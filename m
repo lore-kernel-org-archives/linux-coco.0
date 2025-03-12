@@ -1,184 +1,139 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D551A260A22
-	for <linux-coco@lists.linux.dev>; Tue, 11 Mar 2025 20:15:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80AFB3595E;
+	Wed, 12 Mar 2025 01:13:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741724120; cv=none; b=rnZwPXTz5xsYVjrJ8gmR08y39Rg8uSycxzLEOmq29syOG7VLRx5U+aVlaBqYi159roxhxoWJgBjJ/VsBQ2d2frsSvuRS8NlqnAjzBAUQP2ZtT3c3RJSM6pOBM4WwUCuI8oWnZiH7MURy6KK97ZE0nw6khNOy1dvaEpCIoO3L2vE=
+	t=1741742029; cv=none; b=q6LncpD+fZ2iDOG2wSeRTAXj9R9IDqSOwUrCkQ4jAZPzhRv4esh3hBP+lcO4Wxp9+/M5X7CnxXjQDJpAW3FvFFWCFwUDDRfGdsJqhEL6//hu7Uj1fXs09QTgbBlciSugeRmp0ArwpJgKC5brYQ73ubh6cBEsVpNOZUDoSzHRPxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741724120; c=relaxed/simple;
-	bh=gzYjPCmlJWUGrIy1NZsbrqTW6eUdr3n8qqb1vCqcOA0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rFB5mdnLymS2JrfaE681Sk3HdEYKB8wO3KmMg3BuEczw863Gnv+x0RkoJ4VcYkIG9wjs6ncCzB/4a9FY9EgOGq49tn0ihzswPKThv8KJYdt99Sf7wj59kqvoFJnOoIhQQ/Vo86dtvayHrsrO7ikoMQU4Iay/8PD86/epZgwP9gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=DSY1Yh1J; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=AOPuZBRa; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=fRspo3fo; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=kXcGZ1Vm; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1741742029; c=relaxed/simple;
+	bh=+RZZ7dldifWWO9KJpQQJzaN1oqzmUvwKYrniOyXt/Dc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A18X1o3AyxnEKZyZnFay1BSgyBgsk2xxAN6LOKs23nZx3W4xhPoa1dnObn6D10gs9koBEkAXzY06eUtINWJOHXWVQpnKB8YRqtLXoN+dvKw0dFw0+M5izUTUbrx/NjlTJz85YAqmAEjm2zHWmfjxjptUXfNBNqx6Y3VQ2tUi6YE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dQ5xbV8u; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="DSY1Yh1J";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="AOPuZBRa";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="fRspo3fo";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="kXcGZ1Vm"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C9ECA2117D;
-	Tue, 11 Mar 2025 20:15:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1741724117; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MOymMAqxQuWdddRLmuh9+YU6OLKrxhKGbPPHnJzrflY=;
-	b=DSY1Yh1JOVv/ZTzcEVsr9Ti1k9cmcp22Scvv2CWSTQX3axcqqi3rW3t0x2Pynyi+DwqyHR
-	ZuY/Ulf1yNNiR/f3Rnar/X0aKAwe57XY0sZxT7VgPyfBvR3o1/QRE1L7MjS/fJAn5/7EMO
-	iEbHrQ8WoA0Oi5a2Mcp/zEqgbDGv0ac=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1741724117;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MOymMAqxQuWdddRLmuh9+YU6OLKrxhKGbPPHnJzrflY=;
-	b=AOPuZBRaUBqYhLrakEgihcY4LJWL5b9svAc2c/X6W9ZvXBM4plw5Nv2jJ55KzMXiBbzDfn
-	skKgz0yMOhT8V1Cw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fRspo3fo;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kXcGZ1Vm
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1741724116; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MOymMAqxQuWdddRLmuh9+YU6OLKrxhKGbPPHnJzrflY=;
-	b=fRspo3fok3Djsq0C0D/DB5ui1oCrOZP5AUscfN+gf9QlFPoyMIG746eUTe7zAU8Nml+ckp
-	YHZbtCLD0IBe1z1pL3bgLqbgyDLTCUbxa5Aa5TykH+CVAU32xueaNbZbRfJDUROxQ0KrV1
-	E74CMv5qVFtXTnocqS+iRb8qX+LWcsI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1741724116;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MOymMAqxQuWdddRLmuh9+YU6OLKrxhKGbPPHnJzrflY=;
-	b=kXcGZ1Vmr4aoGYZRETCaSzu18GsByerx0YeDPI4/+vBPNPNwndvKfARFu3MlKrERsFOHbu
-	wm5/JAzb8hI398Aw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A0C56134A0;
-	Tue, 11 Mar 2025 20:15:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 5DmmJtSZ0GeiQQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 11 Mar 2025 20:15:16 +0000
-Message-ID: <12460463-a2c4-4d02-b3fd-42a490d500a9@suse.cz>
-Date: Tue, 11 Mar 2025 21:15:16 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dQ5xbV8u"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741742028; x=1773278028;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+RZZ7dldifWWO9KJpQQJzaN1oqzmUvwKYrniOyXt/Dc=;
+  b=dQ5xbV8ul0YjycD+MymH6UJ5uHbNo+3HUvSxDhhgyPEDzPLFsP9Ll7H1
+   6HRqJG53EJTiGtfn2ascqjlWdK1aC5tQtC++eVK5KXIZmkQdJk1Or5M7V
+   jHp+hA4inmQQQayIPiZVE/3cqq5GR5YqSdLTOQwrbGI7uJfvWXVROGM5c
+   JSQ0BYiGa+Uad2hfULiTdrPyvPCPVA05p4uZWxptuOywQTn0b8t5E6Hs4
+   iXnHD2SO92ls4bg4jFl6K3PnKJHO/A0M3SRLf7uimH+3DYQLnzoQwmWjT
+   uHnE67gC/87fuYLaVAVaLksn+YGOBZ76NJlIDNVWsxMOJQZwxjhRrK9x8
+   g==;
+X-CSE-ConnectionGUID: QpGmr0fqQDi0X/4Z+9Py+Q==
+X-CSE-MsgGUID: c1yKkK7YTfedNExRlKRmNA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11370"; a="42936204"
+X-IronPort-AV: E=Sophos;i="6.14,240,1736841600"; 
+   d="scan'208";a="42936204"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2025 18:13:47 -0700
+X-CSE-ConnectionGUID: u38PE43hRciZlNtVu9D/dQ==
+X-CSE-MsgGUID: eMPyhx1JRFGVHJBvNOHpgQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,240,1736841600"; 
+   d="scan'208";a="151443309"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa001.fm.intel.com with ESMTP; 11 Mar 2025 18:13:39 -0700
+Date: Wed, 12 Mar 2025 09:11:09 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org, kvm@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arch@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Christoph Hellwig <hch@lst.de>, Nikunj A Dadhania <nikunj@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Steve Sistare <steven.sistare@oracle.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Dionna Glaze <dionnaglaze@google.com>, Yi Liu <yi.l.liu@intel.com>,
+	iommu@lists.linux.dev, linux-coco@lists.linux.dev,
+	Zhi Wang <zhiw@nvidia.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+Subject: Re: [RFC PATCH v2 14/22] iommufd: Add TIO calls
+Message-ID: <Z9DfLQtmq7GGXlBb@yilunxu-OptiPlex-7050>
+References: <Z72GmixR6NkzXAl7@yilunxu-OptiPlex-7050>
+ <2fe6b3c6-3eed-424d-87f0-34c4e7e1c906@amd.com>
+ <Z77xrqLtJfB84dJF@yilunxu-OptiPlex-7050>
+ <20250226131202.GH5011@ziepe.ca>
+ <Z7/jFhlsBrbrloia@yilunxu-OptiPlex-7050>
+ <20250301003711.GR5011@ziepe.ca>
+ <Z8U+/0IYyn7XX3ao@yilunxu-OptiPlex-7050>
+ <20250305192842.GE354403@ziepe.ca>
+ <Z8lE+5OpqZc746mT@yilunxu-OptiPlex-7050>
+ <c5c31890-14fc-4fab-8cd4-d4dcfdecdd2d@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: Fix memory accept before watermarks gets
- initialized
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>,
- Mel Gorman <mgorman@techsingularity.net>,
- Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
- <ashish.kalra@amd.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
- linux-mm@kvack.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, Farrah Chen <farrah.chen@intel.com>
-References: <20250310082855.2587122-1-kirill.shutemov@linux.intel.com>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20250310082855.2587122-1-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C9ECA2117D
-X-Spam-Score: -4.51
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:dkim,suse.cz:mid,suse.cz:email,intel.com:email];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	DKIM_TRACE(0.00)[suse.cz:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Level: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c5c31890-14fc-4fab-8cd4-d4dcfdecdd2d@amd.com>
 
-On 3/10/25 09:28, Kirill A. Shutemov wrote:
-> Watermarks are initialized during the postcore initcall. Until then, all
-> watermarks are set to zero. This causes cond_accept_memory() to
-> incorrectly skip memory acceptance because a watermark of 0 is always
-> met.
+On Fri, Mar 07, 2025 at 01:19:11PM +1100, Alexey Kardashevskiy wrote:
 > 
-> To ensure progress, accept one MAX_ORDER page if the watermark is zero.
 > 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Reported-and-tested-by: Farrah Chen <farrah.chen@intel.com>
-
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-
-> ---
->  mm/page_alloc.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
+> On 6/3/25 17:47, Xu Yilun wrote:
+> > On Wed, Mar 05, 2025 at 03:28:42PM -0400, Jason Gunthorpe wrote:
+> > > On Mon, Mar 03, 2025 at 01:32:47PM +0800, Xu Yilun wrote:
+> > > > All these settings cannot really take function until guest verifies them
+> > > > and does TDISP start. Guest verification does not (should not) need host
+> > > > awareness.
+> > > > 
+> > > > Our solution is, separate the secure DMA setting and secure device setting
+> > > > in different components, iommufd & vfio.
+> > > > 
+> > > > Guest require bind:
+> > > >    - ioctl(iommufd, IOMMU_VIOMMU_ALLOC, {.type = IOMMU_VIOMMU_TYPE_KVM_VALID,
+> > > > 					.kvm_fd = kvm_fd,
+> > > > 					.out_viommu_id = &viommu_id});
+> > > >    - ioctl(iommufd, IOMMU_HWPT_ALLOC, {.flag = IOMMU_HWPT_ALLOC_TRUSTED,
+> > > > 				      .pt_id = viommu_id,
+> > > > 				      .out_hwpt_id = &hwpt_id});
+> > > >    - ioctl(vfio_fd, VFIO_DEVICE_ATTACH_IOMMUFD_PT, {.pt_id = hwpt_id})
+> > > >      - do secure DMA setting in Intel iommu driver.
+> > > > 
+> > > >    - ioctl(vfio_fd, VFIO_DEVICE_TSM_BIND, ...)
+> > > >      - do bind in Intel TSM driver.
+> > > 
+> > > Except what do command do you issue to the secure world for TSM_BIND
+> > > and what are it's argument? Again you can't include the vBDF or vIOMMU
+> > > ID here.
+> > 
+> > Bind for TDX doesn't require vBDF or vIOMMU ID. The seamcall is like:
+> > 
+> > u64 tdh_devif_create(u64 stream_id,     // IDE stream ID, PF0 stuff
+> >                       u64 devif_id,      // TDI ID, it is the host BDF
+> >                       u64 tdr_pa,        // TDX VM core metadate page, TDX Connect uses it as CoCo-VM ID
+> >                       u64 devifcs_pa)    // metadate page provide to firmware
 > 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 579789600a3c..4fe93029bcb6 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -7004,7 +7004,7 @@ static inline bool has_unaccepted_memory(void)
->  
->  static bool cond_accept_memory(struct zone *zone, unsigned int order)
->  {
-> -	long to_accept;
-> +	long to_accept, wmark;
->  	bool ret = false;
->  
->  	if (!has_unaccepted_memory())
-> @@ -7013,8 +7013,18 @@ static bool cond_accept_memory(struct zone *zone, unsigned int order)
->  	if (list_empty(&zone->unaccepted_pages))
->  		return false;
->  
-> +	wmark = promo_wmark_pages(zone);
-> +
-> +	/*
-> +	 * Watermarks have not been initialized yet.
-> +	 *
-> +	 * Accepting one MAX_ORDER page to ensure progress.
-> +	 */
-> +	if (!wmark)
-> +		return try_to_accept_memory_one(zone);
-> +
->  	/* How much to accept to get to promo watermark? */
-> -	to_accept = promo_wmark_pages(zone) -
-> +	to_accept = wmark -
->  		    (zone_page_state(zone, NR_FREE_PAGES) -
->  		    __zone_watermark_unusable_free(zone, order, 0) -
->  		    zone_page_state(zone, NR_UNACCEPTED));
+> 
+> (offtopic) is there a public spec with this command defined?
 
+Sorry, there is no public TDX Connect SPEC yet.
+
+Thanks,
+Yilun
