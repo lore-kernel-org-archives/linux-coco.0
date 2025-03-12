@@ -1,121 +1,155 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745A824BC07
-	for <linux-coco@lists.linux.dev>; Wed, 12 Mar 2025 14:57:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D172124E009
+	for <linux-coco@lists.linux.dev>; Wed, 12 Mar 2025 15:08:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741791454; cv=none; b=oWLGlmkRpWO75AD4WQzUGFOZTRNKtlY9pnKfDNY50bcVPJ3gAglAyHgnEetyqtNorAfxy4ylVQ+3EstdBbgAE23g8pogXKq+0pemTiR3veXyNfDbkt/72E++A8tLN/S3u3j0xDUXyal6NAwZ8L3f5t63kqk9A9qZUV14aDQTU+o=
+	t=1741792087; cv=none; b=L70qjfsydLpDlgDhAVDKoe1JD/y0O+p8exrcR7Iuyra1uii3W+mh3vtBImoP45NF3ZuhC15rrBY8bEZfBPQ/+JPDq3LqAnC+g44hni+w/LiR6Rsw2+iXxXdX5pH0+afWqtdpAU+kocAjhEQ42fGanuQIvhhxVOVWwR1c8m3Iq60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741791454; c=relaxed/simple;
-	bh=30rWqo8z930udy+5ywjJvV26a4Wv6syXa/papODAR6I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T+mi8nQrPrk3rmGVuokX5uHeo87DHNOZ6TCdLMjX38c63CLFb9tReyAyDS84KKKPoCzEXmN+8AEObkh+sTCcfTFRAoF6wp+VX39zPXuJngV8p3lKZScueeoxKFBWNu7wMXxnJ4trmZSsUvIPzk3Vz2MKDunjo5jJeGq16whBKnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mjmt4/dO; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1741792087; c=relaxed/simple;
+	bh=wc8JbAP3PIt3Azoy9npzTYy9TnFtAoQqRXYhKLUUSbM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WYha6ieSGabNL9qv6HU96pI9MxQhbqpHAEg5zzJrA/H+qx9+SEvj6C1DkMJEJ+Y9vvU6Z0dhHYnoKkvVClKNle3r3q8vhSdioiCBbowDROfHt1ISrZresVTi4D3nyUZESTARUheqpjUOUhM0eGxmiKIEbkkG7bVwPpgZ7QYd5uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=AplTCqYk; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=SnHIz0QK; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=WI4LBhDJ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=D7XUBvxW; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mjmt4/dO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741791453; x=1773327453;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=30rWqo8z930udy+5ywjJvV26a4Wv6syXa/papODAR6I=;
-  b=mjmt4/dO9ZQ3kB7YCg3oO76oEYQ7Ov5wDaLXpiBBVi3mZGOkJxvMIsvi
-   JVH5XbeqXMVY36M3qswmGvJRbMEJrLZSc7Mp5rP2rjS4DYzPY9DPS0/oG
-   cww0LTXRxRptMKS7rYTt4ShZaUo19O5ukzKF/pAQjc7lPwxgKKFibsuin
-   ekteOvaU8tV9padfGbmZ4S+gcmIq0syJVDZUxQe/MmQJbfCIzlcLwp8oG
-   xwktu3/aXCHs1nMYtaMaaT2P/XwgaJgpYzz+Zf+FMQc1glXy/tJAEY6/w
-   CdgSKP+kKf/eGub1k3fBWQtvSCBCIFB04ukD9j3LvzXBSu53Oicn0yxcz
-   w==;
-X-CSE-ConnectionGUID: qLhuMorKS8C+Fq5xlBK3Dg==
-X-CSE-MsgGUID: R82Rm5m5SgihAuQ2YVOjJw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11371"; a="54245544"
-X-IronPort-AV: E=Sophos;i="6.14,242,1736841600"; 
-   d="scan'208";a="54245544"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 07:57:33 -0700
-X-CSE-ConnectionGUID: 0FaqkDUdRamXwQnAfGkEnQ==
-X-CSE-MsgGUID: 9W+b80xeTXeF7xd3gzAitw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,242,1736841600"; 
-   d="scan'208";a="124812634"
-Received: from ldmartin-desk2.corp.intel.com (HELO [10.125.108.3]) ([10.125.108.3])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2025 07:57:32 -0700
-Message-ID: <ef3f3117-6cd5-4b94-8ddb-e6d224efac60@intel.com>
-Date: Wed, 12 Mar 2025 07:57:31 -0700
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="AplTCqYk";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="SnHIz0QK";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="WI4LBhDJ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="D7XUBvxW"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E9FE71F394;
+	Wed, 12 Mar 2025 15:07:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1741792082; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C7b3OyWlr6XkYpJCgvuDRuD07UMukpDEgYsj61ygyFw=;
+	b=AplTCqYkvL3DrhCJ0K4JRDsu0dBB/mwLwd+eMB+w2IkkBL9DhBEFkW+6oTSXKt/OvehcrM
+	pQzQ0OOhTynPDc+72IjuvZIPx3JoyIGy9a+lI6+56lNIlrLLD6u76h4H9VNPQPdudQ4ZwR
+	lPD1eIiqbZl/Sq24IYYaFG9XnhGz5A4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1741792082;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C7b3OyWlr6XkYpJCgvuDRuD07UMukpDEgYsj61ygyFw=;
+	b=SnHIz0QK2y397iZAS9xI9+Ct8BseEn+I66mvSPWGqpcG1/2YBRpfNfFyamro0UJ2ER2HC3
+	6+lXrZ7iUbA8kWDQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1741792077; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C7b3OyWlr6XkYpJCgvuDRuD07UMukpDEgYsj61ygyFw=;
+	b=WI4LBhDJk4kQMJS8DHrFvUv6cj9RAkycOIM/OO0M2dPIYTWoKavBeBMVw4vhz8AfjtBist
+	scbGx/6uYutASd4JnBpbnr/BsVgWo0GapT/xUWnVajJ5Y1CsIjhLu+9iIWa1UMeKj7ricU
+	Lk+nWWabB6RbEd/AvyBJZ9XE7+TPJnQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1741792077;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C7b3OyWlr6XkYpJCgvuDRuD07UMukpDEgYsj61ygyFw=;
+	b=D7XUBvxWYkgkPdEGGiL7U26j0zBMZLSYRYnl1UAo0Dfmce6JrkqsLBA3JijRHsbfhoYPh2
+	tFAlQzCxr/Y9K2CQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9EDFB13A91;
+	Wed, 12 Mar 2025 15:07:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id is+XJU2j0WfvBQAAD6G6ig
+	(envelope-from <jroedel@suse.de>); Wed, 12 Mar 2025 15:07:57 +0000
+Date: Wed, 12 Mar 2025 16:07:56 +0100
+From: Joerg Roedel <jroedel@suse.de>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Joerg Roedel <joro@8bytes.org>, x86@kernel.org, hpa@zytor.com,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>, Larry.Dewey@amd.com,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	Juergen Gross <jgross@suse.com>, kirill.shutemov@linux.intel.com,
+	alexey.gladkov@intel.com
+Subject: Re: [PATCH 2/2] x86/sev: Make SEV_STATUS available via SYSFS
+Message-ID: <Z9GjTBHBqXenCWYx@suse.de>
+References: <20250312144107.108451-1-joro@8bytes.org>
+ <20250312144107.108451-3-joro@8bytes.org>
+ <ef3f3117-6cd5-4b94-8ddb-e6d224efac60@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] x86/sev: Make SEV_STATUS available via SYSFS
-To: Joerg Roedel <joro@8bytes.org>, x86@kernel.org
-Cc: hpa@zytor.com, Tom Lendacky <thomas.lendacky@amd.com>,
- Nikunj A Dadhania <nikunj@amd.com>, Larry.Dewey@amd.com,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- Juergen Gross <jgross@suse.com>, kirill.shutemov@linux.intel.com,
- alexey.gladkov@intel.com, Joerg Roedel <jroedel@suse.de>
-References: <20250312144107.108451-1-joro@8bytes.org>
- <20250312144107.108451-3-joro@8bytes.org>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20250312144107.108451-3-joro@8bytes.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ef3f3117-6cd5-4b94-8ddb-e6d224efac60@intel.com>
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCVD_TLS_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	SEM_URIBL_FRESH15_UNKNOWN_FAIL(0.00)[suse.de:server fail];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:url,suse.de:mid,suse.de:email]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On 3/12/25 07:41, Joerg Roedel wrote:
-> +static ssize_t sev_status_show(struct kobject *kobj,
-> +			       struct kobj_attribute *attr, char *buf)
-> +{
-> +	return sysfs_emit(buf, "%llx\n", sev_status);
-> +}
+Hi Dave,
 
-Do we really want to just plumb the raw MSR out to userspace? Users
-would still need to parse the thing, so it's not _really_ human readable.
+On Wed, Mar 12, 2025 at 07:57:31AM -0700, Dave Hansen wrote:
+> Do we really want to just plumb the raw MSR out to userspace? Users
+> would still need to parse the thing, so it's not _really_ human readable.
+
+I agree that this is not really human readable. On the other side SYSFS
+is more an interface targeted for tools than optimized for human
+readability (see the one-datum-per-file rule).
+
+The actual use-case (and the reason for these patches) of the sev_status
+file is to provide a better and more secure interface than /dev/msr to a
+tool named snpguest.
+
+A human readable form of this can be added as well, if needed. There is
+already a line in dmesg with the decoded features.
+
+Regards,
+
+-- 
+Jörg Rödel
+jroedel@suse.de
+
+SUSE Software Solutions Germany GmbH
+Frankenstraße 146
+90461 Nürnberg
+Germany
+https://www.suse.com/
+
+Geschäftsführer: Ivo Totev, Andrew McDonald, Werner Knoblich
+(HRB 36809, AG Nürnberg)
