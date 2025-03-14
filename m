@@ -1,125 +1,227 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BAFA1FECBA;
-	Fri, 14 Mar 2025 11:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4E517579;
+	Fri, 14 Mar 2025 15:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741953461; cv=none; b=Avrhn3vfhmmajenPqPBVFc0gSVYhEdczzcvBhdJHTTzZ5auaGQpiq3M1kipncxp3T0NGlqnvfs+R00LAYNiwz+CTUHdOOoq1Pl4J6bS8JFEr7iqcURelDT36fL40fyE5Go1ChJu2GHzMGx0n3jc0I7VzyNg/GA9P6FJew6DfVMQ=
+	t=1741964645; cv=none; b=fYhamcMhPBckL8vjP/TI+he0LkVbMhLyiR+AfmqTU+/4xjvhFVetptlqq2OjcSDl4yUr1/rRcMJTJ2XTyR+BG7zN10/rze7pRMv4fuzhxhLaTWujeBCpi/QaGbzZd0ua6dz0oJyasLGIcq+w31dN73uQm0+Hl+x/Vn98xbQFya4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741953461; c=relaxed/simple;
-	bh=h9R5v8KHjf73KOzZC4dBCiwt0HBHwsI7o5SeTDlR0lg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NVHxrcllaMeTNUy18ucV14C3EFMkjDaW+5g9AuDrkmS30ibyKOclTkgQjwQO+8qvwrevHAFCsuazkfaVP9hyqQcc0yMkh45aMqUbDCoT0mCkGodsZiW8pulClL8w+R+FntOkOeYNQi+c9P1JmKPmsxUsyaw+syz8BptSYwb9jBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L6n6Iu/T; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741964645; c=relaxed/simple;
+	bh=0e0DjIP+VKfjwdEYSIUIE2NE30oUUxw6WwNZHuvge3A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=syEl3MIKOq+/Q2WCT5o526b/2IuwpaEQK6F5d0/1yaQiqpGjuK6Vhu7+ZQg9I3uctR1nM5zC8yCqMrh7RbVMDbLwiwkSmc78We9QEQ2jhiNnQByNliqqtUKscG644jYTHANYPO7DPnuYpBZUVOPsfEC9kZaxgsLSaiXMYJibihk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dlTMJ/LP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L6n6Iu/T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A03C4CEF1;
-	Fri, 14 Mar 2025 11:57:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dlTMJ/LP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAF5C4CEE3;
+	Fri, 14 Mar 2025 15:04:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741953461;
-	bh=h9R5v8KHjf73KOzZC4dBCiwt0HBHwsI7o5SeTDlR0lg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L6n6Iu/T2FVs4V4AqCqmYWvXoki5xhpHCAGGGOeLTGAVa7VWe4WKdZzsNFlPt8pYz
-	 dhvDJHdZNqLemX1eQ4adk+vKXEHogIhp6pvk/ny4XCRS80Dl1qdhrN986gaaWK82gn
-	 d7hAzO+jp47CGgDOl1wYI7+JonubTojPlJ0C81ASChdp7x0thmpkFSDf+czcmv9KWK
-	 7afjQdUOB4GCjlxi2YPKuX6+pGVkZWSOCIItW1oqj4LaIL1Ygz3NQOpi0J08A4CHCZ
-	 zrJGwhK4m5U9mdGwbeYEWpE1vmoKUDvIEtVe40U38x3qwW4nariAflWwaOF68pN0rS
-	 uPm+FQUxRsLwQ==
-From: Alexey Gladkov <legion@kernel.org>
-To: x86@kernel.org
-Cc: "Alexey Gladkov (Intel)" <legion@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	Alexey Gladkov <alexey.gladkov@intel.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Juergen Gross <jgross@suse.com>,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-	Larry.Dewey@amd.com,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>
-Subject: [RFC PATCH v1 3/3] docs: ABI: testing: Add documentation about TDX
-Date: Fri, 14 Mar 2025 12:56:28 +0100
-Message-ID: <9e3c8a309ea558e8783c2bd346f536ce8417f406.1741952958.git.legion@kernel.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <cover.1741952958.git.legion@kernel.org>
-References: <cover.1741952958.git.legion@kernel.org>
+	s=k20201202; t=1741964645;
+	bh=0e0DjIP+VKfjwdEYSIUIE2NE30oUUxw6WwNZHuvge3A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dlTMJ/LPHUArLjczhP9hRtw8xbFoO9c5acZfol2Gs5Q7IXltfeD/Tn0j1jVh5f59X
+	 Q++N7OWjc+gPpKq+SbV58XPwYclvkrHXvQOjPX8DeUEBrZIjC9Tb1ARZTIROn/GkNk
+	 +nkVecMAI/+hcxiUHvwXgZVhOE5t/h+0FfELm16RRVwAJNSdualYRnedaztMR+IMvo
+	 Anbv41RgSZz7/YmQ2rzDDTVgkk60mfLS1piXGO7UenTWaLS8kknNVBlA5Fgk4KFEMA
+	 RCeH4jDmE+ZTgPaZYvGZdh5nPJkxRzPrkvL4tE/lE7wafzTO2juGQ/z+yudZSSkp1p
+	 xYxfIQ6f5dS1Q==
+Date: Fri, 14 Mar 2025 17:04:00 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Peter Huewe <peterhuewe@gmx.de>, Tom Lendacky <thomas.lendacky@amd.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
+	linux-integrity@vger.kernel.org, Dov Murik <dovmurik@linux.ibm.com>,
+	Dionna Glaze <dionnaglaze@google.com>, linux-coco@lists.linux.dev,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Claudio Carvalho <cclaudio@linux.ibm.com>,
+	Ingo Molnar <mingo@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: Re: [PATCH v3 1/4] x86/sev: add SVSM vTPM probe/send_command
+ functions
+Message-ID: <Z9RFYCAGEZTVfqjb@kernel.org>
+References: <20250311094225.35129-1-sgarzare@redhat.com>
+ <20250311094225.35129-2-sgarzare@redhat.com>
+ <Z9AIx9kFKWcHB_WK@kernel.org>
+ <2of2zhxi2c735fgvjxug2bxjfpz2zk25adf3h2ps5byau3rj3k@pgbxmpbskezi>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2of2zhxi2c735fgvjxug2bxjfpz2zk25adf3h2ps5byau3rj3k@pgbxmpbskezi>
 
-From: "Alexey Gladkov (Intel)" <legion@kernel.org>
+On Wed, Mar 12, 2025 at 11:56:06AM +0100, Stefano Garzarella wrote:
+> On Tue, Mar 11, 2025 at 11:56:23AM +0200, Jarkko Sakkinen wrote:
+> > On Tue, Mar 11, 2025 at 10:42:22AM +0100, Stefano Garzarella wrote:
+> > > Add two new functions to probe and send commands to the SVSM vTPM.
+> > > They leverage the two calls defined by the AMD SVSM specification [1]
+> > > for the vTPM protocol: SVSM_VTPM_QUERY and SVSM_VTPM_CMD.
+> > > 
+> > > Expose these functions to be used by other modules such as a tpm
+> > > driver.
+> > > 
+> > > [1] "Secure VM Service Module for SEV-SNP Guests"
+> > >     Publication # 58019 Revision: 1.00
+> > > 
+> > > Co-developed-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+> > > Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+> > > Co-developed-by: Claudio Carvalho <cclaudio@linux.ibm.com>
+> > > Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
+> > > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+> > > ---
+> > > v3:
+> > > - removed link to the spec because those URLs are unstable [Borislav]
+> > > - squashed "x86/sev: add SVSM call macros for the vTPM protocol" patch
+> > >   in this one [Borislav]
+> > > - slimmed down snp_svsm_vtpm_probe() [Borislav]
+> > > - removed features check and any print related [Tom]
+> > > ---
+> > >  arch/x86/include/asm/sev.h |  7 +++++++
+> > >  arch/x86/coco/sev/core.c   | 31 +++++++++++++++++++++++++++++++
+> > >  2 files changed, 38 insertions(+)
+> > > 
+> > > diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+> > > index ba7999f66abe..09471d058ce5 100644
+> > > --- a/arch/x86/include/asm/sev.h
+> > > +++ b/arch/x86/include/asm/sev.h
+> > > @@ -384,6 +384,10 @@ struct svsm_call {
+> > >  #define SVSM_ATTEST_SERVICES		0
+> > >  #define SVSM_ATTEST_SINGLE_SERVICE	1
+> > > 
+> > > +#define SVSM_VTPM_CALL(x)		((2ULL << 32) | (x))
+> > > +#define SVSM_VTPM_QUERY			0
+> > > +#define SVSM_VTPM_CMD			1
+> > > +
+> > >  #ifdef CONFIG_AMD_MEM_ENCRYPT
+> > > 
+> > >  extern u8 snp_vmpl;
+> > > @@ -481,6 +485,9 @@ void snp_msg_free(struct snp_msg_desc *mdesc);
+> > >  int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req,
+> > >  			   struct snp_guest_request_ioctl *rio);
+> > > 
+> > > +bool snp_svsm_vtpm_probe(void);
+> > > +int snp_svsm_vtpm_send_command(u8 *buffer);
+> > > +
+> > >  void __init snp_secure_tsc_prepare(void);
+> > >  void __init snp_secure_tsc_init(void);
+> > > 
+> > > diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+> > > index 96c7bc698e6b..2166bdff88b7 100644
+> > > --- a/arch/x86/coco/sev/core.c
+> > > +++ b/arch/x86/coco/sev/core.c
+> > > @@ -2628,6 +2628,37 @@ static int snp_issue_guest_request(struct snp_guest_req *req, struct snp_req_dat
+> > >  	return ret;
+> > >  }
+> > > 
+> > 
+> > Since this is an exported symbol, it'd be a good practice document
+> > snp_svsm_vtpm_probe().
+> 
+> Yes, you are right, since the others were not documented, I had not added
+> it, but I agree with you, I'll do in v4.
+> 
+> > 
+> > > +bool snp_svsm_vtpm_probe(void)
+> > > +{
+> > > +	struct svsm_call call = {};
+> > > +
+> > > +	/* The vTPM device is available only if a SVSM is present */
+> > > +	if (!snp_vmpl)
+> > > +		return false;
+> > > +
+> > > +	call.caa = svsm_get_caa();
+> > > +	call.rax = SVSM_VTPM_CALL(SVSM_VTPM_QUERY);
+> > 
+> > I supposed CAA is some kind of shared memory area for host and VM?
+> 
+> Not with the host, but with SVSM, which is the firmware running in the
+> guest, but at a higher privilege level (VMPL) than the kernel, where, for
+> example, the vTPM is emulated.
+> 
+> BTW, yep it is a shared memory defined by the SVSM calling convention.
+> From AMD SVSM specification:
+> 
+>   5 Calling Convention
+> 
+>     Each call to the SVSM conveys data through a combination of the
+>     SVSM Calling Area (whose address was first configured through the
+>     SVSM_CAA field of the secrets page) and registers. Use of the
+>     Calling Area is necessary for the SVSM to detect the difference
+>     between a call that was issued by the guest and a spurious
+>     invocation by a poorly behaved host. Registers are used for all
+>     other parameters.
+>     The initially configured SVSM Calling Area is a page of memory that
+>     lies outside the initial SVSM memory range and has not had its VMPL
+>     permissions restricted in any way. The address is guaranteed to be
+>     aligned to a 4 KB boundary, so the remainder of the page may be used
+>     by the guest for memory-based parameter passing if desired.
+>     The contents of the Calling Area are described in the following
+>     table:
+> 
+>     Table 2: Calling Area
+>     Byte      Size     Name                Description
+>     Offset
+> 
+>     0x000     1 byte   SVSM_CALL_PENDING   Indicates whether a call has
+>                                            been requested by the guest
+>                                            (0=no call requested, 1=call
+>                                            requested).
+>     0x001     1 byte   SVSM_MEM_AVAILABLE  Free memory is available to
+>                                            be withdrawn.
+>     0x002     6 byte                       Reserved. The SVSM is not
+>                                            required to verify that
+>                                            these bytes are 0.
+> 
+> > 
+> > > +
+> > > +	if (svsm_perform_call_protocol(&call))
+> > > +		return false;
+> > > +
+> > > +	/* Check platform commands contains TPM_SEND_COMMAND - platform command 8 */
+> > > +	return (call.rcx_out & BIT_ULL(8)) == BIT_ULL(8);
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(snp_svsm_vtpm_probe);
+> > > +
+> > 
+> > Ditto.
+> 
+> Ack.
+> 
+> > 
+> > > +int snp_svsm_vtpm_send_command(u8 *buffer)
+> > > +{
+> > > +	struct svsm_call call = {};
+> > > +
+> > > +	call.caa = svsm_get_caa();
+> > > +	call.rax = SVSM_VTPM_CALL(SVSM_VTPM_CMD);
+> > > +	call.rcx = __pa(buffer);
+> > > +
+> > > +	return svsm_perform_call_protocol(&call);
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(snp_svsm_vtpm_send_command);
+> > > +
+> > >  static struct platform_device sev_guest_device = {
+> > >  	.name		= "sev-guest",
+> > >  	.id		= -1,
+> > > --
+> > > 2.48.1
+> > > 
+> > 
+> > That said, these are rather self-documenting (i.e, nice and clean).
+> 
+> Thanks for the review!
 
-Document the new testing ABI of TDX module. Currently, there is no
-reliable user interface within the guest as well as on the host system.
+Sure, don't worry about it! Let's just cycle this enough rounds that
+it fits well...
 
-Signed-off-by: Alexey Gladkov (Intel) <legion@kernel.org>
----
- .../ABI/testing/sysfs-hypervisor-tdx          | 50 +++++++++++++++++++
- 1 file changed, 50 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-hypervisor-tdx
+> Stefano
 
-diff --git a/Documentation/ABI/testing/sysfs-hypervisor-tdx b/Documentation/ABI/testing/sysfs-hypervisor-tdx
-new file mode 100644
-index 000000000000..5ee33cdc59ef
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-hypervisor-tdx
-@@ -0,0 +1,50 @@
-+What:		/sys/hypervisor/tdx/version/major
-+Date:		March 2025
-+KernelVersion:	v6.15
-+Contact:	linux-coco@lists.linux.dev
-+Description:	(RO) Report the major version of the loaded TDX module.
-+
-+What:		/sys/hypervisor/tdx/version/minor
-+Date:		March 2025
-+KernelVersion:	v6.15
-+Contact:	linux-coco@lists.linux.dev
-+Description:	(RO) Report the major version of the loaded TDX module.
-+
-+What:		/sys/hypervisor/tdx/version/update
-+Date:		March 2025
-+KernelVersion:	v6.15
-+Contact:	linux-coco@lists.linux.dev
-+Description:	(RO) Report the update version of the loaded TDX module.
-+		Not available on the guest side.
-+
-+What:		/sys/hypervisor/tdx/properties/build_num
-+Date:		March 2025
-+KernelVersion:	v6.15
-+Contact:	linux-coco@lists.linux.dev
-+Description:	(RO) Reports the build number of the loaded TDX module.
-+		Not available on the guest side.
-+
-+What:		/sys/hypervisor/tdx/properties/build_date
-+Date:		March 2025
-+KernelVersion:	v6.15
-+Contact:	linux-coco@lists.linux.dev
-+Description:	(RO) Reports the build data of loaded TDX module in yyyymmdd
-+		BCD format (each digit occupies 4 bits).
-+		Not available on the guest side.
-+
-+What:		/sys/hypervisor/tdx/properties/features0
-+Date:		March 2025
-+KernelVersion:	v6.15
-+Contact:	linux-coco@lists.linux.dev
-+Description:	(RO) Reports the features supported by the loaded TDX module in
-+		hex format. Enumerates TDX features:
-+
-+			=========   ===================================
-+			Bit 0       TD Migration
-+			Bit 1       TD Preserving
-+			Bit 2       Service TD
-+			Bit 3       TDG.VP.RD/WR
-+			Bit 4       Relaxed mem management concurrency
-+			Bits 63:5   Reserved, set to 0
-+			=========   ===================================
-+
--- 
-2.48.1
+BR, Jarkko
 
