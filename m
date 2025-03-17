@@ -1,158 +1,203 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2046.outbound.protection.outlook.com [40.107.100.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A265F8F5E;
-	Mon, 17 Mar 2025 13:43:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742219002; cv=none; b=c4GaHQBVY/wEC2PvcYNBT7LfzTewUavkyWXWAdQtx7PoDY9Pgd7d2TnTljgayaqb+LHE6SCoIyJRz0qIh14tcJ5p1Rt9KUEtYxBXJRqU5k/o/+V5VetcYkxevfI6QYnejU7/GLbHiIQMIGvYhZFBfXlxLjRD91i1NqF3F/4MhCE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742219002; c=relaxed/simple;
-	bh=KcLfpDFlHF4CuFkvzWAVtDEGynkNVW0lSPNM2If/EqA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iJrG5mDJFL+b4q5wrP+NvRAPQ8qLLB12n7FRq15383iSbnyu9ky9gDEqMiIQnrZSH89AC6Rpz0prgMZ7g2b+KitnXiyVihQPpHjOfxDkGk5+ql/5/Br5zyFtsubTVWy0ROV/BBDZLRtQFTpkxl+U7NWsl6YAQDzraHVZ21O4LqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tPzZCMPo; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519E0200120
+	for <linux-coco@lists.linux.dev>; Mon, 17 Mar 2025 16:38:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742229514; cv=fail; b=YPn8vF/1Dtx1GAb5P99qeE3OiudC6mIC6zwFHJ46YSC5ECU2hiBl5FdKS+oLog1+KUfDRsc3plvQqJQra3ESCIYyehmbABivpHYnCD5Zxwv2drADYnVc0iGD7E3nyLm25CuJ4d11i2NImEzGPjfX2LmtLM332f5V6PnZ/XhFgOk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742229514; c=relaxed/simple;
+	bh=l7MU9KXEoZL5qyriI/1rn+jlEw2h3IlvUR90tgYsCPc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=udeCCgM3C+29hBzolPZ83PZOptdcBGWyL8lOd18iW4HEmmhRD2OIbpwVwVA2LsrxV+cPdUgbD7tVAKloeGpB/G0jDzFLALZ8p/Sz7FZaiMx/IdOpBJP24exHdzJXymAmOScdmvbZoSffFwR3gP7guPdAEinyOprWvsH8OIhRvu0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=imcNWENI; arc=fail smtp.client-ip=40.107.100.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tPzZCMPo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7114C4CEE3;
-	Mon, 17 Mar 2025 13:43:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742219002;
-	bh=KcLfpDFlHF4CuFkvzWAVtDEGynkNVW0lSPNM2If/EqA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tPzZCMPoONlouXorORgBcubM0hCBWp9aOaZlINFiQv7j6KhbCGnqxO2sxsbc6iH46
-	 iNeKNHJUxRcHchgTpzPyyaC5Bkjx21fYXMPRAAM87t2JI2q+Lkxb3jTvNv38u6W16Y
-	 1q/2LMVPbjbt/tT1yg3klvquyGqbVeYNSumrGYiexrtq9KU4LgWogzrWa8hyDHN/H+
-	 scda8atE0lAx7Mj3651Rbjru97j3kxoP3BawUXTxkJKpeOC+FWqvfYTMGWDpVCnE2v
-	 zUZnhfdK1QfG4v9mchF8yF2WZB1KszYVYQJD93JTIuBFlPgeE5zJB+lw6kkg5cKJiu
-	 CQfbgRLfo+aXw==
-Date: Mon, 17 Mar 2025 15:43:18 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>,
-	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-	x86@kernel.org, linux-kernel@vger.kernel.org,
-	Borislav Petkov <bp@alien8.de>, linux-integrity@vger.kernel.org,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Dionna Glaze <dionnaglaze@google.com>, linux-coco@lists.linux.dev,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Claudio Carvalho <cclaudio@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: Re: [PATCH v3 3/4] tpm: add SNP SVSM vTPM driver
-Message-ID: <Z9gm9iWhk5Zs2NvI@kernel.org>
-References: <20250311094225.35129-1-sgarzare@redhat.com>
- <20250311094225.35129-4-sgarzare@redhat.com>
- <e4eeaead-2277-1f6f-86eb-f80deae2135b@amd.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="imcNWENI"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RSs2Jmu2t6deLdxIQUaKNEAu8qMpqoO0jCwSHJHVrJ5M/ikCEAi5KfZIEdLJzXZ/CGLKExm4KjBH0AN4RyT53mQU0g7AFG4pIVjcJvwgCoIP9gyP299njdkqh5rFGsfZ+CNdR5aTahzkiky69NA1RAotwaT2Qw1YSRQ2ToimzJKnYhkmJw/+KGbF6w09JBqe5X9WkHrZCklaJERBUgOgVlJCWDR9yalWw5ONFqgMWhkdtol8yYSb2FKakF/YhuyOGcSReKJEpRhPH1hAmH7aagYoF02nWHXTvMH++2sxqMSUs4+QAiiblpEgEvGaCgGMCyesvfp19sOKTDv0BPrGeA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KMR+033BL8YtE0zJD+p3KFTKRLda1626i4IzJtvXTK8=;
+ b=nrCcPlsHkHui4CW/zsOLY361lVAzJH+nl6B9vQ2unYGwOAjTtIfvcF9faCtIxqxBX2iWUMFqtm69vCpUbkmirxDEMlElD930c603J1HbwYqOfeqzTdgh0z8ryMxxrTzEm3ve1KoaDhGCw1kCUEV9HNemR4AI3xCtnAkCHceIjh2Y8zPmZD0YOtyKF6msQg8oBS/p5QhFZN62TiOfq6IrpAXapkIeKdFxtBukjoqLxTzDFQBOizvtjJt1vXO0rqMEdJBYpRCCHdchQNNS1hljEKbT8NraVbomAxbTMfQCJc9iOZL/S4RlkTgCAYILGFWN3s6SF/46yMEUK0brkC23ow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KMR+033BL8YtE0zJD+p3KFTKRLda1626i4IzJtvXTK8=;
+ b=imcNWENITuSQfbkQhaTR3waaZH+V2DsCopTfe9k5uP2och/k1uIcITsD7q0hwRjG5jVvFJIxdRjrmezHPgzN9YhSGXS3CTBMfwPdBj4VVzmaLuwwSAqVXd6jRQpCQU3Bu9RnrFYxRpHiJrgQP2WlBo2Sy7DMOdTUWDEZxZXl1u0+KuhOHUkP1GvfFJRtpTGCdifg6ESXc75F1J72gdrf8f2j/PdjvAzFHExHbRdOEJW0omQc4+NElUXftVimokam/i3KJgtd7OfplDSsEh7JXLC2fqfZoC9RhcxQ3R1d2mGsS7Bor4vVUVJ0+tVUSFsw1X3vDHjwWUJdFvuu90lXaQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by MN0PR12MB5788.namprd12.prod.outlook.com (2603:10b6:208:377::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Mon, 17 Mar
+ 2025 16:38:27 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.8534.031; Mon, 17 Mar 2025
+ 16:38:27 +0000
+Date: Mon, 17 Mar 2025 13:38:25 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>, Baolu Lu <baolu.lu@linux.intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
+	christian.koenig@amd.com, pbonzini@redhat.com, seanjc@google.com,
+	alex.williamson@redhat.com, vivek.kasireddy@intel.com,
+	yilun.xu@intel.com, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
+	daniel.vetter@ffwll.ch, leon@kernel.org, zhenzhong.duan@intel.com,
+	tao1.su@intel.com
+Subject: Re: [RFC PATCH 08/12] vfio/pci: Create host unaccessible dma-buf for
+ private device
+Message-ID: <20250317163825.GL9311@nvidia.com>
+References: <20250113164935.GP5556@nvidia.com>
+ <ZnDGqww5SLbVD6ET@yilunxu-OptiPlex-7050>
+ <20250114133553.GB5556@nvidia.com>
+ <17cd9b77-4620-4883-9a6a-8d1cab822c88@amd.com>
+ <20250115130102.GM5556@nvidia.com>
+ <f1ac048f-64b1-4343-ab86-ad98c24a44f5@linux.intel.com>
+ <20250117132523.GA5556@nvidia.com>
+ <835c7751-d8ba-4af0-812f-2b3a9a91d0bc@amd.com>
+ <20250120132843.GI5556@nvidia.com>
+ <67d0e549d4d27_201f029458@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <67d0e549d4d27_201f029458@dwillia2-xfh.jf.intel.com.notmuch>
+X-ClientProxiedBy: MN0P221CA0001.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:208:52a::7) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e4eeaead-2277-1f6f-86eb-f80deae2135b@amd.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|MN0PR12MB5788:EE_
+X-MS-Office365-Filtering-Correlation-Id: 117cc56d-05ef-4cd1-e26d-08dd65722482
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?9BO/lCk2kcMXmq49JmMSS8LGKmIFZHXGm3hXrFwima1giu1gkf9L1N5eQ47m?=
+ =?us-ascii?Q?KGXIKbll9oZ5wJOgduwwjuRBhWU1lxcrULWZIshwjJRSLdy4RILEfe+5Z17r?=
+ =?us-ascii?Q?UQXglsiJ+7wZZ1qOm5qaMmUKL81lREd1og3GUmKMGPoL1zMNTq6kqht8D1bO?=
+ =?us-ascii?Q?Adx8zpdLomTNmr3DGqGoYEuR9X86LqKL9Xg6SgD59pHupidzx5H5vnRUzleA?=
+ =?us-ascii?Q?CjtL0VNDKujHM5N/F3O7MoJdkwr42BVTe7k8ecFyN5I9qDQHxdggyBZm+kX5?=
+ =?us-ascii?Q?SR51cOS1kvwDOMEkvseTcbhYFIoVQTxuA8vsMoev5LQFUaqvLIq0TO+M99qr?=
+ =?us-ascii?Q?3dBlG71Ha32QOnmOfuUvLZpStrzG9+mcsAuJ/Nl0rLXEgF7aaLM+IsTlTcWq?=
+ =?us-ascii?Q?U1rNWqReaW3Dj/hgfumTk371elC2/Jg4wU7kP1RjHg6ESDdak9exoI9WIloz?=
+ =?us-ascii?Q?Yf4hsYm8RE5ewkG25DljAXXVFedSVu57j77eRmOca/LeOWIpVnDuNV6EuNLz?=
+ =?us-ascii?Q?0rO6/TfIexqZudVghMv9JksAmv378/KrvicI+cfoniXFqpc3TipXMAOBa8xK?=
+ =?us-ascii?Q?wZSLaLE6lWgkfkSVY8Es8iuQ/7g3x0VrWp8F8cqTey95HioG8rYDDuXrhkcr?=
+ =?us-ascii?Q?HcZtN7HAKIFvJOg9IsFnQKoewddhxvOVTj3YZkN2g/T2/4UUZYWoNfK6UJI9?=
+ =?us-ascii?Q?vgx/TNqIem4jAw1NIhbGx46pehbmsDDH7QzI5V21gUIOSZQwGv7adja3rWkl?=
+ =?us-ascii?Q?UwNKsWjmmRy4QOZ5b7jVAkxIricW5tU9GXvowZBjBK/wJjzDNIVZ1wV79jME?=
+ =?us-ascii?Q?hI73tXTgsMqI6AkKFrrznbdHGu7JtjzW72szGYC0DY6wlekO288+vyY7fc1W?=
+ =?us-ascii?Q?szeYEwbv8/+wZ9T4xeTw7zQ2Y4INZtUQ3bEw56OTCWU+HnPUEDz9k7mKnSh4?=
+ =?us-ascii?Q?LxsfZbNIIkkcZDu4k8AbCokGEmozacJxHxIHAaPYnTn+BULiHAA1zz2NH6BN?=
+ =?us-ascii?Q?q9n3cVMydOvwGRhIAdcm6gMKtQII59wZFLTJXH0Ctoe3NLaeyb3UDzizebw3?=
+ =?us-ascii?Q?gOP4AvtS5721V3a2sOPNGsyuSIfVQ2vUScJgiocQg4Vh2XrQ2+VWa7zAXNZq?=
+ =?us-ascii?Q?oLZYPg9R/bBlzOlHRuHvCQh80nyElYuFhGiPzsuSpe4tfgpP+f+Thn/Xgweu?=
+ =?us-ascii?Q?7tY1YKCDoaQ6i9GPwUt66PoIGzl1TPWOMV/CM2c2xoXbiaFMZRFwp++Lsdkt?=
+ =?us-ascii?Q?7Ymuvp/Nq2cryybkT0faNLwkXKyQLCMDFNJI5wxr49FBL6TrsUJOpuOwklc2?=
+ =?us-ascii?Q?T3DK3qct6wLjILz2GpSEE1Q38ANw85jcH/GXh2jxSiPMDj1AeRNrln54LbRI?=
+ =?us-ascii?Q?5RpPunX2UJSmCeAwG4cfBN32/1jR?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?MAq4S5LX+W1/NrBZwJoU4vC3X6IkdbIgJrsUeI1M74+LrM81YtMJxE2AOBZr?=
+ =?us-ascii?Q?Vn97VhyIGSOJaivoy1EuGR4jhBFvRRqW8YzOsOgIMApVwzhEb169CLXLkHta?=
+ =?us-ascii?Q?n28eHTNqmmGpg3tu80KyaCQ94qKyzjGcCW6K0io6xFUpDP8PJUuo0nuM1v6Z?=
+ =?us-ascii?Q?n1SJfm3Ppilucnb6TEljLIHZWxEbo9XfwaSOLRo3GgWxvLkCy5Gzb6kGrv4a?=
+ =?us-ascii?Q?7w7sprX/ncRfwHG28Eu7A3hseUBvL9be0ZRGs4uag4jZ48QaRICniIESR4qy?=
+ =?us-ascii?Q?bQB7X7tw6PbARv9qoUOGYkWhRNA3Od/nLS60EIixJWfOzQMH8DHTUZ+1WgC+?=
+ =?us-ascii?Q?RFI6Pb5PNtQyCr8AZQQ3xB0TFa/IksrUcBXsPgjLXcbA2sN9JfUVG+GmN4Gu?=
+ =?us-ascii?Q?j360LS4OBO2OKcWQqBOPEtXTrvz6MXpl4Mb/E6SP7ar1t7dNBg2qwi0gAccL?=
+ =?us-ascii?Q?oV7atC6+u7KYsvFUk4uRx/yhhLI6awWs49pB3l/tCIIyfxfiQ77aQPzQMEhN?=
+ =?us-ascii?Q?4wAiaezOisYzOKNYjDmxe4KWHQPwjM+eekjHm407A+dkzxmBSNAGpxhiEYIQ?=
+ =?us-ascii?Q?xusgRaitUZgkMjj19eDJxoh3W5BkBl1xn0ZONIdCBIX5u3OB8v3avWI/AsoS?=
+ =?us-ascii?Q?OQRpcMZdCaJ/kQdlfvIqzEXQMcV13Gi7PqqigJiEizcpokl05fxmfxcOoJkj?=
+ =?us-ascii?Q?UARMKLze4nghlqAtMgx3yC0IRS9Rs3TL+yNQKySHkbV1pmYVDQNAJa7hZG86?=
+ =?us-ascii?Q?wCnPaei1WI2iQiwMYq/3rVWjUUiUObgft4IYALjThFRmxJ4MPG3Yu0XYHL3E?=
+ =?us-ascii?Q?p7arDsiYExfs15on6/OcD8iSOiKIHk5pIuGwO69l15Xot+V+5VjvHJvEnURf?=
+ =?us-ascii?Q?zLZCjlwB/YGfm4+iobIWxwDvgwFFyimeEWQnp6u2BbzB/9FBOccRiA0RuPVr?=
+ =?us-ascii?Q?XYO5hK9/ozGie0u8YYp8YwRCtuRLlE9jA08qe5ZES7PQw6bM7PtgqEayTAgc?=
+ =?us-ascii?Q?P8ij1XMre3ZnN1M+OLfk70QfKqOYI7DCK3UnZP6U/xct/cI4xm6zYLwTSttI?=
+ =?us-ascii?Q?LuaFyk7xYYyMOdF7Y2CzyGOxaUloDVRT2ZBBlmm2OrZZp7qn+aKdYgQLUPEO?=
+ =?us-ascii?Q?uia56jv/VH1lLZ/uYIhbcQQZAen5KuguPrak2XuYvo2ECUDpoT3szMl4gAMv?=
+ =?us-ascii?Q?SoYP7kTMMSoQESUFdD67HUfg6Xwr+W3RhuBEbGd/CcC/Js4DPQS+nR9bswaA?=
+ =?us-ascii?Q?jh/+BPFY2Yk9jH0iugzRDA3MRe9eDuWh76ocXZqNwPrnH67EAuJ22BxrYQ9V?=
+ =?us-ascii?Q?s6MNex3OXKqZLZTKrP+CYnRiNShL7rYQh7TOIWBWHJAWVILebcxasP8KSgGV?=
+ =?us-ascii?Q?AX9vZEWHJXI6AUHjH4ELTZhUQPiOiYrjMAZeLGML0808E4vEigY6KooZFzaM?=
+ =?us-ascii?Q?veazZBnslP3EYDlj+DlDNR2JzdtUM0socs0L5EVf8onX6BAk8jBNeE9AVnco?=
+ =?us-ascii?Q?1FTCp9nL7Gg4FJH6yUXwowHtgJY56/mW2F2Jccy0o1IDSOlxw8bELntKne7P?=
+ =?us-ascii?Q?+wy5SSghn558wMY4Ct9BRevxLxns4WF6vwWC/FyK?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 117cc56d-05ef-4cd1-e26d-08dd65722482
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2025 16:38:27.2579
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8egIt5/ccd0soGnswQUBqEJcQfyIeidvsbw5NNZ3waTnWadJDPHfx1T9sOy80rT7
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5788
 
-On Fri, Mar 14, 2025 at 11:48:11AM -0500, Tom Lendacky wrote:
-> On 3/11/25 04:42, Stefano Garzarella wrote:
-> > Add driver for the vTPM defined by the AMD SVSM spec [1].
-> > 
-> > The specification defines a protocol that a SEV-SNP guest OS can use to
-> > discover and talk to a vTPM emulated by the Secure VM Service Module (SVSM)
-> > in the guest context, but at a more privileged level (VMPL0).
-> > 
-> > The new tpm-svsm platform driver uses two functions exposed by x86/sev
-> > to verify that the device is actually emulated by the platform and to
-> > send commands and receive responses.
-> > 
-> > The device cannot be hot-plugged/unplugged as it is emulated by the
-> > platform, so we can use module_platform_driver_probe(). The probe
-> > function will only check whether in the current runtime configuration,
-> > SVSM is present and provides a vTPM.
-> > 
-> > This device does not support interrupts and sends responses to commands
-> > synchronously. In order to have .recv() called just after .send() in
-> > tpm_try_transmit(), the .status() callback returns 0, and both
-> > .req_complete_mask and .req_complete_val are set to 0.
-> > 
-> > [1] "Secure VM Service Module for SEV-SNP Guests"
-> >     Publication # 58019 Revision: 1.00
-> > 
-> > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> > ---
-> > v3:
-> > - removed send_recv() ops and followed the ftpm driver implementing .status,
-> >   .req_complete_mask, .req_complete_val, etc. [Jarkko]
-> > - removed link to the spec because those URLs are unstable [Borislav]
-> > ---
-> >  drivers/char/tpm/tpm_svsm.c | 148 ++++++++++++++++++++++++++++++++++++
-> >  drivers/char/tpm/Kconfig    |  10 +++
-> >  drivers/char/tpm/Makefile   |   1 +
-> >  3 files changed, 159 insertions(+)
-> >  create mode 100644 drivers/char/tpm/tpm_svsm.c
-> > 
-> > diff --git a/drivers/char/tpm/tpm_svsm.c b/drivers/char/tpm/tpm_svsm.c
-> > new file mode 100644
-> > index 000000000000..5540d0227eed
-> > --- /dev/null
-> > +++ b/drivers/char/tpm/tpm_svsm.c
-> > @@ -0,0 +1,148 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +/*
-> > + * Copyright (C) 2025 Red Hat, Inc. All Rights Reserved.
-> > + *
-> > + * Driver for the vTPM defined by the AMD SVSM spec [1].
-> > + *
-> > + * The specification defines a protocol that a SEV-SNP guest OS can use to
-> > + * discover and talk to a vTPM emulated by the Secure VM Service Module (SVSM)
-> > + * in the guest context, but at a more privileged level (usually VMPL0).
-> > + *
-> > + * [1] "Secure VM Service Module for SEV-SNP Guests"
-> > + *     Publication # 58019 Revision: 1.00
-> > + */
-> > +
-> > +#include <asm/sev.h>
+On Tue, Mar 11, 2025 at 06:37:13PM -0700, Dan Williams wrote:
+
+> > There is a use case for using TDISP and getting devices up into an
+> > ecrypted/attested state on pure bare metal without any KVM, VFIO
+> > should work in that use case too.
 > 
-> Typically the "asm" includes are after the "linux" includes and separated
-> from each other by a blank line.
-> 
-> > +#include <linux/module.h>
-> > +#include <linux/kernel.h>
-> > +#include <linux/platform_device.h>
-> > +#include <linux/svsm_vtpm.h>
-> > +
-> > +#include "tpm.h"
-> > +
-> > +struct tpm_svsm_priv {
-> > +	u8 buffer[SVSM_VTPM_MAX_BUFFER];
-> > +	u8 locality;
-> > +};
-> 
-> I'm wondering if the buffer shouldn't be a pointer to a page of memory
-> that is a page allocation. This ensures it is always page-aligned in case
-> the tpm_svsm_priv structure is ever modified.
-> 
-> As it is, the kmalloc() allocation will be page-aligned because of the
-> size, but it might be safer, dunno, your call.
+> Are you sure you are not confusing the use case for native PCI CMA plus
+> PCIe IDE *without* PCIe TDISP?
 
-This was good catch. There's actually two issues here:
+Oh maybe, who knows with all this complexity :\
 
-1. SVSM_VTPM_MAX_BUFFER is same as page size.
-2. SVSM_VTPM_MAX_BUFFER is IMHO defined in wrong patch 2/4.
+I see there is a crossover point, once you start getting T=1 traffic
+then you need a KVM handle to process it, yes, but everything prior to
+T=0, including all the use cases with T=0 IDE, attestation and so on,
+still need to be working.
 
-So this constant would be needed, it should be appeneded in this patch,
-not in 2/4 because it has direct effect on implementation of the driver.
+> In other words validate device measurements over a secure session
+> and set up link encryption, but not enable DMA to private
+> memory. Without a cVM there is no private memory for the device to
+> talk to in the TDISP run state, but you can certainly encrypt the
+> PCIe link.
 
-I'd personally support the idea of removing this constant altogether
-and use alloc_page() (i.e., same as you suggested).
+Right. But can you do that all without touching tdisp?
 
-kmalloc() does do the "right thing here but it is still extra
-unnecessary layer of random stuff on top...
+> However that pretty much only gets you an extension of a secure session
+> to a PCIe link state. It does not enable end-to-end MMIO and DMA
+> integrity+confidentiality.
 
-> 
-> Thanks,
+But that is the point, right? You want to bind your IDE encryption to
+the device attestation and get all of those things. I thought you
+needed some TDISP for that?
+ 
+> Note that to my knowledge all but the Intel TEE I/O implementation
+> disallow routing T=0 traffic over IDE.
 
-BR, Jarkko
+I'm not sure that will hold up long term, I hear alot of people
+talking about using IDE to solve all kinds of PCI problems that have
+nothing to do with CC.
+
+> The uapi proposed in the PCI/TSM series [1] is all about the setup of PCI
+> CMA + PCIe IDE without KVM as a precuror to all the VFIO + KVM + IOMMUFD
+> work needed to get the TDI able to publish private MMIO and DMA to
+> private memory.
+
+That seems reasonable
+
+Jason
