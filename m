@@ -1,247 +1,147 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB6919B3CB
-	for <linux-coco@lists.linux.dev>; Tue, 18 Mar 2025 16:19:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADAEF128816
+	for <linux-coco@lists.linux.dev>; Tue, 18 Mar 2025 17:56:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742314744; cv=none; b=LcJa3Z6sQsPou1TuiN0+5LoAVA+taPL8Jznn/VqbZsBQJstAGtxyh8tTUymuaL/Gv00JL8GTRoooR2jxbX4lIfi47JkAFqiJ32ROXSIXmnfNzBwTMsDl2LJx+zrt0W4Afi7hNqo0GPBpw14K5IaIsw5zWmUw0Sr2ilMozWjxWII=
+	t=1742320601; cv=none; b=eiyvAJo1GDk3xbNtzlLXmyKLmJDuOiBdXLr46B8+i2f40LvGUMB3+ZBHVJKuXV3dAHjyUDVhC4LH3w2Dn8nRDNHT1ziXAd6S5cueYQ/nwivjh0xG2IPXSY/df2cc9g+KL8QNbSdRLa9eKuQfit6vSiKiW3raJww/PbsOVGjqQxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742314744; c=relaxed/simple;
-	bh=xezgAHJjH1+Tu2ILpiloHYoZecr29l2Uf5h98HBsK5E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=mUbV/PNOwWz7JfDchaNoeWyKYvyrnjNkl6TWSF3udVd4dzx85vPdd1dp7eA4n8dWHsGK6ZpatUK86OZON213wC+saYYurIXxuRc6OXOt3O1zp8i4v3bkOg0uz/tbflHE3mnnhckg2udUGSyuox1MULiw0V3j0JR/ioAIGjA0kOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BUEucSob; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1742320601; c=relaxed/simple;
+	bh=4PZfwGrp8v/V+a6ySydcmrMh5p9mr08FuVy3311xhwE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pIhReDtIC/GtBnpzTz3xjjVwGRJltj0XHIJW4nrPdR0R34czFkaIWRnDA2mL08ONEjJj8Ww/pdUtL0LIfTJ/jrVViwbTVhS1+QidDPF8JgZasIBvMlgRmq5PK7ynZ36FhLZOmpT9Fnt3kGf+llaQxTmyMpzCS71/L3kCRmUjoRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=MR9OvdVx; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BUEucSob"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742314741;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ojp+ehhGMDyrZfk37N2dqDkDnZrpGaHqadk7AS/VL4I=;
-	b=BUEucSobR30N9OUtW6UZ2M1eCO8T4WTSMak46rIxqfMmXzOlfdmidO8s3bpZuMnsF7QwMe
-	0a5iReg4V1j1AB/+vn21S44nj5owWRpvdovPuIiAlDeAZhnJH7Z71YHaNU1lRxaq1KjYgt
-	5585r7U5yWn7LM8Y49j56QQE/PuylxU=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-607--7la7g5jP4yOul_CxhO-_Q-1; Tue, 18 Mar 2025 12:19:00 -0400
-X-MC-Unique: -7la7g5jP4yOul_CxhO-_Q-1
-X-Mimecast-MFC-AGG-ID: -7la7g5jP4yOul_CxhO-_Q_1742314739
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-ac28f255a36so449292666b.3
-        for <linux-coco@lists.linux.dev>; Tue, 18 Mar 2025 09:19:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="MR9OvdVx"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ac2963dc379so1016400566b.2
+        for <linux-coco@lists.linux.dev>; Tue, 18 Mar 2025 10:56:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1742320594; x=1742925394; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zBPjmyPyfiOdzrQpzRRrkTO8G9wlDGhtVrZqNtmDiH4=;
+        b=MR9OvdVx5FBB9lDyr7zwPo3UQsGW+d1U6AyI7SI58SEUT5E/1YCKZJeLHWqNPdFK4m
+         /hMw1LKKsIN0xqPVq/dWcc6956Lw88Uv68dBiSoMKwsILuVZ3RGETY5H77ZqDY6hQzGc
+         GN8OItKqMVyld+Rymr+RIp//xPo5t/nKIJGaJCSxzqlwCirpv6clHWJSgpKbt9OgGhV4
+         qVH5o9CAERnvA+4HLk0QnVP0nEseeHPZDGylB6lIWx49jA+JuiJNJRFGslSI7rov5bwD
+         YfL3HrEkJA9+M5GtGPV2X5GUx8Z43axY0OM9wmQR3G3OrRICMD0RGnHqcDqHnWENZlrm
+         FsgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742314739; x=1742919539;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ojp+ehhGMDyrZfk37N2dqDkDnZrpGaHqadk7AS/VL4I=;
-        b=qciDoZbvnm3fTmylbtOTcsJaRHfuOgAt3w8McGGcj3Fmc895IftMP6BsCyJ7Z3WlzE
-         /TNqQ77PAGmXYwjXUSgp3Kl+k6NjQKda9UIe0FgovwYhK74R65eX4VRLXFOzY1l6a0xf
-         O5c5cKNs61TlTTEBlNjOSFRxA0Qb/ZhYbKEkO7ZYskJdH1GgzrBFGo56jCMDdiXUX1lL
-         Nl88qP6o+uerp+V/xx+Hl9/iomVoUla9y7ciWKQphnW6GQ4H9qMsn0XsI5deG5xaPOpq
-         7xdFpjHATxKvVGSxyfWHMKcXDHGfaZ3CH8cqVAwiUCsTlOlqe+NmOw79TZ8Bj6NGluyf
-         OPoA==
-X-Forwarded-Encrypted: i=1; AJvYcCXx1skyuZM56tJzt6xDPn37iLbLNnvMKZlWQJ5meNo/D5ergAdH8ukCkVaiIlrnMimIRV65rHkFTo1U@lists.linux.dev
-X-Gm-Message-State: AOJu0YyObcdXngmpl5/218gWxmg/sA7hSzFjxk1nQXxS0LqHpfrG3saV
-	6jVVSfGXIHMaNqiQl8obhwgISmGtx5ks4YvOay81OtONRW4Ld6MYD0K4uBDLxcSa4z7xy2zVe8G
-	j0to/qjow2BuvOLR/2GCnLG4BrklQfeByBJf76+NnkqDyG8mq4NqWhs056UA=
-X-Gm-Gg: ASbGnctjMzF2Lpwy28wqr5fYgHvRuGqrWiEfm7Dqp8jehvRjEqmWzIQiyDIpdUdOYHA
-	/fHilbbYFR6RyM+D0ksSHQEEB2oVCdXFjfpmYjhuhbBbPhEsArRmTjAVjbikGZEHNG0DfPq4MXt
-	u5RnmFMZVCgAMz4pbMaU+3N0qZjbkyVWl58l5PfoXaYyfSrtrEJ8TnPSeQl+cdfsiqKACFmnlN5
-	xHcNCqS0mliTL1sbjWTzbpp45jXzUpBbIw83qPC2MkAjQYzuxXeNkZUZ+Z9wwaf8ieIDTZiwyoz
-	OqLGwWoEoMtOIlkoTipvX6pxfTe7VzOVRlgkkDEgTz+Vx+I/uMJl2nbZUJPSJoTJ
-X-Received: by 2002:a17:907:7d93:b0:ac2:84db:5916 with SMTP id a640c23a62f3a-ac3303013demr1950497166b.31.1742314739054;
-        Tue, 18 Mar 2025 09:18:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFEBXn2Dp5CzogYyVhOceebzb+lde3KvdaGTDH+J6/yUCXbynPYtozYnV11UWLKbFnsupkUkQ==
-X-Received: by 2002:a17:907:7d93:b0:ac2:84db:5916 with SMTP id a640c23a62f3a-ac3303013demr1950491266b.31.1742314738419;
-        Tue, 18 Mar 2025 09:18:58 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-46-200-29.retail.telecomitalia.it. [79.46.200.29])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e816968cd8sm7829348a12.18.2025.03.18.09.18.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Mar 2025 09:18:57 -0700 (PDT)
-Date: Tue, 18 Mar 2025 17:18:53 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>, Peter Huewe <peterhuewe@gmx.de>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	Borislav Petkov <bp@alien8.de>, linux-integrity@vger.kernel.org, 
-	Dov Murik <dovmurik@linux.ibm.com>, Dionna Glaze <dionnaglaze@google.com>, 
-	linux-coco@lists.linux.dev, James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Claudio Carvalho <cclaudio@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Joerg Roedel <jroedel@suse.de>
-Subject: Re: [PATCH v3 3/4] tpm: add SNP SVSM vTPM driver
-Message-ID: <qne5fm44dhkbnwc6ldgff76ljt7ecd3cvtf3b3lhos56yyx2ez@qbcv45zbxlhp>
-References: <20250311094225.35129-1-sgarzare@redhat.com>
- <20250311094225.35129-4-sgarzare@redhat.com>
- <e4eeaead-2277-1f6f-86eb-f80deae2135b@amd.com>
- <Z9gm9iWhk5Zs2NvI@kernel.org>
- <CAGxU2F7fdAi148rB-4c==-qCOW1SJjwf4AzC2=TUhfPXMhR5pQ@mail.gmail.com>
- <1262fa5b-0822-b8d4-26c5-426ffa4e0265@amd.com>
+        d=1e100.net; s=20230601; t=1742320594; x=1742925394;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zBPjmyPyfiOdzrQpzRRrkTO8G9wlDGhtVrZqNtmDiH4=;
+        b=B3TZpbwZrh3dbZSGVpSia+e8p5EPbXiQel6ip9BQwKbq8Uu5cfFOWKanRyeWsejUsw
+         RUOsiQDmoVDNq0eeI21ArsbByg77N0hVmvCHrYrYDHzX+5IcApxTu/KkDnk5c3NdhTBS
+         Sv4WzP5TbO4BxV0UTUl5O0pHWvhxODba8TidEAKm8FSlwPDVUFZn4wfjyjnM4Gjuw/bH
+         yMiCUQllOWGIrTVBpKxxJf4Va1TkDcg0y6r5tiJPMFAHmT/pxsRfDdsgcgXCruyOnmna
+         VafcGzzE3BCV/Strm40/S1SDplCyYbs/JosRpYoEd0hpkGSd4aQV3SLpKEP2Sy/dffxE
+         K2gg==
+X-Forwarded-Encrypted: i=1; AJvYcCVVJdK9Jjf0eZzPaKldJ99D8T5L4oFXQznBCwjLJNRmVV66WUDeaTuy57xk8uJw2jolN+wAYegn9wZS@lists.linux.dev
+X-Gm-Message-State: AOJu0YwHPZHwUycvodq/GJazkoCxoo1p7UQKdrF69Z02x0ZIH/GMjDdG
+	TszE3iae5ulBPPQhempVg3znFsb8onmhSr3WFG3bDk2kD4goQWewckeC0BAB2Qk=
+X-Gm-Gg: ASbGncugVparr9c7p2afpOdhbm/bXQlebiDv0GJJpdZ+47r7xWJsqRa6BYI/36rgHHJ
+	b8x96khnOqbCX9Z8eLCIj6eaYRrHjb9o9q961az68pCALq23L0ioTXLx+INcY73Lf4pePP02dNJ
+	Gi0KovoyxYjNHDAB5UNrLVwiN/s90NaXRngHzZmXBZsdS5HbJ51E+unQrxUDYXwNHAnckWhNdAx
+	nog/h9qBjeKN1WQWi1sCk2oElw1ZQUIItJnBltr4BIsRJiiZvg2lEqTds8OsA8WkMogVIc8F1NA
+	BRyjiKSkii9JBE+nksMf25C0FkLXxYLwQIzylQX9js7jxRcYfQuNAYv717EaMkr//QJBzJDm
+X-Google-Smtp-Source: AGHT+IFMjkZ5IrHq4jLg0uEgl/6brC8Ml4DCkmZvAq2IsoOMSkCZ8VOYThwlQt5Wy+iO2RTDT/fpWg==
+X-Received: by 2002:a17:907:728c:b0:ac2:4bfa:6f33 with SMTP id a640c23a62f3a-ac3b339ceddmr13164866b.54.1742320593886;
+        Tue, 18 Mar 2025 10:56:33 -0700 (PDT)
+Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [109.121.143.205])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac3146aef90sm887318466b.6.2025.03.18.10.56.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Mar 2025 10:56:33 -0700 (PDT)
+Message-ID: <3a6889b3-114a-4921-adbb-0579891aca6c@suse.com>
+Date: Tue, 18 Mar 2025 19:56:32 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <1262fa5b-0822-b8d4-26c5-426ffa4e0265@amd.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: hgORh2duQpt51RFNh0yubR_s-2wASK3B55GsTAMgFiI_1742314739
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] /dev/mem: Disable /dev/mem under TDX guest
+To: Dave Hansen <dave.hansen@intel.com>, dave.hansen@linux.intel.com
+Cc: kirill.shutemov@linux.intel.com, linux-coco@lists.linux.dev,
+ x86@kernel.org, linux-kernel@vger.kernel.org, vannapurve@google.com
+References: <20250318113604.297726-1-nik.borisov@suse.com>
+ <babd4e40-0cb6-4796-af86-1944e32f89ee@intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+In-Reply-To: <babd4e40-0cb6-4796-af86-1944e32f89ee@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 18, 2025 at 09:54:31AM -0500, Tom Lendacky wrote:
->On 3/18/25 05:38, Stefano Garzarella wrote:
->> On Mon, Mar 17, 2025 at 03:43:18PM +0200, Jarkko Sakkinen wrote:
->>> On Fri, Mar 14, 2025 at 11:48:11AM -0500, Tom Lendacky wrote:
->>>> On 3/11/25 04:42, Stefano Garzarella wrote:
->>>>> Add driver for the vTPM defined by the AMD SVSM spec [1].
->>>>>
->>>>> The specification defines a protocol that a SEV-SNP guest OS can use to
->>>>> discover and talk to a vTPM emulated by the Secure VM Service Module (SVSM)
->>>>> in the guest context, but at a more privileged level (VMPL0).
->>>>>
->>>>> The new tpm-svsm platform driver uses two functions exposed by x86/sev
->>>>> to verify that the device is actually emulated by the platform and to
->>>>> send commands and receive responses.
->>>>>
->>>>> The device cannot be hot-plugged/unplugged as it is emulated by the
->>>>> platform, so we can use module_platform_driver_probe(). The probe
->>>>> function will only check whether in the current runtime configuration,
->>>>> SVSM is present and provides a vTPM.
->>>>>
->>>>> This device does not support interrupts and sends responses to commands
->>>>> synchronously. In order to have .recv() called just after .send() in
->>>>> tpm_try_transmit(), the .status() callback returns 0, and both
->>>>> .req_complete_mask and .req_complete_val are set to 0.
->>>>>
->>>>> [1] "Secure VM Service Module for SEV-SNP Guests"
->>>>>     Publication # 58019 Revision: 1.00
->>>>>
->>>>> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
->>>>> ---
->>>>> v3:
->>>>> - removed send_recv() ops and followed the ftpm driver implementing .status,
->>>>>   .req_complete_mask, .req_complete_val, etc. [Jarkko]
->>>>> - removed link to the spec because those URLs are unstable [Borislav]
->>>>> ---
->>>>>  drivers/char/tpm/tpm_svsm.c | 148 ++++++++++++++++++++++++++++++++++++
->>>>>  drivers/char/tpm/Kconfig    |  10 +++
->>>>>  drivers/char/tpm/Makefile   |   1 +
->>>>>  3 files changed, 159 insertions(+)
->>>>>  create mode 100644 drivers/char/tpm/tpm_svsm.c
->>>>>
->>>>> diff --git a/drivers/char/tpm/tpm_svsm.c b/drivers/char/tpm/tpm_svsm.c
->>>>> new file mode 100644
->>>>> index 000000000000..5540d0227eed
->>>>> --- /dev/null
->>>>> +++ b/drivers/char/tpm/tpm_svsm.c
->>>>> @@ -0,0 +1,148 @@
->>>>> +// SPDX-License-Identifier: GPL-2.0-only
->>>>> +/*
->>>>> + * Copyright (C) 2025 Red Hat, Inc. All Rights Reserved.
->>>>> + *
->>>>> + * Driver for the vTPM defined by the AMD SVSM spec [1].
->>>>> + *
->>>>> + * The specification defines a protocol that a SEV-SNP guest OS can use to
->>>>> + * discover and talk to a vTPM emulated by the Secure VM Service Module (SVSM)
->>>>> + * in the guest context, but at a more privileged level (usually VMPL0).
->>>>> + *
->>>>> + * [1] "Secure VM Service Module for SEV-SNP Guests"
->>>>> + *     Publication # 58019 Revision: 1.00
->>>>> + */
->>>>> +
->>>>> +#include <asm/sev.h>
->>>>
->>>> Typically the "asm" includes are after the "linux" includes and separated
->>>> from each other by a blank line.
->>
->> Yep, I already fixed it in v4, since I found that issue while
->> backporting this patch to CentOS 9.
->>
->>>>
->>>>> +#include <linux/module.h>
->>>>> +#include <linux/kernel.h>
->>>>> +#include <linux/platform_device.h>
->>>>> +#include <linux/svsm_vtpm.h>
->>>>> +
->>>>> +#include "tpm.h"
->>>>> +
->>>>> +struct tpm_svsm_priv {
->>>>> +  u8 buffer[SVSM_VTPM_MAX_BUFFER];
->>>>> +  u8 locality;
->>>>> +};
->>>>
->>>> I'm wondering if the buffer shouldn't be a pointer to a page of memory
->>>> that is a page allocation. This ensures it is always page-aligned in case
->>>> the tpm_svsm_priv structure is ever modified.
->>
->> @Tom Should that buffer really page aligned?
->>
->> I couldn't find anything in the specification. IIRC edk2 also doesn't
->> allocate it aligned, and the code in SVSM already handles the case when
->> this is not aligned.
->>
->> So if it is to be aligned to the pages, we should reinforce it in SVSM
->> (spec/code) and also fix edk2.
->>
->> Or was yours a suggestion for performance/optimization?
->
->No reason other than the size of the buffer is the size of a page.
->Allocating a page provides a page that is dedicated to the buffer for
->the SVSM. To me it just makes sense to keep it separate from any driver
->related data. Just a suggestion, not a requirement, and no need to
->update the spec.
 
-I see, thanks for the clarification!
-I saw that with devm_get_free_pages() I can easily allocate a 
-resource-managed page, so I'll do that in v4.
 
-Thanks,
-Stefano
+On 18.03.25 г. 16:48 ч., Dave Hansen wrote:
+> On 3/18/25 04:36, Nikolay Borisov wrote:
+>> 1. Should we forbid getting a descriptor to /dev/mem (this patch)
+>> 2. Skip creating /dev/mem altogether3
+> 
+> Like Kirill mentioned, it would be nice to leverage the existing hooks:
+> 
+>          if (!capable(CAP_SYS_RAWIO))
+>                  return -EPERM;
+> 
+>          rc = security_locked_down(LOCKDOWN_DEV_MEM);
+>          if (rc)
+>                  return rc;
+> 
+> Lockdown seems like a decent fit. We'd also ideally check
+> lockdown_is_locked_down() in x86 code and spew epithets if someone is
+> booting a CoCo guest without lockdown.
+> 
+>> 3. Possibly tinker with internals of ioremap to ensure that no memory which is
+>> backed by kvm memslots is remapped as shared.
+> 
+> It's not just memslots, though. It's any TDX private memory which
+> includes stuff the TDX module uses like the PAMT or SEPT pages.
+> 
+> 
 
->
->Thanks,
->Tom
->
->>
->>>>
->>>> As it is, the kmalloc() allocation will be page-aligned because of the
->>>> size, but it might be safer, dunno, your call.
->>>
->>> This was good catch. There's actually two issues here:
->>>
->>> 1. SVSM_VTPM_MAX_BUFFER is same as page size.
->>> 2. SVSM_VTPM_MAX_BUFFER is IMHO defined in wrong patch 2/4.
->>
->> I put it in patch 2 because IIUC it should be part of the SVSM
->> specification (the size, not the alignment).
->>
->>>
->>> So this constant would be needed, it should be appeneded in this patch,
->>> not in 2/4 because it has direct effect on implementation of the driver.
->>>
->>> I'd personally support the idea of removing this constant altogether
->>> and use alloc_page() (i.e., same as you suggested).
->>
->> Do you think it's necessary, even though alignment is not required?
->> (I'm still not clear if it's a requirement, see above)
->>
->>>
->>> kmalloc() does do the "right thing here but it is still extra
->>> unnecessary layer of random stuff on top...
->>
->> Yes, if it has to be aligned I completely agree. I would like to use
->> devm_ functions to keep the driver simple. Do you think
->> devm_get_free_pages() might be a good alternative to alloc_page()?
->>
->> Thanks,
->> Stefano
->>
->
+How about something along those lines to warn when a CoCo guest is run 
+but lockdown is not enabled:
+
+diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
+index 9a0ddda3aa69..e34f6c0f9269 100644
+--- a/arch/x86/coco/core.c
++++ b/arch/x86/coco/core.c
+@@ -10,6 +10,7 @@
+
+  #include <linux/export.h>
+  #include <linux/cc_platform.h>
++#include <linux/security.h>
+  #include <linux/string.h>
+  #include <linux/random.h>
+
+@@ -206,6 +207,25 @@ void cc_platform_set(enum cc_attr attr)
+         }
+  }
+
++static int __init cc_lockdown_warn(void)
++{
++       if (!cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
++               return 0;
++
++       /* Not a CoCo guest */
++       if (!cpu_feature_enabled(X86_FEATURE_TDX_GUEST) ||
++           cc_platform_has(CC_ATTR_HOST_SEV_SNP))
++               return 0;
++
++
++       if (!security_locked_down(LOCKDOWN_DEV_MEM))
++               pr_warn("CoCo guest running with kernel lockdown 
+disabled\n");
++
++       return 0;
++}
++late_initcall(cc_lockdown_warn);
+
 
