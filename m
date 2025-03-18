@@ -1,64 +1,50 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C4E20DD7F
-	for <linux-coco@lists.linux.dev>; Tue, 18 Mar 2025 14:21:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85CEB207A01
+	for <linux-coco@lists.linux.dev>; Tue, 18 Mar 2025 14:48:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742307687; cv=none; b=DH7VWLzREUI8COa+eOhowjYLq7UNHcCHFHFUDW7EncqyHZvTtDP19Lv1+NiTg4hJCkKCgIIvscRB6BDOHIWQ4ybv0qCcJz9mtM6ofLlFd96OW7it8iDFmiqYqqP3ZJND/s/RKRlRto8R5G35XRvqSrfbwxmtOdB7lZm3eBHdvGE=
+	t=1742309334; cv=none; b=alh0aJbYL8+dg8WaOVrdOH92d0fQhSd3v7k6J0iaNBiV5AusZxv/lWNw8bssoIbDFFlJ6KKBF2hjVeYi1jGzfANnPCJlvIpVobMe9yHEe5iKNUtzpwBwWOpCBudL05kfS97DSbJYcT9kFlMffTC0cUgGaS8sKW5bEDmD+Dp0YHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742307687; c=relaxed/simple;
-	bh=bSK+2TFYlBo+88nBmG72X8WSTHc6hfb3JBW4AQsB7/s=;
+	s=arc-20240116; t=1742309334; c=relaxed/simple;
+	bh=xiGrV0p7GJZxrWN2vAqhbv8uSP7VsNU+VOWO/5mW+No=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NO9BqDZA3KaSSMK6XpWDNIIt1W9DNRC+8EgX4066oQuaAWIgE7+aKOCUKcBt6xuj7YzdBlSWb2nggiQ5V8ocPCJygoBCY8LctbGr3YbE0tZjcSvu4Moopxnrgknw40+/Gy2DLQzUD8inNkR93Rp7xd6R15jQf63zYFch6wN2B6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=bH8OxPYj; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	 In-Reply-To:Content-Type; b=qT8m5iD97GOBWlxssa+UQt2t9i/nIByp4rPcYQ0wiM0O4IOMM0a3IyN6QySVXZi8kivTGCBVsu8mTC2QDmOnaGP5UJx+jTPL+TtLIjL137kTWXs+NZ7D7sFO/rj8Ym2/F4bF/38RSnn1hMoGI0L4+TVaU6sRJYmHbJmpJllHodM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fwj05f2X; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="bH8OxPYj"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43cebe06e9eso23472545e9.3
-        for <linux-coco@lists.linux.dev>; Tue, 18 Mar 2025 07:21:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1742307683; x=1742912483; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qxR27kQuwBEt7OQtqQ55XSsL464ltVf3GaX2mQdx5wY=;
-        b=bH8OxPYjx5qYuNFMRkBwmUcI8iTEdKlOUZMCRVKK5yn+Ghhmh4wF/SUvIPFxCRAfZk
-         WqiVlqjN61kfFPz8jkvAbJW51bOJKUhQPlKb6TdSEVQwO2wXn7485GO8U/HRsi0mvgqB
-         BVP8Q6jjuq9f50iGCQo7rcc+oqeQ9i8LvlMwLAA2Ip+WrqTTA3+7s5dO+pUC6nvU6RNJ
-         +lzhyXNymYtvXT2Hwrg/Xy4nIQ1RsjqklpJYsqzCK9D99zxuszH68YE4+WCEruaUzsdV
-         33Vxrg7i3hBCKljqDdGCCBctc+6CjvjgV1xz36ft1uoGCYGNsCgpIU+aSG4iru/QYeXN
-         j+dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742307683; x=1742912483;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qxR27kQuwBEt7OQtqQ55XSsL464ltVf3GaX2mQdx5wY=;
-        b=jy4Y4GBQUFDjHRwWSoqJfiysMqjOegr8fFsunBbiNkj5kBAR7XSK/2m4PFCD88/ml6
-         1H2yiIKm/Ytpdj4IUSE+gBuuBhw+FqywDGPkIKAUZ3mb+z5gtjS1Af0tKDXxwGizbxjy
-         VcRLTjcrq+RDigtHsiPmdgqopNqv4jkTh9ajAnRvKiCP9hOcQGYtoyGZHu1j2O4DDO4R
-         D2BVlqM5ZjEhYOzou0206TAicCOEt83pKoiMFjKn75e2JKKnEvBC8e1y+e1ZmI06wpiv
-         SlAdNxc8fs4+doQ7Qn7HH7BdQla5M/92BcGHB1DxvyGZEYwSAhvvNjtotgEzOdD25Z/m
-         CUlw==
-X-Forwarded-Encrypted: i=1; AJvYcCVg0S4Z9Y2vs3QTebNmoKf/XL63fKPUse+K9r9ZjmqkX371Rzi3Pdx2rSOGIPNyPA+Za6lqZTfw2OQE@lists.linux.dev
-X-Gm-Message-State: AOJu0YyVTPSQBacEP379aMd8OS+QTIxXqkD0oPKe78jLDVnImN8zA+Cg
-	UWBxU9BGefIgbxT+HRe7L2SxgndFDG3IKg2YM311Ow+kD4dmJdZ1bQvX8imTlLc=
-X-Gm-Gg: ASbGncvBo0YVA8iiddOj8kt/u+XD/EnKhQR2EZSXgCFatPm+wsBAY8NrBLwQvDiWU0y
-	P4JyMhSkeQDMyEvomk33h/T7ZAfQWtlDKNTlMtpCy4OuKekdvp8Us38bqgQLBsXq4aM9CX9lQyV
-	RgNUTKP8yN/HhT2oB7f52rYY/mGWbahKsSId8uP/cTs9oxDn/Bukz372FRNIyd18hwPL2wmh3Lo
-	y8WSfWISVV9ncstlKz5Jeu2abZtdz7EhAhfUjmsGNVJS+jyVLWreuixxSYgULOsK3NKt+z2TrIc
-	VVy2UJB+DXGPmWFcwH7r2+NWD8oQhB40nwiFXSX71GlwWgj/R7e9jpPtQV4egVFpk+MvHiq1
-X-Google-Smtp-Source: AGHT+IEHOb/2Ant15/B6B1CZFyAfapecsnnjB92EQqFBYGik1Jl1z+dobqVz/+A0Y+HNe7ocgqsSLw==
-X-Received: by 2002:a05:600c:5106:b0:43d:d06:3798 with SMTP id 5b1f17b1804b1-43d3b9c09bcmr24196435e9.20.1742307683481;
-        Tue, 18 Mar 2025 07:21:23 -0700 (PDT)
-Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [109.121.143.205])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d3ae040f9sm17700535e9.0.2025.03.18.07.21.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Mar 2025 07:21:23 -0700 (PDT)
-Message-ID: <d0891544-98b9-447a-a382-bfc078865243@suse.com>
-Date: Tue, 18 Mar 2025 16:21:21 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fwj05f2X"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1742309333; x=1773845333;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=xiGrV0p7GJZxrWN2vAqhbv8uSP7VsNU+VOWO/5mW+No=;
+  b=Fwj05f2XO4Itt1tWCnGlS+Q4FME4dG6tdor0/RBGgg5M70Ggy72v24l7
+   w4L3mzlMZMJx7FFuyDz1KX4tpBD1egInkpoiEq19lvUWn4I7KAvQjWSN0
+   GNbz8L8kcElp8uzyWUta44VU1uaY5O9QvJO99sTlfwGkbLnM/E/k2JZ9U
+   QjH6z1aI2uXbX2EzDKrrrW2GbkmbJgONMkRl598ht7JrGcrwOyfkp2+N3
+   BhInozRcm6HAl9UHXMqpobG+BOdKqCE4JPTaWmoX7HFS5hFjl4HHIou0Z
+   Z/+Dd2OTCfaeInzNRBl+hp3xPSh2jgDkzAgF4HoRDq+/5PWp1INvzKiKs
+   g==;
+X-CSE-ConnectionGUID: vScnc/LyQGOESa78Lt2V9g==
+X-CSE-MsgGUID: neydTAaeSHauUda7WyTX0Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11377"; a="43341566"
+X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; 
+   d="scan'208";a="43341566"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 07:48:52 -0700
+X-CSE-ConnectionGUID: IQ3TbxkIR8KEyu06ZDzk0g==
+X-CSE-MsgGUID: wzMqsPulRTmvs9Yx8bMOVQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,257,1736841600"; 
+   d="scan'208";a="122114983"
+Received: from agladkov-desk.ger.corp.intel.com (HELO [10.125.109.198]) ([10.125.109.198])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2025 07:48:51 -0700
+Message-ID: <babd4e40-0cb6-4796-af86-1944e32f89ee@intel.com>
+Date: Tue, 18 Mar 2025 07:48:50 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -67,87 +53,80 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC PATCH] /dev/mem: Disable /dev/mem under TDX guest
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, x86@kernel.org,
- linux-kernel@vger.kernel.org, vannapurve@google.com,
- Elena Reshetova <elena.reshetova@intel.com>
+To: Nikolay Borisov <nik.borisov@suse.com>, dave.hansen@linux.intel.com
+Cc: kirill.shutemov@linux.intel.com, linux-coco@lists.linux.dev,
+ x86@kernel.org, linux-kernel@vger.kernel.org, vannapurve@google.com
 References: <20250318113604.297726-1-nik.borisov@suse.com>
- <guatjzjzipzjzvj4oou2gktxmzileawshxmxj22hsa5kmet5g4@2rhf7tzaiytw>
- <b6d132a7-b259-46f4-8bde-fc517bd9d294@suse.com>
- <auno67lcikllqdlgdsad72hvsmym4lqxnaqaohmvtvf2boscxu@54ftt6342jxy>
-From: Nikolay Borisov <nik.borisov@suse.com>
 Content-Language: en-US
-In-Reply-To: <auno67lcikllqdlgdsad72hvsmym4lqxnaqaohmvtvf2boscxu@54ftt6342jxy>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20250318113604.297726-1-nik.borisov@suse.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 3/18/25 04:36, Nikolay Borisov wrote:
+> 1. Should we forbid getting a descriptor to /dev/mem (this patch)
+> 2. Skip creating /dev/mem altogether3
 
+Like Kirill mentioned, it would be nice to leverage the existing hooks:
 
-On 18.03.25 г. 15:27 ч., Kirill A. Shutemov wrote:
-> On Tue, Mar 18, 2025 at 02:53:34PM +0200, Nikolay Borisov wrote:
->>> I think we need to think wider. What about applying a subset of LOCKDOWN_*
->>> in all coco guests by default. Many of them are relevant for the guest security.
->>
->> How do you envision this to work, by introducing another
->> CONFIG_LOCK_DOWN_KERNEL_FORCE_COCO or some such ? Will it be opt-in or
->> mandatory?
-> 
-> I think cc_platform_has(CC_ATTR_xxx) should enabled some subset of
-> LOCKDOWN_*. No need in new config options.
+        if (!capable(CAP_SYS_RAWIO))
+                return -EPERM;
 
-Care to suggest which ones should be included? The way lockdown works at 
-the moment is that it only supports 2 levels (check lock_kernel_down() 
-and lockdown_is_locked_down()) at which you can lockdown - INTEGRITY_MAX 
-and CONFIDENTIALITY_MAX,  where each level includes everything below it. 
-So by choosing integrity max you get:
+        rc = security_locked_down(LOCKDOWN_DEV_MEM);
+        if (rc)
+                return rc;
 
-     19         LOCKDOWN_MODULE_SIGNATURE, 
+Lockdown seems like a decent fit. We'd also ideally check
+lockdown_is_locked_down() in x86 code and spew epithets if someone is
+booting a CoCo guest without lockdown.
 
-     18         LOCKDOWN_DEV_MEM, 
+> 3. Possibly tinker with internals of ioremap to ensure that no memory which is
+> backed by kvm memslots is remapped as shared.
 
-     17         LOCKDOWN_EFI_TEST, 
+It's not just memslots, though. It's any TDX private memory which
+includes stuff the TDX module uses like the PAMT or SEPT pages.
 
-     16         LOCKDOWN_KEXEC, 
-
-     15         LOCKDOWN_HIBERNATION, 
-
-     14         LOCKDOWN_PCI_ACCESS, 
-
-     13         LOCKDOWN_IOPORT, 
-
-     12         LOCKDOWN_MSR, 
-
-     11         LOCKDOWN_ACPI_TABLES, 
-
-     10         LOCKDOWN_DEVICE_TREE, 
-
-      9         LOCKDOWN_PCMCIA_CIS, 
-
-      8         LOCKDOWN_TIOCSSERIAL, 
-
-      7         LOCKDOWN_MODULE_PARAMETERS, 
-
-      6         LOCKDOWN_MMIOTRACE, 
-
-      5         LOCKDOWN_DEBUGFS, 
-
-      4         LOCKDOWN_XMON_WR, 
-
-      3         LOCKDOWN_BPF_WRITE_USER, 
-
-      2         LOCKDOWN_DBG_WRITE_KERNEL, 
-
-      1         LOCKDOWN_RTAS_ERROR_INJECTION,
-
-Given this if we for example choose to lockdown the kernel for DEV_MEM, 
-we'll also get the MODULE_SIGNATURE lockdown as well. I find this 
-somewhat inflexible as we might have to rejuggle the current ordering.
-
-> 
->> Should we decide to follow the lockdown route this means the owner of the
->> coco guest will have the ability to disable it and a misbehaving userspace
->> process will still be able to induce an EPT violation.
-> 
-> Sure. It can shoot itself in the foot.
-> 
 
