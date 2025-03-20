@@ -1,110 +1,142 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D48221541
-	for <linux-coco@lists.linux.dev>; Wed, 19 Mar 2025 23:44:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1407205ADA
+	for <linux-coco@lists.linux.dev>; Thu, 20 Mar 2025 09:38:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742427866; cv=none; b=nRX4LJtnTF0sZWYUMvn4pRWjqXOoh967aPFcO3FdUD6A0cH0FR0UVn0+3ssiPQgEyRYM9CNqdD+PFspBoX+QdXOASC562XpdCBFP/F7mRT36q072hkMwOUXj3W/SCx8TrA4b7Ly5nhL2pdP6GWpKYAPFv7wGdqdkxyofJ4Et07A=
+	t=1742463534; cv=none; b=PUBz61MBnS95aTFEueuDfDbYjGXWF/ACDRUGgFOGWRsxM3gQ/AXtrhgxaYNJREwhQAAhXSqbZzx5JsjZ/HUV8+afKl8w9ZjHEmujld0fPs57gbMJTM7yImLRjvqEhG4kh2x6DhIYxvYmc1nNaEs1VuHbS37X+UFnjkwqCPZL9Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742427866; c=relaxed/simple;
-	bh=Vh55jnJy2grFwLLHr52AS9nQQTqMbkRIqCLV5X+4ptc=;
+	s=arc-20240116; t=1742463534; c=relaxed/simple;
+	bh=XxhDtK+NPjrUigmQEObn5NVqHG9KWOcga5qM3iqOX/k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ct1zr52Q6+EOjy2fgI2evU0G3ZCAJDuFB3Ux7JwsPFpSP8YdikWM6mW90YMt/NJHfAvTOPxFcnJjl8zDqBqoqLV2iLXLFoZWOKYTbDP8ATw/piGuOYdeJFueI/elItUIXUz4CQkkHPCidvtGo4J4Ghl+1XEmF6nrST6Jy4DmXw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=hwvQsBGg; arc=none smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=dWPAOP3dhcpU5e4gnHvY10DHwYVivfOC8F6aySXmcObdCkBPPplBrISUJ47id9hZEJIO9Y1OsSsSChA7NFoEzlPz5xPKC0Nkg/fREmQCqEHGnrOFRDFeLBoz1QYB4NnA5ttbZybw0X5RVPo6UhcCIyVlq+p4XxiyguPeiMvpXkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F4/uNaO3; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="hwvQsBGg"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4767e969b94so4416361cf.2
-        for <linux-coco@lists.linux.dev>; Wed, 19 Mar 2025 16:44:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1742427864; x=1743032664; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vh55jnJy2grFwLLHr52AS9nQQTqMbkRIqCLV5X+4ptc=;
-        b=hwvQsBGg9LwI2c3zzOm7HCeZ8vQAjq2Seerf8ofAstWKj+E870X1+QJqFthzppYibS
-         1VcSlAuZ3U+yRoqRJANyUMv4vKMPuhA9Y3WT6ifG98wBgGq378UKOmDZqpFwWOja3GV1
-         xgZwJ4HLptEtK1WHq5VUCuDIiz1DG32v9YTcta+qCesDh8r0YTrGRk3cx/WCRL0TUPkZ
-         xJLmp1Q2+ZOnLwcjLAmH9QV06R4rjEuPGaBMD+wRSB/0TXHyJoHrWlpy91ByrDXeIehQ
-         dyJ5Lbwnq0D5GPZLWyu9sb8XO+rXI5uI6RY3SVldqZznjtWJtqfbvs4DJouQQQwbrF+1
-         YB2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742427864; x=1743032664;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Vh55jnJy2grFwLLHr52AS9nQQTqMbkRIqCLV5X+4ptc=;
-        b=sh+n9NF433oNQitQfn/qzUPMCEHVzjzdYyMnsHBPOHBw3EOQFttCYMAaedjmPtdj0I
-         U7GioSTDVhwMePdTqllNoRdkB2xmeEAnyCnuoyKZUyFqcFu7qJzXgKPMcQuItlLggLvC
-         rftsnkW6nQ8u9wr6h6XsZCITgYAu1hLvi5dn4jNfmJ6JEQsJKG0W/TN9dU53ELoVbaQF
-         Tlzs0y9fwgSEPVPBwxwQoHbimeGueYc25P1bp97lHck1pqUnCz4pI4GkbCQEYTM91xfj
-         XRMSpq4wiT+8W2SXnhMaOK9cRx7u0uiNWDTDmXNlvN1AVgZX6tIh7NNTu7q7xwrPpjIA
-         Ukog==
-X-Forwarded-Encrypted: i=1; AJvYcCXP74dLU6Wt8Ie2ouHXVGwX0wBX1E1zhvjA/dnGWpu07MOuohO41U8Yq3orfIwj6NbJw0W0UXu+XkAR@lists.linux.dev
-X-Gm-Message-State: AOJu0YwAHKlP5DoSjxHdXbAfF5C6hOIXewIhseIuL27t/qa2oePp7x7F
-	/atBLoCTb4MRUdRSSgktYkR2+6ZDuGFzbTyKPhvXY2srp0C8BAzZDQA39eG1r9s=
-X-Gm-Gg: ASbGnctMAnHqYD7sCBssaXuBJkKOOAq12GIx/bS0pesyaM75mvGHbQ6tocpvFJ+qUi8
-	ANX7iH9h9QW7j5LPaiK4UryYMMECt/7oCRiMHaLBV5VzfdqDwG2dIrnG5G35ccqh8JCAgjaIMT1
-	mK4jZRLhhAsdCeeO0S+AYcJ9EvmWmBhFkvBIE2Hb4Xoyj7LerusyvRlRUNWxv+xRYLsFd9w9bQ4
-	VpXdpkeyoQ6Cl0MePwtl53Exnd8r0Mz0rT5Q3ZqfFnK/ZPTZYrt8pwspHRoBdmeG994ai1LNx1M
-	S4TSddPNbPpeIJCnOCVX1xWxAsFFiaATeuRW2YJORh4LtrT4w3RyWHr0w56XGA2D5AaNLuLEL1D
-	3monytufVUIr/IPK/vQ==
-X-Google-Smtp-Source: AGHT+IF+fj9+38BlQ3egRKwX5axqC8Q6Kq8BwaFO1wbsyUuFXTRy7mG60I78Ff7FJGVMt4lfemVaVg==
-X-Received: by 2002:a05:622a:410b:b0:476:bb8e:a90e with SMTP id d75a77b69052e-4770839e2f2mr88068521cf.20.1742427864047;
-        Wed, 19 Mar 2025 16:44:24 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-476bb63cb11sm85166061cf.22.2025.03.19.16.44.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Mar 2025 16:44:23 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1tv35C-00000000cos-3wix;
-	Wed, 19 Mar 2025 20:44:22 -0300
-Date: Wed, 19 Mar 2025 20:44:22 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Peter Huewe <peterhuewe@gmx.de>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
-	linux-integrity@vger.kernel.org, Dov Murik <dovmurik@linux.ibm.com>,
-	Dionna Glaze <dionnaglaze@google.com>, linux-coco@lists.linux.dev,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Claudio Carvalho <cclaudio@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: Re: [PATCH v3 3/4] tpm: add SNP SVSM vTPM driver
-Message-ID: <20250319234422.GG126678@ziepe.ca>
-References: <20250311094225.35129-1-sgarzare@redhat.com>
- <20250311094225.35129-4-sgarzare@redhat.com>
- <e4eeaead-2277-1f6f-86eb-f80deae2135b@amd.com>
- <Z9gm9iWhk5Zs2NvI@kernel.org>
- <CAGxU2F7fdAi148rB-4c==-qCOW1SJjwf4AzC2=TUhfPXMhR5pQ@mail.gmail.com>
- <1262fa5b-0822-b8d4-26c5-426ffa4e0265@amd.com>
- <qne5fm44dhkbnwc6ldgff76ljt7ecd3cvtf3b3lhos56yyx2ez@qbcv45zbxlhp>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F4/uNaO3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1742463533; x=1773999533;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=XxhDtK+NPjrUigmQEObn5NVqHG9KWOcga5qM3iqOX/k=;
+  b=F4/uNaO39/UYmmT+b0xPNmbrnp78DDNxwZizAvt5PLzjqcxImQn+V023
+   Lh8hzVvVEqhLIBuFlZbuTmuXGvSSMT8malcLZqAJHHjOzJG8OdTsPnzjl
+   UOs33/IA17lGQ4Gv7WkMog8B4Zte0RLywX0VfrD7H4DhkBUm+Nk9iQGl2
+   tThXKdUkBWhl4eUWpxosECdVDEKZgf1IJbhps9GRF1TNXlunb3uJVtuxD
+   EYbrrW9lTycsMHudpU4YNkYqQgf3pgilfoazXxHbbBoSK5Zzg2h3eSQdo
+   7nRcOE/xKlXfjlu1lzGXnL7L2I4IVw7cKslZzMBNUR7CDcEShoC56dmuN
+   Q==;
+X-CSE-ConnectionGUID: eZRJo8jvQRS2DULk2sAXew==
+X-CSE-MsgGUID: 4OdcwGeJQB20sOMdKOTL6Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11378"; a="47341106"
+X-IronPort-AV: E=Sophos;i="6.14,261,1736841600"; 
+   d="scan'208";a="47341106"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2025 02:38:50 -0700
+X-CSE-ConnectionGUID: KT0aoQBlQDqdQcJOlWaX2g==
+X-CSE-MsgGUID: AIYXmeVVQbu8OR1s90H7Cw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,261,1736841600"; 
+   d="scan'208";a="127879555"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa003.jf.intel.com with ESMTP; 20 Mar 2025 02:38:48 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 856FE1E0; Thu, 20 Mar 2025 11:38:46 +0200 (EET)
+Date: Thu, 20 Mar 2025 11:38:46 +0200
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Nikolay Borisov <nik.borisov@suse.com>
+Cc: dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, 
+	x86@kernel.org, linux-kernel@vger.kernel.org, vannapurve@google.com, 
+	Elena Reshetova <elena.reshetova@intel.com>
+Subject: Re: [RFC PATCH] /dev/mem: Disable /dev/mem under TDX guest
+Message-ID: <h46ki6cfmrflbw4fhebsb646cpzba6iqq6cozq4prveqhowdtj@ifwsk64zo73k>
+References: <20250318113604.297726-1-nik.borisov@suse.com>
+ <guatjzjzipzjzvj4oou2gktxmzileawshxmxj22hsa5kmet5g4@2rhf7tzaiytw>
+ <b6d132a7-b259-46f4-8bde-fc517bd9d294@suse.com>
+ <auno67lcikllqdlgdsad72hvsmym4lqxnaqaohmvtvf2boscxu@54ftt6342jxy>
+ <d0891544-98b9-447a-a382-bfc078865243@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <qne5fm44dhkbnwc6ldgff76ljt7ecd3cvtf3b3lhos56yyx2ez@qbcv45zbxlhp>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d0891544-98b9-447a-a382-bfc078865243@suse.com>
 
-On Tue, Mar 18, 2025 at 05:18:53PM +0100, Stefano Garzarella wrote:
+On Tue, Mar 18, 2025 at 04:21:21PM +0200, Nikolay Borisov wrote:
+> 
+> 
+> On 18.03.25 г. 15:27 ч., Kirill A. Shutemov wrote:
+> > On Tue, Mar 18, 2025 at 02:53:34PM +0200, Nikolay Borisov wrote:
+> > > > I think we need to think wider. What about applying a subset of LOCKDOWN_*
+> > > > in all coco guests by default. Many of them are relevant for the guest security.
+> > > 
+> > > How do you envision this to work, by introducing another
+> > > CONFIG_LOCK_DOWN_KERNEL_FORCE_COCO or some such ? Will it be opt-in or
+> > > mandatory?
+> > 
+> > I think cc_platform_has(CC_ATTR_xxx) should enabled some subset of
+> > LOCKDOWN_*. No need in new config options.
+> 
+> Care to suggest which ones should be included? The way lockdown works at the
+> moment is that it only supports 2 levels (check lock_kernel_down() and
+> lockdown_is_locked_down()) at which you can lockdown - INTEGRITY_MAX and
+> CONFIDENTIALITY_MAX,  where each level includes everything below it. So by
+> choosing integrity max you get:
+> 
+>     19         LOCKDOWN_MODULE_SIGNATURE,
+> 
+>     18         LOCKDOWN_DEV_MEM,
+> 
+>     17         LOCKDOWN_EFI_TEST,
+> 
+>     16         LOCKDOWN_KEXEC,
+> 
+>     15         LOCKDOWN_HIBERNATION,
+> 
+>     14         LOCKDOWN_PCI_ACCESS,
+> 
+>     13         LOCKDOWN_IOPORT,
+> 
+>     12         LOCKDOWN_MSR,
+> 
+>     11         LOCKDOWN_ACPI_TABLES,
+> 
+>     10         LOCKDOWN_DEVICE_TREE,
+> 
+>      9         LOCKDOWN_PCMCIA_CIS,
+> 
+>      8         LOCKDOWN_TIOCSSERIAL,
+> 
+>      7         LOCKDOWN_MODULE_PARAMETERS,
+> 
+>      6         LOCKDOWN_MMIOTRACE,
+> 
+>      5         LOCKDOWN_DEBUGFS,
+> 
+>      4         LOCKDOWN_XMON_WR,
+> 
+>      3         LOCKDOWN_BPF_WRITE_USER,
+> 
+>      2         LOCKDOWN_DBG_WRITE_KERNEL,
+> 
+>      1         LOCKDOWN_RTAS_ERROR_INJECTION,
+> 
+> Given this if we for example choose to lockdown the kernel for DEV_MEM,
+> we'll also get the MODULE_SIGNATURE lockdown as well. I find this somewhat
+> inflexible as we might have to rejuggle the current ordering.
 
-> I see, thanks for the clarification!
-> I saw that with devm_get_free_pages() I can easily allocate a
-> resource-managed page, so I'll do that in v4.
+Urgh.. I thought we track the lockdown level for each feature separately,
+but it is lockdown depth instead :/
 
-As a general note you should just use kmalloc these days, even for
-PAGE_SIZE. It is efficient and OK.
+Maybe it is worth reworking internals to have bitmap of lockdown features?
+It will allow us to pick and choose features to lockdown.
 
-Having a struct that is PAGE_SIZE+1 is not efficient and will waste
-a page of memory. That should be avoided ..
-
-Jason
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
