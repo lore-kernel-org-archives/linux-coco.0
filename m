@@ -1,184 +1,158 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE32202C27
-	for <linux-coco@lists.linux.dev>; Fri, 21 Mar 2025 10:24:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13BD1514F6;
+	Fri, 21 Mar 2025 20:34:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742552678; cv=none; b=X8WcQgHe3a46ZcClmAj9XPN1fUFomBW66IcBGNPFMfDt3msXi2zANLDnhN0ZXsdxBVygpnWKrj91SeUGbndpqGmPPeBX46TF8r5C8+Q9MlSgHgQqu0FHoteRAJebI6XdzEAOtTXzWqk9dvh4kfm+0swOapitRHsGkyspQFNcwH0=
+	t=1742589282; cv=none; b=uv134ij3bMm3Ea/1fBZA7CdHR5wk5GX8Z0eNHofPRk8HhGvMunPOtF9mfXoZKlRUbFVGJkFbOdhIW/ilHb2VzYA2sDd8EeDfBesoBGrLjPIEEWX6lCxBeZSNtkp2OQEqJUUfKSsehAmf0runC5dQIyNnobPPlWxRm+zNH61YLng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742552678; c=relaxed/simple;
-	bh=A/rBJDhv1XB34siYUPkh+pGlsLysi6s+22W0AZ77jJM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nEOq3vlDFlIybc/p9UGd3OSDlVnM5IugFWpwXIYZNoiTqHTdwvhGycMwER6ZHbEx53rQ1dou4hQwNARGhcjpvyetjJUHyx7gKJZxehldfu3pMJwxW8997IjmWihh4laDLTEoT00kK6uY3Nlw8fDtbPWtSVi4TxANv8vIwjtEiKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=NXNPrr1U; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=NXNPrr1U; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1742589282; c=relaxed/simple;
+	bh=ESuQxc1uo2rrbnn2JcOtucq5e7Bg+IxPDoWM/kKHcd0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pd/byEfQpbl2a1QIqp94mtDFGIZcBtfJq0LqigbXhKyZP6g0mf3ZN1ATvxzP9RiNe35sPsXTOJpzFqiJgBAzxhxS2QXPiV+VMMXwFeJzR2qzNeGFALv4Bf1sl9YI9A2pdB4zDCG1GaUhZA0h/bv1UELYxVHVwD5mlkdYDfhCFus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rzFWRekB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="NXNPrr1U";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="NXNPrr1U"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 857E31FB99;
-	Fri, 21 Mar 2025 10:24:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1742552668; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zvAEo4UohrjBSNtMLm9Rxs56hJ4BwIGsQOlr5elEyEE=;
-	b=NXNPrr1UQjC5HlnBga1V0HYjqq72+uveDL8eKtsIMwZg51d6iAb0uRZvQa2F5JYiNGfcrF
-	rym60vM2o8FDKcV26eqTAwMuPyoyhuL0n/95DSjV99YrS8+MViLwHOP/dq3p7JQwmU4in2
-	ceHZvq9qMaxoX2zupavhBlxqH+HtxHU=
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1742552668; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zvAEo4UohrjBSNtMLm9Rxs56hJ4BwIGsQOlr5elEyEE=;
-	b=NXNPrr1UQjC5HlnBga1V0HYjqq72+uveDL8eKtsIMwZg51d6iAb0uRZvQa2F5JYiNGfcrF
-	rym60vM2o8FDKcV26eqTAwMuPyoyhuL0n/95DSjV99YrS8+MViLwHOP/dq3p7JQwmU4in2
-	ceHZvq9qMaxoX2zupavhBlxqH+HtxHU=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0331813A68;
-	Fri, 21 Mar 2025 10:24:27 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id WCReOVs+3WcvLQAAD6G6ig
-	(envelope-from <nik.borisov@suse.com>); Fri, 21 Mar 2025 10:24:27 +0000
-From: Nikolay Borisov <nik.borisov@suse.com>
-To: linux-security-module@vger.kernel.org
-Cc: paul@paul-moore.com,
-	serge@hallyn.com,
-	kees@kernel.org,
-	linux-kernel@vger.kernel.org,
-	kirill.shutemov@linux.intel.com,
-	linux-coco@lists.linux.dev,
-	Nikolay Borisov <nik.borisov@suse.com>
-Subject: [PATCH 1/2] lockdown: Switch implementation to using bitmap
-Date: Fri, 21 Mar 2025 12:24:20 +0200
-Message-ID: <20250321102422.640271-2-nik.borisov@suse.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250321102422.640271-1-nik.borisov@suse.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rzFWRekB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADECAC4CEEA;
+	Fri, 21 Mar 2025 20:34:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742589280;
+	bh=ESuQxc1uo2rrbnn2JcOtucq5e7Bg+IxPDoWM/kKHcd0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rzFWRekBJPwEGvbHtbrGUGtb8eplO2ree3EZf/OaCNzl5PY0Q/KAtSvAdXH+GtNAm
+	 T5A1Wtw1W2QZV0vBTiWfXF1ggx8kkylGKo7ElOdNQdD/hN1PPkpSR5+atMHpaFWhL5
+	 a6YkRlGyRn4TX/5C/0pNt6GQHiVeaQA/GcRvc9bhPasSSiKuW6pE5DyNBGOaqFeHDK
+	 Mw1W5EgxwAQ2lHU7NU5STndVPhO2nnnhVa0einiOVStpAicC5+F4DxYQM2UNRl3k9s
+	 p+Xssx8WC50e3srHz7eJu3abIHa5RgTOVVZJOydi3Zn83tVZ4+eS9Poo5Wok3hguRb
+	 re9bmBDf/ovaQ==
+Date: Fri, 21 Mar 2025 20:34:35 +0000
+From: sergeh@kernel.org
+To: Nikolay Borisov <nik.borisov@suse.com>
+Cc: linux-security-module@vger.kernel.org, paul@paul-moore.com,
+	serge@hallyn.com, kees@kernel.org, linux-kernel@vger.kernel.org,
+	kirill.shutemov@linux.intel.com, linux-coco@lists.linux.dev
+Subject: Re: [PATCH 1/2] lockdown: Switch implementation to using bitmap
+Message-ID: <Z93NW3za1ilzVxLK@lei>
 References: <20250321102422.640271-1-nik.borisov@suse.com>
+ <20250321102422.640271-2-nik.borisov@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -6.80
-X-Spamd-Result: default: False [-6.80 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,suse.com:email];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Flag: NO
-X-Spam-Level: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250321102422.640271-2-nik.borisov@suse.com>
 
-Tracking the lockdown at the depth granularity rather than at the
-individual is somewhat inflexible as it provides an "all or nothing"
-approach. Instead there are use cases where it  will be useful to be
-able to lockdown individual features - TDX for example wants to disable
-access to just /dev/mem.
+On Fri, Mar 21, 2025 at 12:24:20PM +0200, Nikolay Borisov wrote:
+> Tracking the lockdown at the depth granularity rather than at the
+> individual is somewhat inflexible as it provides an "all or nothing"
+> approach. Instead there are use cases where it  will be useful to be
+> able to lockdown individual features - TDX for example wants to disable
+> access to just /dev/mem.
+> 
+> To accommodate this use case switch the internal implementation to using
+> a bitmap so that individual lockdown features can be turned on. At the
+> same time retain the existing semantic where
+> INTEGRITY_MAX/CONFIDENTIALITY_MAX are treated as wildcards meaning "lock
+> everything below me".
+> 
+> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
 
-To accommodate this use case switch the internal implementation to using
-a bitmap so that individual lockdown features can be turned on. At the
-same time retain the existing semantic where
-INTEGRITY_MAX/CONFIDENTIALITY_MAX are treated as wildcards meaning "lock
-everything below me".
+Reviewed-by: Serge Hallyn <sergeh@kernel.org>
 
-Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
----
- security/lockdown/lockdown.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+but one comment below
 
-diff --git a/security/lockdown/lockdown.c b/security/lockdown/lockdown.c
-index cf83afa1d879..5014d18c423f 100644
---- a/security/lockdown/lockdown.c
-+++ b/security/lockdown/lockdown.c
-@@ -10,12 +10,13 @@
-  * 2 of the Licence, or (at your option) any later version.
-  */
- 
-+#include <linux/bitmap.h>
- #include <linux/security.h>
- #include <linux/export.h>
- #include <linux/lsm_hooks.h>
- #include <uapi/linux/lsm.h>
- 
--static enum lockdown_reason kernel_locked_down;
-+static DECLARE_BITMAP(kernel_locked_down, LOCKDOWN_CONFIDENTIALITY_MAX);
- 
- static const enum lockdown_reason lockdown_levels[] = {LOCKDOWN_NONE,
- 						 LOCKDOWN_INTEGRITY_MAX,
-@@ -26,10 +27,15 @@ static const enum lockdown_reason lockdown_levels[] = {LOCKDOWN_NONE,
-  */
- static int lock_kernel_down(const char *where, enum lockdown_reason level)
- {
--	if (kernel_locked_down >= level)
--		return -EPERM;
- 
--	kernel_locked_down = level;
-+	if (level > LOCKDOWN_CONFIDENTIALITY_MAX)
-+		return -EINVAL;
-+
-+	if (level == LOCKDOWN_INTEGRITY_MAX || level == LOCKDOWN_CONFIDENTIALITY_MAX)
-+		bitmap_set(kernel_locked_down, 1, level);
-+	else
-+		bitmap_set(kernel_locked_down, level, 1);
-+
- 	pr_notice("Kernel is locked down from %s; see man kernel_lockdown.7\n",
- 		  where);
- 	return 0;
-@@ -62,13 +68,12 @@ static int lockdown_is_locked_down(enum lockdown_reason what)
- 		 "Invalid lockdown reason"))
- 		return -EPERM;
- 
--	if (kernel_locked_down >= what) {
-+	if (test_bit(what, kernel_locked_down)) {
- 		if (lockdown_reasons[what])
- 			pr_notice_ratelimited("Lockdown: %s: %s is restricted; see man kernel_lockdown.7\n",
- 				  current->comm, lockdown_reasons[what]);
- 		return -EPERM;
- 	}
--
- 	return 0;
- }
- 
-@@ -105,7 +110,7 @@ static ssize_t lockdown_read(struct file *filp, char __user *buf, size_t count,
- 		if (lockdown_reasons[level]) {
- 			const char *label = lockdown_reasons[level];
- 
--			if (kernel_locked_down == level)
-+			if (test_bit(level, kernel_locked_down))
- 				offset += sprintf(temp+offset, "[%s] ", label);
- 			else
- 				offset += sprintf(temp+offset, "%s ", label);
--- 
-2.43.0
+> ---
+>  security/lockdown/lockdown.c | 19 ++++++++++++-------
+>  1 file changed, 12 insertions(+), 7 deletions(-)
+> 
+> diff --git a/security/lockdown/lockdown.c b/security/lockdown/lockdown.c
+> index cf83afa1d879..5014d18c423f 100644
+> --- a/security/lockdown/lockdown.c
+> +++ b/security/lockdown/lockdown.c
+> @@ -10,12 +10,13 @@
+>   * 2 of the Licence, or (at your option) any later version.
+>   */
+>  
+> +#include <linux/bitmap.h>
+>  #include <linux/security.h>
+>  #include <linux/export.h>
+>  #include <linux/lsm_hooks.h>
+>  #include <uapi/linux/lsm.h>
+>  
+> -static enum lockdown_reason kernel_locked_down;
+> +static DECLARE_BITMAP(kernel_locked_down, LOCKDOWN_CONFIDENTIALITY_MAX);
+>  
+>  static const enum lockdown_reason lockdown_levels[] = {LOCKDOWN_NONE,
+>  						 LOCKDOWN_INTEGRITY_MAX,
+> @@ -26,10 +27,15 @@ static const enum lockdown_reason lockdown_levels[] = {LOCKDOWN_NONE,
+>   */
+>  static int lock_kernel_down(const char *where, enum lockdown_reason level)
+>  {
+> -	if (kernel_locked_down >= level)
+> -		return -EPERM;
+>  
+> -	kernel_locked_down = level;
+> +	if (level > LOCKDOWN_CONFIDENTIALITY_MAX)
+> +		return -EINVAL;
+> +
+> +	if (level == LOCKDOWN_INTEGRITY_MAX || level == LOCKDOWN_CONFIDENTIALITY_MAX)
+> +		bitmap_set(kernel_locked_down, 1, level);
+> +	else
+> +		bitmap_set(kernel_locked_down, level, 1);
+> +
+>  	pr_notice("Kernel is locked down from %s; see man kernel_lockdown.7\n",
+>  		  where);
+>  	return 0;
+> @@ -62,13 +68,12 @@ static int lockdown_is_locked_down(enum lockdown_reason what)
+>  		 "Invalid lockdown reason"))
+>  		return -EPERM;
+>  
+> -	if (kernel_locked_down >= what) {
+> +	if (test_bit(what, kernel_locked_down)) {
+>  		if (lockdown_reasons[what])
+>  			pr_notice_ratelimited("Lockdown: %s: %s is restricted; see man kernel_lockdown.7\n",
+>  				  current->comm, lockdown_reasons[what]);
+>  		return -EPERM;
+>  	}
+> -
+>  	return 0;
+>  }
+>  
+> @@ -105,7 +110,7 @@ static ssize_t lockdown_read(struct file *filp, char __user *buf, size_t count,
 
+Context here is:
+
+static ssize_t lockdown_read(struct file *filp, char __user *buf, size_t count,
+                             loff_t *ppos)
+{
+        char temp[80] = "";
+        int i, offset = 0;
+
+        for (i = 0; i < ARRAY_SIZE(lockdown_levels); i++) {
+                enum lockdown_reason level = lockdown_levels[i];
+
+...
+
+>  		if (lockdown_reasons[level]) {
+>  			const char *label = lockdown_reasons[level];
+>  
+> -			if (kernel_locked_down == level)
+> +			if (test_bit(level, kernel_locked_down))
+
+Right now this is still just looping over the lockdown_levels, and so
+it can't get longer than "none [integrity] [confidentiality]" which fits
+easily into the 80 chars of temp.  But I'm worried that someone will
+change this loop i a way that violates that.  Could you just switch
+this to a snprintf that checks its result for < 0 and >= n , or some
+other sanity check?
+
+>  				offset += sprintf(temp+offset, "[%s] ", label);
+>  			else
+>  				offset += sprintf(temp+offset, "%s ", label);
+> -- 
+> 2.43.0
+> 
