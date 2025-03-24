@@ -1,128 +1,136 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76AF825D8E7
-	for <linux-coco@lists.linux.dev>; Mon, 24 Mar 2025 09:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FF125D919
+	for <linux-coco@lists.linux.dev>; Mon, 24 Mar 2025 09:59:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742806832; cv=none; b=Ptkao5r2dvb8GKHgmJPy0FA8+Haupl0uPK8gJ6gVAoiCZe02Pd+PhkO0U66hZXGxxvkKPArteNYDEHOLBoUDe8KL5kB3PVl7kjNHkxo0GMj/q5Y/8xLkexVxQAMQ/h2SCpQ19sOWHBR0iQlS5T/ASLtONj6MCxb6oMWBbihSsMY=
+	t=1742810365; cv=none; b=WNQ/fVzyAaPD7K3wAEQEsSikXf+ZNUJOrdfOkVQ2y0lmvXYZp09UfDxuZMGJYZIF+kxal8UKfZnzcSaYKCjf7gSXVMpx8Qj33ZwpjScB1+WxLLz+DZUJUOMNhembuXIn2mz+/z5eWPYk0hDRk4ctOHBU0HiYfYuyO8/bZ2N2VpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742806832; c=relaxed/simple;
-	bh=VtQd7ZzM47zcnMCUYhBnsvT1LXfPEQwzDz8Bh3c7XCo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CjU/0EMJfWQEKaqvqX/r9Par8UkWiqi9ARILP3EPuIFZ2PD/hIEFI9qL/kxdx6j8nAvH/hsAiaPKZ3zfmfe6WyCFH/LbOJHVVAEvUop5zv7S+vLDRyigVer5ZL7UIOYAJhLCx6stgObdKLbPRA6D+oC9Ydneuy62qDKh/xd8rOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z1jZErQh; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1742810365; c=relaxed/simple;
+	bh=vWTVDvcU0o4L768ZMZZd6FAcvB7K627DBPFsUxxwneQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pMmp1yobUqqkWaYB5MmxRntJ3zbl80rc6j6fCGtCqW+mjTBjxJuOTE4pMsx6a32052DjJWFhD+IkIyWdtisuhSnrjqi4Bqiqkxtyxhjg7SesAfRDEI1gB7GlVLU2Ddzy0oSH3SYHhZQakVkClJmX+TcIWj2CvGIfKKI/7r1ZOBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Nllof3Ja; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z1jZErQh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742806829;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VtQd7ZzM47zcnMCUYhBnsvT1LXfPEQwzDz8Bh3c7XCo=;
-	b=Z1jZErQhumnhm90ODugoFMd1G0C5HzeKpvQc8NxeAaqjql5fXTxtJ4kS4EkzFN73Iqyy2k
-	gsshRTagLXyTW4NejEdtYfJKyHB/qxvEmSZ8FsZlI+jSDtjohGcSTzUcfvGsCHXFprT+hI
-	enp9k92qBpxeVvZXy7QMOL8vaRBnC+E=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-588-Cs-oUuH-P_qciRrWyB-AMg-1; Mon, 24 Mar 2025 05:00:26 -0400
-X-MC-Unique: Cs-oUuH-P_qciRrWyB-AMg-1
-X-Mimecast-MFC-AGG-ID: Cs-oUuH-P_qciRrWyB-AMg_1742806825
-Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-6f27dd44f86so55243927b3.0
-        for <linux-coco@lists.linux.dev>; Mon, 24 Mar 2025 02:00:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Nllof3Ja"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3913d45a148so3351620f8f.3
+        for <linux-coco@lists.linux.dev>; Mon, 24 Mar 2025 02:59:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1742810361; x=1743415161; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0x1szqNluXRdFHlnkhxeTJTRaNEPeNMvCPbIRkxMkzc=;
+        b=Nllof3Jae+zlGSDM9DX10MMX82zUKe5lk/EqJrS6Ehj6nWTXAeT9QffDM4hRo0IxRh
+         dCro5nJFV95broUBoQdjWde44uCkVtp4Yh7oMymvD+tMZJMIafBauS19yd0YHVR6jECP
+         eKLQ5ykvQ6jOSO3UhInin45vTUdz5YwsOX8xa5/6fJpX3SiYRPWaQyDQhETGMsu8+4Yb
+         3qCzi08ezgaMEwCMDyErq0gkwYavc1UUFG5sbgZi1mmciZFctx+aRV0DHFyhJf7CdE7c
+         0bN7pxg/kFcervRlFdJHIIVn54FI2d95qKVSXMkfGEIqWcARRX9elB3I7JT1m0snzhi6
+         kDOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742806825; x=1743411625;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VtQd7ZzM47zcnMCUYhBnsvT1LXfPEQwzDz8Bh3c7XCo=;
-        b=RRYInBSPS74lLDrQKT/pX5fN8ErpmwITTCrhSJ7uUHha6v3sYQvLgiCmGsM839MAwZ
-         4Qd4NLh4USjJUV0syH9vvm0Vu9PHz38ZavQ5BvecXZIeXU2rGoS8I27DK7ZLg+tsCYr0
-         2TgHgrQnIzc7ViZaPIrPfKKbvJ3MZs6iohTe2dz3u7MnlRAQNLxCTehJCSQEsAVA6OCU
-         xMUqItbbxegjU+92k+rGhvlyNG5+oDEa3RAd2XfyM/8CMPV5dCw4p/gKCq2YefpQEw1d
-         pqEKPo2twstPkTXsbNB0UO6Qy4C6mNcPYdNqSdB1pLuMMSxMS35xWd6Bna70O5JoPGYL
-         kMhg==
-X-Forwarded-Encrypted: i=1; AJvYcCXak2VHqGwaXTzKiX268jT5B52Nzbnm7W94Cz6SsQrzQ6+PCFV9uBTc7MOSSQV35T4bwQ+dZeYgIB2J@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy74xLwrArNIoYM56f/RiUubLCBdiL7qlapR4n0UfeGLjTYGoMF
-	AlEo8cvZQLKWrkRrvG/6Xb1/ah53UJMaqC3AvyBNCkMywWc0jwf9oJUTyrt3d2mf+FR6j5fpvxS
-	7IkLLzbsygii8ae+S9VfdLddcw6eMDN9WeQyaTpaHTkmem/huENd4KSaNFZ9Zl744xDmtNRnx3o
-	Z6YKREy6EppNPHLJGS9texJrCxfax5u0SOQA==
-X-Gm-Gg: ASbGncu7LXMXt1jV2KKrnKAmBtTVV/y7PLFyIFBSQLO13LcRPgEcuofXjS1lUD/xOEV
-	6t9GTDF7C6oYoux0H1fZoMV+HPIkdjryZodpmai2nV5pf3uA/XCCcjF6zccXwpe2qwGnDBQ==
-X-Received: by 2002:a05:690c:3588:b0:6fe:b109:6973 with SMTP id 00721157ae682-700bacfba94mr158095957b3.24.1742806825341;
-        Mon, 24 Mar 2025 02:00:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFrUHGJpHADoIDbX/Sou896YczE/U5d5SAf7THitdTqPnQR8uE2GhDufDdh/tsFnucbOoNKGD29uDDAHCwOw5c=
-X-Received: by 2002:a05:690c:3588:b0:6fe:b109:6973 with SMTP id
- 00721157ae682-700bacfba94mr158095497b3.24.1742806824797; Mon, 24 Mar 2025
- 02:00:24 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1742810361; x=1743415161;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0x1szqNluXRdFHlnkhxeTJTRaNEPeNMvCPbIRkxMkzc=;
+        b=NQl1vNQgXE0VD+cJzxlH249Jn1djBUSKV3m85XHA917PBgxlpXGa87Yhw31JNOCnVe
+         9km94LQLrVIUAQN9R2aHXdNFX8nvnzU4aWBemq0agsTyuRzBvGHTbIBeGFE5JBYaUAxf
+         MgPrExRSv/XLI765JTOVtTAE01IyJCMWLKnJPYis/d7jgFerUda8iGZUbo/bGymaNzjL
+         Cs2GZi/njJOUACuoZCpATprpwnZv6rIm/fb3HSiYzuPPSBueb6J3pGpKkOXd2OeyHgkS
+         BDCykbtustXzgOWCPL8873J/hiFE+wAPe3tyflSoPyxgwkV8h05dAjrvzab1A7gMWuvY
+         0s/w==
+X-Forwarded-Encrypted: i=1; AJvYcCVE9JVV1mQrQrOY7UzFscvTu7Rq5ntqjhlZnRrirohq2iDmHYgLzl/65WbM0PKjXwRewypWLKSSPdRy@lists.linux.dev
+X-Gm-Message-State: AOJu0YxuLcQl51kQZbFVt/+UZgmlttaBHPfHCaHh0OFmzJTKRxP87D0R
+	x8fxwg+zYIJiA3CNRS4fz0upaRaY9ZpmSsxdLsqFnoOWQsuzZW5AasOW7LrdjCM=
+X-Gm-Gg: ASbGncuFKPxx2FTCDSIvdTWJhUMQUr3C31sEHoseCZMxXQttZpqTfhLpSG5uR16YFZT
+	ZhH8zMyaWL0U8vph4O/rFVHEP5cWVHH1voV6xnP+vqVh9tp+upEJX9Ri6pcTQnhb4GjUYRZEVyX
+	3MviJKvsnHeYKFdkk9i3PZ6oGDDBL9n7vYdhR3/uskfWHzckxdb6H2U7U3CWqXkXN5V1O16wijx
+	LaVHHRnwzntYBbUPWO0pnhvClic1ZsDACdGYuvZ8Y6vn6knVN9nPvai0AQfOZ6V+gngJtUjdIXD
+	ecexcryHlHH/qpgbgPkUwLBWTk1EP/W6JgV1NOOY9u/18xViVGDeMTh4d9hfKcy0jKJGDPj/WAP
+	fTu5Wdis=
+X-Google-Smtp-Source: AGHT+IEZBXb8In+hm/mlMuQwYUbtYes821tRtjpaqkfz/8npTdiwCyS93ktKfkIKoFtyGe+iN/UeKQ==
+X-Received: by 2002:a05:6000:1867:b0:399:728f:4673 with SMTP id ffacd0b85a97d-3997f91bc81mr12810206f8f.33.1742810361176;
+        Mon, 24 Mar 2025 02:59:21 -0700 (PDT)
+Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [109.121.139.128])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d4fcea6ecsm116116715e9.5.2025.03.24.02.59.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Mar 2025 02:59:20 -0700 (PDT)
+Message-ID: <327a23d5-d5c4-4227-aafb-9d4ddd90289e@suse.com>
+Date: Mon, 24 Mar 2025 11:59:19 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250311094225.35129-1-sgarzare@redhat.com> <20250311094225.35129-2-sgarzare@redhat.com>
- <d7e5a1d2-5fcc-bf7f-a67d-7871a1627c98@amd.com> <Z9glWp6U6vyEmKQa@kernel.org>
- <7kuhiyy7gj4py323g5n2vy3ddlg666zwhtx3mjcklebgtlstdc@xgdyeecifwei>
- <Z9wuLVeP726Cssqp@kernel.org> <20250320171619.GOZ9xNY4W54avW2a-u@fat_crate.local>
- <Z9xQw8QpRKk26G6R@kernel.org> <rspkz663fg7i7jomvg5ehv3ldr6ayehttb7vgwwzsfsxafzb5y@uhqcadvsmw6f>
- <20250321220520.GFZ93ioO0JtfhXCb1n@fat_crate.local> <Z98av2cbURhSy6Rk@kernel.org>
-In-Reply-To: <Z98av2cbURhSy6Rk@kernel.org>
-From: Stefano Garzarella <sgarzare@redhat.com>
-Date: Mon, 24 Mar 2025 10:00:13 +0100
-X-Gm-Features: AQ5f1Jq8rkzGdhbXeWVtUWD697l_-G9Y-_hvBqVxJBnsvHw0N0RMVXOA163V3KQ
-Message-ID: <CAGxU2F68_3nAzgPNj0m1SX-RPumuM2utX6B0-s4GDvFixJmt7g@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] x86/sev: add SVSM vTPM probe/send_command functions
-To: Jarkko Sakkinen <jarkko@kernel.org>, Borislav Petkov <bp@alien8.de>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>, Peter Huewe <peterhuewe@gmx.de>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-integrity@vger.kernel.org, Dov Murik <dovmurik@linux.ibm.com>, 
-	Dionna Glaze <dionnaglaze@google.com>, linux-coco@lists.linux.dev, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Claudio Carvalho <cclaudio@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Joerg Roedel <jroedel@suse.de>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: olTUYJVDkDBbbtq2M9s79k-jsqeV9boDW6k7Y_8IEz8_1742806825
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] /dev/mem: Disable /dev/mem under TDX guest
+To: Dan Williams <dan.j.williams@intel.com>, dave.hansen@linux.intel.com
+Cc: kirill.shutemov@linux.intel.com, linux-coco@lists.linux.dev,
+ x86@kernel.org, linux-kernel@vger.kernel.org, vannapurve@google.com
+References: <20250318113604.297726-1-nik.borisov@suse.com>
+ <67d9c447ddcfd_11987294c6@dwillia2-xfh.jf.intel.com.notmuch>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+In-Reply-To: <67d9c447ddcfd_11987294c6@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sat, Mar 22, 2025 at 10:17:03PM +0200, Jarkko Sakkinen wrote:
->On Fri, Mar 21, 2025 at 11:05:20PM +0100, Borislav Petkov wrote:
->> On Fri, Mar 21, 2025 at 10:01:17AM +0100, Stefano Garzarella wrote:
->> > Just a note, patch 2 adds `include/linux/svsm_vtpm.h`, that file is
->> > basically a translation of the AMD SVSM specification into structures and
->> > functions used to communicate with SVSM in the way it is defined by the
->> > specification.
->> >
->> > I realized that the file does not fall under any section of MAINTAINERS.
->> > How do you suggest we proceed?
->> >
->> > Should we create an SVSM section to maintain it, including the TPM driver
->> > and future other drivers,etc.?
+
+
+On 18.03.25 г. 21:06 ч., Dan Williams wrote:
+> Nikolay Borisov wrote:
+>> If a piece of memory is read from /dev/mem that falls outside of the
+>> System Ram region i.e bios data region the kernel creates a shared
+>> mapping via xlate_dev_mem_ptr() (this behavior was introduced by
+>> 9aa6ea69852c ("x86/tdx: Make pages shared in ioremap()"). This results
+>> in a region having both a shared and a private mapping.
 >>
->> This all belongs to the TPM drivers, right?
-
-For now yes, we may have other devices in the future, but we can think
-about that later.
-
+>> Subsequent accesses to this region via the private mapping induce a
+>> SEPT violation and a crash of the VMM. In this particular case the
+>> scenario was a userspace process reading something from the bios data
+>> area at address 0x497 which creates a shared mapping, and a followup
+>> reboot accessing __va(0x472) which access pfn 0 via the private mapping
+>> causing mayhem.
 >>
->> I.e., drivers/char/tpm/
+>> Fix this by simply forbidding access to /dev/mem when running as an TDX
+>> guest.
 >>
->> So I guess add that header to the TPM DEVICE DRIVER section if the gents there
->> are fine with it...
->
->It's fine for me but I'd suggest to rename the header as "tpm_svsm.h".
->Then this will already provide coverage:
->
->https://web.git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/commit/?id=a2fbcecc7027944a2ce447d4dd72725c5822321f
->
+>> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
+>> ---
+>>
+>> Sending this now to hopefully spur up discussion as to how to handle the described
+>> scenario. This was hit on the GCP cloud and was causing their hypervisor to crash.
+>>
+>> I guess the most pressing question is what will be the most sensible approach to
+>> eliminate such situations happening in the future:
+>>
+>> 1. Should we forbid getting a descriptor to /dev/mem (this patch)
+>> 2. Skip creating /dev/mem altogether3
+>> 3. Possibly tinker with internals of ioremap to ensure that no memory which is
+>> backed by kvm memslots is remapped as shared.
+> 
+> It seems unfortunate that the kernel is allowing conflicting mappings of
+> the same pfn. Is this not just a track_pfn_remap() bug report? In other
+> words, whatever established the conflicting private mapping failed to do
+> a memtype_reserve() with the encryption setting such that
+> track_pfn_remap() could find it and enforce a consistent mapping.
 
-Great, I'll rename it and send v4.
+I'm not an expert into this, but looking at the code it seems 
+memtype_reserve deals with the memory type w.r.t PAT/MTRR i.e the 
+cacheability of the memory, not whether the mapping is consistent w.r.t 
+to other, arbitrary attributes.
 
-Thanks,
-Stefano
+> 
+> Otherwise, kernel_lockdown also disables useful mechanisms like debugfs,
+> and feels like it does not solve the underlying problem. Not all
+> ioremap() callers in the kernel are aware of a potential
+> ioremap_encrypted() dependendency.
+> 
+>> 4. Eliminate the access to 0x472 from the x86 reboot path, after all we don't
+>> really have a proper bios at that address.
+>> 5. Something else ?
 
