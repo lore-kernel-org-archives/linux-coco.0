@@ -1,192 +1,128 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB1D35947;
-	Sun, 23 Mar 2025 11:36:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76AF825D8E7
+	for <linux-coco@lists.linux.dev>; Mon, 24 Mar 2025 09:00:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742729762; cv=none; b=sd5o3FeucOK/u/Yx5yndUuMDp/XgPB/PZDF5HRbEWpsOMq3IhO8pCFIq/MyUIw7ZzupocOneYZOB0rvAVmixovA3Tk7SG1sXH2EnNNzeQ979ogyU/b+B4v4ELbQ4QYP7dnuXZUzjTZeQ5Q3VJL+QU/60TKa7LBKUfOlSv9TOFwY=
+	t=1742806832; cv=none; b=Ptkao5r2dvb8GKHgmJPy0FA8+Haupl0uPK8gJ6gVAoiCZe02Pd+PhkO0U66hZXGxxvkKPArteNYDEHOLBoUDe8KL5kB3PVl7kjNHkxo0GMj/q5Y/8xLkexVxQAMQ/h2SCpQ19sOWHBR0iQlS5T/ASLtONj6MCxb6oMWBbihSsMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742729762; c=relaxed/simple;
-	bh=vxqD9fQ0riCAby3fUhv76PYUNSKXaRoQ4ZVMDVN1oec=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
-	 MIME-Version; b=Fz/9E+PGyHddJQnAFSFNbmwJwI5H5Tm+gJewJ5OTXfGDG69VAvz9CEADLSY+rD+C1iReKFx2AHLXLD1LSJXLQh4i7QUv5vetH5W3151JcWx6WZtckQ7V6Klh7Lvi7jl7/cr+B6SfcZCXdTR22nrBop1LKXUEdsZn/zx+nLm6h9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ehvs5Yx9; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742806832; c=relaxed/simple;
+	bh=VtQd7ZzM47zcnMCUYhBnsvT1LXfPEQwzDz8Bh3c7XCo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CjU/0EMJfWQEKaqvqX/r9Par8UkWiqi9ARILP3EPuIFZ2PD/hIEFI9qL/kxdx6j8nAvH/hsAiaPKZ3zfmfe6WyCFH/LbOJHVVAEvUop5zv7S+vLDRyigVer5ZL7UIOYAJhLCx6stgObdKLbPRA6D+oC9Ydneuy62qDKh/xd8rOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z1jZErQh; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ehvs5Yx9"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ac29af3382dso580881766b.2;
-        Sun, 23 Mar 2025 04:36:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742729758; x=1743334558; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:in-reply-to:date
-         :cc:to:from:subject:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ulYi+eY/hFy7Rpw8ZWtw9DJBvuhlwhkseKvZOaTPlmo=;
-        b=Ehvs5Yx9hzfJz+RYM+XtHVCF7nxAyr1GNw1ThmNOcs7NxzoYcCGKf2zQawr54HOWjk
-         26q2JMgO7p5X4iGllj/s9Hpcn3tYhmD5GHTZ03VNIPGuSKf8NdmrZmWfBf1XlYCPxAo6
-         zHFrEF0/CIBp9ycPFfPJ20jpi0WWpZOaVBvMmc24XLxUcBQlsXFCSIFkldXrF9+bJ5dB
-         W/BICMYZTeA8MpRSWvzdvjZhnsinEWTyOjd35uBEFJ+TJPu9ZXvWkE1HNNjVQJO/Tov+
-         u7ASKClFYLrY6yTZ5outQ3NIJjBX4KKhHN/tlooy8P3QU+lBUOKtzp1WaMBTWNaLzEhm
-         ltgw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z1jZErQh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1742806829;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VtQd7ZzM47zcnMCUYhBnsvT1LXfPEQwzDz8Bh3c7XCo=;
+	b=Z1jZErQhumnhm90ODugoFMd1G0C5HzeKpvQc8NxeAaqjql5fXTxtJ4kS4EkzFN73Iqyy2k
+	gsshRTagLXyTW4NejEdtYfJKyHB/qxvEmSZ8FsZlI+jSDtjohGcSTzUcfvGsCHXFprT+hI
+	enp9k92qBpxeVvZXy7QMOL8vaRBnC+E=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-588-Cs-oUuH-P_qciRrWyB-AMg-1; Mon, 24 Mar 2025 05:00:26 -0400
+X-MC-Unique: Cs-oUuH-P_qciRrWyB-AMg-1
+X-Mimecast-MFC-AGG-ID: Cs-oUuH-P_qciRrWyB-AMg_1742806825
+Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-6f27dd44f86so55243927b3.0
+        for <linux-coco@lists.linux.dev>; Mon, 24 Mar 2025 02:00:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742729758; x=1743334558;
-        h=mime-version:user-agent:content-transfer-encoding:in-reply-to:date
-         :cc:to:from:subject:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ulYi+eY/hFy7Rpw8ZWtw9DJBvuhlwhkseKvZOaTPlmo=;
-        b=PA+N7CcjZkMqMh+LdNxhSWiUvY2hy6QyYjVYLh9KXsu27HXUt9K4P0wIOkYOdz93Cw
-         HR7gcljvKb3tgUS7p351fclatfEbkM1CSLpk0bmlHYl7f2AKrZz7C3U/lLSqepxv64c9
-         7M+8xPagsfDQhLK02U83pathZ2ZhVFfdrtQya3YCq25NamxgEjXF/oei1KAun0zf7GZ4
-         aG76RZSRLqMT4EUcnvLdjPVsOoVlsI+m6slCddCeN0Inu//M6PlAcH5IihQLF8pMK54h
-         8eL9mPq8dBD0GRPX1Ll7ush1Tv531fxgUeRzsnftSVANq1BRFjbMYUTZ5guE3/0PLvv7
-         B0jg==
-X-Forwarded-Encrypted: i=1; AJvYcCVsL8ID7A/BTbzrnKk2ZoadCQxsE84ZWRA/95qv0MfYKk4TC4EQoVlKxMwHtDqlujYtnScLKU1ZrfDRHw==@lists.linux.dev, AJvYcCVtfujagNxCfY8/mrWXMiN80m/iVMiAzHXyLZHX0ss8VWd0Grg4NotJwFGDBWQMyhWrGhR49w==@lists.linux.dev
-X-Gm-Message-State: AOJu0YynzO6qHmgZYI0Rl1iOEIYnwbfcQE+mueHKkHYzJ8DPiflpmt95
-	5bWkCxHWRU3adHOQWtHWxEorrJFsyE3RUAXenl0VBY7Fqm7VyXRQ
-X-Gm-Gg: ASbGncsrTA+9vkWorKHd4Uc9MadgyQL01TLU3daGpVvg0T8zvF2wNP+2uOQOHJLS6mJ
-	sRMcRnInhlzoaNVsCYgPDTn5xGVVlIkOZZVTfhQ8xRFgsHOrwIGw0HnPP4ihMh8eqrZqhpzU1wn
-	ws7wD3XslkX+YPr5Ksbpbh7shlwLU8blM+UYk5A5PY3rIME0rYFBY1yFARw1rgILG2iKfnqlPrn
-	eO27TsDBpdViY9wHNwPvXO3jJEkEsuGPSGBE07tuO3DWa+em91FJdyfd/ZeyNn3eQJ04XpOKHBw
-	M+Gc2XrNma8NF1G8K5NDQMXkqBy9IFnxOuR2RsiKiCm5Lu+wkWZFFvc3c3zOuyvou6popU1Ef/3
-	s0C8cWru/gj7nxJj0+vfFl/pwrQ==
-X-Google-Smtp-Source: AGHT+IEzF59fM+1sXKTJnQXrcFoM0BGGjWdJktjtNJk+BRvhUOw/UEJ7hRrjg6HizFkpkJVBQreUZw==
-X-Received: by 2002:a17:907:ec0d:b0:ac3:d9db:14bc with SMTP id a640c23a62f3a-ac3f1dfcc58mr968370866b.0.1742729758185;
-        Sun, 23 Mar 2025 04:35:58 -0700 (PDT)
-Received: from ?IPv6:2001:b07:5d29:f42d:400c:7196:fafe:b8ec? ([2001:b07:5d29:f42d:400c:7196:fafe:b8ec])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac3efd4800esm493940666b.164.2025.03.23.04.35.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Mar 2025 04:35:57 -0700 (PDT)
-Message-ID: <545cc6485e2c4043d222cb762833fd9bc33feb1a.camel@gmail.com>
-Subject: Re: [RFC PATCH v2 09/22] crypto/ccp: Implement SEV TIO firmware
- interface
-From: Francesco Lavra <francescolavra.fl@gmail.com>
-To: aik@amd.com
-Cc: Jonathan.Cameron@huawei.com, aneesh.kumar@kernel.org,
- ashish.kalra@amd.com,  baolu.lu@linux.intel.com, bhelgaas@google.com,
- dan.j.williams@intel.com,  dionnaglaze@google.com, hch@lst.de,
- iommu@lists.linux.dev, jgg@ziepe.ca,  joao.m.martins@oracle.com,
- joro@8bytes.org, kevin.tian@intel.com,  kvm@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-coco@lists.linux.dev, 
- linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org, lukas@wunner.de, 
- michael.roth@amd.com, nicolinc@nvidia.com, nikunj@amd.com,
- pbonzini@redhat.com,  robin.murphy@arm.com, seanjc@google.com,
- steven.sistare@oracle.com,  suravee.suthikulpanit@amd.com,
- suzuki.poulose@arm.com, thomas.lendacky@amd.com,  vasant.hegde@amd.com,
- x86@kernel.org, yi.l.liu@intel.com, yilun.xu@linux.intel.com, 
- zhiw@nvidia.com
-Date: Sun, 23 Mar 2025 12:35:55 +0100
-In-Reply-To: <20250218111017.491719-10-aik@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+        d=1e100.net; s=20230601; t=1742806825; x=1743411625;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VtQd7ZzM47zcnMCUYhBnsvT1LXfPEQwzDz8Bh3c7XCo=;
+        b=RRYInBSPS74lLDrQKT/pX5fN8ErpmwITTCrhSJ7uUHha6v3sYQvLgiCmGsM839MAwZ
+         4Qd4NLh4USjJUV0syH9vvm0Vu9PHz38ZavQ5BvecXZIeXU2rGoS8I27DK7ZLg+tsCYr0
+         2TgHgrQnIzc7ViZaPIrPfKKbvJ3MZs6iohTe2dz3u7MnlRAQNLxCTehJCSQEsAVA6OCU
+         xMUqItbbxegjU+92k+rGhvlyNG5+oDEa3RAd2XfyM/8CMPV5dCw4p/gKCq2YefpQEw1d
+         pqEKPo2twstPkTXsbNB0UO6Qy4C6mNcPYdNqSdB1pLuMMSxMS35xWd6Bna70O5JoPGYL
+         kMhg==
+X-Forwarded-Encrypted: i=1; AJvYcCXak2VHqGwaXTzKiX268jT5B52Nzbnm7W94Cz6SsQrzQ6+PCFV9uBTc7MOSSQV35T4bwQ+dZeYgIB2J@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy74xLwrArNIoYM56f/RiUubLCBdiL7qlapR4n0UfeGLjTYGoMF
+	AlEo8cvZQLKWrkRrvG/6Xb1/ah53UJMaqC3AvyBNCkMywWc0jwf9oJUTyrt3d2mf+FR6j5fpvxS
+	7IkLLzbsygii8ae+S9VfdLddcw6eMDN9WeQyaTpaHTkmem/huENd4KSaNFZ9Zl744xDmtNRnx3o
+	Z6YKREy6EppNPHLJGS9texJrCxfax5u0SOQA==
+X-Gm-Gg: ASbGncu7LXMXt1jV2KKrnKAmBtTVV/y7PLFyIFBSQLO13LcRPgEcuofXjS1lUD/xOEV
+	6t9GTDF7C6oYoux0H1fZoMV+HPIkdjryZodpmai2nV5pf3uA/XCCcjF6zccXwpe2qwGnDBQ==
+X-Received: by 2002:a05:690c:3588:b0:6fe:b109:6973 with SMTP id 00721157ae682-700bacfba94mr158095957b3.24.1742806825341;
+        Mon, 24 Mar 2025 02:00:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFrUHGJpHADoIDbX/Sou896YczE/U5d5SAf7THitdTqPnQR8uE2GhDufDdh/tsFnucbOoNKGD29uDDAHCwOw5c=
+X-Received: by 2002:a05:690c:3588:b0:6fe:b109:6973 with SMTP id
+ 00721157ae682-700bacfba94mr158095497b3.24.1742806824797; Mon, 24 Mar 2025
+ 02:00:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <20250311094225.35129-1-sgarzare@redhat.com> <20250311094225.35129-2-sgarzare@redhat.com>
+ <d7e5a1d2-5fcc-bf7f-a67d-7871a1627c98@amd.com> <Z9glWp6U6vyEmKQa@kernel.org>
+ <7kuhiyy7gj4py323g5n2vy3ddlg666zwhtx3mjcklebgtlstdc@xgdyeecifwei>
+ <Z9wuLVeP726Cssqp@kernel.org> <20250320171619.GOZ9xNY4W54avW2a-u@fat_crate.local>
+ <Z9xQw8QpRKk26G6R@kernel.org> <rspkz663fg7i7jomvg5ehv3ldr6ayehttb7vgwwzsfsxafzb5y@uhqcadvsmw6f>
+ <20250321220520.GFZ93ioO0JtfhXCb1n@fat_crate.local> <Z98av2cbURhSy6Rk@kernel.org>
+In-Reply-To: <Z98av2cbURhSy6Rk@kernel.org>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Mon, 24 Mar 2025 10:00:13 +0100
+X-Gm-Features: AQ5f1Jq8rkzGdhbXeWVtUWD697l_-G9Y-_hvBqVxJBnsvHw0N0RMVXOA163V3KQ
+Message-ID: <CAGxU2F68_3nAzgPNj0m1SX-RPumuM2utX6B0-s4GDvFixJmt7g@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] x86/sev: add SVSM vTPM probe/send_command functions
+To: Jarkko Sakkinen <jarkko@kernel.org>, Borislav Petkov <bp@alien8.de>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, Peter Huewe <peterhuewe@gmx.de>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-integrity@vger.kernel.org, Dov Murik <dovmurik@linux.ibm.com>, 
+	Dionna Glaze <dionnaglaze@google.com>, linux-coco@lists.linux.dev, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, 
+	Claudio Carvalho <cclaudio@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Joerg Roedel <jroedel@suse.de>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: olTUYJVDkDBbbtq2M9s79k-jsqeV9boDW6k7Y_8IEz8_1742806825
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 2025-02-18 at 11:09, Alexey Kardashevskiy wrote:
-> diff --git a/drivers/crypto/ccp/sev-dev-tio.c
-> b/drivers/crypto/ccp/sev-dev-tio.c
-> new file mode 100644
-> index 000000000000..bd55ad6c5fb3
-> --- /dev/null
-> +++ b/drivers/crypto/ccp/sev-dev-tio.c
-> @@ -0,0 +1,1664 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +
-> +// Interface to PSP for CCP/SEV-TIO/SNP-VM
-> +
-> +#include <linux/pci.h>
-> +#include <linux/tsm.h>
-> +#include <linux/psp.h>
-> +#include <linux/file.h>
-> +#include <linux/vmalloc.h>
-> +
-> +#include <asm/sev-common.h>
-> +#include <asm/sev.h>
-> +#include <asm/page.h>
-> +
-> +#include "psp-dev.h"
-> +#include "sev-dev.h"
-> +#include "sev-dev-tio.h"
-> +
-> +static void *__prep_data_pg(struct tsm_dev_tio *dev_data, size_t
-> len)
-> +{
-> +	void *r =3D dev_data->data_pg;
-> +
-> +	if (snp_reclaim_pages(virt_to_phys(r), 1, false))
-> +		return NULL;
-> +
-> +	memset(r, 0, len);
-> +
-> +	if (rmp_make_private(page_to_pfn(virt_to_page(r)), 0,
-> PG_LEVEL_4K, 0, true))
+On Sat, Mar 22, 2025 at 10:17:03PM +0200, Jarkko Sakkinen wrote:
+>On Fri, Mar 21, 2025 at 11:05:20PM +0100, Borislav Petkov wrote:
+>> On Fri, Mar 21, 2025 at 10:01:17AM +0100, Stefano Garzarella wrote:
+>> > Just a note, patch 2 adds `include/linux/svsm_vtpm.h`, that file is
+>> > basically a translation of the AMD SVSM specification into structures and
+>> > functions used to communicate with SVSM in the way it is defined by the
+>> > specification.
+>> >
+>> > I realized that the file does not fall under any section of MAINTAINERS.
+>> > How do you suggest we proceed?
+>> >
+>> > Should we create an SVSM section to maintain it, including the TPM driver
+>> > and future other drivers,etc.?
+>>
+>> This all belongs to the TPM drivers, right?
 
-We have virt_to_pfn().
+For now yes, we may have other devices in the future, but we can think
+about that later.
 
-> +static struct sla_addr_t sla_alloc(size_t len, bool firmware_state)
-> +{
-> +	unsigned long i, npages =3D PAGE_ALIGN(len) >> PAGE_SHIFT;
-> +	struct sla_addr_t *scatter =3D NULL;
-> +	struct sla_addr_t ret =3D SLA_NULL;
-> +	struct sla_buffer_hdr *buf;
-> +	struct page *pg;
-> +
-> +	if (npages =3D=3D 0)
-> +		return ret;
-> +
-> +	if (WARN_ON_ONCE(npages > ((PAGE_SIZE / sizeof(struct
-> sla_addr_t)) + 1)))
+>>
+>> I.e., drivers/char/tpm/
+>>
+>> So I guess add that header to the TPM DEVICE DRIVER section if the gents there
+>> are fine with it...
+>
+>It's fine for me but I'd suggest to rename the header as "tpm_svsm.h".
+>Then this will already provide coverage:
+>
+>https://web.git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/commit/?id=a2fbcecc7027944a2ce447d4dd72725c5822321f
+>
 
-This should be (npages + 1 > (...)), because we need to fit `npages`
-SLAs plus the final SLA_EOL.
+Great, I'll rename it and send v4.
 
-> +/* Expands a buffer, only firmware owned buffers allowed for now */
-> +static int sla_expand(struct sla_addr_t *sla, size_t *len)
-> +{
-> +	struct sla_buffer_hdr *oldbuf =3D sla_buffer_map(*sla),
-> *newbuf;
-> +	struct sla_addr_t oldsla =3D *sla, newsla;
-> +	size_t oldlen =3D *len, newlen;
-> +
-> +	if (!oldbuf)
-> +		return -EFAULT;
-> +
-> +	newlen =3D oldbuf->capacity_sz;
-> +	if (oldbuf->capacity_sz =3D=3D oldlen) {
-> +		/* This buffer does not require expansion, must be
-> another buffer */
-> +		sla_buffer_unmap(oldsla, oldbuf);
-> +		return 1;
-> +	}
-> +
-> +	pr_notice("Expanding BUFFER from %ld to %ld bytes\n",
-> oldlen, newlen);
-> +
-> +	newsla =3D sla_alloc(newlen, true);
-> +	if (IS_SLA_NULL(newsla))
-> +		return -ENOMEM;
-> +
-> +	newbuf =3D sla_buffer_map(newsla);
-> +	if (!newbuf) {
-> +		sla_free(newsla, newlen, true);
-> +		return -EFAULT;
-> +	}
-> +
-> +	memcpy(newbuf, oldbuf, oldlen);
-> +
-> +	sla_buffer_unmap(newsla, newbuf);
-> +	sla_free(oldsla, oldlen, true);
-> +	*sla =3D newsla;
-> +	*len =3D newlen;
-> +
-> +	return 0;
+Thanks,
+Stefano
 
-Return values are inconsistent with how this function is used in
-sev_tio_do_cmd(): a zero value should indicate that expansion is not
-required.
