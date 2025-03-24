@@ -1,83 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540D62641D4
-	for <linux-coco@lists.linux.dev>; Mon, 24 Mar 2025 17:29:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED58026159E
+	for <linux-coco@lists.linux.dev>; Mon, 24 Mar 2025 18:54:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742837346; cv=none; b=Q45DF2XWSFi9aUInVJxvEBDrrF2g66bblHJ6NOl7+R9+P3JA/09m4GR+/M7/65bJtM23zPLIhSpQTIrUkOm0Nn48x1aCsKUjgeFQQNUtjWpudDVpHhRAtoXVTOeGC6Sf+ZKlGhVPEzQUi02g4sJvkPuMZVcXVJ560PKzEdpHGkQ=
+	t=1742842443; cv=none; b=K5AKrpb6PrACaR94qEs08DELfDUEPMZ2dtMd7zv+7iKpVGkqDKoCfVGt/iAxhFbnYZNe/7uPrzgckE+Nmwb5/oMGyodmyFu+1PVpZle9tqIeK3LzFkqPN7TyeT5i1LnrTk+vEi+LjtNHuylMpvRKlpL3ArKCFyenahKWONDLZLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742837346; c=relaxed/simple;
-	bh=lP6l4cI7/jGloCIQwt6mXdDSjyKba8rsmfpwRjrO2lQ=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=ks9lH9EUCn2QUHT34eftiWF9TVskheIdBjlQRPubLLnAn7nPEAt20RpP7tcI4JQ/j6wqT25fpNnufZW870F0mGenFz4naI6ta83P+sMXFFoXXCsR3L9LVpQEQ6Kn2/KwWwjp+IyQZuaJ0zfVkaNyxBauIsGTUaF09aNxA8qkjhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FIpntT/w; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742842443; c=relaxed/simple;
+	bh=5Oc9X4WPpkb0I7xxxkTExY9Kqtnuab39zq/DpuRW+9k=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=BwXJz9rRF9ZVSTvG12I4WFoIX4ALZxoRoErocLR3/hMl8d+0Y0guxRMgONcnap44ryqswG7/hLQ/2go9DHFi+E14eZNolSOPtVyoOxFZGSYvbtX+t+c46etRaQX4nX5EpC6IeTIWPEucAYPLljrpudw3wSfmM9Qzb2FLxsXN9L4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--afranji.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=An1HGXvN; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--afranji.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FIpntT/w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DF1C4CEDD
-	for <linux-coco@lists.linux.dev>; Mon, 24 Mar 2025 17:29:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742837345;
-	bh=lP6l4cI7/jGloCIQwt6mXdDSjyKba8rsmfpwRjrO2lQ=;
-	h=From:Date:Subject:To:Cc:From;
-	b=FIpntT/wRWgzQxyfmNpVr9snt00u0N6KK6UvgIq9GL8LOjGrUzn3Z+udhw3ZFwPMJ
-	 Rr2zIWCtDWPPAmCfDEdNstwYJy767n/jFTK6URnje0v/rKDS8HHrZjYfwisff6deQB
-	 KoHM0Sobj3SwIxfoEwlsHK1uTFQ7in7VLSt6g/WFxrcd9I7xT2h/kYnZn4WuXvELrs
-	 pIkDn4n5cJ8WAgo8R+iK59jzO4B9RDS1k1ECYJ0/2LICl8t/V8uyL+G+YyYRqOym4r
-	 /pp3sCxawtQFIPgywoyvTzPJxnAwLz8+5u/zljZqc7Bg4r7hp5gkNapo39M8OZ7p+J
-	 kaNyKjThI/7PA==
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-54aef877725so822729e87.1
-        for <linux-coco@lists.linux.dev>; Mon, 24 Mar 2025 10:29:05 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX7JfCMxDbJIuvUdr5H8PFZazrY8PY5jU8f9GSdFAZ3PUPaw4vSgdQRBUwpqK7k2i2Pqj5y2zoKiq8Y@lists.linux.dev
-X-Gm-Message-State: AOJu0YxNzq35hazBG4vUBUthDSyF0HomOcWrlaPHeWIEpX7x2nTXW4BT
-	GAZzL9Em/WPCmi5HeFkvkW4UtgnLMgeydBgwDV5b3T895LZjN62ALCN4/SO+rnuLryC2wAZWIKS
-	Ij5poEGjzhjHmZl0KTvMWYqKsqAw=
-X-Google-Smtp-Source: AGHT+IHNZI2/9BxzuSLiSEzyhByDHAJ9bDhbmWjhVQliAHyE/zuWM/w5c7AolYlRgKpXVeCbJ6c/5Ihqc1ukc6UgWOA=
-X-Received: by 2002:a05:6512:3082:b0:54a:cc76:ad5e with SMTP id
- 2adb3069b0e04-54ad64708fcmr6152812e87.3.1742837344189; Mon, 24 Mar 2025
- 10:29:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="An1HGXvN"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-225107fbdc7so79053025ad.0
+        for <linux-coco@lists.linux.dev>; Mon, 24 Mar 2025 11:54:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1742842441; x=1743447241; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5Oc9X4WPpkb0I7xxxkTExY9Kqtnuab39zq/DpuRW+9k=;
+        b=An1HGXvNoauhD2PRO4QCA5z9j2IKk2sApwt2ixMbqYepBJaqDeTja6c67AUR3NC6F3
+         LQ+4xuJV4qQzqYw8Js8ziB7OEd3fsQgncm5r9uZ/rK3JZ5tDnDSGyyGyN3LtcGrDv4g5
+         3+v6lHRiXJFv1lxgcp0xd89yFCqbkzYff9Z8qGRC1uyv86k6j69vNAJLop9Uh/HYQmn+
+         mDzc3VRV9h4TF428kUmYaiAWBVG+a3ymOEZKWaEDOqgztI1k9vqEPiF/i8mchm91vqQ5
+         ZiBkyK6jOaXWyCPsmsjx90b6bC7XehSZWFb68yNSIeICsFIfqeAZlyE5R15hb/BPauep
+         ypbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742842441; x=1743447241;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5Oc9X4WPpkb0I7xxxkTExY9Kqtnuab39zq/DpuRW+9k=;
+        b=NqsRb16wosCR/2PVmoIK6f8HwbZZGweyqkHQ3X8un1pEn5C3ja26tbF4+fVi6ZgM08
+         XF4qS4pKT1zwgGYp8/LPbFSeL7nUZeBDUBoWs82KtnqwOMfCkrJ+RG2EX526lU2Qcn1X
+         bKhftLPSdtMKSJJ7Fc2ky/JgEQC/JcboafTqJg2mMEx5+5koZFbFBjiFzHDmUq2KaLOV
+         SRfDYS+MFNbQ1SB1PXhuEvxO6q/WnTsC5K0aAMR8gdceJEX8mMMfNMrzI0Nd8tUK52Vv
+         NiQ3sMFRBKmGmACtN4YCy59or8tAnZ2pF5OEeHMVbrOUP+MaZrVumt91kaxWTCb1+El6
+         t6mA==
+X-Forwarded-Encrypted: i=1; AJvYcCUuEl2AFP4TMXeX4+CpEpvOtRWzzCuNRgeB+2f6LGX1CpxC7ZaJXRDlE0RAVhKGnu/JlTkMvOZTBsb8@lists.linux.dev
+X-Gm-Message-State: AOJu0YzGL2L+kCG9mk+x9MAGVU64E3W13ZmGa4IvBqAEqTzD3dvPusts
+	vVOHF02CHvBJTMkmgUeJMLvNM5D60dDc3piuZOpFlXy6KTKCQQdAdp7VzVRtNzfIYpcV6ZP31Cg
+	c+AnNhg==
+X-Google-Smtp-Source: AGHT+IFgmKsprpaGDjxSOAFPcgtylxDFAlGJWR3zzYK2eH1W43TjKeWbEuCfuwWXukUdHLsJ/AaSlcsX4NnQ
+X-Received: from plj11.prod.google.com ([2002:a17:902:c14b:b0:21f:651b:6fd6])
+ (user=afranji job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d2c9:b0:216:7926:8d69
+ with SMTP id d9443c01a7336-22780e26127mr200986085ad.47.1742842441044; Mon, 24
+ Mar 2025 11:54:01 -0700 (PDT)
+Date: Mon, 24 Mar 2025 18:53:53 +0000
+In-Reply-To: <20250228014416.3925664-1-vannapurve@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 24 Mar 2025 18:28:52 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHacRusnpmGJecMU3L2CCyQtopBL6KqoSVuF7tDW85TUg@mail.gmail.com>
-X-Gm-Features: AQ5f1JqHuy0jgXGLm0D0dSSBfrtBUD7Dxtk2rVg_yQ9adre4qcW8Uu9CLQe2ICo
-Message-ID: <CAMj1kXHacRusnpmGJecMU3L2CCyQtopBL6KqoSVuF7tDW85TUg@mail.gmail.com>
-Subject: query regarding SEV logic in early boot
-To: linux-efi <linux-efi@vger.kernel.org>, linux-coco@lists.linux.dev, 
-	Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Borislav Petkov <bp@alien8.de>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
-	Kevin Loughlin <kevinloughlin@google.com>
+Mime-Version: 1.0
+References: <20250228014416.3925664-1-vannapurve@google.com>
+X-Mailer: git-send-email 2.49.0.395.g12beb8f557-goog
+Message-ID: <20250324185353.1974105-1-afranji@google.com>
+Subject: Re: [PATCH v7 0/3] x86/tdx: Fix HLT logic execution for TDX VMs
+From: Ryan Afranji <afranji@google.com>
+To: vannapurve@google.com
+Cc: ackerleytng@google.com, afranji@google.com, ajay.kaher@broadcom.com, 
+	ak@linux.intel.com, bcm-kernel-feedback-list@broadcom.com, bp@alien8.de, 
+	chao.p.peng@linux.intel.com, dave.hansen@linux.intel.com, 
+	erdemaktas@google.com, hpa@zytor.com, isaku.yamahata@gmail.com, 
+	jgross@suse.com, jikos@kernel.org, jxgao@google.com, kai.huang@intel.com, 
+	kees@kernel.org, kirill.shutemov@linux.intel.com, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, mingo@redhat.com, pbonzini@redhat.com, 
+	peterz@infradead.org, sagis@google.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, seanjc@google.com, 
+	tglx@linutronix.de, thomas.lendacky@amd.com, tony.luck@intel.com, 
+	virtualization@lists.linux.dev, x86@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-L.S.,
+Tested with the specjbb2015 benchmark. It has heavy lock contention which leads
+to many halt calls. TDX VMs suffered a poor score before this patchset.
 
-As I am trying to disentangle the Linux early SEV boot code, the
-legacy decompressor and the EFI stub, I noticed something that looks
-broken to me, but I'm not quite sure how to fix it.
+Verified the major performance improvement with this patchset applied.
 
-When booting via the EFI stub, the following call chain may occur:
-
-setup_e820()
- process_unaccepted_memory()
-  arch_accept_memory()
-   snp_accept_memory()
-    early_setup_ghcb()
-     set_page_decrypted()
-      set_clr_page_flags()
-
-where the latter function relies on mapping_info to remap the GHCB
-page as unencrypted. However, when entering via the EFI stub, this
-struct is never initialized, and so I am struggling to see why this
-works at all.
-
-For context, I am looking into splitting/refactoring the decompressor
-SEV startup code and the kernel proper's SEV startup code, in order to
-a) use PIC codegen properly, and b) allow building a EFI-only bootable
-image that does not include all the exception handling and demand
-paging.
-
-Any ideas?
+Tested-by: Ryan Afranji <afranji@google.com>
