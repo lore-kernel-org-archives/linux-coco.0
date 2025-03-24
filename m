@@ -1,213 +1,235 @@
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2050.outbound.protection.outlook.com [40.107.244.50])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2060.outbound.protection.outlook.com [40.107.220.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111462620FC
-	for <linux-coco@lists.linux.dev>; Mon, 24 Mar 2025 19:14:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF5A8635C
+	for <linux-coco@lists.linux.dev>; Mon, 24 Mar 2025 21:13:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.60
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742843697; cv=fail; b=VlwH4nnf9ZS9VVM508lQkDl/SGA7RqOzWQgNV99kHJGAc+e5B+UmxAoALnryHHC+y6U+aOaZPlXOO8alrNlPkoTDBNZJ0M9OUbW27osORj5YZXX87GqGCmgOLqOzZ5HMVramrw0g+UL8XRxRBcbK7wzsEmr9aA2He9c9kYYCQfc=
+	t=1742850839; cv=fail; b=Q/ePSk4J2KlekBrM0Mvl40FHR7kI9EDIpaJo13aZsehvub44JxmyLoNRnoSr/Ht51qab2Rsuc7rgdCWj86YqvehFXA12o01LbTn3adqSCH7scLQw9qOp3qGNZoQ/c+boFSPXvZC6exLL+a0uButvrOgQYi4IRGA/lUCeG+3g7tY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742843697; c=relaxed/simple;
-	bh=RJ9/qQ9if+Pw+0StHdvZPab8oEQ36zu13HUXm1EpHx0=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ESawFrQ5XqT2yeRj/rTNYWyWd8SydCvRdlT6CEXuquD/gv2RvA2tVYqigORaitIypBrsKKkwA8j5ryQEYxtP0bvNNiiaMJXwDfC953Oig3TN5ldyEluasUdSUT5hDb1t0uh29glG5POU4zsCHttB8q78QkaSgiNJO9p00L/xUC8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ZFkqoGvd; arc=fail smtp.client-ip=40.107.244.50
+	s=arc-20240116; t=1742850839; c=relaxed/simple;
+	bh=SuaZ5yeDjTvEs6D4wf2l0YtyWY4c5Thp9zzRV4KsA6w=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OKMX/E9eN0lnNUhr45EhSEO8X9ngJWZJnV9Uc0kmJEFOIJcvjys+L60D0M9RRw3+e+Kos//TNih18wwgsXsGJ15AGTAew1+kRslOUySBbmwwXkqzFR/aydJR7Yq9O6bHhutx+aoJR3v/BGCxVjW8x2UWULA0apExyydaELqv5GI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=trredStR; arc=fail smtp.client-ip=40.107.220.60
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ZFkqoGvd"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="trredStR"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Jh75iHqvk0/94lDpfJ42yOcZxfe5vXPzLtDIFwVfMCMQDbXQP905GFiL8CU2G+MJg7/M7Pk3Zzt0zbJMoYX9eg1RKg+ivoupB8KF7+5PecGJpKFv6ium688bVrueGoqb38/FIlq8Zw8uXS45EVzVTGDFHilbyNdnuKFYejtsu3ZU2e76HjRPouludAEy17JOmJKt+h6mSqo4dua47n9kTXjdXpD7lDjY+75rTk9h/H2CNRisbqsJgX5a/LBF21smzPhE/1Al/x2uuj+YoQ2yR3eyFHDRNNw+XLLAnJNpdtJHV02D/WrRHek1fkXAI1ajjMolTK/0rBHnnszJNT3cMQ==
+ b=PWjxGhwprVDsS91Mc/naGw5zUc0/etCjVphh3r1PoW0E13zi3liayxAFWHA4gchCITVYisaGKUuk3x3SnL9DMbjtflXoxDpaQ5jrLGk2lbNWVX4D6GXWbsNunuJJ8CUS++CuHjSgic8R4xWgJ1jB0LdW/t6yVVN9ChxPaOhyPLtaaf9LsjYdYAmmXM4zlhljOXgmRMm8o5b4e4v7/k89tmOnKi6Zm4DEySkXfSL+yRc36Gk36pr7HxdMUjoIwMvR/t4fgbHZMCf18+VKyyYkoMuMvV4f16GQbmxZs5G51dKjiP67pD/pfmemL/nRxI/y2bZ/t08Ujr8GpJXTV9vWww==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OFDu44CG7TAoYA5tMuORa6hpmkQ4LmQ9RZ7D4oeL5tc=;
- b=wrLVNesIbUl3Bkr0Ul7ulhdXtR46aYSgYn7NojgNJYd6m/dTzOqu6x+c5RtC2cIPRmRNoUI5p61K1a98G1SrvJ3v0lf0Ow1bUB90cJfDvkTuJHiUdj2JTzrIXEeRxL13lFNoexFtEitgzn4dR8eB03stScRjAbZ39+0V2JAEsPPBtCOYUkt4OAJvS3zEf6g3Em17kiR2IAfE12IPb+VTa7pRNhLVptSRuSYui9ssWaqs5aiMtzDrY0AZO9eWGic+m9ymIriwDT6sIaNHS7RyjXsbKi64IJZLJk68bAphT2CaSac/PXSi+myfrGPXIfRQ+D9sOUFlMFIqGA5m3uffBQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+ bh=ioN0f3Zqi29FW+zSq2ziGzRcaiH/OCCN3hQA+kOJqEk=;
+ b=C7oPRaQVQRB0HiATBMqR6zOBdOAJl5zs4uI6XQJNPxQ9BZkql6JVyNutjuSfDszpVpA8nd5LzuFoE55ANvAQ1FNaxAT/JGqlJiCkf46Bc1xhyro2E+nW+V6JRBc9p9Y5BZM8i4ddb7BqIL+Dwi/QY6Trr7/RM3a9MjfIXHNd8FKO6KxUpUqttwKEvOF2qzVgNA4r/s2fY3XvuVF40mUtryUohIphyTyAvBnzsgnxm6HNEukCNlMe1nnABWe/rmxCj7b2f5CuezA26pcHU1kKTSSKMLZ3d+HZTuTEHzDD5OfOGd5BfLPDKlIWFTGdKyII1fvId/D0fVCdfQexMvbwmg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OFDu44CG7TAoYA5tMuORa6hpmkQ4LmQ9RZ7D4oeL5tc=;
- b=ZFkqoGvdzxIyALaIhBnGWXAhvhdRuIOPV95I2Rcr5Lo3WPHlooyn9m8GchdEdKgPYmcoG6noa+aO+RgG2Cq9ejrqsLXIqUYj2KTRzdHfTDKVeEAeqC4gLso7Qr7Og66W7j0uhcPgDueb3KFmz40IE84S6kTWt2fIJTwhJ+0k0So=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
- by BN7PPF39B20C1D8.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6cc) with
+ bh=ioN0f3Zqi29FW+zSq2ziGzRcaiH/OCCN3hQA+kOJqEk=;
+ b=trredStRh4Ia7zVqsEZOfXJ+FFQhd1SdqS13fROULZ+mUrk/GM0C0VXVz2V6PGKntWM5B11D+7OS7A/drFPF0sxl7l9SXyxukJQqRs1PYJAGfTFni61Kf+mPE0vJN38jnS4Cj+JObPjPIpqnht+SPTLoOKFw3EtA1wy44XEHd0A=
+Received: from MW4PR03CA0280.namprd03.prod.outlook.com (2603:10b6:303:b5::15)
+ by DS0PR12MB9399.namprd12.prod.outlook.com (2603:10b6:8:1b8::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.42; Mon, 24 Mar
- 2025 19:14:52 +0000
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e%5]) with mapi id 15.20.8534.040; Mon, 24 Mar 2025
- 19:14:52 +0000
-Message-ID: <874299e9-eb4f-7775-4ea4-69d449ca1e05@amd.com>
-Date: Mon, 24 Mar 2025 14:14:48 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: query regarding SEV logic in early boot
-To: Ard Biesheuvel <ardb@kernel.org>, linux-efi <linux-efi@vger.kernel.org>,
- linux-coco@lists.linux.dev
-Cc: Borislav Petkov <bp@alien8.de>,
- Dionna Amalie Glaze <dionnaglaze@google.com>,
- Kevin Loughlin <kevinloughlin@google.com>
-References: <CAMj1kXHacRusnpmGJecMU3L2CCyQtopBL6KqoSVuF7tDW85TUg@mail.gmail.com>
-Content-Language: en-US
-From: Tom Lendacky <thomas.lendacky@amd.com>
-In-Reply-To: <CAMj1kXHacRusnpmGJecMU3L2CCyQtopBL6KqoSVuF7tDW85TUg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA0PR11CA0189.namprd11.prod.outlook.com
- (2603:10b6:806:1bc::14) To DM4PR12MB5070.namprd12.prod.outlook.com
- (2603:10b6:5:389::22)
+ 2025 21:13:53 +0000
+Received: from SJ1PEPF00001CE2.namprd05.prod.outlook.com
+ (2603:10b6:303:b5:cafe::87) by MW4PR03CA0280.outlook.office365.com
+ (2603:10b6:303:b5::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8534.42 via Frontend Transport; Mon,
+ 24 Mar 2025 21:13:52 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ1PEPF00001CE2.mail.protection.outlook.com (10.167.242.10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8534.20 via Frontend Transport; Mon, 24 Mar 2025 21:13:52 +0000
+Received: from ethanolx7e2ehost.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 24 Mar
+ 2025 16:13:51 -0500
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <seanjc@google.com>, <pbonzini@redhat.com>, <tglx@linutronix.de>,
+	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, <hpa@zytor.com>, <thomas.lendacky@amd.com>,
+	<john.allen@amd.com>, <herbert@gondor.apana.org.au>
+CC: <michael.roth@amd.com>, <dionnaglaze@google.com>, <nikunj@amd.com>,
+	<ardb@kernel.org>, <kevinloughlin@google.com>, <Neeraj.Upadhyay@amd.com>,
+	<aik@amd.com>, <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-crypto@vger.kernel.org>, <linux-coco@lists.linux.dev>
+Subject: [PATCH v7 0/8] Move initializing SEV/SNP functionality to KVM
+Date: Mon, 24 Mar 2025 21:13:41 +0000
+Message-ID: <cover.1742850400.git.ashish.kalra@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|BN7PPF39B20C1D8:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4f6a835d-ae33-43d5-f37c-08dd6b082790
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE2:EE_|DS0PR12MB9399:EE_
+X-MS-Office365-Filtering-Correlation-Id: 413d577f-a757-48e5-4c2c-08dd6b18c788
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700013|7416014|376014|1800799024|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?M2JpTDd6cW1TWjhhdUZITmVJMDlYWmdDaTBvNXFNNDJZZFpIaGg2NzVoRjZz?=
- =?utf-8?B?OHcrMEkxU3Zab3VpcDViN0lPVm5rOWRaajlNaDBhaDJaQWcxWkcrS0hIb29q?=
- =?utf-8?B?NW9VRStxdlk5YWczczN1Tk92bUxJNHlqL28rMDRWVTA3TnRFUVY2MEQvQTI0?=
- =?utf-8?B?OThNRTUzRnE2SHBGSi9uVzhqczNiRkg5K1RMb21pWEFFNWdGRVd2T1dhZ3JW?=
- =?utf-8?B?eVl1M2FVSEZIVlAyZFVBZWZ1ck5uNXRtdjk1d1lLZG9MNTNZdkRMSlY2WG0z?=
- =?utf-8?B?UTRBblNKb2tLTUk2R00wMmJtcUFFWjI0MnhtNjFabFZDK2Y0MEt3L2tSMnZm?=
- =?utf-8?B?cHR5YnVGQ1B5bTJoa2cwVlEzcTV2dm9kYkVqZEFxaXpyYUhsQW1qOWI0akdW?=
- =?utf-8?B?aDNmamJVTWp5d09VVERjcklzMitRUG5pUjdUYXdSQ3ZNMzIrVFhrc2ZsYi9X?=
- =?utf-8?B?dXB4ZWZBemtPRXQrMFZMNE1wUkUyYlpJMU91TDA3enU5a1Y1YmcrQWw3d1BQ?=
- =?utf-8?B?NFlrOFJIYnhJdk9LZTlIWmNYUG12bXc2M0tpdjZTREtSazFqejNNMDg5Y2JW?=
- =?utf-8?B?RGl5YzFIR1VXYTk1U29zZDg1bFdRMytyaEVNcTBvREdja1FzSTYxRjRqNGN4?=
- =?utf-8?B?amZjNi84RjVOckIrOEFMSGpwNzZxSmY1ODJxUFowcnE2OXBZcWV1MDZ0T0Nk?=
- =?utf-8?B?TGlkcVQ3SHQxbUNLdlJKemRydVJPSXhWMzQwMVh1Ri9Ia2tqSUxWSHIyRTFz?=
- =?utf-8?B?VzRBekxYNWFwY1BJT2plcG0zMVJqdy9ueUYxSnZ3U212UDl3d1RGWEg5dGJ2?=
- =?utf-8?B?K3kwZkZGb291WWNLSDgxWEwyQnNLZnhLUlJReWoySGpNLzhyUDZaZ2xZWXBQ?=
- =?utf-8?B?NVFVRjJ5am52M0dqZWdxWUVEaXRTRDdkNU9zNEkvYXNhcG9OdDlLZkVYaDZ3?=
- =?utf-8?B?TUN6bmZnTUt0UHoySWMwWGNsckptUyt0OWFJUTNwclVpZTBWNExCZU5OMVdk?=
- =?utf-8?B?SFJ0ZFgyL2xpcUJTR0w3ZjRIalZmS1JTN0wyU2RSZ2hjMGVzUC9RbEJPdEZC?=
- =?utf-8?B?R09nYURJbWluUXF6TVhzZ3ZqRGovSWVwaTNDSlhkYXJnTEVEL0FHZENJbGVX?=
- =?utf-8?B?S2lTb0dpUUVlV2cveGN3cmI1SmEzVXdJNkIreXgxS3VDbCtkSVpGQVRWZEN0?=
- =?utf-8?B?VUVxNlMyYm0yUHI2MStzT3RjNEpmci9uYmxJMzVtUUpFcEhQQUlsUkIvMS9r?=
- =?utf-8?B?ODM3RFFwWnNmdUFoQ1FRWER0aUxZR3BadHNGS0M2UEV1aXVEQWV4RlNGblVw?=
- =?utf-8?B?N3UveWdnc1FVbGxOUm40M3pxcWw1V2Fsb2dZby9nVExveFZTR2xqY0dmNzdn?=
- =?utf-8?B?R3BBWS9NOFlRN2k2NldCYWQ3MnQxbmhiWHprb2lzMTRDcDY1ejhNWlR2azdN?=
- =?utf-8?B?cXdPWllIYytXcTdMZThxTVREYlVWR0tkZ1U0VXZaSk81UllOdnRMYjk2S0Fo?=
- =?utf-8?B?YnNWZG1uTkN2dzI2TTcyaVpwZ2JvMEJYU0thKy9XQi9GVWVWak5hcWVVcEU4?=
- =?utf-8?B?M0RpNGlHNVh6QmMzeEJkSWtSVjlLOWxjUVdFbE5Idk1ZTkJPZ1NFbldvUmtt?=
- =?utf-8?B?c2N3dU02ZDUzT0lCZXB1QUgrOWZJZHF0c0VXYjAxWnEyU2FxSHB6MXZVaFRT?=
- =?utf-8?B?RUpaMXk4MVdoek5KRmFqaWRGZWNFN2FtRW1ZeGJFbENqT0NtaHl4bFFNSlkw?=
- =?utf-8?B?Vk53UDQ5YTBGOCtOb3FQV3RrTzJ6cFhHSXBrMmhtSU9nTkRJMG4rUFhZSEpZ?=
- =?utf-8?B?clNOWjBGNzRrbnlHMGlLWnpKV3ZEeEtqMmg1a2FBYW1HZWtYVGNodU5RR1VV?=
- =?utf-8?Q?1gdr+bTT0zKKo?=
+	=?us-ascii?Q?alzlJ1UgXptIwC7I+2ceJkLtsNSSYNuEwdZ7mnVddU0ACmMXZ/8IoNOeqU3o?=
+ =?us-ascii?Q?sypzOM3oc3SZU+PAWg6ukqjAu/9i9eUsWpVnIaz53OtQaTK8oo7YhBhMXpqL?=
+ =?us-ascii?Q?01p2Jx4EWPYAOBlsr3JW+mB7746JHdNy90fW4Yz53l1gVpckXyjh6gjOu11Q?=
+ =?us-ascii?Q?I7AGdDWFTaFj2kPx9lFLEw55iwgrfxutxU9fnFmiJqsDpFlB8km4dNnpEmyW?=
+ =?us-ascii?Q?PkNubxGmxI99duU2vI0/Lmv4DVXYs5fz7bEU/3ktf63baAYLiKozEkce6F24?=
+ =?us-ascii?Q?3gQiHBTYK9MLgfQUvhLFTqvZbx/S2ww4mm4eQHTB3JMx6EAuraemaubVUXXN?=
+ =?us-ascii?Q?EuhbATKQIIxFMYkJqyih+Op5rqwzTNwspFMArJU37yGhpt92ZEN1qS0e+yvY?=
+ =?us-ascii?Q?T2xFSY99+6FgDO5bB8onzrMVYGFY31L23DVsonch6vRA+G18mghbBj3V/kKQ?=
+ =?us-ascii?Q?O249HBvZSdniJRFr4HvKiOT20kdC2LgLfsN17MhbIqY7fhzBAKlAQ6+EOTzD?=
+ =?us-ascii?Q?9TN97XG7pIDHkcgmwoGVokML2QehWG/5oJ7Gyf9iz3cV4CRjCqf8SpJKmyqN?=
+ =?us-ascii?Q?Z+0DfSEQeGDVd0u3M4l6f1geDkWrKWy6QsPGSb5jAXvLcXyRzO11nruVa7z6?=
+ =?us-ascii?Q?s30vzLxuzOEbgqXSv+4ak0G/1JJ3DQaG7aaO5KAZK28fDkV5pFln0ohIM9Oo?=
+ =?us-ascii?Q?VnJ/mxMDXqikQ8asGX2r8NvNbaluTMLFcziwxhQvdmDeRjcppi8Ut27GQgE+?=
+ =?us-ascii?Q?2GhrgybErFuUYQVW5D18nkvz75LNHfIKNjchDPeJcBuYzNZ/rwY4arerwltE?=
+ =?us-ascii?Q?C19zyI//hYBWpGLX+kPGSTCPZZwjqlrqDDSJKt8t6QNMyORZMm9VzpSgBQG3?=
+ =?us-ascii?Q?Xk13eoV7ZrC6LY5WmUrlkYII5M+tc8vNr5nQhYK1T1bgKe0v+0m38Hke5U3h?=
+ =?us-ascii?Q?G816D8AHsB+QNODxnmKzPQ2nvC1iCT4A1YWJt6MofjxCAU4DQrLzi0jsxvpp?=
+ =?us-ascii?Q?umJLiy9iGZgJ8fJlBllzSJBJf9CoOJbwA+SCgzZ+N/u/B4vuqYPKJiDE5wsf?=
+ =?us-ascii?Q?1goZMBWq2PuCuu97FEtOZqlTXXX3AUnAYn1tjP5QVp4uLonXhcXuoZgiCswS?=
+ =?us-ascii?Q?zimMt4bbxE/PbzkifG9i86mL+BLXqkuRtwSr7v3NK923WJV8JmwluRnRDmPv?=
+ =?us-ascii?Q?zeI09gNfkEUuY3P4ud65piQam8HJ/nMSpUxJQblf+C1EouHH1U1adENF3NK8?=
+ =?us-ascii?Q?UmRhUT27ZPuLNm9xog2DD58HP2yH2A4A4E+qI9JSRBugLT3fR/fSgZ8dJGm7?=
+ =?us-ascii?Q?R3kufVdP9LsYoNxopfWT2BhxuCwjC2Xn9N2sf581kI4tsJ+MfMxogY2sq+w5?=
+ =?us-ascii?Q?CT6Cq7Qr4XjcN14i9J/HNKo9RIApwhZxgWQGcaLuYN6BR70MAkCb2mBigY4F?=
+ =?us-ascii?Q?RUPCTBcZm4qAOFGVTH+cf2/l4SDVm2iiro6Jf8IL1J+RZRB3yuj5KAl3qhyw?=
+ =?us-ascii?Q?fIg/iD++pLQeSzM=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dEp0ZCtoV3pabEJYR3FPdkd1RDQrNmJZRlJWMFFxUXkwb2ZJOGRqOVNaRFMx?=
- =?utf-8?B?VUFlNHdROFFoV2R6bDl1Zm1CYTVZUEhYOFR1Uy9VRnR1alFiZnBnekt0UnRG?=
- =?utf-8?B?SlpkSUJmVkNteWpaRWtsaEdjUGpNUFZUNm8yZldEWnFyajdpRFV4L3J0UWdO?=
- =?utf-8?B?bXRHaXlJU2wvS1ZJcEFidXZNZndtaTExaWlIOTkrMVRrZE5ad3ZrWmlmSVVJ?=
- =?utf-8?B?T2ZmdWVkbWtRa1dnakV5dlJCdGFCd1l4N0I1S0FPTUFpMC9zZ3BGc1FkamFr?=
- =?utf-8?B?UE5Zd0ZWMS9USmRCUmFFelR6VEsrczIxS2ZBQk1yUGViZ3dra1NLNlNjL0ZG?=
- =?utf-8?B?ODZQaHVOd3lkRmFsTnVZcWJIS1BPVzJ4NmxLZHJJaEIzVUhSWEJFWXZmajRu?=
- =?utf-8?B?d0dmanlEc0xWTjFzQ2k1TnRIdGsyTjZWQmNxSFlUTlRZU3NneXJuM2hKK0Rn?=
- =?utf-8?B?ZFBoOXFxVjlvTmhKZUdaL1ZiWGxhZFgrY214ZDZMRmcxZ2hlQVlrK3lwK0ZU?=
- =?utf-8?B?UWZDZFJna3hCSXhpVVBkM3RpVm1iUHNxQlVNS1J0RnhPdUJLSHRPcmN6SjBq?=
- =?utf-8?B?SUpLa2hRZ3NORmVBbUNmNW95QUZoakpZZTZkeVhZQXZod2lPM1lzeXp3c2Zz?=
- =?utf-8?B?bHhpZ2pLZDdmb0RxL0NnZHpMQ0lQbHFrL1JBRGFrVEZwT0V1YmR3ajc2RWM1?=
- =?utf-8?B?d2ZXc25RdTVzQTIzNHQxNEZNL0JHZXEycXZqUUpoNTJTRnFCMy90bUp0eStV?=
- =?utf-8?B?UVAzRlVwSzhzWUNsUy9waXN1OVhPaGtpcFZuTmdEbDF6aGtnelBkWGl5U1ZX?=
- =?utf-8?B?SzJrM2JPMlJqWkhDYWlXR3V2RFdFVTArcHRpS1B6SCs3c3B4bGtHcDZER0E2?=
- =?utf-8?B?cXBya1BybXNnMzlMQ213VzE1d1pLbmpBV011UGhoekxuL0xvWlNjVXBabm1o?=
- =?utf-8?B?YUxaZS9mK25XYTJuK0JaY2FJOHdzQTBSWEc1Z1F6bzZEVEVQeXNrQ282WVE2?=
- =?utf-8?B?QUlpNExsWlFxV3N2ZmRHN2pIRnZKaWo1Q2N1QXg2RGNwN2tWYmZmaHkzbm01?=
- =?utf-8?B?WTZKdmJsTTVDU1RkbXVtYktEOVlXbDNYV3NCb0NoL2lhWGNuOS9ncThTa3JU?=
- =?utf-8?B?Wm9JV29GanhzaHpHdkl1aDE3SWRpNFdwbUZKM1JsZGRsT2lQbHhqM05DMGQ4?=
- =?utf-8?B?QlA5NVBabm16a1B2Q2xqejZxYjVmeGh0T0VKTW52aHAwZFFlSzdZVEhJQWxH?=
- =?utf-8?B?ZkpiRU44NlF6M0RFcXJyZlBkYUxpSlZlVE1oVlo4ckxDclFWOG5WN3RpUk9R?=
- =?utf-8?B?UjVLYnFFSi9wdEpCL09oaGFxSExMT09BTUJvaWtlTnM5cEMvL2t6RnpMbURy?=
- =?utf-8?B?VnkxUGJnbTdqVDAzUGF0NUFqajYvMDE1SU4wS2VHRzdPNWpqKzlTOTdjcXJP?=
- =?utf-8?B?M2pudzZ5UldCZ0E3TkVGbWRCdm1qc3RsWmJHZTNhRzZpRmFYVWhvQzhyczNS?=
- =?utf-8?B?VzV4UXJ4Q2ovZGhRcjRwSGFOd3lPWHZZU2NwZHZnR3FUSEFZanRHMXVTYUZK?=
- =?utf-8?B?ZHd0OENXckpIVW5oZVFqVG9aTW1jQ3ZBS0pKZUtmcGQyVUJJOVVtYVZuNENG?=
- =?utf-8?B?S2paUkxJMm9VdmFnR3BSVDQxclIvZGpuZmhpSmFMWkJ2THJrSmZyZG5lZHhy?=
- =?utf-8?B?OUY2OXQrS0gvZC9qWWMvWENVdjU3UXp6MG1ZUUlLMDMwYW9VM1VTQVhSei8y?=
- =?utf-8?B?RWZiVUs0cHpxbE9sZ2F1NXRxRjYvTjc4aThFL09hb2VHb00zUE14MWZCUmp0?=
- =?utf-8?B?aXpGU1lWa2VPaXplalhpTkZFbFZQcklpckpVZ0E1TjdFU0h1Nnc5ZkhNci9i?=
- =?utf-8?B?SFNhaWg4QXFQbU9NVndWWW5kNFhBWnI2Y3R5eElLS1ZVUldNMzA0YVVkNFRq?=
- =?utf-8?B?ejd2RWw5elBCV2luSDVFZk1Gc3R5RzQ5ejdpemFZQStOUVdvS3dTTCtzNUpq?=
- =?utf-8?B?dmFoVUV5ZE1PQlBYZGhIOUpPZzBac1JVejRzY1NJQVRKMHJsWjY3R3AzYUhs?=
- =?utf-8?B?dE50WldDWnhFWU0rdmFRaGJ4WEtKWmNONVpsa3JaOC83ZzE4QUdneWl5ZlA1?=
- =?utf-8?Q?joFpyaHkmKl6IkORbJd7KEoeM?=
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(7416014)(376014)(1800799024)(921020);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4f6a835d-ae33-43d5-f37c-08dd6b082790
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2025 19:14:52.6082
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2025 21:13:52.6057
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: 413d577f-a757-48e5-4c2c-08dd6b18c788
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VsXHsLJHBwS9NdeVlSTJp7F5+gXQlWLpDSykKgt0e3rj5ohMHJlR9EWq2mD7Oq6AtlUK9cq7Rb/nPGcYXYPFXw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF39B20C1D8
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00001CE2.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9399
 
-On 3/24/25 12:28, Ard Biesheuvel wrote:
-> L.S.,
-> 
-> As I am trying to disentangle the Linux early SEV boot code, the
-> legacy decompressor and the EFI stub, I noticed something that looks
-> broken to me, but I'm not quite sure how to fix it.
-> 
-> When booting via the EFI stub, the following call chain may occur:
-> 
-> setup_e820()
->  process_unaccepted_memory()
->   arch_accept_memory()
->    snp_accept_memory()
->     early_setup_ghcb()
->      set_page_decrypted()
->       set_clr_page_flags()
-> 
-> where the latter function relies on mapping_info to remap the GHCB
-> page as unencrypted. However, when entering via the EFI stub, this
-> struct is never initialized, and so I am struggling to see why this
-> works at all.
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-The latter function reads from the target page so that the page gets
-faulted in via do_boot_page_fault(). do_boot_page_fault() calls
-kernel_add_identity_map(), which calls kernel_ident_mapping_init() and
-initializes the mapping_info struct.
+Remove initializing SEV/SNP functionality from PSP driver and instead add
+support to KVM to explicitly initialize the PSP if KVM wants to use
+SEV/SNP functionality.
 
-At least that is how it is supposed to happen coming through the
-decompressor. I couldn't recreate the path you sited until I tried an odd
-size memory argument that was not 2M aligned (using 4097M on the qemu
-command line fixed that). However, even that causes issues, because the
-SEV_STATUS MSR doesn't get read until sev_enable() is called, which is
-called after setup_e820(), so we actually can't even take the
-snp_accept_memory() path.
+This removes SEV/SNP initialization at PSP module probe time and does
+on-demand SEV/SNP initialization when KVM really wants to use 
+SEV/SNP functionality. This will allow running legacy non-confidential
+VMs without initializating SEV functionality. 
 
-But faking the SEV_STATUS MSR value does cause the code to get down to the
-set_clr_page_flags() function and reading the input address contents
-doesn't trigger do_boot_page_fault() to run because load_stage2_idt()
-hasn't been called, which probably wouldn't matter anyway since the code
-is running under the EFI page tables.
+The patch-set includes the fix to not continue with SEV INIT if SNP
+INIT fails as RMP table must be initialized before calling SEV INIT
+if host SNP support is enabled.
 
-So, yes, this does appear broken.
+This will assist in adding SNP CipherTextHiding support and SEV firmware
+hotloading support in KVM without sharing SEV ASID management and SNP
+guest context support between PSP driver and KVM and keeping all that
+support only in KVM.
 
-Thanks,
-Tom
+To support SEV firmware hotloading, SEV Shutdown will be done explicitly
+prior to DOWNLOAD_FIRMWARE_EX and SEV INIT post it to work with the
+requirement of SEV to be in UNINIT state for DOWNLOAD_FIRMWARE_EX.
+NOTE: SEV firmware hotloading will only be supported if there are no
+active SEV/SEV-ES guests. 
 
-> 
-> For context, I am looking into splitting/refactoring the decompressor
-> SEV startup code and the kernel proper's SEV startup code, in order to
-> a) use PIC codegen properly, and b) allow building a EFI-only bootable
-> image that does not include all the exception handling and demand
-> paging.
-> 
-> Any ideas?
+v7:
+-  Drop the Fixes: tag for patch 01, as continuing with SEV INIT
+after SNP INIT(_EX) failure will still cause SEV INIT to fail,
+we are simply aborting here after SNP INIT(_EX) failure.
+- Fix commit logs.
+- Add additional reviewed-by's.
+
+v6:
+- Add fix to not continue with SEV INIT if SNP INIT fails as RMP table 
+must be initialized before calling SEV INIT if host SNP support is enabled.
+- Ensure that for SEV IOCTLs requiring SEV to be initialized, 
+_sev_platform_init_locked() is called instead of __sev_platform_init_locked()
+to ensure that both implicit SNP and SEV INIT is done for these ioctls and
+followed by __sev_firmware_shutdown() to do both SEV and SNP shutdown.
+- Refactor doing SEV and SNP INIT implicitly for specific SEV and SNP
+ioctls into sev_move_to_init_state() and snp_move_to_init_state(). 
+- Ensure correct error code is returned from sev_ioctl_do_pdh_export() 
+if platform is not in INIT state.
+- Remove dev_info() from sev_pci_init() because this would have printed
+a duplicate message.
+
+v5:
+- To maintain 1-to-1 mapping between the ioctl commands and the SEV/SNP commands, 
+handle the implicit INIT in the same way as SHUTDOWN, which is to use a local error
+for INIT and in case of implicit INIT failures, let the error logs from 
+__sev_platform_init_locked() OR __sev_snp_init_locked() be printed and always return
+INVALID_PLATFORM_STATE as error back to the caller.
+- Add better error logging for SEV/SNP INIT and SHUTDOWN commands.
+- Fix commit logs.
+- Add more acked-by's, reviewed-by's, suggested-by's.
+
+v4:
+- Rebase on linux-next which has the fix for SNP broken with kvm_amd
+module built-in.
+- Fix commit logs.
+- Add explicit SEV/SNP initialization and shutdown error logs instead
+of using a common exit point.
+- Move SEV/SNP shutdown error logs from callers into __sev_platform_shutdown_locked()
+and __sev_snp_shutdown_locked().
+- Make sure that we continue to support both the probe field and psp_init_on_probe
+module parameter for PSP module to support SEV INIT_EX.
+- Add reviewed-by's.
+
+v3:
+- Move back to do both SNP and SEV platform initialization at KVM module
+load time instead of SEV initialization on demand at SEV/SEV-ES VM launch
+to prevent breaking QEMU which has a check for SEV to be initialized 
+prior to launching SEV/SEV-ES VMs. 
+- As both SNP and SEV platform initialization and shutdown is now done at
+KVM module load and unload time remove patches for separate SEV and SNP
+platform initialization and shutdown.
+
+v2:
+- Added support for separate SEV and SNP platform initalization, while
+SNP platform initialization is done at KVM module load time, SEV 
+platform initialization is done on demand at SEV/SEV-ES VM launch.
+- Added support for separate SEV and SNP platform shutdown, both 
+SEV and SNP shutdown done at KVM module unload time, only SEV
+shutdown down when all SEV/SEV-ES VMs have been destroyed, this
+allows SEV firmware hotloading support anytime during system lifetime.
+- Updated commit messages for couple of patches in the series with
+reference to the feedback received on v1 patches.
+
+Ashish Kalra (8):
+  crypto: ccp: Abort doing SEV INIT if SNP INIT fails
+  crypto: ccp: Move dev_info/err messages for SEV/SNP init and shutdown
+  crypto: ccp: Ensure implicit SEV/SNP init and shutdown in ioctls
+  crypto: ccp: Reset TMR size at SNP Shutdown
+  crypto: ccp: Register SNP panic notifier only if SNP is enabled
+  crypto: ccp: Add new SEV/SNP platform shutdown API
+  KVM: SVM: Add support to initialize SEV/SNP functionality in KVM
+  crypto: ccp: Move SEV/SNP Platform initialization to KVM
+
+ arch/x86/kvm/svm/sev.c       |  12 ++
+ drivers/crypto/ccp/sev-dev.c | 245 +++++++++++++++++++++++++----------
+ include/linux/psp-sev.h      |   3 +
+ 3 files changed, 194 insertions(+), 66 deletions(-)
+
+-- 
+2.34.1
+
