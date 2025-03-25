@@ -1,259 +1,170 @@
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2085.outbound.protection.outlook.com [40.107.101.85])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70161F78E4
-	for <linux-coco@lists.linux.dev>; Tue, 25 Mar 2025 17:03:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.85
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742922212; cv=fail; b=kph9z4HC50grGLc7Ev1Pis2/pFjzk9CsDA1auQwDokv60AEQnYduO9UKnp/zX5M7EIQ15v1oWca333hLkHOAJU5l0JJc4C2Ns/XCt1mGAbT/6IYnI7oUz+lkaj2ABIPDHzL08/Vweel9YunKpnnE8h1ICCI43eH9LPSV4pQSIgg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742922212; c=relaxed/simple;
-	bh=ECwsDtfj77K805Fko8/CwcBvXjj3+VG2yn4bc4y6yiw=;
-	h=Message-ID:Date:To:Cc:References:From:Subject:In-Reply-To:
-	 Content-Type:MIME-Version; b=LWOo8tkjsjiE7tVnva++KwdkscJlO3JfjI4myWFJwzva/oqhXjeLafl6aobu19NdAvJ+9QTnbTbI8kcFSVofELDsrxId7hCp/OAdeWCeqrOletJgVKXpCxIq6QwTgxfTXPNbtaaAIgnJXp9SUqm37n14d1KaPRnY+a8/e3dPCBc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=PUZX7SEA; arc=fail smtp.client-ip=40.107.101.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B50126139D
+	for <linux-coco@lists.linux.dev>; Tue, 25 Mar 2025 17:20:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742923260; cv=none; b=B1Nw9fXoWIkl/AxHsgG/BM6A0uKK1HQyix/geKYQiXtAHBgSqunj2VEbiYLYUudY2RQWB2GrRuRzYgpzxEG/p/navFkxB9shL4lZciZrqNTvTrK52g8AJwvFUx4RtYxvojRECTQDH80HULLp44DVBpq5ys1UdHR+S+A88JRUwBk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742923260; c=relaxed/simple;
+	bh=XR1tVytbIphJs05val9V5bAdzBLdjUKyNgfVx4GEvDE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=rj6x8aiw52kDKp6dvEBVouRO9pXUAThtO/Bwuu3+vipKo7dHeLFaVmT2V3bU0RG8tbQkKvlyvhz1FLnZPFc9CMza8KOEE+4btVAMKveT0pKem4QePfkw9gLIzEGCNJ8VydMbg8Uf63jbAUmDr/LF/cBvJzFc0lwUe+03q3+6OPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QkVK9ilw; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="PUZX7SEA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ObY7/ofEUJgAJCLTOcVZ6I4unjj+9ME4Urng+2yyHFrLWFQskCkT4s0qLFyHtHlZeyaEshOPNUCLshOYv8TxfIHd3fTfaF4HGJ51ycySWOFar/WOqR9NVEiRolutWy6XHnHFAEgU/bbW8NUaJ5gcqscTjGIObN6YTSEO6BiOrwVLNYd1ikJpsSQ2HgdgPEM46sdxc3adDFDEF/tqlOiBepnXF28oHhseQK+dd8ES0w4BHrVNoJtAQbB+orCS0+lfwuy98d1nnxfBq4yQBxGIsC4cfhp9LGSvz4T29aOr94IgZMP43Hi9X5ZX47s5+JvaXc5zmd9k54gFElb2C5epvw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jYYt3SwPK+JhwZj6yabKz+HPyeqc9JnZt28S+VZBxj8=;
- b=FEl7y8VVtRODIdh1pVxoMxRofks2qgJuz+MbSLZVD5PMPWXSBk1vxcK7Fj6Ndw64okVUucUZEJEJvaFeF18MiydwnAQwqJFK1xerA1rkbZ33C+I0Dmuggy5IgTK0H9Moh4UW/9eaQ94Ur88LX7GPI2x119hRLxelVNs+mOeRCgDkLCNIyizAfc/f0zb+akLiToNr1LgWIS41kFDu/r4kmj3dKWnKmzVTVS115gX34pFebOeaVzsKbyW3/ItphsmsGCp+meRVuctDpwEa6JEw4RCIiLBKWBRIdUny2rLlKwBSjfEBuQDByIHBFvG4j3bHNnf7pe/Ykh6ictMCtAKEEg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jYYt3SwPK+JhwZj6yabKz+HPyeqc9JnZt28S+VZBxj8=;
- b=PUZX7SEAFbc78xRsnfoOlCETds1uGWyOtxSBDc+36mVsQHm1p3M4UvEyGAJE32fVZWBDkNVttrmCMz8iaZKtOcFmyl/J/Xgwp8xC3JSYjdXBQpVp6o3sdUuxtUDGvRuBbK107j0JdXqE/TEc2lKKDNE30vE/IwJ6QGvy0OjbPa4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
- by CH3PR12MB8402.namprd12.prod.outlook.com (2603:10b6:610:132::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.42; Tue, 25 Mar
- 2025 17:03:28 +0000
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e%5]) with mapi id 15.20.8534.040; Tue, 25 Mar 2025
- 17:03:28 +0000
-Message-ID: <8c466989-9775-adc9-2091-3e1aad6d7436@amd.com>
-Date: Tue, 25 Mar 2025 12:03:26 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Content-Language: en-US
-To: Ard Biesheuvel <ardb@kernel.org>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: linux-efi <linux-efi@vger.kernel.org>, linux-coco@lists.linux.dev,
- Borislav Petkov <bp@alien8.de>, Dionna Amalie Glaze
- <dionnaglaze@google.com>, Kevin Loughlin <kevinloughlin@google.com>
-References: <CAMj1kXHacRusnpmGJecMU3L2CCyQtopBL6KqoSVuF7tDW85TUg@mail.gmail.com>
- <874299e9-eb4f-7775-4ea4-69d449ca1e05@amd.com>
- <CAMj1kXGu-2KNKLwYvRYRv7sd3d2XR8Q0wDOdRK84FYXOirO54g@mail.gmail.com>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: query regarding SEV logic in early boot
-In-Reply-To: <CAMj1kXGu-2KNKLwYvRYRv7sd3d2XR8Q0wDOdRK84FYXOirO54g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN7PR04CA0010.namprd04.prod.outlook.com
- (2603:10b6:806:f2::15) To DM4PR12MB5070.namprd12.prod.outlook.com
- (2603:10b6:5:389::22)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QkVK9ilw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1742923257;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oXrcQRGT+YymoQu8Nq/Sa3GMytku7iNudqsRUZDUqH8=;
+	b=QkVK9ilwjvYPUKL43wE41y3eT+1BS5vgB/BfBOfOzyoiYeX7IwxhY+E5XrTZRo3UKJMT+J
+	OA9JzJNnBBXUQRm6r1mdYLdCjuE6QH2dONsTAxEq1nNg5qFUrb1heGXhSIrt03BP/3oDYb
+	gND2mFErtO14GYu/NGRqYT9pMDkVxJM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-116-KsYjIfaUP42ZANQPgNgvmQ-1; Tue, 25 Mar 2025 13:20:55 -0400
+X-MC-Unique: KsYjIfaUP42ZANQPgNgvmQ-1
+X-Mimecast-MFC-AGG-ID: KsYjIfaUP42ZANQPgNgvmQ_1742923255
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43cf172ff63so36968005e9.3
+        for <linux-coco@lists.linux.dev>; Tue, 25 Mar 2025 10:20:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742923254; x=1743528054;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oXrcQRGT+YymoQu8Nq/Sa3GMytku7iNudqsRUZDUqH8=;
+        b=GIqxMdr8ZKbCLiqql+CLcsoDbiA9u5IS3fNiTMmv9jeEJKbU7MD32ihlrgfnftEeRk
+         64K9jYskSiUQ8V4RmGQy7TExkVQFA4S808oyjsvu+l4bkLlcYrq2IJV/3GCojMlf1V1j
+         b7yfCZ8+nnels+Ojp1BNnr8RCJ/kDMUgfERJP+3b+CmSTe0fr1yBTdBJ6Sh4iT3dWo2K
+         91r2YLIoEdkZR4FRAfNWgPiMzmyUCxcNbG0f8NP2WK2xvhVvYjaz1KzWQrXNWoCWuErx
+         mRqddpL6ArBZ8fiAc4rYU22j5coCzxYAKV8GOVjmmZXvGbXHVPytZ0C7Wacrf4V46fjd
+         UwQA==
+X-Forwarded-Encrypted: i=1; AJvYcCVSjujT5wENaYKdzwtc8ZquheVNjbMKEkBYLuhCjh9MSVjrg66duBTuTzoCEIPlHL2Jx20x4TxGXnWG@lists.linux.dev
+X-Gm-Message-State: AOJu0YzHvU9IS3xvbsf5ng59I64pw/MkY+KUfgpvEc11LlHgQzoPouIq
+	2K470mOJVW9SHa7qxDsFLVJF4KUTKh7IMeK6p7JoIBb8QjSNPvnJZtHEVRwoMH8vwfd0VbXg19g
+	hLmRjYwY/jSE5VOOemoN3uvwGLz2AIk2JgCrPorxnMm5kAUTGNGCPNjuGbAc=
+X-Gm-Gg: ASbGncvnm8urZFdGXcPsnrWWIGkBFWwFkCYblzBQMZtIe8ZT8TCRWqi2BFquigKGLHW
+	xMQpNe6spiBdiT3SS6CFQ7I2kW67TiOrAkUeQ99S3BhU/FOF5UBDzQnsAySiAmraUWyti6bTX5B
+	tYaT0f5SEUpzdLOAghLQh57s98el/fb4UEA95KGQjBwDl6omDlpzpfbHB9tgdf2nOPp0mtv2FKE
+	PaeGGx9hFxKW3onheMtE22CuEVVCqY+WTsW3VbzY60LkNZAZf3tLtnVPJxkZYVdD174rru4nPuJ
+	DBjMbzvja11tlDybpXYjM9cYErPT/ie1dwC+O1NYy3pCU93a9AD1fAYW/8ptYo6a
+X-Received: by 2002:a05:600c:5488:b0:43c:fe5e:f040 with SMTP id 5b1f17b1804b1-43d50a219a4mr183355995e9.23.1742923254503;
+        Tue, 25 Mar 2025 10:20:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGCb+zv6HS9bYecqfccexaC5TWzYCJ46ME9+z1Odod48/9DY0ZMeRbh9jp1LnT9G/G4XaXh8A==
+X-Received: by 2002:a05:600c:5488:b0:43c:fe5e:f040 with SMTP id 5b1f17b1804b1-43d50a219a4mr183355615e9.23.1742923253915;
+        Tue, 25 Mar 2025 10:20:53 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-12-25-55.business.telecomitalia.it. [87.12.25.55])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d4fd9e96bsm159257455e9.25.2025.03.25.10.20.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Mar 2025 10:20:53 -0700 (PDT)
+Date: Tue, 25 Mar 2025 18:20:48 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Dionna Amalie Glaze <dionnaglaze@google.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>, Joerg Roedel <jroedel@suse.de>, 
+	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Peter Huewe <peterhuewe@gmx.de>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, linux-kernel@vger.kernel.org, Borislav Petkov <bp@alien8.de>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, "H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev, 
+	Claudio Carvalho <cclaudio@linux.ibm.com>, Dov Murik <dovmurik@linux.ibm.com>, 
+	linux-integrity@vger.kernel.org
+Subject: Re: [PATCH v4 1/4] x86/sev: add SVSM vTPM probe/send_command
+ functions
+Message-ID: <dou3uniecwqapl7kmsxa2776v6pdy7c4zdvcrdky6wz62ohyao@u3vlgaao4sb7>
+References: <20250324104653.138663-1-sgarzare@redhat.com>
+ <20250324104653.138663-2-sgarzare@redhat.com>
+ <CAAH4kHYuaQEkvftWuX+UmGDiAgV5i1uHx8=rjmhJ0Y=inQFw-Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|CH3PR12MB8402:EE_
-X-MS-Office365-Filtering-Correlation-Id: a6946fea-8940-4bcb-b8c6-08dd6bbef682
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?OGtZM2gwRG94d0laa3F3czJDNnZ2NGs3bEY2cVFad21LMUJORk83QkNqS1Fk?=
- =?utf-8?B?YkdmbjNLclFRSFlGandJY0JHR3prcTk0Z09SNHloTjZDTjJ5dlg1aEVNRE5X?=
- =?utf-8?B?YzdSa3NmNjJNNURodUlxa2IyWW4xM2FMcGJaMXM5K1V0RG9ad3d6TGpnbXpQ?=
- =?utf-8?B?amFDWGRkdUlDcDM5RFZxMDllMWJYU0o3eGlhaTUrZWZCSndwd0VneXB5b3Bu?=
- =?utf-8?B?S2lLRVBYRnlqTS81N0M3SkZLTzdKUGh4UXZIb0dvOTBnOUVkRlhIQkYzMCt2?=
- =?utf-8?B?NVFObW90a2FjeUV6eUFpSXJXWmpkREw0bVlmc1ozb2Jac0JtbFAvUjJkZm1i?=
- =?utf-8?B?MGU1RGw3TGdUZVYxWlJGZzB2amxqWXVxU3FzdHBGeTZZM3JnL1M3MFNCUW1G?=
- =?utf-8?B?QmxFZG5JdStETmE5bGx6WklXYmFaWFJOUEFHeEl2eDZMK1FEWU9QcmJFZ1k2?=
- =?utf-8?B?d2g2UjVzWHRTVDhhQUIybkNZZks3NDI0RUVxd1dnaEFYa09EbVpIMlFDZm0x?=
- =?utf-8?B?QU15cHpWUjYycUNvUnltV3RuYU92TEVQbnBrbWtYYzhVWjRqQmdGcjYyZFp1?=
- =?utf-8?B?NVF4cUJuOWFKb1FhcEJxaWd0WXV5N3NhdkR1UTBJd3lwKzJQWTZNakxaM24y?=
- =?utf-8?B?MzJ1UHZlamFnZFFlUlNGdG1FVjdMV0lJTVE1OHhaSHVIazJra2REaUdDZmty?=
- =?utf-8?B?STAzNjRKMVpuMWJRYzVNY0xXVXp4UjB4M3dtbEpKczVKM3dhbTBFR3lnL3Yr?=
- =?utf-8?B?U2g2UXhvOStaOTNmY0pycmkxbUxiOTBGdkFNemRlOStWbm9xekwvZ2lQRVBO?=
- =?utf-8?B?UlB2bW5xbllpRmVYYlNpdWxQMmZxNFZ2NHFYR0RUYXd6VENXa2hWelU3OGpN?=
- =?utf-8?B?VXlmeVBjVmQ0b3VaRFhpaWtmRUx4RmJaR3dBYzZyVW9kREwvNUZMajRiWmsz?=
- =?utf-8?B?VkUwNlR2L21oVHFLdHNib2phbWMzTHpVQmdIbXdSdlNOVUtvcUhHeURmWEQ2?=
- =?utf-8?B?QUM3cVViY2NHR3Nubmw4WWs1SEpoZzUxemJXVThlckJ2bXYxblg1RHRLcmRx?=
- =?utf-8?B?T3BBbW1TZVRLM2FQKzk1a2I0QWVqd2NyZGtYY1VGY1RuQVBYL1FMYTgxUU5R?=
- =?utf-8?B?K2tJUmZFaHBOUWFxTlowUHVzcXdwc285MWxvNFFVeDBWZ2JuMkx5aDN0SlFu?=
- =?utf-8?B?RE9VZ05sQjVUNUxTeTVpREtwMThueUZjNm1QUEhlaDk5NFNTYWNoSlptOW9h?=
- =?utf-8?B?c051MWhOZWlJNkZieGN2QWlscWFROUk5OS9yVktIVlpYSmRtRE51Y0htYVJk?=
- =?utf-8?B?SFZwNnc2Q1NGT2NkQTNHUXFMaDYrbGg5M3hzWmZoazlXYldxNk5PdmtoUjlS?=
- =?utf-8?B?cUxyeStMc3lEcVNFYktjTjQ4TkcwYWo0Y1AyUS9FOHY2NFVRT0lOTDRkeFQ5?=
- =?utf-8?B?VjBSZDFKamVkMFFueXdEeEt1MTN3cWZ2cFdsY0crWm9WUHFkSmN1MmNVdXd6?=
- =?utf-8?B?czRtaUptREhYQ3NkSXd4STV1ek5IRzlSd2JxWitKUkFtSHZoblN6UTVrMG5w?=
- =?utf-8?B?QWtkMVNPNTIyYmtFTzBDdG5HS2lPUU84TS93QzNkOXlRVFhLYzhaTnArZFNr?=
- =?utf-8?B?Wk9iVGtFcnpsUmh1WWlZOVNkdFdsVEozZFI4RXpWS0g5dldwZytJZVRxbktt?=
- =?utf-8?B?bWROMmVZU0RBOWZtdDJLanRuRDBkemF2MlNjM2JRcUZPRWl5R0NsMEtCM1lQ?=
- =?utf-8?B?RzlPUnJBa01oeG5yUnNSa0FiTUNiLzMzTGJqUTlsZFhMbWQ4b2xrOVR3ZFVQ?=
- =?utf-8?B?RnN6K0JzanZ0ZTMxbkRzbmFxM2dJWGVuaE9PQ1YzL0Y4WXdOS29CNzNqN2Zr?=
- =?utf-8?Q?ItBUwnZeyLtCo?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?S0phM0NiVzlXc01HczZ3OXQwemljam8rKytrQi9ndEM5NGxNY1ZQRHdFYXlu?=
- =?utf-8?B?cGNHOHV2bks1bUlnenZJMDJ3OFVsbmRNQWdFamFzQ1pSMmlRcVhNelBGVzFz?=
- =?utf-8?B?RVdEUzM4L3ZoL1ZMQVhIL0lDSFVkUk1ZSGx2YjkzcWFxVmdYSnpPOUhXSDYv?=
- =?utf-8?B?V0pTUnJjSXFxRDA3SFhJRnk5SERKUzUvUldBZUtvTDZZaDFMRkhySFN2UDJz?=
- =?utf-8?B?Vis1Qjg5eDRVWVNwU0UwTUtXMzNBcWxuUlJmYXZyUTZIUC8wRDMwNGRJQWpE?=
- =?utf-8?B?NlVxTHN2S0RXRnZ6Nk1lb3I3Yys0b2lUWUVDSGVnaUFDd241TG5GL0NCL1Rl?=
- =?utf-8?B?RzN1Ukc5elRtWnlHa2pVS3hvdlNCVXB6MHZrRExSQ09RRVF1K2V2Z0ZCOUFV?=
- =?utf-8?B?U2NlbWJscTREUUxTUjV6NmtJNjFta0JsL2kzVTZlQkVmdzROUDN1dFlZTGQx?=
- =?utf-8?B?RXRncUdIUk54a3ZFajhiUjRCOUNOVjN3ZGRHUUFDN29Jd20xN2hiSEFyK2Jt?=
- =?utf-8?B?SUJsTy92VEpjVWRUN0ZTNTIxZXRGWFQrR2dZQ1lScjd3WEM4MWp0MDZPMWJt?=
- =?utf-8?B?Z3M1WHUrc3AxZHFjRW1CVFRUdy9RS29sMW9sRWRPNGUxNFBvV2RwUE5udXJZ?=
- =?utf-8?B?NWdsbXdkWFMwTFY5VWhVUExQcDZ0VHdUQWg4K1JnanZBS1FvMjhuR3ZuZHBM?=
- =?utf-8?B?SlBUbkwxNGFMWjdjNEluVVJmRFROUExwZ3YxenQ1eTB2ZzJNcC9uWEVkSENE?=
- =?utf-8?B?Q3JGYkp4SW5RbHFZdTBaMzRiQW4wWXBLcWFYdEREYVA4dnhWVkdUVURzeGM0?=
- =?utf-8?B?cU1RNHQycVN3K2srby8xYXEzeFY0SUk5VWE5U1BFYzFDaVJVcTU5SjZqL1lr?=
- =?utf-8?B?dWJyczRicXUyRXJPVktYaXN5OVVBN3k3amlrYS9GeVI1NFd6ek5WdGpIYW90?=
- =?utf-8?B?cWxPazVtZkpSSlNoYng4QVBLcjFDYUlnaUNVUk83SjhURHJwOW56dUV6cFhw?=
- =?utf-8?B?NVhOcTBKdkVBaGY0VTNid1RKb0VKMXFmQ1pqRHc0MDYrNmZvREpEcEVWTkM5?=
- =?utf-8?B?U2hLdHA5TWRONFkrRXBtYnBhWnErMHB3bUZRM0xCWFZZTDM2Ky90QzZPeXBO?=
- =?utf-8?B?bUdEKzNrNlllR05zQXh0N1AwL2NaeG02eXhFOHZBc1NVcm5pdWZ0SzE1SS9W?=
- =?utf-8?B?Z0VXenAxMVZiVzNtdnc2ZmxYQ21VamZyaDRTRDIvV29LWFdQb1hwTzNnYnE5?=
- =?utf-8?B?OTJMTThSdDZoMnRtdS9uQ1ZpbG0zT0pJQVpqU3NjMGg3M3hpeW4zOUl5SHFZ?=
- =?utf-8?B?QjRscVN2ME1kYVpDSms0aU9qTTh1eDBheVByS0FPNUlwUk5NQU1NbWNyMU8r?=
- =?utf-8?B?VHlIY3FkSi9uOTZ4c21vR3FYYTZxQURMRjZJdkRGVHBld3pZK0ZrcjBNZ1Bp?=
- =?utf-8?B?QU1namptTnNiYkEwNXhVUFdsMFBoeUp0aW9FaEdjQUIxcDkwOXB1ZGMwUFJX?=
- =?utf-8?B?aTBtczdGTlIvdWtIU1hiMCsweTBPc25HQXlZczlqanRKbzVVemJpS2dXa2Np?=
- =?utf-8?B?SzFUVlcrc0lJU3hLV3YzNkh1TEl1RlNleDA1aGlLK1AyUDB1dFQ0bG5KQlJI?=
- =?utf-8?B?SlNoR084N2t5ak1oeXZubkZwblhWWFdTaUNXTUFhWXk0TkhCZnFMbC9QeGFQ?=
- =?utf-8?B?ZHFsa0dUUnFjM0ZYUTA0c0pyVURaUUxmWFd5RjVnOWRSekthVCtLbWk5ekhM?=
- =?utf-8?B?cjRndlMvaHdud0FkR2JNeGJTbGRNTEQrZEN3anZOYXg4NFdwWllLQTY1Z0Nq?=
- =?utf-8?B?OHJPb29YaFlRWC9iMHV4dVRHZ0JuMFJpdmNIQzl5aURaOW9lT0ZPRVd0cVh5?=
- =?utf-8?B?NC9iaUV6T1pSRFhQeVNMSDNKaUJUdklWZ2dZTUwzalNrdHNldnhnUzgwbVFY?=
- =?utf-8?B?WExENDFZVmJZRDhHMUY4ekxYWmtwb1E0VmYrb0k3RWxKajYzb0diT3hjM2wx?=
- =?utf-8?B?OTZ5cytFbWMyWXJ0Ky9hRm9acitDdm1UUlNtMTBNaXorZzg4UFAxblovaE40?=
- =?utf-8?B?UnlxdyttQ3d1Ym0xSjQ4M3FkL3BjWGY3Y1k2ckVCTlNFNUowdUxSWExxNjZp?=
- =?utf-8?Q?2JTY8+kGCiGSyK0tfzTUs8d9b?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a6946fea-8940-4bcb-b8c6-08dd6bbef682
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2025 17:03:28.1799
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 70NR5mopFiPSnOFkjKEAGcPVrw/sCPM4cfRbWwuyBbkUVw5zchMZeuMr83BTYPG70Aq2SgCS00P9wK2JPdxAdQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8402
+In-Reply-To: <CAAH4kHYuaQEkvftWuX+UmGDiAgV5i1uHx8=rjmhJ0Y=inQFw-Q@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: FrslezWFiVya_SvsnI629D8og2Rnj64RQ7F4ejJsWnM_1742923255
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On 3/25/25 02:22, Ard Biesheuvel wrote:
-> (cc Kirill)
-> 
-> On Mon, 24 Mar 2025 at 20:14, Tom Lendacky <thomas.lendacky@amd.com> wrote:
+On Tue, Mar 25, 2025 at 09:56:53AM -0700, Dionna Amalie Glaze wrote:
+>On Mon, Mar 24, 2025 at 3:47 AM Stefano Garzarella <sgarzare@redhat.com> wrote:
 >>
->> On 3/24/25 12:28, Ard Biesheuvel wrote:
->>> L.S.,
->>>
->>> As I am trying to disentangle the Linux early SEV boot code, the
->>> legacy decompressor and the EFI stub, I noticed something that looks
->>> broken to me, but I'm not quite sure how to fix it.
->>>
->>> When booting via the EFI stub, the following call chain may occur:
->>>
->>> setup_e820()
->>>  process_unaccepted_memory()
->>>   arch_accept_memory()
->>>    snp_accept_memory()
->>>     early_setup_ghcb()
->>>      set_page_decrypted()
->>>       set_clr_page_flags()
->>>
->>> where the latter function relies on mapping_info to remap the GHCB
->>> page as unencrypted. However, when entering via the EFI stub, this
->>> struct is never initialized, and so I am struggling to see why this
->>> works at all.
+>> From: Stefano Garzarella <sgarzare@redhat.com>
 >>
-> ...
->> So, yes, this does appear broken.
+>> Add two new functions to probe and send commands to the SVSM vTPM.
+>> They leverage the two calls defined by the AMD SVSM specification [1]
+>> for the vTPM protocol: SVSM_VTPM_QUERY and SVSM_VTPM_CMD.
 >>
-> 
-> OK, thanks for the analysis.
-> 
->> The latter function reads from the target page so that the page gets
->> faulted in via do_boot_page_fault(). do_boot_page_fault() calls
->> kernel_add_identity_map(), which calls kernel_ident_mapping_init() and
->> initializes the mapping_info struct.
+>> Expose these functions to be used by other modules such as a tpm
+>> driver.
 >>
->> At least that is how it is supposed to happen coming through the
->> decompressor. I couldn't recreate the path you sited until I tried an odd
->> size memory argument that was not 2M aligned (using 4097M on the qemu
->> command line fixed that). However, even that causes issues, because the
->> SEV_STATUS MSR doesn't get read until sev_enable() is called, which is
->> called after setup_e820(), so we actually can't even take the
->> snp_accept_memory() path.
+>> [1] "Secure VM Service Module for SEV-SNP Guests"
+>>     Publication # 58019 Revision: 1.00
 >>
-> 
-> So we should never hit the page fault that triggers
-> kernel_ident_mapping_init() because all memory is already mapped (and
-> boot_ghcb_page is part of the image so it will definitely be mapped
-> even when not booting via EFI)
-> 
-> (For future reference, could you share the QEMU command line that you used?)
+>> Co-developed-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+>> Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+>> Co-developed-by: Claudio Carvalho <cclaudio@linux.ibm.com>
+>> Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
+>> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+>> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+>> ---
+>> v4:
+>> - added Tom's R-b
+>> - added functions documentation [Jarkko]
+>> - simplified TPM_SEND_COMMAND check [Tom/Jarkko]
+>> v3:
+>> - removed link to the spec because those URLs are unstable [Borislav]
+>> - squashed "x86/sev: add SVSM call macros for the vTPM protocol" patch
+>>   in this one [Borislav]
+>> - slimmed down snp_svsm_vtpm_probe() [Borislav]
+>> - removed features check and any print related [Tom]
+>> ---
+>>  arch/x86/include/asm/sev.h |  7 +++++
+>>  arch/x86/coco/sev/core.c   | 59 ++++++++++++++++++++++++++++++++++++++
+>>  2 files changed, 66 insertions(+)
+>>
+>> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+>> index ba7999f66abe..09471d058ce5 100644
+>> --- a/arch/x86/include/asm/sev.h
+>> +++ b/arch/x86/include/asm/sev.h
+>> @@ -384,6 +384,10 @@ struct svsm_call {
+>>  #define SVSM_ATTEST_SERVICES           0
+>>  #define SVSM_ATTEST_SINGLE_SERVICE     1
+>>
+>> +#define SVSM_VTPM_CALL(x)              ((2ULL << 32) | (x))
+>> +#define SVSM_VTPM_QUERY                        0
+>> +#define SVSM_VTPM_CMD                  1
+>> +
+>>  #ifdef CONFIG_AMD_MEM_ENCRYPT
+>>
+>>  extern u8 snp_vmpl;
+>> @@ -481,6 +485,9 @@ void snp_msg_free(struct snp_msg_desc *mdesc);
+>>  int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req,
+>>                            struct snp_guest_request_ioctl *rio);
+>>
+>> +bool snp_svsm_vtpm_probe(void);
+>> +int snp_svsm_vtpm_send_command(u8 *buffer);
+>> +
+>
+>These should be defined static inline with trivial definitions in the
+>#else case, yes?
 
-I used the following Qemu command line:
+For now the only user of those is the tpm_svsm driver which is build 
+only if CONFIG_AMD_MEM_ENCRYPT is defined, so there should be no 
+problem, but you are right, better to follow the other functions and 
+define the stubs
 
-./bin/qemu-system-x86_64 -enable-kvm \
- -cpu EPYC-v4,host-phys-bits=true -smp 1 \
- -machine type=q35,confidential-guest-support=sev0,memory-backend=ram1,vmport=off \
- -object memory-backend-memfd,id=ram1,size=4097M,share=true,prealloc=false \
- -object sev-snp-guest,id=sev0,policy=0xb0000,cbitpos=51,reduced-phys-bits=1 \
- -bios /root/kernels/qemu-install/OVMF.fd \
- -kernel /root/kernels/linux-build-x86_64/arch/x86/boot/bzImage \
- -append "console=ttyS0 earlyprintk=serial root=/dev/sda2" \
- -nographic -monitor pty -monitor unix:monitor,server,nowait \
- -gdb tcp::1234 -qmp tcp::4444,server,wait=off
-
-Note, this doesn't have an initrd or guest image/disk, so the boot will
-eventually fail, but it boots far enough along to encounter the issue
-and test a fix.
+I'll fix in v5, good catch!
 
 Thanks,
-Tom
+Stefano
 
-> 
->> But faking the SEV_STATUS MSR value does cause the code to get down to the
->> set_clr_page_flags() function and reading the input address contents
->> doesn't trigger do_boot_page_fault() to run because load_stage2_idt()
->> hasn't been called, which probably wouldn't matter anyway since the code
->> is running under the EFI page tables.
->>
-> 
-> Exactly, and that was the whole point of separating those code paths,
-> i.e., to get rid of all the demand paging logic and execute under the
-> EFI page tables (which use strict permissions for code and data, which
-> is a Microsoft requirement for secure boot signing)
-> 
-> So in a nutshell, the problem is that snp_accept_memory() calls into
-> the SEV code before sev_enable() has been called. But I wonder why
-> accepting memory is needed in the EFI stub at all?
-> (asking Kirill) Is it just to ensure that all unaccepted memory is at
-> the granularity provided by the bitmap? That could explain why nobody
-> ever noticed this.
-> 
-> Is there a problem with being conservative in the bitmap, and marking
-> misaligned chunks of accepted memory as unaccepted? AIUI, that would
-> remove the need entirely to accept any memory in the EFI stub - only
-> the decompressor code path would have a need for it.
