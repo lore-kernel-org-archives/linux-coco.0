@@ -1,170 +1,214 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B50126139D
-	for <linux-coco@lists.linux.dev>; Tue, 25 Mar 2025 17:20:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742923260; cv=none; b=B1Nw9fXoWIkl/AxHsgG/BM6A0uKK1HQyix/geKYQiXtAHBgSqunj2VEbiYLYUudY2RQWB2GrRuRzYgpzxEG/p/navFkxB9shL4lZciZrqNTvTrK52g8AJwvFUx4RtYxvojRECTQDH80HULLp44DVBpq5ys1UdHR+S+A88JRUwBk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742923260; c=relaxed/simple;
-	bh=XR1tVytbIphJs05val9V5bAdzBLdjUKyNgfVx4GEvDE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=rj6x8aiw52kDKp6dvEBVouRO9pXUAThtO/Bwuu3+vipKo7dHeLFaVmT2V3bU0RG8tbQkKvlyvhz1FLnZPFc9CMza8KOEE+4btVAMKveT0pKem4QePfkw9gLIzEGCNJ8VydMbg8Uf63jbAUmDr/LF/cBvJzFc0lwUe+03q3+6OPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QkVK9ilw; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685AD190477
+	for <linux-coco@lists.linux.dev>; Tue, 25 Mar 2025 18:17:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742926640; cv=fail; b=CWV6MlhxpznZ3qPhbwHhExOi1NE1+rCP9zFZsvSJ7bcnDAlzDmoNboE6MWrzigiDfCk7BcCLzNoJ/b6n9AQvUR5OLmuKUFiYuTZOSfC1t623HA22iSMusVeArugQIV4c2hRH+tHK0ZFnvzen8lu3BWXdvjsAAKIIDKDUJI3A2dI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742926640; c=relaxed/simple;
+	bh=/WzTAev5vEgkcbgdzeozSrCCLi4cH+ac1SCSm39DBOA=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=SJkG3J2QUJ8WJHX8rH2DrPn6wE/54WVxD3gpeqVMAs7wEbmnTqbaFGSjqvu3sWNh1swNGe8BJfEW6BC/uHAD9GGqGnWg/WbcWqy+VXubsV0UzhEESGBqlEMteyqzVn406QtzNOrxNFAmBJzPU6U+xJxGK1B3FJMlnSm/s0Hs7w8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GwACIpED; arc=fail smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QkVK9ilw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742923257;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oXrcQRGT+YymoQu8Nq/Sa3GMytku7iNudqsRUZDUqH8=;
-	b=QkVK9ilwjvYPUKL43wE41y3eT+1BS5vgB/BfBOfOzyoiYeX7IwxhY+E5XrTZRo3UKJMT+J
-	OA9JzJNnBBXUQRm6r1mdYLdCjuE6QH2dONsTAxEq1nNg5qFUrb1heGXhSIrt03BP/3oDYb
-	gND2mFErtO14GYu/NGRqYT9pMDkVxJM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-116-KsYjIfaUP42ZANQPgNgvmQ-1; Tue, 25 Mar 2025 13:20:55 -0400
-X-MC-Unique: KsYjIfaUP42ZANQPgNgvmQ-1
-X-Mimecast-MFC-AGG-ID: KsYjIfaUP42ZANQPgNgvmQ_1742923255
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43cf172ff63so36968005e9.3
-        for <linux-coco@lists.linux.dev>; Tue, 25 Mar 2025 10:20:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742923254; x=1743528054;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oXrcQRGT+YymoQu8Nq/Sa3GMytku7iNudqsRUZDUqH8=;
-        b=GIqxMdr8ZKbCLiqql+CLcsoDbiA9u5IS3fNiTMmv9jeEJKbU7MD32ihlrgfnftEeRk
-         64K9jYskSiUQ8V4RmGQy7TExkVQFA4S808oyjsvu+l4bkLlcYrq2IJV/3GCojMlf1V1j
-         b7yfCZ8+nnels+Ojp1BNnr8RCJ/kDMUgfERJP+3b+CmSTe0fr1yBTdBJ6Sh4iT3dWo2K
-         91r2YLIoEdkZR4FRAfNWgPiMzmyUCxcNbG0f8NP2WK2xvhVvYjaz1KzWQrXNWoCWuErx
-         mRqddpL6ArBZ8fiAc4rYU22j5coCzxYAKV8GOVjmmZXvGbXHVPytZ0C7Wacrf4V46fjd
-         UwQA==
-X-Forwarded-Encrypted: i=1; AJvYcCVSjujT5wENaYKdzwtc8ZquheVNjbMKEkBYLuhCjh9MSVjrg66duBTuTzoCEIPlHL2Jx20x4TxGXnWG@lists.linux.dev
-X-Gm-Message-State: AOJu0YzHvU9IS3xvbsf5ng59I64pw/MkY+KUfgpvEc11LlHgQzoPouIq
-	2K470mOJVW9SHa7qxDsFLVJF4KUTKh7IMeK6p7JoIBb8QjSNPvnJZtHEVRwoMH8vwfd0VbXg19g
-	hLmRjYwY/jSE5VOOemoN3uvwGLz2AIk2JgCrPorxnMm5kAUTGNGCPNjuGbAc=
-X-Gm-Gg: ASbGncvnm8urZFdGXcPsnrWWIGkBFWwFkCYblzBQMZtIe8ZT8TCRWqi2BFquigKGLHW
-	xMQpNe6spiBdiT3SS6CFQ7I2kW67TiOrAkUeQ99S3BhU/FOF5UBDzQnsAySiAmraUWyti6bTX5B
-	tYaT0f5SEUpzdLOAghLQh57s98el/fb4UEA95KGQjBwDl6omDlpzpfbHB9tgdf2nOPp0mtv2FKE
-	PaeGGx9hFxKW3onheMtE22CuEVVCqY+WTsW3VbzY60LkNZAZf3tLtnVPJxkZYVdD174rru4nPuJ
-	DBjMbzvja11tlDybpXYjM9cYErPT/ie1dwC+O1NYy3pCU93a9AD1fAYW/8ptYo6a
-X-Received: by 2002:a05:600c:5488:b0:43c:fe5e:f040 with SMTP id 5b1f17b1804b1-43d50a219a4mr183355995e9.23.1742923254503;
-        Tue, 25 Mar 2025 10:20:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGCb+zv6HS9bYecqfccexaC5TWzYCJ46ME9+z1Odod48/9DY0ZMeRbh9jp1LnT9G/G4XaXh8A==
-X-Received: by 2002:a05:600c:5488:b0:43c:fe5e:f040 with SMTP id 5b1f17b1804b1-43d50a219a4mr183355615e9.23.1742923253915;
-        Tue, 25 Mar 2025 10:20:53 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-12-25-55.business.telecomitalia.it. [87.12.25.55])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d4fd9e96bsm159257455e9.25.2025.03.25.10.20.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Mar 2025 10:20:53 -0700 (PDT)
-Date: Tue, 25 Mar 2025 18:20:48 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Dionna Amalie Glaze <dionnaglaze@google.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>, Joerg Roedel <jroedel@suse.de>, 
-	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Peter Huewe <peterhuewe@gmx.de>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, linux-kernel@vger.kernel.org, Borislav Petkov <bp@alien8.de>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, "H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev, 
-	Claudio Carvalho <cclaudio@linux.ibm.com>, Dov Murik <dovmurik@linux.ibm.com>, 
-	linux-integrity@vger.kernel.org
-Subject: Re: [PATCH v4 1/4] x86/sev: add SVSM vTPM probe/send_command
- functions
-Message-ID: <dou3uniecwqapl7kmsxa2776v6pdy7c4zdvcrdky6wz62ohyao@u3vlgaao4sb7>
-References: <20250324104653.138663-1-sgarzare@redhat.com>
- <20250324104653.138663-2-sgarzare@redhat.com>
- <CAAH4kHYuaQEkvftWuX+UmGDiAgV5i1uHx8=rjmhJ0Y=inQFw-Q@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GwACIpED"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1742926638; x=1774462638;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=/WzTAev5vEgkcbgdzeozSrCCLi4cH+ac1SCSm39DBOA=;
+  b=GwACIpEDfP83iqbM9n8+zlsF+XecVLLFE7I+PEAjcs8UFUWfWqZA78d0
+   JRpmXJzpirUFOPQZsQUr3dFNoWBPIr8voIs17VB0eLLJ5AyOXI7cIZpCb
+   S5m9mjlJEWIvawSF+p4ycLBXeAb59yvuH840V3rlBGufwd6vDi/PCr28/
+   THW1sCrBM2jb0Xzgr4wUyMGGaeNMh/UQxYm7P+zfW/Ka4ol2p8Rm2HdJa
+   jGPDhPiQ0xIZYLwrrxJ1C1061vM+ICZOc6gJB7kkVcLAiPfyyPk/5dPfc
+   bTmEtipJIzr6j5cp2VUT6eIVz1iz1DGWRgZaj4cxdWISFJG3ahTeM0gGR
+   w==;
+X-CSE-ConnectionGUID: gYGIBJ4ST32wEgxrkvcV/w==
+X-CSE-MsgGUID: uaQ4HCfCTaa1AOcBEdrgxA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11384"; a="48066392"
+X-IronPort-AV: E=Sophos;i="6.14,275,1736841600"; 
+   d="scan'208";a="48066392"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2025 11:17:16 -0700
+X-CSE-ConnectionGUID: EL1HurxLTUOQ+xvqnxDILg==
+X-CSE-MsgGUID: sGleODSiQ/qyzB5exbZHMQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,275,1736841600"; 
+   d="scan'208";a="129127722"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 25 Mar 2025 11:17:16 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Tue, 25 Mar 2025 11:17:16 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Tue, 25 Mar 2025 11:17:16 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.42) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Tue, 25 Mar 2025 11:17:15 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=i+nO9STVcKjDwj8kMNF9QKb4/TpS6knZ0c8xXUlI8hEtzwy1fphPWaUBUYZuUzBGAQZaNLu14xD3R8qRohCwTyjScg2e+CBgy+dyTGsX2JidKhkp4Zsk5nROGTg1YF00wH8BNhRcEWjdZxKidyuuOjdtV2WRPzGfybqKtZpMjRJ/OVejJtN2XlWK0Pkg3988Nih+dynAgr2aFuwdNbxtOYyIznoQcUa3xZ/C8HCNSXLjWkpc2eFpojxjBTVmLwWgogqzbuG+dJ31i81A/1rUk9ubUzgNOfvJWg+6KLlAYmyy9LQILHlsruqEP4tzPli/B6+BUXQim4TGjIJPtzfK9g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BDq8zW1PJkB8vyv1k0K4ufFyMh7TchJnu8rqRW/ogV0=;
+ b=GUji6ookicEMQh0O54gEmEszAJxF4Bw+nsyDKuyq76ghkhddV9wzsFTldBvlDHTcKRF842MhUA5CV2P9ben9PtERRKKwqvRhoKqokuBnHx76YpEOoCcsAMO1wocjyA3vb4qg9lhd7xFnrsOFebMWGzf7pnneEPt2dPLpNPx4AgnZwbe2XXpV09BfHZP6MsMMEDM1Td2yVB7B5VeShMDtlv3QU7R0+c6zPp6j2fzLeIR8jEHbhefOWthDMWE3Vswr9g0Pu+e7zLZCZpNX5Ly6is/xQd+ZO0GvRj9+nqxHd+zwcS47fPSQzJU7FOWXtbtKOV+DvNruDZSSwAOlG5dN0Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by IA4PR11MB9252.namprd11.prod.outlook.com (2603:10b6:208:561::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.42; Tue, 25 Mar
+ 2025 18:16:57 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.8534.040; Tue, 25 Mar 2025
+ 18:16:57 +0000
+Date: Tue, 25 Mar 2025 14:16:53 -0400
+From: Dan Williams <dan.j.williams@intel.com>
+To: Nikolay Borisov <nik.borisov@suse.com>, Dan Williams
+	<dan.j.williams@intel.com>, <dave.hansen@linux.intel.com>
+CC: <kirill.shutemov@linux.intel.com>, <linux-coco@lists.linux.dev>,
+	<x86@kernel.org>, <linux-kernel@vger.kernel.org>, <vannapurve@google.com>
+Subject: Re: [RFC PATCH] /dev/mem: Disable /dev/mem under TDX guest
+Message-ID: <67e2f315af42e_50a3294d4@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+References: <20250318113604.297726-1-nik.borisov@suse.com>
+ <67d9c447ddcfd_11987294c6@dwillia2-xfh.jf.intel.com.notmuch>
+ <327a23d5-d5c4-4227-aafb-9d4ddd90289e@suse.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <327a23d5-d5c4-4227-aafb-9d4ddd90289e@suse.com>
+X-ClientProxiedBy: MW4PR03CA0146.namprd03.prod.outlook.com
+ (2603:10b6:303:8c::31) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <CAAH4kHYuaQEkvftWuX+UmGDiAgV5i1uHx8=rjmhJ0Y=inQFw-Q@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: FrslezWFiVya_SvsnI629D8og2Rnj64RQ7F4ejJsWnM_1742923255
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|IA4PR11MB9252:EE_
+X-MS-Office365-Filtering-Correlation-Id: c10f4597-cf13-4f35-d274-08dd6bc93acd
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?PLAeOV0A8bIeUHggHI5sDsY33kLvoGx2stFz3SQNOTuFdz30LituiCbUPqCr?=
+ =?us-ascii?Q?uuup6cPVxf+yNAq4LyE2+CccI7pwVQjp1TlCFT5YFgt5xlFhSHq9ai/BuitI?=
+ =?us-ascii?Q?K+Fv6vIqqPKgNJRcd9DzCJDH8/tPTku4XkGMDHUCZ19H3tqipc0wQwHq1XMC?=
+ =?us-ascii?Q?QEadqwLTxQgTtOc5Wndw2f/IszusGJyGefLF/NLlRC9YoRLO63F+GSX26Ob9?=
+ =?us-ascii?Q?PLkxeJ8aRBrJGbFvm1A7542N7G3PVdPVDAYswLVIOay9+1eXBMm6hGTWKadL?=
+ =?us-ascii?Q?OQJ3eoFw0XLZnftRHoyNQeTTD5JnO+H5/bCUOfuk3Fn3bgrJytNnpq3v9PDA?=
+ =?us-ascii?Q?R817sWj3gGVmC0iEf0i3LPBl7Zlg6x3Ok3XP05OgCLC5Gwv0cu1kjODPb+uh?=
+ =?us-ascii?Q?a51wEiLiRyShwpJ3AvjzQo9Ro/QGh7hVuEy/VaukRidVSYkoeOUsJIkkaDzq?=
+ =?us-ascii?Q?jlle8MAS+SmD6Ai/YLL66lFrPEvMRlqggi3IpSq5Mov6jJREArWWX/H3MSnh?=
+ =?us-ascii?Q?6E4w7u8V/jLHqUDRh51Yv70X89v9YZrR+vZW3VfYOVYoDpFnhGMtCiblcFQb?=
+ =?us-ascii?Q?jXSEDJohsrGs2PK0oeqIpy7MHL5YUZ2MjG+maGkb0TEVhmc7dViboCmJJRnv?=
+ =?us-ascii?Q?XpC+GrU0EYRWh0IIXD3tI6GFpfOn0Dc62vosjtsbUfYikZYhYJ+UgVjVxZUP?=
+ =?us-ascii?Q?UwjL1VPjlxsZJ28iJH+rXwcQOLDTFc9NXkRegAsNqMx17OthNJqRI3jHpMNK?=
+ =?us-ascii?Q?nh3T7B2FXf7YY3ZjoMA27+TJFHMm8X6av5eLaAAYcpOjIyVvUrVan7swEZx2?=
+ =?us-ascii?Q?qLRmlgh4kGAE0hxFoDCNrP8NcLCUj+IwlI9Xw3OAMcOe+GA+SA6gtls2Tm82?=
+ =?us-ascii?Q?8st9zlvyBWudh/izh9RygW0MJGe2weS4rKV/JSLnVcqCYmq/V8aJfWkkRFIo?=
+ =?us-ascii?Q?Oi7EHZC/UqEiALPWTU4sQsh1xJipQpuVT4Lg0yZMswzpTS1wXLqt/YOcjnkH?=
+ =?us-ascii?Q?oS+Jxr3hJO7KZ+dADzdyEuIopqW1ud6TX5YfAmXcvIbwq6eAZoZVPaQs7fzz?=
+ =?us-ascii?Q?cwAzRjVXv0ItMTbTd7NGUeKj74fUpoS2fbHYPkLtLJt38gfqUc+L4xgjRiXe?=
+ =?us-ascii?Q?AZtMUyJ8MBDVhm2xcrWAfZav2uTjBh02ZtyHSrOcCQb3xb7ZOVST6VB9785+?=
+ =?us-ascii?Q?MAI6ZLsVHFuMpcFaBez+UpabUa3qF3EGonuXVwntGA66S2GFFbz0/fjWPMEY?=
+ =?us-ascii?Q?0vGd+afAXbMEBi2oTaaS2eU0lzweY3w7/27tb8DyIAZ0YsngU9E5jaFz272p?=
+ =?us-ascii?Q?oXjLH4nUtNGbYQqVR5QXhBeIItdbYoVsvGxfNbJOVur+0zxJ8bTOHaWfFuvo?=
+ =?us-ascii?Q?egnzZzl9YIDpLEZ9+plcv/el1ceU?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?CGGnovZvQu3jtuUgOqvTxh1PiZqtXfnbyCu17IgD6zBpyniqvEikA1V6x0oQ?=
+ =?us-ascii?Q?/jIVyzbHXD/nx9HJ7TA7iQZrcnhbjnl7gDcxnEfkCX4LOCSiUeSehZz3WaBz?=
+ =?us-ascii?Q?M4sL2zX4p2KmOtHfGtvnIHk5D7/+XLPVk+4eJDP1xNU6Gq+skZsVLCwszc8a?=
+ =?us-ascii?Q?7BANbf2tvSOFBvv053NnEhFL5Lt2ZP+Eu4zwe1/O4gwFW9RiYuxL0czDlDBZ?=
+ =?us-ascii?Q?HzvvOwxnCW+9Vy8yURjbY3hVFtf4UgLnk4rkvf2x5e1dQrfQVRYxEJ1wK9Jg?=
+ =?us-ascii?Q?1fP6LL4H+2g9ea9c0g8tSfqvtWnGv6/TAruC2rOS7qLxfFrbZlP0wfDDgnQ7?=
+ =?us-ascii?Q?OS8pu+ND6bqp6OiPQ8SabVb88PhUtbL9tsoAJCHofcKiYBgceK9c3OQUkEal?=
+ =?us-ascii?Q?qHtXNwlfotSgWhHAJ8R1DBiV3yJp7WzgOLNsbCA1FDPA7UwJcTGAMaKel1WA?=
+ =?us-ascii?Q?dAyN/XcCBD7oW5A6s26IyGJisZypuvshNd8qqvSPrJsy0+u7y3IXamWCGFFe?=
+ =?us-ascii?Q?u7TcuEUi0tCKEd3yXZdC3oZrX9CW1Ehs8HMZ7/LZcE4iz6AdatmtKotOst/e?=
+ =?us-ascii?Q?gNtFjaljmEqCfFvReXYTCytw33e0TOaIxO1okY61qhDR9TTJ/3HJzWCjh4jQ?=
+ =?us-ascii?Q?bJNSZRIHXCth8R+GmCV0CzDzWwSwu2mu0Cm92nqi3E0iLzhSwr7T5+KDA2Us?=
+ =?us-ascii?Q?ERR5RHKlrV9fyiTiR6+3K3hLKjxopq1pN91xw7BBHnn4G7ByPp0tdEpShObv?=
+ =?us-ascii?Q?WQdhBSBTMQ2BkDTzoWXE+1j4DP67nZF0p8WCqKfWcRWTqAe/3WdJOIMJX9V6?=
+ =?us-ascii?Q?ZdVjHGTf77dcOwxdLhc+1MdvMlu9/vbP+qF3vT0K99hWf1TVuMiidE8TqOWT?=
+ =?us-ascii?Q?mZENrnTmhg+VQ4p5HH16FJhJlALN2n437YKqHXQyfG9oBGZJkdE0qZ6Odikv?=
+ =?us-ascii?Q?65/qN16b4LNKSXMn7GPdAN6sBvfVRV3qnDwqli1UJ+erglMOVnKlDP8Gi8Wi?=
+ =?us-ascii?Q?3E9BI6dEzgh4wbGtM1yhVVsO6o+Y67+tEzfNJpltkNMOLIKX0XKF1PhfrrIg?=
+ =?us-ascii?Q?nZfLMJyhQQabVSXIu+c9AkXcdIDrDLMVGulCuKxzdFp2l0w/r5AMh2idvwhW?=
+ =?us-ascii?Q?KtszV7ufEpi0sZID04L4sklDKrF368gE9O5j2VLXq+z2/zeAN4G5P0fTSLB+?=
+ =?us-ascii?Q?gdSTD8ZtY7MXi/Lx16MKh7RIppREq4gewoBL/FKgO/diLMveRevImOf62CiR?=
+ =?us-ascii?Q?ylcgO8llP4SHPgCAAfwCWuFoCuDe7EFnQGaI9pHBzm0mIv28DChO9l4Lzhy5?=
+ =?us-ascii?Q?bz98TnBKickoawjZMYGi3ywowDJnQWisB9XAchDANOLpdB4vsbnyYdPShbkp?=
+ =?us-ascii?Q?mafI9zElqHb3KGQeCIvrUygKQRDlyP1ZSLiaIZWExLkyQ0ZTqIJQqhaF+HpN?=
+ =?us-ascii?Q?aibfLIrgg7M5fBTy7zesMm6ccsgT/IUW8KOL08cC0OcDL7MoRXHyjVuveUzM?=
+ =?us-ascii?Q?zUhWNifOB8O0xAfADfq0z6UhMmtXs5luVDkVKTqP+a8eIIdQ9D6qR+GlqUYv?=
+ =?us-ascii?Q?4GaN18Zwe8Un+r/gHhzER5QT+Vi4eIxZ77KxTVEkDMFES5Hof+glzbOV+r0w?=
+ =?us-ascii?Q?3w=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: c10f4597-cf13-4f35-d274-08dd6bc93acd
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2025 18:16:57.7371
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VH3L1+3TTCot0OT2GB3V9X+44zVI9N9E4pWKFHgIc0LHfUsC+awimVtVT6W0bJwAtUCegqDCJZC13OjR/2z/S+ypw0Qif1RbLen+8kJXnNY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR11MB9252
+X-OriginatorOrg: intel.com
 
-On Tue, Mar 25, 2025 at 09:56:53AM -0700, Dionna Amalie Glaze wrote:
->On Mon, Mar 24, 2025 at 3:47 AM Stefano Garzarella <sgarzare@redhat.com> wrote:
->>
->> From: Stefano Garzarella <sgarzare@redhat.com>
->>
->> Add two new functions to probe and send commands to the SVSM vTPM.
->> They leverage the two calls defined by the AMD SVSM specification [1]
->> for the vTPM protocol: SVSM_VTPM_QUERY and SVSM_VTPM_CMD.
->>
->> Expose these functions to be used by other modules such as a tpm
->> driver.
->>
->> [1] "Secure VM Service Module for SEV-SNP Guests"
->>     Publication # 58019 Revision: 1.00
->>
->> Co-developed-by: James Bottomley <James.Bottomley@HansenPartnership.com>
->> Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
->> Co-developed-by: Claudio Carvalho <cclaudio@linux.ibm.com>
->> Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
->> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
->> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
->> ---
->> v4:
->> - added Tom's R-b
->> - added functions documentation [Jarkko]
->> - simplified TPM_SEND_COMMAND check [Tom/Jarkko]
->> v3:
->> - removed link to the spec because those URLs are unstable [Borislav]
->> - squashed "x86/sev: add SVSM call macros for the vTPM protocol" patch
->>   in this one [Borislav]
->> - slimmed down snp_svsm_vtpm_probe() [Borislav]
->> - removed features check and any print related [Tom]
->> ---
->>  arch/x86/include/asm/sev.h |  7 +++++
->>  arch/x86/coco/sev/core.c   | 59 ++++++++++++++++++++++++++++++++++++++
->>  2 files changed, 66 insertions(+)
->>
->> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
->> index ba7999f66abe..09471d058ce5 100644
->> --- a/arch/x86/include/asm/sev.h
->> +++ b/arch/x86/include/asm/sev.h
->> @@ -384,6 +384,10 @@ struct svsm_call {
->>  #define SVSM_ATTEST_SERVICES           0
->>  #define SVSM_ATTEST_SINGLE_SERVICE     1
->>
->> +#define SVSM_VTPM_CALL(x)              ((2ULL << 32) | (x))
->> +#define SVSM_VTPM_QUERY                        0
->> +#define SVSM_VTPM_CMD                  1
->> +
->>  #ifdef CONFIG_AMD_MEM_ENCRYPT
->>
->>  extern u8 snp_vmpl;
->> @@ -481,6 +485,9 @@ void snp_msg_free(struct snp_msg_desc *mdesc);
->>  int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req,
->>                            struct snp_guest_request_ioctl *rio);
->>
->> +bool snp_svsm_vtpm_probe(void);
->> +int snp_svsm_vtpm_send_command(u8 *buffer);
->> +
->
->These should be defined static inline with trivial definitions in the
->#else case, yes?
+Nikolay Borisov wrote:
+[..]
+> > It seems unfortunate that the kernel is allowing conflicting mappings of
+> > the same pfn. Is this not just a track_pfn_remap() bug report? In other
+> > words, whatever established the conflicting private mapping failed to do
+> > a memtype_reserve() with the encryption setting such that
+> > track_pfn_remap() could find it and enforce a consistent mapping.
+> 
+> I'm not an expert into this, but looking at the code it seems 
+> memtype_reserve deals with the memory type w.r.t PAT/MTRR i.e the 
+> cacheability of the memory, not whether the mapping is consistent w.r.t 
+> to other, arbitrary attributes.
 
-For now the only user of those is the tpm_svsm driver which is build 
-only if CONFIG_AMD_MEM_ENCRYPT is defined, so there should be no 
-problem, but you are right, better to follow the other functions and 
-define the stubs
+Right, but the observation is that "something" decides to map that first
+page of memory as private and then xlate_dev_mem_ptr() fails to maintain
+consistent mapping.
 
-I'll fix in v5, good catch!
+So memtype_reserve() is indeed an awkward place to carry this
+information and overkill for this particular bug.
 
-Thanks,
-Stefano
+However, something like the following is more appropriate than saying
+/dev/mem is outright forbidden for guests.
 
+diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
+index 38ff7791a9c7..4a7a5fc83039 100644
+--- a/arch/x86/mm/ioremap.c
++++ b/arch/x86/mm/ioremap.c
+@@ -122,6 +122,10 @@ static void __ioremap_check_other(resource_size_t addr, struct ioremap_desc *des
+                return;
+        }
+ 
++       /* Ensure BIOS data (see devmem_is_allowed()) is consistently mapped */
++       if (PHYS_PFN(addr) < 256)
++               desc->flags |= IORES_MAP_ENCRYPTED;
++
+        if (!IS_ENABLED(CONFIG_EFI))
+                return;
+ 
+...because if the guest image wants to trust root why enforce piecemeal
+lockdown semantics?
