@@ -1,192 +1,136 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2075.outbound.protection.outlook.com [40.107.93.75])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E211EB9E2
-	for <linux-coco@lists.linux.dev>; Mon, 24 Mar 2025 21:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.75
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742850965; cv=fail; b=JHvNIyNQhtqR3OYbl4gEIr0btzebBVEiH6J08ScDa8c7DKvmlE8SMpeN/fjrc8s5+pTePmESi2H1RXSDLLpjAVaLoo41IP5k0Zp9ZFnmh0VYEhTXchT12nE3rGV873WmyCJucY4MrhXrxJIXE+fV763kw/ziqVRuRfWvEpaz1xw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742850965; c=relaxed/simple;
-	bh=LTlAm50khwx7MyGHDUe/J9IemorC42ny7oeVhuaTFEE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jofMNKCD11DSloBS5wYbbDcWKfESTB22Agw5Eio/3o2SX2nBLZklhomGC8ijiT/yaGxSLnjaZropC3Yua8TOq5bgjegClyBRWq/uJhAZsYFqQLHl/ir6E8HR2J4dwpVlZWJvqvT7YSsGChAuDoSw8SHAr3+VENFX2dFH52TEZzo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=QiaVOXIK; arc=fail smtp.client-ip=40.107.93.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0CE19F127
+	for <linux-coco@lists.linux.dev>; Tue, 25 Mar 2025 07:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742887384; cv=none; b=vE52oOyVKzUl+ZLkMCZx7DZwJqenXB+T3z0pe/yR5jcMA+/MRfky3dtrwmgcpeD6ILCdCHtnKSMmyu1oo12bYYBTXeLvMfH9iouv5a4SAx9zEHm9dmSNr87Dd7GK5QuGPclxcCbB4RlibHWGLsy1514isxkHBWA8QnEgJRzY7Iw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742887384; c=relaxed/simple;
+	bh=kIFLQ6QUfPfpBlVuvPWNElwgYOQJPwa/W8Jh5YJHISI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AghaJIWfbjyykJKeWafw4UsTtdwYf5krm1Wm092qc6/8TDG+QUaFWugRBQvD9ddpRxnWievW8rvqdSpXaEYGI79A8sSBKGDAPBiKey6ZE1LYUXdsE05tyRKx36sDrVlp1mbne6bYxsWA1eOU2pNblXbHBxkwILEM7TiM/EgmdeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tLq5OZeJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="QiaVOXIK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zNCoW3Kf4crN6r0FTxWPwsim96ZVewc1HTh1Ej6SjtUHHMyczVF9frHx2j/2k/82STcdPgxOeCqwF8PsfHYO4X9c97rYfmQUzOmE0/Ip+Z4nOAmBcXKg1hP978C4BO+ALAiMO01xUWq5KhpnfqICD2xBrLdXokrOCLSzdecGKcee0XSxjfsAeZLbZX5pMJGqKpvlz64v67OceH/tlQICNsA9208HyMXTpRHroYAZva1c+shfqZoq/PmNqw+SpS6/LAvgJ7cNzByQLpZYmBl6imt3Y8u80ctkn102l6DxNGS+3+QcWxJdR4QeoAz5e8ll0mbzAZNUbAFjf0k0DSF2sw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2cNuKj6mGvdKVap2fHNknx2ahhzqXtraUwGyw/xoIZ4=;
- b=Bpp9tEi5ol8bbhZrNpFLRQCjmZO93tRtuZKy/LcxsMw+tT0nWK8ETIUQOB8+zGMNJqAzsuH4jKU9tejx/S9mEmjo3iqnKGCZwSz/RTQgnj3R2GB5YgV+xfsrKAz0ltSQx2hfHhAElb91sUVQMGeDwinnke3rb5AkbSOUZgWN+MSzlWCq9Bd8Txwyusx9S4IbaFwve/KctcCUe0VmEkieuBZSSDlh99wjeFVEekHyHNSRUrpN1UliuMw7nl/78bRoIyb3eouXa7DMAAjB6ZxcCFYkhqDEk38wc1OCD/Vy2FYMH2qdz3W5+0RccJEkAwUwp/ZK4tWNHMcS13M2li4ipQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2cNuKj6mGvdKVap2fHNknx2ahhzqXtraUwGyw/xoIZ4=;
- b=QiaVOXIKEdpcJtJTVCjIp/kb/ltUKFU2i36T38wIkJOK9BGdMGmNu0zDBhc1WakxnCby0qjh3CCR7308PCUqWWVFmk5enmZeLQKD3MfslerOCQwe2WPO4YmCgsSTKJpFuJ6q/CHNzYYB1Rprwrot7IVKJGGIku7b6QGHuAAs5IU=
-Received: from SJ0PR05CA0133.namprd05.prod.outlook.com (2603:10b6:a03:33d::18)
- by SN7PR12MB8436.namprd12.prod.outlook.com (2603:10b6:806:2e3::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.42; Mon, 24 Mar
- 2025 21:15:58 +0000
-Received: from SJ1PEPF00001CE0.namprd05.prod.outlook.com
- (2603:10b6:a03:33d:cafe::73) by SJ0PR05CA0133.outlook.office365.com
- (2603:10b6:a03:33d::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8534.42 via Frontend Transport; Mon,
- 24 Mar 2025 21:15:58 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SJ1PEPF00001CE0.mail.protection.outlook.com (10.167.242.8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8534.20 via Frontend Transport; Mon, 24 Mar 2025 21:15:58 +0000
-Received: from ethanolx7e2ehost.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 24 Mar
- 2025 16:15:56 -0500
-From: Ashish Kalra <Ashish.Kalra@amd.com>
-To: <seanjc@google.com>, <pbonzini@redhat.com>, <tglx@linutronix.de>,
-	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<x86@kernel.org>, <hpa@zytor.com>, <thomas.lendacky@amd.com>,
-	<john.allen@amd.com>, <herbert@gondor.apana.org.au>
-CC: <michael.roth@amd.com>, <dionnaglaze@google.com>, <nikunj@amd.com>,
-	<ardb@kernel.org>, <kevinloughlin@google.com>, <Neeraj.Upadhyay@amd.com>,
-	<aik@amd.com>, <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-crypto@vger.kernel.org>, <linux-coco@lists.linux.dev>
-Subject: [PATCH v7 8/8] crypto: ccp: Move SEV/SNP Platform initialization to KVM
-Date: Mon, 24 Mar 2025 21:15:47 +0000
-Message-ID: <1602f82feadaa127c0e4d626c55c93c29b3a022d.1742850400.git.ashish.kalra@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1742850400.git.ashish.kalra@amd.com>
-References: <cover.1742850400.git.ashish.kalra@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tLq5OZeJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE96C4CEED
+	for <linux-coco@lists.linux.dev>; Tue, 25 Mar 2025 07:23:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742887383;
+	bh=kIFLQ6QUfPfpBlVuvPWNElwgYOQJPwa/W8Jh5YJHISI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=tLq5OZeJUmiP5NJxVOB2a2sn/L9qaFspiFATIPVoc//uAzKfKO7CYPWZvtpjXbZfx
+	 sjDCCH4RKawKECmrtDhLV/rNHyXOnBUmwnfW4i7FgNQhhS0s6oiYRCKHVbLk5mA/Ke
+	 j7AwpFBDX4gzyp2F+ZkPaKyWr4PeuLzRFlCPOpJuorKmzsRDyHSKbvK2RT/sfVl1eM
+	 w/7f7KhtOy5VHXuv+RaPzlhTkO8pNh8I6bKf1cWLJNyn3WXN3w6iybkcVw2XmtK30x
+	 xATn8WhRBruK8tuKeZswNuhhQ0rHa0qnVayVmYI+IlVopbsOTW7upMeXqKx6IwK7rV
+	 p5v2ix5aUGBtA==
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-30bf1d48843so49511051fa.2
+        for <linux-coco@lists.linux.dev>; Tue, 25 Mar 2025 00:23:03 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWcY+iwIx/J7eGigMTMcD+1fshf2UErWGxSYbOhg4mw1StbTBmIn4dV0dPzS3THO2XqUknZ1Le8oL0h@lists.linux.dev
+X-Gm-Message-State: AOJu0YwWfxaDRlTqbGOtsvztf6NxyaoKJSc+uM6r4OjcH/lnleWXfAe1
+	M7Ml96QLcROqS3Q/7n87zJYADBpg0w1alLAfaI2RHyGgH6bJtFMImNWpIdE0IXN6yjfhiCN3Qg/
+	sBeUxPKANtWYefcH1ZhPiz5GqFnM=
+X-Google-Smtp-Source: AGHT+IG6MGwpDjaFb1imc2Jkdpsg8r8/f3BEeq+lthPLHB5UXqCtGTT7lo60Lt6ya5HVferokVNM2U45FBWFMTHjndk=
+X-Received: by 2002:a05:651c:1189:b0:30c:160b:c766 with SMTP id
+ 38308e7fff4ca-30d7e22790emr49313841fa.14.1742887382039; Tue, 25 Mar 2025
+ 00:23:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE0:EE_|SN7PR12MB8436:EE_
-X-MS-Office365-Filtering-Correlation-Id: c25f39d4-16c2-4490-bf65-08dd6b1912ae
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|7416014|376014|82310400026|7053199007|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?jwHV0ALn7etJiukZ+byXcH1G7tPBwN/Ez0q82Mge2+ydexMqt7Ig3DkEu3Ul?=
- =?us-ascii?Q?4DQVEakBCUVwmUNT1Bm7BD6a0mYDz95hpbe0DYVznz2aB5ZyPclWO4FQmUWb?=
- =?us-ascii?Q?Bi3zAi4e7M053QASMekfv5hrLmoHxHGbOpqL0pwX+ckIFGsKXkLhdsbMQQQA?=
- =?us-ascii?Q?x6ecMMx370QJjkhf0W0zl+kKNINdMyTqruyM9oPD7bF1XRQoGYq1oNT/54Mk?=
- =?us-ascii?Q?n8Mq+WrocfwW2xb7a5GILHaTF9UdwFMuWeQDxiTVBSO/7u63CnxSax9SRblB?=
- =?us-ascii?Q?XtVe1UdV6kaigtxYRzkvAfLKWRjp7VO0KK4LS6fVzWjcYzALCVX91fQn7IQW?=
- =?us-ascii?Q?XIBIsdbsdVQw8gOHZ/N3+Jl7s+cUG2LqTNiXBapeNlXQGo/K63v6wA3XQdC2?=
- =?us-ascii?Q?/06G4517owqXixHzyJQGU+nWqlrmqSUrhi8QPA36XeyuDIGGxq08cdQjVzsQ?=
- =?us-ascii?Q?9ZMhsaDkqF0+bTAWetwwo2z8koe4D7hjOiDAuZJuOZ5cZsZPn4HIWmppoewy?=
- =?us-ascii?Q?1aZdC2Fgr3U6lZqn9F+NOVcHzxohL1JQVZ5jPP38h0NvlBud4X4QAuHMh1KN?=
- =?us-ascii?Q?ljAEr6W6+Y9TJsoZoXUoavOT1r2xcYQO+4rcXESBY4p3FegdK+2oUHsvBGOn?=
- =?us-ascii?Q?YIdFDD8+/clvdSRsUfJyTVsxe3gTT6vAvRMut/ltUkAQrj58cUGy7kf7QJTh?=
- =?us-ascii?Q?vRS+k61Sa2SIfZ+DQx24YHg60EBDb5+CePtaKQp4Nl5bhmRUJaz+dpUF5ld6?=
- =?us-ascii?Q?7tZ8QTjXpHcSApc6h5ZqDjAI8KNqr8WpZkh2d8mwo3A4iEZ9BHMqJyQbPlD6?=
- =?us-ascii?Q?n9YJOw7mrp0pL2Ym4ghoiK0+HlzYYw0MjiovdCOMEsJ8Y3p8JjYbwbKeL3nX?=
- =?us-ascii?Q?xGNWk6mMRRDBGvCI9I1z80Zbxzk+4+sAPpG0lXZT0OwziOu2I/W/IckAKvPs?=
- =?us-ascii?Q?/KTkdOaEht0bZ61XeL9K4Jm8QJjhOUhGTSh6AJENo0MNO6v0wDy2zHatQ5EV?=
- =?us-ascii?Q?P7OgcWYBSbyVLWf6zN9SYJy+fGx8Y91gakukRrXizR60bHeYvdM4idIx7VBa?=
- =?us-ascii?Q?yaamDwX0ompESMAeAJiwaQvV5My9tvG8tw2NfWuAsY3REM90+NTx4POfb4+V?=
- =?us-ascii?Q?1poFAeBBop9E4ezbtCJZA6w7/Ee5AqPrQ2jXmJg1rrFTC5yRV8lxLlEsJbVb?=
- =?us-ascii?Q?2A9lQQaJi0+u/foE8iYbEmWeQvc5dAWEl3wHX9DTLnbJWGW5coIG/+Td288A?=
- =?us-ascii?Q?2W/PCKGVvW1xR0GAXEUORZJzR4R6TOImCBHSKfI7R7RFNp1mD/OwPDRFpzI2?=
- =?us-ascii?Q?ShTBQ5xsGDBZWWGlwo5h1/fb1PicYUNMuWKfNXR46wOF2+nCSCVxwkWQjOT7?=
- =?us-ascii?Q?dkiuPKezrSHOeYbXVUTFmUCgIxJDiOEb7IA+uuK5dtGhj3mcbHvbsjUVkvaI?=
- =?us-ascii?Q?fredew0ut5Wzo/BJ+yNqtjNPhU51Jutrq+Iv76hSVcaAD0Ssd0MGG/Jhee8R?=
- =?us-ascii?Q?+4+zkl1lQXNmbAZJYD0PesekVc7kXKjj9OpH?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(7416014)(376014)(82310400026)(7053199007)(921020);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2025 21:15:58.6868
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c25f39d4-16c2-4490-bf65-08dd6b1912ae
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00001CE0.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8436
+References: <CAMj1kXHacRusnpmGJecMU3L2CCyQtopBL6KqoSVuF7tDW85TUg@mail.gmail.com>
+ <874299e9-eb4f-7775-4ea4-69d449ca1e05@amd.com>
+In-Reply-To: <874299e9-eb4f-7775-4ea4-69d449ca1e05@amd.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 25 Mar 2025 08:22:50 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGu-2KNKLwYvRYRv7sd3d2XR8Q0wDOdRK84FYXOirO54g@mail.gmail.com>
+X-Gm-Features: AQ5f1JozlpH1oFPXtCUplyKr25fV8VIVVMTKYURtWnnZHHtxv711_AYohazzVFw
+Message-ID: <CAMj1kXGu-2KNKLwYvRYRv7sd3d2XR8Q0wDOdRK84FYXOirO54g@mail.gmail.com>
+Subject: Re: query regarding SEV logic in early boot
+To: Tom Lendacky <thomas.lendacky@amd.com>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: linux-efi <linux-efi@vger.kernel.org>, linux-coco@lists.linux.dev, 
+	Borislav Petkov <bp@alien8.de>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
+	Kevin Loughlin <kevinloughlin@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Ashish Kalra <ashish.kalra@amd.com>
+(cc Kirill)
 
-SNP initialization is forced during PSP driver probe purely because SNP
-can't be initialized if VMs are running.  But the only in-tree user of
-SEV/SNP functionality is KVM, and KVM depends on PSP driver for the same.
-Forcing SEV/SNP initialization because a hypervisor could be running
-legacy non-confidential VMs make no sense.
+On Mon, 24 Mar 2025 at 20:14, Tom Lendacky <thomas.lendacky@amd.com> wrote:
+>
+> On 3/24/25 12:28, Ard Biesheuvel wrote:
+> > L.S.,
+> >
+> > As I am trying to disentangle the Linux early SEV boot code, the
+> > legacy decompressor and the EFI stub, I noticed something that looks
+> > broken to me, but I'm not quite sure how to fix it.
+> >
+> > When booting via the EFI stub, the following call chain may occur:
+> >
+> > setup_e820()
+> >  process_unaccepted_memory()
+> >   arch_accept_memory()
+> >    snp_accept_memory()
+> >     early_setup_ghcb()
+> >      set_page_decrypted()
+> >       set_clr_page_flags()
+> >
+> > where the latter function relies on mapping_info to remap the GHCB
+> > page as unencrypted. However, when entering via the EFI stub, this
+> > struct is never initialized, and so I am struggling to see why this
+> > works at all.
+>
+...
+> So, yes, this does appear broken.
+>
 
-This patch removes SEV/SNP initialization from the PSP driver probe
-time and moves the requirement to initialize SEV/SNP functionality
-to KVM if it wants to use SEV/SNP.
+OK, thanks for the analysis.
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Alexey Kardashevskiy <aik@amd.com>
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
----
- drivers/crypto/ccp/sev-dev.c | 13 -------------
- 1 file changed, 13 deletions(-)
+> The latter function reads from the target page so that the page gets
+> faulted in via do_boot_page_fault(). do_boot_page_fault() calls
+> kernel_add_identity_map(), which calls kernel_ident_mapping_init() and
+> initializes the mapping_info struct.
+>
+> At least that is how it is supposed to happen coming through the
+> decompressor. I couldn't recreate the path you sited until I tried an odd
+> size memory argument that was not 2M aligned (using 4097M on the qemu
+> command line fixed that). However, even that causes issues, because the
+> SEV_STATUS MSR doesn't get read until sev_enable() is called, which is
+> called after setup_e820(), so we actually can't even take the
+> snp_accept_memory() path.
+>
 
-diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-index 671347702ae7..980b3d296dc6 100644
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -1347,10 +1347,6 @@ static int _sev_platform_init_locked(struct sev_platform_init_args *args)
- 	if (sev->state == SEV_STATE_INIT)
- 		return 0;
- 
--	/*
--	 * Legacy guests cannot be running while SNP_INIT(_EX) is executing,
--	 * so perform SEV-SNP initialization at probe time.
--	 */
- 	rc = __sev_snp_init_locked(&args->error);
- 	if (rc && rc != -ENODEV)
- 		return rc;
-@@ -2524,9 +2520,7 @@ EXPORT_SYMBOL_GPL(sev_issue_cmd_external_user);
- void sev_pci_init(void)
- {
- 	struct sev_device *sev = psp_master->sev_data;
--	struct sev_platform_init_args args = {0};
- 	u8 api_major, api_minor, build;
--	int rc;
- 
- 	if (!sev)
- 		return;
-@@ -2549,13 +2543,6 @@ void sev_pci_init(void)
- 			 api_major, api_minor, build,
- 			 sev->api_major, sev->api_minor, sev->build);
- 
--	/* Initialize the platform */
--	args.probe = true;
--	rc = sev_platform_init(&args);
--	if (rc)
--		dev_err(sev->dev, "SEV: failed to INIT error %#x, rc %d\n",
--			args.error, rc);
--
- 	return;
- 
- err:
--- 
-2.34.1
+So we should never hit the page fault that triggers
+kernel_ident_mapping_init() because all memory is already mapped (and
+boot_ghcb_page is part of the image so it will definitely be mapped
+even when not booting via EFI)
 
+(For future reference, could you share the QEMU command line that you used?)
+
+> But faking the SEV_STATUS MSR value does cause the code to get down to the
+> set_clr_page_flags() function and reading the input address contents
+> doesn't trigger do_boot_page_fault() to run because load_stage2_idt()
+> hasn't been called, which probably wouldn't matter anyway since the code
+> is running under the EFI page tables.
+>
+
+Exactly, and that was the whole point of separating those code paths,
+i.e., to get rid of all the demand paging logic and execute under the
+EFI page tables (which use strict permissions for code and data, which
+is a Microsoft requirement for secure boot signing)
+
+So in a nutshell, the problem is that snp_accept_memory() calls into
+the SEV code before sev_enable() has been called. But I wonder why
+accepting memory is needed in the EFI stub at all?
+(asking Kirill) Is it just to ensure that all unaccepted memory is at
+the granularity provided by the bitmap? That could explain why nobody
+ever noticed this.
+
+Is there a problem with being conservative in the bitmap, and marking
+misaligned chunks of accepted memory as unaccepted? AIUI, that would
+remove the need entirely to accept any memory in the EFI stub - only
+the decompressor code path would have a need for it.
