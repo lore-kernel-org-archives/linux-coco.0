@@ -1,230 +1,259 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2085.outbound.protection.outlook.com [40.107.101.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B90225E806
-	for <linux-coco@lists.linux.dev>; Tue, 25 Mar 2025 16:57:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742921829; cv=none; b=RoWEYXqWhLkTXO99Cj3WH07VSwTq3OVvWQmy5OSLn0XJexEp1bWL5fNVv39R5PY+qlacLpi1IJp/0tHfCBmhL2kfh+6fLlOJozk08Mawva/T/7AhP84M9hWeZ5VGiy0rLfSZlT57kpY+qMtOuboB594ZF8GnCE2pIBXjD52foFI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742921829; c=relaxed/simple;
-	bh=DHhaVcWokcmNeyMpAa/XPyVDS1B8ctys936Gog/i6Qk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EhW2MUfDlHETqRpsBZZ5Qvr/iOcMpGMqcJnESkK9VMredQ+b9UfPAq4zblzjbPvADLbH/0JPa66IV5OaYCHjvGfi+bJ9pF0V3zGZKOJnkdakevXEs4gCACklqbSrWcVYwchFKB0a+ZDBQ8dX53KOKIAFEVFfFmP2Nb8rR2s5neE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q1sPNjau; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70161F78E4
+	for <linux-coco@lists.linux.dev>; Tue, 25 Mar 2025 17:03:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.85
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742922212; cv=fail; b=kph9z4HC50grGLc7Ev1Pis2/pFjzk9CsDA1auQwDokv60AEQnYduO9UKnp/zX5M7EIQ15v1oWca333hLkHOAJU5l0JJc4C2Ns/XCt1mGAbT/6IYnI7oUz+lkaj2ABIPDHzL08/Vweel9YunKpnnE8h1ICCI43eH9LPSV4pQSIgg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742922212; c=relaxed/simple;
+	bh=ECwsDtfj77K805Fko8/CwcBvXjj3+VG2yn4bc4y6yiw=;
+	h=Message-ID:Date:To:Cc:References:From:Subject:In-Reply-To:
+	 Content-Type:MIME-Version; b=LWOo8tkjsjiE7tVnva++KwdkscJlO3JfjI4myWFJwzva/oqhXjeLafl6aobu19NdAvJ+9QTnbTbI8kcFSVofELDsrxId7hCp/OAdeWCeqrOletJgVKXpCxIq6QwTgxfTXPNbtaaAIgnJXp9SUqm37n14d1KaPRnY+a8/e3dPCBc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=PUZX7SEA; arc=fail smtp.client-ip=40.107.101.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q1sPNjau"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-ac3b12e8518so76160366b.0
-        for <linux-coco@lists.linux.dev>; Tue, 25 Mar 2025 09:57:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742921825; x=1743526625; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LHR6o7AHPoVcL3mifFoOecu+bkyOlN7e6JWMVln9ejU=;
-        b=Q1sPNjauI7YsjBjRw5zVs0lHVV2kfszYCpT1A/5CBuINe03SYCQ4EEB3YLPUXNj0lx
-         N3MfBUEaM/e6Xs9sdhs07GAKM5MVx9dw9VTBin6eYx0FCndOc0DGIKQeg6i5qg8c7J4K
-         76O+oG74e2fbpa03pi/bqerSy9fKMuyybZg9uPDkuBIQUQMyskX91h0ZhJjSNwkHkZWl
-         svfA3fU6cyWtNsASbXbWbeLjQ//KMjjSLMML1CetV/Wxc2Th5nrI38ihdGMT4APP83ym
-         Y0nYzty8pz+N20aLjWEo8jylivUoNML8Rye9U4h8vHtJSOkC4lz0APZI9E66tB0nYesU
-         z90A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742921825; x=1743526625;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LHR6o7AHPoVcL3mifFoOecu+bkyOlN7e6JWMVln9ejU=;
-        b=A+dk6MRZP7H2+Gv+A+rja4x+sppp665mJjMczGfoZZCNrVB5NkNF/X+EvVkLuSzZHr
-         radQhC3qs3fZ9co4p3xGn7k2pH1yjgwaY/gHDAvquAWSVZx73jZ99GvA/IPuRMMoAx5Y
-         mPTzEz8g4pmx0bZ6cw61HBcFMvbYbisxpZ/JyCpawlrLO7rFWjjYnGZP036SgnBVIHcQ
-         BfdCndWwuCtaVFaagebIY89NSE7lEOM+a/uSoEKoTAMM2KsKD1Xt0If1ctuSdgZ771PE
-         AyCKAzXVNUr8WZczwROeXf1KoyAVJjdpf/3rtaVmeVFAT19SGYh4lGtOZZ9d7zxlbVKP
-         ifCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWJ52z933+c6RZzG48oATLwX2hSK4JwuF6YETKREbZlpIEOEzGiP35O3wyRx70hbg9pgItsFtzwix/0@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywj45zpKvspPX+Nyjh9iFsdaf2+A4zdxGu8N7uQfTVZX9rvxj/c
-	jK+67YnrRbiWkXmlY79BvQYVVwvxD2Mkb/Xy8YbW4j7IkDSxOiQfv2SY/nnVtGnO0j9Nk4RwLh9
-	+V7Wtfx4ybVK05n9l2yutGSs/J/wj7gDqxATq
-X-Gm-Gg: ASbGncs1g5KVGp+73hYauObc9tANlT3FfqOVJeufznwoh4DlkZP9cjp6aixxRkHcLRv
-	MMf9+8Bme0lwvM6Jlj5fcDEHG5+VYFUaGavRwrzX1uMnkBmMEZzwdGgjyWfjBtyOrV9d2aDWq22
-	VR36eejIFCjvrGnar1twBd9ABd
-X-Google-Smtp-Source: AGHT+IHiunbDy64QKJ1rFHvrWPJFtkT3kS/DMJaMWqheAGqvq3asfLSavmh0zFHfePK2DFNi4vOT1uYNczRGYC1UgDA=
-X-Received: by 2002:a17:907:720c:b0:ab7:1012:3ccb with SMTP id
- a640c23a62f3a-ac3f20d2423mr1450323266b.14.1742921825236; Tue, 25 Mar 2025
- 09:57:05 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="PUZX7SEA"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ObY7/ofEUJgAJCLTOcVZ6I4unjj+9ME4Urng+2yyHFrLWFQskCkT4s0qLFyHtHlZeyaEshOPNUCLshOYv8TxfIHd3fTfaF4HGJ51ycySWOFar/WOqR9NVEiRolutWy6XHnHFAEgU/bbW8NUaJ5gcqscTjGIObN6YTSEO6BiOrwVLNYd1ikJpsSQ2HgdgPEM46sdxc3adDFDEF/tqlOiBepnXF28oHhseQK+dd8ES0w4BHrVNoJtAQbB+orCS0+lfwuy98d1nnxfBq4yQBxGIsC4cfhp9LGSvz4T29aOr94IgZMP43Hi9X5ZX47s5+JvaXc5zmd9k54gFElb2C5epvw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jYYt3SwPK+JhwZj6yabKz+HPyeqc9JnZt28S+VZBxj8=;
+ b=FEl7y8VVtRODIdh1pVxoMxRofks2qgJuz+MbSLZVD5PMPWXSBk1vxcK7Fj6Ndw64okVUucUZEJEJvaFeF18MiydwnAQwqJFK1xerA1rkbZ33C+I0Dmuggy5IgTK0H9Moh4UW/9eaQ94Ur88LX7GPI2x119hRLxelVNs+mOeRCgDkLCNIyizAfc/f0zb+akLiToNr1LgWIS41kFDu/r4kmj3dKWnKmzVTVS115gX34pFebOeaVzsKbyW3/ItphsmsGCp+meRVuctDpwEa6JEw4RCIiLBKWBRIdUny2rLlKwBSjfEBuQDByIHBFvG4j3bHNnf7pe/Ykh6ictMCtAKEEg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jYYt3SwPK+JhwZj6yabKz+HPyeqc9JnZt28S+VZBxj8=;
+ b=PUZX7SEAFbc78xRsnfoOlCETds1uGWyOtxSBDc+36mVsQHm1p3M4UvEyGAJE32fVZWBDkNVttrmCMz8iaZKtOcFmyl/J/Xgwp8xC3JSYjdXBQpVp6o3sdUuxtUDGvRuBbK107j0JdXqE/TEc2lKKDNE30vE/IwJ6QGvy0OjbPa4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
+ by CH3PR12MB8402.namprd12.prod.outlook.com (2603:10b6:610:132::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.42; Tue, 25 Mar
+ 2025 17:03:28 +0000
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e%5]) with mapi id 15.20.8534.040; Tue, 25 Mar 2025
+ 17:03:28 +0000
+Message-ID: <8c466989-9775-adc9-2091-3e1aad6d7436@amd.com>
+Date: Tue, 25 Mar 2025 12:03:26 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Content-Language: en-US
+To: Ard Biesheuvel <ardb@kernel.org>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: linux-efi <linux-efi@vger.kernel.org>, linux-coco@lists.linux.dev,
+ Borislav Petkov <bp@alien8.de>, Dionna Amalie Glaze
+ <dionnaglaze@google.com>, Kevin Loughlin <kevinloughlin@google.com>
+References: <CAMj1kXHacRusnpmGJecMU3L2CCyQtopBL6KqoSVuF7tDW85TUg@mail.gmail.com>
+ <874299e9-eb4f-7775-4ea4-69d449ca1e05@amd.com>
+ <CAMj1kXGu-2KNKLwYvRYRv7sd3d2XR8Q0wDOdRK84FYXOirO54g@mail.gmail.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: query regarding SEV logic in early boot
+In-Reply-To: <CAMj1kXGu-2KNKLwYvRYRv7sd3d2XR8Q0wDOdRK84FYXOirO54g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN7PR04CA0010.namprd04.prod.outlook.com
+ (2603:10b6:806:f2::15) To DM4PR12MB5070.namprd12.prod.outlook.com
+ (2603:10b6:5:389::22)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250324104653.138663-1-sgarzare@redhat.com> <20250324104653.138663-2-sgarzare@redhat.com>
-In-Reply-To: <20250324104653.138663-2-sgarzare@redhat.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Tue, 25 Mar 2025 09:56:53 -0700
-X-Gm-Features: AQ5f1JpVbwWqpNDbKaceDrU7STOlxFC1ra_fhrwK0XiBE_U6_DZfkH_Wo5bMXgQ
-Message-ID: <CAAH4kHYuaQEkvftWuX+UmGDiAgV5i1uHx8=rjmhJ0Y=inQFw-Q@mail.gmail.com>
-Subject: Re: [PATCH v4 1/4] x86/sev: add SVSM vTPM probe/send_command functions
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>, Joerg Roedel <jroedel@suse.de>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Peter Huewe <peterhuewe@gmx.de>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, linux-kernel@vger.kernel.org, 
-	Borislav Petkov <bp@alien8.de>, Jason Gunthorpe <jgg@ziepe.ca>, "H. Peter Anvin" <hpa@zytor.com>, 
-	linux-coco@lists.linux.dev, Claudio Carvalho <cclaudio@linux.ibm.com>, 
-	Dov Murik <dovmurik@linux.ibm.com>, linux-integrity@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|CH3PR12MB8402:EE_
+X-MS-Office365-Filtering-Correlation-Id: a6946fea-8940-4bcb-b8c6-08dd6bbef682
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?OGtZM2gwRG94d0laa3F3czJDNnZ2NGs3bEY2cVFad21LMUJORk83QkNqS1Fk?=
+ =?utf-8?B?YkdmbjNLclFRSFlGandJY0JHR3prcTk0Z09SNHloTjZDTjJ5dlg1aEVNRE5X?=
+ =?utf-8?B?YzdSa3NmNjJNNURodUlxa2IyWW4xM2FMcGJaMXM5K1V0RG9ad3d6TGpnbXpQ?=
+ =?utf-8?B?amFDWGRkdUlDcDM5RFZxMDllMWJYU0o3eGlhaTUrZWZCSndwd0VneXB5b3Bu?=
+ =?utf-8?B?S2lLRVBYRnlqTS81N0M3SkZLTzdKUGh4UXZIb0dvOTBnOUVkRlhIQkYzMCt2?=
+ =?utf-8?B?NVFObW90a2FjeUV6eUFpSXJXWmpkREw0bVlmc1ozb2Jac0JtbFAvUjJkZm1i?=
+ =?utf-8?B?MGU1RGw3TGdUZVYxWlJGZzB2amxqWXVxU3FzdHBGeTZZM3JnL1M3MFNCUW1G?=
+ =?utf-8?B?QmxFZG5JdStETmE5bGx6WklXYmFaWFJOUEFHeEl2eDZMK1FEWU9QcmJFZ1k2?=
+ =?utf-8?B?d2g2UjVzWHRTVDhhQUIybkNZZks3NDI0RUVxd1dnaEFYa09EbVpIMlFDZm0x?=
+ =?utf-8?B?QU15cHpWUjYycUNvUnltV3RuYU92TEVQbnBrbWtYYzhVWjRqQmdGcjYyZFp1?=
+ =?utf-8?B?NVF4cUJuOWFKb1FhcEJxaWd0WXV5N3NhdkR1UTBJd3lwKzJQWTZNakxaM24y?=
+ =?utf-8?B?MzJ1UHZlamFnZFFlUlNGdG1FVjdMV0lJTVE1OHhaSHVIazJra2REaUdDZmty?=
+ =?utf-8?B?STAzNjRKMVpuMWJRYzVNY0xXVXp4UjB4M3dtbEpKczVKM3dhbTBFR3lnL3Yr?=
+ =?utf-8?B?U2g2UXhvOStaOTNmY0pycmkxbUxiOTBGdkFNemRlOStWbm9xekwvZ2lQRVBO?=
+ =?utf-8?B?UlB2bW5xbllpRmVYYlNpdWxQMmZxNFZ2NHFYR0RUYXd6VENXa2hWelU3OGpN?=
+ =?utf-8?B?VXlmeVBjVmQ0b3VaRFhpaWtmRUx4RmJaR3dBYzZyVW9kREwvNUZMajRiWmsz?=
+ =?utf-8?B?VkUwNlR2L21oVHFLdHNib2phbWMzTHpVQmdIbXdSdlNOVUtvcUhHeURmWEQ2?=
+ =?utf-8?B?QUM3cVViY2NHR3Nubmw4WWs1SEpoZzUxemJXVThlckJ2bXYxblg1RHRLcmRx?=
+ =?utf-8?B?T3BBbW1TZVRLM2FQKzk1a2I0QWVqd2NyZGtYY1VGY1RuQVBYL1FMYTgxUU5R?=
+ =?utf-8?B?K2tJUmZFaHBOUWFxTlowUHVzcXdwc285MWxvNFFVeDBWZ2JuMkx5aDN0SlFu?=
+ =?utf-8?B?RE9VZ05sQjVUNUxTeTVpREtwMThueUZjNm1QUEhlaDk5NFNTYWNoSlptOW9h?=
+ =?utf-8?B?c051MWhOZWlJNkZieGN2QWlscWFROUk5OS9yVktIVlpYSmRtRE51Y0htYVJk?=
+ =?utf-8?B?SFZwNnc2Q1NGT2NkQTNHUXFMaDYrbGg5M3hzWmZoazlXYldxNk5PdmtoUjlS?=
+ =?utf-8?B?cUxyeStMc3lEcVNFYktjTjQ4TkcwYWo0Y1AyUS9FOHY2NFVRT0lOTDRkeFQ5?=
+ =?utf-8?B?VjBSZDFKamVkMFFueXdEeEt1MTN3cWZ2cFdsY0crWm9WUHFkSmN1MmNVdXd6?=
+ =?utf-8?B?czRtaUptREhYQ3NkSXd4STV1ek5IRzlSd2JxWitKUkFtSHZoblN6UTVrMG5w?=
+ =?utf-8?B?QWtkMVNPNTIyYmtFTzBDdG5HS2lPUU84TS93QzNkOXlRVFhLYzhaTnArZFNr?=
+ =?utf-8?B?Wk9iVGtFcnpsUmh1WWlZOVNkdFdsVEozZFI4RXpWS0g5dldwZytJZVRxbktt?=
+ =?utf-8?B?bWROMmVZU0RBOWZtdDJLanRuRDBkemF2MlNjM2JRcUZPRWl5R0NsMEtCM1lQ?=
+ =?utf-8?B?RzlPUnJBa01oeG5yUnNSa0FiTUNiLzMzTGJqUTlsZFhMbWQ4b2xrOVR3ZFVQ?=
+ =?utf-8?B?RnN6K0JzanZ0ZTMxbkRzbmFxM2dJWGVuaE9PQ1YzL0Y4WXdOS29CNzNqN2Zr?=
+ =?utf-8?Q?ItBUwnZeyLtCo?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?S0phM0NiVzlXc01HczZ3OXQwemljam8rKytrQi9ndEM5NGxNY1ZQRHdFYXlu?=
+ =?utf-8?B?cGNHOHV2bks1bUlnenZJMDJ3OFVsbmRNQWdFamFzQ1pSMmlRcVhNelBGVzFz?=
+ =?utf-8?B?RVdEUzM4L3ZoL1ZMQVhIL0lDSFVkUk1ZSGx2YjkzcWFxVmdYSnpPOUhXSDYv?=
+ =?utf-8?B?V0pTUnJjSXFxRDA3SFhJRnk5SERKUzUvUldBZUtvTDZZaDFMRkhySFN2UDJz?=
+ =?utf-8?B?Vis1Qjg5eDRVWVNwU0UwTUtXMzNBcWxuUlJmYXZyUTZIUC8wRDMwNGRJQWpE?=
+ =?utf-8?B?NlVxTHN2S0RXRnZ6Nk1lb3I3Yys0b2lUWUVDSGVnaUFDd241TG5GL0NCL1Rl?=
+ =?utf-8?B?RzN1Ukc5elRtWnlHa2pVS3hvdlNCVXB6MHZrRExSQ09RRVF1K2V2Z0ZCOUFV?=
+ =?utf-8?B?U2NlbWJscTREUUxTUjV6NmtJNjFta0JsL2kzVTZlQkVmdzROUDN1dFlZTGQx?=
+ =?utf-8?B?RXRncUdIUk54a3ZFajhiUjRCOUNOVjN3ZGRHUUFDN29Jd20xN2hiSEFyK2Jt?=
+ =?utf-8?B?SUJsTy92VEpjVWRUN0ZTNTIxZXRGWFQrR2dZQ1lScjd3WEM4MWp0MDZPMWJt?=
+ =?utf-8?B?Z3M1WHUrc3AxZHFjRW1CVFRUdy9RS29sMW9sRWRPNGUxNFBvV2RwUE5udXJZ?=
+ =?utf-8?B?NWdsbXdkWFMwTFY5VWhVUExQcDZ0VHdUQWg4K1JnanZBS1FvMjhuR3ZuZHBM?=
+ =?utf-8?B?SlBUbkwxNGFMWjdjNEluVVJmRFROUExwZ3YxenQ1eTB2ZzJNcC9uWEVkSENE?=
+ =?utf-8?B?Q3JGYkp4SW5RbHFZdTBaMzRiQW4wWXBLcWFYdEREYVA4dnhWVkdUVURzeGM0?=
+ =?utf-8?B?cU1RNHQycVN3K2srby8xYXEzeFY0SUk5VWE5U1BFYzFDaVJVcTU5SjZqL1lr?=
+ =?utf-8?B?dWJyczRicXUyRXJPVktYaXN5OVVBN3k3amlrYS9GeVI1NFd6ek5WdGpIYW90?=
+ =?utf-8?B?cWxPazVtZkpSSlNoYng4QVBLcjFDYUlnaUNVUk83SjhURHJwOW56dUV6cFhw?=
+ =?utf-8?B?NVhOcTBKdkVBaGY0VTNid1RKb0VKMXFmQ1pqRHc0MDYrNmZvREpEcEVWTkM5?=
+ =?utf-8?B?U2hLdHA5TWRONFkrRXBtYnBhWnErMHB3bUZRM0xCWFZZTDM2Ky90QzZPeXBO?=
+ =?utf-8?B?bUdEKzNrNlllR05zQXh0N1AwL2NaeG02eXhFOHZBc1NVcm5pdWZ0SzE1SS9W?=
+ =?utf-8?B?Z0VXenAxMVZiVzNtdnc2ZmxYQ21VamZyaDRTRDIvV29LWFdQb1hwTzNnYnE5?=
+ =?utf-8?B?OTJMTThSdDZoMnRtdS9uQ1ZpbG0zT0pJQVpqU3NjMGg3M3hpeW4zOUl5SHFZ?=
+ =?utf-8?B?QjRscVN2ME1kYVpDSms0aU9qTTh1eDBheVByS0FPNUlwUk5NQU1NbWNyMU8r?=
+ =?utf-8?B?VHlIY3FkSi9uOTZ4c21vR3FYYTZxQURMRjZJdkRGVHBld3pZK0ZrcjBNZ1Bp?=
+ =?utf-8?B?QU1namptTnNiYkEwNXhVUFdsMFBoeUp0aW9FaEdjQUIxcDkwOXB1ZGMwUFJX?=
+ =?utf-8?B?aTBtczdGTlIvdWtIU1hiMCsweTBPc25HQXlZczlqanRKbzVVemJpS2dXa2Np?=
+ =?utf-8?B?SzFUVlcrc0lJU3hLV3YzNkh1TEl1RlNleDA1aGlLK1AyUDB1dFQ0bG5KQlJI?=
+ =?utf-8?B?SlNoR084N2t5ak1oeXZubkZwblhWWFdTaUNXTUFhWXk0TkhCZnFMbC9QeGFQ?=
+ =?utf-8?B?ZHFsa0dUUnFjM0ZYUTA0c0pyVURaUUxmWFd5RjVnOWRSekthVCtLbWk5ekhM?=
+ =?utf-8?B?cjRndlMvaHdud0FkR2JNeGJTbGRNTEQrZEN3anZOYXg4NFdwWllLQTY1Z0Nq?=
+ =?utf-8?B?OHJPb29YaFlRWC9iMHV4dVRHZ0JuMFJpdmNIQzl5aURaOW9lT0ZPRVd0cVh5?=
+ =?utf-8?B?NC9iaUV6T1pSRFhQeVNMSDNKaUJUdklWZ2dZTUwzalNrdHNldnhnUzgwbVFY?=
+ =?utf-8?B?WExENDFZVmJZRDhHMUY4ekxYWmtwb1E0VmYrb0k3RWxKajYzb0diT3hjM2wx?=
+ =?utf-8?B?OTZ5cytFbWMyWXJ0Ky9hRm9acitDdm1UUlNtMTBNaXorZzg4UFAxblovaE40?=
+ =?utf-8?B?UnlxdyttQ3d1Ym0xSjQ4M3FkL3BjWGY3Y1k2ckVCTlNFNUowdUxSWExxNjZp?=
+ =?utf-8?Q?2JTY8+kGCiGSyK0tfzTUs8d9b?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a6946fea-8940-4bcb-b8c6-08dd6bbef682
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2025 17:03:28.1799
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 70NR5mopFiPSnOFkjKEAGcPVrw/sCPM4cfRbWwuyBbkUVw5zchMZeuMr83BTYPG70Aq2SgCS00P9wK2JPdxAdQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8402
 
-On Mon, Mar 24, 2025 at 3:47=E2=80=AFAM Stefano Garzarella <sgarzare@redhat=
-.com> wrote:
->
-> From: Stefano Garzarella <sgarzare@redhat.com>
->
-> Add two new functions to probe and send commands to the SVSM vTPM.
-> They leverage the two calls defined by the AMD SVSM specification [1]
-> for the vTPM protocol: SVSM_VTPM_QUERY and SVSM_VTPM_CMD.
->
-> Expose these functions to be used by other modules such as a tpm
-> driver.
->
-> [1] "Secure VM Service Module for SEV-SNP Guests"
->     Publication # 58019 Revision: 1.00
->
-> Co-developed-by: James Bottomley <James.Bottomley@HansenPartnership.com>
-> Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
-> Co-developed-by: Claudio Carvalho <cclaudio@linux.ibm.com>
-> Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
-> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> ---
-> v4:
-> - added Tom's R-b
-> - added functions documentation [Jarkko]
-> - simplified TPM_SEND_COMMAND check [Tom/Jarkko]
-> v3:
-> - removed link to the spec because those URLs are unstable [Borislav]
-> - squashed "x86/sev: add SVSM call macros for the vTPM protocol" patch
->   in this one [Borislav]
-> - slimmed down snp_svsm_vtpm_probe() [Borislav]
-> - removed features check and any print related [Tom]
-> ---
->  arch/x86/include/asm/sev.h |  7 +++++
->  arch/x86/coco/sev/core.c   | 59 ++++++++++++++++++++++++++++++++++++++
->  2 files changed, 66 insertions(+)
->
-> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-> index ba7999f66abe..09471d058ce5 100644
-> --- a/arch/x86/include/asm/sev.h
-> +++ b/arch/x86/include/asm/sev.h
-> @@ -384,6 +384,10 @@ struct svsm_call {
->  #define SVSM_ATTEST_SERVICES           0
->  #define SVSM_ATTEST_SINGLE_SERVICE     1
->
-> +#define SVSM_VTPM_CALL(x)              ((2ULL << 32) | (x))
-> +#define SVSM_VTPM_QUERY                        0
-> +#define SVSM_VTPM_CMD                  1
-> +
->  #ifdef CONFIG_AMD_MEM_ENCRYPT
->
->  extern u8 snp_vmpl;
-> @@ -481,6 +485,9 @@ void snp_msg_free(struct snp_msg_desc *mdesc);
->  int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_=
-req *req,
->                            struct snp_guest_request_ioctl *rio);
->
-> +bool snp_svsm_vtpm_probe(void);
-> +int snp_svsm_vtpm_send_command(u8 *buffer);
-> +
+On 3/25/25 02:22, Ard Biesheuvel wrote:
+> (cc Kirill)
+> 
+> On Mon, 24 Mar 2025 at 20:14, Tom Lendacky <thomas.lendacky@amd.com> wrote:
+>>
+>> On 3/24/25 12:28, Ard Biesheuvel wrote:
+>>> L.S.,
+>>>
+>>> As I am trying to disentangle the Linux early SEV boot code, the
+>>> legacy decompressor and the EFI stub, I noticed something that looks
+>>> broken to me, but I'm not quite sure how to fix it.
+>>>
+>>> When booting via the EFI stub, the following call chain may occur:
+>>>
+>>> setup_e820()
+>>>  process_unaccepted_memory()
+>>>   arch_accept_memory()
+>>>    snp_accept_memory()
+>>>     early_setup_ghcb()
+>>>      set_page_decrypted()
+>>>       set_clr_page_flags()
+>>>
+>>> where the latter function relies on mapping_info to remap the GHCB
+>>> page as unencrypted. However, when entering via the EFI stub, this
+>>> struct is never initialized, and so I am struggling to see why this
+>>> works at all.
+>>
+> ...
+>> So, yes, this does appear broken.
+>>
+> 
+> OK, thanks for the analysis.
+> 
+>> The latter function reads from the target page so that the page gets
+>> faulted in via do_boot_page_fault(). do_boot_page_fault() calls
+>> kernel_add_identity_map(), which calls kernel_ident_mapping_init() and
+>> initializes the mapping_info struct.
+>>
+>> At least that is how it is supposed to happen coming through the
+>> decompressor. I couldn't recreate the path you sited until I tried an odd
+>> size memory argument that was not 2M aligned (using 4097M on the qemu
+>> command line fixed that). However, even that causes issues, because the
+>> SEV_STATUS MSR doesn't get read until sev_enable() is called, which is
+>> called after setup_e820(), so we actually can't even take the
+>> snp_accept_memory() path.
+>>
+> 
+> So we should never hit the page fault that triggers
+> kernel_ident_mapping_init() because all memory is already mapped (and
+> boot_ghcb_page is part of the image so it will definitely be mapped
+> even when not booting via EFI)
+> 
+> (For future reference, could you share the QEMU command line that you used?)
 
-These should be defined static inline with trivial definitions in the
-#else case, yes?
+I used the following Qemu command line:
 
->  void __init snp_secure_tsc_prepare(void);
->  void __init snp_secure_tsc_init(void);
->
-> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-> index 96c7bc698e6b..034aab7e76d2 100644
-> --- a/arch/x86/coco/sev/core.c
-> +++ b/arch/x86/coco/sev/core.c
-> @@ -2628,6 +2628,65 @@ static int snp_issue_guest_request(struct snp_gues=
-t_req *req, struct snp_req_dat
->         return ret;
->  }
->
-> +/**
-> + * snp_svsm_vtpm_probe() - Probe if SVSM provides a vTPM device
-> + *
-> + * This function checks that there is SVSM and that it supports at least
-> + * TPM_SEND_COMMAND which is the only request we use so far.
-> + *
-> + * Return: true if the platform provides a vTPM SVSM device, false other=
-wise.
-> + */
-> +bool snp_svsm_vtpm_probe(void)
-> +{
-> +       struct svsm_call call =3D {};
-> +
-> +       /* The vTPM device is available only if a SVSM is present */
-> +       if (!snp_vmpl)
-> +               return false;
-> +
-> +       call.caa =3D svsm_get_caa();
-> +       call.rax =3D SVSM_VTPM_CALL(SVSM_VTPM_QUERY);
-> +
-> +       if (svsm_perform_call_protocol(&call))
-> +               return false;
-> +
-> +       /* Check platform commands contains TPM_SEND_COMMAND - platform c=
-ommand 8 */
-> +       return call.rcx_out & BIT_ULL(8);
-> +}
-> +EXPORT_SYMBOL_GPL(snp_svsm_vtpm_probe);
-> +
-> +/**
-> + * snp_svsm_vtpm_send_command() - execute a vTPM operation on SVSM
-> + * @buffer: A buffer used to both send the command and receive the respo=
-nse.
-> + *
-> + * This function executes a SVSM_VTPM_CMD call as defined by
-> + * "Secure VM Service Module for SEV-SNP Guests" Publication # 58019 Rev=
-ision: 1.00
-> + *
-> + * All command request/response buffers have a common structure as speci=
-fied by
-> + * the following table:
-> + *     Byte      Size       In/Out    Description
-> + *     Offset    (Bytes)
-> + *     0x000     4          In        Platform command
-> + *                          Out       Platform command response size
-> + *
-> + * Each command can build upon this common request/response structure to=
- create
-> + * a structure specific to the command.
-> + * See include/linux/tpm_svsm.h for more details.
-> + *
-> + * Return: 0 on success, -errno on failure
-> + */
-> +int snp_svsm_vtpm_send_command(u8 *buffer)
-> +{
-> +       struct svsm_call call =3D {};
-> +
-> +       call.caa =3D svsm_get_caa();
-> +       call.rax =3D SVSM_VTPM_CALL(SVSM_VTPM_CMD);
-> +       call.rcx =3D __pa(buffer);
-> +
-> +       return svsm_perform_call_protocol(&call);
-> +}
-> +EXPORT_SYMBOL_GPL(snp_svsm_vtpm_send_command);
-> +
->  static struct platform_device sev_guest_device =3D {
->         .name           =3D "sev-guest",
->         .id             =3D -1,
-> --
-> 2.49.0
->
+./bin/qemu-system-x86_64 -enable-kvm \
+ -cpu EPYC-v4,host-phys-bits=true -smp 1 \
+ -machine type=q35,confidential-guest-support=sev0,memory-backend=ram1,vmport=off \
+ -object memory-backend-memfd,id=ram1,size=4097M,share=true,prealloc=false \
+ -object sev-snp-guest,id=sev0,policy=0xb0000,cbitpos=51,reduced-phys-bits=1 \
+ -bios /root/kernels/qemu-install/OVMF.fd \
+ -kernel /root/kernels/linux-build-x86_64/arch/x86/boot/bzImage \
+ -append "console=ttyS0 earlyprintk=serial root=/dev/sda2" \
+ -nographic -monitor pty -monitor unix:monitor,server,nowait \
+ -gdb tcp::1234 -qmp tcp::4444,server,wait=off
 
+Note, this doesn't have an initrd or guest image/disk, so the boot will
+eventually fail, but it boots far enough along to encounter the issue
+and test a fix.
 
---=20
--Dionna Glaze, PhD, CISSP, CCSP (she/her)
+Thanks,
+Tom
+
+> 
+>> But faking the SEV_STATUS MSR value does cause the code to get down to the
+>> set_clr_page_flags() function and reading the input address contents
+>> doesn't trigger do_boot_page_fault() to run because load_stage2_idt()
+>> hasn't been called, which probably wouldn't matter anyway since the code
+>> is running under the EFI page tables.
+>>
+> 
+> Exactly, and that was the whole point of separating those code paths,
+> i.e., to get rid of all the demand paging logic and execute under the
+> EFI page tables (which use strict permissions for code and data, which
+> is a Microsoft requirement for secure boot signing)
+> 
+> So in a nutshell, the problem is that snp_accept_memory() calls into
+> the SEV code before sev_enable() has been called. But I wonder why
+> accepting memory is needed in the EFI stub at all?
+> (asking Kirill) Is it just to ensure that all unaccepted memory is at
+> the granularity provided by the bitmap? That could explain why nobody
+> ever noticed this.
+> 
+> Is there a problem with being conservative in the bitmap, and marking
+> misaligned chunks of accepted memory as unaccepted? AIUI, that would
+> remove the need entirely to accept any memory in the EFI stub - only
+> the decompressor code path would have a need for it.
