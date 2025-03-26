@@ -1,124 +1,75 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C135078F5F
-	for <linux-coco@lists.linux.dev>; Wed, 26 Mar 2025 09:28:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6379189903
+	for <linux-coco@lists.linux.dev>; Wed, 26 Mar 2025 15:07:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742981324; cv=none; b=CqFdzsfc7cP/5pwYaznvEpPey1jMNatm3fQMPOuPq8OV/rJXVHN/HxvO289qyRbQ7F2yLCS1Uikj0yOJyFeejbRwXPBxBkKUsNuIRfLQunyWnl8VeMdPDvmK7cCLc9wSxDWPKEF9Zd/S/L7TW6/FHkI5JNMIfxlUjPe/BAPvsus=
+	t=1743001670; cv=none; b=USGWCv3c9nSSaVreLNVwO3db2KCLttuisfJG6i/aRbaSc9ZBLEcCG99AbByP88hagfs+FeCorFE+Ho/RDPrZWdjJWf6JxlE/p9hASAgzMw3KgDprp/687WrSDt9Bs9rsHTAkCgMNimbevszGTWSQnok9nqox5kdg/0rfyMz35uI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742981324; c=relaxed/simple;
-	bh=q9/n6xLXsg9cP0fsy15b0++dlcAF+G/WhyWx6lN0+Zs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ouEgy/VW/C6lv/ktZNCBYnFx2BrDqwPoOPsOA5IeFFS0l9UIqaHjLM0g4LkYkLYS3SCZPEJM+kvAlY1dN386jajUTUV8od2T0VqUnj3Wl4oS47EX8FKlaguzc+n9XlCBhM/lFTNrliSdVEWipxqEDTvcTnINUOIiXji2QXyLTY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CuW7T6SN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743001670; c=relaxed/simple;
+	bh=wpI/6Tg3JzMLXkj2EE+uVlYMlQYWKMq9bpdzv9t7VoM=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=doGzn8Kf1CVSEqxjbmIi5mx+EePo7P1aMyBrP5sNPIb3c2SvGYynfF1O5Y+dwcaYZ1ruUCfAyzxF5OwFLwcCqGq7uHJdf42CT++TMTWEIdKK3afzwQNeyTSEv/TTd66A7ZiwFtZvfufK37JEMp9ImGXRZlur5745wh1xBnrM7m0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=y2t5BMvF; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CuW7T6SN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B768C4CEE2
-	for <linux-coco@lists.linux.dev>; Wed, 26 Mar 2025 09:28:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742981324;
-	bh=q9/n6xLXsg9cP0fsy15b0++dlcAF+G/WhyWx6lN0+Zs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=CuW7T6SNRUALRP1iNFIjI2o768oBi3xAhd15l2JUAOG43EQrKpF+8tDeT44K2HxCj
-	 g5VtY96x44p3ynHZg7pQdiub5MhHR3X8lqYvM862WGOSMxAg5zSY4deGCiGrGsj9tr
-	 XPz8OyNtB3CxNnyF5NVcVRx5wl6pxR5cnBKcJi2aBllwEJHv8iy2WWKUJG3ZHJHqul
-	 QvpQqrQpydRV7VJW+ESBxG9EOzW5LXNZpHraUK3M64n0Ksxh1dfK3X8WD7Hg5nt8XI
-	 s/hwSjmIKMvuiXJp3EAw0Kd4SZpGWBkUz16zMYNSzMsSlWNljOheVI1i8FXxp24Qpo
-	 JCS/KIAjbUg4A==
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-54af20849adso718987e87.1
-        for <linux-coco@lists.linux.dev>; Wed, 26 Mar 2025 02:28:44 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUwJO2pQ1emi6GfV9dS+Pjh2l2ZerDG4t2vth2g5YbuupxZ03bsM4psFk69+rJneIK+etOnBUDLSEfi@lists.linux.dev
-X-Gm-Message-State: AOJu0YyKn4vuaHHs1gH/p2OS6O2ux0FfdWTDeo0yXTUhPzNRZr7ebrW0
-	JFLpabd6T+hzzCA3lSL2ZFcBCyZKCXa6JvWRa64A5hqcI+BynmG/hxoCDuAiNalyK/H1DpthRGX
-	QdWstW2kK7XA7XeBnfLboJhjIf0s=
-X-Google-Smtp-Source: AGHT+IFXWbs1fX8iTQbUdYaL5sHwQsN622JIoeRiZKLkfZCQUyfP3od4fb8/AWHW7pdVSkn65pic8TS75oiivWFYFM4=
-X-Received: by 2002:a05:6512:6cd:b0:54a:f743:3137 with SMTP id
- 2adb3069b0e04-54afaca81acmr974655e87.19.1742981322689; Wed, 26 Mar 2025
- 02:28:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="y2t5BMvF"
+Received: from 8bytes.org (p4ffe03ae.dip0.t-ipconnect.de [79.254.3.174])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 77496469F5;
+	Wed, 26 Mar 2025 16:07:46 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1743001666;
+	bh=wpI/6Tg3JzMLXkj2EE+uVlYMlQYWKMq9bpdzv9t7VoM=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=y2t5BMvFP0yQ5oy3p32xDAfTCr40wi3id6LNvdWqqw3EzlyABq31hEwoNfraRp6ra
+	 cQXhjwmrJKea5gdXwAQckqVmLcyyi6eJ3EyGEtQnUqOHQXlAtjRLhQDVuoWCJVAgu4
+	 BHLFc4PiGFqvpcyEqinCXq5SeVgwenXaWEP9mUKUNKZUwTDU4NyU7eF2XylEICDD/6
+	 6IbxrRt/cZ6afA/2VzTnvLw+/e5jg/v2PBFp3NQWmc+n/Dv9gROsHFxiYd7d3oDrdd
+	 QJ5Xu9FwZhNysz9w3xuJoqrSyKdWRoJl7w/9rJcY2tc5EN90ssguHgysTW9k1i1UjQ
+	 ukcA4i/1FcrAA==
+Date: Wed, 26 Mar 2025 16:07:45 +0100
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
+Subject: Re: [svsm-devel] SVSM Development Call March 26th, 2025 (Changed
+ meeting time for US)
+Message-ID: <Z-QYQTBuOjJtkiWX@8bytes.org>
+References: <Z-LgVcs66nVpAd7x@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250325091614.1203411-2-ardb+git@google.com> <32zavhk2moqarh4vd76rnhwte45kkc3gqy3shls7mp5lemhy4k@o4gibpdf4sj6>
- <CAMj1kXHkM2hBHkfjFuCKpOA2APX+BBR-zrPfRkpiEf609UMKjw@mail.gmail.com>
- <ervuw7mwzvcyizkchy3nz4357ahz5kdfzc227exlrc5yabq4im@g2kzsrdbkdf6>
- <CAMj1kXEzzNnohJat5REp5mAUCSd4v_ft6F=P6vB95z6+f1MMfw@mail.gmail.com>
- <4xm3bmuhmdbnn6fkmhmnrtkcdiwj76dcr7gujam45nqvgupvj3@caytleltmyzj>
- <CAMj1kXFERrdioZ8_07rwDVUAoq=OLDvLCRUS6BN3GXnJoJPuAA@mail.gmail.com> <d6eb83a9-d1b1-7028-9cfd-1ab3fa0d6269@amd.com>
-In-Reply-To: <d6eb83a9-d1b1-7028-9cfd-1ab3fa0d6269@amd.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 26 Mar 2025 10:28:31 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXE35QQ7b3uSF4Ufv6VXyjCfPyveUO1KLPKwsgoHu8iE=w@mail.gmail.com>
-X-Gm-Features: AQ5f1Jpnd9eYwLni4mh8jwISb_Oxtq4dxdAx4qp4jDGul2n1bzqdn0OFaRBdMIY
-Message-ID: <CAMj1kXE35QQ7b3uSF4Ufv6VXyjCfPyveUO1KLPKwsgoHu8iE=w@mail.gmail.com>
-Subject: Re: [PATCH] efi/libstub: Do not accept parts of memory before ExitBootServices()
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Ard Biesheuvel <ardb+git@google.com>, 
-	linux-efi@vger.kernel.org, linux-coco@lists.linux.dev, 
-	Borislav Petkov <bp@alien8.de>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
-	Kevin Loughlin <kevinloughlin@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z-LgVcs66nVpAd7x@8bytes.org>
 
-On Tue, 25 Mar 2025 at 17:30, Tom Lendacky <thomas.lendacky@amd.com> wrote:
->
-> On 3/25/25 09:39, Ard Biesheuvel wrote:
-> > On Tue, 25 Mar 2025 at 14:44, Kirill A. Shutemov
-> > <kirill.shutemov@linux.intel.com> wrote:
-> >>
-> >> On Tue, Mar 25, 2025 at 02:09:54PM +0100, Ard Biesheuvel wrote:
-> >>>> Since the problem happens before ExitBootServices(), can we allocate this
-> >>>> memory range with EFI API and free it back?
-> >>>>
-> >>>
-> >>> In principle, yes - we could allocate these misaligned chunks as
-> >>> EfiLoaderData, and it wouldn't even be necessary to free them, as they
-> >>> would become available to the OS automatically.
-> >>>
-> >>> But doing this in setup_e820() is tricky, because every page
-> >>> allocation modifies the EFI memory map, and we may have to restart
-> >>> from the beginning. And there is no guarantee that some asynchronous
-> >>> event in the firmware context does not attempt to allocate some pages,
-> >>> in a way that might result in another misaligned unaccepted region.
-> >>
-> >> Looking again at the code, setup_e820() (and therefore
-> >> process_unaccepted_memory()) called after efi_exit_boot_services() in
-> >> exit_boot(), so we can't use EFI API to allocate memory.
-> >>
-> >
-> > Ah yes, I misremembered that. It also means that it is fine in
-> > principle to take over the communication with the hypervisor.
-> >
-> > However, this is still tricky, because on SEV-SNP, accepting memory
-> > appears to rely on the GHCB page based communication being enabled,
-> > and this involves mapping it down to a single page so the C bit can be
-> > cleared. It would be nice if we could simply use the MSR based
-> > protocol for accepting memory.
->
-> We can probably do something along this line since there is an existing
-> function, __page_state_change(), that performs MSR protocol PSC. If we
-> change the arch_accept_memory() calls in process_unaccepted_memory() to
-> arch_accept_memory_early() then we can differentiate between this early
-> alignment setup timeframe. The early function can also use
-> sev_get_status() instead of sev_snp_enabled().
->
-> Let me mess around with it a bit and see what I come up with.
->
+Hey again,
 
-Cheers.
+On Tue, Mar 25, 2025 at 05:56:53PM +0100, Jörg Rödel wrote:
+> Here is the usual call for agenda items for the this weeks SVSM
+> development call.  Please send me any agenda items you have in mind or
+> raise them in the meeting.
 
-So IIUC, it would be sufficient to check sev_get_status() against
-MSR_AMD64_SEV_SNP_ENABLED, and use the PSC MSR to transition each
-unaccepted page that is in the misaligned head or tail of the region
-to private.
+Just a notice that I want to bring the status of some of the PRs to the
+agenda today, namely:
 
-Pardon my ignorance, but does that mean that in principle,
-sev_enable() et al could be deferred to early startup of the kernel
-proper (where the other SEV startup code lives) ?
+	- #259 SVSM: require SNP restricted injection
+	  (Can we require restricted injection on SNP?)
+	- #528 Attestation driver and proxy (with KBS attestation)
+	  (How to solve the stack usage problem?)
+	- #541 svsm: add SVSM VTPM Service Attestation
+	  (Any dependencies regarding the ongoing attestation report
+	   format changes?)
+	- #635 virtio-blk storage via mmio using virtio-drivers [v3]
+	  (Any blockers, maybe generic MMIO routine support?)
 
-We have been playing whack-a-mole with PIC codegen issues there, and
-so it might make sense to consolidate that logic into a single [PIC]
-chunk of code that is somewhat isolated from the rest of the code
-(like the kernel/pi code on arm64)
+See you in the meeting :)
+
+Regards,
+
+	Joerg
