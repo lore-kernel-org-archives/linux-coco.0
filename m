@@ -1,109 +1,124 @@
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C195F823DE;
-	Wed, 26 Mar 2025 06:15:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C135078F5F
+	for <linux-coco@lists.linux.dev>; Wed, 26 Mar 2025 09:28:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742969707; cv=none; b=M6faDka2XUERca7uCeR/IgRNU/KBiIw8VdfjnC5u70Avc/ZgD3rYPn6I4ewxp8kyBPXprpzHP1Vb6OC4ceRg9iFjVvhdpoYukYSbUhFIa/cA3tlXYAU9IuF/xaOjn7s9VuhzR4PzUqJihwKPnX5vv/u6u/h9MzsZKBIaFS4mziY=
+	t=1742981324; cv=none; b=CqFdzsfc7cP/5pwYaznvEpPey1jMNatm3fQMPOuPq8OV/rJXVHN/HxvO289qyRbQ7F2yLCS1Uikj0yOJyFeejbRwXPBxBkKUsNuIRfLQunyWnl8VeMdPDvmK7cCLc9wSxDWPKEF9Zd/S/L7TW6/FHkI5JNMIfxlUjPe/BAPvsus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742969707; c=relaxed/simple;
-	bh=DW8Fy2HTTgoGtISvZcT+E3D97xdwk6+3h+vam6MJfPE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cQBu8mx8dO3TtD+Omq4xjiqdKQM0VAJ06swWL+RZy39HpcEkSrGombYN5BlNNcM1X7cAfm4dsEOT4SrzzvD57FQX0QhLieOm+QBl7n94iExwBQHgIX88FRH+ARG5vIPBDn1wXrHASdEAf1dd5OL5ccc8cTpsOpBivAZsRl3X+/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=OuiqmHTL; arc=none smtp.client-ip=95.215.58.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1742981324; c=relaxed/simple;
+	bh=q9/n6xLXsg9cP0fsy15b0++dlcAF+G/WhyWx6lN0+Zs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ouEgy/VW/C6lv/ktZNCBYnFx2BrDqwPoOPsOA5IeFFS0l9UIqaHjLM0g4LkYkLYS3SCZPEJM+kvAlY1dN386jajUTUV8od2T0VqUnj3Wl4oS47EX8FKlaguzc+n9XlCBhM/lFTNrliSdVEWipxqEDTvcTnINUOIiXji2QXyLTY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CuW7T6SN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="OuiqmHTL"
-Date: Tue, 25 Mar 2025 23:14:40 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1742969702;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=slCF2xs2ElnaTVorgRjJtJXFeYpLhzlPphzcbXRpqBA=;
-	b=OuiqmHTL8r1gLM/KKEIjqAjSmMsNYpkvBf0rF1fapMbUROPNKPJrNCuIniEZweIt2hcbQL
-	zVCmBXHOplOtEyzKqjZRA+blDaXiM047RrfHp6qItXfsJFcV6cpMoOiCI/Y01E5Hi1/f8w
-	jCLrNhkoLu/Hgj/xfyHkzQiqiV4nuHw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Oliver Upton <oliver.upton@linux.dev>
-To: "Emi Kisanuki (Fujitsu)" <fj0570is@fujitsu.com>
-Cc: 'Steven Price' <steven.price@arm.com>,
-	"'kvm@vger.kernel.org'" <kvm@vger.kernel.org>,
-	"'kvmarm@lists.linux.dev'" <kvmarm@lists.linux.dev>,
-	'Catalin Marinas' <catalin.marinas@arm.com>,
-	'Marc Zyngier' <maz@kernel.org>, 'Will Deacon' <will@kernel.org>,
-	'James Morse' <james.morse@arm.com>,
-	'Suzuki K Poulose' <suzuki.poulose@arm.com>,
-	'Zenghui Yu' <yuzenghui@huawei.com>,
-	"'linux-arm-kernel@lists.infradead.org'" <linux-arm-kernel@lists.infradead.org>,
-	"'linux-kernel@vger.kernel.org'" <linux-kernel@vger.kernel.org>,
-	'Joey Gouly' <joey.gouly@arm.com>,
-	'Alexandru Elisei' <alexandru.elisei@arm.com>,
-	'Christoffer Dall' <christoffer.dall@arm.com>,
-	'Fuad Tabba' <tabba@google.com>,
-	"'linux-coco@lists.linux.dev'" <linux-coco@lists.linux.dev>,
-	'Ganapatrao Kulkarni' <gankulkarni@os.amperecomputing.com>,
-	'Gavin Shan' <gshan@redhat.com>,
-	'Shanker Donthineni' <sdonthineni@nvidia.com>,
-	'Alper Gun' <alpergun@google.com>,
-	"'Aneesh Kumar K . V'" <aneesh.kumar@kernel.org>
-Subject: Re: [PATCH v7 00/45] arm64: Support for Arm CCA in KVM
-Message-ID: <Z-ObUJQn2dGsgSsO@linux.dev>
-References: <20250213161426.102987-1-steven.price@arm.com>
- <TYCPR01MB11463C8CCEFEDAF79868E9BBCC3A62@TYCPR01MB11463.jpnprd01.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CuW7T6SN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B768C4CEE2
+	for <linux-coco@lists.linux.dev>; Wed, 26 Mar 2025 09:28:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742981324;
+	bh=q9/n6xLXsg9cP0fsy15b0++dlcAF+G/WhyWx6lN0+Zs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=CuW7T6SNRUALRP1iNFIjI2o768oBi3xAhd15l2JUAOG43EQrKpF+8tDeT44K2HxCj
+	 g5VtY96x44p3ynHZg7pQdiub5MhHR3X8lqYvM862WGOSMxAg5zSY4deGCiGrGsj9tr
+	 XPz8OyNtB3CxNnyF5NVcVRx5wl6pxR5cnBKcJi2aBllwEJHv8iy2WWKUJG3ZHJHqul
+	 QvpQqrQpydRV7VJW+ESBxG9EOzW5LXNZpHraUK3M64n0Ksxh1dfK3X8WD7Hg5nt8XI
+	 s/hwSjmIKMvuiXJp3EAw0Kd4SZpGWBkUz16zMYNSzMsSlWNljOheVI1i8FXxp24Qpo
+	 JCS/KIAjbUg4A==
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-54af20849adso718987e87.1
+        for <linux-coco@lists.linux.dev>; Wed, 26 Mar 2025 02:28:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUwJO2pQ1emi6GfV9dS+Pjh2l2ZerDG4t2vth2g5YbuupxZ03bsM4psFk69+rJneIK+etOnBUDLSEfi@lists.linux.dev
+X-Gm-Message-State: AOJu0YyKn4vuaHHs1gH/p2OS6O2ux0FfdWTDeo0yXTUhPzNRZr7ebrW0
+	JFLpabd6T+hzzCA3lSL2ZFcBCyZKCXa6JvWRa64A5hqcI+BynmG/hxoCDuAiNalyK/H1DpthRGX
+	QdWstW2kK7XA7XeBnfLboJhjIf0s=
+X-Google-Smtp-Source: AGHT+IFXWbs1fX8iTQbUdYaL5sHwQsN622JIoeRiZKLkfZCQUyfP3od4fb8/AWHW7pdVSkn65pic8TS75oiivWFYFM4=
+X-Received: by 2002:a05:6512:6cd:b0:54a:f743:3137 with SMTP id
+ 2adb3069b0e04-54afaca81acmr974655e87.19.1742981322689; Wed, 26 Mar 2025
+ 02:28:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <TYCPR01MB11463C8CCEFEDAF79868E9BBCC3A62@TYCPR01MB11463.jpnprd01.prod.outlook.com>
-X-Migadu-Flow: FLOW_OUT
+References: <20250325091614.1203411-2-ardb+git@google.com> <32zavhk2moqarh4vd76rnhwte45kkc3gqy3shls7mp5lemhy4k@o4gibpdf4sj6>
+ <CAMj1kXHkM2hBHkfjFuCKpOA2APX+BBR-zrPfRkpiEf609UMKjw@mail.gmail.com>
+ <ervuw7mwzvcyizkchy3nz4357ahz5kdfzc227exlrc5yabq4im@g2kzsrdbkdf6>
+ <CAMj1kXEzzNnohJat5REp5mAUCSd4v_ft6F=P6vB95z6+f1MMfw@mail.gmail.com>
+ <4xm3bmuhmdbnn6fkmhmnrtkcdiwj76dcr7gujam45nqvgupvj3@caytleltmyzj>
+ <CAMj1kXFERrdioZ8_07rwDVUAoq=OLDvLCRUS6BN3GXnJoJPuAA@mail.gmail.com> <d6eb83a9-d1b1-7028-9cfd-1ab3fa0d6269@amd.com>
+In-Reply-To: <d6eb83a9-d1b1-7028-9cfd-1ab3fa0d6269@amd.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Wed, 26 Mar 2025 10:28:31 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXE35QQ7b3uSF4Ufv6VXyjCfPyveUO1KLPKwsgoHu8iE=w@mail.gmail.com>
+X-Gm-Features: AQ5f1Jpnd9eYwLni4mh8jwISb_Oxtq4dxdAx4qp4jDGul2n1bzqdn0OFaRBdMIY
+Message-ID: <CAMj1kXE35QQ7b3uSF4Ufv6VXyjCfPyveUO1KLPKwsgoHu8iE=w@mail.gmail.com>
+Subject: Re: [PATCH] efi/libstub: Do not accept parts of memory before ExitBootServices()
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Ard Biesheuvel <ardb+git@google.com>, 
+	linux-efi@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Borislav Petkov <bp@alien8.de>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
+	Kevin Loughlin <kevinloughlin@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Emi,
+On Tue, 25 Mar 2025 at 17:30, Tom Lendacky <thomas.lendacky@amd.com> wrote:
+>
+> On 3/25/25 09:39, Ard Biesheuvel wrote:
+> > On Tue, 25 Mar 2025 at 14:44, Kirill A. Shutemov
+> > <kirill.shutemov@linux.intel.com> wrote:
+> >>
+> >> On Tue, Mar 25, 2025 at 02:09:54PM +0100, Ard Biesheuvel wrote:
+> >>>> Since the problem happens before ExitBootServices(), can we allocate this
+> >>>> memory range with EFI API and free it back?
+> >>>>
+> >>>
+> >>> In principle, yes - we could allocate these misaligned chunks as
+> >>> EfiLoaderData, and it wouldn't even be necessary to free them, as they
+> >>> would become available to the OS automatically.
+> >>>
+> >>> But doing this in setup_e820() is tricky, because every page
+> >>> allocation modifies the EFI memory map, and we may have to restart
+> >>> from the beginning. And there is no guarantee that some asynchronous
+> >>> event in the firmware context does not attempt to allocate some pages,
+> >>> in a way that might result in another misaligned unaccepted region.
+> >>
+> >> Looking again at the code, setup_e820() (and therefore
+> >> process_unaccepted_memory()) called after efi_exit_boot_services() in
+> >> exit_boot(), so we can't use EFI API to allocate memory.
+> >>
+> >
+> > Ah yes, I misremembered that. It also means that it is fine in
+> > principle to take over the communication with the hypervisor.
+> >
+> > However, this is still tricky, because on SEV-SNP, accepting memory
+> > appears to rely on the GHCB page based communication being enabled,
+> > and this involves mapping it down to a single page so the C bit can be
+> > cleared. It would be nice if we could simply use the MSR based
+> > protocol for accepting memory.
+>
+> We can probably do something along this line since there is an existing
+> function, __page_state_change(), that performs MSR protocol PSC. If we
+> change the arch_accept_memory() calls in process_unaccepted_memory() to
+> arch_accept_memory_early() then we can differentiate between this early
+> alignment setup timeframe. The early function can also use
+> sev_get_status() instead of sev_snp_enabled().
+>
+> Let me mess around with it a bit and see what I come up with.
+>
 
-On Wed, Mar 26, 2025 at 02:14:35AM +0000, Emi Kisanuki (Fujitsu) wrote:
-> Hi all,
-> 
-> I tested Linux-cca cca-host/v7 patch with our Internal simulator based on QEMU (with CCA and MPAM support).
-> A panic occurred when starting Realm, but I don't think this is a problem with the cca-host/v7 patch.
-> The location of the panic is [1].
-> 
-> [1]https://lore.kernel.org/linux-arm-kernel/20241030160317.2528209-4-joey.gouly@arm.com
-> diff --git a/arch/arm64/kernel/cpuinfo.c b/arch/arm64/kernel/cpuinfo.c
-> index 44718d0482b3..46ba30d42b9b 100644
-> --- a/arch/arm64/kernel/cpuinfo.c
-> +++ b/arch/arm64/kernel/cpuinfo.c
-> @@ -478,6 +478,9 @@ static void __cpuinfo_store_cpu(struct cpuinfo_arm64 *info)
->  	if (id_aa64pfr0_32bit_el0(info->reg_id_aa64pfr0))
->  		__cpuinfo_store_cpu_32bit(&info->aarch32);
->  
-> +	if (id_aa64pfr0_mpam(info->reg_id_aa64pfr0))
-> +		info->reg_mpamidr = read_cpuid(MPAMIDR_EL1); /////// panic occurred here. 
-> +
->  	cpuinfo_detect_icache_policy(info);
->  }
-> 
-> There was no problem with the cca-host/v5 patch (based on v6.12).
-> This panic is caused by accessing MPAMIDR_EL1 when the chip supports MPAM.
-> This functionality was enabled when the cca host patch base version was rebased from v6.12 to v6.13.
-> 
-> I am not familiar with TF-A, but I think this maybe a TF-A's bug.
-> Because It seems TF-A sets MPAM3_EL3.TRAPLOWER to 0 during normal guest boot in manage_extensions_nonsecure_per_world function[2].
-> However, TF-A does not set it to 0 during Realm guest boot in manage_extensions_secure_per_world function.
-> Therefore, a trap occurs against EL3 (TF-A), and it is likely being processed as an invalid instruction (Undef).
+Cheers.
 
-Your instinct is correct that this is *not* a kernel bug. It is the
-responsibility of the RMM to provide a consistent feature set to the
-Realm.
+So IIUC, it would be sufficient to check sev_get_status() against
+MSR_AMD64_SEV_SNP_ENABLED, and use the PSC MSR to transition each
+unaccepted page that is in the misaligned head or tail of the region
+to private.
 
-Looks like this was addressed recently in TF-RMM by hiding FEAT_MPAM:
+Pardon my ignorance, but does that mean that in principle,
+sev_enable() et al could be deferred to early startup of the kernel
+proper (where the other SEV startup code lives) ?
 
-https://github.com/TF-RMM/tf-rmm/commit/7b0874403726d215c40054abfd5d8704049f8dac
-
-Thanks,
-Oliver
+We have been playing whack-a-mole with PIC codegen issues there, and
+so it might make sense to consolidate that logic into a single [PIC]
+chunk of code that is somewhat isolated from the rest of the code
+(like the kernel/pi code on arm64)
