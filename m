@@ -1,137 +1,181 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96EB91DE2C3
-	for <linux-coco@lists.linux.dev>; Fri, 28 Mar 2025 10:51:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348DC7FBD6
+	for <linux-coco@lists.linux.dev>; Sat, 29 Mar 2025 17:10:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743159106; cv=none; b=OdlsNgAOStym8wK05xiQ6+POkc8BHcj72rxy33XBVjfJSHjfUVR6cR4DbQvtPbM2DEDMSyiWQZ3kUJ+GcKGfKRpWhO36WsacTFhmLyQWZUFLlCXdS7PAvOcxjQZohe07aiKINls35CWDjtbwPrPxoBOU51KiPoZQpgt8Rta52Nk=
+	t=1743268242; cv=none; b=PZJ+RNLg5+4VeKkhqumzjX6veJ0A4ojlhmh+mxwWzzLbN99yDuenGKO3p2FVquB6YiRp5bAG9HwoO0xk+H01CkyRuRbNIwoDcmGu7lCsPMLsT4RvMWWf+5fpObMsxb9Qm5d05nmPMJ/FMs0GyHJ3pHzsjzR3QFo5l3Gb0RZvX1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743159106; c=relaxed/simple;
-	bh=HbA7tMOi1Feho6qYy2tg+QgB3PPhFWttRgsDiLAQsAk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AVX+raNlJlpVK+UmyW8C/i0xYtRYqp/PncGJBihtR9XHbNf+L2PycLE/5TrdyO9xr7dnZLH7T3PUeNp/sa3lKjhN8zZ4NQRl/TDS2YF4v81GyjBysC+HNWiJWA8gpZTSo9JS/0ybXIaXzVE+1VkC/K2Ytrhb/T2f1IJD70cvnIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=XyX66qP+; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1743268242; c=relaxed/simple;
+	bh=4DMmDPM+mnqlZL773FBuVPksbC1CLTN0NfZNu70KjNg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CvMlT4ITYTV/AhODHk1uoMxG6EvgHfRdN7vE+iUfYSuIVBM6Fl4Tiay5+SGk5d+NXMR9CvOvLgWrWQH9u3VJnbf96iA7bXfoksoHcRjKGYSEmBWoG7NmR3suu3qpyBOVNwbSJuienMi4UAYLksXuKM/n0ptWw0keMD7ZTXUMXBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fbtfyOBS; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="XyX66qP+"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ac41514a734so329939466b.2
-        for <linux-coco@lists.linux.dev>; Fri, 28 Mar 2025 03:51:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1743159102; x=1743763902; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DQVoBzYq7Puhz7ziaLimw8gEX/xy907ffqXtK8mC8IY=;
-        b=XyX66qP+umCuZeC1G6GeyMOsevwj/ehhrJ0S0EHIZP4y3Ac1ktvFy4z7diepJSSsKP
-         9i6gUVfV9jI4PXv+jktOeq11P18r7OOAYpgDtew4a1NASBPZ4KZkCd0+fTkDFcYcPqxp
-         X6N8AMLRcetOMzu9ZmSYfo56to3dj+Exw7r3uWbrNQoFEpBEbSdSQPhrWxx+36VBFbCC
-         rprk3IWzlXIRy9gVaHotNNkGCLSZb7r1OyVL0xDonYrNmVBd51b7mCtaeAqQjkynx/nE
-         N72S09NgLPAXpQ1Y3DUedqCjXkifLsGEN9f0H0J3C952SLI1x5a70y5GexhjKn7M4Kyd
-         nbrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743159102; x=1743763902;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DQVoBzYq7Puhz7ziaLimw8gEX/xy907ffqXtK8mC8IY=;
-        b=FmUrD005D4iWY6WiHRyt8xM8cUheIDZyq6BHVk48fNln2aCRBeHXeHLJ0ciIwP+UWh
-         JUdWg3dhsDDMtEhnegTPxijwBqljTvepN1J5ghga2XZZPE4xd066ktoqTlgzcrL56XhW
-         D5YcmJSqeqt6bNcjEJb9ieP9ZyA/A6GwecoGaJPG7M75FH++YHiMrlC3gFINmr5Z/gXf
-         NKDsefddvpsD5MaLerGMpJoZ3LMxdywIZ/YCG7EdrWr4pAACn2qaZKRxE/MTumFY1BIo
-         bHJbdqgQ/EJxyBUQJRzAu1x80R+Idy6FjB4EHC3O//PCsHg6aav2cVck6jM78X3SVedY
-         AayA==
-X-Forwarded-Encrypted: i=1; AJvYcCUUU1uaLOu/dlhjydQ5Uf7TDujamsn4aCbE79LMwfu8pXbg34FNn/6V6KIssasygPrTFBx/hqaHclo+@lists.linux.dev
-X-Gm-Message-State: AOJu0YzWwo35wbKAKNmakqJz23NxHZvZDDvxYsvIlWj1Qa8t7+gDAaAg
-	s1xP7sOddFhIadHIXnc7Tv5pZ88YW9dms5rQyE1/SorVO6JFqjr3D0bp8py05Zg=
-X-Gm-Gg: ASbGnctx+XtOc1tHP+7VJXzle3Jj7zNpSf7/liBZpvgaKJo6lI1wYw0GJ8IA5DUs3x9
-	AjPLAOz16K8aJa1QewoN826Pcl7r3/S7rBPIUYIaZGWj5Jmeq7J286uei78dG9TdowPkFhj1yIe
-	Bx87BTz/5bqljncU/0lSzP4unqfs1sD50mK+oFUdjX0YbfWtoZLcRi9f9ZQQDgXVXrFzqtIR11S
-	2SgjHQm8fDmBt1PZGBe4D3FnZ1Aign4Sfmct52ZOZ1Wr4eN8401Qyo0d9x3V+C9SGXi0UF4PhhW
-	aWGkzewIjwrxLSm1dV48MeIp6PCNLK1aHurhuUaxwh2C97ETNw==
-X-Google-Smtp-Source: AGHT+IFL4jqPAqUnZ7HDp7n5d8sxsztzpjD+EXPGZF738ZKWCkWtSM+MMvDEWhIygYJX8/2agEkClw==
-X-Received: by 2002:a17:906:c148:b0:ac3:47b1:d210 with SMTP id a640c23a62f3a-ac6fb10a79amr784650266b.39.1743159101716;
-        Fri, 28 Mar 2025 03:51:41 -0700 (PDT)
-Received: from [192.168.0.20] ([212.21.159.224])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac71922ba88sm143453866b.16.2025.03.28.03.51.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Mar 2025 03:51:41 -0700 (PDT)
-Message-ID: <90b3e063-9587-40a9-90e6-1ad792c4a175@suse.com>
-Date: Fri, 28 Mar 2025 12:51:40 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fbtfyOBS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743268241; x=1774804241;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=4DMmDPM+mnqlZL773FBuVPksbC1CLTN0NfZNu70KjNg=;
+  b=fbtfyOBS1WeycbWrxIXBbWI2hru4wJPE5HpSsts/dutJl9ib5AbnscDg
+   ScKh9qz3b6HtH2CsmeiYpWwZMoGNcYdDf0CgYykNv628NZPYDPXU252m5
+   SKUAFykIAgfkbdxki8gsjtFPtCJe8ZYYr7becEZ6Na+uAx9whXLTZkeJe
+   0QzhgzeN7ppqQZO6Fgv7gfwEf5WHR+pCu3LaedAdqRql8sGTfZOMWVvde
+   0zaZcP04Q0nyOeKjb1y43MspgBQFqId6n6R5dAyrP3NF/opVEwAa5tYR5
+   3/Iuwt2+/IWHE7tBVi6pgbxt2i7R5N8crRqxUjLRbFjGIheqcSC+U4/0M
+   A==;
+X-CSE-ConnectionGUID: 48kTZP4XTUKq/OQn8tHing==
+X-CSE-MsgGUID: NJOb2zV6TR6Oqt/QGaegag==
+X-IronPort-AV: E=McAfee;i="6700,10204,11388"; a="44329142"
+X-IronPort-AV: E=Sophos;i="6.14,286,1736841600"; 
+   d="scan'208";a="44329142"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2025 10:10:41 -0700
+X-CSE-ConnectionGUID: 2ATFz57SSnWBkJtKWXE6jQ==
+X-CSE-MsgGUID: +g+mxmhFQbeO30Wi9C/5/g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,286,1736841600"; 
+   d="scan'208";a="148891558"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa002.fm.intel.com with ESMTP; 29 Mar 2025 10:10:37 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id B7E751AE; Sat, 29 Mar 2025 19:10:36 +0200 (EET)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Kalra, Ashish" <ashish.kalra@amd.com>,
+	Rick Edgecombe  <rick.p.edgecombe@intel.com>,
+	linux-mm@kvack.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Srikanth Aithal <sraithal@amd.com>
+Subject: [PATCH] mm/page_alloc: fix deadlock on cpu_hotplug_lock in __accept_page()
+Date: Sat, 29 Mar 2025 19:10:29 +0200
+Message-ID: <20250329171030.3942298-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] /dev/mem: Disable /dev/mem under TDX guest
-To: Dan Williams <dan.j.williams@intel.com>, dave.hansen@linux.intel.com
-Cc: kirill.shutemov@linux.intel.com, linux-coco@lists.linux.dev,
- x86@kernel.org, linux-kernel@vger.kernel.org, vannapurve@google.com
-References: <20250318113604.297726-1-nik.borisov@suse.com>
- <67d9c447ddcfd_11987294c6@dwillia2-xfh.jf.intel.com.notmuch>
- <327a23d5-d5c4-4227-aafb-9d4ddd90289e@suse.com>
- <67e2f315af42e_50a3294d4@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-Content-Language: en-US
-From: Nikolay Borisov <nik.borisov@suse.com>
-In-Reply-To: <67e2f315af42e_50a3294d4@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+When the last page in the zone is accepted, __accept_page() calls
+static_branch_dec(). This function takes cpu_hotplug_lock, which can
+lead to a deadlock if the allocation occurs during CPU bringup path as
+_cpu_up() also takes the lock.
 
+To prevent this deadlock, defer static_branch_dec() to a workqueue.
 
-On 25.03.25 г. 20:16 ч., Dan Williams wrote:
-> Nikolay Borisov wrote:
-> [..]
->>> It seems unfortunate that the kernel is allowing conflicting mappings of
->>> the same pfn. Is this not just a track_pfn_remap() bug report? In other
->>> words, whatever established the conflicting private mapping failed to do
->>> a memtype_reserve() with the encryption setting such that
->>> track_pfn_remap() could find it and enforce a consistent mapping.
->>
->> I'm not an expert into this, but looking at the code it seems
->> memtype_reserve deals with the memory type w.r.t PAT/MTRR i.e the
->> cacheability of the memory, not whether the mapping is consistent w.r.t
->> to other, arbitrary attributes.
-> 
-> Right, but the observation is that "something" decides to map that first
-> page of memory as private and then xlate_dev_mem_ptr() fails to maintain
-> consistent mapping.
-> 
-> So memtype_reserve() is indeed an awkward place to carry this
-> information and overkill for this particular bug.
-> 
-> However, something like the following is more appropriate than saying
-> /dev/mem is outright forbidden for guests.
-> 
-> diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
-> index 38ff7791a9c7..4a7a5fc83039 100644
-> --- a/arch/x86/mm/ioremap.c
-> +++ b/arch/x86/mm/ioremap.c
-> @@ -122,6 +122,10 @@ static void __ioremap_check_other(resource_size_t addr, struct ioremap_desc *des
->                  return;
->          }
->   
-> +       /* Ensure BIOS data (see devmem_is_allowed()) is consistently mapped */
-> +       if (PHYS_PFN(addr) < 256)
-> +               desc->flags |= IORES_MAP_ENCRYPTED;
-> +
->          if (!IS_ENABLED(CONFIG_EFI))
->                  return;
->   
-> ...because if the guest image wants to trust root why enforce piecemeal
-> lockdown semantics?
+Call static_branch_dec() only when the workqueue is not yet initialized.
+Workqueues are initialized before CPU bring up, so this will not
+conflict with the first scenario.
 
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Fixes: 55ad43e8ba0f ("mm: add a helper to accept page")
+Reported-by: Srikanth Aithal <sraithal@amd.com>
+Tested-by: Srikanth Aithal <sraithal@amd.com>
+---
+ include/linux/mmzone.h |  3 +++
+ mm/internal.h          |  1 +
+ mm/mm_init.c           |  1 +
+ mm/page_alloc.c        | 28 ++++++++++++++++++++++++++--
+ 4 files changed, 31 insertions(+), 2 deletions(-)
 
-This fixes the issue as now the remapped address and the direct mapping 
-are identical.
-
-Tested-by: Nikolay Borisov <nik.borisov@suse.com>
-
-Would you care to send a proper patch ?
-
-
-
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 9540b41894da..9027f751b619 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -964,6 +964,9 @@ struct zone {
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ 	/* Pages to be accepted. All pages on the list are MAX_PAGE_ORDER */
+ 	struct list_head	unaccepted_pages;
++
++	/* To be called once the last page in the zone is accepted */
++	struct work_struct	unaccepted_cleanup;
+ #endif
+ 
+ 	/* zone flags, see below */
+diff --git a/mm/internal.h b/mm/internal.h
+index 109ef30fee11..f2e6d42af6eb 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1516,6 +1516,7 @@ unsigned long move_page_tables(struct vm_area_struct *vma,
+ 
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ void accept_page(struct page *page);
++void unaccepted_cleanup_work(struct work_struct *work);
+ #else /* CONFIG_UNACCEPTED_MEMORY */
+ static inline void accept_page(struct page *page)
+ {
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 2630cc30147e..d5a51f65dc4d 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1404,6 +1404,7 @@ static void __meminit zone_init_free_lists(struct zone *zone)
+ 
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ 	INIT_LIST_HEAD(&zone->unaccepted_pages);
++	INIT_WORK(&zone->unaccepted_cleanup, unaccepted_cleanup_work);
+ #endif
+ }
+ 
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 4fe93029bcb6..e51304d3f126 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6921,6 +6921,11 @@ static DEFINE_STATIC_KEY_FALSE(zones_with_unaccepted_pages);
+ 
+ static bool lazy_accept = true;
+ 
++void unaccepted_cleanup_work(struct work_struct *work)
++{
++	static_branch_dec(&zones_with_unaccepted_pages);
++}
++
+ static int __init accept_memory_parse(char *p)
+ {
+ 	if (!strcmp(p, "lazy")) {
+@@ -6959,8 +6964,27 @@ static void __accept_page(struct zone *zone, unsigned long *flags,
+ 
+ 	__free_pages_ok(page, MAX_PAGE_ORDER, FPI_TO_TAIL);
+ 
+-	if (last)
+-		static_branch_dec(&zones_with_unaccepted_pages);
++	if (last) {
++		/*
++		 * There are two corner cases:
++		 *
++		 * - If allocation occurs during the CPU bring up,
++		 *   static_branch_dec() cannot be used directly as
++		 *   it causes a deadlock on cpu_hotplug_lock.
++		 *
++		 *   Instead, use schedule_work() to prevent deadlock.
++		 *
++		 * - If allocation occurs before workqueues are initialized,
++		 *   static_branch_dec() should be called directly.
++		 *
++		 *   Workqueues are initialized before CPU bring up, so this
++		 *   will not conflict with the first scenario.
++		 */
++		if (system_wq)
++			schedule_work(&zone->unaccepted_cleanup);
++		else
++			unaccepted_cleanup_work(&zone->unaccepted_cleanup);
++	}
+ }
+ 
+ void accept_page(struct page *page)
+-- 
+2.47.2
 
