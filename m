@@ -1,150 +1,338 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED797080D
-	for <linux-coco@lists.linux.dev>; Mon, 31 Mar 2025 19:07:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F9D21B9CA
+	for <linux-coco@lists.linux.dev>; Mon, 31 Mar 2025 20:56:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743448032; cv=none; b=YUD13FHw2NHbzTAzm3/9GoHodiDQQIsnIJ3y54fKrXuibOP34+oH+HeonGIcvD8lrIO1R16Z06jBBusXIbjv6MP2VSk4DRe5D/lFG7IhpWuQ1jtsOTdw4rVoUzDv740bqoWQyjBIqr/csjZkAcQcUldYh1BzhgQ6vzhlNGbQwk8=
+	t=1743454596; cv=none; b=pD5gp8gYvJfWRA6BYga3ppr1mgoqUf9ze6jojhPW23ehsUmqt+GCtk6MPi3Uydjy307mDCqIX/syf4Wn7rDE1Jh3J9LOQdcYaQ87iWRStc+N9z1vjcsUfVvyvKyACE4CT3CRJ/oVHBo89lkFielJBK3fba7MUxDy278ktCIiODY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743448032; c=relaxed/simple;
-	bh=9VZLtZQn21bK8YBrplVm/X96kYUH4jS80NIgLvwg0cE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aMNiB3Ry5cpCwtyibOqe9yLD9GwxXecijNv9qjalQZaIHIzOiNG3HVY/HqURQ6oNV/Js4akDTCv5CoNmBJkYTMxXpQJY0xcneA4SJ64URA38NsAgBJZe3MzYlO2kOAi+ay/w7KqiCJZKEWM1cAvwomke3xuhSZ6GW+4aArXTD9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VJQWcqaQ; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1743454596; c=relaxed/simple;
+	bh=0pByYo/m1oO08mHiQN3LGCDX1MTAfljCRfBH7G57rx4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nw0+R3lgDdRie46RLm9JKp2u+u59yIaYoJ73oIw59jla/XwyjlenWBxZUTYX2MqiJtiZDxzqKoDXz2v+PF6pvaquyJSakgyOvdCWJpVU4n1fdC52z7SO4QUuOmchfSbSrvZ9CRDK3P6vhTbP8D/jWSWWlj9ZkadPNA/b6nnnhRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IZcADlHH; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VJQWcqaQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1743448031; x=1774984031;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=9VZLtZQn21bK8YBrplVm/X96kYUH4jS80NIgLvwg0cE=;
-  b=VJQWcqaQPRpj2sa4fNPx6vANdSkiUXXuy+yqOY1phnjSmHfxrP/pE/wD
-   WZFz6s8tuOeJyPt42aTgoq3HgFyJUXJGzRA66WLd/qR+szMAlPWYglm9O
-   tVaEU6EfdcZPt5vHxifgZJzKhvdEyWZB3Xd3Leeu07M5lhP11hXDtXbaC
-   K1EC1IVcFWseq1FZLAnKrsrwLYZAA8YfyALtIMr6IM1AmksfcOalfAHIp
-   xuOMeg9L6RAnqiCEfh/ykbBnN95eHGHHetGELpdEaN8645rSCl5scKWPv
-   j/U/oKXE6hSbQIvdeEj4LD131EioBUj58aRrdylmftfEo8ExK4NPLt7zC
-   w==;
-X-CSE-ConnectionGUID: ibLrP6bJScyp2BvZtyvbIg==
-X-CSE-MsgGUID: YPssY4o0TpiNsQW/WBg0Gw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11390"; a="44922112"
-X-IronPort-AV: E=Sophos;i="6.14,291,1736841600"; 
-   d="scan'208";a="44922112"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2025 12:07:10 -0700
-X-CSE-ConnectionGUID: DlM1ZiJ5RymVKGjPLPUU8g==
-X-CSE-MsgGUID: iTP+Awi5TwSXjzeN4b/cXw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,291,1736841600"; 
-   d="scan'208";a="126066562"
-Received: from lbogdanm-mobl3.ger.corp.intel.com (HELO [10.124.221.61]) ([10.124.221.61])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2025 12:07:09 -0700
-Message-ID: <b44cef03-46ef-4153-b21a-98aa6ff43a08@intel.com>
-Date: Mon, 31 Mar 2025 12:07:07 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IZcADlHH"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ac2a089fbbdso871515066b.1
+        for <linux-coco@lists.linux.dev>; Mon, 31 Mar 2025 13:56:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1743454592; x=1744059392; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eMFZIJLHMLFfbbHCZUqErm/om6E3FaM9SCzxRtHFq/Q=;
+        b=IZcADlHHNmQPy5XEq81Z0s2ejbIJel1nsPLHMFsqzqrWMONj4SNFp4XCgCA6Ikdcr0
+         0nRb38MYDcv7KwluqECEyL66KMAgrbMXGig3DEYwRDbSzxrkpjHraT8hnULcWtXgWAu6
+         QiS9PJzxE7qNBCZSnXpdTVn3pVVmMeyYcFqhESgjdm/IZmxZjzc20ygptKNxcJ8GXtiJ
+         FnodOcQ3z8x9sA97FJqn7jV5gtYk+uzm3AJGUJcqelqZpREX538xuu7urM9TVqkooMVN
+         wWJey1ju59Am0piidmq9duiG7rXW5mGdi61cgatk6X0uM0B7vrQVJzN/9+g6g+qOZXd8
+         i9eQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743454592; x=1744059392;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eMFZIJLHMLFfbbHCZUqErm/om6E3FaM9SCzxRtHFq/Q=;
+        b=qinJiOohxdCkvUgddhqezdDIGz/yJdXl35kuj2XHjrmYcnxXP00FCT0sxHlAyPri8w
+         UUwHR30oXOOhI2zYbQLoUIwrSOqaAwVY/UedNwiFdTBqG5pctsXAcZBOGCeex4V0WK2O
+         4ZU861bpZ0wGMNO30aRNcYwdGhDQbfFdWx1Ci2AJZrJCRkADaaDiv7gHCcFHfmFA1mEw
+         p6hRxQat6v+ZKcUzliajvcJHsJdyrneM+M6NxZmLtE28mQ2vjBy2J9IcKtubRPdXspxS
+         In/sFPK6cWGOUFuxsOd09+SFsNPLDI7PKpa+fRpAzcQ+QResnVCIqjZB0oHlJi5JKUIS
+         a3YQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXKZd334YOOp7OR3sP6b4+wWYUqQQofMwBq1YWAv69J5pOZniNvIC2k7ih+UZLN4Hw6/aVqaxgB4qiz@lists.linux.dev
+X-Gm-Message-State: AOJu0YzOBOW8bb/6nLLCrmGS28QNrLSlNvJrnCqANzqI7KXZ9VLmQyzr
+	8FZZdIBZY3GkcakFF47tjqScVHd2YpamJ3Q5gM2T3HTjW2vfHcUTP51/oOIMUBcInLNEOmdMjgA
+	vAUfOmMPodib07AtZLeJSnYwxm0E913FPJRD3
+X-Gm-Gg: ASbGncu3hmk55Hy+Sdn9K7NKNPhjQt8hWFoveQVBYcKfZUaOvO3x49nyyOCavcHu8Cz
+	FX1235SXJablyhF6hbcdukZmBCNsOE7xfoPdfMCxe/h1UrpdsbAa4oaVGCdKn2eatjFEM1OD89a
+	mezE1W9F9R8VWQL9XLYX95WNrr
+X-Google-Smtp-Source: AGHT+IH2OrHRiZFl4Zx4EeGDFhwP+R719BUvxihcuKGW5gBmsdKcrfpG95lRcFRV8Rgidgp6mcsdFS6maClNn4YgpQ8=
+X-Received: by 2002:a17:907:868d:b0:ac7:4d51:a75f with SMTP id
+ a640c23a62f3a-ac74d51bb38mr781558366b.2.1743454592001; Mon, 31 Mar 2025
+ 13:56:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: fix deadlock on cpu_hotplug_lock in
- __accept_page()
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mel Gorman <mgorman@techsingularity.net>,
- Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
- <ashish.kalra@amd.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
- linux-mm@kvack.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, Srikanth Aithal <sraithal@amd.com>
-References: <20250329171030.3942298-1-kirill.shutemov@linux.intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20250329171030.3942298-1-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250331103900.92701-1-sgarzare@redhat.com> <20250331103900.92701-4-sgarzare@redhat.com>
+ <Z-rSMi2uCvShLbLS@kernel.org>
+In-Reply-To: <Z-rSMi2uCvShLbLS@kernel.org>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Mon, 31 Mar 2025 13:56:20 -0700
+X-Gm-Features: AQ5f1JoPS4PMiTFlmKgvgRB6Wf13_tuys_dCoPVlhpi0HfXVLgVRwNBrhZzlmCU
+Message-ID: <CAAH4kHY-Orjr_+rcYNemuWrAOOtyrCMD5s6KsOrkX740AARXiA@mail.gmail.com>
+Subject: Re: [PATCH v5 3/4] tpm: add SNP SVSM vTPM driver
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Stefano Garzarella <sgarzare@redhat.com>, linux-kernel@vger.kernel.org, 
+	Jason Gunthorpe <jgg@ziepe.ca>, James Bottomley <James.Bottomley@hansenpartnership.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Borislav Petkov <bp@alien8.de>, 
+	linux-integrity@vger.kernel.org, Peter Huewe <peterhuewe@gmx.de>, 
+	Ingo Molnar <mingo@redhat.com>, linux-coco@lists.linux.dev, 
+	Dov Murik <dovmurik@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Joerg Roedel <jroedel@suse.de>, x86@kernel.org, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Claudio Carvalho <cclaudio@linux.ibm.com>, "H. Peter Anvin" <hpa@zytor.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 3/29/25 10:10, Kirill A. Shutemov wrote:
-> +		if (system_wq)
-> +			schedule_work(&zone->unaccepted_cleanup);
-> +		else
-> +			unaccepted_cleanup_work(&zone->unaccepted_cleanup);
-> +	}
->  }
+On Mon, Mar 31, 2025 at 10:34=E2=80=AFAM Jarkko Sakkinen <jarkko@kernel.org=
+> wrote:
+>
+> On Mon, Mar 31, 2025 at 12:38:56PM +0200, Stefano Garzarella wrote:
+> > From: Stefano Garzarella <sgarzare@redhat.com>
+> >
+> > Add driver for the vTPM defined by the AMD SVSM spec [1].
+> >
+> > The specification defines a protocol that a SEV-SNP guest OS can use to
+> > discover and talk to a vTPM emulated by the Secure VM Service Module (S=
+VSM)
+> > in the guest context, but at a more privileged level (VMPL0).
+> >
+> > The new tpm-svsm platform driver uses two functions exposed by x86/sev
+> > to verify that the device is actually emulated by the platform and to
+> > send commands and receive responses.
+> >
+> > The device cannot be hot-plugged/unplugged as it is emulated by the
+> > platform, so we can use module_platform_driver_probe(). The probe
+> > function will only check whether in the current runtime configuration,
+> > SVSM is present and provides a vTPM.
+> >
+> > This device does not support interrupts and sends responses to commands
+> > synchronously. In order to have .recv() called just after .send() in
+> > tpm_try_transmit(), the .status() callback returns 0, and both
+> > .req_complete_mask and .req_complete_val are set to 0.
+> >
+> > [1] "Secure VM Service Module for SEV-SNP Guests"
+> >     Publication # 58019 Revision: 1.00
+> >
+> > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+> > ---
+> > v5:
+> > - removed cancel/status/req_* ops after rebase on master that cotains
+> >   commit 980a573621ea ("tpm: Make chip->{status,cancel,req_canceled} op=
+t")
+> > v4:
+> > - moved "asm" includes after the "linux" includes [Tom]
+> > - allocated buffer separately [Tom/Jarkko/Jason]
+> > v3:
+> > - removed send_recv() ops and followed the ftpm driver implementing .st=
+atus,
+> >   .req_complete_mask, .req_complete_val, etc. [Jarkko]
+> > - removed link to the spec because those URLs are unstable [Borislav]
+> > ---
+> >  drivers/char/tpm/tpm_svsm.c | 135 ++++++++++++++++++++++++++++++++++++
+> >  drivers/char/tpm/Kconfig    |  10 +++
+> >  drivers/char/tpm/Makefile   |   1 +
+> >  3 files changed, 146 insertions(+)
+> >  create mode 100644 drivers/char/tpm/tpm_svsm.c
+> >
+> > diff --git a/drivers/char/tpm/tpm_svsm.c b/drivers/char/tpm/tpm_svsm.c
+> > new file mode 100644
+> > index 000000000000..04c532421ff2
+> > --- /dev/null
+> > +++ b/drivers/char/tpm/tpm_svsm.c
+> > @@ -0,0 +1,135 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +/*
+> > + * Copyright (C) 2025 Red Hat, Inc. All Rights Reserved.
+> > + *
+> > + * Driver for the vTPM defined by the AMD SVSM spec [1].
+> > + *
+> > + * The specification defines a protocol that a SEV-SNP guest OS can us=
+e to
+> > + * discover and talk to a vTPM emulated by the Secure VM Service Modul=
+e (SVSM)
+> > + * in the guest context, but at a more privileged level (usually VMPL0=
+).
+> > + *
+> > + * [1] "Secure VM Service Module for SEV-SNP Guests"
+> > + *     Publication # 58019 Revision: 1.00
+> > + */
+> > +
+> > +#include <linux/module.h>
+> > +#include <linux/kernel.h>
+> > +#include <linux/platform_device.h>
+> > +#include <linux/tpm_svsm.h>
+> > +
+> > +#include <asm/sev.h>
+> > +
+> > +#include "tpm.h"
+> > +
+> > +struct tpm_svsm_priv {
+> > +     void *buffer;
+> > +     u8 locality;
+> > +};
+> > +
+> > +static int tpm_svsm_send(struct tpm_chip *chip, u8 *buf, size_t len)
+> > +{
+> > +     struct tpm_svsm_priv *priv =3D dev_get_drvdata(&chip->dev);
+> > +     int ret;
+> > +
+> > +     ret =3D svsm_vtpm_cmd_request_fill(priv->buffer, priv->locality, =
+buf, len);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     /*
+> > +      * The SVSM call uses the same buffer for the command and for the
+> > +      * response, so after this call, the buffer will contain the resp=
+onse
+> > +      * that can be used by .recv() op.
+> > +      */
+> > +     return snp_svsm_vtpm_send_command(priv->buffer);
+> > +}
+> > +
+> > +static int tpm_svsm_recv(struct tpm_chip *chip, u8 *buf, size_t len)
+> > +{
+> > +     struct tpm_svsm_priv *priv =3D dev_get_drvdata(&chip->dev);
+> > +
+> > +     /*
+> > +      * The internal buffer contains the response after we send the co=
+mmand
+> > +      * to SVSM.
+> > +      */
+> > +     return svsm_vtpm_cmd_response_parse(priv->buffer, buf, len);
+> > +}
+> > +
+> > +static struct tpm_class_ops tpm_chip_ops =3D {
+> > +     .flags =3D TPM_OPS_AUTO_STARTUP,
+> > +     .recv =3D tpm_svsm_recv,
+> > +     .send =3D tpm_svsm_send,
+> > +};
+> > +
+> > +static int __init tpm_svsm_probe(struct platform_device *pdev)
+> > +{
+> > +     struct device *dev =3D &pdev->dev;
+> > +     struct tpm_svsm_priv *priv;
+> > +     struct tpm_chip *chip;
+> > +     int err;
+> > +
+> > +     if (!snp_svsm_vtpm_probe())
+> > +             return -ENODEV;
+> > +
+> > +     priv =3D devm_kmalloc(dev, sizeof(*priv), GFP_KERNEL);
+> > +     if (!priv)
+> > +             return -ENOMEM;
+> > +
+> > +     /*
+> > +      * The maximum buffer supported is one page (see SVSM_VTPM_MAX_BU=
+FFER
+> > +      * in tpm_svsm.h).
+> > +      */
+> > +     priv->buffer =3D (void *)devm_get_free_pages(dev, GFP_KERNEL, 0);
+> > +     if (!priv->buffer)
+> > +             return -ENOMEM;
+> > +
+> > +     /*
+> > +      * FIXME: before implementing locality we need to agree what it m=
+eans
+> > +      * for the SNP SVSM vTPM
+> > +      */
+> > +     priv->locality =3D 0;
+>
+> I don't think we want FIXME's to mainline. Instead, don't declare the
+> field at all if you don't use it. Just pass zero to *_request_fill().
+>
+> Maybe "not have the field" is even a better reminder than a random fixme
+> comment?
+>
+> > +
+> > +     chip =3D tpmm_chip_alloc(dev, &tpm_chip_ops);
+> > +     if (IS_ERR(chip))
+> > +             return PTR_ERR(chip);
+> > +
+> > +     dev_set_drvdata(&chip->dev, priv);
+> > +
+> > +     err =3D tpm2_probe(chip);
+> > +     if (err)
+> > +             return err;
+> > +
+> > +     err =3D tpm_chip_register(chip);
+> > +     if (err)
+> > +             return err;
+> > +
+> > +     dev_info(dev, "SNP SVSM vTPM %s device\n",
+> > +              (chip->flags & TPM_CHIP_FLAG_TPM2) ? "2.0" : "1.2");
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +static void __exit tpm_svsm_remove(struct platform_device *pdev)
+> > +{
+> > +     struct tpm_chip *chip =3D platform_get_drvdata(pdev);
+> > +
+> > +     tpm_chip_unregister(chip);
+> > +}
+> > +
+> > +/*
+> > + * tpm_svsm_remove() lives in .exit.text. For drivers registered via
+> > + * module_platform_driver_probe() this is ok because they cannot get u=
+nbound
+> > + * at runtime. So mark the driver struct with __refdata to prevent mod=
+post
+> > + * triggering a section mismatch warning.
+> > + */
+> > +static struct platform_driver tpm_svsm_driver __refdata =3D {
+> > +     .remove =3D __exit_p(tpm_svsm_remove),
+> > +     .driver =3D {
+> > +             .name =3D "tpm-svsm",
+> > +     },
+> > +};
+> > +
+> > +module_platform_driver_probe(tpm_svsm_driver, tpm_svsm_probe);
 
-The 'system_wq' check seems like an awfully big hack. No other
-schedule_work() user does anything similar that I can find across the tree.
+I might be unclear on how I should be testing this, but I do see
+/dev/tpm0 and /dev/tpmrm0 when I build with CONFIG_TCG_SVSM=3Dy, but I
+don't see the event log in securityfs. What am I missing?
 
-Instead of hacking in some internal state, could you use 'system_state',
-like:
+> > +
+> > +MODULE_DESCRIPTION("SNP SVSM vTPM Driver");
+> > +MODULE_LICENSE("GPL");
+> > +MODULE_ALIAS("platform:tpm-svsm");
+> > diff --git a/drivers/char/tpm/Kconfig b/drivers/char/tpm/Kconfig
+> > index fe4f3a609934..dddd702b2454 100644
+> > --- a/drivers/char/tpm/Kconfig
+> > +++ b/drivers/char/tpm/Kconfig
+> > @@ -234,5 +234,15 @@ config TCG_FTPM_TEE
+> >       help
+> >         This driver proxies for firmware TPM running in TEE.
+> >
+> > +config TCG_SVSM
+> > +     tristate "SNP SVSM vTPM interface"
+> > +     depends on AMD_MEM_ENCRYPT
+> > +     help
+> > +       This is a driver for the AMD SVSM vTPM protocol that a SEV-SNP =
+guest
+> > +       OS can use to discover and talk to a vTPM emulated by the Secur=
+e VM
+> > +       Service Module (SVSM) in the guest context, but at a more privi=
+leged
+> > +       level (usually VMPL0).  To compile this driver as a module, cho=
+ose M
+> > +       here; the module will be called tpm_svsm.
+> > +
+> >  source "drivers/char/tpm/st33zp24/Kconfig"
+> >  endif # TCG_TPM
+> > diff --git a/drivers/char/tpm/Makefile b/drivers/char/tpm/Makefile
+> > index 2b004df8c04b..9de1b3ea34a9 100644
+> > --- a/drivers/char/tpm/Makefile
+> > +++ b/drivers/char/tpm/Makefile
+> > @@ -45,3 +45,4 @@ obj-$(CONFIG_TCG_CRB) +=3D tpm_crb.o
+> >  obj-$(CONFIG_TCG_ARM_CRB_FFA) +=3D tpm_crb_ffa.o
+> >  obj-$(CONFIG_TCG_VTPM_PROXY) +=3D tpm_vtpm_proxy.o
+> >  obj-$(CONFIG_TCG_FTPM_TEE) +=3D tpm_ftpm_tee.o
+> > +obj-$(CONFIG_TCG_SVSM) +=3D tpm_svsm.o
+> > --
+> > 2.49.0
+> >
+>
+> BR, Jarkko
 
-	if (system_state == SYSTEM_BOOTING)
-		unaccepted_cleanup_work(&zone->unaccepted_cleanup);
-	else
-		schedule_work(&zone->unaccepted_cleanup);
 
-The other method would be to make it more opportunistic? Basically,
-detect when it might deadlock:
 
-bool try_to_dec()
-{
-	if (!cpus_read_trylock())
-		return false;
-
-	static_branch_dec_cpuslocked(&zones_with_unaccepted_pages);
-	cpus_read_unlock();
-
-	return true;
-}
-
-That still requires a bit in the zone to say whether the
-static_branch_dec() was deferred or not, though. It's kinda open-coding
-schedule_work().
+--=20
+-Dionna Glaze, PhD, CISSP, CCSP (she/her)
