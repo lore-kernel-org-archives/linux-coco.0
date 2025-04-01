@@ -1,64 +1,61 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203681E5B6F
-	for <linux-coco@lists.linux.dev>; Tue,  1 Apr 2025 07:25:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A6A1E5B88
+	for <linux-coco@lists.linux.dev>; Tue,  1 Apr 2025 07:57:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743492308; cv=none; b=cInItgD8BLJhN2ubgRIgXhxXWmq+3XRBJLq8mhlv+8Cv50Q9whC+bvplkM2OC27LflN4l3uDphags239msZSPkpIr0jlm/1ZykUjKedzU43ePsyracyoNIZKov5xHlzsNgXgNnYw5al9Lmst2YyFmOpdGMbd4OuEo2uFixhWvP4=
+	t=1743494260; cv=none; b=tLGKPtmWxKDgMfzkGRj5ZpiWpGL4x0AEfwQgdwO/2rqXnlIY65MiBdFc/vf82N1cqHqsHkdVaJeAHaGIk7EFQmmOk4qgsb7hlkpdZlpZmxU7uTaoP5Ae5QQkp29HsmX0Pd70CBFh6JQR/6T7QiocNDdbrrJwVZ9PzSid6bRxuXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743492308; c=relaxed/simple;
-	bh=lviFBdN6BXt0GE8RcFoBwRgn67ez6kJJ1ofE+xH7fuk=;
+	s=arc-20240116; t=1743494260; c=relaxed/simple;
+	bh=gsOC6Rdr7oKwXyERdvN9ZCknZbemPP5V4VJ2wdV1FgE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ap8RifC0gyI1fyj4gfT+VIE/+QZgZC608wenn+/CuceNaebakWLefSAEwDr0tdGIr+S1/OvokfgP630P8utQG/Fx7hRjr1l+qxhgmhnvpPedKc8eKiepbH75KpYDVAh2wsou3+DOKkUUmV0+OWB89pi0PJ9tvxZCEKbjO/jbdCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l1gmTBdK; arc=none smtp.client-ip=192.198.163.12
+	 Content-Type:Content-Disposition:In-Reply-To; b=SRE/yehHJBbfNNob9Owb3yjGWEuSM9sjMaiXLJetHtnj120UfNFhLhs7hoovYSeOQDRIgq7vgRmcv1jQ5IYKDMYSqXVhv1/H9yRqe80BCqhiJjcN7aK40dDgpFgssMHTut2cut8wn7YMddCCtfKLA6ewRuyq/8kSyqFdb0WcUxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j2UOoP3N; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l1gmTBdK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j2UOoP3N"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1743492307; x=1775028307;
+  t=1743494258; x=1775030258;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=lviFBdN6BXt0GE8RcFoBwRgn67ez6kJJ1ofE+xH7fuk=;
-  b=l1gmTBdKKBqCm8kiVmWJCzXa4XBHvEe92aRlXvagOrX3zaaAStVejB6u
-   kNV2vR3WT84DnOawMU5O+p3kdJuQWFk8/eBuJSpXbugoOp0k9HG+lCA7e
-   0T3gZ3/y5DCQkNNT54y7YKPlws/xpmb/0Zl3jGCR+BfcLac2TqfbHIomD
-   CjUiEU06gGSyt/PnLcC0nA45WCrT8Nouz1BCeTWU82aBOj/JXsvzwnY8X
-   +hLqM7ZJdWWrCguBGxOCM5+fq9wTsFr8ukaJQuh5WfHDnOL1sdjFRsCsv
-   pc61qsTJiCeK1EX7nf+PBugqG9rbJJO8ELNh+5JdMr4RBAs5pVzv8LnxS
-   g==;
-X-CSE-ConnectionGUID: VVd16+Y7RiqmB+JNvZesSw==
-X-CSE-MsgGUID: HED56HzrQW+dmsNjuzBS0w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11390"; a="48670618"
+  bh=gsOC6Rdr7oKwXyERdvN9ZCknZbemPP5V4VJ2wdV1FgE=;
+  b=j2UOoP3N5Qg2Yzp5uEKTdcU6arkoKupPyO/DMNePjzo/ZB9E47KAByJ9
+   retf9jNm1hTb79v04oVIwnCr/L1ZaKX0RIOyEr/8Gy8iBpAWgukrjiBuM
+   W5gAlCPwofYa+knazz9vaoDbQoqWwFinjD19nq7fYW4+N+MKa4EEm/nAf
+   JgnQFFq2+/iYwk2v9w/5pofmo9V+bryVLYU9GRI9whHyQCR2LsBMAx3ni
+   8KudHhB5EQdr8qkpcVM45DPmvmsFiMNCdP7hh1xXKJSpX5aB/CaCvSKM2
+   81nkY9i9pF0TGFL5Qoi8+y110ORz3WTvxaOCgMA7VoXn0s2GFW67QnsRQ
+   Q==;
+X-CSE-ConnectionGUID: Gv8nPWZdSIWrPG/F8nrpyQ==
+X-CSE-MsgGUID: bE0wqcvrS3+dPNHdqDGhbQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11390"; a="44054390"
 X-IronPort-AV: E=Sophos;i="6.14,292,1736841600"; 
-   d="scan'208";a="48670618"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2025 00:25:06 -0700
-X-CSE-ConnectionGUID: 3Pztk+laTtaenkiK1mG16A==
-X-CSE-MsgGUID: EE/yTQiGQoGexTN3UtIhNw==
+   d="scan'208";a="44054390"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2025 00:57:38 -0700
+X-CSE-ConnectionGUID: n/HefCdgTY6bVQlhI/Aoyw==
+X-CSE-MsgGUID: 04wal0V/Tc6yT+lACGj31A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.14,292,1736841600"; 
-   d="scan'208";a="126139787"
+   d="scan'208";a="131172051"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa006.fm.intel.com with ESMTP; 01 Apr 2025 00:25:03 -0700
+  by orviesa003.jf.intel.com with ESMTP; 01 Apr 2025 00:57:36 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 6C2B8278; Tue, 01 Apr 2025 10:25:02 +0300 (EEST)
-Date: Tue, 1 Apr 2025 10:25:02 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mel Gorman <mgorman@techsingularity.net>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, linux-mm@kvack.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Srikanth Aithal <sraithal@amd.com>
-Subject: Re: [PATCH] mm/page_alloc: fix deadlock on cpu_hotplug_lock in
- __accept_page()
-Message-ID: <mc7rnftmisbx5fpefwaiobngzpbh66yk5535xrfxope4gobu36@2wite5exlfcd>
-References: <20250329171030.3942298-1-kirill.shutemov@linux.intel.com>
- <b44cef03-46ef-4153-b21a-98aa6ff43a08@intel.com>
+	id 825BC278; Tue, 01 Apr 2025 10:57:34 +0300 (EEST)
+Date: Tue, 1 Apr 2025 10:57:34 +0300
+From: Kirill Shutemov <kirill.shutemov@linux.intel.com>
+To: Dan Williams <dan.j.williams@intel.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>
+Cc: dave.hansen@linux.intel.com, x86@kernel.org, 
+	Vishal Annapurve <vannapurve@google.com>, Nikolay Borisov <nik.borisov@suse.com>, stable@vger.kernel.org, 
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH] x86/ioremap: Maintain consistent IORES_MAP_ENCRYPTED for
+ BIOS data
+Message-ID: <z7h6sepvvrqvmpiccqubganhshcbzzrbvda7dntzufqywei4gz@6clsg5lbvamd>
+References: <174346288005.2166708.14425674491111625620.stgit@dwillia2-xfh.jf.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -67,67 +64,60 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b44cef03-46ef-4153-b21a-98aa6ff43a08@intel.com>
+In-Reply-To: <174346288005.2166708.14425674491111625620.stgit@dwillia2-xfh.jf.intel.com>
 
-On Mon, Mar 31, 2025 at 12:07:07PM -0700, Dave Hansen wrote:
-> On 3/29/25 10:10, Kirill A. Shutemov wrote:
-> > +		if (system_wq)
-> > +			schedule_work(&zone->unaccepted_cleanup);
-> > +		else
-> > +			unaccepted_cleanup_work(&zone->unaccepted_cleanup);
-> > +	}
-> >  }
+On Mon, Mar 31, 2025 at 04:14:40PM -0700, Dan Williams wrote:
+> Nikolay reports [1] that accessing BIOS data (first 1MB of the physical
+> address space) via /dev/mem results in an SEPT violation.
 > 
-> The 'system_wq' check seems like an awfully big hack. No other
-> schedule_work() user does anything similar that I can find across the tree.
+> The cause is ioremap() (via xlate_dev_mem_ptr()) establishing an
+> unencrypted mapping where the kernel had established an encrypted
+> mapping previously.
+> 
+> Teach __ioremap_check_other() that this address space shall always be
+> mapped as encrypted as historically it is memory resident data, not MMIO
+> with side-effects.
 
-I don't see how it is "an awfully big hack". It is "use system_wq if it is
-ready".
+I am not sure if all AMD platforms would survive that.
 
-Maybe it is going to be marginally cleaner if schedule_work() would be
-open-coded:
+Tom?
 
-		if (system_wq)
-		        queue_work(system_wq, &zone->unaccepted_cleanup);
-		else
-			unaccepted_cleanup_work(&zone->unaccepted_cleanup);
+> 
+> Cc: <x86@kernel.org>
+> Cc: Vishal Annapurve <vannapurve@google.com>
+> Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>
+> Reported-by: Nikolay Borisov <nik.borisov@suse.com>
+> Closes: http://lore.kernel.org/20250318113604.297726-1-nik.borisov@suse.com [1]
+> Tested-by: Nikolay Borisov <nik.borisov@suse.com>
+> Fixes: 9aa6ea69852c ("x86/tdx: Make pages shared in ioremap()")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+>  arch/x86/mm/ioremap.c |    4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
+> index 42c90b420773..9e81286a631e 100644
+> --- a/arch/x86/mm/ioremap.c
+> +++ b/arch/x86/mm/ioremap.c
+> @@ -122,6 +122,10 @@ static void __ioremap_check_other(resource_size_t addr, struct ioremap_desc *des
+>  		return;
+>  	}
+>  
+> +	/* Ensure BIOS data (see devmem_is_allowed()) is consistently mapped */
+> +	if (PHYS_PFN(addr) < 256)
+
+Maybe
+	if (addr < BIOS_END)
 
 ?
 
+> +		desc->flags |= IORES_MAP_ENCRYPTED;
+> +
+>  	if (!IS_ENABLED(CONFIG_EFI))
+>  		return;
+>  
 > 
-> Instead of hacking in some internal state, could you use 'system_state',
-> like:
-> 
-> 	if (system_state == SYSTEM_BOOTING)
-> 		unaccepted_cleanup_work(&zone->unaccepted_cleanup);
-> 	else
-> 		schedule_work(&zone->unaccepted_cleanup);
-
-Really? The transition points between these states are arbitrary defined.
-Who said that if we are out of SYSTEM_BOOTING we can use system_wq?
-Tomorrow we can introduce additional state between BOOTING and SCHEDULING
-and this code will be silently broken. The same for any new state before
-BOOTING.
-
-> The other method would be to make it more opportunistic? Basically,
-> detect when it might deadlock:
-> 
-> bool try_to_dec()
-> {
-> 	if (!cpus_read_trylock())
-> 		return false;
-> 
-> 	static_branch_dec_cpuslocked(&zones_with_unaccepted_pages);
-> 	cpus_read_unlock();
-> 
-> 	return true;
-> }
-> 
-> That still requires a bit in the zone to say whether the
-> static_branch_dec() was deferred or not, though. It's kinda open-coding
-> schedule_work().
-
-It will also require special handling for soft CPU online/offline.
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
