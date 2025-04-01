@@ -1,69 +1,72 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A597081C
-	for <linux-coco@lists.linux.dev>; Tue,  1 Apr 2025 18:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7FF20C48A
+	for <linux-coco@lists.linux.dev>; Tue,  1 Apr 2025 20:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743533204; cv=none; b=oyIWz9DcCvdwwDYj3ZJ+v/wsgT79wN8NLCCudEG3ev9xo2icVqu9blMcQ2XTTDKndkpXud/HO46yGS/lO9snmZpoK2W6CaTeV6noezCSM9K7dKIQuF/qO3lNq8/las+m9pPbRCNF2KyGjgaCPpS5yUshE7iQWsWsYwc10M5piRk=
+	t=1743540929; cv=none; b=eRSufI1+Wq1ZYdK4fWCPSA76HjqIs6UClLJV5/z5j8Dm8EAIIcrnIjdXBwKsq15wq0grTu8INqTjzNCSHEJ7IzTGVYDw4tpoYaG9Q8R5k2GArfkrTylQ3CMiRE+jDM/T5bCMs/5oDdqycGV8ZDBTMy8c8D29FvLSwhchD+g0vX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743533204; c=relaxed/simple;
-	bh=8B6oXazQXaV9pPAnx0jd+2XsiwGquDdkeqxctviJA+A=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=Xb5YiLOR7ZYQFawZThxXuGHjsMsKn9cAp5bUAeRKRuuTiV6pRq/tw05LTzWeL3/m/8haUVoW9jrWeln9uli6SbAOhO/8IcmRFgvhoFFtIrnYk14maRbxr9n0baggpSDCFVSuxyiwvzE0qrDcdQhqzuTRGFVrUN2gRU/awQzZ1gA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fVHPBpPL; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1743540929; c=relaxed/simple;
+	bh=wO5tHIDlxst7r697iR4bshoY56C5LbRa0jXC0tZViGM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=lllu5por2vEHRFYynhQUEnONzBdftS627vBYoQ7cOA0TI/4gcJC5R7xjGDn/gP8X2P1p6vPRvv10EHmbnByPVm46EqbSkzI+VHfnoGIJdvCh1CgRxjFofc8NfdbEhjYxPK4RQ6WTexlif5o7P7jIEvknMrUT4H9kjAzBrzM+uDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CRWpJg6b; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fVHPBpPL"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CRWpJg6b"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743533202;
+	s=mimecast20190719; t=1743540927;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=kKK1Qrzxrep9nFQ3mmefW/rXw3H/O80pMYOoU3NOBSo=;
-	b=fVHPBpPLHgwDmZSbQ8JB161larC7RfodLsM6yaMPyXDF1PmMBrlyJPhTM393NO8zpKxOQ8
-	CLWnjRq1EhsNgZKGLDjOlaxkWBdA5lFwXPSYukFItmMw/fS8ISXCt4+daKkY3D2cB2VeBZ
-	H7dQBhGswpcdwYaQUMC8QDDGwtrwY2Y=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=7QpsIRYDdD+NL12KBYzmELgBny35dGaEVH3KooFWSIs=;
+	b=CRWpJg6boK5lXUMhCcSNYQ1aPLJdPKX2P/XsHOaclbO18OlZxdHqISvWQstwO8ZAs5tnYd
+	bk4M5WHRK4UoRc1JP70Y8Zmcxq0sYL6AllVqawt3YHm3dIViVOYq/15CSpDE1qZUTRqUvA
+	bBY3dst/kLgdn7XYpCURyzdcUClV2Ng=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-587-iltzaOVFNda7jIi12r63Lw-1; Tue, 01 Apr 2025 14:46:40 -0400
-X-MC-Unique: iltzaOVFNda7jIi12r63Lw-1
-X-Mimecast-MFC-AGG-ID: iltzaOVFNda7jIi12r63Lw_1743533200
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43e9a3d2977so21278315e9.1
-        for <linux-coco@lists.linux.dev>; Tue, 01 Apr 2025 11:46:40 -0700 (PDT)
+ us-mta-683-I8s7lPy8Mvme0yCMBN8PCg-1; Tue, 01 Apr 2025 16:55:26 -0400
+X-MC-Unique: I8s7lPy8Mvme0yCMBN8PCg-1
+X-Mimecast-MFC-AGG-ID: I8s7lPy8Mvme0yCMBN8PCg_1743540925
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-39135d31ca4so101088f8f.1
+        for <linux-coco@lists.linux.dev>; Tue, 01 Apr 2025 13:55:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743533200; x=1744138000;
-        h=content-transfer-encoding:organization:autocrypt:subject:cc:to:from
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kKK1Qrzxrep9nFQ3mmefW/rXw3H/O80pMYOoU3NOBSo=;
-        b=pU6/twGv8ALzTnmYg/QjAFvJkcuNznsoeEjwYNDnnCFZf1uQTa7SwgfmCZB8hKyE1/
-         YGoweqzCHShreNDAJ4ssyU/qWjhL/pxRl8aSNSPh8U0pq2sdFnETykw2BrHwmbiD0jNx
-         bMs92dpougso+OJL9qW/5wSJZU1DlV6+m2ZUDeWT/u43PdH2MErGRPVcWNdw6uNmi52o
-         wj9BNDe75m0U23ONZ5NituZ/3uFHuNNbKkjbqqg+ounjLhi2qbL7Y6s6sJUZWnsvItdR
-         GdKvdLSGNYht4TQqHHXCaBC7+Frg87NDgUL7O2GLBk2dT+QCz/5qM8K1wWlP31wKISVy
-         WSXA==
-X-Gm-Message-State: AOJu0Yy+gH91zTepQKUVtEvSiC0sIMfllZyuxZTy+bWxqy4rPKu4k3rq
-	p9c+0XnVIo4SSfiohqwhOCgreCEnkI0BAPn/QA3eabMXV2L6LLUDmLCOznRDzlLhxS7REAGJ1C1
-	ynuVpI7at0FmulFFrJAo0aQM3kveYGTdUz7NPQrlaclpSyN+/bUzFnwejOxfY0XQ4e/viFKX+Jt
-	wie1YGx71G+UZ9P3SDyD3z1b01mRCboWF+za8Lz5O0ug==
-X-Gm-Gg: ASbGnctYXSEZxkB3RPQIO4eCjzR55xhGbQ2fhQH+3+vKjRFy1zESIkeq3c6XAn5FY9V
-	Kkom47elBSsMCcVNx6iZOZUnxjtVrYI17VGvXKypZ6BhsCIo+Uf29AuoURxtUqYq0X5KC1cBlus
-	/i0BZsy9zZT1ZyhXSMHd8v28rYmqSy2Gx/NLHxPuruGBg1qWm2M2JB6BCOFh+BxtDke/4c1u58n
-	ncxAIyJnbTV28UM2R+yOQbkaTtfC0O63Ay27jtcyfXBz+cF0+83mHqDsTr6F6cvlkhmWe4vR05s
-	+40AHPfUfJ3BRqXt5zu0uCV7f41/p3GF1WvK46g7H52fuQ==
-X-Received: by 2002:a05:6000:1882:b0:390:e311:a8c7 with SMTP id ffacd0b85a97d-39c120c8ddfmr12512799f8f.5.1743533199542;
-        Tue, 01 Apr 2025 11:46:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFIWn+7qndzlrQxqALUnPSOIr8UBsZEgSJxrYPbKOl0AEFKfLH3IIGslkQuztfDQqSz4JiDPg==
-X-Received: by 2002:a05:6000:1882:b0:390:e311:a8c7 with SMTP id ffacd0b85a97d-39c120c8ddfmr12512752f8f.5.1743533198871;
-        Tue, 01 Apr 2025 11:46:38 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1743540925; x=1744145725;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:to:from:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7QpsIRYDdD+NL12KBYzmELgBny35dGaEVH3KooFWSIs=;
+        b=ron5E+L8nyQwUl4uNTTboqLrVFtNJCJyQKU+W4lXvcDbeuRvPYZFQsdDjUJPc/qnhp
+         HZ+auzmaMgiSOs5zx2DN135qK6CH4LMkWkN9SR/EH9bI4v6BJgNyS8oCLsfYkuhuo+XF
+         Hxn3o/yNYI+EdGAaTXWfBj6wWKVIjIR8C0HR0YZDprnOYGVvFZ04cZrjxclG2qfRgBR2
+         A7Fa0vRTuEnSU60FRkOSae5403RA9iODbnJiXc/U1+LTm7kBWntCfsXoZifQdXis7N4J
+         blGQrabBoQeW1vT5HJvsUOBGnG6YKjPIJom+zh4lSh66SJyVHgj9w6IbHx7UVcAkSIwd
+         Ej8w==
+X-Gm-Message-State: AOJu0YwwRsB8xacpvKo7azqcrThFJImS2stp67u9ezb7CquPdWYwZCNF
+	iBRD/aIo8TvumnenmkIkaIUmInNThnEGwiCOZVXxJxeycYsNHPS87Ykjm8oQJrEwBrQIgGRqgQZ
+	hXkRhI1/vUX/OzCHG4mfvNLBKhdU2zLcovjsll8HFNlrBjmnfS5Ktp3CyVqBhZT+QKS/hYUNwVR
+	AXsbPx/7anRdrmAikthKEoe2vBSkPKcfPcsOYrSW/S1ay3
+X-Gm-Gg: ASbGnctLVMu9P1q35X+X4O3+bA8STgNOz0HG3FDlv13hhAkUvoSV6CtBV+0eeKfwEpf
+	od+whxJgN9voj97zqmS1DE3OJkqsmWOjGsIwWRHNs9pr5r38kgCmBafxAhqowHKzLM9sN2JIkIt
+	03AxSE0DFHqlld680uIyFyX8QIB7tozqnHl9JoUaRTtivAn5C4cWaa3Xtve3iDTS8GhhENPI1Ji
+	WG58yr/9SfSPDsXmGVyZiN5dtzpFhTSJ825URA0mcA4rbcHtf/CFXObHQJBi+yrUIbagmr+N+Zt
+	GowqTpf3t8LkyvVCth4criyHiUrc53LeVd5etL5sjcGP2Q==
+X-Received: by 2002:a05:6000:4283:b0:391:952:c74a with SMTP id ffacd0b85a97d-39c27ee60b5mr1307686f8f.8.1743540925185;
+        Tue, 01 Apr 2025 13:55:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEY9ekMJ4Nar5uiVtoOHkCFgzdpp/cgUqXG8VhQGEL+yuCge44cRIeUThbv+Mn70edoSI8jmg==
+X-Received: by 2002:a05:6000:4283:b0:391:952:c74a with SMTP id ffacd0b85a97d-39c27ee60b5mr1307647f8f.8.1743540924756;
+        Tue, 01 Apr 2025 13:55:24 -0700 (PDT)
 Received: from [192.168.3.141] (p4ff236cf.dip0.t-ipconnect.de. [79.242.54.207])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c0b79e12bsm15067963f8f.62.2025.04.01.11.46.37
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ea8d16049sm22202225e9.0.2025.04.01.13.55.21
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Apr 2025 11:46:38 -0700 (PDT)
-Message-ID: <7b3090fb-1816-4761-a7a5-17d49a050645@redhat.com>
-Date: Tue, 1 Apr 2025 20:46:36 +0200
+        Tue, 01 Apr 2025 13:55:23 -0700 (PDT)
+Message-ID: <6c9362f3-0eb8-4526-a7d3-3d483a40dd84@redhat.com>
+Date: Tue, 1 Apr 2025 22:55:21 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -71,18 +74,11 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: [Invitation] bi-weekly guest_memfd upstream call on 2025-04-03
 From: David Hildenbrand <david@redhat.com>
 To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
  "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
-Cc: gshan@redhat.com, ackerleytng@google.com, kalyazin@amazon.com,
- pankaj.gupta@amd.com, papaluri@amd.com, peterx@redhat.com,
- seanjc@google.com, shivankg@amd.com, tabba@google.com,
- vannapurve@google.com, shan.gavin@gmail.com,
- aneeshkumar.kizhakeveetil@arm.com, ashish.kalra@amd.com,
- dan.j.williams@intel.com, ddutile@redhat.com, quic_eberman@quicinc.com,
- michael.roth@amd.com, roypat@amazon.co.uk, suzuki.poulose@arm.com,
- vbabka@suse.com, yuzhao@google.com, rppt@kernel.org, jgowans@amazon.com
-Subject: [Invitation] bi-weekly guest_memfd upstream call on 2025-04-03
+References: <7b3090fb-1816-4761-a7a5-17d49a050645@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -128,37 +124,25 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
+In-Reply-To: <7b3090fb-1816-4761-a7a5-17d49a050645@redhat.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Q3byqOKF1Q_E1RouJqv4sM2LFteOfEVJsUupTPDCOPM_1743533200
+X-Mimecast-MFC-PROC-ID: k0E1TQTH2AIv5HfEhtYtypmvp7-YYq5GBeaIU7ejc5s_1743540925
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hi everybody,
+On 01.04.25 20:46, David Hildenbrand wrote:
+> Hi everybody,
+> 
+> our next guest_memfd upstream call is scheduled for Thursday,
+> 2025-04-03 at 8:00 - 9:00am (GMT-08:00) Pacific Time - Vancouver.
 
-our next guest_memfd upstream call is scheduled for Thursday,
-2025-04-03 at 8:00 - 9:00am (GMT-08:00) Pacific Time - Vancouver.
+Correction (thanks James!)
 
-We'll be using the following Google meet:
-http://meet.google.com/wxp-wtju-jzw
+	8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
-The meeting notes can be found at [1], where we also link recordings and
-collect current guest_memfd upstream proposals. If you want an google
-calendar invitation that also covers all future meetings, just write me
-a mail.
-
-In this meeting, I'll share some details from my LSF/MM session, and 
-we'll likely talk about the folio_put() callback and how to maybe limit 
-it to only specific cases (e.g., handing folios back to hugetlb after 
-truncate).
-
-To put something to discuss onto the agenda, reply to this mail or add
-them to the "Topics/questions for next meeting(s)" section in the
-meeting notes as a comment.
-
-[1]
-https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
+is the real deal according to google calendar.
 
 -- 
 Cheers,
