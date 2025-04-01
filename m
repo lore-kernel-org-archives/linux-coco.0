@@ -1,133 +1,404 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A48207662
-	for <linux-coco@lists.linux.dev>; Tue,  1 Apr 2025 17:59:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7E220D4F8
+	for <linux-coco@lists.linux.dev>; Tue,  1 Apr 2025 18:45:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743530369; cv=none; b=NDu4B3w4sCmxJnoFgdvsWtSXc6xZwhd1s+RdEVgwjlOqFuQ0p05e1hx6g6nOLJthBcjE+x3gk6GPX8rSNhvomIgloHvAJDSimTA4r8Dqv1tiXSwhOFhoLCdXidNWV3h0v+jVk6adThfWH7fwvBEXLML5MM7H57OhE6YujxY7r2I=
+	t=1743533150; cv=none; b=eTVauEAmjh9NHDrvWRk7ueLngpzQQcoom1kVMCHIGD0CoCFOwEET51oDVwJmBca/35hmAeKLbzjc8BDewlQcav+xRF64L8wr0WDyl665SpASVQm6JoWFx7YA3eLaxRZkC7hVzLDlaesyA5L6fiTm1jIxHOTJjOKGorGptYIk8I4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743530369; c=relaxed/simple;
-	bh=EkAhl5JNBQDkU3GzPpbNR4kF4fd1AXlSprNV4wW4B9E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Vt12W87FN3lqRez73pR8c2FA5YZXgxpXtyqpUQUyZwFdyOPwiEeI57gRSQp978p5GPMRnLjubNTgX6C8uZ/6uyejKS5GcSAFuLP7f3bkf3CMP7J8ckOD9K+JmUKvDbuJc471/n1C9wVj2ihZmN5ix3+IfwwB0eFi6b6mPK8dChI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GaZKOp3J; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1743533150; c=relaxed/simple;
+	bh=P1VJDqdlcScdk8mP/cMnGmVzjAvz0ds0HzSLfAdE4qU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=n1fnhU41HqDsGfnav4E20ggHvX2+tk+US474WwlDvB6nvQZScT/h3U2xoeAWIGQKp0neETXg+lLL9lUCGkki5VJXhyHpPFhcaie01ioNM1ViqYXk59C4KD3yit20Haz1CZqAM/ELv6BE2pcRsaH7D1hJ7Ekpx5u7wrbSX1ob8xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B2siRzmp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GaZKOp3J"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1743530368; x=1775066368;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=EkAhl5JNBQDkU3GzPpbNR4kF4fd1AXlSprNV4wW4B9E=;
-  b=GaZKOp3JYV+INI3VmdmvDIuRJBqs4JUcLeNTvzsEjxHDfd4/ZQfXlLFC
-   ZPsGnbZnQeaIF/a0G2X148b/YINk+Jf35YHI4p3g9im0QDr2vj/k9biMS
-   R5j+N/HzfjL3qPJes/5kt/obvA1Fn/ggeIw4BDEx+Wwi70fHzOdsXloqG
-   0nVUWIKe00w5GFoCdCxxHhcu4hBHP2DizgsIoOAU9lO59rVHuLD5fr8I5
-   wYl9JnhPonLNBy2E6x7UL9rMsE8y9i+aPRX8WL/T8G3+3iv0WWgISTZXr
-   xUt6uDPs9wvnJ9soWdJiAIyoWp+5v5wDE10rh1eL/VWtMStpMFcwDcBBx
-   Q==;
-X-CSE-ConnectionGUID: njEMold+QvK7lVcTEpZy0A==
-X-CSE-MsgGUID: S18GBSQISniUs5tP+xM7bg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="55067468"
-X-IronPort-AV: E=Sophos;i="6.14,294,1736841600"; 
-   d="scan'208";a="55067468"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2025 10:59:27 -0700
-X-CSE-ConnectionGUID: QKKM40C3SrGzwED74lrM6Q==
-X-CSE-MsgGUID: WMg+4v4FTxKjz52kZe+Ciw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,294,1736841600"; 
-   d="scan'208";a="131661073"
-Received: from uaeoff-desk2.amr.corp.intel.com (HELO [10.124.221.203]) ([10.124.221.203])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2025 10:59:26 -0700
-Message-ID: <d440f49c-ab2f-4cb8-b822-362f757ae47d@intel.com>
-Date: Tue, 1 Apr 2025 10:59:25 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B2siRzmp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 125ECC4CEE4
+	for <linux-coco@lists.linux.dev>; Tue,  1 Apr 2025 18:45:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743533150;
+	bh=P1VJDqdlcScdk8mP/cMnGmVzjAvz0ds0HzSLfAdE4qU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=B2siRzmp5CcvgsI0DL11wSIVKXfl/mYkEkoJH8lSdrg9PwBRpVYONEhRWoJg3VqR8
+	 UEBvh92feOn+WHCE+rpJMk84YDwUxUqOT1+uUXp5adRvBLR9ViqUHsSQNlDNyUMXWn
+	 KSVhunpdwLERtqfKxVyNzz5BXYIh1zl7qNIfGmQaVJObHmqVqaE9UHfUCbldTNS/0G
+	 JASv1XDBrQ0IS98b+DyZdw//sr382tyYk7ZOtekPMPExlHTm+fF8gXRunaSi6uV88D
+	 sr9UUcl7I72g91kNCDpF2/1RbfrkP2oOqxQYtDHBEp4D/XixkDfvrUo9CHCahG3aTY
+	 6PQoq5yec/OhA==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-30db2c2c609so63773631fa.3
+        for <linux-coco@lists.linux.dev>; Tue, 01 Apr 2025 11:45:49 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVY27h9hEHCMDykUSyPsFBTkKR1vLwgGmF6GUuPpIrAJwfpIcvIfsV0VfhXFAfdr97rPL8acUSE/pFp@lists.linux.dev
+X-Gm-Message-State: AOJu0YwPUR1NAP1M/xiw2VG5vbcoE4O+48QzSd1u5R2YOfFHHkZq4Xnz
+	FwqRYJIGcV83lvji+AGoRSh04G0JxJfslT515jGHaVeo79bHbyqREvd+EVEsDo9kzftbK+z0ij3
+	PIBsY5NmxKwHNrCuT3rQ4mOexBhQ=
+X-Google-Smtp-Source: AGHT+IEYbRpldzYSsutlTu9wu42EqGv8gBSb+TaaAwLs88n2ixqNqz9FzG1J8RBFWf1ZDfWHnzHVAz3s0FlwHCR6UZU=
+X-Received: by 2002:a05:651c:158b:b0:307:e368:6bd6 with SMTP id
+ 38308e7fff4ca-30eecd8cf02mr16542101fa.32.1743533148375; Tue, 01 Apr 2025
+ 11:45:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/ioremap: Maintain consistent IORES_MAP_ENCRYPTED for
- BIOS data
-To: Tom Lendacky <thomas.lendacky@amd.com>,
- Kirill Shutemov <kirill.shutemov@linux.intel.com>,
- Dan Williams <dan.j.williams@intel.com>, Naveen N Rao <naveen.rao@amd.com>
-Cc: dave.hansen@linux.intel.com, x86@kernel.org,
- Vishal Annapurve <vannapurve@google.com>,
- Nikolay Borisov <nik.borisov@suse.com>, stable@vger.kernel.org,
- linux-coco@lists.linux.dev
-References: <174346288005.2166708.14425674491111625620.stgit@dwillia2-xfh.jf.intel.com>
- <z7h6sepvvrqvmpiccqubganhshcbzzrbvda7dntzufqywei4gz@6clsg5lbvamd>
- <00931e12-4e6a-9ec4-309c-372aaee333b9@amd.com>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <00931e12-4e6a-9ec4-309c-372aaee333b9@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250325091614.1203411-2-ardb+git@google.com> <32zavhk2moqarh4vd76rnhwte45kkc3gqy3shls7mp5lemhy4k@o4gibpdf4sj6>
+ <CAMj1kXHkM2hBHkfjFuCKpOA2APX+BBR-zrPfRkpiEf609UMKjw@mail.gmail.com>
+ <ervuw7mwzvcyizkchy3nz4357ahz5kdfzc227exlrc5yabq4im@g2kzsrdbkdf6>
+ <CAMj1kXEzzNnohJat5REp5mAUCSd4v_ft6F=P6vB95z6+f1MMfw@mail.gmail.com>
+ <4xm3bmuhmdbnn6fkmhmnrtkcdiwj76dcr7gujam45nqvgupvj3@caytleltmyzj>
+ <CAMj1kXFERrdioZ8_07rwDVUAoq=OLDvLCRUS6BN3GXnJoJPuAA@mail.gmail.com>
+ <d6eb83a9-d1b1-7028-9cfd-1ab3fa0d6269@amd.com> <CAMj1kXE35QQ7b3uSF4Ufv6VXyjCfPyveUO1KLPKwsgoHu8iE=w@mail.gmail.com>
+ <121a6769-3b86-b1a7-1d90-524cdd82790b@amd.com>
+In-Reply-To: <121a6769-3b86-b1a7-1d90-524cdd82790b@amd.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 1 Apr 2025 21:45:37 +0300
+X-Gmail-Original-Message-ID: <CAMj1kXEUARHvxQjucikoy_qWkrVnqsMGQyt7mUrBeV-f-_ZQJg@mail.gmail.com>
+X-Gm-Features: AQ5f1JrD_yZ0dmD3gZOyVSC0d4NEy8CKTfymmvNCRvvJZWiVeu0lsanB8VHbd3o
+Message-ID: <CAMj1kXEUARHvxQjucikoy_qWkrVnqsMGQyt7mUrBeV-f-_ZQJg@mail.gmail.com>
+Subject: Re: [PATCH] efi/libstub: Do not accept parts of memory before ExitBootServices()
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Ard Biesheuvel <ardb+git@google.com>, 
+	linux-efi@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Borislav Petkov <bp@alien8.de>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
+	Kevin Loughlin <kevinloughlin@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 4/1/25 08:07, Tom Lendacky wrote:
-> I haven't tested this, yet, but with SME the BIOS is not encrypted, so
-> that would need an unencrypted mapping.
-> 
-> Could you qualify your mapping with a TDX check? Or can you do something
-> in the /dev/mem support to map appropriately?
-> 
-> I'm adding @Naveen since he is preparing a patch to prevent /dev/mem
-> from accessing ROM areas under SNP as those can trigger #VC for a page
-> that is mapped encrypted but has not been validated. He's looking at
-> possibly adding something to x86_platform_ops that can be overridden.
-> The application would get a bad return code vs an exception.
+On Tue, 1 Apr 2025 at 18:51, Tom Lendacky <thomas.lendacky@amd.com> wrote:
+>
+> On 3/26/25 04:28, Ard Biesheuvel wrote:
+> > On Tue, 25 Mar 2025 at 17:30, Tom Lendacky <thomas.lendacky@amd.com> wrote:
+> >>
+> >> On 3/25/25 09:39, Ard Biesheuvel wrote:
+> >>> On Tue, 25 Mar 2025 at 14:44, Kirill A. Shutemov
+> >>> <kirill.shutemov@linux.intel.com> wrote:
+> >>>>
+> >>>> On Tue, Mar 25, 2025 at 02:09:54PM +0100, Ard Biesheuvel wrote:
+> >>>>>> Since the problem happens before ExitBootServices(), can we allocate this
+> >>>>>> memory range with EFI API and free it back?
+> >>>>>>
+> >>>>>
+> >>>>> In principle, yes - we could allocate these misaligned chunks as
+> >>>>> EfiLoaderData, and it wouldn't even be necessary to free them, as they
+> >>>>> would become available to the OS automatically.
+> >>>>>
+> >>>>> But doing this in setup_e820() is tricky, because every page
+> >>>>> allocation modifies the EFI memory map, and we may have to restart
+> >>>>> from the beginning. And there is no guarantee that some asynchronous
+> >>>>> event in the firmware context does not attempt to allocate some pages,
+> >>>>> in a way that might result in another misaligned unaccepted region.
+> >>>>
+> >>>> Looking again at the code, setup_e820() (and therefore
+> >>>> process_unaccepted_memory()) called after efi_exit_boot_services() in
+> >>>> exit_boot(), so we can't use EFI API to allocate memory.
+> >>>>
+> >>>
+> >>> Ah yes, I misremembered that. It also means that it is fine in
+> >>> principle to take over the communication with the hypervisor.
+> >>>
+> >>> However, this is still tricky, because on SEV-SNP, accepting memory
+> >>> appears to rely on the GHCB page based communication being enabled,
+> >>> and this involves mapping it down to a single page so the C bit can be
+> >>> cleared. It would be nice if we could simply use the MSR based
+> >>> protocol for accepting memory.
+> >>
+> >> We can probably do something along this line since there is an existing
+> >> function, __page_state_change(), that performs MSR protocol PSC. If we
+> >> change the arch_accept_memory() calls in process_unaccepted_memory() to
+> >> arch_accept_memory_early() then we can differentiate between this early
+> >> alignment setup timeframe. The early function can also use
+> >> sev_get_status() instead of sev_snp_enabled().
+> >>
+> >> Let me mess around with it a bit and see what I come up with.
+> >>
+> >
+> > Cheers.
+>
+> This is what I came up with below. @Ard and @Kirill, let me know if it
+> looks ok to you and, if so, I'll submit a formal patch where we can work
+> on naming, etc.
+>
 
-How many more /dev/mem band-aids will we need for TDX and SEV before we
-just throw up our hands and turn it off?
+Thanks for putting this together.
 
-Maybe the x86_platform_ops call should just be "Do we allow /dev/mem at
-all?"
+Some questions below.
+
+> >
+> > So IIUC, it would be sufficient to check sev_get_status() against
+> > MSR_AMD64_SEV_SNP_ENABLED, and use the PSC MSR to transition each
+> > unaccepted page that is in the misaligned head or tail of the region
+> > to private.
+> >
+> > Pardon my ignorance, but does that mean that in principle,
+> > sev_enable() et al could be deferred to early startup of the kernel
+> > proper (where the other SEV startup code lives) ?
+>
+> I'm not sure if it can be. There is a bunch of code in the sev_enable()
+> path that I'm not sure can be moved. I'd have to look a lot closer to
+> determine that.
+>
+> Thanks,
+> Tom
+>
+> >
+> > We have been playing whack-a-mole with PIC codegen issues there, and
+> > so it might make sense to consolidate that logic into a single [PIC]
+> > chunk of code that is somewhat isolated from the rest of the code
+> > (like the kernel/pi code on arm64)
+>
+> diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
+> index dbba332e4a12..b115a73ca25e 100644
+> --- a/arch/x86/boot/compressed/mem.c
+> +++ b/arch/x86/boot/compressed/mem.c
+> @@ -32,19 +32,42 @@ static bool early_is_tdx_guest(void)
+>         return is_tdx;
+>  }
+>
+> -void arch_accept_memory(phys_addr_t start, phys_addr_t end)
+> +static bool is_sev_snp_enabled(bool early)
+> +{
+> +       return early ? early_sev_snp_enabled() : sev_snp_enabled();
+
+Why is the latter test not suitable early on? Simply because
+sev_status is not initialized yet?
+
+> +}
+> +
+> +static void __arch_accept_memory(phys_addr_t start, phys_addr_t end, bool early)
+>  {
+>         /* Platform-specific memory-acceptance call goes here */
+>         if (early_is_tdx_guest()) {
+>                 if (!tdx_accept_memory(start, end))
+>                         panic("TDX: Failed to accept memory\n");
+> -       } else if (sev_snp_enabled()) {
+> -               snp_accept_memory(start, end);
+> +       } else if (is_sev_snp_enabled(early)) {
+> +               /*
+> +                * Calls when memory acceptance is being setup require SNP
+> +                * to use the GHCB protocol because the current pagetable
+> +                * mappings can't change the early GHCB page to shared.
+> +                */
+> +               if (early)
+
+I think it would be better to structure this slightly differently.
+I'll have a stab at this myself and get back to you.
+
+> +                       snp_accept_memory_early(start, end);
+> +               else
+> +                       snp_accept_memory(start, end);
+>         } else {
+>                 error("Cannot accept memory: unknown platform\n");
+>         }
+>  }
+>
+> +void arch_accept_memory(phys_addr_t start, phys_addr_t end)
+> +{
+> +       __arch_accept_memory(start, end, false);
+> +}
+> +
+> +void arch_accept_memory_early(phys_addr_t start, phys_addr_t end)
+> +{
+> +       __arch_accept_memory(start, end, true);
+> +}
+> +
+>  bool init_unaccepted_memory(void)
+>  {
+>         guid_t guid = LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID;
+> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+> index bb55934c1cee..162484d662f1 100644
+> --- a/arch/x86/boot/compressed/sev.c
+> +++ b/arch/x86/boot/compressed/sev.c
+> @@ -157,6 +157,12 @@ static int svsm_perform_call_protocol(struct svsm_call *call)
+>         return ret;
+>  }
+>
+> +/* Used before sev_enable() has been called during unaccepted memory init */
+> +bool early_sev_snp_enabled(void)
+> +{
+> +       return sev_get_status() & MSR_AMD64_SEV_SNP_ENABLED;
+> +}
+> +
+>  bool sev_snp_enabled(void)
+>  {
+>         return sev_status & MSR_AMD64_SEV_SNP_ENABLED;
+> @@ -164,10 +170,7 @@ bool sev_snp_enabled(void)
+>
+>  static void __page_state_change(unsigned long paddr, enum psc_op op)
+>  {
+> -       u64 val;
+> -
+> -       if (!sev_snp_enabled())
+> -               return;
+> +       u64 val, msr;
+>
+
+Could you explain how the below code now knows how to decide whether
+to use the MSR protocol or the GHCB page based one?
+
+>         /*
+>          * If private -> shared then invalidate the page before requesting the
+> @@ -176,6 +179,9 @@ static void __page_state_change(unsigned long paddr, enum psc_op op)
+>         if (op == SNP_PAGE_STATE_SHARED)
+>                 pvalidate_4k_page(paddr, paddr, false);
+>
+> +       /* Save the current GHCB MSR value */
+> +       msr = sev_es_rd_ghcb_msr();
+> +
+>         /* Issue VMGEXIT to change the page state in RMP table. */
+>         sev_es_wr_ghcb_msr(GHCB_MSR_PSC_REQ_GFN(paddr >> PAGE_SHIFT, op));
+>         VMGEXIT();
+> @@ -185,6 +191,9 @@ static void __page_state_change(unsigned long paddr, enum psc_op op)
+>         if ((GHCB_RESP_CODE(val) != GHCB_MSR_PSC_RESP) || GHCB_MSR_PSC_RESP_VAL(val))
+>                 sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PSC);
+>
+> +       /* Restore the GHCB MSR value */
+> +       sev_es_wr_ghcb_msr(msr);
+> +
+>         /*
+>          * Now that page state is changed in the RMP table, validate it so that it is
+>          * consistent with the RMP entry.
+> @@ -195,11 +204,17 @@ static void __page_state_change(unsigned long paddr, enum psc_op op)
+>
+>  void snp_set_page_private(unsigned long paddr)
+>  {
+> +       if (!sev_snp_enabled())
+> +               return;
+> +
+>         __page_state_change(paddr, SNP_PAGE_STATE_PRIVATE);
+>  }
+>
+>  void snp_set_page_shared(unsigned long paddr)
+>  {
+> +       if (!sev_snp_enabled())
+> +               return;
+> +
+>         __page_state_change(paddr, SNP_PAGE_STATE_SHARED);
+>  }
+>
+> @@ -261,6 +276,11 @@ static phys_addr_t __snp_accept_memory(struct snp_psc_desc *desc,
+>         return pa;
+>  }
+>
+> +/*
+> + * The memory acceptance support uses the boot GHCB page to perform
+> + * the required page state change operation before validating the
+> + * pages.
+> + */
+>  void snp_accept_memory(phys_addr_t start, phys_addr_t end)
+>  {
+>         struct snp_psc_desc desc = {};
+> @@ -275,6 +295,23 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
+>                 pa = __snp_accept_memory(&desc, pa, end);
+>  }
+>
+> +/*
+> + * The early version of memory acceptance is needed when being called
+> + * from the EFI stub driver. The pagetable manipulation to mark the
+> + * boot GHCB page as shared can't be performed at this stage, so use
+> + * the GHCB page state change MSR protocol instead.
+> + */
+> +void snp_accept_memory_early(phys_addr_t start, phys_addr_t end)
+> +{
+> +       phys_addr_t pa;
+> +
+> +       pa = start;
+> +       while (pa < end) {
+
+Nit: please make this
+
+for (phys_addr_t pa = start; pa < end; pa += PAGE_SIZE)
+
+and drop the braces
+
+> +               __page_state_change(pa, SNP_PAGE_STATE_PRIVATE);
+> +               pa += PAGE_SIZE;
+> +       }
+> +}
+> +
+>  void sev_es_shutdown_ghcb(void)
+>  {
+>         if (!boot_ghcb)
+> diff --git a/arch/x86/boot/compressed/sev.h b/arch/x86/boot/compressed/sev.h
+> index fc725a981b09..8a135c9c043a 100644
+> --- a/arch/x86/boot/compressed/sev.h
+> +++ b/arch/x86/boot/compressed/sev.h
+> @@ -10,13 +10,17 @@
+>
+>  #ifdef CONFIG_AMD_MEM_ENCRYPT
+>
+> +bool early_sev_snp_enabled(void);
+>  bool sev_snp_enabled(void);
+>  void snp_accept_memory(phys_addr_t start, phys_addr_t end);
+> +void snp_accept_memory_early(phys_addr_t start, phys_addr_t end);
+>
+>  #else
+>
+> +static inline bool early_sev_snp_enabled(void) { return false; }
+>  static inline bool sev_snp_enabled(void) { return false; }
+>  static inline void snp_accept_memory(phys_addr_t start, phys_addr_t end) { }
+> +static inline void snp_accept_memory_early(phys_addr_t start, phys_addr_t end) { }
+>
+>  #endif
+>
+> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+> index d96d4494070d..676aa30df52e 100644
+> --- a/drivers/firmware/efi/libstub/efistub.h
+> +++ b/drivers/firmware/efi/libstub/efistub.h
+> @@ -1233,5 +1233,6 @@ efi_status_t allocate_unaccepted_bitmap(__u32 nr_desc,
+>  void process_unaccepted_memory(u64 start, u64 end);
+>  void accept_memory(phys_addr_t start, unsigned long size);
+>  void arch_accept_memory(phys_addr_t start, phys_addr_t end);
+> +void arch_accept_memory_early(phys_addr_t start, phys_addr_t end);
+>
+>  #endif
+> diff --git a/drivers/firmware/efi/libstub/unaccepted_memory.c b/drivers/firmware/efi/libstub/unaccepted_memory.c
+> index 757dbe734a47..1955eddc85f1 100644
+> --- a/drivers/firmware/efi/libstub/unaccepted_memory.c
+> +++ b/drivers/firmware/efi/libstub/unaccepted_memory.c
+> @@ -118,7 +118,7 @@ void process_unaccepted_memory(u64 start, u64 end)
+>          * immediately accepted in its entirety.
+>          */
+>         if (end - start < 2 * unit_size) {
+> -               arch_accept_memory(start, end);
+> +               arch_accept_memory_early(start, end);
+>                 return;
+>         }
+>
+> @@ -129,13 +129,13 @@ void process_unaccepted_memory(u64 start, u64 end)
+>
+>         /* Immediately accept a <unit_size piece at the start: */
+>         if (start & unit_mask) {
+> -               arch_accept_memory(start, round_up(start, unit_size));
+> +               arch_accept_memory_early(start, round_up(start, unit_size));
+>                 start = round_up(start, unit_size);
+>         }
+>
+>         /* Immediately accept a <unit_size piece at the end: */
+>         if (end & unit_mask) {
+> -               arch_accept_memory(round_down(end, unit_size), end);
+> +               arch_accept_memory_early(round_down(end, unit_size), end);
+>                 end = round_down(end, unit_size);
+>         }
+>
+> @@ -144,8 +144,8 @@ void process_unaccepted_memory(u64 start, u64 end)
+>          * into the bitmap.
+>          */
+>         if (start < unaccepted_table->phys_base) {
+> -               arch_accept_memory(start,
+> -                                  min(unaccepted_table->phys_base, end));
+> +               arch_accept_memory_early(start,
+> +                                        min(unaccepted_table->phys_base, end));
+>                 start = unaccepted_table->phys_base;
+>         }
+>
+> @@ -165,7 +165,7 @@ void process_unaccepted_memory(u64 start, u64 end)
+>                              unaccepted_table->phys_base;
+>                 phys_end = end + unaccepted_table->phys_base;
+>
+> -               arch_accept_memory(phys_start, phys_end);
+> +               arch_accept_memory_early(phys_start, phys_end);
+>                 end = bitmap_size * unit_size * BITS_PER_BYTE;
+>         }
+>
+>
+>
