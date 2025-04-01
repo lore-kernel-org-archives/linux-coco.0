@@ -1,404 +1,167 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7E220D4F8
-	for <linux-coco@lists.linux.dev>; Tue,  1 Apr 2025 18:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A597081C
+	for <linux-coco@lists.linux.dev>; Tue,  1 Apr 2025 18:46:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743533150; cv=none; b=eTVauEAmjh9NHDrvWRk7ueLngpzQQcoom1kVMCHIGD0CoCFOwEET51oDVwJmBca/35hmAeKLbzjc8BDewlQcav+xRF64L8wr0WDyl665SpASVQm6JoWFx7YA3eLaxRZkC7hVzLDlaesyA5L6fiTm1jIxHOTJjOKGorGptYIk8I4=
+	t=1743533204; cv=none; b=oyIWz9DcCvdwwDYj3ZJ+v/wsgT79wN8NLCCudEG3ev9xo2icVqu9blMcQ2XTTDKndkpXud/HO46yGS/lO9snmZpoK2W6CaTeV6noezCSM9K7dKIQuF/qO3lNq8/las+m9pPbRCNF2KyGjgaCPpS5yUshE7iQWsWsYwc10M5piRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743533150; c=relaxed/simple;
-	bh=P1VJDqdlcScdk8mP/cMnGmVzjAvz0ds0HzSLfAdE4qU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n1fnhU41HqDsGfnav4E20ggHvX2+tk+US474WwlDvB6nvQZScT/h3U2xoeAWIGQKp0neETXg+lLL9lUCGkki5VJXhyHpPFhcaie01ioNM1ViqYXk59C4KD3yit20Haz1CZqAM/ELv6BE2pcRsaH7D1hJ7Ekpx5u7wrbSX1ob8xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B2siRzmp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743533204; c=relaxed/simple;
+	bh=8B6oXazQXaV9pPAnx0jd+2XsiwGquDdkeqxctviJA+A=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=Xb5YiLOR7ZYQFawZThxXuGHjsMsKn9cAp5bUAeRKRuuTiV6pRq/tw05LTzWeL3/m/8haUVoW9jrWeln9uli6SbAOhO/8IcmRFgvhoFFtIrnYk14maRbxr9n0baggpSDCFVSuxyiwvzE0qrDcdQhqzuTRGFVrUN2gRU/awQzZ1gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fVHPBpPL; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B2siRzmp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 125ECC4CEE4
-	for <linux-coco@lists.linux.dev>; Tue,  1 Apr 2025 18:45:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743533150;
-	bh=P1VJDqdlcScdk8mP/cMnGmVzjAvz0ds0HzSLfAdE4qU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=B2siRzmp5CcvgsI0DL11wSIVKXfl/mYkEkoJH8lSdrg9PwBRpVYONEhRWoJg3VqR8
-	 UEBvh92feOn+WHCE+rpJMk84YDwUxUqOT1+uUXp5adRvBLR9ViqUHsSQNlDNyUMXWn
-	 KSVhunpdwLERtqfKxVyNzz5BXYIh1zl7qNIfGmQaVJObHmqVqaE9UHfUCbldTNS/0G
-	 JASv1XDBrQ0IS98b+DyZdw//sr382tyYk7ZOtekPMPExlHTm+fF8gXRunaSi6uV88D
-	 sr9UUcl7I72g91kNCDpF2/1RbfrkP2oOqxQYtDHBEp4D/XixkDfvrUo9CHCahG3aTY
-	 6PQoq5yec/OhA==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-30db2c2c609so63773631fa.3
-        for <linux-coco@lists.linux.dev>; Tue, 01 Apr 2025 11:45:49 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVY27h9hEHCMDykUSyPsFBTkKR1vLwgGmF6GUuPpIrAJwfpIcvIfsV0VfhXFAfdr97rPL8acUSE/pFp@lists.linux.dev
-X-Gm-Message-State: AOJu0YwPUR1NAP1M/xiw2VG5vbcoE4O+48QzSd1u5R2YOfFHHkZq4Xnz
-	FwqRYJIGcV83lvji+AGoRSh04G0JxJfslT515jGHaVeo79bHbyqREvd+EVEsDo9kzftbK+z0ij3
-	PIBsY5NmxKwHNrCuT3rQ4mOexBhQ=
-X-Google-Smtp-Source: AGHT+IEYbRpldzYSsutlTu9wu42EqGv8gBSb+TaaAwLs88n2ixqNqz9FzG1J8RBFWf1ZDfWHnzHVAz3s0FlwHCR6UZU=
-X-Received: by 2002:a05:651c:158b:b0:307:e368:6bd6 with SMTP id
- 38308e7fff4ca-30eecd8cf02mr16542101fa.32.1743533148375; Tue, 01 Apr 2025
- 11:45:48 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fVHPBpPL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1743533202;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=kKK1Qrzxrep9nFQ3mmefW/rXw3H/O80pMYOoU3NOBSo=;
+	b=fVHPBpPLHgwDmZSbQ8JB161larC7RfodLsM6yaMPyXDF1PmMBrlyJPhTM393NO8zpKxOQ8
+	CLWnjRq1EhsNgZKGLDjOlaxkWBdA5lFwXPSYukFItmMw/fS8ISXCt4+daKkY3D2cB2VeBZ
+	H7dQBhGswpcdwYaQUMC8QDDGwtrwY2Y=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-587-iltzaOVFNda7jIi12r63Lw-1; Tue, 01 Apr 2025 14:46:40 -0400
+X-MC-Unique: iltzaOVFNda7jIi12r63Lw-1
+X-Mimecast-MFC-AGG-ID: iltzaOVFNda7jIi12r63Lw_1743533200
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43e9a3d2977so21278315e9.1
+        for <linux-coco@lists.linux.dev>; Tue, 01 Apr 2025 11:46:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743533200; x=1744138000;
+        h=content-transfer-encoding:organization:autocrypt:subject:cc:to:from
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kKK1Qrzxrep9nFQ3mmefW/rXw3H/O80pMYOoU3NOBSo=;
+        b=pU6/twGv8ALzTnmYg/QjAFvJkcuNznsoeEjwYNDnnCFZf1uQTa7SwgfmCZB8hKyE1/
+         YGoweqzCHShreNDAJ4ssyU/qWjhL/pxRl8aSNSPh8U0pq2sdFnETykw2BrHwmbiD0jNx
+         bMs92dpougso+OJL9qW/5wSJZU1DlV6+m2ZUDeWT/u43PdH2MErGRPVcWNdw6uNmi52o
+         wj9BNDe75m0U23ONZ5NituZ/3uFHuNNbKkjbqqg+ounjLhi2qbL7Y6s6sJUZWnsvItdR
+         GdKvdLSGNYht4TQqHHXCaBC7+Frg87NDgUL7O2GLBk2dT+QCz/5qM8K1wWlP31wKISVy
+         WSXA==
+X-Gm-Message-State: AOJu0Yy+gH91zTepQKUVtEvSiC0sIMfllZyuxZTy+bWxqy4rPKu4k3rq
+	p9c+0XnVIo4SSfiohqwhOCgreCEnkI0BAPn/QA3eabMXV2L6LLUDmLCOznRDzlLhxS7REAGJ1C1
+	ynuVpI7at0FmulFFrJAo0aQM3kveYGTdUz7NPQrlaclpSyN+/bUzFnwejOxfY0XQ4e/viFKX+Jt
+	wie1YGx71G+UZ9P3SDyD3z1b01mRCboWF+za8Lz5O0ug==
+X-Gm-Gg: ASbGnctYXSEZxkB3RPQIO4eCjzR55xhGbQ2fhQH+3+vKjRFy1zESIkeq3c6XAn5FY9V
+	Kkom47elBSsMCcVNx6iZOZUnxjtVrYI17VGvXKypZ6BhsCIo+Uf29AuoURxtUqYq0X5KC1cBlus
+	/i0BZsy9zZT1ZyhXSMHd8v28rYmqSy2Gx/NLHxPuruGBg1qWm2M2JB6BCOFh+BxtDke/4c1u58n
+	ncxAIyJnbTV28UM2R+yOQbkaTtfC0O63Ay27jtcyfXBz+cF0+83mHqDsTr6F6cvlkhmWe4vR05s
+	+40AHPfUfJ3BRqXt5zu0uCV7f41/p3GF1WvK46g7H52fuQ==
+X-Received: by 2002:a05:6000:1882:b0:390:e311:a8c7 with SMTP id ffacd0b85a97d-39c120c8ddfmr12512799f8f.5.1743533199542;
+        Tue, 01 Apr 2025 11:46:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFIWn+7qndzlrQxqALUnPSOIr8UBsZEgSJxrYPbKOl0AEFKfLH3IIGslkQuztfDQqSz4JiDPg==
+X-Received: by 2002:a05:6000:1882:b0:390:e311:a8c7 with SMTP id ffacd0b85a97d-39c120c8ddfmr12512752f8f.5.1743533198871;
+        Tue, 01 Apr 2025 11:46:38 -0700 (PDT)
+Received: from [192.168.3.141] (p4ff236cf.dip0.t-ipconnect.de. [79.242.54.207])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c0b79e12bsm15067963f8f.62.2025.04.01.11.46.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Apr 2025 11:46:38 -0700 (PDT)
+Message-ID: <7b3090fb-1816-4761-a7a5-17d49a050645@redhat.com>
+Date: Tue, 1 Apr 2025 20:46:36 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250325091614.1203411-2-ardb+git@google.com> <32zavhk2moqarh4vd76rnhwte45kkc3gqy3shls7mp5lemhy4k@o4gibpdf4sj6>
- <CAMj1kXHkM2hBHkfjFuCKpOA2APX+BBR-zrPfRkpiEf609UMKjw@mail.gmail.com>
- <ervuw7mwzvcyizkchy3nz4357ahz5kdfzc227exlrc5yabq4im@g2kzsrdbkdf6>
- <CAMj1kXEzzNnohJat5REp5mAUCSd4v_ft6F=P6vB95z6+f1MMfw@mail.gmail.com>
- <4xm3bmuhmdbnn6fkmhmnrtkcdiwj76dcr7gujam45nqvgupvj3@caytleltmyzj>
- <CAMj1kXFERrdioZ8_07rwDVUAoq=OLDvLCRUS6BN3GXnJoJPuAA@mail.gmail.com>
- <d6eb83a9-d1b1-7028-9cfd-1ab3fa0d6269@amd.com> <CAMj1kXE35QQ7b3uSF4Ufv6VXyjCfPyveUO1KLPKwsgoHu8iE=w@mail.gmail.com>
- <121a6769-3b86-b1a7-1d90-524cdd82790b@amd.com>
-In-Reply-To: <121a6769-3b86-b1a7-1d90-524cdd82790b@amd.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 1 Apr 2025 21:45:37 +0300
-X-Gmail-Original-Message-ID: <CAMj1kXEUARHvxQjucikoy_qWkrVnqsMGQyt7mUrBeV-f-_ZQJg@mail.gmail.com>
-X-Gm-Features: AQ5f1JrD_yZ0dmD3gZOyVSC0d4NEy8CKTfymmvNCRvvJZWiVeu0lsanB8VHbd3o
-Message-ID: <CAMj1kXEUARHvxQjucikoy_qWkrVnqsMGQyt7mUrBeV-f-_ZQJg@mail.gmail.com>
-Subject: Re: [PATCH] efi/libstub: Do not accept parts of memory before ExitBootServices()
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Ard Biesheuvel <ardb+git@google.com>, 
-	linux-efi@vger.kernel.org, linux-coco@lists.linux.dev, 
-	Borislav Petkov <bp@alien8.de>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
-	Kevin Loughlin <kevinloughlin@google.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+From: David Hildenbrand <david@redhat.com>
+To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
+Cc: gshan@redhat.com, ackerleytng@google.com, kalyazin@amazon.com,
+ pankaj.gupta@amd.com, papaluri@amd.com, peterx@redhat.com,
+ seanjc@google.com, shivankg@amd.com, tabba@google.com,
+ vannapurve@google.com, shan.gavin@gmail.com,
+ aneeshkumar.kizhakeveetil@arm.com, ashish.kalra@amd.com,
+ dan.j.williams@intel.com, ddutile@redhat.com, quic_eberman@quicinc.com,
+ michael.roth@amd.com, roypat@amazon.co.uk, suzuki.poulose@arm.com,
+ vbabka@suse.com, yuzhao@google.com, rppt@kernel.org, jgowans@amazon.com
+Subject: [Invitation] bi-weekly guest_memfd upstream call on 2025-04-03
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Q3byqOKF1Q_E1RouJqv4sM2LFteOfEVJsUupTPDCOPM_1743533200
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, 1 Apr 2025 at 18:51, Tom Lendacky <thomas.lendacky@amd.com> wrote:
->
-> On 3/26/25 04:28, Ard Biesheuvel wrote:
-> > On Tue, 25 Mar 2025 at 17:30, Tom Lendacky <thomas.lendacky@amd.com> wrote:
-> >>
-> >> On 3/25/25 09:39, Ard Biesheuvel wrote:
-> >>> On Tue, 25 Mar 2025 at 14:44, Kirill A. Shutemov
-> >>> <kirill.shutemov@linux.intel.com> wrote:
-> >>>>
-> >>>> On Tue, Mar 25, 2025 at 02:09:54PM +0100, Ard Biesheuvel wrote:
-> >>>>>> Since the problem happens before ExitBootServices(), can we allocate this
-> >>>>>> memory range with EFI API and free it back?
-> >>>>>>
-> >>>>>
-> >>>>> In principle, yes - we could allocate these misaligned chunks as
-> >>>>> EfiLoaderData, and it wouldn't even be necessary to free them, as they
-> >>>>> would become available to the OS automatically.
-> >>>>>
-> >>>>> But doing this in setup_e820() is tricky, because every page
-> >>>>> allocation modifies the EFI memory map, and we may have to restart
-> >>>>> from the beginning. And there is no guarantee that some asynchronous
-> >>>>> event in the firmware context does not attempt to allocate some pages,
-> >>>>> in a way that might result in another misaligned unaccepted region.
-> >>>>
-> >>>> Looking again at the code, setup_e820() (and therefore
-> >>>> process_unaccepted_memory()) called after efi_exit_boot_services() in
-> >>>> exit_boot(), so we can't use EFI API to allocate memory.
-> >>>>
-> >>>
-> >>> Ah yes, I misremembered that. It also means that it is fine in
-> >>> principle to take over the communication with the hypervisor.
-> >>>
-> >>> However, this is still tricky, because on SEV-SNP, accepting memory
-> >>> appears to rely on the GHCB page based communication being enabled,
-> >>> and this involves mapping it down to a single page so the C bit can be
-> >>> cleared. It would be nice if we could simply use the MSR based
-> >>> protocol for accepting memory.
-> >>
-> >> We can probably do something along this line since there is an existing
-> >> function, __page_state_change(), that performs MSR protocol PSC. If we
-> >> change the arch_accept_memory() calls in process_unaccepted_memory() to
-> >> arch_accept_memory_early() then we can differentiate between this early
-> >> alignment setup timeframe. The early function can also use
-> >> sev_get_status() instead of sev_snp_enabled().
-> >>
-> >> Let me mess around with it a bit and see what I come up with.
-> >>
-> >
-> > Cheers.
->
-> This is what I came up with below. @Ard and @Kirill, let me know if it
-> looks ok to you and, if so, I'll submit a formal patch where we can work
-> on naming, etc.
->
+Hi everybody,
 
-Thanks for putting this together.
+our next guest_memfd upstream call is scheduled for Thursday,
+2025-04-03 at 8:00 - 9:00am (GMT-08:00) Pacific Time - Vancouver.
 
-Some questions below.
+We'll be using the following Google meet:
+http://meet.google.com/wxp-wtju-jzw
 
-> >
-> > So IIUC, it would be sufficient to check sev_get_status() against
-> > MSR_AMD64_SEV_SNP_ENABLED, and use the PSC MSR to transition each
-> > unaccepted page that is in the misaligned head or tail of the region
-> > to private.
-> >
-> > Pardon my ignorance, but does that mean that in principle,
-> > sev_enable() et al could be deferred to early startup of the kernel
-> > proper (where the other SEV startup code lives) ?
->
-> I'm not sure if it can be. There is a bunch of code in the sev_enable()
-> path that I'm not sure can be moved. I'd have to look a lot closer to
-> determine that.
->
-> Thanks,
-> Tom
->
-> >
-> > We have been playing whack-a-mole with PIC codegen issues there, and
-> > so it might make sense to consolidate that logic into a single [PIC]
-> > chunk of code that is somewhat isolated from the rest of the code
-> > (like the kernel/pi code on arm64)
->
-> diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
-> index dbba332e4a12..b115a73ca25e 100644
-> --- a/arch/x86/boot/compressed/mem.c
-> +++ b/arch/x86/boot/compressed/mem.c
-> @@ -32,19 +32,42 @@ static bool early_is_tdx_guest(void)
->         return is_tdx;
->  }
->
-> -void arch_accept_memory(phys_addr_t start, phys_addr_t end)
-> +static bool is_sev_snp_enabled(bool early)
-> +{
-> +       return early ? early_sev_snp_enabled() : sev_snp_enabled();
+The meeting notes can be found at [1], where we also link recordings and
+collect current guest_memfd upstream proposals. If you want an google
+calendar invitation that also covers all future meetings, just write me
+a mail.
 
-Why is the latter test not suitable early on? Simply because
-sev_status is not initialized yet?
+In this meeting, I'll share some details from my LSF/MM session, and 
+we'll likely talk about the folio_put() callback and how to maybe limit 
+it to only specific cases (e.g., handing folios back to hugetlb after 
+truncate).
 
-> +}
-> +
-> +static void __arch_accept_memory(phys_addr_t start, phys_addr_t end, bool early)
->  {
->         /* Platform-specific memory-acceptance call goes here */
->         if (early_is_tdx_guest()) {
->                 if (!tdx_accept_memory(start, end))
->                         panic("TDX: Failed to accept memory\n");
-> -       } else if (sev_snp_enabled()) {
-> -               snp_accept_memory(start, end);
-> +       } else if (is_sev_snp_enabled(early)) {
-> +               /*
-> +                * Calls when memory acceptance is being setup require SNP
-> +                * to use the GHCB protocol because the current pagetable
-> +                * mappings can't change the early GHCB page to shared.
-> +                */
-> +               if (early)
+To put something to discuss onto the agenda, reply to this mail or add
+them to the "Topics/questions for next meeting(s)" section in the
+meeting notes as a comment.
 
-I think it would be better to structure this slightly differently.
-I'll have a stab at this myself and get back to you.
+[1]
+https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
 
-> +                       snp_accept_memory_early(start, end);
-> +               else
-> +                       snp_accept_memory(start, end);
->         } else {
->                 error("Cannot accept memory: unknown platform\n");
->         }
->  }
->
-> +void arch_accept_memory(phys_addr_t start, phys_addr_t end)
-> +{
-> +       __arch_accept_memory(start, end, false);
-> +}
-> +
-> +void arch_accept_memory_early(phys_addr_t start, phys_addr_t end)
-> +{
-> +       __arch_accept_memory(start, end, true);
-> +}
-> +
->  bool init_unaccepted_memory(void)
->  {
->         guid_t guid = LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID;
-> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-> index bb55934c1cee..162484d662f1 100644
-> --- a/arch/x86/boot/compressed/sev.c
-> +++ b/arch/x86/boot/compressed/sev.c
-> @@ -157,6 +157,12 @@ static int svsm_perform_call_protocol(struct svsm_call *call)
->         return ret;
->  }
->
-> +/* Used before sev_enable() has been called during unaccepted memory init */
-> +bool early_sev_snp_enabled(void)
-> +{
-> +       return sev_get_status() & MSR_AMD64_SEV_SNP_ENABLED;
-> +}
-> +
->  bool sev_snp_enabled(void)
->  {
->         return sev_status & MSR_AMD64_SEV_SNP_ENABLED;
-> @@ -164,10 +170,7 @@ bool sev_snp_enabled(void)
->
->  static void __page_state_change(unsigned long paddr, enum psc_op op)
->  {
-> -       u64 val;
-> -
-> -       if (!sev_snp_enabled())
-> -               return;
-> +       u64 val, msr;
->
+-- 
+Cheers,
 
-Could you explain how the below code now knows how to decide whether
-to use the MSR protocol or the GHCB page based one?
+David / dhildenb
 
->         /*
->          * If private -> shared then invalidate the page before requesting the
-> @@ -176,6 +179,9 @@ static void __page_state_change(unsigned long paddr, enum psc_op op)
->         if (op == SNP_PAGE_STATE_SHARED)
->                 pvalidate_4k_page(paddr, paddr, false);
->
-> +       /* Save the current GHCB MSR value */
-> +       msr = sev_es_rd_ghcb_msr();
-> +
->         /* Issue VMGEXIT to change the page state in RMP table. */
->         sev_es_wr_ghcb_msr(GHCB_MSR_PSC_REQ_GFN(paddr >> PAGE_SHIFT, op));
->         VMGEXIT();
-> @@ -185,6 +191,9 @@ static void __page_state_change(unsigned long paddr, enum psc_op op)
->         if ((GHCB_RESP_CODE(val) != GHCB_MSR_PSC_RESP) || GHCB_MSR_PSC_RESP_VAL(val))
->                 sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PSC);
->
-> +       /* Restore the GHCB MSR value */
-> +       sev_es_wr_ghcb_msr(msr);
-> +
->         /*
->          * Now that page state is changed in the RMP table, validate it so that it is
->          * consistent with the RMP entry.
-> @@ -195,11 +204,17 @@ static void __page_state_change(unsigned long paddr, enum psc_op op)
->
->  void snp_set_page_private(unsigned long paddr)
->  {
-> +       if (!sev_snp_enabled())
-> +               return;
-> +
->         __page_state_change(paddr, SNP_PAGE_STATE_PRIVATE);
->  }
->
->  void snp_set_page_shared(unsigned long paddr)
->  {
-> +       if (!sev_snp_enabled())
-> +               return;
-> +
->         __page_state_change(paddr, SNP_PAGE_STATE_SHARED);
->  }
->
-> @@ -261,6 +276,11 @@ static phys_addr_t __snp_accept_memory(struct snp_psc_desc *desc,
->         return pa;
->  }
->
-> +/*
-> + * The memory acceptance support uses the boot GHCB page to perform
-> + * the required page state change operation before validating the
-> + * pages.
-> + */
->  void snp_accept_memory(phys_addr_t start, phys_addr_t end)
->  {
->         struct snp_psc_desc desc = {};
-> @@ -275,6 +295,23 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
->                 pa = __snp_accept_memory(&desc, pa, end);
->  }
->
-> +/*
-> + * The early version of memory acceptance is needed when being called
-> + * from the EFI stub driver. The pagetable manipulation to mark the
-> + * boot GHCB page as shared can't be performed at this stage, so use
-> + * the GHCB page state change MSR protocol instead.
-> + */
-> +void snp_accept_memory_early(phys_addr_t start, phys_addr_t end)
-> +{
-> +       phys_addr_t pa;
-> +
-> +       pa = start;
-> +       while (pa < end) {
-
-Nit: please make this
-
-for (phys_addr_t pa = start; pa < end; pa += PAGE_SIZE)
-
-and drop the braces
-
-> +               __page_state_change(pa, SNP_PAGE_STATE_PRIVATE);
-> +               pa += PAGE_SIZE;
-> +       }
-> +}
-> +
->  void sev_es_shutdown_ghcb(void)
->  {
->         if (!boot_ghcb)
-> diff --git a/arch/x86/boot/compressed/sev.h b/arch/x86/boot/compressed/sev.h
-> index fc725a981b09..8a135c9c043a 100644
-> --- a/arch/x86/boot/compressed/sev.h
-> +++ b/arch/x86/boot/compressed/sev.h
-> @@ -10,13 +10,17 @@
->
->  #ifdef CONFIG_AMD_MEM_ENCRYPT
->
-> +bool early_sev_snp_enabled(void);
->  bool sev_snp_enabled(void);
->  void snp_accept_memory(phys_addr_t start, phys_addr_t end);
-> +void snp_accept_memory_early(phys_addr_t start, phys_addr_t end);
->
->  #else
->
-> +static inline bool early_sev_snp_enabled(void) { return false; }
->  static inline bool sev_snp_enabled(void) { return false; }
->  static inline void snp_accept_memory(phys_addr_t start, phys_addr_t end) { }
-> +static inline void snp_accept_memory_early(phys_addr_t start, phys_addr_t end) { }
->
->  #endif
->
-> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-> index d96d4494070d..676aa30df52e 100644
-> --- a/drivers/firmware/efi/libstub/efistub.h
-> +++ b/drivers/firmware/efi/libstub/efistub.h
-> @@ -1233,5 +1233,6 @@ efi_status_t allocate_unaccepted_bitmap(__u32 nr_desc,
->  void process_unaccepted_memory(u64 start, u64 end);
->  void accept_memory(phys_addr_t start, unsigned long size);
->  void arch_accept_memory(phys_addr_t start, phys_addr_t end);
-> +void arch_accept_memory_early(phys_addr_t start, phys_addr_t end);
->
->  #endif
-> diff --git a/drivers/firmware/efi/libstub/unaccepted_memory.c b/drivers/firmware/efi/libstub/unaccepted_memory.c
-> index 757dbe734a47..1955eddc85f1 100644
-> --- a/drivers/firmware/efi/libstub/unaccepted_memory.c
-> +++ b/drivers/firmware/efi/libstub/unaccepted_memory.c
-> @@ -118,7 +118,7 @@ void process_unaccepted_memory(u64 start, u64 end)
->          * immediately accepted in its entirety.
->          */
->         if (end - start < 2 * unit_size) {
-> -               arch_accept_memory(start, end);
-> +               arch_accept_memory_early(start, end);
->                 return;
->         }
->
-> @@ -129,13 +129,13 @@ void process_unaccepted_memory(u64 start, u64 end)
->
->         /* Immediately accept a <unit_size piece at the start: */
->         if (start & unit_mask) {
-> -               arch_accept_memory(start, round_up(start, unit_size));
-> +               arch_accept_memory_early(start, round_up(start, unit_size));
->                 start = round_up(start, unit_size);
->         }
->
->         /* Immediately accept a <unit_size piece at the end: */
->         if (end & unit_mask) {
-> -               arch_accept_memory(round_down(end, unit_size), end);
-> +               arch_accept_memory_early(round_down(end, unit_size), end);
->                 end = round_down(end, unit_size);
->         }
->
-> @@ -144,8 +144,8 @@ void process_unaccepted_memory(u64 start, u64 end)
->          * into the bitmap.
->          */
->         if (start < unaccepted_table->phys_base) {
-> -               arch_accept_memory(start,
-> -                                  min(unaccepted_table->phys_base, end));
-> +               arch_accept_memory_early(start,
-> +                                        min(unaccepted_table->phys_base, end));
->                 start = unaccepted_table->phys_base;
->         }
->
-> @@ -165,7 +165,7 @@ void process_unaccepted_memory(u64 start, u64 end)
->                              unaccepted_table->phys_base;
->                 phys_end = end + unaccepted_table->phys_base;
->
-> -               arch_accept_memory(phys_start, phys_end);
-> +               arch_accept_memory_early(phys_start, phys_end);
->                 end = bitmap_size * unit_size * BITS_PER_BYTE;
->         }
->
->
->
