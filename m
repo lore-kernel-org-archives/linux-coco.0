@@ -1,130 +1,133 @@
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423E920D4E7
-	for <linux-coco@lists.linux.dev>; Tue,  1 Apr 2025 16:13:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A48207662
+	for <linux-coco@lists.linux.dev>; Tue,  1 Apr 2025 17:59:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743523984; cv=none; b=NmmMRo4d8PJdo3ox/JW4AhNx5iBRJVDTE4EATGKTHTCaGCyM2ZqHveQUj0G4x5ma/XuXTFKEjEtoi0vjT7PPWwi/M0i6/FI683EAt/DquHWABYAMiBLr/s5Ug8wfUCkvw6lxifrN31HF6CN/Lr/y09CFlcTwg6iXAdwhfKWhHKQ=
+	t=1743530369; cv=none; b=NDu4B3w4sCmxJnoFgdvsWtSXc6xZwhd1s+RdEVgwjlOqFuQ0p05e1hx6g6nOLJthBcjE+x3gk6GPX8rSNhvomIgloHvAJDSimTA4r8Dqv1tiXSwhOFhoLCdXidNWV3h0v+jVk6adThfWH7fwvBEXLML5MM7H57OhE6YujxY7r2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743523984; c=relaxed/simple;
-	bh=jsPocqxTm3Tk/n85dNMIT20KutkK5Grt6C4lCnIAUO4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a49eOB5xPzfMIyseLa3SlJWLaQYj0tA4lZ/ql2Viz4aMIVb3mLfNZBAoRqXc52yF0xGBfvMpXTJy/DPRCPknMmePRO6yKBh7vMUf2JHWciZ9JpDU+rmKxkOcTg5R6/yYrgLIP6P0MLeFbe+B3u/KdI4Z+nXnl/kIWUBAjjsAh6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=dDHma69e; arc=none smtp.client-ip=209.85.219.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1743530369; c=relaxed/simple;
+	bh=EkAhl5JNBQDkU3GzPpbNR4kF4fd1AXlSprNV4wW4B9E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vt12W87FN3lqRez73pR8c2FA5YZXgxpXtyqpUQUyZwFdyOPwiEeI57gRSQp978p5GPMRnLjubNTgX6C8uZ/6uyejKS5GcSAFuLP7f3bkf3CMP7J8ckOD9K+JmUKvDbuJc471/n1C9wVj2ihZmN5ix3+IfwwB0eFi6b6mPK8dChI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GaZKOp3J; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="dDHma69e"
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6ecfc2cb1aaso53513436d6.3
-        for <linux-coco@lists.linux.dev>; Tue, 01 Apr 2025 09:13:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1743523982; x=1744128782; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=poENEUfmFrThnex6gEytUaMxRROeOKxTbEdDijAo1Do=;
-        b=dDHma69eOp7gJHnnfuQUjMGiLZEDoYF0YW1JK41j0rgXEaj/vxRrqXH4G8a/I73jOQ
-         6bDRgK2MVyyueHr8HxB729prKWePXppP55703lLbJwHDWqncV7141rB0NI7lcQ6Acfge
-         CKTkNSHQ7bPrE3Wihb0CHTyriiVuso2ycPnJEVhMqVLm6uHQw00SU/4UluNuh8+E9yem
-         zumaspyspQ41EtFgvts7ZUX1Ts0Cj5i4GrazOgb0HB+EFe5wTuTc0A+RjahU8t7tZ8XT
-         SntUJDTznMBsPjgRr1a/NE/oWgViSDG7FTleb/Ns67C2pqgXXbv8Xu2+iNA5LUtO0vyt
-         OcnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743523982; x=1744128782;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=poENEUfmFrThnex6gEytUaMxRROeOKxTbEdDijAo1Do=;
-        b=J+w8bzFrSS3WKRhdUqn53m/mG3/Ezt+JyVbQvQjfcZxlIDo06quP043iVUrxd3aEBi
-         kQrLOgUHdcRAL9Ol0k4Z0sYGFqt9g0p6FKjmYGIfUAgWs3BXpTgTM8Uox0QhIUhup0mX
-         +vzn1kPfxMMnwjBjXgpqEeA4tpKrPiLfNDbvOmOr8zmvySrGWG3NscUtTHN88cr5CtCR
-         /mDMweh1mDQ+op6VayFKkrqOz73InbOwZWhG7Xnp/vzEiR/0o1LTHXMc52O9zLKNOfSV
-         2IJzRlo3Yb+8aL7GbX0X/DgNXynK7q1lySSvSNwuUrdpJrAvJpIPDSyw+9LkozigUIVe
-         qHVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVUs+HkyoAbc3ppChmxK/kGBWOyAsnGRc8xtci63rQlSmjLtXh+mjiET/JFuBdsnjSSFHYjpoIhWub6@lists.linux.dev
-X-Gm-Message-State: AOJu0YxlFVX9eXKv015/jSiHOaMTrXCKIMhWwZVziRR6MlozZ6GkYSJ0
-	PzTXS8Pt4Vs2XAAa/ApsV/VnoQBVKL1OtfGemN+HGnphEVXX+pYeex1MU6NBweA=
-X-Gm-Gg: ASbGncunFsF2kkrH44pnnXhuE0s2iFmr3qJ97pAU106bt/oreLBFlBXr6Gc8nBKEHOs
-	ZYfBlC/TVOxENxiRfx1hwH+HqobMfu/yPenbAzhezGftLQ1EZAALpj/R2NVkNfA1slmQfneRpDd
-	BFtHSbKCgqxeWck1xgwjT2zcAL7Z3NSCRNUooPsv9nYU60GSA9F7C/sETJFjCSVwsTE/EdNRrgU
-	z7KQwF0XlNDsDIDgeAWHsYwMaIr5I0EmbZB8T/aWSohaThwF+PX6CmdsyjjUlv3/j8iPolX3qC4
-	4OAL8gTSswKtWdXYYVgyrg9IM8pfp24qwtI7QaY9o7w7FbGfXKogpYBm5eF1UqsHbtKh0P/F+o5
-	lnLt8ZIK/+ZOwqVSJ0ax8Cvw=
-X-Google-Smtp-Source: AGHT+IFgqnXSN6fOa8wvReuysgLZpbCK1HhkdqcE+Mm2zYjIPC+dt/OEL3eUy9xyw3HgFZ9lLvi7Ow==
-X-Received: by 2002:a05:6214:226c:b0:6e8:f905:aff0 with SMTP id 6a1803df08f44-6eed62a0be1mr227091686d6.35.1743523980713;
-        Tue, 01 Apr 2025 09:13:00 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-167-219-86.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.219.86])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eec97718e1sm63039286d6.70.2025.04.01.09.13.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Apr 2025 09:13:00 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1tzeEV-00000001MLv-35Gu;
-	Tue, 01 Apr 2025 13:12:59 -0300
-Date: Tue, 1 Apr 2025 13:12:59 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: x86@kernel.org, kvm@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-arch@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Christoph Hellwig <hch@lst.de>, Nikunj A Dadhania <nikunj@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Steve Sistare <steven.sistare@oracle.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Dionna Glaze <dionnaglaze@google.com>, Yi Liu <yi.l.liu@intel.com>,
-	iommu@lists.linux.dev, linux-coco@lists.linux.dev,
-	Zhi Wang <zhiw@nvidia.com>, AXu Yilun <yilun.xu@linux.intel.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-Subject: Re: [RFC PATCH v2 14/22] iommufd: Add TIO calls
-Message-ID: <20250401161259.GM186258@ziepe.ca>
-References: <20250218111017.491719-1-aik@amd.com>
- <20250218111017.491719-15-aik@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GaZKOp3J"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743530368; x=1775066368;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=EkAhl5JNBQDkU3GzPpbNR4kF4fd1AXlSprNV4wW4B9E=;
+  b=GaZKOp3JYV+INI3VmdmvDIuRJBqs4JUcLeNTvzsEjxHDfd4/ZQfXlLFC
+   ZPsGnbZnQeaIF/a0G2X148b/YINk+Jf35YHI4p3g9im0QDr2vj/k9biMS
+   R5j+N/HzfjL3qPJes/5kt/obvA1Fn/ggeIw4BDEx+Wwi70fHzOdsXloqG
+   0nVUWIKe00w5GFoCdCxxHhcu4hBHP2DizgsIoOAU9lO59rVHuLD5fr8I5
+   wYl9JnhPonLNBy2E6x7UL9rMsE8y9i+aPRX8WL/T8G3+3iv0WWgISTZXr
+   xUt6uDPs9wvnJ9soWdJiAIyoWp+5v5wDE10rh1eL/VWtMStpMFcwDcBBx
+   Q==;
+X-CSE-ConnectionGUID: njEMold+QvK7lVcTEpZy0A==
+X-CSE-MsgGUID: S18GBSQISniUs5tP+xM7bg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="55067468"
+X-IronPort-AV: E=Sophos;i="6.14,294,1736841600"; 
+   d="scan'208";a="55067468"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2025 10:59:27 -0700
+X-CSE-ConnectionGUID: QKKM40C3SrGzwED74lrM6Q==
+X-CSE-MsgGUID: WMg+4v4FTxKjz52kZe+Ciw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,294,1736841600"; 
+   d="scan'208";a="131661073"
+Received: from uaeoff-desk2.amr.corp.intel.com (HELO [10.124.221.203]) ([10.124.221.203])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2025 10:59:26 -0700
+Message-ID: <d440f49c-ab2f-4cb8-b822-362f757ae47d@intel.com>
+Date: Tue, 1 Apr 2025 10:59:25 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250218111017.491719-15-aik@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/ioremap: Maintain consistent IORES_MAP_ENCRYPTED for
+ BIOS data
+To: Tom Lendacky <thomas.lendacky@amd.com>,
+ Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+ Dan Williams <dan.j.williams@intel.com>, Naveen N Rao <naveen.rao@amd.com>
+Cc: dave.hansen@linux.intel.com, x86@kernel.org,
+ Vishal Annapurve <vannapurve@google.com>,
+ Nikolay Borisov <nik.borisov@suse.com>, stable@vger.kernel.org,
+ linux-coco@lists.linux.dev
+References: <174346288005.2166708.14425674491111625620.stgit@dwillia2-xfh.jf.intel.com>
+ <z7h6sepvvrqvmpiccqubganhshcbzzrbvda7dntzufqywei4gz@6clsg5lbvamd>
+ <00931e12-4e6a-9ec4-309c-372aaee333b9@amd.com>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <00931e12-4e6a-9ec4-309c-372aaee333b9@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Feb 18, 2025 at 10:10:01PM +1100, Alexey Kardashevskiy wrote:
-> When a TDISP-capable device is passed through, it is configured as
-> a shared device to begin with. Later on when a VM probes the device,
-> detects its TDISP capability (reported via the PCIe ExtCap bit
-> called "TEE-IO"), performs the device attestation and transitions it
-> to a secure state when the device can run encrypted DMA and respond
-> to encrypted MMIO accesses.
+On 4/1/25 08:07, Tom Lendacky wrote:
+> I haven't tested this, yet, but with SME the BIOS is not encrypted, so
+> that would need an unencrypted mapping.
 > 
-> Since KVM is out of the TCB, secure enablement is done in the secure
-> firmware. The API requires PCI host/guest BDFns, a KVM id hence such
-> calls are routed via IOMMUFD, primarily because allowing secure DMA
-> is the major performance bottleneck and it is a function of IOMMU.
+> Could you qualify your mapping with a TDX check? Or can you do something
+> in the /dev/mem support to map appropriately?
 > 
-> Add TDI bind to do the initial binding of a passed through PCI
-> function to a VM. Add a forwarder for TIO GUEST REQUEST. These two
-> call into the TSM which forwards the calls to the PSP.
+> I'm adding @Naveen since he is preparing a patch to prevent /dev/mem
+> from accessing ROM areas under SNP as those can trigger #VC for a page
+> that is mapped encrypted but has not been validated. He's looking at
+> possibly adding something to x86_platform_ops that can be overridden.
+> The application would get a bad return code vs an exception.
 
-Can you list here what the basic flow of iommufd calls is to create a
-CC VM, with no vIOMMU, and a CC capable vPCI device?
+How many more /dev/mem band-aids will we need for TDX and SEV before we
+just throw up our hands and turn it off?
 
-I'd like the other arches to review this list and see how their arches
-fit
-
-Thanks
-Jason
+Maybe the x86_platform_ops call should just be "Do we allow /dev/mem at
+all?"
