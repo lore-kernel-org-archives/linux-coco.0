@@ -1,104 +1,133 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B6538FB0
-	for <linux-coco@lists.linux.dev>; Mon, 31 Mar 2025 23:14:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758431BEF77
+	for <linux-coco@lists.linux.dev>; Tue,  1 Apr 2025 05:57:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743462883; cv=none; b=YF3oM6rXPY9Q08ZdRP0q4pyERLojiBaa0Uqrg6OWH53wdFRcBkus7rzFg2BTudWg2GWi9krppGlMWpN6C1W+V5n1o0pFyS/H1F2xlKwSUXsKT0cr70uuAkfIRCtl5UqKbkuQJjNI5UZIXepPdbKCXFRZT0aqiio6ocJsPOneUJY=
+	t=1743487069; cv=none; b=CKYcsIvSX672tQcU3znd8cUFxUWqzlHaI6jBJOC2m6GBIPQEpMF371n4NG6Igm/tNXqTHXpgUTmHCwVL/ObJZJ0VLgcM6MujWv4EUAugBDQ1m8UhE8Zc2bCfR1nBoWdXzQpLLA1Oanor9h2N5NMtBX/el9TgtmrJswuUNMLIT+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743462883; c=relaxed/simple;
-	bh=Wjc215N7L/d2KvnY1ejcna8mFdIS6Fx7ftRLZSD+jWg=;
-	h=Subject:From:To:Cc:Date:Message-ID:MIME-Version:Content-Type; b=b5ddG26VQLzgXxhX39Hw90AiYwdCs2bKouNvcIm7u1uS39oMKnzCJL8J7PP/gDKdEQHUGaZLvSZHF5ecTIR2Zqv1+A77GOwcTcawUYR7YZJH+bobKE57sr6iyA8qxdI3qF4hsbAnacca736hb4KQDkbkmeqG/wcIGYHeVg6qmns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i1u+yYzi; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1743487069; c=relaxed/simple;
+	bh=Tg8NE179pIoKTkYxqXdaqoZpP1MRgabt/Ct3QXaY8tU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P+90LDkxcgDQs4ysLCDxfO1NhL9qDWqY61clTpLMtkIjzzcwl3mEckBndpqz4YdWm6Cxi7mareTByRkLHkkBcW/o2ljKyx3bTPZWNOPu/xIO38oaYGm0YiZwX7wW41KsB58VgA1vKRw/gmGwXOtX+6y/pL/EMUOxNEKpkPrV1cY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=RJgA7hCL; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i1u+yYzi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1743462881; x=1774998881;
-  h=subject:from:to:cc:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Wjc215N7L/d2KvnY1ejcna8mFdIS6Fx7ftRLZSD+jWg=;
-  b=i1u+yYzijonWCxfQs3rLEZe690VbC2src/kCUzq9mRk6k0UoDYkmWan1
-   56QMUI58RNnUhUwahUPktGqjhYZkG7XRdsvE8mFHiD/tLfKmjC54k3raM
-   D/PFWKHCCx+ACjC8klWOREFpPAIixxEhpQNWVk7OpgvtElX3dLfEuZiEO
-   j8MMt0Ou1+1tpPMrzJbcXd0G8RhW7Q5VKWdSPSYEBtStV0irlGEowoSL3
-   0mCUke1rtpC+VCQPrUlSLM5R44XDF7SN0PO5vOIuDPXXVDbRYfkTsLJFX
-   DqGMRHqHasTRK6YclO7RQoRgG0msWXUGKYwCmnlOBJr0Tn0j4M4w+/yGQ
-   A==;
-X-CSE-ConnectionGUID: NVlWc4jjSdy8iD0QfLdPOQ==
-X-CSE-MsgGUID: x3q19Q0ATGmMgKkTWtMC8g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11390"; a="44943804"
-X-IronPort-AV: E=Sophos;i="6.14,291,1736841600"; 
-   d="scan'208";a="44943804"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2025 16:14:41 -0700
-X-CSE-ConnectionGUID: PSwTP5tgS4+8F89y4VHtaQ==
-X-CSE-MsgGUID: ysQyX+inS4WQwVwlgWkpvQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,291,1736841600"; 
-   d="scan'208";a="157220620"
-Received: from puneetse-mobl.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.125.109.128])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Mar 2025 16:14:41 -0700
-Subject: [PATCH] x86/ioremap: Maintain consistent IORES_MAP_ENCRYPTED for
- BIOS data
-From: Dan Williams <dan.j.williams@intel.com>
-To: dave.hansen@linux.intel.com
-Cc: x86@kernel.org, Vishal Annapurve <vannapurve@google.com>,
- Kirill Shutemov <kirill.shutemov@linux.intel.com>,
- Nikolay Borisov <nik.borisov@suse.com>, Nikolay Borisov <nik.borisov@suse.com>,
- stable@vger.kernel.org, linux-coco@lists.linux.dev
-Date: Mon, 31 Mar 2025 16:14:40 -0700
-Message-ID: <174346288005.2166708.14425674491111625620.stgit@dwillia2-xfh.jf.intel.com>
-User-Agent: StGit/0.18-3-g996c
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="RJgA7hCL"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-ac6ed4ab410so821529566b.1
+        for <linux-coco@lists.linux.dev>; Mon, 31 Mar 2025 22:57:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1743487066; x=1744091866; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lccw6A9vzMJ6BKh7gXq9qnm3AIfT4fRlC/uJQrdTuVc=;
+        b=RJgA7hCLWmygyfbdd9kPbNpQ8IMV83pywD6260BZNZ6MPJo/XwoU2rjptXMEClaIOM
+         h4Wjc7kZbKgOWAADcLrSU6LGYtFG3iAh/IMlgIVdYQHV5AaMBJdP2n/3ExtEMYZL0L4U
+         1ubJMgte0+nbBgxgj2ia0jepAdZCJDDZF6m+nhjsfsfwo6YDpv3lYYuoTVVFZ/zKgXQW
+         EJ6vw5iPJYWRg/H4S1P986n9emOwuvzWJ65W7ydsFIRNkHuhHMkWX2+87Cn3a0HJ6so0
+         Gi7U28l5npXiFg4EA5JEgwGEYrFEhLDrimGv+obgDxVRjeAPj632HFVh1usGsR6ZLU3N
+         8hiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743487066; x=1744091866;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lccw6A9vzMJ6BKh7gXq9qnm3AIfT4fRlC/uJQrdTuVc=;
+        b=ZnU7TJ4XKRlZh5m6bZG7kWIyolLqFK6R0a3WrgYY/r2BbFLIojP47quzR0PrH8RwuE
+         G/EtJqSAtN9wZPo2NLJdja8mnRsGzzEUKblNVolcYLP+dkSoW0wQXqv8xOqM6gcvBRmc
+         XD4n2zkdO+HOuQS2y5/6Ve/OAWwC6uaKjUN1L5Qpj1OZnlH3vB9TbE8hq7/qcN8nOXXz
+         uF7/v5vxj3eKnE2d3t+zSqK4si2CHVJfVvThHNuvs8T19xbJv6JvKK3NrpL4h4sw0sXJ
+         sY7pRuf3Zt0VyXb2gPp3jX43yNoLmyraafgsaAAUovIIlViR3f4YuOe4IoZYmU8KWpXh
+         RJIw==
+X-Forwarded-Encrypted: i=1; AJvYcCWUIer1dyMsas1IXdbAVMcQcHWR7oaID6+klKWTJ2vKviwkcSj9Pn4pgbrwnQn5ah78uSuqFNaWHB7O@lists.linux.dev
+X-Gm-Message-State: AOJu0YzWYOdppI8xxW/9FFR/BaPCdbV/cyC3sr8zVu2SoJ86asFTkp1A
+	Q1Rt0sgIbO1Y+Ed3IUjs0TPWElNt4Aa37g0n8v2GeVQhHWby3xGlFUnGtx9l4AU=
+X-Gm-Gg: ASbGncsnNCe+ijFjxSGyZgUXZOvOJXWjwXjHNxIIYD5weScu6mgeXaUD/42QxRrSYjy
+	DkjYprOMGHlNHggSyorVrcX8CHYAJ2GW9WDrurDyBKK1aGxchHqJTJwAWBdKe4HRvdenBc8FGwM
+	PvZBsE5zdAqCfllFSYt0OyxSi3nUpy9gSUrRS56PnKN4YIqky8zYQilpyGCkKVqtAZTW73tl4K0
+	6j7VmtiWbPVbtK+LaTiKmwmbch6oCbZCiqPSEE5aX+Xuhs0y/cTajQLXdZWOeUBBUiF1vfkqLAx
+	PDvWafFMpjgn0GTBgAACJPZvKb9NLdAWucAPJNxeIRwZZEOcVw==
+X-Google-Smtp-Source: AGHT+IEvjpcJpp5uC9FTtLHiwqjKE2oXvU4sQc9FlSK9mFcbcVYySdPLAbEWl4XwZWiv4tvHpzpGlQ==
+X-Received: by 2002:a17:907:c920:b0:ac3:bbc8:ecab with SMTP id a640c23a62f3a-ac738a151e3mr799397666b.11.1743487065692;
+        Mon, 31 Mar 2025 22:57:45 -0700 (PDT)
+Received: from [192.168.0.20] ([212.21.159.224])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac71927b21fsm720158866b.71.2025.03.31.22.57.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 31 Mar 2025 22:57:45 -0700 (PDT)
+Message-ID: <7ed9418b-db12-4678-bf7a-634daf66282d@suse.com>
+Date: Tue, 1 Apr 2025 08:57:44 +0300
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/ioremap: Maintain consistent IORES_MAP_ENCRYPTED for
+ BIOS data
+To: Dan Williams <dan.j.williams@intel.com>, dave.hansen@linux.intel.com
+Cc: x86@kernel.org, Vishal Annapurve <vannapurve@google.com>,
+ Kirill Shutemov <kirill.shutemov@linux.intel.com>, stable@vger.kernel.org,
+ linux-coco@lists.linux.dev
+References: <174346288005.2166708.14425674491111625620.stgit@dwillia2-xfh.jf.intel.com>
+Content-Language: en-US
+From: Nikolay Borisov <nik.borisov@suse.com>
+In-Reply-To: <174346288005.2166708.14425674491111625620.stgit@dwillia2-xfh.jf.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Nikolay reports [1] that accessing BIOS data (first 1MB of the physical
-address space) via /dev/mem results in an SEPT violation.
 
-The cause is ioremap() (via xlate_dev_mem_ptr()) establishing an
-unencrypted mapping where the kernel had established an encrypted
-mapping previously.
 
-Teach __ioremap_check_other() that this address space shall always be
-mapped as encrypted as historically it is memory resident data, not MMIO
-with side-effects.
+On 1.04.25 г. 2:14 ч., Dan Williams wrote:
+> Nikolay reports [1] that accessing BIOS data (first 1MB of the physical
+> address space) via /dev/mem results in an SEPT violation.
+> 
+> The cause is ioremap() (via xlate_dev_mem_ptr()) establishing an
+> unencrypted mapping where the kernel had established an encrypted
+> mapping previously.
+> 
+> Teach __ioremap_check_other() that this address space shall always be
+> mapped as encrypted as historically it is memory resident data, not MMIO
+> with side-effects.
+> 
+> Cc: <x86@kernel.org>
+> Cc: Vishal Annapurve <vannapurve@google.com>
+> Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>
+> Reported-by: Nikolay Borisov <nik.borisov@suse.com>
+> Closes: http://lore.kernel.org/20250318113604.297726-1-nik.borisov@suse.com [1]
+> Tested-by: Nikolay Borisov <nik.borisov@suse.com>
+> Fixes: 9aa6ea69852c ("x86/tdx: Make pages shared in ioremap()")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-Cc: <x86@kernel.org>
-Cc: Vishal Annapurve <vannapurve@google.com>
-Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>
-Reported-by: Nikolay Borisov <nik.borisov@suse.com>
-Closes: http://lore.kernel.org/20250318113604.297726-1-nik.borisov@suse.com [1]
-Tested-by: Nikolay Borisov <nik.borisov@suse.com>
-Fixes: 9aa6ea69852c ("x86/tdx: Make pages shared in ioremap()")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- arch/x86/mm/ioremap.c |    4 ++++
- 1 file changed, 4 insertions(+)
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
 
-diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
-index 42c90b420773..9e81286a631e 100644
---- a/arch/x86/mm/ioremap.c
-+++ b/arch/x86/mm/ioremap.c
-@@ -122,6 +122,10 @@ static void __ioremap_check_other(resource_size_t addr, struct ioremap_desc *des
- 		return;
- 	}
- 
-+	/* Ensure BIOS data (see devmem_is_allowed()) is consistently mapped */
-+	if (PHYS_PFN(addr) < 256)
-+		desc->flags |= IORES_MAP_ENCRYPTED;
-+
- 	if (!IS_ENABLED(CONFIG_EFI))
- 		return;
- 
+> ---
+>   arch/x86/mm/ioremap.c |    4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
+> index 42c90b420773..9e81286a631e 100644
+> --- a/arch/x86/mm/ioremap.c
+> +++ b/arch/x86/mm/ioremap.c
+> @@ -122,6 +122,10 @@ static void __ioremap_check_other(resource_size_t addr, struct ioremap_desc *des
+>   		return;
+>   	}
+>   
+> +	/* Ensure BIOS data (see devmem_is_allowed()) is consistently mapped */
+> +	if (PHYS_PFN(addr) < 256)
+> +		desc->flags |= IORES_MAP_ENCRYPTED;
+
+Side question: Is it guaranteed that this region will be mapped with 4k 
+pages and not some larger size? I.e should the 256 constant be dependent 
+on the current page size?
+
+> +
+>   	if (!IS_ENABLED(CONFIG_EFI))
+>   		return;
+>   
+> 
 
