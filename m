@@ -1,344 +1,524 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2066.outbound.protection.outlook.com [40.107.94.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E410C2040A3
-	for <linux-coco@lists.linux.dev>; Wed,  2 Apr 2025 04:50:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743569416; cv=none; b=JOkywvwNLZ+l/6Ih8hG5AjoQUALTBEX0txSuY2HjTtZhbbugQ2s9Ig7ovu7iI+X6cLIqLa08/1G4t9CjOAoqANuB5O+7qJPluXa9G2M34s1tpmU7ug29bySURtP4KYiH7CeWHAi27MKCOOHFJKeGTubdNN4efHQVqQJZzvSVPtI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743569416; c=relaxed/simple;
-	bh=isebNrf2esoUGpP65SmaxzofRltSgMUSebkM3amp5AQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jSxpmuP0yjVJ4bO86YVYNzJN9A5KJg2gPvpIre9yT+Is7qdVHpZy4CN0Up612QOThdk5gCRFgKEUPlOrA+A9rhkgCNpG7iw7IWGSpq1bFPH5fnLjRkcLXmXCpPPXt0bzW4XPvmxZVFpAXQccle1Va2YPn4B3u8HlyuGdVDsJz94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Fj5fBzWB; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A49A19E99A
+	for <linux-coco@lists.linux.dev>; Wed,  2 Apr 2025 18:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743618730; cv=fail; b=O/9PwSLDi3EC5FBJ1KrMwZnivZ4ywIynArgbnT0numsLkwoMW78JD5hQg/m+tfhxXevZForKM7fqBxqbL9Rccu+h8GUcSckk38xekpgxeN/I+m+LNy15bJx8wTONo1knC+Zyf8973v83k4wezXVgP7IehI85v34l4hIqlvw9Q6M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743618730; c=relaxed/simple;
+	bh=8KWMAM+4MN4D1JNh2nulB/0Btfj3ZXj5PFjhF95NTEg=;
+	h=Message-ID:Date:To:Cc:References:From:Subject:In-Reply-To:
+	 Content-Type:MIME-Version; b=Qn1SJVoWF01VRJX17zKQPhdSeE4vhtN1/wZsqufCJzLCNyveTZtCcZiv0Fdx5bwdhwLW/54wpYBPVppBqjDtJFsLgODrStF4BLIBJh/TOmFkRH3BNDuvlKMkuEh+MfiZEi4bZalnypw/wrBnGW5X/NfS/4c42nBFAT367JmZ4AQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=M8xn95/3; arc=fail smtp.client-ip=40.107.94.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Fj5fBzWB"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ac2ab99e16eso153385666b.0
-        for <linux-coco@lists.linux.dev>; Tue, 01 Apr 2025 21:50:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1743569412; x=1744174212; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sAlu+ltVRWjSYmA5Gp5XEU5Z7YgITnX8VX3GMZmf9c0=;
-        b=Fj5fBzWBe6K0Yi94KZkGGn8UOSh4eNNsdWMD5O6rN384h/NWB0Ela7KNe5ckP30TBE
-         0YZW+8MZdl5Th5wUXttoF4e6yD65Zak3VcFviYLsjqTo5qMYIN5FnTZei4kG1EA+eDfr
-         S7C/zTD8JvXoWrmPBXjq/TNON8FFT2VrR+EVlIp+qvK42S/SzfbLi9ApX1G4RgVNpEDK
-         JJgDSyyChhHYbPb2QbBPJ6m56NaPU4CopAlDrWzkYA28lib3UqmpYLBtysXl22cbyNBT
-         i+iGOtF+tGNuxW+WpiQU13+YpTAH/ngtJSzc/Mt7bnjV9CUjC8oGt9gdiGHbcos+zlKp
-         QJlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743569412; x=1744174212;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sAlu+ltVRWjSYmA5Gp5XEU5Z7YgITnX8VX3GMZmf9c0=;
-        b=H5W1IVVAUi5iEEHGeH0XqHIbC/VFFhFA011Uu0h28Fbls1imF3jCuChAXSahj4fPBe
-         9djgExSJ6x9T7TMnPWhEP6RZ897B48K9fJo7nJAkCmMaMm+YXs+xgAFbm9TFcWbQrrV7
-         mYBAwFVwY87TG81rQGYpBNixezpGGkCmHPgrufbiJ+h+hQimP1/L/ryDs0EZ/2qFU7OK
-         znrZCjsVtfyPkapvkuJwTiz3MPa6pF2e77uJEV10BT8MrTJb17BOkRKWEeclH+iiO/bf
-         RWh96CwPTDvgfrVjhS/Ozau6EQWYtiFIac61DbkPr3KJwwyaiHyPpBnzNxDHLYyO43LY
-         xuzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX0CvQW+T5BfWZzaQvocJD1DqCc/KECS/x61U1zJqPAO6Ln/L/6g9JY7CzpEBZM7V8xxSydoz/mhjqb@lists.linux.dev
-X-Gm-Message-State: AOJu0YzzqEeGuEWDW0ODVsn8y5xaIOU2+Ob7ep+eWgBHYsEmMqN0DhHR
-	UGUAGKa61CHxhMnvziPCYdUMqx0ZSNGFUAC1m655sJjqX2RF92xxURguHBQbA/bP9Ge6TXSdcYa
-	/9zQiPSWD9dnqbo11htQludxymifWx+SbTr+W
-X-Gm-Gg: ASbGncvZnBNjuQ3K1370kcIHrvjfqIWJ6IJsKsLSJMmgQtWjBycTTRWOUz15sZxtFRW
-	QU3bFh5comDSe5uYYRrRxh9iGJYMvLubhnmVtE6AVZda1AyJBZ19M6ZriiB2jJt9Oj+gyuLFLqQ
-	XGFcK5Hd+pN88UvK+aOZ8wvqSWoQ==
-X-Google-Smtp-Source: AGHT+IEO30ME7eSMcTeelbOr3WHn7l+8jLOV3Rh2RF8FpgyLrbYT3cBg4cAKLmxezZ1OAfFGtdfWV5/3D1abll702Mg=
-X-Received: by 2002:a17:907:7da7:b0:ac7:19d3:1b2 with SMTP id
- a640c23a62f3a-ac7389edd03mr1209228466b.18.1743569411948; Tue, 01 Apr 2025
- 21:50:11 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="M8xn95/3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OMdWYJomppsOPiXtHPPr4taoMS2D+Yrxm7MC+XhmR/zbqfnu9/+pwNXhLjuaOsH3I1YZGbDf6j5PemAPFZvd4t2oS+ADoXZgkCwiqxf2+I2nXzslfffojLsW9lAtk905PyqcbAMnNoyvyPKdmlgur7juiIaeIEUyZnjoED5JinJkNG9PySJjDFeHeGg8XjTiOh4iAVaD+D7fTHWp8OhbJzUdovpStknU6XUpCJFZVs2ydzuBp7Z16M46gyPvrYinnPmLNCdv97375bB9iXND1hccej7cgGr4K3wz0pnC9UG/cXrQkK1Ewb/xlR7olPYfqEDBxwhr08GzO24g2azg4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3yOxYN9aGKCSVqMcWdI9yyMhS+TQNiEZRV6lLzsO/5Q=;
+ b=n31lFhx8DiaF5Va8lYL5Uc3C2OlEiRLfeZHSF9oGS5EgXpDr1v1bA0qld6hPTQZDXD2Ko2V2eC0BIYrDlVNYrkEQ91VmJhNJV4avg3yV0ZalvzIHZairZXgt2vVwhl77Wh+doNin7Td8TzBbhzWvCsbSwxjjrxWUkst5xhn2CSh4SgYjmztgPz4ZxLw6OGK2JPVWwlPkiK/QueTfeudXSW/J3j4iqbr/QyLp0055YR/uhHpXwFaZL/5RVcpJTJKj/Z650VldiqtHM20o6jjJekmQbIVKIi9HW4964ryNbPqEBmp9HOXHzPAUFZasPSqYu2IF9QNjMXD7Y9NyD7kEWA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3yOxYN9aGKCSVqMcWdI9yyMhS+TQNiEZRV6lLzsO/5Q=;
+ b=M8xn95/3mjOKRraiG/A3StZ3GQOTD/3E96EUwyPtNYLii8vZqOUvsqrA2usfIDh3RReN00Cl41GJZJiH2k8fTAd+ULyDDWoznG78oYxMcZ0Ozo1OVJIKcqudxjacJxjmlA41Af/t02TpPzBzJTPA/+JJXYcqaL/qU1skLrRsrx0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
+ by SN7PR12MB7788.namprd12.prod.outlook.com (2603:10b6:806:345::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Wed, 2 Apr
+ 2025 18:32:04 +0000
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e%5]) with mapi id 15.20.8534.043; Wed, 2 Apr 2025
+ 18:32:04 +0000
+Message-ID: <afb6dc48-bde3-ffeb-19a3-70b1e5a15cd0@amd.com>
+Date: Wed, 2 Apr 2025 13:32:02 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org,
+ linux-coco@lists.linux.dev, Borislav Petkov <bp@alien8.de>,
+ Dionna Amalie Glaze <dionnaglaze@google.com>,
+ Kevin Loughlin <kevinloughlin@google.com>
+References: <20250325091614.1203411-2-ardb+git@google.com>
+ <32zavhk2moqarh4vd76rnhwte45kkc3gqy3shls7mp5lemhy4k@o4gibpdf4sj6>
+ <CAMj1kXHkM2hBHkfjFuCKpOA2APX+BBR-zrPfRkpiEf609UMKjw@mail.gmail.com>
+ <ervuw7mwzvcyizkchy3nz4357ahz5kdfzc227exlrc5yabq4im@g2kzsrdbkdf6>
+ <CAMj1kXEzzNnohJat5REp5mAUCSd4v_ft6F=P6vB95z6+f1MMfw@mail.gmail.com>
+ <4xm3bmuhmdbnn6fkmhmnrtkcdiwj76dcr7gujam45nqvgupvj3@caytleltmyzj>
+ <CAMj1kXFERrdioZ8_07rwDVUAoq=OLDvLCRUS6BN3GXnJoJPuAA@mail.gmail.com>
+ <d6eb83a9-d1b1-7028-9cfd-1ab3fa0d6269@amd.com>
+ <CAMj1kXE35QQ7b3uSF4Ufv6VXyjCfPyveUO1KLPKwsgoHu8iE=w@mail.gmail.com>
+ <121a6769-3b86-b1a7-1d90-524cdd82790b@amd.com>
+ <CAMj1kXEUARHvxQjucikoy_qWkrVnqsMGQyt7mUrBeV-f-_ZQJg@mail.gmail.com>
+Content-Language: en-US
+From: Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: [PATCH] efi/libstub: Do not accept parts of memory before
+ ExitBootServices()
+In-Reply-To: <CAMj1kXEUARHvxQjucikoy_qWkrVnqsMGQyt7mUrBeV-f-_ZQJg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA1P222CA0166.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:3c3::10) To DM4PR12MB5070.namprd12.prod.outlook.com
+ (2603:10b6:5:389::22)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250331103900.92701-1-sgarzare@redhat.com> <20250331103900.92701-2-sgarzare@redhat.com>
- <CAAH4kHYWT_LhxciFgEpG4wTRstZsY3grjrL0zjbERzrPyQZ9rw@mail.gmail.com>
-In-Reply-To: <CAAH4kHYWT_LhxciFgEpG4wTRstZsY3grjrL0zjbERzrPyQZ9rw@mail.gmail.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Tue, 1 Apr 2025 21:50:00 -0700
-X-Gm-Features: AQ5f1JqISR008aUW6iF3QtvXScRkhHvlKh8Noq97ar4eYwt7xn7MXs-U6YueRb8
-Message-ID: <CAAH4kHb7sAHkU3W6RwYP60EQiOnHqsL6nksU-_GQ+nuyG5XU1g@mail.gmail.com>
-Subject: Re: [PATCH v5 1/4] x86/sev: add SVSM vTPM probe/send_command functions
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>, linux-kernel@vger.kernel.org, 
-	Jason Gunthorpe <jgg@ziepe.ca>, James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Borislav Petkov <bp@alien8.de>, 
-	linux-integrity@vger.kernel.org, Peter Huewe <peterhuewe@gmx.de>, 
-	Ingo Molnar <mingo@redhat.com>, linux-coco@lists.linux.dev, 
-	Dov Murik <dovmurik@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Joerg Roedel <jroedel@suse.de>, x86@kernel.org, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Claudio Carvalho <cclaudio@linux.ibm.com>, "H. Peter Anvin" <hpa@zytor.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|SN7PR12MB7788:EE_
+X-MS-Office365-Filtering-Correlation-Id: f1fc4785-9ea7-495f-d0d9-08dd7214aa70
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?QTdDUTJsT2pkNXczMVcya0NyM3VRb3h4dVBZSFpSZ3MyUjV5VE8yendYNjBO?=
+ =?utf-8?B?U1dUb05wanBrYi8ySXdYTnZIVVJsQmdZTUppaWJRMFRaWDBsSUFpOEp2VmZn?=
+ =?utf-8?B?dnJHRnE2NlY2OVJrdktEVjUrYjZHbTFXVGxxcGRHUkRwR1U5U3U1OHlDOFJC?=
+ =?utf-8?B?S2VjOUVvNDJqcTFyTTh5azRZSGY3ZjFkR1hrQnovR1pNWmNYQTloWU9OUUds?=
+ =?utf-8?B?bG5ZdThOcVRYNERkRThIN0ZJNW1DRjJPSnR2YnhTU1pDYWtUZ3pWV3BXWnlS?=
+ =?utf-8?B?QSttMXc2MEZHemFOK1A2ekRCbi9HeDBRM0xCT0xPWmJyRENNa2hMaFI4L0l1?=
+ =?utf-8?B?RjZJOXRnMWJkaktIbll5NWVFMHlINlFBaWRneG55eCtlZW50R1c0Y25rSmM3?=
+ =?utf-8?B?aVN5OEp2dTJObWUyNitkaHFCTzNTM2x6R2xJZ0JkUGVEQjJmVWNaRElkOEJi?=
+ =?utf-8?B?bUxZWklxQWlJK0RKM05QK1Y3cjVtSUhLaCtCYU5WQnlGbjdzeEQ4SEhKdjRr?=
+ =?utf-8?B?Z0FCakt3Uks2L2o0alh6dk5YMnVQSlpEYVpYeTdVNE11Z2liZDRiNkcyOVNs?=
+ =?utf-8?B?TUFMUGVQYlc0UjUxTjZvcnQxaHIwVUtTK2JrWVk4TDBvQVlTTnFEMTlveVA4?=
+ =?utf-8?B?WHBHcUpFR2JpWHNqZ1JydnlBcDgyVllZTHM1V3g5TlJXUVpsY2RQRS8xWVhU?=
+ =?utf-8?B?MnNSejVzcndaanpVTW5mYS9YVWdzUGFSVHdILzJXNVBKaGFWZDFGNkJJWVpx?=
+ =?utf-8?B?S1VSR2NnbWpMbVZjdjVCY0hDRFQwMGFLaE8wR2FWV1JScVNkSjN1WUlPS2NE?=
+ =?utf-8?B?SXEvUnZpNnJkUTNaU3MvYm94Mk1yR25xU0E4MmZlaDY0a1doMnVKVFA0K3Ny?=
+ =?utf-8?B?TVgzL2M5dU9TMm9qK2syRXlQSUlaU2hhb3YzRzVzTTBnSEF5L0cxNWY4RjNT?=
+ =?utf-8?B?MURlZTBLZG9YMnZXcEFMSVRwWmhFTE9iMVB5S29vSWgxYUlHQmlabk5jMUor?=
+ =?utf-8?B?NHF1cEhZV0UxdnBJVVZTVnZRb25MaFFlR1dSK0pQOFhIcGp1NEg5SjdlZFdt?=
+ =?utf-8?B?WDJOYURpUHg0QjdiQmtRUTA5amRjbC9KYmtEVnordVRSYjRtaFhNcURjQkR1?=
+ =?utf-8?B?MWY0bTQ5cVpXZXBKTzF4aU9kbjNINzEySUhWQXhFZnZxSG82dTk5MDhWQTE0?=
+ =?utf-8?B?NEVZdEtoMVY4VXZpTWdPMXQxczBKM2VDTUI1U2ZzUTlFeE5WNWFWN2NQN0tu?=
+ =?utf-8?B?U3hKckpINWRobVFIQThyY2RDSHovRFRRZEQ5ODZ5cmlyVEd0elNKMXU2VWNN?=
+ =?utf-8?B?QmR4TmdqWlI3T0Y3djVQTUlLMmtGOHBrdVFXMEdITFcwNWdkL3pjUDg2WWJX?=
+ =?utf-8?B?V2ZmcmlMWlIxQ0x1cDd5VFpZYmJMQmJmNU5uOEZ0S2wybXRhN2hGbUxMZndM?=
+ =?utf-8?B?YlR0ZE84eG1JWExVcVVDMnMxYVYxTkdoRnNPYTdER2tzS1VNWUR5L0p2UlBO?=
+ =?utf-8?B?b242Rk4ycmVsM0RtMlZuUFRDODZQMHp4bUFrWExrc2txM3hjT0RmamNoMXNF?=
+ =?utf-8?B?VnBXNTI5UytRM25mLy8zdU91Sm45VGt4dHN3dzg3QU54L2FmeS9RN0lxQllJ?=
+ =?utf-8?B?czYyZkZtY0xydXZSRGZXRzZwY2FDWmRWdDRDUVlPSVdjY1M0YWxTZnRpdGYr?=
+ =?utf-8?B?WlVackJ1bitVcEprcHlUWkw5dmNnTXc0bUpFN1pMZUlzZGpxUnNydk1UbEpU?=
+ =?utf-8?B?NkNVSEo1UnRrb3ptU0laek9BYzRObXdkblFMR1pqZ3JOKzgwbWRxWVhuNHI5?=
+ =?utf-8?B?ZzFBYWUwZzY5KzkyR3hydSsxYTlzMVdERkN6Vks4VzNZb1dhdFdISW9UamtX?=
+ =?utf-8?Q?mfcdB2X18zknG?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OHZaWklGaW9qL1RSQSsycGsyZVVZWS95Nk50bnl2b2R1NHQ5M1dJUjNvY3Ba?=
+ =?utf-8?B?M09ad3ArZ0hPSU9DSk9pQWFhaTRCWTNEWnlDZ0pxVlcybG1CMlZMdXB1S0dn?=
+ =?utf-8?B?REZQKzY3MFgvRWltdkZ1NUYydWhodDlQU1QyN3dGNkNlOUt6UWtrOXN3TURz?=
+ =?utf-8?B?cFNmdHhDeno5cVhnblpOenhXQVQrWk52Vy9iUnBNVjFMbVpIbm84UGswMkVN?=
+ =?utf-8?B?L1E0c2RqOHBMZUVPeGxVVGZpNzZ0T3RNN2R4elRGNjNhdFV6N25YVHR4dFNr?=
+ =?utf-8?B?dXpvL1YxYXFrVjRTQnZCT0JRN3dPY2xkaXlkVnRqTXgvelB4RUpFK0o0UENK?=
+ =?utf-8?B?Vm5rdEJnSFJSaWFwamJ5ZHJqK1NiZG9BalJLb2xTTlROV212M1lZRFdTOHBu?=
+ =?utf-8?B?WDBZaUozVmp1NkRobVo2M1lVU2wyUnF1MnBDTmEwMUhxby9hK0FDU1J0NXpQ?=
+ =?utf-8?B?bzlMRmpESG40alZtZGZKbjJQSkw2R2hjVkM1bnlFN0FwbjBSYTVnNzRLQlQy?=
+ =?utf-8?B?R0NleWw2bEhac1pESFNGdXpBdkZ4U2xhQnN4cHp3ZVQ1cDBxNHdvbElQTDdS?=
+ =?utf-8?B?T2xFZWdFYzNITnBPczNQZmZsTHZzNVBsbm9uMURXbTlleGdOTlB1elZpZE96?=
+ =?utf-8?B?VEwyeUYvMzkvR3lldE1xY3A5bEw4U1lLUCtRdU5oSTAzeUhWdWw3OEZRUm9M?=
+ =?utf-8?B?WWxadUZQWDRBQllsc0NmZmhtV2ZGQ05xZTBXTTJDaW5IQ3hzK05iaGdxdHNQ?=
+ =?utf-8?B?dS9CUXBIUFZLbllaMEZXbEUxVkJ6WWpQYzBxUWhGS3UvTWwwZEw4MkVVelZ6?=
+ =?utf-8?B?SnNiTnYwWU5xeXNTRS9PMDJEVDl0Q3d3UTVYb2hKbDl4akxoK3RWM3JyRkhD?=
+ =?utf-8?B?UlhIa2ZSbmpDcmZHbndJcGVjTUlJWWo3L2ViUnpaVnNveEJkZ3pNeFRoTHlx?=
+ =?utf-8?B?ZU84NWtLM3V5KzFkMkY4QmN3YmFvVmhNdHNMdk9uU2M4QmRRalQ1UFZ5dVp6?=
+ =?utf-8?B?dGVhakJFZmtNQXVSVEwyQTlFQTJmV0Rkc2pJaXVNYUM5b2E5L29qVjM4UTky?=
+ =?utf-8?B?YWgxSzNta2lQUXVuU21iOUJvcVBKNlh4U0ZINkZIeWlOK3h3TjdjYTAwZjhl?=
+ =?utf-8?B?Nis3SzE4SmV4eWo1TXIzM1kyU3pwWXFUS2Q4L050aHQ0V2tkV1V4ZUFkbDFM?=
+ =?utf-8?B?cmRnSzNWVm5tYS9pUnZ2TmhLWTdpSWhzck9aQzZGQkI4a2FVa2pWQkpSQVFt?=
+ =?utf-8?B?cDhxcVRWNXhINkQ5TWlLeXpxZlh5blRRbUFudU1lSUNzNlBHUXNKemJBUlNs?=
+ =?utf-8?B?NWg0TElmS3VBbzRGQjhlUEJoNEZlZFJzUTJDYnh5Wk5kamFnWFovWjNaQ1hW?=
+ =?utf-8?B?TXlaSkJmTlhnZGlrK0w5c2VKRnVOZStlRW9NUlR2Y3FBR3k3RGg5VFdFNjd2?=
+ =?utf-8?B?TFVnMkZycUVaZjVYSFpjb3VvZVJWaXNBWFh5dUd2NEU5Q28xY0pVN1A1SVp2?=
+ =?utf-8?B?TWZVc1FISzZTU0FkZ1Y3bXVQQ3Y1cDVqYUJySkE0cjVRR2NXaU1ibXNpUll3?=
+ =?utf-8?B?SVZxVXcwa1lQbkdyUERlaU5WL1VKOTYzZHlibkxjQ253eUNDRkZjT1pEeXRP?=
+ =?utf-8?B?alVUREl6dnM4MGM2MU1BbUc5UWJGdnIzOGRiWWV5Y21leXVVRmR3U3VxRGhI?=
+ =?utf-8?B?QVdnN0tueE5MajlzRmRQK1p2cDROT29iSXQrQmZqOStDam1zZHdCdm5WQW9T?=
+ =?utf-8?B?M1owWlZkNDVWRCthdFdlcVJra0ZNR2tKQ1NaZ1kyZWxJRit3ZnpPUzlrOTdv?=
+ =?utf-8?B?aGNZcFJMZWZXL3huMG1KYTQzT3FqbWtweGpUKzM5K2VFRHdwcnorc1BCSjQ2?=
+ =?utf-8?B?eTlydzVUZFJkUXF5RWF6OGJtSUJuQjYyWm5CazJnQ2crRVNJM1R3cjc4Titp?=
+ =?utf-8?B?UFZlZFhqODhtUmlROVg4SmhuUHY2Q2Zsd29Xb083MVRjb20xUkNDMExIOTJE?=
+ =?utf-8?B?MUZEMVpxM2RlRTNnSGxjTlJuekE3U1RMR2JsL0U2d2ZmWHllUHBzOThTTS9H?=
+ =?utf-8?B?WllBVXk3VU1ibHNoK05La0tDZktONmw0c1ovaXlSWitIOXNyNWFITU5aYzUz?=
+ =?utf-8?Q?3Njyo1awbULBky8lZTlNuPETr?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f1fc4785-9ea7-495f-d0d9-08dd7214aa70
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2025 18:32:04.2874
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xILFMUHitQKoUdCNP5rOeOGkO/X81N4LnnezneuHBVdjJ8jFUn1osvszYMi7AtVu3fDeUjiAw3BHRgM/uA8w0Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7788
 
-On Tue, Apr 1, 2025 at 9:13=E2=80=AFPM Dionna Amalie Glaze
-<dionnaglaze@google.com> wrote:
->
-> On Mon, Mar 31, 2025 at 3:39=E2=80=AFAM Stefano Garzarella <sgarzare@redh=
-at.com> wrote:
-> >
-> > From: Stefano Garzarella <sgarzare@redhat.com>
-> >
-> > Add two new functions to probe and send commands to the SVSM vTPM.
-> > They leverage the two calls defined by the AMD SVSM specification [1]
-> > for the vTPM protocol: SVSM_VTPM_QUERY and SVSM_VTPM_CMD.
-> >
-> > Expose these functions to be used by other modules such as a tpm
-> > driver.
-> >
-> > [1] "Secure VM Service Module for SEV-SNP Guests"
-> >     Publication # 58019 Revision: 1.00
-> >
-> > Co-developed-by: James Bottomley <James.Bottomley@HansenPartnership.com=
->
-> > Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
-> > Co-developed-by: Claudio Carvalho <cclaudio@linux.ibm.com>
-> > Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
-> > Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-> > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> > ---
-> > v5:
-> > - added stubs when !CONFIG_AMD_MEM_ENCRYPT [Dionna]
-> > - added Jarkko's R-b
-> > v4:
-> > - added Tom's R-b
-> > - added functions documentation [Jarkko]
-> > - simplified TPM_SEND_COMMAND check [Tom/Jarkko]
-> > v3:
-> > - removed link to the spec because those URLs are unstable [Borislav]
-> > - squashed "x86/sev: add SVSM call macros for the vTPM protocol" patch
-> >   in this one [Borislav]
-> > - slimmed down snp_svsm_vtpm_probe() [Borislav]
-> > - removed features check and any print related [Tom]
-> > ---
-> >  arch/x86/include/asm/sev.h |  9 ++++++
-> >  arch/x86/coco/sev/core.c   | 59 ++++++++++++++++++++++++++++++++++++++
-> >  2 files changed, 68 insertions(+)
-> >
-> > diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-> > index ba7999f66abe..ba7a0a327afb 100644
-> > --- a/arch/x86/include/asm/sev.h
-> > +++ b/arch/x86/include/asm/sev.h
-> > @@ -384,6 +384,10 @@ struct svsm_call {
-> >  #define SVSM_ATTEST_SERVICES           0
-> >  #define SVSM_ATTEST_SINGLE_SERVICE     1
-> >
-> > +#define SVSM_VTPM_CALL(x)              ((2ULL << 32) | (x))
-> > +#define SVSM_VTPM_QUERY                        0
-> > +#define SVSM_VTPM_CMD                  1
-> > +
-> >  #ifdef CONFIG_AMD_MEM_ENCRYPT
-> >
-> >  extern u8 snp_vmpl;
-> > @@ -481,6 +485,9 @@ void snp_msg_free(struct snp_msg_desc *mdesc);
-> >  int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_gues=
-t_req *req,
-> >                            struct snp_guest_request_ioctl *rio);
-> >
-> > +bool snp_svsm_vtpm_probe(void);
-> > +int snp_svsm_vtpm_send_command(u8 *buffer);
-> > +
-> >  void __init snp_secure_tsc_prepare(void);
-> >  void __init snp_secure_tsc_init(void);
-> >
-> > @@ -524,6 +531,8 @@ static inline struct snp_msg_desc *snp_msg_alloc(vo=
-id) { return NULL; }
-> >  static inline void snp_msg_free(struct snp_msg_desc *mdesc) { }
-> >  static inline int snp_send_guest_request(struct snp_msg_desc *mdesc, s=
-truct snp_guest_req *req,
-> >                                          struct snp_guest_request_ioctl=
- *rio) { return -ENODEV; }
-> > +static inline bool snp_svsm_vtpm_probe(void) { return false; }
-> > +static inline int snp_svsm_vtpm_send_command(u8 *buffer) { return -ENO=
-DEV; }
-> >  static inline void __init snp_secure_tsc_prepare(void) { }
-> >  static inline void __init snp_secure_tsc_init(void) { }
-> >
-> > diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-> > index b0c1a7a57497..efb43c9d3d30 100644
-> > --- a/arch/x86/coco/sev/core.c
-> > +++ b/arch/x86/coco/sev/core.c
-> > @@ -2625,6 +2625,65 @@ static int snp_issue_guest_request(struct snp_gu=
-est_req *req, struct snp_req_dat
-> >         return ret;
-> >  }
-> >
-> > +/**
-> > + * snp_svsm_vtpm_probe() - Probe if SVSM provides a vTPM device
-> > + *
-> > + * This function checks that there is SVSM and that it supports at lea=
-st
-> > + * TPM_SEND_COMMAND which is the only request we use so far.
-> > + *
-> > + * Return: true if the platform provides a vTPM SVSM device, false oth=
-erwise.
-> > + */
-> > +bool snp_svsm_vtpm_probe(void)
-> > +{
-> > +       struct svsm_call call =3D {};
-> > +
-> > +       /* The vTPM device is available only if a SVSM is present */
-> > +       if (!snp_vmpl)
-> > +               return false;
-> > +
-> > +       call.caa =3D svsm_get_caa();
-> > +       call.rax =3D SVSM_VTPM_CALL(SVSM_VTPM_QUERY);
-> > +
-> > +       if (svsm_perform_call_protocol(&call))
-> > +               return false;
-> > +
-> > +       /* Check platform commands contains TPM_SEND_COMMAND - platform=
- command 8 */
-> > +       return call.rcx_out & BIT_ULL(8);
-> > +}
-> > +EXPORT_SYMBOL_GPL(snp_svsm_vtpm_probe);
-> > +
-> > +/**
-> > + * snp_svsm_vtpm_send_command() - execute a vTPM operation on SVSM
-> > + * @buffer: A buffer used to both send the command and receive the res=
-ponse.
-> > + *
-> > + * This function executes a SVSM_VTPM_CMD call as defined by
-> > + * "Secure VM Service Module for SEV-SNP Guests" Publication # 58019 R=
-evision: 1.00
-> > + *
-> > + * All command request/response buffers have a common structure as spe=
-cified by
-> > + * the following table:
-> > + *     Byte      Size       In/Out    Description
-> > + *     Offset    (Bytes)
-> > + *     0x000     4          In        Platform command
-> > + *                          Out       Platform command response size
-> > + *
-> > + * Each command can build upon this common request/response structure =
-to create
-> > + * a structure specific to the command.
-> > + * See include/linux/tpm_svsm.h for more details.
-> > + *
-> > + * Return: 0 on success, -errno on failure
-> > + */
-> > +int snp_svsm_vtpm_send_command(u8 *buffer)
-> > +{
-> > +       struct svsm_call call =3D {};
-> > +
-> > +       call.caa =3D svsm_get_caa();
-> > +       call.rax =3D SVSM_VTPM_CALL(SVSM_VTPM_CMD);
-> > +       call.rcx =3D __pa(buffer);
-> > +
-> > +       return svsm_perform_call_protocol(&call);
-> > +}
-> > +EXPORT_SYMBOL_GPL(snp_svsm_vtpm_send_command);
-> > +
->
-> How do we prevent this from causing scheduler problems when the TPM
-> service decides to take a really long time?
-> I removed the create_ek_2048 operation at boot in favor of lazily
-> creating it on first use.
->
-> This attest protocol uses tpm_send_command under the hood and
-> demonstrates the problem.
-> When I use this for CreatePrimary for an RSA 2048 key, the vCPU goes
-> out to lunch
->
-> [ 3356.509143] Sending NMI from CPU 1 to CPUs 0:
-> [ 2503.241673] NMI backtrace for cpu 0
-> [ 2503.241673] CPU: 0 PID: 462 Comm: cat Not tainted 6.6.84 #1
-> [ 2503.241673] Hardware name: Google Google Compute Engine/Google
-> Compute Engine, BIOS Google 01/01/2011
-> [ 2503.241673] RIP: 0010:svsm_perform_call_protocol+0x1ee/0x310
-> [ 2503.241673] Code: c2 48 c1 ea 20 b9 30 01 01 c0 0f 30 48 8b 3b 48
-> 8b 43 08 48 8b 4b 10 48 8b 53 18 4c 8b 43 20 4c 8b 4b 28 c6 07
-> 01 f3 0f 01 d9 <48> 8b 3b 45 31 d2 44 86 17 48 89 43 30 48 89 4b 38 48
-> 89 53 40 4c
-> [ 2503.241673] RSP: 0018:ffffc90000f93ba8 EFLAGS: 00000012
-> [ 2503.241673] RAX: 0000000080000000 RBX: ffffc90000f93c98 RCX:
-> 000000013ffe8008
-> [ 2503.241673] RDX: ffffffffffffffff RSI: ffff88813ffe9000 RDI:
-> ffff88813ffe8000
-> [ 2503.241673] RBP: ffffc90000f93bf8 R08: ffffffffffffffff R09:
-> 0000000000000000
-> [ 2503.241673] R10: 0000000000000000 R11: 0000000080000000 R12:
-> 0000000080000018
-> [ 2503.241673] R13: ffff88813ffe93f0 R14: 00000000ffffffea R15:
-> ffff8881bffe9000
-> [ 2503.241673] FS:  00007d3490351800(0000) GS:ffff88813bc00000(0000)
-> knlGS:0000000000000000
-> [ 2503.241673] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [ 2503.241673] CR2: 00007d349032f000 CR3: 00080001012d8003 CR4:
-> 0000000000770ef0
-> [ 2503.241673] PKRU: 55555554
-> [ 2503.241673] Call Trace:
-> [ 2503.241673]  <NMI>
-> [ 2503.241673]  ? nmi_cpu_backtrace+0xe2/0x110
-> [ 2503.241673]  ? nmi_cpu_backtrace_handler+0x15/0x20
-> [ 2503.241673]  ? nmi_handle+0x7f/0x140
-> [ 2503.241673]  ? svsm_perform_call_protocol+0x1ee/0x310
-> [ 2503.241673]  ? default_do_nmi+0x46/0x100
-> [ 2503.241673]  ? exc_nmi+0x111/0x190
-> [ 2503.241673]  ? end_repeat_nmi+0x16/0x67
-> [ 2503.241673]  ? svsm_perform_call_protocol+0x1ee/0x310
-> [ 2503.241673]  ? svsm_perform_call_protocol+0x1ee/0x310
-> [ 2503.241673]  ? svsm_perform_call_protocol+0x1ee/0x310
-> [ 2503.241673]  </NMI>
-> [ 2503.241673]  <TASK>
-> [ 2503.241673]  snp_issue_svsm_attest_req+0xa7/0xf0
-> [ 2503.241673]  sev_report_new+0x58e/0xb20
-> [ 2503.241673]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [ 2503.241673]  tsm_report_read+0x153/0x330
-> [ 2503.241673]  configfs_bin_read_iter+0xbf/0x200
-> [ 2503.241673]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [ 2503.241673]  vfs_read+0x25e/0x2f0
-> [ 2503.241673]  ksys_read+0x75/0xe0
-> [ 2503.241673]  do_syscall_64+0x46/0xb0
-> [ 2503.241673]  entry_SYSCALL_64_after_hwframe+0x78/0xe2
-> [ 2503.241673] RIP: 0033:0x7d348ff281cd
-> [ 2503.241673] Code: 31 c0 e9 d6 fe ff ff 55 48 8d 3d a6 0a 0a 00 48
-> 89 e5 e8 c6 1c 02 00 66 0f 1f 44 00 00 80 3d 31 62 0d 00 00 74
-> 17 31 c0 0f 05 <48> 3d 00 f0 ff ff 77 53 c3 66 2e 0f 1f 84 00 00 00 00
-> 00 55 48 89
-> [ 2503.241673] RSP: 002b:00007ffc71e50a88 EFLAGS: 00000246 ORIG_RAX:
-> 0000000000000000
-> [ 2503.241673] RAX: ffffffffffffffda RBX: 00007d3490330000 RCX:
-> 00007d348ff281cd
-> [ 2503.241673] RDX: 0000000000020000 RSI: 00007d3490330000 RDI:
-> 0000000000000003
-> [ 2503.241673] RBP: 00007ffc71e50ab0 R08: 00007d349032f010 R09:
-> 0000000000000000
-> [ 2503.241673] R10: 0000000000000022 R11: 0000000000000246 R12:
-> 0000000000020000
-> [ 2503.241673] R13: 0000000000000000 R14: 0000000000000003 R15:
-> 0000000000020000
-> [ 2503.241673]  </TASK>
->
+On 4/1/25 13:45, Ard Biesheuvel wrote:
+> On Tue, 1 Apr 2025 at 18:51, Tom Lendacky <thomas.lendacky@amd.com> wrote:
+>>
+>> On 3/26/25 04:28, Ard Biesheuvel wrote:
+>>> On Tue, 25 Mar 2025 at 17:30, Tom Lendacky <thomas.lendacky@amd.com> wrote:
+>>>>
+>>>> On 3/25/25 09:39, Ard Biesheuvel wrote:
+>>>>> On Tue, 25 Mar 2025 at 14:44, Kirill A. Shutemov
+>>>>> <kirill.shutemov@linux.intel.com> wrote:
+>>>>>>
+>>>>>> On Tue, Mar 25, 2025 at 02:09:54PM +0100, Ard Biesheuvel wrote:
+>>>>>>>> Since the problem happens before ExitBootServices(), can we allocate this
+>>>>>>>> memory range with EFI API and free it back?
+>>>>>>>>
+>>>>>>>
+>>>>>>> In principle, yes - we could allocate these misaligned chunks as
+>>>>>>> EfiLoaderData, and it wouldn't even be necessary to free them, as they
+>>>>>>> would become available to the OS automatically.
+>>>>>>>
+>>>>>>> But doing this in setup_e820() is tricky, because every page
+>>>>>>> allocation modifies the EFI memory map, and we may have to restart
+>>>>>>> from the beginning. And there is no guarantee that some asynchronous
+>>>>>>> event in the firmware context does not attempt to allocate some pages,
+>>>>>>> in a way that might result in another misaligned unaccepted region.
+>>>>>>
+>>>>>> Looking again at the code, setup_e820() (and therefore
+>>>>>> process_unaccepted_memory()) called after efi_exit_boot_services() in
+>>>>>> exit_boot(), so we can't use EFI API to allocate memory.
+>>>>>>
+>>>>>
+>>>>> Ah yes, I misremembered that. It also means that it is fine in
+>>>>> principle to take over the communication with the hypervisor.
+>>>>>
+>>>>> However, this is still tricky, because on SEV-SNP, accepting memory
+>>>>> appears to rely on the GHCB page based communication being enabled,
+>>>>> and this involves mapping it down to a single page so the C bit can be
+>>>>> cleared. It would be nice if we could simply use the MSR based
+>>>>> protocol for accepting memory.
+>>>>
+>>>> We can probably do something along this line since there is an existing
+>>>> function, __page_state_change(), that performs MSR protocol PSC. If we
+>>>> change the arch_accept_memory() calls in process_unaccepted_memory() to
+>>>> arch_accept_memory_early() then we can differentiate between this early
+>>>> alignment setup timeframe. The early function can also use
+>>>> sev_get_status() instead of sev_snp_enabled().
+>>>>
+>>>> Let me mess around with it a bit and see what I come up with.
+>>>>
+>>>
+>>> Cheers.
+>>
+>> This is what I came up with below. @Ard and @Kirill, let me know if it
+>> looks ok to you and, if so, I'll submit a formal patch where we can work
+>> on naming, etc.
+>>
+> 
+> Thanks for putting this together.
+> 
+> Some questions below.
+> 
+>>>
+>>> So IIUC, it would be sufficient to check sev_get_status() against
+>>> MSR_AMD64_SEV_SNP_ENABLED, and use the PSC MSR to transition each
+>>> unaccepted page that is in the misaligned head or tail of the region
+>>> to private.
+>>>
+>>> Pardon my ignorance, but does that mean that in principle,
+>>> sev_enable() et al could be deferred to early startup of the kernel
+>>> proper (where the other SEV startup code lives) ?
+>>
+>> I'm not sure if it can be. There is a bunch of code in the sev_enable()
+>> path that I'm not sure can be moved. I'd have to look a lot closer to
+>> determine that.
+>>
+>> Thanks,
+>> Tom
+>>
+>>>
+>>> We have been playing whack-a-mole with PIC codegen issues there, and
+>>> so it might make sense to consolidate that logic into a single [PIC]
+>>> chunk of code that is somewhat isolated from the rest of the code
+>>> (like the kernel/pi code on arm64)
+>>
+>> diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
+>> index dbba332e4a12..b115a73ca25e 100644
+>> --- a/arch/x86/boot/compressed/mem.c
+>> +++ b/arch/x86/boot/compressed/mem.c
+>> @@ -32,19 +32,42 @@ static bool early_is_tdx_guest(void)
+>>         return is_tdx;
+>>  }
+>>
+>> -void arch_accept_memory(phys_addr_t start, phys_addr_t end)
+>> +static bool is_sev_snp_enabled(bool early)
+>> +{
+>> +       return early ? early_sev_snp_enabled() : sev_snp_enabled();
+> 
+> Why is the latter test not suitable early on? Simply because
+> sev_status is not initialized yet?
 
-Disregard this error. I was providing the wrong command. I don't
-experience any such hang now.
+Right. I was following the example of calling sev_get_status() before
+sev_enable() has been invoked.
 
->
-> Which doesn't seem like behavior we want, nor is it something I have
-> any idea how we solve with the synchronous SVSM call model.
->
-> >  static struct platform_device sev_guest_device =3D {
-> >         .name           =3D "sev-guest",
-> >         .id             =3D -1,
-> > --
-> > 2.49.0
-> >
->
->
-> --
-> -Dionna Glaze, PhD, CISSP, CCSP (she/her)
+> 
+>> +}
+>> +
+>> +static void __arch_accept_memory(phys_addr_t start, phys_addr_t end, bool early)
+>>  {
+>>         /* Platform-specific memory-acceptance call goes here */
+>>         if (early_is_tdx_guest()) {
+>>                 if (!tdx_accept_memory(start, end))
+>>                         panic("TDX: Failed to accept memory\n");
+>> -       } else if (sev_snp_enabled()) {
+>> -               snp_accept_memory(start, end);
+>> +       } else if (is_sev_snp_enabled(early)) {
+>> +               /*
+>> +                * Calls when memory acceptance is being setup require SNP
+>> +                * to use the GHCB protocol because the current pagetable
+>> +                * mappings can't change the early GHCB page to shared.
+>> +                */
+>> +               if (early)
+> 
+> I think it would be better to structure this slightly differently.
+> I'll have a stab at this myself and get back to you.
 
+Sounds good.
 
+> 
+>> +                       snp_accept_memory_early(start, end);
+>> +               else
+>> +                       snp_accept_memory(start, end);
+>>         } else {
+>>                 error("Cannot accept memory: unknown platform\n");
+>>         }
+>>  }
+>>
+>> +void arch_accept_memory(phys_addr_t start, phys_addr_t end)
+>> +{
+>> +       __arch_accept_memory(start, end, false);
+>> +}
+>> +
+>> +void arch_accept_memory_early(phys_addr_t start, phys_addr_t end)
+>> +{
+>> +       __arch_accept_memory(start, end, true);
+>> +}
+>> +
+>>  bool init_unaccepted_memory(void)
+>>  {
+>>         guid_t guid = LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID;
+>> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+>> index bb55934c1cee..162484d662f1 100644
+>> --- a/arch/x86/boot/compressed/sev.c
+>> +++ b/arch/x86/boot/compressed/sev.c
+>> @@ -157,6 +157,12 @@ static int svsm_perform_call_protocol(struct svsm_call *call)
+>>         return ret;
+>>  }
+>>
+>> +/* Used before sev_enable() has been called during unaccepted memory init */
+>> +bool early_sev_snp_enabled(void)
+>> +{
+>> +       return sev_get_status() & MSR_AMD64_SEV_SNP_ENABLED;
+>> +}
+>> +
+>>  bool sev_snp_enabled(void)
+>>  {
+>>         return sev_status & MSR_AMD64_SEV_SNP_ENABLED;
+>> @@ -164,10 +170,7 @@ bool sev_snp_enabled(void)
+>>
+>>  static void __page_state_change(unsigned long paddr, enum psc_op op)
+>>  {
+>> -       u64 val;
+>> -
+>> -       if (!sev_snp_enabled())
+>> -               return;
+>> +       u64 val, msr;
+>>
+> 
+> Could you explain how the below code now knows how to decide whether
+> to use the MSR protocol or the GHCB page based one?
 
---=20
--Dionna Glaze, PhD, CISSP, CCSP (she/her)
+The __page_state_change() routine only performs the MSR protocol version
+of a page state change, no decision is made between the two at this stage.
+
+> 
+>>         /*
+>>          * If private -> shared then invalidate the page before requesting the
+>> @@ -176,6 +179,9 @@ static void __page_state_change(unsigned long paddr, enum psc_op op)
+>>         if (op == SNP_PAGE_STATE_SHARED)
+>>                 pvalidate_4k_page(paddr, paddr, false);
+>>
+>> +       /* Save the current GHCB MSR value */
+>> +       msr = sev_es_rd_ghcb_msr();
+>> +
+>>         /* Issue VMGEXIT to change the page state in RMP table. */
+>>         sev_es_wr_ghcb_msr(GHCB_MSR_PSC_REQ_GFN(paddr >> PAGE_SHIFT, op));
+>>         VMGEXIT();
+>> @@ -185,6 +191,9 @@ static void __page_state_change(unsigned long paddr, enum psc_op op)
+>>         if ((GHCB_RESP_CODE(val) != GHCB_MSR_PSC_RESP) || GHCB_MSR_PSC_RESP_VAL(val))
+>>                 sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PSC);
+>>
+>> +       /* Restore the GHCB MSR value */
+>> +       sev_es_wr_ghcb_msr(msr);
+>> +
+>>         /*
+>>          * Now that page state is changed in the RMP table, validate it so that it is
+>>          * consistent with the RMP entry.
+>> @@ -195,11 +204,17 @@ static void __page_state_change(unsigned long paddr, enum psc_op op)
+>>
+>>  void snp_set_page_private(unsigned long paddr)
+>>  {
+>> +       if (!sev_snp_enabled())
+>> +               return;
+>> +
+>>         __page_state_change(paddr, SNP_PAGE_STATE_PRIVATE);
+>>  }
+>>
+>>  void snp_set_page_shared(unsigned long paddr)
+>>  {
+>> +       if (!sev_snp_enabled())
+>> +               return;
+>> +
+>>         __page_state_change(paddr, SNP_PAGE_STATE_SHARED);
+>>  }
+>>
+>> @@ -261,6 +276,11 @@ static phys_addr_t __snp_accept_memory(struct snp_psc_desc *desc,
+>>         return pa;
+>>  }
+>>
+>> +/*
+>> + * The memory acceptance support uses the boot GHCB page to perform
+>> + * the required page state change operation before validating the
+>> + * pages.
+>> + */
+>>  void snp_accept_memory(phys_addr_t start, phys_addr_t end)
+>>  {
+>>         struct snp_psc_desc desc = {};
+>> @@ -275,6 +295,23 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
+>>                 pa = __snp_accept_memory(&desc, pa, end);
+>>  }
+>>
+>> +/*
+>> + * The early version of memory acceptance is needed when being called
+>> + * from the EFI stub driver. The pagetable manipulation to mark the
+>> + * boot GHCB page as shared can't be performed at this stage, so use
+>> + * the GHCB page state change MSR protocol instead.
+>> + */
+>> +void snp_accept_memory_early(phys_addr_t start, phys_addr_t end)
+>> +{
+>> +       phys_addr_t pa;
+>> +
+>> +       pa = start;
+>> +       while (pa < end) {
+> 
+> Nit: please make this
+> 
+> for (phys_addr_t pa = start; pa < end; pa += PAGE_SIZE)
+> 
+> and drop the braces
+
+Doh! Yes.
+
+> 
+>> +               __page_state_change(pa, SNP_PAGE_STATE_PRIVATE);
+>> +               pa += PAGE_SIZE;
+>> +       }
+>> +}
+>> +
+>>  void sev_es_shutdown_ghcb(void)
+>>  {
+>>         if (!boot_ghcb)
+>> diff --git a/arch/x86/boot/compressed/sev.h b/arch/x86/boot/compressed/sev.h
+>> index fc725a981b09..8a135c9c043a 100644
+>> --- a/arch/x86/boot/compressed/sev.h
+>> +++ b/arch/x86/boot/compressed/sev.h
+>> @@ -10,13 +10,17 @@
+>>
+>>  #ifdef CONFIG_AMD_MEM_ENCRYPT
+>>
+>> +bool early_sev_snp_enabled(void);
+>>  bool sev_snp_enabled(void);
+>>  void snp_accept_memory(phys_addr_t start, phys_addr_t end);
+>> +void snp_accept_memory_early(phys_addr_t start, phys_addr_t end);
+>>
+>>  #else
+>>
+>> +static inline bool early_sev_snp_enabled(void) { return false; }
+>>  static inline bool sev_snp_enabled(void) { return false; }
+>>  static inline void snp_accept_memory(phys_addr_t start, phys_addr_t end) { }
+>> +static inline void snp_accept_memory_early(phys_addr_t start, phys_addr_t end) { }
+>>
+>>  #endif
+>>
+>> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+>> index d96d4494070d..676aa30df52e 100644
+>> --- a/drivers/firmware/efi/libstub/efistub.h
+>> +++ b/drivers/firmware/efi/libstub/efistub.h
+>> @@ -1233,5 +1233,6 @@ efi_status_t allocate_unaccepted_bitmap(__u32 nr_desc,
+>>  void process_unaccepted_memory(u64 start, u64 end);
+>>  void accept_memory(phys_addr_t start, unsigned long size);
+>>  void arch_accept_memory(phys_addr_t start, phys_addr_t end);
+>> +void arch_accept_memory_early(phys_addr_t start, phys_addr_t end);
+>>
+>>  #endif
+>> diff --git a/drivers/firmware/efi/libstub/unaccepted_memory.c b/drivers/firmware/efi/libstub/unaccepted_memory.c
+>> index 757dbe734a47..1955eddc85f1 100644
+>> --- a/drivers/firmware/efi/libstub/unaccepted_memory.c
+>> +++ b/drivers/firmware/efi/libstub/unaccepted_memory.c
+>> @@ -118,7 +118,7 @@ void process_unaccepted_memory(u64 start, u64 end)
+>>          * immediately accepted in its entirety.
+>>          */
+>>         if (end - start < 2 * unit_size) {
+>> -               arch_accept_memory(start, end);
+>> +               arch_accept_memory_early(start, end);
+>>                 return;
+>>         }
+>>
+>> @@ -129,13 +129,13 @@ void process_unaccepted_memory(u64 start, u64 end)
+>>
+>>         /* Immediately accept a <unit_size piece at the start: */
+>>         if (start & unit_mask) {
+>> -               arch_accept_memory(start, round_up(start, unit_size));
+>> +               arch_accept_memory_early(start, round_up(start, unit_size));
+>>                 start = round_up(start, unit_size);
+>>         }
+>>
+>>         /* Immediately accept a <unit_size piece at the end: */
+>>         if (end & unit_mask) {
+>> -               arch_accept_memory(round_down(end, unit_size), end);
+>> +               arch_accept_memory_early(round_down(end, unit_size), end);
+>>                 end = round_down(end, unit_size);
+>>         }
+>>
+>> @@ -144,8 +144,8 @@ void process_unaccepted_memory(u64 start, u64 end)
+>>          * into the bitmap.
+>>          */
+>>         if (start < unaccepted_table->phys_base) {
+>> -               arch_accept_memory(start,
+>> -                                  min(unaccepted_table->phys_base, end));
+>> +               arch_accept_memory_early(start,
+>> +                                        min(unaccepted_table->phys_base, end));
+>>                 start = unaccepted_table->phys_base;
+>>         }
+>>
+>> @@ -165,7 +165,7 @@ void process_unaccepted_memory(u64 start, u64 end)
+>>                              unaccepted_table->phys_base;
+>>                 phys_end = end + unaccepted_table->phys_base;
+>>
+>> -               arch_accept_memory(phys_start, phys_end);
+>> +               arch_accept_memory_early(phys_start, phys_end);
+>>                 end = bitmap_size * unit_size * BITS_PER_BYTE;
+>>         }
+>>
+>>
+>>
