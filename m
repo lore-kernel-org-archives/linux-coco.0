@@ -1,286 +1,248 @@
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2072.outbound.protection.outlook.com [40.107.95.72])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E92A76EB7C
-	for <linux-coco@lists.linux.dev>; Wed,  2 Apr 2025 19:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35631EA7F8
+	for <linux-coco@lists.linux.dev>; Wed,  2 Apr 2025 20:56:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743620453; cv=fail; b=L+f6Y0CIvOI42fU3pVk831Jh32xSg8HN43vCasYccGPTf1uK4h5i19tk+CQKucCe/+Zx2el99G97pU1XlWT4aM8oLJ6H6KJEVCqZPsfAN01IWGU2TPG7yJLm/uDThRHwzulrh/K3ixuDFc2i9Ovg0hWBTZVEcyd9h6AZr/m7edU=
+	t=1743627386; cv=fail; b=O/gZIfMzZKyO8nSvhMJ3MDB5XSFDnJaKZZZh4zG2zpj2XHAaXTKZai07qo3xdTXKF3KwKBrlNI4bWNBEDIf0twYiO1AsrDBS0Nx31QnwCnIho6xAMwEn7GKqM2w/IJ98oOV0V8xO+L8d7oDTat+dytfKEMbzLOzHDUiWcG0SVnM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743620453; c=relaxed/simple;
-	bh=mMXstf9Rr9U8afrwbI2WjERZePHpSOtAGMG+onC56xA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gElcTfHWC6MoKK6Ac+bX0zAn8GBAnsYtx3c2NXAJX0feOrC+Jk6VowXuWg+ZQuqSm6Qfr1hMGfI8wleqGgxw8bI2FkkNalquBX0FvzIJMnh7MON4/Zd597vzX3SdZJPypZdmgbG2a+KByL25YWbosdLAqxmAh/LUYEUDi4ZnIgk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=hZmf90ob; arc=fail smtp.client-ip=40.107.95.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1743627386; c=relaxed/simple;
+	bh=bPgyfRjMPJCz3XZvVoPh+3nXwcbvJTgPn6ldg11IEU4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Gw+wdcmyUW8VZoj1AVzL0TJp+uES/lhmRXW06AvVH7JWRDsbfx37FX6yeuwv1AVjVE0nEGP7hryBi3izJcz1QmXi/Rmw6MN8+j/IES1uHLofCkpTQqkpFRDNjtCrmlPQx64HDEj7BF6/Za8ifh8WZShDkGF+xy+V/ImcnLT5Mlw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FMui3dda; arc=fail smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="hZmf90ob"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FMui3dda"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743627384; x=1775163384;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=bPgyfRjMPJCz3XZvVoPh+3nXwcbvJTgPn6ldg11IEU4=;
+  b=FMui3ddawolMyV2rLkNGUjyp2XfEN4g3YFx+9LxJpvXjBypwTU6+MkXm
+   6ggYTbWy/oKNR7kveLeW7/TNYxbRhl3bM6mVVpSWUeQQ4bGk47lMeLSf9
+   rMTEZFcEsdCk/wkCA2+S7Uka29m46GXqLqSQhPsW20KJmcB7bMn1yrsQ9
+   jE9TXlvk4ACWlkcwfFR+MeSxjyZzwuYPIejMXbpGNCZFO/PKVb2DQTOxp
+   aM6tfP+cjKv3cjlOJ0CH/DJDoLXC0DvX/+MV139XWPeY894XGqNTr980y
+   hfeK5ldEVca1rFmTKubcy1j7H6jiPpiUsPvkTzoSs7zQ+hWyWGoEykb5z
+   A==;
+X-CSE-ConnectionGUID: BijwdFtPSXeVLMR2mPyILA==
+X-CSE-MsgGUID: 00CJzsEdR+eB9xLRWVEBhA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11392"; a="45024651"
+X-IronPort-AV: E=Sophos;i="6.15,183,1739865600"; 
+   d="scan'208";a="45024651"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2025 13:56:24 -0700
+X-CSE-ConnectionGUID: eSfiqDMjT6K/EJPILihfeQ==
+X-CSE-MsgGUID: tbHDX1NiThi9H/xOkJ/kXQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,183,1739865600"; 
+   d="scan'208";a="126710305"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by orviesa010.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 02 Apr 2025 13:56:24 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Wed, 2 Apr 2025 13:56:23 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Wed, 2 Apr 2025 13:56:23 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.43) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Wed, 2 Apr 2025 13:56:21 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eBypMCi7FQCIzCRyNwvNL+QVQL8WraCes75ke+aqAuLXgjnbg+1pmKJlQ8gAJRK1UFi+Ta6SVYSWhwoNI8Z+oQgyr/PMWvMBnJVwDX42eCAeA4Kt9oRC/pTS7sPdfUlh1ZV3rXcvXoTrIvG+FkS7VVzy2gFSUnxMxry+0nTG5iDqeXaCmfsRSkhZyNaE5n5a5qWKTlUhWxnWKHD4egnlZn+OfuDc7UTB/y8UeeAl9Fup7lh5OPElg0J3IVxupwKZ1iEl6wDmvETXX+bl2QjxdIuEUYhv7s3waJALc6sx09RdXRlKipNcSLvdef0TxNNDRAzRMYnE7aNJn5PdDYpmLg==
+ b=P89r/DqmOm3DDOWyUcQKx5LmZE4TtG2nO63+9TTjA8D/WEQCBpvhb298YyEj3OYjx+whT6a/JMI+8CwgbFl/LhVFK6/QZ6WAvAuEJmkU68Ks45Y09uOVkEFeZJfoPpQPHkXLyWEgMeGROrDUKDB3Y33zJld0yHnH9BbIIiU5xem2UDjMnKR5aqCgE3z1XcIxdSYj4sCBgW7rpWFzQV+QQXAoDE08gjGWio8jNhtkUVkfMoz5IDMr6MOYHWRDCCxXoxNEHZtFLwyJAbDU+lQGRdYoyTei0jsOVFaAtJAWeu9ggRmBCC8fwIVgUMRi2AxgipCh206d6NwT3dCcJaYoQQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=24g02xTdMJEEbU9paJTIiBkoenXHGaYbqKeuki4Ptj0=;
- b=oQtibqMRsSFpnNsCDDBMP9uIEQPU5ehjn+bDQLoSFmJsCYbEv+4PSOI91Gs3U9ccoM1pXAu6SqK5fO1yMVcCZqWTRG9sRLZt7vYWN1z9ajZ2zlnbPT6HKt+lDMDVDO0ucc9AP6Fo15A5EolrDqcTCUVJ0DLCG5nWmTFihcUMfGVOi/8RKu1oRc9tcfsA3JOPQS+EYoVtxhpmm1cac3Zpj+FxHIT1MfhbRn3yTICS0n9r0JCDJ79Ab3KoF9vjjhwHf+uDjbXCw+ihIjcUIBNM0jPcHDD2Zxxe9c/kQ5hXDeXR9nJInSfRCTXN/CQoYSKic8onzcUTmoAumxmuSdF39g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=24g02xTdMJEEbU9paJTIiBkoenXHGaYbqKeuki4Ptj0=;
- b=hZmf90ob6oeQCQ9v0sq7E6Mss7Ng063dqBfmFWGrdLTVYvtRSw/F9v+2zdAvkzUHCJ9u+r4KtKG/fdPyLQ/Cz9jo1gwauMgfuz989jmGjbGRou9UMyRXXtMrxXOU6AImMRLaxl1q7Qd2T7Nd4HgcWBX0JOsJZbvT0em6Iyeb+l8=
-Received: from DM6PR02CA0062.namprd02.prod.outlook.com (2603:10b6:5:177::39)
- by IA1PR12MB8190.namprd12.prod.outlook.com (2603:10b6:208:3f2::7) with
+ bh=Cs+YB73ShoRnrs30Q4WJRt1GD/0GSNlwNHUWMswhRaQ=;
+ b=MD176JG3LIYFsn4CiahoRJXv9p2RRq7IqWvgYtz3JO4pG6pmqLKYdDCW7x0+CLy7ARDirhs5SLmnQIo061GwRHoGJIGZnc9srRvmPTUyXmPrtkNRxP2JKyIaN3X6r6NNwc7xuiucuw/3hJwpxVoY1To5qLCzN9MXYUsbE9idLWdJeCcfQ2GvG2BSYBWe/7HLcvx57JR/BCk4B+So0DIio93arf9DsnB8SvqyKzu2IubtgNiGWmBP7w0HKxz6zl9CriWKFQzTi3HlANAp3ZsCX/rbik9p2wbBHPDttKSENnKSlC1CSlRYQUfUd/HWlS2XlJFVSRvaDw0IB6ERi8tWhA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA3PR11MB8118.namprd11.prod.outlook.com (2603:10b6:806:2f1::13)
+ by MW3PR11MB4729.namprd11.prod.outlook.com (2603:10b6:303:5d::24) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Wed, 2 Apr
- 2025 19:00:43 +0000
-Received: from CY4PEPF0000E9D2.namprd03.prod.outlook.com
- (2603:10b6:5:177:cafe::22) by DM6PR02CA0062.outlook.office365.com
- (2603:10b6:5:177::39) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8606.24 via Frontend Transport; Wed,
- 2 Apr 2025 19:00:43 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- CY4PEPF0000E9D2.mail.protection.outlook.com (10.167.241.137) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8606.22 via Frontend Transport; Wed, 2 Apr 2025 19:00:42 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 2 Apr
- 2025 14:00:41 -0500
-Received: from localhost (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Wed, 2 Apr 2025 13:59:51 -0500
-Date: Thu, 3 Apr 2025 00:25:46 +0530
-From: Naveen N Rao <naveen.rao@amd.com>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-CC: Kirill Shutemov <kirill.shutemov@linux.intel.com>, Dan Williams
-	<dan.j.williams@intel.com>, <dave.hansen@linux.intel.com>, <x86@kernel.org>,
-	Vishal Annapurve <vannapurve@google.com>, Nikolay Borisov
-	<nik.borisov@suse.com>, <stable@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, Borislav Petkov <bp@alien8.de>
+ 2025 20:56:02 +0000
+Received: from SA3PR11MB8118.namprd11.prod.outlook.com
+ ([fe80::c4e2:f07:bdaa:21ec]) by SA3PR11MB8118.namprd11.prod.outlook.com
+ ([fe80::c4e2:f07:bdaa:21ec%5]) with mapi id 15.20.8534.043; Wed, 2 Apr 2025
+ 20:56:02 +0000
+Date: Wed, 2 Apr 2025 13:55:58 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Nikolay Borisov <nik.borisov@suse.com>, Dan Williams
+	<dan.j.williams@intel.com>, <dave.hansen@linux.intel.com>
+CC: <x86@kernel.org>, Vishal Annapurve <vannapurve@google.com>, "Kirill
+ Shutemov" <kirill.shutemov@linux.intel.com>, <stable@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>
 Subject: Re: [PATCH] x86/ioremap: Maintain consistent IORES_MAP_ENCRYPTED for
  BIOS data
-Message-ID: <7cgiqaoeosg3vekjkcm5iorn5djdqbqv3evijgho6tvonzhe2t@jzn56u4ad7v3>
+Message-ID: <67eda45ee899d_1a6d929462@dwillia2-xfh.jf.intel.com.notmuch>
 References: <174346288005.2166708.14425674491111625620.stgit@dwillia2-xfh.jf.intel.com>
- <z7h6sepvvrqvmpiccqubganhshcbzzrbvda7dntzufqywei4gz@6clsg5lbvamd>
- <00931e12-4e6a-9ec4-309c-372aaee333b9@amd.com>
+ <7ed9418b-db12-4678-bf7a-634daf66282d@suse.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7ed9418b-db12-4678-bf7a-634daf66282d@suse.com>
+X-ClientProxiedBy: MW4PR03CA0181.namprd03.prod.outlook.com
+ (2603:10b6:303:b8::6) To SA3PR11MB8118.namprd11.prod.outlook.com
+ (2603:10b6:806:2f1::13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <00931e12-4e6a-9ec4-309c-372aaee333b9@amd.com>
-Received-SPF: None (SATLEXMB03.amd.com: naveen.rao@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D2:EE_|IA1PR12MB8190:EE_
-X-MS-Office365-Filtering-Correlation-Id: 62e81543-30c5-45c5-b646-08dd7218aaea
+X-MS-TrafficTypeDiagnostic: SA3PR11MB8118:EE_|MW3PR11MB4729:EE_
+X-MS-Office365-Filtering-Correlation-Id: 442c2c81-fa6d-464f-4033-08dd7228c75d
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|36860700013|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?i6MzQ/YxB50MGZAkszBWNU9ptBzMTbqWnz5jKdadJeX4SMgVHWtQkDd3owFZ?=
- =?us-ascii?Q?satCURy6WzUenFdu3XFaz/KnCfGcPffsW75doX/M+EqvudweghMfMyzBSwWq?=
- =?us-ascii?Q?RfadiB1vD6cLVmgI9bzR+4QKHRpEHUqAJwXgiEVc5hnTzZyBL7UX67cKKgiY?=
- =?us-ascii?Q?H+sL/K/7oTa7edpE6wjKCswGdAdMf/BR/9RsmfsMzpYSmvukUYPXGpAM58Z3?=
- =?us-ascii?Q?NKlKi4wfSUhjOCe6aH7LgMQbWeMvxFbHzLfChYTNGqLwV27Tv4HeCF30SBpl?=
- =?us-ascii?Q?aT0ZkoYpApx8wpv8gHaeIwzZXXHU1LPCZsB64SrAm0x5OkJwrWpVTrDvIczE?=
- =?us-ascii?Q?dcji+oQuvW/LlpnYJONzwTGOLdaR6zv4tcD5z9oEfCrFRztsWl8yJJrB7GBt?=
- =?us-ascii?Q?AuhdmON/rl4Icex86LCSbRgZkQDLZGShI5zaPw1QYeA9DqeWempzo5lBaWqI?=
- =?us-ascii?Q?nEFKA59DRyrAXqVp6s8zjSJtq4LicFfG0V0erSfl9HjO7PT2dt9Xc7rUSVHL?=
- =?us-ascii?Q?pIYy6Hx+F0X2auJHv83EsiLrHqoq1Om87TsB0ll5DJR9i8l+EW+r947Q677k?=
- =?us-ascii?Q?LBHiQbpGwScadbUe4fStjs44dl+kgBHMfMT2HvS9RxS+lUy3K8tH2p9tyOzi?=
- =?us-ascii?Q?8dH4XaEIpp4/BzDaZCtVmX8vp6pU/kdXBYBRwnO/ygHAHNHIucl/5u3gCTss?=
- =?us-ascii?Q?Y9nYeoz2udwfpmTf39dmWbUuy3gQ2cyKbCSQm1xqGeYiSzZR9bJ/jgtok4wP?=
- =?us-ascii?Q?Luy8cenUk1XiOZCm5YzruqGj/aoyCXtJF8TJuuo0jgyvvogHHn21zJ5h8lLb?=
- =?us-ascii?Q?wbB///25OhTIX6gL62RiCjKS/4PORTUsJaXMy6YqJF1W4uJ9cJUAC6Z5I96K?=
- =?us-ascii?Q?BZoJyne5t/bhGTZBIwgFoIkdZ1T+fVP/DHcNWxVYcuEKD4eHppQrBSfcfBgc?=
- =?us-ascii?Q?Dt6dB9ZyrBsHQ0cO/wGN27aspA6nk9ds355rqI5ZdO6xMvTXHHHXQOcZWMzK?=
- =?us-ascii?Q?CFeY7pU4c3dezcoJPgSdRyNxzMyHgZoeVT5a1WFpvYae7FKCxBxK47EpfUnz?=
- =?us-ascii?Q?iZfTt+DRVc9axnTQ2dZTT48jfIz+v6GAIWDRwevbfvWq4Pt8obdqvU4DeTlX?=
- =?us-ascii?Q?PSP6DAc79+7tADdu9dq+ZnqQFw2TcRcHhiilEAbQ+gmFE3US9CPZBz1mR2S2?=
- =?us-ascii?Q?FMj9uwMDRhFSEnSVE3jujJT3mYTX2Pguz8N662APVVJeUqnkomgs/jOJKjIJ?=
- =?us-ascii?Q?bu8BxObxu7iU9ti2cYb7imm8iBDnuCIT4z+tgUUyW0/fqu7EnhaJU0H3uBFY?=
- =?us-ascii?Q?w5Z2pWwHDXSIdonP6S77pQ58p0xKw6DgrpGjPj20bN3zCGoUEqgkrTmuWe68?=
- =?us-ascii?Q?rj9PSTswpsjO3wu4Wmpcb3OiqvA/KS+aXWgjZ9oAjNlIpjfN/IZ9T51XqbE+?=
- =?us-ascii?Q?5fD/z7dtCQ3DzjfkTNK8zBWJXt227xS6OKOE3FocMtu/Zaa3IyR9wP/E4B0g?=
- =?us-ascii?Q?Kmzw1eSg9wDnv+0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2025 19:00:42.7206
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?NytsUzFabVZaMWFZSjZjQUhINzJBSVRVenYxcDBReDg1bHpnOElyeHRMZlEw?=
+ =?utf-8?B?cXN2M2FtejlFc1U3Zm45SWZWblFNTVpnVGZFcGJKeFNBd2hNQ290SEV1M3Mx?=
+ =?utf-8?B?T0s5QW45OXRaOEN6dnVKeDNaN3pjM2c3ZEpSVzM5aGFrUXdFYVhOTlZ3bjlr?=
+ =?utf-8?B?TFYwblZ2UkpGejZMOWhJRGRHdi81RWoyRktjL3pLVVBVbGhreEVNdXc1TVdw?=
+ =?utf-8?B?WHkxNHlGMVEyVXVLbEpyL05hNUVETVRGUkdlVWx6eDAzSkMyeEpzZlhNQmp0?=
+ =?utf-8?B?T0RnZlJTcGwrWkF3K0lPcWZYdUJNQk9qb0pPbzk4eFZKcTVic0RmVDJzelFB?=
+ =?utf-8?B?L0NhSzBhd2FHZlhOZFI2RVJmV0MreWthS1RDdXBJdE9FZEJxZVo0ZExrTitj?=
+ =?utf-8?B?TzRHMXlmekRCRE5ZOXNocDdZTE1yNFRwRUpER090UGVrM2V3c1NJMlM1Rkha?=
+ =?utf-8?B?WW80U0tpZ1NtVGhVYTZVUnVOeHl2c1hmOW1RUHBiN0tjSnRMNE1Dcy9kRXBT?=
+ =?utf-8?B?R1pVZ1NOZU9CZy9oQ3AxV3pkcEpRdWswcTdXZTNVN21tUzEwV0FjSUMwalhl?=
+ =?utf-8?B?RVBTcmcrSXp0Mk5wYTM4RmUyOURnK0xFQ0NLSElYcytjMFlySG9aNWFQa2dw?=
+ =?utf-8?B?NGNHNnFYSGhOOTErK0cwbm9QTzMzdDA3R1VYTXJldVU5cmlLZ2toNGJMVEts?=
+ =?utf-8?B?am5ubjJnT2t2ZkVjbFV3WHhEWmlsZWNXS2tadVFjZWpVckRQTm9OVDQ2Nmh4?=
+ =?utf-8?B?Y1MvbWg5SEpMNnQ1UUF4ZDdXYzFCejFoY0JzTHVyb2w2Rkplc3RNS3N5Rnh6?=
+ =?utf-8?B?dWdXRWppMTh1Qy8wOVl4U3dnWkdmMTVsMzc0YyszWlFzbDdpMWNUbWNsV2hY?=
+ =?utf-8?B?bVBoSWRjaWpJeFBtTDg5ZTBLMDdrcE9wRjdoMlRnUFYyL0pLbk41LzM4RlhS?=
+ =?utf-8?B?TTNzOGNWdlEvRUpwM2tBdGs0Zm43YzFBWmpRWnRmcDF3ekVKb28wcktCTWJa?=
+ =?utf-8?B?ZTZxM0JTZG1JUFQ1cXdVS0U2MWNvV05lODROeHJJMmJYNStUNStITFJhaG1U?=
+ =?utf-8?B?MHppZUtwczhwNGRCdzR0ekFrK1cyRlZXa2oxWDl6bWFLelF6bnZQZ24vNU1v?=
+ =?utf-8?B?ektXTEJVeHF6a05EYlFubncvWXFlTjJsbnZqWWQwbWlTVEtoMFl2S0JPZTlV?=
+ =?utf-8?B?NVRRYVVvODgwSFJOdEc1cWVqc3Jjakk4UGRkNExleDB3QjBTNjd1Vjg3OHZP?=
+ =?utf-8?B?WU10Q1RTbFFYeG4yVXBCalVHWFJ1NDR1bnFJNW1jZ2h2d0FDUCsxTmtQVk9h?=
+ =?utf-8?B?blVDUHBwMzVMa3RHZGM1WjRheGExMWpvR2JHT3htOTEwQ0NsTDdMY2pSdnpy?=
+ =?utf-8?B?N1pLZTRaUDhicGRTWEdXSDBpTzBDSEpNSGJJVExYOTFuT0tkaFhOZlJ3STBy?=
+ =?utf-8?B?bFBJc094OFJOVkRLQlk1and5ZzYvUzdRaXNnaUxTazFWeFo2eFdIa2Jnb0lT?=
+ =?utf-8?B?dHc4eGx5RkdZdWFpTVlreDl0TTd2cUhoaTcwMmFDSHBRektINFhhZUx0aUN5?=
+ =?utf-8?B?WjQzQkZJdzl2QzlNeW5hVGVaRXo1OWpBQnFWWUlNNzlFc216RXJqOWJTRUtK?=
+ =?utf-8?B?bWk4c2h1bW9Bck9iWVpvbDVzR25uMHZFRThSMEcrR1E0MEtYQy9KNlFNYXdF?=
+ =?utf-8?B?U0F2azdvcWFsMDZlZDFPdVhYWG5nZ2dVRVk0Z0F2L2FmK2RXSktwVzQzZnBM?=
+ =?utf-8?B?ZWp1OEFkK0R5ajgxdWRhSGxSc2NsMklFMmJDOGIyNENSVmQ4SXhsN2p6UXpR?=
+ =?utf-8?B?UFF3WWNtMjBaUVk0UVZNSWVxbVlCWWJqck5HUGFMZWp2elY1K2UxUkFrVkMr?=
+ =?utf-8?Q?58i0prgbFcQS0?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR11MB8118.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dDBwd29mdnpmU1ErakFiczFvN3BlNCtFTzg1RXJvTS9xekdVMFhpbkZoV2FX?=
+ =?utf-8?B?bEE3YmtSQkJaaVJycUljdHlhVThEdFF0VjZGRE1tL29XL3h0TEdIcmUxdURa?=
+ =?utf-8?B?UGlqQjJQQlJrcmxnNGM4ZVdVUlVMU3VoVEhSRGFVWFUxSERycnkvUXRCb2xm?=
+ =?utf-8?B?cVFrR2w1b3NtLzJ3V2NFODZPek1pcmtSMUxmdER4YUFYSUswMjRTYXpHN0kv?=
+ =?utf-8?B?RlkrK3pJZHd4T0RVNlNWSlZEbDc3emkyOHcxbDNGeVd2ekJ4QmlualFQYnJy?=
+ =?utf-8?B?bWxoNHhJYmVaZkxWOFdjSEkvSEFGRENndGdnQjV2Y2VidVBYVndhdWdiYVVV?=
+ =?utf-8?B?U29JSlJzZWFaN0VDRUFKZzRuRzZ0dVI0dTBnZG5KTEhrSVdlNW0wNW5XbWhF?=
+ =?utf-8?B?M1d2d25LcEVGbk1BQzdvUjZ4Q0w3YThVMXZQblpCSlpUUHArMjJ4QUZKTkRQ?=
+ =?utf-8?B?Q3RuNWtja0FmK3lKaER4c0RTOTEwb2ZoVUkxUjQ5SDc5anNCd1VZS1IzaGYw?=
+ =?utf-8?B?RCtDbGJIeWd0RlFteDVhRFRJUEYxNHJ5WDVDVDBYOXRKUjJhTU5penR2aEJl?=
+ =?utf-8?B?UnpPY3FxTXZHSENYaUQrNGtsZjZRQzAwZFR0SFg0emJGZG1xdG5kS0llc3o3?=
+ =?utf-8?B?ZTg5TUoyaVNtTUFsVzN5dkZaQnBidEdCNS9PTjlBRnp4STNSZG5OUkZ5UXhp?=
+ =?utf-8?B?OFdFalZFQUdFVmF1TjdqK25FNWh0aDNBRWFxS1g2bm95R21hMGdrQU9FTDh1?=
+ =?utf-8?B?Y3doNGZjZzAyMEVXaW04SmROQkNiaVpFUjgzTXBqY1V3ak5NQzNJbHNYMWp6?=
+ =?utf-8?B?TFRleGFXakE5ajNRUm5mWTNpRDViWFZFa1h0U25nT3NRVzNYaEI2UnpzZFRI?=
+ =?utf-8?B?eDBYUEVqdytXUEFaWVp4WGFoZm9ZN0ZUb3NBMGF5VGkwSHpyTkUrV000WHBj?=
+ =?utf-8?B?UlBwOXhkZHVwOTBZTmJpUllBcmdBaDhLMkw0Q0hUbE45L2d1ZlZPcktmTG1l?=
+ =?utf-8?B?dHdtbU1XUnNlM1Rpek1MWUlxL3pOL0ZBN0hJdlN6NGNCU2FzdlF5am84YURt?=
+ =?utf-8?B?eTBBWndrQmZKK3hkc0o1bS9jUTcvL2pMdmlEejRrZk9MSStLZVhBL1BualVi?=
+ =?utf-8?B?Vm45Y29CNHYwWjhMK04zZ3ZSa2RuWlpOVW9Kb05MZDJYK096ZHdzRWNOS2Fr?=
+ =?utf-8?B?eEVEMHlPaWd3SjZ0cE9IL0FsZGQ1OVczMHpRQnhFU084YlF3MTdXMUpKVGM2?=
+ =?utf-8?B?alUvb3VxMDh0d2swQVhTcGpYUWF0UmllNHJxbWUxU1A1U0ZIdjZhdkpReG1s?=
+ =?utf-8?B?eGp2dG9WUERsZXMxOHdBc2hzb09iMTc4TWY3RUw3bmd6T2JRSTdEYTNlK1pG?=
+ =?utf-8?B?bWpXM3d6Q25nL28walljSmxRVGRWS2tLdG9nS3drODZLYkVDSGRLT2xXMlJu?=
+ =?utf-8?B?ZnVxU1dyVCt2d3M3NDZ2bFdDRDU0THNqYzRxRWpPcU9RUXhoL3htYjgwUzdS?=
+ =?utf-8?B?aXMwT2VweWRvTEhvTmRSVmxheWlxRW80YXlHTjdtc3JQNVRvWS9xeHFUSGdH?=
+ =?utf-8?B?VENBTE8xcStjZ3A3OEpBMFFsZ1d1Q083TWdwczlsVXQxYjhWdTkzaGZ2NXhK?=
+ =?utf-8?B?VGxjd2x4MjdCd3JYTUp4R1lUUkk3SUFsM1ROQThkVy9tT3ZDclZzOW5ORVN4?=
+ =?utf-8?B?U1JaWkdBZGY5anBnV01TajgzUzJTQnhZbU9CZ3hFakFlVWtqSTJwWGlERzh6?=
+ =?utf-8?B?YWlPVzlHZXJ1cTVZVmRYcXRjZytPUzU2akFwL2VuK25mTHczN3JwV2I4WHRx?=
+ =?utf-8?B?V254S0pkbGx2LzM1OVpXMGM3R1B0L2lERGJrNEo0Z1VwdENna1FYZldyMXZt?=
+ =?utf-8?B?Z3h4SDBJSUJTMmZnTHh2VU9oOXBGREtvYnpKVmdlaVdldW0rS1dKMWJzOUJq?=
+ =?utf-8?B?VTBMS1k4bjc4eWt5OFcwMWpsa0I1Vi9DZ2hWcitUUHV2azRYYXhUeHcrRTRl?=
+ =?utf-8?B?cVZJMys3cm9ubExXdFArSTdCU2FiaVpQSVpNMmpvWVZCbWlhSk9YTytadlhs?=
+ =?utf-8?B?THFCR2JNSmFjb2c3MXh4Q0ljN2NTY3JkcVdaUDNVRkFXKzNkbHZnZ01mK09k?=
+ =?utf-8?B?TWZLZTBMeGNEeHhjUmJjaVg0SVZRYmxPNmNpTFRFbzBlZDNPZCtDdCtLaUxa?=
+ =?utf-8?B?MGc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 442c2c81-fa6d-464f-4033-08dd7228c75d
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR11MB8118.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2025 20:56:02.7285
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 62e81543-30c5-45c5-b646-08dd7218aaea
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000E9D2.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8190
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6YvqkDpPzOXqG0peWcrZzflw3SefMAcp9B0v0gi+nz3CCuuHE6tUq/y63rxRzss9hMWR9M2gVmV8CAMNn6gw1PULrdlU+l8t5U9CHjhI9Bc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4729
+X-OriginatorOrg: intel.com
 
-On Tue, Apr 01, 2025 at 10:07:18AM -0500, Tom Lendacky wrote:
-> On 4/1/25 02:57, Kirill Shutemov wrote:
-> > On Mon, Mar 31, 2025 at 04:14:40PM -0700, Dan Williams wrote:
-> >> Nikolay reports [1] that accessing BIOS data (first 1MB of the physical
-> >> address space) via /dev/mem results in an SEPT violation.
-> >>
-> >> The cause is ioremap() (via xlate_dev_mem_ptr()) establishing an
-> >> unencrypted mapping where the kernel had established an encrypted
-> >> mapping previously.
-> >>
-> >> Teach __ioremap_check_other() that this address space shall always be
-> >> mapped as encrypted as historically it is memory resident data, not MMIO
-> >> with side-effects.
+Nikolay Borisov wrote:
+> 
+> 
+> On 1.04.25 г. 2:14 ч., Dan Williams wrote:
+> > Nikolay reports [1] that accessing BIOS data (first 1MB of the physical
+> > address space) via /dev/mem results in an SEPT violation.
 > > 
-> > I am not sure if all AMD platforms would survive that.
+> > The cause is ioremap() (via xlate_dev_mem_ptr()) establishing an
+> > unencrypted mapping where the kernel had established an encrypted
+> > mapping previously.
 > > 
-> > Tom?
+> > Teach __ioremap_check_other() that this address space shall always be
+> > mapped as encrypted as historically it is memory resident data, not MMIO
+> > with side-effects.
+> > 
+> > Cc: <x86@kernel.org>
+> > Cc: Vishal Annapurve <vannapurve@google.com>
+> > Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>
+> > Reported-by: Nikolay Borisov <nik.borisov@suse.com>
+> > Closes: http://lore.kernel.org/20250318113604.297726-1-nik.borisov@suse.com [1]
+> > Tested-by: Nikolay Borisov <nik.borisov@suse.com>
+> > Fixes: 9aa6ea69852c ("x86/tdx: Make pages shared in ioremap()")
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 > 
-> I haven't tested this, yet, but with SME the BIOS is not encrypted, so
-> that would need an unencrypted mapping.
+> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
 > 
-> Could you qualify your mapping with a TDX check? Or can you do something
-> in the /dev/mem support to map appropriately?
+> > ---
+> >   arch/x86/mm/ioremap.c |    4 ++++
+> >   1 file changed, 4 insertions(+)
+> > 
+> > diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
+> > index 42c90b420773..9e81286a631e 100644
+> > --- a/arch/x86/mm/ioremap.c
+> > +++ b/arch/x86/mm/ioremap.c
+> > @@ -122,6 +122,10 @@ static void __ioremap_check_other(resource_size_t addr, struct ioremap_desc *des
+> >   		return;
+> >   	}
+> >   
+> > +	/* Ensure BIOS data (see devmem_is_allowed()) is consistently mapped */
+> > +	if (PHYS_PFN(addr) < 256)
+> > +		desc->flags |= IORES_MAP_ENCRYPTED;
 > 
-> I'm adding @Naveen since he is preparing a patch to prevent /dev/mem
-> from accessing ROM areas under SNP as those can trigger #VC for a page
-> that is mapped encrypted but has not been validated. He's looking at
-> possibly adding something to x86_platform_ops that can be overridden.
-> The application would get a bad return code vs an exception.
+> Side question: Is it guaranteed that this region will be mapped with 4k 
+> pages and not some larger size? I.e should the 256 constant be dependent 
+> on the current page size?
 
-The thought with x86_platform_ops was that TDX may want to differ and 
-setup separate ranges to deny access to. For SEV-SNP, we primarily want 
-to disallow the video ROM range at this point. Something like the below.
+True, if in some future kernel PAGE_SHIFT changes for x86 then both
+devmem and this code would be confused.
 
-If this is not something TDX wants, then we should be able to add a 
-check for SNP in devmem_is_allowed() directly without the 
-x86_platform_ops.
+I will submit a follow-on patch to clean that up.
 
-
-- Naveen
-
-
----
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index 583df2c6a2e3..fa9f23200ee4 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -761,6 +761,18 @@ static u64 __init get_jump_table_addr(void)
- 	return ret;
- }
- 
-+bool sev_snp_mem_access_allowed(unsigned long pfn)
-+{
-+	/*
-+	 * Reject access to ROM address range (0xc0000 to 0xfffff) for SEV-SNP guests
-+	 * as that address range is not validated, so access can cause #VC exception
-+	 */
-+	if (pfn >= 0xc0 && pfn <= 0xff)
-+		return 0;
-+
-+	return 1;
-+}
-+
- static void __head
- early_set_pages_state(unsigned long vaddr, unsigned long paddr,
- 		      unsigned long npages, enum psc_op op)
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index ba7999f66abe..f94522da9eb5 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -454,6 +454,7 @@ static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate)
- struct snp_guest_request_ioctl;
- 
- void setup_ghcb(void);
-+bool sev_snp_mem_access_allowed(unsigned long pfn);
- void early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr,
- 				  unsigned long npages);
- void early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr,
-@@ -496,6 +497,7 @@ static inline void sev_enable(struct boot_params *bp) { }
- static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate) { return 0; }
- static inline int rmpadjust(unsigned long vaddr, bool rmp_psize, unsigned long attrs) { return 0; }
- static inline void setup_ghcb(void) { }
-+static inline bool sev_snp_mem_access_allowed(unsigned long pfn) { return true; }
- static inline void __init
- early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr, unsigned long npages) { }
- static inline void __init
-diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
-index 36698cc9fb44..0add7878e413 100644
---- a/arch/x86/include/asm/x86_init.h
-+++ b/arch/x86/include/asm/x86_init.h
-@@ -307,6 +307,7 @@ struct x86_hyper_runtime {
-  * @realmode_reserve:		reserve memory for realmode trampoline
-  * @realmode_init:		initialize realmode trampoline
-  * @hyper:			x86 hypervisor specific runtime callbacks
-+ * @mem_access_allowed:	filter accesses to pfn
-  */
- struct x86_platform_ops {
- 	unsigned long (*calibrate_cpu)(void);
-@@ -324,6 +325,7 @@ struct x86_platform_ops {
- 	void (*set_legacy_features)(void);
- 	void (*realmode_reserve)(void);
- 	void (*realmode_init)(void);
-+	bool (*mem_access_allowed)(unsigned long pfn);
- 	struct x86_hyper_runtime hyper;
- 	struct x86_guest guest;
- };
-diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
-index 0a2bbd674a6d..83217de27b46 100644
---- a/arch/x86/kernel/x86_init.c
-+++ b/arch/x86/kernel/x86_init.c
-@@ -142,6 +142,7 @@ static bool enc_cache_flush_required_noop(void) { return false; }
- static void enc_kexec_begin_noop(void) {}
- static void enc_kexec_finish_noop(void) {}
- static bool is_private_mmio_noop(u64 addr) {return false; }
-+static bool mem_access_allowed_noop(unsigned long pfn) { return true; }
- 
- struct x86_platform_ops x86_platform __ro_after_init = {
- 	.calibrate_cpu			= native_calibrate_cpu_early,
-@@ -156,6 +157,7 @@ struct x86_platform_ops x86_platform __ro_after_init = {
- 	.restore_sched_clock_state	= tsc_restore_sched_clock_state,
- 	.realmode_reserve		= reserve_real_mode,
- 	.realmode_init			= init_real_mode,
-+	.mem_access_allowed		= mem_access_allowed_noop,
- 	.hyper.pin_vcpu			= x86_op_int_noop,
- 	.hyper.is_private_mmio		= is_private_mmio_noop,
- 
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index bfa444a7dbb0..64750d710f9f 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -867,6 +867,9 @@ void __init poking_init(void)
-  */
- int devmem_is_allowed(unsigned long pagenr)
- {
-+	if (!x86_platform.mem_access_allowed(pagenr))
-+		return 0;
-+
- 	if (region_intersects(PFN_PHYS(pagenr), PAGE_SIZE,
- 				IORESOURCE_SYSTEM_RAM, IORES_DESC_NONE)
- 			!= REGION_DISJOINT) {
-diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
-index 7490ff6d83b1..75e2d86cdab9 100644
---- a/arch/x86/mm/mem_encrypt_amd.c
-+++ b/arch/x86/mm/mem_encrypt_amd.c
-@@ -532,6 +532,7 @@ void __init sme_early_init(void)
- 		 * parsing has happened.
- 		 */
- 		x86_init.resources.dmi_setup = snp_dmi_setup;
-+		x86_platform.mem_access_allowed = sev_snp_mem_access_allowed;
- 	}
- 
- 	/*
+That said, I expect PAGE_SHIFT != 12 breaks many other places besides
+this in x86. I wrote it this way just for symmetry with
+devmem_is_allowed().
