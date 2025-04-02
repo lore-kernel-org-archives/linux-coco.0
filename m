@@ -1,524 +1,286 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2066.outbound.protection.outlook.com [40.107.94.66])
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2072.outbound.protection.outlook.com [40.107.95.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A49A19E99A
-	for <linux-coco@lists.linux.dev>; Wed,  2 Apr 2025 18:32:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E92A76EB7C
+	for <linux-coco@lists.linux.dev>; Wed,  2 Apr 2025 19:00:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.72
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743618730; cv=fail; b=O/9PwSLDi3EC5FBJ1KrMwZnivZ4ywIynArgbnT0numsLkwoMW78JD5hQg/m+tfhxXevZForKM7fqBxqbL9Rccu+h8GUcSckk38xekpgxeN/I+m+LNy15bJx8wTONo1knC+Zyf8973v83k4wezXVgP7IehI85v34l4hIqlvw9Q6M=
+	t=1743620453; cv=fail; b=L+f6Y0CIvOI42fU3pVk831Jh32xSg8HN43vCasYccGPTf1uK4h5i19tk+CQKucCe/+Zx2el99G97pU1XlWT4aM8oLJ6H6KJEVCqZPsfAN01IWGU2TPG7yJLm/uDThRHwzulrh/K3ixuDFc2i9Ovg0hWBTZVEcyd9h6AZr/m7edU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743618730; c=relaxed/simple;
-	bh=8KWMAM+4MN4D1JNh2nulB/0Btfj3ZXj5PFjhF95NTEg=;
-	h=Message-ID:Date:To:Cc:References:From:Subject:In-Reply-To:
-	 Content-Type:MIME-Version; b=Qn1SJVoWF01VRJX17zKQPhdSeE4vhtN1/wZsqufCJzLCNyveTZtCcZiv0Fdx5bwdhwLW/54wpYBPVppBqjDtJFsLgODrStF4BLIBJh/TOmFkRH3BNDuvlKMkuEh+MfiZEi4bZalnypw/wrBnGW5X/NfS/4c42nBFAT367JmZ4AQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=M8xn95/3; arc=fail smtp.client-ip=40.107.94.66
+	s=arc-20240116; t=1743620453; c=relaxed/simple;
+	bh=mMXstf9Rr9U8afrwbI2WjERZePHpSOtAGMG+onC56xA=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gElcTfHWC6MoKK6Ac+bX0zAn8GBAnsYtx3c2NXAJX0feOrC+Jk6VowXuWg+ZQuqSm6Qfr1hMGfI8wleqGgxw8bI2FkkNalquBX0FvzIJMnh7MON4/Zd597vzX3SdZJPypZdmgbG2a+KByL25YWbosdLAqxmAh/LUYEUDi4ZnIgk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=hZmf90ob; arc=fail smtp.client-ip=40.107.95.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="M8xn95/3"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="hZmf90ob"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OMdWYJomppsOPiXtHPPr4taoMS2D+Yrxm7MC+XhmR/zbqfnu9/+pwNXhLjuaOsH3I1YZGbDf6j5PemAPFZvd4t2oS+ADoXZgkCwiqxf2+I2nXzslfffojLsW9lAtk905PyqcbAMnNoyvyPKdmlgur7juiIaeIEUyZnjoED5JinJkNG9PySJjDFeHeGg8XjTiOh4iAVaD+D7fTHWp8OhbJzUdovpStknU6XUpCJFZVs2ydzuBp7Z16M46gyPvrYinnPmLNCdv97375bB9iXND1hccej7cgGr4K3wz0pnC9UG/cXrQkK1Ewb/xlR7olPYfqEDBxwhr08GzO24g2azg4A==
+ b=eBypMCi7FQCIzCRyNwvNL+QVQL8WraCes75ke+aqAuLXgjnbg+1pmKJlQ8gAJRK1UFi+Ta6SVYSWhwoNI8Z+oQgyr/PMWvMBnJVwDX42eCAeA4Kt9oRC/pTS7sPdfUlh1ZV3rXcvXoTrIvG+FkS7VVzy2gFSUnxMxry+0nTG5iDqeXaCmfsRSkhZyNaE5n5a5qWKTlUhWxnWKHD4egnlZn+OfuDc7UTB/y8UeeAl9Fup7lh5OPElg0J3IVxupwKZ1iEl6wDmvETXX+bl2QjxdIuEUYhv7s3waJALc6sx09RdXRlKipNcSLvdef0TxNNDRAzRMYnE7aNJn5PdDYpmLg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3yOxYN9aGKCSVqMcWdI9yyMhS+TQNiEZRV6lLzsO/5Q=;
- b=n31lFhx8DiaF5Va8lYL5Uc3C2OlEiRLfeZHSF9oGS5EgXpDr1v1bA0qld6hPTQZDXD2Ko2V2eC0BIYrDlVNYrkEQ91VmJhNJV4avg3yV0ZalvzIHZairZXgt2vVwhl77Wh+doNin7Td8TzBbhzWvCsbSwxjjrxWUkst5xhn2CSh4SgYjmztgPz4ZxLw6OGK2JPVWwlPkiK/QueTfeudXSW/J3j4iqbr/QyLp0055YR/uhHpXwFaZL/5RVcpJTJKj/Z650VldiqtHM20o6jjJekmQbIVKIi9HW4964ryNbPqEBmp9HOXHzPAUFZasPSqYu2IF9QNjMXD7Y9NyD7kEWA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+ bh=24g02xTdMJEEbU9paJTIiBkoenXHGaYbqKeuki4Ptj0=;
+ b=oQtibqMRsSFpnNsCDDBMP9uIEQPU5ehjn+bDQLoSFmJsCYbEv+4PSOI91Gs3U9ccoM1pXAu6SqK5fO1yMVcCZqWTRG9sRLZt7vYWN1z9ajZ2zlnbPT6HKt+lDMDVDO0ucc9AP6Fo15A5EolrDqcTCUVJ0DLCG5nWmTFihcUMfGVOi/8RKu1oRc9tcfsA3JOPQS+EYoVtxhpmm1cac3Zpj+FxHIT1MfhbRn3yTICS0n9r0JCDJ79Ab3KoF9vjjhwHf+uDjbXCw+ihIjcUIBNM0jPcHDD2Zxxe9c/kQ5hXDeXR9nJInSfRCTXN/CQoYSKic8onzcUTmoAumxmuSdF39g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3yOxYN9aGKCSVqMcWdI9yyMhS+TQNiEZRV6lLzsO/5Q=;
- b=M8xn95/3mjOKRraiG/A3StZ3GQOTD/3E96EUwyPtNYLii8vZqOUvsqrA2usfIDh3RReN00Cl41GJZJiH2k8fTAd+ULyDDWoznG78oYxMcZ0Ozo1OVJIKcqudxjacJxjmlA41Af/t02TpPzBzJTPA/+JJXYcqaL/qU1skLrRsrx0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
- by SN7PR12MB7788.namprd12.prod.outlook.com (2603:10b6:806:345::7) with
+ bh=24g02xTdMJEEbU9paJTIiBkoenXHGaYbqKeuki4Ptj0=;
+ b=hZmf90ob6oeQCQ9v0sq7E6Mss7Ng063dqBfmFWGrdLTVYvtRSw/F9v+2zdAvkzUHCJ9u+r4KtKG/fdPyLQ/Cz9jo1gwauMgfuz989jmGjbGRou9UMyRXXtMrxXOU6AImMRLaxl1q7Qd2T7Nd4HgcWBX0JOsJZbvT0em6Iyeb+l8=
+Received: from DM6PR02CA0062.namprd02.prod.outlook.com (2603:10b6:5:177::39)
+ by IA1PR12MB8190.namprd12.prod.outlook.com (2603:10b6:208:3f2::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Wed, 2 Apr
- 2025 18:32:04 +0000
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e%5]) with mapi id 15.20.8534.043; Wed, 2 Apr 2025
- 18:32:04 +0000
-Message-ID: <afb6dc48-bde3-ffeb-19a3-70b1e5a15cd0@amd.com>
-Date: Wed, 2 Apr 2025 13:32:02 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Ard Biesheuvel <ardb+git@google.com>, linux-efi@vger.kernel.org,
- linux-coco@lists.linux.dev, Borislav Petkov <bp@alien8.de>,
- Dionna Amalie Glaze <dionnaglaze@google.com>,
- Kevin Loughlin <kevinloughlin@google.com>
-References: <20250325091614.1203411-2-ardb+git@google.com>
- <32zavhk2moqarh4vd76rnhwte45kkc3gqy3shls7mp5lemhy4k@o4gibpdf4sj6>
- <CAMj1kXHkM2hBHkfjFuCKpOA2APX+BBR-zrPfRkpiEf609UMKjw@mail.gmail.com>
- <ervuw7mwzvcyizkchy3nz4357ahz5kdfzc227exlrc5yabq4im@g2kzsrdbkdf6>
- <CAMj1kXEzzNnohJat5REp5mAUCSd4v_ft6F=P6vB95z6+f1MMfw@mail.gmail.com>
- <4xm3bmuhmdbnn6fkmhmnrtkcdiwj76dcr7gujam45nqvgupvj3@caytleltmyzj>
- <CAMj1kXFERrdioZ8_07rwDVUAoq=OLDvLCRUS6BN3GXnJoJPuAA@mail.gmail.com>
- <d6eb83a9-d1b1-7028-9cfd-1ab3fa0d6269@amd.com>
- <CAMj1kXE35QQ7b3uSF4Ufv6VXyjCfPyveUO1KLPKwsgoHu8iE=w@mail.gmail.com>
- <121a6769-3b86-b1a7-1d90-524cdd82790b@amd.com>
- <CAMj1kXEUARHvxQjucikoy_qWkrVnqsMGQyt7mUrBeV-f-_ZQJg@mail.gmail.com>
-Content-Language: en-US
-From: Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [PATCH] efi/libstub: Do not accept parts of memory before
- ExitBootServices()
-In-Reply-To: <CAMj1kXEUARHvxQjucikoy_qWkrVnqsMGQyt7mUrBeV-f-_ZQJg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1P222CA0166.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c3::10) To DM4PR12MB5070.namprd12.prod.outlook.com
- (2603:10b6:5:389::22)
+ 2025 19:00:43 +0000
+Received: from CY4PEPF0000E9D2.namprd03.prod.outlook.com
+ (2603:10b6:5:177:cafe::22) by DM6PR02CA0062.outlook.office365.com
+ (2603:10b6:5:177::39) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8606.24 via Frontend Transport; Wed,
+ 2 Apr 2025 19:00:43 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ CY4PEPF0000E9D2.mail.protection.outlook.com (10.167.241.137) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8606.22 via Frontend Transport; Wed, 2 Apr 2025 19:00:42 +0000
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 2 Apr
+ 2025 14:00:41 -0500
+Received: from localhost (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Wed, 2 Apr 2025 13:59:51 -0500
+Date: Thu, 3 Apr 2025 00:25:46 +0530
+From: Naveen N Rao <naveen.rao@amd.com>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+CC: Kirill Shutemov <kirill.shutemov@linux.intel.com>, Dan Williams
+	<dan.j.williams@intel.com>, <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+	Vishal Annapurve <vannapurve@google.com>, Nikolay Borisov
+	<nik.borisov@suse.com>, <stable@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, Borislav Petkov <bp@alien8.de>
+Subject: Re: [PATCH] x86/ioremap: Maintain consistent IORES_MAP_ENCRYPTED for
+ BIOS data
+Message-ID: <7cgiqaoeosg3vekjkcm5iorn5djdqbqv3evijgho6tvonzhe2t@jzn56u4ad7v3>
+References: <174346288005.2166708.14425674491111625620.stgit@dwillia2-xfh.jf.intel.com>
+ <z7h6sepvvrqvmpiccqubganhshcbzzrbvda7dntzufqywei4gz@6clsg5lbvamd>
+ <00931e12-4e6a-9ec4-309c-372aaee333b9@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <00931e12-4e6a-9ec4-309c-372aaee333b9@amd.com>
+Received-SPF: None (SATLEXMB03.amd.com: naveen.rao@amd.com does not designate
+ permitted sender hosts)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|SN7PR12MB7788:EE_
-X-MS-Office365-Filtering-Correlation-Id: f1fc4785-9ea7-495f-d0d9-08dd7214aa70
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D2:EE_|IA1PR12MB8190:EE_
+X-MS-Office365-Filtering-Correlation-Id: 62e81543-30c5-45c5-b646-08dd7218aaea
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|36860700013|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QTdDUTJsT2pkNXczMVcya0NyM3VRb3h4dVBZSFpSZ3MyUjV5VE8yendYNjBO?=
- =?utf-8?B?U1dUb05wanBrYi8ySXdYTnZIVVJsQmdZTUppaWJRMFRaWDBsSUFpOEp2VmZn?=
- =?utf-8?B?dnJHRnE2NlY2OVJrdktEVjUrYjZHbTFXVGxxcGRHUkRwR1U5U3U1OHlDOFJC?=
- =?utf-8?B?S2VjOUVvNDJqcTFyTTh5azRZSGY3ZjFkR1hrQnovR1pNWmNYQTloWU9OUUds?=
- =?utf-8?B?bG5ZdThOcVRYNERkRThIN0ZJNW1DRjJPSnR2YnhTU1pDYWtUZ3pWV3BXWnlS?=
- =?utf-8?B?QSttMXc2MEZHemFOK1A2ekRCbi9HeDBRM0xCT0xPWmJyRENNa2hMaFI4L0l1?=
- =?utf-8?B?RjZJOXRnMWJkaktIbll5NWVFMHlINlFBaWRneG55eCtlZW50R1c0Y25rSmM3?=
- =?utf-8?B?aVN5OEp2dTJObWUyNitkaHFCTzNTM2x6R2xJZ0JkUGVEQjJmVWNaRElkOEJi?=
- =?utf-8?B?bUxZWklxQWlJK0RKM05QK1Y3cjVtSUhLaCtCYU5WQnlGbjdzeEQ4SEhKdjRr?=
- =?utf-8?B?Z0FCakt3Uks2L2o0alh6dk5YMnVQSlpEYVpYeTdVNE11Z2liZDRiNkcyOVNs?=
- =?utf-8?B?TUFMUGVQYlc0UjUxTjZvcnQxaHIwVUtTK2JrWVk4TDBvQVlTTnFEMTlveVA4?=
- =?utf-8?B?WHBHcUpFR2JpWHNqZ1JydnlBcDgyVllZTHM1V3g5TlJXUVpsY2RQRS8xWVhU?=
- =?utf-8?B?MnNSejVzcndaanpVTW5mYS9YVWdzUGFSVHdILzJXNVBKaGFWZDFGNkJJWVpx?=
- =?utf-8?B?S1VSR2NnbWpMbVZjdjVCY0hDRFQwMGFLaE8wR2FWV1JScVNkSjN1WUlPS2NE?=
- =?utf-8?B?SXEvUnZpNnJkUTNaU3MvYm94Mk1yR25xU0E4MmZlaDY0a1doMnVKVFA0K3Ny?=
- =?utf-8?B?TVgzL2M5dU9TMm9qK2syRXlQSUlaU2hhb3YzRzVzTTBnSEF5L0cxNWY4RjNT?=
- =?utf-8?B?MURlZTBLZG9YMnZXcEFMSVRwWmhFTE9iMVB5S29vSWgxYUlHQmlabk5jMUor?=
- =?utf-8?B?NHF1cEhZV0UxdnBJVVZTVnZRb25MaFFlR1dSK0pQOFhIcGp1NEg5SjdlZFdt?=
- =?utf-8?B?WDJOYURpUHg0QjdiQmtRUTA5amRjbC9KYmtEVnordVRSYjRtaFhNcURjQkR1?=
- =?utf-8?B?MWY0bTQ5cVpXZXBKTzF4aU9kbjNINzEySUhWQXhFZnZxSG82dTk5MDhWQTE0?=
- =?utf-8?B?NEVZdEtoMVY4VXZpTWdPMXQxczBKM2VDTUI1U2ZzUTlFeE5WNWFWN2NQN0tu?=
- =?utf-8?B?U3hKckpINWRobVFIQThyY2RDSHovRFRRZEQ5ODZ5cmlyVEd0elNKMXU2VWNN?=
- =?utf-8?B?QmR4TmdqWlI3T0Y3djVQTUlLMmtGOHBrdVFXMEdITFcwNWdkL3pjUDg2WWJX?=
- =?utf-8?B?V2ZmcmlMWlIxQ0x1cDd5VFpZYmJMQmJmNU5uOEZ0S2wybXRhN2hGbUxMZndM?=
- =?utf-8?B?YlR0ZE84eG1JWExVcVVDMnMxYVYxTkdoRnNPYTdER2tzS1VNWUR5L0p2UlBO?=
- =?utf-8?B?b242Rk4ycmVsM0RtMlZuUFRDODZQMHp4bUFrWExrc2txM3hjT0RmamNoMXNF?=
- =?utf-8?B?VnBXNTI5UytRM25mLy8zdU91Sm45VGt4dHN3dzg3QU54L2FmeS9RN0lxQllJ?=
- =?utf-8?B?czYyZkZtY0xydXZSRGZXRzZwY2FDWmRWdDRDUVlPSVdjY1M0YWxTZnRpdGYr?=
- =?utf-8?B?WlVackJ1bitVcEprcHlUWkw5dmNnTXc0bUpFN1pMZUlzZGpxUnNydk1UbEpU?=
- =?utf-8?B?NkNVSEo1UnRrb3ptU0laek9BYzRObXdkblFMR1pqZ3JOKzgwbWRxWVhuNHI5?=
- =?utf-8?B?ZzFBYWUwZzY5KzkyR3hydSsxYTlzMVdERkN6Vks4VzNZb1dhdFdISW9UamtX?=
- =?utf-8?Q?mfcdB2X18zknG?=
+	=?us-ascii?Q?i6MzQ/YxB50MGZAkszBWNU9ptBzMTbqWnz5jKdadJeX4SMgVHWtQkDd3owFZ?=
+ =?us-ascii?Q?satCURy6WzUenFdu3XFaz/KnCfGcPffsW75doX/M+EqvudweghMfMyzBSwWq?=
+ =?us-ascii?Q?RfadiB1vD6cLVmgI9bzR+4QKHRpEHUqAJwXgiEVc5hnTzZyBL7UX67cKKgiY?=
+ =?us-ascii?Q?H+sL/K/7oTa7edpE6wjKCswGdAdMf/BR/9RsmfsMzpYSmvukUYPXGpAM58Z3?=
+ =?us-ascii?Q?NKlKi4wfSUhjOCe6aH7LgMQbWeMvxFbHzLfChYTNGqLwV27Tv4HeCF30SBpl?=
+ =?us-ascii?Q?aT0ZkoYpApx8wpv8gHaeIwzZXXHU1LPCZsB64SrAm0x5OkJwrWpVTrDvIczE?=
+ =?us-ascii?Q?dcji+oQuvW/LlpnYJONzwTGOLdaR6zv4tcD5z9oEfCrFRztsWl8yJJrB7GBt?=
+ =?us-ascii?Q?AuhdmON/rl4Icex86LCSbRgZkQDLZGShI5zaPw1QYeA9DqeWempzo5lBaWqI?=
+ =?us-ascii?Q?nEFKA59DRyrAXqVp6s8zjSJtq4LicFfG0V0erSfl9HjO7PT2dt9Xc7rUSVHL?=
+ =?us-ascii?Q?pIYy6Hx+F0X2auJHv83EsiLrHqoq1Om87TsB0ll5DJR9i8l+EW+r947Q677k?=
+ =?us-ascii?Q?LBHiQbpGwScadbUe4fStjs44dl+kgBHMfMT2HvS9RxS+lUy3K8tH2p9tyOzi?=
+ =?us-ascii?Q?8dH4XaEIpp4/BzDaZCtVmX8vp6pU/kdXBYBRwnO/ygHAHNHIucl/5u3gCTss?=
+ =?us-ascii?Q?Y9nYeoz2udwfpmTf39dmWbUuy3gQ2cyKbCSQm1xqGeYiSzZR9bJ/jgtok4wP?=
+ =?us-ascii?Q?Luy8cenUk1XiOZCm5YzruqGj/aoyCXtJF8TJuuo0jgyvvogHHn21zJ5h8lLb?=
+ =?us-ascii?Q?wbB///25OhTIX6gL62RiCjKS/4PORTUsJaXMy6YqJF1W4uJ9cJUAC6Z5I96K?=
+ =?us-ascii?Q?BZoJyne5t/bhGTZBIwgFoIkdZ1T+fVP/DHcNWxVYcuEKD4eHppQrBSfcfBgc?=
+ =?us-ascii?Q?Dt6dB9ZyrBsHQ0cO/wGN27aspA6nk9ds355rqI5ZdO6xMvTXHHHXQOcZWMzK?=
+ =?us-ascii?Q?CFeY7pU4c3dezcoJPgSdRyNxzMyHgZoeVT5a1WFpvYae7FKCxBxK47EpfUnz?=
+ =?us-ascii?Q?iZfTt+DRVc9axnTQ2dZTT48jfIz+v6GAIWDRwevbfvWq4Pt8obdqvU4DeTlX?=
+ =?us-ascii?Q?PSP6DAc79+7tADdu9dq+ZnqQFw2TcRcHhiilEAbQ+gmFE3US9CPZBz1mR2S2?=
+ =?us-ascii?Q?FMj9uwMDRhFSEnSVE3jujJT3mYTX2Pguz8N662APVVJeUqnkomgs/jOJKjIJ?=
+ =?us-ascii?Q?bu8BxObxu7iU9ti2cYb7imm8iBDnuCIT4z+tgUUyW0/fqu7EnhaJU0H3uBFY?=
+ =?us-ascii?Q?w5Z2pWwHDXSIdonP6S77pQ58p0xKw6DgrpGjPj20bN3zCGoUEqgkrTmuWe68?=
+ =?us-ascii?Q?rj9PSTswpsjO3wu4Wmpcb3OiqvA/KS+aXWgjZ9oAjNlIpjfN/IZ9T51XqbE+?=
+ =?us-ascii?Q?5fD/z7dtCQ3DzjfkTNK8zBWJXt227xS6OKOE3FocMtu/Zaa3IyR9wP/E4B0g?=
+ =?us-ascii?Q?Kmzw1eSg9wDnv+0=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OHZaWklGaW9qL1RSQSsycGsyZVVZWS95Nk50bnl2b2R1NHQ5M1dJUjNvY3Ba?=
- =?utf-8?B?M09ad3ArZ0hPSU9DSk9pQWFhaTRCWTNEWnlDZ0pxVlcybG1CMlZMdXB1S0dn?=
- =?utf-8?B?REZQKzY3MFgvRWltdkZ1NUYydWhodDlQU1QyN3dGNkNlOUt6UWtrOXN3TURz?=
- =?utf-8?B?cFNmdHhDeno5cVhnblpOenhXQVQrWk52Vy9iUnBNVjFMbVpIbm84UGswMkVN?=
- =?utf-8?B?L1E0c2RqOHBMZUVPeGxVVGZpNzZ0T3RNN2R4elRGNjNhdFV6N25YVHR4dFNr?=
- =?utf-8?B?dXpvL1YxYXFrVjRTQnZCT0JRN3dPY2xkaXlkVnRqTXgvelB4RUpFK0o0UENK?=
- =?utf-8?B?Vm5rdEJnSFJSaWFwamJ5ZHJqK1NiZG9BalJLb2xTTlROV212M1lZRFdTOHBu?=
- =?utf-8?B?WDBZaUozVmp1NkRobVo2M1lVU2wyUnF1MnBDTmEwMUhxby9hK0FDU1J0NXpQ?=
- =?utf-8?B?bzlMRmpESG40alZtZGZKbjJQSkw2R2hjVkM1bnlFN0FwbjBSYTVnNzRLQlQy?=
- =?utf-8?B?R0NleWw2bEhac1pESFNGdXpBdkZ4U2xhQnN4cHp3ZVQ1cDBxNHdvbElQTDdS?=
- =?utf-8?B?T2xFZWdFYzNITnBPczNQZmZsTHZzNVBsbm9uMURXbTlleGdOTlB1elZpZE96?=
- =?utf-8?B?VEwyeUYvMzkvR3lldE1xY3A5bEw4U1lLUCtRdU5oSTAzeUhWdWw3OEZRUm9M?=
- =?utf-8?B?WWxadUZQWDRBQllsc0NmZmhtV2ZGQ05xZTBXTTJDaW5IQ3hzK05iaGdxdHNQ?=
- =?utf-8?B?dS9CUXBIUFZLbllaMEZXbEUxVkJ6WWpQYzBxUWhGS3UvTWwwZEw4MkVVelZ6?=
- =?utf-8?B?SnNiTnYwWU5xeXNTRS9PMDJEVDl0Q3d3UTVYb2hKbDl4akxoK3RWM3JyRkhD?=
- =?utf-8?B?UlhIa2ZSbmpDcmZHbndJcGVjTUlJWWo3L2ViUnpaVnNveEJkZ3pNeFRoTHlx?=
- =?utf-8?B?ZU84NWtLM3V5KzFkMkY4QmN3YmFvVmhNdHNMdk9uU2M4QmRRalQ1UFZ5dVp6?=
- =?utf-8?B?dGVhakJFZmtNQXVSVEwyQTlFQTJmV0Rkc2pJaXVNYUM5b2E5L29qVjM4UTky?=
- =?utf-8?B?YWgxSzNta2lQUXVuU21iOUJvcVBKNlh4U0ZINkZIeWlOK3h3TjdjYTAwZjhl?=
- =?utf-8?B?Nis3SzE4SmV4eWo1TXIzM1kyU3pwWXFUS2Q4L050aHQ0V2tkV1V4ZUFkbDFM?=
- =?utf-8?B?cmRnSzNWVm5tYS9pUnZ2TmhLWTdpSWhzck9aQzZGQkI4a2FVa2pWQkpSQVFt?=
- =?utf-8?B?cDhxcVRWNXhINkQ5TWlLeXpxZlh5blRRbUFudU1lSUNzNlBHUXNKemJBUlNs?=
- =?utf-8?B?NWg0TElmS3VBbzRGQjhlUEJoNEZlZFJzUTJDYnh5Wk5kamFnWFovWjNaQ1hW?=
- =?utf-8?B?TXlaSkJmTlhnZGlrK0w5c2VKRnVOZStlRW9NUlR2Y3FBR3k3RGg5VFdFNjd2?=
- =?utf-8?B?TFVnMkZycUVaZjVYSFpjb3VvZVJWaXNBWFh5dUd2NEU5Q28xY0pVN1A1SVp2?=
- =?utf-8?B?TWZVc1FISzZTU0FkZ1Y3bXVQQ3Y1cDVqYUJySkE0cjVRR2NXaU1ibXNpUll3?=
- =?utf-8?B?SVZxVXcwa1lQbkdyUERlaU5WL1VKOTYzZHlibkxjQ253eUNDRkZjT1pEeXRP?=
- =?utf-8?B?alVUREl6dnM4MGM2MU1BbUc5UWJGdnIzOGRiWWV5Y21leXVVRmR3U3VxRGhI?=
- =?utf-8?B?QVdnN0tueE5MajlzRmRQK1p2cDROT29iSXQrQmZqOStDam1zZHdCdm5WQW9T?=
- =?utf-8?B?M1owWlZkNDVWRCthdFdlcVJra0ZNR2tKQ1NaZ1kyZWxJRit3ZnpPUzlrOTdv?=
- =?utf-8?B?aGNZcFJMZWZXL3huMG1KYTQzT3FqbWtweGpUKzM5K2VFRHdwcnorc1BCSjQ2?=
- =?utf-8?B?eTlydzVUZFJkUXF5RWF6OGJtSUJuQjYyWm5CazJnQ2crRVNJM1R3cjc4Titp?=
- =?utf-8?B?UFZlZFhqODhtUmlROVg4SmhuUHY2Q2Zsd29Xb083MVRjb20xUkNDMExIOTJE?=
- =?utf-8?B?MUZEMVpxM2RlRTNnSGxjTlJuekE3U1RMR2JsL0U2d2ZmWHllUHBzOThTTS9H?=
- =?utf-8?B?WllBVXk3VU1ibHNoK05La0tDZktONmw0c1ovaXlSWitIOXNyNWFITU5aYzUz?=
- =?utf-8?Q?3Njyo1awbULBky8lZTlNuPETr?=
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f1fc4785-9ea7-495f-d0d9-08dd7214aa70
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2025 18:32:04.2874
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2025 19:00:42.7206
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: 62e81543-30c5-45c5-b646-08dd7218aaea
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xILFMUHitQKoUdCNP5rOeOGkO/X81N4LnnezneuHBVdjJ8jFUn1osvszYMi7AtVu3fDeUjiAw3BHRgM/uA8w0Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7788
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000E9D2.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8190
 
-On 4/1/25 13:45, Ard Biesheuvel wrote:
-> On Tue, 1 Apr 2025 at 18:51, Tom Lendacky <thomas.lendacky@amd.com> wrote:
->>
->> On 3/26/25 04:28, Ard Biesheuvel wrote:
->>> On Tue, 25 Mar 2025 at 17:30, Tom Lendacky <thomas.lendacky@amd.com> wrote:
->>>>
->>>> On 3/25/25 09:39, Ard Biesheuvel wrote:
->>>>> On Tue, 25 Mar 2025 at 14:44, Kirill A. Shutemov
->>>>> <kirill.shutemov@linux.intel.com> wrote:
->>>>>>
->>>>>> On Tue, Mar 25, 2025 at 02:09:54PM +0100, Ard Biesheuvel wrote:
->>>>>>>> Since the problem happens before ExitBootServices(), can we allocate this
->>>>>>>> memory range with EFI API and free it back?
->>>>>>>>
->>>>>>>
->>>>>>> In principle, yes - we could allocate these misaligned chunks as
->>>>>>> EfiLoaderData, and it wouldn't even be necessary to free them, as they
->>>>>>> would become available to the OS automatically.
->>>>>>>
->>>>>>> But doing this in setup_e820() is tricky, because every page
->>>>>>> allocation modifies the EFI memory map, and we may have to restart
->>>>>>> from the beginning. And there is no guarantee that some asynchronous
->>>>>>> event in the firmware context does not attempt to allocate some pages,
->>>>>>> in a way that might result in another misaligned unaccepted region.
->>>>>>
->>>>>> Looking again at the code, setup_e820() (and therefore
->>>>>> process_unaccepted_memory()) called after efi_exit_boot_services() in
->>>>>> exit_boot(), so we can't use EFI API to allocate memory.
->>>>>>
->>>>>
->>>>> Ah yes, I misremembered that. It also means that it is fine in
->>>>> principle to take over the communication with the hypervisor.
->>>>>
->>>>> However, this is still tricky, because on SEV-SNP, accepting memory
->>>>> appears to rely on the GHCB page based communication being enabled,
->>>>> and this involves mapping it down to a single page so the C bit can be
->>>>> cleared. It would be nice if we could simply use the MSR based
->>>>> protocol for accepting memory.
->>>>
->>>> We can probably do something along this line since there is an existing
->>>> function, __page_state_change(), that performs MSR protocol PSC. If we
->>>> change the arch_accept_memory() calls in process_unaccepted_memory() to
->>>> arch_accept_memory_early() then we can differentiate between this early
->>>> alignment setup timeframe. The early function can also use
->>>> sev_get_status() instead of sev_snp_enabled().
->>>>
->>>> Let me mess around with it a bit and see what I come up with.
->>>>
->>>
->>> Cheers.
->>
->> This is what I came up with below. @Ard and @Kirill, let me know if it
->> looks ok to you and, if so, I'll submit a formal patch where we can work
->> on naming, etc.
->>
+On Tue, Apr 01, 2025 at 10:07:18AM -0500, Tom Lendacky wrote:
+> On 4/1/25 02:57, Kirill Shutemov wrote:
+> > On Mon, Mar 31, 2025 at 04:14:40PM -0700, Dan Williams wrote:
+> >> Nikolay reports [1] that accessing BIOS data (first 1MB of the physical
+> >> address space) via /dev/mem results in an SEPT violation.
+> >>
+> >> The cause is ioremap() (via xlate_dev_mem_ptr()) establishing an
+> >> unencrypted mapping where the kernel had established an encrypted
+> >> mapping previously.
+> >>
+> >> Teach __ioremap_check_other() that this address space shall always be
+> >> mapped as encrypted as historically it is memory resident data, not MMIO
+> >> with side-effects.
+> > 
+> > I am not sure if all AMD platforms would survive that.
+> > 
+> > Tom?
 > 
-> Thanks for putting this together.
+> I haven't tested this, yet, but with SME the BIOS is not encrypted, so
+> that would need an unencrypted mapping.
 > 
-> Some questions below.
+> Could you qualify your mapping with a TDX check? Or can you do something
+> in the /dev/mem support to map appropriately?
 > 
->>>
->>> So IIUC, it would be sufficient to check sev_get_status() against
->>> MSR_AMD64_SEV_SNP_ENABLED, and use the PSC MSR to transition each
->>> unaccepted page that is in the misaligned head or tail of the region
->>> to private.
->>>
->>> Pardon my ignorance, but does that mean that in principle,
->>> sev_enable() et al could be deferred to early startup of the kernel
->>> proper (where the other SEV startup code lives) ?
->>
->> I'm not sure if it can be. There is a bunch of code in the sev_enable()
->> path that I'm not sure can be moved. I'd have to look a lot closer to
->> determine that.
->>
->> Thanks,
->> Tom
->>
->>>
->>> We have been playing whack-a-mole with PIC codegen issues there, and
->>> so it might make sense to consolidate that logic into a single [PIC]
->>> chunk of code that is somewhat isolated from the rest of the code
->>> (like the kernel/pi code on arm64)
->>
->> diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
->> index dbba332e4a12..b115a73ca25e 100644
->> --- a/arch/x86/boot/compressed/mem.c
->> +++ b/arch/x86/boot/compressed/mem.c
->> @@ -32,19 +32,42 @@ static bool early_is_tdx_guest(void)
->>         return is_tdx;
->>  }
->>
->> -void arch_accept_memory(phys_addr_t start, phys_addr_t end)
->> +static bool is_sev_snp_enabled(bool early)
->> +{
->> +       return early ? early_sev_snp_enabled() : sev_snp_enabled();
-> 
-> Why is the latter test not suitable early on? Simply because
-> sev_status is not initialized yet?
+> I'm adding @Naveen since he is preparing a patch to prevent /dev/mem
+> from accessing ROM areas under SNP as those can trigger #VC for a page
+> that is mapped encrypted but has not been validated. He's looking at
+> possibly adding something to x86_platform_ops that can be overridden.
+> The application would get a bad return code vs an exception.
 
-Right. I was following the example of calling sev_get_status() before
-sev_enable() has been invoked.
+The thought with x86_platform_ops was that TDX may want to differ and 
+setup separate ranges to deny access to. For SEV-SNP, we primarily want 
+to disallow the video ROM range at this point. Something like the below.
 
-> 
->> +}
->> +
->> +static void __arch_accept_memory(phys_addr_t start, phys_addr_t end, bool early)
->>  {
->>         /* Platform-specific memory-acceptance call goes here */
->>         if (early_is_tdx_guest()) {
->>                 if (!tdx_accept_memory(start, end))
->>                         panic("TDX: Failed to accept memory\n");
->> -       } else if (sev_snp_enabled()) {
->> -               snp_accept_memory(start, end);
->> +       } else if (is_sev_snp_enabled(early)) {
->> +               /*
->> +                * Calls when memory acceptance is being setup require SNP
->> +                * to use the GHCB protocol because the current pagetable
->> +                * mappings can't change the early GHCB page to shared.
->> +                */
->> +               if (early)
-> 
-> I think it would be better to structure this slightly differently.
-> I'll have a stab at this myself and get back to you.
+If this is not something TDX wants, then we should be able to add a 
+check for SNP in devmem_is_allowed() directly without the 
+x86_platform_ops.
 
-Sounds good.
 
-> 
->> +                       snp_accept_memory_early(start, end);
->> +               else
->> +                       snp_accept_memory(start, end);
->>         } else {
->>                 error("Cannot accept memory: unknown platform\n");
->>         }
->>  }
->>
->> +void arch_accept_memory(phys_addr_t start, phys_addr_t end)
->> +{
->> +       __arch_accept_memory(start, end, false);
->> +}
->> +
->> +void arch_accept_memory_early(phys_addr_t start, phys_addr_t end)
->> +{
->> +       __arch_accept_memory(start, end, true);
->> +}
->> +
->>  bool init_unaccepted_memory(void)
->>  {
->>         guid_t guid = LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID;
->> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
->> index bb55934c1cee..162484d662f1 100644
->> --- a/arch/x86/boot/compressed/sev.c
->> +++ b/arch/x86/boot/compressed/sev.c
->> @@ -157,6 +157,12 @@ static int svsm_perform_call_protocol(struct svsm_call *call)
->>         return ret;
->>  }
->>
->> +/* Used before sev_enable() has been called during unaccepted memory init */
->> +bool early_sev_snp_enabled(void)
->> +{
->> +       return sev_get_status() & MSR_AMD64_SEV_SNP_ENABLED;
->> +}
->> +
->>  bool sev_snp_enabled(void)
->>  {
->>         return sev_status & MSR_AMD64_SEV_SNP_ENABLED;
->> @@ -164,10 +170,7 @@ bool sev_snp_enabled(void)
->>
->>  static void __page_state_change(unsigned long paddr, enum psc_op op)
->>  {
->> -       u64 val;
->> -
->> -       if (!sev_snp_enabled())
->> -               return;
->> +       u64 val, msr;
->>
-> 
-> Could you explain how the below code now knows how to decide whether
-> to use the MSR protocol or the GHCB page based one?
+- Naveen
 
-The __page_state_change() routine only performs the MSR protocol version
-of a page state change, no decision is made between the two at this stage.
 
-> 
->>         /*
->>          * If private -> shared then invalidate the page before requesting the
->> @@ -176,6 +179,9 @@ static void __page_state_change(unsigned long paddr, enum psc_op op)
->>         if (op == SNP_PAGE_STATE_SHARED)
->>                 pvalidate_4k_page(paddr, paddr, false);
->>
->> +       /* Save the current GHCB MSR value */
->> +       msr = sev_es_rd_ghcb_msr();
->> +
->>         /* Issue VMGEXIT to change the page state in RMP table. */
->>         sev_es_wr_ghcb_msr(GHCB_MSR_PSC_REQ_GFN(paddr >> PAGE_SHIFT, op));
->>         VMGEXIT();
->> @@ -185,6 +191,9 @@ static void __page_state_change(unsigned long paddr, enum psc_op op)
->>         if ((GHCB_RESP_CODE(val) != GHCB_MSR_PSC_RESP) || GHCB_MSR_PSC_RESP_VAL(val))
->>                 sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PSC);
->>
->> +       /* Restore the GHCB MSR value */
->> +       sev_es_wr_ghcb_msr(msr);
->> +
->>         /*
->>          * Now that page state is changed in the RMP table, validate it so that it is
->>          * consistent with the RMP entry.
->> @@ -195,11 +204,17 @@ static void __page_state_change(unsigned long paddr, enum psc_op op)
->>
->>  void snp_set_page_private(unsigned long paddr)
->>  {
->> +       if (!sev_snp_enabled())
->> +               return;
->> +
->>         __page_state_change(paddr, SNP_PAGE_STATE_PRIVATE);
->>  }
->>
->>  void snp_set_page_shared(unsigned long paddr)
->>  {
->> +       if (!sev_snp_enabled())
->> +               return;
->> +
->>         __page_state_change(paddr, SNP_PAGE_STATE_SHARED);
->>  }
->>
->> @@ -261,6 +276,11 @@ static phys_addr_t __snp_accept_memory(struct snp_psc_desc *desc,
->>         return pa;
->>  }
->>
->> +/*
->> + * The memory acceptance support uses the boot GHCB page to perform
->> + * the required page state change operation before validating the
->> + * pages.
->> + */
->>  void snp_accept_memory(phys_addr_t start, phys_addr_t end)
->>  {
->>         struct snp_psc_desc desc = {};
->> @@ -275,6 +295,23 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
->>                 pa = __snp_accept_memory(&desc, pa, end);
->>  }
->>
->> +/*
->> + * The early version of memory acceptance is needed when being called
->> + * from the EFI stub driver. The pagetable manipulation to mark the
->> + * boot GHCB page as shared can't be performed at this stage, so use
->> + * the GHCB page state change MSR protocol instead.
->> + */
->> +void snp_accept_memory_early(phys_addr_t start, phys_addr_t end)
->> +{
->> +       phys_addr_t pa;
->> +
->> +       pa = start;
->> +       while (pa < end) {
-> 
-> Nit: please make this
-> 
-> for (phys_addr_t pa = start; pa < end; pa += PAGE_SIZE)
-> 
-> and drop the braces
-
-Doh! Yes.
-
-> 
->> +               __page_state_change(pa, SNP_PAGE_STATE_PRIVATE);
->> +               pa += PAGE_SIZE;
->> +       }
->> +}
->> +
->>  void sev_es_shutdown_ghcb(void)
->>  {
->>         if (!boot_ghcb)
->> diff --git a/arch/x86/boot/compressed/sev.h b/arch/x86/boot/compressed/sev.h
->> index fc725a981b09..8a135c9c043a 100644
->> --- a/arch/x86/boot/compressed/sev.h
->> +++ b/arch/x86/boot/compressed/sev.h
->> @@ -10,13 +10,17 @@
->>
->>  #ifdef CONFIG_AMD_MEM_ENCRYPT
->>
->> +bool early_sev_snp_enabled(void);
->>  bool sev_snp_enabled(void);
->>  void snp_accept_memory(phys_addr_t start, phys_addr_t end);
->> +void snp_accept_memory_early(phys_addr_t start, phys_addr_t end);
->>
->>  #else
->>
->> +static inline bool early_sev_snp_enabled(void) { return false; }
->>  static inline bool sev_snp_enabled(void) { return false; }
->>  static inline void snp_accept_memory(phys_addr_t start, phys_addr_t end) { }
->> +static inline void snp_accept_memory_early(phys_addr_t start, phys_addr_t end) { }
->>
->>  #endif
->>
->> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
->> index d96d4494070d..676aa30df52e 100644
->> --- a/drivers/firmware/efi/libstub/efistub.h
->> +++ b/drivers/firmware/efi/libstub/efistub.h
->> @@ -1233,5 +1233,6 @@ efi_status_t allocate_unaccepted_bitmap(__u32 nr_desc,
->>  void process_unaccepted_memory(u64 start, u64 end);
->>  void accept_memory(phys_addr_t start, unsigned long size);
->>  void arch_accept_memory(phys_addr_t start, phys_addr_t end);
->> +void arch_accept_memory_early(phys_addr_t start, phys_addr_t end);
->>
->>  #endif
->> diff --git a/drivers/firmware/efi/libstub/unaccepted_memory.c b/drivers/firmware/efi/libstub/unaccepted_memory.c
->> index 757dbe734a47..1955eddc85f1 100644
->> --- a/drivers/firmware/efi/libstub/unaccepted_memory.c
->> +++ b/drivers/firmware/efi/libstub/unaccepted_memory.c
->> @@ -118,7 +118,7 @@ void process_unaccepted_memory(u64 start, u64 end)
->>          * immediately accepted in its entirety.
->>          */
->>         if (end - start < 2 * unit_size) {
->> -               arch_accept_memory(start, end);
->> +               arch_accept_memory_early(start, end);
->>                 return;
->>         }
->>
->> @@ -129,13 +129,13 @@ void process_unaccepted_memory(u64 start, u64 end)
->>
->>         /* Immediately accept a <unit_size piece at the start: */
->>         if (start & unit_mask) {
->> -               arch_accept_memory(start, round_up(start, unit_size));
->> +               arch_accept_memory_early(start, round_up(start, unit_size));
->>                 start = round_up(start, unit_size);
->>         }
->>
->>         /* Immediately accept a <unit_size piece at the end: */
->>         if (end & unit_mask) {
->> -               arch_accept_memory(round_down(end, unit_size), end);
->> +               arch_accept_memory_early(round_down(end, unit_size), end);
->>                 end = round_down(end, unit_size);
->>         }
->>
->> @@ -144,8 +144,8 @@ void process_unaccepted_memory(u64 start, u64 end)
->>          * into the bitmap.
->>          */
->>         if (start < unaccepted_table->phys_base) {
->> -               arch_accept_memory(start,
->> -                                  min(unaccepted_table->phys_base, end));
->> +               arch_accept_memory_early(start,
->> +                                        min(unaccepted_table->phys_base, end));
->>                 start = unaccepted_table->phys_base;
->>         }
->>
->> @@ -165,7 +165,7 @@ void process_unaccepted_memory(u64 start, u64 end)
->>                              unaccepted_table->phys_base;
->>                 phys_end = end + unaccepted_table->phys_base;
->>
->> -               arch_accept_memory(phys_start, phys_end);
->> +               arch_accept_memory_early(phys_start, phys_end);
->>                 end = bitmap_size * unit_size * BITS_PER_BYTE;
->>         }
->>
->>
->>
+---
+diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+index 583df2c6a2e3..fa9f23200ee4 100644
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -761,6 +761,18 @@ static u64 __init get_jump_table_addr(void)
+ 	return ret;
+ }
+ 
++bool sev_snp_mem_access_allowed(unsigned long pfn)
++{
++	/*
++	 * Reject access to ROM address range (0xc0000 to 0xfffff) for SEV-SNP guests
++	 * as that address range is not validated, so access can cause #VC exception
++	 */
++	if (pfn >= 0xc0 && pfn <= 0xff)
++		return 0;
++
++	return 1;
++}
++
+ static void __head
+ early_set_pages_state(unsigned long vaddr, unsigned long paddr,
+ 		      unsigned long npages, enum psc_op op)
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index ba7999f66abe..f94522da9eb5 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -454,6 +454,7 @@ static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate)
+ struct snp_guest_request_ioctl;
+ 
+ void setup_ghcb(void);
++bool sev_snp_mem_access_allowed(unsigned long pfn);
+ void early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr,
+ 				  unsigned long npages);
+ void early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr,
+@@ -496,6 +497,7 @@ static inline void sev_enable(struct boot_params *bp) { }
+ static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate) { return 0; }
+ static inline int rmpadjust(unsigned long vaddr, bool rmp_psize, unsigned long attrs) { return 0; }
+ static inline void setup_ghcb(void) { }
++static inline bool sev_snp_mem_access_allowed(unsigned long pfn) { return true; }
+ static inline void __init
+ early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr, unsigned long npages) { }
+ static inline void __init
+diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
+index 36698cc9fb44..0add7878e413 100644
+--- a/arch/x86/include/asm/x86_init.h
++++ b/arch/x86/include/asm/x86_init.h
+@@ -307,6 +307,7 @@ struct x86_hyper_runtime {
+  * @realmode_reserve:		reserve memory for realmode trampoline
+  * @realmode_init:		initialize realmode trampoline
+  * @hyper:			x86 hypervisor specific runtime callbacks
++ * @mem_access_allowed:	filter accesses to pfn
+  */
+ struct x86_platform_ops {
+ 	unsigned long (*calibrate_cpu)(void);
+@@ -324,6 +325,7 @@ struct x86_platform_ops {
+ 	void (*set_legacy_features)(void);
+ 	void (*realmode_reserve)(void);
+ 	void (*realmode_init)(void);
++	bool (*mem_access_allowed)(unsigned long pfn);
+ 	struct x86_hyper_runtime hyper;
+ 	struct x86_guest guest;
+ };
+diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
+index 0a2bbd674a6d..83217de27b46 100644
+--- a/arch/x86/kernel/x86_init.c
++++ b/arch/x86/kernel/x86_init.c
+@@ -142,6 +142,7 @@ static bool enc_cache_flush_required_noop(void) { return false; }
+ static void enc_kexec_begin_noop(void) {}
+ static void enc_kexec_finish_noop(void) {}
+ static bool is_private_mmio_noop(u64 addr) {return false; }
++static bool mem_access_allowed_noop(unsigned long pfn) { return true; }
+ 
+ struct x86_platform_ops x86_platform __ro_after_init = {
+ 	.calibrate_cpu			= native_calibrate_cpu_early,
+@@ -156,6 +157,7 @@ struct x86_platform_ops x86_platform __ro_after_init = {
+ 	.restore_sched_clock_state	= tsc_restore_sched_clock_state,
+ 	.realmode_reserve		= reserve_real_mode,
+ 	.realmode_init			= init_real_mode,
++	.mem_access_allowed		= mem_access_allowed_noop,
+ 	.hyper.pin_vcpu			= x86_op_int_noop,
+ 	.hyper.is_private_mmio		= is_private_mmio_noop,
+ 
+diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+index bfa444a7dbb0..64750d710f9f 100644
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -867,6 +867,9 @@ void __init poking_init(void)
+  */
+ int devmem_is_allowed(unsigned long pagenr)
+ {
++	if (!x86_platform.mem_access_allowed(pagenr))
++		return 0;
++
+ 	if (region_intersects(PFN_PHYS(pagenr), PAGE_SIZE,
+ 				IORESOURCE_SYSTEM_RAM, IORES_DESC_NONE)
+ 			!= REGION_DISJOINT) {
+diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
+index 7490ff6d83b1..75e2d86cdab9 100644
+--- a/arch/x86/mm/mem_encrypt_amd.c
++++ b/arch/x86/mm/mem_encrypt_amd.c
+@@ -532,6 +532,7 @@ void __init sme_early_init(void)
+ 		 * parsing has happened.
+ 		 */
+ 		x86_init.resources.dmi_setup = snp_dmi_setup;
++		x86_platform.mem_access_allowed = sev_snp_mem_access_allowed;
+ 	}
+ 
+ 	/*
