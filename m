@@ -1,117 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B311924CEF8;
-	Thu,  3 Apr 2025 12:15:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F04B24EF91
+	for <linux-coco@lists.linux.dev>; Thu,  3 Apr 2025 14:48:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743682511; cv=none; b=LLOPwiXvEKtPCVyCyJ1NgY21VVV3CHg3MEEP+MF9s2AcAFUa519uRsYzhVmXuZwzMXvOmnVcV9vlOEMHnDT4yO2UCYdWsTATDzaYNe4aue1w5RkUtsmUP1cXvhfvMp8R71xEE8Zmwg5MgEVXDZDJOA9iA2+Cp6oytdZsVt6TkHA=
+	t=1743691719; cv=none; b=PxdkQ1SbIPTrcgHvmQ72OhHWsL1aceeP6hwM/KVFZftnVqxpL6NcZCEEdGeGQwS6X3yxooMfRI/V0nTAwd5HcO6zEcnXl5KlmBT9Q/ZhSFoQfgJ3BD0d2mL2cMaHJaAi17pOx3OBJoNPPq4ciQMEUQH1KHSQw8fg3JlKxqxzfyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743682511; c=relaxed/simple;
-	bh=23ExgsOKUXblOVPYfpCtRZ12RIlo+qDHaQOvltMZl7s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p+0iJVZWlm8Mhmp5+MjucFl8g5EZ9rt2jAbddzjPfcoFkKXFirmORxWfaCQM3WKyGnBvVbN0DCHP5Zm8EHvrJ1pKxNIm7/kqx89gRM8AbxG/WQMp+NjrJrHk+cbdVBjfJN5sKl98LJvoMSpxX2jzXjwnQQj/uZq0LwpIjBEMMuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LrHLCxiA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743691719; c=relaxed/simple;
+	bh=wmF3ASAu4l5e5QaPK3NSuhBM69OYwzUeQtDHQcn6MS4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=qcvJ5/g7VEO8u1G69JZCg7cK7wEN9Xv3lnya8y+9ZMO6/NNMwIenxXn7IdFlGFA/VrIPbASvuJKLH1JsyU5KkS3+o/ogrRiBTa/KGm63zyACcmAUbwUboiqH1cSw0D392HTI2mf7bHVCU/dipdXxH55xwS5e/nflZtxqDZSxH1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AhsoEFTd; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LrHLCxiA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF9BC4CEE3;
-	Thu,  3 Apr 2025 12:15:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743682511;
-	bh=23ExgsOKUXblOVPYfpCtRZ12RIlo+qDHaQOvltMZl7s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LrHLCxiAwjQCI0ybe94JIwngEW+zI94NC/ou43BS0+cv+8SmSw4+7Ex8qnriCsSku
-	 3tXw7kLy9E0S3Dd1atnFuePV7eHzS0kjqX8wBYDgxZZFrKIcaN7fDXBZrrOwY0CWjb
-	 HfH1Esos/2/L3zWHSbx3cQ92OBvNoOx3lBXUlDLeNLFdaEde9m2+ZwUgU4fHFGT91z
-	 dyihYLM+npFPyVNOTej23OmRHzrazGv19wVrbD6a8ThyAh5hFr/CBdrcCeH4c6vE0S
-	 SRjackvg7LqFuTHEYe3vyZwV3LAZHW7e3nVYmUSYar9hlBTivGH1RaToVJwDKHfboX
-	 TWIPJpyYezOCQ==
-Date: Thu, 3 Apr 2025 17:41:02 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>, 
-	Kirill Shutemov <kirill.shutemov@linux.intel.com>, dave.hansen@linux.intel.com, x86@kernel.org, 
-	Vishal Annapurve <vannapurve@google.com>, Nikolay Borisov <nik.borisov@suse.com>, stable@vger.kernel.org, 
-	linux-coco@lists.linux.dev, Borislav Petkov <bp@alien8.de>
-Subject: Re: [PATCH] x86/ioremap: Maintain consistent IORES_MAP_ENCRYPTED for
- BIOS data
-Message-ID: <qkhrxoonvpmp7udbvak4qq6uujjkskzec2kezzfooonndaroxq@5bkl6ly6xslv>
-References: <174346288005.2166708.14425674491111625620.stgit@dwillia2-xfh.jf.intel.com>
- <z7h6sepvvrqvmpiccqubganhshcbzzrbvda7dntzufqywei4gz@6clsg5lbvamd>
- <00931e12-4e6a-9ec4-309c-372aaee333b9@amd.com>
- <7cgiqaoeosg3vekjkcm5iorn5djdqbqv3evijgho6tvonzhe2t@jzn56u4ad7v3>
- <67edade5e3e6d_1a6d929450@dwillia2-xfh.jf.intel.com.notmuch>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AhsoEFTd"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-73691c75863so1283044b3a.0
+        for <linux-coco@lists.linux.dev>; Thu, 03 Apr 2025 07:48:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1743691717; x=1744296517; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=igg3zobfFtydVGAelA7JZ01NRykTuhkzUPbgteiqM9Q=;
+        b=AhsoEFTdMsDhALuZxaaDqBjgTfp1+FXbatxvz8c6jRAZm6op6QuLIwW82x1H8CBrv7
+         ctrvnTKtupFMieNXvOOms1VyERTf6h3EcpnYh0cf8fvYknn3WSoIyT0dbCpbNJ4iPeoj
+         m3SNrV/1Vv2fdOj9wbxnSseIU1ozOPdcm/Hn+vHLs/PntUlqQdkgTZkzbyeazRFGbLjV
+         TzpAL/YLF2jm0nwxqPftbYJFmwSClrahCItXkEnTocQmOOZ4pSVEqVFnwwLJUc8on65E
+         JCY46bygHlHUgAIaNntWmEP4ERuhcI0zFGcx/jWsZo5s08BesRgndBkCe6uIzP1dpZmO
+         W8Nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743691717; x=1744296517;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=igg3zobfFtydVGAelA7JZ01NRykTuhkzUPbgteiqM9Q=;
+        b=BRRqotp2dpSQPZ+xF7MzxP1BoWOnSbL6HHTsvQWFV+96hw8yjpMXn+4GJfSOQ8F7ii
+         7zCoeT14ZKDbgVmpSeFpBXPXYKH+FHcp2jeDJtyaQBSrRvlNXGCEye6BOLpg+4obobCC
+         W26iTEJBLFPs6G3qWpaoUXrRPGt+d7c3rGxkNpEaQmrNFrues5ctXntAh0w6aQ6iaEtq
+         al3GJ7CZ9Cbnm/y3c6VvsBi8guYr4Pv9eeVFWBfjvMbZGkGrU8+y3OH9FVhdCDtfMvbn
+         3b+h2en1/P/ehniqWLM3EFVtgC6L7eOrPgx7GdADo08YhVBhSeXv+CaDzkBrMU+VnxU9
+         kSHw==
+X-Forwarded-Encrypted: i=1; AJvYcCUPke/MwJRGZ/0BfQtOhNmHVvddOPB+ZdSRZz8FLbf4s97KEXMp7SFiN4u7DbQg9L8HZATVabKxJ392@lists.linux.dev
+X-Gm-Message-State: AOJu0YynyQHWyEmDnlzk8p8FZ3sq6wCxOOppkNVYKEL9tPenR9PyTVHa
+	PC89VK9y6CBOWAx3V+GbqTE6RchV7J5q5qqbjJoY5u/oxktgZzi4Y66TJb9ABzXRtui1gT80wIP
+	+Wg==
+X-Google-Smtp-Source: AGHT+IG9IJrC2WV7WLtmMSWgTecisx21a4/DmbtG4CGcCIp6FaiyOk56NSQtsUf8hBMYnyjC9Po0xvGrGdU=
+X-Received: from pfam26.prod.google.com ([2002:aa7:8a1a:0:b0:734:6f4e:794])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:848:b0:736:5b85:a911
+ with SMTP id d2e1a72fcca58-73980399504mr32373172b3a.8.1743691716806; Thu, 03
+ Apr 2025 07:48:36 -0700 (PDT)
+Date: Thu, 3 Apr 2025 07:48:35 -0700
+In-Reply-To: <Z0DOdTRAaK3whZKW@casper.infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <67edade5e3e6d_1a6d929450@dwillia2-xfh.jf.intel.com.notmuch>
+Mime-Version: 1.0
+References: <20241122-guestmem-library-v5-0-450e92951a15@quicinc.com>
+ <20241122-guestmem-library-v5-2-450e92951a15@quicinc.com> <Z0DOdTRAaK3whZKW@casper.infradead.org>
+Message-ID: <Z-6fw8VuDTk4soN8@google.com>
+Subject: Re: [PATCH v5 2/2] mm: guestmem: Convert address_space operations to
+ guestmem library
+From: Sean Christopherson <seanjc@google.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Elliot Berman <quic_eberman@quicinc.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Fuad Tabba <tabba@google.com>, 
+	Ackerley Tng <ackerleytng@google.com>, Mike Rapoport <rppt@kernel.org>, 
+	David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	James Gowans <jgowans@amazon.com>, Mike Day <michael.day@amd.com>, linux-fsdevel@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	devel@lists.orangefs.org, linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Apr 02, 2025 at 02:36:37PM -0700, Dan Williams wrote:
-> Naveen N Rao wrote:
-> > On Tue, Apr 01, 2025 at 10:07:18AM -0500, Tom Lendacky wrote:
-> > > On 4/1/25 02:57, Kirill Shutemov wrote:
-> > > > On Mon, Mar 31, 2025 at 04:14:40PM -0700, Dan Williams wrote:
-> > > >> Nikolay reports [1] that accessing BIOS data (first 1MB of the physical
-> > > >> address space) via /dev/mem results in an SEPT violation.
-> > > >>
-> > > >> The cause is ioremap() (via xlate_dev_mem_ptr()) establishing an
-> > > >> unencrypted mapping where the kernel had established an encrypted
-> > > >> mapping previously.
-> > > >>
-> > > >> Teach __ioremap_check_other() that this address space shall always be
-> > > >> mapped as encrypted as historically it is memory resident data, not MMIO
-> > > >> with side-effects.
-> > > > 
-> > > > I am not sure if all AMD platforms would survive that.
-> > > > 
-> > > > Tom?
-> > > 
-> > > I haven't tested this, yet, but with SME the BIOS is not encrypted, so
-> > > that would need an unencrypted mapping.
-> > > 
-> > > Could you qualify your mapping with a TDX check? Or can you do something
-> > > in the /dev/mem support to map appropriately?
-> > > 
-> > > I'm adding @Naveen since he is preparing a patch to prevent /dev/mem
-> > > from accessing ROM areas under SNP as those can trigger #VC for a page
-> > > that is mapped encrypted but has not been validated. He's looking at
-> > > possibly adding something to x86_platform_ops that can be overridden.
-> > > The application would get a bad return code vs an exception.
-> > 
-> > The thought with x86_platform_ops was that TDX may want to differ and 
-> > setup separate ranges to deny access to. For SEV-SNP, we primarily want 
-> > to disallow the video ROM range at this point. Something like the below.
-> > 
-> > If this is not something TDX wants, then we should be able to add a 
-> > check for SNP in devmem_is_allowed() directly without the 
-> > x86_platform_ops.
+On Fri, Nov 22, 2024, Matthew Wilcox wrote:
+> On Fri, Nov 22, 2024 at 09:29:39AM -0800, Elliot Berman wrote:
+> > A few near-term features are coming to guest_memfd which make sense to
+> > create a built-in library.
 > 
-> So I think there are 2 problems is a range consistently mapped by early
-> init code + various ioremap callers, and for encrypted mappings is there
-> potential unvalidated access that needs to be prevented outright.
-> 
-> The theoretical use case I have in mind is that userspace PCI drivers
-> have no real reason to be blocked in a confidential VM. Most of the
-> validation work to transition MMIO from shared to private is driven by
-> userspace anyway so it is unfortunate that after the end of that
-> conversion devmem and PCI-sysfs still block mappings.
-> 
-> However, there is no need to do pre-enabling for a theoretical use case.
-> So I am ok if devmem_is_allowed() globally says no for TVMs and then see
-> who screams with a practical problem that causes.
+> You haven't created a library, you've created a middle-layer.  This
+> file primarily consists of functions which redispatch to a function
+> pointer.  I think you'd be better off creating a library!  That is,
+> have the consumers register their own address_space_operations and
+> have functions in this library which provide useful implementations.
 
-That makes sense. I have posted that patch with some changes:
-https://lore.kernel.org/all/20250403120228.2344377-1-naveen@kernel.org/T/#u
+Or, go even further and move the overwhelming majority of guest_memfd code into
+mm/.  But I suspect that will be practically infeasible, in which case I think I
+agree with Matthew.
 
-It should be trivial to add a change for Intel to block the first 1MB 
-for TVMs.
-
-
-Thanks,
-Naveen
-
+Either way, the Gunyah usage of the library/middle-layer needs to be included in
+the series.  It's impossible to review the code split and APIs without seeing
+both KVM's usage and Gunyah's usage.  E.g. this series allows
+__guestmem_invalidate_begin() to fail, without any explanation as to while that's
+legal or desirable.
