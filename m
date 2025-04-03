@@ -1,100 +1,275 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F04B24EF91
-	for <linux-coco@lists.linux.dev>; Thu,  3 Apr 2025 14:48:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F276B2673A9;
+	Thu,  3 Apr 2025 19:05:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743691719; cv=none; b=PxdkQ1SbIPTrcgHvmQ72OhHWsL1aceeP6hwM/KVFZftnVqxpL6NcZCEEdGeGQwS6X3yxooMfRI/V0nTAwd5HcO6zEcnXl5KlmBT9Q/ZhSFoQfgJ3BD0d2mL2cMaHJaAi17pOx3OBJoNPPq4ciQMEUQH1KHSQw8fg3JlKxqxzfyA=
+	t=1743707130; cv=none; b=c1QZEe+jXMh/wUqw/6ihJ3rPUTf0SgVci0mErxD8JYOQd4ui5fTA9pu+GwualqddJclC7pp5/UdmWZmFpL5jgbqzFu+c/b+vUcj7b+LeByi5RhSXFJdMiNIpbnQK/niZPCztCwhsZk6TpgVqU4pgL4ow72Dq2879oMVVVh4gDsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743691719; c=relaxed/simple;
-	bh=wmF3ASAu4l5e5QaPK3NSuhBM69OYwzUeQtDHQcn6MS4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qcvJ5/g7VEO8u1G69JZCg7cK7wEN9Xv3lnya8y+9ZMO6/NNMwIenxXn7IdFlGFA/VrIPbASvuJKLH1JsyU5KkS3+o/ogrRiBTa/KGm63zyACcmAUbwUboiqH1cSw0D392HTI2mf7bHVCU/dipdXxH55xwS5e/nflZtxqDZSxH1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AhsoEFTd; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1743707130; c=relaxed/simple;
+	bh=UTSybPX9pm657Ejw52N4FlK3mRJy2RMZjRzMQdJm5jA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eklctM24GVIv3BM0e3asyoPxXd8wWJynZnro5GMCJPg6DduuSSnz18b8GiWFf30oC9cUKbq0B15vyn2IQspTt0yqtwRB9xQ/MZBMkygKhBZHxxxzqpp3ANGMXuo6utVzeHC1XFgeQus5pXsTAQNhcyHWYC7ssN+JaeC2Yo4YMdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ik+7j6xB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AhsoEFTd"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-73691c75863so1283044b3a.0
-        for <linux-coco@lists.linux.dev>; Thu, 03 Apr 2025 07:48:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1743691717; x=1744296517; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=igg3zobfFtydVGAelA7JZ01NRykTuhkzUPbgteiqM9Q=;
-        b=AhsoEFTdMsDhALuZxaaDqBjgTfp1+FXbatxvz8c6jRAZm6op6QuLIwW82x1H8CBrv7
-         ctrvnTKtupFMieNXvOOms1VyERTf6h3EcpnYh0cf8fvYknn3WSoIyT0dbCpbNJ4iPeoj
-         m3SNrV/1Vv2fdOj9wbxnSseIU1ozOPdcm/Hn+vHLs/PntUlqQdkgTZkzbyeazRFGbLjV
-         TzpAL/YLF2jm0nwxqPftbYJFmwSClrahCItXkEnTocQmOOZ4pSVEqVFnwwLJUc8on65E
-         JCY46bygHlHUgAIaNntWmEP4ERuhcI0zFGcx/jWsZo5s08BesRgndBkCe6uIzP1dpZmO
-         W8Nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743691717; x=1744296517;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=igg3zobfFtydVGAelA7JZ01NRykTuhkzUPbgteiqM9Q=;
-        b=BRRqotp2dpSQPZ+xF7MzxP1BoWOnSbL6HHTsvQWFV+96hw8yjpMXn+4GJfSOQ8F7ii
-         7zCoeT14ZKDbgVmpSeFpBXPXYKH+FHcp2jeDJtyaQBSrRvlNXGCEye6BOLpg+4obobCC
-         W26iTEJBLFPs6G3qWpaoUXrRPGt+d7c3rGxkNpEaQmrNFrues5ctXntAh0w6aQ6iaEtq
-         al3GJ7CZ9Cbnm/y3c6VvsBi8guYr4Pv9eeVFWBfjvMbZGkGrU8+y3OH9FVhdCDtfMvbn
-         3b+h2en1/P/ehniqWLM3EFVtgC6L7eOrPgx7GdADo08YhVBhSeXv+CaDzkBrMU+VnxU9
-         kSHw==
-X-Forwarded-Encrypted: i=1; AJvYcCUPke/MwJRGZ/0BfQtOhNmHVvddOPB+ZdSRZz8FLbf4s97KEXMp7SFiN4u7DbQg9L8HZATVabKxJ392@lists.linux.dev
-X-Gm-Message-State: AOJu0YynyQHWyEmDnlzk8p8FZ3sq6wCxOOppkNVYKEL9tPenR9PyTVHa
-	PC89VK9y6CBOWAx3V+GbqTE6RchV7J5q5qqbjJoY5u/oxktgZzi4Y66TJb9ABzXRtui1gT80wIP
-	+Wg==
-X-Google-Smtp-Source: AGHT+IG9IJrC2WV7WLtmMSWgTecisx21a4/DmbtG4CGcCIp6FaiyOk56NSQtsUf8hBMYnyjC9Po0xvGrGdU=
-X-Received: from pfam26.prod.google.com ([2002:aa7:8a1a:0:b0:734:6f4e:794])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:848:b0:736:5b85:a911
- with SMTP id d2e1a72fcca58-73980399504mr32373172b3a.8.1743691716806; Thu, 03
- Apr 2025 07:48:36 -0700 (PDT)
-Date: Thu, 3 Apr 2025 07:48:35 -0700
-In-Reply-To: <Z0DOdTRAaK3whZKW@casper.infradead.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ik+7j6xB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A68C4CEEA;
+	Thu,  3 Apr 2025 19:05:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743707129;
+	bh=UTSybPX9pm657Ejw52N4FlK3mRJy2RMZjRzMQdJm5jA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ik+7j6xBNMmfDLKfAD1G4fEuwhRJQMKS7xjMqFSfXvS7q92adp2GswnvSbxASXLyc
+	 //99URLK+hhRYo3DOjpa0+yOI0qnsGmbElzHc6G4pCHr1hwzJCRFZm9xVO+rh7JDSJ
+	 aWRzF/CrSkDkbwwurTSXvdIvOYcnsy/VPToR6ugZXbmWxFw2LQgG6t6lC6ImiDdxzs
+	 NBjxh0RlyrJ/2w6VbIk7oLmz9bU2GjE1zHG351R39S0Wk566+S+/R3jINZA1SFeOVS
+	 njJ9L6/cI2mwEVizO7JLbEu/L1ZH14eKsfP3Gcs54QaEyav5QGk7Y90vIBZSvbk6EP
+	 vVjNyZc39xBcg==
+Date: Thu, 3 Apr 2025 22:05:25 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+	"H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev,
+	linux-integrity@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
+	Ingo Molnar <mingo@redhat.com>, x86@kernel.org,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Dionna Glaze <dionnaglaze@google.com>,
+	Claudio Carvalho <cclaudio@linux.ibm.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	linux-kernel@vger.kernel.org, Dov Murik <dovmurik@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v6 3/4] tpm: add SNP SVSM vTPM driver
+Message-ID: <Z-7b9VPEhmVYHjbX@kernel.org>
+References: <20250403100943.120738-1-sgarzare@redhat.com>
+ <20250403100943.120738-4-sgarzare@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20241122-guestmem-library-v5-0-450e92951a15@quicinc.com>
- <20241122-guestmem-library-v5-2-450e92951a15@quicinc.com> <Z0DOdTRAaK3whZKW@casper.infradead.org>
-Message-ID: <Z-6fw8VuDTk4soN8@google.com>
-Subject: Re: [PATCH v5 2/2] mm: guestmem: Convert address_space operations to
- guestmem library
-From: Sean Christopherson <seanjc@google.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Elliot Berman <quic_eberman@quicinc.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Fuad Tabba <tabba@google.com>, 
-	Ackerley Tng <ackerleytng@google.com>, Mike Rapoport <rppt@kernel.org>, 
-	David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
-	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	James Gowans <jgowans@amazon.com>, Mike Day <michael.day@amd.com>, linux-fsdevel@vger.kernel.org, 
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	devel@lists.orangefs.org, linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250403100943.120738-4-sgarzare@redhat.com>
 
-On Fri, Nov 22, 2024, Matthew Wilcox wrote:
-> On Fri, Nov 22, 2024 at 09:29:39AM -0800, Elliot Berman wrote:
-> > A few near-term features are coming to guest_memfd which make sense to
-> > create a built-in library.
+On Thu, Apr 03, 2025 at 12:09:41PM +0200, Stefano Garzarella wrote:
+> From: Stefano Garzarella <sgarzare@redhat.com>
 > 
-> You haven't created a library, you've created a middle-layer.  This
-> file primarily consists of functions which redispatch to a function
-> pointer.  I think you'd be better off creating a library!  That is,
-> have the consumers register their own address_space_operations and
-> have functions in this library which provide useful implementations.
+> Add driver for the vTPM defined by the AMD SVSM spec [1].
+> 
+> The specification defines a protocol that a SEV-SNP guest OS can use to
+> discover and talk to a vTPM emulated by the Secure VM Service Module (SVSM)
+> in the guest context, but at a more privileged level (VMPL0).
+> 
+> The new tpm-svsm platform driver uses two functions exposed by x86/sev
+> to verify that the device is actually emulated by the platform and to
+> send commands and receive responses.
+> 
+> The device cannot be hot-plugged/unplugged as it is emulated by the
+> platform, so we can use module_platform_driver_probe(). The probe
+> function will only check whether in the current runtime configuration,
+> SVSM is present and provides a vTPM.
+> 
+> This device does not support interrupts and sends responses to commands
+> synchronously. In order to have .recv() called just after .send() in
+> tpm_try_transmit(), the .status() callback returns 0, and both
+> .req_complete_mask and .req_complete_val are set to 0.
+> 
+> [1] "Secure VM Service Module for SEV-SNP Guests"
+>     Publication # 58019 Revision: 1.00
+> 
+> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+> ---
+> v6:
+> - removed the `locality` field (set to 0) and the FIXME comment [Jarkko]
+> v5:
+> - removed cancel/status/req_* ops after rebase on master that cotains
+>   commit 980a573621ea ("tpm: Make chip->{status,cancel,req_canceled} opt")
+> v4:
+> - moved "asm" includes after the "linux" includes [Tom]
+> - allocated buffer separately [Tom/Jarkko/Jason]
+> v3:
+> - removed send_recv() ops and followed the ftpm driver implementing .status,
+>   .req_complete_mask, .req_complete_val, etc. [Jarkko]
+> - removed link to the spec because those URLs are unstable [Borislav]
+> ---
+>  drivers/char/tpm/tpm_svsm.c | 128 ++++++++++++++++++++++++++++++++++++
+>  drivers/char/tpm/Kconfig    |  10 +++
+>  drivers/char/tpm/Makefile   |   1 +
+>  3 files changed, 139 insertions(+)
+>  create mode 100644 drivers/char/tpm/tpm_svsm.c
+> 
+> diff --git a/drivers/char/tpm/tpm_svsm.c b/drivers/char/tpm/tpm_svsm.c
+> new file mode 100644
+> index 000000000000..b9242c9eab87
+> --- /dev/null
+> +++ b/drivers/char/tpm/tpm_svsm.c
+> @@ -0,0 +1,128 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (C) 2025 Red Hat, Inc. All Rights Reserved.
+> + *
+> + * Driver for the vTPM defined by the AMD SVSM spec [1].
+> + *
+> + * The specification defines a protocol that a SEV-SNP guest OS can use to
+> + * discover and talk to a vTPM emulated by the Secure VM Service Module (SVSM)
+> + * in the guest context, but at a more privileged level (usually VMPL0).
+> + *
+> + * [1] "Secure VM Service Module for SEV-SNP Guests"
+> + *     Publication # 58019 Revision: 1.00
+> + */
+> +
+> +#include <linux/module.h>
+> +#include <linux/kernel.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/tpm_svsm.h>
+> +
+> +#include <asm/sev.h>
+> +
+> +#include "tpm.h"
+> +
+> +struct tpm_svsm_priv {
+> +	void *buffer;
+> +};
+> +
+> +static int tpm_svsm_send(struct tpm_chip *chip, u8 *buf, size_t len)
+> +{
+> +	struct tpm_svsm_priv *priv = dev_get_drvdata(&chip->dev);
+> +	int ret;
+> +
+> +	ret = svsm_vtpm_cmd_request_fill(priv->buffer, 0, buf, len);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/*
+> +	 * The SVSM call uses the same buffer for the command and for the
+> +	 * response, so after this call, the buffer will contain the response
+> +	 * that can be used by .recv() op.
+> +	 */
+> +	return snp_svsm_vtpm_send_command(priv->buffer);
+> +}
+> +
+> +static int tpm_svsm_recv(struct tpm_chip *chip, u8 *buf, size_t len)
+> +{
+> +	struct tpm_svsm_priv *priv = dev_get_drvdata(&chip->dev);
+> +
+> +	/*
+> +	 * The internal buffer contains the response after we send the command
+> +	 * to SVSM.
+> +	 */
+> +	return svsm_vtpm_cmd_response_parse(priv->buffer, buf, len);
+> +}
+> +
+> +static struct tpm_class_ops tpm_chip_ops = {
+> +	.flags = TPM_OPS_AUTO_STARTUP,
+> +	.recv = tpm_svsm_recv,
+> +	.send = tpm_svsm_send,
+> +};
+> +
+> +static int __init tpm_svsm_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct tpm_svsm_priv *priv;
+> +	struct tpm_chip *chip;
+> +	int err;
+> +
+> +	if (!snp_svsm_vtpm_probe())
+> +		return -ENODEV;
+> +
+> +	priv = devm_kmalloc(dev, sizeof(*priv), GFP_KERNEL);
+> +	if (!priv)
+> +		return -ENOMEM;
+> +
+> +	/*
+> +	 * The maximum buffer supported is one page (see SVSM_VTPM_MAX_BUFFER
+> +	 * in tpm_svsm.h).
+> +	 */
+> +	priv->buffer = (void *)devm_get_free_pages(dev, GFP_KERNEL, 0);
+> +	if (!priv->buffer)
+> +		return -ENOMEM;
+> +
+> +	chip = tpmm_chip_alloc(dev, &tpm_chip_ops);
+> +	if (IS_ERR(chip))
+> +		return PTR_ERR(chip);
+> +
+> +	dev_set_drvdata(&chip->dev, priv);
+> +
+> +	err = tpm2_probe(chip);
+> +	if (err)
+> +		return err;
+> +
+> +	err = tpm_chip_register(chip);
+> +	if (err)
+> +		return err;
+> +
+> +	dev_info(dev, "SNP SVSM vTPM %s device\n",
+> +		 (chip->flags & TPM_CHIP_FLAG_TPM2) ? "2.0" : "1.2");
+> +
+> +	return 0;
+> +}
+> +
+> +static void __exit tpm_svsm_remove(struct platform_device *pdev)
+> +{
+> +	struct tpm_chip *chip = platform_get_drvdata(pdev);
+> +
+> +	tpm_chip_unregister(chip);
+> +}
+> +
+> +/*
+> + * tpm_svsm_remove() lives in .exit.text. For drivers registered via
+> + * module_platform_driver_probe() this is ok because they cannot get unbound
+> + * at runtime. So mark the driver struct with __refdata to prevent modpost
+> + * triggering a section mismatch warning.
+> + */
+> +static struct platform_driver tpm_svsm_driver __refdata = {
+> +	.remove = __exit_p(tpm_svsm_remove),
+> +	.driver = {
+> +		.name = "tpm-svsm",
+> +	},
+> +};
+> +
+> +module_platform_driver_probe(tpm_svsm_driver, tpm_svsm_probe);
+> +
+> +MODULE_DESCRIPTION("SNP SVSM vTPM Driver");
+> +MODULE_LICENSE("GPL");
+> +MODULE_ALIAS("platform:tpm-svsm");
+> diff --git a/drivers/char/tpm/Kconfig b/drivers/char/tpm/Kconfig
+> index fe4f3a609934..dddd702b2454 100644
+> --- a/drivers/char/tpm/Kconfig
+> +++ b/drivers/char/tpm/Kconfig
+> @@ -234,5 +234,15 @@ config TCG_FTPM_TEE
+>  	help
+>  	  This driver proxies for firmware TPM running in TEE.
+>  
+> +config TCG_SVSM
+> +	tristate "SNP SVSM vTPM interface"
+> +	depends on AMD_MEM_ENCRYPT
+> +	help
+> +	  This is a driver for the AMD SVSM vTPM protocol that a SEV-SNP guest
+> +	  OS can use to discover and talk to a vTPM emulated by the Secure VM
+> +	  Service Module (SVSM) in the guest context, but at a more privileged
+> +	  level (usually VMPL0).  To compile this driver as a module, choose M
+> +	  here; the module will be called tpm_svsm.
+> +
+>  source "drivers/char/tpm/st33zp24/Kconfig"
+>  endif # TCG_TPM
+> diff --git a/drivers/char/tpm/Makefile b/drivers/char/tpm/Makefile
+> index 2b004df8c04b..9de1b3ea34a9 100644
+> --- a/drivers/char/tpm/Makefile
+> +++ b/drivers/char/tpm/Makefile
+> @@ -45,3 +45,4 @@ obj-$(CONFIG_TCG_CRB) += tpm_crb.o
+>  obj-$(CONFIG_TCG_ARM_CRB_FFA) += tpm_crb_ffa.o
+>  obj-$(CONFIG_TCG_VTPM_PROXY) += tpm_vtpm_proxy.o
+>  obj-$(CONFIG_TCG_FTPM_TEE) += tpm_ftpm_tee.o
+> +obj-$(CONFIG_TCG_SVSM) += tpm_svsm.o
+> -- 
+> 2.49.0
+> 
+> 
 
-Or, go even further and move the overwhelming majority of guest_memfd code into
-mm/.  But I suspect that will be practically infeasible, in which case I think I
-agree with Matthew.
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-Either way, the Gunyah usage of the library/middle-layer needs to be included in
-the series.  It's impossible to review the code split and APIs without seeing
-both KVM's usage and Gunyah's usage.  E.g. this series allows
-__guestmem_invalidate_begin() to fail, without any explanation as to while that's
-legal or desirable.
+BR, Jarkko
