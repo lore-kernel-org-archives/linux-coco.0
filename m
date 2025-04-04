@@ -1,313 +1,318 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA49326B957
-	for <linux-coco@lists.linux.dev>; Thu,  3 Apr 2025 19:06:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743707202; cv=fail; b=M+1WArkbFY4Lab2SEMKfvnm2yuIVSB8keHrl7vRaGDLZMR3PIT7WgdvMWKwfHLcugKpiuSnklrHklsPuiXuzX0K6iuUA7U9HxdiDcKwHvlazSBaTEJ3LWDzS7izzJe9ND/ZTIxQeSMEX2dCjy1rPreZROobxi/oAJuxs50RrXvQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743707202; c=relaxed/simple;
-	bh=fRRoTIs/bUruAvHa5EhysrQrkM5kNy5LPvA5T6o5zeo=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=CXpdajSQQKNLQKIzJRC5oOPD9SqlR65qlsH9ZFsTonisoEXX9EMXzFoYPdoluj26JokXqv1eZfwlI8Z70IaaEo+xkJcCOTZpu2raexT+UenOniW1d6S2SrmmPRVCeV6Xf6Au/9FwQ4DS4EkOUUVXgykOlnQsiMNWCZz/H0pJVMI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XWeJ6oip; arc=fail smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEFA2080E8
+	for <linux-coco@lists.linux.dev>; Fri,  4 Apr 2025 17:32:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743787922; cv=none; b=u3T6CnmM5RF8d/979AJxsWrMkC7zVRXEhxefyZLt9Jq8aUn3RlrfT8GhRGOQxz1daWTmjCvvp1YvqtsSGjSSv7MtetrWUx4FXGA3zseHiuddHFPE5ucN6D/77afhCk+awOq41EqbH+/4iF6hh2Ox3ArWDS5s1KOgfJfX7XWVcc0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743787922; c=relaxed/simple;
+	bh=Y3b2Cjxv4tYL0u0PPGJYMVEnxE9QkPDjbFvD2vkuSYo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hQqINdvl0DIdOD7Fs619Z5MNhyPcbaH6PExYB5SFvEDlekRwTOclDdTDAHrsFweKR8s54LtX5roJdwnCUuG/VPMOd6qBOz1wLRHzChxrranQ2/6xCCAWeMvWKQpptJ4TPvq0IT852yksDc2bt0a37RbRov0h7Kd8WeX6KpHbGvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UnKBb4rc; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XWeJ6oip"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1743707200; x=1775243200;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=fRRoTIs/bUruAvHa5EhysrQrkM5kNy5LPvA5T6o5zeo=;
-  b=XWeJ6oipSIl8RjVlUqUpoVr6avYp50C7/8E67u9B4fJK0fhsw3I2bFso
-   6JCztdp+NlI1x9C6xS1kJu+8t5mhnjMNPWcQTcYCCoOQbKGKLYuh2C4Yx
-   8EoAvdGleGid64zaRXgqrWykoOoX0I7Zj+KI5gnt8LTghoWn/V6thK42n
-   UcPNYzCPNZ7MWuP97igSoj+yPTsg1ug3iYfC791ZMkfXaKKHbfFOn0dKL
-   anKThq+qHJFPxI0gcTsBpC3qdF6/Rd2peC5ugiqhPqmlTn1yYWIQYO3jI
-   67D49Os/DImnf+zEEQEwN3YIY9/n78BpFMm3e5JDAYCzXzL6CgN+HMCsM
-   g==;
-X-CSE-ConnectionGUID: N0HkK3/+QESf3IP9oprxQw==
-X-CSE-MsgGUID: 08zj9+xmTVewClClFnxvYQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11393"; a="45019082"
-X-IronPort-AV: E=Sophos;i="6.15,186,1739865600"; 
-   d="scan'208";a="45019082"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2025 12:06:39 -0700
-X-CSE-ConnectionGUID: 0dgNA+IjQJq5OaY8PQ86cw==
-X-CSE-MsgGUID: VpMeisjwTvmKpEHb4k6vPg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,186,1739865600"; 
-   d="scan'208";a="128018454"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2025 12:06:39 -0700
-Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.1544.14; Thu, 3 Apr 2025 12:06:38 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Thu, 3 Apr 2025 12:06:38 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.172)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Thu, 3 Apr 2025 12:06:38 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oBR6g5AeOUEBs0BFcIog2KqixQiNqBqy67eQ3YWbi7gtc9LdPeRzgzdPliAnIVRJqAW+bNqqZPIo57L0b1KnwqTMN4QGIRABS1FgAPJ4fuB2KvI0m4EfBMN55fSFVUTiHfblLNpyQ3YWTQjSzCO9BfpikhjOpQ5tGoNMXezQ19aoUohb3jb4ogUpQahp5uBeKIQfFFyPT31BNoJZtPXczKgUt6fVIma2iJP7qHGk+p77I4J8bb9fMSeiW08fx9RReMD7IJAC10T8VwuR6sbbTfCf0M7KyXPQHdE0IQjml71zEaBd13SzxC2qhXE/bUPORHK41MQogT2Hjff3MSK63Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=g3yW0LWLFKuyDUDAijQDrhyN7VXdPlKy+aHa0Lcq7ls=;
- b=H0Pm1hZos1gNRhYnj6/7B3/MRd1dUG3wUSnzf8NCDeEeSEVXEb7Bjo0D4UNikWZZPKG6c4Sr4ZKlAzy5KJXz8YU9nhpJxUbQx5Af1KC2zLwMiL5xhSANqXPuA6c6h++sVs8IyzKisvsIxmKutsJfgyP5XaHdO5OPOX3vQvhGlCv0IEaofzjYglxL8wQgdR4wmx6oaTv67tUSKRxIHZnMvFdcopvUJf78/oMpBQUzuoYOQdV5nYooc9er0rEkc18baZDbG2Ss/fZ2Ckv4Fcb9lshZBkuoKQT1Z1UJlxfMV4sUDnglgWmpQMGjCWDHTQy6uPJsfT6SU+4dTUwTU95GRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by CH0PR11MB5265.namprd11.prod.outlook.com (2603:10b6:610:e0::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8583.41; Thu, 3 Apr
- 2025 19:06:34 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8%3]) with mapi id 15.20.8583.041; Thu, 3 Apr 2025
- 19:06:33 +0000
-Date: Thu, 3 Apr 2025 12:06:29 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: "Naveen N Rao (AMD)" <naveen@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<x86@kernel.org>, <linux-coco@lists.linux.dev>
-CC: Dave Hansen <dave.hansen@linux.intel.com>, Borislav Petkov <bp@alien8.de>,
-	Vishal Annapurve <vannapurve@google.com>, Kirill Shutemov
-	<kirill.shutemov@linux.intel.com>, Dan Williams <dan.j.williams@intel.com>,
-	Nikolay Borisov <nik.borisov@suse.com>, Tom Lendacky
-	<thomas.lendacky@amd.com>, Kevin Loughlin <kevinloughlin@google.com>
-Subject: Re: [RFC PATCH] x86/sev: Disallow userspace access to BIOS region
- for SEV-SNP guests
-Message-ID: <67eedc35be77d_464ec29462@dwillia2-xfh.jf.intel.com.notmuch>
-References: <20250403120228.2344377-1-naveen@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250403120228.2344377-1-naveen@kernel.org>
-X-ClientProxiedBy: MW4P220CA0017.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:303:115::22) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UnKBb4rc"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-abec8b750ebso368466066b.0
+        for <linux-coco@lists.linux.dev>; Fri, 04 Apr 2025 10:32:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1743787919; x=1744392719; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q89yAvYXvndl1irm5LZz/0EHmiyywExfQhlkm5JASPw=;
+        b=UnKBb4rc1e9SGgvbSM4sJfyvdQjtIsullYjZyYzEKt8EtKvvH/QzQBCCcXxwQK1C5+
+         THlEgHMsTDpVudboE84cVJciJZxMVsjvbONXt3e2DmvLubvA4ptgkgll6bSbgQ4E7Ck9
+         8qczsq8jEIAWCNWqG+3jL5nMh6vIbNfgx6UbtKKmrhrdn1SyN4hFI4kLW5xmEcAtNkDt
+         je9uwtpzCQtUMIV7qAvCnmJ/Wepzy2Vm8zSAzs+qTYwOQfwVEVELxOWbe2vsYBUPE+uS
+         Qf2559xnBVxlEzk5IRBUyFR9V2q7TXkyic6L7Gaz2rAlUkgktuOhmH1yRbrJVMGfUu6d
+         Vd9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743787919; x=1744392719;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Q89yAvYXvndl1irm5LZz/0EHmiyywExfQhlkm5JASPw=;
+        b=WpOKWIW59fmstEng2jooSxPEkPz8HmNly+UOelJPrxtc5d3Hu6vh8eJXN511mxH1Iq
+         LYGUuL2GjJCDImdORpTw7wS26rSaZWiXfHH+pEiBvvp1W/d++kDixEf5+dkyoJDQ2Emm
+         YC73zTtL1c+u7KGEQeVyTFFYOcnzHZlV4gfNECHH6gK9nRW1HVIt0Rzabq58U7hk3wje
+         PPxTkPqbB5Y1Or8PvDDXkMUwwTK13gbRGWVFeiV40kc4JYnT2zkFEzmERH6NrF+Gu3r/
+         CL5os7B1UGYb/kRkvIGaJbtZtik9fQ5fJ0Ybh7989WkA6lxkrh/eQxP1bNiN5c8qMW71
+         IHug==
+X-Forwarded-Encrypted: i=1; AJvYcCUT2s+GbmfkZYYbmbBHWwdMIhmdAuS7NHnj77d8o+sl7+UmT1Zkq2L3cuOwKyoptUddJjNe6xvqpJys@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw+oiUd9SyPgJqXq0/I4q+zYR73IvBnx+sAQ2FHtgJmJCiAx7gI
+	uqPZvCcUKlQz5l8y1JLt0AWGQ5mrsatB15ize63UVRY9A0bcLK/S8KXBYe1htbx2ARywpOYDbG7
+	nwVPLzE2FH65bpQmhLjIpsjKNQNbZQef96J1U
+X-Gm-Gg: ASbGnctpezYZhWo0Ay6Xbt0lXB/3KlK8KGQ15Gj1CzZj+/mNhpEtgfMPspl9hM/esXA
+	lLD3hThq+tfkPbQW5PQthKbX73eLfLSUkSjihElviYsEBG/byhxFaPxhFHaJ9qNs+OtPwAxd2Sb
+	+BpLJBHLDf3F8v2Z/aTj55oyaq5Q==
+X-Google-Smtp-Source: AGHT+IE88NgLTRWE+IuShfOX0Jx6AkxSFsKpDC1V09N1wPs/KLPyeH3dIToVTOqntAd8wIUj/YscWKjvbWX1pmw+qno=
+X-Received: by 2002:a17:906:dc94:b0:ac2:b8ce:90d5 with SMTP id
+ a640c23a62f3a-ac7e761e88fmr33071166b.44.1743787918560; Fri, 04 Apr 2025
+ 10:31:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|CH0PR11MB5265:EE_
-X-MS-Office365-Filtering-Correlation-Id: 749dd24e-4d2b-4ba5-253b-08dd72e2a636
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?0IP/JSW/8bvPpGGCxwIyQGPwQds/LmuQs0u+iSO7cda40RlsRiAU62i4gTZZ?=
- =?us-ascii?Q?NoWGtrLpRpskJ3qbj37OlsOLmF2YGZA3XnMQAd3Hns3GUJFT7A6C/FIAqSzU?=
- =?us-ascii?Q?mfzhJSfOp0eiKZuJGXBlcMtq/pPZvqV75jLMSXMH/mVCe1Sp2yBXyNoYY8uk?=
- =?us-ascii?Q?zzC4kK18APcgAZ0/fXCuWSnDepIys+fD3ApI2qx+YeE7tnZt1cQ29ZZIc51H?=
- =?us-ascii?Q?Nff3JxWTM33rotg5cVXVRjkgwJZH5cGTVGaQz8J8lu5Mt2HRv8mZn/1UBwfP?=
- =?us-ascii?Q?zi/9jfI6gHWzAco+okmPzoik5jh05CShqifongtEkRhRljuZ3O17JwKi+tvk?=
- =?us-ascii?Q?YeMhsbvTlPwWzaPdWZ0+Kjco1oOkG8fjlX6ts7wImhAtr9nCBuBK08FSkclu?=
- =?us-ascii?Q?glVoqbZwVQMvw7p/WuCRCAuXyPOJlSCGjpr0E9dG33GYgLbdNRIRzBDSCclt?=
- =?us-ascii?Q?SNbird7PXGXIclQHyVcTOZdRhtvYgmjgfXdhPIaq/M53bgNA0hfkOq4psO3b?=
- =?us-ascii?Q?nSn4zxzgakEe3E3Q507setSO1SNoVWoANY6J2RExXuew56cMblL+PJrR2gxl?=
- =?us-ascii?Q?0a/GFRAs+gQwTsj2qHJm/0ypMS3524UebnGeWS6ZtYIY68umpODDmCxDkUPz?=
- =?us-ascii?Q?ruV64YtTrTSPsI1FnB1d18I58UrrEkB4OvpaOB7FzkTwO86rML5KHIqDpO9U?=
- =?us-ascii?Q?1RXAn9jBuzC1q+4hnf/CaFmRPHroaokAcc9Wwf2iLNmVv5qp9UhHWtk5n3DT?=
- =?us-ascii?Q?tnauKcg1UAmKLmNPozvnt55G3XhEAdGqSOq8IbpIFgSRm9rMsVD6K7sTYCrJ?=
- =?us-ascii?Q?Rv7XhzJmqKeq0Vi59WzOYTLoP+pqAjiac9fD8D8AcYiuOjmjcgpFpJMR3V6E?=
- =?us-ascii?Q?/Hot3bQBN3tiemhqpuq4QJk+o/MAvfIpLFwuItdP4CisODBF9k6r+BdWYiqJ?=
- =?us-ascii?Q?XLg9oFUHWqWgxEuB4XVwwPj+5z2fJ+78d89QdkK67oJQMeyRyMsUXNfKftYG?=
- =?us-ascii?Q?KIDmV5vqzFn6Gboh9cURMYDNn1Qc1eMoxGxF3PiH2GwqBZ76osJnxKme/xOo?=
- =?us-ascii?Q?wMPKspDajPoVRZs2GLFTMgK7vtvXYlrtl5UZvNfnO3PBuFpuyTmJtbRM//bJ?=
- =?us-ascii?Q?wu2ecZMBYfTjq86H6D/9U/WjhBhZjAmLoueahzMHrCJHR/kpdSVYcUP8slrl?=
- =?us-ascii?Q?3MmrpTAugRWpOySExbE++u7Ep4IoyqXwwC9KDYBTaROVLxiZ3KUDKgWyptJo?=
- =?us-ascii?Q?66Cx7lWvO6D/SroaAptAZZt05uPsIV2nQxd/TMCrl+a19FJpgjcZpDmO6NJV?=
- =?us-ascii?Q?iy4Azz6juzso2ppno0yCpm6/Ft+aXX9oBasOLVls/32tD/jQitrX1lQwOOQb?=
- =?us-ascii?Q?+7X7CMzmEJR8UUNOzjHp4LSwgJBv?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?PuWDsD6ksb+zz89bQQi9c+Ml2jNcvlXakpzxtQdznPArs9yA0tz8iuPfiwEa?=
- =?us-ascii?Q?4Gn+6D7zvVwEaJrZcKQe3k5t6UVz3K8q0l+GTtLPAPlZrmaQk+wsJvj/cz1D?=
- =?us-ascii?Q?w3l79fCrVFhAaJ4TZKOzEE18jhl91HB+VYckbbAoE6tSNm4Wsr5+gizfm5/2?=
- =?us-ascii?Q?Nw1duszZZ/EcnWDQyjP8EDSK1wFrjirXJeLcz1pBD7J8B6ylXJFBoug9Po2q?=
- =?us-ascii?Q?9ZpEgZI6QFGh0cJOeVmtVTSlY+EAVB7kUqk934ev7LVO3PAI8zFBNx3UDtts?=
- =?us-ascii?Q?rQr+eHMQnZumY9AFwVduta0Er3/yEEIngulluP6DgtUjacaVs7853+FxompF?=
- =?us-ascii?Q?4U0IPXRi9zGLiatxK/O6vIgcs4KSQhd+r9MN9TRgWiwqb/GrC3VAk40AKGl1?=
- =?us-ascii?Q?al5QyBYExpLLOxtytukZY7pI4vQ5XyAJ2Oyl7Hj/9GwZOs5wfnBjs+u3oggW?=
- =?us-ascii?Q?qQx87wGJSg1ec3uOEecvZzFVyxUpRrCKnyRF8od19XAlVVhnSsV0kNXuMF9E?=
- =?us-ascii?Q?9e2WiLIL4aqCBRl+CpAVkfjkrOWJI7vtYJq0A+z3aGekIcprhQC9ghJg+2Wp?=
- =?us-ascii?Q?l7NDAxAAdqe2hnlZdwSeYOGp6lR6o1NwdgAsraStnSTbF+YXGwWaMKgf1deE?=
- =?us-ascii?Q?Bbkc7fVQQJABZ19sIV972l2yn7bcriFPbaVHU6hN79hdjcsXdZY4oNe+Pmcx?=
- =?us-ascii?Q?VjfezLC5jUKJ8N3tVS7ayuoghJPzMCWRzvHrK2BzPJibkhLydxUvVxAQ8sbO?=
- =?us-ascii?Q?IM/ruMKkQHsGNyGuz4UmjUrEPw/+YTELp0nvKl7tTW3v8GyMJLJpewc5pQwk?=
- =?us-ascii?Q?pm2aB90gWLzZMLAud4ER6xdxMXys9f6hLU1/AToc9aTVObQmyuklWzDhz643?=
- =?us-ascii?Q?Bf/89GPqgHYe5P4GQqhMS9P507tqUSNyDFtYSryFeRN5ZylPFE4C4FdkUVof?=
- =?us-ascii?Q?3xQcLhH6iubx19L4lBH/ev7OidajgmQlstMoesEnUs7z1jHemZmB7tEq4tmo?=
- =?us-ascii?Q?k3LEXgBhvBy9/zBW0+Oed2H+EVKGkJAU9mQ4B978RKkugeQFpWgLW9prP8c6?=
- =?us-ascii?Q?mHLRXzvTbud0cG/jr3XKpGyMGH4LmAufDLRJhWnb0wCYPB8Q6lXHzAa98odG?=
- =?us-ascii?Q?g/tUJfmDhBI6uVGpUWo17zg2Knr6UIyQeFw5uuROC19kqB8p2epJ7R44+0vf?=
- =?us-ascii?Q?f4tp2nFjYI3Cl5q0YPRXzUA8v+Mx1aItIbcsLBf0fjODwqOsOBs/dKSmDZNw?=
- =?us-ascii?Q?dSxqPjboFABbhB/2qk53yMYXD2ouxamtDuMWGLM7TbIDw+tQ7/awp/qFZByI?=
- =?us-ascii?Q?KHvKC0PIBSH/SWiaMZyPjsMCC8k4XDz/bRpe96ST+Oh6milIZ+320ZT7iJRB?=
- =?us-ascii?Q?5CWQtKxjOzTpwkzWMP5IltFm4WnuxvEUKmd6jDjoTKTs8ykdv/86YVtgRFef?=
- =?us-ascii?Q?V0EKQRJzQqWzERE4B/WmA7Vi8rqiWg67bJeH08IwBhU7KMytZpL4XpVstbQG?=
- =?us-ascii?Q?Dtlw5Pb1UQ7f61uclFh/uZjIy49KJNgjEpnAy6bmMjI3xpjg8PGvs+IFUtNd?=
- =?us-ascii?Q?SNWx9MW66oMAjp25aMcpbtdnaRQcvWeXpc0DcUgEyxvwBqMgxgtbPFGSIgm8?=
- =?us-ascii?Q?HQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 749dd24e-4d2b-4ba5-253b-08dd72e2a636
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2025 19:06:33.5426
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RTork+Cho8eoE93o577xSmhGniHs12PBPMmP69Tb2SSaHM9yg8mVzgFg1Y4yw+FVHjt37Z7qlklPnlg/JoW/yE7IQczg8I+ArPXYIGCxzjY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB5265
-X-OriginatorOrg: intel.com
+References: <20250403100943.120738-1-sgarzare@redhat.com> <20250403100943.120738-4-sgarzare@redhat.com>
+In-Reply-To: <20250403100943.120738-4-sgarzare@redhat.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Fri, 4 Apr 2025 10:31:46 -0700
+X-Gm-Features: ATxdqUHPtDIrRTyTH9FKonOAsFXCoiLuJzoCznyGYLEznBNeztNYqKCarK8ZvPQ
+Message-ID: <CAAH4kHYcRm1TpcgbtryJAtc6sjeh3hXzW7ApXY4WhcfZ3HEpVw@mail.gmail.com>
+Subject: Re: [PATCH v6 3/4] tpm: add SNP SVSM vTPM driver
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, "H. Peter Anvin" <hpa@zytor.com>, 
+	linux-coco@lists.linux.dev, linux-integrity@vger.kernel.org, 
+	Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>, x86@kernel.org, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Joerg Roedel <jroedel@suse.de>, 
+	Claudio Carvalho <cclaudio@linux.ibm.com>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, linux-kernel@vger.kernel.org, 
+	Dov Murik <dovmurik@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Naveen N Rao (AMD) wrote:
-> Commit 9704c07bf9f7 ("x86/kernel: Validate ROM memory before accessing
-> when SEV-SNP is active") added code to validate the ROM region from
-> 0xc0000 to 0xfffff in a SEV-SNP guest since that region can be accessed
-> during kernel boot. That address range is not part of the system RAM, so
-> it needed to be validated separately.
-> 
-> Commit 0f4a1e80989a ("x86/sev: Skip ROM range scans and validation for
-> SEV-SNP guests") reverted those changes and instead chose to prevent the
-> guest from accessing the ROM region since SEV-SNP guests did not rely on
-> data from that region. However, while the kernel itself no longer
-> accessed the ROM region, there are userspace programs that probe this
-> region through /dev/mem and they started crashing due to this change. In
-> particular, fwupd (up until versions released last year that no longer
-> link against libsmbios) and smbios utilities such as smbios-sys-info
-> crash with a cryptic message in dmesg:
->   Wrong/unhandled opcode bytes: 0x8b, exit_code: 0x404, rIP: 0x7fe5404d3840
->   SEV: Unsupported exit-code 0x404 in #VC exception (IP: 0x7fe5404d3840)
-> 
-> Deny access to the BIOS region (rather than just the video ROM range)
-> via /dev/mem to address this. Restrict changes to CONFIG_STRICT_DEVMEM=y
-> which is enabled by default on x86. Add a new x86_platform_ops callback
-> so Intel can customize the address range to block.
-> 
-> Fixes: 0f4a1e80989a ("x86/sev: Skip ROM range scans and validation for SEV-SNP guests")
-> Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
+On Thu, Apr 3, 2025 at 3:10=E2=80=AFAM Stefano Garzarella <sgarzare@redhat.=
+com> wrote:
+>
+> From: Stefano Garzarella <sgarzare@redhat.com>
+>
+> Add driver for the vTPM defined by the AMD SVSM spec [1].
+>
+> The specification defines a protocol that a SEV-SNP guest OS can use to
+> discover and talk to a vTPM emulated by the Secure VM Service Module (SVS=
+M)
+> in the guest context, but at a more privileged level (VMPL0).
+>
+> The new tpm-svsm platform driver uses two functions exposed by x86/sev
+> to verify that the device is actually emulated by the platform and to
+> send commands and receive responses.
+>
+> The device cannot be hot-plugged/unplugged as it is emulated by the
+> platform, so we can use module_platform_driver_probe(). The probe
+> function will only check whether in the current runtime configuration,
+> SVSM is present and provides a vTPM.
+>
+> This device does not support interrupts and sends responses to commands
+> synchronously. In order to have .recv() called just after .send() in
+> tpm_try_transmit(), the .status() callback returns 0, and both
+> .req_complete_mask and .req_complete_val are set to 0.
+>
+> [1] "Secure VM Service Module for SEV-SNP Guests"
+>     Publication # 58019 Revision: 1.00
+>
+> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 > ---
->  arch/x86/coco/sev/core.c        | 13 +++++++++++++
->  arch/x86/include/asm/sev.h      |  2 ++
->  arch/x86/include/asm/x86_init.h |  2 ++
->  arch/x86/kernel/x86_init.c      |  2 ++
->  arch/x86/mm/init.c              |  3 +++
->  arch/x86/mm/mem_encrypt_amd.c   |  1 +
->  6 files changed, 23 insertions(+)
-> 
-> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-> index b0c1a7a57497..4e10701536d4 100644
-> --- a/arch/x86/coco/sev/core.c
-> +++ b/arch/x86/coco/sev/core.c
-> @@ -43,6 +43,7 @@
->  #include <asm/apic.h>
->  #include <asm/cpuid.h>
->  #include <asm/cmdline.h>
-> +#include <asm/e820/types.h>
->  
->  #define DR7_RESET_VALUE        0x400
->  
-> @@ -761,6 +762,18 @@ static u64 __init get_jump_table_addr(void)
->  	return ret;
->  }
->  
-> +bool sev_snp_pfn_access_allowed(unsigned long pfn)
-> +{
-> +	/*
-> +	 * Reject access to BIOS address range (0xa0000 to 0x100000) for SEV-SNP guests
-> +	 * as that address range is not validated, so access can cause #VC exception
-> +	 */
-> +	if (pfn << PAGE_SHIFT >= BIOS_BEGIN && pfn << PAGE_SHIFT < BIOS_END)
-> +		return 0;
+> v6:
+> - removed the `locality` field (set to 0) and the FIXME comment [Jarkko]
+> v5:
+> - removed cancel/status/req_* ops after rebase on master that cotains
+>   commit 980a573621ea ("tpm: Make chip->{status,cancel,req_canceled} opt"=
+)
+> v4:
+> - moved "asm" includes after the "linux" includes [Tom]
+> - allocated buffer separately [Tom/Jarkko/Jason]
+> v3:
+> - removed send_recv() ops and followed the ftpm driver implementing .stat=
+us,
+>   .req_complete_mask, .req_complete_val, etc. [Jarkko]
+> - removed link to the spec because those URLs are unstable [Borislav]
+> ---
+>  drivers/char/tpm/tpm_svsm.c | 128 ++++++++++++++++++++++++++++++++++++
+>  drivers/char/tpm/Kconfig    |  10 +++
+>  drivers/char/tpm/Makefile   |   1 +
+>  3 files changed, 139 insertions(+)
+>  create mode 100644 drivers/char/tpm/tpm_svsm.c
+>
+> diff --git a/drivers/char/tpm/tpm_svsm.c b/drivers/char/tpm/tpm_svsm.c
+> new file mode 100644
+> index 000000000000..b9242c9eab87
+> --- /dev/null
+> +++ b/drivers/char/tpm/tpm_svsm.c
+> @@ -0,0 +1,128 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (C) 2025 Red Hat, Inc. All Rights Reserved.
+> + *
+> + * Driver for the vTPM defined by the AMD SVSM spec [1].
+> + *
+> + * The specification defines a protocol that a SEV-SNP guest OS can use =
+to
+> + * discover and talk to a vTPM emulated by the Secure VM Service Module =
+(SVSM)
+> + * in the guest context, but at a more privileged level (usually VMPL0).
+> + *
+> + * [1] "Secure VM Service Module for SEV-SNP Guests"
+> + *     Publication # 58019 Revision: 1.00
+> + */
 > +
-> +	return 1;
+> +#include <linux/module.h>
+> +#include <linux/kernel.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/tpm_svsm.h>
+> +
+> +#include <asm/sev.h>
+> +
+> +#include "tpm.h"
+> +
+> +struct tpm_svsm_priv {
+> +       void *buffer;
+> +};
+> +
+> +static int tpm_svsm_send(struct tpm_chip *chip, u8 *buf, size_t len)
+> +{
+> +       struct tpm_svsm_priv *priv =3D dev_get_drvdata(&chip->dev);
+> +       int ret;
+> +
+> +       ret =3D svsm_vtpm_cmd_request_fill(priv->buffer, 0, buf, len);
+> +       if (ret)
+> +               return ret;
+> +
+> +       /*
+> +        * The SVSM call uses the same buffer for the command and for the
+> +        * response, so after this call, the buffer will contain the resp=
+onse
+> +        * that can be used by .recv() op.
+> +        */
+> +       return snp_svsm_vtpm_send_command(priv->buffer);
 > +}
 > +
->  static void __head
->  early_set_pages_state(unsigned long vaddr, unsigned long paddr,
->  		      unsigned long npages, enum psc_op op)
-> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-> index ba7999f66abe..721498c0a055 100644
-> --- a/arch/x86/include/asm/sev.h
-> +++ b/arch/x86/include/asm/sev.h
-> @@ -454,6 +454,7 @@ static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate)
->  struct snp_guest_request_ioctl;
->  
->  void setup_ghcb(void);
-> +bool sev_snp_pfn_access_allowed(unsigned long pfn);
->  void early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr,
->  				  unsigned long npages);
->  void early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr,
-> @@ -496,6 +497,7 @@ static inline void sev_enable(struct boot_params *bp) { }
->  static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate) { return 0; }
->  static inline int rmpadjust(unsigned long vaddr, bool rmp_psize, unsigned long attrs) { return 0; }
->  static inline void setup_ghcb(void) { }
-> +static inline bool sev_snp_pfn_access_allowed(unsigned long pfn) { return true; }
->  static inline void __init
->  early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr, unsigned long npages) { }
->  static inline void __init
-> diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
-> index 36698cc9fb44..d559587dee48 100644
-> --- a/arch/x86/include/asm/x86_init.h
-> +++ b/arch/x86/include/asm/x86_init.h
-> @@ -307,6 +307,7 @@ struct x86_hyper_runtime {
->   * @realmode_reserve:		reserve memory for realmode trampoline
->   * @realmode_init:		initialize realmode trampoline
->   * @hyper:			x86 hypervisor specific runtime callbacks
-> + * @pfn_access_allowed:		filter accesses to pages
->   */
->  struct x86_platform_ops {
->  	unsigned long (*calibrate_cpu)(void);
-> @@ -324,6 +325,7 @@ struct x86_platform_ops {
->  	void (*set_legacy_features)(void);
->  	void (*realmode_reserve)(void);
->  	void (*realmode_init)(void);
-> +	bool (*pfn_access_allowed)(unsigned long pfn);
->  	struct x86_hyper_runtime hyper;
->  	struct x86_guest guest;
->  };
-> diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
-> index 0a2bbd674a6d..3679a92a3881 100644
-> --- a/arch/x86/kernel/x86_init.c
-> +++ b/arch/x86/kernel/x86_init.c
-> @@ -142,6 +142,7 @@ static bool enc_cache_flush_required_noop(void) { return false; }
->  static void enc_kexec_begin_noop(void) {}
->  static void enc_kexec_finish_noop(void) {}
->  static bool is_private_mmio_noop(u64 addr) {return false; }
-> +static bool pfn_access_allowed_noop(unsigned long pfn) { return true; }
->  
->  struct x86_platform_ops x86_platform __ro_after_init = {
->  	.calibrate_cpu			= native_calibrate_cpu_early,
-> @@ -156,6 +157,7 @@ struct x86_platform_ops x86_platform __ro_after_init = {
->  	.restore_sched_clock_state	= tsc_restore_sched_clock_state,
->  	.realmode_reserve		= reserve_real_mode,
->  	.realmode_init			= init_real_mode,
-> +	.pfn_access_allowed		= pfn_access_allowed_noop,
+> +static int tpm_svsm_recv(struct tpm_chip *chip, u8 *buf, size_t len)
+> +{
+> +       struct tpm_svsm_priv *priv =3D dev_get_drvdata(&chip->dev);
+> +
+> +       /*
+> +        * The internal buffer contains the response after we send the co=
+mmand
+> +        * to SVSM.
+> +        */
+> +       return svsm_vtpm_cmd_response_parse(priv->buffer, buf, len);
+> +}
+> +
+> +static struct tpm_class_ops tpm_chip_ops =3D {
+> +       .flags =3D TPM_OPS_AUTO_STARTUP,
+> +       .recv =3D tpm_svsm_recv,
+> +       .send =3D tpm_svsm_send,
+> +};
+> +
+> +static int __init tpm_svsm_probe(struct platform_device *pdev)
+> +{
+> +       struct device *dev =3D &pdev->dev;
+> +       struct tpm_svsm_priv *priv;
+> +       struct tpm_chip *chip;
+> +       int err;
+> +
+> +       if (!snp_svsm_vtpm_probe())
+> +               return -ENODEV;
+> +
+> +       priv =3D devm_kmalloc(dev, sizeof(*priv), GFP_KERNEL);
+> +       if (!priv)
+> +               return -ENOMEM;
+> +
+> +       /*
+> +        * The maximum buffer supported is one page (see SVSM_VTPM_MAX_BU=
+FFER
+> +        * in tpm_svsm.h).
+> +        */
+> +       priv->buffer =3D (void *)devm_get_free_pages(dev, GFP_KERNEL, 0);
+> +       if (!priv->buffer)
+> +               return -ENOMEM;
+> +
+> +       chip =3D tpmm_chip_alloc(dev, &tpm_chip_ops);
+> +       if (IS_ERR(chip))
+> +               return PTR_ERR(chip);
+> +
+> +       dev_set_drvdata(&chip->dev, priv);
+> +
+> +       err =3D tpm2_probe(chip);
 
-Is there any driving need to allow devmem at all for TVM access at this
-point?
+Our testing is showing that tpm2_probe is hitting a null pointer deref
+in tpm_transmit.
 
-I would be in favor of making this clearly tied to devmem, call it
-".devmem_is_allowed" for symmetry with the mm/init.c helper, and make
-the default implementation be:
 
-static bool platform_devmem_is_allowed(unsigned long pfn)
-{
-	return !cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT));
-}
+> +       if (err)
+> +               return err;
+> +
+> +       err =3D tpm_chip_register(chip);
+> +       if (err)
+> +               return err;
+> +
+> +       dev_info(dev, "SNP SVSM vTPM %s device\n",
+> +                (chip->flags & TPM_CHIP_FLAG_TPM2) ? "2.0" : "1.2");
+> +
+> +       return 0;
+> +}
+> +
+> +static void __exit tpm_svsm_remove(struct platform_device *pdev)
+> +{
+> +       struct tpm_chip *chip =3D platform_get_drvdata(pdev);
+> +
+> +       tpm_chip_unregister(chip);
+> +}
+> +
+> +/*
+> + * tpm_svsm_remove() lives in .exit.text. For drivers registered via
+> + * module_platform_driver_probe() this is ok because they cannot get unb=
+ound
+> + * at runtime. So mark the driver struct with __refdata to prevent modpo=
+st
+> + * triggering a section mismatch warning.
+> + */
+> +static struct platform_driver tpm_svsm_driver __refdata =3D {
+> +       .remove =3D __exit_p(tpm_svsm_remove),
+> +       .driver =3D {
+> +               .name =3D "tpm-svsm",
+> +       },
+> +};
+> +
+> +module_platform_driver_probe(tpm_svsm_driver, tpm_svsm_probe);
+> +
+> +MODULE_DESCRIPTION("SNP SVSM vTPM Driver");
+> +MODULE_LICENSE("GPL");
+> +MODULE_ALIAS("platform:tpm-svsm");
+> diff --git a/drivers/char/tpm/Kconfig b/drivers/char/tpm/Kconfig
+> index fe4f3a609934..dddd702b2454 100644
+> --- a/drivers/char/tpm/Kconfig
+> +++ b/drivers/char/tpm/Kconfig
+> @@ -234,5 +234,15 @@ config TCG_FTPM_TEE
+>         help
+>           This driver proxies for firmware TPM running in TEE.
+>
+> +config TCG_SVSM
+> +       tristate "SNP SVSM vTPM interface"
+> +       depends on AMD_MEM_ENCRYPT
+> +       help
+> +         This is a driver for the AMD SVSM vTPM protocol that a SEV-SNP =
+guest
+> +         OS can use to discover and talk to a vTPM emulated by the Secur=
+e VM
+> +         Service Module (SVSM) in the guest context, but at a more privi=
+leged
+> +         level (usually VMPL0).  To compile this driver as a module, cho=
+ose M
+> +         here; the module will be called tpm_svsm.
+> +
+>  source "drivers/char/tpm/st33zp24/Kconfig"
+>  endif # TCG_TPM
+> diff --git a/drivers/char/tpm/Makefile b/drivers/char/tpm/Makefile
+> index 2b004df8c04b..9de1b3ea34a9 100644
+> --- a/drivers/char/tpm/Makefile
+> +++ b/drivers/char/tpm/Makefile
+> @@ -45,3 +45,4 @@ obj-$(CONFIG_TCG_CRB) +=3D tpm_crb.o
+>  obj-$(CONFIG_TCG_ARM_CRB_FFA) +=3D tpm_crb_ffa.o
+>  obj-$(CONFIG_TCG_VTPM_PROXY) +=3D tpm_vtpm_proxy.o
+>  obj-$(CONFIG_TCG_FTPM_TEE) +=3D tpm_ftpm_tee.o
+> +obj-$(CONFIG_TCG_SVSM) +=3D tpm_svsm.o
+> --
+> 2.49.0
+>
 
-...if a TVM technology wants more leniency, it can override.
+
+--
+-Dionna Glaze, PhD, CISSP, CCSP (she/her)
