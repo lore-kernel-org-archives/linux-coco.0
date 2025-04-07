@@ -1,114 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2EFE254877;
-	Mon,  7 Apr 2025 13:16:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A61149C51
+	for <linux-coco@lists.linux.dev>; Mon,  7 Apr 2025 13:47:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744031761; cv=none; b=O2nNKASuTfG7T8hn1g1O20Ox+xPeqCN4FOGytC3v6kmufq3yTuTAivEEZBxupVOdAz1qsaru4/TIgAyROjuWBrlZ9rXeotFJibGvdePw1VzwPaIsukHgxOnm7Ku3n6Ny7JzMpHZ23Wy/HoEGtNhKKoJMR1ackNEaIIUN1cf13DA=
+	t=1744033636; cv=none; b=bebe8c8L/vWScoL8IJzr9UvmKIU6362ZfZb1491JaUotYb5nR7VN8mpGA2pCTjdCFXcsnc7znXBEZgXBhZHvRUwRrfRBQfndkGbX2wVxFE71W1yVeB7bB97XWf5SmvoqXhgqnlttSd3bk8whUp4loILy4klTFPiXyhTXl6mEYVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744031761; c=relaxed/simple;
-	bh=SJvaVxeGjrrd7lgKd48IanGgrp61arG5wckYR92s2uI=;
+	s=arc-20240116; t=1744033636; c=relaxed/simple;
+	bh=vNWTMdv+jOoNEEp8FYoMLcDNadO7j1Y3ZibXpl+7a4g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JjmlBWBSxGBi0ALg1UG8P4MHcxW+kvLS2Pd1FNC3x83MAgOuA+T0OlialZ5ofcdAUz15Y57ZhsS/bRQikHoZYes6b2LMM6TyUoUupp/pzgX/Gpe3eGb7PHqElUTYqEZfmaHa+8LpSHtwJmsTcLGDw/k/E5tFkFQejRUV4tZDvAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=haYs3vFf; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=mP07zacgc+jx0cIxjUkHjA8ZvZXddDzGSTLpKe2ftkr7cc93U80xutVZabOgSygtNJ5ytd0qiCtW9Vf/m3YeZkPHcIHn/MKs57JhT3/j9mTZDulMObp2yFEKhUCFWFec1jARWZ07Uzdlq9nwzR9MhGOhA/WMHdVCXu+pji+s1rM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=UPPvKkJH; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="haYs3vFf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E87C4CEE7;
-	Mon,  7 Apr 2025 13:15:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744031761;
-	bh=SJvaVxeGjrrd7lgKd48IanGgrp61arG5wckYR92s2uI=;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="UPPvKkJH"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7FE1140E0214;
+	Mon,  7 Apr 2025 13:47:11 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id W35ScQmYY_sJ; Mon,  7 Apr 2025 13:47:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1744033628; bh=C+DuWs1QJWCyb+Jz2U+p7g01q+x5MgKJ0a73l6qpKdQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=haYs3vFftxXXrMnEVOADmuhZyBoS3RDG027UqLwCVnAWZbmGwCkTI5dLipt0U3HYU
-	 7hQISuV29FlK/P9psrfnd4eI+sZ/JiGKu/9bmlx+i5AbZJGueEWWGM/gwV4CYw79Ox
-	 5L2ozHgPAgfNp9kgNUo3X18mpYAlKgp0qCDXNNMjUiq8u7nz8PLiQkJxu1LqlpVm0z
-	 eFGQli6VYhPkT3krOEyHx9s5W/At3aoiHyCHPqgR+NmMroDDBvSdGpIiHpc7CrerN2
-	 ecm01CVF16kym/uxcPzdECGFHoAQ+fa+geR/MRt4efNtbGKciOKxVi72zulI0m081I
-	 q9MW3byo4tpsQ==
-Date: Mon, 7 Apr 2025 18:43:54 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, 
-	linux-coco@lists.linux.dev, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Borislav Petkov <bp@alien8.de>, Vishal Annapurve <vannapurve@google.com>, 
-	Kirill Shutemov <kirill.shutemov@linux.intel.com>, Nikolay Borisov <nik.borisov@suse.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Kevin Loughlin <kevinloughlin@google.com>
-Subject: Re: [RFC PATCH] x86/sev: Disallow userspace access to BIOS region
- for SEV-SNP guests
-Message-ID: <l34f6nqq3up23cvrgmebbufztqkvfil5eahecukw5bnqekccpj@6nbciquhwxxc>
-References: <20250403120228.2344377-1-naveen@kernel.org>
- <67eedc35be77d_464ec29462@dwillia2-xfh.jf.intel.com.notmuch>
+	b=UPPvKkJHieclp2Wt2o8CsohsLi3oXKOkbYBOMOVZy2+2Emp0LA4cwUhQoXZWyQfnw
+	 Eut9e3ssiA4hn94EdNU/GTsJnc7IrjZcG5bJlf+shsvMScRocDQ7/rPjVLMb8rok5m
+	 2UbOaq/Kt2pt5W/BPkeEvGA9KZNhYyo8SQb9vBA8czHS7cv806Ofv5m2CZR7V8BWJ0
+	 8fYPdV9mZ74FrJQFWsQY0Aiw7Lmzyou2ACMhtHiy0Q9ajJOTvUvkZiZAhbXr7AM8/O
+	 dw6GfjdH4M0nZJR35pfv3F0C+R7jf7P84EUemW0apmj2J7DXbFgcca1rLjCxcqLeDr
+	 jM3ZsKXxYaBMgDtB1VTibFZKd234cmDpAybbLFBsbEBnUpjB1A72rIJ6N1UsBRfgdB
+	 Q7IQzP7HiuFwhTs3gsxjLlS94itJ8D0y9SMJ5OiM4FAQihU4JLNQEpkzLrC1el3K8A
+	 wU3TxSj3OCJN1lFCdR+a8TFPGbOYoosqkn4OwEn7GiHeHWtB0Ig9s/ac1i9Smmkqe5
+	 ihhUiRUoEch+K9UgDXopkStgG+vFQwZ0rxqYG18W9yEQX/rkkMyjJGWRFpOycNlr+f
+	 FK4JLIsQKZ1jU4G1VSvLvRV5GCeMwO6H9DHrbPLjT1uE0zE/G0sel+BTsiEL1GQ7i0
+	 Xkve7DdzMvtEYcCCG1toS5fc=
+Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 138D640E019F;
+	Mon,  7 Apr 2025 13:46:50 +0000 (UTC)
+Date: Mon, 7 Apr 2025 15:46:43 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Stefano Garzarella <sgarzare@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+	"H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev,
+	linux-integrity@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+	x86@kernel.org, Tom Lendacky <thomas.lendacky@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Dionna Glaze <dionnaglaze@google.com>,
+	Claudio Carvalho <cclaudio@linux.ibm.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	linux-kernel@vger.kernel.org, Dov Murik <dovmurik@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v6 0/4] Enlightened vTPM support for SVSM on SEV-SNP
+Message-ID: <20250407134643.GDZ_PXQ0OlzcMjiGgp@fat_crate.local>
+References: <20250403100943.120738-1-sgarzare@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <67eedc35be77d_464ec29462@dwillia2-xfh.jf.intel.com.notmuch>
+In-Reply-To: <20250403100943.120738-1-sgarzare@redhat.com>
 
-On Thu, Apr 03, 2025 at 12:06:29PM -0700, Dan Williams wrote:
-> Naveen N Rao (AMD) wrote:
-> > Commit 9704c07bf9f7 ("x86/kernel: Validate ROM memory before accessing
-> > when SEV-SNP is active") added code to validate the ROM region from
-> > 0xc0000 to 0xfffff in a SEV-SNP guest since that region can be accessed
-> > during kernel boot. That address range is not part of the system RAM, so
-> > it needed to be validated separately.
-> > 
-> > Commit 0f4a1e80989a ("x86/sev: Skip ROM range scans and validation for
-> > SEV-SNP guests") reverted those changes and instead chose to prevent the
-> > guest from accessing the ROM region since SEV-SNP guests did not rely on
-> > data from that region. However, while the kernel itself no longer
-> > accessed the ROM region, there are userspace programs that probe this
-> > region through /dev/mem and they started crashing due to this change. In
-> > particular, fwupd (up until versions released last year that no longer
-> > link against libsmbios) and smbios utilities such as smbios-sys-info
-> > crash with a cryptic message in dmesg:
-> >   Wrong/unhandled opcode bytes: 0x8b, exit_code: 0x404, rIP: 0x7fe5404d3840
-> >   SEV: Unsupported exit-code 0x404 in #VC exception (IP: 0x7fe5404d3840)
-> > 
-> > Deny access to the BIOS region (rather than just the video ROM range)
-> > via /dev/mem to address this. Restrict changes to CONFIG_STRICT_DEVMEM=y
-> > which is enabled by default on x86. Add a new x86_platform_ops callback
-> > so Intel can customize the address range to block.
-> > 
-> > Fixes: 0f4a1e80989a ("x86/sev: Skip ROM range scans and validation for SEV-SNP guests")
-> > Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
-> > ---
-> >  arch/x86/coco/sev/core.c        | 13 +++++++++++++
-> >  arch/x86/include/asm/sev.h      |  2 ++
-> >  arch/x86/include/asm/x86_init.h |  2 ++
-> >  arch/x86/kernel/x86_init.c      |  2 ++
-> >  arch/x86/mm/init.c              |  3 +++
-> >  arch/x86/mm/mem_encrypt_amd.c   |  1 +
-> >  6 files changed, 23 insertions(+)
-> > 
-<snip>
+On Thu, Apr 03, 2025 at 12:09:38PM +0200, Stefano Garzarella wrote:
+> Stefano Garzarella (4):
+>   x86/sev: add SVSM vTPM probe/send_command functions
+>   svsm: add header with SVSM_VTPM_CMD helpers
+>   tpm: add SNP SVSM vTPM driver
+>   x86/sev: register tpm-svsm platform device
 > 
-> Is there any driving need to allow devmem at all for TVM access at this
-> point?
-> 
-> I would be in favor of making this clearly tied to devmem, call it
-> ".devmem_is_allowed" for symmetry with the mm/init.c helper, and make
-> the default implementation be:
-> 
-> static bool platform_devmem_is_allowed(unsigned long pfn)
-> {
-> 	return !cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT));
-> }
-> 
-> ...if a TVM technology wants more leniency, it can override.
+>  arch/x86/include/asm/sev.h  |   9 +++
+>  include/linux/tpm_svsm.h    | 149 ++++++++++++++++++++++++++++++++++++
+>  arch/x86/coco/sev/core.c    |  67 ++++++++++++++++
+>  drivers/char/tpm/tpm_svsm.c | 128 +++++++++++++++++++++++++++++++
+>  drivers/char/tpm/Kconfig    |  10 +++
+>  drivers/char/tpm/Makefile   |   1 +
+>  6 files changed, 364 insertions(+)
+>  create mode 100644 include/linux/tpm_svsm.h
+>  create mode 100644 drivers/char/tpm/tpm_svsm.c
 
-I'm not fully aware of the history here, but I suppose a TVM should 
-appear as any other VM for userspace. For that reason, I didn't want to 
-block access to /dev/mem any more than was necessary. Admittedly, I have 
-limited insight into which utilities may be using /dev/mem today.
+Jarrko,
 
-Tom/Boris, do you see a problem blocking access to /dev/mem for SEV 
-guests?
+should I take the whole bunch through the tip tree?
 
+No point in splitting between two trees...
 
-- Naveen
+Thx.
 
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
