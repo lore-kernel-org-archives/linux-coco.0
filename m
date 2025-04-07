@@ -1,157 +1,152 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3070620C46C;
-	Mon,  7 Apr 2025 16:35:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6CB20E039
+	for <linux-coco@lists.linux.dev>; Mon,  7 Apr 2025 16:40:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744043724; cv=none; b=NZJ2Vy73Xgfg4TlkcHdRLOYqq5ciU8K5n1nac5/ONfM1csDc81Rrr3OKq9+oyyg79seiP3D0YoNNYNxECGvqPHojejSKTiNpj9Dl6e/k40du2nRMUGSYzLUBu8WGDPrpEsHcEAQOUd4bgjKw67ZMYHGX0ARPxPhc9F30i5HmHHg=
+	t=1744044013; cv=none; b=WmAu2Y7707ra/OH5ZPPn9LnLJAuj1TDji/9nBrgcGU8y9NhKx3BGsturb/Vs6iEn/Zl2zY/yUymbanglDYjmo/Thquk4GYUph3+/7NZORGADC0Nvyh/CP8oa+B/x16SnTrSQdqTqCyx1YPLBtEwetOQ32aZiTvJKcUrYWWbsEWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744043724; c=relaxed/simple;
-	bh=LNnD2bDITRNhLIrHQbKqo/V3F9P9CZyDllsCX405OgA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D5V4gx0UFqgDnLTREyucdqNjRER1VzH37bHQFpDMdHurWO4qJSD/rO6+9TETh+lGk6t871Zx8ZGveqA4jNse1jx+yTv725ugIFHVfPzusM9Bs4uXB4BNRVwGc76LrWyFJf31PeekpEGTmUK/XrJsNo6p0FOBOTCucXIU4p/glMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A6174106F;
-	Mon,  7 Apr 2025 09:35:23 -0700 (PDT)
-Received: from [10.57.17.31] (unknown [10.57.17.31])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4D9893F694;
-	Mon,  7 Apr 2025 09:35:18 -0700 (PDT)
-Message-ID: <adbca476-7d0f-473d-a2a2-0a29a497dbca@arm.com>
-Date: Mon, 7 Apr 2025 17:35:16 +0100
+	s=arc-20240116; t=1744044013; c=relaxed/simple;
+	bh=xekbj8Um5XwrEOGdzENZPa2iQeQhDeMvkZT0NVb5BK4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EFQZveSpZQSa3lo2GNFCanl9OYxBIxYo/HRmvFpmat4DxTy+HC0FD69j/1oRB70JL5Mm7suPPh2Jak3jIuDbGy4NLeeAcq9VJs4W5VR+RxOZizMFtc8WOBvXAGCwtgeJ3Q9WOcqgZdKPik8wCMhqmbnUXZ6Eni87Xb5/00B02FU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Ypj7rpBV; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Ypj7rpBV"
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7c54f67db99so541727685a.1
+        for <linux-coco@lists.linux.dev>; Mon, 07 Apr 2025 09:40:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1744044011; x=1744648811; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KVaiHAMacLy0yHf6meYzZ4WkOGggIQHdshTAyck4dh4=;
+        b=Ypj7rpBVysPz5D0/qyygYpHhL6/JhVcLMka0qhmOPmui2HhhnEWmKdHWA7ArQiNv8P
+         JAGnsvG1lDjPKMbopie7s5y8nMdGDq5NG6InZxAPBHmeTazZYDJluj9VTrjZeMm10LYh
+         Tr7NhS+kJO6xQuAY/igAmS+eiRDIbzEqHcGpRE7lKCWk2JiEXQ91RLRn3HXkMQlLF5TZ
+         zpVTZP1WkOOH5tzosls2A0wtsFVZur/vPYM/NEcQvb/04NwTHF/wAShmYHb9ChQLCp1X
+         qNlk7fUv70lPC1uCyRy5mdPn3ViDmAUW6tCte5DZXMvbBdQDfltPq9pIQFyqYPoppkjR
+         wJVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744044011; x=1744648811;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KVaiHAMacLy0yHf6meYzZ4WkOGggIQHdshTAyck4dh4=;
+        b=hk1MCD66x6Rsy/lFIB5UUGSlnNMkdZSPyuiMxrD9XNotnek/Eqskov5a2lcX10Uxw5
+         TyR01E/S54NRFuXBuT0Yzk5ilmA2tcM7r9kb48eGH73yesHtq4LvNcTH48fZVTMe8D4D
+         5zriKQXb5pHZOQVSiGAAj0zoWTtnn/9/ah4vQYlkbpufZaYwvnMdi963X1OJtRf6cyK3
+         JaIy7tj3W7a7as0kg0Rr16t5PnGMOyNy1hGUxD0MOd4+FkPmXv7bFfl9LYImWHsONfds
+         LKSGpq+PRlnl33sHzqiaT3Es6hRKv93TOVGYUuZkxs00Y1qJVgeObhjMYIW5bEaKdCxg
+         4bSg==
+X-Forwarded-Encrypted: i=1; AJvYcCVKEQB4DUBDimY4ivzc+Nj4XFU7ESqnYmHLfWDU6/km8Spw17g94qd1DNA7AD6uJd2Dyd1mSpMnkAew@lists.linux.dev
+X-Gm-Message-State: AOJu0YyRH7a534IPIiA9A+STpkxmTV3r3I/DVYHXfz6btsvoP/NwNHTE
+	hVUxk8SWPDR+orau7mTJoaH7HtXISYIDYvRIelVSLxLfrrlCODtmeFPd1XqUR1c=
+X-Gm-Gg: ASbGncvy6eB4tQmNHQRhZ18VZvuA8UAv3R9HbM8vpWN68bUNTbtv4UF4pQk6fI+uc00
+	AibYqcrqpJV0lV4JxdTOwu5QC9aG2GWSaVhRimRtavxSEvOLzCFaiMzCpsRfpJ2sNK+p5tLHIP5
+	RpaiD3j+naMmrdaoitWpvho059WVXpDINZQMeHygq0ULSGk5QY8zoaK26mtEIMust7WUW+xod6U
+	Hw7Ddhhzxiaw7+OaDS3S9ns9OYl0GBbHRRjP1MOjQMnohPSpgOLy8TfgWr8PASVF88tW5L9CX5t
+	nndtA9PqpAdUvNVfEfjDNv9QgIWfIN9zjcb191Uf4lG+t6HraTkoFSGIeBlgMFmp76ZFKviB9D2
+	4BZzJ6iUwJOoBO8X+RrobAvg=
+X-Google-Smtp-Source: AGHT+IEFf/klcawRT/DLAKNVY/s1kWSMw+u/XuSys5u9G30IOfriJNNXl5A9JC2j6VoZritBscM43A==
+X-Received: by 2002:a05:620a:25c8:b0:7c0:ad47:db3d with SMTP id af79cd13be357-7c7940ba2a0mr22422685a.21.1744044010744;
+        Mon, 07 Apr 2025 09:40:10 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-167-219-86.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.219.86])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c76e96e870sm618914485a.60.2025.04.07.09.40.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Apr 2025 09:40:10 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1u1pW5-00000007DRV-3Cjz;
+	Mon, 07 Apr 2025 13:40:09 -0300
+Date: Mon, 7 Apr 2025 13:40:09 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Alexey Kardashevskiy <aik@amd.com>, x86@kernel.org, kvm@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arch@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Christoph Hellwig <hch@lst.de>, Nikunj A Dadhania <nikunj@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Steve Sistare <steven.sistare@oracle.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Dionna Glaze <dionnaglaze@google.com>, Yi Liu <yi.l.liu@intel.com>,
+	iommu@lists.linux.dev, linux-coco@lists.linux.dev,
+	Zhi Wang <zhiw@nvidia.com>, AXu Yilun <yilun.xu@linux.intel.com>
+Subject: Re: [RFC PATCH v2 14/22] iommufd: Add TIO calls
+Message-ID: <20250407164009.GC1562048@ziepe.ca>
+References: <20250218111017.491719-1-aik@amd.com>
+ <20250218111017.491719-15-aik@amd.com>
+ <yq5av7rt7mix.fsf@kernel.org>
+ <20250401160340.GK186258@ziepe.ca>
+ <yq5a4iz019oy.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 35/45] arm64: RME: Propagate number of breakpoints and
- watchpoints to userspace
-To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-References: <20250213161426.102987-1-steven.price@arm.com>
- <20250213161426.102987-36-steven.price@arm.com>
- <c8af8a7f-5ee4-460b-aec4-959f688db628@redhat.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <c8af8a7f-5ee4-460b-aec4-959f688db628@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq5a4iz019oy.fsf@kernel.org>
 
-On 04/03/2025 23:45, Gavin Shan wrote:
-> On 2/14/25 2:14 AM, Steven Price wrote:
->> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
->>
->> The RMM describes the maximum number of BPs/WPs available to the guest
->> in the Feature Register 0. Propagate those numbers into ID_AA64DFR0_EL1,
->> which is visible to userspace. A VMM needs this information in order to
->> set up realm parameters.
->>
->> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->>   arch/arm64/include/asm/kvm_rme.h |  2 ++
->>   arch/arm64/kvm/rme.c             | 22 ++++++++++++++++++++++
->>   arch/arm64/kvm/sys_regs.c        |  2 +-
->>   3 files changed, 25 insertions(+), 1 deletion(-)
->>
+On Mon, Apr 07, 2025 at 05:10:29PM +0530, Aneesh Kumar K.V wrote:
+> I was trying to prototype this using kvmtool and I have run into some
+> issues. First i needed the below change for vIOMMU alloc to work
 > 
-> With the following one nitpick addressed:
-> 
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> 
->> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/
->> asm/kvm_rme.h
->> index d684b30493f5..67ee38541a82 100644
->> --- a/arch/arm64/include/asm/kvm_rme.h
->> +++ b/arch/arm64/include/asm/kvm_rme.h
->> @@ -85,6 +85,8 @@ void kvm_init_rme(void);
->>   u32 kvm_realm_ipa_limit(void);
->>   u32 kvm_realm_vgic_nr_lr(void);
->>   +u64 kvm_realm_reset_id_aa64dfr0_el1(const struct kvm_vcpu *vcpu,
->> u64 val);
->> +
->>   bool kvm_rme_supports_sve(void);
->>     int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap
->> *cap);
->> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
->> index f83f34358832..8c426f575728 100644
->> --- a/arch/arm64/kvm/rme.c
->> +++ b/arch/arm64/kvm/rme.c
->> @@ -87,6 +87,28 @@ u32 kvm_realm_vgic_nr_lr(void)
->>       return u64_get_bits(rmm_feat_reg0,
->> RMI_FEATURE_REGISTER_0_GICV3_NUM_LRS);
->>   }
->>   +u64 kvm_realm_reset_id_aa64dfr0_el1(const struct kvm_vcpu *vcpu,
->> u64 val)
->> +{
->> +    u32 bps = u64_get_bits(rmm_feat_reg0,
->> RMI_FEATURE_REGISTER_0_NUM_BPS);
->> +    u32 wps = u64_get_bits(rmm_feat_reg0,
->> RMI_FEATURE_REGISTER_0_NUM_WPS);
->> +    u32 ctx_cmps;
->> +
->> +    if (!kvm_is_realm(vcpu->kvm))
->> +        return val;
->> +
->> +    /* Ensure CTX_CMPs is still valid */
->> +    ctx_cmps = FIELD_GET(ID_AA64DFR0_EL1_CTX_CMPs, val);
->> +    ctx_cmps = min(bps, ctx_cmps);
->> +
->> +    val &= ~(ID_AA64DFR0_EL1_BRPs_MASK | ID_AA64DFR0_EL1_WRPs_MASK |
->> +         ID_AA64DFR0_EL1_CTX_CMPs);
->> +    val |= FIELD_PREP(ID_AA64DFR0_EL1_BRPs_MASK, bps) |
->> +           FIELD_PREP(ID_AA64DFR0_EL1_WRPs_MASK, wps) |
->> +           FIELD_PREP(ID_AA64DFR0_EL1_CTX_CMPs, ctx_cmps);
->> +
->> +    return val;
->> +}
->> +
-> 
-> The chunk of code can be squeezed to
-> sys_reg.c::sanitise_id_aa64dfr0_el1() since
-> sys_reg.c has been plumbed for realm, no reason to keep a separate
-> helper in rme.c
-> because it's only called by sys_reg.c::sanitise_id_aa64dfr0_el1()
+> modified   drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+> @@ -4405,6 +4405,8 @@ static int arm_smmu_device_hw_probe(struct arm_smmu_device *smmu)
+>  	reg = readl_relaxed(smmu->base + ARM_SMMU_IDR3);
+>  	if (FIELD_GET(IDR3_RIL, reg))
+>  		smmu->features |= ARM_SMMU_FEAT_RANGE_INV;
+> +	if (FIELD_GET(IDR3_FWB, reg))
+> +		smmu->features |= ARM_SMMU_FEAT_S2FWB;
+>  
+>  	/* IDR5 */
+>  	reg = readl_relaxed(smmu->base + ARM_SMMU_IDR5);
 
-The issue here is the rmm_feat_reg0 variable - it's currently static in
-rme.c - so I can't just shift the code over. I could obviously provide
-helpers to get the necessary information but this seemed cleaner.
+Oh wow, I don't know what happened there that the IDR3 got dropped
+maybe a rebase mistake? It was in earlier versions of the patch at
+least :\ Please send a formal patch!!
 
-Thanks,
-Steve
-
->>   static int get_start_level(struct realm *realm)
->>   {
->>       return 4 - ((realm->ia_bits - 8) / (RMM_PAGE_SHIFT - 3));
->> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
->> index ed881725eb64..5618eff33155 100644
->> --- a/arch/arm64/kvm/sys_regs.c
->> +++ b/arch/arm64/kvm/sys_regs.c
->> @@ -1820,7 +1820,7 @@ static u64 sanitise_id_aa64dfr0_el1(const struct
->> kvm_vcpu *vcpu, u64 val)
->>       /* Hide BRBE from guests */
->>       val &= ~ID_AA64DFR0_EL1_BRBE_MASK;
->>   -    return val;
->> +    return kvm_realm_reset_id_aa64dfr0_el1(vcpu, val);
->>   }
->>     static int set_id_aa64dfr0_el1(struct kvm_vcpu *vcpu,
+> Also current code don't allow a Stage 1 bypass, Stage2 translation when
+> allocating HWPT.
+>
+> arm_vsmmu_alloc_domain_nested -> arm_smmu_validate_vste -> 
 > 
-> Thanks,
-> Gavin
+> 	cfg = FIELD_GET(STRTAB_STE_0_CFG, le64_to_cpu(arg->ste[0]));
+> 	if (cfg != STRTAB_STE_0_CFG_ABORT && cfg != STRTAB_STE_0_CFG_BYPASS &&
+> 	    cfg != STRTAB_STE_0_CFG_S1_TRANS)
+> 		return -EIO;
 > 
+> This only allow a abort or bypass or stage1 translate/stage2 bypass config
 
+The above is for the vSTE, the cfg is not copied as is to the host
+STE. See how arm_smmu_make_nested_domain_ste() transforms it.
+
+STRTAB_STE_0_CFG_ABORT blocks all DMA
+STRTAB_STE_0_CFG_BYPASS "bypass" for the VM is S2 translation only
+STRTAB_STE_0_CFG_S1_TRANS "s1 only" for the VM is S1 & S1 translation
+
+> Also if we don't need stage1 table, what will
+> iommufd_viommu_alloc_hwpt_nested() return?
+
+A wrapper around whatever STE configuration that userspace requested
+logically linked to the viommu.
+
+Jason
