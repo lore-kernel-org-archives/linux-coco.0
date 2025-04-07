@@ -1,95 +1,164 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0AF267731;
-	Mon,  7 Apr 2025 18:14:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E360217F5D
+	for <linux-coco@lists.linux.dev>; Mon,  7 Apr 2025 18:59:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049690; cv=none; b=Y4sy3KhCXedJt6c8ot5tjKL0UUi+xCgVBdRGzS+/SJ4n5OR1XXXzPoTLJNlxs5c/UrXQ76HLq+zBkAdQZvda/RB9oxfjQssgw6gh5kamW3JxAru6EdQJRNL1DD9YvTEXA/6OeoZWze6MZBryJrE7AG6K9QK6f4xALm++J1029FY=
+	t=1744052389; cv=none; b=CBWaoQNE7QRWrmFnn0dNMIOVwMhcjRGscoeO4hdomSdi9zK/sKGNB3btDn91CT88+gygI8tYR0ODZLgof6mhH7kGWUuvQePFyzwH61etMdfO7/F0ZMy9w9DGrAL+0HvButR0opKPTSQtIktJEdSqSEQHG2ElN4wIFO+UPorsy/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049690; c=relaxed/simple;
-	bh=roTV4fCBWYKtx7tR13LEF6bSe/MmWW79N66Dk4jgSkI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MwSOhGbvwz28Ue+K0y6wd0lp5svIE2UYFxhp2NZlEuTupFc1Ne7Yhgi781uhXJ/I+hHQmGu82UP+AG36xrd3N69Ns481ptHHG5l9wqbxg7JqKHiPN2ycmpORdaCJZvKVmlJs0ZgiZFEtkq6x/3MGEJk+2CkPLR14dv6u1sfYmcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NIXonLt1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744052389; c=relaxed/simple;
+	bh=GmzZzyb8/k4Anna3v9Ql8DWhrigUAQLV2n55HY2aLDk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=AT06UmFbRGGEgqNc2/pSgdCe2Sw9J015MYtLAm61QtnVCUT0KYVmVE4mlvxLWkymt391ZkLSR+el4I9IYcPcGWjSsH0FmFcDUnXutD8u9Bk9AJ5lFn8St0epP0UjdwCgqX+9OGWCrbkUpUfxb9LIzzjeEVqmk8sAW771jBGQjbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H6mNPPtC; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NIXonLt1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A00C9C4CEE7;
-	Mon,  7 Apr 2025 18:14:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049690;
-	bh=roTV4fCBWYKtx7tR13LEF6bSe/MmWW79N66Dk4jgSkI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NIXonLt1oMwV1DOQJSeK3B40+6p6j24z3O8dhm0pzGEEfCBHhzCAYMflHFyIv8qhR
-	 XAA3/6l+dz+cCRkZ0DO96zwxiy4hCcWYBg81BYITFzqVT5tf13kP2mnrEXlaLcstTG
-	 3qg6LAz0AeRL8aoeq3M8OXdyODYcuB8bQPaSQcKR0VJXtGIlagA0Zlbam2kln9Txpb
-	 mWx+aGRN/7HGO3V31ldITu+d29kIImpM/a1Q/6XYVKxs7Bpt/QMTw+xU2qLjWvQUbe
-	 YJypWBrZm3mBlL6BPiXsLd0BBPs2nQzlCHV91stSHpEiq5RSGkpSCqBvNqLUVXf9nY
-	 J6AS1A+iJd/SA==
-Date: Mon, 7 Apr 2025 21:14:46 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Stefano Garzarella <sgarzare@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-	"H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev,
-	linux-integrity@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-	x86@kernel.org, Tom Lendacky <thomas.lendacky@amd.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Dionna Glaze <dionnaglaze@google.com>,
-	Claudio Carvalho <cclaudio@linux.ibm.com>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	linux-kernel@vger.kernel.org, Dov Murik <dovmurik@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v6 0/4] Enlightened vTPM support for SVSM on SEV-SNP
-Message-ID: <Z_QWFjJbPWIsBP2s@kernel.org>
-References: <20250403100943.120738-1-sgarzare@redhat.com>
- <20250407134643.GDZ_PXQ0OlzcMjiGgp@fat_crate.local>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H6mNPPtC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744052387; x=1775588387;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=GmzZzyb8/k4Anna3v9Ql8DWhrigUAQLV2n55HY2aLDk=;
+  b=H6mNPPtCgyuETrBN2g6bt2lNXwdacLnoMeBIGaYhg+Ht8mwytSwEGaAq
+   QiPWvrLOw70qlYrms8ofRrSS3ASTCMOAKA5FYCkOF7RUc9Yru+lMT9w4p
+   wV1W1celGi4nUeSlyR7SGRmDBsUgyITlv2VXJXCpjPiVNY+WMbcsP2aqX
+   Hlehp0i/cSv2r77BfjNELu/J5YX6g7biijOC6E7m9iNee0AiRfbo9/Qk+
+   9+QorXDbRRRTm0oHHYKi4Kv5L0suej2VrULbQtyyKcBiBTkGPu1nfz/yp
+   KuKu0r4OrjqKwmlh5MCezsXikyJaiFaFsDCBxxXdbVrJhx5Jqd141H25y
+   g==;
+X-CSE-ConnectionGUID: IvlQEjQJQkyv6Bq4FlX3SA==
+X-CSE-MsgGUID: gIRdReWQSfmzr+tekGzlnA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="62999679"
+X-IronPort-AV: E=Sophos;i="6.15,194,1739865600"; 
+   d="scan'208";a="62999679"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 11:59:46 -0700
+X-CSE-ConnectionGUID: ebudS2sbQ6mgoO4E+/+7Bw==
+X-CSE-MsgGUID: 63jsluQtQ6GaJeEF/UrxMg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,194,1739865600"; 
+   d="scan'208";a="128899302"
+Received: from trung68x-mobl.amr.corp.intel.com (HELO bxing-mobl1.clients.intel.com) ([10.246.115.210])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 11:59:44 -0700
+From: Cedric Xing <cedric.xing@intel.com>
+Subject: [PATCH v3 0/5] tsm-mr: Unified Measurement Register ABI for TVMs
+Date: Mon, 07 Apr 2025 13:59:27 -0500
+Message-Id: <20250407-tdx-rtmr-v3-0-54f17bc65228@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250407134643.GDZ_PXQ0OlzcMjiGgp@fat_crate.local>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAI8g9GcC/02MQQ6CMBBFr0JmbU07tGBdeQ/jAukgkyiYtmkwh
+ LtbiIks389/b4ZAninAuZjBU+LA45ChPBTQ9s3wIMEuM6BEI1FaEd0kfHx5gcbo2lZVrXQF+f7
+ 21PG0pa63zD2HOPrPVk5qXX8Rhf9IUkIKW1vjWm1JlXjhIdLz2I4vWCMJdyKWOxGz2KE7mbtsT
+ Gf1XlyW5QsEkoGE2QAAAA==
+To: Dan Williams <dan.j.williams@intel.com>, 
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, 
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+ Dionna Amalie Glaze <dionnaglaze@google.com>, 
+ Guorui Yu <guorui.yu@linux.alibaba.com>, 
+ James Bottomley <James.Bottomley@HansenPartnership.com>, 
+ Dan Middleton <dan.middleton@linux.intel.com>, 
+ Mikko Ylinen <mikko.ylinen@linux.intel.com>, 
+ Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+X-Mailer: b4 0.13.0
 
-On Mon, Apr 07, 2025 at 03:46:43PM +0200, Borislav Petkov wrote:
-> On Thu, Apr 03, 2025 at 12:09:38PM +0200, Stefano Garzarella wrote:
-> > Stefano Garzarella (4):
-> >   x86/sev: add SVSM vTPM probe/send_command functions
-> >   svsm: add header with SVSM_VTPM_CMD helpers
-> >   tpm: add SNP SVSM vTPM driver
-> >   x86/sev: register tpm-svsm platform device
-> > 
-> >  arch/x86/include/asm/sev.h  |   9 +++
-> >  include/linux/tpm_svsm.h    | 149 ++++++++++++++++++++++++++++++++++++
-> >  arch/x86/coco/sev/core.c    |  67 ++++++++++++++++
-> >  drivers/char/tpm/tpm_svsm.c | 128 +++++++++++++++++++++++++++++++
-> >  drivers/char/tpm/Kconfig    |  10 +++
-> >  drivers/char/tpm/Makefile   |   1 +
-> >  6 files changed, 364 insertions(+)
-> >  create mode 100644 include/linux/tpm_svsm.h
-> >  create mode 100644 drivers/char/tpm/tpm_svsm.c
-> 
-> Jarrko,
-> 
-> should I take the whole bunch through the tip tree?
-> 
-> No point in splitting between two trees...
+NOTE: This patch series introduces the Measurement Register (MR) ABI, and
+is a continuation of the RFC series on the same topic [1].
 
-It's cleanly separated and does not even touch any shared headers,
-so I don't see any issues on doing that. I.e., I'm with it :-)
+Introduce the CONFIG_TSM_MEASUREMENTS helper library (tsm-mr) as a
+cross-vendor transport schema to allow TVM (TEE VM) guest drives to export
+CC (Confidential Compute) architecture-specific MRs (Measurement Registers)
+as sysfs attributes/files. Enable applications to read, write/extend MRs
+like regular files, supporting various usages such as configuration
+verification (e.g., verify a TVM's configuration against digests stored in
+static/immutable MRs like MRCONFIGID on TDX or HOSTDATA on SEV) and runtime
+measurements (e.g., extend the measurement of a container image to an RTMR
+before running it).
 
-> 
-> Thx.
-> 
-> -- 
-> Regards/Gruss,
->     Boris.
-> 
-> https://people.kernel.org/tglx/notes-about-netiquette
-> 
+Patches included in this series:
 
-BR, Jarkko
+- Patch 1 adds the tsm-mr library to help TVM guest drivers exposing MRs as
+  sysfs attributes.
+- Patch 2 provides a sample module demonstrating the usage of the new
+  tsm-mr library.
+- The remaining patches update the TDX guest driver to expose TDX MRs with
+  the help of the tsm-mr library.
+
+[1]: https://lore.kernel.org/linux-coco/20241210-tsm-rtmr-v3-0-5997d4dbda73@intel.com/
+
+Signed-off-by: Cedric Xing <cedric.xing@intel.com>
+---
+Changes in v3:
+- tsm-mr: Separate measurement support (tsm-mr) from the original tsm
+  source code. Modules depending on tsm-mr should `select TSM_MEASUREMENTS`
+  in Kconfig.
+- tsm-mr: Revise tsm-mr APIs to allow callers to decide where to host the
+  MR attributes in sysfs.
+- tsm-mr: Drop TSM_MR_F_EXTENSIBLE and route all "write" requests to the CC
+  guest driver, which would decide how to handle writes (e.g., as extension
+  to the specified MR).
+- tsm-mr: Update the naming pattern for MR attributes from
+  MRNAME/HASH/digest to MRNAME:HASH.
+- tsm-mr: Drop TSM_MR_MAXBANKS kernel config.
+- x86/tdx: Return -EBUSY from tdx_mcall_get_report0 on TDCALL_OPERAND_BUSY
+  error.
+- tdx-guest: Move MR attributes from /sys/kernel/tsm/tdx/ to
+  /sys/class/misc/tdx_guest/ because MR names are architecture-specific, so
+  their attributes should reside in an architecture-specific location.
+- tdx-guest: Remove hash from `mrconfigid`, `mrowner`, `mrownerconfig`.
+- tdx-guest: Remove `servtd_hash`, `report0`, and `reportdata`.
+- Link to v2: https://lore.kernel.org/r/20250223-tdx-rtmr-v2-0-f2d85b0a5f94@intel.com
+
+Changes in v2:
+- Added TSM_MR_MAXBANKS Kconfig option
+- Updated Kconfig dependency for TSM_REPORTS
+- Updated comments in include/linux/tsm.h
+- Updated drivers/virt/coco/tdx-guest/tdx-guest.c to use `IS_BUILTIN()` for
+  determining if static buffer addresses can be converted to GPAs by
+  `virt_to_phys()`
+- Renamed function `tdx_mcall_rtmr_extend()` -> `tdx_mcall_extend_rtmr()`
+- Link to v1: https://lore.kernel.org/r/20250212-tdx-rtmr-v1-0-9795dc49e132@intel.com
+
+---
+Cedric Xing (5):
+      tsm-mr: Add TVM Measurement Register support
+      tsm-mr: Add tsm-mr sample code
+      x86/tdx: Add tdx_mcall_extend_rtmr() interface
+      x86/tdx: tdx_mcall_get_report0: Return -EBUSY on TDCALL_OPERAND_BUSY error
+      virt: tdx-guest: Expose TDX MRs as sysfs attributes
+
+ .../sysfs-devices-virtual-misc-tdx_guest-mr        |  48 +++++
+ MAINTAINERS                                        |   6 +-
+ arch/x86/coco/tdx/tdx.c                            |  42 ++++-
+ arch/x86/include/asm/shared/tdx.h                  |   1 +
+ arch/x86/include/asm/tdx.h                         |   2 +
+ drivers/virt/coco/Kconfig                          |   5 +
+ drivers/virt/coco/Makefile                         |   1 +
+ drivers/virt/coco/tdx-guest/Kconfig                |   1 +
+ drivers/virt/coco/tdx-guest/tdx-guest.c            | 169 ++++++++++++++++-
+ drivers/virt/coco/tsm-mr.c                         | 209 +++++++++++++++++++++
+ include/linux/tsm-mr.h                             |  93 +++++++++
+ samples/Kconfig                                    |  10 +
+ samples/Makefile                                   |   1 +
+ samples/tsm-mr/Makefile                            |   2 +
+ samples/tsm-mr/tsm_mr_sample.c                     | 138 ++++++++++++++
+ 15 files changed, 722 insertions(+), 6 deletions(-)
+---
+base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+change-id: 20250209-tdx-rtmr-255479667146
+
+Best regards,
+-- 
+Cedric Xing <cedric.xing@intel.com>
+
