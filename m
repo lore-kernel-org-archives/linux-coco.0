@@ -1,154 +1,114 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5263623E35D;
-	Mon,  7 Apr 2025 11:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2EFE254877;
+	Mon,  7 Apr 2025 13:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744026045; cv=none; b=EqLPa82x9t2EdOYNeKHwmdXmJUwwzakSDYNT8J232Kr3pqr4gOCcs2mRchAMstW3cwkgBuxzBXsgntG3dxDU/eQhY/8QsXmL6MpLLHY6R9XbBUokY42g4USdfvwp6YFWlux64z+SbkPIDeRNfHDTt/66bEAFYGqHJCdETYuql54=
+	t=1744031761; cv=none; b=O2nNKASuTfG7T8hn1g1O20Ox+xPeqCN4FOGytC3v6kmufq3yTuTAivEEZBxupVOdAz1qsaru4/TIgAyROjuWBrlZ9rXeotFJibGvdePw1VzwPaIsukHgxOnm7Ku3n6Ny7JzMpHZ23Wy/HoEGtNhKKoJMR1ackNEaIIUN1cf13DA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744026045; c=relaxed/simple;
-	bh=vzyAKLHqu3gRIT3XigIACxVJDWJCCNJWkRCnR4vlrpU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=iZRrNJQBAXLycI7EFiJyPDwDnDnbAXRvK2I/ah6YjlDh77Jml0hgKRFstpySu9aB+5gb2RyBoDGAYsGNs0jPsoj5AHda+HRt7F9IfXHSEknKbbIr3zPWtyVt6IOr5snXJvvlwKIQs8gVwYPANuAX5CF3tmh7XjduVrXEQL6eSek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ihfvx7i3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744031761; c=relaxed/simple;
+	bh=SJvaVxeGjrrd7lgKd48IanGgrp61arG5wckYR92s2uI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JjmlBWBSxGBi0ALg1UG8P4MHcxW+kvLS2Pd1FNC3x83MAgOuA+T0OlialZ5ofcdAUz15Y57ZhsS/bRQikHoZYes6b2LMM6TyUoUupp/pzgX/Gpe3eGb7PHqElUTYqEZfmaHa+8LpSHtwJmsTcLGDw/k/E5tFkFQejRUV4tZDvAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=haYs3vFf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ihfvx7i3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4031CC4CEDD;
-	Mon,  7 Apr 2025 11:40:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="haYs3vFf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E87C4CEE7;
+	Mon,  7 Apr 2025 13:15:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744026044;
-	bh=vzyAKLHqu3gRIT3XigIACxVJDWJCCNJWkRCnR4vlrpU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ihfvx7i3hTmS/r04UM0uF1arK6LEBDn5fWytpW7+ZiJsnRDfmKLwJBtzh7PN1XNSI
-	 u+znc1IeLnyjRrgKMkjD94YLwDy+wtZLg1H+uqMpTGNke8HlUc2cDCa5sLVuT2YSQg
-	 g2RqmcKfRwUpKnWGiNhh9HBrxMujr3oxWEnU1xxJ3WN8RqoFq5oCjQ7Kz+AprXY7CM
-	 q9vc4EozkL2+taALxeW3EFGp4AdYg9TZ1OSfRLODymwNydsqrEAhbszSLVr6fWRChT
-	 X8u1VlbYEIbqkl82fa1NwmOLeASjXl7YSgiLzOUMPlbythNvreSWcHUrQFYnXsDe+m
-	 g9XQKpYvS2tig==
-X-Mailer: emacs 30.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Alexey Kardashevskiy <aik@amd.com>, x86@kernel.org, kvm@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arch@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Steve Sistare <steven.sistare@oracle.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Dionna Glaze <dionnaglaze@google.com>,
-	Yi Liu <yi.l.liu@intel.com>, iommu@lists.linux.dev,
-	linux-coco@lists.linux.dev, Zhi Wang <zhiw@nvidia.com>,
-	AXu Yilun <yilun.xu@linux.intel.com>
-Subject: Re: [RFC PATCH v2 14/22] iommufd: Add TIO calls
-In-Reply-To: <20250401160340.GK186258@ziepe.ca>
-References: <20250218111017.491719-1-aik@amd.com>
- <20250218111017.491719-15-aik@amd.com> <yq5av7rt7mix.fsf@kernel.org>
- <20250401160340.GK186258@ziepe.ca>
-Date: Mon, 07 Apr 2025 17:10:29 +0530
-Message-ID: <yq5a4iz019oy.fsf@kernel.org>
+	s=k20201202; t=1744031761;
+	bh=SJvaVxeGjrrd7lgKd48IanGgrp61arG5wckYR92s2uI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=haYs3vFftxXXrMnEVOADmuhZyBoS3RDG027UqLwCVnAWZbmGwCkTI5dLipt0U3HYU
+	 7hQISuV29FlK/P9psrfnd4eI+sZ/JiGKu/9bmlx+i5AbZJGueEWWGM/gwV4CYw79Ox
+	 5L2ozHgPAgfNp9kgNUo3X18mpYAlKgp0qCDXNNMjUiq8u7nz8PLiQkJxu1LqlpVm0z
+	 eFGQli6VYhPkT3krOEyHx9s5W/At3aoiHyCHPqgR+NmMroDDBvSdGpIiHpc7CrerN2
+	 ecm01CVF16kym/uxcPzdECGFHoAQ+fa+geR/MRt4efNtbGKciOKxVi72zulI0m081I
+	 q9MW3byo4tpsQ==
+Date: Mon, 7 Apr 2025 18:43:54 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, 
+	linux-coco@lists.linux.dev, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Borislav Petkov <bp@alien8.de>, Vishal Annapurve <vannapurve@google.com>, 
+	Kirill Shutemov <kirill.shutemov@linux.intel.com>, Nikolay Borisov <nik.borisov@suse.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Kevin Loughlin <kevinloughlin@google.com>
+Subject: Re: [RFC PATCH] x86/sev: Disallow userspace access to BIOS region
+ for SEV-SNP guests
+Message-ID: <l34f6nqq3up23cvrgmebbufztqkvfil5eahecukw5bnqekccpj@6nbciquhwxxc>
+References: <20250403120228.2344377-1-naveen@kernel.org>
+ <67eedc35be77d_464ec29462@dwillia2-xfh.jf.intel.com.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <67eedc35be77d_464ec29462@dwillia2-xfh.jf.intel.com.notmuch>
 
-Jason Gunthorpe <jgg@ziepe.ca> writes:
+On Thu, Apr 03, 2025 at 12:06:29PM -0700, Dan Williams wrote:
+> Naveen N Rao (AMD) wrote:
+> > Commit 9704c07bf9f7 ("x86/kernel: Validate ROM memory before accessing
+> > when SEV-SNP is active") added code to validate the ROM region from
+> > 0xc0000 to 0xfffff in a SEV-SNP guest since that region can be accessed
+> > during kernel boot. That address range is not part of the system RAM, so
+> > it needed to be validated separately.
+> > 
+> > Commit 0f4a1e80989a ("x86/sev: Skip ROM range scans and validation for
+> > SEV-SNP guests") reverted those changes and instead chose to prevent the
+> > guest from accessing the ROM region since SEV-SNP guests did not rely on
+> > data from that region. However, while the kernel itself no longer
+> > accessed the ROM region, there are userspace programs that probe this
+> > region through /dev/mem and they started crashing due to this change. In
+> > particular, fwupd (up until versions released last year that no longer
+> > link against libsmbios) and smbios utilities such as smbios-sys-info
+> > crash with a cryptic message in dmesg:
+> >   Wrong/unhandled opcode bytes: 0x8b, exit_code: 0x404, rIP: 0x7fe5404d3840
+> >   SEV: Unsupported exit-code 0x404 in #VC exception (IP: 0x7fe5404d3840)
+> > 
+> > Deny access to the BIOS region (rather than just the video ROM range)
+> > via /dev/mem to address this. Restrict changes to CONFIG_STRICT_DEVMEM=y
+> > which is enabled by default on x86. Add a new x86_platform_ops callback
+> > so Intel can customize the address range to block.
+> > 
+> > Fixes: 0f4a1e80989a ("x86/sev: Skip ROM range scans and validation for SEV-SNP guests")
+> > Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
+> > ---
+> >  arch/x86/coco/sev/core.c        | 13 +++++++++++++
+> >  arch/x86/include/asm/sev.h      |  2 ++
+> >  arch/x86/include/asm/x86_init.h |  2 ++
+> >  arch/x86/kernel/x86_init.c      |  2 ++
+> >  arch/x86/mm/init.c              |  3 +++
+> >  arch/x86/mm/mem_encrypt_amd.c   |  1 +
+> >  6 files changed, 23 insertions(+)
+> > 
+<snip>
+> 
+> Is there any driving need to allow devmem at all for TVM access at this
+> point?
+> 
+> I would be in favor of making this clearly tied to devmem, call it
+> ".devmem_is_allowed" for symmetry with the mm/init.c helper, and make
+> the default implementation be:
+> 
+> static bool platform_devmem_is_allowed(unsigned long pfn)
+> {
+> 	return !cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT));
+> }
+> 
+> ...if a TVM technology wants more leniency, it can override.
 
-> On Fri, Mar 28, 2025 at 10:57:18AM +0530, Aneesh Kumar K.V wrote:
->> > +int iommufd_vdevice_tsm_bind_ioctl(struct iommufd_ucmd *ucmd)
->> > +{
->> > +	struct iommu_vdevice_tsm_bind *cmd = ucmd->cmd;
->> > +	struct iommufd_viommu *viommu;
->> > +	struct iommufd_vdevice *vdev;
->> > +	struct iommufd_device *idev;
->> > +	struct tsm_tdi *tdi;
->> > +	int rc = 0;
->> > +
->> > +	viommu = iommufd_get_viommu(ucmd, cmd->viommu_id);
->> > +	if (IS_ERR(viommu))
->> > +		return PTR_ERR(viommu);
->> >
->> 
->> Would this require an IOMMU_HWPT_ALLOC_NEST_PARENT page table
->> allocation?
->
-> Probably. That flag is what forces a S2 page table.
->
->> How would this work in cases where there's no need to set up Stage 1
->> IOMMU tables?
->
-> Either attach the raw HWPT of the IOMMU_HWPT_ALLOC_NEST_PARENT or:
->
->> Alternatively, should we allocate an IOMMU_HWPT_ALLOC_NEST_PARENT with a
->> Stage 1 disabled translation config? (In the ARM case, this could mean
->> marking STE entries as Stage 1 bypass and Stage 2 translate.)
->
-> For arm you mean IOMMU_HWPT_DATA_ARM_SMMUV3.. But yes, this can work
-> too and is mandatory if you want the various viommu linked features to
-> work.
->
+I'm not fully aware of the history here, but I suppose a TVM should 
+appear as any other VM for userspace. For that reason, I didn't want to 
+block access to /dev/mem any more than was necessary. Admittedly, I have 
+limited insight into which utilities may be using /dev/mem today.
 
-I was trying to prototype this using kvmtool and I have run into some
-issues. First i needed the below change for vIOMMU alloc to work
-
-modified   drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -4405,6 +4405,8 @@ static int arm_smmu_device_hw_probe(struct arm_smmu_device *smmu)
- 	reg = readl_relaxed(smmu->base + ARM_SMMU_IDR3);
- 	if (FIELD_GET(IDR3_RIL, reg))
- 		smmu->features |= ARM_SMMU_FEAT_RANGE_INV;
-+	if (FIELD_GET(IDR3_FWB, reg))
-+		smmu->features |= ARM_SMMU_FEAT_S2FWB;
- 
- 	/* IDR5 */
- 	reg = readl_relaxed(smmu->base + ARM_SMMU_IDR5);
-
-
-
-Also current code don't allow a Stage 1 bypass, Stage2 translation when
-allocating HWPT.
-
-arm_vsmmu_alloc_domain_nested -> arm_smmu_validate_vste -> 
-
-	cfg = FIELD_GET(STRTAB_STE_0_CFG, le64_to_cpu(arg->ste[0]));
-	if (cfg != STRTAB_STE_0_CFG_ABORT && cfg != STRTAB_STE_0_CFG_BYPASS &&
-	    cfg != STRTAB_STE_0_CFG_S1_TRANS)
-		return -EIO;
+Tom/Boris, do you see a problem blocking access to /dev/mem for SEV 
+guests?
 
 
-This only allow a abort or bypass or stage1 translate/stage2 bypass config
+- Naveen
 
-Also if we don't need stage1 table, what will
-iommufd_viommu_alloc_hwpt_nested() return?
-
->
->> Also, if a particular setup doesn't require creating IOMMU
->> entries because the entire guest RAM is identity-mapped in the IOMMU, do
->> we still need to make tsm_tdi_bind use this abstraction in iommufd?
->
-> Even if the viommu will not be exposed to the guest I'm expecting that
-> iommufd will have a viommu object, just not use various features. We
-> are using viommu as the handle for the KVM, vmid and other things that
-> are likely important here.
->
-> Jason
-
--aneesh
