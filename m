@@ -1,130 +1,172 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5617C1A0BF3;
-	Sat,  5 Apr 2025 18:19:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3759211A33;
+	Mon,  7 Apr 2025 05:06:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743877193; cv=none; b=IQn95lzrvu3NaokI/Rc0kOOcJ28bs7Y53Sltmo5RnI6lvZjWU2/ACbaoXlS/LGp/SqBCq7qh3gZFiSj5W6GHCcXokgbyDHX8u0OOjw57Dlc1ghrYyU/V861UWYrmL95kHKkO5hKLZBZ6HUsDddzXOjqnwX0ff0yoNserZ/UzmOc=
+	t=1744002386; cv=none; b=Z7pYamfXbvoCmT4VVEUgiimzbix9P8zeTv0Tj0/ZzIHHcVMUftf92Dj7tLx+XApp4j+BHTq7/rfBC/jookmxllvofBmCWH6YYulhfwKFctQacLCQpL58LpJ7zxlI/8PXNeLEpaJrmS5KldxYreHIqVUUNkRCAnd8llDzreQLScI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743877193; c=relaxed/simple;
-	bh=UuKpmCc29izBRMeN6jegH6OMMWvy55AsNWWT5DJwIi4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
-	 MIME-Version; b=B04w/h5EKjR2kSzOgI6SPyWMSoFDAZb4sKBiqMQPugNDOvuiAiIzZbI3NBxOoq1UvC6cIetmb2l/GUVzXfKxti8+3jvKNGmO/tdmsMNLiaMH/6r+ODLRCSZU1pawQUGu/wCpljbeddyjpVxFMjRdxpY3yjZh46lpi5jgGGI7Iao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EsUK+lbg; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744002386; c=relaxed/simple;
+	bh=q3x3Bn3tMRPQCHENHO+gAPcGM2Et1HxLhfTvQFIcMYQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HjKKU8HMBpvDyQbpPv+qhFunA615ynvkEjUtVz+beUARtHXA3uFHr2HR9VfA5x4GYY9J4HQuBMNQ8I4P2cKGl/4RgoRWcxqJQtO44x1Jv9geCymXV8/GtzL5yAw3AAlHsGbHx+V4GgorKKbZW5w6MtnNhE1AYxyMtHTtA6cf/Gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=ZCcXAMDA; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EsUK+lbg"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5e61d91a087so5004143a12.0;
-        Sat, 05 Apr 2025 11:19:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743877189; x=1744481989; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:in-reply-to:date
-         :cc:to:from:subject:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JzDPIcjxpueJWPt8ubJyJmHV+G2m+1GMdqn6UOzKG/Q=;
-        b=EsUK+lbgcH/7V3YecXfX1C7vFJfxtgDPHAcDCGVOr3mxMQhNdE4FJ+BlyT0VPYQ2bu
-         gFtJJLfUGo0AKTiTfKY744x40iiJwYcrpIqNEWuknwSwMnMYQRcedQEJ6cPXNqovMxLe
-         aw9P+l5dWvvdJCjueL1u3WZN2L+OmuYq9rru/hOoG7rUtT0G+bOMV6rLSWNT9DoLIldD
-         QvQseJFH12Y5IRbgnmnRm8l/ODVgGrgEVanqtFPUG9YIb/qOqYyhIPQjhkYU1gX//AUO
-         6LnW0pzIIgDI3980Z1u/LE3DnXHnYDGbsWwVY4ccAjOERTCwPfPmOhrJyRVhdrgaBwKg
-         4J5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743877189; x=1744481989;
-        h=mime-version:user-agent:content-transfer-encoding:in-reply-to:date
-         :cc:to:from:subject:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=JzDPIcjxpueJWPt8ubJyJmHV+G2m+1GMdqn6UOzKG/Q=;
-        b=WjiezvEaMjnzkxq7dbghSqn/Wila4kPdACS4SjLTAJ7pz1pAriWlouu2lXgnpMDPHC
-         rW6HamWN7P9zFA5Khy9HcVjcyhCduMFgA0xwkzX23mjovp13oFi/udLDHhFb0bpgan7K
-         wr0WOjsY3DEFwDbOeE1CeV3DUOlqXAxvXyKnIFii2CVNRRTi4liRABUOhhJaS/FGvUSn
-         OBiywXIKa9upDe1kUg+qe2BAw5+jZkoxI7sfzDQ6EBf3phso+Tm//5XV7RcuYkkXasVx
-         AzqXZYGDaQ9NMaxmh/pS5hVwgBY8Ur8e0qPLfrM9H9m465f7cIdr7uaOewbjt1vgaxJY
-         85IA==
-X-Forwarded-Encrypted: i=1; AJvYcCX0nDZQ0m0RJhG+A4chek9pbeEnWFYtuZC1Qjs+HFdFHbz4YMoPYLUiN6hIgoXhx3yxlNuiMI6rPbeOMQ==@lists.linux.dev, AJvYcCXfOHUvfZFH8AxycTsvMxINMs8HQP+MM2wEuprOWMYBWzjEhgM4fGMeNhwAGptLUkKpDl4hnA==@lists.linux.dev
-X-Gm-Message-State: AOJu0YzrCd7siusLSQc7/CsE7z4dnZ7RKoFnYZrw8+6Ujm+481J/qPK3
-	+PW/dzm8JHW2cKVdZTyp+IcMViRavfva2S4G7ysv9e3X9HNtB7a6
-X-Gm-Gg: ASbGncutUUQKWn+9EVeCZO51Sml4880ybt2vdbNFwyAlDmzLPzCD+xn78USttL7Xaii
-	DBUxo1HWYrOsdKUT14xt23hDXXcuZxib+XKgJPg8Bcag68eCYAweMh73JvwQhkOQOSe6H1ySg+y
-	zSloG18w+zc76zdXgGo2/HLVBhXsrlfN8PuaQK/bgduhUasY/zNQogcDBAzfjGKy+/0bDQTRFhs
-	ESxg+DjvfzCRa/kjJIWU9XLTCDC8gBFxwSzq7RbaP6x5Drwf/ilNqcKtHzffCNZdC+pqSEWScbC
-	fFO1P5nc43UyRMWDERkfamBwY6NJ4YzdZxQGYalRXwYEjKTSPE+YPw0cXnnOVSdr8bL28pje4Q1
-	tcwUEgvzQAWyP8OhY4Z1EvgvaDA==
-X-Google-Smtp-Source: AGHT+IHjWd15bJFnLvYIPJuTi7FnhI2p3c/aAJQJSPYd5K7f8WVJvfxyJpynzpZjmDExmCZGqw22yQ==
-X-Received: by 2002:a05:6402:2350:b0:5de:dfde:c8b1 with SMTP id 4fb4d7f45d1cf-5f0b3b62b55mr5957465a12.4.1743877189229;
-        Sat, 05 Apr 2025 11:19:49 -0700 (PDT)
-Received: from ?IPv6:2001:b07:5d29:f42d:f4b6:62bc:3e10:c9d4? ([2001:b07:5d29:f42d:f4b6:62bc:3e10:c9d4])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5f088084eddsm4160377a12.62.2025.04.05.11.19.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Apr 2025 11:19:48 -0700 (PDT)
-Message-ID: <3f450f215435d39b5376a83c42fd1da186d774c3.camel@gmail.com>
-Subject: Re: [RFC PATCH v2 17/22] resource: Mark encrypted MMIO resource on
- validation
-From: Francesco Lavra <francescolavra.fl@gmail.com>
-To: aik@amd.com
-Cc: Jonathan.Cameron@huawei.com, aneesh.kumar@kernel.org,
- ashish.kalra@amd.com,  baolu.lu@linux.intel.com, bhelgaas@google.com,
- dan.j.williams@intel.com,  dionnaglaze@google.com, hch@lst.de,
- iommu@lists.linux.dev, jgg@ziepe.ca,  joao.m.martins@oracle.com,
- joro@8bytes.org, kevin.tian@intel.com,  kvm@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-coco@lists.linux.dev, 
- linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org, lukas@wunner.de, 
- michael.roth@amd.com, nicolinc@nvidia.com, nikunj@amd.com,
- pbonzini@redhat.com,  robin.murphy@arm.com, seanjc@google.com,
- steven.sistare@oracle.com,  suravee.suthikulpanit@amd.com,
- suzuki.poulose@arm.com, thomas.lendacky@amd.com,  vasant.hegde@amd.com,
- x86@kernel.org, yi.l.liu@intel.com, yilun.xu@linux.intel.com, 
- zhiw@nvidia.com
-Date: Sat, 05 Apr 2025 20:19:46 +0200
-In-Reply-To: <20250218111017.491719-18-aik@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="ZCcXAMDA"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=hRUX8rrpmOkyJiGL4KZMKPZOaOhgJW1xe8y86R4HPLM=; b=ZCcXAMDA89r/LV8XMGmE74DC3Z
+	qUcu61u308rZrFHLVFkKE8f2ohOZvNBD6LQLDdnFGTdo4AIe2eKg19pTJR37yxVhi8/bK7BDngQlr
+	tc7ieS2Xn4IJ7Hbq83HvKrFwI223TheoMGHn4jvaWFRgjkzcHtkbxWBU/PPMfl2a+fjCeDgti4+FN
+	3yjBnyXqR643/bhGhXrGHzPazG0iMoeguKa9HITHxrQKrLuhbVzpgdT9l0Kz+depbsmrPts63mk24
+	PL9IEuqA92pLU/0//Y8mT+sJZvVZUZr5dEZ1WNrfRQeSroEZrLtMy1uCf/Aoywp0Uw72uMANkVj2z
+	agflauQw==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1u1eg4-00DN8Y-1w;
+	Mon, 07 Apr 2025 13:05:45 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Mon, 07 Apr 2025 13:05:44 +0800
+Date: Mon, 7 Apr 2025 13:05:44 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, thomas.lendacky@amd.com,
+	john.allen@amd.com, michael.roth@amd.com, dionnaglaze@google.com,
+	nikunj@amd.com, ardb@kernel.org, kevinloughlin@google.com,
+	Neeraj.Upadhyay@amd.com, aik@amd.com, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH v7 0/8] Move initializing SEV/SNP functionality to KVM
+Message-ID: <Z_NdKF3PllghT2XC@gondor.apana.org.au>
+References: <cover.1742850400.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1742850400.git.ashish.kalra@amd.com>
 
-On 2025-02-18 at 11:10, Alexey Kardashevskiy wrote:
-> diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-> index 5385349f0b8a..f2e0b9f02373 100644
-> --- a/include/linux/ioport.h
-> +++ b/include/linux/ioport.h
-> @@ -55,6 +55,7 @@ struct resource {
->  #define IORESOURCE_MEM_64	0x00100000
->  #define IORESOURCE_WINDOW	0x00200000	/* forwarded by
-> bridge */
->  #define IORESOURCE_MUXED	0x00400000	/* Resource is
-> software muxed */
-> +#define IORESOURCE_VALIDATED	0x00800000	/* TDISP validated
-> */
+On Mon, Mar 24, 2025 at 09:13:41PM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
+> 
+> Remove initializing SEV/SNP functionality from PSP driver and instead add
+> support to KVM to explicitly initialize the PSP if KVM wants to use
+> SEV/SNP functionality.
+> 
+> This removes SEV/SNP initialization at PSP module probe time and does
+> on-demand SEV/SNP initialization when KVM really wants to use 
+> SEV/SNP functionality. This will allow running legacy non-confidential
+> VMs without initializating SEV functionality. 
+> 
+> The patch-set includes the fix to not continue with SEV INIT if SNP
+> INIT fails as RMP table must be initialized before calling SEV INIT
+> if host SNP support is enabled.
+> 
+> This will assist in adding SNP CipherTextHiding support and SEV firmware
+> hotloading support in KVM without sharing SEV ASID management and SNP
+> guest context support between PSP driver and KVM and keeping all that
+> support only in KVM.
+> 
+> To support SEV firmware hotloading, SEV Shutdown will be done explicitly
+> prior to DOWNLOAD_FIRMWARE_EX and SEV INIT post it to work with the
+> requirement of SEV to be in UNINIT state for DOWNLOAD_FIRMWARE_EX.
+> NOTE: SEV firmware hotloading will only be supported if there are no
+> active SEV/SEV-ES guests. 
+> 
+> v7:
+> -  Drop the Fixes: tag for patch 01, as continuing with SEV INIT
+> after SNP INIT(_EX) failure will still cause SEV INIT to fail,
+> we are simply aborting here after SNP INIT(_EX) failure.
+> - Fix commit logs.
+> - Add additional reviewed-by's.
+> 
+> v6:
+> - Add fix to not continue with SEV INIT if SNP INIT fails as RMP table 
+> must be initialized before calling SEV INIT if host SNP support is enabled.
+> - Ensure that for SEV IOCTLs requiring SEV to be initialized, 
+> _sev_platform_init_locked() is called instead of __sev_platform_init_locked()
+> to ensure that both implicit SNP and SEV INIT is done for these ioctls and
+> followed by __sev_firmware_shutdown() to do both SEV and SNP shutdown.
+> - Refactor doing SEV and SNP INIT implicitly for specific SEV and SNP
+> ioctls into sev_move_to_init_state() and snp_move_to_init_state(). 
+> - Ensure correct error code is returned from sev_ioctl_do_pdh_export() 
+> if platform is not in INIT state.
+> - Remove dev_info() from sev_pci_init() because this would have printed
+> a duplicate message.
+> 
+> v5:
+> - To maintain 1-to-1 mapping between the ioctl commands and the SEV/SNP commands, 
+> handle the implicit INIT in the same way as SHUTDOWN, which is to use a local error
+> for INIT and in case of implicit INIT failures, let the error logs from 
+> __sev_platform_init_locked() OR __sev_snp_init_locked() be printed and always return
+> INVALID_PLATFORM_STATE as error back to the caller.
+> - Add better error logging for SEV/SNP INIT and SHUTDOWN commands.
+> - Fix commit logs.
+> - Add more acked-by's, reviewed-by's, suggested-by's.
+> 
+> v4:
+> - Rebase on linux-next which has the fix for SNP broken with kvm_amd
+> module built-in.
+> - Fix commit logs.
+> - Add explicit SEV/SNP initialization and shutdown error logs instead
+> of using a common exit point.
+> - Move SEV/SNP shutdown error logs from callers into __sev_platform_shutdown_locked()
+> and __sev_snp_shutdown_locked().
+> - Make sure that we continue to support both the probe field and psp_init_on_probe
+> module parameter for PSP module to support SEV INIT_EX.
+> - Add reviewed-by's.
+> 
+> v3:
+> - Move back to do both SNP and SEV platform initialization at KVM module
+> load time instead of SEV initialization on demand at SEV/SEV-ES VM launch
+> to prevent breaking QEMU which has a check for SEV to be initialized 
+> prior to launching SEV/SEV-ES VMs. 
+> - As both SNP and SEV platform initialization and shutdown is now done at
+> KVM module load and unload time remove patches for separate SEV and SNP
+> platform initialization and shutdown.
+> 
+> v2:
+> - Added support for separate SEV and SNP platform initalization, while
+> SNP platform initialization is done at KVM module load time, SEV 
+> platform initialization is done on demand at SEV/SEV-ES VM launch.
+> - Added support for separate SEV and SNP platform shutdown, both 
+> SEV and SNP shutdown done at KVM module unload time, only SEV
+> shutdown down when all SEV/SEV-ES VMs have been destroyed, this
+> allows SEV firmware hotloading support anytime during system lifetime.
+> - Updated commit messages for couple of patches in the series with
+> reference to the feedback received on v1 patches.
+> 
+> Ashish Kalra (8):
+>   crypto: ccp: Abort doing SEV INIT if SNP INIT fails
+>   crypto: ccp: Move dev_info/err messages for SEV/SNP init and shutdown
+>   crypto: ccp: Ensure implicit SEV/SNP init and shutdown in ioctls
+>   crypto: ccp: Reset TMR size at SNP Shutdown
+>   crypto: ccp: Register SNP panic notifier only if SNP is enabled
+>   crypto: ccp: Add new SEV/SNP platform shutdown API
+>   KVM: SVM: Add support to initialize SEV/SNP functionality in KVM
+>   crypto: ccp: Move SEV/SNP Platform initialization to KVM
+> 
+>  arch/x86/kvm/svm/sev.c       |  12 ++
+>  drivers/crypto/ccp/sev-dev.c | 245 +++++++++++++++++++++++++----------
+>  include/linux/psp-sev.h      |   3 +
+>  3 files changed, 194 insertions(+), 66 deletions(-)
+> 
+> -- 
+> 2.34.1
 
-You may want to remove the reference to TDISP, as this flag could be
-reused for non-PCI devices in the future.
-
-> @@ -1085,6 +1092,47 @@ int adjust_resource(struct resource *res,
-> resource_size_t start,
->  }
->  EXPORT_SYMBOL(adjust_resource);
-> =20
-> +int encrypt_resource(struct resource *res, unsigned int flags)
-> +{
-> +	struct resource *p;
-> +	int result =3D 0;
-> +
-> +	if (!res)
-> +		return -EINVAL;
-> +
-> +	write_lock(&resource_lock);
-> +
-> +	for_each_resource(&iomem_resource, p, false) {
-
-I don't think this function should walk the iomem_resource list, it can
-simply modify res->flags, which is consistent with what is done by the
-other *_resource() functions that take a pointer to a resource that is
-expected to be in the list.
-Also, the name of this function is unrelated to the name of the
-affected flag, you may want to make these names more consistent.
+Patches 1-6 applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
