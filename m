@@ -1,172 +1,97 @@
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51982638B0;
-	Tue,  8 Apr 2025 08:11:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D3D21ADAE
+	for <linux-coco@lists.linux.dev>; Tue,  8 Apr 2025 11:00:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744099886; cv=none; b=L991J1/oANK8GSLpgy5OG1ugO7TMSvs2eLDany/q8vDbakxxTLZT8ilc2yQEU1uPP8Thf7/HuOTmEhcDnLG+eyKtQnswa91qK2iwE/F0PSQMVP03qMZST1clG/lB944sl2t2uxI5EUv77dT2HqIe3GSm3AmD+obLz4Hr3+rSIIY=
+	t=1744110051; cv=none; b=UJwM3nbtuvP1DFKKybXvaMyXuY9FvF+cmicVNqF8yYVhptpudgDlOqkVTwdB43c+ODXM/FWgBYUyJffkbOvY8e3KIVsi+jJa+FRaR03JOKMJUWXTnaz8MH5GACPsgGFPS1DD++iC6VBTwtGIPfFr8FqPQPGDPT+W1IPZPayvJ9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744099886; c=relaxed/simple;
-	bh=0NFejXXQ5C/Irc7QVCHJxI7ymX8Um1SmC/6y0Sf6bps=;
+	s=arc-20240116; t=1744110051; c=relaxed/simple;
+	bh=wZtNChfV7QOu2QO2ElEUsUzkKu9O7qNQsyFXu5NwBt8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MhLrXevYIy/4Ac6cdLcVTNOgBOnoO1jcUaN5nRzW1fJlxMFFgtCQweCWTDrLWrOeaRu7x9VuQFA9wclLu6eSCXx6/0OnT7D4iqzsRbNQrHlWhYI4xMviTMB5U2RrTmNYl+3snc5C9xUWt6JKkOKa6zwASnR2NPfqo66N8lqVrus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=qF9Znl9v; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+	 Content-Type:Content-Disposition:In-Reply-To; b=ghkPFE4QOKBu0KUpYBpc8Dmx2AvkhcmvjBmMw3GCYzNHSbbhxMgSwVgGBtKn5zHG3czo5Du/O55O5p8MhgwrBPGkZU36yKmkTkyA1zwEMX52Fr0fIk8Cg/aLx1RbhMjOOtr6EroGNweBmdxKklaU51SgXScydc2t0vJmHbeokL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=AYWx5KYo; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="qF9Znl9v"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=BJqa6CzCTAkaDv71FdSxwPL/T5p0WkVuqJBIvve0EHU=; b=qF9Znl9vlveOLcfy/Lf7p749Wn
-	Ad2WcxwsLLrlScrw70HmNPgSwlIyALU09S/SKeVKLW3Jbv80V8NWledW+PbIakXukYDD/JN2fz6kk
-	75Yl2Jd2xiNFF6275NJj6SJq6qMIW3dqZn1Dgg1Wn2IohcDN+E/L4uSJRHTzULexp1d6dxn9nf21t
-	hXJ/sACLCgSQPZ/wuaqC+Uhm+QRQLg7ewJqWZOhdlGXbDNe9FoItJRgXBUMnBSKYe6r7AWc+hY7uy
-	ti535Pu3O0WZBvEplyNZBD/+ui7rL2HSiSg7o5ntXiCGEBb3+Wh2ltvxdmsA+RstHn78rWHGIFJml
-	/bbK1P1Q==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1u242r-00DonW-0E;
-	Tue, 08 Apr 2025 16:10:58 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Tue, 08 Apr 2025 16:10:57 +0800
-Date: Tue, 8 Apr 2025 16:10:57 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, thomas.lendacky@amd.com,
-	john.allen@amd.com, michael.roth@amd.com, dionnaglaze@google.com,
-	nikunj@amd.com, ardb@kernel.org, kevinloughlin@google.com,
-	Neeraj.Upadhyay@amd.com, aik@amd.com, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v7 0/8] Move initializing SEV/SNP functionality to KVM
-Message-ID: <Z_TaEXCXpDM6wa-m@gondor.apana.org.au>
-References: <cover.1742850400.git.ashish.kalra@amd.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="AYWx5KYo"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0BFF540E021D;
+	Tue,  8 Apr 2025 11:00:47 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id C04Qe2trqGVA; Tue,  8 Apr 2025 11:00:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1744110036; bh=Mlgg2ceV8x70fyOMoJlodD+LImFBfrga3myZ0BJHFP0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AYWx5KYooH1CNy5l+82g+0TpOtccqXgbsnaSOlS6QxwRuc7lAxOmdvddOs+XsQ5TN
+	 Q4fhtfXZapd4hWT3AwQeLUHxlkBc8fQLf0T+1rae/iYtuJPrSJ2RCNfQTW99J5YtpN
+	 LqSXEVaI8bGy2E+ejeXObcTWszDzvDMm7zE095lE+cow8DyS9+Ol3e6Q6NIC3K4yED
+	 q7Bwg0vehlrtsagcaFHQ0v3ZE41egIOndgIia4yFkKv7wabNUrKP17yKYkMlMF6L5o
+	 huPMbm6smqvTpflQj+SlgIotT2B+TJUXSBGh2fW7lsO44ymx9iaVF4GSwX9DaV7AlA
+	 MbmUBqeCnMJmPDammwCdU+CsXXU75DAJIgovdI1DUHL/STC+UiLDISf/f2uNIUx8Ux
+	 EojYTLu954qpZMbsbjRBAdNKC8v5EQAEuKPjdnbgmM74lSN6zqAt3bjcApupRtvIVz
+	 RMxDAHCXGqeWWKJBT9DKDsOvz/5Pe5cBFdTcwkhpz8IYzpjCdIzkN2GoKU2FfvL5Vy
+	 z1s07mL0GM9wtnda5x2VxeIGgAArkM5YBwaxkbw2BWP4Ac6NXPCH4fagbiDDo7o0bB
+	 TLHCCE4lLGOE7qBDmxetDidmM0XKv9TnOagCsP9vD4HRNXREyBfd7IY30I87H1s3q5
+	 1+Pz7bilGO1pZMPI+KpaMeTM=
+Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A0A9740E019F;
+	Tue,  8 Apr 2025 11:00:18 +0000 (UTC)
+Date: Tue, 8 Apr 2025 13:00:12 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+	"H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev,
+	linux-integrity@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+	x86@kernel.org, Tom Lendacky <thomas.lendacky@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Dionna Glaze <dionnaglaze@google.com>,
+	Claudio Carvalho <cclaudio@linux.ibm.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	linux-kernel@vger.kernel.org, Dov Murik <dovmurik@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v6 4/4] x86/sev: register tpm-svsm platform device
+Message-ID: <20250408110012.GFZ_UBvOcEfEcIM4mI@fat_crate.local>
+References: <20250403100943.120738-1-sgarzare@redhat.com>
+ <20250403100943.120738-5-sgarzare@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <cover.1742850400.git.ashish.kalra@amd.com>
+In-Reply-To: <20250403100943.120738-5-sgarzare@redhat.com>
 
-On Mon, Mar 24, 2025 at 09:13:41PM +0000, Ashish Kalra wrote:
-> From: Ashish Kalra <ashish.kalra@amd.com>
-> 
-> Remove initializing SEV/SNP functionality from PSP driver and instead add
-> support to KVM to explicitly initialize the PSP if KVM wants to use
-> SEV/SNP functionality.
-> 
-> This removes SEV/SNP initialization at PSP module probe time and does
-> on-demand SEV/SNP initialization when KVM really wants to use 
-> SEV/SNP functionality. This will allow running legacy non-confidential
-> VMs without initializating SEV functionality. 
-> 
-> The patch-set includes the fix to not continue with SEV INIT if SNP
-> INIT fails as RMP table must be initialized before calling SEV INIT
-> if host SNP support is enabled.
-> 
-> This will assist in adding SNP CipherTextHiding support and SEV firmware
-> hotloading support in KVM without sharing SEV ASID management and SNP
-> guest context support between PSP driver and KVM and keeping all that
-> support only in KVM.
-> 
-> To support SEV firmware hotloading, SEV Shutdown will be done explicitly
-> prior to DOWNLOAD_FIRMWARE_EX and SEV INIT post it to work with the
-> requirement of SEV to be in UNINIT state for DOWNLOAD_FIRMWARE_EX.
-> NOTE: SEV firmware hotloading will only be supported if there are no
-> active SEV/SEV-ES guests. 
-> 
-> v7:
-> -  Drop the Fixes: tag for patch 01, as continuing with SEV INIT
-> after SNP INIT(_EX) failure will still cause SEV INIT to fail,
-> we are simply aborting here after SNP INIT(_EX) failure.
-> - Fix commit logs.
-> - Add additional reviewed-by's.
-> 
-> v6:
-> - Add fix to not continue with SEV INIT if SNP INIT fails as RMP table 
-> must be initialized before calling SEV INIT if host SNP support is enabled.
-> - Ensure that for SEV IOCTLs requiring SEV to be initialized, 
-> _sev_platform_init_locked() is called instead of __sev_platform_init_locked()
-> to ensure that both implicit SNP and SEV INIT is done for these ioctls and
-> followed by __sev_firmware_shutdown() to do both SEV and SNP shutdown.
-> - Refactor doing SEV and SNP INIT implicitly for specific SEV and SNP
-> ioctls into sev_move_to_init_state() and snp_move_to_init_state(). 
-> - Ensure correct error code is returned from sev_ioctl_do_pdh_export() 
-> if platform is not in INIT state.
-> - Remove dev_info() from sev_pci_init() because this would have printed
-> a duplicate message.
-> 
-> v5:
-> - To maintain 1-to-1 mapping between the ioctl commands and the SEV/SNP commands, 
-> handle the implicit INIT in the same way as SHUTDOWN, which is to use a local error
-> for INIT and in case of implicit INIT failures, let the error logs from 
-> __sev_platform_init_locked() OR __sev_snp_init_locked() be printed and always return
-> INVALID_PLATFORM_STATE as error back to the caller.
-> - Add better error logging for SEV/SNP INIT and SHUTDOWN commands.
-> - Fix commit logs.
-> - Add more acked-by's, reviewed-by's, suggested-by's.
-> 
-> v4:
-> - Rebase on linux-next which has the fix for SNP broken with kvm_amd
-> module built-in.
-> - Fix commit logs.
-> - Add explicit SEV/SNP initialization and shutdown error logs instead
-> of using a common exit point.
-> - Move SEV/SNP shutdown error logs from callers into __sev_platform_shutdown_locked()
-> and __sev_snp_shutdown_locked().
-> - Make sure that we continue to support both the probe field and psp_init_on_probe
-> module parameter for PSP module to support SEV INIT_EX.
-> - Add reviewed-by's.
-> 
-> v3:
-> - Move back to do both SNP and SEV platform initialization at KVM module
-> load time instead of SEV initialization on demand at SEV/SEV-ES VM launch
-> to prevent breaking QEMU which has a check for SEV to be initialized 
-> prior to launching SEV/SEV-ES VMs. 
-> - As both SNP and SEV platform initialization and shutdown is now done at
-> KVM module load and unload time remove patches for separate SEV and SNP
-> platform initialization and shutdown.
-> 
-> v2:
-> - Added support for separate SEV and SNP platform initalization, while
-> SNP platform initialization is done at KVM module load time, SEV 
-> platform initialization is done on demand at SEV/SEV-ES VM launch.
-> - Added support for separate SEV and SNP platform shutdown, both 
-> SEV and SNP shutdown done at KVM module unload time, only SEV
-> shutdown down when all SEV/SEV-ES VMs have been destroyed, this
-> allows SEV firmware hotloading support anytime during system lifetime.
-> - Updated commit messages for couple of patches in the series with
-> reference to the feedback received on v1 patches.
-> 
-> Ashish Kalra (8):
->   crypto: ccp: Abort doing SEV INIT if SNP INIT fails
->   crypto: ccp: Move dev_info/err messages for SEV/SNP init and shutdown
->   crypto: ccp: Ensure implicit SEV/SNP init and shutdown in ioctls
->   crypto: ccp: Reset TMR size at SNP Shutdown
->   crypto: ccp: Register SNP panic notifier only if SNP is enabled
->   crypto: ccp: Add new SEV/SNP platform shutdown API
->   KVM: SVM: Add support to initialize SEV/SNP functionality in KVM
->   crypto: ccp: Move SEV/SNP Platform initialization to KVM
-> 
->  arch/x86/kvm/svm/sev.c       |  12 ++
->  drivers/crypto/ccp/sev-dev.c | 245 +++++++++++++++++++++++++----------
->  include/linux/psp-sev.h      |   3 +
->  3 files changed, 194 insertions(+), 66 deletions(-)
-> 
-> -- 
-> 2.34.1
+On Thu, Apr 03, 2025 at 12:09:42PM +0200, Stefano Garzarella wrote:
+> @@ -2697,6 +2702,9 @@ static int __init snp_init_platform_device(void)
+>  	if (platform_device_register(&sev_guest_device))
+>  		return -ENODEV;
+>  
+> +	if (platform_device_register(&tpm_svsm_device))
+> +		return -ENODEV;
 
-Patches 7-8 applied.  Thanks.
+So I don't understand the design here:
+
+You've exported the probe function - snp_svsm_vtpm_probe() - and you're
+calling it in tpm_svsm_probe().
+
+So why aren't you registering the platform device there too but are doing this
+unconditional strange thing here?
+
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
