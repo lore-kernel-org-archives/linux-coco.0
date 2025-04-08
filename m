@@ -1,212 +1,172 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978D925F78F
-	for <linux-coco@lists.linux.dev>; Tue,  8 Apr 2025 06:39:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51982638B0;
+	Tue,  8 Apr 2025 08:11:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744094359; cv=none; b=L7savITPwnCztKw/3ZC0acACRolu7jotiU87U8UxBrfclpvi8blX5ZiKBQkzVliXeQp81czoEXvbBH6y3Aw2Ch+em8Rvkw+ChmzO11doQDU5jiEh7IypeDLVHoZSIqFdMrOXQb9U7YcNsFiNnET4rSbwQU3B93dpFKpl9MKzdSA=
+	t=1744099886; cv=none; b=L991J1/oANK8GSLpgy5OG1ugO7TMSvs2eLDany/q8vDbakxxTLZT8ilc2yQEU1uPP8Thf7/HuOTmEhcDnLG+eyKtQnswa91qK2iwE/F0PSQMVP03qMZST1clG/lB944sl2t2uxI5EUv77dT2HqIe3GSm3AmD+obLz4Hr3+rSIIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744094359; c=relaxed/simple;
-	bh=QImjOwZmHFIglPjEksFrg4C+14Ff/Y7CUPgguEl5tWI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aF0yse96OMjLLbspacKNnLhIXwWIWM07pB1BcslSiMiPF4a4Rcv185ltWXoo7ILTVtu3FgbA62yM0STILbRq98ASQ9BKLkd+MUxxGvyvO4Z5tecYj46auA2Zn9y7lHOTw1bkPXgXNc8vLvGBDOUbhZTiDJqGxDp12806tG+IjS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JqvEXeNC; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1744099886; c=relaxed/simple;
+	bh=0NFejXXQ5C/Irc7QVCHJxI7ymX8Um1SmC/6y0Sf6bps=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MhLrXevYIy/4Ac6cdLcVTNOgBOnoO1jcUaN5nRzW1fJlxMFFgtCQweCWTDrLWrOeaRu7x9VuQFA9wclLu6eSCXx6/0OnT7D4iqzsRbNQrHlWhYI4xMviTMB5U2RrTmNYl+3snc5C9xUWt6JKkOKa6zwASnR2NPfqo66N8lqVrus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=qF9Znl9v; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JqvEXeNC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744094356;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oo+vNBz6jEsiKjb63zXVQ6UhZa9LQg13RIyxKH2Wp2U=;
-	b=JqvEXeNCFI0Hf1IG2eMpUxXVITDMsImtQE+YDpQcEtJ0dx1X4BIGHz+7MIIRxo9KZc+9CQ
-	zHLtLqXWwpILNdOXPMHm1nEYJEf8tJwJ3cK5ZHrUWos/gw1JjgFTLDmrS8DxnY1vN9l55N
-	/6EyOP/WOrEhXlYC+OIbarxf390wdWg=
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
- [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-343-ZvEvQ-TiPrKKFZ1GzXg2Xg-1; Tue, 08 Apr 2025 02:39:13 -0400
-X-MC-Unique: ZvEvQ-TiPrKKFZ1GzXg2Xg-1
-X-Mimecast-MFC-AGG-ID: ZvEvQ-TiPrKKFZ1GzXg2Xg_1744094352
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-736c7d0d35aso7380834b3a.1
-        for <linux-coco@lists.linux.dev>; Mon, 07 Apr 2025 23:39:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744094352; x=1744699152;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oo+vNBz6jEsiKjb63zXVQ6UhZa9LQg13RIyxKH2Wp2U=;
-        b=ppNby7m88HtDLT18VU86TXIrMsDOeOCBNv9qpMYl+IAA4kIgikzBa8iz45nohxEE6R
-         VQ3L9ol6AVpVeO+6pv0djJQ915qKr0KhAKd38CgoBwAZSqq8gQ8grK5FmEngUjp5a9iV
-         SNc6YActgfRSdNdFlKmeHUkpV+8E+JYVKVzamzPbopCHZ6cdcTAsCnswLelu+Nhb8Swv
-         O82n6uujU6ZtmQqOC+PKu3/NkDZsZPCRptUwAVV6d73hXLVazfrPuw/DPc3u8SnkcYwX
-         h4nkEFKlTV0XDsVg43zxRQmsHcT3dHJb8WL8uXy8lJDDvDM/z3l018msd9kC6lOYgBOz
-         73kg==
-X-Forwarded-Encrypted: i=1; AJvYcCU5my/M0bKsO/PS4JRyAzG6EDbN9RJ+K0cTmAYFbEyFfG+BgI29oR7NURX4WHmDOgeD2DDdThSr2E+e@lists.linux.dev
-X-Gm-Message-State: AOJu0YzW6xyc/nDOKzTpcBqs3PhU1q47rtxkTuy+lQUW6ilSEZ3mfGlU
-	qkz4TvOdIzvoI7vTRAwp7sBOFJIHVq+D3Mcsra+0cl9Ef2TU4i/WMnTvFYvNIvQfm1/CtNDVOr6
-	UlkxSevk/OAKXG9lkTRNmwc56dOhly5eaa219U9Atjdn66VdXr5XkFJykcLc=
-X-Gm-Gg: ASbGncsNcjmQxmNFvvAO+dnxD0hXV+Fwf558OzIgUWbl54UaoZougjgSaGsqfgWTIM3
-	ayLApO83Gf5wN6Cao7iU0vpCgUC5KxWqmofogRcbMpciZ4Tnbc2sl69yOPLks20ib9aRoTTvoe+
-	evEc+lMx9uzG6bhwB4MNpVM4AIBYTPIDI/vNVEUfIQP/F36GBs7hASQUINr9tUw5KEVDrtQHNVK
-	SDbXSagbfNUNOvmNunhaZrqsKDJ1lcrLwVxMeW4jl1h1DFCf8900r2HYwSussdD5eEHeTwQP/vq
-	1PshuRfdiAPzf8B4
-X-Received: by 2002:a05:6a00:2393:b0:736:52d7:daca with SMTP id d2e1a72fcca58-73b6b8c3084mr14619982b3a.18.1744094352231;
-        Mon, 07 Apr 2025 23:39:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHCluDWzP6aX2PyZk9at9nI1CqMZ/cLW37DfwKCDqyszydjKUwNSMY0//3epUtYWIjDAxF0tw==
-X-Received: by 2002:a05:6a00:2393:b0:736:52d7:daca with SMTP id d2e1a72fcca58-73b6b8c3084mr14619954b3a.18.1744094351805;
-        Mon, 07 Apr 2025 23:39:11 -0700 (PDT)
-Received: from [192.168.68.55] ([180.233.125.65])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-739d9ea15d6sm9712319b3a.89.2025.04.07.23.39.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Apr 2025 23:39:11 -0700 (PDT)
-Message-ID: <cda1db80-4b4d-471f-87f0-d978278a4b6c@redhat.com>
-Date: Tue, 8 Apr 2025 16:39:02 +1000
+	dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="qF9Znl9v"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=BJqa6CzCTAkaDv71FdSxwPL/T5p0WkVuqJBIvve0EHU=; b=qF9Znl9vlveOLcfy/Lf7p749Wn
+	Ad2WcxwsLLrlScrw70HmNPgSwlIyALU09S/SKeVKLW3Jbv80V8NWledW+PbIakXukYDD/JN2fz6kk
+	75Yl2Jd2xiNFF6275NJj6SJq6qMIW3dqZn1Dgg1Wn2IohcDN+E/L4uSJRHTzULexp1d6dxn9nf21t
+	hXJ/sACLCgSQPZ/wuaqC+Uhm+QRQLg7ewJqWZOhdlGXbDNe9FoItJRgXBUMnBSKYe6r7AWc+hY7uy
+	ti535Pu3O0WZBvEplyNZBD/+ui7rL2HSiSg7o5ntXiCGEBb3+Wh2ltvxdmsA+RstHn78rWHGIFJml
+	/bbK1P1Q==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1u242r-00DonW-0E;
+	Tue, 08 Apr 2025 16:10:58 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Tue, 08 Apr 2025 16:10:57 +0800
+Date: Tue, 8 Apr 2025 16:10:57 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, thomas.lendacky@amd.com,
+	john.allen@amd.com, michael.roth@amd.com, dionnaglaze@google.com,
+	nikunj@amd.com, ardb@kernel.org, kevinloughlin@google.com,
+	Neeraj.Upadhyay@amd.com, aik@amd.com, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH v7 0/8] Move initializing SEV/SNP functionality to KVM
+Message-ID: <Z_TaEXCXpDM6wa-m@gondor.apana.org.au>
+References: <cover.1742850400.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 35/45] arm64: RME: Propagate number of breakpoints and
- watchpoints to userspace
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-References: <20250213161426.102987-1-steven.price@arm.com>
- <20250213161426.102987-36-steven.price@arm.com>
- <c8af8a7f-5ee4-460b-aec4-959f688db628@redhat.com>
- <adbca476-7d0f-473d-a2a2-0a29a497dbca@arm.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <adbca476-7d0f-473d-a2a2-0a29a497dbca@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Uh13m2g7DCVAoVwjlo-5pNGBgC0QTc32-rkbIi8XQZw_1744094352
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1742850400.git.ashish.kalra@amd.com>
 
-On 4/8/25 2:35 AM, Steven Price wrote:
-> On 04/03/2025 23:45, Gavin Shan wrote:
->> On 2/14/25 2:14 AM, Steven Price wrote:
->>> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
->>>
->>> The RMM describes the maximum number of BPs/WPs available to the guest
->>> in the Feature Register 0. Propagate those numbers into ID_AA64DFR0_EL1,
->>> which is visible to userspace. A VMM needs this information in order to
->>> set up realm parameters.
->>>
->>> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
->>> Signed-off-by: Steven Price <steven.price@arm.com>
->>> ---
->>>    arch/arm64/include/asm/kvm_rme.h |  2 ++
->>>    arch/arm64/kvm/rme.c             | 22 ++++++++++++++++++++++
->>>    arch/arm64/kvm/sys_regs.c        |  2 +-
->>>    3 files changed, 25 insertions(+), 1 deletion(-)
->>>
->>
->> With the following one nitpick addressed:
->>
->> Reviewed-by: Gavin Shan <gshan@redhat.com>
->>
->>> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/
->>> asm/kvm_rme.h
->>> index d684b30493f5..67ee38541a82 100644
->>> --- a/arch/arm64/include/asm/kvm_rme.h
->>> +++ b/arch/arm64/include/asm/kvm_rme.h
->>> @@ -85,6 +85,8 @@ void kvm_init_rme(void);
->>>    u32 kvm_realm_ipa_limit(void);
->>>    u32 kvm_realm_vgic_nr_lr(void);
->>>    +u64 kvm_realm_reset_id_aa64dfr0_el1(const struct kvm_vcpu *vcpu,
->>> u64 val);
->>> +
->>>    bool kvm_rme_supports_sve(void);
->>>      int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap
->>> *cap);
->>> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
->>> index f83f34358832..8c426f575728 100644
->>> --- a/arch/arm64/kvm/rme.c
->>> +++ b/arch/arm64/kvm/rme.c
->>> @@ -87,6 +87,28 @@ u32 kvm_realm_vgic_nr_lr(void)
->>>        return u64_get_bits(rmm_feat_reg0,
->>> RMI_FEATURE_REGISTER_0_GICV3_NUM_LRS);
->>>    }
->>>    +u64 kvm_realm_reset_id_aa64dfr0_el1(const struct kvm_vcpu *vcpu,
->>> u64 val)
->>> +{
->>> +    u32 bps = u64_get_bits(rmm_feat_reg0,
->>> RMI_FEATURE_REGISTER_0_NUM_BPS);
->>> +    u32 wps = u64_get_bits(rmm_feat_reg0,
->>> RMI_FEATURE_REGISTER_0_NUM_WPS);
->>> +    u32 ctx_cmps;
->>> +
->>> +    if (!kvm_is_realm(vcpu->kvm))
->>> +        return val;
->>> +
->>> +    /* Ensure CTX_CMPs is still valid */
->>> +    ctx_cmps = FIELD_GET(ID_AA64DFR0_EL1_CTX_CMPs, val);
->>> +    ctx_cmps = min(bps, ctx_cmps);
->>> +
->>> +    val &= ~(ID_AA64DFR0_EL1_BRPs_MASK | ID_AA64DFR0_EL1_WRPs_MASK |
->>> +         ID_AA64DFR0_EL1_CTX_CMPs);
->>> +    val |= FIELD_PREP(ID_AA64DFR0_EL1_BRPs_MASK, bps) |
->>> +           FIELD_PREP(ID_AA64DFR0_EL1_WRPs_MASK, wps) |
->>> +           FIELD_PREP(ID_AA64DFR0_EL1_CTX_CMPs, ctx_cmps);
->>> +
->>> +    return val;
->>> +}
->>> +
->>
->> The chunk of code can be squeezed to
->> sys_reg.c::sanitise_id_aa64dfr0_el1() since
->> sys_reg.c has been plumbed for realm, no reason to keep a separate
->> helper in rme.c
->> because it's only called by sys_reg.c::sanitise_id_aa64dfr0_el1()
+On Mon, Mar 24, 2025 at 09:13:41PM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
 > 
-> The issue here is the rmm_feat_reg0 variable - it's currently static in
-> rme.c - so I can't just shift the code over. I could obviously provide
-> helpers to get the necessary information but this seemed cleaner.
+> Remove initializing SEV/SNP functionality from PSP driver and instead add
+> support to KVM to explicitly initialize the PSP if KVM wants to use
+> SEV/SNP functionality.
 > 
-
-Ack.
-
-Thanks,
-Gavin
-
-> Thanks,
-> Steve
+> This removes SEV/SNP initialization at PSP module probe time and does
+> on-demand SEV/SNP initialization when KVM really wants to use 
+> SEV/SNP functionality. This will allow running legacy non-confidential
+> VMs without initializating SEV functionality. 
 > 
->>>    static int get_start_level(struct realm *realm)
->>>    {
->>>        return 4 - ((realm->ia_bits - 8) / (RMM_PAGE_SHIFT - 3));
->>> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
->>> index ed881725eb64..5618eff33155 100644
->>> --- a/arch/arm64/kvm/sys_regs.c
->>> +++ b/arch/arm64/kvm/sys_regs.c
->>> @@ -1820,7 +1820,7 @@ static u64 sanitise_id_aa64dfr0_el1(const struct
->>> kvm_vcpu *vcpu, u64 val)
->>>        /* Hide BRBE from guests */
->>>        val &= ~ID_AA64DFR0_EL1_BRBE_MASK;
->>>    -    return val;
->>> +    return kvm_realm_reset_id_aa64dfr0_el1(vcpu, val);
->>>    }
->>>      static int set_id_aa64dfr0_el1(struct kvm_vcpu *vcpu,
+> The patch-set includes the fix to not continue with SEV INIT if SNP
+> INIT fails as RMP table must be initialized before calling SEV INIT
+> if host SNP support is enabled.
+> 
+> This will assist in adding SNP CipherTextHiding support and SEV firmware
+> hotloading support in KVM without sharing SEV ASID management and SNP
+> guest context support between PSP driver and KVM and keeping all that
+> support only in KVM.
+> 
+> To support SEV firmware hotloading, SEV Shutdown will be done explicitly
+> prior to DOWNLOAD_FIRMWARE_EX and SEV INIT post it to work with the
+> requirement of SEV to be in UNINIT state for DOWNLOAD_FIRMWARE_EX.
+> NOTE: SEV firmware hotloading will only be supported if there are no
+> active SEV/SEV-ES guests. 
+> 
+> v7:
+> -  Drop the Fixes: tag for patch 01, as continuing with SEV INIT
+> after SNP INIT(_EX) failure will still cause SEV INIT to fail,
+> we are simply aborting here after SNP INIT(_EX) failure.
+> - Fix commit logs.
+> - Add additional reviewed-by's.
+> 
+> v6:
+> - Add fix to not continue with SEV INIT if SNP INIT fails as RMP table 
+> must be initialized before calling SEV INIT if host SNP support is enabled.
+> - Ensure that for SEV IOCTLs requiring SEV to be initialized, 
+> _sev_platform_init_locked() is called instead of __sev_platform_init_locked()
+> to ensure that both implicit SNP and SEV INIT is done for these ioctls and
+> followed by __sev_firmware_shutdown() to do both SEV and SNP shutdown.
+> - Refactor doing SEV and SNP INIT implicitly for specific SEV and SNP
+> ioctls into sev_move_to_init_state() and snp_move_to_init_state(). 
+> - Ensure correct error code is returned from sev_ioctl_do_pdh_export() 
+> if platform is not in INIT state.
+> - Remove dev_info() from sev_pci_init() because this would have printed
+> a duplicate message.
+> 
+> v5:
+> - To maintain 1-to-1 mapping between the ioctl commands and the SEV/SNP commands, 
+> handle the implicit INIT in the same way as SHUTDOWN, which is to use a local error
+> for INIT and in case of implicit INIT failures, let the error logs from 
+> __sev_platform_init_locked() OR __sev_snp_init_locked() be printed and always return
+> INVALID_PLATFORM_STATE as error back to the caller.
+> - Add better error logging for SEV/SNP INIT and SHUTDOWN commands.
+> - Fix commit logs.
+> - Add more acked-by's, reviewed-by's, suggested-by's.
+> 
+> v4:
+> - Rebase on linux-next which has the fix for SNP broken with kvm_amd
+> module built-in.
+> - Fix commit logs.
+> - Add explicit SEV/SNP initialization and shutdown error logs instead
+> of using a common exit point.
+> - Move SEV/SNP shutdown error logs from callers into __sev_platform_shutdown_locked()
+> and __sev_snp_shutdown_locked().
+> - Make sure that we continue to support both the probe field and psp_init_on_probe
+> module parameter for PSP module to support SEV INIT_EX.
+> - Add reviewed-by's.
+> 
+> v3:
+> - Move back to do both SNP and SEV platform initialization at KVM module
+> load time instead of SEV initialization on demand at SEV/SEV-ES VM launch
+> to prevent breaking QEMU which has a check for SEV to be initialized 
+> prior to launching SEV/SEV-ES VMs. 
+> - As both SNP and SEV platform initialization and shutdown is now done at
+> KVM module load and unload time remove patches for separate SEV and SNP
+> platform initialization and shutdown.
+> 
+> v2:
+> - Added support for separate SEV and SNP platform initalization, while
+> SNP platform initialization is done at KVM module load time, SEV 
+> platform initialization is done on demand at SEV/SEV-ES VM launch.
+> - Added support for separate SEV and SNP platform shutdown, both 
+> SEV and SNP shutdown done at KVM module unload time, only SEV
+> shutdown down when all SEV/SEV-ES VMs have been destroyed, this
+> allows SEV firmware hotloading support anytime during system lifetime.
+> - Updated commit messages for couple of patches in the series with
+> reference to the feedback received on v1 patches.
+> 
+> Ashish Kalra (8):
+>   crypto: ccp: Abort doing SEV INIT if SNP INIT fails
+>   crypto: ccp: Move dev_info/err messages for SEV/SNP init and shutdown
+>   crypto: ccp: Ensure implicit SEV/SNP init and shutdown in ioctls
+>   crypto: ccp: Reset TMR size at SNP Shutdown
+>   crypto: ccp: Register SNP panic notifier only if SNP is enabled
+>   crypto: ccp: Add new SEV/SNP platform shutdown API
+>   KVM: SVM: Add support to initialize SEV/SNP functionality in KVM
+>   crypto: ccp: Move SEV/SNP Platform initialization to KVM
+> 
+>  arch/x86/kvm/svm/sev.c       |  12 ++
+>  drivers/crypto/ccp/sev-dev.c | 245 +++++++++++++++++++++++++----------
+>  include/linux/psp-sev.h      |   3 +
+>  3 files changed, 194 insertions(+), 66 deletions(-)
+> 
+> -- 
+> 2.34.1
 
-
+Patches 7-8 applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
