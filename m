@@ -1,423 +1,80 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276CA25A2A3
-	for <linux-coco@lists.linux.dev>; Mon,  7 Apr 2025 18:59:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3BC22B5AD
+	for <linux-coco@lists.linux.dev>; Tue,  8 Apr 2025 00:39:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744052395; cv=none; b=kSuuzG1Nv0fQJWMCJPKTvW0uu5/YJu503TrOIfbqN8kOPrg8BmpvUxsgCeBxwZFAp40X15XqesLPvoJHVLM6dg5Eb2z84ALq32QloQCAPp+uCIqNa7WKb6LM237Hbjo2BobgeUs2EodIPFOUXQVc6NzRGmfi/zTMbDoQmsUX+yQ=
+	t=1744072776; cv=none; b=YPbRLI3koSvJKI+uXJX8OqMh1FttZAYHGvx8QqwGdRez3RloBlQuWDNfK5Par/G++XQXge3wnbr71xoOS/k5ByrSj7B5r82gdAgjzPkxa7GqSDI1LbP/eXHgbjHHI57a5pNhrjsodyTdSYlv0J5AeJ5Y4ZsKBstYqAkXaX28Qwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744052395; c=relaxed/simple;
-	bh=NE0tNXAYqSzmOnnFtNjH0NP/9T7ARhN+xOJeISYddgU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=U+QQ9LQsPNEpbuMpLF9ILb37Kw8m6+3i0q4blX91ZdBX5JYmqwQsM4eIXAJooW1HkocK2xj+EkWkaKk2r5o55ThaZxJ8uUyynFIp+fCkm4RYczT+yJEkF0r0iImbQ4mTBGTsUNx2afdhDrcMeC6miITuFdnpcQUkGttrXI/oJlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R6HzREuw; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1744072776; c=relaxed/simple;
+	bh=CH7nWE8hxjYh1hNdsD6EtWR+XZxdRrhM8+42fQc31Mg=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=jl/mB/7TYJpBWdwYzyshmI1zr7FOJcTKHuGCd6GAXxCLwdepJgAGJ6iU5ti7/jufFIxioW85vYAM8s0Nys/r55oB0JgN+2Pp1wV6yB7vcwD8sYjIo2SQmO2gVKKFJhclBQMO86ShqKGzFUZXkU88/OzZwUiebureeXwWKKbAcRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ao0HtsJn; arc=none smtp.client-ip=209.85.222.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R6HzREuw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744052393; x=1775588393;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=NE0tNXAYqSzmOnnFtNjH0NP/9T7ARhN+xOJeISYddgU=;
-  b=R6HzREuw94nIJcUJPH3aqKSbL77Pf+9tQUVaVyMLQm4K66Fon3pm3lWP
-   yeQUn5XmwiV3xEJbRt/ngnay6kXOrbrV+kJ/r14cS8aIv4bOOebigCqwU
-   +T/N/IjYVXIxd+Bv3LZP60EbbwWXVb5lFbTw7RaGPUjmkH6UswEn7KNjl
-   0bIhygZanpKih/3j7pYCkd9oNcgLvOdfRzcQ0lkKMVgEixusPB4ZB136d
-   zal7DWD9ghJYv5sqxXvw3sRxvtVOAMACRGMYTzJeSk47trZ3kqS4tdPeW
-   VJ1btWIjQSU7G3ahmovh+fdesZtNbsBAaJn8ADY5DGBm/a5P+SYborMpN
-   g==;
-X-CSE-ConnectionGUID: Mh3BzdJKQJqEBXXdgpYZNw==
-X-CSE-MsgGUID: zZVe+i3HRTiIdxJekL21/w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="62999734"
-X-IronPort-AV: E=Sophos;i="6.15,194,1739865600"; 
-   d="scan'208";a="62999734"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 11:59:53 -0700
-X-CSE-ConnectionGUID: ZQSxcxGASXm6/aF+qPn8zQ==
-X-CSE-MsgGUID: QjJ+RrzaQDyzmzBmTiyvrQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,194,1739865600"; 
-   d="scan'208";a="128899334"
-Received: from trung68x-mobl.amr.corp.intel.com (HELO bxing-mobl1.clients.intel.com) ([10.246.115.210])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Apr 2025 11:59:51 -0700
-From: Cedric Xing <cedric.xing@intel.com>
-Date: Mon, 07 Apr 2025 13:59:32 -0500
-Subject: [PATCH v3 5/5] virt: tdx-guest: Expose TDX MRs as sysfs attributes
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ao0HtsJn"
+Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-86feb848764so2069971241.0
+        for <linux-coco@lists.linux.dev>; Mon, 07 Apr 2025 17:39:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1744072770; x=1744677570; darn=lists.linux.dev;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=CH7nWE8hxjYh1hNdsD6EtWR+XZxdRrhM8+42fQc31Mg=;
+        b=Ao0HtsJnqIEfNOWnVcieQfKLeZ+s/hvuPz31V7PDxUSDlKW7+5awNRbNBgax2UViLe
+         fbBwWGp7xU29E5u7pw98XRLvF+xMcwgo1yHakiFK2IiQcZPQbCVoQJu0hGev6OjTGE62
+         +HHsLleMZ1+WGVBx/CiAFCOlZIEN+hxsta1Gkk6eZJ4tbgVP/QJGair/o6tr6UnRmSr2
+         2kUoXIOuVqv1wOK7mjagiJ9S1tHkWmGVtojT+9aACG/aPQzpjT3uIhRpfo3OKgB4bj9K
+         C9nqDUvPcolT4NLQgrrleoCj1Kpga8+qTKKwwZ0Notl4LLSPNV66rXcfyr+ZZd4nJUW7
+         O8fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744072770; x=1744677570;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CH7nWE8hxjYh1hNdsD6EtWR+XZxdRrhM8+42fQc31Mg=;
+        b=VlZKRJcCIHOcRKqWcHEpOHMa70colFQzj0adDJxRtcGIPTNP1B4V6lGzpiJUr6A3OB
+         NGu5TNrII82yCl4QbHM4h8TidJeOsfty/1GRn1ukVNYKMCF/GB+7vqrq8UC9heUq7V69
+         zpva+pjHqaMoQ2YWCPqIf+7nQ50sfYLbFJeQJ5mRQ3wj8LtA1/U17jyVzBsUmETzL9oA
+         XDjsoaYZmGn9xKrl9tJDq30kyHH/GFlMsgjx7nlOHAQDeUw6Qmd+KInUSwo9gw0BNrMX
+         4HLO2ruUlX5UhCs/hK5A+g0OVOwE3SNXTJM8Wan+gnEu/9J5QOFr0RqNkveiNSTr7D99
+         DE8Q==
+X-Gm-Message-State: AOJu0YxupK3uU0tmveiPF4N0vWyHSjp6qreif+ppXF6GChyPhDuJWIt+
+	XiDkPM67nmhDY6SI1Nb1ECLGnHTBB1uXTivQMhh/1KsSsk67NhZQ0RfLwkJsDXT09LfMuEIBEXR
+	nQ7RrSY4FVm2OeoWVit4gpyinE5Un4hhbLniP5eidxGao6Z3Qc0Wf9aA=
+X-Gm-Gg: ASbGncvTRQlgUBFbKbXGfQKD7+sqrxfS9oRjosDJ9dYnW82vj0BlRL2Rdz74lVWq9Y1
+	mvb4o+IqYTnNVqvjB4JPSMQ2RsJuMaK9xML6Gx8ETDjXHsQ2WXbP+4kwNEhFa1MM9WFywiFb4Lx
+	Po7WyJu1OR+EqLiljY11CldnhJJf4GC4jcauc3VsQ5VhxXCnNwOTFhS4tm
+X-Google-Smtp-Source: AGHT+IF5KWS4P0OrHfJgNfE99B8O+tUqhC0YRvQ+OVi93PNSrACeOegQtDkZOFXZAwENaZycBZ6LVTDGaZMA4KRpLmE=
+X-Received: by 2002:a05:6102:26c6:b0:4ba:974c:891e with SMTP id
+ ada2fe7eead31-4c856a500f2mr10901485137.17.1744072770217; Mon, 07 Apr 2025
+ 17:39:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250407-tdx-rtmr-v3-5-54f17bc65228@intel.com>
-References: <20250407-tdx-rtmr-v3-0-54f17bc65228@intel.com>
-In-Reply-To: <20250407-tdx-rtmr-v3-0-54f17bc65228@intel.com>
-To: Dan Williams <dan.j.williams@intel.com>, 
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, 
- Dave Hansen <dave.hansen@linux.intel.com>, 
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
- Dionna Amalie Glaze <dionnaglaze@google.com>, 
- Guorui Yu <guorui.yu@linux.alibaba.com>, 
- James Bottomley <James.Bottomley@HansenPartnership.com>, 
- Dan Middleton <dan.middleton@linux.intel.com>, 
- Mikko Ylinen <mikko.ylinen@linux.intel.com>, 
- Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-X-Mailer: b4 0.13.0
+From: Steve Rutherford <srutherford@google.com>
+Date: Mon, 7 Apr 2025 17:38:53 -0700
+X-Gm-Features: ATxdqUE4bl-iR9pG2iOR2KE1SbbhqMDbsvIwBBfgh2QnoOoNEzSXlElzwA4__qE
+Message-ID: <CABayD+c7G2=3ysYWFLziFM7SEd3KLDzVbQNjUtk43rdeRrf8qw@mail.gmail.com>
+Subject: Kernel SIG meeting 4/10 - Open Agenda
+To: linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Expose the most commonly used TDX MRs (Measurement Registers) as sysfs
-attributes. Use the ioctl() interface of /dev/tdx_guest to request a full
-TDREPORT for access to other TD measurements.
+Hi all,
 
-Directory structure of TDX MRs inside a TDVM is as follows:
+We have an instance of the Kernel SIG coming up, at 9AM PDT on
+Thursday, April 10th (6PM CEST).
 
-/sys/class/misc/tdx_guest
-└── mr
-    ├── mrconfigid
-    ├── mrowner
-    ├── mrownerconfig
-    ├── mrtd:sha384
-    ├── rtmr0:sha384
-    ├── rtmr1:sha384
-    ├── rtmr2:sha384
-    └── rtmr3:sha384
+We currently have an open agenda, please make suggestions for topics.
+In particular, if you have any topics that have been challenging to
+resolve on list, this may be a good forum to hash things out.
 
-Read the file/attribute to retrieve the current value of an MR. Write to
-the file/attribute (if writable) to extend the corresponding RTMR. Refer to
-Documentation/ABI/testing/sysfs-devices-virtual-misc-tdx_guest-mr for more
-information.
+Zoom link - https://zoom-lfx.platform.linuxfoundation.org/meeting/92401169243?password=e6c02995-6cfb-4f90-82b6-747f767eb168
+Agenda - https://docs.google.com/document/d/18D820gyt2xe84Jy6dGXgrNThApoozcekDzvIlK2_bd4/edit?tab=t.0
+Calendar - https://confidentialcomputing.io/get-involved/calendar/
 
-Signed-off-by: Cedric Xing <cedric.xing@intel.com>
----
- .../sysfs-devices-virtual-misc-tdx_guest-mr        |  48 ++++++
- MAINTAINERS                                        |   1 +
- drivers/virt/coco/tdx-guest/Kconfig                |   1 +
- drivers/virt/coco/tdx-guest/tdx-guest.c            | 169 ++++++++++++++++++++-
- 4 files changed, 217 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/ABI/testing/sysfs-devices-virtual-misc-tdx_guest-mr b/Documentation/ABI/testing/sysfs-devices-virtual-misc-tdx_guest-mr
-new file mode 100644
-index 000000000000..682b2973737a
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-devices-virtual-misc-tdx_guest-mr
-@@ -0,0 +1,48 @@
-+What:		/sys/devices/virtual/misc/tdx_guest/mr/MRNAME[:HASH]
-+Date:		April, 2025
-+KernelVersion:	v6.16
-+Contact:	linux-coco@lists.linux.dev
-+Description:
-+		Value of a TDX measurement register (MR). MRNAME and HASH above
-+		are placeholders. The optional suffix :HASH is used for MRs
-+		that have associated hash algorithms. See below for a complete
-+		list of TDX MRs exposed via sysfs. Comprehensive information is
-+		available at https://intel.com/tdx
-+
-+What:		/sys/devices/virtual/misc/tdx_guest/mr/mrconfigid
-+Date:		April, 2025
-+KernelVersion:	v6.16
-+Contact:	cedric.xing@intel.com
-+Description:
-+		(RO) Value of MRCONFIGID - immutable storage for SW use.
-+
-+What:		/sys/devices/virtual/misc/tdx_guest/mr/mrowner
-+Date:		April, 2025
-+KernelVersion:	v6.16
-+Contact:	cedric.xing@intel.com
-+Description:
-+		(RO) Value of MROWNER - immutable storage for SW use.
-+
-+What:		/sys/devices/virtual/misc/tdx_guest/mr/mrownerconfig
-+Date:		April, 2025
-+KernelVersion:	v6.16
-+Contact:	cedric.xing@intel.com
-+Description:
-+		(RO) Value of MROWNERCONFIG - immutable storage for SW use.
-+
-+What:		/sys/devices/virtual/misc/tdx_guest/mr/mrtd:sha384
-+Date:		April, 2025
-+KernelVersion:	v6.16
-+Contact:	cedric.xing@intel.com
-+Description:
-+		(RO) Value of MRTD - the measurement of the initial memory
-+		image of the current TD.
-+
-+What:		/sys/devices/virtual/misc/tdx_guest/mr/rtmr[0123]:sha384
-+Date:		April, 2025
-+KernelVersion:	v6.16
-+Contact:	cedric.xing@intel.com
-+Description:
-+		(RW) Read returns the current value of the RTMR. Write extends
-+		the written buffer to the RTMR. All writes must start at offset
-+		0 and be 48 bytes in size. Partial writes are not supported.
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b210ac3389a7..c702f456643a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -26226,6 +26226,7 @@ L:	x86@kernel.org
- L:	linux-coco@lists.linux.dev
- S:	Supported
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git x86/tdx
-+F:	Documentation/ABI/testing/sysfs-devices-virtual-misc-tdx_guest-mr
- F:	arch/x86/boot/compressed/tdx*
- F:	arch/x86/coco/tdx/
- F:	arch/x86/include/asm/shared/tdx.h
-diff --git a/drivers/virt/coco/tdx-guest/Kconfig b/drivers/virt/coco/tdx-guest/Kconfig
-index 22dd59e19431..dbbdc14383b1 100644
---- a/drivers/virt/coco/tdx-guest/Kconfig
-+++ b/drivers/virt/coco/tdx-guest/Kconfig
-@@ -2,6 +2,7 @@ config TDX_GUEST_DRIVER
- 	tristate "TDX Guest driver"
- 	depends on INTEL_TDX_GUEST
- 	select TSM_REPORTS
-+	select TSM_MEASUREMENTS
- 	help
- 	  The driver provides userspace interface to communicate with
- 	  the TDX module to request the TDX guest details like attestation
-diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
-index 224e7dde9cde..1160f861c027 100644
---- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-+++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-@@ -5,6 +5,8 @@
-  * Copyright (C) 2022 Intel Corporation
-  */
- 
-+#define pr_fmt(fmt)			KBUILD_MODNAME ": " fmt
-+
- #include <linux/kernel.h>
- #include <linux/miscdevice.h>
- #include <linux/mm.h>
-@@ -16,7 +18,7 @@
- #include <linux/io.h>
- #include <linux/delay.h>
- #include <linux/tsm.h>
--#include <linux/sizes.h>
-+#include <linux/tsm-mr.h>
- 
- #include <uapi/linux/tdx-guest.h>
- 
-@@ -86,8 +88,14 @@ static long tdx_get_report0(struct tdx_report_req __user *req)
- 		goto out;
- 	}
- 
-+	if (mutex_lock_interruptible(&quote_lock)) {
-+		ret = -EINTR;
-+		goto out;
-+	}
-+
- 	/* Generate TDREPORT0 using "TDG.MR.REPORT" TDCALL */
- 	ret = tdx_mcall_get_report0(reportdata, tdreport);
-+	mutex_unlock(&quote_lock);
- 	if (ret)
- 		goto out;
- 
-@@ -285,10 +293,16 @@ static const struct file_operations tdx_guest_fops = {
- 	.unlocked_ioctl = tdx_guest_ioctl,
- };
- 
-+static const struct attribute_group *tdx_attr_groups[] = {
-+	NULL,
-+	NULL,
-+};
-+
- static struct miscdevice tdx_misc_dev = {
- 	.name = KBUILD_MODNAME,
- 	.minor = MISC_DYNAMIC_MINOR,
- 	.fops = &tdx_guest_fops,
-+	.groups = tdx_attr_groups,
- };
- 
- static const struct x86_cpu_id tdx_guest_ids[] = {
-@@ -304,6 +318,144 @@ static const struct tsm_ops tdx_tsm_ops = {
- 	.report_bin_attr_visible = tdx_report_bin_attr_visible,
- };
- 
-+enum {
-+	TDREPORT_reportdata = 128,
-+	TDREPORT_tee_tcb_info = 256,
-+	TDREPORT_tdinfo = TDREPORT_tee_tcb_info + 256,
-+	TDREPORT_attributes = TDREPORT_tdinfo,
-+	TDREPORT_xfam = TDREPORT_attributes + sizeof(u64),
-+	TDREPORT_mrtd = TDREPORT_xfam + sizeof(u64),
-+	TDREPORT_mrconfigid = TDREPORT_mrtd + SHA384_DIGEST_SIZE,
-+	TDREPORT_mrowner = TDREPORT_mrconfigid + SHA384_DIGEST_SIZE,
-+	TDREPORT_mrownerconfig = TDREPORT_mrowner + SHA384_DIGEST_SIZE,
-+	TDREPORT_rtmr0 = TDREPORT_mrownerconfig + SHA384_DIGEST_SIZE,
-+	TDREPORT_rtmr1 = TDREPORT_rtmr0 + SHA384_DIGEST_SIZE,
-+	TDREPORT_rtmr2 = TDREPORT_rtmr1 + SHA384_DIGEST_SIZE,
-+	TDREPORT_rtmr3 = TDREPORT_rtmr2 + SHA384_DIGEST_SIZE,
-+	TDREPORT_servtd_hash = TDREPORT_rtmr3 + SHA384_DIGEST_SIZE,
-+};
-+
-+static u8 tdx_mr_report[TDX_REPORT_LEN] __aligned(TDX_REPORT_LEN);
-+
-+#define TDX_MR_(r) .mr_value = tdx_mr_report + TDREPORT_##r, TSM_MR_(r, SHA384)
-+static const struct tsm_measurement_register tdx_mrs[] = {
-+	{ TDX_MR_(rtmr0) | TSM_MR_F_RTMR },
-+	{ TDX_MR_(rtmr1) | TSM_MR_F_RTMR },
-+	{ TDX_MR_(rtmr2) | TSM_MR_F_RTMR },
-+	{ TDX_MR_(rtmr3) | TSM_MR_F_RTMR },
-+	{ TDX_MR_(mrtd) },
-+	{ TDX_MR_(mrconfigid) | TSM_MR_F_NOHASH },
-+	{ TDX_MR_(mrowner) | TSM_MR_F_NOHASH },
-+	{ TDX_MR_(mrownerconfig) | TSM_MR_F_NOHASH },
-+};
-+#undef TDX_MR_
-+
-+static int tdx_mr_try_refresh(void)
-+{
-+	u8 *reportdata, *tdreport;
-+	int ret;
-+
-+	reportdata = tdx_mr_report + TDREPORT_reportdata;
-+
-+	/*
-+	 * TDCALL requires a GPA as input. Depending on whether this module is
-+	 * built as a built-in (Y) or a module (M), tdx_mr_report may or may
-+	 * not be converted to a GPA using virt_to_phys. If not, a directly
-+	 * mapped buffer must be allocated using kmalloc and used as an
-+	 * intermediary.
-+	 */
-+	if (IS_BUILTIN(CONFIG_TDX_GUEST_DRIVER))
-+		tdreport = tdx_mr_report;
-+	else {
-+		/* TDREPORT buffer must be naturally aligned */
-+		tdreport = kmalloc(__alignof(tdx_mr_report), GFP_KERNEL);
-+		if (!tdreport)
-+			return -ENOMEM;
-+
-+		reportdata = memcpy(tdreport + TDREPORT_reportdata, reportdata,
-+				    TDX_REPORTDATA_LEN);
-+	}
-+
-+	ret = tdx_mcall_get_report0(reportdata, tdreport);
-+	if (ret)
-+		pr_err("GetReport call failed\n");
-+
-+	if (!IS_BUILTIN(CONFIG_TDX_GUEST_DRIVER)) {
-+		if (!ret)
-+			memcpy(tdx_mr_report, tdreport, sizeof(tdx_mr_report));
-+		kfree(tdreport);
-+	}
-+
-+	return ret;
-+}
-+
-+static int tdx_mr_refresh(const struct tsm_measurements *tm,
-+			  const struct tsm_measurement_register *mr)
-+{
-+	int ret = -EINTR;
-+
-+	if (!mutex_lock_interruptible(&quote_lock)) {
-+		ret = tdx_mr_try_refresh();
-+		mutex_unlock(&quote_lock);
-+
-+		WARN_ON(ret);
-+	}
-+	return ret;
-+}
-+
-+static int tdx_mr_try_extend(ptrdiff_t mr_ind, const u8 *data)
-+{
-+#if IS_BUILTIN(CONFIG_TDX_GUEST_DRIVER)
-+	/*
-+	 * TDG.MR.RTMR.EXTEND takes the GPA of a 64-byte aligned buffer on
-+	 * input. virt_to_phys() works on static buffers only if the current
-+	 * module is built-in.
-+	 */
-+	static u8 buf[SHA384_DIGEST_SIZE] __aligned(64);
-+#else
-+	/*
-+	 * Otherwise, kmalloc() must be used to allocate the 64-byte aligned
-+	 * input buffer.
-+	 */
-+	u8 *buf __free(kfree) = kmalloc(64, GFP_KERNEL);
-+	if (!buf)
-+		return -ENOMEM;
-+#endif
-+
-+	int ret;
-+
-+	memcpy(buf, data, SHA384_DIGEST_SIZE);
-+
-+	ret = tdx_mcall_extend_rtmr((u8)mr_ind, buf);
-+	if (ret)
-+		pr_err("Extending RTMR%ld failed\n", mr_ind);
-+
-+	return ret;
-+}
-+
-+static int tdx_mr_extend(const struct tsm_measurements *tm,
-+			 const struct tsm_measurement_register *mr,
-+			 const u8 *data)
-+{
-+	int ret = -EINTR;
-+
-+	if (!mutex_lock_interruptible(&quote_lock)) {
-+		ret = tdx_mr_try_extend(mr - tm->mrs, data);
-+		mutex_unlock(&quote_lock);
-+
-+		WARN_ON(ret);
-+	}
-+	return ret;
-+}
-+
-+static struct tsm_measurements tdx_measurements = {
-+	.name = "mr",
-+	.mrs = tdx_mrs,
-+	.nr_mrs = ARRAY_SIZE(tdx_mrs),
-+	.refresh = tdx_mr_refresh,
-+	.write = tdx_mr_extend,
-+};
-+
- static int __init tdx_guest_init(void)
- {
- 	int ret;
-@@ -311,9 +463,19 @@ static int __init tdx_guest_init(void)
- 	if (!x86_match_cpu(tdx_guest_ids))
- 		return -ENODEV;
- 
-+	ret = tdx_mr_try_refresh();
-+	if (ret) {
-+		pr_err("Failed to read MRs: %d\n", ret);
-+		return ret;
-+	}
-+
-+	tdx_attr_groups[0] = tsm_mr_create_attribute_group(&tdx_measurements);
-+	if (IS_ERR(tdx_attr_groups[0]))
-+		return PTR_ERR(tdx_attr_groups[0]);
-+
- 	ret = misc_register(&tdx_misc_dev);
- 	if (ret)
--		return ret;
-+		goto free_tsm_mr;
- 
- 	quote_data = alloc_quote_buf();
- 	if (!quote_data) {
-@@ -332,6 +494,8 @@ static int __init tdx_guest_init(void)
- 	free_quote_buf(quote_data);
- free_misc:
- 	misc_deregister(&tdx_misc_dev);
-+free_tsm_mr:
-+	tsm_mr_free_attribute_group(tdx_attr_groups[0]);
- 
- 	return ret;
- }
-@@ -342,6 +506,7 @@ static void __exit tdx_guest_exit(void)
- 	tsm_unregister(&tdx_tsm_ops);
- 	free_quote_buf(quote_data);
- 	misc_deregister(&tdx_misc_dev);
-+	tsm_mr_free_attribute_group(tdx_attr_groups[0]);
- }
- module_exit(tdx_guest_exit);
- 
-
--- 
-2.43.0
-
+Thanks,
+Steve
