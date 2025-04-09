@@ -1,128 +1,100 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA5525D542
-	for <linux-coco@lists.linux.dev>; Wed,  9 Apr 2025 10:43:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4734325D212
+	for <linux-coco@lists.linux.dev>; Wed,  9 Apr 2025 11:32:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744195397; cv=none; b=VAE8tKWLRWxCHPAPKNrW4WCi+v5qbMg5ZGptrZZ7jk75NuPHQQTe7xHX9xYam5JIuyezywtNqpKO/Sh+oRKen2uQm77K/udkFEeUs9P5907Flz/n4ksgNGHExlfbt7wIIBTmVvtsVRL3YgD8ij4Xj9QTWyNERkEJaeuWIjVMEnE=
+	t=1744198341; cv=none; b=XMwZUHy+wDHg52UrmaNlPObvbZK1OItxEeapnajLWp3NH4Rivw4DCZ+P4izNR8AXETNG1FJJCy2EgGypWLl0xkLwTHug9Kh9ws4HViZX0tthWZsdsArMi90EtFurHF+62eGVOorAKaGqnFRVBaM/L34SbPYW02sEOXJ4uiWFyNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744195397; c=relaxed/simple;
-	bh=A/FlqmaIzcO4c8nAuBHIloGWE3rDWwPZOR27kQ1vVdA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P3uuvG6gWNNLJt2g6o7fmgp8rAyfT9BZfjt4LDjZPdw18UTwXPfwu6pFponne4W1xtzFuUxbU36f9AA85GDhO6fetDJm1DaFkCUfVDxPRF/J4jdSg512fyXbvOMJcPb3izsTpseuI6ousB1ZABTNuWPqjUAng32zKJyUAcA5u0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=faOg85dN; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1744198341; c=relaxed/simple;
+	bh=uJ2A4eJ9gw+1+DX8cROf0E6YMpexW4oBimv3nz/BFW8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hmlY+ZoazHj+/7yTA3Z/c1Xa3ozU0443RfLYz3Sy5xqYxt1RLBgNvUFtGxo+xry74zYbiF46tOo+KsIe9PRLfABd7LYjGMtw28V6lPVK1B7BYeoe24LQw/lh9CxXZqmFFXg8RHefPEsx1RVAh7tO1CiiKD2Wam5RMgpyKMhn+R8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=IIqwh7nN; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="faOg85dN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744195395;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EnfObN/lFf683o8WuLfplJQb1/cYuQGkU+V1Bcc+zTA=;
-	b=faOg85dNB73UyyYuViZ5JaBU2Z5/JC4V1aLvF2hI6jgsxqbeAjWF/q6bDFwSJkETQoJ9eJ
-	44pRSgJPynh7bAAHYYr0RhX7muoQwgWQfEfWAEd+Db83RD6WyBuKFLjR4IoZg/Z+zlKsnN
-	C1gT7BPCJlQHkpdeRroEXwAkqUgEuwA=
-Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
- [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-570-6R8aEHuTMlSZPcaXrMYE0A-1; Wed, 09 Apr 2025 06:43:14 -0400
-X-MC-Unique: 6R8aEHuTMlSZPcaXrMYE0A-1
-X-Mimecast-MFC-AGG-ID: 6R8aEHuTMlSZPcaXrMYE0A_1744195393
-Received: by mail-yb1-f198.google.com with SMTP id 3f1490d57ef6-e643fea7fd8so863382276.1
-        for <linux-coco@lists.linux.dev>; Wed, 09 Apr 2025 03:43:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744195393; x=1744800193;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EnfObN/lFf683o8WuLfplJQb1/cYuQGkU+V1Bcc+zTA=;
-        b=KoxThYOcF/mvz409TYo4UAqZqdnTSZuLUVXDHByDC3vzwVJG0Dkw5qsaqt9tQj4fGs
-         9q8s4JaWO7SIS2BlxpcKxGIpo8mVea3N9o8JbYbOZgvmVb1xad6F+K8eqyUdt4C1odpF
-         sSeoGuq7ASSt6DGZPbfRtz6P9YNr7Ueaa3TXpuQf1+B2I66pt/a6w18JQgrBgdpjbTYt
-         0P4m32eKLuuo+279JfYNxPwaGFFYBWjrJWvaOk1wAtC9c+Ek/pNbU2NXMad4vae8Dteb
-         RzB/wxVOuDxs8h89BNggAsLAP8hC3Vje42gVAape4J1TdbkJItiEvHE65Erqq5+y75AN
-         aBng==
-X-Forwarded-Encrypted: i=1; AJvYcCXyZtQKyDiEwYv9tIBDj87V4HtCwaSLQZ2b9guqdagowcf4WOtK2wppMdyM0wfmgt1Q9C2UCKZTq+VI@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx8Wln8SFYSBXnli5Eias3mkqLRVrR+7iuDqyhQxyG5hxbG8nZx
-	EQTH9buYNG8x9ibFAShJxVtARw+zWYxplwW58SdNFIUS+hkCQhd7TnK1K20XrDr0GJ47gnmLM1L
-	vcGRNJGAI6IQJTVx/xEK+p3gtzjkWnFr6mFsofCf9l4d/SZYq2xrU5pWHsQcPorjc2D7A//ZD38
-	cN/3BNQfltPwJynqW9f7lzPWORXpO2hnrrZQ==
-X-Gm-Gg: ASbGncuKDNJQ/HdlRrD/3PnwnDaFsmU4j04PNDRoKjZV1CPE/q265VuNwvMzaEwf2hQ
-	/dINj7zmGFY5SFJqPOxcdofiODS353KXJf1ZX4xEFOtJHeRIclLByil6FlV6qJvik430=
-X-Received: by 2002:a05:6902:2487:b0:e61:142a:82b1 with SMTP id 3f1490d57ef6-e6e5da76d6dmr11417305276.16.1744195393475;
-        Wed, 09 Apr 2025 03:43:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH9XLCSiAWV0l0Xyy3erc/2RwiuGpJfzHLbxLJRgI2MfphnLTk5GZMmDYdIvEsBTniIkRBZyC9Yc3m0F9mrx/U=
-X-Received: by 2002:a05:6902:2487:b0:e61:142a:82b1 with SMTP id
- 3f1490d57ef6-e6e5da76d6dmr11417256276.16.1744195393057; Wed, 09 Apr 2025
- 03:43:13 -0700 (PDT)
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="IIqwh7nN"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 075BF40E019F;
+	Wed,  9 Apr 2025 11:32:18 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id gUu-ArE3mT14; Wed,  9 Apr 2025 11:32:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1744198334; bh=Kd1dq6qO7Pm6ZvRiE64SfOl2sLEG/m2bPzR2xytbWHQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IIqwh7nNBt2x+2yj2qdpDHb2uNH4WmLAfAawqK2p//IrzduhQ8PFg+DomGP5FYLQK
+	 kcj2PVRNQboa/SNhYSO0QtRTu2tdzUrLsOwH+aw4CcSOnV/vh7z0nPDetHKCIMVR3v
+	 nsMDU9KzwVsc5asqWYjKK857/gsJ9XU1qxafO0NA8Kp1azysr7ZnwTM1m85Hv3QP7i
+	 ylLJTkcDpcPfao2bkxgX86prmHPuNDcK538rmjQd86silLCGZg1/xjm+iKOYcFRb5c
+	 C/AsxZ4+QOaI7PNAPe0vjDdP+8w3HR5IthiN2ssiRegxMs++Dp6nCiI/4PaQyl5gE8
+	 k6udHOGVHPt4wPRxnbiIivvwSvFLb7zf6myK6NBMecifVosboSyiDPUMoOhwuXYuy6
+	 k2Gww+0LV0Kfv9dpscT6gsjw3sr57CQgHJlWANL9ZG3Pka1IiGaD3t3o0tmTnvqmr0
+	 1T4ExnmlBKn1rNr3i/cOoS6ACrqmO+LL8gODtBGu6BJObEa/vxvcZtArQjzVgvFdpE
+	 cmQSiNlZsHSh/FsBECEPl06lteBMug5JKseiqqxhDFaktM75TbzQKI11+Q9DTg1xYZ
+	 aK6AhhdgaKw/1ILedOANYASvDjLa2KVbvPLwP4d+wfgL7iQWfaQ457O+EaFXYQHjs9
+	 YZ2cPK7xkIT8mZD0iRkn/1go=
+Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DCF4C40E01A3;
+	Wed,  9 Apr 2025 11:31:55 +0000 (UTC)
+Date: Wed, 9 Apr 2025 13:31:54 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+	"H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev,
+	linux-integrity@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+	x86@kernel.org, Tom Lendacky <thomas.lendacky@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Dionna Glaze <dionnaglaze@google.com>,
+	Claudio Carvalho <cclaudio@linux.ibm.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	linux-kernel@vger.kernel.org, Dov Murik <dovmurik@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v6 4/4] x86/sev: register tpm-svsm platform device
+Message-ID: <20250409113154.GGZ_ZaqgfRrrMij_Zm@fat_crate.local>
+References: <20250403100943.120738-1-sgarzare@redhat.com>
+ <20250403100943.120738-5-sgarzare@redhat.com>
+ <20250408110012.GFZ_UBvOcEfEcIM4mI@fat_crate.local>
+ <eqtiiphs6rtjo7nirkw7zcicew75wnl4ydenrt5vl6jdpqdgj6@2brjlyjbqhoq>
+ <20250408112820.GBZ_UIVPp-LuIiVrIV@fat_crate.local>
+ <o2u7p3wb64lcc4sziunr274hyubkgmspzdjcvihbpzkw6mkvpo@sjq3vi4y2qfl>
+ <20250409102120.GCZ_ZKIJw9WkXpTz4u@fat_crate.local>
+ <CAGxU2F7r_fWgr2YRmCvh2iQ1vPg30f-+W6FXyuidbakZkwhw2w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250403100943.120738-1-sgarzare@redhat.com> <20250403100943.120738-5-sgarzare@redhat.com>
- <20250408110012.GFZ_UBvOcEfEcIM4mI@fat_crate.local> <eqtiiphs6rtjo7nirkw7zcicew75wnl4ydenrt5vl6jdpqdgj6@2brjlyjbqhoq>
- <20250408112820.GBZ_UIVPp-LuIiVrIV@fat_crate.local> <o2u7p3wb64lcc4sziunr274hyubkgmspzdjcvihbpzkw6mkvpo@sjq3vi4y2qfl>
- <20250409102120.GCZ_ZKIJw9WkXpTz4u@fat_crate.local>
-In-Reply-To: <20250409102120.GCZ_ZKIJw9WkXpTz4u@fat_crate.local>
-From: Stefano Garzarella <sgarzare@redhat.com>
-Date: Wed, 9 Apr 2025 12:43:01 +0200
-X-Gm-Features: ATxdqUEEmadHBgiIuGJgxnDt-QGQF_QGugtY5XSP7f88rY67_2s-xBx1Kyl3594
-Message-ID: <CAGxU2F7r_fWgr2YRmCvh2iQ1vPg30f-+W6FXyuidbakZkwhw2w@mail.gmail.com>
-Subject: Re: [PATCH v6 4/4] x86/sev: register tpm-svsm platform device
-To: Borislav Petkov <bp@alien8.de>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, "H. Peter Anvin" <hpa@zytor.com>, 
-	linux-coco@lists.linux.dev, linux-integrity@vger.kernel.org, 
-	Ingo Molnar <mingo@redhat.com>, x86@kernel.org, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Joerg Roedel <jroedel@suse.de>, Dionna Glaze <dionnaglaze@google.com>, 
-	Claudio Carvalho <cclaudio@linux.ibm.com>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, linux-kernel@vger.kernel.org, 
-	Dov Murik <dovmurik@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: pJ9jDz-m6Z8itDFkQhIXCxZwQTfK_QyfyHnLQC95sGk_1744195393
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAGxU2F7r_fWgr2YRmCvh2iQ1vPg30f-+W6FXyuidbakZkwhw2w@mail.gmail.com>
 
-On Wed, 9 Apr 2025 at 12:21, Borislav Petkov <bp@alien8.de> wrote:
->
-> On Tue, Apr 08, 2025 at 01:54:07PM +0200, Stefano Garzarella wrote:
-> > I see, so IIUC I can just apply the following change to this patch and avoid
-> > to export snp_svsm_vtpm_probe() at all, right?
-> >
-> > diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-> > index acbd9bc526b1..fa83e6c7f990 100644
-> > --- a/arch/x86/coco/sev/core.c
-> > +++ b/arch/x86/coco/sev/core.c
-> > @@ -2702,8 +2702,10 @@ static int __init snp_init_platform_device(void)
-> >         if (platform_device_register(&sev_guest_device))
-> >                 return -ENODEV;
-> > -       if (platform_device_register(&tpm_svsm_device))
-> > -               return -ENODEV;
-> > +       if (snp_svsm_vtpm_probe()) {
-> > +               if (platform_device_register(&tpm_svsm_device))
-> > +                       return -ENODEV;
-> > +       }
-> >         pr_info("SNP guest platform device initialized.\n");
-> >         return 0;
->
-> No, this should go in tpm_svsm_probe().
+On Wed, Apr 09, 2025 at 12:43:01PM +0200, Stefano Garzarella wrote:
+> Sorry, maybe I missed something.
+> 
+> tpm_svsm.c registers the driver with module_platform_driver_probe().
+> 
+> Someone (the platform I guess) has to register the device by calling
+> platform_device_register(), as we already do for example for
+> sev_guest.
 
-Sorry, maybe I missed something.
+Maybe that platform device thing is the wrong approach. Why does the core code
+need to register some dummy platform device in the first place? Why can't
+drivers/char/tpm/tpm_svsm.c probe and init without it?
 
-tpm_svsm.c registers the driver with module_platform_driver_probe().
+-- 
+Regards/Gruss,
+    Boris.
 
-Someone (the platform I guess) has to register the device by calling
-platform_device_register(), as we already do for example for
-sev_guest.
-
-If we move platform_device_register() to tpm_svsm_probe() how will the
-probe be invoked?
-
-Thanks,
-Stefano
-
+https://people.kernel.org/tglx/notes-about-netiquette
