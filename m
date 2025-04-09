@@ -1,216 +1,216 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617351DFFD
-	for <linux-coco@lists.linux.dev>; Wed,  9 Apr 2025 15:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744211934; cv=none; b=dvYSlzLXH0bI3qS/2JHJidDMcr4WYWL6sPWQwWik5npqSqglYYi5sDPe9UZNVEdlDO2VS2BTdGoo9wZoR8sDq9ySZ/OEeO3gDbjBHIQ+u+EeLdUiNCkRalIvbcR/1sBkT95CNUk1WmbDyl26ZxGQTflrHSTZA78DHeUoV4FqFt0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744211934; c=relaxed/simple;
-	bh=neMBjAfQvFLiQGn9l5qtqonTP5JJPsOXzqJ5oJj7+S4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ejQ/nJVqtpipsC2C6GqwNUmB6Mr3j9G0kJJdL1YkENYVPGB6hJyp7GJckdMNcvsIB4W+1g3ECZA3qLO9j+2LUwMFX8SIefBGpREGu9yGdtJaMFiIZJ4lXL/REAjx8gXntpxQRYNbNCC+4xYHfUWPEeqeq3WYg2ObEIWAk3onEEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=KrCx6hvM; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A673326B970
+	for <linux-coco@lists.linux.dev>; Wed,  9 Apr 2025 15:45:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744213518; cv=fail; b=EwNPpksACoW/4/JwYoV1ZJVHC138+IX9BMqQ3RikdfU/9+NRZFGtOlMNZUyNxEau5K0y3k7wDMlP6D9btZ15GgCeUxD7Nkbnl57qQc913PcrD79xTmEWNM6ZtyRjYMpIbE5TjEc0dCklNMS0sTsc706a2hZsUj9bp6NHXwMSSfk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744213518; c=relaxed/simple;
+	bh=rL/fjA+lPCggJ4GHZCfuCa7eH8Pwe/UoH2nD1mLLTWM=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Nfr7Xby09RJZHYcyT+Pkghh9Z7kRG+PvvpJ7YWQL4XLr8XHVvZippbdIpG3tNhUf1NWaA3bF2DCOWfY54p6Bff3r+2VsGspoxqXU6RiHoJ+ed5jdfIPPJPJhxHPbqOX+F5ypTxsTszaCrqlUmzuf8wTUvnVB90JheW3K0sIdiOk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LUe6n4/D; arc=fail smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="KrCx6hvM"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3912fdddf8fso687867f8f.1
-        for <linux-coco@lists.linux.dev>; Wed, 09 Apr 2025 08:18:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1744211931; x=1744816731; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DIx/sSq+dGHJdaQfwcLez7458y2PCQ4hjTFY5rQhv8A=;
-        b=KrCx6hvMpS8D9LOKUxZLwNyz/6cB0/04guMdd38w+0wzFzQCfVmon3bu6ncghBlsfG
-         HCOoOIVwvQi4QvdWEdzOpwVJ7w1K/79vqUmRxzvj2AiywzzpKMzIE9dkNQnPx4zQreqP
-         P2lRUgxMqSQMnZvPSjfTr9zEvUuwovNmhVuJwwL6Zc2aj060b+fr+tK9ddJTHCFH5xKH
-         z7JJ7P4+pof5FF/PlQDqYayHmPU+LGGvdfu/feRXvjrtWofEhtsHnwQyLAQD8UNWM2DF
-         1IqYpEZK2ZpCr8fiUvcuiAL0KCQ1uzE8Rqw3dzIP+gAdOmVFO3agS9SZBCloCxsIWkeL
-         mMAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744211931; x=1744816731;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DIx/sSq+dGHJdaQfwcLez7458y2PCQ4hjTFY5rQhv8A=;
-        b=vgudZx6oQ2QKMnl+svOd7WhkX3xLiQWYIAHKZK47gdYXbPuAYCElVESSVyUR7NvRj/
-         vCESVwbDj5x9nekraccWj8pvsI0H8fpRkRifMeOkI+ruUzbZ3mLg1hSQ+8+vaHk+vqC4
-         BJTPe5rK2RlSrHRPnTAqlidG4OxFxDP1GZXXvYIZmtO99Njx2HWL0wqq4xJS56ZuyVZc
-         QLBFtd0RGhtR0aJLX6YWTdj1cKuEILqKuv8Mn58mwj/1eFNlxu4oVW2g8l6tXaA87V8s
-         P5URcfmHPDdDrcm/sVV0zNVUkgzig4I/Tq9yX3JlVz7cDjmapfIQZb93bEQg0vVDgw21
-         ldkw==
-X-Forwarded-Encrypted: i=1; AJvYcCV3pJ1ky4yU+MNWUV+tMUZVPn4ifQCUtEuElv6T717r3yYUWNWzTLePiNDj/FuoGNG1ARuoZ2+cIcAK@lists.linux.dev
-X-Gm-Message-State: AOJu0YyixGVmUO+T2ktTK710j5VXLUGOdwRmb8It7++E2J0Q9lw+xMiL
-	+jGRtFWdzpdEnamOEDWUoLpjG1CUnC2YuTENYFTGxBAO32EAfBolOcMKC7jb+og=
-X-Gm-Gg: ASbGncuk3C3cfwFYfJdiGY36TPViMIG9Wq47qNV1H8zQ/hoRRRUjzuTrNiu9UMeCfTH
-	Hko/bCqRPgzLnL/UH/b8DJIws6r35ahQl/5b8Xq+qW7JFwmFEmwRuA1TmEsxs37UFWk8lNWh88q
-	sMuFIJJA54/NZKZfW5bo+0jr9oye7cJMKQFMHUNrtG142L5Njj6wJEHvRM8gbWIpcpXhaXlvdMU
-	04zvcjj6cMC2+nT3y6ker9NNeV+AchtSKIbzFYhq7pNnAxf6nHfDtgHdl2KylA6EDCy6f6n6JJ8
-	u03YHeQLPjOVoNGvxMdXCLpX7gajd4I/UwAk7SJw8ihHqQ==
-X-Google-Smtp-Source: AGHT+IH0W2q+QLXgY50bsUbLBMvi45RCcTvwgobZWuIbFNKFA/xqikUTmik8xCbwlkIbPAogtMZxiA==
-X-Received: by 2002:a5d:64cf:0:b0:391:865:5a93 with SMTP id ffacd0b85a97d-39d87ff0a02mr3195457f8f.22.1744211930617;
-        Wed, 09 Apr 2025 08:18:50 -0700 (PDT)
-Received: from [192.168.0.20] ([212.21.133.214])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39d894001a4sm1916107f8f.98.2025.04.09.08.18.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Apr 2025 08:18:50 -0700 (PDT)
-Message-ID: <472d6a3e-2d87-438f-b75b-c0e4eb0141d9@suse.com>
-Date: Wed, 9 Apr 2025 18:18:49 +0300
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LUe6n4/D"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744213514; x=1775749514;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=rL/fjA+lPCggJ4GHZCfuCa7eH8Pwe/UoH2nD1mLLTWM=;
+  b=LUe6n4/DpsXGt+3PmdCpLnbK7ZNBbNP0ItzCk5Jpp3vcWerHeSMyXpIX
+   dCUusp3yl2i5JtnenVDxkNYEHJZ/rLJEQIYG5XD4+qOCyI+Wf9UMmrfz3
+   XXtzIVSJ3J5oDDphMSohacaceIyeXkRKYBnPKxYsoRmWpkbKTgThVxsN/
+   SMG4T+Zf7s1l4S+T+gUXYBGFrRCFPVQjYKWHh95+t1c7XHCUoegZZdawe
+   N6Vvwg+npHQmFw0JxFA1rAIrBpBhdMvHevVMXLjL1yRj+patAVEzt4+XZ
+   3NE//s6oVG0ibxK8ePOzdC2wdE+BuioYCpJKgYuUb3yQcCQlDaRGgF0JO
+   w==;
+X-CSE-ConnectionGUID: +IwjP5I8QR2jWT0yuIaUEA==
+X-CSE-MsgGUID: +ZTX9rB7R9aXRauSPpi4nw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11399"; a="49492051"
+X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
+   d="scan'208";a="49492051"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 08:45:12 -0700
+X-CSE-ConnectionGUID: cp+isuoyQlCHG3tXKvmZwg==
+X-CSE-MsgGUID: OCf2LDbOQJe/nXij9gZDoQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,200,1739865600"; 
+   d="scan'208";a="133341589"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2025 08:45:11 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Wed, 9 Apr 2025 08:45:11 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Wed, 9 Apr 2025 08:45:11 -0700
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.47) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Wed, 9 Apr 2025 08:45:10 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dYFkAVXUfpXu9KS84hFGVHWdCZPUaQljDSHIACkUhax2oRCMPQcS91YuwV9ZdHUpY1xc7llRN7YkB17C2IbvrTQ7VNU4cT3Xi6aIgD9sXXeRvXBvOvpAFSnwvAPoGcO2N4vQg5dLVVo4ytaT9Fx9ALZCknfVEt0qR7KTx1VPkbsfyCWpbgKpqgwCtbwIshT39nIWmVxswZKzjvf0cIkAUmq1OcexD5Ni+iRvvcYfdPbe6V6Vbcg51IiP8nUkug3RHg0dBDVv4ma6yFa5B/LVNmbVPDkzdrXaaIiNfVOQz3cT9XE5T6K6mOVY4OD0O3HBm4K4+vdskxgqKESlk7uAJA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ixen9JL4jtsv35WxEeZHmrUdOg5kGI6UYfcUHFnjspg=;
+ b=Ix6SWyASlFKvXttDJG3g0ZUdkI6E34mbuNIagaSjii1WqCxkuAI69Z4v+D3kvuIA8t1LPIcHqlETX1ObIn8sueADkhKOzdvJttrXKd/aZSOKBSOGBSwSNvp3TjxTyX04tDCODsmJOQKUee3bvziD0LTpy3M/vrvhJ3qjrFGf7UKSKu6F28Suw8zWxsuqyz/q6hU1N8TKtiY7xoTAggsOSc+hpgkXeG5lXRrW+fz/X2inzt7Nz2aU8+yUWcKhgpFPaMoo2yrlg/jIrBe1XcWbSLGxBfPsABP1sotOu2QBOLTxeIegfHK0IsSvErtTVOMzEQxYKToTofpfsr54ykLY1w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by DS4PPF382351574.namprd11.prod.outlook.com (2603:10b6:f:fc02::1d) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.22; Wed, 9 Apr
+ 2025 15:45:08 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%3]) with mapi id 15.20.8606.033; Wed, 9 Apr 2025
+ 15:45:08 +0000
+Date: Wed, 9 Apr 2025 08:45:05 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Paul Moore <paul@paul-moore.com>, Nikolay Borisov <nik.borisov@suse.com>
+CC: <linux-security-module@vger.kernel.org>, <serge@hallyn.com>,
+	<kees@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<kirill.shutemov@linux.intel.com>, <linux-coco@lists.linux.dev>
+Subject: Re: [PATCH 0/2] Allow individual features to be locked down
+Message-ID: <67f69600ed221_71fe2946f@dwillia2-xfh.jf.intel.com.notmuch>
+References: <20250321102422.640271-1-nik.borisov@suse.com>
+ <CAHC9VhSpgzde_xRiu9FApg59w6sR1FUWW-Pf7Ya6XG9eFHwTqQ@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHC9VhSpgzde_xRiu9FApg59w6sR1FUWW-Pf7Ya6XG9eFHwTqQ@mail.gmail.com>
+X-ClientProxiedBy: MW4PR04CA0084.namprd04.prod.outlook.com
+ (2603:10b6:303:6b::29) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] lockdown: Switch implementation to using bitmap
-To: sergeh@kernel.org
-Cc: linux-security-module@vger.kernel.org, paul@paul-moore.com,
- serge@hallyn.com, kees@kernel.org, linux-kernel@vger.kernel.org,
- kirill.shutemov@linux.intel.com, linux-coco@lists.linux.dev
-References: <20250321102422.640271-1-nik.borisov@suse.com>
- <20250321102422.640271-2-nik.borisov@suse.com> <Z93NW3za1ilzVxLK@lei>
-Content-Language: en-US
-From: Nikolay Borisov <nik.borisov@suse.com>
-In-Reply-To: <Z93NW3za1ilzVxLK@lei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DS4PPF382351574:EE_
+X-MS-Office365-Filtering-Correlation-Id: fc264b70-9439-4759-7881-08dd777d8149
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?SkszYjJndTNxTFF3Z20zSHRQc3FwN2FJSjlTL3U0OHdNLzBnVm1Tdk9pTDZW?=
+ =?utf-8?B?RzR1YkRuMkF0dmUrTFR3ZTd6RzU5SXd4T2QzRW41c3VBUmNGVHJ2L2c5dU1C?=
+ =?utf-8?B?Q25pdnVxWHJUN1QyVUI0dXBpNzdoOVQySzg3RG9hMVlOV1lKR3ZDR1NxTzly?=
+ =?utf-8?B?QU4xWnprODhTbTJIcnQ4U1lhZUJKdGQ5VW0vMjhMbEdZZ1dvUXowd2NuYldW?=
+ =?utf-8?B?azByVlI3OXFVZTFpT3UyQXpmc25GTW1iTFNEd2tIYWsxNGhKOXgvQlVKQmFG?=
+ =?utf-8?B?OUxmbnk3RXdGbXpBWEZYU3pESHZBMU9GYVhGNVZQdXVTR2ovc0xnc3lLUENl?=
+ =?utf-8?B?cVNQalVYaWRhYUcwK2JVVWg2RFRUKy9XVGRQQ0xEbUluSjU5UTQ1MDNZNThv?=
+ =?utf-8?B?dFA4dVFXdTNMMmxabUwxMDRvblIvaHE0UjZSZWhlMkxPNVZSQ1dyTnBFUmdJ?=
+ =?utf-8?B?UFZIZ1lNWHdBeDIxbHI5cDM4R3lRTVhoaEYwWU12ek02OEhvNXBGc3hvS2Rs?=
+ =?utf-8?B?Q0s5V3BXSkdrT1VNK0FMakNUNFVURGo0a0pNcjZkMlJ3aTVlOHZpV05SWGJV?=
+ =?utf-8?B?SWQ3RFdYaXlwWkxNNlcxMXRxbyt1WE0vaElJMGtKZ1F0SENkUE9MVGFwVEQ1?=
+ =?utf-8?B?QXowVUMvTEs1d1IvdjZQaDZzd052WFRvODFSYkNsWlNBR29pUjVNZWFaUGVZ?=
+ =?utf-8?B?bzR6aElRZ24wd0VaSXdtc2tyV0VuRWNlKzJvN1VqWFIzSzJieFVJNVc4a0RJ?=
+ =?utf-8?B?bFB6RXdlcUsvWnIzWkxESkM4ODNrbjhUWWpmRlFaWncxMGFvbXdrUFR5ZEM2?=
+ =?utf-8?B?NExQaGpwU3RGSFlycGJRZSsvZkNaNmxnZFd2UUlzekl0L3JaNnNRQTRpZlNa?=
+ =?utf-8?B?eVN4R2JJSzFxWTRVcmlTaE1GYjhPUFBJd3NuQ2N5Vzk1ZDlLUkRSZ0xiTjF5?=
+ =?utf-8?B?YU1rWXJxaGEzVjFPNmpwT2RVUGJOL3k3Kzd4OUZ5ZjZiNGJYRFZTTXJ3cGZs?=
+ =?utf-8?B?THMyTmI2TWJFanNMUTNMYm9Oa3Buak5kR1dNV1NvT2NxS0J6N1ZXVEpsNmJF?=
+ =?utf-8?B?b2pPODJCek9CTVJyOCtWNUp5K3E0TmF5bDVxTkMvbW5samw4ZnE2NkFDTm5C?=
+ =?utf-8?B?OCsvbnA3c3BRaXJvNTZIZnNqWUVNQUd1UC9PYmliM1VybWFrZkZpRE9ULzN5?=
+ =?utf-8?B?WE05SzhKRm5KSlFHd01iWHduclhhMkxhTE5ra0RjTEtOVlNKMlJjOWpxRENM?=
+ =?utf-8?B?WU1nUHQxcmIwNTl2eVpKa29ibjFjSHYzT2ZTeHlVOXBUUzNRRGZJY1ZZOVdH?=
+ =?utf-8?B?MDJrNFdsRlBiV3JNNmJVV1pYdWRTc2FwNjROVFozSC9adWhEZ242UU92ZWM1?=
+ =?utf-8?B?K21wdm9pTnpvMjVyMCtBSzJ6T0VDUTBpWStERHlsUEFPektjLzF5RytrR0tQ?=
+ =?utf-8?B?azNORGNOMmZ1STVBY0xLYTF3emQ0aWFjczBHb0tjUVNUYWYxR01VVmZjTGRs?=
+ =?utf-8?B?ZkVuUWJaVUFoRnhrRnphYTRqazJDZnRObGtFZFhrWXFKQjR5SjNROFFvWFZq?=
+ =?utf-8?B?aEtiUmVXWHBLVk1JNnAyQS9aOXVkS3J1QnRRLzhCaStCSGlKbWUvdHJDR0hw?=
+ =?utf-8?B?a2Y4N0hRYy9qcFRDNklibWpHSTBQWE5OSHNVTFc4cHBHemFQQkptRjdvdFNq?=
+ =?utf-8?B?Zk1GVHgzbEd2ZCthZkU3Nk5iTWc1QU84RkxSZ3FUWU1ITm9uUHp0cEhuNkhz?=
+ =?utf-8?B?NG1ERnZWdkJRbU5DTjNRaTR4Q2NpWm1yS1ZHakFlS01uYWdtd0tVcE9JSVVa?=
+ =?utf-8?B?b1dxYTRGWGpXem5WWnR6UmhPZGhyeWw4OVE3MDExYWxVUHI1d0VlZ05SNXlW?=
+ =?utf-8?B?bDZQR2VGVVVMY3ZRNjdybGR1djQ0MEpncDJBQWZvY1J0YjVxamxMQ0dZTVha?=
+ =?utf-8?Q?0Jx1DGfTsx4=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UHlMM1FzZnA0YStrVFRnRzM1MFBTYjFNYkp0WW9CeDBRUUZVTzdTS3l5alBs?=
+ =?utf-8?B?Y0piblBISFcwNGVRL0xsc3BhOU1wVkF3d2hzUlkzSFpvUHRJREM1cnRFdGZy?=
+ =?utf-8?B?RzZyazB6N21TWXUrNVBuQkdUTnJNby9IaGsyOFJjZFdlWGRKSGRqV0JucHdD?=
+ =?utf-8?B?bU9NY1AzcVdOcXQxendGSzRMVVdzY3VLbEZWVXQwS1YzSC9vSnBRY2Z5ZjNq?=
+ =?utf-8?B?djMvYUNlakJ4RjFDUEt6Tkx1S1diaVFqdCtpRDBpaUxVRGtEN3c2dWdhMzly?=
+ =?utf-8?B?SExwbThkZkxaMFJvdUx1eXU2RWJWRWxGL0JhWk80R2NDcVRHamVYV09INUM2?=
+ =?utf-8?B?aDdpaU9WWWJndmJRS2g2WUorbkhNUGF5a1QrQ25WNEl3N2FDNElLd1FTNXRR?=
+ =?utf-8?B?aWdCNW50R09rZ3Z5NFJ3b2w0dHRvcXhqR0FaNlZRSFBRdDBkTHBBMUF5QlJV?=
+ =?utf-8?B?SGwzbXZ1MjREZ1lOMmZFbVhhcU9TSUdIV1BpQWRHd0pFNlVjSkRNTmdYVUpD?=
+ =?utf-8?B?S3M4RmJsdHZYREkxd0ZtRG44NGNLRjZEc2RtbkhGQW13L2FJNDZBU0FTRW9y?=
+ =?utf-8?B?dTc2S3NwMjVPWHBjbWFkNGpGVXJFNUw3WkQvaUpDbU9oa0RHa0dBS3FYM0dK?=
+ =?utf-8?B?T1ZzUHd3OWgrRElFenJjUTA4WERQN0g4UEttSzB3Q21HeXloM1laUDY1Mldy?=
+ =?utf-8?B?MXdkZFRaSG9oU0ZwYkkxQTU5ZDhQWUNPenpkYVRpZmxqS3lxZmZXOWtOZU1K?=
+ =?utf-8?B?UEpIVkMxR0dvNnU0U0xtN2w0di9RTEZlcVU3eGJJb09EbURuZ0YxQ2tVcDJP?=
+ =?utf-8?B?d3lGTkNUeGtRQXU3dWZRdkJVd3FmZlBmTjZ1R0lmRjFnTnJqdTE3VnZVVFAx?=
+ =?utf-8?B?VGVkMVphTHVaeVRidTJmelB5ZWg5Uk5VelorTklFa1RZVzlaUEJKS1phakhj?=
+ =?utf-8?B?TWdEMzlocks3MTVRb2w5ZlFObTlBVFlMZjRwRm1TbkJkNTRtUFNDTWFUR0FJ?=
+ =?utf-8?B?ZVkxU0Qydk11ZkVrd1UweDUxRjJBeHVJTjJDUllMTUl4Uk9ZV3ZJU1k1R3RB?=
+ =?utf-8?B?YjAvZkEvbE5McGFHV2wvSEtPMW9TV0hmWS9YY3VQaHFPZG1uV1A0YVNYeEVw?=
+ =?utf-8?B?OGI3ZFJtZERpdkdtNTNzeGNjcmlIUVdoek5wNFlrRmVOTFQxNE51aGNOb09K?=
+ =?utf-8?B?bW9Ld29JanhDOXVKMzd4VVU2dnhxdkFXUXh5M1B6eWZGNVRtbGsrMXlMWC9z?=
+ =?utf-8?B?VWlzTncrZ2YrOXdjVWh1TzF3ZWlnVi9TbU5zZFYvRndGRFMyU2xnYVJ4NzJL?=
+ =?utf-8?B?alBKODNhUDl3c3F4RWpBYWF5ME9zOWlTY0J6OUFvOGJnemphcVRwZ2VyRVJF?=
+ =?utf-8?B?U0hicEt5ODB5UXFMaC9GRXhsU3lEL2hEWlg2eDQ3THljYStmSnhTUU9NQnFi?=
+ =?utf-8?B?NVgzVU9TVmR5SjQrVWZyRVhEanFUMnlBYnVhNS9Wek5zWTZYWU1DNGxKeU11?=
+ =?utf-8?B?bjlzWUl4aVpQZDRPUFEvL0M5UlExR3RoMWVJSzIva0xQT2NXcE5Talo4a1hV?=
+ =?utf-8?B?a0JoalM0U1ZvYjFnNHZDUUlIWUp6emZhRjh1eWpkcWVWRFZFMFo0WVRHVHZJ?=
+ =?utf-8?B?QVpJejZVWlFlV0NyQUwvL2lLMmRwT2p3ejN6VFFOSHJ1RmhLTXVXM0FERHh5?=
+ =?utf-8?B?RmM4MkdpQkxZSEpzbmpxRVNBZ0g2U2t4cEZIbEdkbktkMmVFVFFldTd2ZXlx?=
+ =?utf-8?B?WEtldlZZbklPQkpUWUVUV0E5b0dQYmJUQTEwUzRiM1N6TW9iWnN4VE0zNEI3?=
+ =?utf-8?B?RVIxa3VCSW9Ybmw4Q1pSTnc2OXFOcThjLzZ6cGIySGd2cy9tdDV0S29QRVQy?=
+ =?utf-8?B?d2FKRFZvWi84VnZuYzhYdFA2MTJ2Y2VWbWhvcnUvMXhMZ3JSOVhsTGdxNDg2?=
+ =?utf-8?B?Sm9NV1hibjdUSXEzWWwzMXV5amk2YTE0YTFuOHFseGVrcVNHaFRSaWd3cjkw?=
+ =?utf-8?B?clpOczl5a0Y0MkVlQUJSTkZDMitpaG8yTlJSaXdIbFBWbFk3ODBDRGdjUnc0?=
+ =?utf-8?B?YXN1dHVOYWtReEJrK2VLNmRUKy8xRnhCcEVKd3RWSUNZenJzSFY3RGZ3YnMx?=
+ =?utf-8?B?NVpLbDJiMDE1aVM2WVZSNEFKY2RsNEZMOUk1d1NKUVMyaDQ3Wm9PamRISFlJ?=
+ =?utf-8?B?WFE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: fc264b70-9439-4759-7881-08dd777d8149
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2025 15:45:08.2331
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2wM6NylYxEyKtm6eDFl6TbKB1AXKlGXGhCZPf3gqxWLSCaHIM2SvHgeB7notnQfQvx8/i2vN5VAZV/nbdOseTQo8fI+8qRKnhN6IaI/+4w4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF382351574
+X-OriginatorOrg: intel.com
 
+Paul Moore wrote:
+> On Fri, Mar 21, 2025 at 6:24 AM Nikolay Borisov <nik.borisov@suse.com> wrote:
+> >
+> > This simple change allows usecases where someone might want to  lock only specific
+> > feature at a finer granularity than integrity/confidentiality levels allows.
+> > The first likely user of this is the CoCo subsystem where certain features will be
+> > disabled.
+> >
+> > Nikolay Borisov (2):
+> >   lockdown: Switch implementation to using bitmap
+> >   lockdown/kunit: Introduce kunit tests
+> 
+> Hi Nikolay,
+> 
+> Thanks for the patches!  With the merge window opening in a few days,
+> it is too late to consider this for the upcoming merge window so
+> realistically this patchset is two weeks out and I'm hopeful we'll
+> have a dedicated Lockdown maintainer by then so I'm going to defer the
+> ultimate decision on acceptance to them.
 
+The patches in this thread proposed to selectively disable /dev/mem
+independent of all the other lockdown mitigations. That goal can be
+achieved with more precision with this proposed patch:
 
-On 21.03.25 г. 22:34 ч., sergeh@kernel.org wrote:
-> On Fri, Mar 21, 2025 at 12:24:20PM +0200, Nikolay Borisov wrote:
->> Tracking the lockdown at the depth granularity rather than at the
->> individual is somewhat inflexible as it provides an "all or nothing"
->> approach. Instead there are use cases where it  will be useful to be
->> able to lockdown individual features - TDX for example wants to disable
->> access to just /dev/mem.
->>
->> To accommodate this use case switch the internal implementation to using
->> a bitmap so that individual lockdown features can be turned on. At the
->> same time retain the existing semantic where
->> INTEGRITY_MAX/CONFIDENTIALITY_MAX are treated as wildcards meaning "lock
->> everything below me".
->>
->> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
-> 
-> Reviewed-by: Serge Hallyn <sergeh@kernel.org>
-> 
-> but one comment below
-> 
->> ---
->>   security/lockdown/lockdown.c | 19 ++++++++++++-------
->>   1 file changed, 12 insertions(+), 7 deletions(-)
->>
->> diff --git a/security/lockdown/lockdown.c b/security/lockdown/lockdown.c
->> index cf83afa1d879..5014d18c423f 100644
->> --- a/security/lockdown/lockdown.c
->> +++ b/security/lockdown/lockdown.c
->> @@ -10,12 +10,13 @@
->>    * 2 of the Licence, or (at your option) any later version.
->>    */
->>   
->> +#include <linux/bitmap.h>
->>   #include <linux/security.h>
->>   #include <linux/export.h>
->>   #include <linux/lsm_hooks.h>
->>   #include <uapi/linux/lsm.h>
->>   
->> -static enum lockdown_reason kernel_locked_down;
->> +static DECLARE_BITMAP(kernel_locked_down, LOCKDOWN_CONFIDENTIALITY_MAX);
->>   
->>   static const enum lockdown_reason lockdown_levels[] = {LOCKDOWN_NONE,
->>   						 LOCKDOWN_INTEGRITY_MAX,
->> @@ -26,10 +27,15 @@ static const enum lockdown_reason lockdown_levels[] = {LOCKDOWN_NONE,
->>    */
->>   static int lock_kernel_down(const char *where, enum lockdown_reason level)
->>   {
->> -	if (kernel_locked_down >= level)
->> -		return -EPERM;
->>   
->> -	kernel_locked_down = level;
->> +	if (level > LOCKDOWN_CONFIDENTIALITY_MAX)
->> +		return -EINVAL;
->> +
->> +	if (level == LOCKDOWN_INTEGRITY_MAX || level == LOCKDOWN_CONFIDENTIALITY_MAX)
->> +		bitmap_set(kernel_locked_down, 1, level);
->> +	else
->> +		bitmap_set(kernel_locked_down, level, 1);
->> +
->>   	pr_notice("Kernel is locked down from %s; see man kernel_lockdown.7\n",
->>   		  where);
->>   	return 0;
->> @@ -62,13 +68,12 @@ static int lockdown_is_locked_down(enum lockdown_reason what)
->>   		 "Invalid lockdown reason"))
->>   		return -EPERM;
->>   
->> -	if (kernel_locked_down >= what) {
->> +	if (test_bit(what, kernel_locked_down)) {
->>   		if (lockdown_reasons[what])
->>   			pr_notice_ratelimited("Lockdown: %s: %s is restricted; see man kernel_lockdown.7\n",
->>   				  current->comm, lockdown_reasons[what]);
->>   		return -EPERM;
->>   	}
->> -
->>   	return 0;
->>   }
->>   
->> @@ -105,7 +110,7 @@ static ssize_t lockdown_read(struct file *filp, char __user *buf, size_t count,
-> 
-> Context here is:
-> 
-> static ssize_t lockdown_read(struct file *filp, char __user *buf, size_t count,
->                               loff_t *ppos)
-> {
->          char temp[80] = "";
->          int i, offset = 0;
-> 
->          for (i = 0; i < ARRAY_SIZE(lockdown_levels); i++) {
->                  enum lockdown_reason level = lockdown_levels[i];
-> 
-> ...
-> 
->>   		if (lockdown_reasons[level]) {
->>   			const char *label = lockdown_reasons[level];
->>   
->> -			if (kernel_locked_down == level)
->> +			if (test_bit(level, kernel_locked_down))
-> 
-> Right now this is still just looping over the lockdown_levels, and so
-> it can't get longer than "none [integrity] [confidentiality]" which fits
-> easily into the 80 chars of temp.  But I'm worried that someone will
-> change this loop i a way that violates that.  Could you just switch
-> this to a snprintf that checks its result for < 0 and >= n , or some
-> other sanity check?
-
-How about the following:
-
-diff --git a/security/lockdown/lockdown.c b/security/lockdown/lockdown.c
-index 412184121279..47b47c4f7b98 100644
---- a/security/lockdown/lockdown.c
-+++ b/security/lockdown/lockdown.c
-@@ -114,9 +114,9 @@ static ssize_t lockdown_read(struct file *filp, char __user *buf, size_t count,
-                         const char *label = lockdown_reasons[level];
-  
-                         if (test_bit(level, kernel_locked_down))
--                               offset += sprintf(temp+offset, "[%s] ", label);
-+                               offset += snprintf(temp+offset, 80-offset, "[%s] ", label);
-                         else
--                               offset += sprintf(temp+offset, "%s ", label);
-+                               offset += snprintf(temp+offset, 80-offset, "%s ", label);
-                 }
-         }
-
-It prevents buffer overflow but doesn't prevent buffer truncation.
-
-> 
->>   				offset += sprintf(temp+offset, "[%s] ", label);
->>   			else
->>   				offset += sprintf(temp+offset, "%s ", label);
->> -- 
->> 2.43.0
->>
-
+http://lore.kernel.org/67f5b75c37143_71fe2949b@dwillia2-xfh.jf.intel.com.notmuch
