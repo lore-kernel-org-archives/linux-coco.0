@@ -1,193 +1,317 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652AC156F3C
-	for <linux-coco@lists.linux.dev>; Wed,  9 Apr 2025 05:13:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744175621; cv=fail; b=LwZDVi6ZMZfzXpH74y2K7Z+GlrokaJMXQ3rzhcXjkWlMUZyWBttKRxTk9Jd76ts9C7cSO1634O25ymYN1GJ+9ttscyjiG15NaJNM2EjzhjU0RXy3hP93tHaRA2gmNrcNuyp3BSSsbgjkEUExcUE+IaIUu2mqT3TwDPAcc0Ao1G4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744175621; c=relaxed/simple;
-	bh=LH2FbW83FNFDErtJzQNVqT0yW2icYMX2s2cnl7xRqwY=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=car/KvcDh6Zb1Z7Vr2eWF6a6qfCP9KaigMWMoegRqqQ4TGItjSgss4FTN9CbbnM+zj4q+oe7Efjt5c6GJ3tnXdk5eMe20mj2UjivRwFJilu0ir2YaKVgeYO3SZb8ByAra3qdeQJpLsiRHBfyzXFeez0FrzAFV2rcSnd8F4oDzGQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dMqJnaSc; arc=fail smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F228D259C
+	for <linux-coco@lists.linux.dev>; Wed,  9 Apr 2025 09:44:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744191853; cv=none; b=WjDyDM1O8irrU56CLTX39zMAV3PIXxxTfqgdaapIMDCV+i3WGBTmoEe0ddZ+iCYAkkMorl/GGoCP/2g5Sp6Dtly5+ZzB1kfzUlcbjYFN7WWdUJ8tGfDoP7JdybejX9KwEaT6yZElkb98iHyFlraUyH7m0MFCq7QaIWmQRjeO2T4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744191853; c=relaxed/simple;
+	bh=N6owoXk28YLLwUW3i5/zFHr8Ha0tLuVKTVWuEizWYq4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Z5xqSdtpzWkFsDF13AkOOu3IbNgwFnCeigWEOptSC8UVYrjYRG2FoYtXE7FDa/SIUx2YOnfGtkN5GJnGi9/kxlB5YCHWTlXm72SEaJYF1DgiYrcEthx7a4QCOzE6r1wiHnkCmrRwAXliVy+E1t8lQxSvtoAOqWWzsC9sDPxHeIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UPnJvAv9; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dMqJnaSc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744175620; x=1775711620;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=LH2FbW83FNFDErtJzQNVqT0yW2icYMX2s2cnl7xRqwY=;
-  b=dMqJnaScvxteXYSCPOk0LwJR56sfdzjfBIfi+QVkxqcBdaSH8SaR3bIx
-   PxtVPwbXGHHCjvY+y8RlqwbLcy+rS5Xe6+YM42wOTTkAbN6I9O0X5Yo9a
-   WfpYI7f/TvzqHj8dbfBOD2yZEDwKuq8K3CptsepnA5pcCv+DzM08YHq8r
-   3a4QmWuAYNif/lSXpWkieJ9OlI2oer7g5Hwm/OSyxLf7Q/Vod6dc05GEf
-   WPHuPN5U6YNFBZ7hL53aTIf+rdP9+8/IanCfTovYaDzMQSOea+xjyTKEH
-   Pcf5C7QkclUhY8XCxgpUw6Mld+fMCigmMAy/+aFp0KB7k+5ZSjv4SbdhF
-   Q==;
-X-CSE-ConnectionGUID: dJfzisdwQXGCkZMzdkY0kg==
-X-CSE-MsgGUID: Lq7auBkUSre7mvUS8BkelA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="49476471"
-X-IronPort-AV: E=Sophos;i="6.15,199,1739865600"; 
-   d="scan'208";a="49476471"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 22:13:34 -0700
-X-CSE-ConnectionGUID: I1j2eNFpR6OZ5Dj6pRGciA==
-X-CSE-MsgGUID: bb4h3VDeTJGCeUIIlGGTzw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,199,1739865600"; 
-   d="scan'208";a="159453164"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 22:13:33 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Tue, 8 Apr 2025 22:13:32 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Tue, 8 Apr 2025 22:13:32 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.40) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Tue, 8 Apr 2025 22:13:31 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Eij+simsEfRpnHVdDjlNkMehIQeM/v4GXApeio5I6AnF3t7loSjY+2YX0XZPa1HLnyH92GrIXil5maAUXeM1hja4jGtgZNa2GOiDirzpVAgtv6wy99/mFhHVuaML5wrqNB75lIXWpzH0ETc75iM1J1RUCE1iZie6p75J3pTSXZeKGEqkcAS46jmrqH6DhTJUj8IG1e6BgPBZQ540uAgpZeOKw0slGgKRp5DgnHIYrMBkuL2SFU3aqjufEyBRzDkNPimhSczBzhS9h+V2DJGWGxPNeZzQPXwWNS9iGZaLz3t9F0N6aB5HSrQSwk6d35JZgPn29QQ7kto1t5Fo5Ilmng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LH2FbW83FNFDErtJzQNVqT0yW2icYMX2s2cnl7xRqwY=;
- b=MlAbbUTpy7BGOE2q83dwr4BdTbRO2QTXbR+MWiqUKmPHi+nrEhSONWpwTMOpnFNoK2W34PK+CJcCOs1VQ7VQCNTyImj/dgKYhqmXBo/UlWQDx3jtv9liaglhjAxLR0U2JSjIgqU3lkVLl3ByCnPk5AdHnKordHC7ThL7asPa9uBQpN/poVF86I8SiIKWdACwFlyRDeWZnbuibgEKxHvWrB0DRDFSVOFvcfjtC+GUJ3HF7MKCkibUF8C2Jskoqn4cdpA9A6dkevvgXZ+Vf5/BMqyurEjZ0M+pVXwN/suSE6u5IzFtfDKnBXGf+A9Oyp3ub2aVwJLyZHvIzRqVIxKaRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by PH7PR11MB6427.namprd11.prod.outlook.com (2603:10b6:510:1f5::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.21; Wed, 9 Apr
- 2025 05:13:10 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8%3]) with mapi id 15.20.8606.033; Wed, 9 Apr 2025
- 05:13:10 +0000
-Date: Tue, 8 Apr 2025 22:13:07 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: Cedric Xing <cedric.xing@intel.com>, Dan Williams
-	<dan.j.williams@intel.com>, "Kirill A. Shutemov"
-	<kirill.shutemov@linux.intel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, <x86@kernel.org>, "H. Peter Anvin"
-	<hpa@zytor.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>, "Dionna
- Amalie Glaze" <dionnaglaze@google.com>, Guorui Yu
-	<guorui.yu@linux.alibaba.com>, James Bottomley
-	<James.Bottomley@hansenpartnership.com>, Dan Middleton
-	<dan.middleton@linux.intel.com>, Mikko Ylinen <mikko.ylinen@linux.intel.com>,
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: Re: [PATCH v3 4/5] x86/tdx: tdx_mcall_get_report0: Return -EBUSY on
- TDCALL_OPERAND_BUSY error
-Message-ID: <67f601e35845f_720529475@dwillia2-xfh.jf.intel.com.notmuch>
-References: <20250407-tdx-rtmr-v3-0-54f17bc65228@intel.com>
- <20250407-tdx-rtmr-v3-4-54f17bc65228@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250407-tdx-rtmr-v3-4-54f17bc65228@intel.com>
-X-ClientProxiedBy: MW2PR16CA0023.namprd16.prod.outlook.com (2603:10b6:907::36)
- To PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UPnJvAv9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744191849;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zUQJ6PUgUUIw2lyUC2lJw3AoBlYQ50F1V57qK/lUQ30=;
+	b=UPnJvAv9K94lKOA5qyae4DZCocixMNGqJiV+xEfRHkZm/8AW7VnmR8BnVFLEIzvei5QnIb
+	y2xq5sYZgCR2+ZXR1LSdjHSvVc0vWgVy/zjg6EFade9Gb/fg3thN0hDd+oSqZf8BLPH4e+
+	CsTAbAvIio7pLacGZTIa2XGv/pKm1H8=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-562-V38s4XMeOm6IIyizBUixCw-1; Wed, 09 Apr 2025 05:44:07 -0400
+X-MC-Unique: V38s4XMeOm6IIyizBUixCw-1
+X-Mimecast-MFC-AGG-ID: V38s4XMeOm6IIyizBUixCw_1744191847
+Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-6fecf913cb1so87501617b3.2
+        for <linux-coco@lists.linux.dev>; Wed, 09 Apr 2025 02:44:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744191847; x=1744796647;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zUQJ6PUgUUIw2lyUC2lJw3AoBlYQ50F1V57qK/lUQ30=;
+        b=qJASUmqBkNF1MdadUXBGO5Ql+uihUXYVvKN8y6JsjcZrSKeNyLrmtzB7R+BVNgHaOi
+         cgorgae9i4zhM1Ct3tt6W7oLBtL43dWw8AT87r9uR+TeK8ZSx1fErDFwHqCG+0EwuESn
+         YmOf2Dj3JBbInNJRVUkfVpu6LkscmSemfhzdYHR9pRviLsxTQEe5NGBLJGes/vb4Vm6M
+         G2B808/G/+PKSLgnXKMHc6/zNOj/+kc2Ljxh+BrCkTw68j09cEDnLxvNPoPagnS3szk/
+         4z4ACOvlWo8OzxfcaMtFXlS6tA5hYP0XFNJ6/n6wsEJ24BeatmQTjfGou/BOvBhjYyk6
+         oPdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXx5O0yOJQprD9fXXwzs2J/fPxAbhS4/y2sTq12hfkxY8oZZ84Lg/4lA4T3l4FNxQj9vdd3+Wy6LR8d@lists.linux.dev
+X-Gm-Message-State: AOJu0YxVzb5mctHUQ1Rccj9udXvjL1mtAjucs3VyelFMnUP6MXENlsi5
+	tg9ABPl9ZXGrNEc4Mml+Ok439ciKVz8YYCj0ikj/dJweo/QGj9CWLdAqJwhP5tEbtby1TPBQx1/
+	jAfju9crH3sbhP8LTFSgOJ3tZVGgYRPqx1mptSoL23KLVetfO416GV5F0YGCTImFZw7zp4LPXo0
+	s7jkABABfX07e+I075Gn+qPsthuEnqa6Q4Vg==
+X-Gm-Gg: ASbGnctjabmzoIoh4dgpG2BRpSxrAmyA/Vrj4vVYras2luaVFPdtH1NlqdlQrdj4I7O
+	O/UpFcyrwvQJCOuZ2ZkoqsH5gbg3yPq4lxxa107OEJm6HjwQ5qj+NTzdol4PKT9Oyp28=
+X-Received: by 2002:a05:6902:4911:b0:e5a:e6eb:d444 with SMTP id 3f1490d57ef6-e702f598b5cmr3242957276.2.1744191847048;
+        Wed, 09 Apr 2025 02:44:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGXDmAsuDjN6cm8V61wNyn1AoIquIc3555mQ1UNfgKbyZZMSjx+xjvWUm/M/Di/3xDlbAaupDLE32Ade1Q+NBs=
+X-Received: by 2002:a05:6902:4911:b0:e5a:e6eb:d444 with SMTP id
+ 3f1490d57ef6-e702f598b5cmr3242931276.2.1744191846714; Wed, 09 Apr 2025
+ 02:44:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|PH7PR11MB6427:EE_
-X-MS-Office365-Filtering-Correlation-Id: 521cb116-649a-484f-d3e0-08dd7725387b
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?oqqP3ElPPaqub8yBrdlPNg21HPP5gB82kIanrCRsWyqvjb3kdY5sv8wIFfJY?=
- =?us-ascii?Q?WHdbhN8w3r/of/RpmP7B18rODz3rvxDN8fQS3awQSJYhxhbY/sVJMQdx3sCR?=
- =?us-ascii?Q?jw+A9EMjcMFwfyayKo7MxnKYrLx/Amt5XvnnMBGVqwPrLL5WlWW5bYe8YKfg?=
- =?us-ascii?Q?OOa4jw6zvMaX//w5+Hj/3IuwpWz9Sk8GV5yMIU3tNx+vUsTgbaWVdi3DsWgX?=
- =?us-ascii?Q?MT77s2vLLnJUQdivm/M3N/nZZzsa0VfGFkq0ZxSVFdqQJZDO2KWPXS3dwKDW?=
- =?us-ascii?Q?WqDztkTFIXdnVikehFd7n9clD48/tUVzKzmqOiIxVKKYkJUnWhi3YYMrtOvq?=
- =?us-ascii?Q?pV6lqhVJ2SSw8jcRXdTrhIVEdPVm+ZSieBJZ9aw62csYKH7tJaVJwm+qMXAX?=
- =?us-ascii?Q?YU3t4x9LgKj2g50MeKeXVRq5Helaz6inTitiFpjaTCHQ9InJotj90dArLFFj?=
- =?us-ascii?Q?EpQXyJqxHmIZLPjvUuEtxYyX9+IHY8J1QAnLCJ1/VTgTocWUP3VaLLQjdmPS?=
- =?us-ascii?Q?hEMfYG0uIopDIg+NMrKzPs7C+tU6Z6ETSsboJfT+M+D03UGAUicFQRvcyw5N?=
- =?us-ascii?Q?a4kbGhZBS/cQoffqx+4vomFWDsW6fNgubkR30EXRLaQJrjspU0BLCY2fM2pm?=
- =?us-ascii?Q?FCYJMByRnh+HfbFIU5XKnNAZ92M/XLBOkVtBUFvCN2yb/7HzAIrt3OV44QO3?=
- =?us-ascii?Q?60oSi+ucEieVoE+IHaSvcF2gjUVRnaRvUQYlBWboYWW4kbzugd0uL52GqBCj?=
- =?us-ascii?Q?mXSRQGf6AMcnlqlfi5uvBlLEzzyVGjbD7BPE9i1rbOto/gMUqaJdkCs6AJ2L?=
- =?us-ascii?Q?m0uYKe4eihKe9SrC1fZ+ELHhR3wsunGXQoQ0qbBQ72nmClq0/b9Nt2YOi/Q1?=
- =?us-ascii?Q?hsRMbTPkVxe6BG81U+/D5ddH4wZyJ6t6Ne9ogGXat0H8vgv+mQIQD8GrFxSr?=
- =?us-ascii?Q?veoj6JNB6+XTBTUL81A1i/uoYf4lIT+UO2wmlAoOKswfXOWxyPEKhyidRbHF?=
- =?us-ascii?Q?lOFb/Fw3CiFcRN9pQItEEyMtZDMpP//csMlLfKS65pbRsgm5JVfNUF5W7QxQ?=
- =?us-ascii?Q?gXTSeVmKMATjkCat3w7nR2XlKAZ80G4G3p960LBsrkUzGlOz+6HD6MWieWNZ?=
- =?us-ascii?Q?Ds25iLxXNW+bBLUtP57DitJSmiNZcpsSaVAcJhgqRLrY/ytRWxjH6Khi1iJv?=
- =?us-ascii?Q?wyzgpmS6hXWRKsO4GmOHftwU/38Oox17FinTJHmGtV+cmIb0Ie7NTTR4aUf6?=
- =?us-ascii?Q?J21kM4cD9IQb42+tFimOerph+bvt4kcx9eSG2RIS9Nmjm4Yoc2oFqqFPm4Jv?=
- =?us-ascii?Q?hijzcqun2mAosXm38KNJC4+F8w47r5vEEh5bZcpTMOo14yvmVF3NpHAryntL?=
- =?us-ascii?Q?hkNIT641BljjUovh6z2uRsKc7OhWcVt1d6N47maxA5+AwUikrfDNDBBHfqAx?=
- =?us-ascii?Q?/SfVqgCsWnA=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?XsFgkJoyEsIET7XLJCrURrj+G2kiWGfo5t8j//yD7UaFlgMfJawoTo6QS1ju?=
- =?us-ascii?Q?2+wnrDfhRhExAHOyrtAk3sj2UcNGHn75GDziz8O5yYw5hwWoZeXL8fJzCTup?=
- =?us-ascii?Q?G1wuPgIoS7YLsQYtV0I4YRpqTV7d3G74HvBeQ1EE9saIjnzUmHzEUXH8eKqu?=
- =?us-ascii?Q?USEwE6OxIRWkZ4/U+qMZ3+V9ENfPL1GMxB1g2ia6DT6hRh9RU0zuF5fZu9+J?=
- =?us-ascii?Q?l3TdpmgzVUbJo/H8w7yplNXZAl4+G67XZdGVRB/LuICpJ0YrsxgNQEItHCo9?=
- =?us-ascii?Q?ivrC8wStpOwzg6W16K1F7TF8WO2M3Ipc0Tdn1nvRvgS6YCKcToZZdvQpeBa4?=
- =?us-ascii?Q?pj0SaQXvozfK1R0hPYs7bA5e9z6AutLsVzh5HmmREeytwdOJecv86A8xdFlU?=
- =?us-ascii?Q?h58RkR41ivTPHX3Pjqeieo8akgO5yUsAPo1OtcJvY5l1rfqtjy98a2VxcqEJ?=
- =?us-ascii?Q?mBpOA5VGp2x6enCSUOcGsoIFJXMCV4zqc7m8uJvaRXiAS9FjvNZPz548Z+wV?=
- =?us-ascii?Q?tp80qqQZgX6deX6jfhMAYADZVhsbwrrXcop/tLt3N+Z3dwu+Yjs8iNs5495g?=
- =?us-ascii?Q?uIjtHYLXWmwqvXl0COJAa8lHDdiA0s7PL3tKGlmH76/9f7UIjQdYuyVxfHYh?=
- =?us-ascii?Q?7fBS6OdAeJu8dprkZLJeuOCuFgwF7+3kRtzAaZ47Hk5x8j7aNDIAXre8a6pv?=
- =?us-ascii?Q?JYQ7/+4H/duf9PYD9y3pXw0GwGnAxl4nPwHe1DJkO2ubppQ89iY/zonbJ3FD?=
- =?us-ascii?Q?e00y4rzDD1eBYIKtB+0p4Swy74L9ZvbLOT+5IcjioSLIupVDUYVpWxUV0Wa0?=
- =?us-ascii?Q?2xNT1d0SfUcRf25a1tXLrhbji31p+Ebp/ThFhDPt2vcjRTV3KVP/XbvLulDK?=
- =?us-ascii?Q?sjd1X1RVLXyV9/I1STjdZVFi7D2fGreLShtO6mb+Eu9qPQOHS4cj8vkDQQVd?=
- =?us-ascii?Q?sNbPxdtLEF0/kfbbRFwDowdjkPqnjb0p9i38rw7W+fiG+dLkv5Q1YtnhcAwy?=
- =?us-ascii?Q?HZ0NuIbuKbSoinzrTvE3tSIvCjRwJEzgRBcSh0IZrZIIiK63kya3Z5JOzoaa?=
- =?us-ascii?Q?IWPXhbVgb+t840l5KdC9cXnoDa26FTYU9VE8h60HTe9H8Ip7kpt7obaZM6/y?=
- =?us-ascii?Q?YkgbFuBR2e7EvljbHQaHAyR5f9Obxu6yMBe+Hz4HRYQ6dqWMvGt9fSp6rJlU?=
- =?us-ascii?Q?+5Isb4L1lT3rW+9rNAytftbCe40FWjXzOiNx73vo4hOhpbiiwAOnZR8V7UZE?=
- =?us-ascii?Q?z03szn/SbtdlV5YWq6FheVJ7+mi6ga4VJcjxsEz7FscNRP+PXpjGPSNfd38J?=
- =?us-ascii?Q?Kj/XiCq7upOmYJqFtnZNmSF6SkM721q7REv8W864CFOGl9q5LBfD6+YZfgn+?=
- =?us-ascii?Q?Qgj2RLQpZFS+MafY3E/Y1TuOpVZH91NPF2RAbJT2cFWZwMg28feRMsGj6ZsV?=
- =?us-ascii?Q?rEiqrwhkDEZioN6Hy1Kqjkz13QEHXMljVszmEjlQApI78QWcUH/JSii93CFX?=
- =?us-ascii?Q?DtFcDZj26Hv7PRKSavqNa9TZEjpNPj5tcn1GNCd+OuFdVJPrWb6ZlY87gDE1?=
- =?us-ascii?Q?s7VSdsrSzj5FMcch+epDiTsFP9VmhLKPBXqY05qBQSWrPHde68O+6Y8u/o0G?=
- =?us-ascii?Q?Sw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 521cb116-649a-484f-d3e0-08dd7725387b
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Apr 2025 05:13:10.3019
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wC9QvZp8I0l6rpvVmtye2d5Jr2cTP1mdTzfJeCFD49JP2ITd6Mnaou33HPsg9CGqHG1wX4ixdJECpBmFM7cjDEAqB+tk8FXwaUdJ8MOftzY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6427
-X-OriginatorOrg: intel.com
+References: <20250403100943.120738-1-sgarzare@redhat.com> <20250403100943.120738-4-sgarzare@redhat.com>
+ <Z-7b9VPEhmVYHjbX@kernel.org>
+In-Reply-To: <Z-7b9VPEhmVYHjbX@kernel.org>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Wed, 9 Apr 2025 11:43:55 +0200
+X-Gm-Features: ATxdqUHoBAw1a642SjFJq29zM4LubIhp9qI7SBYfox5FR3hyUch8jrRr6-te6JM
+Message-ID: <CAGxU2F7a8uLz0367FubJhnwOAqGSpymTc9GefRAT5foRPHV9VA@mail.gmail.com>
+Subject: Re: [PATCH v6 3/4] tpm: add SNP SVSM vTPM driver
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, Peter Huewe <peterhuewe@gmx.de>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, "H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev, 
+	linux-integrity@vger.kernel.org, Borislav Petkov <bp@alien8.de>, 
+	Ingo Molnar <mingo@redhat.com>, x86@kernel.org, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Joerg Roedel <jroedel@suse.de>, Dionna Glaze <dionnaglaze@google.com>, 
+	Claudio Carvalho <cclaudio@linux.ibm.com>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, linux-kernel@vger.kernel.org, 
+	Dov Murik <dovmurik@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 1LESkp3BfP9DBQ88CL-4nN-Y7dNqwswzEbr4ONAK24s_1744191847
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 
-Cedric Xing wrote:
-> Return `-EBUSY` from tdx_mcall_get_report0() when `TDG.MR.REPORT` returns
-> `TDCALL_OPERAND_BUSY`. This enables the caller to retry obtaining a
-> TDREPORT later if another VCPU is extending an RTMR concurrently.
+On Thu, 3 Apr 2025 at 21:05, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+>
+> On Thu, Apr 03, 2025 at 12:09:41PM +0200, Stefano Garzarella wrote:
+> > From: Stefano Garzarella <sgarzare@redhat.com>
+> >
+> > Add driver for the vTPM defined by the AMD SVSM spec [1].
+> >
+> > The specification defines a protocol that a SEV-SNP guest OS can use to
+> > discover and talk to a vTPM emulated by the Secure VM Service Module (SVSM)
+> > in the guest context, but at a more privileged level (VMPL0).
+> >
+> > The new tpm-svsm platform driver uses two functions exposed by x86/sev
+> > to verify that the device is actually emulated by the platform and to
+> > send commands and receive responses.
+> >
+> > The device cannot be hot-plugged/unplugged as it is emulated by the
+> > platform, so we can use module_platform_driver_probe(). The probe
+> > function will only check whether in the current runtime configuration,
+> > SVSM is present and provides a vTPM.
+> >
+> > This device does not support interrupts and sends responses to commands
+> > synchronously. In order to have .recv() called just after .send() in
+> > tpm_try_transmit(), the .status() callback returns 0, and both
+> > .req_complete_mask and .req_complete_val are set to 0.
+> >
+> > [1] "Secure VM Service Module for SEV-SNP Guests"
+> >     Publication # 58019 Revision: 1.00
+> >
+> > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+> > ---
+> > v6:
+> > - removed the `locality` field (set to 0) and the FIXME comment [Jarkko]
+> > v5:
+> > - removed cancel/status/req_* ops after rebase on master that cotains
+> >   commit 980a573621ea ("tpm: Make chip->{status,cancel,req_canceled} opt")
+> > v4:
+> > - moved "asm" includes after the "linux" includes [Tom]
+> > - allocated buffer separately [Tom/Jarkko/Jason]
+> > v3:
+> > - removed send_recv() ops and followed the ftpm driver implementing .status,
+> >   .req_complete_mask, .req_complete_val, etc. [Jarkko]
+> > - removed link to the spec because those URLs are unstable [Borislav]
+> > ---
+> >  drivers/char/tpm/tpm_svsm.c | 128 ++++++++++++++++++++++++++++++++++++
+> >  drivers/char/tpm/Kconfig    |  10 +++
+> >  drivers/char/tpm/Makefile   |   1 +
+> >  3 files changed, 139 insertions(+)
+> >  create mode 100644 drivers/char/tpm/tpm_svsm.c
+> >
+> > diff --git a/drivers/char/tpm/tpm_svsm.c b/drivers/char/tpm/tpm_svsm.c
+> > new file mode 100644
+> > index 000000000000..b9242c9eab87
+> > --- /dev/null
+> > +++ b/drivers/char/tpm/tpm_svsm.c
+> > @@ -0,0 +1,128 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +/*
+> > + * Copyright (C) 2025 Red Hat, Inc. All Rights Reserved.
+> > + *
+> > + * Driver for the vTPM defined by the AMD SVSM spec [1].
+> > + *
+> > + * The specification defines a protocol that a SEV-SNP guest OS can use to
+> > + * discover and talk to a vTPM emulated by the Secure VM Service Module (SVSM)
+> > + * in the guest context, but at a more privileged level (usually VMPL0).
+> > + *
+> > + * [1] "Secure VM Service Module for SEV-SNP Guests"
+> > + *     Publication # 58019 Revision: 1.00
+> > + */
+> > +
+> > +#include <linux/module.h>
+> > +#include <linux/kernel.h>
+> > +#include <linux/platform_device.h>
+> > +#include <linux/tpm_svsm.h>
+> > +
+> > +#include <asm/sev.h>
+> > +
+> > +#include "tpm.h"
+> > +
+> > +struct tpm_svsm_priv {
+> > +     void *buffer;
+> > +};
+> > +
+> > +static int tpm_svsm_send(struct tpm_chip *chip, u8 *buf, size_t len)
+> > +{
+> > +     struct tpm_svsm_priv *priv = dev_get_drvdata(&chip->dev);
+> > +     int ret;
+> > +
+> > +     ret = svsm_vtpm_cmd_request_fill(priv->buffer, 0, buf, len);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     /*
+> > +      * The SVSM call uses the same buffer for the command and for the
+> > +      * response, so after this call, the buffer will contain the response
+> > +      * that can be used by .recv() op.
+> > +      */
+> > +     return snp_svsm_vtpm_send_command(priv->buffer);
+> > +}
+> > +
+> > +static int tpm_svsm_recv(struct tpm_chip *chip, u8 *buf, size_t len)
+> > +{
+> > +     struct tpm_svsm_priv *priv = dev_get_drvdata(&chip->dev);
+> > +
+> > +     /*
+> > +      * The internal buffer contains the response after we send the command
+> > +      * to SVSM.
+> > +      */
+> > +     return svsm_vtpm_cmd_response_parse(priv->buffer, buf, len);
+> > +}
+> > +
+> > +static struct tpm_class_ops tpm_chip_ops = {
+> > +     .flags = TPM_OPS_AUTO_STARTUP,
+> > +     .recv = tpm_svsm_recv,
+> > +     .send = tpm_svsm_send,
+> > +};
+> > +
+> > +static int __init tpm_svsm_probe(struct platform_device *pdev)
+> > +{
+> > +     struct device *dev = &pdev->dev;
+> > +     struct tpm_svsm_priv *priv;
+> > +     struct tpm_chip *chip;
+> > +     int err;
+> > +
+> > +     if (!snp_svsm_vtpm_probe())
+> > +             return -ENODEV;
+> > +
+> > +     priv = devm_kmalloc(dev, sizeof(*priv), GFP_KERNEL);
+> > +     if (!priv)
+> > +             return -ENOMEM;
+> > +
+> > +     /*
+> > +      * The maximum buffer supported is one page (see SVSM_VTPM_MAX_BUFFER
+> > +      * in tpm_svsm.h).
+> > +      */
+> > +     priv->buffer = (void *)devm_get_free_pages(dev, GFP_KERNEL, 0);
+> > +     if (!priv->buffer)
+> > +             return -ENOMEM;
+> > +
+> > +     chip = tpmm_chip_alloc(dev, &tpm_chip_ops);
+> > +     if (IS_ERR(chip))
+> > +             return PTR_ERR(chip);
+> > +
+> > +     dev_set_drvdata(&chip->dev, priv);
+> > +
+> > +     err = tpm2_probe(chip);
+> > +     if (err)
+> > +             return err;
+> > +
+> > +     err = tpm_chip_register(chip);
+> > +     if (err)
+> > +             return err;
+> > +
+> > +     dev_info(dev, "SNP SVSM vTPM %s device\n",
+> > +              (chip->flags & TPM_CHIP_FLAG_TPM2) ? "2.0" : "1.2");
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +static void __exit tpm_svsm_remove(struct platform_device *pdev)
+> > +{
+> > +     struct tpm_chip *chip = platform_get_drvdata(pdev);
+> > +
+> > +     tpm_chip_unregister(chip);
+> > +}
+> > +
+> > +/*
+> > + * tpm_svsm_remove() lives in .exit.text. For drivers registered via
+> > + * module_platform_driver_probe() this is ok because they cannot get unbound
+> > + * at runtime. So mark the driver struct with __refdata to prevent modpost
+> > + * triggering a section mismatch warning.
+> > + */
+> > +static struct platform_driver tpm_svsm_driver __refdata = {
+> > +     .remove = __exit_p(tpm_svsm_remove),
+> > +     .driver = {
+> > +             .name = "tpm-svsm",
+> > +     },
+> > +};
+> > +
+> > +module_platform_driver_probe(tpm_svsm_driver, tpm_svsm_probe);
+> > +
+> > +MODULE_DESCRIPTION("SNP SVSM vTPM Driver");
+> > +MODULE_LICENSE("GPL");
+> > +MODULE_ALIAS("platform:tpm-svsm");
+> > diff --git a/drivers/char/tpm/Kconfig b/drivers/char/tpm/Kconfig
+> > index fe4f3a609934..dddd702b2454 100644
+> > --- a/drivers/char/tpm/Kconfig
+> > +++ b/drivers/char/tpm/Kconfig
+> > @@ -234,5 +234,15 @@ config TCG_FTPM_TEE
+> >       help
+> >         This driver proxies for firmware TPM running in TEE.
+> >
+> > +config TCG_SVSM
+> > +     tristate "SNP SVSM vTPM interface"
+> > +     depends on AMD_MEM_ENCRYPT
+> > +     help
+> > +       This is a driver for the AMD SVSM vTPM protocol that a SEV-SNP guest
+> > +       OS can use to discover and talk to a vTPM emulated by the Secure VM
+> > +       Service Module (SVSM) in the guest context, but at a more privileged
+> > +       level (usually VMPL0).  To compile this driver as a module, choose M
+> > +       here; the module will be called tpm_svsm.
+> > +
+> >  source "drivers/char/tpm/st33zp24/Kconfig"
+> >  endif # TCG_TPM
+> > diff --git a/drivers/char/tpm/Makefile b/drivers/char/tpm/Makefile
+> > index 2b004df8c04b..9de1b3ea34a9 100644
+> > --- a/drivers/char/tpm/Makefile
+> > +++ b/drivers/char/tpm/Makefile
+> > @@ -45,3 +45,4 @@ obj-$(CONFIG_TCG_CRB) += tpm_crb.o
+> >  obj-$(CONFIG_TCG_ARM_CRB_FFA) += tpm_crb_ffa.o
+> >  obj-$(CONFIG_TCG_VTPM_PROXY) += tpm_vtpm_proxy.o
+> >  obj-$(CONFIG_TCG_FTPM_TEE) += tpm_ftpm_tee.o
+> > +obj-$(CONFIG_TCG_SVSM) += tpm_svsm.o
+> > --
+> > 2.49.0
+> >
+> >
+>
+> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-Can this not be prevented by proper locking? Otherwise this type of
-collision sounds like a kernel bug, not something that should escape to
-userspace.
+In the next version I'm moving the snp_svsm_vtpm_probe() call from
+here to sev core where the device is registered.
+See https://lore.kernel.org/linux-integrity/o2u7p3wb64lcc4sziunr274hyubkgmspzdjcvihbpzkw6mkvpo@sjq3vi4y2qfl/
 
-I.e. userspace can not reasonably know when it is safe to retry, so take
-locks to ensure forward progress.
+Do I carry your R-b for this patch (and patch 4) or would you rather
+take a look at v7?
+
+Thanks,
+Stefano
+
