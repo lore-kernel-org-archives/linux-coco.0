@@ -1,126 +1,445 @@
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FB520297F
-	for <linux-coco@lists.linux.dev>; Wed,  9 Apr 2025 20:19:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172FE19CD07
+	for <linux-coco@lists.linux.dev>; Wed,  9 Apr 2025 21:36:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744229985; cv=none; b=SbPe28E72tfXL35ROLH8NoVilz5sO1IMOwfDrjolOr8ZrI/gh9g7w3cARKScjtnY2Y2ri9AgX4Nmu6aYYVDZV3mR8bQ2U5O70Cl4Hp2qZNVNwBvRxjBmeCU4GiOegx2tcZFFBdixAYM3zGTW94gNsvn3FTlK6gwKvcGkkCBZrnw=
+	t=1744234597; cv=none; b=XhoEKV3By8YbydHkYRk1Q7KzDJp5zw37QHc/rzKiZSuc2W1LyFOKWmSK8EzAXv+zBgMoMdrToyQGpA6tu1Z3cNc9bVwsY6BfYaIMGF7C6ytiNeBJ8T52Vbb88Zp4oPBYXwFjtzbusk4gQy5QrtBSDX80QL95QwMAHPqFOLsS9jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744229985; c=relaxed/simple;
-	bh=vFYL2A2m4BVqGIUPwG+SJe8Wi/rBo/+xMXvF158DHXI=;
+	s=arc-20240116; t=1744234597; c=relaxed/simple;
+	bh=QQma51yL7jkbwDd3Csa4FE9yq4cwnb4FeAlqH5rB3kg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HVBLrl0hXqXuzh+jIaZKlRX1BXWcoXJ1FS2hn1O7VuhYUO92y1aF3sXRbJW27AhkYrmbayY4h1jztBdPL9+NQnKFSyOYMgiNVVvhUtzhxjY2qWLdwsqq2ZWaQ1IcDsfjT3EyL+dP6NrnbvetxkQtRvmRtbUDHh0k7slFAnGTnck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=Wk649vqk; arc=none smtp.client-ip=209.85.219.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+	 To:Cc:Content-Type; b=ZBMkW1Djns+R4sDONwRCztj8uU8pnjzZwC6aCg1PMtjjBR4XPP98WVmmDs5/02Ka5LrUw2T3abPhpClvNJSrqN6ijReoruNZzXZ42RugHABnHPGkeqtf4u2xHwgoLt/7M7HRwlJ7Mx8cyw4d+619NDau12o/D6V+r+Ux4B+6m9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BOV4YYLY; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="Wk649vqk"
-Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e702cffe574so54000276.3
-        for <linux-coco@lists.linux.dev>; Wed, 09 Apr 2025 13:19:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BOV4YYLY"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ac2bb7ca40bso29811466b.3
+        for <linux-coco@lists.linux.dev>; Wed, 09 Apr 2025 14:36:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1744229982; x=1744834782; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1744234592; x=1744839392; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VsHh17W+bDIV1e4xVUO/JwjeRPH7cOalB9Js2vjnhrU=;
-        b=Wk649vqk3X3v42pN6C2gqHKu4CTqYVil4O3wkWfUfIlI3Z0nEQ6HQO26xRyDB4bSGY
-         0O5jixIXdYS3H2xtb3A59pbBCl6n0O8irFJxLBftx2Kdr5vcJcTIzWJ9r9DkKnVim+yp
-         h9vZwjavWTM+YZSvw1z2zgRPphtLSkxSJZWAUrYSn72v/gB5MyZNIRpGpBldR8stkpQp
-         iUen69g283lGJcwtfMKciha46j7akeKHXd1ecFSuYt7GXEfkkdymyG1PPLhNh/OR2w5t
-         9Wc0I/FSMer1iCjvFBvza14ylsxEs4fTXkZ+QMeztflTPzuhaqyMZkTOaE69IXZDbfLd
-         5BMQ==
+        bh=N5pxT0nJOPqG3/SYoQPK9JDYYvavJZctTxbL+M9qQE8=;
+        b=BOV4YYLYTSly/igRBokfEjskC/ktJCTMKbO2UUiuHdt9juN99wxDNuWK9N0UHp2wbQ
+         +KNFGCvLxcTgt82PaTmQmD1FM9RFZWQx91ONDA6sCYapQvDiVwOIs2Jkx2ulDWtU9kf+
+         tX0yrHD//1TQCL5VOObWCi0lCmtN3lpiaNi2dxWOzpjouPW/HEvLTuJzKaEapM5uwI+X
+         +HZLF9N5Yv063hRjyvV3mDRHjNAcEEwgCg8uaZjCEA6NkkU4n26NpaMEPWg4RW2QbDQ3
+         yS9TTpTJaIdDarDhT05lsYtxpv/C8Oc7i35bcnLFx2SbYhJor38KoLezEx4HfdSrEJhU
+         pxDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744229982; x=1744834782;
+        d=1e100.net; s=20230601; t=1744234592; x=1744839392;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VsHh17W+bDIV1e4xVUO/JwjeRPH7cOalB9Js2vjnhrU=;
-        b=OGgXZXabEERFflnFzlmp4KGHOkhcrIxGR1KkZPF5Ot09uYgnaMJTUDYABGKvdjmQ4Y
-         Qii4NDxnu+Jb2q8q1Tt2O1OSL904xlmvgljCpv75LYXPg1d7dqituZI9tzIkFT/kJ1Z5
-         mejT+yWE0Iu8EaAjR53Ote9LVNVWnhsNOKsQJUvMagndMeDwYrh/Dq7QtoKHEsmYkBHc
-         eAuMnXUtONPwxI/4GYohQerz+KesfZg3XGB7L5TP84k2zB86IQpS2E63f4X4jbjv9Zf4
-         XQ3oQXvgMQpelUHnQGLXkXxgXW32XHOYlVZmJ5CayyM9BvfAW8NK+1fsAKSg6T+qHjdO
-         DX6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWbp0aEYc6E39JLXx9XfKHwkoat1yAVPIzsF8ElyN+PzqBwvZCHgpTE2QVMayy2I52Q7Htcj9UhL1Z+@lists.linux.dev
-X-Gm-Message-State: AOJu0YwecBi+8A13WYIF7NQSUInfqYhWm+zNGczIToh758fDWYfJsmR2
-	L5M3s4w2p/wzrsel0R6hr2ra5zCHIqZUHz4MGzEVhUUBAEjUIH0O+4KLEAb3Gqk1VTitXtegQOF
-	uCoJZPwKjUUyRX2lGsyn8RiCU+b3sQz6ONjOK
-X-Gm-Gg: ASbGncuuCitowVmDNjJE6rZ5v35tflHZpMcXxsHVG0b/61RywaFKm5tm+4O2VnZskKk
-	FQYZASClDhjIzeSJnRyNQpRJgSk9YK9X0YfH6IFx4LLRQG4ZszjP3VF7znRiRx6VEXFIZHfYUa/
-	fLhUmLY1NUFgoC3+G7T2WvOQ==
-X-Google-Smtp-Source: AGHT+IEGCJR9IA5jDMT2Of/TaTFQ6Kl+jhMbbHqtWzPYG+QuFj2lKMDW1yD44Tl3NdNB6jTiuM59Ql0Ux2XWfYO9+PU=
-X-Received: by 2002:a05:6902:1b90:b0:e6d:f3ca:3e15 with SMTP id
- 3f1490d57ef6-e703e0ecf38mr658467276.3.1744229981817; Wed, 09 Apr 2025
- 13:19:41 -0700 (PDT)
+        bh=N5pxT0nJOPqG3/SYoQPK9JDYYvavJZctTxbL+M9qQE8=;
+        b=pWQiQbAluihMrYWkhmLxECNBFBVlSEme7ANE4qM/liVt+ne+Q2SZWj+Qg8MQ2HxJE9
+         MfyYeb++VDwmyDRXGfsYCzGFvqnSLGhGreJq2Tni0WCtvZDfzitDhgTGxJowISb8UiiY
+         VxPVvIh/5+rhzQMkNBJfUecZsE10BA+ZhGaYknfivZz4GMgCZVnafHcxISvAjH0gtXeE
+         D5QQMlQGZrehZuSXhjwObvdtFFPVohGvHKXpPU9fZzUKuwNetQxgBKi2/9f2/HmhQEe+
+         QByt3b8jV0/VOK+JX423tTmka2KP6B+zsrnCpBC6VDWXIlTeEXRjCmZxuDCXwHp9lxZ4
+         TIgQ==
+X-Gm-Message-State: AOJu0YwmumDTmVBcuaJ+7Y+pe5Rn5pRF3rRJCnMrm8ONmW1hsV3ASLJ5
+	zq85YEqGVDCMpYH8TpLJyYkmswmA62UPPI4jToq7aU1+n5I6+SdDgQcVULhIAFAYGq9l1RKEdRI
+	6HSiU0CYfB8UNBKU9JlTPvauisczc2pSiBKXk53fd5WbW2toyiO1r
+X-Gm-Gg: ASbGncvq5Mg3PJlCmKhKmsXFTVT2EaynG1OD69KYSfgBvHVwIZDuODjdtTBLk+7zOCz
+	qC/wHzdN2tmx7lDbCnjg1CMc3fX4DmVeJmw70Pxyyd5AMVlAEiUsH9b7VAB58xZCR8eUFtP5mMT
+	+cisyfDeTAiLe8XinqSp6z6FTZWzdMXRWcEYaLTVUdPAspmQp258Rpl7p1zvVIRGs=
+X-Google-Smtp-Source: AGHT+IF0tm6Q/5OLaX0F3JOPDVHGOzzoAwllce1a3QzPyLWbtEGhp/oEI5n/cyMnPqUjIGqrxkUZA0NVqcLWH5WpuZU=
+X-Received: by 2002:a17:907:7e92:b0:ac4:2ae:c970 with SMTP id
+ a640c23a62f3a-acabd195332mr20720266b.21.1744234591695; Wed, 09 Apr 2025
+ 14:36:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250408112402.181574-1-shivankg@amd.com> <20250408112402.181574-4-shivankg@amd.com>
-In-Reply-To: <20250408112402.181574-4-shivankg@amd.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Wed, 9 Apr 2025 16:19:31 -0400
-X-Gm-Features: ATxdqUEUOdbJE1FR-JWrcEMUFKxoL7rqK5e8WWf2cXUgc2Yd72xDgueuEkSahFw
-Message-ID: <CAHC9VhRFBOC=cZB+Dm00cshwBSBaK6amv+=XFLPF0Bub0gHN+Q@mail.gmail.com>
-Subject: Re: [PATCH RFC v7 3/8] security: Export security_inode_init_security_anon
- for KVM guest_memfd
-To: Shivank Garg <shivankg@amd.com>
-Cc: seanjc@google.com, david@redhat.com, vbabka@suse.cz, willy@infradead.org, 
-	akpm@linux-foundation.org, shuah@kernel.org, pbonzini@redhat.com, 
-	ackerleytng@google.com, jmorris@namei.org, serge@hallyn.com, pvorel@suse.cz, 
-	bfoster@redhat.com, tabba@google.com, vannapurve@google.com, 
-	chao.gao@intel.com, bharata@amd.com, nikunj@amd.com, michael.day@amd.com, 
-	yan.y.zhao@intel.com, Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com, 
-	michael.roth@amd.com, aik@amd.com, jgg@nvidia.com, kalyazin@amazon.com, 
-	peterx@redhat.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-coco@lists.linux.dev
+References: <CAAH4kHZg_f--LJhw0zu9bYe87ozQX1jgxhQwJS+-=g0-u0DZTQ@mail.gmail.com>
+ <447a8b1cdf7ede36a14fd9c0bf061885adf868b3.camel@HansenPartnership.com>
+ <9f2236e99150814f64f444aff2d3edee495483a8.camel@ibm.com> <CAAH4kHaP6n-n=X=zDxonqhv2tZRjycS3R0XBX-FZv6tS7xn_hQ@mail.gmail.com>
+ <CAH6wD8X9ttrnt5rTTx8paDiWeBOnZZCgWsEiDHctLqgz5GZucw@mail.gmail.com>
+ <c17b2eee63c5c16305d2a8b9aa8e451134718cdf.camel@HansenPartnership.com>
+ <CAAH4kHZe1S1ErOoqX7E6qVr9ofTf15_3zyEh3-xjufcksAkiGQ@mail.gmail.com>
+ <CAAH4kHYdy6bovpA=M5gYfp-K_rBC2Hz_r-tHg_XdEJ9uEc5wMw@mail.gmail.com>
+ <CAH6wD8WEqn4XyefQXBYyTT_W6g6mE5GOhcp25BxpwJz_bgmZ1A@mail.gmail.com>
+ <CAAH4kHZoqppd7MgJTzd1rCP4Oo_xS=s+JKQ8QEWvXFTw81mciQ@mail.gmail.com>
+ <CAAH4kHbPbwQ8XE9pnjQRy28gnfn2a5W_h6EsmX-+r-Cw_fpAaA@mail.gmail.com> <CAAH4kHa3A4x+nAew7hdFdJ9ABDc1nikT=HLs79iyX7FAqvv+DQ@mail.gmail.com>
+In-Reply-To: <CAAH4kHa3A4x+nAew7hdFdJ9ABDc1nikT=HLs79iyX7FAqvv+DQ@mail.gmail.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Wed, 9 Apr 2025 14:36:19 -0700
+X-Gm-Features: ATxdqUFAfdEK-aIFum4kr7Ts_8JAbf89bzoGT9OYjHa_xOMIvCq6AGDMzI6SK94
+Message-ID: <CAAH4kHb6TiJ8vzEK7A4O1yJswATxReM-kr6zgqrCUZkYDSA6tA@mail.gmail.com>
+Subject: Re: [svsm-devel] vTPM service attestation format update
+To: linux-coco@lists.linux.dev, "Ndu, Geoffrey" <geoffrey.ndu@hpe.com>, 
+	Claudio Carvalho <cclaudio@linux.ibm.com>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, 
+	Claudio Siqueira de Carvalho <cclaudio@ibm.com>, 
+	"svsm-devel@coconut-svsm.dev" <svsm-devel@coconut-svsm.dev>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 8, 2025 at 7:25=E2=80=AFAM Shivank Garg <shivankg@amd.com> wrot=
-e:
->
-> KVM guest_memfd is implementing its own inodes to store metadata for
-> backing memory using a custom filesystem. This requires the ability to
-> initialize anonymous inode using security_inode_init_security_anon().
->
-> As guest_memfd currently resides in the KVM module, we need to export thi=
-s
-> symbol for use outside the core kernel. In the future, guest_memfd might =
-be
-> moved to core-mm, at which point the symbols no longer would have to be
-> exported. When/if that happens is still unclear.
++Ndu, Geoffrey +James Bottomley +Claudio Carvalho If this looks good
+to you, a Reviewed-by: for Thomas I think would help his position to
+make edits that this is what the developer community wants the
+specification to be. Thanks!
 
-Can you help me understand the timing just a bit more ... do you
-expect the move to the core MM code to happen during the lifetime of
-this patchset, or is it just some hand-wavy "future date"?  No worries
-either way, just trying to understand things a bit better.
-
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> ---
->  security/security.c | 1 +
->  1 file changed, 1 insertion(+)
+On Mon, Apr 7, 2025 at 10:56=E2=80=AFAM Dionna Amalie Glaze
+<dionnaglaze@google.com> wrote:
 >
-> diff --git a/security/security.c b/security/security.c
-> index fb57e8fddd91..097283bb06a5 100644
-> --- a/security/security.c
-> +++ b/security/security.c
-> @@ -1877,6 +1877,7 @@ int security_inode_init_security_anon(struct inode =
-*inode,
->         return call_int_hook(inode_init_security_anon, inode, name,
->                              context_inode);
->  }
-> +EXPORT_SYMBOL(security_inode_init_security_anon);
+> Reposting to linux-coco for reach, since this doesn't just concern the
+> Coconut-SVSM project, but the specification for SVSM. The spec
+> addition, if accepted, will lead to a new attribute in
+> configfs-tsm-report: manifest_selector.
 >
->  #ifdef CONFIG_SECURITY_PATH
->  /**
+> >
+> > Here is my full proposal to match the implementation in PR #662
+> >
+> > Table 10: Attestation Protocol Services
+> > | Call ID | First version Supported | Name | Function |
+> > ---
+> > -| 0 | 1 | SVSM_ATTEST_SERVICES | Retrieve an attestation report for
+> > all SVSM services (e.g. vTPM, etc.). |
+> > +| 0 | 1 | SVSM_ATTEST_SERVICES | Retrieve an attestation report for
+> > all SVSM services (e.g., vTPM, etc.). |
+> > -| 1 | 1 | SVSM_ATTEST_SINGLE_SERVICE | Retrieve an attestation report
+> > for a single SVSM service |
+> > +| 1 | 1 | SVSM_ATTEST_SINGLE_SERVICE | Retrieve an attestation report
+> > for a single SVSM service. |
+> > +| 2 | 2 | SVSM_ATTEST_SINGLE_SERVICE_EX | Retrieve an attestation
+> > report for a single SVSM service with given selection criteria. |
+> >
+> > ## SVSM_ATTEST_SINGLE_SERVICE Call
+> >
+> > ...
+> > -| RCX | 8 | 8 | In | gPA of the attestation services operation
+> > structure, see Table 11: Attest Services Operation |
+> > +| RCX | 8 | 8 | In | gPA of the attest single service operation
+> > structure, see Table 13: Attest  Single Service Operation |
+> >
+> > +## SVSM_ATTEST_SINGLE_SERVICE_EX Call
+> > +
+> > +This call is used to request a VMPL0 attestation report that includes
+> > a service manifest for the specified service that is running in the
+> > SVSM as part of the report data.
+> > +
+> > +| Register | Size (Bytes) | Alignment (Bytes) | In/Out | Description |
+> > +---
+> > +| RAX | 4 |  | Out | Result value |
+> > +| RCX | 8 | 8 | In | gPA of the attest single service ex operation
+> > structure, see Table 14: Attest Single Service Ex Operation |
+> > +| RCX | 8 |  | Out | Service manifest size (in bytes) |
+> > +| RDX | 8 |  | Out | Certificate data size (in bytes) |
+> > +| R8 | 8 |  | Out | Attestation report size (in bytes) |
+> > +
+> > +The inputs associated with the attest single service ex call are
+> > specified according to the format of the following table.
+> > +
+> > +| Byte Offset | Size (Bytes) | Alignment (Bytes) | Meaning |
+> > +| 0x000 | 8 | 4 KB | Attestation report buffer gPA |
+> > +| 0x008 | 4 |  | Attestation report buffer size (in bytes) |
+> > +| 0x00C | 4 |  | RESERVED =E2=80=93 MBZ |
+> > +| 0x010 | 8 |  | Nonce gPA |
+> > +| 0x018 | 2 |  | Nonce size (in bytes) |
+> > +| 0x01A | 6 |  | Reserved |
+> > +| 0x020 | 8 | 4 KB | Service manifest buffer gPA |
+> > +| 0x028 | 4 |  | Service manifest buffer size (in bytes) |
+> > +| 0x02C | 4 |  | RESERVED =E2=80=93 MBZ |
+> > +| 0x030 | 8 | 4 KB | Certificate data buffer gPA |
+> > +| 0x038 | 4 |  | Certificate data buffer size (in bytes) |
+> > +| 0x03C | 4 |  | RESERVED =E2=80=93 MBZ |
+> > +| 0x040 | 16  |  | GUID of service to attest |
+> > +| 0x050 | 4 |  | Requested manifest version |
+> > +| 0x054 | 4 |  | RESERVED =E2=80=93 MBZ |
+> > +| 0x058 | 8 |  | Manifest selector data buffer gPA |
+> > +| 0x060 | 4 |  | Manifest selector data buffer size (in bytes) |
+> > +| 0x064 | 4 |  | RESERVED =E2=80=93 MBZ |
+> > +{#tbl-attest-single-service-ex-op Attest Single Service Ex Operation}
+> > +
+> > +The attest single service operation ex structure must not cross a 4
+> > KB boundary.
+> > +If the gPA of the structure is such that the structure crosses a 4 KB
+> > boundary, the call will return SVSM_ERR_INVALID_PARAMETER.
+> > +
+> > +The attestation report buffer will be treated as physically
+> > contiguous in the guest address space if the buffer size is greater
+> > than 4 KB.
+> > +
+> > +The nonce must not cross a 4 KB boundary.
+> > + If the nonce crosses a 4 KB boundary, the call will return
+> > SVSM_ERR_INVALID_PARAMETER.
+> > +
+> > +The service manifest buffer will be treated as physically contiguous
+> > in the guest address space if the buffer size is greater than 4 KB.
+> > +
+> > +The certificate data buffer is optional.
+> > +Its presence is indicated by setting the certificate data buffer size
+> > to a non-0 value.
+> > +If the certificate data buffer length is non-0, the certificate data
+> > buffer will be treated as physically contiguous in the guest address
+> > space if the buffer size is greater than 4 KB.
+> > +
+> > +The manifest selector data buffer is optional.
+> > +Its present is indicated by setting the manifest selector data buffer
+> > size to a non-0 value.
+> > +If the manifest selector data buffer length is non-0, the manifest
+> > selector data buffer will be treated as physically contiguous is the
+> > guest address space if the buffer crosses the 4 KB page boundary.
+> > +If the manifest selector data buffer size is 0, the result must be
+> > the same as returned from SVSM_ATTEST_SINGLE_SERVICE.
+> > +
+> > +All gPA values must not be gPA values that are assigned to the SVSM it=
+self.
+> > +If the SVSM detects that the guest is specifying an address that is
+> > assigned to the SVSM, the call will return SVSM_ERR_INVALID_ADDRESS.
+> > +
+> > +The GUID of the service to be attested needs to be an available
+> > service of the SVSM.
+> > +If the requested service is not available, the call will return
+> > SVSM_ERR_INVALID_PARAMETER.
+> > +
+> > +The SVSM service must support the version of the manifest requested.
+> > +If the requested manifest version is not supported, the call will
+> > return SVSM_ERR_INVALID_PARAMETER.
+> > +
+> > +The SVSM will assemble a service manifest optionally using selection
+> > criteria it interprets from the manifest selector data buffer.
+> > +The format of the manifest selector is determined by the service
+> > named by the service GUID.
+> > +If the service is not able to interpret the contents of the manifest,
+> > the call will return a protocol error greater than 0x8000_1000.
+> > +
+> > +The service will produce a descriptive manifest in a service-defined f=
+ormat.
+> > +If the size of the assembled service manifest exceeds the size of the
+> > supplied service manifest buffer, RCX will be set to the size of the
+> > service manifest (in bytes) and the call will return
+> > SVSM_ERR_INVALID_PARAMETER.
+> > +If the manifest selector data buffer size is 0, the Input REPORT_DATA
+> > supplied on the SNP attestation request will be the SHA-512 digest of
+> > the input nonce and the service manifest, SHA-512(Nonce || Service
+> > Manifest).
+> > +If the manifest selector data buffer size is non-0, the Input
+> > REPORT_DATA supplied on the SNP attestation request will be the
+> > SHA-512 digest of the input nonce, the selector context, and the
+> > service manifest, SHA-512(Nonce || Selector Context || Service
+> > Manifest).
+> > +The selector context is defined as
+> > +
+> > +| Byte offset | Size (in bytes) | Description |
+> > +| 0x000 | 4 | The signature number 0x324D5353 (SSM2 in little endian
+> > ASCII, for single service manifest 2). |
+> > +| 0x004 | 16 | GUID of attested service in mixed endian format. |
+> > +| 0x014 | 4 | The manifest version in little endian format. |
+> > +| 0x018 | variable | The manifest selector data buffer. |
+> > +
+> > +The input VMPL supplied on the SNP attestation request will be 0.
+> > +
+> > +If a certificate data buffer was provided and if the size of the
+> > certificate data from the hypervisor exceeds the size of the supplied
+> > certificate data buffer, RCX will be set to the size of the services
+> > manifest and RDX will be set to the size of the certificate data (in
+> > bytes) and the call will return SVSM_ERR_INVALID_PARAMETER.
+> > +If the size of the SNP attestation report exceeds the size of the
+> > supplied attestation report buffer, RCX will be set to the size of the
+> > services manifest, RDX will be set to the size of the certificate data
+> > (in bytes, if a certificate buffer was supplied) and R8 will be set to
+> > the size of the attestation report (in bytes) and the call will return
+> > SVSM_ERR_INVALID_PARAMETER.
+> > +Upon successful completion of the SNP attestation request, the
+> > attestation report will be copied to the input attestation report
+> > buffer gPA, the service manifest will be copied to the input service
+> > manifest buffer gPA, RCX will be set to the size of the service
+> > manifest, if a certificate data buffer was provided, the certificate
+> > data will be copied to the input certificate data buffer gPA and RDX
+> > will be set to the size of the certificate data.
+> > +Should the SNP attestation request fail, RAX will be set to 0x8000_100=
+0.
+> >
+> > Please note the context format ordering is different than previously pr=
+oposed.
+> > The manifest selector context is NOT added to REPORT_DATA if no
+> > manifest selector is given.
+> > The new call should be a strict superset of ATTEST_SINGLE_SERVICE behav=
+ior.
+> >
+> > ...vTPM section...
+> >
+> > +### SVSM_ATTEST_SINGLE_SERVICE_EX Manifest Selector
+> > +
+> > +#### Manifest version 0
+> > +
+> > +The format of the manifest selector is as follows
+> > +
+> > +| Byte offset | Size (in bytes) | Description |
+> > +| 0x000 | 8 | Selector kind (see table vTPM manifest selectors) |
+> > +| 0x008 | variable | Data structure determined by the selector kind |
+> > +
+> > +| Selector kind | Selector data |
+> > +| 0x0000_0000_0000_0001 | TPMT_PUBLIC for the template input of
+> > CreatePrimary command. |
+> > +{#tbl-vtpm-selector-kind Supported kinds of manifest selectors }
+> > +
+> > +For selector kind 1, if the manifest selector data buffer size
+> > exceeds 65543, the call will return 0x8000_1001.
+> > +The TPMT_PUBLIC value will be used in a TPM_CC_CREATEPRIMARY command
+> > constructed as follows
+> > +
+> > +h'8002' || COMMAND_SIZE ||
+> > h'000001314000000B00000009400000090000010000000400000000' ||
+> > PUBLIC_SIZE || TPMT_PUBLIC || h'000000000000'
+> > +
+> > +Where TPMT_PUBLIC is the manifest selector data buffer without the
+> > first 8 bytes, PUBLIC_SIZE is the 16-bit big endian representation of
+> > manifest selector data buffer size minus 8, and COMMAND_SIZE is the
+> > 32-bit big endian representation of the TPM command length, i.e.,
+> > manifest data buffer size plus 33.
+> > +
+> > +If the TPM has not been powered on, the call will return
+> > SVSM_ERR_INVALID_REQUEST.
+> > +If the TPM response is lost or too large for the SVSM, then the call
+> > will return SVSM_ERR_INVALID_REQUEST.
+> > +If the constructed TPM command length exceeds the maximum size, the
+> > call will return 0x8000_1001.
+> > +
+> > +If the TPM command result code RC is non-0, the call will return
+> > 0x8000_1100 + RC.
+> > +If the TPM command result code is 0, the vTPM manifest (see \ref{vTPM
+> > Service Manifest Data Structure}) will contain the TPMT_PUBLIC
+> > represented in the command response.
+> >
+> > The strange number 65543 is 2^16+7 to account for the 8 byte header
+> > before the manifest selector and the maximum representable
+> > TPM2B_PUBLIC, which is the combination of PUBLIC_SIZE and TPMT_PUBLIC.
+> >
+> > On Fri, Mar 28, 2025 at 9:02=E2=80=AFAM Dionna Amalie Glaze
+> > <dionnaglaze@google.com> wrote:
+> > >
+> > > On Thu, Mar 27, 2025 at 4:37=E2=80=AFAM Geoffrey Ndu <gndu8086@gmail.=
+com> wrote:
+> > > >
+> > > > I believe it would be helpful to add the error code as a read-only
+> > > > attribute in configfs
+> > > >
+> > >
+> > > After closer inspection, I think that we should probably generalize
+> > > this to report the svsm protocol error.
+> > > For vTPM, then, we'd want to reserve perhaps the first 256 numbers fo=
+r
+> > > administrative errors for the service, but then use the rest for the
+> > > TPM_RC.
+> > > Adding the TPM_RC to PROTOCOL_BASE + 0x100 will not overflow the 32
+> > > bits for the error code since the top 20 bits are specified to be 0.
+> > > So I'll add a service_error attribute to tsm/report. Given the way
+> > > tsm_report_state is separated from tsm_report, it will be ugly to add
+> > > the administrative fields back in to limit the visibility to equal
+> > > read/write generations, so I'll just make it available if SVSM is
+> > > available.
+> > >
+> > > > Geoffrey
+> > > >
+> > > > On Wed, Mar 26, 2025 at 9:02=E2=80=AFPM Dionna Amalie Glaze
+> > > > <dionnaglaze@google.com> wrote:
+> > > > >
+> > > > > As the selector is used to drive a create_primary command, it's
+> > > > > possible for the command to fail before getting to the attestatio=
+n
+> > > > > report creation.
+> > > > > If this svsm attestation report fails with invalid_parameter, the=
+n
+> > > > > sev-guest will retry in a loop thinking the only way for the requ=
+est
+> > > > > to fail is due to output buffer sizes being wrong.
+> > > > >
+> > > > > I think in addition to the selector address and length, I'll use =
+the
+> > > > > would-be-reserved 4 following bytes for an error code related to =
+the
+> > > > > selector.  If this is set, then the attestation should not be ret=
+ried.
+> > > > > Does it make sense to add the error code as a RO configfs attribu=
+te?
+> > > > > We can make it visible only if the write generation is the same a=
+s the
+> > > > > generation it was when the error code was recorded.
+> > > > >
+> > > > > On Fri, Mar 7, 2025 at 9:51=E2=80=AFAM Dionna Amalie Glaze
+> > > > > <dionnaglaze@google.com> wrote:
+> > > > > >
+> > > > > > On Fri, Mar 7, 2025 at 6:24=E2=80=AFAM James Bottomley
+> > > > > > <James.Bottomley@hansenpartnership.com> wrote:
+> > > > > > >
+> > > > > > > On Fri, 2025-03-07 at 11:48 +0000, Geoffrey Ndu wrote:
+> > > > > > > > Since the single_service_manifest call for the vTPM effecti=
+vely
+> > > > > > > > certifies EKs, why don=E2=80=99t the =E2=80=9Cselector=E2=
+=80=9D be the handle values for EK
+> > > > > > > > certificates, as specified by the TCG in 2.2.2.5.1 of =E2=
+=80=9CTCG EK
+> > > > > > > > Credential Profile For TPM Family 2.0; Level 0=E2=80=9D? Th=
+is approach would
+> > > > > > > > simplify the user experience, as every SVSM would function
+> > > > > > > > identically, and  SVSM vTPMs would exhibit analogous behavi=
+our to
+> > > > > > > > physical TPMs.
+> > > > > > >
+> > > > > > > Because to make life easier we might want to short circuit th=
+e EK/AK
+> > > > > > > makecredential/activatecredential round trip and simply const=
+ruct a
+> > > > > > > signing EK to use in place of an arbitrary AK.  Then to make =
+the
+> > > > > > > signing EK easily useful, we might want it not to have a poli=
+cy
+> > > > > > > statement tying it to the endorsement hierarchy password (par=
+ticularly
+> > > > > > > as we know that will be empty).  To allow this type of thing =
+we need to
+> > > > > > > allow flexibility in the EK creation which isn't listed in th=
+e TCG
+> > > > > > > profile EK templates.
+> > > > > > >
+> > > > > >
+> > > > > > I have local changes to tpm-rs that I haven't pushed to make th=
+is
+> > > > > > commit work on its own, but this is what I'm prototyping.
+> > > > > >
+> > > > > > https://github.com/coconut-svsm/svsm/commit/db1ad6018b04b995e02=
+78455eb2f9a66569cbcc9
+> > > > > >
+> > > > > > > Regards,
+> > > > > > >
+> > > > > > > James
+> > > > > > >
+> > > > > >
+> > > > > >
+> > > > > > --
+> > > > > > -Dionna Glaze, PhD, CISSP, CCSP (she/her)
+> > > > >
+> > > > >
+> > > > >
+> > > > > --
+> > > > > -Dionna Glaze, PhD, CISSP, CCSP (she/her)
+> > >
+> > >
+> > >
+> > > --
+> > > -Dionna Glaze, PhD, CISSP, CCSP (she/her)
+> >
+> >
+> >
+> > --
+> > -Dionna Glaze, PhD, CISSP, CCSP (she/her)
+>
+>
+>
 > --
-> 2.34.1
+> -Dionna Glaze, PhD, CISSP, CCSP (she/her)
+
+
 
 --=20
-paul-moore.com
+-Dionna Glaze, PhD, CISSP, CCSP (she/her)
