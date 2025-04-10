@@ -1,46 +1,41 @@
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC90205515;
-	Thu, 10 Apr 2025 07:24:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1361E1023
+	for <linux-coco@lists.linux.dev>; Thu, 10 Apr 2025 07:48:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744269842; cv=none; b=jzQMsSa1yLjmgpyU+4iAMxq8JKwj79krWfH1M3mUvCF8C/kzBnKZHbW3U/tTEpjeImCrqXhSyUruRqEZc611/xx7kjFG4vRhTZVFAY7xzIxLIr32xe0ECl9pzGcuXoPdEIDbbBFJfzvJmTEbTPoeirskqZI6mXRHrsFn2Apgs90=
+	t=1744271319; cv=none; b=NwQEkYwe68lUOtcRug0q7sOc/3uL3eMFBvKW0ZqpJ7bRaJWBwrvJfJntPVet8igTzqra7xAlKPngS0FBNywyy8zTdvu+E1nmk/K/LhxoRw6jQ8iy0GjjQ3v8PzaNJMHVXNk27LwMbG2WmeAjmJUOUZUOCgMAptY2mRbqrNQVMJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744269842; c=relaxed/simple;
-	bh=7sEd3Ffa5a1RVgJPuCxl22V8hW6GtHda8gxp+9Ug0ag=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V+v5yuqe4Rry2meYZWhHc/LIJq1ygGvWaWa7hX/QHAerS2ZKjbbg42S+w0kqNWqvieQi9xVkximlAco2fa+jQvY2lRHT4tKQqgejvjUtBfTTqcwe+4IINXLGakMKvptlDQzEUvhvzAmQi9J+aEvTdulADrYlcQ/NytKl7nDVMS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 7F56568C4E; Thu, 10 Apr 2025 09:23:54 +0200 (CEST)
-Date: Thu, 10 Apr 2025 09:23:54 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Roman Kisel <romank@linux.microsoft.com>,
-	Robin Murphy <robin.murphy@arm.com>, aleksander.lobakin@intel.com,
-	andriy.shevchenko@linux.intel.com, arnd@arndb.de, bp@alien8.de,
-	catalin.marinas@arm.com, corbet@lwn.net, dakr@kernel.org,
-	dave.hansen@linux.intel.com, decui@microsoft.com,
-	gregkh@linuxfoundation.org, haiyangz@microsoft.com, hch@lst.de,
-	hpa@zytor.com, James.Bottomley@hansenpartnership.com,
-	Jonathan.Cameron@huawei.com, kys@microsoft.com, leon@kernel.org,
-	lukas@wunner.de, luto@kernel.org, m.szyprowski@samsung.com,
-	martin.petersen@oracle.com, mingo@redhat.com, peterz@infradead.org,
-	quic_zijuhu@quicinc.com, tglx@linutronix.de, wei.liu@kernel.org,
-	will@kernel.org, iommu@lists.linux.dev, linux-arch@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-scsi@vger.kernel.org, x86@kernel.org, apais@microsoft.com,
-	benhill@microsoft.com, bperkins@microsoft.com,
-	sunilmut@microsoft.com, Suzuki K Poulose <suzuki.poulose@arm.com>,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH hyperv-next 5/6] arch, drivers: Add device struct
- bitfield to not bounce-buffer
-Message-ID: <20250410072354.GB32563@lst.de>
-References: <20250409000835.285105-1-romank@linux.microsoft.com> <20250409000835.285105-6-romank@linux.microsoft.com> <0eb87302-fae8-4708-aaf8-d16e836e727f@arm.com> <0ab2849a-5c03-4a8c-891e-3cb89b20b0e4@linux.microsoft.com> <67f703099f124_71fe2949e@dwillia2-xfh.jf.intel.com.notmuch>
+	s=arc-20240116; t=1744271319; c=relaxed/simple;
+	bh=0tXZrsf6f4Aj+AalxpFjdwlgpHRdctYGl37Zkep3jmo=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cHfSFuT3nd/HwDr1MHIyYeAbXItNwVs08gqHGQ0Jd9p1SgKKQUzw35AU4LKSaSLrztKwqOJmKEU9lC92EPTpJ5+VbIGIePaA7SM3SiTmtNSJ21GpkDZrEouSmkYnbevLS+j2FzEvHA66nFoJ2829nJfwZTYXQ84IzZZTD3Wz9uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=4onTOImi; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="4onTOImi"
+Received: from 8bytes.org (p4ffe03ae.dip0.t-ipconnect.de [79.254.3.174])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 759AB47CAC;
+	Thu, 10 Apr 2025 09:42:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1744270966;
+	bh=0tXZrsf6f4Aj+AalxpFjdwlgpHRdctYGl37Zkep3jmo=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=4onTOImidi8vjtgI8Aw9wcf6qRkwPNqqTVxh5wTb/yFhLvauhchXd0ZsB/oRsu96H
+	 jDcVZpFvH4Ye1QH9zBZDcmi3VHH0MuKYeCoS0XyZMrx9/zGttzR27YxBmWX58cEVDq
+	 kfb/bc3HdzVO20ER0C7rncUUsLftMFhr5HWQ9SZ3LPZCMLqWBPTYDpbdYcIHTvGhmI
+	 n0VpS5slduZPntlZYlR2x9vSJXKRphLXFYc8XT1VKYDCvhmtDOxTa87gA8Cu8k9GJ5
+	 aiFPNXdDw97h3XhDj1LZF1h4nUkTj/PM6vWw92ybZqogD5pRN0rvNHM9D1l7YDNm5g
+	 nKCJJNx2wCixw==
+Date: Thu, 10 Apr 2025 09:42:45 +0200
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+To: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
+Subject: Re: [svsm-devel] SVSM Development Call April 9th, 2025
+Message-ID: <Z_d2dUgvZ4vSNf7X@8bytes.org>
+References: <Z_VgmBYq96ShGdhr@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -49,21 +44,12 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <67f703099f124_71fe2949e@dwillia2-xfh.jf.intel.com.notmuch>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <Z_VgmBYq96ShGdhr@8bytes.org>
 
-On Wed, Apr 09, 2025 at 04:30:17PM -0700, Dan Williams wrote:
-> > Thanks, I should've highlighted that facet most certainly!
-> 
-> One would hope that no one is building a modern device with trusted I/O
-> capability, *and* with a swiotlb addressing dependency. However, I agree
-> that a non-shared swiotlb would be needed in such a scenario.
+Meeting minutes are now ready:
 
-Hope is never a good idea when dealing with hardware :(  PCIe already
-requires no addressing limitations, and programming interface specs
-like NVMe double down on that.  But at least one big hyperscaler still
-managed to build such a device.
+	https://github.com/coconut-svsm/governance/pull/52
 
-Also even if the periphal device is not addressing limited, the root
-port or interconnect might still be, we've seen quite a lot of that.
+Have fun!
 
+	Joerg
