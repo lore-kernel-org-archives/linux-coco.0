@@ -1,94 +1,81 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0483328F93C
-	for <linux-coco@lists.linux.dev>; Thu, 10 Apr 2025 19:20:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744312851; cv=fail; b=TfqbFX7vzFrOe1vffiSUFsgUErZbcsY/FQVcb9RmJsBiJf+FQkfCkDjaJPs/JCLle4g0dnB/zmgC++d0aviIQU/Nb5VcKZBBoRRRZlXQVf4J6blfje1Te1k0KbsF/fw6Vj7Jjl/crKw9eG2s5Iib+pB5JXD/CDQAkxbNZoAQIOg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744312851; c=relaxed/simple;
-	bh=JKbTpyIvwgqnJurDLbcVUKnJQEE8jHxroOkDPHQYEDM=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=axZzGP8qAniklQDb/vlQ/Lb82OesXyzbUEBzUmQJ0dfrmgWBF+MDYQSjVqTWrIuqUVgs/OiPvuzFZ0EwNeMsTLHVckScYxvNyCGW0L6/HDWn9r+fXBFVCvtlqgevdl10DK5k299/qFHz3F0+63Pw54NUz+zSHUvrIYmjnXF6kFI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V/0vcd2l; arc=fail smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4545C70830
+	for <linux-coco@lists.linux.dev>; Thu, 10 Apr 2025 19:27:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744313247; cv=none; b=SWWSAOoPVsCM/QF0XoH9j9x+ZVKSIeCm73t3dMx/5k6g70b6sHTuiTUpF/5eA2VJkkO0CCw8Qens/MHWaBPK9ixG8h9aQlNLRwr45HNQ7tMr1cZPjIQH5h4nK1ow9IVQXkSwuPCPrf4qT28ObpyCcM/aY0uLUoZLx5AQNO2SbZ0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744313247; c=relaxed/simple;
+	bh=YQ4nkvKpRuTZrCGPqBDsfJdbG1p2IYURAYsSu5WUCBw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R5eZTrUjBRYvtRP2Rq+VjoX2uksoJcHKNy59JlhdacvREJTg8uJOhPxMaHeqTEPc89avluNfhqIgJLJcvOzE0iweuRnz7Bf+vmPctrLRGEDECKt3AoUqIgiLGAitzW9moSKCLTNPbkidkoLCvaAi2KEUPtikys81YbzLvL0Whc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=b6fy2owg; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V/0vcd2l"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744312850; x=1775848850;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=JKbTpyIvwgqnJurDLbcVUKnJQEE8jHxroOkDPHQYEDM=;
-  b=V/0vcd2lRbqOiozEtuSF84frfOiSidH34LggbDRZ8n3GNWmcKaJqRYz+
-   IfYx/Ry1udNIAFA1lP4KQ0nFZ1lfWmlbjro6uNKDkQySs1eYf/G3KNcq/
-   +DOO++rQqZJNev7V3pneBytLyCtvU4MLXAlpTZNf6MnFFRKDGZ/bA6yBL
-   kBlWrv+KOn7htui9Br/UBe/0UgNlYJ+L67FwkUDu/LCvMW5BMX/mlqaEg
-   /E2x2LOqlDTfthCrMysT7Hn8E6Ucgl40GVxVz6FdCd03JwjAHaaVd3TvL
-   OS1uVU5qGqAWHYaNRVmZlU28VOeg+MZlKtL287oXfeBDYNwijSgJeaeSl
-   A==;
-X-CSE-ConnectionGUID: o9CIrIIvQqKPh01WXE2EEg==
-X-CSE-MsgGUID: Nb2PNUSGQwWVR6J1ZzgDbg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="56033754"
-X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; 
-   d="scan'208";a="56033754"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 12:20:50 -0700
-X-CSE-ConnectionGUID: Jd6H7e63RZqKjiGNdTuC4g==
-X-CSE-MsgGUID: nNnz55DOQdaXXws8DAOGog==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; 
-   d="scan'208";a="133856487"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 12:20:50 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Thu, 10 Apr 2025 12:20:49 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Thu, 10 Apr 2025 12:20:49 -0700
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.42) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Thu, 10 Apr 2025 12:20:47 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=e1/6yRnNm+yr8VYFUv0IDIyjtycejS/KaoVLzL9RAv+TcUXqaazykaDi6K/lyYuMwLpRsqtzyWsIVKtzcUaMwgDoDfQI21/Rvwt3MXzeXchfAdxgQYrVM5UgxX1wmQmkSy1Yztu8K2LHwKr0E6JI5lH6HN+T3DCQpnSxvg/TkchF1aZnuPOaHVXC0n9adfyq7m+GMRsvPgm1qeRlo2oR0rhrZocxFFmYS7jGO4fZtb+oTuvSzGvGP6QVLVWEbEngyPNyX9NGEzHzMYFpgaEiBX9nYu+O8DuxL96m2QOLUDJxmtHo3A8kme20XtH4MURwhSDI9lEx/NGS4c9jtu8Sug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tz9hF6BBiZnGWCUtthAGHBD1wBffvNEP5p+I5aJwlvs=;
- b=im7KI67i5pEzLv+huuaPa5+Ub4Drcg518Lj6MIjoaphpfNwDc1IwBCrxytRO9r6BOEzwZD+lVVfGhZUAtjrFcjO8uM8Akv37nvj5FYjonU5adqSbdqvhxAP/RqvKh3gP3xv/8KVDW0/etPA0NSnbqWtz7DA0daRe/UI8+A9wNV+Bx4yCCeaNcEY98U1zSQ+V6F4/FLH02Aq5/tBc+VdI91Q54181AprOdqBp4uuMcLeNENyetGhqv7oT8dmdvB2wB2Ir/MHe8FwhSX+mRZsENgUa42M/MPuQqw4YidlPQTSJ2O7VfOZAMUt+Esz4EMC4ttcSTTn9GdOXFL5SmjPG+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by SJ5PPFC35D45AFD.namprd11.prod.outlook.com (2603:10b6:a0f:fc02::853) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.23; Thu, 10 Apr
- 2025 19:20:30 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8%3]) with mapi id 15.20.8606.033; Thu, 10 Apr 2025
- 19:20:30 +0000
-Date: Thu, 10 Apr 2025 12:20:26 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: Nikolay Borisov <nik.borisov@suse.com>, Kees Cook <kees@kernel.org>
-CC: Dan Williams <dan.j.williams@intel.com>, Dave Hansen
-	<dave.hansen@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, Naveen N Rao
-	<naveen@kernel.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
-	<linux-coco@lists.linux.dev>, Dave Hansen <dave.hansen@linux.intel.com>,
-	Borislav Petkov <bp@alien8.de>, Vishal Annapurve <vannapurve@google.com>,
-	Kirill Shutemov <kirill.shutemov@linux.intel.com>, Kevin Loughlin
-	<kevinloughlin@google.com>, Michal Hocko <mhocko@suse.com>
-Subject: Re: [RFC PATCH] x86/sev: Disallow userspace access to BIOS region
- for SEV-SNP guests
-Message-ID: <67f819faa4e0b_71fe294e1@dwillia2-xfh.jf.intel.com.notmuch>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="b6fy2owg"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43cf034d4abso12617215e9.3
+        for <linux-coco@lists.linux.dev>; Thu, 10 Apr 2025 12:27:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1744313243; x=1744918043; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=P5bSl8e7o8CwEQkSt7I/ZxblQGIKY/++dgN9t2+FjKE=;
+        b=b6fy2owgyX7g2BAgAuq3/WyUcGEKO8i6y+6oPOzthB3ZUd9BbQEhLtgKBw9hDS8RQw
+         N+6VcfsFdy5Tg116Qw1aaqAq/lVI5llZJuyfnSqhRwEporvOyJConwtltw6PuYOEb086
+         HZoUCMYJzyFOQWyRleMsaCgUdaT389cNQbJZMq6vN2L7L3wS1ZRpdkWzpfbKVd2vk1Tr
+         J4H4rB3cNtp1qIhzFvLfDDshbLeUQHz/TNCTIz4zRtMKgO0n/bRiSTNsAic1xNTqKqHh
+         TSZ8dyl2NVCFAgJjQgwGsa3R4A5kVd9B3FRZXWOE+Hfxs1KXWk7OX5aq0xpUQXNAMVLM
+         W/vA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744313243; x=1744918043;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=P5bSl8e7o8CwEQkSt7I/ZxblQGIKY/++dgN9t2+FjKE=;
+        b=sNXeKSdtpFNbQbnaT2R5QU3ZvAOsHqv1FHPaxSeOlSMWux8Kqx6LwWo2hcRzyma+47
+         gcCf/b1UD4tQDgAYIWaEthpyjirSDLr2vMZkA3rrg0cnuD1uTPz5FZha6wrIfWnxc96p
+         xV3n0qLTAQs1pFoBgHCvGAA3F5rhWsBJWfxhpplWeoPFE6YazlMArXY4PvToqxSC3A/I
+         nYsQKSEm7c7aFMFXRBvOW/N30/FQM5AhzS0sGM5SJIJt5FEG14vaacSDoJcVAERHCZ+V
+         UEtlwkkc6DwetkjR0Cp/Hqrc59F1AhOldWWONn8o+nhdXVwTEP36O9RsT7VooV0GEQxq
+         fJjA==
+X-Forwarded-Encrypted: i=1; AJvYcCX2KoCKgrv3JfpBwKmA6SgGevO6kazDcqFGRnIHusMo5PmfAJKP9YaeXZwV3aiFwxEWLfUG8hOpyVfM@lists.linux.dev
+X-Gm-Message-State: AOJu0YyMY+eeyQl0DVfyTfO85ojIc8oKDvAD45c0TITl1s+mCROym4hE
+	fRAHraRLitsNV1u19IZbBlClZ4aLtj0GuI11jO89Pax1k+StI3f25nUvYRynvBA=
+X-Gm-Gg: ASbGncttiIc8OnEHiKtuua6+Y+AT53fr85EmaxWioR76Po/XLGCL8cENwUQdXWKbnMi
+	bfMcNCT5YeRkbFDppNJPXIc+AE/bgBae5Mgisw6CKJEhkM+26ebEQE8k/1Xy/5wn1XH8wSwQj6W
+	KnBnNgBMHspdnFKfDa8itwN9mPCwGa98SYU3Om8cuPd8/2F/iiwelGB8aIUWGy6zkqp20zJhRvf
+	mgCoFFdc6lKXXNy3LLUcSNiV+oOx3Rj4wU1/PIS3OR9YNlYijQ1xAaXI+cIkFTHFAmHbz7+MZwv
+	y7CJQon0CMaAMN/s03cfqDUV1LKgI2dwxPTXxdbybAJbsQ==
+X-Google-Smtp-Source: AGHT+IEdVe2mD+cwO4qCB3YFgTnoYH0uwytzAg/jIFK4xqldbmRS8WVHtkNc5j1+SnW32WvdtqridA==
+X-Received: by 2002:a05:600c:511c:b0:43c:fa24:873e with SMTP id 5b1f17b1804b1-43f2d7b88d3mr44317825e9.13.1744313243547;
+        Thu, 10 Apr 2025 12:27:23 -0700 (PDT)
+Received: from [192.168.0.20] ([212.21.133.214])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f233a2f08sm61061875e9.12.2025.04.10.12.27.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Apr 2025 12:27:23 -0700 (PDT)
+Message-ID: <e11e9b17-a9e0-4f3d-964f-c8b656403f65@suse.com>
+Date: Thu, 10 Apr 2025 22:27:21 +0300
+Precedence: bulk
+X-Mailing-List: linux-coco@lists.linux.dev
+List-Id: <linux-coco.lists.linux.dev>
+List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
+List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] x86/sev: Disallow userspace access to BIOS region for
+ SEV-SNP guests
+To: Dan Williams <dan.j.williams@intel.com>, Kees Cook <kees@kernel.org>
+Cc: Dave Hansen <dave.hansen@intel.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Naveen N Rao <naveen@kernel.org>,
+ linux-kernel@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
+ Dave Hansen <dave.hansen@linux.intel.com>, Borislav Petkov <bp@alien8.de>,
+ Vishal Annapurve <vannapurve@google.com>,
+ Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+ Kevin Loughlin <kevinloughlin@google.com>, Michal Hocko <mhocko@suse.com>
 References: <67eedc35be77d_464ec29462@dwillia2-xfh.jf.intel.com.notmuch>
  <l34f6nqq3up23cvrgmebbufztqkvfil5eahecukw5bnqekccpj@6nbciquhwxxc>
  <1bc4c506-57ad-38aa-d56d-ed058f54708e@amd.com>
@@ -99,127 +86,76 @@ References: <67eedc35be77d_464ec29462@dwillia2-xfh.jf.intel.com.notmuch>
  <e2933f6e-4bda-40ee-b69c-d7222082fcfd@suse.com>
  <202504100931.DEC3D3B79@keescook>
  <e67bbcf2-02f4-4ce1-8ad0-b1f1381c65fb@suse.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <e67bbcf2-02f4-4ce1-8ad0-b1f1381c65fb@suse.com>
-X-ClientProxiedBy: MW4P222CA0029.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:303:114::34) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
-Precedence: bulk
-X-Mailing-List: linux-coco@lists.linux.dev
-List-Id: <linux-coco.lists.linux.dev>
-List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
-List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SJ5PPFC35D45AFD:EE_
-X-MS-Office365-Filtering-Correlation-Id: bcb335ba-55b5-4575-1fee-08dd7864c1f8
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?fJSilIWWwNyeugnuPktY7jfBCcLm1yNxKe0KKIRAQzLzjVmMQT9pVU6Dauav?=
- =?us-ascii?Q?LNg9VvkO69HcEhBqzYcJb3BB5NyBjF9bT0Z/1gBg43zMatU9fP/n0y2twpFC?=
- =?us-ascii?Q?Trz1tgZp0BP1pPEkVicquuR6iMT+h/uvLIJl6EG8huqViMiz7HpyM4h2uTsr?=
- =?us-ascii?Q?7F0CJzL73wVUCv06j5ujIuEQ3pW7HgHG8Lhbv9cC4Jx89fSwjaFr2wYi5mn9?=
- =?us-ascii?Q?FXhm36wU1X0ysO6Z/9lXolnYjVYuIl4lEWMpE16Db/hn3BLa0WXDy6tBk8f6?=
- =?us-ascii?Q?8txh1MYmsPG2w1M91RiM93++NSNiV1Gg3JZMdQ+pVT0P0hfC8FsrR252Ihlm?=
- =?us-ascii?Q?FOOf8YXNi1sOdMOJT5MwWnKjTDcSuo2KNz7ImkNSo2TIr+hAGSc9XpmPZV++?=
- =?us-ascii?Q?zb+3OnV38kaiCey0BODduDkEdcnEhMdKXbdnXKciH1owHF8i08NbTDAWikdU?=
- =?us-ascii?Q?jw4VxlQURFTblIEm+rS8WAzAqXncgnMsnNd6wKcT2qkGgkhxdfw7ZyPn87wA?=
- =?us-ascii?Q?vZ8FE140TReRG9MgHFn21bw8lxStB4X07XWk/FG+OYGIp62zfjXW9gVSIgC1?=
- =?us-ascii?Q?TO6pT0tBWSmFuHzZhKCh4jnW5B1G3dRh1VjtvqJbl0o9rvfkTMc00NYR+RLO?=
- =?us-ascii?Q?MvFCEIv+q8Lswm7r5PpX6QCK9OqQGdyypGoreMX+bZKO96M1/4f1ZfSyDsY5?=
- =?us-ascii?Q?6M5XGYsF4aspmg6wwdA4A35K9vFa+oxJS23tRbtdEgW3T5RdeLn3+YZugst8?=
- =?us-ascii?Q?W6Xaoi0Fqjt1bBj1NQjoVbvk1zbljbwgQU65I+3Jzr3liovvKFlIRLCEW2gO?=
- =?us-ascii?Q?v8X6NP3vFPgHfLKOuethfpKBoghogwYSPryGnezNZZUHft79czkA3tbYzAu4?=
- =?us-ascii?Q?6OsomjOEFUMX35qZ6V2FTWDffYNW4LFlUN3EQoIOCi5+Gq5XVX9sKkV3WqH9?=
- =?us-ascii?Q?BNhqSFDsTos6/5lYX4Y09fZsqMoRVqnupg+p2H8Ol0lWzheqgZrkZhYjjH1Y?=
- =?us-ascii?Q?Y4GXOEXTU8Vs0jNTHcPrRT1BKRYtOSRK48MJb/FVwkilZ8mGf69q8tCSw47j?=
- =?us-ascii?Q?vbtxOg6ntQoo3f/63UiN0b7mTWt8l36scsLacBrEUqBP/vnUyNq3o2dLqalc?=
- =?us-ascii?Q?UlpfW9ZXeZbkGneNgK/NFYS7CVXreBuhx2sn1YBGXR7np4nlNklqeeEmsirs?=
- =?us-ascii?Q?zkH1cvNZxvMUpeBkAyhhj+rkoJAOGB+0NODcyjvfUvqU+O1RPmOUxqn/wCgf?=
- =?us-ascii?Q?zFYznJQbtLC0vueOXWrlyiNimcMa9IBtxFlQoxXdNdW93FbztdHo0DKPSTjf?=
- =?us-ascii?Q?A3qJ2ol5Cq4S+CRUZrU5Q9Dez752TAY77cfG00kpn7JL7W5sr1n4n9X/T5vn?=
- =?us-ascii?Q?/8NsVUyyHL8M1Q7CofXwGmms+cd+G+1qe981narJZC72WOA0dqbC2Ejn497g?=
- =?us-ascii?Q?cLTe149oVSQ=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?AgT6WXj57snXNHmmfJU0i9j2Rd2xdIDCiBDmCbqhz2vHmaBaZCSQtq2v/1rk?=
- =?us-ascii?Q?jw/j0K1QB8yebqCvDmgCqRFUkaSAlSuOznyewp2KAZV2UGh0H+BfdVLjajZv?=
- =?us-ascii?Q?1gtaKyluC7au8+iA8cSciCdJCm9zvStL1LYvumQpj7B/gV2bC0+5kxDbxuHM?=
- =?us-ascii?Q?GeJYicKe/VrXXbOz8dG5mJMxhgrdfphKutKYSrmWGxxDC5VdkCYdbvK9c0cK?=
- =?us-ascii?Q?oMUv09Ng1BcEJl4ZIqGNMyvPe3IhlMpRlKXacyIZj0GPF4rXVetT0Td45gzE?=
- =?us-ascii?Q?tRB6Jkm8dR6i/e+rVECr0qnNCLz8zzaC4ZTEN4gi0zvuL1eV+/7+11ia+E3N?=
- =?us-ascii?Q?7bBGUroGOMwsmhtHsDn6rFpgCuhaz65/3pRgTjOpEm7N0KHtSLRa6QKVXcyZ?=
- =?us-ascii?Q?+ccG4tma0bfAk0t5aYn42IY4uXvPsE0ibWXvVwC5QrlOzy1GUhc9GLjjC9Ls?=
- =?us-ascii?Q?+bEM/zsT/Z++v6O6mOn1Qmta8SbQzvQ7zIVOLayBvvFVBtdHRRvHqHP/qRQ2?=
- =?us-ascii?Q?jgHO4p2ZxTpcAGjSzgbAadlEHoBw4yvpwCj5+rxk+BcA2BiGDfvmbWBw2GUe?=
- =?us-ascii?Q?KWjmS8g3J2f0byV95xQY5tSPEdpg94lhXG+naiDEH1Lil/o6laTfe/6PSP/z?=
- =?us-ascii?Q?PbHFAkQJ5m1R1PLheGFfWGwBSCPmxS+2gO33AwndsCIf6IUs9QEgo2bNO9qO?=
- =?us-ascii?Q?HBQMVlfV2z7Y8pa6QFRK4JaZZ8gpmV8Xyjso9a2YNzua8iiyamc+hniY0O5G?=
- =?us-ascii?Q?54n+DUetKUf+VVW50WEYZwetOmFamfWCbcaUmDrVYaSDDQbo6aMwbvur5Abb?=
- =?us-ascii?Q?RdEgKpxjOEn7BmuIoY3PDDsaRIntgq5BShFNjBrAxQNxPQt/WYiN0jz9u5ON?=
- =?us-ascii?Q?YfRMtfL+T7ZfeKnpTl/T39318P/T0MI6uRQ/m+z5MEM+ubRtIr/BJTS48/M/?=
- =?us-ascii?Q?VIH05Nntm1DrTGx+1qXwlpkm5geTeicqAiNIH0sCfsAllU0SGHlyU+GbOIzf?=
- =?us-ascii?Q?sWDlKpsPlc1DgCZqSA65Ao53PVYjfXW2G/fNDEMU0TH2ts5/Pf3S9tjolks4?=
- =?us-ascii?Q?CLVgRKR3iBsmvD5DnUjIyWhxDi6sQhOS0qVuNE8psEmIKDvCj3H/YdUA+cDQ?=
- =?us-ascii?Q?YKPdu+ldbiz2hYXRIInvduPMQHtRlG+zh34UrcoQfH403RdPempCxR35BqXa?=
- =?us-ascii?Q?prwVdeV4VPPHKQAkV0YsR8iXrtgHVGfAWcgPetRSNqeO7anidfGhPBgumWB0?=
- =?us-ascii?Q?c2ZFSTLSl5qjiqDFrvN0zeUDypcxHHCDL5Toc138zpGJWgAij6sLwS6+NUgM?=
- =?us-ascii?Q?jxFgbiNDURK74yx8aiigN84JDqNGelPYzsZjHkWWKUmL+UDatKzwtwIonsXV?=
- =?us-ascii?Q?H7EZwxbRMAbnDKApebctih4hOPkZGo/NLMqlNRlbe7XWjvNHoXpNe5ZHZyeF?=
- =?us-ascii?Q?bNuKk3K6KIRWteQQpfFH64ONcXNX6LBO7Y8U66gessRJ0dUOZSN5s9jptZ7I?=
- =?us-ascii?Q?f/VksyZtS8P130B9+HZIH0DXvMRv4heMmFqwpNFbO7kazzgF0iisKtl7JDvf?=
- =?us-ascii?Q?WcVrMBKjKsAgrLpXfFtj0ezpu9ajtvZoXj9Zz3JmONrMoEo+Y6P5jjL1ts3w?=
- =?us-ascii?Q?WA=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: bcb335ba-55b5-4575-1fee-08dd7864c1f8
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2025 19:20:30.5539
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: X8n29rHxSsNBEDm4g4sGi6487CO8rnTBSsP6D1Pt2gt/NLPuxza5ZHSjiv9JGHVxgHlWufoHQHiJI1SMNB60dSHeLfCU+XoiZG+GdKwU3jc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFC35D45AFD
-X-OriginatorOrg: intel.com
+ <67f819faa4e0b_71fe294e1@dwillia2-xfh.jf.intel.com.notmuch>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+In-Reply-To: <67f819faa4e0b_71fe294e1@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Nikolay Borisov wrote:
-[..]
-> >> Can't we simply treat return value of 2 for range_is_allowed the same way as
-> >> if 0 was returned in mmap_mem and simply fail the call with -EPERM?
-> > 
-> > The historical concern was that EPERM would break old tools. I don't
-> > have any current evidence either way, though.
+
+
+On 10.04.25 г. 22:20 ч., Dan Williams wrote:
+> Nikolay Borisov wrote:
+> [..]
+>>>> Can't we simply treat return value of 2 for range_is_allowed the same way as
+>>>> if 0 was returned in mmap_mem and simply fail the call with -EPERM?
+>>>
+>>> The historical concern was that EPERM would break old tools. I don't
+>>> have any current evidence either way, though.
+>>
+>> Right, but we are only about to return 2 in a TVM context, so chances of
+>> running old tools are slim to none. Also it's perfectly valid to have
+>> mmap fail for a number of reasons, so old tools should be equipped with
+>> handling it returning -EPERM, no ?
 > 
-> Right, but we are only about to return 2 in a TVM context, so chances of 
-> running old tools are slim to none. Also it's perfectly valid to have 
-> mmap fail for a number of reasons, so old tools should be equipped with 
-> handling it returning -EPERM, no ?
+> In practice that is yet another return code since the caller does not
+> know why the "2" is being returned and it is not clear how safe it is to
+> now start denying mmap in the !TVM case. So, perhaps something like this:
+> 
 
-In practice that is yet another return code since the caller does not
-know why the "2" is being returned and it is not clear how safe it is to
-now start denying mmap in the !TVM case. So, perhaps something like this:
+What I meant by "returning 2" is returning 2 from the call to 
+range_is_allowed in mmap_mem and handling this value inside mmap_mem, 
+not returning 2 to user space :) In essence something along the lines of:
 
-enum devmem_policy {
-	DEVMEM_DENY,
-	DEVMEM_ALLOW,
-	DEVMEM_ZERO_RW, /* XXX: fix mmap_mem to install zeroes? */
-	DEVMEM_ZERO_RW_DENY_MMAP,
-};
 
-The hope is that legacy tools are either fine with open() failures due
-to the prevalance of lockdown, fine with read/write of zeroes to BIOS
-data due to the prevalance of CONFIG_STRICT_DEVMEM, or otherwise would
-not notice / break when mmap() starts failing for BIOS data in the TVM
-case. The !TVM case continues with the current gap for mmap.
 
-Or, rip the bandaid and do this to see who screams:
+diff --git a/drivers/char/mem.c b/drivers/char/mem.c
+index 169eed162a7f..8273066b6637 100644
+--- a/drivers/char/mem.c
++++ b/drivers/char/mem.c
+@@ -359,7 +359,8 @@ static int mmap_mem(struct file *file, struct 
+vm_area_struct *vma)
+         if (!private_mapping_ok(vma))
+                 return -ENOSYS;
 
-enum devmem_policy {
-	DEVMEM_DENY,
-	DEVMEM_ALLOW,
-	DEVMEM_ZERO_RW_DENY_MMAP,
-};
+-       if (!range_is_allowed(vma->vm_pgoff, size))
++       int ret = range_is_allowed(vma->vm_pgoff, size);
++       if (!ret || ret == 2)
+                 return -EPERM;
+
+         if (!phys_mem_access_prot_allowed(file, vma->vm_pgoff, size,
+
+
+> enum devmem_policy {
+> 	DEVMEM_DENY,
+> 	DEVMEM_ALLOW,
+> 	DEVMEM_ZERO_RW, /* XXX: fix mmap_mem to install zeroes? */
+> 	DEVMEM_ZERO_RW_DENY_MMAP,
+> };
+> 
+> The hope is that legacy tools are either fine with open() failures due
+> to the prevalance of lockdown, fine with read/write of zeroes to BIOS
+> data due to the prevalance of CONFIG_STRICT_DEVMEM, or otherwise would
+> not notice / break when mmap() starts failing for BIOS data in the TVM
+> case. The !TVM case continues with the current gap for mmap.
+> 
+> Or, rip the bandaid and do this to see who screams:
+> 
+> enum devmem_policy {
+> 	DEVMEM_DENY,
+> 	DEVMEM_ALLOW,
+> 	DEVMEM_ZERO_RW_DENY_MMAP,
+> };
+> 
 
