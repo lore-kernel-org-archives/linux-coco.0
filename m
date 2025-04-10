@@ -1,69 +1,69 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E64E28C5AB
-	for <linux-coco@lists.linux.dev>; Thu, 10 Apr 2025 13:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654A128C5C9
+	for <linux-coco@lists.linux.dev>; Thu, 10 Apr 2025 13:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744293092; cv=none; b=BuwcR66GAZQSar6c3RrZzsUi1NC9P8UYlR5vnuKD7xmT7JZ90yy8xVDz1qAzJTaGem8dL76XTzExd+dWE4wzcx9W+wO7bK/aDbtkmjeMApcnPjFnwdfjXtNDT+6+1QcQvA+xVuW/gb4o4zHHHBhK+iL0tFMEBG3DzK9hMZKPH5I=
+	t=1744293098; cv=none; b=FMhlQV6HsZh+MOHFBufnv5//jR31nkWrLg5d0K0kWfYwJN+0Gaqka1QI2nT34TOsxe1cSIrdBC6GoLHhOMwHd1DW7vDsFtvJtGtenKiMxrM4jBc8bnNxCIr6brUK5/Xyj1UEVCWAmOGUVgJ+BKYJVBC+tOCaOZIAk83P/qrXHjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744293092; c=relaxed/simple;
-	bh=RqYMqp3Ujj1yablcXK4m8qctcMpdGLtxgb9YCEHWtfE=;
+	s=arc-20240116; t=1744293098; c=relaxed/simple;
+	bh=JanhuPR/iml68kEFk6VsdfPYwqYcdQYvtjajdTMi5bI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=juCNwbAlf1E4NRLKZ25PnCnyaD1AoNziWArGfftciMFJVLqUHMTne+U8os1kLxIVkgSneqnes6hbrIjGfu2sJ9Hi9sfuiPKbkJDs6s+ZFHTJWtI+G+sI2j444Eq2EeNZODct48ELpB6UOLnWoLM3r5IZuGGL48JNRup41eJI7/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZDfrvNTe; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=Ivmr5bkpcENWHMQYoukODqQ6fmDfq2Ob0wlyUJTSUH6vKggPAzuTLuosjd581Avj4S2g0K1ixh/T13giX2r5sUEsGSqqLHEU5bL2b8F73NQz/3D5IiZOk5deHqY6JkfNb88aDXRDZG6zPvZbymqg57o7/bZh0+HeXjHvcl58SlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DE8ir8AY; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZDfrvNTe"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DE8ir8AY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744293089;
+	s=mimecast20190719; t=1744293094;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2hayB2itOF52swyYqnft2InIWkfIXl2u+4tuyLp7J20=;
-	b=ZDfrvNTehm32kZ2cAkP0+A9VzODYpxIXD/ZsQAUX+AxdqkZVeo5pQtjrg+3aReLM8bJlJ4
-	aMDQvetEzAWm+AMjBPOd9cgtzm1DDy1PIqkQFIQWPYJghUqnzRkkzvdiq4kyYJm4DMs2HM
-	DM6MIfVjuWmC2MI4xJUcKCrjhXhJ6oQ=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=9cwx8PB++1jPTpqj+0lA5MhEHp2F2B5hQ/5H2FoJu9E=;
+	b=DE8ir8AY4zQElribE6WB5jfExzlMGS5uqmFtOhh5T4YnapP3OJ0bTmAdmAGEbc6odJKO4L
+	Pu9mqsZ+0oza17fLJkjBksGOZnus3RVSMtLV3CsCQTbT/YBxN6bbJeLOrw7n/AaSG+W5DB
+	fupe+JntKdw/y59quwn8+O7s147GzDQ=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-622-4-22hWTFO0GWdWUwpiOvYw-1; Thu, 10 Apr 2025 09:51:28 -0400
-X-MC-Unique: 4-22hWTFO0GWdWUwpiOvYw-1
-X-Mimecast-MFC-AGG-ID: 4-22hWTFO0GWdWUwpiOvYw_1744293087
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-399744f742bso263505f8f.1
-        for <linux-coco@lists.linux.dev>; Thu, 10 Apr 2025 06:51:28 -0700 (PDT)
+ us-mta-50-7nHQOZWdOVShK3S5iYkRkA-1; Thu, 10 Apr 2025 09:51:33 -0400
+X-MC-Unique: 7nHQOZWdOVShK3S5iYkRkA-1
+X-Mimecast-MFC-AGG-ID: 7nHQOZWdOVShK3S5iYkRkA_1744293092
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43e9b0fd00cso4283375e9.0
+        for <linux-coco@lists.linux.dev>; Thu, 10 Apr 2025 06:51:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744293087; x=1744897887;
+        d=1e100.net; s=20230601; t=1744293092; x=1744897892;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2hayB2itOF52swyYqnft2InIWkfIXl2u+4tuyLp7J20=;
-        b=D1QUEloDVvXKJsVxvqMfHTV8jUOGg7iNKPOImcvzSXheKW2/VLRjnRhiv2BlTXlkX8
-         2ggWMpilTOrZUCQ4extETY0A40XaV5COQefEg+iBd8xSvG3JOGm+/MyYOGIGVhJxO31T
-         2dYqyRxO0FFQrBjIIJElcGn9cZmi3Eu/ZLfCI4A72fdE4n7WgexPSIwWF+vRt8/znsiJ
-         dAlkU9v/j1CieJ5ur8p+RoflkaIKB1GT6OsRI+UfHOug/6RNSs8zqrcwubsjg0xzf4s1
-         S+D3gmDb+sCi819pf/vOoMNefd7KShvipTwxpnPFy05h18AqQq8NHahMVvoEG3yXIL8x
-         FVjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWL139SkL4SSDtzdQ2Bu9qoMYcWTxS+O/foZJ3s0x69XMrQeA+QoC1UxDAu8GOFvxVxrqOGK/AIAqCa@lists.linux.dev
-X-Gm-Message-State: AOJu0YxeLhRnrdcjeaLRbKltqPOfNyeWPTBfVViZ0IFQL0DY5WU80gVv
-	vvop22VxgyeCLxQ0ScoHSWfSZnnQ1FLd+Gko+xL+9z6aBTBaYTbyKSAiXRe2VinCg6eEKwqPW1m
-	IINekpTJyfR+nN/lOVZEappS62+iymSfwTiENjs1R2H0ipqIY81sR0UL8EDo=
-X-Gm-Gg: ASbGncszem5EJeoTrSkwvMqqymaONh+mvhdi8rSiHzi1xHXwqavvSzfvaRSnayac5ag
-	r0VQelH2jKrhcjX/TPI+376VgJ3c1vI4JHkOPmmj373pYAh5vbl/kqV9bBezzNvoD4sMA38YwBm
-	ybPxihFmBRlMLy2K1G9whVJyV42SabH90wfzSd/Jza+DKR7MNCfXbbL2cDs+v6QTG5tZZEl5PBN
-	5uMIqLav27lSMS6h3vxsV+wskwLri0ObNhzj0Fuyz+5fpofMqS3m5f3Detfdk5lvaAhdbgEQD25
-	WJR3/mjM0+hS9hy4sH9e60nCvDtAPhZMM5t1xUB+MGy8wUW2gYc3j6O+KL8Csw==
-X-Received: by 2002:a05:6000:2cd:b0:39a:ca04:3e4d with SMTP id ffacd0b85a97d-39d8f273573mr2757995f8f.7.1744293087097;
-        Thu, 10 Apr 2025 06:51:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH74r2mCwQMz4b5b40UpkJVX/gWuuE0hyyRu8AvG8fHXAQ9RwrpeFNISL0qnwEahYkR49vqdg==
-X-Received: by 2002:a05:6000:2cd:b0:39a:ca04:3e4d with SMTP id ffacd0b85a97d-39d8f273573mr2757948f8f.7.1744293086504;
-        Thu, 10 Apr 2025 06:51:26 -0700 (PDT)
+        bh=9cwx8PB++1jPTpqj+0lA5MhEHp2F2B5hQ/5H2FoJu9E=;
+        b=qN/cPaou+nuY/6axTxP3i2dGxHslRVaI/7XLNlKK7HQft8R1jw08i3SLhkygROKOhQ
+         ZdbSV/Jo+N96CP8UkB2Xt3eWMDwqFzWM1zbSx9pzKhUg0muGse7nNXcbEoiG0AJty3Dg
+         Eun30tA+Eyz7W38kbAmBHr3so1o68Ie592OE/PrebFWEuTDNg35CpOkT1hM0qjO1XMwq
+         BB9WalADT2eH+j8cr3upEtsYNBYV4aCqXd+4n9ZDovIZbdpomenaIspRmrcH1JjAg9U5
+         E3ytGI6rrnA6/I2Nlhj+NmS8t7au+ZlY7+F9ztIUsV0WP7rzVVy+/zXfbiugWe2zC5QP
+         YR4w==
+X-Forwarded-Encrypted: i=1; AJvYcCV5iPSCcQbnPm/GbyBdLx9ILbckH6gTJbnMhv6WFTD5tBlujDS2QMPCLuxVIgLxXiCq93Z0bJXThg11@lists.linux.dev
+X-Gm-Message-State: AOJu0YwCMg0V7WGtHo+dAxah5wbsyYFAPBG6EKePr2/D2YOHafy6WbeK
+	MZjGNZCiw4Ba48KM9w2RRuxMc0HnX2aZMRPpyfCUJfMiysffwneGV8qJI4GQkKramaSqaaR2J5a
+	smPyswZqzSmMyd4Wfxwnyttk6vzZPoEkU4dCaO4Nt6A2h8828TuvIDxXLd7o=
+X-Gm-Gg: ASbGncvuovUtQDHDGHVGfd209L1KldNAI5cI3KxaH0Qk3Low8Qvo2cd54kWbGMXn3s5
+	mmy9sXypNOBrSoUktjBndLgU46MIdKeNUs8TwPCqBhWLaHfclWVoj7lGfspOxfUDKQTpPNfF1P9
+	Eqd68H9ezboBLcLd5eOs9uee8znJpMtTLmtbJHHfFlyd0U1TG9fpEPCO/DML4+hyHKPIQEoBPwb
+	NFMFcgSOdL6s696tEAR1090ndt7G0sR6K36sXmBDssM/+GeH04ELhL/b7f1PwiFrCHtQZXrcoZr
+	lrmX/VUD7pvmoij4+fTOG2s0pUvHhp1f336SP7NacOk1/18gcVDGJ9CwVLc/3A==
+X-Received: by 2002:a05:600c:1614:b0:43d:fa5f:7d04 with SMTP id 5b1f17b1804b1-43f2edc7c63mr20711535e9.16.1744293091881;
+        Thu, 10 Apr 2025 06:51:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEuGhwEkIOIQmV9vyTTjh08E802YQY2NMK9rYdrO7U9thvFq8ZhNT2/VmlP/YCA83my8ZlkmQ==
+X-Received: by 2002:a05:600c:1614:b0:43d:fa5f:7d04 with SMTP id 5b1f17b1804b1-43f2edc7c63mr20711175e9.16.1744293091252;
+        Thu, 10 Apr 2025 06:51:31 -0700 (PDT)
 Received: from stex1.redhat.com (host-79-53-30-213.retail.telecomitalia.it. [79.53.30.213])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39d8938a761sm4932104f8f.51.2025.04.10.06.51.24
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f2075fc83sm57126385e9.26.2025.04.10.06.51.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Apr 2025 06:51:25 -0700 (PDT)
+        Thu, 10 Apr 2025 06:51:30 -0700 (PDT)
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: Borislav Petkov <bp@alien8.de>,
 	Jarkko Sakkinen <jarkko@kernel.org>
@@ -84,9 +84,9 @@ Cc: Joerg Roedel <jroedel@suse.de>,
 	James Bottomley <James.Bottomley@HansenPartnership.com>,
 	linux-coco@lists.linux.dev,
 	Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH v7 1/4] x86/sev: add SVSM vTPM probe/send_command functions
-Date: Thu, 10 Apr 2025 15:51:13 +0200
-Message-ID: <20250410135118.133240-2-sgarzare@redhat.com>
+Subject: [PATCH v7 2/4] svsm: add header with SVSM_VTPM_CMD helpers
+Date: Thu, 10 Apr 2025 15:51:14 +0200
+Message-ID: <20250410135118.133240-3-sgarzare@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250410135118.133240-1-sgarzare@redhat.com>
 References: <20250410135118.133240-1-sgarzare@redhat.com>
@@ -97,18 +97,18 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: b0zielo7fbb9Eu6n_jJtyahPplOYcMJeUq7GIY530T8_1744293087
+X-Mimecast-MFC-PROC-ID: 9x03JzAOJ-cDH8Q0gqLDf4cPAIID9Z-DALuL67pFdo0_1744293092
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: Stefano Garzarella <sgarzare@redhat.com>
 
-Add two new functions to probe and send commands to the SVSM vTPM.
-They leverage the two calls defined by the AMD SVSM specification [1]
-for the vTPM protocol: SVSM_VTPM_QUERY and SVSM_VTPM_CMD.
+Helpers for the SVSM_VTPM_CMD calls used by the vTPM protocol defined by
+the AMD SVSM spec [1].
 
-Expose snp_svsm_vtpm_send_command() to be used by a tpm driver.
+The vTPM protocol follows the Official TPM 2.0 Reference Implementation
+(originally by Microsoft, now part of the TCG) simulator protocol.
 
 [1] "Secure VM Service Module for SEV-SNP Guests"
     Publication # 58019 Revision: 1.00
@@ -117,132 +117,187 @@ Co-developed-by: James Bottomley <James.Bottomley@HansenPartnership.com>
 Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
 Co-developed-by: Claudio Carvalho <cclaudio@linux.ibm.com>
 Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
 Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
-v7:
-- avoided exporting snp_svsm_vtpm_probe() because we will only use it
-  internally
 v5:
-- added stubs when !CONFIG_AMD_MEM_ENCRYPT [Dionna]
 - added Jarkko's R-b
 v4:
-- added Tom's R-b
-- added functions documentation [Jarkko]
-- simplified TPM_SEND_COMMAND check [Tom/Jarkko]
+- used svsm_vtpm_ prefix consistently [Jarkko]
+- removed __packed where not needed [Jarkko]
+- expanded headers to avoid obfuscation [Jarkko]
+- used `buf` instead of `inbuf`/`outbuf` [Jarkko]
+- added more documentation quoting the specification
+- removed TPM_* macros since we only use TPM_SEND_COMMAND in one place
+  and don't want dependencies on external headers, but put the value
+  directly as specified in the AMD SVSM specification
+- header renamed in tpm_svsm.h so it will fall under TPM DEVICE DRIVER
+  section [Borislav, Jarkko]
 v3:
+- renamed header and prefix to make clear it's related to the SVSM vTPM
+  protocol
+- renamed fill/parse functions [Tom]
 - removed link to the spec because those URLs are unstable [Borislav]
-- squashed "x86/sev: add SVSM call macros for the vTPM protocol" patch
-  in this one [Borislav]
-- slimmed down snp_svsm_vtpm_probe() [Borislav]
-- removed features check and any print related [Tom]
 ---
- arch/x86/include/asm/sev.h |  7 +++++
- arch/x86/coco/sev/core.c   | 58 ++++++++++++++++++++++++++++++++++++++
- 2 files changed, 65 insertions(+)
+ include/linux/tpm_svsm.h | 149 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 149 insertions(+)
+ create mode 100644 include/linux/tpm_svsm.h
 
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index ba7999f66abe..d9ba035d8609 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -384,6 +384,10 @@ struct svsm_call {
- #define SVSM_ATTEST_SERVICES		0
- #define SVSM_ATTEST_SINGLE_SERVICE	1
- 
-+#define SVSM_VTPM_CALL(x)		((2ULL << 32) | (x))
-+#define SVSM_VTPM_QUERY			0
-+#define SVSM_VTPM_CMD			1
-+
- #ifdef CONFIG_AMD_MEM_ENCRYPT
- 
- extern u8 snp_vmpl;
-@@ -481,6 +485,8 @@ void snp_msg_free(struct snp_msg_desc *mdesc);
- int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req,
- 			   struct snp_guest_request_ioctl *rio);
- 
-+int snp_svsm_vtpm_send_command(u8 *buffer);
-+
- void __init snp_secure_tsc_prepare(void);
- void __init snp_secure_tsc_init(void);
- 
-@@ -524,6 +530,7 @@ static inline struct snp_msg_desc *snp_msg_alloc(void) { return NULL; }
- static inline void snp_msg_free(struct snp_msg_desc *mdesc) { }
- static inline int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req,
- 					 struct snp_guest_request_ioctl *rio) { return -ENODEV; }
-+static inline int snp_svsm_vtpm_send_command(u8 *buffer) { return -ENODEV; }
- static inline void __init snp_secure_tsc_prepare(void) { }
- static inline void __init snp_secure_tsc_init(void) { }
- 
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index b0c1a7a57497..3bc5b47e7304 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -2625,6 +2625,64 @@ static int snp_issue_guest_request(struct snp_guest_req *req, struct snp_req_dat
- 	return ret;
- }
- 
-+/**
-+ * snp_svsm_vtpm_probe() - Probe if SVSM provides a vTPM device
+diff --git a/include/linux/tpm_svsm.h b/include/linux/tpm_svsm.h
+new file mode 100644
+index 000000000000..38e341f9761a
+--- /dev/null
++++ b/include/linux/tpm_svsm.h
+@@ -0,0 +1,149 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (C) 2023 James.Bottomley@HansenPartnership.com
++ * Copyright (C) 2025 Red Hat, Inc. All Rights Reserved.
 + *
-+ * This function checks that there is SVSM and that it supports at least
-+ * TPM_SEND_COMMAND which is the only request we use so far.
++ * Helpers for the SVSM_VTPM_CMD calls used by the vTPM protocol defined by the
++ * AMD SVSM spec [1].
 + *
-+ * Return: true if the platform provides a vTPM SVSM device, false otherwise.
++ * The vTPM protocol follows the Official TPM 2.0 Reference Implementation
++ * (originally by Microsoft, now part of the TCG) simulator protocol.
++ *
++ * [1] "Secure VM Service Module for SEV-SNP Guests"
++ *     Publication # 58019 Revision: 1.00
 + */
-+static bool snp_svsm_vtpm_probe(void)
-+{
-+	struct svsm_call call = {};
++#ifndef _TPM_SVSM_H_
++#define _TPM_SVSM_H_
 +
-+	/* The vTPM device is available only if a SVSM is present */
-+	if (!snp_vmpl)
-+		return false;
++#include <linux/errno.h>
++#include <linux/string.h>
++#include <linux/types.h>
 +
-+	call.caa = svsm_get_caa();
-+	call.rax = SVSM_VTPM_CALL(SVSM_VTPM_QUERY);
-+
-+	if (svsm_perform_call_protocol(&call))
-+		return false;
-+
-+	/* Check platform commands contains TPM_SEND_COMMAND - platform command 8 */
-+	return call.rcx_out & BIT_ULL(8);
-+}
++#define SVSM_VTPM_MAX_BUFFER		4096 /* max req/resp buffer size */
 +
 +/**
-+ * snp_svsm_vtpm_send_command() - execute a vTPM operation on SVSM
-+ * @buffer: A buffer used to both send the command and receive the response.
++ * struct svsm_vtpm_request - Generic request for single word command
++ * @cmd:	The command to send
 + *
-+ * This function executes a SVSM_VTPM_CMD call as defined by
-+ * "Secure VM Service Module for SEV-SNP Guests" Publication # 58019 Revision: 1.00
++ * Defined by AMD SVSM spec [1] in section "8.2 SVSM_VTPM_CMD Call" -
++ * Table 15: vTPM Common Request/Response Structure
++ *     Byte      Size       In/Out    Description
++ *     Offset    (Bytes)
++ *     0x000     4          In        Platform command
++ *                          Out       Platform command response size
++ */
++struct svsm_vtpm_request {
++	u32 cmd;
++};
++
++/**
++ * struct svsm_vtpm_response - Generic response
++ * @size:	The response size (zero if nothing follows)
 + *
-+ * All command request/response buffers have a common structure as specified by
-+ * the following table:
++ * Defined by AMD SVSM spec [1] in section "8.2 SVSM_VTPM_CMD Call" -
++ * Table 15: vTPM Common Request/Response Structure
 + *     Byte      Size       In/Out    Description
 + *     Offset    (Bytes)
 + *     0x000     4          In        Platform command
 + *                          Out       Platform command response size
 + *
-+ * Each command can build upon this common request/response structure to create
-+ * a structure specific to the command.
-+ * See include/linux/tpm_svsm.h for more details.
-+ *
-+ * Return: 0 on success, -errno on failure
++ * Note: most TCG Simulator commands simply return zero here with no indication
++ * of success or failure.
 + */
-+int snp_svsm_vtpm_send_command(u8 *buffer)
++struct svsm_vtpm_response {
++	u32 size;
++};
++
++/**
++ * struct svsm_vtpm_cmd_request - Structure for a TPM_SEND_COMMAND request
++ * @cmd:	The command to send (must be TPM_SEND_COMMAND)
++ * @locality:	The locality
++ * @buf_size:	The size of the input buffer following
++ * @buf:	A buffer of size buf_size
++ *
++ * Defined by AMD SVSM spec [1] in section "8.2 SVSM_VTPM_CMD Call" -
++ * Table 16: TPM_SEND_COMMAND Request Structure
++ *     Byte      Size       Meaning
++ *     Offset    (Bytes)
++ *     0x000     4          Platform command (8)
++ *     0x004     1          Locality (must-be-0)
++ *     0x005     4          TPM Command size (in bytes)
++ *     0x009     Variable   TPM Command
++ *
++ * Note: the TCG Simulator expects @buf_size to be equal to the size of the
++ * specific TPM command, otherwise an TPM_RC_COMMAND_SIZE error is returned.
++ */
++struct svsm_vtpm_cmd_request {
++	u32 cmd;
++	u8 locality;
++	u32 buf_size;
++	u8 buf[];
++} __packed;
++
++/**
++ * struct svsm_vtpm_cmd_response - Structure for a TPM_SEND_COMMAND response
++ * @buf_size:	The size of the output buffer following
++ * @buf:	A buffer of size buf_size
++ *
++ * Defined by AMD SVSM spec [1] in section "8.2 SVSM_VTPM_CMD Call" -
++ * Table 17: TPM_SEND_COMMAND Response Structure
++ *     Byte      Size       Meaning
++ *     Offset    (Bytes)
++ *     0x000     4          Response size (in bytes)
++ *     0x004     Variable   Response
++ */
++struct svsm_vtpm_cmd_response {
++	u32 buf_size;
++	u8 buf[];
++};
++
++/**
++ * svsm_vtpm_cmd_request_fill() - Fill a TPM_SEND_COMMAND request to be sent to SVSM
++ * @req: The struct svsm_vtpm_cmd_request to fill
++ * @locality: The locality
++ * @buf: The buffer from where to copy the payload of the command
++ * @len: The size of the buffer
++ *
++ * Return: 0 on success, negative error code on failure.
++ */
++static inline int
++svsm_vtpm_cmd_request_fill(struct svsm_vtpm_cmd_request *req, u8 locality,
++			   const u8 *buf, size_t len)
 +{
-+	struct svsm_call call = {};
++	if (len > SVSM_VTPM_MAX_BUFFER - sizeof(*req))
++		return -EINVAL;
 +
-+	call.caa = svsm_get_caa();
-+	call.rax = SVSM_VTPM_CALL(SVSM_VTPM_CMD);
-+	call.rcx = __pa(buffer);
++	req->cmd = 8; /* TPM_SEND_COMMAND */
++	req->locality = locality;
++	req->buf_size = len;
 +
-+	return svsm_perform_call_protocol(&call);
++	memcpy(req->buf, buf, len);
++
++	return 0;
 +}
-+EXPORT_SYMBOL_GPL(snp_svsm_vtpm_send_command);
 +
- static struct platform_device sev_guest_device = {
- 	.name		= "sev-guest",
- 	.id		= -1,
++/**
++ * svsm_vtpm_cmd_response_parse() - Parse a TPM_SEND_COMMAND response received from SVSM
++ * @resp: The struct svsm_vtpm_cmd_response to parse
++ * @buf: The buffer where to copy the response
++ * @len: The size of the buffer
++ *
++ * Return: buffer size filled with the response on success, negative error
++ * code on failure.
++ */
++static inline int
++svsm_vtpm_cmd_response_parse(const struct svsm_vtpm_cmd_response *resp, u8 *buf,
++			     size_t len)
++{
++	if (len < resp->buf_size)
++		return -E2BIG;
++
++	if (resp->buf_size > SVSM_VTPM_MAX_BUFFER - sizeof(*resp))
++		return -EINVAL;  // Invalid response from the platform TPM
++
++	memcpy(buf, resp->buf, resp->buf_size);
++
++	return resp->buf_size;
++}
++
++#endif /* _TPM_SVSM_H_ */
 -- 
 2.49.0
 
