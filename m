@@ -1,85 +1,152 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983E3281529;
-	Thu, 10 Apr 2025 14:23:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFD31E835B;
+	Thu, 10 Apr 2025 16:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744295014; cv=none; b=eqqlwhXAL8vCqGhZ5nd0YpZWdXi9pK8aNOajCOwdEXbrzRLtwN7pQW+bihXTDfTLi4UjBTq3GiGF1qLVM79LVVZ42dwM3PjKswg1JHevioQdf+GNvlBzKL7rfgcqcg6Z21ZDYsUr5cYvkYhlTrrp8ik+O4J2kGkxD7wDi0zkhFU=
+	t=1744302778; cv=none; b=na/A7A3YDSggWIhmz7/ANyJxNoeAeZkUuiRiaK9Ws6wn1XMVfVdF/dH3gyrThoOuzrGeLzU8HSVtTdUuVhzefkOkTe0ZrPvLiVzCF0RZTTqPELs1IolumeANvS+j19qDsyKLVi0JulMkpwndbaiFT8Ksi3HfzkvJc9enYz2nhJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744295014; c=relaxed/simple;
-	bh=F8eq5C2arq6nQ8is5jRPMuJ8H0Gg2faL+GzWh6CxsyA=;
+	s=arc-20240116; t=1744302778; c=relaxed/simple;
+	bh=W+KBvBmUBQxYMM+SM1C+l8F5u52QLsfsuEheevSFjuA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JLm+uCdJ8bChxFCnnqVBkP68X3RRBQ2aJxvOenuff3r+LAWu0hP5GJN/mQj6NsLmzO5GZ4oDY/96UF+CkBIjBcXC1lzc3IHaoIQlJNsMB0iyCE1yiHT3tYbxK7Q064Ru8HQCKa+uAmd1Y5cKfaq+/0BUVR/twdlKEjnhQvFRqIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=0CD1m9e0; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=MMus3DYZSwc6FCOBSFuKpiGPBJ7npWG10LH5t7PZ1gc/FHwd+JdHByW7k3kb0lqSCcOqmczclUlFUQFl1nus02Igdy4trqKwn47BaDgoXNp2mP4TdN0eqQreu5sImCMjBL+nXKFHZggQMerUTRJbdsIkxfmqM9jQGfihW3JJ0mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FFj9JS7e; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="0CD1m9e0"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Sje0mXCO8uUiowTlFETq7gVVR2y68OmKN7E7RZiwNSw=; b=0CD1m9e04quHGOpw8NHRSXbjD+
-	ThjnIJYoOyyFvb/yn27LI6/uJ5XxIl13/WyJQVD/xFCBnpt611XkipXZzfH8fnZK36MVkKtg67O5o
-	iQZ38Bj6MOEB/cqasGjSP1WF/wZDPZpkqLoK4eRuT3ejQc4c0EyWcUXD6ZRKm1O7RRqXefFBsT5JB
-	iKRtD3y9PxJqDL2zWSvps5l73BVvL+jIa5drSgn20dKKLIjuQW5RADSR4gBG53XeTd/8BqkCRpS3e
-	ChbqPUvdkLIymD5FRmHm11UlzJkVWBTQwdOOYqK321HEVrS5xhj0P8DgLwnsMt/TbOmnfeaZUsxN6
-	QZQzjGIA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u2soP-0000000Apj7-062H;
-	Thu, 10 Apr 2025 14:23:25 +0000
-Date: Thu, 10 Apr 2025 07:23:24 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Christoph Hellwig <hch@infradead.org>, Shivank Garg <shivankg@amd.com>,
-	seanjc@google.com, david@redhat.com, vbabka@suse.cz,
-	willy@infradead.org, akpm@linux-foundation.org, shuah@kernel.org,
-	pbonzini@redhat.com, paul@paul-moore.com, jmorris@namei.org,
-	serge@hallyn.com, pvorel@suse.cz, bfoster@redhat.com,
-	tabba@google.com, vannapurve@google.com, chao.gao@intel.com,
-	bharata@amd.com, nikunj@amd.com, michael.day@amd.com,
-	yan.y.zhao@intel.com, Neeraj.Upadhyay@amd.com,
-	thomas.lendacky@amd.com, michael.roth@amd.com, aik@amd.com,
-	jgg@nvidia.com, kalyazin@amazon.com, peterx@redhat.com,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH RFC v7 5/8] KVM: guest_memfd: Make guest mem use guest
- mem inodes instead of anonymous inodes
-Message-ID: <Z_fUXKcvbbUTQO1n@infradead.org>
-References: <20250408112402.181574-1-shivankg@amd.com>
- <20250408112402.181574-6-shivankg@amd.com>
- <Z_eEfjrkspAt4ACP@infradead.org>
- <diqz4iyw5dis.fsf@ackerleytng-ctop.c.googlers.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FFj9JS7e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15CB2C4CEE8;
+	Thu, 10 Apr 2025 16:32:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744302778;
+	bh=W+KBvBmUBQxYMM+SM1C+l8F5u52QLsfsuEheevSFjuA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FFj9JS7eGsAjExLx+npY5TEH/ifiwKlMQ5UJREfhJpGWv1+dYumGlAzij41mxlpuo
+	 wGApODJhauoyczKBHbFq1spaA6Xj4T/0C762aqohiglwaZgEI5P9j/ui7xsmjfs0XI
+	 jbTuzr3KiXPySfczS/Ab0iuHxWZjVCrai7apd7X7KpUVo7kX7ogDeWshxDlgWnSHpW
+	 ExTTQhVzgHWwUdw/WvgfgWTImmuYRMvypqSJMq7BRnLPMEyzU1lw4E1Honv3IJETOT
+	 1XU1ShBzM/cQ7PtN8mMelBTFwi6bu81S7jmI6If/9f8O0Lh0Kw/8Ltq7TxpU1sQEKn
+	 QuzshxAhOeQMQ==
+Date: Thu, 10 Apr 2025 09:32:54 -0700
+From: Kees Cook <kees@kernel.org>
+To: Nikolay Borisov <nik.borisov@suse.com>
+Cc: Dan Williams <dan.j.williams@intel.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Naveen N Rao <naveen@kernel.org>, linux-kernel@vger.kernel.org,
+	x86@kernel.org, linux-coco@lists.linux.dev,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+	Kevin Loughlin <kevinloughlin@google.com>,
+	Michal Hocko <mhocko@suse.com>
+Subject: Re: [RFC PATCH] x86/sev: Disallow userspace access to BIOS region
+ for SEV-SNP guests
+Message-ID: <202504100931.DEC3D3B79@keescook>
+References: <20250403120228.2344377-1-naveen@kernel.org>
+ <67eedc35be77d_464ec29462@dwillia2-xfh.jf.intel.com.notmuch>
+ <l34f6nqq3up23cvrgmebbufztqkvfil5eahecukw5bnqekccpj@6nbciquhwxxc>
+ <1bc4c506-57ad-38aa-d56d-ed058f54708e@amd.com>
+ <fd683daa-d953-48ca-8c5d-6f4688ad442c@intel.com>
+ <67f5b75c37143_71fe2949b@dwillia2-xfh.jf.intel.com.notmuch>
+ <202504091038.5D9B68A@keescook>
+ <67f6bee647aa5_1302d294f5@dwillia2-xfh.jf.intel.com.notmuch>
+ <e2933f6e-4bda-40ee-b69c-d7222082fcfd@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <diqz4iyw5dis.fsf@ackerleytng-ctop.c.googlers.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e2933f6e-4bda-40ee-b69c-d7222082fcfd@suse.com>
 
-On Thu, Apr 10, 2025 at 06:53:15AM -0700, Ackerley Tng wrote:
-> > So why do other alloc_anon_inode callers not need
-> > security_inode_init_security_anon?
+On Thu, Apr 10, 2025 at 03:03:55PM +0300, Nikolay Borisov wrote:
 > 
-> Thanks for this tip!
 > 
-> When I did this refactoring, I was just refactoring
-> anon_inode_create_getfile(), to set up the guest_memfd inode and file in
-> separate stages, and anon_inode_create_getfile() was already using
-> security_inode_init_security_anon().
+> On 9.04.25 г. 21:39 ч., Dan Williams wrote:
+> > Kees Cook wrote:
+> > > On Tue, Apr 08, 2025 at 04:55:08PM -0700, Dan Williams wrote:
+> > > > Dave Hansen wrote:
+> > > > > On 4/8/25 06:43, Tom Lendacky wrote:
+> > > > > > > Tom/Boris, do you see a problem blocking access to /dev/mem for SEV
+> > > > > > > guests?
+> > > > > > Not sure why we would suddenly not allow that.
+> > > > > 
+> > > > > Both TDX and SEV-SNP have issues with allowing access to /dev/mem.
+> > > > > Disallowing access to the individually troublesome regions can fix
+> > > > > _part_ of the problem. But suddenly blocking access is guaranteed to fix
+> > > > > *ALL* the problems forever.
+> > > > 
+> > > > ...or at least solicits practical use cases for why the kernel needs to
+> > > > poke holes in the policy.
+> > > > 
+> > > > > Or, maybe we just start returning 0's for all reads and throw away all
+> > > > > writes. That is probably less likely to break userspace that doesn't
+> > > > > know what it's doing in the first place.
+> > > > 
+> > > > Yes, and a bulk of the regression risk has already been pipe-cleaned by
+> > > > KERNEL_LOCKDOWN that shuts down /dev/mem and PCI resource file mmap in
+> > > > many scenarios.
+> > > > 
+> > > > Here is an updated patch that includes some consideration for mapping
+> > > > zeros for known legacy compatibility use cases.
+> > [..]
+> > > > diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+> > > > index bfa444a7dbb0..c8679ae1bc8b 100644
+> > > > --- a/arch/x86/mm/init.c
+> > > > +++ b/arch/x86/mm/init.c
+> > > > @@ -867,6 +867,8 @@ void __init poking_init(void)
+> > > >    */
+> > > >   int devmem_is_allowed(unsigned long pagenr)
+> > > >   {
+> > > > +	bool platform_allowed = x86_platform.devmem_is_allowed(pagenr);
+> > > > +
+> > > >   	if (region_intersects(PFN_PHYS(pagenr), PAGE_SIZE,
+> > > >   				IORESOURCE_SYSTEM_RAM, IORES_DESC_NONE)
+> > > >   			!= REGION_DISJOINT) {
+> > > > @@ -885,14 +887,20 @@ int devmem_is_allowed(unsigned long pagenr)
+> > > >   	 * restricted resource under CONFIG_STRICT_DEVMEM.
+> > > >   	 */
+> > > >   	if (iomem_is_exclusive(pagenr << PAGE_SHIFT)) {
+> > > > -		/* Low 1MB bypasses iomem restrictions. */
+> > > > -		if (pagenr < 256)
+> > > > +		/*
+> > > > +		 * Low 1MB bypasses iomem restrictions unless the
+> > > > +		 * platform says "no", in which case map zeroes
+> > > > +		 */
+> > > > +		if (pagenr < 256) {
+> > > > +			if (!platform_allowed)
+> > > > +				return 2;
+> > > >   			return 1;
+> > > > +		}
+> > > >   		return 0;
+> > > >   	}
+> > > > -	return 1;
+> > > > +	return platform_allowed;
+> > > >   }
+> > > >   void free_init_pages(const char *what, unsigned long begin, unsigned long end)
+> > > 
+> > > I am reminded of this discussion:
+> > > https://lore.kernel.org/all/CAPcyv4iVt=peUAk1qx_EfKn7aGJM=XwRUpJftBhkUgQEti2bJA@mail.gmail.com/
+> > > 
+> > > As in, mmap will bypass this restriction, so if you really want the low
+> > > 1MiB to be unreadable, a solution for mmap is still needed...
+> > 
+> > Glad you remembered that!
+> > 
+> > This needs a self-test to verify the assumptions here. I can circle back
+> > next week or so take a look at turning this into a bigger series. If
+> > someone has cycles to take this on before that I would not say no to
+> > some help.
 > 
-> In the next revision I can remove this call.
-> 
-> Is it too late to remove the call to security_inode_init_security_anon()
-> though? IIUC it is used by LSMs, which means security modules may
-> already be assuming this call?
+> Can't we simply treat return value of 2 for range_is_allowed the same way as
+> if 0 was returned in mmap_mem and simply fail the call with -EPERM?
 
-I'd really like to here from the security folks if we need it or not,
-both in this case and for other alloc_anon_inode callers.
+The historical concern was that EPERM would break old tools. I don't
+have any current evidence either way, though.
+
+-- 
+Kees Cook
