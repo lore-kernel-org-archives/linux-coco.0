@@ -1,154 +1,249 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E44928C5BA
-	for <linux-coco@lists.linux.dev>; Thu, 10 Apr 2025 13:05:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7002857F7
+	for <linux-coco@lists.linux.dev>; Thu, 10 Apr 2025 13:40:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744290336; cv=none; b=O/GxLx0VMayqhnSa5kYpp6FVPbdlMKc8KtOB+iSzFfSvFm+xYUp8eHE3iVWemNTEG/iUyvCaQhge7+YmeFVTaGbWeWCeMGEDqmux/q74fjeZZBj5x2VhTKeiDEc4T1jkTsuMa1DG05wvezjB6b2fdFLKeThyXlmSHG4GkbVFZbo=
+	t=1744292439; cv=none; b=XzXXYYAcYFFK9IW1rUJ5zwg0EFlOpDaMoDcEr8c6/dCDBNmUjlaVebnbTMmBJrrP2pbF0SeAhwLZMf1cj91+Pb+c8MWsYikwe4OPVcwWrQ8YVimIQbRS3PhVRnnE+PtI5ot/N3gL5ClTYYF6wFNulo+Vbp1HTsxGPPjBYxjC5KU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744290336; c=relaxed/simple;
-	bh=HMR9MCdcSh4ghNXN2PNjr8BtDW52Pk7L9AMhE1YOGEg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dnZdW8S85P2Slt0CD2ULBc648YalVqsASCeTN74wHTaorD5ha/yR3zRQsbTg2fTXhz4mhLnOLF7EcByF0n+O1B08LGaiK1vMbbs3ke0JpWiDMX2wojIJiWbpUR0ZyEv8TNH4fgWMAKjfudkWpc4x4RNX7uqaedFBU+553vVXvmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=OsTnzLcN; arc=none smtp.client-ip=209.85.222.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1744292439; c=relaxed/simple;
+	bh=RyXiF/jkRIj400dJ7AmDNhGbCH7VL8l8ltE6ndzB2ag=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=KSyjMd8qCaTuH6Ktti/rGqLDeK94TynOwSCF/8Vz3gfQNG6IrHuJyjkCyt3g6PAzy84D2oGQH6pmf5OElnbzGK/cZHNnGUexj/ueC5uNAZxJG4+aJLaeLjPXFOwse7UX6dpcBuzNMElL+1Eek5Mn7zuiv5WWv9TsZJZr5cBgCuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OWYRQ18z; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="OsTnzLcN"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7c5a88b34a6so80493485a.3
-        for <linux-coco@lists.linux.dev>; Thu, 10 Apr 2025 06:05:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OWYRQ18z"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-736a7d0b82fso949319b3a.1
+        for <linux-coco@lists.linux.dev>; Thu, 10 Apr 2025 06:40:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1744290331; x=1744895131; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZHIQ/++9W1bwFwjTR3scNHhBiiv2Oa9aNs8dRl0dl1I=;
-        b=OsTnzLcNJplDvhcrb4iiB1wJ5UrrJoPmzEzoB67wS4c7SBD4ARv9JgYmqe8GpkHH0w
-         RZN23wb15Sq1dsXbyvTpG0nlDSLBK//4J0w/T4qhMZ13tOYRKioK7i/6BXSozhcwzRDO
-         qeHgUifrkssEXGnL+btT0J/BCoHCwbKkXvhoM44mT9fUj/ks5yo4gg1+AQ0Hvt2kCn+V
-         pq2eg13wHtZfStvO+7Y4NO/A8AG02lEeeFr5QSO3dCRkrvYL9na/KCoLymwMWOrwGFzX
-         iM4i0UPvrMBm2+mDJKKnCtFnnMnjOqc6JDAf1drtr/HfneZ3nI5FClFRD/KZ0wm+WfqK
-         /kYQ==
+        d=google.com; s=20230601; t=1744292436; x=1744897236; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NAdkgo+26TLCNZdpvTsQI8wpHzhqkKGWGAXIQv7DOuE=;
+        b=OWYRQ18zl5UPqeyGfJf+PCzG7R7KotK0viYMDGyR/n6u8CXvo4sH1gpgkp0v0R6Y2q
+         4Mrlb6XgngazfHRKD29r64UjqAC1AfvgmN148ZR7KycsUJ871OiUJN5LkbvnFXC2fttH
+         qTDZSCX0t33xsGGHn4PqXJxv2kOTbIL3F8PEDI0pgszOI0YJ0F26qjMecIropCeBrP7c
+         lPaRv5x85tT/8TCk4x+/ismYLlRhQqGUHlmHUDabzoIs3p62lYfIe2Xpu+Eh4KfZyzek
+         TwAOEz1V64iM5dRK0fL03yq2wI5cwomDSuPnafSMME7yUgrN7kZWE9y1KKaxpz8HGstN
+         74Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744290331; x=1744895131;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZHIQ/++9W1bwFwjTR3scNHhBiiv2Oa9aNs8dRl0dl1I=;
-        b=DuK9XChYviitIZ9EjD6aaFyeSLedKlvRc78CH2w+6J2fjVMcA6xtIjnZgtKx6KewKe
-         5Z3LWNE3YR3E5dDRnwLt5vNZCnDglP06e9JV6gifzH66mhucslj+Xtluv5ny89ktBiBY
-         rN2Q5bWQYtknSCwu/CUAvOPhMc4j4LU/QyUAV490q8qx7taWyhIdB0Kwr+J2FYuDiQOc
-         BdJT/ZNzItWNazKcin9vxSnovHRsqx4dMZFDSjuiCcQmjdPZKLg1p7GgBnJ4W2Wp4/Vb
-         DvJo70dtX3YtKpGMhRRtRBIbOls4EABXSaiK+u8xd7bpVarGv89FIwIPWc0RQsyfBcFy
-         +wsw==
-X-Forwarded-Encrypted: i=1; AJvYcCXWxfanLh924E+2gNUn4OtZmWjkUODtLCgQlE8SqF4aIySJ2FoobKmTLE9oPtqQ/NJ2PI4ThKCpDw1+@lists.linux.dev
-X-Gm-Message-State: AOJu0YwGDB+hcggqnjTFXmgBbaqiz8JJc2LVwEdGjbpSHNrC0+RJY7TM
-	IzoRDfuy/yMPOl/OI7o0r17dVIOMMHmonWB+VDeMVOzFz1I5gtkv0+p5Kqp88OU=
-X-Gm-Gg: ASbGncvIOimqh310PUFIkjUhMqiSQDy/TyxCb587U3Z8fuhbh3pS8JOMrDHz+5TLS1b
-	KuzkGphptOepIeavOvUi2CBwmFcl3jw7g3zBmmKI9aku2AA2T8bip9xOO3ev9goocR+gfC9TtI6
-	0EKFVYYRvyk5bmuX2/GLSm9Or7KsAquipnFJhx6VzteKePyWtPxWrqfXUDGM0cZLeHSREPsmzuw
-	ni8a1RCq0FDaVkKzuWkiZmdJqTOZ0Nzf8stdCYAmGE/mjc/TMvPZSZXvyM2KIyGw2+GrmsDIPmp
-	Qh5P3IdgxIJxWv41KgVKWTbBLC+TKL/zUw2VzyhBZhhtPyvgymE4VWZKW8a/aTtMQPRDEaC0XMJ
-	tPRt4jZwY/VNYvktXErI=
-X-Google-Smtp-Source: AGHT+IG4IzEnrtMNm0AmTZUaqXGTX04b5UW6VZBKQK8VGv14pbPLZJgnECNrc0NUhMe5YZKTD9kaag==
-X-Received: by 2002:a05:620a:2445:b0:7c5:99f9:6ada with SMTP id af79cd13be357-7c7a76d3503mr365847885a.50.1744290330960;
-        Thu, 10 Apr 2025 06:05:30 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-167-219-86.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.219.86])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c7a8969f1asm82420785a.59.2025.04.10.06.05.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Apr 2025 06:05:29 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1u2raz-00000009aH7-1871;
-	Thu, 10 Apr 2025 10:05:29 -0300
-Date: Thu, 10 Apr 2025 10:05:29 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: x86@kernel.org, kvm@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-arch@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Christoph Hellwig <hch@lst.de>, Nikunj A Dadhania <nikunj@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Steve Sistare <steven.sistare@oracle.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Dionna Glaze <dionnaglaze@google.com>, Yi Liu <yi.l.liu@intel.com>,
-	iommu@lists.linux.dev, linux-coco@lists.linux.dev,
-	Zhi Wang <zhiw@nvidia.com>, AXu Yilun <yilun.xu@linux.intel.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-Subject: Re: [RFC PATCH v2 13/22] iommufd: amd-iommu: Add vdevice support
-Message-ID: <20250410130529.GE1727154@ziepe.ca>
-References: <20250218111017.491719-1-aik@amd.com>
- <20250218111017.491719-14-aik@amd.com>
- <20250401161138.GL186258@ziepe.ca>
- <b051dcc8-58a5-4f24-8b06-e817e9762952@amd.com>
+        d=1e100.net; s=20230601; t=1744292436; x=1744897236;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NAdkgo+26TLCNZdpvTsQI8wpHzhqkKGWGAXIQv7DOuE=;
+        b=R9tHsNu8AZWd0j1E6/aQwyOptXVlOqI8hYY/hc9PH3pVlOVcRaIRndNHakYafO0WLl
+         jsN4MjODTeQINOcJg+REv8ah1fvc6wNizLXeH35ziwL3TyaaHqyZowOMfFra3T0MPZYF
+         tcsJb++6RlujM6PdmsKQFzFqM4cbFzpnZIUh2rl+I78Qy6t1IsL3dRNtiK7XKioWS6k6
+         x6uRcdNklMQg3/6YZ8aLQf7XOxo561UJ5QE7ZX16L6LiD4bDMsytqNvkoCp6t5Rtm3dC
+         rrGrKKO6+73iB3hgNJt7Czo+jqzvSMgwpx/LFP2MJAeL8C9+VcAjCtk+hXbQ00/V64me
+         Twug==
+X-Forwarded-Encrypted: i=1; AJvYcCVpaGwu98Np68TcRUotEoqMibTwlUloWZLrkzH7yJsR9qIax7qPh/uDm1UdKTiYHCqkNdKSYn55c+Fe@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw0lFPvQY5AvNZDUIQijqp1045aXjPkDtUVZU1xqM89s7Fr6WEc
+	KWvcVhpsR8cs/NdBKdjhXtTjGwEB6ZFzAtTqvBlgQR1vIohsx5ZaWUObGWOHo8snqKY6ySk4hEh
+	offCSV4okcCl82haxFiaWhg==
+X-Google-Smtp-Source: AGHT+IHA1HgsCl6z98FoXuuYkPI1df6L0N/s2mcX4Y5/lnvzb/BxqximvQNI8RQed9Y9suGb1/1qvHayYMY3eco6Ww==
+X-Received: from pfbgj26.prod.google.com ([2002:a05:6a00:841a:b0:736:3d80:7076])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:244c:b0:732:a24:7354 with SMTP id d2e1a72fcca58-73bc09faeb8mr2766392b3a.4.1744292436406;
+ Thu, 10 Apr 2025 06:40:36 -0700 (PDT)
+Date: Thu, 10 Apr 2025 06:40:34 -0700
+In-Reply-To: <20250408112402.181574-8-shivankg@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b051dcc8-58a5-4f24-8b06-e817e9762952@amd.com>
+Mime-Version: 1.0
+References: <20250408112402.181574-1-shivankg@amd.com> <20250408112402.181574-8-shivankg@amd.com>
+Message-ID: <diqz7c3s5e3x.fsf@ackerleytng-ctop.c.googlers.com>
+Subject: Re: [PATCH RFC v7 7/8] KVM: guest_memfd: Enforce NUMA mempolicy using
+ shared policy
+From: Ackerley Tng <ackerleytng@google.com>
+To: Shivank Garg <shivankg@amd.com>, seanjc@google.com, david@redhat.com, vbabka@suse.cz, 
+	willy@infradead.org, akpm@linux-foundation.org, shuah@kernel.org, 
+	pbonzini@redhat.com
+Cc: paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com, pvorel@suse.cz, 
+	bfoster@redhat.com, tabba@google.com, vannapurve@google.com, 
+	chao.gao@intel.com, bharata@amd.com, nikunj@amd.com, michael.day@amd.com, 
+	yan.y.zhao@intel.com, Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com, 
+	michael.roth@amd.com, aik@amd.com, jgg@nvidia.com, kalyazin@amazon.com, 
+	peterx@redhat.com, shivankg@amd.com, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Apr 10, 2025 at 04:39:39PM +1000, Alexey Kardashevskiy wrote:
-> > > @@ -2549,12 +2561,15 @@ amd_iommu_domain_alloc_paging_flags(struct device *dev, u32 flags,
-> > >   {
-> > >   	struct amd_iommu *iommu = get_amd_iommu_from_dev(dev);
-> > >   	const u32 supported_flags = IOMMU_HWPT_ALLOC_DIRTY_TRACKING |
-> > > +						IOMMU_HWPT_ALLOC_PASID |
-> > > +						IOMMU_HWPT_ALLOC_NEST_PARENT;
-> > > +	const u32 supported_flags2 = IOMMU_HWPT_ALLOC_DIRTY_TRACKING |
-> > >   						IOMMU_HWPT_ALLOC_PASID;
-> > 
-> > Just ignore NEST_PARENT? That seems wrong, it should force a V1 page
-> > table??
-> 
-> 
-> Ahhh... This is because I still have troubles with what IOMMU_DOMAIN_NESTED
-> means (and iommufd.rst does not help me). There is one device, one IOMMU
-> table buuut 2 domains? Uh.
+Shivank Garg <shivankg@amd.com> writes:
 
-It means whatever you want it to mean, so long as it holds a reference
-to a NEST_PARENT :)
+> Previously, guest-memfd allocations followed local NUMA node id in absence
+> of process mempolicy, resulting in arbitrary memory allocation.
+> Moreover, mbind() couldn't be used since memory wasn't mapped to userspace
+> in the VMM.
+>
+> Enable NUMA policy support by implementing vm_ops for guest-memfd mmap
+> operation. This allows the VMM to map the memory and use mbind() to set the
+> desired NUMA policy. The policy is stored in the inode structure via
+> kvm_gmem_inode_info, as memory policy is a property of the memory (struct
+> inode) itself. The policy is then retrieved via mpol_shared_policy_lookup()
+> and passed to filemap_grab_folio_mpol() to ensure that allocations follow
+> the specified memory policy.
+>
+> This enables the VMM to control guest memory NUMA placement by calling
+> mbind() on the mapped memory regions, providing fine-grained control over
+> guest memory allocation across NUMA nodes.
+>
+> The policy change only affect future allocations and does not migrate
+> existing memory. This matches mbind(2)'s default behavior which affects
+> only new allocations unless overridden with MPOL_MF_MOVE/MPOL_MF_MOVE_ALL
+> flags, which are not supported for guest_memfd as it is unmovable.
+>
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> ---
+>  virt/kvm/guest_memfd.c | 75 ++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 73 insertions(+), 2 deletions(-)
+>
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 0ccbb152483a..233d3fd5781c 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -4,6 +4,7 @@
+>  #include <linux/backing-dev.h>
+>  #include <linux/falloc.h>
+>  #include <linux/kvm_host.h>
+> +#include <linux/mempolicy.h>
+>  #include <linux/pseudo_fs.h>
+>  #include <linux/pagemap.h>
+>  #include <linux/anon_inodes.h>
+> @@ -19,6 +20,7 @@ struct kvm_gmem {
+>  };
+>  
+>  struct kvm_gmem_inode_info {
+> +	struct shared_policy policy;
+>  	struct inode vfs_inode;
+>  };
 
-> > You can get 1:1 domain objects linked to the viommu by creating the
-> > 'S1' type domains, maybe that is what you want here. A special domain
-> > type that is TSM that has a special DTE.
-> 
-> Should not IOMMU_DOMAIN_NESTED be that "S1" domain?
+What are the pros and cons that you see of storing struct shared_policy
+in a containing struct kvm_gmem_inode_info, as opposed to storing it in
+inode->i_private?
 
-Yes that is how ARM is doing it.
+I've just been using inode->i_private for sharability and hugetlb
+metadata and didn't consider this option.
 
-Minimally IOMMU_DOMAIN_NESTED on AMD should refere to a partial DTE
-fragment that sets the GCR3 information and other guest controlled
-bits from the vDTE. It should hold a reference to the viommu and the
-S2 NEST_PARENT.
+Could one reason be that struct shared_policy is a requirement for all
+inodes (not a CONFIG flag) but sharability and hugetlb metadata are both
+configurable, possibly at runtime?
 
-From that basis then you'd try to fit in the CC stuff.
-
-> > Though I'd really rather see the domain attach logic and DTE formation
-> > in the AMD driver be fixed up before we made it more complex :\
-> > 
-> > It would be nice to see normal nesting and viommu support first too :\
-> 
-> It is in the works too. Thanks,
-
-I think your work will be easier to understand when viewed on top of
-working basic nesting support as it is just a special case of that
-
-Jason
+>  
+> @@ -27,6 +29,9 @@ static inline struct kvm_gmem_inode_info *KVM_GMEM_I(struct inode *inode)
+>  	return container_of(inode, struct kvm_gmem_inode_info, vfs_inode);
+>  }
+>  
+> +static struct mempolicy *kvm_gmem_get_pgoff_policy(struct kvm_gmem_inode_info *info,
+> +						   pgoff_t index);
+> +
+>  /**
+>   * folio_file_pfn - like folio_file_page, but return a pfn.
+>   * @folio: The folio which contains this index.
+> @@ -113,7 +118,24 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+>  {
+>  	/* TODO: Support huge pages. */
+> -	return filemap_grab_folio(inode->i_mapping, index);
+> +	struct mempolicy *policy;
+> +	struct folio *folio;
+> +
+> +	/*
+> +	 * Fast-path: See if folio is already present in mapping to avoid
+> +	 * policy_lookup.
+> +	 */
+> +	folio = __filemap_get_folio(inode->i_mapping, index,
+> +				    FGP_LOCK | FGP_ACCESSED, 0);
+> +	if (!IS_ERR(folio))
+> +		return folio;
+> +
+> +	policy = kvm_gmem_get_pgoff_policy(KVM_GMEM_I(inode), index);
+> +	folio = filemap_grab_folio_mpol(inode->i_mapping, index, policy,
+> +					NO_INTERLEAVE_INDEX);
+> +	mpol_cond_put(policy);
+> +
+> +	return folio;
+>  }
+>  
+>  static void kvm_gmem_invalidate_begin(struct kvm_gmem *gmem, pgoff_t start,
+> @@ -336,12 +358,14 @@ static struct inode *kvm_gmem_alloc_inode(struct super_block *sb)
+>  	if (!info)
+>  		return NULL;
+>  
+> +	mpol_shared_policy_init(&info->policy, NULL);
+> +
+>  	return &info->vfs_inode;
+>  }
+>  
+>  static void kvm_gmem_destroy_inode(struct inode *inode)
+>  {
+> -
+> +	mpol_free_shared_policy(&KVM_GMEM_I(inode)->policy);
+>  }
+>  
+>  static void kvm_gmem_free_inode(struct inode *inode)
+> @@ -384,7 +408,54 @@ static void kvm_gmem_init_mount(void)
+>  	kvm_gmem_mnt->mnt_flags |= MNT_NOEXEC;
+>  }
+>  
+> +#ifdef CONFIG_NUMA
+> +static int kvm_gmem_set_policy(struct vm_area_struct *vma, struct mempolicy *mpol)
+> +{
+> +	struct inode *inode = file_inode(vma->vm_file);
+> +
+> +	return mpol_set_shared_policy(&KVM_GMEM_I(inode)->policy, vma, mpol);
+> +}
+> +
+> +static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
+> +					     unsigned long addr, pgoff_t *pgoff)
+> +{
+> +	struct inode *inode = file_inode(vma->vm_file);
+> +
+> +	*pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
+> +	return mpol_shared_policy_lookup(&KVM_GMEM_I(inode)->policy, *pgoff);
+> +}
+> +
+> +static struct mempolicy *kvm_gmem_get_pgoff_policy(struct kvm_gmem_inode_info *info,
+> +						   pgoff_t index)
+> +{
+> +	struct mempolicy *mpol;
+> +
+> +	mpol = mpol_shared_policy_lookup(&info->policy, index);
+> +	return mpol ? mpol : get_task_policy(current);
+> +}
+> +#else
+> +static struct mempolicy *kvm_gmem_get_pgoff_policy(struct kvm_gmem_inode_info *info,
+> +						   pgoff_t index)
+> +{
+> +	return NULL;
+> +}
+> +#endif /* CONFIG_NUMA */
+> +
+> +static const struct vm_operations_struct kvm_gmem_vm_ops = {
+> +#ifdef CONFIG_NUMA
+> +	.get_policy	= kvm_gmem_get_policy,
+> +	.set_policy	= kvm_gmem_set_policy,
+> +#endif
+> +};
+> +
+> +static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
+> +{
+> +	vma->vm_ops = &kvm_gmem_vm_ops;
+> +	return 0;
+> +}
+> +
+>  static struct file_operations kvm_gmem_fops = {
+> +	.mmap		= kvm_gmem_mmap,
+>  	.open		= generic_file_open,
+>  	.release	= kvm_gmem_release,
+>  	.fallocate	= kvm_gmem_fallocate,
+> -- 
+> 2.34.1
