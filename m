@@ -1,70 +1,79 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 432C4296D06;
-	Tue, 15 Apr 2025 14:42:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744728139; cv=none; b=VXa9jCAJxXyFqNYpJifI2m6oKK4rGwGYiZZ3fjVMtZVV9eBAFFZr3XvpS5wl3ylJ3RMd06+G5k4tC8GWOe7DrTDzaCBLuFNlMSt3fMLEmDyXaA0duT43ut/sJaoNgd2Ec6Pyw/0ItJyKA8ltKEZE4yrkSIUvRCYdgGkfJSVGKAs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744728139; c=relaxed/simple;
-	bh=lC3Lw4hnbEoPZ4iZmoWQbU5CHTLzGMkvTPZdtguLiKo=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=qIBQ1HHDsWbq7PTfE90lPrbdRTb3OZYfVFHuuKSNE0eiQI9W7b4/XKD3uoaj9DubUICFlAAzkjVP65GijvG64HWJKmJ4gNdqpWktRA+RZuhRuW5XU/8FI43AKqqyWZZmlOfg0lLCcZFw6cg3zkPodNNfcy33cNNMjeN66Ul9/ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=H2ENnzJv; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="H2ENnzJv"
-Received: from 8bytes.org (p4ffe03ae.dip0.t-ipconnect.de [79.254.3.174])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 1981A46860;
-	Tue, 15 Apr 2025 16:42:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1744728130;
-	bh=lC3Lw4hnbEoPZ4iZmoWQbU5CHTLzGMkvTPZdtguLiKo=;
-	h=Date:From:To:Subject:From;
-	b=H2ENnzJvM8zNbso/wAAjIxs9YEompMFEifn/BJ1Q15GN8Vk/jSTAG6I2ZmGpPDHes
-	 DojvJwcYbxZdN97kmo+NNbssNl7tqtAYlmNinOOR+hA2mq6t0Bm2xoPvZLWqAdebg3
-	 yXBH5r8JuGS3WzD2Qjnoxvzo8I5Pil9tv1Uk1CjvvplccpsEqsgwl6uHenbkxg9fiy
-	 ayQC0jERavOH+lByOhggVWU5rwVtWqHDx81awI3QN+dRhJg3omGecOtByKn69MM6zD
-	 0PBqiLLyi2Dqe0IsySljynMwDkNuBb8h+xx5J+DT/oR+h8kn2PHGWdqFz14kdcoanQ
-	 swu06saYC2wmA==
-Date: Tue, 15 Apr 2025 16:42:08 +0200
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: svsm-devel@coconut-svsm.dev, coconut-svsm@lists.linux.dev,
-	linux-coco@lists.linux.dev
-Subject: SVSM Development Call April 16th, 2025
-Message-ID: <Z_5wQLUu13RUm7Dy@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3A72528E1;
+	Tue, 15 Apr 2025 20:15:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744748149; cv=none; b=hidYTTX5EP3hUVgFnKyUhp2VcZp4qNxO/jQmmMQTVbu07VOn7Guh6dF03Lby+2foH61Ppx3Mo4GEp/pf8zM0GJNgFEsO7OA75I3y07wCn+J4sfWomgDIepH/Qbu5BZfongJ2FQD03/AIx/89qSoxT4o8zTXcGQtOvn4F8ZAC+To=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744748149; c=relaxed/simple;
+	bh=QwTJf9GxpIvIfOhFYaJO6b+nTXK1Pmo5iQcJ/GI9BGU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=YZTt/xE+NXDYaMT5J3DSekk+0gTaL8EP2mUSc254er92PqVnVV71hvFa7YVOVGSygEHSXe1mkiXibVfr54HOUBVycuGe7fBuTm9WPUDQRt4Gd/LTc3yq6nOwF4H9tB//vekIp8dgg3NVsgL4G/sLDDVrL/aJSlPTKyngZvFSl3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jO/DDpLU; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jO/DDpLU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857C9C4CEE7;
+	Tue, 15 Apr 2025 20:15:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744748148;
+	bh=QwTJf9GxpIvIfOhFYaJO6b+nTXK1Pmo5iQcJ/GI9BGU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=jO/DDpLUw6lPmlvlhtrDhoKnokaxjzDFG0GJx6h2ALJm1U5w8n3wIIl6Mghx/t08C
+	 YMkwUzvfYvZrMgehfXIZy9SbH4VdhGrgSQmg4r7pXhv2fCRdUZ4z2YZus6I8xxJhqV
+	 YfR4KWoBRxqn5uOoOEXKA4lHgTsfTNqW13PaHhn3EGg3kN+K+pJPsDFhZgySRsv5u0
+	 mWvFdU+STmgqRcOr47AOm/uU+FKrotrmwcAVZr6dUqqy/sAR7Bl87PDPViPgbbpMxy
+	 9ccn8ebL8nU82lVjDkDyxwqebwgnK2ZGFbWq8QQsNdcMDxVm+2X8L1wUDLPXD7EcSs
+	 jrM0MLUteVC6g==
+Date: Tue, 15 Apr 2025 15:15:47 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: x86@kernel.org, kvm@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-arch@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Robin Murphy <robin.murphy@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Christoph Hellwig <hch@lst.de>, Nikunj A Dadhania <nikunj@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Steve Sistare <steven.sistare@oracle.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Dionna Glaze <dionnaglaze@google.com>, Yi Liu <yi.l.liu@intel.com>,
+	iommu@lists.linux.dev, linux-coco@lists.linux.dev,
+	Zhi Wang <zhiw@nvidia.com>, AXu Yilun <yilun.xu@linux.intel.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+Subject: Re: [RFC PATCH v2 01/22] pci/doe: Define protocol types and make
+ those public
+Message-ID: <20250415201547.GA32736@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250218111017.491719-2-aik@amd.com>
 
-Hi,
+Match capitalization of subject from previous history.
 
-Here is the usual call for agenda items for the this weeks SVSM
-development call.  Please send me any agenda items you have in mind or
-raise them in the meeting.
+On Tue, Feb 18, 2025 at 10:09:48PM +1100, Alexey Kardashevskiy wrote:
+> Already public pci_doe() takes a protocol type argument.
+> PCIe 6.0 defines three, define them in a header for use with pci_doe().
 
-Currently I have one item on the list:
+Add section number to spec reference, rewrap paragraph to fill 75
+columns.
 
-	* Upcoming changes to the SVSM call.
-
-Details of the meeting (GMeet and Calendar links, meeting time) can be
-found in our governance repository at:
-
-	https://github.com/coconut-svsm/governance
-
-The meeting will be recorded and the recording eventually published.
-
-See you all there.
-
-Regards,
-
-	Jörg
+Bjorn
