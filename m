@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300B51FECB0
-	for <linux-coco@lists.linux.dev>; Thu, 17 Apr 2025 19:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E75B1E7C3B
+	for <linux-coco@lists.linux.dev>; Thu, 17 Apr 2025 19:33:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744918223; cv=none; b=Tbfx64S8v6Gz3J7G8ifvTzipDAVLAwcPSowZjKDgwdh7haKtiMb1gvklxby7lilURCC+/6p/m/6xvsYaKS13LrgXIU8z1Ab8A8gtiETG8+fYvxYnaZiCioLAto/p74cKpudfU/l+CAmiJiHt6lJtJSHSp82e/bc/GDjUhliHcdc=
+	t=1744918414; cv=none; b=aTzfdnUdw/SmwakLtzBT1qxlOTCsyRkSwTIm+9IyiA1qnL2UM0iLB5u7cJ9kBAlCTb2GSeP48mcxp+KLMPmf70nRUDkUNARtzrYkRDfXbs47e87QnMpu+1g3rdtYJvoB1f23Li9yssKBdKKy2YXT3B9tSt8zhDdwEYzqtmw+rRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744918223; c=relaxed/simple;
-	bh=DgSOWnvNvn/QxSmHd7+V2xUmIEAWsoKv3QG7DLAGgaI=;
+	s=arc-20240116; t=1744918414; c=relaxed/simple;
+	bh=E7QLYiPVgNh86rCfxPxTHHHQkTStPgPD9nZacPlf+Mo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZTqCOaIxWVQrAI1S6mMqIvzmfuTaBFF2xekZE5H0H/ubAg9r0gF79ctsJPl/RrpUALq2FYlyz/1/KT8rdjw6HJmHyxQ/HYkYqGXh7VKMoEwXxSeAtDhxE6n5drbMXGSdWLw2uKYQk3nRYAiTLGmmhNfsQNHL7Jy9oZ/PIhBazss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OrvtYSp3; arc=none smtp.client-ip=192.198.163.14
+	 In-Reply-To:Content-Type; b=SrMTTOzRhcN3XheCKSf/aInvEq5N4qfSDzi8zfxMpCbIlSeO7rrcii6UQBdfave9aqhF4xo7lBE58jQtGHbmXfODJhLyzUc7VveY/ftISit/ucQqwFw53ZLcx1zWzvfJBsPGQ3/FKHE92apdgGDGSfPewls3tWbWiJ54OTSS50w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RJ22Z7Ll; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OrvtYSp3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RJ22Z7Ll"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744918221; x=1776454221;
+  t=1744918413; x=1776454413;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=DgSOWnvNvn/QxSmHd7+V2xUmIEAWsoKv3QG7DLAGgaI=;
-  b=OrvtYSp3aPWDVcTWsbvAsEqy9/JfxabeBE+jHx2n+30tzO7olq6hElou
-   qpWfCuaDXmO2RzEyRA3jpQQLHm0DEjF8Ho67aTiE9QYfD2BBZrZuhrJJ+
-   Jw2zrql9Mh4Cw1Z5MGMz2nIc2lXGrP4eoeKjOwxPvkVQPfbpWX1HOfYcC
-   ZvX0g+79LCGpCynrSZIM8ls8VGO/8+hi2tAZ++IFlN2BXZEq2GQoJ8Jhb
-   03DLXH2azcjY9VQmGcVVTjE8dPg1nHX5pAYNXkmyoigi54cBYwbThbVXb
-   RWYNtBffnLnokXD7YupASKcZNDlPAy1aB1wayx6jEnysMHGLTrQcExqTl
+  bh=E7QLYiPVgNh86rCfxPxTHHHQkTStPgPD9nZacPlf+Mo=;
+  b=RJ22Z7LlzqQdRGHN+PnpJ/4YdNTREFF8agVh097DiD+gBbRvkfRmF6xN
+   d3mhRr7jrdMCmTqI7hitjDsq8ub3OyuQbHjNHJcmzZtIJMLPS7638VwhB
+   y0+DH0XRueCoyGuEMZ3tOxwHdqboTKN/coKqAEUqYiP82Q0Ed5Cyn3vh8
+   iU/u67XrNtkKp5q8hDmc9bBZWUT5xapGQgUrPA5r0X5id7qtBxmyc/plP
+   jgPzJqDTUaZQsay+lLFOPw4cbLnrIPjSj7CKGAoq9LgfAuRtRwDoMvjZC
+   M6oE0WL5tX6FXcqRDqAAeh5JmpBYBbXCPL/bBfG9Hans3wsfilT0TnTz/
    Q==;
-X-CSE-ConnectionGUID: GEldfX0eSb2GDhdmpUw0Jg==
-X-CSE-MsgGUID: /POTgUy+Rrat5/xQ9G1bLA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11406"; a="46695505"
-X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
-   d="scan'208";a="46695505"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 12:30:20 -0700
-X-CSE-ConnectionGUID: TA0yaL1wRBS9EMC0By5B9w==
-X-CSE-MsgGUID: iyuZ8g1STMWBTdUqO+adgg==
+X-CSE-ConnectionGUID: 0UdTdXtTQQarXEPGaFs+ug==
+X-CSE-MsgGUID: Dw1mnFtTQxy1Kb3SIlp7Ng==
+X-IronPort-AV: E=McAfee;i="6700,10204,11406"; a="57901009"
+X-IronPort-AV: E=Sophos;i="6.15,220,1739865600"; 
+   d="scan'208";a="57901009"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 12:33:32 -0700
+X-CSE-ConnectionGUID: KOKFi6IxTuGtGSA7H7ndrg==
+X-CSE-MsgGUID: oMZqxEjGSYexkTi8Zb3R1w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
-   d="scan'208";a="131457672"
+X-IronPort-AV: E=Sophos;i="6.15,220,1739865600"; 
+   d="scan'208";a="130755317"
 Received: from bjrankin-mobl3.amr.corp.intel.com (HELO [10.124.223.169]) ([10.124.223.169])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 12:30:20 -0700
-Message-ID: <b11e30ac-2b6f-4687-b687-3254511a003a@intel.com>
-Date: Thu, 17 Apr 2025 12:30:19 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 12:33:31 -0700
+Message-ID: <73f393a9-32e4-4f39-9834-249068ca3294@intel.com>
+Date: Thu, 17 Apr 2025 12:33:30 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,14 +52,17 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] x86/devmem: Remove duplicate range_is_allowed()
- definition
+Subject: Re: [PATCH v3 2/2] x86/devmem: Drop /dev/mem access for confidential
+ guests
 To: Dan Williams <dan.j.williams@intel.com>, dave.hansen@linux.intel.com
-Cc: Ingo Molnar <mingo@kernel.org>, Naveen N Rao <naveen@kernel.org>,
- Nikolay Borisov <nik.borisov@suse.com>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev
+Cc: x86@kernel.org, Kees Cook <kees@kernel.org>,
+ Ingo Molnar <mingo@kernel.org>, Naveen N Rao <naveen@kernel.org>,
+ Vishal Annapurve <vannapurve@google.com>,
+ Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+ Nikolay Borisov <nik.borisov@suse.com>, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
 References: <174491711228.1395340.3647010925173796093.stgit@dwillia2-xfh.jf.intel.com>
- <174491712068.1395340.11679806523938235782.stgit@dwillia2-xfh.jf.intel.com>
+ <174491712829.1395340.5054725417641299524.stgit@dwillia2-xfh.jf.intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -105,18 +108,25 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <174491712068.1395340.11679806523938235782.stgit@dwillia2-xfh.jf.intel.com>
+In-Reply-To: <174491712829.1395340.5054725417641299524.stgit@dwillia2-xfh.jf.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 4/17/25 12:12, Dan Williams wrote:
-> The only thing preventing a common implementation is that
-> phys_mem_access_prot_allowed() expects the range check to exit
-> immediately when PAT is disabled [2]. I.e. there is no cache conflict to
-> manage in that case. This cleanup was noticed on the path to
-> considering changing range_is_allowed() policy to blanket deny /dev/mem
-> for private (confidential computing) memory.
-
-Yay, removing duplicated code!
+...
+> +	/*
+> +	 * Enforce encrypted mapping consistency and avoid unaccepted
+> +	 * memory conflicts, "lockdown" /dev/mem for confidential
+> +	 * guests.
+> +	 */
+> +	if (IS_ENABLED(CONFIG_STRICT_DEVMEM) &&
+> +	    cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+> +		return -EPERM;
+> +
+A lot of /dev/mem use seems to be poking at random hardware details like
+BIOS internals, ACPI tables or hardware devices. Those all have modern
+alternatives. So while I worry that this will make some userspace mad, I
+have a hard time imagining that it's _relevant_ userspace on a modern
+x86 CoCo platform where that userspace isn't buggy already.
 
 Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
