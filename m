@@ -1,56 +1,56 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D812153D8;
-	Thu, 17 Apr 2025 22:31:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046A82222C9;
+	Thu, 17 Apr 2025 23:24:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744929085; cv=none; b=shjZyCmW79dP0kSQJ7dLcXuUWhvKuq+ZGZGQSMme9Te1+1TP4B8RYNFHdMiIMkq5Ao86PR53GJAQ2oe2aKFsuAdfO8+n/NTkK/WInwPz0C8WL/jXzAXm3Zn9xfZUXOtWc55pGY5ovCCBVPqNr3LAVUf/DMs3zCEzpfN0ApfKdQo=
+	t=1744932270; cv=none; b=LhZproJeU5Fv6IA4qvrHg4RdiQL4WD9cvK3DLr5k/xjMg/CxVSlFgVPuttYiSCa6pUB/qQjpTwnkPe5/J/Eu6CM2zeRUAQBJaNCEKLgb/h6cy5aYGZKR2WIqG6ojQ+pHeclo6hcbAhcmMNqKC3z2rgCdsL6grQllgYQvcqDAV1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744929085; c=relaxed/simple;
-	bh=vn1J2xsoHaKRRR5gEBvbJFfe7rTGH95sSYVPpYSFX1w=;
+	s=arc-20240116; t=1744932270; c=relaxed/simple;
+	bh=XSxVGP9hXVpNkJP08GtFCM1fYw8yyPnJUvg/EHoHTiU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qAL3XVq+MsckAZ/sl041vajjZrD/uzj3gKH3p10JhwgWivG91hX2lP66APV0S+Kd5B1FqedRjdL3sZ7UoOpMZT3yLK4oNjl2hy97QAtG/UDuac/MAlM9XqDuvtllS++GQfWINBwqjHjTvysG8HjAxEb2ZeU6H8PIZXA/IlEqO+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DoNSTZ8H; arc=none smtp.client-ip=198.175.65.12
+	 Content-Type:Content-Disposition:In-Reply-To; b=DLWaFUnpUVm7gFUL3Mwc1pWaCXmyCUGbjMTYWNgxKNfSvi/18TWnOaaa7XZUuoDKaBE5b744+tozJ/HWdhVfcuNRcUaRGGlrmhejblydJIlteMhRcCxKj/i/LoiPqIiYRzqPLJmdND+ajv0FT6x2634t70E4ntuxzWtpIMXpsLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hBqFNuiq; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DoNSTZ8H"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hBqFNuiq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744929084; x=1776465084;
+  t=1744932269; x=1776468269;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=vn1J2xsoHaKRRR5gEBvbJFfe7rTGH95sSYVPpYSFX1w=;
-  b=DoNSTZ8HOV1rTO83zIRkcKa6DgIEJZ8aIoXAy4xU42srYXCsAtRNPaoI
-   yXhVFQWd7atElrlvoIqh93NY4StQFSS4MGKrbtZzWMU1Ru1cuy66rpz+Z
-   ts4Ght9zM6IEiuMyreLeBg9MVq3SdN9lIEckPZmnNfoCYC1Kflyvuw1CQ
-   MEfBQmA1LNlyFAaI9by0Ksz6lbwVSBqzzwW3u/wSgHUqSHC58/eZs1T3l
-   QlOTsVYJc3Yq1KlDMHfNAxYZkA4R+S4S88KID20fbhcvuiLHkkrCpkTgh
-   kt452Ype6Zi/dcF/62ChqwTOql5tDKEUhVVituDXDlWO4TvC0sWVl4fi4
-   g==;
-X-CSE-ConnectionGUID: b05VWsw+QvaWV3Ma+Raasg==
-X-CSE-MsgGUID: Ep3eg4dtR1Gk5i5jBs4suA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11406"; a="57916238"
+  bh=XSxVGP9hXVpNkJP08GtFCM1fYw8yyPnJUvg/EHoHTiU=;
+  b=hBqFNuiqOqQaeLyLd/CaTUQMWcVSH4BqaSL4Fo7BllnVuu++geefioR9
+   L43l7Oz3OHo2vdxdigerH+yHR1hfAbVxIBadCgLrIqx41mk6ZO5ohU1zf
+   cQioqwEO+O1nmWwf54Y741CQ2fZBFOF/JlAlFQQUrYKibzoTkqcpbRmQV
+   aigLiN3dOx0GWxffIhokugPdtguElhMqZcu6q7zgJlidYhPTpdFKyj/1C
+   gL2krJhWIIMPm76YxjaioFWv2FVXyw0H8jAzLxFmdHJdQR7Ax/gxqTCqY
+   AcJHYdkUJSyjskBpQXoKEzxa9PAMv654Vgc28mos9uR1ottVz7K4K9BAx
+   Q==;
+X-CSE-ConnectionGUID: qMRWpPzVTK6V4ihA8om5mg==
+X-CSE-MsgGUID: NFuRoPZ1Qa6Sb6ahWquoYQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11406"; a="57201282"
 X-IronPort-AV: E=Sophos;i="6.15,220,1739865600"; 
-   d="scan'208";a="57916238"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 15:31:23 -0700
-X-CSE-ConnectionGUID: sgPx69gGQUmAcBfh+diB0g==
-X-CSE-MsgGUID: F43qLPHRSEaSbB4nMS+1Sw==
+   d="scan'208";a="57201282"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 16:24:27 -0700
+X-CSE-ConnectionGUID: VVnFoNmLSI+U+iizbdNHgg==
+X-CSE-MsgGUID: e9noRkXTQo+bCoQEGNHJkw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,220,1739865600"; 
-   d="scan'208";a="130938428"
+   d="scan'208";a="161920270"
 Received: from lkp-server01.sh.intel.com (HELO 61e10e65ea0f) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 17 Apr 2025 15:31:19 -0700
+  by orviesa002.jf.intel.com with ESMTP; 17 Apr 2025 16:24:23 -0700
 Received: from kbuild by 61e10e65ea0f with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1u5XlM-000263-34;
-	Thu, 17 Apr 2025 22:31:16 +0000
-Date: Fri, 18 Apr 2025 06:31:15 +0800
+	id 1u5Yaj-00029N-1p;
+	Thu, 17 Apr 2025 23:24:21 +0000
+Date: Fri, 18 Apr 2025 07:24:20 +0800
 From: kernel test robot <lkp@intel.com>
 To: Dan Williams <dan.j.williams@intel.com>, dave.hansen@linux.intel.com
-Cc: oe-kbuild-all@lists.linux.dev, x86@kernel.org,
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, x86@kernel.org,
 	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@kernel.org>,
 	Naveen N Rao <naveen@kernel.org>,
 	Vishal Annapurve <vannapurve@google.com>,
@@ -59,7 +59,7 @@ Cc: oe-kbuild-all@lists.linux.dev, x86@kernel.org,
 	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
 Subject: Re: [PATCH v3 2/2] x86/devmem: Drop /dev/mem access for confidential
  guests
-Message-ID: <202504180628.qlDJEl1e-lkp@intel.com>
+Message-ID: <202504180754.vQCz7zWh-lkp@intel.com>
 References: <174491712829.1395340.5054725417641299524.stgit@dwillia2-xfh.jf.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -81,25 +81,24 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Dan-Williams/x86-devmem-R
 base:   0af2f6be1b4281385b618cb86ad946eded089ac8
 patch link:    https://lore.kernel.org/r/174491712829.1395340.5054725417641299524.stgit%40dwillia2-xfh.jf.intel.com
 patch subject: [PATCH v3 2/2] x86/devmem: Drop /dev/mem access for confidential guests
-config: arc-randconfig-001-20250418 (https://download.01.org/0day-ci/archive/20250418/202504180628.qlDJEl1e-lkp@intel.com/config)
-compiler: arc-linux-gcc (GCC) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250418/202504180628.qlDJEl1e-lkp@intel.com/reproduce)
+config: arm-randconfig-004-20250418 (https://download.01.org/0day-ci/archive/20250418/202504180754.vQCz7zWh-lkp@intel.com/config)
+compiler: clang version 21.0.0git (https://github.com/llvm/llvm-project f819f46284f2a79790038e1f6649172789734ae8)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250418/202504180754.vQCz7zWh-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202504180628.qlDJEl1e-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202504180754.vQCz7zWh-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   drivers/char/mem.c: In function 'open_port':
->> drivers/char/mem.c:604:13: error: implicit declaration of function 'cc_platform_has' [-Wimplicit-function-declaration]
+>> drivers/char/mem.c:604:6: error: call to undeclared function 'cc_platform_has'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
      604 |             cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-         |             ^~~~~~~~~~~~~~~
->> drivers/char/mem.c:604:29: error: 'CC_ATTR_GUEST_MEM_ENCRYPT' undeclared (first use in this function)
+         |             ^
+>> drivers/char/mem.c:604:22: error: use of undeclared identifier 'CC_ATTR_GUEST_MEM_ENCRYPT'
      604 |             cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-         |                             ^~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/char/mem.c:604:29: note: each undeclared identifier is reported only once for each function it appears in
+         |                             ^
+   2 errors generated.
 
 
 vim +/cc_platform_has +604 drivers/char/mem.c
