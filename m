@@ -1,205 +1,60 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B19215197
-	for <linux-coco@lists.linux.dev>; Thu, 17 Apr 2025 07:15:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50EBE20FA90;
+	Thu, 17 Apr 2025 09:05:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744874103; cv=none; b=q+2feTFVN374nPNBzXBxfWuzKL+Ug9c/+qmI4I0SmhjM0qAGPBS2TSMMo/ZqQu8sseW16QaTKJQ8+n3eaihBzjrdd7VMEWonne612Uq9Z71xVQgwONlmiaVYqXLzjfCCkGiUsgp+W4WYkfb51AiIXeHBk3iHQS2b1zNiX2eG79c=
+	t=1744880739; cv=none; b=XvpGmlkMorPhYoUFaDislNWpboVoyV7Lplax8NW5FwR3FErYJEXz8P1FP68CtwN7cDJW7/vj1nvkBQSlVGvTf9NSAczr83iZrkxDWJ6uhewAB5vGXSi/tpT1i5RfhgzzwqGdeNaI65IVrpR5yJCqhkdrzleeOkpY5Qax3SLxyAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744874103; c=relaxed/simple;
-	bh=qKfREfq8cLs0YcBclGpbd1/aUBbAGsvNb2nH0iQaPaI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=JHQ8NoyvQUecGCM8vTyKmrx09ayybDlm9HcCJ8nVS6D+7kAhyYLSvRiVqGfTQ11WDBTIAFYAqQ0yzhox2ksKIiwCj7UM3pTDWFNzANb/YMI4Ej/h8IYE8naDApIvzWthX4ZNbRd3F5c+SL/79aPH93u3fNFd7TrXJwHr19iLrq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AayWlqt3; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1744880739; c=relaxed/simple;
+	bh=7ErKA3nuUWMuQRHrXe+5htO5kR3JRPM+aYBiSHrq7yw=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QG7WxjOe5kng/OqAbAIdBlZEfAUM2DHvth1ZB7k/izeniOMpHhm/Pd0FCKICtqNQk0pnFyBFkFZh0x7pA83KX0o/HKe3mXaO85YVJ5NnRA8iYmPbNOjafSJYwO7SAiMLgLcIDFjMF2PdelmbACJnmx3/+FfL83brq6iYMmrsJhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=jFxnDfvu; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AayWlqt3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744874100;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=51dhjsjLR1Xu8v8vrTdI7zY3jGAvHFHPmWKyU7AoQ4c=;
-	b=AayWlqt3/nJZlyO+tJIesal+MV1WdBx8x/oVOD80NDo4eO81+oDh7r3U2uGOEU+K9Wcq1y
-	4fA82lVcTDTcrNiWqrZ9bhyHDiZzN5+e48b2el4InTCx7totIIRZa4MOqLfqSKbx/9FYjI
-	M42Aia8ynIEr+WFU4BhOZZKnjDcYn2k=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-235-Na6fjyOPNTmrvZbvgCd6cQ-1; Thu, 17 Apr 2025 03:14:58 -0400
-X-MC-Unique: Na6fjyOPNTmrvZbvgCd6cQ-1
-X-Mimecast-MFC-AGG-ID: Na6fjyOPNTmrvZbvgCd6cQ_1744874097
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43d0830c3f7so2871185e9.2
-        for <linux-coco@lists.linux.dev>; Thu, 17 Apr 2025 00:14:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744874097; x=1745478897;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=51dhjsjLR1Xu8v8vrTdI7zY3jGAvHFHPmWKyU7AoQ4c=;
-        b=MDcfByyEMz0Vwjk+VkWT/RdiD/i/W8QzkuBpyvkHoQ/U03tW2EGYKhglp2m4Sa3Fbz
-         MFFj04FzFWW9x6T1V6kaZCmD1yh0NDUg5Ut/Fa95AL3ytR5gH+0ImJ/eMuQPPM3HHypd
-         eleJdYeoIGPSO+dOPmZyf/EYZgF5qH8yGg4CAXpeBpV9XbJwit2JSd61MC7pFi0HwsEh
-         dYK5TlvCsMfY65E1+bmYzjuTQrJFEOD+5J6BapMy+knKP52i9qyH98iNnHwlUf0/42C9
-         PwgiSUSR3pRO6KdkcL4AbaC1oYvDXCedwrE9vE49ySrJiexQFAiD0azHRsIz4W7Kmhin
-         2CxA==
-X-Forwarded-Encrypted: i=1; AJvYcCWZe2wwHSWsqgwSSNL3Bpjni7OKQO48eSnWetg0reKReTbU8SL6dEW/TC1NP9eOwmqqxUiyTadambH2@lists.linux.dev
-X-Gm-Message-State: AOJu0YzAduROXf0M4nueErO9ZxLjmI3n3WJKkiFcWIYtzgunDBZAdFD6
-	q88QxtrnxZPKFieqiCT9k15E8BP/ZsPd2dwqinZTk8yeL5KLJDoAykxXvx7fplIFasu/0YSR+Ne
-	78xvWRQXXuurspmESpcnS28yZgzjxc4lpIJWJ5fAjyuPZA7LHqZK6LoP8HJw=
-X-Gm-Gg: ASbGnctbn0hnGfc7V6eMiWefrCsGEALWgBQ7ncpeTItzGze8tRQj49Nzlk3Xo+f7uFJ
-	1gYq6YgrZZDEFtRC+2xhsgodZfPqT3OZe6Avgs0b/ewc/DMlWunoYHgw92CP+kHTTUsr7ZqEgXs
-	pGA5tU34s+KQ+R5S6bdGjdPajPLAJ5yiRHmeZ3dAm68ycEKqjdvm0QwBGV/u22SCp36KhNO1lr2
-	R0bZDr1QIFdpTnRIxnJS87+ZJKEPLpG1si8pYP3fhHnoe+vS79kD8t3AgzRM0PtmY/YZwUiGm4I
-	PmeVAYaQPpsHT79kA2H1WmolXD+6LlZLW3WIbi79iQ7+kGpoME6C2cEMdZie/S8/G5ET5hg2q+Y
-	d5ybgvHV2T0nSwq85+egH6ZO224HvSwc+zLl+4+o=
-X-Received: by 2002:a5d:588d:0:b0:391:47d8:de25 with SMTP id ffacd0b85a97d-39ee5b8b992mr3863357f8f.41.1744874097358;
-        Thu, 17 Apr 2025 00:14:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH/eQTys4+DfbYoPnzh2pEwpGmYVx0ykrkqQmgHQPSTakOo4T0T0bnb+BxnUPUGlE6+rVqnWQ==
-X-Received: by 2002:a5d:588d:0:b0:391:47d8:de25 with SMTP id ffacd0b85a97d-39ee5b8b992mr3863318f8f.41.1744874096760;
-        Thu, 17 Apr 2025 00:14:56 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c706:2700:abf9:4eac:588c:adab? (p200300cbc7062700abf94eac588cadab.dip0.t-ipconnect.de. [2003:cb:c706:2700:abf9:4eac:588c:adab])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4405b53ef95sm42347205e9.36.2025.04.17.00.14.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Apr 2025 00:14:56 -0700 (PDT)
-Message-ID: <3e1f2046-0018-43c2-b2c6-2c8265dbbf5f@redhat.com>
-Date: Thu, 17 Apr 2025 09:14:55 +0200
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="jFxnDfvu"
+Received: from 8bytes.org (p4ffe03ae.dip0.t-ipconnect.de [79.254.3.174])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 0EBAE48531;
+	Thu, 17 Apr 2025 11:05:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1744880730;
+	bh=7ErKA3nuUWMuQRHrXe+5htO5kR3JRPM+aYBiSHrq7yw=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=jFxnDfvus5W0dtOlurcgJPJgJ6XeV+tZWJP+n/XClttKTu97c8Xo/ydORuJURhCQ1
+	 dmkNNtkUrqzweKmPa4g8C1LnOl6Ya3eDlNvz/7axwOhCZ4n/SmKizVZTn3jGcSbpEr
+	 my5lzCVdxST24JLKfJSBS//OC6j9QNg5Cs0MiLm64VArIk9xC4OY/JOP9aVd/DnKBS
+	 /REBe8ZY9R49WbYvgHxpo4x3ES1xwcCu/bPNqHigVaE77TMgjc55Rq5i4Tgu6gbyU2
+	 CMiAqIDAAMxk8lN1nGOrN31pEZwmtO2g2YVIrlOM/BG7LmW+rwfRVf+pCCPdQ4opML
+	 oW6JXAa/9RkCw==
+Date: Thu, 17 Apr 2025 11:05:28 +0200
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+To: svsm-devel@coconut-svsm.dev, coconut-svsm@lists.linux.dev,
+	linux-coco@lists.linux.dev
+Subject: Re: [svsm-devel] SVSM Development Call April 16th, 2025
+Message-ID: <aADEWG83kwzcEgkb@8bytes.org>
+References: <Z_5wQLUu13RUm7Dy@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Invitation] bi-weekly guest_memfd upstream call on 2025-04-17
-To: Chenyi Qiang <chenyi.qiang@intel.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
-References: <971a3797-5fc4-4c7f-a856-dca05f9a874e@redhat.com>
- <a185919f-1567-47bd-946f-0a66486404db@intel.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <a185919f-1567-47bd-946f-0a66486404db@intel.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: GSaF4QL0hZxTVYNXGhMqILRlMFpc_7RnhDfcYriO1h8_1744874097
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-
-On 17.04.25 04:46, Chenyi Qiang wrote:
-> 
-> 
-> On 4/16/2025 7:58 PM, David Hildenbrand wrote:
->> Hi everybody,
->>
->> our next guest_memfd upstream call is scheduled for Thursday,
->> 2025-04-17 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
->>
->> We'll be using the following Google meet:
->> http://meet.google.com/wxp-wtju-jzw
->>
->> The meeting notes can be found at [1], where we also link recordings and
->> collect current guest_memfd upstream proposals. If you want an google
->> calendar invitation that also covers all future meetings, just write me
->> a mail.
->>
->>
->> If nothing else comes up, let's talk about the next steps to get basic
->> mmap support [2] ready for upstream, to prepare for actual in-place
->> conversion, direct-map removal and much more.
->>
->> In particular, let's talk about what "basic mmap support" is, and what
->> we can use it for without actual in-place conversion: IIUC "only shared
->> memory in guest_memfd" use cases and some cases of software-protected
->> VMs can use it.
->>
->> Also, let's talk about the relationship/expectations between guest_memfd
->> and the user (mmap) address when it comes to KVM memory slots that have
->> a guest_memfd that supports "shared" memory.
->>
->>
->> To put something to discuss onto the agenda, reply to this mail or add
->> them to the "Topics/questions for next meeting(s)" section in the
->> meeting notes as a comment.
->>
->> [1]
->> https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-
->> cxTxOrAosPOk/edit?usp=sharing
->> [2] https://lore.kernel.org/all/20250318161823.4005529-1-
->> tabba@google.com/T/#u
->>
-> 
-> Hi David,
-> 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z_5wQLUu13RUm7Dy@8bytes.org>
 
 Hi,
 
-> If we have time, I'd like to discuss about my v4 posting of shared
-> device assignment support
-> (https://lore.kernel.org/qemu-devel/20250407074939.18657-1-chenyi.qiang@intel.com/)
-> which introduces a new abstract parent class of RamDiscardManager, and a
-> new priority listener to apply to in-place conversion. Hope to get some
-> suggestion or confirmation if I'm in the correct direction.
+The minutes of yesterdays call are now available in this PR:
 
-yes we can discuss that (and it's on my todo list as well to review). I 
-suspect that it's mostly review that's missing at that point, and that 
-it is conceptually ok.
+	https://github.com/coconut-svsm/governance/pull/54
 
-Interestingly, I might be looking into virtio-mem support for 
-confidential VMs at some point; I'll have to figure out how to allow for 
-more states then :)
+Have fun!
 
--- 
-Cheers,
+Regards,
 
-David / dhildenb
-
+	Joerg
