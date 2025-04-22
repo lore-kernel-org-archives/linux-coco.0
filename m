@@ -1,249 +1,236 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199CD20E338
-	for <linux-coco@lists.linux.dev>; Mon, 21 Apr 2025 21:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCC227700A
+	for <linux-coco@lists.linux.dev>; Tue, 22 Apr 2025 13:38:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745270596; cv=none; b=YLxLkw5c5viOiq3mz/Ug/KIT89SZiRKN6JMqQNpo0TPTXruQDU1eXhCbpE4fWe7m7ROaPPTdaeZR1zGYnzQBrLbQTCmObshrcV0yDYhM/iU2WgnH+2RUWYj/M7MqgzW0KNlcGcI5jqenRl3MPJ/RerR16pF+v401nqx0ufKVdKc=
+	t=1745329090; cv=none; b=uiCJC+AfmIApSw7z5uzkikmUvlecKKQrqLQzl7aBZZ7vnd7lppBnVR3YdTZvL83gsrTbUz542BTGemLx4B3AyxnTCKxi8VNtpnvCrvHda4FZ71mtcIxfuppoqa0QFe96426gclvUstvsVAKSsv85PDlHwbvnmHEW7q6IBd+Q+1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745270596; c=relaxed/simple;
-	bh=xJ91RYyjNW6ERKd3NB9/gYclSsaCipGeyFTmb3C83Go=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lSvaQr8DrbaXKDCIH8dx1O3T6H3OG4T67FcSazmisfeXeKA8ZOygooWKU7VYZAqyR7G+NSVF/Jw/BZrY9y1qnWqz+fDoCyyXCLuBr0gVGycfN3hugjRrT02HujJLRnwztjjrOIKGblVvP83TmcUjWTF76J2DbF+m2VqyD49ZN28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=OChlXyXS; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1745329090; c=relaxed/simple;
+	bh=pl6fiPutlShbxadQEmo5fBZv/7bbFR/l3H1kg5gJjmM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ipc5wLTJ4bn3HBimYir6vqWJOGmWOFXKbtsDnHa5JT3gpOZJ2lSXGPM24W0L3HNdrfaQHsxBhLamAuu6JM7BBBQwtrkQei02bz0OmMX92LEtZwK+oU/Esr+pq8Mg/vXHep71y4D1QFCi5W2IxafxgQZfrDHDQ3GTIvj6OJ1AM9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=TK5hPygR; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="OChlXyXS"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 61E4340E0173;
-	Mon, 21 Apr 2025 21:23:05 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id kxbgOAo3Tz2X; Mon, 21 Apr 2025 21:23:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1745270580; bh=3QegChI5VmQxyAbe7RGBdtzGP8b1Xp50OSRQDsR75Vs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OChlXyXS+nYdWunaV00LIgwgVb8U8MPJhVDf9UkoZ+cF7ZWd4v/T5xxJocZ93KUCe
-	 /FFryUHXiyGUxV/rcKkLhvN5TOhBwGu+yFfYTZfPKP7ScC+fUxLUg2SZ6aZIJkdJ1P
-	 T+P/EJHX1Q+FWQvoTmoczENMcc+j+pE0LJRiajmE3skNn+5LssvNiFqyJGgQiO6kUA
-	 VXWXtSEBz1fNlSQAdBnuiLqVJLmTNRYj4xNiYldkQYEK5EFGlHvSmenghl2fBwQKSr
-	 J0pvFzya1at0orsXSFs0dqing3uuAEqVSrhwmYVXCzgG5iRWUn3DvyHN7y/Ww9M0g1
-	 OloaHjNh8JbjdPHLJZQ/4mX/u0IfbLbTtJdQgGJK9AsujRM630n+CbNdRt3IoXWWmI
-	 IyzjAlvJxdVpPBLOYhd5kfwBWH63RVaHeTFId+vAXLo4eN1RpG9QRNmP4szpO6cfjT
-	 arejvAm/G8qF8J4A40Fws6kDzdK/zAhCy1nldoNjUZHCqZJhw5LU80mIO0RH54GWfW
-	 CdMs3TB8i++LlWsKU8H1vU1lj1xXMLQ6j2gJMKKWwsyJz7qSYwrht/4LtA130Atufb
-	 VkFkE28/N/DAfnbNViNTeRFmOrL382hmPGRIkVA+6clC9v7vvYSVMtJS/aQsnOl64X
-	 2NIXmb1/rR5hYCISMWE/WxnU=
-Received: from rn.tnic (unknown [78.130.214.207])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id A6C6140E016E;
-	Mon, 21 Apr 2025 21:22:41 +0000 (UTC)
-Date: Mon, 21 Apr 2025 23:23:41 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, thomas.lendacky@amd.com, hpa@zytor.com,
-	kees@kernel.org, michael.roth@amd.com, nikunj@amd.com,
-	seanjc@google.com, ardb@kernel.org, gustavoars@kernel.org,
-	sgarzare@redhat.com, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org, kexec@lists.infradead.org,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH] x86/sev: Fix SNP guest kdump hang/softlockup/panic
-Message-ID: <20250421212341.GBaAa3XbwU138aY-__@renoirsky.local>
-References: <20250421204453.318557-1-Ashish.Kalra@amd.com>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="TK5hPygR"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-39ac56756f6so5136810f8f.2
+        for <linux-coco@lists.linux.dev>; Tue, 22 Apr 2025 06:38:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1745329087; x=1745933887; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=dF9sFNvJKB1EQkguCgrZyubpUsdg/C5YYpWtECEXaQs=;
+        b=TK5hPygRzcaPGS2aWSaG/eZ7UdHaXt2hSFgDx2DpmNWS1ZCx7iwNLsISwgnkd6LV9Z
+         B4L5aya70q3h7mRYjI5RG9PFJeGmGO4rcgfjsPkr7hjI4ZmcAonj+VYl3IXhtYmx4Qmm
+         k5dVggBmj0BcgC7fgesZCO8URvcbmSgqD4pUCTyZ+n9oS0Ha06tfuqYEJdgkHpvjcugZ
+         zP8MCzt47SKD0vrdK6UE/NIV91gV3EeHCHY/jqF/U9s1s6lUMUOO5+9D6U/o6NI8/Ncs
+         e0F/ciP2sw3IeZZjFK67RTQ6RQstQdjoF4Cgszb3NmtF3snfaDzcJAzCiTMlhp0nTUVU
+         p4pQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745329087; x=1745933887;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dF9sFNvJKB1EQkguCgrZyubpUsdg/C5YYpWtECEXaQs=;
+        b=eiycu5x9Cnttnk5Tz3t7wPKjAX0y0/DJfVkEwnm8Tbm3219A/Tv29v7mp++8lkSz79
+         x1MujcvxNrCjGC158gMvcTpX1NK8s5jiK52p7Nk9u1L/YqDugLMcCc1llCdG9Crbf9au
+         7P0lM+5G28Spxo1VYhrxv7ML3vvV1BZiybUWYEE3ahSKGku5RwdQNln4rv5wKxDocdLs
+         sje0yVhBS768ai9WUub+qZaYk+gjf2Efq4e9hB4fikza+54HBMYiDQ87UrgnW7/jFvwi
+         jMCI80sokOzhGeLbUYUIgqTkuLXcnkHGUOLM2BtbFerxNM3GoNoKuUyG42KFUF49f+Oh
+         hPrg==
+X-Forwarded-Encrypted: i=1; AJvYcCUtDTwF41+/BLbrDIcakX0aFfs1MiUb6MyahFhWlHaGHAsLYW+s5a+F7yR2drii/8nNlEbT3a4V+nQk@lists.linux.dev
+X-Gm-Message-State: AOJu0YyTu+yLQssai+fmZKyhkLxK2l18B3MnQOPTU/9WgvWTD7KhvFQf
+	SBplFtx2kYc6C3cbN+VdkbDlbb2luUoNtTeMrwiadIAHC9nJoi+n4i5K/1SazH4=
+X-Gm-Gg: ASbGncsqGO68Tt5pY9zs9Pw211QPm+yyHiOk5SsZeVzbeVkh5NRgwmjrcHpt50xy86i
+	LAVe3MOn/F8/LKBbEOKTO91LjRcBLpEhfmFiwhA8N3FBayxRevr/f9dOMCr/3j3vLO7tff/83Ra
+	C9jD0o1hBqmQFOVse4oRNy9aCNCGo+Zo5veumHOzbS7bccxCi9pkcA23/Y7RZMe+p+zY9Bb3/mn
+	jEawspB3LA+E/MoT36eIzUH9vd6R0qAUg+BNlKn1HagaVBbFotv6xxK+dzcOGPw/2IXjjrxLX+d
+	A25WwDmSM1wW/3RQKVgSJTfqXAryl1quDJd1zghunt+k
+X-Google-Smtp-Source: AGHT+IFAfaa289JIhV75JZIoorDwyS7gM9JvKdzqygxCBcHk/VmqP/FsIBipNSbuJYG5ffhdbcNMxA==
+X-Received: by 2002:a05:6000:1a8f:b0:39e:e259:91dd with SMTP id ffacd0b85a97d-39efba501a2mr11704479f8f.17.1745329086702;
+        Tue, 22 Apr 2025 06:38:06 -0700 (PDT)
+Received: from [192.168.0.20] ([212.21.133.10])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39efa4207fcsm15542344f8f.19.2025.04.22.06.38.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Apr 2025 06:38:06 -0700 (PDT)
+Message-ID: <20eaf26f-90e0-44b4-aa4a-ca4aa06be1dd@suse.com>
+Date: Tue, 22 Apr 2025 16:38:05 +0300
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250421204453.318557-1-Ashish.Kalra@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] x86/devmem: Drop /dev/mem access for confidential
+ guests
+To: Dan Williams <dan.j.williams@intel.com>, dave.hansen@linux.intel.com
+Cc: x86@kernel.org, Kees Cook <kees@kernel.org>,
+ Ingo Molnar <mingo@kernel.org>, Naveen N Rao <naveen@kernel.org>,
+ Vishal Annapurve <vannapurve@google.com>,
+ Kirill Shutemov <kirill.shutemov@linux.intel.com>, stable@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <174491712829.1395340.5054725417641299524.stgit@dwillia2-xfh.jf.intel.com>
+ <174500659632.1583227.11220240508166521765.stgit@dwillia2-xfh.jf.intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <174500659632.1583227.11220240508166521765.stgit@dwillia2-xfh.jf.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 21, 2025 at 08:44:53PM +0000, Ashish Kalra wrote:
-> From: Ashish Kalra <ashish.kalra@amd.com>
+
+
+On 18.04.25 г. 23:04 ч., Dan Williams wrote:
+> Nikolay reports [1] that accessing BIOS data (first 1MB of the physical
+> address space) via /dev/mem results in an SEPT violation.
 > 
-> [  117.111097] watchdog: BUG: soft lockup - CPU#0 stuck for 27s! [cp:318]
-> [  117.111115] Modules linked in:
-> [  117.111120] irq event stamp: 3066414
-> [  117.111122] hardirqs last  enabled at (3066413): [<ffffffffa04878d9>] irqentry_exit+0x39/0x90
-> [  117.111142] hardirqs last disabled at (3066414): [<ffffffffa0485c15>] sysvec_apic_timer_interrupt+0x15/0xb0
-> [  117.111146] softirqs last  enabled at (3066364): [<ffffffff9f245852>] __irq_exit_rcu+0xb2/0xe0
-> [  117.111157] softirqs last disabled at (3066355): [<ffffffff9f245852>] __irq_exit_rcu+0xb2/0xe0
-> [  117.111165] CPU: 0 UID: 0 PID: 318 Comm: cp Not tainted 6.14.0-next-20250328-snp-host-f2a41ff576cc-dirty #414 VOLUNTARY
-> [  117.111171] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2022
-> [  117.111176] RIP: 0010:rep_movs_alternative+0x5b/0x70
-> [  117.111182] Code: 8b 06 48 89 07 48 83 c6 08 48 83 c7 08 83 e9 08 74 db 83 f9 08 73 e8 eb c5 eb 05 e9 2f 21 02 00 48 89 c8 48 c1 e9 03 83 e0 07 <f3> 48 a5 89 c1 85 c9 75 ab e9 17 21 02 00 48 8d 0c c8 eb a0 90 90
-> [  117.111184] RSP: 0018:ffffc061c16c7b50 EFLAGS: 00040246
-> [  117.111187] RAX: 0000000000000000 RBX: 0000000000001000 RCX: 0000000000000200
-> [  117.111188] RDX: 0000000000018000 RSI: ffffc061c3f53000 RDI: 00007f27a86a5000
-> [  117.111189] RBP: ffffc061c16c7be8 R08: 00007f27a86a6000 R09: 00000000ffffffff
-> [  117.111190] R10: 0000000000000001 R11: 0000000000000001 R12: ffffc061c16c7d30
-> [  117.111191] R13: ffffc061c3f53000 R14: 0000000000000000 R15: ffffc061c3f53000
-> [  117.111193] FS:  00007f27a86ae800(0000) GS:ffff9d420cf0d000(0000) knlGS:0000000000000000
-> [  117.111195] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [  117.111196] CR2: 00007fd1278a3000 CR3: 0008000053e58000 CR4: 00000000003506f0
-> [  117.111200] Call Trace:
-> [  117.111204]  <TASK>
-> [  117.111206]  ? _copy_to_iter+0xc1/0x720
-> [  117.111216]  ? srso_return_thunk+0x5/0x5f
-> [  117.111220]  ? _raw_spin_unlock+0x27/0x40
-> [  117.111234]  ? srso_return_thunk+0x5/0x5f
-> [  117.111236]  ? find_vmap_area+0xd6/0xf0
-> [  117.111251]  ? srso_return_thunk+0x5/0x5f
-> [  117.111253]  ? __check_object_size+0x18d/0x2e0
-> [  117.111268]  __copy_oldmem_page.part.0+0x64/0xa0
-> [  117.111281]  copy_oldmem_page_encrypted+0x1d/0x30
-> [  117.111285]  read_from_oldmem.part.0+0xf4/0x200
-> [  117.111306]  read_vmcore+0x206/0x3c0
-> [  117.111309]  ? srso_return_thunk+0x5/0x5f
-> [  117.111325]  proc_reg_read_iter+0x59/0x90
-> [  117.111334]  vfs_read+0x26e/0x350
-> [  117.111362]  ksys_read+0x73/0xf0
-> [  117.111373]  __x64_sys_read+0x1d/0x30
-> [  117.111377]  x64_sys_call+0x1b90/0x2150
-> [  117.111386]  do_syscall_64+0x8b/0x140
-> [  117.111454] RIP: 0033:0x7f27a7510031
-> [  117.111462] Code: fe ff ff 48 8d 3d cf 9b 0a 00 48 83 ec 08 e8 56 4b 02 00 66 0f 1f 44 00 00 48 8d 05 b1 09 2e 00 8b 00 85 c0 75 13 31 c0 0f 05 <48> 3d 00 f0 ff ff 77 57 f3 c3 0f 1f 44 00 00 41 54 55 49 89 d4 53
-> [  117.111464] RSP: 002b:00007fff8f2d31c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-> [  117.111466] RAX: ffffffffffffffda RBX: 0000000000001000 RCX: 00007f27a7510031
-> [  117.111467] RDX: 0000000000020000 RSI: 00007f27a868d000 RDI: 0000000000000003
-> [  117.111468] RBP: 0000000000000000 R08: 0000000000006000 R09: 0000000000000000
-> [  117.111469] R10: 0000000000001000 R11: 0000000000000246 R12: 0000000000000000
-> [  117.111470] R13: 0000000000000000 R14: 00007f27a86ad000 R15: 0000000000000000
-> [  117.111499]  </TASK>
-> [  117.111502] Kernel panic - not syncing: softlockup: hung tasks
-> [  117.164421] CPU: 0 UID: 0 PID: 318 Comm: cp Tainted: G             L      6.14.0-next-20250328-snp-host-f2a41ff576cc-dirty #414 VOLUNTARY
-> [  117.166326] Tainted: [L]=SOFTLOCKUP
-> [  117.166878] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2022
-> [  117.168116] Call Trace:
-> [  117.168514]  <IRQ>
-> [  117.168862]  dump_stack_lvl+0x2b/0xf0
-> [  117.169530]  dump_stack+0x14/0x20
-> [  117.170068]  panic+0x3a8/0x410
-> [  117.170592]  watchdog_timer_fn+0x293/0x300
-> [  117.171229]  ? __pfx_watchdog_timer_fn+0x10/0x10
-> [  117.171961]  __hrtimer_run_queues+0x1c7/0x3d0
-> [  117.172603]  hrtimer_interrupt+0x126/0x290
-> [  117.173261]  __sysvec_apic_timer_interrupt+0x72/0x1c0
-> [  117.174118]  sysvec_apic_timer_interrupt+0x80/0xb0
-
-Why is that untrimmed splat even here?
-
-What is that supposed to say?
-
-> Kdump while doing vmcore generation will be walking through all the
-> guest pages and copying them to userspace, while walking through
-> these guest pages it dumps/reads the guest VMSA pages which are
-> marked in-use/busy (if the vCPU associated with that VMSA is
-> running then that VMSA page is marked in-use/busy in the RMP table)
-> and touching these in-use pages causes unrecoverable #NPF/RMP faults
-> which causes the guest to hang/softlockup/panic.
-
-This paragraph is one single sentence! I think you're the only one who
-understands it.
-
-> If kdump kernel is running on BSP, then BSP's VMSA itself cannot
-> cause any issues, but other APs may be halted in guest, hence
-> they are still in VMRUN state and their VMSAs are busy/in-use
-> and touching those VMSAs will cause the #NPF.
+> The cause is ioremap() (via xlate_dev_mem_ptr()) establishes an
+> unencrypted mapping where the kernel had established an encrypted
+> mapping previously.
 > 
-> The issue is that either the AP running the kdump kernel has a
-> conflict with it's VMSA page and additionally other APs halted
-> in guest mode have a conflict with their VMSA pages.
+> Linux traps read(2) access to the BIOS data area, and returns zero.
+> However, it turns out the kernel fails to enforce the same via mmap(2).
+> This is a hole, and unfortunately userspace has learned to exploit it
+> [2].
 > 
-> Note that even if kdump kernel is running with one vCPU, other APs
-> can still be halted in guest mode and they are in VMRUN state and
-> their VMSAs are busy and will cause #NPF when they are being
-> dumped during kdump.
+> This means the kernel either needs a mechanism to ensure consistent
+> "encrypted" mappings of this /dev/mem mmap() hole, close the hole by
+> mapping the zero page in the mmap(2) path, block only BIOS data access
+> and let typical STRICT_DEVMEM protect the rest, or disable /dev/mem
+> altogether.
 > 
-> Therefore, issue AP_DESTROY GHCB calls on all APs (to ensure they
-> are kicked out of guest mode) and then the VMSA bit is cleared on
-> their VMSA page. Additionally if the vCPU running kdump is an AP,
-> then it's VMSA bit can't be cleared (and that AP can't be shutdown
-> or destroyed as it is running kdump) so it's VMSA page is made offline
-> to ensure that makedumpfile excludes that page while dumping guest
-> memory. If the vCPU running kdump is a BSP then nothing else needs
-> to be done as far as BSP's VMSA is concerned.
+> The simplest option for now is arrange for /dev/mem to always behave as
+> if lockdown is enabled for confidential guests. Require confidential
+> guest userspace to jettison legacy dependencies on /dev/mem similar to
+> how other legacy mechanisms are jettisoned for confidential operation.
+> Recall that modern methods for BIOS data access are available like
+> /sys/firmware/dmi/tables.
 > 
-> This fix is for kdump when using makedumpfile command/utility to
-> generate vmcore.
-> 
-> For kexec, additional fix is required to mark the VMSA page of
-> currently running vCPU as reserved during kexec boot and that fix
-> will be depending on KHO/kstate patch-series which add the ability
-> to preserve memory pages across kexec.
-
-All that text is missing restraint, proper structure and makes me go:
-what is that thing even trying to fix?
-
-How about you read this here first:
-
-https://www.kernel.org/doc/html/latest/process/maintainer-tip.html#changelog
-
-perhaps even use an AI to help you with the formulations and then send
-a version which is actually parseable by other humans?
-
-> Fixes: 3074152e56c9 ("x86/sev: Convert shared memory back to private on kexec")
-
-I'd like to read in the next commit message why are you fixing your own
-patch and why isn't this one CC:stable?
-
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> Cc: <x86@kernel.org>
+> Cc: Kees Cook <kees@kernel.org>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: "Naveen N Rao" <naveen@kernel.org>
+> Cc: Vishal Annapurve <vannapurve@google.com>
+> Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>
+> Link: https://sources.debian.org/src/libdebian-installer/0.125/src/system/subarch-x86-linux.c/?hl=113#L93 [2]
+> Reported-by: Nikolay Borisov <nik.borisov@suse.com>
+> Closes: http://lore.kernel.org/20250318113604.297726-1-nik.borisov@suse.com [1]
+> Fixes: 9aa6ea69852c ("x86/tdx: Make pages shared in ioremap()")
+> Cc: <stable@vger.kernel.org>
+> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 > ---
->  arch/x86/coco/sev/core.c | 105 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 105 insertions(+)
+> Changes since v3
+> * Fix a 0day kbuild robot report about missing cc_platform.h include.
 > 
-> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-> index dcfaa698d6cf..2c27d4b3985c 100644
-> --- a/arch/x86/coco/sev/core.c
-> +++ b/arch/x86/coco/sev/core.c
-> @@ -110,9 +110,12 @@ struct svsm_ca boot_svsm_ca_page __aligned(PAGE_SIZE);
->  
->  DEFINE_PER_CPU(struct sev_es_runtime_data*, runtime_data);
->  DEFINE_PER_CPU(struct sev_es_save_area *, sev_vmsa);
-> +DEFINE_PER_CPU(int, sev_vcpu_apic_id);
+>   arch/x86/Kconfig   |    4 ++++
+>   drivers/char/mem.c |   10 ++++++++++
+>   2 files changed, 14 insertions(+)
+> 
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 4b9f378e05f6..bf4528d9fd0a 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -891,6 +891,8 @@ config INTEL_TDX_GUEST
+>   	depends on X86_X2APIC
+>   	depends on EFI_STUB
+>   	depends on PARAVIRT
+> +	depends on STRICT_DEVMEM
+> +	depends on IO_STRICT_DEVMEM
+>   	select ARCH_HAS_CC_PLATFORM
+>   	select X86_MEM_ENCRYPT
+>   	select X86_MCE
+> @@ -1510,6 +1512,8 @@ config AMD_MEM_ENCRYPT
+>   	bool "AMD Secure Memory Encryption (SME) support"
+>   	depends on X86_64 && CPU_SUP_AMD
+>   	depends on EFI_STUB
+> +	depends on STRICT_DEVMEM
+> +	depends on IO_STRICT_DEVMEM
+>   	select DMA_COHERENT_POOL
+>   	select ARCH_USE_MEMREMAP_PROT
+>   	select INSTRUCTION_DECODER
+> diff --git a/drivers/char/mem.c b/drivers/char/mem.c
+> index 48839958b0b1..47729606b817 100644
+> --- a/drivers/char/mem.c
+> +++ b/drivers/char/mem.c
+> @@ -30,6 +30,7 @@
+>   #include <linux/uio.h>
+>   #include <linux/uaccess.h>
+>   #include <linux/security.h>
+> +#include <linux/cc_platform.h>
+>   
+>   #define DEVMEM_MINOR	1
+>   #define DEVPORT_MINOR	4
+> @@ -595,6 +596,15 @@ static int open_port(struct inode *inode, struct file *filp)
+>   	if (rc)
+>   		return rc;
+>   
+> +	/*
+> +	 * Enforce encrypted mapping consistency and avoid unaccepted
+> +	 * memory conflicts, "lockdown" /dev/mem for confidential
+> +	 * guests.
+> +	 */
+> +	if (IS_ENABLED(CONFIG_STRICT_DEVMEM) &&
+> +	    cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+> +		return -EPERM;
 
-Why? What for?
+Just confirming - the STRIC_DEVMEM check here is needed in case other 
+CoCo technologies i.e ARM's CCA or risc-v tvm doesn't depend on it? 
+Because for the x86 world it's redundant since both implementations 
+imply STRICT_DEVMEM.
 
->  DEFINE_PER_CPU(struct svsm_ca *, svsm_caa);
->  DEFINE_PER_CPU(u64, svsm_caa_pa);
->  
-> +static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa, int apic_id);
+
 > +
->  static __always_inline bool on_vc_stack(struct pt_regs *regs)
->  {
->  	unsigned long sp = regs->sp;
-> @@ -973,6 +976,104 @@ void snp_kexec_begin(void)
->  		pr_warn("Failed to stop shared<->private conversions\n");
->  }
->  
-> +/*
-> + * kexec/kdump should be shutting down all APs except the one handling
-> + * kexec/kdump and clearing the VMSA tag on those AP's VMSA pages as they
-> + * are not being used as a VMSA page anymore, so that a random page in
-> + * the kexec'ed guest which remains a VMSA page cannot cause unrecoverable
-> + * RMP faults, kdump will anyway reboot afterwards while kexec will set new
-> + * VMSA pages for all the APs to come up. Kdump while doing vmcore generation
-> + * and page walking can cause unrecoverable #NPF/RMP faults when walking guest
-> + * memory for dumping when it touches the VMSA page of the currently running
-> + * vCPU while kexec can randomly use this pages when it is re-allocated after
-> + * kexec via the page-allocator.
+>   	if (iminor(inode) != DEVMEM_MINOR)
+>   		return 0;
+>   
+> 
 
-More gibberish text.
-
-I give up - this is a mess.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
