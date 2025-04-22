@@ -1,65 +1,65 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCC227700A
-	for <linux-coco@lists.linux.dev>; Tue, 22 Apr 2025 13:38:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EB21EB1A7
+	for <linux-coco@lists.linux.dev>; Tue, 22 Apr 2025 14:09:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745329090; cv=none; b=uiCJC+AfmIApSw7z5uzkikmUvlecKKQrqLQzl7aBZZ7vnd7lppBnVR3YdTZvL83gsrTbUz542BTGemLx4B3AyxnTCKxi8VNtpnvCrvHda4FZ71mtcIxfuppoqa0QFe96426gclvUstvsVAKSsv85PDlHwbvnmHEW7q6IBd+Q+1c=
+	t=1745330971; cv=none; b=GNe0bExCaCbfj66THsI3acLb7lAq6srAeXskoDRAW1jJ5s7wMplchrTnxEwcTMY81IjXnWzTaNLb+F7hJc20VVsRq37xlVbfIjQQORysBRsUGuMx3nUSFU6uvqYcoo8LKYYXic16np2NI1IbuiHN2tbZA8sBsM//sB3RCTuVUPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745329090; c=relaxed/simple;
-	bh=pl6fiPutlShbxadQEmo5fBZv/7bbFR/l3H1kg5gJjmM=;
+	s=arc-20240116; t=1745330971; c=relaxed/simple;
+	bh=4WUL+kRVdXJ4YqP3HWnBAaAj2sgwvzUpdes1f8Ws2HE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ipc5wLTJ4bn3HBimYir6vqWJOGmWOFXKbtsDnHa5JT3gpOZJ2lSXGPM24W0L3HNdrfaQHsxBhLamAuu6JM7BBBQwtrkQei02bz0OmMX92LEtZwK+oU/Esr+pq8Mg/vXHep71y4D1QFCi5W2IxafxgQZfrDHDQ3GTIvj6OJ1AM9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=TK5hPygR; arc=none smtp.client-ip=209.85.221.49
+	 In-Reply-To:Content-Type; b=AbQD/id0Z31gpCzdY9MBXwenpgmn8uv9f8jYwBAPNwCrHlTLpXEswmNAd9rDSZlW1XyB92vOiV34dVWO9RM9SbuRfcxUBCI41ZFtwnRUdW5rXKr/bvKxJ2gVGmbt4ZnePsXyYHlEp2m1vYw5PoKw+cI27hjDL/vk+mEVAmBFak8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Ovi+u3Jd; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="TK5hPygR"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-39ac56756f6so5136810f8f.2
-        for <linux-coco@lists.linux.dev>; Tue, 22 Apr 2025 06:38:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Ovi+u3Jd"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43cfe574976so38554645e9.1
+        for <linux-coco@lists.linux.dev>; Tue, 22 Apr 2025 07:09:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1745329087; x=1745933887; darn=lists.linux.dev;
+        d=suse.com; s=google; t=1745330966; x=1745935766; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=dF9sFNvJKB1EQkguCgrZyubpUsdg/C5YYpWtECEXaQs=;
-        b=TK5hPygRzcaPGS2aWSaG/eZ7UdHaXt2hSFgDx2DpmNWS1ZCx7iwNLsISwgnkd6LV9Z
-         B4L5aya70q3h7mRYjI5RG9PFJeGmGO4rcgfjsPkr7hjI4ZmcAonj+VYl3IXhtYmx4Qmm
-         k5dVggBmj0BcgC7fgesZCO8URvcbmSgqD4pUCTyZ+n9oS0Ha06tfuqYEJdgkHpvjcugZ
-         zP8MCzt47SKD0vrdK6UE/NIV91gV3EeHCHY/jqF/U9s1s6lUMUOO5+9D6U/o6NI8/Ncs
-         e0F/ciP2sw3IeZZjFK67RTQ6RQstQdjoF4Cgszb3NmtF3snfaDzcJAzCiTMlhp0nTUVU
-         p4pQ==
+        bh=etzYKPdfFIVAafOh3+s0YxsgTDS1jvvGazVnTpn/4ZE=;
+        b=Ovi+u3JdrYez23x1WEa5rH5Z/TLJ5rtnmDaglFt+pSzL2WUjzRs8KFDr1pKKtoJ8/h
+         MB0iZV4kvygCjmof8lmWb51WxAGlYLe5ySbgfWdnXnrCIcl+v6TtFUpQMGJZYL1fMI28
+         np7qn2rHPbwB2wIXHhGtiPV7p5AxVprO3qvepZxVR5vEVk047Hqscnb6mrq3vB7ZbjYQ
+         W3zJPxxbVXn5MUGi1SPmwXJiFgs2CrS7Hr+zb1dMEQG+52kvuRRKRFU/TdEFk4jrhOks
+         AwjIJHrsPO5NvGF8Gt3c8gZIA8uAyG4WyWghSLdBpFuJhwBMPEGIu6HVc8yD6VNY3vBC
+         5EWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745329087; x=1745933887;
+        d=1e100.net; s=20230601; t=1745330966; x=1745935766;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=dF9sFNvJKB1EQkguCgrZyubpUsdg/C5YYpWtECEXaQs=;
-        b=eiycu5x9Cnttnk5Tz3t7wPKjAX0y0/DJfVkEwnm8Tbm3219A/Tv29v7mp++8lkSz79
-         x1MujcvxNrCjGC158gMvcTpX1NK8s5jiK52p7Nk9u1L/YqDugLMcCc1llCdG9Crbf9au
-         7P0lM+5G28Spxo1VYhrxv7ML3vvV1BZiybUWYEE3ahSKGku5RwdQNln4rv5wKxDocdLs
-         sje0yVhBS768ai9WUub+qZaYk+gjf2Efq4e9hB4fikza+54HBMYiDQ87UrgnW7/jFvwi
-         jMCI80sokOzhGeLbUYUIgqTkuLXcnkHGUOLM2BtbFerxNM3GoNoKuUyG42KFUF49f+Oh
-         hPrg==
-X-Forwarded-Encrypted: i=1; AJvYcCUtDTwF41+/BLbrDIcakX0aFfs1MiUb6MyahFhWlHaGHAsLYW+s5a+F7yR2drii/8nNlEbT3a4V+nQk@lists.linux.dev
-X-Gm-Message-State: AOJu0YyTu+yLQssai+fmZKyhkLxK2l18B3MnQOPTU/9WgvWTD7KhvFQf
-	SBplFtx2kYc6C3cbN+VdkbDlbb2luUoNtTeMrwiadIAHC9nJoi+n4i5K/1SazH4=
-X-Gm-Gg: ASbGncsqGO68Tt5pY9zs9Pw211QPm+yyHiOk5SsZeVzbeVkh5NRgwmjrcHpt50xy86i
-	LAVe3MOn/F8/LKBbEOKTO91LjRcBLpEhfmFiwhA8N3FBayxRevr/f9dOMCr/3j3vLO7tff/83Ra
-	C9jD0o1hBqmQFOVse4oRNy9aCNCGo+Zo5veumHOzbS7bccxCi9pkcA23/Y7RZMe+p+zY9Bb3/mn
-	jEawspB3LA+E/MoT36eIzUH9vd6R0qAUg+BNlKn1HagaVBbFotv6xxK+dzcOGPw/2IXjjrxLX+d
-	A25WwDmSM1wW/3RQKVgSJTfqXAryl1quDJd1zghunt+k
-X-Google-Smtp-Source: AGHT+IFAfaa289JIhV75JZIoorDwyS7gM9JvKdzqygxCBcHk/VmqP/FsIBipNSbuJYG5ffhdbcNMxA==
-X-Received: by 2002:a05:6000:1a8f:b0:39e:e259:91dd with SMTP id ffacd0b85a97d-39efba501a2mr11704479f8f.17.1745329086702;
-        Tue, 22 Apr 2025 06:38:06 -0700 (PDT)
+        bh=etzYKPdfFIVAafOh3+s0YxsgTDS1jvvGazVnTpn/4ZE=;
+        b=ha8KA4EFp66327Xrx6V5/iL798q9q+rZpGF6RaK6RtwcfFmtajvVgM4bs0eRIvqPp4
+         qOEbMQmq47xUyuDAlm52I/J4R0vWptBsteOly1hMmu4kjCiWtXu6Fgdvr+6jFtBGEfPs
+         glXsjjvkXNXW7Cwkhr0xpRj+7iCtJ42HHrdWyBBWXEn1UHH8eqWxeWNJvszcVBYNM7ME
+         ZWeGNC6ygO6bOWL/OGFmhNlHQ7OxYkrW/CEo/q9EKttxi5fIbVxNYS36pPPAvSiCC1rc
+         dzsn9pEZ8FX0R6ZqN1+Yh3pv3nSjPh7vuIAY0r0wB5loP4+9K/vu60VP0v47IqovEBD1
+         9lZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVvrvtQWYClIdDqw2j8BKDliNo/VwIXs2nUaFMTrZynOonRhvf2RebEaDwW0sf/gYC8EozJaeZTK83z@lists.linux.dev
+X-Gm-Message-State: AOJu0YyTYClE2VWSWvztzDS/9JN80ml4NgtEcmqXjdqMVU8LGD2kTUC5
+	1S3f+wgayu+burevbYhmJyuY7SvHyZwVszuN4uYW4GK5R8NMXhBrnoUzVCC5EpU=
+X-Gm-Gg: ASbGncuX+dKc8Qjbwhr/5V9zP/W2/nkiosw60pIZYHRnIw0jo7Srk+zD1scJCOeyTgW
+	5Oe9IFLcGxNqqGtXc4DqXrnpOqmxnbS4himTMm/lSj/OlkGsqW9GYFpIZhypZop5Wacvm+0Maq/
+	j2tmrgz06ZeVfV5gNcaqzC2TF6MPschsgj7zZxJ3pJt+Y7MmMKS78kz8jJSqcDb51cpiwXV/6P6
+	wSXWLIuf5GX8dLs5E/Dny7daH/JrvXISnzbBNiXokFzRWuqM/ahD0seTB2l0K0cOSV6If4xEeem
+	ohKF62LuvZT+NmuCmdNzYVggMAVXRgjU8brpRersyMKy
+X-Google-Smtp-Source: AGHT+IGbEm6WLpkN1s6bPsy2k4y3Qs9ExG7sHa0JjGc3i8w4ykBTzS6UnnOmFNbB9lH6qijzORtc4A==
+X-Received: by 2002:a05:600c:1c12:b0:43d:7588:66a5 with SMTP id 5b1f17b1804b1-4406ac21bbdmr166257855e9.31.1745330965876;
+        Tue, 22 Apr 2025 07:09:25 -0700 (PDT)
 Received: from [192.168.0.20] ([212.21.133.10])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39efa4207fcsm15542344f8f.19.2025.04.22.06.38.05
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4406d5aa100sm178139995e9.7.2025.04.22.07.09.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Apr 2025 06:38:06 -0700 (PDT)
-Message-ID: <20eaf26f-90e0-44b4-aa4a-ca4aa06be1dd@suse.com>
-Date: Tue, 22 Apr 2025 16:38:05 +0300
+        Tue, 22 Apr 2025 07:09:25 -0700 (PDT)
+Message-ID: <99902694-65b0-4c0b-bc71-b082efb15625@suse.com>
+Date: Tue, 22 Apr 2025 17:09:24 +0300
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -67,16 +67,14 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] x86/devmem: Drop /dev/mem access for confidential
- guests
+Subject: Re: [PATCH v3 0/2] Restrict devmem for confidential VMs
 To: Dan Williams <dan.j.williams@intel.com>, dave.hansen@linux.intel.com
-Cc: x86@kernel.org, Kees Cook <kees@kernel.org>,
- Ingo Molnar <mingo@kernel.org>, Naveen N Rao <naveen@kernel.org>,
- Vishal Annapurve <vannapurve@google.com>,
- Kirill Shutemov <kirill.shutemov@linux.intel.com>, stable@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <174491712829.1395340.5054725417641299524.stgit@dwillia2-xfh.jf.intel.com>
- <174500659632.1583227.11220240508166521765.stgit@dwillia2-xfh.jf.intel.com>
+Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+ Vishal Annapurve <vannapurve@google.com>, Kees Cook <kees@kernel.org>,
+ stable@vger.kernel.org, x86@kernel.org, Naveen N Rao <naveen@kernel.org>,
+ Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev
+References: <174491711228.1395340.3647010925173796093.stgit@dwillia2-xfh.jf.intel.com>
 From: Nikolay Borisov <nik.borisov@suse.com>
 Content-Language: en-US
 Autocrypt: addr=nik.borisov@suse.com; keydata=
@@ -122,115 +120,54 @@ Autocrypt: addr=nik.borisov@suse.com; keydata=
  JDjakbdjBoYDWVoaPbp5KAQ2VQRiR54lir/inyqGX+dwzPX/F4OHfB5RTiAFLJliCxniKFsM
  d8eHe88jWjm6/ilx4IlLl9/MdVUGjLpBi18X7ejLz3U2quYD8DBAGzCjy49wJ4Di4qQjblb2
  pTXoEyM2L6E604NbDu0VDvHg7EXh1WwmijEu28c/hEB6DwtzslLpBSsJV0s1/jE=
-In-Reply-To: <174500659632.1583227.11220240508166521765.stgit@dwillia2-xfh.jf.intel.com>
+In-Reply-To: <174491711228.1395340.3647010925173796093.stgit@dwillia2-xfh.jf.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
 
-On 18.04.25 г. 23:04 ч., Dan Williams wrote:
-> Nikolay reports [1] that accessing BIOS data (first 1MB of the physical
-> address space) via /dev/mem results in an SEPT violation.
+On 17.04.25 г. 22:11 ч., Dan Williams wrote:
+> Changes since v2 [1]:
+> * Drop the new x86_platform_op and just use
+>    cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) directly where needed
+>    (Naveen)
+> * Make the restriction identical to lockdown and stop playing games with
+>    devmem_is_allowed()
+> * Ensure that CONFIG_IO_STRICT_DEVMEM is enabled to avoid conflicting
+>    mappings for userspace mappings of PCI MMIO.
 > 
-> The cause is ioremap() (via xlate_dev_mem_ptr()) establishes an
-> unencrypted mapping where the kernel had established an encrypted
-> mapping previously.
+> The original response to Nikolay's report of an SEPT violation triggered
+> by /dev/mem access to private memory was "let's just turn off /dev/mem".
 > 
-> Linux traps read(2) access to the BIOS data area, and returns zero.
-> However, it turns out the kernel fails to enforce the same via mmap(2).
-> This is a hole, and unfortunately userspace has learned to exploit it
-> [2].
+> After some machinations of x86_platform_ops to block a subset of
+> problematic access, spelunking the history of devmem_is_allowed()
+> returning "2" to enable some compatibility benefits while blocking
+> access, and discovering that userspace depends buggy kernel behavior for
+> mmap(2) of the first 1MB of memory on x86, the proposal has circled back
+> to "disable /dev/mem".
 > 
-> This means the kernel either needs a mechanism to ensure consistent
-> "encrypted" mappings of this /dev/mem mmap() hole, close the hole by
-> mapping the zero page in the mmap(2) path, block only BIOS data access
-> and let typical STRICT_DEVMEM protect the rest, or disable /dev/mem
-> altogether.
+> Require both STRICT_DEVMEM and IO_STRICT_DEVMEM for x86 confidential
+> guests to close /dev/mem hole while still allowing for userspace
+> mapping of PCI MMIO as long as the kernel and userspace are not mapping
+> the range at the same time.
 > 
-> The simplest option for now is arrange for /dev/mem to always behave as
-> if lockdown is enabled for confidential guests. Require confidential
-> guest userspace to jettison legacy dependencies on /dev/mem similar to
-> how other legacy mechanisms are jettisoned for confidential operation.
-> Recall that modern methods for BIOS data access are available like
-> /sys/firmware/dmi/tables.
+> The range_is_allowed() cleanup is not strictly necessary, but might as
+> well close a 17 year-old "TODO".
 > 
-> Cc: <x86@kernel.org>
-> Cc: Kees Cook <kees@kernel.org>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: "Naveen N Rao" <naveen@kernel.org>
-> Cc: Vishal Annapurve <vannapurve@google.com>
-> Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>
-> Link: https://sources.debian.org/src/libdebian-installer/0.125/src/system/subarch-x86-linux.c/?hl=113#L93 [2]
-> Reported-by: Nikolay Borisov <nik.borisov@suse.com>
-> Closes: http://lore.kernel.org/20250318113604.297726-1-nik.borisov@suse.com [1]
-> Fixes: 9aa6ea69852c ("x86/tdx: Make pages shared in ioremap()")
-> Cc: <stable@vger.kernel.org>
-> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 > ---
-> Changes since v3
-> * Fix a 0day kbuild robot report about missing cc_platform.h include.
 > 
->   arch/x86/Kconfig   |    4 ++++
->   drivers/char/mem.c |   10 ++++++++++
->   2 files changed, 14 insertions(+)
+> Dan Williams (2):
+>        x86/devmem: Remove duplicate range_is_allowed() definition
+>        x86/devmem: Drop /dev/mem access for confidential guests
 > 
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 4b9f378e05f6..bf4528d9fd0a 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -891,6 +891,8 @@ config INTEL_TDX_GUEST
->   	depends on X86_X2APIC
->   	depends on EFI_STUB
->   	depends on PARAVIRT
-> +	depends on STRICT_DEVMEM
-> +	depends on IO_STRICT_DEVMEM
->   	select ARCH_HAS_CC_PLATFORM
->   	select X86_MEM_ENCRYPT
->   	select X86_MCE
-> @@ -1510,6 +1512,8 @@ config AMD_MEM_ENCRYPT
->   	bool "AMD Secure Memory Encryption (SME) support"
->   	depends on X86_64 && CPU_SUP_AMD
->   	depends on EFI_STUB
-> +	depends on STRICT_DEVMEM
-> +	depends on IO_STRICT_DEVMEM
->   	select DMA_COHERENT_POOL
->   	select ARCH_USE_MEMREMAP_PROT
->   	select INSTRUCTION_DECODER
-> diff --git a/drivers/char/mem.c b/drivers/char/mem.c
-> index 48839958b0b1..47729606b817 100644
-> --- a/drivers/char/mem.c
-> +++ b/drivers/char/mem.c
-> @@ -30,6 +30,7 @@
->   #include <linux/uio.h>
->   #include <linux/uaccess.h>
->   #include <linux/security.h>
-> +#include <linux/cc_platform.h>
->   
->   #define DEVMEM_MINOR	1
->   #define DEVPORT_MINOR	4
-> @@ -595,6 +596,15 @@ static int open_port(struct inode *inode, struct file *filp)
->   	if (rc)
->   		return rc;
->   
-> +	/*
-> +	 * Enforce encrypted mapping consistency and avoid unaccepted
-> +	 * memory conflicts, "lockdown" /dev/mem for confidential
-> +	 * guests.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_STRICT_DEVMEM) &&
-> +	    cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-> +		return -EPERM;
-
-Just confirming - the STRIC_DEVMEM check here is needed in case other 
-CoCo technologies i.e ARM's CCA or risc-v tvm doesn't depend on it? 
-Because for the x86 world it's redundant since both implementations 
-imply STRICT_DEVMEM.
-
-
-> +
->   	if (iminor(inode) != DEVMEM_MINOR)
->   		return 0;
->   
 > 
+>   arch/x86/Kconfig          |    4 ++++
+>   arch/x86/mm/pat/memtype.c |   31 ++++---------------------------
+>   drivers/char/mem.c        |   27 +++++++++------------------
+>   include/linux/io.h        |   21 +++++++++++++++++++++
+>   4 files changed, 38 insertions(+), 45 deletions(-)
+> 
+> base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
 
+
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
