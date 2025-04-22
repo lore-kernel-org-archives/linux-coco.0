@@ -1,72 +1,73 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2A52918C8
-	for <linux-coco@lists.linux.dev>; Tue, 22 Apr 2025 16:49:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF462973BD
+	for <linux-coco@lists.linux.dev>; Tue, 22 Apr 2025 17:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745340562; cv=none; b=KKv/VWXzYdco1j+CUa9K7A4AAj1gDa2epuz8yo7OE1jnLdnPYG5kkf4BVd3HxXbj7R0MUrpSD3uNEUZwRAfjRy0ewlzWjbS/+0BmjjNoCtCC7n3PngFfmEfUe4tnOtOsLhpWVXeX3LJoeQ1xH5WOPxe5pv2rxAzeRqFqpkpZMOE=
+	t=1745342721; cv=none; b=MmyRp3dJtDu2/HkmPBcUYfm8GukjsyLJ6DaVZReCeneSzworXbJ5gclttkuBVBDolisSiiBRNeuvFAVlDN9TRWp2EjYat9kA1e7VR/3neN9qrQLoJphYarCiKL/v5CYq7e5gFJX/vcdX6z/jE/7CcfLsXR0UGmFK9Nx6mE4sO8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745340562; c=relaxed/simple;
-	bh=1zm/ifLFoyueirmbO4F+dQ+4rpCflNI54FJ6BvufTFg=;
+	s=arc-20240116; t=1745342721; c=relaxed/simple;
+	bh=4eFT+ddUgf/MynCnAqV2xPC+DUEYZuUSd9SxFogWjGQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MRKM4K9wlM8ia7UKTbyTLhwdxV5rc74ZCifNcebJn4QqVycClSgciQCsFOSkSIar5nDIKxW93OzsUyuyv1O54mNecmmBCApaaPt3RJ+J/hCXL+bWgBabRi4KA4jGvX9Fg0NADSZ5ipQOBVJ4/8Wx2080NgfkNxqm5xhHX341tog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WmOnqjPG; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=gZga452ZHEabvH02c26ZcGWbEOO87rzvNqTxXA2PzEBzrG0bs83drjQ4LkGiu8ptbk34/AWr44f9RJfrM8szyVkn8oUuMxL/k+4RzzVLsnGF9pkdW6epx9uq8FRZyYNHo1KgqwHq+CPCpdvayqj1OGcYhG+Dipto+iQL4tuoZB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DLIaGPcK; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WmOnqjPG"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DLIaGPcK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1745340560;
+	s=mimecast20190719; t=1745342718;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=lHSkROXmhzxaxiTJB2Sts+hoXg6Enh4N97MVVPj8jow=;
-	b=WmOnqjPGVzWbnJPowlkSPUgG6iyBsT77pl4jPU9QSdEHvrX2wSmvfejG11qdxsMvzm9tRL
-	1mSmTcECkPRpQc+nt+84YfnGem+Gdy7KcqR+sDvVZ97mmF8LvzpPhEjQmLrNdg/vkbJmoC
-	FpWbORfBy2vku7/bYfcj5/pnPqyMR0A=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=AlsF8bB7mLO6h5yOJV7f9wu/vSQAYRdULalqxfc/a/E=;
+	b=DLIaGPcKbiXApFaiJLVagcaxseMbNQJG8nbvN7/7XKRprlOiILIwG8EVGNpKjvlYdAop6t
+	vF6XPb1gKVFhTwL1+QF3j8EwDI34SuyVghh/rXTYaPmRBDN51ga51QcDLz4gp3GRbGKCIk
+	v6io7ljMi4OUNNupSlHLCqFjhjhiPxY=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-586-GVlKAspWN6urIueSQbdRYw-1; Tue, 22 Apr 2025 12:49:18 -0400
-X-MC-Unique: GVlKAspWN6urIueSQbdRYw-1
-X-Mimecast-MFC-AGG-ID: GVlKAspWN6urIueSQbdRYw_1745340557
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-391492acb59so2506017f8f.3
-        for <linux-coco@lists.linux.dev>; Tue, 22 Apr 2025 09:49:18 -0700 (PDT)
+ us-mta-117-hBMPXnLuOR6_kyI0pGzlGg-1; Tue, 22 Apr 2025 13:25:16 -0400
+X-MC-Unique: hBMPXnLuOR6_kyI0pGzlGg-1
+X-Mimecast-MFC-AGG-ID: hBMPXnLuOR6_kyI0pGzlGg_1745342715
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43cf5196c25so30916475e9.0
+        for <linux-coco@lists.linux.dev>; Tue, 22 Apr 2025 10:25:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745340557; x=1745945357;
+        d=1e100.net; s=20230601; t=1745342715; x=1745947515;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=lHSkROXmhzxaxiTJB2Sts+hoXg6Enh4N97MVVPj8jow=;
-        b=CYXQxljBRjePW5ZXrZIkoifl8aoeQyuQZqMrrohUCXHD5wIDj0TvfWp9KT9HWTLQrg
-         7YYvC9RJRX9zOj10BXVG8OLMgkAotefj+uXl+cAe0ihfMzRKL17pTJJRHBzagoGCRGYl
-         kcHj3QVOFJKri3cNqo09GhmTp4XyexmW85glmQTGwr/hw60xAmFMdcKaU2230HQaaici
-         Q241Btjt2EXxts+fqmJPTUo+WpRKp1Q31H/EQZXh/a5xFOb7d0V1KH03MhKRh5g/C10f
-         RdIgMYEBiHUaihAD89tDBXj+47rDntQltA6nan3owO/ZDzp7w6gbjQ7/bCfODiby7+c6
-         YdjA==
-X-Forwarded-Encrypted: i=1; AJvYcCWpYgOMIQKp391LFaQSzkezuAk5pJ31EOq3mjt/3JFpQmlQx/U/Oh6uLE8xWjce55+WhovERFBgHqUR@lists.linux.dev
-X-Gm-Message-State: AOJu0YyL5fz+jk06ETdL/w54ivpItPnUEhiJ20O+ZQWuctldBntl2ZmE
-	aJTzCknfyWuzLhs0Ak6FgXxabeHQN5wIhmaHQ7NEh2jxtKZmItYXUiEqWOZvqDBsH1ndn+6LFsE
-	2ZgAH13giAKyiFRxNxSf6Lcn8L6eWaZczzbMBTcz+eEr6V9ZpUzN+Iuo/3a4=
-X-Gm-Gg: ASbGncvgu5dV2jnPFLFPnLpL56b7XdJne6rDWAaa4ifBLb6lbFQX2j/Ctxc58/gAjLR
-	uFH8GmEb4HxhLjIVM9rqyWqMR9g5ko/h05JPDNruO7B7Or9lNdhWw9GCFW6W90+sJ/1/Z1IzEBw
-	+XCkK/JFP8BEWx9AFY0+6efvPHGs7rAwqUhjNe3RZ2gw+CSHruhvEQB9S/K/P/DpSnGnAFNdmMj
-	NEEc2weijQA3ohww7/soU6aQ/sz6ySyG16h+ditaywWVS4qqGIfkZGvpIzLGAQroL/xzOqJAF/5
-	POhYQU7wm9wUVciGY4/JQyiaW9kHaIMEAzDDH55+
-X-Received: by 2002:a05:6000:381:b0:38f:2413:2622 with SMTP id ffacd0b85a97d-39efbad7f42mr14397254f8f.47.1745340557520;
-        Tue, 22 Apr 2025 09:49:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGDoEgp+mnqvCe0AHRP0Rn4FhZOt0+ug+zdFUDxNDueLDOx4k3ra4nj9Co+7VRKKBDx5ofTWw==
-X-Received: by 2002:a05:6000:381:b0:38f:2413:2622 with SMTP id ffacd0b85a97d-39efbad7f42mr14397208f8f.47.1745340557066;
-        Tue, 22 Apr 2025 09:49:17 -0700 (PDT)
-Received: from [192.168.3.141] (p5b0c62cd.dip0.t-ipconnect.de. [91.12.98.205])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39efa4330bfsm15769041f8f.23.2025.04.22.09.49.15
+        bh=AlsF8bB7mLO6h5yOJV7f9wu/vSQAYRdULalqxfc/a/E=;
+        b=BF91OhIP5zOfIBXszf6k6+tbqdRCGYTuZ4hDKD0En59Y8KH8ECTq6lX6RWiWG+7RSb
+         4779yVvKDGZFPqCU1g8GK0thZhM3sC7WlpKMxT7U3GwHb/CvUnrXMHop0Fp4mtKa1m54
+         bR8usZkq8bweckeZZShpHlyo54fDrsCWeZnTB2VQ9QeY9v2xsJ7AtMelUNF2LvScyfYZ
+         uC3XTrL3tyhKEZKNBX1gzEBMtYGxtNcJl+LdWqJ/uM+CdfEhIMijIzGtzaX1IwdYrxW8
+         DV+VKDWD4+dxR+hZW/CsqayXryhZCAP2o4oc9s/ph8l7HDx7xdnDc37/83Deno8ggKUw
+         BESw==
+X-Forwarded-Encrypted: i=1; AJvYcCX6tk3kT9leQjvqpcrPXQt0CRIzLQnSzzPkFX/ruSxFWsG4eQKeUZ7oF+9DQJKLwrxFTL/oOr8pWz9T@lists.linux.dev
+X-Gm-Message-State: AOJu0YxfINtWwTs3DOBqlg5ZYdUxcl3XRkLh212wCtrWDwNQx0ICgO6I
+	Z8JEsI4SZF+cbdzDCEM1+e0dJ7kvzzIOiQOmyP8U3goAU+pfGFbbmK/PuYMi9rdGdXVGNTSsNh9
+	yetXi/O+GZSyiFOal4IFcYoWZFL35wxrCTsId2apAPh+0O1d7ZuIZ2rZICCg=
+X-Gm-Gg: ASbGncvaRnhI9t8VoFM3c9uRk2Qn/G2bGnzThy1mFVy+zIlL6pRLjZqLuh7GXiP+IKX
+	7byFFJsondFgo5sNr8fqBpWSQzCY+qOLPcMfcGlpvXOCvZKtc+jdanfH3ltloZFQ6quLKXp66eS
+	YUoBUMJz6wa+sNRES+Iwg7QtB45091FPle8gZOVi4OIid/kIBfPxkPngNFt5DStO7LHsMKVa7py
+	rtXo9YZsHsOq8sONcFaZrIzgWD5eOgyPqKcEK00xj1+og214FDk0YEq0oKJf9mcKx/Ov/eCUwdi
+	sdBrNYlmsF2DSBihGqyf1JF1QVI98V0DJQ8XtYIq99d4xRFyPDy0XQxv/Jxbkp+ndNfhNWy0RLk
+	GB/bBZhZ5I7JnVzIHCm+vN+ton3VO6YST+TcA
+X-Received: by 2002:a05:600c:3154:b0:43d:36c:f24 with SMTP id 5b1f17b1804b1-4406ab97d6amr138565745e9.13.1745342715334;
+        Tue, 22 Apr 2025 10:25:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGFktvjOJw9MtQ957iwKCDYuBMP9s5b2E7h4EADLtf2ryrYEiq0M4Q5bYb99jVnuXjG8D4LoA==
+X-Received: by 2002:a05:600c:3154:b0:43d:36c:f24 with SMTP id 5b1f17b1804b1-4406ab97d6amr138565515e9.13.1745342714950;
+        Tue, 22 Apr 2025 10:25:14 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c731:8700:3969:7786:322:9641? (p200300cbc73187003969778603229641.dip0.t-ipconnect.de. [2003:cb:c731:8700:3969:7786:322:9641])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4406d6db10csm180519755e9.27.2025.04.22.10.25.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Apr 2025 09:49:16 -0700 (PDT)
-Message-ID: <1bee5078-5cc4-43b7-993c-f1e57a9bf534@redhat.com>
-Date: Tue, 22 Apr 2025 18:49:14 +0200
+        Tue, 22 Apr 2025 10:25:14 -0700 (PDT)
+Message-ID: <b9e5fa41-62fd-4b3d-bb2d-24ae9d3c33da@redhat.com>
+Date: Tue, 22 Apr 2025 19:25:12 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -76,22 +77,22 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH RFC v7 3/8] security: Export
  security_inode_init_security_anon for KVM guest_memfd
-To: Shivank Garg <shivankg@amd.com>, Paul Moore <paul@paul-moore.com>
+To: Christoph Hellwig <hch@infradead.org>, Shivank Garg <shivankg@amd.com>
 Cc: seanjc@google.com, vbabka@suse.cz, willy@infradead.org,
  akpm@linux-foundation.org, shuah@kernel.org, pbonzini@redhat.com,
- ackerleytng@google.com, jmorris@namei.org, serge@hallyn.com, pvorel@suse.cz,
- bfoster@redhat.com, tabba@google.com, vannapurve@google.com,
- chao.gao@intel.com, bharata@amd.com, nikunj@amd.com, michael.day@amd.com,
- yan.y.zhao@intel.com, Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com,
- michael.roth@amd.com, aik@amd.com, jgg@nvidia.com, kalyazin@amazon.com,
- peterx@redhat.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
- kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-coco@lists.linux.dev
+ ackerleytng@google.com, paul@paul-moore.com, jmorris@namei.org,
+ serge@hallyn.com, pvorel@suse.cz, bfoster@redhat.com, tabba@google.com,
+ vannapurve@google.com, chao.gao@intel.com, bharata@amd.com, nikunj@amd.com,
+ michael.day@amd.com, yan.y.zhao@intel.com, Neeraj.Upadhyay@amd.com,
+ thomas.lendacky@amd.com, michael.roth@amd.com, aik@amd.com, jgg@nvidia.com,
+ kalyazin@amazon.com, peterx@redhat.com, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-security-module@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-coco@lists.linux.dev,
+ =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>,
+ Paul Moore <paul@paul-moore.com>
 References: <20250408112402.181574-1-shivankg@amd.com>
- <20250408112402.181574-4-shivankg@amd.com>
- <CAHC9VhRFBOC=cZB+Dm00cshwBSBaK6amv+=XFLPF0Bub0gHN+Q@mail.gmail.com>
- <b98f7b78-1834-4fa0-b79c-d5ac562e4809@amd.com>
+ <20250408112402.181574-4-shivankg@amd.com> <Z_eEUrkyq1NApL1U@infradead.org>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -138,43 +139,185 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <b98f7b78-1834-4fa0-b79c-d5ac562e4809@amd.com>
+In-Reply-To: <Z_eEUrkyq1NApL1U@infradead.org>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: wlEgOUjETnHaSjo-kv0dtfrxPoglDZt3rsJXY16EBPo_1745340557
+X-Mimecast-MFC-PROC-ID: FARH0tnhTmE2qGRxAy84KSIgn6itwKu094Ws90GvHa8_1745342715
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 11.04.25 08:07, Shivank Garg wrote:
-> Hi Paul,
-> 
-> On 4/10/2025 1:49 AM, Paul Moore wrote:
->> On Tue, Apr 8, 2025 at 7:25 AM Shivank Garg <shivankg@amd.com> wrote:
->>>
->>> KVM guest_memfd is implementing its own inodes to store metadata for
->>> backing memory using a custom filesystem. This requires the ability to
->>> initialize anonymous inode using security_inode_init_security_anon().
->>>
->>> As guest_memfd currently resides in the KVM module, we need to export this
->>> symbol for use outside the core kernel. In the future, guest_memfd might be
->>> moved to core-mm, at which point the symbols no longer would have to be
->>> exported. When/if that happens is still unclear.
+On 10.04.25 10:41, Christoph Hellwig wrote:
+> On Tue, Apr 08, 2025 at 11:23:57AM +0000, Shivank Garg wrote:
+>> KVM guest_memfd is implementing its own inodes to store metadata for
+>> backing memory using a custom filesystem. This requires the ability to
+>> initialize anonymous inode using security_inode_init_security_anon().
 >>
->> Can you help me understand the timing just a bit more ... do you
->> expect the move to the core MM code to happen during the lifetime of
->> this patchset, or is it just some hand-wavy "future date"?  No worries
->> either way, just trying to understand things a bit better.
+>> As guest_memfd currently resides in the KVM module, we need to export this
+>> symbol for use outside the core kernel. In the future, guest_memfd might be
+>> moved to core-mm, at which point the symbols no longer would have to be
+>> exported. When/if that happens is still unclear.
 > 
-> I am not sure about it, any ideas David?
+> This really should be a EXPORT_SYMBOL_GPL, if at all.
+> 
+> But you really should look into a new interface in anon_inode.c that
+> can be reused instead of duplicating anonymouns inode logic in kvm.ko.
 
-Sorry for the late reply.
+I assume you mean combining the alloc_anon_inode()+
+security_inode_init_security_anon(), correct?
 
-Hand-wavy future date after this series. Elliot was working on this, but 
-IIRC he now has a new job and might no longer be able to work on this.
+I can see mm/secretmem.c doing the same thing, so agreed that
+we're duplicating it.
 
-Ackerley+Patrick started looking into this, and will likely require it 
-for other guest_memfd features (hugetlb support, directmap removal).
+
+Regarding your other mail, I am also starting to wonder where/why
+we want security_inode_init_security_anon(). At least for
+mm/secretmem.c, it was introduced by:
+
+commit 2bfe15c5261212130f1a71f32a300bcf426443d4
+Author: Christian Göttsche <cgzones@googlemail.com>
+Date:   Tue Jan 25 15:33:04 2022 +0100
+
+     mm: create security context for memfd_secret inodes
+     
+     Create a security context for the inodes created by memfd_secret(2) via
+     the LSM hook inode_init_security_anon to allow a fine grained control.
+     As secret memory areas can affect hibernation and have a global shared
+     limit access control might be desirable.
+     
+     Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+     Signed-off-by: Paul Moore <paul@paul-moore.com>
+
+
+In combination with Paul's review comment [1]
+
+"
+This seems reasonable to me, and I like the idea of labeling the anon
+inode as opposed to creating a new set of LSM hooks.  If we want to
+apply access control policy to the memfd_secret() fds we are going to
+need to attach some sort of LSM state to the inode, we might as well
+use the mechanism we already have instead of inventing another one.
+"
+
+
+IIUC, we really only want security_inode_init_security_anon() when there
+might be interest to have global access control.
+
+
+Given that guest_memfd already shares many similarities with guest_memfd
+(e.g., pages not swappable/migratable) and might share even more in the future
+(e.g., directmap removal), I assume that we want the same thing for guest_memfd.
+
+
+Would something like the following seem reasonable? We should be adding some
+documentation for the new function, and I wonder if S_PRIVATE should actually
+be cleared for secretmem + guest_memfd (I have no idea what this "fs-internal" flag
+affects).
+
+ From 782a6053268d8a2bddf90ba18c008495b0791710 Mon Sep 17 00:00:00 2001
+From: David Hildenbrand <david@redhat.com>
+Date: Tue, 22 Apr 2025 19:22:00 +0200
+Subject: [PATCH] tmp
+
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+  fs/anon_inodes.c   | 20 ++++++++++++++------
+  include/linux/fs.h |  1 +
+  mm/secretmem.c     |  9 +--------
+  3 files changed, 16 insertions(+), 14 deletions(-)
+
+diff --git a/fs/anon_inodes.c b/fs/anon_inodes.c
+index 583ac81669c24..ea51fd582deb4 100644
+--- a/fs/anon_inodes.c
++++ b/fs/anon_inodes.c
+@@ -55,17 +55,18 @@ static struct file_system_type anon_inode_fs_type = {
+  	.kill_sb	= kill_anon_super,
+  };
+  
+-static struct inode *anon_inode_make_secure_inode(
+-	const char *name,
+-	const struct inode *context_inode)
++static struct inode *anon_inode_make_secure_inode(struct super_block *s,
++		const char *name, const struct inode *context_inode,
++		bool fs_internal)
+  {
+  	struct inode *inode;
+  	int error;
+  
+-	inode = alloc_anon_inode(anon_inode_mnt->mnt_sb);
++	inode = alloc_anon_inode(s);
+  	if (IS_ERR(inode))
+  		return inode;
+-	inode->i_flags &= ~S_PRIVATE;
++	if (!fs_internal)
++		inode->i_flags &= ~S_PRIVATE;
+  	error =	security_inode_init_security_anon(inode, &QSTR(name),
+  						  context_inode);
+  	if (error) {
+@@ -75,6 +76,12 @@ static struct inode *anon_inode_make_secure_inode(
+  	return inode;
+  }
+  
++struct inode *alloc_anon_secure_inode(struct super_block *s, const char *name)
++{
++	return anon_inode_make_secure_inode(s, name, NULL, true);
++}
++EXPORT_SYMBOL_GPL(alloc_anon_secure_inode);
++
+  static struct file *__anon_inode_getfile(const char *name,
+  					 const struct file_operations *fops,
+  					 void *priv, int flags,
+@@ -88,7 +95,8 @@ static struct file *__anon_inode_getfile(const char *name,
+  		return ERR_PTR(-ENOENT);
+  
+  	if (make_inode) {
+-		inode =	anon_inode_make_secure_inode(name, context_inode);
++		inode =	anon_inode_make_secure_inode(anon_inode_mnt->mnt_sb,
++						     name, context_inode, false);
+  		if (IS_ERR(inode)) {
+  			file = ERR_CAST(inode);
+  			goto err;
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 016b0fe1536e3..0fded2e3c661a 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -3550,6 +3550,7 @@ extern int simple_write_begin(struct file *file, struct address_space *mapping,
+  extern const struct address_space_operations ram_aops;
+  extern int always_delete_dentry(const struct dentry *);
+  extern struct inode *alloc_anon_inode(struct super_block *);
++extern struct inode *alloc_anon_secure_inode(struct super_block *, const char *);
+  extern int simple_nosetlease(struct file *, int, struct file_lease **, void **);
+  extern const struct dentry_operations simple_dentry_operations;
+  
+diff --git a/mm/secretmem.c b/mm/secretmem.c
+index 1b0a214ee5580..c0e459e58cb65 100644
+--- a/mm/secretmem.c
++++ b/mm/secretmem.c
+@@ -195,18 +195,11 @@ static struct file *secretmem_file_create(unsigned long flags)
+  	struct file *file;
+  	struct inode *inode;
+  	const char *anon_name = "[secretmem]";
+-	int err;
+  
+-	inode = alloc_anon_inode(secretmem_mnt->mnt_sb);
++	inode = alloc_anon_secure_inode(secretmem_mnt->mnt_sb, anon_name);
+  	if (IS_ERR(inode))
+  		return ERR_CAST(inode);
+  
+-	err = security_inode_init_security_anon(inode, &QSTR(anon_name), NULL);
+-	if (err) {
+-		file = ERR_PTR(err);
+-		goto err_free_inode;
+-	}
+-
+  	file = alloc_file_pseudo(inode, secretmem_mnt, "secretmem",
+  				 O_RDWR, &secretmem_fops);
+  	if (IS_ERR(file))
+-- 
+2.49.0
+
+
+[1] https://lore.kernel.org/lkml/CAHC9VhSdGeZ9x-0Hvk9mE=YMXbpk-tC5Ek+uGFGq5U+51qjChw@mail.gmail.com/
 
 -- 
 Cheers,
