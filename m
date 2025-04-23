@@ -1,171 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420AE280CDC;
-	Wed, 23 Apr 2025 17:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB184265CBF
+	for <linux-coco@lists.linux.dev>; Wed, 23 Apr 2025 20:30:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745429247; cv=none; b=uB54NR2tLhcc/a2PeODJTLMTsn6iwnEcvSFpp38hL/xMCXvcGUuB6YD5nGTXxlr2+3oUroJc3eCBm+F+omyyVF+Y4wVzlgQweXPdACSpI3vSCQVp5M+q1doCc/gCoASJqiFns7kg4JvV3Ow0RLijxd6tlrlXxBJaJx0etML8lIs=
+	t=1745440220; cv=none; b=ieuX7FfaZfzmdwwvPvTFaoN3n+gqn1ar4uxKdEfLLrRWm3AeAOlBBC5xt1o/hB2fteTmeNu/m4Vqg0cA79iLQjQR4viylqe00g0VZyaub7AWkbNFWtWp6JzFC8F8CDsMMdHkXDpApyj3yvjyEyE9C37p+X2ZmybSlDQE1GGVL58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745429247; c=relaxed/simple;
-	bh=7QocEmAKlPrtEbN8wqYhG0hUbtD5vXfeYPczPaaBrt0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dlistPyfyujczGvJUNJqHdjeTEZCSTSDlBNRrd+8JiEeakqldV6uKMAg2D0jJs49d1jm1UT6bXoeYzRPlepxgeZw/7UTDP1bgyir4VBefpVIRAUI9urKUIHrc/gQcxZoVa2Yu5RzlKVabI4iTc7F4HrvDN6IeDg/fcwQxG8I2GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gHp0VWAR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745440220; c=relaxed/simple;
+	bh=Jy9AF1bLD9s1kWHMI5cSeRF12B+vXLXM8S1mo/7+Lc0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Content-Type; b=kx+E3rkkei7IklTS6FSo09BFIHTu7SGYAU83mW3OwNpJBfamGHimPoNclvfTRJn0fzCRt9YRauT2zPuDQ5n1oSfyiW0+3tVjeOdyKilYdv1KVASJVZW4Ghers3/hSZ1aUAsZ21nx+THocZGDRPlm8N+xTMIgCYxminLH34fBN8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4LnWTuz7; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gHp0VWAR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD766C4CEE2;
-	Wed, 23 Apr 2025 17:27:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745429246;
-	bh=7QocEmAKlPrtEbN8wqYhG0hUbtD5vXfeYPczPaaBrt0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gHp0VWARx+HaSd5ich2I+OayDPZkAd5vANfCbNIcP+TT4CEpxFy0/L+ETcJ0s10qa
-	 3BgqQPBoZU+yiEzY5A+xHJ6W7p1gIp65ZMXQgSji3zISfyNZI39y9i4n6BYg///XeH
-	 AkV/58HRcTg1x5NQsJkUAcffCRXBEbLXXgul0Y+ov97A4HvFN1i5xlM3VwMrpW0WZi
-	 vRC591ALkJ9ndzPa+2yB0azrrFf7vNFlLVJpK2YOnu+xWUJRZuz7SpxF/5XlL5GXSn
-	 ONVMhMh9UL3o/DXfZTKtHKmXSaFWcEGjYW7HpDWvpj5fXG4YkwXxQbZdRSYt5ryUgB
-	 Ucx53JaTniX3A==
-Date: Wed, 23 Apr 2025 22:48:31 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: dave.hansen@linux.intel.com, x86@kernel.org, 
-	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@kernel.org>, 
-	Vishal Annapurve <vannapurve@google.com>, Kirill Shutemov <kirill.shutemov@linux.intel.com>, 
-	Nikolay Borisov <nik.borisov@suse.com>, stable@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] x86/devmem: Drop /dev/mem access for confidential
- guests
-Message-ID: <y3c6mpt3w4pdx7xzaqdlsr3ci33cseuaxwdno4uh3jfb2ddvxp@kicc5stwtcto>
-References: <174491712829.1395340.5054725417641299524.stgit@dwillia2-xfh.jf.intel.com>
- <174500659632.1583227.11220240508166521765.stgit@dwillia2-xfh.jf.intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4LnWTuz7"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2ff605a7a43so363884a91.3
+        for <linux-coco@lists.linux.dev>; Wed, 23 Apr 2025 13:30:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1745440218; x=1746045018; darn=lists.linux.dev;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wFwfHWKiOnPA3XurBNytw5hRobKKwcuhd1GdyuPU6d4=;
+        b=4LnWTuz7tk4AnbWD7pZZHbSDRc43sTwuu3rqiomvpD5LmMfj/MU5J/NhYcOghK+mT6
+         7KKGqtatfLIJqJd8m2B6b93VhuTmEWk2bZz3Q7MpC2MFNBJ0mqxbQmV7zqA684CNYfTx
+         Y+ryEmA2CIV5+zVymR7I2QnCw0JcLQbx7/09zZZ5ExPjfvc01LovRkYNJbR5plwE+XrZ
+         eXBs9d1zxJA9QifSqAqzbEkOHOiO00CwEcYGDEUuIfncVvExvCzZkBK6Ib6IOI3JdtNW
+         Sn1tS8T9rZJJs7iHsik6YNKq3A3bApsGyoC3A9IKA2H2V1ubEKIrp4C+SGE3rC5S9ILD
+         hN2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745440218; x=1746045018;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wFwfHWKiOnPA3XurBNytw5hRobKKwcuhd1GdyuPU6d4=;
+        b=pOBNP2/XAY82GcVunEwMGbOSGJ58YeTSXtuEeIY+yHtf4qlAMyxibdqbNPpR1HRGF6
+         SBebm/X+b4o3yFoZyxyO6x2Ha99h3rUdS2Sf7YC92NlJeCptXomWgwSkN58fptAPLHyQ
+         xa73SR8YY87EctL4qWyOFN0CbOyqTnMuaqLWh1VgZbp4Jtp4y6OvIuaj/ZhqWZXJ0ikw
+         5625e7KePTXQVFbWugNxgZUxsci3975l94nloFcvqTahB+3XliLtt9lnO8oSPtVaHf4b
+         IIp7fGzAvmZi+1Dphemkb75reL+RB+pD0RJ5x/+V2duBfWK4BsmM0M64lkCNvvNVr+uH
+         WrwA==
+X-Forwarded-Encrypted: i=1; AJvYcCUPZU1WdHmmSpxMRTWOm0M6AmU/Tm/dr8pay/kwO/sqblR4VGZNjqmr4j1R2siy2QgISE3g6AGbI7R9@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyu3mk0mzfX70L5SrGea4TRmTvf6AoOnaJqscBMcN5Zw+BeHfVI
+	qq7Ds+oInUgxliDN+AfdMv1sZn2udhGwqSHhjO2df5cqDlekj1rnu4guga80pLvI2MgvhbIPkIF
+	2A/NRZ4F0Xyjmbn1nfSkwDA==
+X-Google-Smtp-Source: AGHT+IFGGg/B7qp7FkZaVMVZcodyUC28I1xDuj7tEL7LiKI1XvY47f/3SmITZLm5fSRvypwGzfBdYk1oJR2G2wcvyA==
+X-Received: from pjqq12.prod.google.com ([2002:a17:90b:584c:b0:2f9:dc36:b11])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:510c:b0:2fe:b8b9:5aa6 with SMTP id 98e67ed59e1d1-309ed341a4amr223367a91.31.1745440218015;
+ Wed, 23 Apr 2025 13:30:18 -0700 (PDT)
+Date: Wed, 23 Apr 2025 13:30:16 -0700
+In-Reply-To: <Z/OMB7HNO/RQyljz@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <174500659632.1583227.11220240508166521765.stgit@dwillia2-xfh.jf.intel.com>
+Mime-Version: 1.0
+References: <20241212063635.712877-1-michael.roth@amd.com> <20241212063635.712877-4-michael.roth@amd.com>
+ <Z9P01cdqBNGSf9ue@yzhao56-desk.sh.intel.com> <Z/OMB7HNO/RQyljz@yzhao56-desk.sh.intel.com>
+Message-ID: <diqzjz7azkmf.fsf@ackerleytng-ctop.c.googlers.com>
+Subject: Re: [PATCH 3/5] KVM: gmem: Hold filemap invalidate lock while
+ allocating/preparing folios
+From: Ackerley Tng <ackerleytng@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>, Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	jroedel@suse.de, thomas.lendacky@amd.com, pbonzini@redhat.com, 
+	seanjc@google.com, vbabka@suse.cz, amit.shah@amd.com, 
+	pratikrajesh.sampat@amd.com, ashish.kalra@amd.com, liam.merwick@oracle.com, 
+	david@redhat.com, vannapurve@google.com, quic_eberman@quicinc.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Apr 18, 2025 at 01:04:02PM -0700, Dan Williams wrote:
-> Nikolay reports [1] that accessing BIOS data (first 1MB of the physical
-> address space) via /dev/mem results in an SEPT violation.
-> 
-> The cause is ioremap() (via xlate_dev_mem_ptr()) establishes an
-> unencrypted mapping where the kernel had established an encrypted
-> mapping previously.
-> 
-> Linux traps read(2) access to the BIOS data area, and returns zero.
-> However, it turns out the kernel fails to enforce the same via mmap(2).
-> This is a hole, and unfortunately userspace has learned to exploit it
-> [2].
-> 
-> This means the kernel either needs a mechanism to ensure consistent
-> "encrypted" mappings of this /dev/mem mmap() hole, close the hole by
-> mapping the zero page in the mmap(2) path, block only BIOS data access
-> and let typical STRICT_DEVMEM protect the rest, or disable /dev/mem
-> altogether.
-> 
-> The simplest option for now is arrange for /dev/mem to always behave as
-> if lockdown is enabled for confidential guests. Require confidential
-> guest userspace to jettison legacy dependencies on /dev/mem similar to
-> how other legacy mechanisms are jettisoned for confidential operation.
-> Recall that modern methods for BIOS data access are available like
-> /sys/firmware/dmi/tables.
-> 
-> Cc: <x86@kernel.org>
-> Cc: Kees Cook <kees@kernel.org>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: "Naveen N Rao" <naveen@kernel.org>
-> Cc: Vishal Annapurve <vannapurve@google.com>
-> Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>
-> Link: https://sources.debian.org/src/libdebian-installer/0.125/src/system/subarch-x86-linux.c/?hl=113#L93 [2]
-> Reported-by: Nikolay Borisov <nik.borisov@suse.com>
-> Closes: http://lore.kernel.org/20250318113604.297726-1-nik.borisov@suse.com [1]
-> Fixes: 9aa6ea69852c ("x86/tdx: Make pages shared in ioremap()")
-> Cc: <stable@vger.kernel.org>
-> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
-> Changes since v3
-> * Fix a 0day kbuild robot report about missing cc_platform.h include.
-> 
->  arch/x86/Kconfig   |    4 ++++
->  drivers/char/mem.c |   10 ++++++++++
->  2 files changed, 14 insertions(+)
-> 
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 4b9f378e05f6..bf4528d9fd0a 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -891,6 +891,8 @@ config INTEL_TDX_GUEST
->  	depends on X86_X2APIC
->  	depends on EFI_STUB
->  	depends on PARAVIRT
-> +	depends on STRICT_DEVMEM
-> +	depends on IO_STRICT_DEVMEM
->  	select ARCH_HAS_CC_PLATFORM
->  	select X86_MEM_ENCRYPT
->  	select X86_MCE
-> @@ -1510,6 +1512,8 @@ config AMD_MEM_ENCRYPT
+Yan Zhao <yan.y.zhao@intel.com> writes:
 
-As far as I know, AMD_MEM_ENCRYPT is for the host SME support. Since 
-this is for encrypted guests, should the below dependencies be added to 
-CONFIG_SEV_GUEST instead?
+> On Fri, Mar 14, 2025 at 05:20:21PM +0800, Yan Zhao wrote:
+>> This patch would cause host deadlock when booting up a TDX VM even if huge page
+>> is turned off. I currently reverted this patch. No further debug yet.
+> This is because kvm_gmem_populate() takes filemap invalidation lock, and for
+> TDX, kvm_gmem_populate() further invokes kvm_gmem_get_pfn(), causing deadlock.
+>
+> kvm_gmem_populate
+>   filemap_invalidate_lock
+>   post_populate
+>     tdx_gmem_post_populate
+>       kvm_tdp_map_page
+>        kvm_mmu_do_page_fault
+>          kvm_tdp_page_fault
+> 	   kvm_tdp_mmu_page_fault
+> 	     kvm_mmu_faultin_pfn
+> 	       __kvm_mmu_faultin_pfn
+> 	         kvm_mmu_faultin_pfn_private
+> 		   kvm_gmem_get_pfn
+> 		     filemap_invalidate_lock_shared
+> 	
+> Though, kvm_gmem_populate() is able to take shared filemap invalidation lock,
+> (then no deadlock), lockdep would still warn "Possible unsafe locking scenario:
+> ...DEADLOCK" due to the recursive shared lock, since commit e918188611f0
+> ("locking: More accurate annotations for read_lock()").
+>
 
-Tom?
+Thank you for investigating. This should be fixed in the next revision.
 
->  	bool "AMD Secure Memory Encryption (SME) support"
->  	depends on X86_64 && CPU_SUP_AMD
->  	depends on EFI_STUB
-> +	depends on STRICT_DEVMEM
-> +	depends on IO_STRICT_DEVMEM
-
-Can we use 'select' for the dependency on IO_STRICT_DEVMEM, if not both 
-the above?
-
-IO_STRICT_DEVMEM in particular is not enabled by default, so applying 
-this patch and doing a 'make olddefconfig' disabled AMD_MEM_ENCRYPT, 
-which is not so good. Given that IO_STRICT_DEVMEM only depends on 
-STRICT_DEVMEM, I think a 'select' is ok.
-
->  	select DMA_COHERENT_POOL
->  	select ARCH_USE_MEMREMAP_PROT
->  	select INSTRUCTION_DECODER
-> diff --git a/drivers/char/mem.c b/drivers/char/mem.c
-> index 48839958b0b1..47729606b817 100644
-> --- a/drivers/char/mem.c
-> +++ b/drivers/char/mem.c
-> @@ -30,6 +30,7 @@
->  #include <linux/uio.h>
->  #include <linux/uaccess.h>
->  #include <linux/security.h>
-> +#include <linux/cc_platform.h>
->  
->  #define DEVMEM_MINOR	1
->  #define DEVPORT_MINOR	4
-> @@ -595,6 +596,15 @@ static int open_port(struct inode *inode, struct file *filp)
->  	if (rc)
->  		return rc;
->  
-> +	/*
-> +	 * Enforce encrypted mapping consistency and avoid unaccepted
-> +	 * memory conflicts, "lockdown" /dev/mem for confidential
-> +	 * guests.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_STRICT_DEVMEM) &&
-> +	    cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-> +		return -EPERM;
-> +
->  	if (iminor(inode) != DEVMEM_MINOR)
->  		return 0;
->  
-> 
-
-Otherwise, this looks good to me.
-
-
-- Naveen
-
+>> > @@ -819,12 +827,16 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>> >  	pgoff_t index = kvm_gmem_get_index(slot, gfn);
+>> >  	struct file *file = kvm_gmem_get_file(slot);
+>> >  	int max_order_local;
+>> > +	struct address_space *mapping;
+>> >  	struct folio *folio;
+>> >  	int r = 0;
+>> >  
+>> >  	if (!file)
+>> >  		return -EFAULT;
+>> >  
+>> > +	mapping = file->f_inode->i_mapping;
+>> > +	filemap_invalidate_lock_shared(mapping);
+>> > +
+>> >  	/*
+>> >  	 * The caller might pass a NULL 'max_order', but internally this
+>> >  	 * function needs to be aware of any order limitations set by
+>> > @@ -838,6 +850,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>> >  	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, &max_order_local);
+>> >  	if (IS_ERR(folio)) {
+>> >  		r = PTR_ERR(folio);
+>> > +		filemap_invalidate_unlock_shared(mapping);
+>> >  		goto out;
+>> >  	}
+>> >  
+>> > @@ -845,6 +858,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>> >  		r = kvm_gmem_prepare_folio(kvm, file, slot, gfn, folio, max_order_local);
+>> >  
+>> >  	folio_unlock(folio);
+>> > +	filemap_invalidate_unlock_shared(mapping);
+>> >  
+>> >  	if (!r)
+>> >  		*page = folio_file_page(folio, index);
+>> > -- 
+>> > 2.25.1
+>> > 
+>> > 
