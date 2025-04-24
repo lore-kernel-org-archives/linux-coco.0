@@ -1,438 +1,184 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2080.outbound.protection.outlook.com [40.107.237.80])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA40280CDC
-	for <linux-coco@lists.linux.dev>; Thu, 24 Apr 2025 19:45:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.80
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745523939; cv=fail; b=QhS9iQU1aJZCZCeIMCaWFDjBBL6MhdMVG/YRN3CvmKDmGuJ2lKrT7m3jJD2zMtuu85VpwsXpLiUBenplxZ6Um1d0J8zZlDZxWMfaKlN2orTyOozveVbEp/q2vxs8IKZJ5CwqWQAbzlNbCvw4DdJKImLa8ThNt1+ca3mYqzzDjaU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745523939; c=relaxed/simple;
-	bh=Yf/r+CKgmKFpUhRKIQKq7W42CTIXAbW7/r9N0E/ot4I=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=g8JjBpOXeGhiMPo0lqJEcLVywnXSEuuX/T8HkETa5VqampGiEaG0IK0csifZ+xigh8sEaOKGQtjbJkZ9Rc7rSVn53gOffnBaQYifcP6hc2OhrMNit02a5KbR3G/EKN75xpRKHhflCGeK4BwbqPSLehCXY6hlH0Mww2AXZsSYC8A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=e5Tm2+xg; arc=fail smtp.client-ip=40.107.237.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB251F4612
+	for <linux-coco@lists.linux.dev>; Thu, 24 Apr 2025 20:12:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745525578; cv=none; b=tMHkq2DlW6qoKGIBMM3p0NoGh2PaMZO2tkGW6pz3Lo7a89tM3DeOGAhIyZqLmidYBYaaaTU+8JzM0Mt4Bau1rlbk08x9Psqsiz4BepujMoavN1AfYQPdFro+eO8hgYZAjNAkTsugtY2BskaUR5r8RVVqcwJYamyvH4so7O+M8Tc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745525578; c=relaxed/simple;
+	bh=2pOJat/7RknLpDlgvWY07xMjRZe0qw8mNUALBgrJfk4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=nQe+v+4aLQdjtPQUE0wjKJ8KUYo94meN4N6MmkEhTwrqGiHBBPvyGPD7WA5wNcVz/621CD3lRzWyxFB7zVhEigU7hI6vYkxsaY1/cYnz/jjb/eEop8fvK/bB8p/GAFNMm3vqUJf0su5L1Cx+lmGfY0IO7nUjAifvYYD3g2LaAEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WzR3lBT1; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="e5Tm2+xg"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dP731TNgyofq9yX0xGoJjFSDKNL0j+51mrSBf0K6BgCCwxdlzGAYve3pkrA8FtO3rrXDXp7qHMioFZzrUSR8NQnJq/Zr5d/Nv4fh4oPEzA/Hz2jhBxJ2XE9HfDGavIDkzhkl4NXtIOfq2mjv5gANEJIWrqT5Txgo225wu5OE9gSU3rGVeTeYPFgr/QBZWm/vSiFmvfYjkQmgPQaBRurjhPau7NSuGq7WUs1VjBGiWr1f4i5aiW/1ax67xvxavsTXwFX/83YlwWEVO7ifixfWE3WRdsQTPCkajojWzY+NzqH2JJ7P0KQD9m92Pfg8N1HcbES0jg4XhRaCbQgzzgZ8yA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=A6UKRl7YoQA5gPkIkrWbiHV3KCUGRfBssUtS19iBV+Q=;
- b=WGk7/bpzZPC+nj8Ip1SLMvwhT/c/vba4LfKmiC05k+0AMsdBa6+wZZnOrCgrisTetKfB8Zt0LZz39qBNXoTr6TCU5wJ+2Muj+A0j2BM6ndZazpdzTowKAMcNdf82HsUZvJj64PD/v0hnz8rjQuL4EslusjkyLttuJKmNEcCyduVSTKNtwYka3lHCVe95Y9BiBpXfsbhA6IC3Z1hINadcAfo6b0Ve3ERrFmjW7IMj9OPxhY8ymmF1yr0PnfGDSyio8x29o8ETfriXtPfTSkmKXwtaUmZH5FsmUlpmQddKXCmNHei21HgOVZ5JGJbfn581t3xW3P4eyfTJfPZrXHtMmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=A6UKRl7YoQA5gPkIkrWbiHV3KCUGRfBssUtS19iBV+Q=;
- b=e5Tm2+xgrijqiKq8FocG8XmUrtchjl9/kKs1SWT5EYMRjab8HvGotJpYS3T+O/1S0UoAeSKgRk9Clg0zylk/T/GHgNhvgGte3YaQhi6nKDwImsL3JjeutV+1wBelhipkvsw/NOEe+ybx+MSoYuKSLVj2IjtSBGp4MMLQC79z3po=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
- by CY3PR12MB9631.namprd12.prod.outlook.com (2603:10b6:930:ff::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.32; Thu, 24 Apr
- 2025 19:45:32 +0000
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::c170:6906:9ef3:ecef]) by BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::c170:6906:9ef3:ecef%5]) with mapi id 15.20.8655.033; Thu, 24 Apr 2025
- 19:45:31 +0000
-Message-ID: <2ec2ec0b-0537-4502-948f-4fa725ddbdb2@amd.com>
-Date: Thu, 24 Apr 2025 14:45:28 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] x86/sev: Fix SNP guest kdump hang/softlockup/panic
-To: Borislav Petkov <bp@alien8.de>
-Cc: tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
- x86@kernel.org, thomas.lendacky@amd.com, hpa@zytor.com, kees@kernel.org,
- michael.roth@amd.com, nikunj@amd.com, seanjc@google.com, ardb@kernel.org,
- gustavoars@kernel.org, sgarzare@redhat.com, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
- kexec@lists.infradead.org, linux-coco@lists.linux.dev
-References: <20250424141536.673522-1-Ashish.Kalra@amd.com>
- <20250424180604.GAaAp9jG7N9YyYeprz@renoirsky.local>
-Content-Language: en-US
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-In-Reply-To: <20250424180604.GAaAp9jG7N9YyYeprz@renoirsky.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1P222CA0146.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c2::28) To BL3PR12MB9049.namprd12.prod.outlook.com
- (2603:10b6:208:3b8::21)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WzR3lBT1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745525574; x=1777061574;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=2pOJat/7RknLpDlgvWY07xMjRZe0qw8mNUALBgrJfk4=;
+  b=WzR3lBT1sIf0MdLc+XBy7ntnk75SID6Owda/TGSWe42B0bkEdNu5JXeQ
+   m3Cq1QUUnLwUxJEr47O97HBtpg5LnDPTSYilwIFHhNBpjEeDWNj7X27Nv
+   eNbVLf0aqst8GrlGx3k/UlGgMU/bvBef93PuUr/k9Ccjp0JlMrB9NchXe
+   6rSqND4maxMiP1jyxn/YUG+ZD/a9XS9vtY8gqxll9UTQ4x1Ps5ExNceUG
+   6ed3lUX5S9x/Rmwmsn4Rh4WYorhPaGsR6K2OtsLRr1D2XIaEhz/j+fiE/
+   CIpBaO32ph+9TxV+Zdk+RHE/ttBqolptK1T/TswAZ53Gr+oNZZfdA2N8z
+   A==;
+X-CSE-ConnectionGUID: TxwL7TZXTKaWhE7Nw4MwRg==
+X-CSE-MsgGUID: Wv6pYuI8QZ2KqCJZiX6aqg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="50986681"
+X-IronPort-AV: E=Sophos;i="6.15,237,1739865600"; 
+   d="scan'208";a="50986681"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 13:12:53 -0700
+X-CSE-ConnectionGUID: y3abzMYbTqmsDcJ8WzxESA==
+X-CSE-MsgGUID: hEgU1/aAQSeVseQ4Oy9dQg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,237,1739865600"; 
+   d="scan'208";a="155945358"
+Received: from ajatsiv-mobl.amr.corp.intel.com (HELO bxing-mobl1.clients.intel.com) ([10.246.112.111])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 13:12:54 -0700
+From: Cedric Xing <cedric.xing@intel.com>
+Subject: [PATCH v5 0/5] tsm-mr: Unified Measurement Register ABI for TVMs
+Date: Thu, 24 Apr 2025 15:12:24 -0500
+Message-Id: <20250424-tdx-rtmr-v5-0-4fe28ddf85d4@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|CY3PR12MB9631:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9633427c-89f5-4613-853d-08dd8368927b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SUxaM1BqM290V0xUNTJyYWlLUTBFU1FKek93ZVRBYkgvb1pvVzRyaGV4alA3?=
- =?utf-8?B?bGR5QWxmMVRjVGZZcXZTTlduNENOWUxNejk0SmwxMXVwWVc2K00xbUZJdURv?=
- =?utf-8?B?VkN6ZWlVdElKUHo0TGJnK3dzK0J3K1pBZFlEbDllWUU1d2lxZ0x5YVIwVDZE?=
- =?utf-8?B?Wk51VmkwQ0FnOHp6MCtQTHBtRkNFNll3MisxbzB1OWpRWXBFc2JCNGx3REtP?=
- =?utf-8?B?YnV5VFM3N2RWVk9MY05jZW9CL2hVaXNxY1IzUHVNaXdDNEVzaVpwSTJxRE5P?=
- =?utf-8?B?RzZUWGt6dW52UjgvYnNzNDU4V0loaVBsY2pSTi8yaStKRU1TeTZMQTlCWGVJ?=
- =?utf-8?B?RnVGK3YycjdqUld1c2JHNnZJUnUweG51YjY4KzcySjRrbTIrWTVIRmpRSzU4?=
- =?utf-8?B?RDg0Y1BkNDJGSG9uck9vMjNJRXozRDI1a1h0UzNqaGhXTmVpK0lxZ0VFVnRK?=
- =?utf-8?B?bGdqTjFoRmVFVUJTYjNValJpWTZFSlBaWXQxNjl1SVhWSy95eGhoelo0aUNt?=
- =?utf-8?B?MC9ZMUdnV09KT094cVk5aXU1WDBxZHdqbkRVVHhMdHlSa3ZJUUU5OXRRRVEx?=
- =?utf-8?B?NGZXdjdNdlZSejd5b0t3Mks1bStxYXNsdDRvZUg5Wlo4b2hCNUNQK1NyVGxG?=
- =?utf-8?B?d3c0VEVJV3htaExOT05PTlJ4blZNdmcxYnRkM0FhZ1pqZnhsck9FSzhacFdP?=
- =?utf-8?B?Sk9DYWxGZzZrRTl4eEh0UjF4cDc3czlDOUxjTysweDNjakZ3UDFhNjBqUHVJ?=
- =?utf-8?B?NFdWT0VQVDRycmtmWmpzWmJBVVMvclZ5cUEyOUQ5QVl0dGFFTHRuZjRjNWRt?=
- =?utf-8?B?SXlKcWN4N3Y5VlpGazNrTloxcnJnZXRLMDBqVlpaMlc0Vk1ZU0l5SERlQ0Fi?=
- =?utf-8?B?MHljQXNkamFNZm4yZHlPcXloSE9IWXpKdFpUOVppcG5wV1o4MHY5TkVjUUQz?=
- =?utf-8?B?YkVvQ1ZXdURkM1FYaGk1WkovVVZuaVhiVjlDNmZ4STUyZWdrMjl2WGRmaHJD?=
- =?utf-8?B?VjhRdm1MSTJkLzBPMm1USXpkS2hxNGNIbmlnc09qVDVLek4vdUlvZkFYQmc1?=
- =?utf-8?B?TTdNb20yN3JlM1FhUjVjM1BoMzZrRmEvWnhHQVR0cjQrRTEreWxRV3dackNN?=
- =?utf-8?B?ZG9Lamp6eWNKTXpGa3g4RXh1Snk3TjUxeGtCTWpmK0ozYVpGVGMxNjZXU2p1?=
- =?utf-8?B?QlFzcTE5UlpDMkZYYmJNaWZEY3dwVmpxaGsrV05WRUd3Q2R4clJYV3h6d0tv?=
- =?utf-8?B?aEh6Z2JwUTk0VDF4RmFhai9SblJCbDdISkhQeDdGR3NNQjBSSUtqcXdEbTBN?=
- =?utf-8?B?VU05VjBJVHJXUjBWc0RwVHM3dUZPczVWRXEwZDk0dmNJVm9pRDREYXNxNUxQ?=
- =?utf-8?B?RXFzSU50WXVXRm9vM1ppVjBFMjkrUnRPdThFN3h3UStiOEJNSUQ2S0EwMmN0?=
- =?utf-8?B?YnQyVnZFUkNLeHdXYjBOQzZ5cC85blBuVUtEamoyeGRXZDd3WTJvbjZxZTBm?=
- =?utf-8?B?NG9MbWtpd0cxL3BhbzE5QmdqK0RiNWt6bklPOVhGVlk5aGx6emd0d2NnMXZ1?=
- =?utf-8?B?RDk4Tmt3ZkFPVW04cW9Fc0dkUkI2cG5MQytnSGJmV2lJWHZxL2hIWStSWVRV?=
- =?utf-8?B?dUk4T1VCZ2RONk9OdmErWklvWVRzeUh0eEhET2V0RnJXNUU3MnRhZ085bGxv?=
- =?utf-8?B?ZzBxRW1kUEtUV2YvOHpIeGUxYUtLVkxDcFZxRWMwdnVYUzUrUTdkYjlDNVV6?=
- =?utf-8?B?V0VESmVZQ0k4MDUrQU9rNkIxbmR0NlN4WEpPTHBhSUx3QXpaS0FFbmNvd1hM?=
- =?utf-8?B?ams2ci9XcnMvTU9ZQ29YenQ4Rk9ZTW9Vc0t6MHdubk8zQyszeVFDV0d1YU9T?=
- =?utf-8?B?aERzREVubDJaM0VaeU56U2gzazc5Q3JiYmQ3R2JKYlVBTVJUTzRDV3JaVlFU?=
- =?utf-8?Q?cWp7sRKDXxo=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VFV6NTRlVzFBZU0wek1veGd4SS9saDZzd2hEOHFVQkh3TjlzeHlXdkVnNkpx?=
- =?utf-8?B?OFJZcWhjNWRva0huRXZvSTlCZUdPSElENzUydzVKVUFheXVORHdUcnZKb3NV?=
- =?utf-8?B?eEloSGNIUVhCWEcxdXoyNFFLaFZ2azFkeWFqd1dwaUlmVllOcXZqd3JvalZr?=
- =?utf-8?B?d0c0ZkJoNFFUdGVRRWlDbnppQ1Z3L1IvMlRKVjliMjh5b0UwYkdQY242aU9F?=
- =?utf-8?B?ZndSVFF5VXU4b1RTVzBGR0pjNmwreThyS3FJWlVOVlI4bkNFZko1azhWTkdV?=
- =?utf-8?B?WEdjWFJpOS82RllwS2pybkJzVGhleVdKdUJQc1FRZmUybSszeklMclpQUTdr?=
- =?utf-8?B?VUZLd3NXcDIwS0toVmU2TnEwUXdjQnMvQXdEVmtOYU1OWW9MVzVNcmpFK2pG?=
- =?utf-8?B?U0lObWpXdU1OMGdYMGlMVVVLU010U1phSVRicUdqcnQrYk5teFgzRm9PV3JF?=
- =?utf-8?B?UEU1TUxRcEhoNXZ6czl1NVo2ZCtVS3dtNlowaHd0TCtjNy9sTGdWKzJpZVJK?=
- =?utf-8?B?ekxLSUpCMU54ajVialhhbWlOREhKbzhkaWk5bG0vTFRYRzBnZldSMXBkaG9H?=
- =?utf-8?B?VjR4Q21Bc2lnV0R5V0pOZDgwVjJmU0tvMXE0SUUvOTdST3lTa2tVR1A3RU0w?=
- =?utf-8?B?ZVdneUZLemExQUx1RmNJTjdSUzAxdmRxcVlpbjVQYnNOQ0EwTzNPM29veGIr?=
- =?utf-8?B?WWV5aUdNdVFTK1U5Z1RiczdEQVRTWEpGdkgvV1lMbm54TTNZQU9hU29Rd2Z1?=
- =?utf-8?B?RkNkbTNGN1ljSUd2QS9LT2tVbHNvUUppWVVkTVlnYVYrVE01bCtVbkVHOUs2?=
- =?utf-8?B?YmI0YXdNQTJ3a0o4VFhSa3VGUVdicE4xVHcyK3pLWHpyV1NQZkwwNWJUbDZa?=
- =?utf-8?B?cUYzUFowSXlGTjc0S1JPRUVMdXZKUXRoanM5WWVoZkNYS2pNY1gxU3NnTlVP?=
- =?utf-8?B?cnJIT2pndG1GeWZaQ0RPcTArWkdTTUJ5ang3T0dnSlpGWHlYYllzM3hxakZQ?=
- =?utf-8?B?SW1QS1U3d3ZZUXg3Y0pjYmNjNmVDTFVPdEx5dGRUVmhzdzhDenc3N3pHYnVn?=
- =?utf-8?B?TUVmUW5DVlByKzIwZCt1cEhwUGQrMHdKODhCNnJqMHBuL0lWWCtkTElldWlx?=
- =?utf-8?B?Y3FraVlBWFpKU3hrY0FhMjQyRkFDTGc1WU15a2J2MDNSblZCc3ozQU9EK3BY?=
- =?utf-8?B?SWVsRXVwR2VIZ3hodkdTZzUxUmNHYjd4ZnVFMnF2ZEhlKzNuTFBTL2o0TjJ5?=
- =?utf-8?B?U0lrK0FKbHFYRlVJTXh6djVXMWNzUEZEenRmV3VENXpQbm5IMkZFMW5pRjhH?=
- =?utf-8?B?OTdPblBTYyt6ZzgrTjFVWnlGdTQxeVhvbGF0TkhpbjNyWXNlR2xWUThKUnFj?=
- =?utf-8?B?aXRjUHVCZVhGZTlFb09jZ1Z2K1UzcEVxTjUrQ3JXQTNjaTdTY0s2SWUrYm5y?=
- =?utf-8?B?RCtxdW5ieGhjMlBxSFMycUhVYU5zQnJyZ3VYNldwL0tuamVaWkptdUdhaWZl?=
- =?utf-8?B?NEQyYi9jUzE2ei9yemFFVkF4QVorTkh1TDEzeWpRQlg1NVlBR21haGxWTUdw?=
- =?utf-8?B?M2xvbk9YOFJRSEpHWDhhbEcwZmViLzdNemdyaTM4b2hZazdERXdBcVdPU01r?=
- =?utf-8?B?ckdxTmVwUzZJektLR0Z1emNNYldub0RQMW5EMlhEZ1d4WElQRnpSYjE4Vm5s?=
- =?utf-8?B?bC9rKzZtak54OWZoazNaL1FJR0M5ODFZV0ltamJiSmF3bGdDTEwrT0Z0WnlQ?=
- =?utf-8?B?LzVwdjdjVkhwUHJudEVCeS90bFhCOTBSb25Qa3RTdGkrRVZTaVNYV0Q4bGNo?=
- =?utf-8?B?bkJRL3QvMUlPS1JQQUJqb2oxbXdVYTIxRGlWWnZYU1hjMmRlS1FyVnFQYTdj?=
- =?utf-8?B?MUVIVnQ2ZDhIYkdWVmJhWHFvUzZhejRZVzJhQXZIVGdCZHk5WW1kSDRBWXFL?=
- =?utf-8?B?RVlYeTI1MkRCV2VKb3JmOFNvck1EVWFzNGlxUXdUelFhMCtGeHMyNTNCTlhH?=
- =?utf-8?B?alRJbWdMN0Z0VDZvdXRSVzdwVkI1c25jVkxnQ3RlOFR0SmlUa3E0TW9Na3pF?=
- =?utf-8?B?Q2FUMmlMMGdJRDVranJIS1hSWUZxcnNmUFJRbVRUK2laNUpZQjJpTE9QWWVH?=
- =?utf-8?Q?CMtfe/78zQJc1cuCK/Gp50dz5?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9633427c-89f5-4613-853d-08dd8368927b
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2025 19:45:31.5339
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: W6MxfdTEfHhFMEh1evyx6SsLQ9AMwhjXmHPeje3lwFCnI2HRzOiOPzjU24kl3El6croQqAs8pHlDGQg/ZRHSyQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9631
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACibCmgC/13MQQ6CMBCF4auYrq1ph5mWuvIexgXQVpoomEKIx
+ nB3CzGhYfkm8/1fNrgY3MDOhy+LbgpD6Ls06HhgTVt1d8eDTZuBABIgDB/tm8fxGTkQoTZKaYm
+ KpfdXdD6819T1lnYbhrGPn7U8yeX6j0jYIpPkghttyDZonCzgErrRPU5N/2RLZIIMQpFBSNCDL
+ akWFXmDe1hsEIXOYJEgoZe6bhQBlHuIGZSYQUxQO+ur0ppSS5XDeZ5/fAPrt0sBAAA=
+To: Dan Williams <dan.j.williams@intel.com>, 
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, 
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+ Dionna Amalie Glaze <dionnaglaze@google.com>, 
+ Guorui Yu <guorui.yu@linux.alibaba.com>, 
+ James Bottomley <James.Bottomley@HansenPartnership.com>, 
+ Dan Middleton <dan.middleton@linux.intel.com>, 
+ Mikko Ylinen <mikko.ylinen@linux.intel.com>, 
+ Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+ Cedric Xing <cedric.xing@intel.com>
+X-Mailer: b4 0.13.0
 
-Hello Boris,
+NOTE: This patch series introduces the Measurement Register (MR) ABI, and
+is a continuation of the RFC series on the same topic [1].
 
-On 4/24/2025 1:06 PM, Borislav Petkov wrote:
-> Rn Thu, Apr 24, 2025 at 02:15:36PM +0000, Ashish Kalra wrote:
->> From: Ashish Kalra <ashish.kalra@amd.com>
->>
->> When kdump is running makedumpfile to generate vmcore and dumping SNP
->> guest memory it touches the VMSA page of the vCPU executing kdump which
->> then results in unrecoverable #NPF/RMP faults as the VMSA page is
->> marked busy/in-use when the vCPU is running.
-> 
-> Definitely better. Thanks.
-> 
->> This leads to guest softlockup/hang:
->>
->> [  117.111097] watchdog: BUG: soft lockup - CPU#0 stuck for 27s! [cp:318]
->> [  117.111165] CPU: 0 UID: 0 PID: 318 Comm: cp Not tainted 6.14.0-next-20250328-snp-host-f2a41ff576cc-dirty #414 VOLUNTARY
->> [  117.111171] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2022
->> [  117.111176] RIP: 0010:rep_movs_alternative+0x5b/0x70
->> [  117.111200] Call Trace:
->> [  117.111204]  <TASK>
->> [  117.111206]  ? _copy_to_iter+0xc1/0x720
->> [  117.111216]  ? srso_return_thunk+0x5/0x5f
->> [  117.111220]  ? _raw_spin_unlock+0x27/0x40
->> [  117.111234]  ? srso_return_thunk+0x5/0x5f
->> [  117.111236]  ? find_vmap_area+0xd6/0xf0
->> [  117.111251]  ? srso_return_thunk+0x5/0x5f
->> [  117.111253]  ? __check_object_size+0x18d/0x2e0
->> [  117.111268]  __copy_oldmem_page.part.0+0x64/0xa0
->> [  117.111281]  copy_oldmem_page_encrypted+0x1d/0x30
->> [  117.111285]  read_from_oldmem.part.0+0xf4/0x200
->> [  117.111306]  read_vmcore+0x206/0x3c0
->> [  117.111309]  ? srso_return_thunk+0x5/0x5f
->> [  117.111325]  proc_reg_read_iter+0x59/0x90
->> [  117.111334]  vfs_read+0x26e/0x350
-> 
-> I ask you again: why is that untrimmed splat needed here?
-> 
+Introduce the CONFIG_TSM_MEASUREMENTS helper library (tsm-mr) as a
+cross-vendor transport schema to allow TVM (TEE VM) guest drivers to export
+CC (Confidential Compute) architecture-specific MRs (Measurement Registers)
+as sysfs attributes/files. Enable applications to read, write/extend MRs
+like regular files, supporting various usages such as configuration
+verification (e.g., verify a TVM's configuration against digests stored in
+static/immutable MRs like MRCONFIGID on TDX or HOSTDATA on SEV) and runtime
+measurements (e.g., extend the measurement of a container image to an RTMR
+before running it).
 
-I will remove this.
+Patches included in this series:
 
->> Additionally other APs may be halted in guest mode and their VMSA pages
->> are marked busy and touching these VMSA pages during guest memory dump
->> will also cause #NPF.
-> 
-> So, the title of this patch should be something like "Do not touch VMSA
-> pages during kdump of SNP guest memory" ?
->
+- Patch 1 adds the tsm-mr library to help TVM guest drivers exposing MRs as
+  sysfs attributes.
+- Patch 2 provides a sample module demonstrating the usage of the new
+  tsm-mr library.
+- The remaining patches update the TDX guest driver to expose TDX MRs with
+  the help of the tsm-mr library.
 
-Ok, that makes sense.
- 
-> Because what you have now cannot be any more indeterminate...
-> 
->> Issue AP_DESTROY GHCB calls on other APs to ensure they are kicked out
->> of guest mode and then clear the VMSA bit on their VMSA pages.
->>
->> If the vCPU running kdump is an AP, mark it's VMSA page as offline to
->> ensure that makedumpfile excludes that page while dumping guest memory.
->>
->> Cc: stable@vger.kernel.org
->> Fixes: 3074152e56c9 ("x86/sev: Convert shared memory back to private on kexec")
-> 
-> This one and the next one you sent are fixing both one and the same
-> patch - yours.
-> 
-> So, how much has this one and your other one:
-> 
-> https://lore.kernel.org/all/20250424142739.673666-1-Ashish.Kalra@amd.com
-> 
-> have been tested?
-> 
-> I'd like for those two to be extensively tested before I send them to
-> Linus in this cycle still so that they don't break anything.
+[1]: https://lore.kernel.org/linux-coco/20241210-tsm-rtmr-v3-0-5997d4dbda73@intel.com/
 
-Both patches have been tested by me and additionally both have been tested
-by Tencent in their development environment, so i would say they have been
-tested fairly well. 
+Signed-off-by: Cedric Xing <cedric.xing@intel.com>
+---
+Changes in v5:
+- tsm-mr: Fix typo in MAINTAINERS.
+- tsm-mr-sample: Fix Kconfig dependencies by adding `select VIRT_DRIVERS`.
+- Link to v4: https://lore.kernel.org/r/20250414-tdx-rtmr-v4-0-7edfa8d98716@intel.com
 
->> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
->> ---
->>  arch/x86/coco/sev/core.c | 129 ++++++++++++++++++++++++++++++---------
->>  1 file changed, 101 insertions(+), 28 deletions(-)
->>
->> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
->> index dcfaa698d6cf..870f4994a13d 100644
->> --- a/arch/x86/coco/sev/core.c
->> +++ b/arch/x86/coco/sev/core.c
->> @@ -113,6 +113,8 @@ DEFINE_PER_CPU(struct sev_es_save_area *, sev_vmsa);
->>  DEFINE_PER_CPU(struct svsm_ca *, svsm_caa);
->>  DEFINE_PER_CPU(u64, svsm_caa_pa);
->>  
->> +static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa, int apic_id);
-> 
-> No lazy forward declarations. Restructure your code pls so that you
-> don't need them.
-> 
+Changes in v4:
+- tsm-mr: Add details to ABI doc.
+- tsm-mr: Add driver-api doc.
+- tsm-mr: Add tracepoints.
+- tsm-mr: Use the constant string "mr" as the group/directory name for MR
+  sysfs attributes.
+- x86/tdx: Revise error codes returned by tdx_mcall_* functions.
+- tdx-guest: Merge all TDREPORT code paths into a common function.
+- Link to v3: https://lore.kernel.org/r/20250407-tdx-rtmr-v3-0-54f17bc65228@intel.com
 
-Ok.
+Changes in v3:
+- tsm-mr: Separate measurement support (tsm-mr) from the original tsm
+  source code. Modules depending on tsm-mr should `select TSM_MEASUREMENTS`
+  in Kconfig. (Dan Williams)
+- tsm-mr: Revise tsm-mr APIs to allow callers to decide where to host the
+  MR attributes in sysfs.
+- tsm-mr: Drop TSM_MR_F_EXTENSIBLE and route all "write" requests to the CC
+  guest driver, which decides how to handle writes (e.g., by extending the
+  buffer on input to the specified MR).
+- tsm-mr: Update the naming pattern for MR attributes from
+  MRNAME/HASH/digest to MRNAME:HASH.
+- tsm-mr: Drop TSM_MR_MAXBANKS kernel config.
+- x86/tdx: Return -EBUSY from tdx_mcall_get_report0 on TDCALL_OPERAND_BUSY
+  error.
+- tdx-guest: Move MR attributes from /sys/kernel/tsm/tdx/ to
+  /sys/class/misc/tdx_guest/ because MR names are architecture-specific, so
+  their attributes should reside in an architecture-specific location.
+- tdx-guest: Remove hash from `mrconfigid`, `mrowner`, `mrownerconfig`.
+- tdx-guest: Remove `servtd_hash`, `report0`, and `reportdata`.
+- Link to v2: https://lore.kernel.org/r/20250223-tdx-rtmr-v2-0-f2d85b0a5f94@intel.com
 
->> +
->>  static __always_inline bool on_vc_stack(struct pt_regs *regs)
->>  {
->>  	unsigned long sp = regs->sp;
->> @@ -877,6 +879,42 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
->>  	set_pages_state(vaddr, npages, SNP_PAGE_STATE_PRIVATE);
->>  }
->>  
->> +static int issue_vmgexit_ap_create_destroy(u64 event, struct sev_es_save_area *vmsa, u32 apic_id)
-> 
-> vmgexit_ap_control() or so.
->
+Changes in v2:
+- Added TSM_MR_MAXBANKS Kconfig option
+- Updated Kconfig dependency for TSM_REPORTS
+- Updated comments in include/linux/tsm.h
+- Updated drivers/virt/coco/tdx-guest/tdx-guest.c to use `IS_BUILTIN()` for
+  determining if static buffer addresses can be converted to GPAs by
+  `virt_to_phys()`
+- Renamed function `tdx_mcall_rtmr_extend()` -> `tdx_mcall_extend_rtmr()`
+- Link to v1: https://lore.kernel.org/r/20250212-tdx-rtmr-v1-0-9795dc49e132@intel.com
 
-Ok.
- 
->> +{
->> +	struct ghcb_state state;
->> +	unsigned long flags;
->> +	struct ghcb *ghcb;
->> +	int ret = 0;
->> +
->> +	local_irq_save(flags);
->> +
->> +	ghcb = __sev_get_ghcb(&state);
->> +
->> +	vc_ghcb_invalidate(ghcb);
->> +	ghcb_set_rax(ghcb, vmsa->sev_features);
->> +	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_AP_CREATION);
->> +	ghcb_set_sw_exit_info_1(ghcb,
->> +				((u64)apic_id << 32)	|
->> +				((u64)snp_vmpl << 16)	|
->> +				event);
->> +	ghcb_set_sw_exit_info_2(ghcb, __pa(vmsa));
->> +
->> +	sev_es_wr_ghcb_msr(__pa(ghcb));
->> +	VMGEXIT();
->> +
->> +	if (!ghcb_sw_exit_info_1_is_valid(ghcb) ||
->> +	    lower_32_bits(ghcb->save.sw_exit_info_1)) {
->> +		pr_err("SNP AP %s error\n", (event == SVM_VMGEXIT_AP_CREATE ? "CREATE" : "DESTROY"));
->> +		ret = -EINVAL;
->> +	}
->> +
->> +	__sev_put_ghcb(&state);
->> +
->> +	local_irq_restore(flags);
->> +
->> +	return ret;
->> +}
->> +
->>  static void set_pte_enc(pte_t *kpte, int level, void *va)
->>  {
->>  	struct pte_enc_desc d = {
->> @@ -973,6 +1011,66 @@ void snp_kexec_begin(void)
->>  		pr_warn("Failed to stop shared<->private conversions\n");
->>  }
->>  
->> +/*
->> + * Shutdown all APs except the one handling kexec/kdump and clearing
->> + * the VMSA tag on AP's VMSA pages as they are not being used as
->> + * VMSA page anymore.
->> + */
->> +static void snp_shutdown_all_aps(void)
-> 
-> Static function - no need for "snp_" prefix.
->
+---
+Cedric Xing (5):
+      tsm-mr: Add TVM Measurement Register support
+      tsm-mr: Add tsm-mr sample code
+      x86/tdx: Add tdx_mcall_extend_rtmr() interface
+      x86/tdx: tdx_mcall_get_report0: Return -EBUSY on TDCALL_OPERAND_BUSY error
+      virt: tdx-guest: Expose TDX MRs as sysfs attributes
 
-Ok.
- 
->> +{
->> +	struct sev_es_save_area *vmsa;
->> +	int apic_id, cpu;
->> +
->> +	/*
->> +	 * APs are already in HLT loop when kexec_finish() is invoked.
-> 
-> Which kexec_finish?
-> 
-> $ git grep -w kexec_finish
-> $
-> 
+ .../testing/sysfs-devices-virtual-misc-tdx_guest   |  60 +++++
+ Documentation/driver-api/coco/index.rst            |  12 +
+ .../driver-api/coco/measurement-registers.rst      |  12 +
+ Documentation/driver-api/index.rst                 |   1 +
+ MAINTAINERS                                        |   6 +-
+ arch/x86/coco/tdx/tdx.c                            |  50 +++-
+ arch/x86/include/asm/shared/tdx.h                  |   1 +
+ arch/x86/include/asm/tdx.h                         |   2 +
+ drivers/virt/coco/Kconfig                          |   5 +
+ drivers/virt/coco/Makefile                         |   1 +
+ drivers/virt/coco/tdx-guest/Kconfig                |   1 +
+ drivers/virt/coco/tdx-guest/tdx-guest.c            | 291 +++++++++++++--------
+ drivers/virt/coco/tsm-mr.c                         | 247 +++++++++++++++++
+ include/linux/tsm-mr.h                             |  94 +++++++
+ include/trace/events/tsm_mr.h                      |  80 ++++++
+ samples/Kconfig                                    |  11 +
+ samples/Makefile                                   |   1 +
+ samples/tsm-mr/Makefile                            |   2 +
+ samples/tsm-mr/tsm_mr_sample.c                     | 137 ++++++++++
+ 19 files changed, 904 insertions(+), 110 deletions(-)
+---
+base-commit: 9c32cda43eb78f78c73aee4aa344b777714e259b
+change-id: 20250209-tdx-rtmr-255479667146
 
-I meant the x86_platform.guest.enc_kexec_finish() callback, which in this case is snp_kexec_finish().
-
->> +	 */
-> 
-> Btw, comment fits on one line.
-> 
->> +	for_each_present_cpu(cpu) {
-> 
-> What if some CPUs are offlined? Or in this part of kexec that's not
-> a problem?
-> 
-
-Yes, offlined CPUs won't have VMSA pages marked busy or in-use. 
-
->> +		vmsa = per_cpu(sev_vmsa, cpu);
->> +
->> +		/*
->> +		 * BSP does not have guest allocated VMSA, so it's in-use/busy
->> +		 * VMSA cannot touch a guest page and there is no need to clear
->> +		 * the VMSA tag for this page.
-> 
-> This comment's text needs sanitizing.
-> 
-Ok.
-
->> +		 */
->> +		if (!vmsa)
->> +			continue;
->> +
->> +		/*
->> +		 * Cannot clear the VMSA tag for the currently running vCPU.
->> +		 */
->> +		if (get_cpu() == cpu) {
->> +			unsigned long pa;
->> +			struct page *p;
->> +
->> +			pa = __pa(vmsa);
->> +			p = pfn_to_online_page(pa >> PAGE_SHIFT);
->> +			/*
->> +			 * Mark the VMSA page of the running vCPU as Offline
-> 
-> offline
-> 
->> +			 * so that is excluded and not touched by makedumpfile
->> +			 * while generating vmcore during kdump boot.
-> 
-> during kdump. No boot.
-> 
->> +			 */
-> 
-> Put that comment above the previous line: p = pfn_...
-> 
-Ok.
-
->> +			if (p)
->> +				__SetPageOffline(p);
->> +			put_cpu();
->> +			continue;
->> +		}
->> +		put_cpu();
-> 
-> Restructure your code so that you don't need those two put_cpu()s there.
->
-Ok.
- 
->> +
->> +		apic_id = cpuid_to_apicid[cpu];
->> +
->> +		/*
->> +		 * Issue AP destroy on all APs (to ensure they are kicked out
->> +		 * of guest mode) to allow using RMPADJUST to remove the VMSA
->> +		 * tag on VMSA pages especially for guests that allow HLT to
->> +		 * not be intercepted.
->> +		 */
-> 
-> This is not "on all" - it is only on this apic_id.
-> 
-Yes.
-
-> Also, your comment needs splitting into simple sentences as it tries to
-> say *everything* which is not really necessary.
->
-
-Ok.
-
-Thanks,
-Ashish
- 
->> +
-> 
-> Superfluous newline.
-> 
-> Thx.
-> 
+Best regards,
+-- 
+Cedric Xing <cedric.xing@intel.com>
 
