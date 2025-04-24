@@ -1,193 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE182DF49;
-	Thu, 24 Apr 2025 06:36:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B6B17D346
+	for <linux-coco@lists.linux.dev>; Thu, 24 Apr 2025 14:10:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745476586; cv=none; b=PtBDbs3aLS1AJzoS+gtyKGPqYh6YQSz2K/ryxaxL1in6z17lBa2+9lmu9e72ZgLoLj4xyON3diXvMlOxUtQcMLPWFNGnzhFzl6RubMG2fbvna1rOwJzuo6DXkVc1U/7JHqA/oOm17waxBOmenDhf74qYZc+Q05wcOCw0Y/g0DPU=
+	t=1745503816; cv=none; b=MhlZWOZLksTWZWf8XGzinjOsi5P5vijGdKK9ALxzVlNCA8/jf5o1ryKGn0hBvzmW1Y14RgnrwVA1NANxe4k8isOHnynuxwqkqy8e++fLOHiEGxG/0PaVLeUWNPWFW+rJbm7n2pnyiPYonHlVPnitzZ6oPo2shNSqLnsgRYkbiE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745476586; c=relaxed/simple;
-	bh=MDoN1ZK19bo6rNQIgmavzayzM4Rwo/IkSrito3ddS6M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nDJuBoeYIAJh1rj4c8VWNAOO3emgu7h98hipa5Wd7ixBXc8Y65GovcJCQX8WS93eJdB3qTaF0q54p+Mn6f9MVklrg3FoWFfYxVPFgzn9QtkzJcof5nmM6R7oe1kXfQLSm28ttwEgBDVb44GWddvgx7lGMVgF+zWLMXisD1xxcGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DsF+jSuj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745503816; c=relaxed/simple;
+	bh=HgYWa0KeSKcfGbmk47jhXCWVY/vg+Gf8SDRhG1C38DY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iyHwTGg5TLhd3cMfvANheMQ6YdMGaNSoNil2zF7QQ0+HpfDXeDFiCBExYR/vbAkaAcuu4Cpw5gxEpah6cKNoIzzb2sFCkLMgyjJLnEYK2KXcx19+45afk5yr8dkJJ1KiBE54FnpCZTjVjTuLUOfgj/h3SIrGLTM+EkAX2lEhMlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I7IwEsyx; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DsF+jSuj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C0FAC4CEEB;
-	Thu, 24 Apr 2025 06:36:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745476585;
-	bh=MDoN1ZK19bo6rNQIgmavzayzM4Rwo/IkSrito3ddS6M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DsF+jSujyWRYe/er8IF/g1XJr0Uhw2Sc0XVs6y0PKvvSojDF323NKajq2oeD65fay
-	 wbFqByffiBa/4RTnB68MpiPyLmMKduR/raVqD46hXsjChJWhopM+phdJ5CkUDcHQZ/
-	 SoSbFp+D6IdX2+FL4KbiUd5c8Z87OBi0+giQYhYUvgOrMX+vQgOGenZtF+5o0XJYV/
-	 pGSDNkqeYubj16wg80O6YI7lXOsRb1XI4DyuQ0jMifseEe2QlwMl2ctm5AWDnnFn1x
-	 kF5GIYar/VLB2ReV1m3s6Zct++sRPOsrBZz5ednM7ux6eAH1PnXtdQ9WLDhkPPZrjR
-	 fDbgRZ73XvtGg==
-Date: Thu, 24 Apr 2025 12:05:57 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: dave.hansen@linux.intel.com, x86@kernel.org, 
-	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@kernel.org>, 
-	Vishal Annapurve <vannapurve@google.com>, Kirill Shutemov <kirill.shutemov@linux.intel.com>, 
-	Nikolay Borisov <nik.borisov@suse.com>, stable@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [PATCH v4 2/2] x86/devmem: Drop /dev/mem access for confidential
- guests
-Message-ID: <ma4odvegjsceiwccyhbsz5wn4wjdnx2sfhyigtva5zjiyfmsdw@tyq72l2zavb6>
-References: <174491712829.1395340.5054725417641299524.stgit@dwillia2-xfh.jf.intel.com>
- <174500659632.1583227.11220240508166521765.stgit@dwillia2-xfh.jf.intel.com>
- <y3c6mpt3w4pdx7xzaqdlsr3ci33cseuaxwdno4uh3jfb2ddvxp@kicc5stwtcto>
- <68094f51a7b01_71fe294c6@dwillia2-xfh.jf.intel.com.notmuch>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I7IwEsyx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745503815; x=1777039815;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=HgYWa0KeSKcfGbmk47jhXCWVY/vg+Gf8SDRhG1C38DY=;
+  b=I7IwEsyxx4Qxv08lukwtH3KuxMzo8VRNaj9Z+MYQ0QZSmlDrkT1CUQdu
+   qY2eMeXdZRiqwYJBm0kdvSRZ7wRFQETKDPoQowSytSb2KGcQHaIJBAwC1
+   zZD/kuGCWL1DJxGZSetYxU9NnPBi87wGyLgAxs8Jve+v5NiRA4tmU65ne
+   0uJ9WuPBsDKzEUwbAIG7RaBxkqExqf8SU6suIFFYgNjKgbdK2JPgibjRO
+   Ktps4aepU5OncMfHpbZMeAjFyvfyGROzaIh34oFtLJKYE0U5BXWpSAhXA
+   +zJ0uTZaTQZfJD2nkK30F++8loqim5VeZzIhmrMJ3Lq4oveH41DPiqiZY
+   w==;
+X-CSE-ConnectionGUID: lWRlzVifTe2Q6aL8VUm8xQ==
+X-CSE-MsgGUID: yXCOpkjaRFOHQQawUvYlYA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="47013898"
+X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; 
+   d="scan'208";a="47013898"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 07:10:12 -0700
+X-CSE-ConnectionGUID: 4hbJSsyqQhmhnYjAK4eA/A==
+X-CSE-MsgGUID: 0UgLxu6/Tx+o26VGVaaeJA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; 
+   d="scan'208";a="137429596"
+Received: from johunt-mobl9.ger.corp.intel.com (HELO [10.124.221.210]) ([10.124.221.210])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 07:10:10 -0700
+Message-ID: <39b30d41-c073-43f9-8860-1091789a40f8@linux.intel.com>
+Date: Thu, 24 Apr 2025 07:10:10 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <68094f51a7b01_71fe294c6@dwillia2-xfh.jf.intel.com.notmuch>
-
-[Actually copy Tom]
-
-On Wed, Apr 23, 2025 at 01:36:33PM -0700, Dan Williams wrote:
-> Naveen N Rao wrote:
-> > On Fri, Apr 18, 2025 at 01:04:02PM -0700, Dan Williams wrote:
-> > > Nikolay reports [1] that accessing BIOS data (first 1MB of the physical
-> > > address space) via /dev/mem results in an SEPT violation.
-> > > 
-> > > The cause is ioremap() (via xlate_dev_mem_ptr()) establishes an
-> > > unencrypted mapping where the kernel had established an encrypted
-> > > mapping previously.
-> > > 
-> > > Linux traps read(2) access to the BIOS data area, and returns zero.
-> > > However, it turns out the kernel fails to enforce the same via mmap(2).
-> > > This is a hole, and unfortunately userspace has learned to exploit it
-> > > [2].
-> > > 
-> > > This means the kernel either needs a mechanism to ensure consistent
-> > > "encrypted" mappings of this /dev/mem mmap() hole, close the hole by
-> > > mapping the zero page in the mmap(2) path, block only BIOS data access
-> > > and let typical STRICT_DEVMEM protect the rest, or disable /dev/mem
-> > > altogether.
-> > > 
-> > > The simplest option for now is arrange for /dev/mem to always behave as
-> > > if lockdown is enabled for confidential guests. Require confidential
-> > > guest userspace to jettison legacy dependencies on /dev/mem similar to
-> > > how other legacy mechanisms are jettisoned for confidential operation.
-> > > Recall that modern methods for BIOS data access are available like
-> > > /sys/firmware/dmi/tables.
-> > > 
-> > > Cc: <x86@kernel.org>
-> > > Cc: Kees Cook <kees@kernel.org>
-> > > Cc: Ingo Molnar <mingo@kernel.org>
-> > > Cc: "Naveen N Rao" <naveen@kernel.org>
-> > > Cc: Vishal Annapurve <vannapurve@google.com>
-> > > Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>
-> > > Link: https://sources.debian.org/src/libdebian-installer/0.125/src/system/subarch-x86-linux.c/?hl=113#L93 [2]
-> > > Reported-by: Nikolay Borisov <nik.borisov@suse.com>
-> > > Closes: http://lore.kernel.org/20250318113604.297726-1-nik.borisov@suse.com [1]
-> > > Fixes: 9aa6ea69852c ("x86/tdx: Make pages shared in ioremap()")
-> > > Cc: <stable@vger.kernel.org>
-> > > Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> > > ---
-> > > Changes since v3
-> > > * Fix a 0day kbuild robot report about missing cc_platform.h include.
-> > > 
-> > >  arch/x86/Kconfig   |    4 ++++
-> > >  drivers/char/mem.c |   10 ++++++++++
-> > >  2 files changed, 14 insertions(+)
-> > > 
-> > > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> > > index 4b9f378e05f6..bf4528d9fd0a 100644
-> > > --- a/arch/x86/Kconfig
-> > > +++ b/arch/x86/Kconfig
-> > > @@ -891,6 +891,8 @@ config INTEL_TDX_GUEST
-> > >  	depends on X86_X2APIC
-> > >  	depends on EFI_STUB
-> > >  	depends on PARAVIRT
-> > > +	depends on STRICT_DEVMEM
-> > > +	depends on IO_STRICT_DEVMEM
-> > >  	select ARCH_HAS_CC_PLATFORM
-> > >  	select X86_MEM_ENCRYPT
-> > >  	select X86_MCE
-> > > @@ -1510,6 +1512,8 @@ config AMD_MEM_ENCRYPT
-> > 
-> > As far as I know, AMD_MEM_ENCRYPT is for the host SME support. Since 
-> > this is for encrypted guests, should the below dependencies be added to 
-> > CONFIG_SEV_GUEST instead?
-> > 
-> > Tom?
-> 
-> The placement rationale here was to have the DEVMEM restrictions next to
-> the ARCH_HAS_CC_PLATFORM 'select' statement which is INTEL_TDX_GUEST
-> and AMD_MEM_ENCRYPT with SEV_GUEST depending on AMD_MEM_ENCRYPT.
-> 
-> > >  	bool "AMD Secure Memory Encryption (SME) support"
-> > >  	depends on X86_64 && CPU_SUP_AMD
-> > >  	depends on EFI_STUB
-> > > +	depends on STRICT_DEVMEM
-> > > +	depends on IO_STRICT_DEVMEM
-> > 
-> > Can we use 'select' for the dependency on IO_STRICT_DEVMEM, if not both 
-> > the above?
-> > 
-> > IO_STRICT_DEVMEM in particular is not enabled by default, so applying 
-> > this patch and doing a 'make olddefconfig' disabled AMD_MEM_ENCRYPT, 
-> > which is not so good. Given that IO_STRICT_DEVMEM only depends on 
-> > STRICT_DEVMEM, I think a 'select' is ok.
-> 
-> Agree, that makes sense, and I do not think it will lead to any select
-> dependency problems given STRICT_DEVMEM is "default y" for x86.
-> 
-> > 
-> > >  	select DMA_COHERENT_POOL
-> > >  	select ARCH_USE_MEMREMAP_PROT
-> > >  	select INSTRUCTION_DECODER
-> > > diff --git a/drivers/char/mem.c b/drivers/char/mem.c
-> > > index 48839958b0b1..47729606b817 100644
-> > > --- a/drivers/char/mem.c
-> > > +++ b/drivers/char/mem.c
-> > > @@ -30,6 +30,7 @@
-> > >  #include <linux/uio.h>
-> > >  #include <linux/uaccess.h>
-> > >  #include <linux/security.h>
-> > > +#include <linux/cc_platform.h>
-> > >  
-> > >  #define DEVMEM_MINOR	1
-> > >  #define DEVPORT_MINOR	4
-> > > @@ -595,6 +596,15 @@ static int open_port(struct inode *inode, struct file *filp)
-> > >  	if (rc)
-> > >  		return rc;
-> > >  
-> > > +	/*
-> > > +	 * Enforce encrypted mapping consistency and avoid unaccepted
-> > > +	 * memory conflicts, "lockdown" /dev/mem for confidential
-> > > +	 * guests.
-> > > +	 */
-> > > +	if (IS_ENABLED(CONFIG_STRICT_DEVMEM) &&
-> > > +	    cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-> > > +		return -EPERM;
-> > > +
-> > >  	if (iminor(inode) != DEVMEM_MINOR)
-> > >  		return 0;
-> > >  
-> > > 
-> > 
-> > Otherwise, this looks good to me.
-> 
-> Thanks Naveen, can I take that as an Acked-by?
-
-Yes. I tested this and it solves the issue we see with SEV-SNP guest 
-userspace access to video ROM range. For this patch:
-Acked-by: Naveen N Rao (AMD) <naveen@kernel.org>
-Tested-by: Naveen N Rao (AMD) <naveen@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] configfs-tsm-report: Fix NULL dereference of tsm_ops
+To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev
+Cc: stable@vger.kernel.org, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Steven Price <steven.price@arm.com>, Sami Mujawar <sami.mujawar@arm.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Cedric Xing <cedric.xing@intel.com>,
+ x86@kernel.org
+References: <174544207062.2555330.2729112107050724843.stgit@dwillia2-xfh.jf.intel.com>
+ <7f1c8e94-9be7-4ff7-a2a4-063edce48c96@linux.intel.com>
+ <6809aaf1c7e44_71fe29494@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Language: en-US
+From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <6809aaf1c7e44_71fe29494@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
-Thanks,
-Naveen
+On 4/23/25 8:07 PM, Dan Williams wrote:
+> Sathyanarayanan Kuppuswamy wrote:
+>> On 4/23/25 2:01 PM, Dan Williams wrote:
+>>> Unlike sysfs, the lifetime of configfs objects is controlled by
+>>> userspace. There is no mechanism for the kernel to find and delete all
+>>> created config-items. Instead, the configfs-tsm-report mechanism has an
+>>> expectation that tsm_unregister() can happen at any time and cause
+>>> established config-item access to start failing.
+>>>
+>>> That expectation is not fully satisfied. While tsm_report_read(),
+>>> tsm_report_{is,is_bin}_visible(), and tsm_report_make_item() safely fail
+>>> if tsm_ops have been unregistered, tsm_report_privlevel_store()
+>>> tsm_report_provider_show() fail to check for ops registration. Add the
+>>> missing checks for tsm_ops having been removed.
+>>>
+>>> Now, in supporting the ability for tsm_unregister() to always succeed,
+>>> it leaves the problem of what to do with lingering config-items. The
+>>> expectation is that the admin that arranges for the ->remove() (unbind)
+>>> of the ${tsm_arch}-guest driver is also responsible for deletion of all
+>>> open config-items. Until that deletion happens, ->probe() (reload /
+>>> bind) of the ${tsm_arch}-guest driver fails.
+>>>
+>>> This allows for emergency shutdown / revocation of attestation
+>>> interfaces, and requires coordinated restart.
+>>>
+>>> Fixes: 70e6f7e2b985 ("configfs-tsm: Introduce a shared ABI for attestation reports")
+>>> Cc: stable@vger.kernel.org
+>>> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>> Cc: Steven Price <steven.price@arm.com>
+>>> Cc: Sami Mujawar <sami.mujawar@arm.com>
+>>> Cc: Borislav Petkov (AMD) <bp@alien8.de>
+>>> Cc: Tom Lendacky <thomas.lendacky@amd.com>
+>>> Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+>>> Reported-by: Cedric Xing <cedric.xing@intel.com>
+>>> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+>>> ---
+>> Looks good to me
+>>
+>> Reviewed-by: Kuppuswamy Sathyanarayanan
+>> <sathyanarayanan.kuppuswamy@linux.intel.com>
+> Thanks!
+>
+> [..]
+>>>    static const struct config_item_type tsm_reports_type = {
+>>> @@ -459,6 +478,11 @@ int tsm_register(const struct tsm_ops *ops, void *priv)
+>>>    		return -EBUSY;
+>>>    	}
+>>>    
+>>> +	if (atomic_read(&provider.count)) {
+>>> +		pr_err("configfs/tsm not empty\n");
+>>
+>> Nit: I think adding the provider ops name will make the debug log clear.
+> Recall though that the ->name field is a tsm_ops property. At this point
+> tsm_ops is already unregistered. Even if we kept the name around by
+> strdup() at register time the name does not help solving the conflict,
+> only rmdir of the created configs-item unblocks the next registration.
+
+Makes sense.
+
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
 
