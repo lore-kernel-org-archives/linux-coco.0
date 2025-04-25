@@ -1,153 +1,393 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5250412E1CD
-	for <linux-coco@lists.linux.dev>; Fri, 25 Apr 2025 16:34:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745598842; cv=none; b=qB7TIG05v6FzwvjZkDj9unOl3xquB0X/+JOebVDwdvtQI/Yh2nY3QQlFDlxVwn2zWy9wHGhCJ2EV6nWM43GiPK4xf9ouXLs6wFC0eMyh4YhaiaMi2A1MurJXWpYkSc4qCuEJai5Ga+aiKnf37b2KCjXeaPDhc0hxfIqCN3AQxXA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745598842; c=relaxed/simple;
-	bh=u1V74D4vVu2FoZASwEnzWG7Nqf24mqXLJWj3A4SEvw4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tsHWi6MAASsJ/v25ENsKHITfGU4vdCg+01ycJEKD6s3s9ltvQ8YR+v2aU5H6Af6FEjZ0xpuoHcpzZjfLiy1ognGTDO9j2rgCa3I8jxSM71pAUY5EyZzKcMA6pHfaeTIc2NbyrlgzPvsGKqdC5y+b46JAnPPdv3jRy775Z46z1cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dygSeYVb; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D7519E7FA
+	for <linux-coco@lists.linux.dev>; Fri, 25 Apr 2025 20:43:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745613825; cv=fail; b=dDNKDWHEs8s9WW3gsMzFakNV2WCAGmF0drRlrLdZZdUCv+qBIJ4YUA8DamIV2mf4p7WQwkHpZ8vL3QEaGRAt1hKeO7YRxG5cgLRgzFXZaIzqpcLEy3atp04lQQL8v0Xhuvv1xSRMpqvhLNDbb2SbB1pzGnWeptI4X6vAZtrNbRw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745613825; c=relaxed/simple;
+	bh=SVJSLN70KO0dxvTtm3C9co8ZWWOp5FCebOrAbg56ubg=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Cd25c9enp1s/F65us9cAttviUt0++UzuN0HxrKiko5sX3PWwCESuoVCy9NxANFWiZzNLQlzzUH1M5EWzFBTuG23c3x4wGMmx/J1xizB90qNwUQxs97gvcUPaZt02mITwkKuAThFSYJtts5rjsUH3wy7LZL9btDg7/mYzq7Xk9bU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K+3+q5ir; arc=fail smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dygSeYVb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K+3+q5ir"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745598841; x=1777134841;
+  t=1745613824; x=1777149824;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=u1V74D4vVu2FoZASwEnzWG7Nqf24mqXLJWj3A4SEvw4=;
-  b=dygSeYVbkPmCukY5WIRVBO+KNyNOVdiHLISchZGiY7dNTv/xuA7cMqrT
-   GO5BBRgCTCkgF4mheyx6ye9ebIL+u/3wOUUDC/SqtEBlOFn6+x/lUZ7FJ
-   JLCgVWjBtMybZPvobk5ivCzyHbH6ZWkC58GnYcDovCAAh0qrsVDVLzOsq
-   bu7nnKBZp2EoG3GWGnCNYPlnG+JJd7twT527dUb1LHAKnTAXJ4S8N9ykT
-   Dw6QjdLpw1O0IWhbqv894vmV4XXeKv7dVN2OfOBqTghS+lF/fLoeRQJy1
-   N/xYqVErAqIVaMvco1lBrY0Ioam0nATz8kcelZhTynMew/YVExb+JJEF2
-   A==;
-X-CSE-ConnectionGUID: AsJNb3r9QbqT9lvYBATgIg==
-X-CSE-MsgGUID: CqSsrAl4T+KlxNxVxvF1nA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11414"; a="47280791"
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
-   d="scan'208";a="47280791"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 09:34:00 -0700
-X-CSE-ConnectionGUID: PGn7jOLuSSW2LxL5u14jeQ==
-X-CSE-MsgGUID: RJnnuV3bTsOQcX+WI45Vrg==
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=SVJSLN70KO0dxvTtm3C9co8ZWWOp5FCebOrAbg56ubg=;
+  b=K+3+q5irM63wdWZfrbZbFz9cEeRTd2gXUQWZSpBEjDMqrs+gPmC9sWL7
+   uIqv/eHD2u2tvHSm0IcnDcwGAHTDAwgaeKZvXa6tXvSsXktpymyCK1soY
+   PTCDnr7lXYH626ZRAZc3Xr3pnPqdxdnNkXF3YgjHBTvEnQEHSYGPyjkKq
+   HAFBemhsiRPhsd8gfnpPvOGtOGX/NdA5pfTsvi9WyVkWULb/rfKpdOX27
+   L42/7cMTjMzSIrRf8pbx25/r5S1SP7Lc44I99uKevncS5yQpxqjNwM19Q
+   4SFykzx1H4I3foizNbcwxjcHmGGVyligZ127Flg7ZkYKlk9OLB1zv8+Xb
+   w==;
+X-CSE-ConnectionGUID: lvaGZ89wQ+CmOc1j+LXxlg==
+X-CSE-MsgGUID: jXSKTdgsRkiEqTwqFqVgmQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11414"; a="47300351"
+X-IronPort-AV: E=Sophos;i="6.15,240,1739865600"; 
+   d="scan'208";a="47300351"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 13:43:39 -0700
+X-CSE-ConnectionGUID: jyFsLiXeRdWXD/isiVh26A==
+X-CSE-MsgGUID: Rg24PaaSTuiUEvUY0Alq9A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
-   d="scan'208";a="132820919"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa010.jf.intel.com with ESMTP; 25 Apr 2025 09:33:56 -0700
-Date: Sat, 26 Apr 2025 00:29:17 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>, Lukas Wunner <lukas@wunner.de>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Alexey Kardashevskiy <aik@amd.com>, gregkh@linuxfoundation.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 08/11] PCI/IDE: Add IDE establishment helpers
-Message-ID: <aAu4XanJRnSuFXr/@yilunxu-OptiPlex-7050>
+X-IronPort-AV: E=Sophos;i="6.15,240,1739865600"; 
+   d="scan'208";a="138092438"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 13:43:36 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Fri, 25 Apr 2025 13:43:19 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Fri, 25 Apr 2025 13:43:19 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.176)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Fri, 25 Apr 2025 13:43:19 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MGOY9fmouV1WipxNHQLR1o5rrFXxSDZZYRVteBJmpl7Ix4uu0PtVBSqjqKEmKb1CBDE/rtRhrZtWSQbOpYWTMktaS8dn4YE1O127Smy0dwY0vFh/OHeJHfgiLIZwB8Wl8YI2qGmAQ+EEDnyQ10RSryZ5c9tQ3LvR8v+Fd0O2bClTyXh1LatbmqR03/eRqv8LZaixQMOj9fnJUk9K9fVEVjeaDAnLmNWRhFmRheomDCBdco2RY0vlf1ReaSmnFbASD0lWHwPblcyFR3F8PCCoBk7QtzaoFzKusIwaxACQvqUDf5VDySW0E57jO1gnKhSB70IH6JGwB0jaLsrJYnanCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0ji0anzYonFs96FUpCS6C7drjiM+gFfpxIPvlc9V/Fk=;
+ b=rXYmx/O2ychdr+MHwhrZasLGok6+SL5FliUOZ1S73o8tDezen5QONmSkUF2xwZdcA3xbmbK2FmEnku172QjyvKO+94WK66bLBF1yK59lE8qXtsoat4jBUMff/8a3giTYvyxDk+i+XHToOirOAS06d0XGyLILYETBTtFbiHgEMoUXQF2QS5TZrCgjQXuZK8Y5g2jUSZgsPT6y5znfnC7z7yY+Qh7A2PE5kYgXSm+f+DQRI4Z8RMdF+A05EAhIzB1sreIzli+/XpGLHyHFgi2XT6wM6tiq4/elQUlHqILEIx7awhQB9PvzSRXyexQC4ayjiJ77vTL8yo8r0z8wZDBPoA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by IA3PR11MB9422.namprd11.prod.outlook.com (2603:10b6:208:57e::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.26; Fri, 25 Apr
+ 2025 20:43:02 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.8655.031; Fri, 25 Apr 2025
+ 20:43:02 +0000
+Date: Fri, 25 Apr 2025 13:42:58 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Dionna Amalie Glaze <dionnaglaze@google.com>, Dan Williams
+	<dan.j.williams@intel.com>
+CC: <linux-coco@lists.linux.dev>, Bjorn Helgaas <bhelgaas@google.com>, "Lukas
+ Wunner" <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>, "Alexey
+ Kardashevskiy" <aik@amd.com>, Xu Yilun <yilun.xu@linux.intel.com>,
+	<gregkh@linuxfoundation.org>, <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH v2 09/11] PCI/IDE: Report available IDE streams
+Message-ID: <680bf3d2be818_1d5229490@dwillia2-xfh.jf.intel.com.notmuch>
 References: <174107245357.1288555.10863541957822891561.stgit@dwillia2-xfh.jf.intel.com>
- <174107250147.1288555.16948528371146013276.stgit@dwillia2-xfh.jf.intel.com>
- <yq5a7c3edot5.fsf@kernel.org>
+ <174107250696.1288555.15924775074966673629.stgit@dwillia2-xfh.jf.intel.com>
+ <CAAH4kHZS+wOrP-R22bnFRPY10jZw7swxmAsPXegpBjuVvJxe1Q@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAH4kHZS+wOrP-R22bnFRPY10jZw7swxmAsPXegpBjuVvJxe1Q@mail.gmail.com>
+X-ClientProxiedBy: MW2PR2101CA0032.namprd21.prod.outlook.com
+ (2603:10b6:302:1::45) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5a7c3edot5.fsf@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|IA3PR11MB9422:EE_
+X-MS-Office365-Filtering-Correlation-Id: 88c56c71-11bb-4be0-e0df-08dd8439c5e5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?b1ZjTmhCWFJEWmo1TlBsaGZaMXRPaFlZNXdlMGtSbjJMRzVRZnE5Um5aMXhX?=
+ =?utf-8?B?cUdiZ0N6cHJ4MTNKRmVtRnRTUFE2bjUzNkt1UGttZFk0YmxYSkdEckwzNHN6?=
+ =?utf-8?B?cWdqOUM0Q3RiOWlhbVVFdnhiZzNMNUlIaXBWY3Myc0NveGxPRS8vMUhxdU81?=
+ =?utf-8?B?S3I4Z0hDL2lQTHFYZ0hWVlltOHRCMForQjNIempVQzRkNGFxMURFRGlEM2Zv?=
+ =?utf-8?B?N1NQZWp2clpYVkI4anpWbjJTODFDN1Fnai9TRWJPbUJySWtPalBWVC9HRGF5?=
+ =?utf-8?B?RnVZUFRmSU1IRm5SQllONE5kMVU1NE9QZDJpdjd0Tnc4QlB5dWpNdlBnWFpU?=
+ =?utf-8?B?Zi9lSWY3Qm0xb1g5djEyUFpKN1BWcmxnNm9ZenRpU0F3RGhWZFBwMW5kb3Yz?=
+ =?utf-8?B?aGlpNzRXeDM2TWhLMVBDemVzUWlnSEhxdDZzNFVCWDRiVnN0RzJjaFZmQnFM?=
+ =?utf-8?B?eUd2bHpDMVp4dk1lSS9EbWxRanoyVFNxcFZVWHdRd1Z3dlFKTG04cVNqV2gz?=
+ =?utf-8?B?Qlk5L0xmVmIvRjkycFhWL1k3a0UxTlR6bUl5bk1ZelVZc2x5TzBsQjlFb2c0?=
+ =?utf-8?B?RW9NQUNGdDlhUUNNVjBsYVZXakVHNWtOK21pN1dvSGIyK2ZmTENIZmMybzZQ?=
+ =?utf-8?B?N2tQNnFSUE1LeDM3Nk9TeWdOLzNPL3hScDZob09CMWVqZk5od2dXK1BOSy9v?=
+ =?utf-8?B?c1hJdXZ3bm94VU9vMllrbURFcVhUNWN2YThjNHI5SW9heGk1S1Bob1E1dW9z?=
+ =?utf-8?B?dFRMeXZhVnpkZ1cwbm1JVktCMGxDcnpoWWN0dFYyRndKeHU5aXpIenpNSGNN?=
+ =?utf-8?B?VGZUV2tLK3piY0ttRzZzdnJCZk94bDV5K1Bvc1g5UXlMU3Y3ZDFiRGtwUThS?=
+ =?utf-8?B?ZXFpMEhRTVFqbHFGcHArZzFIenhKYitEdTBzOExQaS9ySTl2V1dwblV6dUMy?=
+ =?utf-8?B?bGxIaDRQaGtYbmlUUE9QV2RnSEh3WjBia3pWV1gxQ2NsZEFrQi95ZzBkaGFo?=
+ =?utf-8?B?ZTllY0JYOU9yV21uak0wcDloTGNaQUhqdG0zZHlyNnN5OGxXR0J0eGRuM1Zl?=
+ =?utf-8?B?TVliSWg0VFlYbVZCU3lrdXZINEQ0THpHUzFuMEdtTmpQc0dFdHRxZ0xvR281?=
+ =?utf-8?B?bE9wRTVxYk1jb1paVWQ0RjBIV05rRHlubW9wTlRhZG95d1B6OEhFOGpIYm1q?=
+ =?utf-8?B?RUt3ZDhQNWxlU1VsRHRBc08xMWtUS01Gd2xsOXNrQ01KUTlrZ0RsQk41NFA2?=
+ =?utf-8?B?ZTU3NmU1UWlBeG9nTVh1SWtpbUxrV252SWhkYm54bFJBZ0g1UzBHWmxIU25X?=
+ =?utf-8?B?RitDL0VNazJjdXluR0RzMnBBQVJUczdTNEhvS2l4c3Y5WWVyWkZmczdsU0dy?=
+ =?utf-8?B?TjcrcDlyUEM5eHcvcU9IRERpcW15b1UwTEN6QitaVFhoZXFOZVlIeURNM1pK?=
+ =?utf-8?B?RnVuRmpqbXNNcW50cEE4RHR0ekpBYW9pR0JiaVdPZ092eGtsV0IzNm1pTU1w?=
+ =?utf-8?B?Q1JWUWNid1BCNW9IRU1XMUtBRnh1UGZHR2RobS9aUVFXbTI4QTlLaGREVHV4?=
+ =?utf-8?B?czlRb201M0NZZEtlM2lnRWFoNW9zVGl0M3NqWTI0bEFJa1RnMzJhU3BIK0My?=
+ =?utf-8?B?aEpFWE5Ha01mVnJZSjZaWUFPaHliVCtZM01MV2EzZzBuQ09LRWdNcEY0Sjcv?=
+ =?utf-8?B?dUJGZFlkOExkSStxeFRPdmltS25nVHhkcnUzMGdVNCtHTFdqVGk2endCUkhu?=
+ =?utf-8?B?a2lQZzh1SkpDQkRKTXd4REZDVjBIMHZZOWp6SVRvelhNNEZwMUYwakZTRmdi?=
+ =?utf-8?B?ZEpVVFBQOFdybTBDeExXdXhVb081aERFM0dSNXJPZjdyeGtHdURFNG0vanJ1?=
+ =?utf-8?B?bXpXRUVYekVmV3BwNHlqRHYzRitsY2NtT2FFdlk0SXp5MWZsZmVBUHF1d21k?=
+ =?utf-8?Q?yEClOZ2LThQ=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bUwyMXVzOEUycS9yTUNwdHJsSy94ZFgxNGVGd0hMMzA5OTB4V2pOUE9aWnZ1?=
+ =?utf-8?B?ODZnRWJ0VjRNSFdkT1oxSUNCTEgrQmRkaXBoYnRlK0MwSnArZnh3alQxNnVX?=
+ =?utf-8?B?aGdNMnQ5Vm0vMDJ6WVNxQkQ3UDFqVjg4bTFGakdpNEJicGlRUU83d2UxNjdN?=
+ =?utf-8?B?YWxoRkFiQnZuVjBQak11ZVlmbEhEbDBQUnhRUUNyVFhzQld2RnVOd003YWsw?=
+ =?utf-8?B?aERvOXNNSXpVQ2JBY242THg4aEFVZFJLemN2UVUzblZoVE02bStNMXI0aXEz?=
+ =?utf-8?B?em9QZmJPMlpqUFRZSmVKNXZ6ZHZFaG95VVcvTVBDNTYwRW83amxrWWd3M2x4?=
+ =?utf-8?B?c3NHWWFpUFNYQURiNC81cHQ3N0JCK1EzTzJuWEFqRk5BSDZVVm9OazN1S0oz?=
+ =?utf-8?B?WHBHaGNaU1g0dUowTm1JOGQzTXhmSXdmVGdadFhyd2RISEpra1B2aE1CaFky?=
+ =?utf-8?B?cEZ1VmVQQnNZemVqZkFuTjJjUVU1dHlyLzE1M21Wa1hSSnZKeWJBQklYajdT?=
+ =?utf-8?B?R3FGcGluanNyclFsQWJPUzVVRHdsbm85VHhtOHVhUWp3NXdZZGJaZEl6SDl1?=
+ =?utf-8?B?YVFGRktmTnBqbDJyK2JhWUZsYjAyN2NWdGRuYUoxQlhjeVdnS1JWbWcwcUVF?=
+ =?utf-8?B?Mms1VUhkSDN3WjNEUVVkZ3kxcStSZVBwSy90bnZKbWNoVVVWa1VGRmRVSGRr?=
+ =?utf-8?B?bnZvVllYNlJsNG9ja25qdE50MFhFbDlUMTBQZmVWSCtsbUJGZ090aDJhWnhQ?=
+ =?utf-8?B?NThqU2UvaExmeFc0NXpNd0hnN3RSSUVJTVpRVlhKTWd0MHhXRDQ4cnNMZnp2?=
+ =?utf-8?B?UXFkNi9zRGJpQmtZUmdySlI5S0JuTTVUY1pGTzZTc3Y5LzZxNW1kdFpyTzhj?=
+ =?utf-8?B?Z1VxY2VrRGZPVk1oTlF5R3dxd003S2V4Vk4zWVB4bWVNTVo3Z2NnRWZZYnVZ?=
+ =?utf-8?B?SUhyL2xSOWNGWjM0cnA0MEF6RklBb2J5TXFEZXNMZXZteEx4bkEvelBkZEIw?=
+ =?utf-8?B?SkhMRzRXWTljOXRzS1dHY0NWUiswUmhMVmN0Z0xTUFhmWDBSNUIrMFhoQ1hW?=
+ =?utf-8?B?eXdWS1RlVXBXMW80ZjVPOVRaTHFWR3I2aVdMK2R0dW9EdE9tYlB2ZzFqRFQz?=
+ =?utf-8?B?UFZId0NORlBGWVdFNFNDLzB3ZWxRS3JzU3Z0bGgvYk1ocS9oUlhyRm1xcy91?=
+ =?utf-8?B?MDQyZzRZT0kxeTNwTml6KzN2YlNzQ0JFQWFHLy9KRmx2UW5lME5WamNQVHZC?=
+ =?utf-8?B?N1hoVHczODI2SExTUHVndVRCZHhPRXNWR1lOTnBwWjZ6UHA3UCtOb1dpZ3lk?=
+ =?utf-8?B?RVMxTURPMUlXcDNpcGlKTVJsWitHcC90ZVZFREUrWEYycVpPRWpKS0xpdzNv?=
+ =?utf-8?B?WlNMcTB3a2t5bitGTDZ5WWZnKzNka3dyMjVBa1JZTXJaYmdhTjVuWHREL3VQ?=
+ =?utf-8?B?QTQwSHJVbis0ZU5tZng3ZUVUYjhwejZ3LzN2dWVZZkw4SXFxRGpMRlRoMTBB?=
+ =?utf-8?B?czE1U3ljQmZwY1NGbFFYM0xFYlZIYnptYVphV0dwTlViRzJ6dWIxU0RBUHhE?=
+ =?utf-8?B?ZFIzMnY0V2NOMXZsVEtTQ2Z2TzhVSVFtRTZOWDk4YWQ3M1RHQW5wdTJuWTRD?=
+ =?utf-8?B?eFo0U2hnS0Q1RkpyRVZlZUtBZkExMmJDMzRqT3Y1RWZRemJEYWc5WUJtVkps?=
+ =?utf-8?B?U0FqTmwzd1hHK0w5Zjk3ci82eUFsRENvTzM4VTVKem5yeFdWNFlLaVkxY3hG?=
+ =?utf-8?B?VDYvYnlxZVhaQytkYlRzc3BrLzZhNGVpTFp4Qm1ZVWlVY1luNVh6eTlHM3p2?=
+ =?utf-8?B?NjdSaG1wNGlvenM1ZnpObFcrNS9IMEx2SXZWcy9ZOUxpbm5nN0pIenB1ejNJ?=
+ =?utf-8?B?czdvbkhpTHkyVmJ3cmlMRS9Yb05vbzdiTy9qajFuUXlGcmZuMFZDZ1dsb3VT?=
+ =?utf-8?B?V3FYclVvV25nUEpWckRsSW1kd3dzc1lsQXRYTUFiN0p5TXNXR29MVm9jZ08r?=
+ =?utf-8?B?bmlkVnBEN0NzZEQrTGNjcE9OYXpNOC85d1UxOHhndHd3dFB4Zkx1bnZGS0xN?=
+ =?utf-8?B?aFlBR0Y2a1Jqck9kdEdtWFRrdzhWTFNZaGxNK3ZEMjNsZVNmTnJVMnNGN2s1?=
+ =?utf-8?B?QTVWeUlSeTBvSEttOUJRc2lMWTh1SlgzNVBmU3NlblgwZVMzYnYxWUM3WWhC?=
+ =?utf-8?B?WVE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 88c56c71-11bb-4be0-e0df-08dd8439c5e5
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Apr 2025 20:43:02.6755
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eFvtK1kiRferl5m8DyKCv2kV5AEmAX9G76fFRh+wn+k9Nql4vmEO57RueZwUf4GOV3Ou5HBhXfANkmXRKegQNXQxlSfeNOVE8cXg7C9z37c=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB9422
+X-OriginatorOrg: intel.com
 
-On Mon, Apr 21, 2025 at 11:43:58AM +0530, Aneesh Kumar K.V wrote:
-> Dan Williams <dan.j.williams@intel.com> writes:
-> 
-> > There are two components to establishing an encrypted link, provisioning
-> > the stream in Partner Port config-space, and programming the keys into
-> > the link layer via IDE_KM (IDE Key Management). This new library,
-> > drivers/pci/ide.c, enables the former. IDE_KM, via a TSM low-level
-> > driver, is saved for later.
+Dionna Amalie Glaze wrote:
+> On Mon, Mar 3, 2025 at 11:20 PM Dan Williams <dan.j.williams@intel.com> wrote:
 > >
-> ....
+> > The limited number of link-encryption (IDE) streams that a given set of
+> > host bridges supports is a platform specific detail. Provide
+> > pci_ide_init_nr_streams() as a generic facility for either platform TSM
+> > drivers, or PCI core native IDE, to report the number available streams.
+> > After invoking pci_ide_init_nr_streams() an "available_secure_streams"
+> > attribute appears in PCI host bridge sysfs to convey that count.
+> >
+> > Cc: Bjorn Helgaas <bhelgaas@google.com>
+> > Cc: Lukas Wunner <lukas@wunner.de>
+> > Cc: Samuel Ortiz <sameo@rivosinc.com>
+> > Cc: Alexey Kardashevskiy <aik@amd.com>
+> > Cc: Xu Yilun <yilun.xu@linux.intel.com>
+> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > ---
+> >  .../ABI/testing/sysfs-devices-pci-host-bridge      |   12 ++++
+> >  drivers/pci/ide.c                                  |   58 ++++++++++++++++++++
+> >  drivers/pci/pci.h                                  |    3 +
+> >  drivers/pci/probe.c                                |   12 ++++
+> >  include/linux/pci.h                                |    8 +++
+> >  5 files changed, 92 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/Documentation/ABI/testing/sysfs-devices-pci-host-bridge b/Documentation/ABI/testing/sysfs-devices-pci-host-bridge
+> > index 51dc9eed9353..4624469e56d4 100644
+> > --- a/Documentation/ABI/testing/sysfs-devices-pci-host-bridge
+> > +++ b/Documentation/ABI/testing/sysfs-devices-pci-host-bridge
+> > @@ -20,6 +20,7 @@ What:         pciDDDD:BB/streamH.R.E:DDDD:BB:DD:F
+> >  Date:          December, 2024
+> >  Contact:       linux-pci@vger.kernel.org
+> >  Description:
+> > +<<<<<<< current
 > 
-> > +/**
-> > + * pci_ide_stream_setup() - program settings to Selective IDE Stream registers
-> > + * @pdev: PCIe device object for either a Root Port or Endpoint Partner Port
-> > + * @ide: registered IDE settings descriptor
-> > + *
-> > + * When @pdev is a PCI_EXP_TYPE_ENDPOINT then the PCI_IDE_EP partner
-> > + * settings are written to @pdev's Selective IDE Stream register block,
-> > + * and when @pdev is a PCI_EXP_TYPE_ROOT_PORT, the PCI_IDE_RP settings
-> > + * are selected.
-> > + */
-> > +void pci_ide_stream_setup(struct pci_dev *pdev, struct pci_ide *ide)
+> Drop?
+
+Whoops, surprised checkpatch did not flag that.
+
+> 
+> >                 (RO) When a platform has established a secure connection, PCIe
+> >                 IDE, between two Partner Ports, this symlink appears. The
+> >                 primary function is to account the stream slot / resources
+> > @@ -30,3 +31,14 @@ Description:
+> >                 assigned Selective IDE Stream Register Block in the Root Port
+> >                 and Endpoint, and H represents a platform specific pool of
+> >                 stream resources shared by the Root Ports in a host bridge.
+> > +
+> > +What:          pciDDDD:BB/available_secure_streams
+> > +Date:          December, 2024
+> > +Contact:       linux-pci@vger.kernel.org
+> > +Description:
+> > +               (RO) When a host bridge has Root Ports that support PCIe IDE
+> > +               (link encryption and integrity protection) there may be a
+> > +               limited number of streams that can be used for establishing new
+> > +               secure links. This attribute decrements upon secure link setup,
+> > +               and increments upon secure link teardown. The in-use stream
+> > +               count is determined by counting stream symlinks.
+> 
+> Please describe the expected form metavariables DDDD and BB will take.
+
+I went ahead and folded the below into the preceding patch, and will add
+another "See /sys/devices/pciDDDD:BB entry..." note.
+
+diff --git a/Documentation/ABI/testing/sysfs-devices-pci-host-bridge b/Documentation/ABI/testing/sysfs-devices-pci-host-bridge
+index 51dc9eed9353..8ea48b7aa996 100644
+--- a/Documentation/ABI/testing/sysfs-devices-pci-host-bridge
++++ b/Documentation/ABI/testing/sysfs-devices-pci-host-bridge
+@@ -5,8 +5,10 @@ Contact:	linux-pci@vger.kernel.org
+ Description:
+ 		A PCI host bridge device parents a PCI bus device topology. PCI
+ 		controllers may also parent host bridges. The DDDD:BB format
+-		conveys the PCI domain number and root bus number of the
+-		host bridge.
++		conveys the PCI domain number and root bus number (in
++		hexadecimal) of the host bridge. Note that the domain number may
++		be larger than the 16-bits that the "DDDD" format implies for
++		emulated host-bridges.
+ 
+ What:		pciDDDD:BB/firmware_node
+ Date:		December, 2024
+@@ -14,7 +16,9 @@ Contact:	linux-pci@vger.kernel.org
+ Description:
+ 		(RO) Symlink to the platform firmware device object "companion"
+ 		of the host bridge. For example, an ACPI device with an _HID of
+-		PNP0A08 (/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00).
++		PNP0A08 (/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00). See
++		/sys/devices/pciDDDD:BB entry for details about the DDDD:BB
++		format.
+ 
+ What:		pciDDDD:BB/streamH.R.E:DDDD:BB:DD:F
+ Date:		December, 2024
+@@ -29,4 +33,6 @@ Description:
+ 		bus:BB device:DD function:F. Where R and E represent the
+ 		assigned Selective IDE Stream Register Block in the Root Port
+ 		and Endpoint, and H represents a platform specific pool of
+-		stream resources shared by the Root Ports in a host bridge.
++		stream resources shared by the Root Ports in a host bridge.  See
++		/sys/devices/pciDDDD:BB entry for details about the DDDD:BB
++		format.
+
+> > diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
+> > index b2091f6260e6..0c72985e6a65 100644
+> > --- a/drivers/pci/ide.c
+> > +++ b/drivers/pci/ide.c
+> > @@ -439,3 +439,61 @@ void pci_ide_stream_disable(struct pci_dev *pdev, struct pci_ide *ide)
+> >         pci_write_config_dword(pdev, pos + PCI_IDE_SEL_CTL, 0);
+> >  }
+> >  EXPORT_SYMBOL_GPL(pci_ide_stream_disable);
+> > +
+> > +static ssize_t available_secure_streams_show(struct device *dev,
+> > +                                            struct device_attribute *attr,
+> > +                                            char *buf)
 > > +{
-> > +	struct pci_ide_partner *settings = to_settings(pdev, ide);
-> > +	int pos;
-> > +	u32 val;
+> > +       struct pci_host_bridge *hb = to_pci_host_bridge(dev);
+> > +       int avail;
 > > +
-> > +	if (!settings)
-> > +		return;
+> > +       if (hb->nr_ide_streams < 0)
+> > +               return -ENXIO;
 > > +
-> > +	pos = sel_ide_offset(pdev->nr_link_ide, settings->stream_index,
-> > +			     pdev->nr_ide_mem);
-> >
+> > +       avail = hb->nr_ide_streams -
+> > +               bitmap_weight(hb->ide_stream_map, hb->nr_ide_streams);
+> > +       return sysfs_emit(buf, "%d\n", avail);
+> > +}
+> > +static DEVICE_ATTR_RO(available_secure_streams);
+> > +
+> > +static struct attribute *pci_ide_attrs[] = {
+> > +       &dev_attr_available_secure_streams.attr,
+> > +       NULL,
+> > +};
+> > +
+> > +static umode_t pci_ide_attr_visible(struct kobject *kobj, struct attribute *a, int n)
+> > +{
+> > +       struct device *dev = kobj_to_dev(kobj);
+> > +       struct pci_host_bridge *hb = to_pci_host_bridge(dev);
+> > +
+> > +       if (a == &dev_attr_available_secure_streams.attr)
+> > +               if (hb->nr_ide_streams < 0)
+> > +                       return 0;
+> > +
+> > +       return a->mode;
+> > +}
+> > +
+> > +struct attribute_group pci_ide_attr_group = {
+> > +       .attrs = pci_ide_attrs,
+> > +       .is_visible = pci_ide_attr_visible,
+> > +};
+> > +
+> > +/**
+> > + * pci_init_nr_ide_streams() - size the pool of IDE Stream resources
 > 
-> This and the similar offset caclulation below needs the EXT_CAP_ID_IDE offset 
+> /size/sets the size of/
+
+Fixed.
+
+> > + * @hb: host bridge boundary for the stream pool
+> > + * @nr: number of streams
+> > + *
+> > + * Enable IDE Stream establishment by setting the number of stream
+> > + * resources available at the host bridge. Platform init code must set
+> > + * this before the first pci_ide_stream_alloc() call.
 > 
-> modified   drivers/pci/ide.c
-> @@ -10,11 +10,13 @@
->  #include <linux/bitfield.h>
->  #include "pci.h"
->  
-> -static int sel_ide_offset(int nr_link_ide, int stream_index, int nr_ide_mem)
-> +static int sel_ide_offset(struct pci_dev *pdev, int nr_link_ide,
-> +			  int stream_index, int nr_ide_mem)
->  {
->  	int offset;
->  
-> -	offset = PCI_IDE_LINK_STREAM_0 + nr_link_ide * PCI_IDE_LINK_BLOCK_SIZE;
-> +	offset = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_IDE);
-> +	offset += PCI_IDE_LINK_STREAM_0 + nr_link_ide * PCI_IDE_LINK_BLOCK_SIZE;
+> Is failing to call this a caught error by pci_ide_stream_alloc?
 
-ide_cap, nr_link_ide, nr_ide_mem are all cached in pci_dev structure at
-the end of pci_ide_init().
+Good point, it should.
 
-So either use all cached value in pdev (not for pci_ide_init()):
+> > + *
+> > + * The "PCI_IDE" symbol namespace is required because this is typically
+> > + * a detail that is settled in early PCI init, i.e. only an expert or
+> > + * test module should consume this export.
+> 
+> Perhaps start with "Expert use only"?
 
-  static int sel_ide_offset(struct pci_dev *pdev, int stream_index)
+Updated it to:
 
-or don't use any cached value:
+@@ -480,17 +490,18 @@ struct attribute_group pci_ide_attr_group = {
+ };
+ 
+ /**
+- * pci_ide_init_nr_streams() - size the pool of IDE Stream resources
++ * pci_ide_init_nr_streams() - sets size of the pool of IDE Stream resources
+  * @hb: host bridge boundary for the stream pool
+  * @nr: number of streams
+  *
+- * Enable IDE Stream establishment by setting the number of stream
+- * resources available at the host bridge. Platform init code must set
+- * this before the first pci_ide_stream_alloc() call.
++ * Platform PCI init and/or expert test module use only. Enable IDE
++ * Stream establishment by setting the number of stream resources
++ * available at the host bridge. Platform init code must set this before
++ * the first pci_ide_stream_alloc() call.
+  *
+  * The "PCI_IDE" symbol namespace is required because this is typically
+- * a detail that is settled in early PCI init, i.e. only an expert or
+- * test module should consume this export.
++ * a detail that is settled in early PCI init. I.e. this export is not
++ * for endpoint drivers.
+  */
 
-  static int sel_ide_offset(u16 dev_cap, int nr_link_ide, int stream_index, int nr_ide_mem)
-
-or keep sel_ide_offset() unchanged, alway do:
-
-  ide_cap + sel_ide_offset()
-
->  
->  	/*
->  	 * Assume a constant number of address association resources per
-> @@ -66,7 +68,7 @@ void pci_ide_init(struct pci_dev *pdev)
->  	nr_streams = min(1 + FIELD_GET(PCI_IDE_CAP_SEL_NUM_MASK, val),
->  			 CONFIG_PCI_IDE_STREAM_MAX);
->  	for (int i = 0; i < nr_streams; i++) {
-> -		int offset = sel_ide_offset(nr_link_ide, i, nr_ide_mem);
-> +		int offset = sel_ide_offset(pdev, nr_link_ide, i, nr_ide_mem);
->  		int nr_assoc;
->  		u32 val;
-
-With your change, the next line will be broken:
-
--		pci_read_config_dword(pdev, ide_cap + offset, &val);
-+		pci_read_config_dword(pdev, offset, &val);
-
-Thanks,
-Yilun
+Thanks for the fixup suggestions.
