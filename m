@@ -1,265 +1,153 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7FB6222576;
-	Fri, 25 Apr 2025 11:08:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5250412E1CD
+	for <linux-coco@lists.linux.dev>; Fri, 25 Apr 2025 16:34:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745579323; cv=none; b=nw3dcXOLiJflRIOPQbn5lDAjKt1Mzq4vjrNvB4rObRlgIsesPY2mqbKT4IUPjtyYRTIgjkpQV4eFiBWQpw1hJofehb1ezmR3F75j2xum7rdqN7ZCJtGXAaRs/1bBe8MkDKeUHv3BMPkfN5nAgrEUSaPWCaRa+0Ufmvg3zmCHj20=
+	t=1745598842; cv=none; b=qB7TIG05v6FzwvjZkDj9unOl3xquB0X/+JOebVDwdvtQI/Yh2nY3QQlFDlxVwn2zWy9wHGhCJ2EV6nWM43GiPK4xf9ouXLs6wFC0eMyh4YhaiaMi2A1MurJXWpYkSc4qCuEJai5Ga+aiKnf37b2KCjXeaPDhc0hxfIqCN3AQxXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745579323; c=relaxed/simple;
-	bh=m9oQt6VPLAxFVRIMYXwsR6soKz0BMud64V+MX8cIpw0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QYDMChqgihRhgtfp6tunpIIWS0a076emubwB+LuV4yqzwlcTVbrky1xCv/9NNO/Sner8dHIhsH3nbECoOsb8/NbiW6019szySNf6KPQMYcZgnI12rxOWHFEABUWVmTS9KDC46UyYONM3Ywg7AGkrkioZ+ylcJqoyxEmDuTaVN3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 87BC9106F;
-	Fri, 25 Apr 2025 04:08:35 -0700 (PDT)
-Received: from [10.57.45.160] (unknown [10.57.45.160])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 709853F59E;
-	Fri, 25 Apr 2025 04:08:37 -0700 (PDT)
-Message-ID: <d582f30d-4d30-4ca0-992b-6bf7d8f7da83@arm.com>
-Date: Fri, 25 Apr 2025 12:08:36 +0100
+	s=arc-20240116; t=1745598842; c=relaxed/simple;
+	bh=u1V74D4vVu2FoZASwEnzWG7Nqf24mqXLJWj3A4SEvw4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tsHWi6MAASsJ/v25ENsKHITfGU4vdCg+01ycJEKD6s3s9ltvQ8YR+v2aU5H6Af6FEjZ0xpuoHcpzZjfLiy1ognGTDO9j2rgCa3I8jxSM71pAUY5EyZzKcMA6pHfaeTIc2NbyrlgzPvsGKqdC5y+b46JAnPPdv3jRy775Z46z1cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dygSeYVb; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dygSeYVb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745598841; x=1777134841;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=u1V74D4vVu2FoZASwEnzWG7Nqf24mqXLJWj3A4SEvw4=;
+  b=dygSeYVbkPmCukY5WIRVBO+KNyNOVdiHLISchZGiY7dNTv/xuA7cMqrT
+   GO5BBRgCTCkgF4mheyx6ye9ebIL+u/3wOUUDC/SqtEBlOFn6+x/lUZ7FJ
+   JLCgVWjBtMybZPvobk5ivCzyHbH6ZWkC58GnYcDovCAAh0qrsVDVLzOsq
+   bu7nnKBZp2EoG3GWGnCNYPlnG+JJd7twT527dUb1LHAKnTAXJ4S8N9ykT
+   Dw6QjdLpw1O0IWhbqv894vmV4XXeKv7dVN2OfOBqTghS+lF/fLoeRQJy1
+   N/xYqVErAqIVaMvco1lBrY0Ioam0nATz8kcelZhTynMew/YVExb+JJEF2
+   A==;
+X-CSE-ConnectionGUID: AsJNb3r9QbqT9lvYBATgIg==
+X-CSE-MsgGUID: CqSsrAl4T+KlxNxVxvF1nA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11414"; a="47280791"
+X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
+   d="scan'208";a="47280791"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 09:34:00 -0700
+X-CSE-ConnectionGUID: PGn7jOLuSSW2LxL5u14jeQ==
+X-CSE-MsgGUID: RJnnuV3bTsOQcX+WI45Vrg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
+   d="scan'208";a="132820919"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa010.jf.intel.com with ESMTP; 25 Apr 2025 09:33:56 -0700
+Date: Sat, 26 Apr 2025 00:29:17 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	Bjorn Helgaas <bhelgaas@google.com>, Lukas Wunner <lukas@wunner.de>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Alexey Kardashevskiy <aik@amd.com>, gregkh@linuxfoundation.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v2 08/11] PCI/IDE: Add IDE establishment helpers
+Message-ID: <aAu4XanJRnSuFXr/@yilunxu-OptiPlex-7050>
+References: <174107245357.1288555.10863541957822891561.stgit@dwillia2-xfh.jf.intel.com>
+ <174107250147.1288555.16948528371146013276.stgit@dwillia2-xfh.jf.intel.com>
+ <yq5a7c3edot5.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 05/43] arm64: RME: Check for RME support at KVM init
-Content-Language: en-GB
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>
-References: <20250416134208.383984-1-steven.price@arm.com>
- <20250416134208.383984-6-steven.price@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20250416134208.383984-6-steven.price@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq5a7c3edot5.fsf@kernel.org>
 
-On 16/04/2025 14:41, Steven Price wrote:
-> Query the RMI version number and check if it is a compatible version. A
-> static key is also provided to signal that a supported RMM is available.
+On Mon, Apr 21, 2025 at 11:43:58AM +0530, Aneesh Kumar K.V wrote:
+> Dan Williams <dan.j.williams@intel.com> writes:
 > 
-> Functions are provided to query if a VM or VCPU is a realm (or rec)
-> which currently will always return false.
+> > There are two components to establishing an encrypted link, provisioning
+> > the stream in Partner Port config-space, and programming the keys into
+> > the link layer via IDE_KM (IDE Key Management). This new library,
+> > drivers/pci/ide.c, enables the former. IDE_KM, via a TSM low-level
+> > driver, is saved for later.
+> >
+> ....
 > 
-> Later patches make use of struct realm and the states as the ioctls
-> interfaces are added to support realm and REC creation and destruction.
+> > +/**
+> > + * pci_ide_stream_setup() - program settings to Selective IDE Stream registers
+> > + * @pdev: PCIe device object for either a Root Port or Endpoint Partner Port
+> > + * @ide: registered IDE settings descriptor
+> > + *
+> > + * When @pdev is a PCI_EXP_TYPE_ENDPOINT then the PCI_IDE_EP partner
+> > + * settings are written to @pdev's Selective IDE Stream register block,
+> > + * and when @pdev is a PCI_EXP_TYPE_ROOT_PORT, the PCI_IDE_RP settings
+> > + * are selected.
+> > + */
+> > +void pci_ide_stream_setup(struct pci_dev *pdev, struct pci_ide *ide)
+> > +{
+> > +	struct pci_ide_partner *settings = to_settings(pdev, ide);
+> > +	int pos;
+> > +	u32 val;
+> > +
+> > +	if (!settings)
+> > +		return;
+> > +
+> > +	pos = sel_ide_offset(pdev->nr_link_ide, settings->stream_index,
+> > +			     pdev->nr_ide_mem);
+> >
 > 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> ---
-> Changes since v6:
->   * Improved message for an unsupported RMI ABI version.
-> Changes since v5:
->   * Reword "unsupported" message from "host supports" to "we want" to
->     clarify that 'we' are the 'host'.
-> Changes since v2:
->   * Drop return value from kvm_init_rme(), it was always 0.
->   * Rely on the RMM return value to identify whether the RSI ABI is
->     compatible.
-> ---
->   arch/arm64/include/asm/kvm_emulate.h | 18 +++++++++
->   arch/arm64/include/asm/kvm_host.h    |  4 ++
->   arch/arm64/include/asm/kvm_rme.h     | 56 ++++++++++++++++++++++++++++
->   arch/arm64/include/asm/virt.h        |  1 +
->   arch/arm64/kvm/Makefile              |  3 +-
->   arch/arm64/kvm/arm.c                 |  6 +++
->   arch/arm64/kvm/rme.c                 | 56 ++++++++++++++++++++++++++++
->   7 files changed, 143 insertions(+), 1 deletion(-)
->   create mode 100644 arch/arm64/include/asm/kvm_rme.h
->   create mode 100644 arch/arm64/kvm/rme.c
+> This and the similar offset caclulation below needs the EXT_CAP_ID_IDE offset 
 > 
-> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
-> index d7cf66573aca..1c43a4fc25dd 100644
-> --- a/arch/arm64/include/asm/kvm_emulate.h
-> +++ b/arch/arm64/include/asm/kvm_emulate.h
-> @@ -686,4 +686,22 @@ static inline void vcpu_set_hcrx(struct kvm_vcpu *vcpu)
->   			vcpu->arch.hcrx_el2 |= HCRX_EL2_EnFPM;
->   	}
->   }
-> +
-> +static inline bool kvm_is_realm(struct kvm *kvm)
-> +{
-> +	if (static_branch_unlikely(&kvm_rme_is_available) && kvm)
-> +		return kvm->arch.is_realm;
-> +	return false;
-> +}
-> +
-> +static inline enum realm_state kvm_realm_state(struct kvm *kvm)
-> +{
-> +	return READ_ONCE(kvm->arch.realm.state);
-> +}
-> +
-> +static inline bool vcpu_is_rec(struct kvm_vcpu *vcpu)
-> +{
-> +	return false;
-> +}
-> +
->   #endif /* __ARM64_KVM_EMULATE_H__ */
-> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-> index e98cfe7855a6..7bd81b86eab0 100644
-> --- a/arch/arm64/include/asm/kvm_host.h
-> +++ b/arch/arm64/include/asm/kvm_host.h
-> @@ -27,6 +27,7 @@
->   #include <asm/fpsimd.h>
->   #include <asm/kvm.h>
->   #include <asm/kvm_asm.h>
-> +#include <asm/kvm_rme.h>
->   #include <asm/vncr_mapping.h>
->   
->   #define __KVM_HAVE_ARCH_INTC_INITIALIZED
-> @@ -394,6 +395,9 @@ struct kvm_arch {
->   	 * the associated pKVM instance in the hypervisor.
->   	 */
->   	struct kvm_protected_vm pkvm;
-> +
-> +	bool is_realm;
-> +	struct realm realm;
->   };
->   
->   struct kvm_vcpu_fault_info {
-> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/asm/kvm_rme.h
-> new file mode 100644
-> index 000000000000..9c8a0b23e0e4
-> --- /dev/null
-> +++ b/arch/arm64/include/asm/kvm_rme.h
-> @@ -0,0 +1,56 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Copyright (C) 2023 ARM Ltd.
-> + */
-> +
-> +#ifndef __ASM_KVM_RME_H
-> +#define __ASM_KVM_RME_H
-> +
-> +/**
-> + * enum realm_state - State of a Realm
-> + */
-> +enum realm_state {
-> +	/**
-> +	 * @REALM_STATE_NONE:
-> +	 *      Realm has not yet been created. rmi_realm_create() may be
-> +	 *      called to create the realm.
-> +	 */
-> +	REALM_STATE_NONE,
-> +	/**
-> +	 * @REALM_STATE_NEW:
-> +	 *      Realm is under construction, not eligible for execution. Pages
-> +	 *      may be populated with rmi_data_create().
-> +	 */
-> +	REALM_STATE_NEW,
-> +	/**
-> +	 * @REALM_STATE_ACTIVE:
-> +	 *      Realm has been created and is eligible for execution with
-> +	 *      rmi_rec_enter(). Pages may no longer be populated with
-> +	 *      rmi_data_create().
-> +	 */
-> +	REALM_STATE_ACTIVE,
-> +	/**
-> +	 * @REALM_STATE_DYING:
-> +	 *      Realm is in the process of being destroyed or has already been
-> +	 *      destroyed.
-> +	 */
-> +	REALM_STATE_DYING,
-> +	/**
-> +	 * @REALM_STATE_DEAD:
-> +	 *      Realm has been destroyed.
-> +	 */
-> +	REALM_STATE_DEAD
-> +};
-> +
-> +/**
-> + * struct realm - Additional per VM data for a Realm
-> + *
-> + * @state: The lifetime state machine for the realm
-> + */
-> +struct realm {
-> +	enum realm_state state;
-> +};
-> +
-> +void kvm_init_rme(void);
-> +
-> +#endif /* __ASM_KVM_RME_H */
-> diff --git a/arch/arm64/include/asm/virt.h b/arch/arm64/include/asm/virt.h
-> index ebf4a9f943ed..e45d47156dcf 100644
-> --- a/arch/arm64/include/asm/virt.h
-> +++ b/arch/arm64/include/asm/virt.h
-> @@ -81,6 +81,7 @@ void __hyp_reset_vectors(void);
->   bool is_kvm_arm_initialised(void);
->   
->   DECLARE_STATIC_KEY_FALSE(kvm_protected_mode_initialized);
-> +DECLARE_STATIC_KEY_FALSE(kvm_rme_is_available);
->   
->   static inline bool is_pkvm_initialized(void)
->   {
-> diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
-> index 209bc76263f1..2ebc66812d49 100644
-> --- a/arch/arm64/kvm/Makefile
-> +++ b/arch/arm64/kvm/Makefile
-> @@ -23,7 +23,8 @@ kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o pvtime.o \
->   	 vgic/vgic-v3.o vgic/vgic-v4.o \
->   	 vgic/vgic-mmio.o vgic/vgic-mmio-v2.o \
->   	 vgic/vgic-mmio-v3.o vgic/vgic-kvm-device.o \
-> -	 vgic/vgic-its.o vgic/vgic-debug.o vgic/vgic-v3-nested.o
-> +	 vgic/vgic-its.o vgic/vgic-debug.o vgic/vgic-v3-nested.o \
-> +	 rme.o
->   
->   kvm-$(CONFIG_HW_PERF_EVENTS)  += pmu-emul.o pmu.o
->   kvm-$(CONFIG_ARM64_PTR_AUTH)  += pauth.o
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 68fec8c95fee..856a721d41ac 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -40,6 +40,7 @@
->   #include <asm/kvm_nested.h>
->   #include <asm/kvm_pkvm.h>
->   #include <asm/kvm_ptrauth.h>
-> +#include <asm/kvm_rme.h>
->   #include <asm/sections.h>
->   
->   #include <kvm/arm_hypercalls.h>
-> @@ -59,6 +60,8 @@ enum kvm_wfx_trap_policy {
->   static enum kvm_wfx_trap_policy kvm_wfi_trap_policy __read_mostly = KVM_WFX_NOTRAP_SINGLE_TASK;
->   static enum kvm_wfx_trap_policy kvm_wfe_trap_policy __read_mostly = KVM_WFX_NOTRAP_SINGLE_TASK;
->   
-> +DEFINE_STATIC_KEY_FALSE(kvm_rme_is_available);
-> +
->   DECLARE_KVM_HYP_PER_CPU(unsigned long, kvm_hyp_vector);
->   
->   DEFINE_PER_CPU(unsigned long, kvm_arm_hyp_stack_base);
-> @@ -2819,6 +2822,9 @@ static __init int kvm_arm_init(void)
->   
->   	in_hyp_mode = is_kernel_in_hyp_mode();
->   
-> +	if (in_hyp_mode)
-> +		kvm_init_rme();
-> +
+> modified   drivers/pci/ide.c
+> @@ -10,11 +10,13 @@
+>  #include <linux/bitfield.h>
+>  #include "pci.h"
+>  
+> -static int sel_ide_offset(int nr_link_ide, int stream_index, int nr_ide_mem)
+> +static int sel_ide_offset(struct pci_dev *pdev, int nr_link_ide,
+> +			  int stream_index, int nr_ide_mem)
+>  {
+>  	int offset;
+>  
+> -	offset = PCI_IDE_LINK_STREAM_0 + nr_link_ide * PCI_IDE_LINK_BLOCK_SIZE;
+> +	offset = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_IDE);
+> +	offset += PCI_IDE_LINK_STREAM_0 + nr_link_ide * PCI_IDE_LINK_BLOCK_SIZE;
 
-minor nit:
+ide_cap, nr_link_ide, nr_ide_mem are all cached in pci_dev structure at
+the end of pci_ide_init().
 
-I wondering if this check is necessary. If the host is running under a
-a hypervisor, it could relay the calls to the RMM. Nothing urgent, but
-it is a possibility. It doesn't matter to the host as such. The
-Realm Guest will do its own verification and the host can ignore
-what lies beneath ?
+So either use all cached value in pdev (not for pci_ide_init()):
 
+  static int sel_ide_offset(struct pci_dev *pdev, int stream_index)
 
-Either ways,
+or don't use any cached value:
 
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+  static int sel_ide_offset(u16 dev_cap, int nr_link_ide, int stream_index, int nr_ide_mem)
 
+or keep sel_ide_offset() unchanged, alway do:
 
+  ide_cap + sel_ide_offset()
+
+>  
+>  	/*
+>  	 * Assume a constant number of address association resources per
+> @@ -66,7 +68,7 @@ void pci_ide_init(struct pci_dev *pdev)
+>  	nr_streams = min(1 + FIELD_GET(PCI_IDE_CAP_SEL_NUM_MASK, val),
+>  			 CONFIG_PCI_IDE_STREAM_MAX);
+>  	for (int i = 0; i < nr_streams; i++) {
+> -		int offset = sel_ide_offset(nr_link_ide, i, nr_ide_mem);
+> +		int offset = sel_ide_offset(pdev, nr_link_ide, i, nr_ide_mem);
+>  		int nr_assoc;
+>  		u32 val;
+
+With your change, the next line will be broken:
+
+-		pci_read_config_dword(pdev, ide_cap + offset, &val);
++		pci_read_config_dword(pdev, offset, &val);
+
+Thanks,
+Yilun
