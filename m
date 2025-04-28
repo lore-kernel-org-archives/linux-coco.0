@@ -1,25 +1,73 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A36418CC15;
-	Mon, 28 Apr 2025 08:58:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F56B20CCC8
+	for <linux-coco@lists.linux.dev>; Mon, 28 Apr 2025 14:04:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745830705; cv=none; b=BxMrYPdcNKWowUe1HtGsAbdEHu4bdfVO0K81Fqns/CxBtYKrYR2JPl+sRZ32zY4I7rn06SzrJ8/rD53+879PKDQNJdMH+KVxzJMvhQLdwY1kkbfVYvjjXuQnI8K8YgLYrV53dRFr/nlUK0fly8Cw1VW4nq4CMysfleKoz4xQ+Yc=
+	t=1745849098; cv=none; b=uc7rXmOYyxez/X1/93NIwlvciYOFj2/F2BMW5nodF9ilQqyrYPSb9vJYxuCgrPcUhz9/oOaYTqv3zbbgjYAm9eVXcFh5e/+ZGXhKb4118OB0CESVJI5Vua+7UBJjxr4p0hewHQXL16DUd8mKeIplEVrMPfsxbucIXx5wyN0QOgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745830705; c=relaxed/simple;
-	bh=hBhlveHVYfdqh7hjf/loO1kscPH9CqqgworRHqmeYSs=;
+	s=arc-20240116; t=1745849098; c=relaxed/simple;
+	bh=Bd+7/nIAeYuUyStSOhPWyB1pzbUK7MNNUkAjFiqyxS8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YvoSqZGNXnM3hkXzmMSy+YUsLsF0cS6rJhYy4H1tyUCY4uYYKdWuzv3N2anTYz/K98g62yhy3k05Y313lezLlzuCBIcOaeO1jCDBi36TIoJ7PM/HCu5SsuZSyVDOFYFXr9woKP/vCMGL/JlqWXHDTLxwlYX41OgGRjCTH8FzkFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9F6591595;
-	Mon, 28 Apr 2025 01:58:15 -0700 (PDT)
-Received: from [10.1.37.44] (Suzukis-MBP.cambridge.arm.com [10.1.37.44])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 29A013F673;
-	Mon, 28 Apr 2025 01:58:19 -0700 (PDT)
-Message-ID: <35a91f8c-cdf6-4595-9ed2-c792a8e9d679@arm.com>
-Date: Mon, 28 Apr 2025 09:58:18 +0100
+	 In-Reply-To:Content-Type; b=RX/BvnqqkCLVBhLnI21OJ7RoVmA/+P1yqd57XNjZMCxpS7Wn7oMyfFXjaSyit7eNefb+QtRoOfAYiYmLRrKagttzwUP02mEHn6BkyjzD0nLSwuP/BzFbBwFWerSLFEoJKv8R/5doF5RqV9GXI58iIpe+fCMMrW8g4yiWaaLYW6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fWX2jE4X; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fWX2jE4X"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1745849095;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=LCPqXznOEi2VAzafxyWUGGwRnIkn4pZb5EHsf0ONcRo=;
+	b=fWX2jE4X+OZhQ18YEGMmVX0whQijhO7GWNkONsIquPOW9I3sgAcjWAWFj/y0a9tQBuLBcU
+	KSmYdukVFFTcsNlvUn8XSMQbSA4SDXnZ1z88Ko70i2l4tmj/H1O9mzdq0yjJh5ULZv3/Ed
+	WyB2HLSkuDIwG6CuSPYRiwuPKl+pa5o=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-83-ffHbAcpQNvC0y8WbL0ZoBA-1; Mon, 28 Apr 2025 10:04:54 -0400
+X-MC-Unique: ffHbAcpQNvC0y8WbL0ZoBA-1
+X-Mimecast-MFC-AGG-ID: ffHbAcpQNvC0y8WbL0ZoBA_1745849093
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-44059976a1fso19422005e9.1
+        for <linux-coco@lists.linux.dev>; Mon, 28 Apr 2025 07:04:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745849093; x=1746453893;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=LCPqXznOEi2VAzafxyWUGGwRnIkn4pZb5EHsf0ONcRo=;
+        b=hlFR98V/t23RIA1abEcUkDpPIZFI2qWKnPXzs26Njda8MFq3v2s6ptOOaWUZeFkptU
+         EH0FK9f6t9/U4ejHkubUMONDgAXGMNNa4UqwpPfJPaSjk/kOTlb8QvrAd80rbYvifzY+
+         hVsBEvRKChn8kJemfetNok2Qq+0Rgrvg4ztX8J91iogI2zkSXe6iDznBnhuPkz/dvaYy
+         Mc5dGgEKRcV21Fnfw8wULfugrs2QTf8UEvph/DU5yExMEy1aPIr6K97ENPt7DKDpxk0L
+         JjBkfjeeMjkdjgZrm85IJ4EphG7QoJAqMcDJUIVb30vowUsOwgxi/57FYVjsrH48OvNd
+         rzUA==
+X-Forwarded-Encrypted: i=1; AJvYcCXtBW5QxSWC/5tfPhRNesGUWGsiSPHJLmqCiq/qfXAWDyRJBkrBReO0TILc97VdxKrZ5IVBsg+EHI5g@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzi/RUy+eySKMeS0OnCsJGGIVMM2n21QloWR1sdOfXnpyp+1233
+	46FvCrVpp422s7UmWtyOQsT1k5fnB9LLvnOdDJDEEf1xu/YQwLjdeOAU9cs9x8REsW4C/Vb9Xpa
+	rjtl8h62QiqJE/1GlVS6C14hG01LFQYa8qmO+DSGsIwneD08Q2Z1ZiQzDn5k=
+X-Gm-Gg: ASbGncvSADzZoijHwd3uvO+IwunYOFOE6t8sYXOmibJpN1jE34MwmaBKMTqwIMWAJwU
+	qDN+Z95Fshf0myD6nNE/xm/DalLg4bOTTQDfPC1354UtIKd8w/a5pqJzHjQwdqn5mVSi+31lOP/
+	mtEUszeHWCD7+0h0JAogqAj9bPnDM8OnEMfI0e8ZLY/KOoY1s1q3xtF5fpBz5hPJ7wq6y/YIbn3
+	geYaGoVv/UYDcTZgCziwZI+g+FX7Ncy26z9VngPuZRbjijW3UnieGxRpTGEVWjksr1ZM6H6tjXq
+	9e/jqwnuxXjvqtPcLf2WE2XmOV4SYlUjyJANM8veYZz8fUkYHu/N87nR4BrpfefieXH4U6LLqdL
+	Qr7uA227/mCjYMEzvQ5ahRMg16bgyQ/pUl1sW0d8=
+X-Received: by 2002:a05:600c:3b9d:b0:43d:7588:66a5 with SMTP id 5b1f17b1804b1-440a66b08a0mr102610365e9.31.1745849092828;
+        Mon, 28 Apr 2025 07:04:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEJK4O2qWL0SIQ2GwqZNkaVAJoiBY3Z6hHfmUxMrilkaARu1MUCIpMtD7Rr7FPbch96+oAUlQ==
+X-Received: by 2002:a05:600c:3b9d:b0:43d:7588:66a5 with SMTP id 5b1f17b1804b1-440a66b08a0mr102609685e9.31.1745849092294;
+        Mon, 28 Apr 2025 07:04:52 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f32:c200:9add:4a7a:46aa:f740? (p200300d82f32c2009add4a7a46aaf740.dip0.t-ipconnect.de. [2003:d8:2f32:c200:9add:4a7a:46aa:f740])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-440a5394bfasm126622875e9.40.2025.04.28.07.04.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Apr 2025 07:04:51 -0700 (PDT)
+Message-ID: <b037ffeb-bfeb-41a6-b200-d8c57076370f@redhat.com>
+Date: Mon, 28 Apr 2025 16:04:50 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -27,282 +75,117 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 06/43] arm64: RME: Define the user ABI
-Content-Language: en-GB
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>
-References: <20250416134208.383984-1-steven.price@arm.com>
- <20250416134208.383984-7-steven.price@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20250416134208.383984-7-steven.price@arm.com>
+Subject: Re: SNP guest crash in memblock with unaccepted memory
+To: Tom Lendacky <thomas.lendacky@amd.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport
+ <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Mel Gorman <mgorman@techsingularity.net>,
+ "Kalra, Ashish" <ashish.kalra@amd.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Michael Roth <michael.roth@amd.com>
+References: <f12f5bd0-135b-91fd-9703-7df98500f9c5@amd.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <f12f5bd0-135b-91fd-9703-7df98500f9c5@amd.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 6bZqrVPIwJcgZTIU9sWma4XGjdZsH2wL8MfvufM_h_U_1745849093
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hi Steven
-
-On 16/04/2025 14:41, Steven Price wrote:
-> There is one (multiplexed) CAP which can be used to create, populate and
-> then activate the realm.
+On 27.04.25 17:01, Tom Lendacky wrote:
+> Hi Kirill,
 > 
-> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v7:
->   * Add documentation of new ioctls
->   * Bump the magic numbers to avoid conflicts
-> Changes since v6:
->   * Rename some of the symbols to make their usage clearer and avoid
->     repetition.
-> Changes from v5:
->   * Actually expose the new VCPU capability (KVM_ARM_VCPU_REC) by bumping
->     KVM_VCPU_MAX_FEATURES - note this also exposes KVM_ARM_VCPU_HAS_EL2!
-> ---
->   Documentation/virt/kvm/api.rst    | 70 +++++++++++++++++++++++++++++++
->   arch/arm64/include/uapi/asm/kvm.h | 49 ++++++++++++++++++++++
->   include/uapi/linux/kvm.h          | 10 +++++
->   3 files changed, 129 insertions(+)
+> Every now and then I experience an SNP guest boot failure for accessing
+> memory that hasn't been accepted. I managed to get a back trace:
 > 
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> index 1f8625b7646a..99ba6c82cf37 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -3527,6 +3527,11 @@ Possible features:
->   	      - the KVM_REG_ARM64_SVE_VLS pseudo-register is immutable, and can
->   	        no longer be written using KVM_SET_ONE_REG.
->   
-> +	- KVM_ARM_VCPU_REC: Allocate a REC (Realm Execution Context) for this
-> +	  VCPU. This must be specified on all VCPUs created in a Realm VM.
-> +	  Depends on KVM_CAP_ARM_RME.
-> +	  Requires KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_REC).
-> +
->   4.83 KVM_ARM_PREFERRED_TARGET
->   -----------------------------
->   
-> @@ -5098,6 +5103,7 @@ Recognised values for feature:
->   
->     =====      ===========================================
->     arm64      KVM_ARM_VCPU_SVE (requires KVM_CAP_ARM_SVE)
-> +  arm64      KVM_ARM_VCPU_REC (requires KVM_CAP_ARM_RME)
->     =====      ===========================================
->   
->   Finalizes the configuration of the specified vcpu feature.
-> @@ -6452,6 +6458,30 @@ the capability to be present.
->   
->   `flags` must currently be zero.
->   
-> +4.144 KVM_ARM_VCPU_RMM_PSCI_COMPLETE
-> +------------------------------------
-> +
-> +:Capability: KVM_CAP_ARM_RME
-> +:Architectures: arm64
-> +:Type: vcpu ioctl
-> +:Parameters: struct kvm_arm_rmm_psci_complete (in)
-> +:Returns: 0 if successful, < 0 on error
-> +
-> +::
-> +
-> +  struct kvm_arm_rmm_psci_complete {
-> +	__u64 target_mpidr;
-> +	__u32 psci_status;
-> +	__u32 padding[3];
-> +  };
-> +
-> +Where PSCI functions are handled by user space, the RMM needs to be informed of
-> +the target of the operation using `target_mpidr`, along with the status
-> +(`psci_status`). The RMM v1.0 specification defines two functions that require
-> +this call: PSCI_CPU_ON and PSCI_AFFINITY_INFO.
-> +
-> +If the kernel is handling PSCI then this is done automatically and the VMM
-> +doesn't need to call this ioctl.
->   
->   .. _kvm_run:
->   
-> @@ -8280,6 +8310,46 @@ aforementioned registers before the first KVM_RUN. These registers are VM
->   scoped, meaning that the same set of values are presented on all vCPUs in a
->   given VM.
->   
-> +7.38 KVM_CAP_ARM_RME
-> +--------------------
-> +
-> +:Architectures: arm64
-> +:Target: VM
-> +:Parameters: args[0] provides an action, args[1] points to a structure in
-> +	     memory for some actions.
-> +:Returns: 0 on success, negative value on error
-> +
-> +Used to configure and set up the memory for a Realm. The available actions are:
-> +
-> +================================= =============================================
-> + KVM_CAP_ARM_RME_CONFIG_REALM     Takes struct arm_rme_config as args[1] and
-> +                                  configures realm parameters prior to it being
-> +                                  created.
-> +
-> +                                  Options are ARM_RME_CONFIG_RPV to set the
-> +                                  "Realm Personalization Value" and
-> +                                  ARM_RME_CONFIG_HASH_ALGO to set the hash
-> +                                  algorithm.
-> +
-> + KVM_CAP_ARM_RME_CREATE_REALM     Request the RMM create the realm. The realm's
+>    RIP: 0010:memcpy_orig+0x68/0x130
+>    Code: ...
+>    RSP: 0000:ffffffff9cc03ce8 EFLAGS: 00010006
+>    RAX: ff11001ff83e5000 RBX: 0000000000000000 RCX: fffffffffffff000
+>    RDX: 0000000000000bc0 RSI: ffffffff9dba8860 RDI: ff11001ff83e5c00
+>    RBP: 0000000000002000 R08: 0000000000000000 R09: 0000000000002000
+>    R10: 000000207fffe000 R11: 0000040000000000 R12: ffffffff9d06ef78
+>    R13: ff11001ff83e5000 R14: ffffffff9dba7c60 R15: 0000000000000c00
+>    memblock_double_array+0xff/0x310
+>    memblock_add_range+0x1fb/0x2f0
+>    memblock_reserve+0x4f/0xa0
+>    memblock_alloc_range_nid+0xac/0x130
+>    memblock_alloc_internal+0x53/0xc0
+>    memblock_alloc_try_nid+0x3d/0xa0
+>    swiotlb_init_remap+0x149/0x2f0
+>    mem_init+0xb/0xb0
+>    mm_core_init+0x8f/0x350
+>    start_kernel+0x17e/0x5d0
+>    x86_64_start_reservations+0x14/0x30
+>    x86_64_start_kernel+0x92/0xa0
+>    secondary_startup_64_no_verify+0x194/0x19b
+> 
+> I don't know a lot about memblock, but it appears that it needs to
+> allocate more memory for it's regions array and returns a range of memory
+> that hasn't been accepted. When the memcpy() runs, the SNP guest gets a
+> #VC 0x404 because of this.
+> 
+> Do you think it is as simple as calling accept_memory() on the memory
+> range returned from memblock_find_in_range() in memblock_double_array()?
 
-minor nit: s/RMM create/RMM to create/
+(not Kirill, but replying :) )
 
-Or may be rephrase it:
+Yeah, we seem to be effectively allocating memory from memblock ("from 
+ourselves") without considering that memory must be accepted first.
 
-Request the RMM to create the Realm with the configured parameters.
+accept_memory() on the new memory (in case of !slab) should be the right 
+thing to do.
 
+-- 
+Cheers,
 
-> +                                  configuration parameters must be set first.
-> +
-> + KVM_CAP_ARM_RME_INIT_RIPAS_REALM Takes struct arm_rme_init_ripas as args[1]
-> +                                  and sets the RIPAS (Realm IPA State) to
-> +                                  RIPAS_RAM of a specified area of the realm's
-> +                                  IPA.
-> +
-> + KVM_CAP_ARM_RME_POPULATE_REALM   Takes struct arm_rme_init_ripas as args[1]
-
-nit: struct arm_rme_populate_realm
-
-> +                                  and populates a region of protected address
-> +                                  space by copying the data from the shared
-> +                                  alias.
-> +
-> + KVM_CAP_ARM_RME_ACTIVATE_REALM   Request the RMM activate the realm. No
-
-s/the RMM/the RMM to/
-
-> +                                  further changes can be made to the realm's
-> +                                  configuration, and VCPUs are not permitted to
-> +                                  enter the realm until it has been activated.
-
-minor nit: this sounds as if "configurations" (of parameters)  are
-possible after the CREATE_REALM and before ACTIVATE_REALM ? Could we
-also make it clear that the VCPUs must have been created before ACTIVATE ?
-
-
-May be rephrase it to:
-
-No changes can be made to Realm's memory (including the IPA state). No 
-new VCPUs can be created after this step.
-
-
-> +================================= =============================================
-> +
->   8. Other capabilities.
->   ======================
->   
-> diff --git a/arch/arm64/include/uapi/asm/kvm.h b/arch/arm64/include/uapi/asm/kvm.h
-> index af9d9acaf997..b57712880605 100644
-> --- a/arch/arm64/include/uapi/asm/kvm.h
-> +++ b/arch/arm64/include/uapi/asm/kvm.h
-> @@ -106,6 +106,7 @@ struct kvm_regs {
->   #define KVM_ARM_VCPU_PTRAUTH_GENERIC	6 /* VCPU uses generic authentication */
->   #define KVM_ARM_VCPU_HAS_EL2		7 /* Support nested virtualization */
->   #define KVM_ARM_VCPU_HAS_EL2_E2H0	8 /* Limit NV support to E2H RES0 */
-> +#define KVM_ARM_VCPU_REC		9 /* VCPU REC state as part of Realm */
->   
->   struct kvm_vcpu_init {
->   	__u32 target;
-> @@ -429,6 +430,54 @@ enum {
->   #define   KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES	3
->   #define   KVM_DEV_ARM_ITS_CTRL_RESET		4
->   
-> +/* KVM_CAP_ARM_RME on VM fd */
-> +#define KVM_CAP_ARM_RME_CONFIG_REALM		0
-> +#define KVM_CAP_ARM_RME_CREATE_REALM		1
-> +#define KVM_CAP_ARM_RME_INIT_RIPAS_REALM	2
-> +#define KVM_CAP_ARM_RME_POPULATE_REALM		3
-> +#define KVM_CAP_ARM_RME_ACTIVATE_REALM		4
-> +
-> +/* List of configuration items accepted for KVM_CAP_ARM_RME_CONFIG_REALM */
-> +#define ARM_RME_CONFIG_RPV			0
-> +#define ARM_RME_CONFIG_HASH_ALGO		1
-> +
-> +#define ARM_RME_CONFIG_MEASUREMENT_ALGO_SHA256		0
-> +#define ARM_RME_CONFIG_MEASUREMENT_ALGO_SHA512		1
-
-minor nit:
-May be we could rename this to CONFIG_HASH_ALGO_* to align with the
-RMM spec (btw which also moved from measurement to hash) and the
-parameter.
-
-
-Suzuki
-
-
-> +
-> +#define ARM_RME_CONFIG_RPV_SIZE 64
-> +
-> +struct arm_rme_config {
-> +	__u32 cfg;
-> +	union {
-> +		/* cfg == ARM_RME_CONFIG_RPV */
-> +		struct {
-> +			__u8	rpv[ARM_RME_CONFIG_RPV_SIZE];
-> +		};
-> +
-> +		/* cfg == ARM_RME_CONFIG_HASH_ALGO */
-> +		struct {
-> +			__u32	hash_algo;
-> +		};
-> +
-> +		/* Fix the size of the union */
-> +		__u8	reserved[256];
-> +	};
-> +};
-> +
-> +#define KVM_ARM_RME_POPULATE_FLAGS_MEASURE	(1 << 0)
-> +struct arm_rme_populate_realm {
-> +	__u64 base;
-> +	__u64 size;
-> +	__u32 flags;
-> +	__u32 reserved[3];
-> +};
-> +
-> +struct arm_rme_init_ripas {
-> +	__u64 base;
-> +	__u64 size;
-> +	__u64 reserved[2];
-> +};
-> +
->   /* Device Control API on vcpu fd */
->   #define KVM_ARM_VCPU_PMU_V3_CTRL	0
->   #define   KVM_ARM_VCPU_PMU_V3_IRQ	0
-> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> index b6ae8ad8934b..0b8479985581 100644
-> --- a/include/uapi/linux/kvm.h
-> +++ b/include/uapi/linux/kvm.h
-> @@ -930,6 +930,7 @@ struct kvm_enable_cap {
->   #define KVM_CAP_X86_APIC_BUS_CYCLES_NS 237
->   #define KVM_CAP_X86_GUEST_MODE 238
->   #define KVM_CAP_ARM_WRITABLE_IMP_ID_REGS 239
-> +#define KVM_CAP_ARM_RME 240
->   
->   struct kvm_irq_routing_irqchip {
->   	__u32 irqchip;
-> @@ -1582,4 +1583,13 @@ struct kvm_pre_fault_memory {
->   	__u64 padding[5];
->   };
->   
-> +/* Available with KVM_CAP_ARM_RME, only for VMs with KVM_VM_TYPE_ARM_REALM  */
-> +struct kvm_arm_rmm_psci_complete {
-> +	__u64 target_mpidr;
-> +	__u32 psci_status;
-> +	__u32 padding[3];
-> +};
-> +
-> +#define KVM_ARM_VCPU_RMM_PSCI_COMPLETE	_IOW(KVMIO, 0xd6, struct kvm_arm_rmm_psci_complete)
-> +
->   #endif /* __LINUX_KVM_H */
+David / dhildenb
 
