@@ -1,123 +1,98 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4F92528EB
-	for <linux-coco@lists.linux.dev>; Mon, 28 Apr 2025 15:53:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010DB199E9A
+	for <linux-coco@lists.linux.dev>; Mon, 28 Apr 2025 16:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745855631; cv=none; b=lf1Fj2YhTZ6dGInvDEWi3JL3B1ZvU0jVwToRVvVZ446/xOaj3avfL/xWb72vxGNyw119MouQZD7xsWpq/d7We/lB9nZflfZ6/hUXk4F6LEEcFhSPQSiuqEr6kqQKXOHSwfbqR5Lpp1IX6ZjaorYHEdisWQ/+pdod2fP309tqoSc=
+	t=1745857851; cv=none; b=E3j6R1+lk/LIT/Xg8MOlZrLpAvR1OzmFNo6qy/GBu5g1EHhc7TajzjGnOHNQd20YrWWZn6bRz8gHUXo3Mg1AzIImC8cNjAcs1C51TbmL5rbzvH7Fi/IgBVyKUyNqBrIECDVUmM2FYH4PHGdL7gKsn6Awk0TucRRQW9rQtC+2On0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745855631; c=relaxed/simple;
-	bh=B2y1+QxYf7rk0CFLRxjX2EEpZWEepC5pVNNibzK5yyE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LkyANk4gqDyWksS98BUVqILfPY3EGEwQZxCeaBDiqi48yyx51zXi3BlwfM3Fx1qmBI0EkdDox6WE4NnzWxkxs3c/LBEsiuG+M+1qFlVJdGi3SN9Zpeygrlo0Prn2yu6piomiQuTyjCObDal/yA/aH7hnAvSTVbXNiCAoQ9/zrSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AjI8LMxA; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1745857851; c=relaxed/simple;
+	bh=c2j3wvBAtJ0GDwgGXeGIR4XMhG+aqgluAkbj+c/x8BE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=naYdMVPs7J9o3RZuDyrhqZHbODVkqL4304IO4FA544j60/9brDyJsC5SZ8WBf6hZvITG8DYBc3liMuDn8dlUwJer3p3OPtWRCMbWR4NJsLuDSKvWDvGuCnT604Fy43bhRn2Xvbt+MubhrJ7pPImQm+lmXROqsOw/eM+yFAp8rL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EGCie+Dc; arc=none smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AjI8LMxA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745855630; x=1777391630;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=B2y1+QxYf7rk0CFLRxjX2EEpZWEepC5pVNNibzK5yyE=;
-  b=AjI8LMxARwyXfNcKrv7ZntyhZ7lhdaBMlD0lQlXTjoKqv/4uHap2OjOt
-   cyYK5sltRGeeL1tUn8uFSfUB7MFGseCDjRI31EwGKJULG/zKrMbQsTfHx
-   gN5CjhUao7HgQAbS3Wn9CWD+M2jG0MrwPykcLoOnGhjfgkgOemOwAJgYs
-   W6i9vCL9kot+cWMX0flLXZw/wQQ5+6K3zUEn+P3BOMGV27ruJR7IHJM/u
-   tsJhVWtOOeNBelZ4t/PISdc0XuF4/N5K0NA6XctyMGItSeBA0KaBDNCmP
-   /XbDQO+vcJDHr/cexTeFyVqNiztKW9+lzCAxcYtzffcFw3kVdXzGUPZmX
-   w==;
-X-CSE-ConnectionGUID: GDfx6fZESWCaGH7DgXGzbA==
-X-CSE-MsgGUID: 0mRx/+WrRp+zDjIaWfBgRA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="51123251"
-X-IronPort-AV: E=Sophos;i="6.15,246,1739865600"; 
-   d="scan'208";a="51123251"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 08:53:50 -0700
-X-CSE-ConnectionGUID: nHgEBM0pRMuANucrr0hEBw==
-X-CSE-MsgGUID: qOSliL3yQ8a6JcL8sVp4YQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,246,1739865600"; 
-   d="scan'208";a="156788783"
-Received: from mdroper-mobl2.amr.corp.intel.com (HELO [10.124.222.199]) ([10.124.222.199])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 08:53:49 -0700
-Message-ID: <9a4b347f-9a18-4578-9031-0d1bc98e668d@intel.com>
-Date: Mon, 28 Apr 2025 08:53:47 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EGCie+Dc"
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-47666573242so291cf.0
+        for <linux-coco@lists.linux.dev>; Mon, 28 Apr 2025 09:30:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1745857849; x=1746462649; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c2j3wvBAtJ0GDwgGXeGIR4XMhG+aqgluAkbj+c/x8BE=;
+        b=EGCie+DcJX5VVFAjkvGmWZiOSv1MPOK6d5EFS96hLFznrhbZAoISku/SmFssWoou0b
+         mJZml/u+k+oM7puxkNUoadhk+F3sPj9PSQoysSNM33J6ZdhGps+6xvlZFJZxo8u4QVbs
+         8Ioc/jrP53KPE9+PAEqMJGgVX9Fjkag4X724niXZY3ja3kIxMhlkNr/SVah8XbcS4xEA
+         cfckURpbexquVDw41lMku4QLf2Ini+K+FZt/b9GebjYaOgBluyztVODo6ml25U+sL9tB
+         e9F0V9wBTakpuQJtp3bKrh8ffWKGTlFiIsc6ncambIMV7FIc9S0ivnIykCwG6A0Gcfnq
+         Q2cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745857849; x=1746462649;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=c2j3wvBAtJ0GDwgGXeGIR4XMhG+aqgluAkbj+c/x8BE=;
+        b=E6i3YMyEwYB0yKV1sujaFDhS8G1QkNlfTamOYQ5vE+T1xW5m/0fVDeTqUdBpO3Z1fV
+         PKvRFxJRDBBs4IfxcUBmrjoz5n6d4W6o6KkhF9MOCDTpSACXKqcdSGl8QTZ6Vn6hUdFI
+         NlfdsnRTq1/ns+F1ruFBBpGnmra0otOcxXbjdHbQ2ceINbOhq3AZxG7QHlajOy7qwGJm
+         K//o+ASLxVHztbdOBeDJQC407VIH/9jtDiJElP6ubh/CwrjRGwbATtT0IXEhDfWGKo6W
+         hJGnQXtS68x6M1iEs6cKwrNd6uPfpAQuUtbBoEPvqUJW+gF7rpQHa1DoFageihNT8iLf
+         R8pQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVFrU7zZQDEmofWYMJyJBTAeHGWAToZPJeZP4f4+yBparuuK2NWPaKnukPk29oH4ZQIsq+McEL5cu/e@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywuf5RyII+rwABb5knA5DKqXQdHfsxswjxy500kPW7FTzPj7Y6n
+	sgFhy9jem6j8hWEt/SpfNg+XQFY0VnngzYXKRq77gBrEQ8dLCag1NvtzNdVLimqCjA76l/oWzhM
+	INKcbuipVDETSaDmoKLeXdcroHfYY1plr6u2L
+X-Gm-Gg: ASbGncvAj3xgvhZ6H4aFmGt6HO4fIwYMN9py4Yy6ykbRhIMvcfKTMSjuNsEfS2QOomG
+	/KRdxaNt34Qynrr4iEonn9nK07YngWFmpZNCAuIUg1Sdht5edkHaVqPO0Pj28EhXYwDBrnRuBGO
+	LEnHFNnS8GzrM9q6zoX6K02a8VWo8kj54=
+X-Google-Smtp-Source: AGHT+IHISK1kxrYk4RfbziCnCnzPWCd0oWI+e9SVH/lBMnDhpa52pdJdvOhZCLc8iwRh9PYrrSIzc0NhpiEDqA7CwQc=
+X-Received: by 2002:ac8:5d4d:0:b0:486:b41d:af93 with SMTP id
+ d75a77b69052e-487fe63bc50mr533301cf.20.1745857848688; Mon, 28 Apr 2025
+ 09:30:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] x86/devmem: Drop /dev/mem access for confidential
- guests
-To: Dan Williams <dan.j.williams@intel.com>, dave.hansen@linux.intel.com
-Cc: x86@kernel.org, Kees Cook <kees@kernel.org>,
- Ingo Molnar <mingo@kernel.org>, Naveen N Rao <naveen@kernel.org>,
- Vishal Annapurve <vannapurve@google.com>,
- Kirill Shutemov <kirill.shutemov@linux.intel.com>,
- Nikolay Borisov <nik.borisov@suse.com>, stable@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 References: <174491712829.1395340.5054725417641299524.stgit@dwillia2-xfh.jf.intel.com>
- <174500659632.1583227.11220240508166521765.stgit@dwillia2-xfh.jf.intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <174500659632.1583227.11220240508166521765.stgit@dwillia2-xfh.jf.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <174500659632.1583227.11220240508166521765.stgit@dwillia2-xfh.jf.intel.com> <9a4b347f-9a18-4578-9031-0d1bc98e668d@intel.com>
+In-Reply-To: <9a4b347f-9a18-4578-9031-0d1bc98e668d@intel.com>
+From: Jianxiong Gao <jxgao@google.com>
+Date: Mon, 28 Apr 2025 09:30:36 -0700
+X-Gm-Features: ATxdqUELDAnyO3GkumJUBV1EJePzSaA7vBfrlJPvUNeMSl7GggLRW3jYHMePSec
+Message-ID: <CAMGD6P0ORZF6Tbkuedv99jEpk+6HjG=pyqCwTHKU5dVxt+kRCQ@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] x86/devmem: Drop /dev/mem access for confidential guests
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Dan Williams <dan.j.williams@intel.com>, dave.hansen@linux.intel.com, x86@kernel.org, 
+	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@kernel.org>, Naveen N Rao <naveen@kernel.org>, 
+	Vishal Annapurve <vannapurve@google.com>, Kirill Shutemov <kirill.shutemov@linux.intel.com>, 
+	Nikolay Borisov <nik.borisov@suse.com>, stable@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 4/18/25 13:04, Dan Williams wrote:
-> Nikolay reports [1] that accessing BIOS data (first 1MB of the physical
-> address space) via /dev/mem results in an SEPT violation.
+On Mon, Apr 28, 2025 at 8:53=E2=80=AFAM Dave Hansen <dave.hansen@intel.com>=
+ wrote:
+>
+> Would most developers reading this know what an "SEPT violation" is or
+> what its implications are?
+>
+> This results in an immediate exit from and termination of the TDX guest,
+> right?
+>
+In most cases yes but it depends on the settings.
 
-Would most developers reading this know what an "SEPT violation" is or
-what its implications are?
+If TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE is set then the TDX guest
+is terminated immediately.
 
-This results in an immediate exit from and termination of the TDX guest,
-right?
+Otherwise a #VE is generated for the guest to handle.
+
+TDX_TD_ATTRIBUTES_SEPT_VE_DISABLE is disabled by default. See [1].
+
+[1] https://lore.kernel.org/all/20250401130205.2198253-11-xiaoyao.li@intel.=
+com/
