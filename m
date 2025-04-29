@@ -1,287 +1,435 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2077.outbound.protection.outlook.com [40.107.220.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54B52356A7
-	for <linux-coco@lists.linux.dev>; Tue, 29 Apr 2025 07:50:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.77
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745913015; cv=fail; b=dBkBnguC/STg8hFM1ay70UT+qKfJeXw/Jov8BCB7hA8LZrkj5HxMqrtzUOOeTn/vLnL9GPtOk8XfnvcIXDtkYRXtiqJ5Wi5kg8MsNsDk7neGE6pUL2j5qWDY6OMhyoz6mlQLIX/6xECfoyOlNgU8LN12wlcdA1q/m5V0bJVs1Mc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745913015; c=relaxed/simple;
-	bh=I544l85pcy1+F2KGFvsVNQyyDWBwGi+9P1Cg4dNcTF8=;
-	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=OdoWYI/12M9xwdF08DzhzUfAAVanQRZPrgq5r6KVKiYpgw60PRJQOjRlG1JH2xqbpaJv8QZni+zQDW7S0o0sTI/nLY/wH9S60uEOMV1aojSqmKUDlRPvOEhqVAdD2DF86eEhSroqYwpmLp0jRwdp3Qd72WFlrD9xLmwqafRog6U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=hkknKVku; arc=fail smtp.client-ip=40.107.220.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="hkknKVku"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fq2kF35UzAk6gjcHd5NUpn4TuvTGb/sUOpHRBgFyOxjwmj4aG4pMUsGRLIHfwpOmwbBVYk9I/i4N6XuNEOq11XDC/g478G8/53LijiqGKJphu8Ntw+gezphbwrFRwVAghpJ4WyR2D1OndleJ2o+9L/5pKjQdq7cJrVhY4RamKIelPesmh8uoey1qMAkLqb4bYeB6ASwpfZllQS/VmP36zKbuVYUleW2T7VkaeZAqVMrFBeH/rWJQmQy2L+H/7SfuYb74rRdfARWLdGrkXomYrO5wox7b7HBYe8zFHz+4KYV4V9CC986yR1VX5UEQGRIxUBnp9gD+F6H8xRxBjBTYkA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e0qt71UB7vkB0am1WJo0zup1O/FFXmKTSSZLplPaRlY=;
- b=C7nTkU3ByjPWtT3KQdXMaxXl4camZ1aY6wKcADcYb2UuA/vAGBsOmo58g4zGe3SbPPEaZF9xsBWSnnI7YIa2BmIjfveHFxP9Iv3y5CsTUABETSU06FLwuxTpS3JUp/Lla1wkaRU+R6TkYGwUJvZXfWssnzBcvskNUHOMBL6RE7LewHhsWurlLl2DNwVZNQ40bxlBKOxafz7j0aUCWcmEi0OLhIfkWrtlRZMf0c9pR00Frk+UBdLE19wPn0Oi2WirwPxPaFtN974sz+qDVBS7vbWiDfgukR7cZS6yyJ6/o2MX4vOLsB1mobOjxH5JE7FjcExu3UOPdqvUggtKlMEe6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=e0qt71UB7vkB0am1WJo0zup1O/FFXmKTSSZLplPaRlY=;
- b=hkknKVkugl4WAWGZv/lbtl34z91Wcjln2NDjCOh4yQg6xWnw9pty0ziPnJ4WUI4SgG+EZp4AQiHjg/7U9SeiApqAGRm0JTSo0nGdjbSibNsnYihUB4mVeP8beE8ePdmN0WhntfwpMO6HnJeZtYfRn2nWDtptcou15bcWb5T3K/g=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by SA0PR12MB4447.namprd12.prod.outlook.com (2603:10b6:806:9b::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.19; Tue, 29 Apr
- 2025 07:50:10 +0000
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f%4]) with mapi id 15.20.8678.028; Tue, 29 Apr 2025
- 07:50:09 +0000
-Message-ID: <4b6dc759-86fd-47a7-a206-66b25a0ccc6d@amd.com>
-Date: Tue, 29 Apr 2025 17:50:01 +1000
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [RFC PATCH 00/12] Private MMIO support for private assigned dev
-From: Alexey Kardashevskiy <aik@amd.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
- christian.koenig@amd.com, pbonzini@redhat.com, seanjc@google.com,
- alex.williamson@redhat.com, jgg@nvidia.com, vivek.kasireddy@intel.com,
- dan.j.williams@intel.com
-Cc: yilun.xu@intel.com, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
- daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com,
- zhenzhong.duan@intel.com, tao1.su@intel.com
-References: <20250107142719.179636-1-yilun.xu@linux.intel.com>
- <371ab632-d167-4720-8f0d-57be1e3fee84@amd.com>
-Content-Language: en-US
-In-Reply-To: <371ab632-d167-4720-8f0d-57be1e3fee84@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA1P222CA0187.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c4::14) To CH3PR12MB9194.namprd12.prod.outlook.com
- (2603:10b6:610:19f::7)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F149684D02;
+	Tue, 29 Apr 2025 09:45:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745919961; cv=none; b=iy0tiPe6W5GPcA9h19ZCRAOX9pANvrLJVU58ZfV07sxu3de4YePy4esYh8nYBs6BNw6AuOSvK2U+lbDQidxlCq2cfGiE5SE68gdifK1vYMw1BdybZ2Ij8NocSBnDe4uZfe+8i4LdonqutJ/Hk9S8yItDGivOsW4SrPGGAqlfRyE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745919961; c=relaxed/simple;
+	bh=X0VXGSMHf//qV5FNiM4OS+QMOL5TZTK4cwEyGS+j43k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oGZNkigsOE3jYx5qtVHT42ShEGyshEn1ufag9cvCFM58NddxktKq4XHE7Wsulou3kDh4jAx29DOSs9mXYl6+zXGvMqZ0lIVw72D1vH/L3iJE+yt1pzgCGtVykL00oGIbnepEQkk5uWEKDNUVleoeLC5NToQYKwYbU4nEjstVSV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 663011515;
+	Tue, 29 Apr 2025 02:45:51 -0700 (PDT)
+Received: from [10.1.33.43] (unknown [10.1.33.43])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E83133F673;
+	Tue, 29 Apr 2025 02:45:54 -0700 (PDT)
+Message-ID: <bd53bafc-b66c-48c7-8380-06899469a546@arm.com>
+Date: Tue, 29 Apr 2025 10:45:54 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|SA0PR12MB4447:EE_
-X-MS-Office365-Filtering-Correlation-Id: 11adb4c1-e4bf-4e4c-7262-08dd86f2772d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?M05KYktoMW5tckovbHp1L0ppUHFhNnBSWUJ1WW5PaFRoenllQWliZGtodUNV?=
- =?utf-8?B?VnZZeVh0Nkw4dkJ4bU1JVnZ4TTV4d3Q5cUhyaEFCU1RGaHpqYmc0NDVwSE5L?=
- =?utf-8?B?SjdNTmxaWmxTZFU4NzcrRCtwQWxFQ3UralQvaDZNQ2QrcEpReHlqRnhtQjJH?=
- =?utf-8?B?Wnp0My9pc1FwS25xRXZTYWk0Rzk0Tk4vcXREa2o2M1E4cGcrd09UOXZscWwz?=
- =?utf-8?B?UGUxZnBrdXlYTWp3dlJpQnlLSmdrbVBPMzJEbTdBaVVXZ3UzbGo0bVFoZis1?=
- =?utf-8?B?TE1PdkNESU1uVVc0eVZYaVVTMU9XOUhmQmhxdFltRGpmaUtNQzBYWWl4ZW45?=
- =?utf-8?B?Ym1CSFZHR2ROTDZ5eTYyczRYbFpqd2k0NDVUL3VkdkRCaVhVNHM5YXFzb1B0?=
- =?utf-8?B?SEhjZ0Ruay9wZTM2ZHlETi9FRGVucUdrRml1Ym9oMHZvVGU0S0tJUnJEODdk?=
- =?utf-8?B?WnIzcXNOai9VVlJTNEJTVHB1elJFK0YvVkVJcHJ2eGUyZU0wcHBuaEZ2Rkk1?=
- =?utf-8?B?LzZoVG9wSHk0YzlxaDNUQXN0NUo3UWpFWmd2b0hUQkFTclVXUW9QZklRdVh0?=
- =?utf-8?B?cW11cVhlaitSRVBQbHBPclFQa3FGL2c4UlJjOWh2c3F4K3JxZXhnSFV5ZS94?=
- =?utf-8?B?N1QrNFV2VVhQMTU3NHlvSTVGLzN4bkhMdURQUFZZL05aQytENXZpZW1PdjVj?=
- =?utf-8?B?bUxRb0ZEeUNtVGZka1JGZ3lJMDE4dVJ0NFAyTWVwRFArdldXVDkzTlJ4WE52?=
- =?utf-8?B?ellVSWcrVHczWERyQkxpbTcvUVlYem1wS1JMb1NKRXQrcytKVWhEck1zYzBq?=
- =?utf-8?B?THNsSWRUNjBQZDRrelVhb1BOZWh1N0RGSGtLWEVJbjRSWmZOL1crR1RoQjND?=
- =?utf-8?B?bittaG9EZ2R6MXVvb1kzRThlMnd2TGpuQ2EwYVRzWmVML0VMeG41aGRFV0Fi?=
- =?utf-8?B?NVBNQUhodnRtdWlEb05NUStzaFhPZXRHU0ZCbTV0MjJSZ0JMNC9oaG9wNW1E?=
- =?utf-8?B?dm9HTmJFRVpScnZib2orK1J6WVNicHhrdmVpRjB2OXVma1VGcEp1UmlLTE1a?=
- =?utf-8?B?Y3FYdzVOenR1QTgyQW5qZlYrU1ZReUo3YmNGVXBVejh6eC8rVmVRZkFzdUxW?=
- =?utf-8?B?NVEzaldtUHRQTFdGZ3RjTXkzZDE0VGVJUUJNbXdlZUdGVE10UUNtZE5BNHV0?=
- =?utf-8?B?dTF2V1Rmby95RUhFeFMrMnBHMFBqUFNUcTFJdTJCWVZVR3hBQ1YzMStPWUlO?=
- =?utf-8?B?RElaVXhSWDRISjcyU1ZlMkxQWVlQVytGNS9GVmtPRDNTUGk3ZkkrOEJKYjlT?=
- =?utf-8?B?VUlUYTBYanhXYnd6NTNpa24xR3dQWUhtMGxON2dpU0JTRzc0YjdMUkM1d1E3?=
- =?utf-8?B?MWxzeFFOc0liaWYyUGtCcHBoakJ3NTJOZUtYWWpxWlBIaVdydUZwK0ZNWmda?=
- =?utf-8?B?bnBTLysvelBhd3NhdlIxU0VOMHpLcUhEV0g4c0ZyUnAzZU5kZC8vUVBxUlRj?=
- =?utf-8?B?b0U1R3RYRXh5MENvcS9DQnN0VXJNY255K2s5V3Bra3kyKzhNYUVrK1RqR0pK?=
- =?utf-8?B?SXBKdTNPN29CazEvd3JMZHBPUzkwT0VvcnkzZkhMNWpmVGJuY3NPanRBQndm?=
- =?utf-8?B?YkRlSGhQQ0lJU3ZNZU1WejJBMmtkcXBVcHpmVi80OWJ5NmE1Z2ZaaFZaRjFJ?=
- =?utf-8?B?cGR0dkxpNitqaDZ0OTRmUmJWRnp6YWtLZC8yRmhnNGp2OVFmMnNTUmVweWJa?=
- =?utf-8?B?aUt1bjdEUTA5WmNZNGpLamM4TlhHNHhDMEcvY2drM3V4bW9GYlUzTmRycXpN?=
- =?utf-8?B?d2I4aTVyRyszNXBlMk5LM0lFWHNOL2svT3d5TmxPUkJkZFpzOUpkL3FoVUlS?=
- =?utf-8?B?ZU5WRGRsZzhmOExRNTVrbnBoTkNPcjBpaXhwcU5vWTNrVzRRcWdoczRkSVVk?=
- =?utf-8?B?RkNWU2lFY3JWcmQrUVdnR3hrSGtGZ0NJRmh2RlpOSDhsOVhKSFJjRVNrTlhJ?=
- =?utf-8?Q?kZDriNbVwGM1uPFNmz4uQes3ux/A5k=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aERTWjBGRGZlNzV5dlltMHRqOFZkN3ZBTWZTY3VkNHRxaFVJbXlJd0cxc3oz?=
- =?utf-8?B?MGp2eU9rcWl1QmZOVVdEdVJrYTVLWk55MncwcXNpeXVhSmxBaVZoN1BvaU9O?=
- =?utf-8?B?dUVkN213UTRrNnFyVlcvd2lBZWZsdGJ0ZiswSVhmd1hRYi9KWjdBTUVjWGxv?=
- =?utf-8?B?alY5ei9UQ05aaUdZT0NRRHBNVTdwZnRqWGNnZmlOdElEUWd1cFVVeXZnZGRZ?=
- =?utf-8?B?Qko3ZW1lWHJYRlNGL2Z0WW81N3NZNnpYTk1iTnVUYWthM3B4ZkUrQ0g0enla?=
- =?utf-8?B?Y09qK1RGcTArM2YwZW1BdWFrUWlnVVByQmR0TEtDSUxjSWZ6eHdKa3hPWStk?=
- =?utf-8?B?elBnU1hncnYrVXUvNlRYU3EzYmZ0d3dRR3dBR2NONzZCem9HWnBGK3VrMzUv?=
- =?utf-8?B?UzU0NGw1TVgxbmlFVERVUlBMdjQrNTJDZ1JiRWRTQmYrYUJVejdKUXBhNWgz?=
- =?utf-8?B?Nmd3cE9kUUo2WHh2N280VVgyclV4R2RwbWxlOU5ST3lCNUFJZzBrOTRHL1cz?=
- =?utf-8?B?bUNld2JMOVhpdGZ4OSs0dnp2TU5sdzZoeG1MQWpWcm11K2xkOE9qMkpZczNw?=
- =?utf-8?B?Z2lXdzNiK3JEL2t6TzN1Qk1KWk9TY0JSbW1TbHdwZ0FKbVhEdkJVK21qQWxy?=
- =?utf-8?B?OWFlLzVuc1p4M3ZvVXJ4eGNTL0owbXJxNnVFMFZjYS9HZEx6ZzFQcUl4ZUpx?=
- =?utf-8?B?QTN5d1RUYjQ1TmxCbmwzOG5Ub2ErRENyWGhwSUZKSU5aYWVnZXFjMDRzbEZo?=
- =?utf-8?B?R2VzbHBja0ZGaklmcTJERXY4ZnJPWCt2RnJ1RUlOaDVzNm93cmpzS0l3WGlW?=
- =?utf-8?B?SHhZaUpaSUtLblJOMXd3SHlmUG9YMGwyVmF6V1pDUHk0WUE0SXd6T2ZzMFpL?=
- =?utf-8?B?SW10V1Y1emgySFJqbWFkVTJQUklIelR6NzhxZlFabW05ZVloV2FGdnVJMyty?=
- =?utf-8?B?OXFaRjFtTDhheExDQy83QWU4VmVKNFlHZHpIR0hJcUVtMkFBTjZEeEQrUVNp?=
- =?utf-8?B?R1JROUFNNWQ5Zm9BcDNRdy92eS9GeUFIdWpOUlhrQTRaTUZrNHcreksxMjVS?=
- =?utf-8?B?c29QNnJySElGQ2NBKzh4M0dPbWtUZXdGTEpJYWRtUUhxY3Vrb2pjOHBRQkc3?=
- =?utf-8?B?VkFaYW9KbithQjdyNFJvelNZVHA3ejJPYVFLd2NzSFZvSFZkaUQ5c2l3NThG?=
- =?utf-8?B?R3FVUXY0U2x3YTdTQWlzS1JhNEUzUVRsWWgvYStmM29OZFF4emhxL0VDTnNF?=
- =?utf-8?B?c252dGMzUW9tcVNSY1RldFNwYzYwMkNjNWE5aWFrT2tyam1YQVlVQ3pxZklw?=
- =?utf-8?B?RjNxdWt2RnZWTW5CeEMyT3ZvNHVtV1VvRGxPZ2RGMUkwK21aNGpuSWJucVFZ?=
- =?utf-8?B?MWUvZlJFMHI1OFArS0JJbmNpVVpOQytzWkM3eVlPTVUzbnlOenlJa0R0Z3h2?=
- =?utf-8?B?bkwvNTBKOXY1cGJ0SVFmeWlSL1pzNjZYMmhJTHNYQ202NjFFSEF5VnhkenVj?=
- =?utf-8?B?T3JtSktlWkFTSERyai92SE1obUlxWWNwdlFxdmcraVlUSVdtNDJoWTArQnRu?=
- =?utf-8?B?ZVhxYXJ5ZnpqUkFWRWFObjJsL1BZOUVCTzhtR3NnZVY5THE5dmthdXROWnZI?=
- =?utf-8?B?MFFENHZvS2ZTMzgvVnZsT3JBNkJOMVdDVVlYdHVhZ3RMNmltdTdtTFR5d3Rx?=
- =?utf-8?B?Wmp2d0RnaHRmSnVyZlhyT1NaTUwxOFlxbXJzcDNuY1QzZ0tqOE5YVFd4dGdM?=
- =?utf-8?B?NGFCckI0Y1hkUTU3azAwWlpEcGExN050Tmg3bk56aVJsTk1PTCtRRkFGV1A3?=
- =?utf-8?B?Qm8vYVlFc3Y4VnRkQWFsK3NSdDdmcUd2aFJrZ29UM0w0UHNtRS9ManM1S3oy?=
- =?utf-8?B?Q1hnU2xZblc4T05wUTFMVHB1SkNhS0ZqbEhDSzl5cW4ySys1SUY1Qm1LemRC?=
- =?utf-8?B?OFZ3Tit2ay82Qnlrblp3VVVta05BdTVRMW9kcFMrSXo0QnQyNjV6UHBlbGlj?=
- =?utf-8?B?TTc5ZnZaUVdUMFlaWXdhYmpsWjE2RWxoYnM3SVJ6VG5PS1dYYVlSWk13UVp2?=
- =?utf-8?B?WldKYWlFcm9VWVRtOG5RV1I4YmxsRVNxRjJnWlNobm5kenNHYmY0QXp3QkNv?=
- =?utf-8?Q?QzPlazPzHSbtizTPJZeY+yYLY?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 11adb4c1-e4bf-4e4c-7262-08dd86f2772d
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2025 07:50:09.7895
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Y5T2Q1cCUg/0gnHAOp/8S/53PlL1B+oIX9rN0uRT8uMKHSwg91IjBQMOW22/Gxs26nOv5o7mDsj+ocqxM48+Ew==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4447
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 07/43] arm64: RME: ioctls to create and configure
+ realms
+Content-Language: en-GB
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>
+References: <20250416134208.383984-1-steven.price@arm.com>
+ <20250416134208.383984-8-steven.price@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20250416134208.383984-8-steven.price@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-
-
-On 29/4/25 16:48, Alexey Kardashevskiy wrote:
-> On 8/1/25 01:27, Xu Yilun wrote:
->> This series is based on an earlier kvm-coco-queue version (v6.12-rc2)
+On 16/04/2025 14:41, Steven Price wrote:
+> Add the KVM_CAP_ARM_RME_CREATE_RD ioctl to create a realm. This involves
+> delegating pages to the RMM to hold the Realm Descriptor (RD) and for
+> the base level of the Realm Translation Tables (RTT). A VMID also need
+> to be picked, since the RMM has a separate VMID address space a
+> dedicated allocator is added for this purpose.
 > 
-> Has this been pushed somewhere public? The patchset does not apply on top of v6.12-rc2, for example (I fixed locally).
-> Also, is there somewhere a QEMU tree using this? I am trying to use this new DMA_BUF feature and this require quite some not so obvious plumbing. Thanks,
-
-
-More to the point, to make it work, QEMU needs to register VFIO MMIO BAR with KVM_SET_USER_MEMORY_REGION2 which passes slot->guest_memfd to KVM which essentially comes from VFIORegion->mmaps[0].mem->ram_block->guest_memfd. But since you disabled mmap for private MMIO, there is no MR which QEMU would even try registering as KVM memslot and there are many ways to fix it. I took a shortcut and reenabled mmap() but wonder what exactly you did. Makes sense? Thanks,
-
-
+> KVM_CAP_ARM_RME_CONFIG_REALM is provided to allow configuring the realm
+> before it is created. Configuration options can be classified as:
 > 
->> which includes all basic TDX patches.
->>
->> The series is to start the early stage discussion of the private MMIO
->> handling for Coco-VM, which is part of the Private Device
->> Assignment (aka TEE-IO, TIO) enabling. There are already some
->> disscusion about the context of TIO:
->>
->> https://lore.kernel.org/linux-coco/173343739517.1074769.13134786548545925484.stgit@dwillia2-xfh.jf.intel.com/
->> https://lore.kernel.org/all/20240823132137.336874-1-aik@amd.com/
->>
->> Private MMIOs are resources owned by Private assigned devices. Like
->> private memory, they are also not intended to be accessed by host, only
->> accessible by Coco-VM via some secondary MMUs (e.g. Secure EPT). This
->> series is for KVM to map these MMIO resources without firstly mapping
->> into the host. For this purpose, This series uses the FD based MMIO
->> resources for secure mapping, and the dma-buf is chosen as the FD based
->> backend, just like guest_memfd for private memory. Patch 6 in this
->> series has more detailed description.
->>
->>
->> Patch 1 changes dma-buf core, expose a new kAPI for importers to get
->> dma-buf's PFN without DMA mapping. KVM could use this kAPI to build
->> GPA -> HPA mapping in KVM MMU.
->>
->> Patch 2-4 are from Jason & Vivek, allow vfio-pci to export MMIO
->> resources as dma-buf. The original series are for native P2P DMA and
->> focus on p2p DMA mapping opens. I removed these p2p DMA mapping code
->> just to focus the early stage discussion of private MMIO. The original
->> series:
->>
->> https://lore.kernel.org/all/0-v2-472615b3877e+28f7-vfio_dma_buf_jgg@nvidia.com/
->> https://lore.kernel.org/kvm/20240624065552.1572580-1-vivek.kasireddy@intel.com/
->>
->> Patch 5 is the implementation of get_pfn() callback for vfio dma-buf
->> exporter.
->>
->> Patch 6-7 is about KVM supports the private MMIO memory slot backed by
->> vfio dma-buf.
->>
->> Patch 8-10 is about how KVM verifies the user provided dma-buf fd
->> eligible for private MMIO slot.
->>
->> Patch 11-12 is the example of how KVM TDX setup the Secure EPT for
->> private MMIO.
->>
->>
->> TODOs:
->>
->> - Follow up the evolving of original VFIO dma-buf series.
->> - Follow up the evolving of basic TDX patches.
->>
->>
->> Vivek Kasireddy (3):
->>    vfio: Export vfio device get and put registration helpers
->>    vfio/pci: Share the core device pointer while invoking feature
->>      functions
->>    vfio/pci: Allow MMIO regions to be exported through dma-buf
->>
->> Xu Yilun (9):
->>    dma-buf: Introduce dma_buf_get_pfn_unlocked() kAPI
->>    vfio/pci: Support get_pfn() callback for dma-buf
->>    KVM: Support vfio_dmabuf backed MMIO region
->>    KVM: x86/mmu: Handle page fault for vfio_dmabuf backed MMIO
->>    vfio/pci: Create host unaccessible dma-buf for private device
->>    vfio/pci: Export vfio dma-buf specific info for importers
->>    KVM: vfio_dmabuf: Fetch VFIO specific dma-buf data for sanity check
->>    KVM: x86/mmu: Export kvm_is_mmio_pfn()
->>    KVM: TDX: Implement TDX specific private MMIO map/unmap for SEPT
->>
->>   Documentation/virt/kvm/api.rst     |   7 +
->>   arch/x86/include/asm/tdx.h         |   3 +
->>   arch/x86/kvm/mmu.h                 |   1 +
->>   arch/x86/kvm/mmu/mmu.c             |  25 ++-
->>   arch/x86/kvm/mmu/spte.c            |   3 +-
->>   arch/x86/kvm/vmx/tdx.c             |  57 +++++-
->>   arch/x86/virt/vmx/tdx/tdx.c        |  52 ++++++
->>   arch/x86/virt/vmx/tdx/tdx.h        |   3 +
->>   drivers/dma-buf/dma-buf.c          |  90 ++++++++--
->>   drivers/vfio/device_cdev.c         |   9 +-
->>   drivers/vfio/pci/Makefile          |   1 +
->>   drivers/vfio/pci/dma_buf.c         | 273 +++++++++++++++++++++++++++++
->>   drivers/vfio/pci/vfio_pci_config.c |  22 ++-
->>   drivers/vfio/pci/vfio_pci_core.c   |  64 +++++--
->>   drivers/vfio/pci/vfio_pci_priv.h   |  27 +++
->>   drivers/vfio/pci/vfio_pci_rdwr.c   |   3 +
->>   drivers/vfio/vfio_main.c           |   2 +
->>   include/linux/dma-buf.h            |  13 ++
->>   include/linux/kvm_host.h           |  25 ++-
->>   include/linux/vfio.h               |  22 +++
->>   include/linux/vfio_pci_core.h      |   1 +
->>   include/uapi/linux/kvm.h           |   1 +
->>   include/uapi/linux/vfio.h          |  34 +++-
->>   virt/kvm/Kconfig                   |   6 +
->>   virt/kvm/Makefile.kvm              |   1 +
->>   virt/kvm/kvm_main.c                |  32 +++-
->>   virt/kvm/kvm_mm.h                  |  19 ++
->>   virt/kvm/vfio_dmabuf.c             | 151 ++++++++++++++++
->>   28 files changed, 896 insertions(+), 51 deletions(-)
->>   create mode 100644 drivers/vfio/pci/dma_buf.c
->>   create mode 100644 virt/kvm/vfio_dmabuf.c
->>
+>   1. Parameters specific to the Realm stage2 (e.g. IPA Size, vmid, stage2
+>      entry level, entry level RTTs, number of RTTs in start level, LPA2)
+>      Most of these are not measured by RMM and comes from KVM book
+>      keeping.
 > 
+>   2. Parameters controlling "Arm Architecture features for the VM". (e.g.
+>      SVE VL, PMU counters, number of HW BRPs/WPs), configured by the VMM
+>      using the "user ID register write" mechanism. These will be
+>      supported in the later patches.
+> 
+>   3. Parameters are not part of the core Arm architecture but defined
+>      by the RMM spec (e.g. Hash algorithm for measurement,
+>      Personalisation value). These are programmed via
+>      KVM_CAP_ARM_RME_CONFIG_REALM.
+> 
+> For the IPA size there is the possibility that the RMM supports a
+> different size to the IPA size supported by KVM for normal guests. At
+> the moment the 'normal limit' is exposed by KVM_CAP_ARM_VM_IPA_SIZE and
+> the IPA size is configured by the bottom bits of vm_type in
+> KVM_CREATE_VM. This means that it isn't easy for the VMM to discover
+> what IPA sizes are supported for Realm guests. Since the IPA is part of
+> the measurement of the realm guest the current expectation is that the
+> VMM will be required to pick the IPA size demanded by attestation and
+> therefore simply failing if this isn't available is fine. An option
+> would be to expose a new capability ioctl to obtain the RMM's maximum
+> IPA size if this is needed in the future.
+> 
+> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> ---
+> Changes since v7:
+>   * Minor code cleanup following Gavin's review.
+> Changes since v6:
+>   * Separate RMM RTT calculations from host PAGE_SIZE. This allows the
+>     host page size to be larger than 4k while still communicating with an
+>     RMM which uses 4k granules.
+> Changes since v5:
+>   * Introduce free_delegated_granule() to replace many
+>     undelegate/free_page() instances and centralise the comment on
+>     leaking when the undelegate fails.
+>   * Several other minor improvements suggested by reviews - thanks for
+>     the feedback!
+> Changes since v2:
+>   * Improved commit description.
+>   * Improved return failures for rmi_check_version().
+>   * Clear contents of PGD after it has been undelegated in case the RMM
+>     left stale data.
+>   * Minor changes to reflect changes in previous patches.
+> ---
+>   arch/arm64/include/asm/kvm_emulate.h |   5 +
+>   arch/arm64/include/asm/kvm_rme.h     |  19 ++
+>   arch/arm64/kvm/arm.c                 |  16 ++
+>   arch/arm64/kvm/mmu.c                 |  22 +-
+>   arch/arm64/kvm/rme.c                 | 319 +++++++++++++++++++++++++++
+>   5 files changed, 379 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
+> index 1c43a4fc25dd..4ee6c215da82 100644
+> --- a/arch/arm64/include/asm/kvm_emulate.h
+> +++ b/arch/arm64/include/asm/kvm_emulate.h
+> @@ -699,6 +699,11 @@ static inline enum realm_state kvm_realm_state(struct kvm *kvm)
+>   	return READ_ONCE(kvm->arch.realm.state);
+>   }
+>   
+> +static inline bool kvm_realm_is_created(struct kvm *kvm)
+> +{
+> +	return kvm_is_realm(kvm) && kvm_realm_state(kvm) != REALM_STATE_NONE;
+> +}
+> +
+>   static inline bool vcpu_is_rec(struct kvm_vcpu *vcpu)
+>   {
+>   	return false;
+> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/asm/kvm_rme.h
+> index 9c8a0b23e0e4..5dc1915de891 100644
+> --- a/arch/arm64/include/asm/kvm_rme.h
+> +++ b/arch/arm64/include/asm/kvm_rme.h
+> @@ -6,6 +6,8 @@
+>   #ifndef __ASM_KVM_RME_H
+>   #define __ASM_KVM_RME_H
+>   
+> +#include <uapi/linux/kvm.h>
+> +
+>   /**
+>    * enum realm_state - State of a Realm
+>    */
+> @@ -46,11 +48,28 @@ enum realm_state {
+>    * struct realm - Additional per VM data for a Realm
+>    *
+>    * @state: The lifetime state machine for the realm
+> + * @rd: Kernel mapping of the Realm Descriptor (RD)
+> + * @params: Parameters for the RMI_REALM_CREATE command
+> + * @num_aux: The number of auxiliary pages required by the RMM
+> + * @vmid: VMID to be used by the RMM for the realm
+> + * @ia_bits: Number of valid Input Address bits in the IPA
+>    */
+>   struct realm {
+>   	enum realm_state state;
+> +
+> +	void *rd;
+> +	struct realm_params *params;
+> +
+> +	unsigned long num_aux;
+> +	unsigned int vmid;
+> +	unsigned int ia_bits;
+>   };
+>   
+>   void kvm_init_rme(void);
+> +u32 kvm_realm_ipa_limit(void);
+> +
+> +int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap);
+> +int kvm_init_realm_vm(struct kvm *kvm);
+> +void kvm_destroy_realm(struct kvm *kvm);
+>   
+>   #endif /* __ASM_KVM_RME_H */
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index 856a721d41ac..0e8482fdc4d3 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -136,6 +136,11 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+>   		}
+>   		mutex_unlock(&kvm->lock);
+>   		break;
+> +	case KVM_CAP_ARM_RME:
+> +		mutex_lock(&kvm->lock);
+> +		r = kvm_realm_enable_cap(kvm, cap);
+> +		mutex_unlock(&kvm->lock);
+> +		break;
+>   	default:
+>   		break;
+>   	}
+> @@ -198,6 +203,13 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+>   
+>   	bitmap_zero(kvm->arch.vcpu_features, KVM_VCPU_MAX_FEATURES);
+>   
+> +	/* Initialise the realm bits after the generic bits are enabled */
+> +	if (kvm_is_realm(kvm)) {
+> +		ret = kvm_init_realm_vm(kvm);
+> +		if (ret)
+> +			goto err_free_cpumask;
+> +	}
+> +
+>   	return 0;
+>   
+>   err_free_cpumask:
+> @@ -257,6 +269,7 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
+>   	kvm_unshare_hyp(kvm, kvm + 1);
+>   
+>   	kvm_arm_teardown_hypercalls(kvm);
+> +	kvm_destroy_realm(kvm);
+>   }
+>   
+>   static bool kvm_has_full_ptr_auth(void)
+> @@ -405,6 +418,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+>   	case KVM_CAP_ARM_SUPPORTED_REG_MASK_RANGES:
+>   		r = BIT(0);
+>   		break;
+> +	case KVM_CAP_ARM_RME:
+> +		r = static_key_enabled(&kvm_rme_is_available);
+> +		break;
+>   	default:
+>   		r = 0;
+>   	}
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index 2feb6c6b63af..5957a07de86d 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -876,12 +876,16 @@ static struct kvm_pgtable_mm_ops kvm_s2_mm_ops = {
+>   	.icache_inval_pou	= invalidate_icache_guest_page,
+>   };
+>   
+> -static int kvm_init_ipa_range(struct kvm_s2_mmu *mmu, unsigned long type)
+> +static int kvm_init_ipa_range(struct kvm *kvm,
+> +			      struct kvm_s2_mmu *mmu, unsigned long type)
+>   {
+>   	u32 kvm_ipa_limit = get_kvm_ipa_limit();
+>   	u64 mmfr0, mmfr1;
+>   	u32 phys_shift;
+>   
+> +	if (kvm_is_realm(kvm))
+> +		kvm_ipa_limit = kvm_realm_ipa_limit();
+> +
+>   	if (type & ~KVM_VM_TYPE_ARM_IPA_SIZE_MASK)
+>   		return -EINVAL;
+>   
+> @@ -946,7 +950,7 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
+>   		return -EINVAL;
+>   	}
+>   
+> -	err = kvm_init_ipa_range(mmu, type);
+> +	err = kvm_init_ipa_range(kvm, mmu, type);
+>   	if (err)
+>   		return err;
+>   
+> @@ -1072,6 +1076,20 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
+>   	struct kvm_pgtable *pgt = NULL;
+>   
+>   	write_lock(&kvm->mmu_lock);
+> +	if (kvm_is_realm(kvm) &&
+> +	    (kvm_realm_state(kvm) != REALM_STATE_DEAD &&
+> +	     kvm_realm_state(kvm) != REALM_STATE_NONE)) {
+> +		/* Tearing down RTTs will be added in a later patch */
+> +		write_unlock(&kvm->mmu_lock);
+> +
+> +		/*
+> +		 * The physical PGD pages are delegated to the RMM, so cannot
+> +		 * be freed at this point. This function will be called again
+> +		 * from kvm_destroy_realm() after the physical pages have been
+> +		 * returned at which point the memory can be freed.
+> +		 */
+> +		return;
+> +	}
+>   	pgt = mmu->pgt;
+>   	if (pgt) {
+>   		mmu->pgd_phys = 0;
+> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
+> index 67cf2d94cb2d..dbb6521fe380 100644
+> --- a/arch/arm64/kvm/rme.c
+> +++ b/arch/arm64/kvm/rme.c
+> @@ -5,9 +5,23 @@
+>   
+>   #include <linux/kvm_host.h>
+>   
+> +#include <asm/kvm_emulate.h>
+> +#include <asm/kvm_mmu.h>
+>   #include <asm/rmi_cmds.h>
+>   #include <asm/virt.h>
+>   
+> +#include <asm/kvm_pgtable.h>
+> +
+> +static unsigned long rmm_feat_reg0;
+> +
+> +#define RMM_PAGE_SHIFT		12
+> +#define RMM_PAGE_SIZE		BIT(RMM_PAGE_SHIFT)
+> +
+> +static bool rme_has_feature(unsigned long feature)
+> +{
+> +	return !!u64_get_bits(rmm_feat_reg0, feature);
+> +}
+> +
+>   static int rmi_check_version(void)
+>   {
+>   	struct arm_smccc_res res;
+> @@ -42,6 +56,305 @@ static int rmi_check_version(void)
+>   	return 0;
+>   }
+>   
+> +u32 kvm_realm_ipa_limit(void)
+> +{
+> +	return u64_get_bits(rmm_feat_reg0, RMI_FEATURE_REGISTER_0_S2SZ);
+> +}
+> +
+> +static int get_start_level(struct realm *realm)
+> +{
+> +	return 4 - ((realm->ia_bits - 8) / (RMM_PAGE_SHIFT - 3));
 
--- 
-Alexey
+minor nit: It may be worth adding a comment here, how we got this magic
+number 8. We could say:
+
+Open coded version of ARM64_HW_PGTABLE_LEVELS(ia_bits - 4) (accounting 
+for the concatenation of upto 16 tables in entry level) for RMM Stage2.
+
+
+> +}
+> +
+> +static void free_delegated_granule(phys_addr_t phys)
+> +{
+> +	if (WARN_ON(rmi_granule_undelegate(phys))) {
+> +		/* Undelegate failed: leak the page */
+> +		return;
+> +	}
+> +
+> +	kvm_account_pgtable_pages(phys_to_virt(phys), -1);
+> +
+> +	free_page((unsigned long)phys_to_virt(phys));
+> +}
+> +
+> +/* Calculate the number of s2 root rtts needed */
+> +static int realm_num_root_rtts(struct realm *realm)
+> +{
+> +	unsigned int ipa_bits = realm->ia_bits;
+> +	unsigned int levels = 3 - get_start_level(realm);
+
+nit: Why is this 3 - start_level and not 4 ? Though that is compensated 
+by the "levels + 1" below, hence the calculation is correct.
+
+> +	unsigned int sl_ipa_bits = (levels + 1) * (RMM_PAGE_SHIFT - 3) +
+> +				   RMM_PAGE_SHIFT;
+> +
+> +	if (sl_ipa_bits >= ipa_bits)
+> +		return 1;
+> +
+> +	return 1 << (ipa_bits - sl_ipa_bits);
+> +}
+> +
+> +static int realm_create_rd(struct kvm *kvm)
+> +{
+> +	struct realm *realm = &kvm->arch.realm;
+> +	struct realm_params *params = realm->params;
+> +	void *rd = NULL;
+> +	phys_addr_t rd_phys, params_phys;
+> +	size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
+> +	int i, r;
+> +	int rtt_num_start;
+> +
+> +	realm->ia_bits = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
+> +	rtt_num_start = realm_num_root_rtts(realm);
+> +
+> +	if (WARN_ON(realm->rd || !realm->params))
+> +		return -EEXIST;
+> +
+> +	if (pgd_size / RMM_PAGE_SIZE < rtt_num_start)
+> +		return -EINVAL;
+> +
+> +	rd = (void *)__get_free_page(GFP_KERNEL);
+> +	if (!rd)
+> +		return -ENOMEM;
+> +
+> +	rd_phys = virt_to_phys(rd);
+> +	if (rmi_granule_delegate(rd_phys)) {
+> +		r = -ENXIO;
+> +		goto free_rd;
+> +	}
+> +
+> +	for (i = 0; i < pgd_size; i += RMM_PAGE_SIZE) {
+> +		phys_addr_t pgd_phys = kvm->arch.mmu.pgd_phys + i;
+> +
+> +		if (rmi_granule_delegate(pgd_phys)) {
+> +			r = -ENXIO;
+> +			goto out_undelegate_tables;
+> +		}
+> +	}
+> +
+> +	params->s2sz = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
+> +	params->rtt_level_start = get_start_level(realm);
+> +	params->rtt_num_start = rtt_num_start;
+> +	params->rtt_base = kvm->arch.mmu.pgd_phys;
+> +	params->vmid = realm->vmid;
+> +
+> +	params_phys = virt_to_phys(params);
+> +
+> +	if (rmi_realm_create(rd_phys, params_phys)) {
+> +		r = -ENXIO;
+> +		goto out_undelegate_tables;
+> +	}
+> +
+> +	if (WARN_ON(rmi_rec_aux_count(rd_phys, &realm->num_aux))) {
+> +		WARN_ON(rmi_realm_destroy(rd_phys));
+> +		goto out_undelegate_tables;
+> +	}
+> +
+> +	realm->rd = rd;
+> +
+> +	return 0;
+> +
+> +out_undelegate_tables:
+> +	while (i > 0) {
+> +		i -= RMM_PAGE_SIZE;
+> +
+> +		phys_addr_t pgd_phys = kvm->arch.mmu.pgd_phys + i;
+> +
+> +		if (WARN_ON(rmi_granule_undelegate(pgd_phys))) {
+> +			/* Leak the pages if they cannot be returned */
+> +			kvm->arch.mmu.pgt = NULL;
+> +			break;
+> +		}
+
+minor nit: Do we need to try undelegating the other pages ? We could 
+make that WARN_ON_ONCE() too.
+
+Suzuki
 
