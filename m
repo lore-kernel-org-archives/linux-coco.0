@@ -1,105 +1,181 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254D8190676
-	for <linux-coco@lists.linux.dev>; Wed, 30 Apr 2025 15:41:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28511DE2B4
+	for <linux-coco@lists.linux.dev>; Wed, 30 Apr 2025 17:32:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746027692; cv=none; b=RE6KclG0oWlTn7+gj2xBshL2S99tKmWxyAV8B9VCY5eGkbwnXfEI7JZSWfGFvweZcmFpv6P8j50zD7yxgbM0WwO0mSd61w+suR82RFrRYjr6LjimgPtoWWW3lB8UgQgmqvXxQu0m+XfyljAG1rfJ+6L/Tws10tTeMXakMKreaHg=
+	t=1746034333; cv=none; b=M7RClh5kG61wP1exOeUCDa2K6MqULL6lZ78l5OrurGOqLPMzYOX/zk9yJ6ZN6wfUzm8cmt2Oc2TISKBhd8f+Y8RERY+FZw2lbANRv+GFrB2mZmrR7zAH7olOKri7Oz4/DOXlHUcZzWi7H1G2FCE7h6BmoOfcuWMoyKoUmHbrVlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746027692; c=relaxed/simple;
-	bh=kdy+6lyDup6NN9r8Zyqs6ADoNhHFNmabeAeGewjscmk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ihaunXTYV5kKscrsPbi3xjCRVxl9hhSRqV7UzepHDjQBHf7q9ZB3Uhz7wOko4vr+JzCu6IRMH2caetCfnmWrHvgsCKYW2jDorqLb5/nc4xkee2e9eGOPPRKVXvmug190zD7rVDbKLpn7yBpuwKJ/vZ0/Eet/HP7MZaL1YY37Lgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2DEF61063;
-	Wed, 30 Apr 2025 08:41:23 -0700 (PDT)
-Received: from [10.57.47.173] (unknown [10.57.47.173])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 1F5783F5A1;
-	Wed, 30 Apr 2025 08:41:27 -0700 (PDT)
-Message-ID: <55d0c2a9-54a3-4063-9f57-624e7eef4720@arm.com>
-Date: Wed, 30 Apr 2025 16:41:27 +0100
+	s=arc-20240116; t=1746034333; c=relaxed/simple;
+	bh=GDERo12fuylocE1QEmf7ZtqDJ8koySNJKbepEfkU+8U=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=UgF7+XTrW9iUUgsWXUa7XWCtzebDnCbnC/KsUyrt//O8pn8rrWgFP7dZAKRLT2Dm23Ww5Rgj+erKTawGTyElM+qxPzCfIL+LvKDLo9BLGBM0gb6vJT++JVR4eHzcfv50l3RIshTDUNGFu0Crv5j0zQYvmHZFZe2gLtNq0VsacSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=UJv2ZgjU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=uON408y8; arc=none smtp.client-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="UJv2ZgjU";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="uON408y8"
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id 16A2E13800BF;
+	Wed, 30 Apr 2025 13:32:10 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-05.internal (MEProxy); Wed, 30 Apr 2025 13:32:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1746034330;
+	 x=1746120730; bh=015VbXW4QSDjJ/pEV0tZANumHA9OVvM3KFWKJRCZ4lk=; b=
+	UJv2ZgjUaSKkF4zhYl4nhxC3ESRP1XOV+eawVzYLCitaBQSOs0deZYmLwARPXcMa
+	Sqm9np82NvAfg5Wxa9C0bgdzFhlmREEY27HEKcfCwwZ7HYGNaKcJGgqnJW7wfN7q
+	lAvMhD2GOo5UTyHYtYc77n7kP+DZwbHT12ab1KXoVCroGQA0nbDUgq4VPKAIwAKo
+	ELX/A7l9hhazF6gu71TmvomuqItmJVsAcKukTbaMTBukpkYWNAzPTOxdHfOwhGu8
+	UY3FTFaY0HwxNzvWDTI+OO7ferAu+IfccgvrxokSyKNHHM6o0Kk/G3ZUrw9JcKVd
+	nfIolmN9ySbIgtC5K47/8w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1746034330; x=
+	1746120730; bh=015VbXW4QSDjJ/pEV0tZANumHA9OVvM3KFWKJRCZ4lk=; b=u
+	ON408y8e6miKi1eISuxU9lpd/R0/LkaBvMHp+jrPQV71e/X7m2GvLXWvxoc3Jlcm
+	ZPVNfkMcAX+RALQ0wDc4WZjxc01lSZzJNXTg2kVr7DyFDIM84JDSC7Viwo75pLpA
+	I4fktLBbzCyAum/wDkK1WACqTdymcm6H0UxY424xBSErpGR/KCrIz43bs4VfsQqz
+	VdnZoyilphQ1aA1SEaU5pcIP43IKzLZAcXyPiMGvEI/CX6lQL79YmQMbkKIWHdUg
+	pVRZL9x4D1EN8ZoVArAystkmhIW9OZo26YGj88vc3BWxYi0xaLHFBPo/NNL8599P
+	dGnPh+oDyvHxj13K04LAg==
+X-ME-Sender: <xms:mF4SaBTDrqSfTJ5Go-_mHN8p4DT0wyqgO7s8lImTc89gM878I6zNUQ>
+    <xme:mF4SaKwjE5jyI4EMH-mRYdxftBGmDHMbue_nA1lvuX8ZVmlqyJn-GmacOuh_hFUyp
+    ExROb-NAP0F3njjRB0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvieejfedtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
+    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
+    gsrdguvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeet
+    fefggfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohep
+    udegpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehsuhiiuhhkihdrphhouhhloh
+    hsvgesrghrmhdrtghomhdprhgtphhtthhopehmphgvsegvlhhlvghrmhgrnhdrihgurdgr
+    uhdprhgtphhtthhopehvrghnnhgrphhurhhvvgesghhoohhglhgvrdgtohhmpdhrtghpth
+    htohepuggrnhdrjhdrfihilhhlihgrmhhssehinhhtvghlrdgtohhmpdhrtghpthhtohep
+    khgvvghssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihhnghhosehkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehnrghvvggvnheskhgvrhhnvghlrdhorhhgpdhrtghpthht
+    ohepgiekieeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhgvrdhhrghnshgvnh
+    eslhhinhhugidrihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:mF4SaG0QI_RSZSoV79KZJd_nG6-SWAQQXm3sq9bo73RE-oeMsOy-wg>
+    <xmx:mF4SaJBYD2PDqICn8-rR9y1RolwK-uKbuqpk4BzQcNHS7hqeFwgU1g>
+    <xmx:mF4SaKjZHbiQyN1F--m8-TSVcGT3PEmwS3Q-ylCBzVPAISCYQ-HMLQ>
+    <xmx:mF4SaNo4CQ6Lw-5Wqu4BuQUj34WEkQbG-SnP9pz28hW6jRBD-eoCUg>
+    <xmx:ml4SaDFezXjtWYGUxk2_ryDByr5I-jKTni0DnYWdgu4Z29sMPj2YIoOI>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 494E02220073; Wed, 30 Apr 2025 13:32:08 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/2] Restrict devmem for confidential VMs
-Content-Language: en-GB
-To: Dan Williams <dan.j.williams@intel.com>,
- Dave Hansen <dave.hansen@intel.com>, dave.hansen@linux.intel.com
-Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>,
- Vishal Annapurve <vannapurve@google.com>, Kees Cook <kees@kernel.org>,
- stable@vger.kernel.org, x86@kernel.org,
- Nikolay Borisov <nik.borisov@suse.com>, Naveen N Rao <naveen@kernel.org>,
- Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, mpe@ellerman.id.au
-References: <174491711228.1395340.3647010925173796093.stgit@dwillia2-xfh.jf.intel.com>
- <63bb3383-de43-4638-b229-28c33c1582be@intel.com>
- <681005cdd3631_1d522948e@dwillia2-xfh.jf.intel.com.notmuch>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <681005cdd3631_1d522948e@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-ThreadId: T3ad4a30312e33025
+Date: Wed, 30 Apr 2025 19:31:37 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Dan Williams" <dan.j.williams@intel.com>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Ingo Molnar" <mingo@kernel.org>, "Kees Cook" <kees@kernel.org>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ "Michael Ellerman" <mpe@ellerman.id.au>, "Naveen N Rao" <naveen@kernel.org>,
+ "Nikolay Borisov" <nik.borisov@suse.com>, stable@vger.kernel.org,
+ "Suzuki K Poulose" <suzuki.poulose@arm.com>,
+ "Vishal Annapurve" <vannapurve@google.com>, x86@kernel.org,
+ linux-coco@lists.linux.dev
+Message-Id: <0bdb1876-0cb3-4632-910b-2dc191902e3e@app.fastmail.com>
+In-Reply-To: <20250430024622.1134277-3-dan.j.williams@intel.com>
+References: <20250430024622.1134277-1-dan.j.williams@intel.com>
+ <20250430024622.1134277-3-dan.j.williams@intel.com>
+Subject: Re: [PATCH v5] x86/devmem: Drop /dev/mem access for confidential guests
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
-Hi Dan
+On Wed, Apr 30, 2025, at 04:46, Dan Williams wrote:
+> While there is an existing mitigation to simulate and redirect access to
+> the BIOS data area with STRICT_DEVMEM=y, it is insufficient.
+> Specifically, STRICT_DEVMEM=y traps read(2) access to the BIOS data
+> area, and returns a zeroed buffer.  However, it turns out the kernel
+> fails to enforce the same via mmap(2), and a direct mapping is
+> established. This is a hole, and unfortunately userspace has learned to
+> exploit it [2].
 
-On 28/04/2025 23:48, Dan Williams wrote:
-> Dave Hansen wrote:
->> On 4/17/25 12:11, Dan Williams wrote:
->>>   arch/x86/Kconfig          |    4 ++++
->>>   arch/x86/mm/pat/memtype.c |   31 ++++---------------------------
->>>   drivers/char/mem.c        |   27 +++++++++------------------
->>>   include/linux/io.h        |   21 +++++++++++++++++++++
->>>   4 files changed, 38 insertions(+), 45 deletions(-)
->>
->> This looks like a good idea on multiple levels. We can take it through
->> tip, but one things that makes me nervous is that neither of the "CHAR
->> and MISC DRIVERS" supporters are even on cc.
->>
->>> Arnd Bergmann <arnd@arndb.de> (supporter:CHAR and MISC DRIVERS)
->>> Greg Kroah-Hartman <gregkh@linuxfoundation.org> (supporter:CHAR and MISC DRIVERS)
-> 
-> Good catch, just note that until this latest iteration the proposal was
-> entirely contained to x86 specific support functions like devmem_is_allowed().
-> So yes, an oversight as this moved to a more general devmem mechanism.
-> 
->> I guess arm and powerpc have cc_platform_has() so it's not _completely_
->> x86 only, either. Acks from those folks would also be appreciated since
->> it's going to affect them most immediately.
-> 
-> I have added Suzuki and Michael for their awareness, but I would not say
-> acks are needed at this point since to date CC_ATTR_GUEST_MEM_ENCRYPT is
-> strictly an x86-ism.
-> 
-> For example, the PowerPC implementation of cc_platform_has() has not been
-> touched since Tom added it.
-> 
-> Suzuki, Michael, at a minimum the question this patch poses to ARM64 and
-> PowerPC is whether they are going to allow CONFIG_STRICT_DEVMEM=n, or otherwise
-> understand that CONFIG_STRICT_DEVMEM=y == LOCKDOWN with
-> CC_ATTR_GUEST_MEM_ENCRYPT.
+As far as I can tell, this was a deliberate design choice in
+commit a4866aa81251 ("mm: Tighten x86 /dev/mem with zeroing reads"),
+which did not try to forbid it completely but mainly avoids triggering
+the hardened usercopy check.
 
-For CCA we don't really enforce STRICT_DEVMEM. But we do expect people
-to use it for safety reasons, but is not mandatory.
+> The simplest option for now is arrange for /dev/mem to always behave as
+> if lockdown is enabled for confidential guests. Require confidential
+> guest userspace to jettison legacy dependencies on /dev/mem similar to
+> how other legacy mechanisms are jettisoned for confidential operation.
+> Recall that modern methods for BIOS data access are available like
+> /sys/firmware/dmi/tables.
 
-Does that help ?
+Restricting /dev/mem further is a good idea, but it would be nice
+if that could be done without adding yet another special case.
 
-Suzuki
+An even more radical approach would be to just disallow CONFIG_DEVMEM
+for any configuration that includes ARCH_HAS_CC_PLATFORM, but that
+may go a little too far.
 
+The existing rules that I can see are:
 
+- readl/write is only allowed on actual (lowmem) RAM, not
+  on MMIO registers, enforced by valid_phys_addr_range()
+- with STRICT_DEVMEM, read/write is disallowed on both
+  RAM and MMIO
+- an an exception, x86 additionally allows read/write on the
+  low 1MB MMIO region and 32-bit PCI MMIO BAR space, with
+  a custom xlate_dev_mem_ptr() that calls either memremap()
+  or ioremap() on the physical address.
+- as another exception from that, the low 1MB on x86 behaves
+  like /dev/zero for memory pages when STRICT_DEVMEM
+  is set, and ignores conflicting drivers for MMIO registers
+- The PowerPC sys_rtas syscall has another exception in
+  order to ignore the STRICT_DEVMEM and write to a portion
+  of kernel memory to talk to firmware
+- on the mmap() side, x86 has another special to allow
+  mapping RAM in the first 1MB despite STRICT_DEVMEM
 
+How about changing x86 to work more like the others and
+removing the special cases for the first 1MB and for the
+32-bit PCI BAR space? If Xorg, and dmidecode are able to
+do this differently, maybe the hacks can just go away, or
+be guarded by a Kconfig option that is mutually exclusive
+with ARCH_HAS_CC_PLATFORM?
+
+> @@ -595,6 +596,15 @@ static int open_port(struct inode *inode, struct 
+> file *filp)
+>  	if (rc)
+>  		return rc;
 > 
->> Also, just to confirm, patch 2 can go to stable@ without _any_
->> dependency on patch 1, right?
-> 
-> Correct. I will make them independent / unordered patches on the repost.
-> 
-> Next posting to fix the "select" instead of "depends on" dependency
-> management, h/t Naveen, and clarify the "'crash' vs 'SEPT violation'"
-> description.
+> +	/*
+> +	 * Enforce encrypted mapping consistency and avoid unaccepted
+> +	 * memory conflicts, "lockdown" /dev/mem for confidential
+> +	 * guests.
+> +	 */
+> +	if (IS_ENABLED(CONFIG_STRICT_DEVMEM) &&
+> +	    cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+> +		return -EPERM;
+> +
 
+The description only talks about /dev/mem, but it looks like this
+blocks /dev/port as well. Blocking /dev/port may also be a good
+idea, but I don't see why that would be conditional on
+CC_ATTR_GUEST_MEM_ENCRYPT.
+
+When CONFIG_DEVMEM=y and CONFIG_STRICT_DEVMEM=n, doesn't this still
+have the same problem for CC guests?
+
+     Arnd
