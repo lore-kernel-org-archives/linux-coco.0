@@ -1,258 +1,149 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BA07E107
-	for <linux-coco@lists.linux.dev>; Wed, 30 Apr 2025 12:11:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C272DC768
+	for <linux-coco@lists.linux.dev>; Wed, 30 Apr 2025 12:48:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746015083; cv=none; b=e3E+/VDPm9dS7a5U4ukRvIgseX67oZ4TQvwm8Hk4XVwA6+lkBWQgLLUHJNEu+QsVrcNgIsZ87mTeEJrVgyue4bN1tzxoxTG4tXYRAqppp7qvxToyP5/PFrUspxhyOy2n34jI3atE25+S/ZiOWqy+lnZ9jo3t3kTXEGOmSn7TOCQ=
+	t=1746017282; cv=none; b=Hw5aWQTufZHP1PzhQOYKCHb6awI5o3jNPlhtL0x4VKhG2tXbe6tTYxKqqCXGvhBikRorI4zd4YQoBjaFkF3DRuxVAcAxqjrsFVIXfN71NGynlAbij0Q6HNj6TTdhASObzQ67+Z4q4egzErkq2RwbbD6BtW30M6d6fvJ7elVFIro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746015083; c=relaxed/simple;
-	bh=WBVwmUGhNQeqSG1wEq0pfwpkL0pYYhpZqSLVK9JWP60=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YRiWZq6tyYACdHze5OXY/4hYi6M/N1cxPldGNBB5Pz8o+sDZ0bwCqMzpK0zmo53P8lYLMVYdqRTps8mp1pxECKy9pZywX3K/xOXrISlFXi+Ov9gSrUh7PGJZI/O+cCZuzKjKXGtAD6bflWooCE3I0lrHs0Du9bjAJCjpAj0YMSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AD9ZwQDi; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1746017282; c=relaxed/simple;
+	bh=U6QZenkf6jdbisYQhbMfwrHTpFbBNEtT4NQJE+pFW4U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JT4AGtwDggpi1O67PBmAd3HHtMIRjwSav7PjAIIGfCvrEoBzQeVuEa+w/+2okOTOLAAjFp06wHW3XCX5gY6o6Rnwh6oS/EAHGuxxuSOUK4PzzymHTAkzIY08QKCX5sbAGLMl/hfm23N8LsWSWbjQNJAoDeuvSwMiGBsLDYuKvuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=CkTOKCTu; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AD9ZwQDi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1746015080;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7tFgFXzqc2ivrCQjcqTMjWCPkQCLYsEDRrk0U+aYhgw=;
-	b=AD9ZwQDiw12pJ4/0qBFC0KYKIY275yb2X44z9HbIgp7HlY5DmTSsRRDxdraq4Ui2EztyY/
-	oOGPOt6ijRTV18Z5Fp+eSX97nIgiVdvVI38rnF5wNZbPJ0Sr5lPZl/iR9bHsZf9tXu6YCm
-	BG3ptSO/YFU/yQZDKDmj7IceVcVXaGY=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-306-icnQ-qM2OLmunYIluUmyuw-1; Wed, 30 Apr 2025 08:11:19 -0400
-X-MC-Unique: icnQ-qM2OLmunYIluUmyuw-1
-X-Mimecast-MFC-AGG-ID: icnQ-qM2OLmunYIluUmyuw_1746015078
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2240a7aceeaso65641665ad.0
-        for <linux-coco@lists.linux.dev>; Wed, 30 Apr 2025 05:11:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746015078; x=1746619878;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7tFgFXzqc2ivrCQjcqTMjWCPkQCLYsEDRrk0U+aYhgw=;
-        b=s96vhXKiBnjmDlrbeY0dIF2c7kmzQWlE9vOFeLg8FHM1FiP0B6HdLT0A3WsqC4bijS
-         mwl/aIQltfTe4nvpPIQSWgI93eFdWEexnd5OPEl/DTtCF5XDdoJP/vIWq0xt7feXDeyK
-         bcj+vuK0FDQqm9xf8GnPdwVRTXx167sL8tV1C2T5E5cyryYt4cttyIIIt+RPz7MWSWYR
-         q9AcgXvW/DhO2F+fCwAVID3nrlzYYCP/k1q6/4/Lh02XNgDfkoLPiepQgiJrPcgr8n0c
-         0h5ZJd2hmpS6AAAk3DPb79480llW6rZm7DsDe7KFhnfPG/+7pD3MC4I/j4CWCYNMFbgF
-         s7uQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUb0jUNgzPdBpie3yK4ZFgf4eXyNNWHANkrnBWAU8xzJcqwi2ZfSql6EeP9ZShXJyeIXTxUjbJKrcTH@lists.linux.dev
-X-Gm-Message-State: AOJu0YzZ/1yLTPzD67ooQuSRLkxHE7WK6Of+cHWfjZOUWzE4Oy/KuS7M
-	/mHek90cdN+hOQF8JyVyX3Y2RHt6FkNz/+tLZJ93leXbbJv1z26BzXEq1N8KLdlWOs5gMzFKllF
-	4dhwRdEYX/+f/3n1rjlkB/NmhkmE9FDwmtptL/iWgrs+x3AviDVI5xE8o1Is=
-X-Gm-Gg: ASbGnctDBLtUNmV3d+dXnMyMWaK8wqf8LngFHbyl6Mkm2XcPlvW4AunOneuX7kgyEkf
-	Nnzt+CxsVyrfhy47aziJVpMp/cno9Ztmm8BmAAe7LtgqWsWlXpL4v3AcKGmH11PxV+6s5SfzWUC
-	f2cvhcPFSHsCj1P31aJPgoL7xznJ5pGLbpT0zfhLXz7c5jl6Fwb9qz9/9MUuTSQdQGE7qNmhSVY
-	yNrTw6LkTAMIzBAS98ORCmuHBAwyO4jesPD40iuCxTEcmYgOjJxc1x5nvHN1rnNfHoTkULuw4PB
-	tIB8QopAeTb6
-X-Received: by 2002:a17:902:ebcc:b0:223:f408:c3f8 with SMTP id d9443c01a7336-22df578bcebmr38849465ad.14.1746015078595;
-        Wed, 30 Apr 2025 05:11:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHL6LT3h1gUo31SZA1COwvt+3Fy8+QNcJQ2pDlfoosU3yDt8W0PlDXI1jufTia5Y9HcVnFrHw==
-X-Received: by 2002:a17:902:ebcc:b0:223:f408:c3f8 with SMTP id d9443c01a7336-22df578bcebmr38849145ad.14.1746015078260;
-        Wed, 30 Apr 2025 05:11:18 -0700 (PDT)
-Received: from [192.168.68.51] ([180.233.125.65])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db50e89acsm120641205ad.113.2025.04.30.05.11.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Apr 2025 05:11:17 -0700 (PDT)
-Message-ID: <b5770d9b-4f17-4be8-95a7-1549322debb2@redhat.com>
-Date: Wed, 30 Apr 2025 22:11:09 +1000
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="CkTOKCTu"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D757C40E0214;
+	Wed, 30 Apr 2025 12:47:57 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 6ZDrEEMDyFL4; Wed, 30 Apr 2025 12:47:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1746017273; bh=l4rDJaOTk4RX7FoHJnTSsKAbG34bCLAXiDBoAAm9OcM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CkTOKCTu6r9r7oTTgdAtjKYYLKzO7MAayVNsqYCb+LF6qA5CtYCFurnaHYsbnI41f
+	 UJj/PsWAXJsq/uyZNTClJ5zMaRzJGHvV/ejIqju502V2xCzPeeEqyscUkDo3ZeDEQ5
+	 iBNZjQ6q27YQCbxAw3nSw3eALjegi5UCf+bY0pOO5OvMJ79WLVZSbg5apeZbS9S8aB
+	 HUa0xpyNtvx8uBD+WWzH0zSkei6D8lu0sUTqB1uuws+etTH1DBY4TLjWtF46s9N98y
+	 1DCSKreREjQlPt8lTx/iZIMHOxg7EBsqmFoTwa9bM06E88mjD/ZrH+0HR4rgSgvXAF
+	 qlvs8Zt27laVfQFKLmnbZSZznx+cSEdoXEjNLPZs67vcLxifs2Z49frZoij8ouB4ki
+	 hbKcL66canvNhpAcSzQcOUj6CKJFRwnnj3CZmgzW0/W1hjhI6Nl8CihFyxrLXIr+wX
+	 yJsjXUuzwKUOSmILxo2nsicbyERq7WVbI6ndQXVYhqTBipUlWQC7d+thj+OylOPxxv
+	 R8yqu9SipOYpZOzU9RFddmpY+vX51Y9pJm4X3BS4+dS9Ff1EU12hv4STnb8rXgMjRq
+	 YOFLz3GQSbXQySFNrkYme3kwWyG6n0jpig92FaDliNo6Z8wITA0rhf72PhZYactIGM
+	 nzyCZYzlcgTKqxRsAmTVf+nQ=
+Received: from zn.tnic (p579690ee.dip0.t-ipconnect.de [87.150.144.238])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DF8CF40E0174;
+	Wed, 30 Apr 2025 12:47:33 +0000 (UTC)
+Date: Wed, 30 Apr 2025 14:47:28 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, thomas.lendacky@amd.com, hpa@zytor.com,
+	kees@kernel.org, michael.roth@amd.com, nikunj@amd.com,
+	seanjc@google.com, ardb@kernel.org, gustavoars@kernel.org,
+	sgarzare@redhat.com, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v3] x86/sev: Do not touch VMSA pages during kdump of SNP
+ guest memory
+Message-ID: <20250430124728.GDaBIb4JTMxW2zO9gB@fat_crate.local>
+References: <20250428214151.155464-1-Ashish.Kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 17/43] arm64: RME: Handle RMI_EXIT_RIPAS_CHANGE
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-References: <20250416134208.383984-1-steven.price@arm.com>
- <20250416134208.383984-18-steven.price@arm.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20250416134208.383984-18-steven.price@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: j3zso09-KvFW3V3QB6uW7m4boVOZ5vzJ-0koygkSf5I_1746015078
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250428214151.155464-1-Ashish.Kalra@amd.com>
 
-On 4/16/25 11:41 PM, Steven Price wrote:
-> The guest can request that a region of it's protected address space is
-> switched between RIPAS_RAM and RIPAS_EMPTY (and back) using
-> RSI_IPA_STATE_SET. This causes a guest exit with the
-> RMI_EXIT_RIPAS_CHANGE code. We treat this as a request to convert a
-> protected region to unprotected (or back), exiting to the VMM to make
-> the necessary changes to the guest_memfd and memslot mappings. On the
-> next entry the RIPAS changes are committed by making RMI_RTT_SET_RIPAS
-> calls.
+On Mon, Apr 28, 2025 at 09:41:51PM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
 > 
-> The VMM may wish to reject the RIPAS change requested by the guest. For
-> now it can only do with by no longer scheduling the VCPU as we don't
-> currently have a usecase for returning that rejection to the guest, but
-> by postponing the RMI_RTT_SET_RIPAS changes to entry we leave the door
-> open for adding a new ioctl in the future for this purpose.
+> When kdump is running makedumpfile to generate vmcore and dumping SNP
+> guest memory it touches the VMSA page of the vCPU executing kdump which
+> then results in unrecoverable #NPF/RMP faults as the VMSA page is
+> marked busy/in-use when the vCPU is running and subsequently causes
+> guest softlockup/hang.
 > 
-> Signed-off-by: Steven Price <steven.price@arm.com>
+> Additionally other APs may be halted in guest mode and their VMSA pages
+> are marked busy and touching these VMSA pages during guest memory dump
+> will also cause #NPF.
+> 
+> Issue AP_DESTROY GHCB calls on other APs to ensure they are kicked out
+> of guest mode and then clear the VMSA bit on their VMSA pages.
+> 
+> If the vCPU running kdump is an AP, mark it's VMSA page as offline to
+> ensure that makedumpfile excludes that page while dumping guest memory.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 3074152e56c9 ("x86/sev: Convert shared memory back to private on kexec")
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
 > ---
-> Changes since v7:
->   * Rework the loop in realm_set_ipa_state() to make it clear when the
->     'next' output value of rmi_rtt_set_ripas() is used.
-> New patch for v7: The code was previously split awkwardly between two
-> other patches.
-> ---
->   arch/arm64/kvm/rme.c | 88 ++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 88 insertions(+)
-> 
+>  arch/x86/coco/sev/core.c | 241 +++++++++++++++++++++++++--------------
+>  1 file changed, 155 insertions(+), 86 deletions(-)
 
-One nitpick below, either way:
+Some minor cleanups ontop:
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
+diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+index b031cabb2ccf..9ac902d022bf 100644
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -961,6 +961,7 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
+ 
+ static int vmgexit_ap_control(u64 event, struct sev_es_save_area *vmsa, u32 apic_id)
+ {
++	bool create = event == SVM_VMGEXIT_AP_CREATE;
+ 	struct ghcb_state state;
+ 	unsigned long flags;
+ 	struct ghcb *ghcb;
+@@ -971,8 +972,10 @@ static int vmgexit_ap_control(u64 event, struct sev_es_save_area *vmsa, u32 apic
+ 	ghcb = __sev_get_ghcb(&state);
+ 
+ 	vc_ghcb_invalidate(ghcb);
+-	if (event == SVM_VMGEXIT_AP_CREATE)
++
++	if (create)
+ 		ghcb_set_rax(ghcb, vmsa->sev_features);
++
+ 	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_AP_CREATION);
+ 	ghcb_set_sw_exit_info_1(ghcb,
+ 				((u64)apic_id << 32)	|
+@@ -985,7 +988,7 @@ static int vmgexit_ap_control(u64 event, struct sev_es_save_area *vmsa, u32 apic
+ 
+ 	if (!ghcb_sw_exit_info_1_is_valid(ghcb) ||
+ 	    lower_32_bits(ghcb->save.sw_exit_info_1)) {
+-		pr_err("SNP AP %s error\n", (event == SVM_VMGEXIT_AP_CREATE ? "CREATE" : "DESTROY"));
++		pr_err("SNP AP %s error\n", (create ? "CREATE" : "DESTROY"));
+ 		ret = -EINVAL;
+ 	}
+ 
+@@ -1168,8 +1171,8 @@ static void shutdown_all_aps(void)
+ 		vmsa = per_cpu(sev_vmsa, cpu);
+ 
+ 		/*
+-		 * BSP does not have guest allocated VMSA and there is no need
+-		 * to clear the VMSA tag for this page.
++		 * The BSP or offlined APs do not have guest allocated VMSA
++		 * and there is no need  to clear the VMSA tag for this page.
+ 		 */
+ 		if (!vmsa)
+ 			continue;
 
-> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
-> index bee9dfe12e03..fe0d5b8703d2 100644
-> --- a/arch/arm64/kvm/rme.c
-> +++ b/arch/arm64/kvm/rme.c
-> @@ -624,6 +624,65 @@ void kvm_realm_unmap_range(struct kvm *kvm, unsigned long start,
->   		realm_unmap_private_range(kvm, start, end);
->   }
->   
-> +static int realm_set_ipa_state(struct kvm_vcpu *vcpu,
-> +			       unsigned long start,
-> +			       unsigned long end,
-> +			       unsigned long ripas,
-> +			       unsigned long *top_ipa)
-> +{
-> +	struct kvm *kvm = vcpu->kvm;
-> +	struct realm *realm = &kvm->arch.realm;
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +	phys_addr_t rd_phys = virt_to_phys(realm->rd);
-> +	phys_addr_t rec_phys = virt_to_phys(rec->rec_page);
-> +	struct kvm_mmu_memory_cache *memcache = &vcpu->arch.mmu_page_cache;
-> +	unsigned long ipa = start;
-> +	int ret = 0;
-> +
-> +	while (ipa < end) {
-> +		unsigned long next;
-> +
-> +		ret = rmi_rtt_set_ripas(rd_phys, rec_phys, ipa, end, &next);
-> +
-> +		if (RMI_RETURN_STATUS(ret) == RMI_SUCCESS) {
-> +			ipa = next;
-> +		} else if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
+-- 
+Regards/Gruss,
+    Boris.
 
---->
-
-> +			int walk_level = RMI_RETURN_INDEX(ret);
-> +			int level = find_map_level(realm, ipa, end);
-> +
-> +			/*
-> +			 * If the RMM walk ended early then more tables are
-> +			 * needed to reach the required depth to set the RIPAS.
-> +			 */
-> +			if (walk_level < level) {
-> +				ret = realm_create_rtt_levels(realm, ipa,
-> +							      walk_level,
-> +							      level,
-> +							      memcache);
-> +				/* Retry with RTTs created */
-> +				if (!ret)
-> +					continue;
-> +			} else {
-> +				ret = -EINVAL;
-> +			}
-> +
-
-<--- This block of code have been existing in multiple functions. I guess
-it would be worthy to introduce a helper for it if you agree. Alternatively,
-it's definitely something to do in the future, after this series is merged :)
-
-> +			break;
-> +		} else {
-> +			WARN(1, "Unexpected error in %s: %#x\n", __func__,
-> +			     ret);
-> +			ret = -ENXIO;
-> +			break;
-> +		}
-> +	}
-> +
-> +	*top_ipa = ipa;
-> +
-> +	if (ripas == RMI_EMPTY && ipa != start)
-> +		realm_unmap_private_range(kvm, start, ipa);
-> +
-> +	return ret;
-> +}
-> +
->   static int realm_init_ipa_state(struct realm *realm,
->   				unsigned long ipa,
->   				unsigned long end)
-> @@ -863,6 +922,32 @@ void kvm_destroy_realm(struct kvm *kvm)
->   	kvm_free_stage2_pgd(&kvm->arch.mmu);
->   }
->   
-> +static void kvm_complete_ripas_change(struct kvm_vcpu *vcpu)
-> +{
-> +	struct kvm *kvm = vcpu->kvm;
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +	unsigned long base = rec->run->exit.ripas_base;
-> +	unsigned long top = rec->run->exit.ripas_top;
-> +	unsigned long ripas = rec->run->exit.ripas_value;
-> +	unsigned long top_ipa;
-> +	int ret;
-> +
-> +	do {
-> +		kvm_mmu_topup_memory_cache(&vcpu->arch.mmu_page_cache,
-> +					   kvm_mmu_cache_min_pages(vcpu->arch.hw_mmu));
-> +		write_lock(&kvm->mmu_lock);
-> +		ret = realm_set_ipa_state(vcpu, base, top, ripas, &top_ipa);
-> +		write_unlock(&kvm->mmu_lock);
-> +
-> +		if (WARN_RATELIMIT(ret && ret != -ENOMEM,
-> +				   "Unable to satisfy RIPAS_CHANGE for %#lx - %#lx, ripas: %#lx\n",
-> +				   base, top, ripas))
-> +			break;
-> +
-> +		base = top_ipa;
-> +	} while (top_ipa < top);
-> +}
-> +
->   int kvm_rec_enter(struct kvm_vcpu *vcpu)
->   {
->   	struct realm_rec *rec = &vcpu->arch.rec;
-> @@ -873,6 +958,9 @@ int kvm_rec_enter(struct kvm_vcpu *vcpu)
->   		for (int i = 0; i < REC_RUN_GPRS; i++)
->   			rec->run->enter.gprs[i] = vcpu_get_reg(vcpu, i);
->   		break;
-> +	case RMI_EXIT_RIPAS_CHANGE:
-> +		kvm_complete_ripas_change(vcpu);
-> +		break;
->   	}
->   
->   	if (kvm_realm_state(vcpu->kvm) != REALM_STATE_ACTIVE)
-
-Thanks,
-Gavin
-
+https://people.kernel.org/tglx/notes-about-netiquette
