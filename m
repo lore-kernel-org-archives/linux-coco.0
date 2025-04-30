@@ -1,439 +1,180 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB170211A35
-	for <linux-coco@lists.linux.dev>; Wed, 30 Apr 2025 11:55:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07BD1DF25A;
+	Wed, 30 Apr 2025 12:05:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746014122; cv=none; b=WZC3jvPquEaYgCmmJB5lBssFoUVqSPEcSoLawGH70+E7BE5f6LcuIHhQHtu4EU9N17PBZw6E883mxt33pCp5t7RCu4SpGoODA+3L7eDWwBL+eAZL6xsGMhhjyAA8wi0/YUECv25c6dxJ3wn0QEhkN6ZdGD/7DNQ8T6M/B1dzRCU=
+	t=1746014740; cv=none; b=lmViAx2h+UfGMC++MbEJuxnik0zwwZmyGh+yBcw2Lg1HAMXTchQ1BC5N9IGrTdq+LvvnHfPJkWjJNI50p6gU/EJFDiGy/T9BQsVc/MKN0uD4nEDK7xq3w7qIujh2lo9BkktggLGmHQbnXzeoxCYYSfUK2ycEtFznFHQpjIXfCfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746014122; c=relaxed/simple;
-	bh=fw8sbmO1e6O0328NKQzYF9tfFXk9nA49fAcnrdPiRUc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pVZDHO1nZa8cJLBF+6nWwSq3SuDO6oLRivuOMTj7AnCm/gG2QPiy97KJu15/pgBIJM+3qCyiGZNKIhiWwQmN9FbXXJW3rGfZp8PDg4cR6UtnGOpXmpZl1KapRXP0mxBjZ/zDTHpZh/37jo95pbiblDh7FshCcE6mlVFkVB4fCC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cUMcnJRx; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1746014740; c=relaxed/simple;
+	bh=onkMaIN9HqcgjvElUcKUCB/qk3aGAorGg0wgy9unIdk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PoHL7/DHSDPizL6WSDJQyKJn9QpwkR+cd0KZQ2vAuB0eLO+TjMcrgzKlt05vhQA/3SpEKn01583AZjUKR9mFm6DH0lM7lEsGLCfO4/TmSwmEoe1d7iIv1A5F9Ku/IsaZDOvehDF29rWw9JVcPtIV4CcIp/0QSl9SgzLO+cxMHI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wj+EOWbl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cUMcnJRx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1746014117;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xnq3OLYaF+K0sVWrSL5fn61Vue0Rlx0kE9aNbGR/m3o=;
-	b=cUMcnJRxUvFPotg+30JgF2bqpv0EOXv0fDdjLgq7m+YS/rLZ6t7Q9x5YrdoCgn1oXvBLLs
-	isZX3nFa8dBtZ975F4rTP8+NjY4pkKHn7jJdNU/Zx/cCddXOOQu9e5MS1WlPFl2FmBVCEO
-	nRe8WGDONOgqiIKivp0C0nutHYDICa4=
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
- [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-530-FupaDDgnPau9Uw1AfmjKKg-1; Wed, 30 Apr 2025 07:55:16 -0400
-X-MC-Unique: FupaDDgnPau9Uw1AfmjKKg-1
-X-Mimecast-MFC-AGG-ID: FupaDDgnPau9Uw1AfmjKKg_1746014115
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-736cb72efd5so5389415b3a.3
-        for <linux-coco@lists.linux.dev>; Wed, 30 Apr 2025 04:55:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746014115; x=1746618915;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xnq3OLYaF+K0sVWrSL5fn61Vue0Rlx0kE9aNbGR/m3o=;
-        b=qU0YTQX6NLxVFL6RADtA8vKhfx/KE/baHebOAL1KgHgaIVe73zrkZXVm+ti14rFEwz
-         sYWggbWibvkD+1smN4rsuiKMffoP/fja1atgXzDqRGsDxxXOizueDZ0KucOOhRTYSNno
-         Fw2phQaaX1GMVSPMWaF/czQ2xGA1GfkWSJ6sjOXNTnwueaGjWajr41PrdOxRwemwSXFf
-         TbCNSuDr0SgEAxYZ0wwLedDZIgYxdwANKxGkk1j2HciQEBkqArwn9BGSgr8+JZz3a7iW
-         fKHxvcrqpn5clfqVSJ3lQNJkIGtnS66U6msuQFrulxrwgI03gEo7a5LPDgCF0YqEN93P
-         PR+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV22bsNA1nKpkIt4XyENO33FvwSBbTWd1WSQZ9C3aYSyzpr9V0MiL2XwaNIk7HANGIXznC3vqyIFyet@lists.linux.dev
-X-Gm-Message-State: AOJu0YwOA5lhRMyaml8QUs9oMUaNsbeyEOj8lj2GKEnnELkC0UI8Yl91
-	UALLQ2NRph8jJ288Ze23syOqMujXMOCwRzIxbI3fZoEYk2j3UF/cBdL6BbjfUA0gv6PFm+wiqyR
-	Ulp13VVbyl1o0XcaMD+Hf4/Ubz3d0OTAovTGp8fC2XL5DZNzj6ox8u0HnHnA=
-X-Gm-Gg: ASbGncs03gwPDG9sCpOF9W68PV+9n35Xp1r1By7wH89Tid4ikkzCpj39duUbbfjZxqL
-	xZnRjSY0E4S8zKvIZSRlAQKktRv/g63kVZpXEHl+tpq4+jPvUVsZQVLdmsJZw2uklYBToNH0swV
-	iKogD8pbfPm9TskqbZ5KCFSroOoumo/++0yGFvekY615dCaaRMINPBX+vO26UNL+XRcVlOh8bSN
-	OZgdJ0vP/uXsnAZeJ+CnPiT46pMAXCsL9ASRvEPllci0vrhx9xtgeDJw1E37EIUnq2jTUy6grAk
-	3syOA1yqatst
-X-Received: by 2002:a05:6a00:1414:b0:72f:590f:2859 with SMTP id d2e1a72fcca58-740389ba998mr3850431b3a.13.1746014115344;
-        Wed, 30 Apr 2025 04:55:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFSfuAYjpYj51WsKtmoHkz37YKpvduGHDsHCx97KPPTiCcp6hHFcIFol3aPI4I+SwKGgfY2og==
-X-Received: by 2002:a05:6a00:1414:b0:72f:590f:2859 with SMTP id d2e1a72fcca58-740389ba998mr3850388b3a.13.1746014114855;
-        Wed, 30 Apr 2025 04:55:14 -0700 (PDT)
-Received: from [192.168.68.51] ([180.233.125.65])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-740398f982csm1420938b3a.21.2025.04.30.04.55.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Apr 2025 04:55:14 -0700 (PDT)
-Message-ID: <e6a69a4a-8014-44b4-aef6-37afe0fa8d29@redhat.com>
-Date: Wed, 30 Apr 2025 21:55:05 +1000
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wj+EOWbl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60880C4CEE9;
+	Wed, 30 Apr 2025 12:05:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1746014739;
+	bh=onkMaIN9HqcgjvElUcKUCB/qk3aGAorGg0wgy9unIdk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Wj+EOWblQZck7xAP/A5Sor1ThYJtxSnQIiB/a3pc6v/Ishjl5ICognWHzWsri/jwx
+	 GxmoRUyg5qw3/IiadJ/Z0pQkCk+HDugXz5hpPUH47WE27VM15H5DUqsqFlw31DlUD7
+	 N/WKlkwGd75FTSysFaidbI7OBGW9kWxREBM6lTSU=
+Date: Wed, 30 Apr 2025 09:19:10 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: dave.hansen@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
+	Ingo Molnar <mingo@kernel.org>, Kees Cook <kees@kernel.org>,
+	Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Naveen N Rao <naveen@kernel.org>,
+	Nikolay Borisov <nik.borisov@suse.com>, stable@vger.kernel.org,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Vishal Annapurve <vannapurve@google.com>, x86@kernel.org,
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH v5] x86/devmem: Drop /dev/mem access for confidential
+ guests
+Message-ID: <2025043025-cathouse-headlamp-7bde@gregkh>
+References: <20250430024622.1134277-1-dan.j.williams@intel.com>
+ <20250430024622.1134277-3-dan.j.williams@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 16/43] arm64: RME: Handle realm enter/exit
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-References: <20250416134208.383984-1-steven.price@arm.com>
- <20250416134208.383984-17-steven.price@arm.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20250416134208.383984-17-steven.price@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: X2aD3Hf7pGzQ4IEernZvMTxr5sIRVQXdTAph6RSgLJY_1746014115
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250430024622.1134277-3-dan.j.williams@intel.com>
 
-On 4/16/25 11:41 PM, Steven Price wrote:
-> Entering a realm is done using a SMC call to the RMM. On exit the
-> exit-codes need to be handled slightly differently to the normal KVM
-> path so define our own functions for realm enter/exit and hook them
-> in if the guest is a realm guest.
+On Tue, Apr 29, 2025 at 07:46:22PM -0700, Dan Williams wrote:
+> Nikolay reports that accessing BIOS data (first 1MB of the physical
+> address space) via /dev/mem results in a "crash" / terminated VM
+> (unhandled SEPT violation). See report [1] for details.
 > 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v7:
->   * A return of 0 from kvm_handle_sys_reg() doesn't mean the register has
->     been read (although that can never happen in the current code). Tidy
->     up the condition to handle any future refactoring.
-> Changes since v6:
->   * Use vcpu_err() rather than pr_err/kvm_err when there is an associated
->     vcpu to the error.
->   * Return -EFAULT for KVM_EXIT_MEMORY_FAULT as per the documentation for
->     this exit type.
->   * Split code handling a RIPAS change triggered by the guest to the
->     following patch.
-> Changes since v5:
->   * For a RIPAS_CHANGE request from the guest perform the actual RIPAS
->     change on next entry rather than immediately on the exit. This allows
->     the VMM to 'reject' a RIPAS change by refusing to continue
->     scheduling.
-> Changes since v4:
->   * Rename handle_rme_exit() to handle_rec_exit()
->   * Move the loop to copy registers into the REC enter structure from the
->     to rec_exit_handlers callbacks to kvm_rec_enter(). This fixes a bug
->     where the handler exits to user space and user space wants to modify
->     the GPRS.
->   * Some code rearrangement in rec_exit_ripas_change().
-> Changes since v2:
->   * realm_set_ipa_state() now provides an output parameter for the
->     top_iap that was changed. Use this to signal the VMM with the correct
->     range that has been transitioned.
->   * Adapt to previous patch changes.
-> ---
->   arch/arm64/include/asm/kvm_rme.h |   3 +
->   arch/arm64/kvm/Makefile          |   2 +-
->   arch/arm64/kvm/arm.c             |  19 +++-
->   arch/arm64/kvm/rme-exit.c        | 170 +++++++++++++++++++++++++++++++
->   arch/arm64/kvm/rme.c             |  19 ++++
->   5 files changed, 207 insertions(+), 6 deletions(-)
->   create mode 100644 arch/arm64/kvm/rme-exit.c
+> The cause is ioremap() (via xlate_dev_mem_ptr()) establishes an
+> unencrypted mapping where the kernel had established an encrypted
+> mapping previously. The CPU enforces mapping consistency with a fault
+> upon detecting a mismatch. A similar situation arises with devmem access
+> to "unaccepted" confidential memory. In summary, it is fraught to allow
+> uncoordinated userspace mapping of confidential memory.
 > 
-
-One nitpick below.
-
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-
-> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/asm/kvm_rme.h
-> index b916db8565a2..d86051ef0c5c 100644
-> --- a/arch/arm64/include/asm/kvm_rme.h
-> +++ b/arch/arm64/include/asm/kvm_rme.h
-> @@ -101,6 +101,9 @@ void kvm_realm_destroy_rtts(struct kvm *kvm, u32 ia_bits);
->   int kvm_create_rec(struct kvm_vcpu *vcpu);
->   void kvm_destroy_rec(struct kvm_vcpu *vcpu);
->   
-> +int kvm_rec_enter(struct kvm_vcpu *vcpu);
-> +int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_status);
-> +
->   void kvm_realm_unmap_range(struct kvm *kvm,
->   			   unsigned long ipa,
->   			   unsigned long size,
-> diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
-> index 2ebc66812d49..c4b10012faa3 100644
-> --- a/arch/arm64/kvm/Makefile
-> +++ b/arch/arm64/kvm/Makefile
-> @@ -24,7 +24,7 @@ kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o pvtime.o \
->   	 vgic/vgic-mmio.o vgic/vgic-mmio-v2.o \
->   	 vgic/vgic-mmio-v3.o vgic/vgic-kvm-device.o \
->   	 vgic/vgic-its.o vgic/vgic-debug.o vgic/vgic-v3-nested.o \
-> -	 rme.o
-> +	 rme.o rme-exit.o
->   
->   kvm-$(CONFIG_HW_PERF_EVENTS)  += pmu-emul.o pmu.o
->   kvm-$(CONFIG_ARM64_PTR_AUTH)  += pauth.o
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 7c0bb1b05f4c..cf707130ef66 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -1263,7 +1263,10 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->   		trace_kvm_entry(*vcpu_pc(vcpu));
->   		guest_timing_enter_irqoff();
->   
-> -		ret = kvm_arm_vcpu_enter_exit(vcpu);
-> +		if (vcpu_is_rec(vcpu))
-> +			ret = kvm_rec_enter(vcpu);
-> +		else
-> +			ret = kvm_arm_vcpu_enter_exit(vcpu);
->   
->   		vcpu->mode = OUTSIDE_GUEST_MODE;
->   		vcpu->stat.exits++;
-> @@ -1319,10 +1322,13 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->   
->   		local_irq_enable();
->   
-> -		trace_kvm_exit(ret, kvm_vcpu_trap_get_class(vcpu), *vcpu_pc(vcpu));
-> -
->   		/* Exit types that need handling before we can be preempted */
-> -		handle_exit_early(vcpu, ret);
-> +		if (!vcpu_is_rec(vcpu)) {
-> +			trace_kvm_exit(ret, kvm_vcpu_trap_get_class(vcpu),
-> +				       *vcpu_pc(vcpu));
-> +
-> +			handle_exit_early(vcpu, ret);
-> +		}
->   
->   		preempt_enable();
->   
-> @@ -1345,7 +1351,10 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->   			ret = ARM_EXCEPTION_IL;
->   		}
->   
-> -		ret = handle_exit(vcpu, ret);
-> +		if (vcpu_is_rec(vcpu))
-> +			ret = handle_rec_exit(vcpu, ret);
-> +		else
-> +			ret = handle_exit(vcpu, ret);
->   	}
->   
->   	/* Tell userspace about in-kernel device output levels */
-> diff --git a/arch/arm64/kvm/rme-exit.c b/arch/arm64/kvm/rme-exit.c
-> new file mode 100644
-> index 000000000000..a1adf5610455
-> --- /dev/null
-> +++ b/arch/arm64/kvm/rme-exit.c
-> @@ -0,0 +1,170 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (C) 2023 ARM Ltd.
-> + */
-> +
-> +#include <linux/kvm_host.h>
-> +#include <kvm/arm_hypercalls.h>
-> +#include <kvm/arm_psci.h>
-> +
-> +#include <asm/rmi_smc.h>
-> +#include <asm/kvm_emulate.h>
-> +#include <asm/kvm_rme.h>
-> +#include <asm/kvm_mmu.h>
-> +
-> +typedef int (*exit_handler_fn)(struct kvm_vcpu *vcpu);
-> +
-> +static int rec_exit_reason_notimpl(struct kvm_vcpu *vcpu)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +
-> +	vcpu_err(vcpu, "Unhandled exit reason from realm (ESR: %#llx)\n",
-> +		 rec->run->exit.esr);
-> +	return -ENXIO;
-> +}
-> +
-> +static int rec_exit_sync_dabt(struct kvm_vcpu *vcpu)
-> +{
-> +	return kvm_handle_guest_abort(vcpu);
-> +}
-> +
-> +static int rec_exit_sync_iabt(struct kvm_vcpu *vcpu)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +
-> +	vcpu_err(vcpu, "Unhandled instruction abort (ESR: %#llx).\n",
-> +		 rec->run->exit.esr);
-> +	return -ENXIO;
-> +}
-> +
-> +static int rec_exit_sys_reg(struct kvm_vcpu *vcpu)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +	unsigned long esr = kvm_vcpu_get_esr(vcpu);
-> +	int rt = kvm_vcpu_sys_get_rt(vcpu);
-> +	bool is_write = !(esr & 1);
-> +	int ret;
-> +
-> +	if (is_write)
-> +		vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[0]);
-> +
-> +	ret = kvm_handle_sys_reg(vcpu);
-> +	if (ret > 0 && !is_write)
-> +		rec->run->enter.gprs[0] = vcpu_get_reg(vcpu, rt);
-
-kvm_handle_sys_reg() always returns positive value, so it can be:
-
-	if (!is_write)
-		rc->run->enter.gprs[0] = vcpu_get_reg(vcpu, rt);
-
-> +
-> +	return ret;
-> +}
-> +
-> +static exit_handler_fn rec_exit_handlers[] = {
-> +	[0 ... ESR_ELx_EC_MAX]	= rec_exit_reason_notimpl,
-> +	[ESR_ELx_EC_SYS64]	= rec_exit_sys_reg,
-> +	[ESR_ELx_EC_DABT_LOW]	= rec_exit_sync_dabt,
-> +	[ESR_ELx_EC_IABT_LOW]	= rec_exit_sync_iabt
-> +};
-> +
-> +static int rec_exit_psci(struct kvm_vcpu *vcpu)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +	int i;
-> +
-> +	for (i = 0; i < REC_RUN_GPRS; i++)
-> +		vcpu_set_reg(vcpu, i, rec->run->exit.gprs[i]);
-> +
-> +	return kvm_smccc_call_handler(vcpu);
-> +}
-> +
-> +static int rec_exit_ripas_change(struct kvm_vcpu *vcpu)
-> +{
-> +	struct kvm *kvm = vcpu->kvm;
-> +	struct realm *realm = &kvm->arch.realm;
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +	unsigned long base = rec->run->exit.ripas_base;
-> +	unsigned long top = rec->run->exit.ripas_top;
-> +	unsigned long ripas = rec->run->exit.ripas_value;
-> +
-> +	if (!kvm_realm_is_private_address(realm, base) ||
-> +	    !kvm_realm_is_private_address(realm, top - 1)) {
-> +		vcpu_err(vcpu, "Invalid RIPAS_CHANGE for %#lx - %#lx, ripas: %#lx\n",
-> +			 base, top, ripas);
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* Exit to VMM, the actual RIPAS change is done on next entry */
-> +	kvm_prepare_memory_fault_exit(vcpu, base, top - base, false, false,
-> +				      ripas == RMI_RAM);
-> +
+> While there is an existing mitigation to simulate and redirect access to
+> the BIOS data area with STRICT_DEVMEM=y, it is insufficient.
+> Specifically, STRICT_DEVMEM=y traps read(2) access to the BIOS data
+> area, and returns a zeroed buffer.  However, it turns out the kernel
+> fails to enforce the same via mmap(2), and a direct mapping is
+> established. This is a hole, and unfortunately userspace has learned to
+> exploit it [2].
+> 
+> This means the kernel either needs: a mechanism to ensure consistent
+> plus accepted "encrypted" mappings of this /dev/mem mmap() hole, close
+> the hole by mapping the zero page in the mmap(2) path, block only BIOS
+> data access and let typical STRICT_DEVMEM protect the rest, or disable
+> /dev/mem altogether.
+> 
+> The simplest option for now is arrange for /dev/mem to always behave as
+> if lockdown is enabled for confidential guests. Require confidential
+> guest userspace to jettison legacy dependencies on /dev/mem similar to
+> how other legacy mechanisms are jettisoned for confidential operation.
+> Recall that modern methods for BIOS data access are available like
+> /sys/firmware/dmi/tables.
+> 
+> Now, this begs the question what to do with PCI sysfs which allows
+> userspace mappings of confidential MMIO with similar mapping consistency
+> and acceptance expectations? Here, the existing mitigation of
+> IO_STRICT_DEVMEM is likely sufficient. The kernel is expected to use
+> request_mem_region() when toggling the state of MMIO. With
+> IO_STRICT_DEVMEM that enforces kernel-exclusive access until
+> release_mem_region(), i.e. mapping conflicts are prevented.
+> 
+> Cc: <x86@kernel.org>
+> Cc: Kees Cook <kees@kernel.org>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: Vishal Annapurve <vannapurve@google.com>
+> Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Link: https://sources.debian.org/src/libdebian-installer/0.125/src/system/subarch-x86-linux.c/?hl=113#L93 [2]
+> Reported-by: Nikolay Borisov <nik.borisov@suse.com>
+> Closes: http://lore.kernel.org/20250318113604.297726-1-nik.borisov@suse.com [1]
+> Fixes: 9aa6ea69852c ("x86/tdx: Make pages shared in ioremap()")
+> Cc: <stable@vger.kernel.org>
+> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+> Acked-by: Naveen N Rao (AMD) <naveen@kernel.org>
+> Tested-by: Naveen N Rao (AMD) <naveen@kernel.org>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+>  arch/x86/Kconfig   |  4 ++++
+>  drivers/char/mem.c | 10 ++++++++++
+>  2 files changed, 14 insertions(+)
+> 
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 4b9f378e05f6..36f11aad1ae5 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -891,6 +891,8 @@ config INTEL_TDX_GUEST
+>  	depends on X86_X2APIC
+>  	depends on EFI_STUB
+>  	depends on PARAVIRT
+> +	select STRICT_DEVMEM
+> +	select IO_STRICT_DEVMEM
+>  	select ARCH_HAS_CC_PLATFORM
+>  	select X86_MEM_ENCRYPT
+>  	select X86_MCE
+> @@ -1510,6 +1512,8 @@ config AMD_MEM_ENCRYPT
+>  	bool "AMD Secure Memory Encryption (SME) support"
+>  	depends on X86_64 && CPU_SUP_AMD
+>  	depends on EFI_STUB
+> +	select STRICT_DEVMEM
+> +	select IO_STRICT_DEVMEM
+>  	select DMA_COHERENT_POOL
+>  	select ARCH_USE_MEMREMAP_PROT
+>  	select INSTRUCTION_DECODER
+> diff --git a/drivers/char/mem.c b/drivers/char/mem.c
+> index 48839958b0b1..47729606b817 100644
+> --- a/drivers/char/mem.c
+> +++ b/drivers/char/mem.c
+> @@ -30,6 +30,7 @@
+>  #include <linux/uio.h>
+>  #include <linux/uaccess.h>
+>  #include <linux/security.h>
+> +#include <linux/cc_platform.h>
+>  
+>  #define DEVMEM_MINOR	1
+>  #define DEVPORT_MINOR	4
+> @@ -595,6 +596,15 @@ static int open_port(struct inode *inode, struct file *filp)
+>  	if (rc)
+>  		return rc;
+>  
 > +	/*
-> +	 * KVM_EXIT_MEMORY_FAULT requires an return code of -EFAULT, see the
-> +	 * API documentation
+> +	 * Enforce encrypted mapping consistency and avoid unaccepted
+> +	 * memory conflicts, "lockdown" /dev/mem for confidential
+> +	 * guests.
 > +	 */
-> +	return -EFAULT;
-> +}
-> +
-> +static void update_arch_timer_irq_lines(struct kvm_vcpu *vcpu)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +
-> +	__vcpu_sys_reg(vcpu, CNTV_CTL_EL0) = rec->run->exit.cntv_ctl;
-> +	__vcpu_sys_reg(vcpu, CNTV_CVAL_EL0) = rec->run->exit.cntv_cval;
-> +	__vcpu_sys_reg(vcpu, CNTP_CTL_EL0) = rec->run->exit.cntp_ctl;
-> +	__vcpu_sys_reg(vcpu, CNTP_CVAL_EL0) = rec->run->exit.cntp_cval;
-> +
-> +	kvm_realm_timers_update(vcpu);
-> +}
-> +
-> +/*
-> + * Return > 0 to return to guest, < 0 on error, 0 (and set exit_reason) on
-> + * proper exit to userspace.
-> + */
-> +int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_ret)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +	u8 esr_ec = ESR_ELx_EC(rec->run->exit.esr);
-> +	unsigned long status, index;
-> +
-> +	status = RMI_RETURN_STATUS(rec_run_ret);
-> +	index = RMI_RETURN_INDEX(rec_run_ret);
-> +
-> +	/*
-> +	 * If a PSCI_SYSTEM_OFF request raced with a vcpu executing, we might
-> +	 * see the following status code and index indicating an attempt to run
-> +	 * a REC when the RD state is SYSTEM_OFF.  In this case, we just need to
-> +	 * return to user space which can deal with the system event or will try
-> +	 * to run the KVM VCPU again, at which point we will no longer attempt
-> +	 * to enter the Realm because we will have a sleep request pending on
-> +	 * the VCPU as a result of KVM's PSCI handling.
-> +	 */
-> +	if (status == RMI_ERROR_REALM && index == 1) {
-> +		vcpu->run->exit_reason = KVM_EXIT_UNKNOWN;
-> +		return 0;
-> +	}
-> +
-> +	if (rec_run_ret)
-> +		return -ENXIO;
-> +
-> +	vcpu->arch.fault.esr_el2 = rec->run->exit.esr;
-> +	vcpu->arch.fault.far_el2 = rec->run->exit.far;
-> +	vcpu->arch.fault.hpfar_el2 = rec->run->exit.hpfar;
-> +
-> +	update_arch_timer_irq_lines(vcpu);
-> +
-> +	/* Reset the emulation flags for the next run of the REC */
-> +	rec->run->enter.flags = 0;
-> +
-> +	switch (rec->run->exit.exit_reason) {
-> +	case RMI_EXIT_SYNC:
-> +		return rec_exit_handlers[esr_ec](vcpu);
-> +	case RMI_EXIT_IRQ:
-> +	case RMI_EXIT_FIQ:
-> +		return 1;
-> +	case RMI_EXIT_PSCI:
-> +		return rec_exit_psci(vcpu);
-> +	case RMI_EXIT_RIPAS_CHANGE:
-> +		return rec_exit_ripas_change(vcpu);
-> +	}
-> +
-> +	kvm_pr_unimpl("Unsupported exit reason: %u\n",
-> +		      rec->run->exit.exit_reason);
-> +	vcpu->run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
-> +	return 0;
-> +}
-> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
-> index 33eb793d8bdb..bee9dfe12e03 100644
-> --- a/arch/arm64/kvm/rme.c
-> +++ b/arch/arm64/kvm/rme.c
-> @@ -863,6 +863,25 @@ void kvm_destroy_realm(struct kvm *kvm)
->   	kvm_free_stage2_pgd(&kvm->arch.mmu);
->   }
->   
-> +int kvm_rec_enter(struct kvm_vcpu *vcpu)
-> +{
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +
-> +	switch (rec->run->exit.exit_reason) {
-> +	case RMI_EXIT_HOST_CALL:
-> +	case RMI_EXIT_PSCI:
-> +		for (int i = 0; i < REC_RUN_GPRS; i++)
-> +			rec->run->enter.gprs[i] = vcpu_get_reg(vcpu, i);
-> +		break;
-> +	}
-> +
-> +	if (kvm_realm_state(vcpu->kvm) != REALM_STATE_ACTIVE)
-> +		return -EINVAL;
-> +
-> +	return rmi_rec_enter(virt_to_phys(rec->rec_page),
-> +			     virt_to_phys(rec->run));
-> +}
-> +
->   static void free_rec_aux(struct page **aux_pages,
->   			 unsigned int num_aux)
->   {
+> +	if (IS_ENABLED(CONFIG_STRICT_DEVMEM) &&
+> +	    cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+> +		return -EPERM;
 
-Thanks,
-Gavin
+I hate to ask, but why not force the whole "confidential computing"
+stuff to enable IO_STRICT_DEVMEM as well?  I don't see why you would
+want a cc guest raw access to devmem, do you?
 
+You kind of mention it above in the last paragraph, but forcing that on
+for these guests feels like the best, and simplest, solution overall as
+the number of different "is this secure, no really is this secure, no
+what about this option" chain of tests that we have in this driver is
+getting kind of silly.
+
+OR, why not just force all cc guests to enable a security module that
+implements this for them?  :)
+
+thanks,
+
+greg k-h
