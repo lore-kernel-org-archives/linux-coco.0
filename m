@@ -1,295 +1,336 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8D21C6FF2
-	for <linux-coco@lists.linux.dev>; Wed, 30 Apr 2025 02:46:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745981216; cv=fail; b=ukbsBkXwL3ICkvHb4Und1WoPnYYjIWRcTy5+TnOnElr4s1HFBGDZ/EUUWhGNXi28T0VsDaGQAh2oGJ3sFgzlm/GcFH1wGle2D3OpOkRtYS0PjRede+woHnmxDK82mo9ooYvpWppT3udyxrXVTrndIN5KwXqVsYp/NaUTcJ7tpQc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745981216; c=relaxed/simple;
-	bh=AGfLs2pFBHilMrofVjkKoPWTZ9PhTts+dRUbzEyvjo4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gALdVrGN11xsZ2AwmwsvjuOAz2xgRAiaCkN22s8pHSaK3pMZF0INEfwMR2Gbf8J69Lr9VtVlnsFLzT0Cm6A2kMlGrYgMi2YcuZsNdfJEntDI2yZ84SgwX51Ff6wM63WLkf0jPwJLSo/yZ/MDtxGU90BkHXp6wrHip2/Y5TnQ1n0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SZmLhjPV; arc=fail smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822DB32C85
+	for <linux-coco@lists.linux.dev>; Wed, 30 Apr 2025 04:25:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745987123; cv=none; b=XJaAj9ttXQ3/YIyzwZtVu05IQg123Jfp/MJ4OprZOr7maIOqsC8SVWMe/G+LJaPZhlNSwp7FBghIKbvUyBfaFMx62cmaXrPsuv+MO9W9Teeoby7E0ih6RNOrqg3WtSe6su/gZOWMXOm1YpGE41wuByGg4qM24vD8uBQ9qs32zFQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745987123; c=relaxed/simple;
+	bh=YoINL3SCWfkae2dP2gypAqnB4AkqatXeI1a981LEJp4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X8Zldr2cW6UYG1Hyw4Ro8u3z/2J4K1ko8EE3/NhkYgdh2b2A718S2eisms0aDWNP4hJ79FonzD4HXD2vfWQ8F9OwMl6qgVA0RgfnLcKxSwyF4IYr0s211SKqakJwDLmB8IrAsLGwXDZa48Sne5LAUrWQmm6rWd/G4+WfiWxKUvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YSKNZnL7; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SZmLhjPV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745981214; x=1777517214;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=AGfLs2pFBHilMrofVjkKoPWTZ9PhTts+dRUbzEyvjo4=;
-  b=SZmLhjPVcnVab6U41P0NWTYqpx+eTnSuq5fL96/Zq7ewaSxFhie3xZvd
-   ph1MOlrj3AbJBHLAFOGb0BIiT6yCaUiMnXyQYtpN7ociOrQXsdSbSf5EL
-   8ujDDMT7zvcMfQFqVd3CKGKnRJOJG53UZmnFDMhEduYAoI8mudc7K23mo
-   Grg2k68OcBNywdEYryKS5tmU5iQsGFOa+kBSu/jiy7tRB44ul+TmXh7lV
-   UGFrumXUtX8yPzA8BqtIhSpnlJT8Rw9STsx7RBXAsvXhXN+VYDRFL8J31
-   sLlpGiNYtX7m9lcsyzf+y9pSfwkWGFGCzNlw0UPmsMjaQ5Lg+j0djiBde
-   w==;
-X-CSE-ConnectionGUID: UrMpWouMS32lsMJBaKSPzQ==
-X-CSE-MsgGUID: BmsTTLIkQLyRb6a1JqIqSg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11418"; a="47764060"
-X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; 
-   d="scan'208";a="47764060"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2025 19:46:48 -0700
-X-CSE-ConnectionGUID: y3OxVJNzTWWMoQTqJ1GRvQ==
-X-CSE-MsgGUID: aPF3GJ5eTgiE9q+1RNeyoA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,250,1739865600"; 
-   d="scan'208";a="133904074"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2025 19:46:48 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Tue, 29 Apr 2025 19:46:47 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Tue, 29 Apr 2025 19:46:47 -0700
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.47) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Tue, 29 Apr 2025 19:46:45 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Wt6K0nlvG/6E6ZWHk4oOpWnvrHAKsOyCmNM0h8NIHMLmNS3M8slWEmKHSWLFdvZG4TU4KDgXrVTjRQEjNDdlJOcVXufUkEJsLj0lY+uhkx44Bcqzh3FaDMb5TkqR32bhZh0cJgcj4zxBzY2eCdRRzkMQfxOA9n8KvNVsDmgzSQdRgKF21il8VRnezZoVpUqPVEVod7igHbuTJh0c+B10/a62tUQG5DhY5qY4jcrcWmPUAgFUIyq/7MzYnsPUVMuWYtEycYyAduEf33H0oBJyg2Gjus/M2vqRFuERa1rlgEtXvmQ0qQ5e+byWi6795AcqixhhHzb1etmZ3KORSWiGEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ERoo9eIVFnIGogrUZxOIcoKw3Yn7S2Z2lF5qiiFGlog=;
- b=gLMeGhU0KXXPQPHCcAbrmSfSrIrwLtNxBrBNquzGK2u7Yxxf+yKymBsGC8KoPoxYS6+cmHhbFjRlLuqNv14z0egYd8AzIEUDpgDT1FtDJ3ACpn7iAytq2+lNaec5jgrpPpr/qXjDNHNLHAXffzdPnsBCtVvpmi5z+HmINOAySOweVYgGFqGu/qh01BIfmD2YrdjjdCO0fb5PYZZkNK78UoZpnEN4eK3dom5q50s5F/7raGzAtbD4Hx3RiSOrq9gSoDnSi5I17wTjYhasHsgJVLV2TPRUmIxb9gtwS0U7qkSuFxIs8Sqzu1zDfmYGYe1kfw4Bs1lX83VWgDJrdtqI9Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by DM4PR11MB5231.namprd11.prod.outlook.com (2603:10b6:5:38a::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.19; Wed, 30 Apr
- 2025 02:46:29 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.8699.012; Wed, 30 Apr 2025
- 02:46:28 +0000
-From: Dan Williams <dan.j.williams@intel.com>
-To: <dave.hansen@linux.intel.com>
-CC: Arnd Bergmann <arnd@arndb.de>, Dan Williams <dan.j.williams@intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Ingo Molnar
-	<mingo@kernel.org>, Kees Cook <kees@kernel.org>, Kirill Shutemov
-	<kirill.shutemov@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>,
-	Naveen N Rao <naveen@kernel.org>, Nikolay Borisov <nik.borisov@suse.com>,
-	<stable@vger.kernel.org>, Suzuki K Poulose <suzuki.poulose@arm.com>, "Vishal
- Annapurve" <vannapurve@google.com>, <x86@kernel.org>,
-	<linux-coco@lists.linux.dev>
-Subject: [PATCH v5] x86/devmem: Drop /dev/mem access for confidential guests
-Date: Tue, 29 Apr 2025 19:46:22 -0700
-Message-ID: <20250430024622.1134277-3-dan.j.williams@intel.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250430024622.1134277-1-dan.j.williams@intel.com>
-References: <20250430024622.1134277-1-dan.j.williams@intel.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MW4PR03CA0071.namprd03.prod.outlook.com
- (2603:10b6:303:b6::16) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YSKNZnL7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1745987120;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5/9ZIpgit3K5HEouvbiwaznyb2ZT+dyMuQHH+dHlTBs=;
+	b=YSKNZnL7gUk1kAEmGK9ZXX0ax8sYEZODxAr33JxyQOvUKPZDE9zsykHAebSmWRlbfgSmis
+	0NB7O2dxEig8WWCQwlhuLdw7gCbl0YudimHg0TqSFjnuJA1fE6WV5b3DYjQt89guHTSgh9
+	WFtVTdxYjCYvR6NFYmNTfjojas884iM=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-527-lD--5M4kOt2_isfq6z6PTw-1; Wed, 30 Apr 2025 00:25:18 -0400
+X-MC-Unique: lD--5M4kOt2_isfq6z6PTw-1
+X-Mimecast-MFC-AGG-ID: lD--5M4kOt2_isfq6z6PTw_1745987117
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-225505d1ca5so59443925ad.2
+        for <linux-coco@lists.linux.dev>; Tue, 29 Apr 2025 21:25:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745987112; x=1746591912;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5/9ZIpgit3K5HEouvbiwaznyb2ZT+dyMuQHH+dHlTBs=;
+        b=uY/JyiENfVEoYPnVlyThIImunZjEJGeEz2FheHlULA0JCqueP2K/yuyMT8gGGo11J9
+         RGis6dQHVM2Z42NjhXxxSUrV2xTzDxFqENlY+7PkJLL+3zg4KmfSNATTRtusOehHy8Iw
+         QdmtKQ1lIyfUrWMtPD1iE1DPqynZyQlcl0UQY7VqMl3p3D61ShM6i9/ee/nfjJMIt3Ke
+         npg/OmT4YP/S5n7KH5VppjAE34Se3o0wDB0+5PcKaCMmerMvNtseTDvzPab1iTC45bUA
+         6DnXl4Eytd4G78fSXDU0fayWkyy3siKX3mtA5CMWzP5TLrMLW9M5Tcx3Ms8RGvUZ0FLC
+         m3cA==
+X-Forwarded-Encrypted: i=1; AJvYcCXCFzS4By7kSdzCRnlbo1cHDJ6TZhlekrorKb5Bw4W8EiCDtukdTrH56Hh5pCwc3YAQQPHGtAq7mETN@lists.linux.dev
+X-Gm-Message-State: AOJu0YxvMIgRhypp5rh7jrmJwg5R57f9Q57RDN4T5wJzpjBAeC7x8Fq0
+	MVk1gQrx7KHt2a1DKt2koy9p0psKctPjkjIYqN8qCHZz/S0nXiQ4S889mwcY2hWZFUdydy/q/eh
+	r9MTKnQMBcOH1SUUWRoT/+cxi9z4XezX282aA15b2tcr/kPG/gAqPH4c7Avk=
+X-Gm-Gg: ASbGncsb/QA4D8cpdzhMhYVaD3X0sYadsdLwLF38KzPCTvNcw1Dhrfv7Zu/Iy2KQvwF
+	eECyTvSLCNmymBlHSRbJbDK7HdGrKIu9U1vfrXd0E5hed84UnmkXWo0xL7/eX/G+Q9P2h7XS2vI
+	4/MZDeq2ywFzBq2BOnOesk+ir5+GLVyhCQHDMRnDxVE/eAgecykWH9JPfpXxh49HxjGVaeQ1O+7
+	O4E9q/q0ah/xjPCKnY06uWN3Newfp9WiPGqTc5XtYC9mXEghl8OTggTBHH/aDsAtIHuuPF7ksYa
+	AZU+f2XrgUBi
+X-Received: by 2002:a17:903:1a6f:b0:223:517c:bfa1 with SMTP id d9443c01a7336-22df3590ef6mr30861015ad.38.1745987112440;
+        Tue, 29 Apr 2025 21:25:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEyXj2p77AmMx3N+ITVW1jQFy+1LPquQePsvvxXex3oWiwLfzusXWyW1Gs0Qv4M8sW36jIdYA==
+X-Received: by 2002:a17:903:1a6f:b0:223:517c:bfa1 with SMTP id d9443c01a7336-22df3590ef6mr30860675ad.38.1745987112018;
+        Tue, 29 Apr 2025 21:25:12 -0700 (PDT)
+Received: from [192.168.68.51] ([180.233.125.65])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db5100c13sm112249685ad.162.2025.04.29.21.25.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Apr 2025 21:25:11 -0700 (PDT)
+Message-ID: <dac9f2c6-d46e-4232-abbd-8aa097f012a5@redhat.com>
+Date: Wed, 30 Apr 2025 14:25:02 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DM4PR11MB5231:EE_
-X-MS-Office365-Filtering-Correlation-Id: 653b3fa5-deda-45b2-9226-08dd87913519
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?+Da2YjTiVC/n+GdXbVDF6a5aGUptZ2M3RC7Brg4J0J6exkd+6YVy9WcaPQpz?=
- =?us-ascii?Q?tzAEHcvNQNs81nF17YbUiwDBVVAsq3VnUPQLFCdOZa/bj7pKYq2FLGfGQPR0?=
- =?us-ascii?Q?eBJp/j/29t2goXfOM9U7BkrG/9AxDkvJ2jnexoQ3IawnSFpQzqg7t7JlMNZS?=
- =?us-ascii?Q?enQ5jHlDlD/9oh74wCDawgEDQCjLPLWScrnN9PJOAwpbT5wG8mkTn3PVt0J0?=
- =?us-ascii?Q?MmGdF2cbuAGgge6CH5xCBM+EI7hHgv5DD7QQAFQALGRtzcwh90p5yPBAcJp4?=
- =?us-ascii?Q?WRrgbj/Qylthv90vr+NGB4lN61UB6JDib9nu02LeGH39lISEFbTQyt/F9AzW?=
- =?us-ascii?Q?hBpi0hgUbwSpxAm9lzLVmKhamcR/rCv5mWg9fKhSJcsvD8e4ZCGPqgMkCe4O?=
- =?us-ascii?Q?3wMVsO4xDP1JNC1SEz4JL+xVkiyDT02RwMX9fqYxYs9wm6tO3AizZ42RwYGk?=
- =?us-ascii?Q?CS8HBRrb+2x6maGKPCsw+ecfR+/wfx+cEH2EL7p09juxtZmEdTl8qAnoNcD0?=
- =?us-ascii?Q?tw4Ak/6t7V4ywN2+8K6X8uWJvHoxmmjGT+SQTSHE6u7EONorn6q686JeBDej?=
- =?us-ascii?Q?w+SEoCxEOza/k8yH0dciHn2Bsn3gcA8/xgyvYA4Li2D/0+cJR/MwV2zfVO3E?=
- =?us-ascii?Q?ueCP+r8Wuk8K14y0c9RD0xYWLM8b8ga7X5yxXoPl2bXVo29KdZTxTU1tletk?=
- =?us-ascii?Q?glF/dtu+mEJhkVYST2M4aCDLHcvdPOoPzKkgFyx4ioHqX3nDsjSxjqdxDFpt?=
- =?us-ascii?Q?K+o03ojyq1Py7wGtN3uNLA5vVryBoWUO1r+yPDhV4/lZ+m+FIQB9HosxhCKc?=
- =?us-ascii?Q?1+HETzSM9v4u2j1dAmX8TpfTyDBu6rEOpgV+hvdXIxcvi5Xh69g/lGm5bA+s?=
- =?us-ascii?Q?vfrWFdquo3AUIapa6AoExr6/u9WVzi/pAAgZDhoMBe1U0YwhE9uT0ktv4Zt4?=
- =?us-ascii?Q?vWJSxSYb/Y1y+I4EffbCbKTHknnFReVIhrmsGliE9gqcrcDoV6NSEZYMI0HX?=
- =?us-ascii?Q?5Lt1Umly4xztF87nSxB6O4qrjM/5iEpC5X79mP3EesA+TReKUf9vlsKXbEJ4?=
- =?us-ascii?Q?gpfXx0aJQOOrHc2qhvlbn9NYOGHEEjJi9awkRHJekNHT6WfvmffuuK0P54tJ?=
- =?us-ascii?Q?WkwiFqdyVnbQ7hkDUtHDR3hQop252E0jo+c1/y4j4empB4W4Pa+W0i1TP5eJ?=
- =?us-ascii?Q?nHccbJr4ll16R5TbuZ0IkWa7eiyUSUKc3UPR/UcPZjxilQvynwn45S5MR7ag?=
- =?us-ascii?Q?zjdIn72/Dl3njN8K272cnfRDL65hbkPdDNrbgOHt7Tiv1VCcQThlEwQPAt3q?=
- =?us-ascii?Q?DibD0r/4t6Gl5aC6xjqXOifOB56bDbLHYgV2VKeqlYIgboPIovzvybV5VPRf?=
- =?us-ascii?Q?ITvz11s=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?zmY+i18EIdocmhFHS/Uo2OHPCML4TW2IHNAID7Sf038K+kyKvKxAstGNLlO9?=
- =?us-ascii?Q?SjKmcDGv0Bju6RJYIu2MnYq1xiTq6DvJQkDo3Hzc6Myw8qlZCGkX5r3tGcd9?=
- =?us-ascii?Q?z+woVqmgqQmo5nfUBPxlpu445FOAluXMwImCmx3VWXZqvGeAoO951ZQILE2O?=
- =?us-ascii?Q?VBCXwcqNfdNA37RGS+RYAwmjO99XZTIH/TvevuTcAqU4gitn8xFfu8DvCxCo?=
- =?us-ascii?Q?MkQjNHcXop01kjwJRfhhSniG6flXLMsy9u34F0eitVb+HqI0+zgC7ggIPbyU?=
- =?us-ascii?Q?de2wlPSLAvhbTsk3RPzwqIi2lCM85UFg11wReRDtNXwiCuD+LKlEP0a/Zdko?=
- =?us-ascii?Q?zEy0gngfPesZQ86DbihIV+Il1wPHGLkDDzUGdkv0H/poAy144Za1Qt+tEnsf?=
- =?us-ascii?Q?drWdHdZt3sXQCmoZBQX/RzBwOEk1ZPzqENNqjmSX33TJUXR/sulrc1Tqokd3?=
- =?us-ascii?Q?B17TKbNLsqAFPWvAGkCxAhUYezn0iI399NjQ72qWruzbBwELSTe/nbR2l0iA?=
- =?us-ascii?Q?trhOlXzq+oiZjGwoSWxUgIOwx56jsFhTo3od3C1KmgThVZZZMXVCPf69b0x9?=
- =?us-ascii?Q?XwSYglFxAc7GcoWekCdAb9/dIdCoI5NXIDYEmlInpaot26mLBrU6v1okyIi1?=
- =?us-ascii?Q?J1C4eQIlc1nZoQf4qmHU+87OPXiGvOZuVSa2dnV2ZC8XBm45ypdh8FIAcUcd?=
- =?us-ascii?Q?nBiAnxwcDG40ftM71ZR0ycXsVZA6tcBvIA1J78OG37KQIaqi2W2dcUPqrRwF?=
- =?us-ascii?Q?0rw94SN2IzGGpBDUX6H2MaeMKPoO99BdSforyVRqY+cVwEhIa2gODvRHbWOh?=
- =?us-ascii?Q?O5hOBv128SPNriL2cmyNTE59kaEdGQZrK2qff+5ws6GSgkCr3ATkze2P4uUJ?=
- =?us-ascii?Q?Ai/QOxMuB+okMDx/n2kDLgW41Du1avMtB1HfDpxfj6jOASfJW1aWlOH8Fy7T?=
- =?us-ascii?Q?m/wV8U5hnhVRT1mX+8Bb1qaY6mVUiVk0CuHMZ3Dj/NXo79cni4SDFKpkSO0n?=
- =?us-ascii?Q?+daAzWmwj6PirhOIigMQo4CS/9U8mgcLyu7fPPguVP6meHebIZPsl24bXPso?=
- =?us-ascii?Q?corgzFbXe3VbZNciJasbw44xFLMTAT96MKpmr3FdMh+N51/EhflNpfIBUz++?=
- =?us-ascii?Q?ViEG0j5AhDQifyV+ZxhXaGd52hy+9vvdJ6Z7eJfu4yvyY0UaNddxP74qs79B?=
- =?us-ascii?Q?rWD2EOeb9SndumSZsEQjrpmTdqoCHFyt8eL6KI7m2IHNJaZs56ZiqKvF2z0r?=
- =?us-ascii?Q?AsC40O8mXnSOXo8qt0bwaPvbOWK8OMX8yRVsD8mj9MCinUgPcuIHAjxvzmCR?=
- =?us-ascii?Q?IOEnthkYYyV4iLfBAXtZ4oMkTyfZZmoBklN/yl44NTmaL1EQWSrBLE93FQ76?=
- =?us-ascii?Q?S56cxtHN0BPJhCrbJ+95FVEFuJrPzSRUMsyCPV0kywXSzJGhb/KPO2Y1w5Ap?=
- =?us-ascii?Q?xGV4V9eaAvlKryTyhuvY4Dm1A5pB2B2T0AP+PcNqrym1XhmIA86ViPrCAtvA?=
- =?us-ascii?Q?5Xq0Cxg4eM78x86GJYceASczcPWOI6AJNAVrJEPDiI2B+ti/aeL98QJ9dc4E?=
- =?us-ascii?Q?G6pkT+Zo0C4WsHk7XiHRCqREgBQl7etvZ43B8bbr05AaDodgm0uDllW4yTe2?=
- =?us-ascii?Q?jw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 653b3fa5-deda-45b2-9226-08dd87913519
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2025 02:46:28.8962
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ItLfMJ8yYaZ8Umq4U+qiYkfHi5HmGrLbawCPttvyjjL057Tbcduwsb/gMmfFKP8l2hpq3l8rpwEF5k0r/7JZNiafJzQu3qmGqpXqJwq3SJc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5231
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 06/43] arm64: RME: Define the user ABI
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+References: <20250416134208.383984-1-steven.price@arm.com>
+ <20250416134208.383984-7-steven.price@arm.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20250416134208.383984-7-steven.price@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: cV_QXNUQCaq8fEGzX_6XZJHyYFW9ghGmhgZHZfn21jQ_1745987117
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Nikolay reports that accessing BIOS data (first 1MB of the physical
-address space) via /dev/mem results in a "crash" / terminated VM
-(unhandled SEPT violation). See report [1] for details.
+On 4/16/25 11:41 PM, Steven Price wrote:
+> There is one (multiplexed) CAP which can be used to create, populate and
+> then activate the realm.
+> 
+> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Changes since v7:
+>   * Add documentation of new ioctls
+>   * Bump the magic numbers to avoid conflicts
+> Changes since v6:
+>   * Rename some of the symbols to make their usage clearer and avoid
+>     repetition.
+> Changes from v5:
+>   * Actually expose the new VCPU capability (KVM_ARM_VCPU_REC) by bumping
+>     KVM_VCPU_MAX_FEATURES - note this also exposes KVM_ARM_VCPU_HAS_EL2!
+> ---
+>   Documentation/virt/kvm/api.rst    | 70 +++++++++++++++++++++++++++++++
+>   arch/arm64/include/uapi/asm/kvm.h | 49 ++++++++++++++++++++++
+>   include/uapi/linux/kvm.h          | 10 +++++
+>   3 files changed, 129 insertions(+)
+> 
 
-The cause is ioremap() (via xlate_dev_mem_ptr()) establishes an
-unencrypted mapping where the kernel had established an encrypted
-mapping previously. The CPU enforces mapping consistency with a fault
-upon detecting a mismatch. A similar situation arises with devmem access
-to "unaccepted" confidential memory. In summary, it is fraught to allow
-uncoordinated userspace mapping of confidential memory.
+With below comment addressed:
 
-While there is an existing mitigation to simulate and redirect access to
-the BIOS data area with STRICT_DEVMEM=y, it is insufficient.
-Specifically, STRICT_DEVMEM=y traps read(2) access to the BIOS data
-area, and returns a zeroed buffer.  However, it turns out the kernel
-fails to enforce the same via mmap(2), and a direct mapping is
-established. This is a hole, and unfortunately userspace has learned to
-exploit it [2].
+Reviewed-by: Gavin Shan <gshan@redhat.com>
 
-This means the kernel either needs: a mechanism to ensure consistent
-plus accepted "encrypted" mappings of this /dev/mem mmap() hole, close
-the hole by mapping the zero page in the mmap(2) path, block only BIOS
-data access and let typical STRICT_DEVMEM protect the rest, or disable
-/dev/mem altogether.
+> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+> index 1f8625b7646a..99ba6c82cf37 100644
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -3527,6 +3527,11 @@ Possible features:
+>   	      - the KVM_REG_ARM64_SVE_VLS pseudo-register is immutable, and can
+>   	        no longer be written using KVM_SET_ONE_REG.
+>   
+> +	- KVM_ARM_VCPU_REC: Allocate a REC (Realm Execution Context) for this
+> +	  VCPU. This must be specified on all VCPUs created in a Realm VM.
+> +	  Depends on KVM_CAP_ARM_RME.
+> +	  Requires KVM_ARM_VCPU_FINALIZE(KVM_ARM_VCPU_REC).
+> +
+>   4.83 KVM_ARM_PREFERRED_TARGET
+>   -----------------------------
+>   
+> @@ -5098,6 +5103,7 @@ Recognised values for feature:
+>   
+>     =====      ===========================================
+>     arm64      KVM_ARM_VCPU_SVE (requires KVM_CAP_ARM_SVE)
+> +  arm64      KVM_ARM_VCPU_REC (requires KVM_CAP_ARM_RME)
+>     =====      ===========================================
+>   
+>   Finalizes the configuration of the specified vcpu feature.
+> @@ -6452,6 +6458,30 @@ the capability to be present.
+>   
+>   `flags` must currently be zero.
+>   
+> +4.144 KVM_ARM_VCPU_RMM_PSCI_COMPLETE
+> +------------------------------------
+> +
+> +:Capability: KVM_CAP_ARM_RME
+> +:Architectures: arm64
+> +:Type: vcpu ioctl
+> +:Parameters: struct kvm_arm_rmm_psci_complete (in)
+> +:Returns: 0 if successful, < 0 on error
+> +
+> +::
+> +
+> +  struct kvm_arm_rmm_psci_complete {
+> +	__u64 target_mpidr;
+> +	__u32 psci_status;
+> +	__u32 padding[3];
+> +  };
+> +
+> +Where PSCI functions are handled by user space, the RMM needs to be informed of
+> +the target of the operation using `target_mpidr`, along with the status
+> +(`psci_status`). The RMM v1.0 specification defines two functions that require
+> +this call: PSCI_CPU_ON and PSCI_AFFINITY_INFO.
+> +
+> +If the kernel is handling PSCI then this is done automatically and the VMM
+> +doesn't need to call this ioctl.
+>   
+>   .. _kvm_run:
+>   
+> @@ -8280,6 +8310,46 @@ aforementioned registers before the first KVM_RUN. These registers are VM
+>   scoped, meaning that the same set of values are presented on all vCPUs in a
+>   given VM.
+>   
+> +7.38 KVM_CAP_ARM_RME
+> +--------------------
+> +
+> +:Architectures: arm64
+> +:Target: VM
+> +:Parameters: args[0] provides an action, args[1] points to a structure in
+> +	     memory for some actions.
+> +:Returns: 0 on success, negative value on error
+> +
+> +Used to configure and set up the memory for a Realm. The available actions are:
+> +
+> +================================= =============================================
+> + KVM_CAP_ARM_RME_CONFIG_REALM     Takes struct arm_rme_config as args[1] and
+> +                                  configures realm parameters prior to it being
+> +                                  created.
+> +
+> +                                  Options are ARM_RME_CONFIG_RPV to set the
+> +                                  "Realm Personalization Value" and
+> +                                  ARM_RME_CONFIG_HASH_ALGO to set the hash
+> +                                  algorithm.
+> +
+> + KVM_CAP_ARM_RME_CREATE_REALM     Request the RMM create the realm. The realm's
+> +                                  configuration parameters must be set first.
+> +
+> + KVM_CAP_ARM_RME_INIT_RIPAS_REALM Takes struct arm_rme_init_ripas as args[1]
+> +                                  and sets the RIPAS (Realm IPA State) to
+> +                                  RIPAS_RAM of a specified area of the realm's
+> +                                  IPA.
+> +
+> + KVM_CAP_ARM_RME_POPULATE_REALM   Takes struct arm_rme_init_ripas as args[1]
+> +                                  and populates a region of protected address
+> +                                  space by copying the data from the shared
+> +                                  alias.
+> +
+> + KVM_CAP_ARM_RME_ACTIVATE_REALM   Request the RMM activate the realm. No
+> +                                  further changes can be made to the realm's
+> +                                  configuration, and VCPUs are not permitted to
+> +                                  enter the realm until it has been activated.
+                                                               ^^^^^^^^^^^^^^^^^^
+s/has been activated/is deactivated
 
-The simplest option for now is arrange for /dev/mem to always behave as
-if lockdown is enabled for confidential guests. Require confidential
-guest userspace to jettison legacy dependencies on /dev/mem similar to
-how other legacy mechanisms are jettisoned for confidential operation.
-Recall that modern methods for BIOS data access are available like
-/sys/firmware/dmi/tables.
+I don't see where the guard is applied to prevent vCPU is added after realm
+has been activated. I may missed that. Otherwise, it's something to be improved
+n the subsequent patch where a vCPU is created and added to the realm.
 
-Now, this begs the question what to do with PCI sysfs which allows
-userspace mappings of confidential MMIO with similar mapping consistency
-and acceptance expectations? Here, the existing mitigation of
-IO_STRICT_DEVMEM is likely sufficient. The kernel is expected to use
-request_mem_region() when toggling the state of MMIO. With
-IO_STRICT_DEVMEM that enforces kernel-exclusive access until
-release_mem_region(), i.e. mapping conflicts are prevented.
 
-Cc: <x86@kernel.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Vishal Annapurve <vannapurve@google.com>
-Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://sources.debian.org/src/libdebian-installer/0.125/src/system/subarch-x86-linux.c/?hl=113#L93 [2]
-Reported-by: Nikolay Borisov <nik.borisov@suse.com>
-Closes: http://lore.kernel.org/20250318113604.297726-1-nik.borisov@suse.com [1]
-Fixes: 9aa6ea69852c ("x86/tdx: Make pages shared in ioremap()")
-Cc: <stable@vger.kernel.org>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Acked-by: Naveen N Rao (AMD) <naveen@kernel.org>
-Tested-by: Naveen N Rao (AMD) <naveen@kernel.org>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- arch/x86/Kconfig   |  4 ++++
- drivers/char/mem.c | 10 ++++++++++
- 2 files changed, 14 insertions(+)
+> +================================= =============================================
+> +
+>   8. Other capabilities.
+>   ======================
+>   
+> diff --git a/arch/arm64/include/uapi/asm/kvm.h b/arch/arm64/include/uapi/asm/kvm.h
+> index af9d9acaf997..b57712880605 100644
+> --- a/arch/arm64/include/uapi/asm/kvm.h
+> +++ b/arch/arm64/include/uapi/asm/kvm.h
+> @@ -106,6 +106,7 @@ struct kvm_regs {
+>   #define KVM_ARM_VCPU_PTRAUTH_GENERIC	6 /* VCPU uses generic authentication */
+>   #define KVM_ARM_VCPU_HAS_EL2		7 /* Support nested virtualization */
+>   #define KVM_ARM_VCPU_HAS_EL2_E2H0	8 /* Limit NV support to E2H RES0 */
+> +#define KVM_ARM_VCPU_REC		9 /* VCPU REC state as part of Realm */
+>   
+>   struct kvm_vcpu_init {
+>   	__u32 target;
+> @@ -429,6 +430,54 @@ enum {
+>   #define   KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES	3
+>   #define   KVM_DEV_ARM_ITS_CTRL_RESET		4
+>   
+> +/* KVM_CAP_ARM_RME on VM fd */
+> +#define KVM_CAP_ARM_RME_CONFIG_REALM		0
+> +#define KVM_CAP_ARM_RME_CREATE_REALM		1
+> +#define KVM_CAP_ARM_RME_INIT_RIPAS_REALM	2
+> +#define KVM_CAP_ARM_RME_POPULATE_REALM		3
+> +#define KVM_CAP_ARM_RME_ACTIVATE_REALM		4
+> +
+> +/* List of configuration items accepted for KVM_CAP_ARM_RME_CONFIG_REALM */
+> +#define ARM_RME_CONFIG_RPV			0
+> +#define ARM_RME_CONFIG_HASH_ALGO		1
+> +
+> +#define ARM_RME_CONFIG_MEASUREMENT_ALGO_SHA256		0
+> +#define ARM_RME_CONFIG_MEASUREMENT_ALGO_SHA512		1
+> +
+> +#define ARM_RME_CONFIG_RPV_SIZE 64
+> +
+> +struct arm_rme_config {
+> +	__u32 cfg;
+> +	union {
+> +		/* cfg == ARM_RME_CONFIG_RPV */
+> +		struct {
+> +			__u8	rpv[ARM_RME_CONFIG_RPV_SIZE];
+> +		};
+> +
+> +		/* cfg == ARM_RME_CONFIG_HASH_ALGO */
+> +		struct {
+> +			__u32	hash_algo;
+> +		};
+> +
+> +		/* Fix the size of the union */
+> +		__u8	reserved[256];
+> +	};
+> +};
+> +
+> +#define KVM_ARM_RME_POPULATE_FLAGS_MEASURE	(1 << 0)
+> +struct arm_rme_populate_realm {
+> +	__u64 base;
+> +	__u64 size;
+> +	__u32 flags;
+> +	__u32 reserved[3];
+> +};
+> +
+> +struct arm_rme_init_ripas {
+> +	__u64 base;
+> +	__u64 size;
+> +	__u64 reserved[2];
+> +};
+> +
+>   /* Device Control API on vcpu fd */
+>   #define KVM_ARM_VCPU_PMU_V3_CTRL	0
+>   #define   KVM_ARM_VCPU_PMU_V3_IRQ	0
+> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> index b6ae8ad8934b..0b8479985581 100644
+> --- a/include/uapi/linux/kvm.h
+> +++ b/include/uapi/linux/kvm.h
+> @@ -930,6 +930,7 @@ struct kvm_enable_cap {
+>   #define KVM_CAP_X86_APIC_BUS_CYCLES_NS 237
+>   #define KVM_CAP_X86_GUEST_MODE 238
+>   #define KVM_CAP_ARM_WRITABLE_IMP_ID_REGS 239
+> +#define KVM_CAP_ARM_RME 240
+>   
+>   struct kvm_irq_routing_irqchip {
+>   	__u32 irqchip;
+> @@ -1582,4 +1583,13 @@ struct kvm_pre_fault_memory {
+>   	__u64 padding[5];
+>   };
+>   
+> +/* Available with KVM_CAP_ARM_RME, only for VMs with KVM_VM_TYPE_ARM_REALM  */
+> +struct kvm_arm_rmm_psci_complete {
+> +	__u64 target_mpidr;
+> +	__u32 psci_status;
+> +	__u32 padding[3];
+> +};
+> +
+> +#define KVM_ARM_VCPU_RMM_PSCI_COMPLETE	_IOW(KVMIO, 0xd6, struct kvm_arm_rmm_psci_complete)
+> +
+>   #endif /* __LINUX_KVM_H */
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 4b9f378e05f6..36f11aad1ae5 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -891,6 +891,8 @@ config INTEL_TDX_GUEST
- 	depends on X86_X2APIC
- 	depends on EFI_STUB
- 	depends on PARAVIRT
-+	select STRICT_DEVMEM
-+	select IO_STRICT_DEVMEM
- 	select ARCH_HAS_CC_PLATFORM
- 	select X86_MEM_ENCRYPT
- 	select X86_MCE
-@@ -1510,6 +1512,8 @@ config AMD_MEM_ENCRYPT
- 	bool "AMD Secure Memory Encryption (SME) support"
- 	depends on X86_64 && CPU_SUP_AMD
- 	depends on EFI_STUB
-+	select STRICT_DEVMEM
-+	select IO_STRICT_DEVMEM
- 	select DMA_COHERENT_POOL
- 	select ARCH_USE_MEMREMAP_PROT
- 	select INSTRUCTION_DECODER
-diff --git a/drivers/char/mem.c b/drivers/char/mem.c
-index 48839958b0b1..47729606b817 100644
---- a/drivers/char/mem.c
-+++ b/drivers/char/mem.c
-@@ -30,6 +30,7 @@
- #include <linux/uio.h>
- #include <linux/uaccess.h>
- #include <linux/security.h>
-+#include <linux/cc_platform.h>
- 
- #define DEVMEM_MINOR	1
- #define DEVPORT_MINOR	4
-@@ -595,6 +596,15 @@ static int open_port(struct inode *inode, struct file *filp)
- 	if (rc)
- 		return rc;
- 
-+	/*
-+	 * Enforce encrypted mapping consistency and avoid unaccepted
-+	 * memory conflicts, "lockdown" /dev/mem for confidential
-+	 * guests.
-+	 */
-+	if (IS_ENABLED(CONFIG_STRICT_DEVMEM) &&
-+	    cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-+		return -EPERM;
-+
- 	if (iminor(inode) != DEVMEM_MINOR)
- 		return 0;
- 
--- 
-2.49.0
+Thanks,
+Gavin
 
