@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83269215191
-	for <linux-coco@lists.linux.dev>; Thu,  1 May 2025 17:28:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DA91EB5D0
+	for <linux-coco@lists.linux.dev>; Thu,  1 May 2025 17:36:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746120491; cv=none; b=NLOjVcZmLEp2MOmGzhV2ugtopEkDTZWZ0rnbz35hOH4fqQh23WLLS9P4L+GobDZRtElDHCYvpyEi5obOvyjxlV11UdIjr0CLTvcZ0IYsq3NXLTjOdDQWFovnjNHKRFB9bdjDNnRLw4VeXT5RCjiwBugp/+eXhpmWbEsKA0VvKas=
+	t=1746120985; cv=none; b=r1eHos1bpPJFtkn4QxZKQQytBd3xtrNawC1tuDrSIyyMa+DM3w4UTAR8h5jyO3n0+i5yJbumxKbQtP4mEtjdUSqlKrdrSBgPBggjyEeDnRuebqBgUEWbTB5zXjoRATF7LK7+VV4LzQIKpNXVQqHx+aL8q7kX/NqDTIbZogfNgZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746120491; c=relaxed/simple;
-	bh=TmEpM1C7T+c713907hNJRvHZP/y6y/JUuntk3Bs3CPk=;
+	s=arc-20240116; t=1746120985; c=relaxed/simple;
+	bh=GVQZVmIPjFTL2nBzj0YFPfMMFlfwszWPp7tldmRsEGQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VvX73D/IwQ32oQ5LGA72sDyZkcgCt84iFKeor+5qeecKPXGsyInniBob+HvWn9eqLBtyoQlaekg83bG36/BH8wiNrbiUEbL/Opk0RZAHTkx3JlUMo5Mt4t2q4B4Lf/iw64Myw9YTT2NOtQlFWiOIE/MYJBq80AvG+QSr7Rl78HY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gmr5LoSL; arc=none smtp.client-ip=198.175.65.20
+	 In-Reply-To:Content-Type; b=WmwchamcHpKIiroA9TzmY46/dBQGDzvCvxVopcgqiI48XSg/kbKyhOcrVhquCn3jKj4lFJlfzsUMYra/aMHUoVxdBIe7BHsO3nEXDs3YmpU59xUzKfN3npk96eAmXjnYBGNXEMK5RWdeRjdBnv72RZOy6WAu9DrTLqaoYVR0Qbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q3bd04eA; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gmr5LoSL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q3bd04eA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746120490; x=1777656490;
+  t=1746120983; x=1777656983;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=TmEpM1C7T+c713907hNJRvHZP/y6y/JUuntk3Bs3CPk=;
-  b=Gmr5LoSLzE8rUEesjVS+KUC6CppCJWAMVW8E9nShcVIhCXbddys5MB53
-   9xRA1auVfQuTjPX7cHtqPzUBvUeRWKWopaxT4OT9LQhm5QuH0ZZF7ufdD
-   coVasS+echUi0/qGQoD0Z70E1yXOh6bZMVoVPoM3Hc9EHrhNRw7EM7dgR
-   zDdWapE2+1URytKoCwj6e15i27qgBmDoRhWsApRDe1ICtw5m9VTf0zqdr
-   r4Wrk+5YphE8c7ihHAGfmPUDDmk55tg46wqwr9/xAqJfYdK/9jdReSnGm
-   AMjk2ykBjniAJlOQ2qnF5IlPuVdBJ8CKt9GbHXxmP4TCaqulS7L1Jqhy0
-   w==;
-X-CSE-ConnectionGUID: UKLZjlToQdO2If5CFcHv1g==
-X-CSE-MsgGUID: LNYugyNrTnayRIflvvqnxg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11420"; a="47516267"
+  bh=GVQZVmIPjFTL2nBzj0YFPfMMFlfwszWPp7tldmRsEGQ=;
+  b=Q3bd04eAmJ617zEPbyA3DouJLItIGMOd+t5Zkkt0KauyD+DknZE3J8z5
+   xfql0T0y+GckXRKQK/m9H5T2Dctd7PUTFxDMngeJVweyVOpWMz2/uVO5P
+   z0FZ0w+qlKUPoWF73Y4AJb/B8HASg++MNrisWXe1L2Xw2zRL9vO9lO9xB
+   RyGtf0V6qpxhZ8xIKAxMfVXf9AgzT+BhV25Q96DHD+P2L/8kRwTJv3t/+
+   g4ejv6FyFFuC37LSx+zZ9f2GNg+mXN+CbTy39zWJb0cxOysWR2NTHg9bN
+   XoJ+Vc7iDmYjpN3Fe3ZipJQ5Ne7iSSEnQ9gFSEwWMNO11wEaKkYJKCohf
+   g==;
+X-CSE-ConnectionGUID: RXbK8rlER3qwzz7MKwKDyQ==
+X-CSE-MsgGUID: g3sKb45uR26jSmHF0ESeMA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11420"; a="47941453"
 X-IronPort-AV: E=Sophos;i="6.15,254,1739865600"; 
-   d="scan'208";a="47516267"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 May 2025 10:28:09 -0700
-X-CSE-ConnectionGUID: IGWHYLdiSfCbI74vRs2gmQ==
-X-CSE-MsgGUID: Ksv9379MTSe8MItJjSCJUQ==
+   d="scan'208";a="47941453"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 May 2025 10:36:22 -0700
+X-CSE-ConnectionGUID: VXKijSaBSH2ahV+mBkcspg==
+X-CSE-MsgGUID: Szj+zFtLQzGAyI3RuIx+9g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,254,1739865600"; 
-   d="scan'208";a="139244404"
+   d="scan'208";a="139251989"
 Received: from rfrazer-mobl3.amr.corp.intel.com (HELO [10.124.220.24]) ([10.124.220.24])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 May 2025 10:28:08 -0700
-Message-ID: <615afc41-2044-46ab-b171-4c9e039e11ff@intel.com>
-Date: Thu, 1 May 2025 10:28:05 -0700
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 May 2025 10:36:21 -0700
+Message-ID: <13b76cda-4fa9-4a00-a923-6a842275e555@intel.com>
+Date: Thu, 1 May 2025 10:36:18 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,7 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/5] x86/tdx: Add tdx_mcall_extend_rtmr() interface
+Subject: Re: [PATCH v5 4/5] x86/tdx: tdx_mcall_get_report0: Return -EBUSY on
+ TDCALL_OPERAND_BUSY error
 To: Cedric Xing <cedric.xing@intel.com>,
  Dan Williams <dan.j.williams@intel.com>,
  "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
@@ -68,7 +69,7 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
  Mikko Ylinen <mikko.ylinen@linux.intel.com>,
  Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
 References: <20250424-tdx-rtmr-v5-0-4fe28ddf85d4@intel.com>
- <20250424-tdx-rtmr-v5-3-4fe28ddf85d4@intel.com>
+ <20250424-tdx-rtmr-v5-4-4fe28ddf85d4@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -114,26 +115,15 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20250424-tdx-rtmr-v5-3-4fe28ddf85d4@intel.com>
+In-Reply-To: <20250424-tdx-rtmr-v5-4-4fe28ddf85d4@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 4/24/25 13:12, Cedric Xing wrote:
-> The TDX guest exposes one MRTD (Build-time Measurement Register) and four
-> RTMR (Run-time Measurement Register) registers to record the build and boot
-> measurements of a virtual machine (VM). These registers are similar to PCR
-> (Platform Configuration Register) registers in the TPM (Trusted Platform
-> Module) space. This measurement data is used to implement security features
-> like attestation and trusted boot.
-> 
-> To facilitate updating the RTMR registers, the TDX module provides support
-> for the `TDG.MR.RTMR.EXTEND` TDCALL which can be used to securely extend
-> the RTMR registers.
-> 
-> Add helper function to update RTMR registers. It will be used by the TDX
-> guest driver in enabling RTMR extension support.
-
-Thank you for revising the changelogs to make the underlying purpose of
-this series more clear.
+> Return `-EBUSY` from tdx_mcall_get_report0() when `TDG.MR.REPORT` returns
+> `TDCALL_OPERAND_BUSY`. This enables the caller to retry obtaining a
+> TDREPORT later if another VCPU is extending an RTMR concurrently.
+I would appreciate if someone can go back and look at centralizing the
+TDX error code => errno conversions. But that doesn't need to happen now.
 
 Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
