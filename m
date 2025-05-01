@@ -1,71 +1,71 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9008C1E9B2F
-	for <linux-coco@lists.linux.dev>; Thu,  1 May 2025 03:42:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC5C1AF0C8
+	for <linux-coco@lists.linux.dev>; Thu,  1 May 2025 03:50:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746070981; cv=none; b=RII1U/AINhhAoGlL9QolfWS/w6bVhcwjGbb3+StintSL3KalbPk+NIhSPV08fTPIiyxJfDeBMPuuPpAuNfAsJVNp9QqMpzSdgY1hiW+3IqLZaTg6kRN72q3mGdpz133OUfo4cYVZI3XjJCckLtBk6yUwmRHjC7/dT6rmKLngqTA=
+	t=1746071424; cv=none; b=hY2JotM862raOQxReSOQgkSPpMW8Oyirqt8YnPT+X449moWIF0m85jwXMBBAl2paZrUUB47wE5VKDYwpEG8br3i85BAu95MnqjPNlYuG2AS1vdzp1fvseQUMDtkfJDePehPFTSroEtiy5i/92DQ5O/hfObbYJL3mlaWhpyKfglc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746070981; c=relaxed/simple;
-	bh=rCfk93JTwE7IksYYV61B6JuTCbu+HHdPHtJEQpV6aCY=;
+	s=arc-20240116; t=1746071424; c=relaxed/simple;
+	bh=PO+3BQsPIF+4e0+asMRXeh+QLcIUVpdmgRa7WCUfcr8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IVhmNICZxq/dbkPLOZCJr7rTMnLXxzXcf+BYqnmrocWeBB7GOm3wZH62KPZyJ9F18YFlqNExLX8VYGrVk8aLjZ5tWWZMGn0x76B7urhR1ZjQP8+AJRLIVrVHsjok0Fr0cG2XJmsdfDoGIRjrqi0bcXwibxEczgKieyiH9jbN2XY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XKyAFHF9; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=BwIagpKBIuKW1GLN/NQcYhjkQD26dh2EJk4+s19ZZAeO/qKiXK2DZrBJFCKk1B6jMxBQJcSp1z4DouuAb0Eiy7M12heukehtDbkcSlKv3ybcexc6k1qArbXveiNcHzrA7q0aqKO4vXDLMN7nwfPmi2JZqPq9V4XQH/ytzQSd4tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VvtVvuRn; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XKyAFHF9"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VvtVvuRn"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1746070978;
+	s=mimecast20190719; t=1746071422;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JC4AbsVCdLJ1p7UYeSXewTdrjDsKeZ54RhtL8jSgmm0=;
-	b=XKyAFHF9nx6GM9PE/5EOToUqSFaTdxXqVR5E/bRfighZzyGzYUiPdbqFUjozPFIUyjOC5k
-	2v7FwUx5pMpUlfZzBHpx/yW4rRykPg7eg5EzRblAFCNneJ+l+Br5Sui7D0PcKA7zmmgDse
-	g+Y7G5QSCm+NMjkhrt2nvW9zZJVXxtQ=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=eCg3VHmOtxCvew5eYi3QzhfJ1vb1uNXc4Xa6k7JPpko=;
+	b=VvtVvuRnXUp04++ObLq/ENJatsQKtnlZsf/uo3WSQWZINGiYKUCRfKCGriOFtztSDo/Dfw
+	QED4ZIDmRM4RRJ8nNoI3P73z1hUmjfC5TAPIXnimrxXVipznwMuXeeQxKMfAQMasxG2cj7
+	tRzelyQ/5M+X095A+kBIwCEUJCnj904=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-V84oB_1NPaKDOWz5bRpL5g-1; Wed, 30 Apr 2025 23:42:56 -0400
-X-MC-Unique: V84oB_1NPaKDOWz5bRpL5g-1
-X-Mimecast-MFC-AGG-ID: V84oB_1NPaKDOWz5bRpL5g_1746070975
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-22403329f9eso4247935ad.3
-        for <linux-coco@lists.linux.dev>; Wed, 30 Apr 2025 20:42:56 -0700 (PDT)
+ us-mta-335-U68AmEUUOdGpJyQHW2LX5w-1; Wed, 30 Apr 2025 23:50:20 -0400
+X-MC-Unique: U68AmEUUOdGpJyQHW2LX5w-1
+X-Mimecast-MFC-AGG-ID: U68AmEUUOdGpJyQHW2LX5w_1746071420
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-af8f28f85a7so340503a12.2
+        for <linux-coco@lists.linux.dev>; Wed, 30 Apr 2025 20:50:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746070975; x=1746675775;
+        d=1e100.net; s=20230601; t=1746071419; x=1746676219;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JC4AbsVCdLJ1p7UYeSXewTdrjDsKeZ54RhtL8jSgmm0=;
-        b=jdcaUdUhQy/MrP9O8aMV9xWklSQuFsX6n6ynO5PxFUzGIas9GFLLwsXZHxoNlF1Gad
-         jvLR716VXnO8hMmaWtQCnJ0yuDFQY5Xo48L9OseJ31dnbajr+4l/sp06ucNP9V9f/e7S
-         s/msro3gaK2dvPprRM48DjJ8BfrMgT8bt/NJYFVLVYeT/ZvCGIZJrqXASysmwfsn1taJ
-         i51VISmyvz/NT7nWTgXmZbryST16Ot33/wWvcfZBvHVH32D7lCIFA6fTMqBaNL51rPBI
-         vGTxSiLri7ykKViSa2jy5Vj8fff8gaaCSXXX/u/9zwbNT6KXA47t66xwgq7DE5KKhQM1
-         FUlg==
-X-Forwarded-Encrypted: i=1; AJvYcCVIV+OzJsinTLhl3w4Wx3xkGndeHwI7DJdygFxy5sDDZJ3Skyw+dqsWAQGwI+OJTVTYM4Hz43woyprI@lists.linux.dev
-X-Gm-Message-State: AOJu0YwqEKHUEmmsBwbW46l6fQjQ/umcSZEChMRsls2a2cwa6FLXFZN3
-	I9VCQs7g6JK/DFwKPPb7QekcTCMyKBVf4cdlyAj6wb0LdBc8+0IgzPHurgU1EpYEtlXYP5//wy7
-	zfTvUJQfjJ4fnytsEnXRgOKLeJMuJsl7JXHSvSe8lyXjeoh/ihEcKewcVJWU=
-X-Gm-Gg: ASbGncvKucBknI/kP4Ck3hsmz5RyDeDzArbd7G4r3QV5A44J/+b8cQ+/SdKlZdoX2Wj
-	q8S4LysoO1sgWb3+J2BMGdjMvbmUdu48YFDU1K0bFX6Q+48m2oAz5CrfLcl9iFV7hnKzVauACAu
-	RcpWzEIFtpxW3PmX9NR11NYFZ90Ml6OX71bHmKMKa7aphSn6OdZsVDVjMnU9sS3i4sqUyLODNn9
-	aLdDCvGkrgCCyP3fMHpczW2F8Tf6s70r7nsPgk1Re9xYbnvd+vfFU8JK6xppMBqWn6QS2mdcEk9
-	UPPPBoeKGA1G
-X-Received: by 2002:a17:902:f548:b0:21f:4649:fd49 with SMTP id d9443c01a7336-22e0863efbfmr14694105ad.49.1746070975373;
-        Wed, 30 Apr 2025 20:42:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE6XeA16VOaq6zL1nFcqHpvVwTJjX64McCuJNjLU9eHJvxIX6JXOCTvpbcT/Z0Dp6bPnFYLIg==
-X-Received: by 2002:a17:902:f548:b0:21f:4649:fd49 with SMTP id d9443c01a7336-22e0863efbfmr14693805ad.49.1746070975009;
-        Wed, 30 Apr 2025 20:42:55 -0700 (PDT)
+        bh=eCg3VHmOtxCvew5eYi3QzhfJ1vb1uNXc4Xa6k7JPpko=;
+        b=ajV4Mu71ff+9YXppSCj7RUDcy5JJ+tecRvqCUKApf8FmbCDiFEdlVfQOPF2iC+k4Xk
+         I3XYNz0nXBjXmPi9n9QT4I828n63JT171xzze8OAveXoBvQux0drm0WJ0Ny7dM/m1AV7
+         dR/68MEIuFXuRB7HeqjLI1KrOlZqp/ZLkusPizzZSabco+g6Ui94Xje7HmzpahZgZc/C
+         92TYrIbtPC36eYXvtIDTnYFXyXqceb0NhJIqy4OH5Ls7fqPhBY5WIsRG1Ig4qMw4goSq
+         +pixoU67JH54t1wXl569BzYoDD5ldwREOpf9PEWlDHXNBDYtYIqok2QE7VaqPHRyRVlQ
+         FdSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWsHXCFdRgV3zMsiPGInQ4KlxenKxT2R+zN+FpnV0AJtU+oW9J4cD2Zhxd1t6i84jCDO2kIAAWTZ9dr@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz4DH2wXwDhUAJHyO6wz+TGyyPjI+dMe2f3BBYaEcyKrPHzrZVt
+	Ci65GSKHBby0heL5taxdrVe88Xds/6HlPGmuYYBVAsFOI5D5Yn3wKMwc2HRAn8y+qzTeBQ4ZZXK
+	V+VbSSj2zTwwkmOFS/l1v/zzTMrDM39agHHoFilcLcELWYfdglagrcUgPN1k=
+X-Gm-Gg: ASbGncthkp8HQzpllz8elfhVZoiEcfjRcoj52WgV10+yTTEXw8A633IJjCIJKG/OxFR
+	GtE4CuVcaKGwIIUBN+vG/Vr5tND+s89/G8M2XgcuCwqKuIcgwG0riFikL3zjMd3JupKFSzzrPW+
+	zio1tP+HpXOeqtX4/popODgqAHWNJ9AYhYbrXecyU6U/XWAm/IbXHhuw+rDa+E/3ajS6GmPQzGR
+	qm/IhLtxkGDnNTQl5eO5A9Vj4F2TgKZQ84oZcRO1GPOJD64RFJJWIc32Z8qjagCNDYiXiwu2eQj
+	SNhdT7Q38TCe
+X-Received: by 2002:a17:902:ce82:b0:224:e33:889b with SMTP id d9443c01a7336-22e040bf632mr26267655ad.12.1746071419635;
+        Wed, 30 Apr 2025 20:50:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHjGXYl1nbElt//Y7QO+1qgJyi9H/AWK7L3Z8v+0R5cqVKw1fIlymBvwS8voAmkMjppWWC63Q==
+X-Received: by 2002:a17:902:ce82:b0:224:e33:889b with SMTP id d9443c01a7336-22e040bf632mr26267185ad.12.1746071419220;
+        Wed, 30 Apr 2025 20:50:19 -0700 (PDT)
 Received: from [192.168.68.51] ([180.233.125.65])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db5102b03sm130327715ad.194.2025.04.30.20.42.47
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db5100c70sm130601505ad.166.2025.04.30.20.50.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Apr 2025 20:42:54 -0700 (PDT)
-Message-ID: <f61ef14b-9a51-48c5-b88e-518461c988cb@redhat.com>
-Date: Thu, 1 May 2025 13:42:46 +1000
+        Wed, 30 Apr 2025 20:50:18 -0700 (PDT)
+Message-ID: <b10f429b-7009-4399-966c-430ad1e02d05@redhat.com>
+Date: Thu, 1 May 2025 13:50:10 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -73,8 +73,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 36/43] arm64: RME: Initialize PMCR.N with number
- counter supported by RMM
+Subject: Re: [PATCH v8 37/43] arm64: RME: Propagate max SVE vector length from
+ RMM
 To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
 Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>,
@@ -91,11 +91,11 @@ Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>,
  Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
  <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
 References: <20250416134208.383984-1-steven.price@arm.com>
- <20250416134208.383984-37-steven.price@arm.com>
+ <20250416134208.383984-38-steven.price@arm.com>
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20250416134208.383984-37-steven.price@arm.com>
+In-Reply-To: <20250416134208.383984-38-steven.price@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: dz9HIRraLuwxktW47_6PSQRovNb2gS9nWC_6vy7U6mc_1746070975
+X-Mimecast-MFC-PROC-ID: EMV5V0lnU6nBSSunvfbDNS0Xv0HqZ2HWSJiVgdyX5G4_1746071420
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
@@ -104,16 +104,19 @@ Content-Transfer-Encoding: 7bit
 On 4/16/25 11:41 PM, Steven Price wrote:
 > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 > 
-> Provide an accurate number of available PMU counters to userspace when
-> setting up a Realm.
+> RMM provides the maximum vector length it supports for a guest in its
+> feature register. Make it visible to the rest of KVM and to userspace
+> via KVM_REG_ARM64_SVE_VLS.
 > 
 > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 > Signed-off-by: Steven Price <steven.price@arm.com>
 > ---
->   arch/arm64/include/asm/kvm_rme.h | 1 +
->   arch/arm64/kvm/pmu-emul.c        | 3 +++
->   arch/arm64/kvm/rme.c             | 5 +++++
->   3 files changed, 9 insertions(+)
+>   arch/arm64/include/asm/kvm_host.h |  2 +-
+>   arch/arm64/include/asm/kvm_rme.h  |  1 +
+>   arch/arm64/kvm/guest.c            |  2 +-
+>   arch/arm64/kvm/reset.c            | 12 ++++++++++--
+>   arch/arm64/kvm/rme.c              |  6 ++++++
+>   5 files changed, 19 insertions(+), 4 deletions(-)
 > 
 
 Reviewed-by: Gavin Shan <gshan@redhat.com>
