@@ -1,25 +1,25 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 960701C8FB5;
-	Thu,  1 May 2025 13:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9CC21AF4E9;
+	Thu,  1 May 2025 13:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746106286; cv=none; b=mNId+jns+mAkJmPWxZ5gApH9fDWVC41vSHR+MJuJHzCeRyP9Opb2b4qIb7xCP+cjbzf5+mFXZMitEYNPwvYBgHYe4Ghm7C7n1vjBpcbdeVc9sTdzJ/nvD3AwpsGiyNg7A4+djSplnQZZoSzBnuwXCoJOXpAIk2nZi0X00nuxL5U=
+	t=1746107099; cv=none; b=tJnqP9Xg9QnCyDOTUWG9RW7m+h7MRZrg4lFNuEExH4YoA/y9FPbnkgJn4ebLVznAIattrF/3PAW4Hfkk3WUZ29pVvLdlMYkZWkKjCllNCczxDOWd5Z+5R2Y2K1u0UGypxIHmjC+wBmNMy5LpKS5IOQCJUo10KhGWLXlqwykHThM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746106286; c=relaxed/simple;
-	bh=501iMGdvWFMVbmnY1cQW5t1rzrn7kL8WrtB7rzKbW6g=;
+	s=arc-20240116; t=1746107099; c=relaxed/simple;
+	bh=kKenmRzGfOHmyjzOAoGBmpGNmDMllmOINdon1Jn8QkM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G9LbYhcLVNg56qHtUdjH0n2bZMNuZBe6XEYdz1jicjqNe6weZYZZEfKAbe2V/8cFaxrI4eD56f87g9+XjyFQcUYUcONAO6rXaYXzW46lNDX/4PcNdbYJLDKiE79tdd8pDP+/7G8YQ9QP4BstRO17WXMTPtcY5KHil00Nnt48tF0=
+	 In-Reply-To:Content-Type; b=FstKlJ2Uume5Qd9sns3/UgkX6DsMjPxS14N0mGxJFvnPGe9WRGjxPchPWouQ/4M5dIBF+IzIO/tPO2r+3kVGL1kKFyZJShvJAYHTAVcPIxK2eydzpl6RiBimloqP9Uwg+upv8r0BHJRdLsLZ693kHyk5nBMXbjj5ocPOvUbpNEQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3F5911CC4;
-	Thu,  1 May 2025 06:31:16 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A8A2E168F;
+	Thu,  1 May 2025 06:44:49 -0700 (PDT)
 Received: from [10.1.33.27] (e122027.cambridge.arm.com [10.1.33.27])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6D5A23F5A1;
-	Thu,  1 May 2025 06:31:19 -0700 (PDT)
-Message-ID: <961bd6f8-2c0c-47d7-991d-aab7d247ffa8@arm.com>
-Date: Thu, 1 May 2025 14:31:14 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DE1B63F5A1;
+	Thu,  1 May 2025 06:44:53 -0700 (PDT)
+Message-ID: <9004ac7b-2df5-42c3-b3af-729ef5107822@arm.com>
+Date: Thu, 1 May 2025 14:44:52 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -28,32 +28,32 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v8 06/43] arm64: RME: Define the user ABI
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
+To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
  Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
  Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
 References: <20250416134208.383984-1-steven.price@arm.com>
  <20250416134208.383984-7-steven.price@arm.com>
- <35a91f8c-cdf6-4595-9ed2-c792a8e9d679@arm.com>
+ <dac9f2c6-d46e-4232-abbd-8aa097f012a5@redhat.com>
 From: Steven Price <steven.price@arm.com>
 Content-Language: en-GB
-In-Reply-To: <35a91f8c-cdf6-4595-9ed2-c792a8e9d679@arm.com>
+In-Reply-To: <dac9f2c6-d46e-4232-abbd-8aa097f012a5@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 28/04/2025 09:58, Suzuki K Poulose wrote:
-> Hi Steven
-> 
-> On 16/04/2025 14:41, Steven Price wrote:
+Hi Gavin,
+
+On 30/04/2025 05:25, Gavin Shan wrote:
+> On 4/16/25 11:41 PM, Steven Price wrote:
 >> There is one (multiplexed) CAP which can be used to create, populate and
 >> then activate the realm.
 >>
@@ -76,6 +76,11 @@ On 28/04/2025 09:58, Suzuki K Poulose wrote:
 >>   include/uapi/linux/kvm.h          | 10 +++++
 >>   3 files changed, 129 insertions(+)
 >>
+> 
+> With below comment addressed:
+> 
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> 
 >> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/
 >> api.rst
 >> index 1f8625b7646a..99ba6c82cf37 100644
@@ -164,16 +169,6 @@ On 28/04/2025 09:58, Suzuki K Poulose wrote:
 >> +
 >> + KVM_CAP_ARM_RME_CREATE_REALM     Request the RMM create the realm.
 >> The realm's
-> 
-> minor nit: s/RMM create/RMM to create/
-
-Ack
-
-> Or may be rephrase it:
-> 
-> Request the RMM to create the Realm with the configured parameters.
-> 
-> 
 >> +                                  configuration parameters must be
 >> set first.
 >> +
@@ -187,11 +182,6 @@ Ack
 >> +
 >> + KVM_CAP_ARM_RME_POPULATE_REALM   Takes struct arm_rme_init_ripas as
 >> args[1]
-> 
-> nit: struct arm_rme_populate_realm
-
-Copy/paste error - thanks for spotting.
-
 >> +                                  and populates a region of protected
 >> address
 >> +                                  space by copying the data from the
@@ -199,34 +189,47 @@ Copy/paste error - thanks for spotting.
 >> +                                  alias.
 >> +
 >> + KVM_CAP_ARM_RME_ACTIVATE_REALM   Request the RMM activate the realm. No
-> 
-> s/the RMM/the RMM to/
-
-Ack
-
 >> +                                  further changes can be made to the
 >> realm's
 >> +                                  configuration, and VCPUs are not
 >> permitted to
 >> +                                  enter the realm until it has been
 >> activated.
-> 
-> minor nit: this sounds as if "configurations" (of parameters)  are
-> possible after the CREATE_REALM and before ACTIVATE_REALM ? Could we
-> also make it clear that the VCPUs must have been created before ACTIVATE ?
-> 
-> 
-> May be rephrase it to:
-> 
-> No changes can be made to Realm's memory (including the IPA state). No
-> new VCPUs can be created after this step.
+>                                                              
+> ^^^^^^^^^^^^^^^^^^
+> s/has been activated/is deactivated
 
-I was attmepting to include that CONFIG_REALM cannot be called. How about:
+I think I worded it badly before (as Susuki has already pointed out) and
+you haven't understood what I intended.
 
-	Request the RMM to activate the realm. No
-	changes can be made to the Realm's memory,
-	IPA state or configuration parameters.  No
-	new VCPUs can be created after this step.
+VCPUs can be added to a Realm guest up until the ACTIVATE_REALM call.
+There is no "deactivate" - you would need to destroy the guest and start
+again.
+
+What I intended was to say that a VCPU must not be executed (KVM_RUN)
+until the ACTIVE_REALM call.
+
+> I don't see where the guard is applied to prevent vCPU is added after realm
+> has been activated. I may missed that. Otherwise, it's something to be
+> improved
+> n the subsequent patch where a vCPU is created and added to the realm.
+
+This is handled in kvm_create_rec() where there's a check that
+kvm_realm_state() != REALM_STATE_NEW. This prevents finalization of a
+VCPU unless the realm is still in "new" state.
+
+Admittedly this doesn't technically stop the user creating a VCPU. I
+could add a check in kvm_arch_vcpu_create(), however this wouldn't stop
+a VMM creating a VCPU and not finalising it before activating the realm.
+So we'd end up with the same situation. I'm not sure whether it's worth
+trying to stop the VMM or if I should just reword to say that the VMM
+shouldn't do this.
+
+I don't believe anything bad will happen to the host in these situations
+- you will just end up with a useless VCPU which cannot be run.
+
+Thanks,
+Steve
 
 >> +=================================
 >> =============================================
@@ -265,21 +268,6 @@ I was attmepting to include that CONFIG_REALM cannot be called. How about:
 >> +
 >> +#define ARM_RME_CONFIG_MEASUREMENT_ALGO_SHA256        0
 >> +#define ARM_RME_CONFIG_MEASUREMENT_ALGO_SHA512        1
-> 
-> minor nit:
-> May be we could rename this to CONFIG_HASH_ALGO_* to align with the
-> RMM spec (btw which also moved from measurement to hash) and the
-> parameter.
-
-Ah, I must have missed that rename in the spec - yes that makes sense,
-I've generally tried to stick closely to the naming in the spec.
-
-Thanks,
-Steve
-
-> Suzuki
-> 
-> 
 >> +
 >> +#define ARM_RME_CONFIG_RPV_SIZE 64
 >> +
@@ -344,5 +332,8 @@ Steve
 >> kvm_arm_rmm_psci_complete)
 >> +
 >>   #endif /* __LINUX_KVM_H */
+> 
+> Thanks,
+> Gavin
 > 
 
