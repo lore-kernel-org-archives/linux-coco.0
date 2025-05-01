@@ -1,126 +1,193 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4551EB193
-	for <linux-coco@lists.linux.dev>; Thu,  1 May 2025 03:50:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57831E25E8
+	for <linux-coco@lists.linux.dev>; Thu,  1 May 2025 08:13:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746071447; cv=none; b=BWKGrGiHyQlPUWENAIclz/ETI+gBj225L5ka3ZuvHrQwNzDu8WsyvS7mainKUDwxtyD1hnPZhfgLBSjfzvnhw/K4vP9AoijoaXkAF4vPscHVFVSiyQiVgXKAYFKJR+6mNtsOZQ8OmXgaP06aBn8sJZm2cy2PA6fFqpTgGSAd5yI=
+	t=1746087186; cv=none; b=CSrvTz8CFck0m31qIm+6JvMYGi/6o6j1kEEdG7ogawADLux3HMvR05BH914mgUPp38/28dFk1F1ljN88MHfQQLsjXsYoG0+8k+GBy5DQvFzRVdM8L1Rc1K6C2lYMc8K6VETZRiE/rGNIZJ8F8H4I9rVYtuuS9RKUfDFoKoJZvTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746071447; c=relaxed/simple;
-	bh=2dAVFnoSWIkTOqjHfYENLB8pzU1NdvuV0xq8Gvel9G0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Gejz3FMwUc2p2UZR71bpqU/CBKKqaT6zjLpC7ulf516MN132iNFaMWxhZSNUHsagWYs/unM7K5c/L+QlmYDdoIkuk2UHL9uQBanug0/MJFRuyidb+kJBBaeFgY1HYc8+Y5pXZl3NN5LpfCiFVTxIfggX5mGRciytZag/KR7ndls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IQWibwIc; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1746087186; c=relaxed/simple;
+	bh=Kfet0z5MYBG5NdDYWAJeCq0jk5SsurFJ/QDiffzvnPo=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=jHF/Wr1Z6MmnlA2Qv1MwaI1SZ7hiPaC1/CCT9AjbNl4P8rAoSVECFr1JVZmU46QsQyzKEo2iigZOC2cfR80V5+WYSdropbQCf7CHjKeMBVCMuOlFdaD6x2ni6e32WIX7kGUiX/RBQwQSf8Leh3hv+eJnFhzg3SufpRCh78uSPLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=QjSOFdsF; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=R/eqYwVv; arc=none smtp.client-ip=202.12.124.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IQWibwIc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1746071444;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xu+Kf0+DFCNXRO2ndZGA8xUx9TD/werA57XUeiFDww0=;
-	b=IQWibwIcdfF/tz6XEWtD69Y1E/jrvkb0eq6SmtQgm9vHB40Dx3kTY6bgi/7VmTXnLwLtdX
-	O5EnP7FCTnfsFxF38MrkTFgB0XNUmimQMjEia4geXwnjptjzG9yGqQ6ns15Jej8fjhOHhY
-	Lagw9xCQvOAg30I/L/5WGh3xgWRkNFU=
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
- [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-623-OMflJPWFNaaVG1xyKUgnkw-1; Wed, 30 Apr 2025 23:50:41 -0400
-X-MC-Unique: OMflJPWFNaaVG1xyKUgnkw-1
-X-Mimecast-MFC-AGG-ID: OMflJPWFNaaVG1xyKUgnkw_1746071441
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-7401179b06fso538964b3a.1
-        for <linux-coco@lists.linux.dev>; Wed, 30 Apr 2025 20:50:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746071441; x=1746676241;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xu+Kf0+DFCNXRO2ndZGA8xUx9TD/werA57XUeiFDww0=;
-        b=HNlaW7UpakhFZ7SzCChMO6UzogY6Q6xuscb9dI0ne91BJ7yqlc0/HeLRgQlL2xoM4u
-         FvuLQjjDGAkI6xp1/oCUxPKJvwQMcu2NXVoQBb+JHCpLcGMTQQYf7eh8juwsFrGyabZU
-         C8zpoB+mybL5WdyDdWa1ztXBJ6q+FI/Duo0ggepL09QdcH3Jw/G2xV//9VJBnC2XbBp+
-         w1yrIhCoLCLU2Oh47xej606VPjcwKqQaxcJ4fUyig26CKRDU4v7JgM3AuIuSpQJAmEvI
-         grJuQV3nSbAg4VC66uNnojz6IYWYfRhRf02tM6CzLppdd5fc85H/Hagut/lCe6pe9vE+
-         /EbA==
-X-Forwarded-Encrypted: i=1; AJvYcCXuIJcxvs44zFZGFlwQ66FI5BD82RtjewdF6ffC75KlwDlRKi7HsEn541ytnh7Ca1CJ8I/XSpv/lhAC@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx3e1rdDuDCtgyYBEfVmn0mIbXgi8bWhL2k8KSrJ9NLzhI7fFeS
-	PTAe0s9f6/iwPqYRPy4naVGxz6gLVeA8n/6u/yIgbcc73j6iBfVagwdlpg4/7PzS5722v9PV1KA
-	2s44b3Zz+8VwYItCzF3hzlvnW1ZS0I/zJduTZCejo33oCnp/iQKAeMkC/wq0=
-X-Gm-Gg: ASbGncsBj1DbPbzZmxDm9i85MvYl/zSnQODy3AaAC4aZ5CwnLZgHyw0LRabD682db7r
-	CYWl+tUi/j78Vfkfavm/gVYAnKQj+WDSx2NxC06ogFJf0uLWI13bMYx1HAA4+2aSPUR7rKw11Tb
-	1TL2mc3CE81eypVm86REuWppiyvWIKW9yDcEdLIwy+EVL78lNTUX2O4onlxQb3UyQOUGzuz4RVc
-	80C1LXY4XouMSAjSOAJwvCh1Vx3h8AL6WnfsmbAZXdqet02CqsyUBwBEkkYPtYxERQABzwx4cTP
-	ptUup2bj7CKc
-X-Received: by 2002:a05:6a00:2da3:b0:736:a82a:58ad with SMTP id d2e1a72fcca58-7404923a33dmr1298201b3a.15.1746071440950;
-        Wed, 30 Apr 2025 20:50:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF+2TUVWiAQRNStfJKlXXyrEy8i+Rkh7KlouLhbtQWVsBfOICdI6sUfx8nwE+QueIaBYA6F7Q==
-X-Received: by 2002:a05:6a00:2da3:b0:736:a82a:58ad with SMTP id d2e1a72fcca58-7404923a33dmr1298168b3a.15.1746071440658;
-        Wed, 30 Apr 2025 20:50:40 -0700 (PDT)
-Received: from [192.168.68.51] ([180.233.125.65])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74039a2e5ccsm2541439b3a.110.2025.04.30.20.50.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Apr 2025 20:50:40 -0700 (PDT)
-Message-ID: <87f40de1-dd3b-43e2-aa67-8d7b6288acf8@redhat.com>
-Date: Thu, 1 May 2025 13:50:31 +1000
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="QjSOFdsF";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="R/eqYwVv"
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfout.stl.internal (Postfix) with ESMTP id 43019114019B;
+	Thu,  1 May 2025 04:13:02 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-05.internal (MEProxy); Thu, 01 May 2025 04:13:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1746087182;
+	 x=1746173582; bh=S95BdOMfTwyiLY6VbmcL7u8I6TTnOATgFWpbyEqEii0=; b=
+	QjSOFdsFtwgrDNEihfkCqe1vRTVgycVfSeS5YSWFcULigc1N4xJa5Bqdy/kS0tbl
+	d2ZRsxK7j2Pp4h6LxNRR7MRLEbrBRQ5C//Ydc5VgTryPUsWwubNvHPUBzTq2/fOP
+	CXEglDih725tbcsebk47lrsQrtvuQDTobhR3mMisk6mKZBk6VfOPt/Vn2Pe9P58i
+	f/hIifzIP/7fl2TPiZ6vQlvEIkd68QrrqZdnqeNpDVz3hcefWtJ1l+Ud4b0s0Ahc
+	ANTx8CsNYfH4UGd2FjKDPzD2q319ZEp0gC2w+vhd7MPKsQA22k1pqbqCCiq4wIr0
+	Be+xhdoeFlJ/3D7J3PiGfg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1746087182; x=
+	1746173582; bh=S95BdOMfTwyiLY6VbmcL7u8I6TTnOATgFWpbyEqEii0=; b=R
+	/eqYwVvBWqJ8DFsMkLYVqJVmtcFezkKXdFNqRAv1zDna2aNaAqCX5r3UtBzQ+zUq
+	G5SP0PBwoC39b/tIB4h433mVwR+MJSn11CwG31RVCushl67Ym1/n1bBz6r6AB+nI
+	fnQL1lIFPSPEi6Znf975eyliEqGd9MVMdYEvgjH5i32CTqHUy89N9mBzgRgVimaH
+	KgQiWU+wgMiME7hg+iEVVQsX7T3eMA8LYwD1/IaBgTciUcPDKYKwQFdv2Amd3x2T
+	QgihJJ37BMCLV9IzaUcwWPOmmgCzf51a6Z65m2uBO7m0V9K+FIud5L+p+ADepm2l
+	j4bJi97tF0PEU6GMH1i0w==
+X-ME-Sender: <xms:DC0TaH6ngWN6JZS6gGuK0AANkUPugzcJmSCX0hTEfjJG0VF4RoWAYg>
+    <xme:DC0TaM6gzc4V_f641YQvPBZ0NJYu5-74f7tkJOqn3fuNa63PfhXXsU6UavT2HecKC
+    PL8lPYp0Dj8iZ1-H7M>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvieeltdeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
+    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
+    gsrdguvgeqnecuggftrfgrthhtvghrnhepfefhheetffduvdfgieeghfejtedvkeetkeej
+    feekkeelffejteevvdeghffhiefhnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenuc
+    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnuges
+    rghrnhgusgdruggvpdhnsggprhgtphhtthhopedugedpmhhouggvpehsmhhtphhouhhtpd
+    hrtghpthhtohepshhuiihukhhirdhpohhulhhoshgvsegrrhhmrdgtohhmpdhrtghpthht
+    ohepmhhpvgesvghllhgvrhhmrghnrdhiugdrrghupdhrtghpthhtohepvhgrnhhnrghpuh
+    hrvhgvsehgohhoghhlvgdrtghomhdprhgtphhtthhopegurghnrdhjrdifihhllhhirghm
+    shesihhnthgvlhdrtghomhdprhgtphhtthhopehkvggvsheskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtohepmhhinhhgoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgrvhgv
+    vghnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgtohhm
+X-ME-Proxy: <xmx:DS0TaOfjTqWZkjqa69-IckPxx5zjchm-GxVtsJjI2hCnP_uTryPBeg>
+    <xmx:DS0TaIL_L_MTfQYrOE0IrWlgNvQc6BZq3J20Wxik08MXyIcrwrrv3w>
+    <xmx:DS0TaLJaGi9VPl3W-1wLCAMsg3bVxTnZdMZh1TVWEz8ffzDXY6ZPWg>
+    <xmx:DS0TaBwmszRpi7bGyQ0H42manJvxf_SgEhB92Ef8VUOXXCm5qrSuBA>
+    <xmx:Di0TaHNvcVB7zAiBMbkcfei5J3vRkpPu1zc-JovISdstx-0-iW1xr1WD>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id E35D72220073; Thu,  1 May 2025 04:13:00 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 38/43] arm64: RME: Configure max SVE vector length for
- a Realm
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-References: <20250416134208.383984-1-steven.price@arm.com>
- <20250416134208.383984-39-steven.price@arm.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20250416134208.383984-39-steven.price@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: k7h7MVqaqTvnyHPMUuZ99c4rVWAHE6jwc4hBuh0ktEw_1746071441
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-ThreadId: T3ad4a30312e33025
+Date: Thu, 01 May 2025 10:12:06 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Dan Williams" <dan.j.williams@intel.com>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Ingo Molnar" <mingo@kernel.org>, "Kees Cook" <kees@kernel.org>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ "Michael Ellerman" <mpe@ellerman.id.au>, "Naveen N Rao" <naveen@kernel.org>,
+ "Nikolay Borisov" <nik.borisov@suse.com>, stable@vger.kernel.org,
+ "Suzuki K Poulose" <suzuki.poulose@arm.com>,
+ "Vishal Annapurve" <vannapurve@google.com>, x86@kernel.org,
+ linux-coco@lists.linux.dev
+Message-Id: <b48aac71-5148-4be2-b95f-ec60e4f490bd@app.fastmail.com>
+In-Reply-To: <6812c6cda0575_1d6a294d7@dwillia2-xfh.jf.intel.com.notmuch>
+References: <20250430024622.1134277-1-dan.j.williams@intel.com>
+ <20250430024622.1134277-3-dan.j.williams@intel.com>
+ <0bdb1876-0cb3-4632-910b-2dc191902e3e@app.fastmail.com>
+ <6812c6cda0575_1d6a294d7@dwillia2-xfh.jf.intel.com.notmuch>
+Subject: Re: [PATCH v5] x86/devmem: Drop /dev/mem access for confidential guests
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
-On 4/16/25 11:42 PM, Steven Price wrote:
-> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> 
-> Obtain the max vector length configured by userspace on the vCPUs, and
-> write it into the Realm parameters. By default the vCPU is configured
-> with the max vector length reported by RMM, and userspace can reduce it
-> with a write to KVM_REG_ARM64_SVE_VLS.
-> 
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v6:
->   * Rename max_vl/realm_max_vl to vl/last_vl - there is nothing "maximum"
->     about them, we're just checking that all realms have the same vector
->     length
-> ---
->   arch/arm64/kvm/guest.c |  3 ++-
->   arch/arm64/kvm/rme.c   | 42 ++++++++++++++++++++++++++++++++++++++++++
->   2 files changed, 44 insertions(+), 1 deletion(-)
-> 
+On Thu, May 1, 2025, at 02:56, Dan Williams wrote:
+> Arnd Bergmann wrote:
+>> On Wed, Apr 30, 2025, at 04:46, Dan Williams wrote:
+>> > While there is an existing mitigation to simulate and redirect access to
+>> > the BIOS data area with STRICT_DEVMEM=y, it is insufficient.
+>> > Specifically, STRICT_DEVMEM=y traps read(2) access to the BIOS data
+>> > area, and returns a zeroed buffer.  However, it turns out the kernel
+>> > fails to enforce the same via mmap(2), and a direct mapping is
+>> > established. This is a hole, and unfortunately userspace has learned to
+>> > exploit it [2].
+>> 
+>> As far as I can tell, this was a deliberate design choice in
+>> commit a4866aa81251 ("mm: Tighten x86 /dev/mem with zeroing reads"),
+>> which did not try to forbid it completely but mainly avoids triggering
+>> the hardened usercopy check.
+>
+> I would say not a "design choice", but rather a known leftover hole that
+> nobody has had the initiative to close since 2022.
+>
+> https://lore.kernel.org/all/202204071526.37364B5E3@keescook/
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
+Ok, I see.
 
+>> The existing rules that I can see are:
+>> 
+>> - readl/write is only allowed on actual (lowmem) RAM, not
+>>   on MMIO registers, enforced by valid_phys_addr_range()
+>> - with STRICT_DEVMEM, read/write is disallowed on both
+>>   RAM and MMIO
+>> - an an exception, x86 additionally allows read/write on the
+>>   low 1MB MMIO region and 32-bit PCI MMIO BAR space, with
+>>   a custom xlate_dev_mem_ptr() that calls either memremap()
+>>   or ioremap() on the physical address.
+>> - as another exception from that, the low 1MB on x86 behaves
+>>   like /dev/zero for memory pages when STRICT_DEVMEM
+>>   is set, and ignores conflicting drivers for MMIO registers
+>> - The PowerPC sys_rtas syscall has another exception in
+>>   order to ignore the STRICT_DEVMEM and write to a portion
+>>   of kernel memory to talk to firmware
+>> - on the mmap() side, x86 has another special to allow
+>>   mapping RAM in the first 1MB despite STRICT_DEVMEM
+>> 
+>> How about changing x86 to work more like the others and
+>> removing the special cases for the first 1MB and for the
+>> 32-bit PCI BAR space? If Xorg, and dmidecode are able to
+>> do this differently, maybe the hacks can just go away, or
+>> be guarded by a Kconfig option that is mutually exclusive
+>> with ARCH_HAS_CC_PLATFORM?
+>
+> I see the 1MB MMIO special-case in x86::devmem_is_allowed(), but where
+> is the 32-bit PCI BAR space workaround? Just to make sure I am not
+> missing a detail here.
+
+The main difference on x86 is the xlate_dev_mem_ptr() function
+that does an extra memremap() of the physical address, everything
+else just does a phys_to_virt(). The only other architecture
+with an xlate_dev_mem_ptr() implementation is s390, which uses
+it to work around the first physical page being different per CPU.
+ia64 had something similar to x86 but is gone now.
+
+The other bit of the puzzle is that memremap() on x86 silently
+falls back to ioremap() for non-RAM pages. This was originally
+added in 2008 commit e045fb2a988a ("x86: PAT avoid aliasing in
+/dev/mem read/write"). I'm not sure what happened exactly, but
+I suspect that the low 1MB was already mapped at the time
+through a cached mapping, while the PCI MMIO hole was perhaps
+not mapped. On x86-32, the 32-bit PCI BAR area should not
+be included here (since it's above high_memory), but the 16MB
+hold may be.
+
+The address is first checked by valid_phys_addr_range(), which
+is defined in an architecture specific way, so it's possible that
+there are additional architectures on which that includes MMIO
+ranges that can be accesses through phys_to_virt(), but I could
+not find any.
+
+The default valid_phys_addr_range() just checks against
+'high_memory' to see whether the address is in the linear
+map. This works on all architectures that don't have holes
+in the memory map for MMIO (most of them) or that don't
+just ioremap() all MMIO space into the hole (most of the rest).
+
+arm64 and loongarch check memblock allow known RAM both in
+the linear map and outside of it, while arm32 and sh explicitly
+exclude addresses before PHYS_OFFSET on machines where RAM
+does not start at address 0.
+
+       Arnd
