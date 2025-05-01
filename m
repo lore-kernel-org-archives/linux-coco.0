@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DA91EB5D0
-	for <linux-coco@lists.linux.dev>; Thu,  1 May 2025 17:36:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85415218AB9
+	for <linux-coco@lists.linux.dev>; Thu,  1 May 2025 17:51:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746120985; cv=none; b=r1eHos1bpPJFtkn4QxZKQQytBd3xtrNawC1tuDrSIyyMa+DM3w4UTAR8h5jyO3n0+i5yJbumxKbQtP4mEtjdUSqlKrdrSBgPBggjyEeDnRuebqBgUEWbTB5zXjoRATF7LK7+VV4LzQIKpNXVQqHx+aL8q7kX/NqDTIbZogfNgZY=
+	t=1746121867; cv=none; b=shQUHzGnVeCLOV/i5V7Ho1HaeqtJk0IjwUH9zl1UFWU7jyfHjU6GLavgycefHNg5vWm3xnKZ7gL7AkUfhZnqMiaRMzurDgjpMUwoiurWhbMi4vgaJ332w4uvD/5rWhVyD6fdr8rqm+Ym/P4k1zZzFY/v8BoyvxLY+aS78CoGk6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746120985; c=relaxed/simple;
-	bh=GVQZVmIPjFTL2nBzj0YFPfMMFlfwszWPp7tldmRsEGQ=;
+	s=arc-20240116; t=1746121867; c=relaxed/simple;
+	bh=wyx9LuFLmRr/KpJH2cSuuH5H5luZ70m61Hsbna1NbVE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WmwchamcHpKIiroA9TzmY46/dBQGDzvCvxVopcgqiI48XSg/kbKyhOcrVhquCn3jKj4lFJlfzsUMYra/aMHUoVxdBIe7BHsO3nEXDs3YmpU59xUzKfN3npk96eAmXjnYBGNXEMK5RWdeRjdBnv72RZOy6WAu9DrTLqaoYVR0Qbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q3bd04eA; arc=none smtp.client-ip=192.198.163.15
+	 In-Reply-To:Content-Type; b=ifws8235r0rmLwaNGIN4fkeXu1vaoV0+8Cxw00tdTkICEtPNp/g+AGSJEchOtEW3msineYt78T9qz6P3obLshfptGPiA+wKSfdJiQbhqoOGJNYDVJZsy1/WS9+PEyF9ghRnG7IsiXupBGcIWmbFW0yqi3fC7SypyWTfMcLZrUSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kOagf3Kd; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q3bd04eA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kOagf3Kd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746120983; x=1777656983;
+  t=1746121866; x=1777657866;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=GVQZVmIPjFTL2nBzj0YFPfMMFlfwszWPp7tldmRsEGQ=;
-  b=Q3bd04eAmJ617zEPbyA3DouJLItIGMOd+t5Zkkt0KauyD+DknZE3J8z5
-   xfql0T0y+GckXRKQK/m9H5T2Dctd7PUTFxDMngeJVweyVOpWMz2/uVO5P
-   z0FZ0w+qlKUPoWF73Y4AJb/B8HASg++MNrisWXe1L2Xw2zRL9vO9lO9xB
-   RyGtf0V6qpxhZ8xIKAxMfVXf9AgzT+BhV25Q96DHD+P2L/8kRwTJv3t/+
-   g4ejv6FyFFuC37LSx+zZ9f2GNg+mXN+CbTy39zWJb0cxOysWR2NTHg9bN
-   XoJ+Vc7iDmYjpN3Fe3ZipJQ5Ne7iSSEnQ9gFSEwWMNO11wEaKkYJKCohf
+  bh=wyx9LuFLmRr/KpJH2cSuuH5H5luZ70m61Hsbna1NbVE=;
+  b=kOagf3KdMrrQgJiiqr2JRGyeJpgmJSgjBETeQGgsaibBwsWJ1FH3jaVT
+   91RdenFQr7w2kysWL+VDRUbCZG6pzcCUVSJl9dG3YjlYA2+tA7flsw+Qi
+   jZ9WhEIryTFhdGpJoUFF+E+q4c1z46JUe0ReixGK9eogJ0HIYPIb6Zwdp
+   NKyeh+0PZWuukHTOBO7YkuSyp29r/7P5puJo65LYGpYwk7lIZUAsVJVe/
+   JocVBb7Jsv3ftv16RmM3ydpEi1G6jKrkgzLAbEE0PXao57xdqbDl6kuka
+   33B7OlblAr5A4XUiDcCL02IqomGHPPU0AUuwbwWUJNyormq4Ut2En3Wbp
    g==;
-X-CSE-ConnectionGUID: RXbK8rlER3qwzz7MKwKDyQ==
-X-CSE-MsgGUID: g3sKb45uR26jSmHF0ESeMA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11420"; a="47941453"
+X-CSE-ConnectionGUID: F4ECH9CkTE+02ZdSWxQSWQ==
+X-CSE-MsgGUID: Yh+BYoWySryJFgffBc7qDA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11420"; a="47813005"
 X-IronPort-AV: E=Sophos;i="6.15,254,1739865600"; 
-   d="scan'208";a="47941453"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 May 2025 10:36:22 -0700
-X-CSE-ConnectionGUID: VXKijSaBSH2ahV+mBkcspg==
-X-CSE-MsgGUID: Szj+zFtLQzGAyI3RuIx+9g==
+   d="scan'208";a="47813005"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 May 2025 10:51:02 -0700
+X-CSE-ConnectionGUID: wZ2WwlwVRXKpT5ZdiSfHRw==
+X-CSE-MsgGUID: 55UKEPIuRQKn4NsZeoK4bQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,254,1739865600"; 
-   d="scan'208";a="139251989"
+   d="scan'208";a="139577756"
 Received: from rfrazer-mobl3.amr.corp.intel.com (HELO [10.124.220.24]) ([10.124.220.24])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 May 2025 10:36:21 -0700
-Message-ID: <13b76cda-4fa9-4a00-a923-6a842275e555@intel.com>
-Date: Thu, 1 May 2025 10:36:18 -0700
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 May 2025 10:50:59 -0700
+Message-ID: <14b13fe4-7a0d-4ddb-92e9-bbe557b5bc15@intel.com>
+Date: Thu, 1 May 2025 10:50:57 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +52,7 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/5] x86/tdx: tdx_mcall_get_report0: Return -EBUSY on
- TDCALL_OPERAND_BUSY error
+Subject: Re: [PATCH v5 3/5] x86/tdx: Add tdx_mcall_extend_rtmr() interface
 To: Cedric Xing <cedric.xing@intel.com>,
  Dan Williams <dan.j.williams@intel.com>,
  "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
@@ -69,9 +68,9 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
  Mikko Ylinen <mikko.ylinen@linux.intel.com>,
  Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
 References: <20250424-tdx-rtmr-v5-0-4fe28ddf85d4@intel.com>
- <20250424-tdx-rtmr-v5-4-4fe28ddf85d4@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
+ <20250424-tdx-rtmr-v5-3-4fe28ddf85d4@intel.com>
 Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
  oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
@@ -115,15 +114,27 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20250424-tdx-rtmr-v5-4-4fe28ddf85d4@intel.com>
+In-Reply-To: <20250424-tdx-rtmr-v5-3-4fe28ddf85d4@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 4/24/25 13:12, Cedric Xing wrote:
-> Return `-EBUSY` from tdx_mcall_get_report0() when `TDG.MR.REPORT` returns
-> `TDCALL_OPERAND_BUSY`. This enables the caller to retry obtaining a
-> TDREPORT later if another VCPU is extending an RTMR concurrently.
-I would appreciate if someone can go back and look at centralizing the
-TDX error code => errno conversions. But that doesn't need to happen now.
+> +	ret = __tdcall(TDG_MR_RTMR_EXTEND, &args);
+> +	if (ret) {
+> +		if (TDCALL_RETURN_CODE(ret) == TDCALL_INVALID_OPERAND)
+> +			return -ENXIO;
+> +		if (TDCALL_RETURN_CODE(ret) == TDCALL_OPERAND_BUSY)
+> +			return -EBUSY;
+> +		return -EIO;
+> +	}
+This a pretty ugly switch statement. ;)
 
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+I assume there are more of these around, but it would be _nice_ if these
+could eventually look like:
+
+	...
+	err = __tdcall(...);
+
+	return tdx_err_to_errno(err);
+
+
