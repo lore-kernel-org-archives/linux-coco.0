@@ -1,193 +1,212 @@
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2063.outbound.protection.outlook.com [40.107.92.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57831E25E8
-	for <linux-coco@lists.linux.dev>; Thu,  1 May 2025 08:13:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746087186; cv=none; b=CSrvTz8CFck0m31qIm+6JvMYGi/6o6j1kEEdG7ogawADLux3HMvR05BH914mgUPp38/28dFk1F1ljN88MHfQQLsjXsYoG0+8k+GBy5DQvFzRVdM8L1Rc1K6C2lYMc8K6VETZRiE/rGNIZJ8F8H4I9rVYtuuS9RKUfDFoKoJZvTw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746087186; c=relaxed/simple;
-	bh=Kfet0z5MYBG5NdDYWAJeCq0jk5SsurFJ/QDiffzvnPo=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=jHF/Wr1Z6MmnlA2Qv1MwaI1SZ7hiPaC1/CCT9AjbNl4P8rAoSVECFr1JVZmU46QsQyzKEo2iigZOC2cfR80V5+WYSdropbQCf7CHjKeMBVCMuOlFdaD6x2ni6e32WIX7kGUiX/RBQwQSf8Leh3hv+eJnFhzg3SufpRCh78uSPLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=QjSOFdsF; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=R/eqYwVv; arc=none smtp.client-ip=202.12.124.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF8C1A316E
+	for <linux-coco@lists.linux.dev>; Thu,  1 May 2025 13:30:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746106216; cv=fail; b=sKMC3HNb4fB3iP2E8vEmmFJvIBJR95pODH6/btTSs/lmcm8GHL9/mGI2l0h1xz8dnMy+CnOSaFaqfTE8uD6Pksk9uGeq/iKelqkNZ/Cht3NO0xpW9WlDsjT8F98UuJ5kqY94LqzMelq1o20uDiZvePfxBSZvkODhJ4c549JQVM8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746106216; c=relaxed/simple;
+	bh=W+ma64vi0m50kSiJS7RDHWiARiHBaj1AE8lLq+gYXlE=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=vCKRYA+6gctn1EWBVO15Rax1YCUJyDI5CYqfTAdDM+Ar6bQ2MBYELwbkvBt6v+7s8LnG60oevB0D17Y/43is/I8la/tfpI65iwFjTh8U95gq5T7LZQX9PTGN7sRd70GS+qsHKw2LDNSYv5nBPUwY71P4crci1MpYO0OwtHJrRS0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ra2twYCW; arc=fail smtp.client-ip=40.107.92.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="QjSOFdsF";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="R/eqYwVv"
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id 43019114019B;
-	Thu,  1 May 2025 04:13:02 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-05.internal (MEProxy); Thu, 01 May 2025 04:13:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1746087182;
-	 x=1746173582; bh=S95BdOMfTwyiLY6VbmcL7u8I6TTnOATgFWpbyEqEii0=; b=
-	QjSOFdsFtwgrDNEihfkCqe1vRTVgycVfSeS5YSWFcULigc1N4xJa5Bqdy/kS0tbl
-	d2ZRsxK7j2Pp4h6LxNRR7MRLEbrBRQ5C//Ydc5VgTryPUsWwubNvHPUBzTq2/fOP
-	CXEglDih725tbcsebk47lrsQrtvuQDTobhR3mMisk6mKZBk6VfOPt/Vn2Pe9P58i
-	f/hIifzIP/7fl2TPiZ6vQlvEIkd68QrrqZdnqeNpDVz3hcefWtJ1l+Ud4b0s0Ahc
-	ANTx8CsNYfH4UGd2FjKDPzD2q319ZEp0gC2w+vhd7MPKsQA22k1pqbqCCiq4wIr0
-	Be+xhdoeFlJ/3D7J3PiGfg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1746087182; x=
-	1746173582; bh=S95BdOMfTwyiLY6VbmcL7u8I6TTnOATgFWpbyEqEii0=; b=R
-	/eqYwVvBWqJ8DFsMkLYVqJVmtcFezkKXdFNqRAv1zDna2aNaAqCX5r3UtBzQ+zUq
-	G5SP0PBwoC39b/tIB4h433mVwR+MJSn11CwG31RVCushl67Ym1/n1bBz6r6AB+nI
-	fnQL1lIFPSPEi6Znf975eyliEqGd9MVMdYEvgjH5i32CTqHUy89N9mBzgRgVimaH
-	KgQiWU+wgMiME7hg+iEVVQsX7T3eMA8LYwD1/IaBgTciUcPDKYKwQFdv2Amd3x2T
-	QgihJJ37BMCLV9IzaUcwWPOmmgCzf51a6Z65m2uBO7m0V9K+FIud5L+p+ADepm2l
-	j4bJi97tF0PEU6GMH1i0w==
-X-ME-Sender: <xms:DC0TaH6ngWN6JZS6gGuK0AANkUPugzcJmSCX0hTEfjJG0VF4RoWAYg>
-    <xme:DC0TaM6gzc4V_f641YQvPBZ0NJYu5-74f7tkJOqn3fuNa63PfhXXsU6UavT2HecKC
-    PL8lPYp0Dj8iZ1-H7M>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvieeltdeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
-    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
-    gsrdguvgeqnecuggftrfgrthhtvghrnhepfefhheetffduvdfgieeghfejtedvkeetkeej
-    feekkeelffejteevvdeghffhiefhnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenuc
-    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnuges
-    rghrnhgusgdruggvpdhnsggprhgtphhtthhopedugedpmhhouggvpehsmhhtphhouhhtpd
-    hrtghpthhtohepshhuiihukhhirdhpohhulhhoshgvsegrrhhmrdgtohhmpdhrtghpthht
-    ohepmhhpvgesvghllhgvrhhmrghnrdhiugdrrghupdhrtghpthhtohepvhgrnhhnrghpuh
-    hrvhgvsehgohhoghhlvgdrtghomhdprhgtphhtthhopegurghnrdhjrdifihhllhhirghm
-    shesihhnthgvlhdrtghomhdprhgtphhtthhopehkvggvsheskhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtohepmhhinhhgoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgrvhgv
-    vghnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:DS0TaOfjTqWZkjqa69-IckPxx5zjchm-GxVtsJjI2hCnP_uTryPBeg>
-    <xmx:DS0TaIL_L_MTfQYrOE0IrWlgNvQc6BZq3J20Wxik08MXyIcrwrrv3w>
-    <xmx:DS0TaLJaGi9VPl3W-1wLCAMsg3bVxTnZdMZh1TVWEz8ffzDXY6ZPWg>
-    <xmx:DS0TaBwmszRpi7bGyQ0H42manJvxf_SgEhB92Ef8VUOXXCm5qrSuBA>
-    <xmx:Di0TaHNvcVB7zAiBMbkcfei5J3vRkpPu1zc-JovISdstx-0-iW1xr1WD>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id E35D72220073; Thu,  1 May 2025 04:13:00 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ra2twYCW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rNFCDoCieCRExs1KY/3B8LAL0TDZL6Zl7ROxe5jPeKNQy/lt9z8sW8ylCfrbiZpua724ZrTzjbyFSVhadnpMR2GGZssEGfQcd3KaUCw2lGzyfqDTCM0BqOF0zIaJ8VyoTwQFGVYOUq/1QJSzoHhsIAEMb9N0MP7CCY/ZAU/ohzcVTqM/7GpAQKtxBkzNInBUdi63Y2vXh1WCIG68HMcSpqmgC+JKK1EBmgzo3VelUxYaUoIiwWliUla9jHxd+HmRnXzghPsE+j96/RGWhP9oKz6sngZdE6ziTK2DhYW9/od115oeaojhvd3S2lxCM6LEAi3y2F9IXOKNinYnoVWjdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1NseGMW6YHZumRsu/ROE0vbLOHt7tZNwPE0voLa45rY=;
+ b=bY9mEK0SpzqiwYrRP1lZwPsMDsrhS86qND1ZYp80THzczF86xKAgwk+gVH9jHNat+rIIAGK8jFVD4OQrnLcSi4TxkHW7kBk2fdVRJnb6Fml1fR6vOd9ZS5tgNtrN5PNI0t0pkh1Ro4hIHGVzs326ciLX0leiX+NDC1jgxYwlte6Igi1YP9YvCzW3C6qPq2hLt2ndl65GEVOzNBJz7tJq1NEGU7yFtbJy+RAymjZWyoTeskaqSPhAMd2FfO4VEPIHIYNgixqaGg76U6BaYe/pHoLamxiwIuof/nEU+jMMuyLeswb8U/YTTqh5MbVrLULSIYrNMC5AiMxsRFNjcSEvEQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1NseGMW6YHZumRsu/ROE0vbLOHt7tZNwPE0voLa45rY=;
+ b=ra2twYCWrb6VvbSIkgAboZFd+wvr8o2J8N6HT8SKq3s+5YuyXqa3ML5z3E+ChUiT5wBiGEX1S1K9WQLEDoQDYaui3aLMUZNFFgZpL0bCvNpw8dKUA8aptj4jy6DBlnrUWrJq9SJ8RNKxLca9yiXnHLpvthZMLhVDzkS4uoOiv9w=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
+ by MW4PR12MB5627.namprd12.prod.outlook.com (2603:10b6:303:16a::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.20; Thu, 1 May
+ 2025 13:30:06 +0000
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e%5]) with mapi id 15.20.8699.022; Thu, 1 May 2025
+ 13:30:05 +0000
+Message-ID: <e7a0cc72-388a-7fa4-601f-371aea369204@amd.com>
+Date: Thu, 1 May 2025 08:29:59 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v4] x86/sev: Don't touch VMSA pages during kdump of SNP
+ guest memory
+To: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@linutronix.de,
+ mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org, bp@alien8.de,
+ hpa@zytor.com
+Cc: kees@kernel.org, michael.roth@amd.com, nikunj@amd.com, seanjc@google.com,
+ ardb@kernel.org, gustavoars@kernel.org, sgarzare@redhat.com,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org, kexec@lists.infradead.org,
+ linux-coco@lists.linux.dev
+References: <20250430215730.369777-1-Ashish.Kalra@amd.com>
+Content-Language: en-US
+From: Tom Lendacky <thomas.lendacky@amd.com>
+In-Reply-To: <20250430215730.369777-1-Ashish.Kalra@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN4PR0501CA0109.namprd05.prod.outlook.com
+ (2603:10b6:803:42::26) To DM4PR12MB5070.namprd12.prod.outlook.com
+ (2603:10b6:5:389::22)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: T3ad4a30312e33025
-Date: Thu, 01 May 2025 10:12:06 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Dan Williams" <dan.j.williams@intel.com>,
- "Dave Hansen" <dave.hansen@linux.intel.com>
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Ingo Molnar" <mingo@kernel.org>, "Kees Cook" <kees@kernel.org>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- "Michael Ellerman" <mpe@ellerman.id.au>, "Naveen N Rao" <naveen@kernel.org>,
- "Nikolay Borisov" <nik.borisov@suse.com>, stable@vger.kernel.org,
- "Suzuki K Poulose" <suzuki.poulose@arm.com>,
- "Vishal Annapurve" <vannapurve@google.com>, x86@kernel.org,
- linux-coco@lists.linux.dev
-Message-Id: <b48aac71-5148-4be2-b95f-ec60e4f490bd@app.fastmail.com>
-In-Reply-To: <6812c6cda0575_1d6a294d7@dwillia2-xfh.jf.intel.com.notmuch>
-References: <20250430024622.1134277-1-dan.j.williams@intel.com>
- <20250430024622.1134277-3-dan.j.williams@intel.com>
- <0bdb1876-0cb3-4632-910b-2dc191902e3e@app.fastmail.com>
- <6812c6cda0575_1d6a294d7@dwillia2-xfh.jf.intel.com.notmuch>
-Subject: Re: [PATCH v5] x86/devmem: Drop /dev/mem access for confidential guests
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|MW4PR12MB5627:EE_
+X-MS-Office365-Filtering-Correlation-Id: a6600eb7-e72a-4596-716c-08dd88b44868
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZlRKMy9iNGtncU55U3JpM20wVVBnTmtycm1LZTMwNCtWN3hFUWliWjZNeUxt?=
+ =?utf-8?B?QUFnUVUwVy9EcjRXRXA1TjNXNUtPRnpnQ3pQWnpHY1BBUmlvb2IyNVNDVWZT?=
+ =?utf-8?B?UjhMQkhLWHlMMGNtYU8ramhjd05zcmF2aWlSeVQzTEQ4cU0wRitPMm9kd0tJ?=
+ =?utf-8?B?M3pLVzhlcmlHRmhRSzBPY0NTOU8ydGFHZUdRTC9pTXpiejBKR3JLMG0wSTJo?=
+ =?utf-8?B?cmlHZ1VoOEpwUSsxa2UxQVUzYm52WXA1QUhGcmU5ek94RkNyOEVYTGc0YldL?=
+ =?utf-8?B?UjNzNWtKTEtwdGtEMVA4WnhJaEVod1hlUVl4TlpCNWd3L0dTRTA3cWFOSm5l?=
+ =?utf-8?B?a0haMmVsbmJ1MGVQc3REZUROQkdqT3lBQ0ZmVjZZYlNBMDlLRzVZL3hoRlho?=
+ =?utf-8?B?SDhLalFKZzRvVXQ5eGR6V1dCUTgxdEJpS01Tbm5jc1FyU1ZDQzFwb0FVSFhM?=
+ =?utf-8?B?dkwxMUIwKzJMV1BEeUZBeWIrNkt0ZUU3OTJTdHdXYTJkUzlZSTk1dWJNVjZ5?=
+ =?utf-8?B?Mkl5VU1Vb1ZMRTFBaGVzbStpSkQ1K0ZoMytiYWptYTdUcGRWMEtra214QXNJ?=
+ =?utf-8?B?NUFXaVovYkc4UG5kbVVjaG9CbE5SYXBlYUdYTE1vNEVFNzNCQ0ROeTdRMm9W?=
+ =?utf-8?B?ZExIN01nbXlmajFQTVo2bE9uUzJHU0xFMkZLZU9nQjVIU2pWSEFjK1Fjck5C?=
+ =?utf-8?B?QVFOOThvT29YdGc0VDI5R01TbXpCOExVb09heHhxRFRlUUxEcHpqVk1KaGFk?=
+ =?utf-8?B?djRGQUJTZlNIRkppNGN2dnB3emZEVW5FSXVTUk1leU8vWVFGK01qQlRXT0NJ?=
+ =?utf-8?B?RXpkOHVZajdRSkxnZUduVlUyUkxlS3E3OGprR3gvTWhWOHczcmd2Vnp2bm5X?=
+ =?utf-8?B?bHJxN05lWjRVT0ZSUGQrMVpNUWg3bFFZNFdyZDU5Y1YycXBQRlVIRTlkYzJX?=
+ =?utf-8?B?bnZvRUdGQUk1ZXNJbVY4U0FnV2JDNVo1cXRCdUNmN3N0LzViZExHZjR2M2E3?=
+ =?utf-8?B?VVdpVE1kSE5wTmpxd0NaY2E3b0JMS2o5MGVhK3o3b1dKMnZmUzhTWGRreTBE?=
+ =?utf-8?B?UWEvTnAzbWFkRVRrZ0NhY1lUOXRjRlhDUllSUVFoMU9jbVFmKzVuK21NaGpU?=
+ =?utf-8?B?c3YzMitMLzltbE41eGVmQnFoTjRoL2d4VXRFYTltdEV6b0FoWXR0RjVsUFJU?=
+ =?utf-8?B?eTRqL1lJZFVQWWI1Vm5Ibm9NRHVlNzlFRVNXa0t5aWxDYTZTS2xvNkF6ckpT?=
+ =?utf-8?B?SnVYWnpmNnFyZEF6UUVTeUJnYzIxemRIN0pNd0tGQ0I2RHUzRFp4aGdkaVB2?=
+ =?utf-8?B?bmR3TzdRdUlBelhqeDlFUlhNVDFJUjJsUkhqQzIwdWszWnBpOGhxYnVJZVlX?=
+ =?utf-8?B?Zzh4NExvTkZQVXpkU1FsMElEazZuK0t5emlZbEt1ekFDRmR1ejFKVjFuK1Bi?=
+ =?utf-8?B?SzRKNWRzVm9uQ1BMeCsrSVZ4enNmSXJEMUljbzd2VzB5UExOajZycUFycXZi?=
+ =?utf-8?B?OVpMclRkU2NreEkybTdpY1ZFZ0hicUNwZFhjeWhLZld5a2JSUjNTUWthOSs2?=
+ =?utf-8?B?UHBCM1llNGgzZjFlazZ5MkE1RG8yZlNwc1FnaWdOMVRTR3FQbFpXRmMwZkZI?=
+ =?utf-8?B?TklZSHg0NHNkRmM2ZnpUeTBWMWU5QTJmL1hXcFZsTVN5RVgyUmJHc05pVUNY?=
+ =?utf-8?B?TTgzMVA2cmwxdXhVSXEzK3k4bWs2Z284b2N3cytTZkcyRzdxUWx6R3RSV1hL?=
+ =?utf-8?B?SnBPZkFFL3ZKUmZhWXN6eUxxcUQ4bHRZaklOZjFkQ0NrNGgzWU1IYWIzcGFO?=
+ =?utf-8?B?RXEvRzAzMVpBY1ZEK3c1R3JHVXhZWHFMM29aNXQzL0F0L3NZR2NOTzNzNVFr?=
+ =?utf-8?B?bWJVeFFuRVlFRnhyOVRybzhLOHA1QUhhU3BFWmpmZzE0OGJnS0QwbFp1MlNz?=
+ =?utf-8?Q?txrJCAp6JZw=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Z3BVM2hsV1crczBQY2pIMEh3UFFVdGg1TDF4LzJVbWw5WXBFTm1ncGE1NWxx?=
+ =?utf-8?B?K2R3K1dSSFZMZW9GWlR2VVZOT1VIYzl5STJZY2htK1dhaWVTb2Z4Nk1veUJB?=
+ =?utf-8?B?WWRTS2NXb3JiVVFFTjFKZHM5aXgxMmY0Y0xrZTVnd3gwQlAxU0t3SnlIWG45?=
+ =?utf-8?B?eXRPVklPZGJsWDY3QzJRQk8vU0FKcGgxakpyRUpnWHQzTVJIMVIxU1RPVmR4?=
+ =?utf-8?B?TVF5ZkhTRWdzTW8yUmkxV0hpd0RlSWhSK0FRV2Q5amk5MXh5MnZ0L1ZNcks0?=
+ =?utf-8?B?OTBCZ3ZIeld5QVg2MXBwNE1mTldJWWg3Z1l0d1h2TWcvVTBIUUttaEVQNjNO?=
+ =?utf-8?B?OU5WY1Nxd3BhVVgzRDhjV05kZUxOT3JDWjdCMndoTmhkcjVwTjlnWW55MXNw?=
+ =?utf-8?B?UE9yaW04SGRQcHR5RFNlWmI1ekRHMHJjS3FDbXVYZUJCcXJwbmRMUTNKbmRs?=
+ =?utf-8?B?dVNtaGYrdGxRY1dMRW8xRjRjejFvN0VvenF1Y0w4RUdCdGd1K3A1eXlwRGkv?=
+ =?utf-8?B?WmpVVEpMbldDWjFRVVZnYVVvVnhHYUx6bml5MENUazU3ejhiVW00WE9UUGVR?=
+ =?utf-8?B?ZlZMTG5rRWM5Mm93RFVzQ3BwSHdTWGFpZWo0dnpYR0dXanR1WkxvTFpoWm5y?=
+ =?utf-8?B?dmpjN0x1czdnNlBPdUNIWVQ3NDYrdWF5TTdlMVF1YkFQLytFdEsrQzRRU2lP?=
+ =?utf-8?B?Qk00TDREUllHNW56bFk3SVlWRW8rNVJDeGtHcWJXY2dhck9FdnhGWm5OYk1Q?=
+ =?utf-8?B?OFlFZUYyaFlxaTV3MW5TdTlUQVRYSW8yWU4vdHJNZHVMU3Y4Y3d0dlo1QVBF?=
+ =?utf-8?B?N2VwYWlGZTdDeXlNMVpsb3BDR3JYWnpqODRMWmZSM1ZuQWRqeFI5QVZqRXpQ?=
+ =?utf-8?B?MDFkSG5iR013UVBCYWZva2pHc0dITFdodFhSdlB2eElmT3RBOFZrcTByb2JP?=
+ =?utf-8?B?SEV5VExaa0FMQlJoTUxrNm54d1hVNktQWXVFT05KMC91a3NBR3ZUM2MxZWNi?=
+ =?utf-8?B?OVU3UXJEY0xXWVQ2MXpXemJGbHBIWCtrbDExd0o1UmxvbTNYOHJoZkJyZlJZ?=
+ =?utf-8?B?VFIzY3g3enNEVUZ3WGY1eE8yNWgvTEFreGlzMHh3Qi9Gb1JBd05ZSlVFMnlN?=
+ =?utf-8?B?ZXRPWkV4dVYrNzZEMDI5bmhtOXJXOUZtL0ROdmQxRzAyNTNTN2ZVVStGWk5T?=
+ =?utf-8?B?V0pCTmVWUlRvK0ozeityUmU5TVlFS0FmWnc2STUvdnhrNkF3QzJYT3VpRVhX?=
+ =?utf-8?B?bkZ4S09DdmNlZHdWSU9aS1VQQ3ZhSEpwczZOWUV6ZW5jWWJoZjFpWWhvQ21k?=
+ =?utf-8?B?M3VBMU43NkZwUG5SbzNXQXFHdDFaQ3hteFpzelkvUm9wNVJMalJvelRPU1l1?=
+ =?utf-8?B?NjVRMWh5OWRueE5VVkM3NG5aYnowTmtSYXJjOHl2azh0eENjSlNNSXVRS2Ft?=
+ =?utf-8?B?MnBQd1M4ZWl0b2dZV1ZSOXloU0I2RnJ1MCtXbkZ0NU55M25zeXBkR3lCckxH?=
+ =?utf-8?B?eVlOa0NtL0paWTVTTXBBbURhTlplYzJvdHRIdEtET0NETkZINFh4KzBxTVRx?=
+ =?utf-8?B?V21jMWJRelRRSnZGQVpyazNmWVVUeitjVEZXeU9hNnM0aGVoZmxJY2tkRVEx?=
+ =?utf-8?B?RG8vVGhyVDVDMitNWVpQSkNWYlY5cHFmZmxDZnhvMjF5dkxPMVhUSWUxYjcy?=
+ =?utf-8?B?eDVSK09CL3JyUWt6Q2lNUFgreGM4M2Z6ZVp0dENlb29JdGtmZE1KS3pYMkdo?=
+ =?utf-8?B?MmVHZWRQSzBSeU5GT3hCRGhXdEZ3d3FnVjdnNzExNWtDWW1QZzhSN1VFTXlF?=
+ =?utf-8?B?M1cvUSsrSVR1aTF1L3Foa1hoTFhpUVFBTytySDZnM3hlTm1hVnFySkRzc0RU?=
+ =?utf-8?B?bDNtejB5OVYrbVp0bkJMekFzOVJIWUtRZFJIQUZNZmVHRFJLWEVzaGZhSExh?=
+ =?utf-8?B?VTRSRnJ0QXdNOFV2Q3NJS213c2VKVlJaSmhLU0oxeXJLL0VrVFV0eUFyci83?=
+ =?utf-8?B?UTdxK2Y4UHdaRW5XZW9iK2RWQWZYYVo2aGo2NVJnNUxJbk5OUnBWRFovQnAx?=
+ =?utf-8?B?WGlzMktrN2JEV0wranVUV1ptdTZMZ1YxM2E5WmtEWm9BQThzdUhQUTlEeWtW?=
+ =?utf-8?Q?laWRf0HLQIXxHwnxxIYNWNZrv?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a6600eb7-e72a-4596-716c-08dd88b44868
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 May 2025 13:30:04.9289
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vUVVM3uBq7YsSCWr1wcAVjYoJ8un8ZHzM5uwlHTRqIzeSk2m19qewkBDH5jC6XYCC8pZyUq/+OhjWwy2ZXaruQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB5627
 
-On Thu, May 1, 2025, at 02:56, Dan Williams wrote:
-> Arnd Bergmann wrote:
->> On Wed, Apr 30, 2025, at 04:46, Dan Williams wrote:
->> > While there is an existing mitigation to simulate and redirect access to
->> > the BIOS data area with STRICT_DEVMEM=y, it is insufficient.
->> > Specifically, STRICT_DEVMEM=y traps read(2) access to the BIOS data
->> > area, and returns a zeroed buffer.  However, it turns out the kernel
->> > fails to enforce the same via mmap(2), and a direct mapping is
->> > established. This is a hole, and unfortunately userspace has learned to
->> > exploit it [2].
->> 
->> As far as I can tell, this was a deliberate design choice in
->> commit a4866aa81251 ("mm: Tighten x86 /dev/mem with zeroing reads"),
->> which did not try to forbid it completely but mainly avoids triggering
->> the hardened usercopy check.
->
-> I would say not a "design choice", but rather a known leftover hole that
-> nobody has had the initiative to close since 2022.
->
-> https://lore.kernel.org/all/202204071526.37364B5E3@keescook/
+On 4/30/25 16:57, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
+> 
+> When kdump is running makedumpfile to generate vmcore and dumping SNP
+> guest memory it touches the VMSA page of the vCPU executing kdump which
+> then results in unrecoverable #NPF/RMP faults as the VMSA page is
+> marked busy/in-use when the vCPU is running and subsequently causes
+> guest softlockup/hang.
+> 
+> Additionally other APs may be halted in guest mode and their VMSA pages
+> are marked busy and touching these VMSA pages during guest memory dump
+> will also cause #NPF.
+> 
+> Issue AP_DESTROY GHCB calls on other APs to ensure they are kicked out
+> of guest mode and then clear the VMSA bit on their VMSA pages.
+> 
+> If the vCPU running kdump is an AP, mark it's VMSA page as offline to
+> ensure that makedumpfile excludes that page while dumping guest memory.
+> 
+> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+> Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 3074152e56c9 ("x86/sev: Convert shared memory back to private on kexec")
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> ---
+>  arch/x86/coco/sev/core.c | 244 +++++++++++++++++++++++++--------------
+>  1 file changed, 158 insertions(+), 86 deletions(-)
+> 
+> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+> index dcfaa698d6cf..d35fec7b164a 100644
+> --- a/arch/x86/coco/sev/core.c
+> +++ b/arch/x86/coco/sev/core.c
+> @@ -877,6 +877,102 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
+>  	set_pages_state(vaddr, npages, SNP_PAGE_STATE_PRIVATE);
+>  }
+>  
+> +static int vmgexit_ap_control(u64 event, struct sev_es_save_area *vmsa, u32 apic_id)
+> +{
+> +	bool create = event == SVM_VMGEXIT_AP_CREATE;
 
-Ok, I see.
+Just occurred to me that, while we don't use it, there is another create
+event, SVM_VMGEXIT_AP_CREATE_ON_INIT. So maybe change this to
 
->> The existing rules that I can see are:
->> 
->> - readl/write is only allowed on actual (lowmem) RAM, not
->>   on MMIO registers, enforced by valid_phys_addr_range()
->> - with STRICT_DEVMEM, read/write is disallowed on both
->>   RAM and MMIO
->> - an an exception, x86 additionally allows read/write on the
->>   low 1MB MMIO region and 32-bit PCI MMIO BAR space, with
->>   a custom xlate_dev_mem_ptr() that calls either memremap()
->>   or ioremap() on the physical address.
->> - as another exception from that, the low 1MB on x86 behaves
->>   like /dev/zero for memory pages when STRICT_DEVMEM
->>   is set, and ignores conflicting drivers for MMIO registers
->> - The PowerPC sys_rtas syscall has another exception in
->>   order to ignore the STRICT_DEVMEM and write to a portion
->>   of kernel memory to talk to firmware
->> - on the mmap() side, x86 has another special to allow
->>   mapping RAM in the first 1MB despite STRICT_DEVMEM
->> 
->> How about changing x86 to work more like the others and
->> removing the special cases for the first 1MB and for the
->> 32-bit PCI BAR space? If Xorg, and dmidecode are able to
->> do this differently, maybe the hacks can just go away, or
->> be guarded by a Kconfig option that is mutually exclusive
->> with ARCH_HAS_CC_PLATFORM?
->
-> I see the 1MB MMIO special-case in x86::devmem_is_allowed(), but where
-> is the 32-bit PCI BAR space workaround? Just to make sure I am not
-> missing a detail here.
+  bool create = event != SVM_VMGEXIT_AP_DESTROY;
 
-The main difference on x86 is the xlate_dev_mem_ptr() function
-that does an extra memremap() of the physical address, everything
-else just does a phys_to_virt(). The only other architecture
-with an xlate_dev_mem_ptr() implementation is s390, which uses
-it to work around the first physical page being different per CPU.
-ia64 had something similar to x86 but is gone now.
+Thanks,
+Tom
 
-The other bit of the puzzle is that memremap() on x86 silently
-falls back to ioremap() for non-RAM pages. This was originally
-added in 2008 commit e045fb2a988a ("x86: PAT avoid aliasing in
-/dev/mem read/write"). I'm not sure what happened exactly, but
-I suspect that the low 1MB was already mapped at the time
-through a cached mapping, while the PCI MMIO hole was perhaps
-not mapped. On x86-32, the 32-bit PCI BAR area should not
-be included here (since it's above high_memory), but the 16MB
-hold may be.
-
-The address is first checked by valid_phys_addr_range(), which
-is defined in an architecture specific way, so it's possible that
-there are additional architectures on which that includes MMIO
-ranges that can be accesses through phys_to_virt(), but I could
-not find any.
-
-The default valid_phys_addr_range() just checks against
-'high_memory' to see whether the address is in the linear
-map. This works on all architectures that don't have holes
-in the memory map for MMIO (most of them) or that don't
-just ioremap() all MMIO space into the hole (most of the rest).
-
-arm64 and loongarch check memblock allow known RAM both in
-the linear map and outside of it, while arm32 and sh explicitly
-exclude addresses before PHYS_OFFSET on machines where RAM
-does not start at address 0.
-
-       Arnd
