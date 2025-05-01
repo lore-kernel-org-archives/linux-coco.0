@@ -1,71 +1,71 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C286B267AEC
-	for <linux-coco@lists.linux.dev>; Thu,  1 May 2025 23:30:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D80A267F64
+	for <linux-coco@lists.linux.dev>; Thu,  1 May 2025 23:41:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746142257; cv=none; b=UJsjhDve+POUQnwb3bd75w2k6ma2ERPKsAmV3JE6f4K6undt/ok2uzQP3iL7Gyaxe1DLq9JK3JePGVqsTFytar/zuPvL+xuGvjz35XVJSPY/6penCzHfq/qITBOlc0MZNffIFV54hj0bDEJHAeBxpV2PBvoBCya2nsrOGP4Kja0=
+	t=1746142899; cv=none; b=ZXxPGZggxtmOU2OhIzR9uJ+TJbq4y8WWXSpsgQafl5ryrXYfHtWmi2jatgsucUDzvoVWYANz/l37gS2CEldAEdLA056vPv20dUU8nDZeXGePo9muWXkkAjMSyBQWN7K56dX+DQ1WW/ffTDKhD5I02n919EgFRA/zqa86P+VvoWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746142257; c=relaxed/simple;
-	bh=xVGEn53VMIadoPNtpTXYP9w2q/1FWFt4j5ySM3+Il+k=;
+	s=arc-20240116; t=1746142899; c=relaxed/simple;
+	bh=V3rX/4/xpD9h/udXgGtkaJHl8XY74/C8DHLGx9nM+cQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p/40ihSnYgZR5zFzEbgv8Pn7DkrRrjeyU9RuzM6j5MH4mwZR7SGZc9BCCFWu1Gh0DlGAsin1ophDjm7YhlQD9ogXuhOKhgAdCb7TTdymwULeyH4kICqBU3JvmX9iP1/lQ+ciEaqNqluA7OFhD6tEYJ4CQ3Ih51NWt2sf2+aDS6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CUNTGs3r; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=A4rtttJGPWzSYxbo+Jx1iWRuu3EPTpHbUB+gl6zZtkWUv6IuB09sHibq3RqnbDDWdmv1LrTr8hJufu5HhZKZV6L0HdCtd7HJpLvtwDRY9ZrL0XLd0uvHkUvb1hNpUsECPi/w7EKkewEK34fc49TIuj6kJYe9XouVo+TKPd1Qbvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z3cGKz3U; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CUNTGs3r"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z3cGKz3U"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1746142254;
+	s=mimecast20190719; t=1746142896;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=V61xkxPc38oYjgZEUT4lB2Jdszj4oz3OEIRZu6N5HPs=;
-	b=CUNTGs3r4VrwR//lImqk2Lgrr+aIoFJduIe8NWCd2Ml1yplw519Ubqu+2Y8Y632c84BsGJ
-	ZvK+p3nxNh4f4/sHpOMfjjk5SA2PwVMqILkChy+O83t2IUL3Lr+JRW7xIYyk7e5WtZKmtH
-	B70O31qY+YMSdzCdB8t1q8qtmVUvLbE=
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
- [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=CyhZBVISRQ5clAuU8+PvOudE8wxZ8XRmw30nrERw5/M=;
+	b=Z3cGKz3Ubuk/xJQhwUaZGCwS8fAfTwBRT09StZCOK+tR8QXrpVqCntG/OulAu4n8YTWxLe
+	lf8ohbsVmbzkhT+baexrbefIBh/0kHCykpglxl4YWFCUk2Uq7z9PQ0ly+zNxjWuNW2zgtO
+	WbPnaZlaxySJwFawdZaCYcvzjXgEvpM=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-517-e9zkngTGO-SzB-WklIYljg-1; Thu, 01 May 2025 19:30:53 -0400
-X-MC-Unique: e9zkngTGO-SzB-WklIYljg-1
-X-Mimecast-MFC-AGG-ID: e9zkngTGO-SzB-WklIYljg_1746142252
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-af2f03fcc95so1455455a12.1
-        for <linux-coco@lists.linux.dev>; Thu, 01 May 2025 16:30:53 -0700 (PDT)
+ us-mta-138-P1UQ4pu5N-KKO_34eJSpSQ-1; Thu, 01 May 2025 19:41:35 -0400
+X-MC-Unique: P1UQ4pu5N-KKO_34eJSpSQ-1
+X-Mimecast-MFC-AGG-ID: P1UQ4pu5N-KKO_34eJSpSQ_1746142894
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-b1d9f278aecso766557a12.2
+        for <linux-coco@lists.linux.dev>; Thu, 01 May 2025 16:41:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746142252; x=1746747052;
+        d=1e100.net; s=20230601; t=1746142894; x=1746747694;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=V61xkxPc38oYjgZEUT4lB2Jdszj4oz3OEIRZu6N5HPs=;
-        b=Pc2WfTQE5beIiGwhgpXisjwamVjNYnqQTT8Ky5cmHledFLiLO7hsTFVt0nt20xSLeE
-         NnX/b6DtBf2UaD4AIvJGUyWzl3iE6FtEJkTYVooZG+mhtFwXFW5HYCGTK9S8VA/Lsl1B
-         DzGIPLeerVvlKv6OhuXSQ0eOtcaBoG9bR2cZSP0ExREdJY1wTTQRJmBkuiuy8bZ1Rn3w
-         cHzbYh6Oh6NqN+q2RFmqoIuNlYMX2r/08xE4MO/jCDkDeqCZ6ChCZdTV5Ro+q/Ac5LQJ
-         OUE6+kWlR3T4PXcPHdqXfsC+yq1nCz5qyIWvKoZxsL1ulFN7DEUFMmoGCtkIJHA8Fwdh
-         OQTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUZR8trzomKexTjLz6VB7q9bQFl9ON58L4nveWgaCw/DPrJXRekZxYE3iyXJaV1eRO+sDD8DyCKTs0l@lists.linux.dev
-X-Gm-Message-State: AOJu0YwMkrS4lD59Hdk1L9U7kYX90IUEeyuNffwCmkXdmiV6Al+BQOUh
-	JUZfh+tE0RKs0uWV7Q/oQnuq+C5w61N+CIBBSV3Rl2AqcFseetuQTB5OTJK8cwq7tpj+SZJsrZU
-	Uvxwo11GR0N/liGbk09SvMBe7v0hbQXFzXRARn6yvzeQbm1XKd2c1nzRjv68=
-X-Gm-Gg: ASbGncvIwJ7eXtE+BuGC464bHx1mcoW9Hz8Np4aPaz6lZvZV4AEtKcwNE9N5V5b5K2Z
-	Y6DTVh7+2mVOqc8iadu85S3NnYk0825p4NW+85TbgmOzL1uEI50wU4Nd1moA75jwbzdZ40iuKJk
-	7hxsR4O2XQg7yNff0jpwOZ1mG6A30cZhHgRcgVe8t11k/xrXxwv8c5YG3F+Ae/NukVTTe2EWe9A
-	D1PU4ETx1QOY3mOl/JcrbMkVEivHtRdk+vR8W2DES435XEbcSogsv0gaH1+NyV4QGBCCCid32AG
-	aUO9d7mZo+QC
-X-Received: by 2002:a05:6a20:394d:b0:1f3:2c55:8d8a with SMTP id adf61e73a8af0-20cde952da6mr1047595637.12.1746142252569;
-        Thu, 01 May 2025 16:30:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF2dZAV7HsuZ8oKI3zYsiz7ja1Xpp36L3rGRrA0ckr87PI6dc2juV/UWU2b7kcpP5iRZnp7dw==
-X-Received: by 2002:a05:6a20:394d:b0:1f3:2c55:8d8a with SMTP id adf61e73a8af0-20cde952da6mr1047551637.12.1746142252156;
-        Thu, 01 May 2025 16:30:52 -0700 (PDT)
+        bh=CyhZBVISRQ5clAuU8+PvOudE8wxZ8XRmw30nrERw5/M=;
+        b=NGyYinY1gykwZsVodIBwxuoNjSziFRyGOWfjWzb3S9pszT9oOpyf09CJsZF8K8dtFk
+         7iWNTyX1Bs43FOZ6HEU/sxx0TsNtutz6EkcIgdsGzr7nLUbRmiCN4efys7ovq0dSOdzE
+         nm2RCmwjLPBS0pGxWxatGktTOKLVF8w63DwX1rjKRv7/GPGDE8IqPLo93f9h0+BkoDzj
+         6uBjbZEMuLYiqnV3hL4Xf+wcRUX35cfkEtcJsbeL9GDh3Se6Tu8NDVJ9SY9HjTeduvxZ
+         W+PZHP6J98t6yAYkVC0bzsxOq0wMFpjzyjumv95IZR5hSg3Pi9mtVv6P9B9adOJPI/G4
+         WQOw==
+X-Forwarded-Encrypted: i=1; AJvYcCX1O7BOduKFTNCubpg37PHwCWZZcUtVaqQonc5xR89XyEOpoq6bkkP8henQFVmYgBlLTy2QnM8fJY2G@lists.linux.dev
+X-Gm-Message-State: AOJu0YxNIR2OitPOqBNbevash6HHZp/eoNoB+AKd0lkTJNivwSrj5mKk
+	CTbaM7BLGcHWQ+K2Gn9vHeg8x1bGXyMplwIeZDJTaJZGmbAW1knttv7KJqZnJgwaXGURoUqnpaF
+	JyoHVNOrahoIRDoWDNX2cbvLVFVTroRYZH29reeK0hDREuhYON9txSceI4pD5SASOUS4=
+X-Gm-Gg: ASbGncs6hOFK1dBDTd2F1kCs2mtMVjDwQHJUxdzFFYWE+kl1Ihneu3mqIHprMjkP17l
+	mOOh5URR8mCmxM3JBKfTeRNtjxd1LQ/WnNA0Msby7N6I3mwaI5cS3nPuo5nJzv2VE7Vxu86onqw
+	Gm82e4MOr/oWiSl6dImxOwfUPkxcEfbuSkh1mienWxGxNG+rvnocf23Bz6PbY3/I6Ihr7f3jPio
+	ca9Il62SJiDxWyIuVCKUmNTFBbWfykJ6a80CZZp7pHK1Ze03dv36mmxoc02kx+/3BECA/cLR/Z5
+	YBlMFuqg/VIj
+X-Received: by 2002:a05:6a21:33a3:b0:1f5:852a:dd81 with SMTP id adf61e73a8af0-20cdfdf1dc5mr1087255637.34.1746142894152;
+        Thu, 01 May 2025 16:41:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGq3VtO1vtLmO8E/fnCTC9w5B6F4cawG5lkrIFMIOrYDpU+7Qf+p2E6KFN4AlFzZpxvWi44og==
+X-Received: by 2002:a05:6a21:33a3:b0:1f5:852a:dd81 with SMTP id adf61e73a8af0-20cdfdf1dc5mr1087223637.34.1746142893729;
+        Thu, 01 May 2025 16:41:33 -0700 (PDT)
 Received: from [192.168.68.51] ([180.233.125.65])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b1fa82422e0sm228551a12.13.2025.05.01.16.30.44
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b1fa8285817sm170886a12.30.2025.05.01.16.41.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 May 2025 16:30:51 -0700 (PDT)
-Message-ID: <6799bc5f-cc4a-446e-b47b-1cbabbc0b518@redhat.com>
-Date: Fri, 2 May 2025 09:30:42 +1000
+        Thu, 01 May 2025 16:41:33 -0700 (PDT)
+Message-ID: <377a678c-16e4-4e85-8831-421e59e9bf6e@redhat.com>
+Date: Fri, 2 May 2025 09:41:25 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -73,8 +73,7 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 39/43] arm64: RME: Provide register list for
- unfinalized RME RECs
+Subject: Re: [PATCH v8 40/43] arm64: RME: Provide accurate register list
 To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
  kvmarm@lists.linux.dev
 Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>,
@@ -91,11 +90,11 @@ Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>,
  Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
  <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
 References: <20250416134208.383984-1-steven.price@arm.com>
- <20250416134208.383984-40-steven.price@arm.com>
+ <20250416134208.383984-41-steven.price@arm.com>
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20250416134208.383984-40-steven.price@arm.com>
+In-Reply-To: <20250416134208.383984-41-steven.price@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Et20sm0Hdshc28BPX67XiTcb4FxHjJ_ayqwTzvq9SXg_1746142252
+X-Mimecast-MFC-PROC-ID: ld61ah2J9YxNdg5avH_syOntGO65HnqoDcSgzjxkh8Y_1746142894
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
@@ -104,106 +103,200 @@ Content-Transfer-Encoding: 7bit
 On 4/16/25 11:42 PM, Steven Price wrote:
 > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 > 
-> KVM_GET_REG_LIST should not be called before SVE is finalized. The ioctl
-> handler currently returns -EPERM in this case. But because it uses
-> kvm_arm_vcpu_is_finalized(), it now also rejects the call for
-> unfinalized REC even though finalizing the REC can only be done late,
-> after Realm descriptor creation.
-> 
-> Move the check to copy_sve_reg_indices(). One adverse side effect of
-> this change is that a KVM_GET_REG_LIST call that only probes for the
-> array size will now succeed even if SVE is not finalized, but that seems
-> harmless since the following KVM_GET_REG_LIST with the full array will
-> fail.
+> Userspace can set a few registers with KVM_SET_ONE_REG (9 GP registers
+> at runtime, and 3 system registers during initialization). Update the
+> register list returned by KVM_GET_REG_LIST.
 > 
 > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 > Signed-off-by: Steven Price <steven.price@arm.com>
 > ---
->   arch/arm64/kvm/arm.c   | 4 ----
->   arch/arm64/kvm/guest.c | 9 +++------
->   2 files changed, 3 insertions(+), 10 deletions(-)
+> Changes since v7:
+>   * Reworked on upstream changes.
+> ---
+>   arch/arm64/kvm/guest.c      | 19 ++++++++++++++-----
+>   arch/arm64/kvm/hypercalls.c |  4 ++--
+>   arch/arm64/kvm/sys_regs.c   | 28 ++++++++++++++++++++++------
+>   3 files changed, 38 insertions(+), 13 deletions(-)
 > 
 
-With below comment addressed.
+With below nitpicks addressed:
 
 Reviewed-by: Gavin Shan <gshan@redhat.com>
 
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 4780e3af1bb9..eaa60ba6d97b 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -1832,10 +1832,6 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
->   		if (unlikely(!kvm_vcpu_initialized(vcpu)))
->   			break;
->   
-> -		r = -EPERM;
-> -		if (!kvm_arm_vcpu_is_finalized(vcpu))
-> -			break;
-> -
->   		r = -EFAULT;
->   		if (copy_from_user(&reg_list, user_list, sizeof(reg_list)))
->   			break;
 > diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
-> index dd379aba31bb..1288920fc73d 100644
+> index 1288920fc73d..e9bb7647aa65 100644
 > --- a/arch/arm64/kvm/guest.c
 > +++ b/arch/arm64/kvm/guest.c
-> @@ -671,12 +671,9 @@ static unsigned long num_sve_regs(const struct kvm_vcpu *vcpu)
->   {
->   	const unsigned int slices = vcpu_sve_slices(vcpu);
+> @@ -618,8 +618,6 @@ static const u64 timer_reg_list[] = {
+>   	KVM_REG_ARM_PTIMER_CVAL,
+>   };
 >   
-> -	if (!vcpu_has_sve(vcpu))
-> +	if (!vcpu_has_sve(vcpu) || !kvm_arm_vcpu_sve_finalized(vcpu))
+> -#define NUM_TIMER_REGS ARRAY_SIZE(timer_reg_list)
+> -
+>   static bool is_timer_reg(u64 index)
+>   {
+>   	switch (index) {
+> @@ -634,9 +632,14 @@ static bool is_timer_reg(u64 index)
+>   	return false;
+>   }
+>   
+> +static unsigned long num_timer_regs(struct kvm_vcpu *vcpu)
+> +{
+> +	return kvm_is_realm(vcpu->kvm) ? 0 : ARRAY_SIZE(timer_reg_list);
+> +}
+> +
+
+static inline unsigned long num_timer_regs(struct kvm_vcpu *vcpu)
+
+>   static int copy_timer_indices(struct kvm_vcpu *vcpu, u64 __user *uindices)
+>   {
+> -	for (int i = 0; i < NUM_TIMER_REGS; i++) {
+> +	for (int i = 0; i < num_timer_regs(vcpu); i++) {
+>   		if (put_user(timer_reg_list[i], uindices))
+>   			return -EFAULT;
+>   		uindices++;
+
+	for (unsigned long i = 0; ...)
+
+> @@ -674,6 +677,9 @@ static unsigned long num_sve_regs(const struct kvm_vcpu *vcpu)
+>   	if (!vcpu_has_sve(vcpu) || !kvm_arm_vcpu_sve_finalized(vcpu))
 >   		return 0;
 >   
-> -	/* Policed by KVM_GET_REG_LIST: */
-> -	WARN_ON(!kvm_arm_vcpu_sve_finalized(vcpu));
-> -
+> +	if (kvm_is_realm(vcpu->kvm))
+> +		return 1; /* KVM_REG_ARM64_SVE_VLS */
+> +
 >   	return slices * (SVE_NUM_PREGS + SVE_NUM_ZREGS + 1 /* FFR */)
 >   		+ 1; /* KVM_REG_ARM64_SVE_VLS */
 >   }
-
-KVM_REG_ARM64_SVE_VLS is exposed even SVE isn't finalized. See set_sve_vls() where
-it's required that SVE isn't finalized, or -EPERM is returned. So this would be
-something like below:
-
-	if (!vcpu_has_sve(vcpu))
-		return 0;
-
-	if (!kvm_arm_vcpu_sve_finalized(vcpu))
-		return 1;	/* KVM_REG_ARM64_SVE_VLS */
-
-	return slices * (SVE_NUM_PREGS + SVE_NUM_ZREGS + 1 /* FFR */)
-		+ 1; /* KVM_REG_ARM64_SVE_VLS */
-
-> @@ -692,8 +689,8 @@ static int copy_sve_reg_indices(const struct kvm_vcpu *vcpu,
->   	if (!vcpu_has_sve(vcpu))
->   		return 0;
+> @@ -701,6 +707,9 @@ static int copy_sve_reg_indices(const struct kvm_vcpu *vcpu,
+>   		return -EFAULT;
+>   	++num_regs;
 >   
-> -	/* Policed by KVM_GET_REG_LIST: */
-> -	WARN_ON(!kvm_arm_vcpu_sve_finalized(vcpu));
-> +	if (!kvm_arm_vcpu_sve_finalized(vcpu))
-> +		return -EPERM;
+> +	if (kvm_is_realm(vcpu->kvm))
+> +		return num_regs;
+> +
+>   	for (i = 0; i < slices; i++) {
+>   		for (n = 0; n < SVE_NUM_ZREGS; n++) {
+>   			reg = KVM_REG_ARM64_SVE_ZREG(n, i);
+> @@ -739,7 +748,7 @@ unsigned long kvm_arm_num_regs(struct kvm_vcpu *vcpu)
+>   	res += num_sve_regs(vcpu);
+>   	res += kvm_arm_num_sys_reg_descs(vcpu);
+>   	res += kvm_arm_get_fw_num_regs(vcpu);
+> -	res += NUM_TIMER_REGS;
+> +	res += num_timer_regs(vcpu);
 >   
+>   	return res;
+>   }
+> @@ -773,7 +782,7 @@ int kvm_arm_copy_reg_indices(struct kvm_vcpu *vcpu, u64 __user *uindices)
+>   	ret = copy_timer_indices(vcpu, uindices);
+>   	if (ret < 0)
+>   		return ret;
+> -	uindices += NUM_TIMER_REGS;
+> +	uindices += num_timer_regs(vcpu);
+>   
+>   	return kvm_arm_copy_sys_reg_indices(vcpu, uindices);
+>   }
+> diff --git a/arch/arm64/kvm/hypercalls.c b/arch/arm64/kvm/hypercalls.c
+> index 569941eeb3fe..fb2bba0c7e86 100644
+> --- a/arch/arm64/kvm/hypercalls.c
+> +++ b/arch/arm64/kvm/hypercalls.c
+> @@ -412,14 +412,14 @@ void kvm_arm_teardown_hypercalls(struct kvm *kvm)
+>   
+>   int kvm_arm_get_fw_num_regs(struct kvm_vcpu *vcpu)
+>   {
+> -	return ARRAY_SIZE(kvm_arm_fw_reg_ids);
+> +	return kvm_is_realm(vcpu->kvm) ? 0 : ARRAY_SIZE(kvm_arm_fw_reg_ids);
+>   }
+>   
+>   int kvm_arm_copy_fw_reg_indices(struct kvm_vcpu *vcpu, u64 __user *uindices)
+>   {
+>   	int i;
+>   
+> -	for (i = 0; i < ARRAY_SIZE(kvm_arm_fw_reg_ids); i++) {
+> +	for (i = 0; i < kvm_arm_get_fw_num_regs(vcpu); i++) {
+>   		if (put_user(kvm_arm_fw_reg_ids[i], uindices++))
+>   			return -EFAULT;
+>   	}
+> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+> index a53a06700867..7d384016d1ba 100644
+> --- a/arch/arm64/kvm/sys_regs.c
+> +++ b/arch/arm64/kvm/sys_regs.c
+> @@ -4960,18 +4960,18 @@ int kvm_arm_sys_reg_set_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg
+>   				    sys_reg_descs, ARRAY_SIZE(sys_reg_descs));
+>   }
+>   
+> -static unsigned int num_demux_regs(void)
+> +static unsigned int num_demux_regs(struct kvm_vcpu *vcpu)
+>   {
+> -	return CSSELR_MAX;
+> +	return kvm_is_realm(vcpu->kvm) ? 0 : CSSELR_MAX;
+>   }
+>   
+
+static inline unsigned int num_demux_regs(struct kvm_vcpu *vcpu)
+
+> -static int write_demux_regids(u64 __user *uindices)
+> +static int write_demux_regids(struct kvm_vcpu *vcpu, u64 __user *uindices)
+>   {
+>   	u64 val = KVM_REG_ARM64 | KVM_REG_SIZE_U32 | KVM_REG_ARM_DEMUX;
+>   	unsigned int i;
+>   
+>   	val |= KVM_REG_ARM_DEMUX_ID_CCSIDR;
+> -	for (i = 0; i < CSSELR_MAX; i++) {
+> +	for (i = 0; i < num_demux_regs(vcpu); i++) {
+>   		if (put_user(val | i, uindices))
+>   			return -EFAULT;
+>   		uindices++;
+> @@ -5002,11 +5002,27 @@ static bool copy_reg_to_user(const struct sys_reg_desc *reg, u64 __user **uind)
+>   	return true;
+>   }
+>   
+> +static bool kvm_realm_sys_reg_hidden_user(const struct kvm_vcpu *vcpu, u64 reg)
+> +{
+> +	if (!kvm_is_realm(vcpu->kvm))
+> +		return false;
+> +
+> +	switch (reg) {
+> +	case SYS_ID_AA64DFR0_EL1:
+> +	case SYS_PMCR_EL0:
+> +		return false;
+> +	}
+> +	return true;
+> +}
+> +
+
+static inline bool kvm_realm_sys_reg_hidden_user(const struct kvm_vcpu *vcpu, u64 reg)
+
+>   static int walk_one_sys_reg(const struct kvm_vcpu *vcpu,
+>   			    const struct sys_reg_desc *rd,
+>   			    u64 __user **uind,
+>   			    unsigned int *total)
+>   {
+> +	if (kvm_realm_sys_reg_hidden_user(vcpu, reg_to_encoding(rd)))
+> +		return 0;
+> +
 >   	/*
->   	 * Enumerate this first, so that userspace can save/restore in
-
-Since KVM_REG_ARM64_SVE_VLS can be exposed before the vCPU is finalized, it'd better to
-move the check after the followup block where KVM_REG_ARM64_SVE_VLS index is copied
-to user space.
-
-	/*
-          * Enumerate this first, so that userspace can save/restore in
-          * the order reported by KVM_GET_REG_LIST:
-          */
-         reg = KVM_REG_ARM64_SVE_VLS;
-         if (put_user(reg, uindices++))
-                 return -EFAULT;
-         ++num_regs;
-
-	if (!kvm_arm_vcpu_sve_finalized(vcpu))
-		return num_regs;
+>   	 * Ignore registers we trap but don't save,
+>   	 * and for which no custom user accessor is provided.
+> @@ -5044,7 +5060,7 @@ static int walk_sys_regs(struct kvm_vcpu *vcpu, u64 __user *uind)
+>   
+>   unsigned long kvm_arm_num_sys_reg_descs(struct kvm_vcpu *vcpu)
+>   {
+> -	return num_demux_regs()
+> +	return num_demux_regs(vcpu)
+>   		+ walk_sys_regs(vcpu, (u64 __user *)NULL);
+>   }
+>   
+> @@ -5057,7 +5073,7 @@ int kvm_arm_copy_sys_reg_indices(struct kvm_vcpu *vcpu, u64 __user *uindices)
+>   		return err;
+>   	uindices += err;
+>   
+> -	return write_demux_regids(uindices);
+> +	return write_demux_regids(vcpu, uindices);
+>   }
+>   
+>   #define KVM_ARM_FEATURE_ID_RANGE_INDEX(r)			\
 
 Thanks,
 Gavin
-	
 
