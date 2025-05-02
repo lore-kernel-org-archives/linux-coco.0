@@ -1,263 +1,116 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E23A25A65C
-	for <linux-coco@lists.linux.dev>; Fri,  2 May 2025 13:08:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B6C255251
+	for <linux-coco@lists.linux.dev>; Fri,  2 May 2025 13:31:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746191335; cv=none; b=ko6RWakRuHGqhPy05jXkHTY6LzTTBn1BLpJwqypTg3cAxsvq0Kr773pyTHvTfVZGt+ZGLAdgnJaHXOnztO+/gjUdT+DOf0FXcFpeiUlIvxkcuFWJD1eZ4jfuXoejPLAhjCdo70upPjn7/w1izEQyJ3X9igDFSPCA2SF1xgV6b1I=
+	t=1746192678; cv=none; b=iwQd/zyCkdwrWOdAAedVqVGvfypO5dApWOdkSwb9fT8medN68v/XjWjJcH30os5fec13aiTzdsYiaS/HbM9aons2+rKPH520XP3Y2mp7iuZbVAi0Z7olpMpuO7mr7IAq8hF3/Yggx4CaQg2LVN4O/YB+uLUh2+1DhlVhambJLzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746191335; c=relaxed/simple;
-	bh=6KdVYsEBJ/j6nE8ePLlnDGqB/MG4p1xHnjjBkVTUNtA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bw7IMRBO0skfWtIl2WUlt3qbO/OQpn1XSm1sZ4vfQLuFVN8GKZDJ+0C9jYNe2fkBW6MUwYucQKd8cBey7TeO/CPnkRozFe7qfX5UiQYbkgoCtSMf8E6VQiNjgYcD9q7ticyOOW0wRjvrOKGN1cQXw+eQjTkZ6HYnMggAYD69osk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jm5XCcJt; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
+	s=arc-20240116; t=1746192678; c=relaxed/simple;
+	bh=ceItz0NSonxwZNsg0HKxcB2b92rRQMtHm+5vyEc1fiU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cSVtxQU9AYIEbKE7p+L0dHMATUOY51/IUAEPtkXGvfIln0umAAIEuq0kSnm3MryubNhtCqP8a2clXucpk6FtdpDAD07OOWi+Do737rwF4KSnC2Fi6OgkxThCPOMtYDTnEpLdLltkU8k3oOpvDlo1lPiMNBmvj2P57GvTFM25zYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Oqamq4ql; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jm5XCcJt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746191333; x=1777727333;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=6KdVYsEBJ/j6nE8ePLlnDGqB/MG4p1xHnjjBkVTUNtA=;
-  b=jm5XCcJtpLljNy9hcSTBtrgLDvRHB9fXBIXmLeVw7WOYn0Vx9KhGR16H
-   dPMvT1mPHQCWusmkg7d04lq7WVO+CUGuF3aYaGBkTwAWUgdgdZHgmUcWh
-   fQiE4bBTlvb3RyLNGvd8HCak7SZF0IiHrX1hjnQfFWUrPr1FFnco2SjND
-   IQqt9uq9znnPja3wYbCYcQVcELQZQTSzJEZNb8bkvqit1QuHiF5VS38ZW
-   tFmtGUn4UwOS1Pau7lcKL5eDrVlmhouCV2GwUOu2qJhxeCBE15TXGIVd+
-   AOPXi4yPHJPGoykHgDzJ00+fs+h0azksCPw+TGXhVtGtf2NllYXvd0hmz
-   A==;
-X-CSE-ConnectionGUID: AJHQoOy0SUyFrIad/4d9ow==
-X-CSE-MsgGUID: qJjhAk5tRROrwpYWaxVyZg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11421"; a="58495276"
-X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
-   d="scan'208";a="58495276"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 06:08:51 -0700
-X-CSE-ConnectionGUID: 8tZWGe7yT5a8MWhcxhzp+w==
-X-CSE-MsgGUID: lJjrM7SrRlu9dwzC/wPHZQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
-   d="scan'208";a="138657786"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa003.fm.intel.com with ESMTP; 02 May 2025 06:08:41 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 40BB51A1; Fri, 02 May 2025 16:08:36 +0300 (EEST)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: pbonzini@redhat.com,
-	seanjc@google.com
-Cc: rick.p.edgecombe@intel.com,
-	isaku.yamahata@intel.com,
-	kai.huang@intel.com,
-	yan.y.zhao@intel.com,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	kvm@vger.kernel.org,
-	x86@kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [RFC, PATCH 05/12] KVM: TDX: Add tdx_pamt_get()/put() helpers
-Date: Fri,  2 May 2025 16:08:21 +0300
-Message-ID: <20250502130828.4071412-6-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250502130828.4071412-1-kirill.shutemov@linux.intel.com>
-References: <20250502130828.4071412-1-kirill.shutemov@linux.intel.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Oqamq4ql"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 779D940E01CF;
+	Fri,  2 May 2025 13:31:06 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id bSZneCzSyNAU; Fri,  2 May 2025 13:31:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1746192658; bh=yUaue560YkltyOlDG0wH62GcwgC5OBuxzVya6sKvsug=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Oqamq4qlI7br9n5Wd3igLSUN52Oqi154+I/XEpufXyQzY89hKLUPg0BVnjkQXft7l
+	 UZo4Pya0eF+nHC5QI3AEidSN4ivSJbilDTAjd5H9zPx9sXR5KqGM+/9A1AlHCMia1w
+	 8wsiqbkIgZxoZDE5PHOm0YkgotZ+YBQVCw+bqNEzuYuBjW90jWBjZsxzLuO1+7s70n
+	 qQZ0Xc7Kbsu1FD+MMzGBmBpQAwP6iweMZu0nLZ1RM9uV5FOfkPOqseONVHej5WM+db
+	 rw3jIh1HGCJ8UCGbpFjdeIswVFefh6KHfczz3fgWs4iAH/TIadtANJDwlDnPYVKjH0
+	 UlZ/ibOIq+/khKozqesbiuZ6Rj8E54KvYOWfDQoLimYvm3+fg7Tx24F6G/cyJVOG0g
+	 Fjxn53yGtx/yA7X6atX57UuXLrrQbyse39OuUoOtWSCJY1OwFgvbmTzC6l8B3CcKwa
+	 r6RZL5/bLtc5a8M484Hqm88kEoXTtSd/Q3czfvtzM3byaTrfjuCahH/LRxB8nwjcs9
+	 GS+jZAs0TkGRjMa+WtyW1CYLmM+f+L/56wJojZCu/ePjN+lRXy3dYQoeFjyj7WsLWP
+	 NRIfuuh0RQb111hd3SFtfcBMhj82LCQeKKyNBdyvcSyax/pmEJYKYo9+toO8V7ZXOK
+	 pdmGk/nNVdi4Ir5g7G+OLe14=
+Received: from zn.tnic (p579690ee.dip0.t-ipconnect.de [87.150.144.238])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4775940E0206;
+	Fri,  2 May 2025 13:30:43 +0000 (UTC)
+Date: Fri, 2 May 2025 15:30:32 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@linutronix.de,
+	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
+	hpa@zytor.com, michael.roth@amd.com, nikunj@amd.com,
+	seanjc@google.com, ardb@kernel.org, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH v3] x86/sev: Fix making shared pages private during kdump
+Message-ID: <20250502133032.GAaBTI-AsaIVn4hOS8@fat_crate.local>
+References: <20250430231738.370328-1-Ashish.Kalra@amd.com>
+ <633b73ac-8983-fe38-dcdc-0b6a08388f5d@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <633b73ac-8983-fe38-dcdc-0b6a08388f5d@amd.com>
 
-Introduce a pair of helpers to allocate and free memory for a given 2M
-range. The range is represented by struct page for any memory in the
-range and the PAMT memory by a list of pages.
+On Thu, May 01, 2025 at 08:56:00AM -0500, Tom Lendacky wrote:
+> On 4/30/25 18:17, Ashish Kalra wrote:
+> > From: Ashish Kalra <ashish.kalra@amd.com>
+> > 
+> > When the shared pages are being made private during kdump preparation
+> > there are additional checks to handle shared GHCB pages.
+> > 
+> > These additional checks include handling the case of GHCB page being
+> > contained within a huge page.
+> > 
+> > While handling the case of GHCB page contained within a huge page
+> > any shared page just below the GHCB page gets skipped from being
+> > transitioned back to private during kdump preparation.
+> 
+> Why this was occurring is because the original check was incorrect. The
+> check for
+> 
+>  ghcb <= addr + size
+> 
+> can result in skipping a range that should not have been skipped because
+> the "addr + size" is actually the start of a page/range after the end of
+> the range being checked. If the ghcb address was equal to addr + size,
+> then it was mistakenly considered part of the range when it really wasn't.
+> 
+> I think the check could have just been changed to:
+> 
+>   if (addr <= ghcb && ghcb < addr + size) {
+> 
+> The new checks are a bit clearer in showing normal pages vs huge pages,
+> though, but you can clearly see the "ghcb < addr + size" change to do the
+> right thing in the huge page case.
+> 
+> While it is likely that a GHCB page hasn't been part of a huge page during
+> all the testing, the change in snp_kexec_finish() to mask the address is
+> the proper thing to do. It probably doesn't even need the if check as the
+> mask can just be applied no matter what.
 
-Use per-2M refcounts to detect when PAMT memory has to be allocated and
-when it can be freed.
+Sounds like I'll be getting a v3.1 with Tom's suggestions?
 
-pamt_lock spinlock serializes against races between multiple
-tdx_pamt_add() as well as tdx_pamt_add() vs tdx_pamt_put().
+Thx.
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
----
- arch/x86/include/asm/tdx.h   |   2 +
- arch/x86/kvm/vmx/tdx.c       | 123 +++++++++++++++++++++++++++++++++++
- arch/x86/kvm/vmx/tdx_errno.h |   1 +
- 3 files changed, 126 insertions(+)
-
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 8091bf5b43cc..42449c054938 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -135,6 +135,8 @@ static inline int tdx_nr_pamt_pages(const struct tdx_sys_info *sysinfo)
- 	return sysinfo->tdmr.pamt_4k_entry_size * PTRS_PER_PTE / PAGE_SIZE;
- }
- 
-+atomic_t *tdx_get_pamt_refcount(unsigned long hpa);
-+
- int tdx_guest_keyid_alloc(void);
- u32 tdx_get_nr_guest_keyids(void);
- void tdx_guest_keyid_free(unsigned int keyid);
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index b952bc673271..ea7e2d93fb44 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -207,6 +207,10 @@ static bool tdx_operand_busy(u64 err)
- 	return (err & TDX_SEAMCALL_STATUS_MASK) == TDX_OPERAND_BUSY;
- }
- 
-+static bool tdx_hpa_range_not_free(u64 err)
-+{
-+	return (err & TDX_SEAMCALL_STATUS_MASK) == TDX_HPA_RANGE_NOT_FREE;
-+}
- 
- /*
-  * A per-CPU list of TD vCPUs associated with a given CPU.
-@@ -276,6 +280,125 @@ static inline void tdx_disassociate_vp(struct kvm_vcpu *vcpu)
- 	vcpu->cpu = -1;
- }
- 
-+static DEFINE_SPINLOCK(pamt_lock);
-+
-+static void tdx_free_pamt_pages(struct list_head *pamt_pages)
-+{
-+	struct page *page;
-+
-+	while ((page = list_first_entry_or_null(pamt_pages, struct page, lru))) {
-+		list_del(&page->lru);
-+		__free_page(page);
-+	}
-+}
-+
-+static int tdx_alloc_pamt_pages(struct list_head *pamt_pages)
-+{
-+	for (int i = 0; i < tdx_nr_pamt_pages(tdx_sysinfo); i++) {
-+		struct page *page = alloc_page(GFP_KERNEL);
-+		if (!page)
-+			goto fail;
-+		list_add(&page->lru, pamt_pages);
-+	}
-+	return 0;
-+fail:
-+	tdx_free_pamt_pages(pamt_pages);
-+	return -ENOMEM;
-+}
-+
-+static int tdx_pamt_add(atomic_t *pamt_refcount, unsigned long hpa,
-+			struct list_head *pamt_pages)
-+{
-+	u64 err;
-+
-+	hpa = ALIGN_DOWN(hpa, SZ_2M);
-+
-+	spin_lock(&pamt_lock);
-+
-+	/* Lost race to other tdx_pamt_add() */
-+	if (atomic_read(pamt_refcount) != 0) {
-+		atomic_inc(pamt_refcount);
-+		spin_unlock(&pamt_lock);
-+		tdx_free_pamt_pages(pamt_pages);
-+		return 0;
-+	}
-+
-+	err = tdh_phymem_pamt_add(hpa | TDX_PS_2M, pamt_pages);
-+
-+	if (err)
-+		tdx_free_pamt_pages(pamt_pages);
-+
-+	/*
-+	 * tdx_hpa_range_not_free() is true if current task won race
-+	 * against tdx_pamt_put().
-+	 */
-+	if (err && !tdx_hpa_range_not_free(err)) {
-+		spin_unlock(&pamt_lock);
-+		pr_tdx_error(TDH_PHYMEM_PAMT_ADD, err);
-+		return -EIO;
-+	}
-+
-+	atomic_set(pamt_refcount, 1);
-+	spin_unlock(&pamt_lock);
-+	return 0;
-+}
-+
-+static int tdx_pamt_get(struct page *page)
-+{
-+	unsigned long hpa = page_to_phys(page);
-+	atomic_t *pamt_refcount;
-+	LIST_HEAD(pamt_pages);
-+
-+	if (!tdx_supports_dynamic_pamt(tdx_sysinfo))
-+		return 0;
-+
-+	pamt_refcount = tdx_get_pamt_refcount(hpa);
-+	WARN_ON_ONCE(atomic_read(pamt_refcount) < 0);
-+
-+	if (atomic_inc_not_zero(pamt_refcount))
-+		return 0;
-+
-+	if (tdx_alloc_pamt_pages(&pamt_pages))
-+		return -ENOMEM;
-+
-+	return tdx_pamt_add(pamt_refcount, hpa, &pamt_pages);
-+}
-+
-+static void tdx_pamt_put(struct page *page)
-+{
-+	unsigned long hpa = page_to_phys(page);
-+	atomic_t *pamt_refcount;
-+	LIST_HEAD(pamt_pages);
-+	u64 err;
-+
-+	if (!tdx_supports_dynamic_pamt(tdx_sysinfo))
-+		return;
-+
-+	hpa = ALIGN_DOWN(hpa, SZ_2M);
-+
-+	pamt_refcount = tdx_get_pamt_refcount(hpa);
-+	if (!atomic_dec_and_test(pamt_refcount))
-+		return;
-+
-+	spin_lock(&pamt_lock);
-+
-+	/* Lost race against tdx_pamt_add()? */
-+	if (atomic_read(pamt_refcount) != 0) {
-+		spin_unlock(&pamt_lock);
-+		return;
-+	}
-+
-+	err = tdh_phymem_pamt_remove(hpa | TDX_PS_2M, &pamt_pages);
-+	spin_unlock(&pamt_lock);
-+
-+	if (err) {
-+		pr_tdx_error(TDH_PHYMEM_PAMT_REMOVE, err);
-+		return;
-+	}
-+
-+	tdx_free_pamt_pages(&pamt_pages);
-+}
-+
- static void tdx_clear_page(struct page *page)
- {
- 	const void *zero_page = (const void *) page_to_virt(ZERO_PAGE(0));
-diff --git a/arch/x86/kvm/vmx/tdx_errno.h b/arch/x86/kvm/vmx/tdx_errno.h
-index 6ff4672c4181..c8a471d6b991 100644
---- a/arch/x86/kvm/vmx/tdx_errno.h
-+++ b/arch/x86/kvm/vmx/tdx_errno.h
-@@ -18,6 +18,7 @@
- #define TDX_OPERAND_BUSY			0x8000020000000000ULL
- #define TDX_PREVIOUS_TLB_EPOCH_BUSY		0x8000020100000000ULL
- #define TDX_PAGE_METADATA_INCORRECT		0xC000030000000000ULL
-+#define TDX_HPA_RANGE_NOT_FREE			0xC000030400000000ULL
- #define TDX_VCPU_NOT_ASSOCIATED			0x8000070200000000ULL
- #define TDX_KEY_GENERATION_FAILED		0x8000080000000000ULL
- #define TDX_KEY_STATE_INCORRECT			0xC000081100000000ULL
 -- 
-2.47.2
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
