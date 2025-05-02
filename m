@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75909255F55
-	for <linux-coco@lists.linux.dev>; Fri,  2 May 2025 13:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317AA2561DA
+	for <linux-coco@lists.linux.dev>; Fri,  2 May 2025 13:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746191328; cv=none; b=qNkEjZ1BQAR88yw+hUZrzWCGCE8lJVh289A4WeJ11G50wmw5wunxeQ5Qu2aA1mwfLAdJI3oX8nKFo83472jQ8ZbgQriMr+aHhHEIwkSd6qR6uYWh9OX33SxBz7V6Hhs5y3hSdQTWdAJ4Hi/xKJOJ/VPHnR8JkkvrDF6SYUSfRns=
+	t=1746191329; cv=none; b=gWyQk6+EuQbiyVQZ5vrT/oBOcuXitHdsxIwoGo+RGiMmfwCB1aadLJEYN+dk6DLazQ0v0OMZp6CVdbqbWRFmlUtv8v4rMbie0cZTFK9UUgCsT5hL+tceeG9bq9sZ6Cc+44r+WTp6PUr2cXC1WnkCQ4TMK+Q+/zibbObr4XkmvpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746191328; c=relaxed/simple;
-	bh=m2m5QyspU/4UyDV/0jL1rXptk37jp9pz/ghUzoVVwFo=;
+	s=arc-20240116; t=1746191329; c=relaxed/simple;
+	bh=I6qbJYYYEbsv9ghw69w99htbaZsoBJusuXa9G8q9fEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZTmUC1EanucgH2w0TeSulRfgB/8yyZWS94gXqANmnUK5eHME7sOZL043vkVOGpybTHbteQc7YU0N3xYR0l7tBWz0T6zNgmmTTWLkipgkMM+3JY2vMs/Uxq1A69VxMLhvnzv+BVYk6gxb2uSpHGEYgwP8+YWkZ5j9y8FjzbflZ/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NlXjNMcK; arc=none smtp.client-ip=198.175.65.18
+	 MIME-Version; b=PuWqGf0kLY3EEvavQfgcQNVKFgsrznYbB/ElOaIvsPxhEBS9v28BqrWJvU6PmzMmjpfxQ4lPsQ5Q1NF7MTGxTRr0RaPmEqZfDb/3nbyZltYtaLDrFEDnt+BAvkUV7uAviA7id1TEJqjrJ9Xz/M/z9aZ2qfwJZymFkT/F+oun64A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KOtq/Ujt; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NlXjNMcK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KOtq/Ujt"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746191326; x=1777727326;
+  t=1746191327; x=1777727327;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=m2m5QyspU/4UyDV/0jL1rXptk37jp9pz/ghUzoVVwFo=;
-  b=NlXjNMcKjeKXliMSavkJdN2GkeFU7Wl2BmhB1n/IJ5izau/JE2/gCnxF
-   Nm8Emp7+qVBYjElLs8i8eypbon4fbSZYm/wZHIshtenouhgzE0em65MG/
-   /IBWtvKrlMo0IR8mb+v7u7djmVm/90VZ87w9Mke3MBrO8P22hIzKrjgjZ
-   LnnEOB8ZYGWWUouf0i554+O/QnoG29fVjIAv825DdMwynGa4+9ebgVCsi
-   0eQ8S+95KiAOEELiCIwGn2yLiNkEa5kfU/5HwWANV7kg6ZHpljm7R/Ut1
-   6dH4Sm0fZcFTjcIKlVGqeuSqfHx1cpv/NLlvP8bZtbPUqsqHOS08xNHC0
-   g==;
-X-CSE-ConnectionGUID: Cz777mi6Ruq+p/RLkEhk+Q==
-X-CSE-MsgGUID: uwddL1seQrCdgj736IyXvw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11421"; a="48012986"
+  bh=I6qbJYYYEbsv9ghw69w99htbaZsoBJusuXa9G8q9fEE=;
+  b=KOtq/UjtHlb+nTI2nfk2lUWz7ygn2TEwNdtp8KJx3lCEUFwItP/MBKgu
+   T41odZgaBuN6dc942DvnJQ7WTu+b7kjQPBlTFMV/crfWWP93Ng2Trwcko
+   tr1UKOv+X12uqDk0SESimzRurEjZOF1lTOK6Falo0QmlY3pTDYma94muP
+   09XMxurrxAESBZoCrnumMUlQhrNXxFV2b4eIOcXFucGsKwvWHLG5B3gLR
+   I4uqqFW+A61pPBAlqQR1TdCf5vXFmsX9KittQjPthccyIJQGDtf9JJ+Wa
+   tytfnOcciPtGKUwnbDgkkjgWedu16CmVjgJy608HIc73JvL9/iNM+iaz4
+   w==;
+X-CSE-ConnectionGUID: fiMfdarJTaSD/R7eZv5pRg==
+X-CSE-MsgGUID: 8GLearUOTvKj9Fkh6MRNcw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11421"; a="48012985"
 X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
-   d="scan'208";a="48012986"
+   d="scan'208";a="48012985"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
   by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 06:08:45 -0700
-X-CSE-ConnectionGUID: LfwDnBDURhq5OyBvLXjxmw==
-X-CSE-MsgGUID: zQqhLQYdSiKeYfAeNjyBVw==
+X-CSE-ConnectionGUID: IIAkqwwPTfGrRroE/gPC2A==
+X-CSE-MsgGUID: tzKiF+OjR1SUi0GIX1ZPUQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
-   d="scan'208";a="157871093"
+   d="scan'208";a="157871091"
 Received: from black.fi.intel.com ([10.237.72.28])
   by fmviesa002.fm.intel.com with ESMTP; 02 May 2025 06:08:41 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 86CB636F; Fri, 02 May 2025 16:08:36 +0300 (EEST)
+	id 7A599366; Fri, 02 May 2025 16:08:36 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: pbonzini@redhat.com,
 	seanjc@google.com
@@ -61,9 +61,9 @@ Cc: rick.p.edgecombe@intel.com,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [RFC, PATCH 10/12] KVM: TDX: Hookup phys_prepare() and phys_cleanup() kvm_x86_ops
-Date: Fri,  2 May 2025 16:08:26 +0300
-Message-ID: <20250502130828.4071412-11-kirill.shutemov@linux.intel.com>
+Subject: [RFC, PATCH 09/12] KVM: TDX: Preallocate PAMT pages to be used in page fault path
+Date: Fri,  2 May 2025 16:08:25 +0300
+Message-ID: <20250502130828.4071412-10-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250502130828.4071412-1-kirill.shutemov@linux.intel.com>
 References: <20250502130828.4071412-1-kirill.shutemov@linux.intel.com>
@@ -75,112 +75,59 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Allocate PAMT memory from a per-VCPU pool in kvm_x86_ops::phys_prepare()
-and release memory in kvm_x86_ops::phys_cleanup().
+Preallocate a page to be used in the link_external_spt() and
+set_external_spte() paths.
 
-The TDP code invokes these callbacks to handle PAMT memory management.
+In the worst-case scenario, handling a page fault might require a
+tdx_nr_pamt_pages() pages for each page table level.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/kvm/vmx/main.c    |  2 ++
- arch/x86/kvm/vmx/tdx.c     | 30 ++++++++++++++++++++++++++++++
- arch/x86/kvm/vmx/x86_ops.h |  9 +++++++++
- virt/kvm/kvm_main.c        |  1 +
- 4 files changed, 42 insertions(+)
+ arch/x86/include/asm/kvm_host.h |  2 ++
+ arch/x86/kvm/mmu/mmu.c          | 10 ++++++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index 94d5d907d37b..665a3dbd4ba5 100644
---- a/arch/x86/kvm/vmx/main.c
-+++ b/arch/x86/kvm/vmx/main.c
-@@ -63,6 +63,8 @@ static __init int vt_hardware_setup(void)
- 		vt_x86_ops.free_external_spt = tdx_sept_free_private_spt;
- 		vt_x86_ops.remove_external_spte = tdx_sept_remove_private_spte;
- 		vt_x86_ops.protected_apic_has_interrupt = tdx_protected_apic_has_interrupt;
-+		vt_x86_ops.phys_prepare = tdx_phys_prepare;
-+		vt_x86_ops.phys_cleanup = tdx_phys_cleanup;
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 91958c55f918..a5661499a176 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -849,6 +849,8 @@ struct kvm_vcpu_arch {
+ 	 */
+ 	struct kvm_mmu_memory_cache mmu_external_spt_cache;
+ 
++	struct kvm_mmu_memory_cache pamt_page_cache;
++
+ 	/*
+ 	 * QEMU userspace and the guest each have their own FPU state.
+ 	 * In vcpu_run, we switch between the user and guest FPU contexts.
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index a284dce227a0..7bfa0dc50440 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -616,6 +616,15 @@ static int mmu_topup_memory_caches(struct kvm_vcpu *vcpu, bool maybe_indirect)
+ 		if (r)
+ 			return r;
  	}
- 
- 	return 0;
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 18c4ae00cd8d..0f06ae7ff6b9 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1958,6 +1958,36 @@ int tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
- 	return tdx_sept_drop_private_spte(kvm, gfn, level, page);
- }
- 
-+int tdx_phys_prepare(struct kvm_vcpu *vcpu, kvm_pfn_t pfn)
-+{
-+	unsigned long hpa = pfn << PAGE_SHIFT;
-+	atomic_t *pamt_refcount;
-+	LIST_HEAD(pamt_pages);
 +
-+	if (!tdx_supports_dynamic_pamt(tdx_sysinfo))
-+		return 0;
-+
-+	pamt_refcount = tdx_get_pamt_refcount(hpa);
-+	if (atomic_inc_not_zero(pamt_refcount))
-+		return 0;
-+
-+	for (int i = 0; i < tdx_nr_pamt_pages(tdx_sysinfo); i++) {
-+		struct page *page;
-+		void *p;
-+
-+		p = kvm_mmu_memory_cache_alloc(&vcpu->arch.pamt_page_cache);
-+		page = virt_to_page(p);
-+		list_add(&page->lru, &pamt_pages);
++	if (vcpu->kvm->arch.vm_type == KVM_X86_TDX_VM) {
++		int nr = tdx_nr_pamt_pages(tdx_get_sysinfo());
++		r = kvm_mmu_topup_memory_cache(&vcpu->arch.pamt_page_cache,
++					       nr * PT64_ROOT_MAX_LEVEL);
++		if (r)
++			return r;
 +	}
 +
-+	return tdx_pamt_add(pamt_refcount, hpa, &pamt_pages);
-+}
-+
-+void tdx_phys_cleanup(kvm_pfn_t pfn)
-+{
-+	tdx_pamt_put(pfn_to_page(pfn));
-+}
-+
- void tdx_deliver_interrupt(struct kvm_lapic *apic, int delivery_mode,
- 			   int trig_mode, int vector)
- {
-diff --git a/arch/x86/kvm/vmx/x86_ops.h b/arch/x86/kvm/vmx/x86_ops.h
-index 6bf8be570b2e..111f16c3039f 100644
---- a/arch/x86/kvm/vmx/x86_ops.h
-+++ b/arch/x86/kvm/vmx/x86_ops.h
-@@ -158,6 +158,8 @@ int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn,
- 			      enum pg_level level, kvm_pfn_t pfn);
- int tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
- 				 enum pg_level level, kvm_pfn_t pfn);
-+int tdx_phys_prepare(struct kvm_vcpu *vcpu, kvm_pfn_t pfn);
-+void tdx_phys_cleanup(kvm_pfn_t pfn);
- 
- void tdx_flush_tlb_current(struct kvm_vcpu *vcpu);
- void tdx_flush_tlb_all(struct kvm_vcpu *vcpu);
-@@ -224,6 +226,13 @@ static inline int tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
- 	return -EOPNOTSUPP;
+ 	return kvm_mmu_topup_memory_cache(&vcpu->arch.mmu_page_header_cache,
+ 					  PT64_ROOT_MAX_LEVEL);
+ }
+@@ -626,6 +635,7 @@ static void mmu_free_memory_caches(struct kvm_vcpu *vcpu)
+ 	kvm_mmu_free_memory_cache(&vcpu->arch.mmu_shadow_page_cache);
+ 	kvm_mmu_free_memory_cache(&vcpu->arch.mmu_shadowed_info_cache);
+ 	kvm_mmu_free_memory_cache(&vcpu->arch.mmu_external_spt_cache);
++	kvm_mmu_free_memory_cache(&vcpu->arch.pamt_page_cache);
+ 	kvm_mmu_free_memory_cache(&vcpu->arch.mmu_page_header_cache);
  }
  
-+static inline int tdx_phys_prepare(struct kvm_vcpu *vcpu, kvm_pfn_t pfn)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static inline void tdx_phys_cleanup(kvm_pfn_t pfn) {}
-+
- static inline void tdx_flush_tlb_current(struct kvm_vcpu *vcpu) {}
- static inline void tdx_flush_tlb_all(struct kvm_vcpu *vcpu) {}
- static inline void tdx_load_mmu_pgd(struct kvm_vcpu *vcpu, hpa_t root_hpa, int root_level) {}
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 69782df3617f..c3ba3ca37940 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -436,6 +436,7 @@ void *kvm_mmu_memory_cache_alloc(struct kvm_mmu_memory_cache *mc)
- 	BUG_ON(!p);
- 	return p;
- }
-+EXPORT_SYMBOL_GPL(kvm_mmu_memory_cache_alloc);
- #endif
- 
- static void kvm_vcpu_init(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned id)
 -- 
 2.47.2
 
