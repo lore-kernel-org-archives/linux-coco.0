@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44A7256C60
-	for <linux-coco@lists.linux.dev>; Fri,  2 May 2025 13:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A3F256C8B
+	for <linux-coco@lists.linux.dev>; Fri,  2 May 2025 13:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746191329; cv=none; b=kQKKj9TSka1hU1Jkr1fXD2btwoP4zBFYNPntJyfINLETqPX7tfpp78KncquqS6CnqXElE9EJLgp89Yv5LpCzXpChmPiTphBYGFHZY3MJ18Hgd8yZWqjAk8WAGtyfSqYO4vhXhx3F9CjSh0To6ZNwmS9G55piYar+igy2AWHC2+k=
+	t=1746191330; cv=none; b=gjiITDtiHKPX99vw157VAPl+PGEKimrHb/BWZ5z3Q7mto/T0yDcp2CkAq8dCeLEjb7o1gU9uyxibljLxS56razAEOmZXfavxv7rDpmsGaJr4YISTsSWKJS7jjMKH3DiQs2PWZwU5KCKNJx+R5n0KrAbPSbYY6f3M0XNxK81TQE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746191329; c=relaxed/simple;
-	bh=7xeWckPjP89IBi9NXNh7YPusMMIHW2rLxxKdSrf9EoQ=;
+	s=arc-20240116; t=1746191330; c=relaxed/simple;
+	bh=EA7G0eYYU+Fzt6HFAAauj8vAuuhBCOFdQK2LisRs3Ro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GOD9xGTAxBI5PhB7A3sH9AgJK/tpuBaVm/1662igQUYPyxGg6Pt43XDoALhdjMEyMiytpOok3mWBaA7QhN6qwVIodUufDS1R9BbOuzq+76L8OiSG6W2XWLzIp1jM+pRkWVALvOm7m2vq/kh9zdU6FDR9HUs0WEOthGrv72LkhJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aSrwwbFi; arc=none smtp.client-ip=198.175.65.18
+	 MIME-Version; b=M9iZxGMBRIU9dN6TZeAX6ZtC5PcT9Le1IvUPWXKDXJ0UiF7bcrxVvbjFpE5HpbXouGQ1/PHjr9mnkfRaHtwiT1XgKZMQwt1xJD36ViDiXJYqoCfXqeNgrXve6J82RIgRoWA1poTgQWLyNNrQPPmDKEBL4nKBW5jIYlrvwYqGmWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Kt6x5xIY; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aSrwwbFi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Kt6x5xIY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746191327; x=1777727327;
+  t=1746191328; x=1777727328;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=7xeWckPjP89IBi9NXNh7YPusMMIHW2rLxxKdSrf9EoQ=;
-  b=aSrwwbFi44IoB//BYEYrxoOp/C4H+uuciCqgeqPH7WRYBU/O7zWFl2eO
-   U5HLBNCFTsfUZzMUlKKUNYxxosblndvvzTQwDVG3GtDcPdQ/OssejISGq
-   DehFRSGDCgJwX/MToRi9thL/3hpU8qPdxJbxGC6xA00c+8VMIUUHoHK6D
-   QnJvEGu1f9yT/n9S9/b5siX6k6qZXBZlykaswgMXBSJkN6/W8heg3Pr4q
-   wMg9yVPAjMjInpkdaTD1csitVIxJq7tgFDsDs6LfUc891SdK+12AI+guj
-   BWdXO4QYNtJMyzmnkfiTwx7//nw3mAjttxG44VztPudB0XAkjQfjYfUqy
-   w==;
-X-CSE-ConnectionGUID: cQzKxlPQQda8WGZzQwryxw==
-X-CSE-MsgGUID: oCnNhZEXR+O4DhfGb1tulw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11421"; a="48012998"
+  bh=EA7G0eYYU+Fzt6HFAAauj8vAuuhBCOFdQK2LisRs3Ro=;
+  b=Kt6x5xIYVSl/RQM2YsT3pnXAFsJhjrzsLV6ZIzcsj4L+Jm6J6ZWT6qdP
+   d/FKzg7Xh2iFShNZXsGuXeHa49KlyfMgJoSbah14vjdZrjal4seUv0omc
+   ylr3eeAPgp5Goj9xzaRYaaS01FI/vL5zO9eyP4Xkf9QnbZq8VV1hMYu0T
+   Yrw90ejXonRce/LMj9Wc9IsCMUGIZxHwmlw4CpKqsFkQ5jetYdZJC2zRV
+   J90zNpCNQvDSNo9bC8z3F0jMm5H7i0b0rg66iCo3+DDGmcpNStJNpeSzV
+   CxAKH7IrWVYHaWiohOl9LRAYnJnQe5epDewQDDw/nZ96TksNOnVPcEtAH
+   Q==;
+X-CSE-ConnectionGUID: zLaE81AaTjSy/yFDtEdo5w==
+X-CSE-MsgGUID: P2mOnUgFQ62whOloNn81Cw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11421"; a="48012999"
 X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
-   d="scan'208";a="48012998"
+   d="scan'208";a="48012999"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
   by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 06:08:45 -0700
-X-CSE-ConnectionGUID: p2hxTxWpReWIJnPWa4/6yQ==
-X-CSE-MsgGUID: XeibqyAdQrmPjFUwZsSSIw==
+X-CSE-ConnectionGUID: JDHTPLdtRNylud+KIJttpg==
+X-CSE-MsgGUID: EBR059RXSo2bT5ZO4EBvmg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,256,1739865600"; 
-   d="scan'208";a="157871094"
+   d="scan'208";a="157871092"
 Received: from black.fi.intel.com ([10.237.72.28])
   by fmviesa002.fm.intel.com with ESMTP; 02 May 2025 06:08:41 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 97A1D436; Fri, 02 May 2025 16:08:36 +0300 (EEST)
+	id 7235735D; Fri, 02 May 2025 16:08:36 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: pbonzini@redhat.com,
 	seanjc@google.com
@@ -61,9 +61,9 @@ Cc: rick.p.edgecombe@intel.com,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [RFC, PATCH 12/12] x86/virt/tdx: Enable Dynamic PAMT
-Date: Fri,  2 May 2025 16:08:28 +0300
-Message-ID: <20250502130828.4071412-13-kirill.shutemov@linux.intel.com>
+Subject: [RFC, PATCH 08/12] KVM: x86/tdp_mmu: Add phys_prepare() and phys_cleanup() to kvm_x86_ops
+Date: Fri,  2 May 2025 16:08:24 +0300
+Message-ID: <20250502130828.4071412-9-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250502130828.4071412-1-kirill.shutemov@linux.intel.com>
 References: <20250502130828.4071412-1-kirill.shutemov@linux.intel.com>
@@ -75,94 +75,150 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The Physical Address Metadata Table (PAMT) holds TDX metadata for
-physical memory and must be allocated by the kernel during TDX module
-initialization.
+The functions kvm_x86_ops::link_external_spt() and
+kvm_x86_ops::set_external_spte() are used to assign new memory to a VM.
+When using TDX with Dynamic PAMT enabled, the assigned memory must be
+covered by PAMT.
 
-The exact size of the required PAMT memory is determined by the TDX
-module and may vary between TDX module versions, but currently it is
-approximately 0.4% of the system memory. This is a significant
-commitment, especially if it is not known upfront whether the machine
-will run any TDX guests.
+The new function kvm_x86_ops::phys_prepare() is called before
+link_external_spt() and set_external_spte() to ensure that the memory is
+ready to be assigned to the virtual machine. In the case of TDX, it
+makes sure that the memory is covered by PAMT.
 
-The Dynamic PAMT feature reduces static PAMT allocations. PAMT_1G and
-PAMT_2M levels are still allocated on TDX module initialization, but the
-PAMT_4K level is allocated dynamically, reducing static allocations to
-approximately 0.004% of the system memory.
+kvm_x86_ops::phys_prepare() is called in a context where struct kvm_vcpu
+is available, allowing the implementation to allocate memory from a
+per-VCPU pool.
 
-All pieces are in place. Enable Dynamic PAMT if it is supported.
+The function kvm_x86_ops::phys_cleanup() frees PAMT memory in case of
+failure.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/include/asm/tdx.h  | 6 +++++-
- arch/x86/virt/vmx/tdx/tdx.c | 8 ++++++++
- arch/x86/virt/vmx/tdx/tdx.h | 3 ---
- 3 files changed, 13 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/kvm-x86-ops.h |  2 ++
+ arch/x86/include/asm/kvm_host.h    |  3 ++
+ arch/x86/kvm/mmu/tdp_mmu.c         | 47 +++++++++++++++++++++++++++---
+ 3 files changed, 48 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 42449c054938..5744f98d193e 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -32,6 +32,10 @@
- #define TDX_SUCCESS		0ULL
- #define TDX_RND_NO_ENTROPY	0x8000020300000000ULL
+diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+index 79406bf07a1c..37081d04e82f 100644
+--- a/arch/x86/include/asm/kvm-x86-ops.h
++++ b/arch/x86/include/asm/kvm-x86-ops.h
+@@ -99,6 +99,8 @@ KVM_X86_OP_OPTIONAL(link_external_spt)
+ KVM_X86_OP_OPTIONAL(set_external_spte)
+ KVM_X86_OP_OPTIONAL(free_external_spt)
+ KVM_X86_OP_OPTIONAL(remove_external_spte)
++KVM_X86_OP_OPTIONAL(phys_prepare)
++KVM_X86_OP_OPTIONAL(phys_cleanup)
+ KVM_X86_OP(has_wbinvd_exit)
+ KVM_X86_OP(get_l2_tsc_offset)
+ KVM_X86_OP(get_l2_tsc_multiplier)
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 6c06f3d6e081..91958c55f918 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1813,6 +1813,9 @@ struct kvm_x86_ops {
+ 	int (*remove_external_spte)(struct kvm *kvm, gfn_t gfn, enum pg_level level,
+ 				    kvm_pfn_t pfn_for_gfn);
  
-+/* Bit definitions of TDX_FEATURES0 metadata field */
-+#define TDX_FEATURES0_NO_RBP_MOD	BIT_ULL(18)
-+#define TDX_FEATURES0_DYNAMIC_PAMT	BIT_ULL(36)
++	int (*phys_prepare)(struct kvm_vcpu *vcpu, kvm_pfn_t pfn);
++	void (*phys_cleanup)(kvm_pfn_t pfn);
 +
- #ifndef __ASSEMBLER__
+ 	bool (*has_wbinvd_exit)(void);
  
- #include <uapi/asm/mce.h>
-@@ -127,7 +131,7 @@ const struct tdx_sys_info *tdx_get_sysinfo(void);
- 
- static inline bool tdx_supports_dynamic_pamt(const struct tdx_sys_info *sysinfo)
- {
--	return false; /* To be enabled when kernel is ready */
-+	return sysinfo->features.tdx_features0 & TDX_FEATURES0_DYNAMIC_PAMT;
+ 	u64 (*get_l2_tsc_offset)(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+index 405874f4d088..f6c836b2e6fc 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -1137,6 +1137,26 @@ void kvm_tdp_mmu_invalidate_roots(struct kvm *kvm,
+ 	}
  }
  
- static inline int tdx_nr_pamt_pages(const struct tdx_sys_info *sysinfo)
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 74bd81acef7b..f35566c0588d 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -945,6 +945,8 @@ static int construct_tdmrs(struct list_head *tmb_list,
- 	return ret;
- }
- 
-+#define TDX_SYS_CONFIG_DYNAMIC_PAMT	BIT(16)
++static int tdp_mmu_install_spte(struct kvm_vcpu *vcpu,
++				struct tdp_iter *iter,
++				u64 spte)
++{
++	kvm_pfn_t pfn = 0;
++	int ret = 0;
 +
- static int config_tdx_module(struct tdmr_info_list *tdmr_list, u64 global_keyid)
- {
- 	struct tdx_module_args args = {};
-@@ -972,6 +974,12 @@ static int config_tdx_module(struct tdmr_info_list *tdmr_list, u64 global_keyid)
- 	args.rcx = __pa(tdmr_pa_array);
- 	args.rdx = tdmr_list->nr_consumed_tdmrs;
- 	args.r8 = global_keyid;
-+
-+	if (tdx_supports_dynamic_pamt(&tdx_sysinfo)) {
-+		pr_info("Enable Dynamic PAMT\n");
-+		args.r8 |= TDX_SYS_CONFIG_DYNAMIC_PAMT;
++	if (is_mirror_sptep(iter->sptep) && !is_frozen_spte(spte)) {
++		pfn = spte_to_pfn(spte);
++		ret = static_call(kvm_x86_phys_prepare)(vcpu, pfn);
 +	}
++	if (ret)
++		return ret;
++	ret = tdp_mmu_set_spte_atomic(vcpu->kvm, iter, spte);
++	if (pfn && ret)
++		static_call(kvm_x86_phys_cleanup)(pfn);
 +
- 	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
- 
- 	/* Free the array as it is not required anymore. */
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index 46c4214b79fb..096c78a1d438 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -86,9 +86,6 @@ struct tdmr_info {
- 	DECLARE_FLEX_ARRAY(struct tdmr_reserved_area, reserved_areas);
- } __packed __aligned(TDMR_INFO_ALIGNMENT);
- 
--/* Bit definitions of TDX_FEATURES0 metadata field */
--#define TDX_FEATURES0_NO_RBP_MOD	BIT(18)
--
++	return ret;
++}
++
  /*
-  * Do not put any hardware-defined TDX structure representations below
-  * this comment!
+  * Installs a last-level SPTE to handle a TDP page fault.
+  * (NPT/EPT violation/misconfiguration)
+@@ -1170,7 +1190,7 @@ static int tdp_mmu_map_handle_target_level(struct kvm_vcpu *vcpu,
+ 
+ 	if (new_spte == iter->old_spte)
+ 		ret = RET_PF_SPURIOUS;
+-	else if (tdp_mmu_set_spte_atomic(vcpu->kvm, iter, new_spte))
++	else if (tdp_mmu_install_spte(vcpu, iter, new_spte))
+ 		return RET_PF_RETRY;
+ 	else if (is_shadow_present_pte(iter->old_spte) &&
+ 		 (!is_last_spte(iter->old_spte, iter->level) ||
+@@ -1211,7 +1231,7 @@ static int tdp_mmu_map_handle_target_level(struct kvm_vcpu *vcpu,
+  * Returns: 0 if the new page table was installed. Non-0 if the page table
+  *          could not be installed (e.g. the atomic compare-exchange failed).
+  */
+-static int tdp_mmu_link_sp(struct kvm *kvm, struct tdp_iter *iter,
++static int __tdp_mmu_link_sp(struct kvm *kvm, struct tdp_iter *iter,
+ 			   struct kvm_mmu_page *sp, bool shared)
+ {
+ 	u64 spte = make_nonleaf_spte(sp->spt, !kvm_ad_enabled);
+@@ -1230,6 +1250,25 @@ static int tdp_mmu_link_sp(struct kvm *kvm, struct tdp_iter *iter,
+ 	return 0;
+ }
+ 
++static int tdp_mmu_link_sp(struct kvm_vcpu *vcpu, struct tdp_iter *iter,
++			   struct kvm_mmu_page *sp, bool shared)
++{
++	kvm_pfn_t pfn = 0;
++	int ret = 0;
++
++	if (sp->external_spt) {
++		pfn = __pa(sp->external_spt) >> PAGE_SHIFT;
++		ret = static_call(kvm_x86_phys_prepare)(vcpu, pfn);
++		if (ret)
++			return ret;
++	}
++	ret = __tdp_mmu_link_sp(vcpu->kvm, iter, sp, shared);
++	if (pfn && ret)
++		static_call(kvm_x86_phys_cleanup)(pfn);
++
++	return ret;
++}
++
+ static int tdp_mmu_split_huge_page(struct kvm *kvm, struct tdp_iter *iter,
+ 				   struct kvm_mmu_page *sp, bool shared);
+ 
+@@ -1288,7 +1327,7 @@ int kvm_tdp_mmu_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+ 			KVM_BUG_ON(is_mirror_sptep(iter.sptep), vcpu->kvm);
+ 			r = tdp_mmu_split_huge_page(kvm, &iter, sp, true);
+ 		} else {
+-			r = tdp_mmu_link_sp(kvm, &iter, sp, true);
++			r = tdp_mmu_link_sp(vcpu, &iter, sp, true);
+ 		}
+ 
+ 		/*
+@@ -1514,7 +1553,7 @@ static int tdp_mmu_split_huge_page(struct kvm *kvm, struct tdp_iter *iter,
+ 	 * correctness standpoint since the translation will be the same either
+ 	 * way.
+ 	 */
+-	ret = tdp_mmu_link_sp(kvm, iter, sp, shared);
++	ret = __tdp_mmu_link_sp(kvm, iter, sp, shared);
+ 	if (ret)
+ 		goto out;
+ 
 -- 
 2.47.2
 
