@@ -1,52 +1,52 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E4C21E094
-	for <linux-coco@lists.linux.dev>; Tue,  6 May 2025 22:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C653220F51
+	for <linux-coco@lists.linux.dev>; Tue,  6 May 2025 22:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746572261; cv=none; b=QpXfdrFUEI3lOmp0ULOEI/9v1w8Hfl+N0011JAjycfc3MTfypoIb55g5NU6in8FJLEWaN+Jw48h5Yibjq/ZdIM0V5P1fyolM1WQMbGHofBIj3DtlsemDLaftTjtnVaV/RrQbRxkzxpQSRCFbpMwTbAsRnfUF0ksHjemxHrbVvRA=
+	t=1746572264; cv=none; b=tUmVQeyYEMz1z97kL0EY2YxHFOWo5WLnWqFNOiadwN5d3PVg0ZHvx8KTip99+IWdkxAtD5woQcfI1PPEqXwfi5LLEMsq6/+JhUc6qlI1PGC61iHHUvqEsukvIYX2BoIoQXnNLdAGZiLB/D+OBcJHuWu2BtMyRo5IDO0SHA2R4+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746572261; c=relaxed/simple;
-	bh=QktQjePJmdQh76RmXkFHAPBbgd+38gmYsixWYkuxDjM=;
+	s=arc-20240116; t=1746572264; c=relaxed/simple;
+	bh=kgYIpqC3kdhwbgazXvdMTlmn17dcW7g0J3sZ3oezZQo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AB4ntyzi2qPm0nfscLpflgRDG9yD2XnEPr8TR/fLoaZOCz3RuX63KjiFJooAOogcjRKt/3k8HUeHezkOF8GXmR6+u3zaZFDSITEzmHtrn0e8MmVPi34oXGN0MjX0CHZ6EQQU2nRgi6dginyiTOL7b4EEM198Yiw7ekfiLBooufc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bL8O0lSg; arc=none smtp.client-ip=192.198.163.16
+	 In-Reply-To:To:Cc; b=WsO6I9lNfk5GGeUYB5Ft1pdoTxEGgY4H03llOB7W7EHPAAfUAS0KHpR6MYjZU/5pKK0nkHYuPPLraLWz5KQd7KgHaHQOEwJNY8Mh3KZpK6YGakU5Xl3vv6tc1gpEbRxP2/rniUD7I4K/OHkdjLZtMJnJZqbeDjas3A4sPZ2gorM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j5hi+O0O; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bL8O0lSg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j5hi+O0O"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746572259; x=1778108259;
+  t=1746572262; x=1778108262;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=QktQjePJmdQh76RmXkFHAPBbgd+38gmYsixWYkuxDjM=;
-  b=bL8O0lSgSWUxzTv6czoCg5ZvlsDICrSSjpnq3h6jKWFv2Pe3JrqdtgjT
-   GY/+topCvlnho4UUyrWqBeFYrNBHyJpp3/KZBrUm6JhtWX1I/u1lmkHg9
-   sgLAbGYAiSQDTJwCsADCtWJ7oEN97NhCcH5CaDjBMMohxhEJo/ORENq1Q
-   cbFxJS3/qAHFlzK+AmA4nQb6+4u8fp4WrQM4TBK+9MdhGS3MTrzCU+9aV
-   1O4UAizrO1nroEJZClnaKHu3RsRiZiL2+nDke6JeaIwBBL5z9ck9D096y
-   IT8cex4KcVN16a0DHYO5Hs7e1i8QRu3jr3DyeSfRsOO7YpjJkarRD27x7
-   A==;
-X-CSE-ConnectionGUID: hTDJxIlPRDeEXtrzQMZGgw==
-X-CSE-MsgGUID: Dt242q6EQaWLVN67tCdimg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="35898329"
+  bh=kgYIpqC3kdhwbgazXvdMTlmn17dcW7g0J3sZ3oezZQo=;
+  b=j5hi+O0OfVxxsXJSGTDMQuI3yCNAJGWMl5QymY1nE/kSQ8EVxWTSorWm
+   mDPNv8Nps8/nrI0y5/xgT7YGeVhFyB/hMWa0Hpy+8x6u72fDWqFJ+9eAM
+   hSX1vmfPTyNjRQ02TIM90ctZoDy1EMUJyYsP/sTArzToWTnA84t20qgUe
+   rNKuy1sTX3UYJmP7uXFvfjz0ZsDrhG+3OKtDgSEaTrdowhtaoqH0svJYP
+   H3kOwTlpJC+7bGPBFd5B9O01SNKk24rOPh1Z9RgHNXHW/KE2O1Aeu8ce8
+   mn0BFy376CE6fBtrF6rIrTdjazseU5nEr5L4zdaDX+h9kdMfoXhBoavR7
+   g==;
+X-CSE-ConnectionGUID: MY5bjTdnSp+894dfbxyWUA==
+X-CSE-MsgGUID: ibHTT+4ZSH2sI9ojALMQ5w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="35898356"
 X-IronPort-AV: E=Sophos;i="6.15,267,1739865600"; 
-   d="scan'208";a="35898329"
+   d="scan'208";a="35898356"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 15:57:38 -0700
-X-CSE-ConnectionGUID: Rs4agT2JTgiDcC1VdWNcuQ==
-X-CSE-MsgGUID: Ax+Z+WKJRrG4DiffEsM1Zw==
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 15:57:42 -0700
+X-CSE-ConnectionGUID: 6al7VJIJRYizL5QBgE7LSg==
+X-CSE-MsgGUID: VNUn4wcWSNOrQOkQSYFZbw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,267,1739865600"; 
-   d="scan'208";a="135477005"
+   d="scan'208";a="135477019"
 Received: from sjdobek-mobl3.amr.corp.intel.com (HELO bxing-mobl1.clients.intel.com) ([10.246.114.48])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 15:57:36 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 15:57:40 -0700
 From: Cedric Xing <cedric.xing@intel.com>
-Date: Tue, 06 May 2025 17:57:10 -0500
-Subject: [PATCH v6 4/7] x86/tdx: tdx_mcall_get_report0: Return -EBUSY on
- TDCALL_OPERAND_BUSY error
+Date: Tue, 06 May 2025 17:57:12 -0500
+Subject: [PATCH v6 6/7] virt: tdx-guest: Refactor and streamline TDREPORT
+ generation
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250506-tdx-rtmr-v6-4-ac6ff5e9d58a@intel.com>
+Message-Id: <20250506-tdx-rtmr-v6-6-ac6ff5e9d58a@intel.com>
 References: <20250506-tdx-rtmr-v6-0-ac6ff5e9d58a@intel.com>
 In-Reply-To: <20250506-tdx-rtmr-v6-0-ac6ff5e9d58a@intel.com>
 To: Dan Williams <dan.j.williams@intel.com>, 
@@ -74,50 +74,120 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
  Cedric Xing <cedric.xing@intel.com>
 X-Mailer: b4 0.14.2
 
-Return `-EBUSY` from tdx_mcall_get_report0() when `TDG.MR.REPORT` returns
-`TDCALL_OPERAND_BUSY`. This enables the caller to retry obtaining a
-TDREPORT later if another VCPU is extending an RTMR concurrently.
+Consolidate instances (code segments) of TDREPORT generation to improve
+readability and maintainability, by refactoring each instance into invoking
+a unified subroutine throughout the TDX guest driver. Implement proper
+locking around TDG.MR.REPORT and TDG.MR.RTMR.EXTEND to avoid race inside
+the TDX module. Preallocate TDREPORT buffer to reduce overhead in
+subsequent TDREPORT generation.
 
 Signed-off-by: Cedric Xing <cedric.xing@intel.com>
 Acked-by: Dionna Amalie Glaze <dionnaglaze@google.com>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
 ---
- arch/x86/coco/tdx/tdx.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/virt/coco/tdx-guest/tdx-guest.c | 63 ++++-----------------------------
+ 1 file changed, 7 insertions(+), 56 deletions(-)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 0b6804d2a5e14d3ccbee5d19ad8ae6674527fb2f..7b2833705d475a8c0c0e8393685f923c5fd58945 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -110,12 +110,13 @@ static inline u64 tdg_vm_wr(u64 field, u64 value, u64 mask)
-  *              REPORTDATA to be included into TDREPORT.
-  * @tdreport: Address of the output buffer to store TDREPORT.
-  *
-- * Refer to section titled "TDG.MR.REPORT leaf" in the TDX Module
-- * v1.0 specification for more information on TDG.MR.REPORT TDCALL.
-+ * Refer to section titled "TDG.MR.REPORT leaf" in the TDX Module v1.0
-+ * specification for more information on TDG.MR.REPORT TDCALL.
-+ *
-  * It is used in the TDX guest driver module to get the TDREPORT0.
-  *
-- * Return 0 on success, -EINVAL for invalid operands, or -EIO on
-- * other TDCALL failures.
-+ * Return 0 on success, -ENXIO for invalid operands, -EBUSY for busy operation,
-+ * or -EIO on other TDCALL failures.
-  */
- int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport)
+diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+index 452520ad1b32341405cae63a9cea02fdf8baf9b9..e94fed82839e767cb803cafb3f69fec7a7de6364 100644
+--- a/drivers/virt/coco/tdx-guest/tdx-guest.c
++++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+@@ -202,37 +202,8 @@ static u32 getquote_timeout = 30;
+ 
+ static long tdx_get_report0(struct tdx_report_req __user *req)
  {
-@@ -129,7 +130,9 @@ int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport)
- 	ret = __tdcall(TDG_MR_REPORT, &args);
- 	if (ret) {
- 		if (TDCALL_RETURN_CODE(ret) == TDCALL_INVALID_OPERAND)
--			return -EINVAL;
-+			return -ENXIO;
-+		else if (TDCALL_RETURN_CODE(ret) == TDCALL_OPERAND_BUSY)
-+			return -EBUSY;
- 		return -EIO;
+-	u8 *reportdata, *tdreport;
+-	long ret;
+-
+-	reportdata = kmalloc(TDX_REPORTDATA_LEN, GFP_KERNEL);
+-	if (!reportdata)
+-		return -ENOMEM;
+-
+-	tdreport = kzalloc(TDX_REPORT_LEN, GFP_KERNEL);
+-	if (!tdreport) {
+-		ret = -ENOMEM;
+-		goto out;
+-	}
+-
+-	if (copy_from_user(reportdata, req->reportdata, TDX_REPORTDATA_LEN)) {
+-		ret = -EFAULT;
+-		goto out;
+-	}
+-
+-	/* Generate TDREPORT0 using "TDG.MR.REPORT" TDCALL */
+-	ret = tdx_mcall_get_report0(reportdata, tdreport);
+-	if (ret)
+-		goto out;
+-
+-	if (copy_to_user(req->tdreport, tdreport, TDX_REPORT_LEN))
+-		ret = -EFAULT;
+-
+-out:
+-	kfree(reportdata);
+-	kfree(tdreport);
+-
+-	return ret;
++	return tdx_do_report(USER_SOCKPTR(req->reportdata),
++			     USER_SOCKPTR(req->tdreport));
+ }
+ 
+ static void free_quote_buf(void *buf)
+@@ -293,7 +264,7 @@ static int wait_for_quote_completion(struct tdx_quote_buf *quote_buf, u32 timeou
+ 
+ static int tdx_report_new(struct tsm_report *report, void *data)
+ {
+-	u8 *buf, *reportdata = NULL, *tdreport = NULL;
++	u8 *buf;
+ 	struct tdx_quote_buf *quote_buf = quote_data;
+ 	struct tsm_desc *desc = &report->desc;
+ 	int ret;
+@@ -318,34 +289,16 @@ static int tdx_report_new(struct tsm_report *report, void *data)
+ 		goto done;
  	}
  
+-	reportdata = kmalloc(TDX_REPORTDATA_LEN, GFP_KERNEL);
+-	if (!reportdata) {
+-		ret = -ENOMEM;
+-		goto done;
+-	}
+-
+-	tdreport = kzalloc(TDX_REPORT_LEN, GFP_KERNEL);
+-	if (!tdreport) {
+-		ret = -ENOMEM;
+-		goto done;
+-	}
+-
+-	memcpy(reportdata, desc->inblob, desc->inblob_len);
+-
+-	/* Generate TDREPORT0 using "TDG.MR.REPORT" TDCALL */
+-	ret = tdx_mcall_get_report0(reportdata, tdreport);
+-	if (ret) {
+-		pr_err("GetReport call failed\n");
+-		goto done;
+-	}
+-
+ 	memset(quote_data, 0, GET_QUOTE_BUF_SIZE);
+ 
+ 	/* Update Quote buffer header */
+ 	quote_buf->version = GET_QUOTE_CMD_VER;
+ 	quote_buf->in_len = TDX_REPORT_LEN;
+ 
+-	memcpy(quote_buf->data, tdreport, TDX_REPORT_LEN);
++	ret = tdx_do_report(KERNEL_SOCKPTR(desc->inblob),
++			    KERNEL_SOCKPTR(quote_buf->data));
++	if (ret)
++		goto done;
+ 
+ 	err = tdx_hcall_get_quote(quote_data, GET_QUOTE_BUF_SIZE);
+ 	if (err) {
+@@ -375,8 +328,6 @@ static int tdx_report_new(struct tsm_report *report, void *data)
+ 	 */
+ done:
+ 	mutex_unlock(&quote_lock);
+-	kfree(reportdata);
+-	kfree(tdreport);
+ 
+ 	return ret;
+ }
 
 -- 
 2.43.0
