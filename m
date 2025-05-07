@@ -1,92 +1,148 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF071289358
-	for <linux-coco@lists.linux.dev>; Wed,  7 May 2025 15:27:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3264928C2A4
+	for <linux-coco@lists.linux.dev>; Wed,  7 May 2025 16:31:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746631643; cv=none; b=GIREvUGHfBHwSU7yEbMOEW7PMV2YAYkjXABHLi9607vLZENUmPjx19XPebdsmBzQoOywkrgh/NPvcWy9Qm5de6pCEg4s02CAYWnkkUurm3FHqBoXov/wVGpW85Xu3icN5O6DAcDR+D2OzGp/XQabJVohNOdZGHh+iLFqGsfWCxQ=
+	t=1746635489; cv=none; b=pzCvpemys/kWfE9maw42PqYBS1XAa3lJclTgfjUQP1XG+PWnlVDGIgWz8xXz+ZzBr+e289fVLkhMvxkOhWgUBpJE7Yd5ojI2ac8LHFo8VjbcFpi9Jv/w319ohKvDpOEvTxgDBD5LJkJOYczISXrmB2QJCyh6PlEsU4Egs/osLRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746631643; c=relaxed/simple;
-	bh=RB5x+S+YxBY2uweoaKwC9lZHlxnJE1L0fDzjyErwVXI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=DC8L58d+VK6xjom4RKA+xfnSaHAOAAbmDhP5Effc9oTLkZ0oZ9/WZznjIDpAwjdsqwzM4YwMr8DmLBqQlY5ylT5LcGPr7LwMfqab3S89hF+WwtBxoJDM4SENmcksqfniNmjxl/FTYdEeZfiJju/CwmJie9u7Vwbs2xbkwNeHalc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=thcLe73W; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com
+	s=arc-20240116; t=1746635489; c=relaxed/simple;
+	bh=kI07jhygPEF3cA5Ef6FeyQHLic0l3rHSGi2QY3xRrek=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e1lS636pueyp927RxULj2hRWoj0/jPF8ycqXIdlWPm4pZxD0FsMeXvqpZIT9Ekk0LY4vDir6aGpAOagp8wc1921jjurZdNRWazwZ7yfcIiATdF+oROgHFcDybHobJ5lIaGRDiCkTXCa+cawpCFiloqLfSwN1uJFXIahSt1+EEwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PsNiyp8t; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="thcLe73W"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cf446681cso655e9.1
-        for <linux-coco@lists.linux.dev>; Wed, 07 May 2025 08:27:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746631640; x=1747236440; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UVScMaJsNdWzXaWbUOC+RQZonS9hMcxETO6CXiEAlRw=;
-        b=thcLe73WQl4X1cCgBFFPNeL4tGRsiVi84GAwc85vjF416FXTV3e+VDKh0dD/CK/JT4
-         TQgf3BgP3PRyD3Sv6kJ8e5UD7QRboAjOVHPXJePvv2oJFqCX4oZVYWqU+DZLw2ALBhrB
-         KtEV1R8gEl3n/n8IS08EkuXnBj9X+OsttS4LSBVHC93Ygy++71FOxjN7E2a0ElQt+pb5
-         /bEnA6de07ltUesY8dJOuI4aXJ25nZCCm3uvh39ARHCKat5AKs6M3SwXJOaAJQutozGv
-         xjVaoijgdxiP9Xn7Z/66YQvkC+JaAx3qFV3Pni57xtOElENpNb7q9atmFgWKyhQ4gUJ2
-         NcZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746631640; x=1747236440;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UVScMaJsNdWzXaWbUOC+RQZonS9hMcxETO6CXiEAlRw=;
-        b=i8H6hKhPty9aoXciRzLuBZEdk8QZKZRmV3Z5MUtQYNjuyiCSDFMWTpE8RQxrh9hcvf
-         XcKE/z10A4zBmDHV3XfYOe3sByPrGLrUshVFrQ5jLaFQ+OqsmtrZ5OfxGBPbqEqjIffT
-         cCAeit3h2OvffUZAhJ77uFdMobD5jsFALREPSpR2vCWkZ/6+CUQlkHIbHqGtgNqtjkyZ
-         n9ucLq9xPZMWiQjsATj+5d2DGfncWY661sQKEPetAiMWVySN83uuJ8tyt8gKQaaY9Lm4
-         g4pDcfb/0TzjRvwRKHKEqR6VjONT5XkEHpuCpa0SYbjNQoxcsiqxILy0rCuAzWx0kMma
-         DJiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVrgh8iuYtZ7CY60ggOMdjh6dvvykp38fhK7Lr3sobXUAi2/GSK3bJ04dWfc/jjxmd2Vro9i5grm+Tb@lists.linux.dev
-X-Gm-Message-State: AOJu0YwTOIqboq3gVSTV3CLkivGYc5XsngP52itlA96TYOTtvDc3OuHx
-	o8LPbWg5Uu31DVZ7HHTejdiAO4/wyoBXmg3hmIv2kUj+MwnG+eOMZrRLSVgZtWP2bD8AMGKfAqd
-	Q/HWx+s/SOA==
-X-Google-Smtp-Source: AGHT+IFbv1gkzIUlafRoPSulkZnF0yX8hhTbcTrPKkzq/6eQOecLcqYYtCLGIV57zt9Rt/Zmw0wGOrsHsd3dlA==
-X-Received: from wmbeq6.prod.google.com ([2002:a05:600c:8486:b0:43c:fd99:1b7e])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:5122:b0:43d:160:cd97 with SMTP id 5b1f17b1804b1-441d44dc257mr25363515e9.25.1746631640335;
- Wed, 07 May 2025 08:27:20 -0700 (PDT)
-Date: Wed, 07 May 2025 15:27:18 +0000
-In-Reply-To: <hqd7h7elpou6mohkdr2rqcz6u7xuanezuq3ti56ibsnccsb2d2@yokitckdkwqo>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PsNiyp8t"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746635488; x=1778171488;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=kI07jhygPEF3cA5Ef6FeyQHLic0l3rHSGi2QY3xRrek=;
+  b=PsNiyp8tpeCNvSOpys+bx1LHSqd1ZwcSGVHPoDjyR7wTvR2AFFuUQZN5
+   G3TXq7UPtS+vu42UMwcdOuX763SNNlxCgiDX2SzlEtUxgDAMyf6F2osD3
+   1QXMgNCOHY2c7DwQ00F3KIUKZTIlAC9bYTNO+O/IwFQoqoCIRC4fW9PA9
+   gjFf0SkgUcB+8nl+FECbtd6F11r9KmRSvj/fM74b8uxhAGc7vrQit+JxT
+   lw1W5SHHOBLeqGsJMzv7vpmneUF+gcnPayuTMtsQUOoix/Xep1h+a/eMx
+   ckT9Ah9IZyplE2b18xsIOwxrmSplaIQvETCH5gqHAcbFEsMhgqu2xI6ih
+   Q==;
+X-CSE-ConnectionGUID: bS1lD38vT1ewKukm98pvHw==
+X-CSE-MsgGUID: aNwj1oygS8Se4eJ8bXwD7A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="48537012"
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
+   d="scan'208";a="48537012"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 09:31:26 -0700
+X-CSE-ConnectionGUID: SFzmCAJVSYW+77whoDEDOA==
+X-CSE-MsgGUID: Q3BU1n1UT6G7LyUKm8xK6A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
+   d="scan'208";a="141132112"
+Received: from tfalcon-desk.amr.corp.intel.com (HELO [10.124.222.63]) ([10.124.222.63])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 09:31:25 -0700
+Message-ID: <4bb2119a-ff6d-42b6-acf4-86d87b0e9939@intel.com>
+Date: Wed, 7 May 2025 09:31:22 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20250506112509.905147-1-kirill.shutemov@linux.intel.com>
- <20250506112509.905147-2-kirill.shutemov@linux.intel.com> <D9P3X0NLQMW5.1J74MJ7FDRBFB@google.com>
- <hqd7h7elpou6mohkdr2rqcz6u7xuanezuq3ti56ibsnccsb2d2@yokitckdkwqo>
-X-Mailer: aerc 0.20.0
-Message-ID: <D9Q18PJT3Y7R.5Q9X3BZ0ESYU@google.com>
-Subject: Re: [PATCH 1/2] mm/page_alloc: Ensure try_alloc_pages() plays well
- with unaccepted memory
-From: Brendan Jackman <jackmanb@google.com>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: <akpm@linux-foundation.org>, <vbabka@suse.cz>, <surenb@google.com>, 
-	<mhocko@suse.com>, <hannes@cmpxchg.org>, <bp@alien8.de>, <tglx@linutronix.de>, 
-	<david@redhat.com>, <ast@kernel.org>, <linux-mm@kvack.org>, 
-	<linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC, PATCH 05/12] KVM: TDX: Add tdx_pamt_get()/put() helpers
+To: "Huang, Kai" <kai.huang@intel.com>,
+ "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "seanjc@google.com" <seanjc@google.com>
+Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "bp@alien8.de" <bp@alien8.de>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "x86@kernel.org" <x86@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
+ "Zhao, Yan Y" <yan.y.zhao@intel.com>, "tglx@linutronix.de"
+ <tglx@linutronix.de>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "Yamahata, Isaku" <isaku.yamahata@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20250502130828.4071412-1-kirill.shutemov@linux.intel.com>
+ <20250502130828.4071412-6-kirill.shutemov@linux.intel.com>
+ <55c1c173bfb13d897eaaabcc04f38d010608a7e3.camel@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <55c1c173bfb13d897eaaabcc04f38d010608a7e3.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue May 6, 2025 at 1:34 PM UTC, Kirill A. Shutemov wrote:
-> On Tue, May 06, 2025 at 01:20:25PM +0000, Brendan Jackman wrote:
->> On Tue May 6, 2025 at 11:25 AM UTC, Kirill A. Shutemov wrote:
->> > +	/* Bailout, since try_to_accept_memory_one() needs to take a lock */
->> > +	if (alloc_flags & ALLOC_TRYLOCK)
->> > +		return false;
->> > +
->> 
->> Quick lazy question: why don't we just trylock it like we do for the zone
->> lock?
->
-> It is not only zone lock. There's also unaccepted_memory_lock inside
-> accept_memory().
+On 5/5/25 05:44, Huang, Kai wrote:
+>> +static int tdx_pamt_add(atomic_t *pamt_refcount, unsigned long hpa,
+>> +			struct list_head *pamt_pages)
+>> +{
+>> +	u64 err;
+>> +
+>> +	hpa = ALIGN_DOWN(hpa, SZ_2M);
+>> +
+>> +	spin_lock(&pamt_lock);
+> Just curious, Can the lock be per-2M-range?
 
-Right, but my lazy question was why can't we "just" trylock that too?
+Folks, please keep it simple.
 
-But anyway, that's no use because if we win the trylock we'd still have
-to do __free_pages_ok().
+If there's lock contention on this, we'll fix the lock contention, or
+hash the physical address into a fixed number of locks. But having it be
+per-2M-range sounds awful. Then you have to size it, and allocate it and
+then resize it if there's ever hotplug, etc...
+
+Kirill, could you put together some kind of torture test for this,
+please? I would imagine a workload which is sitting in a loop setting up
+and tearing down VMs on a bunch of CPUs would do it.
+
+That ^ would be the worst possible case, I think. If you don't see lock
+contention there, you'll hopefully never see it on real systems.
+
+I *suspect* that real systems will get bottlenecked somewhere in the
+page conversion process rather than on this lock. But it should be a
+pretty simple experiment to run.
