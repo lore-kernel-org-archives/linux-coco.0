@@ -1,145 +1,110 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11A914884C;
-	Wed,  7 May 2025 05:44:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D618D24B28
+	for <linux-coco@lists.linux.dev>; Wed,  7 May 2025 09:42:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746596692; cv=none; b=ngz17gcauDPLnuA09tbsLdWGrsSFoLWdcC0+2++26JL2Nf4arU3C1DgIFPcdkQIqXr7YRbXHf/Z7yZ20wrpT6iVAM9LPipscH+wBi1VLMbDxUEybhJAPH1bfoXCzhwIAGP9+oucgJfX2UomVk6ZaoNEgS+9JDIDACiV4YAfVMAw=
+	t=1746610974; cv=none; b=q5n93/9+BNsFesdm6QMuGThJkEek5oIIjxvScpCxxx3EaHGpBHjkOHGdCBOlE4LFTkVPlC2i+o9FNrDcvXJVOFB9K3RfRzDZC0n/GuRsgtHNh6fpvvDxtI8FhlWrSVAnFSd57rt88GDvbuQIZ3vz7O3TofU8BhcYEmB7yOOaog4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746596692; c=relaxed/simple;
-	bh=dET57/3w7AB13kQwYH18hcOd/6ONv+xqKFslnB4Aw1E=;
+	s=arc-20240116; t=1746610974; c=relaxed/simple;
+	bh=TJv2DgdDgD0zQ/WdFPHqdVqlx/9+4rM5yIjbLQPR+NM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gdfMC87jIEbXjLAGTAvPBExX07WDbUvt1SyHmBrVyjK0++2MRkcuv/tEHlXn2g/zHvU+hH/WU+NyFmDxqf5LE2knKXtZa/fWLkfSHspPbxV+B53yqkt0HahbRZsc7pafdSLldyDg9aJGV1orDnmqI77n1Sdleyo5mmKd0K6jtsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U45b/3yM; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=MP+lTQitnv04WQcMnXdYMfjM7SGFlI+qHI5tFjpmXJMyN5NtXIcS1SiBP8qKKMZgtgn+AIzSAN1+4qJx7/cJ14fX/TS59BLTxw7ltnwzZlDuEOcyEtlKJ2K2FrxNCbA0EDus4TlaJlrROpd854dzX5WVyobiY0YmxQ9d7qx5TWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=WDFvwGaf; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U45b/3yM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746596691; x=1778132691;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dET57/3w7AB13kQwYH18hcOd/6ONv+xqKFslnB4Aw1E=;
-  b=U45b/3yMJ6ui7t36H472iOw8EiS4BqR9+sDz2yM9va6dRA+UwEp3c006
-   mjaPcMgfIqnkODrs7nzSYmFVDb8+bZcXbK8P9FOftFIu0MA1Eq1oczsz3
-   1ptKfuzXtzwVtSCYlB4zg8LuE+PbBRnyjPL2wC2t+HR9vF8jbaHpCQ91T
-   qiyBuP8JesNIy7hPqMXHAWO9yRtTSZar8VSUCBvc0jr+wPdg8w6xqCrvt
-   +26j77kocWa0pnEFtZ6CjuBQUceT6pbovm8PQQKooMMic7C/oe5qqwXFN
-   kU1TXXmCH8JBN61/gZTh749AIJFLPIwGXjyZxCdglRBOI022h0iY8DRmJ
-   Q==;
-X-CSE-ConnectionGUID: C4OEAXB0Ty+AE7RUM4A1PA==
-X-CSE-MsgGUID: Dmxqm59oTpmTtn7xID62CQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="35932873"
-X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; 
-   d="scan'208";a="35932873"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 22:44:49 -0700
-X-CSE-ConnectionGUID: c4D2Ws4lRaymkTlaqFHm/g==
-X-CSE-MsgGUID: ocnwfwJRR2WLdCgnFPKUdg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; 
-   d="scan'208";a="140959206"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 06 May 2025 22:44:46 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uCXaF-000769-1E;
-	Wed, 07 May 2025 05:44:43 +0000
-Date: Wed, 7 May 2025 13:44:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: Dan Williams <dan.j.williams@intel.com>, dave.hansen@linux.intel.com
-Cc: oe-kbuild-all@lists.linux.dev, x86@kernel.org,
-	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-	Naveen N Rao <naveen@kernel.org>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Kirill Shutemov <kirill.shutemov@linux.intel.com>,
-	Nikolay Borisov <nik.borisov@suse.com>, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v3 2/2] x86/devmem: Drop /dev/mem access for confidential
- guests
-Message-ID: <202505071309.Aa4vRJxa-lkp@intel.com>
-References: <174491712829.1395340.5054725417641299524.stgit@dwillia2-xfh.jf.intel.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="WDFvwGaf"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A428540E01ED;
+	Wed,  7 May 2025 09:42:49 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id OinWf2BSwkrW; Wed,  7 May 2025 09:42:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1746610964; bh=vd1kP3jlGsAa1/WrA5dgigKmpDxOwjsZqjH8zD+YFvM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WDFvwGafN0Th8/qo/ihTfnszbhzQn+wT+ZETp0X/to5cQgR5nTIWt3xbKH1ftbVY7
+	 cjy4PIitedWGDjA+fpImZowNHBiAcZ5QESmMuGasQTbPrCYQ7BDwEvUYzJaiyPyl4g
+	 seCRlLQpzl3EZQYZon1kJzaBG9fblD1p1RFYtGDSfHAuPW8sVXe8WSHEFTSpCrC65u
+	 jZKd48dPU++3SQsJzncG2COECZKOUA10eP5o3426AKotV8+z8TzBWkdeFtPR3N/tGP
+	 NtslWCBAg4GdIRYLn6dep7YW/SCd3/XBqTbWQ3NLpwt+ICdYWatpB6A/bJvspohFgl
+	 mD/xi6345sUpwiifTPR1ac+4gyt9qNu16X2yv2a7zy/Ebp/dZVZdgsOVkMVGyuP4SR
+	 zO1n5BedP28ExBCYusE2GdfmkuhwROkeKU+D3lQjfiqK1rVy2cDo4oZ2HjeQMVbPVJ
+	 pJazDmB3rvbUhOG6QyLslDAHLAbbI89MgvuDJFnjRan3ESUKPdlgdt87Kic4lDQSUu
+	 9E1WeyP7e0C+L3giR7kGKS7dx81KBqKgMofunNSn2J24hDzMPgxQl3HvGdlVrymepa
+	 Utc/IQUlMu+LwLcLaA61bPRMqTNqRWzJ/wjtieS6+7J+MP/w7Gw7/knBaFUQNj0jwx
+	 cpF1CZ0yZpi8cbil45Yd2WUs=
+Received: from zn.tnic (p579690ee.dip0.t-ipconnect.de [87.150.144.238])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B9BA040E0238;
+	Wed,  7 May 2025 09:42:28 +0000 (UTC)
+Date: Wed, 7 May 2025 11:42:11 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, thomas.lendacky@amd.com, hpa@zytor.com,
+	michael.roth@amd.com, nikunj@amd.com, seanjc@google.com,
+	ardb@kernel.org, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH v5] x86/sev: Fix making shared pages private during kdump
+Message-ID: <20250507094211.GAaBsq8zEJMAuffwmh@fat_crate.local>
+References: <20250506183529.289549-1-Ashish.Kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <174491712829.1395340.5054725417641299524.stgit@dwillia2-xfh.jf.intel.com>
+In-Reply-To: <20250506183529.289549-1-Ashish.Kalra@amd.com>
 
-Hi Dan,
+On Tue, May 06, 2025 at 06:35:29PM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
+> 
+> When the shared pages are being made private during kdump preparation
+> there are additional checks to handle shared GHCB pages.
+> 
+> These additional checks include handling the case of GHCB page being
+> contained within a huge page.
+> 
+> The check for handling the case of GHCB contained within a huge
+> page incorrectly skips a page just below the GHCB page from being
+> transitioned back to private during kdump preparation.
+> 
+> This skipped page causes a 0x404 #VC exception when it is accessed
+> later while dumping guest memory during vmcore generation via kdump.
+> 
+> Correct the range to be checked for GHCB contained in a huge page.
+> Also ensure that the skipped huge page containing the GHCB page is
+> transitioned back to private by applying the correct address mask
+> later when changing GHCBs to private at end of kdump preparation.
+> 
+> Fixes: 3074152e56c9 ("x86/sev: Convert shared memory back to private on kexec")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> ---
+>  arch/x86/coco/sev/core.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
 
-kernel test robot noticed the following build errors:
+Ok, I've pushed both patches here:
 
-[auto build test ERROR on 0af2f6be1b4281385b618cb86ad946eded089ac8]
+https://git.kernel.org/pub/scm/linux/kernel/git/bp/bp.git/log/?h=tip-x86-urgent-sev
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Dan-Williams/x86-devmem-Remove-duplicate-range_is_allowed-definition/20250419-080713
-base:   0af2f6be1b4281385b618cb86ad946eded089ac8
-patch link:    https://lore.kernel.org/r/174491712829.1395340.5054725417641299524.stgit%40dwillia2-xfh.jf.intel.com
-patch subject: [PATCH v3 2/2] x86/devmem: Drop /dev/mem access for confidential guests
-config: openrisc-randconfig-r073-20250428 (https://download.01.org/0day-ci/archive/20250507/202505071309.Aa4vRJxa-lkp@intel.com/config)
-compiler: or1k-linux-gcc (GCC) 10.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250507/202505071309.Aa4vRJxa-lkp@intel.com/reproduce)
+Please have those who are affected by the issues test and report back.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202505071309.Aa4vRJxa-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/char/mem.c: In function 'open_port':
->> drivers/char/mem.c:604:6: error: implicit declaration of function 'cc_platform_has' [-Werror=implicit-function-declaration]
-     604 |      cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-         |      ^~~~~~~~~~~~~~~
->> drivers/char/mem.c:604:22: error: 'CC_ATTR_GUEST_MEM_ENCRYPT' undeclared (first use in this function)
-     604 |      cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-         |                      ^~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/char/mem.c:604:22: note: each undeclared identifier is reported only once for each function it appears in
-   cc1: some warnings being treated as errors
-
-
-vim +/cc_platform_has +604 drivers/char/mem.c
-
-   586	
-   587	static int open_port(struct inode *inode, struct file *filp)
-   588	{
-   589		int rc;
-   590	
-   591		if (!capable(CAP_SYS_RAWIO))
-   592			return -EPERM;
-   593	
-   594		rc = security_locked_down(LOCKDOWN_DEV_MEM);
-   595		if (rc)
-   596			return rc;
-   597	
-   598		/*
-   599		 * Enforce encrypted mapping consistency and avoid unaccepted
-   600		 * memory conflicts, "lockdown" /dev/mem for confidential
-   601		 * guests.
-   602		 */
-   603		if (IS_ENABLED(CONFIG_STRICT_DEVMEM) &&
- > 604		    cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-   605			return -EPERM;
-   606	
-   607		if (iminor(inode) != DEVMEM_MINOR)
-   608			return 0;
-   609	
-   610		/*
-   611		 * Use a unified address space to have a single point to manage
-   612		 * revocations when drivers want to take over a /dev/mem mapped
-   613		 * range.
-   614		 */
-   615		filp->f_mapping = iomem_get_mapping();
-   616	
-   617		return 0;
-   618	}
-   619	
+Thx.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
