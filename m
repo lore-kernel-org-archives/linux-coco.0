@@ -1,156 +1,132 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A755191F77
-	for <linux-coco@lists.linux.dev>; Fri,  9 May 2025 11:18:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701D7153BD9
+	for <linux-coco@lists.linux.dev>; Fri,  9 May 2025 13:40:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746789493; cv=none; b=rNFrk8WK+bn7xkoBmE8aTiHnuFMu+Fg9/OkT/dFalPPCzHEmUDqwWQaDQDzY5ou+bedzVYfXoOapVDAI9G+OMs5Q9Zc7Vg6F1DHGF3bJaUzC2nFOy6ksUnWBR0DOUfjCu2kL0Wpzqdo+cnLJkfyiFQF+4H/rdn0+1uoNvjVCzGA=
+	t=1746798040; cv=none; b=g7i7R6mHYckUenptZGzppqWrFSgf11KqfxeKTPZQxvmYtCxuR3dm2PMITB8Jt+ElVszWSlYdzJMcHWdg/Iei0s0Zo23uuaKGz1p+apsJ4aUNS9bRyDpikKgrm684ntYR4GAlcemtUfYAUWNPddlXItV41RtqiIeQrnDVL60Dq80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746789493; c=relaxed/simple;
-	bh=aiPaYDwSGvN0K0HQK9CDqTSbttoNGl/6tY2Cm6xaBBs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zzps36xMJJY+roc+9HgimgmR6EDMXRhpC9Pg8PcwI+VpaLB+I1G0bZr3khLQEFZwMFufoExHBwa6ozOHtyZ4YlV2RW/jERPxfPeUclJ/9uTUMrL8xJioxO7QKuOacE05JziZFEyHwnaWvooIXoffvG5RvNsnwAtMJt9xJ+Pa5Pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D+k7tabO; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1746798040; c=relaxed/simple;
+	bh=6kh1EmvyaIMEv6qY2bKAXfovW6AsqQRIY19O2CY38EA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=ZdnilXHAFXfYlyY3GYBvarM4AYrVYbGwKo+hOT6SNaovVvO3BYxynRSwoXMkZb5st6ObAJMcVQbJlyEWCzBvwZ2DBK2GgccRTj3mJtc1SHDI820IhLSWz6EgnPaYaICEYDTlM0OblnS34tY+vSxOsgSgUGd16Ju8wwkI4iI/7dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gT7FWQXo; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D+k7tabO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746789491; x=1778325491;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=aiPaYDwSGvN0K0HQK9CDqTSbttoNGl/6tY2Cm6xaBBs=;
-  b=D+k7tabOKOIL7tJ2NgJbn5avF239nlxYZIix3stzqbyGRByseyGe4uaG
-   ZVFzM9o2U2X3/bXV9w+VXNhmqdrjS7PFMcWbVo5yKxAmY16cQuj85xxd6
-   cDhd/wJgn+ExsG4HqD/5HROsuhZ4ZZFnqnk/CbMuIGf9ui87/0uFuS1G9
-   CRY5HVUdXFPgz0iiKFwjyTqu/Hjg97Q/uiEkqzoT1zvOSYb4eoHfVSTwS
-   ZZqTvaBEIN8kamEeTmXmidTv6jMQsHY29nq6OegwZ540D95RYyEyC+cfa
-   zgJ3TGwNtNSyrTpGcXRHCxicYASTaf5oRLctwX+sr1XUqI4KJIMHEgT0G
-   w==;
-X-CSE-ConnectionGUID: X8baivVHT5aPZc/H1RYpTA==
-X-CSE-MsgGUID: kvq99b+nRMyie5SGEVp8Yw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="52422849"
-X-IronPort-AV: E=Sophos;i="6.15,275,1739865600"; 
-   d="scan'208";a="52422849"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 04:18:10 -0700
-X-CSE-ConnectionGUID: IO0YruilQeCpWzu6FzjjTw==
-X-CSE-MsgGUID: 19XzKC/dT36Fay078oLWsg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,275,1739865600"; 
-   d="scan'208";a="136294670"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa009.jf.intel.com with ESMTP; 09 May 2025 04:18:06 -0700
-Date: Fri, 9 May 2025 19:12:46 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	sumit.semwal@linaro.org, christian.koenig@amd.com,
-	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
-	jgg@nvidia.com, vivek.kasireddy@intel.com, dan.j.williams@intel.com,
-	yilun.xu@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
-	daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, tao1.su@intel.com
-Subject: Re: [RFC PATCH 00/12] Private MMIO support for private assigned dev
-Message-ID: <aB3jLmlUKKziwdeG@yilunxu-OptiPlex-7050>
-References: <20250107142719.179636-1-yilun.xu@linux.intel.com>
- <371ab632-d167-4720-8f0d-57be1e3fee84@amd.com>
- <4b6dc759-86fd-47a7-a206-66b25a0ccc6d@amd.com>
- <c10bf9c2-e073-479d-ad1c-6796c592d333@amd.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gT7FWQXo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1746798037;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=rbU/Ik2HFCaYPRnGL3BpFYVtUHthaf34xL/8Qjh8JzE=;
+	b=gT7FWQXovB456Xb8WfYMuvVAi5qPBnqw2tHUAFqeF8WGcixtSmdGklBa31A5QX8nWFuyvT
+	lt1PljvZLZc5MzrTEum0iQlyrSz7WthIFwhv5uK3roU17Fr8AHfhMOcHW/8Fepdqc222Ae
+	fqfAD+Q4M54k5/aqlC2oyTov1BmPWyk=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-363-wj3PxzHDPWaoCHx2_8vgrQ-1; Fri, 09 May 2025 09:40:36 -0400
+X-MC-Unique: wj3PxzHDPWaoCHx2_8vgrQ-1
+X-Mimecast-MFC-AGG-ID: wj3PxzHDPWaoCHx2_8vgrQ_1746798035
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43f405810b4so10797265e9.1
+        for <linux-coco@lists.linux.dev>; Fri, 09 May 2025 06:40:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746798035; x=1747402835;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rbU/Ik2HFCaYPRnGL3BpFYVtUHthaf34xL/8Qjh8JzE=;
+        b=kMyt7ycsvJj8EsbAqoQf+LbulJyhlglvvbZVznbfJ/K4LLKRrbrV+X6qcpRv2NxIrb
+         exp+XMg1yB/MJ/5hFvJ196vAZ9D5ktdJvsn4pBRdt/8BZ1Kjw/1N3xwMnDlaqiGua9Ux
+         7J5f6AGOMC/TW3mOROz7qkmcqlaTHwv6Cy0k4KkK/IUNvOoh9CWsD9oH9Lx6WBRzhA7w
+         GURBow4dIFUfibojU6YxIyYKDgs2j/FhaKQBEPh4qd00knodswzcN5Uodhak5whR1AAP
+         7iYO9VA+MHD3JwHMNHH3mt+jUIIS4wUPKFtRaiBLD4t0P2aFKiHp12Xc8DfX6Q+yn7On
+         W1Hg==
+X-Forwarded-Encrypted: i=1; AJvYcCV9n5SglyTB6XqH1Z0FfSf/NLNilTetnA/znlFvsrXK6wfjcS6l1ChXfbspdYg7ayzthTm2mJFBaCtP@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw7MGjjK1DleLqqxfasG/5Ef3km86D5qPCwhiHaA1NRgpA316c9
+	BfiJbzESf3WEkl/bg9G+RnER9/6DU7WJHdy9OdN0ps6NW1aV9pp22N2edFPZzV1wq+QNUeMtWfM
+	pAAtyZFbgnXcRx3ftkcnrm5SdfnbYpTglLv8+itYj3yUTLNiHvk43MWzVXkk=
+X-Gm-Gg: ASbGncseHZe25giSBTyq+BhnPxej0HmhJXohI2fTXJm9h1rA2t19/Xo38I2PvmHPq7Z
+	w0WzYxcJf8VIvuCanl4pAQI2ocZcFd+YVbED5GP+PR/giTv+CNpLR5nb/SnpVz5sfFuYey/jrg1
+	YsououHDuC1xKKZ04Dcqaj6gEjiu+4TSr6cl953ls/gAb274fOIk+tTb/Jy8FDQjK1JOeGZB8XM
+	z9UkoE/cwa9yZhSbgQ8oVc28GGxvxFvTRLGwVF3cholYhgjNPHH7RNzLM3O9OANELQ4zztE1Yzd
+	8HZPkdMsAO0FqsPhI1i2HYbkBsuqmtIOl5e7O68OOkm3ANom7bLHi/weqQ==
+X-Received: by 2002:a05:600c:6819:b0:43d:649:4e50 with SMTP id 5b1f17b1804b1-442d6d44db5mr30308865e9.13.1746798034806;
+        Fri, 09 May 2025 06:40:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH8Kxh1nPeuAUwUqlxdH6k97wyjBuBL7pw2aJhhUSJalMBvgbkpXFDayp+M9yqixrKB3tLmdA==
+X-Received: by 2002:a05:600c:6819:b0:43d:649:4e50 with SMTP id 5b1f17b1804b1-442d6d44db5mr30308675e9.13.1746798034415;
+        Fri, 09 May 2025 06:40:34 -0700 (PDT)
+Received: from lbulwahn-thinkpadx1carbongen9.rmtde.csb ([2a02:810d:7e01:ef00:b52:2ad9:f357:f709])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442cd3b7dc1sm71403735e9.34.2025.05.09.06.40.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 May 2025 06:40:33 -0700 (PDT)
+From: Lukas Bulwahn <lbulwahn@redhat.com>
+X-Google-Original-From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+To: Dan Williams <dan.j.williams@intel.com>,
+	linux-coco@lists.linux.dev
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>
+Subject: [PATCH] MAINTAINERS: rectify file entries in TRUSTED SECURITY MODULE (TSM) INFRASTRUCTURE
+Date: Fri,  9 May 2025 15:40:31 +0200
+Message-ID: <20250509134031.70559-1-lukas.bulwahn@redhat.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: XbiHB_u7QQIBeEPiu05ylO526_mVW9q4vVxE_jLAEbc_1746798035
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <c10bf9c2-e073-479d-ad1c-6796c592d333@amd.com>
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-On Fri, May 09, 2025 at 01:04:58PM +1000, Alexey Kardashevskiy wrote:
-> Ping?
+From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 
-Sorry for late reply from vacation.
+Commit 7515f45c1652 ("coco/guest: Move shared guest CC infrastructure to
+drivers/virt/coco/guest/") moves drivers/virt/coco/tsm.c to
+drivers/virt/coco/guest/report.c, and adjusts the file entry in TRUSTED
+SECURITY MODULE (TSM) INFRASTRUCTURE.
 
-> Also, since there is pushback on 01/12 "dma-buf: Introduce dma_buf_get_pfn_unlocked() kAPI", what is the plan now? Thanks,
+However, commit b9e22b35d459 ("tsm-mr: Add TVM Measurement Register
+support") also touches that section, leading to some unintended state with
+the two concurrent changes of these two commits, i.e., entry
+drivers/virt/coco/tsm*.c is still in place, where it should have been
+deleted. Note that the existing file entry drivers/virt/coco/tsm*.c is not
+needed, as the files are after their renaming in drivers/virt/coco/guest/,
+and there is already a file entry in this section for that directory.
 
-As disscussed in the thread, this kAPI is not well considered but IIUC
-the concept of "importer mapping" is still valid. We need more
-investigation about all the needs - P2P, CC memory, private bus
-channel, and work out a formal API.
+Rectify this section appropriately.
 
-However in last few months I'm focusing on high level TIO flow - TSM
-framework, IOMMUFD based bind/unbind, so no much progress here and is
-still using this temporary kAPI. But as long as "importer mapping" is
-alive, the dmabuf fd for KVM is still valid and we could enable TIO
-based on that.
+Further, commit f6953f1f9ec4 ("tsm-mr: Add tsm-mr sample code") adds
+example code to samples/tsm-mr/, but in the MAINTAINERS section, it refers
+to the non-existing directory samples/tsm/. So, rectify that file entry to
+the existing intended location as well.
 
-> 
-> 
-> On 29/4/25 17:50, Alexey Kardashevskiy wrote:
-> > 
-> > 
-> > On 29/4/25 16:48, Alexey Kardashevskiy wrote:
-> > > On 8/1/25 01:27, Xu Yilun wrote:
-> > > > This series is based on an earlier kvm-coco-queue version (v6.12-rc2)
-> > > 
-> > > Has this been pushed somewhere public? The patchset does not apply on top of v6.12-rc2, for example (I fixed locally).
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+---
+ MAINTAINERS | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Sorry, not yet. I'm trying to solve this ... same for the QEMU tree.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 6dbdf02d6b0c..e8a21d6f89f8 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -24991,9 +24991,8 @@ S:	Maintained
+ F:	Documentation/ABI/testing/configfs-tsm-report
+ F:	Documentation/driver-api/coco/
+ F:	drivers/virt/coco/guest/
+-F:	drivers/virt/coco/tsm*.c
+ F:	include/linux/tsm*.h
+-F:	samples/tsm/
++F:	samples/tsm-mr/
+ 
+ TRUSTED SERVICES TEE DRIVER
+ M:	Balint Dobszay <balint.dobszay@arm.com>
+-- 
+2.49.0
 
-> > > Also, is there somewhere a QEMU tree using this? I am trying to use this new DMA_BUF feature and this require quite some not so obvious plumbing. Thanks,
-> > 
-> > 
-> > More to the point, to make it work, QEMU needs to register VFIO MMIO BAR with KVM_SET_USER_MEMORY_REGION2 which passes slot->guest_memfd to KVM which essentially comes from VFIORegion->mmaps[0].mem->ram_block->guest_memfd. But since you disabled mmap for private MMIO, there is no MR which QEMU would even try registering as KVM memslot and there are many ways to fix it. I took a shortcut and reenabled mmap() but wonder what exactly you did. Makes sense? Thanks,
-
-Yes, QEMU needs change. 08/12 "vfio/pci: Create host unaccessible dma-buf for private device“
-adds a new flag VFIO_REGION_INFO_FLAG_PRIVATE to indicate user could
-create dmabuf on this region.
-
-I'm also not very serious about QEMU changes now, just FYI:
-
-I use VFIO_REGION_INFO_FLAG_PRIVATE flag to revive region->mmaps.
-
-int vfio_region_setup(Object *obj, VFIODevice *vbasedev, VFIORegion *region,
-	...
-
-+        if (region->flags & VFIO_REGION_INFO_FLAG_PRIVATE) {
-+            region->nr_mmaps = 1;
-+            region->mmaps = g_new0(VFIOMmap, region->nr_mmaps);
-+            region->mmaps[0].offset = 0;
-+            region->mmaps[0].size = region->size;
-+            region->mmaps[0].dmabuf_fd = -1;
-         }
-
-Then in vfio_region_mmap(), use a new memory_region_init_dmabuf() to populate
-the MR.
-
-int vfio_region_mmap(VFIORegion *region)
-
-+        if (use_dmabuf) {
-+            /* create vfio dmabuf fd */
-+            ret = vfio_create_dmabuf(region->vbasedev, region->nr,
-+                                     region->mmaps[i].offset,
-+                                     region->mmaps[i].size);
-+            if (ret < 0) {
-+                goto sub_unmap;
-+            }
-+
-+            region->mmaps[i].dmabuf_fd = ret;
-+
-+            name = g_strdup_printf("%s dmabuf[%d]",
-+                                   memory_region_name(region->mem), i);
-+            memory_region_init_dmabuf(&region->mmaps[i].mem,
-+                                             memory_region_owner(region->mem),
-+                                             name, region->mmaps[i].size,
-+                                             region->mmaps[i].dmabuf_fd);
-+            g_free(name);
-+        } else {
-
-Thanks,
-Yilun
