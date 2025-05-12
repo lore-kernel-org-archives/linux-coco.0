@@ -1,186 +1,221 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2066.outbound.protection.outlook.com [40.107.100.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4212AD0B
-	for <linux-coco@lists.linux.dev>; Mon, 12 May 2025 16:21:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747066892; cv=none; b=k2u7ADYWfpaUAL/Ft9nMEeR5nJQ6oYN0xchd8Vpo1kV/eg4EwM4Clxq9/yZKl5Fgh206SHHSspEAyt1pRQe3tWHOT22fsJTFPOjfDSdGKylrBUu73shR5E+lCH+qrrJV3mGmlkNLCjOPsceLVaSHJJp3vv+lQ09F+W0luZK+050=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747066892; c=relaxed/simple;
-	bh=R916CkDIv6piiy5jUfAa8DNdpHhmJPe/JfXTOj/3U20=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VhHjwnZRnlTNQZyqzzULyxNgwhLYk4np17BXqPeMDarzTkQ84kght57UihmZhcK0M/itJeDfJLfs/8PzKsoRhBir8pqF/EZA6FpZ/RP27DwfSgyd0aAMXNhpqTd/HGPYnLY23O4V7r94RUKBp0NOeU4SORo0+zY7du6DMPvbCrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ioc1Jifq; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B111298273
+	for <linux-coco@lists.linux.dev>; Mon, 12 May 2025 21:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747083867; cv=fail; b=Z+N62aDQFmZtSbWDcfNmtcvcNta8qLqiSdkcjc5YTcU5kyxfCuTNAVdR3+wgQ9cu/uethtvpIwtSAEept1zwBRC27/ZTMXbovbizsDXCU1pFj6iP2oeuqQfO2VC2ADOTaClIbNJnYPZd7Mv/07F4dQxHR9uxzLGKF2WcXscnw4I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747083867; c=relaxed/simple;
+	bh=m/mZwQMpCV/3ZW/LWz4one5sThN9HR31d9Lf0VHE88U=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=An0Xc2j4XxBq30IXKwteuc/sV0JGJdvHJPGM4FguzRSWc/QxXEv5MgZbJ/lsUir9b271u1A0P6p+xdUNesiB25lePvry7tdQVZ0Xyzngf+oUaEJuh9R6bGHlBWuYcDJchZlXRZDkmpQ0ss+2Ey+gsXBCPtGeuWlOQoRADx/0Ba0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=0eDjVVRd; arc=fail smtp.client-ip=40.107.100.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ioc1Jifq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747066891; x=1778602891;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=R916CkDIv6piiy5jUfAa8DNdpHhmJPe/JfXTOj/3U20=;
-  b=ioc1JifqX1V/OMdaelYwCcJeYFMh59O0GkBGX+bUsjzOM3S22jojGWNO
-   OxHY8i461nxiNVMuxlbMYdkLa4pV1QFhoVCarPPoICd16a6lUJd5rWeeC
-   6iY2exs/FoN+7sQn1WbJjJy4IFTgG6GMLgnFzkuPxbQfVO2c9aqtAySMQ
-   X0sFxv42bw32bByFQ0j/Du1OgtBf+/g+BcDqrjpGQ4LSZ/QFm6IHp0Ae2
-   PKAfYp0DETsComysAfMRhoDvWSqvkSFQDokTBtXEMUhIpzOO0ShvSx6lf
-   YXgThubCIbky6LEx889gMwUxPZB9JDOpar/13i6W3c55HISzq1/VDZY2m
-   w==;
-X-CSE-ConnectionGUID: HGvpzGP9RtGGaClyU1RRBw==
-X-CSE-MsgGUID: oJvw8hH5QNmZBoHcqqxblQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11431"; a="60216092"
-X-IronPort-AV: E=Sophos;i="6.15,282,1739865600"; 
-   d="scan'208";a="60216092"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 09:21:30 -0700
-X-CSE-ConnectionGUID: HOAPRbhcQ1qIAnwOKnGXKw==
-X-CSE-MsgGUID: E8xklg7lQ0anqgI3T9lyQw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,282,1739865600"; 
-   d="scan'208";a="168496095"
-Received: from rrajasre-mobl.amr.corp.intel.com (HELO [10.95.0.74]) ([10.95.0.74])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 09:21:24 -0700
-Message-ID: <3d9fa17e-2b74-4c90-99b8-5b1dc8d15356@linux.intel.com>
-Date: Mon, 12 May 2025 11:21:00 -0500
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0eDjVVRd"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=G/P7lrhVwuOAzgUkMR0wyd7b8pYY+9K1owLUM1R3IyI5vMojokiYv4wgqUkLOYNiS5S+o2r0/z0LshAqX2cVu/1kFm7WQmvkZDnrVJABcgiSIeSdb+ZFoXuPzjZ712zQaakqzXj1nay/Z9X6C1MBMWkFFoOv/ESI+EpuZYvhOE8UCJmG517gyk7xxOMpGnWxJ+TQ/jC7sVmphp0KR+i4gZjE0G4rWbQ3YNC4wC6VlbOOjz0fuuK/gceJgnP2vgUBvYHhqDSaMnfdlcK93SWG2+nT/8cK4BRMWaKW4LBmmAKr/BE0qnwWm0xli8OGz2NZUIx1EPxb6uxEZMvPywRgQw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0OU4vLxVqj9P45caG+qxxhf3c3XXPlO9fQld0BL31fU=;
+ b=WBi2Nftb/dQZYYZCvWfPlS39X5p5XBBBRde7JmTNFxWStmOFNzdCB7Y+Fc2MSrpZWMOuQIVsHny6neLYf/tuPal5mM3dBOi1PYKszUcXPvi4HMnVvcjViG+rFJvZbS+2Xri4YSbi/p4IeEPiO+ZeDq33k22lTIum21q/cBtjKJyDqaPzr74z8GSPx9IHIXiYIVrUZqaQ/Z6MzcM9F0mYbvzpaoyp+ZZQzUAChjTNsM8gZap8wvV06LEGlQeg1np8APlVwnnH5MuBvY7Zsi4LYT/IUy8Kula5cC+t8bVxacDhO/jzn+XcdAlTnf2DtuxzLGAAzJ4SgrOnLoq5tV17Og==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0OU4vLxVqj9P45caG+qxxhf3c3XXPlO9fQld0BL31fU=;
+ b=0eDjVVRdURbYvoCVj4YP9guCOvTMTHxvNfFzKjp71y3YruQWMZ9ho4YUmkqX7+6o3pGfrsaV2hyNiQpp0kQE4Hz/7DuX6n9RJjaq5PFnINDLQaLZOn2xouD4MyVnJLOTHmUZeG5bgwUAUjBu43277wpV1qvU08bWijd5pQOsbSY=
+Received: from MN2PR08CA0016.namprd08.prod.outlook.com (2603:10b6:208:239::21)
+ by SN7PR12MB7370.namprd12.prod.outlook.com (2603:10b6:806:299::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.29; Mon, 12 May
+ 2025 21:04:22 +0000
+Received: from BN3PEPF0000B074.namprd04.prod.outlook.com
+ (2603:10b6:208:239:cafe::4f) by MN2PR08CA0016.outlook.office365.com
+ (2603:10b6:208:239::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8699.32 via Frontend Transport; Mon,
+ 12 May 2025 21:04:22 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN3PEPF0000B074.mail.protection.outlook.com (10.167.243.119) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8722.18 via Frontend Transport; Mon, 12 May 2025 21:04:22 +0000
+Received: from ethanolx7e2ehost.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 12 May
+ 2025 16:04:21 -0500
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <seanjc@google.com>, <pbonzini@redhat.com>, <tglx@linutronix.de>,
+	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+	<thomas.lendacky@amd.com>, <shuah@kernel.org>, <prsampat@amd.com>
+CC: <pgonda@google.com>, <nikunj@amd.com>, <pankaj.gupta@amd.com>,
+	<michael.roth@amd.com>, <sraithal@amd.com>, <linux-kernel@vger.kernel.org>,
+	<x86@kernel.org>, <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>
+Subject: [PATCH v2] KVM: SEV: Disable SEV-SNP support on initialization failure
+Date: Mon, 12 May 2025 21:04:10 +0000
+Message-ID: <20250512210410.10172-1-Ashish.Kalra@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Linux kernel SIG meeting for vwfwupdate discussion
-To: Dionna Amalie Glaze <dionnaglaze@google.com>,
- Steve Rutherford <srutherford@google.com>, linux-coco@lists.linux.dev
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Joerg Roedel <jroedel@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
- Jon Lange <jlange@microsoft.com>, "cho@microsoft.com" <cho@microsoft.com>,
- Alexander Graf <graf@amazon.com>,
- James Bottomley <James.Bottomley@hansenpartnership.com>
-References: <CAAH4kHZ2yO3ju_iJinR9y4BDXXdWBnEP1wcv09JWMzaqp1ZP+g@mail.gmail.com>
- <CAK3XEhOs4ijnbqmv8UrNmKN4=nv6+_A7fESLibGBRR9u8rXi6w@mail.gmail.com>
- <87frifm75c.fsf@redhat.com>
- <CABayD+eRjjknqJNRkkh9_KraC-jZyXb1BL_D79m04po1_hR-_g@mail.gmail.com>
- <CAAH4kHbCduQr_+oj0X8QeTjgDgh6aBncPV-1+mvB_r1R3i7Lqg@mail.gmail.com>
-Content-Language: en-US
-From: Dan Middleton <dan.middleton@linux.intel.com>
-In-Reply-To: <CAAH4kHbCduQr_+oj0X8QeTjgDgh6aBncPV-1+mvB_r1R3i7Lqg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B074:EE_|SN7PR12MB7370:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2c87080b-e192-46b5-a040-08dd919891cf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700013|7416014|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?+1Ef131zhO41RdHVq2Qa3FqeGz7vnEsghOoPOxSpMX2ECHmrkheoMY0Ci4Sc?=
+ =?us-ascii?Q?v0g1kQcMlfctjI+UoIgzz6DoN/fRAXv2WZB3yZAiCzwNvEEvllCvwAdFX3Um?=
+ =?us-ascii?Q?tIti0UdZQ70x7Pdb8UaYQ+0s72+Ft8XNkJuxHT5nxCP8qrmVFlFh5QIrPlZN?=
+ =?us-ascii?Q?csB6ZNDbGifdWt+HrEQfc+2Ez709X9xn30OuRW8AO4OHGTLfz98kChtD5+ex?=
+ =?us-ascii?Q?9FUSHkAVLs8VKyy4eayxOJ3Llysf9sw+VgPpiUH/e4xrX13foc58WLnJbt68?=
+ =?us-ascii?Q?TYayjzBHdc/sLS1QyPJ4B6UinZzc0xGGGFoHf4eKjrNg9JfMjXnuTSNZ7sP0?=
+ =?us-ascii?Q?L2NmOW6esIw/RhyFiXMn2gKqJ5OUNoM6XJNwrYdjwlm1I9E+85cW8qpJ4PI2?=
+ =?us-ascii?Q?z1S+LgrvOMt/F1PQT9PliTZSwE83aXmBBVNfxIE9xkpRdoaseALmu79qPNZ4?=
+ =?us-ascii?Q?XP8FH5bJi91C/7XVAhUZ4ZJbzlGb5TUppG+Rsxhr4JqS/oJe4rxgGHswwpZW?=
+ =?us-ascii?Q?sI3IQQlKaT/Tu+X2VDr3+sCcl3AUUXdGNefJZQ7GQjga9Eus7ECAj9HVNQGV?=
+ =?us-ascii?Q?r80YAjdWEsyPoepYp6hvnyerG+cdISJcBUn8Coiuoz6+1bA7MS0H7SvjvWJN?=
+ =?us-ascii?Q?LfMiz/fSexFm595kMSJntC4nfyOTMMeFOpjulUmpUqo1zr4thaTd7OUSFbVX?=
+ =?us-ascii?Q?BBK0KhjRIPf//j5M1bUXQUcuA3hMkuKhPI6lYzDmoDg4lI2+r9d4MXtRsaAf?=
+ =?us-ascii?Q?7v64iE+B3n86gejaiXMItJ5Jt1YyFhdJrOA98jmQcJDRvBsRHOUR3D/CZgu9?=
+ =?us-ascii?Q?xb6rsSBL6Endbc1sccL95pajfwBXQiYSW2Jh0UnUxr4Tjwe47igYJVWteDmx?=
+ =?us-ascii?Q?Ze0gd5hIT8YUyRqF+LlVpC8PdFCW+Pw/Z2HQVHbB9yxyBGmAyf9QdPMEHaX/?=
+ =?us-ascii?Q?36fqhxMw5IH0+A+GUrnJ70m5iCy/pfCRd9P0HN2wwxmc8gxUYR2JLHQOCO7W?=
+ =?us-ascii?Q?S7PHxqXpdcRvy8rgRCIALk2NOeunwpPvvuV+zr3lvYmvJNRjSyPRRbiSVPCe?=
+ =?us-ascii?Q?/6K75nGUvjz1ecnLlbgZg0ZsUaYcKx5rQPCfrI17kCnv1wKvsQfzBDmpUqsH?=
+ =?us-ascii?Q?AHImYmAYX1gAs7yQocYcP4UcjGfCCVZVBSODqw8/y2oao0GH7RVKyKVbSkYu?=
+ =?us-ascii?Q?9HBeuYSd0+haIF8hN8ZCpM6o2Z7PoUg7wjLlFZgHkOp6OthuQoHVawP1Qe+c?=
+ =?us-ascii?Q?bkDTbqwqyVJOTVCgdYsAcXlu6hB1/NOL4dbD7LuxbDzxxsAlSeWP59o610Xl?=
+ =?us-ascii?Q?IttenAEVUCC27DUjxot1kqKG9bcQvfuwmd0YA4GCvi5F+tySOVA32gDNnULN?=
+ =?us-ascii?Q?BeYBbyZy2yDlvK9VAHeJqKdoMGKlwNfx+U/EQmpTQj+++jZpQhSaNSIM6eLp?=
+ =?us-ascii?Q?mbRCJ5b+Uek2JQof+DQuBn53kNX9o3aZCDrzSgfu/+4MVvccGKxYAM4GBiKd?=
+ =?us-ascii?Q?e9hGvDTPwErJrQTsHfitFvMe27U+pFdP1W+C?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2025 21:04:22.3404
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c87080b-e192-46b5-a040-08dd919891cf
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF0000B074.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7370
 
-The recording is now available:
-https://www.youtube.com/watch?v=bio5BGhjui4
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-Additional Minutes:
-https://docs.google.com/document/d/18D820gyt2xe84Jy6dGXgrNThApoozcekDzvIlK2_bd4/edit?tab=t.0#heading=h.4qh5zyiozbow 
+During platform init, SNP initialization may fail for several reasons,
+such as firmware command failures and incompatible versions. However,
+the KVM capability may continue to advertise support for it.
 
+The platform may have SNP enabled but if SNP_INIT fails then SNP is
+not supported by KVM.
 
-Really interesting discussion.
-Great that the discussion could be recruited on short notice.
-Sounds like follow-up might be over a thread here, with those not
-subscribed to linux-coco added directly.
+During KVM module initialization query the SNP platform status to obtain
+the SNP initialization state and use it as an additional condition to
+determine support for SEV-SNP.
 
-Keep in mind that the next SIG session is available and you can not only
-show pictures there, but can gesture and point to the same things to
-clarify.. I don't understand this stage, this widget, this format.
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Co-developed-by: Pratik R. Sampat <prsampat@amd.com>
+Signed-off-by: Pratik R. Sampat <prsampat@amd.com>
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+---
+ arch/x86/kvm/svm/sev.c | 44 +++++++++++++++++++++++++++++++++---------
+ 1 file changed, 35 insertions(+), 9 deletions(-)
 
-Thanks,
-Dan
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index dea9480b9ff6..f7d343ab9acd 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -2935,6 +2935,33 @@ void __init sev_set_cpu_caps(void)
+ 	}
+ }
+ 
++static bool is_sev_snp_initialized(void)
++{
++	struct sev_user_data_snp_status *status;
++	struct sev_data_snp_addr buf;
++	bool initialized = false;
++	int error, ret;
++
++	status = snp_alloc_firmware_page(GFP_KERNEL | __GFP_ZERO);
++	if (!status)
++		return false;
++
++	buf.address = __psp_pa(status);
++	ret = sev_do_cmd(SEV_CMD_SNP_PLATFORM_STATUS, &buf, &error);
++	if (ret) {
++		pr_err("SEV: SNP_PLATFORM_STATUS failed ret=%d, fw_error=%d (%#x)\n",
++		       ret, error, error);
++		goto out;
++	}
++
++	initialized = !!status->state;
++
++out:
++	snp_free_firmware_page(status);
++
++	return initialized;
++}
++
+ void __init sev_hardware_setup(void)
+ {
+ 	unsigned int eax, ebx, ecx, edx, sev_asid_count, sev_es_asid_count;
+@@ -3039,6 +3066,14 @@ void __init sev_hardware_setup(void)
+ 	sev_snp_supported = sev_snp_enabled && cc_platform_has(CC_ATTR_HOST_SEV_SNP);
+ 
+ out:
++	if (sev_enabled) {
++		init_args.probe = true;
++		if (sev_platform_init(&init_args))
++			sev_supported = sev_es_supported = sev_snp_supported = false;
++		else if (sev_snp_supported)
++			sev_snp_supported = is_sev_snp_initialized();
++	}
++
+ 	if (boot_cpu_has(X86_FEATURE_SEV))
+ 		pr_info("SEV %s (ASIDs %u - %u)\n",
+ 			sev_supported ? min_sev_asid <= max_sev_asid ? "enabled" :
+@@ -3065,15 +3100,6 @@ void __init sev_hardware_setup(void)
+ 	sev_supported_vmsa_features = 0;
+ 	if (sev_es_debug_swap_enabled)
+ 		sev_supported_vmsa_features |= SVM_SEV_FEAT_DEBUG_SWAP;
+-
+-	if (!sev_enabled)
+-		return;
+-
+-	/*
+-	 * Do both SNP and SEV initialization at KVM module load.
+-	 */
+-	init_args.probe = true;
+-	sev_platform_init(&init_args);
+ }
+ 
+ void sev_hardware_unsetup(void)
+-- 
+2.34.1
 
-On 5/8/25 12:29 PM, Dionna Amalie Glaze wrote:
-> Thanks everyone who could attend the CCC Linux Kernel SIG meeting
-> about FUKI and specifically the firmware replacement mechanism.
-> Please +cc any participants I missed.
-> 
-> Meeting minutes:
-> * the concept from its initial version that was Qemu-specific and used
-> specially-named FwCfg files to direct CVM context reconstruction with
-> a different ROM.
-> * the viewpoint of generalizing that interface to be an IGVM-based
-> firmware loading instruction in order to reduce the interface's
-> interpretation requirements to keep focused on an emerging standard.
-> * the usefulness of "single artifact" VM template distribution, such
-> that the firmware can be disk-image specific and not need extra
-> orchestration to lead to VM construction.
-> * constraints of the different VMM providers, namely
->     + AWS does not have access to guest resources. A disk can only be
-> read by a guest VM.
->     + Azure doesn't have this constraint and does not want to build a
-> stage 1 VM just to tear it down to boot a stage 2 VM every cold reset.
-> It's far more preferable for the host to have the option to determine
-> if an IGVM will be requested to load, in which case it should be
-> loaded directly without VM construction.
->     + GCP emulates Qemu devices and could implement the FUKI interface,
-> but would prefer to use mechanisms that are standardized through
-> professional bodies like the UEFI forum. Faster boots without VM
-> reconstruction are also highly desirable.
-> 
-> Jon requested for Alex to give some more design consideration into a
-> mechanism that would satisfy both AWS and Azure's constraints.
-> 
-> Alex suggested the framework of a solution: mount the guest image,
-> search the boot partition for a specially named IGVM file, and launch
-> that instead of the CSP's firmware.
-> (Dionna notes outside of the meeting that this has the danger of being
-> an unsound optimization of directly loading the disk image under the
-> CSP firmware for FUKI application to load the IGVM due to no
-> requirement that the FUKI application load that specific IGVM file)
-> 
-> I look forward to our further discussion on how to provide a more
-> trustworthy Confidential Computing experience in the Cloud for our
-> customers :)
-> 
-> On Wed, May 7, 2025 at 4:04 PM Steve Rutherford <srutherford@google.com> wrote:
->>
->> Heads up, this meeting is tomorrow, May 8th at 9AM PDT (6PM CEST), if
->> you all are available.
->>
->> On Fri, Apr 11, 2025 at 1:31 AM Vitaly Kuznetsov <vkuznets@redhat.com> wrote:
->>>
->>> Ani Sinha <anisinha@redhat.com> writes:
->>>
->>>> Adding Vitaly as well who is also involved in this project from Red Hat.
->>>>
->>>> On Fri, Apr 11, 2025 at 4:46 AM Dionna Amalie Glaze
->>>> <dionnaglaze@google.com> wrote:
->>>>>
->>>>> Hi y'all, my colleague Steve Rutherford runs a monthly special
->>>>> interest group meeting amongst Linux kernel developers under the
->>>>> confidential computing consortium umbrella.
->>>>>
->>>>> The f-UKI concept presented at FOSDEM is a very interesting idea for
->>>>> improving customer trust in cloud confidential VMs without the need
->>>>> for complex control plane resource management for virtual firmware
->>>>> EEPROM.
->>>>>
->>>>> Microsoft has proposed a firmware loading format called IGVM that the
->>>>> Coconut-SVSM project has adopted, and has support in Vanadium
->>>>> (Google's KVM-based VMM), Qemu, and OpenVMM (donated to the CCC).
->>>>>
->>>>> I see Alexander from AWS in the Qemu threads for vmfwupdate, so now
->>>>> that's at least the top 3 CSPs represented here.
->>>>>
->>>>> I think for everyone in the To: tag here, we all have a vested
->>>>> interest in improving the CVM trust story without making the
->>>>> virtualization ecosystem even more challenging to work with. I'd like
->>>>> to invite you all to our next meeting
->>>>>
->>>>> 9am PDT May 8th: https://confidentialcomputing.io/get-involved/calendar/
->>>>>
->>>
->>> Hi Ani, Dionna, everyone,
->>>
->>> I'd be delighted to participate! May, 8th, however, is a public holiday
->>> in some European countries including CZ where I'm based and I will be
->>> traveling on that day so I may not be able to join. I'm, however, pretty
->>> certain that Ani/Alex/Gerd can represent the idea very well)
->>>
->>> --
->>> Vitaly
->>>
-> 
-> 
-> 
