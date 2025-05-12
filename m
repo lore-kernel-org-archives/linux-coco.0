@@ -1,25 +1,50 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A561EDA06;
-	Mon, 12 May 2025 14:45:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4212AD0B
+	for <linux-coco@lists.linux.dev>; Mon, 12 May 2025 16:21:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747061141; cv=none; b=kFneupT73yUZLTzcb+Qbw8lHdDrV06sNM/yuvBe8s3RizcXYG71yX24T1JQixyV4VfkytBSqTd7Okm5Mwh819j/GTZQen4L6o/blirSiEVwoHpNwD+PYX1A/aJLU8f5z9K15T9/k7QhG0EI8s3NtPPfIi2XWJ0jQnOzl2kGOWvM=
+	t=1747066892; cv=none; b=k2u7ADYWfpaUAL/Ft9nMEeR5nJQ6oYN0xchd8Vpo1kV/eg4EwM4Clxq9/yZKl5Fgh206SHHSspEAyt1pRQe3tWHOT22fsJTFPOjfDSdGKylrBUu73shR5E+lCH+qrrJV3mGmlkNLCjOPsceLVaSHJJp3vv+lQ09F+W0luZK+050=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747061141; c=relaxed/simple;
-	bh=u5dr95GixDsIATIzfH8+P0BjJQyZkXENkW98trzSn/k=;
+	s=arc-20240116; t=1747066892; c=relaxed/simple;
+	bh=R916CkDIv6piiy5jUfAa8DNdpHhmJPe/JfXTOj/3U20=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fEx1akb15zza2LI3LP3+PNEGsV3oGqfCKzWTDgutyMX2QgXDYUA4QnCXvjMdBVXMqbFSHmPrzzbpRsDk/1dtwlA6uet9c3CFEpyd6kd36InNRqJlPIhXTGGvWbeybSlLZi6UIjGZ80eYxOKvfMNnqzS0DXDf/6aUfYRN5vHYPes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0CD6014BF;
-	Mon, 12 May 2025 07:45:27 -0700 (PDT)
-Received: from [10.57.21.218] (unknown [10.57.21.218])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9D8883F673;
-	Mon, 12 May 2025 07:45:33 -0700 (PDT)
-Message-ID: <805af62d-1d3a-4084-8f71-17b58ff0089f@arm.com>
-Date: Mon, 12 May 2025 15:45:31 +0100
+	 In-Reply-To:Content-Type; b=VhHjwnZRnlTNQZyqzzULyxNgwhLYk4np17BXqPeMDarzTkQ84kght57UihmZhcK0M/itJeDfJLfs/8PzKsoRhBir8pqF/EZA6FpZ/RP27DwfSgyd0aAMXNhpqTd/HGPYnLY23O4V7r94RUKBp0NOeU4SORo0+zY7du6DMPvbCrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ioc1Jifq; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ioc1Jifq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747066891; x=1778602891;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=R916CkDIv6piiy5jUfAa8DNdpHhmJPe/JfXTOj/3U20=;
+  b=ioc1JifqX1V/OMdaelYwCcJeYFMh59O0GkBGX+bUsjzOM3S22jojGWNO
+   OxHY8i461nxiNVMuxlbMYdkLa4pV1QFhoVCarPPoICd16a6lUJd5rWeeC
+   6iY2exs/FoN+7sQn1WbJjJy4IFTgG6GMLgnFzkuPxbQfVO2c9aqtAySMQ
+   X0sFxv42bw32bByFQ0j/Du1OgtBf+/g+BcDqrjpGQ4LSZ/QFm6IHp0Ae2
+   PKAfYp0DETsComysAfMRhoDvWSqvkSFQDokTBtXEMUhIpzOO0ShvSx6lf
+   YXgThubCIbky6LEx889gMwUxPZB9JDOpar/13i6W3c55HISzq1/VDZY2m
+   w==;
+X-CSE-ConnectionGUID: HGvpzGP9RtGGaClyU1RRBw==
+X-CSE-MsgGUID: oJvw8hH5QNmZBoHcqqxblQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11431"; a="60216092"
+X-IronPort-AV: E=Sophos;i="6.15,282,1739865600"; 
+   d="scan'208";a="60216092"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 09:21:30 -0700
+X-CSE-ConnectionGUID: HOAPRbhcQ1qIAnwOKnGXKw==
+X-CSE-MsgGUID: E8xklg7lQ0anqgI3T9lyQw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,282,1739865600"; 
+   d="scan'208";a="168496095"
+Received: from rrajasre-mobl.amr.corp.intel.com (HELO [10.95.0.74]) ([10.95.0.74])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 09:21:24 -0700
+Message-ID: <3d9fa17e-2b74-4c90-99b8-5b1dc8d15356@linux.intel.com>
+Date: Mon, 12 May 2025 11:21:00 -0500
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -27,265 +52,135 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 16/43] arm64: RME: Handle realm enter/exit
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>
-References: <20250416134208.383984-1-steven.price@arm.com>
- <20250416134208.383984-17-steven.price@arm.com>
- <82c0ee14-65fb-4f34-892a-a3820d8d0f97@arm.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <82c0ee14-65fb-4f34-892a-a3820d8d0f97@arm.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: Linux kernel SIG meeting for vwfwupdate discussion
+To: Dionna Amalie Glaze <dionnaglaze@google.com>,
+ Steve Rutherford <srutherford@google.com>, linux-coco@lists.linux.dev
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Joerg Roedel <jroedel@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
+ Jon Lange <jlange@microsoft.com>, "cho@microsoft.com" <cho@microsoft.com>,
+ Alexander Graf <graf@amazon.com>,
+ James Bottomley <James.Bottomley@hansenpartnership.com>
+References: <CAAH4kHZ2yO3ju_iJinR9y4BDXXdWBnEP1wcv09JWMzaqp1ZP+g@mail.gmail.com>
+ <CAK3XEhOs4ijnbqmv8UrNmKN4=nv6+_A7fESLibGBRR9u8rXi6w@mail.gmail.com>
+ <87frifm75c.fsf@redhat.com>
+ <CABayD+eRjjknqJNRkkh9_KraC-jZyXb1BL_D79m04po1_hR-_g@mail.gmail.com>
+ <CAAH4kHbCduQr_+oj0X8QeTjgDgh6aBncPV-1+mvB_r1R3i7Lqg@mail.gmail.com>
+Content-Language: en-US
+From: Dan Middleton <dan.middleton@linux.intel.com>
+In-Reply-To: <CAAH4kHbCduQr_+oj0X8QeTjgDgh6aBncPV-1+mvB_r1R3i7Lqg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 07/05/2025 11:26, Suzuki K Poulose wrote:
-> On 16/04/2025 14:41, Steven Price wrote:
->> Entering a realm is done using a SMC call to the RMM. On exit the
->> exit-codes need to be handled slightly differently to the normal KVM
->> path so define our own functions for realm enter/exit and hook them
->> in if the guest is a realm guest.
->>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->> Changes since v7:
->>   * A return of 0 from kvm_handle_sys_reg() doesn't mean the register has
->>     been read (although that can never happen in the current code). Tidy
->>     up the condition to handle any future refactoring.
->> Changes since v6:
->>   * Use vcpu_err() rather than pr_err/kvm_err when there is an associated
->>     vcpu to the error.
->>   * Return -EFAULT for KVM_EXIT_MEMORY_FAULT as per the documentation for
->>     this exit type.
->>   * Split code handling a RIPAS change triggered by the guest to the
->>     following patch.
->> Changes since v5:
->>   * For a RIPAS_CHANGE request from the guest perform the actual RIPAS
->>     change on next entry rather than immediately on the exit. This allows
->>     the VMM to 'reject' a RIPAS change by refusing to continue
->>     scheduling.
->> Changes since v4:
->>   * Rename handle_rme_exit() to handle_rec_exit()
->>   * Move the loop to copy registers into the REC enter structure from the
->>     to rec_exit_handlers callbacks to kvm_rec_enter(). This fixes a bug
->>     where the handler exits to user space and user space wants to modify
->>     the GPRS.
->>   * Some code rearrangement in rec_exit_ripas_change().
->> Changes since v2:
->>   * realm_set_ipa_state() now provides an output parameter for the
->>     top_iap that was changed. Use this to signal the VMM with the correct
->>     range that has been transitioned.
->>   * Adapt to previous patch changes.
->> ---
->>   arch/arm64/include/asm/kvm_rme.h |   3 +
->>   arch/arm64/kvm/Makefile          |   2 +-
->>   arch/arm64/kvm/arm.c             |  19 +++-
->>   arch/arm64/kvm/rme-exit.c        | 170 +++++++++++++++++++++++++++++++
->>   arch/arm64/kvm/rme.c             |  19 ++++
->>   5 files changed, 207 insertions(+), 6 deletions(-)
->>   create mode 100644 arch/arm64/kvm/rme-exit.c
->>
->> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/
->> asm/kvm_rme.h
->> index b916db8565a2..d86051ef0c5c 100644
->> --- a/arch/arm64/include/asm/kvm_rme.h
->> +++ b/arch/arm64/include/asm/kvm_rme.h
->> @@ -101,6 +101,9 @@ void kvm_realm_destroy_rtts(struct kvm *kvm, u32
->> ia_bits);
->>   int kvm_create_rec(struct kvm_vcpu *vcpu);
->>   void kvm_destroy_rec(struct kvm_vcpu *vcpu);
->>   +int kvm_rec_enter(struct kvm_vcpu *vcpu);
->> +int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_status);
->> +
->>   void kvm_realm_unmap_range(struct kvm *kvm,
->>                  unsigned long ipa,
->>                  unsigned long size,
->> diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
->> index 2ebc66812d49..c4b10012faa3 100644
->> --- a/arch/arm64/kvm/Makefile
->> +++ b/arch/arm64/kvm/Makefile
->> @@ -24,7 +24,7 @@ kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o
->> pvtime.o \
->>        vgic/vgic-mmio.o vgic/vgic-mmio-v2.o \
->>        vgic/vgic-mmio-v3.o vgic/vgic-kvm-device.o \
->>        vgic/vgic-its.o vgic/vgic-debug.o vgic/vgic-v3-nested.o \
->> -     rme.o
->> +     rme.o rme-exit.o
->>     kvm-$(CONFIG_HW_PERF_EVENTS)  += pmu-emul.o pmu.o
->>   kvm-$(CONFIG_ARM64_PTR_AUTH)  += pauth.o
->> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
->> index 7c0bb1b05f4c..cf707130ef66 100644
->> --- a/arch/arm64/kvm/arm.c
->> +++ b/arch/arm64/kvm/arm.c
->> @@ -1263,7 +1263,10 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->>           trace_kvm_entry(*vcpu_pc(vcpu));
->>           guest_timing_enter_irqoff();
->>   -        ret = kvm_arm_vcpu_enter_exit(vcpu);
->> +        if (vcpu_is_rec(vcpu))
->> +            ret = kvm_rec_enter(vcpu);
->> +        else
->> +            ret = kvm_arm_vcpu_enter_exit(vcpu);
->>             vcpu->mode = OUTSIDE_GUEST_MODE;
->>           vcpu->stat.exits++;
->> @@ -1319,10 +1322,13 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu
->> *vcpu)
->>             local_irq_enable();
->>   -        trace_kvm_exit(ret, kvm_vcpu_trap_get_class(vcpu),
->> *vcpu_pc(vcpu));
->> -
->>           /* Exit types that need handling before we can be preempted */
->> -        handle_exit_early(vcpu, ret);
->> +        if (!vcpu_is_rec(vcpu)) {
->> +            trace_kvm_exit(ret, kvm_vcpu_trap_get_class(vcpu),
->> +                       *vcpu_pc(vcpu));
->> +
->> +            handle_exit_early(vcpu, ret);
->> +        }
-> 
-> minor nit: Looks like we loose the kvm_exit trace. Could we add
-> something in handle_rec_exit ?
+The recording is now available:
+https://www.youtube.com/watch?v=bio5BGhjui4
 
-I dropped the trace because we can't provide the PC value. I'm not sure
-what's best here:
+Additional Minutes:
+https://docs.google.com/document/d/18D820gyt2xe84Jy6dGXgrNThApoozcekDzvIlK2_bd4/edit?tab=t.0#heading=h.4qh5zyiozbow 
 
- (1). Provide kvm_exit trace but with a bogus PC.
- (2). Introduce a new 'kvm_rec_exit'.
- (3). Wait until someone comes along with a use-case and hope they
-      implement what they need.
 
-Obviously my preference is 3 ;)
+Really interesting discussion.
+Great that the discussion could be recruited on short notice.
+Sounds like follow-up might be over a thread here, with those not
+subscribed to linux-coco added directly.
 
-In practice I haven't actually dropped kvm_entry (so that has a bogus
-PC), so for now I guess I'll go with (1).
-
->>             preempt_enable();
->>   @@ -1345,7 +1351,10 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu
->> *vcpu)
->>               ret = ARM_EXCEPTION_IL;
->>           }
->>   -        ret = handle_exit(vcpu, ret);
->> +        if (vcpu_is_rec(vcpu))
->> +            ret = handle_rec_exit(vcpu, ret);
->> +        else
->> +            ret = handle_exit(vcpu, ret);
->>       }
->>         /* Tell userspace about in-kernel device output levels */
->> diff --git a/arch/arm64/kvm/rme-exit.c b/arch/arm64/kvm/rme-exit.c
->> new file mode 100644
->> index 000000000000..a1adf5610455
->> --- /dev/null
->> +++ b/arch/arm64/kvm/rme-exit.c
->> @@ -0,0 +1,170 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/*
->> + * Copyright (C) 2023 ARM Ltd.
->> + */
->> +
->> +#include <linux/kvm_host.h>
->> +#include <kvm/arm_hypercalls.h>
->> +#include <kvm/arm_psci.h>
->> +
->> +#include <asm/rmi_smc.h>
->> +#include <asm/kvm_emulate.h>
->> +#include <asm/kvm_rme.h>
->> +#include <asm/kvm_mmu.h>
->> +
->> +typedef int (*exit_handler_fn)(struct kvm_vcpu *vcpu);
->> +
->> +static int rec_exit_reason_notimpl(struct kvm_vcpu *vcpu)
->> +{
->> +    struct realm_rec *rec = &vcpu->arch.rec;
->> +
->> +    vcpu_err(vcpu, "Unhandled exit reason from realm (ESR: %#llx)\n",
->> +         rec->run->exit.esr);
->> +    return -ENXIO;
->> +}
->> +
->> +static int rec_exit_sync_dabt(struct kvm_vcpu *vcpu)
->> +{
->> +    return kvm_handle_guest_abort(vcpu);
->> +}
->> +
->> +static int rec_exit_sync_iabt(struct kvm_vcpu *vcpu)
->> +{
->> +    struct realm_rec *rec = &vcpu->arch.rec;
->> +
->> +    vcpu_err(vcpu, "Unhandled instruction abort (ESR: %#llx).\n",
->> +         rec->run->exit.esr);
->> +    return -ENXIO;
->> +}
->> +
->> +static int rec_exit_sys_reg(struct kvm_vcpu *vcpu)
->> +{
->> +    struct realm_rec *rec = &vcpu->arch.rec;
->> +    unsigned long esr = kvm_vcpu_get_esr(vcpu);
->> +    int rt = kvm_vcpu_sys_get_rt(vcpu);
->> +    bool is_write = !(esr & 1);
->> +    int ret;
->> +
->> +    if (is_write)
->> +        vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[0]);
->> +
->> +    ret = kvm_handle_sys_reg(vcpu);
->> +    if (ret > 0 && !is_write)
->> +        rec->run->enter.gprs[0] = vcpu_get_reg(vcpu, rt);
->> +
->> +    return ret;
->> +}
->> +
->> +static exit_handler_fn rec_exit_handlers[] = {
->> +    [0 ... ESR_ELx_EC_MAX]    = rec_exit_reason_notimpl,
->> +    [ESR_ELx_EC_SYS64]    = rec_exit_sys_reg,
->> +    [ESR_ELx_EC_DABT_LOW]    = rec_exit_sync_dabt,
->> +    [ESR_ELx_EC_IABT_LOW]    = rec_exit_sync_iabt
->> +};
->> +
->> +static int rec_exit_psci(struct kvm_vcpu *vcpu)
->> +{
->> +    struct realm_rec *rec = &vcpu->arch.rec;
->> +    int i;
->> +
->> +    for (i = 0; i < REC_RUN_GPRS; i++)
->> +        vcpu_set_reg(vcpu, i, rec->run->exit.gprs[i]);
->> +
->> +    return kvm_smccc_call_handler(vcpu);
->> +}
->> +
->> +static int rec_exit_ripas_change(struct kvm_vcpu *vcpu)
->> +{
->> +    struct kvm *kvm = vcpu->kvm;
->> +    struct realm *realm = &kvm->arch.realm;
->> +    struct realm_rec *rec = &vcpu->arch.rec;
->> +    unsigned long base = rec->run->exit.ripas_base;
->> +    unsigned long top = rec->run->exit.ripas_top;
->> +    unsigned long ripas = rec->run->exit.ripas_value;
->> +
->> +    if (!kvm_realm_is_private_address(realm, base) ||
->> +        !kvm_realm_is_private_address(realm, top - 1)) {
->> +        vcpu_err(vcpu, "Invalid RIPAS_CHANGE for %#lx - %#lx, ripas:
->> %#lx\n",
->> +             base, top, ripas);
-> 
-> Do we need to set the RMI_REJECT for run->enter.flags
-> REC_ENTER_FLAG_RIPAS_RESPONSE ?
-
-Makes sense, will add.
+Keep in mind that the next SIG session is available and you can not only
+show pictures there, but can gesture and point to the same things to
+clarify.. I don't understand this stage, this widget, this format.
 
 Thanks,
-Steve
+Dan
 
-> Rest looks fine to me.
+On 5/8/25 12:29 PM, Dionna Amalie Glaze wrote:
+> Thanks everyone who could attend the CCC Linux Kernel SIG meeting
+> about FUKI and specifically the firmware replacement mechanism.
+> Please +cc any participants I missed.
 > 
-> Suzuki
-
+> Meeting minutes:
+> * the concept from its initial version that was Qemu-specific and used
+> specially-named FwCfg files to direct CVM context reconstruction with
+> a different ROM.
+> * the viewpoint of generalizing that interface to be an IGVM-based
+> firmware loading instruction in order to reduce the interface's
+> interpretation requirements to keep focused on an emerging standard.
+> * the usefulness of "single artifact" VM template distribution, such
+> that the firmware can be disk-image specific and not need extra
+> orchestration to lead to VM construction.
+> * constraints of the different VMM providers, namely
+>     + AWS does not have access to guest resources. A disk can only be
+> read by a guest VM.
+>     + Azure doesn't have this constraint and does not want to build a
+> stage 1 VM just to tear it down to boot a stage 2 VM every cold reset.
+> It's far more preferable for the host to have the option to determine
+> if an IGVM will be requested to load, in which case it should be
+> loaded directly without VM construction.
+>     + GCP emulates Qemu devices and could implement the FUKI interface,
+> but would prefer to use mechanisms that are standardized through
+> professional bodies like the UEFI forum. Faster boots without VM
+> reconstruction are also highly desirable.
+> 
+> Jon requested for Alex to give some more design consideration into a
+> mechanism that would satisfy both AWS and Azure's constraints.
+> 
+> Alex suggested the framework of a solution: mount the guest image,
+> search the boot partition for a specially named IGVM file, and launch
+> that instead of the CSP's firmware.
+> (Dionna notes outside of the meeting that this has the danger of being
+> an unsound optimization of directly loading the disk image under the
+> CSP firmware for FUKI application to load the IGVM due to no
+> requirement that the FUKI application load that specific IGVM file)
+> 
+> I look forward to our further discussion on how to provide a more
+> trustworthy Confidential Computing experience in the Cloud for our
+> customers :)
+> 
+> On Wed, May 7, 2025 at 4:04 PM Steve Rutherford <srutherford@google.com> wrote:
+>>
+>> Heads up, this meeting is tomorrow, May 8th at 9AM PDT (6PM CEST), if
+>> you all are available.
+>>
+>> On Fri, Apr 11, 2025 at 1:31 AM Vitaly Kuznetsov <vkuznets@redhat.com> wrote:
+>>>
+>>> Ani Sinha <anisinha@redhat.com> writes:
+>>>
+>>>> Adding Vitaly as well who is also involved in this project from Red Hat.
+>>>>
+>>>> On Fri, Apr 11, 2025 at 4:46 AM Dionna Amalie Glaze
+>>>> <dionnaglaze@google.com> wrote:
+>>>>>
+>>>>> Hi y'all, my colleague Steve Rutherford runs a monthly special
+>>>>> interest group meeting amongst Linux kernel developers under the
+>>>>> confidential computing consortium umbrella.
+>>>>>
+>>>>> The f-UKI concept presented at FOSDEM is a very interesting idea for
+>>>>> improving customer trust in cloud confidential VMs without the need
+>>>>> for complex control plane resource management for virtual firmware
+>>>>> EEPROM.
+>>>>>
+>>>>> Microsoft has proposed a firmware loading format called IGVM that the
+>>>>> Coconut-SVSM project has adopted, and has support in Vanadium
+>>>>> (Google's KVM-based VMM), Qemu, and OpenVMM (donated to the CCC).
+>>>>>
+>>>>> I see Alexander from AWS in the Qemu threads for vmfwupdate, so now
+>>>>> that's at least the top 3 CSPs represented here.
+>>>>>
+>>>>> I think for everyone in the To: tag here, we all have a vested
+>>>>> interest in improving the CVM trust story without making the
+>>>>> virtualization ecosystem even more challenging to work with. I'd like
+>>>>> to invite you all to our next meeting
+>>>>>
+>>>>> 9am PDT May 8th: https://confidentialcomputing.io/get-involved/calendar/
+>>>>>
+>>>
+>>> Hi Ani, Dionna, everyone,
+>>>
+>>> I'd be delighted to participate! May, 8th, however, is a public holiday
+>>> in some European countries including CZ where I'm based and I will be
+>>> traveling on that day so I may not be able to join. I'm, however, pretty
+>>> certain that Ani/Alex/Gerd can represent the idea very well)
+>>>
+>>> --
+>>> Vitaly
+>>>
+> 
+> 
+> 
