@@ -1,226 +1,307 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2065.outbound.protection.outlook.com [40.107.93.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78A0172BD5
-	for <linux-coco@lists.linux.dev>; Mon, 12 May 2025 14:06:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747058782; cv=fail; b=Ui+NlxlMx07yVlSLtYQTCyYXLqUEtRrFgLGPt4AX19uHDXDa44Sa75iNFz4rcdWNNFB43hDKALOA35TCUI5ZcifyDw7jzYpmtltZYU3o+kvjc3mkuXKv756FTy1w+3m12FovSe9G6CmxezoN/AmmKrm4+YoNDtP8gBJiQCUqMys=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747058782; c=relaxed/simple;
-	bh=94Bkw3AKUwYTju1XsegvvTe9OOehEBVvr/dof9XM5Yo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=RGGMVJPFkF5YRE2H/HvmHmALLpwjj1t9+7RDDaPa5e0PoK7US4IH0SZZ97p4hijgVHe8pFzvkvl7FVOz5IJhg15Xe4TS19DhqLlN/zhHTjew86VxDKt+BXeHSHdv+9VhEnTU80gphp2+5lP/WwZ9o8G4laB77sI3xyQJK/xzdI4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=q0fbEKHL; arc=fail smtp.client-ip=40.107.93.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="q0fbEKHL"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GvCQk+tpsjT2/JyY1b4qUdnhBLbty59gaYFwSpwVSVLvDgkTLZGdkJ9PWCGnLCoTmVFw5PLqYAcsHOyujmeG+LX17xqfSPg7ImCbtiVHpUKN6EQJStxpEwdlFpE38oOEyGu3X4j0KAVyp5+1Nr/hw0LCRVatCRu/OZjetBF3FPSK7Eu1ndhhubFfPczXNvUJVXNLaMGyCwgh5q0RldZNY7heajEZLMNBfXLeCz56N6vCG4k7S8WcK70p2tRtXZzJFNUwNKVo8N84Q3D2J+7y0KPegFLxyoFsPO9ZccVexyEzi0Dx/r2FmPm9fP+F2+XxPbjzjvVY09FDbKnC2yVmVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9o85sQUDWwWszXK15xJS1kXTPd2+acIxkgDRszjYMk0=;
- b=JynhR5pbr1GDf6XmT5qR/fe2Rtyx7aNpNZmMr+3lenEf//Q2JMeH4ILel+ovyXZxCp1KpiChE4gP61RSYQ9nSq4duAw9Ydhu8wnCQ6B6nsmEntk7Qw3bBG+dQ3qXmOPaWDCxWDHE/uKwry2l+QdX7+pDchdskk7TcnJ0kvn2JOnVuWcO/B7UBGkkUOg3C7SBtpHrmiZnJ3vVa/S8Hsc5thl5XLP5HzF7pS+eu3BbL39ub7U03EWmznkZiBmwLXxtDx3JSaQ6QwKRhNIPkVOU9OzYeWvYOA9sZwkcgf7evohMLfP/YtGX70D1T1sMjxF69FvGzZXT6TgWuj81vD7L+w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9o85sQUDWwWszXK15xJS1kXTPd2+acIxkgDRszjYMk0=;
- b=q0fbEKHL/hBnZGjjj8SyslAHdgymWXfFJ0mMIpKYeyqUmr925eWsxGzRLYqV+5X7h0LqZAhD5P1Idy0qeOTAA0d6w9ac0RTGQIjqV4RndxM7h+AX/pvC9mzIg3WA1CYZtBLQv9eLuDXEe4LvSKQPFEGa1P1KPb4x0P3VMFXAoxcFjKGVUUGYR9enbmVFRdlXmVrBj+LwvoOQCFwOFBH9EtcPOMzNjhBrad/zkPx5d2e3UI9QUmjZMcaJBLbwO/TrSzJnynK8xPARHMV7WeICKxeTbpLM05RzbXFruHEUhqil+DKg0axn86FZnubMjaz9agZTBtZQrSOeFoBc7Id0PQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by IA0PR12MB8302.namprd12.prod.outlook.com (2603:10b6:208:40f::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.30; Mon, 12 May
- 2025 14:06:18 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%7]) with mapi id 15.20.8722.027; Mon, 12 May 2025
- 14:06:18 +0000
-Date: Mon, 12 May 2025 11:06:17 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
-	christian.koenig@amd.com, pbonzini@redhat.com, seanjc@google.com,
-	alex.williamson@redhat.com, vivek.kasireddy@intel.com,
-	dan.j.williams@intel.com, yilun.xu@intel.com,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	lukas@wunner.de, yan.y.zhao@intel.com, daniel.vetter@ffwll.ch,
-	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
-	tao1.su@intel.com
-Subject: Re: [RFC PATCH 00/12] Private MMIO support for private assigned dev
-Message-ID: <20250512140617.GA285583@nvidia.com>
-References: <20250107142719.179636-1-yilun.xu@linux.intel.com>
- <371ab632-d167-4720-8f0d-57be1e3fee84@amd.com>
- <4b6dc759-86fd-47a7-a206-66b25a0ccc6d@amd.com>
- <c10bf9c2-e073-479d-ad1c-6796c592d333@amd.com>
- <aB3jLmlUKKziwdeG@yilunxu-OptiPlex-7050>
- <aB4tQHmHzHooDeTE@yilunxu-OptiPlex-7050>
- <20250509184318.GD5657@nvidia.com>
- <aB7Ma84WXATiu5O1@yilunxu-OptiPlex-7050>
- <2c4713b0-3d6c-4705-841b-1cb58cd9a0f5@amd.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2c4713b0-3d6c-4705-841b-1cb58cd9a0f5@amd.com>
-X-ClientProxiedBy: MN2PR07CA0022.namprd07.prod.outlook.com
- (2603:10b6:208:1a0::32) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E499918DB14;
+	Mon, 12 May 2025 14:44:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747061101; cv=none; b=FGs3+wJfIIhP89BnSCIvYz3qgzOE+J/F+Hi9WouAW1K4yJka8zG7d1IxAqSDXh3Cvaqoqrt5zxbpcTbaiqk3tj5c8R9T6LEjxqRxchiXoWorNg/e6Q2NMO9NtkfzC7g3mcVp3i/2WswH31CiF4f1tXd5zJ4Qj2e2GaouDudQB04=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747061101; c=relaxed/simple;
+	bh=XAITQ9gGYPlNcp5g5iWOivskIm4vLmuGTyg7TfZHkIQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Bo4kG97MRtnYWrCq/v4a+CsU59CQlv39J8SuQKH41QXnwF0h6fcMPEnFL2QcckJQhm6aXPFYiIlpZF/8WSED07eDNeb/J5Uyc3w4q6tb9tidru4tpRv2j50/DaVgQjzD0q6C+QB44eAH0NpQO6llj46GZNath5oO5WyZ+nTWRRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 39CAC14BF;
+	Mon, 12 May 2025 07:44:47 -0700 (PDT)
+Received: from [10.57.21.218] (unknown [10.57.21.218])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6A08D3F673;
+	Mon, 12 May 2025 07:44:53 -0700 (PDT)
+Message-ID: <8f7ab79a-6d9e-4b66-a74e-5fb1dd2beecd@arm.com>
+Date: Mon, 12 May 2025 15:44:51 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|IA0PR12MB8302:EE_
-X-MS-Office365-Filtering-Correlation-Id: cfb15a4c-035e-46a5-6c7c-08dd915e2a32
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?HjDhY/9fnVMhfYk56xZo9aisjPv89IGExNaZvTNZrUGLV2J4mu1RGmx4pIPH?=
- =?us-ascii?Q?Nl4Y+CK7Pgyi27v4WxBxhfNgJvLr7qOehtgna4Burjjwkwn0HkDf6gW8u7hg?=
- =?us-ascii?Q?3S2mesGa2u2062nVXRwltgHvyMrCqwxgKWJpvx3xm/G6sSvEbE01HApKQI+g?=
- =?us-ascii?Q?vIEug+Yi5Py97ipixqjS1DtJDotJMatRLR+PqStjqwU47/m4nJRISVG3BXVr?=
- =?us-ascii?Q?8iIIB9LgIgwfEF4Od/zLnhykqVpFtZyN2nfEryZCU/lkbQDZihK+su7V05uW?=
- =?us-ascii?Q?epXca11c9+hrbPbWdSiYlkzowXg3oVTOj9/hwsDQV0UT4SMEAGaVpBSs17pL?=
- =?us-ascii?Q?b6BKr3nQnmb8VcPW7UsguXZGu3M7RbUL1XiJjluhcmK5jXx0H6veyvhjOqLl?=
- =?us-ascii?Q?Ny82I+np/9fh5o0et8ue1QY4uYB7Y82xO44GzPMyanKVWfm9AWbfD5rdqQlV?=
- =?us-ascii?Q?wuZzc28z2YIPoVJwxJtl1Hslr/1zxikKVl9uL17igQ7r8Df3t+DdSdYx/lR1?=
- =?us-ascii?Q?CljTN/oaUTLDnslFxtNWgSjL3O1U8JsD4lD90jhSRxqRqOfmflWvnLd7jdfW?=
- =?us-ascii?Q?nkgx+8ThqTI/vf7WiuV5RVRJHmyOV4Q1wRf6DTl7jvk8gijhCTvQzYWtskie?=
- =?us-ascii?Q?98h2rEZN4m5M/0FDTMy61y343c9EMSx/ss18MZWUr+NJUQnjFRwLDwv4tgy0?=
- =?us-ascii?Q?Yei9w5QJLJQUa3UhhrdAOFdwGIeQmMvlLPD7ZrHfmam1c8Y1aLInxvQzPBT2?=
- =?us-ascii?Q?47xu5lQkY1N/zt4o3KR/JtTqDxHYNj6TrVcVbR8MdTTpMUvcYQN+2LU2rU+f?=
- =?us-ascii?Q?wZak2SQhpy2fNyjNg4pTyPCZIbmuIC3/NGDv0DMoPb5TZZI9J1P6PKU9wrw2?=
- =?us-ascii?Q?keuVgjzaw88oYaBgwklnJOxQQX/4AfHMAU8JxKXM5Jh38cQuCCAwkNrqLqUq?=
- =?us-ascii?Q?qnKXrIsphM9N5YBP4ON6+sRSdYbGTZJYs2gnuEZWW00yxD2G7WAVU3is4BPZ?=
- =?us-ascii?Q?RQqU6P/P66yu7GAr+iLD/HGFZ3EQYpaQ47Vdii2YdHxWaI1fjUdc1gyL74Mk?=
- =?us-ascii?Q?qJUBTJc0I0pVYkXgZkmbH3csgKrStGxp0w005QT8HgLmHI1shyUB+fIHTlsd?=
- =?us-ascii?Q?pwWujpBhJTQekCof4EJ9qEcBVWv9IyB1uPa3PMqFRo7b+415Lgp3dTxrs3cE?=
- =?us-ascii?Q?Ee3S9fbPX9/ISbB/PTzLTe0sbk/1hXPy6TziEM1Vz98S+lCQ17wuwSBzaeyL?=
- =?us-ascii?Q?ATAMZV0AGtuG6ssiT8R8UiftzmkTezj0vdJYvJbJmcUtZO40OIBeeUoFqXSt?=
- =?us-ascii?Q?+oaUOWnK7+ndZv6x6Kf5Div0BzRhJbGGXLGfHAJCpjqzn2Es09gLNTUi28+J?=
- =?us-ascii?Q?RaaRh4Vnph3+UtKeO2jM9/ZuE7eVhNKTCQFDCi1cRn/VB+/Zbg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?3uGB/wh5uxdfI1I7Heq7qH0Og9FzlyhrYFKDSA8z7YwdokyYoK24rIKLZe9b?=
- =?us-ascii?Q?NCBjeHuMOkgOZ5KB1yOXXf7NvO8fIyFi6pP4dKX4eGZuSY6yAgmXHKFfk05h?=
- =?us-ascii?Q?MmP1JZXen0v0e9yTRIdIbvPH1lBMNwhvDFteR3AE2SFshNiqd7Ewn7bXRgkV?=
- =?us-ascii?Q?q7Q0+6Rbj0AXMyhk17cgYbWozzq/91/mgCjjVA25qQ513HZnvf6mNms0S43t?=
- =?us-ascii?Q?Pa6q1pxYZxHHi3tNePUm3KI5buNY5bEVbzDLM3FEtt0pvRVXQLRju5ArOxUP?=
- =?us-ascii?Q?JFJVRIKFnwoDmoiMHMKnu+akIiTQLrhY/LkoKA4Yqa5Tij+RSN1DnOshss/Q?=
- =?us-ascii?Q?CvySJxvEVVUSjOkUIBxOhxRoO6PZw5U1zQaO7YAAx0QCRFa+CeWCcU+pRAml?=
- =?us-ascii?Q?o/UkKvsawvIgyhhlLcpwtZsVMLuZvY9MYBjzh3BtowMyI9EDtyoDV1XGCvn+?=
- =?us-ascii?Q?xnFv6SAFgCzU15sV1o8qb5pKOov/bGIHZXeAIZjxr5Ab6+z7dL41QD3+Pjc3?=
- =?us-ascii?Q?pLoGLBSJSDfO73KFYCeuzbZfnZ3HB1JSnT4Hzsh/at0JkiQfsvp7LqVmpXPO?=
- =?us-ascii?Q?UlUm0ulNxUpLjK7oLZCk9jKuDbyTn3XSac9LBNPc4b6E7aZ5GavkM98+bYBz?=
- =?us-ascii?Q?4a/GEPdwmNWKM0Mcoh6RpB2pycO3NVGZTNqqI++TRI82jzbLTPtgSJ1L+hpT?=
- =?us-ascii?Q?j/+qNnn++kL3BR2O4q82U0/sNa4M4z9zUkbbMnfdflVanOF9INc6wNwfSJly?=
- =?us-ascii?Q?gIiXNQAYj1wdwzgzWbKIPbn5eceBhEllsiXXWxaM1/A5Ul0PldOpaq/WKiQR?=
- =?us-ascii?Q?DaCGf/S8wvPup2EoqK25qywSFksP9SzL7MXUp4gLtXKd5kXgw+GxnsWRwZDA?=
- =?us-ascii?Q?wQLSDERRcOA2L1TlZwAsrB/u1fJwgqXSXFyLPEoDlb1i8Tt5yNkbSDygwjGs?=
- =?us-ascii?Q?6nIO73A9ohThl0Wc2tbUGV3OHWdH7X08mahVp2piKkXWgVc+UqD7Y5qKk9mB?=
- =?us-ascii?Q?V08B3Ty+/NTYyyUtvDLqz7nBh14Kv/pjn4omiXHKNWK88C/985XLKz6H00M8?=
- =?us-ascii?Q?CiG9ZxnD55iMazckYiLKyk/13F+cjNHQ/+7X3r+pynvekP9HC2KvqqD0GEJK?=
- =?us-ascii?Q?515CvM4zIZp+KZswzxfXqL0jgku0wOykm5mh2kDqG1FWSbfdSTOdpE8KdoB2?=
- =?us-ascii?Q?+2tvXfT9Iwpy2C1FnXV7pNGhrsa/ONpx7tHQdyipriG4I2aZd9J2pT5jqw70?=
- =?us-ascii?Q?KAS9aqe1HBUcQxuoX32QMFc1gBb7dFxd6g2/N7Cp1H4fnjn8JXEDxXxOqa6Y?=
- =?us-ascii?Q?/v3et32XnvXWVctg5hchv9Fy8u6Y37Iy4wzg31zZHqAnZ3EzO7wdMVwGDbbJ?=
- =?us-ascii?Q?lIjvgin+kP1PWhJ0hc0G/ZFhNvXEBN1RkFQhgRIIzw4sY2sJjEKO3o4SUuro?=
- =?us-ascii?Q?J0uDcN7LPYna2ezd6uowRCpxOv17wW8fguTN+Y6lRHT40S52W0+569mcc+NI?=
- =?us-ascii?Q?V9kmQJZH9Vxwfo/5EYZ3zIaP1NdrZmFScdoCBV2aHPkZKwOEO3Vg8EWtEtit?=
- =?us-ascii?Q?B3rsYMB5daOVdmqfDOk=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cfb15a4c-035e-46a5-6c7c-08dd915e2a32
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2025 14:06:17.9431
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9XOPNpXo0izY4ZK79J8S5SOXnrLwVISIq8DobohJUXZEmtI86dR9kuogaBjNEe/A
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8302
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 13/43] arm64: RME: Support for the VGIC in realms
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>
+References: <20250416134208.383984-1-steven.price@arm.com>
+ <20250416134208.383984-14-steven.price@arm.com>
+ <bf0b9232-36b0-41c5-89a5-6639719cd09e@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <bf0b9232-36b0-41c5-89a5-6639719cd09e@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, May 12, 2025 at 07:30:21PM +1000, Alexey Kardashevskiy wrote:
+On 02/05/2025 12:04, Suzuki K Poulose wrote:
+> On 16/04/2025 14:41, Steven Price wrote:
+>> The RMM provides emulation of a VGIC to the realm guest but delegates
+>> much of the handling to the host. Implement support in KVM for
+>> saving/restoring state to/from the REC structure.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>> Changes from v5:
+>>   * Handle RMM providing fewer GIC LRs than the hardware supports.
+>> ---
+>>   arch/arm64/include/asm/kvm_rme.h |  1 +
+>>   arch/arm64/kvm/arm.c             | 16 +++++++++---
+>>   arch/arm64/kvm/rme.c             |  5 ++++
+>>   arch/arm64/kvm/vgic/vgic-init.c  |  2 +-
+>>   arch/arm64/kvm/vgic/vgic-v3.c    |  6 ++++-
+>>   arch/arm64/kvm/vgic/vgic.c       | 43 ++++++++++++++++++++++++++++++--
+>>   6 files changed, 66 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/
+>> asm/kvm_rme.h
+>> index f716b890e484..9bcad6ec5dbb 100644
+>> --- a/arch/arm64/include/asm/kvm_rme.h
+>> +++ b/arch/arm64/include/asm/kvm_rme.h
+>> @@ -92,6 +92,7 @@ struct realm_rec {
+>>     void kvm_init_rme(void);
+>>   u32 kvm_realm_ipa_limit(void);
+>> +u32 kvm_realm_vgic_nr_lr(void);
+>>     int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap
+>> *cap);
+>>   int kvm_init_realm_vm(struct kvm *kvm);
+>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+>> index fd83efb667cc..808d7e479571 100644
+>> --- a/arch/arm64/kvm/arm.c
+>> +++ b/arch/arm64/kvm/arm.c
+>> @@ -683,19 +683,24 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
+>>           kvm_call_hyp_nvhe(__pkvm_vcpu_put);
+>>       }
+>>   +    kvm_timer_vcpu_put(vcpu);
+>> +    kvm_vgic_put(vcpu);
+>> +
+>> +    vcpu->cpu = -1;
+>> +
+>> +    if (vcpu_is_rec(vcpu))
+>> +        return;
+>> +
+>>       kvm_vcpu_put_debug(vcpu);
+>>       kvm_arch_vcpu_put_fp(vcpu);
+>>       if (has_vhe())
+>>           kvm_vcpu_put_vhe(vcpu);
+>> -    kvm_timer_vcpu_put(vcpu);
+>> -    kvm_vgic_put(vcpu);
+>>       kvm_vcpu_pmu_restore_host(vcpu);
+>>       if (vcpu_has_nv(vcpu))
+>>           kvm_vcpu_put_hw_mmu(vcpu);
+>>       kvm_arm_vmid_clear_active();
+>>         vcpu_clear_on_unsupported_cpu(vcpu);
+>> -    vcpu->cpu = -1;
+>>   }
+>>     static void __kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu)
+>> @@ -912,6 +917,11 @@ int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu
+>> *vcpu)
+>>               return ret;
+>>       }
+>>   +    if (!irqchip_in_kernel(kvm) && kvm_is_realm(vcpu->kvm)) {
+>> +        /* Userspace irqchip not yet supported with Realms */
+>> +        return -EOPNOTSUPP;
+>> +    }
+>> +
+>>       mutex_lock(&kvm->arch.config_lock);
+>>       set_bit(KVM_ARCH_FLAG_HAS_RAN_ONCE, &kvm->arch.flags);
+>>       mutex_unlock(&kvm->arch.config_lock);
+>> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
+>> index f4923fc3b34e..1239eb07aca6 100644
+>> --- a/arch/arm64/kvm/rme.c
+>> +++ b/arch/arm64/kvm/rme.c
+>> @@ -77,6 +77,11 @@ u32 kvm_realm_ipa_limit(void)
+>>       return u64_get_bits(rmm_feat_reg0, RMI_FEATURE_REGISTER_0_S2SZ);
+>>   }
+>>   +u32 kvm_realm_vgic_nr_lr(void)
+>> +{
+>> +    return u64_get_bits(rmm_feat_reg0,
+>> RMI_FEATURE_REGISTER_0_GICV3_NUM_LRS);
+>> +}
+>> +
+>>   static int get_start_level(struct realm *realm)
+>>   {
+>>       return 4 - ((realm->ia_bits - 8) / (RMM_PAGE_SHIFT - 3));
+>> diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/
+>> vgic-init.c
+>> index 1f33e71c2a73..a81c7f3d1d42 100644
+>> --- a/arch/arm64/kvm/vgic/vgic-init.c
+>> +++ b/arch/arm64/kvm/vgic/vgic-init.c
+>> @@ -81,7 +81,7 @@ int kvm_vgic_create(struct kvm *kvm, u32 type)
+>>        * the proper checks already.
+>>        */
+>>       if (type == KVM_DEV_TYPE_ARM_VGIC_V2 &&
+>> -        !kvm_vgic_global_state.can_emulate_gicv2)
+>> +        (!kvm_vgic_global_state.can_emulate_gicv2 || kvm_is_realm(kvm)))
+>>           return -ENODEV;
+>>         /* Must be held to avoid race with vCPU creation */
+>> diff --git a/arch/arm64/kvm/vgic/vgic-v3.c b/arch/arm64/kvm/vgic/vgic-
+>> v3.c
+>> index b9ad7c42c5b0..c10ad817030d 100644
+>> --- a/arch/arm64/kvm/vgic/vgic-v3.c
+>> +++ b/arch/arm64/kvm/vgic/vgic-v3.c
+>> @@ -8,9 +8,11 @@
+>>   #include <linux/kvm_host.h>
+>>   #include <linux/string_choices.h>
+>>   #include <kvm/arm_vgic.h>
+>> +#include <asm/kvm_emulate.h>
+>>   #include <asm/kvm_hyp.h>
+>>   #include <asm/kvm_mmu.h>
+>>   #include <asm/kvm_asm.h>
+>> +#include <asm/rmi_smc.h>
+>>     #include "vgic.h"
+>>   @@ -758,7 +760,9 @@ void vgic_v3_put(struct kvm_vcpu *vcpu)
+>>           return;
+>>       }
+>>   -    if (likely(!is_protected_kvm_enabled()))
+>> +    if (vcpu_is_rec(vcpu))
+>> +        cpu_if->vgic_vmcr = vcpu->arch.rec.run->exit.gicv3_vmcr;
+>> +    else if (likely(!is_protected_kvm_enabled()))
+>>           kvm_call_hyp(__vgic_v3_save_vmcr_aprs, cpu_if);
+>>       WARN_ON(vgic_v4_put(vcpu));
+>>   diff --git a/arch/arm64/kvm/vgic/vgic.c b/arch/arm64/kvm/vgic/vgic.c
+>> index 8d189ce18ea0..c68a41a29917 100644
+>> --- a/arch/arm64/kvm/vgic/vgic.c
+>> +++ b/arch/arm64/kvm/vgic/vgic.c
+>> @@ -10,7 +10,9 @@
+>>   #include <linux/list_sort.h>
+>>   #include <linux/nospec.h>
+>>   +#include <asm/kvm_emulate.h>
+>>   #include <asm/kvm_hyp.h>
+>> +#include <asm/kvm_rme.h>
+>>     #include "vgic.h"
+>>   @@ -23,6 +25,8 @@ struct vgic_global kvm_vgic_global_state
+>> __ro_after_init = {
+>>     static inline int kvm_vcpu_vgic_nr_lr(struct kvm_vcpu *vcpu)
+>>   {
+>> +    if (unlikely(vcpu_is_rec(vcpu)))
+>> +        return kvm_realm_vgic_nr_lr();
+>>       return kvm_vgic_global_state.nr_lr;
+>>   }
+>>   @@ -864,10 +868,23 @@ static inline bool
+>> can_access_vgic_from_kernel(void)
+>>       return !
+>> static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif) || has_vhe();
+>>   }
+>>   +static inline void vgic_rmm_save_state(struct kvm_vcpu *vcpu)
+>> +{
+>> +    struct vgic_v3_cpu_if *cpu_if = &vcpu->arch.vgic_cpu.vgic_v3;
+>> +    int i;
+>> +
+>> +    for (i = 0; i < kvm_vcpu_vgic_nr_lr(vcpu); i++) {
+>> +        cpu_if->vgic_lr[i] = vcpu->arch.rec.run->exit.gicv3_lrs[i];
+>> +        vcpu->arch.rec.run->enter.gicv3_lrs[i] = 0;
+>> +    }
+>> +}
+> 
+> We also need to save/restore gicv3_hcr/cpuif->vgic_hcr.
 
-> > > I'm surprised by this.. iommufd shouldn't be doing PCI stuff, it is
-> > > just about managing the translation control of the device.
-> > 
-> > I have a little difficulty to understand. Is TSM bind PCI stuff? To me
-> > it is. Host sends PCI TDISP messages via PCI DOE to put the device in
-> > TDISP LOCKED state, so that device behaves differently from before. Then
-> > why put it in IOMMUFD?
+I'm not sure how I missed that. Note that the RMM spec restricts the
+fields that the normal world is allowed to set. So I'll also add a new
+define to rmi_smc.h to provide the bitmask:
+
+#define RMI_PERMITTED_GICV3_HCR_BITS   (ICH_HCR_EL2_UIE |              \
+                                        ICH_HCR_EL2_LRENPIE |          \
+                                        ICH_HCR_EL2_NPIE |             \
+                                        ICH_HCR_EL2_VGrp0EIE |         \
+                                        ICH_HCR_EL2_VGrp0DIE |         \
+                                        ICH_HCR_EL2_VGrp1EIE |         \
+                                        ICH_HCR_EL2_VGrp1DIE |         \
+                                        ICH_HCR_EL2_TDIR)
+
+>> +
+>>   static inline void vgic_save_state(struct kvm_vcpu *vcpu)
+>>   {
+>>       if (!static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
+>>           vgic_v2_save_state(vcpu);
+>> +    else if (vcpu_is_rec(vcpu))
+>> +        vgic_rmm_save_state(vcpu);
+>>       else
+>>           __vgic_v3_save_state(&vcpu->arch.vgic_cpu.vgic_v3);
+>>   }
+>> @@ -903,10 +920,28 @@ void kvm_vgic_sync_hwstate(struct kvm_vcpu *vcpu)
+>>       vgic_prune_ap_list(vcpu);
+>>   }
+>>   +static inline void vgic_rmm_restore_state(struct kvm_vcpu *vcpu)
+>> +{
+>> +    struct vgic_v3_cpu_if *cpu_if = &vcpu->arch.vgic_cpu.vgic_v3;
+>> +    int i;
+>> +
+>> +    for (i = 0; i < kvm_vcpu_vgic_nr_lr(vcpu); i++) {
+>> +        vcpu->arch.rec.run->enter.gicv3_lrs[i] = cpu_if->vgic_lr[i];
+>> +        /*
+>> +         * Also populate the rec.run->exit copies so that a late
+>> +         * decision to back out from entering the realm doesn't cause
+>> +         * the state to be lost
+>> +         */
+>> +        vcpu->arch.rec.run->exit.gicv3_lrs[i] = cpu_if->vgic_lr[i];
+>> +    }
+>> +}
+>> +
+>>   static inline void vgic_restore_state(struct kvm_vcpu *vcpu)
+>>   {
+>>       if (!static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
+>>           vgic_v2_restore_state(vcpu);
+>> +    else if (vcpu_is_rec(vcpu))
+>> +        vgic_rmm_restore_state(vcpu);
+>>       else
+>>           __vgic_v3_restore_state(&vcpu->arch.vgic_cpu.vgic_v3);
+>>   }
+>> @@ -976,7 +1011,9 @@ void kvm_vgic_flush_hwstate(struct kvm_vcpu *vcpu)
+>>     void kvm_vgic_load(struct kvm_vcpu *vcpu)
+>>   {
+>> -    if (unlikely(!irqchip_in_kernel(vcpu->kvm) || !
+>> vgic_initialized(vcpu->kvm))) {
+>> +    if (unlikely(!irqchip_in_kernel(vcpu->kvm) ||
+>> +             !vgic_initialized(vcpu->kvm) ||
+>> +             vcpu_is_rec(vcpu))) {
 > 
 > 
-> "TSM bind" sets up the CPU side of it, it binds a VM to a piece of
-> IOMMU on the host CPU. The device does not know about the VM, it
-> just enables/disables encryption by a request from the CPU (those
-> start/stop interface commands). And IOMMUFD won't be doing DOE, the
-> platform driver (such as AMD CCP) will. Nothing to do for VFIO here.
+>>           if (has_vhe() &&
+>> static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
+>>               __vgic_v3_activate_traps(&vcpu->arch.vgic_cpu.vgic_v3);
+>>           return;
+>> @@ -990,7 +1027,9 @@ void kvm_vgic_load(struct kvm_vcpu *vcpu)
+>>     void kvm_vgic_put(struct kvm_vcpu *vcpu)
+>>   {
+>> -    if (unlikely(!irqchip_in_kernel(vcpu->kvm) || !
+>> vgic_initialized(vcpu->kvm))) {
+>> +    if (unlikely(!irqchip_in_kernel(vcpu->kvm) ||
+>> +             !vgic_initialized(vcpu->kvm) ||
+>> +             vcpu_is_rec(vcpu))) {
+>>           if (has_vhe() &&
+>> static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif))
+>>               __vgic_v3_deactivate_traps(&vcpu->arch.vgic_cpu.vgic_v3);
 > 
-> We probably should notify VFIO about the state transition but I do
-> not know VFIO would want to do in response.
+> We could return early here for rec, and skip the unnecessary trap steps.
+> Similar for the vgic_load case.
 
-We have an awkward fit for what CCA people are doing to the various
-Linux APIs. Looking somewhat maximally across all the arches a "bind"
-for a CC vPCI device creation operation does:
+Ack. I think this was me getting confused during a rebase ;) I'll pull
+out the "if (unlikely(vcpu_is_rec())" and return early.
 
- - Setup the CPU page tables for the VM to have access to the MMIO
- - Revoke hypervisor access to the MMIO
- - Setup the vIOMMU to understand the vPCI device
- - Take over control of some of the IOVA translation, at least for T=1,
-   and route to the the vIOMMU
- - Register the vPCI with any attestation functions the VM might use
- - Do some DOE stuff to manage/validate TDSIP/etc
+Steve
 
-So we have interactions of things controlled by PCI, KVM, VFIO, and
-iommufd all mushed together.
+> Rest looks good to me.
+> 
+> Suzuki
+> 
+> 
+>>           return;
+> 
 
-iommufd is the only area that already has a handle to all the required
-objects:
- - The physical PCI function
- - The CC vIOMMU object
- - The KVM FD
- - The CC vPCI object
-
-Which is why I have been thinking it is the right place to manage
-this.
-
-It doesn't mean that iommufd is suddenly doing PCI stuff, no, that
-stays in VFIO.
-
-> > > So your issue is you need to shoot down the dmabuf during vPCI device
-> > > destruction?
-> > 
-> > I assume "vPCI device" refers to assigned device in both shared mode &
-> > prvate mode. So no, I need to shoot down the dmabuf during TSM unbind,
-> > a.k.a. when assigned device is converting from private to shared.
-> > Then recover the dmabuf after TSM unbind. The device could still work
-> > in VM in shared mode.
-
-What are you trying to protect with this? Is there some intelism where
-you can't have references to encrypted MMIO pages?
-
-> > What I really want is, one SW component to manage MMIO dmabuf, secure
-> > iommu & TSM bind/unbind. So easier coordinate these 3 operations cause
-> > these ops are interconnected according to secure firmware's requirement.
->
-> This SW component is QEMU. It knows about FLRs and other config
-> space things, it can destroy all these IOMMUFD objects and talk to
-> VFIO too, I've tried, so far it is looking easier to manage. Thanks,
-
-Yes, qemu should be sequencing this. The kernel only needs to enforce
-any rules required to keep the system from crashing.
-
-Jason
