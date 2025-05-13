@@ -1,25 +1,65 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310E0213259;
-	Tue, 13 May 2025 10:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A28328C876
+	for <linux-coco@lists.linux.dev>; Tue, 13 May 2025 11:10:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747133044; cv=none; b=WPiwW1MOkJAvtXX9U1nQqvkx9/+eibCVKaFbb+N8cIfnc8tQVOVtMUqXHFEs8qPT6QLHicHNJKWyDl/XEKdTkqjiAmq4NfqMI/N8lBxfoKMxME49f+pBALxx2KaKQtVn9gz1GEZBIXle0d75Py8lys7ZE/h52S4ky0NxH4NXjCs=
+	t=1747134659; cv=none; b=TxI/yVsjAbH8WeYkOxcQH/2NHJ6GoRxRUE7KkxbvdI1HFWmBOi1NmGDZTd07ybPvTpQyEynkn2R132oX6SH+Xib9qeGGoKr4cGD34A1sxJFEK6cGmNeYtBOQ5dw5O8Gog6pvN/Ac/MEDg0F7K0KdcvJjfzVQpPYUjfS7DRQzhW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747133044; c=relaxed/simple;
-	bh=R3qN94XqLBMC350Jm9Vx7bjxVR4PE08xu34naEEs5GU=;
+	s=arc-20240116; t=1747134659; c=relaxed/simple;
+	bh=G/Iuvk97lCj/ysnGeDq5y/E/uY+SQmDZiycYuE0QgTY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KB0Nf1n8hgEm2rOxYruhdWUCqyidFcEbH9WUbFv2P4rDQiLGybgTZlf/WPpY39Dzs9JeeGKEMe/+fRovZ/8pr/brh5m992BBwyxbzU2iillvun3Ps3LehUJDIiMFpG2JQV1c3lgUJQ87RMd2OLqsCOfDArf24zEFDB/695Irr9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B4BEE168F;
-	Tue, 13 May 2025 03:43:49 -0700 (PDT)
-Received: from [10.1.35.46] (Suzukis-MBP.cambridge.arm.com [10.1.35.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 2EA723F5A1;
-	Tue, 13 May 2025 03:43:57 -0700 (PDT)
-Message-ID: <d0cbb637-6ba1-4858-b326-31271e9949ea@arm.com>
-Date: Tue, 13 May 2025 11:43:56 +0100
+	 In-Reply-To:Content-Type; b=AUS3epLT5dDCMOncMImpGBZwd5WYILpaeQa9Vxi7vYmV82CN3ycO+5n31F4fcUgF05FKQxToePHj4eJV9DOUiTzsBShRUwfQTZ9LqvMMdQEDi9jLVqY6xjwazvRTt1BOpRBtZk5FHKY09Apyk3SLlkzns8GC7vDrrtNyZvbpYOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=NRxm9ROj; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="NRxm9ROj"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ace94273f0dso13729066b.3
+        for <linux-coco@lists.linux.dev>; Tue, 13 May 2025 04:10:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1747134656; x=1747739456; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ih47wa8lOcapFnPoJK//XfeRJyzOSt0KNDPZDlIyojo=;
+        b=NRxm9ROjBn8njHjEWODira9GCnlp+GI5ynxIoycwHVfJd0G36n/4u1jM6wg6YnTHkR
+         Irqf7NYNLKxIKah5MJrHOgqJtSPB19aTXf40aVWcbhoQEQhyI7WkvL33uowi1gVy5mJo
+         zZzrW6XA453nm7B0JeP9YIFK+MI5frk6URJPoL1E31gw29Nzlkzkgm16yv+VrgZHU5dC
+         SUMXpf/Xyzqk0idgUNlhA7RISgIWR23iP+A8+u+5/n8OoEAgNFRmZ2zlMxouxuvHZiSe
+         nu64OZ8d+abU4s6jSfqCFQw9IDnTC7+JpVJz0F6WOWVyQN+xNCGeC+uICfF9wglPjJff
+         57yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747134656; x=1747739456;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ih47wa8lOcapFnPoJK//XfeRJyzOSt0KNDPZDlIyojo=;
+        b=RWa31inOFV2d9bNmUEViEOuJFNKxQ14jIrZSpLfodnUt+o+gJjZRXcppKVKSbycfg2
+         b/dlT6I9eR1zweXogOUjaPlWfUcE3uatZc4h7Np247H4ncdakdFqQbJBG/4PhSOuRDY+
+         oMqYu57bqpZz+9CsbnB3tXwkabTvP13jwyhsq6SToPGDllTqkH2EXA9m4r9vDzIBb0BQ
+         3+Ddy05WYmfZsvXz9LdAW1ovENcvRSjH0q9U65EnhTAW6hLT8q2JmIsI3sUsoOesPdwz
+         uOHUbsO6/pmdudjU89M8uDjB/YdSutCyodKxNIvU/20JR6tGA9/ZcDwjUAblVmNBOTqB
+         MXoA==
+X-Forwarded-Encrypted: i=1; AJvYcCU2/Lq+E9L1+IKPAAyr73Im/axaAb7XzuJJ8QJr5dthX10skic6rD3xxJZcKAqNbCebovl+QGooKecM@lists.linux.dev
+X-Gm-Message-State: AOJu0YygXXHcU/wIDny1kE93TGU+PF5oxjwjyIElbq/02YO/uIp5WX/q
+	kklk6POCKPYpnugSeiK+AL+YLEa1HjMOyWQUkaQhlynwZVoNH3xyZRnxnAF2P2I=
+X-Gm-Gg: ASbGnctaFxaZq87up09hHDc8PJmOiNV3bOnKG08GgY8KTxTQtI/LbZda6rKGE0iOw1+
+	BLfDfHycipWELs2Sw4oaGBJOOvreOMGukkK7zg/wwZsKVuUbnvVqEHJZ3HpaMq04Sd/UpZ8ohCQ
+	joI1gec1yzEssyLI224nA4WW1GttZJx4BQ30ms0WSyz2+AjCvoE7zOvrGGPp+N4MAQtQO0rQxY5
+	iZvRz7Xif6vnfHlFKTA3l0uznu4GAORuoKLcvM0K29TE9Xp+unEJMQvtgh3RiGPHbjVhWQhvF++
+	cqXV4l0gYd7Tl+qi85udMHWXdlWT5zKeKbQeJOzihCaQ1c+Tun+laPg=
+X-Google-Smtp-Source: AGHT+IG/1KGBzYEjomD9ooGdFK5Z+PWpP4n15tO0ehecLA0mQwOQvBEHF+6qJupAbbVt/rBjAG8RAA==
+X-Received: by 2002:a17:906:99cf:b0:ad2:39a9:f1aa with SMTP id a640c23a62f3a-ad239aa04e2mr1057420766b.47.1747134655593;
+        Tue, 13 May 2025 04:10:55 -0700 (PDT)
+Received: from [192.168.0.20] ([212.21.133.65])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad24121e992sm496096766b.14.2025.05.13.04.10.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 May 2025 04:10:55 -0700 (PDT)
+Message-ID: <efcca734-2c80-43e3-b347-2af39f811502@suse.com>
+Date: Tue, 13 May 2025 14:10:54 +0300
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -27,457 +67,125 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 15/43] arm64: RME: Allow VMM to set RIPAS
-Content-Language: en-GB
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>
-References: <20250416134208.383984-1-steven.price@arm.com>
- <20250416134208.383984-16-steven.price@arm.com>
- <83071e55-cbe4-4786-b60e-d26ce16368b3@arm.com>
- <f4ee678d-112d-46d1-8b87-70e55d6617e1@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <f4ee678d-112d-46d1-8b87-70e55d6617e1@arm.com>
+Subject: Re: [PATCH 0/2] Allow individual features to be locked down
+To: Paul Moore <paul@paul-moore.com>, Dan Williams <dan.j.williams@intel.com>
+Cc: linux-security-module@vger.kernel.org, serge@hallyn.com, kees@kernel.org,
+ linux-kernel@vger.kernel.org, kirill.shutemov@linux.intel.com,
+ linux-coco@lists.linux.dev
+References: <20250321102422.640271-1-nik.borisov@suse.com>
+ <CAHC9VhSpgzde_xRiu9FApg59w6sR1FUWW-Pf7Ya6XG9eFHwTqQ@mail.gmail.com>
+ <67f69600ed221_71fe2946f@dwillia2-xfh.jf.intel.com.notmuch>
+ <68226ad551afd_29032945b@dwillia2-xfh.jf.intel.com.notmuch>
+ <CAHC9VhSyz2MqMjnHFbTiMqYvhAFZf162ZabnSsyyCQEZj-V9=g@mail.gmail.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <CAHC9VhSyz2MqMjnHFbTiMqYvhAFZf162ZabnSsyyCQEZj-V9=g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 12/05/2025 15:45, Steven Price wrote:
-> On 06/05/2025 14:23, Suzuki K Poulose wrote:
->> Hi Steven
->>
->> On 16/04/2025 14:41, Steven Price wrote:
->>> Each page within the protected region of the realm guest can be marked
->>> as either RAM or EMPTY. Allow the VMM to control this before the guest
->>> has started and provide the equivalent functions to change this (with
->>> the guest's approval) at runtime.
+
+
+On 5/13/25 01:01, Paul Moore wrote:
+> On Mon, May 12, 2025 at 5:41 PM Dan Williams <dan.j.williams@intel.com> wrote:
+>> Dan Williams wrote:
+>>> Paul Moore wrote:
+>>>> On Fri, Mar 21, 2025 at 6:24 AM Nikolay Borisov <nik.borisov@suse.com> wrote:
+>>>>>
+>>>>> This simple change allows usecases where someone might want to  lock only specific
+>>>>> feature at a finer granularity than integrity/confidentiality levels allows.
+>>>>> The first likely user of this is the CoCo subsystem where certain features will be
+>>>>> disabled.
+>>>>>
+>>>>> Nikolay Borisov (2):
+>>>>>    lockdown: Switch implementation to using bitmap
+>>>>>    lockdown/kunit: Introduce kunit tests
+>>>>
+>>>> Hi Nikolay,
+>>>>
+>>>> Thanks for the patches!  With the merge window opening in a few days,
+>>>> it is too late to consider this for the upcoming merge window so
+>>>> realistically this patchset is two weeks out and I'm hopeful we'll
+>>>> have a dedicated Lockdown maintainer by then so I'm going to defer the
+>>>> ultimate decision on acceptance to them.
 >>>
->>> When transitioning from RIPAS RAM (1) to RIPAS EMPTY (0) the memory is
->>> unmapped from the guest and undelegated allowing the memory to be reused
->>> by the host. When transitioning to RIPAS RAM the actual population of
->>> the leaf RTTs is done later on stage 2 fault, however it may be
->>> necessary to allocate additional RTTs to allow the RMM track the RIPAS
->>> for the requested range.
+>>> The patches in this thread proposed to selectively disable /dev/mem
+>>> independent of all the other lockdown mitigations. That goal can be
+>>> achieved with more precision with this proposed patch:
 >>>
->>> When freeing a block mapping it is necessary to temporarily unfold the
->>> RTT which requires delegating an extra page to the RMM, this page can
->>> then be recovered once the contents of the block mapping have been
->>> freed.
->>>
->>> Signed-off-by: Steven Price <steven.price@arm.com>
->>> ---
->>> Changes from v7:
->>>    * Replace use of "only_shared" with the upstream "attr_filter" field
->>>      of struct kvm_gfn_range.
->>>    * Clean up the logic in alloc_delegated_granule() for when to call
->>>      kvm_account_pgtable_pages().
->>>    * Rename realm_destroy_protected_granule() to
->>>      realm_destroy_private_granule() to match the naming elsewhere. Also
->>>      fix the return codes in the function to be descriptive.
->>>    * Several other minor changes to names/return codes.
->>> Changes from v6:
->>>    * Split the code dealing with the guest triggering a RIPAS change into
->>>      a separate patch, so this patch is purely for the VMM setting up the
->>>      RIPAS before the guest first runs.
->>>    * Drop the useless flags argument from alloc_delegated_granule().
->>>    * Account RTTs allocated for a guest using kvm_account_pgtable_pages().
->>>    * Deal with the RMM granule size potentially being smaller than the
->>>      host's PAGE_SIZE. Although note alloc_delegated_granule() currently
->>>      still allocates an entire host page for every RMM granule (so wasting
->>>      memory when PAGE_SIZE>4k).
->>> Changes from v5:
->>>    * Adapt to rebasing.
->>>    * Introduce find_map_level()
->>>    * Rename some functions to be clearer.
->>>    * Drop the "spare page" functionality.
->>> Changes from v2:
->>>    * {alloc,free}_delegated_page() moved from previous patch to this one.
->>>    * alloc_delegated_page() now takes a gfp_t flags parameter.
->>>    * Fix the reference counting of guestmem pages to avoid leaking memory.
->>>    * Several misc code improvements and extra comments.
->>> ---
->>>    arch/arm64/include/asm/kvm_rme.h |   5 +
->>>    arch/arm64/kvm/mmu.c             |   8 +-
->>>    arch/arm64/kvm/rme.c             | 384 +++++++++++++++++++++++++++++++
->>>    3 files changed, 394 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/
->>> asm/kvm_rme.h
->>> index 9bcad6ec5dbb..b916db8565a2 100644
->>> --- a/arch/arm64/include/asm/kvm_rme.h
->>> +++ b/arch/arm64/include/asm/kvm_rme.h
->>> @@ -101,6 +101,11 @@ void kvm_realm_destroy_rtts(struct kvm *kvm, u32
->>> ia_bits);
->>>    int kvm_create_rec(struct kvm_vcpu *vcpu);
->>>    void kvm_destroy_rec(struct kvm_vcpu *vcpu);
->>>    +void kvm_realm_unmap_range(struct kvm *kvm,
->>> +               unsigned long ipa,
->>> +               unsigned long size,
->>> +               bool unmap_private);
->>> +
->>>    static inline bool kvm_realm_is_private_address(struct realm *realm,
->>>                            unsigned long addr)
->>>    {
->>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->>> index d80a9d408f71..71c04259e39f 100644
->>> --- a/arch/arm64/kvm/mmu.c
->>> +++ b/arch/arm64/kvm/mmu.c
->>> @@ -323,6 +323,7 @@ static void invalidate_icache_guest_page(void *va,
->>> size_t size)
->>>     * @start: The intermediate physical base address of the range to unmap
->>>     * @size:  The size of the area to unmap
->>>     * @may_block: Whether or not we are permitted to block
->>> + * @only_shared: If true then protected mappings should not be unmapped
->>>     *
->>>     * Clear a range of stage-2 mappings, lowering the various ref-
->>> counts.  Must
->>>     * be called while holding mmu_lock (unless for freeing the stage2
->>> pgd before
->>> @@ -330,7 +331,7 @@ static void invalidate_icache_guest_page(void *va,
->>> size_t size)
->>>     * with things behind our backs.
->>>     */
->>>    static void __unmap_stage2_range(struct kvm_s2_mmu *mmu, phys_addr_t
->>> start, u64 size,
->>> -                 bool may_block)
->>> +                 bool may_block, bool only_shared)
->>>    {
->>>        struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
->>>        phys_addr_t end = start + size;
->>> @@ -344,7 +345,7 @@ static void __unmap_stage2_range(struct kvm_s2_mmu
->>> *mmu, phys_addr_t start, u64
->>>    void kvm_stage2_unmap_range(struct kvm_s2_mmu *mmu, phys_addr_t start,
->>>                    u64 size, bool may_block)
->>>    {
->>> -    __unmap_stage2_range(mmu, start, size, may_block);
->>> +    __unmap_stage2_range(mmu, start, size, may_block, false);
->>>    }
->>>      void kvm_stage2_flush_range(struct kvm_s2_mmu *mmu, phys_addr_t
->>> addr, phys_addr_t end)
->>> @@ -1975,7 +1976,8 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct
->>> kvm_gfn_range *range)
->>>          __unmap_stage2_range(&kvm->arch.mmu, range->start << PAGE_SHIFT,
->>>                     (range->end - range->start) << PAGE_SHIFT,
->>> -                 range->may_block);
->>> +                 range->may_block,
->>> +                 !(range->attr_filter & KVM_FILTER_PRIVATE));
->>>          kvm_nested_s2_unmap(kvm, range->may_block);
->>>        return false;
->>> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
->>> index 1239eb07aca6..33eb793d8bdb 100644
->>> --- a/arch/arm64/kvm/rme.c
->>> +++ b/arch/arm64/kvm/rme.c
->>> @@ -87,6 +87,51 @@ static int get_start_level(struct realm *realm)
->>>        return 4 - ((realm->ia_bits - 8) / (RMM_PAGE_SHIFT - 3));
->>>    }
->>>    
+>>> http://lore.kernel.org/67f5b75c37143_71fe2949b@dwillia2-xfh.jf.intel.com.notmuch
 >>
->>> +
->>> +static phys_addr_t alloc_delegated_granule(struct
->>> kvm_mmu_memory_cache *mc)
->>> +{
->>> +    phys_addr_t phys;
->>> +    void *virt;
->>> +
->>> +    if (mc)
->>> +        virt = kvm_mmu_memory_cache_alloc(mc);
->>> +    else
->>> +        virt = (void *)__get_free_page(GFP_KERNEL_ACCOUNT);
->>> +
->>> +    if (!virt)
->>> +        return PHYS_ADDR_MAX;
->>> +
->>> +    phys = virt_to_phys(virt);
->>> +
->>> +    if (rmi_granule_delegate(phys)) {
->>> +        free_page((unsigned long)virt);
->>> +
->>> +        return PHYS_ADDR_MAX;
->>> +    }
->>> +
+>> Just wanted to circle back here and repair the damage I caused to the
+>> momentum of this "lockdown feature bitmap" proposal. It turns out that
+>> devmem maintainers are not looking to add yet more arch-specific hacks
+>> [1].
 >>
+>>      "Restricting /dev/mem further is a good idea, but it would be nice
+>>       if that could be done without adding yet another special case."
 >>
->>> +    kvm_account_pgtable_pages(virt, 1);
+>> security_locked_down() is already plumbed into all the places that
+>> confidential VMs may need to manage userspace access to confidential /
+>> private memory.
 >>
->> Could we delay this to the place where we actually use it ? Otherwise
->> we may get the accounting wrong, if e.g, free it using
->> free_delegated_granule() ? Also, the name doesn't suggest that
->> we are allocating an rtt (though it accepts a memory_cache for rtts).
+>> I considered registering a new "coco-LSM" to hook
+>> security_locked_down(), but that immediately raises the next question of
+>> how does userspace discover what is currently locked_down. So just teach
+>> the native lockdown LSM how to be more fine-grained rather than
+>> complicate the situation with a new LSM.
 > 
-> I think what I should do is provide wrappers for the RTT functions and
-> move the kvm_account_pgtables_pages() to the wrappers. That would make
-> it more obvious which allocations are for RTTs and hopefully avoid
-> accounting errors.
+> Historically Linus has bristled at LSMs with alternative
+> security_locked_down() implementations/security-models, therefore I'd
+> probably give a nod to refining the existing Lockdown approach over a
+> new LSM.
 > 
->>> +
->>> +    return phys;
->>> +}
->>> +
->>>    static void free_delegated_granule(phys_addr_t phys)
->>>    {
->>>        if (WARN_ON(rmi_granule_undelegate(phys))) {
->>> @@ -99,6 +144,154 @@ static void free_delegated_granule(phys_addr_t phys)
->>>        free_page((unsigned long)phys_to_virt(phys));
->>>    }
->>>    +static int realm_rtt_create(struct realm *realm,
->>> +                unsigned long addr,
->>> +                int level,
->>> +                phys_addr_t phys)
->>> +{
->>> +    addr = ALIGN_DOWN(addr, rme_rtt_level_mapsize(level - 1));
->>> +    return rmi_rtt_create(virt_to_phys(realm->rd), phys, addr, level);
->>> +}
->>> +
->>> +static int realm_rtt_fold(struct realm *realm,
->>> +              unsigned long addr,
->>> +              int level,
->>> +              phys_addr_t *rtt_granule)
->>> +{
->>> +    unsigned long out_rtt;
->>> +    int ret;
->>> +
->>> +    ret = rmi_rtt_fold(virt_to_phys(realm->rd), addr, level, &out_rtt);
->>
->> minor nit: Should we align "addr" to level - 1, similar to what we do
->> for rtt_create, just to be consistent and safer ?
+> Related update, there are new Lockdown maintainers coming, there is
+> just an issue of sorting out some email addresses first.  Hopefully
+> we'll see something on-list soon.
 > 
-> Ack
-> 
->>> +
->>> +    if (RMI_RETURN_STATUS(ret) == RMI_SUCCESS && rtt_granule)
->>> +        *rtt_granule = out_rtt;
->>> +
->>> +    return ret;
->>> +}
->>> +
->>> +static int realm_destroy_private_granule(struct realm *realm,
->>> +                     unsigned long ipa,
->>> +                     unsigned long *next_addr,
->>> +                     phys_addr_t *out_rtt)
->>> +{
->>> +    unsigned long rd = virt_to_phys(realm->rd);
->>> +    unsigned long rtt_addr;
->>> +    phys_addr_t rtt;
->>> +    int ret;
->>> +
->>> +retry:
->>> +    ret = rmi_data_destroy(rd, ipa, &rtt_addr, next_addr);
->>> +    if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
->>> +        if (*next_addr > ipa)
->>> +            return 0; /* UNASSIGNED */
->>> +        rtt = alloc_delegated_granule(NULL);
->>> +        if (WARN_ON(rtt == PHYS_ADDR_MAX))
->>> +            return -ENOMEM;
->>> +        /*
->>> +         * ASSIGNED - ipa is mapped as a block, so split. The index
->>> +         * from the return code should be 2 otherwise it appears
->>> +         * there's a huge page bigger than KVM currently supports
->>> +         */
->>> +        WARN_ON(RMI_RETURN_INDEX(ret) != 2);
->>> +        ret = realm_rtt_create(realm, ipa, 3, rtt);
->>> +        if (WARN_ON(ret)) {
->>
->> Can we race with another thread ? If so, we may need to do an rtt read
->> to confirm if we are safe to retry and ignore the failure.
-> 
-> We're holding the KVM mmu_lock (the only call path is
-> realm_unmap_private_range() > realm_unmap_private_page() >
-> realm_destroy_private_granule(). So we can't race with another thread
-> doing the same thing.
-> 
-> This situation happens when there's a block mapping, so we know there
-> can't be a racing thread faulting in other pages in the same RTT (as all
-> the base pages are already there). So AFAICT this should never happen
-> due to a race...
-
-I see, we shouldn't see a fault as the mappings are valid. Thanks for
-the clarification.
-
-> 
-> I may have missed something though ;)
-> 
-> I'm also a little wary of using rtt read because that in itself can be
-> racy (unless we're holding a suitable lock the situation can change
-> before/after the read).
-
-Very much true. But it at least gives you some chance of a debug.
-
-> 
->>> +            free_delegated_granule(rtt);
->>> +            return -ENXIO;
->>> +        }
->>> +        goto retry;
->>> +    } else if (WARN_ON(ret)) {
->>
->> minor nit: I am wondering, if we should add a new wrapper for warn_on,
->> which also dumps the RTT entry and the operation that caused the
->> WARNING ? Might be useful to debug and pin point issues. We have several
->> cases
->> where this might be used.
-> 
-> In this particular case the error is not RMI_ERROR_RTT, so the RTT
-> probably isn't particularly enlightening. But I agree the default
-> WARN_ON splat tends not to be informative, I'll take a look at if a
-> wrapper could help.
-
-...
-
->>>    void kvm_realm_destroy_rtts(struct kvm *kvm, u32 ia_bits)
->>>    {
->>>        struct realm *realm = &kvm->arch.realm;
->>> @@ -306,6 +588,96 @@ void kvm_realm_destroy_rtts(struct kvm *kvm, u32
->>> ia_bits)
->>>        WARN_ON(realm_tear_down_rtt_range(realm, 0, (1UL << ia_bits)));
->>>    }
->>>    +static void realm_unmap_private_range(struct kvm *kvm,
->>> +                      unsigned long start,
->>> +                      unsigned long end)
->>> +{
->>> +    struct realm *realm = &kvm->arch.realm;
->>> +    unsigned long next_addr, addr;
->>> +    int ret;
->>> +
->>> +    for (addr = start; addr < end; addr = next_addr) {
->>> +        ret = realm_unmap_private_page(realm, addr, &next_addr);
->>> +
->>> +        if (ret)
->>> +            break;
->>
->> Do we need yielding CPU here, similar to the shared case ? It may be
->> difficult (not impossible) to define a check point to do that.
-> 
-> Yes, I've already got a local change adding a "may_block" flag to the
-> function so we can do a cond_resched_rwlock_write() call here when possible.
-
-Cool, thanks.
-
-> 
->>> +    }
->>> +
->>> +    realm_fold_rtt_level(realm, get_start_level(realm) + 1,
->>> +                 start, end);
->>
->> We don't seem to be reclaiing the RTTs from shared mapping case ?
-> 
-> I'm not sure I follow: realm_fold_rtt_level() will free any RTTs that
-> are released.
-> 
-> Or are you referring to the fact that we don't (yet) fold the shared
-> range? I have been purposefully leaving that for now as normally we'd
-
-sorry it was a bit vague. We don't seem to be reclaiming the RTTs in
-realm_unmap_shared_range(), like we do for the private range.
 
 
-> follow the page size in the VMM to choose the page size on the guest,
-> but that doesn't work when the RMM might have a different page size to
-> the host. So my reasons for leaving it for later are:
-> 
->   * First huge pages is very much a TODO in general.
-> 
->   * When we support >4K host pages then a huge page on the host may not
->     be available in the RMM, so we can't just follow the VMM.
-> 
->   * We don't have support in realm_unmap_shared_range() to split a block
->     mapping up - it could be added, but it's not clear to me if it's best
->     to split a block mapping, or remove the whole and refault as
->     required.
-> 
->   * guest_memfd might well be able to provide some good hints here, but
->     we'll have to wait for that series to settle.
-
-I am not sure I follow. None of this affects folding, once we have 
-"unmapped". For that matter, we could easily DESTROY the RTTs in
-shared side without unmapping, but we can do that later as an
-optimisation.
-
-
-> 
->>> +}
->>> +
->>> +void kvm_realm_unmap_range(struct kvm *kvm, unsigned long start,
->>> +               unsigned long size, bool unmap_private)
->>> +{
->>> +    unsigned long end = start + size;
->>> +    struct realm *realm = &kvm->arch.realm;
->>> +
->>> +    end = min(BIT(realm->ia_bits - 1), end);
->>> +
->>> +    if (realm->state == REALM_STATE_NONE)
->>> +        return;
->>> +
->>> +    realm_unmap_shared_range(kvm, find_map_level(realm, start, end),
->>> +                 start, end);
->>> +    if (unmap_private)
->>> +        realm_unmap_private_range(kvm, start, end);
->>> +}
->>> +
->>> +static int realm_init_ipa_state(struct realm *realm,
->>> +                unsigned long ipa,
->>> +                unsigned long end)
->>> +{
->>> +    phys_addr_t rd_phys = virt_to_phys(realm->rd);
->>> +    int ret;
->>> +
->>> +    while (ipa < end) {
->>> +        unsigned long next;
->>> +
->>> +        ret = rmi_rtt_init_ripas(rd_phys, ipa, end, &next);
->>> +
->>> +        if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
->>> +            int err_level = RMI_RETURN_INDEX(ret);
->>> +            int level = find_map_level(realm, ipa, end);
->>> +
->>> +            if (WARN_ON(err_level >= level))
->>
->> I am wondering if WARN_ON() is required here. A buggy VMM could trigger
->> the WARN_ON(). (e.g, INIT_IPA after POPULATE, where L3 table is
->> created.). The only case where it may be worth WARNING is if the level
->> == 3.
-> 
-> I have to admit I've struggled to get my head round this ;)
-> 
-> init_ripas will fail with ERROR_RTT in three cases:
-> 
->   1. (base_align) The base address isn't aligned for the level reached.
-> 
->   2. (rtt_state) The rtte state is !UNASSIGNED.
-> 
->   3. (no_progress) base==walk_top - the while condition should prevent
->      this.
-> 
-> So I think case 1 is the case we're expecting, and creating RTTs should
-> resolve it.
-> 
-> Case 2 is presumably the case you are concerned about, although it's not
-> because tables have been created, but because INIT_RIPAS is invalid on
-> areas that have been populated already.
-
-Correct, this is the case I was referring to.
-
-> 
-> If my reading of the spec is correct, then level == 3 isn't a possible
-> result, so beyond potentially finding RMM bugs I don't think a WARN for
-
-It is almost certainly possible, with L3 page mapping created for
-POPULATE and a follow up INIT_RIPAS with 2M or even 1G alignment, could
-lead us to expect that only L1 or L2 is required (find_map_level) but
-the RTT walk reached L3 and failed. This is not a case of RMM bug, but
-a VMM not following the rules.
-
-> that is very interesting. So for now I'll just drop the WARN_ON here
-> altogether.
-
-Thanks, that is much safer
-
-Suzuki
+So I guess the most sensible way forward will be to resend these 2 
+patches after the new maintainer has been officially announced?
 
