@@ -1,135 +1,204 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564E61F3B97
-	for <linux-coco@lists.linux.dev>; Wed, 14 May 2025 06:43:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935BF634EC
+	for <linux-coco@lists.linux.dev>; Wed, 14 May 2025 07:08:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747204992; cv=none; b=GMI53cU+PwfWrg4HQsBo7D8e1synPAxrwbHD9sqszv8z4vl/feWdu/ncPKj13SNIL6XB7rGUgYZCs6sLFixksjAdP40U+OaYmWgJFXf6ZVEqYlHIeH09aO15DjLERGBNFTbZEaHH+PnNjci/8SM9CegdvwAFq7j5X/zY3ZvMFnQ=
+	t=1747206532; cv=none; b=OvmHW8YXCKsYWYWvaAVM8JtWkiJj8klHWafHjNIHmRp9y8fMN1sRWTczW5TzyRqyJxOLr0Vgc/pR/rqLecx/algRJmEzripFTStLvwcc2OrtVmBHlNpvQnmDZY61W279zeVf4i8ELvG+/9aLr6DQ30drCk8J2+swMmKZ2bQseE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747204992; c=relaxed/simple;
-	bh=kFHkCxWs6VPQE47pxI+eiEDzhqKDD4j49CqEU63h/ck=;
+	s=arc-20240116; t=1747206532; c=relaxed/simple;
+	bh=I5ZeDzwTsw5smVFSGfLPW9Kqqd0AVZLFXaBqDiREk1U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=udyJqLQYtqnS1JXrfTYe2+gKGbv9T9TDNtF70Zv/FKvo/ycFuen4OcQFdVjebvvUXqoiQIcarUguZ5+Vjbz5f0OXgb5CspZmlhDYPdHisqgrjE4iWun5ivwKq0aGmP4mCaU5BCZSsbd9JE9QP05SA4kZ5wJfyEDoidUIz8dtplY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mlHtb/UC; arc=none smtp.client-ip=198.175.65.11
+	 Content-Type:Content-Disposition:In-Reply-To; b=cRJTQzbsFuyaGDEqMyz8FOsWv89rFu9v5xoUSpt9QCBilJhNlYmcngIxkLPHhUHrByeZGugmnN0Pu7nqu+GmAOdtTpYXwQJIpADGrCipIq7bQmI8i3E7x+JBVAoKCTo+zHmvMeLSRlPpjBAMk1xNZqrqjReR6UYc7ALeHt1au18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UYXQinZT; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mlHtb/UC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UYXQinZT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747204991; x=1778740991;
+  t=1747206530; x=1778742530;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=kFHkCxWs6VPQE47pxI+eiEDzhqKDD4j49CqEU63h/ck=;
-  b=mlHtb/UC8IbDr1zyS3Ps3hIdqPWT5DdsNN2iZEuyM3/i4ELX3JqafmTN
-   O5JnF/O32tGhslnfEs4AFpq3W49Hje8DjezrGvydeicJFZLUGF9x5GyKl
-   pl7YIJps7mZDkgi5nFAsNKJVuto0VcNAm8z/eqbxxzo3YElKTIJKt1Y9+
-   SLggtX1TtHaq7pnwgotaJVEThaCRZcpvBfEs+LtqYMxtMXJ5yd5PSGEvy
-   Wy+ejO/2e9L8lyMWnu70stQYVjsUm8GcSZy4JlYrzg0k9xiwSP0M17koE
-   CPeXapO0f7oHxLPI5u7D0QF8+xeJc5tusBeQDEGS/SE7P6xbfajNbAhsM
+   mime-version:in-reply-to;
+  bh=I5ZeDzwTsw5smVFSGfLPW9Kqqd0AVZLFXaBqDiREk1U=;
+  b=UYXQinZTt92R7kG+jL7R+T9bAUyZ4KkvA+BsIxlBno244FjhnGS3LD+4
+   4saO+XqcuvuW0dN7UXA5R0BLIKXUttgLiUmeBriIanVASfkM5J0dlLiyp
+   91wLr9OywGn8mAwApH/Bf/hWwEoZsL6Wswfc3ycb3Tu9EXe/3Guzc5rfW
+   QlmSkLw3XDgkOXJniu20aLytYLkFDgD4rDvGtyCmKxM+b3o3uf+gNSGCV
+   BRyOdKJIak14Up0V2MggiR9GGnNlnUqB1Vx757atdY/i8oYMoCmNyjfYY
+   hNjGxPHn23S5DeewgRfZAcLekb9ivw8pQfPx/gn7P3i7I3sV6s7BWFkyq
    g==;
-X-CSE-ConnectionGUID: Zaj8xlFFSyq7DPKAtOCtOw==
-X-CSE-MsgGUID: 1Y3oy3uoQtuBsvX9Cr1Ukw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="59310561"
+X-CSE-ConnectionGUID: dHMuX6DyT3aORJVBmBC5vQ==
+X-CSE-MsgGUID: wzNw0PDuTl+13VK2p4SNUQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="66635939"
 X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; 
-   d="scan'208";a="59310561"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 23:43:10 -0700
-X-CSE-ConnectionGUID: S9yAEpEIQe2bWP7fO6rrTQ==
-X-CSE-MsgGUID: 8z4kgyjUQQKeb9yxGsH6zQ==
+   d="scan'208";a="66635939"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2025 00:08:33 -0700
+X-CSE-ConnectionGUID: PlY5bNZKQKau2P5xsihc5w==
+X-CSE-MsgGUID: rrPdk0y0QkOk1bT2XRucfw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; 
-   d="scan'208";a="143060552"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa005.jf.intel.com with ESMTP; 13 May 2025 23:43:07 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 150621FD; Wed, 14 May 2025 09:43:06 +0300 (EEST)
-Date: Wed, 14 May 2025 09:43:06 +0300
-From: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
-To: "Huang, Kai" <kai.huang@intel.com>
-Cc: "Zhao, Yan Y" <yan.y.zhao@intel.com>, 
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "seanjc@google.com" <seanjc@google.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>, 
-	"mingo@redhat.com" <mingo@redhat.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"Yamahata, Isaku" <isaku.yamahata@intel.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Subject: Re: [RFC, PATCH 08/12] KVM: x86/tdp_mmu: Add phys_prepare() and
- phys_cleanup() to kvm_x86_ops
-Message-ID: <6b5pkr4eh3l6c2ovp6t2m7phonp4kr2z5k5facrsktcmsyztqo@2hjgi7c455km>
-References: <20250502130828.4071412-1-kirill.shutemov@linux.intel.com>
- <20250502130828.4071412-9-kirill.shutemov@linux.intel.com>
- <aBn4pfn4aMXcFHd7@yzhao56-desk.sh.intel.com>
- <t2im27kgcfsl2qltxbf3cear35szyoafczgvmmwootxthnbcdp@dasmg4bdfd6i>
- <aB1ZplDCPkDCkhQr@yzhao56-desk.sh.intel.com>
- <2bi4cz2ulrki62odprol253mhxkvjdu3xtq4p6dbndowsufnmu@7kzlzywmi22s>
- <8668efe87d6e538b5a49a3c7508ade612a6d766b.camel@intel.com>
+   d="scan'208";a="142894346"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa004.jf.intel.com with ESMTP; 14 May 2025 00:08:27 -0700
+Date: Wed, 14 May 2025 15:02:53 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>, kvm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
+	christian.koenig@amd.com, pbonzini@redhat.com, seanjc@google.com,
+	alex.williamson@redhat.com, vivek.kasireddy@intel.com,
+	dan.j.williams@intel.com, yilun.xu@intel.com,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	lukas@wunner.de, yan.y.zhao@intel.com, daniel.vetter@ffwll.ch,
+	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	tao1.su@intel.com
+Subject: Re: [RFC PATCH 00/12] Private MMIO support for private assigned dev
+Message-ID: <aCRAHRCKP1s0Oi0c@yilunxu-OptiPlex-7050>
+References: <20250107142719.179636-1-yilun.xu@linux.intel.com>
+ <371ab632-d167-4720-8f0d-57be1e3fee84@amd.com>
+ <4b6dc759-86fd-47a7-a206-66b25a0ccc6d@amd.com>
+ <c10bf9c2-e073-479d-ad1c-6796c592d333@amd.com>
+ <aB3jLmlUKKziwdeG@yilunxu-OptiPlex-7050>
+ <aB4tQHmHzHooDeTE@yilunxu-OptiPlex-7050>
+ <20250509184318.GD5657@nvidia.com>
+ <aB7Ma84WXATiu5O1@yilunxu-OptiPlex-7050>
+ <2c4713b0-3d6c-4705-841b-1cb58cd9a0f5@amd.com>
+ <20250512140617.GA285583@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8668efe87d6e538b5a49a3c7508ade612a6d766b.camel@intel.com>
+In-Reply-To: <20250512140617.GA285583@nvidia.com>
 
-On Wed, May 14, 2025 at 12:00:17AM +0000, Huang, Kai wrote:
-> On Mon, 2025-05-12 at 12:55 +0300, Kirill A. Shutemov wrote:
-> > On Fri, May 09, 2025 at 09:25:58AM +0800, Yan Zhao wrote:
-> > > On Thu, May 08, 2025 at 04:23:56PM +0300, Kirill A. Shutemov wrote:
-> > > > On Tue, May 06, 2025 at 07:55:17PM +0800, Yan Zhao wrote:
-> > > > > On Fri, May 02, 2025 at 04:08:24PM +0300, Kirill A. Shutemov wrote:
-> > > > > > The functions kvm_x86_ops::link_external_spt() and
-> > > > > > kvm_x86_ops::set_external_spte() are used to assign new memory to a VM.
-> > > > > > When using TDX with Dynamic PAMT enabled, the assigned memory must be
-> > > > > > covered by PAMT.
-> > > > > > 
-> > > > > > The new function kvm_x86_ops::phys_prepare() is called before
-> > > > > > link_external_spt() and set_external_spte() to ensure that the memory is
-> > > > > > ready to be assigned to the virtual machine. In the case of TDX, it
-> > > > > > makes sure that the memory is covered by PAMT.
-> > > > > > 
-> > > > > > kvm_x86_ops::phys_prepare() is called in a context where struct kvm_vcpu
-> > > > > > is available, allowing the implementation to allocate memory from a
-> > > > > > per-VCPU pool.
-> > > > > > 
-> > > > > Why not invoke phys_prepare() and phys_cleanup() in set_external_spte_present()?
-> > > > > Or in tdx_sept_set_private_spte()/tdx_sept_link_private_spt()?
-> > > > 
-> > > > Because the memory pool we allocated from is per-vcpu and we lost access
-> > > > to vcpu by then. And not all callers provide vcpu.
-> > > Maybe we can get vcpu via kvm_get_running_vcpu(), as in [1].
-> > > Then for callers not providing vcpu (where vcpu is NULL), we can use per-KVM
-> > > cache? 
+On Mon, May 12, 2025 at 11:06:17AM -0300, Jason Gunthorpe wrote:
+> On Mon, May 12, 2025 at 07:30:21PM +1000, Alexey Kardashevskiy wrote:
+> 
+> > > > I'm surprised by this.. iommufd shouldn't be doing PCI stuff, it is
+> > > > just about managing the translation control of the device.
+> > > 
+> > > I have a little difficulty to understand. Is TSM bind PCI stuff? To me
+> > > it is. Host sends PCI TDISP messages via PCI DOE to put the device in
+> > > TDISP LOCKED state, so that device behaves differently from before. Then
+> > > why put it in IOMMUFD?
 > > 
-> > Hm. I was not aware of kvm_get_running_vcpu(). Will play with it, thanks.
+> > 
+> > "TSM bind" sets up the CPU side of it, it binds a VM to a piece of
+> > IOMMU on the host CPU. The device does not know about the VM, it
+> > just enables/disables encryption by a request from the CPU (those
+> > start/stop interface commands). And IOMMUFD won't be doing DOE, the
+> > platform driver (such as AMD CCP) will. Nothing to do for VFIO here.
+> > 
+> > We probably should notify VFIO about the state transition but I do
+> > not know VFIO would want to do in response.
 > 
-> I am not sure why per-vcpu cache matters.
+> We have an awkward fit for what CCA people are doing to the various
+> Linux APIs. Looking somewhat maximally across all the arches a "bind"
+> for a CC vPCI device creation operation does:
 > 
-> For non-leaf SEPT pages, AFAICT the "vcpu->arch.mmu_external_spt_cache" is just
-> an empty cache, and eventually __get_free_page() is used to allocate in:
->                                                                                             
->   sp->external_spt = 
-> 	kvm_mmu_memory_cache_alloc(&vcpu->arch.mmu_external_spt_cache);
+>  - Setup the CPU page tables for the VM to have access to the MMIO
+
+This is guest side thing, is it? Anything host need to opt-in?
+
+>  - Revoke hypervisor access to the MMIO
+
+VFIO could choose never to mmap MMIO, so in this case nothing to do?
+
+>  - Setup the vIOMMU to understand the vPCI device
+>  - Take over control of some of the IOVA translation, at least for T=1,
+>    and route to the the vIOMMU
+>  - Register the vPCI with any attestation functions the VM might use
+>  - Do some DOE stuff to manage/validate TDSIP/etc
+
+Intel TDX Connect has a extra requirement for "unbind":
+
+- Revoke KVM page table (S-EPT) for the MMIO only after TDISP
+  CONFIG_UNLOCK
+
+Another thing is, seems your term "bind" includes all steps for
+shared -> private conversion. But in my mind, "bind" only includes
+putting device in TDISP LOCK state & corresponding host setups required
+by firmware. I.e "bind" means host lockes down the CC setup, waiting for
+guest attestation.
+
+While "unbind" means breaking CC setup, no matter the vPCI device is
+already accepted as CC device, or only locked and waiting for attestation.
+
 > 
-> So why not we actually create a kmem_cache for it with an actual 'ctor', and we
-> can call tdx_alloc_page() in that.  This makes sure when the "external_spt" is
-> allocated, the underneath PAMT entry is there.
+> So we have interactions of things controlled by PCI, KVM, VFIO, and
+> iommufd all mushed together.
+> 
+> iommufd is the only area that already has a handle to all the required
+> objects:
+>  - The physical PCI function
+>  - The CC vIOMMU object
+>  - The KVM FD
+>  - The CC vPCI object
+> 
+> Which is why I have been thinking it is the right place to manage
+> this.
 
-This would make hard to debug PAMT memory leaks. external_spt pages in the
-pool will have PAMT memory tied to them, so we will have non-zero PAMT
-memory usage with zero TDs running.
+Yeah, I see the merit.
 
-> For the last level guest memory page, similar to SEV, we can hook the
-> kvm_arch_gmem_prepare() to call tdx_alloc_page() to make PAMT entry ready.
+> 
+> It doesn't mean that iommufd is suddenly doing PCI stuff, no, that
+> stays in VFIO.
 
-I don't think kvm_arch_gmem_prepare() is right place to allocate PAMT
-memory. THPs are dynamic and page order can change due to split or
-collapse between the time the page is allocated and gets mapped into EPT.
-I am not sure if SEV code is correct in this regard.
+I'm not sure if Alexey's patch [1] illustates your idea. It calls
+tsm_tdi_bind() which directly does device stuff, and impacts MMIO.
+VFIO doesn't know about this.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+I have to interpret this as VFIO firstly hand over device CC features
+and MMIO resources to IOMMUFD, so VFIO never cares about them.
+
+[1] https://lore.kernel.org/all/20250218111017.491719-15-aik@amd.com/
+
+> 
+> > > > So your issue is you need to shoot down the dmabuf during vPCI device
+> > > > destruction?
+> > > 
+> > > I assume "vPCI device" refers to assigned device in both shared mode &
+> > > prvate mode. So no, I need to shoot down the dmabuf during TSM unbind,
+> > > a.k.a. when assigned device is converting from private to shared.
+> > > Then recover the dmabuf after TSM unbind. The device could still work
+> > > in VM in shared mode.
+> 
+> What are you trying to protect with this? Is there some intelism where
+> you can't have references to encrypted MMIO pages?
+> 
+> > > What I really want is, one SW component to manage MMIO dmabuf, secure
+> > > iommu & TSM bind/unbind. So easier coordinate these 3 operations cause
+> > > these ops are interconnected according to secure firmware's requirement.
+> >
+> > This SW component is QEMU. It knows about FLRs and other config
+> > space things, it can destroy all these IOMMUFD objects and talk to
+> > VFIO too, I've tried, so far it is looking easier to manage. Thanks,
+> 
+> Yes, qemu should be sequencing this. The kernel only needs to enforce
+> any rules required to keep the system from crashing.
+
+To keep from crashing, The kernel still needs to enforce some firmware
+specific rules. That doesn't reduce the interactions between kernel
+components. E.g. for TDX, if VFIO doesn't control "bind" but controls
+MMIO, it should refuse FLR or MSE when device is bound. That means VFIO
+should at least know from IOMMUFD whether device is bound.
+
+Further more, these rules are platform firmware specific, "QEMU executes
+kernel checks" means more SW components should be aware of these rules.
+That multiples the effort.
+
+And QEMU can be killed, means if kernel wants to reclaim all the
+resources, it still have to deal with the sequencing. And I don't think
+it is a good idea that kernel just stales large amount of resources.
+
+Thanks,
+Yilun
+> 
+> Jason
