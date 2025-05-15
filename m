@@ -1,111 +1,277 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6870297A46
-	for <linux-coco@lists.linux.dev>; Thu, 15 May 2025 09:17:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BB2297119
+	for <linux-coco@lists.linux.dev>; Thu, 15 May 2025 09:58:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747300675; cv=none; b=Fzpbc/DSSJGJKsDlokEnLMzu04lm7vkqGQ54E544gwmqimyx9cAkffGyA6YLmAeMxOP+6M1MHdozgf15EEO0Tn2Qs0hwCV2OQ6YxZcYu+QW0KOMejSuMa4wt9pP2904353eCpNWqjcxn6cpAPPZ2rh27kuagjIUwwEExv+KVgcA=
+	t=1747303095; cv=none; b=mWSyxO0+H515UQAO6sg0sMJ4dABP14vTGkdJ6IYGn3HW43AdiKkybqf4MGxlzcn2CoELp/3bx0CbcP/K11Ub6iwKm6Y37siPF3aHqhburrQ21XW5X/aG+IIOk1odS8LLVhbuuN5UcO3oVnvswOA3pBXwWsmxJUPfSiE9YZ3hAGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747300675; c=relaxed/simple;
-	bh=16mrttDqkGMk1xuXFQG657d/rNSJ7Kzc97AIqHURTrE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r29NV780ABWX92ZIHtxOSHNfqytVZPzDjRaY6fjS6lwAoU0dMjzv+OI6emBBL980AIiL3KNTui1QwptOibbKike7eJFDDB/PeoPakLqe12pA7BvADdAtFqgvNMZeuK0m2nS3qGJZl41DXJl3t+ZZxAp6H1Q7cPKB45jjGfLaUjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TAAKWTVl; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1747303095; c=relaxed/simple;
+	bh=WMbyjKOYZKjUsunAus/iE7CaOUThNQmodpnmYOlPdsc=;
+	h=Message-ID:Date:MIME-Version:From:Cc:Subject:To:Content-Type; b=mfW4yQLaofybOJAyLtNPxiaZpY61L/D5c13366i5keNiBzfD8je3u1l1HSBYhQ/WYoycHhUANYrZCTDI/o4skbxelQRyWK/unHfjTJmdTlyztNHw/2XW4xGxvscMUG9Xhg6bbFB57ksvjwn6S/kyGL1Qlpmz+SBMUrR9e5taMWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bYABw1fO; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TAAKWTVl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747300673; x=1778836673;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=16mrttDqkGMk1xuXFQG657d/rNSJ7Kzc97AIqHURTrE=;
-  b=TAAKWTVlH+V0B3QwDNEti0oMOgdoMzzTGEPGZjUtM2yo154JpcU9N7BV
-   PqivtjYdTzH9eLTvfXOKL+hu/r+vKzE8kxPjmg1cGKJ31QlF4ubgJ52gK
-   NlVKUnOmRobt81d8qaPR+Gg9cQ55ICnajOjOrk0nCZmryvpDbx456o2f+
-   oB3uA41e7d3lSn2qocM3uh5IWexizA3XT2HLoHr2lTfiVfzfMjZwQjnOg
-   TmP80Ue92i/GLMjQf9FrhXqBxzj4kKXfnE9SXEkqGOMowxTlSbMXsrEhl
-   LnVEKFMXDjT8A6J83ww0SPCsKY5hNbBl6c9X5LljwEpVxUihcvk7jvRA2
-   g==;
-X-CSE-ConnectionGUID: 2GbUCDI0TfixrHvoZDR5ug==
-X-CSE-MsgGUID: aGXaDFKrSAy4EVdKAqiDCg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="71736307"
-X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; 
-   d="scan'208";a="71736307"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 02:17:53 -0700
-X-CSE-ConnectionGUID: OCO+lFPURlqDfj1aLOv1HA==
-X-CSE-MsgGUID: 3MOaRAPPSkufbH7Xzg3BIA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; 
-   d="scan'208";a="143502817"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa004.fm.intel.com with ESMTP; 15 May 2025 02:17:49 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id F25E923F; Thu, 15 May 2025 12:17:47 +0300 (EEST)
-Date: Thu, 15 May 2025 12:17:47 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Zhi Wang <zhiw@nvidia.com>
-Cc: pbonzini@redhat.com, seanjc@google.com, rick.p.edgecombe@intel.com, 
-	isaku.yamahata@intel.com, kai.huang@intel.com, yan.y.zhao@intel.com, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, kvm@vger.kernel.org, 
-	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [RFC, PATCH 00/12] TDX: Enable Dynamic PAMT
-Message-ID: <pvcetnkt2qvxikcneh2ojszrytwenmagvjc33swd3q23hcftf4@nxqi73f57w6b>
-References: <20250502130828.4071412-1-kirill.shutemov@linux.intel.com>
- <20250514233317.306f69f9.zhiw@nvidia.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bYABw1fO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747303092;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=pTGqGXVw8z80rGktDR9uqeOqFeSCceq/wKqHsvtbKIw=;
+	b=bYABw1fOqOOfKCseGnhnwl/NHxzH8akmFIkMLPnCdNBB1E2s8wuaxJJFQ7Q0HYGJtwIFOT
+	dmMSYgyuoy1EQiS7gZWHy0fL/cuzCcdAcQDwcQQHwPeFqQ3eLSVreCj+/Cpo11bpOucVW4
+	kL+026zhKc7H7L+gkIaeDyeOWjp88lM=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-683-8efzCscaOlmfAfzCnNz7aA-1; Thu, 15 May 2025 05:58:11 -0400
+X-MC-Unique: 8efzCscaOlmfAfzCnNz7aA-1
+X-Mimecast-MFC-AGG-ID: 8efzCscaOlmfAfzCnNz7aA_1747303090
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-43efa869b0aso5976105e9.3
+        for <linux-coco@lists.linux.dev>; Thu, 15 May 2025 02:58:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747303090; x=1747907890;
+        h=content-transfer-encoding:to:subject:cc:organization:autocrypt:from
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pTGqGXVw8z80rGktDR9uqeOqFeSCceq/wKqHsvtbKIw=;
+        b=VmWKty7ERl4DduzFIl8K7DV6Jn1Ugu5ZWhcmRtR30QDdO8X/rqf3kN1msEARoE8Azl
+         lunSrU5MUCGL9RlHo5hmdTJ+zw5CvmHXZ91uyu6D7fRjxIo3VXihhmtiZiTeNyhT0hw+
+         FM2fAmFZXvqEvoLR0f19VQXIn/VTcweFUSlHsLIEx28Wn2SHfFQoV3FMoHeQLXvBUcyF
+         RQTql0ZKL0ebJpCqMoAD8DUco6i8Xb6I+ojgq1JO8TPWY2atQS857jn75I6mKCFuyTdp
+         5kBuYULb66fLCtzMM9c3LAn28M3cF/YYJRzFZoqXjYG3DQ/T/6IVRfwvkLUcqSW1fIwH
+         Y78g==
+X-Gm-Message-State: AOJu0Yx8Ltg1nKi9j/zXq37dU2CBx5t0yav16DbD+H0VJf/zPUbf7mYW
+	JoNvs7NhA0UKP93MtRRkZqw4m1rwJnznz0+4q8JX74MoDr5kArTAJ/slA8f9YXzle5GE0L89oR3
+	g5fzzpUU6+bCJNoq89wy69AEQdGgf/chmP5MNoKg0eBg+K4CLk/2cISgjuUZHpLUNJF5TcM3Dz+
+	jORKJ3cC2naJ14DB1mQ3a27xDTLwlD11hRC4TL7as8dQ==
+X-Gm-Gg: ASbGnct/KouVTuIJ2/wDpbU+Zfa/v6OmZWnuZdrBB1Cv4td5imygigxmujZXleL6yUl
+	LqVgyxlJ5LIEdmrBr21zmRtirIHwcfl/85G4dcgJQbq5bTLgGlTqSk4RpJ8pm/bwz5efUUVZmKJ
+	Nt6bun6rIaVQ3El4WclkjZAX9F78GUvKZZjnUUpL+RWWhW1Wz2YOiVQtlshhFQmi5di/ZX9Hhio
+	2ma63M/4etu4HWBlYMqTqKlJcyq+U+ObXUDly1QZK1BNLOcgSoA+7qsBwf+e65cwODPQGdpGoy/
+	YthX19AhxN8X/1+jL0/AlRB9yrj49Yu9vhAiO90nvRrbMyefoz73YMf0LSkOUIVPWHdW/yTpd8s
+	dhr2PwYwX9dO3G2PUymmc2zNEb9f52Is/kdAsLho=
+X-Received: by 2002:a05:600c:3b85:b0:442:f12f:bd9f with SMTP id 5b1f17b1804b1-442f2178431mr53187905e9.27.1747303090016;
+        Thu, 15 May 2025 02:58:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE/+zH4hXXxDYKXmH9e7v7sDqIDgpWi4J6S+8+V8DNyJGvt2Kf7Y50xBY8atc/g20ZfKeT/hw==
+X-Received: by 2002:a05:600c:3b85:b0:442:f12f:bd9f with SMTP id 5b1f17b1804b1-442f2178431mr53187415e9.27.1747303089470;
+        Thu, 15 May 2025 02:58:09 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f4a:8900:884a:b3af:e3c9:ec88? (p200300d82f4a8900884ab3afe3c9ec88.dip0.t-ipconnect.de. [2003:d8:2f4a:8900:884a:b3af:e3c9:ec88])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442f3951494sm66106625e9.22.2025.05.15.02.58.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 15 May 2025 02:58:09 -0700 (PDT)
+Message-ID: <c1c9591d-218a-495c-957b-ba356c8f8e09@redhat.com>
+Date: Thu, 15 May 2025 11:58:07 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250514233317.306f69f9.zhiw@nvidia.com>
+User-Agent: Mozilla Thunderbird
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+Cc: gshan@redhat.com, ackerleytng@google.com, kalyazin@amazon.com,
+ pankaj.gupta@amd.com, papaluri@amd.com, peterx@redhat.com,
+ seanjc@google.com, shivankg@amd.com, tabba@google.com,
+ vannapurve@google.com, shan.gavin@gmail.com,
+ aneeshkumar.kizhakeveetil@arm.com, ashish.kalra@amd.com,
+ dan.j.williams@intel.com, ddutile@redhat.com, quic_eberman@quicinc.com,
+ michael.roth@amd.com, roypat@amazon.co.uk, suzuki.poulose@arm.com,
+ vbabka@suse.com, yuzhao@google.com, rppt@kernel.org, jgowans@amazon.com,
+ Nikita Kalyazin <kalyazin@amazon.com>, Yan Zhao <yan.y.zhao@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [Overview] guest_memfd extensions and dependencies 2025-05-15
+To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: nbG55xaejJd93YAwuKFJychley9AUlBjnO5RGLSA2qE_1747303090
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, May 14, 2025 at 11:33:17PM +0300, Zhi Wang wrote:
-> On Fri,  2 May 2025 16:08:16 +0300
-> "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com> wrote:
-> 
-> > This RFC patchset enables Dynamic PAMT in TDX. It is not intended to
-> > be applied, but rather to receive early feedback on the feature
-> > design and enabling.
-> > 
-> > From our perspective, this feature has a lower priority compared to
-> > huge page support. I will rebase this patchset on top of Yan's huge
-> > page enabling at a later time, as it requires additional work.
-> > 
-> > Any feedback is welcome. We are open to ideas.
-> > 
-> 
-> Do we have any estimation on how much extra cost on TVM creation/destroy
-> when tightly couple the PAMT allocation/de-allocation to the private
-> page allocation/de-allocation? It has been trendy nowadays that
-> meta pages are required to be given to the TSM when doing stuff with
-> private page in many platforms. When the pool of the meta page is
-> extensible/shrinkable, there are always ideas about batch pre-charge the
-> pool and lazy batch reclaim it at a certain path for performance
-> considerations or VM characteristics. That might turn into a
-> vendor-agnostic path in KVM with tunable configurations.
+Hi,
 
-It depends on the pages that the page allocator gives to TD. If memory is
-not fragmented and TD receives memory from the same 2M chunks, we do not
-need much PAMT memory and we do not need to make additional SEAMCALLs to
-add it. It also depends on the availability of huge pages.
+as requested, a quick overview of guest_memfd extensions and their 
+relationship/dependencies; this also highlights the order in which 
+patches should likely go upstream (current state). Some things will 
+likely change, especially the further we go down the dependency chain :)
 
-From my tests, a typical TD boot takes about 20 MiB of PAMT memory if no
-huge pages are allocated and about 2MiB with huge pages. The overhead on
-its management is negligible, especially with huge pages: approximately
-256 SEAMCALLs to add PAMT pages and the same number to remove.
+TL;DR
 
-The consumption of PAMT memory for booting does not increase significantly
-with the size of TD as the guest accepts memory lazily. However, it will
-increase as more memory is accepted if huge pages are not used.
+A
+|       +-- Expected dependency
+|       |
+|       v
++--B--E--F--G
+|
++--C
+|
++--D
+|
++--H--I
 
-I don't think we can justify any batching here.
+As we post stuff that depends on something that is not upstream yet, we 
+should (1) tag it as RFC and (2) provide a branch that contains all 
+relevant patches.
+
+
+
+(A) "Stage 1": Basic mmap support (Fuad) [1]
+
+Allow guest_memfd to mmap'ed and contain "shared" memory. No in-place 
+conversion support: either all-shared or all-private. Shared pages can 
+be faulted in.
+
+
+(B) "Stage 2": In-place conversion support (Fuad) [2]
+
+Allow guest_memfd to contain a mixture of shared and private pages, and
+converting between shared<->private in-place. Memory attributes 
+(shared/private) are managed by guest_memfd instead of KVM.
+
+Depends on (A).
+
+
+(C) Direct-map removal support (Patrick) [3]
+
+Allow for removal of the directmap of guest_memfd pages/folios.
+
+Depends on (A)
+
+
+(D) NUMA mempolicy support (Shivank) [4]
+
+Configure the "shared mempolicy" similar to shmem using the VMA.
+
+Depends on (A). But we'll have to be able to mmap any guest_memfd -- 
+just all faults must fail for ones that don't support shared memory, so 
+might require some tweaks on top of (A).
+
+
+(E) 1G huge page support (via hugetlb) (Ackerley) [5]
+
+Add support for huge pages obtained from hugetlb, splitting large folios 
+to small folios whenever we convert to shared. Need to reassemble large 
+folios before handing them back to hugetlb.
+
+I *assume* that further changes are required to make Intel / AMD CoCo 
+VMs make use of it -- essentially what (F) and (G) also deal with.
+
+Depends on (B)
+
+
+(F) AMD huge page support (via the buddy) (Michael) [6]
+
+Add support for huge pages / large folios that we allocate from the 
+buddy + preparedness tracking for AMD. In theory, we could add this 
+support for "private only" memory, but likely we will just do it 
+properly and base it on in-place conversion support.
+
+So, expected to depend on (B), but likely depends to some degree on 
+infrastructure being added in (E)
+
+
+(G) Intel TDX huge page support (via the buddy) (Yan) [7]
+
+Similar to (F) but for TDX.
+
+Depends on (F).
+
+
+(H) write() support (Nikita) [8]
+
+Allow for using write() to more efficiently preallocate/populate memory 
+for "all shared memory" VMs.
+
+Depends on (A)
+
+
+(I) UFFD-missing support (Nikita) [9]
+
+Support userfaultfd-missing fault handling for guest_memfd.
+
+Depends on (I), but likely could be based on (A) only.
+
+
+
+I'm not listing the "factor out guest_memfd from KVM to mm/guestmem.c" / 
+"guestmem library" / "guestmem shim" for now [10] as it will likely be 
+covered by one of the other items as required.
+
+Also, there is a lot of other planned work ("all shared" VMs can allow 
+for not splitting large folios because there is no in-place conversion, 
+guest_memfs, ... ).
+
+
+[1] https://lkml.kernel.org/r/20250513163438.3942405-1-tabba@google.com
+[2] https://lore.kernel.org/all/20250328153133.3504118-1-tabba@google.com/
+[3] https://lkml.kernel.org/r/20250221160728.1584559-1-roypat@amazon.co.uk
+[4] 
+https://lore.kernel.org/linux-mm/20250408112402.181574-1-shivankg@amd.com/
+[5] 
+https://lore.kernel.org/all/cover.1747264138.git.ackerleytng@google.com/T/#u
+[6] 
+https://lore.kernel.org/all/20241212063635.712877-1-michael.roth@amd.com/T/#u
+[7] 
+https://lore.kernel.org/all/20250424030033.32635-1-yan.y.zhao@intel.com/T/#u
+[8] 
+https://lore.kernel.org/kvm/20250303130838.28812-1-kalyazin@amazon.com/T/
+[9] 
+https://lore.kernel.org/all/20250303133011.44095-1-kalyazin@amazon.com/T/#u
+[10] 
+https://lore.kernel.org/all/20241113-guestmem-library-v3-0-71fdee85676b@quicinc.com/T/#u
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Cheers,
+
+David / dhildenb
+
