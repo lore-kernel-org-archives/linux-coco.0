@@ -1,265 +1,255 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2086.outbound.protection.outlook.com [40.107.93.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEA625B66A;
-	Thu, 15 May 2025 18:21:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747333276; cv=none; b=EXy6vg0l8TUD/n79ZmXxmYd4KCoIXdqLzORsipHSnbDk9q651cVHxR7omJpurOi3tNxusR+ngbJxsZqaciLAI59qqtuNHtwbLeLfuO4k65KQaE1Q/IZUelpv3wI6djUNBgwNdmljjuaVNtC++tacVbDHD5d+PtzAKVAfvRViVbA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747333276; c=relaxed/simple;
-	bh=JSwCiSAwn05Q9RkHgVNM3M59fcm/PaIB8NH4mV/n0as=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BOr37Lawzwx+tesWblISkiMjus9GJNmpP0PuHBJXjqu0h/W54S36RnL2X72DhdeuIYOSu8j9bFnOwHlbOy+rxxSXSuVYCWC3onhvqirFKgqFdCvoNnWuiUMEsjCgtINbeXw4leRB4xqACR2XQ55VdwqG1LoJrmm0ISOQH12xEXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QM7WyIBD; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFE6257452
+	for <linux-coco@lists.linux.dev>; Thu, 15 May 2025 19:21:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.86
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747336895; cv=fail; b=A27wP07kzFCDugFLZ/SCS2kyDxP89XJxO0RfoaeRjhlyPjejpE3wlZhWKsN1tG0Jx8D6HqmbubI/Fx458fc3OUy4lPQQqe1fD7SIWb1Xkfbtd6h5uAo3C/qY1nzF9NqtJ9RS+Toi1W2d3qkmxxVE+ywQRD7Y+5MVo9X9Jb5V7Bw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747336895; c=relaxed/simple;
+	bh=uAz7O1SWKvd38g0ayUqu2TgIlhugsr4qWBLpJepVVi8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=gjmSa6CAKzOECZDhn9sP+qtLn2ucAl/okPwqP+CeneNBNdc9xlfGIV2a2gxWPXfhvebYLgnsvc/ai+nQ3Bk7MRSiw2vZNBWxlhRgHQpGn8m/mfrsyJfpLROljFboVxrOC9d0dApznSljf89f8nnAWLWWkZCU2nMzPNByNGnNFIM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=NgbQYr1o; arc=fail smtp.client-ip=40.107.93.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QM7WyIBD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747333273; x=1778869273;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=JSwCiSAwn05Q9RkHgVNM3M59fcm/PaIB8NH4mV/n0as=;
-  b=QM7WyIBDpUiNTkBHPG9g73W5aK5yl7NlYv8LLYnamD+/w/wR+t1rQJpd
-   miISNnd657ZowQkE3Qc/1VOA/Z/hscRDylRYCEfGRZYk9T/ZMtoG+0poR
-   P0RX6FzsZ56JXZzIqGKbr3m1c8sRKt7+7grgNrsXjNq4oGcf9PXyyGlJK
-   rWDYjpGHlc2av4UHifXgYrRoYVGS49dxarV5KtR9jgWkDWQd1uOUn7hZh
-   GoZcC7hikt5c8VhTuNrTLbPNxXG4Js26uE6iQXYPjkvdW3vWtUvCeIBKA
-   c/k5PJp/uX0CUrrtqfZRW+/G2SSmW7+yiS76CZUv14i63zYEeNKw6OL8c
-   w==;
-X-CSE-ConnectionGUID: aXI/CIh0RtK3o+tMya9YZg==
-X-CSE-MsgGUID: Oja/gmxRRcO3CF7lftcqAg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11434"; a="49445232"
-X-IronPort-AV: E=Sophos;i="6.15,291,1739865600"; 
-   d="scan'208";a="49445232"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 11:21:12 -0700
-X-CSE-ConnectionGUID: omX37vd3RGawzvIKKN6iWQ==
-X-CSE-MsgGUID: FlSR2Jq9S6qCZurx4ZdEag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,291,1739865600"; 
-   d="scan'208";a="139338942"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 15 May 2025 11:21:10 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uFdCd-000IeB-2R;
-	Thu, 15 May 2025 18:21:07 +0000
-Date: Fri, 16 May 2025 02:21:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: Dionna Glaze <dionnaglaze@google.com>, kvm@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, Dionna Glaze <dionnaglaze@google.com>,
-	Thomas Lendacky <Thomas.Lendacky@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Peter Gonda <pgonda@google.com>, Borislav Petkov <bp@alien8.de>,
-	Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH v4 1/2] kvm: sev: Add SEV-SNP guest request throttling
-Message-ID: <202505160203.9PdDhrOM-lkp@intel.com>
-References: <20250514184136.238446-2-dionnaglaze@google.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="NgbQYr1o"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=w7AZJzBxOreX3Te4DHOhpdjxdFKuWaXGhMtQBIx/GGIpLGVYfkpquPr0TKUOdY9lJdMkGdNQiC7KYbisNaRklgz0agV8tnylVgStNO+suOQizn3orQOYBvjFNi+lApV0J7bbsCFHRv7vrLjtuPKGXOKe4qZsIlt9LvXB1mIh9l6rFofnYUgeF5Lyy6ccadVyJb/q8gpeLYkvsolwEQSxes0cHPOuQoKdliswi/ADklR2wnayRQ1lcRJZnCtQ0u3kSVp4VC7FC7eJoiSASGBn9ecKwvN2b150lbi2PFJMNN1s6choCY2pHsBCXJJtzXzhiWZlpokFNarUF1OV/iGm5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=K33z5+xi4198KnymUusYgyJb+35rjaT/UbgCF6jKnxk=;
+ b=OvEl8nDJQMUE4Cc9aZom9h3VPXaR4VMfWEFE0ocLL+nw3sQShtQXcnVJ6pHM/CqBtx9QQ7Z995RAoakJT0gfpt7IoJ3o+UJhDJYDdzvLsWrhIi9mdh5NgppUQD2vbIR1brAPcBq8LIOp1FwYrk7AIDxyV/lFDoo0VMHX1jWA98Yzr8hPxaOFkRvJZACEUlm5ankd7CNRdVxQHYE6dtQXgE57CJEa7Pu1cpyRPUnzSckLU/oZXXAF7+vMPW5RrD9TXynGamvWEuOdEwCFvid674jXYMx0BwngC1fo6KbEuhzd86etqxh7v9OKV9EVuJDiP9KXzPRIE1WmiGwzkYgiLA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=K33z5+xi4198KnymUusYgyJb+35rjaT/UbgCF6jKnxk=;
+ b=NgbQYr1o0gAvxoLowTFe0mjIbyOqnRwxUeQEFzsIhbLM+JsgPQc23/qTd1gqqdzkZEmWoVtLfVQF+WfvyefVgD4pq9LavjL5I+IyYRZ/anaHa8LU0zsFigC7MSGcgI1xi0Qs9kb+esm1/TJ9T0rw0NkguUBqfOAXHalbPK5b3W5kZ5VOJjv47kfDqxlk1SaCxzghfwGyHZsq7mChFfgrkBKq6/fz3bmv+gouDd10m9J69kyQksnFTT6kyN1gCXBBIHCXq9GKZAcgUef8FdtEfts0S04mfEzt9PLSra9L5P6NsGxOQbqvixmSV3YpSql/sdFIPnGDXWMebrr6SvW+8w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by CY8PR12MB7489.namprd12.prod.outlook.com (2603:10b6:930:90::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.29; Thu, 15 May
+ 2025 19:21:29 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%7]) with mapi id 15.20.8722.031; Thu, 15 May 2025
+ 19:21:29 +0000
+Date: Thu, 15 May 2025 16:21:27 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Zhi Wang <zhiw@nvidia.com>, Alexey Kardashevskiy <aik@amd.com>,
+	kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	sumit.semwal@linaro.org, christian.koenig@amd.com,
+	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
+	vivek.kasireddy@intel.com, dan.j.williams@intel.com,
+	yilun.xu@intel.com, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
+	daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, tao1.su@intel.com
+Subject: Re: [RFC PATCH 00/12] Private MMIO support for private assigned dev
+Message-ID: <20250515192127.GA580805@nvidia.com>
+References: <aB3jLmlUKKziwdeG@yilunxu-OptiPlex-7050>
+ <aB4tQHmHzHooDeTE@yilunxu-OptiPlex-7050>
+ <20250509184318.GD5657@nvidia.com>
+ <aB7Ma84WXATiu5O1@yilunxu-OptiPlex-7050>
+ <2c4713b0-3d6c-4705-841b-1cb58cd9a0f5@amd.com>
+ <20250512140617.GA285583@nvidia.com>
+ <20250513130315.0158a626.zhiw@nvidia.com>
+ <aCRmoDupzK9zTqFL@yilunxu-OptiPlex-7050>
+ <20250514230502.6b64da7f.zhiw@nvidia.com>
+ <aCYsNSFQJZzHVOFI@yilunxu-OptiPlex-7050>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aCYsNSFQJZzHVOFI@yilunxu-OptiPlex-7050>
+X-ClientProxiedBy: BN9PR03CA0196.namprd03.prod.outlook.com
+ (2603:10b6:408:f9::21) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250514184136.238446-2-dionnaglaze@google.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|CY8PR12MB7489:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9e61b64e-f264-4728-1479-08dd93e5b15a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?h+LQIdYaTZBsVhC6jGPXhvgsiTkkE//NBY83PaC6jk6/kue+QvIz5tcyFQqp?=
+ =?us-ascii?Q?wQshwWAPpDDG/Tq1v7jc6bcMTgHAurKO5jqxHlR0ciS2o6/IVyHtWj8HhvJu?=
+ =?us-ascii?Q?AH6V04N+WJtzYElLidy1l2xno6Uz2dOD56T1na1CP+1xut3YS8/rTxWnB+z8?=
+ =?us-ascii?Q?VnO6tRUtWiElz+fvrFKOMMdD+XL4D25d7mY0IQJB/MTA3wdpLpx+zJiN7rOp?=
+ =?us-ascii?Q?N23rf+JD4gATqU7leWkO7d2062Rf8LIlKnXnecKTPr4D3balstINcmXITGII?=
+ =?us-ascii?Q?NsasRnAYvPKOTDdksY5zfQq8A0DOpLDQnzHSq1MDyo6vfC0TY03eCp4qcvpe?=
+ =?us-ascii?Q?PCoSCWoG1wMDt0qNTaIQC4xGE7R+jbFz/5C2inoWOItUJFX+y/HlC3Shqhco?=
+ =?us-ascii?Q?VQXndyLLjouSL5Ak4oPtQAovYNwFcaoMM/+ix6OwpNhzJ9VVa/S+J/bBrjOO?=
+ =?us-ascii?Q?cVXM3brNXxwd00i8cjQBZM//osDCPLFTkbe0fxNJE55+usOBZf6Q2uSQXbOJ?=
+ =?us-ascii?Q?IFwf0LJ9PhZ+PYzzHgWYnpbjzpf8O0FyqSQ0cWPX1Rtq16PuU9ATYo/SnfP0?=
+ =?us-ascii?Q?nX7k91rhOZ5DLu/a4Bjjy7ssCNxwkD8V35tlQBWbk6+Cyja+cPP5F1iTz482?=
+ =?us-ascii?Q?wm1zthPkJaYbXjdVq1J9+g1KREhmCv0xqFzPZLRxj4IfcWDp/s1qmS5tCrw1?=
+ =?us-ascii?Q?/oiqaIp1c18jXVl7Fgn93NJQFAGqlYMOgCliLlKGeVNeiivcFG0AkcQQf+Po?=
+ =?us-ascii?Q?/KfhMIGZMeqOTK8DEBrZVOC6MnZ3q7iEFCbUgnSKNGuxNemimNXYIWn1/Nl0?=
+ =?us-ascii?Q?LJi1rVLt/5jilLfMJIM9OTKyXNt2T7rhKKhknEUceYmE2BgzmsTGgy0iqHQK?=
+ =?us-ascii?Q?5xieWBOyAngJ+aRk6RIgVI6WmM/Do8VukW2h88NuF5Bx3LQJKusuWohbFvVE?=
+ =?us-ascii?Q?L1b7bwnv4LLqVfBS5hCBM5y20fygeZ+cA3TGrQOPHUhlJsYnEMy0zqPGYvUd?=
+ =?us-ascii?Q?w6AopVFga/eBc88pReeXtHE57fVuJLY2N9oSQTHl4T8u++P7ezrJQU0Sj2gX?=
+ =?us-ascii?Q?RIOc9qqEkzlBnb6v/ihwMc+GQKcrRppMUuUSaJ6X1sj0DHE3ZU3kgzhKBK4r?=
+ =?us-ascii?Q?a6+S1E+IeTPrrP0qxUlz1zjQRfq0uQ0oy+0PK6FhjmfE3LgkMz+5kFOWoyxd?=
+ =?us-ascii?Q?IeqSLd/vPB6s1sG7AOTguoIXFyuy9rN2dJs2wLJmyKXI0U6XaKIHrKNnL3QP?=
+ =?us-ascii?Q?eQ7IPc1f26OZCxJe8lJrPsTRlJ2trUIEoiB9qENxnLwe3Z+ELIKNloPL5/ys?=
+ =?us-ascii?Q?zbtlhTmdrxoMWkDr/8CP9moTfzSf2OpPNueOHf/SA3erjBb/14gZqqjvmJUg?=
+ =?us-ascii?Q?an8jD3CjycFcYdgZuPYgCH4EoPFjHt227qFamWaIc+zMSiPMkg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?z2FPrpEMXo9zg+DLuZGm7ZJatUkXKJUjlCxUbcxjB/08hcx1NNUHRpwdbXbQ?=
+ =?us-ascii?Q?Ig/fxJQHB6B0//KGWYMo6WCPqgWUv1BzNuu5MBwj8cx2sBEzYBl2iLSEmCLS?=
+ =?us-ascii?Q?ElHsLr2lJ3vCRJVI3grcOSV15QGNAQsqMRqtbMdFiKWwE70m8G6TVc9rJUEn?=
+ =?us-ascii?Q?9pw1AAOpfVYIa49pKNO8hCwK5VMeks8j7PGuvPSMk7IrKqdgH7w3tv6Q6cKu?=
+ =?us-ascii?Q?ZWsKhagv9tdVfCwW2ahVPXd1BWIgvJV+5mmV7pQ0qKm8t1QVSxHfBhgqyy5w?=
+ =?us-ascii?Q?xBkj/WUiMvxIIVDk93iEjkI0YOwW6u+nWTJe7ILjyvMR268LYnND2PrezQFg?=
+ =?us-ascii?Q?V57RhFjwilFzw7hl0lJDY2QZe9JJ5iXWRK/BIQakRxNCTVBfqlP0lYGgFGOJ?=
+ =?us-ascii?Q?H0uBu3u2yHgfCBIB7fjKxp7igafcMfzeQBDDOI/M3EsaTqiKPmxS01rPKtnA?=
+ =?us-ascii?Q?DplSbXSBFcEGkKN1DhAN1jZN8elCmZoD85ep/PvPWSbPvhNk/yjTkwC+nI7d?=
+ =?us-ascii?Q?ocKKDS+2APUGwOc5lHp3kB7EJ3bFeeFlj660GAHUPB3Ard5pWd5kk1MaWPe4?=
+ =?us-ascii?Q?y0iB6z+K5JK7NY940gmLbT8VoJOgMU7+Gxx29t3Yh5/3+HtbeFwGk13yLwqC?=
+ =?us-ascii?Q?BDW/qx5uSQpAlpfZXAbtVBn+ZxbDTJIMINP8qMC0Af8wz8tDX0Xkhv7zcJFB?=
+ =?us-ascii?Q?O0BwzAL/IC12OwzucGktu8oOnup3Rmgn0MV09x3wkLNMDoQpwYqbZ1hDs17b?=
+ =?us-ascii?Q?r0pAtqNzyJdRxPkJQBXF9xaaqYj0hVk2+Bnzs9P2Dpq79zZCw98slpy8NdU7?=
+ =?us-ascii?Q?bnz9+hXFqTjirdvvSoqadbawqe7wr4aLXlLrjgFFypW8+zJV3B4jupIFQtHA?=
+ =?us-ascii?Q?IUuS9ezVLx8vJar3Ty9cttVBUkHr/H8fxAfQFnnxYSGSVbIFe7h8hP6WjCiy?=
+ =?us-ascii?Q?Djd5erZAgigVSckHYlOq4FuTtuS1WPdl4Q9fFmHHdl/VdDesOcjjqNBy1+Gy?=
+ =?us-ascii?Q?0XDD1YQ3B48mm1x5ksv1LzfPc6NMVnC40Q/OM+QIKuBHhvho7X+WR0+1tj09?=
+ =?us-ascii?Q?ADtQtcNd5dg2Iz8x0YEuxrv3vsndJTrWq0bfot7RmwhFL9c4Dh+lfpgpv6AY?=
+ =?us-ascii?Q?1/zTWYvxOKmcmRfqc0GqFuZ/3+oukcGhCVTTwbqdTl1lbSZoek/kmeowaFqQ?=
+ =?us-ascii?Q?aSNfgpOA/F6KM/v9d30v6L/SMx/j1DEV0LxgMYa6oLOFNiGo5z5YWLnm5nrE?=
+ =?us-ascii?Q?Zg28kpWokukUlsUeucgMIQu3eby4KmJcwUdIuyWJ1NUrR9feeYU7KBLjzad7?=
+ =?us-ascii?Q?whhqNCA6J2Ccw8jOSjj26oiRQk+W+aM7ENjvI4z4dLWWZEeKTnqKcIdygXG2?=
+ =?us-ascii?Q?OxnSZp1H9k1xCj+v3WIGLOlJ3T/Pq5TSOHtsAoFWoYsoSCLCW9vW1ojTCNPa?=
+ =?us-ascii?Q?tMBX65sLRwqVNNqYcV4XhilUfgmLReB0CKdVyMdTKZjaABBtEPJ4//DjpkDR?=
+ =?us-ascii?Q?hwLQGwwhWQPgqTSwxxw/tKuQw+jxj5ujieSySCXSGRkg2vzwt/I4eHgyHiD6?=
+ =?us-ascii?Q?eo2n78PajRWkfqQ8K4/3I/1+vdJmn2OjAl4wJpTD?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9e61b64e-f264-4728-1479-08dd93e5b15a
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2025 19:21:29.0334
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LB2PnzlZ1MeaoByM2L5VMYsDoQbI8acPINc+QIkMwrRKrQoeF1QG/0KS0lWXWYdC
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7489
 
-Hi Dionna,
+On Fri, May 16, 2025 at 02:02:29AM +0800, Xu Yilun wrote:
+> > IMHO, I think it might be helpful that you can picture out what are the
+> > minimum requirements (function/life cycle) to the current IOMMUFD TSM
+> > bind architecture:
+> > 
+> > 1.host tsm_bind (preparation) is in IOMMUFD, triggered by QEMU handling
+> > the TVM-HOST call.
+> > 2. TDI acceptance is handled in guest_request() to accept the TDI after
+> > the validation in the TVM)
+> 
+> I'll try my best to brainstorm and make a flow in ASCII. 
+> 
+> (*) means new feature
+> 
+> 
+>       Guest          Guest TSM       QEMU           VFIO            IOMMUFD       host TSM          KVM 
+>       -----          ---------       ----           ----            -------       --------          ---
+> 1.                                                                               *Connect(IDE)
+> 2.                                 Init vdev            
 
-kernel test robot noticed the following build errors:
+open /dev/vfio/XX as a VFIO action
 
-[auto build test ERROR on kvm/queue]
-[also build test ERROR on kvm/next mst-vhost/linux-next linus/master v6.15-rc6 next-20250515]
-[cannot apply to kvm/linux-next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Then VFIO attaches to IOMMUFD as an iommufd action creating the idev
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Dionna-Glaze/kvm-sev-Add-SEV-SNP-guest-request-throttling/20250515-064452
-base:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git queue
-patch link:    https://lore.kernel.org/r/20250514184136.238446-2-dionnaglaze%40google.com
-patch subject: [PATCH v4 1/2] kvm: sev: Add SEV-SNP guest request throttling
-config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20250516/202505160203.9PdDhrOM-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250516/202505160203.9PdDhrOM-lkp@intel.com/reproduce)
+> 3.                                *create dmabuf   
+> 4.                                               *export dmabuf                              
+> 5.                                create memslot
+> 6.                                                                                              *import dmabuf
+> 7.                                setup shared DMA
+> 8.                                                                 create hwpt
+> 9.                                               attach hwpt
+> 10.                                  kvm run
+> 11.enum shared dev
+> 12.*Connect(Bind)
+> 13.                  *GHCI Bind
+> 14.                                  *Bind
+> 15                                                                 CC viommu alloc
+> 16.                                                                vdevice allloc
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202505160203.9PdDhrOM-lkp@intel.com/
+viommu and vdevice creation happen before KVM run. The vPCI function
+is visible to the guest from the very start, even though it is in T=0
+mode. If a platform does not require any special CC steps prior to KVM
+run then it just has a NOP for these functions.
 
-All errors (new ones prefixed by >>):
+What you have here is some new BIND operation against the already
+existing vdevice as we discussed earlier.
 
-   arch/x86/kvm/svm/sev.c: In function 'snp_set_request_throttle_ms':
-   arch/x86/kvm/svm/sev.c:2542:13: warning: unused variable 'ret' [-Wunused-variable]
-    2542 |         int ret;
-         |             ^~~
-   arch/x86/kvm/svm/sev.c: In function 'sev_mem_enc_ioctl':
->> arch/x86/kvm/svm/sev.c:2666:14: error: 'KVM_SEV_SNP_SET_REQUEST_THROTTLE_RATE_MS' undeclared (first use in this function); did you mean 'KVM_SEV_SNP_SET_REQUEST_THROTTLE_RATE'?
-    2666 |         case KVM_SEV_SNP_SET_REQUEST_THROTTLE_RATE_MS:
-         |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         |              KVM_SEV_SNP_SET_REQUEST_THROTTLE_RATE
-   arch/x86/kvm/svm/sev.c:2666:14: note: each undeclared identifier is reported only once for each function it appears in
-   arch/x86/kvm/svm/sev.c: In function 'snp_handle_guest_req':
->> arch/x86/kvm/svm/sev.c:4039:17: error: 'rc' undeclared (first use in this function); did you mean 'rq'?
-    4039 |                 rc = SNP_GUEST_VMM_ERR_BUSY;
-         |                 ^~
-         |                 rq
+> 16.                                              *attach vdev
+> 17.                                                               *setup CC viommu
+> 18                                                                 *tsm_bind
+> 19.                                                                                  *bind
+> 20.*Attest
+> 21.               *GHCI get CC info
+> 22.                                 *get CC info
+> 23.                                                                *vdev guest req
+> 24.                                                                                 *guest req
+> 25.*Accept
+> 26.             *GHCI accept MMIO/DMA
+> 27.                                *accept MMIO/DMA
+> 28.                                                               *vdev guest req
+> 29.                                                                                 *guest req
+> 30.                                                                                              *map private MMIO
+> 31.             *GHCI start tdi
+> 32.                                *start tdi
+> 33.                                                               *vdev guest req
+> 34.                                                                                 *guest req
 
+This seems reasonable you want to have some generic RPC scheme to
+carry messages fro mthe VM to the TSM tunneled through the iommufd
+vdevice (because the vdevice has the vPCI ID, the KVM ID, the VIOMMU
+id and so on)
 
-vim +2666 arch/x86/kvm/svm/sev.c
+> 35.Workload...
+> 36.*disconnect(Unbind)
+> 37.              *GHCI unbind
+> 38.                                *Unbind
+> 39.                                            *detach vdev
 
-  2537	
-  2538	static int snp_set_request_throttle_ms(struct kvm *kvm, struct kvm_sev_cmd *argp)
-  2539	{
-  2540		struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
-  2541		struct kvm_sev_snp_set_request_throttle_rate params;
-> 2542		int ret;
-  2543		u64 jiffies;
-  2544	
-  2545		if (!sev_snp_guest(kvm))
-  2546			return -ENOTTY;
-  2547	
-  2548		if (copy_from_user(&params, u64_to_user_ptr(argp->data), sizeof(params)))
-  2549			return -EFAULT;
-  2550	
-  2551		jiffies = (params.interval_ms * HZ) / 1000;
-  2552	
-  2553		if (!jiffies || !params.burst)
-  2554			return -EINVAL;
-  2555	
-  2556		ratelimit_state_init(&sev->snp_guest_msg_rs, jiffies, params.burst);
-  2557	
-  2558		return 0;
-  2559	}
-  2560	
-  2561	int sev_mem_enc_ioctl(struct kvm *kvm, void __user *argp)
-  2562	{
-  2563		struct kvm_sev_cmd sev_cmd;
-  2564		int r;
-  2565	
-  2566		if (!sev_enabled)
-  2567			return -ENOTTY;
-  2568	
-  2569		if (!argp)
-  2570			return 0;
-  2571	
-  2572		if (copy_from_user(&sev_cmd, argp, sizeof(struct kvm_sev_cmd)))
-  2573			return -EFAULT;
-  2574	
-  2575		mutex_lock(&kvm->lock);
-  2576	
-  2577		/* Only the enc_context_owner handles some memory enc operations. */
-  2578		if (is_mirroring_enc_context(kvm) &&
-  2579		    !is_cmd_allowed_from_mirror(sev_cmd.id)) {
-  2580			r = -EINVAL;
-  2581			goto out;
-  2582		}
-  2583	
-  2584		/*
-  2585		 * Once KVM_SEV_INIT2 initializes a KVM instance as an SNP guest, only
-  2586		 * allow the use of SNP-specific commands.
-  2587		 */
-  2588		if (sev_snp_guest(kvm) && sev_cmd.id < KVM_SEV_SNP_LAUNCH_START) {
-  2589			r = -EPERM;
-  2590			goto out;
-  2591		}
-  2592	
-  2593		switch (sev_cmd.id) {
-  2594		case KVM_SEV_ES_INIT:
-  2595			if (!sev_es_enabled) {
-  2596				r = -ENOTTY;
-  2597				goto out;
-  2598			}
-  2599			fallthrough;
-  2600		case KVM_SEV_INIT:
-  2601			r = sev_guest_init(kvm, &sev_cmd);
-  2602			break;
-  2603		case KVM_SEV_INIT2:
-  2604			r = sev_guest_init2(kvm, &sev_cmd);
-  2605			break;
-  2606		case KVM_SEV_LAUNCH_START:
-  2607			r = sev_launch_start(kvm, &sev_cmd);
-  2608			break;
-  2609		case KVM_SEV_LAUNCH_UPDATE_DATA:
-  2610			r = sev_launch_update_data(kvm, &sev_cmd);
-  2611			break;
-  2612		case KVM_SEV_LAUNCH_UPDATE_VMSA:
-  2613			r = sev_launch_update_vmsa(kvm, &sev_cmd);
-  2614			break;
-  2615		case KVM_SEV_LAUNCH_MEASURE:
-  2616			r = sev_launch_measure(kvm, &sev_cmd);
-  2617			break;
-  2618		case KVM_SEV_LAUNCH_FINISH:
-  2619			r = sev_launch_finish(kvm, &sev_cmd);
-  2620			break;
-  2621		case KVM_SEV_GUEST_STATUS:
-  2622			r = sev_guest_status(kvm, &sev_cmd);
-  2623			break;
-  2624		case KVM_SEV_DBG_DECRYPT:
-  2625			r = sev_dbg_crypt(kvm, &sev_cmd, true);
-  2626			break;
-  2627		case KVM_SEV_DBG_ENCRYPT:
-  2628			r = sev_dbg_crypt(kvm, &sev_cmd, false);
-  2629			break;
-  2630		case KVM_SEV_LAUNCH_SECRET:
-  2631			r = sev_launch_secret(kvm, &sev_cmd);
-  2632			break;
-  2633		case KVM_SEV_GET_ATTESTATION_REPORT:
-  2634			r = sev_get_attestation_report(kvm, &sev_cmd);
-  2635			break;
-  2636		case KVM_SEV_SEND_START:
-  2637			r = sev_send_start(kvm, &sev_cmd);
-  2638			break;
-  2639		case KVM_SEV_SEND_UPDATE_DATA:
-  2640			r = sev_send_update_data(kvm, &sev_cmd);
-  2641			break;
-  2642		case KVM_SEV_SEND_FINISH:
-  2643			r = sev_send_finish(kvm, &sev_cmd);
-  2644			break;
-  2645		case KVM_SEV_SEND_CANCEL:
-  2646			r = sev_send_cancel(kvm, &sev_cmd);
-  2647			break;
-  2648		case KVM_SEV_RECEIVE_START:
-  2649			r = sev_receive_start(kvm, &sev_cmd);
-  2650			break;
-  2651		case KVM_SEV_RECEIVE_UPDATE_DATA:
-  2652			r = sev_receive_update_data(kvm, &sev_cmd);
-  2653			break;
-  2654		case KVM_SEV_RECEIVE_FINISH:
-  2655			r = sev_receive_finish(kvm, &sev_cmd);
-  2656			break;
-  2657		case KVM_SEV_SNP_LAUNCH_START:
-  2658			r = snp_launch_start(kvm, &sev_cmd);
-  2659			break;
-  2660		case KVM_SEV_SNP_LAUNCH_UPDATE:
-  2661			r = snp_launch_update(kvm, &sev_cmd);
-  2662			break;
-  2663		case KVM_SEV_SNP_LAUNCH_FINISH:
-  2664			r = snp_launch_finish(kvm, &sev_cmd);
-  2665			break;
-> 2666		case KVM_SEV_SNP_SET_REQUEST_THROTTLE_RATE_MS:
-  2667			r = snp_set_request_throttle_ms(kvm, &sev_cmd);
-  2668			break;
-  2669		default:
-  2670			r = -EINVAL;
-  2671			goto out;
-  2672		}
-  2673	
-  2674		if (copy_to_user(argp, &sev_cmd, sizeof(struct kvm_sev_cmd)))
-  2675			r = -EFAULT;
-  2676	
-  2677	out:
-  2678		mutex_unlock(&kvm->lock);
-  2679		return r;
-  2680	}
-  2681	
+unbind vdev. vdev remains until kvm is stopped.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> 40.                                                               *tsm_unbind
+> 41.                                                                                 *TDX stop tdi
+> 42.                                                                                 *TDX disable mmio cb
+> 43.                                            *cb dmabuf revoke
+> 44.                                                                                               *unmap private MMIO
+> 45.                                                                                 *TDX disable dma cb
+> 46.                                                              *cb disable CC viommu
+
+I don't know why you'd disable a viommu while the VM is running,
+doesn't make sense.
+
+> 47.                                                                                 *TDX tdi free
+> 48.                                                                                 *enable mmio
+> 49.                                            *cb dmabuf recover
+> 50.workable shared dev
+
+This is a nice chart, it would be good to see a comparable chart for
+AMD and ARM
+
+Jason
