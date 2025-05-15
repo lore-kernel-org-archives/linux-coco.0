@@ -1,66 +1,61 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE88482FF
-	for <linux-coco@lists.linux.dev>; Thu, 15 May 2025 08:39:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6870297A46
+	for <linux-coco@lists.linux.dev>; Thu, 15 May 2025 09:17:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747298383; cv=none; b=KE0NEbRduCi28quz4VjjfBCp3/vlBWx61e3wSTzGq8GQOvwdgngEGPzvk0+nM1s53DqJ+AxTsIrv4UVlu68UQPEwCiF1D4FhARe7BRSYHnf4Jmtbh3WtI5EixhTwyShe/I0TzBYyRaBAcHEZ4vTId5blUiEod3J2go9K0a7qHo0=
+	t=1747300675; cv=none; b=Fzpbc/DSSJGJKsDlokEnLMzu04lm7vkqGQ54E544gwmqimyx9cAkffGyA6YLmAeMxOP+6M1MHdozgf15EEO0Tn2Qs0hwCV2OQ6YxZcYu+QW0KOMejSuMa4wt9pP2904353eCpNWqjcxn6cpAPPZ2rh27kuagjIUwwEExv+KVgcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747298383; c=relaxed/simple;
-	bh=fsuoFyrEyrIg9K1H9ClrNFl/H1zpx/Ny01zBJqEez6M=;
+	s=arc-20240116; t=1747300675; c=relaxed/simple;
+	bh=16mrttDqkGMk1xuXFQG657d/rNSJ7Kzc97AIqHURTrE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DhaRp25uC6JFhLxj0pK6WdwUHL2AjVY7nkX+gs4b06+jkzchLz7qpfI4PvRNND015EKfdUwW4B4cjvJGQgGt/IWXIOMX1EOhvxjJgrmnuE6B/5cZggS1B/au0LwGuddbn2BuZMNoyy0K8sNYqI6g6dPbJx3h4Ozj0KM3zn4/n/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kmdy0K6v; arc=none smtp.client-ip=198.175.65.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=r29NV780ABWX92ZIHtxOSHNfqytVZPzDjRaY6fjS6lwAoU0dMjzv+OI6emBBL980AIiL3KNTui1QwptOibbKike7eJFDDB/PeoPakLqe12pA7BvADdAtFqgvNMZeuK0m2nS3qGJZl41DXJl3t+ZZxAp6H1Q7cPKB45jjGfLaUjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TAAKWTVl; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kmdy0K6v"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TAAKWTVl"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747298382; x=1778834382;
+  t=1747300673; x=1778836673;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=fsuoFyrEyrIg9K1H9ClrNFl/H1zpx/Ny01zBJqEez6M=;
-  b=kmdy0K6vmiPgAeT1FOBhC4w8Q2sDlMdww2gKLXOJSbe0IqPito1xBNjn
-   7g6+Tk64CWVycSkSOJl+iuoe5fhDHXNJU2d9Ut6vyxjbyh4z5jCoJylXP
-   YEoahuXbheAdGGwDIGvq+t2f052OkIh3tThFr9xw1uzpmKA9/763BaPCM
-   QtUJF+kbEkjiJ/10s1O1ijbS5bQEC5SGCWyQvcItvHkqqUzQhhgajbQao
-   ijBM03zjsEFa9drHvqHXZewyxf9E/eMXmnd+DloryujqN6eQzs12bBu4K
-   9MdBBPO+R0whKf2koiqcjucx8W9HnHyNWN1AzBB0LjMWwQZgjw/6WGhlu
-   A==;
-X-CSE-ConnectionGUID: TDfKRN49QLuxfJSzmmx6iA==
-X-CSE-MsgGUID: 7RKJ7xSOQhuK/9HSo//q6g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="49383201"
+  bh=16mrttDqkGMk1xuXFQG657d/rNSJ7Kzc97AIqHURTrE=;
+  b=TAAKWTVlH+V0B3QwDNEti0oMOgdoMzzTGEPGZjUtM2yo154JpcU9N7BV
+   PqivtjYdTzH9eLTvfXOKL+hu/r+vKzE8kxPjmg1cGKJ31QlF4ubgJ52gK
+   NlVKUnOmRobt81d8qaPR+Gg9cQ55ICnajOjOrk0nCZmryvpDbx456o2f+
+   oB3uA41e7d3lSn2qocM3uh5IWexizA3XT2HLoHr2lTfiVfzfMjZwQjnOg
+   TmP80Ue92i/GLMjQf9FrhXqBxzj4kKXfnE9SXEkqGOMowxTlSbMXsrEhl
+   LnVEKFMXDjT8A6J83ww0SPCsKY5hNbBl6c9X5LljwEpVxUihcvk7jvRA2
+   g==;
+X-CSE-ConnectionGUID: 2GbUCDI0TfixrHvoZDR5ug==
+X-CSE-MsgGUID: aGXaDFKrSAy4EVdKAqiDCg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="71736307"
 X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; 
-   d="scan'208";a="49383201"
+   d="scan'208";a="71736307"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 01:39:41 -0700
-X-CSE-ConnectionGUID: PdRe44tZT1uby4AsNeVZJg==
-X-CSE-MsgGUID: IhovUxxXRDifKKG2Lz7wzg==
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 02:17:53 -0700
+X-CSE-ConnectionGUID: OCO+lFPURlqDfj1aLOv1HA==
+X-CSE-MsgGUID: 3MOaRAPPSkufbH7Xzg3BIA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; 
-   d="scan'208";a="143495637"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO himmelriiki) ([10.245.244.110])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 01:39:35 -0700
-Date: Thu, 15 May 2025 11:39:25 +0300
-From: Mikko Ylinen <mikko.ylinen@linux.intel.com>
-To: Cedric Xing <cedric.xing@intel.com>
-Cc: Dan Williams <dan.j.williams@intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Dionna Amalie Glaze <dionnaglaze@google.com>,
-	Guorui Yu <guorui.yu@linux.alibaba.com>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Dan Middleton <dan.middleton@linux.intel.com>,
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: Re: [PATCH v6 0/7] tsm-mr: Unified Measurement Register ABI for TVMs
-Message-ID: <aCWoPWMjg9rX2qPl@himmelriiki>
-References: <20250506-tdx-rtmr-v6-0-ac6ff5e9d58a@intel.com>
+   d="scan'208";a="143502817"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa004.fm.intel.com with ESMTP; 15 May 2025 02:17:49 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id F25E923F; Thu, 15 May 2025 12:17:47 +0300 (EEST)
+Date: Thu, 15 May 2025 12:17:47 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Zhi Wang <zhiw@nvidia.com>
+Cc: pbonzini@redhat.com, seanjc@google.com, rick.p.edgecombe@intel.com, 
+	isaku.yamahata@intel.com, kai.huang@intel.com, yan.y.zhao@intel.com, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, kvm@vger.kernel.org, 
+	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [RFC, PATCH 00/12] TDX: Enable Dynamic PAMT
+Message-ID: <pvcetnkt2qvxikcneh2ojszrytwenmagvjc33swd3q23hcftf4@nxqi73f57w6b>
+References: <20250502130828.4071412-1-kirill.shutemov@linux.intel.com>
+ <20250514233317.306f69f9.zhiw@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -69,136 +64,48 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250506-tdx-rtmr-v6-0-ac6ff5e9d58a@intel.com>
+In-Reply-To: <20250514233317.306f69f9.zhiw@nvidia.com>
 
-Hi,
+On Wed, May 14, 2025 at 11:33:17PM +0300, Zhi Wang wrote:
+> On Fri,  2 May 2025 16:08:16 +0300
+> "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com> wrote:
+> 
+> > This RFC patchset enables Dynamic PAMT in TDX. It is not intended to
+> > be applied, but rather to receive early feedback on the feature
+> > design and enabling.
+> > 
+> > From our perspective, this feature has a lower priority compared to
+> > huge page support. I will rebase this patchset on top of Yan's huge
+> > page enabling at a later time, as it requires additional work.
+> > 
+> > Any feedback is welcome. We are open to ideas.
+> > 
+> 
+> Do we have any estimation on how much extra cost on TVM creation/destroy
+> when tightly couple the PAMT allocation/de-allocation to the private
+> page allocation/de-allocation? It has been trendy nowadays that
+> meta pages are required to be given to the TSM when doing stuff with
+> private page in many platforms. When the pool of the meta page is
+> extensible/shrinkable, there are always ideas about batch pre-charge the
+> pool and lazy batch reclaim it at a certain path for performance
+> considerations or VM characteristics. That might turn into a
+> vendor-agnostic path in KVM with tunable configurations.
 
-On Tue, May 06, 2025 at 05:57:06PM -0500, Cedric Xing wrote:
-> NOTE: This patch series introduces the Measurement Register (MR) ABI, and
-> is a continuation of the RFC series on the same topic [1].
-> 
-> Introduce the CONFIG_TSM_MEASUREMENTS helper library (tsm-mr) as a
-> cross-vendor transport schema to allow TVM (TEE VM) guest drivers to export
-> CC (Confidential Compute) architecture-specific MRs (Measurement Registers)
-> as sysfs attributes/files. Enable applications to read, write/extend MRs
-> like regular files, supporting various usages such as configuration
-> verification (e.g., verify a TVM's configuration against digests stored in
-> static/immutable MRs like MRCONFIGID on TDX or HOSTDATA on SEV) and runtime
-> measurements (e.g., extend the measurement of a container image to an RTMR
-> before running it).
-> 
-> Patches included in this series:
-> 
-> - Patch 1 adds the tsm-mr library to help TVM guest drivers exposing MRs as
->   sysfs attributes.
-> - Patch 2 provides a sample module demonstrating the usage of the new
->   tsm-mr library.
-> - The remaining patches update the TDX guest driver to expose TDX MRs with
->   the help of the tsm-mr library.
-> 
-> [1]: https://lore.kernel.org/linux-coco/20241210-tsm-rtmr-v3-0-5997d4dbda73@intel.com/
+It depends on the pages that the page allocator gives to TD. If memory is
+not fragmented and TD receives memory from the same 2M chunks, we do not
+need much PAMT memory and we do not need to make additional SEAMCALLs to
+add it. It also depends on the availability of huge pages.
 
-I ran some TDX RTMR extend tests with this series and everything works
-as expected, so:
+From my tests, a typical TD boot takes about 20 MiB of PAMT memory if no
+huge pages are allocated and about 2MiB with huge pages. The overhead on
+its management is negligible, especially with huge pages: approximately
+256 SEAMCALLs to add PAMT pages and the same number to remove.
 
-Tested-by: Mikko Ylinen <mikko.ylinen@linux.intel.com>
+The consumption of PAMT memory for booting does not increase significantly
+with the size of TD as the guest accepts memory lazily. However, it will
+increase as more memory is accepted if huge pages are not used.
 
-> 
-> ---
-> Changes in v6:
-> - tsm-mr: Rename MR root directory name to "measurements" for improved
->   clarity.
-> - tsm-mr: Drop @mr from the parameter list of tsm_measurements.refresh().
-> - tsm-mr-sample: Remove redundant debug messages following the introduction
->   of tracepoints.
-> - tdx-guest: Split and refactor changes into 3 separate commits for easier
->   review.
-> - Add collected "Acked-by" tags to respective commits.
-> - Link to v5: https://lore.kernel.org/r/20250424-tdx-rtmr-v5-0-4fe28ddf85d4@intel.com
-> 
-> Changes in v5:
-> - tsm-mr: Fix typo in MAINTAINERS.
-> - tsm-mr-sample: Fix Kconfig dependencies by adding `select VIRT_DRIVERS`.
-> - Link to v4: https://lore.kernel.org/r/20250414-tdx-rtmr-v4-0-7edfa8d98716@intel.com
-> 
-> Changes in v4:
-> - tsm-mr: Add details to ABI doc.
-> - tsm-mr: Add driver-api doc.
-> - tsm-mr: Add tracepoints.
-> - tsm-mr: Use the constant string "mr" as the group/directory name for MR
->   sysfs attributes.
-> - x86/tdx: Revise error codes returned by tdx_mcall_* functions.
-> - tdx-guest: Merge all TDREPORT code paths into a common function.
-> - Link to v3: https://lore.kernel.org/r/20250407-tdx-rtmr-v3-0-54f17bc65228@intel.com
-> 
-> Changes in v3:
-> - tsm-mr: Separate measurement support (tsm-mr) from the original tsm
->   source code. Modules depending on tsm-mr should `select TSM_MEASUREMENTS`
->   in Kconfig. (Dan Williams)
-> - tsm-mr: Revise tsm-mr APIs to allow callers to decide where to host the
->   MR attributes in sysfs.
-> - tsm-mr: Drop TSM_MR_F_EXTENSIBLE and route all "write" requests to the CC
->   guest driver, which decides how to handle writes (e.g., by extending the
->   buffer on input to the specified MR).
-> - tsm-mr: Update the naming pattern for MR attributes from
->   MRNAME/HASH/digest to MRNAME:HASH.
-> - tsm-mr: Drop TSM_MR_MAXBANKS kernel config.
-> - x86/tdx: Return -EBUSY from tdx_mcall_get_report0 on TDCALL_OPERAND_BUSY
->   error.
-> - tdx-guest: Move MR attributes from /sys/kernel/tsm/tdx/ to
->   /sys/class/misc/tdx_guest/ because MR names are architecture-specific, so
->   their attributes should reside in an architecture-specific location.
-> - tdx-guest: Remove hash from `mrconfigid`, `mrowner`, `mrownerconfig`.
-> - tdx-guest: Remove `servtd_hash`, `report0`, and `reportdata`.
-> - Link to v2: https://lore.kernel.org/r/20250223-tdx-rtmr-v2-0-f2d85b0a5f94@intel.com
-> 
-> Changes in v2:
-> - Added TSM_MR_MAXBANKS Kconfig option
-> - Updated Kconfig dependency for TSM_REPORTS
-> - Updated comments in include/linux/tsm.h
-> - Updated drivers/virt/coco/tdx-guest/tdx-guest.c to use `IS_BUILTIN()` for
->   determining if static buffer addresses can be converted to GPAs by
->   `virt_to_phys()`
-> - Renamed function `tdx_mcall_rtmr_extend()` -> `tdx_mcall_extend_rtmr()`
-> - Link to v1: https://lore.kernel.org/r/20250212-tdx-rtmr-v1-0-9795dc49e132@intel.com
-> 
-> ---
-> Cedric Xing (7):
->       tsm-mr: Add TVM Measurement Register support
->       tsm-mr: Add tsm-mr sample code
->       x86/tdx: Add tdx_mcall_extend_rtmr() interface
->       x86/tdx: tdx_mcall_get_report0: Return -EBUSY on TDCALL_OPERAND_BUSY error
->       virt: tdx-guest: Expose TDX MRs as sysfs attributes
->       virt: tdx-guest: Refactor and streamline TDREPORT generation
->       virt: tdx-guest: Transition to scoped_cond_guard for mutex operations
-> 
->  .../testing/sysfs-devices-virtual-misc-tdx_guest   |  63 ++++++
->  Documentation/driver-api/coco/index.rst            |  12 +
->  .../driver-api/coco/measurement-registers.rst      |  12 +
->  Documentation/driver-api/index.rst                 |   1 +
->  MAINTAINERS                                        |   7 +-
->  arch/x86/coco/tdx/tdx.c                            |  50 +++-
->  arch/x86/include/asm/shared/tdx.h                  |   1 +
->  arch/x86/include/asm/tdx.h                         |   2 +
->  drivers/virt/coco/Kconfig                          |   5 +
->  drivers/virt/coco/Makefile                         |   1 +
->  drivers/virt/coco/tdx-guest/Kconfig                |   1 +
->  drivers/virt/coco/tdx-guest/tdx-guest.c            | 251 ++++++++++++++-------
->  drivers/virt/coco/tsm-mr.c                         | 248 ++++++++++++++++++++
->  include/linux/tsm-mr.h                             |  89 ++++++++
->  include/trace/events/tsm_mr.h                      |  80 +++++++
->  samples/Kconfig                                    |  11 +
->  samples/Makefile                                   |   1 +
->  samples/tsm-mr/Makefile                            |   2 +
->  samples/tsm-mr/tsm_mr_sample.c                     | 131 +++++++++++
->  19 files changed, 881 insertions(+), 87 deletions(-)
-> ---
-> base-commit: 92a09c47464d040866cf2b4cd052bc60555185fb
-> change-id: 20250209-tdx-rtmr-255479667146
-> 
-> Best regards,
-> -- 
-> Cedric Xing <cedric.xing@intel.com>
->
+I don't think we can justify any batching here.
 
--- Regards, Mikko
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
