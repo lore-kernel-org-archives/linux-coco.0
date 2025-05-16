@@ -1,91 +1,191 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAD1282F1
-	for <linux-coco@lists.linux.dev>; Fri, 16 May 2025 06:57:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F95A222592
+	for <linux-coco@lists.linux.dev>; Fri, 16 May 2025 09:25:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747378669; cv=none; b=tMG+k5oVjIpyFXIs/jHhqQXjc3t5twXTEzHFfkbKt5+ShMnfo801+157haHzue1A/ZQm+LDZw7aUrLUlqw6IPqBg+cWVXWpEr9vuiW749msl6y2n3Gx6O8x1I4NFuCUEzDA6Y+gn6IwAIFTNEGVNFjnKmyQVQfXqdkIRiu8l5a4=
+	t=1747387532; cv=none; b=HQ9JiLmiKsjYHuDPYD6KwUjh0DPJp+4phoOFwAj69GF6JEFK/3IOWegr8S8AAkJYLPyOW+5vxyU6fhi5MhuRO9pFL9eeX1404Zk033W8VaMh04te6+hCzeUILzl230IlIXVBAQaqQKj5ynSR2ntu/b2OpIEgin90FqZy99CT+4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747378669; c=relaxed/simple;
-	bh=XnZoPswJ3bA6jxPLmT+F4YbPnOb8BlY1QlQMFMbPtUE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wd/YCs7+HWUcSOMZPnd1wVRhUnjYdqM1CVSnXwYdkVYfn2+Sj7FDjv8VTnyUN7nGJGquGOU1qthMe1FCfIKBAHxYguMr6qoLdYKplnbTaFhyo75IJZGVpeWQ3wGxjXR/kzu3rksXLw9+zXsslQaaK0wlXLyQJkKeatpd2EwzU5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LfNZh7S/; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1747387532; c=relaxed/simple;
+	bh=GCD2vCe0LhxE0ig5ImzuZ3qvPLGI8kUnIfij8gJRL7E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=hbZ+3iVbqIVhQBTX601vfp3AEVg4EuJ5jyvdbPTY47b4F5O91KaUqsj4v14O0fv+7b1fbWfSgn9zvGoxOWCgn9znGCMw/NujbTtd2ePqKyPD5vOx3q0ig2WWRRx2f2vBVRRZ+27vti7Vx2lkMotFCks7Qn9jssXdybbB9okC0zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=B7TT19fw; arc=none smtp.client-ip=99.78.197.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LfNZh7S/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747378668; x=1778914668;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=XnZoPswJ3bA6jxPLmT+F4YbPnOb8BlY1QlQMFMbPtUE=;
-  b=LfNZh7S/8WBGxGGBCFtDNRjvO/FRbQREMtdamYhij8YCthX1i6PQZ4xM
-   +qHy5PeQJXTDnjQN5ChiucOI7TyzzftVYO64FJK+zWCsc7CGKOBpPwMsl
-   qRXUfqIMcYBeOVdPkJkUSMEnZ+1kNTwqso/guf7EJTkjAQWQBHXD7gG4c
-   a1VruYWIRtZKq5omzlsuAoPqNK0cYrEO/WeJm7q0NljxKlRpjnoDvvmBN
-   ghmSu3sJHehIfZei3QZQgIujMle3sRYAhvm1VdOlUPR8IW/uHQlE+Uuq0
-   l9PEartM34UCeq7z+T547pLlAWkT8im6sTvYdx5ks000+zR86G7KQPSaE
-   A==;
-X-CSE-ConnectionGUID: GvSKKUZeQ/ec2r5PHtYB3A==
-X-CSE-MsgGUID: CWShD0o2RTugZmwKT88ooA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11434"; a="49324713"
-X-IronPort-AV: E=Sophos;i="6.15,293,1739865600"; 
-   d="scan'208";a="49324713"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 23:57:47 -0700
-X-CSE-ConnectionGUID: Jx2SeMZOSiaiwQwTOC60xg==
-X-CSE-MsgGUID: ejI5XwvHQCugMZNmKNCMtA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,293,1739865600"; 
-   d="scan'208";a="138993620"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa008.fm.intel.com with ESMTP; 15 May 2025 23:57:45 -0700
-Date: Fri, 16 May 2025 14:52:06 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	gregkh@linuxfoundation.org, lukas@wunner.de,
-	aneesh.kumar@kernel.org, suzuki.poulose@arm.com, sameo@rivosinc.com,
-	aik@amd.com, jgg@nvidia.com, zhiw@nvidia.com
-Subject: Re: [PATCH v3 12/13] PCI/TSM: support TDI related operations for
- host TSM driver
-Message-ID: <aCbglieuHI1BJDkz@yilunxu-OptiPlex-7050>
-References: <20250516054732.2055093-1-dan.j.williams@intel.com>
- <20250516054732.2055093-13-dan.j.williams@intel.com>
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="B7TT19fw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1747387529; x=1778923529;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=GCD2vCe0LhxE0ig5ImzuZ3qvPLGI8kUnIfij8gJRL7E=;
+  b=B7TT19fwRC4hhwGGN5wE4i39zkgooBaLo5RwWthIvNeAaC2ZSNRAkQFs
+   DhLG0MVZT4F8kadTn3PrIJs+nuu9p1mz7sqBWmJKaqvypUn+pch5pBpZP
+   lD6CvF8PQ9LBhsgy4ql6QkVAQHEUReM5wp38zwihyYz/LhbZgF8DnPPiY
+   iq4ToSj216QlVKlJM68H1+HjBimGB7YKYZBzw+rotJApAar+2VZ6l2f1E
+   1cYei8Xo6hbExUV+Mm39LRVjoEDGoMLGpiuGah7II3bf1TM2pJG5JODev
+   Z3MA7MmGHIBKNvuqvWXRltpWO4BL/3um2oea1DVc65k9KJmy2PEdyl3qa
+   g==;
+X-IronPort-AV: E=Sophos;i="6.15,293,1739836800"; 
+   d="scan'208";a="50586088"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 09:25:26 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:26605]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.45.193:2525] with esmtp (Farcaster)
+ id b2cb958e-e092-4c68-8911-b59f142beefa; Fri, 16 May 2025 09:25:26 +0000 (UTC)
+X-Farcaster-Flow-ID: b2cb958e-e092-4c68-8911-b59f142beefa
+Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Fri, 16 May 2025 09:25:26 +0000
+Received: from [0.0.0.0] (172.19.99.218) by EX19D020UWC004.ant.amazon.com
+ (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14; Fri, 16 May 2025
+ 09:25:23 +0000
+Message-ID: <7c650817-09d9-4c41-96db-62c0950d71d5@amazon.com>
+Date: Fri, 16 May 2025 11:25:21 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250516054732.2055093-13-dan.j.williams@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Linux kernel SIG meeting for vwfwupdate discussion
+To: Ani Sinha <anisinha@redhat.com>, Dan Middleton
+	<dan.middleton@linux.intel.com>
+CC: Dionna Amalie Glaze <dionnaglaze@google.com>, Steve Rutherford
+	<srutherford@google.com>, <linux-coco@lists.linux.dev>, Vitaly Kuznetsov
+	<vkuznets@redhat.com>, Joerg Roedel <jroedel@suse.de>, Gerd Hoffmann
+	<kraxel@redhat.com>, Jon Lange <jlange@microsoft.com>, "cho@microsoft.com"
+	<cho@microsoft.com>, James Bottomley <James.Bottomley@hansenpartnership.com>
+References: <CAAH4kHZ2yO3ju_iJinR9y4BDXXdWBnEP1wcv09JWMzaqp1ZP+g@mail.gmail.com>
+ <CAK3XEhOs4ijnbqmv8UrNmKN4=nv6+_A7fESLibGBRR9u8rXi6w@mail.gmail.com>
+ <87frifm75c.fsf@redhat.com>
+ <CABayD+eRjjknqJNRkkh9_KraC-jZyXb1BL_D79m04po1_hR-_g@mail.gmail.com>
+ <CAAH4kHbCduQr_+oj0X8QeTjgDgh6aBncPV-1+mvB_r1R3i7Lqg@mail.gmail.com>
+ <3d9fa17e-2b74-4c90-99b8-5b1dc8d15356@linux.intel.com>
+ <100D7ECF-1292-450A-9F65-FEBA5843AB99@redhat.com>
+Content-Language: en-US
+From: Alexander Graf <graf@amazon.com>
+In-Reply-To: <100D7ECF-1292-450A-9F65-FEBA5843AB99@redhat.com>
+X-ClientProxiedBy: EX19D043UWA003.ant.amazon.com (10.13.139.31) To
+ EX19D020UWC004.ant.amazon.com (10.13.138.149)
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-On Thu, May 15, 2025 at 10:47:31PM -0700, Dan Williams wrote:
-> From: Xu Yilun <yilun.xu@linux.intel.com>
-> 
-> Add kAPIs pci_tsm_{bind,unbind,guest_req}() for PCI devices.
-> 
-> pci_tsm_bind/unbind() are supposed to be called by kernel components
-> which manages the virtual device. The verb 'bind' means VMM does extra
-> configurations to make the assigned device ready to be validated by
-> CoCo VM as TDI (TEE Device Interface). Usually these configurations
-> include assigning device ownership and MMIO ownership to CoCo VM, and
-> move the TDI to CONFIG_LOCKED TDISP state by LOCK_INTERFACE_REQUEST
-> TDISP message. The detailed operations are specific to platform TSM
-> firmware so need to be supported by vendor TSM drivers.
-> 
-> pci_tsm_guest_req() supports a channel for CoCo VM to directly talk
-> to TSM firmware about further TDI operations after TDI is bound, e.g.
-> get device interface report, certifications & measurements. So this kAPI
-> is supposed to be called from KVM vmexit handler.
+SGV5IEFuaSwKCldlIGFscmVhZHkgcHJlc2VudGVkIGNvbmNlcHRzIGxhc3QgeWVhci4gSWYgd2Ug
+d2FudCB0byBwcmVzZXJ2ZSAKY3JlZGliaWxpdHksIHRoaXMgeWVhciB3ZSBuZWVkIHRvIHNob3cg
+YSBzb2x1dGlvbiB0aGF0J3MgZWl0aGVyIG1lcmdlZCAKb3IgYWxtb3N0IG1lcmdlZCB1cHN0cmVh
+bSBhbmQgcmVhZHkgdG8gdXNlLgoKQWxleAoKT24gMTYuMDUuMjUgMDg6MDIsIEFuaSBTaW5oYSB3
+cm90ZToKPiBJcyB0aGVyZSBhbnkgaW50ZXJlc3QgaW4gc2VuZGluZyBhIGpvaW50IHByb3Bvc2Fs
+IGluIHRoZSB1cGNvbWluZyBLVk0gRm9ydW0gYmFzZWQgb24gdGhlIHVwZGF0ZWQsIGxhdGVzdCBp
+bmNhcm5hdGlvbiBvZiB0aGUgaWRlYT8gV2UgY2FuIHNlbmQgYSBwcm9wb3NhbCBub3cgKGRlYWRs
+aW5lIGlzIEp1bmUgOXRoIEkgYmVsaWV2ZSkgYW5kIHRoZW4gd29yayBvbiB0aGUgZGV0YWlscyBp
+biB0aGUgc3Vic2VxdWVudCB3ZWVrcy4gSSB0aGluayB3ZSBzaG91bGQgYmUgYWJsZSB0byBzb2xp
+ZGlmeSB0aGUgc3BlY2lmaWNzIG9mIHRoZSBoeXBlcnZpc29yIGludGVyZmFjZS4gV2hlbiB3ZSBw
+cmVzZW50ZWQgdGhpcyBpZGVhIGxhc3QgeWVhciBpbiB0aGUgS1ZNIGZvcnVtLCBpdCB3YXMgcXVp
+dGUgYSBiaXQgZnV6enkgYW5kIHdlIGRpZCBub3QgZXhwbG9yZSB0aGUgSUdWTSBhbmdsZSBhdCBk
+ZXB0aC4KPiBTbyBpbiBteSBvcGluaW9uLCBpdCB3aWxsIGJlIGEgbXVjaCBiZXR0ZXIgdGFsayB0
+aGlzIHRpbWUgcGFydGljdWxhcmx5IHdpdGggZXZlcnlvbmUgKGFsbCBtYWpvciBoeXBlcnNjYWxl
+cnMpIHNob3dpbmcgaW50ZXJlc3Qgb24gdGhpcy4KPgo+IFRoYW5rcwo+IEFuaQo+Cj4KPj4gT24g
+MTIgTWF5IDIwMjUsIGF0IDk6NTHigK9QTSwgRGFuIE1pZGRsZXRvbiA8ZGFuLm1pZGRsZXRvbkBs
+aW51eC5pbnRlbC5jb20+IHdyb3RlOgo+Pgo+PiBUaGUgcmVjb3JkaW5nIGlzIG5vdyBhdmFpbGFi
+bGU6Cj4+IGh0dHBzOi8vd3d3LnlvdXR1YmUuY29tL3dhdGNoP3Y9YmlvNUJHaGp1aTQKPj4KPj4g
+QWRkaXRpb25hbCBNaW51dGVzOgo+PiBodHRwczovL2RvY3MuZ29vZ2xlLmNvbS9kb2N1bWVudC9k
+LzE4RDgyMGd5dDJ4ZTg0Snk2ZEdYZ3JOVGhBcG9vemNla0R6dklsSzJfYmQ0L2VkaXQ/dGFiPXQu
+MCNoZWFkaW5nPWguNHFoNXp5aW96Ym93Cj4+Cj4+IFJlYWxseSBpbnRlcmVzdGluZyBkaXNjdXNz
+aW9uLgo+PiBHcmVhdCB0aGF0IHRoZSBkaXNjdXNzaW9uIGNvdWxkIGJlIHJlY3J1aXRlZCBvbiBz
+aG9ydCBub3RpY2UuCj4+IFNvdW5kcyBsaWtlIGZvbGxvdy11cCBtaWdodCBiZSBvdmVyIGEgdGhy
+ZWFkIGhlcmUsIHdpdGggdGhvc2Ugbm90Cj4+IHN1YnNjcmliZWQgdG8gbGludXgtY29jbyBhZGRl
+ZCBkaXJlY3RseS4KPj4KPj4gS2VlcCBpbiBtaW5kIHRoYXQgdGhlIG5leHQgU0lHIHNlc3Npb24g
+aXMgYXZhaWxhYmxlIGFuZCB5b3UgY2FuIG5vdCBvbmx5Cj4+IHNob3cgcGljdHVyZXMgdGhlcmUs
+IGJ1dCBjYW4gZ2VzdHVyZSBhbmQgcG9pbnQgdG8gdGhlIHNhbWUgdGhpbmdzIHRvCj4+IGNsYXJp
+ZnkuLiBJIGRvbid0IHVuZGVyc3RhbmQgdGhpcyBzdGFnZSwgdGhpcyB3aWRnZXQsIHRoaXMgZm9y
+bWF0Lgo+Pgo+PiBUaGFua3MsCj4+IERhbgo+Pgo+PiBPbiA1LzgvMjUgMTI6MjkgUE0sIERpb25u
+YSBBbWFsaWUgR2xhemUgd3JvdGU6Cj4+PiBUaGFua3MgZXZlcnlvbmUgd2hvIGNvdWxkIGF0dGVu
+ZCB0aGUgQ0NDIExpbnV4IEtlcm5lbCBTSUcgbWVldGluZwo+Pj4gYWJvdXQgRlVLSSBhbmQgc3Bl
+Y2lmaWNhbGx5IHRoZSBmaXJtd2FyZSByZXBsYWNlbWVudCBtZWNoYW5pc20uCj4+PiBQbGVhc2Ug
+K2NjIGFueSBwYXJ0aWNpcGFudHMgSSBtaXNzZWQuCj4+PiBNZWV0aW5nIG1pbnV0ZXM6Cj4+PiAq
+IHRoZSBjb25jZXB0IGZyb20gaXRzIGluaXRpYWwgdmVyc2lvbiB0aGF0IHdhcyBRZW11LXNwZWNp
+ZmljIGFuZCB1c2VkCj4+PiBzcGVjaWFsbHktbmFtZWQgRndDZmcgZmlsZXMgdG8gZGlyZWN0IENW
+TSBjb250ZXh0IHJlY29uc3RydWN0aW9uIHdpdGgKPj4+IGEgZGlmZmVyZW50IFJPTS4KPj4+ICog
+dGhlIHZpZXdwb2ludCBvZiBnZW5lcmFsaXppbmcgdGhhdCBpbnRlcmZhY2UgdG8gYmUgYW4gSUdW
+TS1iYXNlZAo+Pj4gZmlybXdhcmUgbG9hZGluZyBpbnN0cnVjdGlvbiBpbiBvcmRlciB0byByZWR1
+Y2UgdGhlIGludGVyZmFjZSdzCj4+PiBpbnRlcnByZXRhdGlvbiByZXF1aXJlbWVudHMgdG8ga2Vl
+cCBmb2N1c2VkIG9uIGFuIGVtZXJnaW5nIHN0YW5kYXJkLgo+Pj4gKiB0aGUgdXNlZnVsbmVzcyBv
+ZiAic2luZ2xlIGFydGlmYWN0IiBWTSB0ZW1wbGF0ZSBkaXN0cmlidXRpb24sIHN1Y2gKPj4+IHRo
+YXQgdGhlIGZpcm13YXJlIGNhbiBiZSBkaXNrLWltYWdlIHNwZWNpZmljIGFuZCBub3QgbmVlZCBl
+eHRyYQo+Pj4gb3JjaGVzdHJhdGlvbiB0byBsZWFkIHRvIFZNIGNvbnN0cnVjdGlvbi4KPj4+ICog
+Y29uc3RyYWludHMgb2YgdGhlIGRpZmZlcmVudCBWTU0gcHJvdmlkZXJzLCBuYW1lbHkKPj4+ICAg
+ICArIEFXUyBkb2VzIG5vdCBoYXZlIGFjY2VzcyB0byBndWVzdCByZXNvdXJjZXMuIEEgZGlzayBj
+YW4gb25seSBiZQo+Pj4gcmVhZCBieSBhIGd1ZXN0IFZNLgo+Pj4gICAgICsgQXp1cmUgZG9lc24n
+dCBoYXZlIHRoaXMgY29uc3RyYWludCBhbmQgZG9lcyBub3Qgd2FudCB0byBidWlsZCBhCj4+PiBz
+dGFnZSAxIFZNIGp1c3QgdG8gdGVhciBpdCBkb3duIHRvIGJvb3QgYSBzdGFnZSAyIFZNIGV2ZXJ5
+IGNvbGQgcmVzZXQuCj4+PiBJdCdzIGZhciBtb3JlIHByZWZlcmFibGUgZm9yIHRoZSBob3N0IHRv
+IGhhdmUgdGhlIG9wdGlvbiB0byBkZXRlcm1pbmUKPj4+IGlmIGFuIElHVk0gd2lsbCBiZSByZXF1
+ZXN0ZWQgdG8gbG9hZCwgaW4gd2hpY2ggY2FzZSBpdCBzaG91bGQgYmUKPj4+IGxvYWRlZCBkaXJl
+Y3RseSB3aXRob3V0IFZNIGNvbnN0cnVjdGlvbi4KPj4+ICAgICArIEdDUCBlbXVsYXRlcyBRZW11
+IGRldmljZXMgYW5kIGNvdWxkIGltcGxlbWVudCB0aGUgRlVLSSBpbnRlcmZhY2UsCj4+PiBidXQg
+d291bGQgcHJlZmVyIHRvIHVzZSBtZWNoYW5pc21zIHRoYXQgYXJlIHN0YW5kYXJkaXplZCB0aHJv
+dWdoCj4+PiBwcm9mZXNzaW9uYWwgYm9kaWVzIGxpa2UgdGhlIFVFRkkgZm9ydW0uIEZhc3RlciBi
+b290cyB3aXRob3V0IFZNCj4+PiByZWNvbnN0cnVjdGlvbiBhcmUgYWxzbyBoaWdobHkgZGVzaXJh
+YmxlLgo+Pj4gSm9uIHJlcXVlc3RlZCBmb3IgQWxleCB0byBnaXZlIHNvbWUgbW9yZSBkZXNpZ24g
+Y29uc2lkZXJhdGlvbiBpbnRvIGEKPj4+IG1lY2hhbmlzbSB0aGF0IHdvdWxkIHNhdGlzZnkgYm90
+aCBBV1MgYW5kIEF6dXJlJ3MgY29uc3RyYWludHMuCj4+PiBBbGV4IHN1Z2dlc3RlZCB0aGUgZnJh
+bWV3b3JrIG9mIGEgc29sdXRpb246IG1vdW50IHRoZSBndWVzdCBpbWFnZSwKPj4+IHNlYXJjaCB0
+aGUgYm9vdCBwYXJ0aXRpb24gZm9yIGEgc3BlY2lhbGx5IG5hbWVkIElHVk0gZmlsZSwgYW5kIGxh
+dW5jaAo+Pj4gdGhhdCBpbnN0ZWFkIG9mIHRoZSBDU1AncyBmaXJtd2FyZS4KPj4+IChEaW9ubmEg
+bm90ZXMgb3V0c2lkZSBvZiB0aGUgbWVldGluZyB0aGF0IHRoaXMgaGFzIHRoZSBkYW5nZXIgb2Yg
+YmVpbmcKPj4+IGFuIHVuc291bmQgb3B0aW1pemF0aW9uIG9mIGRpcmVjdGx5IGxvYWRpbmcgdGhl
+IGRpc2sgaW1hZ2UgdW5kZXIgdGhlCj4+PiBDU1AgZmlybXdhcmUgZm9yIEZVS0kgYXBwbGljYXRp
+b24gdG8gbG9hZCB0aGUgSUdWTSBkdWUgdG8gbm8KPj4+IHJlcXVpcmVtZW50IHRoYXQgdGhlIEZV
+S0kgYXBwbGljYXRpb24gbG9hZCB0aGF0IHNwZWNpZmljIElHVk0gZmlsZSkKPj4+IEkgbG9vayBm
+b3J3YXJkIHRvIG91ciBmdXJ0aGVyIGRpc2N1c3Npb24gb24gaG93IHRvIHByb3ZpZGUgYSBtb3Jl
+Cj4+PiB0cnVzdHdvcnRoeSBDb25maWRlbnRpYWwgQ29tcHV0aW5nIGV4cGVyaWVuY2UgaW4gdGhl
+IENsb3VkIGZvciBvdXIKPj4+IGN1c3RvbWVycyA6KQo+Pj4gT24gV2VkLCBNYXkgNywgMjAyNSBh
+dCA0OjA04oCvUE0gU3RldmUgUnV0aGVyZm9yZCA8c3J1dGhlcmZvcmRAZ29vZ2xlLmNvbT4gd3Jv
+dGU6Cj4+Pj4gSGVhZHMgdXAsIHRoaXMgbWVldGluZyBpcyB0b21vcnJvdywgTWF5IDh0aCBhdCA5
+QU0gUERUICg2UE0gQ0VTVCksIGlmCj4+Pj4geW91IGFsbCBhcmUgYXZhaWxhYmxlLgo+Pj4+Cj4+
+Pj4gT24gRnJpLCBBcHIgMTEsIDIwMjUgYXQgMTozMeKAr0FNIFZpdGFseSBLdXpuZXRzb3YgPHZr
+dXpuZXRzQHJlZGhhdC5jb20+IHdyb3RlOgo+Pj4+PiBBbmkgU2luaGEgPGFuaXNpbmhhQHJlZGhh
+dC5jb20+IHdyaXRlczoKPj4+Pj4KPj4+Pj4+IEFkZGluZyBWaXRhbHkgYXMgd2VsbCB3aG8gaXMg
+YWxzbyBpbnZvbHZlZCBpbiB0aGlzIHByb2plY3QgZnJvbSBSZWQgSGF0Lgo+Pj4+Pj4KPj4+Pj4+
+IE9uIEZyaSwgQXByIDExLCAyMDI1IGF0IDQ6NDbigK9BTSBEaW9ubmEgQW1hbGllIEdsYXplCj4+
+Pj4+PiA8ZGlvbm5hZ2xhemVAZ29vZ2xlLmNvbT4gd3JvdGU6Cj4+Pj4+Pj4gSGkgeSdhbGwsIG15
+IGNvbGxlYWd1ZSBTdGV2ZSBSdXRoZXJmb3JkIHJ1bnMgYSBtb250aGx5IHNwZWNpYWwKPj4+Pj4+
+PiBpbnRlcmVzdCBncm91cCBtZWV0aW5nIGFtb25nc3QgTGludXgga2VybmVsIGRldmVsb3BlcnMg
+dW5kZXIgdGhlCj4+Pj4+Pj4gY29uZmlkZW50aWFsIGNvbXB1dGluZyBjb25zb3J0aXVtIHVtYnJl
+bGxhLgo+Pj4+Pj4+Cj4+Pj4+Pj4gVGhlIGYtVUtJIGNvbmNlcHQgcHJlc2VudGVkIGF0IEZPU0RF
+TSBpcyBhIHZlcnkgaW50ZXJlc3RpbmcgaWRlYSBmb3IKPj4+Pj4+PiBpbXByb3ZpbmcgY3VzdG9t
+ZXIgdHJ1c3QgaW4gY2xvdWQgY29uZmlkZW50aWFsIFZNcyB3aXRob3V0IHRoZSBuZWVkCj4+Pj4+
+Pj4gZm9yIGNvbXBsZXggY29udHJvbCBwbGFuZSByZXNvdXJjZSBtYW5hZ2VtZW50IGZvciB2aXJ0
+dWFsIGZpcm13YXJlCj4+Pj4+Pj4gRUVQUk9NLgo+Pj4+Pj4+Cj4+Pj4+Pj4gTWljcm9zb2Z0IGhh
+cyBwcm9wb3NlZCBhIGZpcm13YXJlIGxvYWRpbmcgZm9ybWF0IGNhbGxlZCBJR1ZNIHRoYXQgdGhl
+Cj4+Pj4+Pj4gQ29jb251dC1TVlNNIHByb2plY3QgaGFzIGFkb3B0ZWQsIGFuZCBoYXMgc3VwcG9y
+dCBpbiBWYW5hZGl1bQo+Pj4+Pj4+IChHb29nbGUncyBLVk0tYmFzZWQgVk1NKSwgUWVtdSwgYW5k
+IE9wZW5WTU0gKGRvbmF0ZWQgdG8gdGhlIENDQykuCj4+Pj4+Pj4KPj4+Pj4+PiBJIHNlZSBBbGV4
+YW5kZXIgZnJvbSBBV1MgaW4gdGhlIFFlbXUgdGhyZWFkcyBmb3Igdm1md3VwZGF0ZSwgc28gbm93
+Cj4+Pj4+Pj4gdGhhdCdzIGF0IGxlYXN0IHRoZSB0b3AgMyBDU1BzIHJlcHJlc2VudGVkIGhlcmUu
+Cj4+Pj4+Pj4KPj4+Pj4+PiBJIHRoaW5rIGZvciBldmVyeW9uZSBpbiB0aGUgVG86IHRhZyBoZXJl
+LCB3ZSBhbGwgaGF2ZSBhIHZlc3RlZAo+Pj4+Pj4+IGludGVyZXN0IGluIGltcHJvdmluZyB0aGUg
+Q1ZNIHRydXN0IHN0b3J5IHdpdGhvdXQgbWFraW5nIHRoZQo+Pj4+Pj4+IHZpcnR1YWxpemF0aW9u
+IGVjb3N5c3RlbSBldmVuIG1vcmUgY2hhbGxlbmdpbmcgdG8gd29yayB3aXRoLiBJJ2QgbGlrZQo+
+Pj4+Pj4+IHRvIGludml0ZSB5b3UgYWxsIHRvIG91ciBuZXh0IG1lZXRpbmcKPj4+Pj4+Pgo+Pj4+
+Pj4+IDlhbSBQRFQgTWF5IDh0aDogaHR0cHM6Ly9jb25maWRlbnRpYWxjb21wdXRpbmcuaW8vZ2V0
+LWludm9sdmVkL2NhbGVuZGFyLwo+Pj4+Pj4+Cj4+Pj4+IEhpIEFuaSwgRGlvbm5hLCBldmVyeW9u
+ZSwKPj4+Pj4KPj4+Pj4gSSdkIGJlIGRlbGlnaHRlZCB0byBwYXJ0aWNpcGF0ZSEgTWF5LCA4dGgs
+IGhvd2V2ZXIsIGlzIGEgcHVibGljIGhvbGlkYXkKPj4+Pj4gaW4gc29tZSBFdXJvcGVhbiBjb3Vu
+dHJpZXMgaW5jbHVkaW5nIENaIHdoZXJlIEknbSBiYXNlZCBhbmQgSSB3aWxsIGJlCj4+Pj4+IHRy
+YXZlbGluZyBvbiB0aGF0IGRheSBzbyBJIG1heSBub3QgYmUgYWJsZSB0byBqb2luLiBJJ20sIGhv
+d2V2ZXIsIHByZXR0eQo+Pj4+PiBjZXJ0YWluIHRoYXQgQW5pL0FsZXgvR2VyZCBjYW4gcmVwcmVz
+ZW50IHRoZSBpZGVhIHZlcnkgd2VsbCkKPj4+Pj4KPj4+Pj4gLS0KPj4+Pj4gVml0YWx5Cj4+Pj4+
+CgoKCkFtYXpvbiBXZWIgU2VydmljZXMgRGV2ZWxvcG1lbnQgQ2VudGVyIEdlcm1hbnkgR21iSApU
+YW1hcmEtRGFuei1TdHIuIDEzCjEwMjQzIEJlcmxpbgpHZXNjaGFlZnRzZnVlaHJ1bmc6IENocmlz
+dGlhbiBTY2hsYWVnZXIsIEpvbmF0aGFuIFdlaXNzCkVpbmdldHJhZ2VuIGFtIEFtdHNnZXJpY2h0
+IENoYXJsb3R0ZW5idXJnIHVudGVyIEhSQiAyNTc3NjQgQgpTaXR6OiBCZXJsaW4KVXN0LUlEOiBE
+RSAzNjUgNTM4IDU5Nwo=
 
-To clarify, this commit message is staled. We are proposing existing to
-QEMU, then pass to TSM through IOMMUFD VDEVICE.
-
-Thanks,
-Yilun 
