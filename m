@@ -1,173 +1,224 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2064.outbound.protection.outlook.com [40.107.237.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84F122F176
-	for <linux-coco@lists.linux.dev>; Fri, 16 May 2025 12:49:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747399800; cv=fail; b=L7yLsCcASMwrwjJeXnajVsqtxW6OX05T0WxmhQKApJK0K5em7UPY4DRg2y8yqPo0p9cJ14QfvnuxN9I2a3AdYiENQ2qUSv1IrwALe7ciE2345rqF/i57RtFKGvONPUocroZJ01KUxX8DX2dUaDLJz/03CASXiVxbLkibVCnaoT4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747399800; c=relaxed/simple;
-	bh=/ssxdQx4KBY4OPAe6Nn+lJC2blTajUh+GRZj7o79He0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Yqq6Y/aqfciYrmiOuU6Lp+1wQMvA/1Caf8alqv83SrVtBFU12HJ7CuSA//HFMmQHsGOzZPioYEKYh92pdOmCm+LBBW/3FKCCBqHrxHLFsDbFsagHqbMOd530tEkhgbxpq6p+uS+psGEpTgqE8184AYxhi7Kso3AhjvVB8izanjM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=VzYcp7dU; arc=fail smtp.client-ip=40.107.237.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="VzYcp7dU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bZZGRSanTmg6iwhMe7oGyogTjem71pdxHlLOOL+MI3a6k74CiXRp2pkrlnuuG24oTVp+Ow7cFHG8tz0xuMZs0v/PKeNH3XssoFBPvJPdWItWvCAk4BwgDh69+NQoQuTmqR8B93cS7c4DM20gZlLXXBk+DeIGNZiIcm79qSQnPncqyrcOZavAUg3Htj/pP9F1yczmDxHwl7XK8qnttj3Kb4uG2/KGuRNmWLW5Y7ROJVgCHqAkjYOIdektCjyjd7PJhBAasjrT2lXRIQ7NLempbSsJ0Gk4vcb+YE16+i7gFLvIPvt5sd+5z1LE2nKWaFlFjVUUvGBctdhpjcCQrCKvAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HCOliCDFiza2YXF/6yogjX8ZCITtgDW9sZwjVVE5EJQ=;
- b=O/ueFMTl93ZP2vrB5a2lYu6b8yBJEdPvZ8LGVx3pTM62Z09c5aMxzSscNufXNLMMwHlS0PFDCHQUMFtIsVxzhtSVMSUBmdmuR00fZBaBv+GUWsMKYOo1yXeYTnP2yU8hNzWln2ZeDFkP33veMbV0FGO1ZUrTgIqtZjENPJf5AvhRC42pHpFvd5Evtva0yV6wa5NCIyFcoKda5UwAqVtxGOaA9pikK9fLaKWLxQGDj4JoD+5oLvconJ0RJ8c5Y347ytDMPGzpcMpufGZH2LWMDHAwWoAq3LAQldzcdUwti/1x7XS02vSmwb3mhpNd6nqu3Wj6GvtKn3VBbNj0MJsvGg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HCOliCDFiza2YXF/6yogjX8ZCITtgDW9sZwjVVE5EJQ=;
- b=VzYcp7dUV9Y4FZj6pXoQyafuHXBXOBavJbhc3wi1ffK87mk9w9WsAWOterkCyuCqApVxQBjBn7kC+hdtjZ9rfbEFr49dPXOIyxHegT4PdvGxFBSmHMCcza8VqNWZQcbLa20LFLMk/Zpbu6jai8yzqjm71pVYUcQX9dh/4avCtr+BOnfAz8prX27T/PC6sxRxZjBcrKciVNW5jgJZqukse4rJAHQmLNYkvY2PikSZthLFwFzg1ZOG4hIJjBT31gjI+iYeudUH6eUPVPM3ROAvW0GWhh46B2Wlqhx33eHjvajwsMHbbUH6O+JIds0CCYvF09RDXeR45kMzMRhXs6Rkfw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by LV8PR12MB9407.namprd12.prod.outlook.com (2603:10b6:408:1f9::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.21; Fri, 16 May
- 2025 12:49:55 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%7]) with mapi id 15.20.8722.031; Fri, 16 May 2025
- 12:49:54 +0000
-Date: Fri, 16 May 2025 09:49:53 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: Zhi Wang <zhiw@nvidia.com>, Alexey Kardashevskiy <aik@amd.com>,
-	kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	sumit.semwal@linaro.org, christian.koenig@amd.com,
-	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
-	vivek.kasireddy@intel.com, dan.j.williams@intel.com,
-	yilun.xu@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
-	daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, tao1.su@intel.com
-Subject: Re: [RFC PATCH 00/12] Private MMIO support for private assigned dev
-Message-ID: <20250516124953.GD613512@nvidia.com>
-References: <20250509184318.GD5657@nvidia.com>
- <aB7Ma84WXATiu5O1@yilunxu-OptiPlex-7050>
- <2c4713b0-3d6c-4705-841b-1cb58cd9a0f5@amd.com>
- <20250512140617.GA285583@nvidia.com>
- <20250513130315.0158a626.zhiw@nvidia.com>
- <aCRmoDupzK9zTqFL@yilunxu-OptiPlex-7050>
- <20250514230502.6b64da7f.zhiw@nvidia.com>
- <aCYsNSFQJZzHVOFI@yilunxu-OptiPlex-7050>
- <20250515192127.GA580805@nvidia.com>
- <aCbZATrK7EPyH4qt@yilunxu-OptiPlex-7050>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aCbZATrK7EPyH4qt@yilunxu-OptiPlex-7050>
-X-ClientProxiedBy: BLAPR05CA0008.namprd05.prod.outlook.com
- (2603:10b6:208:36e::11) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2E472601;
+	Fri, 16 May 2025 13:50:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747403424; cv=none; b=mWj78ttmCDSe/0gw4eJ6fSTNRQzuds/knL8tVHhD2UB70cLdNMLFoGwqNo7bFdopfg6gjNIq8o7HML8R3LxGCqJuIqS4tvoD455KrC7FAaQiz8aJHWwVLjJBqFMTiOFFrHhZfrdB7HDLkC28jI9qSc06Z6+WqMojqn4oFG6Mu10=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747403424; c=relaxed/simple;
+	bh=nf3OQE9ZhNsiJA068uF5vECxBvjjy1drOxz1l/4Kwgc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=exdPULYFtmnHtaKSx62wfFNWdsPvXw6s2kG9p9ystRTQEGkwtHVSsRXguVvaaesJQFBO6fbyjN6XxycMR7x5gjQve/whv4MO+rjZ6e3LLqUGyWxnCwTyrXyXXweaFXoYtAeLUgaM+NV9u8C69OKtZqUxSdpuK0mybNyp4s0nf04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BB252169C;
+	Fri, 16 May 2025 06:50:09 -0700 (PDT)
+Received: from [10.1.27.17] (e122027.cambridge.arm.com [10.1.27.17])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 73A8F3F673;
+	Fri, 16 May 2025 06:50:17 -0700 (PDT)
+Message-ID: <31bf9eac-a234-44dd-a4a3-0939092da66a@arm.com>
+Date: Fri, 16 May 2025 14:50:15 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|LV8PR12MB9407:EE_
-X-MS-Office365-Filtering-Correlation-Id: 99866117-8bb5-455c-7975-08dd947827de
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?0A88D7Xk+4Dbcoa0kk5LY4CRSr3WKbN1QYlt1yWoEDxXzPBhjfJVtp2Yy70Y?=
- =?us-ascii?Q?zUz11APEe6lFpVGs+yeUiSpTj0mIgBnpo/kfpGHEvYtoZKUhLbQKjZMl1sEE?=
- =?us-ascii?Q?CV9td+Qee3912GrSa7VjI2rwSX37M+KjgE7QlYbf0dVRrlwuzIX2fDEJfAmE?=
- =?us-ascii?Q?5U9i+jOQiSLuQgiRai82kf/cVWWIqbxaWR8ZuzPZOtbO4E0sZmdR0VTzMH8h?=
- =?us-ascii?Q?vz00nwGeg+ZGvc++i5/wu2CfNwCOFwLRlCJu8/9OwprXgJAdqz/8x9TCL7OD?=
- =?us-ascii?Q?51JuCuxp+vntQSDica86aKKREJnGpWDKPXX2dw8CYdZosK72MgXpHl8JVC0d?=
- =?us-ascii?Q?73Wsoc2Pilt/JKr4GCTSVMnsPgmZLMQi3Q3pE1ksHyjgRqs5sKl7h9/dZHHZ?=
- =?us-ascii?Q?5oZuF7m7bNPfFIBFU3P2Q9gv5d+wWDT+elyxQaCGYVk/ruzEvhAViQYTa47C?=
- =?us-ascii?Q?LDAKS1AYyzvz5nuKNCgYmIBJESsoMtI5OHZ39/+gzegWQszJGjSGQcVFfgfd?=
- =?us-ascii?Q?WKE0cRbY/MqDFENIrh4rYFoW8lj0IqnDdnfPhh2yD0+AoDppCsbQCkLq4nb1?=
- =?us-ascii?Q?QCwz7GORKJhNmbdhaSAftCzGHZi0SbkzOMhdvJEyA+QqZ8jPInkU98tLCJez?=
- =?us-ascii?Q?T2XFOX5VT2YyKO19J6lyXJnH0w3qr8IXbQy6/0ahKikb4aR6pOWLb6xvwDRY?=
- =?us-ascii?Q?F4yzjvQwN0qOQ0x0MVEhuRcWmeLbeshyh7/cKS+ZFP6KZ/j9FeeM1FMJtdhE?=
- =?us-ascii?Q?iGCDCVQyHFX96jSaU9l2huSIWbADOrU+5mfZ8CpMcwtU+soxueEHNyQl1Von?=
- =?us-ascii?Q?91t7lvYpBAQcf+ggO99EH5zWblwNgQCAzwYt1Z8voCDoahtrYUZks9M+FVIK?=
- =?us-ascii?Q?0t3jUkYT0vcnzTPz3h35Kgaq4WyR0eC9UjMTJ0nCnNyxwXokkkljBUKv42Ib?=
- =?us-ascii?Q?ki1o2CZOB783irbyzS1V2znb1kKx/Y4oGXWemCEBtJeR46eHlwW5IoA/jDYr?=
- =?us-ascii?Q?6EZy0Heb5j+okEOeprp2jGHS5lc1zLFv4blKBKcO1J21NJNfhZtCAxqYIzUF?=
- =?us-ascii?Q?wSwZec69g0bUMaXurPv3Je/LObXvsc6NiCWF50VH14WlfGK2uGFe4M50UGYW?=
- =?us-ascii?Q?MiymA/rokXkXwNtIeroSNDxt2ZxIIS375xPBo1xvaa6kfhYWEmUZ6ydiHHU/?=
- =?us-ascii?Q?vqb8BL20SyMOGUFfZxn0Tv+eVHmwHe5e1nGJYlWCqX2fDe+sgfXVDFkDqlRo?=
- =?us-ascii?Q?RD4rPqzOmq/v9zJB+rBvZFw43UeANuyjyYGHOclcW5vjcefxgghj4jb16Har?=
- =?us-ascii?Q?U8NlWa40wQv7DEVMslb0BXpUYZoAs1tXRWmb/K1j2oxUmw/4QziHBawfyIBB?=
- =?us-ascii?Q?Fidxp8MS1VqMllg4fyYc3nJ71ed1KgCsFvQ2GlSUpuYR1zkaSY/tjtJrVnBh?=
- =?us-ascii?Q?N0a533mpn3g=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?LGVK2F8W0Wm3fJq3ZH963qAVxDpJoZRHn4o5ndnnNZH/Njvb7ymARfuw+Czd?=
- =?us-ascii?Q?rU6fY25yEtam3E6LXUVvmWcc2WylEzpf83sB+Ot4GwHFAIfMQSTR8nhWrgnb?=
- =?us-ascii?Q?m4rcBXdsv/PpVq7jqo0JZ+FlzoZd9RBFiIUp04odOR5kP3cA3Ku5ktCoxQrd?=
- =?us-ascii?Q?7mhCdLGNWPpfqLMOCwfpg1OfUWqESkMMIkuYetsGuN9Jf0Wj6c3mcnKwCiR7?=
- =?us-ascii?Q?OBVvHfUewD9FCZgpEtyDWW23nIyf4bfXYNwQpzfF3mgaicWutsgnVjWijEAT?=
- =?us-ascii?Q?50AtqDWBGt8Fa2kDU0CxnG8+BhudVe4R9mAiQX0cwapU8d3PnE5Ah8QhheO9?=
- =?us-ascii?Q?DXaE3QJcSPZmXpqMd5U92ecN2js83z0bcqyjaVBxnTyj7FU4KZsX5Sp7yDDy?=
- =?us-ascii?Q?u/FqbiWlIpZbI366Z9ev41YeQJsutysF/QLqv/MRUmD5N50zSJ2fxaVIw4EH?=
- =?us-ascii?Q?b9EZ1X/TcKmlFiMMXl73xRRYsLPu3IRNpJAQKhqSlOq1g0sjCrWh4rBhuS08?=
- =?us-ascii?Q?PC8XBkHmJO1f26bx2egFq9nonFXHwHItp6ALJE+Nj8LO8IgbYgim5HVbeVcQ?=
- =?us-ascii?Q?4fRrMQX6vPrR0MaOFP7CuzXuCgt/B87G3VAxfOS0wS/70YcUwaiFOITqjsqs?=
- =?us-ascii?Q?jMavqJ+D+qHlv+5bFlxLfiVz1vStPbR2H4GNmPPdydSxbfXvryRPupu83J2I?=
- =?us-ascii?Q?jtNVn70+3k1iDTkw4vSBEHYcizEoP0My4+bCWy8nC0EvQEjLdRyB5MqC1B3c?=
- =?us-ascii?Q?gSdUEi1ZvExUQaicrVVJ7CKG4ltYW6sA0+3NT9wf4qJmFmGvvKQR8Bu02Bx2?=
- =?us-ascii?Q?5uu235zAA1l4xNl0mlWiqam3dZxIx+ZLzbdp1i6N8pLIgtcPbzYKISQVrhwj?=
- =?us-ascii?Q?GASA5nc30bbVRL2QveY7fym+ItFOVXaN94HuucZGS5YrtU/+j0ddVFomRgZ/?=
- =?us-ascii?Q?P/VMNInvVl57yJDsY4Q2CiI0WEYPgcDTzG+MgX9VWZsGjekLiPWciAQnkm0X?=
- =?us-ascii?Q?58aQYmpPpvG+EumBIVsOt5/Ak1OsQkrmsMSpNOouQQ3bmYRSbI64C5YnhU0o?=
- =?us-ascii?Q?qNkrR9ikpV5BdFDYb1sBzbQojEbYikYKjyjRA137a8Kbr1Xbm8yGwgFTVaKf?=
- =?us-ascii?Q?kCbHlZz3qLhe0jrKnNTVE063hrrdF2yfIwJ//DKtwFM1GPakbnRKf3GgItcK?=
- =?us-ascii?Q?LycW0tLTZ0rePXdEL+YO4tHUy1oe5P5BkTtPQZvLqHZduOrDq2SXa4Gekigk?=
- =?us-ascii?Q?bzusr7gpP6c65BVxD4papYI7WmyvyCLujluSuMgrOTBWw8HiWnymc9cwV0kH?=
- =?us-ascii?Q?f6QScR0RRbujCtJw/DXa4w/XlETbpurBKkU4c2rkncq+yrHRykYYo8zATLT2?=
- =?us-ascii?Q?1LnlXep6JKSLfE89xAuqC0dHsgdglZ6bfVjQE2E2BqaZYfTYIuDpE3KfJvB4?=
- =?us-ascii?Q?tvAmTjkCs/qHQTW7Yk6ZwiOFT7EU9kzThORcgcymRezw/RvVXY3gGB2C7pP3?=
- =?us-ascii?Q?zobk7N238b4zs5M+gHQ99tl8UlHsR1Krmf54uyVPdigca/LG9gx7Qe9fXD94?=
- =?us-ascii?Q?bxnKHikjOdKIOq/6oXWPQ0tdT31QZF7G3xm500mz?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 99866117-8bb5-455c-7975-08dd947827de
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2025 12:49:54.4226
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qHDieHybEthLyfPYmZGKux0H70WkxopgOQkWV1RZOpH6ipjgKvxAGwv7uUgjSCwU
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9407
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 17/43] arm64: RME: Handle RMI_EXIT_RIPAS_CHANGE
+To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+References: <20250416134208.383984-1-steven.price@arm.com>
+ <20250416134208.383984-18-steven.price@arm.com>
+ <b5770d9b-4f17-4be8-95a7-1549322debb2@redhat.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <b5770d9b-4f17-4be8-95a7-1549322debb2@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, May 16, 2025 at 02:19:45PM +0800, Xu Yilun wrote:
-> > I don't know why you'd disable a viommu while the VM is running,
-> > doesn't make sense.
+On 30/04/2025 13:11, Gavin Shan wrote:
+> On 4/16/25 11:41 PM, Steven Price wrote:
+>> The guest can request that a region of it's protected address space is
+>> switched between RIPAS_RAM and RIPAS_EMPTY (and back) using
+>> RSI_IPA_STATE_SET. This causes a guest exit with the
+>> RMI_EXIT_RIPAS_CHANGE code. We treat this as a request to convert a
+>> protected region to unprotected (or back), exiting to the VMM to make
+>> the necessary changes to the guest_memfd and memslot mappings. On the
+>> next entry the RIPAS changes are committed by making RMI_RTT_SET_RIPAS
+>> calls.
+>>
+>> The VMM may wish to reject the RIPAS change requested by the guest. For
+>> now it can only do with by no longer scheduling the VCPU as we don't
+>> currently have a usecase for returning that rejection to the guest, but
+>> by postponing the RMI_RTT_SET_RIPAS changes to entry we leave the door
+>> open for adding a new ioctl in the future for this purpose.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>> Changes since v7:
+>>   * Rework the loop in realm_set_ipa_state() to make it clear when the
+>>     'next' output value of rmi_rtt_set_ripas() is used.
+>> New patch for v7: The code was previously split awkwardly between two
+>> other patches.
+>> ---
+>>   arch/arm64/kvm/rme.c | 88 ++++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 88 insertions(+)
+>>
 > 
-> Here it means remove the CC setup for viommu, shared setup is still
-> kept.
+> One nitpick below, either way:
+> 
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> 
+>> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
+>> index bee9dfe12e03..fe0d5b8703d2 100644
+>> --- a/arch/arm64/kvm/rme.c
+>> +++ b/arch/arm64/kvm/rme.c
+>> @@ -624,6 +624,65 @@ void kvm_realm_unmap_range(struct kvm *kvm,
+>> unsigned long start,
+>>           realm_unmap_private_range(kvm, start, end);
+>>   }
+>>   +static int realm_set_ipa_state(struct kvm_vcpu *vcpu,
+>> +                   unsigned long start,
+>> +                   unsigned long end,
+>> +                   unsigned long ripas,
+>> +                   unsigned long *top_ipa)
+>> +{
+>> +    struct kvm *kvm = vcpu->kvm;
+>> +    struct realm *realm = &kvm->arch.realm;
+>> +    struct realm_rec *rec = &vcpu->arch.rec;
+>> +    phys_addr_t rd_phys = virt_to_phys(realm->rd);
+>> +    phys_addr_t rec_phys = virt_to_phys(rec->rec_page);
+>> +    struct kvm_mmu_memory_cache *memcache = &vcpu->arch.mmu_page_cache;
+>> +    unsigned long ipa = start;
+>> +    int ret = 0;
+>> +
+>> +    while (ipa < end) {
+>> +        unsigned long next;
+>> +
+>> +        ret = rmi_rtt_set_ripas(rd_phys, rec_phys, ipa, end, &next);
+>> +
+>> +        if (RMI_RETURN_STATUS(ret) == RMI_SUCCESS) {
+>> +            ipa = next;
+>> +        } else if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
+> 
+> --->
+> 
+>> +            int walk_level = RMI_RETURN_INDEX(ret);
+>> +            int level = find_map_level(realm, ipa, end);
+>> +
+>> +            /*
+>> +             * If the RMM walk ended early then more tables are
+>> +             * needed to reach the required depth to set the RIPAS.
+>> +             */
+>> +            if (walk_level < level) {
+>> +                ret = realm_create_rtt_levels(realm, ipa,
+>> +                                  walk_level,
+>> +                                  level,
+>> +                                  memcache);
+>> +                /* Retry with RTTs created */
+>> +                if (!ret)
+>> +                    continue;
+>> +            } else {
+>> +                ret = -EINVAL;
+>> +            }
+>> +
+> 
+> <--- This block of code have been existing in multiple functions. I guess
+> it would be worthy to introduce a helper for it if you agree.
+> Alternatively,
+> it's definitely something to do in the future, after this series is
+> merged :)
 
-That might makes sense for the vPCI function, but not the vIOMMU. A
-secure VIOMMU needs to be running at all times while the guest is
-running. Perhaps it has no devices it can be used with, but it's
-functionality has to be there because a driver in the VM will be
-connected to it.
+I believe it's just two functions: realm_set_ipa_state() and
+realm_init_ipa_state(). Those two functions are going basically the same
+thing just at different stages (realm_init before the guest has started,
+and realm_set when it's running).
 
-At most "bind" should only tell the already existing secure vIOMMU
-that it is allowed to translate for a specific vPCI function.
+I've had a go and combing the two functions, it's a little clunky
+because of the differences, but I think it's an improvement over the
+repeated code.
 
-Jason
+Thanks,
+Steve
+
+>> +            break;
+>> +        } else {
+>> +            WARN(1, "Unexpected error in %s: %#x\n", __func__,
+>> +                 ret);
+>> +            ret = -ENXIO;
+>> +            break;
+>> +        }
+>> +    }
+>> +
+>> +    *top_ipa = ipa;
+>> +
+>> +    if (ripas == RMI_EMPTY && ipa != start)
+>> +        realm_unmap_private_range(kvm, start, ipa);
+>> +
+>> +    return ret;
+>> +}
+>> +
+>>   static int realm_init_ipa_state(struct realm *realm,
+>>                   unsigned long ipa,
+>>                   unsigned long end)
+>> @@ -863,6 +922,32 @@ void kvm_destroy_realm(struct kvm *kvm)
+>>       kvm_free_stage2_pgd(&kvm->arch.mmu);
+>>   }
+>>   +static void kvm_complete_ripas_change(struct kvm_vcpu *vcpu)
+>> +{
+>> +    struct kvm *kvm = vcpu->kvm;
+>> +    struct realm_rec *rec = &vcpu->arch.rec;
+>> +    unsigned long base = rec->run->exit.ripas_base;
+>> +    unsigned long top = rec->run->exit.ripas_top;
+>> +    unsigned long ripas = rec->run->exit.ripas_value;
+>> +    unsigned long top_ipa;
+>> +    int ret;
+>> +
+>> +    do {
+>> +        kvm_mmu_topup_memory_cache(&vcpu->arch.mmu_page_cache,
+>> +                       kvm_mmu_cache_min_pages(vcpu->arch.hw_mmu));
+>> +        write_lock(&kvm->mmu_lock);
+>> +        ret = realm_set_ipa_state(vcpu, base, top, ripas, &top_ipa);
+>> +        write_unlock(&kvm->mmu_lock);
+>> +
+>> +        if (WARN_RATELIMIT(ret && ret != -ENOMEM,
+>> +                   "Unable to satisfy RIPAS_CHANGE for %#lx - %#lx,
+>> ripas: %#lx\n",
+>> +                   base, top, ripas))
+>> +            break;
+>> +
+>> +        base = top_ipa;
+>> +    } while (top_ipa < top);
+>> +}
+>> +
+>>   int kvm_rec_enter(struct kvm_vcpu *vcpu)
+>>   {
+>>       struct realm_rec *rec = &vcpu->arch.rec;
+>> @@ -873,6 +958,9 @@ int kvm_rec_enter(struct kvm_vcpu *vcpu)
+>>           for (int i = 0; i < REC_RUN_GPRS; i++)
+>>               rec->run->enter.gprs[i] = vcpu_get_reg(vcpu, i);
+>>           break;
+>> +    case RMI_EXIT_RIPAS_CHANGE:
+>> +        kvm_complete_ripas_change(vcpu);
+>> +        break;
+>>       }
+>>         if (kvm_realm_state(vcpu->kvm) != REALM_STATE_ACTIVE)
+> 
+> Thanks,
+> Gavin
+> 
+
