@@ -1,207 +1,340 @@
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAED52571B4
-	for <linux-coco@lists.linux.dev>; Thu, 15 May 2025 22:49:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747349375; cv=none; b=pZcdu+d3b6/shglHV3XO4yGwW4rWd0mO9wsHGTf+IRbjRsR07G1GXecnpNW6U6tZUnPW1LRf/be25U/lAjqrTmdRg8xTwNxP15g+q7aB1g5FgiZL9RqX9DDXXaWjL3J7yV++Hz/543vEBmu5oekdMDcJlnadIuaACxhgzank6Wk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747349375; c=relaxed/simple;
-	bh=89+mIPSEyl1jk20Zi3bSoa8/o1ewvizvZ+xuQMqcg1Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UTSV0xfJf6EKgv7toxC1T7CMtTdvbMr/6iExa/XodAwTjD4uXG9f3YoS7LYlb7swGk0Cdj/uad6mf2Rs12zt7pM2cjwhbX4rqrmhbThrq6YP9527H/AZlmDiR5I7eP1VHg2jXIw+GwvD0oefk7EDnhyBt7szfUraK0zgiIkgWFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E+Jm1p15; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9918F1F463F
+	for <linux-coco@lists.linux.dev>; Fri, 16 May 2025 05:47:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747374468; cv=fail; b=MXh3J0RKKgVvEuYYiMJNPpHaDeXrraR23I4vGqTNz+5LxnTWlpGatV9murRnIQ7WvhTztaan3J+Ya5SFsqHR2fGHg/V2g8Wob8W8tJ/clEvLCddAuHVT5mqsoi4wizC6irT3Q8raCG6Yk5cdIdo8Ge1WeBhk8ycNW5QjOqp2OAo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747374468; c=relaxed/simple;
+	bh=JITupa7g4h36jCFDnnmMVSyC3PRVRRugL8w2q/xg9m0=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=T9gc56gk33Dr7gBPuqE5AgnyhiniApCzVqdxf4SW6d7n+u5oNTULE/h8Ot5hrPpBPVTVH9sxlCm22dATT1ZAVwpLhj47pM7JpL9OYExd6BoZPc93Kr9eT3LxAgLOrlYiDyYO7+5HazH3yGUTSKkqikYcCpp+XDSGHkbkC5B8GqM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yew8/Xpa; arc=fail smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E+Jm1p15"
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-327fa3ceccdso14088541fa.1
-        for <linux-coco@lists.linux.dev>; Thu, 15 May 2025 15:49:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747349372; x=1747954172; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DCSS97t3u1kdRKYKlrm084u+oSo6ltFMNTSE/4G2Uf8=;
-        b=E+Jm1p1584P9OHdWlWziH/n8jQllMJG/KHnBtOZWGkPD9XqdyPpS/2s0KHCJeCb38s
-         U8com2Y6TCxaK+suRXj+y66fRm9OSeRdr19omF4+toNmc5hmzN8+7gG2hvBjmGNrM8CM
-         8NRTDOSar5l52GXtm7vWONx2A/EOIhEu5lovfATud+7ce8RKjis1IvDaP0OTjFPuPefL
-         +Gpj66JVnbc57CYQvsaZroEolpG6oFFgjpyaRRZ/1hYDxu3dcH/I7iQ6+hYpqsLDBlc5
-         oxRJPNE2Pi435MyytanIKHDkNvlZF98TZPah0T1j18QNye4QQtaFefi4FCzEmMIlLfOr
-         2WdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747349372; x=1747954172;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DCSS97t3u1kdRKYKlrm084u+oSo6ltFMNTSE/4G2Uf8=;
-        b=D7COcvNIMVrDkPY8l27LA9LkzrrL0sd/CK0GYbVVhMf17I5irPjKYpq/0QT18Luy5c
-         02zGIMuioiH3B0k4IEFY13ckrdEYcHh2Tio0VsXyWJa76EMDI65xl/rJOWimvtz/5IiW
-         g51YLHs4uBiutB4DYHUCQIfkR08s73a/JyGCdPfeQfhbsqy7W9M5WFLkqYA9eT27RFH7
-         xTzfxtlnoTMuARntMJrVuJbpCP9L06cbqGtGHmDPHAHMNU2dPysGV9TOpaPDQd1rZbbh
-         9jP+OPYBBPwytCrISURsTyHbp31XEfDMZ8XbuMYg/42NQfAYpGoC0Kzyjz8PGrgwImys
-         a59Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWzURZq2I9C3hhF/s3JpcBXoJajOw9B5yY82O0oTo/i6kSordT7XOstqMT3crBndiDa1aPqwLD3jj+t@lists.linux.dev
-X-Gm-Message-State: AOJu0YygYJk2XF0pO7HrPtRmqA48ga3yE2Px4xHw4N+WEQUYlh2b7qSS
-	7R9/c7Dy98MB/c0jjaV6EjZNcOfATyTga3t/BVjxu0lgF4IL+pYJ50xDB0+c3l03GGz8iA/zdxD
-	eN7pci7DupSfcikpbgPB2H7apc4nNThRvuqex0owJ
-X-Gm-Gg: ASbGncvBz23nXYaIVvyJG8KCQY8+cAABq33dpuiH5Hp7bmJRB1Cm5sH5qofHiLbkxQX
-	ucaqZ6E9QjDf84ubdarESxejZJzlTxu090k5LdovFNdIDoXnDcNyWoV5asUnOonS3wB225+/j3+
-	iL+X62QKSk9X4HJsAzw1oCYDPgRL7bqbG4WVdEs6ksnn4nxQIXC/5yyzdcW6GEwQ==
-X-Google-Smtp-Source: AGHT+IHWtANlYcuCC0/XDTHQZBRE5/tMfTuNY3gJfr1KwCQEvBfhzh2eNdxODeINaXFLI/yLb0ytPZNTnpKZvqT9UXY=
-X-Received: by 2002:a05:651c:b25:b0:328:604:9da8 with SMTP id
- 38308e7fff4ca-328096986cdmr1537141fa.6.1747349371669; Thu, 15 May 2025
- 15:49:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yew8/Xpa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747374466; x=1778910466;
+  h=from:to:cc:subject:date:message-id:
+   content-transfer-encoding:mime-version;
+  bh=JITupa7g4h36jCFDnnmMVSyC3PRVRRugL8w2q/xg9m0=;
+  b=Yew8/XpaQLWNhp6zGRn3khkUFjyTgNbaUAvS5mpepS3DFwutxgKjbmqD
+   6kP1tBASHYEwgnHT7TrzkQT1u5oLdsQ8hs1Hr1VON7pZ1FyNK+/mL15Vz
+   jQrWoPASeEOqn6kI4Vg6XiS8uMXSIIYE9AEO30JVy7kuS6NoO69kdw4Z6
+   Xk8mURA6yxc7kenWD9+BCHVjJ5mUh0Q3Tfyw5fGEGDGmAhtHrQi1Euqtx
+   RaO07owWt1gxveIY5GxaXkX4O5JZ7utjAxDt8uYEwV5nrqRBM08DVm4By
+   FfWSVkAnBbpaUIKAP+bYV0vkHIAjUppR+1r7mfSzcIKfm0YCQbEqgF9g4
+   w==;
+X-CSE-ConnectionGUID: 9s+zy4WcQFawn3xuvb3t5w==
+X-CSE-MsgGUID: Q6vg/PblSaG/WFeY/uWVlA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11434"; a="36952751"
+X-IronPort-AV: E=Sophos;i="6.15,293,1739865600"; 
+   d="scan'208";a="36952751"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 22:47:45 -0700
+X-CSE-ConnectionGUID: 9xMbnQCBTfGLuzbT1Wgigw==
+X-CSE-MsgGUID: J5HCCmYtRZ6UIJ0WURsBdw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,293,1739865600"; 
+   d="scan'208";a="169654628"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 22:47:45 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Thu, 15 May 2025 22:47:44 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Thu, 15 May 2025 22:47:44 -0700
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.47) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Thu, 15 May 2025 22:47:44 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lMMSmMgTYE+yuepY6v8L9KZpY9QtHPLcuTVrBj+K3nf60veuUarrPCpNHEaEU23yLwDC5vc3ddvg38MKa4UQ1E7PWNkwtzmFiWzZBkYnF7MBv0nq+HphsydwsKgpGAvByWL2BOqCZoj5l26O6fSMYt7jbLlCOVFECpHrC2YsZi1ijpIliHQfEeEL2HIbxVyFdBFFsXDvZ2TO+Hruw3BgRZg+aOVkK72v/0RSqIL1xryGrfF97Q2PgYdCtJ7dKOiBlet7uIXCOJF39NJ0vIuXkZ9TMwL4sfJC/V+VA7o9S+6LlmYrbossJalWbtFBZo+UFnmYHz5JIPG7ocLbJl4NiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2SdEpd3op+ht435u9eumUKHwznz36JWdbZ4eKC76upE=;
+ b=eEGOubIkbLFT/PJwGVJR7hqGwk3d2SI/kEVHoK9HKvRuwulhEZE/LN34YrBrxZ6U05NRBCBVreqCinzdRVLGxfEX8anpR3PcU8xJ5QBzb1oDdpmJuME0mRCIhzqKhowSjXCKnyHsvvS9KHnJbVgC8wZq0J7PEiqr7z7khJufa2b1qYhbbto1uU3xcHNmPo+Sutee+yIt0d6WuCrcuJ3EizE5oWJKNAA4/JBoB0B7ILnboAKcN1K/zCmDbM2oIGv8NFKMWXCC26jBEaoBAUo1uMqceWz45FRKWbwDb33xIEzv+ZI6EYxhUKTYJt2NcJQvslPSR/JblNpb0NOCSud57A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by SA0PR11MB7160.namprd11.prod.outlook.com (2603:10b6:806:24b::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.33; Fri, 16 May
+ 2025 05:47:36 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.8722.031; Fri, 16 May 2025
+ 05:47:36 +0000
+From: Dan Williams <dan.j.williams@intel.com>
+To: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>
+CC: <gregkh@linuxfoundation.org>, <lukas@wunner.de>,
+	<aneesh.kumar@kernel.org>, <suzuki.poulose@arm.com>, <sameo@rivosinc.com>,
+	<aik@amd.com>, <jgg@nvidia.com>, <zhiw@nvidia.com>, Bjorn Helgaas
+	<bhelgaas@google.com>, Dexuan Cui <decui@microsoft.com>, Haiyang Zhang
+	<haiyangz@microsoft.com>, =?UTF-8?q?Ilpo=20J=C3=A4rvinen?=
+	<ilpo.jarvinen@linux.intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>,
+	John Allen <john.allen@amd.com>, Jonathan Cameron
+	<Jonathan.Cameron@huawei.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Manivannan Sadhasivam
+	<manivannan.sadhasivam@linaro.org>, Nirmal Patel
+	<nirmal.patel@linux.intel.com>, Rob Herring <robh@kernel.org>, Tom Lendacky
+	<thomas.lendacky@amd.com>, Wei Liu <wei.liu@kernel.org>, Xiaoyao Li
+	<xiaoyao.li@intel.com>, Xu Yilun <yilun.xu@linux.intel.com>, Yilun Xu
+	<yilun.xu@intel.com>
+Subject: [PATCH v3 00/13] PCI/TSM: Core infrastructure for PCI device security (TDISP)
+Date: Thu, 15 May 2025 22:47:19 -0700
+Message-ID: <20250516054732.2055093-1-dan.j.williams@intel.com>
+X-Mailer: git-send-email 2.49.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BYAPR11CA0098.namprd11.prod.outlook.com
+ (2603:10b6:a03:f4::39) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250515220400.1096945-1-dionnaglaze@google.com>
- <20250515220400.1096945-2-dionnaglaze@google.com> <aCZtdN0LhkRqm1Vn@google.com>
-In-Reply-To: <aCZtdN0LhkRqm1Vn@google.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Thu, 15 May 2025 15:49:11 -0700
-X-Gm-Features: AX0GCFspY1AzLrcrLzhIyg__-nVMLoKyDv5UQXRrl1jv0rhubP1IoCC60mMRPaQ
-Message-ID: <CAAH4kHYBoGeGftvGwPb+NtB8pz-LKubseZfa+oHsd1TbSxU6kA@mail.gmail.com>
-Subject: Re: [PATCH v5 1/2] kvm: sev: Add SEV-SNP guest request throttling
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, Thomas Lendacky <Thomas.Lendacky@amd.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Joerg Roedel <jroedel@suse.de>, Peter Gonda <pgonda@google.com>, 
-	Borislav Petkov <bp@alien8.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SA0PR11MB7160:EE_
+X-MS-Office365-Filtering-Correlation-Id: e8aeb9a4-ff24-4fd4-987b-08dd943d290d
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?TUl5UldScVdOWjRpM0d6YThBWHZWTXRDZVV2a2crUWVqQXNiVERtbENkOWVK?=
+ =?utf-8?B?L1V2TVVyR08xVG5IU2ZvUUhGRHdhMjNLQzE5SkFIaDNTVlpHTk5FajBhbWho?=
+ =?utf-8?B?L2VvcGwrOHJzdS9wNUN1K0NpMXg5U1c4Q2loUnhoVm5tNHM3eXNVb1B0ZWtI?=
+ =?utf-8?B?RGpjd2p6TnNGMGZBQzE2bTlUTXk1Z2IwdVpnZ2tES0tnemhuMkxvWkVXZUl2?=
+ =?utf-8?B?dmZVWGRNT2w2U1AwYnFZUjJtaS9SaFB0dTNXaFFsQUlLY0ljQ21jRy80OG14?=
+ =?utf-8?B?TzMzZUZDTkY5a2NMU3hEMkgxNHhHMWR1dGgxd2N3S1FyUUh2ZXFTRnNaL1Fu?=
+ =?utf-8?B?YUNNTHNlM0I3UXBnRVgxT3lGaFdyUmZBRE1LRU9WdGhWak1tN1NRZjh5Um9q?=
+ =?utf-8?B?SldkdVZEQzZUVFNZYjJCRW1tTTYzcFFvcHFrcSt1YXZuSjZpSmJZU2d5dmhF?=
+ =?utf-8?B?UnR1d3BHVFlBK3JEVzIyb1pFSGRZTUg3Y2NzZkFWdTQrWTRYTCszaGQ2cC9j?=
+ =?utf-8?B?dWJYamxTR1VOYVhrUDhvS1NTVVQrZEI5RVdMMkladlNreVZZTmROOWpOa3o3?=
+ =?utf-8?B?bzRQMlFqNytRQzFyVWdMaFRlaUMyQlZpWlVCWHpOQms3NFNyUEQ3ckoxZmJF?=
+ =?utf-8?B?emJTMFJpQ1VuYk5kb0xxWDZPREthM0VkT0twellFaVJtOE8wcUJ3SExIajUx?=
+ =?utf-8?B?ekhHREpsUDJrM2ZyR25ub3VNWDM1Y0FqT1JKSFNoN0drRUY4MnlPcmRlUU5O?=
+ =?utf-8?B?UDQ2b3QxTEZ5NXVZUDZ1eU5ldFVRNUx1eU9rdWFuMjVnbEN5YXNGZFZoVDlq?=
+ =?utf-8?B?aXVsSkF5a2VKWE12c0FyZE9Pd0tVZUZOdUsvT3dWVGpncEdKbVZ0dFZLVktv?=
+ =?utf-8?B?R2RlRnEvY3Y3TzJFS1h3bmJLcHI2MDMyTHRqZ1FKZlRrYmF5aGNRaEZCcDdk?=
+ =?utf-8?B?YTEvbHhSRmlRR1hQb3FsMkNoMkZ4dmZ4eHh5Mllabk11UWNkbWFGUHRwb3Ez?=
+ =?utf-8?B?cUVhcTdhejkwNHc1TUFLam82ZDEvZ3ZrQkVmTzJiRE9Xbk42YWt2TXM3STdu?=
+ =?utf-8?B?SHA3dEJld1YvZC96YkRaV08yK2N1TW9VQUJNZ2RoZDB4dlZqYUFDNEtlazhJ?=
+ =?utf-8?B?bVRxNnl3MTJVM1VPVGFjOGJmWjcxeTcrRCtLc09FWnFGU3U1WVY4K0hLK2tR?=
+ =?utf-8?B?d3FQRVFTajdpeWV5VmphOWJGWjNrSTJSZXJ3c0Y5eUl1ZW5qTFZ6cDR0ZXpC?=
+ =?utf-8?B?bk4xWTNMcVNQSjVjVU5kZEJqQ3lxR21HUU9EejRXMDdYVkx5MDdjYzhYeWx2?=
+ =?utf-8?B?d3VpQk41YW40QjBUWlRMaXpIMVJaTlZkcU0xSTVQZGRZR042azIzdlhIMlpD?=
+ =?utf-8?B?MkM1cUZMdk1BRno4R1VFaGl0UTc2Vnp4dWcrZy9hemFYRFhzRmFBb2k0cDNC?=
+ =?utf-8?B?b05CQ0JxUmlyc3NNYlVqdlJ3OHlrK015UVNZaTlKVVU2UisvSitENlFmanBZ?=
+ =?utf-8?B?cUZJZDFSOVhSV0dZcXEwblBKVDNqakNoWHV0UlI3TnZac0FpZlhpT3BLQWZz?=
+ =?utf-8?B?WW5mUndNcmg5V2c4ZmNGUDQxdEdCb09rQVh0dmhnRXZGZ3JSb21XeEU0Y0VN?=
+ =?utf-8?B?VFNlL05IODR6Yk1tcXRYNTRaM1JNNFFKUTBndW9WZC9xSHBPbVJIdzYwVy9k?=
+ =?utf-8?B?K2YwcC9MWmZQVTExZUlxRmJhekFNbVJoVjBDWDViMGVTSjNSQ1lOdXlzaEJh?=
+ =?utf-8?B?bnJoaE5McjB0bkNHNXpQaTRFNlZadWNlczlvVitWRSt4R1dHenRiSTFWay8r?=
+ =?utf-8?B?QnRFY0g3U1o2RmtOTWw5ajVMQ3VueHFJWklVbFRNT1ZOTFVRVXRGUkwwSysy?=
+ =?utf-8?B?a0tnNjNaTWhWeis4VU1VbmZkMlhqalRIWThrZ1ZpWjdZRnREMWMyNzdnTnc0?=
+ =?utf-8?Q?s4MvMiJCSsw=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Tm9yR0hmYnZHZzdKMHhNZnlkc0NiNXE0Y0VQQzNXcFpCOFlqSHhsZFRENW9U?=
+ =?utf-8?B?VEs2UzNVWFA0Wmg0VkZPd0c4TFZkMzlQT3hHWC9CL3NoelhBY3FEaTdYcURq?=
+ =?utf-8?B?N3hBaldvVk95WllyQ1p3eXgwMVIyUm4xSWpTTkF0N29PeXJncmVCOXpjeGsv?=
+ =?utf-8?B?U05xc1Y1Sm10bUhKS09VTmRxQW5tR21QTXVVSkd3WXRRNU9SNk9mSHFhTlBh?=
+ =?utf-8?B?d2xnUStOVEEvR25yNnFOQWErK2lZbXFKQ1NuNzlRY2ZPSFA2MHkreVo1TzB6?=
+ =?utf-8?B?UlpqWElUbS85NytFWVg4YTJCRWZuWkxnUWNIcXU5eUwreEMySXpNcE54NWVz?=
+ =?utf-8?B?Rjd3UFBjMHZuOVJGUXg0S0hKRmt3TXlsbG1TUlZhdmcrc3ZDT0lOSDJ5N29Y?=
+ =?utf-8?B?VWl3ZXpORzFiYTgvTjRlQlQ5cFl1OFpXN1lSV3BDZXVxZGpVK0JqTjNjQ09v?=
+ =?utf-8?B?alErT2YyT1I0NktiQ1MyZ2c3bFZEZktXNzA0eFlTbE9XN00vd1BxNVpOakFX?=
+ =?utf-8?B?N1NqK2RuQ3Ixb29ocjNydjB2Rm5oOEV2aVVNTTBGWndOQjFTdUdwNnBPNkR0?=
+ =?utf-8?B?OHppUmt3ckV3MGVzTm5wTUhNVlBIWUdick53cjJwelpyZ2IrdkRYK0VMUWdh?=
+ =?utf-8?B?SmtQYWhkMVVPM2QyMHdTcTRleDU2U1FEU204UW13WmNSaDFFMGNhWE1zbXdB?=
+ =?utf-8?B?d0VhL1RLLzZMRWVWOW5ZeHVTT2dqSjlhNXhBVU9YdHZVTUxENUR5ZGszMGg4?=
+ =?utf-8?B?QjNuaHpjT3ErcTNVWmNyMW55azZmaWx0NWtGNlhmd3RWeWtGTUs4OTBtSEN1?=
+ =?utf-8?B?VEZoY3pha0JCMjlmcjFJQWZmTGgwVlFjU0pBYi9OMkFVWFFwWVZWNU9SNXV2?=
+ =?utf-8?B?V09nUEh3bmZzWFRaWU04dTh0WlNKcWxuazgwcnVzQXoxdVdTUU40dmVnK1ZW?=
+ =?utf-8?B?STl6aXB2NG5iODBhK0QvNXJtcDlCdStpenA1N3VyQUxyUi9HdUdnY1VDeUI5?=
+ =?utf-8?B?YnBVSmVEbGtOMkhQSmZsZ2RqalVDak1lNzBCODZWdmEweFdDZXpBbWRsMEpi?=
+ =?utf-8?B?emVJeEEwYzltOHFSYkxETENLRXZlZzJwNlNnQlluNVY1QS9LZGZ3WnA3ekdu?=
+ =?utf-8?B?TU5NdlprdkhnVEZXMng3dlZqY1NwdVJjWnN4QW1lLzN6bERhM01IVjZ6OVlE?=
+ =?utf-8?B?QUI5Z3RsUTJ5RzE1bkhuNithYnNiNElKSkhHVUU3cnJVV3E5QWpQOXExRW1k?=
+ =?utf-8?B?ZVc1aHVJYmxINTRSSTNxRkE0d2k3NmNKck1nb1plR1FDRWMzMFR6b1dwU09J?=
+ =?utf-8?B?RkszVTNGeU5EaXNaTGZvbUlsSDVKVkNnU0tIZGs2WlNJekxZU0NTZjJpNVp0?=
+ =?utf-8?B?Z3dhbXJvUnZacklGZDdKcWNzdmJiaFJaM3UzazJKNVo0TG9sNG9MKzN0TnRF?=
+ =?utf-8?B?dXAzOFc1aWJFOEdZUG9iQnVhd05GVmFYNjVpMi9sNk8wQzFxaUR5RERJYTUx?=
+ =?utf-8?B?UmE1TU03SS9Ec2p1SHlDTHpkeUhGU1hKNUNLaklQUkJYOG5SVkJEWThMbVVs?=
+ =?utf-8?B?bHdlK2t4eUpURWdxMGpSM2d3a0NweUZlVEt1QkVIOTFXS2ZETHNjY29TN1Zy?=
+ =?utf-8?B?N3RCdFVsWE1rRW5SQ1BxOUJxNlMyWk0zSEJXdHRYakxTUjM0V0NNN2tlb2ZZ?=
+ =?utf-8?B?N1JtOW9Pb2gvUUkvUkJTMWFxTVFoM0dha3F0KzB4eDVYZTAvSjJPaGh6alRs?=
+ =?utf-8?B?QTB3YTVrNTBMTzAzOVBoSVVyYnpCTzc5L3JIeXNDMnRqVWFTR2JXV1ZIYlFS?=
+ =?utf-8?B?S2c5QUsxaXF5N0V4L0VIUWtEckJKUyttVXBpaEw5YjdVNUdHUDdWTXpLQ3NQ?=
+ =?utf-8?B?ZjkwWTBGRlAwUE0yZkdhd3d2UDI1MnJ0ZjhwRW9wQzViTWVCdFMyakJpNVZQ?=
+ =?utf-8?B?RnEvS0k2dXMxZmxTRmEwM1dpSy8xQ2gyajZ3UmwrcXBRa3NTbHBjQ1FqdHZp?=
+ =?utf-8?B?RWdGanBtTmhzY3hYK3E0eFZWVFhKUXdNRnVhY2lqaytkMVZKTU9wNExNS2p2?=
+ =?utf-8?B?aHphRnFpTU1vNDEwRER0dm1mZzV3aExJaGx3L1IzRWovaCsrdk12LzlSVjFF?=
+ =?utf-8?B?S3UxeTJxNWZMN05TTW9Ib29uTUVxYW54U1FBb0FPSDVGd1ZJUDZtb0NHQ0F2?=
+ =?utf-8?B?d1E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: e8aeb9a4-ff24-4fd4-987b-08dd943d290d
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2025 05:47:36.1328
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HYxeRL1M1bMNtxxMU+Hcvfo381sGjc0gOHvHdejl3afzd+HwDtiB2a96VHQbz7KW1oNmtRoG7POnE66zcA9lnePN+czY/NEvX5gKaZhxi3o=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB7160
+X-OriginatorOrg: intel.com
 
-On Thu, May 15, 2025 at 3:40=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> On Thu, May 15, 2025, Dionna Glaze wrote:
-> > The AMD-SP is a precious resource that doesn't have a scheduler other
-> > than a mutex lock queue. To avoid customers from causing a DoS, a
-> > mem_enc_ioctl command for rate limiting guest requests is added.
-> >
-> > Recommended values are {.interval_ms =3D 1000, .burst =3D 1} or
-> > {.interval_ms =3D 2000, .burst =3D 2} to average 1 request every second=
-.
-> > You may need to allow 2 requests back to back to allow for the guest
-> > to query the certificate length in an extended guest request without
-> > a pause. The 1 second average is our target for quality of service
-> > since empirical tests show that 64 VMs can concurrently request an
-> > attestation report with a maximum latency of 1 second. We don't
->
-> Who is we?
->
-> > anticipate more concurrency than that for a seldom used request for
-> > a majority well-behaved set of VMs. The majority point is decided as
-> > >64 VMs given the assumed 128 VM count for "extreme load".
-> >
-> > Cc: Thomas Lendacky <Thomas.Lendacky@amd.com>
-> > Cc: Paolo Bonzini <pbonzini@redhat.com>
-> > Cc: Joerg Roedel <jroedel@suse.de>
-> > Cc: Peter Gonda <pgonda@google.com>
-> > Cc: Borislav Petkov <bp@alien8.de>
-> > Cc: Sean Christopherson <seanjc@google.com>
-> >
-> > Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
-> > ---
-> >  .../virt/kvm/x86/amd-memory-encryption.rst    | 23 +++++++++++++
-> >  arch/x86/include/uapi/asm/kvm.h               |  7 ++++
-> >  arch/x86/kvm/svm/sev.c                        | 33 +++++++++++++++++++
-> >  arch/x86/kvm/svm/svm.h                        |  3 ++
-> >  4 files changed, 66 insertions(+)
-> >
-> > diff --git a/Documentation/virt/kvm/x86/amd-memory-encryption.rst b/Doc=
-umentation/virt/kvm/x86/amd-memory-encryption.rst
-> > index 1ddb6a86ce7f..1b5b4fc35aac 100644
-> > --- a/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-> > +++ b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-> > @@ -572,6 +572,29 @@ Returns: 0 on success, -negative on error
-> >  See SNP_LAUNCH_FINISH in the SEV-SNP specification [snp-fw-abi]_ for f=
-urther
-> >  details on the input parameters in ``struct kvm_sev_snp_launch_finish`=
-`.
-> >
-> > +21. KVM_SEV_SNP_SET_REQUEST_THROTTLE_RATE
-> > +-----------------------------------------
-> > +
-> > +The KVM_SEV_SNP_SET_REQUEST_THROTTLE_RATE command is used to set a per=
--VM rate
-> > +limit on responding to requests for AMD-SP to process a guest request.
-> > +The AMD-SP is a global resource with limited capacity, so to avoid noi=
-sy
-> > +neighbor effects, the host may set a request rate for guests.
-> > +
-> > +Parameters (in): struct kvm_sev_snp_set_request_throttle_rate
-> > +
-> > +Returns: 0 on success, -negative on error
-> > +
-> > +::
-> > +
-> > +     struct kvm_sev_snp_set_request_throttle_rate {
-> > +             __u32 interval_ms;
-> > +             __u32 burst;
-> > +     };
-> > +
-> > +The interval will be translated into jiffies, so if it after transform=
-ation
->
-> I assume this is a limitation of the __ratelimit() interface?
+Changes since v2 [1]:
+- drivers/virt/coco/guest rename merged to tsm.git#next
+- Clarify usage and requirements for pci_ide_init_nr_streams() (Dionna)
+- Misc fixups (Dionna)
+- Fix sel_ide_offset() to incorporate ide_cap (Aneesh, Yilun)
+- Allow at least 1 stream when enforcing uniform address association
+  register layout (Yilun)
+- Fix host-bridge-emulation for PCI_DOMAINS_GENERIC platform (Suzuki)
+- Export pci_ide_to_settings() as a helper for TSM drivers (Yilun)
+- Set Stream ID early, prior to IDE_KM (Alexey)
+- Catch IDE_KM initial setup failures with pci_ide_stream_enable()
+  errors (Yilun).
+- Fix missing initialization of nr_link_ide (caught by
+  samples/devsec/bus test)
+- Add some reference documentation to the devsec_tsm_connect() sample
+  operation to clarify implementation expectations (Zhi)
+- Expand the possible Device Security Managers from only PF0 of a device
+  hosting TDIs, to include Upstream Ports with downstream endpoints as
+  TDIs
+- Add bind, unbind, guest_req, and accept operations (Yilun)
 
-It is.
->
-> > +the interval is 0, the command will return ``-EINVAL``. The ``burst`` =
-value
-> > +must be greater than 0.
->
-> Ugh, whose terribly idea was a per-VM capability?  Oh, mine[*].  *sigh*
->
-> Looking at this again, a per-VM capability doesn't change anything.  In f=
-act,
-> it's far, far worse.  At least with a module param there's guaranteed to =
-be some
-> amount of ratelimiting.  Relying on the VMM to opt-in to ratelimiting its=
- VM if
-> userspace is compromised is completely nonsensical.
->
-> Unless someone has a better idea, let's just go with a module param.
+[1]: http://lore.kernel.org/174107245357.1288555.10863541957822891561.stgit@dwillia2-xfh.jf.intel.com
 
-Thanks for that. Do you want the module param to be in units of KHZ (1
-interval / x milliseconds),
-and treat 0 as unlimited?
+Launch of tsm.git#staging [2]
+-----------------------------
+As mentioned on v2, tsm.git#staging is proposed as a neutral location to
+collect device-security infrastructure from multiple vendors. I.e.
+collect all the vendor trees to resolve conflicts, code or otherwise.
+For now it does not contain kvm-coco-queue, but am open to merging that
+if needed for some device-security-flows.
 
-The original burst value of 2 is due to an oddity of an older version
-of the kernel that would ratelimit
-before handling the certificate buffer length negotiation, so we could
-simply have a single module
-parameter and set the burst rate to 1 unconditionally.
+Yilun showed a potential flow for the end-to-end API changes here [1],
+do review that and point out where it may not work for a different
+architecture. A goal of mine is to catch sample/devsec/ up with that
+diagram to prove out and unit test the end-to-end mechanism without
+needing hardware. It has already found bugs while revising this new set.
 
-I'd generally prefer this to go in after Michael Roth's patch that
-adds the extended guest request support.
+[2]: https://git.kernel.org/pub/scm/linux/kernel/git/devsec/tsm.git/log/?h=staging
+[3]: http://lore.kernel.org/aCYsNSFQJZzHVOFI@yilunxu-OptiPlex-7050
 
->
-> [*] https://lore.kernel.org/all/Y8rEFpbMV58yJIKy@google.com
->
-> > @@ -4015,6 +4042,12 @@ static int snp_handle_guest_req(struct vcpu_svm =
-*svm, gpa_t req_gpa, gpa_t resp_
-> >
-> >       mutex_lock(&sev->guest_req_mutex);
-> >
-> > +     if (!__ratelimit(&sev->snp_guest_msg_rs)) {
-> > +             svm_vmgexit_no_action(svm, SNP_GUEST_ERR(SNP_GUEST_VMM_ER=
-R_BUSY, 0));
-> > +             ret =3D 1;
-> > +             goto out_unlock;
->
-> Can you (or anyone) explain what a well-behaved guest will do in in respo=
-nse to
-> BUSY?  And/or explain why KVM injecting an error into the guest is better=
- than
-> exiting to userspace.
+Original Cover letter:
+----------------------
+
+Trusted execution environment (TEE) Device Interface Security Protocol
+(TDISP) is a chapter name in the PCI specification. It describes an
+alphabet soup of mechanisms, SPDM, CMA, IDE, TSM/DSM, that system
+software uses to establish trust in a device and assign it to a
+confidential virtual machine (CVM). It is protocol for dynamically
+extending the trusted computing boundary (TCB) of a CVM with a PCI
+device interface that can issue DMA to CVM private memory.
+
+The acronym soup problem is enhanced by every major platform vendor
+having distinct TEE Security Manager (TSM) API implementations /
+capabilities, and to a lesser extent, every potential endpoint Device
+Security Manager (DSM) having its own idiosyncratic behaviors around
+TDISP state transitions.
+
+Despite all that opportunity for differentiation, there is a significant
+portion of the implementation that is cross-vendor common. However, it
+is difficult to develop, debate, test and settle all those pieces absent
+a low level TSM driver implementation to pull it all together.
+
+The proposal is incrementally develop the shared infrastructure on top
+of a sample TSM driver implementation to enable clean vendor agnostic
+discussions about the commons. "samples/devsec/" is meant to be: just
+enough emulation to exercise all the core infrastructure, a reference
+implementation, and a simple unit test. The sample also enables
+coordination with the native PCI device security effort [4].
+
+[4]: http://lore.kernel.org/cover.1719771133.git.lukas@wunner.de
+
+Dan Williams (11):
+  coco/tsm: Introduce a core device for TEE Security Managers
+  PCI/IDE: Enumerate Selective Stream IDE capabilities
+  PCI/TSM: Authenticate devices via platform TSM
+  PCI: Enable host-bridge emulation for PCI_DOMAINS_GENERIC platforms
+  PCI: vmd: Switch to pci_bus_find_emul_domain_nr()
+  samples/devsec: Introduce a PCI device-security bus + endpoint sample
+  PCI: Add PCIe Device 3 Extended Capability enumeration
+  PCI/IDE: Add IDE establishment helpers
+  PCI/IDE: Report available IDE streams
+  PCI/TSM: Report active IDE streams
+  samples/devsec: Add sample IDE establishment
+
+Xu Yilun (2):
+  PCI/TSM: support TDI related operations for host TSM driver
+  PCI/TSM: Add Guest TSM Support
+
+ Documentation/ABI/testing/sysfs-bus-pci       |  45 +
+ Documentation/ABI/testing/sysfs-class-tsm     |  20 +
+ .../ABI/testing/sysfs-devices-pci-host-bridge |  51 ++
+ MAINTAINERS                                   |   7 +-
+ drivers/pci/Kconfig                           |  28 +
+ drivers/pci/Makefile                          |   2 +
+ drivers/pci/controller/pci-hyperv.c           |  53 +-
+ drivers/pci/controller/vmd.c                  |  33 +-
+ drivers/pci/ide.c                             | 525 ++++++++++++
+ drivers/pci/pci-sysfs.c                       |   4 +
+ drivers/pci/pci.c                             |  43 +-
+ drivers/pci/pci.h                             |  19 +
+ drivers/pci/probe.c                           |  34 +-
+ drivers/pci/remove.c                          |   3 +
+ drivers/pci/tsm.c                             | 782 ++++++++++++++++++
+ drivers/virt/coco/Kconfig                     |   2 +
+ drivers/virt/coco/Makefile                    |   1 +
+ drivers/virt/coco/host/Kconfig                |   6 +
+ drivers/virt/coco/host/Makefile               |   6 +
+ drivers/virt/coco/host/tsm-core.c             | 144 ++++
+ include/linux/pci-ide.h                       |  76 ++
+ include/linux/pci-tsm.h                       | 211 +++++
+ include/linux/pci.h                           |  29 +
+ include/linux/tsm.h                           |  11 +
+ include/uapi/linux/pci_regs.h                 |  91 +-
+ samples/Kconfig                               |  16 +
+ samples/Makefile                              |   1 +
+ samples/devsec/Makefile                       |  10 +
+ samples/devsec/bus.c                          | 711 ++++++++++++++++
+ samples/devsec/common.c                       |  26 +
+ samples/devsec/devsec.h                       |  40 +
+ samples/devsec/tsm.c                          | 218 +++++
+ 32 files changed, 3170 insertions(+), 78 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-class-tsm
+ create mode 100644 Documentation/ABI/testing/sysfs-devices-pci-host-bridge
+ create mode 100644 drivers/pci/ide.c
+ create mode 100644 drivers/pci/tsm.c
+ create mode 100644 drivers/virt/coco/host/Kconfig
+ create mode 100644 drivers/virt/coco/host/Makefile
+ create mode 100644 drivers/virt/coco/host/tsm-core.c
+ create mode 100644 include/linux/pci-ide.h
+ create mode 100644 include/linux/pci-tsm.h
+ create mode 100644 samples/devsec/Makefile
+ create mode 100644 samples/devsec/bus.c
+ create mode 100644 samples/devsec/common.c
+ create mode 100644 samples/devsec/devsec.h
+ create mode 100644 samples/devsec/tsm.c
 
 
+base-commit: 7515f45c165269b72ee739e6fc26cc2ef928fc1b
+-- 
+2.49.0
 
---=20
--Dionna Glaze, PhD, CISSP, CCSP (she/her)
