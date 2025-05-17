@@ -1,105 +1,110 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA99553BE
-	for <linux-coco@lists.linux.dev>; Sat, 17 May 2025 00:37:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0AB1552FA
+	for <linux-coco@lists.linux.dev>; Sat, 17 May 2025 02:38:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747442260; cv=none; b=grzCU1xq7ZhX7fzU9FeFGf7sk8djHw2zKGlmT9q5nnQD6zTVldQ7svVjSo2I6QVVNfEc96wfug8v7sQijofeTty4r0ukggV2LmItpUzLGIsEc6kXs0FHH/5XbL5IRAXKjSwN53MQwPgxhnbZX2EEkV0PQ6i3FuKdw6OIiFpIO8Q=
+	t=1747449530; cv=none; b=IDBGhvkIRux9xx2G8KtaTZumBKzuIjS3ygqPx1dRK6Ti2+gCuczS+bZYWpy1oBFuCRx7Ucgn58ItxbhZw2CdvfdVj2kw3XGwscdExgexGIcloI1YzkjwFU50Ex0guBEel/gr6wpYIHS7eMyUknCEsAGcstlyEJL7IavolHh5Po4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747442260; c=relaxed/simple;
-	bh=5QWqpt8UQT+7sGjaLvlYOPslmVhHfwIca9fRx8275Mc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QbmpQfL1qShVk2RtohRHauRzG5AhFeSJhi3DzI+t+RoxXI5rMZhhRUBnMRPQh3CZoRveVvGgU11y5mHJAFoZGX48WHC5ZtApRPIYYDlafBMMNrzpvDgVKVAjQBL+4LfnsVgpESzGuL3Uu+jWZ3/1+E10uMPCr8/+T7cP467+61E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vAdSs6tZ; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1747449530; c=relaxed/simple;
+	bh=ml22strUZn+xOk9qBkBac3qcQdnFAG09ONFp/e6vtto=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RCIAbEuG/Ph2ZA7nUU6jELZaNc3qnFhggerl1rwKQpUyGNbhSTw2PQ5FlS12vvJUsmuJbOVcZ0oWUEuzVmHo7cF3wjEWRHyXHxBVw97RCJQB+d2HwrNS2HwzudCoHny0QdrFyYfXWmvT/RVbgorp8qG+t/P+4ctRyiF3J2iigU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gGVP+gTz; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vAdSs6tZ"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-74248a3359fso2871118b3a.2
-        for <linux-coco@lists.linux.dev>; Fri, 16 May 2025 17:37:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747442258; x=1748047058; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=GGBS69GTPI2RAKvmYg8FGeQcpbc48jJia8g8c3mkVTE=;
-        b=vAdSs6tZJYaiYoEfZuS0rmO0CAfdxYZxmIBOxsnG/YpzzyUAjff7zr8CJxJ11Uh+NT
-         x+GftMpvOlFhLz+QHYwpdJvIkhjkDD1fG9jbep9z8gYujcd9p4NpQ8Xl7D1pI8kMThNJ
-         1poc6gheI/wk8KpUpqByeERCajvleY6xyauHcNcVv9e+9Kj+/7LYDcDo8U8aSLSYUNCl
-         wdw28KHStDrO7+AXys8h5xcxf+3ej3D2WkpBG0betINghOfrnQn0QkjmOw3cf1gJ7EYu
-         HiVrsF31SS7sd872iNQO80yiJ3CTuHboVNe40I8bPDuI7Kd8+kQXUcd6rf7AT5dD4Zlx
-         A4xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747442258; x=1748047058;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GGBS69GTPI2RAKvmYg8FGeQcpbc48jJia8g8c3mkVTE=;
-        b=A2u/z4KJ3WLK3RdsHuxQ/2Vc+g0Iw6N+kuEz67lBn1ugDdv4eZTE98NXhGR172IZtn
-         fJMQdgzJCtYd+2PyZFzGFRsNX7/dlPc/FFrGlQ47G9n1qmvtRX3eUpKri3ssTFfXiHhx
-         5MKEuurE0engvzuVYPTG862FwTmuqBWMH17ah+wUgrRVwHRTOARj80HzAXFH8SI5bmeG
-         HuBrg00hlyKfzejnY/B4BAVXChI77TZnYEyizf1iJvrluab+UFcCYqajKxPMpvOVZiy9
-         WUSk6kGVWkW5EH+2Ww/9+1U4iIf55/lW0j+XR8pzRP7t8NzrDyfo3hBjJINqZTNaHtvh
-         h5hg==
-X-Forwarded-Encrypted: i=1; AJvYcCW151d47/ygZ6is7F2/nM66IZOGAi/Yj0gZneoJiQrjmep0ru5+LD/7ogwjdEnz72qnsyH2xgHMZof0@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywf3s/pyc43JE7Ihn5eCj/CwLyaWAJFZ4n6dNwNPITDSQNQRnHx
-	VCHqfoPquf+PPoHLVuvnOr/NW/R6jB8hPoQt0VZmzopkMU9Pv267bLjMJ2/C9UjJtdVYQGbm7t+
-	2Y51L7B+jl+2oXKf7n0mWVxDKSjJ+oBmpPk5IwGa5
-X-Gm-Gg: ASbGncuW9slkfHG0wqQADjh70t3M8Os8ruLn/pDOZw2gjG+8NDd/Nu3XdnVnhWsFztk
-	H/20XVUwN432D/aq0PCuNHfDgLuMjbc1PxuKTdBP8MdqP95FlqqKJu+HkqnmQdukpMj88tWEGdm
-	PejvWNLCpOQt3PjZ8urmEkmWwKBbNw5+VORg==
-X-Google-Smtp-Source: AGHT+IEw6yv27A7ypvZUsX54CsMfyWQh56U8kZL5hyzUNYgeL0+XsFUYBvlDzHmNtXxZGuv43oWXWL4xM7ruRZ33L1A=
-X-Received: by 2002:a05:6a21:9188:b0:1f5:8754:324d with SMTP id
- adf61e73a8af0-21621875a26mr7295097637.9.1747442257679; Fri, 16 May 2025
- 17:37:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gGVP+gTz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747449529; x=1778985529;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ml22strUZn+xOk9qBkBac3qcQdnFAG09ONFp/e6vtto=;
+  b=gGVP+gTzcU6IjYMMCMW4PiTHZ/vxS8fFsZn7yPe1ftOll1L3Cm4VgC2p
+   u9xlbKOh3Lh9giire/eMcYHbMHu8DlsFDNEaGmj4o4LvCYbOjyiEkCroq
+   L34Fzi7gqatwXIyBujQUdwSPnWze2yj10jot3l5UPWi8vOnMqDBUEHdp4
+   1K3zGCux9jXZzDrLYDfNofTiHkfmLsBAhlU24yndH3MqzKMfhTub/XU6T
+   +Ljbq2xoTQgeqeZxCuUBJ+0LO17M9K49e1rZ6tfvIE/KjJS+kPEd9UtFQ
+   mIYYgLFAMnbdLbbOiXsEgIENNx/7UUAohGa4v9pzzgrOtnY8NUgL/y0AT
+   g==;
+X-CSE-ConnectionGUID: gDqoIFCnTPinFIX85JC9MQ==
+X-CSE-MsgGUID: q0orwsslRm21kOOCpHSifQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="74828443"
+X-IronPort-AV: E=Sophos;i="6.15,295,1739865600"; 
+   d="scan'208";a="74828443"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 19:38:48 -0700
+X-CSE-ConnectionGUID: WsTNlC65TIOa6GM8/8KyQA==
+X-CSE-MsgGUID: 3knh1WNVQgOcOdqzelccDQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,295,1739865600"; 
+   d="scan'208";a="169788702"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa002.jf.intel.com with ESMTP; 16 May 2025 19:38:42 -0700
+Date: Sat, 17 May 2025 10:33:00 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Zhi Wang <zhiw@nvidia.com>, Alexey Kardashevskiy <aik@amd.com>,
+	kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	sumit.semwal@linaro.org, christian.koenig@amd.com,
+	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
+	vivek.kasireddy@intel.com, dan.j.williams@intel.com,
+	yilun.xu@intel.com, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
+	daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, tao1.su@intel.com
+Subject: Re: [RFC PATCH 00/12] Private MMIO support for private assigned dev
+Message-ID: <aCf1XNQamIJLi+OL@yilunxu-OptiPlex-7050>
+References: <aB7Ma84WXATiu5O1@yilunxu-OptiPlex-7050>
+ <2c4713b0-3d6c-4705-841b-1cb58cd9a0f5@amd.com>
+ <20250512140617.GA285583@nvidia.com>
+ <20250513130315.0158a626.zhiw@nvidia.com>
+ <aCRmoDupzK9zTqFL@yilunxu-OptiPlex-7050>
+ <20250514230502.6b64da7f.zhiw@nvidia.com>
+ <aCYsNSFQJZzHVOFI@yilunxu-OptiPlex-7050>
+ <20250515192127.GA580805@nvidia.com>
+ <aCbZATrK7EPyH4qt@yilunxu-OptiPlex-7050>
+ <20250516124953.GD613512@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250515220400.1096945-1-dionnaglaze@google.com>
- <20250515220400.1096945-2-dionnaglaze@google.com> <aCZtdN0LhkRqm1Vn@google.com>
-In-Reply-To: <aCZtdN0LhkRqm1Vn@google.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Fri, 16 May 2025 17:37:24 -0700
-X-Gm-Features: AX0GCFvqpnmmIdGRZ0Krupreoa4zV8101M6bKqT1JZaaQ4QUjjDWnxQ2I5c7uTA
-Message-ID: <CAAH4kHai8JStj+=HUiPVxbH9P79GorviG2GykEP7jQ=NB2MbUQ@mail.gmail.com>
-Subject: Re: [PATCH v5 1/2] kvm: sev: Add SEV-SNP guest request throttling
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, Thomas Lendacky <Thomas.Lendacky@amd.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Joerg Roedel <jroedel@suse.de>, Peter Gonda <pgonda@google.com>, 
-	Borislav Petkov <bp@alien8.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250516124953.GD613512@nvidia.com>
 
-> > @@ -4015,6 +4042,12 @@ static int snp_handle_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_
-> >
-> >       mutex_lock(&sev->guest_req_mutex);
-> >
-> > +     if (!__ratelimit(&sev->snp_guest_msg_rs)) {
-> > +             svm_vmgexit_no_action(svm, SNP_GUEST_ERR(SNP_GUEST_VMM_ERR_BUSY, 0));
-> > +             ret = 1;
-> > +             goto out_unlock;
->
-> Can you (or anyone) explain what a well-behaved guest will do in in response to
-> BUSY?  And/or explain why KVM injecting an error into the guest is better than
-> exiting to userspace.
+On Fri, May 16, 2025 at 09:49:53AM -0300, Jason Gunthorpe wrote:
+> On Fri, May 16, 2025 at 02:19:45PM +0800, Xu Yilun wrote:
+> > > I don't know why you'd disable a viommu while the VM is running,
+> > > doesn't make sense.
+> > 
+> > Here it means remove the CC setup for viommu, shared setup is still
+> > kept.
+> 
+> That might makes sense for the vPCI function, but not the vIOMMU. A
+> secure VIOMMU needs to be running at all times while the guest is
+> running. Perhaps it has no devices it can be used with, but it's
+> functionality has to be there because a driver in the VM will be
+> connected to it.
+> 
+> At most "bind" should only tell the already existing secure vIOMMU
+> that it is allowed to translate for a specific vPCI function.
 
-Ah, I missed this question. The guest is meant to back off and try
-again after waiting a bit.
-This is the behavior added in
-https://lore.kernel.org/all/20230214164638.1189804-2-dionnaglaze@google.com/
+So I think something like:
 
-If KVM returns to userspace with an exit type that the guest request
-was throttled, then
-what is user space supposed to do with that? It could wait a bit
-before trying KVM_RUN
-again, but with the enlightened method, the guest could at least work
-on other kernel
-tasks while it waits for its turn to get an attestation report.
+struct iommufd_vdevice_ops {
+	int (*setup_trusted_dma)(struct iommufd_vdevice *vdev); //for Bind
+	void (*remove_trusted_dma)(struct iommufd_vdevice *vdev); //for Unbind
+};
 
-Perhaps this is me not understanding the preferred KVM way of doing things.
+Thanks,
+Yilun
 
--- 
--Dionna Glaze, PhD, CISSP, CCSP (she/her)
+> 
+> Jason
+> 
