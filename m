@@ -1,159 +1,105 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C26117A5BE;
-	Fri, 16 May 2025 16:00:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA99553BE
+	for <linux-coco@lists.linux.dev>; Sat, 17 May 2025 00:37:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747411219; cv=none; b=a7M/y2cu+X253GSCLU3Q7scvZv4AZXK2zDlvQroLPLqopfvpZ6hVXVWO4+rRG8xOO8/uK0y0jKGPWUcIYhNLAb5rHV67U4QKCj81PEJH13Id8JLlCsBC+WsNnDk5BtJbYF2CPONBLhcmjd9tJ43Sj7cxcnoXGqZKJKE+8R4V8ww=
+	t=1747442260; cv=none; b=grzCU1xq7ZhX7fzU9FeFGf7sk8djHw2zKGlmT9q5nnQD6zTVldQ7svVjSo2I6QVVNfEc96wfug8v7sQijofeTty4r0ukggV2LmItpUzLGIsEc6kXs0FHH/5XbL5IRAXKjSwN53MQwPgxhnbZX2EEkV0PQ6i3FuKdw6OIiFpIO8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747411219; c=relaxed/simple;
-	bh=dlfXNqe7fgW+ic4s5DLoOQjk+cTXyw5CXxEJwqYfkUE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q2mUN9+jZJNHM4QSGMf7bkmdc1PvafpOBiBuXt3g/FFf4AUBs8ja69L8tEOmHalFzk2HV+HFUPQxDZAL/ngsSGK+wHUUPO9ad1aNFRBIB+nrQkXTAnxLRgnRalfdVUHLhr1nWe5qf4FNBJiCiQ25aXN9iFLH6PuXlob36J/QnYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 711D4169C;
-	Fri, 16 May 2025 09:00:05 -0700 (PDT)
-Received: from [10.1.27.17] (e122027.cambridge.arm.com [10.1.27.17])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BC4D63F63F;
-	Fri, 16 May 2025 09:00:13 -0700 (PDT)
-Message-ID: <64fd76aa-10b0-4b4f-875c-6c24977464f9@arm.com>
-Date: Fri, 16 May 2025 17:00:11 +0100
+	s=arc-20240116; t=1747442260; c=relaxed/simple;
+	bh=5QWqpt8UQT+7sGjaLvlYOPslmVhHfwIca9fRx8275Mc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QbmpQfL1qShVk2RtohRHauRzG5AhFeSJhi3DzI+t+RoxXI5rMZhhRUBnMRPQh3CZoRveVvGgU11y5mHJAFoZGX48WHC5ZtApRPIYYDlafBMMNrzpvDgVKVAjQBL+4LfnsVgpESzGuL3Uu+jWZ3/1+E10uMPCr8/+T7cP467+61E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vAdSs6tZ; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vAdSs6tZ"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-74248a3359fso2871118b3a.2
+        for <linux-coco@lists.linux.dev>; Fri, 16 May 2025 17:37:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1747442258; x=1748047058; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=GGBS69GTPI2RAKvmYg8FGeQcpbc48jJia8g8c3mkVTE=;
+        b=vAdSs6tZJYaiYoEfZuS0rmO0CAfdxYZxmIBOxsnG/YpzzyUAjff7zr8CJxJ11Uh+NT
+         x+GftMpvOlFhLz+QHYwpdJvIkhjkDD1fG9jbep9z8gYujcd9p4NpQ8Xl7D1pI8kMThNJ
+         1poc6gheI/wk8KpUpqByeERCajvleY6xyauHcNcVv9e+9Kj+/7LYDcDo8U8aSLSYUNCl
+         wdw28KHStDrO7+AXys8h5xcxf+3ej3D2WkpBG0betINghOfrnQn0QkjmOw3cf1gJ7EYu
+         HiVrsF31SS7sd872iNQO80yiJ3CTuHboVNe40I8bPDuI7Kd8+kQXUcd6rf7AT5dD4Zlx
+         A4xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747442258; x=1748047058;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GGBS69GTPI2RAKvmYg8FGeQcpbc48jJia8g8c3mkVTE=;
+        b=A2u/z4KJ3WLK3RdsHuxQ/2Vc+g0Iw6N+kuEz67lBn1ugDdv4eZTE98NXhGR172IZtn
+         fJMQdgzJCtYd+2PyZFzGFRsNX7/dlPc/FFrGlQ47G9n1qmvtRX3eUpKri3ssTFfXiHhx
+         5MKEuurE0engvzuVYPTG862FwTmuqBWMH17ah+wUgrRVwHRTOARj80HzAXFH8SI5bmeG
+         HuBrg00hlyKfzejnY/B4BAVXChI77TZnYEyizf1iJvrluab+UFcCYqajKxPMpvOVZiy9
+         WUSk6kGVWkW5EH+2Ww/9+1U4iIf55/lW0j+XR8pzRP7t8NzrDyfo3hBjJINqZTNaHtvh
+         h5hg==
+X-Forwarded-Encrypted: i=1; AJvYcCW151d47/ygZ6is7F2/nM66IZOGAi/Yj0gZneoJiQrjmep0ru5+LD/7ogwjdEnz72qnsyH2xgHMZof0@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywf3s/pyc43JE7Ihn5eCj/CwLyaWAJFZ4n6dNwNPITDSQNQRnHx
+	VCHqfoPquf+PPoHLVuvnOr/NW/R6jB8hPoQt0VZmzopkMU9Pv267bLjMJ2/C9UjJtdVYQGbm7t+
+	2Y51L7B+jl+2oXKf7n0mWVxDKSjJ+oBmpPk5IwGa5
+X-Gm-Gg: ASbGncuW9slkfHG0wqQADjh70t3M8Os8ruLn/pDOZw2gjG+8NDd/Nu3XdnVnhWsFztk
+	H/20XVUwN432D/aq0PCuNHfDgLuMjbc1PxuKTdBP8MdqP95FlqqKJu+HkqnmQdukpMj88tWEGdm
+	PejvWNLCpOQt3PjZ8urmEkmWwKBbNw5+VORg==
+X-Google-Smtp-Source: AGHT+IEw6yv27A7ypvZUsX54CsMfyWQh56U8kZL5hyzUNYgeL0+XsFUYBvlDzHmNtXxZGuv43oWXWL4xM7ruRZ33L1A=
+X-Received: by 2002:a05:6a21:9188:b0:1f5:8754:324d with SMTP id
+ adf61e73a8af0-21621875a26mr7295097637.9.1747442257679; Fri, 16 May 2025
+ 17:37:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 00/43] arm64: Support for Arm CCA in KVM
-To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-References: <20250416134208.383984-1-steven.price@arm.com>
- <fa874ef5-5da5-44de-a9d0-24663eb684a0@redhat.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <fa874ef5-5da5-44de-a9d0-24663eb684a0@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250515220400.1096945-1-dionnaglaze@google.com>
+ <20250515220400.1096945-2-dionnaglaze@google.com> <aCZtdN0LhkRqm1Vn@google.com>
+In-Reply-To: <aCZtdN0LhkRqm1Vn@google.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Fri, 16 May 2025 17:37:24 -0700
+X-Gm-Features: AX0GCFvqpnmmIdGRZ0Krupreoa4zV8101M6bKqT1JZaaQ4QUjjDWnxQ2I5c7uTA
+Message-ID: <CAAH4kHai8JStj+=HUiPVxbH9P79GorviG2GykEP7jQ=NB2MbUQ@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] kvm: sev: Add SEV-SNP guest request throttling
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, Thomas Lendacky <Thomas.Lendacky@amd.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Joerg Roedel <jroedel@suse.de>, Peter Gonda <pgonda@google.com>, 
+	Borislav Petkov <bp@alien8.de>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Gavin,
+> > @@ -4015,6 +4042,12 @@ static int snp_handle_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_
+> >
+> >       mutex_lock(&sev->guest_req_mutex);
+> >
+> > +     if (!__ratelimit(&sev->snp_guest_msg_rs)) {
+> > +             svm_vmgexit_no_action(svm, SNP_GUEST_ERR(SNP_GUEST_VMM_ERR_BUSY, 0));
+> > +             ret = 1;
+> > +             goto out_unlock;
+>
+> Can you (or anyone) explain what a well-behaved guest will do in in response to
+> BUSY?  And/or explain why KVM injecting an error into the guest is better than
+> exiting to userspace.
 
-On 02/05/2025 01:46, Gavin Shan wrote:
-> On 4/16/25 11:41 PM, Steven Price wrote:
-> 
-> [...]
-> 
->>
->> The ABI to the RMM (the RMI) is based on RMM v1.0-rel0 specification[1].
->>
->> This series is based on v6.15-rc1. It is also available as a git
->> repository:
->>
->> https://gitlab.arm.com/linux-arm/linux-cca cca-host/v8
->>
->> Work in progress changes for kvmtool are available from the git
->> repository below:
->>
->> https://gitlab.arm.com/linux-arm/kvmtool-cca cca/v6
->>
->> [1] https://developer.arm.com/documentation/den0137/1-0rel0/
->> [2] https://lore.kernel.org/r/20250408105225.4002637-17-maz%40kernel.org
->>
-> 
-> I got a chance to try the following combination, the guest can boot using
-> qemu/kvmtool except a RCU stall is observed (more details provided below)
-> 
-> host.tf-rmm      https://git.codelinaro.org/linaro/dcap/
-> rmm.git                      (cca/v8)
-> host.edk2        git@github.com:tianocore/
-> edk2.git                                   (edk2-stable202411)
-> host.tf-a        https://git.codelinaro.org/linaro/dcap/tf-a/trusted-
-> firmware-a.git  (cca/v4)
-> host.qemu        https://git.qemu.org/git/
-> qemu.git                                   (stable-9.2)
-> host.linux       https://git.gitlab.arm.com/linux-arm/linux-
-> cca.git                  (cca-host/v8)
-> host.buildroot   https://github.com/buildroot/
-> buildroot                              (master)
-> guest.qemu       https://git.codelinaro.org/linaro/dcap/
-> qemu.git                     (cca/latest)
-> guest.kvmtool    https://gitlab.arm.com/linux-arm/kvmtool-
-> cca                        (cca/latest)
-> guest.buildroot  https://github.com/buildroot/
-> buildroot                              (master)
-> 
-> RCU stall report
-> ----------------
-> 
-> [ 7816.381336] rcu: INFO: rcu_preempt self-detected stall on CPU
-> [ 7816.382816] rcu:     6-....: (5249 ticks this GP)
-> idle=3a4c/1/0x4000000000000000 softirq=6001/6003 fqs=2624
-> [ 7816.384399] rcu:     (t=5250 jiffies g=29821 q=47 ncpus=8)
-> [ 7816.386059] CPU: 6 UID: 0 PID: 203 Comm: qemu-system-aar Not tainted
-> 6.15.0-rc1-gavin-g78b23c56de79 #34 PREEMPT
-> [ 7816.387133] Hardware name: QEMU QEMU Virtual Machine, BIOS unknown
-> 02/02/2022
-> [ 7816.387926] pstate: 61402009 (nZCv daif +PAN -UAO -TCO +DIT -SSBS
-> BTYPE=--)
-> [ 7816.388678] pc : realm_unmap_private_range+0x19c/0x2c0
-> [ 7816.389878] lr : realm_unmap_private_range+0x94/0x2c0
-> [ 7816.390388] sp : ffff80008095bb60
-> [ 7816.390765] x29: ffff80008095bb60 x28: 000000007caef000 x27:
-> ffffba3322764000
-> [ 7816.392321] x26: 00007fffffffffff x25: 000000007caf0000 x24:
-> 0001000000000000
-> [ 7816.393168] x23: 00000000c4000155 x22: ffff8000801b5e98 x21:
-> 0000000106481000
-> [ 7816.393999] x20: 000000007caef000 x19: 0000000000000000 x18:
-> 0000000000000000
-> [ 7816.394833] x17: 0000000000000000 x16: 0000000000000000 x15:
-> 0000ffff8e997058
-> [ 7816.395668] x14: 0000000000000000 x13: 0000000000000000 x12:
-> 0000000000000000
-> [ 7816.396548] x11: 0000000038e38e39 x10: 0000000000000004 x9 :
-> ffffba33218a2564
-> [ 7816.397419] x8 : ffff8000801b5e98 x7 : 000000003fffffff x6 :
-> 0000000000000001
-> [ 7816.398243] x5 : 000000011e795000 x4 : 0000000000000002 x3 :
-> 0000000000000000
-> [ 7816.399062] x2 : 000000007caf0000 x1 : 000000011e796000 x0 :
-> 0000000000000000
-> [ 7816.400021] Call trace:
-> [ 7816.400604]  realm_unmap_private_range+0x19c/0x2c0 (P)
+Ah, I missed this question. The guest is meant to back off and try
+again after waiting a bit.
+This is the behavior added in
+https://lore.kernel.org/all/20230214164638.1189804-2-dionnaglaze@google.com/
 
-So I suspect this is because I didn't have a cond_resched_rwlock_write()
-in here - which was (as you pointed out) because I hadn't propagated
-"may_block" down. Finger's crossed this will be fixed with that change.
+If KVM returns to userspace with an exit type that the guest request
+was throttled, then
+what is user space supposed to do with that? It could wait a bit
+before trying KVM_RUN
+again, but with the enlightened method, the guest could at least work
+on other kernel
+tasks while it waits for its turn to get an attestation report.
 
-Thanks,
-Steve
+Perhaps this is me not understanding the preferred KVM way of doing things.
 
-> [ 7816.401347]  kvm_realm_unmap_range+0x94/0xb0
-> [ 7816.401894]  __unmap_stage2_range+0x70/0xa0
-> [ 7816.402421]  kvm_arch_post_set_memory_attributes+0x68/0xa8
-> [ 7816.403011]  kvm_vm_ioctl+0x6bc/0x1b58
-> [ 7816.403509]  __arm64_sys_ioctl+0xa4/0xe8
-> [ 7816.404020]  invoke_syscall+0x50/0x120
-> [ 7816.404562]  el0_svc_common.constprop.0+0x48/0xf0
-> [ 7816.405113]  do_el0_svc+0x24/0x38
-> [ 7816.405584]  el0_svc+0x34/0xf0
-> [ 7816.406045]  el0t_64_sync_handler+0x10c/0x138
-> [ 7816.406571]  el0t_64_sync+0x1ac/0x1b0
-> 
-> Thanks,
-> Gavin
-> 
-
+-- 
+-Dionna Glaze, PhD, CISSP, CCSP (she/her)
