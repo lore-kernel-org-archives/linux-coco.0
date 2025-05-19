@@ -1,167 +1,310 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9676B287505
-	for <linux-coco@lists.linux.dev>; Mon, 19 May 2025 17:04:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DACF1E9B35;
+	Mon, 19 May 2025 17:36:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747674290; cv=none; b=pB9QCO+woKVq6y6lda8BmnOSCyH0GZoSzpcvw7/XOjg5iq4WTTUn493Dj8Ox3GtyYIOXSwDKYh5MziORTQsemg9iuYhb5xWtDF/u3oFUrhRaaDiaKAAwz9UgAKAOGQUR8axSXJVYXYEPUX0UsTXvB0ltarEmq0qa5lUfHUdF6Wo=
+	t=1747676167; cv=none; b=OjVeRiAwtv+phOPKlh3XAl5wbXCwh0c1nJ/KoC58RyhvVtaTMSJUMKynY1eHT+FPi7ZTUHHryS2pSyTX55I7texP3i7j6T5q82FS6pdbu2pZs4mDsMCJSbiGoyYBg3tYzaHPmFitYCNu8R+NRYhc+BBSLzfZq2hhzE7vRZ3aA90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747674290; c=relaxed/simple;
-	bh=01w4XwT5rgnUWhWg7mruXsUD7XvOWhDH57c8K7bFTHk=;
-	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=j6KHWvTM2pNMiS5NFVXY3LCWtRMiOsh0VDLkjvGEgl3+K7TVx+zMUgEls/hxM6IUjabhXaz5t0eQy28jgNEAYfzQ3JYYNI/PxSjtNr0hgTnAC8wphZD+YIu93CXpdFmHZcvFm93ibDw0GzeXHMcYCHP+KZA2TKfWBhrT+ULFrls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H6YpFHRr; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H6YpFHRr"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-7370e73f690so5731150b3a.3
-        for <linux-coco@lists.linux.dev>; Mon, 19 May 2025 10:04:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747674287; x=1748279087; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Goq4u7JwRNa/mNKgeJWxWxL3A/olzwx0SUya3IskYzo=;
-        b=H6YpFHRrVXERibJ9P/ULoMqbwGih9/T1tyoB2rrGYg1aCQuT0TWUiaQSQ1iozIFMGM
-         WQ8BaN/LUq93iOP45qS4qFVAv1Oz01dH55bNz7J50jphXPn5qHFjYjtA7rkzx3pW89WA
-         U6IUMPUJEd88XOjF4kLAtJL99Fr4Fi0MHNdX3r7JNB9vTSw34zMe53Z4cm2QFT5EhR/A
-         sGWQ6BhFfR/xSzkXOkiTY+n7xcbxvrlKFDMppFEQ2Py36YxK+yJ4F9vcrCI41MOUfQnb
-         osXROiaftQTLWeTqkXGl7PZ0OQmzdAmmW9CfI819FgErO+A7jwtCRcnvywjgeD+Um20k
-         i/bA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747674287; x=1748279087;
-        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Goq4u7JwRNa/mNKgeJWxWxL3A/olzwx0SUya3IskYzo=;
-        b=ap7+BT+Ff9HnX4hDTxtKDZcdSQrRwYFKXEAV0m2mErKJ5OhYsRFeKMzi8yJfF6/RTT
-         KopeeM5KKC2AGsr9g0jgPuFHE8ooEJObaM38sPEw2epFgJjn0BhUMrGG4+AUgVPO8Me3
-         llzjsDuUx0eIyWEUzT5UKcEJNt7BHFSFqsUFIMOU83qjrjunB+FE3EPFErXsNZHEF2qD
-         bzxpPudRXBu1EOgVd21yRHR2zbh0TB/mVP6vHRqphxpVBO31HnidciABBJ/Vo8IEs3my
-         /HjDsTkBWiLDDzghG93r7NHFA5dh9WYAV4fwPSDGP0Mhw+0UrX18wj6ok790sqVSelWc
-         ttyg==
-X-Forwarded-Encrypted: i=1; AJvYcCUc/XM3aQZ4rDaLTJhmbdK+YpUrQ1q5tYC5VcqxmK0ZqCFLob0R3aHf4OpLcAOiNRGnw+NkRF/3uQGN@lists.linux.dev
-X-Gm-Message-State: AOJu0YxoeUU6Tg3rdEA+Fra+fmj2fwO/fKLUSUuQSZgzg9KV0AtwlbGh
-	hCUBZ1HYOYOIwcUdXTnqD2E9+4QdPDGBKeNuC0UnaC8Xr/sq2lmgjnHp+l5X+q7OJXVrnMpiNe1
-	7WWz1zvjMPrHoASQstRmXF4Wplw==
-X-Google-Smtp-Source: AGHT+IFMPwogMPOLeEVsy9zVVtiGIXpX7XWCAue2qkIgrW2Gtgg1AnNlznNb/LyQz+ITtedo/7pWya9Uw1d88i2rcQ==
-X-Received: from pfbbo8.prod.google.com ([2002:a05:6a00:e88:b0:740:b0f1:1ede])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:3a14:b0:740:67ce:1d8b with SMTP id d2e1a72fcca58-742a97b7a1bmr20111944b3a.7.1747674286740;
- Mon, 19 May 2025 10:04:46 -0700 (PDT)
-Date: Mon, 19 May 2025 10:04:45 -0700
-In-Reply-To: <diqzjz7azkmf.fsf@ackerleytng-ctop.c.googlers.com> (message from
- Ackerley Tng on Wed, 23 Apr 2025 13:30:16 -0700)
+	s=arc-20240116; t=1747676167; c=relaxed/simple;
+	bh=uRxGMqVvMhdnhZUCOSCjxyGRSKnkRsYIWlWK7s5f0LE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mXdRVOt6dNx01uicJ4eLBJ7QCG1wf8j4oxwrrbkpZ4GiSIX/ot1YmRe4ys5av9KXwQwBzFxhrVJinBTTyTnL2mGyo7Wqd+ucTJjY0QXu/Op8W72vel2JZrEJEVijimfs/9RNVrLHMn4pyZiP4jxFvkbbtIZwQVZZlxvNlksjRoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 323FD1655;
+	Mon, 19 May 2025 10:35:50 -0700 (PDT)
+Received: from [10.57.50.157] (unknown [10.57.50.157])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id C790F3F673;
+	Mon, 19 May 2025 10:35:59 -0700 (PDT)
+Message-ID: <3a04995a-524c-4d07-8c8b-82930f9bca72@arm.com>
+Date: Mon, 19 May 2025 18:35:58 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Message-ID: <diqz8qmsfs5u.fsf@ackerleytng-ctop.c.googlers.com>
-Subject: Re: [PATCH 3/5] KVM: gmem: Hold filemap invalidate lock while
- allocating/preparing folios
-From: Ackerley Tng <ackerleytng@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: yan.y.zhao@intel.com, michael.roth@amd.com, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	jroedel@suse.de, thomas.lendacky@amd.com, pbonzini@redhat.com, 
-	seanjc@google.com, vbabka@suse.cz, amit.shah@amd.com, 
-	pratikrajesh.sampat@amd.com, ashish.kalra@amd.com, liam.merwick@oracle.com, 
-	david@redhat.com, vannapurve@google.com, quic_eberman@quicinc.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 20/43] arm64: RME: Runtime faulting of memory
+Content-Language: en-GB
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>
+References: <20250416134208.383984-1-steven.price@arm.com>
+ <20250416134208.383984-21-steven.price@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20250416134208.383984-21-steven.price@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Ackerley Tng <ackerleytng@google.com> writes:
+Hi Steven
 
-> Yan Zhao <yan.y.zhao@intel.com> writes:
->
->> On Fri, Mar 14, 2025 at 05:20:21PM +0800, Yan Zhao wrote:
->>> This patch would cause host deadlock when booting up a TDX VM even if huge page
->>> is turned off. I currently reverted this patch. No further debug yet.
->> This is because kvm_gmem_populate() takes filemap invalidation lock, and for
->> TDX, kvm_gmem_populate() further invokes kvm_gmem_get_pfn(), causing deadlock.
->>
->> kvm_gmem_populate
->>   filemap_invalidate_lock
->>   post_populate
->>     tdx_gmem_post_populate
->>       kvm_tdp_map_page
->>        kvm_mmu_do_page_fault
->>          kvm_tdp_page_fault
->> 	   kvm_tdp_mmu_page_fault
->> 	     kvm_mmu_faultin_pfn
->> 	       __kvm_mmu_faultin_pfn
->> 	         kvm_mmu_faultin_pfn_private
->> 		   kvm_gmem_get_pfn
->> 		     filemap_invalidate_lock_shared
->> 	
->> Though, kvm_gmem_populate() is able to take shared filemap invalidation lock,
->> (then no deadlock), lockdep would still warn "Possible unsafe locking scenario:
->> ...DEADLOCK" due to the recursive shared lock, since commit e918188611f0
->> ("locking: More accurate annotations for read_lock()").
->>
->
-> Thank you for investigating. This should be fixed in the next revision.
->
+On 16/04/2025 14:41, Steven Price wrote:
+> At runtime if the realm guest accesses memory which hasn't yet been
+> mapped then KVM needs to either populate the region or fault the guest.
+> 
+> For memory in the lower (protected) region of IPA a fresh page is
+> provided to the RMM which will zero the contents. For memory in the
+> upper (shared) region of IPA, the memory from the memslot is mapped
+> into the realm VM non secure.
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
 
-This was not fixed in v2 [1], I misunderstood this locking issue.
+Please find some comments below.
 
-IIUC kvm_gmem_populate() gets a pfn via __kvm_gmem_get_pfn(), then calls
-part of the KVM fault handler to map the pfn into secure EPTs, then
-calls the TDX module for the copy+encrypt.
+...
 
-Regarding this lock, seems like KVM'S MMU lock is already held while TDX
-does the copy+encrypt. Why must the filemap_invalidate_lock() also be
-held throughout the process?
+> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
+> index f6af3ea6ea8a..b6959cd17a6c 100644
+> --- a/arch/arm64/kvm/rme.c
+> +++ b/arch/arm64/kvm/rme.c
+> @@ -714,6 +714,186 @@ static int realm_create_protected_data_page(struct realm *realm,
+>   	return -ENXIO;
+>   }
+>   
+> +static int fold_rtt(struct realm *realm, unsigned long addr, int level)
+> +{
+> +	phys_addr_t rtt_addr;
+> +	int ret;
+> +
+> +	ret = realm_rtt_fold(realm, addr, level, &rtt_addr);
+> +	if (ret)
+> +		return ret;
+> +
+> +	free_delegated_granule(rtt_addr);
+> +
+> +	return 0;
+> +}
+> +
+> +int realm_map_protected(struct realm *realm,
+> +			unsigned long ipa,
+> +			kvm_pfn_t pfn,
+> +			unsigned long map_size,
+> +			struct kvm_mmu_memory_cache *memcache)
+> +{
+> +	phys_addr_t phys = __pfn_to_phys(pfn);
+> +	phys_addr_t rd = virt_to_phys(realm->rd);
+> +	unsigned long base_ipa = ipa;
+> +	unsigned long size;
+> +	int map_level;
+> +	int ret = 0;
+> +
+> +	if (WARN_ON(!IS_ALIGNED(map_size, RMM_PAGE_SIZE)))
+> +		return -EINVAL;
+> +
+> +	if (WARN_ON(!IS_ALIGNED(ipa, map_size)))
+> +		return -EINVAL;
+> +
+> +	if (IS_ALIGNED(map_size, RMM_L2_BLOCK_SIZE))
+> +		map_level = 2;
 
-If we don't have to hold the filemap_invalidate_lock() throughout, 
+minor nit : RMM_RTT_BLOCK_LEVEL
 
-1. Would it be possible to call kvm_gmem_get_pfn() to get the pfn
-   instead of calling __kvm_gmem_get_pfn() and managing the lock in a
-   loop?
+> +	else
+> +		map_level = 3;
 
-2. Would it be possible to trigger the kvm fault path from
-   kvm_gmem_populate() so that we don't rebuild the get_pfn+mapping
-   logic and reuse the entire faulting code? That way the
-   filemap_invalidate_lock() will only be held while getting a pfn.
+minor nit:  RMM_RTT_MAX_LEVEL ?
 
-[1] https://lore.kernel.org/all/cover.1747264138.git.ackerleytng@google.com/T/
+> +
+> +	if (map_level < RMM_RTT_MAX_LEVEL) {
+> +		/*
+> +		 * A temporary RTT is needed during the map, precreate it,
+> +		 * however if there is an error (e.g. missing parent tables)
+> +		 * this will be handled below.
+> +		 */
+> +		realm_create_rtt_levels(realm, ipa, map_level,
+> +					RMM_RTT_MAX_LEVEL, memcache);
+> +	}
+> +
+> +	for (size = 0; size < map_size; size += RMM_PAGE_SIZE) {
+> +		if (rmi_granule_delegate(phys)) {
+> +			/*
+> +			 * It's likely we raced with another VCPU on the same
+> +			 * fault. Assume the other VCPU has handled the fault
+> +			 * and return to the guest.
+> +			 */
+> +			return 0;
+> +		}
+> +
+> +		ret = rmi_data_create_unknown(rd, phys, ipa);
+> +
+> +		if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
+> +			/* Create missing RTTs and retry */
+> +			int level = RMI_RETURN_INDEX(ret);
+> +
+> +			WARN_ON(level == RMM_RTT_MAX_LEVEL);
+> +
+> +			ret = realm_create_rtt_levels(realm, ipa, level,
+> +						      RMM_RTT_MAX_LEVEL,
+> +						      memcache);
+> +			if (ret)
+> +				goto err_undelegate;
+> +
+> +			ret = rmi_data_create_unknown(rd, phys, ipa);
+> +		}
+> +
+> +		if (WARN_ON(ret))
+> +			goto err_undelegate;
+> +
+> +		phys += RMM_PAGE_SIZE;
+> +		ipa += RMM_PAGE_SIZE;
+> +	}
+> +
+> +	if (map_size == RMM_L2_BLOCK_SIZE) {
+> +		ret = fold_rtt(realm, base_ipa, map_level + 1);
+> +		if (WARN_ON(ret))
+> +			goto err;
+> +	}
+> +
+> +	return 0;
+> +
+> +err_undelegate:
+> +	if (WARN_ON(rmi_granule_undelegate(phys))) {
+> +		/* Page can't be returned to NS world so is lost */
+> +		get_page(phys_to_page(phys));
+> +	}
+> +err:
+> +	while (size > 0) {
+> +		unsigned long data, top;
+> +
+> +		phys -= RMM_PAGE_SIZE;
+> +		size -= RMM_PAGE_SIZE;
+> +		ipa -= RMM_PAGE_SIZE;
+> +
+> +		WARN_ON(rmi_data_destroy(rd, ipa, &data, &top));
+> +
+> +		if (WARN_ON(rmi_granule_undelegate(phys))) {
+> +			/* Page can't be returned to NS world so is lost */
+> +			get_page(phys_to_page(phys));
+> +		}
+> +	}
+> +	return -ENXIO;
+> +}
+> +
+> +int realm_map_non_secure(struct realm *realm,
+> +			 unsigned long ipa,
+> +			 kvm_pfn_t pfn,
+> +			 unsigned long size,
+> +			 struct kvm_mmu_memory_cache *memcache)
+> +{
+> +	phys_addr_t rd = virt_to_phys(realm->rd);
+> +	phys_addr_t phys = __pfn_to_phys(pfn);
+> +	unsigned long offset;
+> +	int map_size, map_level;
+> +	int ret = 0;
+> +
+> +	if (WARN_ON(!IS_ALIGNED(size, RMM_PAGE_SIZE)))
+> +		return -EINVAL;
+> +
+> +	if (WARN_ON(!IS_ALIGNED(ipa, size)))
+> +		return -EINVAL;
+> +
+> +	if (IS_ALIGNED(size, RMM_L2_BLOCK_SIZE)) {
+> +		map_level = 2;
+> +		map_size = RMM_L2_BLOCK_SIZE;
 
->>> > @@ -819,12 +827,16 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->>> >  	pgoff_t index = kvm_gmem_get_index(slot, gfn);
->>> >  	struct file *file = kvm_gmem_get_file(slot);
->>> >  	int max_order_local;
->>> > +	struct address_space *mapping;
->>> >  	struct folio *folio;
->>> >  	int r = 0;
->>> >  
->>> >  	if (!file)
->>> >  		return -EFAULT;
->>> >  
->>> > +	mapping = file->f_inode->i_mapping;
->>> > +	filemap_invalidate_lock_shared(mapping);
->>> > +
->>> >  	/*
->>> >  	 * The caller might pass a NULL 'max_order', but internally this
->>> >  	 * function needs to be aware of any order limitations set by
->>> > @@ -838,6 +850,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->>> >  	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, &max_order_local);
->>> >  	if (IS_ERR(folio)) {
->>> >  		r = PTR_ERR(folio);
->>> > +		filemap_invalidate_unlock_shared(mapping);
->>> >  		goto out;
->>> >  	}
->>> >  
->>> > @@ -845,6 +858,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->>> >  		r = kvm_gmem_prepare_folio(kvm, file, slot, gfn, folio, max_order_local);
->>> >  
->>> >  	folio_unlock(folio);
->>> > +	filemap_invalidate_unlock_shared(mapping);
->>> >  
->>> >  	if (!r)
->>> >  		*page = folio_file_page(folio, index);
->>> > -- 
->>> > 2.25.1
->>> > 
->>> > 
+Same here, stick to the symbols than digits.
+
+> +	} else {
+> +		map_level = 3;
+> +		map_size = RMM_PAGE_SIZE;
+> +	}
+> +
+> +	for (offset = 0; offset < size; offset += map_size) {
+> +		/*
+> +		 * realm_map_ipa() enforces that the memory is writable,
+
+The function names seems to be obsolete, please fix.
+
+> +		 * so for now we permit both read and write.
+> +		 */
+> +		unsigned long desc = phys |
+> +				     PTE_S2_MEMATTR(MT_S2_FWB_NORMAL) |
+> +				     KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R |
+> +				     KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
+> +		ret = rmi_rtt_map_unprotected(rd, ipa, map_level, desc);
+> +
+> +		if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
+
+Could we hit the following case and end up in failure ?
+
+* Initially a single page is shared and the S2 is mapped
+* Later the Realm shares the entire L2 block and encounters a fault
+   at a new IPA within the L2 block.
+
+In this case, we may try to L2 mapping when there is a L3 mapping and
+we could encounter (RMI_ERROR_RTT, 2).
+
+
+> +			/* Create missing RTTs and retry */
+> +			int level = RMI_RETURN_INDEX(ret);
+
+So we should probably go down the rtt create step, with the following
+check.
+
+			if (level < map_level) {
+
+> +
+> +			ret = realm_create_rtt_levels(realm, ipa, level,
+> +						      map_level, memcache);
+> +			if (ret)
+> +				return -ENXIO;
+> +
+> +			ret = rmi_rtt_map_unprotected(rd, ipa, map_level, desc);
+
+
+		} else {
+
+Otherwise, may be we need to do some more hard work to fix it up.
+
+1. If map_level == 3, something is terribly wrong or we raced with 
+another thread ?
+
+2. If map_level < 3 and we didn't race :
+
+   a. Going one level down and creating the mappings there and then 
+folding. But we could endup dealing with ERROR_RTT,3 as in (1).
+
+   b. Easiest is to destroy the table at "map_level + 1" and retry the map.
+
+
+Suzuki
+
+
+
+> +		}
+> +		/*
+> +		 * RMI_ERROR_RTT can be reported for two reasons: either the
+> +		 * RTT tables are not there, or there is an RTTE already
+> +		 * present for the address.  The call to
+> +		 * realm_create_rtt_levels() above handles the first case, and
+> +		 * in the second case this indicates that another thread has
+> +		 * already populated the RTTE for us, so we can ignore the
+> +		 * error and continue.
+> +		 */
+> +		if (ret && RMI_RETURN_STATUS(ret) != RMI_ERROR_RTT)
+> +			return -ENXIO;
+> +
+> +		ipa += map_size;
+> +		phys += map_size;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>   static int populate_region(struct kvm *kvm,
+>   			   phys_addr_t ipa_base,
+>   			   phys_addr_t ipa_end,
 
