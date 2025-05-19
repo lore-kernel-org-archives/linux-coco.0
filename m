@@ -1,96 +1,167 @@
-Received: from smtp-fw-9105.amazon.com (smtp-fw-9105.amazon.com [207.171.188.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B312620C00E
-	for <linux-coco@lists.linux.dev>; Mon, 19 May 2025 11:25:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9676B287505
+	for <linux-coco@lists.linux.dev>; Mon, 19 May 2025 17:04:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747653956; cv=none; b=o0IAc5rZ/s1/eRBpmETkj3X2KxBJfzdWy/pKUe+llk/LmgrWgONTLkpQEQnWGoBpNm7i33ZGBDAh41hqqWrKfS7pRyhcqD0FG1JqWoChX0fdhLyAWFmIOgs47GnvFVNG6YMs990km1UyvWchDInNH9UVjqIw8xi621EOr4+3VCA=
+	t=1747674290; cv=none; b=pB9QCO+woKVq6y6lda8BmnOSCyH0GZoSzpcvw7/XOjg5iq4WTTUn493Dj8Ox3GtyYIOXSwDKYh5MziORTQsemg9iuYhb5xWtDF/u3oFUrhRaaDiaKAAwz9UgAKAOGQUR8axSXJVYXYEPUX0UsTXvB0ltarEmq0qa5lUfHUdF6Wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747653956; c=relaxed/simple;
-	bh=TXhlqTxDjPQU0/WS5vOXRw68WEo6IQcEKqGOA0J0n4w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=D1vSLhYhPRpa2UkKVTE4XHRwJzzkHIrEofGZBwRBxERo9jCEbQKiT+kFtch5NUecwEY09sMoFazt/Qs2GlDt4K61JniNga9WSd9irAhDZNVwIHgK3ZaNu8hjYRTgIbiyTuwgWf/lFstkZ2kMIPz7QJ9yhOhgHZS9sDmEiafxzhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=PDdo35jF; arc=none smtp.client-ip=207.171.188.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+	s=arc-20240116; t=1747674290; c=relaxed/simple;
+	bh=01w4XwT5rgnUWhWg7mruXsUD7XvOWhDH57c8K7bFTHk=;
+	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=j6KHWvTM2pNMiS5NFVXY3LCWtRMiOsh0VDLkjvGEgl3+K7TVx+zMUgEls/hxM6IUjabhXaz5t0eQy28jgNEAYfzQ3JYYNI/PxSjtNr0hgTnAC8wphZD+YIu93CXpdFmHZcvFm93ibDw0GzeXHMcYCHP+KZA2TKfWBhrT+ULFrls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H6YpFHRr; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="PDdo35jF"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H6YpFHRr"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-7370e73f690so5731150b3a.3
+        for <linux-coco@lists.linux.dev>; Mon, 19 May 2025 10:04:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1747653955; x=1779189955;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=TXhlqTxDjPQU0/WS5vOXRw68WEo6IQcEKqGOA0J0n4w=;
-  b=PDdo35jFD3Felc6g+LB3ABN95SkNwfrIgRDEjqUSa14wFfHsNXaeT6XU
-   uz7jH9ECAILpEvZRFMjJaQDPdU83LE6PvoOxLXhIMZ1gBRU8kENND3KsR
-   suFl2d59YhV2x6Pr04lBuyM1SKjA+4/AUjjCuaBF2720ubAE+tURVjscZ
-   Ss1kymMWKL8T2EPQHuRVOnq8ciQzImxiYHKPZn4j68Pc82cAHd5WZV2nz
-   dhQQ6fftAb9jcgItJjvEGl6mlAUQ60fb+J+JbF4LCleVip3QdojyMmwQh
-   fAtDcI+6Sw6OQfE/3mJIPnN8VIYN9m5YcLQtRQXw545CuXRMvNWx0W+bc
-   w==;
-X-IronPort-AV: E=Sophos;i="6.15,300,1739836800"; 
-   d="scan'208";a="21275029"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-9105.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 11:25:47 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:62137]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.29.53:2525] with esmtp (Farcaster)
- id 98d062e0-381c-40d3-9ee5-7e11a7b98b3f; Mon, 19 May 2025 11:25:46 +0000 (UTC)
-X-Farcaster-Flow-ID: 98d062e0-381c-40d3-9ee5-7e11a7b98b3f
-Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Mon, 19 May 2025 11:25:46 +0000
-Received: from [0.0.0.0] (172.19.99.218) by EX19D020UWC004.ant.amazon.com
- (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14; Mon, 19 May 2025
- 11:25:43 +0000
-Message-ID: <95a3e3ca-4fba-411c-b979-4dc8ecc1f902@amazon.com>
-Date: Mon, 19 May 2025 13:25:41 +0200
+        d=google.com; s=20230601; t=1747674287; x=1748279087; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Goq4u7JwRNa/mNKgeJWxWxL3A/olzwx0SUya3IskYzo=;
+        b=H6YpFHRrVXERibJ9P/ULoMqbwGih9/T1tyoB2rrGYg1aCQuT0TWUiaQSQ1iozIFMGM
+         WQ8BaN/LUq93iOP45qS4qFVAv1Oz01dH55bNz7J50jphXPn5qHFjYjtA7rkzx3pW89WA
+         U6IUMPUJEd88XOjF4kLAtJL99Fr4Fi0MHNdX3r7JNB9vTSw34zMe53Z4cm2QFT5EhR/A
+         sGWQ6BhFfR/xSzkXOkiTY+n7xcbxvrlKFDMppFEQ2Py36YxK+yJ4F9vcrCI41MOUfQnb
+         osXROiaftQTLWeTqkXGl7PZ0OQmzdAmmW9CfI819FgErO+A7jwtCRcnvywjgeD+Um20k
+         i/bA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747674287; x=1748279087;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Goq4u7JwRNa/mNKgeJWxWxL3A/olzwx0SUya3IskYzo=;
+        b=ap7+BT+Ff9HnX4hDTxtKDZcdSQrRwYFKXEAV0m2mErKJ5OhYsRFeKMzi8yJfF6/RTT
+         KopeeM5KKC2AGsr9g0jgPuFHE8ooEJObaM38sPEw2epFgJjn0BhUMrGG4+AUgVPO8Me3
+         llzjsDuUx0eIyWEUzT5UKcEJNt7BHFSFqsUFIMOU83qjrjunB+FE3EPFErXsNZHEF2qD
+         bzxpPudRXBu1EOgVd21yRHR2zbh0TB/mVP6vHRqphxpVBO31HnidciABBJ/Vo8IEs3my
+         /HjDsTkBWiLDDzghG93r7NHFA5dh9WYAV4fwPSDGP0Mhw+0UrX18wj6ok790sqVSelWc
+         ttyg==
+X-Forwarded-Encrypted: i=1; AJvYcCUc/XM3aQZ4rDaLTJhmbdK+YpUrQ1q5tYC5VcqxmK0ZqCFLob0R3aHf4OpLcAOiNRGnw+NkRF/3uQGN@lists.linux.dev
+X-Gm-Message-State: AOJu0YxoeUU6Tg3rdEA+Fra+fmj2fwO/fKLUSUuQSZgzg9KV0AtwlbGh
+	hCUBZ1HYOYOIwcUdXTnqD2E9+4QdPDGBKeNuC0UnaC8Xr/sq2lmgjnHp+l5X+q7OJXVrnMpiNe1
+	7WWz1zvjMPrHoASQstRmXF4Wplw==
+X-Google-Smtp-Source: AGHT+IFMPwogMPOLeEVsy9zVVtiGIXpX7XWCAue2qkIgrW2Gtgg1AnNlznNb/LyQz+ITtedo/7pWya9Uw1d88i2rcQ==
+X-Received: from pfbbo8.prod.google.com ([2002:a05:6a00:e88:b0:740:b0f1:1ede])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:3a14:b0:740:67ce:1d8b with SMTP id d2e1a72fcca58-742a97b7a1bmr20111944b3a.7.1747674286740;
+ Mon, 19 May 2025 10:04:46 -0700 (PDT)
+Date: Mon, 19 May 2025 10:04:45 -0700
+In-Reply-To: <diqzjz7azkmf.fsf@ackerleytng-ctop.c.googlers.com> (message from
+ Ackerley Tng on Wed, 23 Apr 2025 13:30:16 -0700)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Linux kernel SIG meeting for vwfwupdate discussion
-To: Ani Sinha <anisinha@redhat.com>
-CC: Dan Middleton <dan.middleton@linux.intel.com>, Dionna Amalie Glaze
-	<dionnaglaze@google.com>, Steve Rutherford <srutherford@google.com>,
-	<linux-coco@lists.linux.dev>, Vitaly Kuznetsov <vkuznets@redhat.com>, "Joerg
- Roedel" <jroedel@suse.de>, Gerd Hoffmann <kraxel@redhat.com>, Jon Lange
-	<jlange@microsoft.com>, "cho@microsoft.com" <cho@microsoft.com>, "James
- Bottomley" <James.Bottomley@hansenpartnership.com>
-References: <CAAH4kHZ2yO3ju_iJinR9y4BDXXdWBnEP1wcv09JWMzaqp1ZP+g@mail.gmail.com>
- <CAK3XEhOs4ijnbqmv8UrNmKN4=nv6+_A7fESLibGBRR9u8rXi6w@mail.gmail.com>
- <87frifm75c.fsf@redhat.com>
- <CABayD+eRjjknqJNRkkh9_KraC-jZyXb1BL_D79m04po1_hR-_g@mail.gmail.com>
- <CAAH4kHbCduQr_+oj0X8QeTjgDgh6aBncPV-1+mvB_r1R3i7Lqg@mail.gmail.com>
- <3d9fa17e-2b74-4c90-99b8-5b1dc8d15356@linux.intel.com>
- <100D7ECF-1292-450A-9F65-FEBA5843AB99@redhat.com>
- <7c650817-09d9-4c41-96db-62c0950d71d5@amazon.com>
- <0E0BB5C5-457F-49B3-A61D-98BCD10CC430@redhat.com>
-Content-Language: en-US
-From: Alexander Graf <graf@amazon.com>
-In-Reply-To: <0E0BB5C5-457F-49B3-A61D-98BCD10CC430@redhat.com>
-X-ClientProxiedBy: EX19D036UWB003.ant.amazon.com (10.13.139.172) To
- EX19D020UWC004.ant.amazon.com (10.13.138.149)
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Mime-Version: 1.0
+Message-ID: <diqz8qmsfs5u.fsf@ackerleytng-ctop.c.googlers.com>
+Subject: Re: [PATCH 3/5] KVM: gmem: Hold filemap invalidate lock while
+ allocating/preparing folios
+From: Ackerley Tng <ackerleytng@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: yan.y.zhao@intel.com, michael.roth@amd.com, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	jroedel@suse.de, thomas.lendacky@amd.com, pbonzini@redhat.com, 
+	seanjc@google.com, vbabka@suse.cz, amit.shah@amd.com, 
+	pratikrajesh.sampat@amd.com, ashish.kalra@amd.com, liam.merwick@oracle.com, 
+	david@redhat.com, vannapurve@google.com, quic_eberman@quicinc.com
+Content-Type: text/plain; charset="UTF-8"
 
-Ck9uIDE5LjA1LjI1IDEwOjM3LCBBbmkgU2luaGEgd3JvdGU6Cj4+IE9uIDE2IE1heSAyMDI1LCBh
-dCAyOjU14oCvUE0sIEFsZXhhbmRlciBHcmFmIDxncmFmQGFtYXpvbi5jb20+IHdyb3RlOgo+Pgo+
-PiBIZXkgQW5pLAo+Pgo+PiBXZSBhbHJlYWR5IHByZXNlbnRlZCBjb25jZXB0cyBsYXN0IHllYXIu
-IElmIHdlIHdhbnQgdG8gcHJlc2VydmUgY3JlZGliaWxpdHksIHRoaXMgeWVhciB3ZSBuZWVkIHRv
-IHNob3cgYSBzb2x1dGlvbiB0aGF0J3MgZWl0aGVyIG1lcmdlZCBvciBhbG1vc3QgbWVyZ2VkIHVw
-c3RyZWFtIGFuZCByZWFkeSB0byB1c2UuCj4gSG1tIG9rIEkgdGhpbmsgaXQgd2lsbCBiZSBoYXJk
-IHRvIGdldCBhbnl0aGluZyBtZXJnZWQgYmVmb3JlIHRoZSBkZWFkbGluZSBvbiBKdW5lIDl0aC4K
-CgpJdCBkb2Vzbid0IGhhdmUgdG8gYmUgbWVyZ2VkIG9uIHRoZSA5dGgsIGJ1dCBpdCBzaG91bGQg
-aGF2ZSBhIHJlYWxpc3RpYyAKYXZlbnVlIHRvIGJlIG1lcmdlZCBieSBTZXB0ZW1iZXIgNHRoIDop
-LgoKCkFsZXgKCgoKCkFtYXpvbiBXZWIgU2VydmljZXMgRGV2ZWxvcG1lbnQgQ2VudGVyIEdlcm1h
-bnkgR21iSApUYW1hcmEtRGFuei1TdHIuIDEzCjEwMjQzIEJlcmxpbgpHZXNjaGFlZnRzZnVlaHJ1
-bmc6IENocmlzdGlhbiBTY2hsYWVnZXIsIEpvbmF0aGFuIFdlaXNzCkVpbmdldHJhZ2VuIGFtIEFt
-dHNnZXJpY2h0IENoYXJsb3R0ZW5idXJnIHVudGVyIEhSQiAyNTc3NjQgQgpTaXR6OiBCZXJsaW4K
-VXN0LUlEOiBERSAzNjUgNTM4IDU5Nwo=
+Ackerley Tng <ackerleytng@google.com> writes:
+
+> Yan Zhao <yan.y.zhao@intel.com> writes:
+>
+>> On Fri, Mar 14, 2025 at 05:20:21PM +0800, Yan Zhao wrote:
+>>> This patch would cause host deadlock when booting up a TDX VM even if huge page
+>>> is turned off. I currently reverted this patch. No further debug yet.
+>> This is because kvm_gmem_populate() takes filemap invalidation lock, and for
+>> TDX, kvm_gmem_populate() further invokes kvm_gmem_get_pfn(), causing deadlock.
+>>
+>> kvm_gmem_populate
+>>   filemap_invalidate_lock
+>>   post_populate
+>>     tdx_gmem_post_populate
+>>       kvm_tdp_map_page
+>>        kvm_mmu_do_page_fault
+>>          kvm_tdp_page_fault
+>> 	   kvm_tdp_mmu_page_fault
+>> 	     kvm_mmu_faultin_pfn
+>> 	       __kvm_mmu_faultin_pfn
+>> 	         kvm_mmu_faultin_pfn_private
+>> 		   kvm_gmem_get_pfn
+>> 		     filemap_invalidate_lock_shared
+>> 	
+>> Though, kvm_gmem_populate() is able to take shared filemap invalidation lock,
+>> (then no deadlock), lockdep would still warn "Possible unsafe locking scenario:
+>> ...DEADLOCK" due to the recursive shared lock, since commit e918188611f0
+>> ("locking: More accurate annotations for read_lock()").
+>>
+>
+> Thank you for investigating. This should be fixed in the next revision.
+>
+
+This was not fixed in v2 [1], I misunderstood this locking issue.
+
+IIUC kvm_gmem_populate() gets a pfn via __kvm_gmem_get_pfn(), then calls
+part of the KVM fault handler to map the pfn into secure EPTs, then
+calls the TDX module for the copy+encrypt.
+
+Regarding this lock, seems like KVM'S MMU lock is already held while TDX
+does the copy+encrypt. Why must the filemap_invalidate_lock() also be
+held throughout the process?
+
+If we don't have to hold the filemap_invalidate_lock() throughout, 
+
+1. Would it be possible to call kvm_gmem_get_pfn() to get the pfn
+   instead of calling __kvm_gmem_get_pfn() and managing the lock in a
+   loop?
+
+2. Would it be possible to trigger the kvm fault path from
+   kvm_gmem_populate() so that we don't rebuild the get_pfn+mapping
+   logic and reuse the entire faulting code? That way the
+   filemap_invalidate_lock() will only be held while getting a pfn.
+
+[1] https://lore.kernel.org/all/cover.1747264138.git.ackerleytng@google.com/T/
+
+>>> > @@ -819,12 +827,16 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>>> >  	pgoff_t index = kvm_gmem_get_index(slot, gfn);
+>>> >  	struct file *file = kvm_gmem_get_file(slot);
+>>> >  	int max_order_local;
+>>> > +	struct address_space *mapping;
+>>> >  	struct folio *folio;
+>>> >  	int r = 0;
+>>> >  
+>>> >  	if (!file)
+>>> >  		return -EFAULT;
+>>> >  
+>>> > +	mapping = file->f_inode->i_mapping;
+>>> > +	filemap_invalidate_lock_shared(mapping);
+>>> > +
+>>> >  	/*
+>>> >  	 * The caller might pass a NULL 'max_order', but internally this
+>>> >  	 * function needs to be aware of any order limitations set by
+>>> > @@ -838,6 +850,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>>> >  	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, &max_order_local);
+>>> >  	if (IS_ERR(folio)) {
+>>> >  		r = PTR_ERR(folio);
+>>> > +		filemap_invalidate_unlock_shared(mapping);
+>>> >  		goto out;
+>>> >  	}
+>>> >  
+>>> > @@ -845,6 +858,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>>> >  		r = kvm_gmem_prepare_folio(kvm, file, slot, gfn, folio, max_order_local);
+>>> >  
+>>> >  	folio_unlock(folio);
+>>> > +	filemap_invalidate_unlock_shared(mapping);
+>>> >  
+>>> >  	if (!r)
+>>> >  		*page = folio_file_page(folio, index);
+>>> > -- 
+>>> > 2.25.1
+>>> > 
+>>> > 
 
