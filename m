@@ -1,264 +1,610 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2063.outbound.protection.outlook.com [40.107.236.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E1913B58D
-	for <linux-coco@lists.linux.dev>; Mon, 19 May 2025 08:38:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747643920; cv=none; b=h0phkOMI69Dme5ZSDJ3hbRtE1MT0nLk/4XF52TfUUYn1tz1wo7tiUSAhJjWBsWL1sRvg6qmQATxfPnBq8FGL3nbpWscTzwZmfW1esNkvSWtQlTKQiv/iaSB1gDwJJN2f9bIuneEdGykeoMcr0yo7PYfTVJ7joqRoEn2QHuTV9+E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747643920; c=relaxed/simple;
-	bh=yN99FKnW4ZTqhmcgfl2pxuzv4f6fMQB07z2u3Skp5kc=;
-	h=Mime-Version:Subject:From:In-Reply-To:Date:Cc:Message-Id:
-	 References:To:Content-Type; b=eeZPAbLpQkYbFYTBsUoO52GILk1DxokMeTsnynLLZ9rOkZET0kTIU2EtpOkk7rvMRQVykjh4v+xrSL+gvlgr6v9wZp9pEOQAVBJf1BlKJ8r6JYI8V2AO1pO8djIBgydCz9anB7DJsDOeReHbA6IdCaoH1E2zBMyne0fBdB5fteQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f1ksLVDH; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E0D274651
+	for <linux-coco@lists.linux.dev>; Mon, 19 May 2025 10:20:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747650022; cv=fail; b=Fv6t47HCsTRpZPqlXeUtVyYt6w7AdUubOZtrbYvAtug9NuZpxSrNZMVTxdqkpvVuEmdKpWxZAF9LnVLZKY3t7JVcvxob5HpPBF+UX5KaPA3CMlGlzQct58K8ISSDdJySjy1ZSOtN9aDywB62w6gm37xpbC6pe2P0ql1QR/TL1o0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747650022; c=relaxed/simple;
+	bh=0JsM8ko2Nav3nnXgZPQs0yA+Axn+m07VXrdyxzTAxJs=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=QGn9stCfnvRI7qjT3NaH7esFrv+d2tAlGNkgv0cODw3IgONRmyNMMVGnePir0BSN5aAAU+szI7/vB7h15QUw126vAfDZvv8O+LNxzK5JYuEvfM6xtVSBBRCtPRt953z700dZbis4UD7w01E8tHGp/QnIMdhB8nt0rTeoueEX08I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=A+BoEfZ3; arc=fail smtp.client-ip=40.107.236.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f1ksLVDH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747643916;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=54bz+5OlBqRTLNSZ62DupV/b8NHlbvrw05YZniHdZjc=;
-	b=f1ksLVDHr1HcIWJWICA7JuENVo5A+raw9i1P+zsR/l3wBvNicH+7oDtlRAHOkd7bEWoocc
-	nNu+1O4UqUwrlqGIT7/gAw04bzC9I5a+tDgtnXlkZoBCHD0SjBL/Yvj44OQh3W53EiuBxf
-	25pKLJ1vcIsIjB+3hlUFvAH1+h6DhCs=
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
- [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-689-QUEfGjD_NSmn-m1zgqhyaA-1; Mon, 19 May 2025 04:38:35 -0400
-X-MC-Unique: QUEfGjD_NSmn-m1zgqhyaA-1
-X-Mimecast-MFC-AGG-ID: QUEfGjD_NSmn-m1zgqhyaA_1747643914
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-af8e645a1d1so2590816a12.3
-        for <linux-coco@lists.linux.dev>; Mon, 19 May 2025 01:38:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747643911; x=1748248711;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6+Gk/0pHrLZiuzjccjgTwvvILHRX6UcYfIa2oyRLjFw=;
-        b=tyEdE6UVm9AMMc3/Ud9RgKmGtqdnBxFiDfvvMqzAagxTR49lJuU+bNsh3mpYOa9M8C
-         +S+io7smCHUPxJl9XI5xsIdN3AdqisKmX1Kkh0Cfv4u8JYXkGNSdkuwTllXUmS6f7C+S
-         Zwr6CmIaHvXzU99OOrC25wacgAo/yjQoma6KYYWmKQDjb+VVaoIiUcEE1r1ird07aPEa
-         rAxWGhPTtVPPEXbaIDQFCQQNzcCEhoDhqvQhHhI2fM08fJ2Cq98I8c72ZfhNIXPZa7MG
-         T3GWe+fkUGH4Eg4oGC+4O+7hTEZ58/P8x8qxzKVAi8WFx4FEyD/8B9Fpyq8QQE4nMpYt
-         i69Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWFhwOKJ6zAudI+9c0S1AQDrH8ittNzCs1nbBWzu8XHr80FbwFMALLNhYcec3S0296YqM0b7BfrkInb@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx3A2ch2b3Xor5bmG5NOJ8/YIC6wBfhcARy5FWZEgjHO7ZnDaEh
-	gSf30udr7zoFLVQCYMyhmTpt0m9K5qAn5I7EuW6Mn7lTK9fMMK1iGzmaFrF7uZiuynhvpQCJ2qe
-	iuEw70CYXBrP87ZkK955+zRbqnkWlXF64mKIjpT99cxNsSMRsSHKJrEnNmMIY6iU=
-X-Gm-Gg: ASbGncuyPMgjLvLgS1t8w6v7dC3U6ozt697T+Gm+LpwEzFVrRpdxdUbPrLKRE3gp9B4
-	vV4TlRuUuKOZlqICFhZTMuYMpcUnb0K3XVxnOjqsINzodeIddmA/JBSXdAkt3GCwlCS5ZeoN+fx
-	GVfY+D+Nu1qYZzbbA6rTHVPdV7Wd0wWi+6PHd9vyghEwo0P3ihqFx7X1B/6YZPoSwTvzgJ6z2bA
-	slh7sCH9H+A7U1TigZGkSdOdvuX9KPwnnffCo7+cLl/0Cds6hYylCs7Qx+0CP7uS8DMBE+tCgFU
-	s6XYlMcWeYRHM2COLOMk2t0pz7LmzKYp
-X-Received: by 2002:a17:90b:3d85:b0:2f9:d9fe:e72e with SMTP id 98e67ed59e1d1-30e8312dcd2mr22524204a91.16.1747643911194;
-        Mon, 19 May 2025 01:38:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF5LGWn1wT5uIAHp9X4y+C92pGXIcuoPjpLbYHS6Z5Ppw+CZIciM/VRPs3nEAxxORuwsLFTvA==
-X-Received: by 2002:a17:90b:3d85:b0:2f9:d9fe:e72e with SMTP id 98e67ed59e1d1-30e8312dcd2mr22524155a91.16.1747643910587;
-        Mon, 19 May 2025 01:38:30 -0700 (PDT)
-Received: from smtpclient.apple ([171.79.90.201])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30e833da84csm5854335a91.10.2025.05.19.01.38.26
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 19 May 2025 01:38:30 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="A+BoEfZ3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YEIBnget67gmQCr6sG31HC+E3nK9RFyEpqm1Wqd6DXEUrYqaSegbYJLp163GyU8OkpXatol0Dv8poY8OPYinzZRwRX5hFVe80ODCghuCCBH9togHgG46phBFv7ZgG7G24rrT76dWQ1tVfQ7USjJUKK2b6iuhupfyCfJegbVKl1P+Cj9HboPVYFmr3eSiS5wUNxN67q66AdeovR+oKIgnC7GFEOhJcJ+LE2w7uEB/Nn6V9sRjPPvQtUe0PVRiXA5sWYPA/yHZp66VDxRIReBRxRkfV5qi63tKcmL7MRR3Sz0zV4/whZNOcmSwNVRwddtyHllcX8Tdz35WBWKE4dL55g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KFvj0mEBF85Lzl/jM21DGREpirFo+ajUCHcYd0Fdg2A=;
+ b=TIt52tR6GHfCIm+MnDEOzTVgu8WXAEclckb6ZFvigFfxfr27O+0+mNIath/numeN5a+FrIO9z3ZiMekBrnOp5DVVAwSxZPGsgDuIt31kz/NsikkU3EKopgx5dD5GgDjDk6S+AF+utagSQZD89x4mc4X4TD5ssNBL0beNyd9BFeWhXJZX4LZJPsGFQp7AwobtXFeetc0AY/qTxET2AAymwwQ3wLDoSk+LCpXhyyYasJ4YcyOM17CGClSyJuXqB7zVUdHhetg4j6I1aSpsyR66rEUyBE3oRwdW/RHDkLJn6eygYesaEODbNzwXG2BNtmxlAGSMRkKf2yvWpY95V/Qvcg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KFvj0mEBF85Lzl/jM21DGREpirFo+ajUCHcYd0Fdg2A=;
+ b=A+BoEfZ3ogom2dCBJz/fbe9wR9azP069MKVzqLIq36xd8+bNA+Z65xQ5jUa1xQmVumTuiB/bMgae3qcAaEJotQWKb5C9IT9GOL4EhWA/hqitGXAW/ZFnuYnrqU9nCpB2aNPZJOD1Up0UycawUN6FIDTjAEUexQmn7CgOIsz4Cxs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
+ by CY5PR12MB6622.namprd12.prod.outlook.com (2603:10b6:930:42::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.32; Mon, 19 May
+ 2025 10:20:15 +0000
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f%5]) with mapi id 15.20.8746.030; Mon, 19 May 2025
+ 10:20:14 +0000
+Message-ID: <153d5223-169d-4379-bc2c-6ad279489560@amd.com>
+Date: Mon, 19 May 2025 20:20:08 +1000
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v3 12/13] PCI/TSM: support TDI related operations for host
+ TSM driver
+To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+ linux-pci@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, lukas@wunner.de, aneesh.kumar@kernel.org,
+ suzuki.poulose@arm.com, sameo@rivosinc.com, jgg@nvidia.com, zhiw@nvidia.com,
+ Xu Yilun <yilun.xu@linux.intel.com>
+References: <20250516054732.2055093-1-dan.j.williams@intel.com>
+ <20250516054732.2055093-13-dan.j.williams@intel.com>
+Content-Language: en-US
+From: Alexey Kardashevskiy <aik@amd.com>
+In-Reply-To: <20250516054732.2055093-13-dan.j.williams@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SY5P282CA0099.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:204::8) To CH3PR12MB9194.namprd12.prod.outlook.com
+ (2603:10b6:610:19f::7)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.2\))
-Subject: Re: Linux kernel SIG meeting for vwfwupdate discussion
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <7c650817-09d9-4c41-96db-62c0950d71d5@amazon.com>
-Date: Mon, 19 May 2025 14:07:42 +0530
-Cc: Dan Middleton <dan.middleton@linux.intel.com>,
- Dionna Amalie Glaze <dionnaglaze@google.com>,
- Steve Rutherford <srutherford@google.com>,
- linux-coco@lists.linux.dev,
- Vitaly Kuznetsov <vkuznets@redhat.com>,
- Joerg Roedel <jroedel@suse.de>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Jon Lange <jlange@microsoft.com>,
- "cho@microsoft.com" <cho@microsoft.com>,
- James Bottomley <James.Bottomley@hansenpartnership.com>
-Message-Id: <0E0BB5C5-457F-49B3-A61D-98BCD10CC430@redhat.com>
-References: <CAAH4kHZ2yO3ju_iJinR9y4BDXXdWBnEP1wcv09JWMzaqp1ZP+g@mail.gmail.com>
- <CAK3XEhOs4ijnbqmv8UrNmKN4=nv6+_A7fESLibGBRR9u8rXi6w@mail.gmail.com>
- <87frifm75c.fsf@redhat.com>
- <CABayD+eRjjknqJNRkkh9_KraC-jZyXb1BL_D79m04po1_hR-_g@mail.gmail.com>
- <CAAH4kHbCduQr_+oj0X8QeTjgDgh6aBncPV-1+mvB_r1R3i7Lqg@mail.gmail.com>
- <3d9fa17e-2b74-4c90-99b8-5b1dc8d15356@linux.intel.com>
- <100D7ECF-1292-450A-9F65-FEBA5843AB99@redhat.com>
- <7c650817-09d9-4c41-96db-62c0950d71d5@amazon.com>
-To: Alexander Graf <graf@amazon.com>
-X-Mailer: Apple Mail (2.3776.700.51.11.2)
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: N0cKF4t5nqtULR9ssaKnrKNxRfjvXVqBP1JMb00CDLc_1747643914
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|CY5PR12MB6622:EE_
+X-MS-Office365-Filtering-Correlation-Id: e90cec86-493b-483e-5c0f-08dd96bebed2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TUdKdXpTSHdjekg0djVLYXczeUhXTkZ5OGJOMk81Z3NBVC9QWEhCR1F6TFgx?=
+ =?utf-8?B?ZmRxRGlGWWtkSUdTNkFkbW5XRS9rTUxqWDF0ZzIwN0hFUkp1OHVDOTFlcmRP?=
+ =?utf-8?B?a2NGNjVwcWhqM2NZTWREZzhub3VRWlBSci9uOHFuWVZ2bTlFdUM5azIrRGdU?=
+ =?utf-8?B?M3BQU0tZNGErNEo3VmM2aGJCNU9qam5iL1FrS2U2TnZHSEZiVVd6bG1ySGJO?=
+ =?utf-8?B?dEZpaFVwV0RHYk5iZWVsTTNNd3YwMGloVllBYjBEVDBCRXM1SHNtNW1xdEV2?=
+ =?utf-8?B?ODhiN25ON25pUmdHeGRlRjhxU0JMMzlPRnh5M0RwakdVdkNzdmI0SDU1TERn?=
+ =?utf-8?B?VGh2WkdaQmJXbmdSYzFSNnRCbVdnK2pNQ0t3MDZKdk1POTF6Y0o0Q1k2RnBi?=
+ =?utf-8?B?WkZyaWtwelpBV3VWMVJMcUpRVC9KbUNmUThMSEhDZmNRYUx1MnlpYXNMLzNm?=
+ =?utf-8?B?ekkyR1ZJQWE2QTRINkJWd3ZubEZXRjhDYWN6Vm5UcGxMV0w0WU9RbXpSeVZY?=
+ =?utf-8?B?RWp2Y2RRSHZvR3FSa1FTVlVLQUZ3Lyt6K2FBNjg1WVpVQ1RsK0ZPQ2lVaUxx?=
+ =?utf-8?B?b3VicVE3dnR1YUdhVlJtTk13YmZmbXJCOTI0SjBTaGVVNlArQ3Z0MXBXTXNl?=
+ =?utf-8?B?ZzdrV1cwd09LMm5tcllWZzFWNHp4dlVhM0xDSGdhNHRhcW40NFUxbU5UZXVq?=
+ =?utf-8?B?cGRpM3YvbXdCbzVWbUt6akpkT3pUQWRrNkk0ZFVtNFY5NmhxUDh4dmY2NVF3?=
+ =?utf-8?B?UGNaeXRaVldVSG1ldzJVMzVVVithSU45QTNJYURhRVI0T2QwT1h3aGd3a0Ev?=
+ =?utf-8?B?ZmEzcU96U2tlK0lXWVdxeWpKZnlVR2pOZTQ0b01USEtNOGtsS1VHdlFDREht?=
+ =?utf-8?B?VFBoNHV3cDVBZEhteTFuZ2czK0hDbjFxMVZPUUwrc2h1RWdnckZXZkdScy9U?=
+ =?utf-8?B?ajhGcVNpeWVYSW1LeFNqSUhtQUJyU2o2Y0FkUzBrTVk0Um1kUmx4NUxYUC9P?=
+ =?utf-8?B?OHpidnRLbVkzWkltY3Z0Z3Racy83cWxzSXFOcEdXS05rZUErRnNpWCttMnZi?=
+ =?utf-8?B?UlRtbWVUM1MxN1pwVTlJSk9penRTQXhSMTFsOS8xNTZMQ3Q1bTJOYUljQity?=
+ =?utf-8?B?amgxVnV0dHFESy82YjJ5K3V2RnZ4c0s2T0VjamRuK2l4SlcrbC8xRkE0NUlR?=
+ =?utf-8?B?Z21zNjNmM2RDQlgycVc2cWtyOEdCblo4K0toSDYrWEVnYnJNcktKM1ErS0J0?=
+ =?utf-8?B?b0NPVzh1Rm9PNkpDYTJLMVNML0V3NmNpbDhVTzlIcXN3czhIN0ZCQlJ4Z0lK?=
+ =?utf-8?B?bDhCVTJzUjFtTFVFbWtyM2ZUQVVXYldyM0o2OTl3dnUzaTZRWVpEWTMyMnFz?=
+ =?utf-8?B?YXBrdERCdTlIRGFaZEJvdEVRakZmME5qVnZQRVMxUXZpUkpXUTV0cXUrVDFF?=
+ =?utf-8?B?MWVETjNnNEltM0E1Y201M3lyQUdDNG5lSXpFVUpodDU3QVdNRENnVklyMmFo?=
+ =?utf-8?B?dzQyYnNZd3JacityekdtVGQwNCtWT2c1L0M0MEJucnNMbnlrMTlnYWxFdzZY?=
+ =?utf-8?B?eW9IczBFR3JpTE53VHB0aEphUVJ5Vk9ja2pCcytyVDNsdVo4a2tUbGJwWVNO?=
+ =?utf-8?B?ZGJBc3R5eHV6eEpDQUR0SjlQMk85WkNBT0MxMnV1QVV1ZlFWTkgrUUJNZjQv?=
+ =?utf-8?B?ZkJtQ05XbmQrRXZyakhMUktKdzRLUnJyR1JGeFNDblJCTmp2YTlMU0xLMTJZ?=
+ =?utf-8?B?ZUt1WWVGSEtDOXFtcFM0a003ajV3c3RVVzNOM00zQXVldE5BZ1pMWGNpcHo4?=
+ =?utf-8?B?VXM3TkFFK0ZDZkNQNnF4ZTRNVE9neUFyeEVCQytxL0k0TCtCdHRVNmlkR0sx?=
+ =?utf-8?B?NkpiTXRvL2VXS0RaNVN6TWN5ME5tclF1WWljR3lvSVJsUzU5dWpUSERNcTYw?=
+ =?utf-8?Q?9m7JBzxw50E=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bFZablIrM1NtTlRiUWpaWCtVNDN6ZVhJUTAycGtpb0N1MFlSSlFwQUtMeWNa?=
+ =?utf-8?B?Z1dMVllzcXorNmUrb2lUVStkd0pqODM4T2ZMcjd2TzhkT1piOVBqMmdXdWFy?=
+ =?utf-8?B?ZDg1UXVWOURTUkJVK3F0MDJHeTRjeGJVam52bjVaa0VPeVhkbHZCQ3FOYURV?=
+ =?utf-8?B?RmFXRkZpdG5WT1FkUlFnVUNLTVFJanVmb0tiZVIwN1VzTXJkdDRDUjBaSUZl?=
+ =?utf-8?B?S3RaYTU1UzVNQUdFd2JLUlBQd2lGb1JPb2Fpd1lXV2RwNGJ2eFdkWmQrOFJZ?=
+ =?utf-8?B?aHRJMnZmVVhEeDlHUmNhVkN4ZmNGeDdCSC9BcnBxdXgvYS9vMTdsWUtFR2dQ?=
+ =?utf-8?B?Ym5jNmpSZ1JnV0xWWFM3ZEYzZlozUlI5dkRJc3JpUFU5Z3dtSnEzNEhWZlBs?=
+ =?utf-8?B?VHhGRlNUQWRaV0haaFJtMnR2TGVsQ3pvUnlabmpmdUlRT3EyWGhYMzEzVk9F?=
+ =?utf-8?B?YVRyNTFXakx1MzIzcXg1bzdUb2NJeVNTVVlDSjR2Tk9uWWNJZ2JyTmllZytN?=
+ =?utf-8?B?M0MzNzgwMUtFbUt6MFRGZW1UcVA3WnVsdFRGL3BQVVV2dHRZZXZxQjY3ZkRP?=
+ =?utf-8?B?OVEzMGFzQWtET2grOW00NGdmVDJ0ejZDQ1BJbUpjUlJOZ3VTTjhKTFhFa1ZR?=
+ =?utf-8?B?RTliRllkcjVINVJaMklsejgvNTFEdG1ya2d1YlM5N2tZTnJLSTRsK1dSajM5?=
+ =?utf-8?B?bEJSUXQ2WmhONDV3R2k3d09VbUkxaWxBcUZrWllYNElKUFhCRWJxOWE4ZFV4?=
+ =?utf-8?B?YzhFYksvZ0lPc1RTL1dMZkM5eEthanVKc3hWbk5MdzdJY09yWlBBNzd5bkRO?=
+ =?utf-8?B?NXk2YUMvWHdZUFVlL05aT3VTMDZoVlg4OUhVemRlWi9uQTg2Y0VkUzhPNmJM?=
+ =?utf-8?B?Vk84YzdFVjRwcDN4Wko4eWtVeGt1RjFQdU1aNmZERHpUdzZOWEUxbzNxQ29G?=
+ =?utf-8?B?Ui81YUdGUUtSbGZobXhvamF1alYvSUxvZEV2dE8zSHVSSjdoaTVHeTY1VENv?=
+ =?utf-8?B?SXdwQTBETkhrSDk0SXZGaC9XWS84UFZjbDRQbVNudWNPdEVSMkhWNnlEZzE3?=
+ =?utf-8?B?NCs3RXlmRlNXVWVEOVk2VUFNTDQxZ3o3WTFsUnN6di9xWU4rbzdleEFDYStK?=
+ =?utf-8?B?bEp6Mk5scFVnTCt1N043Ny8wd2w2cVhySkdZcWUycG5tMHo4M3ZnZWZjSnRp?=
+ =?utf-8?B?WG16emM1WEMrV0ZlUFp0UlY3ejQ2K0xFRFBjUm1GUFQ0RUVVRTdZV0t0MXds?=
+ =?utf-8?B?UGxyeUpNZUNkbjh1cldLUnhXV3d1VnRESVBpM1MxSWpLNXVzWVpGMlpTUVBt?=
+ =?utf-8?B?TGUvSHc2NnFmbDVYZStRUithZFRnWnJHamNWVURML1diUE5iSlJyVXFIdEsy?=
+ =?utf-8?B?czdQVDdDSFVqbkpvWitJZkNiZTFXbGN3VjlSU1I3RFJFa0FHUERBajEydER0?=
+ =?utf-8?B?b21jQ2tCM0RpLzNHNFJFNmhCYldGT3BxWHVoa3NlV3ZxcnFtU0wxOUJhZ2hL?=
+ =?utf-8?B?RTRhczV6OUZmNVArY3JEaE5CYy9uYWlDRXNkdFdxUkp6SnBoSHRqNVVBUEtK?=
+ =?utf-8?B?TGtUYWEveklVOE0xdE9xK0ZOWlowMXhnU1NqeVFYSDhyNUluV3hNQlVDSmdn?=
+ =?utf-8?B?bzlwMFBxbndSakxxTW84OGhuQkd5MUMvUTRWZXJON3VmYmZ5UitsL3ZlKzZ1?=
+ =?utf-8?B?SWQ4empRVXU2OGk5QWkrV2xTZWZISTBqdXNpR0RGaWs4bDBOSjJPL3NiUHZV?=
+ =?utf-8?B?N1d0NWVySmJROTJjZlNFUk1xN1ZuVVVueUlvQzAzRjQ5TU9NYjdrSzhSeVRn?=
+ =?utf-8?B?TENRdUNBYmQzNGsvVEJIRXV4MWxVd1AyQy9sWkRGa3UrSjRLWUl6bXdmNEYw?=
+ =?utf-8?B?VXRkWDd2ZnBXUG9BbWhZWC9OampjSmp0ZTJWaVhDaksxZy9vdWdja09kdGxH?=
+ =?utf-8?B?eGhXV2dzSDB1UHdZeTJBd2tnTlAxN0EzeDZOR3VNYjZSMjJWKzVDdS9MVWNh?=
+ =?utf-8?B?OTh3dDB5dU9WUEZnczBCb01lMWVWU1dCNUR3YTFJMHRmNFVEaHZIam5iYWxm?=
+ =?utf-8?B?dnptS3k4Zy93MTBnZUN3d3FaZUVrZ3F2Q2pDT1FPckl1Q1A3bngyT2NYTzU1?=
+ =?utf-8?Q?18S1EKx1tmEX6keQ34aUjnTPf?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e90cec86-493b-483e-5c0f-08dd96bebed2
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2025 10:20:14.7755
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: g1ScZLJrbbGpGqb0QQh2kW6TCqa2Z0jGUNG9lrNxPcbF+Rv+vO8tg+iXVWm3fQ6FkM4d7QGXKJS2voLdapbVQA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6622
 
 
 
-> On 16 May 2025, at 2:55=E2=80=AFPM, Alexander Graf <graf@amazon.com> wrot=
-e:
->=20
-> Hey Ani,
->=20
-> We already presented concepts last year. If we want to preserve credibili=
-ty, this year we need to show a solution that's either merged or almost mer=
-ged upstream and ready to use.
+On 16/5/25 15:47, Dan Williams wrote:
+> From: Xu Yilun <yilun.xu@linux.intel.com>
+> 
+> Add kAPIs pci_tsm_{bind,unbind,guest_req}() for PCI devices.
+> 
+> pci_tsm_bind/unbind() are supposed to be called by kernel components
+> which manages the virtual device. The verb 'bind' means VMM does extra
+> configurations to make the assigned device ready to be validated by
+> CoCo VM as TDI (TEE Device Interface). Usually these configurations
+> include assigning device ownership and MMIO ownership to CoCo VM, and
+> move the TDI to CONFIG_LOCKED TDISP state by LOCK_INTERFACE_REQUEST
+> TDISP message. The detailed operations are specific to platform TSM
+> firmware so need to be supported by vendor TSM drivers.
+> 
+> pci_tsm_guest_req() supports a channel for CoCo VM to directly talk
+> to TSM firmware about further TDI operations after TDI is bound, e.g.
+> get device interface report, certifications & measurements. So this kAPI
+> is supposed to be called from KVM vmexit handler.
+> 
+> A problem to solve here is the TDI operation lock. The TDI operations
+> involve TDISP message communication with devices, which is transferred
+> via PF0's DOE. When multiple VFs or MFDs are involved at the same time,
+> these messages are not intended to interleave with each other. So
+> serialize all TSM operations of one slot by holding the DSM device (PF0)
+> pci_tsm.lock.
+> 
+> Add a struct pci_tdi to represent the TDI context, which is common to
+> all PFs/VFs/MFDs so embedded it in struct pci_tsm. The appearing of the
+> tsm::tdi means the device is in BOUND state and vice versa. So no extra
+> enum pci_tsm_state value is added for bind. That also means the access
+> to tsm::tdi must with the DEM device (PF0) TSM lock.
+> 
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Co-developed-by: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+>   drivers/pci/tsm.c       | 227 +++++++++++++++++++++++++++++++++++++++-
+>   include/linux/pci-tsm.h |  64 +++++++++++
+>   2 files changed, 290 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
+> index d00a8e471340..219e40c5d4e7 100644
+> --- a/drivers/pci/tsm.c
+> +++ b/drivers/pci/tsm.c
+> @@ -50,10 +50,65 @@ static struct mutex *tsm_ops_lock(struct pci_tsm_pf0 *tsm)
+>   }
+>   DEFINE_FREE(tsm_ops_unlock, struct mutex *, if (_T) mutex_unlock(_T))
+>   
+> +static int __pci_tsm_unbind(struct pci_dev *pdev);
+> +static void pci_tsm_unbind_all_vfs(struct pci_dev *pdev)
+> +{
+> +	struct pci_dev *virtfn;
+> +
+> +	for (int i = 0; i < pci_num_vf(pdev); i++) {
+> +		virtfn = pci_get_domain_bus_and_slot(pci_domain_nr(pdev->bus),
+> +						     pci_iov_virtfn_bus(pdev, i),
+> +						     pci_iov_virtfn_devfn(pdev, i));
+> +		if (virtfn) {
+> +			__pci_tsm_unbind(virtfn);
+> +			pci_dev_put(virtfn);
+> +		}
+> +	}
+> +}
+> +
+> +static void pci_tsm_unbind_all_mfds(struct pci_dev *pdev)
+> +{
+> +	struct pci_dev *phyfn;
+> +
+> +	for (int i = 0; i < 8; i++) {
+> +		phyfn = pci_get_slot(pdev->bus, PCI_DEVFN(PCI_SLOT(pdev->devfn), i));
+> +		if (phyfn) {
+> +			__pci_tsm_unbind(phyfn);
+> +			pci_dev_put(phyfn);
+> +		}
+> +	}
+> +}
+> +
+> +static int unbind_downstream(struct pci_dev *pdev, void *uport_subordinate)
+> +{
+> +	if (pdev->bus->parent != uport_subordinate)
+> +		return 0;
+> +
+> +	if (pdev->tsm && pdev->tsm->type == PCI_TSM_DOWNSTREAM)
+> +		__pci_tsm_unbind(pdev);
+> +
+> +	return 0;
+> +}
+> +
+> +static void pci_tsm_unbind_all_downstream(struct pci_dev *pdev)
+> +{
+> +	if (pci_pcie_type(pdev) != PCI_EXP_TYPE_UPSTREAM)
+> +		return;
+> +
+> +	if (!pdev->tsm)
+> +		return;
+> +
+> +	pci_walk_bus(pdev->subordinate, unbind_downstream, pdev->subordinate);
+> +}
+> +
+>   static int pci_tsm_disconnect(struct pci_dev *pdev)
+>   {
+>   	struct pci_tsm_pf0 *tsm = to_pci_tsm_pf0(pdev->tsm);
+>   
+> +	pci_tsm_unbind_all_downstream(pdev);
+> +	pci_tsm_unbind_all_vfs(pdev);
+> +	pci_tsm_unbind_all_mfds(pdev);
+> +
+>   	struct mutex *lock __free(tsm_ops_unlock) = tsm_ops_lock(tsm);
+>   	if (!lock)
+>   		return -EINTR;
+> @@ -392,8 +447,12 @@ static void __pci_tsm_destroy(struct pci_dev *pdev)
+>   
+>   	lockdep_assert_held_write(&pci_tsm_rwsem);
+>   
+> -	if (is_pci_tsm_pf0(pdev))
+> +	if (is_pci_tsm_pf0(pdev)) {
+>   		pci_tsm_pf0_destroy(pdev);
+> +	} else {
+> +		__pci_tsm_unbind(pdev);
+> +		pdev->tsm = NULL;
+> +	}
+>   	tsm_ops->remove(pci_tsm);
+>   }
+>   
+> @@ -435,3 +494,169 @@ int pci_tsm_doe_transfer(struct pci_dev *pdev, enum pci_doe_proto type,
+>   		       resp, resp_sz);
+>   }
+>   EXPORT_SYMBOL_GPL(pci_tsm_doe_transfer);
+> +
+> +/* lookup the 'DSM' pf0 for @pdev */
+> +static struct pci_dev *tsm_pf0_get(struct pci_dev *pdev)
+> +{
+> +	struct pci_dev *uport_pf0;
+> +
+> +	struct pci_dev *pf0 __free(pci_dev_put) = pf0_dev_get(pdev);
+> +	if (!pf0)
+> +		return NULL;
+> +
+> +	/* Check that @pf0 was not initialized as PCI_TSM_DOWNSTREAM */
+> +	if (pf0->tsm && pf0->tsm->type == PCI_TSM_PF0)
+> +		return no_free_ptr(pf0);
+> +
+> +	/*
+> +	 * For cases where a switch may be hosting TDISP services on
+> +	 * behalf of downstream devices, check the first usptream port
+> +	 * relative to this endpoint.
+> +	 */
+> +	if (!pdev->dev.parent || !pdev->dev.parent->parent)
+> +		return NULL;
+> +
+> +	uport_pf0 = to_pci_dev(pdev->dev.parent->parent);
+> +	if (!uport_pf0->tsm)
+> +		return NULL;
+> +	return pci_dev_get(uport_pf0);
+> +}
+> +
+> +/* Only implement non-interruptible lock for now */
+> +static struct mutex *tdi_ops_lock(struct pci_dev *pf0_dev)
+> +{
+> +	struct pci_tsm_pf0 *pf0_tsm;
+> +
+> +	lockdep_assert_held(&pci_tsm_rwsem);
+> +
+> +	if (!pf0_dev->tsm)
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	pf0_tsm = to_pci_tsm_pf0(pf0_dev->tsm);
+> +	mutex_lock(&pf0_tsm->lock);
+> +
+> +	if (pf0_tsm->state < PCI_TSM_CONNECT) {
+> +		mutex_unlock(&pf0_tsm->lock);
+> +		return ERR_PTR(-EINVAL);
+> +	}
+> +
+> +	return &pf0_tsm->lock;
+> +}
+> +DEFINE_FREE(tdi_ops_unlock, struct mutex *, if (!IS_ERR(_T)) mutex_unlock(_T))
+> +
+> +int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u64 tdi_id)
+> +{
+> +	struct pci_tdi *tdi;
+> +
+> +	if (!kvm)
+> +		return -EINVAL;
 
-Hmm ok I think it will be hard to get anything merged before the deadline o=
-n June 9th.=20
+Does not belong here, if the caller failed to get the kvm pointer from an fd, then that caller should handle it.
 
->=20
-> Alex
->=20
-> On 16.05.25 08:02, Ani Sinha wrote:
->> Is there any interest in sending a joint proposal in the upcoming KVM Fo=
-rum based on the updated, latest incarnation of the idea? We can send a pro=
-posal now (deadline is June 9th I believe) and then work on the details in =
-the subsequent weeks. I think we should be able to solidify the specifics o=
-f the hypervisor interface. When we presented this idea last year in the KV=
-M forum, it was quite a bit fuzzy and we did not explore the IGVM angle at =
-depth.
->> So in my opinion, it will be a much better talk this time particularly w=
-ith everyone (all major hyperscalers) showing interest on this.
->>=20
->> Thanks
->> Ani
->>=20
->>=20
->>> On 12 May 2025, at 9:51=E2=80=AFPM, Dan Middleton <dan.middleton@linux.=
-intel.com> wrote:
->>>=20
->>> The recording is now available:
->>> https://www.youtube.com/watch?v=3Dbio5BGhjui4
->>>=20
->>> Additional Minutes:
->>> https://docs.google.com/document/d/18D820gyt2xe84Jy6dGXgrNThApoozcekDzv=
-IlK2_bd4/edit?tab=3Dt.0#heading=3Dh.4qh5zyiozbow
->>>=20
->>> Really interesting discussion.
->>> Great that the discussion could be recruited on short notice.
->>> Sounds like follow-up might be over a thread here, with those not
->>> subscribed to linux-coco added directly.
->>>=20
->>> Keep in mind that the next SIG session is available and you can not onl=
-y
->>> show pictures there, but can gesture and point to the same things to
->>> clarify.. I don't understand this stage, this widget, this format.
->>>=20
->>> Thanks,
->>> Dan
->>>=20
->>> On 5/8/25 12:29 PM, Dionna Amalie Glaze wrote:
->>>> Thanks everyone who could attend the CCC Linux Kernel SIG meeting
->>>> about FUKI and specifically the firmware replacement mechanism.
->>>> Please +cc any participants I missed.
->>>> Meeting minutes:
->>>> * the concept from its initial version that was Qemu-specific and used
->>>> specially-named FwCfg files to direct CVM context reconstruction with
->>>> a different ROM.
->>>> * the viewpoint of generalizing that interface to be an IGVM-based
->>>> firmware loading instruction in order to reduce the interface's
->>>> interpretation requirements to keep focused on an emerging standard.
->>>> * the usefulness of "single artifact" VM template distribution, such
->>>> that the firmware can be disk-image specific and not need extra
->>>> orchestration to lead to VM construction.
->>>> * constraints of the different VMM providers, namely
->>>>    + AWS does not have access to guest resources. A disk can only be
->>>> read by a guest VM.
->>>>    + Azure doesn't have this constraint and does not want to build a
->>>> stage 1 VM just to tear it down to boot a stage 2 VM every cold reset.
->>>> It's far more preferable for the host to have the option to determine
->>>> if an IGVM will be requested to load, in which case it should be
->>>> loaded directly without VM construction.
->>>>    + GCP emulates Qemu devices and could implement the FUKI interface,
->>>> but would prefer to use mechanisms that are standardized through
->>>> professional bodies like the UEFI forum. Faster boots without VM
->>>> reconstruction are also highly desirable.
->>>> Jon requested for Alex to give some more design consideration into a
->>>> mechanism that would satisfy both AWS and Azure's constraints.
->>>> Alex suggested the framework of a solution: mount the guest image,
->>>> search the boot partition for a specially named IGVM file, and launch
->>>> that instead of the CSP's firmware.
->>>> (Dionna notes outside of the meeting that this has the danger of being
->>>> an unsound optimization of directly loading the disk image under the
->>>> CSP firmware for FUKI application to load the IGVM due to no
->>>> requirement that the FUKI application load that specific IGVM file)
->>>> I look forward to our further discussion on how to provide a more
->>>> trustworthy Confidential Computing experience in the Cloud for our
->>>> customers :)
->>>> On Wed, May 7, 2025 at 4:04=E2=80=AFPM Steve Rutherford <srutherford@g=
-oogle.com> wrote:
->>>>> Heads up, this meeting is tomorrow, May 8th at 9AM PDT (6PM CEST), if
->>>>> you all are available.
->>>>>=20
->>>>> On Fri, Apr 11, 2025 at 1:31=E2=80=AFAM Vitaly Kuznetsov <vkuznets@re=
-dhat.com> wrote:
->>>>>> Ani Sinha <anisinha@redhat.com> writes:
->>>>>>=20
->>>>>>> Adding Vitaly as well who is also involved in this project from Red=
- Hat.
->>>>>>>=20
->>>>>>> On Fri, Apr 11, 2025 at 4:46=E2=80=AFAM Dionna Amalie Glaze
->>>>>>> <dionnaglaze@google.com> wrote:
->>>>>>>> Hi y'all, my colleague Steve Rutherford runs a monthly special
->>>>>>>> interest group meeting amongst Linux kernel developers under the
->>>>>>>> confidential computing consortium umbrella.
->>>>>>>>=20
->>>>>>>> The f-UKI concept presented at FOSDEM is a very interesting idea f=
-or
->>>>>>>> improving customer trust in cloud confidential VMs without the nee=
-d
->>>>>>>> for complex control plane resource management for virtual firmware
->>>>>>>> EEPROM.
->>>>>>>>=20
->>>>>>>> Microsoft has proposed a firmware loading format called IGVM that =
-the
->>>>>>>> Coconut-SVSM project has adopted, and has support in Vanadium
->>>>>>>> (Google's KVM-based VMM), Qemu, and OpenVMM (donated to the CCC).
->>>>>>>>=20
->>>>>>>> I see Alexander from AWS in the Qemu threads for vmfwupdate, so no=
-w
->>>>>>>> that's at least the top 3 CSPs represented here.
->>>>>>>>=20
->>>>>>>> I think for everyone in the To: tag here, we all have a vested
->>>>>>>> interest in improving the CVM trust story without making the
->>>>>>>> virtualization ecosystem even more challenging to work with. I'd l=
-ike
->>>>>>>> to invite you all to our next meeting
->>>>>>>>=20
->>>>>>>> 9am PDT May 8th: https://confidentialcomputing.io/get-involved/cal=
-endar/
->>>>>>>>=20
->>>>>> Hi Ani, Dionna, everyone,
->>>>>>=20
->>>>>> I'd be delighted to participate! May, 8th, however, is a public holi=
-day
->>>>>> in some European countries including CZ where I'm based and I will b=
-e
->>>>>> traveling on that day so I may not be able to join. I'm, however, pr=
-etty
->>>>>> certain that Ani/Alex/Gerd can represent the idea very well)
->>>>>>=20
->>>>>> --
->>>>>> Vitaly
->>>>>>=20
->=20
->=20
->=20
-> Amazon Web Services Development Center Germany GmbH
-> Tamara-Danz-Str. 13
-> 10243 Berlin
-> Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-> Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
-> Sitz: Berlin
-> Ust-ID: DE 365 538 597
+> +
+> +	struct rw_semaphore *lock __free(tsm_read_unlock) = tsm_read_lock();
+> +	if (!lock)
+> +		return -EINTR;
+> +
+> +	if (!pdev->tsm)
+> +		return -EINVAL;
+> +
+> +	struct pci_dev *pf0_dev __free(pci_dev_put) = tsm_pf0_get(pdev);
+> +	if (!pf0_dev)
+> +		return -EINVAL;
+> +
+> +	struct mutex *ops_lock __free(tdi_ops_unlock) = tdi_ops_lock(pf0_dev);
+> +	if (IS_ERR(ops_lock))
+> +		return PTR_ERR(ops_lock);
+> +
+> +	if (pdev->tsm->tdi) {
+> +		if (pdev->tsm->tdi->kvm == kvm)
+> +			return 0;
+> +		else
+> +			return -EBUSY;
+> +	}
+> +
+> +	tdi = tsm_ops->bind(pdev, pf0_dev, kvm, tdi_id);
+> +	if (!tdi)
+> +		return -ENXIO;
+> +
+> +	pdev->tsm->tdi = tdi;
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(pci_tsm_bind);
+> +
+> +static int __pci_tsm_unbind(struct pci_dev *pdev)
+> +{
+> +	struct pci_tdi *tdi;
+> +
+> +	lockdep_assert_held(&pci_tsm_rwsem);
+> +
+> +	if (!pdev->tsm)
+> +		return -EINVAL;
+
+Nothing checks for these errors.
+
+> +
+> +	struct pci_dev *pf0_dev __free(pci_dev_put) = tsm_pf0_get(pdev);
+> +	if (!pf0_dev)
+> +		return -EINVAL;
+> +
+> +	struct mutex *lock __free(tdi_ops_unlock) = tdi_ops_lock(pf0_dev);
+> +	if (IS_ERR(lock))
+> +		return PTR_ERR(lock);
+> +
+> +	tdi = pdev->tsm->tdi;
+> +	if (!tdi)
+> +		return 0;
+> +
+> +	tsm_ops->unbind(tdi);
+> +	pdev->tsm->tdi = NULL;
+> +
+> +	return 0;
+> +}
+> +
+> +int pci_tsm_unbind(struct pci_dev *pdev)
+> +{
+> +	struct rw_semaphore *lock __free(tsm_read_unlock) = tsm_read_lock();
+> +	if (!lock)
+> +		return -EINTR;
+> +
+> +	return __pci_tsm_unbind(pdev);
+> +}
+> +EXPORT_SYMBOL_GPL(pci_tsm_unbind);
+> +
+> +/**
+> + * pci_tsm_guest_req - VFIO/IOMMUFD helper to handle guest requests
+> + * @pdev: @pdev representing a bound tdi
+> + * @info: envelope for the request
+> + *
+> + * Expected flow is guest low-level TSM driver initiates a guest request
+> + * like "transition TDISP state to RUN", "fetch report" via a
+> + * technology specific guest-host-interface and KVM exit reason. KVM
+> + * posts to userspace (e.g. QEMU) that holds the host-to-guest RID
+> + * mapping.
+> + */
+> +int pci_tsm_guest_req(struct pci_dev *pdev, struct pci_tsm_guest_req_info *info)
+> +{
+> +	struct pci_tdi *tdi;
+> +	int rc;
+> +
+> +	lockdep_assert_held_read(&pci_tsm_rwsem);
+> +
+> +	if (!pdev->tsm)
+> +		return -ENODEV;
+> +
+> +	struct pci_dev *pf0_dev __free(pci_dev_put) = tsm_pf0_get(pdev);
+> +	if (!pf0_dev)
+> +		return -EINVAL;
+> +
+> +	struct mutex *lock __free(tdi_ops_unlock) = tdi_ops_lock(pf0_dev);
+> +	if (IS_ERR(lock))
+> +		return -ENODEV;
+> +
+> +	tdi = pdev->tsm->tdi;
+> +	if (!tdi)
+> +		return -ENODEV;
+> +
+> +	rc = tsm_ops->guest_req(pdev, info);
+> +	if (rc)
+> +		return -EIO;
+
+return rc.
+
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(pci_tsm_guest_req);
+> diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
+> index 00fdae087069..2328037ae4d1 100644
+> --- a/include/linux/pci-tsm.h
+> +++ b/include/linux/pci-tsm.h
+> @@ -5,6 +5,7 @@
+>   #include <linux/pci.h>
+>   
+>   struct pci_dev;
+> +struct kvm;
+>   
+>   enum pci_tsm_state {
+>   	PCI_TSM_ERR = -1,
+> @@ -28,10 +29,23 @@ enum pci_tsm_type {
+>   	PCI_TSM_DOWNSTREAM,
+>   };
+>   
+> +/**
+> + * struct pci_tdi - TDI context
+> + * @pdev: host side representation of guest-side TDI
+> + * @dsm: PF0 PCI device that can modify TDISP state for the TDI
+> + * @kvm: TEE VM context of bound TDI
+> + */
+> +struct pci_tdi {
+> +	struct pci_dev *pdev;
+> +	struct pci_dev *dsm;
+> +	struct kvm *kvm;
+> +};
+> +
+>   /**
+>    * struct pci_tsm - Core TSM context for a given PCIe endpoint
+>    * @pdev: indicates the type of pci_tsm object
+>    * @type: pci_tsm object type to disambiguate PCI_TSM_DOWNSTREAM and PCI_TSM_PF0
+> + * @tdi: TDI context
+>    *
+>    * This structure is wrapped by a low level TSM driver and returned by
+>    * tsm_ops.probe(), it is freed by tsm_ops.remove(). Depending on
+> @@ -42,6 +56,7 @@ enum pci_tsm_type {
+>   struct pci_tsm {
+>   	struct pci_dev *pdev;
+>   	enum pci_tsm_type type;
+> +	struct pci_tdi *tdi;
+>   };
+>   
+>   /**
+> @@ -86,12 +101,40 @@ static inline bool is_pci_tsm_pf0(struct pci_dev *pdev)
+>   	return PCI_FUNC(pdev->devfn) == 0;
+>   }
+>   
+> +enum pci_tsm_guest_req_type {
+> +	PCI_TSM_GUEST_REQ_TDXC,
+
+Will Intel ever need more types here?
+
+> +};
+> +
+> +/**
+> + * struct pci_tsm_guest_req_info - parameter for pci_tsm_ops.guest_req()
+> + * @type: identify the format of the following blobs
+> + * @type_info: extra input/output info, e.g. firmware error code
+
+Call it "fw_ret"?
+
+> + * @type_info_len: the size of @type_info
+> + * @req: request data buffer filled by guest
+> + * @req_len: the size of @req filled by guest
+> + * @resp: response data buffer filled by host
+> + * @resp_len: for input, the size of @resp buffer filled by guest
+> + *	      for output, the size of actual response data filled by host
+> + */
+> +struct pci_tsm_guest_req_info {
+> +	enum pci_tsm_guest_req_type type;
+> +	void *type_info;
+> +	size_t type_info_len;
+> +	void *req;
+> +	size_t req_len;
+> +	void *resp;
+> +	size_t resp_len;
+> +};
+> +
+>   /**
+>    * struct pci_tsm_ops - Low-level TSM-exported interface to the PCI core
+>    * @probe: probe/accept device for tsm operation, setup DSM context
+>    * @remove: destroy DSM context
+>    * @connect: establish / validate a secure connection (e.g. IDE) with the device
+>    * @disconnect: teardown the secure connection
+> + * @bind: establish a secure binding with the TVM
+> + * @unbind: teardown the secure binding
+> + * @guest_req: handle the vendor specific requests from TVM when bound
+>    *
+>    * @probe and @remove run in pci_tsm_rwsem held for write context. All
+>    * other ops run under the @pdev->tsm->lock mutex and pci_tsm_rwsem held
+> @@ -102,6 +145,11 @@ struct pci_tsm_ops {
+>   	void (*remove)(struct pci_tsm *tsm);
+>   	int (*connect)(struct pci_dev *pdev);
+>   	void (*disconnect)(struct pci_dev *pdev);
+> +	struct pci_tdi *(*bind)(struct pci_dev *pdev, struct pci_dev *pf0_dev,
+> +				struct kvm *kvm, u64 tdi_id);
+
+pf0_dev is not needed here, we should be able to calculate it from pdev.
+
+tdi_id is 32bit.
+
+Should return an error code. Thanks,
+
+> +	void (*unbind)(struct pci_tdi *tdi);
+> +	int (*guest_req)(struct pci_dev *pdev,
+> +			 struct pci_tsm_guest_req_info *info);
+>   };
+>   
+>   enum pci_doe_proto {
+> @@ -118,6 +166,9 @@ int pci_tsm_doe_transfer(struct pci_dev *pdev, enum pci_doe_proto type,
+>   			 size_t resp_sz);
+>   void pci_tsm_initialize(struct pci_dev *pdev, struct pci_tsm *tsm);
+>   int pci_tsm_pf0_initialize(struct pci_dev *pdev, struct pci_tsm_pf0 *tsm);
+> +int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u64 tdi_id);
+> +int pci_tsm_unbind(struct pci_dev *pdev);
+> +int pci_tsm_guest_req(struct pci_dev *pdev, struct pci_tsm_guest_req_info *info);
+>   #else
+>   static inline int pci_tsm_core_register(const struct pci_tsm_ops *ops,
+>   					const struct attribute_group *grp)
+> @@ -134,5 +185,18 @@ static inline int pci_tsm_doe_transfer(struct pci_dev *pdev,
+>   {
+>   	return -ENOENT;
+>   }
+> +static inline int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm,
+> +			       u64 tdi_id)
+> +{
+> +	return -ENOENT;
+> +}
+> +static inline int pci_tsm_unbind(struct pci_dev *pdev)
+> +{
+> +	return -ENOENT;
+> +}
+> +int pci_tsm_guest_req(struct pci_dev *pdev, struct pci_tsm_guest_req_info *info)
+> +{
+> +	return -ENOENT;
+> +}
+>   #endif
+>   #endif /*__PCI_TSM_H */
+
+-- 
+Alexey
 
