@@ -1,132 +1,211 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA4B246771
-	for <linux-coco@lists.linux.dev>; Tue, 20 May 2025 14:41:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1A520E71D;
+	Tue, 20 May 2025 14:48:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747752098; cv=none; b=TjBS1R8ugHRJuuz4rWzIDRBoCLIZUNxCDawZz9EO0GZHQSQ8spn1z7ZKFL33i4/GcRYwliESQKE4FZ/fAvTQ1QY17LXBjI5jGI15p19cnzRbnjLearIX1EG7obhqNcKzPps72jBnzAcf0OUCwl7QAIWKpjWnDQfK9RPagAf6mJk=
+	t=1747752487; cv=none; b=tc2rLApRcYtUKYDT6tO7ZHLeb21Z2sX6ff4TRL+IgoevnR8CefKyZbd8f4JrL0DIcccmJLRzUhxTR26h46Q/YIauL7ax7KloFl0Ndvq0pOBwUtbJQCd0E7Hbdok7Fhyh8kUwqiFxZuwmEFXt0asrSnmHT3MUJMl1dla0HpznoGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747752098; c=relaxed/simple;
-	bh=HpfNiTPAANbqe3RbMf12jI9XVS4HyrmhMBmve5e2Xoc=;
-	h=Mime-Version:Subject:From:In-Reply-To:Date:Cc:Message-Id:
-	 References:To:Content-Type; b=FWGgComCvPCkDmQzGuQJwa3k6X+hVq14RcUfYj2SSzJwdWRjlZf+a8GpERzYnsKoiZ9VX7J3HdLWOVl6EfFVQKCJEYjKzzP4oAqOLZGyAvrqX6AwIItLPpFls8v7ex8gVsIudZlfEcdFIKsSGuc5TVN+peLeN7S0NN2jqDngtIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UGcnEvrM; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UGcnEvrM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747752095;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HpfNiTPAANbqe3RbMf12jI9XVS4HyrmhMBmve5e2Xoc=;
-	b=UGcnEvrMSUP9YmTpXJVm0DAW3QOntSRozTGMpKxKiYtsd5O1yBsvtHW5/7KVKlVnXwoqwM
-	GBdleN2r1vKAxiOSOBKz6md9ysw9RiPJlac9suzrixSrkmQPsh6PwwzupRt/B1AxV9gZBL
-	gHhE4F1JMr2UYLBhp6d942c89bKqFz8=
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-351-OD1CDODVMN2DODoY_wvZpw-1; Tue, 20 May 2025 10:41:32 -0400
-X-MC-Unique: OD1CDODVMN2DODoY_wvZpw-1
-X-Mimecast-MFC-AGG-ID: OD1CDODVMN2DODoY_wvZpw_1747752090
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-7429fc0bfc8so4167884b3a.1
-        for <linux-coco@lists.linux.dev>; Tue, 20 May 2025 07:41:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747752090; x=1748356890;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rcS2SeryfDuJG8EvZLBBrpQADW2521i2kOb8Z2mCLnw=;
-        b=SIOqkiLQ0mBALYwfddYrVWIAJ/vtNvYBVTzgevtbOmyEPQZMZGkMyiQOVgnUeubx8m
-         FUkPSlB7oGBHKzJlQzPwdgaC163ql+fs257RzmM+6zRrSepSF+oyuFDNcNhXCEB1E4SY
-         S4ML3W4+jpkTG5WPHhUWrc8DvYHNN3jcWlQ/HolrMo3QGTYnDjnRPsH0wFQaPk784hBU
-         9pRpceIA8Gq6V/MzB3CwIENH9F6FFBzBAQoez1f5pGgud5KuCrljlOCojx8iZduBoJXl
-         2bTvYj+IF8Ib+1aFMMmMfRV4zwJD6MxS6kKSzSx+HjNbjlDhq0k30zOAyrPqgbiPklY/
-         Et1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWJp4B1oyO14/oQ5pKAzhJZ6UAjfa1aF7HAy5VTqYTt9f3Mxog3ajc9payi+4vUAkrT8c/TSAlfYi40@lists.linux.dev
-X-Gm-Message-State: AOJu0YwphIr0s8HSVSGoE3IbiTY8vXlGxlz3HqPA01pLPqciG6YaYfui
-	zs3c9lsuEu7UgStdDgiYJDHQWijl4pauyFk/c5Q/KFnjXPft/wookEpaSJfv1V6vxlo02W8c+KO
-	WgdX1xITQSoFCeGmfhlerHBMV2PvVCag6tEMugm1WoXcfiBob5TidC0XA/kwhnNA=
-X-Gm-Gg: ASbGnctE2sF6SYApjOFvj3fCM+U8RNtyfbBqC6+VjvZ8rb5FCiYWvq6jjp6MTC6Q8B+
-	fv7aE2myIt5Z/nkGWlQ/lmptpCafJ1fTJQOcUQo1cc9wjMnolYS3Fx7sI3g+Zgam7WxWoEvhzz6
-	YoFQy+a6OxwqMzvYYQbSkW/iEvUdFxN+63Sc8vuxnwXA8CCVjcqOpUtq0Rw2CVHCS59ZIotAM07
-	qGUW3Bj/WiuZABj9Bgs8O4fNlIPxwDTaMRQC41iROo49x4ANS7rRmkoSUUDL3URNZWsoL3LBgQ3
-	aDgv8UKbblfzyTngqiXhtIYntJL7
-X-Received: by 2002:a05:6a21:1788:b0:218:11d6:b66 with SMTP id adf61e73a8af0-21811d60d10mr22111161637.5.1747752089596;
-        Tue, 20 May 2025 07:41:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEoQRkiqsJeUCAA8vxynnl6yjPrrnuScXPjEVUxmdhIQ+GT4giFNiXjm9M08IAcuzyMFyMGmw==
-X-Received: by 2002:a05:6a21:1788:b0:218:11d6:b66 with SMTP id adf61e73a8af0-21811d60d10mr22111105637.5.1747752089161;
-        Tue, 20 May 2025 07:41:29 -0700 (PDT)
-Received: from smtpclient.apple ([115.96.146.104])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b26eaf6dd83sm8050031a12.18.2025.05.20.07.41.25
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 20 May 2025 07:41:28 -0700 (PDT)
+	s=arc-20240116; t=1747752487; c=relaxed/simple;
+	bh=WCKzpIynvWaAtjaaXVKE+DRuvRGKoM5NxQJWUeQ9iDA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=d4ClZcw3ryxe/0wtYBi+oyKzK2LC/s/F9Dsk3mTOs0fbSfqMhDsHgAao5VJxi+Islb2vO3QwTod1G2sqSh/QGu+mWxPxD0StXb/jtVMiMCCfQCUz43qmcH2rIBUCw8KsVfTapLOMaStuRFXwc/7MtoDtnZoEVQxb1oZTahlAgZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E1B6F1516;
+	Tue, 20 May 2025 07:47:51 -0700 (PDT)
+Received: from [10.57.50.40] (unknown [10.57.50.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3E0A53F6A8;
+	Tue, 20 May 2025 07:48:02 -0700 (PDT)
+Message-ID: <d1b3caaf-636f-48e6-90e6-0bb650753748@arm.com>
+Date: Tue, 20 May 2025 15:48:01 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.2\))
-Subject: Re: Linux kernel SIG meeting for vwfwupdate discussion
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <95a3e3ca-4fba-411c-b979-4dc8ecc1f902@amazon.com>
-Date: Tue, 20 May 2025 20:11:12 +0530
-Cc: Dan Middleton <dan.middleton@linux.intel.com>,
- Dionna Amalie Glaze <dionnaglaze@google.com>,
- Steve Rutherford <srutherford@google.com>,
- linux-coco@lists.linux.dev,
- Vitaly Kuznetsov <vkuznets@redhat.com>,
- Joerg Roedel <jroedel@suse.de>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Jon Lange <jlange@microsoft.com>,
- "cho@microsoft.com" <cho@microsoft.com>,
- James Bottomley <James.Bottomley@hansenpartnership.com>
-Message-Id: <64D33153-BCA6-4971-97A7-110504B4AAA3@redhat.com>
-References: <CAAH4kHZ2yO3ju_iJinR9y4BDXXdWBnEP1wcv09JWMzaqp1ZP+g@mail.gmail.com>
- <CAK3XEhOs4ijnbqmv8UrNmKN4=nv6+_A7fESLibGBRR9u8rXi6w@mail.gmail.com>
- <87frifm75c.fsf@redhat.com>
- <CABayD+eRjjknqJNRkkh9_KraC-jZyXb1BL_D79m04po1_hR-_g@mail.gmail.com>
- <CAAH4kHbCduQr_+oj0X8QeTjgDgh6aBncPV-1+mvB_r1R3i7Lqg@mail.gmail.com>
- <3d9fa17e-2b74-4c90-99b8-5b1dc8d15356@linux.intel.com>
- <100D7ECF-1292-450A-9F65-FEBA5843AB99@redhat.com>
- <7c650817-09d9-4c41-96db-62c0950d71d5@amazon.com>
- <0E0BB5C5-457F-49B3-A61D-98BCD10CC430@redhat.com>
- <95a3e3ca-4fba-411c-b979-4dc8ecc1f902@amazon.com>
-To: Alexander Graf <graf@amazon.com>
-X-Mailer: Apple Mail (2.3776.700.51.11.2)
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: nGMCWUL9V9OHUMc-C6MHpzEJfl7dKhz6RDiDeDO7ThI_1747752090
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 20/43] arm64: RME: Runtime faulting of memory
+Content-Language: en-GB
+To: Steven Price <steven.price@arm.com>, Gavin Shan <gshan@redhat.com>,
+ kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+References: <20250416134208.383984-1-steven.price@arm.com>
+ <20250416134208.383984-21-steven.price@arm.com>
+ <c99b408c-3819-482a-a427-68045211e434@redhat.com>
+ <4fca6bfa-3687-4fdf-8204-00fa90d36e2a@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <4fca6bfa-3687-4fdf-8204-00fa90d36e2a@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
+On 16/05/2025 16:33, Steven Price wrote:
+> On 01/05/2025 01:16, Gavin Shan wrote:
+>> On 4/16/25 11:41 PM, Steven Price wrote:
+>>> At runtime if the realm guest accesses memory which hasn't yet been
+>>> mapped then KVM needs to either populate the region or fault the guest.
+>>>
+>>> For memory in the lower (protected) region of IPA a fresh page is
+>>> provided to the RMM which will zero the contents. For memory in the
+>>> upper (shared) region of IPA, the memory from the memslot is mapped
+>>> into the realm VM non secure.
+>>>
+>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>> ---
+>>> Changes since v7:
+>>>    * Remove redundant WARN_ONs for realm_create_rtt_levels() - it will
+>>>      internally WARN when necessary.
+>>> Changes since v6:
+>>>    * Handle PAGE_SIZE being larger than RMM granule size.
+>>>    * Some minor renaming following review comments.
+>>> Changes since v5:
+>>>    * Reduce use of struct page in preparation for supporting the RMM
+>>>      having a different page size to the host.
+>>>    * Handle a race when delegating a page where another CPU has faulted on
+>>>      a the same page (and already delegated the physical page) but not yet
+>>>      mapped it. In this case simply return to the guest to either use the
+>>>      mapping from the other CPU (or refault if the race is lost).
+>>>    * The changes to populate_par_region() are moved into the previous
+>>>      patch where they belong.
+>>> Changes since v4:
+>>>    * Code cleanup following review feedback.
+>>>    * Drop the PTE_SHARED bit when creating unprotected page table entries.
+>>>      This is now set by the RMM and the host has no control of it and the
+>>>      spec requires the bit to be set to zero.
+>>> Changes since v2:
+>>>    * Avoid leaking memory if failing to map it in the realm.
+>>>    * Correctly mask RTT based on LPA2 flag (see rtt_get_phys()).
+>>>    * Adapt to changes in previous patches.
+>>> ---
+>>>    arch/arm64/include/asm/kvm_emulate.h |  10 ++
+>>>    arch/arm64/include/asm/kvm_rme.h     |  10 ++
+>>>    arch/arm64/kvm/mmu.c                 | 127 ++++++++++++++++++-
+>>>    arch/arm64/kvm/rme.c                 | 180 +++++++++++++++++++++++++++
+>>>    4 files changed, 321 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/
+>>> include/asm/kvm_emulate.h
+>>> index c803c8188d9c..def439d6d732 100644
+>>> --- a/arch/arm64/include/asm/kvm_emulate.h
+>>> +++ b/arch/arm64/include/asm/kvm_emulate.h
+>>> @@ -704,6 +704,16 @@ static inline bool kvm_realm_is_created(struct
+>>> kvm *kvm)
+>>>        return kvm_is_realm(kvm) && kvm_realm_state(kvm) !=
+>>> REALM_STATE_NONE;
+>>>    }
+>>>    +static inline gpa_t kvm_gpa_from_fault(struct kvm *kvm, phys_addr_t
+>>> ipa)
+>>> +{
+>>> +    if (kvm_is_realm(kvm)) {
+>>> +        struct realm *realm = &kvm->arch.realm;
+>>> +
+>>> +        return ipa & ~BIT(realm->ia_bits - 1);
+>>> +    }
+>>> +    return ipa;
+>>> +}
+>>> +
+>>>    static inline bool vcpu_is_rec(struct kvm_vcpu *vcpu)
+>>>    {
+>>>        if (static_branch_unlikely(&kvm_rme_is_available))
+>>> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/
+>>> asm/kvm_rme.h
+>>> index d86051ef0c5c..47aa6362c6c9 100644
+>>> --- a/arch/arm64/include/asm/kvm_rme.h
+>>> +++ b/arch/arm64/include/asm/kvm_rme.h
+>>> @@ -108,6 +108,16 @@ void kvm_realm_unmap_range(struct kvm *kvm,
+>>>                   unsigned long ipa,
+>>>                   unsigned long size,
+>>>                   bool unmap_private);
+>>> +int realm_map_protected(struct realm *realm,
+>>> +            unsigned long base_ipa,
+>>> +            kvm_pfn_t pfn,
+>>> +            unsigned long size,
+>>> +            struct kvm_mmu_memory_cache *memcache);
+>>> +int realm_map_non_secure(struct realm *realm,
+>>> +             unsigned long ipa,
+>>> +             kvm_pfn_t pfn,
+>>> +             unsigned long size,
+>>> +             struct kvm_mmu_memory_cache *memcache);
+>>>      static inline bool kvm_realm_is_private_address(struct realm *realm,
+>>>                            unsigned long addr)
+>>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>>> index 71c04259e39f..02b66ee35426 100644
+>>> --- a/arch/arm64/kvm/mmu.c
+>>> +++ b/arch/arm64/kvm/mmu.c
+>>> @@ -338,8 +338,13 @@ static void __unmap_stage2_range(struct
+>>> kvm_s2_mmu *mmu, phys_addr_t start, u64
+>>>          lockdep_assert_held_write(&kvm->mmu_lock);
+>>>        WARN_ON(size & ~PAGE_MASK);
+>>> -    WARN_ON(stage2_apply_range(mmu, start, end,
+>>> KVM_PGT_FN(kvm_pgtable_stage2_unmap),
+>>> -                   may_block));
+>>> +
+>>> +    if (kvm_is_realm(kvm))
+>>> +        kvm_realm_unmap_range(kvm, start, size, !only_shared);
+>>> +    else
+>>> +        WARN_ON(stage2_apply_range(mmu, start, end,
+>>> +                       KVM_PGT_FN(kvm_pgtable_stage2_unmap),
+>>> +                       may_block));
+>>>    }
+>>>    
+>>
+>> As spotted previsouly, the parameter @may_block isn't handled by
+>> kvm_realm_unmap_range().
+> 
+> Ack.
+> 
+>>>    void kvm_stage2_unmap_range(struct kvm_s2_mmu *mmu, phys_addr_t start,
+>>> @@ -359,7 +364,10 @@ static void stage2_flush_memslot(struct kvm *kvm,
+>>>        phys_addr_t addr = memslot->base_gfn << PAGE_SHIFT;
+>>>        phys_addr_t end = addr + PAGE_SIZE * memslot->npages;
+>>>    -    kvm_stage2_flush_range(&kvm->arch.mmu, addr, end);
+>>> +    if (kvm_is_realm(kvm))
+>>> +        kvm_realm_unmap_range(kvm, addr, end - addr, false);
+>>> +    else
+>>> +        kvm_stage2_flush_range(&kvm->arch.mmu, addr, end);
+>>>    }
+>>>      /**
+>>> @@ -1053,6 +1061,10 @@ void stage2_unmap_vm(struct kvm *kvm)
+>>>        struct kvm_memory_slot *memslot;
+>>>        int idx, bkt;
+>>>    +    /* For realms this is handled by the RMM so nothing to do here */
+>>> +    if (kvm_is_realm(kvm))
+>>> +        return;
+>>> +
+>>>        idx = srcu_read_lock(&kvm->srcu);
+>>>        mmap_read_lock(current->mm);
+>>>        write_lock(&kvm->mmu_lock);
+>>> @@ -1078,6 +1090,7 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
+>>>        if (kvm_is_realm(kvm) &&
+>>>            (kvm_realm_state(kvm) != REALM_STATE_DEAD &&
+>>>             kvm_realm_state(kvm) != REALM_STATE_NONE)) {
+>>> +        kvm_stage2_unmap_range(mmu, 0, (~0ULL) & PAGE_MASK, false);
+>>>            write_unlock(&kvm->mmu_lock);
+>>>            kvm_realm_destroy_rtts(kvm, pgt->ia_bits);
+>>
+>> (~0ULL & PAGE_MASK) wouldn't be a problem since the range will be
+>> limited to
+>> [0, BIT(realm->ia_bits) - 1] in kvm_realm_unmap_range(). I think it's
+>> reasonable
+>> to pass the maximal size here, something like:
+>>
+>>          kvm_stage2_unmap_range(mmu, 0, BIT(realm->ia_bits - 1), false);
 
+I think this must be, given the end is excluding:
+	   kvm_stage2_unmap_range(mmu, 0, BIT(realm->ia_bits), false);
 
-> On 19 May 2025, at 4:55=E2=80=AFPM, Alexander Graf <graf@amazon.com> wrot=
-e:
->=20
->=20
-> On 19.05.25 10:37, Ani Sinha wrote:
->>> On 16 May 2025, at 2:55=E2=80=AFPM, Alexander Graf <graf@amazon.com> wr=
-ote:
->>>=20
->>> Hey Ani,
->>>=20
->>> We already presented concepts last year. If we want to preserve credibi=
-lity, this year we need to show a solution that's either merged or almost m=
-erged upstream and ready to use.
->> Hmm ok I think it will be hard to get anything merged before the deadlin=
-e on June 9th.
->=20
->=20
-> It doesn't have to be merged on the 9th, but it should have a realistic a=
-venue to be merged by September 4th :).
+BIT(realm->ia_bits - 1) only covers the protected half. The unprotected 
+half spans  [ BIT(realm->ia_bits - 1), BIT(realm->ia_bits))
 
-One blocker in this path is that IGVM support has not yet been merged into =
-QEMU. I know Roy (now at MSFT) is working on it and I pinged him today in t=
-he mailing list.
-
+Suzuki
