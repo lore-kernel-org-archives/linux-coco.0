@@ -1,285 +1,233 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181DD23504D
-	for <linux-coco@lists.linux.dev>; Wed, 21 May 2025 06:49:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747810148; cv=fail; b=jkOkQvRSOHPkY9+SqNhtzqDd92GlswfKv/5ulRyELGr/CZa1mABb2SbPiQ1tEEc2andqaKnC96xLZVh11wl2ApmHn+60eTjsmbNWwAi6JzkXbq11gBSUvsP4yho0c24GKgWbnzV0cYnVNWNeAU0FB8IJ2jxzsZOqmYjdG7kZFdA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747810148; c=relaxed/simple;
-	bh=anrIDH8smWDPpSIMxn4ddY24zpEtUd3CKSrIrJoO7Us=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=abaNAK1bA7RfbDiv8fnWliqlVpDpD8YFfVdMzXMZ2D5psnYRukJi24HXseXlB9VAmU1V485jmBdzKUvOlGb+Nv6gJX486TpjhCravH13Vgugee0vv7sBkjuncqt78RFeVGizLsz7y14VOYSCpxuH5DT7ndkkL44E1L+qTUtCHG4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MNHsMtlV; arc=fail smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MNHsMtlV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747810147; x=1779346147;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=anrIDH8smWDPpSIMxn4ddY24zpEtUd3CKSrIrJoO7Us=;
-  b=MNHsMtlV5Tw4wxTNoDXrm4DPwaZrfuxLknqtg5p2cyEScaPpBxnl5GOm
-   02EObyfjWo43MO3+yD/A2ogXB28814IhMur19jKDAS1Xb5jGlWhn/in79
-   GACRDmeNV022bXXqcM+PN3L+4ICZai+GHIkIq8c6/4WEOijXuNhv5d82l
-   RB8AaZ3NrZ75kcUlHJuodYZzhvoGsxGQC7q6I7kkaepnJ2C9BNwJ/B3th
-   u/eKv0xpCCaKSr5bNZMGgxPUQx+vaLnKq4pyjWCvzH7pFrew2XRSPefnT
-   lGWWisFxsaGHygefiIhcSFLwKKWnqQlq1HdfHyKHnydxPiURtX+RfbPSM
-   A==;
-X-CSE-ConnectionGUID: f6H3fXkITrCBQ6QpboQRAA==
-X-CSE-MsgGUID: Txd7lK+NR9Kd7VfhW1GAcg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="60001916"
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; 
-   d="scan'208";a="60001916"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 23:49:06 -0700
-X-CSE-ConnectionGUID: JQwc2+wXTASE35yVIEr1Mg==
-X-CSE-MsgGUID: hEM2SqKvSLKOuCM8oVV53A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; 
-   d="scan'208";a="144913241"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 23:49:06 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 20 May 2025 23:49:05 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Tue, 20 May 2025 23:49:05 -0700
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.40) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.55; Tue, 20 May 2025 23:49:05 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yqkdauqADofIFjk9DRs1Pj6Rd9NKWt3/ZJMYjU+9GGvfEpyEWCQIP0PbWvyJ1Mp3AHvXwfBWKlusnHgLILgwgaHo0bnjeY6viPga/a/zbGbZmGbBx6Lisq5Jg+DHR+s/CNUi6vKnxrCNJcqaBLV2caSy0WEqrEo97Sc7+6Bw5lf7gmblQV6ga09ceYpkbnl1Sd6qRJvW3/JlExi7a+9C59YlK1meQEJnoLX8X44478H/FErKHhqhlUJgyJ2DWaU2FTnDwjOdz/Q3nOq05NpnBzPn1N74CUipKSVtTTQYcSVsiyaHBUwuW3C516NpASrkwq4N/Rvbx9ciMozaHGUNAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SFmpjlUMmY930yrno2EG1MZKGtN7FZYcPF1vXQRJslU=;
- b=Jwwg/nhYqXnh3EIj89NLMBJqa/TJlTRej4LwjVFKp0TvOa9Lx+bw7ZYSfYGX+RiMLMLPkFUrJJfNz34FKTSGzBgfeIPmePAWiSdJrAIEjfnAqUHNmfgENo9UinJWnkDIyuAIHH+ljrQZJ/GRM1x3PyVEEy16z7BfIPXEwTpJ/PIa5zGWFfq4/LwHpx8vq5wGQK4oPFYxBWKEXaMCrzKK5y0BMTdGzizUu0fMNmE/qx64iJ+WPPvbMxSZSIK+pi86RRjaHfsAREsjz414wA+hfST+nIOxHaeDy6UZBJkPgW7f+z18WA023Zg6TN2EVWGfBBp0jdZoNoA5qns8eRGGSA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6) by
- CO1PR11MB4993.namprd11.prod.outlook.com (2603:10b6:303:6c::23) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8699.19; Wed, 21 May 2025 06:49:02 +0000
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca]) by DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca%2]) with mapi id 15.20.8746.030; Wed, 21 May 2025
- 06:49:02 +0000
-Date: Wed, 21 May 2025 14:46:51 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: Ackerley Tng <ackerleytng@google.com>
-CC: <michael.roth@amd.com>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <jroedel@suse.de>, <thomas.lendacky@amd.com>,
-	<pbonzini@redhat.com>, <seanjc@google.com>, <vbabka@suse.cz>,
-	<amit.shah@amd.com>, <pratikrajesh.sampat@amd.com>, <ashish.kalra@amd.com>,
-	<liam.merwick@oracle.com>, <david@redhat.com>, <vannapurve@google.com>,
-	<quic_eberman@quicinc.com>
-Subject: Re: [PATCH 3/5] KVM: gmem: Hold filemap invalidate lock while
- allocating/preparing folios
-Message-ID: <aC1221wU6Mby3Lo3@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <diqzjz7azkmf.fsf@ackerleytng-ctop.c.googlers.com>
- <diqz8qmsfs5u.fsf@ackerleytng-ctop.c.googlers.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <diqz8qmsfs5u.fsf@ackerleytng-ctop.c.googlers.com>
-X-ClientProxiedBy: SG2P153CA0032.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c7::19)
- To DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ABF4236A70;
+	Wed, 21 May 2025 08:55:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747817753; cv=none; b=kKmeDeLUerAMDQFCbp9hb+r0SnlnZEV9qLfe/ubNYNHsrhMUZydzGZ0EALZ5Df+9fhCwXfRRgiLgwdgBt9pvrRqbf4VfhkHe8jil/pF5TdD2QhoY9UrUX/WfwRrh1ZSV51OXv0vwCpBrEX3QGGfxmaZaRs8sOlCa87vcBI4bnqI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747817753; c=relaxed/simple;
+	bh=J3eT9enofDeXnYSzoWheHzHJjQzB95yLnnDDVWBQ5Jc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tSpKa4dclT8E6va7CNhUuAHhdAQboaGZbxVkBTXWJULh9skfMoqieNpBMpJF86F15DvvNckYpSexSg4/beE6l7EFDXtP5EDLUsa1TBHbmv5qSbg1YOljv623AVfkXT1Asn67IZ3XICY9ampQWzsg/qZhDJnyxGu3Pcxx1oEfUhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CE4E71515;
+	Wed, 21 May 2025 01:55:36 -0700 (PDT)
+Received: from [10.57.23.70] (unknown [10.57.23.70])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4864A3F6A8;
+	Wed, 21 May 2025 01:55:46 -0700 (PDT)
+Message-ID: <c544b3fe-3cf2-4dcd-8c0f-ab9f1795e305@arm.com>
+Date: Wed, 21 May 2025 09:55:43 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR11MB5966:EE_|CO1PR11MB4993:EE_
-X-MS-Office365-Filtering-Correlation-Id: 99367a9d-e9af-4659-ba50-08dd9833928d
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?HMb50P/BA+f/vEkpjCVoMaTqVedZfjIIJ2ZAPG2kKH1GgOKmrrHW/hlXdv0+?=
- =?us-ascii?Q?XOPttJowfDAAGsegV9b4CBda97hfxYSSjZQeKbton1U6Smi6FOrUZUHyLk+J?=
- =?us-ascii?Q?bnQa3Z9HsjTIZmJOtwSacD1mI6rrnoKoAthsIl825VViUzXYF7JKqI7xrcmY?=
- =?us-ascii?Q?Z0tk6id1vtPa00UbN7hDRRm3Y+g/P8CWTKU5hcboHTXK22saoawzK9LUeG3S?=
- =?us-ascii?Q?xYp2pd0oviEAG3RmVPRDuB972uXhpEgLW1N/Zppxn1eFcmdY1WtDBr1k/qyP?=
- =?us-ascii?Q?YDRiJH0rIaALspWTO08r20k8NO/XIk1frG5vEdgqwMKSCGSXKAf+ONT/Y0aL?=
- =?us-ascii?Q?+7QctRPDXRdLWFLpaBzFte3CP0mcA2Nt/Nnzy+j0PLSZMsXJLjpPtxDMWolx?=
- =?us-ascii?Q?w9ef3DYnT+4D1Dey16fLM/Ao2zCu5vfirGbdiF/R0l5NMq57QtICm4//dm3W?=
- =?us-ascii?Q?I7irSarolQsobYz2rxB4z2wnIxx5yOY12rarqbGZkGU8cami/lAuJ0GHVrJ+?=
- =?us-ascii?Q?mGppWL2wBU7BEDMZHYDrDsLcXH0Wy2S55Uag2gKmHF8U/fnmTbWaZq6uydn7?=
- =?us-ascii?Q?p/8Ye2b8FP2TPDCwhIMEPZxkbVrpbKul/wrzKLfUmrbCO/+EPHT662y/EBVP?=
- =?us-ascii?Q?OGRu3Aq5Pl+F55W8rky1/Rs3DBhHJijS9oYwO2J1nqaL8qR7+nE3ydNJnb2G?=
- =?us-ascii?Q?xDbtPopRIuxDyICMa5R1kMmuVpayDWhF4F3S/uH9SGBTTYxvmz8QQc51pwPx?=
- =?us-ascii?Q?A0wScFw+tyS7EsZ9lAJ0g7YWplUdhrIZBbY422sIQ+Rs+xUkj1aEAE2wYE9k?=
- =?us-ascii?Q?RyA0xkn+iC2b/uPswHCQrullo4kgFWOws0LtO5tXJGHV784Nq87bk4Jpedn/?=
- =?us-ascii?Q?nCT9yUzZQ8NSK5ZjGjwc7ZQTOFrVMTyiUp32NTJ3FRLHKG/P/DV6NMhSsDF5?=
- =?us-ascii?Q?Xi7hD3gA/NQPHzGDWp1IAWxkrDY7we564aIaRqv8GkvsRaxk8Hb5FcmjHHW+?=
- =?us-ascii?Q?nQnGkLwrLJAMEVxBb7RR77bdPjHgkK3dtYdWOnbpFAGK/mcuqI6eZ7FAPpTv?=
- =?us-ascii?Q?TU3AxAe97Mq071iFs8GZAUYmTfpqPv0WuvkMzSWnzSkd54XV/eixyLjvmYAE?=
- =?us-ascii?Q?ZYxxuTc9kS+/k5CPrUShsFKQPbP3kkhMzTz+GvEMzjjq/p+0AtIGkr+j2Jha?=
- =?us-ascii?Q?Y4V3kBZL1H9pCEyXQHz2BLaRU96atCkRarZmFppk+7zSR0wCYgj7CM41ikfk?=
- =?us-ascii?Q?MP6+DILpeowVOleiyIn0KAEbiWfD3V3QOU6lGPbYfxxguqvsM0s7787wTTy2?=
- =?us-ascii?Q?13rC0q2ulmurVOdTVooPuxT2Ml9BaTz19k00gSGedRfpC8Awgb1VtMcBG2Sk?=
- =?us-ascii?Q?3eGgT1/o1PZmcOtJQM33MC+q3CxB?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB5966.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Nisbdyz4RShAXr+Y+EdMFbwgZHpCEk5iLQofzgIiAqHogBfaoEiKSgbAQzgf?=
- =?us-ascii?Q?UdE0YXPyVIkqk4e/LFKkax7Q3cqZ3SbmOMi5JPBy2Ag5ATAbXt/MaA0alhnY?=
- =?us-ascii?Q?oqvKj6ki5dh9WFSzt3fYTaNZFMpEbSTqOuqKPoVyHGcN/bRzi5Bl1H/4CqQ+?=
- =?us-ascii?Q?tBswbf3rYUXtpHgEO2EDVuG2APwqJ9qltrsXWC2DRDk/W8eBTEjl0zfKtj99?=
- =?us-ascii?Q?U/sliCgN5AmjN1d3e2ltokGMP9mInAjNzkLUb1GUMAgNP1rtyhB1/jeNJuh2?=
- =?us-ascii?Q?d4oVu64xAjqNBZjdnN1ofjBtPW7RL6GoZfIVpwC2sCeHhXAHfcRq4IEq9rAb?=
- =?us-ascii?Q?3lmfe628+BZUetzBceFV+wfAN5UoJnHECyJNYAVDqLJz7Is+jsoyc2bn1Vr6?=
- =?us-ascii?Q?Hq7jec0lOb+vY2MVlQR+BvlEUYuhe57kfAVU9DGxkdB+XUa54L4TYt7d6ard?=
- =?us-ascii?Q?tu9pJHo4UFSVB47kCjrZSLkKoP+VqeL+9s2TPpvpwPGbvzNE2Bc74u/lue5N?=
- =?us-ascii?Q?Lzy/81GbLyPGvQIH1tQ4p2JXgJyINE5WGxwlFkY3hJTXc3N6ZRLNJRG7NzCF?=
- =?us-ascii?Q?9P3UWtQ2BF526oWBJ/ZlFLIReIPCeqt8IGxn81ECzsm9LFURaWW50Dp+kq3Z?=
- =?us-ascii?Q?dgXWPuz1KvCQCW0RbBulLigx/FLzZKkriaqLemi1fmks56XnynEaVoPevarN?=
- =?us-ascii?Q?DKIVcEF5BbQz/dPfK0e4pmP/iaJTVAXBncHecFlzMiyIIH1AuHdFIjG9KeN3?=
- =?us-ascii?Q?I/4gOzCXlVB4mZEQvRdJ6T+lk/MshM4Vj4O0KWVrBw52PFBZFmak2ceZjeEn?=
- =?us-ascii?Q?7uoEJrdPpM0b8vrYm3UApmtLvqfP6rdWeZ07uSqufi+zCLL0jr1pq91R9bOW?=
- =?us-ascii?Q?OGhU0hB2doiPywWFi2nJi3hISH9wvF+B2ieH5a7S+DgTYI4lBNjCZFOIdT3k?=
- =?us-ascii?Q?nCXkzdJA5EatUsJ7cKVMuYXu3wwPrWkMXm2KvVS5fNn5YD/0AoN4oee+SJ0U?=
- =?us-ascii?Q?21u6PMHxM2pk6BuOE7O9VVyPM2ZwyuDIu8MRKoKmVcicrw08BHRBPiNCDgJG?=
- =?us-ascii?Q?FL0In7BdF2bbBBe6sI6DQ6L7LOMfXaNG1aMotNEVbF3wjx+EwUXRCdBEgyKt?=
- =?us-ascii?Q?r11YSkZwxaMn4UtIV/oct5SY0m5CPv3LKK0drfVbLfi3seujpMIKrsV8Yv5n?=
- =?us-ascii?Q?BZjOD6B5df+J6wDI5Iyv5ljPgXbcGeCEtiVROdiRNjkfkh302R2NhWe8eHZ5?=
- =?us-ascii?Q?HJA0Gx0jPn0iyiBFNkbz1PNlSt7MUEFPR4aOouXE8pbuOASEar4laO/6q+vE?=
- =?us-ascii?Q?D6DQhvfRJItxpv5HghZg142XE3PiG75TM39gnKr4yzb1zjd6y6cw0Nds4q7u?=
- =?us-ascii?Q?jeym72NFKpDAzHFTEMncsZdquda0eSMQg5pswaq5Zls/siZFTz/X/mjmLlkv?=
- =?us-ascii?Q?aFUkTny5EsB4s8C7oZjovkD5DIueAEJepbgXc3tPX5v+4WxMMXEXdc2clFW/?=
- =?us-ascii?Q?SjVm861LcEHy99lTUVSfB1Nnj/J+fEWWe1tvAN4D9QV4uQrpwduPVQb0gsDh?=
- =?us-ascii?Q?FEtaiSvI5Sti2J+W/TVRZK7Mw2TtPrg6/hYTc/o2?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 99367a9d-e9af-4659-ba50-08dd9833928d
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB5966.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2025 06:49:02.7684
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 44SfONMkx5fT76aqmbEGu2raEXKtg9z+2OMK6xBiGjZL1nrDExaA5KzHkvZoBsrQc5Z6UZDpPhzFk9ufqYPYcw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4993
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 20/43] arm64: RME: Runtime faulting of memory
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, Gavin Shan <gshan@redhat.com>,
+ kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+References: <20250416134208.383984-1-steven.price@arm.com>
+ <20250416134208.383984-21-steven.price@arm.com>
+ <c99b408c-3819-482a-a427-68045211e434@redhat.com>
+ <4fca6bfa-3687-4fdf-8204-00fa90d36e2a@arm.com>
+ <d1b3caaf-636f-48e6-90e6-0bb650753748@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <d1b3caaf-636f-48e6-90e6-0bb650753748@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, May 19, 2025 at 10:04:45AM -0700, Ackerley Tng wrote:
-> Ackerley Tng <ackerleytng@google.com> writes:
+On 20/05/2025 15:48, Suzuki K Poulose wrote:
+> On 16/05/2025 16:33, Steven Price wrote:
+>> On 01/05/2025 01:16, Gavin Shan wrote:
+>>> On 4/16/25 11:41 PM, Steven Price wrote:
+>>>> At runtime if the realm guest accesses memory which hasn't yet been
+>>>> mapped then KVM needs to either populate the region or fault the guest.
+>>>>
+>>>> For memory in the lower (protected) region of IPA a fresh page is
+>>>> provided to the RMM which will zero the contents. For memory in the
+>>>> upper (shared) region of IPA, the memory from the memslot is mapped
+>>>> into the realm VM non secure.
+>>>>
+>>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>>> ---
+>>>> Changes since v7:
+>>>>    * Remove redundant WARN_ONs for realm_create_rtt_levels() - it will
+>>>>      internally WARN when necessary.
+>>>> Changes since v6:
+>>>>    * Handle PAGE_SIZE being larger than RMM granule size.
+>>>>    * Some minor renaming following review comments.
+>>>> Changes since v5:
+>>>>    * Reduce use of struct page in preparation for supporting the RMM
+>>>>      having a different page size to the host.
+>>>>    * Handle a race when delegating a page where another CPU has
+>>>> faulted on
+>>>>      a the same page (and already delegated the physical page) but
+>>>> not yet
+>>>>      mapped it. In this case simply return to the guest to either
+>>>> use the
+>>>>      mapping from the other CPU (or refault if the race is lost).
+>>>>    * The changes to populate_par_region() are moved into the previous
+>>>>      patch where they belong.
+>>>> Changes since v4:
+>>>>    * Code cleanup following review feedback.
+>>>>    * Drop the PTE_SHARED bit when creating unprotected page table
+>>>> entries.
+>>>>      This is now set by the RMM and the host has no control of it
+>>>> and the
+>>>>      spec requires the bit to be set to zero.
+>>>> Changes since v2:
+>>>>    * Avoid leaking memory if failing to map it in the realm.
+>>>>    * Correctly mask RTT based on LPA2 flag (see rtt_get_phys()).
+>>>>    * Adapt to changes in previous patches.
+>>>> ---
+>>>>    arch/arm64/include/asm/kvm_emulate.h |  10 ++
+>>>>    arch/arm64/include/asm/kvm_rme.h     |  10 ++
+>>>>    arch/arm64/kvm/mmu.c                 | 127 ++++++++++++++++++-
+>>>>    arch/arm64/kvm/rme.c                 | 180 ++++++++++++++++++++++
+>>>> +++++
+>>>>    4 files changed, 321 insertions(+), 6 deletions(-)
+>>>>
+>>>> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/
+>>>> include/asm/kvm_emulate.h
+>>>> index c803c8188d9c..def439d6d732 100644
+>>>> --- a/arch/arm64/include/asm/kvm_emulate.h
+>>>> +++ b/arch/arm64/include/asm/kvm_emulate.h
+>>>> @@ -704,6 +704,16 @@ static inline bool kvm_realm_is_created(struct
+>>>> kvm *kvm)
+>>>>        return kvm_is_realm(kvm) && kvm_realm_state(kvm) !=
+>>>> REALM_STATE_NONE;
+>>>>    }
+>>>>    +static inline gpa_t kvm_gpa_from_fault(struct kvm *kvm, phys_addr_t
+>>>> ipa)
+>>>> +{
+>>>> +    if (kvm_is_realm(kvm)) {
+>>>> +        struct realm *realm = &kvm->arch.realm;
+>>>> +
+>>>> +        return ipa & ~BIT(realm->ia_bits - 1);
+>>>> +    }
+>>>> +    return ipa;
+>>>> +}
+>>>> +
+>>>>    static inline bool vcpu_is_rec(struct kvm_vcpu *vcpu)
+>>>>    {
+>>>>        if (static_branch_unlikely(&kvm_rme_is_available))
+>>>> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/
+>>>> asm/kvm_rme.h
+>>>> index d86051ef0c5c..47aa6362c6c9 100644
+>>>> --- a/arch/arm64/include/asm/kvm_rme.h
+>>>> +++ b/arch/arm64/include/asm/kvm_rme.h
+>>>> @@ -108,6 +108,16 @@ void kvm_realm_unmap_range(struct kvm *kvm,
+>>>>                   unsigned long ipa,
+>>>>                   unsigned long size,
+>>>>                   bool unmap_private);
+>>>> +int realm_map_protected(struct realm *realm,
+>>>> +            unsigned long base_ipa,
+>>>> +            kvm_pfn_t pfn,
+>>>> +            unsigned long size,
+>>>> +            struct kvm_mmu_memory_cache *memcache);
+>>>> +int realm_map_non_secure(struct realm *realm,
+>>>> +             unsigned long ipa,
+>>>> +             kvm_pfn_t pfn,
+>>>> +             unsigned long size,
+>>>> +             struct kvm_mmu_memory_cache *memcache);
+>>>>      static inline bool kvm_realm_is_private_address(struct realm
+>>>> *realm,
+>>>>                            unsigned long addr)
+>>>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>>>> index 71c04259e39f..02b66ee35426 100644
+>>>> --- a/arch/arm64/kvm/mmu.c
+>>>> +++ b/arch/arm64/kvm/mmu.c
+>>>> @@ -338,8 +338,13 @@ static void __unmap_stage2_range(struct
+>>>> kvm_s2_mmu *mmu, phys_addr_t start, u64
+>>>>          lockdep_assert_held_write(&kvm->mmu_lock);
+>>>>        WARN_ON(size & ~PAGE_MASK);
+>>>> -    WARN_ON(stage2_apply_range(mmu, start, end,
+>>>> KVM_PGT_FN(kvm_pgtable_stage2_unmap),
+>>>> -                   may_block));
+>>>> +
+>>>> +    if (kvm_is_realm(kvm))
+>>>> +        kvm_realm_unmap_range(kvm, start, size, !only_shared);
+>>>> +    else
+>>>> +        WARN_ON(stage2_apply_range(mmu, start, end,
+>>>> +                       KVM_PGT_FN(kvm_pgtable_stage2_unmap),
+>>>> +                       may_block));
+>>>>    }
+>>>>    
+>>>
+>>> As spotted previsouly, the parameter @may_block isn't handled by
+>>> kvm_realm_unmap_range().
+>>
+>> Ack.
+>>
+>>>>    void kvm_stage2_unmap_range(struct kvm_s2_mmu *mmu, phys_addr_t
+>>>> start,
+>>>> @@ -359,7 +364,10 @@ static void stage2_flush_memslot(struct kvm *kvm,
+>>>>        phys_addr_t addr = memslot->base_gfn << PAGE_SHIFT;
+>>>>        phys_addr_t end = addr + PAGE_SIZE * memslot->npages;
+>>>>    -    kvm_stage2_flush_range(&kvm->arch.mmu, addr, end);
+>>>> +    if (kvm_is_realm(kvm))
+>>>> +        kvm_realm_unmap_range(kvm, addr, end - addr, false);
+>>>> +    else
+>>>> +        kvm_stage2_flush_range(&kvm->arch.mmu, addr, end);
+>>>>    }
+>>>>      /**
+>>>> @@ -1053,6 +1061,10 @@ void stage2_unmap_vm(struct kvm *kvm)
+>>>>        struct kvm_memory_slot *memslot;
+>>>>        int idx, bkt;
+>>>>    +    /* For realms this is handled by the RMM so nothing to do
+>>>> here */
+>>>> +    if (kvm_is_realm(kvm))
+>>>> +        return;
+>>>> +
+>>>>        idx = srcu_read_lock(&kvm->srcu);
+>>>>        mmap_read_lock(current->mm);
+>>>>        write_lock(&kvm->mmu_lock);
+>>>> @@ -1078,6 +1090,7 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
+>>>>        if (kvm_is_realm(kvm) &&
+>>>>            (kvm_realm_state(kvm) != REALM_STATE_DEAD &&
+>>>>             kvm_realm_state(kvm) != REALM_STATE_NONE)) {
+>>>> +        kvm_stage2_unmap_range(mmu, 0, (~0ULL) & PAGE_MASK, false);
+>>>>            write_unlock(&kvm->mmu_lock);
+>>>>            kvm_realm_destroy_rtts(kvm, pgt->ia_bits);
+>>>
+>>> (~0ULL & PAGE_MASK) wouldn't be a problem since the range will be
+>>> limited to
+>>> [0, BIT(realm->ia_bits) - 1] in kvm_realm_unmap_range(). I think it's
+>>> reasonable
+>>> to pass the maximal size here, something like:
+>>>
+>>>          kvm_stage2_unmap_range(mmu, 0, BIT(realm->ia_bits - 1), false);
 > 
-> > Yan Zhao <yan.y.zhao@intel.com> writes:
-> >
-> >> On Fri, Mar 14, 2025 at 05:20:21PM +0800, Yan Zhao wrote:
-> >>> This patch would cause host deadlock when booting up a TDX VM even if huge page
-> >>> is turned off. I currently reverted this patch. No further debug yet.
-> >> This is because kvm_gmem_populate() takes filemap invalidation lock, and for
-> >> TDX, kvm_gmem_populate() further invokes kvm_gmem_get_pfn(), causing deadlock.
-> >>
-> >> kvm_gmem_populate
-> >>   filemap_invalidate_lock
-> >>   post_populate
-> >>     tdx_gmem_post_populate
-> >>       kvm_tdp_map_page
-> >>        kvm_mmu_do_page_fault
-> >>          kvm_tdp_page_fault
-> >> 	   kvm_tdp_mmu_page_fault
-> >> 	     kvm_mmu_faultin_pfn
-> >> 	       __kvm_mmu_faultin_pfn
-> >> 	         kvm_mmu_faultin_pfn_private
-> >> 		   kvm_gmem_get_pfn
-> >> 		     filemap_invalidate_lock_shared
-> >> 	
-> >> Though, kvm_gmem_populate() is able to take shared filemap invalidation lock,
-> >> (then no deadlock), lockdep would still warn "Possible unsafe locking scenario:
-> >> ...DEADLOCK" due to the recursive shared lock, since commit e918188611f0
-> >> ("locking: More accurate annotations for read_lock()").
-> >>
-> >
-> > Thank you for investigating. This should be fixed in the next revision.
-> >
+> I think this must be, given the end is excluding:
+>        kvm_stage2_unmap_range(mmu, 0, BIT(realm->ia_bits), false);
 > 
-> This was not fixed in v2 [1], I misunderstood this locking issue.
-> 
-> IIUC kvm_gmem_populate() gets a pfn via __kvm_gmem_get_pfn(), then calls
-> part of the KVM fault handler to map the pfn into secure EPTs, then
-> calls the TDX module for the copy+encrypt.
-> 
-> Regarding this lock, seems like KVM'S MMU lock is already held while TDX
-> does the copy+encrypt. Why must the filemap_invalidate_lock() also be
-> held throughout the process?
-If kvm_gmem_populate() does not hold filemap invalidate lock around all
-requested pages, what value should it return after kvm_gmem_punch_hole() zaps a
-mapping it just successfully installed?
+> BIT(realm->ia_bits - 1) only covers the protected half. The unprotected
+> half spans  [ BIT(realm->ia_bits - 1), BIT(realm->ia_bits))
 
-TDX currently only holds the read kvm->mmu_lock in tdx_gmem_post_populate() when
-CONFIG_KVM_PROVE_MMU is enabled, due to both slots_lock and the filemap
-invalidate lock being taken in kvm_gmem_populate().
+The kernel treats the two halves as aliasing. kvm_realm_unmap_range()
+caps the end to min(BIT(realm->ia_bits - 1), end). So this wouldn't make
+any difference.
 
-Looks sev_gmem_post_populate() does not take kvm->mmu_lock either.
+This an unfortunate outcome of the memory slots describing both the
+protected region (via guestmem_fd) and the shared region (via VMM maps).
+So a single memslot describes two regions which leads to the kernel
+treating those regions as aliasing for some purposes.
 
-I think kvm_gmem_populate() needs to hold the filemap invalidate lock at least
-around each __kvm_gmem_get_pfn(), post_populate() and kvm_gmem_mark_prepared().
+Thanks,
+Steve
 
-> If we don't have to hold the filemap_invalidate_lock() throughout, 
-> 
-> 1. Would it be possible to call kvm_gmem_get_pfn() to get the pfn
->    instead of calling __kvm_gmem_get_pfn() and managing the lock in a
->    loop?
-> 
-> 2. Would it be possible to trigger the kvm fault path from
->    kvm_gmem_populate() so that we don't rebuild the get_pfn+mapping
->    logic and reuse the entire faulting code? That way the
->    filemap_invalidate_lock() will only be held while getting a pfn.
-The kvm fault path is invoked in TDX's post_populate() callback.
-I don't find a good way to move it to kvm_gmem_populate().
-
-> [1] https://lore.kernel.org/all/cover.1747264138.git.ackerleytng@google.com/T/
-> 
-> >>> > @@ -819,12 +827,16 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
-> >>> >  	pgoff_t index = kvm_gmem_get_index(slot, gfn);
-> >>> >  	struct file *file = kvm_gmem_get_file(slot);
-> >>> >  	int max_order_local;
-> >>> > +	struct address_space *mapping;
-> >>> >  	struct folio *folio;
-> >>> >  	int r = 0;
-> >>> >  
-> >>> >  	if (!file)
-> >>> >  		return -EFAULT;
-> >>> >  
-> >>> > +	mapping = file->f_inode->i_mapping;
-> >>> > +	filemap_invalidate_lock_shared(mapping);
-> >>> > +
-> >>> >  	/*
-> >>> >  	 * The caller might pass a NULL 'max_order', but internally this
-> >>> >  	 * function needs to be aware of any order limitations set by
-> >>> > @@ -838,6 +850,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
-> >>> >  	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, &max_order_local);
-> >>> >  	if (IS_ERR(folio)) {
-> >>> >  		r = PTR_ERR(folio);
-> >>> > +		filemap_invalidate_unlock_shared(mapping);
-> >>> >  		goto out;
-> >>> >  	}
-> >>> >  
-> >>> > @@ -845,6 +858,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
-> >>> >  		r = kvm_gmem_prepare_folio(kvm, file, slot, gfn, folio, max_order_local);
-> >>> >  
-> >>> >  	folio_unlock(folio);
-> >>> > +	filemap_invalidate_unlock_shared(mapping);
-> >>> >  
-> >>> >  	if (!r)
-> >>> >  		*page = folio_file_page(folio, index);
-> >>> > -- 
-> >>> > 2.25.1
-> >>> > 
-> >>> > 
-> 
