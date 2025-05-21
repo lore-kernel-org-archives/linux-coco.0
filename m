@@ -1,88 +1,132 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860C919E7D0
-	for <linux-coco@lists.linux.dev>; Wed, 21 May 2025 15:09:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10CF22192F4;
+	Wed, 21 May 2025 15:32:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747840156; cv=none; b=eCRIv2TdQOtJAFUwQBwVdWn5o6RwzE1izUqsAS/g2u9LAlOczRQ2LCTB2fCjuwB6ZgvtWCBP2bUHMw8mHdpgq75+WP7jMOCrQr9XepB388Hi42SA2UkuCGO530U7w+naAsU/ao+RGiFWRiSGAceQ6Gc/IaJlH0Ys5RTKLi+M4jQ=
+	t=1747841552; cv=none; b=jjD2AniNnGJ0F2h4Y/RbvFfJ1IJPxdT6fJCrnr1W0JACip+tPaRK1VdeLQRauHaudNgP4U2I98TuB8p5zkLENKXUUsBmPIeCd2ya43OIfw2zsof+2Ny3KvYmgjtN7YAg87DwEoxiKWoEGdyEAKILFOA4AD1XZDuwkIq0ABmoaTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747840156; c=relaxed/simple;
-	bh=oSM7dC8BeF2n+l+fK5etAN8b2GMpufWdeSoyecVxaXw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HGtgIaAjBHgiUOOnXqkNWEMiiqKZTlDwIZuNO+QvvlqLlzPrEmnqDIUa0QWeVWVjzxKDIZNF21x73rdzHpAsa8UqQAzcJFnDn0Ru6aTjqIEHUU/a2R4ZWuppEgL440mVqmGpyYUQ05JBVaDzyttbXSgPKwMnVh/gwZVUNvdUjGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UvpSBcVC; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1747841552; c=relaxed/simple;
+	bh=LMtuE9dsKh98YmZuBP64WyO1t0zlGdMJ2SeiCRQiOrE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=oZoGQZLF79asHOLW7tZA+Wr0BbkVH12Ws15DYeFbde3DCd9uifGiL3TiIQu2arXl0h+dhPNl76ikcaKGb4ViZqmBuZI2UuK5q6zm8xFE2ERfAihc+toYtD1+SPpv2wxnB/zRIeAOfuLBj0cNupSBg5Tm+PeUzx52dRpohM/MnB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u3w61wKl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UvpSBcVC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747840153; x=1779376153;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=oSM7dC8BeF2n+l+fK5etAN8b2GMpufWdeSoyecVxaXw=;
-  b=UvpSBcVCVhs982l6xeWL2CptaIn1VF6Is3mHgfZsLKLqLuM3ZC2X/ge6
-   CT31JBbYRjqz/USO8tvFMex/gXrJh0+a2fTvxpkN7luZmEPQgf+eIPqfk
-   KKq1elzJh0he5i7w7zqx4dw9zlYLQ5sAEGe5oIc+lYs52apIahInAHm82
-   QdppayLvy2prltutpVhJ0xxPPOjyGcSHAOLXsh5X6cOY9XxEwnAbztlTz
-   keEN6tOQZeO+8WILsWRfPNTPQlxPhJPgyaNYSMYRfvLUCgHiXWk5YR5D6
-   zO5Yr+xxhpnVD+aXSMzyRsvBhOgw0frrxIUZE3U+5VvOfdMyS1EnIoVES
-   Q==;
-X-CSE-ConnectionGUID: PkxUNjcXSWC7KlK2or7+cw==
-X-CSE-MsgGUID: mBtjmmKaQHSrSzh6/Zygag==
-X-IronPort-AV: E=McAfee;i="6700,10204,11440"; a="67381228"
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; 
-   d="scan'208";a="67381228"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2025 08:09:12 -0700
-X-CSE-ConnectionGUID: DDhonru9RjKYKiuH43o3HQ==
-X-CSE-MsgGUID: WjSIjTrkRSaCGrey4pBgWg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; 
-   d="scan'208";a="163388024"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa002.fm.intel.com with ESMTP; 21 May 2025 08:09:10 -0700
-Date: Wed, 21 May 2025 23:03:15 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	gregkh@linuxfoundation.org, lukas@wunner.de,
-	aneesh.kumar@kernel.org, suzuki.poulose@arm.com, sameo@rivosinc.com,
-	aik@amd.com, jgg@nvidia.com, zhiw@nvidia.com
-Subject: Re: [PATCH v3 13/13] PCI/TSM: Add Guest TSM Support
-Message-ID: <aC3rM1LLmRPAGwFU@yilunxu-OptiPlex-7050>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u3w61wKl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63316C4CEE4;
+	Wed, 21 May 2025 15:32:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747841551;
+	bh=LMtuE9dsKh98YmZuBP64WyO1t0zlGdMJ2SeiCRQiOrE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=u3w61wKlZFZGWiWBLOwGFyjpDI6J6ZqI0rCGxUHe/U0/e+37qG4a2Pt0ZPJ3hr5Rt
+	 q+IAOJeh7PUjcZl3ODW/VX6lC9Y0XDjUSatAxwS7ENEmT1pCTG76WgLttz7n/xTKEH
+	 ll2wGkJAFLtILbnKpGIuKUpgTheKdzS3rfppCRJZxniTb/Bxyg/bVL+ly0PGVeWCKV
+	 tADDADQyj8V1aJ/AurQwYjlHG6JKcEr/IJKSg6qwEquBnOm3erkzjbDAs/3Sjr6a6A
+	 vIS6V6xopbV6/cGil0GnYEg0CxWfnln9AfOFWAiDBCbXD8XCz0O28+WOcrVnDFWAQp
+	 sXzn7a0u63O4A==
+X-Mailer: emacs 30.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, lukas@wunner.de, suzuki.poulose@arm.com,
+	sameo@rivosinc.com, aik@amd.com, jgg@nvidia.com, zhiw@nvidia.com,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: Re: [PATCH v3 03/13] PCI/TSM: Authenticate devices via platform TSM
+In-Reply-To: <20250516054732.2055093-4-dan.j.williams@intel.com>
 References: <20250516054732.2055093-1-dan.j.williams@intel.com>
- <20250516054732.2055093-14-dan.j.williams@intel.com>
+ <20250516054732.2055093-4-dan.j.williams@intel.com>
+Date: Wed, 21 May 2025 21:02:23 +0530
+Message-ID: <yq5ajz6a3rp4.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250516054732.2055093-14-dan.j.williams@intel.com>
+Content-Type: text/plain
 
-> @@ -573,10 +690,13 @@ int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u64 tdi_id)
->  			return -EBUSY;
->  	}
->  
-> -	tdi = tsm_ops->bind(pdev, pf0_dev, kvm, tdi_id);
-> +	tdi = tsm_ops->bind(pdev, dsm_dev, kvm, tdi_id);
->  	if (!tdi)
->  		return -ENXIO;
->  
-> +	tdi->pdev = pdev;
-> +	tdi->dsm_dev = dsm_dev;
-> +	tdi->kvm = kvm;
+Dan Williams <dan.j.williams@intel.com> writes:
 
-I think it is still better that platform TSM drivers assign these
-fields in ->bind(), just as pci_tsm_ops.probe() do.  It is
-inconveniente that struct pci_tdi is not initialized, then these
-parameters have to be passed again and again between functions.
+....
 
-Thanks,
-Yilun
+> +static void pci_tsm_pf0_init(struct pci_dev *pdev)
+> +{
+> +	bool tee_cap;
+> +
+> +	tee_cap = pdev->devcap & PCI_EXP_DEVCAP_TEE;
+> +
+> +	if (!(pdev->ide_cap || tee_cap))
+> +		return;
+>
 
->  	pdev->tsm->tdi = tdi;
+If we expect to use pci_tsm_pf0_init and is_pci_tsm_pf0() from the
+guest, can we have the ide_cap and tee_cap check here? Will that be true
+for all devices assigned to the guest?
+
+> +
+> +	lockdep_assert_held_write(&pci_tsm_rwsem);
+> +	if (!tsm_ops)
+> +		return;
+> +
+> +	/*
+> +	 * If a physical device has any security capabilities it may be
+> +	 * a candidate to connect with the platform TSM
+> +	 */
+> +	struct pci_tsm *pci_tsm __free(tsm_remove) = tsm_ops->probe(pdev);
+> +
+> +	pci_dbg(pdev, "Device security capabilities detected (%s%s ), TSM %s\n",
+> +		pdev->ide_cap ? " ide" : "", tee_cap ? " tee" : "",
+> +		pci_tsm ? "attach" : "skip");
+> +
+> +	if (!pci_tsm)
+> +		return;
+> +
+> +	pdev->tsm = no_free_ptr(pci_tsm);
+> +	sysfs_update_group(&pdev->dev.kobj, &pci_tsm_auth_attr_group);
+> +	sysfs_update_group(&pdev->dev.kobj, &pci_tsm_pf0_attr_group);
+> +	if (pci_tsm_owner_attr_group)
+> +		sysfs_merge_group(&pdev->dev.kobj, pci_tsm_owner_attr_group);
+> +}
+> +
+>
+....
+
+> +/* physical function0 and capable of 'connect' */
+> +static inline bool is_pci_tsm_pf0(struct pci_dev *pdev)
+> +{
+> +	if (!pci_is_pcie(pdev))
+> +		return false;
+> +
+> +	if (pdev->is_virtfn)
+> +		return false;
+> +
+> +	/*
+> +	 * Allow for a Device Security Manager (DSM) associated with function0
+> +	 * of an Endpoint to coordinate TDISP requests for other functions
+> +	 * (physical or virtual) of the device, or allow for an Upstream Port
+> +	 * DSM to accept TDISP requests for switch Downstream Endpoints.
+> +	 */
+> +	switch (pci_pcie_type(pdev)) {
+> +	case PCI_EXP_TYPE_ENDPOINT:
+> +	case PCI_EXP_TYPE_UPSTREAM:
+> +	case PCI_EXP_TYPE_RC_END:
+> +		if (pdev->ide_cap || (pdev->devcap & PCI_EXP_DEVCAP_TEE))
+> +			break;
+> +		fallthrough;
+>
+
+here
+
+> +	default:
+> +		return false;
+> +	}
+> +
+> +	return PCI_FUNC(pdev->devfn) == 0;
+> +}
+> +
+
+
+-aneesh
