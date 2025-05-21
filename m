@@ -1,107 +1,117 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7616225393F
-	for <linux-coco@lists.linux.dev>; Wed, 21 May 2025 09:41:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2664F22F770;
+	Wed, 21 May 2025 10:21:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747820468; cv=none; b=CXXvWR06RoiwSR2kF4UCXgK25qDekvYJN2/nTAahD+E7bwpAEPwSlB4zxEJvxCjwGWus+SAx5L050GYU77GlVz3xzL7/wijIqKEr081JKehMsuSGH3Io7LfPw0OKDZeaYw8KwoxJulDa3FVrPscnM4pjA4fziyeFcz6uDW7ouDU=
+	t=1747822883; cv=none; b=SsqFHqtCT5evJ487tpVGNcvsnFcmQDwxXbzqyvL61MOFHUQsus/hMkjZb+/aOexylOiegn5FDOgwZIjKZx6jkoCecl9ZNQIDVbuzy1leBl9S5+/4xYXdYuunlqILiZLGrctCPTlNJ10YGY/buYMU40Gigjv/B3Nq8erCDMjlIoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747820468; c=relaxed/simple;
-	bh=7cg2kugEmmL2lERRLDHGTr0rt4634yf3DzKja4v3AX8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FWMl5PXCrfD5Zpv9GT2NpvXBBZv9EXOa/pmxKFMHXTEYlKA4Dioswe1RDdrrj720dXjfUmjv5t4N50dHNVGxJyUHe9bGd3CXHyEEoAskLrwJ2W2HGO5VbGT2jsOGUaQDZLQBEZK6RzIXY9ZeHiTxZ/vV08kQBSJOfTEM20s9Ypo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vz3JOf6G; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vz3JOf6G"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747820466; x=1779356466;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7cg2kugEmmL2lERRLDHGTr0rt4634yf3DzKja4v3AX8=;
-  b=Vz3JOf6GIZhkOcGXSaQ6OAg45Wamtbawdt0UzYDikHW75SvjzeVCRbU0
-   p6IhUiK9oia3XgduNGEnOOLVWdz/Qj+8C8T3QCo3F0VVDpxJNskfcoIDn
-   LxOCCbWpK+VkTh+HXJJAC+FW709/ohnOFLpQxL8GrHrYuFD+mnQ8bWojv
-   j9Z6zXzdtgwBpeUJlMmnie4il83J0HnKtGuj1b2He8rAdBRtwOvZJbQ9G
-   3NsjvkqO3C43LvM2tlZA3FfaeQMAMNsi5rzd5uLl3xl5i1s3s3SJV0VK5
-   MPZyFevKyFG0iADoFP+FFbYq4SK2Ilm1FZw0MCXRSNMJdZLaD7UV+nj9L
-   A==;
-X-CSE-ConnectionGUID: NblyclJ4R82OrLa8q5O5qQ==
-X-CSE-MsgGUID: AdgyrlonRdiTVgT+/NfMMw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="37410880"
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; 
-   d="scan'208";a="37410880"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2025 02:41:05 -0700
-X-CSE-ConnectionGUID: 5pF0oTwTSHWogEZ5f835YA==
-X-CSE-MsgGUID: t6GWQvmLQ/yYQN4CeS4uYA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; 
-   d="scan'208";a="145121111"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa005.jf.intel.com with ESMTP; 21 May 2025 02:41:03 -0700
-Date: Wed, 21 May 2025 17:35:08 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
-	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
-	aik@amd.com, jgg@nvidia.com, zhiw@nvidia.com
-Subject: Re: [PATCH v3 12/13] PCI/TSM: support TDI related operations for
- host TSM driver
-Message-ID: <aC2eTGpODgYh7ND7@yilunxu-OptiPlex-7050>
-References: <20250516054732.2055093-1-dan.j.williams@intel.com>
- <20250516054732.2055093-13-dan.j.williams@intel.com>
- <aCbglieuHI1BJDkz@yilunxu-OptiPlex-7050>
- <yq5awmab4uq6.fsf@kernel.org>
+	s=arc-20240116; t=1747822883; c=relaxed/simple;
+	bh=O0M/Knc1SstOgP9f+/1lfj76rztByzOvmpyIseFRX8w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o+ZeuMRUdO+1f9fPkq7t2acs5MpfTi2b2Lc2/wok+JKVDn8KogR2ZSBK/NoGqpvCTGxmsDj2OZKu1Pd4euTU9JLLFLVYOsybvIEYffQ4OzChgDuFwPI0faHgEDRVV7iD6VIZxf6mNtW8ASBp/HcyDHMuJ6/8F1DpOzEN9Rk2GqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 962AF1515;
+	Wed, 21 May 2025 03:21:05 -0700 (PDT)
+Received: from [10.57.23.70] (unknown [10.57.23.70])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 460CB3F6A8;
+	Wed, 21 May 2025 03:21:15 -0700 (PDT)
+Message-ID: <0906c39b-2e67-4f5f-86fb-aa8d5abde0ed@arm.com>
+Date: Wed, 21 May 2025 11:21:13 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5awmab4uq6.fsf@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 21/43] KVM: arm64: Handle realm VCPU load
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>
+References: <20250416134208.383984-1-steven.price@arm.com>
+ <20250416134208.383984-22-steven.price@arm.com>
+ <9a09a3fe-c91c-457f-b6da-9fccbf98e649@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <9a09a3fe-c91c-457f-b6da-9fccbf98e649@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, May 20, 2025 at 12:47:05PM +0530, Aneesh Kumar K.V wrote:
-> Xu Yilun <yilun.xu@linux.intel.com> writes:
+On 19/05/2025 18:48, Suzuki K Poulose wrote:
+> On 16/04/2025 14:41, Steven Price wrote:
+>> When loading a realm VCPU much of the work is handled by the RMM so only
+>> some of the actions are required. Rearrange kvm_arch_vcpu_load()
+>> slightly so we can bail out early for a realm guest.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> Reviewed-by: Gavin Shan <gshan@redhat.com>
+>> ---
+>>   arch/arm64/kvm/arm.c | 13 +++++++++----
+>>   1 file changed, 9 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+>> index cf707130ef66..08d5e0d76749 100644
+>> --- a/arch/arm64/kvm/arm.c
+>> +++ b/arch/arm64/kvm/arm.c
+>> @@ -644,10 +644,6 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu,
+>> int cpu)
 > 
-> > On Thu, May 15, 2025 at 10:47:31PM -0700, Dan Williams wrote:
-> >> From: Xu Yilun <yilun.xu@linux.intel.com>
-> >> 
-> >> Add kAPIs pci_tsm_{bind,unbind,guest_req}() for PCI devices.
-> >> 
-> >> pci_tsm_bind/unbind() are supposed to be called by kernel components
-> >> which manages the virtual device. The verb 'bind' means VMM does extra
-> >> configurations to make the assigned device ready to be validated by
-> >> CoCo VM as TDI (TEE Device Interface). Usually these configurations
-> >> include assigning device ownership and MMIO ownership to CoCo VM, and
-> >> move the TDI to CONFIG_LOCKED TDISP state by LOCK_INTERFACE_REQUEST
-> >> TDISP message. The detailed operations are specific to platform TSM
-> >> firmware so need to be supported by vendor TSM drivers.
-> >> 
-> >> pci_tsm_guest_req() supports a channel for CoCo VM to directly talk
-> >> to TSM firmware about further TDI operations after TDI is bound, e.g.
-> >> get device interface report, certifications & measurements. So this kAPI
-> >> is supposed to be called from KVM vmexit handler.
-> >
-> > To clarify, this commit message is staled. We are proposing existing to
-> > QEMU, then pass to TSM through IOMMUFD VDEVICE.
-> >
+> I think we use the pkvm hook to skip to the nommu goto, to avoid
+> the VMID allocation and context flush.
 > 
-> Can you share the POC code/git repo implementing that? I am looking for
-> pci_tsm_bind()/pci_tsm_unbind() example usage.
+> 
+>>       kvm_timer_vcpu_load(vcpu);
+>>       kvm_vgic_load(vcpu);
+>>       kvm_vcpu_load_debug(vcpu);
+>> -    if (has_vhe())
+>> -        kvm_vcpu_load_vhe(vcpu);
+>> -    kvm_arch_vcpu_load_fp(vcpu);
+>> -    kvm_vcpu_pmu_restore_guest(vcpu);
+>>       if (kvm_arm_is_pvtime_enabled(&vcpu->arch))
+>>           kvm_make_request(KVM_REQ_RECORD_STEAL, vcpu);
+> 
+> We could also move thise pvtime to the bottom too ?
+> 
+>>   @@ -671,6 +667,15 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu,
+>> int cpu)
+>>                    &vcpu->arch.vgic_cpu.vgic_v3);
+>>       }
+>>   +    /* No additional state needs to be loaded on Realmed VMs */
+>> +    if (vcpu_is_rec(vcpu))
+>> +        return;
+>> +
+>> +    if (has_vhe())
+>> +        kvm_vcpu_load_vhe(vcpu);
+>> +    kvm_arch_vcpu_load_fp(vcpu);
+>> +    kvm_vcpu_pmu_restore_guest(vcpu);
+>> +
+> 
+> With the above addressed:
+> 
+> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-The usage of these kAPIs should be in IOMMUFD, that's what I'm doing for
-Stage 2 patchset. I need to rebase this series, adopt suggestions from
-Jason, and make TDX Connect work to verify, so need more time...
+Thanks, the suggestions above seem sensible, I'll make those changes.
 
 Thanks,
-Yilun
+Steve
 
 > 
-> -aneesh
+> 
+>>       if (!cpumask_test_cpu(cpu, vcpu->kvm->arch.supported_cpus))
+>>           vcpu_set_on_unsupported_cpu(vcpu);
+>>   }
+> 
+
