@@ -1,74 +1,66 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2058.outbound.protection.outlook.com [40.107.92.58])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2089.outbound.protection.outlook.com [40.107.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FB14A21
-	for <linux-coco@lists.linux.dev>; Thu, 22 May 2025 03:46:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF07EED7
+	for <linux-coco@lists.linux.dev>; Thu, 22 May 2025 04:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.89
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747885575; cv=fail; b=DTU9xR69yQiagcFm+DecOHpEkMspumdo/13ZfZW8Ohk2ethhpYNhTTzY9KS93Q6CjQ5m3kjpN66rfQ5uwb5fyfjtwqvGM9TrZeXLP2mKThDsb+SeqtTozxKex/6pLF22GeJtwhwbwLKrYOJhbX3yHcmTJLH7vo86vz1Bi4CbQ/c=
+	t=1747886880; cv=fail; b=MC1P+zao1SDYlHHT3hYJX92oykOZYUO/YXho9usE9nlk5E9u2Z2oXmTlO3kQsdyFBbwOCGc7Jdy9pO+fgv3fS1rhw0k1phDbpn9aO/m4jwUNQFQsV8yUUUqsHRcQeEmFF58UZUhU0KgLsY+PoYJb0uJVAhmDQKskx/0PmgF/OMM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747885575; c=relaxed/simple;
-	bh=4Wcv9rqYNYVMPqKDv6ssSfQZgir41YbRrSoFzbb/dMU=;
+	s=arc-20240116; t=1747886880; c=relaxed/simple;
+	bh=oeRGXUzEDCK57YVudtuMF9mR+0JGkaT62ascq5CGe3g=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=VTNTsYIh9BNMPSASrV+4qOzfHWjYLGxck6dsTn7E+UxKoePwkUP/Gh+u/kd1rl+T7K26Jqt+o1KHzn5N3JJNwU/nRsfrl6z9S/+ukZBSLc+HFkRXb7h5HLck31/shR3mhXo4WgG3/bpoOaBTAsIc/WVp5CifZf0MLF3RZEHIG1U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=DiIt7P13; arc=fail smtp.client-ip=40.107.92.58
+	 Content-Type:MIME-Version; b=AcBo4VutDLblqudmlMVh5w//Ykc3jTtfLBIFiDLQGoRyHJoFmFE5pr9IpVETDe3XDmNW7Y+TzCapEAu1qQ2ICdpCwZdgVsLWdEpp75KVIR1YoVT1QVtmmKGAqA/LJsJcM/ptqu5FX3mooGlcSbnXfVq0EqJr9BgT6Gn7esIZcmM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=BwD6axck; arc=fail smtp.client-ip=40.107.243.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="DiIt7P13"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="BwD6axck"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ytDhEKwPUZzsCFUQToQs9uTTE6kKjpyrGfeixCZeiUHgGagwV4u1U5+SNy3L/FfeYEjR0oQNW8dic8RSZjNQAVq7Pd/cAW024o6BNROCumeRYVpSBM3nT58FcjK2j2yAW6UZlHHE+RceKvICdYuvl1s6ZqoFNDCZe7+/P1vI4UrWlKpbto+NOOrd5R+rQEys3cwNFDBrI4peDcJVK+tyVNnuSKvYcDSS0lSr9wyvhWQUpIgaYthofqxBbDXJ39Ukq05bvNiTyU5pbMF1uDviw7EABsTFKxQHi4a8Va2/POF+L9u5f8gWC/COX7gT0SJEg6ViywxZG9uOA0Bq9R6neg==
+ b=Q00g/L1Jq7yJ1vXiS4Kw82qq0nkOnZd0Z3LImiGIg4QXeXN6A/Imc5rmeJDzkYAYNphPrGiCEAGCcLudvqa9fG9oWAd6qa4RemXH2XdG9r3+SGkkJihMdtfjIfN7UniJejwR3+6MJ02xAM5iwqP4OJ8j1T4Hf4EkdJg+vlAE3uA5hF2PPXqmj+fBAAQ6wohahKxuDVgkuTYQ6FSPLibHxeZgro3k0ap87KXk91ZWKpoHbxr7WRzLv3KCwy81rGCVtSsWkSmkcrhP23gGdS+Vls3IA/sYfLt+2pu+ejT5Osh0q0PBO/GyZYuvwJjbxb33g+hNptFBmiKNVuPeIvFmow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ls0szZOulcGIFeIwKfGaDJaLNfU9MaNvdBwJK/NlVA0=;
- b=D/GIX7eOhbyr1op3K/rDhBNgA1yifvLcUddSs88Uh9+IoRyas2JVig32OXLpanGEJWLQ4iZVKUMYcd9bLZmzF5hMPyVPbnfHjTULO3HkXEvVAejOIcdpl42yhKjd4Y7ODWABsN3LRU8K+pVWhMWv+LGzJtXGvaUS2U2sa43vM0kIvFa8pcg/ITuNVOwfGO+HhWDUS1zE7jrkbf18KC1L+7mfVGIj5Yd1untLjM0n9rz8fEg0tLxLbt0sK3pQyXOvHgAqUeKcrx361ZSwxgjk47XhPA5BtpqkeGfiWWvss82yJ5IUDBbz3n9iCqVj/6zcphS4P7bIw8XrCEq8j9cFlg==
+ bh=QQe+IjXHo4cmhvNgNh1VPrlFWlE/p2Lt1+JJKA9mtiw=;
+ b=Twh052HTmXBjZxQJUX5eOKO7L9pgB27FLiAEWI3BpIOPj37oTcTAaJ+1+s5bs64GZyTkCaGWza3MdLyv6UoPQJeyJ8jvRWAMeTkWw/iSUHVmR3thzm+215GDQT4ZEXmefRISsKwCnLHb5YkqS5NnTHTl0wIHVAFmkp2zdNClYVsmtjr2UZpMwad/Nzp0iLJBlsYAKpQC3eGWOZkqc+zsJt+AibrUJBaVpfn8eFP9siTeQPX4MJnx6XNnwmDJFpsvbfrx6iQcnYpYVkw8Qt+jXV1QFMJ6f8w5nsawKUn/Oc9AmO69etlm6LPMjR89fj9SndE9YIw7VXhu/Tk7Qr4jpA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ls0szZOulcGIFeIwKfGaDJaLNfU9MaNvdBwJK/NlVA0=;
- b=DiIt7P13bA07UgiWdPUqUSHVCXbEn9GDGNsdaVA4FesYeWpwqYQiu+JzIIA+5NF0d6PYIBuV6V8uWDl4QrOWjIACdcv0dUvwDhtEuE0HZM2hZADa8tVwNOoe/ScC4Ctot12a4Li9stO6bvcsks6DcgmDBojoXM4YhTRPxn3Xc9U=
+ bh=QQe+IjXHo4cmhvNgNh1VPrlFWlE/p2Lt1+JJKA9mtiw=;
+ b=BwD6axcksnk8yd/MCCuF7tDctEqzATvqNNB6hm5PDQcjjo7cWtzcqxCxtsug5ALhvDEZrc/Y3+KuCIgxzSsJxJUI/YZhYv2BStwkuAXyCxoGj41f7FPNkL8Z2HlM+l2ESi97OXJsv6U9suz9UhbCZIZPYUAj4AKTsK07Fzt6Kkc=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by PH7PR12MB9126.namprd12.prod.outlook.com (2603:10b6:510:2f0::21) with
+ by PH7PR12MB6882.namprd12.prod.outlook.com (2603:10b6:510:1b8::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.31; Thu, 22 May
- 2025 03:46:07 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.20; Thu, 22 May
+ 2025 04:07:53 +0000
 Received: from CH3PR12MB9194.namprd12.prod.outlook.com
  ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
  ([fe80::53fb:bf76:727f:d00f%5]) with mapi id 15.20.8769.019; Thu, 22 May 2025
- 03:46:07 +0000
-Message-ID: <9dea400f-a57b-43be-a2e4-24a9f51e6ba0@amd.com>
-Date: Thu, 22 May 2025 13:45:57 +1000
+ 04:07:53 +0000
+Message-ID: <cc0e125a-a297-4573-a315-89f4f95324c4@amd.com>
+Date: Thu, 22 May 2025 14:07:46 +1000
 User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [RFC PATCH 00/12] Private MMIO support for private assigned dev
-To: Xu Yilun <yilun.xu@linux.intel.com>, Jason Gunthorpe <jgg@nvidia.com>
-Cc: kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
- sumit.semwal@linaro.org, christian.koenig@amd.com, pbonzini@redhat.com,
- seanjc@google.com, alex.williamson@redhat.com, vivek.kasireddy@intel.com,
- dan.j.williams@intel.com, yilun.xu@intel.com, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
- daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com,
- zhenzhong.duan@intel.com, tao1.su@intel.com
-References: <4b6dc759-86fd-47a7-a206-66b25a0ccc6d@amd.com>
- <c10bf9c2-e073-479d-ad1c-6796c592d333@amd.com>
- <aB3jLmlUKKziwdeG@yilunxu-OptiPlex-7050>
- <aB4tQHmHzHooDeTE@yilunxu-OptiPlex-7050> <20250509184318.GD5657@nvidia.com>
- <aB7Ma84WXATiu5O1@yilunxu-OptiPlex-7050>
- <2c4713b0-3d6c-4705-841b-1cb58cd9a0f5@amd.com>
- <20250512140617.GA285583@nvidia.com> <aCRAHRCKP1s0Oi0c@yilunxu-OptiPlex-7050>
- <20250514163339.GD382960@nvidia.com> <aCYQdDrYYZRAgsen@yilunxu-OptiPlex-7050>
+Subject: Re: [PATCH v3 13/13] PCI/TSM: Add Guest TSM Support
+To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+ linux-pci@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, lukas@wunner.de, aneesh.kumar@kernel.org,
+ suzuki.poulose@arm.com, sameo@rivosinc.com, jgg@nvidia.com, zhiw@nvidia.com,
+ Xu Yilun <yilun.xu@linux.intel.com>
+References: <20250516054732.2055093-1-dan.j.williams@intel.com>
+ <20250516054732.2055093-14-dan.j.williams@intel.com>
+ <363a3220-e43c-4965-b138-b85f09a5907b@amd.com>
+ <682ceffd717b4_1626e1006f@dwillia2-xfh.jf.intel.com.notmuch>
 Content-Language: en-US
 From: Alexey Kardashevskiy <aik@amd.com>
-In-Reply-To: <aCYQdDrYYZRAgsen@yilunxu-OptiPlex-7050>
+In-Reply-To: <682ceffd717b4_1626e1006f@dwillia2-xfh.jf.intel.com.notmuch>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SY5PR01CA0041.ausprd01.prod.outlook.com
- (2603:10c6:10:1f8::16) To CH3PR12MB9194.namprd12.prod.outlook.com
+X-ClientProxiedBy: SY6PR01CA0001.ausprd01.prod.outlook.com
+ (2603:10c6:10:e8::6) To CH3PR12MB9194.namprd12.prod.outlook.com
  (2603:10b6:610:19f::7)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -77,270 +69,360 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|PH7PR12MB9126:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0e88cdd5-f7ec-4eff-020e-08dd98e32f06
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|PH7PR12MB6882:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7a7cc40f-d6ca-42e7-1f73-08dd98e63945
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dTFyL1pGYXVHbzQ3TmFQT2k1U3RPc0VKN2ZBQk04TG1QVTZ4QVE5ZE5WMUUx?=
- =?utf-8?B?ZklEcmFsRnVYam40RkF1bS9sdmIvR0U5MGNxc3pnS2krMjF5OVRiOFJHd3Zi?=
- =?utf-8?B?OHlJUERYOGNmYXVJWXRwai8vMGIyUTlLMkxuQy85Z2ZNKzJBUlhraUtSTDJu?=
- =?utf-8?B?NnVxbkVnZmNyTFJSYlFrNncxUFVOMHpkV1VESzNiUnNISlR5TWxEZG5wb3R5?=
- =?utf-8?B?cUVMU1I1OXJybWt3Z01YL1JsVUY2Y2JhOGltKy9teTI4RFFYUTFGaDRFbnhT?=
- =?utf-8?B?UWg2WFdxdHM5dVAvMks0TkNES2J6U2kvb3VzdHhNeEFCT3d2M1V0bHlzZm5X?=
- =?utf-8?B?TGs4ZHkyTm9Xd214UndSd2ovTGVqR244UTZLVVhXdnU4a1JmMTdiZHpMM3Rx?=
- =?utf-8?B?QW45a3pUUmh2VUpiUkZaOW9GWHBoa2I0aXJUWWV1aVpNaWN0OUdnUGloRG1w?=
- =?utf-8?B?aG5uVlBoMldLd28rWjNUYkRiNjVKcmpPaTV4MERycWQxbDV0bDlURWptY2dk?=
- =?utf-8?B?aWQvNGppR3dLMnYrRXpQbWk0dFFIbERvSUZoTWVYWEdLK3RwSHBhc0xJTjZQ?=
- =?utf-8?B?NVFTQ1RSUFlTa2l1UHJWQ09LRFBDSXVpODRySTY3UVd0KzI0OC9GSDNYVjF2?=
- =?utf-8?B?bDlKU2xYNDNmZGlJbk1GcTJZOGZ3b1loZGVwLy9ibHR4bFVndmprYVpaN3ZZ?=
- =?utf-8?B?WUczOFE2cTBJYWxnUlA1VFpNNEo0N2RWMjNMUFpabWxhTkhrSWdJcTlIZG02?=
- =?utf-8?B?RVhNZk1nd3RQeERiZ3I5aFF1QXAxME81R2hua3FoUkxHbnJvcXlLUXQ0NWt6?=
- =?utf-8?B?cGhITGlmN3BmTjVSYjBabVZkU1NpVGRzdXlHMVhxTU1ZNXJLeFZvd1lnQTBB?=
- =?utf-8?B?SG9McUlRc3JEZGZ3TlZ5OHA4c3gwbDJlOW9LUEF2YyttS1k4UVZFVzF5czg5?=
- =?utf-8?B?RXQwVEtvbkJFMGRDZG1Va2lBL3dqN3RTQ2NaSDc3VU1JZXBIUEZMU2w5WnBQ?=
- =?utf-8?B?Z1c5SFpZRksxTTVxVTNPcUJwYkhnek5tSUlRUmR3bWJFOUlGb2VkVDBrZTQ2?=
- =?utf-8?B?OGZrTytwdjRzVzY0QkpTQ0p2eTk3WmppWTI2K25iOEJDQ2lHTnc3Qk10UkNv?=
- =?utf-8?B?eDNGZE13TUlmOVdxOHpPSVhrbE0zVkNaa0ZTZTFkWkhPL3RYcXlNZHZHM214?=
- =?utf-8?B?aHJwVC9lbUp4bnBjRDFnYTV5cXVKanVrNU5Mejd3STA5NGpQSmlqTFZqbVox?=
- =?utf-8?B?SWE3dlBpSUswcjMyR2NkV3RjZUY2M003TThyVmJsU3hpcSs4eXBDM3BrYjQ1?=
- =?utf-8?B?L2c3VHFLSmlWM1lDVlBSb3N2Yit3STgzRGJEQi9JVCtWNEsvd0lKNmg5OStW?=
- =?utf-8?B?N0VYUVJ3S2pKdDV2QVRiZVFSTGNTODNGL2x2TGFZSzRqNlQ0VkZyWGlHbXRS?=
- =?utf-8?B?NE5OUGU3eUpyQlVVTmkxeWtMTU9rOHo4YVhZWWdHWWtVdFRDazR0MTlWYjRW?=
- =?utf-8?B?ejFOdTBVZlNHbEhBcytEMFNadyt0emJGT28zT1Nnbkxib3dNZnNJUzJ3bUdL?=
- =?utf-8?B?cG1UR1Nib2FlcmlFcUNpZjAyS0poemg4dE01MkNkMmgzZEN4WHdsbUtBWmww?=
- =?utf-8?B?RC91a1E2VGpITm9jc2xIQzNaaGZjZVBkSXk1VmcwMjR5T2ZzV3ErR0hmTDJL?=
- =?utf-8?B?Qzd1dmhzOHFpRVF1Q1h5NGJ3bUpSM3hIUHgxVU9hcEFOcDlhZXFiMjB4bkxQ?=
- =?utf-8?B?UC9sZ2VLWnZMRUkxMzA3bXZid3R1ZDdXWUN6SlcxQ1dwK3puc3hkNW1VbCs1?=
- =?utf-8?B?TnNIZHBrOTRSZDl1MFhvbnlkNDZmVzFTTkhLVXhtZ2M3K2JlTU5rcXp2Ky9B?=
- =?utf-8?Q?Xw3/U/WLDX56d?=
+	=?utf-8?B?REMyWW0ydHFjNjIrT1MydXJvUFZFQzhuSkdQT0hKYjVXUnFMSlNHQW1GTmVI?=
+ =?utf-8?B?RWtLMDJ5SXI0OWNNTjFJRkNIanp0V25CNktJSXoySkRicHlBOHJ2RG5LMy9q?=
+ =?utf-8?B?OWxudEhjcEU3cll6VnJHbWVWK2pMYllZOUFVTlBTOWdtYVo2Mjl4U0JYNUV6?=
+ =?utf-8?B?bzhuSW5naWVOWnJDbzVOay9VR0VnTGxRc3d0amVuVW8xYU5FVWE1NWZKWElV?=
+ =?utf-8?B?RzJoN3BQMitIWUcvbzJHZVZONENYYys5SXI3NGxPWlQ0S0pqbHg1YlNyR2w2?=
+ =?utf-8?B?T05lMW9yaXNtMDQ3ZU1tWU9vbkJHUHp4OThOU05mYXVXZnZZMjhpdXh2MDRV?=
+ =?utf-8?B?OGFKckZiZGZHdkJCTzdKNUFqaUh1VzUxck5zUXNsVWF3WlVPS1M4RmRwZ0N0?=
+ =?utf-8?B?RkpzLzNQMFdjUnFlbzY4MWxsME93YXZaWjh5czJ0Nm90WHNoQThjdVUzaVJu?=
+ =?utf-8?B?cFNmS3dCVTE0SUdHRkpjdzk1WFVhZStZdExIZXJKc2l6aGk4aDZvWm14UUFr?=
+ =?utf-8?B?Mk4vdmRScCtjWDdURXBuaFc1bk9WMDNOajZaREkraXRTOGV4VzJhb3RkaXMw?=
+ =?utf-8?B?TFBLclVYUVF1a2VEZVg0RnRGRFhreStJYXpyMi9UaC95aEtpRzJQUGNoQ3Nv?=
+ =?utf-8?B?RmNiV0orNWUweUpqeW5GZ05yNDF0U1FpdEZqaHc3L0x6dUJMM1F6NGRjbkE4?=
+ =?utf-8?B?NzZoOWlCRWlwQnluY1dwblVySmU1dlB5d216bXJiVmN2bk8yWVFMMFAwVWVi?=
+ =?utf-8?B?anJsK3IvSFlzVkJDYTJqbGdJK2tnSDRQZlVUOG1YWTZRa3dCTUtLL3VnVEN4?=
+ =?utf-8?B?aDFqcHhjRFVqTmJCbklTSEtoNUJoQTgwVXhZTUVCbytMVmJSTlducmJZVWx4?=
+ =?utf-8?B?Y3BlQzVTa3BaOHJzRHd5QjhHeWNmUGdmR2hTbW5ybW9BNlNRRWx3ZGZTNmd4?=
+ =?utf-8?B?Qks1elQvMzhnRHhZUnhsQ21Ea3RKN1pHVVFRbXc0czNtOUt4Nkd1cGhOdVZL?=
+ =?utf-8?B?OHdpUlNSeUJGZWg0Ym1IV2RibjhCL3FqT1U4ZE9nNGhBb2JhYzROYWoxUWsr?=
+ =?utf-8?B?WWFsMEI4QmVlK3lwU1pCVnIvMXdBOGtsaGU3QXo0TGhVek5QckQxWTM0bXdp?=
+ =?utf-8?B?YjBjNE1wZ2pVQmdHT1U1Q1M4MHBHQ0JIdW9mSDRSbVcyaUo5LzJ6M1Zockgw?=
+ =?utf-8?B?NlZIK0s0VXlDUlI0Vkp4S3duUWl1bWxPbUhGVkVZZk0yTWFTcFFpTzdqUE1r?=
+ =?utf-8?B?TXJkR2lQV1ZUWEhVLzZXcys0MFhqMTRqcWhyTno4elIzcW50ZnNsaDd3RWtL?=
+ =?utf-8?B?VkFqalhNWThUVFlybjdpTHdCQmJoNTBTK1RhK0E5Mm5GSXppY2x0SWpSZEJa?=
+ =?utf-8?B?b3U5RWl1WGFCclVhbklKRVBweUlBL3J6cERlVEhieDVkY3U5MnIxMERBZDZN?=
+ =?utf-8?B?b0NhNlNQbDAxUjh4bEQ0RXppMzRhS29sWEE0SlM3cWMvTFdxcG43RytrOGNX?=
+ =?utf-8?B?aGdvc01TWVlOWEdldnVsSFNZUkhLeWZBWDZHK0pnR0RIVnRiT1ZWM05UM2xu?=
+ =?utf-8?B?SnJyKzdNQlRsRU5BaThEbHpFWmtlME5IMXRvM2tkRDZ2ajZrK09UT0pOa2hN?=
+ =?utf-8?B?RzdiUWRIN3FTNG01RDdSSXk4UktxTnFmdGFCa1F3TDEyOExpbnhVRG5wdVFQ?=
+ =?utf-8?B?cEdlMjV0Wi9ONEpHZjd5aGJVSUpobmtBYVlYVDJtRjJzeTBBNlo3RStyNWpF?=
+ =?utf-8?B?VC9ETTB4VHllSFNBSlcxUG8yVTBINTI4RysxelR3Rm9BWkJxOTk2TWdzZUxz?=
+ =?utf-8?B?L29RQXJIUDkvaXB3dUZpWFJtRDd2U0xaZzJ5SjBJS0NHalcyT3plMllFdkdw?=
+ =?utf-8?Q?bQfJhckGZC/U9?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?LzRSOWZIWVpZRHEyVXR5VEFWQmFoUGdKQitlNWd4T0FrV2R6bFFqb2JTRzJ5?=
- =?utf-8?B?cWowbFR3UGc3WEh4RWVhOHpmVVExbEJJR1VsRTl1Q2xwajlXSW8vTjZIbXdC?=
- =?utf-8?B?bTFmV01uYm9xQTY4Q1FGRHQzTER0aSsyZnNpVWdPeDczSDBGdHMzR0VLZlFr?=
- =?utf-8?B?d3VXME9ZRWQ2bTBPWU5wNzdadXBxSDg3NWlYY3R3RVJVUExZa2NQSFAzRk9I?=
- =?utf-8?B?VENPWVVLbmJsL2gzUDJHcTVnV0NsZWloNGFsTTZoY081MXFSRGVyVjhDUVNP?=
- =?utf-8?B?NGNjSHh5VjdDWGFrbjFMZmc1OC9KTzJxV1JBdmxIbm9NOXJBOUhLYXh5OGFk?=
- =?utf-8?B?d0pkT1ROSVZKSDlTdzF6SEVDSDk3MzNvaHRaUVVQbE5NenBPSmtWSXcvWjRJ?=
- =?utf-8?B?cnhDckQzV1p0SGY0bmtKMHhvL3ZlaU01Q29PbnFhYm1DWU40d1kwaXR2ZCsr?=
- =?utf-8?B?RUFPSy9zVkhNT1phS1BlVlRhOTlwWHNKS2ZIL3VTSm1DM1VuUEVtNGJiemVC?=
- =?utf-8?B?TVhRQzZCR1JVZTZ4eDJFTW8wb2RsWndpTzMzY1JoWmRiWEIrbzlKL09jYTBq?=
- =?utf-8?B?dmpPTnJPbFp2T2RKb0d1dzFVM0VTR1FOMWZoalR3VG1iUTZsMXc0ZXd0Vkgw?=
- =?utf-8?B?bDh2bVNqRGYzS2k1RWF0NGhHT1YzZDV3Sy9UY2QxRnV3MnpnMDIxL3hna256?=
- =?utf-8?B?YUVHNWxPUUt6eGtMV1J4cEd4ekJXOFpRVjRuL01SR0Vpb25UREJ5WUNmR0tY?=
- =?utf-8?B?SGpFQy84RkU3S0R6V0h4N21LQWVMcVJaSGxmUXR4ZDFONUZ2b3ZIcWhNRkVi?=
- =?utf-8?B?TmhFM2JLb2JJRjc5TVhIQkpKd0NVVmtMUXExSzdud0NtM1RtZlozenQ1Vnd1?=
- =?utf-8?B?R25WTlpQaWI2NWt6Vmd3QllhYzFxaEFaaGVwWFRnU01Kcy9SaVREbzQrNXA1?=
- =?utf-8?B?akhCNDdFSWZjTk9aR1dnclFJVHlMZ0h0dVNvS1NuUUpCM2p6dWhKVkQxYk1P?=
- =?utf-8?B?bFBnS0hmdTZJeTZiU0xETFJOblA1WHNiLzhQK2JoanJsRkFFWVhwOEUxbFZB?=
- =?utf-8?B?Z3oxalBNL2t3RDh4NkoxTGU0MTJpYkpDRVRKV2ErdmpLZ3I2WXpOYnNUT0tv?=
- =?utf-8?B?UTlaUlFsYWZkRzNic1ZWblhCV3JaVjhzMWRNVWs3TURCVXZ3MzJQTGpESGp2?=
- =?utf-8?B?azZSa0FJSEtSRGt6djkrSEl4OWJEWng2SUtoT3dLWDFKY2lmMkUzc0NQL2Nx?=
- =?utf-8?B?WTc0SEYwYzViSHA4QVZtdlpiN0tnWWYvOUdqUURiQmJybnZBOHZUNHVsWTVX?=
- =?utf-8?B?MjdKTytLUmo4bzFheUtrS1JIQmVNT3NQUWxBQzROMEtWV1VWODBpWVpRMXkx?=
- =?utf-8?B?Si8wdldzRmJJTFdQTWxSS1JUaWhmbEI2NEdSSHdNMG91aE51eWR6UU45eG54?=
- =?utf-8?B?bDh1eXBoNzdaT05ERTR2a0ZSRmNOZE96aG9mV3pqUTM3bld2RzcyQUMwZjBD?=
- =?utf-8?B?Z2UvVGlkNXc5MzJ0WUoxYXVCQi9JbWtjR1ZCelkrblZnM1pWbjFKR2Y0aisz?=
- =?utf-8?B?STRBalo0eFhxMTdXQlY1MnczZkVwMHNBc0pYVU12bjVWS0gyaWRGNXlxWVVl?=
- =?utf-8?B?NjB6Y2RmcUNxcGkrc1JJazFqMnZNWm9kd0J4djlZYTFobGtBdzNBYzVnZnN6?=
- =?utf-8?B?bkJtckoxdkppMkxTU0JuSlZjY043eThsd25ZdGg1eWNKOVBEN0RNcnpqWWFj?=
- =?utf-8?B?UVpodGh1c0RjYkV5NGZ6eTh4cGZJbitiaU9ST01ISURTV05XUzFTcXNpaXNa?=
- =?utf-8?B?SFNNVFVnaS9uOFcwVEVLdEhPaHRodjZIVGFqYjJkajJvM24zc1hNSE1md3kx?=
- =?utf-8?B?REcrTzc3Q2ZucTNxVUUvUkxPZ05ZR3Biakl1aTZwSVFQQ3hYY2l2M2tud0th?=
- =?utf-8?B?RnhkS3E0OGJHOWYzMW5lWDFsS2k3WnJyRVpxREFsdGszUUIyRWl3NzZCb0t1?=
- =?utf-8?B?WkJOamhvcGpHczNleFRycktLS1NNdjM3QktSL3gvdDlDNFNkZ3hYU0VUempM?=
- =?utf-8?B?TGtFTm9UUjFmMlFXcER1MFVYUWgzbGJPNEZIbmRUYXNJSmdrUTAvUEhlODNi?=
- =?utf-8?Q?1gLQgpsIiNixBiU6CsSFKW7l6?=
+	=?utf-8?B?ajBnNkZ0ZFYrZDZEVHRPaVBhK2tPalZuNkFjQ2lkSWFBdC9KRm1VUGtCK0pZ?=
+ =?utf-8?B?SUpvWC9nOTZRZ0oyemdiSW1uVUd3TU95WnU5QzU5TDJ5TllGbm1aOXJvblh2?=
+ =?utf-8?B?WTNjVDhjdWE3WkgvajdlTk4rYkFIc3FVbkY2dEJOSVhkYjVWNkh3cWdkcUpR?=
+ =?utf-8?B?VFRqTUxQQmdmeW9KYmF4b0dTcjlsQUI3ejhvUWdLVG02YVYyTFhvNGxwb29I?=
+ =?utf-8?B?eXQ2bFlQdCtyWlhRNkpYUHA2aE1GazNkUmk2NEFTZWFYRDRIekkxMXlMZG5p?=
+ =?utf-8?B?ZVpkeVI4S0FBNnQvL3lQT1RKdDIrTkxEYmZpYWVNUlc0cCs3K0JGR2JDdzJj?=
+ =?utf-8?B?OTJ1bEg0ZElpTUpYRHJWb2lLMkVSM0VnVU9JcWRZSHlnVVkzZWZESkRodGsv?=
+ =?utf-8?B?UTl6WVdSaDBtaDlWU2l1eUdZK0p6dmdFMGRZZWZKLzdPVTQyOEY3Wi85SlRQ?=
+ =?utf-8?B?Q2lqVGgyNGZWZmI5MDkrdmlGd1ByVlMrSGNiOWQwL3NaQk1Gb2JMdW9tQVly?=
+ =?utf-8?B?T3M1Z3U4aUZxSE5OK21QQWRKSnlpd1lKK1lKVmxDdTloc3VlVzF0WUpWcTk1?=
+ =?utf-8?B?N0RRcjM3L1dvcVpnVm1Ec3RNQjZqaW4rQnQxeGF2dm1MdmdiWnIrYVlNSzRH?=
+ =?utf-8?B?T3hOT1luQ2ZiWlB0ZklzQXRiSEhjWlVNdDVXaHMrM2NRTnJrNEdicTJUMFg5?=
+ =?utf-8?B?RG5RREJTaHVUVDZiMmw4RzNyNDJFOUFvUXNwUUpoSFgyNkxScGIrN3d0Ty8x?=
+ =?utf-8?B?WkxyMTh2SmVNcHk0OXBBKzJFTWdyOC92d3FxVTg5UlNuVHcrVVNiMjBQdU44?=
+ =?utf-8?B?RDNNSXhJb0xVeDNLMkE2SkVPT0tRTTE5L21ubGx0TDlCVW5JWDlqTXpDMStx?=
+ =?utf-8?B?YmdsYzBubnRTMW1CVGhwSjdRK2VrbmF0ODFGY3cyTVJTbGJrL3RNU053dUZh?=
+ =?utf-8?B?bWtlSlY5YjBZUHZJSmQ2WnNlNHRyQUZOZlhFUjdmc0tMc2oyQnlMeHpzWFhV?=
+ =?utf-8?B?RksxNDBYMTR4T01vN3JlSGROdjByNXdYVzlDUUpHckkvaGY2dGhyKzJBNW4w?=
+ =?utf-8?B?OG1DRXZVa2RlQ0FBekZiRUQ2QzlFeDlwbmhNOWpnbkNJR2k2TjQ2WkpFQlBS?=
+ =?utf-8?B?cEk5RGdoeVZJZ1V3REtWQXYzVmZPOFNBM3RqbmFHVzFtUUkwZTRKbDhhTGlp?=
+ =?utf-8?B?eXN6ek5iN0Fmd0VrNWc2K0NlNkQrM1haUko5ZnlYUEIwNFZLakdWcUU0VkVP?=
+ =?utf-8?B?dHdNSDdlU2kzNFVZSDUzN3pKVlhFWno5a0crd2dvQkhRUHpYL2FoUEVCdzRv?=
+ =?utf-8?B?K0ZocnNpL0VtVzE0MktXSmNuV2lPNjMvRDFnUEx1Qi94N1NEMkFBWWRUaFRv?=
+ =?utf-8?B?OE1WZmpBVGcwWEhwQkpQR3NjSStmcHY1NmM3N1ZNVFIvenUrKysxM2RDSnRW?=
+ =?utf-8?B?R1E5WEhYRFlkWUswY3R0c2FNWENZQ1UySXRYQmpQU3dvL1ZyaXZxamFoUTBN?=
+ =?utf-8?B?SzBGNUdnWVZsQkhFWnNxalB2RWZtaHc5aGRmSkdteDBUbzB0VjBlMGJ6Yit2?=
+ =?utf-8?B?NlhtQmsrRHhkdzZnTGNKTm1wV1VWMm1sSCs1OUdvcVpJaERXQ1V0bk1pcWpt?=
+ =?utf-8?B?VGhLZHVDaXNXZEJ2cUJyd1g0THN6OGpUV3BjRDZQRmYwMTAyOXdtWDJRa2hu?=
+ =?utf-8?B?Wi9WVHRjSmdQUTFKWHRlMTZNaUMvQWl4RzhsY2J4NWs0Sy81clhaVE5kUWJN?=
+ =?utf-8?B?cjFuekdYNWluTXl3SzBrRk91a0lBdllmaXAvaFhhdVgwTzFlS0t6anJxZDht?=
+ =?utf-8?B?b2dQNDhZUDhlbENmOU9IUnoybTFHalY4SG0wWnRZVVY4dzhCTW9HT2tFN1Ny?=
+ =?utf-8?B?c2oxbmtoc2kvNGFSczdORzhIcHl1S1ZuektPK3pUeUdpSyttRzhqR2hoV0JE?=
+ =?utf-8?B?ZWxKRWhMeWRoMWUzRktLQ2trRlkzZU50R2pBMCtmN1V5ZDZYTVptQ1pxREd2?=
+ =?utf-8?B?SGcxVXNnZGd0VXVNUFUrL09rMlg4THNzMmV1eVVmb2JmbmFjM2wvYVFSKzRp?=
+ =?utf-8?B?ZllGV2RhQ1JoYW01eVIyQkpXdlhWeG1lNWRwNjVlL05IRGkxeTRlRzVnT3ZC?=
+ =?utf-8?Q?QgX45q2eSkUa7ZdVh0jMElvdN?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0e88cdd5-f7ec-4eff-020e-08dd98e32f06
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7a7cc40f-d6ca-42e7-1f73-08dd98e63945
 X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2025 03:46:07.3962
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2025 04:07:52.9112
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5Zl7PGXhqqzRVpS2suJpWEpJYMZW2GV6whMGqUXZDaQj8CQovzLEkAGWHeMq+JV+IKfQknG5r04D2hAS8c8u5w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9126
+X-MS-Exchange-CrossTenant-UserPrincipalName: LD5T299fIlEL9NDq0gCn6lUfVawxsFm4oYO37jVfk/P5MIhC1khHDvz5GQrNhHFWYp15ic54PMXlfZewOKpLcg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6882
 
 
 
-On 16/5/25 02:04, Xu Yilun wrote:
-> On Wed, May 14, 2025 at 01:33:39PM -0300, Jason Gunthorpe wrote:
->> On Wed, May 14, 2025 at 03:02:53PM +0800, Xu Yilun wrote:
->>>> We have an awkward fit for what CCA people are doing to the various
->>>> Linux APIs. Looking somewhat maximally across all the arches a "bind"
->>>> for a CC vPCI device creation operation does:
->>>>
->>>>   - Setup the CPU page tables for the VM to have access to the MMIO
+On 21/5/25 07:11, Dan Williams wrote:
+> Alexey Kardashevskiy wrote:
+>>
+>>
+>> On 16/5/25 15:47, Dan Williams wrote:
+>>> From: Xu Yilun <yilun.xu@linux.intel.com>
 >>>
->>> This is guest side thing, is it? Anything host need to opt-in?
->>
->> CPU hypervisor page tables.
->>
->>>>   - Revoke hypervisor access to the MMIO
+>>> Enable PCI TSM/TSM core to support assigned device authentication in
+>>> CoCo VM. The main changes are:
 >>>
->>> VFIO could choose never to mmap MMIO, so in this case nothing to do?
->>
->> Yes, if you do it that way.
->>   
->>>>   - Setup the vIOMMU to understand the vPCI device
->>>>   - Take over control of some of the IOVA translation, at least for T=1,
->>>>     and route to the the vIOMMU
->>>>   - Register the vPCI with any attestation functions the VM might use
->>>>   - Do some DOE stuff to manage/validate TDSIP/etc
+>>>    - Add an ->accept() operation which also flags whether the TSM driver is
+>>>      host or guest context.
+>>>    - Re-purpose the 'connect' sysfs attribute in guest to lock down the
+>>>      private configuration for the device.
+>>>    - Add the 'accept' sysfs attribute for guest to accept the private
+>>>      device into its TEE.
+>>>    - Skip DOE setup/transfer for guest TSM managed devices.
 >>>
->>> Intel TDX Connect has a extra requirement for "unbind":
+>>> All private capable assigned PCI devices (TDI) start as shared. CoCo VM
+>>> should authenticate some of these devices and accept them in its TEE for
+>>> private memory access. TSM supports this authentication in 3 steps:
+>>> Connect, Attest and Accept.
 >>>
->>> - Revoke KVM page table (S-EPT) for the MMIO only after TDISP
->>>    CONFIG_UNLOCK
->>
->> Maybe you could express this as the S-EPT always has the MMIO mapped
->> into it as long as the vPCI function is installed to the VM?
-> 
-> Yeah.
-> 
->> Is KVM responsible for the S-EPT?
-> 
-> Yes.
-> 
->>
->>> Another thing is, seems your term "bind" includes all steps for
->>> shared -> private conversion.
->>
->> Well, I was talking about vPCI creation. I understand that during the
->> vPCI lifecycle the VM will do "bind" "unbind" which are more or less
->> switching the device into a T=1 mode. Though I understood on some
-> 
-> I want to introduce some terms about CC vPCI.
-> 
-> 1. "Bind", guest requests host do host side CC setup & put device in
-> CONFIG_LOCKED state, waiting for attestation. Any further change which
-> has secuity concern breaks "bind", e.g. reset, touch MMIO, physical MSE,
-> BAR addr...
-> 
-> 2. "Attest", after "bind", guest verifies device evidences (cert,
-> measurement...).
-> 
-> 3. "Accept", after successful attestation, guest do guest side CC setup &
-> switch the device into T=1 mode (TDISP RUN state)
-
-(implementation note)
-AMD SEV moves TDI to RUN at "Attest" as a guest still can avoid encrypted MMIO access and the PSP keeps IOMMU blocked until the guest enables it.
-
-> 4. "Unbind", guest requests host put device in CONFIG_UNLOCK state +
-> remove all CC setup.
-> 
->> arches this was mostly invisible to the hypervisor?
-> 
-> Attest & Accept can be invisible to hypervisor, or host just help pass
-> data blobs between guest, firmware & device.
-
-No, they cannot.
-
-> Bind cannot be host agnostic, host should be aware not to touch device
-> after Bind.
-
-Bind actually connects a TDI to a guest, the guest could not possibly do that alone as it does not know/have access to the physical PCI function#0 to do the DOE/SecSPDM messaging, and neither does the PSP.
-
-The non-touching clause (or, more precisely "selectively touching") is about "Attest" and "Accept" when the TDI is in the CONFIG_LOCKED or RUN state. Up to the point when we rather want to block the config space and MSIX BAR access after the TDI is CONFIG_LOCKED/RUN to prevent TDI from going to the ERROR state.
-
-
->>
->>> But in my mind, "bind" only includes
->>> putting device in TDISP LOCK state & corresponding host setups required
->>> by firmware. I.e "bind" means host lockes down the CC setup, waiting for
->>> guest attestation.
->>
->> So we will need to have some other API for this that modifies the vPCI
->> object.
-> 
-> IIUC, in Alexey's patch ioctl(iommufd, IOMMU_VDEVICE_TSM_BIND) does the
-> "Bind" thing in host.
-
-
-I am still not sure what "vPCI" means exactly, a passed through PCI device? Or a piece of vIOMMU handling such device?
-
-
->> It might be reasonable to have VFIO reach into iommufd to do that on
->> an already existing iommufd VDEVICE object. A little weird, but we
->> could probably make that work.
-> 
-> Mm, Are you proposing an uAPI in VFIO, and a kAPI from VFIO -> IOMMUFD like:
-> 
->   ioctl(vfio_fd, VFIO_DEVICE_ATTACH_VDEV, vdev_id)
->   -> iommufd_device_attach_vdev()
->      -> tsm_tdi_bind()
-> 
->>
->> But you have some weird ordering issues here if the S-EPT has to have
->> the VFIO MMIO then you have to have a close() destruction order that
-> 
-> Yeah, by holding kvm reference.
-> 
->> sees VFIO remove the S-EPT and release the KVM, then have iommufd
->> destroy the VDEVICE object.
-> 
-> Regarding VM destroy, TDX Connect has more enforcement, VM could only be
-> destroyed after all assigned CC vPCI devices are destroyed.
-
-Can be done by making IOMMUFD/vdevice holding the kvm pointer to ensure tsm_tdi_unbind() is not called before the guest disappeared from the firmware. I seem to be just lucky with the current order of things being destroyed, hmm.
-
-
-> Nowadays, VFIO already holds KVM reference, so we need
-> 
-> close(vfio_fd)
-> -> iommufd_device_detach_vdev()
->     -> tsm_tdi_unbind()
->        -> tdi stop
->        -> callback to VFIO, dmabuf_move_notify(revoke)
->           -> KVM unmap MMIO
->        -> tdi metadata remove
-> -> kvm_put_kvm()
->     -> kvm_destroy_vm()
-> 
-> 
->>
->>>> It doesn't mean that iommufd is suddenly doing PCI stuff, no, that
->>>> stays in VFIO.
+>>> On Connect, CoCo VM requires hypervisor to finish all private
+>>> configurations to the device and put the device in TDISP CONFIG_LOCKED
+>>> state. Please note this verb has different meaning from host context. On
+>>> host, Connect means establish secure physical link (e.g. PCI IDE).
 >>>
->>> I'm not sure if Alexey's patch [1] illustates your idea. It calls
->>> tsm_tdi_bind() which directly does device stuff, and impacts MMIO.
->>> VFIO doesn't know about this.
-
-VFIO knows about this enough as we asked it to share MMIO via dmabuf's fd and not via mmap(), otherwise it is the same MMIO, exactly where it was, BARs do not change.
-
+>>> On Attest, CoCo VM retrieves evidence from device and decide if the
+>>> device is good for accept. The CoCo VM kernel provides evidence,
+>>> userspace decides if the evidence is good based on its own strategy.
 >>>
->>> I have to interpret this as VFIO firstly hand over device CC features
->>> and MMIO resources to IOMMUFD, so VFIO never cares about them.
+>>> On Accept, userspace has acknowledged the evidence and requires CoCo VM
+>>> kernel to enable private MMIO & DMA access. Usually it ends up by put
+>>> the device in TDISP RUN state.
 >>>
->>> [1] https://lore.kernel.org/all/20250218111017.491719-15-aik@amd.com/
+>>> Currently only implement Connect & Accept to enable a minimum flow for
+>>> device shared <-> private conversion. There is no evidence retrieval
+>>> interfaces, only to assume the device evidences are always good without
+>>> attestation.
+>>>
+>>> The shared -> private conversion:
+>>>
+>>>     echo 1 > /sys/bus/pci/devices/<...>/tsm/connect
+>>>     echo 1 > /sys/bus/pci/devices/<...>/tsm/accept
+>>>
+>>> The private -> shared conversion:
+>>>
+>>>     echo 0 > /sys/bus/pci/devices/<...>/tsm/connect
+>>>
+>>> Since the device's MMIO & DMA are all blocked after Connect & before
+>>> Accept, device drivers are not considered workable in this intermediate
+>>> state. The Connect and Accept transitions only proceed while the driver is
+>>> detached. Note this can be relaxed later with a callback to an enlightened
+>>> driver to coordinate the transition, but for now, require detachment.
+>>>
+>>> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+>>> Co-developed-by: Dan Williams <dan.j.williams@intel.com>
+>>> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+>>> ---
+>>>    drivers/pci/tsm.c       | 160 +++++++++++++++++++++++++++++++++++-----
+>>>    include/linux/pci-tsm.h |  15 +++-
+>>>    2 files changed, 152 insertions(+), 23 deletions(-)
+>>>
+>>> diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
+>>> index 219e40c5d4e7..794de2f258c3 100644
+>>> --- a/drivers/pci/tsm.c
+>>> +++ b/drivers/pci/tsm.c
+>>> @@ -124,6 +124,29 @@ static int pci_tsm_disconnect(struct pci_dev *pdev)
+>>>    	return 0;
+>>>    }
+>>>    
+>>> +/*
+>>> + * TDISP locked state temporarily makes the device inaccessible, do not
+>>> + * surprise live attached drivers
+>>> + */
+>>> +static int __driver_idle_connect(struct pci_dev *pdev)
 >>
->> There is also the PCI layer involved here and maybe PCI should be
->> participating in managing some of this. Like it makes a bit of sense
->> that PCI would block the FLR on platforms that require this?
+>> Do not need "__"...
 > 
-> FLR to a bound device is absolutely fine, just break the CC state.
-> Sometimes it is exactly what host need to stop CC immediately.
-> The problem is in VFIO's pre-FLR handling so we need to patch VFIO, not
-> PCI core.
-
-What is a problem here exactly?
-FLR by the host which equals to any other PCI error? The guest may or may not be able to handle it, afaik it does not handle any errors now, QEMU just stops the guest.
-Or FLR by the guest? Then it knows it needs to do the dance with attest/accept, again.
-
-Thanks,
-
+> I am ok to drop. The thought was to make this nuance stand-out more, as
+> one more level of indirection than typically necessary, but no need to
+> push that preference.
 > 
-> Thanks,
-> Yilun
-> 
+>>> +{
+>>> +	guard(device)(&pdev->dev);
+>>> +	if (pdev->dev.driver)
+>>> +		return -EBUSY;
 >>
->> Jason
+>>> +	return tsm_ops->connect(pdev);
+>>> +}
+>>> +
+>>> +/*
+>>> + * When the registered ops support accept it indicates that this is a
+>>> + * TVM-side (guest) TSM operations structure. In this mode ->connect()
+>>> + * arranges for the TDI to enter TDISP LOCKED state, and ->accept()
+>>> + * transitions the device to RUN state.
+>>> + */
+>>> +static bool tvm_mode(void)
+>>> +{
+>>> +	return !!tsm_ops->accept;
+>>
+>> tsm_ops->accept != NULL
+> 
+> Yeah, that is a bit more idiomatic.
+> 
+>>> +}
+>>> +
+>>>    static int pci_tsm_connect(struct pci_dev *pdev)
+>>>    {
+>>>    	struct pci_tsm_pf0 *tsm = to_pci_tsm_pf0(pdev->tsm);
+>>> @@ -138,13 +161,47 @@ static int pci_tsm_connect(struct pci_dev *pdev)
+>>>    	if (tsm->state >= PCI_TSM_CONNECT)
+>>>    		return 0;
+>>>    
+>>> -	rc = tsm_ops->connect(pdev);
+>>> +	if (tvm_mode())
+>>> +		rc = __driver_idle_connect(pdev);
+>>
+>> ... or just open code it here?
+> 
+> I will do with dropping the "__" and keeping the helper with the
+> comment to keep this function less busy.
+> 
+>>> +	else
+>>> +		rc = tsm_ops->connect(pdev);
+>>>    	if (rc)
+>>>    		return rc;
+>>>    	tsm->state = PCI_TSM_CONNECT;
+>>>    	return 0;
+>>>    }
+>>>    
+>>> +static int pci_tsm_accept(struct pci_dev *pdev)
+>>> +{
+>>> +	struct pci_tsm_pf0 *tsm = to_pci_tsm_pf0(pdev->tsm);
+>>> +	int rc;
+>>> +
+>>> +	struct mutex *lock __free(tsm_ops_unlock) = tsm_ops_lock(tsm);
+>>
+>> Add an empty line.
+> 
+> I think we, as a community, are still figuring out the coding-style
+> around scope-based cleanup declarations, but I would argue, no empty
+> line required after mid-function variable declarations. Now, in this
+> case it is arguably not "mid-function", but all the other occurrences of
+> tsm_ops_lock() are checking the result on the immediate next line.
+
+Do not really care as much :)
+
+> 
+>>> +	if (!lock)
+>>> +		return -EINTR;
+>>> +
+>>> +	if (tsm->state < PCI_TSM_CONNECT)
+>>> +		return -ENXIO;
+>>> +	if (tsm->state >= PCI_TSM_ACCEPT)
+>>> +		return 0;
+>>> +
+>>> +	/*
+>>> +	 * "Accept" transitions a device to the run state, it is only suitable
+>>> +	 * to make that transition from a known DMA-idle (no active mappings)
+>>> +	 * state.  The "driver detached" state is a coarse way to assert that
+>>> +	 * requirement.
+>>
+>> And then the userspace will modprobe the driver, which will enable BME
+>> and MSE which in turn will render the ERROR state, what is the plan
+>> here?
+> 
+> Right, so the notifier proposal [1] gave me pause because of perceived
+> complexity and my general reluctance to rely on the magic of notifiers
+> when an explicit sequence is easier to read/maintain. The proposal is
+> that drivers switch to TDISP aware setup helpers that understand that
+> BME and MSE were handled at LOCK. Becauase it is not just
+> pci_enable_device() / pci_set_master() awareness that is needed but also
+> pci_disable_device() / pci_clear_master() flows that need consideration
+> for avoiding/handling the TDISP ERROR state.
+> 
+> I.e. support for TDISP-unaware drivers is not a goal.
+
+So your plan it to modify driver to switch to the secure mode on the go? (not arguing, just asking for now)
+
+The alternative is - let TSM do the attestation and acceptance and then "modprobe tdispawaredriver tdisp=on" and change the driver to assume that BME and MSE are already enabled.
+
+
+
+> There are still details to work out like supporting drivers that want to
+> stay loaded over the UNLOCKED->LOCKED->RUN transitions, and whether the
+> "accept" UAPI triggers entry into "RUN" or still requires a driver to
+> perform that.
+> 
+> [1]: http://lore.kernel.org/20250218111017.491719-20-aik@amd.com
+> 
+> [..]
+>>> @@ -558,11 +675,11 @@ int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u64 tdi_id)
+>>>    	if (!pdev->tsm)
+>>>    		return -EINVAL;
+>>>    
+>>> -	struct pci_dev *pf0_dev __free(pci_dev_put) = tsm_pf0_get(pdev);
+>>> -	if (!pf0_dev)
+>>> +	struct pci_dev *dsm_dev __free(pci_dev_put) = dsm_dev_get(pdev);
+>>> +	if (!dsm_dev)
+>>>    		return -EINVAL;
+>>
+>> A bunch of changes like this one belong to 12/13.
+> 
+> Whoops, yes, missed that before sending.
+> 
+> [..]
+>>> @@ -135,6 +141,8 @@ struct pci_tsm_guest_req_info {
+>>>     * @bind: establish a secure binding with the TVM
+>>>     * @unbind: teardown the secure binding
+>>>     * @guest_req: handle the vendor specific requests from TVM when bound
+>>> + * @accept: TVM-only operation to confirm that system policy allows
+>>> + *	    device to access private memory and be mapped with private mmio.
+>>>     *
+>>>     * @probe and @remove run in pci_tsm_rwsem held for write context. All
+>>>     * other ops run under the @pdev->tsm->lock mutex and pci_tsm_rwsem held
+>>> @@ -150,6 +158,7 @@ struct pci_tsm_ops {
+>>>    	void (*unbind)(struct pci_tdi *tdi);
+>>>    	int (*guest_req)(struct pci_dev *pdev,
+>>>    			 struct pci_tsm_guest_req_info *info);
+>>> +	int (*accept)(struct pci_dev *pdev);
+>>
+>>
+>> When I posted my v1, I got several comments to not put host and guest
+>> callbacks together which makes sense (as only really "connect" and
+>> "status" are shared, and I am not sure I like dual use of "connect")
+>> and so did I in v2 and yet you are pushing for one struct for all?
+> 
+> Frankly, I missed that feedback and was focused on how to simply extend
+> PCI to understand TSM semantics.
+
+That was literally you (and I think someone else mentioned it too) ;)
+
+https://lore.kernel.org/all/66d7a10a4d621_3975294ac@dwillia2-xfh.jf.intel.com.notmuch/
+
+"Lets not mix HV and VM hooks in the same ops without good reason" and I do not see a good reason here yet.
+
+More to the point, the host and guest have very little in common to have one ops struct for both and then deal with questions "do we execute the code related to PF0 in the guest", etc.
+
+My life definitely got easier with 2 separate structures and my split to virt/coco/...(tsm-host.c|tsm-guest.c|tsm.c) + pci/tsm.c.
+
+
+> Part of the motivation is reduce the number of details that
+> drivers/pci/tsm.c needs to consider. I.e. there is only one ops object
+> to manage. Can you share the lore links for the comments that convinced
+> you to change course? Maybe those folks can chime in again here, but I
+> might have been too focused my tdi_dev object model concerns to notice
+> those previously.
+> 
+> As for repurposing "connect" that also comes back to question of whether
+> userspace needs to see or care about that nuance. In the end "connect"
+> is "prepare this device for follow-on TSM + TDISP security operations".
+
+I see "connect" more like "set up ssh connection with some ports forwarded"
+
+> If the "accept" attribute is present userspace can infer that it has
+> more work to get the device operational in the TEE. So the interface can
+> indeed be more verbose... but to what end?
+
+... and these "accept" as connecting via ssh-forwarded ports. Not the same thing. But not really an issue here. Thanks,
+
 
 -- 
 Alexey
