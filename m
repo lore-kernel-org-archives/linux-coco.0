@@ -1,128 +1,129 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EECA62288D3
-	for <linux-coco@lists.linux.dev>; Fri, 23 May 2025 10:46:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0030622157A
+	for <linux-coco@lists.linux.dev>; Fri, 23 May 2025 12:01:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747997214; cv=none; b=e/6Tv25JFDv1zLEUTMTkdtTnF3qr+kC0S7ZWrUOM85bIpkbGuABvYXONIs5eLsCiDGOB7nLnpJymbCtmT+l6H8d4hxN0qp5c1q+W9uC3UsWTZBgLLAns3lWmISEtK5RrAzFedRnflqUBkZDD568tDBwFJJDzewEKOBzdkJrRuho=
+	t=1748001663; cv=none; b=hh0j+rpKQtcDlq1TXA2jfo6PIjWVQ7PWk3I/LAophVFZf3hxYrArYQaP8+oqaLeiW7QCm5sBLotObi8ZZEus/a89+pfWVRN8fVda5LsLdPzieP7bKrheEKv8UCjh4ssa/5Ytu5A7WVCBq4mISHVqnSTmXQUJe8Y/oiqh/P4wVgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747997214; c=relaxed/simple;
-	bh=AdXniMvjoHtes+rn5Tzs8Hl3aYCHjm1S8O3aNvL0dbk=;
+	s=arc-20240116; t=1748001663; c=relaxed/simple;
+	bh=7IjIckS/eHld9WifYNay9DZZv9Fs5Z1uq608lkoIXkI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lczQFyzOX2El99Fdivv8/Nu1N9Ig1s8gIVWNuwGKA/cN0RihnOdZTKXT8TR8c2rqEx2mDhfj6ypsXa6PB7zXuBtlPmv8s4NE/3NzX+FuruldIh/i52rF97bRUIFdMk3imfSuJ2RLiw4Nj9xstlWICstm6wU+gMmJTUjgr5vTiXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BTpXHgaD; arc=none smtp.client-ip=198.175.65.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=iYQY65v78qAduUeDMz7cshtgQ1aQjLX7qCGprRAzUpdDZAO7R1OQ9UAp3CDGbi4B8sSrV4PgNpIgRoLA2EUSaRvr2aKrlCHllhl3HUKJh55kMuBHlWJMlMQhVX0vEMuEeu3PFzX+CjTaWVJzhuovdrKBP/rC5Fqkkhn28uR3xfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nxHUTEje; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BTpXHgaD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nxHUTEje"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747997213; x=1779533213;
+  t=1748001662; x=1779537662;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=AdXniMvjoHtes+rn5Tzs8Hl3aYCHjm1S8O3aNvL0dbk=;
-  b=BTpXHgaDuh4kpGFeITUkH/NdeRp9RK3q1xU7tc5caqb3/rNu/5mpm7/C
-   4xDOuya8orcYGxt1tb+R9+ASbg51HJ4yJYOd1czKpmyb1B+xWqIfRfm4M
-   BQcAPzK1DyZwq6zhWw27BJZ85qLIlYAJ932ZO8FOS28X4XLFepLxyTWDp
-   iooYVI8OGh7246xE6jHf+hR8pR/VfgsPOXCQ58vpvMhm4AV6s88GqG//E
-   tCUngMygtnr5Q5IXF4uUeRogAuAJjUO4R8XW2aTT+asU7bG6FDzRXZzAr
-   ujHJMxXtlHD8af9ixdfp8bPuPMFqGrN4sXyVh8Lk1tMjsYzT1p4fTdiI6
-   A==;
-X-CSE-ConnectionGUID: zJUH/GbiS5esn2KJSw5Xcg==
-X-CSE-MsgGUID: jwfAUXktTaiFfRVO/lgMLw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="50045464"
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=7IjIckS/eHld9WifYNay9DZZv9Fs5Z1uq608lkoIXkI=;
+  b=nxHUTEjeRckz0pihB027tb/94QuYG4HV3b5v1rEib/k/2qgaPQExy4ij
+   HRVc7bxLeCrpqNg0Y5BQR3NtwJyeZXEtE9iY6C+8f/MKevm4/6Lt/WIAs
+   gsvseR7rn+NuACa67HRsk5Hcexhtrp1fniZeNpvM5FOgLLHmrw21rLXpH
+   w1Xs4GDKY7Tr47jbKnvjqGeJc+izqBEJyXusYME85+pZxvR2/PVsh9HIm
+   yIFRHKkKV7egxzi9QS2ciOB8W81wR8bYw22Pu64muIfe9CkxV8Xi8nwxI
+   kjYkuWAT7PcHTQs5x8D2CJErT36Dg3uyUDoSFCrHzXdX8FqKzK6qy/oYx
+   Q==;
+X-CSE-ConnectionGUID: nHzNA9YfS2uuhMbmU7H0Aw==
+X-CSE-MsgGUID: KnbNemPGSX2COSvIUO2qwg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="50220490"
 X-IronPort-AV: E=Sophos;i="6.15,308,1739865600"; 
-   d="scan'208";a="50045464"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 03:46:52 -0700
-X-CSE-ConnectionGUID: jNhVUHS2SZaCOyJL+ucXqw==
-X-CSE-MsgGUID: 9yGc6FaySXKusBfvhC+QVw==
+   d="scan'208";a="50220490"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 05:01:01 -0700
+X-CSE-ConnectionGUID: 7NjLot7PTG2we7A1X3P5lw==
+X-CSE-MsgGUID: 7qugAWUHQgK6aOkQIYfU1A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,308,1739865600"; 
-   d="scan'208";a="142131768"
+   d="scan'208";a="141178468"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa009.fm.intel.com with ESMTP; 23 May 2025 03:46:48 -0700
+  by fmviesa007.fm.intel.com with ESMTP; 23 May 2025 05:00:58 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 8736B1F6; Fri, 23 May 2025 13:46:47 +0300 (EEST)
-Date: Fri, 23 May 2025 13:46:47 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Chao Gao <chao.gao@intel.com>
-Cc: pbonzini@redhat.com, seanjc@google.com, rick.p.edgecombe@intel.com, 
-	isaku.yamahata@intel.com, kai.huang@intel.com, yan.y.zhao@intel.com, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, kvm@vger.kernel.org, 
-	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [RFC, PATCH 05/12] KVM: TDX: Add tdx_pamt_get()/put() helpers
-Message-ID: <wn2enmsk5aqxl452aleri535kgqhkxp2rqzgd2dxolkbjlfsyk@dyqan5zirrxe>
+	id ACD931F6; Fri, 23 May 2025 15:00:56 +0300 (EEST)
+Date: Fri, 23 May 2025 15:00:56 +0300
+From: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
+To: "Huang, Kai" <kai.huang@intel.com>
+Cc: "Zhao, Yan Y" <yan.y.zhao@intel.com>, 
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "seanjc@google.com" <seanjc@google.com>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>, 
+	"mingo@redhat.com" <mingo@redhat.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"Yamahata, Isaku" <isaku.yamahata@intel.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Subject: Re: [RFC, PATCH 08/12] KVM: x86/tdp_mmu: Add phys_prepare() and
+ phys_cleanup() to kvm_x86_ops
+Message-ID: <mgu7at7d3qy4h55bchxfmxj6yzqyi7gh4ieds4ecdvlv243frl@bzou376shiak>
 References: <20250502130828.4071412-1-kirill.shutemov@linux.intel.com>
- <20250502130828.4071412-6-kirill.shutemov@linux.intel.com>
- <aCQpUQx5jNQxPBez@intel.com>
+ <20250502130828.4071412-9-kirill.shutemov@linux.intel.com>
+ <aBn4pfn4aMXcFHd7@yzhao56-desk.sh.intel.com>
+ <t2im27kgcfsl2qltxbf3cear35szyoafczgvmmwootxthnbcdp@dasmg4bdfd6i>
+ <aB1ZplDCPkDCkhQr@yzhao56-desk.sh.intel.com>
+ <2bi4cz2ulrki62odprol253mhxkvjdu3xtq4p6dbndowsufnmu@7kzlzywmi22s>
+ <8668efe87d6e538b5a49a3c7508ade612a6d766b.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <aCQpUQx5jNQxPBez@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8668efe87d6e538b5a49a3c7508ade612a6d766b.camel@intel.com>
 
-On Wed, May 14, 2025 at 01:25:37PM +0800, Chao Gao wrote:
-> >+static int tdx_pamt_add(atomic_t *pamt_refcount, unsigned long hpa,
-> >+			struct list_head *pamt_pages)
-> >+{
-> >+	u64 err;
-> >+
-> >+	hpa = ALIGN_DOWN(hpa, SZ_2M);
+On Wed, May 14, 2025 at 12:00:17AM +0000, Huang, Kai wrote:
+> On Mon, 2025-05-12 at 12:55 +0300, Kirill A. Shutemov wrote:
+> > On Fri, May 09, 2025 at 09:25:58AM +0800, Yan Zhao wrote:
+> > > On Thu, May 08, 2025 at 04:23:56PM +0300, Kirill A. Shutemov wrote:
+> > > > On Tue, May 06, 2025 at 07:55:17PM +0800, Yan Zhao wrote:
+> > > > > On Fri, May 02, 2025 at 04:08:24PM +0300, Kirill A. Shutemov wrote:
+> > > > > > The functions kvm_x86_ops::link_external_spt() and
+> > > > > > kvm_x86_ops::set_external_spte() are used to assign new memory to a VM.
+> > > > > > When using TDX with Dynamic PAMT enabled, the assigned memory must be
+> > > > > > covered by PAMT.
+> > > > > > 
+> > > > > > The new function kvm_x86_ops::phys_prepare() is called before
+> > > > > > link_external_spt() and set_external_spte() to ensure that the memory is
+> > > > > > ready to be assigned to the virtual machine. In the case of TDX, it
+> > > > > > makes sure that the memory is covered by PAMT.
+> > > > > > 
+> > > > > > kvm_x86_ops::phys_prepare() is called in a context where struct kvm_vcpu
+> > > > > > is available, allowing the implementation to allocate memory from a
+> > > > > > per-VCPU pool.
+> > > > > > 
+> > > > > Why not invoke phys_prepare() and phys_cleanup() in set_external_spte_present()?
+> > > > > Or in tdx_sept_set_private_spte()/tdx_sept_link_private_spt()?
+> > > > 
+> > > > Because the memory pool we allocated from is per-vcpu and we lost access
+> > > > to vcpu by then. And not all callers provide vcpu.
+> > > Maybe we can get vcpu via kvm_get_running_vcpu(), as in [1].
+> > > Then for callers not providing vcpu (where vcpu is NULL), we can use per-KVM
+> > > cache? 
+> > 
+> > Hm. I was not aware of kvm_get_running_vcpu(). Will play with it, thanks.
 > 
-> Nit: it is better to use SZ_2M or PMD_SIZE consistently.
+> I am not sure why per-vcpu cache matters.
 > 
-> e.g., patch 2 uses PMD_SIZE:
->  
-> +atomic_t *tdx_get_pamt_refcount(unsigned long hpa)
-> +{
-> +	return &pamt_refcounts[hpa / PMD_SIZE];
-> +}
-> +EXPORT_SYMBOL_GPL(tdx_get_pamt_refcount);
+> For non-leaf SEPT pages, AFAICT the "vcpu->arch.mmu_external_spt_cache" is just
+> an empty cache, and eventually __get_free_page() is used to allocate in:
+>                                                                                             
+>   sp->external_spt = 
+> 	kvm_mmu_memory_cache_alloc(&vcpu->arch.mmu_external_spt_cache);
 > 
-> >+
-> >+	spin_lock(&pamt_lock);
-> >+
-> >+	/* Lost race to other tdx_pamt_add() */
-> >+	if (atomic_read(pamt_refcount) != 0) {
-> >+		atomic_inc(pamt_refcount);
-> >+		spin_unlock(&pamt_lock);
-> >+		tdx_free_pamt_pages(pamt_pages);
-> >+		return 0;
-> >+	}
-> >+
-> >+	err = tdh_phymem_pamt_add(hpa | TDX_PS_2M, pamt_pages);
-> >+
-> >+	if (err)
-> >+		tdx_free_pamt_pages(pamt_pages);
-> >+
-> 
-> >+	/*
-> >+	 * tdx_hpa_range_not_free() is true if current task won race
-> >+	 * against tdx_pamt_put().
-> >+	 */
-> >+	if (err && !tdx_hpa_range_not_free(err)) {
-> >+		spin_unlock(&pamt_lock);
-> >+		pr_tdx_error(TDH_PHYMEM_PAMT_ADD, err);
-> >+		return -EIO;
-> >+	}
-> 
-> IIUC, this chunk is needed because tdx_pamt_put() decreases the refcount
-> without holding the pamt_lock. Why not move that decrease inside the lock?
-> 
-> And I suggest that all accesses to the pamt_refcount should be performed with
-> the pamt_lock held. This can make the code much clearer. It's similar to how
-> kvm_usage_count is managed, where transitions from 0 to 1 or 1 to 0 require
-> extra work, but other cases simply increases or decreases the refcount.
+> So why not we actually create a kmem_cache for it with an actual 'ctor', and we
+> can call tdx_alloc_page() in that.  This makes sure when the "external_spt" is
+> allocated, the underneath PAMT entry is there.
 
-Vast majority of cases will take fast path which requires single atomic
-operation. We can move it under lock but it would double number of
-atomics. I don't see a strong reason to do this.
+I looked closer to this and while it is good idea, but ctor in kmem_cache
+cannot fail which makes this approach not viable.
+
+I guess we can a constructor directly into struct kvm_mmu_memory_cache.
+Let me play with this.
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
