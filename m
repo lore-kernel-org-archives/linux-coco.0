@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F9F23535E
-	for <linux-coco@lists.linux.dev>; Fri, 23 May 2025 09:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6543C23BF9B
+	for <linux-coco@lists.linux.dev>; Fri, 23 May 2025 09:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747994032; cv=none; b=Ai5Sw18yfzNLent5m3MhQsze2YyJTgkQjmKO6kJrgaFonfyJ6u2NsjMb87HkalE10pHnpL0fpqUsJulJuoLMHPHAgZMezhSZxeEbC0zv20/wVaLMB8IYzbpQBbdMDplWA7GKgvYSa+vBShMrJxellVpqFMOInWuDAaGWTeO3SgM=
+	t=1747994035; cv=none; b=II2pSxoIYvJKgRBDpBdZpdxdVq73TzjwzBbBK6IETtjuD25HM+Tp15Jp9H5CDLgvCSGhphpQHvW64GRCgfy9iROa42SmTKgPC5TJCizO/TXRQpZlsmzLywnk9DC0hNZkVQDei/BWrrLwS9dARn6jfVvui9ezIiUMZBla06mtbUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747994032; c=relaxed/simple;
-	bh=TsI9HxQ2Gz6GuimkwqYvAK3v4dW3I+m/53VcN46/PpA=;
+	s=arc-20240116; t=1747994035; c=relaxed/simple;
+	bh=Ji+zxcDg6HyiUmEYaMcKATRfTO8H0bwmGnt9rZMxtXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hbWxoPWPQ6mUweMD297T+rfHxw6go2n7g31ZdN9B2PcrZ9UqG3xg+JLAzBBO7gFZgbxYyksAMK7Nb6tptyX1fxZe8Btz03n2GgdcFcCD8io/GwmEZQ7LTo5FU21Mv/aq7l4foYLrBc6J25jNZAYn8Qlf3/ZSNVwwFI4CVAq/PXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=djNTgCJj; arc=none smtp.client-ip=192.198.163.7
+	 MIME-Version; b=kP007gVTZK5xmbyx6hofxMs+m98HKYWV2gmHCrSCz/C0oFpAe1UcPXEEfPfbepv8WhzcWNN0vau2fokuDGUOmVX7yZ2BGCUv8DoxTjy8p4ck3g9wHYKQZrwgQz200QRZpw3CjZJpalGxNjDx58e1JbKBk6+3IyKbtQS+G8Y6JV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gVmd4BLL; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="djNTgCJj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gVmd4BLL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747994031; x=1779530031;
+  t=1747994033; x=1779530033;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=TsI9HxQ2Gz6GuimkwqYvAK3v4dW3I+m/53VcN46/PpA=;
-  b=djNTgCJjkc5yEE0yIoQ4FcV2NpPkpbBt1ET4sb9Zeupk2dUCEcx1rGnA
-   xLnQf5xfV7fd98VcVaoTegOEy6NRfWcbhPQsO097kDvOHGIve+VSaZk2N
-   CCFBhPleAz0OO9FWprjKyBtixj13z3+XdQ9k5dqN6bXTlMpIg86wr+ydx
-   7d8EHXyMbSNFOBsSpMZvG80kc/2pTZZWHZwMbUOIypUKUXXGQGOn1iTFk
-   kI3xG/RM2godztFj9dhATxwnIkhTPP7Js4WRM7LjgN2oyTzsFylZuQTFo
-   4KgYwLUKWZ2ZaCilvsQrd67LGtQEf6E4MWPD8Liv9P0cvR2MDp9WT5cO2
-   Q==;
-X-CSE-ConnectionGUID: 5U+xdv92RFSXj4eH9Wq3/g==
-X-CSE-MsgGUID: EyZyxrDQSqCtX78P3eaaWQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="75444190"
+  bh=Ji+zxcDg6HyiUmEYaMcKATRfTO8H0bwmGnt9rZMxtXc=;
+  b=gVmd4BLL8wOgPOKIq6u6AtT9kKtFV+Iw9VhLksWv691Kotx7y1ZjTntw
+   xfbdjMnysOvQPd9NH5UeofMhKjw9s++bsDz6D/vzp9uUYiz5Vj9rDn4nC
+   MkA7IxPpvI0SV12sIjDnMoQcJRJmsKDhWyzfahx7drUicDAawHPBPdBPD
+   xeBDTpY8GU1xGviShdDTJ+3qWDj5+nczuDTWvlTohJKLTIEUQl92mZE38
+   hgyvk9XFPWpQ5ShYdMD8yBQ3q8ANZ8HPVItCEgzIGuLWWNaW+5myic0lW
+   qdu38IhuG1WBQJiP5sMDXhJphBeMyV3Rw2oEPHVuamFApzcPGFPN0igq9
+   A==;
+X-CSE-ConnectionGUID: fr0KUhGzSsujMLwabUYNdg==
+X-CSE-MsgGUID: l7P394M5TgKBv+cByYQIuQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="75444199"
 X-IronPort-AV: E=Sophos;i="6.15,308,1739865600"; 
-   d="scan'208";a="75444190"
+   d="scan'208";a="75444199"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 02:53:51 -0700
-X-CSE-ConnectionGUID: 4G5ctHf6RjuhrRGHbSR6Nw==
-X-CSE-MsgGUID: NBdC9/7BTGS+2BkR2PyaCw==
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 02:53:53 -0700
+X-CSE-ConnectionGUID: 4VgRQ3HmRYqAuDsvbP3F/A==
+X-CSE-MsgGUID: x0cVf/4WRmGgBXTovuESyA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,308,1739865600"; 
-   d="scan'208";a="164315072"
+   d="scan'208";a="164315075"
 Received: from 984fee019967.jf.intel.com ([10.165.54.94])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 02:53:50 -0700
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 02:53:52 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: linux-coco@lists.linux.dev,
 	x86@kernel.org,
@@ -59,16 +59,16 @@ Cc: seanjc@google.com,
 	rick.p.edgecombe@intel.com,
 	Chao Gao <chao.gao@intel.com>,
 	Farrah Chen <farrah.chen@intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
 	"H. Peter Anvin" <hpa@zytor.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 11/20] x86/virt/seamldr: Abort updates if errors occurred midway
-Date: Fri, 23 May 2025 02:52:34 -0700
-Message-ID: <20250523095322.88774-12-chao.gao@intel.com>
+Subject: [RFC PATCH 12/20] x86/virt/seamldr: Shut down the current TDX module
+Date: Fri, 23 May 2025 02:52:35 -0700
+Message-ID: <20250523095322.88774-13-chao.gao@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250523095322.88774-1-chao.gao@intel.com>
 References: <20250523095322.88774-1-chao.gao@intel.com>
@@ -80,72 +80,191 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The update process is divided into multiple stages, each of which may
-encounter failures. However, the current state machine for updates proceeds
-to the next stage regardless of errors.
+TD-Preserving updates request shutting down the existing TDX module.
+During this shutdown, the module generates hand-off data, which captures
+the module's states essential for preserving running TDs. The new TDX
+module can utilize this hand-off data to establish its states.
 
-Continuing updates when errors occur midway is pointless.
+Invoke the TDH_SYS_SHUTDOWN API on one CPU to perform the shutdown. This
+API requires a hand-off module version. Use the module's own hand-off
+version, as it is the highest version the module can produce and is more
+likely to be compatible with new modules.
 
-Implement a mechanism that transitions directly to the final stage,
-effectively aborting the update and skipping all remaining stages when an
-error is detected.
+Changes to tdx_global_metadata.{hc} are auto-generated by following the
+instructions detailed in [1], after adding the following section to the
+tdx.py script:
 
-This is in preparation for adding the first stage that may fail.
+    "handoff": [
+       "MODULE_HV",
+    ],
+
+Add a check to ensure that module_hv is guarded by the TDX module's
+support for TD-Preserving.
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
 Tested-by: Farrah Chen <farrah.chen@intel.com>
+Link: https://lore.kernel.org/kvm/20250226181453.2311849-12-pbonzini@redhat.com/ [1]
 ---
- arch/x86/virt/vmx/tdx/seamldr.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/tdx_global_metadata.h  |  5 +++++
+ arch/x86/virt/vmx/tdx/seamldr.c             | 11 +++++++++++
+ arch/x86/virt/vmx/tdx/tdx.c                 | 18 ++++++++++++++++++
+ arch/x86/virt/vmx/tdx/tdx.h                 |  4 ++++
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 13 +++++++++++++
+ 5 files changed, 51 insertions(+)
 
+diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
+index ce0370f4a5b9..a2011a3575ff 100644
+--- a/arch/x86/include/asm/tdx_global_metadata.h
++++ b/arch/x86/include/asm/tdx_global_metadata.h
+@@ -40,12 +40,17 @@ struct tdx_sys_info_td_conf {
+ 	u64 cpuid_config_values[128][2];
+ };
+ 
++struct tdx_sys_info_handoff {
++	u16 module_hv;
++};
++
+ struct tdx_sys_info {
+ 	struct tdx_sys_info_versions versions;
+ 	struct tdx_sys_info_features features;
+ 	struct tdx_sys_info_tdmr tdmr;
+ 	struct tdx_sys_info_td_ctrl td_ctrl;
+ 	struct tdx_sys_info_td_conf td_conf;
++	struct tdx_sys_info_handoff handoff;
+ };
+ 
+ #endif
 diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-index 01dc2b0bc4a5..9d0d37a92bfd 100644
+index 9d0d37a92bfd..11c0c5a93c32 100644
 --- a/arch/x86/virt/vmx/tdx/seamldr.c
 +++ b/arch/x86/virt/vmx/tdx/seamldr.c
-@@ -247,6 +247,7 @@ enum tdp_state {
- static struct {
- 	enum tdp_state state;
- 	atomic_t thread_ack;
-+	atomic_t failed;
- } tdp_data;
+@@ -241,6 +241,7 @@ static struct seamldr_params *init_seamldr_params(const u8 *data, u32 size)
  
- static void set_state(enum tdp_state state)
-@@ -261,8 +262,16 @@ static void set_state(enum tdp_state state)
- /* Last one to ack a state moves to the next state. */
- static void ack_state(void)
+ enum tdp_state {
+ 	TDP_START,
++	TDP_SHUTDOWN,
+ 	TDP_DONE,
+ };
+ 
+@@ -281,8 +282,12 @@ static void ack_state(void)
+ static int do_seamldr_install_module(void *params)
  {
--	if (atomic_dec_and_test(&tdp_data.thread_ack))
--		set_state(tdp_data.state + 1);
-+	if (atomic_dec_and_test(&tdp_data.thread_ack)) {
-+		/*
-+		 * If an error occurred, abort the update by skipping to
-+		 * the final state
-+		 */
-+		if (atomic_read(&tdp_data.failed))
-+			set_state(TDP_DONE);
-+		else
-+			set_state(tdp_data.state + 1);
-+	}
- }
+ 	enum tdp_state newstate, curstate = TDP_START;
++	int cpu = smp_processor_id();
++	bool primary;
+ 	int ret = 0;
  
- /*
-@@ -285,6 +294,9 @@ static int do_seamldr_install_module(void *params)
++	primary = !!(cpumask_first(cpu_online_mask) == cpu);
++
+ 	do {
+ 		/* Chill out and ensure we re-read tdp_data. */
+ 		cpu_relax();
+@@ -291,6 +296,12 @@ static int do_seamldr_install_module(void *params)
+ 		if (newstate != curstate) {
+ 			curstate = newstate;
+ 			switch (curstate) {
++			case TDP_SHUTDOWN:
++				if (!primary)
++					break;
++
++				ret = tdx_module_shutdown();
++				break;
  			default:
  				break;
  			}
-+
-+			if (ret)
-+				atomic_inc(&tdp_data.failed);
- 			ack_state();
- 		} else {
- 			touch_nmi_watchdog();
-@@ -314,6 +326,7 @@ static int seamldr_install_module(const u8 *data, u32 size)
- 	if (IS_ERR(params))
- 		return PTR_ERR(params);
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 22ffc15b4299..fa6b3f1eb197 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -295,6 +295,11 @@ static int read_sys_metadata_field(u64 field_id, u64 *data)
+ 	return 0;
+ }
  
-+	atomic_set(&tdp_data.failed, 0);
- 	set_state(TDP_START + 1);
- 	return stop_machine(do_seamldr_install_module, params, cpu_online_mask);
++static bool tdx_has_td_preserving(void)
++{
++	return tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_TD_PRESERVING;
++}
++
+ #include "tdx_global_metadata.c"
+ 
+ static int check_features(struct tdx_sys_info *sysinfo)
+@@ -1341,6 +1346,19 @@ int tdx_enable(void)
+ }
+ EXPORT_SYMBOL_GPL(tdx_enable);
+ 
++int tdx_module_shutdown(void)
++{
++	struct tdx_module_args args = {};
++
++	/*
++	 * Shut down TDX module and prepare handoff data for the next TDX module.
++	 * Following a successful TDH_SYS_SHUTDOWN, further TDX module APIs will
++	 * fail.
++	 */
++	args.rcx = tdx_sysinfo.handoff.module_hv;
++	return seamcall_prerr(TDH_SYS_SHUTDOWN, &args);
++}
++
+ static bool is_pamt_page(unsigned long phys)
+ {
+ 	struct tdmr_info_list *tdmr_list = &tdx_tdmr_list;
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index 48c0a850c621..3830dee4da91 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -48,6 +48,7 @@
+ #define TDH_PHYMEM_PAGE_WBINVD		41
+ #define TDH_VP_WR			43
+ #define TDH_SYS_CONFIG			45
++#define TDH_SYS_SHUTDOWN		52
+ 
+ /*
+  * SEAMCALL leaf:
+@@ -87,6 +88,7 @@ struct tdmr_info {
+ } __packed __aligned(TDMR_INFO_ALIGNMENT);
+ 
+ /* Bit definitions of TDX_FEATURES0 metadata field */
++#define TDX_FEATURES0_TD_PRESERVING	BIT(1)
+ #define TDX_FEATURES0_NO_RBP_MOD	BIT(18)
+ 
+ /*
+@@ -122,4 +124,6 @@ struct tdmr_info_list {
+ 
+ int seamldr_prerr(u64 fn, struct tdx_module_args *args);
+ 
++int tdx_module_shutdown(void);
++
+ #endif
+diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+index 088e5bff4025..a17cbb82e6b8 100644
+--- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
++++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+@@ -100,6 +100,18 @@ static int get_tdx_sys_info_td_conf(struct tdx_sys_info_td_conf *sysinfo_td_conf
+ 	return ret;
+ }
+ 
++static int get_tdx_sys_info_handoff(struct tdx_sys_info_handoff *sysinfo_handoff)
++{
++	int ret = 0;
++	u64 val;
++
++	if (!ret && tdx_has_td_preserving() &&
++	    !(ret = read_sys_metadata_field(0x8900000100000000, &val)))
++		sysinfo_handoff->module_hv = val;
++
++	return ret;
++}
++
+ static int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
+ {
+ 	int ret = 0;
+@@ -109,6 +121,7 @@ static int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
+ 	ret = ret ?: get_tdx_sys_info_tdmr(&sysinfo->tdmr);
+ 	ret = ret ?: get_tdx_sys_info_td_ctrl(&sysinfo->td_ctrl);
+ 	ret = ret ?: get_tdx_sys_info_td_conf(&sysinfo->td_conf);
++	ret = ret ?: get_tdx_sys_info_handoff(&sysinfo->handoff);
+ 
+ 	return ret;
  }
 -- 
 2.47.1
