@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80ACC24503E
-	for <linux-coco@lists.linux.dev>; Fri, 23 May 2025 09:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67304246782
+	for <linux-coco@lists.linux.dev>; Fri, 23 May 2025 09:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747994041; cv=none; b=Hh8GqfSKUiLb/zNxEdPwrmGhihPkIiEhTxskT7pXAIGg+g4ryPJq3IMzOfHOiMUyEpyk4f4KGKMeNaSF+EJ6mge/2XfKSN/qXvOaOy4pKv5lrNHGgQaOH+vKgj/0Wt/mDTO7ScKjCUnijGLVp2RlAtfZNfoRpliMmYGUu9EyyN8=
+	t=1747994041; cv=none; b=p3jCeXJlYODi9zfJERxxVCfSOzqdUWsN8dFIZyFMp9kw3jvtRgHZPxE1NIJ/Vfon/xDhbVYsD0X5hjNVJ4EBAEJS54RIGXGur2GK4YonHOH9tei+/ziBtts86WNXERqEtjJePdWBP1HYJ8qpoCJK/92wWGBzQxXibT2ZLh1ucs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1747994041; c=relaxed/simple;
-	bh=eSNu+v2D+KaWmQHSJ63w2hZA/nb1bEbeikUu1ijOXvU=;
+	bh=z0i0/IXCqbcVFjIzw3ueLhZMcxcGtEoHNUIB6t7zan8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iQF7KCj0ISgjsvDW1tqBkUCeADmaBZPxsGwVW0jCkEjuRO5sX+8XR3i+lqw7r6RXtpP0aFbMfz7aQ+1XPkIuKHfe6EOGUghQQDqYmskC+IYtIYxdWmLSS+J6pVaaB2aGTudpiHlWQR6eh7X696jqeenvY9I1vY5BFOFC70yIRVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vv8dh5aK; arc=none smtp.client-ip=192.198.163.7
+	 MIME-Version; b=AqshVlYtuHtKvmVg8uWLm1c8Ls5NJA+vazIemOhzTXAPxa4sTjqxqWqYPyV+Ct+tSzGBPCrxO8UxB31YqwnhgSJKzT1q0YA5qGM3Fdn0wADFJ5U4OwcsOLHRhpDL5j/1Do2XDprYXBA6WPCDvPSDjPFBx8IXAzOlL6CYZC4p99M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YlVxZ1jH; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vv8dh5aK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YlVxZ1jH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747994039; x=1779530039;
+  t=1747994040; x=1779530040;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=eSNu+v2D+KaWmQHSJ63w2hZA/nb1bEbeikUu1ijOXvU=;
-  b=Vv8dh5aKXu5oQTJcFNZ9DItBeq+qjXdgw0vUPPTmVlQUjwb/A9LuKOTE
-   3a4/RltAeGw3u4IQan0Zg01X+G+rhgnjoSvx/GqzdBoFZ+Ii+/ZQPg+IT
-   W51x4x0tFVm/fTeAfL7QfhdZ/V95VaC0OlqXPmuihsFMsDP821e9P65Xy
-   hzLjgEewSoH+HC9lgkQ97IESASpr07KuyFA57m2xXfo7sMtCSPozPGKsG
-   0oPc5sqPkxgtAuswX+f9+oy09jjCb9X67JZ3Q7OY7MiwqieWpUln2qppK
-   Y8Bgztv15PtqkxVmOmODHihcz8x2v8NbFCx3OnNFupSHnHZ1id4ABi5Uq
-   g==;
-X-CSE-ConnectionGUID: pKzLCsQ5SkO/CF05+Fsrqw==
-X-CSE-MsgGUID: teQrfJm7QVGKvJNAdMuzig==
-X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="75444260"
+  bh=z0i0/IXCqbcVFjIzw3ueLhZMcxcGtEoHNUIB6t7zan8=;
+  b=YlVxZ1jHdlT+spx+qJJuZ6vbEMrJNfz/FYoCpNBigHSGdF9oUhsIqsH0
+   VnqDYO4NjOXaCvk/cxDC8OjWyGCOhBd5DLzUoUyyRUoC0pWOOu6WUHHwu
+   rbU2Lc0aueb4PJIl6jMQnXqR+r7qejNYE87xC+ylTpct7gazl0CLRivXH
+   3pf1Fe/WcoOckThiFVnWIKwG4tEGrZEffgAGbh+dJ16ti6YWqWvUUTNK6
+   XZeYt6NczRWLAFv2mvK4HAe29N5RaLgZ9jJ1D4NX619xI7frFk7tyR0t7
+   DZNSYC0v2t+LJVJND7KJP6QIaKx1rp4Vb3ZGBVVorEJa8zKyEgEe4dVw4
+   Q==;
+X-CSE-ConnectionGUID: aK/j0GbdQEyRYlFgBN3RdQ==
+X-CSE-MsgGUID: 1pnr/fgJTq2Zuti+BJBCvA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="75444269"
 X-IronPort-AV: E=Sophos;i="6.15,308,1739865600"; 
-   d="scan'208";a="75444260"
+   d="scan'208";a="75444269"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
   by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 02:53:58 -0700
-X-CSE-ConnectionGUID: hgsxCPppRP21PE4KRjgwyA==
-X-CSE-MsgGUID: 0U8B0qiWQL29bXl1nG54zA==
+X-CSE-ConnectionGUID: 9TZeUvwGS6S9vS7yl4WNcg==
+X-CSE-MsgGUID: obpdoiXhTq+asbZ9XygFYA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,308,1739865600"; 
-   d="scan'208";a="164315097"
+   d="scan'208";a="164315100"
 Received: from 984fee019967.jf.intel.com ([10.165.54.94])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 02:53:57 -0700
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 02:53:58 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: linux-coco@lists.linux.dev,
 	x86@kernel.org,
@@ -66,9 +66,9 @@ Cc: seanjc@google.com,
 	Borislav Petkov <bp@alien8.de>,
 	"H. Peter Anvin" <hpa@zytor.com>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 19/20] x86/virt/seamldr: Verify availability of slots for TD-Preserving updates
-Date: Fri, 23 May 2025 02:52:42 -0700
-Message-ID: <20250523095322.88774-20-chao.gao@intel.com>
+Subject: [RFC PATCH 20/20] x86/virt/seamldr: Enable TD-Preserving Updates
+Date: Fri, 23 May 2025 02:52:43 -0700
+Message-ID: <20250523095322.88774-21-chao.gao@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250523095322.88774-1-chao.gao@intel.com>
 References: <20250523095322.88774-1-chao.gao@intel.com>
@@ -80,41 +80,41 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Before initiating TD-Preserving updates, ensure that the limit on
-successive TD-Preserving updates has not been exceeded. This is a cheap
-check to prevent update failure.
-
-Refresh SEAMLDR info after each update so that userspace can read the
-correct value of remaining updates.
+All necessary steps for TD-Preserving updates have been integrated.
+Remove the temporary guard to enable TD-Preserving updates.
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
 Tested-by: Farrah Chen <farrah.chen@intel.com>
 ---
- arch/x86/virt/vmx/tdx/seamldr.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/virt/vmx/tdx/seamldr.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
 diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-index 93385db56281..fe8f98701429 100644
+index fe8f98701429..c6e40a7418d3 100644
 --- a/arch/x86/virt/vmx/tdx/seamldr.c
 +++ b/arch/x86/virt/vmx/tdx/seamldr.c
-@@ -371,6 +371,9 @@ static int seamldr_install_module(const u8 *data, u32 size)
+@@ -350,12 +350,6 @@ static int do_seamldr_install_module(void *params)
+ 	return ret;
+ }
+ 
+-/*
+- * Temporary flag to guard TD-Preserving updates. This will be removed once
+- * all necessary components for its support are integrated.
+- */
+-static bool td_preserving_ready;
+-
+ DEFINE_FREE(free_seamldr_params, struct seamldr_params *,
+ 	    if (!IS_ERR_OR_NULL(_T)) free_seamldr_params(_T))
+ 
+@@ -365,9 +359,6 @@ static int seamldr_install_module(const u8 *data, u32 size)
+ 							  GFP_KERNEL);
+ 	int ret;
+ 
+-	if (!td_preserving_ready)
+-		return -EOPNOTSUPP;
+-
  	if (!info)
  		return -ENOMEM;
- 
-+	if (!seamldr_info.num_remaining_updates)
-+		return -ENOSPC;
-+
- 	struct seamldr_params *params __free(free_seamldr_params) =
- 						init_seamldr_params(data, size);
- 	if (IS_ERR(params))
-@@ -382,6 +385,8 @@ static int seamldr_install_module(const u8 *data, u32 size)
- 	if (ret)
- 		return ret;
- 
-+	WARN_ON_ONCE(get_seamldr_info());
-+
- 	return tdx_module_post_update(info);
- }
  
 -- 
 2.47.1
