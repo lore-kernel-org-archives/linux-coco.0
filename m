@@ -1,227 +1,97 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A8CEC2
-	for <linux-coco@lists.linux.dev>; Sat, 24 May 2025 03:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0151C84BB;
+	Mon, 26 May 2025 06:09:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748057976; cv=none; b=sA/Nz95HDKe6ylt/T6/DBSgfVqxMpBKcx318xx5omDg7MUIRU4Jy//m8rgkhCwEVb39ra/mpjVCMrzPG1uIYJONYwAnaiQEWxOAoIW+HfGIqfmUj5lCzJF7RCA7soIAXZGB/7R682oliLEJpcrZHxkzcvtdHVWlmb18TMgOixMg=
+	t=1748239762; cv=none; b=RLoFpotIyHeZ2oXCUG/f98ZdTeTNozlimNHTSFn0z7HHH2mtxCZl1XKoetEqfzvzOnpkwf84lGPnOlh0c+N5ar0uQQUTGMu992APD4ZzVu4aDVOEiyuF9BX9VA7cevr56g1V6RYOW+FGShigIvWVM1so7To0Ha7YoQcwALw400s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748057976; c=relaxed/simple;
-	bh=7IzTik7Z1oQYNbi1ZtvITH1vtj4QWC1+x7Q28RIHobI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R6w0DmHEqdXbKlatfy802Y8vNbzvyKZrAvAABTSCZvruHp5JqHJBO87vuNReAlR4ou5dnwsuucLkozeBUSs1KT099TutJ1McDPttcQI5wCRs0hZx1LRx1hJ/H15fCVSvEMfEzrGgfHwznxEi8Y/LRtlhGYbK/7i0GQ7lK0TVVSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XrqQljMu; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1748239762; c=relaxed/simple;
+	bh=/RhfTh7WXrowY7bL9VrQJTIAycnFG7ft7ht4TEKQWSI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=cYVeLVyyVVF/fhJlW8jyVGe08iHdc0eHt64ILcpXEWUzD1OzBr6NL4rUbL/4mvUsRC5arz7Tsl0mcNt8a9txWAnjNBwuLMU486o9dChUxnhoB2/p/IZJ2YEatgd56nBdclpm0CaJbo9gq0q6aitS1uq9ysm6n9Fz7rhWe0WjkOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CPwjqsWb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XrqQljMu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748057973; x=1779593973;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7IzTik7Z1oQYNbi1ZtvITH1vtj4QWC1+x7Q28RIHobI=;
-  b=XrqQljMuPCnydCrBKUKNKl/sgSQfxikD0pa/vGCzEh+3uD626/s9zZDc
-   EO3AC0d2NgeD0yYnCfyevH1Y4E2XMzvb1Np7NTndSyUdz5XYT+TikLzE6
-   m7xgw7H9oRGhjCa1/OxVMBhyszM1JdSOoQsP/DKlzL9f1KH8llAp5qZmY
-   lqCT2qtLb32zsdz3Tp8+bEYsZRZkZ5Av3G+K1HvosWbuz0WE88UsKMSBv
-   0ejLYZni7BmK6MQGgV+CjTz9DMKG3TgZCwmectd4OHkeKIuLrB38Fmal3
-   TCVFX9ywp4P/r/lCXS3MqoJPVYH3LdexcxL0+zaANRalL5y3oU1wJnUPV
-   A==;
-X-CSE-ConnectionGUID: +ambhfzMTCa5SY+kYZVMOQ==
-X-CSE-MsgGUID: OzS/0bivSoqUfOH0I6e0CQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="50227675"
-X-IronPort-AV: E=Sophos;i="6.15,310,1739865600"; 
-   d="scan'208";a="50227675"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 20:39:32 -0700
-X-CSE-ConnectionGUID: zcZxj8dbTb+bAaFrzD0SGA==
-X-CSE-MsgGUID: DCJiGGXWQl+UORP1bJyepw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,310,1739865600"; 
-   d="scan'208";a="141966994"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa007.jf.intel.com with ESMTP; 23 May 2025 20:39:28 -0700
-Date: Sat, 24 May 2025 11:33:25 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: Zhi Wang <zhiw@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
-	kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	sumit.semwal@linaro.org, christian.koenig@amd.com,
-	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
-	vivek.kasireddy@intel.com, dan.j.williams@intel.com,
-	yilun.xu@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
-	daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, tao1.su@intel.com
-Subject: Re: [RFC PATCH 00/12] Private MMIO support for private assigned dev
-Message-ID: <aDE+BaMo+X75QaEW@yilunxu-OptiPlex-7050>
-References: <aB4tQHmHzHooDeTE@yilunxu-OptiPlex-7050>
- <20250509184318.GD5657@nvidia.com>
- <aB7Ma84WXATiu5O1@yilunxu-OptiPlex-7050>
- <2c4713b0-3d6c-4705-841b-1cb58cd9a0f5@amd.com>
- <20250512140617.GA285583@nvidia.com>
- <20250513130315.0158a626.zhiw@nvidia.com>
- <aCRmoDupzK9zTqFL@yilunxu-OptiPlex-7050>
- <20250514230502.6b64da7f.zhiw@nvidia.com>
- <aCYsNSFQJZzHVOFI@yilunxu-OptiPlex-7050>
- <3909686a-be14-4b0b-8336-0674667d5159@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CPwjqsWb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C98C4CEE7;
+	Mon, 26 May 2025 06:09:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748239761;
+	bh=/RhfTh7WXrowY7bL9VrQJTIAycnFG7ft7ht4TEKQWSI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=CPwjqsWbIZzw3t4ZVlTqgsjNfu+aBfsYTPNX7Bw61BFGo8HYZ3PZ2raY3V0We+6cc
+	 SDQyF/8PzDmwHYJnB6L4HvuUTz6v5uDZoNwN9JB7+95BcZDfuXmf55tdk0gXVz+a0k
+	 WHk600jyevALylfTWY/tGEnYe4vZsx5C+Hp4k1Jhl/FVRrmniL4hgyUFGoluoLXJ2j
+	 uURbWQ+KBqOoxktHftIrNNas/vAsWdVXSHcFM3LJdY4WYiqr2NCTGRwiorkbhylFM0
+	 P5379fd8OSF4pYIs86ii1vDOd9MeMgYSqz8FcuY5Z+ZUq6IO41RAEA7aharWdHuUnX
+	 s3TzyKznW2fTA==
+X-Mailer: emacs 30.1 (via feedmail 11-beta-1 Q)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
+	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
+	aik@amd.com, jgg@nvidia.com, zhiw@nvidia.com
+Subject: Re: [PATCH v3 12/13] PCI/TSM: support TDI related operations for
+ host TSM driver
+In-Reply-To: <aC2eTGpODgYh7ND7@yilunxu-OptiPlex-7050>
+References: <20250516054732.2055093-1-dan.j.williams@intel.com>
+ <20250516054732.2055093-13-dan.j.williams@intel.com>
+ <aCbglieuHI1BJDkz@yilunxu-OptiPlex-7050> <yq5awmab4uq6.fsf@kernel.org>
+ <aC2eTGpODgYh7ND7@yilunxu-OptiPlex-7050>
+Date: Mon, 26 May 2025 10:35:10 +0530
+Message-ID: <yq5aa570dks9.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3909686a-be14-4b0b-8336-0674667d5159@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 20, 2025 at 08:57:42PM +1000, Alexey Kardashevskiy wrote:
-> 
-> 
-> On 16/5/25 04:02, Xu Yilun wrote:
-> > > IMHO, I think it might be helpful that you can picture out what are the
-> > > minimum requirements (function/life cycle) to the current IOMMUFD TSM
-> > > bind architecture:
-> > > 
-> > > 1.host tsm_bind (preparation) is in IOMMUFD, triggered by QEMU handling
-> > > the TVM-HOST call.
-> > > 2. TDI acceptance is handled in guest_request() to accept the TDI after
-> > > the validation in the TVM)
-> > 
-> > I'll try my best to brainstorm and make a flow in ASCII.
-> > 
-> > (*) means new feature
-> > 
-> > 
-> >        Guest          Guest TSM       QEMU           VFIO            IOMMUFD       host TSM          KVM
-> >        -----          ---------       ----           ----            -------       --------          ---
-> > 1.                                                                               *Connect(IDE)
-> > 2.                                 Init vdev
-> > 3.                                *create dmabuf
-> > 4.                                               *export dmabuf
-> > 5.                                create memslot
-> > 6.                                                                                              *import dmabuf
-> > 7.                                setup shared DMA
-> > 8.                                                                 create hwpt
-> > 9.                                               attach hwpt
-> > 10.                                  kvm run
-> > 11.enum shared dev
-> > 12.*Connect(Bind)
-> > 13.                  *GHCI Bind
-> > 14.                                  *Bind
-> > 15                                                                 CC viommu alloc
-> > 16.                                                                vdevice allloc
-> > 16.                                              *attach vdev
-> 
-> 
-> This "attach vdev" - we are still deciding if it goes to IOMMUFD or VFIO, right?
+Xu Yilun <yilun.xu@linux.intel.com> writes:
 
-This should be "tsm bind". Seems Jason's suggestion is place the IOCTL
-against VFIO, then VFIO reach into IOMMUFD to do the real
-pci_tsm_bind().
+> On Tue, May 20, 2025 at 12:47:05PM +0530, Aneesh Kumar K.V wrote:
+>> Xu Yilun <yilun.xu@linux.intel.com> writes:
+>>=20
+>> > On Thu, May 15, 2025 at 10:47:31PM -0700, Dan Williams wrote:
+>> >> From: Xu Yilun <yilun.xu@linux.intel.com>
+>> >>=20
+>> >> Add kAPIs pci_tsm_{bind,unbind,guest_req}() for PCI devices.
+>> >>=20
+>> >> pci_tsm_bind/unbind() are supposed to be called by kernel components
+>> >> which manages the virtual device. The verb 'bind' means VMM does extra
+>> >> configurations to make the assigned device ready to be validated by
+>> >> CoCo VM as TDI (TEE Device Interface). Usually these configurations
+>> >> include assigning device ownership and MMIO ownership to CoCo VM, and
+>> >> move the TDI to CONFIG_LOCKED TDISP state by LOCK_INTERFACE_REQUEST
+>> >> TDISP message. The detailed operations are specific to platform TSM
+>> >> firmware so need to be supported by vendor TSM drivers.
+>> >>=20
+>> >> pci_tsm_guest_req() supports a channel for CoCo VM to directly talk
+>> >> to TSM firmware about further TDI operations after TDI is bound, e.g.
+>> >> get device interface report, certifications & measurements. So this k=
+API
+>> >> is supposed to be called from KVM vmexit handler.
+>> >
+>> > To clarify, this commit message is staled. We are proposing existing to
+>> > QEMU, then pass to TSM through IOMMUFD VDEVICE.
+>> >
+>>=20
+>> Can you share the POC code/git repo implementing that? I am looking for
+>> pci_tsm_bind()/pci_tsm_unbind() example usage.
+>
+> The usage of these kAPIs should be in IOMMUFD, that's what I'm doing for
+> Stage 2 patchset. I need to rebase this series, adopt suggestions from
+> Jason, and make TDX Connect work to verify, so need more time...
+>
 
-https://lore.kernel.org/all/20250515175658.GR382960@nvidia.com/
+Since the bind/unbind operations are PCI-specific callbacks, and iommufd
+doesn=E2=80=99t seem to have a PCI-specific abstraction layer (unlike vfio,
+which uses vfio_pci.c), I=E2=80=99m wondering how iommufd intends to support
+PCI-specific TSM binding. Will there be a new interface for this, or is
+it expected to hook into something existing?
 
-> 
-> 
-> > 17.                                                               *setup CC viommu
-> > 18                                                                 *tsm_bind
-> > 19.                                                                                  *bind
-> > 20.*Attest
-> > 21.               *GHCI get CC info
-> > 22.                                 *get CC info
-> > 23.                                                                *vdev guest req
-> > 24.                                                                                 *guest req
-> > 25.*Accept
-> > 26.             *GHCI accept MMIO/DMA
-> > 27.                                *accept MMIO/DMA
-> > 28.                                                               *vdev guest req
-> > 29.                                                                                 *guest req
-> > 30.                                                                                              *map private MMIO
-> > 31.             *GHCI start tdi
-> > 32.                                *start tdi
-> > 33.                                                               *vdev guest req
-> > 34.                                                                                 *guest req
-> 
-> 
-> I am not sure I follow the layout here. "start tdi" and "accept MMIO/DMA" are under "QEMU" but QEMU cannot do anything by itself and has to call VFIO or some other driver...
-> 
-
-Yes. Call IOCTL(iommufd, IOMMUFD_VDEVICE_GUEST_REQUEST, vdevice_id)
-
-> > 35.Workload...
-> > 36.*disconnect(Unbind)
-> 
-> Is this a case of PCI hotunplug? Or just killing QEMU/shutting down the VM? Or stopping trusting the device and switching it to untrusted mode, to work with SWIOTLB or DiscardManager?
-> 
-
-switching to untrusted mode. But I think hotunplug would finally trigger
-the same host side behavior, only no need the guest to "echo 0 > connect"
-
-> > 37.              *GHCI unbind
-> > 38.                                *Unbind
-> > 39.                                            *detach vdev
-> > 40.                                                               *tsm_unbind
-> > 41.                                                                                 *TDX stop tdi
-> > 42.                                                                                 *TDX disable mmio cb
-> > 43.                                            *cb dmabuf revoke
-> 
-> 
-> ... like VFIO and hostTSM - "TDX stop tdi" and "cb dmabuf revoke" are not under QEMU.
-
-Correct. These are TDX Module specific requirements, we don't want them
-to make the general APIs unnecessary verbose.
-
-> 
-> 
-> > 44.                                                                                               *unmap private MMIO
-> > 45.                                                                                 *TDX disable dma cb
-> > 46.                                                              *cb disable CC viommu
-> > 47.                                                                                 *TDX tdi free
-> > 48.                                                                                 *enable mmio
-> > 49.                                            *cb dmabuf recover
-> 
-> 
-> What is the difference between "cb dmabuf revoke" and "cb dmabuf recover"?
-
-revoke revokes private S-EPT mapping, recover means KVM could then do
-shared MMIO mapping on EPT.
-
-Thanks,
-Yilun
-
-> 
-> 
-> > 50.workable shared dev
-> > 
-> > TSM unbind is a little verbos & specific to TDX Connect, but SEV TSM could
-> > ignore these callback. Just implement an "unbind" tsm ops.
-> 
-> 
-> Well, something need to clear RMP entries, can be done in the TDI unbind or whenever you will do it.
-> 
-> And the chart applies for AMD too, more or less. Thanks,
-> 
-> 
-> > Thanks,
-> > Yilun
-> > 
-> > > 
-> > > and which part/where need to be modified in the current architecture to
-> > > reach there. Try to fold vendor-specific knowledge as much as possible,
-> > > but still keep them modular in the TSM driver and let's see how it looks
-> > > like. Maybe some example TSM driver code to demonstrate together with
-> > > VFIO dma-buf patch.
-> > > 
-> > > If some where is extremely hacky in the TSM driver, let's see how they
-> > > can be lift to the upper level or the upper call passes more parameters
-> > > to them.
-> 
-> 
-> 
-> -- 
-> Alexey
-> 
+-aneesh
