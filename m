@@ -1,166 +1,206 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2046.outbound.protection.outlook.com [40.107.237.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63F21DBB3A
-	for <linux-coco@lists.linux.dev>; Tue, 27 May 2025 12:32:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748349181; cv=none; b=Z9Qw+f1DWlP2B73kOgKxNnv/mziS5HvShK3MHgJjPKYxAxASyn5kp4Aj7NEjT8/914Y5b5wZzFwiyvnVpFh6oEPdwDXye7PidpgFZ36j+VHF6xnssM4I4JGksR3BoJchW/UNi3Ji68vxhAndDR8NrHIaLHDlGpXP5VtnlOISDLQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748349181; c=relaxed/simple;
-	bh=tSaqhl0rxLhhiPMq46R4DMsAx8zjBsBm4mhI/0YTM1Q=;
-	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=gE0eeIjX7sacqRk+5SpGBPNtSWZgBVaEWdt3/h5Pp08+xsXlFHpf47gyAFKDkxsNqNKapX2ZY0AS31RME+N6oP9I99Dg0cO7IswDxwva/v01ydSd8nVoqEn5GuYq687CF9XlHpqgBk0Lt2jkjZ9WmZS2Q24vcCpIAORTFNLRpqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e0i+P1d+; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A18726FDB3
+	for <linux-coco@lists.linux.dev>; Tue, 27 May 2025 13:06:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748351178; cv=fail; b=GYh1tKRo3vo8SEj2lMJyaF6iJHhxRYluI0O9wcp6yI1gLvIpkTDk7Gc84jrHqLbATlvUpwficivoX83Ngo/xO0DtDa6/vfDP1mafJ4jJSot1A9uLcXFS28u2boJ+O4oaMbvl1XV4mdq5AQdbl0nOFVqLXyIDEYHezkwmaRCyWkg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748351178; c=relaxed/simple;
+	bh=Nk4kvyeHDKW/+iJgdF7pXPWZsWN8DtOrkD6e2fW74Is=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=GPMxpkUAY0CdvCbuEBXbw7wlXG1ackzv+RIPGUGOrkjLWmiUPl8c6XoHSCHrXX8Rok7mCTf955ZTkHIHQpn1yQyhP7ZqkOu4+G953EilP0yU17Y/7FaqdC4j7fQ+UNZrt/VYKmMyF6yhN7CaeOq1J2LQXM9vpGxiTWd03rqQKBI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=RPaCWWOp; arc=fail smtp.client-ip=40.107.237.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="e0i+P1d+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1748349178;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=/kPxUbgLr47CQ3MfBpzjWpRNVDo8L5yJjWAGTA4uxZM=;
-	b=e0i+P1d+bM/0XBNZ24m1fLGypatHE4dBmUoUfa1EQM1Ape47A6556lrt0+R800OOp4sPTJ
-	kCVauQ9+/8bBQlfMKGHLqcrkdCrdnXQUgfuOKz5U2rl3eySE/IRv+LJ1NBZ/joWVNSWKc8
-	VCKCGtOXsmCfSh42xswIeefPqtUQplM=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-VJ1P_YOYOTCz7uGUCHzhvw-1; Tue, 27 May 2025 08:32:57 -0400
-X-MC-Unique: VJ1P_YOYOTCz7uGUCHzhvw-1
-X-Mimecast-MFC-AGG-ID: VJ1P_YOYOTCz7uGUCHzhvw_1748349176
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-43d0830c3f7so25899495e9.2
-        for <linux-coco@lists.linux.dev>; Tue, 27 May 2025 05:32:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748349176; x=1748953976;
-        h=content-transfer-encoding:organization:autocrypt:subject:to:from
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/kPxUbgLr47CQ3MfBpzjWpRNVDo8L5yJjWAGTA4uxZM=;
-        b=IKD3Wph720VYk2ZfUvHorRIl7aDK1N30JWULM3YouXrRdYYXhUobcfSqv7L+J1cZDN
-         cUpJfwi0alJMp0nS1SnTDgA3776bJmHg2ikgaqAUgcQl8QWKCGmZ005dIHcjZvW+CiAr
-         8mQY50bacrYv5kkGc8by4L0v122OJVjwMgfHBLjWCPDUj6MDBAXFe90jhpKGUVW8+pGu
-         xakSA1gMGcPVFulR5fiPQauJfR4e4djVUwh5BfPC/jv74EbwY69jXmXkMm9zFqB4y2oY
-         cOdHHfcQ9AGlsIbRoMYRWLk2KIK0NDJYHKADNsKWJCg86i6hqjKsrehp3Bw2Lo/4fqfm
-         Ldjg==
-X-Gm-Message-State: AOJu0Yw/6Mkw4ilAnkdB8YHWFGOtV/3NNxEP8aUR6BPW64rtITuHnrJZ
-	Bx5nRtFnmvJtYxFP0TbYx0xVnCwaGVFWsey02Zm9UT1sro+FpRq4a1Sx48rRQcFI/dm3jYnNLRt
-	76LCuFi2kM/3YFz/Id7Q8R/ZKKVKQR+iSCdmsqqs96MZWrcmrCLQI7k8Sp2Aveg2AMIfcbsYM3G
-	gte99Prc5Ba9iXO/YKz9Xrj78TbAZhNGkwx8gRPX3vpyB7oT8e
-X-Gm-Gg: ASbGnctp2K7dblwNGyGIKLPp+ErKXvFc+5Bse3DcvOwwGOgTMT1lz9Ss6ktDyYdLaqg
-	4YkS4SAU58vXoDMJG0DukvvM5le/LtVWlKk0qvclraoY5Ib5DNHqICOtbGiQOtwNqFsHNkV7yrc
-	QBk/53adjS0Lbz8tTtexO8dOnLwZDlqoe/JDOCYmoyC1pkAz68PFWHUkRjdPanBdbdbWcFLuzP2
-	c/iroExbvS2XcyvqHAP3GRfZ/DjUBnO2sdIlq7XHSZft/izmYwP5X7P49O+BE2LyWUllROTQDUv
-	rJz0uRM3cCa5fD8dqHf8ZYFRTPJQ0Jbv4QSAYJFk5hY+
-X-Received: by 2002:a5d:53cd:0:b0:3a4:cf10:2a2 with SMTP id ffacd0b85a97d-3a4cf100d37mr8031551f8f.11.1748349176281;
-        Tue, 27 May 2025 05:32:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH74QTlH8BBYgUsfFMFPNYiMSjE1p5/YCiUV+wmYxSUc2meTCS5kkTmQp7vI+MAgBFlG4FD9g==
-X-Received: by 2002:a5d:53cd:0:b0:3a4:cf10:2a2 with SMTP id ffacd0b85a97d-3a4cf100d37mr8031481f8f.11.1748349175603;
-        Tue, 27 May 2025 05:32:55 -0700 (PDT)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f7bae847sm262697675e9.36.2025.05.27.05.32.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 May 2025 05:32:55 -0700 (PDT)
-Message-ID: <a2e57221-751a-4290-a8cf-cee0be537dad@redhat.com>
-Date: Tue, 27 May 2025 14:32:53 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="RPaCWWOp"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TO++P09GdeCOWQ+A9XLROmS/5VnLCAMIQjKVIM/kLAUB7M9JH1fm5V3fJMw8climwnZ/3lkosoceFlSyFludZiupIl9xGV8Oom2WxdN5TBqHXITwVsoWcLdE1y3aSdWBIv1yy99eenJTFzNQIhLLXy+eWDMx4veWoyFOWQTj5H/HtyS40hPUgK3TxeGo0idQtz51s3tFErEbToq14pi9mY328x1u1lsRF1zuwUE7p+o6HBg6IjjGElFb2ow/VHtPLnaMZgg6D+F3KSWtRyN5+X34+x4pyA0zFRPcT9r7b4I636dbJU1HOq3oDMm05p4uPpM8vWgXxt4Ay4gTJnXlfw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=havx/Ac5wMKv3UFh0k0/W592XReFIh5KzOkwvJHWutc=;
+ b=MGbpCCrlDkr092S6Ptdh63SrXu5yNFX1mZgclflOU3TH8S36MCz7F5V+P/sn2uC8lzp5EC4+jMfKCA3+IakwP9v3XAstob2TAM+K+6GLw4QH2BK2K+uImAPc0D5VUJzOpCDnV77yK9eux5oW7q3P8IXlgl6ThYizHZwAhOv6n/d1FOCf3ajLSNGaIG2Ri9NMalkNPOX5Fe+rPwY7A/257KNfVuLLVSaUnRrbIbtlCMwWHOihgwBVaOJIFqaYGgadNC8G1wrdcR0puZziAF6P7m7ZHrSc/rUIyZQ9ISwkmklmuPXSh0IOlgloIfpgV5XwE5uQ3TN3gCTOchtTGCAgzA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=havx/Ac5wMKv3UFh0k0/W592XReFIh5KzOkwvJHWutc=;
+ b=RPaCWWOpqwoguvfKrm+L1hxA/lms8YVvcSrFjuSEUgkiD4QyZT8sIhi3Aa7C/695xmWdMD/zcqx+ENBXDEK8MxlbtrxO+xu5aJR3Tbbvj7IIIXVw6sFLyTMWd33yV0ETl4M2jeFNuny/+QEdPjZM5hesDjnjAoLzfzyQ73DPnnK80JlhyCjlXwQxkgIRAL4QehhrfEg0iEtAXWdamhWmFbSDGMnPRDuBawm3UbkAquQlI4USi2kMVD34bnmWH+5HLZqw93nDi8gnmI0kUEcnVURHjDK2KLvF+1M18oQ1Te3bOlOsY9i0agh1AeB0IomzzJ8vH0Rb/ZOvXPlOGdyB4w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by SA1PR12MB6870.namprd12.prod.outlook.com (2603:10b6:806:25e::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.24; Tue, 27 May
+ 2025 13:06:11 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%6]) with mapi id 15.20.8769.022; Tue, 27 May 2025
+ 13:06:11 +0000
+Date: Tue, 27 May 2025 10:06:10 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Alexey Kardashevskiy <aik@amd.com>, Xu Yilun <yilun.xu@linux.intel.com>,
+	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
+	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
+	zhiw@nvidia.com
+Subject: Re: [PATCH v3 12/13] PCI/TSM: support TDI related operations for
+ host TSM driver
+Message-ID: <20250527130610.GN61950@nvidia.com>
+References: <20250516054732.2055093-1-dan.j.williams@intel.com>
+ <20250516054732.2055093-13-dan.j.williams@intel.com>
+ <aCbglieuHI1BJDkz@yilunxu-OptiPlex-7050>
+ <yq5awmab4uq6.fsf@kernel.org>
+ <aC2eTGpODgYh7ND7@yilunxu-OptiPlex-7050>
+ <yq5aa570dks9.fsf@kernel.org>
+ <1bcf37cd-0fc4-40fa-bcd1-e499619943bd@amd.com>
+ <yq5ah617s7fs.fsf@kernel.org>
+ <cfdfd053-9e9d-43c0-8301-5411a02ffdf9@amd.com>
+ <yq5abjres2a6.fsf@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq5abjres2a6.fsf@kernel.org>
+X-ClientProxiedBy: BN7PR06CA0066.namprd06.prod.outlook.com
+ (2603:10b6:408:34::43) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: David Hildenbrand <david@redhat.com>
-To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
-Subject: [Invitation] bi-weekly guest_memfd upstream call on 2025-05-29
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: s8Nsf4snjFwT60J4OeD6PZXFByla5rmP2dVJlccpcTs_1748349176
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|SA1PR12MB6870:EE_
+X-MS-Office365-Filtering-Correlation-Id: 29f241b3-a543-4de7-2c30-08dd9d1f409d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?xljRfecWf16CQL8n3UGpUF3/wgdJ/EGTrCGdZNHCvusDH1Satg9wbeEAbuLX?=
+ =?us-ascii?Q?8FAcpQOQqLj4a7SoAHiz11gg8t5/4OJsSNvbDfd1B3Ij/foe72SH4wMIktWb?=
+ =?us-ascii?Q?+Q8Zn+pHTS93Z5R/xs3Pf8IAn+dMIoMWG9nieGjN9FoF820rMa3jmTisQsZ6?=
+ =?us-ascii?Q?s2SrQGQ2xkqioTUgZ+j4gLwIDl9pRjZ40p5NzTK6ftRoVLYkFFv3jAYl59T/?=
+ =?us-ascii?Q?X8vwtWqA9fows8YyQwlf4T3kjZDLSb7yQe6P+oavq0wHAGSXxvBKBMGCODkN?=
+ =?us-ascii?Q?R0a557UdaQxDjG7/wBfVpzHBcMYECZ6Pzp6HoPE9HahGJQk9GmxQAogRu2GF?=
+ =?us-ascii?Q?B9EMz5pszd3lsRSI1eVGRrxtyiJe7EWp6+STMsYTwqdp5iwlt6hz9BHcdcT1?=
+ =?us-ascii?Q?Q6AxWaGDO7i7hwfPoy19sLEAE0TyEKLxNw8K6V7yp8wjwSp0XoVN9JNzzOwf?=
+ =?us-ascii?Q?2tP8zZi/+mgeeANFhQUTvc1ipPTCaJcn9Ta06PHBtXJ0UOIO6XFXrprk8xll?=
+ =?us-ascii?Q?2V/4hk2J5GoXy55kNjPdjAsbtQAUY68L9rDxWZdeTi/G5xL4hpSCx80cgiMx?=
+ =?us-ascii?Q?JRRmxqxnh8i9gPqPnVBlI2xoAB5Y9iDpUG/vGX+UxSpqOPnNHanEMtLVRpJm?=
+ =?us-ascii?Q?mLmHEFvrBp5Und0VkleXQji1kQXPeOpmsSjKOQ6e0CG2MVwoQdP4ZUsDNp1r?=
+ =?us-ascii?Q?XpMkRQsCv6zL31x+9N8bcFrO73rnVeGa9gIeqIUS/pJpwXhV7c7jzW1KsiHK?=
+ =?us-ascii?Q?ZDpJkeGEtEG8svSjdWV/BbCKLL7YjTweWJI8s9Y+o7d5JSo7z916DI8TMcOv?=
+ =?us-ascii?Q?eYB+0tntlGfbCyayRYccCgtepVormYxQzF4xYzZG+MEcKSO9eIe0Y0RC9w/i?=
+ =?us-ascii?Q?xtFtBDJ1+pptTOEJ+sHUrji/Yfu120RQ8Iwaba4/XPyHVUpHvuN/B00r4lXE?=
+ =?us-ascii?Q?RxuRDDWe69BEJegNK+Pzm2ngfIrU7y9284mws0wbVv32Ri7CWZVScBAdMhdl?=
+ =?us-ascii?Q?5JZj29XrK4zhJdKmoC409aX3B/Xy+jHMqNb3clstvhFRSAtp5X700bzGRWE/?=
+ =?us-ascii?Q?BkTrIJqXq8N9r7sLFRla+e3JEvbBRHOGwnbfdJUtaJNIBD9Z3vnKSEMjVG0U?=
+ =?us-ascii?Q?zStCs4AK9WKNN6eFx0gETTDCoUmlvNKQbaeAdI1gCmhMR/rzSXJV09XQE9dZ?=
+ =?us-ascii?Q?MmIXCLy9zBgcts8OuXJtqBbPF4vt8+r/szWZ3U9QNR546P2QRJtMJAC93LKA?=
+ =?us-ascii?Q?v/Z0JHYRm4ajqCQxjUq23MmyD4y3Ttdd9QZjpeJzEKGnv1kOoRSTx3eEAenk?=
+ =?us-ascii?Q?aMmZHbL1XUNqMUSvBuz0E5KRHdWGrBnSxevICYM5ox4bjopTfgZENbeeme3N?=
+ =?us-ascii?Q?Op30pjz3bM4Xl+8IsOGQp75rOuQNh77G0uOdnM7mCLvIjxjL5ote6lkMh+GZ?=
+ =?us-ascii?Q?GgVgJkZjloE=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?GtwJ3cDQTxI77T/YkrTmJ4ThwaE17Cj9g8bgcg9kz9HGQmj2JLfLRGyzoaQC?=
+ =?us-ascii?Q?SE4V5FTkDyvuPo0ydlzjJ4JEuqCoySfGZ8O3h7GIxPk4gigr1zuTSMJafua9?=
+ =?us-ascii?Q?VcjVm1kZQ4W8tn4jZY6dTjGWx0gcxjAqEw6Yllqbq1EZyZet9s3Mw/pOJGh2?=
+ =?us-ascii?Q?4h2YIXLszeEr5b74RqS/fCGEs3E5OvOo1ULyXELET90O5ahw67p+yQhARaO8?=
+ =?us-ascii?Q?emuP7XSXrSmimZQa8chUzeXle0w4EZnKi90dEZoxRwF8v3y1Uq3EvpYZJtWY?=
+ =?us-ascii?Q?kshZ6KAYX2d6oCsofBoYGk5gJpKPhuukauWKXyrKI+zoCUPlBfkgX7H2dPOq?=
+ =?us-ascii?Q?nclv6RNZRJIyiLtlP55VbxFd97GCtAMnCTTsU3+RUwnw3HQnIb0i1BR2qzq3?=
+ =?us-ascii?Q?eRIPXk6W45MRDV32AkclqLOqJIHW5zAUyf2YmPvDUcdVIi2M50g29gjIEuVD?=
+ =?us-ascii?Q?YWW/Kiy/raIw5Ml8GbMmc1jW7lKpQQ/jbkAY4mirPYJfiP9j23q4HSqai6cZ?=
+ =?us-ascii?Q?0xS2s8MNoydZJQWDcLt5drwIdwkHboy/ZxL9OZxDdfZ5yuzTRmEp0KF/BcU8?=
+ =?us-ascii?Q?c8vkzDCx2R6nlycOnz3f6RLGasHEbSphy7C9vbSWnSAlpasFlurmeo0zDgRu?=
+ =?us-ascii?Q?ZPeYE2amalMmGelFuzTHdIdpoKxuot069hGzMbN6nrYXqHvL1LullLLrK2uG?=
+ =?us-ascii?Q?pXv84gZwKihahqNZjNyJhnl5jOe8SwCK4KXNeLpeNwfbUm64fUuJ0iwCfJqB?=
+ =?us-ascii?Q?i8GA+nMk4Iab0B/ZjUyEk4msuYl04OSKEW/yxk7DhjdWlw0gPQccriJvWIEG?=
+ =?us-ascii?Q?lSYpRlYFFKRLc7qqiMgRws3rshsJAsL/RHCHI+IaAWr+rD26T9JxNdKnRctR?=
+ =?us-ascii?Q?WUeNAKArHkuaqOm6kXwxKiJGMFO/XfXc1OuHJCzVGCM3NKNBRnM/8Kl8Q9uu?=
+ =?us-ascii?Q?o9nKR6vqBVSLA3xMBmj6gwI7b9RofvyQuatFqRKNo6IgZRHpTivE4zq8FETr?=
+ =?us-ascii?Q?UArB15gp39HILLoXswkZoKJsM04MIkFxnZ0aIOtfq3kzntwwFrS5/9wxoesm?=
+ =?us-ascii?Q?wXzbnHTaKQTCkxlWQE0btzM5sexkIfZ8rN9IqZkPZ051Baq8ZIa7fRf77umz?=
+ =?us-ascii?Q?nW6tlwBr9UgVnVF/gGNQZ3A2/Ni6ucmYco9B8ovo0Q1wDsSF1msT4NYuyBK5?=
+ =?us-ascii?Q?QI5HvdV1kwUJc5CpKVcu1jRSJ5Sa7QM9jnZd4RTv924pR/TqYD74o2LM/2EX?=
+ =?us-ascii?Q?UEc/c5INmgC1cLm6IhnEQ50vNNrZ9JPRKPUfxDx8Hc14YsFVhtwsiVLGkEGc?=
+ =?us-ascii?Q?aqrl+8Gu/4L6ul6ojwnezSHLhuciuSMKhrwNn2H0JMqBHxF9goZyULeiCYBB?=
+ =?us-ascii?Q?VctCxc6ptPU6n+8Ebsxdd1BN0p3QCyzOzWtbFKQtdDKaR30uWi7UyUDgz+Ji?=
+ =?us-ascii?Q?C4wbgV3KsoAlbIC6Exog9Hx50SlLweKXH09+cSU+K/BCy+t43b2QIuBAL7ea?=
+ =?us-ascii?Q?05han0tloxWrEYcZfy9L241FQfksxnxxbGE0pV89fnoadAvb45HhVTJvtZOM?=
+ =?us-ascii?Q?XpN7/k8HQLSBvZz7wR5Z59aqb3HbRvTLaZgFJ14l?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 29f241b3-a543-4de7-2c30-08dd9d1f409d
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2025 13:06:11.3297
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6EjnwYyRWia3Ea/godNRD7K41sH3NOncOfIQhj1kBI+TpabTol9GdKMPYLwxeIsp
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6870
 
-Hi everybody,
+On Tue, May 27, 2025 at 05:18:01PM +0530, Aneesh Kumar K.V wrote:
+> > yeah, I guess, there is a couple of places like this
+> >
+> > git grep pci_dev drivers/iommu/iommufd/
+> >
+> > drivers/iommu/iommufd/device.c:                 struct pci_dev *pdev = to_pci_dev(idev->dev);
+> > drivers/iommu/iommufd/eventq.c:         struct pci_dev *pdev = to_pci_dev(dev);
+> >
+> > Although I do not see any compelling reason to have pci_dev in the TSM API, struct device should just work and not spill any PCI details to IOMMUFD but whatever... Thanks,
+> 
+> Getting the kvm reference is tricky here.
 
-Our next guest_memfd upstream call is scheduled for Thursday,
-2025-05-29 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
+The KVM will come from the viommu object, passed in by userspace that
+is the plan at least.. If you are not presenting a viommu to the guest
+then I imagine we would still have some kind of NOP viommu object..
 
-We'll be using the following Google meet:
-http://meet.google.com/wxp-wtju-jzw
+We need an association between the viommu and vdevice to tell the TSM
+world what it is when we tell the TSM to create the vPCI function..
 
-The meeting notes can be found at [1], where we also link recordings and
-collect current guest_memfd upstream proposals. If you want an google
-calendar invitation that also covers all future meetings, just write me
-a mail.
+There is a missing ioctl in this sequence, you have to register the
+vdev with the viommu to create a vPCI function, and that may trigger a
+TSM call too.
 
-I have the following topics in mind:
+The registration should link the vdev to the viommu and then you can
+get the viommu's kvm for a later bind.
 
-(a) We'll continue our discussion on how to move forward with
-     mmap() support ("stage 1"). So far I assume there are no big
-     blockers.
-(b) It seems as if there are some discussions to be had around the
-     guest_memfd conversion ioctl.
-(c) Likely it makes sense to talk about the series "New KVM ioctl to
-     link a gmem inode to a new gmem file" [2], particularly, clarifying
-     the use case and how it might (or might not) affect other related
-     work.
+> +int iommufd_vdevice_tsm_bind_ioctl(struct iommufd_ucmd *ucmd)
+> +{
+> +	struct iommu_vdevice_id *cmd = ucmd->cmd;
+> +	struct iommufd_vdevice *vdev;
+> +	int rc = 0;
+> +
+> +	vdev = container_of(iommufd_get_object(ucmd->ictx, cmd->vdevice_id,
+> +					       IOMMUFD_OBJ_VDEVICE),
+> +			    struct iommufd_vdevice, obj);
+> +	if (IS_ERR(vdev))
+> +		return PTR_ERR(vdev);
+> +
+> +	rc = tsm_bind(vdev->dev, vdev->kvm, vdev->id);
+> +	if (rc) {
+> +		rc = -ENODEV;
+> +		goto out_put_vdev;
+> +	}
+> +
+> +	/* locking? */
+> +	vdev->tsm_bound = true;
+> +	refcount_inc(&vdev->obj.users);
 
-To put something to discuss onto the agenda, reply to this mail or add
-them to the "Topics/questions for next meeting(s)" section in the
-meeting notes as a comment.
+This refcount isn't going to work, it will make an error close()
+crash..
 
-Cheers,
+You need to auto-unbind on destruction I think.
 
-David
-
-[1]
-https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
-[2] https://lore.kernel.org/all/cover.1747368092.git.afranji@google.com/T/#u
-
+Jason
