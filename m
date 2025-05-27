@@ -1,164 +1,94 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DD927990A
-	for <linux-coco@lists.linux.dev>; Tue, 27 May 2025 14:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BCE927A444
+	for <linux-coco@lists.linux.dev>; Tue, 27 May 2025 15:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748357174; cv=none; b=R2d4ET5aEZJAv3sFru5m/k0OveTUFAHjtxyviSddMIz++VuScht6y2pnypU7blQVOMTsmW6Xj54bXm2+eGHearl9ySzsd+LJ4XnpjyhA4yyg3gAnlN/g3cwQMvlB2znFPQNz1hMqDXNN5gjaXtBMrcAk1TtqGjMpgKYBMkzBZyY=
+	t=1748360989; cv=none; b=DbLBH9khH2AY77zFoDmqNrSqOxHy3ussxRwUmdvZb2s6zc3f9CoKX1nrA0gBqBfN2nACxPaH11M7wQeXwAxS4FLHVvyalZlSyipy9XuZLbF23jJUWbBMPkmi+sC7f/oY5C+nEdRGsEscHfPfCyMwDovJNZ3/W6ZO5X4guBRbIBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748357174; c=relaxed/simple;
-	bh=UQp09avFH8xgeYerTkwf4UoPXmwKxzIXnY83QqUxR54=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u31joSqPsHOcM8OmnncPVKD1/gCK5prUOH4UkBrw7NirlgprPmvIE/iz4wr3GoQlbPrv3noXDVC2NoaZiTkMtq7Y6EJXzv+EywTxH4/KrBOiH4fLSnVxgJX62Y9n1QHjs7v3cO3yNqngwqPn10r4UIqt3xbxU3uxl11sdlJlGLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NqipAK5v; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1748360989; c=relaxed/simple;
+	bh=yShCBBLRkIFxQZxNmJvNsxRiK/3/0s0yLPvxyo8IwfM=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=fkOOZ0NHzlPqAtKpJP59iV3QIaUkDRahWBp10quM6N1p8YqgAWRDwbNHNLWiclSl6crQ91/4plGiZqAAdsz0F7R858UCLnGhp72/xLl/ymUa7JfXNzPTzVxIu8BuWL+IAaX2UGp0xIvyVMFpw111iaXi9KZ0Dfb+JlN6oGX4Bgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P8FkD9tY; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NqipAK5v"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P8FkD9tY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1748357171;
+	s=mimecast20190719; t=1748360986;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sa/wIGm5nRAZlTb1UlvruTlcCiWXHo8pM4cZQoZaSZU=;
-	b=NqipAK5vZdp6Y6NKn7ySXKy9cHH/eHCivw6wqI0v9IrHEFba1JKR8bIRL6nP/41pV2FHcr
-	RlthW0nE0f3VWN90WNNEy/hvnvut/Q9O/3xjehQgivoBxM1UnfpQfJiX1axTCnREWAVg3i
-	bdSnpyTzVA1Nq91BxygCKaDXayNd9mY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-246-2LoxhscaOcCIARcKL32Hjw-1; Tue,
- 27 May 2025 10:46:09 -0400
-X-MC-Unique: 2LoxhscaOcCIARcKL32Hjw-1
-X-Mimecast-MFC-AGG-ID: 2LoxhscaOcCIARcKL32Hjw_1748357167
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6144D1955D88;
-	Tue, 27 May 2025 14:46:07 +0000 (UTC)
-Received: from dobby.home.kraxel.org (unknown [10.45.226.108])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7E33C18003FC;
-	Tue, 27 May 2025 14:46:03 +0000 (UTC)
-Received: by dobby.home.kraxel.org (Postfix, from userid 1000)
-	id 4D2CC44FBC4; Tue, 27 May 2025 16:46:01 +0200 (CEST)
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ard Biesheuvel <ardb@kernel.org>
-Cc: kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	linux-efi@vger.kernel.org
-Subject: [PATCH 2/2] x86/sev: let sev_es_efi_map_ghcbs map the caa pages too
-Date: Tue, 27 May 2025 16:45:45 +0200
-Message-ID: <20250527144546.42981-2-kraxel@redhat.com>
-In-Reply-To: <20250527144546.42981-1-kraxel@redhat.com>
-References: <20250527144546.42981-1-kraxel@redhat.com>
+	 to:to:cc:mime-version:mime-version:content-type:content-type;
+	bh=WZGOJLeYIZIuNyXycDHmcBhHNeauZyZzpVAciy5BvY0=;
+	b=P8FkD9tYZFIuEtmDxkdxEsDd82Ao+TxFEDhjNm4/mwJzIm8JAf7QwFgLNlfnselPdecftb
+	Wa8HLV2mImKjMCpzKIfx2pXxyIUOxBnc93v+10YIWTf+EwCH2ZLVXgj8YhX99+Or/ACJT3
+	RpIGEREQ5fklsSso46I8oJ8EB+G0Fhk=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-68-RGXd_Ao-NuOen_9thTzRFA-1; Tue, 27 May 2025 11:49:45 -0400
+X-MC-Unique: RGXd_Ao-NuOen_9thTzRFA-1
+X-Mimecast-MFC-AGG-ID: RGXd_Ao-NuOen_9thTzRFA_1748360984
+Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-70e620999a5so25780687b3.1
+        for <linux-coco@lists.linux.dev>; Tue, 27 May 2025 08:49:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748360984; x=1748965784;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WZGOJLeYIZIuNyXycDHmcBhHNeauZyZzpVAciy5BvY0=;
+        b=FiPVvjgu5r3RvLF6nimcvjjl1Dxd3s+eTKynfkaITA9ZZzSDQOfFToICIuqNE1nfIA
+         gLMDTzaM+ASTcUFI7WasLfYYgsyLnsyROzERzr6Dc3vI5/7kDeDHnBqA3madULdwe9H2
+         y9EujIMqQPAwpT9/SWy2MX4LrDOuHWqZnnf1unvCzijOHXAlG0WuFH2M3YM6IPqnlf4H
+         9u62CBP5xCP2/MvSMJbOSn+4sj9WtWXFu5Ytd8K9OOKxulxUUYqnAjHrMdkyxbV09/Dd
+         fG4Da43Mb6M/No66KdfHBit6kpnwAzHCbRmq0cs+9Pe+c4MNUznZ2JGKmKVva6QNYVWL
+         2E1A==
+X-Forwarded-Encrypted: i=1; AJvYcCXt1V4TeRZhCU4XG4qfgxgC92MCKOYAfY27wzhGStXPD0w1/lGmDgxmHZtwi9dZRegxczkf3cRMWjBE@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyt8/jpwSIJ5gY1xF4v9WQtbwvkYRt3wnXpXANx4CJH0Kr9srn/
+	w+yc8fWsIZoJvvFpROkcILI7pmBV9eg3e1Y8LMFz8meF8m+xxXXh7duLiO/FTjEPkcwP2synTAa
+	rDvAaVoAFuxLs4ERAGyV/BAt4tM5zLRfnSibBQgFuBTToQUWC2Sz+N9Tm99sT8T0oO4s1tLV74q
+	9oLCkoVh2hi7bFKiAuke5T659ovfeUaWtrxQf5+LQUiGF9cw==
+X-Gm-Gg: ASbGncsrJZbFOeejmkyh93Sf9ddyBNCrbbRHCCNxygXNmWdpe0IuBhFi9aaZ8O7sgdW
+	7xVEuZjF40ufkZ+DkNd89vXcYUOGmhmVw1gsGiWL8ZNpv0nUnLC2tJc4iT9fvKKbjpjM=
+X-Received: by 2002:a05:6902:100f:b0:e7d:c9f4:ed7b with SMTP id 3f1490d57ef6-e7dc9f4eedemr3087840276.1.1748360983867;
+        Tue, 27 May 2025 08:49:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHiWyvITgJL+J+DThBvUtJX06I5LZ0wJ4xX7cXWNpyrd9yE+oA3SbDhtVDmFlvtI+97dxZWuXgvdd/jvC793zk=
+X-Received: by 2002:a05:6902:100f:b0:e7d:c9f4:ed7b with SMTP id
+ 3f1490d57ef6-e7dc9f4eedemr3087813276.1.1748360983464; Tue, 27 May 2025
+ 08:49:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Tue, 27 May 2025 17:49:32 +0200
+X-Gm-Features: AX0GCFtO07OFGCirVhUW5Z7V4STVi5G09xgnk1wWpqEEzNAmpai1tl4PiZ4ZEqw
+Message-ID: <CAGxU2F6wv3QUOD=Ji_Y1aFqpwKUKhcHsUDCdk2uy79DgrvOrrQ@mail.gmail.com>
+Subject: SVSM Development Call May 28th, 2025
+To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: bFknIwofy2bnBOdWztjFafZY3QoaeZz6LamOTt3b2Y4_1748360984
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 
-OVMF EFI firmware needs access to the CAA page to do SVSM protocol
-calls.  So add that to sev_es_efi_map_ghcbs and also rename the function
-to reflect the additional job it is doing now.
+Hi,
 
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
----
- arch/x86/coco/sev/core.c       | 14 ++++++++++++--
- arch/x86/include/asm/sev.h     |  4 ++--
- arch/x86/platform/efi/efi_64.c |  2 +-
- 3 files changed, 15 insertions(+), 5 deletions(-)
+Here is the usual call for agenda items for this week's SVSM development call.
+Please send us any agenda items you have in mind or raise them in the meeting.
 
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index 145f594d7e6b..1cf2a8757ad6 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -1466,11 +1466,13 @@ int __init sev_es_setup_ap_jump_table(struct real_mode_header *rmh)
-  * This is needed by the OVMF UEFI firmware which will use whatever it finds in
-  * the GHCB MSR as its GHCB to talk to the hypervisor. So make sure the per-cpu
-  * runtime GHCBs used by the kernel are also mapped in the EFI page-table.
-+ *
-+ * When running under SVSM the CCA page is needed too, so map it as well.
-  */
--int __init sev_es_efi_map_ghcbs(pgd_t *pgd)
-+int __init sev_es_efi_map_ghcbs_caas(pgd_t *pgd)
- {
- 	struct sev_es_runtime_data *data;
--	unsigned long address, pflags;
-+	unsigned long address, pflags, pflags_enc;
- 	int cpu;
- 	u64 pfn;
- 
-@@ -1478,6 +1480,7 @@ int __init sev_es_efi_map_ghcbs(pgd_t *pgd)
- 		return 0;
- 
- 	pflags = _PAGE_NX | _PAGE_RW;
-+	pflags_enc = cc_mkenc(pflags);
- 
- 	for_each_possible_cpu(cpu) {
- 		data = per_cpu(runtime_data, cpu);
-@@ -1487,6 +1490,13 @@ int __init sev_es_efi_map_ghcbs(pgd_t *pgd)
- 
- 		if (kernel_map_pages_in_pgd(pgd, pfn, address, 1, pflags))
- 			return 1;
-+
-+		address = per_cpu(svsm_caa_pa, cpu);
-+		if (address) {
-+			pfn = address >> PAGE_SHIFT;
-+			if (kernel_map_pages_in_pgd(pgd, pfn, address, 1, pflags_enc))
-+				return 1;
-+		}
- 	}
- 
- 	return 0;
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index ba7999f66abe..6b4f8b55e214 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -410,7 +410,7 @@ static __always_inline void sev_es_nmi_complete(void)
- 	    cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
- 		__sev_es_nmi_complete();
- }
--extern int __init sev_es_efi_map_ghcbs(pgd_t *pgd);
-+extern int __init sev_es_efi_map_ghcbs_caas(pgd_t *pgd);
- extern void sev_enable(struct boot_params *bp);
- 
- /*
-@@ -491,7 +491,7 @@ static inline void sev_es_ist_enter(struct pt_regs *regs) { }
- static inline void sev_es_ist_exit(void) { }
- static inline int sev_es_setup_ap_jump_table(struct real_mode_header *rmh) { return 0; }
- static inline void sev_es_nmi_complete(void) { }
--static inline int sev_es_efi_map_ghcbs(pgd_t *pgd) { return 0; }
-+static inline int sev_es_efi_map_ghcbs_caas(pgd_t *pgd) { return 0; }
- static inline void sev_enable(struct boot_params *bp) { }
- static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate) { return 0; }
- static inline int rmpadjust(unsigned long vaddr, bool rmp_psize, unsigned long attrs) { return 0; }
-diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-index a4b4ebd41b8f..1136c576831f 100644
---- a/arch/x86/platform/efi/efi_64.c
-+++ b/arch/x86/platform/efi/efi_64.c
-@@ -215,7 +215,7 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
- 	 * When SEV-ES is active, the GHCB as set by the kernel will be used
- 	 * by firmware. Create a 1:1 unencrypted mapping for each GHCB.
- 	 */
--	if (sev_es_efi_map_ghcbs(pgd)) {
-+	if (sev_es_efi_map_ghcbs_caas(pgd)) {
- 		pr_err("Failed to create 1:1 mapping for the GHCBs!\n");
- 		return 1;
- 	}
--- 
-2.49.0
+Details of the meeting can be found in our governance repository at:
+
+    https://github.com/coconut-svsm/governance
+
+The link to the COCONUT-SVSM calendar is:
+
+    https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?view=week
+
+The meeting will be recorded and the recording eventually published.
+
+See you all there.
+
+Ciao,
+Stefano
 
