@@ -1,85 +1,89 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27E527F754
-	for <linux-coco@lists.linux.dev>; Tue, 27 May 2025 16:13:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D1424C07D
+	for <linux-coco@lists.linux.dev>; Tue, 27 May 2025 16:22:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748362438; cv=none; b=hKFP0SZeNeVXFpqZCV5xD9vPCxhenYklFO8GwBiVn1waWcQ5EDK2l7kAuAI8mNmsCSrXdIm2lSBch07Bgz2s1DyfBtso4rFuSpj6aM4VEzy66lIazjAy38cPaGbxlKEWBvhZr++ZSu/a+0gn0ObhzVCw/UEY4JP4MBnk+ML6/NI=
+	t=1748362943; cv=none; b=HsU24QrDsmPMzi/Lp4aQyzslYEHRerGFZoMu/582GnOp5Z9xMxSecei63p+cJ5dtXdhrxnUUgD8vnFqHO4QdlvIesrpqwI+n9WhqEIGfe/qFSUnKaJ2FDP7DfkP+QWWFQLJMsiE2TMCmmih5NcNLj/XHtQOKlXxIpiqHxCXOBpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748362438; c=relaxed/simple;
-	bh=iqiXA6Rbb03tF/HCDxpk+ZKgjSzt6H2Xax2VkzI4ddM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qLjyla2BntuJNBt9TrOcx7Rw0MvT7z5e25/qkvWs8gv3grxyV0li49SIOhAY6DUCs6qCqidEua0n+OPC/109SO8S17TWaviWk3QSxZxGWJUgSJRFIdkzdicLkd9n8rzhand4yVqRztY7K4seJ+1DinQ1e/++P81ymbmXv3Xhti8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gQCV/q6g; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1748362943; c=relaxed/simple;
+	bh=DBfQNXHYjZTnioBGVrpuMQOWxk0gKSRi00zY0Oi1SmU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gML/BESxJgTZEMU4Stl9qAKMSWkMRFRXtUf0oM3on+R1jObjfCQ2GbD9NnIPJ7zeHna1s6bYw3iWYavVJWl8uKDV6m913ilc7r/veDMCB9BESUyVur/6d0QuO2m+WK0lm4AA0MkfniPk3QIQVKmXU2rEyGNkew7d9PkkGJhMbsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=PwqwmLT7; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gQCV/q6g"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3114c943367so2397212a91.1
-        for <linux-coco@lists.linux.dev>; Tue, 27 May 2025 09:13:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1748362436; x=1748967236; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=CyI6lRGaIfXB7jxaPrJKSQO0H+oxISfyvnAekkvYBnI=;
-        b=gQCV/q6guevQtfLweYHsAzvv3uy3vA0jlyVJ3f6FtQjcS14bByxNkxQumKguGWS1Ob
-         g2du2lmVB6gTm4ptQjBA7h9aYOHAwkSAJVWIXozRpVo3BCuSQ9dRNj6yCUwlI6ezfyur
-         lXwDhzk2OPhylVJKhly272yWux2wB2f0UzasYnd20ulFXZ92nx01+IO5UqrVpruWxVy8
-         JIom3KOEKuWUiV4DJS8G3wcbUr/rgWCXlZJnA5BSQG71YJjF2o0v981KXeit6AmCk7wJ
-         m3yrLHVPKUteMxOtKvkSnVxdM76rmc/TAqy65gEhWLX3tZJPqjaLRvDVQ/aN8HkWS3i0
-         QSng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748362436; x=1748967236;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CyI6lRGaIfXB7jxaPrJKSQO0H+oxISfyvnAekkvYBnI=;
-        b=atRZxRvAoTWeRF8N3PMAk5EQd5EExQ/T9JYbMuydsxLq+ErgJuv9d2bK/9/tOdEu9o
-         7x1leygSSW3fioS0apDOhD8KnxVTasBwf+JMTItDc9BgH9qBMgm9a9MCzsBw7TUz6qui
-         luuphHzgeRanQUkX8f73DLaaXCWTPGTvEzDaLXZQDoah09Y3Che5Rd0ZM7ghLGxXNEdn
-         p7jRVKoVvkqsiCxEOX+F2K3vlBNKWbtX05gC5d3J/rAKeI3raGxx3E7ycnO2vSepCX2t
-         0lVzt2kYDzgt1FgSeV/lY3QJ50MiLQyEhMxeCCTLrr2QBF9KXSxVxbPwTgKH56BpRgmR
-         lyfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWdl3fp2fyfEhfvqv5fVGnafU0+uvlOAusr5VIJecRNhntqsaul2ErGh9IQy/lW4lHvlT6NgO52qjfT@lists.linux.dev
-X-Gm-Message-State: AOJu0YwXVvJCLyII/xbopav3CjlniPCdgPG8fifbh2PIbVPDkDJnKCPS
-	6jg1xv6pWMDphiWPLsIN5/O+eXEutHDw2jL3i9OZzNcf1GTVnlQc168mmNCJMC8zTw5/H7Izc1p
-	qUTtf5q2+uauXq09Q3c5bcRlM1daJy9idZmegnRzu
-X-Gm-Gg: ASbGncvaAyKx3Li024g4AH02YVUTVgrWytFdrFJJX/VwFbdEUrSscO8UhIreJR+phjT
-	6he3QaDjMJ/ORILiiAqzDJY1RzmAoLpCwdHkHE52eKijdj9ox2Mb9UZ2iJx4lWpGGw03/Fj8+5z
-	ImqEDyNp1OCiFvJ76W70mhcqPrc32dcrF093uPA4spDAj+
-X-Google-Smtp-Source: AGHT+IEFXnUmQcAwZf0IdnuZbXNQFTMc5YTTUzgjQQa6keoKBAojGNaeiYVFV4H1X8znHWDrSoSoOeOR7BiDVmVBRMw=
-X-Received: by 2002:a17:90b:574c:b0:30e:3718:e9d with SMTP id
- 98e67ed59e1d1-31110d99815mr22155423a91.35.1748362435541; Tue, 27 May 2025
- 09:13:55 -0700 (PDT)
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="PwqwmLT7"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C8E2740E01B4;
+	Tue, 27 May 2025 16:22:10 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id V3CwDxIHnanD; Tue, 27 May 2025 16:22:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1748362927; bh=MXaCOMaubsaIUCduYoHD2Xh1n5Fq4KuVfRn1au7Nm64=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PwqwmLT72BexM8Br80mZZtJzUUxVMINZ4k2x2w6JU6LfvKayGBdNv8os1nQFpUW6i
+	 9s+DYsKMm2J8lOYT2omFRKIxyxL77MD60gLh3KPVh2a/ZXCFnliVrCyKXiJnkYgAPX
+	 WxB5zLysi8ysVEdV5PzvNAgSLLezU0QziKjMt5DIxBNRGEk+fyigUmKBh8n/Jxli1p
+	 UW9sHMFCp7e3eXi5IZL+6azNmBbyCWN+9Qn8239UKk1NtLA5BHRp6+1HgjeYoatblI
+	 5i7jtf7D9ze89xlG1TxcsXHrv2CLIQTgCFL9PiOs1Ha7SDozlVMm/0tbmRXLL6GeR4
+	 l5tyHGzWPtIjw/PXeMdfteOCFSBR06s9TQJb62YEekim7NoYY/HzJfA7aDlzJIxZ2z
+	 w6mDrg1IOr7nQO//hJyVbVV0MzuNRQ9JtltL+/22NXmLEipwV7fEznUc5v7q8GZqmr
+	 FqEHJvfYi/sn0ZRbtQu5RE8+P2Mgwyg6fJGKGVqtRoAaFD+cP6mmF3iD0rBOrdR5Nh
+	 e9IpXrBv4VVe+raTOvbEZ4X+V6bGt4kB0l0v8ml4sVu1F22gGeTVBa4gTo462UXgkP
+	 edgA8TH/+11YGuNtRBVZbSEVjZhq0tVCbCikGloJWnkdY8l+fAqvixWKevr/GNe5w9
+	 oZtxAPHu0B1NuHSB3ydTbFZs=
+Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0250940E01AD;
+	Tue, 27 May 2025 16:21:57 +0000 (UTC)
+Date: Tue, 27 May 2025 18:21:51 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] x86/sev/vc: fix efi runtime instruction emulation
+Message-ID: <20250527162151.GAaDXmn8O3f_HYgRju@fat_crate.local>
+References: <20250527144546.42981-1-kraxel@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250428195113.392303-1-michael.roth@amd.com> <20250428195113.392303-2-michael.roth@amd.com>
- <aC3m1uMmp28gSm3r@google.com>
-In-Reply-To: <aC3m1uMmp28gSm3r@google.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Tue, 27 May 2025 09:13:42 -0700
-X-Gm-Features: AX0GCFuVQ3lRhOu8bBMkwtNkd8VOCPOAbdPGDH93Xwsy8_b3o-5N_Qdrv4KHUx8
-Message-ID: <CAAH4kHbcLkGQ4yLKOzRzW=JP5QouonneYnAMU3eqZtPKVVF_jA@mail.gmail.com>
-Subject: Re: [PATCH v6 1/2] KVM: Introduce KVM_EXIT_SNP_REQ_CERTS for SNP certificate-fetching
-To: Sean Christopherson <seanjc@google.com>
-Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, pbonzini@redhat.com, jroedel@suse.de, 
-	thomas.lendacky@amd.com, liam.merwick@oracle.com, huibo.wang@amd.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250527144546.42981-1-kraxel@redhat.com>
 
-> Side topic, what sadist wrote the GHCB?  The "documentation" for MSG_REPORT_REQ
-> is garbage like this:
->
+On Tue, May 27, 2025 at 04:45:44PM +0200, Gerd Hoffmann wrote:
+> In case efi_mm is active go use the userspace instruction decoder which
+> supports fetching instructions from active_mm.  This is needed to make
+> instruction emulation work for EFI runtime code, so it can use cpuid
+> and rdmsr.
+> 
+> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+> ---
+>  arch/x86/coco/sev/core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Dude, please leave this kind of feedback in your head and treat your
-collaborators with respect.
+Can you pls explain what the use cases for this and your next patch are?
 
+We'd like to add them to our test pile.
 
+Thx.
 
 -- 
--Dionna Glaze, PhD, CISSP, CCSP (she/her)
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
