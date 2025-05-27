@@ -1,94 +1,85 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BCE927A444
-	for <linux-coco@lists.linux.dev>; Tue, 27 May 2025 15:49:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27E527F754
+	for <linux-coco@lists.linux.dev>; Tue, 27 May 2025 16:13:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748360989; cv=none; b=DbLBH9khH2AY77zFoDmqNrSqOxHy3ussxRwUmdvZb2s6zc3f9CoKX1nrA0gBqBfN2nACxPaH11M7wQeXwAxS4FLHVvyalZlSyipy9XuZLbF23jJUWbBMPkmi+sC7f/oY5C+nEdRGsEscHfPfCyMwDovJNZ3/W6ZO5X4guBRbIBE=
+	t=1748362438; cv=none; b=hKFP0SZeNeVXFpqZCV5xD9vPCxhenYklFO8GwBiVn1waWcQ5EDK2l7kAuAI8mNmsCSrXdIm2lSBch07Bgz2s1DyfBtso4rFuSpj6aM4VEzy66lIazjAy38cPaGbxlKEWBvhZr++ZSu/a+0gn0ObhzVCw/UEY4JP4MBnk+ML6/NI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748360989; c=relaxed/simple;
-	bh=yShCBBLRkIFxQZxNmJvNsxRiK/3/0s0yLPvxyo8IwfM=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=fkOOZ0NHzlPqAtKpJP59iV3QIaUkDRahWBp10quM6N1p8YqgAWRDwbNHNLWiclSl6crQ91/4plGiZqAAdsz0F7R858UCLnGhp72/xLl/ymUa7JfXNzPTzVxIu8BuWL+IAaX2UGp0xIvyVMFpw111iaXi9KZ0Dfb+JlN6oGX4Bgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P8FkD9tY; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1748362438; c=relaxed/simple;
+	bh=iqiXA6Rbb03tF/HCDxpk+ZKgjSzt6H2Xax2VkzI4ddM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qLjyla2BntuJNBt9TrOcx7Rw0MvT7z5e25/qkvWs8gv3grxyV0li49SIOhAY6DUCs6qCqidEua0n+OPC/109SO8S17TWaviWk3QSxZxGWJUgSJRFIdkzdicLkd9n8rzhand4yVqRztY7K4seJ+1DinQ1e/++P81ymbmXv3Xhti8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gQCV/q6g; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P8FkD9tY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1748360986;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type;
-	bh=WZGOJLeYIZIuNyXycDHmcBhHNeauZyZzpVAciy5BvY0=;
-	b=P8FkD9tYZFIuEtmDxkdxEsDd82Ao+TxFEDhjNm4/mwJzIm8JAf7QwFgLNlfnselPdecftb
-	Wa8HLV2mImKjMCpzKIfx2pXxyIUOxBnc93v+10YIWTf+EwCH2ZLVXgj8YhX99+Or/ACJT3
-	RpIGEREQ5fklsSso46I8oJ8EB+G0Fhk=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-68-RGXd_Ao-NuOen_9thTzRFA-1; Tue, 27 May 2025 11:49:45 -0400
-X-MC-Unique: RGXd_Ao-NuOen_9thTzRFA-1
-X-Mimecast-MFC-AGG-ID: RGXd_Ao-NuOen_9thTzRFA_1748360984
-Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-70e620999a5so25780687b3.1
-        for <linux-coco@lists.linux.dev>; Tue, 27 May 2025 08:49:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gQCV/q6g"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3114c943367so2397212a91.1
+        for <linux-coco@lists.linux.dev>; Tue, 27 May 2025 09:13:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1748362436; x=1748967236; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=CyI6lRGaIfXB7jxaPrJKSQO0H+oxISfyvnAekkvYBnI=;
+        b=gQCV/q6guevQtfLweYHsAzvv3uy3vA0jlyVJ3f6FtQjcS14bByxNkxQumKguGWS1Ob
+         g2du2lmVB6gTm4ptQjBA7h9aYOHAwkSAJVWIXozRpVo3BCuSQ9dRNj6yCUwlI6ezfyur
+         lXwDhzk2OPhylVJKhly272yWux2wB2f0UzasYnd20ulFXZ92nx01+IO5UqrVpruWxVy8
+         JIom3KOEKuWUiV4DJS8G3wcbUr/rgWCXlZJnA5BSQG71YJjF2o0v981KXeit6AmCk7wJ
+         m3yrLHVPKUteMxOtKvkSnVxdM76rmc/TAqy65gEhWLX3tZJPqjaLRvDVQ/aN8HkWS3i0
+         QSng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748360984; x=1748965784;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WZGOJLeYIZIuNyXycDHmcBhHNeauZyZzpVAciy5BvY0=;
-        b=FiPVvjgu5r3RvLF6nimcvjjl1Dxd3s+eTKynfkaITA9ZZzSDQOfFToICIuqNE1nfIA
-         gLMDTzaM+ASTcUFI7WasLfYYgsyLnsyROzERzr6Dc3vI5/7kDeDHnBqA3madULdwe9H2
-         y9EujIMqQPAwpT9/SWy2MX4LrDOuHWqZnnf1unvCzijOHXAlG0WuFH2M3YM6IPqnlf4H
-         9u62CBP5xCP2/MvSMJbOSn+4sj9WtWXFu5Ytd8K9OOKxulxUUYqnAjHrMdkyxbV09/Dd
-         fG4Da43Mb6M/No66KdfHBit6kpnwAzHCbRmq0cs+9Pe+c4MNUznZ2JGKmKVva6QNYVWL
-         2E1A==
-X-Forwarded-Encrypted: i=1; AJvYcCXt1V4TeRZhCU4XG4qfgxgC92MCKOYAfY27wzhGStXPD0w1/lGmDgxmHZtwi9dZRegxczkf3cRMWjBE@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyt8/jpwSIJ5gY1xF4v9WQtbwvkYRt3wnXpXANx4CJH0Kr9srn/
-	w+yc8fWsIZoJvvFpROkcILI7pmBV9eg3e1Y8LMFz8meF8m+xxXXh7duLiO/FTjEPkcwP2synTAa
-	rDvAaVoAFuxLs4ERAGyV/BAt4tM5zLRfnSibBQgFuBTToQUWC2Sz+N9Tm99sT8T0oO4s1tLV74q
-	9oLCkoVh2hi7bFKiAuke5T659ovfeUaWtrxQf5+LQUiGF9cw==
-X-Gm-Gg: ASbGncsrJZbFOeejmkyh93Sf9ddyBNCrbbRHCCNxygXNmWdpe0IuBhFi9aaZ8O7sgdW
-	7xVEuZjF40ufkZ+DkNd89vXcYUOGmhmVw1gsGiWL8ZNpv0nUnLC2tJc4iT9fvKKbjpjM=
-X-Received: by 2002:a05:6902:100f:b0:e7d:c9f4:ed7b with SMTP id 3f1490d57ef6-e7dc9f4eedemr3087840276.1.1748360983867;
-        Tue, 27 May 2025 08:49:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHiWyvITgJL+J+DThBvUtJX06I5LZ0wJ4xX7cXWNpyrd9yE+oA3SbDhtVDmFlvtI+97dxZWuXgvdd/jvC793zk=
-X-Received: by 2002:a05:6902:100f:b0:e7d:c9f4:ed7b with SMTP id
- 3f1490d57ef6-e7dc9f4eedemr3087813276.1.1748360983464; Tue, 27 May 2025
- 08:49:43 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1748362436; x=1748967236;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CyI6lRGaIfXB7jxaPrJKSQO0H+oxISfyvnAekkvYBnI=;
+        b=atRZxRvAoTWeRF8N3PMAk5EQd5EExQ/T9JYbMuydsxLq+ErgJuv9d2bK/9/tOdEu9o
+         7x1leygSSW3fioS0apDOhD8KnxVTasBwf+JMTItDc9BgH9qBMgm9a9MCzsBw7TUz6qui
+         luuphHzgeRanQUkX8f73DLaaXCWTPGTvEzDaLXZQDoah09Y3Che5Rd0ZM7ghLGxXNEdn
+         p7jRVKoVvkqsiCxEOX+F2K3vlBNKWbtX05gC5d3J/rAKeI3raGxx3E7ycnO2vSepCX2t
+         0lVzt2kYDzgt1FgSeV/lY3QJ50MiLQyEhMxeCCTLrr2QBF9KXSxVxbPwTgKH56BpRgmR
+         lyfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWdl3fp2fyfEhfvqv5fVGnafU0+uvlOAusr5VIJecRNhntqsaul2ErGh9IQy/lW4lHvlT6NgO52qjfT@lists.linux.dev
+X-Gm-Message-State: AOJu0YwXVvJCLyII/xbopav3CjlniPCdgPG8fifbh2PIbVPDkDJnKCPS
+	6jg1xv6pWMDphiWPLsIN5/O+eXEutHDw2jL3i9OZzNcf1GTVnlQc168mmNCJMC8zTw5/H7Izc1p
+	qUTtf5q2+uauXq09Q3c5bcRlM1daJy9idZmegnRzu
+X-Gm-Gg: ASbGncvaAyKx3Li024g4AH02YVUTVgrWytFdrFJJX/VwFbdEUrSscO8UhIreJR+phjT
+	6he3QaDjMJ/ORILiiAqzDJY1RzmAoLpCwdHkHE52eKijdj9ox2Mb9UZ2iJx4lWpGGw03/Fj8+5z
+	ImqEDyNp1OCiFvJ76W70mhcqPrc32dcrF093uPA4spDAj+
+X-Google-Smtp-Source: AGHT+IEFXnUmQcAwZf0IdnuZbXNQFTMc5YTTUzgjQQa6keoKBAojGNaeiYVFV4H1X8znHWDrSoSoOeOR7BiDVmVBRMw=
+X-Received: by 2002:a17:90b:574c:b0:30e:3718:e9d with SMTP id
+ 98e67ed59e1d1-31110d99815mr22155423a91.35.1748362435541; Tue, 27 May 2025
+ 09:13:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Stefano Garzarella <sgarzare@redhat.com>
-Date: Tue, 27 May 2025 17:49:32 +0200
-X-Gm-Features: AX0GCFtO07OFGCirVhUW5Z7V4STVi5G09xgnk1wWpqEEzNAmpai1tl4PiZ4ZEqw
-Message-ID: <CAGxU2F6wv3QUOD=Ji_Y1aFqpwKUKhcHsUDCdk2uy79DgrvOrrQ@mail.gmail.com>
-Subject: SVSM Development Call May 28th, 2025
-To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: bFknIwofy2bnBOdWztjFafZY3QoaeZz6LamOTt3b2Y4_1748360984
-X-Mimecast-Originator: redhat.com
+References: <20250428195113.392303-1-michael.roth@amd.com> <20250428195113.392303-2-michael.roth@amd.com>
+ <aC3m1uMmp28gSm3r@google.com>
+In-Reply-To: <aC3m1uMmp28gSm3r@google.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Tue, 27 May 2025 09:13:42 -0700
+X-Gm-Features: AX0GCFuVQ3lRhOu8bBMkwtNkd8VOCPOAbdPGDH93Xwsy8_b3o-5N_Qdrv4KHUx8
+Message-ID: <CAAH4kHbcLkGQ4yLKOzRzW=JP5QouonneYnAMU3eqZtPKVVF_jA@mail.gmail.com>
+Subject: Re: [PATCH v6 1/2] KVM: Introduce KVM_EXIT_SNP_REQ_CERTS for SNP certificate-fetching
+To: Sean Christopherson <seanjc@google.com>
+Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, pbonzini@redhat.com, jroedel@suse.de, 
+	thomas.lendacky@amd.com, liam.merwick@oracle.com, huibo.wang@amd.com
 Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+> Side topic, what sadist wrote the GHCB?  The "documentation" for MSG_REPORT_REQ
+> is garbage like this:
+>
 
-Here is the usual call for agenda items for this week's SVSM development call.
-Please send us any agenda items you have in mind or raise them in the meeting.
+Dude, please leave this kind of feedback in your head and treat your
+collaborators with respect.
 
-Details of the meeting can be found in our governance repository at:
 
-    https://github.com/coconut-svsm/governance
 
-The link to the COCONUT-SVSM calendar is:
-
-    https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?view=week
-
-The meeting will be recorded and the recording eventually published.
-
-See you all there.
-
-Ciao,
-Stefano
-
+-- 
+-Dionna Glaze, PhD, CISSP, CCSP (she/her)
