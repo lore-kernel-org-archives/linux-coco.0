@@ -1,89 +1,98 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D1424C07D
-	for <linux-coco@lists.linux.dev>; Tue, 27 May 2025 16:22:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A522609F7
+	for <linux-coco@lists.linux.dev>; Tue, 27 May 2025 16:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748362943; cv=none; b=HsU24QrDsmPMzi/Lp4aQyzslYEHRerGFZoMu/582GnOp5Z9xMxSecei63p+cJ5dtXdhrxnUUgD8vnFqHO4QdlvIesrpqwI+n9WhqEIGfe/qFSUnKaJ2FDP7DfkP+QWWFQLJMsiE2TMCmmih5NcNLj/XHtQOKlXxIpiqHxCXOBpU=
+	t=1748364296; cv=none; b=j/odDoeo1IWDRmvrsfTv92F2OdEvL0mNCUHNsIJtxGiad02Brv8EXffhTqD3vK8Mn+2/zGX9Kb4epRz4PocxyAlK7Xqf4Fjl3VZj8xBYMwf5Ya6JlH8+9b0mEsStOC0+GQ2JhaZUaBoEd/3YVEOsaFVV15uaAMLuRIi0ZKKq1S4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748362943; c=relaxed/simple;
-	bh=DBfQNXHYjZTnioBGVrpuMQOWxk0gKSRi00zY0Oi1SmU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gML/BESxJgTZEMU4Stl9qAKMSWkMRFRXtUf0oM3on+R1jObjfCQ2GbD9NnIPJ7zeHna1s6bYw3iWYavVJWl8uKDV6m913ilc7r/veDMCB9BESUyVur/6d0QuO2m+WK0lm4AA0MkfniPk3QIQVKmXU2rEyGNkew7d9PkkGJhMbsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=PwqwmLT7; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1748364296; c=relaxed/simple;
+	bh=YQJ5Y/glLmAKoQr5dvAuvWJqArl6gIzSqIc37GUdMUo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=k+fCfQi3iVoMbZg1jToTNGP/tURCPNRRjRKEmiiyNncpWZXbEV56u77iJBr9v4eAvLF7rMJwomxp5LLD0n/lggZ+H1XkzvkaSul6BeIde7YToXeGnphayauZIEUIHB27bcGq04SJ+sp9x3l6j9XrmyoRe5hJ9qkPrwenSkgSMtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=omqejxYs; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="PwqwmLT7"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C8E2740E01B4;
-	Tue, 27 May 2025 16:22:10 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id V3CwDxIHnanD; Tue, 27 May 2025 16:22:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1748362927; bh=MXaCOMaubsaIUCduYoHD2Xh1n5Fq4KuVfRn1au7Nm64=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PwqwmLT72BexM8Br80mZZtJzUUxVMINZ4k2x2w6JU6LfvKayGBdNv8os1nQFpUW6i
-	 9s+DYsKMm2J8lOYT2omFRKIxyxL77MD60gLh3KPVh2a/ZXCFnliVrCyKXiJnkYgAPX
-	 WxB5zLysi8ysVEdV5PzvNAgSLLezU0QziKjMt5DIxBNRGEk+fyigUmKBh8n/Jxli1p
-	 UW9sHMFCp7e3eXi5IZL+6azNmBbyCWN+9Qn8239UKk1NtLA5BHRp6+1HgjeYoatblI
-	 5i7jtf7D9ze89xlG1TxcsXHrv2CLIQTgCFL9PiOs1Ha7SDozlVMm/0tbmRXLL6GeR4
-	 l5tyHGzWPtIjw/PXeMdfteOCFSBR06s9TQJb62YEekim7NoYY/HzJfA7aDlzJIxZ2z
-	 w6mDrg1IOr7nQO//hJyVbVV0MzuNRQ9JtltL+/22NXmLEipwV7fEznUc5v7q8GZqmr
-	 FqEHJvfYi/sn0ZRbtQu5RE8+P2Mgwyg6fJGKGVqtRoAaFD+cP6mmF3iD0rBOrdR5Nh
-	 e9IpXrBv4VVe+raTOvbEZ4X+V6bGt4kB0l0v8ml4sVu1F22gGeTVBa4gTo462UXgkP
-	 edgA8TH/+11YGuNtRBVZbSEVjZhq0tVCbCikGloJWnkdY8l+fAqvixWKevr/GNe5w9
-	 oZtxAPHu0B1NuHSB3ydTbFZs=
-Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0250940E01AD;
-	Tue, 27 May 2025 16:21:57 +0000 (UTC)
-Date: Tue, 27 May 2025 18:21:51 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] x86/sev/vc: fix efi runtime instruction emulation
-Message-ID: <20250527162151.GAaDXmn8O3f_HYgRju@fat_crate.local>
-References: <20250527144546.42981-1-kraxel@redhat.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="omqejxYs"
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-54afb5fcebaso4567937e87.3
+        for <linux-coco@lists.linux.dev>; Tue, 27 May 2025 09:44:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1748364292; x=1748969092; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=K5A4z8idvhrlOUm9it3KkLJXHuCr29pgoYIORSBD9TU=;
+        b=omqejxYspK/vUXhd7tLayxdnImwDUUWEVmSTyG5ME1OI4j+9L/LerRxB7yQuWubCJb
+         wC1RG7GBdHudd7CAzNkvkSR/bWA5OPfMIM7Qg97f4RZ+yC3iU5oeBshO4uq2Hp/+aC5T
+         scEOpQyMPAh1uho0uPEnX/TgHpLfoBgqRHcGryXkKxG714wdEX2mD0DscBniDr5dnYrk
+         VvsxDqCI1X/FjB7IGAlAllOl+hOVC39xMHOVKnBMiq0eKk2mOER4sIuC0K8Iu1T+mJQs
+         aWiZHsDkJ3jIUtx0hlxULyqwX0ayL6XbF7EklNwu0brz+O1suuy7sFgCNKH0mw+P9j9e
+         CZmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748364292; x=1748969092;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=K5A4z8idvhrlOUm9it3KkLJXHuCr29pgoYIORSBD9TU=;
+        b=Let9GU1VY/iRRp69s92MewDC+QL0CfZwMsAxIujDYdimhAG998Anojj0cc4KobDhLm
+         CFOU7QQm2Qf5/uf0IGwTCCuqXmI0QLbw3H+Sk9xDnWFZLeyeFwSk+y1Yp7ZaWNR7aQQe
+         EXRBSXR6iBEJUn0Bj3ZYCDlISDSdZAPam2eBcabkJdHvZsGJs+zepGaXpYYPXt3ggIF/
+         YUjpy9TPqaDffW9+JLXkBxvrDdOzzY7GlYHdGPGBF4XbxefM+nqUzbQAd1xeNeNlFpW5
+         0vEItN+ZFPCFSprG3QwF4oskRkySxVT65RDcHLGokPW7XGghnLNMSDDvd7N4WDwrWl/W
+         m3Og==
+X-Forwarded-Encrypted: i=1; AJvYcCXb2BZ8Cy0NxmtmpIo04zIZlQ4mW2DF1j4Evk/bEgyouSqhcdG388SepndMPaUgANHuy1LQrqOfiBZS@lists.linux.dev
+X-Gm-Message-State: AOJu0YzuVYdbIz2eMWCPOeitfHtiA89IxyOK0Vi/4CljAZPZOzZtbji8
+	FwF4te7kwFr7rFl8DROUnJGjEhcFJUBF9WqgrVvHMFNvN/8iCyzEQJkMHDw83KbkzDitTYz/0Z5
+	0sML1dQcQrCAD+/y22oElyQtKbY3XfI+3RqBnES6F
+X-Gm-Gg: ASbGnctnk5B0ejdni39PkgW2BY7IFpb1kRu2pk9uBb184DU81SWJB9YAAHmLa/8ix/9
+	jTnuxyxGMEBmkFpiU/2aUzmVhVOB+XaEoP2vIP3yLqa9Tvby5oY+t1TP0pln02+1WvLHu8ahPMv
+	w52/xcMRAlU3KswzFrrJi5VWLAQ9BS5rndXoETk+2b31Nh
+X-Google-Smtp-Source: AGHT+IG/h8v06G9ALBq3kMuLuMnCc0pX6R8Hsw0GvHZOftlFSEKI/3wDPROoYBwYqNq8NJ4g87AN4IhUq9rx89c3iII=
+X-Received: by 2002:a05:6512:3b84:b0:54e:752a:ae5f with SMTP id
+ 2adb3069b0e04-5521c7a99e5mr4056444e87.8.1748364291421; Tue, 27 May 2025
+ 09:44:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250527144546.42981-1-kraxel@redhat.com>
+References: <20250527144546.42981-1-kraxel@redhat.com> <20250527144546.42981-2-kraxel@redhat.com>
+In-Reply-To: <20250527144546.42981-2-kraxel@redhat.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Tue, 27 May 2025 09:44:34 -0700
+X-Gm-Features: AX0GCFsUUiLqSU3MxdqUqyI_mJiFndCPXUTUWQVzFQES0xVHvwC1G3rVIaB4HrM
+Message-ID: <CAAH4kHYMyJ0Td47KShOJGntRPs6RLcJ97oajA7z9VPdUbjT+WQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] x86/sev: let sev_es_efi_map_ghcbs map the caa pages too
+To: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, May 27, 2025 at 04:45:44PM +0200, Gerd Hoffmann wrote:
-> In case efi_mm is active go use the userspace instruction decoder which
-> supports fetching instructions from active_mm.  This is needed to make
-> instruction emulation work for EFI runtime code, so it can use cpuid
-> and rdmsr.
-> 
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> ---
->  arch/x86/coco/sev/core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> index a4b4ebd41b8f..1136c576831f 100644
+> --- a/arch/x86/platform/efi/efi_64.c
+> +++ b/arch/x86/platform/efi/efi_64.c
+> @@ -215,7 +215,7 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
+>          * When SEV-ES is active, the GHCB as set by the kernel will be used
+>          * by firmware. Create a 1:1 unencrypted mapping for each GHCB.
+>          */
+> -       if (sev_es_efi_map_ghcbs(pgd)) {
+> +       if (sev_es_efi_map_ghcbs_caas(pgd)) {
+>                 pr_err("Failed to create 1:1 mapping for the GHCBs!\n");
 
-Can you pls explain what the use cases for this and your next patch are?
+nit: update error to reflect the expanded scope?
 
-We'd like to add them to our test pile.
+>                 return 1;
+>         }
+> --
+> 2.49.0
+>
+>
 
-Thx.
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+-Dionna Glaze, PhD, CISSP, CCSP (she/her)
