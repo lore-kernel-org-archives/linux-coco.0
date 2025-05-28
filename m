@@ -1,105 +1,402 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4ABC2441B8
-	for <linux-coco@lists.linux.dev>; Wed, 28 May 2025 07:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2951A27AC5A;
+	Wed, 28 May 2025 12:17:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748417915; cv=none; b=mVdWMFU4U0lxmv/79q5vaC39lmMyx0T65/LyQqQ2dtZkCsZJWQ/uKDt6xvmNd/Iulr7zTtsijsnsBeuwoLmS83RMBH43LKRbXp0Pt456GHSrqytoBCCD19xoQvjnFsehRlUn+15Lf5WPBta4lk89M9/yvhZhTh6L2fI2ln0xZK4=
+	t=1748434667; cv=none; b=Ulw98f2JC9DRRvZ/rjMyfk5f7wbqzMND4z6+t5LUwkf0B7BIxjosBVjiRQHHy1kbjtEdHhfkW1QFv06JNSFXVA9KPHFYzcevmiRTS/l2LrAc+5hKmsNgVVdLNbt55aWc07s91PDqZvFTMV/R8zv/cD2Kyqlfun2unNrCZc7UXGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748417915; c=relaxed/simple;
-	bh=EH+F4iRJI7anYHX3NynlYUSDaVIlMgqBZ6Ur6WFXNAQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cf6WNZxhTSNRvUkyAvNZW895SOs5f1kUBkobMyF0Xm23HMZ63zYCT3ECVJK6/XdrrCSVs212jz0yNyZJmAznu0eTMV6rgpL++jyOR0mvRJAd1wM+FlgMnUFLs3cVO2C4//qOp4of5VZ2aA5Qc/GyC3b4ZMt4NShT4wnMGWGSGng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KK/K7bQw; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1748434667; c=relaxed/simple;
+	bh=GMaRMH4NGfPpVpEbiw0a4wZBSujGM31YX1cJrZ6PKMo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=eE7eOlxYFoK7WSePwBgR0/Bvgk2h27LHIrUIBsgkwFjQ27s9vP+l5aaiP5xunoSH2iik1qoz3/QeYQiIubVaI8Ywc7gVGKnVLWEPDUfuddaakUGgKiC6abKdwH/yoR8Cyjb6rx8L0U69IBTNU0bpfVJ/BnwagAVvTXPhu+QfuAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HbMl+EY6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KK/K7bQw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1748417912;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nIttIbYMTmu8/eguOayC3dSJD20KFYU/EvDlBxz1bX8=;
-	b=KK/K7bQw10tPIUCOoXtX6SjXmxWplMYT747gJPhv2CpyXp502EqMLVlMhiTQW5af3Io4lz
-	C1K0YkMqb9I/K1btKUZf9eVYXfaJ/n1+6moFsHMFc6PChYW9Dsfg50sllu9nFXml0cLg6R
-	k1ai74WzR7Sz6LK8IHOKrPF/4gtRft4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-424-qlHoU7GUPsGgzsvwWcraWw-1; Wed,
- 28 May 2025 03:38:31 -0400
-X-MC-Unique: qlHoU7GUPsGgzsvwWcraWw-1
-X-Mimecast-MFC-AGG-ID: qlHoU7GUPsGgzsvwWcraWw_1748417909
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9EC6A1956086;
-	Wed, 28 May 2025 07:38:28 +0000 (UTC)
-Received: from dobby.home.kraxel.org (unknown [10.45.224.91])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 07335180049D;
-	Wed, 28 May 2025 07:38:27 +0000 (UTC)
-Received: by dobby.home.kraxel.org (Postfix, from userid 1000)
-	id D532F4507BC; Wed, 28 May 2025 09:38:24 +0200 (CEST)
-Date: Wed, 28 May 2025 09:38:24 +0200
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] x86/sev/vc: fix efi runtime instruction emulation
-Message-ID: <77hywpberfkulac3q3hpupdmdpw2xbmlvzin4ks7xypikravkj@xjpi7gqscs6a>
-References: <20250527144546.42981-1-kraxel@redhat.com>
- <20250527162151.GAaDXmn8O3f_HYgRju@fat_crate.local>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HbMl+EY6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA81C4CEE7;
+	Wed, 28 May 2025 12:17:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748434665;
+	bh=GMaRMH4NGfPpVpEbiw0a4wZBSujGM31YX1cJrZ6PKMo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=HbMl+EY6LNFUt2Eiy50uto4fq82ADQyLj8d5e/hLwvB+LVtxJMjz0RLeFcid+w8BB
+	 xOsu0GUVN/WbJ4p5Ec+ZO/3oTUsiwpdsGNx05+6nfkcBa84jFfeG6r65VOSzxn2gxT
+	 VYi/s1zd3qpV2kPhr8La8WY6TfhYCdYvUK3/ErjRlttY1e6wcA97m5bzj+WB+Ykqo0
+	 U7dXTPu7oHqGM812FqtnuqYUzroD2NsR1pvWPPXoUYGJyfCCUX5sG6stiLv+VOj1+L
+	 86DsFNYOXCD/G1nvgkLbyN1UkCj3UCq5LIBi/XXv6T+UHfJwedMOahMJpq6Bb0in2G
+	 OQFd5h1Zd06QQ==
+X-Mailer: emacs 30.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
+	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
+	zhiw@nvidia.com
+Subject: Re: [PATCH v3 12/13] PCI/TSM: support TDI related operations for
+ host TSM driver
+In-Reply-To: <20250527144516.GO61950@nvidia.com>
+References: <aCbglieuHI1BJDkz@yilunxu-OptiPlex-7050>
+ <yq5awmab4uq6.fsf@kernel.org> <aC2eTGpODgYh7ND7@yilunxu-OptiPlex-7050>
+ <yq5aa570dks9.fsf@kernel.org>
+ <1bcf37cd-0fc4-40fa-bcd1-e499619943bd@amd.com>
+ <yq5ah617s7fs.fsf@kernel.org>
+ <cfdfd053-9e9d-43c0-8301-5411a02ffdf9@amd.com>
+ <yq5abjres2a6.fsf@kernel.org> <20250527130610.GN61950@nvidia.com>
+ <yq5a8qmiruym.fsf@kernel.org> <20250527144516.GO61950@nvidia.com>
+Date: Wed, 28 May 2025 17:47:19 +0530
+Message-ID: <yq5a8qmh53qo.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250527162151.GAaDXmn8O3f_HYgRju@fat_crate.local>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain
 
-On Tue, May 27, 2025 at 06:21:51PM +0200, Borislav Petkov wrote:
-> On Tue, May 27, 2025 at 04:45:44PM +0200, Gerd Hoffmann wrote:
-> > In case efi_mm is active go use the userspace instruction decoder which
-> > supports fetching instructions from active_mm.  This is needed to make
-> > instruction emulation work for EFI runtime code, so it can use cpuid
-> > and rdmsr.
-> > 
-> > Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> > ---
-> >  arch/x86/coco/sev/core.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> Can you pls explain what the use cases for this and your next patch are?
+Jason Gunthorpe <jgg@nvidia.com> writes:
 
-Use case is coconut-svsm providing an uefi variable store and edk2
-runtime code doing svsm protocol calls to send requests to the svsm
-variable store.  edk2 needs a caa page mapping and a working rdmsr
-instruction for that.
+> On Tue, May 27, 2025 at 07:56:09PM +0530, Aneesh Kumar K.V wrote:
+>> Jason Gunthorpe <jgg@nvidia.com> writes:
+>> 
+>> > On Tue, May 27, 2025 at 05:18:01PM +0530, Aneesh Kumar K.V wrote:
+>> >> > yeah, I guess, there is a couple of places like this
+>> >> >
+>> >> > git grep pci_dev drivers/iommu/iommufd/
+>> >> >
+>> >> > drivers/iommu/iommufd/device.c:                 struct pci_dev *pdev = to_pci_dev(idev->dev);
+>> >> > drivers/iommu/iommufd/eventq.c:         struct pci_dev *pdev = to_pci_dev(dev);
+>> >> >
+>> >> > Although I do not see any compelling reason to have pci_dev in the TSM API, struct device should just work and not spill any PCI details to IOMMUFD but whatever... Thanks,
+>> >> 
+>> >> Getting the kvm reference is tricky here.
+>> >
+>> > The KVM will come from the viommu object, passed in by userspace that
+>> > is the plan at least.. If you are not presenting a viommu to the guest
+>> > then I imagine we would still have some kind of NOP viommu object..
+>> 
+>> I assume you are not suggesting using IOMMU_VIOMMU_ALLOC? That would
+>> break the ABI, which we need to maintain.
+>
+> Yes I am, what ABI are you talking about? CC is all new.
+>
+>> Instead, my approach uses VFIO_DEVICE_BIND_IOMMUFD to associate the KVM
+>> context. The vfio device file descriptor had already been linked to the
+>> KVM instance via KVM_DEV_VFIO_FILE_ADD.
+>> 
+>> Through VFIO_DEVICE_BIND_IOMMUFD, we inherit the necessary KVM details
+>> and pass them along to iommufd_device, and subsequently to
+>> iommufd_vdevice, using IOMMU_VDEVICE_ALLOC.
+>
+> It is not OK, we want this in the viommu not the device for a bunch of
+> other reasons. I don't want two copies of the KVM running around
+> inside iommfd..
+>
 
-Another less critical but useful case is edk2 debug logging to qemu
-debugcon port.  That needs a working cpuid instruction because edk2
-uses that to figure whenever sev is active and adapt ioport access
-accordingly.
+Ok, I updated the changes as below.
 
-> We'd like to add them to our test pile.
+5 files changed, 161 insertions(+), 2 deletions(-)
+drivers/iommu/iommufd/iommufd_private.h |   3 +
+drivers/iommu/iommufd/main.c            |   5 ++
+drivers/iommu/iommufd/viommu.c          | 134 +++++++++++++++++++++++++++++++-
+include/linux/iommufd.h                 |   5 +-
+include/uapi/linux/iommufd.h            |  16 ++++
 
-That is a bit difficult right now because there are a number of pieces
-which need to fall into place before this is easily testable.  You need:
+modified   drivers/iommu/iommufd/iommufd_private.h
+@@ -606,6 +606,8 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd);
+ void iommufd_viommu_destroy(struct iommufd_object *obj);
+ int iommufd_vdevice_alloc_ioctl(struct iommufd_ucmd *ucmd);
+ void iommufd_vdevice_destroy(struct iommufd_object *obj);
++int iommufd_vdevice_tsm_bind_ioctl(struct iommufd_ucmd *ucmd);
++int iommufd_vdevice_tsm_unbind_ioctl(struct iommufd_ucmd *ucmd);
+ 
+ struct iommufd_vdevice {
+ 	struct iommufd_object obj;
+@@ -613,6 +615,7 @@ struct iommufd_vdevice {
+ 	struct iommufd_viommu *viommu;
+ 	struct device *dev;
+ 	u64 id; /* per-vIOMMU virtual ID */
++	bool tsm_bound;
+ };
+ 
+ #ifdef CONFIG_IOMMUFD_TEST
+modified   drivers/iommu/iommufd/main.c
+@@ -320,6 +320,7 @@ union ucmd_buffer {
+ 	struct iommu_veventq_alloc veventq;
+ 	struct iommu_vfio_ioas vfio_ioas;
+ 	struct iommu_viommu_alloc viommu;
++	struct iommu_vdevice_id vdev_id;
+ #ifdef CONFIG_IOMMUFD_TEST
+ 	struct iommu_test_cmd test;
+ #endif
+@@ -379,6 +380,10 @@ static const struct iommufd_ioctl_op iommufd_ioctl_ops[] = {
+ 		 __reserved),
+ 	IOCTL_OP(IOMMU_VIOMMU_ALLOC, iommufd_viommu_alloc_ioctl,
+ 		 struct iommu_viommu_alloc, out_viommu_id),
++	IOCTL_OP(IOMMU_VDEVICE_TSM_BIND, iommufd_vdevice_tsm_bind_ioctl,
++		 struct iommu_vdevice_id, vdevice_id),
++	IOCTL_OP(IOMMU_VDEVICE_TSM_UNBIND, iommufd_vdevice_tsm_unbind_ioctl,
++		 struct iommu_vdevice_id, vdevice_id),
+ #ifdef CONFIG_IOMMUFD_TEST
+ 	IOCTL_OP(IOMMU_TEST_CMD, iommufd_test, struct iommu_test_cmd, last),
+ #endif
+modified   drivers/iommu/iommufd/viommu.c
+@@ -2,6 +2,57 @@
+ /* Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES
+  */
+ #include "iommufd_private.h"
++#include "linux/tsm.h"
++
++#if IS_ENABLED(CONFIG_KVM)
++#include <linux/kvm_host.h>
++
++static void viommu_get_kvm_safe(struct iommufd_viommu *viommu, struct kvm *kvm)
++{
++	void (*put_fn)(struct kvm *kvm);
++	bool (*get_fn)(struct kvm *kvm);
++	bool ret;
++
++	if (!kvm)
++		return;
++
++	put_fn = symbol_get(kvm_put_kvm);
++	if (WARN_ON(!put_fn))
++		return;
++
++	get_fn = symbol_get(kvm_get_kvm_safe);
++	if (WARN_ON(!get_fn)) {
++		symbol_put(kvm_put_kvm);
++		return;
++	}
++
++	ret = get_fn(kvm);
++	symbol_put(kvm_get_kvm_safe);
++	if (!ret) {
++		symbol_put(kvm_put_kvm);
++		return;
++	}
++
++	viommu->put_kvm = put_fn;
++	viommu->kvm = kvm;
++}
++
++static void viommu_put_kvm(struct iommufd_viommu *viommu)
++{
++	if (!viommu->kvm)
++		return;
++
++	if (WARN_ON(!viommu->put_kvm))
++		goto clear;
++
++	viommu->put_kvm(viommu->kvm);
++	viommu->put_kvm = NULL;
++	symbol_put(kvm_put_kvm);
++
++clear:
++	viommu->kvm = NULL;
++}
++#endif
+ 
+ void iommufd_viommu_destroy(struct iommufd_object *obj)
+ {
+@@ -12,6 +63,8 @@ void iommufd_viommu_destroy(struct iommufd_object *obj)
+ 		viommu->ops->destroy(viommu);
+ 	refcount_dec(&viommu->hwpt->common.obj.users);
+ 	xa_destroy(&viommu->vdevs);
++
++	viommu_put_kvm(viommu);
+ }
+ 
+ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
+@@ -68,10 +121,32 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
+ 	 */
+ 	viommu->iommu_dev = __iommu_get_iommu_dev(idev->dev);
+ 
++	/* get the kvm details if specified. */
++	if (cmd->kvm_vm_fd) {
++		struct kvm *kvm;
++		struct fd f = fdget(cmd->kvm_vm_fd);
++
++		if (!fd_file(f)) {
++			rc = -EBADF;
++			goto out_abort;
++		}
++
++		if (!file_is_kvm(fd_file(f))) {
++			rc = -EBADF;
++			fdput(f);
++			goto out_abort;
++		}
++		kvm = fd_file(f)->private_data;
++		viommu_get_kvm_safe(viommu, kvm);
++		fdput(f);
++	}
++
+ 	cmd->out_viommu_id = viommu->obj.id;
+ 	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
+-	if (rc)
++	if (rc) {
++		viommu_put_kvm(viommu);
+ 		goto out_abort;
++	}
+ 	iommufd_object_finalize(ucmd->ictx, &viommu->obj);
+ 	goto out_put_hwpt;
+ 
+@@ -90,6 +165,9 @@ void iommufd_vdevice_destroy(struct iommufd_object *obj)
+ 		container_of(obj, struct iommufd_vdevice, obj);
+ 	struct iommufd_viommu *viommu = vdev->viommu;
+ 
++	if (vdev->tsm_bound)
++		tsm_unbind(vdev->dev);
++
+ 	/* xa_cmpxchg is okay to fail if alloc failed xa_cmpxchg previously */
+ 	xa_cmpxchg(&viommu->vdevs, vdev->id, vdev, NULL, GFP_KERNEL);
+ 	refcount_dec(&viommu->obj.users);
+@@ -157,3 +235,57 @@ int iommufd_vdevice_alloc_ioctl(struct iommufd_ucmd *ucmd)
+ 	iommufd_put_object(ucmd->ictx, &viommu->obj);
+ 	return rc;
+ }
++
++int iommufd_vdevice_tsm_bind_ioctl(struct iommufd_ucmd *ucmd)
++{
++	struct iommu_vdevice_id *cmd = ucmd->cmd;
++	struct iommufd_vdevice *vdev;
++	int rc = 0;
++
++	vdev = container_of(iommufd_get_object(ucmd->ictx, cmd->vdevice_id,
++					       IOMMUFD_OBJ_VDEVICE),
++			    struct iommufd_vdevice, obj);
++	if (IS_ERR(vdev))
++		return PTR_ERR(vdev);
++
++	rc = tsm_bind(vdev->dev, vdev->viommu->kvm, vdev->id);
++	if (rc) {
++		rc = -ENODEV;
++		goto out_put_vdev;
++	}
++
++	/* locking? */
++	vdev->tsm_bound = true;
++	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
++
++out_put_vdev:
++	iommufd_put_object(ucmd->ictx, &vdev->obj);
++	return rc;
++}
++
++int iommufd_vdevice_tsm_unbind_ioctl(struct iommufd_ucmd *ucmd)
++{
++	struct iommu_vdevice_id *cmd = ucmd->cmd;
++	struct iommufd_vdevice *vdev;
++	int rc = 0;
++
++	vdev = container_of(iommufd_get_object(ucmd->ictx, cmd->vdevice_id,
++					       IOMMUFD_OBJ_VDEVICE),
++			    struct iommufd_vdevice, obj);
++	if (IS_ERR(vdev))
++		return PTR_ERR(vdev);
++
++	rc = tsm_unbind(vdev->dev);
++	if (rc) {
++		rc = -ENODEV;
++		goto out_put_vdev;
++	}
++
++	/* locking ? */
++	vdev->tsm_bound = false;
++	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
++
++out_put_vdev:
++	iommufd_put_object(ucmd->ictx, &vdev->obj);
++	return rc;
++}
+modified   include/linux/iommufd.h
+@@ -51,8 +51,9 @@ struct iommufd_object {
+ 	unsigned int id;
+ };
+ 
++struct kvm;
+ struct iommufd_device *iommufd_device_bind(struct iommufd_ctx *ictx,
+-					   struct device *dev, u32 *id);
++					   struct device *dev, struct kvm *kvm, u32 *id);
+ void iommufd_device_unbind(struct iommufd_device *idev);
+ 
+ int iommufd_device_attach(struct iommufd_device *idev, ioasid_t pasid,
+@@ -94,6 +95,8 @@ struct iommufd_viommu {
+ 	struct iommufd_ctx *ictx;
+ 	struct iommu_device *iommu_dev;
+ 	struct iommufd_hwpt_paging *hwpt;
++	struct kvm *kvm;
++	void (*put_kvm)(struct kvm *kvm);
+ 
+ 	const struct iommufd_viommu_ops *ops;
+ 
+modified   include/uapi/linux/iommufd.h
+@@ -56,6 +56,8 @@ enum {
+ 	IOMMUFD_CMD_VDEVICE_ALLOC = 0x91,
+ 	IOMMUFD_CMD_IOAS_CHANGE_PROCESS = 0x92,
+ 	IOMMUFD_CMD_VEVENTQ_ALLOC = 0x93,
++	IOMMUFD_CMD_VDEVICE_TSM_BIND = 0x94,
++	IOMMUFD_CMD_VDEVICE_TSM_UNBIND = 0x95,
+ };
+ 
+ /**
+@@ -985,6 +987,7 @@ struct iommu_viommu_alloc {
+ 	__u32 dev_id;
+ 	__u32 hwpt_id;
+ 	__u32 out_viommu_id;
++	__u32 kvm_vm_fd;
+ };
+ #define IOMMU_VIOMMU_ALLOC _IO(IOMMUFD_TYPE, IOMMUFD_CMD_VIOMMU_ALLOC)
+ 
+@@ -1038,6 +1041,19 @@ enum iommu_veventq_flag {
+ 	IOMMU_VEVENTQ_FLAG_LOST_EVENTS = (1U << 0),
+ };
+ 
++/**
++ * struct iommu_vdevice_id - ioctl(IOMMU_VDEVICE_TSM_BIND/UNBIND)
++ * @size: sizeof(struct iommu_vdevice_id)
++ * @vdevice_id: Object handle for the vDevice. Returned from IOMMU_VDEVICE_ALLOC
++ */
++struct iommu_vdevice_id {
++	__u32 size;
++	__u32 vdevice_id;
++} __packed;
++#define IOMMU_VDEVICE_TSM_BIND _IO(IOMMUFD_TYPE, IOMMUFD_CMD_VDEVICE_TSM_BIND)
++#define IOMMU_VDEVICE_TSM_UNBIND _IO(IOMMUFD_TYPE, IOMMUFD_CMD_VDEVICE_TSM_UNBIND)
++
++
+ /**
+  * struct iommufd_vevent_header - Virtual Event Header for a vEVENTQ Status
+  * @flags: Combination of enum iommu_veventq_flag
 
- * host kernel with vmplanes patch series (for snp vmpl support).
- * coconut svsm with uefi variable store patches.
- * edk2 patches so it talks to svsm for variable access.
- * igvm support patches for qemu.
 
-Hope I didn't forgot something ...
 
-take care,
-  Gerd
+>
+>> >> +	if (rc) {
+>> >> +		rc = -ENODEV;
+>> >> +		goto out_put_vdev;
+>> >> +	}
+>> >> +
+>> >> +	/* locking? */
+>> >> +	vdev->tsm_bound = true;
+>> >> +	refcount_inc(&vdev->obj.users);
+>> >
+>> > This refcount isn't going to work, it will make an error close()
+>> > crash..
+>> >
+>> > You need to auto-unbind on destruction I think.
+>> 
+>> Can you elaborate on that? if vdevice is tsm_bound,
+>> iommufd_vdevice_destroy() do call tsm_unbind in the changes I shared.
+>
+> You are driving it from the vfio side? Then you don't need the
+> refcount at all here because the vfio facing APIs already take one.
 
+I am using iommufd ioctl to bind/unbind. The goal was to call tsm_unbind
+when we close the iommu file descriptor( So when a vdevice object is
+destroyed).
+
+-aneesh
