@@ -1,547 +1,226 @@
-Received: from esa13.fujitsucc.c3s2.iphmx.com (esa13.fujitsucc.c3s2.iphmx.com [68.232.156.96])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2055.outbound.protection.outlook.com [40.107.237.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2AE1A2643;
-	Thu, 29 May 2025 04:53:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=68.232.156.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FFE253B43
+	for <linux-coco@lists.linux.dev>; Thu, 29 May 2025 05:29:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.55
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748494435; cv=fail; b=UllPxCbUd31k/E8Ql31Q/WkJyT8c8194Dj6upv1UPr5P9IJOSGZxpGpfSeUDqDFA16tOaxioBozNX/tdEmaBepkfKhpRjMvVEMp5pUwV3yYuTSnih9SMfMAPJdZqxaHq8bAyEZxQRdN7ODBBT48nPhUfEwYNk50Sm5wFu/oTR/4=
+	t=1748496582; cv=fail; b=gFfl5Xu+Z7kv8DQPbLxloxIsgF8Jo9Q/kac6raRRQoMy8r/t7r/XuKbhg9Qk9e3gltt/utKoeUkdOMKlGFpTwD0wgc/Z3LQrzh1ezQOsJnfOi/g4OPkc6HOCfUj0RM8ky6cxntjsCxbJ7HMyRhNMME7dTAnPq1ZwwRbR0NmhTRo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748494435; c=relaxed/simple;
-	bh=HNjsYSNDGfMO2NUSLrakQDxfb0LfG7oIOoPopN0Mh3M=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=YvSjRc2tvFX9tKohNIJuDVRoAdaQbqVp2mQK0Wej5P65ye09dmola4RRvs3fj33XH4EaEhGM03w0znaC2hfs39ps3bvCxPT082culWvmjntnr15/7i5boW8CAfi4BygT6/QsG9PIpg0cPfU7xq7bWkHFlMDIUNazaF+Q2F40q90=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=gADiATrP; arc=fail smtp.client-ip=68.232.156.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	s=arc-20240116; t=1748496582; c=relaxed/simple;
+	bh=C+M+TOmeeJ1BEJwYvh3f+RyebBIh+iLAUuzteZRg95E=;
+	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=C7J5KIBUXrI0AtzDUQBBTSMKnE7a9jf41P4Z/5LTAvUJcY9Fl71b/TXfmZGY0YlAdIPo2jeKtIFKRq1Hb+GFYx57xrY399o+uCWabf+t3h1idLh5Nw+Z6Wzyq9T9V+xuHud9CGc7CUwgNtYFj7TsUe4ieJTE9QSqQCa0uIGimF0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=z/KySBh5; arc=fail smtp.client-ip=40.107.237.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="gADiATrP"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj1;
-  t=1748494434; x=1780030434;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=HNjsYSNDGfMO2NUSLrakQDxfb0LfG7oIOoPopN0Mh3M=;
-  b=gADiATrP0zNb05H3/VlGmv9RxokUsQG85hi8NIJsneSb2gFLWcvBoMG9
-   PFzaxwWgq3ECkGQvaJZQbad9v5bFOZgkgJlU1+yuO4+tuf4UdNQNRBukS
-   nRUxyxmTXKNp4RCKdmWzgNz6ugB7R3fh1b+qMoHd/sEDBHU8QTexc49NP
-   rhruiTeFukBEM9vDL+ZyE1VhIPb8Oxes39Aa6Pny4MMoZI5/Hpb6Hc5G/
-   vvCqoPzdWnFMSf4HKENL2UTM9lAGG9LthhWCkHDnIf9KDMIALB5An9UYn
-   gDTGZ7StUd62buhM43ZKTMDd90qmb8AmHwFfSpyGuVfCEMXPBzlAxt5Y9
-   w==;
-X-CSE-ConnectionGUID: FyHafbDsRBKvy0YdeCEdGw==
-X-CSE-MsgGUID: ej/iXiCsSTG/j2S/EqHquA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11447"; a="156450964"
-X-IronPort-AV: E=Sophos;i="6.15,323,1739804400"; 
-   d="scan'208";a="156450964"
-Received: from mail-japanwestazlp17011026.outbound.protection.outlook.com (HELO OS0P286CU010.outbound.protection.outlook.com) ([40.93.130.26])
-  by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2025 13:52:37 +0900
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="z/KySBh5"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Pr9SLaVpeKgJ7OEHwAcYPXogfgGbZnp/yzPvOMv5+AtzBQtU51xkAH3s+UFvBRKeRf6/JCXhKJuVxzDHo6qE1ET7Y1v7Z64SrWKb+eEQWlGs+wXvLyGBkWEM8vsPyrBwQVqNoUu3gIKAIDBg+RiHli01h1lV4Xe7Xgc93zVPc9y7mwe+qiYdhK+76Ef3PYs3LP8+stDcTILudk9lLvUxUXH9XU86F2MMbbod4tVrKDkkMiteqlq4Nb2TqkWAeckvephEabtozND1PkVkSDjthCqtePV01tU40Z99yt2iC19JboHCi4gry/fOm+5bwsLM1kpmX2lGzEgXZbjksx13nA==
+ b=LI94LGIO6ha2ir8FzN5jRGDiQMDgE7sWE3Wbr6k2L8+v16dvLQBACaLuk6C4Z2yLF9rlOAyjv3b5P/Y7gzzx1ChWZGMR+LtfBpylWBeSmvEGg9WSUak1lxATTyQCZFzEIKUiR8i38MkZutxoOoIZcLR3taahEt6AisWtZexmYhnCCX1ldHfrZVcHL6ydZi5rm/Bdre9sFzp4A5qMDGRAgo1B/NSJXQocNXTkm4JJsP9PQ/xIE2JBpP7oJkZnTtJLNmd5JgHQGgDaQNmGJzpsuKj3cmPrDYuW/18jnEpthPzzPj5EwDCABkYjw4Q6oqp1OGoc8dFIzKDy5OtcqZ46fg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/qioMlpApMqt+A1CQCoNF9t5zFK0+B2haNOrT7LS6vI=;
- b=yDwHEBW4uF2Sb9rpd7gDXLlYGVtJ97VhHnXqiz4rROCMVY0hb5sOev8ulcEsXDNEA67QEMI18oR+BpX7fHQHqP/nlvB/AJa0b6e7hgVxklsCRqWUnirwiFZr0UXvfK4ZotLM4MRcOReNLpcnZ+OCIzY3jiY6aRnnIGBknTYcoFTr+SXY0nj+esVcUW2oTixaKkPWLpbXScIB4ws713ZfSxI1VHtGZ6pUtwJb0p0VXfYAwSR3GIAXHRO2+17C138QN6x0qnX7jBwwItify094MrW+4ynsVuEfT3RaCcO28CiSUgtm6yPrRtA2aa7GDqg0jJF1brROaTDfv15anTUH7A==
+ bh=QELpkHI0pNN4A+ZvtnsJNnF2RKWRZZRBNMN88P/IYyE=;
+ b=kxcAoWQ9XSkgQHcy399tzf4p1/1BrOM+PMxOGkSth++WTfIs4SvUZDgpFQ9rg4EHCr7KfEmA9NkYT/xn0FfsmFvBr8awnaieMnoeltzw0BB9C2OxkVqLP09RCllgmHpwCA0UAkRMr0Us/DEVUP4oCSMmon77yZeI29g4Ax5CJBQnoxd9JAPP5n+O7Gx+4HLH5dz8MetrInvOHB2QtVaxU3Yvzf/GOqBJXQ9mAHBpDvsAsDkPD1wXzfYg5n6mKoD6upDNcSwQPTJJHEwkvmNAf+HzcYh/L6k+ARvaWv/g97BZOe4odSEX9gQWARUGIn5sTYhvfEmVaH4WZ5gfy+YUCQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
- dkim=pass header.d=fujitsu.com; arc=none
-Received: from TYCPR01MB11463.jpnprd01.prod.outlook.com
- (2603:1096:400:389::10) by OS7PR01MB15077.jpnprd01.prod.outlook.com
- (2603:1096:604:36f::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.30; Thu, 29 May
- 2025 04:52:33 +0000
-Received: from TYCPR01MB11463.jpnprd01.prod.outlook.com
- ([fe80::5df7:5225:6f58:e8e8]) by TYCPR01MB11463.jpnprd01.prod.outlook.com
- ([fe80::5df7:5225:6f58:e8e8%6]) with mapi id 15.20.8769.022; Thu, 29 May 2025
- 04:52:33 +0000
-From: "Emi Kisanuki (Fujitsu)" <fj0570is@fujitsu.com>
-To: 'Steven Price' <steven.price@arm.com>, "'kvm@vger.kernel.org'"
-	<kvm@vger.kernel.org>, "'kvmarm@lists.linux.dev'" <kvmarm@lists.linux.dev>
-CC: 'Catalin Marinas' <catalin.marinas@arm.com>, 'Marc Zyngier'
-	<maz@kernel.org>, 'Will Deacon' <will@kernel.org>, 'James Morse'
-	<james.morse@arm.com>, 'Oliver Upton' <oliver.upton@linux.dev>, 'Suzuki K
- Poulose' <suzuki.poulose@arm.com>, 'Zenghui Yu' <yuzenghui@huawei.com>,
-	"'linux-arm-kernel@lists.infradead.org'"
-	<linux-arm-kernel@lists.infradead.org>, "'linux-kernel@vger.kernel.org'"
-	<linux-kernel@vger.kernel.org>, 'Joey Gouly' <joey.gouly@arm.com>, 'Alexandru
- Elisei' <alexandru.elisei@arm.com>, 'Christoffer Dall'
-	<christoffer.dall@arm.com>, 'Fuad Tabba' <tabba@google.com>,
-	"'linux-coco@lists.linux.dev'" <linux-coco@lists.linux.dev>, 'Ganapatrao
- Kulkarni' <gankulkarni@os.amperecomputing.com>, 'Gavin Shan'
-	<gshan@redhat.com>, 'Shanker Donthineni' <sdonthineni@nvidia.com>, 'Alper
- Gun' <alpergun@google.com>, "'Aneesh Kumar K . V'" <aneesh.kumar@kernel.org>
-Subject: RE: [PATCH v8 16/43] arm64: RME: Handle realm enter/exit
-Thread-Topic: [PATCH v8 16/43] arm64: RME: Handle realm enter/exit
-Thread-Index: AQMPKfif4GpC56WX1Xmo2sNneTWC8QG0s1FFsXSt8vA=
-Date: Thu, 29 May 2025 04:52:33 +0000
-Message-ID:
- <TYCPR01MB11463D8002D90705A7F860B85C366A@TYCPR01MB11463.jpnprd01.prod.outlook.com>
-References: <20250416134208.383984-1-steven.price@arm.com>
- <20250416134208.383984-17-steven.price@arm.com>
-In-Reply-To: <20250416134208.383984-17-steven.price@arm.com>
-Accept-Language: ja-JP, en-US
-Content-Language: ja-JP
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_1e92ef73-0ad1-40c5-ad55-46de3396802f_ActionId=3cfb0c78-9ffe-4273-9732-ec034cb20816;MSIP_Label_1e92ef73-0ad1-40c5-ad55-46de3396802f_ContentBits=0;MSIP_Label_1e92ef73-0ad1-40c5-ad55-46de3396802f_Enabled=true;MSIP_Label_1e92ef73-0ad1-40c5-ad55-46de3396802f_Method=Privileged;MSIP_Label_1e92ef73-0ad1-40c5-ad55-46de3396802f_Name=FUJITSU-PUBLIC?;MSIP_Label_1e92ef73-0ad1-40c5-ad55-46de3396802f_SetDate=2025-05-29T04:40:31Z;MSIP_Label_1e92ef73-0ad1-40c5-ad55-46de3396802f_SiteId=a19f121d-81e1-4858-a9d8-736e267fd4c7;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=fujitsu.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TYCPR01MB11463:EE_|OS7PR01MB15077:EE_
-x-ms-office365-filtering-correlation-id: fac4332e-36d8-4937-52f8-08dd9e6ca004
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|1800799024|376014|366016|1580799027|38070700018;
-x-microsoft-antispam-message-info:
- =?iso-2022-jp?B?OWxVTVNQNk1Ia0xCSmRnUFdDUG5rL0I2Y2VsOVhWTUVZeVhDUVdwRTM5?=
- =?iso-2022-jp?B?QUhudk1NbzVwaEV2Nm80VCtqek9vdzJ3Sk56dG10cUNmMk45bm5YdHBs?=
- =?iso-2022-jp?B?Z0dOazRiRkVlVlVleHprNTNtVENNNVZHdFdSNzFYUlVPTmdnM2ptWFdD?=
- =?iso-2022-jp?B?Sm1mUGRRTXJaVHJPdXVOLytwWDJGTlhQeHFQbTdmRmtZbGpObFlxTXJa?=
- =?iso-2022-jp?B?aGtOeG1sWjd6MFBINXh4QXdIWW9RRE9UcnlVcDRnaWpvNnN3V2R4d2oz?=
- =?iso-2022-jp?B?UnRkODYwZXQxZk9KNW1PNzJ2elhCWFUrZFpTdGxESnlsK1BycVNQWGli?=
- =?iso-2022-jp?B?Y2lNNzJpMHY4Z2ZPWEFDM0dsVHZhck9aYWJrVGRET0ZDaDJDbmFlQmRk?=
- =?iso-2022-jp?B?azlFTUN1cG1OazdBcnhzbWhmRk43UFI3Tit1QzZ0TWlEVE9CREIvUlph?=
- =?iso-2022-jp?B?Skc2WnBER04vQkxoSHdKbnBkOURuTSt6K0xFdDFyRE4vS1FVVTg2b040?=
- =?iso-2022-jp?B?UnNXYnVhMGZBY0NQTWt6L2ZyN0l5c3V2VFZUSmhuVklBdmxDanlXajRk?=
- =?iso-2022-jp?B?N0NZOWJZeitMS0hDRWsyTE1KQzlUalh4WStGa1BSMlhhY0pSUFNmWW54?=
- =?iso-2022-jp?B?bTRTbWdndmxsYmYzbDVBdXdPcEQrZFRaV3g4L2ttS3F4VWFoZ0I1MGFZ?=
- =?iso-2022-jp?B?d0gvdERWOUE5MjM3enh6RnZGVVJ6VTliblFQdzB6Nkh6TXBQdDVWMDZH?=
- =?iso-2022-jp?B?aGRSTnQrYjhOYzdSUXhnb3B3aWVPZCtZSGxpSy9BbEo3eWRQc0lJbnhD?=
- =?iso-2022-jp?B?aUdXZitvbkNDSENrUTFMaURQTmNyUmw3T1kxNm5DUmVNcFlNcXJ2VkVI?=
- =?iso-2022-jp?B?U0d6alBqWW96bS9UMTkraklNbE93cnl0SktmcnJqbEp0UW5DWi9wdktP?=
- =?iso-2022-jp?B?RUNTbDhCaXlZa0xaa2NKYmF1dHU3SGxvMUlIdm1kRVhuQTV1d2lEVnFD?=
- =?iso-2022-jp?B?VTBZUGtCS2NEbjNYTFVrcFNpejVkSWlyU0pOUFFIOGpxa1c2bG8xZVpT?=
- =?iso-2022-jp?B?YkFwbzRFWlBzY01FOHQwaHBsRjFzTTVWMDRUaGZmdlJrbXVNTGtTZmpF?=
- =?iso-2022-jp?B?WjJTQzZCOFN6dVc0RFJrZFBCcGJSbzBGdkhzWmNSTmpBRXZEKzJxdmxK?=
- =?iso-2022-jp?B?VEtocUIvSDFiSlpjRUlJbStFemdnWGpTR2wxMkdLZUQreFZqL1lNYjk4?=
- =?iso-2022-jp?B?Z2x4Z2NicmJBT2srUzFETjB2V0phN21rN2JhMnRrOGJ6WnJDMERhSGFx?=
- =?iso-2022-jp?B?L2VJUzZ6M1VNL25ySi90eXBaTzJlM3lKWDIxaEpzTTJuSGF2OXBFM3hZ?=
- =?iso-2022-jp?B?Q0pyWE9NajZqY0lTRHFCSjlaTVdZRFM0SmthMGpnUmppQ1FkSFpvbnNS?=
- =?iso-2022-jp?B?RjFobWNpMTRXVFN3VTNPUHhhS0xjV3pVcE1oR1ROZUVEQlEzQVFvWFpP?=
- =?iso-2022-jp?B?ZVpwS29mSzc3eWtvSkduQVZxaFJhZ1ZGVHFCRVNaSUhUUHNoY0hvNVEz?=
- =?iso-2022-jp?B?eSt3TVB0Sld3TUVxZzVuQS9qNXlvLzN0dUZGMjUwdFFoK1JFejdTUmZq?=
- =?iso-2022-jp?B?eVhCVUQ1YVgvUlViYXpCVGRsZFlRS0Zvak02Z3RPRlIwQkRRSVJDQ2d0?=
- =?iso-2022-jp?B?REZrNDdyNmxrQ3RpSmxLZWFDR0p2VGpUaDdMSWNid1llczZCZytlWEhj?=
- =?iso-2022-jp?B?RUsxVzRkN0NnYno3aUR2YkhUMFR0aFFHMFFPVHFqM1p5d0VvUHRkbkxF?=
- =?iso-2022-jp?B?dHFYQzBibFJ0R29pc0xINlJNN3FxakRuR0IzSVJBOTBZdXVEbDRzcnZG?=
- =?iso-2022-jp?B?SW9iQXU1eU9iSFlVai8rdVdYTS9RRTVFMWJpWEtiNUlyd1gwTEl5TEEr?=
- =?iso-2022-jp?B?SXB6YWlWVVF2M0hTalU2bEl0aDlCcjg0U29ZVXY3cUNUUzZvMkZXYSto?=
- =?iso-2022-jp?B?dkhwTjZzWmZBWkwxZURGWUJ5V1VrZGkvNGZKcU9EMnVmdjlCMEVVb2lP?=
- =?iso-2022-jp?B?WTFMWCttOC8vcW1ma1IxNzZGbmlqSHl3bnB6NHJ6MzloUUJaNm04dS9N?=
- =?iso-2022-jp?B?UWFNaFMrcWxJcWRiM0cwQjRCOVNMRkZQYm4zRElSRHVkNEg4N1VmL25a?=
- =?iso-2022-jp?B?QytxWXg4MjFFQ0lzd1cvNGQ3YnZQdXha?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:ja;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB11463.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(1580799027)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-2022-jp?B?U2QwODlwS0NJL0xHR1lDamdSS1dtTzBWUzlxcG9RVmlZTGdCeXFvVW9u?=
- =?iso-2022-jp?B?OUd6ZzBucmVFVVdtUnhPQ0g3QXg3T3BQUDcwNnNNV3AxMzNlTDRRUFZU?=
- =?iso-2022-jp?B?WENmbmI4NFYvSkE3WGNuMEkyUUhzMEJONFFmbEtwSjBxbDBvQmJBSHd0?=
- =?iso-2022-jp?B?WDJYbVdJTHpPcGJRU3pVU2EybHQwaTBiSGZmQkhRdDNCTE01ajBrSXdo?=
- =?iso-2022-jp?B?c2V5STA2bmRjczVhMzhLUDFWdTk3amFpYVJza2M4dXpOZXEvK3NuVThL?=
- =?iso-2022-jp?B?eTIwUFo4bG9NeDkzL0FZdjMxWDJOZTlqcThUblB1VjBPMXdML1hBRXlD?=
- =?iso-2022-jp?B?cnhMUFVLS2pTWHV3T0JpUWhaTlVpeU1kTlRUNjRkNlZxQzIyaFg5YXFS?=
- =?iso-2022-jp?B?YlR5bll1NFY4bHhEcmZINUVIQTJsVFk1dE9FdjdMRFdrSUxHN2hmdDUw?=
- =?iso-2022-jp?B?SVl2YXgzaEhjUXFmckc0K1dmMGIraGRWV3pVYnVVaFpwdXNRbHZaeVVL?=
- =?iso-2022-jp?B?MDFUSk9uLzZVY3ZPNDN6VDd1b0E3TDY4NlJiMHlaV2FETys5bDJZRTQx?=
- =?iso-2022-jp?B?RlJEQWJUalU5RTdtOEN0eHdjS3NXV2VRYnVRUWkwY3JWMWVPdmFtT1ZH?=
- =?iso-2022-jp?B?cEVxY3RqQjhyWnN0MXNlWjc5V3E4TlZQd1JHUFpCYTBkaklWMDA4Wnlr?=
- =?iso-2022-jp?B?ZUFLMnZTTzBrKzFYeGpjOVdpRnJSOWJzL2VVYnpxbHd4cGZwdWh5NkdQ?=
- =?iso-2022-jp?B?T2V5ZzMwbFM0OWxLZVJqYkpVcTB1aHFWSitFUXl5bGtvcTZvdDZHK0ZU?=
- =?iso-2022-jp?B?WmdycHo0UTFob09kUDdkTncrQmVqRnUxSk5lZXBKTGY5R01xZkxWZ2lk?=
- =?iso-2022-jp?B?K3EweTZKMVZNMjI0ei9WVUlTRTErN25RWVU0UkJmMkRQOGVJcEk0T3Rl?=
- =?iso-2022-jp?B?UnpxSHN1UzNNUzhDNGtSUXV3NUUzOFdyVWZKaXNOc203Wm1oQVIzRkNj?=
- =?iso-2022-jp?B?bksrNkZ1VUY0Y1B4Q0JmbFFUUnk2aUUxQnZSKytVZTFCcEI3TEQ0bGN3?=
- =?iso-2022-jp?B?WTBMRUp2T2ZiZEhUTDBQdk5SSStwTjFIREhiTVkxTk8rN1pnK1U1UmVQ?=
- =?iso-2022-jp?B?UytoallUS0hmSUNpWmNaWjhUZ3ZKUlZ1VzExN28zU2RvV1Q0TXVvc1Qz?=
- =?iso-2022-jp?B?a1BUMkVHVWVJbENwd3NaVDF6OVhSN1RyYm9KMnJDYTRmbGpHSHV3b0ph?=
- =?iso-2022-jp?B?TDdaN09oZGM1WVc0NXZqN29KWDczUUx4a0twTHZuZ3ZRS1dZRTc2dzd3?=
- =?iso-2022-jp?B?MTZ4K3dHYVJRM1JZMmY4Um9DaUMxVEtvMjBnaS94eUdubFNpRWdRSzIz?=
- =?iso-2022-jp?B?WWJFTWRnUW5EUVNZaFpENXNXejhMdVc0UFdKL0Zza09UZDZyMThxclVH?=
- =?iso-2022-jp?B?NTJrMzZxVmhRZERPVURLMWZBL2Fvd25oYWp1R0s4S1V1aEdBdkNaODBi?=
- =?iso-2022-jp?B?REJVT2FmS0pIczVBdGVCaCt4a2JZTGtzek1xYm5mWUwwMU4yZnRzODBu?=
- =?iso-2022-jp?B?ODdsT21GNXVpcUNvZTRQckdLcHJ2Z3Q4eGFJNnp5cC92ci9mY1RncGdC?=
- =?iso-2022-jp?B?NjNJeUViWGtaTzBrTmMwUW9zeXBMSXUzenlZMnRHaVV3bDBWNmpRa01O?=
- =?iso-2022-jp?B?eWl0b1kzakJNNnpZeHdyajJYQWtXUFlmczE4ck1WVmUwaHB3TFpCMWhM?=
- =?iso-2022-jp?B?ekZOcHRBRG8yL2lKRFZIVlBMa0JLQ2NJaEV3RlZMWGJLN2J5c3JzSmQr?=
- =?iso-2022-jp?B?TTg2YTh1WFhtaS81YjZkWjZrY2VmM0grdGVtS2I2djgwanJkZW44d2Nw?=
- =?iso-2022-jp?B?OTY3clptMU9YNEZBdmpZclNWMFJUWGJOTTVCeFNQUnpLQlBSMHd2OVVq?=
- =?iso-2022-jp?B?bGVmOENsclhiZjVXdG95RDI3Njd0bytvYWVJRURmWkNFWXpJVU1sQ1pK?=
- =?iso-2022-jp?B?VXpYZ1lVVkh5eEI1NHVTTFZxeUFDcW1MaXlXRXB2NFAwS0U3NGYxU1Qw?=
- =?iso-2022-jp?B?QzkwUmxlTUNlclJGR0N2Q0x0dVZLNVRXODZCTWg2K2pLSmlaSTBoNlhY?=
- =?iso-2022-jp?B?amd2OUdOQWpqN0hrNnJuTldXcE5WRTIvMThiRTNsK212cEVjNnEzdVA1?=
- =?iso-2022-jp?B?dnRQb29meFVSY2xYZFV4bmg2ZXQyNnpEZldZbVZuelM2K3VxbGEwTlh0?=
- =?iso-2022-jp?B?YlA1dWxXcnBPT0Q2QWpBaVpFVkt4NmhtWWNpKytaOG4vY2RzdFBaa291?=
- =?iso-2022-jp?B?d0pOOUNSY2FyTHc2b2lFbUVnZ0R4dXUzQWc9PQ==?=
-Content-Type: text/plain; charset="iso-2022-jp"
-Content-Transfer-Encoding: quoted-printable
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QELpkHI0pNN4A+ZvtnsJNnF2RKWRZZRBNMN88P/IYyE=;
+ b=z/KySBh52ZSLkBTRKFnn4OPoFsnyu54mIu+i6Ipz9IU3N4hwAzxEDn120H7NmzAoRRZBulB/mK6mg8y6EiMb9H81/AIkWFXz++1tQONknH4phQAJh7o/kExx4jjRNCOaiyeESoe8zaIR0NBfl8KTkL0OgA53vdUKYAAVc5uaHiw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
+ by SN7PR12MB7884.namprd12.prod.outlook.com (2603:10b6:806:343::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.27; Thu, 29 May
+ 2025 05:29:34 +0000
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f%5]) with mapi id 15.20.8769.022; Thu, 29 May 2025
+ 05:29:34 +0000
+Message-ID: <91e2985f-0815-4918-b7cf-c593bc2fa96b@amd.com>
+Date: Thu, 29 May 2025 15:29:23 +1000
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v2 00/18] PCI device authentication
+From: Alexey Kardashevskiy <aik@amd.com>
+To: Lukas Wunner <lukas@wunner.de>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Bjorn Helgaas <helgaas@kernel.org>, David Howells <dhowells@redhat.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>,
+ David Woodhouse <dwmw2@infradead.org>,
+ James Bottomley <James.Bottomley@hansenpartnership.com>,
+ linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
+ linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linuxarm@huawei.com,
+ David Box <david.e.box@intel.com>, Dan Williams <dan.j.williams@intel.com>,
+ "Li, Ming" <ming4.li@intel.com>,
+ Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+ Damien Le Moal <dlemoal@kernel.org>, Dhaval Giani <dhaval.giani@amd.com>,
+ Gobikrishna Dhanuskodi <gdhanuskodi@nvidia.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Peter Gonda <pgonda@google.com>,
+ Jerome Glisse <jglisse@google.com>, Sean Christopherson <seanjc@google.com>,
+ Alexander Graf <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>,
+ Eric Biggers <ebiggers@google.com>, Stefan Berger <stefanb@linux.ibm.com>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Alan Stern <stern@rowland.harvard.edu>
+References: <cover.1719771133.git.lukas@wunner.de>
+ <2140c4e4-6df0-47c7-8301-c6eb70ada27d@amd.com> <ZovrK7GsDpOMp3Bz@wunner.de>
+ <b1595ceb-a916-4ff0-97bd-1a223e0cef15@amd.com> <Z6zN8R-E9uJpkU7j@wunner.de>
+ <dab69e0c-37c2-41f1-a9db-fe116fe4cbbd@amd.com>
+Content-Language: en-US
+In-Reply-To: <dab69e0c-37c2-41f1-a9db-fe116fe4cbbd@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SY6PR01CA0035.ausprd01.prod.outlook.com
+ (2603:10c6:10:eb::22) To CH3PR12MB9194.namprd12.prod.outlook.com
+ (2603:10b6:610:19f::7)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	WxLDkPAEpMI2Xx1tfDcv8nKQOwDVFyKGOKNgb37qncakhY2c8UBj7OcpU95/+dl4oCzUd/1a0TXTfg5ZpLZx4ftIOqBQS9tSzlrgzirh3nCPGZUEuYzH/MZWHTRg7XeMNGKC3uduy9bZM87Nhs3XsENMf+EIOtQrTAwHRa3ZC9ZBx/FRQe1hDIdNSE6Lu1UKr53X7zDKSFy6gN5y8zNbSdYJS6GdmlKFG89g+4ccJWUEyA1A60XUT+U/u6IZmAgRKWKT8wleVrOoW/LH/tqK3UKGhay3na2C4jER/tSXudeLDfbE3NhxtzyaMvpsMlJMRAFKwuRKsAJr8MswL2DqN9etoMJkRUd2Q1DzcT9Xk10Ho1SIhDT8jpiiOY9QRvGm6kkjD2ixIDbq62fLejMNedb9aB7fnVJuU2f+7jeJtZdp6jQsY8OS+EXhRkro2/pk3IQytwLxO1M+ipYvuqnqwonKvcxdObDuQb3ZfRCGIL/KfDjlPPq10zQnLsEfLaRQQz0Ut6A29SXP8cwDz+jpoVOVQLHvba6l7eSpeK983kJ0C+THSd0uUhVAcqeZ5Db6vC26uBIwgDshNqCus6Nq+62d6BUf+rL5C8bFNheEh4qjpxGxeQ8in7Tt3bqfYOKc
-X-OriginatorOrg: fujitsu.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|SN7PR12MB7884:EE_
+X-MS-Office365-Filtering-Correlation-Id: 08cf0c75-546f-48ba-0ef2-08dd9e71cb71
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?QUE3Z2dvRklOc0F0azFkN3JjdlU4UmIvY2tMRld1VWovY25ON0svUldXcklE?=
+ =?utf-8?B?TStXMmlnZldjcndVOWpKUGtQRDJmVk5RcENyMVlTQXpMaFpEV1NNTHBjT3Nj?=
+ =?utf-8?B?YzNFVWc1Y1F3TG5pRldkckx5d0Z4a05ocmtHOWQxRlV0WWE5NEg3R3NXWjll?=
+ =?utf-8?B?NHUrVk0vWFdDQktTbWNsNlhOWXFFSG90Q3RVcGI5TVZ6K05BYVpuRU5meUxr?=
+ =?utf-8?B?UGJ5UHQ4SHdsMUozb2hvMGZZQlF2WjUwakxjM1pXYS9xck1HUnA3SmV6djhH?=
+ =?utf-8?B?R0FIRysxcGZHZ0Q2V0hidXQ3ZVFzWUdwa3BXS05PaERsSzVtanlYU01BeTFt?=
+ =?utf-8?B?MGhSUUFDMUlUSnVrZXE5eWJZV1lRNXFKWHJDSWozeTBYK2FqZ1BTSFJWUDd3?=
+ =?utf-8?B?SW1CTTlNUjJMMGRzaU5nUGlSL2RDZGo4NERjT0hYNUtsQVk0NDJxN09hSjJ0?=
+ =?utf-8?B?RnlpRlpEQ1Fzc1A2K2w5TmF1dGNVZE84eE50a000U0VGWFlyd3RzanZGK3pH?=
+ =?utf-8?B?MnZyWHJ0eXNOZGl5TXdCK2Y1a3pybHEzSXVrL0RlNjZsenZaR2R1aCtud0dU?=
+ =?utf-8?B?Vit3QnpnVFpFQ1dkVVd5dU9HRE5ZS1JNZWRCOWsrdEFjN3F2Q2hzRUZsalpx?=
+ =?utf-8?B?b2R1S3pXS2hMRGVwcDd5OFltWno1Zzgwclo3enFkYktzenJqc3dIbkZrbldN?=
+ =?utf-8?B?eVIrUm1Fdll0Mk1YdHFxYlFXUGxEdFYzc3FxcktOU1dZcHdOaEIrbWVmcnlX?=
+ =?utf-8?B?R2VRZFRzclR1TjlWRHJ6UUYzWmtVWklSbHdjK2t6TlV4YWtlWm5mRjZ0cDJM?=
+ =?utf-8?B?TlVZUFlrVG1kalFnb09DYktLZmkwN3JkL0V4TG50UEVMR2VjcVB4MWVoOVkx?=
+ =?utf-8?B?NmxmZVcyU0grYytjYzg3YjNiMVhKZUF2YzhZSW5ySFRiNFloQmxrZVhwNkcw?=
+ =?utf-8?B?OUVnZ0EwVVFJV2FJUlFvejkxWXdMdHpZanVIeFY0RnhqdDNGY29hc2thbG1G?=
+ =?utf-8?B?Slg5MmZmWGx5WEpPT1hSSDZWRW1LNUJtSzRjRTdKWk4vYzlZZDkzcEhrbmUx?=
+ =?utf-8?B?WVJEL05QVmpsQVJaNTZTcXgwNDJIWGVoUUhObVljci9YSkRCSnNSYWJFT2tH?=
+ =?utf-8?B?aS9WYVdBSVNlNisrYVdUNmwrVTB3Wi9sd1JIeUFMT0dMdE5pUUJjdGtpMlV1?=
+ =?utf-8?B?Ujk0MWJhRGQxcERsSDJNNWlGMWVDVDBTRmdUcGMvNm9TWW1nOXp4em1JOUto?=
+ =?utf-8?B?Ym9WU21sL2xxS1puWGVMNWxnUVIxejlIajFQZUx6RUE5UXZPQ1RkWkRubFk5?=
+ =?utf-8?B?VUdkWURsbkdCb2dXMWt6Sjl0d0VUMm04UU5wOVFTc2wxV0s0d084aDBCem5r?=
+ =?utf-8?B?NThXOHhhOGhCb1kxcXJUVGFVM1B3TjNKcVE5YXcvU05zVDg0V0paMXc3S0Qv?=
+ =?utf-8?B?M3VvS2g4bWhLRHNlaXdaTFR0c0JsVkMxM05zREIvZ29iM3k5ZTkvQ2lwdGhi?=
+ =?utf-8?B?UmpzcmRCMWxpelhPKzRkeDBtVTFWZHVGYk1qV0tFOXkzb245eTBMR01MMU9o?=
+ =?utf-8?B?bmhWLzdIa3BqdnoyLzZVT1lVcndSaGdodFhoTWJmYXYyN1JUMW9BQnJtditM?=
+ =?utf-8?B?WFFPMVJrNTQvNjNrb0l4eGZSN016alNHZW1WUG1xNEUrTlBFc1F6QWFMQ25m?=
+ =?utf-8?B?bUpjMEpXRjlYR2tDK1hqSWJwdDBxOGwvOUxad1J1R1k2WG8zakVMbXU2Qzdh?=
+ =?utf-8?B?aDJyWU9kaTk1NEZ0bUhJOE5NZCtvcjRkQXJKUmJSaXBzdmtQRDhPV3dXbHlt?=
+ =?utf-8?B?M3dobVhHc0VGZ0RCdTE5WEJObVg5S3FFcGlPRVA3UzdVSEExelJTMXQ5T1dR?=
+ =?utf-8?B?cjVoSXFDbGplcDY5QXJ6YTgyOCtQbkhxOGxvb3g1Vm1ZNy94eTR5d2F5eUFE?=
+ =?utf-8?Q?QFexsZjvISaWiBpsi4/EWN8NUZtKyUs9?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eHhXTkhrRFMyb0VCLzF4cWkvSE9SK0pQbWlCcko4a1NvR1VoRE5PVm01enls?=
+ =?utf-8?B?N1FuRXVNMm42RXV5bGhteUhmdXdVWmJOd3p3YkhIQ0U2NkxJQzl4cWJGaG8r?=
+ =?utf-8?B?NW9BSFBRWDdFRVExTHgxRXpWQ0lHWVZUK05OQlZWUklwYTZMaGtEb2liR3RJ?=
+ =?utf-8?B?bVZIckNRb2trdFI1UWQxeC9tWi94YXpobXFBR0VKS3lnUDVLZWtsKzNiWk8y?=
+ =?utf-8?B?TU9oYmh2NVlFdUtXM1BWeHV1TUlBQ2hsdWptakxvbVlmNEJzQ29ZR2psemRq?=
+ =?utf-8?B?aVJ4czA1Vm4yNERIbWdYVU10dFBqaGhSWUJ4N29jeGVoWkNwSXpkN214NCtG?=
+ =?utf-8?B?YjRuZjc3WFIvVHJkNlAwd0VkWlNEMFRTbE93V1MvZjNsODVMZkZNWUJwWEF3?=
+ =?utf-8?B?d2FYRVFrdCtnUy91amgvR0d4NG5Sd3Bkc3lDbWp2QStCQ2hVbCsxSzZDaW1I?=
+ =?utf-8?B?dmpDOXNIcEJoU25aUnNiUFFOL1FvekM2MFFlamtEMnN6V3BSYjFrUDUwSVh0?=
+ =?utf-8?B?UUcyWFI0SHp4UzNoWTNZazA2Mmxuc1JWeFBnaXJHY2pqRUh2TmQvYmtNS0Vi?=
+ =?utf-8?B?N3BTVWsxS1VmSUdwZTJDS2lXOFIrS2V2aGZPSTlsY1NSSFh3alp0VDF3aVM3?=
+ =?utf-8?B?Yk5aNFlHS2p2ZGVhcHJqTDcrQ0ZZQm90STRkVXJrRnVRVmx4T0didmZEMDBw?=
+ =?utf-8?B?RUhHSnRBMkVHaENtK3VESk8rY1VCbHcyNk5Mb0w3Skg4TFpNV0FaaXVTQWNu?=
+ =?utf-8?B?NlBVNml2OTcycklwNHIwOGZBdWp1NzdYTzVBUVJEL0RVS3NadSsxNmRtemxi?=
+ =?utf-8?B?dmVnU1RDd2lwZkUySnJ5cE5UTFFjeFcrRG9OWkxITHMrTVNQRUJoaWRlb3FS?=
+ =?utf-8?B?ZGdwVUduYnFFdTlsaE5RcVQzTzduRnM2TUt6Yk8yN2c1eXR5OStGcDZxQ0xa?=
+ =?utf-8?B?RCs3RE1JemxmVjFQS2wrb212ME52aHpvSzZ6OFBHVjQ0UXkxRFZBOGhrREZH?=
+ =?utf-8?B?OWRGbVA3M1gveXV1VUJnYnA0dVEzTktDY0Y0QnRBanlYei84bjArb0dDN3N5?=
+ =?utf-8?B?Y1pxbmpCcmxNUVdvMTgxbVZiV1pSbWNCWGVsaUFuNGUwa2o2MlhuSDV2TmV3?=
+ =?utf-8?B?aFZmUGVUd1pyOUcwTGphM3ZaVFJzbU1pd3B3LzVVR0NGcFhMR0RhZ2dDVERC?=
+ =?utf-8?B?dS9lamx1V0x3TmlSamhwUXJjOXZoMVR2bExVMVVrMENOenltaGVrSThjb1F5?=
+ =?utf-8?B?aXZOZE9HOVV0Nm5RRkcwdWhXRE9RTDZYQnlyODhnb1dBbkp5LzZwUXo0bU81?=
+ =?utf-8?B?T0FKYVR5RkdlbjdhNzlKMVUwSlhGbkVFVTJQR2MyeU1vR1RxQmpEZjhzZTRC?=
+ =?utf-8?B?cWQ5S3ZCV0gzL2hhd0tJOG5RN3FEK3NHU0t0cTdhcDBOWk40WHBNNnh6ZkJ0?=
+ =?utf-8?B?N01uU25JNElRbHlnazVUTE4rQzk5ejJZQ1FRWGNoMFJzdEJLL2dXNTRtWWxX?=
+ =?utf-8?B?SXU3Yi93YUhqTHp6cGJaeWJqa09pTks1RjZ5YW1qVjhkQlBXV01ZUk1CN2tE?=
+ =?utf-8?B?bjFydUtQbDI5KzFqQnhXWm81SlQ5RnE5SUFGZnduTE5pKzcrTkRLSEJoVHdH?=
+ =?utf-8?B?U2xLYUxTdnU3VG44WGtsN1FLSTRETkFoUllBRDVPOW9NREtzUmZZVHFheHJT?=
+ =?utf-8?B?NzBBNHlVL0JjL0hvS2NqMVZKdUNXeUg5YXJVWW5CNVZGck5TRnd6aHFmTDZ1?=
+ =?utf-8?B?Y012KzBPRHNFU09pSUk1OUxLc29maXV2SkZLSElyWUpSQXZhMHppWkEzbW9F?=
+ =?utf-8?B?YzlXSG1xSmJ6Um5JUmtvQlZ6NU9BZzVVTTZ0ZUlDanBzbGtxZlZGYVFwYk55?=
+ =?utf-8?B?dFVuTmhIVlhBN1htUVdpNGpZZVVkZlBmblE0UWJoSVFYQXFIMXg0R29aQUhZ?=
+ =?utf-8?B?N25FZlZvdkVTUEhMaEp5WVR6aTZWQytzTHF1bFFWSFc4K2Uxa1ptS3lEUEwy?=
+ =?utf-8?B?NVZNRkVVZllWc2VCeHZoejkzOWkwQTM2SlkyZndPcXdEdmZGN0xTck5VZmk0?=
+ =?utf-8?B?dDJ4b0ppZ0FhSVd1dDN0ZjZDZ1BvTmMzR3NScDdFLzNmLzdPYW9yZjQ2NzlE?=
+ =?utf-8?Q?aEdH34zyYggg6ewDolVlrV+Tn?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 08cf0c75-546f-48ba-0ef2-08dd9e71cb71
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB11463.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fac4332e-36d8-4937-52f8-08dd9e6ca004
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 May 2025 04:52:33.4637
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2025 05:29:34.3937
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: /Ki8nnxDmH4fxSJetE9now9JCenf+CjVsVcYYzjDR05RYF3fttQpctQSX2gu/SXwkuPeuVwhxQyBNvCeoii6VG9+/cyxf4qiAHD0gmfmVb0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS7PR01MB15077
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: x3g+ZRPAvxFcEc45KcCG9fM0np+96lgKuC9cHKVddz1V9uDL2kN/UNmFqQpkDiZd9eSpvPzpEhrocp0pii7S1A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7884
 
-Hello, I comment below.
 
-> Subject: [PATCH v8 16/43] arm64: RME: Handle realm enter/exit
->=20
-> Entering a realm is done using a SMC call to the RMM. On exit the exit-co=
-des
-> need to be handled slightly differently to the normal KVM path so define =
-our own
-> functions for realm enter/exit and hook them in if the guest is a realm g=
-uest.
->=20
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v7:
->  * A return of 0 from kvm_handle_sys_reg() doesn't mean the register has
->    been read (although that can never happen in the current code). Tidy
->    up the condition to handle any future refactoring.
-> Changes since v6:
->  * Use vcpu_err() rather than pr_err/kvm_err when there is an associated
->    vcpu to the error.
->  * Return -EFAULT for KVM_EXIT_MEMORY_FAULT as per the documentation
-> for
->    this exit type.
->  * Split code handling a RIPAS change triggered by the guest to the
->    following patch.
-> Changes since v5:
->  * For a RIPAS_CHANGE request from the guest perform the actual RIPAS
->    change on next entry rather than immediately on the exit. This allows
->    the VMM to 'reject' a RIPAS change by refusing to continue
->    scheduling.
-> Changes since v4:
->  * Rename handle_rme_exit() to handle_rec_exit()
->  * Move the loop to copy registers into the REC enter structure from the
->    to rec_exit_handlers callbacks to kvm_rec_enter(). This fixes a bug
->    where the handler exits to user space and user space wants to modify
->    the GPRS.
->  * Some code rearrangement in rec_exit_ripas_change().
-> Changes since v2:
->  * realm_set_ipa_state() now provides an output parameter for the
->    top_iap that was changed. Use this to signal the VMM with the correct
->    range that has been transitioned.
->  * Adapt to previous patch changes.
-> ---
->  arch/arm64/include/asm/kvm_rme.h |   3 +
->  arch/arm64/kvm/Makefile          |   2 +-
->  arch/arm64/kvm/arm.c             |  19 +++-
->  arch/arm64/kvm/rme-exit.c        | 170
-> +++++++++++++++++++++++++++++++
->  arch/arm64/kvm/rme.c             |  19 ++++
->  5 files changed, 207 insertions(+), 6 deletions(-)  create mode 100644
-> arch/arm64/kvm/rme-exit.c
->=20
-> diff --git a/arch/arm64/include/asm/kvm_rme.h
-> b/arch/arm64/include/asm/kvm_rme.h
-> index b916db8565a2..d86051ef0c5c 100644
-> --- a/arch/arm64/include/asm/kvm_rme.h
-> +++ b/arch/arm64/include/asm/kvm_rme.h
-> @@ -101,6 +101,9 @@ void kvm_realm_destroy_rtts(struct kvm *kvm, u32
-> ia_bits);  int kvm_create_rec(struct kvm_vcpu *vcpu);  void
-> kvm_destroy_rec(struct kvm_vcpu *vcpu);
->=20
-> +int kvm_rec_enter(struct kvm_vcpu *vcpu); int handle_rec_exit(struct
-> +kvm_vcpu *vcpu, int rec_run_status);
-> +
->  void kvm_realm_unmap_range(struct kvm *kvm,
->  			   unsigned long ipa,
->  			   unsigned long size,
-> diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile index
-> 2ebc66812d49..c4b10012faa3 100644
-> --- a/arch/arm64/kvm/Makefile
-> +++ b/arch/arm64/kvm/Makefile
-> @@ -24,7 +24,7 @@ kvm-y +=3D arm.o mmu.o mmio.o psci.o hypercalls.o pvtim=
-e.o
-> \
->  	 vgic/vgic-mmio.o vgic/vgic-mmio-v2.o \
->  	 vgic/vgic-mmio-v3.o vgic/vgic-kvm-device.o \
->  	 vgic/vgic-its.o vgic/vgic-debug.o vgic/vgic-v3-nested.o \
-> -	 rme.o
-> +	 rme.o rme-exit.o
->=20
->  kvm-$(CONFIG_HW_PERF_EVENTS)  +=3D pmu-emul.o pmu.o
->  kvm-$(CONFIG_ARM64_PTR_AUTH)  +=3D pauth.o diff --git
-> a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c index
-> 7c0bb1b05f4c..cf707130ef66 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -1263,7 +1263,10 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->  		trace_kvm_entry(*vcpu_pc(vcpu));
->  		guest_timing_enter_irqoff();
->=20
-> -		ret =3D kvm_arm_vcpu_enter_exit(vcpu);
-> +		if (vcpu_is_rec(vcpu))
-> +			ret =3D kvm_rec_enter(vcpu);
-> +		else
-> +			ret =3D kvm_arm_vcpu_enter_exit(vcpu);
->=20
->  		vcpu->mode =3D OUTSIDE_GUEST_MODE;
->  		vcpu->stat.exits++;
-> @@ -1319,10 +1322,13 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu=
-)
->=20
->  		local_irq_enable();
->=20
-> -		trace_kvm_exit(ret, kvm_vcpu_trap_get_class(vcpu),
-> *vcpu_pc(vcpu));
-> -
->  		/* Exit types that need handling before we can be preempted */
-> -		handle_exit_early(vcpu, ret);
-> +		if (!vcpu_is_rec(vcpu)) {
-> +			trace_kvm_exit(ret, kvm_vcpu_trap_get_class(vcpu),
-> +				       *vcpu_pc(vcpu));
-> +
-> +			handle_exit_early(vcpu, ret);
-> +		}
->=20
->  		preempt_enable();
->=20
-> @@ -1345,7 +1351,10 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->  			ret =3D ARM_EXCEPTION_IL;
->  		}
->=20
-> -		ret =3D handle_exit(vcpu, ret);
-> +		if (vcpu_is_rec(vcpu))
-> +			ret =3D handle_rec_exit(vcpu, ret);
-> +		else
-> +			ret =3D handle_exit(vcpu, ret);
->  	}
->=20
->  	/* Tell userspace about in-kernel device output levels */ diff --git
-> a/arch/arm64/kvm/rme-exit.c b/arch/arm64/kvm/rme-exit.c new file mode
-> 100644 index 000000000000..a1adf5610455
-> --- /dev/null
-> +++ b/arch/arm64/kvm/rme-exit.c
-> @@ -0,0 +1,170 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (C) 2023 ARM Ltd.
-> + */
-> +
-> +#include <linux/kvm_host.h>
-> +#include <kvm/arm_hypercalls.h>
-> +#include <kvm/arm_psci.h>
-> +
-> +#include <asm/rmi_smc.h>
-> +#include <asm/kvm_emulate.h>
-> +#include <asm/kvm_rme.h>
-> +#include <asm/kvm_mmu.h>
-> +
-> +typedef int (*exit_handler_fn)(struct kvm_vcpu *vcpu);
-> +
-> +static int rec_exit_reason_notimpl(struct kvm_vcpu *vcpu) {
-> +	struct realm_rec *rec =3D &vcpu->arch.rec;
-> +
-> +	vcpu_err(vcpu, "Unhandled exit reason from realm (ESR: %#llx)\n",
-> +		 rec->run->exit.esr);
-> +	return -ENXIO;
-> +}
-> +
-> +static int rec_exit_sync_dabt(struct kvm_vcpu *vcpu) {
-> +	return kvm_handle_guest_abort(vcpu);
-> +}
-> +
-> +static int rec_exit_sync_iabt(struct kvm_vcpu *vcpu) {
-> +	struct realm_rec *rec =3D &vcpu->arch.rec;
-> +
-> +	vcpu_err(vcpu, "Unhandled instruction abort (ESR: %#llx).\n",
-> +		 rec->run->exit.esr);
-> +	return -ENXIO;
-> +}
-> +
-> +static int rec_exit_sys_reg(struct kvm_vcpu *vcpu) {
-> +	struct realm_rec *rec =3D &vcpu->arch.rec;
-> +	unsigned long esr =3D kvm_vcpu_get_esr(vcpu);
-> +	int rt =3D kvm_vcpu_sys_get_rt(vcpu);
-> +	bool is_write =3D !(esr & 1);
-> +	int ret;
-> +
-> +	if (is_write)
-> +		vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[0]);
-> +
-> +	ret =3D kvm_handle_sys_reg(vcpu);
-> +	if (ret > 0 && !is_write)
-> +		rec->run->enter.gprs[0] =3D vcpu_get_reg(vcpu, rt);
-> +
-> +	return ret;
-> +}
-> +
-> +static exit_handler_fn rec_exit_handlers[] =3D {
-> +	[0 ... ESR_ELx_EC_MAX]	=3D rec_exit_reason_notimpl,
-> +	[ESR_ELx_EC_SYS64]	=3D rec_exit_sys_reg,
-> +	[ESR_ELx_EC_DABT_LOW]	=3D rec_exit_sync_dabt,
-> +	[ESR_ELx_EC_IABT_LOW]	=3D rec_exit_sync_iabt
-> +};
-> +
-> +static int rec_exit_psci(struct kvm_vcpu *vcpu) {
-> +	struct realm_rec *rec =3D &vcpu->arch.rec;
-> +	int i;
-> +
-> +	for (i =3D 0; i < REC_RUN_GPRS; i++)
-> +		vcpu_set_reg(vcpu, i, rec->run->exit.gprs[i]);
-> +
-> +	return kvm_smccc_call_handler(vcpu);
-> +}
-> +
-> +static int rec_exit_ripas_change(struct kvm_vcpu *vcpu) {
-> +	struct kvm *kvm =3D vcpu->kvm;
-> +	struct realm *realm =3D &kvm->arch.realm;
-> +	struct realm_rec *rec =3D &vcpu->arch.rec;
-> +	unsigned long base =3D rec->run->exit.ripas_base;
-> +	unsigned long top =3D rec->run->exit.ripas_top;
-> +	unsigned long ripas =3D rec->run->exit.ripas_value;
-> +
-> +	if (!kvm_realm_is_private_address(realm, base) ||
-> +	    !kvm_realm_is_private_address(realm, top - 1)) {
-> +		vcpu_err(vcpu, "Invalid RIPAS_CHANGE for %#lx - %#lx,
-> ripas: %#lx\n",
-> +			 base, top, ripas);
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* Exit to VMM, the actual RIPAS change is done on next entry */
-> +	kvm_prepare_memory_fault_exit(vcpu, base, top - base, false, false,
-> +				      ripas =3D=3D RMI_RAM);
-> +
-> +	/*
-> +	 * KVM_EXIT_MEMORY_FAULT requires an return code of -EFAULT, see
-> the
-> +	 * API documentation
-> +	 */
-> +	return -EFAULT;
-> +}
-> +
-> +static void update_arch_timer_irq_lines(struct kvm_vcpu *vcpu) {
-> +	struct realm_rec *rec =3D &vcpu->arch.rec;
-> +
-> +	__vcpu_sys_reg(vcpu, CNTV_CTL_EL0) =3D rec->run->exit.cntv_ctl;
-> +	__vcpu_sys_reg(vcpu, CNTV_CVAL_EL0) =3D rec->run->exit.cntv_cval;
-> +	__vcpu_sys_reg(vcpu, CNTP_CTL_EL0) =3D rec->run->exit.cntp_ctl;
-> +	__vcpu_sys_reg(vcpu, CNTP_CVAL_EL0) =3D rec->run->exit.cntp_cval;
-> +
-> +	kvm_realm_timers_update(vcpu);
-> +}
-> +
-> +/*
-> + * Return > 0 to return to guest, < 0 on error, 0 (and set exit_reason)
-> +on
-> + * proper exit to userspace.
-> + */
-> +int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_ret) {
-> +	struct realm_rec *rec =3D &vcpu->arch.rec;
-> +	u8 esr_ec =3D ESR_ELx_EC(rec->run->exit.esr);
-> +	unsigned long status, index;
-> +
-> +	status =3D RMI_RETURN_STATUS(rec_run_ret);
-> +	index =3D RMI_RETURN_INDEX(rec_run_ret);
-> +
-> +	/*
-> +	 * If a PSCI_SYSTEM_OFF request raced with a vcpu executing, we
-> might
-> +	 * see the following status code and index indicating an attempt to run
-> +	 * a REC when the RD state is SYSTEM_OFF.  In this case, we just need
-> to
-> +	 * return to user space which can deal with the system event or will tr=
-y
-> +	 * to run the KVM VCPU again, at which point we will no longer attempt
-> +	 * to enter the Realm because we will have a sleep request pending on
-> +	 * the VCPU as a result of KVM's PSCI handling.
-> +	 */
-> +	if (status =3D=3D RMI_ERROR_REALM && index =3D=3D 1) {
-> +		vcpu->run->exit_reason =3D KVM_EXIT_UNKNOWN;
-> +		return 0;
-> +	}
-Running kvm-unit-tests-cca selftest(smp) test in quick succession may trigg=
-er these conditions, resulting in the following error logs.
- Error: KVM exit reason: 0 ("KVM_EXIT_UNKNOWN")
 
-Since KVM_EXIT_UNKNOWN is used when no specific exit reason applies, I thin=
-k it would be better to make it identifiable as an error.
-How about adding and setting a new ARM64 exit_reason value to indicate that=
- the PSCI_SYSTEM_OFF request is conflicting with a running vcpu?
+On 20/5/25 18:35, Alexey Kardashevskiy wrote:
+> 
+> 
+> On 13/2/25 03:36, Lukas Wunner wrote:
+>> On Tue, Feb 11, 2025 at 12:30:21PM +1100, Alexey Kardashevskiy wrote:
+>>>>> On 1/7/24 05:35, Lukas Wunner wrote:
+>>>>>> PCI device authentication v2
+>>>>>>
+>>>>>> Authenticate PCI devices with CMA-SPDM (PCIe r6.2 sec 6.31) and
+>>>>>> expose the result in sysfs.
+>>>
+>>> Has any further development happened since then? I am asking as I have the
+>>> CMA-v2 in my TSM exercise tree (to catch conflicts, etc) but I do not see
+>>> any change in your github or kernel.org/devsec since v2 and that v2 does not
+>>> merge nicely with the current upstream.
+>>
+>> Please find a rebase of v2 on v6.14-rc2 on this branch:
+>>
+>> https://github.com/l1k/linux/commits/doe
+>>
+>> A portion of the crypto patches that were part of v2 have landed in v6.13.
+>> So the rebased version has shrunk.
+>>
+>> There was a bit of fallout caused by the upstreamed crypto patches
+>> and dealing with that kept me occupied during the v6.13 cycle.
+>> However I'm now back working on the PCI/CMA patches,
+> 
+> Any luck with these? Asking as there is another respin  https://lore.kernel.org/r/20250516054732.2055093-1-dan.j.williams@intel.com  and it considers merge with yours. Thanks,
 
-Best Regards,
-Emi Kisanuki
-> +
-> +	if (rec_run_ret)
-> +		return -ENXIO;
-> +
-> +	vcpu->arch.fault.esr_el2 =3D rec->run->exit.esr;
-> +	vcpu->arch.fault.far_el2 =3D rec->run->exit.far;
-> +	vcpu->arch.fault.hpfar_el2 =3D rec->run->exit.hpfar;
-> +
-> +	update_arch_timer_irq_lines(vcpu);
-> +
-> +	/* Reset the emulation flags for the next run of the REC */
-> +	rec->run->enter.flags =3D 0;
-> +
-> +	switch (rec->run->exit.exit_reason) {
-> +	case RMI_EXIT_SYNC:
-> +		return rec_exit_handlers[esr_ec](vcpu);
-> +	case RMI_EXIT_IRQ:
-> +	case RMI_EXIT_FIQ:
-> +		return 1;
-> +	case RMI_EXIT_PSCI:
-> +		return rec_exit_psci(vcpu);
-> +	case RMI_EXIT_RIPAS_CHANGE:
-> +		return rec_exit_ripas_change(vcpu);
-> +	}
-> +
-> +	kvm_pr_unimpl("Unsupported exit reason: %u\n",
-> +		      rec->run->exit.exit_reason);
-> +	vcpu->run->exit_reason =3D KVM_EXIT_INTERNAL_ERROR;
-> +	return 0;
-> +}
-> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c index
-> 33eb793d8bdb..bee9dfe12e03 100644
-> --- a/arch/arm64/kvm/rme.c
-> +++ b/arch/arm64/kvm/rme.c
-> @@ -863,6 +863,25 @@ void kvm_destroy_realm(struct kvm *kvm)
->  	kvm_free_stage2_pgd(&kvm->arch.mmu);
->  }
->=20
-> +int kvm_rec_enter(struct kvm_vcpu *vcpu) {
-> +	struct realm_rec *rec =3D &vcpu->arch.rec;
-> +
-> +	switch (rec->run->exit.exit_reason) {
-> +	case RMI_EXIT_HOST_CALL:
-> +	case RMI_EXIT_PSCI:
-> +		for (int i =3D 0; i < REC_RUN_GPRS; i++)
-> +			rec->run->enter.gprs[i] =3D vcpu_get_reg(vcpu, i);
-> +		break;
-> +	}
-> +
-> +	if (kvm_realm_state(vcpu->kvm) !=3D REALM_STATE_ACTIVE)
-> +		return -EINVAL;
-> +
-> +	return rmi_rec_enter(virt_to_phys(rec->rec_page),
-> +			     virt_to_phys(rec->run));
-> +}
-> +
->  static void free_rec_aux(struct page **aux_pages,
->  			 unsigned int num_aux)
->  {
-> --
-> 2.43.0
->=20
+Ping?
+
+> 
+>> specifically the migration to netlink for retrieval of signatures
+>> and measurements as discussed at Plumbers.
+>>
+>> Thanks,
+>>
+>> Lukas
+> 
+
+-- 
+Alexey
 
