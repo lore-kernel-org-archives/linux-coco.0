@@ -1,150 +1,141 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069E125CC74;
-	Thu, 29 May 2025 05:44:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7454E21CC48
+	for <linux-coco@lists.linux.dev>; Thu, 29 May 2025 09:36:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748497494; cv=none; b=ie2QsBDi19K/kcN3OcmHcw7bG6sU+xGXyeYgwsfYObjCQWWQNzGKRUrNEPFdzWUjg+hu0hI2aAG3NKSekBkpHZrxZ3s/PI8TulcwndhAnGZKim/TxF1LF/SvUrIrMy6/rMu42kk3EZ2I2zi8un+jETVn2RlJlgrMAjLZiOks+xI=
+	t=1748511411; cv=none; b=kECT9Q6nQUwRWW7JwTQezMyCx4hDQeaRI6qLwycczFT6gjAiiNtGRJHS6vqvmbGQF45Y69ZXBtPCQUKqW7K6tmlNvbrtdtEJv5xtFXt/dfIZyNzNnZhjIl/scbfgwYeRGA4/NWsbxkUsa1YYevg87WAN13m/b59O4fVIVyO+apc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748497494; c=relaxed/simple;
-	bh=JfSkXN7VFQD0j241YOoerWnrQ3UAC5/O1OD0Wg9yzYc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=me0yBMz4fFfmOplXQoK3IcDoHR8zZnfVt1kLh1NwMga40z+BWAn/DeT9XhcArkx3/d2z848EY0W+WNHf3o1ZOI6nG7LU66ntXsjxVxWfiCeh3fs1nGtUFTJphEcjljbDbEAojUdls4hd7oL6wWTgz6MN1cTCFNZeTor/39wngtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IYcaHTjF; arc=none smtp.client-ip=198.175.65.10
+	s=arc-20240116; t=1748511411; c=relaxed/simple;
+	bh=E+Eeb0KYH2ceDW5aLdj3dqgcub1uVt8Pi2Kc4wHenx0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IraBq/J/bLCqsFdnf6gOcvLDiZCYXvZzjzysM1u2Z77eMfUKYQNpVPyp8RUDhcpGpCZrVO6V+fNVi8yKL96e9H3VDwmYYn7m8zKXdSBiyz5hI+/dgXKdLOTlTp1fnKI0ToEDu/k7NTLSFJYwXtYOdUrKzKon8i1rs9Gb+Ri6dZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GCKBTPcN; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IYcaHTjF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GCKBTPcN"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748497493; x=1780033493;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=JfSkXN7VFQD0j241YOoerWnrQ3UAC5/O1OD0Wg9yzYc=;
-  b=IYcaHTjFZV2uxjMVwYXZ5cWhaJdl3ZM4xwOaYUMZMdA+FTpAgc/3rIEr
-   w8/p2EV4MdzqiUo0X9bg+jZyKjnZI4L/3DOIRjuBhTBEf9bv7Hee1kNe2
-   l62zcpNIc5dT5g5VapXycq7aYDoKc9avZFhLTa5VsdPDqdEizkWP4cBTm
-   zCVaseZMGf5VYZGZoEj2VH6g1Um3oaLBeYYuvGPMCXzxg/iIPF1X2EcC7
-   YTtI62GleFp1iv2Oi6q5t9iYZPv7HAeWQ/kTjHp5FCldpX4rhBrV7+8DL
-   igyDdGwoX86wLDw3oKY+qUkcaOAOhkgGl4MVF5Zxtc8sR+C9wGBDI32uX
-   w==;
-X-CSE-ConnectionGUID: Yd5Qnx2oRdmfeu05ym3N8g==
-X-CSE-MsgGUID: YOoKsw/BQjuvdU70eZGSXQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11447"; a="67963532"
-X-IronPort-AV: E=Sophos;i="6.15,323,1739865600"; 
-   d="scan'208";a="67963532"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2025 22:44:53 -0700
-X-CSE-ConnectionGUID: VpISARUySKWDHRrKuSvNOg==
-X-CSE-MsgGUID: opx6ComdRiCGYPBNIKpm/g==
+  t=1748511410; x=1780047410;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=E+Eeb0KYH2ceDW5aLdj3dqgcub1uVt8Pi2Kc4wHenx0=;
+  b=GCKBTPcN71DyJ9LanwGa+c0pSWD7c765aGdNgFWYAgXQlp7LfqbKbQPt
+   wb6O5XtYal2UBswL8U8PTDrs93Jz/lA0sMw1Yx2HsNoEPK2VCzUzvv87y
+   jWf3eThx0ggN++4blHDeqMG30mJltq2eNixO2G442Hc/50DMDkOCm2Ize
+   seMAPGUHIi9Ut+Wo2ooHFuRCYV7VGOkTI1uUn5Suc5zdNnh8PBuUYy9Ls
+   dwXPwsevbK2rGNmVHayegMs6awac8TMmUPsh2U1pZqpgFsMJaqluNPK1P
+   cXlUVc4Ls+vzcvP3SUIj2OMG8+f9+qshx6g9g2quLdzMPav1jlRrT5dtI
+   g==;
+X-CSE-ConnectionGUID: NO5YqFPwR4G54jt+KUKU1A==
+X-CSE-MsgGUID: jUzTftbSQpqe2sNWAGg+FQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11447"; a="49681446"
+X-IronPort-AV: E=Sophos;i="6.15,192,1739865600"; 
+   d="scan'208";a="49681446"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2025 02:36:48 -0700
+X-CSE-ConnectionGUID: iR5PS7z6RfqZnz8Eq9bLlg==
+X-CSE-MsgGUID: YCccViobQACX5e6VhlQY3w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,323,1739865600"; 
-   d="scan'208";a="144443716"
-Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.159.165])
-  by fmviesa009.fm.intel.com with ESMTP; 28 May 2025 22:44:46 -0700
+X-IronPort-AV: E=Sophos;i="6.15,192,1739865600"; 
+   d="scan'208";a="148283577"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa003.jf.intel.com with ESMTP; 29 May 2025 02:36:45 -0700
+Date: Thu, 29 May 2025 17:30:26 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
-To: kvm@vger.kernel.org,
-	sumit.semwal@linaro.org,
-	christian.koenig@amd.com,
-	pbonzini@redhat.com,
-	seanjc@google.com,
-	alex.williamson@redhat.com,
-	jgg@nvidia.com,
-	dan.j.williams@intel.com,
-	aik@amd.com,
-	linux-coco@lists.linux.dev
-Cc: dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org,
-	vivek.kasireddy@intel.com,
-	yilun.xu@intel.com,
-	yilun.xu@linux.intel.com,
-	linux-kernel@vger.kernel.org,
-	lukas@wunner.de,
-	yan.y.zhao@intel.com,
-	daniel.vetter@ffwll.ch,
-	leon@kernel.org,
-	baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com,
-	tao1.su@intel.com,
-	linux-pci@vger.kernel.org,
-	zhiw@nvidia.com,
-	simona.vetter@ffwll.ch,
-	shameerali.kolothum.thodi@huawei.com,
-	aneesh.kumar@kernel.org,
-	iommu@lists.linux.dev,
-	kevin.tian@intel.com
-Subject: [RFC PATCH 30/30] coco/tdx_tsm: Manage TDX Module enforced operation sequences for Unbind
-Date: Thu, 29 May 2025 13:35:13 +0800
-Message-Id: <20250529053513.1592088-31-yilun.xu@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
-References: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
+	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
+	zhiw@nvidia.com
+Subject: Re: [PATCH v3 12/13] PCI/TSM: support TDI related operations for
+ host TSM driver
+Message-ID: <aDgpMiGV1nzhwXKv@yilunxu-OptiPlex-7050>
+References: <1bcf37cd-0fc4-40fa-bcd1-e499619943bd@amd.com>
+ <yq5ah617s7fs.fsf@kernel.org>
+ <cfdfd053-9e9d-43c0-8301-5411a02ffdf9@amd.com>
+ <yq5abjres2a6.fsf@kernel.org>
+ <20250527130610.GN61950@nvidia.com>
+ <yq5a8qmiruym.fsf@kernel.org>
+ <20250527144516.GO61950@nvidia.com>
+ <yq5a8qmh53qo.fsf@kernel.org>
+ <20250528164225.GS61950@nvidia.com>
+ <20250528165222.GT61950@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250528165222.GT61950@nvidia.com>
 
-Implement TDX Connect enforced sequences for TSM unbind. The enforced
-sequences are:
+On Wed, May 28, 2025 at 01:52:22PM -0300, Jason Gunthorpe wrote:
+> On Wed, May 28, 2025 at 01:42:25PM -0300, Jason Gunthorpe wrote:
+> > > +int iommufd_vdevice_tsm_bind_ioctl(struct iommufd_ucmd *ucmd)
+> > > +{
+> > > +	struct iommu_vdevice_id *cmd = ucmd->cmd;
+> > > +	struct iommufd_vdevice *vdev;
+> > > +	int rc = 0;
+> > > +
+> > > +	vdev = container_of(iommufd_get_object(ucmd->ictx, cmd->vdevice_id,
+> > > +					       IOMMUFD_OBJ_VDEVICE),
+> > > +			    struct iommufd_vdevice, obj);
+> > > +	if (IS_ERR(vdev))
+> > > +		return PTR_ERR(vdev);
+> > > +
+> > > +	rc = tsm_bind(vdev->dev, vdev->viommu->kvm, vdev->id);
+> > 
+> > Yeah, that makes alot of sense now, you are passing in the KVM for the
+> > VIOMMU and both the vBDF and pBDF to the TSM layer, that should be
+> > enough for it to figure out what to do. The only other data would be
+> > the TSM's VIOMMU handle..
+> 
+> Actually it should also check that the viommu type is compatible with
+> the TSM, somehow.
+> 
+> The way I imagine this working is userspace would create a 
+> IOMMU_VIOMMU_TYPE_TSM_VTD (for example) viommu object which will do a
+> TSM call to setup the secure vIOMMU
+> 
+> Then when you create a VDEVICE against the IOMMU_VIOMMU_TYPE_TSM_VTD
+> it will do a TSM call to create the secure vPCI function attached to
+> the vIOMMU and register the vBDF. [1]
 
-  1. STOP TDI via TDISP message STOP_INTERFACE
-  2. Private MMIO unmap from Secure EPT
-  3. Trusted Device Context Table cleanup for the TDI
-  4. TDI ownership reclaim and metadata free
+Then we should have more verbose TSM APIs,
+pci_tsm_tdi_create/bind/unbind/free(), which seems workable. Now
+according to Dan's series, we only have bind() which creates secure
+vPCI and switch to T=1, and unbind() which switch to T=0 and free secure
+vPCI.
 
-Step 2 is the responsibility of KVM, step 3 is for IOMMU driver. So
-TDX TSM driver needs to invoke TSM handlers for external collaboration.
+Thanks,
+Yilun
 
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
----
- drivers/virt/coco/host/tdx_tsm.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/virt/coco/host/tdx_tsm.c b/drivers/virt/coco/host/tdx_tsm.c
-index beb65f45b478..66d6019812ca 100644
---- a/drivers/virt/coco/host/tdx_tsm.c
-+++ b/drivers/virt/coco/host/tdx_tsm.c
-@@ -87,6 +87,15 @@ static struct pci_tdi *tdx_tsm_bind(struct pci_dev *pdev,
- {
- 	int ret;
- 
-+	if (!pdev->trusted_dma_owner ||
-+	    !pdev->driver->tsm_handler ||
-+	    !pdev->driver->tsm_handler->disable_mmio ||
-+	    !pdev->driver->tsm_handler->recover_mmio ||
-+	    !pdev->driver->tsm_handler->disable_trusted_dma) {
-+		pci_err(pdev, "%s no driver or driver not support bind\n", __func__);
-+		return NULL;
-+	}
-+
- 	struct tdx_tdi *ttdi __free(kfree) =
- 		kzalloc(sizeof(*ttdi), GFP_KERNEL);
- 	if (!ttdi)
-@@ -137,15 +146,15 @@ static struct pci_tdi *tdx_tsm_bind(struct pci_dev *pdev,
- static void tdx_tsm_unbind(struct pci_tdi *tdi)
- {
- 	struct tdx_tdi *ttdi = to_tdx_tdi(tdi);
-+	struct pci_dev *pdev = tdi->pdev;
- 
--	/*
--	 * TODO: In fact devif cannot be freed before TDI's private MMIOs and
--	 * private DMA are unmapped. Will handle this restriction later.
--	 */
- 	tdx_tdi_request(ttdi, TDX_TDI_REQ_STOP);
-+	pdev->driver->tsm_handler->disable_mmio(pdev);
-+	pdev->driver->tsm_handler->disable_trusted_dma(pdev);
- 	tdx_tdi_mmiomt_free(ttdi);
- 	tdx_tdi_devif_free(ttdi);
- 	tdx_tdi_devifmt_free(ttdi);
-+	pdev->driver->tsm_handler->recover_mmio(pdev);
- 	pci_dev_put(ttdi->tdi.dsm_dev);
- 	kfree(ttdi);
- }
--- 
-2.25.1
-
+> 
+> And finally bind will switch to T=1 mode.
+> 
+> But if someone creates a VIOMMU with IOMMU_VIOMMU_TYPE_ARM_SMMUV3 then
+> the vdevice shouldn't be allowed to work in TSM mode at all.
+> 
+> Finally IOMMU_VIOMMU_TYPE_TSM_NO_VIOMMU would be a "NOP" viommu type
+> that enables TSM support but has no vIOMMU and works with all the
+> iommu drivers.
+> 
+> Not sure exactly how to wrangle this all, but it should be done
+> here..
+> 
+> 1 - IMHO alot of the architectures I've seen have messed up the VIOMMU
+> design by having completely separate IOMMUs for T=1 and T=0 traffic. I
+> hope people will fix this and allow the secure VIOMMU to translate
+> both T=0 and T=1 traffic as walking page tables in secure memory and
+> then rejecting T=0 if the final physical is secure memory. Meaning
+> from an API perspective we want the vPCI to possibly have a working
+> secure vIOMMU before we reach bind.
+> 
+> Jason
