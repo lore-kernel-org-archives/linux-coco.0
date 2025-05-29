@@ -1,171 +1,105 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2088.outbound.protection.outlook.com [40.107.94.88])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871CD22D4FA
-	for <linux-coco@lists.linux.dev>; Thu, 29 May 2025 16:29:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.88
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748536171; cv=fail; b=syhqsTeXnjfhRO4oq+q9CHdpIWnvuN0WaW3YND9raXDlXHl+Ei8X4lydmvpe3/jHTEwdOJy/IVmp4cWeNtuEPryndOVGIh7uGY4qBAuV2n9D2kRdRM8oqajq3RQWiHo6vv89MRJ3fH9UgqmyaarGmO/gk5uVIDQstHMn45Y2IoU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748536171; c=relaxed/simple;
-	bh=PocuNlaeSftiFnzuo0y8yeNyzSU4YpFno7FmOwhIxwA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=H1S0GaJFnHFRqtnHOyoIYMcpYmgDKxRlZJTjeN11WHZ1ruyeOlD5r+yai9DLui6CMofj7iQdexOSyyb3IRvvog7MjmTZeQlTmqrPiqoB52DN3p1yNXwp8z1jONAVmTug6YTGcsg6i30huwn+GLm4y3fhyMstg450SWWjlbnecH8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jOt5bVy8; arc=fail smtp.client-ip=40.107.94.88
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFC421CC40
+	for <linux-coco@lists.linux.dev>; Thu, 29 May 2025 23:03:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748559784; cv=none; b=aS6NZ3TlxuoVFmeWc0wNGlZT+K7eUOJXzrkG2pByGb9p3looZkdaeSUlxjOafWClRAI1PUY6aeG09S1jFC9tBYjzHokw0YGEHIyJGtGBqkn/6z4hwMmS12WRWt2bdiK73z22LTdc2lhTMIe5bFasjGNQgA7cNkt7UFXR77MvA+E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748559784; c=relaxed/simple;
+	bh=6qhF68HE1ftdSgDFu+hBJobeV7v0fIYiQRZ+0S5XJnY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=btaUuhb+7K4914plzOhCDwJh976ncNUKD90e+AGm1sGQ3yrAHUDJoHwxJ8DIexHfAD3FtQx8ZTW8rHugXGLpu8slLbKeZZRawdzy/xssE14qts1dBf6P4NVatSAOlark+cFYCUtX2qTXMya4VQ8+xtFruEo0Zv8kRoML436Z1lU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=CnVi6UAD; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jOt5bVy8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VnxL18NGHkrfpmzBwZFIXnuJIw/lLArrO6gaI2vU+/1IuQ2PO4/KR3FKkagpI5x0JZYPrmtjjyC2TT2f1FdDxUuJoeWf9Clu16XouhaoKeVlXyirBF3UZbz7rskapUT9y6nbT4XT/BbSMhUoDrjguMHiIRSi6C6+mz4kBmeSORgMrqd1aPFz+w6Qc0fBRocNvOw/r50jEJNlkP3DXjVpeycHKkkpkWzyJBDD3KGmvp0fvb6EYvaiJU10RGW4hcdo14rnEUKVbx0fnhIqZL1zrLU9EK1MDg3H4O2+uLvM07j//HqcaRBlokAA7CoJpViPeRNj3+vgBNm8qoPMpF+wtw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pFlEEalp4xeEz4zQ4ReUwP4mkRuPIUmhaLfWuP2imt4=;
- b=YoevzW+7g3/3lydFmCJdBETj7JsLBnF8JEPrFXzTFQa+fmJmUBvR8VBzjG17RFScrmh2y8/LpIRSsCMccnitZgXMkO6tLzYIssnPTG+N/ry5ffPoHSgp1NbtXThCEYhCZZ78h3q0Dc6HW6m5FedfZq6U0M7xSPZL6+aN4OoXVxlDT1lwTVvlMHSI5gIVbiBm0Ki9yyhyP7PW8rafBGziEM61K7B3wrWPHSZTGUQC1jcFbcFL1KK06li0JlfkZ55ePT7IKouPaQa1x0AK7RAq0aBx+PuOxbYttsKA0gY9hNU7CGmubu4nnhXzwjuDjiKw+KlCQA9WvZtmVzzSOXr0YA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pFlEEalp4xeEz4zQ4ReUwP4mkRuPIUmhaLfWuP2imt4=;
- b=jOt5bVy8TdJ4Li/ajUOQsxPT8utAgiQyj+8xT2Nas471Z3JVftpohgjuCObf5eqR8NGgGyMcBFko6xbx4WYToWXOdGXc/4xlBPiaXLyvQrARM1cn9a3HW2JUcH8YcLI2+q7mK/B9E0xlDO8ennxM8DLG9y/8zB8YnWwqRkicbgMYcW1/9/VcIQ/RqKqfTeEO/JOgZB7RWR3LmWVursfDkYXXfHbyC/FFW74Wm2YZBWlfvFYpCKWVPoErDdp7c7EYka3ZCawdtBL5qF3aOOKkQW6j/yVu47z5J02zG7YhNoVwZNVm/Gyrt/nc57IFOcb//IOTR6P/+py/Nzpwn9+auA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by LV8PR12MB9135.namprd12.prod.outlook.com (2603:10b6:408:18c::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.27; Thu, 29 May
- 2025 16:29:24 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%6]) with mapi id 15.20.8769.022; Thu, 29 May 2025
- 16:29:24 +0000
-Date: Thu, 29 May 2025 13:29:23 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: Alexey Kardashevskiy <aik@amd.com>, kvm@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
-	christian.koenig@amd.com, pbonzini@redhat.com, seanjc@google.com,
-	alex.williamson@redhat.com, vivek.kasireddy@intel.com,
-	dan.j.williams@intel.com, yilun.xu@intel.com,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	lukas@wunner.de, yan.y.zhao@intel.com, daniel.vetter@ffwll.ch,
-	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
-	tao1.su@intel.com
-Subject: Re: [RFC PATCH 00/12] Private MMIO support for private assigned dev
-Message-ID: <20250529162923.GH192531@nvidia.com>
-References: <aB7Ma84WXATiu5O1@yilunxu-OptiPlex-7050>
- <2c4713b0-3d6c-4705-841b-1cb58cd9a0f5@amd.com>
- <20250512140617.GA285583@nvidia.com>
- <aCRAHRCKP1s0Oi0c@yilunxu-OptiPlex-7050>
- <20250514163339.GD382960@nvidia.com>
- <aCYQdDrYYZRAgsen@yilunxu-OptiPlex-7050>
- <9dea400f-a57b-43be-a2e4-24a9f51e6ba0@amd.com>
- <aDE5SPzOAU0sNIt+@yilunxu-OptiPlex-7050>
- <ae16db07-5fca-4369-aa67-cbe2e0fd60fd@amd.com>
- <aDhyC73r149syMpc@yilunxu-OptiPlex-7050>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aDhyC73r149syMpc@yilunxu-OptiPlex-7050>
-X-ClientProxiedBy: MN0P220CA0011.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:208:52e::23) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="CnVi6UAD"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id DC05F40E01A3;
+	Thu, 29 May 2025 23:02:53 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id atm2818uktFj; Thu, 29 May 2025 23:02:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1748559768; bh=wPDpKpHJ7VOTju4owFMc/rz0TIuDFKjFr21HY0fPmN4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CnVi6UADBW/LUL0mVSlUWvUhj+r8P4xxoh+dfN4fwDQuFXhnsM7PqC8uTe7wBVk9g
+	 muXHC4nMiJvX6nbMX0JWIvbpSHouezBAJ+uf6gh0poMMYTAjqI6h0lhusLuOj/CqJ2
+	 ow2kamCczrJ0QNtJe5MNjEUQ/FADWLXRMBLVgT+mNt+N2cvMfmmglRNGe/Cp+bBHHa
+	 KV5JwsaSdDDmet8AVRIjz6q2TzNKbFv4Xtf3d7ouUxkjBt4ubqbZpJoJmzhulllTTo
+	 5pvHGRYlxhBzNHqOS4ukXKrtJivt/c0OLHedwIPZI2lmNk8pZzSyo8hiFcZtv3Mjop
+	 kqBsoC+uXpmfXD7UZDDfr/5aO+Kpk/h6yZPaU84kPPQra+xpGr42dx/l2N098mqJue
+	 pJ7ibnddghb9MtvdVpZFeuFk79G/ELE1NsN6BLoEw76vhDsa1x5YE/YUgQW+eskwmm
+	 ALIzP8B/Dd6Yk3ZhfDjfZ8LCWIBVxT0Z14PUzVgecbORVmafl/H0qAGkQLZH0xS2R9
+	 urfgr2AOB5G/tuTZtNOTcX31N3UMggPYHhKqEnyO7H6Q0K0t/mfu+Td52V8yWvivhT
+	 CvMUM+tTyZ22IR/TXDAAvc4uxj8kvluapJ6cNgmuMs6Yiv+f5UP4L01L/flM1Y+0rT
+	 UOweecLjIrwKch7lEsNehDqE=
+Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7685C40E016E;
+	Thu, 29 May 2025 23:02:39 +0000 (UTC)
+Date: Fri, 30 May 2025 01:02:33 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] x86/sev/vc: fix efi runtime instruction emulation
+Message-ID: <20250529230233.GEaDjniaXGlxAU0NzA@fat_crate.local>
+References: <20250527144546.42981-1-kraxel@redhat.com>
+ <20250527162151.GAaDXmn8O3f_HYgRju@fat_crate.local>
+ <77hywpberfkulac3q3hpupdmdpw2xbmlvzin4ks7xypikravkj@xjpi7gqscs6a>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|LV8PR12MB9135:EE_
-X-MS-Office365-Filtering-Correlation-Id: bbdd1bee-6937-4960-e79b-08dd9ecdf959
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?fWRhKAmy5OXgrX2WLZqqyiGsjHs4MfUZVCdn9TSvmrXIfSg8tLyuHLThkZOb?=
- =?us-ascii?Q?WoVAVLQ4/EvK8bkBbYLHyaqthXtAzhHG4BStkyTkEKaLw2mTorpF70tnsqqB?=
- =?us-ascii?Q?Wimt7b6IPbe9sOArrdFjLPXbsisXLFlff9GFHPiMQJKbubMqwTnasUPRn9Qu?=
- =?us-ascii?Q?NfKoA4q8BQ8kb0EAsJKOGHh4S/jfyOKKZUBtllkKVVYFpHxomoEeT46NrefM?=
- =?us-ascii?Q?DNqOqOnHLqHzENYfgbYbRi/coKZnzixLiyUJDON+jY3B2P8qLcf9QukLAM2I?=
- =?us-ascii?Q?hqkbnurrNQNRKK0EasX2pMSyrpGUzNvpjxDGhlCx9X8xxBv5fMgAad70Dgzq?=
- =?us-ascii?Q?DJY+KRjUNIOaONsUAqR31nA2hrMoiAviFYC2jMw8y/aMxCNdIXIYS5gUPsN9?=
- =?us-ascii?Q?AuXYsiECK2ZPpl44PFOPEJlxaBtSRKFl3N6FiWQkPovAjc0WR81MmRj2HTct?=
- =?us-ascii?Q?iJZlkwWc5QTa2AdeG18UDQ0vAbaf/FKxLQJrAIz+tSaY+ARfE3RxjXMjWAD5?=
- =?us-ascii?Q?YTc+Bn7ZMOB3WHmqqBHeMOw9jySRNWap4LW66X5izFaUebEyooFhGnXgYHzl?=
- =?us-ascii?Q?sgpzxRd9tb3U7CNTWPqGZUkZC8cvK0UAHFNpEBK3fLnMq9Mm8smZOoHyVDf9?=
- =?us-ascii?Q?ZPlzTJ/9wZ8pkR2d5nq2sUP9Jr9qM0bKlYXs6pCcUscE9+/p1pQTZOlhUl5z?=
- =?us-ascii?Q?StuabvhDsfpQ8EZt3mI3JpEOdpyYbbdUkUmHRN3uvJd/VJDgXzVS8gFkNzH8?=
- =?us-ascii?Q?OhDGydIizcV5na1qicq2Tt5h8MBprCpNzzr6jJBCtQbGr8BeiCAhyvRGXzoU?=
- =?us-ascii?Q?c/diY2V4GdtC2Xkiff0lQ84Gd8ZhJOmkXglv5vOczv+SBLgPsKb7KCdZPfg+?=
- =?us-ascii?Q?GPrD6yT8hD7UQSaorIp8Qkn5pPCBZos723tjsrYzNx4Kw92YyOMf+oLI8fJs?=
- =?us-ascii?Q?090S30l9FXmpWftBai3+rtdKPoHLJwecxI0TRnHKELI/kLy7rTqJ8uRpCPv/?=
- =?us-ascii?Q?zj0yjIz3nv7a4ueTiTrFuVoRSpxlgiXqeANsqGXu1k/vqURkQw+eofGXgr/c?=
- =?us-ascii?Q?bFvQUvlZprh50rx465JybycS2QZTkxQSw7SisBUn5WdwlR+y1392zWH+4KUp?=
- =?us-ascii?Q?N8Y/0j/WmJHIKnzqQF3LU3RDzH93fYgymZfmv7Ce1HXY5aLqtLmp6hk2OP/F?=
- =?us-ascii?Q?z9tnhQKL6QkeB5SBodfWHGgj/q+flGG0J55925JVZis+21zLIbz4syW+LOwu?=
- =?us-ascii?Q?ioMclU7MccKyLurTDxd0r2CFNri5CxzLVlV/c9W18ExoZJnyTiU1liDmMyVg?=
- =?us-ascii?Q?PcZ2HSAcBc/9v9R5OmnddgqzzVUKKsRpgzpvfMCC742tzdfk8Ds+glCxim1z?=
- =?us-ascii?Q?rSfFwKCjk0nrNNX8+I63OlXCuTJ8SoA0+O9q+oaoratN3SxrUA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?amT4X8uLWB+qU6OgnGbvJ9YWoh4Fteg8kr/eRWm7/ufuc44Qf2NEIbewCm3I?=
- =?us-ascii?Q?QAz/wDFFonxoT/UmxxbN97CYB6lqae+1n0opaVUhl7+y6ojt8fTjqsg9AYli?=
- =?us-ascii?Q?vF4OHEFFI69XmB2WYQPo1x0u8qxRtczg0pnRF+zWBbj2iZx6whampSJkXknE?=
- =?us-ascii?Q?+Jh0RPobvlKICTCa1MQ72RGsVQfXpBqHxDxkGkuQX/QKMZxzvYhjoa7OQcXe?=
- =?us-ascii?Q?0tROyqpo46szVMeg0ORvoYW5BDI+uTheBI7Oz9poZcp9AQ+JUwva3HvXj0cB?=
- =?us-ascii?Q?321tdEfFDobwmRM4UpWIf9OQwrMDya7P3ogw3JZbSPDPsrCjE4iiEmWAzEdl?=
- =?us-ascii?Q?JkiwgfMumDsf/VoRAyGskM60snr7eiMn1hfu85u0uTCGIYl1saywxy+RpCfJ?=
- =?us-ascii?Q?tsgY3i6Cyltg0p3NMdOA2lNMPJ6prMA6jZC3Y56OxEhNnrm5POBfe9NOUY+Y?=
- =?us-ascii?Q?PSz1VXcCSTjhmXKx1A6WChE2558WBZDz+RSUd0D+W3oRXFB2vhpHC3Nuz39K?=
- =?us-ascii?Q?xm3iT5BIMsjWOKvUT38yPCa9Emu95vXbQ1MIIDxSOk5cmTziOnJEKxDWFjIo?=
- =?us-ascii?Q?WB9PttDB5LNUKSUQFhT0VcGo9u5PvGJm/o9UIDghRri9qWhbGXyIBlgjRSNw?=
- =?us-ascii?Q?lzihs7P1xRsp+TTowkWXF/b68KxUqwNP9N0tNf+djItrtqkLGgT7DJJ2jNQW?=
- =?us-ascii?Q?kdU4cSopqsBKOHPwXmR3SfiwWUtJj/9vNxlpZbsQChlwmJGiF7njgjK/M1S5?=
- =?us-ascii?Q?MXsT2gzD/gqa6qNnZkc+P8TDyUgd8+V6YXs0mgY0ZukO6Akrbt5vikr9R5+C?=
- =?us-ascii?Q?L8F8FY8C10oXcDe4vhGd+GAPemwoNGn/JUO7RVE1b2zTgKC22v6qPalA+rrM?=
- =?us-ascii?Q?snaRTp1JEqOKe7HOX+zIm7A8dXoFpBLv/Kn1i3RqjKj55iFfNqrdwvfm3Xgn?=
- =?us-ascii?Q?Q9oN2umdk2ODvmJxDDNGglPJV6OqOaN3P0UvsLGyOzbj0kdW1Yup+aW5UOAb?=
- =?us-ascii?Q?KH1DJYXGuwD+BCnR7btQeNOtHY+cXzN2h4UYVxXbwy4f/uxITUKGz2JbtJKi?=
- =?us-ascii?Q?ftpMrYelgHAimeEuePhGl2QpmffS/6gzp557WjnuZdZXRq80Icb9orlP88Ip?=
- =?us-ascii?Q?vJx0hEeb5vTooEyUoaBK0cKuCBERUwne0InrjP7mTrAcJG0Iz5dyyWCjIcjb?=
- =?us-ascii?Q?q/bIqv3OMf+uDfSTT4uXc3Uo7RfB2xzUCuEf9zlTIHCOd4x2TSrYRnq8cHD6?=
- =?us-ascii?Q?ZnlRGDLn8PnHIe94SBGoirD9GWxzx81e91H9Wg6idUOW4vUdxyHZVIHo0Awu?=
- =?us-ascii?Q?S1IViGNJgLGbG5HIdmfA8qzQWodBkgyI/WWG5znzgd+V6+NQoOGYv/4ujCHI?=
- =?us-ascii?Q?Jhg8swQBNruvhCEsDA2ymLi/ky5bBHq2Nyf0yHb3J8fK2YR2jD6bjCVpFDSC?=
- =?us-ascii?Q?U28IH89azyVNqm2VGNzTNTdBp0i3KpezytFgeDfcGS6Lr9xtZybeY9WNwCBY?=
- =?us-ascii?Q?gh2eR3Mz1bCvKbHzmfeJmIXeKbxPIILtdDcAEAR/2E5vVrKwB7Ogs5LcdF3M?=
- =?us-ascii?Q?8GANtRnpIbZwaCiziPAcJINoWmsixTWqnqxuE9yy?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bbdd1bee-6937-4960-e79b-08dd9ecdf959
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2025 16:29:24.6867
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HsgbXcLrvQKsshpuIeuqmZAzUFE4k/Ho1S+B51PzCXKwfanHTUeyWjjTCiVhxP47
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9135
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <77hywpberfkulac3q3hpupdmdpw2xbmlvzin4ks7xypikravkj@xjpi7gqscs6a>
 
-On Thu, May 29, 2025 at 10:41:15PM +0800, Xu Yilun wrote:
-
-> > On AMD, the host can "revoke" at any time, at worst it'll see RMP
-> > events from IOMMU. Thanks,
+On Wed, May 28, 2025 at 09:38:24AM +0200, Gerd Hoffmann wrote:
+> Use case is coconut-svsm providing an uefi variable store and edk2
+> runtime code doing svsm protocol calls to send requests to the svsm
+> variable store.  edk2 needs a caa page mapping and a working rdmsr
+> instruction for that.
 > 
-> Is the RMP event firstly detected by host or guest? If by host,
-> host could fool guest by just suppress the event. Guest thought the
-> DMA writting is successful but it is not and may cause security issue.
+> Another less critical but useful case is edk2 debug logging to qemu
+> debugcon port.  That needs a working cpuid instruction because edk2
+> uses that to figure whenever sev is active and adapt ioport access
+> accordingly.
 
-Is that in scope of the threat model though? Host must not be able to
-change DMAs or target them to different memory, but the host can stop
-DMA and loose it, surely?
+Yeah, I'd like for those justifications be in the commit messages please.
 
-Host controls the PCI memory enable bit, doesn't it?
+> > We'd like to add them to our test pile.
+> 
+> That is a bit difficult right now because there are a number of pieces
+> which need to fall into place before this is easily testable.  You need:
+> 
+>  * host kernel with vmplanes patch series (for snp vmpl support).
+>  * coconut svsm with uefi variable store patches.
+>  * edk2 patches so it talks to svsm for variable access.
+>  * igvm support patches for qemu.
+> 
+> Hope I didn't forgot something ...
 
-Jason
+So why are you sending those for the kernel now is so many other things are
+still moving?
+
+What if something in those things change? Then you need to touch those
+again...
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
