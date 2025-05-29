@@ -1,102 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43E42110;
-	Thu, 29 May 2025 13:44:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A64224B0C
+	for <linux-coco@lists.linux.dev>; Thu, 29 May 2025 13:56:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748526243; cv=none; b=ibif9wjS6ai5wGvRPzf/tfDLGYl3fA9L19dw7XtuPWoGF+Ad9B3YSbZcTuDt6qYK9QcQP6iwgDNECK3f/sAu8eA5akfWTxwCRjLjoIdZIzi5YKOeE0az37g+AxMI+ocbbX3XHJCJ83DV2jbr2yWqiAI3B+APMqGqbzdQ4ZVbaGc=
+	t=1748526974; cv=none; b=Vd6sTAK50ypb9B445DyhOfflGWVw9o+F0wQOSDw92iBj+9tB/B2nTAds2QDYEv+D+ytP6T702VFSxD0HSDXfG4gjfhcXli3alWHs3xHEBxPsJm+XS+oU+UWpJHt8+pT8p7Rnw2sxa0ZKe6iHvqYOKt2dzX1HwTOrQJK3zGsvvm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748526243; c=relaxed/simple;
-	bh=edkEV1hSnZUVROOx+TdET1v9ConRvyBLaXZtxX3dM38=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=uYUHJ1kHL305ASruh51/dTZRf1gAhd71MaTM8VcFVDjFs8t1gIi+6N00qvRCdVX9qeu4exvh5MvkOl6+FHhWpKLmdGsGdzLjVZH5PUAD3rgousu4a+yRj8tdPpproFjydz3iTNCl4n2sVS+ucDu4JY/O75bOQD3jR/QOqsmlI68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WDo+BMm5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748526974; c=relaxed/simple;
+	bh=j5Q3sX/YIUtqn5PpjjmEJ4Hp4cwg9WJvwuLWZ/prHJU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X3/HSuOR+NomupPtBBNfFx+3Av8d0/2sxEkdX/lE7jJjxO1t1MAlvOsHb6eyvpAXSQKuLPIX3i5sOStbZyBVlAxhuLqQt8ncP/eJZXpvOmsYRj5t6PDucOfI7g+IhQtAvItHtw2GXRCp6d/6oZS26tN+h24YXSOLDu4Dsximozc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JwsR4iLN; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WDo+BMm5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888D2C4CEE7;
-	Thu, 29 May 2025 13:43:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748526242;
-	bh=edkEV1hSnZUVROOx+TdET1v9ConRvyBLaXZtxX3dM38=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=WDo+BMm5NfmfIpQpAgN5263RjSeYx078Xws2Sj3qb2IWXUssDdVFyL8+0Z3MhGqm9
-	 hPDPuEdrTTAhzMpWXuLmVsWHAdMD21uZf6rntQbV4HhqaxnnNvtlqbxfg8XZ6pdf4w
-	 DTji4YZrCV8zFqV3R50L110AqzEpPlsUpVR7O/R+ADLD0984dG40i8s5JR5Q3jlx2E
-	 guy487LlYkOaX+cFteCWMOv0Teesp5je2eI5nkmV6yZHvR7a4NpDo3FMvcWXge4lpg
-	 yhAdc2Mek2vnAWQGhoFj4OovMWBeF19AjBjuVpGaaICRwTrd3u4h5m9FYmIkMnGwc+
-	 DoO4qqhs4T9WA==
-X-Mailer: emacs 30.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Cc: Alexey Kardashevskiy <aik@amd.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JwsR4iLN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1748526973; x=1780062973;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=j5Q3sX/YIUtqn5PpjjmEJ4Hp4cwg9WJvwuLWZ/prHJU=;
+  b=JwsR4iLNRDOWbHwKbN8hqTPX2IN/eSoqwOr0QZApk10JcM9nCoP5UtKk
+   ObqE+WDf+vSW7sNHz0M9IgPo9SkJlhaq+WnPFrA+VOhknbl/DxO9FijjH
+   3ukDi3AdbiTL4GuTZR5bn1zLdv2zztz71BGFrDUPwpredWQp779chxHtP
+   Osb8KXMtXs6YzFE0NKP3vkqxF0yhj3zDbp+5sbng+yLAmloWso0Z6FYtm
+   pvyM0VAxve5hgGvA41ccoljCLkXSoYuIz5rCH8d+je/A/VISiU+JDAPr3
+   GPcCh/tmSPBFy1gUVYiA+N5Zj7F3YS8pMnKpHWvqnAxX7p9il+jt9AIEg
+   w==;
+X-CSE-ConnectionGUID: /OU70Hr0TAat+ZwLXNWjyQ==
+X-CSE-MsgGUID: 8rg0N5GJQQWZ+tSunMxWjQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11448"; a="50288808"
+X-IronPort-AV: E=Sophos;i="6.16,193,1744095600"; 
+   d="scan'208";a="50288808"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2025 06:56:12 -0700
+X-CSE-ConnectionGUID: WfM2R1bkRsiM46zXzFf9rQ==
+X-CSE-MsgGUID: o7pY8hpvTJWORXYYkEUdoQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,193,1744095600"; 
+   d="scan'208";a="148854885"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa005.jf.intel.com with ESMTP; 29 May 2025 06:56:10 -0700
+Date: Thu, 29 May 2025 21:49:51 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
 	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
 	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
 	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
 	zhiw@nvidia.com
 Subject: Re: [PATCH v3 12/13] PCI/TSM: support TDI related operations for
  host TSM driver
-In-Reply-To: <20250528165222.GT61950@nvidia.com>
+Message-ID: <aDhl//XH8HNwJPJ2@yilunxu-OptiPlex-7050>
 References: <yq5aa570dks9.fsf@kernel.org>
  <1bcf37cd-0fc4-40fa-bcd1-e499619943bd@amd.com>
  <yq5ah617s7fs.fsf@kernel.org>
  <cfdfd053-9e9d-43c0-8301-5411a02ffdf9@amd.com>
- <yq5abjres2a6.fsf@kernel.org> <20250527130610.GN61950@nvidia.com>
- <yq5a8qmiruym.fsf@kernel.org> <20250527144516.GO61950@nvidia.com>
- <yq5a8qmh53qo.fsf@kernel.org> <20250528164225.GS61950@nvidia.com>
- <20250528165222.GT61950@nvidia.com>
-Date: Thu, 29 May 2025 19:13:54 +0530
-Message-ID: <yq5a1ps75y79.fsf@kernel.org>
+ <yq5abjres2a6.fsf@kernel.org>
+ <20250527130610.GN61950@nvidia.com>
+ <yq5a8qmiruym.fsf@kernel.org>
+ <20250527144516.GO61950@nvidia.com>
+ <yq5a8qmh53qo.fsf@kernel.org>
+ <20250528164225.GS61950@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250528164225.GS61950@nvidia.com>
 
-Jason Gunthorpe <jgg@nvidia.com> writes:
+On Wed, May 28, 2025 at 01:42:25PM -0300, Jason Gunthorpe wrote:
+> On Wed, May 28, 2025 at 05:47:19PM +0530, Aneesh Kumar K.V wrote:
+> 
+> > +#if IS_ENABLED(CONFIG_KVM)
+> > +#include <linux/kvm_host.h>
+> > +
+> > +static void viommu_get_kvm_safe(struct iommufd_viommu *viommu, struct kvm *kvm)
+> > +{
+> > +	void (*put_fn)(struct kvm *kvm);
+> > +	bool (*get_fn)(struct kvm *kvm);
+> > +	bool ret;
+> > +
+> > +	if (!kvm)
+> > +		return;
+> > +
+> > +	put_fn = symbol_get(kvm_put_kvm);
+> > +	if (WARN_ON(!put_fn))
+> > +		return;
+> > +
+> > +	get_fn = symbol_get(kvm_get_kvm_safe);
+> > +	if (WARN_ON(!get_fn)) {
+> > +		symbol_put(kvm_put_kvm);
+> > +		return;
+> > +	}
+> > +
+> > +	ret = get_fn(kvm);
+> > +	symbol_put(kvm_get_kvm_safe);
+> > +	if (!ret) {
+> > +		symbol_put(kvm_put_kvm);
+> > +		return;
+> > +	}
+> > +
+> > +	viommu->put_kvm = put_fn;
+> > +	viommu->kvm = kvm;
+> > +}
+> 
+> Shameer was working on something like this too
+> 
+> I would probably split just the viommu kvm stuff into one patch so you
+> two can share it.
+> 
+> > @@ -68,10 +121,32 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
+> >  	 */
+> >  	viommu->iommu_dev = __iommu_get_iommu_dev(idev->dev);
+> >  
+> > +	/* get the kvm details if specified. */
+> > +	if (cmd->kvm_vm_fd) {
+> 
+> Pedantically a 0 fd is still valid, you should add a flag to indicate
+> if the KVM is being supplied.
 
-> On Wed, May 28, 2025 at 01:42:25PM -0300, Jason Gunthorpe wrote:
->> > +int iommufd_vdevice_tsm_bind_ioctl(struct iommufd_ucmd *ucmd)
->> > +{
->> > +	struct iommu_vdevice_id *cmd =3D ucmd->cmd;
->> > +	struct iommufd_vdevice *vdev;
->> > +	int rc =3D 0;
->> > +
->> > +	vdev =3D container_of(iommufd_get_object(ucmd->ictx, cmd->vdevice_id,
->> > +					       IOMMUFD_OBJ_VDEVICE),
->> > +			    struct iommufd_vdevice, obj);
->> > +	if (IS_ERR(vdev))
->> > +		return PTR_ERR(vdev);
->> > +
->> > +	rc =3D tsm_bind(vdev->dev, vdev->viommu->kvm, vdev->id);
->>=20
->> Yeah, that makes alot of sense now, you are passing in the KVM for the
->> VIOMMU and both the vBDF and pBDF to the TSM layer, that should be
->> enough for it to figure out what to do. The only other data would be
->> the TSM's VIOMMU handle..
->
-> Actually it should also check that the viommu type is compatible with
-> the TSM, somehow.
->
-> The way I imagine this working is userspace would create a=20
-> IOMMU_VIOMMU_TYPE_TSM_VTD (for example) viommu object which will do a
-> TSM call to setup the secure vIOMMU
->
-> Then when you create a VDEVICE against the IOMMU_VIOMMU_TYPE_TSM_VTD
-> it will do a TSM call to create the secure vPCI function attached to
-> the vIOMMU and register the vBDF. [1]
->
+Did I miss something? Shameer's patch passed in struct kvm* through
+iommufd_device_bind() then to viommu, and has your Reviewed-by. I'm a
+little confused...
 
-Don=E2=80=99t we create the vdevice before the guest starts? If I
-understand correctly, we expect tsm_bind to be triggered by the guest=E2=80=
-=99s
-request=E2=80=94specifically, when it writes to /sys/bus/pci/devices/X/tsm/=
-connect.
+https://lore.kernel.org/all/20250319232848.GD126678@ziepe.ca/
 
--aneesh
-
+Thanks,
+Yilun
