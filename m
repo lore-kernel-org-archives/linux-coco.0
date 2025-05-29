@@ -1,487 +1,547 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2055.outbound.protection.outlook.com [40.107.94.55])
+Received: from esa13.fujitsucc.c3s2.iphmx.com (esa13.fujitsucc.c3s2.iphmx.com [68.232.156.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA752629C
-	for <linux-coco@lists.linux.dev>; Thu, 29 May 2025 03:03:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2AE1A2643;
+	Thu, 29 May 2025 04:53:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=68.232.156.96
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748487841; cv=fail; b=cMdWbkMHrWqmnCF7xNZqZuLgrq0qx3tv0BePiIFuSa+tim3rc/58/P4WdvevQyeLc+wHX7ys/D3vBK3RNYoJxK2S2AE+33RPZp22S7hF7Oe4nfQcbhZLQYxMnx/BcBZK5I0TD4Mn5vL3B6AOxoWCbfgyKqyF+6FdIBTa49BejIk=
+	t=1748494435; cv=fail; b=UllPxCbUd31k/E8Ql31Q/WkJyT8c8194Dj6upv1UPr5P9IJOSGZxpGpfSeUDqDFA16tOaxioBozNX/tdEmaBepkfKhpRjMvVEMp5pUwV3yYuTSnih9SMfMAPJdZqxaHq8bAyEZxQRdN7ODBBT48nPhUfEwYNk50Sm5wFu/oTR/4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748487841; c=relaxed/simple;
-	bh=JlryxYKuBpQ4ZtlvnvRLu9kysosKJrDI73fklKhWNCE=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=f6po/QMcz2oCbxLVVFludA7WVGW7b0XSL//fKuuA0ylGqtlCLehkgUGnV262XXowuAT3o7jQDG2CnQ3CEnhfX/0RheGFyF1nMVxbSz3EMpT4nqBJBokmcUNxukOsCXLruerNt1RWrzuAdb0V17ObIePr/OOjjwwppUv3JmJbTZY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=wu9YnxAx; arc=fail smtp.client-ip=40.107.94.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1748494435; c=relaxed/simple;
+	bh=HNjsYSNDGfMO2NUSLrakQDxfb0LfG7oIOoPopN0Mh3M=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=YvSjRc2tvFX9tKohNIJuDVRoAdaQbqVp2mQK0Wej5P65ye09dmola4RRvs3fj33XH4EaEhGM03w0znaC2hfs39ps3bvCxPT082culWvmjntnr15/7i5boW8CAfi4BygT6/QsG9PIpg0cPfU7xq7bWkHFlMDIUNazaF+Q2F40q90=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=gADiATrP; arc=fail smtp.client-ip=68.232.156.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="wu9YnxAx"
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="gADiATrP"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj1;
+  t=1748494434; x=1780030434;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=HNjsYSNDGfMO2NUSLrakQDxfb0LfG7oIOoPopN0Mh3M=;
+  b=gADiATrP0zNb05H3/VlGmv9RxokUsQG85hi8NIJsneSb2gFLWcvBoMG9
+   PFzaxwWgq3ECkGQvaJZQbad9v5bFOZgkgJlU1+yuO4+tuf4UdNQNRBukS
+   nRUxyxmTXKNp4RCKdmWzgNz6ugB7R3fh1b+qMoHd/sEDBHU8QTexc49NP
+   rhruiTeFukBEM9vDL+ZyE1VhIPb8Oxes39Aa6Pny4MMoZI5/Hpb6Hc5G/
+   vvCqoPzdWnFMSf4HKENL2UTM9lAGG9LthhWCkHDnIf9KDMIALB5An9UYn
+   gDTGZ7StUd62buhM43ZKTMDd90qmb8AmHwFfSpyGuVfCEMXPBzlAxt5Y9
+   w==;
+X-CSE-ConnectionGUID: FyHafbDsRBKvy0YdeCEdGw==
+X-CSE-MsgGUID: ej/iXiCsSTG/j2S/EqHquA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11447"; a="156450964"
+X-IronPort-AV: E=Sophos;i="6.15,323,1739804400"; 
+   d="scan'208";a="156450964"
+Received: from mail-japanwestazlp17011026.outbound.protection.outlook.com (HELO OS0P286CU010.outbound.protection.outlook.com) ([40.93.130.26])
+  by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2025 13:52:37 +0900
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mbM6z96QLFzqHD3ShbFh2hK7l4fu2UFKZp84L5b1CaVVexHfrABq4/yQy7VcR4h6HNTdYZ3I6X+shEpYQ1fTnWsvucp5MdS0rfioVpCKIHh76Tnf7KGDxHd/AA7MXJRDGXbVchcGEKDoHn/OAs5O+YkGhAbNuR8H84Pilh+epCz/UhO1BajCMmAXw+Yy2YO9ycVqTKoK06rP+8vonSIsqOjz2+0swS//eGAzuwSWVv9bi84Pdc+QQ0RC9o2bDNUuj/e1XYbrFDIQOBwmhMgy8cXssfUIxeo2CrpboPD9VRSN/71sI8w4uxZBsOPwt192859Xu2CmHHEM577zwzpzzg==
+ b=Pr9SLaVpeKgJ7OEHwAcYPXogfgGbZnp/yzPvOMv5+AtzBQtU51xkAH3s+UFvBRKeRf6/JCXhKJuVxzDHo6qE1ET7Y1v7Z64SrWKb+eEQWlGs+wXvLyGBkWEM8vsPyrBwQVqNoUu3gIKAIDBg+RiHli01h1lV4Xe7Xgc93zVPc9y7mwe+qiYdhK+76Ef3PYs3LP8+stDcTILudk9lLvUxUXH9XU86F2MMbbod4tVrKDkkMiteqlq4Nb2TqkWAeckvephEabtozND1PkVkSDjthCqtePV01tU40Z99yt2iC19JboHCi4gry/fOm+5bwsLM1kpmX2lGzEgXZbjksx13nA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yBl1CLNqg2+rLZ6o0nvCyS4SA7ow2NnkjUOjLurEI0M=;
- b=Bx0QplHlxW24UGWap4CJZErR5XBFvG0lmueKRJzwrLIDabISNRAqwVYuD44+Gc7OXO3dR6uQC2X+A3vNtuimkH2g03RE5NC2e7G4hoZQJ52Sf600f+vUwT+bH+eBKUkperx8a/sGZoXMXpV1c4Z2oMCNhRnSw4eMAU+puaEuN0J/EWexzyw/5b3WLwXFQmNde6JgFSrS0abx+U0YOtCtRy6+OLj0S685S7WTg+drLUk+Qw+bJ+GzBTSk36wLT0imUWWsCNNgf6a5eKAgSvaOHUMCVFQ+xAiQQuFhK8GS+jsallLQNmnj/Fi4CM+93NNGi6Dpt29kwgvihMCtGIvUvA==
+ bh=/qioMlpApMqt+A1CQCoNF9t5zFK0+B2haNOrT7LS6vI=;
+ b=yDwHEBW4uF2Sb9rpd7gDXLlYGVtJ97VhHnXqiz4rROCMVY0hb5sOev8ulcEsXDNEA67QEMI18oR+BpX7fHQHqP/nlvB/AJa0b6e7hgVxklsCRqWUnirwiFZr0UXvfK4ZotLM4MRcOReNLpcnZ+OCIzY3jiY6aRnnIGBknTYcoFTr+SXY0nj+esVcUW2oTixaKkPWLpbXScIB4ws713ZfSxI1VHtGZ6pUtwJb0p0VXfYAwSR3GIAXHRO2+17C138QN6x0qnX7jBwwItify094MrW+4ynsVuEfT3RaCcO28CiSUgtm6yPrRtA2aa7GDqg0jJF1brROaTDfv15anTUH7A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yBl1CLNqg2+rLZ6o0nvCyS4SA7ow2NnkjUOjLurEI0M=;
- b=wu9YnxAxspKxNN1nkNuQ+RViepcL7+2p+LJm8lDi/SYmK5SmQwdvyib56RLggnU+Zu1eLk69XJ11hGijgrwKqSQnitdQIXAAjnFnbre+HI92FuyxLEjmExHRNHsqdx0RUyZiujIB6E9TlCan4Aj3wAOq6oXceNDyJctqr2HhUKM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by PH7PR12MB7018.namprd12.prod.outlook.com (2603:10b6:510:1b8::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.29; Thu, 29 May
- 2025 03:03:53 +0000
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f%5]) with mapi id 15.20.8769.022; Thu, 29 May 2025
- 03:03:53 +0000
-Message-ID: <b96cb784-6097-49af-ae3c-bf469cd609de@amd.com>
-Date: Thu, 29 May 2025 13:03:46 +1000
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH v3 12/13] PCI/TSM: support TDI related operations for host
- TSM driver
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Xu Yilun <yilun.xu@linux.intel.com>
-Cc: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
- linux-pci@vger.kernel.org, gregkh@linuxfoundation.org, lukas@wunner.de,
- suzuki.poulose@arm.com, sameo@rivosinc.com, jgg@nvidia.com, zhiw@nvidia.com
-References: <20250516054732.2055093-1-dan.j.williams@intel.com>
- <20250516054732.2055093-13-dan.j.williams@intel.com>
- <aCbglieuHI1BJDkz@yilunxu-OptiPlex-7050> <yq5awmab4uq6.fsf@kernel.org>
- <aC2eTGpODgYh7ND7@yilunxu-OptiPlex-7050> <yq5aa570dks9.fsf@kernel.org>
- <1bcf37cd-0fc4-40fa-bcd1-e499619943bd@amd.com> <yq5ah617s7fs.fsf@kernel.org>
- <cfdfd053-9e9d-43c0-8301-5411a02ffdf9@amd.com> <yq5abjres2a6.fsf@kernel.org>
-Content-Language: en-US
-From: Alexey Kardashevskiy <aik@amd.com>
-In-Reply-To: <yq5abjres2a6.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SY4P282CA0002.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:a0::12) To CH3PR12MB9194.namprd12.prod.outlook.com
- (2603:10b6:610:19f::7)
+ smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
+ dkim=pass header.d=fujitsu.com; arc=none
+Received: from TYCPR01MB11463.jpnprd01.prod.outlook.com
+ (2603:1096:400:389::10) by OS7PR01MB15077.jpnprd01.prod.outlook.com
+ (2603:1096:604:36f::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.30; Thu, 29 May
+ 2025 04:52:33 +0000
+Received: from TYCPR01MB11463.jpnprd01.prod.outlook.com
+ ([fe80::5df7:5225:6f58:e8e8]) by TYCPR01MB11463.jpnprd01.prod.outlook.com
+ ([fe80::5df7:5225:6f58:e8e8%6]) with mapi id 15.20.8769.022; Thu, 29 May 2025
+ 04:52:33 +0000
+From: "Emi Kisanuki (Fujitsu)" <fj0570is@fujitsu.com>
+To: 'Steven Price' <steven.price@arm.com>, "'kvm@vger.kernel.org'"
+	<kvm@vger.kernel.org>, "'kvmarm@lists.linux.dev'" <kvmarm@lists.linux.dev>
+CC: 'Catalin Marinas' <catalin.marinas@arm.com>, 'Marc Zyngier'
+	<maz@kernel.org>, 'Will Deacon' <will@kernel.org>, 'James Morse'
+	<james.morse@arm.com>, 'Oliver Upton' <oliver.upton@linux.dev>, 'Suzuki K
+ Poulose' <suzuki.poulose@arm.com>, 'Zenghui Yu' <yuzenghui@huawei.com>,
+	"'linux-arm-kernel@lists.infradead.org'"
+	<linux-arm-kernel@lists.infradead.org>, "'linux-kernel@vger.kernel.org'"
+	<linux-kernel@vger.kernel.org>, 'Joey Gouly' <joey.gouly@arm.com>, 'Alexandru
+ Elisei' <alexandru.elisei@arm.com>, 'Christoffer Dall'
+	<christoffer.dall@arm.com>, 'Fuad Tabba' <tabba@google.com>,
+	"'linux-coco@lists.linux.dev'" <linux-coco@lists.linux.dev>, 'Ganapatrao
+ Kulkarni' <gankulkarni@os.amperecomputing.com>, 'Gavin Shan'
+	<gshan@redhat.com>, 'Shanker Donthineni' <sdonthineni@nvidia.com>, 'Alper
+ Gun' <alpergun@google.com>, "'Aneesh Kumar K . V'" <aneesh.kumar@kernel.org>
+Subject: RE: [PATCH v8 16/43] arm64: RME: Handle realm enter/exit
+Thread-Topic: [PATCH v8 16/43] arm64: RME: Handle realm enter/exit
+Thread-Index: AQMPKfif4GpC56WX1Xmo2sNneTWC8QG0s1FFsXSt8vA=
+Date: Thu, 29 May 2025 04:52:33 +0000
+Message-ID:
+ <TYCPR01MB11463D8002D90705A7F860B85C366A@TYCPR01MB11463.jpnprd01.prod.outlook.com>
+References: <20250416134208.383984-1-steven.price@arm.com>
+ <20250416134208.383984-17-steven.price@arm.com>
+In-Reply-To: <20250416134208.383984-17-steven.price@arm.com>
+Accept-Language: ja-JP, en-US
+Content-Language: ja-JP
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_1e92ef73-0ad1-40c5-ad55-46de3396802f_ActionId=3cfb0c78-9ffe-4273-9732-ec034cb20816;MSIP_Label_1e92ef73-0ad1-40c5-ad55-46de3396802f_ContentBits=0;MSIP_Label_1e92ef73-0ad1-40c5-ad55-46de3396802f_Enabled=true;MSIP_Label_1e92ef73-0ad1-40c5-ad55-46de3396802f_Method=Privileged;MSIP_Label_1e92ef73-0ad1-40c5-ad55-46de3396802f_Name=FUJITSU-PUBLIC?;MSIP_Label_1e92ef73-0ad1-40c5-ad55-46de3396802f_SetDate=2025-05-29T04:40:31Z;MSIP_Label_1e92ef73-0ad1-40c5-ad55-46de3396802f_SiteId=a19f121d-81e1-4858-a9d8-736e267fd4c7;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=fujitsu.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TYCPR01MB11463:EE_|OS7PR01MB15077:EE_
+x-ms-office365-filtering-correlation-id: fac4332e-36d8-4937-52f8-08dd9e6ca004
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|1800799024|376014|366016|1580799027|38070700018;
+x-microsoft-antispam-message-info:
+ =?iso-2022-jp?B?OWxVTVNQNk1Ia0xCSmRnUFdDUG5rL0I2Y2VsOVhWTUVZeVhDUVdwRTM5?=
+ =?iso-2022-jp?B?QUhudk1NbzVwaEV2Nm80VCtqek9vdzJ3Sk56dG10cUNmMk45bm5YdHBs?=
+ =?iso-2022-jp?B?Z0dOazRiRkVlVlVleHprNTNtVENNNVZHdFdSNzFYUlVPTmdnM2ptWFdD?=
+ =?iso-2022-jp?B?Sm1mUGRRTXJaVHJPdXVOLytwWDJGTlhQeHFQbTdmRmtZbGpObFlxTXJa?=
+ =?iso-2022-jp?B?aGtOeG1sWjd6MFBINXh4QXdIWW9RRE9UcnlVcDRnaWpvNnN3V2R4d2oz?=
+ =?iso-2022-jp?B?UnRkODYwZXQxZk9KNW1PNzJ2elhCWFUrZFpTdGxESnlsK1BycVNQWGli?=
+ =?iso-2022-jp?B?Y2lNNzJpMHY4Z2ZPWEFDM0dsVHZhck9aYWJrVGRET0ZDaDJDbmFlQmRk?=
+ =?iso-2022-jp?B?azlFTUN1cG1OazdBcnhzbWhmRk43UFI3Tit1QzZ0TWlEVE9CREIvUlph?=
+ =?iso-2022-jp?B?Skc2WnBER04vQkxoSHdKbnBkOURuTSt6K0xFdDFyRE4vS1FVVTg2b040?=
+ =?iso-2022-jp?B?UnNXYnVhMGZBY0NQTWt6L2ZyN0l5c3V2VFZUSmhuVklBdmxDanlXajRk?=
+ =?iso-2022-jp?B?N0NZOWJZeitMS0hDRWsyTE1KQzlUalh4WStGa1BSMlhhY0pSUFNmWW54?=
+ =?iso-2022-jp?B?bTRTbWdndmxsYmYzbDVBdXdPcEQrZFRaV3g4L2ttS3F4VWFoZ0I1MGFZ?=
+ =?iso-2022-jp?B?d0gvdERWOUE5MjM3enh6RnZGVVJ6VTliblFQdzB6Nkh6TXBQdDVWMDZH?=
+ =?iso-2022-jp?B?aGRSTnQrYjhOYzdSUXhnb3B3aWVPZCtZSGxpSy9BbEo3eWRQc0lJbnhD?=
+ =?iso-2022-jp?B?aUdXZitvbkNDSENrUTFMaURQTmNyUmw3T1kxNm5DUmVNcFlNcXJ2VkVI?=
+ =?iso-2022-jp?B?U0d6alBqWW96bS9UMTkraklNbE93cnl0SktmcnJqbEp0UW5DWi9wdktP?=
+ =?iso-2022-jp?B?RUNTbDhCaXlZa0xaa2NKYmF1dHU3SGxvMUlIdm1kRVhuQTV1d2lEVnFD?=
+ =?iso-2022-jp?B?VTBZUGtCS2NEbjNYTFVrcFNpejVkSWlyU0pOUFFIOGpxa1c2bG8xZVpT?=
+ =?iso-2022-jp?B?YkFwbzRFWlBzY01FOHQwaHBsRjFzTTVWMDRUaGZmdlJrbXVNTGtTZmpF?=
+ =?iso-2022-jp?B?WjJTQzZCOFN6dVc0RFJrZFBCcGJSbzBGdkhzWmNSTmpBRXZEKzJxdmxK?=
+ =?iso-2022-jp?B?VEtocUIvSDFiSlpjRUlJbStFemdnWGpTR2wxMkdLZUQreFZqL1lNYjk4?=
+ =?iso-2022-jp?B?Z2x4Z2NicmJBT2srUzFETjB2V0phN21rN2JhMnRrOGJ6WnJDMERhSGFx?=
+ =?iso-2022-jp?B?L2VJUzZ6M1VNL25ySi90eXBaTzJlM3lKWDIxaEpzTTJuSGF2OXBFM3hZ?=
+ =?iso-2022-jp?B?Q0pyWE9NajZqY0lTRHFCSjlaTVdZRFM0SmthMGpnUmppQ1FkSFpvbnNS?=
+ =?iso-2022-jp?B?RjFobWNpMTRXVFN3VTNPUHhhS0xjV3pVcE1oR1ROZUVEQlEzQVFvWFpP?=
+ =?iso-2022-jp?B?ZVpwS29mSzc3eWtvSkduQVZxaFJhZ1ZGVHFCRVNaSUhUUHNoY0hvNVEz?=
+ =?iso-2022-jp?B?eSt3TVB0Sld3TUVxZzVuQS9qNXlvLzN0dUZGMjUwdFFoK1JFejdTUmZq?=
+ =?iso-2022-jp?B?eVhCVUQ1YVgvUlViYXpCVGRsZFlRS0Zvak02Z3RPRlIwQkRRSVJDQ2d0?=
+ =?iso-2022-jp?B?REZrNDdyNmxrQ3RpSmxLZWFDR0p2VGpUaDdMSWNid1llczZCZytlWEhj?=
+ =?iso-2022-jp?B?RUsxVzRkN0NnYno3aUR2YkhUMFR0aFFHMFFPVHFqM1p5d0VvUHRkbkxF?=
+ =?iso-2022-jp?B?dHFYQzBibFJ0R29pc0xINlJNN3FxakRuR0IzSVJBOTBZdXVEbDRzcnZG?=
+ =?iso-2022-jp?B?SW9iQXU1eU9iSFlVai8rdVdYTS9RRTVFMWJpWEtiNUlyd1gwTEl5TEEr?=
+ =?iso-2022-jp?B?SXB6YWlWVVF2M0hTalU2bEl0aDlCcjg0U29ZVXY3cUNUUzZvMkZXYSto?=
+ =?iso-2022-jp?B?dkhwTjZzWmZBWkwxZURGWUJ5V1VrZGkvNGZKcU9EMnVmdjlCMEVVb2lP?=
+ =?iso-2022-jp?B?WTFMWCttOC8vcW1ma1IxNzZGbmlqSHl3bnB6NHJ6MzloUUJaNm04dS9N?=
+ =?iso-2022-jp?B?UWFNaFMrcWxJcWRiM0cwQjRCOVNMRkZQYm4zRElSRHVkNEg4N1VmL25a?=
+ =?iso-2022-jp?B?QytxWXg4MjFFQ0lzd1cvNGQ3YnZQdXha?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:ja;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB11463.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(1580799027)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-2022-jp?B?U2QwODlwS0NJL0xHR1lDamdSS1dtTzBWUzlxcG9RVmlZTGdCeXFvVW9u?=
+ =?iso-2022-jp?B?OUd6ZzBucmVFVVdtUnhPQ0g3QXg3T3BQUDcwNnNNV3AxMzNlTDRRUFZU?=
+ =?iso-2022-jp?B?WENmbmI4NFYvSkE3WGNuMEkyUUhzMEJONFFmbEtwSjBxbDBvQmJBSHd0?=
+ =?iso-2022-jp?B?WDJYbVdJTHpPcGJRU3pVU2EybHQwaTBiSGZmQkhRdDNCTE01ajBrSXdo?=
+ =?iso-2022-jp?B?c2V5STA2bmRjczVhMzhLUDFWdTk3amFpYVJza2M4dXpOZXEvK3NuVThL?=
+ =?iso-2022-jp?B?eTIwUFo4bG9NeDkzL0FZdjMxWDJOZTlqcThUblB1VjBPMXdML1hBRXlD?=
+ =?iso-2022-jp?B?cnhMUFVLS2pTWHV3T0JpUWhaTlVpeU1kTlRUNjRkNlZxQzIyaFg5YXFS?=
+ =?iso-2022-jp?B?YlR5bll1NFY4bHhEcmZINUVIQTJsVFk1dE9FdjdMRFdrSUxHN2hmdDUw?=
+ =?iso-2022-jp?B?SVl2YXgzaEhjUXFmckc0K1dmMGIraGRWV3pVYnVVaFpwdXNRbHZaeVVL?=
+ =?iso-2022-jp?B?MDFUSk9uLzZVY3ZPNDN6VDd1b0E3TDY4NlJiMHlaV2FETys5bDJZRTQx?=
+ =?iso-2022-jp?B?RlJEQWJUalU5RTdtOEN0eHdjS3NXV2VRYnVRUWkwY3JWMWVPdmFtT1ZH?=
+ =?iso-2022-jp?B?cEVxY3RqQjhyWnN0MXNlWjc5V3E4TlZQd1JHUFpCYTBkaklWMDA4Wnlr?=
+ =?iso-2022-jp?B?ZUFLMnZTTzBrKzFYeGpjOVdpRnJSOWJzL2VVYnpxbHd4cGZwdWh5NkdQ?=
+ =?iso-2022-jp?B?T2V5ZzMwbFM0OWxLZVJqYkpVcTB1aHFWSitFUXl5bGtvcTZvdDZHK0ZU?=
+ =?iso-2022-jp?B?WmdycHo0UTFob09kUDdkTncrQmVqRnUxSk5lZXBKTGY5R01xZkxWZ2lk?=
+ =?iso-2022-jp?B?K3EweTZKMVZNMjI0ei9WVUlTRTErN25RWVU0UkJmMkRQOGVJcEk0T3Rl?=
+ =?iso-2022-jp?B?UnpxSHN1UzNNUzhDNGtSUXV3NUUzOFdyVWZKaXNOc203Wm1oQVIzRkNj?=
+ =?iso-2022-jp?B?bksrNkZ1VUY0Y1B4Q0JmbFFUUnk2aUUxQnZSKytVZTFCcEI3TEQ0bGN3?=
+ =?iso-2022-jp?B?WTBMRUp2T2ZiZEhUTDBQdk5SSStwTjFIREhiTVkxTk8rN1pnK1U1UmVQ?=
+ =?iso-2022-jp?B?UytoallUS0hmSUNpWmNaWjhUZ3ZKUlZ1VzExN28zU2RvV1Q0TXVvc1Qz?=
+ =?iso-2022-jp?B?a1BUMkVHVWVJbENwd3NaVDF6OVhSN1RyYm9KMnJDYTRmbGpHSHV3b0ph?=
+ =?iso-2022-jp?B?TDdaN09oZGM1WVc0NXZqN29KWDczUUx4a0twTHZuZ3ZRS1dZRTc2dzd3?=
+ =?iso-2022-jp?B?MTZ4K3dHYVJRM1JZMmY4Um9DaUMxVEtvMjBnaS94eUdubFNpRWdRSzIz?=
+ =?iso-2022-jp?B?WWJFTWRnUW5EUVNZaFpENXNXejhMdVc0UFdKL0Zza09UZDZyMThxclVH?=
+ =?iso-2022-jp?B?NTJrMzZxVmhRZERPVURLMWZBL2Fvd25oYWp1R0s4S1V1aEdBdkNaODBi?=
+ =?iso-2022-jp?B?REJVT2FmS0pIczVBdGVCaCt4a2JZTGtzek1xYm5mWUwwMU4yZnRzODBu?=
+ =?iso-2022-jp?B?ODdsT21GNXVpcUNvZTRQckdLcHJ2Z3Q4eGFJNnp5cC92ci9mY1RncGdC?=
+ =?iso-2022-jp?B?NjNJeUViWGtaTzBrTmMwUW9zeXBMSXUzenlZMnRHaVV3bDBWNmpRa01O?=
+ =?iso-2022-jp?B?eWl0b1kzakJNNnpZeHdyajJYQWtXUFlmczE4ck1WVmUwaHB3TFpCMWhM?=
+ =?iso-2022-jp?B?ekZOcHRBRG8yL2lKRFZIVlBMa0JLQ2NJaEV3RlZMWGJLN2J5c3JzSmQr?=
+ =?iso-2022-jp?B?TTg2YTh1WFhtaS81YjZkWjZrY2VmM0grdGVtS2I2djgwanJkZW44d2Nw?=
+ =?iso-2022-jp?B?OTY3clptMU9YNEZBdmpZclNWMFJUWGJOTTVCeFNQUnpLQlBSMHd2OVVq?=
+ =?iso-2022-jp?B?bGVmOENsclhiZjVXdG95RDI3Njd0bytvYWVJRURmWkNFWXpJVU1sQ1pK?=
+ =?iso-2022-jp?B?VXpYZ1lVVkh5eEI1NHVTTFZxeUFDcW1MaXlXRXB2NFAwS0U3NGYxU1Qw?=
+ =?iso-2022-jp?B?QzkwUmxlTUNlclJGR0N2Q0x0dVZLNVRXODZCTWg2K2pLSmlaSTBoNlhY?=
+ =?iso-2022-jp?B?amd2OUdOQWpqN0hrNnJuTldXcE5WRTIvMThiRTNsK212cEVjNnEzdVA1?=
+ =?iso-2022-jp?B?dnRQb29meFVSY2xYZFV4bmg2ZXQyNnpEZldZbVZuelM2K3VxbGEwTlh0?=
+ =?iso-2022-jp?B?YlA1dWxXcnBPT0Q2QWpBaVpFVkt4NmhtWWNpKytaOG4vY2RzdFBaa291?=
+ =?iso-2022-jp?B?d0pOOUNSY2FyTHc2b2lFbUVnZ0R4dXUzQWc9PQ==?=
+Content-Type: text/plain; charset="iso-2022-jp"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|PH7PR12MB7018:EE_
-X-MS-Office365-Filtering-Correlation-Id: dd56376e-23a5-4e8a-9eda-08dd9e5d714c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RVVyZ2UwTWJxKytZU2ViT1NrSEZBNVBvZHV3amRlYm9zenhLekpPdzZ3bkVH?=
- =?utf-8?B?SExXdjNxSEppWVptUTFhL1p5MWx3RE1LQUlhTUNNTjZBNEVvWkVUSldFZCsw?=
- =?utf-8?B?bDBFeFJZZnVYV1hqS01vTGZ4SXVZY2l0Z0Vwd1gxekpMWTdBRXYxOHNFUDJX?=
- =?utf-8?B?b2tEaURGVXBvb3hYZzdhUkJqSjNhUzI3K2V3eWI0eTFMRHVmZ1RYYVJxOWRS?=
- =?utf-8?B?UkJiYkRFTC9YWUpyVW0rNVZHOVRsMTY4cUZqRVByd1dtUGZhYlhtSVFOWG1k?=
- =?utf-8?B?bWpiWDRjS0dhZm9IaUN0VUMrOFBOelczSEVVU0IvSnY5K3hHSnMyWWFLZEpy?=
- =?utf-8?B?d0plWmpQbDV6MzBlQjFyY1N1S2JxNmpMQXdMM1pTT2pLMjk5WXYweHBleUFa?=
- =?utf-8?B?OXh3YnNETHd2WFpOTXU4VCtIT0Vka0poS1R1RFdEZUFNSmYvbStMenBjVC9H?=
- =?utf-8?B?MmdyMUJYSWRjZDdEOCtxZHNRUGNkQkJ2YTBOcGY5SnIwSkJiUXc4ZDFYRlpp?=
- =?utf-8?B?K0pVR3ZRNjZNL3NyVFF2OHhmLy96dkZmTlllMEhXbWdEK1A2SWJxQ3NQb1Vw?=
- =?utf-8?B?QjdtanJEcHVPQkZSdGg4UjJoQkl2dWx0L2Y0ZE5US29zOGpwSTloUldxWEYw?=
- =?utf-8?B?L1JWVXkwdWZ0ZmtSZFM1bmc0UUhFbHZRektSVUo0QWpGS1h1UU9yTkpGcUs2?=
- =?utf-8?B?OGx6cS9WbkJTWFpybXE2RGJHUDJtNnpyeGNUT1hqdmNUNW9jZjFIU3lGc2Rl?=
- =?utf-8?B?WlpkSFdxTldoS0hyR1ZPNGduR0VHWjA5anpES3FCVVhrdG10MTdOTnZncEd1?=
- =?utf-8?B?dVNFMm8zQWx2SURHckJIZy9NWFZCUjBjSU5mdzY0WHhWODhlWkJUbGxtcURW?=
- =?utf-8?B?WmV6WDY0MkNmVUlVSTcwVEZXRlI3amR0Q1VPU3FFOGY2UnFKMHgxcDdFZkdK?=
- =?utf-8?B?Q1ZkbE9ERmtoeTJPSG5ZZ0tOZGVaVkdBVTIrV2RqN0R2MW5wUm8yWkMrWnA5?=
- =?utf-8?B?RGNtR1p4RnhBM2g3N0pxaFFaa3l6V0VhaEoxWUN5NHdCL2NNT0dFcHZWc2VG?=
- =?utf-8?B?VW5WSC9BaTBmOVZXWXRWYW5qYVpyWEg1VjRBMFhVUkFKWTFZLzExd1h5eWE1?=
- =?utf-8?B?Rm9Wc0ZwTVA4RXJXQXMxVzdFU1FiMFhLZnBEa0xvNmFJWHBsUFVicG9VWDU2?=
- =?utf-8?B?REpNVVM1ZTlwbi95dDhlNi9JRkw4eU5RSThtUDg4U2VHNGk0ZWRJTEV1THp2?=
- =?utf-8?B?Z1lRYWUzQnQxYmxaa0Z5OU1EazhBTTAwZ3JXZTQ0VXM4Q3FuV0RlSHZSbnFu?=
- =?utf-8?B?aWcrNG0rcWJ6QjFtcVJRSHh6OEp3WkFNdmd0S212WGNVL0dBWEtjWEN3ZVBQ?=
- =?utf-8?B?KzRBTXFHL3JCR0tYOEJnUzUvRGFrcU1iM3V3RnI4SkhhbnBNcU9heno4MDhG?=
- =?utf-8?B?dE0yTXlCYVh2RXJqSEdZRTZoeVI5Q1ZLVGp5T25mRDdwZzhCSXFxdW5VWUph?=
- =?utf-8?B?aWdwSmZMbG1tMmMzV1dBUkZUY0J1NzUwdE43UlZIWWtzQkw4U3gyeVd2NFJh?=
- =?utf-8?B?VVBVcFdYMEs2T3dqSFg2Y3lrbmNxeFB0b011aklaQWNTUmNoVGt4dENEelBt?=
- =?utf-8?B?YkRpL2RjMnc3MVpNZHJMVkthYS9nVUZFbEsvWi9iT3YvSW9oTTJDZDZNUnVC?=
- =?utf-8?B?bGdGcXF0ZkRwVDM0bDkzWHExUU9tWkFMRTdVcUMrM2R0THh6LzZWdlRjMEtQ?=
- =?utf-8?B?WXBEajl1a0dlUHFkQXNrY0dwNEZ2cGRqVm5SamcxNXh1NVJ4SHU4bkZXaVFP?=
- =?utf-8?B?WGNLSDRmV0tKY1hMSzJNY0dHY2I4eWJ1S2gxZE5yZVBScUtzTE56MW04cWhu?=
- =?utf-8?B?cXlzZi9yb1NPQU5JSU5ldzM4MnVpYnR4c3pKRXJTNlJRZmN3eXROaWdNOTJx?=
- =?utf-8?Q?tSrVxC5fb0M=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?THdGZG81RUZGV1E5YVBUVmJXdXZBRlpMQXpQem5hZFJEaXlici81V1ZUOGlS?=
- =?utf-8?B?OWJOd1V0SWI3VXF5bU5BM0JwaWp3N01TVmJyemNIaytRNmo5TmRPaXdUM2dy?=
- =?utf-8?B?cVBWTHh1U3hVNU5qdUtrMk9XT1o1Q3YrTUF0UWRtZmZHWmZHQUIxRnZiRWND?=
- =?utf-8?B?REpYWnBZV25rekJ5MFJtZTR4bGt5cGlsRVBFU0s4dzZrUDBLVFVnUCtwMXJD?=
- =?utf-8?B?OXhlU1ZzaG1wc2hxajF6NUpleGFWMjRNUEJjeU5KSjFzR1YwYitMcFpoblRY?=
- =?utf-8?B?T1cwTFlaaU9PdGcyeFROeUc3bE1BNUJYV1JPYTFEbWRzMTcyLzcvRlJsSlRo?=
- =?utf-8?B?TnptU2lmY2xORXR0VytBS3hxNE5TN1V1YkRNUkhMdmNqdytYaWlnNnhuVmph?=
- =?utf-8?B?ZnVYS0p5cjQvdmR2WXZOWEQ1NnM4MXNRM1k5VWw4YWNvZ0hFM3F2N0o3anVG?=
- =?utf-8?B?d2RtK1RaMnY2Snk2a1FOMERzZWcvSDV6R1k0cEFkanJkQTNyWTJLSjBLUDRv?=
- =?utf-8?B?SGJvazFPeVVsVFFoS0VNcmttRElpRTlyelo1WnFlcDUzb3hHOGFSVDBNUlZ6?=
- =?utf-8?B?V3dsUW5MQXhBZ3A1bXhSRU9GV1pyOTR3eWxvMk9ENU4zUEFmWjNRdkxvNUNq?=
- =?utf-8?B?RlN1dURvdFZLRG9vUXVvS3NhL013MmlsS0M1eTZ3N3p2eE5WaWZRblMzV3dZ?=
- =?utf-8?B?WTc5WE9zNUtkYUlxYTRQV2t0cVpyOU9vNzhsdnJhN0swb3ZYOG9PbkJkWWlH?=
- =?utf-8?B?VlNJaXJFRVk4ZWlXM0FpRlVzaElVRjZNUnJtSlJqV3RPZ05DL3JLM2JEVHds?=
- =?utf-8?B?QUhSUXpOWWNNUEpWMklETkE4L0pnWElMdzVRZU9Rc0c3a1dLQjUzdThEV1JM?=
- =?utf-8?B?dEVaS2dWKzVRWE1wZnl4bUxrYUZWb2dmSzgyZjRCSXExZjlJaE1zY2xCblB2?=
- =?utf-8?B?ZEZXUkxhMHlSeXpaNFlTWkZlQ3U0aTRWUmVlNW1tMEx5cG1IWG5pQ3JrMjBG?=
- =?utf-8?B?eE9OSENZdkJRR3hpeFVxdkxKeTluTDZoWjhUNFg1R24xMjRhSVZYTjFGU05K?=
- =?utf-8?B?SnIwTkVlc1V4djlFNW5hZkpwMmowMytBSnJDVlhYYnJrMWRKY2Nub3JJMDFu?=
- =?utf-8?B?Y3NVUGVZTk9sMUdBMHc3SlJWenpDK1pubXBCQlc1Q2VJTDAwZTcwVHJXcThT?=
- =?utf-8?B?YlNOMDMyakc0ZHlLV2VKV2UvTnl2OXRDd2o0aDlyeXJheC8xTnVNdHdxZWVK?=
- =?utf-8?B?L2V2NzFZaThRNXpGT3NwTGY5K2o4YlBpbE56ckNJVDIxR2pNdng0L1JyY1FW?=
- =?utf-8?B?TjFVQ0N1bzVjcU1CZ2NxZDZJY2d4a0h0cjV3N1h2VjU1WXpFeXhqUGFjSDNx?=
- =?utf-8?B?eW13VkJGTGJndzhPaDA4eU1sQ2JReDI3Q2h2TTR5cURDQVdxUlk5MkdYRGdE?=
- =?utf-8?B?eFJxV1g1Y1U0S1BFY09IbFJCWUNoa1VHVTArYTdWMk91OGJqTUduYzdwQ3Y2?=
- =?utf-8?B?emFYaXFXT0F6dE5ZbVVPK2tuekVSRUhieEVDYktVbERxRjVmMU5GRXp6MjZ0?=
- =?utf-8?B?K1kzRnJGUSthYzJnWkRHaTRxckVqQVBuYU1ZMXl3dEZrUGQ5ZXZiTkk0S1BB?=
- =?utf-8?B?bzE4ejlGUktnWk13Ykg3MGVRQ0FEaHRWakRmcjc0NC9MWVZsRWx2dWQxMnhp?=
- =?utf-8?B?RHhORWRJMGczZ0psaERMTlE3dGFkSVlQT0gxSmRoY081eHE1dkJtY1kyZmx0?=
- =?utf-8?B?eTdBbXVwaXhGVW5LSjdBdUUzQ3Vpd3lBQVdkZ0x2MmxoMHBtM1p2TTI0d0NZ?=
- =?utf-8?B?MDhmaGh1RkRreDVDRThBN05TUWdMVDF2bTdJOEhQN3FKdVRib2kvWnptMnpC?=
- =?utf-8?B?cW5ycUU3SUpZK2FhRnJKSC9ZeHRSSWtXeElSM1A2Wkp0cnhEQUlIZVorMjhN?=
- =?utf-8?B?TGhudEtoaWZuaDhhRkZSWjhDT3hsMHdRbzl1cCtZSG9JVFJkc1IvVHh0UDRm?=
- =?utf-8?B?TWhYbmtxTG5KdkZlUjJrZDRDbm1XK0tqYVEyd3dvMDQ4ZWdWMXoyOFZjL1h2?=
- =?utf-8?B?MEVDdTU4d053Y2hiVjRqUWFMcWtBemFwSG45Nm94WmNXNy9GZEJWM3EyWVNU?=
- =?utf-8?Q?Xxz16HlcZwyYMT1C6YxhCp4Pg?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dd56376e-23a5-4e8a-9eda-08dd9e5d714c
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	WxLDkPAEpMI2Xx1tfDcv8nKQOwDVFyKGOKNgb37qncakhY2c8UBj7OcpU95/+dl4oCzUd/1a0TXTfg5ZpLZx4ftIOqBQS9tSzlrgzirh3nCPGZUEuYzH/MZWHTRg7XeMNGKC3uduy9bZM87Nhs3XsENMf+EIOtQrTAwHRa3ZC9ZBx/FRQe1hDIdNSE6Lu1UKr53X7zDKSFy6gN5y8zNbSdYJS6GdmlKFG89g+4ccJWUEyA1A60XUT+U/u6IZmAgRKWKT8wleVrOoW/LH/tqK3UKGhay3na2C4jER/tSXudeLDfbE3NhxtzyaMvpsMlJMRAFKwuRKsAJr8MswL2DqN9etoMJkRUd2Q1DzcT9Xk10Ho1SIhDT8jpiiOY9QRvGm6kkjD2ixIDbq62fLejMNedb9aB7fnVJuU2f+7jeJtZdp6jQsY8OS+EXhRkro2/pk3IQytwLxO1M+ipYvuqnqwonKvcxdObDuQb3ZfRCGIL/KfDjlPPq10zQnLsEfLaRQQz0Ut6A29SXP8cwDz+jpoVOVQLHvba6l7eSpeK983kJ0C+THSd0uUhVAcqeZ5Db6vC26uBIwgDshNqCus6Nq+62d6BUf+rL5C8bFNheEh4qjpxGxeQ8in7Tt3bqfYOKc
+X-OriginatorOrg: fujitsu.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2025 03:03:52.8196
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB11463.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fac4332e-36d8-4937-52f8-08dd9e6ca004
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 May 2025 04:52:33.4637
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aP0MnDCQs/ZjFkm2ES8fXVED7c5mqbMnqJ8QXXgdiSUtXFpFLPTZaiIWmYj6yW5OdrS8wLTSPJ/mwjb2vf4i9Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7018
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: /Ki8nnxDmH4fxSJetE9now9JCenf+CjVsVcYYzjDR05RYF3fttQpctQSX2gu/SXwkuPeuVwhxQyBNvCeoii6VG9+/cyxf4qiAHD0gmfmVb0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS7PR01MB15077
 
+Hello, I comment below.
 
-
-On 27/5/25 21:48, Aneesh Kumar K.V wrote:
-> Alexey Kardashevskiy <aik@amd.com> writes:
-> 
->> On 27/5/25 01:44, Aneesh Kumar K.V wrote:
->>> Alexey Kardashevskiy <aik@amd.com> writes:
->>>
->>>> On 26/5/25 15:05, Aneesh Kumar K.V wrote:
->>>>> Xu Yilun <yilun.xu@linux.intel.com> writes:
->>>>>
->>>>>> On Tue, May 20, 2025 at 12:47:05PM +0530, Aneesh Kumar K.V wrote:
->>>>>>> Xu Yilun <yilun.xu@linux.intel.com> writes:
->>>>>>>
->>>>>>>> On Thu, May 15, 2025 at 10:47:31PM -0700, Dan Williams wrote:
->>>>>>>>> From: Xu Yilun <yilun.xu@linux.intel.com>
->>>>>>>>>
->>>>>>>>> Add kAPIs pci_tsm_{bind,unbind,guest_req}() for PCI devices.
->>>>>>>>>
->>>>>>>>> pci_tsm_bind/unbind() are supposed to be called by kernel components
->>>>>>>>> which manages the virtual device. The verb 'bind' means VMM does extra
->>>>>>>>> configurations to make the assigned device ready to be validated by
->>>>>>>>> CoCo VM as TDI (TEE Device Interface). Usually these configurations
->>>>>>>>> include assigning device ownership and MMIO ownership to CoCo VM, and
->>>>>>>>> move the TDI to CONFIG_LOCKED TDISP state by LOCK_INTERFACE_REQUEST
->>>>>>>>> TDISP message. The detailed operations are specific to platform TSM
->>>>>>>>> firmware so need to be supported by vendor TSM drivers.
->>>>>>>>>
->>>>>>>>> pci_tsm_guest_req() supports a channel for CoCo VM to directly talk
->>>>>>>>> to TSM firmware about further TDI operations after TDI is bound, e.g.
->>>>>>>>> get device interface report, certifications & measurements. So this kAPI
->>>>>>>>> is supposed to be called from KVM vmexit handler.
->>>>>>>>
->>>>>>>> To clarify, this commit message is staled. We are proposing existing to
->>>>>>>> QEMU, then pass to TSM through IOMMUFD VDEVICE.
->>>>>>>>
->>>>>>>
->>>>>>> Can you share the POC code/git repo implementing that? I am looking for
->>>>>>> pci_tsm_bind()/pci_tsm_unbind() example usage.
->>>>>>
->>>>>> The usage of these kAPIs should be in IOMMUFD, that's what I'm doing for
->>>>>> Stage 2 patchset. I need to rebase this series, adopt suggestions from
->>>>>> Jason, and make TDX Connect work to verify, so need more time...
->>>>>>
->>>>>
->>>>> Since the bind/unbind operations are PCI-specific callbacks, and iommufd
->>>>
->>>> Not really, it is PCI-specific in TSM (for DOE) but since IOMMUFD is not doing any of that, it can work with struct device (not pci_dev). Thanks,
->>>>
->>>
->>> Ok, something like this? and iommufd will call tsm_bind()?
->>
->> yeah, I guess, there is a couple of places like this
->>
->> git grep pci_dev drivers/iommu/iommufd/
->>
->> drivers/iommu/iommufd/device.c:                 struct pci_dev *pdev = to_pci_dev(idev->dev);
->> drivers/iommu/iommufd/eventq.c:         struct pci_dev *pdev = to_pci_dev(dev);
->>
->> Although I do not see any compelling reason to have pci_dev in the TSM API, struct device should just work and not spill any PCI details to IOMMUFD but whatever... Thanks,
-> 
-> Getting the kvm reference is tricky here. Also the locking while
-> updating vdevice->tsm_bound needs some solution. Here is what I am
-> improving. Are you also planning something similar?
-
-
-At the moment I am planning getting/holding the KVM reference in the TSM:
-
-https://lore.kernel.org/r/20250218111017.491719-15-aik@amd.com
-
-but may push it even further to the AMD TSM (CCP, the firmware driver) as this where I actually need the kvm struct to get GCTX+ASID from kvm_svm; Intel folks have a similar intimate knowledge sharing between kvm_intel and TDX-connect. Thanks,
-
-
-> 
->   drivers/iommu/iommufd/device.c          |  4 +-
->   drivers/iommu/iommufd/iommufd_private.h |  5 ++
->   drivers/iommu/iommufd/main.c            |  5 ++
->   drivers/iommu/iommufd/viommu.c          | 62 +++++++++++++++++++++++++
->   drivers/vfio/iommufd.c                  |  2 +-
->   include/linux/iommufd.h                 |  3 +-
->   include/uapi/linux/iommufd.h            | 16 +++++++
->   7 files changed, 94 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/iommu/iommufd/device.c b/drivers/iommu/iommufd/device.c
-> index 2111bad72c72..79d669064044 100644
-> --- a/drivers/iommu/iommufd/device.c
-> +++ b/drivers/iommu/iommufd/device.c
-> @@ -165,7 +165,7 @@ void iommufd_device_destroy(struct iommufd_object *obj)
->    * The caller must undo this with iommufd_device_unbind()
->    */
->   struct iommufd_device *iommufd_device_bind(struct iommufd_ctx *ictx,
-> -					   struct device *dev, u32 *id)
-> +					   struct device *dev, struct kvm *kvm, u32 *id)
->   {
->   	struct iommufd_device *idev;
->   	struct iommufd_group *igroup;
-> @@ -221,6 +221,7 @@ struct iommufd_device *iommufd_device_bind(struct iommufd_ctx *ictx,
->   	refcount_inc(&idev->obj.users);
->   	/* igroup refcount moves into iommufd_device */
->   	idev->igroup = igroup;
-> +	idev->kvm = kvm;
->   	mutex_init(&idev->iopf_lock);
->   
->   	/*
-> @@ -1009,6 +1010,7 @@ void iommufd_device_detach(struct iommufd_device *idev, ioasid_t pasid)
->   	if (!hwpt)
->   		return;
->   	iommufd_hw_pagetable_put(idev->ictx, hwpt);
-> +	idev->kvm = NULL;
->   	refcount_dec(&idev->obj.users);
->   }
->   EXPORT_SYMBOL_NS_GPL(iommufd_device_detach, "IOMMUFD");
-> diff --git a/drivers/iommu/iommufd/iommufd_private.h b/drivers/iommu/iommufd/iommufd_private.h
-> index 80e8c76d25f2..dd1c87500a74 100644
-> --- a/drivers/iommu/iommufd/iommufd_private.h
-> +++ b/drivers/iommu/iommufd/iommufd_private.h
-> @@ -424,6 +424,7 @@ struct iommufd_device {
->   	struct list_head group_item;
->   	/* always the physical device */
->   	struct device *dev;
-> +	struct kvm *kvm;
->   	bool enforce_cache_coherency;
->   	/* protect iopf_enabled counter */
->   	struct mutex iopf_lock;
-> @@ -606,13 +607,17 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd);
->   void iommufd_viommu_destroy(struct iommufd_object *obj);
->   int iommufd_vdevice_alloc_ioctl(struct iommufd_ucmd *ucmd);
->   void iommufd_vdevice_destroy(struct iommufd_object *obj);
-> +int iommufd_vdevice_tsm_bind_ioctl(struct iommufd_ucmd *ucmd);
-> +int iommufd_vdevice_tsm_unbind_ioctl(struct iommufd_ucmd *ucmd);
->   
->   struct iommufd_vdevice {
->   	struct iommufd_object obj;
->   	struct iommufd_ctx *ictx;
->   	struct iommufd_viommu *viommu;
->   	struct device *dev;
-> +	struct kvm *kvm;
->   	u64 id; /* per-vIOMMU virtual ID */
-> +	bool tsm_bound;
->   };
->   
->   #ifdef CONFIG_IOMMUFD_TEST
-> diff --git a/drivers/iommu/iommufd/main.c b/drivers/iommu/iommufd/main.c
-> index 3df468f64e7d..9959436d0d42 100644
-> --- a/drivers/iommu/iommufd/main.c
-> +++ b/drivers/iommu/iommufd/main.c
-> @@ -320,6 +320,7 @@ union ucmd_buffer {
->   	struct iommu_veventq_alloc veventq;
->   	struct iommu_vfio_ioas vfio_ioas;
->   	struct iommu_viommu_alloc viommu;
-> +	struct iommu_vdevice_id vdev_id;
->   #ifdef CONFIG_IOMMUFD_TEST
->   	struct iommu_test_cmd test;
->   #endif
-> @@ -379,6 +380,10 @@ static const struct iommufd_ioctl_op iommufd_ioctl_ops[] = {
->   		 __reserved),
->   	IOCTL_OP(IOMMU_VIOMMU_ALLOC, iommufd_viommu_alloc_ioctl,
->   		 struct iommu_viommu_alloc, out_viommu_id),
-> +	IOCTL_OP(IOMMU_VDEVICE_TSM_BIND, iommufd_vdevice_tsm_bind_ioctl,
-> +		 struct iommu_vdevice_id, vdevice_id),
-> +	IOCTL_OP(IOMMU_VDEVICE_TSM_UNBIND, iommufd_vdevice_tsm_unbind_ioctl,
-> +		 struct iommu_vdevice_id, vdevice_id),
->   #ifdef CONFIG_IOMMUFD_TEST
->   	IOCTL_OP(IOMMU_TEST_CMD, iommufd_test, struct iommu_test_cmd, last),
->   #endif
-> diff --git a/drivers/iommu/iommufd/viommu.c b/drivers/iommu/iommufd/viommu.c
-> index 01df2b985f02..9182353f7069 100644
-> --- a/drivers/iommu/iommufd/viommu.c
-> +++ b/drivers/iommu/iommufd/viommu.c
-> @@ -2,6 +2,7 @@
->   /* Copyright (c) 2024, NVIDIA CORPORATION & AFFILIATES
->    */
->   #include "iommufd_private.h"
-> +#include "linux/tsm.h"
->   
->   void iommufd_viommu_destroy(struct iommufd_object *obj)
->   {
-> @@ -90,6 +91,9 @@ void iommufd_vdevice_destroy(struct iommufd_object *obj)
->   		container_of(obj, struct iommufd_vdevice, obj);
->   	struct iommufd_viommu *viommu = vdev->viommu;
->   
-> +	if (vdev->tsm_bound)
-> +		tsm_unbind(vdev->dev);
+> Subject: [PATCH v8 16/43] arm64: RME: Handle realm enter/exit
+>=20
+> Entering a realm is done using a SMC call to the RMM. On exit the exit-co=
+des
+> need to be handled slightly differently to the normal KVM path so define =
+our own
+> functions for realm enter/exit and hook them in if the guest is a realm g=
+uest.
+>=20
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Changes since v7:
+>  * A return of 0 from kvm_handle_sys_reg() doesn't mean the register has
+>    been read (although that can never happen in the current code). Tidy
+>    up the condition to handle any future refactoring.
+> Changes since v6:
+>  * Use vcpu_err() rather than pr_err/kvm_err when there is an associated
+>    vcpu to the error.
+>  * Return -EFAULT for KVM_EXIT_MEMORY_FAULT as per the documentation
+> for
+>    this exit type.
+>  * Split code handling a RIPAS change triggered by the guest to the
+>    following patch.
+> Changes since v5:
+>  * For a RIPAS_CHANGE request from the guest perform the actual RIPAS
+>    change on next entry rather than immediately on the exit. This allows
+>    the VMM to 'reject' a RIPAS change by refusing to continue
+>    scheduling.
+> Changes since v4:
+>  * Rename handle_rme_exit() to handle_rec_exit()
+>  * Move the loop to copy registers into the REC enter structure from the
+>    to rec_exit_handlers callbacks to kvm_rec_enter(). This fixes a bug
+>    where the handler exits to user space and user space wants to modify
+>    the GPRS.
+>  * Some code rearrangement in rec_exit_ripas_change().
+> Changes since v2:
+>  * realm_set_ipa_state() now provides an output parameter for the
+>    top_iap that was changed. Use this to signal the VMM with the correct
+>    range that has been transitioned.
+>  * Adapt to previous patch changes.
+> ---
+>  arch/arm64/include/asm/kvm_rme.h |   3 +
+>  arch/arm64/kvm/Makefile          |   2 +-
+>  arch/arm64/kvm/arm.c             |  19 +++-
+>  arch/arm64/kvm/rme-exit.c        | 170
+> +++++++++++++++++++++++++++++++
+>  arch/arm64/kvm/rme.c             |  19 ++++
+>  5 files changed, 207 insertions(+), 6 deletions(-)  create mode 100644
+> arch/arm64/kvm/rme-exit.c
+>=20
+> diff --git a/arch/arm64/include/asm/kvm_rme.h
+> b/arch/arm64/include/asm/kvm_rme.h
+> index b916db8565a2..d86051ef0c5c 100644
+> --- a/arch/arm64/include/asm/kvm_rme.h
+> +++ b/arch/arm64/include/asm/kvm_rme.h
+> @@ -101,6 +101,9 @@ void kvm_realm_destroy_rtts(struct kvm *kvm, u32
+> ia_bits);  int kvm_create_rec(struct kvm_vcpu *vcpu);  void
+> kvm_destroy_rec(struct kvm_vcpu *vcpu);
+>=20
+> +int kvm_rec_enter(struct kvm_vcpu *vcpu); int handle_rec_exit(struct
+> +kvm_vcpu *vcpu, int rec_run_status);
 > +
->   	/* xa_cmpxchg is okay to fail if alloc failed xa_cmpxchg previously */
->   	xa_cmpxchg(&viommu->vdevs, vdev->id, vdev, NULL, GFP_KERNEL);
->   	refcount_dec(&viommu->obj.users);
-> @@ -134,6 +138,8 @@ int iommufd_vdevice_alloc_ioctl(struct iommufd_ucmd *ucmd)
->   	vdev->dev = idev->dev;
->   	get_device(idev->dev);
->   	vdev->viommu = viommu;
-> +	vdev->kvm = idev->kvm;
-> +	pr_info("Assigning kvm 0x%lx\n", vdev->kvm);
->   	refcount_inc(&viommu->obj.users);
->   
->   	curr = xa_cmpxchg(&viommu->vdevs, virt_id, NULL, vdev, GFP_KERNEL);
-> @@ -157,3 +163,59 @@ int iommufd_vdevice_alloc_ioctl(struct iommufd_ucmd *ucmd)
->   	iommufd_put_object(ucmd->ictx, &viommu->obj);
->   	return rc;
->   }
+>  void kvm_realm_unmap_range(struct kvm *kvm,
+>  			   unsigned long ipa,
+>  			   unsigned long size,
+> diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile index
+> 2ebc66812d49..c4b10012faa3 100644
+> --- a/arch/arm64/kvm/Makefile
+> +++ b/arch/arm64/kvm/Makefile
+> @@ -24,7 +24,7 @@ kvm-y +=3D arm.o mmu.o mmio.o psci.o hypercalls.o pvtim=
+e.o
+> \
+>  	 vgic/vgic-mmio.o vgic/vgic-mmio-v2.o \
+>  	 vgic/vgic-mmio-v3.o vgic/vgic-kvm-device.o \
+>  	 vgic/vgic-its.o vgic/vgic-debug.o vgic/vgic-v3-nested.o \
+> -	 rme.o
+> +	 rme.o rme-exit.o
+>=20
+>  kvm-$(CONFIG_HW_PERF_EVENTS)  +=3D pmu-emul.o pmu.o
+>  kvm-$(CONFIG_ARM64_PTR_AUTH)  +=3D pauth.o diff --git
+> a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c index
+> 7c0bb1b05f4c..cf707130ef66 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -1263,7 +1263,10 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+>  		trace_kvm_entry(*vcpu_pc(vcpu));
+>  		guest_timing_enter_irqoff();
+>=20
+> -		ret =3D kvm_arm_vcpu_enter_exit(vcpu);
+> +		if (vcpu_is_rec(vcpu))
+> +			ret =3D kvm_rec_enter(vcpu);
+> +		else
+> +			ret =3D kvm_arm_vcpu_enter_exit(vcpu);
+>=20
+>  		vcpu->mode =3D OUTSIDE_GUEST_MODE;
+>  		vcpu->stat.exits++;
+> @@ -1319,10 +1322,13 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu=
+)
+>=20
+>  		local_irq_enable();
+>=20
+> -		trace_kvm_exit(ret, kvm_vcpu_trap_get_class(vcpu),
+> *vcpu_pc(vcpu));
+> -
+>  		/* Exit types that need handling before we can be preempted */
+> -		handle_exit_early(vcpu, ret);
+> +		if (!vcpu_is_rec(vcpu)) {
+> +			trace_kvm_exit(ret, kvm_vcpu_trap_get_class(vcpu),
+> +				       *vcpu_pc(vcpu));
 > +
-> +int iommufd_vdevice_tsm_bind_ioctl(struct iommufd_ucmd *ucmd)
-> +{
-> +	struct iommu_vdevice_id *cmd = ucmd->cmd;
-> +	struct iommufd_vdevice *vdev;
-> +	int rc = 0;
-> +
-> +	vdev = container_of(iommufd_get_object(ucmd->ictx, cmd->vdevice_id,
-> +					       IOMMUFD_OBJ_VDEVICE),
-> +			    struct iommufd_vdevice, obj);
-> +	if (IS_ERR(vdev))
-> +		return PTR_ERR(vdev);
-> +
-> +	rc = tsm_bind(vdev->dev, vdev->kvm, vdev->id);
-> +	if (rc) {
-> +		rc = -ENODEV;
-> +		goto out_put_vdev;
-> +	}
-> +
-> +	/* locking? */
-> +	vdev->tsm_bound = true;
-> +	refcount_inc(&vdev->obj.users);
-> +	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
-> +
-> +out_put_vdev:
-> +	iommufd_put_object(ucmd->ictx, &vdev->obj);
-> +	return rc;
-> +}
-> +
-> +int iommufd_vdevice_tsm_unbind_ioctl(struct iommufd_ucmd *ucmd)
-> +{
-> +	struct iommu_vdevice_id *cmd = ucmd->cmd;
-> +	struct iommufd_vdevice *vdev;
-> +	int rc = 0;
-> +
-> +	vdev = container_of(iommufd_get_object(ucmd->ictx, cmd->vdevice_id,
-> +					       IOMMUFD_OBJ_VDEVICE),
-> +			    struct iommufd_vdevice, obj);
-> +	if (IS_ERR(vdev))
-> +		return PTR_ERR(vdev);
-> +
-> +	rc = tsm_unbind(vdev->dev);
-> +	if (rc) {
-> +		rc = -ENODEV;
-> +		goto out_put_vdev;
-> +	}
-> +
-> +	refcount_dec(&vdev->obj.users);
-> +	/* locking ? */
-> +	vdev->tsm_bound = false;
-> +	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
-> +
-> +out_put_vdev:
-> +	iommufd_put_object(ucmd->ictx, &vdev->obj);
-> +	return rc;
-> +}
-> diff --git a/drivers/vfio/iommufd.c b/drivers/vfio/iommufd.c
-> index c8c3a2d53f86..3441d24538a8 100644
-> --- a/drivers/vfio/iommufd.c
-> +++ b/drivers/vfio/iommufd.c
-> @@ -115,7 +115,7 @@ int vfio_iommufd_physical_bind(struct vfio_device *vdev,
->   {
->   	struct iommufd_device *idev;
->   
-> -	idev = iommufd_device_bind(ictx, vdev->dev, out_device_id);
-> +	idev = iommufd_device_bind(ictx, vdev->dev, vdev->kvm, out_device_id);
->   	if (IS_ERR(idev))
->   		return PTR_ERR(idev);
->   	vdev->iommufd_device = idev;
-> diff --git a/include/linux/iommufd.h b/include/linux/iommufd.h
-> index 34b6e6ca4bfa..79a9bb0a7a00 100644
-> --- a/include/linux/iommufd.h
-> +++ b/include/linux/iommufd.h
-> @@ -51,8 +51,9 @@ struct iommufd_object {
->   	unsigned int id;
->   };
->   
-> +struct kvm;
->   struct iommufd_device *iommufd_device_bind(struct iommufd_ctx *ictx,
-> -					   struct device *dev, u32 *id);
-> +					   struct device *dev, struct kvm *kvm, u32 *id);
->   void iommufd_device_unbind(struct iommufd_device *idev);
->   
->   int iommufd_device_attach(struct iommufd_device *idev, ioasid_t pasid,
-> diff --git a/include/uapi/linux/iommufd.h b/include/uapi/linux/iommufd.h
-> index f29b6c44655e..abcdad90bfba 100644
-> --- a/include/uapi/linux/iommufd.h
-> +++ b/include/uapi/linux/iommufd.h
-> @@ -56,6 +56,8 @@ enum {
->   	IOMMUFD_CMD_VDEVICE_ALLOC = 0x91,
->   	IOMMUFD_CMD_IOAS_CHANGE_PROCESS = 0x92,
->   	IOMMUFD_CMD_VEVENTQ_ALLOC = 0x93,
-> +	IOMMUFD_CMD_VDEVICE_TSM_BIND = 0x94,
-> +	IOMMUFD_CMD_VDEVICE_TSM_UNBIND = 0x95,
->   };
->   
->   /**
-> @@ -1038,6 +1040,20 @@ enum iommu_veventq_flag {
->   	IOMMU_VEVENTQ_FLAG_LOST_EVENTS = (1U << 0),
->   };
->   
-> +/**
-> + * struct iommu_vdevice_tsm_unbind - ioctl(IOMMU_VDEVICE_TSM_UNBIND)
-> + * @size: sizeof(struct iommu_vdevice_tsm_unbind)
-> + * @vdevice_id:
-> + *
+> +			handle_exit_early(vcpu, ret);
+> +		}
+>=20
+>  		preempt_enable();
+>=20
+> @@ -1345,7 +1351,10 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+>  			ret =3D ARM_EXCEPTION_IL;
+>  		}
+>=20
+> -		ret =3D handle_exit(vcpu, ret);
+> +		if (vcpu_is_rec(vcpu))
+> +			ret =3D handle_rec_exit(vcpu, ret);
+> +		else
+> +			ret =3D handle_exit(vcpu, ret);
+>  	}
+>=20
+>  	/* Tell userspace about in-kernel device output levels */ diff --git
+> a/arch/arm64/kvm/rme-exit.c b/arch/arm64/kvm/rme-exit.c new file mode
+> 100644 index 000000000000..a1adf5610455
+> --- /dev/null
+> +++ b/arch/arm64/kvm/rme-exit.c
+> @@ -0,0 +1,170 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (C) 2023 ARM Ltd.
 > + */
-> +struct iommu_vdevice_id {
-> +	__u32 size;
-> +	__u32 vdevice_id;
-> +} __packed;
-> +#define IOMMU_VDEVICE_TSM_BIND _IO(IOMMUFD_TYPE, IOMMUFD_CMD_VDEVICE_TSM_BIND)
-> +#define IOMMU_VDEVICE_TSM_UNBIND _IO(IOMMUFD_TYPE, IOMMUFD_CMD_VDEVICE_TSM_UNBIND)
 > +
+> +#include <linux/kvm_host.h>
+> +#include <kvm/arm_hypercalls.h>
+> +#include <kvm/arm_psci.h>
 > +
->   /**
->    * struct iommufd_vevent_header - Virtual Event Header for a vEVENTQ Status
->    * @flags: Combination of enum iommu_veventq_flag
+> +#include <asm/rmi_smc.h>
+> +#include <asm/kvm_emulate.h>
+> +#include <asm/kvm_rme.h>
+> +#include <asm/kvm_mmu.h>
+> +
+> +typedef int (*exit_handler_fn)(struct kvm_vcpu *vcpu);
+> +
+> +static int rec_exit_reason_notimpl(struct kvm_vcpu *vcpu) {
+> +	struct realm_rec *rec =3D &vcpu->arch.rec;
+> +
+> +	vcpu_err(vcpu, "Unhandled exit reason from realm (ESR: %#llx)\n",
+> +		 rec->run->exit.esr);
+> +	return -ENXIO;
+> +}
+> +
+> +static int rec_exit_sync_dabt(struct kvm_vcpu *vcpu) {
+> +	return kvm_handle_guest_abort(vcpu);
+> +}
+> +
+> +static int rec_exit_sync_iabt(struct kvm_vcpu *vcpu) {
+> +	struct realm_rec *rec =3D &vcpu->arch.rec;
+> +
+> +	vcpu_err(vcpu, "Unhandled instruction abort (ESR: %#llx).\n",
+> +		 rec->run->exit.esr);
+> +	return -ENXIO;
+> +}
+> +
+> +static int rec_exit_sys_reg(struct kvm_vcpu *vcpu) {
+> +	struct realm_rec *rec =3D &vcpu->arch.rec;
+> +	unsigned long esr =3D kvm_vcpu_get_esr(vcpu);
+> +	int rt =3D kvm_vcpu_sys_get_rt(vcpu);
+> +	bool is_write =3D !(esr & 1);
+> +	int ret;
+> +
+> +	if (is_write)
+> +		vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[0]);
+> +
+> +	ret =3D kvm_handle_sys_reg(vcpu);
+> +	if (ret > 0 && !is_write)
+> +		rec->run->enter.gprs[0] =3D vcpu_get_reg(vcpu, rt);
+> +
+> +	return ret;
+> +}
+> +
+> +static exit_handler_fn rec_exit_handlers[] =3D {
+> +	[0 ... ESR_ELx_EC_MAX]	=3D rec_exit_reason_notimpl,
+> +	[ESR_ELx_EC_SYS64]	=3D rec_exit_sys_reg,
+> +	[ESR_ELx_EC_DABT_LOW]	=3D rec_exit_sync_dabt,
+> +	[ESR_ELx_EC_IABT_LOW]	=3D rec_exit_sync_iabt
+> +};
+> +
+> +static int rec_exit_psci(struct kvm_vcpu *vcpu) {
+> +	struct realm_rec *rec =3D &vcpu->arch.rec;
+> +	int i;
+> +
+> +	for (i =3D 0; i < REC_RUN_GPRS; i++)
+> +		vcpu_set_reg(vcpu, i, rec->run->exit.gprs[i]);
+> +
+> +	return kvm_smccc_call_handler(vcpu);
+> +}
+> +
+> +static int rec_exit_ripas_change(struct kvm_vcpu *vcpu) {
+> +	struct kvm *kvm =3D vcpu->kvm;
+> +	struct realm *realm =3D &kvm->arch.realm;
+> +	struct realm_rec *rec =3D &vcpu->arch.rec;
+> +	unsigned long base =3D rec->run->exit.ripas_base;
+> +	unsigned long top =3D rec->run->exit.ripas_top;
+> +	unsigned long ripas =3D rec->run->exit.ripas_value;
+> +
+> +	if (!kvm_realm_is_private_address(realm, base) ||
+> +	    !kvm_realm_is_private_address(realm, top - 1)) {
+> +		vcpu_err(vcpu, "Invalid RIPAS_CHANGE for %#lx - %#lx,
+> ripas: %#lx\n",
+> +			 base, top, ripas);
+> +		return -EINVAL;
+> +	}
+> +
+> +	/* Exit to VMM, the actual RIPAS change is done on next entry */
+> +	kvm_prepare_memory_fault_exit(vcpu, base, top - base, false, false,
+> +				      ripas =3D=3D RMI_RAM);
+> +
+> +	/*
+> +	 * KVM_EXIT_MEMORY_FAULT requires an return code of -EFAULT, see
+> the
+> +	 * API documentation
+> +	 */
+> +	return -EFAULT;
+> +}
+> +
+> +static void update_arch_timer_irq_lines(struct kvm_vcpu *vcpu) {
+> +	struct realm_rec *rec =3D &vcpu->arch.rec;
+> +
+> +	__vcpu_sys_reg(vcpu, CNTV_CTL_EL0) =3D rec->run->exit.cntv_ctl;
+> +	__vcpu_sys_reg(vcpu, CNTV_CVAL_EL0) =3D rec->run->exit.cntv_cval;
+> +	__vcpu_sys_reg(vcpu, CNTP_CTL_EL0) =3D rec->run->exit.cntp_ctl;
+> +	__vcpu_sys_reg(vcpu, CNTP_CVAL_EL0) =3D rec->run->exit.cntp_cval;
+> +
+> +	kvm_realm_timers_update(vcpu);
+> +}
+> +
+> +/*
+> + * Return > 0 to return to guest, < 0 on error, 0 (and set exit_reason)
+> +on
+> + * proper exit to userspace.
+> + */
+> +int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_ret) {
+> +	struct realm_rec *rec =3D &vcpu->arch.rec;
+> +	u8 esr_ec =3D ESR_ELx_EC(rec->run->exit.esr);
+> +	unsigned long status, index;
+> +
+> +	status =3D RMI_RETURN_STATUS(rec_run_ret);
+> +	index =3D RMI_RETURN_INDEX(rec_run_ret);
+> +
+> +	/*
+> +	 * If a PSCI_SYSTEM_OFF request raced with a vcpu executing, we
+> might
+> +	 * see the following status code and index indicating an attempt to run
+> +	 * a REC when the RD state is SYSTEM_OFF.  In this case, we just need
+> to
+> +	 * return to user space which can deal with the system event or will tr=
+y
+> +	 * to run the KVM VCPU again, at which point we will no longer attempt
+> +	 * to enter the Realm because we will have a sleep request pending on
+> +	 * the VCPU as a result of KVM's PSCI handling.
+> +	 */
+> +	if (status =3D=3D RMI_ERROR_REALM && index =3D=3D 1) {
+> +		vcpu->run->exit_reason =3D KVM_EXIT_UNKNOWN;
+> +		return 0;
+> +	}
+Running kvm-unit-tests-cca selftest(smp) test in quick succession may trigg=
+er these conditions, resulting in the following error logs.
+ Error: KVM exit reason: 0 ("KVM_EXIT_UNKNOWN")
 
--- 
-Alexey
+Since KVM_EXIT_UNKNOWN is used when no specific exit reason applies, I thin=
+k it would be better to make it identifiable as an error.
+How about adding and setting a new ARM64 exit_reason value to indicate that=
+ the PSCI_SYSTEM_OFF request is conflicting with a running vcpu?
+
+Best Regards,
+Emi Kisanuki
+> +
+> +	if (rec_run_ret)
+> +		return -ENXIO;
+> +
+> +	vcpu->arch.fault.esr_el2 =3D rec->run->exit.esr;
+> +	vcpu->arch.fault.far_el2 =3D rec->run->exit.far;
+> +	vcpu->arch.fault.hpfar_el2 =3D rec->run->exit.hpfar;
+> +
+> +	update_arch_timer_irq_lines(vcpu);
+> +
+> +	/* Reset the emulation flags for the next run of the REC */
+> +	rec->run->enter.flags =3D 0;
+> +
+> +	switch (rec->run->exit.exit_reason) {
+> +	case RMI_EXIT_SYNC:
+> +		return rec_exit_handlers[esr_ec](vcpu);
+> +	case RMI_EXIT_IRQ:
+> +	case RMI_EXIT_FIQ:
+> +		return 1;
+> +	case RMI_EXIT_PSCI:
+> +		return rec_exit_psci(vcpu);
+> +	case RMI_EXIT_RIPAS_CHANGE:
+> +		return rec_exit_ripas_change(vcpu);
+> +	}
+> +
+> +	kvm_pr_unimpl("Unsupported exit reason: %u\n",
+> +		      rec->run->exit.exit_reason);
+> +	vcpu->run->exit_reason =3D KVM_EXIT_INTERNAL_ERROR;
+> +	return 0;
+> +}
+> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c index
+> 33eb793d8bdb..bee9dfe12e03 100644
+> --- a/arch/arm64/kvm/rme.c
+> +++ b/arch/arm64/kvm/rme.c
+> @@ -863,6 +863,25 @@ void kvm_destroy_realm(struct kvm *kvm)
+>  	kvm_free_stage2_pgd(&kvm->arch.mmu);
+>  }
+>=20
+> +int kvm_rec_enter(struct kvm_vcpu *vcpu) {
+> +	struct realm_rec *rec =3D &vcpu->arch.rec;
+> +
+> +	switch (rec->run->exit.exit_reason) {
+> +	case RMI_EXIT_HOST_CALL:
+> +	case RMI_EXIT_PSCI:
+> +		for (int i =3D 0; i < REC_RUN_GPRS; i++)
+> +			rec->run->enter.gprs[i] =3D vcpu_get_reg(vcpu, i);
+> +		break;
+> +	}
+> +
+> +	if (kvm_realm_state(vcpu->kvm) !=3D REALM_STATE_ACTIVE)
+> +		return -EINVAL;
+> +
+> +	return rmi_rec_enter(virt_to_phys(rec->rec_page),
+> +			     virt_to_phys(rec->run));
+> +}
+> +
+>  static void free_rec_aux(struct page **aux_pages,
+>  			 unsigned int num_aux)
+>  {
+> --
+> 2.43.0
+>=20
 
