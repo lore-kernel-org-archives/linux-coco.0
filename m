@@ -1,52 +1,52 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258CE235054
-	for <linux-coco@lists.linux.dev>; Fri, 30 May 2025 16:14:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE651DD9AB
+	for <linux-coco@lists.linux.dev>; Fri, 30 May 2025 16:29:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748621643; cv=none; b=aUckpNKWxI/ZODuRmpTjLrs/y89buihePW7tqGkHhSQRQb8R7qa22CfT9eLvecjlxK0GGXC7CIkBvI2/40B+FgjE5kxqgTU9iNsO2zXXobucS/dxBTOSSAM8ynReQTWwdC46BURbg3jUJxyK2aY97qCsmihWgLPg5lhFkK3K1RQ=
+	t=1748622596; cv=none; b=lFnaYW166DwK6ad896Od8n5IChRotMm4WGgcmpO7XKDoO263UMtXzOQA2qUHhoZKJyu0cYnmBEio96d1BTc/D1WSzMitVhyOKYPnXFmOOi/RdvW3hrD4W+CL7V0GFsvVChbYre04MxDuNV6MlBqfV1gkRLFOy/NQwEPDf8mvLc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748621643; c=relaxed/simple;
-	bh=7Ha8QhcH6vxCbEOvf4pxZOBX1RWBw+HLR5G0Cw6EZFc=;
+	s=arc-20240116; t=1748622596; c=relaxed/simple;
+	bh=D2scOJFObbCx4KXsuqN5hyJ1uWi4EUmVo0sfkDiPW9Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fcg0ujxhxuBt/joOUIyo868KGXSVGmtiYU+L+DOr5+fEc36zdJ0dsyyFUZoqn1BPrKN74enm5VhiKkI3ukO8vCW6ZRUoYFmg9hzRDfJ52IvVVYznoGoXO5AVIyeqgXsX3M4GioQbOVw4itpy5SvkjzC+m35DGJSFSceG9HtxCZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HJzXUc7q; arc=none smtp.client-ip=192.198.163.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=jTzt9oQ7OG9yCvDkB5rJrJtAYR1yTxoALCCzp8ILnhIHNW7q1Vpu0eEchcIxSHhfGe/ppwAwrtcktwutefp2fqr05sDFSZ99coE/6pj7OYE9gfGPhk8jbR4LwJv+7zjz9nSAmiIoV6RbqZtnyJHDlM4LMoq508YKK18Lb4+cjLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lNKdW1SA; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HJzXUc7q"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lNKdW1SA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748621642; x=1780157642;
+  t=1748622595; x=1780158595;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=7Ha8QhcH6vxCbEOvf4pxZOBX1RWBw+HLR5G0Cw6EZFc=;
-  b=HJzXUc7qy/Vm5S3Jn/0ujG0ylBRF/BiCiQPRWMQGfhvy2w7pAjm7QdZN
-   NbZYwx93OSNqmWSN259FlZunr1ZcABPIL6Wa592ftU2k/9rrCX6lIO/XH
-   BZw10vkiwGBRco+1GeYQgP29RuK0OsuZKcwN5vktq8FEQdVhOqZ4CBUnp
-   XRmjTOVgv1aN/P2T4KA5mud2/MNNbWVwhrV6re6P2sRYFHo2L8x4Dfheo
-   wT+i/Oj0delvYcBIxMTqYKCsraKWEAr3s/Xtsw/vJfED7N9KkCOCn4BN1
-   NgDbsgtlFbMxHoLZvOzQr3Te8NTvB6DNwECNI0/hgMePwcIwEWdcUM6Wk
-   g==;
-X-CSE-ConnectionGUID: ZlLc2VJcS2aFiCe0G5Iduw==
-X-CSE-MsgGUID: 0uCHSA1jR3quWJ788Oo1Zg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11449"; a="38348581"
+  bh=D2scOJFObbCx4KXsuqN5hyJ1uWi4EUmVo0sfkDiPW9Q=;
+  b=lNKdW1SAoWgKbPkdhUOEMWrEZ1SbSJ20BjGsdaahXZf6Asn+e6cSy5fT
+   5K7QdXKlq7y/uXHbv+jU1HzC0KpX0nK0ULHWYmSEUERJPgzjGLDNzRltt
+   RxFpsxpdyyApcvwzeEECotNZVDBJVmxLypfu4Q3ciKEzQwQ540bC2jZpI
+   TgBWiMLj+Zy0/Bz0yXhnyfnPDi4PqTHcUaMM4NNRV6hh86yOb/0W4IkIy
+   2Mnqfr/NcFMFNcj09pmQ+OhDNOHvwvhaovDgpe3pkd4ZKay0q6NiwXtqP
+   tpLDUNlA1u4+2yttNJhyDg1zGJ84ccYgiNDlpenpaj3DpbY7HQaqUjKQ8
+   Q==;
+X-CSE-ConnectionGUID: RWhIVjwgSrWWY/2Fdz2SZw==
+X-CSE-MsgGUID: lKvsI/9oSt2sV7AZyt+1cQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11449"; a="60977544"
 X-IronPort-AV: E=Sophos;i="6.16,196,1744095600"; 
-   d="scan'208";a="38348581"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2025 09:14:01 -0700
-X-CSE-ConnectionGUID: cty8znblT/OT/sJyYpRcZQ==
-X-CSE-MsgGUID: YgHR8Xp7Qp+rtp4YuuUnSw==
+   d="scan'208";a="60977544"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2025 09:29:54 -0700
+X-CSE-ConnectionGUID: gSdMvp93Re2stAr5qQaSYg==
+X-CSE-MsgGUID: xmWbXOtqSKqnqwM/UkPvTQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,196,1744095600"; 
-   d="scan'208";a="144379572"
+   d="scan'208";a="149061981"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa010.fm.intel.com with ESMTP; 30 May 2025 09:13:56 -0700
-Date: Sat, 31 May 2025 00:07:34 +0800
+  by fmviesa004.fm.intel.com with ESMTP; 30 May 2025 09:29:49 -0700
+Date: Sat, 31 May 2025 00:23:28 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alexey Kardashevskiy <aik@amd.com>, kvm@vger.kernel.org,
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, kvm@vger.kernel.org,
 	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
 	linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
 	christian.koenig@amd.com, pbonzini@redhat.com, seanjc@google.com,
@@ -57,7 +57,7 @@ Cc: Alexey Kardashevskiy <aik@amd.com>, kvm@vger.kernel.org,
 	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
 	tao1.su@intel.com
 Subject: Re: [RFC PATCH 00/12] Private MMIO support for private assigned dev
-Message-ID: <aDnXxk46kwrOcl0i@yilunxu-OptiPlex-7050>
+Message-ID: <aDnbgBbxF8IkH/cq@yilunxu-OptiPlex-7050>
 References: <2c4713b0-3d6c-4705-841b-1cb58cd9a0f5@amd.com>
  <20250512140617.GA285583@nvidia.com>
  <aCRAHRCKP1s0Oi0c@yilunxu-OptiPlex-7050>
@@ -67,7 +67,7 @@ References: <2c4713b0-3d6c-4705-841b-1cb58cd9a0f5@amd.com>
  <aDE5SPzOAU0sNIt+@yilunxu-OptiPlex-7050>
  <ae16db07-5fca-4369-aa67-cbe2e0fd60fd@amd.com>
  <aDhyC73r149syMpc@yilunxu-OptiPlex-7050>
- <20250529162923.GH192531@nvidia.com>
+ <79872224-4e81-446b-a451-28260f449ea9@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -76,48 +76,90 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250529162923.GH192531@nvidia.com>
+In-Reply-To: <79872224-4e81-446b-a451-28260f449ea9@amd.com>
 
-On Thu, May 29, 2025 at 01:29:23PM -0300, Jason Gunthorpe wrote:
-> On Thu, May 29, 2025 at 10:41:15PM +0800, Xu Yilun wrote:
+On Fri, May 30, 2025 at 12:29:30PM +1000, Alexey Kardashevskiy wrote:
 > 
-> > > On AMD, the host can "revoke" at any time, at worst it'll see RMP
-> > > events from IOMMU. Thanks,
+> 
+> On 30/5/25 00:41, Xu Yilun wrote:
+> > > > > > 
+> > > > > > FLR to a bound device is absolutely fine, just break the CC state.
+> > > > > > Sometimes it is exactly what host need to stop CC immediately.
+> > > > > > The problem is in VFIO's pre-FLR handling so we need to patch VFIO, not
+> > > > > > PCI core.
+> > > > > 
+> > > > > What is a problem here exactly?
+> > > > > FLR by the host which equals to any other PCI error? The guest may or may not be able to handle it, afaik it does not handle any errors now, QEMU just stops the guest.
+> > > > 
+> > > > It is about TDX Connect.
+> > > > 
+> > > > According to the dmabuf patchset, the dmabuf needs to be revoked before
+> > > > FLR. That means KVM unmaps MMIOs when the device is in LOCKED/RUN state.
+> > > > That is forbidden by TDX Module and will crash KVM.
+> > > 
+> > > 
+> > > FLR is something you tell the device to do, how/why would TDX know about it?
+> > 
+> > I'm talking about FLR in VFIO driver. The VFIO driver would zap bar
+> > before FLR. The zapping would trigger KVM unmap MMIOs. See
+> > vfio_pci_zap_bars() for legacy case, and see [1] for dmabuf case.
+> 
+> oh I did not know that we do this zapping, thanks for the pointer.
+> > [1] https://lore.kernel.org/kvm/20250307052248.405803-4-vivek.kasireddy@intel.com/
+> > 
+> > A pure FLR without zapping bar is absolutely OK.
+> > 
+> > > Or it check the TDI state on every map/unmap (unlikely)?
+> > 
+> > Yeah, TDX Module would check TDI state on every unmapping.
+> 
+> _every_? Reading the state from DOE mailbox is not cheap enough (imho) to do on every unmap.
+
+Sorry for confusing. TDX firmware just checks if STOP TDI firmware call
+is executed, will not check the real device state via DOE. That means
+even if device has physically exited to UNLOCKED, TDX host should still
+call STOP TDI fwcall first, then MMIO unmap.
+
+> 
+> > > 
+> > > > So the safer way is
+> > > > to unbind the TDI first, then revoke MMIOs, then do FLR.
+> > > > 
+> > > > I'm not sure when p2p dma is involved AMD will have the same issue.
+> > > 
+> > > On AMD, the host can "revoke" at any time, at worst it'll see RMP events from IOMMU. Thanks,
 > > 
 > > Is the RMP event firstly detected by host or guest? If by host,
+> 
+> Host.
+> 
 > > host could fool guest by just suppress the event. Guest thought the
 > > DMA writting is successful but it is not and may cause security issue.
 > 
-> Is that in scope of the threat model though? Host must not be able to
-> change DMAs or target them to different memory, but the host can stop
-> DMA and loose it, surely?
+> An RMP event on the host is an indication that RMP check has failed and DMA to the guest did not complete so the guest won't see new data. Same as other PCI errors really. RMP acts like a firewall, things behind it do not need to know if something was dropped. Thanks,
 
-This is within the threat model, this is a data integrity issue, not a
-DoS issue.  If secure firmware don't care, then no component within the
-TCB could be aware of the data loss.
+Not really, guest thought the data is changed but it actually doesn't.
+I.e. data integrity is broken.
 
-> 
-> Host controls the PCI memory enable bit, doesn't it?
+Also please help check if the following relates to this issue:
 
-That's why DSM should fallback the device to CONFIG_UNLOCKED when memory
-enable is toggled, that makes TD/TDI aware of the problem. But for IOMMU
-PT blocking, DSM cannot be aware, TSM must do something.
+SEV-TIO Firmware Interface SPEC, Section 2.11
 
-Zhi helps find something in SEV-TIO Firmware Interface SPEC, Section 2.11
-which seems to indicate SEV does do something for this.
-
-"If a bound TDI sends a request to the root complex, and the IOMMU detects a fault caused by host
+If a bound TDI sends a request to the root complex, and the IOMMU detects a fault caused by host
 configuration, the root complex fences the ASID from all further I/O to or from that guest. A host
 fault is either a host page table fault or an RMP check violation. ASID fencing means that the
 IOMMU blocks all further I/O from the root complex to the guest that the TDI was bound, and the
 root complex blocks all MMIO accesses by the guest. When a guest writes to MMIO, the write is
-silently dropped. When a guest reads from MMIO, the guest reads 1s."
-
-Blocking all TDIs should definitely be avoided. Now I'm more sure Unbind
-before DMABUF revoke is necessary.
+silently dropped. When a guest reads from MMIO, the guest reads 1s.
 
 Thanks,
 Yilun
 
 > 
-> Jason
+> > 
+> > Thanks,
+> > Yilun
+> 
+> -- 
+> Alexey
+> 
