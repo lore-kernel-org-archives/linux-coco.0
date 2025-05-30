@@ -1,63 +1,42 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDCF2222C0
-	for <linux-coco@lists.linux.dev>; Fri, 30 May 2025 10:28:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C052A22C35E;
+	Fri, 30 May 2025 13:07:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748600927; cv=none; b=bnGxArisO7jqpBYY6Lyd3L9jiUoZAjk8F2QT3dMQReqcqE9TUbC7tJUF4aHzPCzofkckEd+dTluj0DpcZjFUIptZWcB9M0nMt1XCHbDYQsmXk8hIPuGRJ0UFcxuaqK9TrIXCyJr+BMyqsiSGvrn3rJ2YG1FPrPO78hNNStsfgQk=
+	t=1748610476; cv=none; b=XCwuOhke6HgZvnO10kUqs022WGwxGkVtq0ffD2NYg3BmH0kxR3CcfmvSuDnVDuHqjC4UBxqgn2zSGdH3mgGjtlCxNZDDYA5ahR2knCLPldpoS0wNZpL8Kqp20y2ZPfhvAfCtIOyK5HnEvXFLfqMdCuBxIGTDTK9JVrLfEDS+ijs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748600927; c=relaxed/simple;
-	bh=aWZEgxSVS4Ru0ExtQ69W5ibS4LzCBJTNvFmwCjQNAxU=;
+	s=arc-20240116; t=1748610476; c=relaxed/simple;
+	bh=/xoFeF6uX70aWbBBNEM8uWuCaQ0k29mi7V5Sfd5V9T0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lpZQ9eykUtTNrNyZpAd9dXm+G4p0BSkbWylZwlPSiA6Hx2k0U5NMTmuEksMIsGaNX24KrLYartPHw1bXHce2VEJh6OFHFO1TV+wjqdkx+M5gqB22pLocZpqm2ZJo0kz9A7rIM+rRoXfaLmhSpscCfA92WgZI/nZH0T0TrRrRfBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MB2EYJ5h; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=LLCe2wtVmS4lYSZwRHxtq0ggWpKb8WkwigrkKqO4+WqOOnY4MKQTSY6bS3YxOw9tQ22IXu0wLn4iPkPCkVQqksnGXvejTMdOHkyvpZGDjMy8jyqOiLltxcnmU1muBKI6icV++bJVLtkog9tUfr+9dw+AJHod7Om/QE7wHfnsNCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=BXXo+udb; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MB2EYJ5h"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748600925; x=1780136925;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=aWZEgxSVS4Ru0ExtQ69W5ibS4LzCBJTNvFmwCjQNAxU=;
-  b=MB2EYJ5hramnsP7B151L3FvWNvS2W7+Jh8KcM0LwlmyVMTSu6mHLzFBW
-   2xhTDIa0kk53AW/8aeDFqPlKMvmh2BrI/aR63oSY887v67NEiU+PeU/Ls
-   6wf+bKXPLG9GsDLUprc70aiGGMYV/YZj5bcy03Khgf3W5Db4ksHRyrgQa
-   Nz+9dA5LGZuRDtlTow3aYmkbQz5TxLSsQNxNXS1VlgxRohuC2ClQvt/rA
-   6F9SpPQj6uD+nn8p6vmNsAkctX/fSqYmucInJF7Rpu9BZD52IOi0rsOS/
-   paJpA7FBygbXtaKEEGUX45plZ1MrZTlgEEqLDJyuffCDSZK6QJzqJpyHQ
-   A==;
-X-CSE-ConnectionGUID: LZuKUgTFSz2gtA1pIKkN9A==
-X-CSE-MsgGUID: boZU2JpzSlO1tGzZXONadA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11448"; a="49931254"
-X-IronPort-AV: E=Sophos;i="6.16,195,1744095600"; 
-   d="scan'208";a="49931254"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2025 03:28:44 -0700
-X-CSE-ConnectionGUID: 72d97e1oRRuHDdHUHh2R7w==
-X-CSE-MsgGUID: 62XjU1h0SY2jnZyOT+HBlA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,195,1744095600"; 
-   d="scan'208";a="181054375"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa001.jf.intel.com with ESMTP; 30 May 2025 03:28:41 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 3526214B; Fri, 30 May 2025 13:28:39 +0300 (EEST)
-Date: Fri, 30 May 2025 13:28:39 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Chao Gao <chao.gao@intel.com>
-Cc: pbonzini@redhat.com, seanjc@google.com, rick.p.edgecombe@intel.com, 
-	isaku.yamahata@intel.com, kai.huang@intel.com, yan.y.zhao@intel.com, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, kvm@vger.kernel.org, 
-	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [RFC, PATCH 09/12] KVM: TDX: Preallocate PAMT pages to be used
- in page fault path
-Message-ID: <dtptwhf2si2n2ksz746p67v5oib7h7l7bz57hvxd6rmxne7nht@fvodz653v5nf>
-References: <20250502130828.4071412-1-kirill.shutemov@linux.intel.com>
- <20250502130828.4071412-10-kirill.shutemov@linux.intel.com>
- <aCQ4imYKThyxOWuT@intel.com>
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="BXXo+udb"
+Received: from 8bytes.org (p4ffe03ae.dip0.t-ipconnect.de [79.254.3.174])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 6CC894CB3B;
+	Fri, 30 May 2025 15:07:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1748610472;
+	bh=/xoFeF6uX70aWbBBNEM8uWuCaQ0k29mi7V5Sfd5V9T0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BXXo+udbvzYNtrFDl1TOuGXXo5VB+raBSTT80nNzx8oX24DkIeHEOY+6gvDW+ddOg
+	 7qCpHugBjIX9BG5StUUwiCa6upsIYJ4xQJ/Fno97ClUlCNuXTS6VQzC+SkYlCTeeuF
+	 4T5HQzCcnm/DP281lQ8fMoZVvpHy0iiEc4bSOLxWiEwQdVvQmD8rqtyEIuZcwiQsgs
+	 p+LMcsN4UnNqQEHF6LUAiDchzBWd/Ry8e/oaIEkWtPZfpiBBBwef7gptAsbTiXTZAz
+	 jGa0vHyCwnLmYcAFxLUdKCn8cOcb4mA7FOyibhbjH6d4zmFhe2vuJBBwFywTNE32jC
+	 hdgZFZliWd+Kg==
+Date: Fri, 30 May 2025 15:07:51 +0200
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+Subject: Re: SVSM Development Call May 28th, 2025
+Message-ID: <aDmtpysf7IRTfjTg@8bytes.org>
+References: <CAGxU2F6wv3QUOD=Ji_Y1aFqpwKUKhcHsUDCdk2uy79DgrvOrrQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -66,61 +45,15 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aCQ4imYKThyxOWuT@intel.com>
+In-Reply-To: <CAGxU2F6wv3QUOD=Ji_Y1aFqpwKUKhcHsUDCdk2uy79DgrvOrrQ@mail.gmail.com>
 
-On Wed, May 14, 2025 at 02:30:34PM +0800, Chao Gao wrote:
-> On Fri, May 02, 2025 at 04:08:25PM +0300, Kirill A. Shutemov wrote:
-> >Preallocate a page to be used in the link_external_spt() and
-> >set_external_spte() paths.
-> >
-> >In the worst-case scenario, handling a page fault might require a
-> >tdx_nr_pamt_pages() pages for each page table level.
-> >
-> >Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> >---
-> > arch/x86/include/asm/kvm_host.h |  2 ++
-> > arch/x86/kvm/mmu/mmu.c          | 10 ++++++++++
-> > 2 files changed, 12 insertions(+)
-> >
-> >diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> >index 91958c55f918..a5661499a176 100644
-> >--- a/arch/x86/include/asm/kvm_host.h
-> >+++ b/arch/x86/include/asm/kvm_host.h
-> >@@ -849,6 +849,8 @@ struct kvm_vcpu_arch {
-> > 	 */
-> > 	struct kvm_mmu_memory_cache mmu_external_spt_cache;
-> > 
-> >+	struct kvm_mmu_memory_cache pamt_page_cache;
-> >+
-> > 	/*
-> > 	 * QEMU userspace and the guest each have their own FPU state.
-> > 	 * In vcpu_run, we switch between the user and guest FPU contexts.
-> >diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> >index a284dce227a0..7bfa0dc50440 100644
-> >--- a/arch/x86/kvm/mmu/mmu.c
-> >+++ b/arch/x86/kvm/mmu/mmu.c
-> >@@ -616,6 +616,15 @@ static int mmu_topup_memory_caches(struct kvm_vcpu *vcpu, bool maybe_indirect)
-> > 		if (r)
-> > 			return r;
-> > 	}
-> >+
-> >+	if (vcpu->kvm->arch.vm_type == KVM_X86_TDX_VM) {
-> 
-> The check for vcpu->kvm->arch.vm_type == KVM_X86_TDX_VM is identical to
-> kvm_has_mirrored_tdp() a few lines above.
+Meeting minutes are now available in this PR:
 
-Well, yes. But I think it is conceptually different. There can be
-different virtualization mode that has mirrored TDP which is not TDX.
+	https://github.com/coconut-svsm/governance/pull/60
 
-> 
-> >+		int nr = tdx_nr_pamt_pages(tdx_get_sysinfo());
-> 
-> Since you're already accessing tdx_sysinfo, you can check if dynamic PAMT is
-> enabled and allocate the pamt page cache accordingly.
+As I was not there, everyone please review and fix up things the AI got
+wrong.
 
-I will hide it in tdx_nr_pamt_pages() which would return 0 if Dynamic PAMT
-is disabled.
+Thanks,
 
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+	Joerg
