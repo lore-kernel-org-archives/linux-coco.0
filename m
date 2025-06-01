@@ -1,106 +1,214 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6595320EB
-	for <linux-coco@lists.linux.dev>; Sat, 31 May 2025 16:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52D17DA66;
+	Sun,  1 Jun 2025 10:45:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748709105; cv=none; b=nbWnSAfI3Yj8Xtk72mogkB+e72IPPMYH6AdGtW8NYdnWOPbfuxbv4EdCk+phxfF69oxtNrV92kAK/u458v2B/0Qit/iMaxMnTumCEXXq/ckUwClAE20hNe6P1flMnFED4Ykzywh1rpdjjmkyUuh6RARDW4/7Jaee8xU/5+XVAzs=
+	t=1748774746; cv=none; b=Ugfpw/hgy5dkHWrtKgc61CZfviDwCPhMmh7Ov+aKPTcohRE/LX1vrI8IOHqng5ppRzNB4sdBe13LLDz/qnUUYvTmYX6iGVnTBPhHWeVjXRhQ56rOuFQpDX/k18fC0+bWBiL9Pd3r2RW3wHDCx6Ft61cC9rGYPY1FqcEY+IQa/A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748709105; c=relaxed/simple;
-	bh=MmHGc5KuKeVnsB/wDtKg5/XJXoYTu39SS1n81SPEjis=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C2e9eTI+Q2TebYya/t8AAYJ7CFyb++a3g2q5j49USA0RAFvGVUpftsjFSkyMtsAhtq6YyzQ2pCaOclleccXkvL9gu9Y/Mo7dzsp7gkE/vA7awVShW/1ciAtaHAN74f5+V9bGzlM/4cafKzP2if+0JR6HJPl8ezM3ZTjQwlA7/Io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MP1Rb79w; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1748774746; c=relaxed/simple;
+	bh=knDZgzB0R6dEpWPhQ7xIaO+LHFR6wi+XZqOGDMJ/B0w=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=FthLmwVD6K/JEGR68OFMve7n9MmIOF410LZ+UTc3wgqDuM2PcnC+o9/+cTTdaQq+eiXEdDM8U++ZTjC+rTdPQRgVeKoUiCXpS2TpOl/nFC67F2Oi59f7fK+fLAShWHfrQIhmFcSR8h5UU36QRH5xq3RFR44eYW+cZsuwc0kDZms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qDYV1/ZA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MP1Rb79w"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748709103; x=1780245103;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MmHGc5KuKeVnsB/wDtKg5/XJXoYTu39SS1n81SPEjis=;
-  b=MP1Rb79woC8RrHRD3EvlY/Lb+AuQX+312hdzWZlrf0lCRXlNuIB/ltZC
-   uROz7RpwzABzLql8Nin4zXyXmOqoIAxh6axM4uHOBKUTVN8AGu3nF78YR
-   JPZVw4KieiBjLOJ26SO0OmhWQMqhi4oM6a+1cv9acmmslGOIU9p/gQ/OC
-   dDioejwKIq0ckZBEc7OHv9loOX/o+xBzYioCGGS+iZN0h0uYcROHYczFi
-   ajNB17RhyyNaGAhOW4FWiJPtHOSh/LPzGwfD/+Jn8PVUIiDkNDmMBaMEj
-   3L4ISNypK7kZbeWUc8Fu4wIPQuxHgxTzB6+dKKoX+9T57k4jeh5nEDtJz
-   A==;
-X-CSE-ConnectionGUID: JfxIz2zzTwe1KhYpTbcnKg==
-X-CSE-MsgGUID: 1KV4xEQnS+a0RmCcCNejNg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11450"; a="50700472"
-X-IronPort-AV: E=Sophos;i="6.16,199,1744095600"; 
-   d="scan'208";a="50700472"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2025 09:31:43 -0700
-X-CSE-ConnectionGUID: kjxpTVQYTjSDWxHfrPFHYg==
-X-CSE-MsgGUID: PwkgPEivQua7XL+n2TFiaA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,199,1744095600"; 
-   d="scan'208";a="149429620"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa005.jf.intel.com with ESMTP; 31 May 2025 09:31:40 -0700
-Date: Sun, 1 Jun 2025 00:25:15 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
-	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
-	jgg@nvidia.com, zhiw@nvidia.com
-Subject: Re: [RFC PATCH 3/3] iommufd/tsm: Add tsm_bind/unbind iommufd ioctls
-Message-ID: <aDsta4UX76GaExrO@yilunxu-OptiPlex-7050>
-References: <yq5a5xhj5yng.fsf@kernel.org>
- <20250529133757.462088-1-aneesh.kumar@kernel.org>
- <20250529133757.462088-3-aneesh.kumar@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qDYV1/ZA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C73FC4CEE7;
+	Sun,  1 Jun 2025 10:45:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748774745;
+	bh=knDZgzB0R6dEpWPhQ7xIaO+LHFR6wi+XZqOGDMJ/B0w=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=qDYV1/ZAycrdKvqDBdRG18s72KjUVe1utEyYr/NWAvvRLiRpjj/EBvjGqxUkYxBc9
+	 5x2s3Z6wQm87Uqy4ekxSFAj6UeNcohh5VOsC8TP2dS5WqYvlV5lrNmU5gLPFBhqCw9
+	 1Q/8/QBKQSXyfxk9GsA1FNMKeNCTuuUojMDBd/c7FV1vTtZjb6wCZyl+X8FCk16/v+
+	 xP5yeouaAVK5TT5TRkyZ3Gkrdn2CbPJkMjJLE/TWcnD9eXCnUb7tqIxmDlA3e7c4fj
+	 Hl7zyUiXQUEGRHrd6c9q5jweG0Ck/87xImFcW4s+4EfdqM57o+nW0XIkgpJpoPfn4T
+	 6Maoj+pH2Rttw==
+X-Mailer: emacs 30.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
+	sumit.semwal@linaro.org, christian.koenig@amd.com,
+	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
+	jgg@nvidia.com, dan.j.williams@intel.com, aik@amd.com,
+	linux-coco@lists.linux.dev
+Cc: dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, vivek.kasireddy@intel.com,
+	yilun.xu@intel.com, yilun.xu@linux.intel.com,
+	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
+	daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, tao1.su@intel.com,
+	linux-pci@vger.kernel.org, zhiw@nvidia.com, simona.vetter@ffwll.ch,
+	shameerali.kolothum.thodi@huawei.com, iommu@lists.linux.dev,
+	kevin.tian@intel.com
+Subject: Re: [RFC PATCH 19/30] vfio/pci: Add TSM TDI bind/unbind IOCTLs for
+ TEE-IO support
+In-Reply-To: <20250529053513.1592088-20-yilun.xu@linux.intel.com>
+References: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
+ <20250529053513.1592088-20-yilun.xu@linux.intel.com>
+Date: Sun, 01 Jun 2025 16:15:32 +0530
+Message-ID: <yq5aplfn210z.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250529133757.462088-3-aneesh.kumar@kernel.org>
+Content-Type: text/plain
 
-> + * struct iommu_vdevice_id - ioctl(IOMMU_VDEVICE_TSM_BIND/UNBIND)
-> + * @size: sizeof(struct iommu_vdevice_id)
-> + * @vdevice_id: Object handle for the vDevice. Returned from IOMMU_VDEVICE_ALLOC
-> + */
-> +struct iommu_vdevice_id {
-> +	__u32 size;
-> +	__u32 vdevice_id;
-> +} __packed;
-> +#define IOMMU_VDEVICE_TSM_BIND _IO(IOMMUFD_TYPE, IOMMUFD_CMD_VDEVICE_TSM_BIND)
-> +#define IOMMU_VDEVICE_TSM_UNBIND _IO(IOMMUFD_TYPE, IOMMUFD_CMD_VDEVICE_TSM_UNBIND)
+Xu Yilun <yilun.xu@linux.intel.com> writes:
 
-Hello, I see you are talking about the detailed implementation. But
-could we firstly address the confusing whether this TSM Bind/Unbind
-should be a VFIO uAPI or IOMMUFD uAPI?
+> Add new IOCTLs to do TSM based TDI bind/unbind. These IOCTLs are
+> expected to be called by userspace when CoCo VM issues TDI bind/unbind
+> command to VMM. Specifically for TDX Connect, these commands are some
+> secure Hypervisor call named GHCI (Guest-Hypervisor Communication
+> Interface).
+>
+> The TSM TDI bind/unbind operations are expected to be initiated by a
+> running CoCo VM, which already have the legacy assigned device in place.
+> The TSM bind operation is to request VMM make all secure configurations
+> to support device work as a TDI, and then issue TDISP messages to move
+> the TDI to CONFIG_LOCKED or RUN state, waiting for guest's attestation.
+>
+> Do TSM Unbind before vfio_pci_core_disable(), otherwise will lead
+> device to TDISP ERROR state.
+>
 
-In this thread [1], I was talking about TSM Bind/Unbind affects VFIO
-behavior so they cannot be iommufd uAPIs which VFIO is not aware of.
-At least TDX Connect cares about this problem now. And the conclusion
-seems to be "have a VFIO_DEVICE_BIND(iommufd vdevice id), then have
-VFIO reach into iommufd".
+Any reason these need to be a vfio ioctl instead of iommufd ioctl?
+For ex: https://lore.kernel.org/all/20250529133757.462088-3-aneesh.kumar@kernel.org/
 
-And some further findings [2] indicate this problem may also exist on
-AMD when p2p is involved.
+>
+> Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+> Signed-off-by: Wu Hao <hao.wu@intel.com>
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> ---
+>  drivers/vfio/iommufd.c           | 22 ++++++++++
+>  drivers/vfio/pci/vfio_pci_core.c | 74 ++++++++++++++++++++++++++++++++
+>  include/linux/vfio.h             |  7 +++
+>  include/linux/vfio_pci_core.h    |  1 +
+>  include/uapi/linux/vfio.h        | 42 ++++++++++++++++++
+>  5 files changed, 146 insertions(+)
+>
+> diff --git a/drivers/vfio/iommufd.c b/drivers/vfio/iommufd.c
+> index 3441d24538a8..33fd20ffaeee 100644
+> --- a/drivers/vfio/iommufd.c
+> +++ b/drivers/vfio/iommufd.c
+> @@ -297,3 +297,25 @@ void vfio_iommufd_emulated_detach_ioas(struct vfio_device *vdev)
+>  	vdev->iommufd_attached = false;
+>  }
+>  EXPORT_SYMBOL_GPL(vfio_iommufd_emulated_detach_ioas);
+> +
+> +int vfio_iommufd_tsm_bind(struct vfio_device *vdev, u32 vdevice_id)
+> +{
+> +	lockdep_assert_held(&vdev->dev_set->lock);
+> +
+> +	if (WARN_ON(!vdev->iommufd_device))
+> +		return -EINVAL;
+> +
+> +	return iommufd_device_tsm_bind(vdev->iommufd_device, vdevice_id);
+> +}
+> +EXPORT_SYMBOL_GPL(vfio_iommufd_tsm_bind);
+> +
+> +void vfio_iommufd_tsm_unbind(struct vfio_device *vdev)
+> +{
+> +	lockdep_assert_held(&vdev->dev_set->lock);
+> +
+> +	if (WARN_ON(!vdev->iommufd_device))
+> +		return;
+> +
+> +	iommufd_device_tsm_unbind(vdev->iommufd_device);
+> +}
+> +EXPORT_SYMBOL_GPL(vfio_iommufd_tsm_unbind);
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index 116964057b0b..92544e54c9c3 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -692,6 +692,13 @@ void vfio_pci_core_close_device(struct vfio_device *core_vdev)
+>  #if IS_ENABLED(CONFIG_EEH)
+>  	eeh_dev_release(vdev->pdev);
+>  #endif
+> +
+> +	if (vdev->is_tsm_bound) {
+> +		vfio_iommufd_tsm_unbind(&vdev->vdev);
+> +		pci_release_regions(vdev->pdev);
+> +		vdev->is_tsm_bound = false;
+> +	}
+> +
+>  	vfio_pci_core_disable(vdev);
+>  
+>  	vfio_pci_dma_buf_cleanup(vdev);
+> @@ -1447,6 +1454,69 @@ static int vfio_pci_ioctl_ioeventfd(struct vfio_pci_core_device *vdev,
+>  				  ioeventfd.fd);
+>  }
+>  
+> +static int vfio_pci_ioctl_tsm_bind(struct vfio_pci_core_device *vdev,
+> +				   void __user *arg)
+> +{
+> +	unsigned long minsz = offsetofend(struct vfio_pci_tsm_bind, vdevice_id);
+> +	struct vfio_pci_tsm_bind tsm_bind;
+> +	struct pci_dev *pdev = vdev->pdev;
+> +	int ret;
+> +
+> +	if (copy_from_user(&tsm_bind, arg, minsz))
+> +		return -EFAULT;
+> +
+> +	if (tsm_bind.argsz < minsz || tsm_bind.flags)
+> +		return -EINVAL;
+> +
+> +	mutex_lock(&vdev->vdev.dev_set->lock);
+> +
+> +	/* To ensure no host side MMIO access is possible */
+> +	ret = pci_request_regions_exclusive(pdev, "vfio-pci-tsm");
+> +	if (ret)
+> +		goto out_unlock;
+>
 
-[1]: https://lore.kernel.org/all/20250515175658.GR382960@nvidia.com/
-[2]: https://lore.kernel.org/all/aDnXxk46kwrOcl0i@yilunxu-OptiPlex-7050/
-
-Thanks,
-Yilun
+This should be part of pci_tsm_bind() ? 
 
 > +
+> +	ret = vfio_iommufd_tsm_bind(&vdev->vdev, tsm_bind.vdevice_id);
+> +	if (ret)
+> +		goto out_release_region;
 > +
->  /**
->   * struct iommufd_vevent_header - Virtual Event Header for a vEVENTQ Status
->   * @flags: Combination of enum iommu_veventq_flag
-> -- 
-> 2.43.0
-> 
+> +	vdev->is_tsm_bound = true;
+> +	mutex_unlock(&vdev->vdev.dev_set->lock);
+> +
+> +	return 0;
+> +
+> +out_release_region:
+> +	pci_release_regions(pdev);
+> +out_unlock:
+> +	mutex_unlock(&vdev->vdev.dev_set->lock);
+> +	return ret;
+> +}
+> +
+> +static int vfio_pci_ioctl_tsm_unbind(struct vfio_pci_core_device *vdev,
+> +				     void __user *arg)
+> +{
+> +	unsigned long minsz = offsetofend(struct vfio_pci_tsm_unbind, flags);
+> +	struct vfio_pci_tsm_unbind tsm_unbind;
+> +	struct pci_dev *pdev = vdev->pdev;
+> +
+> +	if (copy_from_user(&tsm_unbind, arg, minsz))
+> +		return -EFAULT;
+> +
+> +	if (tsm_unbind.argsz < minsz || tsm_unbind.flags)
+> +		return -EINVAL;
+> +
+> +	mutex_lock(&vdev->vdev.dev_set->lock);
+> +
+> +	if (!vdev->is_tsm_bound)
+> +		return 0;
+> +
+> +	vfio_iommufd_tsm_unbind(&vdev->vdev);
+> +	pci_release_regions(pdev);
+> +	vdev->is_tsm_bound = false;
+> +	mutex_unlock(&vdev->vdev.dev_set->lock);
+> +
+> +	return 0;
+> +}
+> +
+
+
+-aneesh
