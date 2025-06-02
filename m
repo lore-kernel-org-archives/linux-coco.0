@@ -1,214 +1,284 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2058.outbound.protection.outlook.com [40.107.92.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52D17DA66;
-	Sun,  1 Jun 2025 10:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748774746; cv=none; b=Ugfpw/hgy5dkHWrtKgc61CZfviDwCPhMmh7Ov+aKPTcohRE/LX1vrI8IOHqng5ppRzNB4sdBe13LLDz/qnUUYvTmYX6iGVnTBPhHWeVjXRhQ56rOuFQpDX/k18fC0+bWBiL9Pd3r2RW3wHDCx6Ft61cC9rGYPY1FqcEY+IQa/A4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748774746; c=relaxed/simple;
-	bh=knDZgzB0R6dEpWPhQ7xIaO+LHFR6wi+XZqOGDMJ/B0w=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=FthLmwVD6K/JEGR68OFMve7n9MmIOF410LZ+UTc3wgqDuM2PcnC+o9/+cTTdaQq+eiXEdDM8U++ZTjC+rTdPQRgVeKoUiCXpS2TpOl/nFC67F2Oi59f7fK+fLAShWHfrQIhmFcSR8h5UU36QRH5xq3RFR44eYW+cZsuwc0kDZms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qDYV1/ZA; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9319781732
+	for <linux-coco@lists.linux.dev>; Mon,  2 Jun 2025 04:52:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748839930; cv=fail; b=aD26P+dJ7W8BObPyNHE4weNXNhYqUP6Xs0xXmb3FqdAihAhXFZwrCfbt05A9E50r0+W84rZkC9o0z2sPkO0LMmyy4kULeYY/QM5hXuGCMA8Cv/H3EfiW57GrpexnJMimzVgoohsMau1pYM8WUce4Ucl8MdEHrX696bDxuCouHaU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748839930; c=relaxed/simple;
+	bh=YtDIPKxO1emQxzTSaPC+3BvhxGhcHciFq9RKXa8Ez7k=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=BIe6G6hu2ptJKMyn2YXLllp5GBEF49Kjvdp5veQ51vtqkEl/IUqF9oK4yV4NKbSXJ7/DC5JZyTNK7kck8E8RTzB+B7Fqi0wVp29G2Pz3VOSel9uL7+8ni3C7nVw5wpHhFYv9ywijvfyuGBb2+QuJGKk4p6v7RHvDROMiuWxFjQY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=JnApozp/; arc=fail smtp.client-ip=40.107.92.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qDYV1/ZA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C73FC4CEE7;
-	Sun,  1 Jun 2025 10:45:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748774745;
-	bh=knDZgzB0R6dEpWPhQ7xIaO+LHFR6wi+XZqOGDMJ/B0w=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=qDYV1/ZAycrdKvqDBdRG18s72KjUVe1utEyYr/NWAvvRLiRpjj/EBvjGqxUkYxBc9
-	 5x2s3Z6wQm87Uqy4ekxSFAj6UeNcohh5VOsC8TP2dS5WqYvlV5lrNmU5gLPFBhqCw9
-	 1Q/8/QBKQSXyfxk9GsA1FNMKeNCTuuUojMDBd/c7FV1vTtZjb6wCZyl+X8FCk16/v+
-	 xP5yeouaAVK5TT5TRkyZ3Gkrdn2CbPJkMjJLE/TWcnD9eXCnUb7tqIxmDlA3e7c4fj
-	 Hl7zyUiXQUEGRHrd6c9q5jweG0Ck/87xImFcW4s+4EfdqM57o+nW0XIkgpJpoPfn4T
-	 6Maoj+pH2Rttw==
-X-Mailer: emacs 30.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
-	sumit.semwal@linaro.org, christian.koenig@amd.com,
-	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
-	jgg@nvidia.com, dan.j.williams@intel.com, aik@amd.com,
-	linux-coco@lists.linux.dev
-Cc: dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, vivek.kasireddy@intel.com,
-	yilun.xu@intel.com, yilun.xu@linux.intel.com,
-	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
-	daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, tao1.su@intel.com,
-	linux-pci@vger.kernel.org, zhiw@nvidia.com, simona.vetter@ffwll.ch,
-	shameerali.kolothum.thodi@huawei.com, iommu@lists.linux.dev,
-	kevin.tian@intel.com
-Subject: Re: [RFC PATCH 19/30] vfio/pci: Add TSM TDI bind/unbind IOCTLs for
- TEE-IO support
-In-Reply-To: <20250529053513.1592088-20-yilun.xu@linux.intel.com>
-References: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
- <20250529053513.1592088-20-yilun.xu@linux.intel.com>
-Date: Sun, 01 Jun 2025 16:15:32 +0530
-Message-ID: <yq5aplfn210z.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="JnApozp/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qU28zFpSkRAJ6UxWG8qHh8NCOGT0sDo9nih2ZdeGHFs52rDNHr1aaNwzsfDIlXMzjZ/slsQtNYuPPK2z9crmx1hrdKlorEHPKHppDdrX/Us+I+d7A1iNOhg3F3d1TPKerLx0eq3kIeF30UjTYNLuQhzo2aOPVbnhc9cHGdnvUqg6rV5ZsVBmsoHgTcyGKYTsHn5lrJDQPctmBVjPs01UWoNPLscBoMeDTc0LHCoeIwbF1rQUnbLAghP40wsVAV8HveEkzDyupKFd6gS6+oBkeEg7N01fGh6+1GumtHIS+ZyEELdtWx05y9o3ZNfeDL9fwN/Cq9BHdvhadIR5nzQBsA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RN7dlmvoytO/RYqTAxbcS45cg+wuEANFSQioiqS4XHY=;
+ b=iE8csDVq6z/lOcrfxbe4kfh7AvEOi8pB1e+/sJyvTNd0ZLnHNS4KQ6mr4yr04wWEGvS0icnnocIpLZK+G1LJ5hp3NcKgaTk4jjw0WrL8nzFUJLYUy1E9lbnxkFQSmYJdzYnk5ALS6HPO+6jHytBJsOlQcEAIE4HZBxNVvG92wWP4repWcZHbjWa/CoN16oK3hOTUs9QsZ2wLbByp6FnL3oHfv6EL5d1qKOBsvTiJq3jDNgrp7D6Hgjwv7FHH3n+gs3JrFyJ9+hVCixr3Fx47OUdJTaSANwBW3XyXdFwkxaG4BdmNo60e3tfzNZvCWV7iWyY5BLVr0eHVpH93iiVa6w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RN7dlmvoytO/RYqTAxbcS45cg+wuEANFSQioiqS4XHY=;
+ b=JnApozp/QpsiRtT03/3iCVOfv9Vc6kZAf3keGLhZVxe/wSBApRqkV7BzraXpt1WM/dKFd2Et0lHNz+Vj2yi2Mc8fd0/2j2NcS6yOi5/5f/SljcnHdKU4ENuxy4Xox5+H6r2EGmjyYYFElNT+ILUCmyscopGmWjJYtwd6CkliLL8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
+ by PH0PR12MB8126.namprd12.prod.outlook.com (2603:10b6:510:299::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.31; Mon, 2 Jun
+ 2025 04:52:05 +0000
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f%5]) with mapi id 15.20.8769.037; Mon, 2 Jun 2025
+ 04:52:03 +0000
+Message-ID: <80277929-ce8d-4cef-98ed-c5280fdfa543@amd.com>
+Date: Mon, 2 Jun 2025 14:51:53 +1000
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v3 12/13] PCI/TSM: support TDI related operations for host
+ TSM driver
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+ linux-pci@vger.kernel.org, gregkh@linuxfoundation.org, lukas@wunner.de,
+ aneesh.kumar@kernel.org, suzuki.poulose@arm.com, sameo@rivosinc.com,
+ jgg@nvidia.com, zhiw@nvidia.com
+References: <20250516054732.2055093-1-dan.j.williams@intel.com>
+ <20250516054732.2055093-13-dan.j.williams@intel.com>
+ <153d5223-169d-4379-bc2c-6ad279489560@amd.com>
+ <682ce21c17363_1626e1004e@dwillia2-xfh.jf.intel.com.notmuch>
+ <aC2c1SggkqKSO1st@yilunxu-OptiPlex-7050>
+ <2fb2de7a-efc2-4ab0-8303-833dd2471d9f@amd.com>
+ <aDhtLn2ySm/pgeab@yilunxu-OptiPlex-7050>
+ <4b3621d7-4bed-44c7-8139-57de5825e968@amd.com>
+ <aDsfmJpUqy53dans@yilunxu-OptiPlex-7050>
+Content-Language: en-US
+From: Alexey Kardashevskiy <aik@amd.com>
+In-Reply-To: <aDsfmJpUqy53dans@yilunxu-OptiPlex-7050>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN4P287CA0119.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:c01:2b0::9) To CH3PR12MB9194.namprd12.prod.outlook.com
+ (2603:10b6:610:19f::7)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
-
-Xu Yilun <yilun.xu@linux.intel.com> writes:
-
-> Add new IOCTLs to do TSM based TDI bind/unbind. These IOCTLs are
-> expected to be called by userspace when CoCo VM issues TDI bind/unbind
-> command to VMM. Specifically for TDX Connect, these commands are some
-> secure Hypervisor call named GHCI (Guest-Hypervisor Communication
-> Interface).
->
-> The TSM TDI bind/unbind operations are expected to be initiated by a
-> running CoCo VM, which already have the legacy assigned device in place.
-> The TSM bind operation is to request VMM make all secure configurations
-> to support device work as a TDI, and then issue TDISP messages to move
-> the TDI to CONFIG_LOCKED or RUN state, waiting for guest's attestation.
->
-> Do TSM Unbind before vfio_pci_core_disable(), otherwise will lead
-> device to TDISP ERROR state.
->
-
-Any reason these need to be a vfio ioctl instead of iommufd ioctl?
-For ex: https://lore.kernel.org/all/20250529133757.462088-3-aneesh.kumar@kernel.org/
-
->
-> Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-> Signed-off-by: Wu Hao <hao.wu@intel.com>
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> ---
->  drivers/vfio/iommufd.c           | 22 ++++++++++
->  drivers/vfio/pci/vfio_pci_core.c | 74 ++++++++++++++++++++++++++++++++
->  include/linux/vfio.h             |  7 +++
->  include/linux/vfio_pci_core.h    |  1 +
->  include/uapi/linux/vfio.h        | 42 ++++++++++++++++++
->  5 files changed, 146 insertions(+)
->
-> diff --git a/drivers/vfio/iommufd.c b/drivers/vfio/iommufd.c
-> index 3441d24538a8..33fd20ffaeee 100644
-> --- a/drivers/vfio/iommufd.c
-> +++ b/drivers/vfio/iommufd.c
-> @@ -297,3 +297,25 @@ void vfio_iommufd_emulated_detach_ioas(struct vfio_device *vdev)
->  	vdev->iommufd_attached = false;
->  }
->  EXPORT_SYMBOL_GPL(vfio_iommufd_emulated_detach_ioas);
-> +
-> +int vfio_iommufd_tsm_bind(struct vfio_device *vdev, u32 vdevice_id)
-> +{
-> +	lockdep_assert_held(&vdev->dev_set->lock);
-> +
-> +	if (WARN_ON(!vdev->iommufd_device))
-> +		return -EINVAL;
-> +
-> +	return iommufd_device_tsm_bind(vdev->iommufd_device, vdevice_id);
-> +}
-> +EXPORT_SYMBOL_GPL(vfio_iommufd_tsm_bind);
-> +
-> +void vfio_iommufd_tsm_unbind(struct vfio_device *vdev)
-> +{
-> +	lockdep_assert_held(&vdev->dev_set->lock);
-> +
-> +	if (WARN_ON(!vdev->iommufd_device))
-> +		return;
-> +
-> +	iommufd_device_tsm_unbind(vdev->iommufd_device);
-> +}
-> +EXPORT_SYMBOL_GPL(vfio_iommufd_tsm_unbind);
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index 116964057b0b..92544e54c9c3 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -692,6 +692,13 @@ void vfio_pci_core_close_device(struct vfio_device *core_vdev)
->  #if IS_ENABLED(CONFIG_EEH)
->  	eeh_dev_release(vdev->pdev);
->  #endif
-> +
-> +	if (vdev->is_tsm_bound) {
-> +		vfio_iommufd_tsm_unbind(&vdev->vdev);
-> +		pci_release_regions(vdev->pdev);
-> +		vdev->is_tsm_bound = false;
-> +	}
-> +
->  	vfio_pci_core_disable(vdev);
->  
->  	vfio_pci_dma_buf_cleanup(vdev);
-> @@ -1447,6 +1454,69 @@ static int vfio_pci_ioctl_ioeventfd(struct vfio_pci_core_device *vdev,
->  				  ioeventfd.fd);
->  }
->  
-> +static int vfio_pci_ioctl_tsm_bind(struct vfio_pci_core_device *vdev,
-> +				   void __user *arg)
-> +{
-> +	unsigned long minsz = offsetofend(struct vfio_pci_tsm_bind, vdevice_id);
-> +	struct vfio_pci_tsm_bind tsm_bind;
-> +	struct pci_dev *pdev = vdev->pdev;
-> +	int ret;
-> +
-> +	if (copy_from_user(&tsm_bind, arg, minsz))
-> +		return -EFAULT;
-> +
-> +	if (tsm_bind.argsz < minsz || tsm_bind.flags)
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&vdev->vdev.dev_set->lock);
-> +
-> +	/* To ensure no host side MMIO access is possible */
-> +	ret = pci_request_regions_exclusive(pdev, "vfio-pci-tsm");
-> +	if (ret)
-> +		goto out_unlock;
->
-
-This should be part of pci_tsm_bind() ? 
-
-> +
-> +	ret = vfio_iommufd_tsm_bind(&vdev->vdev, tsm_bind.vdevice_id);
-> +	if (ret)
-> +		goto out_release_region;
-> +
-> +	vdev->is_tsm_bound = true;
-> +	mutex_unlock(&vdev->vdev.dev_set->lock);
-> +
-> +	return 0;
-> +
-> +out_release_region:
-> +	pci_release_regions(pdev);
-> +out_unlock:
-> +	mutex_unlock(&vdev->vdev.dev_set->lock);
-> +	return ret;
-> +}
-> +
-> +static int vfio_pci_ioctl_tsm_unbind(struct vfio_pci_core_device *vdev,
-> +				     void __user *arg)
-> +{
-> +	unsigned long minsz = offsetofend(struct vfio_pci_tsm_unbind, flags);
-> +	struct vfio_pci_tsm_unbind tsm_unbind;
-> +	struct pci_dev *pdev = vdev->pdev;
-> +
-> +	if (copy_from_user(&tsm_unbind, arg, minsz))
-> +		return -EFAULT;
-> +
-> +	if (tsm_unbind.argsz < minsz || tsm_unbind.flags)
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&vdev->vdev.dev_set->lock);
-> +
-> +	if (!vdev->is_tsm_bound)
-> +		return 0;
-> +
-> +	vfio_iommufd_tsm_unbind(&vdev->vdev);
-> +	pci_release_regions(pdev);
-> +	vdev->is_tsm_bound = false;
-> +	mutex_unlock(&vdev->vdev.dev_set->lock);
-> +
-> +	return 0;
-> +}
-> +
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|PH0PR12MB8126:EE_
+X-MS-Office365-Filtering-Correlation-Id: 83093965-efbf-4cc0-5f73-08dda191378b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WkJJTExtQ09MNFo5RjhCRDRNNEVRbXZjcjhOais5MlhEOXRaUkkySEJWVzJM?=
+ =?utf-8?B?SHNDS0N0T1VpMlZrUjN2NXcwamVGOGFFcGY2NVpqN3BiZkZqZ2Z6Z2xqN05L?=
+ =?utf-8?B?TFRNN2JvbVU1YllWYlNpQUJVTDZCSi9MS1YvcnlvcjZwcVo4OStYblY2bDRn?=
+ =?utf-8?B?TGk4bWxKeXExZ0RoT1A0a0p2dkFUWlJyci9JanppbFdNa1k5MDNBT09HOEpp?=
+ =?utf-8?B?ZTVjSVNxREpvKzY4K21RTjBabUhPNkduMlVnVGRtQUI3Slp2NnZpK2xKMHc1?=
+ =?utf-8?B?bGY4RXZNOUQwTWRuYlc4RTk2NDhDWVh1VDZFVzQvQTkxVjZKRjFxOVZnU3lo?=
+ =?utf-8?B?aHAwcWdnaXpiZW9RSHEwSVJycFkrbXpVNzhkSFBrS2x2WlViT1hpVGUxdVNZ?=
+ =?utf-8?B?QmpQRHZmMXJSMTRrMzVqUXgxT2Z2bXRNQkMxWERpWm1uZktPZDVPRFJ2YzVP?=
+ =?utf-8?B?VEZoMGM5WFkxRFhncUNKR29PT0RpZTNBSE5kUFNoSE1mWGdsU0VBanIyVnVM?=
+ =?utf-8?B?MFV0ZjE2VmN5UHBsWHVBc2NVL05PcVpkZnp6bVJkUURWeldGNlZzUXZ6WWti?=
+ =?utf-8?B?Rmxtem51SElBY3hUWWxKUnZpZmhQVnRNUjEwa3Rudyt3cytJYThhdFNFeXBm?=
+ =?utf-8?B?NHhUNXJJWmp2L1R5NG1DWW5WK0EvRjJXR01ZZU4xSHVRVmZMZCtKdlphOGxn?=
+ =?utf-8?B?YmRhcDlXUFhZSDZBNkV0SmhVSzRrSXlWMXg1T0lzdE5ldjZkSU13Q21qNnB1?=
+ =?utf-8?B?Z0txZ3p5K3I5OEUwdFg2K2RMeWNyUHVxcWJScm1kcWtGVjY1YzIvTUxpakFN?=
+ =?utf-8?B?OVFra3Z1ZjNDUHErYk82Ty9teVVkbkdYQjhFRERFVjZGV0k4ZytEZDlUbVNs?=
+ =?utf-8?B?TjEzMW83R2hkYjVhL080blJnLzlYaTF6anNoOFBpQkxSejRmL1QvKzRJb0Qr?=
+ =?utf-8?B?Y3U2bXhHcy9wYjNlY3pvZU9YOWN6SWM2QWV4bk90TzdlV3htck9LQTQxd081?=
+ =?utf-8?B?bmp6S3o1QVhaUmc1eWZWMHU0eWhjYTJ0V0Y1aWsxdzNoMWFVbmNOSEg3SVdW?=
+ =?utf-8?B?RmxoTjQzZFo4NWx5dTdENTN1cysySEcwem5jaHkwMDJOSUdCdWJpeVF6YWNo?=
+ =?utf-8?B?a3BvMGVyNmNpbkU0OEc4eUFuVGhLRTFadTNQNnRJUjBVeUVsTjZoTlJDT0pM?=
+ =?utf-8?B?aHVZK2QyN3hjajZsZHVoL0svVVRoK25YTXFMbEVDR2JUTGYxTC9acVV2Rmxk?=
+ =?utf-8?B?UDhaZ1NRZld4OVRPUkNCNVNQM0g0T21VUWViN2tHV3NCYkwvcXRnazZydjh3?=
+ =?utf-8?B?THdLek5PYzU0Vk82ajFPdlhjRG1FSEhPMkwyREVxVWNxOEFmSExDVFMxVllG?=
+ =?utf-8?B?bEs2QTVVUUFYcTFRWUJSbXV5NGZVUndnZm1yakgxUFBPaFJMcFhWNFd6YjNS?=
+ =?utf-8?B?R3dnanlaQ2F2ODhOVUdJa2J4d2trOGxBZGEwWkxDUlJ6QWpnRmEvYXNUNWtX?=
+ =?utf-8?B?Sk5iMFlYU2dxeVRlUFRQeEJEWGlUUWM1UVQ5L2d5QTAyRjlNbVB4TThVOG1T?=
+ =?utf-8?B?RUNkUmdqMm1uSkJ4WXcwVXZLZkxsNGNKQkFwQTJCS1AvdnMwWjBYdmVPNTQ4?=
+ =?utf-8?B?RnFqNEIyYmROak9JeXdyM2JNT2RLVy9NbDNhOXdrLzNZVWVPQ0IrU2hSYXFr?=
+ =?utf-8?B?amFubCttUFQrRTNNZ0Z3dStUMCtwRGNVdGhsa3MreEdFSnl3WGtoVVpYTVFT?=
+ =?utf-8?B?bVNCcWMxcENBd2xMQ0VaWkgxOW1pSEMzNUFXSTQ3dWNWSWVWTEhWdEZ4Q3dy?=
+ =?utf-8?B?RkNvb3krS29HdkJ4NHR2RllLK1RHemNrQUxWbVZsbktVYmVJYXNVL09BTEZh?=
+ =?utf-8?B?NTlKckRVS1B5RUFzVzQ1Z1l6UE1VRUFaNHJNUXo4MmdhUDlUN09Na0NMU2pY?=
+ =?utf-8?Q?c7NhIZANHfo=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?REZpaUJ3Rko4VVp0ZFRHYklRd2xtbENrOFpGaC9jb3RpbEx3amlqOEx0SFlD?=
+ =?utf-8?B?eEJsalpOM0NibENhYjVHMEZQcHROYlFaUzR6c3lrbWI4NjN2U1ZBSXR1VUxa?=
+ =?utf-8?B?OUl4eldFSiszVlVURVp6Yk05VXc2TTVkMjB3c1QySmo5K0UxdWVsRldVKy9N?=
+ =?utf-8?B?KzNlQXUxMXJJR1lDREV6Qk02U2JVclMvcDZycnhRQUNpOUhsVlpxQWVmZ2NP?=
+ =?utf-8?B?SVNpeVBPRjlIS3hCK3Q2cThRYWZ0a0hkRzlQV2lDR2szWUhUZG5BaFNsdVpK?=
+ =?utf-8?B?YktxRUlrbHQyYkFpM3I0eHdkYkVoNHVnT0dySE9jdi90UFJwbXprNWozckd1?=
+ =?utf-8?B?RXhha1lFSDNMRkRCOENwdmFodVNUbUVPMzBsWWpsYUNZQ0FWdVZTcFhHLzUx?=
+ =?utf-8?B?TXhqK3p2d1huOGNhcnRvc0M3QytaSlRpY1krZDluRklEa0U0YVAwVVIvdThW?=
+ =?utf-8?B?ODNyQW9WS09SN2xBQlV0VHhaMTM2REhIVEJYTkFRZmU0NUJnSjBGTzFkME55?=
+ =?utf-8?B?ZVp3MEVFTkI1SGxtYlZ6THQrdDZtVGcydG53Vk0wVnFRNHZITHdaNXlBOGlx?=
+ =?utf-8?B?dnRPOXF1Q01DbTF2dHpuaE5jQ291K2hEQjNMOEhHK3E4MjI2UWxyUW5GMkEr?=
+ =?utf-8?B?aDFCbm1aZGRScGV4QWFmekFrd2g5WHFNbld5TEJtRmkzc1JaelNjNnhHcm9j?=
+ =?utf-8?B?M24vMGVUUzdSR2N1Qk16M2FBSVhSVDVsbkdveEFBdmJoTEsxZEUwSVUwV0pr?=
+ =?utf-8?B?OVBCN2JCcktNWlhrenFacThSaGJwd3J4MDJQQjkrRC9xR3NHRjlub0VudWcx?=
+ =?utf-8?B?c1lUNUF0VUltMnFRKy9aYnVDM2xTa05vTDVFcjdkYllkQTZjZWdxdHZ1SFpS?=
+ =?utf-8?B?anVwa1hGa3NuaitFVVg0L0UyMHdFYVNUekhJR215akc3Z2dselAvYjNxNFo3?=
+ =?utf-8?B?YVhXMHozT215UlBSRFdRYlFUNnFiWll0VlRKSzEvWGNKL3VxTVNLdXU1cFF2?=
+ =?utf-8?B?M09JbE9ud1hrZURYUHkyR1g4QnhnTFpNRXFtbEJHZXgzVndCc0FkSU1KbmJm?=
+ =?utf-8?B?SFZwYXJSSlhrTU5aUnNkS3ArU0xZL3dld3FGUkFJUndsdUk3dk9WUElqaW1N?=
+ =?utf-8?B?VlFQZHR3dVhUc3dHNDBCeHl3OGlmd056cjZOcFhvSGZYSE5NVXhjQUFCN1d6?=
+ =?utf-8?B?SGJadlYrNmtxc05nSEhMTDFZS0NDZ3Vxa2RFaEkwZjgra2MwUUE2YTNHdnlW?=
+ =?utf-8?B?WmluR3JYaENUUUZCN0tDeGVmaWd5ZExzaTBrNng2NmFDUWxrQTROckUxOVpU?=
+ =?utf-8?B?alM4ZDUvSVNzZDR2c2lKNWZyNkZ4dWxKOEF6bjYzUVp4eUpXbEFGVGYrL0ZI?=
+ =?utf-8?B?N0dLZnp5KzIzMktEeThmT3N4NlRLVHJwRXFsNm45TkZkOGR6ZHJhdi9wZUJD?=
+ =?utf-8?B?Y2VlLzIreWdDZ1AzNThFbHJTUUdQbXE1R1lnZXY3VGRpSHFXVVVITHJyKzJi?=
+ =?utf-8?B?emlyNVVvdkNROU1KUkFSSWZTRGxjWGJ1V1NiektkcjJ1eEFNWnFWL0R0cDA5?=
+ =?utf-8?B?Zm9aZGRrSmlyNm9aTitRQkZFMlVoMXhPU3pwYlZCVHpZMjIrWCtCQlhTYkdI?=
+ =?utf-8?B?TkNQaGtFam1KclVBMWlqbUpKYVlxeXVrU1dkaUIyTE5HWE9qbWcycEhncm4v?=
+ =?utf-8?B?eVJPejJZekJseEdDS3hmT2EzRGJKemZJTjJHWnRNTXU0QUlzaGphN3dmcDQx?=
+ =?utf-8?B?cjh2a3pINEI3aTFWRzZ0dDhxbmhOdER0TW1QMDBSb3NTcmtwVEZ6QnRqMHhP?=
+ =?utf-8?B?b0FRT3JKQ2ZQTmRsRDRzOFl3WE9aNFdCKzdVUjErcStXeGRlU29nZHJUcmNY?=
+ =?utf-8?B?cXUvd2IxU0FDM3VQWE40TmlsOTgxWTlXNmcrVkNzb2tYYmg2OE9tV1pCLzRT?=
+ =?utf-8?B?dVlJUEN0blI0TEZoUm1LUC9NL0R4NXIzc2JEVktERFlaUkhFQXVQak4wYWFO?=
+ =?utf-8?B?RW4xYUJGQ25ud3NUdGJNd3djVGtJbHF3b2MzMTB4L0VscEJ4QWhzdkhoWTdG?=
+ =?utf-8?B?czB0N2pZcFZUMWg1NlU2QnVPNmNaTkIvNUwrTDgyeXdUTmtDNjlkU0VQUDI3?=
+ =?utf-8?Q?axTMhIn4MAPLjQeGbrNI4a/ZV?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 83093965-efbf-4cc0-5f73-08dda191378b
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2025 04:52:03.2659
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: r0H5HRPQAdtRmB27xh8q/KnSHGYsx0xZz7+sdmHC7zZiR23qxtiNXfuTyndtbLjlOGIQdcEaoCgzfztFioKRLg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8126
 
 
--aneesh
+
+On 1/6/25 01:26, Xu Yilun wrote:
+> On Fri, May 30, 2025 at 12:54:44PM +1000, Alexey Kardashevskiy wrote:
+>>
+>>
+>> On 30/5/25 00:20, Xu Yilun wrote:
+>>>>>>
+>>>>>>>> + * struct pci_tsm_guest_req_info - parameter for pci_tsm_ops.guest_req()
+>>>>>>>> + * @type: identify the format of the following blobs
+>>>>>>>> + * @type_info: extra input/output info, e.g. firmware error code
+>>>>>>>
+>>>>>>> Call it "fw_ret"?
+>>>>>>
+>>>>>> Sure.
+>>>>>
+>>>>> This field is intended for out-of-blob values, like fw_ret. But fw_ret
+>>>>> is specified in GHCB and is vendor specific. Other vendors may also
+>>>>> have different values of this kind.
+>>>>>
+>>>>> So I intend to gather these out-of-blob values in type_info, like:
+>>>>>
+>>>>> enum pci_tsm_guest_req_type {
+>>>>>      PCI_TSM_GUEST_REQ_TDXC,
+>>>>>      PCI_TSM_GUEST_REQ_SEV_SNP,
+>>>>> };
+>>>>
+>>>>
+>>>> The pci_tsm_ops hooks already know what they are - SEV or TDX.
+>>>
+>>> I think this is for type safe check to some extend. The tsm driver hook
+>>> assumes the blobs are for its known format, but userspace may pass in
+>>> another format ...
+>>
+>> The blobs are guest_request blobs, they enter the kernel via iommufd's viommu ioctl and viommu already has  iommu_viommu_type which is (in my tree):
+>>
+>> enum iommu_viommu_type {
+>>          IOMMU_VIOMMU_TYPE_DEFAULT = 0,
+>>          IOMMU_VIOMMU_TYPE_ARM_SMMUV3 = 1,
+>>         IOMMU_VIOMMU_TYPE_AMD_TSM = 2,
+>>         IOMMU_VIOMMU_TYPE_AMD = 3,
+>>   };
+> 
+> That's a good point. So I think we don't have to use a 'type' field for
+> ioctl(IOMMUFD_VDEVICE_GUEST_REQUEST). But I didn't see these viommu_type
+> would be passed to TSM driver.So for this pci_tsm_guest_req kAPI, is it
+> still good we keep the 'type' for type safe check in TSM driver?
+This means that we somehow make it possible to create an Intel vdevice for the AMD TSM and now have to catch such situation  in runtime which seems wrong, we should not allow the mix in the first place. IOMMUFD is going to call the platform IOMMU code and that guy will just refuse creating a wrong viommu type.
+
+
+>>
+>>>>
+>>>>
+>>>>> /* SEV SNP guest request type info */
+>>>>> struct pci_tsm_guest_req_sev_snp {
+>>>>> 	s32 fw_err;
+>>>>> };
+>>>>>
+>>>>> Since IOMMUFD has the userspace entry, maybe these definitions should be
+>>>>> moved to include/uapi/linux/iommufd.h.
+>>>>>
+>>>>> In pci-tsm.h, just define:
+>>>>>
+>>>>> struct pci_tsm_guest_req_info {
+>>>>> 	u32 type;
+>>>>> 	void __user *type_info;
+>>>>> 	size_t type_info_len;
+>>>>> 	void __user *req;
+>>>>> 	size_t req_len;
+>>>>> 	void __user *resp;
+>>>>> 	size_t resp_len;
+>>>>> };
+>>>>>
+>>>>> BTW: TDX Connect has no out-of-blob value, so should set type_info_len = 0
+>>>>
+>>>>
+>>>> No TDX Connect fw error handling on the host OS whatsoever, always return to the guest?
+>>>
+>>> Always return to guest. The fw error info (not raw fw error code) is
+>>> embedded in response blob.
+>>>
+>>> For QEMU/IOMMUFD, Guest Request doesn't care blob data, so don't have
+>>> to judge fw_error either. Alway return to the guest and let the guest
+>>> decide what to do.
+>>
+>> So whatever is inside such requests, the host is not told about it ever? How does DOE bouncing work on Intel then if the fw cannot ask the host to do DOE? Thanks,
+>>
+> 
+> No, I just say QEMU/IOMMUFD don't care about the execution, so no need
+> an explicit fw_err return to them. Platform TSM driver should definitely
+> know about fw_err and handle it (to do DOE or anything else) internally,
+> but don't have to EXPLICITLY propagate these error code to up layers (TSM
+> core/QEMU/IOMMUFD).
+
+On AMD, the host has to provide certain handles along with the guest request/response buffers and the host can get it wrong so the host may want to know if the host did a wrong call. Say, we are killing a guest and by the same time making a guest request - will the Intel fw still say "that's ok, forward the response to the guest", even if it knows it is not possible? Or SPDM session broke - the host OS won't be told until it specifically make a call other than guest request? Seems weird but okay. Thanks,
+
+
+> Thanks,
+> Yilun
+> 
+>>>> oookay, do not use it but the fw response is still a generic thing. Whatever is specific to AMD can be packed into req/resp and QEMU/guest will handle those.
+>>>
+>>> But for out-of-blob data, it is the same effort as packing into type_info.
+>>> At least we could have a clear idea, which blob is SW defined, which blob
+>>> is GHCI/GHCB defined.
+>>>
+>>> Thanks,
+>>> Yilun
+>>
+>> -- 
+>> Alexey
+>>
+
+-- 
+Alexey
+
