@@ -1,120 +1,124 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5B3D1DF73C;
-	Mon,  2 Jun 2025 15:16:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523A04437A
+	for <linux-coco@lists.linux.dev>; Mon,  2 Jun 2025 16:31:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877409; cv=none; b=JbJ4bzkp6PrZyoSaIBkatA76Jq5HB8+J1lp4AfdzF8KvPgOMtBLgCq/guNcj2PjI6EzZWsx4g/E0R2dQcMyUk4R3anUiTnJ78JTu6p2yeJnITRNVnngtC5YFHPspifT/5gqWJR1E8o+6OhunXy+8wyuI9p4aXB+sprjYbFes29E=
+	t=1748881916; cv=none; b=NrWMJAyUvIJ6hkzfUUMfM+a7FH39mLEeqYDQD3EYduem6+lsGGBE8pAw/luuArdvMfIYKfGgE3k92GVPccsBIzTWP+jeQmchEzneDo/jwFl2R1yCTpN4d6aD10yTLRa2vP0ys+vciNlRg/C6UcEdOg7pjldD33vgnNBfmqp3dQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877409; c=relaxed/simple;
-	bh=/+njjjjeknWT+7eViUtPJz6TBdiNujnF97CGeFdxBgk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pKUfmBttYHvrprnGR1+6sNGMzxXHhuvMJhVKxgLvbFyPSkG5fPdwJpzQaAcyuI4i+ccaKTly/+gEi3+XEs2HeTNpFus/EDlc3ZnUSXckDCfQtnHwQvBYQh4bEQoJOvfOGyGn5FTNXLYdPctNTSfciW6oQBCGUD2h2Bu3qUvkyLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AC8071424;
-	Mon,  2 Jun 2025 08:16:30 -0700 (PDT)
-Received: from [10.57.47.191] (unknown [10.57.47.191])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 0BC4E3F5A1;
-	Mon,  2 Jun 2025 08:16:43 -0700 (PDT)
-Message-ID: <8a4c285e-2b6f-44f0-b1d8-0b5a6f6b6581@arm.com>
-Date: Mon, 2 Jun 2025 16:16:43 +0100
+	s=arc-20240116; t=1748881916; c=relaxed/simple;
+	bh=ABESuQNba/ISfVxE254p2L8JnPE59Hyu3kS39KIqGqQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MpnwOYcxHvgzJXH4hhnisjX0vgVvzeJlVKpS0WVTndF0BLh3QPU9Lk6BFeUX44a3n15rKAkdLlbpbvWssRMHJULGifI5CDKG/41h3GWp0tF5ClvOexoE8zrj1LbukrGprjNICUD/0+d5scUMYxeHA0TfD4JTNOvbiGRz1ngEMJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nBRF3ThK; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nBRF3ThK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1748881916; x=1780417916;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=ABESuQNba/ISfVxE254p2L8JnPE59Hyu3kS39KIqGqQ=;
+  b=nBRF3ThK3WfhxuDY5zkhqwicbitqKQLUh9zSRIGAk1e2ElXzA6uJQ4XZ
+   S+uXTkJBPUDj/velUAG2VM9iHZ7qNl9P9iRfewMVOh6vr0sMCpptIRFFS
+   ATF2Cwa+MDjVAYR4rxfqV6C9Gp7JoMsi1ARn/c4mixVeqlMO+fRa9Iske
+   sVbFgf2tSu9tHvwbKUqxnzs32owaztWt1n1wmkFQcoricnFnlDlpDW/Ww
+   Bp3Nl/4IGavP4pRWT0w0ggWbi7DPTBIH+TUzdEV5xE1bqjs9VkBNGHwvt
+   x9PIURa0y2Td13kjyGQzpV4uixSFJQtXavw9/PIUqB0YNCoVb/0BW6Xd2
+   w==;
+X-CSE-ConnectionGUID: fddPxisPQdWEEnIg0Ly+Ng==
+X-CSE-MsgGUID: DdgYS4rfStuKy74DyM03yw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="50768353"
+X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; 
+   d="scan'208";a="50768353"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 09:31:55 -0700
+X-CSE-ConnectionGUID: JhQrP/C/SASMFQjjYNadag==
+X-CSE-MsgGUID: gttifzdhQDaggP3Vk4F7KA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; 
+   d="scan'208";a="144619835"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa009.jf.intel.com with ESMTP; 02 Jun 2025 09:31:52 -0700
+Date: Tue, 3 Jun 2025 00:25:21 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
+	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
+	jgg@nvidia.com, zhiw@nvidia.com
+Subject: Re: [RFC PATCH 3/3] iommufd/tsm: Add tsm_bind/unbind iommufd ioctls
+Message-ID: <aD3QcQxtjoYXrglM@yilunxu-OptiPlex-7050>
+References: <yq5a5xhj5yng.fsf@kernel.org>
+ <20250529133757.462088-1-aneesh.kumar@kernel.org>
+ <20250529133757.462088-3-aneesh.kumar@kernel.org>
+ <aDsta4UX76GaExrO@yilunxu-OptiPlex-7050>
+ <yq5azfeqjt9i.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 16/43] arm64: RME: Handle realm enter/exit
-Content-Language: en-GB
-To: Steven Price <steven.price@arm.com>,
- "Emi Kisanuki (Fujitsu)" <fj0570is@fujitsu.com>,
- "'kvm@vger.kernel.org'" <kvm@vger.kernel.org>,
- "'kvmarm@lists.linux.dev'" <kvmarm@lists.linux.dev>
-Cc: 'Catalin Marinas' <catalin.marinas@arm.com>,
- 'Marc Zyngier' <maz@kernel.org>, 'Will Deacon' <will@kernel.org>,
- 'James Morse' <james.morse@arm.com>, 'Oliver Upton'
- <oliver.upton@linux.dev>, 'Zenghui Yu' <yuzenghui@huawei.com>,
- "'linux-arm-kernel@lists.infradead.org'"
- <linux-arm-kernel@lists.infradead.org>,
- "'linux-kernel@vger.kernel.org'" <linux-kernel@vger.kernel.org>,
- 'Joey Gouly' <joey.gouly@arm.com>,
- 'Alexandru Elisei' <alexandru.elisei@arm.com>,
- 'Christoffer Dall' <christoffer.dall@arm.com>,
- 'Fuad Tabba' <tabba@google.com>,
- "'linux-coco@lists.linux.dev'" <linux-coco@lists.linux.dev>,
- 'Ganapatrao Kulkarni' <gankulkarni@os.amperecomputing.com>,
- 'Gavin Shan' <gshan@redhat.com>,
- 'Shanker Donthineni' <sdonthineni@nvidia.com>,
- 'Alper Gun' <alpergun@google.com>,
- "'Aneesh Kumar K . V'" <aneesh.kumar@kernel.org>
-References: <20250416134208.383984-1-steven.price@arm.com>
- <20250416134208.383984-17-steven.price@arm.com>
- <TYCPR01MB11463D8002D90705A7F860B85C366A@TYCPR01MB11463.jpnprd01.prod.outlook.com>
- <673853c4-b7b0-4a7f-915e-37646ae8cf6f@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <673853c4-b7b0-4a7f-915e-37646ae8cf6f@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <yq5azfeqjt9i.fsf@kernel.org>
 
-On 02/06/2025 16:14, Steven Price wrote:
-> On 29/05/2025 05:52, Emi Kisanuki (Fujitsu) wrote:
->> Hello, I comment below.
+On Mon, Jun 02, 2025 at 04:38:09PM +0530, Aneesh Kumar K.V wrote:
+> Xu Yilun <yilun.xu@linux.intel.com> writes:
 > 
-> Hi Emi,
+> >> + * struct iommu_vdevice_id - ioctl(IOMMU_VDEVICE_TSM_BIND/UNBIND)
+> >> + * @size: sizeof(struct iommu_vdevice_id)
+> >> + * @vdevice_id: Object handle for the vDevice. Returned from IOMMU_VDEVICE_ALLOC
+> >> + */
+> >> +struct iommu_vdevice_id {
+> >> +	__u32 size;
+> >> +	__u32 vdevice_id;
+> >> +} __packed;
+> >> +#define IOMMU_VDEVICE_TSM_BIND _IO(IOMMUFD_TYPE, IOMMUFD_CMD_VDEVICE_TSM_BIND)
+> >> +#define IOMMU_VDEVICE_TSM_UNBIND _IO(IOMMUFD_TYPE, IOMMUFD_CMD_VDEVICE_TSM_UNBIND)
+> >
+> > Hello, I see you are talking about the detailed implementation. But
+> > could we firstly address the confusing whether this TSM Bind/Unbind
+> > should be a VFIO uAPI or IOMMUFD uAPI?
+> >
+> > In this thread [1], I was talking about TSM Bind/Unbind affects VFIO
+> > behavior so they cannot be iommufd uAPIs which VFIO is not aware of.
+> > At least TDX Connect cares about this problem now. And the conclusion
+> > seems to be "have a VFIO_DEVICE_BIND(iommufd vdevice id), then have
+> > VFIO reach into iommufd".
+> >
+> > And some further findings [2] indicate this problem may also exist on
+> > AMD when p2p is involved.
+> >
+> > [1]: https://lore.kernel.org/all/20250515175658.GR382960@nvidia.com/
+> > [2]: https://lore.kernel.org/all/aDnXxk46kwrOcl0i@yilunxu-OptiPlex-7050/
+> >
 > 
->>> Subject: [PATCH v8 16/43] arm64: RME: Handle realm enter/exit
->>>
->>> Entering a realm is done using a SMC call to the RMM. On exit the exit-codes
->>> need to be handled slightly differently to the normal KVM path so define our own
->>> functions for realm enter/exit and hook them in if the guest is a realm guest.
->>>
->>> Signed-off-by: Steven Price <steven.price@arm.com>
->>> ---
-> 
-> [..]
-> 
->>> +/*
->>> + * Return > 0 to return to guest, < 0 on error, 0 (and set exit_reason)
->>> +on
->>> + * proper exit to userspace.
->>> + */
->>> +int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_ret) {
->>> +	struct realm_rec *rec = &vcpu->arch.rec;
->>> +	u8 esr_ec = ESR_ELx_EC(rec->run->exit.esr);
->>> +	unsigned long status, index;
->>> +
->>> +	status = RMI_RETURN_STATUS(rec_run_ret);
->>> +	index = RMI_RETURN_INDEX(rec_run_ret);
->>> +
->>> +	/*
->>> +	 * If a PSCI_SYSTEM_OFF request raced with a vcpu executing, we
->>> might
->>> +	 * see the following status code and index indicating an attempt to run
->>> +	 * a REC when the RD state is SYSTEM_OFF.  In this case, we just need
->>> to
->>> +	 * return to user space which can deal with the system event or will try
->>> +	 * to run the KVM VCPU again, at which point we will no longer attempt
->>> +	 * to enter the Realm because we will have a sleep request pending on
->>> +	 * the VCPU as a result of KVM's PSCI handling.
->>> +	 */
->>> +	if (status == RMI_ERROR_REALM && index == 1) {
->>> +		vcpu->run->exit_reason = KVM_EXIT_UNKNOWN;
->>> +		return 0;
->>> +	}
->> Running kvm-unit-tests-cca selftest(smp) test in quick succession may trigger these conditions, resulting in the following error logs.
->>   Error: KVM exit reason: 0 ("KVM_EXIT_UNKNOWN")
->>
->> Since KVM_EXIT_UNKNOWN is used when no specific exit reason applies, I think it would be better to make it identifiable as an error.
->> How about adding and setting a new ARM64 exit_reason value to indicate that the PSCI_SYSTEM_OFF request is conflicting with a running vcpu?
-> 
-> Aneesh pointed this out to me off-list. We agreed that KVM_EXIT_SHUTDOWN
-> was more appropriate here. I'll make the change for v9.
+> Looking at your patch series, I understand the reason you need a vfio
+> ioctl is to call pci_request_regions_exclusive—is that correct?
 
-Sounds good to me
+The immediate reason is to unbind the TDI before unmapping the BAR.
 
-Cheers
-Suzuki
+> 
+> In another thread, I asked whether this might be better handled by
+> pci_tsm instead of vfio. I'd be interested in your thoughts on that.
+> 
+> I also noticed you want to unbind the TDI before unmapping the BAR in
+> vfio. From what I understand, this should still be possible if we use an
+> iommufd ioctl.
 
+I'm not sure how is that possible.
+
+> Either approach—a vfio or iommufd ioctl—works fine for my
+> needs. We can continue that discussion in your patch series thread.
+
+Yeah, let's discuss in that thread.
+
+> 
+> -aneesh
