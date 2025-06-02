@@ -1,166 +1,99 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E582920FA86
-	for <linux-coco@lists.linux.dev>; Mon,  2 Jun 2025 10:51:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E515A1B412A;
+	Mon,  2 Jun 2025 11:08:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748861465; cv=none; b=oory72Su0YfBD+7GrvpE9Kqul97znIXz64Mj+3yYzhuWwIMzT8fbNGHaTkkDnECe6CFhaRfhKNG1NgBXhY0OvMxFi8pRxUzaGxD5eVOsru/QP/cDhL/tLHNRgi4/OzosVrJcH88jFtnQ6LAUZrWK7hL2K6VJFW7UIFAJTG5s5XE=
+	t=1748862498; cv=none; b=HC1fiAu8Ky4btXFwO8msov0wKBKt6CX6hflpKrfYjIhCv7v8WH/dkiQyaX0Z1HtmFAfSXNn8uxf6lq6eOQn55cpzm9co6zdunnUu2WG4SqmhfiNBqlyJlYE5+VpQh+bvU2zD6ZB06uQ/SkRNKHOHfemSGaYwS4cTXTmAl5SqAeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748861465; c=relaxed/simple;
-	bh=yvJh4bvjwJWvwmhp2nxCLl64gwNeP4C7z/uxvgfpHGo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pS45IG7+bpCocRRbyMx0o/PM4p5JgC+M9a2dbMq9FNdDoVDrME2KLhAXCoe0FxCjBzF4kvWVD18JmFbETj4xkMRk+vgZ+Cqf3z4bKYqz+zNPmQ9rdTA25soOyf7wO1IXSFC9Is1Ofru4ExnB4hJiJyiuLFeyTOgHLpsdY//LPoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=b/LEjoN4; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1748862498; c=relaxed/simple;
+	bh=bbcAduJnWusTrZNUnraWUxM+FUh78FuCLZfN8+aO7Ls=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Git78yCGnlQq77QXPEB/uwIyBsV4X4sIbQjTo07W6Vem1Q9sisjuRC3vPW3/VT0deFWNq5MqEkrnxPQvFzSgpHjCZlOltvzx8brb+fiNbwtB/DXh5oziX4tb5rVF3DF9hR35K6pVUdEqkVi8cDna1GgkddAnjlm1zYEp366cGhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m8WMp5Bv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="b/LEjoN4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1748861463;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CuEEvv+92fO5OTnIlEAGlwCiJip9RXuTFHiD9Ei8oBo=;
-	b=b/LEjoN4RD1ausFQ86vHRvVZQIj4dtUwKqzF+IbRUphgxldH0bBhPWRPydzfJ7phrwoVNI
-	xWYkrk8OlvNvNHWQDHS7whXJUUYclR9NHh0Qi2mwH7H3A2IX5UVcuegqisydP6Lz+LJZoM
-	6s/s7hWMFqjYUGgydqp6CcaNxBsKFmw=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-91-YrCPgNQoNLKlgGbCcUXWsQ-1; Mon,
- 02 Jun 2025 06:50:59 -0400
-X-MC-Unique: YrCPgNQoNLKlgGbCcUXWsQ-1
-X-Mimecast-MFC-AGG-ID: YrCPgNQoNLKlgGbCcUXWsQ_1748861457
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 24EB41800373;
-	Mon,  2 Jun 2025 10:50:57 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.45.224.29])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5B68619560B7;
-	Mon,  2 Jun 2025 10:50:56 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
-	id 281F7180078F; Mon, 02 Jun 2025 12:50:51 +0200 (CEST)
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: linux-coco@lists.linux.dev
-Cc: kvm@vger.kernel.org,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-	linux-efi@vger.kernel.org (open list:EXTENSIBLE FIRMWARE INTERFACE (EFI))
-Subject: [PATCH v2 2/2] x86/sev: let sev_es_efi_map_ghcbs map the caa pages too
-Date: Mon,  2 Jun 2025 12:50:49 +0200
-Message-ID: <20250602105050.1535272-3-kraxel@redhat.com>
-In-Reply-To: <20250602105050.1535272-1-kraxel@redhat.com>
-References: <20250602105050.1535272-1-kraxel@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m8WMp5Bv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649C0C4CEEB;
+	Mon,  2 Jun 2025 11:08:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748862497;
+	bh=bbcAduJnWusTrZNUnraWUxM+FUh78FuCLZfN8+aO7Ls=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=m8WMp5BvHJ4TfanL/zerpkPvvfpopAiTB7EYXM9YvbfeShRSX2vW9NTE+QaOmBLhF
+	 lb+WGfpb2c8s4HgJuyvgVpXdqnESO99IZ1v1FZj7GOXghGWfyHoUn257VBhmH0ZZIP
+	 5XdEv/buarpRscYOchHDZdqw0q2KCyrtSDad7mLcvL2CrE5tNngvQae29UOKDj2QjG
+	 3C4gVaQtuLKEvcoeGsBtXl5eNlVBk6MfsPUVBQglQVCjNGDOOZGS5Dli2zGmryDBPK
+	 aBRW6PEqA2r7nWYDW32wmcT2NDeNYOXKFNjwUmGzqnLJz5oR4HFz04sA3c6FxfFCuC
+	 r3ro+Nc4UZnag==
+X-Mailer: emacs 30.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
+	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
+	jgg@nvidia.com, zhiw@nvidia.com
+Subject: Re: [RFC PATCH 3/3] iommufd/tsm: Add tsm_bind/unbind iommufd ioctls
+In-Reply-To: <aDsta4UX76GaExrO@yilunxu-OptiPlex-7050>
+References: <yq5a5xhj5yng.fsf@kernel.org>
+ <20250529133757.462088-1-aneesh.kumar@kernel.org>
+ <20250529133757.462088-3-aneesh.kumar@kernel.org>
+ <aDsta4UX76GaExrO@yilunxu-OptiPlex-7050>
+Date: Mon, 02 Jun 2025 16:38:09 +0530
+Message-ID: <yq5azfeqjt9i.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-OVMF EFI firmware needs access to the CAA page to do SVSM protocol
-calls.  So add that to sev_es_efi_map_ghcbs and also rename the function
-to reflect the additional job it is doing now.
+Xu Yilun <yilun.xu@linux.intel.com> writes:
 
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
----
- arch/x86/include/asm/sev.h     |  4 ++--
- arch/x86/coco/sev/core.c       | 14 ++++++++++++--
- arch/x86/platform/efi/efi_64.c |  4 ++--
- 3 files changed, 16 insertions(+), 6 deletions(-)
+>> + * struct iommu_vdevice_id - ioctl(IOMMU_VDEVICE_TSM_BIND/UNBIND)
+>> + * @size: sizeof(struct iommu_vdevice_id)
+>> + * @vdevice_id: Object handle for the vDevice. Returned from IOMMU_VDEV=
+ICE_ALLOC
+>> + */
+>> +struct iommu_vdevice_id {
+>> +	__u32 size;
+>> +	__u32 vdevice_id;
+>> +} __packed;
+>> +#define IOMMU_VDEVICE_TSM_BIND _IO(IOMMUFD_TYPE, IOMMUFD_CMD_VDEVICE_TS=
+M_BIND)
+>> +#define IOMMU_VDEVICE_TSM_UNBIND _IO(IOMMUFD_TYPE, IOMMUFD_CMD_VDEVICE_=
+TSM_UNBIND)
+>
+> Hello, I see you are talking about the detailed implementation. But
+> could we firstly address the confusing whether this TSM Bind/Unbind
+> should be a VFIO uAPI or IOMMUFD uAPI?
+>
+> In this thread [1], I was talking about TSM Bind/Unbind affects VFIO
+> behavior so they cannot be iommufd uAPIs which VFIO is not aware of.
+> At least TDX Connect cares about this problem now. And the conclusion
+> seems to be "have a VFIO_DEVICE_BIND(iommufd vdevice id), then have
+> VFIO reach into iommufd".
+>
+> And some further findings [2] indicate this problem may also exist on
+> AMD when p2p is involved.
+>
+> [1]: https://lore.kernel.org/all/20250515175658.GR382960@nvidia.com/
+> [2]: https://lore.kernel.org/all/aDnXxk46kwrOcl0i@yilunxu-OptiPlex-7050/
+>
 
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index 58e028d42e41..6e0ef192f23b 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -445,7 +445,7 @@ static __always_inline void sev_es_nmi_complete(void)
- 	    cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
- 		__sev_es_nmi_complete();
- }
--extern int __init sev_es_efi_map_ghcbs(pgd_t *pgd);
-+extern int __init sev_es_efi_map_ghcbs_caas(pgd_t *pgd);
- extern void sev_enable(struct boot_params *bp);
- 
- /*
-@@ -556,7 +556,7 @@ static inline void sev_es_ist_enter(struct pt_regs *regs) { }
- static inline void sev_es_ist_exit(void) { }
- static inline int sev_es_setup_ap_jump_table(struct real_mode_header *rmh) { return 0; }
- static inline void sev_es_nmi_complete(void) { }
--static inline int sev_es_efi_map_ghcbs(pgd_t *pgd) { return 0; }
-+static inline int sev_es_efi_map_ghcbs_caas(pgd_t *pgd) { return 0; }
- static inline void sev_enable(struct boot_params *bp) { }
- static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate) { return 0; }
- static inline int rmpadjust(unsigned long vaddr, bool rmp_psize, unsigned long attrs) { return 0; }
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index fbc1215d2746..7ab9fc0ea180 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -1054,11 +1054,13 @@ int __init sev_es_setup_ap_jump_table(struct real_mode_header *rmh)
-  * This is needed by the OVMF UEFI firmware which will use whatever it finds in
-  * the GHCB MSR as its GHCB to talk to the hypervisor. So make sure the per-cpu
-  * runtime GHCBs used by the kernel are also mapped in the EFI page-table.
-+ *
-+ * When running under SVSM the CCA page is needed too, so map it as well.
-  */
--int __init sev_es_efi_map_ghcbs(pgd_t *pgd)
-+int __init sev_es_efi_map_ghcbs_caas(pgd_t *pgd)
- {
- 	struct sev_es_runtime_data *data;
--	unsigned long address, pflags;
-+	unsigned long address, pflags, pflags_enc;
- 	int cpu;
- 	u64 pfn;
- 
-@@ -1066,6 +1068,7 @@ int __init sev_es_efi_map_ghcbs(pgd_t *pgd)
- 		return 0;
- 
- 	pflags = _PAGE_NX | _PAGE_RW;
-+	pflags_enc = cc_mkenc(pflags);
- 
- 	for_each_possible_cpu(cpu) {
- 		data = per_cpu(runtime_data, cpu);
-@@ -1075,6 +1078,13 @@ int __init sev_es_efi_map_ghcbs(pgd_t *pgd)
- 
- 		if (kernel_map_pages_in_pgd(pgd, pfn, address, 1, pflags))
- 			return 1;
-+
-+		address = per_cpu(svsm_caa_pa, cpu);
-+		if (address) {
-+			pfn = address >> PAGE_SHIFT;
-+			if (kernel_map_pages_in_pgd(pgd, pfn, address, 1, pflags_enc))
-+				return 1;
-+		}
- 	}
- 
- 	return 0;
-diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-index e7e8f77f77f8..97e8032db45d 100644
---- a/arch/x86/platform/efi/efi_64.c
-+++ b/arch/x86/platform/efi/efi_64.c
-@@ -216,8 +216,8 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
- 	 * When SEV-ES is active, the GHCB as set by the kernel will be used
- 	 * by firmware. Create a 1:1 unencrypted mapping for each GHCB.
- 	 */
--	if (sev_es_efi_map_ghcbs(pgd)) {
--		pr_err("Failed to create 1:1 mapping for the GHCBs!\n");
-+	if (sev_es_efi_map_ghcbs_caas(pgd)) {
-+		pr_err("Failed to create 1:1 mapping for the GHCBs and CAAs!\n");
- 		return 1;
- 	}
- 
--- 
-2.49.0
+Looking at your patch series, I understand the reason you need a vfio
+ioctl is to call pci_request_regions_exclusive=E2=80=94is that correct?
 
+In another thread, I asked whether this might be better handled by
+pci_tsm instead of vfio. I'd be interested in your thoughts on that.
+
+I also noticed you want to unbind the TDI before unmapping the BAR in
+vfio. From what I understand, this should still be possible if we use an
+iommufd ioctl. Either approach=E2=80=94a vfio or iommufd ioctl=E2=80=94work=
+s fine for my
+needs. We can continue that discussion in your patch series thread.
+
+-aneesh
