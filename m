@@ -1,220 +1,221 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCA813CA9C
-	for <linux-coco@lists.linux.dev>; Mon,  2 Jun 2025 18:58:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748890700; cv=none; b=OFku2TRSl7oNXkf9E1GpmsrQTdLolt2zg84SGOv5p6QjNabbZYfpxxW0Bc/8UBNj15qNYiiM9VssRrPm+486rTdAk5Pzn7UiY5cX/yDbs0EsMTyLhHKbSyr1PFNfgDbkLGur0bvRrfEEuowWqqzcOJiJpAWU1p6JwdYQNkSO5xc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748890700; c=relaxed/simple;
-	bh=v2x3I7vJUp8Nn4sz3nlD9/N+0W37+LyoFXHCrYC2P3U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OPkWldWc4n3Cl9UvFf7c9pNnf2dWRv5QDc3Nqi8FLWDkCk1wQ9Vz4wG/x7NHgGJDBDBCNcBpkOV+yENnogiiGDe7hn4Bz8Ne5yz5uvVh8Z3B9XPJSvepr/s1GyAhIVCrtyI/eNpO1i7SRaEQofG6+Hy2/2gfAp5KN/lVijCvny8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=giDb07Om; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBF113C8EA
+	for <linux-coco@lists.linux.dev>; Mon,  2 Jun 2025 23:44:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748907856; cv=fail; b=PTwHCAjyc9+BCwZVD9kocVIYgoEzaTaYaadSneA1ccm71qHCwsyqXSyPFncIFiJab0xquR62vZjzG82mhfBUFBm8/HaFDmgH0qybm9iHEBM/Qq4tAMLsUbL4HLOuE1Wsil/R9r/O5ujkDH65QF9NU+f/xwa9eWweAlRmbdTBlyA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748907856; c=relaxed/simple;
+	bh=k9htidvcpH6k6nFXqeP2QuIlJ46A0/ldxT8oaewSj4Q=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=tg86R0cnPuZfKBbEuCM0Shd6H9I6DrkDRkdEZyFJNl6b6Cybe/wd9I5gb1LFZ3UQZGtZ3/bLA5gzotwMmB228GKyHaUZ16BqLanG+5ox9HJNEnNyj26Qtdi9owz354sWGw95I5eUAbsJh598lV9Ae8bU/AbihNXM5MOx0NaYToM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CUHIsws0; arc=fail smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="giDb07Om"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CUHIsws0"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748890699; x=1780426699;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=v2x3I7vJUp8Nn4sz3nlD9/N+0W37+LyoFXHCrYC2P3U=;
-  b=giDb07Om84Hu4BokRQY1Xb2g/OJNefgHcZl9Soyoo+PuVl6F4FRYKhvP
-   LdA/+hNlKolTJI/9Co2dz1c4wViVg18i+tzh6QiMelg7pPsdYQJJbNEEE
-   gL9jYFfDn3E6iRqlw5KuW0kXFX7VemCpqtDLzcbBEV7hn/ns/S/vHUaYs
-   BUEf8GiFBYjdC99VRKZM3MJ2TGzyikVVbnrN6YUNAYflQlBx/v4dM0QyS
-   7hMmas7TKKgJ8IiWlrRHNheWCS0m0yRhxtQypXxK8iXX+SnIflL+Cduih
-   1bfnCVIQlEDicMFKp4BieGN/Vcww30WWop+glXMYMgq9dW1o9sf3NUwmn
-   w==;
-X-CSE-ConnectionGUID: 6ig8zlOoTzuKlT+P0NWvrg==
-X-CSE-MsgGUID: +5AaASFfQAyXKA/hYwrnzA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="53537159"
+  t=1748907854; x=1780443854;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=k9htidvcpH6k6nFXqeP2QuIlJ46A0/ldxT8oaewSj4Q=;
+  b=CUHIsws0v7/AhGEQrNFyCguiMDCAygHPvoJ/O0Ro3yIKjYT8zG6mp1QI
+   iXju5XA4gtin6HdKI4dwLQbUNIVEWCgSKp6HbmcSYma1skhDvQLKd5qZQ
+   AEYS4sjQvfdkChihlAgsjVFouWd75WSAYSVyuJmxk+RJGFK55DEG5pvoc
+   K7idaSiWnSxzyLDD/ep42sjhcCzSBp1sq4jBdqTALcFysyWFOi+P+HOYI
+   2PKBpndFAzS6AC+DtIwqLAgQ4ZpLg5AgvhJLgzkmbUztHRXvesLOcaIhx
+   uBfnZvb/ElK1Do4lfVsV6LNEj9BsGCuH9TJTMUT4ypO+a2a4phorih/rE
+   Q==;
+X-CSE-ConnectionGUID: 3+P29rO+Rx6yEaVeSar7xg==
+X-CSE-MsgGUID: 1YeOsO/6T7egpVqdKKu63w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="50846565"
 X-IronPort-AV: E=Sophos;i="6.16,204,1744095600"; 
-   d="scan'208";a="53537159"
+   d="scan'208";a="50846565"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 11:58:18 -0700
-X-CSE-ConnectionGUID: HTfw4oFzRVe13jt5NYBKKg==
-X-CSE-MsgGUID: St/FPc1BSvmxKKoSe/ONGw==
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 16:44:13 -0700
+X-CSE-ConnectionGUID: /BEg+tk+SM2qyNGhQyo1KA==
+X-CSE-MsgGUID: D/4xpwuyR3u/8JQplRAwug==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,204,1744095600"; 
-   d="scan'208";a="145556404"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa009.fm.intel.com with ESMTP; 02 Jun 2025 11:58:15 -0700
-Date: Tue, 3 Jun 2025 02:51:44 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
-	lukas@wunner.de, aneesh.kumar@kernel.org, suzuki.poulose@arm.com,
-	sameo@rivosinc.com, jgg@nvidia.com, zhiw@nvidia.com
-Subject: Re: [PATCH v3 12/13] PCI/TSM: support TDI related operations for
- host TSM driver
-Message-ID: <aD3ywEQuFMIEng8T@yilunxu-OptiPlex-7050>
-References: <20250516054732.2055093-1-dan.j.williams@intel.com>
- <20250516054732.2055093-13-dan.j.williams@intel.com>
- <153d5223-169d-4379-bc2c-6ad279489560@amd.com>
- <682ce21c17363_1626e1004e@dwillia2-xfh.jf.intel.com.notmuch>
- <aC2c1SggkqKSO1st@yilunxu-OptiPlex-7050>
- <2fb2de7a-efc2-4ab0-8303-833dd2471d9f@amd.com>
- <aDhtLn2ySm/pgeab@yilunxu-OptiPlex-7050>
- <4b3621d7-4bed-44c7-8139-57de5825e968@amd.com>
- <aDsfmJpUqy53dans@yilunxu-OptiPlex-7050>
- <80277929-ce8d-4cef-98ed-c5280fdfa543@amd.com>
+   d="scan'208";a="145610963"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 16:44:12 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 2 Jun 2025 16:44:11 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Mon, 2 Jun 2025 16:44:11 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (40.107.236.51)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.55; Mon, 2 Jun 2025 16:44:11 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mCQAqIHnhOy9MzQlUBJVaJpioT7I3sXmvSFkvHZpr6hdV5Rzs3eDma6MJAoH82WoqyzAOOj0VwXZNQEdD9YeKpJ7fkCK2DBD02+pSf9zgGKepkc9MecreKccwT2NdyY4sruj6yTwFTiEeZQet8dxxX6lsWos2vjWNY1Y30HqPEBqJwyC9LB/dDGb4oj3wFVvpIyzvg9A8BNhH04QsigZ/WfYz56qL2KmfhVLAqkZ31xC+wZ5a2MvVbz34hoOsYCfnK0DcgwMyh7g8zkqVCYXslFM8wvWcv2x/OTGk0LG0aWrhVPCD/OO8+4HaYmvORGoPVHT0eF3iJ1TnM5Dvhynvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=k9htidvcpH6k6nFXqeP2QuIlJ46A0/ldxT8oaewSj4Q=;
+ b=caDcm7Xnnrct36VLglW976mmWDt2EFTsb7gkZzMZxoRKW+vXi3rZSF8o9gvGiyyCG2zxJ0ql5hs1u4Ch59LwQV4nCqeXPtavVlY939WWhGMR4M5xswKU6yNL4A6SA1hdmap/7f0j81IBw57QbTnGJ96alNq+XeAa+U9aC44yS2tl3rip1adkeAZ+c4SdABYCK7JXQWX5X2zHPbZZx2Q+NRPsxRn3NoUUocgBnFLWYINcJy8hPK8sI/g8aKi8vucFNGtu6gWjwrWS2LcBKIYCUfKXIzjbwcFOjtfS+cE5Zv2ghgjwMOPufn6c68nJzzEWYJZAPVLHsOjpAvYYB3zZQA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BL1PR11MB5525.namprd11.prod.outlook.com (2603:10b6:208:31f::10)
+ by IA4PR11MB9393.namprd11.prod.outlook.com (2603:10b6:208:569::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.37; Mon, 2 Jun
+ 2025 23:44:08 +0000
+Received: from BL1PR11MB5525.namprd11.prod.outlook.com
+ ([fe80::1a2f:c489:24a5:da66]) by BL1PR11MB5525.namprd11.prod.outlook.com
+ ([fe80::1a2f:c489:24a5:da66%5]) with mapi id 15.20.8792.034; Mon, 2 Jun 2025
+ 23:44:08 +0000
+From: "Huang, Kai" <kai.huang@intel.com>
+To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "Gao, Chao" <chao.gao@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>
+CC: "Shutemov, Kirill" <kirill.shutemov@intel.com>, "Dong, Eddie"
+	<eddie.dong@intel.com>, "Hansen, Dave" <dave.hansen@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "Reshetova,
+ Elena" <elena.reshetova@intel.com>, "kirill.shutemov@linux.intel.com"
+	<kirill.shutemov@linux.intel.com>, "seanjc@google.com" <seanjc@google.com>,
+	"mingo@redhat.com" <mingo@redhat.com>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>, "tglx@linutronix.de" <tglx@linutronix.de>, "Yamahata,
+ Isaku" <isaku.yamahata@intel.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, "Chen,
+ Farrah" <farrah.chen@intel.com>, "Edgecombe, Rick P"
+	<rick.p.edgecombe@intel.com>, "bp@alien8.de" <bp@alien8.de>, "Williams, Dan
+ J" <dan.j.williams@intel.com>
+Subject: Re: [RFC PATCH 04/20] x86/virt/tdx: Introduce a "tdx" subsystem and
+ "tsm" device
+Thread-Topic: [RFC PATCH 04/20] x86/virt/tdx: Introduce a "tdx" subsystem and
+ "tsm" device
+Thread-Index: AQHby8iNcpEmINNxbky66YHmdnh+k7PwmOEA
+Date: Mon, 2 Jun 2025 23:44:08 +0000
+Message-ID: <61fd680c4e4afd5eb4455ee0dbbb05c30f0e7a0d.camel@intel.com>
+References: <20250523095322.88774-1-chao.gao@intel.com>
+	 <20250523095322.88774-5-chao.gao@intel.com>
+In-Reply-To: <20250523095322.88774-5-chao.gao@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL1PR11MB5525:EE_|IA4PR11MB9393:EE_
+x-ms-office365-filtering-correlation-id: cd39c1bc-e9da-43a3-48ad-08dda22f5e38
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024|38070700018;
+x-microsoft-antispam-message-info: =?utf-8?B?NDFtTTJmRkR3QlRGWlJJNE9TVFBDTER2MTVoYjJVRDJYOWh3VE9wSmI4ZkRN?=
+ =?utf-8?B?NnZRb1EyYWtpWXY3aUp4YTNYQWRCNWZCcm92Z21yamtlMlo0Q1dCbFFHVDEv?=
+ =?utf-8?B?bklybjluYUhqc0U2L2o0NGxwUTFSSnVLVGcwYXFrcGdOSzd4TDFZd1ByT0tE?=
+ =?utf-8?B?djM0Um5idU1mTnV5LzNHZmtYSE81ZWlJbVRWWGFwMUlsYW1qZUhNZG9sSXVE?=
+ =?utf-8?B?dXVna0FJM0Flcjk1OGo3NHFuYzhIdEVNVGZ0WFAwQ2hzNjh3b0gyNTdZNWRj?=
+ =?utf-8?B?dmN3c1FZN3lNS3hBbVplWGFBZUVqQnNtam9MZGljOWdvOG04ZlJITk5scjV5?=
+ =?utf-8?B?TEYxUnNqM1FvZExsd1p2RmlzRHAzVVFGSXhYc25LZ1Y2dEFiOHFGOC8vQVJZ?=
+ =?utf-8?B?SWJHSCtOb1B3MVppdGY1Z0lVRm5yWHdHMk1rUDRhS0RZVk0zZ2JCeU1LZGli?=
+ =?utf-8?B?ampTcHVRL1NuM256N1lyb1cwcUdhRk9EZm9nT0wxRXk0aUdXNzI1TmJqaDFL?=
+ =?utf-8?B?T3Z0S0RBYThzaHJGSnY0Y0thY1A5VlhOMEl3KzB5SzJyemhwNzVEVkVXdVIy?=
+ =?utf-8?B?UEJMN3YrWXF3dXd4amV1UHNHN3E0MEQwNDZGU1dqaU1iWWZ6ODJkTFZhR1dx?=
+ =?utf-8?B?L2pJSkt6cks0ZmtCRjlvdEYyTElZSHFUeG02dDRVL0NmYnY2a2xWbmlzVHJ6?=
+ =?utf-8?B?aUlNdjZlRWMzY0xlS21XVWtPMFVOdUMyRFhHMFYreTNuUXZoaXArck9hQ0Ru?=
+ =?utf-8?B?LytKYkd3enZhNnI3REJmMzQ4TTF3SjEvSmxLWE1seklKS1M3ajdmMHNkbkxy?=
+ =?utf-8?B?SGxBdDlBUHhMTld2cDhNbVpleHlaL05FMXV5T3lOL1Rjd0crZmdSUDRnaWxh?=
+ =?utf-8?B?TEdyR0RrWXRaMWp1bWxoZUNOOEhIdzJ2TmZ5dFhRV0tNQXZjNGwvK1I5Z0s0?=
+ =?utf-8?B?bVp1TkxJNDN6Y2VqelF3dVVmMDRNSmtDNk5DcTNmOHhsT1dVd1RTWnRncTBw?=
+ =?utf-8?B?TERXYThsQzA3L1BIYWlSUUl4UUdlZTVBUDU2RlVSZDZrVWZrQ2U3cjVla0k2?=
+ =?utf-8?B?KzNxOFlRK1F0VEQyY3JWL1MxckNRSVJSN1IzRXF0SWg1K29FSVlXeHFzUG50?=
+ =?utf-8?B?RE0rMWFhZWJnNlBKZ1NnQzZnOWw3WnF6SGQwVFNxdlh5TFFmREJyUXVuYVR3?=
+ =?utf-8?B?NDAvTTZSSWoyZVlMblNxOWxiRDFObjE2YXZVV0dEL2JyTVFKaGlJb21ScEdB?=
+ =?utf-8?B?RUlYam9iRkVUZFVHeVJFNklGVk84UnRKWklMd1NCOCtsYUxmSXNMQytEZHdJ?=
+ =?utf-8?B?SmFkTWFsU3VxY080dHlEa2M1WkR3SDVzckk5dmluYzlaZ1E3NFI1eHpYN01l?=
+ =?utf-8?B?ait1cHZNUEluc2syYnAzS2ZwaTRSczkvVTgzWlpJY0ppaWd0QmlXdW9uWVdx?=
+ =?utf-8?B?UXJLd3N5NmNSbVRqSFIya08yb1hjaWt3anRNR1ZMT0VKbjd3L1ZrbGcyaU1L?=
+ =?utf-8?B?dFlqdWNOSXp4TncyREdNV3I2WkJ0TExnNFBYSzdoSXJrdEpwZlpxMHV5aDVY?=
+ =?utf-8?B?WTBaUDArRmVjNTJxL0ZScFRKdkk2YmZmQzdXM0NpTmY0WE51dWpJQmlNRVh2?=
+ =?utf-8?B?Q1BXWVo1S2d5MzY0eWtEREhWRW00MEpCRGFRV0hoNjZqTGw4UTRjZ1k2M0pV?=
+ =?utf-8?B?dFh3Wm9SVkxGYWRQbzFNcFRCc3gzSlZ4Zk1ZeG1BbVA5blhQWWVRZ2kyempG?=
+ =?utf-8?B?ajU3SHEvRGVGMGtsWDRkQU1iOXBDM08zTE16WTlJMThsNk9VMWRBQ2s4TGo3?=
+ =?utf-8?B?STJYZVlzcnR3eS9BcW16YU5YR1hBb2IvMTd3anUyeStkUFA4U3ZteE5HYm50?=
+ =?utf-8?B?bDNaV0NwZWtxNSszdlhkaGJ0QWpnK0tzMEM2RXdUUjV0d0VDTFFoN1JUTE9N?=
+ =?utf-8?B?SklZendITEVUUWMyU0M1c3JxVUJtcnBLNlhodGQ5K2c5SWd1UFQ3UVZXcEs4?=
+ =?utf-8?Q?eKPjbEW+4qEj098z8mCHUyHuamUGT4=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR11MB5525.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?amxuOWxwM1drSTNxZHBya3VMODRYdHdETXBFRWo1YWgrYU5EU0dlVzNaQXI1?=
+ =?utf-8?B?SzlRWThXdUg2VG5mWXlsMWx5OEVOQVZhZnN6M3NPSi9CWnhZeVpQdVR1eC9p?=
+ =?utf-8?B?TW92Z2tBV1h4M1hyM2sybWszU2p4WDlaaXk0Z2cwUE96MER4QU91My9CSTlv?=
+ =?utf-8?B?NGVYc2Y0TjZMQVRGajZtamFuaDdiRytWS1V0RjBHNkx2Ukw4ejVOTFRmazN6?=
+ =?utf-8?B?MnRRRVNZY0dCSUNRaUJJVnBLY041MC9LaEpFNGhMVFc0TkVJamVnTS9pTDNv?=
+ =?utf-8?B?djhQdEpOeFJ6cW1abXM1bGZMcFlLd05jdEJMU1BHQThFaWxMOWtLdlRmaEdQ?=
+ =?utf-8?B?V0FFenNUTzQ0WGFVbnJrTTNqWlBXWWN0Uk1kdzA5Q2xyQzh4dldJZVhXVUxt?=
+ =?utf-8?B?cW45dVVnSmM1THQ3cytDY3dLcUJsT0hqQ1hLQitTZzd0Ymp2djlLWE4xSGxy?=
+ =?utf-8?B?eEdVRzRCMDFqWCszMUd1UXRqUEdrTmM4YTR2NG1zL0VsQk56NDYzLy9ZSU1k?=
+ =?utf-8?B?bkpVMDJSTDcwVWp1dEY0L1RqbVRDaEgwck0zRVYwa0JmYjY5VkVBVWJvOTlz?=
+ =?utf-8?B?eHdkQkZ0bnBibWJKZnZjV1dHbVZYaDJSY25PVWhEbFhmK0ZxdkJqYWpJb1Bk?=
+ =?utf-8?B?VnlERmw4UkVoeUJwdXdIbnYzT1d3RU5ZVkZDZVlkNTlqZHhZYVFvVmlLdkE5?=
+ =?utf-8?B?UHRzT0hMSkV5U2RSWE94d0ZISCtxMjE0STFNcFVtbnhudFdnQWladjQyaEpR?=
+ =?utf-8?B?Y29KbFNMNWpoTXk0RjFJd01SUERPQnlQc0U3ZEs3NmE3NHlINk00OVIvb1pM?=
+ =?utf-8?B?YUEvQmFITEc0KzdCczVhcENqcTU2a09OSlg5L1FvZnhPdDlCSG45TytLbS9X?=
+ =?utf-8?B?bFBPcnJxdy80RmZvYlhWdmpIbCtmQnMySVUyNStMUi92RFRPRUVOTkJyWEtx?=
+ =?utf-8?B?WUpOanVlUmNHNkJMaFlzRG5Ebkpqa3RIYVJRUGN2YzZuQXM3WEkrZlUzVU1k?=
+ =?utf-8?B?NTl6UDNPRldjWEhyQkY4QmIxVTVUT3RadWUvVldOQnVrSk96eFJTV2ZFUGVl?=
+ =?utf-8?B?VlgxdEduMld0NGlIS2h2cDAxYm5mVTNpendKZzRSRzhySGhhYVE5cEdNdUYx?=
+ =?utf-8?B?QjIxSUVsdVNOOXFOckw4eFFhTUN5NFE4emRKVG55UUNGeHRpcjFnTkIvcDkx?=
+ =?utf-8?B?amd5STZkbWVJZ0krdWhENGQraUxDMWprQlIxLzVtOTBvZFBQY0dSOGxHQk5j?=
+ =?utf-8?B?WUw5L2MrSVVUMWw0WE9iR0VnN3Z1YzQzdlJwb2J2MWcxclA3cHUwYk1IU05H?=
+ =?utf-8?B?dHhFQjZ1MDRVbXZWRGQ3cXBDWXN5cEtDbSszVm1FMkdWSWYzYVhxbm1kWHV3?=
+ =?utf-8?B?L2lKN3gzOGoybWVHVWJjbW5VbGl5OGhhRmRVWlNPSWxITndRWFdlb3JiOXJM?=
+ =?utf-8?B?YkVXWHA0UzBVMm5sYzdpUXM3RkpqVEkvYnBmT1NnV0VMVW1jUFFSNlJaT2Fy?=
+ =?utf-8?B?cXpYdzZyVjdXNHpNNUhibGMxUjVXYWU0ZGJZZTlkdHV1clB3VlN1cFQwM0Yz?=
+ =?utf-8?B?U0p4UlBTTVZJNTJ3MTAzVUtzTktUZk5ZbEwzeGgyTXp1M2NiK2ZsTXp5dkts?=
+ =?utf-8?B?MHdpVVRMSXhQYWtWZFlJQUp4K1lEMmJtNGZneENaNC8xOC9IaU5ESnF2Z2Qy?=
+ =?utf-8?B?eGg0K3ZpM3VvOUhES095UU15TDBSdE5zekdkc0lpMGpDbmhaNUkxdmdXZkgy?=
+ =?utf-8?B?OEFQemdmNUttUkE2c1JOdDNzT0RyR1h5QTVNUEgveGkzS1kzZFIrS3ZuUUVp?=
+ =?utf-8?B?NG5UQmFwL1FHY1poMXVEN2F0OXlxOGhaeXZGT0ZnRXQwY1IvaXJlT1BseG8r?=
+ =?utf-8?B?U1pNaGxDZnF1S3BPQVM4cjY4aXlwazJLN0dUV1h0VndqUGd1NGxwdHBUM2xs?=
+ =?utf-8?B?anRPN2VGR0JGOHZ6VGY5ODUvYkNiQU9uMkV3UnNucElGYk5EdFdYVmE0TS9S?=
+ =?utf-8?B?dzk5WVhiOGhvNVVRemRnV2tFWmM5VmZ1ZnZYVGF2NlU4dUxHYkFVWjRjNmts?=
+ =?utf-8?B?alpTZE1rN3NHaUJ1bmFWOXg4MnluWUY2NVA2NXhpQUVQUm4vcS96Ym9ZQllL?=
+ =?utf-8?Q?pQTc1hY5exaWICYhHwO3Ph0An?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <864AF6022885994A959C9DC6FF9F4758@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <80277929-ce8d-4cef-98ed-c5280fdfa543@amd.com>
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5525.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd39c1bc-e9da-43a3-48ad-08dda22f5e38
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jun 2025 23:44:08.3796
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: BRfCLhU9IF5VvJriZ68do23/Cz5OBqU/eOZHMzJBT5f/h+lO0L9Cj9wPkelwSaAAfXAvMyBA5PRFFtpAcbxTEA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR11MB9393
+X-OriginatorOrg: intel.com
 
-On Mon, Jun 02, 2025 at 02:51:53PM +1000, Alexey Kardashevskiy wrote:
-> 
-> 
-> On 1/6/25 01:26, Xu Yilun wrote:
-> > On Fri, May 30, 2025 at 12:54:44PM +1000, Alexey Kardashevskiy wrote:
-> > > 
-> > > 
-> > > On 30/5/25 00:20, Xu Yilun wrote:
-> > > > > > > 
-> > > > > > > > > + * struct pci_tsm_guest_req_info - parameter for pci_tsm_ops.guest_req()
-> > > > > > > > > + * @type: identify the format of the following blobs
-> > > > > > > > > + * @type_info: extra input/output info, e.g. firmware error code
-> > > > > > > > 
-> > > > > > > > Call it "fw_ret"?
-> > > > > > > 
-> > > > > > > Sure.
-> > > > > > 
-> > > > > > This field is intended for out-of-blob values, like fw_ret. But fw_ret
-> > > > > > is specified in GHCB and is vendor specific. Other vendors may also
-> > > > > > have different values of this kind.
-> > > > > > 
-> > > > > > So I intend to gather these out-of-blob values in type_info, like:
-> > > > > > 
-> > > > > > enum pci_tsm_guest_req_type {
-> > > > > >      PCI_TSM_GUEST_REQ_TDXC,
-> > > > > >      PCI_TSM_GUEST_REQ_SEV_SNP,
-> > > > > > };
-> > > > > 
-> > > > > 
-> > > > > The pci_tsm_ops hooks already know what they are - SEV or TDX.
-> > > > 
-> > > > I think this is for type safe check to some extend. The tsm driver hook
-> > > > assumes the blobs are for its known format, but userspace may pass in
-> > > > another format ...
-> > > 
-> > > The blobs are guest_request blobs, they enter the kernel via iommufd's viommu ioctl and viommu already has  iommu_viommu_type which is (in my tree):
-> > > 
-> > > enum iommu_viommu_type {
-> > >          IOMMU_VIOMMU_TYPE_DEFAULT = 0,
-> > >          IOMMU_VIOMMU_TYPE_ARM_SMMUV3 = 1,
-> > >         IOMMU_VIOMMU_TYPE_AMD_TSM = 2,
-> > >         IOMMU_VIOMMU_TYPE_AMD = 3,
-> > >   };
-> > 
-> > That's a good point. So I think we don't have to use a 'type' field for
-> > ioctl(IOMMUFD_VDEVICE_GUEST_REQUEST). But I didn't see these viommu_type
-> > would be passed to TSM driver.So for this pci_tsm_guest_req kAPI, is it
-> > still good we keep the 'type' for type safe check in TSM driver?
-> This means that we somehow make it possible to create an Intel vdevice for the AMD TSM and now have to catch such situation  in runtime which seems wrong, we should not allow the mix in the first place. IOMMUFD is going to call the platform IOMMU code and that guy will just refuse creating a wrong viommu type.
-
-That's good point, seems we should check if viommu type matches TSM ...
-Need more investigations on it
-
-> 
-> 
-> > > 
-> > > > > 
-> > > > > 
-> > > > > > /* SEV SNP guest request type info */
-> > > > > > struct pci_tsm_guest_req_sev_snp {
-> > > > > > 	s32 fw_err;
-> > > > > > };
-> > > > > > 
-> > > > > > Since IOMMUFD has the userspace entry, maybe these definitions should be
-> > > > > > moved to include/uapi/linux/iommufd.h.
-> > > > > > 
-> > > > > > In pci-tsm.h, just define:
-> > > > > > 
-> > > > > > struct pci_tsm_guest_req_info {
-> > > > > > 	u32 type;
-> > > > > > 	void __user *type_info;
-> > > > > > 	size_t type_info_len;
-> > > > > > 	void __user *req;
-> > > > > > 	size_t req_len;
-> > > > > > 	void __user *resp;
-> > > > > > 	size_t resp_len;
-> > > > > > };
-> > > > > > 
-> > > > > > BTW: TDX Connect has no out-of-blob value, so should set type_info_len = 0
-> > > > > 
-> > > > > 
-> > > > > No TDX Connect fw error handling on the host OS whatsoever, always return to the guest?
-> > > > 
-> > > > Always return to guest. The fw error info (not raw fw error code) is
-> > > > embedded in response blob.
-> > > > 
-> > > > For QEMU/IOMMUFD, Guest Request doesn't care blob data, so don't have
-> > > > to judge fw_error either. Alway return to the guest and let the guest
-> > > > decide what to do.
-> > > 
-> > > So whatever is inside such requests, the host is not told about it ever? How does DOE bouncing work on Intel then if the fw cannot ask the host to do DOE? Thanks,
-> > > 
-> > 
-> > No, I just say QEMU/IOMMUFD don't care about the execution, so no need
-> > an explicit fw_err return to them. Platform TSM driver should definitely
-> > know about fw_err and handle it (to do DOE or anything else) internally,
-> > but don't have to EXPLICITLY propagate these error code to up layers (TSM
-> > core/QEMU/IOMMUFD).
-> 
-> On AMD, the host has to provide certain handles along with the guest request/response buffers and the host can get it wrong so the host may want to know if the host did a wrong call. Say, we are killing a guest and by the same time making a guest request - will the Intel fw still say "that's ok, forward the response to the guest", even if it knows it is not possible?
-
-For Intel, there is no 'guest_request' fw_call. Every GHCI call has
-clear meaning to host (TSM driver) and host uses exact fw_calls to
-complete each GHCI call.
-
-Intel fw doesn't fill GHCI buffer, it just executes fw_call and
-returns fw_err to host. Intel fw will not decide forwarding anything to
-guest or not. It is the TSM driver's job to fill GHCI buffer according
-to fw_call execution status.
-
-That said, guest_request is just a QEMU selected set of GHCI commands.
-
-For guest_request, a GHCI OK only means host has filled the response
-buffer, host fills fw_err to the response buffer and guest should look
-into the response buffer to see what really happened.
-
-> Or SPDM session broke - the host OS won't be told until it specifically make a call other than guest request? Seems weird but okay. Thanks,
-> 
-
-The TDX TSM driver knows every detail of the execution of a fw_calls.
-
-Thanks,
-Yilun
-
-> 
-> > Thanks,
-> > Yilun
-> > 
-> > > > > oookay, do not use it but the fw response is still a generic thing. Whatever is specific to AMD can be packed into req/resp and QEMU/guest will handle those.
-> > > > 
-> > > > But for out-of-blob data, it is the same effort as packing into type_info.
-> > > > At least we could have a clear idea, which blob is SW defined, which blob
-> > > > is GHCI/GHCB defined.
-> > > > 
-> > > > Thanks,
-> > > > Yilun
-> > > 
-> > > -- 
-> > > Alexey
-> > > 
-> 
-> -- 
-> Alexey
-> 
-> 
+DQo+ICBzdGF0aWMgaW50IGluaXRfdGR4X21vZHVsZSh2b2lkKQ0KPiAgew0KPiAgCWludCByZXQ7
+DQo+IEBAIC0xMTM2LDYgKzEyMDksOCBAQCBzdGF0aWMgaW50IGluaXRfdGR4X21vZHVsZSh2b2lk
+KQ0KPiAgDQo+ICAJcHJfaW5mbygiJWx1IEtCIGFsbG9jYXRlZCBmb3IgUEFNVFxuIiwgdGRtcnNf
+Y291bnRfcGFtdF9rYigmdGR4X3RkbXJfbGlzdCkpOw0KPiAgDQo+ICsJdGR4X3N1YnN5c19pbml0
+KCk7DQo+ICsNCj4gIG91dF9wdXRfdGR4bWVtOg0KPiAgCS8qDQo+ICAJICogQHRkeF9tZW1saXN0
+IGlzIHdyaXR0ZW4gaGVyZSBhbmQgcmVhZCBhdCBtZW1vcnkgaG90cGx1ZyB0aW1lLg0KDQpUaGUg
+ZXJyb3IgaGFuZGxpbmcgb2YgaW5pdF9tb2R1bGVfbW9kdWxlKCkgaXMgYWxyZWFkeSB2ZXJ5IGhl
+YXZ5LiAgQWx0aG91Z2gNCnRkeF9zdWJzeXNfaW5pdCgpIGRvZXNuJ3QgcmV0dXJuIGFueSBlcnJv
+ciwgSSB3b3VsZCBwcmVmZXIgdG8gcHV0dGluZw0KdGR4X3N1YnN5c19pbml0KCkgdG8gX190ZHhf
+ZW5hYmxlKCkgKHRoZSBjYWxsZXIgb2YgaW5pdF90ZHhfbW9kdWxlKCkpIHNvIHRoYXQNCmluaXRf
+dGR4X21vZHVsZSgpIGNhbiBqdXN0IGZvY3VzIG9uIGluaXRpYWxpemluZyB0aGUgVERYIG1vZHVs
+ZS4NCg==
