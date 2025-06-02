@@ -1,160 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2040.outbound.protection.outlook.com [40.107.96.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E6F21C171;
-	Mon,  2 Jun 2025 13:06:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748869609; cv=none; b=oXBnYQtVO1yUtRyFKB4HaCnaM6VhQLcNmJWa3GHUiiFLwRNqZKM1pALbb/Pi9Jn9lKJeozoz9huYxnsOXuCBuwbtTCrldCQTe/z1oNk2ULC749Qw6H5LMFOVYnXmbEDS8bHKV5Wfy8FdOtgq+PIy7dQVoakMS8mDpopSR2eehOo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748869609; c=relaxed/simple;
-	bh=4W5iJT4qvv4gvMCawcbl0T+06lxem7eK5CvC/5B+TB4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Ca0GwhgPXuNZH3crDNTJ9/xHn5mj0O+qQK3lntMVQDP8CsWlVtu76LeMXSRzY32LAaoLB+UfkxsGjcZDMajFY9fPllcCB1zQ//FwJjdPQ940nrotx80kQa4JOqsgxHt561vEwWxwIuX1Krl39KigJoImPCB+eVSfLUKnpiGlYAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TawVPv/t; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF93C1EFF8B
+	for <linux-coco@lists.linux.dev>; Mon,  2 Jun 2025 13:19:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748870346; cv=fail; b=J1VJUJvyXzjpHi5HXrjhBNhB3g+b72K885w82J61gInicfID3UWWhikTYf1LuAQDzhVGaVGsayV12Dhnl1lP/xwGkE2QjYV9BI2uzGLzpZnT8rQ19TN1PbUaV/rUaCUxlblRuF/TAj20XbIi5rurkX+Ra8wEWzLw6OEXkBO8Nbw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748870346; c=relaxed/simple;
+	bh=sIb71mLOsoh7Is8UnIep2G7/sVB0nzsKo5VmFIu3Bpg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=q5ybrHjjC9gSebO2TnvNjgwTw5uNnf1+u/LuIJvYOTh6D287Wkn7Un1H04/sC3OmDkIQosc/JHABFQYEzBHIrKcnVvkwKXl8QyFVLMCJDl3ytxSYAOLYRX6TvLalVt5MbHYaUm18VxvaCGwKaD0IIc7e02ufpjVW8MZqKVIqchE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ubtha35+; arc=fail smtp.client-ip=40.107.96.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TawVPv/t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324FBC4CEEB;
-	Mon,  2 Jun 2025 13:06:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748869608;
-	bh=4W5iJT4qvv4gvMCawcbl0T+06lxem7eK5CvC/5B+TB4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=TawVPv/tvXjNYu/rpoIY0xKb56cIrEzo/Xi15r9UhZm6ST7F8uZRggpBglucfv0OU
-	 fsHecQy2i+3R6StrqiyZ6+WbK1fBuyOOfDjuRY+qZdGcuTMpMU4V3iBvt8C7YOe9Fk
-	 AeANcDJVE2xFX5rVcndQarTYonhfBLoOLXf16W5fpWDJYWAdrVcH/jUkt/x4gjBZ3H
-	 8eqmpd4LBkQa2/ePs8uEuA7RgwViEilepLeNbKnD3qSfjvAj/4Bu32knsaAXXkmcNd
-	 64KU6I9drm5O9owkC0XB56VL5w4W7x2IWVrg/7h3WWu9rhR8qXoNZIaQy1nzyYO7gm
-	 5pbeIcOww2Sxg==
-X-Mailer: emacs 30.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
-	sumit.semwal@linaro.org, christian.koenig@amd.com,
-	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
-	jgg@nvidia.com, dan.j.williams@intel.com, aik@amd.com,
-	linux-coco@lists.linux.dev
-Cc: dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, vivek.kasireddy@intel.com,
-	yilun.xu@intel.com, yilun.xu@linux.intel.com,
-	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
-	daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, tao1.su@intel.com,
-	linux-pci@vger.kernel.org, zhiw@nvidia.com, simona.vetter@ffwll.ch,
-	shameerali.kolothum.thodi@huawei.com, iommu@lists.linux.dev,
-	kevin.tian@intel.com
-Subject: Re: [RFC PATCH 27/30] PCI/TSM: Add PCI driver callbacks to handle
- TSM requirements
-In-Reply-To: <20250529053513.1592088-28-yilun.xu@linux.intel.com>
-References: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
- <20250529053513.1592088-28-yilun.xu@linux.intel.com>
-Date: Mon, 02 Jun 2025 18:36:37 +0530
-Message-ID: <yq5att4yjns2.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ubtha35+"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LZUQPENwz3LlxAcn69CStPq2qxkf1aFmnq3Ur3o0Bdn72VooWpPa0ZF/rL+3Y6WlByxP+iy9ZYZjCqsgkMJ9D8jcLPcLoRp/EN5tf5tZO2eZLPXCwwuOQq0eYMPbziMckH8YT17ZtYiyeyf/yYp2nb5kzPHul3PXeGsem3N0rvCa+nB8FBqMO9UxbrTHFjmCjI7iI7n2DwrVwZgaFZhN6Xx1BVaBC4lGvSyWSgdCUsljMS6bvQQgJLpj36pWs3WXpWGYIa11QTaLuQc9GpJhd8IxUnmjDVq6uiuCF2hH8dt2wdBdI4ZQ73+HuMYJEvBKsBmWzKoxN4Sh4MaN7mIs8Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HnR0k+HQ+XxM1G8ydm06vuTsiyoy5oJ91IRRFgecYPU=;
+ b=gVVUaZu7tNWzj9e8hvnawIR5/buzLkBaMJmcmHVsAcs3T++gsrsv7HC+JCmTGd/5wbLYxnpfbW+SlFTHuNLeiJtgnsGZVLWtHjlyEoYQQq6nK8W+cOhlprYlULUAMAIZ0m5QxuYRjStjacvgCnyTEgFCBVH2Cm+B4/zu6YOcEJmHdC8Nc3uidTWlN5ZslfvzXjBUUavPRotzrXKKo/X2ruM0RL1AQg8Ctly48/ZGTbcE2jTzObfzVbib+YbLrx3ARcC0n4+MjM0greEGn3MCjq2lDCsGrGOHBlRMd81rSQ1yvtoB+caX/v17m/pXm3FukSU6bHB0DXLuY5ZCWLxpSg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HnR0k+HQ+XxM1G8ydm06vuTsiyoy5oJ91IRRFgecYPU=;
+ b=Ubtha35+E4WuiNcbAFBjmC2hxTAlw+B3UEkY9Dc/5tiKO+6K+Oq1pf9B7p6TAyGpyo+J3nkYcjFAwriemanVtQcPKjIeg52ixh9KldZbSt+Kfik+Xm20sOhYDRGib7SIDcdy9Vkhh7/7afydEP/umrBoS3/BaSXT1XP8FoxKvv4QtRngYTnusMYC3OtC3fVy3hR2wdFlBtjJpur5dhtyegSBnzDFf3TmYFpjccjuHvXyRxAE4BsLu6N8Kneo6Kq4vewI2+AWh+0L2BEGhGTltGMKdlBoVRSWKnTbP+I4OEQQQhLrXzIyvu0NMcC9q0kjhgtgi3e1mHw/2RA8wQWwFw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MW6PR12MB8663.namprd12.prod.outlook.com (2603:10b6:303:240::9)
+ by CY3PR12MB9654.namprd12.prod.outlook.com (2603:10b6:930:ff::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.34; Mon, 2 Jun
+ 2025 13:18:52 +0000
+Received: from MW6PR12MB8663.namprd12.prod.outlook.com
+ ([fe80::594:5be3:34d:77f]) by MW6PR12MB8663.namprd12.prod.outlook.com
+ ([fe80::594:5be3:34d:77f%7]) with mapi id 15.20.8769.033; Mon, 2 Jun 2025
+ 13:18:52 +0000
+Date: Mon, 2 Jun 2025 10:18:47 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+	gregkh@linuxfoundation.org, lukas@wunner.de,
+	aneesh.kumar@kernel.org, suzuki.poulose@arm.com, sameo@rivosinc.com,
+	aik@amd.com, zhiw@nvidia.com, Xiaoyao Li <xiaoyao.li@intel.com>,
+	Isaku Yamahata <isaku.yamahata@intel.com>,
+	Yilun Xu <yilun.xu@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	John Allen <john.allen@amd.com>
+Subject: Re: [PATCH v3 01/13] coco/tsm: Introduce a core device for TEE
+ Security Managers
+Message-ID: <20250602131847.GB233377@nvidia.com>
+References: <20250516054732.2055093-1-dan.j.williams@intel.com>
+ <20250516054732.2055093-2-dan.j.williams@intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250516054732.2055093-2-dan.j.williams@intel.com>
+X-ClientProxiedBy: SCYPR80CA0030.lamprd80.prod.outlook.com
+ (2603:10d6:300:6::11) To MW6PR12MB8663.namprd12.prod.outlook.com
+ (2603:10b6:303:240::9)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW6PR12MB8663:EE_|CY3PR12MB9654:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1adf4cf6-5375-446c-aa39-08dda1d804bd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?3xjdTS4KV4cVehiRL9LH3X+ZR58C49anpfj8oW+0khtoIXVoLff7NyfM9ZS4?=
+ =?us-ascii?Q?a2wu03vp+5ChlTDuuUwrV1B/OoHkAU3i/f9JnpOtyD+WyBEFQsjPj4mU3dkM?=
+ =?us-ascii?Q?qWZsVdmXmqZiBZbDAerULyquk2JxiL89YsNedqJoIiyTsYtsWo/PzgOH0YtS?=
+ =?us-ascii?Q?H4BnxwiqBaTDlq2c57zmfSZcv/0Qh8tsyOBv02FOdIFD0BpQneZuvHgBKMX2?=
+ =?us-ascii?Q?qyHMOq/RH6fjpMx3jp4AdSwDwxqsQtHp3+rdypG4Ur+N6ncqgFuotyPmsOic?=
+ =?us-ascii?Q?ARSW6pQevoDtz2/Ea6zziBPWT3p76E4Z1l5FBI9SEDH4d55LZP7vLJgLwTv0?=
+ =?us-ascii?Q?U2nE5mkYVf9RUJuti4/DlE0KF7sbRUGz3oJQ7tv0A/NcnARj3/u96t36hGDN?=
+ =?us-ascii?Q?AZo8vj8LuN+2Ae8sqWc/8Vc5Fj8NZ0rNujAiV74RUvIK2SyEAWdY+K4lhB7e?=
+ =?us-ascii?Q?40RbLDProbBhiAP21fVw4AdbSy24p9AeF13V014WTy6guIgxm/9dVzfIECAp?=
+ =?us-ascii?Q?qpWohdZFo24RlpXVvs+NuaZnGcPC4FJuAr5KQBWRuZa2IoVBWuDmEAWxoXF7?=
+ =?us-ascii?Q?85X/4z5fBBDvEkYK3jTNpYwppv3YAM8+kBEduzrK/chgDwqb2HAbOXeGAiPM?=
+ =?us-ascii?Q?nriLOt22X81gKOw97svZvs1Xs1yDEp397czi8hlnEgo11ukyyd+08fE9gnJd?=
+ =?us-ascii?Q?vX00Kwh48u74mufg/TIZZqvi5pNA2EosXVKVDVtGl29GpgfnhGNs0iQQNH8N?=
+ =?us-ascii?Q?bLWzAY5O7ABoYmffWCzWzxJEU4/q1pdyKNJpDgKoWS7vhN7rp9HbWo6B7Cm6?=
+ =?us-ascii?Q?oHwK21UX7DsXFgvyUlftd5o1uOdSZJL8C5G0MoSAzBf+hXKu41+qqHEdp/uA?=
+ =?us-ascii?Q?n9uhvDRogj5jc1oRmSfoNijHINB0a8tV/n8z/YURst2EjfQ3Z/MXMTYyDTwB?=
+ =?us-ascii?Q?ajvsh9C1aV/9sQbFrH6KV9Kx04k2t8sJDDANC5/mZ4SVcr7P169WAHRC7Zob?=
+ =?us-ascii?Q?633phFH4Zuwa3E+nBqPJt+mtGv76jePWG4KmV2DL5VKWgL5eMY96xCIFs5tu?=
+ =?us-ascii?Q?ezLQa4hxPs7IGG32Gsj+UGYCn8UJhgOjYDQcCDr7zyJFcUa7ZTJfTNix22X8?=
+ =?us-ascii?Q?gWXa43T8D4cS5RE3dfnTVEqO+PJh9Iv//M9m0emvEW2xqDc3A3FkqBjYbGhc?=
+ =?us-ascii?Q?ws1CDY+eH+Rj8Z1i199Jxl6HLRno1t0y+kzv9KGoPYc4Nd3s4ANcvlXyQ09Y?=
+ =?us-ascii?Q?55vw3IVcUIsrX5da1EmNdQAMPRcyZmVIvwYqsJjDGegP+ksD59JmsxyfgGl6?=
+ =?us-ascii?Q?dHDpcZsPX853b2TToijaBQkcFql0W+pNB37pTX/4jGwN9DDQeZI3BGLUrQsi?=
+ =?us-ascii?Q?GCjCBYekN1nveJelDfUUHnc6ci+K/x8P99umEEUBgt04M4rx9kPbNkKgtf3H?=
+ =?us-ascii?Q?HZXcJdUtLUY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW6PR12MB8663.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?NQmCYinLaqYESpwtTLPpjbzzaIy+I7NOPlj8vUaGdhe7tJh6g1XsxqM6DicW?=
+ =?us-ascii?Q?BYeoHMyMIuNYDdkAhYuKBd97v6gyTD7jYRYXa3u/FImMQzORzpj+DQp/rpF7?=
+ =?us-ascii?Q?sqK+3fQpetWIn14FrK0EiwSNjk8Izer6HVq/0HoJ/qywgJQIQXeC1eARZijQ?=
+ =?us-ascii?Q?PGVhTaPcvxrSo3t6q42x+aRQ2k3xCAMcTDOZv86zof3wiILA9fi3OeAX1y11?=
+ =?us-ascii?Q?ktELyxn3MyPx+J1CATpDN0Vdhx5qbHvjMsAOlkLSwLuXu6NOL35v7Pt+Gi49?=
+ =?us-ascii?Q?NFm/5nvRSkSE6JqfIpLhYp4pBDrIrpmQKq2zUdQNMVIo5XgK9pO8ithjwaZU?=
+ =?us-ascii?Q?exOvHpKEF8WPcxpZusQDZ42X/0gAef4ONczlVgA5Wow350rTdhDNnFUAmAOv?=
+ =?us-ascii?Q?C8cye78txeA4NjIpjLAOP+zIqVL29aCFLdYnedrmeUxxFqPls9wS3ampCxAv?=
+ =?us-ascii?Q?D/qvs8w2QK/CphowMR3wS9R9FABVCMJfG3nnQIrmImk/VbknjO6dMqKzR4Lz?=
+ =?us-ascii?Q?3ssjSgqwIvtHplRdD5Wj23kVdx4y0UVc/MnwV4j6uyzJJp69kGSjzZAAXYSD?=
+ =?us-ascii?Q?EZYFOR1zVsgYeDND9jYHeLkC5zjisXBg4hwFFuR5zzfOI4MLlQC6dzf9w3hS?=
+ =?us-ascii?Q?PSX/Re9GeYTZl9yL7s+c/8BIV3T7TAxBGofBXcjP9vmgHcbBublOIAoLvmFJ?=
+ =?us-ascii?Q?ppO8ck72oLWDzINdrMxJ4LQoFYLo/INlHP/8fCIY3BuG+bXQLQKlH2QZLgkK?=
+ =?us-ascii?Q?2sa23Yd0CmwIJn8dispJ790cucZk5LCDwoWcJ9BljdxOOsGoRNCfhZgfUqF7?=
+ =?us-ascii?Q?95GBo41o5bWHxyNqXE0+fsaPTX2s3QLRMHHortVWdQGbk48D9yPOL5+OCg+c?=
+ =?us-ascii?Q?SgafHCyOjOAqlpdxpPZjXvppqKwyh8NuoGplC8P8TeHpVcirV65PiFlmk9gK?=
+ =?us-ascii?Q?uTsIYxgsTC9N5I5NeCct8aDJSWs4UcbKr4fvVH9XCYgrokNT7ByO3xrFa9af?=
+ =?us-ascii?Q?N4a/VRzVk3+MEqg0wCehZ4u1aGcQNQ2+sh9skhgW/SMnpbu45M5bVWbjGjlf?=
+ =?us-ascii?Q?cFDTFBUefOSiN51qAwMVmA7iev0VtiySytt2gxUmSq/sxmZmjoFUoPLJjWNO?=
+ =?us-ascii?Q?XhBu4FezCqdjVKg2l7LzQ4/0PYP/Jt7V7PUyiJAOJHK6OvzDPGErSxMCw5VI?=
+ =?us-ascii?Q?nahbltAla2XhHpqkO0KRpwKHAf2sYpCHdI5D8ts1eHthR98Fk06Xm1ujuhUz?=
+ =?us-ascii?Q?wJRkSnog93A3MQ806SwZQM4Z5NGGj+c0hLsTCgM3WE7bCXVHLkwJJCTMo1h4?=
+ =?us-ascii?Q?1AhqDS78My9vqFj3VTwHPMpp7MRru85tgdJmaE4phKo+eKi49RCYlohmZKf9?=
+ =?us-ascii?Q?B4Qp+G9f3XyW3G7SAuKfp74HAEtMDOE6+hFrH1bpYykS06I672mal6Ev5jxF?=
+ =?us-ascii?Q?iokZbwYlfp7T9yQ0apuD2hEBdGpWmB4WL+ESKIR5HOEIkcemNPeqhCD+QL2u?=
+ =?us-ascii?Q?alAmg4NjAAsfKg7no+FGJchvhUFat1ebKA7eqySbDfArZb0d0unRUA+LCzze?=
+ =?us-ascii?Q?uOVfFsVXKgYufwtk/F5+XR7brtODgOLE28qCvpWO?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1adf4cf6-5375-446c-aa39-08dda1d804bd
+X-MS-Exchange-CrossTenant-AuthSource: MW6PR12MB8663.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2025 13:18:52.2251
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lO4N3TaEBCW5rs6BBwDbovj55p7njLJPrtfF0xi7q8AfkKzHXzLMwXisuAIobbbZ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9654
 
-Xu Yilun <yilun.xu@linux.intel.com> writes:
+On Thu, May 15, 2025 at 10:47:20PM -0700, Dan Williams wrote:
+> +static struct class *tsm_class;
+> +static struct tsm_core_dev {
+> +	struct device dev;
+> +} *tsm_core;
 
-> Add optional PCI driver callbacks to notify TSM events. For now, these
-> handlers may be called during pci_tsm_unbind(). By calling these
-> handlers, TSM driver askes for external collaboration to finish entire
-> TSM unbind flow.
->
-> If platform TSM driver could finish TSM bind/unbind all by itself, don't
-> call these handlers.
->
-> Host may need to configure various system components according to
-> platform trusted firmware's requirements. E.g. for Intel TDX Connect,
-> host should do private MMIO mapping in S-EPT, trusted DMA setup, device
-> ownership claiming and device TDISP state transition. Some operations are
-> out of control of PCI TSM, so need collaboration by external components
-> like IOMMU driver, KVM.
->
-> Further more, trusted firmware may enforce executing these operations
-> in a fixed sequence. E.g. Intel TDX Connect enforces the following
-> sequences for TSM unbind:
->
->   1. STOP TDI via TDISP message STOP_INTERFACE
->   2. Private MMIO unmap from Secure EPT
->   3. Trusted Device Context Table cleanup for the TDI
->   4. TDI ownership reclaim and metadata free
->
-> PCI TSM could do Step 1 and 4, but need KVM for Step 2 and IOMMU driver
-> for Step 3. While it is possible TSM provides finer grained APIs like
-> tdi_stop() & tdi_free(), and the caller ensures the sequence, it is
-> better these specific enforcement could be managed in platform TSM
-> driver. By introducing TSM handlers, platform TSM driver controls the
-> operation sequence and notify other components to do the real work.
->
-> Currently add 3 callbacks for TDX Connect. disable_mmio() is for
-> VFIO to invalidate MMIO so that KVM could unmap them from S-EPT.
-> recover_mmio() is to re-validate MMIO so that KVM could map them
-> again for shared assigned device. disable_trusted_dma() is to cleanup
-> trusted IOMMU setup.
->
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> ---
->  include/linux/pci-tsm.h | 7 +++++++
->  include/linux/pci.h     | 3 +++
->  2 files changed, 10 insertions(+)
->
-> diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
-> index 737767f8a9c5..ed549724eb5b 100644
-> --- a/include/linux/pci-tsm.h
-> +++ b/include/linux/pci-tsm.h
-> @@ -157,6 +157,13 @@ struct pci_tsm_ops {
->  	int (*accept)(struct pci_dev *pdev);
->  };
->  
-> +/* pci drivers callbacks for TSM */
-> +struct pci_tsm_handlers {
-> +	void (*disable_mmio)(struct pci_dev *dev);
-> +	void (*recover_mmio)(struct pci_dev *dev);
-> +	void (*disable_trusted_dma)(struct pci_dev *dev);
-> +};
-> +
->  enum pci_doe_proto {
->  	PCI_DOE_PROTO_CMA = 1,
->  	PCI_DOE_PROTO_SSESSION = 2,
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index 5f37957da18f..4f768b4658e8 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -545,6 +545,7 @@ struct pci_dev {
->  #endif
->  #ifdef CONFIG_PCI_TSM
->  	struct pci_tsm *tsm;		/* TSM operation state */
-> +	void *trusted_dma_owner;
->  #endif
->  	u16		acs_cap;	/* ACS Capability offset */
->  	u8		supported_speeds; /* Supported Link Speeds Vector */
-> @@ -957,6 +958,7 @@ struct module;
->   * @sriov_get_vf_total_msix: PF driver callback to get the total number of
->   *              MSI-X vectors available for distribution to the VFs.
->   * @err_handler: See Documentation/PCI/pci-error-recovery.rst
-> + * @tsm_handler: Optional driver callbacks to handle TSM requirements.
->   * @groups:	Sysfs attribute groups.
->   * @dev_groups: Attributes attached to the device that will be
->   *              created once it is bound to the driver.
-> @@ -982,6 +984,7 @@ struct pci_driver {
->  	int  (*sriov_set_msix_vec_count)(struct pci_dev *vf, int msix_vec_count); /* On PF */
->  	u32  (*sriov_get_vf_total_msix)(struct pci_dev *pf);
->  	const struct pci_error_handlers *err_handler;
-> +	struct pci_tsm_handlers *tsm_handler;
->  	const struct attribute_group **groups;
->  	const struct attribute_group **dev_groups;
->  	struct device_driver	driver;
-> -- 
-> 2.25.1
+This is gross, do we really need to have a global?
 
-It looks like the TSM feature is currently interacting with several
-components: struct pci_driver, VFIO, iommufd, and pci_tsm_ops.
-
-Should we consider limiting this scattering? Would it make sense to
-encapsulate this logic within pci_tsm_ops?
-
--aneesh
+Jason
