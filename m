@@ -1,48 +1,65 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5841F948;
-	Tue,  3 Jun 2025 06:34:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC1822B5A3
+	for <linux-coco@lists.linux.dev>; Tue,  3 Jun 2025 10:56:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748932468; cv=none; b=M5IJwTqSMmVjo94ZFWDGujWpFCgmRl990aToM3QHXNI5JsAbUQrRqVWmnlrlyYr3yVW+s2WAFb4Szi2DpnL2ozYnil+KI7ZiiPfbJCt4gNWoGY+oIazUbCBoMroDq5uF4tuc85+6rFsqdPepKDSdJmuUU80aTW51Z0P84F1S6Ys=
+	t=1748948211; cv=none; b=mLyaWh8+K2gg/PPCihniwTadujS8sUzmKRw1Xi4XUv7YPMRA2++O3vcYjIETPWdN54/YamxCF+XMWfdSgSpGiN5pGQWV5Kyg6kJDprqSRGkIfKLiIxHnOWC6TMOjNhpYYWw26bBkgo7SVxfdlQ4zyQrp9qHUhUex56IWwNYYC34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748932468; c=relaxed/simple;
-	bh=9MqeMHm6uVNpV12j4bBrWMR3B7MZ9HzuTUZPD+xW7OA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=S0QqpHFAwmnRC2kHsyulSmeBvGbhkxyGvog5NVGka+TNSba0dICJmX+RzSGbDd0F0Waghu76KlQxA7J+az2fkFZfuIsUZnSF9TRCQ9gIsYaUksL3Oa7qD2ex0apI6FEg4Wtl1hmU0zEhWbX98RHIBt7TJzYsEKDKKr0A4RZ3Kko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SdTO2Z3z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748948211; c=relaxed/simple;
+	bh=l4EVEbozJyY+ughiuK7BCXFZ/p6lHgiVcgDOC1HMZJA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N0+YLR0/tmsh0tbx2ON0w0b+VW+Dee9UpmgBRXRh4LYpBLIqg2sj6PVHYICRMEFP/3UCDve6yAPAiwvaDUj9HY3KcSR//rbFaDutvGKgL4FIOmBqLbPLB5xlqTGD+Gn//Oh1Z7o9vamSeNR+B72xYj6RdtVM1ICFFnCfAPUDlh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MaFwDmo1; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SdTO2Z3z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BA03C4CEEF;
-	Tue,  3 Jun 2025 06:33:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748932468;
-	bh=9MqeMHm6uVNpV12j4bBrWMR3B7MZ9HzuTUZPD+xW7OA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=SdTO2Z3zlf4UgR6DKp0eB+pBme9bxC3X2Q9H/Hkk3h/RDIQKrWiKPdzFO6JdLE0C6
-	 OVTCID8QmWPVUccMVrs74qj0rCVS/mqMr+UaFIUa34VEWFfqXxuxsYdBJu4oHgpyku
-	 BeTk69Ek/HQodm2jOeSDmuCzZv54jb+DLWObZJf7c/PwOPZbDi4PzQwYyhbZMw4h2d
-	 p+ztFxZ+j/Um1ZYC6N7myThDmtQnrbfmWPG/if+I4GMXS9bC6mthENHJP1Q2pB8G5w
-	 3Jy4tiM/uFmjm2hUoWMPxF0E6t21WWvJvOvNz3eJO9/f/CMpo0kL58i7qguJCBRwMR
-	 LNkz0B/atY/Dg==
-X-Mailer: emacs 30.1 (via feedmail 11-beta-1 Q)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MaFwDmo1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1748948210; x=1780484210;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=l4EVEbozJyY+ughiuK7BCXFZ/p6lHgiVcgDOC1HMZJA=;
+  b=MaFwDmo1ScQnCCIf38XwVafhwrV9mSOlotP6OANsx6CMPeOgfza0BqD2
+   pCJrAzM7EroDZWu4dWErU6qN4QH/NurHehS2n3TeMARYBS4nF3Lp1gMwP
+   +yA85ezcxptYG/UqKwvPZd70wBQ1wGTJq5YicHe5ZBdJdyxE6PyVMJsW/
+   zHguRzYOPnf4iuAd5DzuJjY9HXtWm8Z9iGvKDPbs0Jpv0w7OQ/6mmRbCn
+   cBba8cpzJSHzsvpslfkQS8vctc/3drJzl74M95edqbY6D1DBtmBZKJKCP
+   JIK3bMU/+61CBGAzHvdU3ldS4Hrl+slveGdrqdEyeu4674gLxHYA2GadR
+   g==;
+X-CSE-ConnectionGUID: XBIFAMeoRImt+I7KRh8hJQ==
+X-CSE-MsgGUID: OY5TM7mRSBOqDCd8mrckaQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="61602371"
+X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; 
+   d="scan'208";a="61602371"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 03:56:49 -0700
+X-CSE-ConnectionGUID: jb8pVdOSTA6RUjtySVLAYw==
+X-CSE-MsgGUID: Q8VkzE+mQZCe+dpiaGH8LQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,206,1744095600"; 
+   d="scan'208";a="149596483"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa003.jf.intel.com with ESMTP; 03 Jun 2025 03:56:45 -0700
+Date: Tue, 3 Jun 2025 18:50:13 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
 Cc: Alexey Kardashevskiy <aik@amd.com>,
 	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
 	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
 	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
 	jgg@nvidia.com, zhiw@nvidia.com
 Subject: Re: [RFC PATCH 3/3] iommufd/tsm: Add tsm_bind/unbind iommufd ioctls
-In-Reply-To: <aD3QcQxtjoYXrglM@yilunxu-OptiPlex-7050>
+Message-ID: <aD7TZRnFualizeXk@yilunxu-OptiPlex-7050>
 References: <yq5a5xhj5yng.fsf@kernel.org>
  <20250529133757.462088-1-aneesh.kumar@kernel.org>
  <20250529133757.462088-3-aneesh.kumar@kernel.org>
- <aDsta4UX76GaExrO@yilunxu-OptiPlex-7050> <yq5azfeqjt9i.fsf@kernel.org>
+ <aDsta4UX76GaExrO@yilunxu-OptiPlex-7050>
+ <yq5azfeqjt9i.fsf@kernel.org>
  <aD3QcQxtjoYXrglM@yilunxu-OptiPlex-7050>
-Date: Tue, 03 Jun 2025 10:30:30 +0530
-Message-ID: <yq5ao6v5ju6p.fsf@kernel.org>
+ <yq5ao6v5ju6p.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -50,216 +67,222 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <yq5ao6v5ju6p.fsf@kernel.org>
 
-Xu Yilun <yilun.xu@linux.intel.com> writes:
+On Tue, Jun 03, 2025 at 10:30:30AM +0530, Aneesh Kumar K.V wrote:
+> Xu Yilun <yilun.xu@linux.intel.com> writes:
+> 
+> > On Mon, Jun 02, 2025 at 04:38:09PM +0530, Aneesh Kumar K.V wrote:
+> >> Xu Yilun <yilun.xu@linux.intel.com> writes:
+> >> 
+> >> >> + * struct iommu_vdevice_id - ioctl(IOMMU_VDEVICE_TSM_BIND/UNBIND)
+> >> >> + * @size: sizeof(struct iommu_vdevice_id)
+> >> >> + * @vdevice_id: Object handle for the vDevice. Returned from IOMMU_VDEVICE_ALLOC
+> >> >> + */
+> >> >> +struct iommu_vdevice_id {
+> >> >> +	__u32 size;
+> >> >> +	__u32 vdevice_id;
+> >> >> +} __packed;
+> >> >> +#define IOMMU_VDEVICE_TSM_BIND _IO(IOMMUFD_TYPE, IOMMUFD_CMD_VDEVICE_TSM_BIND)
+> >> >> +#define IOMMU_VDEVICE_TSM_UNBIND _IO(IOMMUFD_TYPE, IOMMUFD_CMD_VDEVICE_TSM_UNBIND)
+> >> >
+> >> > Hello, I see you are talking about the detailed implementation. But
+> >> > could we firstly address the confusing whether this TSM Bind/Unbind
+> >> > should be a VFIO uAPI or IOMMUFD uAPI?
+> >> >
+> >> > In this thread [1], I was talking about TSM Bind/Unbind affects VFIO
+> >> > behavior so they cannot be iommufd uAPIs which VFIO is not aware of.
+> >> > At least TDX Connect cares about this problem now. And the conclusion
+> >> > seems to be "have a VFIO_DEVICE_BIND(iommufd vdevice id), then have
+> >> > VFIO reach into iommufd".
+> >> >
+> >> > And some further findings [2] indicate this problem may also exist on
+> >> > AMD when p2p is involved.
+> >> >
+> >> > [1]: https://lore.kernel.org/all/20250515175658.GR382960@nvidia.com/
+> >> > [2]: https://lore.kernel.org/all/aDnXxk46kwrOcl0i@yilunxu-OptiPlex-7050/
+> >> >
+> >> 
+> >> Looking at your patch series, I understand the reason you need a vfio
+> >> ioctl is to call pci_request_regions_exclusive—is that correct?
+> >
+> > The immediate reason is to unbind the TDI before unmapping the BAR.
+> >
+> >> 
+> >> In another thread, I asked whether this might be better handled by
+> >> pci_tsm instead of vfio. I'd be interested in your thoughts on that.
+> >> 
+> >> I also noticed you want to unbind the TDI before unmapping the BAR in
+> >> vfio. From what I understand, this should still be possible if we use an
+> >> iommufd ioctl.
+> >
+> > I'm not sure how is that possible.
+> >
+> 
+> IIUC, what you need is the below interface
+> int iommufd_device_tsm_unbind(struct iommufd_device *idev) so that vfio
+> can use vfio_iommufd_tsm_unbind() -> 	iommufd_device_tsm_unbind(vdev->iommufd_device);
 
-> On Mon, Jun 02, 2025 at 04:38:09PM +0530, Aneesh Kumar K.V wrote:
->> Xu Yilun <yilun.xu@linux.intel.com> writes:
->>=20
->> >> + * struct iommu_vdevice_id - ioctl(IOMMU_VDEVICE_TSM_BIND/UNBIND)
->> >> + * @size: sizeof(struct iommu_vdevice_id)
->> >> + * @vdevice_id: Object handle for the vDevice. Returned from IOMMU_V=
-DEVICE_ALLOC
->> >> + */
->> >> +struct iommu_vdevice_id {
->> >> +	__u32 size;
->> >> +	__u32 vdevice_id;
->> >> +} __packed;
->> >> +#define IOMMU_VDEVICE_TSM_BIND _IO(IOMMUFD_TYPE, IOMMUFD_CMD_VDEVICE=
-_TSM_BIND)
->> >> +#define IOMMU_VDEVICE_TSM_UNBIND _IO(IOMMUFD_TYPE, IOMMUFD_CMD_VDEVI=
-CE_TSM_UNBIND)
->> >
->> > Hello, I see you are talking about the detailed implementation. But
->> > could we firstly address the confusing whether this TSM Bind/Unbind
->> > should be a VFIO uAPI or IOMMUFD uAPI?
->> >
->> > In this thread [1], I was talking about TSM Bind/Unbind affects VFIO
->> > behavior so they cannot be iommufd uAPIs which VFIO is not aware of.
->> > At least TDX Connect cares about this problem now. And the conclusion
->> > seems to be "have a VFIO_DEVICE_BIND(iommufd vdevice id), then have
->> > VFIO reach into iommufd".
->> >
->> > And some further findings [2] indicate this problem may also exist on
->> > AMD when p2p is involved.
->> >
->> > [1]: https://lore.kernel.org/all/20250515175658.GR382960@nvidia.com/
->> > [2]: https://lore.kernel.org/all/aDnXxk46kwrOcl0i@yilunxu-OptiPlex-705=
-0/
->> >
->>=20
->> Looking at your patch series, I understand the reason you need a vfio
->> ioctl is to call pci_request_regions_exclusive=E2=80=94is that correct?
->
-> The immediate reason is to unbind the TDI before unmapping the BAR.
->
->>=20
->> In another thread, I asked whether this might be better handled by
->> pci_tsm instead of vfio. I'd be interested in your thoughts on that.
->>=20
->> I also noticed you want to unbind the TDI before unmapping the BAR in
->> vfio. From what I understand, this should still be possible if we use an
->> iommufd ioctl.
->
-> I'm not sure how is that possible.
->
+I see. But I'm not sure if it can be a better story than ioctl(VFIO_TSM_BIND).
+You want VFIO unaware of TSM bind, e.g. try to hide pci_request/release_region(),
+but make VFIO aware of TSM unbind, which seems odd ...
 
-IIUC, what you need is the below interface
-int iommufd_device_tsm_unbind(struct iommufd_device *idev) so that vfio
-can use vfio_iommufd_tsm_unbind() -> 	iommufd_device_tsm_unbind(vdev->iommu=
-fd_device);
+Thanks,
+Yilun
 
-The below iommufd changes can get that
-
-static struct mutex *vdev_lock(struct iommufd_vdevice *vdev)
-{
-	if (mutex_lock_interruptible(&vdev->mutex) !=3D 0)
-		return NULL;
-	return &vdev->mutex;
-}
-DEFINE_FREE(vdev_unlock, struct mutex *, if (_T) mutex_unlock(_T))
-
-static struct mutex *idev_lock(struct iommufd_device *idev)
-{
-	if (mutex_lock_interruptible(&idev->igroup->lock) !=3D 0)
-		return NULL;
-	return &idev->igroup->lock;
-}
-DEFINE_FREE(idev_unlock, struct mutex *, if (_T) mutex_unlock(_T))
-
-int iommufd_vdevice_tsm_bind_ioctl(struct iommufd_ucmd *ucmd)
-{
-	struct iommu_vdevice_tsm_bind *cmd =3D ucmd->cmd;
-	struct iommufd_vdevice *vdev;
-	struct iommufd_device *idev;
-	struct mutex *ilock __free(idev_unlock) =3D NULL;
-	struct mutex *vlock __free(vdev_unlock) =3D NULL;
-	struct kvm *kvm;
-	int rc =3D 0;
-
-	if (cmd->flags)
-		return -EOPNOTSUPP;
-
-	idev =3D iommufd_get_device(ucmd, cmd->dev_id);
-	if (IS_ERR(idev))
-		return PTR_ERR(idev);
-
-	vdev =3D container_of(iommufd_get_object(ucmd->ictx, cmd->vdevice_id,
-					       IOMMUFD_OBJ_VDEVICE),
-			    struct iommufd_vdevice, obj);
-	if (IS_ERR(vdev)) {
-		rc =3D PTR_ERR(vdev);
-		goto out_put_idev;
-	}
-
-	ilock =3D idev_lock(idev);
-	if (!ilock) {
-		rc =3D -EINTR;
-		goto out_put_vdev;
-	}
-
-	if (idev->vdev) {
-		/* if it is already bound */
-		rc =3D -EINVAL;
-		goto out_put_vdev;
-	}
-
-	vlock =3D vdev_lock(vdev);
-	if (!vlock) {
-		rc =3D -EINTR;
-		goto out_put_vdev;
-	}
-
-	if (WARN_ON(vdev->idev)) {
-		rc =3D -EINVAL;
-		goto out_put_vdev;
-	}
-
-	kvm =3D vdev->viommu->kvm_filp->private_data;
-	if (kvm) {
-		/*
-		 * tsm layer will make take care of parallel calls to tsm_bind/unbind
-		 */
-		rc =3D tsm_bind(vdev->dev, kvm, vdev->id);
-		if (rc) {
-			rc =3D -ENODEV;
-			goto out_put_vdev;
-		}
-	} else {
-		rc =3D -ENODEV;
-		goto out_put_vdev;
-	}
-	idev->vdev =3D vdev;
-	vdev->idev =3D idev;
-	rc =3D iommufd_ucmd_respond(ucmd, sizeof(*cmd));
-
-out_put_idev:
-	iommufd_put_object(ucmd->ictx, &idev->obj);
-out_put_vdev:
-	iommufd_put_object(ucmd->ictx, &vdev->obj);
-	return rc;
-}
-
-static int iommufd_vdevice_tsm_unbind(struct iommufd_vdevice *vdev)
-{
-	int rc =3D -EINVAL;
-	struct mutex *lock __free(vdev_unlock) =3D vdev_lock(vdev);
-	if (!lock)
-		return -EINTR;
-
-	if (!vdev->idev) {
-		tsm_unbind(vdev->dev);
-		vdev->idev =3D NULL;
-		rc =3D 0;
-	}
-	return rc;
-}
-
-/**
- * iommufd_device_tsm_unbind - Move a device out of TSM bind state
- * @idev: device to detach
- *
- * Undo iommufd_device_tsm_bind(). This removes all Confidential Computing
- * configurations, Once this completes the device is unlocked (TDISP
- * CONFIG_UNLOCKED).
- */
-int iommufd_device_tsm_unbind(struct iommufd_device *idev)
-{
-	struct mutex *lock __free(idev_unlock) =3D idev_lock(idev);
-	if (!lock)
-		return -EINTR;
-
-	if (!idev->vdev)
-		return -EINVAL;
-
-	iommufd_vdevice_tsm_unbind(idev->vdev);
-	idev->vdev =3D NULL;
-	return 0;
-}
-EXPORT_SYMBOL_NS_GPL(iommufd_device_tsm_unbind, "IOMMUFD");
-
-int iommufd_vdevice_tsm_unbind_ioctl(struct iommufd_ucmd *ucmd)
-{
-	struct iommu_vdevice_tsm_unbind *cmd =3D ucmd->cmd;
-	struct iommufd_vdevice *vdev;
-	int rc =3D 0;
-
-	vdev =3D container_of(iommufd_get_object(ucmd->ictx, cmd->vdevice_id,
-					       IOMMUFD_OBJ_VDEVICE),
-			    struct iommufd_vdevice, obj);
-	if (IS_ERR(vdev))
-		return PTR_ERR(vdev);
-
-	rc =3D iommufd_device_tsm_unbind(vdev->idev);
-	if (rc) {
-		rc =3D -ENODEV;
-		goto out_put_vdev;
-	}
-	rc =3D iommufd_ucmd_respond(ucmd, sizeof(*cmd));
-
-out_put_vdev:
-	iommufd_put_object(ucmd->ictx, &vdev->obj);
-	return rc;
-}
-
+> 
+> The below iommufd changes can get that
+> 
+> static struct mutex *vdev_lock(struct iommufd_vdevice *vdev)
+> {
+> 	if (mutex_lock_interruptible(&vdev->mutex) != 0)
+> 		return NULL;
+> 	return &vdev->mutex;
+> }
+> DEFINE_FREE(vdev_unlock, struct mutex *, if (_T) mutex_unlock(_T))
+> 
+> static struct mutex *idev_lock(struct iommufd_device *idev)
+> {
+> 	if (mutex_lock_interruptible(&idev->igroup->lock) != 0)
+> 		return NULL;
+> 	return &idev->igroup->lock;
+> }
+> DEFINE_FREE(idev_unlock, struct mutex *, if (_T) mutex_unlock(_T))
+> 
+> int iommufd_vdevice_tsm_bind_ioctl(struct iommufd_ucmd *ucmd)
+> {
+> 	struct iommu_vdevice_tsm_bind *cmd = ucmd->cmd;
+> 	struct iommufd_vdevice *vdev;
+> 	struct iommufd_device *idev;
+> 	struct mutex *ilock __free(idev_unlock) = NULL;
+> 	struct mutex *vlock __free(vdev_unlock) = NULL;
+> 	struct kvm *kvm;
+> 	int rc = 0;
+> 
+> 	if (cmd->flags)
+> 		return -EOPNOTSUPP;
+> 
+> 	idev = iommufd_get_device(ucmd, cmd->dev_id);
+> 	if (IS_ERR(idev))
+> 		return PTR_ERR(idev);
+> 
+> 	vdev = container_of(iommufd_get_object(ucmd->ictx, cmd->vdevice_id,
+> 					       IOMMUFD_OBJ_VDEVICE),
+> 			    struct iommufd_vdevice, obj);
+> 	if (IS_ERR(vdev)) {
+> 		rc = PTR_ERR(vdev);
+> 		goto out_put_idev;
+> 	}
+> 
+> 	ilock = idev_lock(idev);
+> 	if (!ilock) {
+> 		rc = -EINTR;
+> 		goto out_put_vdev;
+> 	}
+> 
+> 	if (idev->vdev) {
+> 		/* if it is already bound */
+> 		rc = -EINVAL;
+> 		goto out_put_vdev;
+> 	}
+> 
+> 	vlock = vdev_lock(vdev);
+> 	if (!vlock) {
+> 		rc = -EINTR;
+> 		goto out_put_vdev;
+> 	}
+> 
+> 	if (WARN_ON(vdev->idev)) {
+> 		rc = -EINVAL;
+> 		goto out_put_vdev;
+> 	}
+> 
+> 	kvm = vdev->viommu->kvm_filp->private_data;
+> 	if (kvm) {
+> 		/*
+> 		 * tsm layer will make take care of parallel calls to tsm_bind/unbind
+> 		 */
+> 		rc = tsm_bind(vdev->dev, kvm, vdev->id);
+> 		if (rc) {
+> 			rc = -ENODEV;
+> 			goto out_put_vdev;
+> 		}
+> 	} else {
+> 		rc = -ENODEV;
+> 		goto out_put_vdev;
+> 	}
+> 	idev->vdev = vdev;
+> 	vdev->idev = idev;
+> 	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
+> 
+> out_put_idev:
+> 	iommufd_put_object(ucmd->ictx, &idev->obj);
+> out_put_vdev:
+> 	iommufd_put_object(ucmd->ictx, &vdev->obj);
+> 	return rc;
+> }
+> 
+> static int iommufd_vdevice_tsm_unbind(struct iommufd_vdevice *vdev)
+> {
+> 	int rc = -EINVAL;
+> 	struct mutex *lock __free(vdev_unlock) = vdev_lock(vdev);
+> 	if (!lock)
+> 		return -EINTR;
+> 
+> 	if (!vdev->idev) {
+> 		tsm_unbind(vdev->dev);
+> 		vdev->idev = NULL;
+> 		rc = 0;
+> 	}
+> 	return rc;
+> }
+> 
+> /**
+>  * iommufd_device_tsm_unbind - Move a device out of TSM bind state
+>  * @idev: device to detach
+>  *
+>  * Undo iommufd_device_tsm_bind(). This removes all Confidential Computing
+>  * configurations, Once this completes the device is unlocked (TDISP
+>  * CONFIG_UNLOCKED).
+>  */
+> int iommufd_device_tsm_unbind(struct iommufd_device *idev)
+> {
+> 	struct mutex *lock __free(idev_unlock) = idev_lock(idev);
+> 	if (!lock)
+> 		return -EINTR;
+> 
+> 	if (!idev->vdev)
+> 		return -EINVAL;
+> 
+> 	iommufd_vdevice_tsm_unbind(idev->vdev);
+> 	idev->vdev = NULL;
+> 	return 0;
+> }
+> EXPORT_SYMBOL_NS_GPL(iommufd_device_tsm_unbind, "IOMMUFD");
+> 
+> int iommufd_vdevice_tsm_unbind_ioctl(struct iommufd_ucmd *ucmd)
+> {
+> 	struct iommu_vdevice_tsm_unbind *cmd = ucmd->cmd;
+> 	struct iommufd_vdevice *vdev;
+> 	int rc = 0;
+> 
+> 	vdev = container_of(iommufd_get_object(ucmd->ictx, cmd->vdevice_id,
+> 					       IOMMUFD_OBJ_VDEVICE),
+> 			    struct iommufd_vdevice, obj);
+> 	if (IS_ERR(vdev))
+> 		return PTR_ERR(vdev);
+> 
+> 	rc = iommufd_device_tsm_unbind(vdev->idev);
+> 	if (rc) {
+> 		rc = -ENODEV;
+> 		goto out_put_vdev;
+> 	}
+> 	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
+> 
+> out_put_vdev:
+> 	iommufd_put_object(ucmd->ictx, &vdev->obj);
+> 	return rc;
+> }
+> 
