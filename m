@@ -1,66 +1,65 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A73F01CAA7D
-	for <linux-coco@lists.linux.dev>; Tue,  3 Jun 2025 11:22:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F8D22D9F7
+	for <linux-coco@lists.linux.dev>; Tue,  3 Jun 2025 12:04:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748949746; cv=none; b=YdrPygQCheOg9k3hbNd1r2bb9HI4u4hCbDuTTllCkpfIrGN9YdFaWXPSV0zw40qVKVckH3oG1CbHqH2ZkQutzv8hcW+jA9dXKXPLHLo2FTsV+P08qH8OoRCB17oitwaUHBIeVQOopBe1BtKgKx9JP57YAN2z4PZnGBRRKVPuTcM=
+	t=1748952247; cv=none; b=Y9RcKTvNgiBVPBzeBoisfApgG/8WUg/NPn9UFV01m9BzMnwtxJ9T3t8ZjoFOi/9XqF9Npc3ETQ/Fh3knY3FNXeY/2Vzm3qXNHg222M7xwz5TiO9b70qYu2oLkk85yOPY9fyAoi4PafHZMdkUOnqUBPIEv4LTp6+DDNXKf/gF4sY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748949746; c=relaxed/simple;
-	bh=4bYe98B7YedxOKQs5dYV9Ing2H+ahxEuWbcKRNwu5jw=;
+	s=arc-20240116; t=1748952247; c=relaxed/simple;
+	bh=eKVE11jLj8lDyZOQhotMaEk97jjBKUbpiusFQCUvx/U=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mqe9sjIpHNlt121Ox/Dx+hGznwbxCqu90WONG0OyR/XH+DyRz+rRO6Xh+tbTOX5UrnGhN7nKQeH5bQI9lxqcuNWcXNuiXzU805fVeJuCTGIG0TB4BzNugGpyWY6g6Zd+/rjc94itMV4zrDyNSJKqu+ipwD2OIm39yo8TwGF8/Pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=EDgTecuA; arc=none smtp.client-ip=209.85.128.54
+	 In-Reply-To:Content-Type; b=oymXUiIH+f95MAY4uzyExjK58ZnelQzGIZJCIVG7iF6t7XKhtRNTxUGHES50QLhFW6JNfskxhuNjftI5HxDLY4mE3kZ3kwe3s6sZ2t27BdwvxPZx19jqTtvuHyHEmzJEsp0i3ljxBbfJRaQfG1p5cXrCTGW/0R6kWJfuIN9AVio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Zb6UHQ1N; arc=none smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="EDgTecuA"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-451d6ade159so21032585e9.1
-        for <linux-coco@lists.linux.dev>; Tue, 03 Jun 2025 04:22:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Zb6UHQ1N"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ad55d6aeb07so858389166b.0
+        for <linux-coco@lists.linux.dev>; Tue, 03 Jun 2025 05:04:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1748949743; x=1749554543; darn=lists.linux.dev;
+        d=suse.com; s=google; t=1748952243; x=1749557043; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=uGLHAt8DknR+WLbJkRe9iH2Js5SBq5tvVtKbx041tVU=;
-        b=EDgTecuAENCvpZxu4Eyqh15j6NpmCfZNdEx2mYSC6sNbRb3SgLVeDm5vVA0PMULS+X
-         SICx6hzb0A7ErlDT+7Ss+n2zlx2yYnxab17GTTM1JUN27gmVyOig5qb5Rb7Sb7dymvDZ
-         i674AB0VNWL0maMSm/ktfXcXtc9rPn18jl3oIdAwMcHlzDyAZu9s1Jn4DPzQm95Yq1SJ
-         K6/57o7NaySBqBmwvrUhBdykO95RRrGuPVV/tJWpP9MLzCrEMByQ8LffhYxeGcGFDYLS
-         0ecBJX7yFAUAwHeOV+yL89RB1tvpSFNJ0wR9tsNiL9mi2/Cd07vt3h9390a+nkgRCdiD
-         Sy5w==
+        bh=HDZ21hWlWv1x+o04xchdKXVEcwFizZSvZru6Ba/BmlI=;
+        b=Zb6UHQ1N6kMVg9QfCt7PMiy88RCdyq16cqCgViTTZbiVPPpXHoFrvMO/hkXp6Pk978
+         23uNpGva15I75gb8e0b4L94CobDMA3e5iS1q5wCV1iiuclZux6CX/+D4MHDDkgt9QWEN
+         WD8W/f3utb34hDhCcM0AxURabInQd25E0AR9jNB/UsTz8T5+6SBKsM6XQAhg83LEuryn
+         Z5n+/qwESlhYzwCAfp0kS6nmxZiS1LzFYvyWSGnv97qCYPwkYothkMJS0YkFrSYDs72V
+         XOSi0tRI/FSA69Y5rX1Y+DWBuyt8cGSSc/UXx1rzCMr+82ihcAWMe7JUG6gD6rF5KAON
+         ESXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748949743; x=1749554543;
+        d=1e100.net; s=20230601; t=1748952243; x=1749557043;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=uGLHAt8DknR+WLbJkRe9iH2Js5SBq5tvVtKbx041tVU=;
-        b=kTBMzKbromYpLQmSoAVQWVaQ7z2lzYtFjA1JYEYSHl4cZbziBwy34yYinNz4bROl0j
-         pY9NRxUd6lrzKH/ZKhfovd8BGqFxDv6PQXn5vsQ+dRPs6iw/2JwbwoPqgaXRyG/C/1wJ
-         7JK0DIQLIZtGgGBGXnCq3EqxuLsdG6gWoIsUvtXghMmRDS00c53t5XivR1qdPXYA/Bok
-         iXUF6OWbp98N1BWAEd+AShQB4tS7OyEiyDzO73TC8DpYsp5UMTIzEmohBshp131CoBoi
-         fw/aWkQC9bWT48ThwAVS5EFayLFWis4VI9LfGOnZw7yBYsYCm6Irr3G5OA6pw45Hct9Q
-         cQ/w==
-X-Forwarded-Encrypted: i=1; AJvYcCVrg1ayJ6Y4Els3QaKlEQf9hcGr0WK+U/yvtOlyhGiKEgP2DbybPhmx5C1dEiKTXHn2EAPQKBYra6cp@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy8BmSWLJgfdUif6mhS7tpRfdOD3E4lHElCPdbvh8vaJ46agMOe
-	V3w+a5t4kHCdS6gXz5BbMA1mWvZEn6xG3ipqp7GNiJ0EecpE8Esa93ReaN+3FEU9n38=
-X-Gm-Gg: ASbGnct6lLbhHbGx9rfCrLPJPCbKtAYHuE+89ywvH0QA1Ww46sR6RMfKm0L5pa2cjX3
-	3p1qE/SkQkVXoV7ficMTlzRpvC38yk2IkeWCTzxg+XMeinoH0y/vM5QTPqmpMd8XMyM5EgwUUEf
-	baghMLaQROPCg11+V3t4tfZSc4UPWQbq+Gw6Vr7ws7XDILKBr2N9yP5vVkdEHbpGQbf5Ck5nMHt
-	0lXWJQVG6wj4G1QRbq1bU93x2qVAob3speldeIl2eb6omOmGIgxeJbEj6c+UdEb8EmPDxNtFIIU
-	MzrbkS7hMw/wGQyYlmq6Pvgj1EhrsUzG+QsTfoYpJX9xfJUU8CYh3RBHJrvprrzEtAXaEQ7o6kt
-	KdQ==
-X-Google-Smtp-Source: AGHT+IEgpygrOhv7gLK00yaoYV7PitKSJjxKjZv024rqcceSRp7/7s8ylWvMN2iyAVhCspNkUGxhTg==
-X-Received: by 2002:a05:600c:1c8f:b0:43c:f70a:2af0 with SMTP id 5b1f17b1804b1-4511edd5bfamr127061965e9.16.1748949742895;
-        Tue, 03 Jun 2025 04:22:22 -0700 (PDT)
+        bh=HDZ21hWlWv1x+o04xchdKXVEcwFizZSvZru6Ba/BmlI=;
+        b=hcgOTiBQXgayJ3Te5W0aAtYlNBLpcRuS8LlrLpPmT8nd64HWLCsaTho4E3STF1yi4s
+         cRzU6qST4oUB8eld8nhPXAGOCCrrDH2UFzMStkDGW0KSUT2xF/7DPj05rJJQxOA9gOEY
+         jDinTbjE9xfwHJNP6vzEuwkqG1wFza7GYBQH2vVkX8FicocHHzPk49hD7HPzua+zqP0h
+         A1qp4p41PQQI5FaRWujqETmXeQQVyURtrozdjEPS3bN4ZDmlSIJ3JtrfO/xUQJd0crr+
+         VYvNr65uZUfJF2rvZcRJS3+OIbdzlN74enRvqqhyHKYoWhwEXsFLV7EuuKb2qZD4Uzm/
+         HQqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXXvrp51cpdD6Xr2fJySRKLPpKQWnw8u2071h4lnwqzfUX7BuuTKYxDaTt8TnFlCQ6AS3OzAg5JxPgv@lists.linux.dev
+X-Gm-Message-State: AOJu0YzXXjfGKx3HQr2P45F1uCezP+6FogqhDrkW9RVK5ivKaweSBIFI
+	1l0akcUtsksUezlhImSF93R6AeXyPVueCp5ZvxNFBpP9JGvM5mgLIRDR51LJ0bchsUM=
+X-Gm-Gg: ASbGncsiOxpvdKfsw68WyS3FT+6vLwUlHG4s/BKqAuwh4xOijiFWRCXkxGsfcxLU3Mh
+	nb5eVzWcbUcr6W9oP0Lx7FmLUGF3uS4ZF/lGMO1WTgAJTO9e1s7ee5cGBgimv7zot8gDEkxcn8w
+	0YWWVRMPmSmd7y/m8N7ARazgUwXrtNlOMETxar5JZoLhkLLt47KBY+kACOwrNCCAdCD47tZe2MI
+	e1T7jnXgVO4RdwO3cY1XfTMA38e5Ce7upAcQdCqeBati+xZQyppdHoQZPqAJ3sAhEnivOWRyCZF
+	UOj2O831lueRCxzKmtzhuH/ms6dlk0qzMRy5awwpgw1zEJU0NZw+dxje
+X-Google-Smtp-Source: AGHT+IFdRpQTjbCVEAc5nDVoTookmyFz0UYQ5bCgOGFgKVeZAWQ8RM/2i+LzJ8MkDBkj3RKJ8+7qOQ==
+X-Received: by 2002:a17:907:6eac:b0:ad5:3156:2c06 with SMTP id a640c23a62f3a-adb36be2f5emr1647258866b.28.1748952242835;
+        Tue, 03 Jun 2025 05:04:02 -0700 (PDT)
 Received: from [192.168.0.20] ([212.21.159.167])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4efe6c8f5sm17608560f8f.27.2025.06.03.04.22.21
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-adb34881d45sm753497466b.128.2025.06.03.05.04.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Jun 2025 04:22:22 -0700 (PDT)
-Message-ID: <d1ec91ad-b368-4993-aadb-18af489ea87e@suse.com>
-Date: Tue, 3 Jun 2025 14:22:20 +0300
+        Tue, 03 Jun 2025 05:04:02 -0700 (PDT)
+Message-ID: <a845370c-a1f0-4d02-9144-f199ca845d59@suse.com>
+Date: Tue, 3 Jun 2025 15:04:00 +0300
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -68,21 +67,21 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 03/20] x86/virt/seamldr: Introduce a wrapper for
- P-SEAMLDR SEAMCALLs
+Subject: Re: [RFC PATCH 11/20] x86/virt/seamldr: Abort updates if errors
+ occurred midway
 To: Chao Gao <chao.gao@intel.com>, linux-coco@lists.linux.dev,
  x86@kernel.org, kvm@vger.kernel.org
 Cc: seanjc@google.com, pbonzini@redhat.com, eddie.dong@intel.com,
  kirill.shutemov@intel.com, dave.hansen@intel.com, dan.j.williams@intel.com,
  kai.huang@intel.com, isaku.yamahata@intel.com, elena.reshetova@intel.com,
  rick.p.edgecombe@intel.com, Farrah Chen <farrah.chen@intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>,
  "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
  linux-kernel@vger.kernel.org
 References: <20250523095322.88774-1-chao.gao@intel.com>
- <20250523095322.88774-4-chao.gao@intel.com>
+ <20250523095322.88774-12-chao.gao@intel.com>
 From: Nikolay Borisov <nik.borisov@suse.com>
 Content-Language: en-US
 Autocrypt: addr=nik.borisov@suse.com; keydata=
@@ -128,72 +127,73 @@ Autocrypt: addr=nik.borisov@suse.com; keydata=
  JDjakbdjBoYDWVoaPbp5KAQ2VQRiR54lir/inyqGX+dwzPX/F4OHfB5RTiAFLJliCxniKFsM
  d8eHe88jWjm6/ilx4IlLl9/MdVUGjLpBi18X7ejLz3U2quYD8DBAGzCjy49wJ4Di4qQjblb2
  pTXoEyM2L6E604NbDu0VDvHg7EXh1WwmijEu28c/hEB6DwtzslLpBSsJV0s1/jE=
-In-Reply-To: <20250523095322.88774-4-chao.gao@intel.com>
+In-Reply-To: <20250523095322.88774-12-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
 
 
 On 5/23/25 12:52, Chao Gao wrote:
-> P-SEAMLDR is another component alongside the TDX module within the
-> protected SEAM range. Software can invoke its functions by executing the
-> SEAMCALL instruction with the 63 bit of RAX set to 1. P-SEAMLDR SEAMCALLs
-> differ from those of the TDX module in terms of error codes and the
-> handling of the current VMCS.
+> The update process is divided into multiple stages, each of which may
+> encounter failures. However, the current state machine for updates proceeds
+> to the next stage regardless of errors.
 > 
-> Add a wrapper for P-SEAMLDR SEAMCALLs based on the SEAMCALL infrastructure.
+> Continuing updates when errors occur midway is pointless.
 > 
-> Intel® Trust Domain CPU Architectural Extensions (May 2021 edition)
-> Chapter 2.3 states:
+> Implement a mechanism that transitions directly to the final stage,
+> effectively aborting the update and skipping all remaining stages when an
+> error is detected.
 > 
-> SEAMRET from the P-SEAMLDR clears the current VMCS structure pointed to by
-> the current-VMCS pointer. A VMM that invokes the P-SEAMLDR using SEAMCALL
-> must reload the current-VMCS, if required, using the VMPTRLD instruction.
-> 
-> So, save and restore the current-VMCS pointer using VMPTRST and VMPTRLD
-> instructions to avoid breaking KVM, which manages the current-VMCS.
-> 
-> Disable interrupts to prevent KVM code from interfering with P-SEAMLDR
-> SEAMCALLs. For example, if a vCPU is scheduled before the current VMCS is
-> restored, it may encounter an invalid current VMCS, causing its VMX
-> instruction to fail. Additionally, if KVM sends IPIs to invalidate a
-> current VMCS and the invalidation occurs right after the current VMCS is
-> saved, that VMCS will be reloaded after P-SEAMLDR SEAMCALLs, leading to
-> unexpected behavior.
-> 
-> NMIs are not a problem, as the only scenario where instructions relying on
-> the current-VMCS are used is during guest PMI handling in KVM. This occurs
-> immediately after VM exits with IRQ and NMI disabled, ensuring no
-> interference with P-SEAMLDR SEAMCALLs.
+> This is in preparation for adding the first stage that may fail.
 > 
 > Signed-off-by: Chao Gao <chao.gao@intel.com>
 > Tested-by: Farrah Chen <farrah.chen@intel.com>
 > ---
->   arch/x86/Kconfig                | 10 ++++++++
->   arch/x86/virt/vmx/tdx/Makefile  |  1 +
->   arch/x86/virt/vmx/tdx/seamldr.c | 44 +++++++++++++++++++++++++++++++++
->   arch/x86/virt/vmx/vmx.h         | 40 ++++++++++++++++++++++++++++++
->   4 files changed, 95 insertions(+)
->   create mode 100644 arch/x86/virt/vmx/tdx/seamldr.c
->   create mode 100644 arch/x86/virt/vmx/vmx.h
+>   arch/x86/virt/vmx/tdx/seamldr.c | 17 +++++++++++++++--
+>   1 file changed, 15 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 4b9f378e05f6..8b1e0986b7f8 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -1932,6 +1932,16 @@ config INTEL_TDX_HOST
+> diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
+> index 01dc2b0bc4a5..9d0d37a92bfd 100644
+> --- a/arch/x86/virt/vmx/tdx/seamldr.c
+> +++ b/arch/x86/virt/vmx/tdx/seamldr.c
+> @@ -247,6 +247,7 @@ enum tdp_state {
+>   static struct {
+>   	enum tdp_state state;
+>   	atomic_t thread_ack;
+> +	atomic_t failed;
+>   } tdp_data;
 >   
->   	  If unsure, say N.
+>   static void set_state(enum tdp_state state)
+> @@ -261,8 +262,16 @@ static void set_state(enum tdp_state state)
+>   /* Last one to ack a state moves to the next state. */
+>   static void ack_state(void)
+>   {
+> -	if (atomic_dec_and_test(&tdp_data.thread_ack))
+> -		set_state(tdp_data.state + 1);
+> +	if (atomic_dec_and_test(&tdp_data.thread_ack)) {
+> +		/*
+> +		 * If an error occurred, abort the update by skipping to
+> +		 * the final state
+> +		 */
+> +		if (atomic_read(&tdp_data.failed))
+> +			set_state(TDP_DONE);
+> +		else
+> +			set_state(tdp_data.state + 1);
+> +	}
+>   }
 >   
-> +config INTEL_TDX_MODULE_UPDATE
-> +	bool "Intel TDX module runtime update"
-> +	depends on INTEL_TDX_HOST
-> +	help
-> +	  This enables the kernel to support TDX module runtime update. This allows
-> +	  the admin to upgrade the TDX module to a newer one without the need to
-> +	  terminate running TDX guests.
+>   /*
+> @@ -285,6 +294,9 @@ static int do_seamldr_install_module(void *params)
+>   			default:
+>   				break;
+>   			}
 > +
-> +	  If unsure, say N.
-> +
+> +			if (ret)
+> +				atomic_inc(&tdp_data.failed);
 
-WHy should this be conditional?
+Should there be some explicit ordering requirement between setting an 
+error and reading it in ack_state by a different CPU?
+
+
+  < snip>
+
