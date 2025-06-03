@@ -1,96 +1,126 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003E43FE4
-	for <linux-coco@lists.linux.dev>; Tue,  3 Jun 2025 04:12:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F124AD23;
+	Tue,  3 Jun 2025 04:56:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748923938; cv=none; b=LVuCyIwJ1hDGQ/e44FP2ttYCEIScgiqAT+hy3rGzp6OTmgaw5azE1hDE3hY7XTO+HGl9bpV47zpNuY+k5cFXQ7uW8+hblWM9ZBnA9QFBZt70OPIKeqh2ux6tyqrGWrYIwSmbSbgssNLArVwBQE4YygnjpnM+qk7STAKRJJgPDXE=
+	t=1748926610; cv=none; b=l6rD9cCvIa3Cqevs74yqZR9lqMpr8ycAXZOQ6bV05sMhnG01cHQUzAMHuWfJjQOBR7AuiBi5Ofv3NhU2FbN4Ek6vcog/ofA5PjYUMhyrzCGciCy1OwUQvqtRqbrgBjUyUERcw8m6y66SP2jJBBjRcbwITMmNKo3LtpMIaCB4A2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748923938; c=relaxed/simple;
-	bh=I0K77ynWRWFakYsSzTa11tPdCaW/k1nmFqRDWJiEcP8=;
+	s=arc-20240116; t=1748926610; c=relaxed/simple;
+	bh=p6Uliwjeb9aiPXavhCVIq0Xv1uYAO1wNjq9ELL7jF9s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EgxgEKa+KLfOALf8IR/HJgKtlQsiqYa4zCFxxXIAywRuxHvhDF+/RrKMTVIkmDv8FoAE1pD0h/GTdOUqcTnY2wDBEmM5qQ+C8NP0udUCkGvIk8Va7sP4vvkKppBdBRn8T2pG4wJbuCGUgWCUsaiTu7fcoWi5BTR16hN7d/1wwAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oAGiJLnE; arc=none smtp.client-ip=198.175.65.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=X0oM7DtjcmU6uRFkHhb04aCJOyMdXuzgGqn56QcTrQSXZoFU7OqvDA+Sg177MrLrjoigY1qeDQ0nOuq5dwvdwShTjIodR3u70uATR/M90A9o5t6RYg5SEfCN8SoOJfqgZtjanwbKo7po3p9TTuaDgWdEy/fQdFSknvOD4Gg7wgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q4uLpHRZ; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oAGiJLnE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q4uLpHRZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748923937; x=1780459937;
+  t=1748926609; x=1780462609;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=I0K77ynWRWFakYsSzTa11tPdCaW/k1nmFqRDWJiEcP8=;
-  b=oAGiJLnEgmSn8nJkrhJNt5pWc/H/b96wXzNnO7h2Q0NW8vQsl+KOI2cL
-   D5IiXdxPrhEto9UNN8fz5Hjo0r6AOBIqcHsHPBsXHDe9nVu6PvRWBPpSP
-   u6fcBURxvWmq8tF4NCHjU+mcDbWjqukh14UgZE/zTSqS6r6bGZKn+9xyh
-   w2kbqmX5LY+ZUIPhQGTe+uZ+EHuZbe9iUC75CU+8BgX6NEzT7KtiJK3HR
-   V0f3Q51XsAtuYy0v9JNvBQSSe/ivm6bPsM10LzRwzgWmMuQGZHRMsaSyE
-   dv0xhqiOY46/6CHD678ntxaZtz1hY9B6EJmkq39cKFe66M2CfLBTHs1O6
+   mime-version:in-reply-to;
+  bh=p6Uliwjeb9aiPXavhCVIq0Xv1uYAO1wNjq9ELL7jF9s=;
+  b=Q4uLpHRZu/t0o7QfJOdhDhV6k/mFl3qIOzhhkyWbZxaZ34sx1pVIXwB9
+   j0wyzqnhM1W5Ry+uYaPGz8bxBKEzLUy3Gy/1eB8Ol1ou2aRat3itAMMLN
+   rAj87AJfHTFylEuLUsIV+CqdPNKUnVUPXCKu1iWc1TeYyqg4wtPIl0iz4
+   AxDRKdtdoNfSXxHn08T2L8Ahfn4HBixK/ODtOh4UyVAtG5zjQ0jR9iPp7
+   7YPC07LgXHPhu3qAWXQn0QF7tGwjGXFRrbbWl/gY/be8fYRiO7SLAowS4
+   vZGqhfW5OG7Dp+S1/jjY7LO1NvUlFRO5JY0kKem2BYUkQdNgVPi1nBEL9
    g==;
-X-CSE-ConnectionGUID: Du5y+ElhSzSY33B0uS6c0g==
-X-CSE-MsgGUID: WdMsuLwDS0yeZ5tNKDqRmg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="51014589"
+X-CSE-ConnectionGUID: RyKZ2MohQ7WJ37fiu649IA==
+X-CSE-MsgGUID: 0o5ckS62RA6RA9FqMbteMg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="62004248"
 X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; 
-   d="scan'208";a="51014589"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 21:12:16 -0700
-X-CSE-ConnectionGUID: DCwd83g0SmK5anRUxGD9Ng==
-X-CSE-MsgGUID: AjKdimCnRtyPpAVwyzcXcw==
+   d="scan'208";a="62004248"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 21:56:48 -0700
+X-CSE-ConnectionGUID: +R3KxD5fSay5O/7fDmdhSg==
+X-CSE-MsgGUID: JbKyM8ULSPaqs7NuuQafDA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; 
-   d="scan'208";a="145223610"
+   d="scan'208";a="175593681"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa010.fm.intel.com with ESMTP; 02 Jun 2025 21:12:14 -0700
-Date: Tue, 3 Jun 2025 12:05:42 +0800
+  by fmviesa001.fm.intel.com with ESMTP; 02 Jun 2025 21:56:43 -0700
+Date: Tue, 3 Jun 2025 12:50:10 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
-	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
-	zhiw@nvidia.com
-Subject: Re: [RFC PATCH 3/3] iommufd/tsm: Add tsm_bind/unbind iommufd ioctls
-Message-ID: <aD50lpgJ+9XMJE/4@yilunxu-OptiPlex-7050>
-References: <yq5a5xhj5yng.fsf@kernel.org>
- <20250529133757.462088-1-aneesh.kumar@kernel.org>
- <20250529133757.462088-3-aneesh.kumar@kernel.org>
- <aDsta4UX76GaExrO@yilunxu-OptiPlex-7050>
- <yq5azfeqjt9i.fsf@kernel.org>
- <aD3QcQxtjoYXrglM@yilunxu-OptiPlex-7050>
- <20250602164857.GE233377@nvidia.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: kvm@vger.kernel.org, sumit.semwal@linaro.org, christian.koenig@amd.com,
+	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
+	jgg@nvidia.com, dan.j.williams@intel.com, aik@amd.com,
+	linux-coco@lists.linux.dev, dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	vivek.kasireddy@intel.com, yilun.xu@intel.com,
+	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
+	daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, tao1.su@intel.com,
+	linux-pci@vger.kernel.org, zhiw@nvidia.com, simona.vetter@ffwll.ch,
+	shameerali.kolothum.thodi@huawei.com, iommu@lists.linux.dev,
+	kevin.tian@intel.com
+Subject: Re: [RFC PATCH 20/30] vfio/pci: Do TSM Unbind before zapping bars
+Message-ID: <aD5/AjaQQOKydUWz@yilunxu-OptiPlex-7050>
+References: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
+ <20250529053513.1592088-21-yilun.xu@linux.intel.com>
+ <yq5ar002jlao.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250602164857.GE233377@nvidia.com>
+In-Reply-To: <yq5ar002jlao.fsf@kernel.org>
 
-On Mon, Jun 02, 2025 at 01:48:57PM -0300, Jason Gunthorpe wrote:
-> On Tue, Jun 03, 2025 at 12:25:21AM +0800, Xu Yilun wrote:
+On Mon, Jun 02, 2025 at 07:30:15PM +0530, Aneesh Kumar K.V wrote:
+> Xu Yilun <yilun.xu@linux.intel.com> writes:
 > 
-> > > Looking at your patch series, I understand the reason you need a vfio
-> > > ioctl is to call pci_request_regions_exclusive—is that correct?
-> > 
-> > The immediate reason is to unbind the TDI before unmapping the BAR.
+> > When device is TSM Bound, some of its MMIO regions are controlled by
+> > secure firmware. E.g. TDX Connect would require these MMIO regions
+> > mappeed in S-EPT and never unmapped until device Unbound. Zapping bars
+> > irrespective of TSM Bound state may cause unexpected secure firmware
+> > errors. It is always safe to do TSM Unbind first, transiting the device
+> > to shared, then do whatever needed as before.
+> >
+> > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> > ---
+> >  drivers/vfio/pci/vfio_pci_config.c |  4 +++
+> >  drivers/vfio/pci/vfio_pci_core.c   | 41 +++++++++++++++++++-----------
+> >  drivers/vfio/pci/vfio_pci_priv.h   |  3 +++
+> >  3 files changed, 33 insertions(+), 15 deletions(-)
+> >
+> > diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
+> > index 7ac062bd5044..4ffe661c9e59 100644
+> > --- a/drivers/vfio/pci/vfio_pci_config.c
+> > +++ b/drivers/vfio/pci/vfio_pci_config.c
+> > @@ -590,6 +590,7 @@ static int vfio_basic_config_write(struct vfio_pci_core_device *vdev, int pos,
+> >  		new_mem = !!(new_cmd & PCI_COMMAND_MEMORY);
+> >  
+> >  		if (!new_mem) {
+> > +			vfio_pci_tsm_unbind(vdev);
+> >  			vfio_pci_zap_and_down_write_memory_lock(vdev);
+> >  			vfio_pci_dma_buf_move(vdev, true);
+> >
 > 
-> Maybe you should just do this directly, require the TSM layer to issue
-> an unbind if it gets any requests to change the secure EPT?
+> For a secure device mmio range instead of vfio_pci_zap_and_down_write_memory_lock()
+> -> unmap_mapping_range() we want the vfio_pci_dma_buf_move right?
 
-The TSM layer won't touch S-EPT, KVM manages S-EPT. 
+Yes.
 
-Similarly IOMMUFD/IOMMU driver manages IOMMUPT. When p2p is
-involved, still need to unbind the TDI first then unmap the BAR for
-IOMMUPT.
+> Also is that expected to get called twice as below?
+
+Yes for TDX Connect. First time zap the private MMIOs during unbind.
+Second time block all mmio mapping.
+
+Other platforms don't need these tsm handlers. They don't have this
+awkwardness.
 
 Thanks,
 Yilun
 
 > 
-> Jason
+> vfio_pci_tsm_unbind-> pci_tsm_unbind -> tdx_tsm_unbind ->
+> tsm_handler->disable_mmio() -> vfio_pci_core_tsm_disable_mmio -> vfio_pci_dma_buf_move(vdev, true);
+> 
+> -aneesh
