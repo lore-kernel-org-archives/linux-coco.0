@@ -1,288 +1,199 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC1822B5A3
-	for <linux-coco@lists.linux.dev>; Tue,  3 Jun 2025 10:56:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A73F01CAA7D
+	for <linux-coco@lists.linux.dev>; Tue,  3 Jun 2025 11:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748948211; cv=none; b=mLyaWh8+K2gg/PPCihniwTadujS8sUzmKRw1Xi4XUv7YPMRA2++O3vcYjIETPWdN54/YamxCF+XMWfdSgSpGiN5pGQWV5Kyg6kJDprqSRGkIfKLiIxHnOWC6TMOjNhpYYWw26bBkgo7SVxfdlQ4zyQrp9qHUhUex56IWwNYYC34=
+	t=1748949746; cv=none; b=YdrPygQCheOg9k3hbNd1r2bb9HI4u4hCbDuTTllCkpfIrGN9YdFaWXPSV0zw40qVKVckH3oG1CbHqH2ZkQutzv8hcW+jA9dXKXPLHLo2FTsV+P08qH8OoRCB17oitwaUHBIeVQOopBe1BtKgKx9JP57YAN2z4PZnGBRRKVPuTcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748948211; c=relaxed/simple;
-	bh=l4EVEbozJyY+ughiuK7BCXFZ/p6lHgiVcgDOC1HMZJA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N0+YLR0/tmsh0tbx2ON0w0b+VW+Dee9UpmgBRXRh4LYpBLIqg2sj6PVHYICRMEFP/3UCDve6yAPAiwvaDUj9HY3KcSR//rbFaDutvGKgL4FIOmBqLbPLB5xlqTGD+Gn//Oh1Z7o9vamSeNR+B72xYj6RdtVM1ICFFnCfAPUDlh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MaFwDmo1; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1748949746; c=relaxed/simple;
+	bh=4bYe98B7YedxOKQs5dYV9Ing2H+ahxEuWbcKRNwu5jw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mqe9sjIpHNlt121Ox/Dx+hGznwbxCqu90WONG0OyR/XH+DyRz+rRO6Xh+tbTOX5UrnGhN7nKQeH5bQI9lxqcuNWcXNuiXzU805fVeJuCTGIG0TB4BzNugGpyWY6g6Zd+/rjc94itMV4zrDyNSJKqu+ipwD2OIm39yo8TwGF8/Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=EDgTecuA; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MaFwDmo1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748948210; x=1780484210;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=l4EVEbozJyY+ughiuK7BCXFZ/p6lHgiVcgDOC1HMZJA=;
-  b=MaFwDmo1ScQnCCIf38XwVafhwrV9mSOlotP6OANsx6CMPeOgfza0BqD2
-   pCJrAzM7EroDZWu4dWErU6qN4QH/NurHehS2n3TeMARYBS4nF3Lp1gMwP
-   +yA85ezcxptYG/UqKwvPZd70wBQ1wGTJq5YicHe5ZBdJdyxE6PyVMJsW/
-   zHguRzYOPnf4iuAd5DzuJjY9HXtWm8Z9iGvKDPbs0Jpv0w7OQ/6mmRbCn
-   cBba8cpzJSHzsvpslfkQS8vctc/3drJzl74M95edqbY6D1DBtmBZKJKCP
-   JIK3bMU/+61CBGAzHvdU3ldS4Hrl+slveGdrqdEyeu4674gLxHYA2GadR
-   g==;
-X-CSE-ConnectionGUID: XBIFAMeoRImt+I7KRh8hJQ==
-X-CSE-MsgGUID: OY5TM7mRSBOqDCd8mrckaQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="61602371"
-X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; 
-   d="scan'208";a="61602371"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 03:56:49 -0700
-X-CSE-ConnectionGUID: jb8pVdOSTA6RUjtySVLAYw==
-X-CSE-MsgGUID: Q8VkzE+mQZCe+dpiaGH8LQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,206,1744095600"; 
-   d="scan'208";a="149596483"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa003.jf.intel.com with ESMTP; 03 Jun 2025 03:56:45 -0700
-Date: Tue, 3 Jun 2025 18:50:13 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
-	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
-	jgg@nvidia.com, zhiw@nvidia.com
-Subject: Re: [RFC PATCH 3/3] iommufd/tsm: Add tsm_bind/unbind iommufd ioctls
-Message-ID: <aD7TZRnFualizeXk@yilunxu-OptiPlex-7050>
-References: <yq5a5xhj5yng.fsf@kernel.org>
- <20250529133757.462088-1-aneesh.kumar@kernel.org>
- <20250529133757.462088-3-aneesh.kumar@kernel.org>
- <aDsta4UX76GaExrO@yilunxu-OptiPlex-7050>
- <yq5azfeqjt9i.fsf@kernel.org>
- <aD3QcQxtjoYXrglM@yilunxu-OptiPlex-7050>
- <yq5ao6v5ju6p.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="EDgTecuA"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-451d6ade159so21032585e9.1
+        for <linux-coco@lists.linux.dev>; Tue, 03 Jun 2025 04:22:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1748949743; x=1749554543; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=uGLHAt8DknR+WLbJkRe9iH2Js5SBq5tvVtKbx041tVU=;
+        b=EDgTecuAENCvpZxu4Eyqh15j6NpmCfZNdEx2mYSC6sNbRb3SgLVeDm5vVA0PMULS+X
+         SICx6hzb0A7ErlDT+7Ss+n2zlx2yYnxab17GTTM1JUN27gmVyOig5qb5Rb7Sb7dymvDZ
+         i674AB0VNWL0maMSm/ktfXcXtc9rPn18jl3oIdAwMcHlzDyAZu9s1Jn4DPzQm95Yq1SJ
+         K6/57o7NaySBqBmwvrUhBdykO95RRrGuPVV/tJWpP9MLzCrEMByQ8LffhYxeGcGFDYLS
+         0ecBJX7yFAUAwHeOV+yL89RB1tvpSFNJ0wR9tsNiL9mi2/Cd07vt3h9390a+nkgRCdiD
+         Sy5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748949743; x=1749554543;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uGLHAt8DknR+WLbJkRe9iH2Js5SBq5tvVtKbx041tVU=;
+        b=kTBMzKbromYpLQmSoAVQWVaQ7z2lzYtFjA1JYEYSHl4cZbziBwy34yYinNz4bROl0j
+         pY9NRxUd6lrzKH/ZKhfovd8BGqFxDv6PQXn5vsQ+dRPs6iw/2JwbwoPqgaXRyG/C/1wJ
+         7JK0DIQLIZtGgGBGXnCq3EqxuLsdG6gWoIsUvtXghMmRDS00c53t5XivR1qdPXYA/Bok
+         iXUF6OWbp98N1BWAEd+AShQB4tS7OyEiyDzO73TC8DpYsp5UMTIzEmohBshp131CoBoi
+         fw/aWkQC9bWT48ThwAVS5EFayLFWis4VI9LfGOnZw7yBYsYCm6Irr3G5OA6pw45Hct9Q
+         cQ/w==
+X-Forwarded-Encrypted: i=1; AJvYcCVrg1ayJ6Y4Els3QaKlEQf9hcGr0WK+U/yvtOlyhGiKEgP2DbybPhmx5C1dEiKTXHn2EAPQKBYra6cp@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy8BmSWLJgfdUif6mhS7tpRfdOD3E4lHElCPdbvh8vaJ46agMOe
+	V3w+a5t4kHCdS6gXz5BbMA1mWvZEn6xG3ipqp7GNiJ0EecpE8Esa93ReaN+3FEU9n38=
+X-Gm-Gg: ASbGnct6lLbhHbGx9rfCrLPJPCbKtAYHuE+89ywvH0QA1Ww46sR6RMfKm0L5pa2cjX3
+	3p1qE/SkQkVXoV7ficMTlzRpvC38yk2IkeWCTzxg+XMeinoH0y/vM5QTPqmpMd8XMyM5EgwUUEf
+	baghMLaQROPCg11+V3t4tfZSc4UPWQbq+Gw6Vr7ws7XDILKBr2N9yP5vVkdEHbpGQbf5Ck5nMHt
+	0lXWJQVG6wj4G1QRbq1bU93x2qVAob3speldeIl2eb6omOmGIgxeJbEj6c+UdEb8EmPDxNtFIIU
+	MzrbkS7hMw/wGQyYlmq6Pvgj1EhrsUzG+QsTfoYpJX9xfJUU8CYh3RBHJrvprrzEtAXaEQ7o6kt
+	KdQ==
+X-Google-Smtp-Source: AGHT+IEgpygrOhv7gLK00yaoYV7PitKSJjxKjZv024rqcceSRp7/7s8ylWvMN2iyAVhCspNkUGxhTg==
+X-Received: by 2002:a05:600c:1c8f:b0:43c:f70a:2af0 with SMTP id 5b1f17b1804b1-4511edd5bfamr127061965e9.16.1748949742895;
+        Tue, 03 Jun 2025 04:22:22 -0700 (PDT)
+Received: from [192.168.0.20] ([212.21.159.167])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4efe6c8f5sm17608560f8f.27.2025.06.03.04.22.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Jun 2025 04:22:22 -0700 (PDT)
+Message-ID: <d1ec91ad-b368-4993-aadb-18af489ea87e@suse.com>
+Date: Tue, 3 Jun 2025 14:22:20 +0300
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 03/20] x86/virt/seamldr: Introduce a wrapper for
+ P-SEAMLDR SEAMCALLs
+To: Chao Gao <chao.gao@intel.com>, linux-coco@lists.linux.dev,
+ x86@kernel.org, kvm@vger.kernel.org
+Cc: seanjc@google.com, pbonzini@redhat.com, eddie.dong@intel.com,
+ kirill.shutemov@intel.com, dave.hansen@intel.com, dan.j.williams@intel.com,
+ kai.huang@intel.com, isaku.yamahata@intel.com, elena.reshetova@intel.com,
+ rick.p.edgecombe@intel.com, Farrah Chen <farrah.chen@intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ linux-kernel@vger.kernel.org
+References: <20250523095322.88774-1-chao.gao@intel.com>
+ <20250523095322.88774-4-chao.gao@intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <20250523095322.88774-4-chao.gao@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <yq5ao6v5ju6p.fsf@kernel.org>
 
-On Tue, Jun 03, 2025 at 10:30:30AM +0530, Aneesh Kumar K.V wrote:
-> Xu Yilun <yilun.xu@linux.intel.com> writes:
-> 
-> > On Mon, Jun 02, 2025 at 04:38:09PM +0530, Aneesh Kumar K.V wrote:
-> >> Xu Yilun <yilun.xu@linux.intel.com> writes:
-> >> 
-> >> >> + * struct iommu_vdevice_id - ioctl(IOMMU_VDEVICE_TSM_BIND/UNBIND)
-> >> >> + * @size: sizeof(struct iommu_vdevice_id)
-> >> >> + * @vdevice_id: Object handle for the vDevice. Returned from IOMMU_VDEVICE_ALLOC
-> >> >> + */
-> >> >> +struct iommu_vdevice_id {
-> >> >> +	__u32 size;
-> >> >> +	__u32 vdevice_id;
-> >> >> +} __packed;
-> >> >> +#define IOMMU_VDEVICE_TSM_BIND _IO(IOMMUFD_TYPE, IOMMUFD_CMD_VDEVICE_TSM_BIND)
-> >> >> +#define IOMMU_VDEVICE_TSM_UNBIND _IO(IOMMUFD_TYPE, IOMMUFD_CMD_VDEVICE_TSM_UNBIND)
-> >> >
-> >> > Hello, I see you are talking about the detailed implementation. But
-> >> > could we firstly address the confusing whether this TSM Bind/Unbind
-> >> > should be a VFIO uAPI or IOMMUFD uAPI?
-> >> >
-> >> > In this thread [1], I was talking about TSM Bind/Unbind affects VFIO
-> >> > behavior so they cannot be iommufd uAPIs which VFIO is not aware of.
-> >> > At least TDX Connect cares about this problem now. And the conclusion
-> >> > seems to be "have a VFIO_DEVICE_BIND(iommufd vdevice id), then have
-> >> > VFIO reach into iommufd".
-> >> >
-> >> > And some further findings [2] indicate this problem may also exist on
-> >> > AMD when p2p is involved.
-> >> >
-> >> > [1]: https://lore.kernel.org/all/20250515175658.GR382960@nvidia.com/
-> >> > [2]: https://lore.kernel.org/all/aDnXxk46kwrOcl0i@yilunxu-OptiPlex-7050/
-> >> >
-> >> 
-> >> Looking at your patch series, I understand the reason you need a vfio
-> >> ioctl is to call pci_request_regions_exclusive—is that correct?
-> >
-> > The immediate reason is to unbind the TDI before unmapping the BAR.
-> >
-> >> 
-> >> In another thread, I asked whether this might be better handled by
-> >> pci_tsm instead of vfio. I'd be interested in your thoughts on that.
-> >> 
-> >> I also noticed you want to unbind the TDI before unmapping the BAR in
-> >> vfio. From what I understand, this should still be possible if we use an
-> >> iommufd ioctl.
-> >
-> > I'm not sure how is that possible.
-> >
-> 
-> IIUC, what you need is the below interface
-> int iommufd_device_tsm_unbind(struct iommufd_device *idev) so that vfio
-> can use vfio_iommufd_tsm_unbind() -> 	iommufd_device_tsm_unbind(vdev->iommufd_device);
 
-I see. But I'm not sure if it can be a better story than ioctl(VFIO_TSM_BIND).
-You want VFIO unaware of TSM bind, e.g. try to hide pci_request/release_region(),
-but make VFIO aware of TSM unbind, which seems odd ...
 
-Thanks,
-Yilun
+On 5/23/25 12:52, Chao Gao wrote:
+> P-SEAMLDR is another component alongside the TDX module within the
+> protected SEAM range. Software can invoke its functions by executing the
+> SEAMCALL instruction with the 63 bit of RAX set to 1. P-SEAMLDR SEAMCALLs
+> differ from those of the TDX module in terms of error codes and the
+> handling of the current VMCS.
+> 
+> Add a wrapper for P-SEAMLDR SEAMCALLs based on the SEAMCALL infrastructure.
+> 
+> Intel® Trust Domain CPU Architectural Extensions (May 2021 edition)
+> Chapter 2.3 states:
+> 
+> SEAMRET from the P-SEAMLDR clears the current VMCS structure pointed to by
+> the current-VMCS pointer. A VMM that invokes the P-SEAMLDR using SEAMCALL
+> must reload the current-VMCS, if required, using the VMPTRLD instruction.
+> 
+> So, save and restore the current-VMCS pointer using VMPTRST and VMPTRLD
+> instructions to avoid breaking KVM, which manages the current-VMCS.
+> 
+> Disable interrupts to prevent KVM code from interfering with P-SEAMLDR
+> SEAMCALLs. For example, if a vCPU is scheduled before the current VMCS is
+> restored, it may encounter an invalid current VMCS, causing its VMX
+> instruction to fail. Additionally, if KVM sends IPIs to invalidate a
+> current VMCS and the invalidation occurs right after the current VMCS is
+> saved, that VMCS will be reloaded after P-SEAMLDR SEAMCALLs, leading to
+> unexpected behavior.
+> 
+> NMIs are not a problem, as the only scenario where instructions relying on
+> the current-VMCS are used is during guest PMI handling in KVM. This occurs
+> immediately after VM exits with IRQ and NMI disabled, ensuring no
+> interference with P-SEAMLDR SEAMCALLs.
+> 
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> Tested-by: Farrah Chen <farrah.chen@intel.com>
+> ---
+>   arch/x86/Kconfig                | 10 ++++++++
+>   arch/x86/virt/vmx/tdx/Makefile  |  1 +
+>   arch/x86/virt/vmx/tdx/seamldr.c | 44 +++++++++++++++++++++++++++++++++
+>   arch/x86/virt/vmx/vmx.h         | 40 ++++++++++++++++++++++++++++++
+>   4 files changed, 95 insertions(+)
+>   create mode 100644 arch/x86/virt/vmx/tdx/seamldr.c
+>   create mode 100644 arch/x86/virt/vmx/vmx.h
+> 
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 4b9f378e05f6..8b1e0986b7f8 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -1932,6 +1932,16 @@ config INTEL_TDX_HOST
+>   
+>   	  If unsure, say N.
+>   
+> +config INTEL_TDX_MODULE_UPDATE
+> +	bool "Intel TDX module runtime update"
+> +	depends on INTEL_TDX_HOST
+> +	help
+> +	  This enables the kernel to support TDX module runtime update. This allows
+> +	  the admin to upgrade the TDX module to a newer one without the need to
+> +	  terminate running TDX guests.
+> +
+> +	  If unsure, say N.
+> +
 
-> 
-> The below iommufd changes can get that
-> 
-> static struct mutex *vdev_lock(struct iommufd_vdevice *vdev)
-> {
-> 	if (mutex_lock_interruptible(&vdev->mutex) != 0)
-> 		return NULL;
-> 	return &vdev->mutex;
-> }
-> DEFINE_FREE(vdev_unlock, struct mutex *, if (_T) mutex_unlock(_T))
-> 
-> static struct mutex *idev_lock(struct iommufd_device *idev)
-> {
-> 	if (mutex_lock_interruptible(&idev->igroup->lock) != 0)
-> 		return NULL;
-> 	return &idev->igroup->lock;
-> }
-> DEFINE_FREE(idev_unlock, struct mutex *, if (_T) mutex_unlock(_T))
-> 
-> int iommufd_vdevice_tsm_bind_ioctl(struct iommufd_ucmd *ucmd)
-> {
-> 	struct iommu_vdevice_tsm_bind *cmd = ucmd->cmd;
-> 	struct iommufd_vdevice *vdev;
-> 	struct iommufd_device *idev;
-> 	struct mutex *ilock __free(idev_unlock) = NULL;
-> 	struct mutex *vlock __free(vdev_unlock) = NULL;
-> 	struct kvm *kvm;
-> 	int rc = 0;
-> 
-> 	if (cmd->flags)
-> 		return -EOPNOTSUPP;
-> 
-> 	idev = iommufd_get_device(ucmd, cmd->dev_id);
-> 	if (IS_ERR(idev))
-> 		return PTR_ERR(idev);
-> 
-> 	vdev = container_of(iommufd_get_object(ucmd->ictx, cmd->vdevice_id,
-> 					       IOMMUFD_OBJ_VDEVICE),
-> 			    struct iommufd_vdevice, obj);
-> 	if (IS_ERR(vdev)) {
-> 		rc = PTR_ERR(vdev);
-> 		goto out_put_idev;
-> 	}
-> 
-> 	ilock = idev_lock(idev);
-> 	if (!ilock) {
-> 		rc = -EINTR;
-> 		goto out_put_vdev;
-> 	}
-> 
-> 	if (idev->vdev) {
-> 		/* if it is already bound */
-> 		rc = -EINVAL;
-> 		goto out_put_vdev;
-> 	}
-> 
-> 	vlock = vdev_lock(vdev);
-> 	if (!vlock) {
-> 		rc = -EINTR;
-> 		goto out_put_vdev;
-> 	}
-> 
-> 	if (WARN_ON(vdev->idev)) {
-> 		rc = -EINVAL;
-> 		goto out_put_vdev;
-> 	}
-> 
-> 	kvm = vdev->viommu->kvm_filp->private_data;
-> 	if (kvm) {
-> 		/*
-> 		 * tsm layer will make take care of parallel calls to tsm_bind/unbind
-> 		 */
-> 		rc = tsm_bind(vdev->dev, kvm, vdev->id);
-> 		if (rc) {
-> 			rc = -ENODEV;
-> 			goto out_put_vdev;
-> 		}
-> 	} else {
-> 		rc = -ENODEV;
-> 		goto out_put_vdev;
-> 	}
-> 	idev->vdev = vdev;
-> 	vdev->idev = idev;
-> 	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
-> 
-> out_put_idev:
-> 	iommufd_put_object(ucmd->ictx, &idev->obj);
-> out_put_vdev:
-> 	iommufd_put_object(ucmd->ictx, &vdev->obj);
-> 	return rc;
-> }
-> 
-> static int iommufd_vdevice_tsm_unbind(struct iommufd_vdevice *vdev)
-> {
-> 	int rc = -EINVAL;
-> 	struct mutex *lock __free(vdev_unlock) = vdev_lock(vdev);
-> 	if (!lock)
-> 		return -EINTR;
-> 
-> 	if (!vdev->idev) {
-> 		tsm_unbind(vdev->dev);
-> 		vdev->idev = NULL;
-> 		rc = 0;
-> 	}
-> 	return rc;
-> }
-> 
-> /**
->  * iommufd_device_tsm_unbind - Move a device out of TSM bind state
->  * @idev: device to detach
->  *
->  * Undo iommufd_device_tsm_bind(). This removes all Confidential Computing
->  * configurations, Once this completes the device is unlocked (TDISP
->  * CONFIG_UNLOCKED).
->  */
-> int iommufd_device_tsm_unbind(struct iommufd_device *idev)
-> {
-> 	struct mutex *lock __free(idev_unlock) = idev_lock(idev);
-> 	if (!lock)
-> 		return -EINTR;
-> 
-> 	if (!idev->vdev)
-> 		return -EINVAL;
-> 
-> 	iommufd_vdevice_tsm_unbind(idev->vdev);
-> 	idev->vdev = NULL;
-> 	return 0;
-> }
-> EXPORT_SYMBOL_NS_GPL(iommufd_device_tsm_unbind, "IOMMUFD");
-> 
-> int iommufd_vdevice_tsm_unbind_ioctl(struct iommufd_ucmd *ucmd)
-> {
-> 	struct iommu_vdevice_tsm_unbind *cmd = ucmd->cmd;
-> 	struct iommufd_vdevice *vdev;
-> 	int rc = 0;
-> 
-> 	vdev = container_of(iommufd_get_object(ucmd->ictx, cmd->vdevice_id,
-> 					       IOMMUFD_OBJ_VDEVICE),
-> 			    struct iommufd_vdevice, obj);
-> 	if (IS_ERR(vdev))
-> 		return PTR_ERR(vdev);
-> 
-> 	rc = iommufd_device_tsm_unbind(vdev->idev);
-> 	if (rc) {
-> 		rc = -ENODEV;
-> 		goto out_put_vdev;
-> 	}
-> 	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
-> 
-> out_put_vdev:
-> 	iommufd_put_object(ucmd->ictx, &vdev->obj);
-> 	return rc;
-> }
-> 
+WHy should this be conditional?
