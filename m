@@ -1,123 +1,98 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3A2197A76
-	for <linux-coco@lists.linux.dev>; Wed,  4 Jun 2025 06:45:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607F01DED6D;
+	Wed,  4 Jun 2025 08:59:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749019558; cv=none; b=WpYKWuwtiii+mAseI85zGQK9V76w3y+mgkvaaIR6C+jF5fG7nYW4JPA42Ey3HDBj0RA+KbIaRXkWfUNtYydqUbrXnQO2mJpyJ2bURNupBpQ4jYpVCKIghfZm3Wrj/r6veaDCqs8nl4ZLURraOs+P7Hle314qsDL9vywoB03xgvA=
+	t=1749027586; cv=none; b=rky1JNdW4LfBgwo1n/TXoPo3xFqoTbRrHDdAZjHd2GVr6gWn6PAlPnzy0YiWOX86vEy0iZBHBtX1yn1mvr3ABVlYm7wBly9Nl3t1XUTqllQko61BKzJAlDL+W28fm6v7K91CLVGaYoUcTmwHGCt1/4Q+7o7zt7KVtVMxpqyabMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749019558; c=relaxed/simple;
-	bh=vlIfn92vfsClp02MAwhpS1OjU+Tz3jZdUSzWImzQIYs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WZDd/0/LDERpVeM89U6Chnq0ltM/f0RQogiGWC6iNRI1b4pEoZpLSE/BNsFVaPwgAS7BTxdFw03iS2lIV7Nk7bWK3e6J7i64eiTn/68M5LF0NQ8j4yfTuKAq9M9pzDP4hnrus7oHvRJBiXIFt6lUlsPnf8U6JDKsZSz10zaBiyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F0kb1ZZ8; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1749027586; c=relaxed/simple;
+	bh=Gv/8dSQ35RXpPTBT+MBnEM0acL6Cg6eS+qdQegxOfLQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=GuCAQTiQ7Q8wlqDL9bEehGfI/ZaVU5XUERuAJp61x8YJc63SHZSDbJ6ULb1fiPbcD1SLG5gtMsfGVydTyQBss03Nm0qucEWK+B0F7EY5ic04//UJCHsuMunTWquVnxSuPFVm3I2/VnXkUm3Faq/09PRPtnObAGkK/BNGN+OGr8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XG8Lpspg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F0kb1ZZ8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749019557; x=1780555557;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vlIfn92vfsClp02MAwhpS1OjU+Tz3jZdUSzWImzQIYs=;
-  b=F0kb1ZZ8WnK27Zo1sCyKMlo/4Lxm04no1T3sGaB3PqUrKff4oSo3Ng8R
-   JiI07b4tBUsTG6ru09u5DuEv3eiwm56jE+E7Zl0kDR4Q18HDWiQIC3zcV
-   RuTkxp8uVdWb3SDJvDiDdC5I40dRGrRd5CMAuuV4ADBQyLG7sghxamCUd
-   f9oM8etwCXL76mfS3jSiORio6goxGtXBNbKDNFqWQa/UwNFASIx9Rxlnn
-   NwCT7bzSniD/+XIcaG9dTlK0Js9hbWYJiQkR9aCmnNHNvxgsE9JydbLK8
-   NV/BXBr+dJFjMiN1/VJtMsFuVwK1Mi5XN6Kzr1thyITxOl8ZgoOk3yu1B
-   g==;
-X-CSE-ConnectionGUID: PC+YHM5aTraiVuLDy50slQ==
-X-CSE-MsgGUID: vTPFQ2uBT3mLOuMIns8mwQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11453"; a="54883914"
-X-IronPort-AV: E=Sophos;i="6.16,208,1744095600"; 
-   d="scan'208";a="54883914"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 23:45:56 -0700
-X-CSE-ConnectionGUID: onhMhJt1StKYJ3OFpL9yKg==
-X-CSE-MsgGUID: H3KZEm75QvamVrf1N5khlw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,208,1744095600"; 
-   d="scan'208";a="145048904"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa007.fm.intel.com with ESMTP; 03 Jun 2025 23:45:53 -0700
-Date: Wed, 4 Jun 2025 14:39:19 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XG8Lpspg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A62C4CEE7;
+	Wed,  4 Jun 2025 08:59:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749027584;
+	bh=Gv/8dSQ35RXpPTBT+MBnEM0acL6Cg6eS+qdQegxOfLQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=XG8LpspgQhEOozu2MyvW7S127w1bVqmyeNdTsZ2RM3Df9LJ8TUIT/F67GMO8KFSq3
+	 ngO22sPZKSE4PvSuc+Vjnoy3kGI4mvd1uYp7OXoRwMGsncOp5ThdnCbBK/nIaQJA6x
+	 YfjeM3RPQxCMa9vMohlDOOsf/cZj/CDypjZF9kW4LrKjErd3AIRLVI5/zzlGv6dMQJ
+	 KtPTzA1fW5CRQ//ICfPzL9suDum53JrZwn/HOqvtEqFeh/cxWvxWd1gutog99q1D9k
+	 n3A8Y/HoW1K0JOqlsoPgOV/EsQj3b30mOchfNn6lwt4Pv/Fb+zTsWTw7v9wZC2X9xX
+	 anohPmBaCiiXA==
+X-Mailer: emacs 30.1 (via feedmail 11-beta-1 Q)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Dan Williams <dan.j.williams@intel.com>,
 	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
-	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
-	zhiw@nvidia.com
-Subject: Re: [RFC PATCH 3/3] iommufd/tsm: Add tsm_bind/unbind iommufd ioctls
-Message-ID: <aD/qF/6vjxjJEXcM@yilunxu-OptiPlex-7050>
-References: <yq5a5xhj5yng.fsf@kernel.org>
- <20250529133757.462088-1-aneesh.kumar@kernel.org>
- <20250529133757.462088-3-aneesh.kumar@kernel.org>
- <aDsta4UX76GaExrO@yilunxu-OptiPlex-7050>
- <20250602124718.GY233377@nvidia.com>
- <aD5wVXINV1QJnMbO@yilunxu-OptiPlex-7050>
- <20250603120810.GD376789@nvidia.com>
+	linux-pci@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, lukas@wunner.de, suzuki.poulose@arm.com,
+	sameo@rivosinc.com, aik@amd.com, jgg@nvidia.com, zhiw@nvidia.com,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: Re: [PATCH v3 03/13] PCI/TSM: Authenticate devices via platform TSM
+In-Reply-To: <683f52b1aa2be_1626e100b1@dwillia2-xfh.jf.intel.com.notmuch>
+References: <20250516054732.2055093-1-dan.j.williams@intel.com>
+ <20250516054732.2055093-4-dan.j.williams@intel.com>
+ <yq5ajz6a3rp4.fsf@kernel.org>
+ <683f52b1aa2be_1626e100b1@dwillia2-xfh.jf.intel.com.notmuch>
+Date: Wed, 04 Jun 2025 13:34:32 +0530
+Message-ID: <yq5asekg7x0v.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250603120810.GD376789@nvidia.com>
+Content-Type: text/plain
 
-On Tue, Jun 03, 2025 at 09:08:10AM -0300, Jason Gunthorpe wrote:
-> On Tue, Jun 03, 2025 at 11:47:33AM +0800, Xu Yilun wrote:
-> 
-> > VFIO doesn't have enough information, but VFIO needs to know about
-> > bound state. So comes the suggestion [1] that the VFIO uAPI, then VFIO
-> > reach into iommufd for real bind.
-> > 
-> > And my implementation [2] is:
-> > 
-> > ioctl(vfio_cdev_fd, VFIO_DEVICE_TSM_BIND)
-> > -> vfio_iommufd_tsm_bind()
-> >    -> iommufd_device_tsm_bind()
-> >       -> iommufd_vdevice_tsm_bind()
-> >          -> pci_tsm_bind()
-> 
-> This doesn't work, logically you are binding the vdevice, not the
-> idevice, the uapi should provide the vdevice id, which VFIO doesn't
-> have.
+Dan Williams <dan.j.williams@intel.com> writes:
 
-Yes. Sorry I just too lazy to provide the full API format.
+> Aneesh Kumar K.V wrote:
+>> Dan Williams <dan.j.williams@intel.com> writes:
+>> 
+>> ....
+>> 
+>> > +static void pci_tsm_pf0_init(struct pci_dev *pdev)
+>> > +{
+>> > +	bool tee_cap;
+>> > +
+>> > +	tee_cap = pdev->devcap & PCI_EXP_DEVCAP_TEE;
+>> > +
+>> > +	if (!(pdev->ide_cap || tee_cap))
+>> > +		return;
+>> >
+>> 
+>> If we expect to use pci_tsm_pf0_init and is_pci_tsm_pf0() from the
+>> guest, can we have the ide_cap and tee_cap check here? Will that be true
+>> for all devices assigned to the guest?
+>
+> I do not expect this path to be taken for a guest device. IDE is not
+> relevant for TDIs in the guest and function0 is not a requirement guest
+> BDFs. I still need to add this to samples/devsec/, but the expectation
+> is that in "TVM mode" the presence of PCI_EXP_DEVCAP_TEE is sufficient
+> to route any PCI function to tsm_ops->probe().
 
-The original suggestion [1] is to provide vdevice_id in VFIO uAPI.
+We do that because we expose /sys/bus/pci/devices/<x>/tsm/connect to
+guest and we have
 
-[1] https://lore.kernel.org/all/20250515175658.GR382960@nvidia.com/
+static int pci_tsm_connect(struct pci_dev *pdev)
+{
+	struct pci_tsm_pf0 *tsm = to_pci_tsm_pf0(pdev->tsm);
+	int rc;
 
-And here is a piece of the implementation in [2]:
+        ....
 
-+struct vfio_pci_tsm_bind {
-+	__u32	argsz;
-+	__u32	flags;
-+	__u32	vdevice_id;
-+	__u32	pad;
-+};
-+
-+#define VFIO_DEVICE_TSM_BIND		_IO(VFIO_TYPE, VFIO_BASE + 22)
+      	if (tvm_mode())
+		rc = __driver_idle_connect(pdev);
+	else
+		rc = tsm_ops->connect(pdev);
 
-[2] https://lore.kernel.org/all/20250529053513.1592088-20-yilun.xu@linux.intel.com/
 
-> 
-> If you really need vfio involvement then you need callbacks, I think.
 
-Only callback is not enough, there are cases that VFIO wants actively
-invalidate MMIO, e.g. VFIO_DEVICE_RESET. In that case, VFIO needs
-dynamic unbind then invalidate MMIO.
-
-Thanks,
-Yilun
-
-> 
-> Jason
+-aneesh
