@@ -1,110 +1,183 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2088.outbound.protection.outlook.com [40.107.244.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E931C6FF3
-	for <linux-coco@lists.linux.dev>; Thu,  5 Jun 2025 15:02:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749135781; cv=none; b=V0vd5ihmmWPH4+eRDFfro7gjwoLL8tW8PmrCiJ4fUtRGlWXunjuvo1VxzDdL3i3G5dcSFttLbSvJ4JAuVnaeaUbUn0JHdAh/wK1MGLvpt7fQzCU8tOU7k8Q36vfLZpuFV7QDKg+CC1ZcrUuYQI80i0wX8AFavCk4R6m51yOPa+s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749135781; c=relaxed/simple;
-	bh=3jeQmiKt06GXrIHfpjh0oQlnOaSY9Kr4rz+umFvQdDA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LRaQoZJ/CKkFq26VYx404jy/xn48Ww8BHio5ay3X7F3I+//jVQ2K8ditRtBWU/Hs808RBu5ftdEOKAW4ciT+gM8tJ4paRbQ6NHr6YT7YLKsjc9o7S2Rfo7VTM/2wp4YqL9SY+OaJwbLtSIzNJ5geLdm+Mzsgbd+gVI6HITiW37Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dionnaglaze.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VtmECPVR; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dionnaglaze.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8651D18DF80;
+	Thu,  5 Jun 2025 15:09:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.88
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749136163; cv=fail; b=ndReAyv87b76yupl1ii0mlq6wFmgTJskcWHUnLgzevzA7nN+OfR9fFeIh3FHita21VVnxWFEVA8f5dJnWCUz9IUl+am8ljFO8xDWojBliwL+p8vk7OXwQVFaZOI91jP9LsjSCs67Z1kwW6DxE7QL7aYn0EnjuWjd7OycuQUj/zE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749136163; c=relaxed/simple;
+	bh=wFJYsXkXZ4eZEIZ4rQAAFyYLv9NX+hOpnQDs9umIvbU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=joc2r+l0k2N7A0eMXb3F7R/QQEZxpTAYvj1rOIFtYJgmLczdnHiSz0iO71sLC5KAjnfsm5fiYamixVvNsiTADkflWK+DnkbbEKyPa8XIRzPFWeuolnj2ufyONqSW4BFTKR9nLiX8Vpgdrn/JqlTOloY+4BVSnrjSYU4yvM8bROI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=q5QzeIJr; arc=fail smtp.client-ip=40.107.244.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VtmECPVR"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-747cebffd4eso938093b3a.2
-        for <linux-coco@lists.linux.dev>; Thu, 05 Jun 2025 08:02:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749135779; x=1749740579; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xzwm5+cjAdLoNMVYNUU/eCk5jF9CVdW14YhkjiBUlxs=;
-        b=VtmECPVRX+OchYTW5noQ46Km068KCe92uSduPQA2bnSbpjr/bav3eaBzu8TRKuJ4rU
-         uWGs6RcoPGEqvIBdYTdxT0NWeP+M8m8mINz7oCbFY5+CQHKS7jWXZEKrvuK1gf8MoF8M
-         gLRu8aueFrNRE6swINRtSCqheGiW31kPxWhEDo7iQiPA4sekPrX4HnviuxrRYLSWmenW
-         ybsmxdKscvLCwrgjbT0w6KWTXHljAfdlbgz/rh5tt+TnvZMIMDkRRua7Y7DGZUHzTa0s
-         srACnqGD/v2fjPISZkypVkO7mHgNQ/u3uUdjSaiRXr0u0iIRoiGNJDgWYdIXIhks90Sw
-         1Yuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749135779; x=1749740579;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xzwm5+cjAdLoNMVYNUU/eCk5jF9CVdW14YhkjiBUlxs=;
-        b=nNXEwOLtjCwm7QPRrFAtRXauJtfkD/sAU3BdfN9FNhXwLPVY/7v4wSJ3spQeUec8ha
-         IPAPyeLz03tThPZn0eMRjz/M5C89NSPzhcfA9vuakkYhmRnKsiLn5chsqev/KT2Ynnko
-         EbDWxRVbJIgIVhj7fuvhxsjgz/T15ynadF5iXXIhY9GFqXg9GGRG5UZjK0GcZOSvM280
-         YMV3F2l0G6qCaQ7M70NGUde64I6YqGqVOUYaZaxtAMm2jb1/lU2KlJj4q9vBO8xrb9Tc
-         J1/mif7tIh3TSOKJPb6u2eJ9Y8+jROr7f2b0ptK6QkHS53qm8Q74RT6ZtLBMaFj9fYHx
-         MOKw==
-X-Gm-Message-State: AOJu0YwMJ+mZbTD17Rz5ziJAKnjsTNRwoQ3VbYVzx9aOWI4zoF2TNLmv
-	ut+WSt/KfP5kFI4MI4PzWad4pulArM4CndTLyQ4+RQVlxrRFJJAXjKCjcEFG8jCACk1KVGqqiaG
-	4nOe4SjAAotFUvPGf6/nezfOjhQ==
-X-Google-Smtp-Source: AGHT+IHb5hKDUYrgVOzSrfCbbqZtDuSQIRve0rxtHVkUEsiBbiESd9WvsZr9lyVAILAcpiMtqMiFe+S0tlpgh2kuCw==
-X-Received: from pfvx14.prod.google.com ([2002:a05:6a00:270e:b0:747:9faf:ed39])
- (user=dionnaglaze job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:b53:b0:747:ee09:1fb4 with SMTP id d2e1a72fcca58-74827f09679mr61292b3a.15.1749135779455;
- Thu, 05 Jun 2025 08:02:59 -0700 (PDT)
-Date: Thu,  5 Jun 2025 15:02:36 +0000
-In-Reply-To: <20250605150236.3775954-1-dionnaglaze@google.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="q5QzeIJr"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pp4qdTmwg6mDEsBPgK7EPygW4OzLmasUMeG84RxjV9mTgHa2iW1IkCh0W2abn1tZ9rNKWw12Z1sh9brJFT8eGEbtHR/bSo8nl8s/SH4tGXv7yNrXQPgeQKukWF0csNM63Xq51DuGx6YqdKXt0TxNE0kB7J9xf1R6Iv79dHusv4f4wFSvOSGH90ZDlPJ4moJ7s4h38HnRppVoIK2DifdYgqVFp+vQha7JlwI9fLvRHaCNffL+hLBMFHJt4eS4gNHUhrVK4eGjutGs0lnwUl1SIIhYgI0MjKQ/1xUnNulRrjVgbJYRXAaTqc2wD2t2RUMMAw+PLAOCl80XB9m78w3vCQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=K9WafZfPOMuTk9JtExzfcLS+H/l2FXgp1KQLW57ZbnQ=;
+ b=FAVxzdYP1pjE5uhwx+I2F7Xw/HbIxz1sSUrNTdkHFsFE+jZLaEYfRpom/gux5WpIYAeMNtQkZWB1GZi2qibp70sosKW6qvq161EQ4Vsni6Ppj54qj9M/IC5F/Xr1NrS0TVgLsFqRoc9+Gpo2E889MbjciEt6Tu3IkasDEXO5LBFAbtGAUIhuMKa/7Hc5wG5zObPj8nCESD43tGAw2FcbnX7R86w9ffMnEwpvAVsm1OZqUogGxLAVC/ZaWAsZM6lsODrPJGFztLA1zhMNrQoBapP/t/CU0yA61V6PN0WPi/vHVGx5SmbKY2LDFT2BFuzNYu/8O7iPx6q8TwO4OJhNIA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=K9WafZfPOMuTk9JtExzfcLS+H/l2FXgp1KQLW57ZbnQ=;
+ b=q5QzeIJrcf2a4hKg429qxtlJ2ZFnzO6QtJcgKe1GbSzl2CLaUqgg24XaSFfT7ZNPdghqE4H/iPwP3W0t7rWQXgNfgDWZQC5kkYvXSakWVPlbnE2Ih7lu8wfhzyskkzG4hEMIz1is+IQ5i6zq2sLoh8pIB/e0Fnn0OhpboLyRd5YnGlsB+VebVDaivIhDjT/o7P4uPxl4Bj8HV8eloWM9MEgGG/1Laz8oM3XyZUPHGf+HyY5YhK4Bx95d9Oz1XJdMm5f809JQVHpiHxWAKq5zIaqSfMLoSUTVbUWUILQU8jWJFdyuW/VuBE2cREdBDFxAiffqAiXxUMGu0IugNA4G1g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by CH3PR12MB7690.namprd12.prod.outlook.com (2603:10b6:610:14e::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.34; Thu, 5 Jun
+ 2025 15:09:18 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%6]) with mapi id 15.20.8792.034; Thu, 5 Jun 2025
+ 15:09:18 +0000
+Date: Thu, 5 Jun 2025 12:09:16 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, kvm@vger.kernel.org,
+	sumit.semwal@linaro.org, christian.koenig@amd.com,
+	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
+	dan.j.williams@intel.com, aik@amd.com, linux-coco@lists.linux.dev,
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, vivek.kasireddy@intel.com,
+	yilun.xu@intel.com, linux-kernel@vger.kernel.org, lukas@wunner.de,
+	yan.y.zhao@intel.com, daniel.vetter@ffwll.ch, leon@kernel.org,
+	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	tao1.su@intel.com, linux-pci@vger.kernel.org, zhiw@nvidia.com,
+	simona.vetter@ffwll.ch, shameerali.kolothum.thodi@huawei.com,
+	iommu@lists.linux.dev, kevin.tian@intel.com
+Subject: Re: [RFC PATCH 19/30] vfio/pci: Add TSM TDI bind/unbind IOCTLs for
+ TEE-IO support
+Message-ID: <20250605150916.GB19710@nvidia.com>
+References: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
+ <20250529053513.1592088-20-yilun.xu@linux.intel.com>
+ <yq5aplfn210z.fsf@kernel.org>
+ <aD24r44v0g1NgeZs@yilunxu-OptiPlex-7050>
+ <yq5ajz5r8w6p.fsf@kernel.org>
+ <aEFmPaYorqaYCKBY@yilunxu-OptiPlex-7050>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aEFmPaYorqaYCKBY@yilunxu-OptiPlex-7050>
+X-ClientProxiedBy: YT4PR01CA0496.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:10c::10) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20250605150236.3775954-1-dionnaglaze@google.com>
-X-Mailer: git-send-email 2.50.0.rc0.642.g800a2b2222-goog
-Message-ID: <20250605150236.3775954-3-dionnaglaze@google.com>
-Subject: [PATCH v6 2/2] kvm: sev: If ccp is busy, report busy to guest
-From: Dionna Glaze <dionnaglaze@google.com>
-To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: linux-coco@lists.linux.dev, Dionna Glaze <dionnaglaze@google.com>, 
-	Thomas Lendacky <Thomas.Lendacky@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Joerg Roedel <jroedel@suse.de>, Peter Gonda <pgonda@google.com>, Borislav Petkov <bp@alien8.de>, 
-	Sean Christopherson <seanjc@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|CH3PR12MB7690:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8248854e-4cf3-4b3b-56a1-08dda442f139
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?JK65WbaMWpD+/ntc+0jbhBWOwtYEQyDRrN5T91y0M7ag3mTYE9nLp2K5V/JM?=
+ =?us-ascii?Q?jVVkXlowDS6vlVCHqrZ+sP5KZyfbEWvzKuxDbX6DHQ8Vl7El2InEikmShAQV?=
+ =?us-ascii?Q?MtccP8O8gud38T6ErUNm4b7XzsY3I6oe0YayLDqXH2SNxRng9iTJYYtG9ONU?=
+ =?us-ascii?Q?WU9RAPxV4vKXYAy6zJXPLQOvRdTFDH62JdutF3yh20P+zldwoeqMfCD2qwds?=
+ =?us-ascii?Q?1ob1yDXDiHi8JiWNkzD+4GixwuzZvQofQByU9HgdYJgPmU+KKnygOr6FAncg?=
+ =?us-ascii?Q?N/5hnsbbMl2pLwV8wiEoAAXX+LXncig7Bfl/bYaaG2mtrWCSQSaN6U0dbHJ7?=
+ =?us-ascii?Q?B1GDBftY7YpFjRXaJqOa7ANZBIpP/ucPgMEqqCiZN9cBrclu7DOhjL6PcXVP?=
+ =?us-ascii?Q?luBe0EzLdhciDCf8V4XHNsdwvcU0OWgqeWFRMJEMaIBxeCtLRuzI0S1z420U?=
+ =?us-ascii?Q?sy2n3xpgoShNmV4iSaSVzMRQFMHp0o7Cj+CD/YomZ5k7zOKRqLGh1UkicNFd?=
+ =?us-ascii?Q?EC156WnVgaYFaM0JbMXVd9RNvz8SWyw7MHpXrfZxO6bkSPl0a8L/6X8O/bwo?=
+ =?us-ascii?Q?wUnZyR+SpG+dVaPysludeCE/7cFl8UDTcl3Y9kMUBoHuZzSSR2nfOauUaLbm?=
+ =?us-ascii?Q?iseDJL4xRm2AdcZxaspYftukILDY4SoltCRo+ALkK8NkAGyfyW26/NNIPan7?=
+ =?us-ascii?Q?7IM7z9RR7dZNN2naQeXw3wJwDTt+5CnhuTO4uKyXStl6PkoKhIxN7G2/oz4Q?=
+ =?us-ascii?Q?NyOSF5AnEkT2hhndyhadvGLg4Fb15ro0t9Wxc9FSfcrabfPYAA9O9T+Le9tm?=
+ =?us-ascii?Q?f3aw2/p6WXEj0GevtJYcmKtNJwmleyrTNPQDM/DhoUILFF3FMFU0FSx+R174?=
+ =?us-ascii?Q?zAziYZOpCsCmYzYG+ShNc+lgWXL6fw597zwswxR/F6SYRe4TDHrHVocX0HHs?=
+ =?us-ascii?Q?i0LKUQ4cebO5Xpd9qTCw21B4z1DcjStybTgArnClyA6qPGbf5pdgusxxpKXo?=
+ =?us-ascii?Q?HHJ3QhU7ZdvzQaeIBuL2vzjdmZLskVrMeZr1xzcYRRBxg+qfbbWqUTnbCfbL?=
+ =?us-ascii?Q?+4QcVTvwKKIE5GI8uGl0lh84bvejZiqLXfYxWtDqs2N+0ZB1lpLswrbaSeIo?=
+ =?us-ascii?Q?j67WBDTPF4g9KnRknQrb4vyiD8DFVLKb+Hr/lrgXyJor7X1GVZJKAI58TqPf?=
+ =?us-ascii?Q?PUO9geMRS3EJbM8Ixmk3Gt2jvMQXYx1EbOWeFjmZb3F9ukqeUI3JNiUbXsc+?=
+ =?us-ascii?Q?bBFkSvpYZWuVb6bznWrkZdgKJZVrScpcrDXxPUZes/a5AqcECZPP77xhB/ct?=
+ =?us-ascii?Q?NBBPMPNIPu3aSktRz8ppZR0Zjl5BUrrZXZkR7oA6YoObkZf7/wBql9D4PhJh?=
+ =?us-ascii?Q?XrLKV8sj0yqSKnqCLJpuevpW8zwIbSlsDbexuwxgjgHdLMSLxK7hx1Z6SGd4?=
+ =?us-ascii?Q?xBjJndPtGz0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?YnJL50NOObalofHyGLcX2sKoki78yzs8ES6ttr1wszqZFBxexjhBT1exyKZp?=
+ =?us-ascii?Q?Cw/+JIf7a322WMyqXY7DV0yMANUKxn+/Mfqqh1mCo6xXYB69sv4O9Z0bnrnp?=
+ =?us-ascii?Q?sNHAtuae5cfjAkv6eCNnKQ8dyVIJ3vaGhik2Q1EPSDJETlOnjI9Lj95hz8PI?=
+ =?us-ascii?Q?P4wBP7ZgfDVE/bbkDlhiBXkFmqENvaJiMyxVcMwLSZV1Nzh6AM7+AAuBxl2w?=
+ =?us-ascii?Q?AAgQrG+72rEYYIsiP6URLD7XoU506gVGcmzbeMygN8lIWz3EFTDW5XVaZTr1?=
+ =?us-ascii?Q?EUNkSnCPp8lvvwC6Iv4JbqK4ZuOEVXHsOpP4TxagMimhx2WGPy/1VOy+4MOC?=
+ =?us-ascii?Q?NrcWTd1jiPgg1VSm/prfIFNps43qH0yxdRV53Em0PE+Uz8CKd6GxBv7S3pV9?=
+ =?us-ascii?Q?zjLB383l76ggINSblZ36AqgP6C2Y9j7JBlPtJjW3/kDqA86IfmypI2fzQ8E9?=
+ =?us-ascii?Q?+ai1CJui5IIFm68Uqswl49lZVm7OdoGpHoiaqgkebfOeMHDmhYzuIRNEm4wC?=
+ =?us-ascii?Q?trhGnmivDAgbN5yjW74Gc2CATFTd5NtQLr6LWjCu2io4W8wpMsfvO97DtFpB?=
+ =?us-ascii?Q?qvkJ0sTsFdyhTPNsdakXHHWYpanHPVHXWvrGLXv6i6vbjkLuxklmdUhOs8It?=
+ =?us-ascii?Q?H28uq68fT7tc6rAuLdnifJPGPfGnLgTSncPR6/+u4P8KCE0nBpiJDmzerqUw?=
+ =?us-ascii?Q?AWKxfT/tqSnjQnWVPJGPoXaTjzvW15NrEolCaubVF+Dja4qJrJuWnqCwdzbQ?=
+ =?us-ascii?Q?H/qi4Z1DVM+snH2+tY9+hSsKd/8zhgl57B7uulzxnVPyd9C1ibnV2wcX6iWL?=
+ =?us-ascii?Q?dCDEi82D/XukgHn16txR+NKoxQvTY2INJrXd/r7Wgh4nPmZAvZe4PYXDxaw8?=
+ =?us-ascii?Q?JysjKNpZjNHCn5117MTYsGSDkNMovWcn/JvGPMv2Asnwp6zumZy1cUsMOXyD?=
+ =?us-ascii?Q?usLsjFMFu+SbQ1pbuOvYLZ37o8dn64dqT9zLrYaldl4tAWvDhQbxecCbDJoj?=
+ =?us-ascii?Q?7DKXhKKuSBZoQ9MrcCc2e9qgSU5GM9zoyT/3ufKVblfNO7+AUrWPUo90PJes?=
+ =?us-ascii?Q?kICL28sncojUZoqzjlYjHVD2EDRmtlUvZWoXLA4CU+e6aRbCJ6ywJ096tkJQ?=
+ =?us-ascii?Q?7NdZ7gNey6rchbiP4d+LaMOx9JoKuYiNjBD7clgAqHKgbHczlMNinknxB7v6?=
+ =?us-ascii?Q?/GYZEyQmhcq2OcRrn3HcSp136SdOsc7ZJqf01rDKdEFCSPOVQAl29W5tlpRi?=
+ =?us-ascii?Q?wX9PAvkmKy1imt0QLh4p5UD77+fl78HIN6T473dLG2m2TbDq1vUd16528xEA?=
+ =?us-ascii?Q?Oxj0706PH8mxgRWIAVG6gG3C1CUpfpGlDxcz1x0mQ01Ga0UWIE8MVYqwdZhG?=
+ =?us-ascii?Q?WhDJYAWtj1g6wuFdtKSHmM1HMr2zzimZLRaJ4SpZic/hhW32b3YyZI40KJ7A?=
+ =?us-ascii?Q?aLCDYXPaFsRa/4w9YVn6COi0W9FNCNSzw7v0mff/H3QtziFQnHbLdPZR+/3R?=
+ =?us-ascii?Q?l+2NoWho7HY9aU2MQEG8mD5uTVF3oXGP39fpGrRfyPYHP3EsiAhI7ZvyjDNu?=
+ =?us-ascii?Q?lmzZJ4a8QG6PqORRuMwsD1yO/Zl0u/6Uj48Rsst2?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8248854e-4cf3-4b3b-56a1-08dda442f139
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2025 15:09:17.9962
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UIaSuJJxDn3yncKQocK9PVLmm5OwsS+qgLXtIEsB70uaI8cOKICF+6jFG5osMo2Y
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7690
 
-The ccp driver can be overloaded even with guest request rate limits.
-The return value of -EBUSY means that there is no firmware error to
-report back to user space, so the guest VM would see this as
-exitinfo2 = 0. The false success can trick the guest to update its
-message sequence number when it shouldn't have.
+On Thu, Jun 05, 2025 at 05:41:17PM +0800, Xu Yilun wrote:
 
-Instead, when ccp returns -EBUSY, that is reported to userspace as the
-throttling return value.
+> No, this is not device side TDISP requirement. It is host side
+> requirement to fix DMA silent drop issue. TDX enforces CPU S2 PT share
+> with IOMMU S2 PT (does ARM do the same?), so unmap CPU S2 PT in KVM equals
+> unmap IOMMU S2 PT.
+> 
+> If we allow IOMMU S2 PT unmapped when TDI is running, host could fool
+> guest by just unmap some PT entry and suppress the fault event. Guest
+> thought a DMA writting is successful but it is not and may cause
+> data integrity issue.
 
-Cc: Thomas Lendacky <Thomas.Lendacky@amd.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Joerg Roedel <jroedel@suse.de>
-Cc: Peter Gonda <pgonda@google.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Sean Christopherson <seanjc@google.com>
+So, TDX prevents *any* unmap, even of normal memory, from the S2 while
+a guest is running?  Seems extreme?
 
-Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
----
- arch/x86/kvm/svm/sev.c | 5 +++++
- 1 file changed, 5 insertions(+)
+MMIO isn't special, if you have a rule like that for such a security
+reason it should cover all of the S2.
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index e45f0cfae2bd..0ceb7e83a98d 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -4060,6 +4060,11 @@ static int snp_handle_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_
- 	 * the PSP is dead and commands are timing out.
- 	 */
- 	ret = sev_issue_cmd(kvm, SEV_CMD_SNP_GUEST_REQUEST, &data, &fw_err);
-+	if (ret == -EBUSY) {
-+		svm_vmgexit_no_action(svm, SNP_GUEST_ERR(SNP_GUEST_VMM_ERR_BUSY, fw_err));
-+		ret = 1;
-+		goto out_unlock;
-+	}
- 	if (ret && !fw_err)
- 		goto out_unlock;
- 
--- 
-2.50.0.rc0.642.g800a2b2222-goog
+> This is not a TDX specific problem, but different vendors has different
+> mechanisms for this. For TDX, firmware fails the MMIO unmap for S2. For
+> AMD, will trigger some HW protection called "ASID fence" [1]. Not sure
+> how ARM handles this?
+
+This seems even more extreme, if the guest gets a bad DMA address into
+the device then the entire device gets killed? No chance to debug it?
+
+Jason
 
