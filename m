@@ -1,107 +1,216 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-oa1-f74.google.com (mail-oa1-f74.google.com [209.85.160.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9862145355
-	for <linux-coco@lists.linux.dev>; Thu,  5 Jun 2025 15:02:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572671ACED9
+	for <linux-coco@lists.linux.dev>; Thu,  5 Jun 2025 15:02:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749135776; cv=none; b=Yo2F+N1R4y088fTqZ3eYKMQqG/LXdUJyb26JAK9MSp+5XOrTo06Ny46gEfJYgozHaszsyxRlvdc0aJ8tZuu7mWT6Boh3KTakicR2YpukStY/Rm7VbHZm1HRkufgON8xd0W3epH2KgyKT/7ZLTjASYeuCeAc+QDXsS8aPFeBu64M=
+	t=1749135780; cv=none; b=ZFpdl7lJd9MtCD1Nbw9nY5WWP0v2ILbG15zO4/QPKrIYDJWa8utpvR4AKlFDIP6FvsOga+SLuTxE8TR464Jf8KtnvWJ5I9LDgWbX6TvE8NR+j7fKl2LLYZ483Y/zlhIULhoNIE+ty8rGS4toRr+9pxJNKYgTTLMuonEo2n2+wSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749135776; c=relaxed/simple;
-	bh=/9oGjbRjnfueRQJIZGhA2Un3eglBFE6JP5x5vleF0JM=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=jKj7NARPc/E0L7JbrubWxGVQ3p/vmVmVmUZN7nT5Hqse2O0CpUTRN6FNko0CmjftNM4zjIAogQ3jluGT+SP9Mk97iJ0cvCMi+3DipoyXjvOWocGd2R/WhUTrAa7FdpWvWHAVt7JqWQUc8FQhSQP4FSTrYGNee2rPPckAAFVcfWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dionnaglaze.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Be7vQKwj; arc=none smtp.client-ip=209.85.215.201
+	s=arc-20240116; t=1749135780; c=relaxed/simple;
+	bh=6ebvtx27JnbmpcCRxTaFDXwmEkzSZL+DSbCdff1DwQs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=UyVa6ofN2fbWpG6bkWmD0W47/8IlWR7kinoAN5eyC3v9jDSWFT+blm4Ke5eb+ryUM41+ApDhRfgZdjyOJdvLRjeKdTVNzGLF+jDwPBrzRed/mzbLmAKeYd4YtQ5gkP2XU7KBTr/6Me0jp34wAui5NrrVswyKH5IGh2tvhrHeefk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dionnaglaze.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d+evDaUg; arc=none smtp.client-ip=209.85.160.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dionnaglaze.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Be7vQKwj"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b090c7c2c6aso635661a12.0
-        for <linux-coco@lists.linux.dev>; Thu, 05 Jun 2025 08:02:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d+evDaUg"
+Received: by mail-oa1-f74.google.com with SMTP id 586e51a60fabf-2e922a13d49so1128175fac.2
+        for <linux-coco@lists.linux.dev>; Thu, 05 Jun 2025 08:02:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749135774; x=1749740574; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=7VKfd8Mda9jsQ2KQuKEzreTAair58/eAqehxmumcIZc=;
-        b=Be7vQKwjXRhhm/xVz8oaW1eWEAePWkmOLVRAAsb6r9/UDVj0l+nxfHZ28Wpi0GXP4I
-         JeIChDj4XGtfWjBjrje/CZJRaXassnff2Yll7e7g28C1Zpjxjilgmn217aZoB2JZm0Yc
-         7cpp9ZqkXQBOtItV0eztr8nuLxUCs9qBtcYdSy8ALFeoavrL9b9ttXM0Zgb1GVdogZiB
-         PllowGDlHbwDahZrLRnGvXd8c0FCq4qcCzRe5dRKwbZ58heyb71z3at3Mj30rw7Mlvbb
-         mzRX8CZWC2cDO3CzujNJKbCtaMJtHBuhVD2T5gHFD2D9k0CV0uB9F+blRRaDjKv9NJGC
-         y4mA==
+        d=google.com; s=20230601; t=1749135777; x=1749740577; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=F4QpCwuMDO3ieFJHgjbXdb25+Lz909bG6cS+4hVbc5I=;
+        b=d+evDaUgwh+DiBdiLuKLBq9uDApO2g/CiR3ciFIdqJ7P5XissI6xAVS3W2iLaUVh6w
+         DNBt0Ikub5yQzrWqRFJp6EFzSSA3buIPo6mvFzV0LPSJeGsBTv5YUfc7abK2Gd6bA8Tn
+         taSwf7y8yHCExmJoPrL93xUty6ERkHJ2b/L1FxhbRkc5gqza2lTAlcFQHdTqrqBi93UP
+         JDhzyGjO5xwdtsY9v+tphnM3dnkiCLCylkiU5Y+bOkzkkpWPTYmkv8n4N12O/dWJliNN
+         4yMnpW9k3E391ZgZrRDxS6ooZl4IddAk/Y31bziBTN+4FrsZ9jrGXnScrOIQsctLpCuA
+         wZCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749135774; x=1749740574;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7VKfd8Mda9jsQ2KQuKEzreTAair58/eAqehxmumcIZc=;
-        b=xOi4ujd3wbk4aLfBW9fbOer60RLOSIpM7tUPByLTsho+LH3reDvqSp4r8qonitEYnu
-         JoZEsWS7MdYyLDsv6/qq0BYb2alYMxuQqrDOi52c77Dhopdr+H9OXu3j9txINTP7bV+v
-         ZoAlF66Y5Dt0kjIU7xdsekhoExaAzNsabxiwYW0ufwrgy6gHyD0q/oUmREJpJFUlTazW
-         FOOdRgnXt9UZddVrj7WoC5yQ4MzTNY8NZX9e+teYKCk14+jBUmtsb9RreSGxJ/dSjl0V
-         KtREEoJrJr0UBK/PyTMfzjUY6gmJJhRqXw+oW3l7Pd9zJvRNvKPyiZbKhvb8RGvN9e78
-         NaOw==
-X-Gm-Message-State: AOJu0YzSeiuiVEKcfKP6yLo+rJQ3awXHiwPgNwyzNqri5oY7j+4NvcGx
-	1pmnaEZT4ZTRA0UPiaZOMcdE4TGKUwRWTlrt2j6SscfyzQ+YDB+00iYOnNO9NsJzH+fbj9XWfMn
-	YrZiEalFhNkon1uHVckO+Ja/wAA==
-X-Google-Smtp-Source: AGHT+IFnu6A91F8hyb9IYuCWMuLpnU44IExyUHuWukUU1F2elsZVdXzAgW0uaSCuWvSNDeFg1ZN4aJuYGs9ROhHb/Q==
-X-Received: from pgbdh4.prod.google.com ([2002:a05:6a02:b84:b0:b2e:ce0c:b3fb])
+        d=1e100.net; s=20230601; t=1749135777; x=1749740577;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=F4QpCwuMDO3ieFJHgjbXdb25+Lz909bG6cS+4hVbc5I=;
+        b=Vq5vaE2xUQBwoKbPOIflPmeFDYc6OFAwIrE5USijQQefd+m8EJ8CvTvz3I2bdzKIOg
+         HK0txmRKgXquOSOyLbimvUByRvPVfR0Urq+NJKwpdUj3gKVUDswWHRpxxKPFl6E77rSS
+         IomCRtn/HVgn36TxyRoAMhOysTu1z0xBDbBU4s3gzoOp1VlgWp0ONybgcItcGeSV7hE5
+         T5opY76Giq7EdeLVRr3u7nCIvcLwkY30Ns1pRh23O1wBxvcg6F7FlGJ9S7G+EvWtHqo0
+         axWItqOMk4QKqYKWr8QB8jYXVKqHU9tXEvNqVkzPKtvJiVq9WQzDNFjruB6mFt8RI5Xs
+         RdKg==
+X-Gm-Message-State: AOJu0YzshcHmC/INhSNTMBujuv07oQhUEX7BhUsoT8spIp3hyGtfiTm8
+	5P3/86z2at5OjAVgggUJToEC/m6OyEWxfG7yzJ/6wRWEScin0kE7Nrw5D4hPswRtoTPvcL20Wfz
+	2o2+Oz1foa2znqrLQuPcUuW2MVQ==
+X-Google-Smtp-Source: AGHT+IEGgg2iURpToiwcoNT/TtIwkShYVJHPggNKgfXkCJt3fQ3ClBkysBTk4Q3GO67DXJVVpKXITswreVrMxROnKw==
+X-Received: from oablb10.prod.google.com ([2002:a05:6871:414a:b0:2d5:5a26:d92])
  (user=dionnaglaze job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:734e:b0:201:85f4:ad07 with SMTP id adf61e73a8af0-21d22b98d7bmr10729217637.33.1749135774020;
- Thu, 05 Jun 2025 08:02:54 -0700 (PDT)
-Date: Thu,  5 Jun 2025 15:02:34 +0000
+ 2002:a05:6870:aa88:b0:296:9c08:51a3 with SMTP id 586e51a60fabf-2e9bf66b5f8mr4663231fac.39.1749135777310;
+ Thu, 05 Jun 2025 08:02:57 -0700 (PDT)
+Date: Thu,  5 Jun 2025 15:02:35 +0000
+In-Reply-To: <20250605150236.3775954-1-dionnaglaze@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
+References: <20250605150236.3775954-1-dionnaglaze@google.com>
 X-Mailer: git-send-email 2.50.0.rc0.642.g800a2b2222-goog
-Message-ID: <20250605150236.3775954-1-dionnaglaze@google.com>
-Subject: [PATCH v6 0/2] kvm: sev: Add SNP guest request throttling
+Message-ID: <20250605150236.3775954-2-dionnaglaze@google.com>
+Subject: [PATCH v6 1/2] kvm: sev: Add SEV-SNP guest request throttling
 From: Dionna Glaze <dionnaglaze@google.com>
 To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: linux-coco@lists.linux.dev, Dionna Glaze <dionnaglaze@google.com>
+Cc: linux-coco@lists.linux.dev, Dionna Glaze <dionnaglaze@google.com>, 
+	Thomas Lendacky <Thomas.Lendacky@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Joerg Roedel <jroedel@suse.de>, Peter Gonda <pgonda@google.com>, Borislav Petkov <bp@alien8.de>, 
+	Sean Christopherson <seanjc@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-The GHCB specification recommends that SNP guest requests should be
-rate limited. Add a kernel module parameter to ensure a system-wide
-lower bound rate limit on a per-VM scale for all new VMs. Note that
-this does not preclude the addition of a new KVM exit type for SEV-SNP
-guest requests for userspace to impose any additional throttling logic.
+The AMD-SP is a precious resource that doesn't have a scheduler other
+than a mutex lock queue. To avoid customers from causing a DoS, a
+kernel module parameter for rate limiting guest requests is added.
 
-The AMD-SP is a global resource that must be shared across VMs, so
-its time should be multiplexed across VMs fairly. It is the
-responsibility of the VMM to ensure all SEV-SNP VMs have a rate limit
-set such that the collective set of VMs on the machine have a rate of
-access that does not exceed the device's capacity.
+The default value does not impose any rate limiting.
 
-The sev-guest device already respects the SNP_GUEST_VMM_ERR_BUSY
-result code, so utilize that result to cause the guest to retry after
-waiting momentarily.
+Throttling vs scheduling:
+Even though Linux kernel mutexes have fair scheduling, the SEV command
+mutex is not enough to balance the AMD-SP load in a manner that favors
+the host to run VM launches for low boot latency over traffic from the
+guest in the form of guests requests that it can't predict.
+Boot sequence commands and guest request commands all contend on
+the same mutex, so boot latency is affected by increased guest request
+contention.
 
-Changes since v5:
-  * Reverted the KVM command for setting the rate limit in favor of
-    the module parameter solution. The default is no rate-limiting
-    to maintain existing behavior.
-Changes since v4:
-  * Fixed build failure caused by rebase.
-  * Added ratelimit.h include.
-  * Added rate bounds checking to stay within ratelimit types.
-Changes since v3:
-  * Rebased on master, changed module parameter to mem_enc_ioctl
-    command. Changed commit descriptions. Much time has passed.
-Changes since v2:
-  * Rebased on v7, changed "we" wording to passive voice.
-Changes since v1:
-  * Added missing Ccs to patches.
+A VM launch may see dozens of SNP_LAUNCH_UPDATE commands before
+SNP_LAUNCH_FINISH, and boot times are a heavily protected metric in
+hyperscalars.
+To favor lower latency of VM launches over each VM's ability to request
+attestations at a high rate, the guest requests need a secondary
+scheduling mechanism.
+It's not good practice to hold a lock and return to user space, so using
+a secondary lock for VM launch sequences is not an appropriate solution.
+For simplicity, merely set a rate limit for every VM's guest requests
+and allow a system administrator to tune that rate limit to platform
+needs.
 
-Dionna Glaze (2):
-  kvm: sev: Add SEV-SNP guest request throttling
-  kvm: sev: If ccp is busy, report busy to guest
+Design decisions:
+The throttle rate for a VM cannot be changed once it has been started.
+The rate the VM gets is its level of service, so it should not be
+degradable by a mem_enc_ioctl for example.
 
- arch/x86/kvm/svm/sev.c | 22 ++++++++++++++++++++++
+Empirical investigation:
+With a test methodology of turning up N-1 "antagonist" VMs with 2 vCPUs
+and 4GiB RAM that all request a SEV-SNP attestation a tight loop before
+measuring the boot latency of the Nth VM, an effective quality of service
+should keep the average boot latency at levels without any guest request
+contention.
+
+On a dedicated 256 core AMD Zen3 with 1TiB of RAM, continuous performance
+testing shows that a boot latency of 220ms +- 50ms is typical with N in
+{4, 16, 32, 64} when the request rate is set to 1/s.
+
+After N=64, the rate limit of 1 HZ is insufficient to hold back enough
+time for the final VM launch to succeed consistently in the contention.
+
+Cc: Thomas Lendacky <Thomas.Lendacky@amd.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Joerg Roedel <jroedel@suse.de>
+Cc: Peter Gonda <pgonda@google.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Sean Christopherson <seanjc@google.com>
+
+Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
+---
+ arch/x86/kvm/svm/sev.c | 17 +++++++++++++++++
  arch/x86/kvm/svm/svm.h |  3 +++
- 2 files changed, 25 insertions(+)
+ 2 files changed, 20 insertions(+)
 
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 1aa0f07d3a63..e45f0cfae2bd 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -12,13 +12,16 @@
+ #include <linux/kvm_host.h>
+ #include <linux/kernel.h>
+ #include <linux/highmem.h>
++#include <linux/limits.h>
+ #include <linux/psp.h>
+ #include <linux/psp-sev.h>
+ #include <linux/pagemap.h>
+ #include <linux/swap.h>
+ #include <linux/misc_cgroup.h>
+ #include <linux/processor.h>
++#include <linux/ratelimit.h>
+ #include <linux/trace_events.h>
++#include <linux/units.h>
+ #include <uapi/linux/sev-guest.h>
+ 
+ #include <asm/pkru.h>
+@@ -59,6 +62,10 @@ static bool sev_es_debug_swap_enabled = true;
+ module_param_named(debug_swap, sev_es_debug_swap_enabled, bool, 0444);
+ static u64 sev_supported_vmsa_features;
+ 
++/* set a per-VM rate limit for SEV-SNP guest requests on VM creation. 0 is unlimited. */
++static int sev_snp_request_ratelimit_khz = 0;
++module_param(sev_snp_request_ratelimit_khz, int, 0444);
++
+ #define AP_RESET_HOLD_NONE		0
+ #define AP_RESET_HOLD_NAE_EVENT		1
+ #define AP_RESET_HOLD_MSR_PROTO		2
+@@ -367,6 +374,7 @@ static int snp_guest_req_init(struct kvm *kvm)
+ {
+ 	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
+ 	struct page *req_page;
++	u64 throttle_interval;
+ 
+ 	req_page = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
+ 	if (!req_page)
+@@ -381,6 +389,9 @@ static int snp_guest_req_init(struct kvm *kvm)
+ 	sev->guest_req_buf = page_address(req_page);
+ 	mutex_init(&sev->guest_req_mutex);
+ 
++	throttle_interval = ((u64)sev_snp_request_ratelimit_khz * HZ) / HZ_PER_KHZ;
++	ratelimit_state_init(&sev->snp_guest_msg_rs, sev_snp_request_ratelimit_khz, 1);
++
+ 	return 0;
+ }
+ 
+@@ -4028,6 +4039,12 @@ static int snp_handle_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_
+ 
+ 	mutex_lock(&sev->guest_req_mutex);
+ 
++	if (!__ratelimit(&sev->snp_guest_msg_rs)) {
++		svm_vmgexit_no_action(svm, SNP_GUEST_ERR(SNP_GUEST_VMM_ERR_BUSY, 0));
++		ret = 1;
++		goto out_unlock;
++	}
++
+ 	if (kvm_read_guest(kvm, req_gpa, sev->guest_req_buf, PAGE_SIZE)) {
+ 		ret = -EIO;
+ 		goto out_unlock;
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index f16b068c4228..2643c940d054 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -18,6 +18,7 @@
+ #include <linux/kvm_types.h>
+ #include <linux/kvm_host.h>
+ #include <linux/bits.h>
++#include <linux/ratelimit.h>
+ 
+ #include <asm/svm.h>
+ #include <asm/sev-common.h>
+@@ -112,6 +113,8 @@ struct kvm_sev_info {
+ 	void *guest_req_buf;    /* Bounce buffer for SNP Guest Request input */
+ 	void *guest_resp_buf;   /* Bounce buffer for SNP Guest Request output */
+ 	struct mutex guest_req_mutex; /* Must acquire before using bounce buffers */
++
++	struct ratelimit_state snp_guest_msg_rs; /* Limit guest requests */
+ };
+ 
+ struct kvm_svm {
 -- 
 2.50.0.rc0.642.g800a2b2222-goog
 
