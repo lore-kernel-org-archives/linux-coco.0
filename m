@@ -1,161 +1,193 @@
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2054.outbound.protection.outlook.com [40.107.212.54])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 260A520A5F1
-	for <linux-coco@lists.linux.dev>; Mon,  9 Jun 2025 18:07:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749492453; cv=fail; b=IEwqxCqbGmRiZjrMqj/PRTVir/R/s+eIL8E0d06hKY3wv9Jq7X+hq2E+uoQ0oAS+M4I9sjvs2tsb0eQeDoFjWIyIxq974MDyIbqqDnu9J58fL8PHswslm22eJn7vLBNxnWxQVIL0CXu7zivEhwN/iLxUg72jkJnUFbFQ/iB9+Gg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749492453; c=relaxed/simple;
-	bh=78z8soSy9p4chOUR6qXXITCrgoRX/KVLHYLZQBtYES0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=e1aBnu2vmkmdPgOUgTH124D+bxUvaVzvB7bhiWBuXxdVg9yWgR/TYRY4sqtCSdguHp+BFkcsu9vfGLBbgMDL04Y0fSRMPKgY/qt2vZfK7WTUsWy23jpMJJLe5UpIwW2wZI42eply8zeWBL+6hp2+VluwS8y/QIZGI3SqEd5qeps=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=A1e+K8jX; arc=fail smtp.client-ip=40.107.212.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0AEB21C9FD
+	for <linux-coco@lists.linux.dev>; Mon,  9 Jun 2025 19:13:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749496436; cv=none; b=ti590ZBRvl9bkykpXWnM2wU931d+9nBfjGxwXJs+ZSLiBXJlUpaE6xl50y7LtkbL5vw/zZ56BlOD6ssqh631qXzcjysSRl6zfFRzbBYphrA/e5Ntxh7qkXHT0rPtW+cAW4Kn8swZQKHI3GRxyTc6WQ33FmC5sGVb/xwW59lBIL8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749496436; c=relaxed/simple;
+	bh=qfB8VMSGySBtQwc24w5kS+61cOYDH+0r3VJ7G+xrbns=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jfbx5zM0yYupd/ZDcNnYC/2anckOcDWy+fTTklGvPXltFtex80vvBwebV9zteHhnvkAjem00UOhQM5tGfOYH6Sm0DW+DSNGuhd1igPg1uy6tJGkIN1YLpW9NMIQNjRs9FH3iGgHmZ/IxESWag+rkme5PzYXcAlXXCthIYAcDDUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cRcGCzSR; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="A1e+K8jX"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wKtBeCcoEJhZrbGOxKhIahLS+CvcljovyzQKGWvdy6HgyPmFprne6ZlLEyiLRIujv2DZ+5CppXv3KQCHxHMoyGJ33tDrmQhWX075phXUkP7vx9IrSv2WXblICB9fyKIcou+usLZG5DJmJ+ZXyO+cBZx9b22lOQqNv6jXmnJdPjb6cRKTRKkiIZGDX9sTfxt46nnsbmbjhKt6n1p1XXuCNcvVwWeZRhL7uB70Orw0o/Fdb3L6VZtVdpfcoyhWwxVFBj8KYd5SC+jYlNgN3u8QLi7Fv8cT2N51ogdfNpzROC4eg4aHja0lrRBK8TjQD9N5bvUl4ziFGpsmGVmvAZZzeg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=78z8soSy9p4chOUR6qXXITCrgoRX/KVLHYLZQBtYES0=;
- b=cicrxiWbXTZTII7Ali1ai3pPPTDODsIP44vTP8jwOPU+gP/MU2Sx3jYErt2OgGds7u8azSpCnidqYCSloBKKMrvshPXKMb31HW0MWojRnfi1fir1du01T8TLmmtjJ6oUDbsnrKzzSPbyT4oycGjMVrUQbMIdckO4vsmTBg4a74rrb0cQ5zileHg/ktrEbCfwwkowtzX1Cu1O/JNShq3IHJNZA9Ajqr0/IO4xTbfTDJ+bm+3XeDTZaYsaWiuEO00/8IdBxXbW0Tckv72upLqau7yNT5YazQZ1dxJaEkxfak6SQ4XksdcFKB06mjF1mDRXcuGLhTrKxyy7lRRV4EjGSQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=78z8soSy9p4chOUR6qXXITCrgoRX/KVLHYLZQBtYES0=;
- b=A1e+K8jXKyyjhgKCBiAu3QGpuLxGDNxz44KBg12jrOthPG4G/dQH71ugvm9XCbatXKVA5LVCoHlqVtb+Rh5m7p4PdLsL8ao3t57sMwR4yFNtXE0v6jaZUIx/0uLrCSO+uDmKOABf5y6/d6in4IUUZirKVnuaLsMbT2BWhhNRfwmikgawK2rm5vNSh4rNptb/doCalZYkpmZqk1eLu62kEDcMU1cDsPDY8tWSI2R2flReOO0g+9miVs73khZMZIuJmbhGXdyIbMlH/1MSRySzD3o7+3sC6fPRiol96GanfwEAT7U97zVNDLYQJzAxCzYEVfpWjQ42mXvIQUKbNPsyoQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by CYXPR12MB9279.namprd12.prod.outlook.com (2603:10b6:930:d5::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.39; Mon, 9 Jun
- 2025 18:07:27 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%6]) with mapi id 15.20.8792.038; Mon, 9 Jun 2025
- 18:07:27 +0000
-Date: Mon, 9 Jun 2025 15:07:25 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
-	lukas@wunner.de, sameo@rivosinc.com, zhiw@nvidia.com
-Subject: Re: [RFC PATCH 3/3] iommufd/tsm: Add tsm_bind/unbind iommufd ioctls
-Message-ID: <20250609180725.GA543171@nvidia.com>
-References: <aD3QcQxtjoYXrglM@yilunxu-OptiPlex-7050>
- <yq5ao6v5ju6p.fsf@kernel.org>
- <aD7TZRnFualizeXk@yilunxu-OptiPlex-7050>
- <20250603121456.GF376789@nvidia.com>
- <aD/aOk9jHryygiRG@yilunxu-OptiPlex-7050>
- <20250604123118.GE5028@nvidia.com>
- <aEEOKXxTuUifYxJY@yilunxu-OptiPlex-7050>
- <20250605145435.GA19710@nvidia.com>
- <aEZ65MtawOTjGZ9R@yilunxu-OptiPlex-7050>
- <0e313cc0-b673-4d13-ab22-741c7fde39df@arm.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0e313cc0-b673-4d13-ab22-741c7fde39df@arm.com>
-X-ClientProxiedBy: YT4PR01CA0247.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:10f::7) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cRcGCzSR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749496435; x=1781032435;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=qfB8VMSGySBtQwc24w5kS+61cOYDH+0r3VJ7G+xrbns=;
+  b=cRcGCzSR163+wR7LZztxFsKYLdB+9mwLIf+p4IRS/KGWAppcYiZ7cLJx
+   Uls/gvafrKRJPGIXeRfZkT/WGiSRQ++xmFGYEWFtZXLpPKo9QM6E+0Hfk
+   ry/Omr4ljxDTtv1FI8aLmGP0fpu42iXPfQXRPB+BDKclCSJuF8nhdj0mb
+   063G4Iufvy8k5XHWHz0yV6DnJRbpqEOrhVm0+vxtshJHImYe/5Tyqgxc1
+   Rcp/mtY8yJferThr03IiLvrc6lTIp2sPgzfE1YZA/0JboHpRKNiiwaXeF
+   tZ7QXpdQmhop8plWB1XENFvaepmWzSer6C9VaB/009HzOpVCajCfu02OQ
+   Q==;
+X-CSE-ConnectionGUID: ukBs1Zp6R6Cp6Rtoi6HWDQ==
+X-CSE-MsgGUID: wzecerWuTfam2BXzJxszEA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11459"; a="51681733"
+X-IronPort-AV: E=Sophos;i="6.16,223,1744095600"; 
+   d="scan'208";a="51681733"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 12:13:54 -0700
+X-CSE-ConnectionGUID: B8SZt3eeQKKg6gaHNVT4ag==
+X-CSE-MsgGUID: YlEQp6tfSA22ulyBZtOKGw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,223,1744095600"; 
+   d="scan'208";a="147174157"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa007.jf.intel.com with ESMTP; 09 Jun 2025 12:13:51 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 0F88E290; Mon, 09 Jun 2025 22:13:49 +0300 (EEST)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: pbonzini@redhat.com,
+	seanjc@google.com,
+	dave.hansen@linux.intel.com
+Cc: rick.p.edgecombe@intel.com,
+	isaku.yamahata@intel.com,
+	kai.huang@intel.com,
+	yan.y.zhao@intel.com,
+	chao.gao@intel.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	kvm@vger.kernel.org,
+	x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2 02/12] x86/virt/tdx: Allocate page bitmap for Dynamic PAMT
+Date: Mon,  9 Jun 2025 22:13:30 +0300
+Message-ID: <20250609191340.2051741-3-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250609191340.2051741-1-kirill.shutemov@linux.intel.com>
+References: <20250609191340.2051741-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|CYXPR12MB9279:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7153d05b-10a4-4859-f6ee-08dda7807e28
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?m1qq4h1B00diU892TpecCl/26VmFF1ZcW8Aw14UFH8f5vvGyFVOzWl1hxrs2?=
- =?us-ascii?Q?ehe1m/OLXvKlUpNLKiqYkhabZIxLrZJnOupOaRPRJApMy5Ps95LDbGUwDwec?=
- =?us-ascii?Q?dX45vXvdqWMTGjUU1HmgOHwbFDlUwOCu0DG0M5pFsOeZ/kocnOsyhtVclRdo?=
- =?us-ascii?Q?9ugWL+mEBYQ/zP0+LR4RkcOJBMCe1lmwP5xYhBizoFNv7vd5DwUBc+7r9ytK?=
- =?us-ascii?Q?YrJyfoX9rmcbFDTD68u+FrhI0tnKDqkWqPIeZC0OpPu34qZDvLWGlp6wapfi?=
- =?us-ascii?Q?H6LruEWUSYpKwNdiH/n6eb1Isl5t+maWN9xqpROi8eVURVp1WjCwnVtHqINO?=
- =?us-ascii?Q?aUx5V9PEQ7QvZv5lukKTXETdmSSBHsvdhnm5jiEQeEdtqJQcoZccL6oJMxnd?=
- =?us-ascii?Q?mq49Gd2yR8IPE3MMBlb0Q/zGMAcB5HUQcrCc1esqMVoWcvdUZPiMwLVm4QMa?=
- =?us-ascii?Q?XL+6qIrjCn72jAbLO3HxD1uq1Lh1loUEz7kdvZrNZ9kJLQCvujfpDyG4SQEL?=
- =?us-ascii?Q?rbt5sBAPpGTDD9RWmZ0vIpErLjUHcQSKE6MFka09JejkMdJcjD2VzP4fEoi5?=
- =?us-ascii?Q?4JmgE/yWrS7Xo+rRvuFhO7yvJU+Q/rZBfsrd0HC+BGcR5PpI159Ge84cHlKp?=
- =?us-ascii?Q?Q7JbNQ+KK/K0NBw9g7v8icjxSbmMaHFPRmCpVUQXciiWm8zd/F+fwVVOniOD?=
- =?us-ascii?Q?qhFpVAG3BRZc5Dr57u0S8qhslJXyk9Kh+UxoQu+e+vSwWI9OLy6ciIL/P6YJ?=
- =?us-ascii?Q?h7fhPH1WoWZ9syMh4xoey4S4PMwVjRRY6gA6qc1SXRkDAPepKdKq22boBcZ4?=
- =?us-ascii?Q?0gDgzNOCJ0jR4zrqJulBrBkD1MkfIWTqhywlEt5pnPLQATKJdTgkZuYWEgee?=
- =?us-ascii?Q?5bhdkVyjZZAwnEeMzJwVHWxfbPG+oJIyIc6IaBuVqWBLIAVzGYFInnCtTdJS?=
- =?us-ascii?Q?ujapKlZs4OJLfqycN0DUnypjotOepM2IYb0B8LeitYEt66J9wMz1Y9olsGUg?=
- =?us-ascii?Q?9NM/wETqrw9iqg6XJUKWAd6sxL5iOlcqR8ddwZjEdyPEqWwDofgv4BRNZhe7?=
- =?us-ascii?Q?SKNU0s0RHKoOVVE16KZmXAqdNXxTkbSUCXLSDv25eDpYpYiP3hzdmbsS8C94?=
- =?us-ascii?Q?f3BIHG3icL5/nDL4e/8O+fAwH8NZJlopsbMvQWVn5iJWgpu7kSZGtcPjSTog?=
- =?us-ascii?Q?P+p3q0uk9Vu7f31QVfGiHeisn9xUZkF0Nkc7g8/rBXvbgpFHZBoDqTfU2Uo6?=
- =?us-ascii?Q?EJS6I7Ec09x1D17Sz+O18LoqI3NTR7bE9cXzoK8qBDOM5TyVT7LBhS8AwFmk?=
- =?us-ascii?Q?gUD57XA+17J/A+FOIXuhlD7S7nKBinhrgNyax3GTvHQNQYyIZhNxOX58JGBc?=
- =?us-ascii?Q?3TRcbBcZrhRZKfQuMosnOn6c8UXVAeqqI9kU0EdedyIDXgn08w=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hqQNZhhDmmSSQDzHYgeVKbeoNOG+VGtWK3R6NUVeHkXZ/Wmq8p7i4dLZbY5t?=
- =?us-ascii?Q?B18nJrNjJf329fs2ujEYCrhAo/StnP+QKF0X9yFuNOZND/YMxhNjIwaF24AD?=
- =?us-ascii?Q?+XVrJSoa9A/YnHzosJlHAtW8Drb5M3N9E3WLpJoQ9QntmPjFMrtoo0wqK69w?=
- =?us-ascii?Q?ACABTBSBe85MwiGjoNGrC3cYCUhgosTLMjNNZKdv8FpZ68U653lfEaa1G40P?=
- =?us-ascii?Q?8xcowxY7kjqJb5jfWriOGgn2n0uWbYNrlkLvMoDduz4oQ/kurBgK8ISGpsyP?=
- =?us-ascii?Q?PU4e90sm1295Q+OzFeoSVW7ctakWPJrWdr7ZIc0MzUpe5n5cTqkRf7T/nR63?=
- =?us-ascii?Q?x2bpOe/5fU9AAkY7slN3yptmZsGDEdCx4WNf7KtZfRXs9K7/jmQipuDG/5Fo?=
- =?us-ascii?Q?FeH4f/Qs1oH065GuyTVNKWC7sp8+WMDRhMA63PwatoLinqYhsmM6czvYJoYb?=
- =?us-ascii?Q?+p7vqwNaALyNetFqChIDvduAo3ZDzyFHVvSL2GNhjqpWSwTJ2ScH0/MoQbo1?=
- =?us-ascii?Q?ObtUaXVWddCdUE2bL9LW15U2cuH7s+ElEowMacV21mg0jXY1r2W9M2Wo4IsU?=
- =?us-ascii?Q?VlYZfMEe+1wmhQ4BgUUPJk/w15F5W7e/Kr3JYW5BYHB+fgNHrH5WcFToD7HH?=
- =?us-ascii?Q?Jxp/M5cv2oR6ltUyiQHplfGMZ6y+Nfwgj9DIxSuXiXAI0Uk1tzQQmKUlU76R?=
- =?us-ascii?Q?71m8hDo+kAeSgV8OZrDBzKJwevacCWsKIa5lbPswm+yAfTmOrEKWrGx0sqqo?=
- =?us-ascii?Q?56+59pTxwtVfbnnnjWtjrLA5WpMJ88GuJDvDCHaYczAEuvVi+PAttP2ZN0Ev?=
- =?us-ascii?Q?b88kZY4GSPlvo6R8lgLErK48vddRp3yXSq7+2RCwlJENB+tgiyE1HREUXMmv?=
- =?us-ascii?Q?sksfLD/SKE9gKaFxhndmggGle4zNV6KG/gfjs1030ba8jQ7WQNaugqzyaY19?=
- =?us-ascii?Q?t3FGjpqRaBnCy0cC8DKQAsj4LE9zjxA9djxMkllYSR/HeAI4XqAzmvNF+VLx?=
- =?us-ascii?Q?P4wRQazfCN4sDffwJUAiQ3bGen9w+md0b04ZwG62B6QHT7VhSxsb6U/AHCR5?=
- =?us-ascii?Q?MLuHezNJXX4f7PJdGcP0/l4uIf+4Dqr51ZPvv5V8gH/hlzP1lDcqdQp/BPtq?=
- =?us-ascii?Q?+k1QfnPFCcYdfq+ptGosx1ZytPWQb1O1jJJRS3/xed0WOK+J5U75SLf5pH3Q?=
- =?us-ascii?Q?AkrYah4K5lfKS9FfoFwNBHAuRvPfoHy71I+3HnCGJIzYidkBU2b05YS+tKOu?=
- =?us-ascii?Q?Dt9zpfeFFbZh8aZGcLtzgq9DHaRvfkGV94Tz95ow2u99u9Pn+11ywbglIDRB?=
- =?us-ascii?Q?4/ZWYXcE4wBcHoxJALptBwqEB418qr+5EMTyIHVdjXD16RY/ZMk0ytOd9j+F?=
- =?us-ascii?Q?FGQxl9+WsFfmR4Ze4x36Sn5QCzmO9kyKoezsMsfXS/qS0fx2JbzD2N1WBw8d?=
- =?us-ascii?Q?JukrKiiG3L+hGK8Q+r85J77qrwFl23x2twoh0Q+TE7gmkMgnsGYoSKXDVTo2?=
- =?us-ascii?Q?AH+Dwy55mat4Zx2O44sPTHevjbdR7allHiSKjKKVZTZNOaXkBn9QTKQFWH9E?=
- =?us-ascii?Q?h2bv6FRtWn82B2QdnS/qagbni4VMNS6bGxjdEO9+?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7153d05b-10a4-4859-f6ee-08dda7807e28
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2025 18:07:27.2634
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DFE4RELdRu2d7+lFBshwXDO7yobmcJXEpbn05w8KU4lHzAcVSm6oXJPlzg9tI3/j
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR12MB9279
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 09, 2025 at 05:42:59PM +0100, Suzuki K Poulose wrote:
+The Physical Address Metadata Table (PAMT) holds TDX metadata for
+physical memory and must be allocated by the kernel during TDX module
+initialization.
 
-> May be this is answered/discussed already, but why can't we use (vfio->fd,
-> offset) similar to the gmem_fd for KVM memory slot ? VFIO could prevent mmap
-> if the device is bound and also pervent bind, when there is a mapping ?
+The exact size of the required PAMT memory is determined by the TDX
+module and may vary between TDX module versions, but currently it is
+approximately 0.4% of the system memory. This is a significant
+commitment, especially if it is not known upfront whether the machine
+will run any TDX guests.
 
-This creates a mess of circular dependencies where kvm and vfio are
-both needing to hold references on each other's FDs.
+The Dynamic PAMT feature reduces static PAMT allocations. PAMT_1G and
+PAMT_2M levels are still allocated on TDX module initialization, but the
+PAMT_4K level is allocated dynamically, reducing static allocations to
+approximately 0.004% of the system memory.
 
-Jason
+With Dynamic PAMT, the kernel no longer needs to allocate PAMT_4K on
+boot, but instead must allocate a page bitmap. The TDX module determines
+how many bits per page need to be allocated (currently it is 1).
+
+Allocate the bitmap if the kernel boots on a machine with Dynamic PAMT.
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+---
+ arch/x86/include/asm/tdx.h                  |  5 +++++
+ arch/x86/include/asm/tdx_global_metadata.h  |  1 +
+ arch/x86/virt/vmx/tdx/tdx.c                 | 23 ++++++++++++++++++++-
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c |  3 +++
+ 4 files changed, 31 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 9649308bd9c0..583d6fe66821 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -106,6 +106,11 @@ int tdx_enable(void);
+ const char *tdx_dump_mce_info(struct mce *m);
+ const struct tdx_sys_info *tdx_get_sysinfo(void);
+ 
++static inline bool tdx_supports_dynamic_pamt(const struct tdx_sys_info *sysinfo)
++{
++	return false; /* To be enabled when kernel is ready */
++}
++
+ int tdx_guest_keyid_alloc(void);
+ u32 tdx_get_nr_guest_keyids(void);
+ void tdx_guest_keyid_free(unsigned int keyid);
+diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
+index 060a2ad744bf..5eb808b23997 100644
+--- a/arch/x86/include/asm/tdx_global_metadata.h
++++ b/arch/x86/include/asm/tdx_global_metadata.h
+@@ -15,6 +15,7 @@ struct tdx_sys_info_tdmr {
+ 	u16 pamt_4k_entry_size;
+ 	u16 pamt_2m_entry_size;
+ 	u16 pamt_1g_entry_size;
++	u8  pamt_page_bitmap_entry_bits;
+ };
+ 
+ struct tdx_sys_info_td_ctrl {
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 2457d13c3f9e..18179eb26eb9 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -470,6 +470,18 @@ static unsigned long tdmr_get_pamt_sz(struct tdmr_info *tdmr, int pgsz,
+ 	return pamt_sz;
+ }
+ 
++static unsigned long tdmr_get_pamt_bitmap_sz(struct tdmr_info *tdmr)
++{
++	unsigned long pamt_sz, nr_pamt_entries;
++	int bits_per_entry;
++
++	bits_per_entry = tdx_sysinfo.tdmr.pamt_page_bitmap_entry_bits;
++	nr_pamt_entries = tdmr->size >> PAGE_SHIFT;
++	pamt_sz = DIV_ROUND_UP(nr_pamt_entries * bits_per_entry, BITS_PER_BYTE);
++
++	return ALIGN(pamt_sz, PAGE_SIZE);
++}
++
+ /*
+  * Locate a NUMA node which should hold the allocation of the @tdmr
+  * PAMT.  This node will have some memory covered by the TDMR.  The
+@@ -522,7 +534,16 @@ static int tdmr_set_up_pamt(struct tdmr_info *tdmr,
+ 	 * and the total PAMT size.
+ 	 */
+ 	tdmr_pamt_size = 0;
+-	for (pgsz = TDX_PS_4K; pgsz < TDX_PS_NR; pgsz++) {
++	pgsz = TDX_PS_4K;
++
++	/* With Dynamic PAMT, PAMT_4K is replaced with a bitmap */
++	if (tdx_supports_dynamic_pamt(&tdx_sysinfo)) {
++		pamt_size[pgsz] = tdmr_get_pamt_bitmap_sz(tdmr);
++		tdmr_pamt_size += pamt_size[pgsz];
++		pgsz++;
++	}
++
++	for (; pgsz < TDX_PS_NR; pgsz++) {
+ 		pamt_size[pgsz] = tdmr_get_pamt_sz(tdmr, pgsz,
+ 					pamt_entry_size[pgsz]);
+ 		tdmr_pamt_size += pamt_size[pgsz];
+diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+index 13ad2663488b..683925bcc9eb 100644
+--- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
++++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+@@ -33,6 +33,9 @@ static int get_tdx_sys_info_tdmr(struct tdx_sys_info_tdmr *sysinfo_tdmr)
+ 		sysinfo_tdmr->pamt_2m_entry_size = val;
+ 	if (!ret && !(ret = read_sys_metadata_field(0x9100000100000012, &val)))
+ 		sysinfo_tdmr->pamt_1g_entry_size = val;
++	if (!ret && tdx_supports_dynamic_pamt(&tdx_sysinfo) &&
++	    !(ret = read_sys_metadata_field(0x9100000100000013, &val)))
++		sysinfo_tdmr->pamt_page_bitmap_entry_bits = val;
+ 
+ 	return ret;
+ }
+-- 
+2.47.2
+
