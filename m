@@ -1,69 +1,69 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346AA26E17A
-	for <linux-coco@lists.linux.dev>; Mon,  9 Jun 2025 04:53:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4AE155A4E
+	for <linux-coco@lists.linux.dev>; Mon,  9 Jun 2025 06:17:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749444837; cv=none; b=FA1NkRMXv+aQGhOsBk7GVvueLvxttpLqMZ0IbRCssX4bv3IKmn62hf3yav/ljqu8fx8mBsZk6VQikxqMCmWQ+ZrUodk2qF7Xcx/0vbxBOML5/MFK5iCxTzOR2EItZVA5Wz379EP3nfzvus2LRmAUEkEwjkOpHs7zWtPCIDN2zjI=
+	t=1749449858; cv=none; b=SXku7Sa553XPxM395Bod6HcFPMaZ9fbVxxZQHPN3okNpF55JtjKa6qo4h4u0ZC2Y/Sdg1tf49BFv0tX9oz/Hb+ZmhjIrwrVckHZs+y6fd24x5ZtqH5o/S6n57T9L7eYwitYQTb9iuelVUocr5mPglg2W4vONFQawaSAf2/XfNI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749444837; c=relaxed/simple;
-	bh=Ff2Bgb/4eaoKrotBTr8PjdJW8R2o12LPFMIYVZ9LZFo=;
+	s=arc-20240116; t=1749449858; c=relaxed/simple;
+	bh=YieKM4rQF0b2eI7WnPYtU5FUWwd2QLpyB286sYPLip8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AP9bTJl76HiNrKOd45/TDFj/mP+voAbrHd0M3zqul0/xuX65Q2q+AEkW0o3tEU6nuS3LpAfSO6Jj++wnAI2fOUAJ556BNsmqD98nI0ac/pAqoZUTenXDIuUvf526IdIRVQQwxUiGsDVEig/QUk9KHVQvXLl35JHlaPv3iFxjmjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QnrC7r/f; arc=none smtp.client-ip=192.198.163.10
+	 Content-Type:Content-Disposition:In-Reply-To; b=r+jgpX5LCn8Lw0LL7ByBg2uVE8YFrytZy6AMo1+ix2YUiqQbOzSmYOFaKwadtBougHUXWyS45i4SVSAjjOpCFtlppfT4lYKzhTgUxZY+/8B7ZAANxvUGW7qQyW9SZbLQwb5hiHfdD7G5aPP1ljFGi8N5VipI6PH/oZtwfFWpqUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mCrZhoDu; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QnrC7r/f"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mCrZhoDu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749444836; x=1780980836;
+  t=1749449857; x=1780985857;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=Ff2Bgb/4eaoKrotBTr8PjdJW8R2o12LPFMIYVZ9LZFo=;
-  b=QnrC7r/f21NJS69vS7eiDafeZyLzuKvAl1cIZMo7LaqocDWVdN8UOZ/G
-   0cZihmo2CTWYbQC0c8ti0xvDIN/WZXBfHsu3b8a6xxYLS+Mi8dG91des5
-   b0BnBXOn6HPfcaZrNGQmg/tFpHfD+oIT8Or7VOYCU+/c6gkTD7vJTxfVe
-   K7ibpEgKM0Cau3Uf3ak+5vZtv7gCtT+bdX96uDRKWTbAn1VN42OpwtfJA
-   8lh0ZfE9AlT/eBuC4yGDeqnkyGAfxpxbm2mH/Lhja+9+7sE8Vhj882Qia
-   ffDaC2SeapcBxdQP1xRK0c3qv/UV5cZD4izx9M/5ZL/j8kmReWj/hew1O
+  bh=YieKM4rQF0b2eI7WnPYtU5FUWwd2QLpyB286sYPLip8=;
+  b=mCrZhoDuOfCazsO+s/zPF56MTuHOGBink427phwIQTadolTvRgXXvBfl
+   a3/09ORXRvEASO978hq5wEpgd/ZFsiRWDFEusn+OLdi98EDEUeN1GHpNu
+   tBbUPLe/jWqGISvfKj/XmRu4CZdZh9+NvwC/UOSadlGmscH5cVMqFVmRK
+   Z97+/oQoFBT+p+57jwsWEGh1ggPH4Yx84C0dT4bv8X0+Of2r1JJFTzKHM
+   TAkcXQlKe2aW5sEvnmSO4TiZEmN93a5NB7nSWs8ofH4Qy24TErR8pS2K1
+   eFly0AnxF83/KBnlUVT7Nhkr2/UBav32HjVDknvnQZVmPRAjM2PMpjpFw
    g==;
-X-CSE-ConnectionGUID: Tqlpfj3+QjmD7nTmBVpoGQ==
-X-CSE-MsgGUID: 6U4wk/n5QzSyCBq6N7Kmcw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11458"; a="62868355"
+X-CSE-ConnectionGUID: 8V+hAi7dRvWhpx0V8ae9Pw==
+X-CSE-MsgGUID: +cU5Tok7QaS2uTBS38DMzA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11458"; a="55305785"
 X-IronPort-AV: E=Sophos;i="6.16,221,1744095600"; 
-   d="scan'208";a="62868355"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2025 21:53:56 -0700
-X-CSE-ConnectionGUID: uNw3HGKlTXiE04d/4jWqJw==
-X-CSE-MsgGUID: j28t0H3pSxKw4iDAVo7NQg==
+   d="scan'208";a="55305785"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2025 23:17:36 -0700
+X-CSE-ConnectionGUID: c5yapTmBSRKRDPZcWGkzag==
+X-CSE-MsgGUID: B6HFq3e/QYC8vORPKDhH0Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,221,1744095600"; 
-   d="scan'208";a="151279140"
+   d="scan'208";a="146336473"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa005.fm.intel.com with ESMTP; 08 Jun 2025 21:53:53 -0700
-Date: Mon, 9 Jun 2025 12:47:04 +0800
+  by fmviesa007.fm.intel.com with ESMTP; 08 Jun 2025 23:17:33 -0700
+Date: Mon, 9 Jun 2025 14:10:44 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alexey Kardashevskiy <aik@amd.com>,
-	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
 	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
 	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
 	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
 	zhiw@nvidia.com
 Subject: Re: [RFC PATCH 3/3] iommufd/tsm: Add tsm_bind/unbind iommufd ioctls
-Message-ID: <aEZnSCJ7aMpIv7eK@yilunxu-OptiPlex-7050>
-References: <yq5a5xhj5yng.fsf@kernel.org>
- <20250529133757.462088-1-aneesh.kumar@kernel.org>
- <20250529133757.462088-3-aneesh.kumar@kernel.org>
- <aDsta4UX76GaExrO@yilunxu-OptiPlex-7050>
- <668b023e-d299-42e1-87fc-ec83c514374e@amd.com>
- <aD3clPC8QfL1/XYF@yilunxu-OptiPlex-7050>
- <c552a298-0dde-409d-9c2d-149b2e2389bf@amd.com>
- <20250604123747.GG5028@nvidia.com>
- <aEML7kUPSibTaAYk@yilunxu-OptiPlex-7050>
- <20250606163455.GI19710@nvidia.com>
+Message-ID: <aEZ65MtawOTjGZ9R@yilunxu-OptiPlex-7050>
+References: <aDsta4UX76GaExrO@yilunxu-OptiPlex-7050>
+ <yq5azfeqjt9i.fsf@kernel.org>
+ <aD3QcQxtjoYXrglM@yilunxu-OptiPlex-7050>
+ <yq5ao6v5ju6p.fsf@kernel.org>
+ <aD7TZRnFualizeXk@yilunxu-OptiPlex-7050>
+ <20250603121456.GF376789@nvidia.com>
+ <aD/aOk9jHryygiRG@yilunxu-OptiPlex-7050>
+ <20250604123118.GE5028@nvidia.com>
+ <aEEOKXxTuUifYxJY@yilunxu-OptiPlex-7050>
+ <20250605145435.GA19710@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -72,64 +72,37 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250606163455.GI19710@nvidia.com>
+In-Reply-To: <20250605145435.GA19710@nvidia.com>
 
-On Fri, Jun 06, 2025 at 01:34:55PM -0300, Jason Gunthorpe wrote:
-> On Fri, Jun 06, 2025 at 11:40:30PM +0800, Xu Yilun wrote:
-> > On Wed, Jun 04, 2025 at 09:37:47AM -0300, Jason Gunthorpe wrote:
-> > > On Wed, Jun 04, 2025 at 11:47:14AM +1000, Alexey Kardashevskiy wrote:
-> > > 
-> > > > If it is the case of killing QEMU - then there is no usespace and
-> > > > then it is a matter of what fd is closed first - VFIO-PCI or
-> > > > IOMMUFD, we could teach IOMMUFD to hold an VFIO-PCI fd to guarantee
-> > > > the order. Thanks,
-> > > 
-> > > It is the other way around VFIO holds the iommufd and it always
-> > > destroys first.
-> > > 
-> > > We are missing a bit where the vfio destruction of the idevice does
-> > > not clean up the vdevice too.
-> > 
-> > Seems there is still problem, the suggested flow is:
-> > 
-> > 1. VFIO fops release
-> > 2. vfio_pci_core_close_device()
-> > 3. vfio_df_iommufd_unbind()
-> > 4.   iommufd_device_unbind()
-> > 5.     iommufd_device_destroy()
-> > 6.       iommufd_vdevice_destroy() (not implemented)
-> > 7.         iommufd_vdevice_tsm_unbind()
-> > 
-> > In step 2, vfio pci does all cleanup, including invalidate MMIO.
-> > In step 7 vdevice does tsm unbind, this is not correct. TSM unbind
-> > should be done before invalidating MMIO.
-> > 
-> > TSM unbind should always the first thing to do to release lockdown,
-> > then cleanup physical device configuration.
+On Thu, Jun 05, 2025 at 11:54:35AM -0300, Jason Gunthorpe wrote:
+> On Thu, Jun 05, 2025 at 11:25:29AM +0800, Xu Yilun wrote:
 > 
-> I think you'd have to re-order things so that vfio_df_iommufd_unbind()
-> happens before the mmio invalidate..
-
-That seems an easier solution.
-
+> > That's good point, thanks. S-EPT is controlled by TSM, but the fact is,
+> > unlike RMP it needs too much help from VMM side, and now KVM is the
+> > helper. I will continue to investigate if TDX TSM driver could opt in to
+> > become another helper and how to coordinate with KVM.
 > 
-> And if you can succeed in moving the MMIO mapping to bind/unbind then
-> the invalidate from vfio won't matter.
+> I think it would be quite a simplification if the iommufd operation
+> would also cause the TSM to setup the secure MMIO directly from the
+> pPCI device and remove hypervisor access to it.
+> 
+> Then you don't need DMABUF to KVM at all.
 
-It still matters. If VFIO tries to invalidate MMIOs before Unbind, DMA
-Silent Drop protection still triggers. Ensuring a correct bind/unbind
-operation in IOMMUFD cannot make VFIO agnostic to bind/unbind.
+I thought about this for sometime. It may be possible to trigger KVM
+to populate/zap the S-EPT but cannot let TSM direct setup/remove S-EPT.
+RMP could be updated by a single instruction, but S-EPT update involves
+generic KVM MMU flow like Page Table Page management, TLB invalidation,
+even mirror EPT management (specific to x86 KVM MMU).
 
-
-BTW: Let me summarize what I've got about Bind-MMIO interaction.
-
-1. All vendors need TSM Unbind first, then invalidate MMIOs, this is
-   to avoid DMA Silent Drop protection which exists on all vendors.
-2. TDX Connect additionally requires finer operation sequence during TSM
-   Unbind, i.e. invalidate MMIOs after TDI stop and before TDI metadata
-   free, this is for TDX firmware internal TDI management logic.
+To make KVM populate S-EPT, we need KVM memory slots and in turn need
+DMABUF.
 
 Thanks,
 Yilun
+
+> 
+> The create vPCI call would have to specify the base virtual addresses
+> of all the BARs from userspace, which is probably OK as I suspose you
+> also cannot disable or relocate the MMIO BAR while in T=1 mode.
 > 
 > Jason
