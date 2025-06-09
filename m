@@ -1,211 +1,86 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD37221F2D
-	for <linux-coco@lists.linux.dev>; Mon,  9 Jun 2025 19:14:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1596F21CC6C
+	for <linux-coco@lists.linux.dev>; Mon,  9 Jun 2025 21:21:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749496444; cv=none; b=rMM9wuuRLx3ci8FYOmvJOoeH/tyId94gEN/sHQwPJ1TbJU1iGQprXrZs4Ppr/Zy9HjiNTPHN2hwbZ/eGJEEIpqm0F5Iqoe8Kx5+53CIskmtbLLIAJHAI1RpPh0zUZleKx93z0dlKexxS/iVvP90iSrmIplwwBUAYHLi7ovjeM/k=
+	t=1749504069; cv=none; b=RdNSzrxmEWvKQ3LVhknFXCXC+4K9CKyAPJTLZ5afsx+smSi1jAgjtNBtvsc6eUJn2FTP1uThcu+rrPgCA2EGuTtSkYXbm6KsND/juE6wfSzcm5IwdEsN6fIKFkNMa35fs5iTiU4sTp+Ze1K8vrNOiDDocqusqx5iLq2lHmxHCt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749496444; c=relaxed/simple;
-	bh=kX+3ZVR0+aZ1UszWZjARbJWwTNTIBQcWEhqm1x/9MBs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UTmxh6Hx20JaZmUqRW0IMJxj+VF3hM2fe8y1o/6/iDjNXrcBeyWOpP/0kI636k+Bp59Yfzdpbk9614Qiz+F7QnZB6/DQBlH9GE+RDHmG9eab9fcwaw3lcDyIyyMb87Ypcf7MlMiM+IZwJnqMx5Ao14hDGQ4v+c7d3asXdMjye1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CpQ+FxNN; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
+	s=arc-20240116; t=1749504069; c=relaxed/simple;
+	bh=pZDS3AQTrG4Y/KmeykWPXxaGdgy1W132Y36jhq5YBwk=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=eD0T/4OWMSyUWPaa9UHaZ3+6qfwE1fTcr1lPCFIuchxYTfamlG7FyqpnpXad2nKVgNuzVo8stqjb3ZSyPif21RGxas/xR15JOqqTqwd7/OQMVlj/f9TmUJzQNqxLaV9EyATZLEPB1uhWejkpYULikjRTuV4n2IdklQr4lOemEnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1rSZwG/B; arc=none smtp.client-ip=209.85.217.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CpQ+FxNN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749496442; x=1781032442;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=kX+3ZVR0+aZ1UszWZjARbJWwTNTIBQcWEhqm1x/9MBs=;
-  b=CpQ+FxNNkcVh0Q/vdb7aAIMRva+M8U1+BWinJUNjUYdhvOXLblrR/G1D
-   bUAR3v832TRoYbG15OoyohYMYuyFkKYI7tw92TYPmMvh25H9xw8mkEoFW
-   1EK6TkgI8EEvfYiFVC4fGyf/2OaBWoGqcoyCrEO3j03bCtYs+2XJFvYiT
-   +4PvctNA8FbMuImUnp1+uyqZANWuJdUkeQ/DSXa3h49ba0Kh5NzvklWl6
-   G/f95DoMYSXDslCNLyBdSKNHcw/0t+H/iSqINsMSu9T47qeyBo9GTTHw8
-   3YLDxG4iypqyZ8nt0FlltRxmcYdMh10q9HOQQGmHPuBgtogG+U+rEHcs/
-   g==;
-X-CSE-ConnectionGUID: JB4eQRhBQmqxfCHBy5KTzg==
-X-CSE-MsgGUID: GPtGwSqOSnuVnjH4zMh8EA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11459"; a="51681804"
-X-IronPort-AV: E=Sophos;i="6.16,223,1744095600"; 
-   d="scan'208";a="51681804"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 12:14:00 -0700
-X-CSE-ConnectionGUID: xyquTUd2SemM+bGqi0GaHQ==
-X-CSE-MsgGUID: XiVCkRk/ToefjoqPvYMteQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,223,1744095600"; 
-   d="scan'208";a="147174198"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa007.jf.intel.com with ESMTP; 09 Jun 2025 12:13:56 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 8310CA65; Mon, 09 Jun 2025 22:13:49 +0300 (EEST)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: pbonzini@redhat.com,
-	seanjc@google.com,
-	dave.hansen@linux.intel.com
-Cc: rick.p.edgecombe@intel.com,
-	isaku.yamahata@intel.com,
-	kai.huang@intel.com,
-	yan.y.zhao@intel.com,
-	chao.gao@intel.com,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	kvm@vger.kernel.org,
-	x86@kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv2 12/12] Documentation/x86: Add documentation for TDX's Dynamic PAMT
-Date: Mon,  9 Jun 2025 22:13:40 +0300
-Message-ID: <20250609191340.2051741-13-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250609191340.2051741-1-kirill.shutemov@linux.intel.com>
-References: <20250609191340.2051741-1-kirill.shutemov@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1rSZwG/B"
+Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-4e7949d9753so559471137.2
+        for <linux-coco@lists.linux.dev>; Mon, 09 Jun 2025 14:21:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1749504067; x=1750108867; darn=lists.linux.dev;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pZDS3AQTrG4Y/KmeykWPXxaGdgy1W132Y36jhq5YBwk=;
+        b=1rSZwG/BMAK3AdYntHGcTht4BfTtSqjOySj9AcCb41+SvfAw8X6Ci2qr9k9EDRVXN3
+         6H2pVIBRrYNxaKvd5ptj6OIdmP53j6nSKJ0bLJh5VlTx4YzzGwFoQjrjd4BM3U0/QWsu
+         M2SWAhduYWjMbOthPbaY7tg1XZs4Rrl5GaSf+akut4uDwXbzXP+WSsYbVvnu3ooLt32B
+         7WkeAnkBW11TfnrLPPQ0cjSLhpKFEthzUAauLEvRDXv7Zb+3x/enZpnMa9zSMYfoCH8V
+         C3mCWxol5/Bnu/I8Pej10lLANOPA3P7hMRkr5Sv06sc7588KrWCYrdJgCCU3/vwF6hK7
+         xzpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749504067; x=1750108867;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pZDS3AQTrG4Y/KmeykWPXxaGdgy1W132Y36jhq5YBwk=;
+        b=VuOSCOVoz9SmtvNMBYoBFR9gGyah5Gma4csCVbjfWQQUicIJNUsLKGLsXuoKo6Rtot
+         TcZL6KQjoKBMgqm8wRnaZOr/Hwzvx0WqftTUa7euXw/BqO3TFFKwN+LWb/10HVRfqszR
+         0W+R+93qQQkUyKl8juxpaC7/dYkTM/UnWKHobFe4gJOVeEI4Nhz+s2Hkv+Ir9oo1Yb67
+         IgLq7FDhMT6xBRZNjn93A08J27S7Mrty9aOR+ficmUhhcGvnQUS8pRwmtwVhM5jISlsr
+         6JE0OTt6Pqha29pp0iNzSJJAaEclwwl6Z+Iva/CrTGFQRs64EXTJISj/efi1BaGtbQ2Y
+         FVfQ==
+X-Gm-Message-State: AOJu0YxHPvvr4ZTNNEU98rlqr6a8aDe64XHX9sgLdcEtJKlHe5gfw304
+	hLXfaC91t/Xh2HxMqcactQIz+RzmlFOZ/wOVpOelVTHIubU42H9WX5bNAPVNpuQAtbJSpK+1YyZ
+	wOxIzZStPx1s7LALPQkcS6QwFZcl6wnc6WiO5ED9ArxQWv7ikmc0H+Hxeokg=
+X-Gm-Gg: ASbGncun4at0Yc0U8/Ds474iYPgu5qRKO+P8hC87KSoqy8fd6QZmGsSbqUlgl6tbho8
+	xBeWS7SfJOwKVuCKa/ChGUHqcZinzJsnOTyQNRmyOdcUFzp/pmPZqhzx0vN6MGUOkOhz8OKyEut
+	LKUHUh0jDPAwARLJB/XKkPl0fGNtFY4PCcdVQR6sXRVJUp+v1cc2snjp+3l9wJxQqqtIcl1ZXqc
+	A==
+X-Google-Smtp-Source: AGHT+IEAsCVUBZHQCKLR7xg12ovz6HkqtBnvhqFoBcoAwFQ9xt4ZwBNZ76e0CScbtF2EpTUjPtslFL1DiJyNZIrU90Q=
+X-Received: by 2002:a05:6102:3596:b0:4e6:cc35:3cb3 with SMTP id
+ ada2fe7eead31-4e7728fe529mr11590064137.12.1749504066436; Mon, 09 Jun 2025
+ 14:21:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: Steve Rutherford <srutherford@google.com>
+Date: Mon, 9 Jun 2025 14:20:29 -0700
+X-Gm-Features: AX0GCFtVt23ugcSWhlzsj_azvAu59FdOeCRN8vbyb8EIjmB-0LvDdw6mbqYV7cU
+Message-ID: <CABayD+fcqro3PtwSbry3zTwhma1fnNUiy0fb6UnyPPUrVbvajg@mail.gmail.com>
+Subject: CCC Kernel SIG Thursday, June 12th
+To: linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Expand TDX documentation to include information on the Dynamic PAMT
-feature.
+Hi all,
 
-The new section explains PAMT support in the TDX module and how it is
-enabled on the kernel side.
+We have an instance of the CCC Kernel SIG coming up Thursday, June 12th at 9AM
+PDT (6PM CEST).
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
----
- Documentation/arch/x86/tdx.rst | 108 +++++++++++++++++++++++++++++++++
- 1 file changed, 108 insertions(+)
+The agenda is currently open. Feel free to drop something into the agenda.
 
-diff --git a/Documentation/arch/x86/tdx.rst b/Documentation/arch/x86/tdx.rst
-index 719043cd8b46..a1dc50dd6f57 100644
---- a/Documentation/arch/x86/tdx.rst
-+++ b/Documentation/arch/x86/tdx.rst
-@@ -99,6 +99,114 @@ initialize::
- 
-   [..] virt/tdx: module initialization failed ...
- 
-+Dynamic PAMT
-+------------
-+
-+Dynamic PAMT support in TDX module
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Dynamic PAMT is a TDX feature that allows VMM to allocate PAMT_4K as
-+needed. PAMT_1G and PAMT_2M are still allocated statically at the time of
-+TDX module initialization. At init stage allocation of PAMT_4K is replaced
-+with PAMT_PAGE_BITMAP which currently requires one bit of memory per 4k.
-+
-+VMM is responsible for allocating and freeing PAMT_4K. There's a couple of
-+new SEAMCALLs for this: TDH.PHYMEM.PAMT.ADD and TDH.PHYMEM.PAMT.REMOVE.
-+They add/remove PAMT memory in form of page pair. There's no requirement
-+for these pages to be contiguous.
-+
-+Page pair supplied via TDH.PHYMEM.PAMT.ADD will cover specified 2M region.
-+It allows any 4K from the region to be usable by TDX module.
-+
-+With Dynamic PAMT, a number of SEAMCALLs can now fail due to missing PAMT
-+memory (TDX_MISSING_PAMT_PAGE_PAIR):
-+
-+ - TDH.MNG.CREATE
-+ - TDH.MNG.ADDCX
-+ - TDH.VP.ADDCX
-+ - TDH.VP.CREATE
-+ - TDH.MEM.PAGE.ADD
-+ - TDH.MEM.PAGE.AUG
-+ - TDH.MEM.PAGE.DEMOTE
-+ - TDH.MEM.PAGE.RELOCATE
-+
-+Basically, if you supply memory to a TD, this memory has to backed by PAMT
-+memory.
-+
-+Once no TD uses the 2M range, the PAMT page pair can be reclaimed with
-+TDH.PHYMEM.PAMT.REMOVE.
-+
-+TDX module track PAMT memory usage and can give VMM a hint that PAMT
-+memory can be removed. Such hint is provided from all SEAMCALLs that
-+removes memory from TD:
-+
-+ - TDH.MEM.SEPT.REMOVE
-+ - TDH.MEM.PAGE.REMOVE
-+ - TDH.MEM.PAGE.PROMOTE
-+ - TDH.MEM.PAGE.RELOCATE
-+ - TDH.PHYMEM.PAGE.RECLAIM
-+
-+With Dynamic PAMT, TDH.MEM.PAGE.DEMOTE takes PAMT page pair as additional
-+input to populate PAMT_4K on split. TDH.MEM.PAGE.PROMOTE returns no longer
-+needed PAMT page pair.
-+
-+PAMT memory is global resource and not tied to a specific TD. TDX modules
-+maintains PAMT memory in a radix tree addressed by physical address. Each
-+entry in the tree can be locked with shared or exclusive lock. Any
-+modification of the tree requires exclusive lock.
-+
-+Any SEAMCALL that takes explicit HPA as an argument will walk the tree
-+taking shared lock on entries. It required to make sure that the page
-+pointed by HPA is of compatible type for the usage.
-+
-+TDCALLs don't take PAMT locks as none of the take HPA as an argument.
-+
-+Dynamic PAMT enabling in kernel
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Kernel maintains refcounts for every 2M regions with two helpers
-+tdx_pamt_get() and tdx_pamt_put().
-+
-+The refcount represents number of users for the PAMT memory in the region.
-+Kernel calls TDH.PHYMEM.PAMT.ADD on 0->1 transition and
-+TDH.PHYMEM.PAMT.REMOVE on transition 1->0.
-+
-+The function tdx_alloc_page() allocates a new page and ensures that it is
-+backed by PAMT memory. Pages allocated in this manner are ready to be used
-+for a TD. The function tdx_free_page() frees the page and releases the
-+PAMT memory for the 2M region if it is no longer needed.
-+
-+PAMT memory gets allocated as part of TD init, VCPU init, on populating
-+SEPT tree and adding guest memory (both during TD build and via AUG on
-+accept). Splitting 2M page into 4K also requires PAMT memory.
-+
-+PAMT memory removed on reclaim of control pages and guest memory.
-+
-+Populating PAMT memory on fault and on split is tricky as kernel cannot
-+allocate memory from the context where it is needed. These code paths use
-+pre-allocated PAMT memory pools.
-+
-+Previous attempt on Dynamic PAMT enabling
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+The initial attempt at kernel enabling was quite different. It was built
-+around lazy PAMT allocation: only trying to add a PAMT page pair if a
-+SEAMCALL fails due to a missing PAMT and reclaiming it based on hints
-+provided by the TDX module.
-+
-+The motivation was to avoid duplicating the PAMT memory refcounting that
-+the TDX module does on the kernel side.
-+
-+This approach is inherently more racy as there is no serialization of
-+PAMT memory add/remove against SEAMCALLs that add/remove memory for a TD.
-+Such serialization would require global locking, which is not feasible.
-+
-+This approach worked, but at some point it became clear that it could not
-+be robust as long as the kernel avoids TDX_OPERAND_BUSY loops.
-+TDX_OPERAND_BUSY will occur as a result of the races mentioned above.
-+
-+This approach was abandoned in favor of explicit refcounting.
-+
- TDX Interaction to Other Kernel Components
- ------------------------------------------
- 
--- 
-2.47.2
+There are a few off-list conversations I've seen or heard about that
+I'd like to push into the open. I'll follow-up and see if those folks
+are interested.
 
+Barring anything substantive being added to the agenda, I'll cancel
+this instance on Wednesday.
+
+Agenda - https://docs.google.com/document/d/18D820gyt2xe84Jy6dGXgrNThApoozcekDzvIlK2_bd4/edit?tab=t.0
+Zoom link - https://zoom-lfx.platform.linuxfoundation.org/meeting/92401169243?password=e6c02995-6cfb-4f90-82b6-747f767eb168
+Calendar - https://confidentialcomputing.io/get-involved/calendar/
+
+Thanks,
+Steve
