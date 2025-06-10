@@ -1,339 +1,385 @@
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2076.outbound.protection.outlook.com [40.107.243.76])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C239A1FBE8A
-	for <linux-coco@lists.linux.dev>; Tue, 10 Jun 2025 08:31:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.76
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749544313; cv=fail; b=EuBFxoWC2zwovPX2XsOzc957uw693RLYhAFyo28clNKXwU1W7gKpYLne5048e95GGXJsuvu4cJZqKU22KosYl57pB8dNcCA/qOb2HF90YgIho4BC7H3287qkLFz7gL5ajXmeFWho0pW38Z2YRvp4ikcS0l5h+XRrdb1Bv8puSlU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749544313; c=relaxed/simple;
-	bh=9iAuUqyuqgdkRCatRMMb7B+YNi/5P7l6VDZH7poETQU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=TG6i4PBebdTB6PnFbcgp06muvcQ2TPqkRciltbwh7WWQ43HeNqCC1jbAwNAbPbT30qwrMkgtFlRZZ/gG+1IU1mlRnF79IrVvQmK4O8MjKMTDN4psznj/FE5TDFXx7wjMIhkonOPwNvbNrjCTXqG1QvkCcR/kIPw+r+FjC9EZ4KM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=pOVTz8rh; arc=fail smtp.client-ip=40.107.243.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC9F21B90B
+	for <linux-coco@lists.linux.dev>; Tue, 10 Jun 2025 14:51:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749567088; cv=none; b=r2I+wchpD0YU7aoU1XZItVDLDhw2pO4hOvLcOO4AuXf98AW/6jRqtnHKbjklSAuAjSAuAx2xEPU0Z0HqX7KZtB2TT90RZIAAmtLr7wJ/y+nfi6ITAnWueFwT2yy1n25cSYjI668dHLC2dnKg9fp1rLF4YeQcbVZ4sPYmCo5EP4o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749567088; c=relaxed/simple;
+	bh=9yMJDZ9WoOJRa9Otxp6Jv7RdN68viaG6fDo7bjYTSHA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Gyx7NZV5L5e/t8LTWxTjUeaalv2Lw0BPjtY7WH5EWqaYyaFlSX+GcahBIeETdGia3Ba8+HTVBUEyyqq2bZzmH7NGSEJEBO7UYL/D/j9Ym68aHykTnIDDbvZQhin2HpCHlT44Ne6xk60QJkF4e2OuXC6FRUrSwaMYTIlyZTrOajw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=czCHzkSL; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="pOVTz8rh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z+9FQlP4tyg88tXNRuAIbWi8lSrhy7JHfGEbF3Fcs4zPmjuY33v83/DK4HwPzoNcMi8aNLXv4ab/5xWXwnM9ls9n0J4SYYl5JaH3JjEd9mUR1gaNAKiuo3U3Bo6EGJsWW9xDn4UJIqLACGXSyPaKhXKKlmEuTV/Yd/iMlTEMIN1UXj7bwA+f/XBGBmmd/qE147+4ptX+Pag33R2qgPtfW+S/4MVdR2TjkUx40dRYag9P/M1vOx2eaZ7eiqJR2NqTzmRI95trh1q++yOMoG6VbCT5ebvSzdfwMiNld8fbW8wzukiDZAgZAR+zfmjTjhpN2zhOW18fkqDTdn9KtEjQrQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PaQ9vKNpgXDCWbem69gs9zcDrcTTCTqJ1dSHe9cHlkw=;
- b=usyan/EfrQ1/C9xsyqyYVbGz/w6lW0pFXegpsAwPPuas54O7OzKIQ8WxDI/ePQ8iy2FnOjogDOcCQiMWdcqfoGfPbsIdgxOQ+O2J5RqqHX4f8JJNTQSaI7PQsVRxx2v2vq36y8A+SC87F0H/uzg4pyorQsymYLifVFf39Ym09zd2RpfVs0c+RJxIl0UaSHzFzJdG58W3pPVWlp2CO5PUMezif3sxeABb+uER7xf75ZpC8XDNNqB0yMb5+roDTKc2+JkUpCxW3adYAdgjsphikedtPmLFP5vMnez4Uvv0DYVsuCqmUrRXduPfUjqv1e8CvYykl3XakwRljfvNaa0Vsw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PaQ9vKNpgXDCWbem69gs9zcDrcTTCTqJ1dSHe9cHlkw=;
- b=pOVTz8rhAEA4pCStgnoJ9V30e+7TQs9nj1PkpsHyplDHnPFcbqur8iIsVoEGRRcJBbEqxuKzSbjCBuiWdKP9eA+tkTmgIXYV4eA/ZlVMoOyMtVNzCaslnLttBUw1Io92HyaEnuffsbzqsWRLvoXFJhvlJoY7smlOKEf+9xrPDzY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by SN7PR12MB7154.namprd12.prod.outlook.com (2603:10b6:806:2a5::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.36; Tue, 10 Jun
- 2025 08:31:48 +0000
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f%5]) with mapi id 15.20.8792.038; Tue, 10 Jun 2025
- 08:31:48 +0000
-Message-ID: <14944158-4a95-4831-b942-5fc9fffa9f2b@amd.com>
-Date: Tue, 10 Jun 2025 18:31:42 +1000
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH v3 13/13] PCI/TSM: Add Guest TSM Support
-To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
- linux-pci@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, lukas@wunner.de, aneesh.kumar@kernel.org,
- suzuki.poulose@arm.com, sameo@rivosinc.com, jgg@nvidia.com, zhiw@nvidia.com,
- Xu Yilun <yilun.xu@linux.intel.com>
-References: <20250516054732.2055093-1-dan.j.williams@intel.com>
- <20250516054732.2055093-14-dan.j.williams@intel.com>
- <363a3220-e43c-4965-b138-b85f09a5907b@amd.com>
- <682ceffd717b4_1626e1006f@dwillia2-xfh.jf.intel.com.notmuch>
- <cc0e125a-a297-4573-a315-89f4f95324c4@amd.com>
- <683f76a7324e3_1626e100df@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Language: en-US
-From: Alexey Kardashevskiy <aik@amd.com>
-In-Reply-To: <683f76a7324e3_1626e100df@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA9P223CA0011.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:806:26::16) To CH3PR12MB9194.namprd12.prod.outlook.com
- (2603:10b6:610:19f::7)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="czCHzkSL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749567086; x=1781103086;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=9yMJDZ9WoOJRa9Otxp6Jv7RdN68viaG6fDo7bjYTSHA=;
+  b=czCHzkSLV4ffNVseqMbR14Q6X7AA9KaKbPor1mmCtFt107ojUnFlOT1B
+   uNP0jlU0l/CpkfPSvI7+WQLgNekl1FRfegO2r3M8a6ZhKvuooIv26vne+
+   3uL8AkTIQSZNvvrTqCMx2o/5QGyid0E9MhC9lh1DWr+3105O9bPKU97SB
+   dfdetNc9gjp5sukS/QF7lKfTFENjoZ9IntJAdbKqnDfvD6ZzOsW3r1EGy
+   7viNTAj5f2Fb/9jrhcmIDAD7v/LzRNlmFIrpp4/XCUzwpZEIJ/FVgPwlu
+   VB378nHeGubFo5ZEeNdLcukiIzVk5hc+KerdC0HUiIrBIrEoWSsDKRGPr
+   A==;
+X-CSE-ConnectionGUID: Zh9MjpkDRZSGuoBmcPvH3g==
+X-CSE-MsgGUID: 551oirtfTxaPE8QYkGcTUQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="51562414"
+X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; 
+   d="scan'208";a="51562414"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 07:51:26 -0700
+X-CSE-ConnectionGUID: CD71CfkKTcKGlqaE2EtGEQ==
+X-CSE-MsgGUID: GOBLBd6NR6KeqXSTpnI5lw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; 
+   d="scan'208";a="146775536"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa010.jf.intel.com with ESMTP; 10 Jun 2025 07:51:23 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id E335A192; Tue, 10 Jun 2025 17:51:20 +0300 (EEST)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: chao.gao@intel.com
+Cc: bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	isaku.yamahata@intel.com,
+	kai.huang@intel.com,
+	kirill.shutemov@linux.intel.com,
+	kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	mingo@redhat.com,
+	pbonzini@redhat.com,
+	rick.p.edgecombe@intel.com,
+	seanjc@google.com,
+	tglx@linutronix.de,
+	x86@kernel.org,
+	yan.y.zhao@intel.com
+Subject: [PATCHv2.1 04/12] x86/virt/tdx: Add tdx_alloc/free_page() helpers
+Date: Tue, 10 Jun 2025 17:51:16 +0300
+Message-ID: <20250610145116.2502206-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <aEeaJH1KqZ38tgKi@intel.com>
+References: <aEeaJH1KqZ38tgKi@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|SN7PR12MB7154:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3ae1e8ad-1e8e-4524-27fe-08dda7f93d9f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dTJNOXg4REErVkdpUUtURktsNEJxSERMaTFDR1VqcVdFdkN2YnZzd1l3ZnFC?=
- =?utf-8?B?NlNQakFyVHBVaFozekNaaEVTVGtpY2psRjg3ei9sQkZrUjhUZ3ZtZFVNSWk2?=
- =?utf-8?B?anA5cDNGVE04MkZUbC96eEpiajJKQkJKcUhleHlzZE1LbVlORnRlSjZnOFVx?=
- =?utf-8?B?S0IzT1JmWFFSa2lkTldvUnhOZ1I0VWN3eUVEcWZDRTZVSUFiZWRaVDhXNCt5?=
- =?utf-8?B?TmhsakY4UWFuZ0RqRVlNM0Z5N0xVbTdPdlZIYTVuS2grMWRmUnE2NTBjTUdJ?=
- =?utf-8?B?Ui9XcHI3ZXRxNXV3M1lEWUthTVBaY3U1U2VNNW5MRERid1pYdlYvRExQNjc3?=
- =?utf-8?B?UHV0WUZBZXJkMUZTNnVudXZFNitWdzlicEp4TEp0Sk1wQ0FtYmV0NDhtZzNa?=
- =?utf-8?B?Vit0Q0tMT3MvamVYNFpPQWU2dE5JU3hwQzlGYUxrWWNZNTdYOWh0Z2t1ZXhO?=
- =?utf-8?B?Q0x2c3lGZUFrbmRhY3JrS0ZYcUVwZDNSMHkrVWhsMWlvQ1ZoVzVaWnV4MU9K?=
- =?utf-8?B?M3NMZ0hjam9hOUFmU3g1R0lyZmtnc2gxcHNaa3V4cmt1V1NsbnErZGhDc0xu?=
- =?utf-8?B?YjNiZ1lTNCt6ZUJHY2hvVFV3Vk56SytIMzBzMUtzRXJ0N3pPVjZiMzJXc1dk?=
- =?utf-8?B?YTFXcWtsbWF1azNLcEdZNzFUbUlBQUNvV0V5V1ZOc1lRWnFsdGlYVHMwVjZm?=
- =?utf-8?B?YlhXNjhrWEovUE11djQ4Z3prTTlPdTJLZ3hmRDZ6OTVEdkRCTVBkSGNqWFJJ?=
- =?utf-8?B?VjdJT3kvcmFJaWl0MGJUK01OWDA1ZWFWOUhZZEJWdmJENVBXSG1IS3h4RFRD?=
- =?utf-8?B?WlFhd2NQSHFTUHpJSVlmR2ZDQzA3OElDTG9JeW91cmdvaVJjRlFTRS94R2V6?=
- =?utf-8?B?Y3lKeWZwenIxa1g4bituZHNUVTdabEJRd0Q2OGprdnR4OVlrLzRxUm5NZ2JD?=
- =?utf-8?B?T0FJYXB0cG1pY014b1JqQ0dtTHFVc21wNzBTS1F2aU9Hd3BDb3BtL3lTMTIr?=
- =?utf-8?B?SllEOWFLZFlwaWVmelAxbE83VE1OSHRaOTlmMkNZT29XZWVsbFlyMUV0MHBN?=
- =?utf-8?B?Vk5LU3I4S0REMnRYMDJtT1dJSjgvREovWFl6Y2VQNjdnZlAvMFA5ekdrVzhw?=
- =?utf-8?B?emd1Mk9PTE5JRG1VVzJBTW9sREczWkxNUENjM0VKc1gxZmc5VWsreWZ1WHBT?=
- =?utf-8?B?aS9HUldwZnBHVHRNblRobDkwQXZsNDBvS0dHTFU4K25QbktIMFMzM0h3V1ZH?=
- =?utf-8?B?amRpeFpvUTVvek1GbkdoaExHY25VWnExYms1dXFlUWVHOElsNGNLUnhjTkZt?=
- =?utf-8?B?aXBPamlvbmRmWElZVTM5UHVPZFZqN2hmVmNQRnhoK2gwL1VYdzhGc0FXeEtV?=
- =?utf-8?B?YlpwQzJJV3hIZ3BOc0VwaVBhbWNvQWY0Y29GVHVEMU54RU1TNVh1cFpMZjlN?=
- =?utf-8?B?bVREWkhtV1Y5ci80ZDk4TXlLODc3Nm5jZStPYURGT1FJVE9TWjhxWUpweERl?=
- =?utf-8?B?VTNqUEQ0dU1iRUlPSVRYQkw4Z2JZeWRubnR4QkNBNUk5cUlWdjlHZXh0dEZx?=
- =?utf-8?B?Y3JFNWl6bmIrUmxTNzZpRityYzNHQzUyeFREemQ1azQzTUtZdzlvMUV5NUM5?=
- =?utf-8?B?VVdoSUp3VHdpakI2QzZUWHVQYTVJNERlUW00RDJ0SU45R1hoM0g5NktnbkM0?=
- =?utf-8?B?NSs1ZXZ6dytrOFRSNW1hZFVsd1djajRZbHN0TjBZbVE0bVI5SCtQMUh0S2NO?=
- =?utf-8?B?bU5wbVo1Z0NBc29TMUczQzZGTXlWUXhTbC8rK3d5Z1BZM1d0Y244RVZFVWJo?=
- =?utf-8?B?bVdkbEdXZWF4OTVwdFJkRDBLY2xqOXlGSm4wVkpvNmplelhlZDVVMGFsMWVr?=
- =?utf-8?B?OXN1d0R2NzFaMUlCMlk2YnhSVXNaNEY3Vms3ZVhNY21DckdRbjRUUGVOdHUx?=
- =?utf-8?Q?aGk0VHdanek=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MHlEc01waTVXQnZjQWk4MGJ0OFVJZWdvUkJCS0hPYmtVZ0dCbFZpNlNjU3lF?=
- =?utf-8?B?UC9KbDdxcEd2d2dMem03aXpTdFVCYUlhUDcvcmJ1ZTRuclJLSmhJMzNVZ1l5?=
- =?utf-8?B?NTZQaU12a1B3T2l6dDIyMVZUaG5xa2RJMjVra21Nb1I2S3FpZGovMW5xZzBD?=
- =?utf-8?B?UmVlMjBjWDRDKzRPOHRlWDNYZTdrbEgxQjJjUW5namU2M0JsUmFPVE9xcU1y?=
- =?utf-8?B?aEpkWUdIWWg2VzB1YkhwZDN0TGJNd0UwQ2wwcVlja1p4eXJpaHZmYjRsYXh4?=
- =?utf-8?B?Z2ZvaklXeURKM25mRU56U0NCZ2M5cXJOYVpKeEY3R0R2SndYSWsyTUYyMEVK?=
- =?utf-8?B?NExEVFNwRjRXclhmUGxnQ0w1QUZqallLU2FiUmZ4Sy9jbkxSQmxCUnI3aThm?=
- =?utf-8?B?dXhuN3BpV1k5Zld3QWIxVXpJT1R6aTE5cncvYUNDaEZ6MlpSTysxanFSalZw?=
- =?utf-8?B?KzUxNitOT01VTFloeUNnSDJQak80eDlvdFNGdGlFL2pGdllUU0VNSitYUnV5?=
- =?utf-8?B?cktxbGNxSDlFNzJlRVZVc2tNSjNKUFFjYUtSRkNKbmlEbnlRam5ob1RPMG9F?=
- =?utf-8?B?S2o1TGlGdUFTTFBrTlpWcDljOTJSMGJqcllQZTl0Q1dJNS9teHZ6TWpUQjBQ?=
- =?utf-8?B?b3lzUjFxRXhrTFRsK0RhUGdlRHNrcmxTcWZvWDVEUkpCVm1yUGhOMDdJYmVO?=
- =?utf-8?B?cjJEQ25McG81SXltKzJzOHBOOGt5ak1RUXdIb3h0aWI5YlFLNi9pUktEalFq?=
- =?utf-8?B?cUlMOWRaTzk5SkUrWCtaemxsQ2MzWHMxd2toQ1pRVFlSek9ndklDZUM5R0U2?=
- =?utf-8?B?anRKTDd6SUMxTk45UXdPVjkwTjlZWUJCc1NiMEkyZEl1d016eG1aVnJDSE4r?=
- =?utf-8?B?Skp1Y3ErWGRHYXpicXZvY2pVSmhWVjN2S0xsQ1Z5Y3dOR2ZGcEw2Z2JuRU04?=
- =?utf-8?B?eFpveUN3R00xd2xHTTlpWWdVZ29VSHlqTHM0ejQxZnJEZXV3YkhEZTBoVWdK?=
- =?utf-8?B?UFBaZlQ1cW1rdGVvb1ZTamRIa1llMlRiZ1FmWHFERTE1Z013Z092Snd5N0ta?=
- =?utf-8?B?UWNSeE8zSUJHRzJYbDN4QjNhM1BneGtkZUpvbXZNck42MmVBRVhUb0ZTSDI2?=
- =?utf-8?B?MUU1Nlg0YzFpN29WQ0V4dkE1UGdUNmtNVUxuazdwNVExZGNLaHA4OXhOSURz?=
- =?utf-8?B?SHVBU3ZHem1aV09GUHlLZld6OVdZUUpvOGZwZS9ha09nTDRISkhlaUVJNktq?=
- =?utf-8?B?bFV3UHBQUUQ4V2l1UVlHZkcxRkt0MG43NFB3eDBVTmxxZHVnaWZWS2JuVEc3?=
- =?utf-8?B?NGpWRERPRzlNYlNwNm1zak56dnc2WGhzOVhRUWh4bGxQT3YrWTVvQmVIQzVh?=
- =?utf-8?B?N3pjZXZ4eGVyVW9BcVFhQktzV3hMbWcxVFczdURXUVZIUGJjTHQ3Tnlkb1ps?=
- =?utf-8?B?UmxYa2NNdGJJQW5MWHoweEppN2VYMUlnTmwvVEV0dy9HMTMvTzFwT1psakt4?=
- =?utf-8?B?UmZJRVp5UWNHVnZqTDRNL0tRcEVZZW5YamM4U1l4dExMcTZuNjhZSzYvc3lo?=
- =?utf-8?B?SDBWWUF4K3R4UURqdzMwTFZWc2NjUlZjbFdsNjgzdll6VjdDWXZtWXF2L1Rh?=
- =?utf-8?B?aDJtWFhjeHFYN2NnNnRXRFc4SzVCaHVlRkxLaTNTMCtaT3JrLzNHc2lCWEdP?=
- =?utf-8?B?ZE9URWU2QUNrSHZydFYwaFRJTXV4dlQzTGJ0ekJnOGNuTFdxK3o0blo1OFNr?=
- =?utf-8?B?L1BJV3FoTlpoUHlxZWVQTHB2TWxTbVltRVVMRVlqUnM1TkZpZ2JJdERZbXlE?=
- =?utf-8?B?SkoxVFVkWDVwZ2VZSXVMMEoxSitBTC9NZSs0cUI0T2liblNsQTZOd2NrME1L?=
- =?utf-8?B?emZUVnZDZkhab1J2czQwTlhLZlIzaTk5VDhOS3dvdkxlaDErdWxaM1FJZG95?=
- =?utf-8?B?TmRnTS8yNFlBV1JrQURmZXFPMFJLZjFhSzVBSFhsYnBDVi9HQ3dUWG9hVVhH?=
- =?utf-8?B?eUo4bkIzN1MzNVFqTElvcUhHanBRejNzRWtWUkRRb0pDaUlROUlGSWRsZXRx?=
- =?utf-8?B?Uyt4Yy9lMG55c2dleDk0em53K052eGxCRTF6aEVSU0NKemZPK3YrUjBLVWlP?=
- =?utf-8?Q?se/4zCfk9TZTiUNngAXvMKDfy?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3ae1e8ad-1e8e-4524-27fe-08dda7f93d9f
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2025 08:31:48.1457
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3nkvHOQ3V4cEWoxXpqOTt4DDb9cJbuaEANApcx5kWA5taaouGWAQq46YfVIz6pzYizWKhqAryjqEtrrKbKQTdw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7154
+Content-Transfer-Encoding: 8bit
 
+The new helpers allocate and free pages that can be used for a TDs.
 
+Besides page allocation and freeing, these helpers also take care about
+managing PAMT memory, if kernel runs on a platform with Dynamic PAMT
+supported.
 
-On 4/6/25 08:26, Dan Williams wrote:
-> Alexey Kardashevskiy wrote:
-> [..]
->>>>> +static int pci_tsm_accept(struct pci_dev *pdev)
->>>>> +{
->>>>> +	struct pci_tsm_pf0 *tsm = to_pci_tsm_pf0(pdev->tsm);
->>>>> +	int rc;
->>>>> +
->>>>> +	struct mutex *lock __free(tsm_ops_unlock) = tsm_ops_lock(tsm);
->>>>
->>>> Add an empty line.
->>>
->>> I think we, as a community, are still figuring out the coding-style
->>> around scope-based cleanup declarations, but I would argue, no empty
->>> line required after mid-function variable declarations. Now, in this
->>> case it is arguably not "mid-function", but all the other occurrences of
->>> tsm_ops_lock() are checking the result on the immediate next line.
->>
->> Do not really care as much :)
-> 
-> Hey, what's kernel development without little side-arguments about
-> whitespace? Will leave it alone for now.
+tdx_pamt_get()/put() helpers take care of PAMT allocation/freeing and
+its refcounting.
 
-:)
+PAMT memory is allocated when refcount for the 2M range crosses from 0
+to 1 and gets freed back on when it is dropped to zero. These
+transitions can happen concurrently and pamt_lock spinlock serializes
+them.
 
->>>>> +	if (!lock)
->>>>> +		return -EINTR;
->>>>> +
->>>>> +	if (tsm->state < PCI_TSM_CONNECT)
->>>>> +		return -ENXIO;
->>>>> +	if (tsm->state >= PCI_TSM_ACCEPT)
->>>>> +		return 0;
->>>>> +
->>>>> +	/*
->>>>> +	 * "Accept" transitions a device to the run state, it is only suitable
->>>>> +	 * to make that transition from a known DMA-idle (no active mappings)
->>>>> +	 * state.  The "driver detached" state is a coarse way to assert that
->>>>> +	 * requirement.
->>>>
->>>> And then the userspace will modprobe the driver, which will enable BME
->>>> and MSE which in turn will render the ERROR state, what is the plan
->>>> here?
->>>
->>> Right, so the notifier proposal [1] gave me pause because of perceived
->>> complexity and my general reluctance to rely on the magic of notifiers
->>> when an explicit sequence is easier to read/maintain. The proposal is
->>> that drivers switch to TDISP aware setup helpers that understand that
->>> BME and MSE were handled at LOCK. Becauase it is not just
->>> pci_enable_device() / pci_set_master() awareness that is needed but also
->>> pci_disable_device() / pci_clear_master() flows that need consideration
->>> for avoiding/handling the TDISP ERROR state.
->>>
->>> I.e. support for TDISP-unaware drivers is not a goal.
->>
->> So your plan it to modify driver to switch to the secure mode on the
->> go? (not arguing, just asking for now)
-> 
-> Effectively, yes. In the non-TDISP case the driver handles the MSE+BME
-> transition, in the TDISP case the driver also effectively handles the
-> same as BME+MSE are superseded by the LOCKED state.
-> 
-> So TVM userspace is responsible for marking the device "accepted" and the
-> driver checks that state before enabling the device (LOCKED -> RUN).
-> 
-> This also allows for kernel debug overrides of the acceptance policy,
-> because, in the end, the Linux kernel trusts drivers. If the TVM owner
-> loads a driver that ignores the "accepted" bit, that is the owner's
-> prerogative. If the TVM owner does not trust a driver there are multiple
-> knobs under the TVM's control to mitigate that mistrust.
-> 
->> The alternative is - let TSM do the attestation and acceptance and
->> then "modprobe tdispawaredriver tdisp=on" and change the driver to
->> assume that BME and MSE are already enabled.
-> 
-> My heartburn with that is that there is an indefinite amount of time
-> whereby a device is MSE + BME active without any driver to deal with the
-> consequences.
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+---
+ arch/x86/include/asm/tdx.h       |   3 +
+ arch/x86/include/asm/tdx_errno.h |   6 +
+ arch/x86/virt/vmx/tdx/tdx.c      | 224 +++++++++++++++++++++++++++++++
+ arch/x86/virt/vmx/tdx/tdx.h      |   2 +
+ 4 files changed, 235 insertions(+)
 
-(out of curiosity) AMD can block DMA until the guest decides it is ready and enabled IOMMU for the device, cannot TDX do the same?
-
-And what is the consequence of MSE being enabled? It is in the guest's best interest to avoid touching MMIO before things are set up. p2p DMA?
-
-
-> For example, what if the device needs some form of reset /
-> re-initialization to quiet an engine or silence an interrupt that
-> immediately starts firing upon the LOCKED -> RUN transition.
-
-The OS will have to ignore such interrupts, what is a problem with it?
-
-> Userspace
-> is not in a good position to make judgements about the state of the
-> device outside of the Interface Report.
-> 
->>> There are still details to work out like supporting drivers that want to
->>> stay loaded over the UNLOCKED->LOCKED->RUN transitions, and whether the
->>> "accept" UAPI triggers entry into "RUN" or still requires a driver to
->>> perform that.
-> 
-> Yes, I now think entry into "RUN" needs to be a driver triggered event
-> to maintain parity with the safety of the non-TDISP case.
-> 
-> [..]
->>>>> @@ -135,6 +141,8 @@ struct pci_tsm_guest_req_info {
->>>>>      * @bind: establish a secure binding with the TVM
->>>>>      * @unbind: teardown the secure binding
->>>>>      * @guest_req: handle the vendor specific requests from TVM when bound
->>>>> + * @accept: TVM-only operation to confirm that system policy allows
->>>>> + *	    device to access private memory and be mapped with private mmio.
->>>>>      *
->>>>>      * @probe and @remove run in pci_tsm_rwsem held for write context. All
->>>>>      * other ops run under the @pdev->tsm->lock mutex and pci_tsm_rwsem held
->>>>> @@ -150,6 +158,7 @@ struct pci_tsm_ops {
->>>>>     	void (*unbind)(struct pci_tdi *tdi);
->>>>>     	int (*guest_req)(struct pci_dev *pdev,
->>>>>     			 struct pci_tsm_guest_req_info *info);
->>>>> +	int (*accept)(struct pci_dev *pdev);
->>>>
->>>>
->>>> When I posted my v1, I got several comments to not put host and guest
->>>> callbacks together which makes sense (as only really "connect" and
->>>> "status" are shared, and I am not sure I like dual use of "connect")
->>>> and so did I in v2 and yet you are pushing for one struct for all?
->>>
->>> Frankly, I missed that feedback and was focused on how to simply extend
->>> PCI to understand TSM semantics.
->>
->> That was literally you (and I think someone else mentioned it too) ;)
->>
->> https://lore.kernel.org/all/66d7a10a4d621_3975294ac@dwillia2-xfh.jf.intel.com.notmuch/
-> 
-> Ugh, yes, it seems that joke: "debugging is a murder mystery where you
-> find out you were the killer the whole time." can also be true for patch
-> review.>>> "Lets not mix HV and VM hooks in the same ops without good reason" and
->> I do not see a good reason here yet.
->>
->> More to the point, the host and guest have very little in common to
->> have one ops struct for both and then deal with questions "do we
->> execute the code related to PF0 in the guest", etc.
-> 
-> Now that is a problem independent of the ops unification question. The
-> 'struct pci_tsm_pf0' data-type should not be used for guest devices. I
-> will rework that to be a separate data-structure, but still keep
-> 'pci_tsm_ops' unified since the signatures are identical.
-> 
->> My life definitely got easier with 2 separate structures and my split
->> to virt/coco/...(tsm-host.c|tsm-guest.c|tsm.c) + pci/tsm.c.
-> 
-> Here is the reason my thinking evolved from that comment. A primary goal
-> of drivers/pci/tsm.c is to give one "Device Security" lifetime model to
-> the PCI core. That means TSM driver discovery (host or guest) lights up
-> TEE I/O capabilities in the PCI topology. That supports "pci_tsm_ops +
-> mode flag" vs separate registration mechanisms for different ops.
-> 
-> I also am not perceiving the need for guest-specific ops beyond
-> ->accept(), as part of what drove my reaction to that RFC proposal was
-> the quantity of proposed ops.
-
-
-But this is all the guest will ever need, why allow possibility of (not) dealing with IDE/DOE in the guest? We will end up with "host-connect" and "guest-connect" when talking about this, having 2 types of bind (VFIO bind and TDI bind) is already confusing people whom I tell about this TSM business. And a global pointer, why... :(
-
-"tvm_mode == !!tsm_ops->accept" - this kind of knob should really be compile-time imho.
-
-Is it going to be one TSM driver for TDX host and guest, sharing measurable amount of code? I am definitely missing a bigger picture here. Thanks,
-
-
-> So today's "good reason" is the useful programming pattern of "push
-> complexity from core-to-leaf". Where the low-level TSM driver needs to
-> be "mode" aware for some operations.
-
-
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 583d6fe66821..d9a77147412f 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -115,6 +115,9 @@ int tdx_guest_keyid_alloc(void);
+ u32 tdx_get_nr_guest_keyids(void);
+ void tdx_guest_keyid_free(unsigned int keyid);
+ 
++struct page *tdx_alloc_page(void);
++void tdx_free_page(struct page *page);
++
+ struct tdx_td {
+ 	/* TD root structure: */
+ 	struct page *tdr_page;
+diff --git a/arch/x86/include/asm/tdx_errno.h b/arch/x86/include/asm/tdx_errno.h
+index d418934176e2..0b3332c2d6b2 100644
+--- a/arch/x86/include/asm/tdx_errno.h
++++ b/arch/x86/include/asm/tdx_errno.h
+@@ -18,6 +18,7 @@
+ #define TDX_PREVIOUS_TLB_EPOCH_BUSY		0x8000020100000000ULL
+ #define TDX_RND_NO_ENTROPY			0x8000020300000000ULL
+ #define TDX_PAGE_METADATA_INCORRECT		0xC000030000000000ULL
++#define TDX_HPA_RANGE_NOT_FREE			0xC000030400000000ULL
+ #define TDX_VCPU_NOT_ASSOCIATED			0x8000070200000000ULL
+ #define TDX_KEY_GENERATION_FAILED		0x8000080000000000ULL
+ #define TDX_KEY_STATE_INCORRECT			0xC000081100000000ULL
+@@ -86,5 +87,10 @@ static inline bool tdx_operand_busy(u64 err)
+ {
+ 	return tdx_status(err) == TDX_OPERAND_BUSY;
+ }
++
++static inline bool tdx_hpa_range_not_free(u64 err)
++{
++	return tdx_status(err) == TDX_HPA_RANGE_NOT_FREE;
++}
+ #endif /* __ASSEMBLER__ */
+ #endif /* _X86_TDX_ERRNO_H */
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index ad9d7a30989d..3830fbc06397 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -2000,3 +2000,227 @@ u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, struct page *page)
+ 	return seamcall(TDH_PHYMEM_PAGE_WBINVD, &args);
+ }
+ EXPORT_SYMBOL_GPL(tdh_phymem_page_wbinvd_hkid);
++
++static int tdx_nr_pamt_pages(void)
++{
++	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
++		return 0;
++
++	return tdx_sysinfo.tdmr.pamt_4k_entry_size * PTRS_PER_PTE / PAGE_SIZE;
++}
++
++static u64 tdh_phymem_pamt_add(unsigned long hpa,
++			       struct list_head *pamt_pages)
++{
++	struct tdx_module_args args = {
++		.rcx = hpa,
++	};
++	struct page *page;
++	u64 *p;
++
++	WARN_ON_ONCE(!IS_ALIGNED(hpa & PAGE_MASK, PMD_SIZE));
++
++	p = &args.rdx;
++	list_for_each_entry(page, pamt_pages, lru) {
++		*p = page_to_phys(page);
++		p++;
++	}
++
++	return seamcall(TDH_PHYMEM_PAMT_ADD, &args);
++}
++
++static u64 tdh_phymem_pamt_remove(unsigned long hpa,
++				  struct list_head *pamt_pages)
++{
++	struct tdx_module_args args = {
++		.rcx = hpa,
++	};
++	struct page *page;
++	u64 *p, ret;
++
++	WARN_ON_ONCE(!IS_ALIGNED(hpa & PAGE_MASK, PMD_SIZE));
++
++	ret = seamcall_ret(TDH_PHYMEM_PAMT_REMOVE, &args);
++	if (ret)
++		return ret;
++
++	p = &args.rdx;
++	for (int i = 0; i < tdx_nr_pamt_pages(); i++) {
++		page = phys_to_page(*p);
++		list_add(&page->lru, pamt_pages);
++		p++;
++	}
++
++	return ret;
++}
++
++static DEFINE_SPINLOCK(pamt_lock);
++
++static void tdx_free_pamt_pages(struct list_head *pamt_pages)
++{
++	struct page *page;
++
++	while ((page = list_first_entry_or_null(pamt_pages, struct page, lru))) {
++		list_del(&page->lru);
++		__free_page(page);
++	}
++}
++
++static int tdx_alloc_pamt_pages(struct list_head *pamt_pages)
++{
++	for (int i = 0; i < tdx_nr_pamt_pages(); i++) {
++		struct page *page = alloc_page(GFP_KERNEL);
++		if (!page) {
++			tdx_free_pamt_pages(pamt_pages);
++			return -ENOMEM;
++		}
++		list_add(&page->lru, pamt_pages);
++	}
++	return 0;
++}
++
++/*
++ * Returns >=0 on success. -errno on failure.
++ *
++ * Non-zero return value indicates that the pamt_pages unused and can be freed.
++ */
++static int tdx_pamt_add(atomic_t *pamt_refcount, unsigned long hpa,
++			struct list_head *pamt_pages)
++{
++	u64 err;
++
++	guard(spinlock)(&pamt_lock);
++
++	hpa = ALIGN_DOWN(hpa, PMD_SIZE);
++
++	/*
++	 * Lost race to other tdx_pamt_add(). Other task has already allocated
++	 * PAMT memory for the HPA.
++	 *
++	 * Return 1 to indicate that pamt_pages is unused and can be freed.
++	 */
++	if (atomic_read(pamt_refcount) != 0) {
++		atomic_inc(pamt_refcount);
++		return 1;
++	}
++
++	err = tdh_phymem_pamt_add(hpa | TDX_PS_2M, pamt_pages);
++
++	/*
++	 * tdx_hpa_range_not_free() is true if current task won race
++	 * against tdx_pamt_put().
++	 */
++	if (err && !tdx_hpa_range_not_free(err)) {
++		pr_err("TDH_PHYMEM_PAMT_ADD failed: %#llx\n", err);
++		return -EIO;
++	}
++
++	atomic_set(pamt_refcount, 1);
++
++	/*
++	 * Current task won race against tdx_pamt_put() and prevented it
++	 * from freeing PAMT memory.
++	 *
++	 * Return 1 to indicate that pamt_pages is unused and can be freed.
++	 */
++	if (tdx_hpa_range_not_free(err))
++		return 1;
++
++	return 0;
++}
++
++static int tdx_pamt_get(struct page *page, enum pg_level level)
++{
++	unsigned long hpa = page_to_phys(page);
++	atomic_t *pamt_refcount;
++	LIST_HEAD(pamt_pages);
++	int ret;
++
++	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
++		return 0;
++
++	/*
++	 * Only PAMT_4K is allocated dynamically. PAMT_2M and PAMT_1G is
++	 * allocated statically on TDX module initialization.
++	 */
++	if (level != PG_LEVEL_4K)
++		return 0;
++
++	pamt_refcount = tdx_get_pamt_refcount(hpa);
++	WARN_ON_ONCE(atomic_read(pamt_refcount) < 0);
++
++	if (atomic_inc_not_zero(pamt_refcount))
++		return 0;
++
++	if (tdx_alloc_pamt_pages(&pamt_pages))
++		return -ENOMEM;
++
++	ret = tdx_pamt_add(pamt_refcount, hpa, &pamt_pages);
++	if (ret)
++		tdx_free_pamt_pages(&pamt_pages);
++
++	return ret >= 0 ? 0 : ret;
++}
++
++static void tdx_pamt_put(struct page *page, enum pg_level level)
++{
++	unsigned long hpa = page_to_phys(page);
++	atomic_t *pamt_refcount;
++	LIST_HEAD(pamt_pages);
++	u64 err;
++
++	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
++		return;
++
++	if (level != PG_LEVEL_4K)
++		return;
++
++	hpa = ALIGN_DOWN(hpa, PMD_SIZE);
++
++	pamt_refcount = tdx_get_pamt_refcount(hpa);
++	if (!atomic_dec_and_test(pamt_refcount))
++		return;
++
++	scoped_guard(spinlock, &pamt_lock) {
++		/* Lost race against tdx_pamt_add()? */
++		if (atomic_read(pamt_refcount) != 0)
++			return;
++
++		err = tdh_phymem_pamt_remove(hpa | TDX_PS_2M, &pamt_pages);
++
++		if (err) {
++			atomic_inc(pamt_refcount);
++			pr_err("TDH_PHYMEM_PAMT_REMOVE failed: %#llx\n", err);
++			return;
++		}
++	}
++
++	tdx_free_pamt_pages(&pamt_pages);
++}
++
++struct page *tdx_alloc_page(void)
++{
++	struct page *page;
++
++	page = alloc_page(GFP_KERNEL);
++	if (!page)
++		return NULL;
++
++	if (tdx_pamt_get(page, PG_LEVEL_4K)) {
++		__free_page(page);
++		return NULL;
++	}
++
++	return page;
++}
++EXPORT_SYMBOL_GPL(tdx_alloc_page);
++
++void tdx_free_page(struct page *page)
++{
++	if (!page)
++		return;
++
++	tdx_pamt_put(page, PG_LEVEL_4K);
++	__free_page(page);
++}
++EXPORT_SYMBOL_GPL(tdx_free_page);
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index 82bb82be8567..46c4214b79fb 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -46,6 +46,8 @@
+ #define TDH_PHYMEM_PAGE_WBINVD		41
+ #define TDH_VP_WR			43
+ #define TDH_SYS_CONFIG			45
++#define TDH_PHYMEM_PAMT_ADD		58
++#define TDH_PHYMEM_PAMT_REMOVE		59
+ 
+ /*
+  * SEAMCALL leaf:
 -- 
-Alexey
+2.47.2
 
