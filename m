@@ -1,202 +1,221 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2066.outbound.protection.outlook.com [40.107.244.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8833127A469
-	for <linux-coco@lists.linux.dev>; Tue, 10 Jun 2025 06:59:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749538799; cv=none; b=cTV6z9A9M5nB59l2nJSky+AQNgmz1zTd+P8DgHsrOVzTQ+C2H5e5vCSxMqQRGV4tlLbaRHNdbhUW+pghrVWSre1bStGJ0qWDRrZLwUefF78wojEJ8DNPnvNho2qHeFkiS+6f0Ktjf5oHg2SilAO4GKcqi5OjPeQZwi6i1gaTkXI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749538799; c=relaxed/simple;
-	bh=nQXu7/qHIbG/mZfLTshtxBAdZxbuaewWvV6VL9QWdqY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bt6Zm0e4y4gRBElaAkYbPMJgd1Q2/Gkbuoiz/CK98wfOfQQ4KGanLi58OvIUBu203qZDOujGQUbjNzTe7JMzJD/BlqeOTQ/be0IhZ3qkXd+WyEt2g+61TG3mOpFTIav6sNPvh6z0O9KjHfq0ZLlfwIJPu4YZqb1Ci7//6Dat7sY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jk8cA5qi; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3CA220F2C
+	for <linux-coco@lists.linux.dev>; Tue, 10 Jun 2025 07:05:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749539133; cv=fail; b=RG2p/RkhYDzk9ohxskCKzucSvzXSzouBl3VQZq4F4wIuM+lkopX/47CWbuVXGds0+1XkYNyfnCQ6Zukk5jQQvlbxeiU7Ff2iXrPRfVafkfQ5wr4l51BkrGK9ONT4RUr8cXPhXN/30m7mPZweOOCPBTXTVzzlWZD4IT4Tm9oyQXE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749539133; c=relaxed/simple;
+	bh=sqUfQqjxFsk/EeV+ercixtqro47uQ9j1f9XKH/AJ4ig=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=NbJ9bFVHST/hwY5NFmXxqD0wxgl2GiQxMOtgXLtriSeCxLvhMDF41qvNcNqbOR/EqQfNxoyhmTNt17ABpmkihzd55NFqpwWWsS/MhIWqLafKoxe122c2ZvNK1p45PZgM+/4e0LFBeCflWJLppY02w4EUL8Ob/3L/uGnfAnitulc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=jyZQZRHt; arc=fail smtp.client-ip=40.107.244.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jk8cA5qi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749538797; x=1781074797;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=nQXu7/qHIbG/mZfLTshtxBAdZxbuaewWvV6VL9QWdqY=;
-  b=jk8cA5qi2xUI2Q1KVsW8L6/cz5u9am+AnM7+sii8GNs4uRnhnvSfVkUK
-   fCZeGiXJnZT4G8Alpe7eXShY3qZPyllg7Zh+5jvq17NcBhxskWxpEtGxY
-   bztLBVipsAuJtjJSDT+1G2yy1LHlVp+d7Qw35y0TUgNzSfwks/P4VODSB
-   i2vEXhplbAlOjBEcUo2hZ5Iq1q6E+spk+UxxI1mvkgK9/0TRtWznSJHrl
-   /URIvayqWrYqsSWEqU+cUPwoclTnaCgIJ/RZ71GTm0hQ6dr+5SJR5fqJe
-   BkB1IZnRNySaKr0EH14Ugem52vusBDpRfbgD5j9Zhg/LnjytKVZgn4pzD
-   g==;
-X-CSE-ConnectionGUID: 7XkRZiH7SRG5btAccelhjQ==
-X-CSE-MsgGUID: aKOug1Z1TjO8uJzwG3NgpQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11459"; a="51778990"
-X-IronPort-AV: E=Sophos;i="6.16,224,1744095600"; 
-   d="scan'208";a="51778990"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 23:59:57 -0700
-X-CSE-ConnectionGUID: ZiXdYjsHRTe5w9XKMyrQaA==
-X-CSE-MsgGUID: pq2m0M7pTrWZ7k3/HXV1AQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,224,1744095600"; 
-   d="scan'208";a="169919096"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa002.fm.intel.com with ESMTP; 09 Jun 2025 23:59:52 -0700
-Date: Tue, 10 Jun 2025 14:53:00 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, kvm@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
-	christian.koenig@amd.com, pbonzini@redhat.com, seanjc@google.com,
-	alex.williamson@redhat.com, vivek.kasireddy@intel.com,
-	dan.j.williams@intel.com, yilun.xu@intel.com,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	lukas@wunner.de, yan.y.zhao@intel.com, daniel.vetter@ffwll.ch,
-	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
-	tao1.su@intel.com
-Subject: Re: [RFC PATCH 00/12] Private MMIO support for private assigned dev
-Message-ID: <aEfWTEaQv2HhldWX@yilunxu-OptiPlex-7050>
-References: <aCRAHRCKP1s0Oi0c@yilunxu-OptiPlex-7050>
- <20250514163339.GD382960@nvidia.com>
- <aCYQdDrYYZRAgsen@yilunxu-OptiPlex-7050>
- <9dea400f-a57b-43be-a2e4-24a9f51e6ba0@amd.com>
- <aDE5SPzOAU0sNIt+@yilunxu-OptiPlex-7050>
- <ae16db07-5fca-4369-aa67-cbe2e0fd60fd@amd.com>
- <aDhyC73r149syMpc@yilunxu-OptiPlex-7050>
- <79872224-4e81-446b-a451-28260f449ea9@amd.com>
- <aDnbgBbxF8IkH/cq@yilunxu-OptiPlex-7050>
- <bd0d8d69-78dd-44d8-9f32-d945bc6078c2@amd.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="jyZQZRHt"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PzkgABbXwJligRi15cV7DBobFik66mhuh6J+OhZBnt2cJ78GZIs1jdDTo2Az0sSI6hUidU8QJBGCmxjsFeXHjILCMAQmA3AxCRyFpBlPCErsiLN8qZcn0cmUk+FIkzmKT2wLwxQNw92IjBUirdQlZJcncwCIZy0cq96R7nYg9ipwghukMhZTV09NpJX9VlHfquRYrXjyF3VuLpDBhI22UvvDuzJQpg8gcBxxlS8gLkfHf/KgViw+v91MexlveKbcCQxT64o8LROhVtnmGYUBi4F41jXETCsnoVvdU0/Q3XDcA6OnRlC6R5q5tf7m/K15DH0wusDK0q35jMvaDSqcDw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LUyU2vMPe0KdW5pix5k3RmZBnuWzZKDL7TIwro73pMk=;
+ b=DBoMoyrLX1pvGHFuZ/H0HRAAzFb4VSVdMjqt1/V4v8lPkaCi69Mv2icvDTuECNbTNRTgSRpsKiibPul47cg5sqiZwbWx7JtOKOzo5XHVIbqzJ65PUmnWCMHBoAeyo9Sb+vqQoPhvWZu4uj59mDYzaqZUeCsgZy9ct/LlbeK0MZSM2Qx5A+OM04XksN3HOAchHPIT5UOa5Y3+5r+1BbnyYdr7d8BxAmMGOk4vDpItv9K8xT06msZbFvYBbW7unV4AjrCw69cz2+SwCiNU4I+9VD7m4BWhEaC5z7o17BxRXSRhdXVbuZGifGbkfApy2CQiz3SbHZYwERrlxwVNsSqaeg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LUyU2vMPe0KdW5pix5k3RmZBnuWzZKDL7TIwro73pMk=;
+ b=jyZQZRHt+oh3GZ+p0J848FFUMCwqdWvyNWXockzLzO27C0MIZT8YuRU/XkoeVgV++xJVzd/CHhZ/yDctOCJtGRMnLnujU4rJ7dMldb78kGGGJwH/p34ePrf58jw45SCkFbyT04n3p9AdGcsbIye7MxU8B0UuHj4NP2ruy5htTFY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
+ by LV3PR12MB9258.namprd12.prod.outlook.com (2603:10b6:408:1bb::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.39; Tue, 10 Jun
+ 2025 07:05:28 +0000
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f%5]) with mapi id 15.20.8792.038; Tue, 10 Jun 2025
+ 07:05:28 +0000
+Message-ID: <d56b85e7-3081-4c99-b3db-7adf6604951c@amd.com>
+Date: Tue, 10 Jun 2025 17:05:21 +1000
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [RFC PATCH 3/3] iommufd/tsm: Add tsm_bind/unbind iommufd ioctls
+To: Jason Gunthorpe <jgg@nvidia.com>, Xu Yilun <yilun.xu@linux.intel.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+ linux-pci@vger.kernel.org, gregkh@linuxfoundation.org, lukas@wunner.de,
+ suzuki.poulose@arm.com, sameo@rivosinc.com, zhiw@nvidia.com
+References: <yq5a5xhj5yng.fsf@kernel.org>
+ <20250529133757.462088-1-aneesh.kumar@kernel.org>
+ <20250529133757.462088-3-aneesh.kumar@kernel.org>
+ <aDsta4UX76GaExrO@yilunxu-OptiPlex-7050> <yq5azfeqjt9i.fsf@kernel.org>
+ <aD3QcQxtjoYXrglM@yilunxu-OptiPlex-7050> <20250602164857.GE233377@nvidia.com>
+ <aD50lpgJ+9XMJE/4@yilunxu-OptiPlex-7050> <20250603121142.GE376789@nvidia.com>
+ <aD/gn2tb+HfZU29D@yilunxu-OptiPlex-7050> <20250604123637.GF5028@nvidia.com>
+Content-Language: en-US
+From: Alexey Kardashevskiy <aik@amd.com>
+In-Reply-To: <20250604123637.GF5028@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SY5P300CA0078.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:10:247::6) To CH3PR12MB9194.namprd12.prod.outlook.com
+ (2603:10b6:610:19f::7)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bd0d8d69-78dd-44d8-9f32-d945bc6078c2@amd.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|LV3PR12MB9258:EE_
+X-MS-Office365-Filtering-Correlation-Id: adc671da-4c09-4276-8133-08dda7ed2de1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?elRmdzd0ZXlFOHQwQjN1bHFRTUZMdzFPZDRaL1lGRm9Qc0tIT204ZVp1UEcr?=
+ =?utf-8?B?bHkzcXdLZmlhTmNpb0V1cVJLc29PbVpWbHhGRXNvemlZakpiWVdNdlFmSFVY?=
+ =?utf-8?B?VmQ5T1JqZXk1WEpvQnhsTndDZGNveTFOU2JTOXFvdUFvaXFncFMvRTA0V3RP?=
+ =?utf-8?B?dDBRMjV5OURHaVBSRGtubTRWZ3JZcjNWaUJDRmJvRkMvTFcvWTEwanFJa2JF?=
+ =?utf-8?B?dlpKdjRaem53ZklmaGhqTWoxWnlFYnlOa0VzeFhhT2UwdVE0ZWhhdTBEWitL?=
+ =?utf-8?B?MnV3Z1Q1WU5Gb1oraGRFWHlobU1CZzh6QVo5dG1XdklsZ2Zobi9Eam5qTWZ2?=
+ =?utf-8?B?Szk5cnNMUWV2SFJ5VDB0TmozaG9EQ2xLUXdkdEJKRVZXR1lFRVNxS2ZaaVQ3?=
+ =?utf-8?B?cmt6dWVPb0s4WkdENHVzQTlLMGh4ZWJCZVRFdENRMGNPWUZiSWlibEF3RHBY?=
+ =?utf-8?B?SGovYnpVNkF6ekYwTm1PMk8wUEpFaTUwSUU0VTdUbkFLc0R3QVB6eUdvSDZy?=
+ =?utf-8?B?Ynl1M3Fja1pWUWlDTEp0ZWpka2tjWmZMVHgrYk1SeStVRFdyNWJMdEFpbDhk?=
+ =?utf-8?B?b3RZQ3hxeUY4TE81Y0tVM3hPNTFxeGNTRytjaStxK2R2VmpyUzJhY1ljYm5B?=
+ =?utf-8?B?NXVmMXBnUGx2bDdKeGtoUlVObU0rVVNLVWh0QnUybTYrM1RCOW04RlptVTll?=
+ =?utf-8?B?MUJnTVlLR0M5TWlHZDNTTHNnc0RmcFJZdHBWaDhSdG95NU1aRXFsRVJuc0FH?=
+ =?utf-8?B?NWh2aVpWeFlGNzlOdjhOc1pLcVVla2RrU3loUnZLVk1Vak5IV0UxOEJCU1NB?=
+ =?utf-8?B?OHU5OGxiTkVhSlNvU2NoQXg4N0U4UU9sNk9WVVgwbnVDRXAyOW5CVjJLemw4?=
+ =?utf-8?B?YjQvcGtLUXRaRW5KSDRZN3FESTRYMmpwS05NdzZsOFdic0N3UC9YUmZSeUN0?=
+ =?utf-8?B?QkNzQjZQQzVMNStYQjgrN1lJeUhwUGRiNFZiZzY5cVVKZ1d4bzAzYUJuNGRQ?=
+ =?utf-8?B?L0VVZkd6SWw4dldYWWlzaFBGWUo2cHR5SnB1ak4veTQ2Ymlma3ZYQkxnZmxa?=
+ =?utf-8?B?Ym50WWxYSjRwcTNYS1JNOFc3czVRSExYc0JaakxXZ1JOWjRxOTlMUU1ySlRT?=
+ =?utf-8?B?dVRhelFtZ3pSTlV5UGZTcnRzRmNmVUFPNmtOVmFqOUxReGJoQzloWUx3OU5y?=
+ =?utf-8?B?cUtoYkl6dlRMYUFqUVRFQjVVQ29QOE5Pd1g0VWMzeGkweVBZK1FHSmdrN05H?=
+ =?utf-8?B?NDRzdVJ6RlB5emlXSHJDWDR4Wkl2UnFDWUgvTDI5UnBxb1E5bUFvTnhQaDdh?=
+ =?utf-8?B?L3ZVVnZpWEkxcjR5RkZvQThBVVJXNytld0Y1WUdHVnYwQ2d5cTFjZXZwck9z?=
+ =?utf-8?B?cXA1d1dGcUp6R09SQVhYcjdXOWtqNXMvb2NKTUI4MisyRldGU0QyWmdWUjJl?=
+ =?utf-8?B?bTJLUkxLUDJOSmZkNkREU3BzSUNRcE5DbmFlLzFjRFRNbmxBazhKQnlGNzI0?=
+ =?utf-8?B?RXVYYldyVWh6RmpDaTVheTVsUUpobnM5TWJUclorMi96dmZQNUZyd2FqdVIw?=
+ =?utf-8?B?SG1IK0poL0d0Ujh2MFVGQy9rUDlXYTFpSHA1dzVhU1ByZ0xrUVI5ellrY3VD?=
+ =?utf-8?B?NmRELzgyeDVJTHY2aGxpMm5NenpubDJXem15K09WL1hnczhUcXprR2prby91?=
+ =?utf-8?B?cmc1Zmp3cE45YmRzdjRyWHNBdW4wa2hNbGZXUGFNYzVXY3hJOVJHNFpFZ29n?=
+ =?utf-8?B?QmxKdFR5REZteXVuQ3BjbDRqMC9YN2wzK01XeEVkL0QxNzVvUTlOUWU3dXVO?=
+ =?utf-8?B?TTVyWHpkVkhYYldCQjBMb1NCV0hpNEVqaFBtaXBwdm0xOEdncXVzb2N0VXE1?=
+ =?utf-8?B?SDRKQ1ltRkJQYVcyMGhlalNrT1lrdmFIYnZkOXk1VnJ4OXc9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?emVsVXU3Sm5FR0VVV1dBRXZxTkcvSzRHZENPNDkrMmRZNU9iZjBRa1NlQ28x?=
+ =?utf-8?B?SWdVUGhhK0k0WnJQelg3UUdCbkRJNTRYZnVPMkFyRURjdXhZMkVHeG9pK3E0?=
+ =?utf-8?B?UmFwaVc5WTMrUkZXVWdzSUd6Q25MeFlHSXplUWV1M2RVWTVmM0JmQkcyQVVw?=
+ =?utf-8?B?a21uQUZmRlJKeEpaUDJlb0NLSXd0V1A4dW1pekZYYVJuNXJsazRXd2I4K3pz?=
+ =?utf-8?B?OXI4bVBMcXZnSWdEME45NFlrZ3BDUFNOdjJlbVlhRXAyK3JGaTlrR3FpaTRu?=
+ =?utf-8?B?UVA3bmJkeThYd2JoUlNibkhUNEVuWHdpLzhybWhoWW1VTTJpTGUvMGlvS0E1?=
+ =?utf-8?B?VUJ2RGNWM1VhdnNkV2F5M3FTejk3Q3d5WllzOU52NTBGdnlUNjQ4U0hldnFw?=
+ =?utf-8?B?N2RtVDRlOG1RWUxWYzNRZVpzN1FsdjY1S0w0am4wSEZCM0ZsSHFrYXdlSTkv?=
+ =?utf-8?B?TVhTNGZvMDVMNWpWY21OeUVGRVZFZXFHR2g4elpzVFc0ZlA1aUk2OXZmNm5K?=
+ =?utf-8?B?S1V6YU5ORzZCdHpCK1UvM2x4U3pxbkg3b3I2NHd5L3NDcUZRM0tTTVlJRDFr?=
+ =?utf-8?B?NGlIUzdUYzVpWXJmUElzR3hxM0xZVEJZU25QTWwzSWZpRjlXeURqR0l0UWRJ?=
+ =?utf-8?B?djNyRW1pQ0xjUlROOEI4VzRvZmZGT1VlK1NoWDJMUGdXS3h3QzM0TlY2YlVu?=
+ =?utf-8?B?d1RLUzdpUGNmSEJ1Z0JJUW5LZXgzSWpDZzhTYWxJdWp1aHJXbjZZVUs1V2tq?=
+ =?utf-8?B?Rit5dkFaT1VtNUFXNUlCM204c1ZUcVBVb0E0M3VQMGVMUTNjQ1g0bDZOd3l5?=
+ =?utf-8?B?U0IxMGdEeWZYRGZYbEIzQmJhNWJmSy9Xc3BZVzJza1VQNFh6QnhLZ2hLZ0pu?=
+ =?utf-8?B?emd1bTBYSUlBTVBPbWgrcTdzYlRNOTkxT3RobldxN3NGdWZNcHVpYzI1T0xt?=
+ =?utf-8?B?WVJuUWdRSU5LUXV1dVJkWDZyWFl4WnVRQmF1akYzTTQ3cHE1dm5hdkxlSUwv?=
+ =?utf-8?B?OHNlWTNsRzkrVmVTbTgyNHNIMVlVek1aSDlDWFJjUzJSRlpGc2xOYlZaK3Vn?=
+ =?utf-8?B?T0dJSFN1aElPYm5ZL3FHekFLMjk5REgrd2VNa2RsV05CK2xsa0dlYWlDMDRK?=
+ =?utf-8?B?aGFDb3ZyS1dTMXFDQkw2ekpsN09LT3NJcllxbkc3UTR1bHNjbzJCOEUyQXNw?=
+ =?utf-8?B?VXNaSi9jcG41WEpXdDMzTUtTUS9jSmdzSFNBWUdjclpvcTlrd0F5MXhJN1Fa?=
+ =?utf-8?B?aitRWitzVmswT1I4QVorVlBqbHc2MW53aE5yRVNEZkg3ZmhpVHdscEM3cXpJ?=
+ =?utf-8?B?SFphM0ttb3pad29yL0RlY1VzR2lROEd1M2QwTTFvdFRYc3JoVGQ2YkpReUtL?=
+ =?utf-8?B?UFJ6MnJQRUEvY2VhakpBS3FGVmVZSDhjWEpTZ2Jvb2lWVHg2ajlLbTNoUEVW?=
+ =?utf-8?B?V241NDhLTGtLUXRqS05raHVTaXZ0SHdwR1RCR0ZpdEtPaW1uN1ZaOStnekxr?=
+ =?utf-8?B?cXc5d0Znc0FpbXJibTR3aDJyc0ZmNldJelMzMEFPRWtkU1dWZHl4eWJ3SEkx?=
+ =?utf-8?B?TGlXcXkwemtIOUFaOGEvNWkvUWt6U3B2aktQRnNBWVhCQXRVZVNOalRpcUl1?=
+ =?utf-8?B?Z0Z3cGNxSXAxalEreFJyNE44VWg4djVtRHZSdFpiM1NRNjR1ejFBRlE3cXJw?=
+ =?utf-8?B?TFE3UE81V3FXWGgvZU1vdmM0SXJmVU9aSGw0SVZzcWNYQUhGSTQxOXk0LzNN?=
+ =?utf-8?B?VkQ1YWN5dlhRaWVuS3BzS1VCcW1HMUJ4SEIvQUQzUTZidS9nMC9taU5hUzkx?=
+ =?utf-8?B?dHA0OXl2UFhPOWFEMGo1dWpTUnJOZzJHdzVsdG10MDBxQmFVVXhVazgwejNO?=
+ =?utf-8?B?cC9PV04zV2RBeDE2eUc1T3BxN0d2cnBXVUhoWlcybEZ6TmVGc2JMcVA4cGdL?=
+ =?utf-8?B?WHdGV2NJWHY0L3l5Z2RYNGpMcWM4bHB0dkFJNTZnbmFvaW8rNHVicVU5R010?=
+ =?utf-8?B?NXFsQXlrcUNLZ3RPTm9ZZXVEQU5wSllSYTkwRW83V0I0SEwrVWRody9HaHlI?=
+ =?utf-8?B?ZTV1VzRYNmQzdHdpSkZyeDc3Zlh4OExhVmdCUzNDUzJKSGhRSFlzaWlFV0Vx?=
+ =?utf-8?Q?Aen//MF3EIX/TfsKEVAffvT+G?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: adc671da-4c09-4276-8133-08dda7ed2de1
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2025 07:05:27.9677
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4D4FvxLPMJgBOx3RS1JzK04Zu4oYKqSFyeNrOqyhanSOeTPxOh6HBZtRaDIEhgzPBCoPNcHU7DKiuKKWbG/WgA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9258
 
-On Tue, Jun 10, 2025 at 02:20:03PM +1000, Alexey Kardashevskiy wrote:
+
+
+On 4/6/25 22:36, Jason Gunthorpe wrote:
+> On Wed, Jun 04, 2025 at 01:58:55PM +0800, Xu Yilun wrote:
 > 
+>> But the p2p case may impact AMD, AMD have legacy IOMMUPT on its secure
+>> DMA path. And if you invalidate MMIO (in turn unmaps IOMMUPT) when
+>> bound, may trigger HW protection mechanism against DMA silent drop.
 > 
-> On 31/5/25 02:23, Xu Yilun wrote:
-> > On Fri, May 30, 2025 at 12:29:30PM +1000, Alexey Kardashevskiy wrote:
-> > > 
-> > > 
-> > > On 30/5/25 00:41, Xu Yilun wrote:
-> > > > > > > > 
-> > > > > > > > FLR to a bound device is absolutely fine, just break the CC state.
-> > > > > > > > Sometimes it is exactly what host need to stop CC immediately.
-> > > > > > > > The problem is in VFIO's pre-FLR handling so we need to patch VFIO, not
-> > > > > > > > PCI core.
-> > > > > > > 
-> > > > > > > What is a problem here exactly?
-> > > > > > > FLR by the host which equals to any other PCI error? The guest may or may not be able to handle it, afaik it does not handle any errors now, QEMU just stops the guest.
-> > > > > > 
-> > > > > > It is about TDX Connect.
-> > > > > > 
-> > > > > > According to the dmabuf patchset, the dmabuf needs to be revoked before
-> > > > > > FLR. That means KVM unmaps MMIOs when the device is in LOCKED/RUN state.
-> > > > > > That is forbidden by TDX Module and will crash KVM.
-> > > > > 
-> > > > > 
-> > > > > FLR is something you tell the device to do, how/why would TDX know about it?
-> > > > 
-> > > > I'm talking about FLR in VFIO driver. The VFIO driver would zap bar
-> > > > before FLR. The zapping would trigger KVM unmap MMIOs. See
-> > > > vfio_pci_zap_bars() for legacy case, and see [1] for dmabuf case.
-> > > 
-> > > oh I did not know that we do this zapping, thanks for the pointer.
-> > > > [1] https://lore.kernel.org/kvm/20250307052248.405803-4-vivek.kasireddy@intel.com/
-> > > > 
-> > > > A pure FLR without zapping bar is absolutely OK.
-> > > > 
-> > > > > Or it check the TDI state on every map/unmap (unlikely)?
-> > > > 
-> > > > Yeah, TDX Module would check TDI state on every unmapping.
-> > > 
-> > > _every_? Reading the state from DOE mailbox is not cheap enough (imho) to do on every unmap.
-> > 
-> > Sorry for confusing. TDX firmware just checks if STOP TDI firmware call
-> > is executed, will not check the real device state via DOE. That means
-> > even if device has physically exited to UNLOCKED, TDX host should still
-> > call STOP TDI fwcall first, then MMIO unmap.
-> > 
-> > > 
-> > > > > 
-> > > > > > So the safer way is
-> > > > > > to unbind the TDI first, then revoke MMIOs, then do FLR.
-> > > > > > 
-> > > > > > I'm not sure when p2p dma is involved AMD will have the same issue.
-> > > > > 
-> > > > > On AMD, the host can "revoke" at any time, at worst it'll see RMP events from IOMMU. Thanks,
-> > > > 
-> > > > Is the RMP event firstly detected by host or guest? If by host,
-> > > 
-> > > Host.
-> > > 
-> > > > host could fool guest by just suppress the event. Guest thought the
-> > > > DMA writting is successful but it is not and may cause security issue.
-> > > 
-> > > An RMP event on the host is an indication that RMP check has failed and DMA to the guest did not complete so the guest won't see new data. Same as other PCI errors really. RMP acts like a firewall, things behind it do not need to know if something was dropped. Thanks,
-> > 
-> > Not really, guest thought the data is changed but it actually doesn't.
-> > I.e. data integrity is broken.
+> As I understand AMD it sort of has a single translation and relies on
+> its RMP for security. 
+
+Well, two levels with the first page table living in the guest memory + RMP for the second page table in the host memory.
+
+> So I think the MMIO remains mapped always in
+> the iommufd IOAS on AMD?
+
+Yup.
+
 > 
-> I am not following, sorry. Integrity is broken when something untrusted (== other than the SNP guest and the trusted device) manages to write to the guest encrypted memory successfully.
-
-Integrity is also broken when guest thought the content in some addr was
-written to A but it actually stays B.
-
-> If nothing is written - the guest can easily see this and do... nothing?
-
-The guest may not see this only by RMP event, or IOMMU fault, malicious
-host could surpress these events.  Yes, guest may later read the addr
-and see the trick, but this cannot be ensured. There is no general
-contract saying SW must read the addr to ensure DMA write successful.
-
-And DMA to MMIO is the worse case than DMA to memory. SW even cannot
-read back the content since MMIO registers may be Write Only.
-
-So you need ASID fence to make guest easily see the DMA Silent Drop.
-Intel & ARM also have there own way.
-
-The purpose here is to have a consensus that benigh VMM should avoid
-triggering these DMA Silent Drop protections, by "unbind TDI first,
-then invalidate MMIO".
-
-Thanks,
-Yilun
-
-> Devices have bugs or spurious interrupts happen, the guest driver should be able to cope with that.
-> > Also please help check if the following relates to this issue:
-> > 
-> > SEV-TIO Firmware Interface SPEC, Section 2.11
-> > 
-> > If a bound TDI sends a request to the root complex, and the IOMMU detects a fault caused by host
-> > configuration, the root complex fences the ASID from all further I/O to or from that guest. A host
-> > fault is either a host page table fault or an RMP check violation. ASID fencing means that the
-> > IOMMU blocks all further I/O from the root complex to the guest that the TDI was bound, and the
-> > root complex blocks all MMIO accesses by the guest. When a guest writes to MMIO, the write is
-> > silently dropped. When a guest reads from MMIO, the guest reads 1s.
+>> SEV-TIO Firmware Interface SPEC, Section 2.11
+>>
+>> "If a bound TDI sends a request to the root complex, and the IOMMU detects a fault caused by host
+>> configuration, the root complex fences the ASID from all further I/O to or from that guest. A host
+>> fault is either a host page table fault or an RMP check violation. ASID fencing means that the
+>> IOMMU blocks all further I/O from the root complex to the guest that the TDI was bound, and the
+>> root complex blocks all MMIO accesses by the guest. When a guest writes to MMIO, the write is
+>> silently dropped. When a guest reads from MMIO, the guest reads 1s."
 > 
-> Right, this is about not letting bad data through, i.e. integrity. Thanks,
+> Sounds to me like the guest has to do things properly or the guest
+> gets itself killed. I wonder how feasible this really is..
+
+What does look especially worrying? So far the process has been pretty straightforward. Thanks,
+
+
+>> BTW: What is ARM's secure DMA path, does it goes through independent
+>> Secure IOPT? So for p2p when VFIO invalidates MMIO, how the Secure IOPT
+>> react? How to avoid DMA slient drop?
 > 
-> > 
-> > Thanks,
-> > Yilun
-> > 
-> > > 
-> > > > 
-> > > > Thanks,
-> > > > Yilun
-> > > 
-> > > -- 
-> > > Alexey
-> > > 
+> On ARM T=1/0 traffic goes to two different iommu instances.
 > 
-> -- 
-> Alexey
+> As I understand it the T=1 traffic will go through an TSM controlled
+> IOMMU that uses the ARM equivalent of the S-EPT for translation. Ie
+> the CPU and IOMMU translation are enforced to be identical.
 > 
+> T=0 traffic will go through an iommufd controlled iommu and it will
+> use the IOAS for translation.
+> 
+> I've also understood this is quite similar to Intel.
+> 
+> (IMHO this design is a mistake, but oh well)
+> 
+> Jason
+
+-- 
+Alexey
+
