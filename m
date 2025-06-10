@@ -1,117 +1,230 @@
-Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5579C3BBC9
-	for <linux-coco@lists.linux.dev>; Tue, 10 Jun 2025 00:43:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749516193; cv=none; b=slEStMQGk20TD+MA7zPHESLBCoQQ6nk3fILN3CcYK31FX8V33gdg3lfv10s+3rVNbnvWHux8byuu4mBp3Q5bau4pEFeZ1DU3aQqiErWTF2uJfmm7FboWyqN/QyA0Pd4jYEx6sTNvSAWRa5uou7LeWe291423n1FIjO54lIh2fHM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749516193; c=relaxed/simple;
-	bh=DrsvzlG7HIaUeByDAoIeUu6XGjQtzIjZZ/7diqa9y7k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=W4Vmud0FoK4LrUNrohdj+V6fAUihUJnuGSLKfSswSsgHbHpYtLk2Q+ZCpYHbNTGZ2L1hrwnHjXziIsw9ivYaDmbAOYGi7zf+ZwWsy7Aw+JnX5L0q+m3O2Ej9A7uAuH/0mqBvVJALxTodJJhym+hmmAxq9tp2tXiwHMq8/gRXoWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VQHsxQ1r; arc=none smtp.client-ip=209.85.222.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B4B1494D9
+	for <linux-coco@lists.linux.dev>; Tue, 10 Jun 2025 01:04:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749517443; cv=fail; b=lW/GNaW009ocsc6IZJcuH5Gp/fa0iJYoIXFLVic2wa4x1D3r0ydQUAfOIvdu18gdSrfb1OYo7n4iD8DuR03zOB0zMA4Wb8ZTKzohwijbkfiHF5z7BDBVEZ7EAGEmwvnt/PztnqtUzU93XwogapABmIQ1JhoSutBj7EQlEPs2LjY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749517443; c=relaxed/simple;
+	bh=Oj4vXqbXhyY3o/I1EWpQ60nRPvgTghkIBLVpQmuS1bo=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=JisbVJAB/VOyER1zla2qEIzKi4smbk+8KYU0NUg0WMxb/tGMA48wIuwDmMuS4BKDyRP10XCEOL2WEHQTnmWJtTYXYq+AZnkI8N7B8n1STr5ju3Uk1UnvUAlnSBhW+UStFu0o2S8HFl0XV1SBApMhx6s9rzz2dyYlu2uWo1WVocs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FROizZbr; arc=fail smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VQHsxQ1r"
-Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-87ecba78750so682225241.1
-        for <linux-coco@lists.linux.dev>; Mon, 09 Jun 2025 17:43:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749516191; x=1750120991; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DrsvzlG7HIaUeByDAoIeUu6XGjQtzIjZZ/7diqa9y7k=;
-        b=VQHsxQ1rxHbqm9MnEXeYu9ozlM/cGHolZLy2dGOvyviHztty2isnYQSwLm0CRMTx+e
-         30SgUZ3Mc/yRfv7m+sS3O2+oK4PXKDyywWfqI4W9SRONNX3/UgY9rDDlYHQeqpjtRcDB
-         ULFcYbYLg5FbVtGYenzM348qur/+pHlEUJ94Pc0EPqwVwLAxrHpo7UF8tW/5cs+sxiwo
-         cIiS8OL0BtVa8TTRsUx6FCLtJjsyimCVz21mklEQ1cTNy8+7K/asI8xwHKELbMupJYwu
-         +GZVrpSpA9dlJAKgImGyrZA8YeThhoR4NroaY5jbW3opWga/WW13ERuYYucOwkqj6uvH
-         hHRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749516191; x=1750120991;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DrsvzlG7HIaUeByDAoIeUu6XGjQtzIjZZ/7diqa9y7k=;
-        b=oxual6JlhgYx/HaibW4GVZCftboXjiTaQfKS7tEC/6m9yv6F0nlVuqwDRyggOmoYB8
-         Aruk/Ae9Bu8c84jAXN7IYKSsciMpwnpKM+zvOEO70cqFEMYy/1jqAJb0nBUDwF9xgI0Q
-         ike6BvmfZVvkuBDTkRR0S3HfE529Zs/Q00Bu5tHiV4F6bPPm2uQQTD7Fafd0cAWBDl/y
-         RTujZSt9wheSCQG19TeNXE+bki5iW80WWTcJ1guUtHycM4A4dLeRxOuRwmBD/hSnVblG
-         Us8jT27N2XXs1BLc+6Lu7JHDZUl1rYzQc+9kRyer2jGOrmlD4jABqmX3NmszWs0OmszH
-         bMiA==
-X-Forwarded-Encrypted: i=1; AJvYcCUxYAMSmB6XKEWiUZX1kOJ7mErlA55hYlB/v1Oe1msFfYjng+LLWrciaiWH4xl0XxjcS41TOLWjN1zC@lists.linux.dev
-X-Gm-Message-State: AOJu0YzzbofGcja5ZYxElcIM1KREJKClg0BE7GumzKywzCsrfV76fQZH
-	34yhdJpjGEDcFbFeD5A1T1r0Bx8MYfEBxAOIZ/RBElWlRlbg5agUKPEjUGR2qGX/McvQ47TECiM
-	gOy+dsQwKZi0sdZEYjLhRxO0qHWBgIr9ZhkrxfDM6
-X-Gm-Gg: ASbGncsgFeandAyfllSpfVArtHLWL6DvRP1qyIDe89YwYDB++aoeZcjxR7BezRgu8Ym
-	nw1OBTRYrVGSk+ARM+642Asf3pXE2T1Vt6vyMEJQoa6sCpPpXwWLkLholXrY44p2tj7mMqoULGO
-	QZIH9FqWkJjOz/JMMRZmaixnDDmkZ4evaJyADERt3BJajvUn47/LtKULdEspPdw6pmOEmS6df6H
-	Q==
-X-Google-Smtp-Source: AGHT+IEFx5LVYp9+A2yGXma2DQNV5spZGGlnCu36kKRGZoEbaYWzORO11OK8dsJ2QQ7t+eAWLe1Db6zpvQuCxrFVWYk=
-X-Received: by 2002:a05:6102:809e:b0:4e7:3d55:5212 with SMTP id
- ada2fe7eead31-4e7729f4214mr14260457137.11.1749516191033; Mon, 09 Jun 2025
- 17:43:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FROizZbr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749517442; x=1781053442;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=Oj4vXqbXhyY3o/I1EWpQ60nRPvgTghkIBLVpQmuS1bo=;
+  b=FROizZbrl8QDqDSCo0X4scanVk9p4MZ8ffVVlOM7E8LEHZnjZ+lq6cEW
+   D2sqonc2w20t9XhZ0Oz0r9rQkpn6Ry1lfYmPJMyvqi+hTGl4FS979sg2F
+   tYUINzxOE6HE0E8+rgdYJUdP7/S3IzIxcnrQeWWvLSKCu2bwDUYj8YhKg
+   d4cgkItiQyrQTWQVcgrDk+zYQ946Xb77rV1VKFp+A4TmIv6OVOSPIsC8M
+   Q+fqAfJynSOc0fpWJed7oEF+sn151n2xgrhKJC44rpnVowFYER4pCiJ6i
+   /jczjWcQ5IM8RTwIT0SBUdFLRnL49Aqo0Q5frXOUADx0E8r4Rf1jLplYm
+   Q==;
+X-CSE-ConnectionGUID: lODf6e80QreAI+L3wkMMaw==
+X-CSE-MsgGUID: CSqxqI1SQ5afrduMoDBsTw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11459"; a="51603358"
+X-IronPort-AV: E=Sophos;i="6.16,223,1744095600"; 
+   d="scan'208";a="51603358"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 18:04:00 -0700
+X-CSE-ConnectionGUID: Y2bo6dpyQsy497d9tA50vg==
+X-CSE-MsgGUID: Z36D3eLWSkGLCQLJQ3Z7Xw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,223,1744095600"; 
+   d="scan'208";a="151555870"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 18:03:58 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 9 Jun 2025 18:03:57 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Mon, 9 Jun 2025 18:03:57 -0700
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (40.107.212.50)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.55; Mon, 9 Jun 2025 18:03:57 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eCQnuaGDaqT+CNH/NVOFoV13MGpryp/hph6lCevHkh1MV54XfAc0uPW3/wEgzSwNb6t6H4nz7HaSPKH0I1c95r7X0A6fuhezfHDomf2Yud2J0lJnNnHXb3Q1S8y/BNZ/SORTwhS6G2oRXjb3+2jyVjO8Ur06NBrn09mHwupu1LEmrzf31gLb4i+z+EXyvJqp60WiLzQDn9AlTw5AmihMZ4Nwqe7VOhQGIuUGdQvJeweifT+3D3j17k2bdBwwWldkV6J5HqqWWauvYs20tgCPzILyut+ZpXMXcefRE76HliYOcoi331u6gI/5EuZ0aVwFpmjJmWN2ynk0fccAFJmpdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=M52HvZojnRq9Z7+CcEk1G76wlm28PcN65OFKjOdkFXk=;
+ b=kBNZ5vGiUwuB5PCHpaZF81lug8iMOVWdV60ibOzuU5JwW9JrZDKK0PxWgMgKhLlAw7tAdlwMZek3pQX9WmZh4x99nWODA9lyDWdVlYMbAhiftVUWC9rUSloant16T+HfQ1f1SKbldtJueZFledSaA5FkpEPQXg8HYKh7DvBS2OaKs+iRiBlJpTj9Y+YyLUeFlcZK1v062whcRy93Qkh/WP+iRBz+0ETPD3LAP52815UH4ZY4x5mzjTfG4I1FXrHY5EqiAEMNCRMzFmnC+J8uwiqjkqEjVI3cW0fHm2hA6/gIGVyQxa7v/lGcX66B3Jjxo88+xxNxzkRPIHcvxY4LkQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
+ by PH7PR11MB8059.namprd11.prod.outlook.com (2603:10b6:510:24e::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8813.23; Tue, 10 Jun
+ 2025 01:03:55 +0000
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::cfad:add4:daad:fb9b]) by CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::cfad:add4:daad:fb9b%5]) with mapi id 15.20.8813.020; Tue, 10 Jun 2025
+ 01:03:54 +0000
+Date: Tue, 10 Jun 2025 09:03:41 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: Nikolay Borisov <nik.borisov@suse.com>
+CC: <linux-coco@lists.linux.dev>, <x86@kernel.org>, <kvm@vger.kernel.org>,
+	<seanjc@google.com>, <pbonzini@redhat.com>, <eddie.dong@intel.com>,
+	<kirill.shutemov@intel.com>, <dave.hansen@intel.com>,
+	<dan.j.williams@intel.com>, <kai.huang@intel.com>,
+	<isaku.yamahata@intel.com>, <elena.reshetova@intel.com>,
+	<rick.p.edgecombe@intel.com>, Farrah Chen <farrah.chen@intel.com>, "Thomas
+ Gleixner" <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, "Borislav
+ Petkov" <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter
+ Anvin" <hpa@zytor.com>, "Kirill A. Shutemov"
+	<kirill.shutemov@linux.intel.com>, <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH 03/20] x86/virt/seamldr: Introduce a wrapper for
+ P-SEAMLDR SEAMCALLs
+Message-ID: <aEeEbXZglywwo1Rm@intel.com>
+References: <20250523095322.88774-1-chao.gao@intel.com>
+ <20250523095322.88774-4-chao.gao@intel.com>
+ <d1ec91ad-b368-4993-aadb-18af489ea87e@suse.com>
+ <aEaS3i5JhgFX2MCh@intel.com>
+ <175eedc5-d82a-4b3a-bce6-2caf625597ca@suse.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <175eedc5-d82a-4b3a-bce6-2caf625597ca@suse.com>
+X-ClientProxiedBy: KU2P306CA0016.MYSP306.PROD.OUTLOOK.COM
+ (2603:1096:d10:3b::14) To CH3PR11MB8660.namprd11.prod.outlook.com
+ (2603:10b6:610:1ce::13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <LV2PR21MB31800E697258585BD0DB7816A56BA@LV2PR21MB3180.namprd21.prod.outlook.com>
- <CAAH4kHZDnfe3L3rJ2htEzT8FCbpVjTmU+u2M94mHbxYHw07WFQ@mail.gmail.com>
-In-Reply-To: <CAAH4kHZDnfe3L3rJ2htEzT8FCbpVjTmU+u2M94mHbxYHw07WFQ@mail.gmail.com>
-From: Steve Rutherford <srutherford@google.com>
-Date: Mon, 9 Jun 2025 17:42:34 -0700
-X-Gm-Features: AX0GCFvpONO1VK4TxPpcl9Z3RTO63R05hq6z89x8YepjEcL6XI1vO3z_0S078Ck
-Message-ID: <CABayD+dRib6_hhGv87WbomeFaFR+edvKnm5pAWWxPMUoCKE1yQ@mail.gmail.com>
-Subject: Re: Confidential computing Linux kernel SIG meeting Thursday agenda
-To: Dionna Amalie Glaze <dionnaglaze@google.com>
-Cc: Chris Oo <cho@microsoft.com>, linux-coco@lists.linux.dev, 
-	Alexander Graf <graf@amazon.com>, Jon Lange <jlange@microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|PH7PR11MB8059:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1bcb1445-df42-4fe0-3fd1-08dda7baab8a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?f6A1n8KuFEeWxsAgHSIo7PVZKIv+98Mvr0DqzfWQIa111qslN00LvO/JczSE?=
+ =?us-ascii?Q?UrikiNA6X9+waOQGvO2tcDeGWFsVFCcj1O8FD9xQ4joVCR2NG45/0lB4DH9S?=
+ =?us-ascii?Q?yoTdvpk8bXbFP0F/5SMcB7qSz0n7lCuFH1TL8XYmvXRT3E4u88w7YDCIQaFd?=
+ =?us-ascii?Q?20W6P4JhYmRPzKQFYF8e9PCLOAZJvFdQdi6ln2R4aSHnNlZ3hXKE3PW0FErp?=
+ =?us-ascii?Q?ErTpU4iUzqPDPCgMKVZplWCwy7cV5kodKNRmfsauwZACWcmrkYnSdInmsFmt?=
+ =?us-ascii?Q?STZxsBkRuC7OadgAm+z0HbDit7du60HnoM1MU8GrN3I+cy2WGv7uksehND8r?=
+ =?us-ascii?Q?byM1wyGFqIJC+BmbDgFpLBibQ9mN+tk3cZeI/etPIfEGu/YJ7eU2m7CE70Rm?=
+ =?us-ascii?Q?j58fQaJXPhzzQz2N3VeNxIhjl2tWtO5AAD1MqKdSquE/YNEF+wPH6D/iRwis?=
+ =?us-ascii?Q?+jfujFKOMTvcRAfelcBglY1XoSaTAF35VqD8P8AOCyMe1ZvgLTqcMiJj98SK?=
+ =?us-ascii?Q?YMy1Q26zob1WkIX6F3d/zqZSZb8z3uPFULOuL0nGmvQFUZny0Sw63M99G6Kc?=
+ =?us-ascii?Q?hh/PRQxLmWb3w0Tilhm2cAiO/gx8F71HY/8cvQCEP2mvx52T56nEVgqTimy8?=
+ =?us-ascii?Q?Pg9kdCbVP5qO+3x4FPSknp0eoVgHXwEFNmskAhnp6c6qHbEWWIh+AWqkkXxL?=
+ =?us-ascii?Q?qfpBr9iysB8lqqN5IomJwLiQ6trsf3NEbhExfi3m6Di+71ibXvTIjelUssRv?=
+ =?us-ascii?Q?FJ1VAP3U39THNUOHRH+4HHTUPV0f21e7Sa40mJiKSFQLCnqDAeOPHDAPRBk2?=
+ =?us-ascii?Q?gnlQQrgD0T7UqzIkme8Nc76D/g805S0DHjSSVndEO/JjFYwE7jYpU9Ksn4pc?=
+ =?us-ascii?Q?7dksVgyhE5W5lrUgecZu5l+yDaFKcgML1SiT3IQ7lc+KlDdngZ79BGH1uD88?=
+ =?us-ascii?Q?K4Po/Xbsd2c5lVb3xm0pbYUEsuQtljhX1q+eHqF/0vYMtB9B/YXSS0qGwHOJ?=
+ =?us-ascii?Q?ENzXPSfqanyVAXicGg6CokxQxTWGvQp4eiFhHF55Ur/MPZRsmF/VYduzVmg7?=
+ =?us-ascii?Q?Nakx4Pqmaiyu25tlWj2vjWiIBz7TIFcpGTVr/6DKQnnyQjJj/fRgpmOWUkbQ?=
+ =?us-ascii?Q?FcMGQvJuvsApFX14Nnocg23xR5QAMlinEIqR5MKeBMVj/J1j7JUEbBzbAGxw?=
+ =?us-ascii?Q?4iDgT2jZT3GzdbEIi7MMEkCDaOqpp0nqpWz+p0oUCKvtSP/bc9+50gugj1ww?=
+ =?us-ascii?Q?LMU4hzDoK3a2GxbzdU2/4UFgXcZxelcxGfdHO0c0jjaXvxWApHUyyxpmeakw?=
+ =?us-ascii?Q?pdGoteygcazNlCoBYibo6EEvPcd7txy5VfBEX6AYIlWxq8kNyQzdQZJVZj48?=
+ =?us-ascii?Q?oCye89+547tUXHpxpb/StxEB26V2l5e1ePzXb+CrCgG+KIYBdG3dsUUKv066?=
+ =?us-ascii?Q?hUd+voKQJYM=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?guw5AlT/DTmwLxDtfHbw2iE/72Vsi0TzD/xE7PSvt918mZz0tGZ6xAl52jKD?=
+ =?us-ascii?Q?0j8p76Xau/gAD9phMVCkgZLhAA434eVFseCX9ut8CxJdkQmf6PTDtnj+T8od?=
+ =?us-ascii?Q?vsouEJrJzsluaZMYtwMy5PXuT9wpSe4G3XoR/cRRE71+HojvXBOg0uLyOXGR?=
+ =?us-ascii?Q?c25W0jjNWXG5Usbhf8jRcv+IlAuUfeTqJqSrf51aZWOiDZO/bVuYGHZi61Kf?=
+ =?us-ascii?Q?rZNEq1dGmmsdBsXOJwNJ2EHFQff7M8BlW6KcBSLcJA42FDfWOHV5dMUonVmW?=
+ =?us-ascii?Q?q9c8QJx5f39MKMcgFCxB2+ZVyP0xKAhpfgL9Y7iZhYOXSPwuRa4C5jH3dS6a?=
+ =?us-ascii?Q?QWtoOwjtAfx1yXAk5RPaI/xRc/FW//jTJ0CiRbDYb0evseyrShLsOzQxQ/ii?=
+ =?us-ascii?Q?mB5C8fkuJFoIft3CwgxZutLLIlbBqQku2+k44IThNs8oVQMaIgpI0cPnWwDa?=
+ =?us-ascii?Q?l+W4RrF9Y/bSQ+Cswq5n5hmjTDMQwRW8oEKgGL1zZOF/x/D6HhDLAbYHnris?=
+ =?us-ascii?Q?xPw62++PJa4Vn2kOKfYkzxg7UgU2xUbn2h3D7vtLb0AEkzN4r9mawrNu5pEM?=
+ =?us-ascii?Q?/fuu7HhH8djkvg92V9v7mUNxODk1QEMjSidM4er7wSQ9MQL0m2RjdZLEuHHJ?=
+ =?us-ascii?Q?HTHfbzSb612XJz8xXb2538ObuFIgxnSMKiorKC5Qg16WZJ4L8SYsCzYkkFEc?=
+ =?us-ascii?Q?KWPHd0LTpzQir8h/JX6fSyx1uwnkY9vs0r5wHtxYzEZJq0K+ubCgL7xYkuuP?=
+ =?us-ascii?Q?xlP7P7fWLpKsSmwBUCbNfZN31vXrL8WrVRA1Hc2gFSSqYhOOEHiwzSm3Tfyc?=
+ =?us-ascii?Q?awplgeTXL1fDF/Vm2io4grOVPZXLIemJNraR8qO/2TbR5v5JvQ9k0ZaeWY+7?=
+ =?us-ascii?Q?nA+Na7G/Ri1fVde6ZuiFLP3YrVkIS9pyXZngOgEjOtNt9s6Vg2fXVmBS8oFC?=
+ =?us-ascii?Q?/EDEveX59qreLyIBSKUkJeJLXkLE+AIpoGrUhS1zs8ADo0rniQSODuPuu82q?=
+ =?us-ascii?Q?7PdPe6AA/+TJ9tDoG4jnPz/TC2Q8VkzcfJE3opPMERQ1R+0FUXcMfTxmeyFj?=
+ =?us-ascii?Q?Bqd1SYF/Qy40qOzrYrvzdP4RthBcZ/IKgfgem9VDMSkFxzSgSC2W1zpCI4lG?=
+ =?us-ascii?Q?ioji/sT0WVP4XCaRdHqjjZ/ehCVdmOZdC8sFqlUUZ6BcIvo48UxoxvgmvfKm?=
+ =?us-ascii?Q?vj8C9/cy43x4scidpVimpJD8ww2FPFMXnBDcMjQUocI4bgtkMI3bn0OICs07?=
+ =?us-ascii?Q?XJ4HDl29WnCVgCoBHEHAeq16oEFWhF3yZapfCm0QHGH7t4jaq794A79RWIoD?=
+ =?us-ascii?Q?qBqaqIxjt3M0y93j5F/JAYkpeKCDwUNKBdD5x2MQtLr//7+DHaNEm2+qZONY?=
+ =?us-ascii?Q?haFl4NSLdSHhCW2Tr5QCFSIF1yvZzHT6N25n3clzwp5dnyfqoMVXFVXzKQNR?=
+ =?us-ascii?Q?V0tt5uUrU0Ho+GltPNTrexK82Jnz7USbpnP8f88nkcB9sjIS+5VOYRfLpvWD?=
+ =?us-ascii?Q?Q/I4WJyOLwIGoNasRfXEE3juxbTxfQ66zrpJ/RdgbihJgBrtZuS+zRhcMfyK?=
+ =?us-ascii?Q?UUSz/qkRTOdLrO/tRApGzuTP7T0BFg2aIve5YD3U?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1bcb1445-df42-4fe0-3fd1-08dda7baab8a
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2025 01:03:54.5352
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ilr2RQ5UEgkJAzXDqUl/iaqV+9yN6db3vFGnrx2WTq3DyJPAPwD6Bkfr0DBdL4e+CX+qdhNASLdRHwPQxbgvJw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB8059
+X-OriginatorOrg: intel.com
 
-Agenda should be in the link pile at the bottom of the email:
-https://docs.google.com/document/d/18D820gyt2xe84Jy6dGXgrNThApoozcekDzvIlK2=
-_bd4/edit?tab=3Dt.0
-(I'll make it a bit more obvious in future emails =E2=80=93 This isn't the
-first time someone has asked. The linux-coco requirement that the
-email is plaintext makes links a bit awkward.)
+On Mon, Jun 09, 2025 at 11:02:49AM +0300, Nikolay Borisov wrote:
+>
+>
+>On 6/9/25 10:53, Chao Gao wrote:
+>> > > +config INTEL_TDX_MODULE_UPDATE
+>> > > +	bool "Intel TDX module runtime update"
+>> > > +	depends on INTEL_TDX_HOST
+>> > > +	help
+>> > > +	  This enables the kernel to support TDX module runtime update. This allows
+>> > > +	  the admin to upgrade the TDX module to a newer one without the need to
+>> > > +	  terminate running TDX guests.
+>> > > +
+>> > > +	  If unsure, say N.
+>> > > +
+>> > 
+>> > WHy should this be conditional?
+>> > 
+>> 
+>> Good question. I don't have a strong reason, but here are my considerations:
+>> 
+>> 1. Runtime updates aren't strictly necessary for TDX functionalities. Users can
+>>     update the TDX module via BIOS updates and reboot if service downtime isn't
+>>     a concern.
+>> 
+>> 2. Selecting TDX module updates requires selecting FW_UPLOAD and FW_LOADER,
+>>     which I think will significantly increase the kernel size if FW_UPLOAD/LOADER
+>>     won't otherwise be selected.
+>
+>If size is a consideration (but given the size of machines that are likely to
+>run CoCo guests I'd say it's not) then don't make this a user-configurable
+>option but rather make it depend on TDX being selected and
+>FW_UPLOAD/FW_LOADER being selected.
 
-f-UKI is a reasonable topic, we'll just want to make sure the relevant
-folks know to come to the meeting.
+But in almost all existing cases, 'select FW_UPLOAD/LOADER' is used rather than
+'depends on FW_UPLOAD/LOADER'. You can verify this by running
 
-Thanks,
-Steve
+	find . -name 'Kconfig' -exec grep -E 'FW_UPLOAD|FW_LOADER$' {} +
 
+>
+>I'd rather keep the user visible options to a minimum, especially something
+>such as this update functionality.
+>
+>But in any case I'd like to hear other opinions as well.
 
-On Mon, Jun 9, 2025 at 2:38=E2=80=AFPM Dionna Amalie Glaze
-<dionnaglaze@google.com> wrote:
->
-> +Steve Rutherford +linux-coco@lists.linux.dev +Alexander Graf
-> I don't have the agenda, no. Steve runs this meeting, so I'll let him
-> comment. If there is nothing else planned, I would recommend the f-UKI
-> topic if Alexander Graf has any further design updates about launching
-> a firmware directly from a disk image.
->
-> On Mon, Jun 9, 2025 at 2:18=E2=80=AFPM Chris Oo <cho@microsoft.com> wrote=
-:
-> >
-> > Hi Dionna,
-> >
-> > Do you know if there was any agenda for the CC Kernel SIG meeting on Th=
-ursday? I don't know where to look, so I wasn't sure if there was more foll=
-ow up discussion planned about f-UKI from the previous one.
-> >
-> > Thanks!
-> > Chris
-> >
-> > Sent from Outlook
->
->
->
-> --
-> -Dionna Glaze, PhD, CISSP, CCSP (she/her)
+Yeah, let's see what others think.
+
+<snip>
