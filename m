@@ -1,191 +1,202 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3EB278E7C
-	for <linux-coco@lists.linux.dev>; Tue, 10 Jun 2025 06:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8833127A469
+	for <linux-coco@lists.linux.dev>; Tue, 10 Jun 2025 06:59:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749538328; cv=none; b=QcUh3w618XGJeBySYsjKtqqHCpeFnOtAZbK8S043DaVVBueD1neinaZ7Jz4ZXJqktCfJcpzvKChjtxynU6UKQYr2eCvZO6LVEggUXz2rBXg9f9gW2ayYZBcGXVZzc3ZBVlwHlRMXANlI9CBNd+xSrbW/r5n03Urf7Phb6yvKMkg=
+	t=1749538799; cv=none; b=cTV6z9A9M5nB59l2nJSky+AQNgmz1zTd+P8DgHsrOVzTQ+C2H5e5vCSxMqQRGV4tlLbaRHNdbhUW+pghrVWSre1bStGJ0qWDRrZLwUefF78wojEJ8DNPnvNho2qHeFkiS+6f0Ktjf5oHg2SilAO4GKcqi5OjPeQZwi6i1gaTkXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749538328; c=relaxed/simple;
-	bh=63vKHSyMMH98x77ZhpqkDjIYudxUsrqpcwc5q0Rk+Cs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GL7JTi1JSgwVir6KZy+EDVp/v9fVj9nKTDACTcLedoF2HdYtM8TNTZJxeGm2YY1lKWJTVYMPai+RJomYBMW3ceDY1vyyCiiMlKlFhp2wQLf/bKtgSozp45B1qduE4zFPTBt4EBK3VbHZttlF0AIW6pDS5RXLh6KT5v4RlnfYkgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=dJdt/71B; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1749538799; c=relaxed/simple;
+	bh=nQXu7/qHIbG/mZfLTshtxBAdZxbuaewWvV6VL9QWdqY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bt6Zm0e4y4gRBElaAkYbPMJgd1Q2/Gkbuoiz/CK98wfOfQQ4KGanLi58OvIUBu203qZDOujGQUbjNzTe7JMzJD/BlqeOTQ/be0IhZ3qkXd+WyEt2g+61TG3mOpFTIav6sNPvh6z0O9KjHfq0ZLlfwIJPu4YZqb1Ci7//6Dat7sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jk8cA5qi; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="dJdt/71B"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3a54690d369so1663611f8f.3
-        for <linux-coco@lists.linux.dev>; Mon, 09 Jun 2025 23:52:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1749538325; x=1750143125; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y9WA0GWxqKXNqKa1/KXkDFLQZ+thxvXB5fhDogLjWGE=;
-        b=dJdt/71BRENY8aHU+IbQGD95YT3ovhzeIrQGazdvC5zShkvw7VIIrrRS08wLYCVd37
-         F1cncfMzxZDSbE/ItrhPAKeY68Z+dhYi8rRaiMajhZXlkYErn35qGjHJxwcm+AtocHFK
-         Fe05wWCcEheIABtLp3ttJJ2z9ca68ik+jtWqxgEOj1wiHapCPK1uYoS7LiGFrzpMSpks
-         rFiCoH3QmWneqtRZ2+XKkT9X/EhEitK1MINavgli+WSe7QCesP5slXH2szXcC85gJBYh
-         oGIKKZ6h88nCia+NsXzWVT2aTIDHJ+6piKbM3TdbmNriKk7rL1rM5jRLI4884tNCBvkZ
-         26Rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749538325; x=1750143125;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Y9WA0GWxqKXNqKa1/KXkDFLQZ+thxvXB5fhDogLjWGE=;
-        b=b6c/8YXPSOuUxTGvMbrjeKv4yyKo0EhYNb61Wb9JgsuTYXvzA5GsoRKXRHSs49RF2i
-         lASogFN0pypw5lgc9l/M0zZyUQd6U0SFc5GdtQyuYO5oGjZ7iuIKf3UoXi2aw4P8swyk
-         a2CiUwQC2CRfQz1/OyRML1f8XwYbTdxL/43ZQ7qVVfZvsGymbSSXgS+Sc+OxpL7NMVwi
-         UXNrdBsTAZwZXRHk8PlkSdIOvguSeTIG/o61NsI1mRqHuYwKPOSCq6bODyqOWwcX3tPP
-         e1KIeG6sN5d8ZAZH2PYBaOVgd301uHltSRXChW4ViG5MvfmTxswLpJkSDwV+5DPLZozW
-         Izgg==
-X-Gm-Message-State: AOJu0YzEmtiS+o95XKaadTz81MYlqcO5uQIoUJ6xM0w/f44LqSr5EZBt
-	GEWnOGu8YHJYKJTNV/lPMyuESekS6Dnj35n/U38hF+N7INeMQjMjS2ckSBXfhzPk9qE=
-X-Gm-Gg: ASbGncvryYy3HePOfqGMg6tOl7dxCYpohlNGw4PZV0V2+njTi5okH8u6hvTDOUIagHT
-	OPxvEOyuwTbfuKz8R4E9BIXUzDXdV8X6qb/gJWyQeR2rkU0G/FzwoEPmr+24ruBoSvNMUm061+w
-	oFPndwFlR32dibXKfzrljKSxgTIDh/+Nf33jhDnCXfxJS9mt/ijD6JjB/Adviw73G0rKUBMrImv
-	nTqEJbqsu6OJY1E2I2jU9s7oaSHWOnYNMyKD4OK5Goo2CP1Nz6xAHKxCYJN07dRxVgXT+AT+6av
-	vPz1wbJosfuvdVGhuTMQSdUuBtikPf6u5t/7z3djihj4H2SseS5jyQqWX/HtffZO0nE=
-X-Google-Smtp-Source: AGHT+IGjxLXmRV1zFEgEiC6eXHaRERXUUvJuTqBOFzsfGaHQ0XwIZ1R6i8g1DzA6FK3xqGtY/MjvmQ==
-X-Received: by 2002:a05:6000:ecf:b0:3a5:5149:ed1a with SMTP id ffacd0b85a97d-3a55149ed48mr1314955f8f.59.1749538324746;
-        Mon, 09 Jun 2025 23:52:04 -0700 (PDT)
-Received: from [192.168.0.20] ([212.21.159.167])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a5323ab207sm11275058f8f.29.2025.06.09.23.52.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Jun 2025 23:52:04 -0700 (PDT)
-Message-ID: <e969d071-1161-4323-89e1-8a358b3760b3@suse.com>
-Date: Tue, 10 Jun 2025 09:52:02 +0300
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jk8cA5qi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749538797; x=1781074797;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=nQXu7/qHIbG/mZfLTshtxBAdZxbuaewWvV6VL9QWdqY=;
+  b=jk8cA5qi2xUI2Q1KVsW8L6/cz5u9am+AnM7+sii8GNs4uRnhnvSfVkUK
+   fCZeGiXJnZT4G8Alpe7eXShY3qZPyllg7Zh+5jvq17NcBhxskWxpEtGxY
+   bztLBVipsAuJtjJSDT+1G2yy1LHlVp+d7Qw35y0TUgNzSfwks/P4VODSB
+   i2vEXhplbAlOjBEcUo2hZ5Iq1q6E+spk+UxxI1mvkgK9/0TRtWznSJHrl
+   /URIvayqWrYqsSWEqU+cUPwoclTnaCgIJ/RZ71GTm0hQ6dr+5SJR5fqJe
+   BkB1IZnRNySaKr0EH14Ugem52vusBDpRfbgD5j9Zhg/LnjytKVZgn4pzD
+   g==;
+X-CSE-ConnectionGUID: 7XkRZiH7SRG5btAccelhjQ==
+X-CSE-MsgGUID: aKOug1Z1TjO8uJzwG3NgpQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11459"; a="51778990"
+X-IronPort-AV: E=Sophos;i="6.16,224,1744095600"; 
+   d="scan'208";a="51778990"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 23:59:57 -0700
+X-CSE-ConnectionGUID: ZiXdYjsHRTe5w9XKMyrQaA==
+X-CSE-MsgGUID: pq2m0M7pTrWZ7k3/HXV1AQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,224,1744095600"; 
+   d="scan'208";a="169919096"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa002.fm.intel.com with ESMTP; 09 Jun 2025 23:59:52 -0700
+Date: Tue, 10 Jun 2025 14:53:00 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, kvm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
+	christian.koenig@amd.com, pbonzini@redhat.com, seanjc@google.com,
+	alex.williamson@redhat.com, vivek.kasireddy@intel.com,
+	dan.j.williams@intel.com, yilun.xu@intel.com,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	lukas@wunner.de, yan.y.zhao@intel.com, daniel.vetter@ffwll.ch,
+	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	tao1.su@intel.com
+Subject: Re: [RFC PATCH 00/12] Private MMIO support for private assigned dev
+Message-ID: <aEfWTEaQv2HhldWX@yilunxu-OptiPlex-7050>
+References: <aCRAHRCKP1s0Oi0c@yilunxu-OptiPlex-7050>
+ <20250514163339.GD382960@nvidia.com>
+ <aCYQdDrYYZRAgsen@yilunxu-OptiPlex-7050>
+ <9dea400f-a57b-43be-a2e4-24a9f51e6ba0@amd.com>
+ <aDE5SPzOAU0sNIt+@yilunxu-OptiPlex-7050>
+ <ae16db07-5fca-4369-aa67-cbe2e0fd60fd@amd.com>
+ <aDhyC73r149syMpc@yilunxu-OptiPlex-7050>
+ <79872224-4e81-446b-a451-28260f449ea9@amd.com>
+ <aDnbgBbxF8IkH/cq@yilunxu-OptiPlex-7050>
+ <bd0d8d69-78dd-44d8-9f32-d945bc6078c2@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 03/20] x86/virt/seamldr: Introduce a wrapper for
- P-SEAMLDR SEAMCALLs
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-coco@lists.linux.dev, x86@kernel.org, kvm@vger.kernel.org,
- seanjc@google.com, pbonzini@redhat.com, eddie.dong@intel.com,
- kirill.shutemov@intel.com, dave.hansen@intel.com, dan.j.williams@intel.com,
- kai.huang@intel.com, isaku.yamahata@intel.com, elena.reshetova@intel.com,
- rick.p.edgecombe@intel.com, Farrah Chen <farrah.chen@intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- linux-kernel@vger.kernel.org
-References: <20250523095322.88774-1-chao.gao@intel.com>
- <20250523095322.88774-4-chao.gao@intel.com>
- <d1ec91ad-b368-4993-aadb-18af489ea87e@suse.com> <aEaS3i5JhgFX2MCh@intel.com>
- <175eedc5-d82a-4b3a-bce6-2caf625597ca@suse.com> <aEeEbXZglywwo1Rm@intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <aEeEbXZglywwo1Rm@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bd0d8d69-78dd-44d8-9f32-d945bc6078c2@amd.com>
 
-
-
-On 6/10/25 04:03, Chao Gao wrote:
-> On Mon, Jun 09, 2025 at 11:02:49AM +0300, Nikolay Borisov wrote:
->>
->>
->> On 6/9/25 10:53, Chao Gao wrote:
->>>>> +config INTEL_TDX_MODULE_UPDATE
->>>>> +	bool "Intel TDX module runtime update"
->>>>> +	depends on INTEL_TDX_HOST
->>>>> +	help
->>>>> +	  This enables the kernel to support TDX module runtime update. This allows
->>>>> +	  the admin to upgrade the TDX module to a newer one without the need to
->>>>> +	  terminate running TDX guests.
->>>>> +
->>>>> +	  If unsure, say N.
->>>>> +
->>>>
->>>> WHy should this be conditional?
->>>>
->>>
->>> Good question. I don't have a strong reason, but here are my considerations:
->>>
->>> 1. Runtime updates aren't strictly necessary for TDX functionalities. Users can
->>>      update the TDX module via BIOS updates and reboot if service downtime isn't
->>>      a concern.
->>>
->>> 2. Selecting TDX module updates requires selecting FW_UPLOAD and FW_LOADER,
->>>      which I think will significantly increase the kernel size if FW_UPLOAD/LOADER
->>>      won't otherwise be selected.
->>
->> If size is a consideration (but given the size of machines that are likely to
->> run CoCo guests I'd say it's not) then don't make this a user-configurable
->> option but rather make it depend on TDX being selected and
->> FW_UPLOAD/FW_LOADER being selected.
+On Tue, Jun 10, 2025 at 02:20:03PM +1000, Alexey Kardashevskiy wrote:
 > 
-> But in almost all existing cases, 'select FW_UPLOAD/LOADER' is used rather than
-> 'depends on FW_UPLOAD/LOADER'. You can verify this by running
 > 
-> 	find . -name 'Kconfig' -exec grep -E 'FW_UPLOAD|FW_LOADER$' {} +
-
-
-Then just have TDX select FW_UPLOAD/FW_LOADER and be done with it. 
-Still, let's hear other opinions but in this case I'd say size 
-considerations aren't major so let's make it simpler for the user.
-
+> On 31/5/25 02:23, Xu Yilun wrote:
+> > On Fri, May 30, 2025 at 12:29:30PM +1000, Alexey Kardashevskiy wrote:
+> > > 
+> > > 
+> > > On 30/5/25 00:41, Xu Yilun wrote:
+> > > > > > > > 
+> > > > > > > > FLR to a bound device is absolutely fine, just break the CC state.
+> > > > > > > > Sometimes it is exactly what host need to stop CC immediately.
+> > > > > > > > The problem is in VFIO's pre-FLR handling so we need to patch VFIO, not
+> > > > > > > > PCI core.
+> > > > > > > 
+> > > > > > > What is a problem here exactly?
+> > > > > > > FLR by the host which equals to any other PCI error? The guest may or may not be able to handle it, afaik it does not handle any errors now, QEMU just stops the guest.
+> > > > > > 
+> > > > > > It is about TDX Connect.
+> > > > > > 
+> > > > > > According to the dmabuf patchset, the dmabuf needs to be revoked before
+> > > > > > FLR. That means KVM unmaps MMIOs when the device is in LOCKED/RUN state.
+> > > > > > That is forbidden by TDX Module and will crash KVM.
+> > > > > 
+> > > > > 
+> > > > > FLR is something you tell the device to do, how/why would TDX know about it?
+> > > > 
+> > > > I'm talking about FLR in VFIO driver. The VFIO driver would zap bar
+> > > > before FLR. The zapping would trigger KVM unmap MMIOs. See
+> > > > vfio_pci_zap_bars() for legacy case, and see [1] for dmabuf case.
+> > > 
+> > > oh I did not know that we do this zapping, thanks for the pointer.
+> > > > [1] https://lore.kernel.org/kvm/20250307052248.405803-4-vivek.kasireddy@intel.com/
+> > > > 
+> > > > A pure FLR without zapping bar is absolutely OK.
+> > > > 
+> > > > > Or it check the TDI state on every map/unmap (unlikely)?
+> > > > 
+> > > > Yeah, TDX Module would check TDI state on every unmapping.
+> > > 
+> > > _every_? Reading the state from DOE mailbox is not cheap enough (imho) to do on every unmap.
+> > 
+> > Sorry for confusing. TDX firmware just checks if STOP TDI firmware call
+> > is executed, will not check the real device state via DOE. That means
+> > even if device has physically exited to UNLOCKED, TDX host should still
+> > call STOP TDI fwcall first, then MMIO unmap.
+> > 
+> > > 
+> > > > > 
+> > > > > > So the safer way is
+> > > > > > to unbind the TDI first, then revoke MMIOs, then do FLR.
+> > > > > > 
+> > > > > > I'm not sure when p2p dma is involved AMD will have the same issue.
+> > > > > 
+> > > > > On AMD, the host can "revoke" at any time, at worst it'll see RMP events from IOMMU. Thanks,
+> > > > 
+> > > > Is the RMP event firstly detected by host or guest? If by host,
+> > > 
+> > > Host.
+> > > 
+> > > > host could fool guest by just suppress the event. Guest thought the
+> > > > DMA writting is successful but it is not and may cause security issue.
+> > > 
+> > > An RMP event on the host is an indication that RMP check has failed and DMA to the guest did not complete so the guest won't see new data. Same as other PCI errors really. RMP acts like a firewall, things behind it do not need to know if something was dropped. Thanks,
+> > 
+> > Not really, guest thought the data is changed but it actually doesn't.
+> > I.e. data integrity is broken.
 > 
->>
->> I'd rather keep the user visible options to a minimum, especially something
->> such as this update functionality.
->>
->> But in any case I'd like to hear other opinions as well.
-> 
-> Yeah, let's see what others think.
-> 
-> <snip>
+> I am not following, sorry. Integrity is broken when something untrusted (== other than the SNP guest and the trusted device) manages to write to the guest encrypted memory successfully.
 
+Integrity is also broken when guest thought the content in some addr was
+written to A but it actually stays B.
+
+> If nothing is written - the guest can easily see this and do... nothing?
+
+The guest may not see this only by RMP event, or IOMMU fault, malicious
+host could surpress these events.  Yes, guest may later read the addr
+and see the trick, but this cannot be ensured. There is no general
+contract saying SW must read the addr to ensure DMA write successful.
+
+And DMA to MMIO is the worse case than DMA to memory. SW even cannot
+read back the content since MMIO registers may be Write Only.
+
+So you need ASID fence to make guest easily see the DMA Silent Drop.
+Intel & ARM also have there own way.
+
+The purpose here is to have a consensus that benigh VMM should avoid
+triggering these DMA Silent Drop protections, by "unbind TDI first,
+then invalidate MMIO".
+
+Thanks,
+Yilun
+
+> Devices have bugs or spurious interrupts happen, the guest driver should be able to cope with that.
+> > Also please help check if the following relates to this issue:
+> > 
+> > SEV-TIO Firmware Interface SPEC, Section 2.11
+> > 
+> > If a bound TDI sends a request to the root complex, and the IOMMU detects a fault caused by host
+> > configuration, the root complex fences the ASID from all further I/O to or from that guest. A host
+> > fault is either a host page table fault or an RMP check violation. ASID fencing means that the
+> > IOMMU blocks all further I/O from the root complex to the guest that the TDI was bound, and the
+> > root complex blocks all MMIO accesses by the guest. When a guest writes to MMIO, the write is
+> > silently dropped. When a guest reads from MMIO, the guest reads 1s.
+> 
+> Right, this is about not letting bad data through, i.e. integrity. Thanks,
+> 
+> > 
+> > Thanks,
+> > Yilun
+> > 
+> > > 
+> > > > 
+> > > > Thanks,
+> > > > Yilun
+> > > 
+> > > -- 
+> > > Alexey
+> > > 
+> 
+> -- 
+> Alexey
+> 
