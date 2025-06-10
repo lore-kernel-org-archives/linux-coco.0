@@ -1,58 +1,59 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3BC1E521B
-	for <linux-coco@lists.linux.dev>; Mon,  9 Jun 2025 21:38:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5579C3BBC9
+	for <linux-coco@lists.linux.dev>; Tue, 10 Jun 2025 00:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749505120; cv=none; b=SUwFSxzl/PreGSJgvcj5eOzcC9NvevTlGgdhfh9btbDKlrfH8antDm+5nGlGWDlGa06A7pBJc3C0TYzTkaj/G6EB9GxB5nzL82/w7AeWiTQ8USQ1brxrEoch4kp9G0hDFeH21l3AQNkQKkuKJMEBQpjfYAiPM1aroHzYmiVDZ/E=
+	t=1749516193; cv=none; b=slEStMQGk20TD+MA7zPHESLBCoQQ6nk3fILN3CcYK31FX8V33gdg3lfv10s+3rVNbnvWHux8byuu4mBp3Q5bau4pEFeZ1DU3aQqiErWTF2uJfmm7FboWyqN/QyA0Pd4jYEx6sTNvSAWRa5uou7LeWe291423n1FIjO54lIh2fHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749505120; c=relaxed/simple;
-	bh=SaFAiKTgjwOsJUvHTTdkRcAJqTcjkFZ6FxQ0f/fdGUQ=;
+	s=arc-20240116; t=1749516193; c=relaxed/simple;
+	bh=DrsvzlG7HIaUeByDAoIeUu6XGjQtzIjZZ/7diqa9y7k=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nnKtMkhd3BsqsOmF4zQTBw7gYLBI8TAhZVWA50jZfp9y1if6SxqIQCUnjy1O+Z5ZLnKWCDGMEmMFO0Z18GV9Ob4h8fc7CAEi1sauq+YiDSV2ATlpD4OcfPuGU3bHsSWmb9Ftb9EddSGkF3Xy/pfBBNGvXpFPU4+hH96N0gZ/86g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JG0jQTj0; arc=none smtp.client-ip=209.85.214.178
+	 To:Cc:Content-Type; b=W4Vmud0FoK4LrUNrohdj+V6fAUihUJnuGSLKfSswSsgHbHpYtLk2Q+ZCpYHbNTGZ2L1hrwnHjXziIsw9ivYaDmbAOYGi7zf+ZwWsy7Aw+JnX5L0q+m3O2Ej9A7uAuH/0mqBvVJALxTodJJhym+hmmAxq9tp2tXiwHMq8/gRXoWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VQHsxQ1r; arc=none smtp.client-ip=209.85.222.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JG0jQTj0"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2353a2bc210so41293015ad.2
-        for <linux-coco@lists.linux.dev>; Mon, 09 Jun 2025 14:38:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VQHsxQ1r"
+Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-87ecba78750so682225241.1
+        for <linux-coco@lists.linux.dev>; Mon, 09 Jun 2025 17:43:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749505118; x=1750109918; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1749516191; x=1750120991; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SaFAiKTgjwOsJUvHTTdkRcAJqTcjkFZ6FxQ0f/fdGUQ=;
-        b=JG0jQTj0OtuGFtUAD4UpToprv3lsllT+VkeU+rxwNN0t2DAvqG3Bk3zLSe10ipOGMK
-         oSCof83Cg4bZ/sxT6/VeSKk0lllrhlUGpy5//J36YitFcP8DQJjQH8rph75qHXjOiOgC
-         cmgfIrrwUV3VIVITDyigxhdJsnxHdsGv5RzvrHAoPPD1ZzJqMlf7jn/YyHsTMAX4hJY+
-         sekBnYYttvlLN67hg+vRXb59vFyAOp1dLhYbNjoHp/jPf3cYkyusi68bM746eADldzLH
-         h+mfA69l69NDoBnd+V5/K/UM9oqF+Hix9yw/CUUMo1kZJao18P9gW9sSvp6AWMk4mWEb
-         W96w==
+        bh=DrsvzlG7HIaUeByDAoIeUu6XGjQtzIjZZ/7diqa9y7k=;
+        b=VQHsxQ1rxHbqm9MnEXeYu9ozlM/cGHolZLy2dGOvyviHztty2isnYQSwLm0CRMTx+e
+         30SgUZ3Mc/yRfv7m+sS3O2+oK4PXKDyywWfqI4W9SRONNX3/UgY9rDDlYHQeqpjtRcDB
+         ULFcYbYLg5FbVtGYenzM348qur/+pHlEUJ94Pc0EPqwVwLAxrHpo7UF8tW/5cs+sxiwo
+         cIiS8OL0BtVa8TTRsUx6FCLtJjsyimCVz21mklEQ1cTNy8+7K/asI8xwHKELbMupJYwu
+         +GZVrpSpA9dlJAKgImGyrZA8YeThhoR4NroaY5jbW3opWga/WW13ERuYYucOwkqj6uvH
+         hHRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749505118; x=1750109918;
+        d=1e100.net; s=20230601; t=1749516191; x=1750120991;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SaFAiKTgjwOsJUvHTTdkRcAJqTcjkFZ6FxQ0f/fdGUQ=;
-        b=Huc5pf6qxouDwkpJT5xh24/K5SBnVqYk4+CGBP+q1eYgKxhry2tlzoCASPzKJPhDlI
-         K1owCQFh6kOJCJ5fkIDa+lxOtp+07kBkpOUYmzhCgbniTfvCsxE/PmAm8HFQeeTFN3z8
-         JSufniiwX53c9IGJzmstLnnN3uqaeY7EFQTKH6AKaGXuymcLNpmUR5yispxS2h+tWWAO
-         tEyMxaXDkt7eh0q1pbJaBq6b41CB10pQ3B/Ihcz9NsiBVel+ALf3xRcCs+KlP7SNBEyF
-         Xcve73zrzv45jzYsO0hQb9CRp14XqX6UVDEIZWBBDpZgaMnivBNyslFq/wuZvOHxle0t
-         B+/A==
-X-Forwarded-Encrypted: i=1; AJvYcCVogV12h9eD/oEkR4+OjVfu+yD5PXtWpLZoQ5wtFWqQwfBFPu2ozKnO7Gf9lczfdG4VMGSW+gjQCVuX@lists.linux.dev
-X-Gm-Message-State: AOJu0YwiZ2XeSmdDNXyL9VicKK8q3dtUFsZwZ6i549byvhndzxtO+Tdg
-	y1PKWTHj1IWklf7UQIkTbaODV0nD0hegfE8KfagJlsyO21us3w6sFrrKA/OTSAhskBob1pIHhJS
-	UF6YXGndDqCFVdguKR1YWjFd8aPVJslGkAEIsrKdw
-X-Gm-Gg: ASbGncscAVPWJ8stQCSdXKCam0c9BluiZr4gIVwpnLkPg/+MZVFbEWUW4Aoc8OgRDqo
-	E6taMuAIDpAOuMSOMDa1k3xZFAgdhVCg3fywsGqj1Dms22DvMdvLCizBIVhRUOV65TWljLfGEf8
-	c7ccYSuaiTXvxuw0is7W64B7740U/Gk5h3RGGw50VNmjVs
-X-Google-Smtp-Source: AGHT+IGlMxoMfk4ejKZyyV9+YbhB5UoHaLz79R1eavHJBDLl4qhCb+gDlPAIrYejoRhYT/JkVxf1Bca9jq8QKV67Sag=
-X-Received: by 2002:a17:902:ecc6:b0:234:e3b7:5d0f with SMTP id
- d9443c01a7336-23601a5287fmr215303085ad.0.1749505118235; Mon, 09 Jun 2025
- 14:38:38 -0700 (PDT)
+        bh=DrsvzlG7HIaUeByDAoIeUu6XGjQtzIjZZ/7diqa9y7k=;
+        b=oxual6JlhgYx/HaibW4GVZCftboXjiTaQfKS7tEC/6m9yv6F0nlVuqwDRyggOmoYB8
+         Aruk/Ae9Bu8c84jAXN7IYKSsciMpwnpKM+zvOEO70cqFEMYy/1jqAJb0nBUDwF9xgI0Q
+         ike6BvmfZVvkuBDTkRR0S3HfE529Zs/Q00Bu5tHiV4F6bPPm2uQQTD7Fafd0cAWBDl/y
+         RTujZSt9wheSCQG19TeNXE+bki5iW80WWTcJ1guUtHycM4A4dLeRxOuRwmBD/hSnVblG
+         Us8jT27N2XXs1BLc+6Lu7JHDZUl1rYzQc+9kRyer2jGOrmlD4jABqmX3NmszWs0OmszH
+         bMiA==
+X-Forwarded-Encrypted: i=1; AJvYcCUxYAMSmB6XKEWiUZX1kOJ7mErlA55hYlB/v1Oe1msFfYjng+LLWrciaiWH4xl0XxjcS41TOLWjN1zC@lists.linux.dev
+X-Gm-Message-State: AOJu0YzzbofGcja5ZYxElcIM1KREJKClg0BE7GumzKywzCsrfV76fQZH
+	34yhdJpjGEDcFbFeD5A1T1r0Bx8MYfEBxAOIZ/RBElWlRlbg5agUKPEjUGR2qGX/McvQ47TECiM
+	gOy+dsQwKZi0sdZEYjLhRxO0qHWBgIr9ZhkrxfDM6
+X-Gm-Gg: ASbGncsgFeandAyfllSpfVArtHLWL6DvRP1qyIDe89YwYDB++aoeZcjxR7BezRgu8Ym
+	nw1OBTRYrVGSk+ARM+642Asf3pXE2T1Vt6vyMEJQoa6sCpPpXwWLkLholXrY44p2tj7mMqoULGO
+	QZIH9FqWkJjOz/JMMRZmaixnDDmkZ4evaJyADERt3BJajvUn47/LtKULdEspPdw6pmOEmS6df6H
+	Q==
+X-Google-Smtp-Source: AGHT+IEFx5LVYp9+A2yGXma2DQNV5spZGGlnCu36kKRGZoEbaYWzORO11OK8dsJ2QQ7t+eAWLe1Db6zpvQuCxrFVWYk=
+X-Received: by 2002:a05:6102:809e:b0:4e7:3d55:5212 with SMTP id
+ ada2fe7eead31-4e7729f4214mr14260457137.11.1749516191033; Mon, 09 Jun 2025
+ 17:43:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -60,38 +61,57 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <LV2PR21MB31800E697258585BD0DB7816A56BA@LV2PR21MB3180.namprd21.prod.outlook.com>
-In-Reply-To: <LV2PR21MB31800E697258585BD0DB7816A56BA@LV2PR21MB3180.namprd21.prod.outlook.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Mon, 9 Jun 2025 14:38:25 -0700
-X-Gm-Features: AX0GCFsfUSSqRaCseNYRK96Qm9Bf-jR7P2zNdWfl0-hvxNJqGMgyI-9AbHK6mlI
-Message-ID: <CAAH4kHZDnfe3L3rJ2htEzT8FCbpVjTmU+u2M94mHbxYHw07WFQ@mail.gmail.com>
+ <CAAH4kHZDnfe3L3rJ2htEzT8FCbpVjTmU+u2M94mHbxYHw07WFQ@mail.gmail.com>
+In-Reply-To: <CAAH4kHZDnfe3L3rJ2htEzT8FCbpVjTmU+u2M94mHbxYHw07WFQ@mail.gmail.com>
+From: Steve Rutherford <srutherford@google.com>
+Date: Mon, 9 Jun 2025 17:42:34 -0700
+X-Gm-Features: AX0GCFvpONO1VK4TxPpcl9Z3RTO63R05hq6z89x8YepjEcL6XI1vO3z_0S078Ck
+Message-ID: <CABayD+dRib6_hhGv87WbomeFaFR+edvKnm5pAWWxPMUoCKE1yQ@mail.gmail.com>
 Subject: Re: Confidential computing Linux kernel SIG meeting Thursday agenda
-To: Chris Oo <cho@microsoft.com>, Steve Rutherford <srutherford@google.com>, 
-	linux-coco@lists.linux.dev, Alexander Graf <graf@amazon.com>
-Cc: Jon Lange <jlange@microsoft.com>
+To: Dionna Amalie Glaze <dionnaglaze@google.com>
+Cc: Chris Oo <cho@microsoft.com>, linux-coco@lists.linux.dev, 
+	Alexander Graf <graf@amazon.com>, Jon Lange <jlange@microsoft.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-+Steve Rutherford +linux-coco@lists.linux.dev +Alexander Graf
-I don't have the agenda, no. Steve runs this meeting, so I'll let him
-comment. If there is nothing else planned, I would recommend the f-UKI
-topic if Alexander Graf has any further design updates about launching
-a firmware directly from a disk image.
+Agenda should be in the link pile at the bottom of the email:
+https://docs.google.com/document/d/18D820gyt2xe84Jy6dGXgrNThApoozcekDzvIlK2=
+_bd4/edit?tab=3Dt.0
+(I'll make it a bit more obvious in future emails =E2=80=93 This isn't the
+first time someone has asked. The linux-coco requirement that the
+email is plaintext makes links a bit awkward.)
 
-On Mon, Jun 9, 2025 at 2:18=E2=80=AFPM Chris Oo <cho@microsoft.com> wrote:
->
-> Hi Dionna,
->
-> Do you know if there was any agenda for the CC Kernel SIG meeting on Thur=
-sday? I don't know where to look, so I wasn't sure if there was more follow=
- up discussion planned about f-UKI from the previous one.
->
-> Thanks!
-> Chris
->
-> Sent from Outlook
+f-UKI is a reasonable topic, we'll just want to make sure the relevant
+folks know to come to the meeting.
+
+Thanks,
+Steve
 
 
-
---=20
--Dionna Glaze, PhD, CISSP, CCSP (she/her)
+On Mon, Jun 9, 2025 at 2:38=E2=80=AFPM Dionna Amalie Glaze
+<dionnaglaze@google.com> wrote:
+>
+> +Steve Rutherford +linux-coco@lists.linux.dev +Alexander Graf
+> I don't have the agenda, no. Steve runs this meeting, so I'll let him
+> comment. If there is nothing else planned, I would recommend the f-UKI
+> topic if Alexander Graf has any further design updates about launching
+> a firmware directly from a disk image.
+>
+> On Mon, Jun 9, 2025 at 2:18=E2=80=AFPM Chris Oo <cho@microsoft.com> wrote=
+:
+> >
+> > Hi Dionna,
+> >
+> > Do you know if there was any agenda for the CC Kernel SIG meeting on Th=
+ursday? I don't know where to look, so I wasn't sure if there was more foll=
+ow up discussion planned about f-UKI from the previous one.
+> >
+> > Thanks!
+> > Chris
+> >
+> > Sent from Outlook
+>
+>
+>
+> --
+> -Dionna Glaze, PhD, CISSP, CCSP (she/her)
