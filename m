@@ -1,53 +1,73 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD3B2820DE;
-	Wed, 11 Jun 2025 10:51:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F7F1C863B
+	for <linux-coco@lists.linux.dev>; Wed, 11 Jun 2025 18:27:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749639107; cv=none; b=HU9e9TaVFFJOHF2W8hau+TYfvoEpgfovAj5rdqvBDxbrrazrOqxpvqkkgVtrqv1JtjNBNKm+mqykxNTGcIdvW3Ihl682xGGyFzHF/UU4ndAAFh71/jh/WAOMADTsd62AgAoKGqCrZ2TwuMShytBTaVd8bd0JYh+A+6cZPtG+MgA=
+	t=1749666455; cv=none; b=YNm9FNlRrreIGhSVt5trcwzeKAgAUqT7b5DHGY2RUlVPWMLN3CgV+8AGrLttLVQbpQ2Gcbb1dFIVFasxj8Gij2Z/Pln9WzTh4qW5sbQWUHQDY5td6TYUhE05UKgSUqBnb8VHVKX2lk6qkEkRbAmkGAI4GwiOVGn34gThDVqyV4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749639107; c=relaxed/simple;
-	bh=Q6rKcvEK3JD2FRQ36VpTV1lBtdavkrHrxZ1+rXKEr7M=;
+	s=arc-20240116; t=1749666455; c=relaxed/simple;
+	bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YxCcAqYIj6QvTboefV30Vvt0hxaBcIw7N8jX170F3KwKWW/pOXoFzS5AE7DXN1eefOBRJP7miPlNeZKxpIjEd/ejVUsiRn1/96Fc+IE+oFhBAjAe0beF82EmpvqaZdQ/lf/oxw5bR6rVPF6q9bIY75oXf8rSE6EVSZOSS2EUajg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4A5F92BC6;
-	Wed, 11 Jun 2025 03:51:26 -0700 (PDT)
-Received: from e122027.arm.com (unknown [10.57.67.107])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EAEA93F59E;
-	Wed, 11 Jun 2025 03:51:41 -0700 (PDT)
-From: Steven Price <steven.price@arm.com>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Cc: Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
+	 MIME-Version; b=k6jnpvr9usnGrqAWYOkldfGDeecRhZdgWdkWMUpsGPx6N2d0uOmukvJQhMxU9ZLOlQs6cXL3/I3ltmAMjThF3ro8RTd/70xQ8IwnjihnJyfCtfAyR1A4GQtC7S6E7k9XOU4yYsjTDoP9LpB/o3OF/YaPA7y+hh70RCkym3gWSOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cd2lDRD/; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cd2lDRD/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1749666452;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+	b=cd2lDRD/BGckihgRXoOOILN5Y++zqG0ybhLKi0JTJnaOj0vg0iRAuzK8CP7i+aXjuHWl5g
+	6URjEoeF/d12ySrmWFcdl2J7sZ3KADjiF/8HvpB3ndyEe3Id2FVG+hHGxZ5x+TBKyOuwk0
+	K96h9OkAsvtgcKGPbg0B84VsfiZa+s8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-453-LBJXklAmOW24FrcpQgPxqQ-1; Wed,
+ 11 Jun 2025 14:27:29 -0400
+X-MC-Unique: LBJXklAmOW24FrcpQgPxqQ-1
+X-Mimecast-MFC-AGG-ID: LBJXklAmOW24FrcpQgPxqQ_1749666447
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BCE85180026D;
+	Wed, 11 Jun 2025 18:27:26 +0000 (UTC)
+Received: from virtlab1023.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6365E1956094;
+	Wed, 11 Jun 2025 18:27:23 +0000 (UTC)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: seanjc@google.com,
+	pbonzini@redhat.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	thomas.lendacky@amd.com,
+	shuah@kernel.org,
+	prsampat@amd.com,
+	pgonda@google.com,
+	nikunj@amd.com,
+	pankaj.gupta@amd.com,
+	michael.roth@amd.com,
+	sraithal@amd.com,
 	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>
-Subject: [PATCH v9 43/43] KVM: arm64: Allow activating realms
-Date: Wed, 11 Jun 2025 11:48:40 +0100
-Message-ID: <20250611104844.245235-44-steven.price@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250611104844.245235-1-steven.price@arm.com>
-References: <20250611104844.245235-1-steven.price@arm.com>
+	x86@kernel.org,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH v3] KVM: SEV: Disable SEV-SNP support on initialization failure
+Date: Wed, 11 Jun 2025 14:27:22 -0400
+Message-ID: <20250611182722.150019-1-pbonzini@redhat.com>
+In-Reply-To: <20250512221634.12045-1-Ashish.Kalra@amd.com>
+References: 
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -55,59 +75,10 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Add the ioctl to activate a realm and set the static branch to enable
-access to the realm functionality if the RMM is detected.
+Queued, thanks.
 
-Signed-off-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
----
- arch/arm64/kvm/rme.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+Paolo
 
-diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
-index 635d22825a70..a25f57387e3e 100644
---- a/arch/arm64/kvm/rme.c
-+++ b/arch/arm64/kvm/rme.c
-@@ -1250,6 +1250,20 @@ static int kvm_init_ipa_range_realm(struct kvm *kvm,
- 	return realm_init_ipa_state(kvm, addr, end);
- }
- 
-+static int kvm_activate_realm(struct kvm *kvm)
-+{
-+	struct realm *realm = &kvm->arch.realm;
-+
-+	if (kvm_realm_state(kvm) != REALM_STATE_NEW)
-+		return -EINVAL;
-+
-+	if (rmi_realm_activate(virt_to_phys(realm->rd)))
-+		return -ENXIO;
-+
-+	WRITE_ONCE(realm->state, REALM_STATE_ACTIVE);
-+	return 0;
-+}
-+
- /* Protects access to rme_vmid_bitmap */
- static DEFINE_SPINLOCK(rme_vmid_lock);
- static unsigned long *rme_vmid_bitmap;
-@@ -1397,6 +1411,9 @@ int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
- 		r = kvm_populate_realm(kvm, &args);
- 		break;
- 	}
-+	case KVM_CAP_ARM_RME_ACTIVATE_REALM:
-+		r = kvm_activate_realm(kvm);
-+		break;
- 	default:
- 		r = -EINVAL;
- 		break;
-@@ -1722,5 +1739,5 @@ void kvm_init_rme(void)
- 	if (rme_vmid_init())
- 		return;
- 
--	/* Future patch will enable static branch kvm_rme_is_available */
-+	static_branch_enable(&kvm_rme_is_available);
- }
--- 
-2.43.0
 
