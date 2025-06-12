@@ -1,72 +1,146 @@
-Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F087DA82
-	for <linux-coco@lists.linux.dev>; Wed, 11 Jun 2025 21:51:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B727A19CC29
+	for <linux-coco@lists.linux.dev>; Thu, 12 Jun 2025 04:23:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749678677; cv=none; b=d/nOgEHGbYWDaVKC656QuoulV2xHjnN2Go2hXoJWBL5fYU5x9MlNI6nfcz4BjElXdYNXDx0NWIGCJAeIHyMpLzgln/sjOlIrBak2uHHrudWDn77yqWI9dUeZfGwvgKTBXhpPR7L0B2wtVrBFHC0VEJpRFwtWmt5KKi+7p1nAEQs=
+	t=1749702182; cv=none; b=QkLn//RAjMKsADNfGcAAys6IZCnvp84r0tKCIE+95jN7lZJKm9OAYQpkYrofv0i1uUeSaz8ttdoEOjTog7/reMD/sbA0BnDjXr3mlGqaUABOfLAsb27hWlOnoYUONXXQGkCxV3Vio3Q3crhuabXBAsPzU2KPbVYeWszw80zaIBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749678677; c=relaxed/simple;
-	bh=2X93JK9ZPiodTzj45SRXlzv/noteKCRUbZLhBvTGPjs=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=IEGdTVgjJlZQBXn6yOymVhSwpZGPb+4cGUZqAQvyG0GuD4/YmZRxJucnK8KYxHxBuJ4YvtNNSeIcm5h2a3NOmlByPOXSmTw7Ytp3jcdrOtf2lHpvuhTnP4+N92N+MWE86Nk/OquxIFqXOQAbzJlrI4Cm90LzoamkD/IeLmzIf6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jXPB6TMp; arc=none smtp.client-ip=209.85.217.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1749702182; c=relaxed/simple;
+	bh=Q675ubLGDkPFFcmY86fkaTZZ+3+l2H6GNmWgJZ8fMao=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CP8YPA4cG+DuqnczeOvt1ZcwVFnUvQO+5DmGDP5zyBW9dDhgpouqQCDIGSmyoMl1EsY9Gnh7LPtt6RWswwXwDamURgprGAQh8czZszxTB63bnDb8LJ4ZpHKQ3UpHOBUmbyYuuVtaOT3sdSuIhmFph8qklePDYC217C8RnpclpQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hUsNXttg; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jXPB6TMp"
-Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-4e7b397cc2aso78195137.2
-        for <linux-coco@lists.linux.dev>; Wed, 11 Jun 2025 14:51:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749678674; x=1750283474; darn=lists.linux.dev;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=2X93JK9ZPiodTzj45SRXlzv/noteKCRUbZLhBvTGPjs=;
-        b=jXPB6TMpbVUgo9eSdBfQXgB6FZ7LsyEOXU5r9W01vsfZPmMu2YMYBO6VAzV3UAvhfd
-         jeal96Jp/OPHkSU2NVO8doY5Qn3NVgbo5NMuZMOo35lArjtPEHtMynk/rmp/BcQXxPyv
-         k7uZ0gPWgxQhLUgruCOopbBmxPEYneo8P4WuZIQpUL4nSikXfttNKh7vxkOe6EshVxG9
-         wf6nuNwMXZ8AuCprAm9Zjsq1HcynWXIGQ3jGj8DciJ2OeEfHJsBIZBjFn2Q2U5tBbQr4
-         qoT3HMsea77qCJMu1IM1hCKGbKoYsf44K+9mHKo+nsysYE7haUCcYt4vKdFIhB6mBaFr
-         3brg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749678674; x=1750283474;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2X93JK9ZPiodTzj45SRXlzv/noteKCRUbZLhBvTGPjs=;
-        b=M/O8RE5IhVIaBpyrLdvVgRMn3ryMPY0TmHvDM1psDsCj8bwGlG7DmOQflDO40doKY7
-         DCdyOR5YvtA0E5+ns/yqKQgXLUJ+DON+V3vcW87TMtEXTcRAVTOXRCaQCcErskjdfVMK
-         f4Cr8JXoYkb8KC8rNVRBG27DLbcxSPslGjzmeVedWs0nnxlv4zI9hSfHcBczAR9PbyL7
-         42qebPRGrhljKAOvnoPLck400f+ayMoGQJAR97b3EqPcb/Z8wfJE8Zy0kJskglFbo2Hn
-         1n8jyfuroygJOf3lo1uoR2u5782LMoBbHaR2a6b4ed+FLR3xgcBNY3onp7bENGQkIRBi
-         3f+g==
-X-Gm-Message-State: AOJu0YyI5PNB2LWv+k74sF/x1qTCQlLWRMPNyomWo8fygUR4eZrLIj+A
-	3pxFgG8yUakkqaC3+g99ZsRHG1gbCWr4Sb3J3HDr7l0BTcsRbqtS6W2zTMEEIZt6k4yY5bZzMkV
-	m8UDnnOhuVQ0ZgdxjxacJJ+XGiKwH66vJKZ4KLKITigIMvo3Z7wh+Z2c9V0I=
-X-Gm-Gg: ASbGncvQydfGqsIgJec8sTvtLSkGnNkMZEuyCZeFHvOjAPgt6OBlbSXcx8EGsd8r4Re
-	HNC0dwapyAKheybLfFfOc4Qe5B7190jTf+W4ukRfrVnTxVEEev0XosPzHlxDR+xhgMqX7BhVxlW
-	HvizrJbbyYMbhTgPJp0MFCMEZsYqXkZ5xjwkz7D29MFLe0QztYlhyS+9YRlVTgmufjwsc3RxLf
-X-Google-Smtp-Source: AGHT+IGMwrLy7hVxkM49GPYQNhFNx8b4PO37V0+LaFBQvbld1IIac69yY99LVyoYq8Q2bqgfPCxY2pcL9dYF8RFT3KM=
-X-Received: by 2002:a05:6102:162c:b0:4e7:3efd:ac76 with SMTP id
- ada2fe7eead31-4e7ccbc4d5fmr1968430137.8.1749678674261; Wed, 11 Jun 2025
- 14:51:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hUsNXttg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749702181; x=1781238181;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=Q675ubLGDkPFFcmY86fkaTZZ+3+l2H6GNmWgJZ8fMao=;
+  b=hUsNXttgzQkPa+ANXVbu6oHQPrF5eDxIwJaAHrK9wbkDEQA2e/XTseXK
+   EYDpvXNWeBALtaF75wwSjxxN7RORS7qvut9avRWGdiyRH35kTxbp+v+Td
+   iIIp8OEF6gfxPK+rKN9hn3Trb1dkzHLAH/hsQ+UHaQoY4t3w4StIeudRy
+   xLd5lZj8zxU4swKHUiNbMdzMlbNQtIXOEXapVoWSBDZZwuxeeiebC+aOI
+   Td+J6iT0gc52lXbaLo8h2+yaONUrw+t1ZjDoygdUaOjFLZyIieEmCl+3e
+   BS9LbNJdHmqe4++H1TB3AcPYg0P5+LBPEcclE2+h9BHCha0OG/00S1vgc
+   Q==;
+X-CSE-ConnectionGUID: 3rKB3dWZSuGLMNQFx//Okg==
+X-CSE-MsgGUID: BC6JjTfURO24fogQ9HpJXg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="51741320"
+X-IronPort-AV: E=Sophos;i="6.16,229,1744095600"; 
+   d="scan'208";a="51741320"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 21:23:00 -0700
+X-CSE-ConnectionGUID: mVQ5fdJbRR2qZs5mdtGp+g==
+X-CSE-MsgGUID: ZiOcNuL9QbG79FPkQbFKaQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,229,1744095600"; 
+   d="scan'208";a="147386747"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa009.jf.intel.com with ESMTP; 11 Jun 2025 21:22:57 -0700
+Date: Thu, 12 Jun 2025 12:15:59 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
+	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
+	zhiw@nvidia.com
+Subject: Re: [RFC PATCH 3/3] iommufd/tsm: Add tsm_bind/unbind iommufd ioctls
+Message-ID: <aEpUf0/P5PZ+apBg@yilunxu-OptiPlex-7050>
+References: <yq5a5xhj5yng.fsf@kernel.org>
+ <20250529133757.462088-1-aneesh.kumar@kernel.org>
+ <20250529133757.462088-3-aneesh.kumar@kernel.org>
+ <aDsta4UX76GaExrO@yilunxu-OptiPlex-7050>
+ <yq5azfeqjt9i.fsf@kernel.org>
+ <aD3QcQxtjoYXrglM@yilunxu-OptiPlex-7050>
+ <20250602164857.GE233377@nvidia.com>
+ <aD50lpgJ+9XMJE/4@yilunxu-OptiPlex-7050>
+ <efd630b0-d08d-46a6-a5ef-8a448eb19993@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Steve Rutherford <srutherford@google.com>
-Date: Wed, 11 Jun 2025 14:50:38 -0700
-X-Gm-Features: AX0GCFukLsub5b-ZPLdFik3z7x6i5lsarhM6-TfhQduesxLfardQHWhYfvbjFdk
-Message-ID: <CABayD+cxsR_DS9iB10KG4mKFiRiRaY4srpBsTO+0teWrdk4VJg@mail.gmail.com>
-Subject: [Cancelled] CCC Kernel SIG Thursday, June 12th
-To: linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <efd630b0-d08d-46a6-a5ef-8a448eb19993@amd.com>
 
-Hi all,
+On Tue, Jun 10, 2025 at 02:47:32PM +1000, Alexey Kardashevskiy wrote:
+> 
+> 
+> On 3/6/25 14:05, Xu Yilun wrote:
+> > On Mon, Jun 02, 2025 at 01:48:57PM -0300, Jason Gunthorpe wrote:
+> > > On Tue, Jun 03, 2025 at 12:25:21AM +0800, Xu Yilun wrote:
+> > > 
+> > > > > Looking at your patch series, I understand the reason you need a vfio
+> > > > > ioctl is to call pci_request_regions_exclusive—is that correct?
+> > > > 
+> > > > The immediate reason is to unbind the TDI before unmapping the BAR.
+> > > 
+> > > Maybe you should just do this directly, require the TSM layer to issue
+> > > an unbind if it gets any requests to change the secure EPT?
+> > 
+> > The TSM layer won't touch S-EPT, KVM manages S-EPT.
+> 
+> Is not it the TDX fw which manages _S_-EPT?
 
-No topics are currently on the agenda, so this instance is cancelled!
-See you all in a month.
+TDX fw writes the S-EPT entries, but to "manage" S-EPT, there are more
+works for VMM.
+
+The S-EPT related TDX fwcalls are verbose, it is not a fwcall like
+"TDX_SEPT_MAP/UNMAP(gfn_range, pfn_range)" then the tree is there.
+
+I wanna briefly describe the S-EPT fwcalls
+
+ - A SEPT_ADD fwcall links a page-table page to a specifc S-EPT non-leaf entry.
+ - A PAGE_AUG fwcall links a guest memory page to a specific leaf entry.
+ - The MEM_TRACK fwcall tracks if VMM kicks all VCPUs out of guest mode, to
+   ensure TLB for S-EPT are flushed/synced for every VCPU.
+ - A PAGE_REMOVE fwcall clears a specific leaf entry, only when TLB
+   flush are all done.
+
+So it is KVM's job to orchestrate what a S-EPT tree should look like,
+and request TDX fw to add/remove each S-EPT node one by one. TDX fw is
+responsible for the security check for each adding/removing request, if
+the check passed, TDX fw writes the actual S-EPT entry.
+
+These TDX base implementations are already in linux-next.
+
+> And the TDX host driver (what is it called btw? Intel's "CCP") registers itself as TSM in the TSM core so it is somewhere near S-EPT logic? Thanks,
+
+Currently kvm_intel is near S-EPT for private memory, just as kvm_amd is
+near RMP for private memory.
+
+I see in AMD's solution, CCP TSM driver could directly operate RMP for
+MMIO. I was trying to figure out if TDX TSM driver could also operate
+MMIO part of S-EPT, but I didn't see the chance. Kicking VCPUs is not
+what TSM driver could do.  Another thing is the existing KVM mirror
+page table mechenism (allow me to keep simple).
 
 Thanks,
-Steve
+Yilun
+
+> 
+> > 
+> > Similarly IOMMUFD/IOMMU driver manages IOMMUPT. When p2p is
+> > involved, still need to unbind the TDI first then unmap the BAR for
+> > IOMMUPT.
+> > 
+> > Thanks,
+> > Yilun
+> > 
+> > > 
+> > > Jason
+> 
+> -- 
+> Alexey
+> 
