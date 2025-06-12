@@ -1,284 +1,378 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937D023ABA8
-	for <linux-coco@lists.linux.dev>; Thu, 12 Jun 2025 13:05:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED26253B67
+	for <linux-coco@lists.linux.dev>; Thu, 12 Jun 2025 14:43:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749733528; cv=none; b=rrOAf2DnU0a/fKtjC81qEXyR8NwRWN4+g7IPNlnE3BNUtCPscEeAbAtCfgHMHNLL3N5w9U2if9xHwMLO11tHmAR5b5s0sKoUjl15Ma9WJ6kd82LuP321YiFvj6vIld0bgeaMDJiZHZ+PK/GTK9H0VhVqlVNT/ttOMhN/5Rl+ELw=
+	t=1749739440; cv=none; b=kKM6wwJF4CNfHVNrAMSwOORPVSdptNbk8Gjv159T2DK34RiJl9vl4msJa6lp7kBwPNYHGERFncsUvxTywY0BqkVcWJ7VnU6ujBj6HTwOGZs0aipk9tCnSVx8yBY3DxLV01RZtJ4LhYVa5iB/T5D7rP25v7pvU2uwzvqAVZMVdHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749733528; c=relaxed/simple;
-	bh=y8NLeed2Zpqmgrw7HwqwPGxaHBEVNUyCekU0isYI6sc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K7B0H1lOxHDhPHp6ZEwJWTn5e5BvByQ++s1O/4yeqXGbn95j920Xg+zGQhHzS+yefDSiYlXbKt9cgnIqT7m3fKhk/IJ3ItEGP29kYoJEHq/U+T2FSGksmR+KVYX22wc1EaZ3rt1tylH9b65pzw/1jaw0G0w+oCAQAl3eNx/+qpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JgdmrRwr; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
+	s=arc-20240116; t=1749739440; c=relaxed/simple;
+	bh=Rkm3+v3Yxu0W/sz8x69bBcz7rS1lWbwdMzunVivz1kA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Jp/WDtCirgGLwxUUrgv8WNjLZRdyhnHd8/JrW9A6aq+T70JrLfjs15Kp2FdzkzIBOYjCJTy/CcwDwfldngO+q46HAW4YuD9AyAV9mglw4xkmb/7SofdV+2XrDKfS2k5fqQRh+ZKoxTU9S/7R/C0SlA9gJr4Vgw1GxPBA1p/1jGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Uz4+p1qa; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JgdmrRwr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749733526; x=1781269526;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=y8NLeed2Zpqmgrw7HwqwPGxaHBEVNUyCekU0isYI6sc=;
-  b=JgdmrRwrxx4k7HiHqcJRRH+LWllC745MjnNG4sPpazjVvSEnyNZqNIQx
-   Dc4lzZj9ztjygzDqonWtOFK1fG3w9bR/cyNdvoBHQCq0b9rDkvD8EHC8Y
-   9QCLxCSYEqF5F3W/IFxu1kRBSRPyYM0/gYdiZYbGWMPyRxIFXPshg85gq
-   1pjU3FgI+hRfQdvO1MXELKohS76T9YcSlNKFGPy3Xb7YDKBbDPIBdByVF
-   MRfqZMbCaEQ46szqgsQH3UZeF+y3hr35Jcus/Efu68JNxuIW76AZhsB/+
-   g4Fok8yw2q8quzZ8C7+KyG7x/YDj+b66XK8QoIdKtipAgj4E1XusO5VPH
-   A==;
-X-CSE-ConnectionGUID: yOa88tTgTh6ebrokzHrYkw==
-X-CSE-MsgGUID: gtmzNRA7TlqptNqJinUydg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="51017678"
-X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; 
-   d="scan'208";a="51017678"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 06:05:26 -0700
-X-CSE-ConnectionGUID: YRi7Uk+ESkOTtO4HZdYkkw==
-X-CSE-MsgGUID: 4/6vREUtSlaI3YeLwVU/rw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,230,1744095600"; 
-   d="scan'208";a="178489788"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa001.fm.intel.com with ESMTP; 12 Jun 2025 06:05:21 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 2259E1DF; Thu, 12 Jun 2025 16:05:21 +0300 (EEST)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: chao.gao@intel.com
-Cc: bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	isaku.yamahata@intel.com,
-	kai.huang@intel.com,
-	kirill.shutemov@linux.intel.com,
-	kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	mingo@redhat.com,
-	pbonzini@redhat.com,
-	rick.p.edgecombe@intel.com,
-	seanjc@google.com,
-	tglx@linutronix.de,
-	x86@kernel.org,
-	yan.y.zhao@intel.com
-Subject: [PATCHv2.1 08/12] KVM: TDX: Handle PAMT allocation in fault path
-Date: Thu, 12 Jun 2025 16:05:08 +0300
-Message-ID: <20250612130508.3213505-1-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <aErF7JXwjmsf5zYp@intel.com>
-References: <aErF7JXwjmsf5zYp@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Uz4+p1qa"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-235e389599fso212605ad.0
+        for <linux-coco@lists.linux.dev>; Thu, 12 Jun 2025 07:43:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1749739438; x=1750344238; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oN6CHeaSqFkDgulddMIy2hQlkOrtNeXTtQB4Zu1fP+o=;
+        b=Uz4+p1qaudmY6IwFllfZOgFkljdtAI5pzzwjMKYllawqBBXqG86NpIVvBDdzJZZ0U8
+         ejh8jmf4KvSqKtYt0oIT2KRtokHra6UIIc/CviiVf35FzzBAw28P3WpNXStyl6A73jKo
+         dfJXCD6cH4ZhwEtbs2EtCjXDEHhSKM7o7XvSaWMLJUu2ThC8H82sqysOA9n42Fk1T88u
+         wYPX0Ff8b1LHOJS5x6oPWb/R6YUZtwd4Px0C/fboy0Q6VV4JhYZUKryUDqQoSQj3BS8m
+         RQwxSWDHvKcGpQhergKIfzIBrFTeG1+vBMRI/r2aEMIEsy5sdpwYEsMfm+TX+hGWTY/X
+         o7ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749739438; x=1750344238;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oN6CHeaSqFkDgulddMIy2hQlkOrtNeXTtQB4Zu1fP+o=;
+        b=t6J9n2Po6nfyvkdATmVNBVjjDKuI7zpKYbKsvWVi5sMl/CHWxv1OvqUKapybrY+6pb
+         VdSVlOM0rPiu95k0YZb/28H9oKOQj7fu/Bk23Exqnr3K/A4wHIe23701YNeDsnX9tTam
+         M40IUgGkr9gdxo2KMPKqfHz/ZlUcFhKmVSZAWGTvueVqFLIHkbX4Joijo11b0FLD84GD
+         LAIGbuf4Q4NGK1XNyAkECAH8wNt/OaEwHuwluN5Qz/yI3O8N9OisSJhlR4mfypYYLpMX
+         Vd33upk6hKzgAcPmmcQtM4jXGb7VDk9gBfmYDIsHuSvS6XB58v21enIuyuPh1Y3rjgZP
+         aRCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV3m4iqsMKZ1Hn1kxTgWlvfw2WT52iHUNXM8Bg5kQ30jYxouzb4OYUZUSMZpslky45HHLlZrnf9Eetz@lists.linux.dev
+X-Gm-Message-State: AOJu0YxErG8k6buhomtiVksH7mM7RaAc1V0nWe2Rde8hpM7rOC+YmYH/
+	FmBQc4W8pOuU+jFMHZv6dsB0HJrEHTWUFgMI+tPvbhx8fM0ygsGGXI+aZvacFcmdhoZeXk6Ao9g
+	ve5cd3F0M8JrKernlXkrOWpdnSRLdyXXfMlXXoqO6
+X-Gm-Gg: ASbGnctRRX7S+wwP8k+PzvNDGB35DjNZ1p2dVBvaoLYfBc66ZSQu3REXGuDRRcdBYoH
+	84pdjNGuWl/bitWaAa+XOaR33riA7VlBo4f2OxmXoehUYioBofqgZCRL4hBygvRG7XPq9jZx+g0
+	lzUt1fOPUzMUOsdb0K0tFlQQs3R+8jAaVUJf+K+YRDAjjhspRt68R9IzwOpAYTuEfsmNtIksriF
+	MP6
+X-Google-Smtp-Source: AGHT+IHpiXzKeAtCO2stFoZ0moxEL5BG+uKUA7FqzPXE76Bh50p7p2GnAHbrdaAH4XoNw6cu2LSfRv2ByjGTRPF8taY=
+X-Received: by 2002:a17:902:c402:b0:234:bfa1:da3e with SMTP id
+ d9443c01a7336-2365bd03e64mr13635ad.5.1749739437338; Thu, 12 Jun 2025 07:43:57
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <diqzjz7azkmf.fsf@ackerleytng-ctop.c.googlers.com>
+ <diqz8qmsfs5u.fsf@ackerleytng-ctop.c.googlers.com> <aC1221wU6Mby3Lo3@yzhao56-desk.sh.intel.com>
+ <CAGtprH_chB5_D3ba=yqgg-ZGGE2ONpoMdB=4_O4S6k7jXcoHHw@mail.gmail.com>
+ <aD5QVdH0pJeAn3+r@yzhao56-desk.sh.intel.com> <CAGtprH_XFpnBf_ZtEAs2MiZNJYhs4i+kJpmAj0QRVhcqWBqDsQ@mail.gmail.com>
+ <aErK25Oo5VJna40z@yzhao56-desk.sh.intel.com>
+In-Reply-To: <aErK25Oo5VJna40z@yzhao56-desk.sh.intel.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Thu, 12 Jun 2025 07:43:45 -0700
+X-Gm-Features: AX0GCFsBxXSxoI571qQ09Y-jDuWyjjNvY5Na7g5THwLq_OH-qmpD6FJcK1L4xBE
+Message-ID: <CAGtprH8U7rKrnPFHrC_ppr0wx+G=tV+LZfYtueDMZy47U1Q80g@mail.gmail.com>
+Subject: Re: [PATCH 3/5] KVM: gmem: Hold filemap invalidate lock while
+ allocating/preparing folios
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, michael.roth@amd.com, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	jroedel@suse.de, thomas.lendacky@amd.com, pbonzini@redhat.com, 
+	seanjc@google.com, vbabka@suse.cz, amit.shah@amd.com, 
+	pratikrajesh.sampat@amd.com, ashish.kalra@amd.com, liam.merwick@oracle.com, 
+	david@redhat.com, quic_eberman@quicinc.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-There are two distinct cases when the kernel needs to allocate PAMT
-memory in the fault path: for SEPT page tables in tdx_sept_link_private_spt()
-and for leaf pages in tdx_sept_set_private_spte().
+On Thu, Jun 12, 2025 at 5:43=E2=80=AFAM Yan Zhao <yan.y.zhao@intel.com> wro=
+te:
+>
+> On Tue, Jun 03, 2025 at 11:28:35PM -0700, Vishal Annapurve wrote:
+> > On Mon, Jun 2, 2025 at 6:34=E2=80=AFPM Yan Zhao <yan.y.zhao@intel.com> =
+wrote:
+> > >
+> > > On Mon, Jun 02, 2025 at 06:05:32PM -0700, Vishal Annapurve wrote:
+> > > > On Tue, May 20, 2025 at 11:49=E2=80=AFPM Yan Zhao <yan.y.zhao@intel=
+.com> wrote:
+> > > > >
+> > > > > On Mon, May 19, 2025 at 10:04:45AM -0700, Ackerley Tng wrote:
+> > > > > > Ackerley Tng <ackerleytng@google.com> writes:
+> > > > > >
+> > > > > > > Yan Zhao <yan.y.zhao@intel.com> writes:
+> > > > > > >
+> > > > > > >> On Fri, Mar 14, 2025 at 05:20:21PM +0800, Yan Zhao wrote:
+> > > > > > >>> This patch would cause host deadlock when booting up a TDX =
+VM even if huge page
+> > > > > > >>> is turned off. I currently reverted this patch. No further =
+debug yet.
+> > > > > > >> This is because kvm_gmem_populate() takes filemap invalidati=
+on lock, and for
+> > > > > > >> TDX, kvm_gmem_populate() further invokes kvm_gmem_get_pfn(),=
+ causing deadlock.
+> > > > > > >>
+> > > > > > >> kvm_gmem_populate
+> > > > > > >>   filemap_invalidate_lock
+> > > > > > >>   post_populate
+> > > > > > >>     tdx_gmem_post_populate
+> > > > > > >>       kvm_tdp_map_page
+> > > > > > >>        kvm_mmu_do_page_fault
+> > > > > > >>          kvm_tdp_page_fault
+> > > > > > >>       kvm_tdp_mmu_page_fault
+> > > > > > >>         kvm_mmu_faultin_pfn
+> > > > > > >>           __kvm_mmu_faultin_pfn
+> > > > > > >>             kvm_mmu_faultin_pfn_private
+> > > > > > >>               kvm_gmem_get_pfn
+> > > > > > >>                 filemap_invalidate_lock_shared
+> > > > > > >>
+> > > > > > >> Though, kvm_gmem_populate() is able to take shared filemap i=
+nvalidation lock,
+> > > > > > >> (then no deadlock), lockdep would still warn "Possible unsaf=
+e locking scenario:
+> > > > > > >> ...DEADLOCK" due to the recursive shared lock, since commit =
+e918188611f0
+> > > > > > >> ("locking: More accurate annotations for read_lock()").
+> > > > > > >>
+> > > > > > >
+> > > > > > > Thank you for investigating. This should be fixed in the next=
+ revision.
+> > > > > > >
+> > > > > >
+> > > > > > This was not fixed in v2 [1], I misunderstood this locking issu=
+e.
+> > > > > >
+> > > > > > IIUC kvm_gmem_populate() gets a pfn via __kvm_gmem_get_pfn(), t=
+hen calls
+> > > > > > part of the KVM fault handler to map the pfn into secure EPTs, =
+then
+> > > > > > calls the TDX module for the copy+encrypt.
+> > > > > >
+> > > > > > Regarding this lock, seems like KVM'S MMU lock is already held =
+while TDX
+> > > > > > does the copy+encrypt. Why must the filemap_invalidate_lock() a=
+lso be
+> > > > > > held throughout the process?
+> > > > > If kvm_gmem_populate() does not hold filemap invalidate lock arou=
+nd all
+> > > > > requested pages, what value should it return after kvm_gmem_punch=
+_hole() zaps a
+> > > > > mapping it just successfully installed?
+> > > > >
+> > > > > TDX currently only holds the read kvm->mmu_lock in tdx_gmem_post_=
+populate() when
+> > > > > CONFIG_KVM_PROVE_MMU is enabled, due to both slots_lock and the f=
+ilemap
+> > > > > invalidate lock being taken in kvm_gmem_populate().
+> > > >
+> > > > Does TDX need kvm_gmem_populate path just to ensure SEPT ranges are
+> > > > not zapped during tdh_mem_page_add and tdh_mr_extend operations? Wo=
+uld
+> > > > holding KVM MMU read lock during these operations sufficient to avo=
+id
+> > > > having to do this back and forth between TDX and gmem layers?
+> > > I think the problem here is because in kvm_gmem_populate(),
+> > > "__kvm_gmem_get_pfn(), post_populate(), and kvm_gmem_mark_prepared()"
+> > > must be wrapped in filemap invalidate lock (shared or exclusive), rig=
+ht?
+> > >
+> > > Then, in TDX's post_populate() callback, the filemap invalidate lock =
+is held
+> > > again by kvm_tdp_map_page() --> ... ->kvm_gmem_get_pfn().
+> >
+> > I am contesting the need of kvm_gmem_populate path altogether for TDX.
+> > Can you help me understand what problem does kvm_gmem_populate path
+> > help with for TDX?
+> There is a long discussion on the list about this.
+>
+> Basically TDX needs 3 steps for KVM_TDX_INIT_MEM_REGION.
+> 1. Get the PFN
+> 2. map the mirror page table
+> 3. invoking tdh_mem_page_add().
+> Holding filemap invalidation lock around the 3 steps helps ensure that th=
+e PFN
+> passed to tdh_mem_page_add() is a valid one.
 
-These code paths run in atomic context. Use a pre-allocated per-VCPU
-pool for memory allocations.
+Indulge me a bit here. If the above flow is modified as follows, will it wo=
+rk?
+1. Map the mirror page table
+2. Hold the read mmu lock
+3. Get the pfn from mirror page table walk
+4. Invoke tdh_mem_page_add and mr_extend
+5. drop the read mmu lock
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
----
- arch/x86/include/asm/tdx.h  |  4 ++++
- arch/x86/kvm/vmx/tdx.c      | 40 ++++++++++++++++++++++++++++++++-----
- arch/x86/virt/vmx/tdx/tdx.c | 23 +++++++++++++++------
- virt/kvm/kvm_main.c         |  1 +
- 4 files changed, 57 insertions(+), 11 deletions(-)
+If we can solve the initial memory region population this way for TDX
+then at least for TDX:
+1) Whole kvm_gmem_populate path is avoided
+2) No modifications needed for the userspace-guest_memfd interaction
+you suggested below.
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 47092eb13eb3..39f8dd7e0f06 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -116,6 +116,10 @@ u32 tdx_get_nr_guest_keyids(void);
- void tdx_guest_keyid_free(unsigned int keyid);
- 
- int tdx_nr_pamt_pages(void);
-+int tdx_pamt_get(struct page *page, enum pg_level level,
-+		 struct page *(alloc)(void *data), void *data);
-+void tdx_pamt_put(struct page *page, enum pg_level level);
-+
- struct page *tdx_alloc_page(void);
- void tdx_free_page(struct page *page);
- 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 36c3c9f8a62c..2f058e17fd73 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1537,16 +1537,31 @@ static int tdx_mem_page_record_premap_cnt(struct kvm *kvm, gfn_t gfn,
- 	return 0;
- }
- 
-+static struct page *tdx_alloc_pamt_page_atomic(void *data)
-+{
-+	struct kvm_vcpu *vcpu = data;
-+	void *p;
-+
-+	p = kvm_mmu_memory_cache_alloc(&vcpu->arch.pamt_page_cache);
-+	return virt_to_page(p);
-+}
-+
- int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn,
- 			      enum pg_level level, kvm_pfn_t pfn)
- {
-+	struct kvm_vcpu *vcpu = kvm_get_running_vcpu();
- 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
- 	struct page *page = pfn_to_page(pfn);
-+	int ret;
- 
- 	/* TODO: handle large pages. */
- 	if (KVM_BUG_ON(level != PG_LEVEL_4K, kvm))
- 		return -EINVAL;
- 
-+	ret = tdx_pamt_get(page, level, tdx_alloc_pamt_page_atomic, vcpu);
-+	if (ret)
-+		return ret;
-+
- 	/*
- 	 * Because guest_memfd doesn't support page migration with
- 	 * a_ops->migrate_folio (yet), no callback is triggered for KVM on page
-@@ -1562,10 +1577,16 @@ int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn,
- 	 * barrier in tdx_td_finalize().
- 	 */
- 	smp_rmb();
--	if (likely(kvm_tdx->state == TD_STATE_RUNNABLE))
--		return tdx_mem_page_aug(kvm, gfn, level, page);
- 
--	return tdx_mem_page_record_premap_cnt(kvm, gfn, level, pfn);
-+	if (likely(kvm_tdx->state == TD_STATE_RUNNABLE))
-+		ret = tdx_mem_page_aug(kvm, gfn, level, page);
-+	else
-+		ret = tdx_mem_page_record_premap_cnt(kvm, gfn, level, pfn);
-+
-+	if (ret)
-+		tdx_pamt_put(page, level);
-+
-+	return ret;
- }
- 
- static int tdx_sept_drop_private_spte(struct kvm *kvm, gfn_t gfn,
-@@ -1622,17 +1643,26 @@ int tdx_sept_link_private_spt(struct kvm *kvm, gfn_t gfn,
- 			      enum pg_level level, void *private_spt)
- {
- 	int tdx_level = pg_level_to_tdx_sept_level(level);
--	gpa_t gpa = gfn_to_gpa(gfn);
-+	struct kvm_vcpu *vcpu = kvm_get_running_vcpu();
- 	struct page *page = virt_to_page(private_spt);
-+	gpa_t gpa = gfn_to_gpa(gfn);
- 	u64 err, entry, level_state;
-+	int ret;
-+
-+	ret = tdx_pamt_get(page, PG_LEVEL_4K, tdx_alloc_pamt_page_atomic, vcpu);
-+	if (ret)
-+		return ret;
- 
- 	err = tdh_mem_sept_add(&to_kvm_tdx(kvm)->td, gpa, tdx_level, page, &entry,
- 			       &level_state);
--	if (unlikely(tdx_operand_busy(err)))
-+	if (unlikely(tdx_operand_busy(err))) {
-+		tdx_pamt_put(page, PG_LEVEL_4K);
- 		return -EBUSY;
-+	}
- 
- 	if (KVM_BUG_ON(err, kvm)) {
- 		pr_tdx_error_2(TDH_MEM_SEPT_ADD, err, entry, level_state);
-+		tdx_pamt_put(page, PG_LEVEL_4K);
- 		return -EIO;
- 	}
- 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 0cbf052c64e9..4fc9f4ae8165 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -2067,14 +2067,22 @@ static void tdx_free_pamt_pages(struct list_head *pamt_pages)
- 	}
- }
- 
--static int tdx_alloc_pamt_pages(struct list_head *pamt_pages)
-+static int tdx_alloc_pamt_pages(struct list_head *pamt_pages,
-+				 struct page *(alloc)(void *data), void *data)
- {
- 	for (int i = 0; i < tdx_nr_pamt_pages(); i++) {
--		struct page *page = alloc_page(GFP_KERNEL);
-+		struct page *page;
-+
-+		if (alloc)
-+			page = alloc(data);
-+		else
-+			page = alloc_page(GFP_KERNEL);
-+
- 		if (!page) {
- 			tdx_free_pamt_pages(pamt_pages);
- 			return -ENOMEM;
- 		}
-+
- 		list_add(&page->lru, pamt_pages);
- 	}
- 	return 0;
-@@ -2130,7 +2138,8 @@ static int tdx_pamt_add(atomic_t *pamt_refcount, unsigned long hpa,
- 	return 0;
- }
- 
--static int tdx_pamt_get(struct page *page, enum pg_level level)
-+int tdx_pamt_get(struct page *page, enum pg_level level,
-+		 struct page *(alloc)(void *data), void *data)
- {
- 	unsigned long hpa = page_to_phys(page);
- 	atomic_t *pamt_refcount;
-@@ -2153,7 +2162,7 @@ static int tdx_pamt_get(struct page *page, enum pg_level level)
- 	if (atomic_inc_not_zero(pamt_refcount))
- 		return 0;
- 
--	if (tdx_alloc_pamt_pages(&pamt_pages))
-+	if (tdx_alloc_pamt_pages(&pamt_pages, alloc, data))
- 		return -ENOMEM;
- 
- 	ret = tdx_pamt_add(pamt_refcount, hpa, &pamt_pages);
-@@ -2162,8 +2171,9 @@ static int tdx_pamt_get(struct page *page, enum pg_level level)
- 
- 	return ret >= 0 ? 0 : ret;
- }
-+EXPORT_SYMBOL_GPL(tdx_pamt_get);
- 
--static void tdx_pamt_put(struct page *page, enum pg_level level)
-+void tdx_pamt_put(struct page *page, enum pg_level level)
- {
- 	unsigned long hpa = page_to_phys(page);
- 	atomic_t *pamt_refcount;
-@@ -2198,6 +2208,7 @@ static void tdx_pamt_put(struct page *page, enum pg_level level)
- 
- 	tdx_free_pamt_pages(&pamt_pages);
- }
-+EXPORT_SYMBOL_GPL(tdx_pamt_put);
- 
- struct page *tdx_alloc_page(void)
- {
-@@ -2207,7 +2218,7 @@ struct page *tdx_alloc_page(void)
- 	if (!page)
- 		return NULL;
- 
--	if (tdx_pamt_get(page, PG_LEVEL_4K)) {
-+	if (tdx_pamt_get(page, PG_LEVEL_4K, NULL, NULL)) {
- 		__free_page(page);
- 		return NULL;
- 	}
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index eec82775c5bf..6add012532a0 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -436,6 +436,7 @@ void *kvm_mmu_memory_cache_alloc(struct kvm_mmu_memory_cache *mc)
- 	BUG_ON(!p);
- 	return p;
- }
-+EXPORT_SYMBOL_GPL(kvm_mmu_memory_cache_alloc);
- #endif
- 
- static void kvm_vcpu_init(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned id)
--- 
-2.47.2
-
+>
+> Rather then revisit it, what about fixing the contention more simply like=
+ this?
+> Otherwise we can revisit the history.
+> (The code is based on Ackerley's branch
+> https://github.com/googleprodkernel/linux-cc/commits/wip-tdx-gmem-convers=
+ions-hugetlb-2mept-v2, with patch "HACK: filemap_invalidate_lock() only for=
+ getting the pfn" reverted).
+>
+>
+> commit d71956718d061926e5d91e5ecf60b58a0c3b2bad
+> Author: Yan Zhao <yan.y.zhao@intel.com>
+> Date:   Wed Jun 11 18:17:26 2025 +0800
+>
+>     KVM: guest_memfd: Use shared filemap invalidate lock in kvm_gmem_popu=
+late()
+>
+>     Convert kvm_gmem_populate() to use shared filemap invalidate lock. Th=
+is is
+>     to avoid deadlock caused by kvm_gmem_populate() further invoking
+>     tdx_gmem_post_populate() which internally acquires shared filemap
+>     invalidate lock in kvm_gmem_get_pfn().
+>
+>     To avoid lockep warning by nested shared filemap invalidate lock,
+>     avoid holding shared filemap invalidate lock in kvm_gmem_get_pfn() wh=
+en
+>     lockdep is enabled.
+>
+>     Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+>
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 784fc1834c04..ccbb7ceb978a 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -2393,12 +2393,16 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_=
+memory_slot *slot,
+>         struct file *file =3D kvm_gmem_get_file(slot);
+>         struct folio *folio;
+>         bool is_prepared =3D false;
+> +       bool get_shared_lock;
+>         int r =3D 0;
+>
+>         if (!file)
+>                 return -EFAULT;
+>
+> -       filemap_invalidate_lock_shared(file_inode(file)->i_mapping);
+> +       get_shared_lock =3D !IS_ENABLED(CONFIG_LOCKDEP) ||
+> +                         !lockdep_is_held(&file_inode(file)->i_mapping->=
+invalidate_lock);
+> +       if (get_shared_lock)
+> +               filemap_invalidate_lock_shared(file_inode(file)->i_mappin=
+g);
+>
+>         folio =3D __kvm_gmem_get_pfn(file, slot, index, pfn, &is_prepared=
+, max_order);
+>         if (IS_ERR(folio)) {
+> @@ -2423,7 +2427,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_me=
+mory_slot *slot,
+>         else
+>                 folio_put(folio);
+>  out:
+> -       filemap_invalidate_unlock_shared(file_inode(file)->i_mapping);
+> +       if (get_shared_lock)
+> +               filemap_invalidate_unlock_shared(file_inode(file)->i_mapp=
+ing);
+>         fput(file);
+>         return r;
+>  }
+> @@ -2536,7 +2541,7 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start=
+_gfn, void __user *src, long
+>         if (!file)
+>                 return -EFAULT;
+>
+> -       filemap_invalidate_lock(file->f_mapping);
+> +       filemap_invalidate_lock_shared(file->f_mapping);
+>
+>         npages =3D min_t(ulong, slot->npages - (start_gfn - slot->base_gf=
+n), npages);
+>         for (i =3D 0; i < npages; i +=3D npages_to_populate) {
+> @@ -2587,7 +2592,7 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start=
+_gfn, void __user *src, long
+>                         break;
+>         }
+>
+> -       filemap_invalidate_unlock(file->f_mapping);
+> +       filemap_invalidate_unlock_shared(file->f_mapping);
+>
+>         fput(file);
+>         return ret && !i ? ret : i;
+>
+>
+> If it looks good to you, then for the in-place conversion version of
+> guest_memfd, there's one remaining issue left: an AB-BA lock issue betwee=
+n the
+> shared filemap invalidate lock and mm->mmap_lock, i.e.,
+> - In path kvm_gmem_fault_shared(),
+>   the lock sequence is mm->mmap_lock --> filemap_invalidate_lock_shared()=
+,
+> - while in path kvm_gmem_populate(),
+>   the lock sequence is filemap_invalidate_lock_shared() -->mm->mmap_lock.
+>
+> We can fix it with below patch. The downside of the this patch is that it
+> requires userspace to initialize all source pages passed to TDX, which I'=
+m not
+> sure if everyone likes it. If it cannot land, we still have another optio=
+n:
+> disallow the initial memory regions to be backed by the in-place conversi=
+on
+> version of guest_memfd. If this can be enforced, then we can resolve the =
+issue
+> by annotating the lockdep, indicating that kvm_gmem_fault_shared() and
+> kvm_gmem_populate() cannot occur on the same guest_memfd, so the two shar=
+ed
+> filemap invalidate locks in the two paths are not the same.
+>
+> Author: Yan Zhao <yan.y.zhao@intel.com>
+> Date:   Wed Jun 11 18:23:00 2025 +0800
+>
+>     KVM: TDX: Use get_user_pages_fast_only() in tdx_gmem_post_populate()
+>
+>     Convert get_user_pages_fast() to get_user_pages_fast_only()
+>     in tdx_gmem_post_populate().
+>
+>     Unlike get_user_pages_fast(), which will acquire mm->mmap_lock and fa=
+ult in
+>     physical pages after it finds the pages have not already faulted in o=
+r have
+>     been zapped/swapped out, get_user_pages_fast_only() returns directly =
+in
+>     such cases.
+>
+>     Using get_user_pages_fast_only() can avoid tdx_gmem_post_populate()
+>     acquiring mm->mmap_lock, which may cause AB, BA lockdep warning with =
+the
+>     shared filemap invalidate lock when guest_memfd in-place conversion i=
+s
+>     supported. (In path kvm_gmem_fault_shared(), the lock sequence is
+>     mm->mmap_lock --> filemap_invalidate_lock_shared(), while in path
+>     kvm_gmem_populate(), the lock sequence is filemap_invalidate_lock_sha=
+red()
+>     -->mm->mmap_lock).
+>
+>     Besides, using get_user_pages_fast_only() and returning directly to
+>     userspace if a page is not present in the primary PTE can help detect=
+ a
+>     careless case that the source pages are not initialized by userspace.
+>     As initial memory region bypasses guest acceptance, copying an
+>     uninitialized source page to guest could be harmful and undermine the=
+ page
+>     measurement.
+>
+>     Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+>
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index 93c31eecfc60..462390dddf88 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -3190,9 +3190,10 @@ static int tdx_gmem_post_populate_4k(struct kvm *k=
+vm, gfn_t gfn, kvm_pfn_t pfn,
+>          * Get the source page if it has been faulted in. Return failure =
+if the
+>          * source page has been swapped out or unmapped in primary memory=
+.
+>          */
+> -       ret =3D get_user_pages_fast((unsigned long)src, 1, 0, &src_page);
+> +       ret =3D get_user_pages_fast_only((unsigned long)src, 1, 0, &src_p=
+age);
+>         if (ret < 0)
+>                 return ret;
+> +
+>         if (ret !=3D 1)
+>                 return -ENOMEM;
+>
