@@ -1,341 +1,196 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D168248883
-	for <linux-coco@lists.linux.dev>; Fri, 13 Jun 2025 03:06:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749784014; cv=fail; b=giuchPRCNMfzUIV89V0WnXzUl25SNC2qFA7RUYunCY2S0qVTIpuPnFJ9FDOzBM9lQalkn0BcuSj0TgnJxLkAyoU1XvYuDpfyfpE19yS2TI4AI+d1yWfNXblms1TgQIbTlyO2tswHP86/CVQY8geOlVOpAvMujddX8SZ5PCFdNIM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749784014; c=relaxed/simple;
-	bh=yP3epcPI1RhL46REoAyazFnbfEyJsXP3Ii0Ui+dyv40=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=bkviEvVMbvvC0HTyoc+VVOP6wddA52dua1pZn3edcR3ONPgxbq/e6vaJPGOdDWimyvUgeoLF5+nRC5BxRkO137pqApup5q9Tl6p1EyNNPvdMygIMz6y36VWaa4UXjLUZp3vJ57i5vH+56N5VjXHW0lul6tzmvkH95hue7KKpGOU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LlwXMK0+; arc=fail smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710FE238C26
+	for <linux-coco@lists.linux.dev>; Fri, 13 Jun 2025 07:36:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749800188; cv=none; b=Z8oK054QS5TR/mS+sUGSpYqiKUtam1Ff4MOBaYq0BiJ1OgINWmx3s9g4oDupQnMzzLQKzjiFrZrwq6nYjC2cuzrri9ZmF8wxOZnHX/9KJq4pqGW/cHiIz7lS0QNsnFdo+H0rjXQFd80ZyrolRtiMddnExUEhWsgQSCIjBNkzOnI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749800188; c=relaxed/simple;
+	bh=MYkmShockohUTQhDi1qsEgwAUV9MPUwgnh3IAatCIgc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D9WNH5p2epldNRWKQnZ8b/KRfYhEAUk2hxciTZQB6+V7AcRJuEEmAaTw9bqP0jSwsoj9jeyGoGqcrx1vXZBenXHMpijJ9ZkyzzNxi7lrN6WWiPv2e4MIHAHYHLhG9MUoes1jvh8ADj/K5SUL6IxWhWd002GbKKglUXsmgZUqyLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gNcyl49X; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LlwXMK0+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749784012; x=1781320012;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=yP3epcPI1RhL46REoAyazFnbfEyJsXP3Ii0Ui+dyv40=;
-  b=LlwXMK0+dSKmNZRxqFmmIgD4yddhXZZcsYtnJTvkEYpfFMtDrLvxR0po
-   HMkKSPlTJFnQlg5mviH2NRok8YOToJ1FZ5hFghPa5uC6iEiBVnwLoetNF
-   D7WCqFm2k5JJ95GcUdvevkVIgj/8fVe6D0yIPjcbM+k5mLQUFqe4bRV51
-   /la2OeVoBdaDNBv9sTFlvKE+sULZgY52pYCx9izhSfhVHp79fKG24VpBa
-   +R9f587x9gNAeukubjGPSSBdksFRRru3rlS4cgLYIZ7AoGkAOtwqcLFE5
-   1nbYmN6EHwA1i04JhV0WTwozkJulE4xtr+PTcYOuBfKfkj9ugtqmru4vO
-   g==;
-X-CSE-ConnectionGUID: 6wQzlURYQM2DC9AkPLwK0w==
-X-CSE-MsgGUID: 0FdG4zu/TS6GL+GXvcS00A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="52135989"
-X-IronPort-AV: E=Sophos;i="6.16,232,1744095600"; 
-   d="scan'208";a="52135989"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 20:06:52 -0700
-X-CSE-ConnectionGUID: cvi4EpgjQz+7JLjV77HECA==
-X-CSE-MsgGUID: Dpj6aPxnTECjm2Dk8YVwpQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,232,1744095600"; 
-   d="scan'208";a="151529015"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 20:06:51 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 12 Jun 2025 20:06:50 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Thu, 12 Jun 2025 20:06:50 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (40.107.237.59)
- by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 12 Jun 2025 20:06:50 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Td3SksIQsH9pqZYMe7gjnlP4uNKE1hV5IY1OW6anwHJSz3IpqsA3+GqIXVWeTd13Sj2oa1AqrzucOcd52r9oxlXfnR5QZFq624AHAZYrlnRtY1iiiABbojfGXtoy2uWZidUCtL4phLb+J/gHawf6jcEAUM07J7rci34QjIx1FBU6nzMqd4/Kb55wmuvhlorDHIJDr0xHiHW2RughGcoERyadj3g26QmDUIKNwUwMecL4KdZaGIVmY113X2EMdbWUx1gL3dhCm6uzHtBptMzPFXRlrs80Xle7OKpieXhdS/PPBfvih0+zCCOj8HfinlRY4wsocvOcegmNFLzJe3i52g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=D/z8dKgwZWgMEgYhiM+h6/rLxBh+GuZdVmpGY7biNL4=;
- b=V99xc8nR1IBBGKVWmCHaM3MUQEO1CwLUXHWt3K/i1AisRieDFS7vxNxklqBc5EbFcIwzcGqDlCz5jskUZm4tCPQq3O4qd9oWuwHRgG/xBuqYSNrVQ9bsRX7SrYzwiGZhesIM60WHJ+NXkjYgXypXdlw4u773LVQC+uDsEEp6fkeGeczohWTD7pcSDMnN1DV4OpYzEDBG3j3jJWDA+VI4D+n+XWW9ziX3cIKSvRVuzMCd1dw5oB3jwN96/B8aWFI1gVturSsdAiaUr3giCEM+y8HLW5VBjDXD+iwbbfxkOuS4LFL1C+abcGTUy5/6lLp+8I05V+zg/xZNYDU0RVnHtA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by DS0PR11MB8113.namprd11.prod.outlook.com (2603:10b6:8:127::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.19; Fri, 13 Jun
- 2025 03:06:34 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8%6]) with mapi id 15.20.8835.018; Fri, 13 Jun 2025
- 03:06:34 +0000
-Date: Thu, 12 Jun 2025 20:06:30 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: Alexey Kardashevskiy <aik@amd.com>, Dan Williams
-	<dan.j.williams@intel.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Xu Yilun
-	<yilun.xu@linux.intel.com>
-CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>,
-	<gregkh@linuxfoundation.org>, <lukas@wunner.de>, <sameo@rivosinc.com>,
-	<jgg@nvidia.com>, <zhiw@nvidia.com>
-Subject: Re: [PATCH v3 12/13] PCI/TSM: support TDI related operations for
- host TSM driver
-Message-ID: <684b95b6cfe92_2491100d4@dwillia2-xfh.jf.intel.com.notmuch>
-References: <1bcf37cd-0fc4-40fa-bcd1-e499619943bd@amd.com>
- <yq5ah617s7fs.fsf@kernel.org>
- <5d8483bb-ceb7-4ef3-920c-d6286a7de85d@arm.com>
- <683f7b6fec30f_1626e100ab@dwillia2-xfh.jf.intel.com.notmuch>
- <53c7523b-5cf3-4047-831f-12e0422cdf5d@amd.com>
- <683fa6f622abb_1626e100e0@dwillia2-xfh.jf.intel.com.notmuch>
- <683fa76214ebf_1626e100e1@dwillia2-xfh.jf.intel.com.notmuch>
- <60812b1e-d01b-40ef-9e59-c6ab970e17e2@amd.com>
- <68439c325a714_2491100f2@dwillia2-xfh.jf.intel.com.notmuch>
- <dcd28de4-010d-4919-8db0-64e807726ad1@amd.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <dcd28de4-010d-4919-8db0-64e807726ad1@amd.com>
-X-ClientProxiedBy: SJ0PR03CA0287.namprd03.prod.outlook.com
- (2603:10b6:a03:39e::22) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gNcyl49X"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1749800185;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=g/KSy3wr0YzCsYvT1z88yXOYsPTy06KTgQEl479p0xk=;
+	b=gNcyl49X6q8mWR0e1B1WIGA+fvgrxCJx1T6ne5ICcWoucaZrG3SURakEjeZZOyMPAPSRvF
+	JcvwxT3W7/lJ88yU6102g7tAiLgqcehrmwtf0F2fw1xrlfRrB9GoPg8GgyYt6NuBDnuI9Y
+	kCNYOZh4BSXYl8RdvxwqfwfgzPoaKJo=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-160-DMAG5lsfM0yUmhp_mgfVfg-1; Fri, 13 Jun 2025 03:36:22 -0400
+X-MC-Unique: DMAG5lsfM0yUmhp_mgfVfg-1
+X-Mimecast-MFC-AGG-ID: DMAG5lsfM0yUmhp_mgfVfg_1749800181
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3a54a8a0122so824928f8f.2
+        for <linux-coco@lists.linux.dev>; Fri, 13 Jun 2025 00:36:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749800181; x=1750404981;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=g/KSy3wr0YzCsYvT1z88yXOYsPTy06KTgQEl479p0xk=;
+        b=pm0irKJfrjafsbLvavQWHAM+lqCO8Yiq6rV5cJ8sJEV1lcnQHlav7eDg+iYpY3Z6dQ
+         13yq9eKsOf3HZ0tl3FLEk0RrrPXJoJhuXWeGHY8R9Z/GReGjtUgENS3PCZhJqTpTm3na
+         d9NZqTAzKeJRDRrWyeT/U98gvlp0BWErAlGwCPzgDoJL9juMBgmd9xIawk53mSnpIoN8
+         m0gOvO8DvliJrUjB6+5jCL+3mYEbjdLaNFNdmBSYBV8wBcTHHroaJgom7nIcFz1HsKtk
+         XFqf6+rpYACnTFv3+KXuBD0WA6PUeOfl/2oiiwYnfCKvne6DvsHgUHwyfEo+x8O/5S6Q
+         yQHQ==
+X-Gm-Message-State: AOJu0YybIdsvJOjIk6FY7GgZM8kBXv8Ma/LBiqcGKAETi/ZG/6c/t2++
+	6pgzQvnjMhYllxnmfTgOt0irXoo4eCiOpo8yq7LVjkalfXn++DvdBGMTCWORIwCfICi2/5Qa2Yd
+	9tFk19MF0ged8Euh/LqvcdFfkMT3DQ1ve80wLKudTei2pGn/pmtglzuZlMI4ipK8=
+X-Gm-Gg: ASbGncupGREmaKl5Re8H7uI2f/9ieRq7rWpcRf8eXuQKueYoEFs9qoD7+odo12Dr4Eq
+	zljdBK2Wx/6BIcurrYnr8wbglEdveq560xiCBejwUspKRESjNVvwAE+IzVdZsRZV2I0tc9wFH+q
+	mRzsfZC7QMpil2Oi2+MY9s+P0H/1TOQTkwftJ9fbdfXfVHhIXnDZTmGBZTndXEgMo2HGJDpgiIc
+	m9/G7p9S2sC8W5DcPgOjzMQAwWAL+Qli9q2MbrfiXghsjJk/yVI20j3gz2QHb9YtijVNjvbb+oe
+	xDThwrhUYO+YmaEfluKU417aGF0P0XkWnLlPXZfZxPk3j6zOnxMRxRsMo6EWoOthBvL1mZJsAhc
+	Ysexvz8ZoeRLesm5ErlrA95maaMX3opXpU+0SY4bCN+cR00a7Ew==
+X-Received: by 2002:a05:6000:200d:b0:3a4:dd02:f565 with SMTP id ffacd0b85a97d-3a5686e46dcmr1695332f8f.3.1749800180760;
+        Fri, 13 Jun 2025 00:36:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG3E5xAucf59QCGzaz7TSQ1Q2JsqiFiIEKcGbgyzY70RtwYOnTLFta6yG1DaZATOftTdpFeSQ==
+X-Received: by 2002:a05:6000:200d:b0:3a4:dd02:f565 with SMTP id ffacd0b85a97d-3a5686e46dcmr1695304f8f.3.1749800180358;
+        Fri, 13 Jun 2025 00:36:20 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f1a:3700:2982:b5f7:a04e:4cb4? (p200300d82f1a37002982b5f7a04e4cb4.dip0.t-ipconnect.de. [2003:d8:2f1a:3700:2982:b5f7:a04e:4cb4])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568b18f96sm1535136f8f.66.2025.06.13.00.36.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Jun 2025 00:36:19 -0700 (PDT)
+Message-ID: <12f88382-e1eb-4e40-9e47-dafb79a7f102@redhat.com>
+Date: Fri, 13 Jun 2025 09:36:18 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DS0PR11MB8113:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3a8bb9a5-5ebb-4176-9abf-08ddaa274d8b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?3Ihmdsx7HoLN8mC2zjOUAtrjjgB7UFSDcE0yta0OglI5Ue+71YC2J6U43eou?=
- =?us-ascii?Q?ln8mQZVTJPAlXggea8CHovXWtateEE86NXm1Yo44t7DRSzhDLw4TYYW39L0Y?=
- =?us-ascii?Q?k8JdiSsuGi3z8rkwK/UEJUQNsQA3OmPXCOFbhAgrpT2fXuqolhoA6v+BM90+?=
- =?us-ascii?Q?aB9pM4wSpODCB2z0dC6E/lroB32FijKjlE9mK4jP+F9U/YfHtVoxuA+vcWfY?=
- =?us-ascii?Q?D0J3RPe9eWCikMppoUfS6Sox9MrufTBqYV3vwhxVwcoHj3p17mM1hxPslSqj?=
- =?us-ascii?Q?JRrIjCQ09Pn0R1iBiprOkVoca7Rbtcrt40PUiwtZtN8nK9FY4e5TYMjJHqGC?=
- =?us-ascii?Q?nVJHjHdatz6P+5TJ7u3ncb3hSBsIt+Fu38j/GFyFoVb0F3QcNXizciTxF4Nf?=
- =?us-ascii?Q?VV3QyuWdUeBdLkPtQYUOa3+gC9CTgsZ544i2dubkdkO5vaDJyAuLTnSfVNlc?=
- =?us-ascii?Q?tm2Jb84PT34RDay9bXva5hSr1lnTCJxXyXxD/eKZ2/AJ/xISZk/OBhI/BWj3?=
- =?us-ascii?Q?w37fKXMpCF8J0yZyD0BWUGiCe/dtV/ENs3FL/Ou+bVu3bbzUKXBmlD+EX3eN?=
- =?us-ascii?Q?9XgRrSvjWA9U5swSW1X316anvJIj3fZKCaezw1Mm5zEGe2VJjmL4PSm+0Jkz?=
- =?us-ascii?Q?3G4ZSJvjCnSOZvXDR0zAj1cvo3UmV61NjzCQcpLP23ScKgfD2GMq484nCY/F?=
- =?us-ascii?Q?ygNHU6NZ5/Mh0fmeTNZ5x6y2edR9VsfO2Ih9Dg88Y9yjLLHgR9QX+L6cnOPe?=
- =?us-ascii?Q?hjMOCt3H3W8DFnEO8/b7SZjkxaLiXMxIWb756mOGNwmd29QuGTjDEzhf0QJz?=
- =?us-ascii?Q?kWkbkORVpoEd5/gY7dwT84npEJJ7v02dXs8/L1ZkLMXqpxMSaF3s1db26zF0?=
- =?us-ascii?Q?bf1Gu6FIeD/554LvP1zLFsgs0Ru7KKFRHDvpfR97ExxUBJ6ngsldNc+TiUGZ?=
- =?us-ascii?Q?qbqum8EIUcar9BqmBUWEkB391qbXtPyZNfeyzFGHSanN48TiIkezB25fdXvT?=
- =?us-ascii?Q?lDlgGJGUN14aC3l8zPTYxzcUbBZ3UPblIsYKP7DOpvCJrSJgo1nrsIObiSOJ?=
- =?us-ascii?Q?IONZtbJunQNnmica8/3+JyE3c9e9gYrL4K09B+WqjU8VZ3ZAO4hHEI0VFv5l?=
- =?us-ascii?Q?BcahHl0uf0BZAVsUQpAt/69BRbEcaVw0roux5OFKd8e6U/N3dG66qdxedzO+?=
- =?us-ascii?Q?aAo9ZqRPcw7xVjh52t3CDFOqQfcN2VHtd+F3VL6qaPhePx/rPoij4/RQRqVI?=
- =?us-ascii?Q?mQysaqqZzM8a7TnvCOa87ZWR0PB4INkrL1xr6in+LVPFyHgUQMg/OY6aot0M?=
- =?us-ascii?Q?iTkSVa+CXvXiIied9McPdW4P/O3bs8b2u+WHObZvUQlORiaJ2tpsOAHnQV8r?=
- =?us-ascii?Q?tfH1GmiTQKqWkGEkSoyL7ZpZMUHMoTKAI8CUr9FMymhJ3LnmNALRqvt/2Z4Z?=
- =?us-ascii?Q?5eBp6pgM8Y0=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?5ON3pwUFI4/HdTcWRXK6eGGKxcHy8lK4EoqalXOdNXcXqwu+YBKvDG8Ms4f6?=
- =?us-ascii?Q?XYRf4Siog03twwCDcyN+5EsFnf6hCbHQMP2YUmjLqbEU9yreO3p+357L0SF5?=
- =?us-ascii?Q?pkXtEbBG5YoBsRcCyFKPkOgKsqHFRAnYgJh/UEH1jDRxs7uIGddj0/PCMyX4?=
- =?us-ascii?Q?OxqsXSqVydyBT7AUlcdOisf4jQHoH1A5OhuQNBSPGr64xTorqA1k15kAR+Ur?=
- =?us-ascii?Q?F+Y3Mqn/iDWLxfoNDXCSPdhovIsyeyxKOEAS5naiSA+oAn1oL+TnajPiByiN?=
- =?us-ascii?Q?KUKCX/bzOimtPqF7wC8rQZErNVteUnsZpdLt2OS0sTINNSeuNbFRo73+zXlO?=
- =?us-ascii?Q?cic9MKP6RFnVlwvL6vi+/OPk76TE0GJSndBAdfLzkINup7EzVxjoI+W0yJ6H?=
- =?us-ascii?Q?DtTrLl9yzISNvoYXXjqEBK2GqvvTqFnFKsscbC1ydULdojKGByTwkNGU/2d0?=
- =?us-ascii?Q?zah58egpuyvtDofYeStpKp0Y448aS0zDLurvix5lkV7ha8OMGzvSGH81kL4N?=
- =?us-ascii?Q?7p1+57T++ZcDqwF6HDwk9kOMPnFHPBGboln55/j3PJtm8nCMtNcnxjlZ0qbG?=
- =?us-ascii?Q?TGlyRRkLPrp18ckHSfC835mnyN6BbjavnkjBm6P/xWsAMx+n2OurUmRMFkyP?=
- =?us-ascii?Q?R+3iyhYRi65ff02oGdG1DP0NGyG4Lh57b4uFI7GteumYlWYODl9WhVCW/yg3?=
- =?us-ascii?Q?IOgdlphH3AJpQM83Now1YnVLQoJECAE00NPLcCTzDd3/74Ls3Ruo0rLyYfKZ?=
- =?us-ascii?Q?4tDIUrRNhgFaBazhs9vGhw+pw/Fjlw+rG3Qc5v/Spdl+InAhkxcMrYwvUtWt?=
- =?us-ascii?Q?vsInkhRSdAn8NuQQfVe8o/5JxbUTY/cWQgqxC48Cp86PQB6MDII8xQ11bGwF?=
- =?us-ascii?Q?FL54Y0WQYIGFKE5cl3BzCn2bwhUEq1I/VGV+AMPrn/YsdaU08GM2qXSoGLDv?=
- =?us-ascii?Q?JvrVmk5FlLIArfFRt1IRXofDuZmJWMwDzrYBhSHtpjeM7ouqiye2149bKncy?=
- =?us-ascii?Q?4uzuDMVSTxcB4M6GeEFanXoHbUSC1x0h5q2PYRolW3hqNGZzipspvP5twFd1?=
- =?us-ascii?Q?aXJNA/x3qo7dgZr6voPlbKIWoopNI6k9ag5Tm7p/3dZGllogt8I2OPCAT+h0?=
- =?us-ascii?Q?4CIT3t2oxDn5VhUXNrbwmo/1vcacIQmGW24TWb9xa9a3kmt225FQmhkE1gOv?=
- =?us-ascii?Q?7oOOEBIVGr13aIimNe+UkJBCRYaRRPYWvHrsxAnmkmp7Zs8hOcfcLhQ/B5dL?=
- =?us-ascii?Q?O6sEmJzlxcfdHPMF1iZVhTgp9QaqG2SZ05Y3iSyCqeV4/F7TfqHkEXpxSVjO?=
- =?us-ascii?Q?NJ4CaIakPxQpsBltGq27Z8W7mh/zVvA1oCo8aWA16IOfoZrqu1A+1zSaXPAI?=
- =?us-ascii?Q?/fmZOtv5nMaa/mYaXvkMbVr3O63w1o9aO7gYp3Ig8AnjTtj7J94Iqapxd+RR?=
- =?us-ascii?Q?rSfOnLzRFoNnMXc0ZQUV35HxqEgvbIVRfFFaIQrgcYEKdRYzAVWrkhHHeTVQ?=
- =?us-ascii?Q?Vj0hyp9lkfqbamTBTcGck77BxwBN0K1fKM0GEcG/g/KV92c9LGIYNy9dGBg9?=
- =?us-ascii?Q?QBWjiqXee+8htHcr8nBDvVpQAxPKGQ7IWOfgGt5QlyFNJx0Ye+hVGkPEMgID?=
- =?us-ascii?Q?Vg=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3a8bb9a5-5ebb-4176-9abf-08ddaa274d8b
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2025 03:06:34.1642
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uGbbdbAIMtLwwZdBW7davbKvZTmximgk29iZ5BJHZyEWbRzW4mdZDxGOUVMdM8wqQgLWOvzt5dFvJzn0QFnENpyIjOZxB/YR0ePjqbTP+IA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8113
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v1 0/5] KVM: guest_memfd: Support in-place conversion
+ for CoCo VMs
+To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
+Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, tabba@google.com, vannapurve@google.com,
+ ackerleytng@google.com, ira.weiny@intel.com, thomas.lendacky@amd.com,
+ pbonzini@redhat.com, seanjc@google.com, vbabka@suse.cz, joro@8bytes.org,
+ pratikrajesh.sampat@amd.com, liam.merwick@oracle.com, yan.y.zhao@intel.com,
+ aik@amd.com
+References: <20250613005400.3694904-1-michael.roth@amd.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20250613005400.3694904-1-michael.roth@amd.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 419QSjcYb1T_z9NsXzbCSdjYgnWe1W_Yw_ayCYPOUCA_1749800181
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Alexey Kardashevskiy wrote:
+On 13.06.25 02:53, Michael Roth wrote:
+> This patchset is also available at:
 > 
+>    https://github.com/amdese/linux/commits/snp-inplace-conversion-rfc1
 > 
-> On 7/6/25 11:56, Dan Williams wrote:
-> > Alexey Kardashevskiy wrote:
-> > [..]
-> >>> but the point is still that we
-> >>> have not even got one implementation of a bus Device Security protocol
-> >>> upstream, let alone multiple.
-> >>
-> >> And my point is that TSM does not actually do anything with PCI except
-> >> SPDM/DOE which can happily live in a library or DOE (and called from
-> >> CCP or TDX drivers) and the rest can be just "device", not "pci_dev".
-> >> I wonder if+how nailing TSM to PCI makes your life somehow easier, it
-> >> is not going to help my case. Thanks,
-> > 
-> > The goal is not to solve Alexey's case, the goal is to solve the TDISP
-> > enabling problem in a way that all impacted subsystem owners (PCI,
-> > Device core, DMA, IOMMU, VFIO/IOMMUFD, KVM, CPU arch/...), and all TSM
-> > platform vendors are willing to accept.
+> and is based on top of the following patches plucked from Ackerley's
+> HugeTLBFS series[1], which add support for tracking/converting guest_memfd
+> pages between private/shared states so the same physical pages can be used
+> to handle both private/shared accesses by the guest or by userspace:
 > 
-> Right, so I need to understand how this TSM makes your life easier.
-
-The goal is make other subsystem owner's lives easier.
-
-I read Bjorn's ack as "oh hey, you added new PCI/TSM functionality in
-the same way all other new PCI device capabilities get added with
-lifetime bounded by pci_init_capabilities() and pci_destroy_dev(), and
-the sysfs attributes follow normal PCI device rules too". I also expect
-I have an implied ack from Lukas who also does the same lifetime for
-native authentication.
-
-Now, they are free to change their mind if new information makes them
-rethink this, but I have been operating under the assumption this
-question is settled. I read ARM folks as tentatively on board as well.
-Greg did not balk yet either.
-
-I expect other subsystem maintainers want to see vendor consensus before
-weighing. "Ongoing debate" almost always == "wait".
-
-> I did show my complete solution, still waiting to see yours or any
-> other really.
-
-This is a fair criticism and I hope to share more soon in the meantime
-Yilun and I have been working on the skeleton pieces and samples/devsec/
-to unit test the proposals.
-
-> For example, DOE bouncing.
-
-The tsm operations and bind have been taking up all of the focus. What
-are the specific concerns around DOE bouncing proposal? The only
-criteria I currently have in mind is:
-
-* if there is common boilerplate lets make that a library helper
-* a TDISP operation / state change should be atomic regardless of how
-  many DOE messages are involved.
-
-> > "TSM" is literally a PCI-introduced term. It comes with a full
-> > device-model and state machine for a protocol that we, OS practitioners,
-> > have a chance to agree what it means. If another bus wants to do "Device
-> > Security" ideally it would map as a strict subset of the TDISP model. If
-> > / when that happens it is easy enough for userspace to see "oh hey, bus
-> > $foo now has tsm/connect and tsm/accept mechanisms too".
+>    KVM: selftests: Update script to map shared memory from guest_memfd
+>    KVM: selftests: Update private_mem_conversions_test to mmap guest_memfd
+>    KVM: selftests: Add script to exercise private_mem_conversions_test
+>    KVM: selftests: Test conversion flows for guest_memfd
+>    KVM: selftests: Allow cleanup of ucall_pool from host
+>    KVM: selftests: Refactor vm_mem_add to be more flexible
+>    KVM: selftests: Test faulting with respect to GUEST_MEMFD_FLAG_INIT_PRIVATE
+>    KVM: selftests: Test flag validity after guest_memfd supports conversions
+>    KVM: guest_memfd: Add CAP KVM_CAP_GMEM_CONVERSION
+>    KVM: Query guest_memfd for private/shared status
+>    KVM: guest_memfd: Skip LRU for guest_memfd folios
+>    KVM: guest_memfd: Introduce KVM_GMEM_CONVERT_SHARED/PRIVATE ioctls
+>    KVM: selftests: Update guest_memfd_test for INIT_PRIVATE flag
+>    KVM: guest_memfd: Introduce and use shareability to guard faulting
+>    KVM: guest_memfd: Make guest mem use guest mem inodes instead of anonymous inodes
+>    fs: Refactor to provide function that allocates a secure anonymous inode
 > 
-> Quite a chunk of it is in the SPDM specs which have all sorts of bindings. No strict PCI.
-
-Agree, but most of the interesting potential for shared code there is
-buried within the TSM implementations with TDISP we mostly sit behind
-TSM calls.
-
-I note that Lukas has spdm common code in lib/spdm/, but all of protocol
-work there is not usable for TDISP since TSMs run that protocol.
-
-> VFIO started as PCI and look at it now with all these platform and mediated devices.
-
-Yes, and VFIO still has specific support for PCI semantics... but the
-meat of your concern is below.
-
->   > Just like the evolution of the "new_id / remove_id, and authorized" bus
-> > attributes, other buses add workalike functionality as a matter of
-> > course. Other buses can add "TSM" mechanisms to their device model,
-> > "TSM" is not a device model unto itself. Similarly, nothing stops
-> > 'struct pci_dev' properties to be promoted to 'struct device' when
-> > needed.
-> > 
-> > I note IOMMMUFD has the bulk of all the interesting cross-bus shared
-> > work to do here and it already has a generic device object model for
-> > that purpose. It is another example of "extend existing objects with
-> > 'Device Security' properties", not "add a new tdi_dev object to manage".
-> > 
-> > I am frustrated that we are still spinning in this philosophical debate.
+>    "[RFC PATCH v2 00/51] 1G page support for guest_memfd"
+>    https://lore.kernel.org/lkml/cover.1747264138.git.ackerleytng@google.com/
 > 
-> That's because I did not do very good job explaining my TSM, my bad,
-> I'll do better, it is too bloated now, and violates sysfs, and should
-> integrate with Lukas'es work, my bad.
-
-No need to apologize, this stuff is complicated and I needed significant
-changes from v1 to v2, getting better for v3, but v4 still needed.
-
-> But having this all in a single built-in (1) with PCI nailed down (2),
-> globals (3), one tsm_ops struct for both host and guest - this
-> frustrates me.
-
-These are good review comments, and need to be addressed.
-
-> (1) means annoyingly many reboots vs rmmod+modprobe
-
-Once you buy the idea that a PCI device capability should have lifetime
-bounded by pci_init_capabilities()/pci_destroy_dev() and attributes
-defined by pci_dev_attr_groups() then the built-in design comes along
-for the ride.
-
-I do not agree that this near term developer ergonomics issue, for this
-core infrastructure piece that will eventually settle and be slow moving
-thereafter, should affect the long term design.
-
-That was also another motivation for samples/devsec/, i.e. stand up an
-environment that can quickly target different corners of the TSM stack
-by restarting QEMU.
-
-> (2) TSM does not IDE (the platform calls the IDE library) and does not
-> do DOE (the DOE library should, called by the platform)
-
-The rationale for this organization is that IDE is not required. TSM may
-have knowledge that the link is secure by other means.
-
-> (3) bites every time when there are development bugs
-
-I take this as par for the course for PCI capability development. I also
-expect the bulk of the development complexity to live in the low-level
-TSM driver, not the TSM skeleton.
-
-> (4) leads to ugly "if (tvm_mode())" checks and bugs (when missed), been there, done that with my first TSM, did not like it.
-
-Fair enough. I will take a look at replacing tvm_mode() with guest
-specific ops structure. It likely still ends up being the same ops
-signature though.
-
-> 1/2/3/5 are not necessary, do not really make anything simpler and
-> most likely will requite untangling later.
+> which is in turn based on the following series[2] from Fuad which implements
+> the initial support for guest_memfd to manage shared memory and allow it to
+> be mmap()'d into userspace:
 > 
+>    "[PATCH v12 00/18] KVM: Mapping guest_memfd backed memory at the host for software protected VMs"
+>    https://lore.kernel.org/kvm/20250611133330.1514028-1-tabba@google.com/
 > 
-> Say, there are assumptions already made for IDE which I believe we do
-> not have to make (like, same number association blocks in all streams)
-> but it is internal IDE detail, can be changed later if needed, but the
-> API is sane so I am ok with the limitations (thanks btw!). But the TSM
-> just is not there yet imho. Hope it all makes sense. Trying now to
-> move to v6.16-rc1 + dmabuf + this series as we speak
+> (One of the main goals of posting this series in it's current form is to
+> identify the common set of dependencies to enable in-place conversion
+> support for SEV-SNP, TDX, and pKVM, which have been coined "stage 2"
+> according to upstreaming plans discussed during guest_memfd bi-weekly calls
+> and summarized by David here[3] (Fuad's series[2] being "stage 1"),
+> so please feel free to chime in here if there's any feedback on whether
+> something like the above set of dependencies is a reasonable starting point
+> for "stage 2" and how best to handle setting up a common tree to track this
+> dependency.)
 
-Which dmabuf series are you trying to integrate? There is yours,
-Yilun's, and Aneesh was looking to publish a third.
+If nobody else volunteers, I can soon start maintaining a guest_memfd 
+preview tree. I suspect a good starting point would be once stage-2 is 
+posted separately.
 
-> so you'll hear from me soon :) Thanks,
+-- 
+Cheers,
 
-Sounds good, the whole goal of this is get to the point where 2 vendors
-agree and they can drag the 3rd vendor along.
+David / dhildenb
+
