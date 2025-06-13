@@ -1,46 +1,46 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2060.outbound.protection.outlook.com [40.107.92.60])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2067.outbound.protection.outlook.com [40.107.237.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F852AE6A
-	for <linux-coco@lists.linux.dev>; Fri, 13 Jun 2025 15:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.60
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7026F226533
+	for <linux-coco@lists.linux.dev>; Fri, 13 Jun 2025 18:19:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.67
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749828002; cv=fail; b=t+AXiiawMYvQwMwx2wBaFUdaLVog6jWBhZyWh1v2HxxUwdR3ab/fe2dm8DFplcnahMIbyTVhsoqxq5KAKQ0CHD8dYbABruvAQjV6oYXVaIA9Cu6hur5fUkx/IotH2qhIVD+yOZkvRkBwseC+qfRdFUJATxTmwKWeoyKCYYbTOMg=
+	t=1749838769; cv=fail; b=dAcsIduhmuoIzFPvug1UaBC4jDvwTXqCTnis/KjmsJLTW0FYMmLanO85Rm4zGlXaAGeBIgrDW5jtWGY6EczVdszP3ROqmlFx5r/rB5+OXZvuK1UH37wkH3trD8rm16xXMDrnkb8T1JRj1iZst22jcKt/TqDqRYlum0gsaEZAbAI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749828002; c=relaxed/simple;
-	bh=ICNhM6k6XGXC3ab+Ksj+BuY+Js0jqB3oyMq6/3ibCwo=;
+	s=arc-20240116; t=1749838769; c=relaxed/simple;
+	bh=1GlvbF+yM23stPpRWVNcC0ZCEJ7VAXXms2WrPxWWCgE=;
 	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fECWiwBmKQ8DTDebTpucyCe8L6gSnnpcTiud/AflNjxkB0D+aihgi3wQCU9jGyrC6QVo0cpEUbsSZB/YRFbkzHFZAJZ87ywZ8runqN1cpKcnMznkUJzlHeYS+rduiQ8SiXvnRcqDXw6/oNUo2Glm4pIj0yPesiSutInXTtTIyFs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=gTmle8mS; arc=fail smtp.client-ip=40.107.92.60
+	 Content-Type:Content-Disposition:In-Reply-To; b=swhXvz/RHZdjT7apX/3WDlGWzI2TPMVGPUnNxVO9E68Na5gG7DZYRpxKLanAAgCVVnkbV2Wb0IolWy/9oO2l2Fr/Evampx8Ftfkec534naTlAacRRIaOVXpLo4jXBWLqTNSU/INr19XUntCdhNqTJ5rCFwSmX2S/hMe/Ls/zfUU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=UGzZ9+AJ; arc=fail smtp.client-ip=40.107.237.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="gTmle8mS"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="UGzZ9+AJ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=O5I3JUeMS7vjOATIjl70gbmF3kKmTb3kV2IHd6YfmJNWDoi3Xv38ZVW8MxBhismzPvgOVJ2zBdDOHstquajFxBDC1qpsnM2tHH/i6UOWHNDUwhSydHq4bmoRs1wTsBg1FtbPn+YWB20c9M84EYCYV8gd7dZkAmmdVXcXk1V13Wm5AJHSFblRNHAIkZvfXf7F+na0uLjiJiqkcMs0egztd01scKus9Gi0Bh6b4ouXmV0dqTPuidMxHR7bySQTSojWvRjyxXZz6aXS+8jvWDC8mafsRfpLVpn0uELkRsKSdOl9xtbLryWN7qYm+ICCLog5spADOxxx8N8UbUTM4dE9kQ==
+ b=r4jIDHBPanjgpMVcigvEljnNjhEt/mdYRAGzkHx69w/Xok8thT20Qzy9Id1FdvqfY1j0XuJcDUB2k2TU/vOJ+gh01iYQMYfXSniQnZeTQFk7/gwts59rQG62iEdrQTai/bXHqwMXwuwdH0wCAoDTAuip/U9JwOJ1OBEIVdp8AD5efxl7i6Y+65nG6kIX4Lu9HlNlVczzoX09YcQrh6oKdnjObv7feSZlYUkF9gr6o9itU1ZTYt1uzWMtRsLL7M/D5qYd57Av2lkcutZHLKhYYS4CmCVaI9xaxLV7m9i64kNdkR3pnJxYe1tHuQgpyrgzbFdbiaJT9iWHYUZi6GiRQg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yvDP22/KhmHZzaLFesYb3B6vjlX96/ryyvxUQEMijSo=;
- b=vqOzXJnutwbm7OA7mHKgEe6o3aj6CJzp7uWxWDOqULD13xnVbhLJBHgcWNyOBlv6H0ATPmBDm/+ZwReVsNcYaOHvah+RK/9KfBmpsneskbMNNa7FkJYuE5qbZCmsjPBZNmubSHX+Mck/jTTFrDWvGMHQHFdCPGDuT0+OKIbVDsd86iHNMjvCNf8UW+IXf6Mr513Cz7TclEkhV6jbS0rYX6cz4fyimrwAVpid6CnRItEnkWOXxp3LKq27SvBjt9KC3GGd2FMRZTipHUFvK0WVv4NbpYX1PEZRRTRoeXkLeYHybRn6ehR46oDVlJoWsH7gF2rhXVoDtFhosUIjxgpx1w==
+ bh=NunCWsZ8g98NT7HDjOKbzLSxfKfURUs2krrU53k959g=;
+ b=Q9mdVjmUKXoQVw7s12tzvVFIHwAFsV9t7Y2d4GQbKVNxtGFe6qK3d6SlgKmgP1QvQUmLvI3wEP+g3Tl2r8+rBaCbt55oxFcD4sEH0t7HZ5mGz9UvtGOV+FzuwUuXjmfYblxNlXoLN8GaIBjHJ6JW0c1OYOc89M4+jGXgMg1V4FxmelsGqzJbe7M0jRVa0BQyTe+VMD0Hmw+WNCZ9xRfJkZwNPsZ7kxEEYHATnhsG2agQJTXCDQDAPYRFVG86lIADWmqYFNKCRu10gLC2XSJJM0iTHDLNKDlrnAkIZGSMlzUHZquYnro8XPRetbt8FzWlK4nQYKmK3dfI7Q0rSwUW1Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yvDP22/KhmHZzaLFesYb3B6vjlX96/ryyvxUQEMijSo=;
- b=gTmle8mSwqM21W0yBxVByQHGRALIB+awm2AOrT9TgLARKF5eek8yEWqRJ20nYJlxmmk64xpOPkW+NLYrZ0Q+w1Mob1ML+PKpsCDcuWwlDM+dBlM/4+1HilG8MW5ZVQsDmIJt5OhvNPLR9efe8HYXrbXfcPm5RYBOVtXfwyAMinw=
-Received: from SA0PR13CA0006.namprd13.prod.outlook.com (2603:10b6:806:130::11)
- by CH3PR12MB9453.namprd12.prod.outlook.com (2603:10b6:610:1c9::12) with
+ bh=NunCWsZ8g98NT7HDjOKbzLSxfKfURUs2krrU53k959g=;
+ b=UGzZ9+AJ3QebMBepLqAjxBVfGCU+tv7kFWwYbtMSq1UM5mMMoDc8mD4RT4Q3vO8uWg3FkiWVJ/XoYp41OdHonT2Gh55N/SFHnwmDgocyBPPPo5OrOVejEbiSgGLgC3MZgMU7SlyRxs7Xg2OuiFyBTT9sXElsA1g4xKYJctmIaCI=
+Received: from BN0PR03CA0020.namprd03.prod.outlook.com (2603:10b6:408:e6::25)
+ by PH0PR12MB7863.namprd12.prod.outlook.com (2603:10b6:510:28b::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.25; Fri, 13 Jun
- 2025 15:19:56 +0000
-Received: from SA2PEPF00001507.namprd04.prod.outlook.com
- (2603:10b6:806:130:cafe::76) by SA0PR13CA0006.outlook.office365.com
- (2603:10b6:806:130::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.38; Fri, 13 Jun
+ 2025 18:19:22 +0000
+Received: from BN1PEPF00004684.namprd03.prod.outlook.com
+ (2603:10b6:408:e6:cafe::6) by BN0PR03CA0020.outlook.office365.com
+ (2603:10b6:408:e6::25) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.25 via Frontend Transport; Fri,
- 13 Jun 2025 15:19:55 +0000
+ 13 Jun 2025 18:19:21 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,14 +48,14 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SA2PEPF00001507.mail.protection.outlook.com (10.167.242.39) with Microsoft
+ BN1PEPF00004684.mail.protection.outlook.com (10.167.243.90) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8835.15 via Frontend Transport; Fri, 13 Jun 2025 15:19:55 +0000
+ 15.20.8835.15 via Frontend Transport; Fri, 13 Jun 2025 18:19:21 +0000
 Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 13 Jun
- 2025 10:19:55 -0500
-Date: Fri, 13 Jun 2025 10:19:39 -0500
+ 2025 13:19:21 -0500
+Date: Fri, 13 Jun 2025 13:04:18 -0500
 From: Michael Roth <michael.roth@amd.com>
 To: Yan Zhao <yan.y.zhao@intel.com>
 CC: Vishal Annapurve <vannapurve@google.com>, Ackerley Tng
@@ -67,7 +67,7 @@ CC: Vishal Annapurve <vannapurve@google.com>, Ackerley Tng
 	<liam.merwick@oracle.com>, <david@redhat.com>, <quic_eberman@quicinc.com>
 Subject: Re: [PATCH 3/5] KVM: gmem: Hold filemap invalidate lock while
  allocating/preparing folios
-Message-ID: <20250613151939.z5ztzrtibr6xatql@amd.com>
+Message-ID: <20250613180418.bo4vqveigxsq2ouu@amd.com>
 References: <diqzjz7azkmf.fsf@ackerleytng-ctop.c.googlers.com>
  <diqz8qmsfs5u.fsf@ackerleytng-ctop.c.googlers.com>
  <aC1221wU6Mby3Lo3@yzhao56-desk.sh.intel.com>
@@ -89,60 +89,61 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00001507:EE_|CH3PR12MB9453:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0cdd485d-b094-4e84-392c-08ddaa8dc0d5
+X-MS-TrafficTypeDiagnostic: BN1PEPF00004684:EE_|PH0PR12MB7863:EE_
+X-MS-Office365-Filtering-Correlation-Id: 68270619-fed4-4921-28bb-08ddaaa6d1ac
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|7416014|376014|82310400026|1800799024|7053199007;
+	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|7416014|376014|13003099007|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?eVJFeHQzMXp2VnNraVNBU2dUckJOMXNmR1V5eXFHNUJJcFBCekI0ZmhSY1FE?=
- =?utf-8?B?ZUJDd0toMlZIckUxTVNtSWE3UjM5OTY2T3crNStSMVVHM1hOOE9CU0dVMDJl?=
- =?utf-8?B?bkcraCtDeWNJbVcxODdiVHZYY3F5THUwelN1YVdiY2tQTDlGNmk2b2c4QWlL?=
- =?utf-8?B?NTFXOEV1T0gzdkhVMXpIUjZ1QktzQlVZTFlqTkxuSmc4c0w2THVhUFZHanJl?=
- =?utf-8?B?Qm5FSEdVMHV2cll0cDdEb2JNeEpMTVZGNWE2UTJsZFpsOVZPaDVGaFFEeThn?=
- =?utf-8?B?L1ViczJNb0xHcjVnOHcySW90Z1NxcGZneEx3dEhLcGFuTjdJWW1ZZTI2SXh5?=
- =?utf-8?B?UWgvYlo0ZHFkbGdmOUtSZkNaYS9CblFtMDRXcml1b2wydTg5THlQV2Q0aEpC?=
- =?utf-8?B?R2E2cTZLUkJheG5WY1dvUzFXK1k3eG9JVXF3MTZwbm81T2FUbnJuUy96Y1JB?=
- =?utf-8?B?UHZrcGpva2xCbGExczNvVjZjL0xOVmsvOW0zNzBySWxrenZrT3ExOW5vbjgw?=
- =?utf-8?B?eUx3US9BVWQ4RXc5a2F1SEhoclB1K2tPZitQVElGN0duV3FIcW9CUkF1aytB?=
- =?utf-8?B?Q280Zkhiak9BM2pTakx2ZnVrWndrSG5EV01RVVdnUXdCbFZuUUVpVkx1aVVQ?=
- =?utf-8?B?TDFvMnRLNnBvYjA3SlU5SmRJd2NLbkJpN01OdXUrcE4xZnNjbXNtb0dYakp6?=
- =?utf-8?B?eVFZeXh6V0FUMTZpeU55WGs0SnNjYTRObzU2OU9pZnVieU90UUkrNVhHMkk1?=
- =?utf-8?B?S2gvSEY1eVdNYWRRRThZbGowb21oZGU5SWpmSFowVW1LL2NkNWlTRzVudENj?=
- =?utf-8?B?V0VGWCtyYnovTkhjZkZRaWtzcWdLTktTS3M1Z2NROTEzSC9TR2V6cFhJRUNB?=
- =?utf-8?B?WEdibnY5VC93dFF4WFJyc3A3d0dCLzlDMER5UUxqZEFCbENMWjFpdjNWZDRw?=
- =?utf-8?B?NG43WjFEYThCUXIwOEdLdU5HTjhEam9GOHNZVlFvVmJyWHJCcWxSSlgvWXpY?=
- =?utf-8?B?dFR1eG5hdjd0c2VleGtKdHBUdHBnN0doUnhJN2MyYzUyUVdXS1psNHVpdkZt?=
- =?utf-8?B?ZS9GY1B6bG9PVHJLMmZIWFVLd1JLM2pwTWx0d29jZU9hRWEzS3hsZjY3R3Fr?=
- =?utf-8?B?Y3RrVkJ1angzZEhPU1luMzg5dHdocnVYTHQzcHVJVUhQUmFQYmpaREJZbkcz?=
- =?utf-8?B?aUR5WG5CZEtrdmVVUm5WSktJbW1GZVZFdi8wTFY4NzY5QjJ3bitQTlBCYVI3?=
- =?utf-8?B?TFFHWENjaTVkU3BCREdUd0hNT2h2YzBTWFNLeTRkcjlCSzd5ajVyMXFBSEJ5?=
- =?utf-8?B?cVdTclZpQm5WRlBFVTJWMjdXY3NnR0k4Vmw4OURKVFZqTGt4Z3pyQUNodUN6?=
- =?utf-8?B?R0U1N2dpbnc3UWtLTUEyU3ZWbTVZNzZjV2doWERYRU5wOS90dStuaC94REls?=
- =?utf-8?B?Q0NFUmI2TjNwK2NNK3BRenlEaFFOd29hMTRYTklTMTcyTGVCM29TTG5qNnE3?=
- =?utf-8?B?azYyUjA3eEwvL0xBbWttWWxxR2p4NzdFTFR3alNvY3JzNE1UVVora0hXQXpX?=
- =?utf-8?B?SVpKdHJUa2lPbkNHTm5TaVduNWNzQi9selpBcTdOblJIWDNRTlFZMlNuUjd5?=
- =?utf-8?B?c1d2ZDlxak1ScU9EUDI1MWxiUldDamNoSUdLWlFPNVNjcnpJa09TT3dtdUlG?=
- =?utf-8?B?azd1Vm5ZR2NNbTBxTHRwU1EvaFo2d1lZNk5VNzVPNzMzYTJlNnpTdFRaMDdq?=
- =?utf-8?B?UC96ZWViemJnOXIrcVFiTVJSZzJhanlhMDRSREUxSCt4SnhOTG5iMll4MWhr?=
- =?utf-8?B?Rk9TOXlIbHNXQ3d0eGFlNUVzTHo4Yjd3N0RIUDd6dmpSNDVtcWViV1RmbzZm?=
- =?utf-8?B?MHNDeTdHSGFYL2xseS96UzBIbmtuZzJzRTNCRzJqR3F4QTJDVGRxbGhIb0Q3?=
- =?utf-8?B?N3cyZG03SXVlcDVLVVVzMmhqNlAzY3RSU3dENDh5TzBJdWFlZVpzQjc2NVBh?=
- =?utf-8?Q?3BX1USOVfloCtMgzsj8Ou3aPRBN1uk=3D?=
+	=?utf-8?B?TFZNY2dXcnUyam9XN2pkdjV6MVFoa1VZOWxOZXhxUUxGTHk3RjRWZ2czaFdw?=
+ =?utf-8?B?dkh2a0lwNEhaRmN4UnUveW5NKzZxczdvOW0rWEc2YUd4dVRtSklsUzgwNUNP?=
+ =?utf-8?B?R2x1VGdxK0J4YmFab0krL3NUMkNZa1VIWUlUUzBoSTlSdFFEakpwemVGdm9M?=
+ =?utf-8?B?eTVWUXBORlRpZDJiVGxBTWROdGNLaEtIN1dvYmpXNmt5SE83cHRYQlliZldD?=
+ =?utf-8?B?NjhCdnYrV1QxNzEyTmJtTTJyb3NjKzI3RGg1cVl6Z3luR0lzUFQyZ1Arbjhr?=
+ =?utf-8?B?YUdPNXpwaUJaNGxsbzRNVyswUkVSSWFBekwwNlNWZjZacEtHSHMzbG16WTha?=
+ =?utf-8?B?aUJ5ME4rU1UyWm1UazZOeEoxNG85SzNmNlltcFV0N05oQVQ0UnRLU1FyaEJn?=
+ =?utf-8?B?WlZSMjF5ZEwrZ1Njcjl6TW1HU1RRTDNHMHRkVWZqQmZ1YXJGcnVJdG11S0F3?=
+ =?utf-8?B?WG9UQW10dElvcWUyZlFpY3I0YVdTbGdTZysvdER2a3R0QkhjeDEzaytoUC9o?=
+ =?utf-8?B?VkZ3V2pnMXFzMFU0NmxJYUF4RzZpb2UxMXBFaEhDUG4yUkhHdTZLZ1pFdHRN?=
+ =?utf-8?B?T0hMT0JISC9Ca2dDSzVUdjdoOWh3ZHBZSkg0SUFzV2pEUFdsTjJqYnk0aDlL?=
+ =?utf-8?B?K0wybWFXUGFrN3YzQXBKbnZHMVJsWHBUblB0RVdrUnJpZlJrZ0hnQlQ3UXps?=
+ =?utf-8?B?RzVobXVzK1Y1ZTVYdEJKSm5RV1Q4RHZhUUNIbVo2SkQrNitZRmdXRXdQaDYx?=
+ =?utf-8?B?ZjMzUjJMWGR0S3MvSTN4MU9rK3pvVWhnWW1za2ZDR0xWYU1wWWVQcmRBNW5o?=
+ =?utf-8?B?Y2JUeHBBSnBad0ZiZmU1SUwzOUlsUTRIZ1dIeVdWcUtJcGl5WVd4ckloMzF1?=
+ =?utf-8?B?NU5nQnI2d0xMZ2xlU3dDbXdwalNBdUI0R3lUbUEraEVaeGVESkFHRTZOSlRV?=
+ =?utf-8?B?dlRSU2JFYllPYlBpR3N3MVM2UG0yMkpIdXVMTGhnbjI4VDNTaXBCSC9OTUdT?=
+ =?utf-8?B?SUxvajgyY3VrbHR4SWp5VXpuL0EyRkErb295M1lRL0QvQ2FlZjk1KzZBbi80?=
+ =?utf-8?B?K2loTEozRjBqOVF4elRhZlhWWU1TVU90dlA1NHJGdUhkMEVEM00rYXNhV3Ba?=
+ =?utf-8?B?KzVsWFZzcG9FaTJGVTVDb0Zxb0RLSGFuR1ROOTlZQTFHSEZ4Rll5Q1JOMkM4?=
+ =?utf-8?B?UEhZeUpWMHNzKzA4NXFFSTU4MDlnUWZkT3hzSG1VaFRnMXRSWjZnOUI2K0sr?=
+ =?utf-8?B?N2pkWFB4VjdVOVhONDBDUjlSMmhQM1ZlNnJmTTFWaC96cWQ5ejZmVVlPOVpt?=
+ =?utf-8?B?aHpYaEw1NlhPRW9Pc0hiWGVmR0NrZDZrbjRpYWs1NFVCbTRMVUpSaXRqUkJM?=
+ =?utf-8?B?OERKZHJLRGFWTnIwOGx1WXpDcktySFBWbmIwckVFRTB0aW8yY21tU3NmU2VX?=
+ =?utf-8?B?NFhHYkx4NGlrTUx5d1d3UlVSSk9uUVRicnZxVVZFdmQxdkt1T1N3TjBQRjl1?=
+ =?utf-8?B?akYxMUU3R3ZHd3R1MDhWOElYNFJ5Zm90c1dGbXZwMzRWUmJSRE9pMDlldGw2?=
+ =?utf-8?B?R3RKaVZ5SzlVUEhMTVJQc3BOOHg2eWIyTGZseEhSbjFqbjNIaTUrelhMN0gz?=
+ =?utf-8?B?Z3E4Y1Z4SlY4aGNmR0JURVBmeFNaZjhRK0FSL3h4QmhWQ1U1clROcDBVMC82?=
+ =?utf-8?B?Z3hwR3RCN0tUVEtVYmxwV1F4L2M1S2NCU2JpMEhPY1VYR0pSb0I5QllIMFdz?=
+ =?utf-8?B?Z0VkeHlDdlYwZzdsQnd2OXZBTTZiVTdEbFoyRnpnYmNQTGVuVjdWNm5WNS9C?=
+ =?utf-8?B?VEh0THlqNGN4L2ZCS3RxeFE5cHFvcUFscFNxSHVwOWJDOVhOQTBTVXV0cjcz?=
+ =?utf-8?B?ZkYrcWlvZG50aThOQ0dYYy9iN2IxeGxFWGFnRDkrVGpCR3J0WW1BcWkvRXNk?=
+ =?utf-8?B?bzQ0QmlwUkNaOEM1MkpWK2RhQnQ3by9MaVByc05ud1NrVW16bE9nZUZSQnVI?=
+ =?utf-8?B?NStwZ3o2bmQzMHpNWVg5OXo5UlptTlQzOGl2U1NOayt3eE5lVldWODhhV1pF?=
+ =?utf-8?B?SThjZWNIS0dueWtUdFVjVFR4akNnZGxZUHI5QT09?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(7416014)(376014)(82310400026)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(7416014)(376014)(13003099007)(7053199007);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2025 15:19:55.8053
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2025 18:19:21.5065
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0cdd485d-b094-4e84-392c-08ddaa8dc0d5
+X-MS-Exchange-CrossTenant-Network-Message-Id: 68270619-fed4-4921-28bb-08ddaaa6d1ac
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00001507.namprd04.prod.outlook.com
+	BN1PEPF00004684.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9453
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7863
 
 On Thu, Jun 12, 2025 at 08:40:59PM +0800, Yan Zhao wrote:
 > On Tue, Jun 03, 2025 at 11:28:35PM -0700, Vishal Annapurve wrote:
@@ -224,6 +225,40 @@ On Thu, Jun 12, 2025 at 08:40:59PM +0800, Yan Zhao wrote:
 > 3. invoking tdh_mem_page_add().
 > Holding filemap invalidation lock around the 3 steps helps ensure that the PFN
 > passed to tdh_mem_page_add() is a valid one.
+
+Since those requirements are already satisfied with kvm_gmem_populate(),
+then maybe this issue is more with the fact that tdh_mem_page_add() is
+making a separate call to kvm_gmem_get_pfn() even though the callback
+has been handed a stable PFN that's protected with the filemap
+invalidate lock.
+
+Maybe some variant of kvm_tdp_map_page()/kvm_mmu_do_page_fault() that
+can be handed the PFN and related fields up-front rather than grabbing
+them later would be a more direct way to solve this? That would give us
+more flexibility on the approaches I mentioned in my other response for
+how to protect shareability state.
+
+This also seems more correct in the sense that the current path triggers:
+
+  tdx_gmem_post_populate
+    kvm_tdp_mmu_page_fault
+      kvm_gmem_get_pfn
+        kvm_gmem_prepare_folio
+
+even the kvm_gmem_populate() intentially avoids call kvm_gmem_get_pfn() in
+favor of __kvm_gmem_get_pfn() specifically to avoid triggering the preparation
+hooks, since kvm_gmem_populate() is a special case of preparation that needs
+to be handled seperately/differently from the fault-time hooks.
+
+This probably doesn't affect TDX because TDX doesn't make use of prepare
+hooks, but since it's complicating things here it seems like we should address
+it directly rather than work around it. Maybe it could even be floated as a
+patch directly against kvm/next?
+
+Thanks,
+
+Mike
+
 > 
 > Rather then revisit it, what about fixing the contention more simply like this?
 > Otherwise we can revisit the history.
@@ -267,58 +302,6 @@ On Thu, Jun 12, 2025 at 08:40:59PM +0800, Yan Zhao wrote:
 > +                         !lockdep_is_held(&file_inode(file)->i_mapping->invalidate_lock);
 > +       if (get_shared_lock)
 > +               filemap_invalidate_lock_shared(file_inode(file)->i_mapping);
-
-Hi Yan,
-
-I had been working on some kind of locking scheme that could account for some
-potential[1] changes needed to allowing concurrent updating of "preparedness"
-state while still allowing for concurrent fault handling. I posted a tree
-there in that link with an alternative scheme that's based on rw_semaphore
-like filemap invalidate lock, but with some changes to allow the folio
-lock to be taken to handle write-side updates to "preparedness" state
-instead of needing to take a write-lock.
-
-With that approach (or something similar), it is then possible to drop reliance
-on using the filemap invalidate lock in kvm_gmem_get_pfn(), and that I
-think would cleanly resolve this particular issue.
-
-However, it was also suggested during the guest_memfd call that we revisit
-the need to track preparedness in guest_memfd at all, and resulted in me
-posting this rfc[2] that removes preparedness tracking from gmem
-completely. That series is based on Ackerley's locking scheme from his
-HugeTLBFS series however, which re-uses filemap invalidate rw_semaphore
-to protect the shareability state, so you'd hit similar issues with
-kvm_gmem_populate().
-
-However, as above (and even more easily so since we don't need to do
-anything fancy for concurrent "preparedness" updates), it would be
-fairly trivial to replace the use of filemap invalidate lock with a
-rw_semaphore that's dedicated to protecting shareability state, which
-should make it possible to drop the use of
-filemap_invalidate_lock[_shared]() in kvm_gmem_get_pfn().
-
-But your above patch seems like it would at least get things working in
-the meantime if there's still some discussion that needs to happen
-before we can make a good call on:
-
-  1) whether to continue to use the filemap invalidate or use a dedicated one
-     (my 2 cents: use a dedicated lock to we don't have to deal with
-     inheriting unintended/unecessary locking dependencies)
-  2) whether or not is will be acceptable to drop preparedness-tracking
-     from guest_memfd or not
-     (my 2 cents: it will make all our lives much happier)
-  3) open-code what kvm_gmem_populate() handles currently if we need
-     extra flexibility WRT to locking
-     (my 2 cents: if it can be avoided it's still nice to gmem
-     handle/orchestrate this to some degree)
-
-Thanks,
-
-Mike
-
-[1] https://lore.kernel.org/lkml/20250529054227.hh2f4jmyqf6igd3i@amd.com/
-[2] https://lore.kernel.org/kvm/20250613005400.3694904-1-michael.roth@amd.com/
-
 > 
 >         folio = __kvm_gmem_get_pfn(file, slot, index, pfn, &is_prepared, max_order);
 >         if (IS_ERR(folio)) {
