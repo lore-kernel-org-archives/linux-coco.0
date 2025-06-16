@@ -1,151 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C20F1BF33F;
-	Mon, 16 Jun 2025 08:16:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0432980A1;
+	Mon, 16 Jun 2025 10:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750061816; cv=none; b=Ez8teZRAUuvf6xSVR9aRBztrzsxhK77fINuQsIEPw/ovblxSPkAwytbHMdFytRcdc8PZpokgU6TtztAmNQrhPgamw8FQ3U6bAA58dvkVl1IVqWsg3xozv9mpVom+G/+r1ZelNYFLeX4PaGfgdUewvFwoxKOpdbkrC0F7z4DzWY0=
+	t=1750070496; cv=none; b=exe5ot2DWHUuiyIJyGiaZMgsBcmESvpTh3O9RuIIhGlcrqK03WIJKJSgJnDpFbl/oGqx4TtX7LA3pqw4XZkjn82TOT0SNvJthbd617guuVfz7bNfbIHRN2mBkXR92sxMWgLvKWmiDq9/qFduP36aE8SgBrcvPLPTepqVW+PWpR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750061816; c=relaxed/simple;
-	bh=ly1IWPhnZ1mdLMMMt0ZwbtlmSqYG5wNvS1Mp/mjCGh8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=jpqDDyN1FLTSd4OvPPgmp4CMadj9JKcslBXknKR+x6l3Yfo2b4QbA+ihHNI2hSXLsUeGIka7I1lPIqi3sktRXh7jWzIYz4B/ATbbSwbe5dHgpq6AJGE1qeJBwljHNNrPz3B/cbvGgIk8BullHqdtPeXBjRKcAdehqRvYpTmh8HI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lf96xJkg; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lf96xJkg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F7A2C4CEEF;
-	Mon, 16 Jun 2025 08:16:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750061816;
-	bh=ly1IWPhnZ1mdLMMMt0ZwbtlmSqYG5wNvS1Mp/mjCGh8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=lf96xJkgz6KBIDKXutGdJKHWBKiiYSI3P6IV8Rt4Ezx881d0N/1Wijd5CsuRIrmEH
-	 iO0ucq0zXsVTGRDCftXbROmy1p+s47E4JpV7ohXYepO9R7fK74pYfzjnB9FPr2Dlx+
-	 D9NmY1kqgsg4kqDo/WT/NtXgtFSN2gwawJtsZ8RQTdBYPsqQTV/Q6+/FKiJNkmFfpH
-	 38ON4HibYUOxRIYYPLb0P68B7/oMeIWR9jxB6ugZJYqrpWHcs86OBbGakdHQuLjjdL
-	 QV9OSCvZIdRlCd+8xO5J6YwfLV78gsg+hBMUxv6kqHIlfm5xqRf9CiuRuve6uXlEVF
-	 3uekUV373Yc3w==
-X-Mailer: emacs 30.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: kvm@vger.kernel.org, sumit.semwal@linaro.org, christian.koenig@amd.com,
-	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
-	jgg@nvidia.com, dan.j.williams@intel.com, aik@amd.com,
-	linux-coco@lists.linux.dev, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	vivek.kasireddy@intel.com, yilun.xu@intel.com,
-	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
-	daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, tao1.su@intel.com,
-	linux-pci@vger.kernel.org, zhiw@nvidia.com, simona.vetter@ffwll.ch,
-	shameerali.kolothum.thodi@huawei.com, iommu@lists.linux.dev,
-	kevin.tian@intel.com
-Subject: Re: [RFC PATCH 19/30] vfio/pci: Add TSM TDI bind/unbind IOCTLs for
- TEE-IO support
-In-Reply-To: <aEFmPaYorqaYCKBY@yilunxu-OptiPlex-7050>
-References: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
- <20250529053513.1592088-20-yilun.xu@linux.intel.com>
- <yq5aplfn210z.fsf@kernel.org> <aD24r44v0g1NgeZs@yilunxu-OptiPlex-7050>
- <yq5ajz5r8w6p.fsf@kernel.org> <aEFmPaYorqaYCKBY@yilunxu-OptiPlex-7050>
-Date: Mon, 16 Jun 2025 13:46:42 +0530
-Message-ID: <yq5a5xgwt82d.fsf@kernel.org>
+	s=arc-20240116; t=1750070496; c=relaxed/simple;
+	bh=Lw2dE+P+MII1mRCnkvkm+zkgPFhWavrLZBJGcO21axg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NTCojAZ29koW7fTNp9q0J4Y4QMjoH0jfH4J6QR6VOpNbfsY1I99XYyeDQkGuLCMOLq6vBUyPSibVuXpgDyimmQCxEwNm56WJHwz6g11XJ0AG9wXTsNTfqPyZQlcl8UsqghELzn+HWuI7o4qBpvygzO8YSDOW1i8MzMZQuzi4grE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 27592150C;
+	Mon, 16 Jun 2025 03:41:12 -0700 (PDT)
+Received: from [10.1.197.1] (ewhatever.cambridge.arm.com [10.1.197.1])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 31E963F58B;
+	Mon, 16 Jun 2025 03:41:31 -0700 (PDT)
+Message-ID: <b39ce0e3-5d44-4334-b739-2af07a24a668@arm.com>
+Date: Mon, 16 Jun 2025 11:41:28 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 10/43] arm64: RME: RTT tear down
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>
+References: <20250611104844.245235-1-steven.price@arm.com>
+ <20250611104844.245235-11-steven.price@arm.com>
+Content-Language: en-US
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20250611104844.245235-11-steven.price@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Xu Yilun <yilun.xu@linux.intel.com> writes:
+Hi Steven
 
-> On Wed, Jun 04, 2025 at 07:07:18PM +0530, Aneesh Kumar K.V wrote:
->> Xu Yilun <yilun.xu@linux.intel.com> writes:
->> 
->> > On Sun, Jun 01, 2025 at 04:15:32PM +0530, Aneesh Kumar K.V wrote:
->> >> Xu Yilun <yilun.xu@linux.intel.com> writes:
->> >> 
->> >> > Add new IOCTLs to do TSM based TDI bind/unbind. These IOCTLs are
->> >> > expected to be called by userspace when CoCo VM issues TDI bind/unbind
->> >> > command to VMM. Specifically for TDX Connect, these commands are some
->> >> > secure Hypervisor call named GHCI (Guest-Hypervisor Communication
->> >> > Interface).
->> >> >
->> >> > The TSM TDI bind/unbind operations are expected to be initiated by a
->> >> > running CoCo VM, which already have the legacy assigned device in place.
->> >> > The TSM bind operation is to request VMM make all secure configurations
->> >> > to support device work as a TDI, and then issue TDISP messages to move
->> >> > the TDI to CONFIG_LOCKED or RUN state, waiting for guest's attestation.
->> >> >
->> >> > Do TSM Unbind before vfio_pci_core_disable(), otherwise will lead
->> >> > device to TDISP ERROR state.
->> >> >
->> >> 
->> >> Any reason these need to be a vfio ioctl instead of iommufd ioctl?
->> >> For ex: https://lore.kernel.org/all/20250529133757.462088-3-aneesh.kumar@kernel.org/
->> >
->> > A general reason is, the device driver - VFIO should be aware of the
->> > bound state, and some operations break the bound state. VFIO should also
->> > know some operations on bound may crash kernel because of platform TSM
->> > firmware's enforcement. E.g. zapping MMIO, because private MMIO mapping
->> > in secure page tables cannot be unmapped before TDI STOP [1].
->> >
->> > Specifically, for TDX Connect, the firmware enforces MMIO unmapping in
->> > S-EPT would fail if TDI is bound. For AMD there seems also some
->> > requirement about this but I need Alexey's confirmation.
->> >
->> > [1] https://lore.kernel.org/all/aDnXxk46kwrOcl0i@yilunxu-OptiPlex-7050/
->> >
->> 
->> According to the TDISP specification (Section 11.2.6), clearing either
->> the Bus Master Enable (BME) or Memory Space Enable (MSE) bits will cause
->> the TDI to transition to an error state. To handle this gracefully, it
->> seems necessary to unbind the TDI before modifying the BME or MSE bits.
->
-> Yes. But now the suggestion is never let VFIO do unbind, instead VFIO
-> should block these operations when device is bound.
->
->> 
->> If I understand correctly, we also need to unmap the Stage-2 mapping due
->> to the issue described in commit
->> abafbc551fddede3e0a08dee1dcde08fc0eb8476. Are there any additional
->> reasons we would want to unmap the Stage-2 mapping for the BAR (as done
->> in vfio_pci_zap_and_down_write_memory_lock)?
->
-> I think no more reason. 
->
->> 
->> Additionally, with TDX, it appears that before unmapping the Stage-2
->> mapping for the BAR, we should first unbind the TDI (ie, move it to the
->> "unlock" state?) Is this step related Section 11.2.6 of the TDISP spec,
->> or is it driven by a different requirement?
->
-> No, this is not device side TDISP requirement. It is host side
-> requirement to fix DMA silent drop issue. TDX enforces CPU S2 PT share
-> with IOMMU S2 PT (does ARM do the same?), so unmap CPU S2 PT in KVM equals
-> unmap IOMMU S2 PT.
->
-> If we allow IOMMU S2 PT unmapped when TDI is running, host could fool
-> guest by just unmap some PT entry and suppress the fault event. Guest
-> thought a DMA writting is successful but it is not and may cause
-> data integrity issue.
->
+On 11/06/2025 11:48, Steven Price wrote:
+> The RMM owns the stage 2 page tables for a realm, and KVM must request
+> that the RMM creates/destroys entries as necessary. The physical pages
+> to store the page tables are delegated to the realm as required, and can
+> be undelegated when no longer used.
+> 
+> Creating new RTTs is the easy part, tearing down is a little more
+> tricky. The result of realm_rtt_destroy() can be used to effectively
+> walk the tree and destroy the entries (undelegating pages that were
+> given to the realm).
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
 
-I am still trying to find more details here. How did the guest conclude
-DMA writing is successful? Guest would timeout waiting for DMA to complete
-if the host hides the interrupt delivery of failed DMA transfer?
+A couple of minor nits below. Should have spotted earlier, apologies.
+...
 
->
-> This is not a TDX specific problem, but different vendors has different
-> mechanisms for this. For TDX, firmware fails the MMIO unmap for S2. For
-> AMD, will trigger some HW protection called "ASID fence" [1]. Not sure
-> how ARM handles this?
->
-> https://lore.kernel.org/all/aDnXxk46kwrOcl0i@yilunxu-OptiPlex-7050/
->
-> Thanks,
-> Yilun
->
+> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
+> index 73261b39f556..0f89295fa59c 100644
+> --- a/arch/arm64/kvm/rme.c
+> +++ b/arch/arm64/kvm/rme.c
+> @@ -17,6 +17,22 @@ static unsigned long rmm_feat_reg0;
+>   #define RMM_PAGE_SHIFT		12
+>   #define RMM_PAGE_SIZE		BIT(RMM_PAGE_SHIFT)
+>   
+> +#define RMM_RTT_BLOCK_LEVEL	2
+> +#define RMM_RTT_MAX_LEVEL	3
+> +
+> +/* See ARM64_HW_PGTABLE_LEVEL_SHIFT() */
+> +#define RMM_RTT_LEVEL_SHIFT(l)	\
+> +	((RMM_PAGE_SHIFT - 3) * (4 - (l)) + 3)
+> +#define RMM_L2_BLOCK_SIZE	BIT(RMM_RTT_LEVEL_SHIFT(2))
+> +
+> +static inline unsigned long rme_rtt_level_mapsize(int level)
+> +{
+> +	if (WARN_ON(level > RMM_RTT_MAX_LEVEL))
+> +		return RMM_PAGE_SIZE;
+> +
+> +	return (1UL << RMM_RTT_LEVEL_SHIFT(level));
+> +}
+> +
+>   static bool rme_has_feature(unsigned long feature)
+>   {
+>   	return !!u64_get_bits(rmm_feat_reg0, feature);
+> @@ -82,6 +98,126 @@ static int free_delegated_granule(phys_addr_t phys)
+>   	return 0;
+>   }
+>   
+> +static void free_rtt(phys_addr_t phys)
+> +{
+> +	if (free_delegated_granule(phys))
+> +		return;
+> +
+> +	kvm_account_pgtable_pages(phys_to_virt(phys), -1);
+> +}
+> +
+> +static int realm_rtt_destroy(struct realm *realm, unsigned long addr,
+> +			     int level, phys_addr_t *rtt_granule,
+> +			     unsigned long *next_addr)
+> +{
+> +	unsigned long out_rtt;
+> +	int ret;
+> +
+> +	ret = rmi_rtt_destroy(virt_to_phys(realm->rd), addr, level,
+> +			      &out_rtt, next_addr);
+> +
+> +	*rtt_granule = out_rtt;
+> +
+> +	return ret;
 
--aneesh
+ultra minor nit: this could simply be :
+
+	return rmi_rtt_destroy(virt_to_phys(realm->rd), addr, level, 
+rtt_granule, next_addr);
+
+
+...
+
+> +
+> +static int realm_tear_down_rtt_range(struct realm *realm,
+> +				     unsigned long start, unsigned long end)
+> +{
+
+minor nit: Is it worth adding a comment here, why we start from 
+start_level + 1 and downwards ? Something like:
+
+	/*
+	 * Root level RTTs can only be destroyed after the RD is
+	 * destroyed. So tear down everything below the root level.
+	 */
+
+Similarly, we may be able to clarify a comment in kvm_free_stage2_pgd()
+
+Suzuki
+
