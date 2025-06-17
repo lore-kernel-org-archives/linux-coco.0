@@ -1,291 +1,221 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6127E218858
-	for <linux-coco@lists.linux.dev>; Mon, 16 Jun 2025 22:56:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750114564; cv=none; b=aatq7SKI5kvngTJ3CaIIWqJ+UdtgSwXe7PORuIvRW8DkQmnx/VJ5vHAFd0Vhdnp/T8h/7p2oOqRw6Bn3dapwub82Tbuh0m9LAUwco87SdvkXiCpzhZDkCyo8DNCuEUrA18sHDv9az+NYremiTJ90b5dfTkr3tm/ClLx0DMA/lQo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750114564; c=relaxed/simple;
-	bh=p0HFxJV+lPrVl3IsetQGPScX9Z2eu4Nipb7a6kuWLmU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VzNFIQfQ1eCoTHPICMlbzwd0/yjZ3VJGeJqphLvmiRpk1Vx6ZiAILYe+IlZHE2vfARKYshmYniTAjVlPh8TaWV21mjNm8vcyHAuigxZPQ5S0UwrVLYlKSaiepxsffBQl+kEVfz69FIFCI6HmZy5bLUMRW0gYbG2xUFdqAYEto5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ILUwZBb9; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5521328C2A3
+	for <linux-coco@lists.linux.dev>; Tue, 17 Jun 2025 07:55:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750146944; cv=fail; b=SG3d5nMUm5g3flFp/RgczF11X3Kou2FjkfMJ113JwSpm0KleMRAlM5o0eJPnoLFlylKpiJ7dR6afM3TEgOojVuU4bzZfKK+OUAJhjxIn2dCzy8Xds/fnc9DhcO3u3CdxQAmAbiHwfrRs2R53rQU3xXyCU6P9awkMZik+Wts37sM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750146944; c=relaxed/simple;
+	bh=gv1GXWN5mxQXRkSi63afNBkJE115CU01P85wIeSNngM=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=GLZFB4k+VqsPyFdOcEMDzpXFHcudh22H6DB0fde1Th92X4wMCugZk6pP48fuqI+2uSE626q4fSU5MU+yXy5VjFdPrnR40FvkzOuCiiu3XXn/AHLq0Cnw5s4VBKVcgiInBwUVQVyRI8dODbAJfbdqNdvlIsVCdO3unTSbEhkoedY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C+W71DVO; arc=fail smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ILUwZBb9"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4a5ac8fae12so151011cf.0
-        for <linux-coco@lists.linux.dev>; Mon, 16 Jun 2025 15:56:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750114561; x=1750719361; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9sxJZ0FF/SMaJHy2nT2/WKSEvvRwEArRwRBCF/xeEms=;
-        b=ILUwZBb90TwJjeYb1QhefqgPdrz574qnJNoRAGmNCwFHxc/JSMROQMHKOdvJls4Zkw
-         FaAk3anhkIGX5fvVGe31QAgIhA4VC8FA3LeaC4T2MlbupUVFt48RZgqlqycn3oSKUXrx
-         9JL0Vme/Z59FoIBMUs9Z/x29TOPqMnlvnb8bajgCGAXnUmeHAUCQGYo/ZiTcUvT8eoDQ
-         Y0e+EIm/HJTvvXynPWyzsRAIjfWOXbAxnVwqCq5EWwWcNcB46nmx+1j6AEAOF4609YIm
-         5L10j/suDbVdP5EV53GC7FgXLVloQrwUEiOkK/j+cezfsU67HQvkeobuogBeVwwHH29T
-         jEQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750114561; x=1750719361;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9sxJZ0FF/SMaJHy2nT2/WKSEvvRwEArRwRBCF/xeEms=;
-        b=gAz1dvokj1henrB8pKKDMtXPTYtNEn75ja6DvpBm554HtsoMNaEoEVD9HbB2tNhd+6
-         5SnEv0xZcxxWTv7LNrG4zuUry9JnVjzhCqwmI+Eow8qF16BgrdOwNkXlFz4eywpMI0wQ
-         ZniHfyFh9wdrGor41umBHOc74bHqWHjfUnk8f7DgRHS9OiTKFGs1CNyowHfRsdxOUOu8
-         UkTf6NDfcE1NSf2thTDEoWng5pbfZ0jY/AAFSghsanKxJ7EPT/17fEA76gFk8eTT5+zt
-         GHcQzPlXAjHO2U3kbIwS9ApEdAJWJXnporTbSZxn6zbEXNKecYrOfFLaQLBkGgmhjZB0
-         7FUw==
-X-Gm-Message-State: AOJu0Yy3Cbg+ZPj/8RFUahAo9c/M+ntCYlZD7PqsYtCgVP2TJl4G02Fd
-	wssyLPOIhzjQ2aE1F4TYjcuPadqxQI+u8q3AjU2YDM+Pk2pvFI4hL+V2CEG1CEh5R4L4FKp4uot
-	u06UgaMB8u6j3B5cXtscGHymDml/OZlfhjVWlCxXj
-X-Gm-Gg: ASbGncttOUjJ+asOvwQTKXFZnNjrVpjtuAodK+Zqi80oFfDs5jxoUD0bTToa27lC+Hc
-	yXL5BO2wyU/Aixvhk58T3l0WONmJE12vE5M42O8IAH+XpMT9Y1HSc3AaViuSFgKqpdkmm2LtJ7s
-	b40rdAACkcl7Xatq1t4cd/kVNQYxTgEGeW5W676wPBl4B7x0bEe3LVabcTMnK51zhCBKZEtJYEA
-	g==
-X-Google-Smtp-Source: AGHT+IGIjS7iz+3YUbT9aghigQKmYQHtJkyMv5yyQ87XHTe9Ys39TLz90+dSPL7I7r0PdxINhIxF/1TBdd12QyHY53U=
-X-Received: by 2002:ac8:5f07:0:b0:4a6:fc57:b85a with SMTP id
- d75a77b69052e-4a73d6b7478mr8535751cf.14.1750114561181; Mon, 16 Jun 2025
- 15:56:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C+W71DVO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750146942; x=1781682942;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=gv1GXWN5mxQXRkSi63afNBkJE115CU01P85wIeSNngM=;
+  b=C+W71DVO69tRVN/oIp32DOwwmYtN5mWUh0yo8Enkcu1Ta7o619UqTr+l
+   C0uVJ4Y3gjbLhykBPM+XdPiIE33CRZwnPAnWDCWlF8mlDlRB8tq4pqjAM
+   Yigpq4chxhDM0OJE3WklrEXdOwc7E0BXIGmC/Xr0PZ/fS+pX5aequ54QA
+   4w4NPpY8LFnch2h+GlooFj8dwkgHr0Eo5GJkpMTJWBmrGMFMVZlHFHk3A
+   AjWY/oc2UWGv7NYGoEzZlDNzFKU7b83ZVje+GWTlZKSddoBuwp4Dj7O8r
+   SY/aqAA8s5poUjXfCZuWnnYAXnF58v5l0Q5UCBsoMmqh62rLcqokya3Bj
+   w==;
+X-CSE-ConnectionGUID: BUTHErosTQemtlDKh+LPRA==
+X-CSE-MsgGUID: qWSvhZqVTIalLO5mjRQoJg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="52293216"
+X-IronPort-AV: E=Sophos;i="6.16,242,1744095600"; 
+   d="scan'208";a="52293216"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 00:55:41 -0700
+X-CSE-ConnectionGUID: 6hF7VKSRTlGKv3puYaYS3Q==
+X-CSE-MsgGUID: tN/MQ1beT3+tVrINDqxu6A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,242,1744095600"; 
+   d="scan'208";a="148539038"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 00:55:41 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 17 Jun 2025 00:55:40 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Tue, 17 Jun 2025 00:55:40 -0700
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (40.107.101.51)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 17 Jun 2025 00:55:37 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lw1dfQ4Vik8W0Emm9//q+c8LjHJfB5JPzWqZg7zinijCYw9F8c7QVKLeBg9qRwKGLtP7JIDP1LICq1YUehClo+3gIU42CM5MC5ICg6dlN+Sz7X+ZAvc6oOhgrXpucPm7gmbcQG3jHMI3k354ID1+0VU/PJ9ycYT2pwx6wBW7OrJsWpCQ+9UYpWAnSPzLvxwoi9jaD60YpGBEYbw3bN6+Iset8jbw+Dg4/cfc/7iYYG79m+a76d2IRMV8ZDFo1kashWtqg6PV2NZfZ0LfTGlvdiyx6d/hgMFerxTfBanR6hO6Pv0SKtfqHANs/f7m0IZmn9xt49u2IUMngIQjRhndtg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jCNuOY2C665RdRWxwlBE/SLEXlvm+Ygm1F+5cqpIjm8=;
+ b=P3/ScCeS0csg1XETJ3kz/Kb5HQyK/GPms3tBJEqw70dmmrnH36fPybhEnwbP8i7VTuqJ0PSUj3rXuXUmT1PCVb+KnrQm79YY0hw6K3bhyvd/wYkPmuEgp2/3C+TAUIZJYb5QRm7zecInpGI3sBH446xju45jhL+oI8INQYOVsTX0qFn2hx1Rcy8xXSji8KaHkHXOXrMmMg3C/alB8er4q3q3i9dHsS+h27U7zoLwJzn0u3Ild7Yaibz+9s+T2oqdfkkhnz92kn/+NpangUa45eRDm4QpaG/i6RCNidcFOEzU1JprcoPr0hPyyw1npzdcIGgiN6gYml7l4+l62oyEVg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
+ by SJ5PPFF6F855567.namprd11.prod.outlook.com (2603:10b6:a0f:fc02::861) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.26; Tue, 17 Jun
+ 2025 07:55:21 +0000
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::cfad:add4:daad:fb9b]) by CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::cfad:add4:daad:fb9b%5]) with mapi id 15.20.8835.025; Tue, 17 Jun 2025
+ 07:55:21 +0000
+Date: Tue, 17 Jun 2025 15:55:01 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: Sagi Shahar <sagis@google.com>
+CC: <linux-coco@lists.linux.dev>, <x86@kernel.org>, <kvm@vger.kernel.org>,
+	<seanjc@google.com>, <pbonzini@redhat.com>, <eddie.dong@intel.com>,
+	<kirill.shutemov@intel.com>, <dave.hansen@intel.com>,
+	<dan.j.williams@intel.com>, <kai.huang@intel.com>,
+	<isaku.yamahata@intel.com>, <elena.reshetova@intel.com>,
+	<rick.p.edgecombe@intel.com>, Farrah Chen <farrah.chen@intel.com>, "Thomas
+ Gleixner" <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, "Borislav
+ Petkov" <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter
+ Anvin" <hpa@zytor.com>, "Kirill A. Shutemov"
+	<kirill.shutemov@linux.intel.com>, <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH 08/20] x86/virt/seamldr: Implement FW_UPLOAD sysfs
+ ABI for TD-Preserving Updates
+Message-ID: <aFEfVX1GKDa6QHox@intel.com>
+References: <20250523095322.88774-1-chao.gao@intel.com>
+ <20250523095322.88774-9-chao.gao@intel.com>
+ <CAAhR5DGFxidA=MuhLrixdHv+D_=KYQquBE2quNCNMZvzijXLiw@mail.gmail.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CAAhR5DGFxidA=MuhLrixdHv+D_=KYQquBE2quNCNMZvzijXLiw@mail.gmail.com>
+X-ClientProxiedBy: SI2PR02CA0054.apcprd02.prod.outlook.com
+ (2603:1096:4:196::13) To CH3PR11MB8660.namprd11.prod.outlook.com
+ (2603:10b6:610:1ce::13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250523095322.88774-1-chao.gao@intel.com> <20250523095322.88774-9-chao.gao@intel.com>
-In-Reply-To: <20250523095322.88774-9-chao.gao@intel.com>
-From: Sagi Shahar <sagis@google.com>
-Date: Mon, 16 Jun 2025 17:55:50 -0500
-X-Gm-Features: AX0GCFvVbiaWGgCRII3OE08Te9sdtG7W4jpMtQeF78bEqoHGPUs-MDM7_o1KaSg
-Message-ID: <CAAhR5DGFxidA=MuhLrixdHv+D_=KYQquBE2quNCNMZvzijXLiw@mail.gmail.com>
-Subject: Re: [RFC PATCH 08/20] x86/virt/seamldr: Implement FW_UPLOAD sysfs ABI
- for TD-Preserving Updates
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-coco@lists.linux.dev, x86@kernel.org, kvm@vger.kernel.org, 
-	seanjc@google.com, pbonzini@redhat.com, eddie.dong@intel.com, 
-	kirill.shutemov@intel.com, dave.hansen@intel.com, dan.j.williams@intel.com, 
-	kai.huang@intel.com, isaku.yamahata@intel.com, elena.reshetova@intel.com, 
-	rick.p.edgecombe@intel.com, Farrah Chen <farrah.chen@intel.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|SJ5PPFF6F855567:EE_
+X-MS-Office365-Filtering-Correlation-Id: fdb66ea1-d84c-4918-4dd3-08ddad744f22
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?lWKzepaQEdk1srbZuJxgA0F1w3Q54mNQPtF+05GA4CmFiObFzQQGWO1XCFG1?=
+ =?us-ascii?Q?LM0Ym/G9Mazj+1t7Yzfvlv6+HJSHVLofAX9xbqRmulvhqvHiZbPTls6dofP6?=
+ =?us-ascii?Q?uIjgqnW5AYC8YTQYHymgvUhgmNP5knlxQ7mkp8vbUONcA2sE2lUTxdxrXsCA?=
+ =?us-ascii?Q?ywUubYWyo5Cbe9/TajbehPwWZElFfp+2QiPkcpYam0RUfdALtY/uOU4OWQYY?=
+ =?us-ascii?Q?nEXlrTVHdIYNm0Wj1N3sRm8+z1zG8uHrhnRtr0FM5sXqPB7UqHS3ud3veS3D?=
+ =?us-ascii?Q?oWIbiBT3zhdwtN8BliTdLAaplR6y1qaAmO95uWpXh3Pnu/ovNpd9qA4SCw49?=
+ =?us-ascii?Q?Ry2G28fh/roPOZROR/xoJmMHIpHAPZcXja4GbfjiI2KPXg5zWkTGcfrP4hgH?=
+ =?us-ascii?Q?4pA7NE2Iu2lTXEMm6PqCmLzOOR5u2/+b14BBRfbHPBVm9o5XVIUU91of53Bn?=
+ =?us-ascii?Q?Oi9QEUTvWHhph8YPMvqO3tc+10iQcqOmcUf0UWm6k2D/MZwSmLc2zS6JLDFi?=
+ =?us-ascii?Q?iM2nb89T+N1YsCwURnQeZtjiN51u0KbIS1n7mb9UCemAbsu3DaX8Sf0/jssu?=
+ =?us-ascii?Q?atfWlIrffmaJ3Z1wpetDmhjB901wPLRvSdqw/2NQDP5b79niuSM+oawmUBLw?=
+ =?us-ascii?Q?/l3IpmepfykPnXjKq6Ogw6htCVleR6THQvuwFCZbmNW6ERzuDqatxYlp1i14?=
+ =?us-ascii?Q?Ipc+vyX10lsrGqX3qX6Ja8O0IFs7nHGXJN54oGQgbbM8P3JwYo9XXIeXUjA1?=
+ =?us-ascii?Q?iYhFbpyaQx+CFvl5UVWYN2Vi1ojXu65Zkk0AsqdykW+c+KxOotNE35J0mc6y?=
+ =?us-ascii?Q?sT+DybKJ0Hrrvvvr9+bSUQgr68NcLpgaCnlJbCg3wC608nlhv+wBtGnk78sB?=
+ =?us-ascii?Q?CQAkhT2YQv4eBqAJ3bSpbisnNYSY/8f4wShLoUwadHPb9ge65zE9ByPUtbdj?=
+ =?us-ascii?Q?1A64ug5DQ4gxJtAxVtQiloDbp/lB3VlNCnpSVTeJ+QR5bxw/IS3jpuQKZkk7?=
+ =?us-ascii?Q?u6OwwJo3rm0AdTRb6XixWYftsBxgakt3kQ7oJdM3/GxD0cZN0rLflvXHi1Kr?=
+ =?us-ascii?Q?uNrF8luNOaE9c+nzXKAlk52VW7mlyn2zsMIbQabIDl7sxHlDjjZCx1MZhPL8?=
+ =?us-ascii?Q?FPFeweID45fjNqhVrrb6ugfebILE9Nh1JGe1Ludvue3uMwAYnaYAA8Gz8pve?=
+ =?us-ascii?Q?puKT5d9Fmc4VQspK24Ntmm07OyE+O9aKvGHd4k7ogM3O5Md/Max9H9pwSZ17?=
+ =?us-ascii?Q?0Q9jtlWVFY6/pMW9thB1HySr9g7c78g3WN/yJtFtOwQfMIKi7pJfKnGphFDk?=
+ =?us-ascii?Q?46la9Ljlk6F7ZSAtSMZmIW0r+UzVNH7RIboPKebrbn7gorz2peN7KnRjOlGn?=
+ =?us-ascii?Q?POeelTxvgZA6Y7iyGZ+dWJFrIs5++pLN9VDfQnXnEDbNXuknMubrx/3r2XSv?=
+ =?us-ascii?Q?o8+stIda4w8=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?PK9nYQolYCYNmhaZj3b/7JI8bgLiI1YCTD8VOHzMP5o1TDRUvpnAbg6tcW2W?=
+ =?us-ascii?Q?K1VmET/ndkMoHCCOL1sov2JGGqd2WAl3AIgHWjQIJTa/xMsAHxc6iQof3uLg?=
+ =?us-ascii?Q?FbNj7N9MKje8V4fRQbN6lgOibYxj4IWcXsdzbRJtTD1K4dOwWQ8xY1eRtsGr?=
+ =?us-ascii?Q?ak7FF6WKzrKngbh7YAgYOGkC3Foq5G0e5FEGmU+uy5nAtklTD+IhllAyqGz/?=
+ =?us-ascii?Q?yrCvVneTWWDFJo3iMiAmovQ4Aci6o+Tc1sh5GRfyGhkL9GjnGCI/W7xNqddi?=
+ =?us-ascii?Q?cwJ9C52s5U2vi3RSKnc0ws7uQXV2yLqbjYFvudGng+pGkYxZz3werL/UtUZ8?=
+ =?us-ascii?Q?w3TkJXC1qdRu4Sh9mDMSBNVd5jJSk3gfnnro60DOeWJsZxg4umte9IGYf+ek?=
+ =?us-ascii?Q?WS9Q8dG4/TNzMm5djC7J3hSWZcqdPGa3RFxqVW/nupP0hA3QLeAH2WUsZFzk?=
+ =?us-ascii?Q?THdRlvrb8WoaWoeHKJXYBZ8s9PBvAiWf3eLV0+lxwpxn29P9g8uewtbdR9pR?=
+ =?us-ascii?Q?7vkGGW+oYArDUaCig4+otzYZV1og5aRZgc/mFCUPnRhi45XY0wzwVRtSgyMc?=
+ =?us-ascii?Q?sWuv8UR/eBN0JV4oioCSTu5Y9wo3a6ffWXr5K+qj0wEqCm5vVV0JxYXIv9u9?=
+ =?us-ascii?Q?sU+dhocZYu86CVxdPsJZpBhc2iSV9TFAIhFHUQuCN2XWtser/lom3GiI+Zc9?=
+ =?us-ascii?Q?LZ6bWm+/5Xc/a+zHHNuTBOJyWPlPma0dCOd0jlan9GC7g8zscSrT/YZVbUAB?=
+ =?us-ascii?Q?xisLD9gEwu95hea/4ZfXGdJWy1yHLZ9ZnB9Ly2GnrX56bMS70xuTtq8Fz+G9?=
+ =?us-ascii?Q?SLdFuFeyOLVTv2/6nPVp0LOf8uyfSjojL5Z2PRZsjDDASQN+LTb6iN6ytE4a?=
+ =?us-ascii?Q?MnrTVdx795r5/26eO2/49rlfIgq6csWy2E+uTLxuj1Io0cVf9jnCZu+sYyZf?=
+ =?us-ascii?Q?/0r8xTNnPjf5+eILzGmi+FKAOPpSsVlpjxWzRFrfvNAh3+IDmSbwUZcjXuul?=
+ =?us-ascii?Q?XyBC24sFmxSsOzHkugYFBlujsQbR78QRHaesSGRmIyD+DoMotrhA30fUD/rY?=
+ =?us-ascii?Q?X+kxTdavQzsUqDT7DKfA2TuJimiwQQC2ne3iA4UoIta8Rr1wigFukToVFXOL?=
+ =?us-ascii?Q?rr5LEzOpyEoYEsHJwVC/NM+ePC7mxhVS0hhAbgp8MVFzQhsHT+p1w9Fx2oDE?=
+ =?us-ascii?Q?FnX8Z9bT19M8aNZKLWty/UWVkTQCNeTw2fP1b9Y+c4BhxI7MuBxnIwY+oph5?=
+ =?us-ascii?Q?QEHOVw8OtMJWNLwU9loliDRj6T/cpbULYqAhAeGc0OGclDRqMRTmEu69fepz?=
+ =?us-ascii?Q?/5cmjuKIvv4LGR0iNkWt67c+BJV75hRxxq1JmzaVoWsRCOPrmMFHdhL5JCpn?=
+ =?us-ascii?Q?+qgF3Yu+MlyjTZfy6JtdYGDsWbbrTFuxdn0ZamENq6mt4TDHNUGGAnm4Oj3G?=
+ =?us-ascii?Q?Fk7fuktr4ThX4xZQvz+lX0TP9D+B/wMA60dHCu7xcy779HHDH4XIHKkPe1gv?=
+ =?us-ascii?Q?NsEnmjwD1AieHrzYyYACNUqUlz4JRlHf70sKYBvzUVLv+JATdyXlYRcIw/YF?=
+ =?us-ascii?Q?dGQuIduEoM6q7dtm1PuNZUHAdcoQhjy+cpqs8aKU?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: fdb66ea1-d84c-4918-4dd3-08ddad744f22
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2025 07:55:21.7745
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OSXjt4A8WiRQr23gzbg5SIaj/v9jiU/IkV0FJ4l32q5S8si5D/WjhbYnn/gbkodMGDNSCLOLRjVtScbrsH6ROg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFF6F855567
+X-OriginatorOrg: intel.com
 
-On Fri, May 23, 2025 at 4:55=E2=80=AFAM Chao Gao <chao.gao@intel.com> wrote=
-:
+On Mon, Jun 16, 2025 at 05:55:50PM -0500, Sagi Shahar wrote:
+>> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+>> index aa6a23d46494..22ffc15b4299 100644
+>> --- a/arch/x86/virt/vmx/tdx/tdx.c
+>> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+>> @@ -1178,6 +1178,10 @@ static void tdx_subsys_init(void)
+>>                 goto err_bus;
+>>         }
+>>
+>> +       struct device *dev_root __free(put_device) = bus_get_dev_root(&tdx_subsys);
 >
-> Implement a fw_upload interface to coordinate TD-Preserving updates. The
-> explicit file selection capabilities of fw_upload is preferred over the
-> implicit file selection of request_firmware() for the following reasons:
+>dev_root definition here causes compilation error:
 >
-> a. Intel distributes all versions of the TDX module, allowing admins to
-> load any version rather than always defaulting to the latest. This
-> flexibility is necessary because future extensions may require reverting =
-to
-> a previous version to clear fatal errors.
->
-> b. Some module version series are platform-specific. For example, the 1.5=
-.x
-> series is for certain platform generations, while the 2.0.x series is
-> intended for others.
->
-> c. The update policy for TD-Preserving is non-linear at times. The latest
-> TDX module may not be TD-Preserving capable. For example, TDX module
-> 1.5.x may be updated to 1.5.y but not to 1.5.y+1. This policy is document=
-ed
-> separately in a file released along with each TDX module release.
->
-> So, the default policy of "request_firmware()" of "always load latest", i=
-s
-> not suitable for TDX. Userspace needs to deploy a more sophisticated poli=
-cy
-> check (i.e. latest may not be TD-Preserving capable), and there is
-> potential operator choice to consider.
->
-> Just have userspace pick rather than add kernel mechanism to change the
-> default policy of request_firmware().
->
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Tested-by: Farrah Chen <farrah.chen@intel.com>
-> ---
->  arch/x86/Kconfig                |  2 +
->  arch/x86/virt/vmx/tdx/seamldr.c | 77 +++++++++++++++++++++++++++++++++
->  arch/x86/virt/vmx/tdx/seamldr.h |  2 +
->  arch/x86/virt/vmx/tdx/tdx.c     |  4 ++
->  4 files changed, 85 insertions(+)
->
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 8b1e0986b7f8..31385104a6ee 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -1935,6 +1935,8 @@ config INTEL_TDX_HOST
->  config INTEL_TDX_MODULE_UPDATE
->         bool "Intel TDX module runtime update"
->         depends on INTEL_TDX_HOST
-> +       select FW_LOADER
-> +       select FW_UPLOAD
->         help
->           This enables the kernel to support TDX module runtime update. T=
-his allows
->           the admin to upgrade the TDX module to a newer one without the =
-need to
-> diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seam=
-ldr.c
-> index b628555daf55..da862e71ebce 100644
-> --- a/arch/x86/virt/vmx/tdx/seamldr.c
-> +++ b/arch/x86/virt/vmx/tdx/seamldr.c
-> @@ -8,6 +8,8 @@
->
->  #include <linux/cleanup.h>
->  #include <linux/device.h>
-> +#include <linux/firmware.h>
-> +#include <linux/gfp.h>
->  #include <linux/kobject.h>
->  #include <linux/sysfs.h>
->
-> @@ -32,6 +34,15 @@ struct seamldr_info {
->         u8      reserved1[224];
->  } __packed;
->
-> +
-> +#define TDX_FW_STATE_BITS      32
-> +#define TDX_FW_CANCEL          0
-> +struct tdx_status {
-> +       DECLARE_BITMAP(fw_state, TDX_FW_STATE_BITS);
-> +};
-> +
-> +struct fw_upload *tdx_fwl;
-> +static struct tdx_status tdx_status;
->  static struct seamldr_info seamldr_info __aligned(256);
->
->  static inline int seamldr_call(u64 fn, struct tdx_module_args *args)
-> @@ -101,3 +112,69 @@ int get_seamldr_info(void)
->
->         return seamldr_call(P_SEAMLDR_INFO, &args);
->  }
-> +
-> +static int seamldr_install_module(const u8 *data, u32 size)
-> +{
-> +       return -EOPNOTSUPP;
-> +}
-> +
-> +static enum fw_upload_err tdx_fw_prepare(struct fw_upload *fwl,
-> +                                        const u8 *data, u32 size)
-> +{
-> +       struct tdx_status *status =3D fwl->dd_handle;
-> +
-> +       if (test_and_clear_bit(TDX_FW_CANCEL, status->fw_state))
-> +               return FW_UPLOAD_ERR_CANCELED;
-> +
-> +       return FW_UPLOAD_ERR_NONE;
-> +}
-> +
-> +static enum fw_upload_err tdx_fw_write(struct fw_upload *fwl, const u8 *=
-data,
-> +                                      u32 offset, u32 size, u32 *written=
-)
-> +{
-> +       struct tdx_status *status =3D fwl->dd_handle;
-> +
-> +       if (test_and_clear_bit(TDX_FW_CANCEL, status->fw_state))
-> +               return FW_UPLOAD_ERR_CANCELED;
-> +
-> +       /*
-> +        * No partial write will be returned to callers so @offset should
-> +        * always be zero.
-> +        */
-> +       WARN_ON_ONCE(offset);
-> +       if (seamldr_install_module(data, size))
-> +               return FW_UPLOAD_ERR_FW_INVALID;
-> +
-> +       *written =3D size;
-> +       return FW_UPLOAD_ERR_NONE;
-> +}
-> +
-> +static enum fw_upload_err tdx_fw_poll_complete(struct fw_upload *fwl)
-> +{
-> +       return FW_UPLOAD_ERR_NONE;
-> +}
-> +
-> +static void tdx_fw_cancel(struct fw_upload *fwl)
-> +{
-> +       struct tdx_status *status =3D fwl->dd_handle;
-> +
-> +       set_bit(TDX_FW_CANCEL, status->fw_state);
-> +}
-> +
-> +static const struct fw_upload_ops tdx_fw_ops =3D {
-> +       .prepare =3D tdx_fw_prepare,
-> +       .write =3D tdx_fw_write,
-> +       .poll_complete =3D tdx_fw_poll_complete,
-> +       .cancel =3D tdx_fw_cancel,
-> +};
-> +
-> +void seamldr_init(struct device *dev)
-> +{
-> +       int ret;
-> +
-> +       tdx_fwl =3D firmware_upload_register(THIS_MODULE, dev, "seamldr_u=
-pload",
-> +                                          &tdx_fw_ops, &tdx_status);
-> +       ret =3D PTR_ERR_OR_ZERO(tdx_fwl);
-> +       if (ret)
-> +               pr_err("failed to register module uploader %d\n", ret);
-> +}
-> diff --git a/arch/x86/virt/vmx/tdx/seamldr.h b/arch/x86/virt/vmx/tdx/seam=
-ldr.h
-> index 15597cb5036d..00fa3a4e9155 100644
-> --- a/arch/x86/virt/vmx/tdx/seamldr.h
-> +++ b/arch/x86/virt/vmx/tdx/seamldr.h
-> @@ -6,9 +6,11 @@
->  extern struct attribute_group seamldr_group;
->  #define SEAMLDR_GROUP (&seamldr_group)
->  int get_seamldr_info(void);
-> +void seamldr_init(struct device *dev);
->  #else
->  #define SEAMLDR_GROUP NULL
->  static inline int get_seamldr_info(void) { return 0; }
-> +static inline void seamldr_init(struct device *dev) { }
->  #endif
->
->  #endif
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index aa6a23d46494..22ffc15b4299 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> @@ -1178,6 +1178,10 @@ static void tdx_subsys_init(void)
->                 goto err_bus;
->         }
->
-> +       struct device *dev_root __free(put_device) =3D bus_get_dev_root(&=
-tdx_subsys);
+>arch/x86/virt/vmx/tdx/tdx.c:1181:3: error: cannot jump from this goto
+>statement to its label
+>                goto err_bus;
+>                ^
+>arch/x86/virt/vmx/tdx/tdx.c:1184:17: note: jump bypasses
+>initialization of variable with __attribute__((cleanup))
+>        struct device *dev_root __free(put_device) =
+>bus_get_dev_root(&tdx_subsys);
 
-dev_root definition here causes compilation error:
+Thank you for reporting this. The goto label is unnecessary, and I'll remove it
+from patch 4 (which adds this goto).
 
-arch/x86/virt/vmx/tdx/tdx.c:1181:3: error: cannot jump from this goto
-statement to its label
-                goto err_bus;
-                ^
-arch/x86/virt/vmx/tdx/tdx.c:1184:17: note: jump bypasses
-initialization of variable with __attribute__((cleanup))
-        struct device *dev_root __free(put_device) =3D
-bus_get_dev_root(&tdx_subsys);
+I'm curious about which compiler you are using because I don't encounter this
+error with "gcc version 11.5.0 20240719 (Red Hat 11.5.0-5) (GCC)".
 
-> +       if (dev_root)
-> +               seamldr_init(dev_root);
-> +
->         return;
 >
->  err_bus:
-> --
-> 2.47.1
->
+>> +       if (dev_root)
+>> +               seamldr_init(dev_root);
+>> +
+>>         return;
+>>
+>>  err_bus:
+>> --
+>> 2.47.1
+>>
+>>
 >
