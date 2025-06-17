@@ -1,41 +1,42 @@
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70342E2640
-	for <linux-coco@lists.linux.dev>; Tue, 17 Jun 2025 14:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999352EF651
+	for <linux-coco@lists.linux.dev>; Tue, 17 Jun 2025 14:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750170125; cv=none; b=kHXOfCUer8p5jrqaBYGLSkPmC1RV9WXjOAXHjEONjsRUbQu5jeVjUuixPFCezVpVT7l4n27dlONK3PqX+3mSzkmjEYBfa3lxyvvl7vBs8uJvWezVhqceDewImrWEPq966qFFFbbQa6AwB8GbhYfydAqY5IFcX4gPkAUX/A/pAcY=
+	t=1750170415; cv=none; b=gkdwT4Xi8dzzZq1BS+P8N2ZlolrlICQGhSjwVfmJGbSl/OimtLh/DcrZFtSPW4dElnMtEGkkGFEhhH1FhgtOkXOCzcmHJ84uuBUm/6MnebtyQ2nAERgRxdYykp9fWGUoKRCFyauZcXTDjBdIOCID/D1JiXyowyBgrWi8vsCe8JY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750170125; c=relaxed/simple;
-	bh=iZFsen1wzgMPKepSb8rWXV52OMIT/eONbL+Pp5LT5Co=;
+	s=arc-20240116; t=1750170415; c=relaxed/simple;
+	bh=gobYUNUFllNI01KDeRELpX66jEUTdqau1xfZDAOL8k0=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Plp3TnREYLpCrtTCs9toKyUbKXhUtxkUTOg4Xa6SLqvHbSvGbUoW0Pj7fh/GdG7LqYfjYcV3e68c9dC3y8sKUeUA2DIuOnhvsnSst/tCGJ2lfTJzVM3IeTMTpUzRnSMZpWW/JnZjqAroOUhjZpEJ4Yej4CzqaGrQFT0oFeaz1EY=
+	 MIME-Version:Content-Type; b=geh7xhAl3SZCrX2d6eKaRnhpKggqxl8wtobsvoIHpYV4Nt1kCkmls6C1yWjqmlfyF7Sx/ieYLn3ktBBUyrv3Qe05KomZEBUSfwypyAx53SEsscVTPTgEdeJUEftlCMjl9fJN1Dw0TM+QVK4lIY7SFAp7AbJWq3rW/J2U+tzzjm0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bM88L4jfWz6L5Zp;
-	Tue, 17 Jun 2025 22:17:22 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bM8Jn247Dz6L5RW;
+	Tue, 17 Jun 2025 22:24:41 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id C95EB140277;
-	Tue, 17 Jun 2025 22:21:59 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 7F38A1402FE;
+	Tue, 17 Jun 2025 22:26:51 +0800 (CST)
 Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
  (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 17 Jun
- 2025 16:21:59 +0200
-Date: Tue, 17 Jun 2025 15:21:57 +0100
+ 2025 16:26:50 +0200
+Date: Tue, 17 Jun 2025 15:26:48 +0100
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 To: Dan Williams <dan.j.williams@intel.com>
 CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>,
 	<gregkh@linuxfoundation.org>, <lukas@wunner.de>, <aneesh.kumar@kernel.org>,
 	<suzuki.poulose@arm.com>, <sameo@rivosinc.com>, <aik@amd.com>,
-	<jgg@nvidia.com>, <zhiw@nvidia.com>
-Subject: Re: [PATCH v3 10/13] PCI/TSM: Report active IDE streams
-Message-ID: <20250617152157.000048a2@huawei.com>
-In-Reply-To: <20250516054732.2055093-11-dan.j.williams@intel.com>
+	<jgg@nvidia.com>, <zhiw@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>, Xu
+ Yilun <yilun.xu@linux.intel.com>
+Subject: Re: [PATCH v3 11/13] samples/devsec: Add sample IDE establishment
+Message-ID: <20250617152648.00006e28@huawei.com>
+In-Reply-To: <20250516054732.2055093-12-dan.j.williams@intel.com>
 References: <20250516054732.2055093-1-dan.j.williams@intel.com>
-	<20250516054732.2055093-11-dan.j.williams@intel.com>
+	<20250516054732.2055093-12-dan.j.williams@intel.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -48,46 +49,75 @@ Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
  frapeml500008.china.huawei.com (7.182.85.71)
 
-On Thu, 15 May 2025 22:47:29 -0700
+On Thu, 15 May 2025 22:47:30 -0700
 Dan Williams <dan.j.williams@intel.com> wrote:
 
-> Given that the platform TSM owns IDE Stream ID allocation, report the
-> active streams via the TSM class device. Establish a symlink from the
-> class device to the PCI endpoint device consuming the stream, named by
-> the Stream ID.
+> Exercise common setup and teardown flows for a sample platform TSM
+> driver that implements the TSM 'connect' and 'disconnect' flows.
 > 
+> This is both a template for platform specific implementations and a
+> simple integration test for the PCI core infrastructure + ABI.
+> 
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Lukas Wunner <lukas@wunner.de>
+> Cc: Samuel Ortiz <sameo@rivosinc.com>
+> Cc: Alexey Kardashevskiy <aik@amd.com>
+> Cc: Xu Yilun <yilun.xu@linux.intel.com>
 > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  Documentation/ABI/testing/sysfs-class-tsm | 10 ++++++++++
->  drivers/virt/coco/host/tsm-core.c         | 17 +++++++++++++++++
->  include/linux/tsm.h                       |  4 ++++
->  3 files changed, 31 insertions(+)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-class-tsm b/Documentation/ABI/testing/sysfs-class-tsm
-> index 7503f04a9eb9..75ee2b9bc555 100644
-> --- a/Documentation/ABI/testing/sysfs-class-tsm
-> +++ b/Documentation/ABI/testing/sysfs-class-tsm
-> @@ -8,3 +8,13 @@ Description:
->  		signals when the PCI layer is able to support establishment of
->  		link encryption and other device-security features coordinated
->  		through the platform tsm.
+Trivial comment inline.
+
+> index 7a8d33dc54c6..aa852ac1c16d 100644
+> --- a/samples/devsec/tsm.c
+> +++ b/samples/devsec/tsm.c
+
+>  /*
+>   * Reference consumer for a TSM driver "connect" operation callback. The
+>   * low-level TSM driver understands details about the platform the PCI
+> @@ -74,11 +79,81 @@ static void devsec_tsm_pci_remove(struct pci_tsm *tsm)
+>   */
+>  static int devsec_tsm_connect(struct pci_dev *pdev)
+>  {
+> -	return -ENXIO;
+> +	struct pci_dev *rp = pcie_find_root_port(pdev);
+> +	struct pci_ide *ide;
+> +	int rc, stream_id;
 > +
-> +What:		/sys/class/tsm/tsm0/streamN:DDDD:BB:DD:F
-> +Date:		December, 2024
-> +Contact:	linux-pci@vger.kernel.org
-> +Description:
-> +		(RO) When a host bridge has established a secure connection via
-> +		the platform TSM, symlink appears. The primary function of this
-> +		is have a system global review of TSM resource consumption
-> +		across host bridges. The link points to the endpoint PCI device
-> +		at domain:DDDD bus:BB device:DD function:F.
+> +	stream_id =
+> +		find_first_zero_bit(devsec_stream_ids, NR_TSM_STREAMS);
 
-Do we need the name to link to include the sbdf?  Maybe just streamN
-is enough. It's a little fiddly to get the spdf from where that goes, but not
-that challenging.
+Ugly and it's under 80 chars on one line.
 
-For user ls -lf /sys/class/tsm/tsm0/* should work for instance.
 
-I don't care strongly about this. Maybe one for Bjorn.
+> +	if (stream_id == NR_TSM_STREAMS)
+> +		return -EBUSY;
 
+>  
+>  static void devsec_tsm_disconnect(struct pci_dev *pdev)
+>  {
+> +	struct pci_dev *rp = pcie_find_root_port(pdev);
+> +	struct pci_ide *ide;
+> +	int i;
+> +
+> +	for_each_set_bit(i, devsec_stream_ids, NR_TSM_STREAMS)
+> +		if (devsec_streams[i]->pdev == pdev)
+> +			break;
+> +
+> +	if (i >= NR_TSM_STREAMS)
+== NR_TSM_STREAMS 
+not that it really matters but it can never be greater.
+
+> +		return;
+> +
+> +	ide = devsec_streams[i];
+> +	devsec_streams[i] = NULL;
+> +	pci_ide_stream_disable(pdev, ide);
+> +	tsm_ide_stream_unregister(ide);
+> +	pci_ide_stream_teardown(rp, ide);
+> +	pci_ide_stream_teardown(pdev, ide);
+> +	pci_ide_stream_unregister(ide);
+> +	pci_ide_stream_free(ide);
+> +	clear_bit(i, devsec_stream_ids);
+>  }
+>  
+>  static const struct pci_tsm_ops devsec_pci_ops = {
 
