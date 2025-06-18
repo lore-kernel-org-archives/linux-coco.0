@@ -1,331 +1,325 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2062.outbound.protection.outlook.com [40.107.220.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE0A2DFF14
-	for <linux-coco@lists.linux.dev>; Wed, 18 Jun 2025 11:32:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750246327; cv=fail; b=GLsIY8mp3I5QFgZJ9XxqBU46+yLQPIUj6sRImY2WnIo9cvN+Vtn5xoZ78rk328aTrPQ2S5iP9XbYlO/E4BdyGRhpzzC7siI17qGm5FBtOuhszpBC37CxCscggmdxWrGZ2n1czVDzR0bF6uMX9/2zXMF5uvVbV+ViUNn97e64q9w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750246327; c=relaxed/simple;
-	bh=rGKaxhopsjzg5whXYJ5oOo5z8yaqW79j4exy6KFRsqE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PlSWISvrf+hzdN3pofoSv9swbVeqUDThos5yQfcwK2AwB4LOCFCbgiWlAu4E4YM2bzJNPXYWvCzXkcb4VvC6lzEJXhYB69qTcn7Xy77BvxzMc4Nnyb0IHhNYajtvYKV4nmXTSyEZmMSq6apOzbDo+M6uaARf1K8ibPhHWFhw0eo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=s9zHZS3E; arc=fail smtp.client-ip=40.107.220.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="s9zHZS3E"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rhTqyd6O6mVVdrpQDx7BCnOHGgRc5iAuwBTgh8Ow/UxldOwbKnWxXUYGcDbTa7rxM9DWd09WND7ZFNYmykJxCzHgwvRlJoM9Rvrt0P6QWYCxVDAKOE5Wcc+ziilbwGaR4NZg46uMrgbfBmaHNyaXpoaPFm70ayfKUvztVYZlJoydp/U15LhiDHQok0UHwnuYgYUqQmGHSyfuduqyAAbo01AbILM+YO0uwZpFZE3bvwxPIup6Rz8/LaYBfkW4y8EAbnKnp+x27x6B4kQM+9av/XfrqW3uRXO5eBqFVG87QixvE0t2olVPWp8i3NM04sjeFNjPjUS7x56JaNr9bpFhQg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aFphcHKUBvSNXcUaDA1E9dP98Pnht5uF+GigLhSttx4=;
- b=K92VyFzpfbi1Uf8zvZyVLqKyQZ+GrL8lmbf1H3nrgYjNR16a9cp48Dmu/UFvGQ69gMv9RIw+3LARgHqq0nMrsc1w5YVyNmzatK6kGqATxvqavJOg+QpPhmst3NmUwlzM8wQNlEn6WvsecDPbz94SKpPxSXnK/A3U5OEnveeDObTM+rocgxlHQRyrNj47y1nIXonK1DhzqlQFRH0u3JTATOgdUA1F9hF5NuuHAmOnJXB2Bt5gWCTjU65hmhsKeQJ3kC3SxJuvRyl8eqZUXw8A/NtnYqk7FmfBTNJqRNLGHjzkypdCovbYW1g4TgZUEwKmNDyBEcKqS+nbBShtKikF0g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aFphcHKUBvSNXcUaDA1E9dP98Pnht5uF+GigLhSttx4=;
- b=s9zHZS3EdmLSeXHmJa/OzgL4XCgs+PEcjwJp0qrejImlLgjB88iqNtbzGH/VC4YN/oqVcEAweseKLbUETV8SVsjthJB96x60ZO/qSkUWX3h7QBcNKXFEs8ht1rnrTa4MvpUiaIIsBMvFb43zCVlyC3sYy/taxYq+r/Gnq63YRKc=
-Received: from SA0PR11CA0210.namprd11.prod.outlook.com (2603:10b6:806:1bc::35)
- by MN0PR12MB5930.namprd12.prod.outlook.com (2603:10b6:208:37d::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.29; Wed, 18 Jun
- 2025 11:31:57 +0000
-Received: from SN1PEPF000397AE.namprd05.prod.outlook.com
- (2603:10b6:806:1bc:cafe::4b) by SA0PR11CA0210.outlook.office365.com
- (2603:10b6:806:1bc::35) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.35 via Frontend Transport; Wed,
- 18 Jun 2025 11:31:57 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SN1PEPF000397AE.mail.protection.outlook.com (10.167.248.52) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8857.21 via Frontend Transport; Wed, 18 Jun 2025 11:31:56 +0000
-Received: from kaveri.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 18 Jun
- 2025 06:31:41 -0500
-From: Shivank Garg <shivankg@amd.com>
-To: <seanjc@google.com>, <david@redhat.com>, <vbabka@suse.cz>,
-	<willy@infradead.org>, <akpm@linux-foundation.org>, <shuah@kernel.org>,
-	<pbonzini@redhat.com>, <brauner@kernel.org>, <viro@zeniv.linux.org.uk>
-CC: <ackerleytng@google.com>, <paul@paul-moore.com>, <jmorris@namei.org>,
-	<serge@hallyn.com>, <pvorel@suse.cz>, <bfoster@redhat.com>,
-	<tabba@google.com>, <vannapurve@google.com>, <chao.gao@intel.com>,
-	<bharata@amd.com>, <nikunj@amd.com>, <michael.day@amd.com>,
-	<yan.y.zhao@intel.com>, <Neeraj.Upadhyay@amd.com>, <thomas.lendacky@amd.com>,
-	<michael.roth@amd.com>, <aik@amd.com>, <jgg@nvidia.com>,
-	<kalyazin@amazon.com>, <peterx@redhat.com>, <shivankg@amd.com>,
-	<jack@suse.cz>, <rppt@kernel.org>, <hch@infradead.org>,
-	<cgzones@googlemail.com>, <ira.weiny@intel.com>, <rientjes@google.com>,
-	<roypat@amazon.co.uk>, <ziy@nvidia.com>, <matthew.brost@intel.com>,
-	<joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>, <byungchul@sk.com>,
-	<gourry@gourry.net>, <kent.overstreet@linux.dev>,
-	<ying.huang@linux.alibaba.com>, <apopple@nvidia.com>,
-	<chao.p.peng@intel.com>, <amit@infradead.org>, <ddutile@redhat.com>,
-	<dan.j.williams@intel.com>, <ashish.kalra@amd.com>, <gshan@redhat.com>,
-	<jgowans@amazon.com>, <pankaj.gupta@amd.com>, <papaluri@amd.com>,
-	<yuzhao@google.com>, <suzuki.poulose@arm.com>, <quic_eberman@quicinc.com>,
-	<aneeshkumar.kizhakeveetil@arm.com>, <linux-fsdevel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<linux-security-module@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, <linux-coco@lists.linux.dev>
-Subject: [RFC PATCH v8 7/7] KVM: guest_memfd: selftests: Add tests for mmap and NUMA policy support
-Date: Wed, 18 Jun 2025 11:29:35 +0000
-Message-ID: <20250618112935.7629-8-shivankg@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250618112935.7629-1-shivankg@amd.com>
-References: <20250618112935.7629-1-shivankg@amd.com>
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 717BC2EA16A;
+	Wed, 18 Jun 2025 12:34:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750250054; cv=none; b=ZSKL1twLLnS9UO9IF2hvf1x2PBi5nXuTyxH586+CeAvCWvdaPqQPHFWrZ/RbwdJpqMIQhFqrSudTmVJuuRreZQJcRCL51IBXmLzMdN790b9jH/K4m6OCIFAqt65oRiRLzbYU19REM9PoCg0UAEHz0ThvZ7klvWLb9wx0y915JPY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750250054; c=relaxed/simple;
+	bh=82jJoSKNfDCk8X5+WmO81pBflXQZP7LLoe+PJ7aYcb8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FHcvC5HBO92fPWvT6NlsBongNz4c1rOqDvCQvCS/HGkmH1+X5/YH1nFW4imdfLlcKshgT6hnsMnYhEECbdIhnYjb4rLZ2fRfM856+JdGodoG8cr9ieTAYqLNe7nw0N+sLl3fq0VhEqrZ4zv9opTF5jKd2mwPlGUygJXNzfo29fA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0365C14BF;
+	Wed, 18 Jun 2025 05:33:49 -0700 (PDT)
+Received: from donnerap.manchester.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 08B5B3F66E;
+	Wed, 18 Jun 2025 05:34:05 -0700 (PDT)
+Date: Wed, 18 Jun 2025 13:33:55 +0100
+From: Andre Przywara <andre.przywara@arm.com>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, Catalin Marinas
+ <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon
+ <will@kernel.org>, James Morse <james.morse@arm.com>, Oliver Upton
+ <oliver.upton@linux.dev>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, Alexandru
+ Elisei <alexandru.elisei@arm.com>, Christoffer Dall
+ <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev, Ganapatrao Kulkarni
+ <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi
+ Kisanuki <fj0570is@fujitsu.com>
+Subject: Re: [PATCH v9 15/43] arm64: RME: Allow VMM to set RIPAS
+Message-ID: <20250618133355.2af1dcc4@donnerap.manchester.arm.com>
+In-Reply-To: <20250611104844.245235-16-steven.price@arm.com>
+References: <20250611104844.245235-1-steven.price@arm.com>
+	<20250611104844.245235-16-steven.price@arm.com>
+Organization: ARM
+X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.32; aarch64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF000397AE:EE_|MN0PR12MB5930:EE_
-X-MS-Office365-Filtering-Correlation-Id: a16d9d3e-3295-40bd-d31f-08ddae5bbb78
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?zb7WaMFy/okY21uLXk+a/PSRd5y7EzGj9x2GFNGa/q9nLiz8tu4RE/PPI/A4?=
- =?us-ascii?Q?gcoth7mWMeIQgf9cfRkckkDH+XGUSTD04YPKtN602oO234NSF5xnsZfzKemU?=
- =?us-ascii?Q?gSklGKhaFTtnZxRh9WWHdVnAO794MDU3SiDLbc9HEQywhLmq3kbAKpmBReyK?=
- =?us-ascii?Q?xtbtgXSOvGSu7CTou4fFSWi3YsG7OKiIDIbw7MuyUTWP/z8AQqjY93TJG+z3?=
- =?us-ascii?Q?nuoZ2kG6JJmH1ewkGUhjVf+6yX1YfzfW/djS23MkADZqyvDb7LHdNQlnCjMv?=
- =?us-ascii?Q?ivL5Z9eYeWkzQO+CX9Bxa/WEQ2LSeNgQTHVdMAjhjR+zew9bbY/2cd5+VfYx?=
- =?us-ascii?Q?yUopCD69Ml3n8ZyDO7J1UwnKkrNVyweQYQVRd+rVOzJGJv+NBFjAyGAc0Brw?=
- =?us-ascii?Q?qSWzODwZZaplgKMi3KBNn9qWhX0/Tw62JzpZjr2L+bwN1u3pHseh3AUg4bRF?=
- =?us-ascii?Q?48jZ6kpJBwCDzNWO3Y+JFGDE3zCQJp5J4p11A4Mt50+F85MGC1xq03Sezvol?=
- =?us-ascii?Q?RXfzYNBR53eA3ZzZTmcE7FUyAV3RyAHwnr/EswJEzYSP8V5n7oX30PvWnYkZ?=
- =?us-ascii?Q?Ws2f4WZioBF6J5hykf9L+HwkDnKI0QmJGMCZYNBjnb8ih4k3SPy4V/8Vg15I?=
- =?us-ascii?Q?WM4JwwclrAZbfFl4xBUODGe75+hmhfKJqK+FBOqv6su9kYHYT3rvk0CsfCKC?=
- =?us-ascii?Q?QCO1NYH0mhUsRIO9qK9UCVGgJFtqoIYwPKpPwBu2ghi4+7PzeNpszjUyIZKL?=
- =?us-ascii?Q?nyXDCEW3bM3HPnPXKUlS3pwm9CU1IfqhMYNvNJgt3rfmtdaMdYaXQ1CoJr9Z?=
- =?us-ascii?Q?tzyXX7HNI/t6yIHKzR3RtMTMwoMQLA8zRRGrR6wm2lTX8BlX5Sblc4VGiUtL?=
- =?us-ascii?Q?EC06U7R2YJfOij4LWBKEpmfZaN6WZKjcOY9Ac/dFHACNEplhC/5BtWk3lUpp?=
- =?us-ascii?Q?H+mp6IUcREgbKtXW/pi2ZxSwi3ilkgvY5cOKHePaGfA52GjVS8LXtgqSb+N4?=
- =?us-ascii?Q?nVHlIVs0lFH6OXy3aqh4QQu7QogZmLWZ8arcXzqw5sN7wceiELp6B5z01b5O?=
- =?us-ascii?Q?EiPiX7hCzlR3MzWoxSWA0PZzihcue+TojqWxSv/P3UV9cvxhYewRRsye3rJ/?=
- =?us-ascii?Q?DprtwyDh6pV9DWoVUUkDWL19eOdCX9az2xj3WgxOI7OBMmnB7YxjJMLrNIHB?=
- =?us-ascii?Q?vE5uwsUDO60hJyUjdadNkuwLQQG7tbI1E+CqjWE6WeHO6xb/w6XFEhGFhEhS?=
- =?us-ascii?Q?ZK7UUmjpqAg2V6DX68/HqsRvlx5NJO3nvSNrPA8w1G73rxraYqAtNyebjLeD?=
- =?us-ascii?Q?W3cT7eycv3hAk3N/njT8h+l8PgvcfAooNKLHKPNaRIDkdmYOfY13F34fr4Zn?=
- =?us-ascii?Q?HQ2ZnOs1qz8gbQ14GMQrewVO5iMQupAUXY8if9uPAdIFf+wP4wyepa7WS6fM?=
- =?us-ascii?Q?rtet+Alfo+How90oITUm2RLyN0mCRsCab0C5g3lFZLATB0F3x68IOuxoc3YK?=
- =?us-ascii?Q?s9WRYLP3V/EbHWxhq7L95E82Nj933NzB7sOA?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(7416014)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2025 11:31:56.6268
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a16d9d3e-3295-40bd-d31f-08ddae5bbb78
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF000397AE.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5930
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Add tests for NUMA memory policy binding and NUMA aware allocation in
-guest_memfd. This extends the existing selftests by adding proper
-validation for:
-- KVM GMEM set_policy and get_policy() vm_ops functionality using
-  mbind() and get_mempolicy()
-- NUMA policy application before and after memory allocation
+On Wed, 11 Jun 2025 11:48:12 +0100
+Steven Price <steven.price@arm.com> wrote:
 
-These tests help ensure NUMA support for guest_memfd works correctly.
+Hi Steven,
 
-Signed-off-by: Shivank Garg <shivankg@amd.com>
----
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../testing/selftests/kvm/guest_memfd_test.c  | 123 +++++++++++++++++-
- 2 files changed, 122 insertions(+), 2 deletions(-)
+one build error below, on my machine (with GCC10):
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index e11ed9e59ab5..f4bb02231d6a 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -273,6 +273,7 @@ pgste-option = $(call try-run, echo 'int main(void) { return 0; }' | \
- 	$(CC) -Werror -Wl$(comma)--s390-pgste -x c - -o "$$TMP",-Wl$(comma)--s390-pgste)
- 
- LDLIBS += -ldl
-+LDLIBS += -lnuma
- LDFLAGS += -pthread $(no-pie-option) $(pgste-option)
- 
- LIBKVM_C := $(filter %.c,$(LIBKVM))
-diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index 5da2ed6277ac..a5d261dcfdf5 100644
---- a/tools/testing/selftests/kvm/guest_memfd_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -7,6 +7,8 @@
- #include <stdlib.h>
- #include <string.h>
- #include <unistd.h>
-+#include <numa.h>
-+#include <numaif.h>
- #include <errno.h>
- #include <stdio.h>
- #include <fcntl.h>
-@@ -18,6 +20,7 @@
- #include <sys/mman.h>
- #include <sys/types.h>
- #include <sys/stat.h>
-+#include <sys/syscall.h>
- 
- #include "kvm_util.h"
- #include "test_util.h"
-@@ -115,6 +118,122 @@ static void test_mmap_not_supported(int fd, size_t page_size, size_t total_size)
- 	TEST_ASSERT_EQ(mem, MAP_FAILED);
- }
- 
-+#define TEST_REQUIRE_NUMA_MULTIPLE_NODES()	\
-+	TEST_REQUIRE(numa_available() != -1 && numa_max_node() >= 1)
-+
-+static void test_mbind(int fd, size_t page_size, size_t total_size)
-+{
-+	unsigned long nodemask = 1; /* nid: 0 */
-+	unsigned long maxnode = 8;
-+	unsigned long get_nodemask;
-+	int get_policy;
-+	char *mem;
-+	int ret;
-+
-+	TEST_REQUIRE_NUMA_MULTIPLE_NODES();
-+
-+	mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-+	TEST_ASSERT(mem != MAP_FAILED, "mmap for mbind test should succeed");
-+
-+	/* Test MPOL_INTERLEAVE policy */
-+	ret = syscall(__NR_mbind, mem, page_size * 2, MPOL_INTERLEAVE,
-+		      &nodemask, maxnode, 0);
-+	TEST_ASSERT(!ret, "mbind with INTERLEAVE to node 0 should succeed");
-+	ret = syscall(__NR_get_mempolicy, &get_policy, &get_nodemask,
-+		      maxnode, mem, MPOL_F_ADDR);
-+	TEST_ASSERT(!ret && get_policy == MPOL_INTERLEAVE && get_nodemask == nodemask,
-+		    "Policy should be MPOL_INTERLEAVE and nodes match");
-+
-+	/* Test basic MPOL_BIND policy */
-+	ret = syscall(__NR_mbind, mem + page_size * 2, page_size * 2, MPOL_BIND,
-+		      &nodemask, maxnode, 0);
-+	TEST_ASSERT(!ret, "mbind with MPOL_BIND to node 0 should succeed");
-+	ret = syscall(__NR_get_mempolicy, &get_policy, &get_nodemask,
-+		      maxnode, mem + page_size * 2, MPOL_F_ADDR);
-+	TEST_ASSERT(!ret && get_policy == MPOL_BIND && get_nodemask == nodemask,
-+		    "Policy should be MPOL_BIND and nodes match");
-+
-+	/* Test MPOL_DEFAULT policy */
-+	ret = syscall(__NR_mbind, mem, total_size, MPOL_DEFAULT, NULL, 0, 0);
-+	TEST_ASSERT(!ret, "mbind with MPOL_DEFAULT should succeed");
-+	ret = syscall(__NR_get_mempolicy, &get_policy, &get_nodemask,
-+		      maxnode, mem, MPOL_F_ADDR);
-+	TEST_ASSERT(!ret && get_policy == MPOL_DEFAULT && get_nodemask == 0,
-+		    "Policy should be MPOL_DEFAULT and nodes zero");
-+
-+	/* Test with invalid policy */
-+	ret = syscall(__NR_mbind, mem, page_size, 999, &nodemask, maxnode, 0);
-+	TEST_ASSERT(ret == -1 && errno == EINVAL,
-+		    "mbind with invalid policy should fail with EINVAL");
-+
-+	TEST_ASSERT(munmap(mem, total_size) == 0, "munmap should succeed");
-+}
-+
-+static void test_numa_allocation(int fd, size_t page_size, size_t total_size)
-+{
-+	unsigned long node0_mask = 1;  /* Node 0 */
-+	unsigned long node1_mask = 2;  /* Node 1 */
-+	unsigned long maxnode = 8;
-+	void *pages[4];
-+	int status[4];
-+	char *mem;
-+	int ret, i;
-+
-+	TEST_REQUIRE_NUMA_MULTIPLE_NODES();
-+
-+	/* Clean slate: deallocate all file space, if any */
-+	ret = fallocate(fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE, 0, total_size);
-+	TEST_ASSERT(!ret, "fallocate(PUNCH_HOLE) should succeed");
-+
-+	mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-+	TEST_ASSERT(mem != MAP_FAILED, "mmap should succeed");
-+
-+	for (i = 0; i < 4; i++)
-+		pages[i] = (char *)mem + page_size * i;
-+
-+	/* Set NUMA policy after allocation */
-+	memset(mem, 0xaa, page_size);
-+	ret = syscall(__NR_mbind, pages[0], page_size, MPOL_BIND, &node0_mask, maxnode, 0);
-+	TEST_ASSERT(!ret, "mbind after allocation page 0 to node 0 should succeed");
-+	ret = fallocate(fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE, 0, page_size);
-+	TEST_ASSERT(!ret, "fallocate(PUNCH_HOLE) should succeed");
-+
-+	/* Set NUMA policy before allocation */
-+	ret = syscall(__NR_mbind, pages[0], page_size * 2, MPOL_BIND, &node1_mask, maxnode, 0);
-+	TEST_ASSERT(!ret, "mbind page 0, 1 to node 1 should succeed");
-+	ret = syscall(__NR_mbind, pages[2], page_size * 2, MPOL_BIND, &node0_mask, maxnode, 0);
-+	TEST_ASSERT(!ret, "mbind page 2, 3 to node 0 should succeed");
-+	memset(mem, 0xaa, total_size);
-+
-+	/* Validate if pages are allocated on specified NUMA nodes */
-+	ret = syscall(__NR_move_pages, 0, 4, pages, NULL, status, 0);
-+	TEST_ASSERT(ret >= 0, "move_pages should succeed for status check");
-+	TEST_ASSERT(status[0] == 1, "Page 0 should be allocated on node 1");
-+	TEST_ASSERT(status[1] == 1, "Page 1 should be allocated on node 1");
-+	TEST_ASSERT(status[2] == 0, "Page 2 should be allocated on node 0");
-+	TEST_ASSERT(status[3] == 0, "Page 3 should be allocated on node 0");
-+
-+	/* Punch hole for all pages */
-+	ret = fallocate(fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE, 0, total_size);
-+	TEST_ASSERT(!ret, "fallocate(PUNCH_HOLE) should succeed");
-+
-+	/* Change NUMA policy nodes and reallocate */
-+	ret = syscall(__NR_mbind, pages[0], page_size * 2, MPOL_BIND, &node0_mask, maxnode, 0);
-+	TEST_ASSERT(!ret, "mbind page 0, 1 to node 0 should succeed");
-+	ret = syscall(__NR_mbind, pages[2], page_size * 2, MPOL_BIND, &node1_mask, maxnode, 0);
-+	TEST_ASSERT(!ret, "mbind page 2, 3 to node 1 should succeed");
-+	memset(mem, 0xaa, total_size);
-+
-+	ret = syscall(__NR_move_pages, 0, 4, pages, NULL, status, 0);
-+	TEST_ASSERT(ret >= 0, "move_pages should succeed after reallocation");
-+	TEST_ASSERT(status[0] == 0, "Page 0 should be allocated on node 0");
-+	TEST_ASSERT(status[1] == 0, "Page 1 should be allocated on node 0");
-+	TEST_ASSERT(status[2] == 1, "Page 2 should be allocated on node 1");
-+	TEST_ASSERT(status[3] == 1, "Page 3 should be allocated on node 1");
-+
-+	TEST_ASSERT(munmap(mem, total_size) == 0, "munmap should succeed");
-+}
-+
- static void test_file_size(int fd, size_t page_size, size_t total_size)
- {
- 	struct stat sb;
-@@ -275,7 +394,8 @@ static void test_with_type(unsigned long vm_type, uint64_t guest_memfd_flags,
- 	if (expect_mmap_allowed) {
- 		test_mmap_supported(fd, page_size, total_size);
- 		test_fault_overflow(fd, page_size, total_size);
--
-+		test_mbind(fd, page_size, total_size);
-+		test_numa_allocation(fd, page_size, total_size);
- 	} else {
- 		test_mmap_not_supported(fd, page_size, total_size);
- 	}
--- 
-2.43.0
+> Each page within the protected region of the realm guest can be marked
+> as either RAM or EMPTY. Allow the VMM to control this before the guest
+> has started and provide the equivalent functions to change this (with
+> the guest's approval) at runtime.
+>=20
+> When transitioning from RIPAS RAM (1) to RIPAS EMPTY (0) the memory is
+> unmapped from the guest and undelegated allowing the memory to be reused
+> by the host. When transitioning to RIPAS RAM the actual population of
+> the leaf RTTs is done later on stage 2 fault, however it may be
+> necessary to allocate additional RTTs to allow the RMM track the RIPAS
+> for the requested range.
+>=20
+> When freeing a block mapping it is necessary to temporarily unfold the
+> RTT which requires delegating an extra page to the RMM, this page can
+> then be recovered once the contents of the block mapping have been
+> freed.
+>=20
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Changes from v8:
+>  * Propagate the 'may_block' flag to allow conditional calls to
+>    cond_resched_rwlock_write().
+>  * Introduce alloc_rtt() to wrap alloc_delegated_granule() and
+>    kvm_account_pgtable_pages() and use when allocating RTTs.
+>  * Code reorganisation to allow init_ipa_state and set_ipa_state to
+>    share a common ripas_change() function,
+>  * Other minor changes following review.
+> Changes from v7:
+>  * Replace use of "only_shared" with the upstream "attr_filter" field
+>    of struct kvm_gfn_range.
+>  * Clean up the logic in alloc_delegated_granule() for when to call
+>    kvm_account_pgtable_pages().
+>  * Rename realm_destroy_protected_granule() to
+>    realm_destroy_private_granule() to match the naming elsewhere. Also
+>    fix the return codes in the function to be descriptive.
+>  * Several other minor changes to names/return codes.
+> Changes from v6:
+>  * Split the code dealing with the guest triggering a RIPAS change into
+>    a separate patch, so this patch is purely for the VMM setting up the
+>    RIPAS before the guest first runs.
+>  * Drop the useless flags argument from alloc_delegated_granule().
+>  * Account RTTs allocated for a guest using kvm_account_pgtable_pages().
+>  * Deal with the RMM granule size potentially being smaller than the
+>    host's PAGE_SIZE. Although note alloc_delegated_granule() currently
+>    still allocates an entire host page for every RMM granule (so wasting
+>    memory when PAGE_SIZE>4k).
+> Changes from v5:
+>  * Adapt to rebasing.
+>  * Introduce find_map_level()
+>  * Rename some functions to be clearer.
+>  * Drop the "spare page" functionality.
+> Changes from v2:
+>  * {alloc,free}_delegated_page() moved from previous patch to this one.
+>  * alloc_delegated_page() now takes a gfp_t flags parameter.
+>  * Fix the reference counting of guestmem pages to avoid leaking memory.
+>  * Several misc code improvements and extra comments.
+> ---
+>  arch/arm64/include/asm/kvm_rme.h |   6 +
+>  arch/arm64/kvm/mmu.c             |   8 +-
+>  arch/arm64/kvm/rme.c             | 447 +++++++++++++++++++++++++++++++
+>  3 files changed, 458 insertions(+), 3 deletions(-)
+>=20
+
+[ ... ]
+
+> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
+> index 25705da6f153..fe75c41d6ac3 100644
+> --- a/arch/arm64/kvm/rme.c
+> +++ b/arch/arm64/kvm/rme.c
+
+[ ... ]
+
+> @@ -318,6 +619,140 @@ static int realm_create_rd(struct kvm *kvm)
+>  	return r;
+>  }
+> =20
+> +static void realm_unmap_private_range(struct kvm *kvm,
+> +				      unsigned long start,
+> +				      unsigned long end,
+> +				      bool may_block)
+> +{
+> +	struct realm *realm =3D &kvm->arch.realm;
+> +	unsigned long next_addr, addr;
+> +	int ret;
+> +
+> +	for (addr =3D start; addr < end; addr =3D next_addr) {
+> +		ret =3D realm_unmap_private_page(realm, addr, &next_addr);
+> +
+> +		if (ret)
+> +			break;
+> +
+> +		if (may_block)
+> +			cond_resched_rwlock_write(&kvm->mmu_lock);
+> +	}
+> +
+> +	realm_fold_rtt_level(realm, get_start_level(realm) + 1,
+> +			     start, end);
+> +}
+> +
+> +void kvm_realm_unmap_range(struct kvm *kvm, unsigned long start,
+> +			   unsigned long size, bool unmap_private,
+> +			   bool may_block)
+> +{
+> +	unsigned long end =3D start + size;
+> +	struct realm *realm =3D &kvm->arch.realm;
+> +
+> +	end =3D min(BIT(realm->ia_bits - 1), end);
+> +
+> +	if (!kvm_realm_is_created(kvm))
+> +		return;
+> +
+> +	realm_unmap_shared_range(kvm, find_map_level(realm, start, end),
+> +				 start, end, may_block);
+> +	if (unmap_private)
+> +		realm_unmap_private_range(kvm, start, end, may_block);
+> +}
+> +
+> +enum ripas_action {
+> +	RIPAS_INIT,
+> +	RIPAS_SET,
+> +};
+> +
+> +static int ripas_change(struct kvm *kvm,
+> +			struct kvm_vcpu *vcpu,
+> +			unsigned long ipa,
+> +			unsigned long end,
+> +			enum ripas_action action,
+> +			unsigned long *top_ipa)
+> +{
+> +	struct realm *realm =3D &kvm->arch.realm;
+> +	phys_addr_t rd_phys =3D virt_to_phys(realm->rd);
+> +	phys_addr_t rec_phys;
+> +	struct kvm_mmu_memory_cache *memcache =3D NULL;
+> +	int ret =3D 0;
+> +
+> +	if (vcpu) {
+> +		rec_phys =3D virt_to_phys(vcpu->arch.rec.rec_page);
+> +		memcache =3D &vcpu->arch.mmu_page_cache;
+> +
+> +		WARN_ON(action !=3D RIPAS_SET);
+> +	} else {
+> +		WARN_ON(action !=3D RIPAS_INIT);
+> +	}
+> +
+> +	while (ipa < end) {
+> +		unsigned long next;
+> +
+> +		switch (action) {
+> +		case RIPAS_INIT:
+> +			ret =3D rmi_rtt_init_ripas(rd_phys, ipa, end, &next);
+> +			break;
+> +		case RIPAS_SET:
+> +			ret =3D rmi_rtt_set_ripas(rd_phys, rec_phys, ipa, end,
+> +						&next);
+> +			break;
+> +		}
+> +
+> +		switch (RMI_RETURN_STATUS(ret)) {
+> +		case RMI_SUCCESS:
+> +			ipa =3D next;
+> +			break;
+> +		case RMI_ERROR_RTT:
+> +			int err_level =3D RMI_RETURN_INDEX(ret);
+
+This breaks the build on GCC <=3D v10:
+
+/src/linux/arch/arm64/kvm/rme.c: In function =E2=80=98ripas_change=E2=80=99:
+/src/linux/arch/arm64/kvm/rme.c:1190:4: error: a label can only be part of =
+a statement and a declaration is not a statement
+ 1190 |    int err_level =3D RMI_RETURN_INDEX(ret);
+      |    ^~~
+/src/linux/arch/arm64/kvm/rme.c:1191:4: error: expected expression before i=
+nt=E2=80=99
+ 1191 |    int level =3D find_map_level(realm, ipa, end);
+      |    ^~~
+/src/linux/arch/arm64/kvm/rme.c:1193:21: error: =E2=80=98level=E2=80=99 und=
+eclared (first use in this function)
+ 1193 |    if (err_level >=3D level)
+      |                     ^~~~~
+
+With GCC 11 and later I see this still as a warning when using -Wpedantic,
+but it vanishes when also paired with -std=3Dgnu2x.
+
+So either hoist the variable declaration up, or use brackets, this worked
+for me as well, and I see it in other places:
+
+		case RMI_ERROR_RTT: {
+			....
+		}
+		default:
+
+Cheers,
+Andre
+
+
+> +			int level =3D find_map_level(realm, ipa, end);
+> +
+> +			if (err_level >=3D level)
+> +				return -EINVAL;
+> +
+> +			ret =3D realm_create_rtt_levels(realm, ipa,
+> err_level,
+> +						      level, memcache);
+> +			if (ret)
+> +				return ret;
+> +			/* Retry with the RTT levels in place */
+> +			break;
+> +		default:
+> +			WARN_ON(1);
+> +			return -ENXIO;
+> +		}
+> +	}
+> +
+> +	if (top_ipa)
+> +		*top_ipa =3D ipa;
+> +
+> +	return 0;
+> +}
+> +
+> +static int realm_init_ipa_state(struct kvm *kvm,
+> +				unsigned long ipa,
+> +				unsigned long end)
+> +{
+> +	return ripas_change(kvm, NULL, ipa, end, RIPAS_INIT, NULL);
+> +}
+> +
+> +static int kvm_init_ipa_range_realm(struct kvm *kvm,
+> +				    struct arm_rme_init_ripas *args)
+> +{
+> +	gpa_t addr, end;
+> +
+> +	addr =3D args->base;
+> +	end =3D addr + args->size;
+> +
+> +	if (end < addr)
+> +		return -EINVAL;
+> +
+> +	if (kvm_realm_state(kvm) !=3D REALM_STATE_NEW)
+> +		return -EPERM;
+> +
+> +	return realm_init_ipa_state(kvm, addr, end);
+> +}
+> +
+>  /* Protects access to rme_vmid_bitmap */
+>  static DEFINE_SPINLOCK(rme_vmid_lock);
+>  static unsigned long *rme_vmid_bitmap;
+> @@ -441,6 +876,18 @@ int kvm_realm_enable_cap(struct kvm *kvm, struct
+> kvm_enable_cap *cap) case KVM_CAP_ARM_RME_CREATE_REALM:
+>  		r =3D kvm_create_realm(kvm);
+>  		break;
+> +	case KVM_CAP_ARM_RME_INIT_RIPAS_REALM: {
+> +		struct arm_rme_init_ripas args;
+> +		void __user *argp =3D u64_to_user_ptr(cap->args[1]);
+> +
+> +		if (copy_from_user(&args, argp, sizeof(args))) {
+> +			r =3D -EFAULT;
+> +			break;
+> +		}
+> +
+> +		r =3D kvm_init_ipa_range_realm(kvm, &args);
+> +		break;
+> +	}
+>  	default:
+>  		r =3D -EINVAL;
+>  		break;
 
