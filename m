@@ -1,203 +1,323 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2041.outbound.protection.outlook.com [40.107.220.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B6817A31E
-	for <linux-coco@lists.linux.dev>; Mon, 23 Jun 2025 07:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750663447; cv=none; b=ZbOLEzwiq4R6mlYusqjPlzF218HUIcrLK0rvR0dx1DOa8lDpZSNdBjSyEmxfpIGYckxtovJAS+sXo6oOyMqJXeb2Xd0ubNU/u7XE6jibAqdr53Ily4//xxFdpwX3zqdIO2bT2U4pBuz8k9Bppq7+0BlO5hl+ZcTniyPPu7Hcrxg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750663447; c=relaxed/simple;
-	bh=uNt9x6nQ/gK3DoiMdoDwudgZshfaURJzAvqZMi0msOs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ro7cVs6WXy2jfXPKJQZ9f1dM6of5mSSQeD3bk1GtziM3/JbYgtxR9QS2Za4ZszbjHOOJ9svyI/7iiAZWB7XdQ1kCA+vpR7i4xbNmW9Y9q3RzIdilb20rohCSjZGztUz9Dok73ai6daBeZUjhRbQ2mejaOhY9Wq8FIIOI9AT8nYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=2j0J/TaS; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=LWRZ7KNl; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=2j0J/TaS; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=LWRZ7KNl; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55824218E9F
+	for <linux-coco@lists.linux.dev>; Mon, 23 Jun 2025 09:50:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750672260; cv=fail; b=HIkGVNfznNHt3fID9g92Hp1/rXWmo1/cYwqqjT/ehc/AnKv3+ZiyNLhs/MbKuPunaFo7lheqV8M7aJyyzxkLx6RLNR/vCVcxuji7DGao4IK6k+MLMNjpDbYUr0oOt2VC/duGYGCTqY1KiO6fUma+MoKNHG9/5Xe2Nh0TmKudNzc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750672260; c=relaxed/simple;
+	bh=TUfn/wTE4yNh7VuELpizQosvmW4gQ54X8+TcOefpcZQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bf/sCAkebTzoF5bHG+ug1KheMYyzME+wYEKHSc7VB2/efpNprG3rkSOn3GNS5vTItZ0rwEsFyMFA5uh3vnYbUWQqCufMMWbMFtEfCp+Ygrcgq7rUkn52Kqbm+5giHpW2C1LdQ6s14fHiDC2RKEpvYefeXD2/jMpZkodUYL1dYH0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=I9CsgjfH; arc=fail smtp.client-ip=40.107.220.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="2j0J/TaS";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="LWRZ7KNl";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="2j0J/TaS";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="LWRZ7KNl"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 767582117A;
-	Mon, 23 Jun 2025 07:16:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1750663019; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rIyupOCN+t5zzgK2WY+WLm8huvrucb9R/tfEk4deDJQ=;
-	b=2j0J/TaS2rvi3fL/cQXi+2OFw/6za/3+n9hb8DqeI1PRuwk+swi8rdzkUy4kVuaTJ3Gr59
-	kkafSUldWoyn67/X/Gu45XkmPNAsoDRbKA7rDK0Not4UWooVMJtxB6/cIrXFVwNCYKBCvz
-	D67vkoT5j3BQEaoNdnJnsFL1lXbd4eE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1750663019;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rIyupOCN+t5zzgK2WY+WLm8huvrucb9R/tfEk4deDJQ=;
-	b=LWRZ7KNld8VhSqG+JFMlQf6wh96oHz24o8+/V7nXT+BKzbWKTFbaXGIFvqfVOyy5glAi9j
-	vOYJWGtu0amt4FBA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1750663019; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rIyupOCN+t5zzgK2WY+WLm8huvrucb9R/tfEk4deDJQ=;
-	b=2j0J/TaS2rvi3fL/cQXi+2OFw/6za/3+n9hb8DqeI1PRuwk+swi8rdzkUy4kVuaTJ3Gr59
-	kkafSUldWoyn67/X/Gu45XkmPNAsoDRbKA7rDK0Not4UWooVMJtxB6/cIrXFVwNCYKBCvz
-	D67vkoT5j3BQEaoNdnJnsFL1lXbd4eE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1750663019;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rIyupOCN+t5zzgK2WY+WLm8huvrucb9R/tfEk4deDJQ=;
-	b=LWRZ7KNld8VhSqG+JFMlQf6wh96oHz24o8+/V7nXT+BKzbWKTFbaXGIFvqfVOyy5glAi9j
-	vOYJWGtu0amt4FBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 104D013A27;
-	Mon, 23 Jun 2025 07:16:59 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id yPuaA2v/WGhkYQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 23 Jun 2025 07:16:59 +0000
-Message-ID: <1d9a4656-8aa8-4e82-9301-644625bf2d4f@suse.cz>
-Date: Mon, 23 Jun 2025 09:16:58 +0200
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="I9CsgjfH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iDFLk/XFVnW7mHLsYPl+wE5iwUp4bRd1z71Q39mQe74Oo7MfW6dzX5s54WqJJJ5ZprNroxHIlJxgwycxYW/FfdGC+77Z51kkV9wKP3INkMFE9qIOJ6j0HE6uIDNfrkj1ZnXK4roPGNGS+UeOLO8xRHLjnk37HaFN2o1Nvyf/4D6xnPurqtDkEQ/Ppq8GZZKaM69Ss2+dJv4Aa7kJvzJHtXAVNWeZ0mg9RySIYwt5rW0pw3XscaAfRD/SlqzChrGQj00EqtBmN/hhkWlM3ravWE9u6p84h+VEpaV+NSwFNFC00bGuFMIMivNnWRIoSPsvTt1tLKP8pEWlICN+2TcwjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aai6tISOHJBDHPBKuHq7jDpuz1N4BLyKb2RTot3ncf0=;
+ b=KRnap/2LaEozHxmjbi3uGly171fpesKzaMDGHeQSUr1PIiXAG38iexz3UfKbLlWk+E67LymJNFxLL0fPys9AT5Br8kVrHqtK5QB4+2z1m005Izv7JVRBXrP6BH+xK5F1SAXCwDkiPYQzEgqGkhykuahYP4R9HDPupTnZg1cvmkc+qc9TNE1AbtMKjULeExYz/atM7P+dwKz1UhA5lgvZ9V7Y+jFdVJIBmbcL/wXNGNSF2m8QS7AYrVwRBJp51IxXOOTpYuJjlBZGD/smGGHRO+z7cK6i9cP8c6WGoEi0NYxzwd2QK9aoSDnr2CxOsRClb07jx1VbM332wSc5UXdLtw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux.dev smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aai6tISOHJBDHPBKuHq7jDpuz1N4BLyKb2RTot3ncf0=;
+ b=I9CsgjfHeZt7/zJH0t987avoZWeEMJOYwTjXiBSRruS8OWb83Rx27MZ1natEbPJ6FwsZx7Wwi88iqZ6fPxFPTdDd7mVqOCpGkNN3SvxY+fvnhLgWTq75Kk80sJBft4/52aA6z+58uQCgN69nNgncWVuQdpNLK0hIXzp8feg8prg=
+Received: from DM6PR08CA0059.namprd08.prod.outlook.com (2603:10b6:5:1e0::33)
+ by SJ1PR12MB6194.namprd12.prod.outlook.com (2603:10b6:a03:458::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.20; Mon, 23 Jun
+ 2025 09:50:54 +0000
+Received: from DS1PEPF00017091.namprd03.prod.outlook.com
+ (2603:10b6:5:1e0:cafe::e9) by DM6PR08CA0059.outlook.office365.com
+ (2603:10b6:5:1e0::33) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8857.29 via Frontend Transport; Mon,
+ 23 Jun 2025 09:50:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS1PEPF00017091.mail.protection.outlook.com (10.167.17.133) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8880.14 via Frontend Transport; Mon, 23 Jun 2025 09:50:53 +0000
+Received: from kaveri.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 23 Jun
+ 2025 04:50:46 -0500
+From: Shivank Garg <shivankg@amd.com>
+To: <kent.overstreet@linux.dev>, <clm@fb.com>, <josef@toxicpanda.com>,
+	<dsterba@suse.com>, <xiang@kernel.org>, <chao@kernel.org>,
+	<jaegeuk@kernel.org>, <willy@infradead.org>, <akpm@linux-foundation.org>,
+	<david@redhat.com>, <vbabka@suse.cz>
+CC: <zbestahu@gmail.com>, <jefflexu@linux.alibaba.com>, <dhavale@google.com>,
+	<lihongbo22@huawei.com>, <pankaj.gupta@amd.com>,
+	<linux-bcachefs@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-btrfs@vger.kernel.org>, <linux-erofs@lists.ozlabs.org>,
+	<linux-f2fs-devel@lists.sourceforge.net>, <linux-fsdevel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	Shivank Garg <shivankg@amd.com>
+Subject: [PATCH V2 1/2] mm/filemap: Add NUMA mempolicy support to filemap_alloc_folio()
+Date: Mon, 23 Jun 2025 09:39:41 +0000
+Message-ID: <20250623093939.1323623-4-shivankg@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] filemap: Add __filemap_get_folio_mpol()
-To: Shivank Garg <shivankg@amd.com>, Andrew Morton
- <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>
-Cc: seanjc@google.com, david@redhat.com, shuah@kernel.org,
- pbonzini@redhat.com, brauner@kernel.org, viro@zeniv.linux.org.uk,
- ackerleytng@google.com, paul@paul-moore.com, jmorris@namei.org,
- serge@hallyn.com, pvorel@suse.cz, bfoster@redhat.com, tabba@google.com,
- vannapurve@google.com, chao.gao@intel.com, bharata@amd.com, nikunj@amd.com,
- michael.day@amd.com, yan.y.zhao@intel.com, Neeraj.Upadhyay@amd.com,
- thomas.lendacky@amd.com, michael.roth@amd.com, aik@amd.com, jgg@nvidia.com,
- kalyazin@amazon.com, peterx@redhat.com, jack@suse.cz, rppt@kernel.org,
- hch@infradead.org, cgzones@googlemail.com, ira.weiny@intel.com,
- rientjes@google.com, roypat@amazon.co.uk, ziy@nvidia.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, kent.overstreet@linux.dev,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, chao.p.peng@intel.com,
- amit@infradead.org, ddutile@redhat.com, dan.j.williams@intel.com,
- ashish.kalra@amd.com, gshan@redhat.com, jgowans@amazon.com,
- pankaj.gupta@amd.com, papaluri@amd.com, yuzhao@google.com,
- suzuki.poulose@arm.com, quic_eberman@quicinc.com,
- aneeshkumar.kizhakeveetil@arm.com, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-security-module@vger.kernel.org, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-coco@lists.linux.dev
-References: <20250618112935.7629-4-shivankg@amd.com>
- <20250620143502.3055777-2-willy@infradead.org>
- <aFWR-2WAQ283SZvg@casper.infradead.org>
- <20250622114322.c6c35800e01e4cc4007a0f89@linux-foundation.org>
- <d1d7feed-c450-4b88-ab73-a673f4029433@amd.com>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <d1d7feed-c450-4b88-ab73-a673f4029433@amd.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	TAGGED_RCPT(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RL3yue66w837q9qg8qqmcasw8c)];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[google.com,redhat.com,kernel.org,zeniv.linux.org.uk,paul-moore.com,namei.org,hallyn.com,suse.cz,intel.com,amd.com,nvidia.com,amazon.com,infradead.org,googlemail.com,amazon.co.uk,gmail.com,sk.com,gourry.net,linux.dev,linux.alibaba.com,arm.com,quicinc.com,vger.kernel.org,kvack.org,lists.linux.dev];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_TLS_ALL(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[65];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:mid]
-X-Spam-Level: 
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS1PEPF00017091:EE_|SJ1PR12MB6194:EE_
+X-MS-Office365-Filtering-Correlation-Id: 838974f4-c710-4b0b-073b-08ddb23b71ec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|7416014|1800799024|36860700013|921020|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?anw+Z1BK4R2vbqiHmDUWFIwNPGJmfZmz5540NEzd6dPqQSn3i4ve0w4c8e9X?=
+ =?us-ascii?Q?R4wbg/ZB3PL5m+lo8PVFiUrDrtgi3o5kSq57BimDqEjceLkO18q8btWlJLGg?=
+ =?us-ascii?Q?oROzwo9AZ1IU6d8jqfHQt6Y6rgEkYKgnttbvSyErGNaEXraKHF94np7GeSKZ?=
+ =?us-ascii?Q?1FFNtUvqn/fZ9FEsJNdIQgfrjQVDuF1pK+6jmEWL4AZj5S/x6G7wThFAwcSk?=
+ =?us-ascii?Q?iXpkaNDryxhE4Ojui5PeW18U/AM3CflhBBUMhCv6VUfub9QJHk4owcAE1EgG?=
+ =?us-ascii?Q?RZxs+oxFItfvWXBeCA6j56rJbqY7POWEFoCtlnMBPmQS8NqE8ZbDlL+sware?=
+ =?us-ascii?Q?gZqvafPj69XBuHdiHxOEOk3ua1jbz73YnH1stY8Pem1UqSmwOkH/6ah77DSK?=
+ =?us-ascii?Q?RKirrlt5bekdEoym/LMmZOGxU2tm2dUCWWvavmXAljNiKM8kl4u2OwBtFwZL?=
+ =?us-ascii?Q?6DWQpqSGFUULP905kxyxi8zVZt8L9nMMzW7H9dfd+oOfgj2KVqOy7pDx3HWq?=
+ =?us-ascii?Q?JtxmhKfY3wei5shi+GNLPrnMlGXt1++v5iEffcux+Pftzsoo0nNbhUewZB2v?=
+ =?us-ascii?Q?qULAKXSRk6LKHsNg0zjqOSsNKKm8aOgfsJ2B9ponCLFKgeP8pQI8WjjXdXN/?=
+ =?us-ascii?Q?oD6mrezTiZ8RFLBED6FB2K0pEWtyHWtznRpuIZNRHQ3JiowhFHqMCRAXqeiQ?=
+ =?us-ascii?Q?USNffEE0DofFXmVd8VTfdQcT68BaBeL5BuKebiZZX34bFxUuxKQMR9ZpmsEx?=
+ =?us-ascii?Q?8xgYGZEKZbMyhqeyiypOuuU+cJo1yQm2TNtNe1/DJl1RH+3eehx7PzhLUZDT?=
+ =?us-ascii?Q?Gx8MgMUqPOwzzzfxRasDkG7j1Oy5xc6OxT1R4Qn+YYaah4mK+fAPbakAi76W?=
+ =?us-ascii?Q?7366YCXNQUJ/yBNDKEQJlkx4/wn6xyLzRTAeAGa0gzj0p5SLhkoJusMS9Rra?=
+ =?us-ascii?Q?zR5diTsQpByJYRRzjbRwhzO3vjGHYqaZ9iQeFus73h+yKNHIsUqNA9kF13xR?=
+ =?us-ascii?Q?3NhXTZMkH7iCIhfVZl7RJJH+meCVxkxtF7XWfv/Ize74mQlJqOMBJw0UqyPr?=
+ =?us-ascii?Q?uuCAmDXZ8A9vnY4Ya1QQSvh7oD4dIT5AqWMkDokdK9PVEhSDKIO3pkPy4nej?=
+ =?us-ascii?Q?ics7WWz8WJtzp0RjOi3dPv1pfsmGp4yLjV2y8xMAAhxlJILqnIiJ7WNk6CN9?=
+ =?us-ascii?Q?OIyxBqfkcgq2eHynTJDnOOOz2qzeewpnP6p7Qmx8ZWbyQDATcs1dCkaXt2nZ?=
+ =?us-ascii?Q?MOcQUa+rFJrmmdtO7GaNk3kq8Tf56qOe9IMEleNJJXIg1NVoWGvJRjEJaSLy?=
+ =?us-ascii?Q?W9w9s1QsLrtPdXNCfBxoUgQ0Sywhuwb/2PDVDNV3XUrSQDN3GCHTIvSK/aBy?=
+ =?us-ascii?Q?v7uGnug6UnWbP20b/yA37FrizDXBisbmx52slyOJ4A9KvACLgW4Z2j9mtgyY?=
+ =?us-ascii?Q?AUU1QJ9Dn1NeVHv0nSmLi2gDA340gZloKYcPZaQenl6rE/zm7ZQgUmxH9yS3?=
+ =?us-ascii?Q?IFxletNtIcTMMaB6wWnIi2Kg4efHrJGoZjjL4asxjQIWYj+s7zAK7v9qcA?=
+ =?us-ascii?Q?=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(1800799024)(36860700013)(921020)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2025 09:50:53.9816
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 838974f4-c710-4b0b-073b-08ddb23b71ec
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS1PEPF00017091.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6194
 
-On 6/22/25 21:02, Shivank Garg wrote:
-> 
-> Hi Andrew,
-> 
-> Thank you for addressing this.
-> 
-> If you don’t mind me asking,
-> I was curious why we used EXPORT_SYMBOL instead of EXPORT_SYMBOL_GPL here.
-> I had previously received feedback recommending the use of EXPORT_SYMBOL_GPL
-> to better align with the kernel’s licensing philosophy, which made sense to me.
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 
-That's the recommendation for new symbols, but this has become effectively a
-rename (plus a new parameter) so it's a bit different situation.
+Add a mempolicy parameter to filemap_alloc_folio() to enable NUMA-aware
+page cache allocations. This will be used by upcoming changes to
+support NUMA policies in guest-memfd, where guest_memory needs to be
+allocated according to NUMA policy specified by the VMM.
 
-> Thanks,
-> Shivank
-> 
+All existing users pass NULL maintaining current behavior.
+
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Shivank Garg <shivankg@amd.com>
+---
+Changes in V2:
+- fix checkpatch warnings.
+- touch up commit description and fix code alignments to make it
+  more readable.
+
+V1: https://lore.kernel.org/all/20250620143502.3055777-1-willy@infradead.org
+
+ fs/bcachefs/fs-io-buffered.c |  2 +-
+ fs/btrfs/compression.c       |  4 ++--
+ fs/btrfs/verity.c            |  2 +-
+ fs/erofs/zdata.c             |  2 +-
+ fs/f2fs/compress.c           |  2 +-
+ include/linux/pagemap.h      |  8 +++++---
+ mm/filemap.c                 | 14 +++++++++-----
+ mm/readahead.c               |  2 +-
+ 8 files changed, 21 insertions(+), 15 deletions(-)
+
+diff --git a/fs/bcachefs/fs-io-buffered.c b/fs/bcachefs/fs-io-buffered.c
+index 66bacdd49f78..392344232b16 100644
+--- a/fs/bcachefs/fs-io-buffered.c
++++ b/fs/bcachefs/fs-io-buffered.c
+@@ -124,7 +124,7 @@ static int readpage_bio_extend(struct btree_trans *trans,
+ 			if (folio && !xa_is_value(folio))
+ 				break;
+ 
+-			folio = filemap_alloc_folio(readahead_gfp_mask(iter->mapping), order);
++			folio = filemap_alloc_folio(readahead_gfp_mask(iter->mapping), order, NULL);
+ 			if (!folio)
+ 				break;
+ 
+diff --git a/fs/btrfs/compression.c b/fs/btrfs/compression.c
+index 48d07939fee4..a0808c8f897f 100644
+--- a/fs/btrfs/compression.c
++++ b/fs/btrfs/compression.c
+@@ -474,8 +474,8 @@ static noinline int add_ra_bio_pages(struct inode *inode,
+ 			continue;
+ 		}
+ 
+-		folio = filemap_alloc_folio(mapping_gfp_constraint(mapping,
+-								   ~__GFP_FS), 0);
++		folio = filemap_alloc_folio(mapping_gfp_constraint(mapping, ~__GFP_FS),
++					    0, NULL);
+ 		if (!folio)
+ 			break;
+ 
+diff --git a/fs/btrfs/verity.c b/fs/btrfs/verity.c
+index b7a96a005487..c43a789ba6d2 100644
+--- a/fs/btrfs/verity.c
++++ b/fs/btrfs/verity.c
+@@ -742,7 +742,7 @@ static struct page *btrfs_read_merkle_tree_page(struct inode *inode,
+ 	}
+ 
+ 	folio = filemap_alloc_folio(mapping_gfp_constraint(inode->i_mapping, ~__GFP_FS),
+-				    0);
++				    0, NULL);
+ 	if (!folio)
+ 		return ERR_PTR(-ENOMEM);
+ 
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index fe8071844724..00e9160a0d24 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -562,7 +562,7 @@ static void z_erofs_bind_cache(struct z_erofs_frontend *fe)
+ 			 * Allocate a managed folio for cached I/O, or it may be
+ 			 * then filled with a file-backed folio for in-place I/O
+ 			 */
+-			newfolio = filemap_alloc_folio(gfp, 0);
++			newfolio = filemap_alloc_folio(gfp, 0, NULL);
+ 			if (!newfolio)
+ 				continue;
+ 			newfolio->private = Z_EROFS_PREALLOCATED_FOLIO;
+diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+index b3c1df93a163..7ef937dd7624 100644
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -1942,7 +1942,7 @@ void f2fs_cache_compressed_page(struct f2fs_sb_info *sbi, struct page *page,
+ 		return;
+ 	}
+ 
+-	cfolio = filemap_alloc_folio(__GFP_NOWARN | __GFP_IO, 0);
++	cfolio = filemap_alloc_folio(__GFP_NOWARN | __GFP_IO, 0, NULL);
+ 	if (!cfolio)
+ 		return;
+ 
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index e63fbfbd5b0f..78ea357d2077 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -646,9 +646,11 @@ static inline void *detach_page_private(struct page *page)
+ }
+ 
+ #ifdef CONFIG_NUMA
+-struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order);
++struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order,
++		struct mempolicy *policy);
+ #else
+-static inline struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order)
++static inline struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order,
++		struct mempolicy *policy)
+ {
+ 	return folio_alloc_noprof(gfp, order);
+ }
+@@ -659,7 +661,7 @@ static inline struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int o
+ 
+ static inline struct page *__page_cache_alloc(gfp_t gfp)
+ {
+-	return &filemap_alloc_folio(gfp, 0)->page;
++	return &filemap_alloc_folio(gfp, 0, NULL)->page;
+ }
+ 
+ static inline gfp_t readahead_gfp_mask(struct address_space *x)
+diff --git a/mm/filemap.c b/mm/filemap.c
+index bada249b9fb7..a30cd4dd085a 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -989,11 +989,16 @@ int filemap_add_folio(struct address_space *mapping, struct folio *folio,
+ EXPORT_SYMBOL_GPL(filemap_add_folio);
+ 
+ #ifdef CONFIG_NUMA
+-struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order)
++struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order,
++		struct mempolicy *policy)
+ {
+ 	int n;
+ 	struct folio *folio;
+ 
++	if (policy)
++		return folio_alloc_mpol_noprof(gfp, order, policy,
++				NO_INTERLEAVE_INDEX, numa_node_id());
++
+ 	if (cpuset_do_page_mem_spread()) {
+ 		unsigned int cpuset_mems_cookie;
+ 		do {
+@@ -1977,7 +1982,7 @@ struct folio *__filemap_get_folio(struct address_space *mapping, pgoff_t index,
+ 			err = -ENOMEM;
+ 			if (order > min_order)
+ 				alloc_gfp |= __GFP_NORETRY | __GFP_NOWARN;
+-			folio = filemap_alloc_folio(alloc_gfp, order);
++			folio = filemap_alloc_folio(alloc_gfp, order, NULL);
+ 			if (!folio)
+ 				continue;
+ 
+@@ -2516,7 +2521,7 @@ static int filemap_create_folio(struct kiocb *iocb, struct folio_batch *fbatch)
+ 	if (iocb->ki_flags & (IOCB_NOWAIT | IOCB_WAITQ))
+ 		return -EAGAIN;
+ 
+-	folio = filemap_alloc_folio(mapping_gfp_mask(mapping), min_order);
++	folio = filemap_alloc_folio(mapping_gfp_mask(mapping), min_order, NULL);
+ 	if (!folio)
+ 		return -ENOMEM;
+ 	if (iocb->ki_flags & IOCB_DONTCACHE)
+@@ -3853,8 +3858,7 @@ static struct folio *do_read_cache_folio(struct address_space *mapping,
+ repeat:
+ 	folio = filemap_get_folio(mapping, index);
+ 	if (IS_ERR(folio)) {
+-		folio = filemap_alloc_folio(gfp,
+-					    mapping_min_folio_order(mapping));
++		folio = filemap_alloc_folio(gfp, mapping_min_folio_order(mapping), NULL);
+ 		if (!folio)
+ 			return ERR_PTR(-ENOMEM);
+ 		index = mapping_align_index(mapping, index);
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 20d36d6b055e..0b2aec0231e6 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -183,7 +183,7 @@ static struct folio *ractl_alloc_folio(struct readahead_control *ractl,
+ {
+ 	struct folio *folio;
+ 
+-	folio = filemap_alloc_folio(gfp_mask, order);
++	folio = filemap_alloc_folio(gfp_mask, order, NULL);
+ 	if (folio && ractl->dropbehind)
+ 		__folio_set_dropbehind(folio);
+ 
+-- 
+2.43.0
 
