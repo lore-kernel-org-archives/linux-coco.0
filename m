@@ -1,67 +1,67 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2072.outbound.protection.outlook.com [40.107.220.72])
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2079.outbound.protection.outlook.com [40.107.102.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9603024B28
-	for <linux-coco@lists.linux.dev>; Mon, 23 Jun 2025 04:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475F019F480
+	for <linux-coco@lists.linux.dev>; Mon, 23 Jun 2025 06:13:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.79
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750652355; cv=fail; b=bqm016vh2Z1kj5b6ysG0PflUJm7nLK2lgcfDX8qT+LXUjxKJkZw78t+uMSjTt6dS1gTT8ZsPwaL62Dv+7tHZkbWIDdvYeyL9Awvvg/dnN6qNQw463nUw8qlxW0rEzYVn0MmlNYYP54C+DOB57MYotnLAhS2cMoUZvkDjca0oq8U=
+	t=1750659237; cv=fail; b=RhUuISJuUsyJtlFXQZXtT6SyLlnhkcreNe/04r0JVFdGy87jzhgTf/pgJjPrDsyQHtdmlLMVROrRQJG6ZltchXip5vf0ROjLHsAcNVpNIwaiuovtR5WJsHa3vTFFijjU4ZEwealsmUzGZpfeLYURYnc9yahg8mFdEpfNnSj3otA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750652355; c=relaxed/simple;
-	bh=t/oPb4vw6l3r9nRwmfmx6t0ndvdJpnGypLohb9lttVk=;
+	s=arc-20240116; t=1750659237; c=relaxed/simple;
+	bh=VhizUotUWN2GZFadyIJ40/ZuFURbJtwJ35RyAFcx8t4=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=IM0UG/mZ7DbNC33JgfPlWvkHYLSw3xu/uNNL9MqGLS9Uz80uZl2yaLby6lfJAog4dl8WMw6SruA22QT+hAJviVwgg6oZvVdhSN/uYjoYFrmlacQorOcaUd95JN4o4lNqfTCy54gF8AsX7Ei7cPmbgx1ysGagmp3jidpHSRR+cCQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=d2M7u88N; arc=fail smtp.client-ip=40.107.220.72
+	 Content-Type:MIME-Version; b=jLJS4NC0Wd4G/0adeW3+Lyh1K/Jyq1d3z2+SZxGfZumdPhGqw1zXMG2QgvNSN1xwSiEGFvB5JF1KTLtHQgUCAH60tCVWF6CAEwFxrQVbFLPmU8bPoTUEvJt65nE8fVvoEJPYA25aSECgH97KLgZYZ2IjMsWtcganRSeidOncTjk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Br7u0j8y; arc=fail smtp.client-ip=40.107.102.79
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="d2M7u88N"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Br7u0j8y"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RIoyknlf4gFhwL17fr8R+aI5+jDG+HgJcCD1by22jBXMD/PdqcVJ4wxpx6yo9wJ8Rtdbd7eJUycOVdupc3lDAY1r8mSbWonHMHFDCzI2PoAppowXKKLnv9mnusYugcE88ucAkVTwiJBYSiKfjUhJP0d/OjTCh14VOswvrjf6fzTnJE5CFaMZQMyB8yjNowVlOF0zJHSe4tQ+doyscl3K6MNZr8fWU3uvEPU5XKa4XAlsYNE/Lmw8/0Ka24+ATCzRTYcxA0zjEjgk66rQsC1AvgKZOazlC9bzYbSoMpRsjV6S6+Dc2hf65OG1kVq75bbmP1cw7+DxxLOc4uFgNFZ2fg==
+ b=A3BC/YD8yfzrtc2cmgBD3lDOfb7Wbag4f47iBdlRX86t5jEw98yZ1dOkmaHPuZyB1UfprEFBsQyg7qyZgtzhdwoJjGNmEbfasojhTXHPDSCTNjG9mI9VZN37+fezx7/N61NdObt6n7KY0uiqEimfyG84jesay73EYtyo9U088K7QBfNFRwXaJIHQsvUq07uMpSffTzWDZWGf2yR7F7fVW+pZehtfJf9Ul+CaO9gsDq5qvgd14a211bxaUJiK/tseqpIKu0JcPCeIA6eL3wv+ak7WpaBo73asyGsTRozgRwUMQnDVQHp1vsDbzmZFk25sqVG18iGc0vYVqwT1ek+9sA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6XvF8IK1T4UrMTL5OBIkuMJkgHqTAdf7NplHNZ6kym4=;
- b=yHBiQb9IIREXdf2LAn20PGLu/+oWbTtT3hYGtK5imgOUiB90KWNNu3zegeNW2LNvGmbuo0qXYV3d2mrzlcH1YgRjhH1PqESpX1Lm1ThaMqcjuSpNln6lgClhjZ+vUFh2n0Htl3V/x+h+CB5kZ68uzMkiab5NkF3BgNUh8VyvvAJacWen6KR1E4RjjOkEOVxxAqIpEvUBkWXQw2YBssXxfmM9UhcYfBRbzRjgFJHJPlAOqu4wUPQv9HBHa0MpdcBKfuoMRZsncWedaKAYWe/+XTA8QSw1EA7QGAP435jN7xTWPZHIwIYN/Q/0HE2+k2hdI7/nylr+en9tlFgvPNcmTQ==
+ bh=MFD6fN2zaXu7xoebl4vI8TgZXLEmFpQZeOvSJrG9tu8=;
+ b=Pjg+yehtjyHIB6g21T36L3b7+aJh5eUDNAwEGg3x1JQm/Nn7HbWOrM9XlDMv/4TZP0KjaLRCkPXlYG8d4NBPhlOVBFvO3gphAnzJ1YNYkpedOasn/pLD1mvTKAvw6BFHuxXD6Y/DC3hTPmSgiGqcLVHoyaTsiRQVSvERQ87jh4o+uIA1gC4LAbGzAHdf9V4iaVxgIP1qQwmxBryokgXgpqqhSzTIeZIppmjkQn91anq7iGJS8w2yDYDArj5VmoptkWvvUG6sRsOgjLMZbUuICvt630w+B7usa23opOVK7wj/FNxK0simsQPBaymWJMOK+rbxr5O7xjvjh0ywZJXPOg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6XvF8IK1T4UrMTL5OBIkuMJkgHqTAdf7NplHNZ6kym4=;
- b=d2M7u88NUdfs82cB1Otj9jl1stjvwiDecp2OQscSkbUY8/xN82wSesbJjBStRrfZ/nr6rG3cFN0w/sx2eD+R5I384L5k+kfOK2jvXoeYObnnvnixRUdOgepDOKRviYGzr+cqpMcfxVo8NVQ5QxRzpwdQMEQGvZVF7I4jivJeyk0=
+ bh=MFD6fN2zaXu7xoebl4vI8TgZXLEmFpQZeOvSJrG9tu8=;
+ b=Br7u0j8yaAHIoGZPEgAjgViWVqY2k4kD+EPbnXbL70glCpF5exRzayQGCsspUH54b08XDlN1e82o+5CBu/PuYj8YtaKXERTfImSSTT8wE7K1xt7fcTKVVnTwd1DhFml+EabMpQ99YeKdLG1yVBMBkAuNCiP+q9LMavIaAd5lryk=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SJ5PPFF6E64BC2C.namprd12.prod.outlook.com
- (2603:10b6:a0f:fc02::9aa) by LV2PR12MB5991.namprd12.prod.outlook.com
- (2603:10b6:408:14f::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.22; Mon, 23 Jun
- 2025 04:19:08 +0000
-Received: from SJ5PPFF6E64BC2C.namprd12.prod.outlook.com
- ([fe80::40bb:ae48:4c30:c3bf]) by SJ5PPFF6E64BC2C.namprd12.prod.outlook.com
- ([fe80::40bb:ae48:4c30:c3bf%8]) with mapi id 15.20.8722.031; Mon, 23 Jun 2025
- 04:19:08 +0000
-Message-ID: <1af44ef0-8651-440c-b3ac-ef22a539b559@amd.com>
-Date: Mon, 23 Jun 2025 09:48:46 +0530
+Received: from IA1PR12MB8189.namprd12.prod.outlook.com (2603:10b6:208:3f0::13)
+ by DS0PR12MB8293.namprd12.prod.outlook.com (2603:10b6:8:f3::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8835.35; Mon, 23 Jun 2025 06:13:51 +0000
+Received: from IA1PR12MB8189.namprd12.prod.outlook.com
+ ([fe80::193b:bbfd:9894:dc48]) by IA1PR12MB8189.namprd12.prod.outlook.com
+ ([fe80::193b:bbfd:9894:dc48%4]) with mapi id 15.20.8835.027; Mon, 23 Jun 2025
+ 06:13:51 +0000
+Message-ID: <9ec4c72e-8895-42d3-9b3c-0794fc9c5c34@amd.com>
+Date: Mon, 23 Jun 2025 08:13:39 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] filemap: Add __filemap_get_folio_mpol()
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Matthew Wilcox <willy@infradead.org>, seanjc@google.com,
- david@redhat.com, vbabka@suse.cz, shuah@kernel.org, pbonzini@redhat.com,
- brauner@kernel.org, viro@zeniv.linux.org.uk, ackerleytng@google.com,
- paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com, pvorel@suse.cz,
- bfoster@redhat.com, tabba@google.com, vannapurve@google.com,
- chao.gao@intel.com, bharata@amd.com, nikunj@amd.com, michael.day@amd.com,
- yan.y.zhao@intel.com, Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com,
- michael.roth@amd.com, aik@amd.com, jgg@nvidia.com, kalyazin@amazon.com,
- peterx@redhat.com, jack@suse.cz, rppt@kernel.org, hch@infradead.org,
- cgzones@googlemail.com, ira.weiny@intel.com, rientjes@google.com,
- roypat@amazon.co.uk, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- gourry@gourry.net, kent.overstreet@linux.dev, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, chao.p.peng@intel.com, amit@infradead.org,
- ddutile@redhat.com, dan.j.williams@intel.com, ashish.kalra@amd.com,
- gshan@redhat.com, jgowans@amazon.com, pankaj.gupta@amd.com,
+Subject: Re: [PATCH 1/2] filemap: Add a mempolicy argument to
+ filemap_alloc_folio()
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Shivank Garg <shivankg@amd.com>, seanjc@google.com, david@redhat.com,
+ vbabka@suse.cz, akpm@linux-foundation.org, shuah@kernel.org,
+ pbonzini@redhat.com, brauner@kernel.org, viro@zeniv.linux.org.uk
+Cc: ackerleytng@google.com, paul@paul-moore.com, jmorris@namei.org,
+ serge@hallyn.com, pvorel@suse.cz, bfoster@redhat.com, tabba@google.com,
+ vannapurve@google.com, chao.gao@intel.com, bharata@amd.com, nikunj@amd.com,
+ michael.day@amd.com, yan.y.zhao@intel.com, Neeraj.Upadhyay@amd.com,
+ thomas.lendacky@amd.com, michael.roth@amd.com, aik@amd.com, jgg@nvidia.com,
+ kalyazin@amazon.com, peterx@redhat.com, jack@suse.cz, rppt@kernel.org,
+ hch@infradead.org, cgzones@googlemail.com, ira.weiny@intel.com,
+ rientjes@google.com, roypat@amazon.co.uk, ziy@nvidia.com,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, kent.overstreet@linux.dev,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, chao.p.peng@intel.com,
+ amit@infradead.org, ddutile@redhat.com, dan.j.williams@intel.com,
+ ashish.kalra@amd.com, gshan@redhat.com, jgowans@amazon.com,
  papaluri@amd.com, yuzhao@google.com, suzuki.poulose@arm.com,
  quic_eberman@quicinc.com, aneeshkumar.kizhakeveetil@arm.com,
  linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
@@ -69,19 +69,15 @@ Cc: Matthew Wilcox <willy@infradead.org>, seanjc@google.com,
  kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
  linux-coco@lists.linux.dev
 References: <20250618112935.7629-4-shivankg@amd.com>
- <20250620143502.3055777-2-willy@infradead.org>
- <aFWR-2WAQ283SZvg@casper.infradead.org>
- <20250622114322.c6c35800e01e4cc4007a0f89@linux-foundation.org>
- <d1d7feed-c450-4b88-ab73-a673f4029433@amd.com>
- <20250622151625.fb5d23362c2c3d1af22878d2@linux-foundation.org>
+ <20250620143502.3055777-1-willy@infradead.org>
 Content-Language: en-US
-From: Shivank Garg <shivankg@amd.com>
-In-Reply-To: <20250622151625.fb5d23362c2c3d1af22878d2@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PN3PR01CA0158.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:c8::11) To SJ5PPFF6E64BC2C.namprd12.prod.outlook.com
- (2603:10b6:a0f:fc02::9aa)
+From: "Gupta, Pankaj" <pankaj.gupta@amd.com>
+In-Reply-To: <20250620143502.3055777-1-willy@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AM6PR04CA0017.eurprd04.prod.outlook.com
+ (2603:10a6:20b:92::30) To IA1PR12MB8189.namprd12.prod.outlook.com
+ (2603:10b6:208:3f0::13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -89,137 +85,270 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PPFF6E64BC2C:EE_|LV2PR12MB5991:EE_
-X-MS-Office365-Filtering-Correlation-Id: 77790a96-f9fd-49d4-1723-08ddb20d1921
+X-MS-TrafficTypeDiagnostic: IA1PR12MB8189:EE_|DS0PR12MB8293:EE_
+X-MS-Office365-Filtering-Correlation-Id: 49c9ff72-cce7-4eb8-c5c7-08ddb21d1f9f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|366016|376014|1800799024;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|1800799024|376014|366016|7053199007|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?T0YrL2VFU3VWdHdGSmdGcjRqcFBYOE9oc3loWlpoQ05xWXFaL3lKN3ZhQmd5?=
- =?utf-8?B?ZDBydDdnUk90aDhySzZLZXRLekRVR01GSUE2YXRZNk5FN2U3NEI2c1JXbWtq?=
- =?utf-8?B?YVgzMm5SaGxWNHBkTUZZeXZsaHZDaFdJWUZWRnJ5ZkNpM2lLZUZNUVBCUFRB?=
- =?utf-8?B?ZWRNUkNNNFVhMkF1aXhtb3ZuRkN3TXR6OW5KN2Z5TTEwQ1BPU1VxRTFJdHB2?=
- =?utf-8?B?R2pBSGNNbkhEaE1XQUNBdmxvbklXSS9xQldxbFhJUk9FVk9RQXZEZnpPMWlN?=
- =?utf-8?B?MnRPY213SHIvS2o5TURhWGxFMzlUNFhCcTBxaHVzNFFWSTA3MThIV2IyWEwr?=
- =?utf-8?B?NXpDb05uZWFpcnk5Z0pyQk9MYTZ4amp2d1F1amc3dDNKcmxjY3RydzVqTjln?=
- =?utf-8?B?UkttUjRKVUtHMUU1cHdCWDMvMHMvZDA4Y1RhVzFNMERqMHZWUC9PZ1RxamQv?=
- =?utf-8?B?Qy9pMTdyNElLbDVhWjVWbldiNlNydzJDS3Z6LzRmU1puL3VYUXdRTEZKdWhN?=
- =?utf-8?B?NkxMM1JudVNPNVIyMXQ3aG9vRDYyYnVNWEQrU0FXRitYZVBRMDdlWmc3YTUz?=
- =?utf-8?B?cnJFRERGbWpSbVk1a29WVjErQTVxbGtxWVZKUEZuNERycGZ3MWlRNEZPWGc2?=
- =?utf-8?B?V1I0dHhRRlNOOXR1QUVrYTRyYXlQQ2EzU3BzSDhpRUV2anM1LzlOaFB3ZlBO?=
- =?utf-8?B?SWFCYkd3dXo2MUZkc3l5WVkxVG96N0VjdkNlRW1rbVRLZFJxRVJic2xvVFdD?=
- =?utf-8?B?eWhBUlJpMjcvWTg1UVFFVEkyUC9HOEJ1ZzZoRVlTV3Bab2FKMFZKODdrd2JM?=
- =?utf-8?B?NVhWQ2NNd0IrOU1JUnFURmpVNkRIZjJscEtBM2NwRkYrUHpoNldVb2ZFWEdH?=
- =?utf-8?B?WTVFYmpFWUFEYVY1aE5Sd2RZMnBxbDFabjFUMmRpOGwySzM2UDhoUTZiMHBW?=
- =?utf-8?B?SjFHK2x3UUw5NzNRK3BCSFE5Qzk5QjRFa1NtNVlZWUNWWGdEVzVpV2wxbnJW?=
- =?utf-8?B?YmlXTUl0czF0OVNFdXVOTkZNZVNqNnFVNWp6aWtQTnI4T3hCWnRxMkkzWXpk?=
- =?utf-8?B?NWcyYUw0WWV3azhMS1hHS094eXNPVERJZTFib1BsUWppRFd0V2plMVQ3dWg3?=
- =?utf-8?B?TDIyMEt4dEtCMURTSWJNY2UrTHZ6T1JLZkw2Q0RJSDgxNUw4ZHI5ZXFmb245?=
- =?utf-8?B?R0pOWGtKYnhqeVJOaDhIOEdveUY1Yld2UHRDS3JWSFU1Q0R0VllSM1RKUGVB?=
- =?utf-8?B?MzUwbmlPMnkvVGxJNHBhQi9BQm9nM1lVMHR3MTNTbWhCZFdzS0FTN0FuWHFJ?=
- =?utf-8?B?a2c0VUppQ2U2UzNBcnVobm91bjVRbklLeHhPdGJUWlUyc29LRHJuMWxPZ290?=
- =?utf-8?B?NFlYNUNENWJ3NURMRVdqM0RWSk5NM000UTRUZUxGS2VuZnFwWGdDWlBnTDF6?=
- =?utf-8?B?akxLOUdPYXRLekRNbmhvMmlMRVRhdXJFcW56bzZiZ1QxVG40bW5zV2krS3FI?=
- =?utf-8?B?Nm1DM3NMTGYvZWtwaDN5Zjh2NmcxamQ4ekpmeXRhRURwUFdLZU5aSzVDb3pw?=
- =?utf-8?B?Y0lBdGdHbkVLemsva3UySE1uTkFjZWE3QXIyNnk3b0RmTVFRcjZ1ZTBxZWpB?=
- =?utf-8?B?RkRFdmdLZUwrSXJZTzBrekpIc2ZVUzE0K1JjaHptMDc4NHl4TXlwWXJkY050?=
- =?utf-8?B?aUVpWnFiRHZXQTIxRTdzMUpFSWd1U051MGh4RXYybGl1NmdtRVQ4eGxPVGNa?=
- =?utf-8?B?enpWbkhwRWVEUGtkZG9rSG9haXBodHhnSXRqeWI1ZGpaS1B3RmlOQ1ZPaC9B?=
- =?utf-8?B?OGNtdG4zSHZBbzlyd3diQ2Nzc1A0cldtN1YzZG5GRjFVMVlnOHN4RFJUVmZw?=
- =?utf-8?B?aTBxb053dy9mY3MyYXhBWFM1M2JwK2NyMjJtQVh2aFJxRFNJOVRsVk8xYlNT?=
- =?utf-8?Q?JaeVxGmDqiI=3D?=
+	=?utf-8?B?UVNCdHBRcDJKbWtTVUdxZU9RcHlKYlN5dzFSNUtLZFhWcWpPT1g3TTBrVlpw?=
+ =?utf-8?B?eGNjZVZwd0g4Q0k0VkltbWdoNEIyblNpUENzQlFEdkkvWEJIZm9zS2U4RUt4?=
+ =?utf-8?B?bnhCY1h6dVZ5dkZGUERMUWVCc2J5TzdnazRURXlNeHdqZHdiUTBLWmFuRFFL?=
+ =?utf-8?B?VWo0R1B0L3pxaW4xd0RnR0J0bDNwVDV0NDhxOHRrNVV5VUNGbndmUXZVV1R5?=
+ =?utf-8?B?ZzUyOGU4QU83c0p5eWYraTlDUW80ZzBHZGJnSFBJSnoySENDNXNMeUVoNzVR?=
+ =?utf-8?B?VzFmRWRrR01LNzU3VzlWUkY4YXJrZ1NpVlpLVG5IRmFJYWpVT0pNNmdIZlJK?=
+ =?utf-8?B?eEw5ZnJNUmUwamhxQVJUTGJIVWlVQzV6OFQzSGJrTzF5Y0Y3OUhUYmZKTEx0?=
+ =?utf-8?B?ZkJCMzF1aCsxTTZhWEZmMGZNYkZ5eTRSNTFsL0ZoVmk3MU9hQ29jampVRmE5?=
+ =?utf-8?B?Z2ovTk43MUROWmYrZGxGNXJMaW1iOHlTYVAyWFBwWWJWZm1LMDFzTjA5dXdv?=
+ =?utf-8?B?ZFpkeTBINlNHZTlhSlRHV2xFUE5tYXBKRDhnNVFOWXpkQUFjWDRaY3dZWTRv?=
+ =?utf-8?B?SzNRQlRQMFdjejcrSzBpZDJSNUM4K043WE5hbS9SYW84b3VrRTZHNWJQNk01?=
+ =?utf-8?B?WkZ0NnJaRDQrYlpNQ0E5Y2RRbFhSZTRkdTFFZ0NDZ014TjdOeHdiTUxLdjNj?=
+ =?utf-8?B?dHRYWThVVytCaFpTQ2x2UU9UMjh6UmsySkIzbFpBRjFQRm03bkoyUXFNYmpV?=
+ =?utf-8?B?MUR0M0RLM0VUZXN1ZWJHU2FIQ2prQ3RwcmJMRFpWKzZwZmJtR3ZEa3ZKSUhq?=
+ =?utf-8?B?QW4xSGgydGtBYUpqRm5iajBSRWF3R0YrNkNLQmJkTTVobHFlRCtkQlM0Q3ZD?=
+ =?utf-8?B?Y3RqQlpTUEp1Rzdid1dKb2l4ejJLZllsNWlTSlF1eWdiS1MvY0U5bVA5UEhC?=
+ =?utf-8?B?UVlXRTZWN21odCsybjQxdkhMT2hOQytibWdZcEw1MnREazB0eHFWV2hvdmdP?=
+ =?utf-8?B?Y1VUQTFNSUl2UWZTWGlOZC85SGtuWVFkdGtrTG05NEZ5OURjMEUzQi83WlBy?=
+ =?utf-8?B?RVY0TWpickZqSDlFc0FDMEcxK3RPZ0lCWURYcXJveENKNDkya3dqbzF0ZUpC?=
+ =?utf-8?B?T0hWM2VEUmpxV3Z0SU96bGdoOW5GL0V2d2FCUk1UYnNXcVFBbGV4U09VTG5y?=
+ =?utf-8?B?YkNTdTA2YllnT0ZFL3ZPWTA3dHpEN2xFczlIZXlnMU5OZkVzaCtHcUIvYStF?=
+ =?utf-8?B?U21OMDRnRGg0S0NnSmVseUxyZjhBNmVRRkJBRnc0NTNObDlQNklQejRuTzBM?=
+ =?utf-8?B?YzBLOUFRcVVNanpZbEtlYjdtZ1lxdWl2TDhlalRpcWsycytkSVhsL0IzVkxD?=
+ =?utf-8?B?Z0xzOFQ2cHVTdVY5ZDR1aEp6UFlXUUxFR0dxVmVvZC8xbVhJTnZyZmQ3M3JT?=
+ =?utf-8?B?NnJCWlNXWHAxc0ZvaDY1eTdtbkRDdExabHRkVXU0M213R2NpRlFuRnJNZVk2?=
+ =?utf-8?B?R2FYaTk0eUJGUUx4N3o0UFUrWUc0a2hyTFhPTVdwZlowaHdnZVlqRzE4Ti9i?=
+ =?utf-8?B?ZWlTTWpyclZmYzBwZWw4MlV5OU51NnJGbnQvQXMrOVA1a3hOMlBacTJSeWVp?=
+ =?utf-8?B?RlVVMkpKNWYrODF5M25pdTZPWS9wbUx1LzNKR1I3SHh3RC9NWGRhWDlVOENQ?=
+ =?utf-8?B?OEEwTnMzTUEvL2o5ZG5VY2RmdGVodk10NThiZ2o4UERuRTVDaVhuWUxDRjc0?=
+ =?utf-8?B?Z2NLSk9zdnF2Vy9YWDRoWlBCVS9xUGVJRitoUkFERGJsallDdEtSTmliRnZK?=
+ =?utf-8?B?TTViRGFvUXE0N0podjV3UGUyZGNaSEluaHpYVFhNOEc2UDFmVGcyd2VTTjBQ?=
+ =?utf-8?B?UGEyUGFRREE4RTNmUzY4KzY2TWc2TnFsZWMxam8rWlpvRnphMmtMaWg5MWFq?=
+ =?utf-8?B?bFFBWWZXUWtzRFBJNEdvR0JzcS9yMnpqdGhuM3I3ZXFFN05KcXJZTVppOGdz?=
+ =?utf-8?B?SHlpM3FtdEV3PT0=?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ5PPFF6E64BC2C.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB8189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(7053199007)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YXlwZ2VNMnV4RmFHZEFyTEwxcDROeUZVcnFHZnJLRU44WXMxQkxlWHBWMDJp?=
- =?utf-8?B?bDdyWDVKeWJtQWY4RkkvbU5KMm1LUUNTbmVnMzV3Q3EvbFRucW9sZnZLWFp4?=
- =?utf-8?B?VXBqSUR3SXoxbDhpdk5ERjBBRGw5NWVOMlIyaUJPNHNRWjU2akJjR3htc1N5?=
- =?utf-8?B?Ym50Q2pyT2ZsWE80QlpLYmhya2xzNk9JL2FjWVN5V3BieHpXZWF1djAwVm9E?=
- =?utf-8?B?d1BDemhpWnZzT0xaeDRzaFAzT2tqRS92WFkrSXVJODVkUUVMTzRUSWZ6bGN1?=
- =?utf-8?B?c2d3VjY0SC8zNmQvSmNkdUFwSjhsU0FLdjhMSGY5c2RiMUptNk5xTnJKWmZB?=
- =?utf-8?B?M0oxTHA1WnhDTnMrbmxYV2Z3SUR0c0orNU5QMEFwYjhNSWhvbk5HcTRSV25l?=
- =?utf-8?B?bHc1UC81Tm5RcFk2Vm9BSTVLTWxxa3A3OVZ1UVAySWZUYUFleDJqSUM1eTVa?=
- =?utf-8?B?Q0dHN3pWay9ySURMR2JvRExqNE9hZkFXVWxVbFcyc05qNlBqOGRVYmppSXE4?=
- =?utf-8?B?aGgzV3pZNndpaXc1bk8vdm52djBCbWlocnhmS1EySGZZbWRnNVRkLzlpc0pM?=
- =?utf-8?B?ckk3UURJdXVVWWtaYW85Q2drdFJZUzdJRm1YVHVZeVU0RzdvcS9mK243R1kr?=
- =?utf-8?B?L21jVC9nODRjZFZGdC9paHliODVwMTB5bUFhVWVEdFdzL2NGS2ZFdVpkZVQ0?=
- =?utf-8?B?ejR0c2FiN0tXWmJXbXRkRHNhbWVvaSttdC9mdHg2eE1GM3lvbzVMMHRGV0xk?=
- =?utf-8?B?NjVqZlRxay9OaTRnbFlCd2lYbW41RnVuYVZ6MnBPcUlzWWdHZUkxcDFvL2M4?=
- =?utf-8?B?dW03Z0RYM2R5RVJBQXZsakJPQU5TT2JXa3Q1OTZNTVUzVDFYVjA2UjZvZmwx?=
- =?utf-8?B?ME41NHZFVEEzc05DWDVhd0JTOXJ3eG5rRGwrR0xCYng0eHByVUNPRVBzOFdI?=
- =?utf-8?B?NzN3UmUxOEtYbVF5ZGRkOGVnM3puN2Y2MEM0RXAyUnZDemdpcHhRdDh1VitE?=
- =?utf-8?B?cHNsWTNOSXRydFJYMlZtY3Q3V0FBaUx1NlJWeGVpSDJybGJoTDRxTnBmaEtw?=
- =?utf-8?B?TzNJTG5LbFFMeXlEK2VqS3h1cEYvTnhKc0pJcmtvNFcvd0hGdUJhM3VyUDZh?=
- =?utf-8?B?TWFDNWtEOVlwdlNMLzhrOEZubWJTTnhFQ1VhR1VINmFidE4ra3N6cDdsRnFy?=
- =?utf-8?B?NFJ6aDVSM1U3N0tsUFJVQmFkaFpDaGdPY1RoRDc5ZERFUkFtTk04TXZHekti?=
- =?utf-8?B?VCtZMXhrR2VqeTNENjVwSFVOeG1KMnRIVG1LdElzOFRMc240Rmp6cGJRYmox?=
- =?utf-8?B?VitKZktoNnZibHpodlhSWm8zYXZNNHY1OUMzU2ZmcGlnSEt3c2ZMS2RiWGZL?=
- =?utf-8?B?VnpraUU4SnlXS0ZlT1dFYis3VmxWTURWRkxvcm82T1F2dXp2V05WaEpaQjQ0?=
- =?utf-8?B?ZER6Z1UxWXRMQVprMTFINStFb3lzaU5sa2RPQWVuY3FSZ0VCMk45SEZCV0tX?=
- =?utf-8?B?VnJpUmNMM2RaUmk3dTFyK1VVaFZLbGNGU2VsSFRtTmpOQVFXVjFPQVB6RkI2?=
- =?utf-8?B?LzVvOGdJU2I1Uk1md1pZTUkxUXZJbk5FcW9POHI5ZTMrS3V1ZlFXU21DblFQ?=
- =?utf-8?B?em1vMTNoOFNIMjEyMC9EaWkrbHlCcWptTEdBTEdEdzdldFV0SnVIekxxUU9D?=
- =?utf-8?B?aVd3TjFtdEIxbnREVVJvM3dtT3R1WXYrdnYzSURxazRHK0kyMitRT0FtQkdX?=
- =?utf-8?B?SFY5amoxekVNTGxvQUljMVF5VzQ4dFMvU01VeGFLdDNBVjFxckZIVEFnVmNu?=
- =?utf-8?B?Yko4VEdJa0dva0gxcDFCU1FjUC9KUnJPUlFTaCtpM093dGg3UFZ5RDJpaTdQ?=
- =?utf-8?B?c3VwL3lpZTlsOUl2UGc4WS83dEdPUWViQ1dxVXNoT3UxRVlTWEFEeU56alg4?=
- =?utf-8?B?bTE2UUw0NW9DUEQ4dW51L1FmS3ZpaFFLWUpCT3dBNEZXZE8wc1RXY2tLYUtw?=
- =?utf-8?B?ZzNQeC9JcGNRdGhMdEs5cnhPRzBidFlRNU5aKzN2akswY0srZU9yRTBMSUhL?=
- =?utf-8?B?VWg1b1RaSFl3ei8zOWdJazcrb1NCR1RUcmpqSytVaVVqNW5jc0RLR3IxYVRp?=
- =?utf-8?Q?nNGBEeokhURL6mktpjKLBupIJ?=
+	=?utf-8?B?czZTMU5jWE1ZY1dnb1lKUFdpWTVzUVg2MWdtbHBSMm9MUkpHK0lMN0p0Qkxz?=
+ =?utf-8?B?b3h1bVFqUlE5ZXpVUWwxcXJic0d1RmxmM3E2TUF0QlRZY3ZzYVcxOWU2STF1?=
+ =?utf-8?B?dHlmakVyZjQyZ1gxM0dJOU05MXNoNHZxNDZwRytaaUVBdkY4VXVTUlFULzVo?=
+ =?utf-8?B?bWN1YnU0azV0am04eVhvQnVXWm1xOFdHSmRUOWNYemw3SjFWS21GWWJWT1Y0?=
+ =?utf-8?B?YkhmWitBa0RDL1RYZTBJNUZ0azRFSUZpbi9Pdlg2aG1pcU9HSnBpdkgvRmZw?=
+ =?utf-8?B?WDJHQmxnUWhyeS9OVDZzQ2FHNGFFcEhpSDZyaFZJNjg1Z210ZmRxTU11YVpN?=
+ =?utf-8?B?ZW9tVmZuOGYxTFI0aTcvQ0F5bEE3TWZUR1RhSGY4VklFd3gyMC81QVoydlh5?=
+ =?utf-8?B?WWExSGFqY2o4LzZEeTZ5VFZ5R0VEVnhkRHJTMUZONDJPNXhyblY3STl3NEZk?=
+ =?utf-8?B?ZkU5YmxpKy9YSFByckJXTUJoVm1md3A4QkZZT3Arak5GRlo0U0JqUlZkbHc2?=
+ =?utf-8?B?OFltQldSRDYzbTVqUkpTK3VBNjV2ZG5oK0lESGZPVGtiMCsvNTlhTXFHT0xs?=
+ =?utf-8?B?YUtNRUMxOWpzME0wVjJ0aDBoUkpvbUdQVGJ0aTFHMUhHNXNzRWNweUcrYi8v?=
+ =?utf-8?B?cUM1QW5DMXBRV0lGSytsQTE0YkFNOHJsRVI1elA4NEZScmhvS3VSdWpvMXFL?=
+ =?utf-8?B?cU1yd3BPblJjL3dXYnhOR1ZHbjVzc2UvV2Jaa0YxOEpZMjU3ei9pOWFMOTc4?=
+ =?utf-8?B?WkxkWEMwcFMxcU90UVlZVzlsVXA2N1FKZGFZSnZPQmIvU3hZTHhOUzB0Ryth?=
+ =?utf-8?B?NnozZ2hITWN5NmQxcDZJdEpwYVJRbHNCbWdlSzIyU1dyTjFMQU9wQXFEYjJ0?=
+ =?utf-8?B?a1pEQXZZTmRSdVdycHFEQ1k3MnNES2N4ZW5aSWE1VUNyZTk2eUs2M0JTeEFu?=
+ =?utf-8?B?a0tmYmZFN25vdm5vSGdtTEFrelZvTms0ZmxzcWZjZ1M2K3VObHZEeFBhazN6?=
+ =?utf-8?B?M3gvOXJkYkpuZ3BMWHdZNVp0YmZMc0M4eUIyTU5HUzUzS1h5cWI2Zmk1bksx?=
+ =?utf-8?B?OTQrdHk5OVNIVFd5Tk9rcFZtMU9aNlZoNncwb0IvZTh4OVA0ZnNxaERoWXVy?=
+ =?utf-8?B?YWZ6ZEVtbzZXb0NQVERwOVRpeXN0eUZwZmRud214VnNrRU9IUlgrRkVXa0d6?=
+ =?utf-8?B?SHlJMGwxeEtYUTZFZnlxNVFRenFMRjdkTFgvSkFaeDBuOU5yMGR2aXFaVGhj?=
+ =?utf-8?B?ZlArYVlXRFRrT2dVUkZkOUM5N2JvM3VESmwvLzB5MjhkcTZoZFFMa3lMUVNp?=
+ =?utf-8?B?VEJIa2FxcTN1MnQ2Y3lYY3lpanBEejJCNnRuVTRGRTFUaFBtZnVOUjRjRkF2?=
+ =?utf-8?B?bGpLdy9PWXo5KzRHOHMzWkpBdmMzTVZtS2dqL1lOaUpEYStiR1hEdkNvT1A5?=
+ =?utf-8?B?UTNVejE0ODRCNEx5WnVxMDRHY3JhTHdYRC9kQ014U04rQzNRN3YwcGtGUzVK?=
+ =?utf-8?B?MFZnQ01uTngyNU9Kc056K3RGM285Y3dDbjhaQ1VBTGFwYWx5MlBHdEdZTWJw?=
+ =?utf-8?B?T1laMC9qYmltdnNBWkZ2M2F3cTFCZWxXZ1c2RXRTdmZNbDN1Uk1Id1RGUFBw?=
+ =?utf-8?B?MG1nMXlpS29Kb3JHUUlYQUxWVkdody9JVnRIT2MyVmlrYzdxNElvN2hEZ0w0?=
+ =?utf-8?B?bEdlbmVUY3haUGxtcFRQWkZOVitEQWVHM1NOMjVMS2JIU3hCMWtxZ0RSRHJF?=
+ =?utf-8?B?UDlwOUZRYjRsNThjWGh5c3pSUHdwQmpYd2IrZDNrWHdvYjJSNS9lYTdlYW9U?=
+ =?utf-8?B?UHpuMlV6TDZNUi9PRjQxU2w3SUV4ZU5EQkZLeVBFSE9zWTc4VHNWMGhQTWo3?=
+ =?utf-8?B?YitaUmtLOVJpTkUra1hrNVBtMXVKYnpXYjJkaFMwdEwxbk0vMVNmR1IveVdi?=
+ =?utf-8?B?b1FwOHFDMHFGTGQ2WU1PbG0rNmR2aHJlc2kwNkx0bEtUUEMwMVZYbGxleFhX?=
+ =?utf-8?B?MVptRnFTL3A4QjFGem5VSStrLzdHc3BVTnBhbXR3YVNGbnJVU3JNTG9HQjdZ?=
+ =?utf-8?B?bVh5bW9oQWU3N3lPU2FPTUhuYndDdldxZ2U4OUxKb01Ob1AzeThwWlZlSWpU?=
+ =?utf-8?Q?5CEbOIEJUAJYXyJARkEzKCHdN?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 77790a96-f9fd-49d4-1723-08ddb20d1921
-X-MS-Exchange-CrossTenant-AuthSource: SJ5PPFF6E64BC2C.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 49c9ff72-cce7-4eb8-c5c7-08ddb21d1f9f
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB8189.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2025 04:19:08.6839
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2025 06:13:51.4804
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6+9icrSPbSQwcu0W7oEev/tolXzjLTa1tXQpo4AEN1Yh7DkXRKGrISv1/EkVnIg988HNq3pVsymZW9AOfbKxQw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5991
+X-MS-Exchange-CrossTenant-UserPrincipalName: GtQmyQRam8HvcIRFd27VqQIeThLRg7zgA1x241nMQ+riuHOMEUTCz0OiKY/GwFUflM9jyMj9Bq54kHAVZbRwkg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8293
 
 
-
-On 6/23/2025 3:46 AM, Andrew Morton wrote:
-> On Mon, 23 Jun 2025 00:32:05 +0530 Shivank Garg <shivankg@amd.com> wrote:
+> guest_memfd needs to support memory policies so add an argument
+> to filemap_alloc_folio().  All existing users pass NULL, the first
+> user will show up later in this series.
 > 
->>> -EXPORT_SYMBOL(__filemap_get_folio);
->>> +EXPORT_SYMBOL(__filemap_get_folio_mpol);
->>>  
->>>  static inline struct folio *find_get_entry(struct xa_state *xas, pgoff_t max,
->>>  		xa_mark_t mark)
->>> _
->>>
->>
->> Hi Andrew,
->>
->> Thank you for addressing this.
->>
->> If you don’t mind me asking,
->> I was curious why we used EXPORT_SYMBOL instead of EXPORT_SYMBOL_GPL here.
->> I had previously received feedback recommending the use of EXPORT_SYMBOL_GPL
->> to better align with the kernel’s licensing philosophy, which made sense to me.
-> 
-> Making this _GPL would effectively switch __filemap_get_folio() from
-> non-GPL to GPL.  Leaving it at non-GPL is less disruptive and Matthew's
-> patch did not have the intention of changing licensing.
-> 
-> Also,
-> 
-> hp2:/usr/src/25> grep "EXPORT_SYMBOL(" mm/filemap.c|wc -l
-> 48
-> hp2:/usr/src/25> grep "EXPORT_SYMBOL_GPL(" mm/filemap.c|wc -l 
-> 9
-> 
-> 
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-Thank you for the explanation.
-This makes sense to me.
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
 
-Reviewed-by: Shivank Garg <shivankg@amd.com>
+> ---
+>   fs/bcachefs/fs-io-buffered.c |  2 +-
+>   fs/btrfs/compression.c       |  3 ++-
+>   fs/btrfs/verity.c            |  2 +-
+>   fs/erofs/zdata.c             |  2 +-
+>   fs/f2fs/compress.c           |  2 +-
+>   include/linux/pagemap.h      |  6 +++---
+>   mm/filemap.c                 | 13 +++++++++----
+>   mm/readahead.c               |  2 +-
+>   8 files changed, 19 insertions(+), 13 deletions(-)
+> 
+> diff --git a/fs/bcachefs/fs-io-buffered.c b/fs/bcachefs/fs-io-buffered.c
+> index 66bacdd49f78..392344232b16 100644
+> --- a/fs/bcachefs/fs-io-buffered.c
+> +++ b/fs/bcachefs/fs-io-buffered.c
+> @@ -124,7 +124,7 @@ static int readpage_bio_extend(struct btree_trans *trans,
+>   			if (folio && !xa_is_value(folio))
+>   				break;
+>   
+> -			folio = filemap_alloc_folio(readahead_gfp_mask(iter->mapping), order);
+> +			folio = filemap_alloc_folio(readahead_gfp_mask(iter->mapping), order, NULL);
+>   			if (!folio)
+>   				break;
+>   
+> diff --git a/fs/btrfs/compression.c b/fs/btrfs/compression.c
+> index 48d07939fee4..8430ccf70887 100644
+> --- a/fs/btrfs/compression.c
+> +++ b/fs/btrfs/compression.c
+> @@ -475,7 +475,8 @@ static noinline int add_ra_bio_pages(struct inode *inode,
+>   		}
+>   
+>   		folio = filemap_alloc_folio(mapping_gfp_constraint(mapping,
+> -								   ~__GFP_FS), 0);
+> +								   ~__GFP_FS),
+> +				0, NULL);
+>   		if (!folio)
+>   			break;
+>   
+> diff --git a/fs/btrfs/verity.c b/fs/btrfs/verity.c
+> index b7a96a005487..c43a789ba6d2 100644
+> --- a/fs/btrfs/verity.c
+> +++ b/fs/btrfs/verity.c
+> @@ -742,7 +742,7 @@ static struct page *btrfs_read_merkle_tree_page(struct inode *inode,
+>   	}
+>   
+>   	folio = filemap_alloc_folio(mapping_gfp_constraint(inode->i_mapping, ~__GFP_FS),
+> -				    0);
+> +				    0, NULL);
+>   	if (!folio)
+>   		return ERR_PTR(-ENOMEM);
+>   
+> diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+> index fe8071844724..00e9160a0d24 100644
+> --- a/fs/erofs/zdata.c
+> +++ b/fs/erofs/zdata.c
+> @@ -562,7 +562,7 @@ static void z_erofs_bind_cache(struct z_erofs_frontend *fe)
+>   			 * Allocate a managed folio for cached I/O, or it may be
+>   			 * then filled with a file-backed folio for in-place I/O
+>   			 */
+> -			newfolio = filemap_alloc_folio(gfp, 0);
+> +			newfolio = filemap_alloc_folio(gfp, 0, NULL);
+>   			if (!newfolio)
+>   				continue;
+>   			newfolio->private = Z_EROFS_PREALLOCATED_FOLIO;
+> diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+> index b3c1df93a163..7ef937dd7624 100644
+> --- a/fs/f2fs/compress.c
+> +++ b/fs/f2fs/compress.c
+> @@ -1942,7 +1942,7 @@ void f2fs_cache_compressed_page(struct f2fs_sb_info *sbi, struct page *page,
+>   		return;
+>   	}
+>   
+> -	cfolio = filemap_alloc_folio(__GFP_NOWARN | __GFP_IO, 0);
+> +	cfolio = filemap_alloc_folio(__GFP_NOWARN | __GFP_IO, 0, NULL);
+>   	if (!cfolio)
+>   		return;
+>   
+> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+> index e63fbfbd5b0f..c176aeeb38db 100644
+> --- a/include/linux/pagemap.h
+> +++ b/include/linux/pagemap.h
+> @@ -646,9 +646,9 @@ static inline void *detach_page_private(struct page *page)
+>   }
+>   
+>   #ifdef CONFIG_NUMA
+> -struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order);
+> +struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order, struct mempolicy *policy);
+>   #else
+> -static inline struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order)
+> +static inline struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order, struct mempolicy *policy)
+>   {
+>   	return folio_alloc_noprof(gfp, order);
+>   }
+> @@ -659,7 +659,7 @@ static inline struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int o
+>   
+>   static inline struct page *__page_cache_alloc(gfp_t gfp)
+>   {
+> -	return &filemap_alloc_folio(gfp, 0)->page;
+> +	return &filemap_alloc_folio(gfp, 0, NULL)->page;
+>   }
+>   
+>   static inline gfp_t readahead_gfp_mask(struct address_space *x)
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index bada249b9fb7..a26df313207d 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -989,11 +989,16 @@ int filemap_add_folio(struct address_space *mapping, struct folio *folio,
+>   EXPORT_SYMBOL_GPL(filemap_add_folio);
+>   
+>   #ifdef CONFIG_NUMA
+> -struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order)
+> +struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order,
+> +		struct mempolicy *policy)
+>   {
+>   	int n;
+>   	struct folio *folio;
+>   
+> +	if (policy)
+> +		return folio_alloc_mpol_noprof(gfp, order, policy,
+> +				NO_INTERLEAVE_INDEX, numa_node_id());
+> +
+>   	if (cpuset_do_page_mem_spread()) {
+>   		unsigned int cpuset_mems_cookie;
+>   		do {
+> @@ -1977,7 +1982,7 @@ struct folio *__filemap_get_folio(struct address_space *mapping, pgoff_t index,
+>   			err = -ENOMEM;
+>   			if (order > min_order)
+>   				alloc_gfp |= __GFP_NORETRY | __GFP_NOWARN;
+> -			folio = filemap_alloc_folio(alloc_gfp, order);
+> +			folio = filemap_alloc_folio(alloc_gfp, order, NULL);
+>   			if (!folio)
+>   				continue;
+>   
+> @@ -2516,7 +2521,7 @@ static int filemap_create_folio(struct kiocb *iocb, struct folio_batch *fbatch)
+>   	if (iocb->ki_flags & (IOCB_NOWAIT | IOCB_WAITQ))
+>   		return -EAGAIN;
+>   
+> -	folio = filemap_alloc_folio(mapping_gfp_mask(mapping), min_order);
+> +	folio = filemap_alloc_folio(mapping_gfp_mask(mapping), min_order, NULL);
+>   	if (!folio)
+>   		return -ENOMEM;
+>   	if (iocb->ki_flags & IOCB_DONTCACHE)
+> @@ -3854,7 +3859,7 @@ static struct folio *do_read_cache_folio(struct address_space *mapping,
+>   	folio = filemap_get_folio(mapping, index);
+>   	if (IS_ERR(folio)) {
+>   		folio = filemap_alloc_folio(gfp,
+> -					    mapping_min_folio_order(mapping));
+> +				mapping_min_folio_order(mapping), NULL);
+>   		if (!folio)
+>   			return ERR_PTR(-ENOMEM);
+>   		index = mapping_align_index(mapping, index);
+> diff --git a/mm/readahead.c b/mm/readahead.c
+> index 20d36d6b055e..0b2aec0231e6 100644
+> --- a/mm/readahead.c
+> +++ b/mm/readahead.c
+> @@ -183,7 +183,7 @@ static struct folio *ractl_alloc_folio(struct readahead_control *ractl,
+>   {
+>   	struct folio *folio;
+>   
+> -	folio = filemap_alloc_folio(gfp_mask, order);
+> +	folio = filemap_alloc_folio(gfp_mask, order, NULL);
+>   	if (folio && ractl->dropbehind)
+>   		__folio_set_dropbehind(folio);
+>   
 
-
-Thanks,
-Shivank
