@@ -1,143 +1,159 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975152777EC
-	for <linux-coco@lists.linux.dev>; Mon, 23 Jun 2025 15:44:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39AD220687;
+	Mon, 23 Jun 2025 16:04:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750693480; cv=none; b=iWohvPIKk7vyPo/lTCIgsYbSxckGUwJsy5UYvRW4EleFvpOdvG+1uPXF8695HcUhyr2DLAPehPVfPNq/a+m+3QMoJTa9WIPYaAqHHiUeEHrpRERP9ZkaPvy6a4aH9itXlSaxPa5tTZHjDzHI90QgLthWCPj2pDCkWQwfREPnJ1E=
+	t=1750694660; cv=none; b=RrTvEDtgnOjqcDYl0kZYL4SgF1nUGy8hRoA1a0QuvosGhINQr/6WhVkHONR0vbuPVd2abr2UHNFClRZSb6BMKCGglc5jgHrzsGR9QsBNmB+QhgOt6dXF0uhEzJ6m1HpArnHOy2ZPnQlgxEc376397Vsv6ZeEjgS7BbcOrF3L7Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750693480; c=relaxed/simple;
-	bh=z6uWI1cuaie6yf/MtpZ0mP75H9G/PCflk8KuC0hKgJU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UY23Bf5N7qdBEQwwAcc+IXOd5ab7fQvEJXLndCashyp1gF4QoP1RDPW6t4JrvuUKRr2MHhXOd7QdQ1ttGiDPqIb+dukuS6KDJ8W8Y9sfsiONh94o3MHEpsP0a8H5LtDQWJyycRyRF8cv/x1IRcj2+Y7NwGP00tDcnJwza/+KYqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=HkP3qsNN; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="HkP3qsNN"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0428640E01A0;
-	Mon, 23 Jun 2025 15:44:34 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id omm5Wp-Yq0vh; Mon, 23 Jun 2025 15:44:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1750693469; bh=wkp2duUgrbyHfHewe7CWhV6ocxmAcIGEYojd8cQElpo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HkP3qsNNiJJ+XYR1A5c/QlkUtdLVxxhFc+aWvHh4CZOQl82P6ET11X2ldr4GVjq1J
-	 amx3yHCjgGarLNglQY5sbxuj18TEwaOKByX0/Fv1DEKBJlFpJlR7xXKXHDa0ndg+kD
-	 YxSEfD3kkgFKTnOz907L0OBsKkEsofL5WBXpsMtyAdCNWiHp1K4/KVJLKHVQr73thD
-	 zT7MycV+9igUBBNBR27W9ep0DLgYevdR45Feui+oKwPASluTc4MJxY26JtlJilfswK
-	 Ywui0rTsgN5X0N84HIC+aM+Vhs4I1ExmEnQzGrF4f4KFu8Q7pMJdcTJ/hJpLgYDmiR
-	 A1whvZj1hzEdGy7ihNLqfdfv5y5WL7taIedwUomsdfxtdJOf8DR8kMQgKw3EjxBvyU
-	 +l1ad0o3ve0TP7ot/QNk4OVfk4dymv0RACGdYEIqX5ESZXkoJAkPLub/aQZksmW6wJ
-	 pIB6tyE86co+3/ne0kIgJhdox2YU3xMkf9NKii+dBTpGX22HVc8Swkzj3/xUZgAxXM
-	 Q0uJfsnbZz3+e7gl2AlPDRFcBhNrTs1S0NJhoY8LCvKzXnuWt4KY6DrnDi8iHl76Ys
-	 jws/O0SLKY3+PIdfYQ7BiZlYuJbdrY6Yb6UWcU5ANwA3zWIU3+bAWQFaMadA70N/rT
-	 gP1HkJXYX7+nAT4LuYRkC+zY=
-Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 080B240E00CE;
-	Mon, 23 Jun 2025 15:44:18 +0000 (UTC)
-Date: Mon, 23 Jun 2025 17:44:12 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] x86/sev/vc: fix efi runtime instruction emulation
-Message-ID: <20250623154412.GHaFl2TJL0iGvy30JY@fat_crate.local>
-References: <20250602105050.1535272-1-kraxel@redhat.com>
- <20250602105050.1535272-2-kraxel@redhat.com>
- <6b4b8924-c0a7-58ab-f282-93d019cd0b96@amd.com>
+	s=arc-20240116; t=1750694660; c=relaxed/simple;
+	bh=LrKGy4WBpoQHJ3dVz+8gr7LXnPo+a03MXlgQE5KvJug=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GwMQqNURY7+lBQceS6rxaOsKYIyZwAjVA9qiCSAGKSq002Ktji53Dxydyrg2HSFL/hOicZgs4PUnQhS+CxHLDAA7lD3Rkmb7sPlktD1+wIl4gh7qqBTH7wwbHjLeza6ZgwomiuzxEk9MEz7dnR2O7c7J7OwZPxHeK/Huw+nlKak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 107A7113E;
+	Mon, 23 Jun 2025 09:03:58 -0700 (PDT)
+Received: from [10.57.29.183] (unknown [10.57.29.183])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AA5B23F66E;
+	Mon, 23 Jun 2025 09:04:11 -0700 (PDT)
+Message-ID: <69e0107f-6c40-4ea1-ac69-51ad8aa78dff@arm.com>
+Date: Mon, 23 Jun 2025 17:04:09 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <6b4b8924-c0a7-58ab-f282-93d019cd0b96@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 20/43] arm64: RME: Runtime faulting of memory
+To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Emi Kisanuki <fj0570is@fujitsu.com>
+References: <20250611104844.245235-1-steven.price@arm.com>
+ <20250611104844.245235-21-steven.price@arm.com>
+ <e75dfc47-5b74-4898-91c0-fed9880f9727@redhat.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <e75dfc47-5b74-4898-91c0-fed9880f9727@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-I have this now:
+On 16/06/2025 12:55, Gavin Shan wrote:
+> Hi Steven,
+> 
+> On 6/11/25 8:48 PM, Steven Price wrote:
+>> At runtime if the realm guest accesses memory which hasn't yet been
+>> mapped then KVM needs to either populate the region or fault the guest.
+>>
+>> For memory in the lower (protected) region of IPA a fresh page is
+>> provided to the RMM which will zero the contents. For memory in the
+>> upper (shared) region of IPA, the memory from the memslot is mapped
+>> into the realm VM non secure.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>>   arch/arm64/include/asm/kvm_emulate.h |  10 ++
+>>   arch/arm64/include/asm/kvm_rme.h     |  10 ++
+>>   arch/arm64/kvm/mmu.c                 | 133 ++++++++++++++++++++-
+>>   arch/arm64/kvm/rme.c                 | 165 +++++++++++++++++++++++++++
+>>   4 files changed, 312 insertions(+), 6 deletions(-)
+>>
+> 
+> [...]
+> 
+>> @@ -1078,6 +1091,9 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
+>>       if (kvm_is_realm(kvm) &&
+>>           (kvm_realm_state(kvm) != REALM_STATE_DEAD &&
+>>            kvm_realm_state(kvm) != REALM_STATE_NONE)) {
+>> +        struct realm *realm = &kvm->arch.realm;
+>> +
+>> +        kvm_stage2_unmap_range(mmu, 0, BIT(realm->ia_bits - 1), false);
+>>           write_unlock(&kvm->mmu_lock);
+>>           kvm_realm_destroy_rtts(kvm, pgt->ia_bits);
+>>   
+> 
+> I'm giving it a try before taking time to review, @may_block needs to be
+> true.
+> I don't see there is anything why not to do so :)
 
-From: Gerd Hoffmann <kraxel@redhat.com>
-Date: Mon, 2 Jun 2025 12:50:48 +0200
-Subject: [PATCH] x86/sev: Fix EFI runtime instruction emulation
+You are right - I've no idea why I passed false to may_block. Thanks for
+the report.
 
-In case efi_mm is active use the userspace instruction decoder which
-supports fetching instructions from active_mm.  This is needed to make
-instruction emulation work for EFI runtime code, so it can use CPUID and
-RDMSR.
+Thanks,
+Steve
 
-EFI runtime code uses the CPUID instruction to gather information about
-the environment it is running in, such as SEV being enabled or not, and
-choose (if needed) the SEV code path for ioport access.
+>   kvm_stage2_unmap_range(mmu, 0, BIT(realm->ia_bits - 1), true);
+> 
+> Otherwise, there is RCU stall when the VM is destroyed.
+> 
+> [12730.399825] rcu: INFO: rcu_preempt self-detected stall on CPU
+> [12730.401922] rcu:     5-....: (5165 ticks this GP)
+> idle=3544/1/0x4000000000000000 softirq=41673/46605 fqs=2625
+> [12730.404598] rcu:     (t=5251 jiffies g=61757 q=36 ncpus=8)
+> [12730.406771] CPU: 5 UID: 0 PID: 170 Comm: qemu-system-aar Not tainted
+> 6.16.0-rc1-gavin-gfbc56042a9cf #36 PREEMPT
+> [12730.407918] Hardware name: QEMU QEMU Virtual Machine, BIOS unknown
+> 02/02/2022
+> [12730.408796] pstate: 61402009 (nZCv daif +PAN -UAO -TCO +DIT -SSBS
+> BTYPE=--)
+> [12730.409515] pc : realm_unmap_private_range+0x1b4/0x310
+> [12730.410825] lr : realm_unmap_private_range+0x98/0x310
+> [12730.411377] sp : ffff8000808f3920
+> [12730.411777] x29: ffff8000808f3920 x28: 0000000104d29000 x27:
+> 000000004229b000
+> [12730.413410] x26: 0000000000000000 x25: ffffb8c82d23f000 x24:
+> 00007fffffffffff
+> [12730.414292] x23: 000000004229c000 x22: 0001000000000000 x21:
+> ffff80008019deb8
+> [12730.415229] x20: 0000000101b3f000 x19: 000000004229b000 x18:
+> ffff8000808f3bd0
+> [12730.416119] x17: 0000000000000001 x16: ffffffffffffffff x15:
+> 0000ffff91cc5000
+> [12730.417004] x14: ffffb8c82cfccb48 x13: 0000ffff4b1fffff x12:
+> 0000000000000000
+> [12730.417876] x11: 0000000038e38e39 x10: 0000000000000004 x9 :
+> ffffb8c82c39a030
+> [12730.418863] x8 : ffff80008019deb8 x7 : 0000010000000000 x6 :
+> 0000000000000000
+> [12730.419738] x5 : 0000000038e38e39 x4 : ffff0000c0d80000 x3 :
+> 0000000000000000
+> [12730.420609] x2 : 000000004229c000 x1 : 0000000104d2a000 x0 :
+> 0000000000000000
+> [12730.421602] Call trace:
+> [12730.422209]  realm_unmap_private_range+0x1b4/0x310 (P)
+> [12730.423096]  kvm_realm_unmap_range+0xbc/0xe0
+> [12730.423657]  __unmap_stage2_range+0x74/0xa8
+> [12730.424198]  kvm_free_stage2_pgd+0xc8/0x120
+> [12730.424746]  kvm_uninit_stage2_mmu+0x24/0x48
+> [12730.425284]  kvm_arch_flush_shadow_all+0x74/0x98
+> [12730.425849]  kvm_mmu_notifier_release+0x38/0xa0
+> [12730.426409]  __mmu_notifier_release+0x80/0x1f0
+> [12730.427031]  exit_mmap+0x3d8/0x438
+> [12730.427526]  __mmput+0x38/0x160
+> [12730.428000]  mmput+0x58/0x78
+> [12730.428463]  do_exit+0x210/0x9d8
+> [12730.428945]  do_group_exit+0x3c/0xa0
+> [12730.429458]  get_signal+0x8d4/0x9c0
+> [12730.429954]  do_signal+0x98/0x400
+> [12730.430455]  do_notify_resume+0xec/0x1a0
+> [12730.431030]  el0_svc+0xe8/0x130
+> [12730.431536]  el0t_64_sync_handler+0x10c/0x138
+> [12730.432085]  el0t_64_sync+0x1ac/0x1b0
+> 
+> Thanks,
+> Gavin
+> 
 
-EFI runtime code uses the RDMSR instruction to get the location of the
-CAA page (see SVSM spec, section 4.2 - "Post Boot").
-
-The big picture behind this is that the kernel needs to be able to
-properly handle #VC exceptions that come from EFI runtime services.
-Since EFI runtime services have a special page table mapping for the EFI
-virtual address space, the efi_mm context must be used when decoding
-instructions during #VC handling.
-
-  [ bp: Massage and extend commit message with more backstory, add
-    clarifying comment from Tom. ]
-
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250602105050.1535272-2-kraxel@redhat.com
----
- arch/x86/coco/sev/vc-handle.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/coco/sev/vc-handle.c b/arch/x86/coco/sev/vc-handle.c
-index 0989d98da130..e498a8965939 100644
---- a/arch/x86/coco/sev/vc-handle.c
-+++ b/arch/x86/coco/sev/vc-handle.c
-@@ -17,6 +17,7 @@
- #include <linux/mm.h>
- #include <linux/io.h>
- #include <linux/psp-sev.h>
-+#include <linux/efi.h>
- #include <uapi/linux/sev-guest.h>
- 
- #include <asm/init.h>
-@@ -178,9 +179,14 @@ static enum es_result __vc_decode_kern_insn(struct es_em_ctxt *ctxt)
- 		return ES_OK;
- }
- 
-+/*
-+ * User instruction decoding is also required for the EFI runtime. Even though
-+ * EFI runtime is running in kernel mode, it uses special EFI virtual address
-+ * mappings that require the use of efi_mm to properly address and decode.
-+ */
- static enum es_result vc_decode_insn(struct es_em_ctxt *ctxt)
- {
--	if (user_mode(ctxt->regs))
-+	if (user_mode(ctxt->regs) || current->active_mm == &efi_mm)
- 		return __vc_decode_user_insn(ctxt);
- 	else
- 		return __vc_decode_kern_insn(ctxt);
--- 
-2.43.0
-
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
