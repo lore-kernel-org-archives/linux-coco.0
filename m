@@ -1,219 +1,164 @@
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2056.outbound.protection.outlook.com [40.107.223.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299472550A3
-	for <linux-coco@lists.linux.dev>; Mon, 23 Jun 2025 13:57:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750687049; cv=fail; b=NY2vev2AJmqW21k0iHvZyCK1EFVYQAOWWQ17PmGbfip48sRpiM4HLVGGlqdlmGEJSb74MhkjNvPDSDHT4/zLsZJhKrorKtcRcpPglaIaMbHDGq7YsJzLfyUg6l1j9t2L/SvODE5yOKXHcDiGwjTFhpQ+SUbsXvIysF4iG3n6cZY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750687049; c=relaxed/simple;
-	bh=K+9y9GpMvYWqrqkfzDQGI8+jLI65eMA3LvioAQBOU8E=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=iT4a5eMok/0AmkvTxrFhrHZGmOxlvvHY8meTPMFhG/vHQcXe+b1mrh8HbqKUI6T5KkoXwRjqI8fCacclTl8xswj44JlFYs2qWk8ySRMaUFnnH9cYqvxjSfyzD5xoH2tq6Gu/L1SrLySm9T1QMBttYFwut0j/gbdjSRYlIFSZcic=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Q3fRIa5Y; arc=fail smtp.client-ip=40.107.223.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Q3fRIa5Y"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=M/qfwkctofS3SncJT9Zkrz1tuisHhYnpkL0HIpI/T22XxD4zxTBX1FU9O5lyey6BPAzChjvKjfad5DjjXLiFPdhjg+y31USWS0Eh+ppjYdx1s5qv2Ii+E8RnnRCpIK6YuSTF7hPwDBpLo6o+j5Pmvlw8TXLUE9CTLcHg463qZBcqFProvWDEpBIZ5bMknflYsD7TNa2L28NBB4tQYS4AiBw871X2GZZOBcx7oHCDSeFlECesWuoUjp4SN/mePgN5sStgUWdJcg4i46J9YDX70/R8YNPOTH5MDLeEsa3YbP9yJNa+BnzTG7TpwiBeP+fTYh1G79FUSj3OTgpVYJlUVQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zeB6mpFid533ECQOom40pUkdHDPKCX8f/T8OJyvTQ/0=;
- b=Db4cAgkl7Rku5vl6wNlWSKQw+LkVasZRO+9iGKnQPmy18dmJdbd52JTQD5CjS09nAHCpGDzJCNIwGDKCTOrDlXfj+zASKoAbooIryD3A/Vz0H13iFkp3wpd3TGSVu/7/7BrF0+AGlutbwRu1N2JfPbhReiMl7cAmwhLsZjhH62dMOe9DAw/DuXoez6IBW1idrfOvoWnWsYQX5RE+4xn8oSIwt61SooreRAKlGKHZHxfg5bOPco5WTrrFmCxPHyVNtoZdj23grVfuD7PEIKeaRHh6RDfKszKTLdMiVLFQf3b2CBkCnHlm1A2ROKPls5xJoapxyAi39DBpYc0QzBqNxg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zeB6mpFid533ECQOom40pUkdHDPKCX8f/T8OJyvTQ/0=;
- b=Q3fRIa5YvCA2AbhPzd3KEOXSUwbUGLRkKHGgdNqvSNNwaWDkxZlJ0a7GvXEKnPhMD/FQC3T8rlq0EF9cpG0+3Xfot96dFBQI44IxA8fB3A+EOIi7mrs5vlxS/Rf8bM8SZZHsoehmQKSbRJ0YB/ir1+Ig1dPzZbKlRd1bvbjzYm8=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
- by SJ2PR12MB8181.namprd12.prod.outlook.com (2603:10b6:a03:4f6::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.30; Mon, 23 Jun
- 2025 13:57:23 +0000
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e%7]) with mapi id 15.20.8857.019; Mon, 23 Jun 2025
- 13:57:23 +0000
-Message-ID: <6b4b8924-c0a7-58ab-f282-93d019cd0b96@amd.com>
-Date: Mon, 23 Jun 2025 08:57:20 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 1/2] x86/sev/vc: fix efi runtime instruction emulation
-To: Gerd Hoffmann <kraxel@redhat.com>, linux-coco@lists.linux.dev
-Cc: kvm@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>,
- "open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)"
- <linux-kernel@vger.kernel.org>
-References: <20250602105050.1535272-1-kraxel@redhat.com>
- <20250602105050.1535272-2-kraxel@redhat.com>
-Content-Language: en-US
-From: Tom Lendacky <thomas.lendacky@amd.com>
-In-Reply-To: <20250602105050.1535272-2-kraxel@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1P222CA0084.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:35e::25) To DM4PR12MB5070.namprd12.prod.outlook.com
- (2603:10b6:5:389::22)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC23826A0FF;
+	Mon, 23 Jun 2025 14:45:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750689932; cv=none; b=HYODQWJuJLlEjbsfuzanMsghsfCeAlQJzzJu5pMeDE6qI2ioq01ngt5TCeKWZZY1TYMIdFCT+QVvtkgX6JDNEwGsg7IXLZB/Dehe0gZfXYvekBU07Tk9saVxEPxKFHzLfSNxiflAGXW3ikeyvpJXzdUl25drA8a6Q+97VpTlm1M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750689932; c=relaxed/simple;
+	bh=EOh6xUIdqtrD2kFL8Xhl74TcdV1yYDlyoO202wzp364=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bn/w76GSVVKa0r2JKbZX1nDRPpOvT76tKbfGyDIjDd78P4LGC3Ejb4sAhC4PI1uCNo7XdT8RKxOjZ8RXW6RV0++Ti9jtvKxTSZBikKv3F/Y+wvip/X1KKxP7qjN1yE262n+iNchNCr0DzLlxC6CLy7jLMZkhcRliP7Vv/kS9Gzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DCD5B113E;
+	Mon, 23 Jun 2025 07:45:10 -0700 (PDT)
+Received: from [10.57.29.183] (unknown [10.57.29.183])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5D6493F66E;
+	Mon, 23 Jun 2025 07:45:23 -0700 (PDT)
+Message-ID: <6c0e7cce-fb63-4f08-9907-9a58e0326bd3@arm.com>
+Date: Mon, 23 Jun 2025 15:45:21 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|SJ2PR12MB8181:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5acff83d-4a9b-49e0-1132-08ddb25de0e7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SzdTVHFKL3MrYmRGMXc5ZjBCcXpnRThzd2ZLREJrMk5RQUJvRlBsZWZGNHJD?=
- =?utf-8?B?ZUZhN0YyVjRNbXZLOEhxVm85cXIwcGpRL3ZoL2ZjeExtSWN2ZWFQd0hFUWE1?=
- =?utf-8?B?a0RQdlNxUHNXVHVIQkxBa3plZUEzelhCc3dRS1k0THczd3FtTEx2QktTK1Bh?=
- =?utf-8?B?djM5cUgwRW9TWUVQb1dLSS9CalVhK3kyWFY1dW9OV3laWWdwenZjSkFURTJT?=
- =?utf-8?B?a0ptajE3aUI2c2gxWHNDR1hUemdmU1VDNjBYT0VvWE5tNytGbStLeHlGb2s4?=
- =?utf-8?B?TGdZejFmZjkzTmhzb01Pb1NlS1I5VThucVBleDFZU2RxUWo5V08rcFg0ZnJZ?=
- =?utf-8?B?TEQzSzlBdVZ0MlY5aUgzeTlMVUJFSE1WQjBxZmY5b0pKVEhhWE5DeUdUdUNL?=
- =?utf-8?B?RWNkeW5rajY0dG50bDJWazQ3eVc4QjlmMjBrYWE0dkpoTTNIMU9OZDlTb05R?=
- =?utf-8?B?Q1NaNVNMWmVJTUhNYTNnM2pWV3gxOVIyZXN1RlV0cy9ybkdwcWZqQ29ZQ1JV?=
- =?utf-8?B?STEvUDdDcTFRc0JFRDRTMnJqZ3NQdFhtQ0xvTWc2NyttalBIMTdyWkdqYWV3?=
- =?utf-8?B?NEEwQVY0VitIRjZhSUZBL29vRkFJdE9hdWFKMFMreUJuY2ZmSnZHOXNxT2Iw?=
- =?utf-8?B?ZTFwU3p0WG5RamM0MDAyN2Rma2R4M3hZWjc5N0xzbVRQT2JBYkdTN2tVS1lD?=
- =?utf-8?B?OFhTNEd2OFhGRTZkdTFmQjFLM0VTV0kvUFRURVBhUTVMaTNJaW9sNXVjeElO?=
- =?utf-8?B?M1BtZXhPeWErRmVvUGQwcERhbE9HZVVVMytNeHBINmVpN3Bxd3d4Qll0cUly?=
- =?utf-8?B?MzhMc2xkTWd2OGtJVU1YaDZaWWVBYmQ0Z2NuOHhBWWJKWWJRZnZVaUpCQXhN?=
- =?utf-8?B?SXd1c2NWbm90MGEwV3JFMGo2YnRuRlB3bFNXRlRJdHl6Mm9uNHM5U0JGT0s1?=
- =?utf-8?B?TlpaVDFFOGVFRE5qci9admpXNUJHVFlRcU1oUkhRb0dDSkFXNG12TXJDc1ZK?=
- =?utf-8?B?a2FzV1g4cUcxZ2g4Z2JPMklqdWxnUkRVWTJWQ3VaRmlnV1JoWjlGYjFKaW92?=
- =?utf-8?B?N2pQSnU5UktXRTRSSnRQcFV6Q2lHY0RmcUtpREZSNEZhYnlnc0ZCY1VDT0sw?=
- =?utf-8?B?QkJqaUxkaCt4K3pTa0tZM0h6eTVQdXhhTWZFTEJtQkMwSVdRMTdZdlZBWTVU?=
- =?utf-8?B?ZlBHVWZlU01VbHJGV2RxRFlFMUNnQS9nSG5QWWZjNGdUd1lhdFN1bWFOVUYr?=
- =?utf-8?B?eDBzUWpGZm5KN3ZZQWgzQUdFOUFwcW5nelBKWitxQm54UThCQitLQk1oY29D?=
- =?utf-8?B?dUJTSnA3ZFp5U01HTFhWU084ZHVWaVRCU2lIYWNBZXN3d2Z4a3VXQS9FdkVK?=
- =?utf-8?B?TEdvUVJoaHdGNGVjQ2JIT08xSExzNnRJdEZQTDkyaHVuanFGMVRxU1BYTEZa?=
- =?utf-8?B?Vm9ZWjM1NlRlOVlmcXpBYy9BeFFaVU1mRXMrakNzKzdTWmFweFRqN3gwK3Ay?=
- =?utf-8?B?aWd6YzV4d1F4Mndra0QyLzZaekxWWXo0WEFURjZ2REVsdFkzRzlkck8xZVlJ?=
- =?utf-8?B?Q2NYRTdmWXNTUXJwU1pPc0szSG5nZDNwc1pTM1RMWVRpTVk4SjdkS0phdkhv?=
- =?utf-8?B?ckl3SWV5K3g5UUZVWVBQejEzeUM3MWhxeTlyaUxpN2Z6aXphWklYMzY4RUwz?=
- =?utf-8?B?UmR0Vjh3ZnlzNWtZNlNNcE5FZCtVbDRRNXRVZ25vYTVmZGJlRzMzUG83OVlI?=
- =?utf-8?B?VDIvV1RBeTVOSDlzVkk0N0xlaHp3YzI4MTdVT0VrWkxwZ21TT0g4TUJxQWdG?=
- =?utf-8?B?ampkOVp5My9VZmRjQlVCRThsZkpQMTFKOHp5NFdXTXRBaVJPWldTS0tLM0dm?=
- =?utf-8?B?dy9SMTdzMkZIcHRHUUdvSGZIc3NWMnlaUmlaK1cvMkpOL1ZqcHpWc2Yxak5w?=
- =?utf-8?Q?9TXWyP4pvS4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Q2dzUi9jNyt5K29ibSt5c2Q5YTJJQUo0RlZ3b0RIQlFINzBXZXpzRnVVYW1W?=
- =?utf-8?B?S1o1QlhyRDBYRERENHJIUkhCZ0s4SWFFbnIzaHVtWXQ4bGhpN21jSHVFUGxv?=
- =?utf-8?B?Q1NQUDZlbytYOENvMHZuTEY0Z0RDQ1VrbFRsTjdHQlBFWmJUVjlLdXkxamw3?=
- =?utf-8?B?S3AyOW5hMFJQQVlJZFFUT1JrSGc5bnNGSkw2bllWUjlua0oxMWx1U1pzOWxz?=
- =?utf-8?B?NGVGNHQ2MjRlV3lOYzJ4Z2FIanN1SFN1SjlxK3ZIUTFtOUFNTDNNajQxVnpT?=
- =?utf-8?B?S0pYc3BzZGhHVFJUSnpQMERNcEwxM1B5Zk01MElGU2hiUERSZm1OV0tRREw1?=
- =?utf-8?B?aVQ3WXp5VHI2cEhzbDF1bWZuTENKMGVNS3lLYjlMTTFYUkxSQUlBRGZZM05D?=
- =?utf-8?B?aTYvTTdia2czOTFtYXJrUUFkZnNpNDdISDh1Y2IxZmUzSVVwK3czd1M0ckNi?=
- =?utf-8?B?NEpxQXE2dWd0ZWxZWDlLK0RkT3ZzVFhxaFo1ZEY5L1Q5V2c2MnJmckpRajRE?=
- =?utf-8?B?NjBIZ3B0SFJveTJBMkk0V3NVVEJrem5SZGorRDJvZmFaRTZ4eWwxeGlCYXNa?=
- =?utf-8?B?eStPMi9UK3BTaXMwbkYzeEVJeHRZc1d3a0o1SERpSWxEZDhuVnRITmpWOGVz?=
- =?utf-8?B?NUVzRWs1TEYxSjMvdWowS2tOam1IWmFlRXQvTzFRVnA5SVdhWnRQMlVaYlE3?=
- =?utf-8?B?am5tWDRIeWFMMFg3NXlwOEppWC9PMjlLclBUckpDWG45VVdPY3laMFU1MzNR?=
- =?utf-8?B?dXk0S3lsZEhzTUNRU0hkamlOc3RLYkZYRGhJMXRwNzZEb2xDSk0vNmlGRVJ2?=
- =?utf-8?B?K2t6emJRR2s5a1dqTXErZUUyNHBwb3JYTnlkOW5lanZRMDBDV3hmLzFHVXNT?=
- =?utf-8?B?QXpDaHh0MmRIRGJ3QVFHU3FsNmMrTFJRVmdFZ3h0UUgyQUJLdDhOWXhTd2Fq?=
- =?utf-8?B?T1ZZYk0yOEprcEM0RkJFRnNDOVJYSnpxZUlGNnIvZ3FmdFVJaHRlN3l4SC9U?=
- =?utf-8?B?RC9Yd0xQSnNYSWlUSjZGMG5yQTZOZ3RvVW9KNjVhTnh2MGN1Ky9mZFg5bllL?=
- =?utf-8?B?Z1VRZ09hMGM1dUh6Q2R6TmRFTHBTWWowckw2NVNJcUh2Sm9yU2plcCtiNHJa?=
- =?utf-8?B?aWhBZ0Rpbk9BeGFyNkR0VDQ2RFVPQ2N5NFlIM0FYVHNFcllmUXA5OHBkRDIv?=
- =?utf-8?B?TkFxRXJRbXFCVUZNNXhNNmhmTkowTTUySkk1S2U3WnR0aHBidkVTTGVwdUJE?=
- =?utf-8?B?OFhpNFJWaFh2cWp6aGpQTmdscGpUMDlxdUxqWCtUOW5EVDRES09HbUdab2hL?=
- =?utf-8?B?UEg1QXROVlIvYWNvdHJoQkdqS043eWpEakRVQk5oblVlRDdSSUN3ODdiNVVt?=
- =?utf-8?B?NkswVWdicFJ1TWMvclpOc3JoQ25ET2pYK28wQzFPbWRYdVJTM2hhOHJwVUFB?=
- =?utf-8?B?Y25Tc1NTeGN6cVlqUWdJcjFLaUNCWFEzS1ZoWWJTWk5WS2hDdWFQWk9iQTNk?=
- =?utf-8?B?elJNSm1oYkE0Q1I5cFF0UUIvVEx5TnlxNzhKWmNUV21lR3dMODdoaFhlVFE2?=
- =?utf-8?B?MXc4Rlh4bytkVUdOa1VwRkhJZDNkV2lZSmxsMlZXL09wcDNuOWJUNWRGY1Y0?=
- =?utf-8?B?ZHpQbVg5dFlFWnpaWG9GNHRNd2daWXhCa2dqVlh6Y1BSV2ZaNFlIY3NGaFhj?=
- =?utf-8?B?KzVFNUV5WE10RktnTGJTTnRJeGdUNXNLZEZKbkFubE1SSEE2N0ZMb3FPYzRj?=
- =?utf-8?B?V25BMzNzMjZCbVdSWE9EWnAvS1JzQnVlWDJTbVdvVTkxSHFTZVdhYkFTY2Jv?=
- =?utf-8?B?dWFMVDBhWE5zb2xhVHFQamNmNm4vcGtEOUV2SWpYWmlKc1pTQlFZT1UvVW8w?=
- =?utf-8?B?MzRvUURkMlcrSHpnS2ZpTGp2eDZXVlROTVBycGVwUk8yamdPWXcwSFNmTVVy?=
- =?utf-8?B?cnp5UlBNdVhaRTNXSVhkQ0Q2cVFSVzB2S2ZFNU5YcU1ub05tZGs1SHBENUc2?=
- =?utf-8?B?SkdFZjA4UW9ZTzJpWEJ0djBDR3ZRZTROcHg4bUxwOUx3U1RVSWMvYkRNb3Iy?=
- =?utf-8?B?ZEY4YmF5R2RTcmRXRHNXemlpbHVab0FTZThUemIyYjlCcHhDU0dLalREdU1Z?=
- =?utf-8?Q?+3dO5IR8Bh7l9PkdCrvjVxHpL?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5acff83d-4a9b-49e0-1132-08ddb25de0e7
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2025 13:57:23.6318
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: g5JS8PBEqEsiDtRsO2ltUqwr2gmzM8bvY+ySaNb7sogRGqdH67usg8icF0jjiJfaAjqdg9G+Pkh2idxW+wTMgA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8181
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 07/43] arm64: RME: ioctls to create and configure
+ realms
+To: zhuangyiwei <zhuangyiwei@huawei.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ zhouguangwei5@huawei.com, wangyuan46@huawei.com
+References: <20250611104844.245235-1-steven.price@arm.com>
+ <20250611104844.245235-8-steven.price@arm.com>
+ <b3b709c2-a154-4b1a-b6bd-7075e6a57fd2@huawei.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <b3b709c2-a154-4b1a-b6bd-7075e6a57fd2@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 6/2/25 05:50, Gerd Hoffmann wrote:
-> In case efi_mm is active go use the userspace instruction decoder which
-> supports fetching instructions from active_mm.  This is needed to make
-> instruction emulation work for EFI runtime code, so it can use cpuid
-> and rdmsr.
+On 23/06/2025 14:17, zhuangyiwei wrote:
+> Hi Steven
 > 
-> EFI runtime code uses the cpuid instruction to gather information about
-> the environment it is running in, such as SEV being enabled or not, and
-> choose (if needed) the SEV code path for ioport access.
+> On 2025/6/11 18:48, Steven Price wrote:
+>> Add the KVM_CAP_ARM_RME_CREATE_RD ioctl to create a realm. This involves
+>> delegating pages to the RMM to hold the Realm Descriptor (RD) and for
+>> the base level of the Realm Translation Tables (RTT). A VMID also need
+>> to be picked, since the RMM has a separate VMID address space a
+>> dedicated allocator is added for this purpose.
+>>
+>> KVM_CAP_ARM_RME_CONFIG_REALM is provided to allow configuring the realm
+>> before it is created. Configuration options can be classified as:
+>>
+>>   1. Parameters specific to the Realm stage2 (e.g. IPA Size, vmid, stage2
+>>      entry level, entry level RTTs, number of RTTs in start level, LPA2)
+>>      Most of these are not measured by RMM and comes from KVM book
+>>      keeping.
+>>
+>>   2. Parameters controlling "Arm Architecture features for the VM". (e.g.
+>>      SVE VL, PMU counters, number of HW BRPs/WPs), configured by the VMM
+>>      using the "user ID register write" mechanism. These will be
+>>      supported in the later patches.
+>>
+>>   3. Parameters are not part of the core Arm architecture but defined
+>>      by the RMM spec (e.g. Hash algorithm for measurement,
+>>      Personalisation value). These are programmed via
+>>      KVM_CAP_ARM_RME_CONFIG_REALM.
+>>
+>> For the IPA size there is the possibility that the RMM supports a
+>> different size to the IPA size supported by KVM for normal guests. At
+>> the moment the 'normal limit' is exposed by KVM_CAP_ARM_VM_IPA_SIZE and
+>> the IPA size is configured by the bottom bits of vm_type in
+>> KVM_CREATE_VM. This means that it isn't easy for the VMM to discover
+>> what IPA sizes are supported for Realm guests. Since the IPA is part of
+>> the measurement of the realm guest the current expectation is that the
+>> VMM will be required to pick the IPA size demanded by attestation and
+>> therefore simply failing if this isn't available is fine. An option
+>> would be to expose a new capability ioctl to obtain the RMM's maximum
+>> IPA size if this is needed in the future.
+>>
+>> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> Reviewed-by: Gavin Shan <gshan@redhat.com>
+[...]
+>> +static int realm_create_rd(struct kvm *kvm)
+>> +{
+>> +    struct realm *realm = &kvm->arch.realm;
+>> +    struct realm_params *params = realm->params;
+>> +    void *rd = NULL;
+>> +    phys_addr_t rd_phys, params_phys;
+>> +    size_t pgd_size = kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
+>> +    int i, r;
+>> +    int rtt_num_start;
+>> +
+>> +    realm->ia_bits = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
+>> +    rtt_num_start = realm_num_root_rtts(realm);
+>> +
+>> +    if (WARN_ON(realm->rd || !realm->params))
+>> +        return -EEXIST;
+>> +
+>> +    if (pgd_size / RMM_PAGE_SIZE < rtt_num_start)
+>> +        return -EINVAL;
+>> +
+>> +    rd = (void *)__get_free_page(GFP_KERNEL);
+>> +    if (!rd)
+>> +        return -ENOMEM;
+>> +
+>> +    rd_phys = virt_to_phys(rd);
+>> +    if (rmi_granule_delegate(rd_phys)) {
+>> +        r = -ENXIO;
+>> +        goto free_rd;
+>> +    }
+>> +
+>> +    for (i = 0; i < pgd_size; i += RMM_PAGE_SIZE) {
+>> +        phys_addr_t pgd_phys = kvm->arch.mmu.pgd_phys + i;
+>> +
+>> +        if (rmi_granule_delegate(pgd_phys)) {
+>> +            r = -ENXIO;
+>> +            goto out_undelegate_tables;
+>> +        }
+>> +    }
+>> +
+>> +    params->s2sz = VTCR_EL2_IPA(kvm->arch.mmu.vtcr);
+>> +    params->rtt_level_start = get_start_level(realm);
+>> +    params->rtt_num_start = rtt_num_start;
+>> +    params->rtt_base = kvm->arch.mmu.pgd_phys;
+>> +    params->vmid = realm->vmid;
+>> +
+>> +    params_phys = virt_to_phys(params);
+>> +
+>> +    if (rmi_realm_create(rd_phys, params_phys)) {
+>> +        r = -ENXIO;
+>> +        goto out_undelegate_tables;
+>> +    }
+>> +
+>> +    if (WARN_ON(rmi_rec_aux_count(rd_phys, &realm->num_aux))) {
+>> +        WARN_ON(rmi_realm_destroy(rd_phys));
 > 
-> EFI runtime code uses the rdmsr instruction to get the location of the
-> CAA page (see SVSM spec, section 4.2 - "Post Boot").
+> Since r has not been initialized, "goto out_undelegate_tables" leads to
 > 
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> ---
->  arch/x86/coco/sev/vc-handle.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/coco/sev/vc-handle.c b/arch/x86/coco/sev/vc-handle.c
-> index 0989d98da130..01c78182da88 100644
-> --- a/arch/x86/coco/sev/vc-handle.c
-> +++ b/arch/x86/coco/sev/vc-handle.c
-> @@ -17,6 +17,7 @@
->  #include <linux/mm.h>
->  #include <linux/io.h>
->  #include <linux/psp-sev.h>
-> +#include <linux/efi.h>
->  #include <uapi/linux/sev-guest.h>
->  
->  #include <asm/init.h>
-> @@ -180,7 +181,7 @@ static enum es_result __vc_decode_kern_insn(struct es_em_ctxt *ctxt)
->  
->  static enum es_result vc_decode_insn(struct es_em_ctxt *ctxt)
->  {
-> -	if (user_mode(ctxt->regs))
-> +	if (user_mode(ctxt->regs) || current->active_mm == &efi_mm)
+> return unknown value.
 
-A comment before this would be good. Something like:
+Good spot! That should have a "r = -ENXIO" line in there.
 
-/*
- * User instruction decoding is also required for the EFI runtime. Even
- * though EFI runtime is running in kernel mode, it uses special EFI
- * virtual address mappings that require the use of efi_mm to properly
- * address and decode.
- */
+Thanks for the review,
+Steve
 
-Might be too verbose, but that's the general idea.
-
-Thanks,
-Tom
-
->  		return __vc_decode_user_insn(ctxt);
->  	else
->  		return __vc_decode_kern_insn(ctxt);
