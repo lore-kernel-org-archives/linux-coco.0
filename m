@@ -1,145 +1,184 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC1B27A10F
-	for <linux-coco@lists.linux.dev>; Mon, 23 Jun 2025 17:08:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AEBA14885D
+	for <linux-coco@lists.linux.dev>; Tue, 24 Jun 2025 04:16:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750698512; cv=none; b=tPh7u+z8x+XqO4E8GPJDK/X9eeMygppKt08Jsqbw4ZM4aaNbiq3uNFxHWIsaP88s059BqAc07XnJovhKOEHpgSF0rCDx8R+c2OradZKkdCMW0E1O5VhgP2MUKcbVl2c0yO0PBReQ6tYphlAzDZ1uzH25CLY6KlJYpY5C2CH7Kug=
+	t=1750738577; cv=none; b=fPVBKthov7zys8EzGKnDxyrcgP0dNZuLHpIESfoCmF5StnSYlXLWm7GPko4Z2FMA0bMgxOuOwDt+CHy68NgjjDGFJqyqb+Jl0IirszYpc/HpJLku6bQqm+rfXYPDUbF/tOpPOwIH4114JvmA9jERhYDNeP6BiEJABdeVlXMZv+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750698512; c=relaxed/simple;
-	bh=h254Eyian8uVimOCSSz1Q9ea712S+hpXcBlsP3TRgHM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RB9gPIk17jSEGXNGymtPNvYFQQ4wVnmNmCk4fybf2zJ0k6jWb5egz5D0uGgm5KuXoxmK9gPsPjIHilrrUGhFB0asZ3tbzCEzxL0EPWUZtHDfXu7suLXexHxCeaKwp3nY/gdxFCSFFqkSdjGm+D41eQdTMMK4jIWxJcXTbP+lAAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c1TL0NeU; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1750738577; c=relaxed/simple;
+	bh=5G65DW5QVEJiCP6BevqgcMH4BJprL0i7tiSazmp4+XU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=h6zZtrQApMaBqeUu2wPxinrI5Lob4uJz/nprEqoyLqMuWvsoF8RnEYPXUc1P2QZEwEX7ftrvoc3gxSGycWwJoFNQoY947y6ReZa++/azAxMSewqkyg4vIOkxGt2wi/4cuYQ55KOOumbtFGON7OMp3wjfHUtzPS8lWqh27/W7Y7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=xqL0XRBt; arc=none smtp.client-ip=115.124.30.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c1TL0NeU"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b3226307787so673412a12.1
-        for <linux-coco@lists.linux.dev>; Mon, 23 Jun 2025 10:08:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750698510; x=1751303310; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h254Eyian8uVimOCSSz1Q9ea712S+hpXcBlsP3TRgHM=;
-        b=c1TL0NeUfWrLHUb4WqksLgoPLUtSsIwdxYU5PEYuetSoamFSpFw9k/LEZlU4B9sW4m
-         RczZCouktQLgkEzQ+W63qMY7MTm9FYCr1bguIGuYwF2x8BdQMpd2YcYkaAI4IRQYvJ7t
-         NYMP31QrMtAP7DPd8BjC6DEQ3GV/qWDahAOdM6Y93HRm6nLad3A8Q0q2iklFqDlchD3H
-         um3Oy6OSAGfjosERokE6D69PLsWOS5EFiS7Mj2ReFH7pmANU0lLEk983wNzA4IaAJyfR
-         K2p5reS1GSPAagfVUkWmoz2G+og7ug78HbFCba6IFMEPKoWkdzdVJpKl36QbhJiJXr27
-         fZPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750698510; x=1751303310;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=h254Eyian8uVimOCSSz1Q9ea712S+hpXcBlsP3TRgHM=;
-        b=kNMyFlj/PjMkFIgYQIKrPrFJr5hy5pzibty1aVGoRdPeM3JDH4TWzCOJc2R76evhHm
-         0tDyTa9tQ6Mr973a5TjUFpAzlabSBm/rIp4iAY1T2uxV00wV3P9WlpbjdZR46pw+jZGD
-         NOHpQX+MC4N6lWRvnuOutKp9jQf6l10LSN1YkhXpy4MT2nmf5jZr7UnVD6HTrhHxW3c+
-         HpvjKL/VjHNIIe68GADb2xGrjFaj42S0FwH1ijA2GZ/5GkKKr0c3W44znHY4FW301aZB
-         ZdeylEGDVD8vOtV3+UiUaTZs6td3QqlVGGkO+/l7SoxLnfWeRJ11QeD5pjnrxDmgpVhQ
-         8DFA==
-X-Forwarded-Encrypted: i=1; AJvYcCX1Gk7yPj0udqsF31RcQ0VIhhzJ0XbJJ3IAZxNv/1OSVRXqKw/mBKuuGKsHgBWyPgGiyRj52RxTyHXD@lists.linux.dev
-X-Gm-Message-State: AOJu0YwPSBFGLxpkaSAXgA9uIl099N4UO4ByUp9m+hjCsThG2dwV/cHv
-	GwvC6FiY8Xwk3lK92RnbUDBryS67vbWm7kYxPJ6Yquuj/KbyPKIApD6nYYBy0nf/Xb5r/XHm43e
-	wC1Dn9GhBKPYcb2UbYt5pITThv8kzuN4CnfL2X6wc
-X-Gm-Gg: ASbGnctSnzDYtvx53hBCgb9ly8Ko3mE0L/wxC7suoyeFHWrkWwUSiy/e/SP8y9aMKoU
-	pQ1wbvSlLyN4YZxmv2wSvJJm67o4+uJ+vaLLc4f32Uo3zhYbTPiczYVBfHhHcPJmFFuaFqm5LaM
-	shbFKxEe/H2/FL08wezFZsD7PbQ9iskGUjxROhNptNNQMf
-X-Google-Smtp-Source: AGHT+IE2AuMeshEAVyW/1Ay4z70ZZsZRIFYqKzbxfeXFAHlVKVP83LScLaPkPeUcAZeKJ3OlA0ADJ00weYtER1IOhsQ=
-X-Received: by 2002:a17:90a:e185:b0:313:d343:4e09 with SMTP id
- 98e67ed59e1d1-3159d62ace0mr20309115a91.3.1750698510329; Mon, 23 Jun 2025
- 10:08:30 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="xqL0XRBt"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1750738570; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=rax2iaNWOHCKSTHeRONdpsloXVAQJACyDqlDlmBHKYA=;
+	b=xqL0XRBt7tGrxyxqn7rtl1uWmcezvFvmO/87YB1NO2Dcb11iWEacgBEk7W4oG3HSoWmahh0V1j+vHswtHk+h+KemRmF5HpwvlKOc/FcJc/vcB7RJnN6rXEpdAGREX8MOej3FXlhMWaV/BymMEzAn0f6NRv3fwcrXRLI635ggMOg=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0Wef2ct8_1750738566 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 24 Jun 2025 12:16:08 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Shivank Garg <shivankg@amd.com>
+Cc: <seanjc@google.com>,  <david@redhat.com>,  <vbabka@suse.cz>,
+  <willy@infradead.org>,  <akpm@linux-foundation.org>,  <shuah@kernel.org>,
+  <pbonzini@redhat.com>,  <brauner@kernel.org>,  <viro@zeniv.linux.org.uk>,
+  <ackerleytng@google.com>,  <paul@paul-moore.com>,  <jmorris@namei.org>,
+  <serge@hallyn.com>,  <pvorel@suse.cz>,  <bfoster@redhat.com>,
+  <tabba@google.com>,  <vannapurve@google.com>,  <chao.gao@intel.com>,
+  <bharata@amd.com>,  <nikunj@amd.com>,  <michael.day@amd.com>,
+  <yan.y.zhao@intel.com>,  <Neeraj.Upadhyay@amd.com>,
+  <thomas.lendacky@amd.com>,  <michael.roth@amd.com>,  <aik@amd.com>,
+  <jgg@nvidia.com>,  <kalyazin@amazon.com>,  <peterx@redhat.com>,
+  <jack@suse.cz>,  <rppt@kernel.org>,  <hch@infradead.org>,
+  <cgzones@googlemail.com>,  <ira.weiny@intel.com>,  <rientjes@google.com>,
+  <roypat@amazon.co.uk>,  <ziy@nvidia.com>,  <matthew.brost@intel.com>,
+  <joshua.hahnjy@gmail.com>,  <rakie.kim@sk.com>,  <byungchul@sk.com>,
+  <gourry@gourry.net>,  <kent.overstreet@linux.dev>,  <apopple@nvidia.com>,
+  <chao.p.peng@intel.com>,  <amit@infradead.org>,  <ddutile@redhat.com>,
+  <dan.j.williams@intel.com>,  <ashish.kalra@amd.com>,  <gshan@redhat.com>,
+  <jgowans@amazon.com>,  <pankaj.gupta@amd.com>,  <papaluri@amd.com>,
+  <yuzhao@google.com>,  <suzuki.poulose@arm.com>,
+  <quic_eberman@quicinc.com>,  <aneeshkumar.kizhakeveetil@arm.com>,
+  <linux-fsdevel@vger.kernel.org>,  <linux-mm@kvack.org>,
+  <linux-kernel@vger.kernel.org>,  <linux-security-module@vger.kernel.org>,
+  <kvm@vger.kernel.org>,  <linux-kselftest@vger.kernel.org>,
+  <linux-coco@lists.linux.dev>
+Subject: Re: [RFC PATCH v8 5/7] KVM: guest_memfd: Add slab-allocated inode
+ cache
+In-Reply-To: <20250618112935.7629-6-shivankg@amd.com> (Shivank Garg's message
+	of "Wed, 18 Jun 2025 11:29:33 +0000")
+References: <20250618112935.7629-1-shivankg@amd.com>
+	<20250618112935.7629-6-shivankg@amd.com>
+Date: Tue, 24 Jun 2025 12:16:06 +0800
+Message-ID: <87ecv9ojuh.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAAH4kHZ2yO3ju_iJinR9y4BDXXdWBnEP1wcv09JWMzaqp1ZP+g@mail.gmail.com>
- <CAK3XEhOs4ijnbqmv8UrNmKN4=nv6+_A7fESLibGBRR9u8rXi6w@mail.gmail.com>
- <87frifm75c.fsf@redhat.com> <CABayD+eRjjknqJNRkkh9_KraC-jZyXb1BL_D79m04po1_hR-_g@mail.gmail.com>
- <CAAH4kHbCduQr_+oj0X8QeTjgDgh6aBncPV-1+mvB_r1R3i7Lqg@mail.gmail.com>
- <3d9fa17e-2b74-4c90-99b8-5b1dc8d15356@linux.intel.com> <100D7ECF-1292-450A-9F65-FEBA5843AB99@redhat.com>
- <7c650817-09d9-4c41-96db-62c0950d71d5@amazon.com> <0E0BB5C5-457F-49B3-A61D-98BCD10CC430@redhat.com>
- <95a3e3ca-4fba-411c-b979-4dc8ecc1f902@amazon.com> <64D33153-BCA6-4971-97A7-110504B4AAA3@redhat.com>
-In-Reply-To: <64D33153-BCA6-4971-97A7-110504B4AAA3@redhat.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Mon, 23 Jun 2025 10:08:16 -0700
-X-Gm-Features: AX0GCFtJPIi2pzcXnKNEYIt3lTsnqMB414ZlpOrdNDkdIbAuMWzU9aiYFa4a-xc
-Message-ID: <CAAH4kHZUMP6it5jwnNv6XdC9NFzj3qAi1DmCTmajTDTYm1NYZA@mail.gmail.com>
-Subject: Re: Linux kernel SIG meeting for vwfwupdate discussion
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Alexander Graf <graf@amazon.com>, Dan Middleton <dan.middleton@linux.intel.com>, 
-	Steve Rutherford <srutherford@google.com>, linux-coco@lists.linux.dev, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Joerg Roedel <jroedel@suse.de>, Gerd Hoffmann <kraxel@redhat.com>, 
-	Jon Lange <jlange@microsoft.com>, "cho@microsoft.com" <cho@microsoft.com>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ascii
 
-Hey all, I've been looking into the least friction-y way to make an
-IGVM readable from disk without having to add a complex device driver
-to the VMM.
-If the FUKI application chooses to read the firmware from disk instead
-of having the binary embedded, then we can insist that there exists a
-GPT partition on the same device as the ESP with IGVM partition type
-(let's say GUID C647E858-C402-4D1E-9497-95FF0A4B4465) that's the
-simplest filesystem format ever: "1FILE FS", 4 bytes of file size in
-little endian, followed by a contiguous representation of the IGVM
-file. If you want to change your firmware, create a new partition with
-this type and delete the old one. It's a simple enough file system to
-propose a DXE driver to OVMF for the FUKI application to use existing
-EFI protocols to read the file.
+Shivank Garg <shivankg@amd.com> writes:
 
-There's the matter of reading the GPT sector and finding the IGVM
-partition, then reading the file in the single file filesystem, all
-using some method of reading the block device that has mounted the
-disk image already that the VMM would have to mess with. The block
-device access depends on VMM architecture that I couldn't really
-comment on other than folks could probably make it work for Google's
-VMM. It'd need to do some funky continuation passing style for the I/O
-threads to string together the block read requests, but it shouldn't
-be too terrible.
-
-
-
-
-
-
-On Tue, May 20, 2025 at 7:41=E2=80=AFAM Ani Sinha <anisinha@redhat.com> wro=
-te:
+> Add dedicated inode structure (kvm_gmem_inode_info) and slab-allocated
+> inode cache for guest memory backing, similar to how shmem handles inodes.
 >
+> This adds the necessary allocation/destruction functions and prepares
+> for upcoming guest_memfd NUMA policy support changes.
 >
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> ---
+>  virt/kvm/guest_memfd.c | 51 ++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 51 insertions(+)
 >
-> > On 19 May 2025, at 4:55=E2=80=AFPM, Alexander Graf <graf@amazon.com> wr=
-ote:
-> >
-> >
-> > On 19.05.25 10:37, Ani Sinha wrote:
-> >>> On 16 May 2025, at 2:55=E2=80=AFPM, Alexander Graf <graf@amazon.com> =
-wrote:
-> >>>
-> >>> Hey Ani,
-> >>>
-> >>> We already presented concepts last year. If we want to preserve credi=
-bility, this year we need to show a solution that's either merged or almost=
- merged upstream and ready to use.
-> >> Hmm ok I think it will be hard to get anything merged before the deadl=
-ine on June 9th.
-> >
-> >
-> > It doesn't have to be merged on the 9th, but it should have a realistic=
- avenue to be merged by September 4th :).
->
-> One blocker in this path is that IGVM support has not yet been merged int=
-o QEMU. I know Roy (now at MSFT) is working on it and I pinged him today in=
- the mailing list.
->
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 159df462d193..5a1ce6f5e287 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -17,6 +17,15 @@ struct kvm_gmem {
+>  	struct list_head entry;
+>  };
+>  
+> +struct kvm_gmem_inode_info {
+> +	struct inode vfs_inode;
+> +};
+> +
+> +static inline struct kvm_gmem_inode_info *KVM_GMEM_I(struct inode *inode)
+> +{
+> +	return container_of(inode, struct kvm_gmem_inode_info, vfs_inode);
+> +}
+> +
+>  /**
+>   * folio_file_pfn - like folio_file_page, but return a pfn.
+>   * @folio: The folio which contains this index.
+> @@ -392,8 +401,33 @@ static struct file_operations kvm_gmem_fops = {
+>  	.fallocate	= kvm_gmem_fallocate,
+>  };
+>  
+> +static struct kmem_cache *kvm_gmem_inode_cachep;
+> +
+> +static struct inode *kvm_gmem_alloc_inode(struct super_block *sb)
+> +{
+> +	struct kvm_gmem_inode_info *info;
+> +
+> +	info = alloc_inode_sb(sb, kvm_gmem_inode_cachep, GFP_KERNEL);
+> +	if (!info)
+> +		return NULL;
+> +
+> +	return &info->vfs_inode;
+> +}
+> +
+> +static void kvm_gmem_destroy_inode(struct inode *inode)
+> +{
+> +}
+> +
+> +static void kvm_gmem_free_inode(struct inode *inode)
+> +{
+> +	kmem_cache_free(kvm_gmem_inode_cachep, KVM_GMEM_I(inode));
+> +}
+> +
+>  static const struct super_operations kvm_gmem_super_operations = {
+>  	.statfs		= simple_statfs,
+> +	.alloc_inode	= kvm_gmem_alloc_inode,
+> +	.destroy_inode	= kvm_gmem_destroy_inode,
+> +	.free_inode	= kvm_gmem_free_inode,
+>  };
+>  
+>  static int kvm_gmem_init_fs_context(struct fs_context *fc)
+> @@ -426,10 +460,26 @@ static int kvm_gmem_init_mount(void)
+>  	return 0;
+>  }
+>  
+> +static void kvm_gmem_init_inode(void *foo)
+> +{
+> +	struct kvm_gmem_inode_info *info = foo;
+> +
+> +	inode_init_once(&info->vfs_inode);
+> +}
+> +
+> +static void kvm_gmem_init_inodecache(void)
+> +{
+> +	kvm_gmem_inode_cachep = kmem_cache_create("kvm_gmem_inode_cache",
+> +						  sizeof(struct kvm_gmem_inode_info),
+> +						  0, SLAB_ACCOUNT,
+> +						  kvm_gmem_init_inode);
 
+Check the return value?
 
---
--Dionna Glaze, PhD, CISSP, CCSP (she/her)
+And, I'm not a big fan of (logically) one line function encapsulation.
+
+> +}
+> +
+>  int kvm_gmem_init(struct module *module)
+>  {
+>  	kvm_gmem_fops.owner = module;
+>  
+> +	kvm_gmem_init_inodecache();
+>  	return kvm_gmem_init_mount();
+
+kmem_cache_destroy(kvm_gmem_inode_cachep) if kvm_gmem_init_mount()
+return with error?
+
+>  }
+>  
+> @@ -437,6 +487,7 @@ void kvm_gmem_exit(void)
+>  {
+>  	kern_unmount(kvm_gmem_mnt);
+>  	kvm_gmem_mnt = NULL;
+> +	kmem_cache_destroy(kvm_gmem_inode_cachep);
+>  }
+>  
+>  static int kvm_gmem_migrate_folio(struct address_space *mapping,
+
+---
+Best Regards,
+Huang, Ying
