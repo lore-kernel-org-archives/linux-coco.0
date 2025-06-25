@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE552BEC33
-	for <linux-coco@lists.linux.dev>; Wed, 25 Jun 2025 18:06:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E57A2DBF4D
+	for <linux-coco@lists.linux.dev>; Wed, 25 Jun 2025 19:26:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750874780; cv=none; b=qe9euby48mV8+Bie+vC+SiMfUsrMqQI1q23dmwSNRcieDtL4hK+J++ZNVTWN3U+NQ63d3LyUw/vKjQED/G022jjnLEnQpJz2VDdgTmoosrYo5oczwaIJumlpBLXaT1YEFq+mMgN78Nc7AOQXuOM1hcCAqcE91hwzMJ7+I7NS2Ng=
+	t=1750879573; cv=none; b=LYbFgpmP90SYfh+LxBuf7Ecc2VNbmM54+mL9aX1cH0lH6myduhnxQQF6R3ZoGOTkkp0veSzEABfK5RRLVOtZL+/3v7s4JvfTW8pxU0K/mhcuvO7GbkYUGilFkjU+OGgBiXA9f1S9LMeU1ewlw24/X8/l+1W/9BGU3ARCtQLTtG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750874780; c=relaxed/simple;
-	bh=57TV/0cm68AKOGsdQMvjSH9dG+6SjsHff+gvbD5Q3bY=;
+	s=arc-20240116; t=1750879573; c=relaxed/simple;
+	bh=STCW0Ble9JAfnjY2ffDHzXPQLbDsHhsDIG/HFSdoeUc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AeKShd10urp7F5UVG18iPBN6k7AhZQHK5QYIEk5qhbsSzu3eCHXqa13i7UK3i7TVR0q4urRKwQ9pI/ACI7t7Dtwe1+a5jQ7K1UD5p7rdei2GtZzdFSqnPOSfIcYcX5GTXCV4WJ22yVCfOecW4XoA39GwErV2lhhTvnCZ8/3aWv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z4cTvdXP; arc=none smtp.client-ip=198.175.65.13
+	 In-Reply-To:Content-Type; b=QE0NRsldndm0Tvlb3QaOLvLyyFfVvPCcCDLqwhT3Z+Sn4Z4zQ5zvbDQCIxCwTDBl8nyWKqfWcSbuxyZdQrdIFJqkD2v5heLVxF+6m1jcnlVP4PaB9uGf01JiE4N+IFgXmKGvdCvK/OrU99BMMFksEMEFGQtHiz5S1OJtpXKbUPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fpy5a7Ld; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z4cTvdXP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fpy5a7Ld"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750874779; x=1782410779;
+  t=1750879572; x=1782415572;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=57TV/0cm68AKOGsdQMvjSH9dG+6SjsHff+gvbD5Q3bY=;
-  b=Z4cTvdXPdZB3HvH3+jrvQUVkT4Czt/7kCTXWLMcxUaas41FFb2BVTNJh
-   6cVPbGvpyNXwnRgPNe6bNcEO9IjTkT47A6FGleFu9QMMeST8peO/G4s/v
-   6A1vrDdX06HzO7pc4h9j3cY1+0VJHHOwFNbSDsoBR6rNzK+x6IjHtdx3f
-   nZnItWAzxZ911TUiVqamVzljwTkTUtzUDPeosNFwk+mRc4mSlkbZ/OQLW
-   sS07bJuVrzijTmcAMwy7RcGrPXiQrc8bapLVM359qGu+ZGisjTBxUt+aF
-   iw7ngpXkNC5bRRmD60IIBR72SX+8Eyl2TyVlMjXFRbshPfl8oa2PxUOS4
+  bh=STCW0Ble9JAfnjY2ffDHzXPQLbDsHhsDIG/HFSdoeUc=;
+  b=fpy5a7Ld7d8ef2VksH/dHQdmwYCTPlE7S3bysINeqWgN+6A2O9BIZPU9
+   AFgKjRx/8sWLaRpAvyiHO8kvc6hIxdmZzdSKXav7II3jcSSIPFmQQDuqB
+   mlcRWPPRRTjmsYUMbJdsDzVAHYv+Mz2xwOLnFrZpowzSU43652xz4memT
+   bZtI/mgr/fnJjjNcHzPoEGgl4HMiKz+i9TBO8xWYOfANIKpvdHYUb1OHp
+   PGhQD15WQAyonwr5TwRgRgd31+H74v3JlAXAWj5xHlBL0kXGkZYP2WzLn
+   X3KiUuN/0sHoa5GL07mIhf1k3Fsyzwul4MN5nTEMg0E6Ztn4XB4Ql/1cn
    A==;
-X-CSE-ConnectionGUID: 0xdPzmgIRXKhdz44ZOQDsQ==
-X-CSE-MsgGUID: gN3eISlJQ32zxNf+uN7j6A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="64215366"
+X-CSE-ConnectionGUID: LbNLhLiOSlucJ0sBptaIPw==
+X-CSE-MsgGUID: C8USQmxpR6K6BudQYoR+mw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="64598521"
 X-IronPort-AV: E=Sophos;i="6.16,265,1744095600"; 
-   d="scan'208";a="64215366"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 11:06:18 -0700
-X-CSE-ConnectionGUID: Yy1+5wX+Q9OvjvZbAbQxlg==
-X-CSE-MsgGUID: N33EmClCTDK64va82lX10A==
+   d="scan'208";a="64598521"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 12:26:11 -0700
+X-CSE-ConnectionGUID: mpA8a4WkQNWjvzIc+WzlxQ==
+X-CSE-MsgGUID: GClNW5waSSaWcZVRiVVU7A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,265,1744095600"; 
-   d="scan'208";a="151807781"
+   d="scan'208";a="152430668"
 Received: from dwoodwor-mobl2.amr.corp.intel.com (HELO [10.125.108.244]) ([10.125.108.244])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 11:06:18 -0700
-Message-ID: <c3f77974-f1d6-4a22-bd1d-2678427a9fb1@intel.com>
-Date: Wed, 25 Jun 2025 11:06:16 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 12:26:10 -0700
+Message-ID: <fb5addcb-1cfc-45be-978c-e7cee4126b38@intel.com>
+Date: Wed, 25 Jun 2025 12:26:09 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv2 02/12] x86/virt/tdx: Allocate page bitmap for Dynamic
- PAMT
+Subject: Re: [PATCHv2 03/12] x86/virt/tdx: Allocate reference counters for
+ PAMT memory
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
  pbonzini@redhat.com, seanjc@google.com, dave.hansen@linux.intel.com
 Cc: rick.p.edgecombe@intel.com, isaku.yamahata@intel.com,
@@ -61,7 +61,7 @@ Cc: rick.p.edgecombe@intel.com, isaku.yamahata@intel.com,
  tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, kvm@vger.kernel.org,
  x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 References: <20250609191340.2051741-1-kirill.shutemov@linux.intel.com>
- <20250609191340.2051741-3-kirill.shutemov@linux.intel.com>
+ <20250609191340.2051741-4-kirill.shutemov@linux.intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -107,28 +107,222 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20250609191340.2051741-3-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20250609191340.2051741-4-kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
->  /*
->   * Locate a NUMA node which should hold the allocation of the @tdmr
->   * PAMT.  This node will have some memory covered by the TDMR.  The
-> @@ -522,7 +534,16 @@ static int tdmr_set_up_pamt(struct tdmr_info *tdmr,
->  	 * and the total PAMT size.
->  	 */
->  	tdmr_pamt_size = 0;
-> -	for (pgsz = TDX_PS_4K; pgsz < TDX_PS_NR; pgsz++) {
-> +	pgsz = TDX_PS_4K;
+On 6/9/25 12:13, Kirill A. Shutemov wrote:
+> The PAMT memory holds metadata for TDX-protected memory. With Dynamic
+> PAMT, PAMT_4K is allocated on demand. The kernel supplies the TDX module
+> with a page pair that covers 2M of host physical memory.
+> 
+> The kernel must provide this page pair before using pages from the range
+> for TDX. If this is not done, any SEAMCALL that attempts to use the
+> memory will fail.
+> 
+> Allocate reference counters for every 2M range to track PAMT memory
+> usage. This is necessary to accurately determine when PAMT memory needs
+> to be allocated and when it can be freed.
+> 
+> This allocation will consume 2MiB for every 1TiB of physical memory.
+
+... and yes, this is another boot-time allocation that seems to be
+counter to the goal of reducing the boot-time TDX memory footprint.
+
+Please mention the 0.4%=>0.0004% overhead here in addition to the cover
+letter. It's important.
+
+> Tracking PAMT memory usage on the kernel side duplicates what TDX module
+> does.  It is possible to avoid this by lazily allocating PAMT memory on
+> SEAMCALL failure and freeing it based on hints provided by the TDX
+> module when the last user of PAMT memory is no longer present.
+> 
+> However, this approach complicates serialization.
+> 
+> The TDX module takes locks when dealing with PAMT: a shared lock on any
+> SEAMCALL that uses explicit HPA and an exclusive lock on PAMT.ADD and
+> PAMT.REMOVE. Any SEAMCALL that uses explicit HPA as an operand may fail
+> if it races with PAMT.ADD/REMOVE.
+> 
+> Since PAMT is a global resource, to prevent failure the kernel would
+> need global locking (per-TD is not sufficient). Or, it has to retry on
+> TDX_OPERATOR_BUSY.
+> 
+> Both options are not ideal, and tracking PAMT usage on the kernel side
+> seems like a reasonable alternative.
+
+Just a nit on changelog formatting: It would be ideal if you could make
+it totally clear that you are transitioning from "what this patch does"
+to "alternate considered designs".
+
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -29,6 +29,7 @@
+>  #include <linux/acpi.h>
+>  #include <linux/suspend.h>
+>  #include <linux/idr.h>
+> +#include <linux/vmalloc.h>
+>  #include <asm/page.h>
+>  #include <asm/special_insns.h>
+>  #include <asm/msr-index.h>
+> @@ -50,6 +51,8 @@ static DEFINE_PER_CPU(bool, tdx_lp_initialized);
+>  
+>  static struct tdmr_info_list tdx_tdmr_list;
+>  
+> +static atomic_t *pamt_refcounts;
+
+Comments, please. How big is this? When is it allocated?
+
+In this case, it's even sparse, right? That's *SUPER* unusual for a
+kernel data structure.
+
+>  static enum tdx_module_status_t tdx_module_status;
+>  static DEFINE_MUTEX(tdx_module_lock);
+>  
+> @@ -182,6 +185,102 @@ int tdx_cpu_enable(void)
+>  }
+>  EXPORT_SYMBOL_GPL(tdx_cpu_enable);
+>  
+> +static atomic_t *tdx_get_pamt_refcount(unsigned long hpa)
+> +{
+> +	return &pamt_refcounts[hpa / PMD_SIZE];
+> +}
+
+"get refcount" usually means "get a reference". This is looking up the
+location of the refcount.
+
+I think this needs a better name.
+
+> +static int pamt_refcount_populate(pte_t *pte, unsigned long addr, void *data)
+> +{
+
+This is getting to be severely under-commented.
+
+I also got this far into the patch and I'd forgotten about the sparse
+allocation and was scratching my head about what pte's have to do with
+dynamically allocating part of the PAMT.
+
+That point to a pretty severe deficit in the cover letter, changelogs
+and comments leading up to this point.
+
+> +	unsigned long vaddr;
+> +	pte_t entry;
 > +
-> +	/* With Dynamic PAMT, PAMT_4K is replaced with a bitmap */
-> +	if (tdx_supports_dynamic_pamt(&tdx_sysinfo)) {
-> +		pamt_size[pgsz] = tdmr_get_pamt_bitmap_sz(tdmr);
-> +		tdmr_pamt_size += pamt_size[pgsz];
-> +		pgsz++;
+> +	if (!pte_none(ptep_get(pte)))
+> +		return 0;
+
+This ^ is an optimization, right? Could it be comment appropriately, please?
+
+> +	vaddr = __get_free_page(GFP_KERNEL | __GFP_ZERO);
+> +	if (!vaddr)
+> +		return -ENOMEM;
+> +
+> +	entry = pfn_pte(PFN_DOWN(__pa(vaddr)), PAGE_KERNEL);
+> +
+> +	spin_lock(&init_mm.page_table_lock);
+> +	if (pte_none(ptep_get(pte)))
+> +		set_pte_at(&init_mm, addr, pte, entry);
+> +	else
+> +		free_page(vaddr);
+> +	spin_unlock(&init_mm.page_table_lock);
+> +
+> +	return 0;
+> +}
+> +
+> +static int pamt_refcount_depopulate(pte_t *pte, unsigned long addr,
+> +				    void *data)
+> +{
+> +	unsigned long vaddr;
+> +
+> +	vaddr = (unsigned long)__va(PFN_PHYS(pte_pfn(ptep_get(pte))));
+
+Gah, we really need a kpte_to_vaddr() helper here. This is really ugly.
+How many of these are in the tree?
+
+> +	spin_lock(&init_mm.page_table_lock);
+> +	if (!pte_none(ptep_get(pte))) {
+
+Is there really a case where this gets called on unpopulated ptes? How?
+
+> +		pte_clear(&init_mm, addr, pte);
+> +		free_page(vaddr);
 > +	}
+> +	spin_unlock(&init_mm.page_table_lock);
+> +
+> +	return 0;
+> +}
+> +
+> +static int alloc_pamt_refcount(unsigned long start_pfn, unsigned long end_pfn)
+> +{
+> +	unsigned long start, end;
+> +
+> +	start = (unsigned long)tdx_get_pamt_refcount(PFN_PHYS(start_pfn));
+> +	end = (unsigned long)tdx_get_pamt_refcount(PFN_PHYS(end_pfn + 1));
+> +	start = round_down(start, PAGE_SIZE);
+> +	end = round_up(end, PAGE_SIZE);
+> +
 
-This is the wrong place to do this.
+Please try to vertically align these:
 
-Hide it in tdmr_get_pamt_sz(). Don't inject it in the main code flow
-here and complicate the for loop.
+	start = (...)tdx_get_pamt_refcount(PFN_PHYS(start_pfn));
+	end   = (...)tdx_get_pamt_refcount(PFN_PHYS(end_pfn + 1));
+	start = round_down(start, PAGE_SIZE);
+	end   = round_up(    end, PAGE_SIZE);
+
+> +	return apply_to_page_range(&init_mm, start, end - start,
+> +				   pamt_refcount_populate, NULL);
+> +}
+
+But, I've staring at these for maybe 5 minutes. I think I've made sense
+of it.
+
+alloc_pamt_refcount() is taking a relatively arbitrary range of pfns.
+Those PFNs come from memory map and NUMA layout so they don't have any
+real alignment guarantees.
+
+This code translates the memory range into a range of virtual addresses
+in the *virtual* refcount table. That table is sparse and might not be
+allocated. It is populated 4k at a time and since the start/end_pfn
+don't have any alignment guarantees, there's no telling onto which page
+they map into the refcount table. This has to be conservative and round
+'start' down and 'end' up. This might overlap with previous refcount
+table populations.
+
+Is that all correct?
+
+That seems ... medium to high complexity to me. Is there some reason
+none of it is documented or commented? Like, I think it's not been
+mentioned a single time anywhere.
+
+> +static int init_pamt_metadata(void)
+> +{
+> +	size_t size = max_pfn / PTRS_PER_PTE * sizeof(*pamt_refcounts);
+> +	struct vm_struct *area;
+> +
+> +	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
+> +		return 0;
+> +
+> +	/*
+> +	 * Reserve vmalloc range for PAMT reference counters. It covers all
+> +	 * physical address space up to max_pfn. It is going to be populated
+> +	 * from init_tdmr() only for present memory that available for TDX use.
+> +	 */
+> +	area = get_vm_area(size, VM_IOREMAP);
+> +	if (!area)
+> +		return -ENOMEM;
+> +
+> +	pamt_refcounts = area->addr;
+> +	return 0;
+> +}
+Finally, we get to a description of what's actually going on. But, still
+nothing has told me why this is necessary directly.
+
+If it were me, I'd probably split this up into two patches. The first
+would just do:
+
+	area = vmalloc(size);
+
+The second would do all the fancy sparse population.
+
+But either way, I've hit a wall on this. This is too impenetrable as it
+stands to review further. I'll eagerly await a more approachable v3.
