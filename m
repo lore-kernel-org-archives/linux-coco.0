@@ -1,94 +1,159 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A531929E0F8;
-	Wed, 25 Jun 2025 10:52:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0839227FB31
+	for <linux-coco@lists.linux.dev>; Wed, 25 Jun 2025 11:20:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750848768; cv=none; b=tUmmPW9Af3Y4nsI0DE0OWFAaIAMb1YzlocvP5dWi8D4CwAOL9kfpn+b5Jkbb/yo+8VCO29HNdp6pMAK3hq5C7IdvQg4b9g/93uX9VHaAXY3CGuv+1lZCu6qteSNryy4xRZFybu212CItO38+HIkIURWGsFdy0DiW7Ps2iFDLoR0=
+	t=1750850436; cv=none; b=hMcq/WSY2dvdMSzzPZfR/kjDoU8MH8G0EQgYSPjcN0xeqBjENNghbg/xmC+Wq30EdDgt26b3GL0l4KLnufF3swG7yoFWcbdbbNeum1DQcSNkYJtCSsf4a6qvMP86UxWHR82HGGMpUcGqMl7Ul4wIfSzGHXL/uIBHvkEufqefgQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750848768; c=relaxed/simple;
-	bh=L2E1mHlLHz7wbD1s3c/UvvxtaaMR/FMov2jR+AourPo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WyWG24r8zGL5xgOI3insY8DwF7JT2+fw9WcbYrZzb5VawzhDPcrne9Bxq/Dgb3kcXKYSIVjFL//daVhbs21Kzkb228Km+oW9sk+E0sTt8iV66Ue3hieSMcQmhuU/uJIQ3eIXgEgIoVZP5uxNDkEnPwGNUC8r9Lt2Cf/G7EwmLJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GMrhQOFE; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1750850436; c=relaxed/simple;
+	bh=EuC2dT5cEm7yl6RaVhgy3klv5nQTEGPENTrHBzs+fe4=;
+	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=BGE2MgebUEjo20SGinrYLGCMMBfNHc1kXv4b5oKWQay2tnB/tjtYLJCJFkHW1vNca2jkQxTeSEID068fdImgFMUb9Wvs00Qq34vbOyXbyLc00IB/K0QQzkJhVhZDmDbhON5MYOG81A5klx/HEqiK8tlFhKFde+/j+s36q2oqGfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Lr0AuEwR; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GMrhQOFE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750848767; x=1782384767;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=L2E1mHlLHz7wbD1s3c/UvvxtaaMR/FMov2jR+AourPo=;
-  b=GMrhQOFEicb8altn3mGUaVAKKDR3cfJzVgoVw6yzlus8ZefB483/x00d
-   xvAPLdpyq+/JJjOZzo90gXrwycnXSoN/WPLs1IC1GPZK68Ttj2zeTATF0
-   XaHa4d+rtfvleBdBgIxcsdYT3ML9Sf2noszZ2J9V8yqMZO9mclOt8FLWO
-   DMmM4QGWYcne2MUhc42OwEpxQB2c/zi5J6jxy0vr5uEZ/HjC2xTov0kzY
-   xbF2HmdBoJ3JHrSn8mxLxhyQACt1b5I/qcBDRi1pGa6/xA4XoHwaEg5V9
-   gH8tl77RYg1oCwv79C9no8eUxf1duNM4/39EhpoXtGh4v802rSY6r6RFc
-   Q==;
-X-CSE-ConnectionGUID: t+x5XoVMQHmZ66/ig6Fp6g==
-X-CSE-MsgGUID: D3/am5iETg6ySmkzGAwJvg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="64172254"
-X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; 
-   d="scan'208";a="64172254"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 03:52:46 -0700
-X-CSE-ConnectionGUID: WvY+25yWSNy9ZVBI9nCQAQ==
-X-CSE-MsgGUID: Srouzp+WTZKyngVqfHLDdA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; 
-   d="scan'208";a="183073412"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa001.fm.intel.com with ESMTP; 25 Jun 2025 03:52:40 -0700
-Date: Wed, 25 Jun 2025 18:45:03 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: kvm@vger.kernel.org, sumit.semwal@linaro.org, christian.koenig@amd.com,
-	pbonzini@redhat.com, seanjc@google.com, alex.williamson@redhat.com,
-	jgg@nvidia.com, dan.j.williams@intel.com,
-	linux-coco@lists.linux.dev, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	vivek.kasireddy@intel.com, yilun.xu@intel.com,
-	linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
-	daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, tao1.su@intel.com,
-	linux-pci@vger.kernel.org, zhiw@nvidia.com, simona.vetter@ffwll.ch,
-	shameerali.kolothum.thodi@huawei.com, aneesh.kumar@kernel.org,
-	iommu@lists.linux.dev, kevin.tian@intel.com
-Subject: Re: [RFC PATCH 00/30] Host side (KVM/VFIO/IOMMUFD) support for TDISP
- using TSM
-Message-ID: <aFvTL6MUkVZrPoBS@yilunxu-OptiPlex-7050>
-References: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
- <e886855f-25cc-4274-9f11-fe0e5b025284@amd.com>
- <f5958bda-838a-4ed6-84c6-fef62cd0b28f@amd.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Lr0AuEwR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750850433;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=bhSzSJzHaUIWuGvXbBnYVOtn+h6mTqqHFiO4LqUVtiE=;
+	b=Lr0AuEwRCmk0g5IBHVK65Ll/KlomqrH0RdUgGO1sd1vNtxvB1A2+sVDoYUmnCMX6M/4Rpf
+	UlM1WWwcAQXugP7D920EQgIC4EaY48SAuVgjYRuc6c6aH74ks6vytRHPSVYNktSUguKe7A
+	N0UVnJBD99T2JWC1lHFAr38I7Z6yszQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-258-L28AhGfyO1OOEuj4sJW3JA-1; Wed, 25 Jun 2025 07:20:32 -0400
+X-MC-Unique: L28AhGfyO1OOEuj4sJW3JA-1
+X-Mimecast-MFC-AGG-ID: L28AhGfyO1OOEuj4sJW3JA_1750850431
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4535f803ec5so44182955e9.1
+        for <linux-coco@lists.linux.dev>; Wed, 25 Jun 2025 04:20:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750850431; x=1751455231;
+        h=content-transfer-encoding:organization:autocrypt:subject:to
+         :content-language:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bhSzSJzHaUIWuGvXbBnYVOtn+h6mTqqHFiO4LqUVtiE=;
+        b=V0kK8tKVkchwCaWnyXAOfEyOKO3EZxU73ZxGX3hw57aeGBQskdnHtW+lyuNO/vZdBg
+         +TwD86Mx2I/BdIw/BomcUUtH8Db0W6OXkaEDX9gkpGER0a32kt2j3R9YNKlv1N2TN83i
+         JBkUy1IzVBONYZEgnBry9nEAjx9V/A0q6la2dreRbPdMrxgl4H0D7HjKi5WUbkHmO9CY
+         G9qhlX+4q+FjX9EQIfVEMxZsvT+VGN4lwpKEB1/Y3gCUh+pVhbXOau0p5fabYaaxyAtH
+         jvNixyBait4OeOSsfFWRQ0qnSOv657FFPiHvC0lFBxpaliDhiqvH9BFmrXwZcrpdaHUM
+         xGKw==
+X-Gm-Message-State: AOJu0YwUHlPKLQB5LJlxWFlfx3GNh3ARVL+fxwEeTeunDApx0hRO7gj6
+	VvEC/D4zMlFgPi+e2f1yqY+BA+uG5dccogFz64FjYPIIligE++CjBaxPEGrAg1l6PhKly1il91o
+	XYcACnF+WguhSGoQPDh0Xzi9Avx2SnD/jnFIPxRuVx5fY5nmVi6RenVFu5K/ZDr97+1Clsk1TlC
+	juZRp+A9Bkq8NK/4NeB+PkM+bwUST3lyubFwF7pbFYLY199bjC
+X-Gm-Gg: ASbGncu1nBZUJk3mHp7DBfTu5TsF4SF0vF3tcG3ZCjl+yov/hqIKbn0EDo1v6MLqjQG
+	+lylN/3OOq29wncMV4Y1kEyQDNey2HIAEh9sB8i02uoWTuhpJcK6BIhZjltDvnxkuNLLSCqayHi
+	+uIrMtweK9NKlbcsDbYFQ//bpGLQZkEj9wiqBkBakWqEda9chJCeOy4pcnmQ0y52d4sh2sjbA8R
+	x9DFDWKHw68ol2K4fqJOOsxOrcmBQBzGvt9m87LeCR59BF/H7gPZelS9IcRMi4yS9LlLj7Zxp+z
+	G5LMEt9fG3HjL+2DaHZsCrMterQQQB5ZD54vgwuALASIPrwE3geARYqudOG3MeG7McwNUwZjKsX
+	PAlZz/ott8o853byvdtaqSdJ+ThhXitkl7F8wPZ5LWPSz
+X-Received: by 2002:a5d:4b10:0:b0:3a4:d6ed:8e00 with SMTP id ffacd0b85a97d-3a6ed64251fmr1819907f8f.33.1750850431050;
+        Wed, 25 Jun 2025 04:20:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGK8v5UO3qFxCBjxHHc3a0By7CRec0Cy475kHni39Vj+zQ7QyeN9nvb4gZXL35PaqzIzhMs1A==
+X-Received: by 2002:a5d:4b10:0:b0:3a4:d6ed:8e00 with SMTP id ffacd0b85a97d-3a6ed64251fmr1819842f8f.33.1750850430370;
+        Wed, 25 Jun 2025 04:20:30 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f12:1b00:5d6b:db26:e2b7:12? (p200300d82f121b005d6bdb26e2b70012.dip0.t-ipconnect.de. [2003:d8:2f12:1b00:5d6b:db26:e2b7:12])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e8051001sm4306887f8f.1.2025.06.25.04.20.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Jun 2025 04:20:29 -0700 (PDT)
+Message-ID: <057ebb4f-7f4c-4580-9fbe-4f689984952b@redhat.com>
+Date: Wed, 25 Jun 2025 13:20:27 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f5958bda-838a-4ed6-84c6-fef62cd0b28f@amd.com>
+User-Agent: Mozilla Thunderbird
+From: David Hildenbrand <david@redhat.com>
+To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
+Subject: [Invitation] bi-weekly guest_memfd upstream call on 2025-06-26
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: aboXJCBUd9OubFUcHKaP56g7dl2aiTsUQjVpRaVBjAg_1750850431
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sat, Jun 21, 2025 at 11:07:24AM +1000, Alexey Kardashevskiy wrote:
-> 
-> 
-> On 11/6/25 11:55, Alexey Kardashevskiy wrote:
-> > Hi,
-> > 
-> > Is there a QEMU tree using this somewhere?
-> 
-> Ping? Thanks,
+Hi everybody,
 
-Sorry for late. I've finally got a public tree.
+Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
+2025-06-26 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
-https://github.com/yiliu1765/qemu/tree/zhenzhong/devsec_tsm
+We'll be using the following Google meet:
+http://meet.google.com/wxp-wtju-jzw
 
-Again, I think the changes are far from good, just work for enabling.
+The meeting notes can be found at [1], where we also link recordings and
+collect current guest_memfd upstream proposals. If you want an google
+calendar invitation that also covers all future meetings, just write me
+a mail.
 
-Thanks,
-Yilun
+In this meeting, we'll continue our discussion on polishing up mmap 
+support ("stage-1") to finally get it merged and whatever else comes up 
+around in-place conversion support ("stage-2") and whatever else comes 
+up around other features (huge pages, mempolicy, ...).
+
+To put something to discuss onto the agenda, reply to this mail or add
+them to the "Topics/questions for next meeting(s)" section in the
+meeting notes as a comment.
+
+Cheers,
+
+David
+
+[1] 
+https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
+
