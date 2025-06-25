@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B4517A2E3
-	for <linux-coco@lists.linux.dev>; Wed, 25 Jun 2025 18:01:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE552BEC33
+	for <linux-coco@lists.linux.dev>; Wed, 25 Jun 2025 18:06:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750874515; cv=none; b=POj7T3RF0L4VuTrJ8ObwnzflTMJtM7ga3xlW6WTg/dax0A248TjWqyQ0LG+EVJ/vE86OOI72I86EijohDoCV9asTvm+Dj71h8N1REjXCg4mshnhsh1F4N6H1kTIQB3EudH6/OFH+dCXky+Hi/p7aNzVU4HYG4UokkGM5WP7FJRI=
+	t=1750874780; cv=none; b=qe9euby48mV8+Bie+vC+SiMfUsrMqQI1q23dmwSNRcieDtL4hK+J++ZNVTWN3U+NQ63d3LyUw/vKjQED/G022jjnLEnQpJz2VDdgTmoosrYo5oczwaIJumlpBLXaT1YEFq+mMgN78Nc7AOQXuOM1hcCAqcE91hwzMJ7+I7NS2Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750874515; c=relaxed/simple;
-	bh=9zt9kSH4ydaeYpW47pmNj8ouiqsks2pwtnnh3nCsl3Q=;
+	s=arc-20240116; t=1750874780; c=relaxed/simple;
+	bh=57TV/0cm68AKOGsdQMvjSH9dG+6SjsHff+gvbD5Q3bY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bv/00Q5IS+9vNWUG22fh6Kl9lthBEi7DTIvu7fgsub4eukDKUBQbp5Se+04SRcQDyvME3P7PutWY1mbYUGw8oXAEbfZvgfLJ+v2hh/eQqeoXW6Q7tn/p/GddewQ9pZ734O8YFnvIhlNXtRIpv2OpJld2vvj7T5lGHbZZsGkklmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kzpRA+T5; arc=none smtp.client-ip=192.198.163.15
+	 In-Reply-To:Content-Type; b=AeKShd10urp7F5UVG18iPBN6k7AhZQHK5QYIEk5qhbsSzu3eCHXqa13i7UK3i7TVR0q4urRKwQ9pI/ACI7t7Dtwe1+a5jQ7K1UD5p7rdei2GtZzdFSqnPOSfIcYcX5GTXCV4WJ22yVCfOecW4XoA39GwErV2lhhTvnCZ8/3aWv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z4cTvdXP; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kzpRA+T5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z4cTvdXP"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750874514; x=1782410514;
+  t=1750874779; x=1782410779;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=9zt9kSH4ydaeYpW47pmNj8ouiqsks2pwtnnh3nCsl3Q=;
-  b=kzpRA+T5lz37LJgVu7WxLAGU02sMllm9VxzgkmZkZO4JShHKHTb1Buig
-   o6vXG0zcK5L1b/PE6OZeVmBPOq0l6GetwmIM05hL7Sno99rpiB6f8Vdlg
-   sroc6PZJ6JIQmPnyjz1QmReVtGSmJvYgI5ats/enXfX9iFPnukuA4oeQH
-   iNS90xKDyq8S9UTkX4oNy77jums+COQ9t+K2Cm54e7qOrDmWEm2xBqrCA
-   L0ja7U5KyJN6+IfZnl0U98XrL6rsg5+QTE7TT5m1QGo96ASxoqSRP3vZA
-   6c/90wOQtyFBGI+fN+2Li1Nn8W2AIg4iDNexXSqY6lRz5R0hVGdcW+kXm
-   Q==;
-X-CSE-ConnectionGUID: 0gPsxnzdRXGbZSOyDGfJLA==
-X-CSE-MsgGUID: 1AerdkfqSSCh5KlXnn1FYg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="53296390"
+  bh=57TV/0cm68AKOGsdQMvjSH9dG+6SjsHff+gvbD5Q3bY=;
+  b=Z4cTvdXPdZB3HvH3+jrvQUVkT4Czt/7kCTXWLMcxUaas41FFb2BVTNJh
+   6cVPbGvpyNXwnRgPNe6bNcEO9IjTkT47A6FGleFu9QMMeST8peO/G4s/v
+   6A1vrDdX06HzO7pc4h9j3cY1+0VJHHOwFNbSDsoBR6rNzK+x6IjHtdx3f
+   nZnItWAzxZ911TUiVqamVzljwTkTUtzUDPeosNFwk+mRc4mSlkbZ/OQLW
+   sS07bJuVrzijTmcAMwy7RcGrPXiQrc8bapLVM359qGu+ZGisjTBxUt+aF
+   iw7ngpXkNC5bRRmD60IIBR72SX+8Eyl2TyVlMjXFRbshPfl8oa2PxUOS4
+   A==;
+X-CSE-ConnectionGUID: 0xdPzmgIRXKhdz44ZOQDsQ==
+X-CSE-MsgGUID: gN3eISlJQ32zxNf+uN7j6A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="64215366"
 X-IronPort-AV: E=Sophos;i="6.16,265,1744095600"; 
-   d="scan'208";a="53296390"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 11:01:53 -0700
-X-CSE-ConnectionGUID: CHMemTsbRn67OS14w2k8PQ==
-X-CSE-MsgGUID: GEVg6mkGQyKBBOnAMhZIqw==
+   d="scan'208";a="64215366"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 11:06:18 -0700
+X-CSE-ConnectionGUID: Yy1+5wX+Q9OvjvZbAbQxlg==
+X-CSE-MsgGUID: N33EmClCTDK64va82lX10A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,265,1744095600"; 
-   d="scan'208";a="189472348"
+   d="scan'208";a="151807781"
 Received: from dwoodwor-mobl2.amr.corp.intel.com (HELO [10.125.108.244]) ([10.125.108.244])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 11:01:53 -0700
-Message-ID: <a1c95555-aa68-4c54-b411-7ae259636921@intel.com>
-Date: Wed, 25 Jun 2025 11:01:52 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 11:06:18 -0700
+Message-ID: <c3f77974-f1d6-4a22-bd1d-2678427a9fb1@intel.com>
+Date: Wed, 25 Jun 2025 11:06:16 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,15 +52,16 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv2.1 04/12] x86/virt/tdx: Add tdx_alloc/free_page() helpers
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, chao.gao@intel.com
-Cc: bp@alien8.de, dave.hansen@linux.intel.com, isaku.yamahata@intel.com,
- kai.huang@intel.com, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, mingo@redhat.com, pbonzini@redhat.com,
- rick.p.edgecombe@intel.com, seanjc@google.com, tglx@linutronix.de,
- x86@kernel.org, yan.y.zhao@intel.com
-References: <aEeaJH1KqZ38tgKi@intel.com>
- <20250610145116.2502206-1-kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCHv2 02/12] x86/virt/tdx: Allocate page bitmap for Dynamic
+ PAMT
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ pbonzini@redhat.com, seanjc@google.com, dave.hansen@linux.intel.com
+Cc: rick.p.edgecombe@intel.com, isaku.yamahata@intel.com,
+ kai.huang@intel.com, yan.y.zhao@intel.com, chao.gao@intel.com,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, kvm@vger.kernel.org,
+ x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20250609191340.2051741-1-kirill.shutemov@linux.intel.com>
+ <20250609191340.2051741-3-kirill.shutemov@linux.intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -106,20 +107,28 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20250610145116.2502206-1-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20250609191340.2051741-3-kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Kirill (and anybody else reading this),
+>  /*
+>   * Locate a NUMA node which should hold the allocation of the @tdmr
+>   * PAMT.  This node will have some memory covered by the TDMR.  The
+> @@ -522,7 +534,16 @@ static int tdmr_set_up_pamt(struct tdmr_info *tdmr,
+>  	 * and the total PAMT size.
+>  	 */
+>  	tdmr_pamt_size = 0;
+> -	for (pgsz = TDX_PS_4K; pgsz < TDX_PS_NR; pgsz++) {
+> +	pgsz = TDX_PS_4K;
+> +
+> +	/* With Dynamic PAMT, PAMT_4K is replaced with a bitmap */
+> +	if (tdx_supports_dynamic_pamt(&tdx_sysinfo)) {
+> +		pamt_size[pgsz] = tdmr_get_pamt_bitmap_sz(tdmr);
+> +		tdmr_pamt_size += pamt_size[pgsz];
+> +		pgsz++;
+> +	}
 
-Please stop doing these vXXX.1 patches. b4 can't deal with them. I don't
-know if it's _supposed_ to be able to, but I'm not sure I even want
-Konstantin spending time on making b4 handle this kind of thing. I
-honestly don't want to make my scripts deal with them either.
+This is the wrong place to do this.
 
-It's one thing to post a whole new series 2 hours after the old one.
-It's a very different thing to resend a series in the 2 *weeks* since
-you updated it.
-
-I'd much rather you resend the series than just leave these tangles for
-the maintainers to unwind.
+Hide it in tdmr_get_pamt_sz(). Don't inject it in the main code flow
+here and complicate the for loop.
