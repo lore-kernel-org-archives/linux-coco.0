@@ -1,172 +1,178 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FAE8275873
-	for <linux-coco@lists.linux.dev>; Thu, 26 Jun 2025 11:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7312EACF5
+	for <linux-coco@lists.linux.dev>; Thu, 26 Jun 2025 14:46:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750938030; cv=none; b=TTOUtPoGzV8PeVDU3fpKJs22H9AMx3i+eoJo3Pc1xLsSpWSXJSo6MGd+Vp6DtmrNHUQvdybY3QxPn+e5+IBLKmggXm9HIpdhltYHgMsmqSiycjfuJjjy0e/KRkKQYm3gpSUBFH0DQZh20T1Mgd01MFALM5o6WNYg4k9b0ELfKBY=
+	t=1750949218; cv=none; b=NZyQGCTk9qZY5LxC/yf8cyxAZJTtpOP8mGK5BtHBSW57m5D/KshEISkXyhc8CQD6yLxnLgklfDjAEJtNkYVuzhXeRyWKiy4sXVcmYJW9Et94ckQ6ek1mWxEWXWL5Q/ojUcdIBe+PFxS5fPU4RUYX9bswJBB4TWGGA4ISu1HD6P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750938030; c=relaxed/simple;
-	bh=gF7Dll6taOeDsbH4ksRfAoJl5VhEo+av+s5fHVt7tJo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NSajNZ8aYMyfWG4qLMu/sxVI4OllQKtzGpZclRsJzhUQ3Ht7qf+uUxqn7KZqo3CFSVfcdCuDi/0v6FKcBZqWqEsDfDUeaeBpIWk96OpWRPPvcozJ9FuYXoQkp1UvwsaGNZHMQeshEdgBxas+qfWfKsFxzyDojMPfYwKIzsalP3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gJq0Wu5p; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1750949218; c=relaxed/simple;
+	bh=wuNLjw7eRkBNUxbK+tbcIm3Smq+1f+s5sxGIuvTbvyc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bzYOyrCjvguM2lPy+fUkxheSefIQS4okx9HAbh71er5/Ht0AVqI2uy+MFoTdt7QVNcOUJeQpqqcvfMAuCyYNuzY7CVih6o2bPr+TBGWHYhl3DvYUQp4pAjvzmwhRNb104MbiD0Bubf7njEeudaHoHh6BlUhCKPZhK51OqLPUqv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=knBMKVpk; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gJq0Wu5p"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750938027;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JNkDX/QAcHMyJfzVyRcdpNBLgVVHagtHqZ1jRyb0YuQ=;
-	b=gJq0Wu5pO+uY6l6ogRzbKg3w/cBC1/+1Yh+lLuBpozIhug5laX0zqmSn2rhc0DO+Py6dNI
-	YbO/01ySERZ61B6v7tNjpXQPO1qJGjknGbLGHcmLnf/cb/9vAhSRD2sCbEhuKLYvSyreQL
-	cbmjpdeAt/CV/TRCM+HJJQM4xY6UCPY=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-686-AWXqvFvjNfGXPPfo_GJD0w-1; Thu,
- 26 Jun 2025 07:40:24 -0400
-X-MC-Unique: AWXqvFvjNfGXPPfo_GJD0w-1
-X-Mimecast-MFC-AGG-ID: AWXqvFvjNfGXPPfo_GJD0w_1750938022
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 83F6E1800268;
-	Thu, 26 Jun 2025 11:40:22 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.44.32.244])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7A5FD19560B3;
-	Thu, 26 Jun 2025 11:40:21 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
-	id A4C77180090C; Thu, 26 Jun 2025 13:40:15 +0200 (CEST)
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-	linux-efi@vger.kernel.org (open list:EXTENSIBLE FIRMWARE INTERFACE (EFI))
-Subject: [PATCH v4 3/3] x86/sev: Let sev_es_efi_map_ghcbs() map the caa pages too
-Date: Thu, 26 Jun 2025 13:40:13 +0200
-Message-ID: <20250626114014.373748-4-kraxel@redhat.com>
-In-Reply-To: <20250626114014.373748-1-kraxel@redhat.com>
-References: <20250626114014.373748-1-kraxel@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="knBMKVpk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750949217; x=1782485217;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=wuNLjw7eRkBNUxbK+tbcIm3Smq+1f+s5sxGIuvTbvyc=;
+  b=knBMKVpkTy9WpwcAFs8hkfGwn0TPziWsb0HbKhpV+mr0Rc2HpkNEZgDI
+   SOFf98dDub0X0aAUkj3sUp3wPgGG7JjkuCsSauoCXq08lECjP+ghm+xOj
+   ee0Gtf8P3T6AdIovwM0CwculYFtGLgrc477E5lGHmySnNrMR97/6ypE5s
+   nPFYn6j+CR3l6tLfAMPL0+jUAXWZ99zx7Mx2ObBkXKHIz3k8QBZQtWPzw
+   6T37WAiYCoLsJR7q4Oc65YL1guki2J8an/uJzqXgSvEvOt6VEjry/n+nU
+   OtPID/jD05lAv1FhG7GLMziDMuBlCWzZlDCGsKQ684N87bQGaR+Ku3IAF
+   Q==;
+X-CSE-ConnectionGUID: QBMzSiPqRgmEOR0nnJDyCw==
+X-CSE-MsgGUID: romyOuDORgu18T5inhlHlA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11475"; a="53380639"
+X-IronPort-AV: E=Sophos;i="6.16,267,1744095600"; 
+   d="scan'208";a="53380639"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2025 07:46:56 -0700
+X-CSE-ConnectionGUID: 8+rRqYoXR/yClCRd1+gTtQ==
+X-CSE-MsgGUID: DzhWelVySNmH0eJh8vyXAw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,267,1744095600"; 
+   d="scan'208";a="151959823"
+Received: from spandruv-desk1.amr.corp.intel.com (HELO [10.125.109.24]) ([10.125.109.24])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2025 07:46:57 -0700
+Message-ID: <3e55fd58-1d1c-437a-9e0a-72ac92facbb5@intel.com>
+Date: Thu, 26 Jun 2025 07:46:55 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv2 01/12] x86/tdx: Consolidate TDX error handling
+To: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>
+Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ Chao Gao <chao.gao@intel.com>, "bp@alien8.de" <bp@alien8.de>,
+ Kai Huang <kai.huang@intel.com>, "x86@kernel.org" <x86@kernel.org>,
+ "mingo@redhat.com" <mingo@redhat.com>, Yan Y Zhao <yan.y.zhao@intel.com>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ Isaku Yamahata <isaku.yamahata@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20250609191340.2051741-1-kirill.shutemov@linux.intel.com>
+ <20250609191340.2051741-2-kirill.shutemov@linux.intel.com>
+ <5cfb2e09-7ecb-4144-9122-c11152b18b5e@intel.com>
+ <d897ab70d48be4508a8a9086de1ff3953041e063.camel@intel.com>
+ <aFxpuRLYA2L6Qfsi@google.com>
+ <vgk3ql5kcpmpsoxfw25hjcw4knyugszdaeqnzur6xl4qll73xy@xi7ttxlxot2r>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <vgk3ql5kcpmpsoxfw25hjcw4knyugszdaeqnzur6xl4qll73xy@xi7ttxlxot2r>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-OVMF EFI firmware needs access to the CAA page to do SVSM protocol calls. For
-example, when the SVSM implements an EFI variable store, such calls will be
-necessary.
+On 6/26/25 02:25, kirill.shutemov@linux.intel.com wrote:
+>> Can we turn them into macros that make it super obvious they are checking if the
+>> error code *is* xyz?  E.g.
+>>
+>> #define IS_TDX_ERR_OPERAND_BUSY
+>> #define IS_TDX_ERR_OPERAND_INVALID
+>> #define IS_TDX_ERR_NO_ENTROPY
+>> #define IS_TDX_ERR_SW_ERROR
+>>>> As is, it's not at all clear that things like tdx_success() are
+>> simply checks, as opposed to commands.
+> I remember Dave explicitly asked for inline functions over macros
+> where possible.
+> 
+> Can we keep them as functions, but give the naming scheme you
+> proposing (but lowercase)?
 
-So add that to sev_es_efi_map_ghcbs() and also rename the function to reflect
-the additional job it is doing now.
+Macros versus function isn't super important. I think Sean was asking if
+we could do:
 
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
----
- arch/x86/include/asm/sev.h     |  4 ++--
- arch/x86/coco/sev/core.c       | 17 +++++++++++++++--
- arch/x86/platform/efi/efi_64.c |  4 ++--
- 3 files changed, 19 insertions(+), 6 deletions(-)
+	if (err == IS_TDX_ERR_OPERAND_BUSY)
+		...
 
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index 58e028d42e41..6e0ef192f23b 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -445,7 +445,7 @@ static __always_inline void sev_es_nmi_complete(void)
- 	    cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
- 		__sev_es_nmi_complete();
- }
--extern int __init sev_es_efi_map_ghcbs(pgd_t *pgd);
-+extern int __init sev_es_efi_map_ghcbs_caas(pgd_t *pgd);
- extern void sev_enable(struct boot_params *bp);
- 
- /*
-@@ -556,7 +556,7 @@ static inline void sev_es_ist_enter(struct pt_regs *regs) { }
- static inline void sev_es_ist_exit(void) { }
- static inline int sev_es_setup_ap_jump_table(struct real_mode_header *rmh) { return 0; }
- static inline void sev_es_nmi_complete(void) { }
--static inline int sev_es_efi_map_ghcbs(pgd_t *pgd) { return 0; }
-+static inline int sev_es_efi_map_ghcbs_caas(pgd_t *pgd) { return 0; }
- static inline void sev_enable(struct boot_params *bp) { }
- static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate) { return 0; }
- static inline int rmpadjust(unsigned long vaddr, bool rmp_psize, unsigned long attrs) { return 0; }
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index 3de8c3d2b55d..26b96e19f5e1 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -1045,11 +1045,13 @@ int __init sev_es_setup_ap_jump_table(struct real_mode_header *rmh)
-  * This is needed by the OVMF UEFI firmware which will use whatever it finds in
-  * the GHCB MSR as its GHCB to talk to the hypervisor. So make sure the per-cpu
-  * runtime GHCBs used by the kernel are also mapped in the EFI page-table.
-+ *
-+ * When running under SVSM the CCA page is needed too, so map it as well.
-  */
--int __init sev_es_efi_map_ghcbs(pgd_t *pgd)
-+int __init sev_es_efi_map_ghcbs_caas(pgd_t *pgd)
- {
- 	struct sev_es_runtime_data *data;
--	unsigned long address, pflags;
-+	unsigned long address, pflags, pflags_enc;
- 	int retval;
- 	int cpu;
- 	u64 pfn;
-@@ -1058,6 +1060,7 @@ int __init sev_es_efi_map_ghcbs(pgd_t *pgd)
- 		return 0;
- 
- 	pflags = _PAGE_NX | _PAGE_RW;
-+	pflags_enc = cc_mkenc(pflags);
- 
- 	for_each_possible_cpu(cpu) {
- 		data = per_cpu(runtime_data, cpu);
-@@ -1068,6 +1071,16 @@ int __init sev_es_efi_map_ghcbs(pgd_t *pgd)
- 		retval = kernel_map_pages_in_pgd(pgd, pfn, address, 1, pflags);
- 		if (retval != 0)
- 			return retval;
-+
-+		if (snp_vmpl) {
-+			address = per_cpu(svsm_caa_pa, cpu);
-+			if (!address)
-+				return 1;
-+
-+			pfn = address >> PAGE_SHIFT;
-+			if (kernel_map_pages_in_pgd(pgd, pfn, address, 1, pflags_enc))
-+				return 1;
-+		}
- 	}
- 
- 	return 0;
-diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
-index e7e8f77f77f8..97e8032db45d 100644
---- a/arch/x86/platform/efi/efi_64.c
-+++ b/arch/x86/platform/efi/efi_64.c
-@@ -216,8 +216,8 @@ int __init efi_setup_page_tables(unsigned long pa_memmap, unsigned num_pages)
- 	 * When SEV-ES is active, the GHCB as set by the kernel will be used
- 	 * by firmware. Create a 1:1 unencrypted mapping for each GHCB.
- 	 */
--	if (sev_es_efi_map_ghcbs(pgd)) {
--		pr_err("Failed to create 1:1 mapping for the GHCBs!\n");
-+	if (sev_es_efi_map_ghcbs_caas(pgd)) {
-+		pr_err("Failed to create 1:1 mapping for the GHCBs and CAAs!\n");
- 		return 1;
- 	}
- 
--- 
-2.50.0
+instead of:
 
+	if (tdx_operand_busy(err))
+		...
+
+We can do that, bu we first need to know that the whole bottom of the
+return code register is empty. Unfortunately, a quick grep of the TDX
+module source shows a bunch of these:
+
+>     return_val = api_error_with_operand_id(TDX_OPERAND_BUSY, OPERAND_ID_MIGSC);
+
+I'll refrain from casting judgement on why the TDX module needs such
+fancy, fine-grained error codes and our little hobby kernel over here
+mostly gets by on a couple errno's ... but I digress.
+
+Those fancy pants error codes are why we need:
+
+static inline u64 tdx_status(u64 err)
+{
+	return err & TDX_STATUS_MASK;
+}
+
+and can't just check the err directly. We need to mask out the fancy
+pants bits first.
+
+To get to what Sean is asking for, we'd have to do the tdx_status()
+masking in the low-level SEAMCALL helpers and have them all return a
+masked error code. Or maybe just bite the bullet and mostly move over to
+errno's.
+
+That wouldn't be horrible. For errno's or a masked TDX-format err,
+callers could always go digging in tdx_module_args if they need the bits
+that got masked out. But it would take some work.
