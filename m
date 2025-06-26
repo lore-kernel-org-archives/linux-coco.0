@@ -1,117 +1,139 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0584C2E975D
-	for <linux-coco@lists.linux.dev>; Thu, 26 Jun 2025 15:51:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F502ED16F
+	for <linux-coco@lists.linux.dev>; Thu, 26 Jun 2025 16:59:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750953105; cv=none; b=lxqL90FvSh2PAI5ZI99DWoXnePyHzH4i+MWgASppHvMhqvZ5lceCfC0x6qGijVDnshezUV4DfWJD8p3AgPwVUxCyz0Tpdh+xJX+MuYLtZOZ8T46DzLoiva0C/VoBW2ju6HkXSzBQoXGK/IMFJzZiejOj7jNpjZm1b3tyWi4ONO8=
+	t=1750957190; cv=none; b=ah5y/r40ORhlvNMTXSafSX1Tzj/QVXJzmWayvdJ7GWR8cHNpH5wSd14ShqpGFDAin9o4NdHRDby3NFLbQfsZ2R8zQ6mo6q09LcYPOpbYLSYJ9Kf+JwpJBypazXgM6vjXLBjnwxhb0KxziPC+y2uotYeMpQ2bxBQr24rQuY0K/d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750953105; c=relaxed/simple;
-	bh=qXV8ywuWUNO49dqW9kDZJmUe/jHnv66YbBB23QyjjcQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RSWLFJgAwwdF1Zw9h4vD0du3ZkHKUOvojhqMT0c8PL1vuRJjSiZ7QDmwsKfnW4ydwGXUlwg96t5e3IOH6W/24bRQ4vG4Q20wEsZmpr46fqp5P1DrsmJlxlm0t8TtAck+ZDZF9bCJtAAl8p7tvojdUtz+9bxu9nhVk7xcRUbv6Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e2Z2ULt6; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1750957190; c=relaxed/simple;
+	bh=XDZrZwxwxUIuc0jfolFJs79wYj64E78GgF4qSIDssKs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oV/jScGO3/iJ/GR0ybFErU+jbJVIcC/XWNPRUsEjZctypx5c9VVF9iQlfdjyUjo4vW+xkVRJxHJw70KUkhC4gowe6HRbNaq1Shs48bGJMug7gcu0oqCZdwiPMAcLH5ysX+FPq/2JEuFgjepGThGqyCQIk2PazIP2yHlcRzAs2/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cDhHALsY; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e2Z2ULt6"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-313fb0ec33bso1153654a91.2
-        for <linux-coco@lists.linux.dev>; Thu, 26 Jun 2025 08:51:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750953103; x=1751557903; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6XW/EqCp3j1f6URWJ4aPoUkrvR+g0bF0hMVqo50f2oY=;
-        b=e2Z2ULt6ImNidklKKFJN5EWWs8PINMZsKniTJae6rcrAore6SpQxzjbpzzQfWRh+oQ
-         DeKI9aO7fHalCxTRptdsCMxvnbW5whp6oYfSOchtwYziVA9Yb/TnNDbw2O4BySId8c2j
-         nxp/8bP32ktBu50jYpKhQP3ZmUvj6PFpbCAY0hig2FWTtS2+1ztVun9i1of1y2+DL0OB
-         ITFeOgX64Ht+d0+pC2ZqyBNbT8qsJX3iNpmH9c2heHNnCnTOgyExfyA6xbpbUVETPPmW
-         B44AtUZCQCJYF2mZ92EsHOsJPwK8131/5hE1AqROyxWH14+d1Grl/xpW7KlZopdDHfR5
-         cCMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750953103; x=1751557903;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6XW/EqCp3j1f6URWJ4aPoUkrvR+g0bF0hMVqo50f2oY=;
-        b=WgUnvUWV5vs6K6d3+p7F9OS0R/+0rreEooVk7vewEQr70zW8JvaZ0BhjSS5krm10OS
-         5cXZ+tD2UCvbZsNr9cvRf7jNfwiEVZtKv0xJm55/7gpl0rqMtRiSZdjNGo7qQG+L0PLE
-         KZd3VGePCjLWXfCHwk6OhtogalXtDA3EHKAT+nbZMDi7TtNSSC2WFgAN5pprsYAAWX4D
-         Op+6CtX9/58UQSDUKLEC5QjtvuzL/RHMChGXtoJRsQx1IBFEbxHYfYJ/D4aqCsJGgN8K
-         HF8IvUjaTPREnJ6SEiRJEFvXwebSSxgFSgViQ3SYhFwRQgxxAY+Xefeep5MFfxGssVNB
-         Gckw==
-X-Forwarded-Encrypted: i=1; AJvYcCXxjb5pPI/d/dYfR0WpG8lShXi04gvEkTM5nPNo5E7TMdnDlvpNXqvUT998v/YWw3wFhVEvnAuPOjFV@lists.linux.dev
-X-Gm-Message-State: AOJu0YxtrTQvcpLFbsrbrz34l0FJB6bgIs8JO9bYW6Lvf/NJbYmqU9ij
-	Uc04pDowoUCEW5tytxBm0OEBKJ8ZZI4Rjv0J/3umXboOwHvkLr6pC9Hhgz+DfT4FsRItj7kREwi
-	eQNNKKg==
-X-Google-Smtp-Source: AGHT+IHC4Drqm7qwalhYbpaZ/EdYOOM+E4RS7ozoWgmrUjHrOdSo3e5wVygc5jxLIu3LTaQIMJLPkowy/94=
-X-Received: from pjbso15.prod.google.com ([2002:a17:90b:1f8f:b0:313:274d:3007])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5210:b0:312:e9bd:5d37
- with SMTP id 98e67ed59e1d1-315f2613846mr10091013a91.6.1750953103423; Thu, 26
- Jun 2025 08:51:43 -0700 (PDT)
-Date: Thu, 26 Jun 2025 08:51:41 -0700
-In-Reply-To: <3e55fd58-1d1c-437a-9e0a-72ac92facbb5@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cDhHALsY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750957189; x=1782493189;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=XDZrZwxwxUIuc0jfolFJs79wYj64E78GgF4qSIDssKs=;
+  b=cDhHALsY0H1iNykZcIiifaxu2dchjYKF7u19ut1gpkowrWTxspUXE/f9
+   ZQEc1SyFg/27qfrsJX5oJ5W44R4+XAJghIG5V6UJ4SfkLhq72jUVTl9Jx
+   fnJrGUPuWrzJNXVTHEcE2u7Zn0izUUqVUUdenswNVVu7vR8qDAQ8ni+io
+   JF4cbvL9WtuqfET9CIlqV5Eqd7AUhutyJh02x8XUKGnIvSCK2+DQFZvSC
+   5sz20M5biWm3yeFuDA0XYtmIwpzqIg/UNPXZnbeq0RKb97tE/NfZktlZG
+   eLgSY/VCXXZFryQTCXei1rr1obHuZfpezg/+vhFkjmEs0915jIgWLlK5L
+   A==;
+X-CSE-ConnectionGUID: 3dAiSv+7RBux8USqSzt/nA==
+X-CSE-MsgGUID: miQ/zjdMT8yKApCRQKnfOA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11476"; a="55887736"
+X-IronPort-AV: E=Sophos;i="6.16,268,1744095600"; 
+   d="scan'208";a="55887736"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2025 09:59:48 -0700
+X-CSE-ConnectionGUID: J+uphDd+TlqC0dcbXL4H5w==
+X-CSE-MsgGUID: sbLwaa6ITd6slQ3Ps7cfVw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,268,1744095600"; 
+   d="scan'208";a="158066056"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO [10.125.109.42]) ([10.125.109.42])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2025 09:59:48 -0700
+Message-ID: <1fbdfffa-ac43-419c-8d96-c5bb1bdac73f@intel.com>
+Date: Thu, 26 Jun 2025 09:59:47 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv2 01/12] x86/tdx: Consolidate TDX error handling
+To: Sean Christopherson <seanjc@google.com>
+Cc: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+ Rick P Edgecombe <rick.p.edgecombe@intel.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ Chao Gao <chao.gao@intel.com>, "bp@alien8.de" <bp@alien8.de>,
+ Kai Huang <kai.huang@intel.com>, "x86@kernel.org" <x86@kernel.org>,
+ "mingo@redhat.com" <mingo@redhat.com>, Yan Y Zhao <yan.y.zhao@intel.com>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ Isaku Yamahata <isaku.yamahata@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 References: <20250609191340.2051741-1-kirill.shutemov@linux.intel.com>
  <20250609191340.2051741-2-kirill.shutemov@linux.intel.com>
- <5cfb2e09-7ecb-4144-9122-c11152b18b5e@intel.com> <d897ab70d48be4508a8a9086de1ff3953041e063.camel@intel.com>
- <aFxpuRLYA2L6Qfsi@google.com> <vgk3ql5kcpmpsoxfw25hjcw4knyugszdaeqnzur6xl4qll73xy@xi7ttxlxot2r>
+ <5cfb2e09-7ecb-4144-9122-c11152b18b5e@intel.com>
+ <d897ab70d48be4508a8a9086de1ff3953041e063.camel@intel.com>
+ <aFxpuRLYA2L6Qfsi@google.com>
+ <vgk3ql5kcpmpsoxfw25hjcw4knyugszdaeqnzur6xl4qll73xy@xi7ttxlxot2r>
  <3e55fd58-1d1c-437a-9e0a-72ac92facbb5@intel.com>
-Message-ID: <aF1sjdV2UDEbAK2h@google.com>
-Subject: Re: [PATCHv2 01/12] x86/tdx: Consolidate TDX error handling
-From: Sean Christopherson <seanjc@google.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>, 
-	Rick P Edgecombe <rick.p.edgecombe@intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
-	"bp@alien8.de" <bp@alien8.de>, Kai Huang <kai.huang@intel.com>, "x86@kernel.org" <x86@kernel.org>, 
-	"mingo@redhat.com" <mingo@redhat.com>, Yan Y Zhao <yan.y.zhao@intel.com>, 
-	"tglx@linutronix.de" <tglx@linutronix.de>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Isaku Yamahata <isaku.yamahata@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+ <aF1sjdV2UDEbAK2h@google.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <aF1sjdV2UDEbAK2h@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jun 26, 2025, Dave Hansen wrote:
-> On 6/26/25 02:25, kirill.shutemov@linux.intel.com wrote:
-> >> Can we turn them into macros that make it super obvious they are checking if the
-> >> error code *is* xyz?  E.g.
-> >>
-> >> #define IS_TDX_ERR_OPERAND_BUSY
-> >> #define IS_TDX_ERR_OPERAND_INVALID
-> >> #define IS_TDX_ERR_NO_ENTROPY
-> >> #define IS_TDX_ERR_SW_ERROR
-> >>>> As is, it's not at all clear that things like tdx_success() are
-> >> simply checks, as opposed to commands.
-> > I remember Dave explicitly asked for inline functions over macros
-> > where possible.
-> > 
-> > Can we keep them as functions, but give the naming scheme you
-> > proposing (but lowercase)?
-
-I don't care about function versus macro, but I'd prefer uppercase.  As Linus
-pointed out[*], upper vs. lower case is about the usage and semantics as much as
-it's about whether or not the thingie is literally a macro vs. function.
-
-[*] https://lore.kernel.org/all/CAHk-=whGWM50Qq3Dgha8ByU7t_dqvrCk3JFBSw2+X0KUAWuT1g@mail.gmail.com
-
-> Macros versus function isn't super important. I think Sean was asking if
-> we could do:
+On 6/26/25 08:51, Sean Christopherson wrote:
+> No, I was thinking:
 > 
-> 	if (err == IS_TDX_ERR_OPERAND_BUSY)
-> 		...
+> 	if (IS_TDX_ERR_OPERAND_BUSY(err))
 > 
-> instead of:
-> 
-> 	if (tdx_operand_busy(err))
-> 		...
+> e.g. to so that it looks like IS_ERR(), which is a familiar pattern.
 
-No, I was thinking:
+That would be a more more compelling if IS_ERR() worked on integers. It
+works on pointers, so I'm not sure it's a pattern we want to apply to
+integers here.
 
-	if (IS_TDX_ERR_OPERAND_BUSY(err))
-
-e.g. to so that it looks like IS_ERR(), which is a familiar pattern.
+I kind of hate all of this. I'd kinda prefer that we just shove the TDX
+error codes as far up into the helpers as possible rather than making
+them easier to deal with in random code.
