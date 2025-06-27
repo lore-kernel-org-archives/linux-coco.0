@@ -1,63 +1,63 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0010B1E49F
-	for <linux-coco@lists.linux.dev>; Fri, 27 Jun 2025 13:00:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167102BEC3B
+	for <linux-coco@lists.linux.dev>; Fri, 27 Jun 2025 13:04:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751029256; cv=none; b=IKbwuDmmQHR03IsUJDWXfKbfmSgQJ+XvOv5y3XatXxPKkwd3/P54MCmZ6SCpxbG/7wteo+YEIJdYWsHcupiGDkIlo9Acs51mf4mUor0tHxzkM33cfZ1BYhsopKQ92rkIZFjgR0BljvhXmVEPp7j3v/oDYIhWhvcSd01a1xz2YRU=
+	t=1751029464; cv=none; b=NMxIytlCEiZjDU/Ld5SOhGrculS8Vx/RmjpTOMAdVTYLiN6OlEYhne/hKY1Ql9gN0Kt/Ht0uD+RO15ZAA12SdTs1VneuTLn7TFX1pAz8xSI1Xd/UmoNFzM0Sp/eUSd3716QyP0IVA7h/0LRDHWfRwBT+ZmlxB/4fWnuIo2y1/uU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751029256; c=relaxed/simple;
-	bh=1KduQflUx5PWgx69L9xIAgh4GnKwc1j7d9n9HVvizXY=;
+	s=arc-20240116; t=1751029464; c=relaxed/simple;
+	bh=XzX4psFBvnYR6QHI3Kw1ucRawOE+xlOc/dM9jXgI1bU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jImVZ3P3zCrSGv+Z8pNfXx1kqTOL+f8UH1jq6SSE+6o931XBT6ZeDcqWHSLW/bHIoM6m0LB7f3+Gm4xEnsiAwIh7ipoeAKYutO5Nmrn7vC7kzQYH6iwdpnhOwUHJqDcyqcIHTTXBgAUv1g80edt6a/5LqBy+u674Y5PIqar1/pY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f5MflKJH; arc=none smtp.client-ip=198.175.65.19
+	 Content-Type:Content-Disposition:In-Reply-To; b=sPVuU70uQl5idUc21CBEpQcWvMMynYuJPaThdQ0BbZS8exbuf2Jcs5yWAbkVHtpWhVUSdsNUTNfvJuPCMljgh/lT9briykGC1o0xaycBpQknG2mXqYrAxT29Og44J5FF+V0CC4gUIEX8L8THhkOY9q0zP2BSJUmptErS7580h0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LFHkrwEZ; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f5MflKJH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LFHkrwEZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751029255; x=1782565255;
+  t=1751029463; x=1782565463;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=1KduQflUx5PWgx69L9xIAgh4GnKwc1j7d9n9HVvizXY=;
-  b=f5MflKJHxUKVyxw7lBlrHeAKImP3RJPUvVMw9HRGg0mezZx0htO5DLHc
-   9eAOOTNpzl3HIIQonjdmI4PJFF/XXsM/MV2cJS1jYoQOiLFssia67jhhG
-   k4fIXHicmoSgAyZ13HvD/tLh1wkqoFlgc9mwm21ckRCExkASNBroqFj++
-   kxeXbMTcNX+jw1Z1Dj3Di1k3Ri6O60uJ1GQq/zrA3y89AoTl9yhoGI8il
-   xMDF3f6SQZPClD4gL0PQ7TDxyDU65EGGAiMW1wxoUFVOlbwZmJ1ttwqrU
-   ZkyX71F37pPJbrVLrLpP5s70iEgbbayG0MnLhqnNxTjd1fnPWVErqy+zM
-   A==;
-X-CSE-ConnectionGUID: NDLi52EkR9GzDeEYDxihlg==
-X-CSE-MsgGUID: iAoLn8+GSuy8vkXEsgOnfQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11476"; a="53215157"
+  bh=XzX4psFBvnYR6QHI3Kw1ucRawOE+xlOc/dM9jXgI1bU=;
+  b=LFHkrwEZjOfVojLoRKrHPhRGdsJvJz6GcQrfqr5lRqde1HBKCHpi0aQZ
+   V7EP3RqV2QeuXrI2mPiiBA71ud0Tj7FW7i2IwkjBRoqiN0/5kDynzHzf9
+   3BJtrpVA+SYVrAikFX2QH81yC2DWCCs8lAW56tahKEbJCyLx00HDnz12z
+   dDOVIQ83LBSBJD4av2uNTLKu1jFvp4RADLTuxpZO9ptspR7X5PSj3RhZM
+   bm9xQKe+ttNaD0hcfCw9TAmNjBEwEq83OhvbJKsfd6wdsEfX16gyz6FFp
+   TmEit7zyoDb8L7nzuyF6JH+h0q0yNI33EqQtESIBqXvTyLNUJEA/JdtXb
+   g==;
+X-CSE-ConnectionGUID: qlh236tFQuSELJRo6U7zhg==
+X-CSE-MsgGUID: Psi25dmlQZKyfPMFsRU6gg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11477"; a="70773962"
 X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
-   d="scan'208";a="53215157"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 06:00:54 -0700
-X-CSE-ConnectionGUID: hf8G9/jFRSCfVPp1wMkX0g==
-X-CSE-MsgGUID: oU6oojOAR/Wlpq5meRaIhA==
+   d="scan'208";a="70773962"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 06:04:02 -0700
+X-CSE-ConnectionGUID: ldfBJ5F6RAmcS7Go8ORzNA==
+X-CSE-MsgGUID: L9DsV3rAT+Wj/YlqbN+IEQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
-   d="scan'208";a="157347865"
+   d="scan'208";a="183836732"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa004.jf.intel.com with ESMTP; 27 Jun 2025 06:00:50 -0700
+  by orviesa002.jf.intel.com with ESMTP; 27 Jun 2025 06:03:58 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 34B536A; Fri, 27 Jun 2025 16:00:49 +0300 (EEST)
-Date: Fri, 27 Jun 2025 16:00:49 +0300
+	id 01F626A; Fri, 27 Jun 2025 16:03:56 +0300 (EEST)
+Date: Fri, 27 Jun 2025 16:03:56 +0300
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
+To: Adrian Hunter <adrian.hunter@intel.com>
 Cc: pbonzini@redhat.com, seanjc@google.com, dave.hansen@linux.intel.com, 
 	rick.p.edgecombe@intel.com, isaku.yamahata@intel.com, kai.huang@intel.com, 
 	yan.y.zhao@intel.com, chao.gao@intel.com, tglx@linutronix.de, mingo@redhat.com, 
 	bp@alien8.de, kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCHv2 04/12] x86/virt/tdx: Add tdx_alloc/free_page() helpers
-Message-ID: <scebxrgqi7dgnyv6kjjpbcpijl4juita4lnq76jpw47rs5q2mc@xnbyphvk6vhv>
+Message-ID: <g5akv7uwsdrvs3j4wsj2xmc3fpdlyudj5sjuhw62m3f4yjsxse@nrne5miazbx4>
 References: <20250609191340.2051741-1-kirill.shutemov@linux.intel.com>
  <20250609191340.2051741-5-kirill.shutemov@linux.intel.com>
- <fd9ebb1c-8a5a-44c5-869b-810bb5e7436c@intel.com>
+ <dba2841f-0725-4b58-b633-650201c053b4@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -66,106 +66,48 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fd9ebb1c-8a5a-44c5-869b-810bb5e7436c@intel.com>
+In-Reply-To: <dba2841f-0725-4b58-b633-650201c053b4@intel.com>
 
-On Wed, Jun 25, 2025 at 01:02:38PM -0700, Dave Hansen wrote:
-> On 6/9/25 12:13, Kirill A. Shutemov wrote:
-> >  arch/x86/include/asm/tdx.h       |   3 +
-> >  arch/x86/include/asm/tdx_errno.h |   6 +
-> >  arch/x86/virt/vmx/tdx/tdx.c      | 205 +++++++++++++++++++++++++++++++
-> >  arch/x86/virt/vmx/tdx/tdx.h      |   2 +
-> >  4 files changed, 216 insertions(+)
-> 
-> Please go through this whole series and add appropriate comments and
-> explanations.
-> 
-> There are 4 lines of comments in the 216 lines of new code.
-
-Will do.
-
-> I'll give some examples:
-> 
-> > +static int tdx_nr_pamt_pages(void)
-> 
-> Despite the naming this function does not return the number of TDX
-> PAMT pages. It returns the number of pages needed for each *dynamic*
-> PAMT granule.
-
-tdx_nr_dpamt_pages_per_2m()? This gets ugly.
-
-> The naming is not consistent with something used only for dynamic PAMT
-> support. This kind of comment would help, but is not a replacement for
-> good naming:
-> 
-> /*
->  * How many pages are needed for the TDX
->  * dynamic page metadata for a 2M region?
->  */
-> 
-> Oh, and what the heck is with the tdx_supports_dynamic_pamt() check?
-> Isn't it illegal to call these functions without dynamic PAMT in
-> place? Wouldn't the TDH_PHYMEM_PAMT_ADD blow up if you hand it 0's
-> in args.rdx?
-
-Returning zero for !tdx_supports_dynamic_pamt() helps to avoid branches in
-mmu_topup_memory_caches(). This way we pre-allocate zero pages in PAMPT
-page cache.
-
-> > +static int tdx_nr_pamt_pages(void)
+On Fri, Jun 27, 2025 at 10:49:34AM +0300, Adrian Hunter wrote:
+> On 09/06/2025 22:13, Kirill A. Shutemov wrote:
+> > +static void tdx_pamt_put(struct page *page, enum pg_level level)
 > > +{
+> > +	unsigned long hpa = page_to_phys(page);
+> > +	atomic_t *pamt_refcount;
+> > +	LIST_HEAD(pamt_pages);
+> > +	u64 err;
+> > +
 > > +	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
-> > +		return 0;
+> > +		return;
 > > +
-> > +	return tdx_sysinfo.tdmr.pamt_4k_entry_size * PTRS_PER_PTE / PAGE_SIZE;
-> > +}
+> > +	if (level != PG_LEVEL_4K)
+> > +		return;
 > > +
-> > +static u64 tdh_phymem_pamt_add(unsigned long hpa,
-> > +			       struct list_head *pamt_pages)
-> > +{
-> > +	struct tdx_module_args args = {
-> > +		.rcx = hpa,
-> > +	};
-> > +	struct page *page;
-> > +	u64 *p;
+> > +	hpa = ALIGN_DOWN(hpa, PMD_SIZE);
 > > +
-> > +	WARN_ON_ONCE(!IS_ALIGNED(hpa & PAGE_MASK, PMD_SIZE));
+> > +	pamt_refcount = tdx_get_pamt_refcount(hpa);
+> > +	if (!atomic_dec_and_test(pamt_refcount))
+> > +		return;
 > > +
-> > +	p = &args.rdx;
-> > +	list_for_each_entry(page, pamt_pages, lru) {
-> > +		*p = page_to_phys(page);
-> > +		p++;
+> > +	scoped_guard(spinlock, &pamt_lock) {
+> > +		/* Lost race against tdx_pamt_add()? */
+> > +		if (atomic_read(pamt_refcount) != 0)
+> > +			return;
+> > +
+> > +		err = tdh_phymem_pamt_remove(hpa | TDX_PS_2M, &pamt_pages);
+> > +
+> > +		if (err) {
+> > +			atomic_inc(pamt_refcount);
+> > +			pr_err("TDH_PHYMEM_PAMT_REMOVE failed: %#llx\n", err);
+> > +			return;
+> > +		}
 > > +	}
+> > +
 > 
-> This is sheer voodoo. Voodoo on its own is OK. But uncommented voodoo
-> is not.
-> 
-> Imagine what would happen if, for instance, someone got confused and did:
-> 
-> 	tdx_alloc_pamt_pages(&pamd_pages);
-> 	tdx_alloc_pamt_pages(&pamd_pages);
-> 	tdx_alloc_pamt_pages(&pamd_pages);
+> Won't any pages that have been used need to be cleared
+> before being freed.
 
-I think tdx_alloc_pamt_pages() has to flag non-empty pamt_pages list.
-
-> It would *work* because the allocation function would just merrily
-> shove lots of pages on the list. But when it's consumed you'd run off
-> the end of the data structure in this function far, far away from the
-> bug site.
-> 
-> The least you can do here is comment what's going on. Because treating
-> a structure like an array is obtuse at best.
-> 
-> Even better would be to have a check to ensure that the pointer magic
-> doesn't run off the end of the struct:
-> 
-> 	if (p - &args.rcx >= sizeof(args)/sizeof(u64)) {
-> 		WARN_ON_ONCE(1);
-> 		break;
-> 	}
-> 
-> or some other pointer voodoo.
-
-Will do.
+Good point. I missed that.
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
