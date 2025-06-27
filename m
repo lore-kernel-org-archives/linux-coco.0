@@ -1,92 +1,171 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3898419F461
-	for <linux-coco@lists.linux.dev>; Fri, 27 Jun 2025 12:01:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0010B1E49F
+	for <linux-coco@lists.linux.dev>; Fri, 27 Jun 2025 13:00:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751025712; cv=none; b=QLEsUJ12EhIsvU0ay1NCZNIc3oOFpj51N26emgkNazsZ0Gx9mCR+RLF+ykip7HgjN53KOJDqvqRjSPMKUC9azFg0JFZFuLrNCS3ZK5ArAtxgT0X/FuGHvBYZ6SBnt1jax+SLazIV56MilO3dcOGj8L7yVn7hlkTd6rGFMcqskbk=
+	t=1751029256; cv=none; b=IKbwuDmmQHR03IsUJDWXfKbfmSgQJ+XvOv5y3XatXxPKkwd3/P54MCmZ6SCpxbG/7wteo+YEIJdYWsHcupiGDkIlo9Acs51mf4mUor0tHxzkM33cfZ1BYhsopKQ92rkIZFjgR0BljvhXmVEPp7j3v/oDYIhWhvcSd01a1xz2YRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751025712; c=relaxed/simple;
-	bh=UHMGY9lxYmtZHXs+Es7Nhp2fGyKHJf0mmDaSA3nAdQw=;
+	s=arc-20240116; t=1751029256; c=relaxed/simple;
+	bh=1KduQflUx5PWgx69L9xIAgh4GnKwc1j7d9n9HVvizXY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bhQuuD9nPzuZ7MDx7ObxwxsTF0k9gUeL9fzy6Z91CX6PupHeqoIhFQJTN1lzxkOf1ZDWXuRjsKx5XOw9mrZh1QeRnP0FvKhd+xokvD0hV9dMWseJoiQ65BmphkgJWOoe1VR7MTj/4veugCqVLNb1H3OUkjpJGBZfKQe/9Gs9MCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=MnyuJS3i; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=jImVZ3P3zCrSGv+Z8pNfXx1kqTOL+f8UH1jq6SSE+6o931XBT6ZeDcqWHSLW/bHIoM6m0LB7f3+Gm4xEnsiAwIh7ipoeAKYutO5Nmrn7vC7kzQYH6iwdpnhOwUHJqDcyqcIHTTXBgAUv1g80edt6a/5LqBy+u674Y5PIqar1/pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f5MflKJH; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="MnyuJS3i"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2D04640E0169;
-	Fri, 27 Jun 2025 12:01:48 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id WrsdBXC2E2Xe; Fri, 27 Jun 2025 12:01:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1751025697; bh=FkZ5lpYwYTYuA2kPbG6UdUCZVUGwHwYkxO5MZLARu2s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MnyuJS3ifx2X1UipUt7O520VGuBc4r7fgG9DBqh+LRNksXo83qdUuuQgii3UTVsJd
-	 PvuDyZTIVxGW9vMRUf7EqWKPbyk17n5w0b/ZQ34Cu8t5+TNPSUp02AQJfUtLuMUq8b
-	 mBrtXi7GqszMZQP0quIeWNBgMx77wMB2j+ca064eWd/o6ntyjGuU6YgLuI9x1j8R8a
-	 nPJ6ZP0fg8kzcyTy/ypocO6o3hFQjGZW+3zsTjdaFyTjg0nhCbTGRWbdX3tgMzG8Rm
-	 wTsgewTl2Js0KwRwke+MLRsMg70YJ+7c303gHup9QJvDe20bWv5exEJ/p9gY1P+pSY
-	 eacxAjruA0aOSvggI4MsSvk6HDLYB/Jvm4fVkaUh3pmr8qJm1p1EkbaAqvr5tEx3wP
-	 A6Q3MdC9pZWb+gmSs8pCEcZoggA/pJkNexRIE+0lG4cm3CVbpSD+9qD1CmLGIMJn9f
-	 szRUauC6pef6M1G42phJfePVNO5PuQ5QvRY1l52obpyuicXBgtEeTJRtZzCN+hZIiU
-	 ZNxRAL2kyTKEgxeKB+Uzq+RwsR2qv3hbet60Ro7aSuNQjkcEka7a28gnqwzeLK5FBb
-	 shYT4hwXP2JNheeLCuAhkDHfGswZUT6CWnJWC4/Q5hGMqelhRUvxub1wbjJFieeUo1
-	 kPhtlHwH2duvJYtFde097Tos=
-Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7CDCF40E019C;
-	Fri, 27 Jun 2025 12:01:28 +0000 (UTC)
-Date: Fri, 27 Jun 2025 14:01:22 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Gerd Hoffmann <kraxel@redhat.com>
-Cc: linux-coco@lists.linux.dev, kvm@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 2/3] x86/sev: fix error handling in
- sev_es_efi_map_ghcbs_caas()
-Message-ID: <20250627120122.GBaF6IEgLEmfntS7qA@fat_crate.local>
-References: <20250626114014.373748-1-kraxel@redhat.com>
- <20250626114014.373748-3-kraxel@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f5MflKJH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751029255; x=1782565255;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1KduQflUx5PWgx69L9xIAgh4GnKwc1j7d9n9HVvizXY=;
+  b=f5MflKJHxUKVyxw7lBlrHeAKImP3RJPUvVMw9HRGg0mezZx0htO5DLHc
+   9eAOOTNpzl3HIIQonjdmI4PJFF/XXsM/MV2cJS1jYoQOiLFssia67jhhG
+   k4fIXHicmoSgAyZ13HvD/tLh1wkqoFlgc9mwm21ckRCExkASNBroqFj++
+   kxeXbMTcNX+jw1Z1Dj3Di1k3Ri6O60uJ1GQq/zrA3y89AoTl9yhoGI8il
+   xMDF3f6SQZPClD4gL0PQ7TDxyDU65EGGAiMW1wxoUFVOlbwZmJ1ttwqrU
+   ZkyX71F37pPJbrVLrLpP5s70iEgbbayG0MnLhqnNxTjd1fnPWVErqy+zM
+   A==;
+X-CSE-ConnectionGUID: NDLi52EkR9GzDeEYDxihlg==
+X-CSE-MsgGUID: iAoLn8+GSuy8vkXEsgOnfQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11476"; a="53215157"
+X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
+   d="scan'208";a="53215157"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 06:00:54 -0700
+X-CSE-ConnectionGUID: hf8G9/jFRSCfVPp1wMkX0g==
+X-CSE-MsgGUID: oU6oojOAR/Wlpq5meRaIhA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
+   d="scan'208";a="157347865"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa004.jf.intel.com with ESMTP; 27 Jun 2025 06:00:50 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 34B536A; Fri, 27 Jun 2025 16:00:49 +0300 (EEST)
+Date: Fri, 27 Jun 2025 16:00:49 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: pbonzini@redhat.com, seanjc@google.com, dave.hansen@linux.intel.com, 
+	rick.p.edgecombe@intel.com, isaku.yamahata@intel.com, kai.huang@intel.com, 
+	yan.y.zhao@intel.com, chao.gao@intel.com, tglx@linutronix.de, mingo@redhat.com, 
+	bp@alien8.de, kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv2 04/12] x86/virt/tdx: Add tdx_alloc/free_page() helpers
+Message-ID: <scebxrgqi7dgnyv6kjjpbcpijl4juita4lnq76jpw47rs5q2mc@xnbyphvk6vhv>
+References: <20250609191340.2051741-1-kirill.shutemov@linux.intel.com>
+ <20250609191340.2051741-5-kirill.shutemov@linux.intel.com>
+ <fd9ebb1c-8a5a-44c5-869b-810bb5e7436c@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250626114014.373748-3-kraxel@redhat.com>
+In-Reply-To: <fd9ebb1c-8a5a-44c5-869b-810bb5e7436c@intel.com>
 
-On Thu, Jun 26, 2025 at 01:40:12PM +0200, Gerd Hoffmann wrote:
-> -		if (kernel_map_pages_in_pgd(pgd, pfn, address, 1, pflags))
-> -			return 1;
-> +		retval = kernel_map_pages_in_pgd(pgd, pfn, address, 1, pflags);
-> +		if (retval != 0)
-> +			return retval;
+On Wed, Jun 25, 2025 at 01:02:38PM -0700, Dave Hansen wrote:
+> On 6/9/25 12:13, Kirill A. Shutemov wrote:
+> >  arch/x86/include/asm/tdx.h       |   3 +
+> >  arch/x86/include/asm/tdx_errno.h |   6 +
+> >  arch/x86/virt/vmx/tdx/tdx.c      | 205 +++++++++++++++++++++++++++++++
+> >  arch/x86/virt/vmx/tdx/tdx.h      |   2 +
+> >  4 files changed, 216 insertions(+)
+> 
+> Please go through this whole series and add appropriate comments and
+> explanations.
+> 
+> There are 4 lines of comments in the 216 lines of new code.
 
-Yeah, I'd understand if it made any sense to propagate the error upwards but
-this function is called exactly once by efi_setup_page_tables() and all it
-needs to return is success/failure which the caller uses on the spot.
+Will do.
 
-So no point in doing any of that nonsense. I'll zap it from the set.
+> I'll give some examples:
+> 
+> > +static int tdx_nr_pamt_pages(void)
+> 
+> Despite the naming this function does not return the number of TDX
+> PAMT pages. It returns the number of pages needed for each *dynamic*
+> PAMT granule.
 
-Thx.
+tdx_nr_dpamt_pages_per_2m()? This gets ugly.
+
+> The naming is not consistent with something used only for dynamic PAMT
+> support. This kind of comment would help, but is not a replacement for
+> good naming:
+> 
+> /*
+>  * How many pages are needed for the TDX
+>  * dynamic page metadata for a 2M region?
+>  */
+> 
+> Oh, and what the heck is with the tdx_supports_dynamic_pamt() check?
+> Isn't it illegal to call these functions without dynamic PAMT in
+> place? Wouldn't the TDH_PHYMEM_PAMT_ADD blow up if you hand it 0's
+> in args.rdx?
+
+Returning zero for !tdx_supports_dynamic_pamt() helps to avoid branches in
+mmu_topup_memory_caches(). This way we pre-allocate zero pages in PAMPT
+page cache.
+
+> > +static int tdx_nr_pamt_pages(void)
+> > +{
+> > +	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
+> > +		return 0;
+> > +
+> > +	return tdx_sysinfo.tdmr.pamt_4k_entry_size * PTRS_PER_PTE / PAGE_SIZE;
+> > +}
+> > +
+> > +static u64 tdh_phymem_pamt_add(unsigned long hpa,
+> > +			       struct list_head *pamt_pages)
+> > +{
+> > +	struct tdx_module_args args = {
+> > +		.rcx = hpa,
+> > +	};
+> > +	struct page *page;
+> > +	u64 *p;
+> > +
+> > +	WARN_ON_ONCE(!IS_ALIGNED(hpa & PAGE_MASK, PMD_SIZE));
+> > +
+> > +	p = &args.rdx;
+> > +	list_for_each_entry(page, pamt_pages, lru) {
+> > +		*p = page_to_phys(page);
+> > +		p++;
+> > +	}
+> 
+> This is sheer voodoo. Voodoo on its own is OK. But uncommented voodoo
+> is not.
+> 
+> Imagine what would happen if, for instance, someone got confused and did:
+> 
+> 	tdx_alloc_pamt_pages(&pamd_pages);
+> 	tdx_alloc_pamt_pages(&pamd_pages);
+> 	tdx_alloc_pamt_pages(&pamd_pages);
+
+I think tdx_alloc_pamt_pages() has to flag non-empty pamt_pages list.
+
+> It would *work* because the allocation function would just merrily
+> shove lots of pages on the list. But when it's consumed you'd run off
+> the end of the data structure in this function far, far away from the
+> bug site.
+> 
+> The least you can do here is comment what's going on. Because treating
+> a structure like an array is obtuse at best.
+> 
+> Even better would be to have a check to ensure that the pointer magic
+> doesn't run off the end of the struct:
+> 
+> 	if (p - &args.rcx >= sizeof(args)/sizeof(u64)) {
+> 		WARN_ON_ONCE(1);
+> 		break;
+> 	}
+> 
+> or some other pointer voodoo.
+
+Will do.
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+  Kiryl Shutsemau / Kirill A. Shutemov
