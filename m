@@ -1,618 +1,792 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2085.outbound.protection.outlook.com [40.107.92.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D67A142E73
-	for <linux-coco@lists.linux.dev>; Wed,  2 Jul 2025 01:04:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751418301; cv=none; b=ozuxX0OgJMElWVyr5nzSS4nCUDac+3gD3qQZraMUbKqSwkEoguv9oRRJjLzNM1mw6tT1LCfJvtmIon9Qz1JKs6cHkIXMuW6GRti0zJht19/FszqvFIOq6yNYjitZ6xBXC31xSn6ruyRe7PgaKiZmizzGoWYP+8Pe6CivYmRKe78=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751418301; c=relaxed/simple;
-	bh=HAi8XTCbUi9ctG7s2cBfvBed60TDj55oXZJqKL1myWY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EGyVBspCf3268Ko1HaWQ4/m7IoW0yYN0JKHNryPscb55276FSxa2m33A230rsEr7NqJKsvXsUSD73C9hgWmQ5XAJUX2lFHGAo7TQKXenOPLysmzGcqAHg590CZ+Mu+ffQsFZ/ukyGbV6nAmud0nipbGC5+69Vd3qUozx4+KYM0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=agDXy5Nf; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E917319ABDE
+	for <linux-coco@lists.linux.dev>; Thu,  3 Jul 2025 02:59:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.85
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751511582; cv=fail; b=glJnVBlnlj0el1W9PhMoR98F5grOTfgBnkE26qLLWS9Ub6U5JvGeno3bPz3ni8689uXcOUSJge6YqES8qwyvcl6R7ntEWIg8pUxs84uATUbIhOBonw3LSZCYxMBoemM0NPvaN3WLskO6DF4/3OxbCsY6++BsPfniUwbeY9hYKF8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751511582; c=relaxed/simple;
+	bh=YoDCRtsXzqONxaSq3f13m15GCDOAjCSQdbpv9W73jF4=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=CFcPymRGOMY3sCbVoEmT0prUgCDvBDuLN5dgdrJkE6jwrR68L8B7BYry5dOl4CMa9PRlfk7em595hCV4cjL867MjnysatkBCJPYEeSmqeoD3VlA4AVN288jbSbzjYMOWRoJ78nqEHYcAxVLsuZDH1ys6CzosbIWfZ8OtegQb6pI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=TsIG/Rat; arc=fail smtp.client-ip=40.107.92.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="agDXy5Nf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751418298;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y7e2iNuz6UMxuCJt+XXUmdNcGsesfcYP95Zgq3Kiu+4=;
-	b=agDXy5NfAl4u9XK3u77El7TgV0qZ+5Ug1s/sUoasFWJE+cnpW655pyj4iVNdnjrjaVMQvB
-	pLQG6fU3nRfETPpdwY5d6mL+xRrV5RlBY6iDzeD9xBtyW6dlSj0cYrjEaGEq3XAgAQPO8m
-	lmfbjAUUKRvc+nNxEc9lVgHlJX55wBM=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-316-rmK2YvOqMqCNj0e4fKrsZw-1; Tue, 01 Jul 2025 21:04:56 -0400
-X-MC-Unique: rmK2YvOqMqCNj0e4fKrsZw-1
-X-Mimecast-MFC-AGG-ID: rmK2YvOqMqCNj0e4fKrsZw_1751418296
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-235089528a0so58528805ad.1
-        for <linux-coco@lists.linux.dev>; Tue, 01 Jul 2025 18:04:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751418296; x=1752023096;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y7e2iNuz6UMxuCJt+XXUmdNcGsesfcYP95Zgq3Kiu+4=;
-        b=Czv44a+NMQYBKj+GgmotcbfWlRpCLBPZHRgjqjuctpGB8X07RQRP/F8uoTjzaUQNaS
-         EwxgzI8Fj1IhTIdGyF7ocMvNFeu6kFRcXcJ5CdBOrItbZDW6sYP0cM6j1InZkX7v5bUz
-         r15sct1Gj5mTVq91iKRM8f2gDHaxHO0zLVyCTQxD/Zgltc8EI1UgtjV1hQ69AWSLnI6U
-         I/RbH2wKEeAPX+YtWzbwjEUAIC2orp9nE5vj1o9Dyhz4BtmR3L5OzFyWo9uMTzea6fLl
-         BFGRnH8BmbpGBZhOD0tvckMzDkv3hsjSKlENAdAcR3hBrYRg/ZjyBZv9zJPWSfTkm2EJ
-         voYg==
-X-Forwarded-Encrypted: i=1; AJvYcCVQfJJDKF0DAyMchAp/YOH1ZjOYZmEfXdcKrSliyqnwC9P0LS8OjnYzJm7dXbHurhe8qOBOGjVL8Enu@lists.linux.dev
-X-Gm-Message-State: AOJu0YzclBiulT0Os9LS5nFeAsqlV2VpcolGi3UXq6/p1BRGWQo4b48u
-	tuhA1LH8F/R71tQDfmjGNfX6JyVjlg5fpppnOr+fGmOHLgOPqzNF0YZHlHaTtzvImLRkIPVPicA
-	Y3lAFadcwwJV5HKoP+iTd8KajaNOUrn0zxeIc3TZoCC/nNgT9NLGgKfNMkiJbOLQ=
-X-Gm-Gg: ASbGncs9bT6Bump+QBGw2scK0lzR8og6kAyRm+qtr7rtF57yRZiJSvfmfTfLUf3/FIm
-	7Kef/WKwt9AIq5uCUC+0g2y7fAgyZfWpXQiBQKMS8b1VzEcWAmrOAkl27WCKHgyunHMtS/w6ypH
-	1lChjaU0BVjxnQW/5Olj8RjJYcwdLjRYpbMvz/LYbAxL9VRh/YwBPPLvhnthYQJUC1bAsJCGJ4x
-	lfvjwcDeOsOKvwFJREmcXQ+CTGRcV5jFszo3+jPpkFc6Sfd0gosKiVmTZNAlaxD3PhkNQ1gPnJN
-	jPQDHuWNtJF7nGf09hyi28fYWeV+yT3+VoLUPIq4+ZrZAt66DCyNkczL6oLxSg==
-X-Received: by 2002:a17:903:3d0f:b0:215:b1e3:c051 with SMTP id d9443c01a7336-23c6e7849e6mr8884235ad.11.1751418295529;
-        Tue, 01 Jul 2025 18:04:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFHOXu/xZ6csxfliZUO8Wh+5iggHLkbPkDpGniLYRwXHCeihkHJH2+rb6i8+X+baqZXhpUZaA==
-X-Received: by 2002:a17:903:3d0f:b0:215:b1e3:c051 with SMTP id d9443c01a7336-23c6e7849e6mr8883735ad.11.1751418294924;
-        Tue, 01 Jul 2025 18:04:54 -0700 (PDT)
-Received: from [192.168.68.51] (n175-34-62-5.mrk21.qld.optusnet.com.au. [175.34.62.5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23acb3c6e09sm115339825ad.227.2025.07.01.18.04.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Jul 2025 18:04:54 -0700 (PDT)
-Message-ID: <bb75b5fd-7186-4c93-80ff-0a398dc6c78d@redhat.com>
-Date: Wed, 2 Jul 2025 11:04:46 +1000
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="TsIG/Rat"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ysLVNRs7eZC8uQCbPTc1Pj3Y172bck4nNK7EUXNow0YAlQcU0Jg36BeG6Z1PHBepjxvTFg/Cw0doRTbG0CYGn568Z/sfW13/F1wDcSGtqtB1TrU0yqaADbWml6pqYceZXCT+QRo7TLbborY9loAteHL5Z3cwz+rUuuIDPoHkxmfoMHYHaUgIWihWA1cFImmX05DkMxF0oN3Py/ViWDnVojH0mYA34eSBpER/JfyxiBw6+8MZ6HKOhnuFhAQKlhyupdtbteEhKqTZae04qRccOejvjmsFqa/grzOhvsFWmd3O7Ntwt5lx8lZUzG6gaZFZ2ZGmRITQBwBFnWCaDAU9aA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bB8ztLFKRDN0bRVzzHf/M2q84Y+CctN/fuiNOEEDIOo=;
+ b=CfHLezwPTpqkOnGrO20qXFlcgN0Oq3mgtqeNOSaBt7ewk+f7by6/auvE4+OfQLVULO2384ERjs5BQMvAGT/za/NEGyWLn9G7ZuTtUB9UP+7mZu+5NqslLtmvnbUf5OC1mopxCSsLqrX8VaghkkGzruvxYP8GVUnGhlCop++/NPvcsMsmVmpAGWf+36jhBe9oHvrjb9vAnrw+N07hW+Mwzepv3voIo6tKSHaBXDqi00goqZ/8ScXZKylSQ/BGaRPE3uQnG6kqXs5FP/aDDkSrgLnKBjc+1aU9VY4l93AJya5B9UahlkpVID/NB2oHxkgwCxYfTuzaINXOXZmc4gaueg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bB8ztLFKRDN0bRVzzHf/M2q84Y+CctN/fuiNOEEDIOo=;
+ b=TsIG/RatVEXkdCv223XWLJkh4JJYxaVbo22eouqkPw4Tir5FClv/aLw/rHEAC9wQ2eZYUv0Wc40wBuund+DLLSvdEyAtshEGi5M4oDOsZ8fKRG4XL/V5qjd4YNc4mVpLo23IK2JdeEA13LyTOOYE+lyoIm30jwjJPiMTS/Z3FT0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
+ by IA1PR12MB6409.namprd12.prod.outlook.com (2603:10b6:208:38b::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.20; Thu, 3 Jul
+ 2025 02:59:36 +0000
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::1e6b:ca8b:7715:6fee]) by CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::1e6b:ca8b:7715:6fee%7]) with mapi id 15.20.8901.021; Thu, 3 Jul 2025
+ 02:59:36 +0000
+Message-ID: <24958311-8cd7-40d8-a366-3141eae7676e@amd.com>
+Date: Thu, 3 Jul 2025 12:59:25 +1000
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v3 08/13] PCI/IDE: Add IDE establishment helpers
+To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+ linux-pci@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, lukas@wunner.de, aneesh.kumar@kernel.org,
+ suzuki.poulose@arm.com, sameo@rivosinc.com, jgg@nvidia.com, zhiw@nvidia.com,
+ Bjorn Helgaas <bhelgaas@google.com>, Yilun Xu <yilun.xu@linux.intel.com>
+References: <20250516054732.2055093-1-dan.j.williams@intel.com>
+ <20250516054732.2055093-9-dan.j.williams@intel.com>
+Content-Language: en-US
+From: Alexey Kardashevskiy <aik@amd.com>
+In-Reply-To: <20250516054732.2055093-9-dan.j.williams@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TPYP295CA0019.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:7d0:a::14) To CH3PR12MB9194.namprd12.prod.outlook.com
+ (2603:10b6:610:19f::7)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 20/43] arm64: RME: Runtime faulting of memory
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>
-References: <20250611104844.245235-1-steven.price@arm.com>
- <20250611104844.245235-21-steven.price@arm.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20250611104844.245235-21-steven.price@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: XK19fcRTYGYXxkDlxFcIiv3-LI7GXRIR0yds1ejsIbs_1751418296
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|IA1PR12MB6409:EE_
+X-MS-Office365-Filtering-Correlation-Id: ea620df4-de1d-4138-84de-08ddb9dda4b3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cmJrK0tLM0dLQXgyS0hvK2QrRWNMNkFvVitsRnJTcDljZDh5bW5sNW9OUE0y?=
+ =?utf-8?B?TjlJM0p5c2puK0hJQWl5R2JyYUNQTVlFNysxSWgwZkpvbVJSbEw2N0VSTDZG?=
+ =?utf-8?B?Mm02ZjhoenpSMW1xOWFGVjBFbkhsL1EwdTZtWTZYZnNuc2o3ZFlIR01oQ3dR?=
+ =?utf-8?B?RG5rbU56N3lSaDlZQlJNUVdBaDJXdFNuem1jMnRBdjVBc1IvUzdPbm41Ny9o?=
+ =?utf-8?B?YjN2VmVTQnk5RkFibjJrV2txeUZwbmhoTi9pcWdNMlJpTUFuaytKVndiN0xr?=
+ =?utf-8?B?MytKSG5Ga1Qydk05bmQ1K1MrY2Z4enlxOURXKzNhQ2JybURpNjRvMXQrOHlx?=
+ =?utf-8?B?ZlFFalMweVJYbjV3NFZFNE5iN2dIc0h0VkdNU0FXYUtSMXMwcXdQYkUyUk1u?=
+ =?utf-8?B?VDZ5U2JTZnp0QVBKc0RQUTZmVUNuYmowMEg3UzlDdHR0c0Fqd0VYM1h1NVlU?=
+ =?utf-8?B?aC9iNGgxa0V4bW5PandBWTZuaEhlV3cwNkpGcmVVOHhYckNvWkRJOVgvaWk2?=
+ =?utf-8?B?TXNHR05TTnppZDdjUncrSEY3SmFFWUhJd0hRWkZLVkQ5SHYvYnFtcXF2bWMw?=
+ =?utf-8?B?WFc3bFluMGRKZGkxa001UzBkQzhsbFVlUzJ5enBVdnZQR2hMa1dqR0Z4UFpr?=
+ =?utf-8?B?dzBIMERRRWdqcGxscUpnMWV2bStUT0RUeXE5ZXlUQk9LTWt1cUdHeUQ5UE0w?=
+ =?utf-8?B?Q2ZWclllTXc0eGZXTnUxVTJ6TlpZT2loTEN6MDFHMmxRTXdKMlFtcnk4SGZl?=
+ =?utf-8?B?TW1ER1NOTlJKSGFibzR1NWE0V2kvYkFoUFRmWG9rclNWK2JOY0VKZk5pVGRC?=
+ =?utf-8?B?NCtRZWdIU3EwU3JiTkdwMXo4MUtZNHhQak5xbzhMTjZRR0ZNdjNLdmc2Q0Rj?=
+ =?utf-8?B?aFhTeWhNRTNQNnpKRC8xZDM1ZVVrWEpLU3dVQjJWTHViamwwRStCNXRSclNz?=
+ =?utf-8?B?aU9tRVFLT1oyKzBPYmtMU3NSZ2pIU2IrbXhuODRnQURNdzN5WFVFeXRuWXBr?=
+ =?utf-8?B?RzBoWE5XbnRmY2FCSnlhVmo2eVgvOWRMcE9qaG5Xb1MrbTYwYSt4ZUZlM3dt?=
+ =?utf-8?B?ME5jTVZpd3N2OHhjTnA2VjljOHpydnF1MHJhRGVOVnlBN0FJdEErc094Uy9a?=
+ =?utf-8?B?MmNKakxZVFZIN0JaVDlsRFd6UFZsOHR3OXpKaUhlSHpONUtPejNBR3AvamFS?=
+ =?utf-8?B?RTZROXUyVXZDZ0tSMkdELzlFUEZZaWJsemh3N3AyYks5OVcwcGxxSlNqY1N2?=
+ =?utf-8?B?YjdRbmlaVzc2UFpnYW9lTHhvN0MySVlUWXpBVkM0QTR2Nkp3eE40SmZtcE5t?=
+ =?utf-8?B?c2dWeS9hQ2EvTXU3bFpWQlJ6VVA5OHB6VDlrSFMvRlFHVkIydTVOWXc4YTR2?=
+ =?utf-8?B?VmdlR1FXYWNMNUZZWndBWlpHdEFZanZlcnNIYnhGNkhFcE4xeTZtMVRJeFlL?=
+ =?utf-8?B?SmhlSHdBaHhKdmg4TGJkK1lZbmQ3Q09mK2lzQUswbTZXM0g2SlVsYVNWVmpp?=
+ =?utf-8?B?TEZyWmFDb1dGTzd2MHlFNFA2eVBua1F3RlJ0QWtRbi90d1I2OCtqQW91ZEFo?=
+ =?utf-8?B?NjduekhMMlhVQnVaSFJEalZvU3hYSHRzTURNV0VPb016Z1UxMkVlZHBIdng5?=
+ =?utf-8?B?bit4YzBJa0dTUFUzcWtkS1ZLM0txbE1JekpETjFzRlY0RFkzQk0xblNXQ0ZV?=
+ =?utf-8?B?UFByZmM2d1RqdkMzNGdkM0llckE5aUFZRm9hc2hxNkJBd3JsL2JHUDB3SVN6?=
+ =?utf-8?B?SnRlNm5qSlFsUHZ3YlMraGdrZFh1RWpFSXU2S0w2SWtISk5MU0F1dWJ1YVdC?=
+ =?utf-8?Q?H1cdHUY/tzif/oRbYa3tL8nBizIbybZ82gCdU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WTZQbkVkZngyUWdUM0lOeG5wUzFRVDZVc1AwdjVoODM3VVZNcjl4Y3pOTHVm?=
+ =?utf-8?B?L0oyaTQ3TElXVzIrL0F0U04xNFNRanVSSGNDd2wzUHRCenZHU0Jua3FUZmpW?=
+ =?utf-8?B?K0plek9xeEU3Qnd3K1A5RnNvemhGTG1oQmpDWHB5dHU1eUpEbDNOZER5SWJC?=
+ =?utf-8?B?THpLVW5WS0JtcUhhbENIWEtKTnQvRlRzZ3d0MVg2STR2V0paT0ZpY1ZDcE0z?=
+ =?utf-8?B?MzdDandMU1ppTDhYa3JzNXhhU1BCRVRJVlFsRGpYaVVIODlHcDJFWFJZYisy?=
+ =?utf-8?B?UWwvbCt2M2FqZnF5NFROU0JvSDhmSXBtV3lXcXBuSFl4eHpOajQrMzhGZ2Z3?=
+ =?utf-8?B?aG0ydis4VGdaNUJsRUlSMlpCTXJ4U05ObnhiWllqOER2REFDeXpRZm9DeU1H?=
+ =?utf-8?B?Zmpwb2wzb3RQT0JBYWlxZjkvdDZPcDJBNVpYTS8rKzUvYWthWWsrMHRMSHdZ?=
+ =?utf-8?B?U1JFWEErdHJ1ajE0MDA3SkFGMW9TWHJTVkFPblBuWHhpSHRCMFl4a3pZOWZH?=
+ =?utf-8?B?T2ljdktnNjNnSGdGY0psMlkyTHNtblNYbmIrR0hRYzNQT2xFMjVWakZzY2tP?=
+ =?utf-8?B?UldpcFV5SjlBQjczTkd6VzdRVzVURWtkTmlPUkRmZ3V5VDVDM01KRWUzT0ZX?=
+ =?utf-8?B?T0pveXNHYWQ5N2V4cXlLWkJCU3NMV0tmSnA1THkxYVROWnFHVktFU1YvVStw?=
+ =?utf-8?B?NDNoMlVKNWlBMmRsdEllWWtxZXFRWUFtQmUwSU55bDUwSGxWTGZ6RWR0WDlO?=
+ =?utf-8?B?eExPWDhiWUZ2VkJtZUNKazhmeUg2UU9IRFFZTzFXSWd5d2hKRzhCSjJpazZy?=
+ =?utf-8?B?NjBhNllRNForMm5LNGUyaUxGWFU2dkd2d0hDWjRCdGkwNWVKcDhxd2hJTXNo?=
+ =?utf-8?B?T2RReStZL21Ha1lHL1NRdjdHVnlidk5CTktPcFRHeGFFY1hpWU95SEJrRzNC?=
+ =?utf-8?B?STNtSFpaamVJK214WW9KT2NZdEVFQUljTmN4ODF2WklxME92Tm5VckZoSWJ0?=
+ =?utf-8?B?UmF2VFJKQ0dISVpFS0lvektPRzV4d050Um42K216THRmRHYzYjFYeUtlRFF3?=
+ =?utf-8?B?QU8yMmY3WUV2TVdIUXFIS1JNcjV1QnpIMnZGMzl0c09wdThrZmZVdW8xb1FM?=
+ =?utf-8?B?TGJONlpZMmpueHdCSDVnQThSa1cva0h2eWh5Q0RvQzh2MEJER1NkY0tNamk1?=
+ =?utf-8?B?a01vcnZEcHlWWE8vR0RRZEpnZ25kOWNoSnExRno4d0pTcGFBRndnWjhvYXds?=
+ =?utf-8?B?T0w1aU41c2x3L29IRnNvdzFqVjVBT1ZRb0JackpSV2tTMmFlWVV4cC9uUTN1?=
+ =?utf-8?B?eDl3SEYvM3RKNHd4Wmw1UDM3TjR1QVBmQnNuL0tBTnVabGo3OG9PeWdmQTYx?=
+ =?utf-8?B?SnZMUHlGLy9INVRkYTlhRktPZEZmRE01V1AzSGdweDBaTTRwdWtxaEtHREFh?=
+ =?utf-8?B?WVdiaFl2TWZoRnBkK3JtbjlBdmUwdXhyNFNVb2ROZUZSaXdodkg4RWN6blQr?=
+ =?utf-8?B?TWZka3FIQm1DTjRtV1VKYTcyV1NGNkJKRy80Z1JBZmQyTUU4YkV6UDJ3Y3NG?=
+ =?utf-8?B?Y2x4K1B0YTJ2Z0o5Q0ZVdkYwZmljMGxhbzhHdjZlN3pjZklvMXVkVnpkUTdQ?=
+ =?utf-8?B?YjNrcjhrdklVV2RvWXhsSDJuNFU3VmVTUFdaSElEcDd5ME5qNnVMNm1NWmUv?=
+ =?utf-8?B?ejZXd09OWWNFUXJ5aE9rUFhvWEdmc2RjU3U1K1B4amlGQTk5Qi9ISnFkZkhR?=
+ =?utf-8?B?WlRmUlhNNHhCS04rK2w3M0xvOTdnVGZ6Wm5rTkZvWE1ZYjdRWHhWM1FsQUFT?=
+ =?utf-8?B?d3dVTHZ5KzdNWnZ1TFdIZVYyRi90YTdXSUsvZTNacFRGUkhmOWlXR0p0Ulcr?=
+ =?utf-8?B?UlIrUUpmeWt0NHZhYTFmNm9ubllaRDVvWUg4Tm1FcUFnRUhwWWVXVGpIVXlB?=
+ =?utf-8?B?M2Y0WjAzYjVqRGZDYTl5YmV6ZXh0c09RbndPOUVlUFZheWVVRlZleFB1dWg2?=
+ =?utf-8?B?RlZoZmZuVG5Pa0RZVk9oMlZ3NlE5bjdZQUVDaGJsT2g5TUQ2VUROUzlLWmdK?=
+ =?utf-8?B?REpieWV1SDZ5MXpqUzhTVWlhOTBHZnVDcUpiKy9Ca1FBNWovaHo0YWFDNENn?=
+ =?utf-8?Q?hAO5x6vmeRFpsh5z6czllhTpX?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ea620df4-de1d-4138-84de-08ddb9dda4b3
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2025 02:59:36.2134
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qdn1mfI7ZhwYuLcPCRK5Odd7UmkTYsedzDqN7y6oK1IgdFzWfhhMkzbJiDjBvoWz64MjV2HExahHZVn/zmPbxQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6409
 
-On 6/11/25 8:48 PM, Steven Price wrote:
-> At runtime if the realm guest accesses memory which hasn't yet been
-> mapped then KVM needs to either populate the region or fault the guest.
+
+
+On 16/5/25 15:47, Dan Williams wrote:
+> There are two components to establishing an encrypted link, provisioning
+> the stream in Partner Port config-space, and programming the keys into
+> the link layer via IDE_KM (IDE Key Management). This new library,
+> drivers/pci/ide.c, enables the former. IDE_KM, via a TSM low-level
+> driver, is saved for later.
 > 
-> For memory in the lower (protected) region of IPA a fresh page is
-> provided to the RMM which will zero the contents. For memory in the
-> upper (shared) region of IPA, the memory from the memslot is mapped
-> into the realm VM non secure.
+> With the platform TSM implementations of SEV-TIO and TDX Connect in mind
+> this library abstracts small differences in those implementations. For
+> example, TDX Connect handles Root Port register setup while SEV-TIO
+> expects System Software to update the Root Port registers. This is the
+> rationale for fine-grained 'setup' + 'enable' verbs.
 > 
-> Signed-off-by: Steven Price <steven.price@arm.com>
+> The other design detail for TSM-coordinated IDE establishment is that
+> the TSM may manage allocation of Stream IDs, this is why the Stream ID
+> value is passed in to pci_ide_stream_setup().
+> 
+> The flow is:
+> 
+> pci_ide_stream_alloc()
+>    Allocate a Selective IDE Stream Register Block in each Partner Port
+>    (Endpoint + Root Port), and reserve a host bridge / platform stream
+>    slot. Gather Partner Port specific stream settings like Requester ID.
+> pci_ide_stream_register()
+>    Publish the stream in sysfs after allocating a Stream ID. In the TSM
+>    case the TSM allocates the Stream ID for the Partner Port pair.
+> pci_ide_stream_setup()
+>    Program the stream settings to a Partner Port. Caller is responsible
+>    for optionally calling this for the Root Port as well if the TSM
+>    implementation requires it.
+> pci_ide_stream_enable()
+>    Try to run the stream after IDE_KM.
+> 
+> In support of system administrators auditing where platform, Root Port,
+> and Endpoint IDE stream resources are being spent, the allocated stream
+> is reflected as a symlink from the host bridge to the endpoint with the
+> name:
+> 
+>      stream%d.%d.%d:%s
+> 
+> Where the tuple of integers reflects the allocated platform, Root Port,
+> and Endpoint stream index (Selective IDE Stream Register Block) values,
+> and the %s is the endpoint device name.
+> 
+> Thanks to Wu Hao for a draft implementation of this infrastructure.
+> 
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Lukas Wunner <lukas@wunner.de>
+> Cc: Samuel Ortiz <sameo@rivosinc.com>
+> Co-developed-by: Alexey Kardashevskiy <aik@amd.com>
+> Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
+> Co-developed-by: Yilun Xu <yilun.xu@linux.intel.com>
+> Signed-off-by: Yilun Xu <yilun.xu@linux.intel.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 > ---
-> Changes since v8:
->   * Propagate the may_block flag.
->   * Minor comments and coding style changes.
-> Changes since v7:
->   * Remove redundant WARN_ONs for realm_create_rtt_levels() - it will
->     internally WARN when necessary.
-> Changes since v6:
->   * Handle PAGE_SIZE being larger than RMM granule size.
->   * Some minor renaming following review comments.
-> Changes since v5:
->   * Reduce use of struct page in preparation for supporting the RMM
->     having a different page size to the host.
->   * Handle a race when delegating a page where another CPU has faulted on
->     a the same page (and already delegated the physical page) but not yet
->     mapped it. In this case simply return to the guest to either use the
->     mapping from the other CPU (or refault if the race is lost).
->   * The changes to populate_par_region() are moved into the previous
->     patch where they belong.
-> Changes since v4:
->   * Code cleanup following review feedback.
->   * Drop the PTE_SHARED bit when creating unprotected page table entries.
->     This is now set by the RMM and the host has no control of it and the
->     spec requires the bit to be set to zero.
-> Changes since v2:
->   * Avoid leaking memory if failing to map it in the realm.
->   * Correctly mask RTT based on LPA2 flag (see rtt_get_phys()).
->   * Adapt to changes in previous patches.
-> ---
->   arch/arm64/include/asm/kvm_emulate.h |  10 ++
->   arch/arm64/include/asm/kvm_rme.h     |  10 ++
->   arch/arm64/kvm/mmu.c                 | 133 ++++++++++++++++++++-
->   arch/arm64/kvm/rme.c                 | 165 +++++++++++++++++++++++++++
->   4 files changed, 312 insertions(+), 6 deletions(-)
+>   .../ABI/testing/sysfs-devices-pci-host-bridge |  38 ++
+>   MAINTAINERS                                   |   1 +
+>   drivers/pci/ide.c                             | 366 ++++++++++++++++++
+>   include/linux/pci-ide.h                       |  76 ++++
+>   include/linux/pci.h                           |   6 +
+>   include/uapi/linux/pci_regs.h                 |   2 +
+>   6 files changed, 489 insertions(+)
+>   create mode 100644 Documentation/ABI/testing/sysfs-devices-pci-host-bridge
+>   create mode 100644 include/linux/pci-ide.h
 > 
-
-With @may_block set to true in kvm_free_stage2_pgd(), as commented previously.
-With below nitpicks addressed:
-
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-
-> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
-> index 302a691b3723..126c98cded90 100644
-> --- a/arch/arm64/include/asm/kvm_emulate.h
-> +++ b/arch/arm64/include/asm/kvm_emulate.h
-> @@ -709,6 +709,16 @@ static inline bool kvm_realm_is_created(struct kvm *kvm)
->   	return kvm_is_realm(kvm) && kvm_realm_state(kvm) != REALM_STATE_NONE;
->   }
->   
-> +static inline gpa_t kvm_gpa_from_fault(struct kvm *kvm, phys_addr_t ipa)
-> +{
-> +	if (kvm_is_realm(kvm)) {
-> +		struct realm *realm = &kvm->arch.realm;
+> diff --git a/Documentation/ABI/testing/sysfs-devices-pci-host-bridge b/Documentation/ABI/testing/sysfs-devices-pci-host-bridge
+> new file mode 100644
+> index 000000000000..d592b68c7333
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-devices-pci-host-bridge
+> @@ -0,0 +1,38 @@
+> +What:		/sys/devices/pciDDDD:BB
+> +		/sys/devices/.../pciDDDD:BB
+> +Date:		December, 2024
+> +Contact:	linux-pci@vger.kernel.org
+> +Description:
+> +		A PCI host bridge device parents a PCI bus device topology. PCI
+> +		controllers may also parent host bridges. The DDDD:BB format
+> +		conveys the PCI domain (ACPI segment) number and root bus number
+> +		(in hexadecimal) of the host bridge. Note that the domain number
+> +		may be larger than the 16-bits that the "DDDD" format implies
+> +		for emulated host-bridges.
 > +
-> +		return ipa & ~BIT(realm->ia_bits - 1);
-> +	}
-> +	return ipa;
+> +What:		pciDDDD:BB/firmware_node
+> +Date:		December, 2024
+> +Contact:	linux-pci@vger.kernel.org
+> +Description:
+> +		(RO) Symlink to the platform firmware device object "companion"
+> +		of the host bridge. For example, an ACPI device with an _HID of
+> +		PNP0A08 (/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00). See
+> +		/sys/devices/pciDDDD:BB entry for details about the DDDD:BB
+> +		format.
+> +
+> +What:		pciDDDD:BB/streamH.R.E:DDDD:BB:DD:F
+> +Date:		December, 2024
+> +Contact:	linux-pci@vger.kernel.org
+> +Description:
+> +		(RO) When a platform has established a secure connection, PCIe
+> +		IDE, between two Partner Ports, this symlink appears. The
+> +		primary function is to account the stream slot / resources
+> +		consumed in each of the (H)ost bridge, (R)oot Port and
+> +		(E)ndpoint that will be freed when invoking the tsm/disconnect
+> +		flow. The link points to the endpoint PCI device at domain:DDDD
+> +		bus:BB device:DD function:F. Where R and E represent the
+> +		assigned Selective IDE Stream Register Block in the Root Port
+> +		and Endpoint, and H represents a platform specific pool of
+> +		stream resources shared by the Root Ports in a host bridge.  See
+> +		/sys/devices/pciDDDD:BB entry for details about the DDDD:BB
+> +		format.
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 2fcbd29853a8..e4c3da0b570b 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -18677,6 +18677,7 @@ Q:	https://patchwork.kernel.org/project/linux-pci/list/
+>   B:	https://bugzilla.kernel.org
+>   C:	irc://irc.oftc.net/linux-pci
+>   T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git
+> +F:	Documentation/ABI/testing/sysfs-devices-pci-host-bridge
+>   F:	Documentation/PCI/
+>   F:	Documentation/devicetree/bindings/pci/
+>   F:	arch/x86/kernel/early-quirks.c
+> diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
+> index 98a51596e329..a529926647f4 100644
+> --- a/drivers/pci/ide.c
+> +++ b/drivers/pci/ide.c
+> @@ -5,6 +5,8 @@
+>   
+>   #define dev_fmt(fmt) "PCI/IDE: " fmt
+>   #include <linux/pci.h>
+> +#include <linux/sysfs.h>
+> +#include <linux/pci-ide.h>
+>   #include <linux/bitfield.h>
+>   #include "pci.h"
+>   
+> @@ -96,5 +98,369 @@ void pci_ide_init(struct pci_dev *pdev)
+>   
+>   	pdev->ide_cap = ide_cap;
+>   	pdev->nr_link_ide = nr_link_ide;
+> +	pdev->nr_sel_ide = nr_streams;
+>   	pdev->nr_ide_mem = nr_ide_mem;
+>   }
+> +
+> +struct stream_index {
+> +	unsigned long *map;
+> +	u8 max, stream_index;
+> +};
+> +
+> +static void free_stream_index(struct stream_index *stream)
+> +{
+> +	clear_bit_unlock(stream->stream_index, stream->map);
 > +}
 > +
-
-It may be more clearer with something like below. Note non-coco VM is still
-preferred than coco VM.
-
-static inline gpa_t kvm_gpa_from_fault(struct kvm *kvm, phys_addr_t ipa)
-{
-	if (!kvm_is_realm(kvm)
-		return ipa;
-
-	return ipa & ~BIT(kvm->arch.realm->ia_bits -1);		
-}
-
->   static inline bool vcpu_is_rec(struct kvm_vcpu *vcpu)
->   {
->   	if (static_branch_unlikely(&kvm_rme_is_available))
-> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/asm/kvm_rme.h
-> index 321970779669..df88ae51b7c9 100644
-> --- a/arch/arm64/include/asm/kvm_rme.h
-> +++ b/arch/arm64/include/asm/kvm_rme.h
-> @@ -110,6 +110,16 @@ void kvm_realm_unmap_range(struct kvm *kvm,
->   			   unsigned long size,
->   			   bool unmap_private,
->   			   bool may_block);
-> +int realm_map_protected(struct realm *realm,
-> +			unsigned long base_ipa,
-> +			kvm_pfn_t pfn,
-> +			unsigned long size,
-> +			struct kvm_mmu_memory_cache *memcache);
-> +int realm_map_non_secure(struct realm *realm,
-> +			 unsigned long ipa,
-> +			 kvm_pfn_t pfn,
-> +			 unsigned long size,
-> +			 struct kvm_mmu_memory_cache *memcache);
->   
->   static inline bool kvm_realm_is_private_address(struct realm *realm,
->   						unsigned long addr)
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index 37403eaa5699..1dc644ea26ce 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -338,8 +338,14 @@ static void __unmap_stage2_range(struct kvm_s2_mmu *mmu, phys_addr_t start, u64
->   
->   	lockdep_assert_held_write(&kvm->mmu_lock);
->   	WARN_ON(size & ~PAGE_MASK);
-> -	WARN_ON(stage2_apply_range(mmu, start, end, KVM_PGT_FN(kvm_pgtable_stage2_unmap),
-> -				   may_block));
+> +DEFINE_FREE(free_stream, struct stream_index *, if (_T) free_stream_index(_T))
+> +static struct stream_index *alloc_stream_index(unsigned long *map, u8 max,
+> +					       struct stream_index *stream)
+> +{
+> +	if (!max)
+> +		return NULL;
 > +
-> +	if (kvm_is_realm(kvm))
-> +		kvm_realm_unmap_range(kvm, start, size, !only_shared,
-> +				      may_block);
+> +	do {
+> +		u8 stream_index = find_first_zero_bit(map, max);
+> +
+> +		if (stream_index == max)
+> +			return NULL;
+> +		if (!test_and_set_bit_lock(stream_index, map)) {
+> +			*stream = (struct stream_index) {
+> +				.map = map,
+> +				.max = max,
+> +				.stream_index = stream_index,
+> +			};
+> +			return stream;
+> +		}
+> +		/* collided with another stream acquisition */
+> +	} while (1);
+> +}
+> +
+> +/**
+> + * pci_ide_stream_alloc() - Reserve stream indices and probe for settings
+> + * @pdev: IDE capable PCIe Endpoint Physical Function
+> + *
+> + * Retrieve the Requester ID range of @pdev for programming its Root
+> + * Port IDE RID Association registers, and conversely retrieve the
+> + * Requester ID of the Root Port for programming @pdev's IDE RID
+> + * Association registers.
+> + *
+> + * Allocate a Selective IDE Stream Register Block instance per port.
+> + *
+> + * Allocate a platform stream resource from the associated host bridge.
+> + * Retrieve stream association parameters for Requester ID range and
+> + * address range restrictions for the stream.
+> + */
+> +struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
+> +{
+> +	/* EP, RP, + HB Stream allocation */
+> +	struct stream_index __stream[PCI_IDE_PARTNER_MAX + 1];
+> +	struct pci_host_bridge *hb;
+> +	struct pci_dev *rp;
+> +	int num_vf, rid_end;
+> +
+> +	if (!pci_is_pcie(pdev))
+> +		return NULL;
+> +
+> +	if (pci_pcie_type(pdev) != PCI_EXP_TYPE_ENDPOINT)
+> +		return NULL;
+> +
+> +	if (!pdev->ide_cap)
+> +		return NULL;
+> +
+> +	/*
+> +	 * Catch buggy PCI platform initialization (missing
+> +	 * pci_ide_init_nr_streams())
+> +	 */
+> +	hb = pci_find_host_bridge(pdev->bus);
+> +	if (WARN_ON_ONCE(!hb->nr_ide_streams))
+> +		return NULL;
+> +
+> +	struct pci_ide *ide __free(kfree) = kzalloc(sizeof(*ide), GFP_KERNEL);
+> +	if (!ide)
+> +		return NULL;
+> +
+> +	struct stream_index *hb_stream __free(free_stream) = alloc_stream_index(
+> +		hb->ide_stream_map, hb->nr_ide_streams, &__stream[PCI_IDE_HB]);
+> +	if (!hb_stream)
+> +		return NULL;
+> +
+> +	rp = pcie_find_root_port(pdev);
+> +	struct stream_index *rp_stream __free(free_stream) = alloc_stream_index(
+> +		rp->ide_stream_map, rp->nr_sel_ide, &__stream[PCI_IDE_RP]);
+> +	if (!rp_stream)
+> +		return NULL;
+> +
+> +	struct stream_index *ep_stream __free(free_stream) = alloc_stream_index(
+> +		pdev->ide_stream_map, pdev->nr_sel_ide, &__stream[PCI_IDE_EP]);
+> +	if (!ep_stream)
+> +		return NULL;
+> +
+> +	/* for SR-IOV case, cover all VFs */
+> +	num_vf = pci_num_vf(pdev);
+> +	if (num_vf)
+> +		rid_end = PCI_DEVID(pci_iov_virtfn_bus(pdev, num_vf),
+> +				    pci_iov_virtfn_devfn(pdev, num_vf));
 > +	else
-> +		WARN_ON(stage2_apply_range(mmu, start, end,
-> +					   KVM_PGT_FN(kvm_pgtable_stage2_unmap),
-> +					   may_block));
->   }
->  
-
-{} is needed here.
-  
->   void kvm_stage2_unmap_range(struct kvm_s2_mmu *mmu, phys_addr_t start,
-> @@ -359,7 +365,10 @@ static void stage2_flush_memslot(struct kvm *kvm,
->   	phys_addr_t addr = memslot->base_gfn << PAGE_SHIFT;
->   	phys_addr_t end = addr + PAGE_SIZE * memslot->npages;
->   
-> -	kvm_stage2_flush_range(&kvm->arch.mmu, addr, end);
-> +	if (kvm_is_realm(kvm))
-> +		kvm_realm_unmap_range(kvm, addr, end - addr, false, true);
-> +	else
-> +		kvm_stage2_flush_range(&kvm->arch.mmu, addr, end);
->   }
->   
->   /**
-> @@ -1053,6 +1062,10 @@ void stage2_unmap_vm(struct kvm *kvm)
->   	struct kvm_memory_slot *memslot;
->   	int idx, bkt;
->   
-> +	/* For realms this is handled by the RMM so nothing to do here */
-> +	if (kvm_is_realm(kvm))
+> +		rid_end = pci_dev_id(pdev);
+> +
+> +	*ide = (struct pci_ide) {
+> +		.pdev = pdev,
+> +		.partner = {
+> +			[PCI_IDE_EP] = {
+> +				.rid_start = pci_dev_id(rp),
+> +				.rid_end = pci_dev_id(rp),
+> +				.stream_index = no_free_ptr(ep_stream)->stream_index,
+> +			},
+> +			[PCI_IDE_RP] = {
+> +				.rid_start = pci_dev_id(pdev),
+> +				.rid_end = rid_end,
+> +				.stream_index = no_free_ptr(rp_stream)->stream_index,
+> +			},
+> +		},
+> +		.host_bridge_stream = no_free_ptr(hb_stream)->stream_index,
+> +		.stream_id = -1,
+> +	};
+> +
+> +	return_ptr(ide);
+> +}
+> +EXPORT_SYMBOL_GPL(pci_ide_stream_alloc);
+> +
+> +/**
+> + * pci_ide_stream_free() - unwind pci_ide_stream_alloc()
+> + * @ide: idle IDE settings descriptor
+> + *
+> + * Free all of the stream index (register block) allocations acquired by
+> + * pci_ide_stream_alloc(). The stream represented by @ide is assumed to
+> + * be unregistered and not instantiated in any device.
+> + */
+> +void pci_ide_stream_free(struct pci_ide *ide)
+> +{
+> +	struct pci_dev *pdev = ide->pdev;
+> +	struct pci_dev *rp = pcie_find_root_port(pdev);
+> +	struct pci_host_bridge *hb = pci_find_host_bridge(pdev->bus);
+> +
+> +	clear_bit_unlock(ide->partner[PCI_IDE_EP].stream_index,
+> +			 pdev->ide_stream_map);
+> +	clear_bit_unlock(ide->partner[PCI_IDE_RP].stream_index,
+> +			 rp->ide_stream_map);
+> +	clear_bit_unlock(ide->host_bridge_stream, hb->ide_stream_map);
+> +	kfree(ide);
+> +}
+> +EXPORT_SYMBOL_GPL(pci_ide_stream_free);
+> +
+> +/**
+> + * pci_ide_stream_register() - Prepare to activate an IDE Stream
+> + * @ide: IDE settings descriptor
+> + *
+> + * After a Stream ID has been acquired for @ide, record the presence of
+> + * the stream in sysfs. The expectation is that @ide is immutable while
+> + * registered.
+> + */
+> +int pci_ide_stream_register(struct pci_ide *ide)
+> +{
+> +	struct pci_dev *pdev = ide->pdev;
+> +	struct pci_host_bridge *hb = pci_find_host_bridge(pdev->bus);
+> +	u8 ep_stream, rp_stream;
+> +	int rc;
+> +
+> +	if (ide->stream_id < 0 || ide->stream_id > U8_MAX) {
+> +		pci_err(pdev, "Setup fail: Invalid Stream ID: %d\n", ide->stream_id);
+> +		return -ENXIO;
+> +	}
+> +
+> +	ep_stream = ide->partner[PCI_IDE_EP].stream_index;
+> +	rp_stream = ide->partner[PCI_IDE_RP].stream_index;
+> +	const char *name __free(kfree) = kasprintf(
+> +		GFP_KERNEL, "stream%d.%d.%d:%s", ide->host_bridge_stream,
+> +		rp_stream, ep_stream, dev_name(&pdev->dev));
+> +	if (!name)
+> +		return -ENOMEM;
+> +
+> +	rc = sysfs_create_link(&hb->dev.kobj, &pdev->dev.kobj, name);
+> +	if (rc)
+> +		return rc;
+> +
+> +	ide->name = no_free_ptr(name);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(pci_ide_stream_register);
+> +
+> +/**
+> + * pci_ide_stream_unregister() - unwind pci_ide_stream_register()
+> + * @ide: idle IDE settings descriptor
+> + *
+> + * In preparation for freeing @ide, remove sysfs enumeration for the
+> + * stream.
+> + */
+> +void pci_ide_stream_unregister(struct pci_ide *ide)
+> +{
+> +	struct pci_dev *pdev = ide->pdev;
+> +	struct pci_host_bridge *hb = pci_find_host_bridge(pdev->bus);
+> +
+> +	sysfs_remove_link(&hb->dev.kobj, ide->name);
+> +	kfree(ide->name);
+> +}
+> +EXPORT_SYMBOL_GPL(pci_ide_stream_unregister);
+> +
+> +int pci_ide_domain(struct pci_dev *pdev)
+> +{
+> +	if (pdev->fm_enabled)
+> +		return pci_domain_nr(pdev->bus);
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(pci_ide_domain);
+> +
+> +struct pci_ide_partner *pci_ide_to_settings(struct pci_dev *pdev, struct pci_ide *ide)
+> +{
+> +	if (!pci_is_pcie(pdev)) {
+> +		pci_warn_once(pdev, "not a PCIe device\n");
+> +		return NULL;
+> +	}
+> +
+> +	switch (pci_pcie_type(pdev)) {
+> +	case PCI_EXP_TYPE_ENDPOINT:
+> +		if (pdev != ide->pdev) {
+> +			pci_warn_once(pdev, "setup expected Endpoint: %s\n", pci_name(ide->pdev));
+> +			return NULL;
+> +		}
+> +		return &ide->partner[PCI_IDE_EP];
+> +	case PCI_EXP_TYPE_ROOT_PORT: {
+> +		struct pci_dev *rp = pcie_find_root_port(ide->pdev);
+> +
+> +		if (pdev != rp) {
+> +			pci_warn_once(pdev, "setup expected Root Port: %s\n",
+> +				      pci_name(rp));
+> +			return NULL;
+> +		}
+> +		return &ide->partner[PCI_IDE_RP];
+> +	}
+> +	default:
+> +		pci_warn_once(pdev, "invalid device type\n");
+> +		return NULL;
+> +	}
+> +}
+> +EXPORT_SYMBOL_GPL(pci_ide_to_settings);
+> +
+> +static void set_ide_sel_ctl(struct pci_dev *pdev, struct pci_ide *ide, int pos,
+> +			    bool enable)
+> +{
+> +	u32 val = FIELD_PREP(PCI_IDE_SEL_CTL_ID_MASK, ide->stream_id) |
+> +		  FIELD_PREP(PCI_IDE_SEL_CTL_DEFAULT, 1) |
+> +		  FIELD_PREP(PCI_IDE_SEL_CTL_CFG_EN, pdev->ide_cfg) |
+> +		  FIELD_PREP(PCI_IDE_SEL_CTL_TEE_LIMITED, pdev->ide_tee_limit) |
+> +		  FIELD_PREP(PCI_IDE_SEL_CTL_EN, enable);
+> +
+> +	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_CTL, val);
+> +}
+> +
+> +/**
+> + * pci_ide_stream_setup() - program settings to Selective IDE Stream registers
+> + * @pdev: PCIe device object for either a Root Port or Endpoint Partner Port
+> + * @ide: registered IDE settings descriptor
+> + *
+> + * When @pdev is a PCI_EXP_TYPE_ENDPOINT then the PCI_IDE_EP partner
+> + * settings are written to @pdev's Selective IDE Stream register block,
+> + * and when @pdev is a PCI_EXP_TYPE_ROOT_PORT, the PCI_IDE_RP settings
+> + * are selected.
+> + */
+> +void pci_ide_stream_setup(struct pci_dev *pdev, struct pci_ide *ide)
+> +{
+> +	struct pci_ide_partner *settings = pci_ide_to_settings(pdev, ide);
+> +	int pos;
+> +	u32 val;
+> +
+> +	if (!settings)
 > +		return;
 > +
->   	idx = srcu_read_lock(&kvm->srcu);
->   	mmap_read_lock(current->mm);
->   	write_lock(&kvm->mmu_lock);
-> @@ -1078,6 +1091,9 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
->   	if (kvm_is_realm(kvm) &&
->   	    (kvm_realm_state(kvm) != REALM_STATE_DEAD &&
->   	     kvm_realm_state(kvm) != REALM_STATE_NONE)) {
-> +		struct realm *realm = &kvm->arch.realm;
+> +	pos = sel_ide_offset(pdev, settings);
 > +
-> +		kvm_stage2_unmap_range(mmu, 0, BIT(realm->ia_bits - 1), false);
->   		write_unlock(&kvm->mmu_lock);
->   		kvm_realm_destroy_rtts(kvm, pgt->ia_bits);
->   
-> @@ -1486,6 +1502,85 @@ static bool kvm_vma_mte_allowed(struct vm_area_struct *vma)
->   	return vma->vm_flags & VM_MTE_ALLOWED;
->   }
->   
-> +static int realm_map_ipa(struct kvm *kvm, phys_addr_t ipa,
-> +			 kvm_pfn_t pfn, unsigned long map_size,
-> +			 enum kvm_pgtable_prot prot,
-> +			 struct kvm_mmu_memory_cache *memcache)
-> +{
-> +	struct realm *realm = &kvm->arch.realm;
+> +	val = FIELD_PREP(PCI_IDE_SEL_RID_1_LIMIT_MASK, settings->rid_end);
+> +	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_1, val);
+> +
+> +	val = PREP_PCI_IDE_SEL_RID_2(settings->rid_start, pci_ide_domain(pdev));
+> +	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_2, val);
 > +
 > +	/*
-> +	 * Write permission is required for now even though it's possible to
-> +	 * map unprotected pages (granules) as read-only. It's impossible to
-> +	 * map protected pages (granules) as read-only.
+> +	 * Setup control register early for devices that expect
+> +	 * stream_id is set during key programming.
 > +	 */
-> +	if (WARN_ON(!(prot & KVM_PGTABLE_PROT_W)))
-> +		return -EFAULT;
-> +
-> +	ipa = ALIGN_DOWN(ipa, PAGE_SIZE);
-> +
-
-Empty line can be dropped.
-
-> +	if (!kvm_realm_is_private_address(realm, ipa))
-> +		return realm_map_non_secure(realm, ipa, pfn, map_size,
-> +					    memcache);
-> +
-> +	return realm_map_protected(realm, ipa, pfn, map_size, memcache);
+> +	set_ide_sel_ctl(pdev, ide, pos, false);
 > +}
+> +EXPORT_SYMBOL_GPL(pci_ide_stream_setup);
 > +
-> +static int private_memslot_fault(struct kvm_vcpu *vcpu,
-> +				 phys_addr_t fault_ipa,
-> +				 struct kvm_memory_slot *memslot)
+> +/**
+> + * pci_ide_stream_teardown() - disable the stream and clear all settings
+> + * @pdev: PCIe device object for either a Root Port or Endpoint Partner Port
+> + * @ide: registered IDE settings descriptor
+> + *
+> + * For stream destruction, zero all registers that may have been written
+> + * by pci_ide_stream_setup(). Consider pci_ide_stream_disable() to leave
+> + * settings in place while temporarily disabling the stream.
+> + */
+> +void pci_ide_stream_teardown(struct pci_dev *pdev, struct pci_ide *ide)
 > +{
-> +	struct kvm *kvm = vcpu->kvm;
-> +	gpa_t gpa = kvm_gpa_from_fault(kvm, fault_ipa);
-> +	gfn_t gfn = gpa >> PAGE_SHIFT;
-> +	bool is_priv_gfn = kvm_mem_is_private(kvm, gfn);
-> +	struct kvm_mmu_memory_cache *memcache = &vcpu->arch.mmu_page_cache;
-> +	struct page *page;
-> +	kvm_pfn_t pfn;
-> +	int ret;
-> +	/*
-> +	 * For Realms, the shared address is an alias of the private GPA with
-> +	 * the top bit set. Thus is the fault address matches the GPA then it
-> +	 * is the private alias.
-> +	 */
-> +	bool is_priv_fault = (gpa == fault_ipa);
+> +	struct pci_ide_partner *settings = pci_ide_to_settings(pdev, ide);
+> +	int pos;
 > +
-> +	if (is_priv_gfn != is_priv_fault) {
-> +		kvm_prepare_memory_fault_exit(vcpu, gpa, PAGE_SIZE,
-> +					      kvm_is_write_fault(vcpu), false,
-> +					      is_priv_fault);
+> +	if (!settings)
+> +		return;
 > +
-> +		/*
-> +		 * KVM_EXIT_MEMORY_FAULT requires an return code of -EFAULT,
-> +		 * see the API documentation
-> +		 */
-> +		return -EFAULT;
-> +	}
+> +	pos = sel_ide_offset(pdev, settings);
 > +
-> +	if (!is_priv_fault) {
-> +		/* Not a private mapping, handling normally */
-> +		return -EINVAL;
-> +	}
-> +
-> +	ret = kvm_mmu_topup_memory_cache(memcache,
-> +					 kvm_mmu_cache_min_pages(vcpu->arch.hw_mmu));
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = kvm_gmem_get_pfn(kvm, memslot, gfn, &pfn, &page, NULL);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* FIXME: Should be able to use bigger than PAGE_SIZE mappings */
-> +	ret = realm_map_ipa(kvm, fault_ipa, pfn, PAGE_SIZE, KVM_PGTABLE_PROT_W,
-> +			    memcache);
-> +	if (!ret)
-> +		return 1; /* Handled */
-> +
-> +	put_page(page);
-> +	return ret;
+> +	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_CTL, 0);
+> +	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_2, 0);
+> +	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_1, 0);
 > +}
+> +EXPORT_SYMBOL_GPL(pci_ide_stream_teardown);
 > +
->   static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
->   			  struct kvm_s2_trans *nested,
->   			  struct kvm_memory_slot *memslot, unsigned long hva,
-> @@ -1513,6 +1608,14 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
->   	if (fault_is_perm)
->   		fault_granule = kvm_vcpu_trap_get_perm_fault_granule(vcpu);
->   	write_fault = kvm_is_write_fault(vcpu);
-> +
-> +	/*
-> +	 * Realms cannot map protected pages read-only
-> +	 * FIXME: It should be possible to map unprotected pages read-only
-> +	 */
-> +	if (vcpu_is_rec(vcpu))
-> +		write_fault = true;
-> +
->   	exec_fault = kvm_vcpu_trap_is_exec_fault(vcpu);
->   	VM_BUG_ON(write_fault && exec_fault);
->   
-> @@ -1630,7 +1733,7 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
->   		ipa &= ~(vma_pagesize - 1);
->   	}
->   
-> -	gfn = ipa >> PAGE_SHIFT;
-> +	gfn = kvm_gpa_from_fault(kvm, ipa) >> PAGE_SHIFT;
->   	mte_allowed = kvm_vma_mte_allowed(vma);
->   
->   	vfio_allow_any_uc = vma->vm_flags & VM_ALLOW_ANY_UNCACHED;
-> @@ -1763,6 +1866,9 @@ static int user_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa,
->   		 */
->   		prot &= ~KVM_NV_GUEST_MAP_SZ;
->   		ret = KVM_PGT_FN(kvm_pgtable_stage2_relax_perms)(pgt, fault_ipa, prot, flags);
-> +	} else if (kvm_is_realm(kvm)) {
-> +		ret = realm_map_ipa(kvm, fault_ipa, pfn, vma_pagesize,
-> +				    prot, memcache);
->   	} else {
->   		ret = KVM_PGT_FN(kvm_pgtable_stage2_map)(pgt, fault_ipa, vma_pagesize,
->   					     __pfn_to_phys(pfn), prot,
-> @@ -1911,8 +2017,15 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->   		nested = &nested_trans;
->   	}
->   
-> -	gfn = ipa >> PAGE_SHIFT;
-> +	gfn = kvm_gpa_from_fault(vcpu->kvm, ipa) >> PAGE_SHIFT;
->   	memslot = gfn_to_memslot(vcpu->kvm, gfn);
-> +
-> +	if (kvm_slot_can_be_private(memslot)) {
-> +		ret = private_memslot_fault(vcpu, ipa, memslot);
-> +		if (ret != -EINVAL)
-> +			goto out;
-> +	}
-> +
->   	hva = gfn_to_hva_memslot_prot(memslot, gfn, &writable);
->   	write_fault = kvm_is_write_fault(vcpu);
->   	if (kvm_is_error_hva(hva) || (write_fault && !writable)) {
-> @@ -1956,7 +2069,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->   		 * of the page size.
->   		 */
->   		ipa |= kvm_vcpu_get_hfar(vcpu) & GENMASK(11, 0);
-> -		ret = io_mem_abort(vcpu, ipa);
-> +		ret = io_mem_abort(vcpu, kvm_gpa_from_fault(vcpu->kvm, ipa));
->   		goto out_unlock;
->   	}
->   
-> @@ -2004,6 +2117,10 @@ bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
->   	if (!kvm->arch.mmu.pgt)
->   		return false;
->   
-> +	/* We don't support aging for Realms */
-> +	if (kvm_is_realm(kvm))
-> +		return true;
-> +
->   	return KVM_PGT_FN(kvm_pgtable_stage2_test_clear_young)(kvm->arch.mmu.pgt,
->   						   range->start << PAGE_SHIFT,
->   						   size, true);
-> @@ -2020,6 +2137,10 @@ bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
->   	if (!kvm->arch.mmu.pgt)
->   		return false;
->   
-> +	/* We don't support aging for Realms */
-> +	if (kvm_is_realm(kvm))
-> +		return true;
-> +
->   	return KVM_PGT_FN(kvm_pgtable_stage2_test_clear_young)(kvm->arch.mmu.pgt,
->   						   range->start << PAGE_SHIFT,
->   						   size, false);
-> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
-> index d7bb11583506..0fe55e369782 100644
-> --- a/arch/arm64/kvm/rme.c
-> +++ b/arch/arm64/kvm/rme.c
-> @@ -750,6 +750,171 @@ static int realm_create_protected_data_page(struct realm *realm,
->   	return -ENXIO;
->   }
->   
-> +static int fold_rtt(struct realm *realm, unsigned long addr, int level)
+> +/**
+> + * pci_ide_stream_enable() - after setup, enable the stream
+> + * @pdev: PCIe device object for either a Root Port or Endpoint Partner Port
+> + * @ide: registered and setup IDE settings descriptor
+> + *
+> + * Activate the stream by writing to the Selective IDE Stream Control Register.
+> + */
+> +int pci_ide_stream_enable(struct pci_dev *pdev, struct pci_ide *ide)
 > +{
-> +	phys_addr_t rtt_addr;
-> +	int ret;
+> +	struct pci_ide_partner *settings = pci_ide_to_settings(pdev, ide);
+> +	int pos;
+> +	u32 val;
 > +
-> +	ret = realm_rtt_fold(realm, addr, level, &rtt_addr);
-> +	if (ret)
-> +		return ret;
+> +	if (!settings)
+> +		return -ENXIO;
 > +
-> +	free_rtt(rtt_addr);
+> +	pos = sel_ide_offset(pdev, settings);
 > +
+> +	set_ide_sel_ctl(pdev, ide, pos, true);
+> +
+> +	pci_read_config_dword(pdev, pos + PCI_IDE_SEL_STS, &val);
+> +	if (FIELD_GET(PCI_IDE_SEL_STS_STATE_MASK, val) !=
+> +	    PCI_IDE_SEL_STS_STATE_SECURE)
+> +		return -ENXIO;
+
+The PCIe spec allows (but funnily "does not recommend") enabling the stream before the keys are programmed and one of my test devices insists on doing it this way (the other one is fine) so at least a different code should be used here? Thanks,
+
+
+
 > +	return 0;
 > +}
+> +EXPORT_SYMBOL_GPL(pci_ide_stream_enable);
 > +
-> +int realm_map_protected(struct realm *realm,
-> +			unsigned long ipa,
-> +			kvm_pfn_t pfn,
-> +			unsigned long map_size,
-> +			struct kvm_mmu_memory_cache *memcache)
+> +/**
+> + * pci_ide_stream_disable() - disable the given stream
+> + * @pdev: PCIe device object for either a Root Port or Endpoint Partner Port
+> + * @ide: registered and setup IDE settings descriptor
+> + *
+> + * Clear the Selective IDE Stream Control Register, but leave all other
+> + * registers untouched.
+> + */
+> +void pci_ide_stream_disable(struct pci_dev *pdev, struct pci_ide *ide)
 > +{
-> +	phys_addr_t phys = __pfn_to_phys(pfn);
-> +	phys_addr_t rd = virt_to_phys(realm->rd);
-> +	unsigned long base_ipa = ipa;
-> +	unsigned long size;
-> +	int map_level = IS_ALIGNED(map_size, RMM_L2_BLOCK_SIZE) ?
-> +			RMM_RTT_BLOCK_LEVEL : RMM_RTT_MAX_LEVEL;
-> +	int ret = 0;
+> +	struct pci_ide_partner *settings = pci_ide_to_settings(pdev, ide);
+> +	int pos;
 > +
-> +	if (WARN_ON(!IS_ALIGNED(map_size, RMM_PAGE_SIZE) ||
-> +		    !IS_ALIGNED(ipa, map_size)))
-> +		return -EINVAL;
+> +	if (!settings)
+> +		return;
 > +
-> +	if (map_level < RMM_RTT_MAX_LEVEL) {
-> +		/*
-> +		 * A temporary RTT is needed during the map, precreate it,
-> +		 * however if there is an error (e.g. missing parent tables)
-> +		 * this will be handled below.
-> +		 */
-> +		realm_create_rtt_levels(realm, ipa, map_level,
-> +					RMM_RTT_MAX_LEVEL, memcache);
-> +	}
+> +	pos = sel_ide_offset(pdev, settings);
 > +
-> +	for (size = 0; size < map_size; size += RMM_PAGE_SIZE) {
-> +		if (rmi_granule_delegate(phys)) {
-> +			/*
-> +			 * It's likely we raced with another VCPU on the same
-> +			 * fault. Assume the other VCPU has handled the fault
-> +			 * and return to the guest.
-> +			 */
-> +			return 0;
-> +		}
-> +
-> +		ret = rmi_data_create_unknown(rd, phys, ipa);
-> +
-> +		if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
-> +			/* Create missing RTTs and retry */
-> +			int level = RMI_RETURN_INDEX(ret);
-> +
-> +			WARN_ON(level == RMM_RTT_MAX_LEVEL);
-> +
-
-Unnecessary empty line.
-
-> +			ret = realm_create_rtt_levels(realm, ipa, level,
-> +						      RMM_RTT_MAX_LEVEL,
-> +						      memcache);
-> +			if (ret)
-> +				goto err_undelegate;
-> +
-> +			ret = rmi_data_create_unknown(rd, phys, ipa);
-> +		}
-> +
-> +		if (WARN_ON(ret))
-> +			goto err_undelegate;
-> +
-> +		phys += RMM_PAGE_SIZE;
-> +		ipa += RMM_PAGE_SIZE;
-> +	}
-> +
-> +	if (map_size == RMM_L2_BLOCK_SIZE) {
-> +		ret = fold_rtt(realm, base_ipa, map_level + 1);
-> +		if (WARN_ON(ret))
-> +			goto err;
-> +	}
-> +
-> +	return 0;
-> +
-> +err_undelegate:
-> +	if (WARN_ON(rmi_granule_undelegate(phys))) {
-> +		/* Page can't be returned to NS world so is lost */
-> +		get_page(phys_to_page(phys));
-> +	}
-> +err:
-> +	while (size > 0) {
-> +		unsigned long data, top;
-> +
-> +		phys -= RMM_PAGE_SIZE;
-> +		size -= RMM_PAGE_SIZE;
-> +		ipa -= RMM_PAGE_SIZE;
-> +
-> +		WARN_ON(rmi_data_destroy(rd, ipa, &data, &top));
-> +
-> +		if (WARN_ON(rmi_granule_undelegate(phys))) {
-> +			/* Page can't be returned to NS world so is lost */
-> +			get_page(phys_to_page(phys));
-> +		}
-> +	}
-> +	return -ENXIO;
+> +	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_CTL, 0);
 > +}
+> +EXPORT_SYMBOL_GPL(pci_ide_stream_disable);
+> diff --git a/include/linux/pci-ide.h b/include/linux/pci-ide.h
+> new file mode 100644
+> index 000000000000..0753c3cd752a
+> --- /dev/null
+> +++ b/include/linux/pci-ide.h
+> @@ -0,0 +1,76 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
 > +
-> +int realm_map_non_secure(struct realm *realm,
-> +			 unsigned long ipa,
-> +			 kvm_pfn_t pfn,
-> +			 unsigned long size,
-> +			 struct kvm_mmu_memory_cache *memcache)
-> +{
-> +	phys_addr_t rd = virt_to_phys(realm->rd);
-> +	phys_addr_t phys = __pfn_to_phys(pfn);
-> +	unsigned long offset;
-> +	/* TODO: Support block mappings */
-> +	int map_level = RMM_RTT_MAX_LEVEL;
-> +	int map_size = rme_rtt_level_mapsize(map_level);
-> +	int ret = 0;
+> +/* PCIe 6.2 section 6.33 Integrity & Data Encryption (IDE) */
 > +
-> +	if (WARN_ON(!IS_ALIGNED(size, RMM_PAGE_SIZE) ||
-> +		    !IS_ALIGNED(ipa, size)))
-> +		return -EINVAL;
+> +#ifndef __PCI_IDE_H__
+> +#define __PCI_IDE_H__
 > +
-> +	for (offset = 0; offset < size; offset += map_size) {
-> +		/*
-> +		 * realm_map_ipa() enforces that the memory is writable,
-> +		 * so for now we permit both read and write.
-> +		 */
-> +		unsigned long desc = phys |
-> +				     PTE_S2_MEMATTR(MT_S2_FWB_NORMAL) |
-> +				     KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R |
-> +				     KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
-> +		ret = rmi_rtt_map_unprotected(rd, ipa, map_level, desc);
+> +#include <linux/range.h>
 > +
-> +		if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
-> +			/* Create missing RTTs and retry */
-> +			int level = RMI_RETURN_INDEX(ret);
+> +#define SEL_ADDR1_LOWER_MASK GENMASK(31, 20)
+> +#define SEL_ADDR_UPPER_MASK GENMASK_ULL(63, 32)
+> +#define PREP_PCI_IDE_SEL_ADDR1(base, limit)                    \
+> +	(FIELD_PREP(PCI_IDE_SEL_ADDR_1_VALID, 1) |             \
+> +	 FIELD_PREP(PCI_IDE_SEL_ADDR_1_BASE_LOW_MASK,          \
+> +		    FIELD_GET(SEL_ADDR1_LOWER_MASK, (base))) | \
+> +	 FIELD_PREP(PCI_IDE_SEL_ADDR_1_LIMIT_LOW_MASK,         \
+> +		    FIELD_GET(SEL_ADDR1_LOWER_MASK, (limit))))
 > +
-> +			ret = realm_create_rtt_levels(realm, ipa, level,
-> +						      map_level, memcache);
-> +			if (ret)
-> +				return -ENXIO;
+> +#define PREP_PCI_IDE_SEL_RID_2(base, domain)               \
+> +	(FIELD_PREP(PCI_IDE_SEL_RID_2_VALID, 1) |          \
+> +	 FIELD_PREP(PCI_IDE_SEL_RID_2_BASE_MASK, (base)) | \
+> +	 FIELD_PREP(PCI_IDE_SEL_RID_2_SEG_MASK, (domain)))
 > +
-> +			ret = rmi_rtt_map_unprotected(rd, ipa, map_level, desc);
-> +		}
-> +		/*
-> +		 * RMI_ERROR_RTT can be reported for two reasons: either the
-> +		 * RTT tables are not there, or there is an RTTE already
-> +		 * present for the address.  The above call to create RTTs
-> +		 * handles the first case, and in the second case this
-> +		 * indicates that another thread has already populated the RTTE
-> +		 * for us, so we can ignore the error and continue.
-> +		 */
-> +		if (ret && RMI_RETURN_STATUS(ret) != RMI_ERROR_RTT)
-> +			return -ENXIO;
+> +enum pci_ide_partner_select {
+> +	PCI_IDE_EP,
+> +	PCI_IDE_RP,
+> +	PCI_IDE_PARTNER_MAX,
+> +	/* pci_ide_stream_alloc() uses this for stream index allocation */
+> +	PCI_IDE_HB = PCI_IDE_PARTNER_MAX,
+> +};
 > +
-> +		ipa += map_size;
-> +		phys += map_size;
-> +	}
+> +/**
+> + * struct pci_ide_partner - Per port IDE Stream settings
+> + * @rid_start: Partner Port Requester ID range start
+> + * @rid_start: Partner Port Requester ID range end
+> + * @stream_index: Selective IDE Stream Register Block selection
+> + */
+> +struct pci_ide_partner {
+> +	u16 rid_start;
+> +	u16 rid_end;
+> +	u8 stream_index;
+> +};
 > +
-> +	return 0;
-> +}
+> +/**
+> + * struct pci_ide - PCIe Selective IDE Stream descriptor
+> + * @pdev: PCIe Endpoint for the stream
+> + * @partner: settings for both partner ports in a stream
+> + * @host_bridge_stream: track platform Stream index
+> + * @stream_id: unique id (within Partner Port pairing) for the stream
+> + * @name: name of the stream in sysfs
+> + *
+> + * Negative @stream_id values indicate "uninitialized" on the
+> + * expectation that with TSM established IDE the TSM owns the stream_id
+> + * allocation.
+> + */
+> +struct pci_ide {
+> +	struct pci_dev *pdev;
+> +	struct pci_ide_partner partner[PCI_IDE_PARTNER_MAX];
+> +	u8 host_bridge_stream;
+> +	int stream_id;
+> +	const char *name;
+> +};
 > +
->   static int populate_region(struct kvm *kvm,
->   			   phys_addr_t ipa_base,
->   			   phys_addr_t ipa_end,
+> +int pci_ide_domain(struct pci_dev *pdev);
+> +struct pci_ide_partner *pci_ide_to_settings(struct pci_dev *pdev, struct pci_ide *ide);
+> +struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev);
+> +void pci_ide_stream_free(struct pci_ide *ide);
+> +DEFINE_FREE(pci_ide_stream_free, struct pci_ide *, if (_T) pci_ide_stream_free(_T))
+> +int  pci_ide_stream_register(struct pci_ide *ide);
+> +void pci_ide_stream_unregister(struct pci_ide *ide);
+> +void pci_ide_stream_setup(struct pci_dev *pdev, struct pci_ide *ide);
+> +void pci_ide_stream_teardown(struct pci_dev *pdev, struct pci_ide *ide);
+> +int pci_ide_stream_enable(struct pci_dev *pdev, struct pci_ide *ide);
+> +void pci_ide_stream_disable(struct pci_dev *pdev, struct pci_ide *ide);
+> +#endif /* __PCI_IDE_H__ */
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index d8dd315d8b4c..d1c901904ee4 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -538,6 +538,8 @@ struct pci_dev {
+>   	u16		ide_cap;	/* Link Integrity & Data Encryption */
+>   	u8		nr_ide_mem;	/* Address association resources for streams */
+>   	u8		nr_link_ide;	/* Link Stream count (Selective Stream offset) */
+> +	u8		nr_sel_ide;	/* Selective Stream count (register block allocator) */
+> +	DECLARE_BITMAP(ide_stream_map, CONFIG_PCI_IDE_STREAM_MAX);
+>   	unsigned int	ide_cfg:1;	/* Config cycles over IDE */
+>   	unsigned int	ide_tee_limit:1; /* Disallow T=0 traffic over IDE */
+>   #endif
+> @@ -605,6 +607,10 @@ struct pci_host_bridge {
+>   	int		domain_nr;
+>   	struct list_head windows;	/* resource_entry */
+>   	struct list_head dma_ranges;	/* dma ranges resource list */
+> +#ifdef CONFIG_PCI_IDE
+> +	u8 nr_ide_streams;		/* Track available vs in-use streams */
+> +	DECLARE_BITMAP(ide_stream_map, CONFIG_PCI_IDE_STREAM_MAX);
+> +#endif
+>   	u8 (*swizzle_irq)(struct pci_dev *, u8 *); /* Platform IRQ swizzler */
+>   	int (*map_irq)(const struct pci_dev *, u8, u8);
+>   	void (*release_fn)(struct pci_host_bridge *);
+> diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
+> index 670314666fdd..0ae7e77313f8 100644
+> --- a/include/uapi/linux/pci_regs.h
+> +++ b/include/uapi/linux/pci_regs.h
+> @@ -1286,6 +1286,8 @@
+>   /* Selective IDE Stream Status Register */
+>   #define  PCI_IDE_SEL_STS		 8
+>   #define   PCI_IDE_SEL_STS_STATE_MASK	 __GENMASK(3, 0) /* Selective IDE Stream State */
+> +#define   PCI_IDE_SEL_STS_STATE_INSECURE 0
+> +#define   PCI_IDE_SEL_STS_STATE_SECURE   2
+>   #define   PCI_IDE_SEL_STS_RECVD_INTEGRITY_CHECK	0x80000000 /* Received Integrity Check Fail Msg */
+>   /* IDE RID Association Register 1 */
+>   #define  PCI_IDE_SEL_RID_1		 0xc
 
-Thanks,
-Gavin
+-- 
+Alexey
 
