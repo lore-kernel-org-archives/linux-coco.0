@@ -1,76 +1,71 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A08129E0F4
-	for <linux-coco@lists.linux.dev>; Tue,  8 Jul 2025 08:11:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A7F26A1A3
+	for <linux-coco@lists.linux.dev>; Tue,  8 Jul 2025 10:19:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751962279; cv=none; b=J8903ZaqADLmcwn3HIXUdYxcaborX7+hYqBgze32cV7/mZDXOg6PoOwDf6ushj3raboy6gTtaoBRKOuojmtc/tDKH4crQ6C8Q3DbQS29+lvsEf409HKYvaon91nOqUBNeUx80jI7L1fp9pRK0YQYTonHNvXtYR9Slejxx8Bczgw=
+	t=1751969975; cv=none; b=DXns95O9/OZYEA/+Fom72v4Pv6kg93qnCxjKUoGgnBbASL1lIEhZGxfpykVRHus8Tidn7KFCPpJjk4NaeVefaB6muTH3o7Whwaxg0mo+HN++2v8ct/w80mxD74zX0BHcV6FCzzPxq6kWEqDrQzPSrs9UNN7eZb+uevYPiI7a2GA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751962279; c=relaxed/simple;
-	bh=ZB9nCtjrRzq0q0am81PMOUb3zQxW12guoujcDogZtQ0=;
+	s=arc-20240116; t=1751969975; c=relaxed/simple;
+	bh=nn38075tAi+eJQwAhDFa2ISYv+vJ2ldqeYPIIpu18dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dZE++EBmhBFNjt6cf7ZqoLXC9zqBAJ4hns0B+Hac6WAWt/S2slz48KcuWSkLmJIXqgORNwPCgrrOb6ayid6c/HgSBp3nz4kQKElxFp3C8YAuJqRnAwCPa5bx73MyqtETe+R+dHbNYuvD+m+o4BXcLQcFGXjBzMLaNcYCNfewr1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L/V/K1pm; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 MIME-Version; b=N5ByjkdimsWsMJ4g5yTm/f9a7z8ogBOtOZ9+v6XaZC6RjNEU8LbDzZpVDZciH3sebdeBWjgH9SUUrHjr5i3SFQ0eLGypf+ScvN4YNJCm+CrhgBZ6i65xNZ1sUos0ofUeMdMxO8Ya/KhantRN3cKklDD9Aa7n9qcEwbUqlQO4pWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b/G4eQ6h; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L/V/K1pm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b/G4eQ6h"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751962277; x=1783498277;
+  t=1751969973; x=1783505973;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ZB9nCtjrRzq0q0am81PMOUb3zQxW12guoujcDogZtQ0=;
-  b=L/V/K1pmZxjDBfvvX5ZO1q29vTNFAIsbA1dmNNaK5bzU+kpUO8+SQi5C
-   VNNhP/p7rX/NfMBLuOPsIFi+ttRzHpspvzOkS5z30YBiHqx2Nq1lgaQpm
-   WywAiFHEPgm5YcJcblveuIM6YSBaCC6rIj80IBm99+WD+gYngOnKxmQnW
-   A+UhEky21tQnoN/NX2A+PrbGx9DpMsbIHeTEr56uugiiqIoTtBGxHVsiH
-   OF0WNppA99FHTditu0pACimOknHKDwehoSJUDokHt+ryctizLa35BMqV5
-   5jTUxq+W6+RF/Sy5RM1zBplgUuVJVv80VuPe9AWEo77CJLysknl5Qtc3a
-   Q==;
-X-CSE-ConnectionGUID: vlnlLy0HQUCfGMq8iGN37Q==
-X-CSE-MsgGUID: ftrRFGbfRDaHNB33CF9nDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="65543238"
-X-IronPort-AV: E=Sophos;i="6.16,296,1744095600"; 
-   d="scan'208";a="65543238"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 01:11:16 -0700
-X-CSE-ConnectionGUID: mCinE0+bR5yOWsiN1/46qw==
-X-CSE-MsgGUID: Te2HtNq9QlKgRWGeN5AyEQ==
+  bh=nn38075tAi+eJQwAhDFa2ISYv+vJ2ldqeYPIIpu18dw=;
+  b=b/G4eQ6hrdXWF7Im8xG7hyx30FA/clEtr1m8u7Dm6W+mMp2DfFvQ62Gz
+   KW7HnHpkMu6WYeGj4x2g+Hp3II7M4y0uMA7RDVvLsd6lVZJwY8poHxa5+
+   o/8BNt302injQxul6yahB11QvXDDrErqS+IhNw/VFPlHHhldb6BTbuz7V
+   d61hNnzSYfLTLU5xSFXga9R2fGynbM8vwnIdqLox66MjG5n+bFFB9Ep3R
+   9NXc3sMqPSP6sCjwW/cshgt+rYheOIhS6RbDCMyGlje0ciNmF+6BXYZNN
+   fAOXbIRYF6qfYUbRjKKfALit7fLho2diU6WRzokpAu8XahQDs/inDpeYJ
+   g==;
+X-CSE-ConnectionGUID: aKE1oTPuSZa+nllRgiO9vw==
+X-CSE-MsgGUID: YrqHNUMHSOWJd1iAjcb8/Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="76751329"
+X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; 
+   d="scan'208";a="76751329"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 03:19:33 -0700
+X-CSE-ConnectionGUID: FcOyMuNXQq2RTSqpkp9aVw==
+X-CSE-MsgGUID: vmdEs1iqQB+GoysMHQN7UA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,296,1744095600"; 
-   d="scan'208";a="161076605"
-Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
-  by orviesa005.jf.intel.com with ESMTP; 08 Jul 2025 01:11:12 -0700
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+X-IronPort-AV: E=Sophos;i="6.16,297,1744095600"; 
+   d="scan'208";a="155196379"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa009.jf.intel.com with ESMTP; 08 Jul 2025 03:19:28 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 94A3D92; Tue, 08 Jul 2025 13:19:27 +0300 (EEST)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Dave Hansen <dave.hansen@linux.intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
+	Borislav Petkov <bp@alien8.de>
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	rick.p.edgecombe@intel.com,
-	Kai Huang <kai.huang@intel.com>,
-	binbin.wu@linux.intel.com,
-	yan.y.zhao@intel.com,
-	reinette.chatre@intel.com,
-	isaku.yamahata@intel.com,
-	adrian.hunter@intel.com,
-	tony.lindgren@intel.com
-Subject: [PATCH 2/2] KVM: TDX: Remove redundant definitions of TDX_TD_ATTR_*
-Date: Tue,  8 Jul 2025 16:03:14 +0800
-Message-ID: <20250708080314.43081-3-xiaoyao.li@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250708080314.43081-1-xiaoyao.li@intel.com>
-References: <20250708080314.43081-1-xiaoyao.li@intel.com>
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCH 1/3] MAINTAINERS: Update the file list in the TDX entry.
+Date: Tue,  8 Jul 2025 13:19:20 +0300
+Message-ID: <20250708101922.50560-2-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250708101922.50560-1-kirill.shutemov@linux.intel.com>
+References: <20250708101922.50560-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -79,57 +74,40 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-There are definitions of TD attributes bits inside asm/shared/tdx.h as
-TDX_ATTR_*.
+Include files that were previously missed in the TDX entry file list.
+It also includes the recently added KVM enabling.
 
-Remove KVM's definitions and use the ones in asm/shared/tdx.h
-
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/kvm/vmx/tdx.c      | 4 ++--
- arch/x86/kvm/vmx/tdx_arch.h | 6 ------
- 2 files changed, 2 insertions(+), 8 deletions(-)
+ MAINTAINERS | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index c539c2e6109f..efb7d589b672 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -62,7 +62,7 @@ void tdh_vp_wr_failed(struct vcpu_tdx *tdx, char *uclass, char *op, u32 field,
- 	pr_err("TDH_VP_WR[%s.0x%x]%s0x%llx failed: 0x%llx\n", uclass, field, op, val, err);
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 993ab3d3fde9..8071871ea59c 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -26952,12 +26952,18 @@ L:	linux-coco@lists.linux.dev
+ S:	Supported
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git x86/tdx
+ F:	Documentation/ABI/testing/sysfs-devices-virtual-misc-tdx_guest
++F:	Documentation/arch/x86/tdx.rst
++F:	Documentation/virt/coco/tdx-guest.rst
++F:	Documentation/virt/kvm/x86/intel-tdx.rst
+ F:	arch/x86/boot/compressed/tdx*
++F:	arch/x86/boot/compressed/tdcall.S
+ F:	arch/x86/coco/tdx/
+-F:	arch/x86/include/asm/shared/tdx.h
+-F:	arch/x86/include/asm/tdx.h
++F:	arch/x86/include/asm/shared/tdx*
++F:	arch/x86/include/asm/tdx*
++F:	arch/x86/kvm/vmx/tdx*
+ F:	arch/x86/virt/vmx/tdx/
+-F:	drivers/virt/coco/tdx-guest
++F:	drivers/virt/coco/tdx-guest/
++F:	tools/testing/selftests/tdx/
  
--#define KVM_SUPPORTED_TD_ATTRS (TDX_TD_ATTR_SEPT_VE_DISABLE)
-+#define KVM_SUPPORTED_TD_ATTRS (TDX_ATTR_SEPT_VE_DISABLE)
- 
- static __always_inline struct kvm_tdx *to_kvm_tdx(struct kvm *kvm)
- {
-@@ -700,7 +700,7 @@ int tdx_vcpu_create(struct kvm_vcpu *vcpu)
- 	vcpu->arch.l1_tsc_scaling_ratio = kvm_tdx->tsc_multiplier;
- 
- 	vcpu->arch.guest_state_protected =
--		!(to_kvm_tdx(vcpu->kvm)->attributes & TDX_TD_ATTR_DEBUG);
-+		!(to_kvm_tdx(vcpu->kvm)->attributes & TDX_ATTR_DEBUG);
- 
- 	if ((kvm_tdx->xfam & XFEATURE_MASK_XTILE) == XFEATURE_MASK_XTILE)
- 		vcpu->arch.xfd_no_write_intercept = true;
-diff --git a/arch/x86/kvm/vmx/tdx_arch.h b/arch/x86/kvm/vmx/tdx_arch.h
-index a30e880849e3..350143b9b145 100644
---- a/arch/x86/kvm/vmx/tdx_arch.h
-+++ b/arch/x86/kvm/vmx/tdx_arch.h
-@@ -75,12 +75,6 @@ struct tdx_cpuid_value {
- 	u32 edx;
- } __packed;
- 
--#define TDX_TD_ATTR_DEBUG		BIT_ULL(0)
--#define TDX_TD_ATTR_SEPT_VE_DISABLE	BIT_ULL(28)
--#define TDX_TD_ATTR_PKS			BIT_ULL(30)
--#define TDX_TD_ATTR_KL			BIT_ULL(31)
--#define TDX_TD_ATTR_PERFMON		BIT_ULL(63)
--
- #define TDX_EXT_EXIT_QUAL_TYPE_MASK	GENMASK(3, 0)
- #define TDX_EXT_EXIT_QUAL_TYPE_PENDING_EPT_VIOLATION  6
- /*
+ X86 VDSO
+ M:	Andy Lutomirski <luto@kernel.org>
 -- 
-2.43.0
+2.47.2
 
