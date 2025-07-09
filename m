@@ -1,82 +1,360 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A642E2EE7
-	for <linux-coco@lists.linux.dev>; Wed,  9 Jul 2025 14:27:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867D02E6113
+	for <linux-coco@lists.linux.dev>; Wed,  9 Jul 2025 14:30:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752071245; cv=none; b=QjDw403iWfjnIu0sdCjvWSZDeVrxWTWzgk3hcQhP2+Hdvh4uVwtgFqm4LZK5PmDQo+bFgMheQC0HaQJ5Q0LJh89Of12+ABngmtR46q7jLigWU3fZj4HyXa4/GLW3nkz4ltvoyXXr5J6DiGPOX8YL4iliZ7pL2RjWfWVEZLSncwI=
+	t=1752071413; cv=none; b=Hrs+oHyDRbWhtp3qSUEduLTu6+oFH6ryY8kAz65Ro/qgGa1leK/VAbw+kUKbqlvi0387iEKQZcsOpm3iHXLp2FZNcFv0Zd3MqGa6ogY4+QwLRP8sAuie9vQx6hqTgcg9+0N/4tfn3oKu8eZTQo3qhMDRjNUsK6Io9aGGLcQ5TX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752071245; c=relaxed/simple;
-	bh=pvkwBrcqCz/q7TbAy/707f2NDn31fDmeAF6bySTr6Ic=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=J17Ll3x2ZW2ADAUtdOqOy/PtCKCYVi8gftGXh8DZFxF+sbf3tELyx62I5dQmt/0Vn3ufbC4vB4UfNf+0VeoYYS3zeCbWn8hrNLYm2oIce2UBLBij3yD1bsZY8KT7NQNSY8XUXH9qPyuYA8xhc/DDNzKQKgY4BVMAaIH3bNkvpLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d7b20BCr; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1752071413; c=relaxed/simple;
+	bh=/BtTSH93VrIIZBv/TtRzPdF9xB2kfbOMw8pxnsx3XcU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u9z2cJcLhIsVKlKXI/4/RwUWyyOdCOx6x/UNMf/0mKdwWPENdZbZAq3ch6o7Rot5XRrCK07ar6RWqdkKASzaurVVIZUbnwksuLmDwM0Jxmt3tZnfHz+nSaFazwjfIFoYvG+tZlcXs9C3pbR1aQz7JK47aDH9no3NhglXusf674Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CftVFqir; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d7b20BCr"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-748e1e474f8so8602472b3a.2
-        for <linux-coco@lists.linux.dev>; Wed, 09 Jul 2025 07:27:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752071243; x=1752676043; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2ny4OheUvtoLgeKPBXu3zvqh0EKHCtc/bq+iQEnC2Ww=;
-        b=d7b20BCror3SCjEE0Kp0bxBd1XNZ8kyUm3z2usOw5Hi8wCsLvhCABqd0ajgvSiGs8m
-         vN7yTZyuZjD+MCMUkb+Jl/WJXDeMK0AFDALTyDPXQYCKK7saf/fx8d3N9UtDcElDq4dm
-         a/A8pxFlZuEQyuuaf/q04ZEmV4BqLmtatY+abwQYj3BZQeiV3RyK8z9qUPL0Z2Y43jAM
-         LY66vUj3r41xuJn/dABj2bXqoRh0aHz0wrJRL0+Y6PiCajvaGVZF76s5NtLlv/nQ1Vr/
-         VIlbHXDd6WPJvZyxlDDZg88OnEnMnaipif5BF3zgYM9yb0Q1BSUCdDO3H5PlxN97zLCv
-         kikQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752071243; x=1752676043;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2ny4OheUvtoLgeKPBXu3zvqh0EKHCtc/bq+iQEnC2Ww=;
-        b=AmdYMVH743HNLX8HoLNkE5TdhrSnHTI8QEnFmVbrSe3W1txSv+VcYAHDnhIpUY4Hmy
-         ZVn/Qq4Au3O8Zc5xVrYsQB4RMU1xQ+gnpgZcZhN1Nj+P/mmzcUv7+Sa0Ar3DftLpfKnz
-         80uDUvnOeT/9vVCh0o9G9qqPp1KeuRqOaKdNHg4FZzp0WUlU1KaYhPViUo07RnNQ9JkL
-         Llu+hxsgybdUGqsuOJcX62hDfErgcRjlJxX2kLOwNcQHIKsnTxn0KwZB8zZaYKqUb8V1
-         BjndCuTXpa+YpvGIJdITxA+00uhaauBdwD7RcnIsFqz1Gkmxm26MFKw6jvpXtYmrB+3J
-         oTaA==
-X-Forwarded-Encrypted: i=1; AJvYcCXqXKtzcc8zLaX8a2RxBYiMQLSbvdHPJrWYpE3RKWeNhHZYchZCtiuLEEzJqAxh3rHBviuCzPaT07cO@lists.linux.dev
-X-Gm-Message-State: AOJu0YwD4zEhSN8hGxD62v94RIBcEFBs1CbFI7IFzTetv5+gbIdFLrrN
-	jq4UPsg1HaeLKZuYgqbYGbt/JH1Q8okPv8wQsPVmxy7VPVC38aB7fZDibMWcT/dlpcrmgtIIwiq
-	DRKO+zw==
-X-Google-Smtp-Source: AGHT+IGcOXxhoDOk+P/ex+nqUAh1f+wKkBdBcrVKVPPMAEpZzWU3sIlfK65sSX3bA5bYd6D9J3w71Pwer9Y=
-X-Received: from pgbcj11.prod.google.com ([2002:a05:6a02:208b:b0:b38:f5cc:7771])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:734b:b0:1ee:d418:f764
- with SMTP id adf61e73a8af0-22cdaad6959mr4171366637.38.1752071243305; Wed, 09
- Jul 2025 07:27:23 -0700 (PDT)
-Date: Wed, 9 Jul 2025 07:27:21 -0700
-In-Reply-To: <20250709141035.70299-1-xiaoyao.li@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CftVFqir"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752071412; x=1783607412;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/BtTSH93VrIIZBv/TtRzPdF9xB2kfbOMw8pxnsx3XcU=;
+  b=CftVFqir3pPfZH0bgl0Am7vE7mTHtX0y/ZhNyjpnDfDh/rCLYuJwSODk
+   bMB1cjax9lluMytEsTn1FKVZcXDv8ih1atNpnp26cDIHuD681KuDzGoZz
+   m4QotltiPmAmn+ysyrjl0w1/dNAC8ZI9L2NwehC0nBgWhzgFkI5GGvoxu
+   urmhYQ3/t6qJ+X9pRPbJAvpFNkGU0Dw3cdDWEDg8PXj5irFeJUBf2cPwB
+   3NwGr3Ezqkx4vu2RgwTEGVjf9o0lug4HBr8KfwE2fop+O3reqr+ufPm2H
+   nBREUywb0KNWjTE6KETeVvS3t0GXxa6iFlK8sDpKQPELHL18Q91TWdRbd
+   A==;
+X-CSE-ConnectionGUID: i6o5TC/yQiWLBc9pRQsh4g==
+X-CSE-MsgGUID: +GisadH6Sba1T71Ns8WWUg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="54214370"
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
+   d="scan'208";a="54214370"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2025 07:30:11 -0700
+X-CSE-ConnectionGUID: SP5P3WgvSMeaEBInRkzzuQ==
+X-CSE-MsgGUID: EECYl+1LRXONC+ta8D+JfA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
+   d="scan'208";a="160328742"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa004.jf.intel.com with ESMTP; 09 Jul 2025 07:29:51 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 2A91D1B7; Wed, 09 Jul 2025 17:29:49 +0300 (EEST)
+Date: Wed, 9 Jul 2025 17:29:49 +0300
+From: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"seanjc@google.com" <seanjc@google.com>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"Gao, Chao" <chao.gao@intel.com>, "bp@alien8.de" <bp@alien8.de>, 
+	"Huang, Kai" <kai.huang@intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"mingo@redhat.com" <mingo@redhat.com>, "Zhao, Yan Y" <yan.y.zhao@intel.com>, 
+	"tglx@linutronix.de" <tglx@linutronix.de>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Yamahata, Isaku" <isaku.yamahata@intel.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCHv2 08/12] KVM: TDX: Handle PAMT allocation in fault path
+Message-ID: <nlnio65utrbd4t3vgkcibmwwmtkfhso6gz7lkqqnwhn5ialu7h@azdndahrdr3f>
+References: <20250609191340.2051741-1-kirill.shutemov@linux.intel.com>
+ <20250609191340.2051741-9-kirill.shutemov@linux.intel.com>
+ <aba17e84f56f2a51e7d3cf0e286a898adf66dc46.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20250709141035.70299-1-xiaoyao.li@intel.com>
-Message-ID: <aG58SdS7HibYuoW-@google.com>
-Subject: Re: [PATCH] MAINTAINERS: Add KVM mail list to the TDX entry
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aba17e84f56f2a51e7d3cf0e286a898adf66dc46.camel@intel.com>
 
-On Wed, Jul 09, 2025, Xiaoyao Li wrote:
-> KVM is the primary user of TDX within the kernel, and it is KVM that
-> provides support for running TDX guests.
+On Wed, Jun 25, 2025 at 10:38:42PM +0000, Edgecombe, Rick P wrote:
+> On Mon, 2025-06-09 at 22:13 +0300, Kirill A. Shutemov wrote:
+> > There are two distinct cases when the kernel needs to allocate PAMT
+> > memory in the fault path: for SEPT page tables in tdx_sept_link_private_spt()
+> > and for leaf pages in tdx_sept_set_private_spte().
+> > 
+> > These code paths run in atomic context. Use a pre-allocated per-VCPU
+> > pool for memory allocations.
 > 
-> Add the KVM mailing list to the TDX entry so that KVM people can be
-> informed of proposed changes and updates related to TDX.
-> 
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> ---
+> This log is way to thin. It should explain the design, justify the function
+> pointer, excuse the export, etc.
 
-Acked-by: Sean Christopherson <seanjc@google.com>
+Ack.
+
+> > 
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > ---
+> >  arch/x86/include/asm/tdx.h  |  4 ++++
+> >  arch/x86/kvm/vmx/tdx.c      | 40 ++++++++++++++++++++++++++++++++-----
+> >  arch/x86/virt/vmx/tdx/tdx.c | 21 +++++++++++++------
+> >  virt/kvm/kvm_main.c         |  1 +
+> >  4 files changed, 55 insertions(+), 11 deletions(-)
+> > 
+> > diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+> > index 47092eb13eb3..39f8dd7e0f06 100644
+> > --- a/arch/x86/include/asm/tdx.h
+> > +++ b/arch/x86/include/asm/tdx.h
+> > @@ -116,6 +116,10 @@ u32 tdx_get_nr_guest_keyids(void);
+> >  void tdx_guest_keyid_free(unsigned int keyid);
+> >  
+> >  int tdx_nr_pamt_pages(void);
+> > +int tdx_pamt_get(struct page *page, enum pg_level level,
+> > +		 struct page *(alloc)(void *data), void *data);
+> > +void tdx_pamt_put(struct page *page, enum pg_level level);
+> > +
+> >  struct page *tdx_alloc_page(void);
+> >  void tdx_free_page(struct page *page);
+> >  
+> > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> > index 36c3c9f8a62c..bc9bc393f866 100644
+> > --- a/arch/x86/kvm/vmx/tdx.c
+> > +++ b/arch/x86/kvm/vmx/tdx.c
+> > @@ -1537,11 +1537,26 @@ static int tdx_mem_page_record_premap_cnt(struct kvm *kvm, gfn_t gfn,
+> >  	return 0;
+> >  }
+> >  
+> > +static struct page *tdx_alloc_pamt_page_atomic(void *data)
+> > +{
+> > +	struct kvm_vcpu *vcpu = data;
+> > +	void *p;
+> > +
+> > +	p = kvm_mmu_memory_cache_alloc(&vcpu->arch.pamt_page_cache);
+> > +	return virt_to_page(p);
+> > +}
+> > +
+> >  int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn,
+> >  			      enum pg_level level, kvm_pfn_t pfn)
+> >  {
+> > +	struct kvm_vcpu *vcpu = kvm_get_running_vcpu();
+> >  	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
+> >  	struct page *page = pfn_to_page(pfn);
+> > +	int ret;
+> > +
+> > +	ret = tdx_pamt_get(page, level, tdx_alloc_pamt_page_atomic, vcpu);
+> > +	if (ret)
+> > +		return ret;
+> >  
+> >  	/* TODO: handle large pages. */
+> >  	if (KVM_BUG_ON(level != PG_LEVEL_4K, kvm))
+> 
+> level is known to be PG_LEVEL_4K if you swap the order of these. I'm guessing
+> left over from order swap.
+
+We would need to pass actual level when huge pages are supported. It is
+better to keep it this way to avoid patching in the future.
+
+> 
+> > @@ -1562,10 +1577,16 @@ int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn,
+> >  	 * barrier in tdx_td_finalize().
+> >  	 */
+> >  	smp_rmb();
+> > -	if (likely(kvm_tdx->state == TD_STATE_RUNNABLE))
+> > -		return tdx_mem_page_aug(kvm, gfn, level, page);
+> >  
+> > -	return tdx_mem_page_record_premap_cnt(kvm, gfn, level, pfn);
+> > +	if (likely(kvm_tdx->state == TD_STATE_RUNNABLE))
+> > +		ret = tdx_mem_page_aug(kvm, gfn, level, page);
+> > +	else
+> > +		ret = tdx_mem_page_record_premap_cnt(kvm, gfn, level, pfn);
+> 
+> tdx_mem_page_record_premap_cnt() doesn't need tdx_pamt_get(). I think it could
+> be skipped if the order is re-arranged.
+
+We need to deposit PAMT memory for PAGE.ADD at some point. I think having
+it consolidated here for both PAGE.ADD and PAGE.AUG is better.
+
+> > +
+> > +	if (ret)
+> > +		tdx_pamt_put(page, level);
+> > +
+> > +	return ret;
+> >  }
+> >  
+> >  static int tdx_sept_drop_private_spte(struct kvm *kvm, gfn_t gfn,
+> > @@ -1622,17 +1643,26 @@ int tdx_sept_link_private_spt(struct kvm *kvm, gfn_t gfn,
+> >  			      enum pg_level level, void *private_spt)
+> >  {
+> >  	int tdx_level = pg_level_to_tdx_sept_level(level);
+> > -	gpa_t gpa = gfn_to_gpa(gfn);
+> > +	struct kvm_vcpu *vcpu = kvm_get_running_vcpu();
+> >  	struct page *page = virt_to_page(private_spt);
+> > +	gpa_t gpa = gfn_to_gpa(gfn);
+> >  	u64 err, entry, level_state;
+> > +	int ret;
+> > +
+> > +	ret = tdx_pamt_get(page, PG_LEVEL_4K, tdx_alloc_pamt_page_atomic, vcpu);
+> > +	if (ret)
+> > +		return ret;
+> >  
+> >  	err = tdh_mem_sept_add(&to_kvm_tdx(kvm)->td, gpa, tdx_level, page, &entry,
+> >  			       &level_state);
+> > -	if (unlikely(tdx_operand_busy(err)))
+> > +	if (unlikely(tdx_operand_busy(err))) {
+> > +		tdx_pamt_put(page, PG_LEVEL_4K);
+> >  		return -EBUSY;
+> > +	}
+> >  
+> >  	if (KVM_BUG_ON(err, kvm)) {
+> >  		pr_tdx_error_2(TDH_MEM_SEPT_ADD, err, entry, level_state);
+> > +		tdx_pamt_put(page, PG_LEVEL_4K);
+> >  		return -EIO;
+> >  	}
+> >  
+> > diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> > index 4f9eaba4af4a..d4b50b6428fa 100644
+> > --- a/arch/x86/virt/vmx/tdx/tdx.c
+> > +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> > @@ -2067,10 +2067,16 @@ static void tdx_free_pamt_pages(struct list_head *pamt_pages)
+> >  	}
+> >  }
+> >  
+> > -static int tdx_alloc_pamt_pages(struct list_head *pamt_pages)
+> > +static int tdx_alloc_pamt_pages(struct list_head *pamt_pages,
+> > +				 struct page *(alloc)(void *data), void *data)
+> >  {
+> >  	for (int i = 0; i < tdx_nr_pamt_pages(); i++) {
+> > -		struct page *page = alloc_page(GFP_KERNEL);
+> > +		struct page *page;
+> > +
+> > +		if (alloc)
+> > +			page = alloc(data);
+> > +		else
+> > +			page = alloc_page(GFP_KERNEL);
+> 
+> It's not great I think. A branch between a function pointer and alloc_page,
+> where there is only ever one value for the function pointer. There has to be a
+> better way?
+
+I guess we can do something like this (but I am not sure it is better):
+
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index baa791ea5fd7..58a3066be6fc 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -2141,11 +2141,7 @@ static int tdx_alloc_pamt_pages(struct list_head *pamt_pages,
+ 	for (int i = 0; i < tdx_nr_pamt_pages(); i++) {
+ 		struct page *page;
+ 
+-		if (alloc)
+-			page = alloc(data);
+-		else
+-			page = alloc_page(GFP_KERNEL);
+-
++		page = alloc(data);
+ 		if (!page) {
+ 			tdx_free_pamt_pages(pamt_pages);
+ 			return -ENOMEM;
+@@ -2208,6 +2204,11 @@ static int tdx_pamt_add(atomic_t *pamt_refcount, unsigned long hpa,
+ 	return 0;
+ }
+ 
++static struct page *alloc_kernel_page(void *dummy)
++{
++	return alloc_page(GFP_KERNEL);
++}
++
+ /* Bump PAMT refcount for the given page and allocate PAMT memory if needed */
+ int tdx_pamt_get(struct page *page, enum pg_level level,
+ 		 struct page *(alloc)(void *data), void *data)
+@@ -2233,6 +2234,9 @@ int tdx_pamt_get(struct page *page, enum pg_level level,
+ 	if (atomic_inc_not_zero(pamt_refcount))
+ 		return 0;
+ 
++	if (!alloc)
++		alloc = alloc_kernel_page;
++
+ 	if (tdx_alloc_pamt_pages(&pamt_pages, alloc, data))
+ 		return -ENOMEM;
+ 
+> 
+> >  		if (!page)
+> >  			goto fail;
+> >  		list_add(&page->lru, pamt_pages);
+> > @@ -2115,7 +2121,8 @@ static int tdx_pamt_add(atomic_t *pamt_refcount, unsigned long hpa,
+> >  	return 0;
+> >  }
+> >  
+> > -static int tdx_pamt_get(struct page *page, enum pg_level level)
+> > +int tdx_pamt_get(struct page *page, enum pg_level level,
+> > +		 struct page *(alloc)(void *data), void *data)
+> >  {
+> >  	unsigned long hpa = page_to_phys(page);
+> >  	atomic_t *pamt_refcount;
+> > @@ -2134,7 +2141,7 @@ static int tdx_pamt_get(struct page *page, enum pg_level level)
+> >  	if (atomic_inc_not_zero(pamt_refcount))
+> >  		return 0;
+> >  
+> > -	if (tdx_alloc_pamt_pages(&pamt_pages))
+> > +	if (tdx_alloc_pamt_pages(&pamt_pages, alloc, data))
+> >  		return -ENOMEM;
+> >  
+> >  	ret = tdx_pamt_add(pamt_refcount, hpa, &pamt_pages);
+> > @@ -2143,8 +2150,9 @@ static int tdx_pamt_get(struct page *page, enum pg_level level)
+> >  
+> >  	return ret >= 0 ? 0 : ret;
+> >  }
+> > +EXPORT_SYMBOL_GPL(tdx_pamt_get);
+> >  
+> > -static void tdx_pamt_put(struct page *page, enum pg_level level)
+> > +void tdx_pamt_put(struct page *page, enum pg_level level)
+> >  {
+> >  	unsigned long hpa = page_to_phys(page);
+> >  	atomic_t *pamt_refcount;
+> > @@ -2179,6 +2187,7 @@ static void tdx_pamt_put(struct page *page, enum pg_level level)
+> >  
+> >  	tdx_free_pamt_pages(&pamt_pages);
+> >  }
+> > +EXPORT_SYMBOL_GPL(tdx_pamt_put);
+> >  
+> >  struct page *tdx_alloc_page(void)
+> >  {
+> > @@ -2188,7 +2197,7 @@ struct page *tdx_alloc_page(void)
+> >  	if (!page)
+> >  		return NULL;
+> >  
+> > -	if (tdx_pamt_get(page, PG_LEVEL_4K)) {
+> > +	if (tdx_pamt_get(page, PG_LEVEL_4K, NULL, NULL)) {
+> >  		__free_page(page);
+> >  		return NULL;
+> >  	}
+> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> > index eec82775c5bf..6add012532a0 100644
+> > --- a/virt/kvm/kvm_main.c
+> > +++ b/virt/kvm/kvm_main.c
+> > @@ -436,6 +436,7 @@ void *kvm_mmu_memory_cache_alloc(struct kvm_mmu_memory_cache *mc)
+> >  	BUG_ON(!p);
+> >  	return p;
+> >  }
+> > +EXPORT_SYMBOL_GPL(kvm_mmu_memory_cache_alloc);
+> 
+> Did you consider pre-allocating a page and returning it to the cache if it's not
+> needed.
+
+I am not sure how returning object back to pool helps anything.
+
+Or do you mean to invent a new memory pool mechanism just for PAMT. Seems
+excessive.
+
+
+> Or moving kvm_mmu_memory_cache_alloc() to a static inline in a header
+> that core x86 can use.
+
+mmu_memory_cache_alloc_obj() need to be pulled into header too. At this
+point we might as well pull all KVM_ARCH_NR_OBJS_PER_MEMORY_CACHE stuff
+there. 
+
+It seems too extreme to avoid export.
+
+> They all seem bad in different ways.
+> 
+> >  #endif
+> >  
+> >  static void kvm_vcpu_init(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned id)
+> 
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
