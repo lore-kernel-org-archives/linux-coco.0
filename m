@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADD61E9B19
-	for <linux-coco@lists.linux.dev>; Wed,  9 Jul 2025 03:32:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8BFA29D05
+	for <linux-coco@lists.linux.dev>; Wed,  9 Jul 2025 04:23:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752031939; cv=none; b=ZBKgxEGYY0iFzJwrdsaJDpfelyzvsRgU06OOjXZX+zveUrbcoNZK8VSLxgFX/LqXo3GiTK8FIPKUjhn/N2M81G/5mYb9eqoZTN6vlINg+VqAJ7v4iiXMHLLsMD1welVZKe/azP+6VxFp2XPj0Lg3XSLPIa5mljRjCAu/bKUMC2g=
+	t=1752034987; cv=none; b=HkgudtDVVbgn5cUBUPzwhBVWFNx040kgr8A8eK3ghLlogFxJ/5Vcb8TRWGgs74O9nevmTV15pJ3n4BXQAJYEIYrjGer3ZusHtILwMBTRWe+8nx4Dib6HFGt0VeQg57piH21G6UIGfBLCK4ZNH3vhKMAOsN1qP4X3kkE+GQgvLvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752031939; c=relaxed/simple;
-	bh=1Pw8KyivSm4APrwkp5YnUtNQp3ayFykviGg3WVfhQzI=;
+	s=arc-20240116; t=1752034987; c=relaxed/simple;
+	bh=5dRrY/NLaoFPY+b+wpeOiJuHyAiYa9WkF6I5zI6k270=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GmWkggC34wUi0Jbby5dGKb6B3UHzub17eJe2ma1cnOBVlD7krfsttfwjHOp/OxxsQHWLwjVE3kVuwlFxpaWwJdibVTyj8bqr/ULptf3FOnexTogE3mvpKkoVFhGD6A/CiGtYhrnrABztkiRQUQXPD43QPE6EsJFULhYL03s67Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YSViXEsv; arc=none smtp.client-ip=198.175.65.19
+	 In-Reply-To:Content-Type; b=b4j+77mEaiuwrl4O7Q2eH6ffJmpTCCvUVOxPs0anUNl2dTN2ayyGTUqv4JA4HtB/GGYMdN/NJMacQU1gAdoEAFLp+avLQTuPNCSInN+6yviYmXi4eHl+5Hls0ShdFMjUivJdkI+HpwSxgg6EYjCFAaVbgAns0SjK3z+Fi1B39nE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lPyTSdMT; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YSViXEsv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lPyTSdMT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752031938; x=1783567938;
+  t=1752034986; x=1783570986;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=1Pw8KyivSm4APrwkp5YnUtNQp3ayFykviGg3WVfhQzI=;
-  b=YSViXEsvhpQ7DSsHrv/ieYncbiIMmZ4yl5z2HI0+HCNBLnUm0QUobYuL
-   W4DmbzSVM1Mpn/c9mbLuaEJlVag7nOAvIRmVVF0qa7maeI07rNsYViV91
-   SBQb9g5os5+yJsZlvyRJODldXashiGGNrW7l7ZFRBMhF0/qeDdaGYIe6Q
-   H2woR9Dz9VU1KZ5e0Rnj6MR2w/CgbgE2xu+Y8NxTTZE/Oobv3te/dmh9C
-   AVFsFZt7Y8YG6ka+aZkbZW9ZH+NhdHueY3Gb5yBQTWXh70DR3TRsO/Us/
-   jxcvJ60p1nTjGHbO6QruBY5DflAr+FoslvpvgaoITMJy8W6yAnqTPRiUG
-   g==;
-X-CSE-ConnectionGUID: 0uuJKCPgSLm93I9Y2h9n8g==
-X-CSE-MsgGUID: vmfxPVzJRtux8XEpHIW+0w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="54138726"
+  bh=5dRrY/NLaoFPY+b+wpeOiJuHyAiYa9WkF6I5zI6k270=;
+  b=lPyTSdMTQ//2cqD/Gr/p/8Sp+wC/ASlIi+ZEN2/kKyTDZmf5LvfvRrlO
+   XKkCxI4/sazow/2aEWewR3MOblPtUPSMJQIt3nEI/1VW+OokTPwCbaiGL
+   7cI/Mx/RHbuLFjikQeC+SSc+VKmwuaj0KpV5z65JedQ0aHSNM3LlYd7rM
+   kTiNw582QTOHZ1uu4NkuAm3+2iUMOd7uPMr+ZTKN416CqcLLazaar+HOF
+   Ir9176IBrVuNdp5lEQPllBbaBraZpbaS30gS+QjvyykTWmPxgdIpf/LkK
+   yOe+SXCHfpSztix+AnSVvdY/fT4v5/KzMUZ8ZwPtC26EwqXJqoRpCvZWW
+   Q==;
+X-CSE-ConnectionGUID: q4B/tXvsQPqyQIbz9K4qfQ==
+X-CSE-MsgGUID: DBhZhZZzRS2VEmhJXiTemg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="79724244"
 X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="54138726"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 20:32:18 -0700
-X-CSE-ConnectionGUID: M8ZxqpsMR7Szc4Ve2uCgkg==
-X-CSE-MsgGUID: VuRcLl3hSI2nqboZfvW4IA==
+   d="scan'208";a="79724244"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 21:23:05 -0700
+X-CSE-ConnectionGUID: DSvrTEPnQhmNO2+IQH7ivA==
+X-CSE-MsgGUID: bazLbBHvR0mtaTIjwUq6Xg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="159972471"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1]) ([10.124.247.1])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 20:32:12 -0700
-Message-ID: <1f977a8e-0503-4596-93ea-720844451b09@intel.com>
-Date: Wed, 9 Jul 2025 11:32:09 +0800
+   d="scan'208";a="156147084"
+Received: from lstrano-mobl6.amr.corp.intel.com (HELO [10.125.110.165]) ([10.125.110.165])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 21:23:05 -0700
+Message-ID: <ebdba9aa-ce65-44c9-97f4-cae74a4db586@intel.com>
+Date: Tue, 8 Jul 2025 21:26:21 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,45 +52,76 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] x86/tdx: Fix the typo of TDX_ATTR_MIGRTABLE
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "seanjc@google.com" <seanjc@google.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "Huang, Kai" <kai.huang@intel.com>, "Zhao, Yan Y" <yan.y.zhao@intel.com>,
- "Hunter, Adrian" <adrian.hunter@intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
- "Chatre, Reinette" <reinette.chatre@intel.com>,
- "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "Yamahata, Isaku" <isaku.yamahata@intel.com>,
- "mingo@redhat.com" <mingo@redhat.com>, "hpa@zytor.com" <hpa@zytor.com>,
- "Lindgren, Tony" <tony.lindgren@intel.com>, "bp@alien8.de" <bp@alien8.de>,
- "x86@kernel.org" <x86@kernel.org>
-References: <20250708080314.43081-1-xiaoyao.li@intel.com>
- <20250708080314.43081-2-xiaoyao.li@intel.com>
- <a1bd44daa452356f4e763e4a980d075a831e2290.camel@intel.com>
+Subject: Re: [PATCH 1/3] MAINTAINERS: Update the file list in the TDX entry.
+To: Xiaoyao Li <xiaoyao.li@intel.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
+References: <20250708101922.50560-1-kirill.shutemov@linux.intel.com>
+ <20250708101922.50560-2-kirill.shutemov@linux.intel.com>
+ <4068a586-532f-4c87-bcd3-c345cbf168c0@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <a1bd44daa452356f4e763e4a980d075a831e2290.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <4068a586-532f-4c87-bcd3-c345cbf168c0@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 7/8/2025 10:20 PM, Edgecombe, Rick P wrote:
-> On Tue, 2025-07-08 at 16:03 +0800, Xiaoyao Li wrote:
->> Fix the typo of TDX_ATTR_MIGRTABLE to TDX_ATTR_MIGRATABLE.
+On 7/8/25 20:31, Xiaoyao Li wrote:
+> On 7/8/2025 6:19 PM, Kirill A. Shutemov wrote:
+>> Include files that were previously missed in the TDX entry file list.
+>> It also includes the recently added KVM enabling.
 > 
-> Can you add a little more. Something that explains the impact of the change.
-> These names are stringified and printed out. So it will actually fix the dmesg
-> output as well. But not any kind of machine readable proc or anything like that.
-
-Good catch! I will add more in next version.
-
->>
->> Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
->> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Side topic:
 > 
+> Could we add kvm maillist to the "L:" ?
 
+Sure, but send another patch please.
