@@ -1,127 +1,91 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8BFA29D05
-	for <linux-coco@lists.linux.dev>; Wed,  9 Jul 2025 04:23:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DA6285CA7
+	for <linux-coco@lists.linux.dev>; Wed,  9 Jul 2025 09:43:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752034987; cv=none; b=HkgudtDVVbgn5cUBUPzwhBVWFNx040kgr8A8eK3ghLlogFxJ/5Vcb8TRWGgs74O9nevmTV15pJ3n4BXQAJYEIYrjGer3ZusHtILwMBTRWe+8nx4Dib6HFGt0VeQg57piH21G6UIGfBLCK4ZNH3vhKMAOsN1qP4X3kkE+GQgvLvE=
+	t=1752054231; cv=none; b=Fez1QwBNa3zY/EONXTCm3sXekYSWR/YW/tGlKNEmGUkZUAtJJbguk9Pzm7E6+henupP7NCD3tGB40bA84ndDcgHNLd3cxwvjF5Xp4U0UhjKf+qI8xW0sq8BArF0L9ZdfOhICTajOkOrop8u9w4tEyWn+UGn2O8FBSDJhe+RjE2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752034987; c=relaxed/simple;
-	bh=5dRrY/NLaoFPY+b+wpeOiJuHyAiYa9WkF6I5zI6k270=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b4j+77mEaiuwrl4O7Q2eH6ffJmpTCCvUVOxPs0anUNl2dTN2ayyGTUqv4JA4HtB/GGYMdN/NJMacQU1gAdoEAFLp+avLQTuPNCSInN+6yviYmXi4eHl+5Hls0ShdFMjUivJdkI+HpwSxgg6EYjCFAaVbgAns0SjK3z+Fi1B39nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lPyTSdMT; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1752054231; c=relaxed/simple;
+	bh=/lPDnBKu5Ej0VxbZcVa3XZ9rvAga5TE+Z1cJ5K6Zy70=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=NoT600RcoojDGmn4JjVHIr7OzY9hMdggHeS0HWVCeJZUzgCi7FkiFL9tgxHwIz+MPhysyHpNLBa33yPiCN+mXDqgkpsdkzZP4ZWTHBXMeFEHi2lFUsI8itHtD5Rawq032njbaUV6vnG8mMeTe6B37D1mtjusoCGUMAvEigrQq+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BnV//62d; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lPyTSdMT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752034986; x=1783570986;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=5dRrY/NLaoFPY+b+wpeOiJuHyAiYa9WkF6I5zI6k270=;
-  b=lPyTSdMTQ//2cqD/Gr/p/8Sp+wC/ASlIi+ZEN2/kKyTDZmf5LvfvRrlO
-   XKkCxI4/sazow/2aEWewR3MOblPtUPSMJQIt3nEI/1VW+OokTPwCbaiGL
-   7cI/Mx/RHbuLFjikQeC+SSc+VKmwuaj0KpV5z65JedQ0aHSNM3LlYd7rM
-   kTiNw582QTOHZ1uu4NkuAm3+2iUMOd7uPMr+ZTKN416CqcLLazaar+HOF
-   Ir9176IBrVuNdp5lEQPllBbaBraZpbaS30gS+QjvyykTWmPxgdIpf/LkK
-   yOe+SXCHfpSztix+AnSVvdY/fT4v5/KzMUZ8ZwPtC26EwqXJqoRpCvZWW
-   Q==;
-X-CSE-ConnectionGUID: q4B/tXvsQPqyQIbz9K4qfQ==
-X-CSE-MsgGUID: DBhZhZZzRS2VEmhJXiTemg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11487"; a="79724244"
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="79724244"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 21:23:05 -0700
-X-CSE-ConnectionGUID: DSvrTEPnQhmNO2+IQH7ivA==
-X-CSE-MsgGUID: bazLbBHvR0mtaTIjwUq6Xg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,298,1744095600"; 
-   d="scan'208";a="156147084"
-Received: from lstrano-mobl6.amr.corp.intel.com (HELO [10.125.110.165]) ([10.125.110.165])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2025 21:23:05 -0700
-Message-ID: <ebdba9aa-ce65-44c9-97f4-cae74a4db586@intel.com>
-Date: Tue, 8 Jul 2025 21:26:21 -0700
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BnV//62d"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1752054228;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=igCiArqXJsJJsq4HFGCG/qhrV6Q18Vi3+rEwH+6RFe0=;
+	b=BnV//62dT1jK+ayogIVPp5nc1BVJTn9zLFcUXxDshF4bFKn8/kMZxaqfCYtfSEp5eJm2zR
+	nI5X2Wiir+qxVeYFzJPeRfNzsi9bA3RNG4p1rTnWsqa4qfXEC8uY8d5x9WiHxmyWdNAoFn
+	fFmoLb5RiMN6RtrAsXCMvoobJVy76BE=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-370-5Jw-5jXiNFS4CYfTu1V26g-1; Wed,
+ 09 Jul 2025 05:43:47 -0400
+X-MC-Unique: 5Jw-5jXiNFS4CYfTu1V26g-1
+X-Mimecast-MFC-AGG-ID: 5Jw-5jXiNFS4CYfTu1V26g_1752054226
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DF90D193585F;
+	Wed,  9 Jul 2025 09:43:45 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.45.224.100])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9A3F51803AF2;
+	Wed,  9 Jul 2025 09:43:45 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+	id 0E66718000B2; Wed, 09 Jul 2025 11:43:43 +0200 (CEST)
+Date: Wed, 9 Jul 2025 11:43:42 +0200
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: "Relph, Richard" <richard.relph@amd.com>
+Cc: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>, 
+	coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+Subject: Re: SVSM Development Call July 2nd, 2025
+Message-ID: <aq6225hfazqsbqgx6fhj2klst52wdfivfa6xj2ost65sg5fq2r@4yoqnv2tp5nm>
+References: <sn6mqb3jmijz2mxur2fxow4wp55ljfiwhem5qzsoeavhsutjbv@iaunp2gqfs4g>
+ <lirgc4cvbgr7wxuci2paqggsdzw2wcfmn2dtg6urorqmjpjhtk@bof63sgjpihg>
+ <vpwzlcdbpu3kdshsgfshwfldqm5wtcesblwa7gzwyaf3tgtqwp@2vh37q57z2xe>
+ <4qbnbdno6hof3llfemhxc4prm7x2vzpqmvjknykelucpqhyryz@kbgpmaoy7vmz>
+ <4b862033-9c53-47ec-8eae-e9c9ce7d7d7d@amd.com>
+ <cvrqixqf3odaxgpz4uzwtkfkbmgbyrndzgyl7mhlbs6vj6fnpp@5aqnndt7rm6q>
+ <d579919f-6e66-4499-8634-e258af61c933@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] MAINTAINERS: Update the file list in the TDX entry.
-To: Xiaoyao Li <xiaoyao.li@intel.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
-References: <20250708101922.50560-1-kirill.shutemov@linux.intel.com>
- <20250708101922.50560-2-kirill.shutemov@linux.intel.com>
- <4068a586-532f-4c87-bcd3-c345cbf168c0@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <4068a586-532f-4c87-bcd3-c345cbf168c0@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <d579919f-6e66-4499-8634-e258af61c933@amd.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: lpLzR2EJ8jzvbVsAKdkSZqp3C6Vj97MlKmOb24Oa3l4_1752054226
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 7/8/25 20:31, Xiaoyao Li wrote:
-> On 7/8/2025 6:19 PM, Kirill A. Shutemov wrote:
->> Include files that were previously missed in the TDX entry file list.
->> It also includes the recently added KVM enabling.
+> > I assume you mean dynamic at boot time?
 > 
-> Side topic:
-> 
-> Could we add kvm maillist to the "L:" ?
+> Jon Lange should weigh in here... he's the expert on this.
+> But I believe it would need to be dynamic at run-time.
 
-Sure, but send another patch please.
+i.e. support for SVSM_CORE_DEPOSIT_MEM ?
+
+> Being able start with a "reasonable" amount for page state while
+> allowing for expansion later if needed is the preferred solution.
+
+What events would trigger the need for expansion?  Would OVMF (which
+typically would run for a few seconds at boot) need to support that?
+Or is that something only the linux kernel (or other guest kernels)
+would have to worry about?
+
+take care,
+  Gerd
+
