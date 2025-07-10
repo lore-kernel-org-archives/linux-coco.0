@@ -1,55 +1,98 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D3BC17A300;
-	Thu, 10 Jul 2025 06:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752130605; cv=none; b=VUbXBQgwSx8c3hkJ4LJ/2cMKUgbfEIZBV4JXEMe3UHu599X+tTD0yPQKj8bv+BvxTwV+/ynCtM+JJjkuQrAkdglL1z1ZFiqEHSPpZHsYj/8LHKZSbXmaiJiKKnpq1CYiztTTP0xAfnxWcjwNo11t/Oo3MC0vnvZw119tZPCXKsY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752130605; c=relaxed/simple;
-	bh=tVWmHiZMFvaMH4M9v4u/o2dimwt+cu2+3+CStvsK5vk=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=odv5FewOQqoTS1eJTl85NCBSkqNYRilHUzVLIKkY86z4uaqAvyRvwTBi8E7Fg9ol4oKf9B47RD7IN75qM+ZoRpeDTkSpy08gJ7ZETDpUKp8BomA8MS6A78NCeZBOs/U+fj3XEQK93qDhWMH0IcjJBJWSRod9U8sPrteVdpB5YJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=jUDI6U14; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="jUDI6U14"
-Received: from 8bytes.org (p4ffe03ae.dip0.t-ipconnect.de [79.254.3.174])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 857274FD74;
-	Thu, 10 Jul 2025 08:56:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1752130595;
-	bh=tVWmHiZMFvaMH4M9v4u/o2dimwt+cu2+3+CStvsK5vk=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=jUDI6U14a7yrVXgMZ+7HSUl2mjkb0Vn09Wa5bi2MPe5o4uvpfpV6ItfJqxRmhiIf3
-	 VFjP9DociZKzp4E5ZcLuIbegZvP6xAEJ5hL9TOZ8E0k/wqCYf34FFHT0d9SqGpns55
-	 1s1vWzM4rHHW5JIW+soDilM/irW7OVFEIcOIlm5w2ta4TNfYl0UjZhoTK9IJELUvrL
-	 QaFEwbRrbK4TzOF5nQokBKV7oV7t4m9qQvOfXRUEW3ysU87qOUk+fVHcR7dQNh1sFX
-	 uUDqMsY8jP7JSV3C3ZyvfRHpliV7n52U5VLk3oBJlguCjmx89SSGxUcw0ewIq7PtIV
-	 qewxIZAvgNiUQ==
-Date: Thu, 10 Jul 2025 08:56:34 +0200
-From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
-Subject: Re: SVSM Development Call July 9th, 2025
-Message-ID: <c7aise4auijfopbk743krcr7toydp37p5wnao6l7bez6sf6xjh@gc235gqus553>
-References: <77dsinxz7oc7tfcox2ochbsunpach573cy6pryf7jlndf4hwgz@eqcdwp5psogl>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66151E515
+	for <linux-coco@lists.linux.dev>; Thu, 10 Jul 2025 07:49:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752133778; cv=none; b=VVhlCFA6ODP2UNVAX92P4IavT6kMQfR6QXPTwm4mgFXjy6M67JmSjwkOJEu09sYc3WTmObmFBiSdbT/tQZOWWwnsx0WqV0ATSO3Ea05LA9ag3y+nZA2O29OyUA4pyFisZ7TeQW0pzq9NS52LXVxivkCKl+yKultmvHMsWKs3TQc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752133778; c=relaxed/simple;
+	bh=s1gPWPDHMHee3mZrHp5MkTm92bihm3mxBUZdy5mNbCw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pVQe8KKhht7C08ZETSn22aN0N7/t1+k+xY3kH6F4pm9zruMa8k+ykvtzjyY4AgMNjSpGuQdmZK00rYfcBNmRfcAIQBgKcMkrBMdG9Y8boHzhyi2Ew1dxlAl5yYReiQfH3hXBfa4OEtt8IJxTRIWHnbADwj/sXbqRRiOMbv1zCE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QAEWGaGd; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QAEWGaGd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752133776; x=1783669776;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=s1gPWPDHMHee3mZrHp5MkTm92bihm3mxBUZdy5mNbCw=;
+  b=QAEWGaGdLoj5SkO4UGwFMQuNyJzTLFzpy8JN6OvVbzT5q0NCY86UhFAU
+   XglmrMxtnQVa7/cT9SBWYtDllRGJhrjLeemu+8Vaj0gKprGxd9azpdpbf
+   z+GojMhSx0iN5+WI4GT4+IiKPSu9HMdk/mw011BcwhBN1Kcw95Zp0Kah/
+   iOco6y/tBMApR1tmndE5YKdITu/2t7P7UtxZ3SbU6BI+LTL97HWb2yUk4
+   hG7YI4ZP2nKb+Pk+JZzuvWcpAnUHgcl3x+80+3Xm9dNn6DszDtTNwINYC
+   wnwOIWYlBZhmUDUQ3w8i/MkZceiJli/G8KjqQqDLlx/fMJfaoQSb7sfc+
+   A==;
+X-CSE-ConnectionGUID: GBXZU3+eT9uI9r8IhgLjmw==
+X-CSE-MsgGUID: Tk9pegQdS0yxR3Vu9Lr+YQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="54535503"
+X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; 
+   d="scan'208";a="54535503"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 00:49:36 -0700
+X-CSE-ConnectionGUID: RS8IeWZ7S56KymhinSUNaQ==
+X-CSE-MsgGUID: ByqQhlgmR8qd9qcAJCFDsA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; 
+   d="scan'208";a="186973491"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa001.fm.intel.com with ESMTP; 10 Jul 2025 00:49:32 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 15DDA1B7; Thu, 10 Jul 2025 10:49:31 +0300 (EEST)
+Date: Thu, 10 Jul 2025 10:49:30 +0300
+From: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"seanjc@google.com" <seanjc@google.com>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"Gao, Chao" <chao.gao@intel.com>, "bp@alien8.de" <bp@alien8.de>, 
+	"Huang, Kai" <kai.huang@intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"mingo@redhat.com" <mingo@redhat.com>, "Zhao, Yan Y" <yan.y.zhao@intel.com>, 
+	"tglx@linutronix.de" <tglx@linutronix.de>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Yamahata, Isaku" <isaku.yamahata@intel.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCHv2 07/12] KVM: TDX: Preallocate PAMT pages to be used in
+ page fault path
+Message-ID: <prt55pslqia6m62m74lseca5xw4kcrxv7gthfnulnbousgxbg3@6zxi46s5rz5p>
+References: <20250609191340.2051741-1-kirill.shutemov@linux.intel.com>
+ <20250609191340.2051741-8-kirill.shutemov@linux.intel.com>
+ <f58bca0331f3ba0bcd55d68f86c2563e6aa70747.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <77dsinxz7oc7tfcox2ochbsunpach573cy6pryf7jlndf4hwgz@eqcdwp5psogl>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f58bca0331f3ba0bcd55d68f86c2563e6aa70747.camel@intel.com>
 
-Meeting minutes are now available:
+On Thu, Jul 10, 2025 at 01:34:19AM +0000, Edgecombe, Rick P wrote:
+> On Mon, 2025-06-09 at 22:13 +0300, Kirill A. Shutemov wrote:
+> > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> > index cbc84c6abc2e..d99bb27b5b01 100644
+> > --- a/arch/x86/kvm/mmu/mmu.c
+> > +++ b/arch/x86/kvm/mmu/mmu.c
+> > @@ -616,6 +616,12 @@ static int mmu_topup_memory_caches(struct kvm_vcpu *vcpu, bool maybe_indirect)
+> >  		if (r)
+> >  			return r;
+> >  	}
+> > +
+> > +	r = kvm_mmu_topup_memory_cache(&vcpu->arch.pamt_page_cache,
+> > +				       tdx_nr_pamt_pages() * PT64_ROOT_MAX_LEVEL);
+> > +	if (r)
+> > +		return r;
+> > +
+> 
+> Shouldn't this be only for TD vCPUs?
 
-	https://github.com/coconut-svsm/governance/pull/66
+Ah. Good point. I didn't consider legacy VMs on TDX-enabled host.
 
-Cheers,
-
-	Joerg
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
