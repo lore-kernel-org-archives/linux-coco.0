@@ -1,111 +1,121 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9FE2D3A8A
-	for <linux-coco@lists.linux.dev>; Fri, 11 Jul 2025 13:30:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBD72D3EDC
+	for <linux-coco@lists.linux.dev>; Fri, 11 Jul 2025 13:34:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752240644; cv=none; b=mQL2xO4/JdhyPrNpF0EjvImNdPJhLtWk7gMi6ZGABRTMtqus1rDkEBVkW6h9NrjQy5DtRb6g7Or8/z3vm6HU6WUwaNtBYGCBZy2++i2COGuTgsLRcf93kKMPXuV1I4kr8eDKm2SFyFJp5ccVlgQV48TsKKEn0B+kKuJH6jKUpy8=
+	t=1752240864; cv=none; b=ecjWps1FAtR16OChmiTvfSm19FejbBEmkg9gJS8PHGaHELNqhL9jGOrH7C97VeMiSiVeK3mbNH2iN5VXrxcO6tzT06OYk3gC8iB/rJIDAzVoMf7lmxVDSZIjTwZe9pofg1Ox/hifYgo911rn0zCtYxIY7+0IyMdFIvOMZ2d6XQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752240644; c=relaxed/simple;
-	bh=6qYCdL4eUWzIJytcMLAQj4G6cl0MK9VLNnRVheqb3uE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=P9NFcxutOI1aFxTfvNNH+nRDRtURTjs4HmIMhSvNvpgWkP10wDtUNh/Mzp7g26jY9eFlRo/nJMShpjBv47bgvxinlHCgai8LTCGzJARDTFEgPopM61PZfesYbRATgUM0hEeF+dwbJliFFDjMoqy9VcWbgWA79TH+9wF4sL7OjbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aWsk1skP; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1752240864; c=relaxed/simple;
+	bh=hIuaHIUW/2tBZyLHxK7pwAlBg9QJ/ynlLfhkCZird+Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S1ME/YDoATAhPmtqfNgBJ7/ibsIlNGCLzML09JxN8dMqmM5dW90l3xTEG18KkMhFV+3oAmSu382QO04cj8z87rd7+21yXoHxplv88lWAIgcilwwN3iAO6Psb7Zw7aRbs4yRbbAp2YkmYYMhsnoediO5VRYVfNnjgWe9fD8h2SKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f8k9Hj+t; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aWsk1skP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752240642;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SyTp8Prip+kBWBbrGW1r47Nl5zxY1T5Awq+di+Gh4Ec=;
-	b=aWsk1skP64kpNGo2rsv7z0kNiFw4CC6CDHr7p25QDxiZXdu7g3vn5IyCZWiAxO0nTMslyx
-	/z4pnGQ/rhxy1qq80O8oN4MOe7Abgo7G+DJEorBRvWw2rC7PiyjtGy4hmYlfZLxaqNxqQ0
-	G6JwF+xmD3GN/y43AtAcul2wfc/+B8s=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-363-5RRNyl_lM86FGb9gaeYj5w-1; Fri,
- 11 Jul 2025 09:30:39 -0400
-X-MC-Unique: 5RRNyl_lM86FGb9gaeYj5w-1
-X-Mimecast-MFC-AGG-ID: 5RRNyl_lM86FGb9gaeYj5w_1752240638
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DD9B91809C87;
-	Fri, 11 Jul 2025 13:30:37 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.45.224.214])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F01953000221;
-	Fri, 11 Jul 2025 13:30:36 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
-	id 9B06B1800393; Fri, 11 Jul 2025 15:30:34 +0200 (CEST)
-Date: Fri, 11 Jul 2025 15:30:34 +0200
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Jon Lange <jlange@microsoft.com>
-Cc: "Relph, Richard" <richard.relph@amd.com>, 
-	=?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>, "coconut-svsm@lists.linux.dev" <coconut-svsm@lists.linux.dev>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Subject: Re: [EXTERNAL] Re: SVSM Development Call July 2nd, 2025
-Message-ID: <auq7txxlerpwzl542o6rkjams22cy6rb2xoi3f7lbej6u47svi@rto2jldlvxyh>
-References: <sn6mqb3jmijz2mxur2fxow4wp55ljfiwhem5qzsoeavhsutjbv@iaunp2gqfs4g>
- <lirgc4cvbgr7wxuci2paqggsdzw2wcfmn2dtg6urorqmjpjhtk@bof63sgjpihg>
- <vpwzlcdbpu3kdshsgfshwfldqm5wtcesblwa7gzwyaf3tgtqwp@2vh37q57z2xe>
- <4qbnbdno6hof3llfemhxc4prm7x2vzpqmvjknykelucpqhyryz@kbgpmaoy7vmz>
- <4b862033-9c53-47ec-8eae-e9c9ce7d7d7d@amd.com>
- <cvrqixqf3odaxgpz4uzwtkfkbmgbyrndzgyl7mhlbs6vj6fnpp@5aqnndt7rm6q>
- <d579919f-6e66-4499-8634-e258af61c933@amd.com>
- <aq6225hfazqsbqgx6fhj2klst52wdfivfa6xj2ost65sg5fq2r@4yoqnv2tp5nm>
- <LV5PR21MB5210A051A344852EC30C089CCA48A@LV5PR21MB5210.namprd21.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f8k9Hj+t"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752240862; x=1783776862;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=hIuaHIUW/2tBZyLHxK7pwAlBg9QJ/ynlLfhkCZird+Q=;
+  b=f8k9Hj+tMTBIIUMCQ67XKhoNJMIIBd4uVgESGvgynITO3y/wL/vaHJJX
+   xfZae5GiIRpPWuwZo2hOvaz8Uw7ppbvlhguW7rqFqqHmyU8QIHJsJrCQF
+   HuOXR/cqR2AXnhH+AzrFEpjnk4rqKKFxo5rPL//p+hiRQvrwRpcPRJEOQ
+   JfYgKX6d0GsMVTFUOTITjmGSf073cm5hMeJcDbpQ0mSRE/OHP64bw9o3t
+   IaeTvMgTwFDlNBuSv0h2GwYv1VALWYjPI2yRR33+wbRUnZ/MPQDy93mgW
+   NqxdGHkH0uKcllLt/YZKVCrPWqXH56Iu3P+mKnwdL+Af0B3reYtEex2x9
+   g==;
+X-CSE-ConnectionGUID: yvw+OrOJS+WipgL+Wddbcw==
+X-CSE-MsgGUID: 7WS297RaQU+W7eo2fwYkwg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="65603393"
+X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; 
+   d="scan'208";a="65603393"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 06:34:21 -0700
+X-CSE-ConnectionGUID: afqFL2hwTwOMOffUEbd4AA==
+X-CSE-MsgGUID: NzGjN/0zS6+L/6GWYO+RQw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; 
+   d="scan'208";a="187349197"
+Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
+  by fmviesa001.fm.intel.com with ESMTP; 11 Jul 2025 06:34:17 -0700
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	x86@kernel.org,
+	Kai Huang <kai.huang@intel.com>,
+	binbin.wu@linux.intel.com,
+	yan.y.zhao@intel.com,
+	reinette.chatre@intel.com,
+	isaku.yamahata@intel.com,
+	adrian.hunter@intel.com,
+	tony.lindgren@intel.com,
+	xiaoyao.li@intel.com,
+	rick.p.edgecombe@intel.com
+Subject: [PATCH v2 0/3] TDX: Clean up the definitions of TDX ATTRIBUTES
+Date: Fri, 11 Jul 2025 21:26:17 +0800
+Message-ID: <20250711132620.262334-1-xiaoyao.li@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <LV5PR21MB5210A051A344852EC30C089CCA48A@LV5PR21MB5210.namprd21.prod.outlook.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: VFL0DHkhvOl6kMh6F0XsKRKJwMYaRTWmBmlmgptAqL4_1752240638
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 10, 2025 at 04:32:58AM +0000, Jon Lange wrote:
-> > i.e. support for SVSM_CORE_DEPOSIT_MEM ?
-> 
-> No, the SVSM knows the full memory map at boot time and therefore can
-> know the amount of memory required for all bitmaps as part of its boot
-> flow.  The simplest approach will be for the SVSM to carve out
-> whatever memory it requires, and to tell the guest (OVMF) what memory
-> it has claimed for itself.  There is no need for additional bitmap
-> memory unless the guest support memory ballooning, which I think we
-> can consider out of scope for now.  So the question is what is the
-> best way for the SVSM to advertise its carve-out to OVMF. 
+Although some duplications were identified during the community review
+of TDX KVM base support[1][2], a few slipped through unnoticed due to
+the simultaneous evolution of the TD guest part.
 
-OVMF doing svsm calls for this should work fine (didn't actually test,
-but OVMF does memory validate calls quite early at boot, so I don't
-expect blockers).  A protocol along these lines should work I think:
+Patch 1 fixes the typo. Patch 2 removes the redundant definitions of
+TD ATTRIBUTES bits. Patch 3 rename KVM_SUPPORTED_TD_ATTRS to include
+"TDX" in it, based on Sean's preference[3].
 
-memmap call #1
+Note, this series doesn't rename TDX_ATTR_* in asm/shared/tdx.h to
+TDX_TD_ATTR_*, so that KVM_SUPPORTED_TDX_TD_ATTRS in patch 3 looks
+a little inconsistent. Because I'm not sure what the preference of tip
+maintainers on the name is. So I only honor KVM maintainer's preference
+and leave the stuff outside KVM unchanged.
 
-  IN  RAX    $protocol.1
-  OUT RCX    number of entries
+[1] https://lore.kernel.org/all/e5387c7c-9df8-4e39-bbe9-23e8bb09e527@intel.com/
+[2] https://lore.kernel.org/all/25bf543723a176bf910f27ede288f3d20f20aed1.camel@intel.com/
+[3] https://lore.kernel.org/all/aG0uyLwxqfKSX72s@google.com/
 
-memmap call #2
 
-  IN  RAX    $protocol.2
-  IN  RCX    entry index
-  OUT RCX    entry index
-  OUT RDX    entry type (e820)
-  OUT R8     entry address
-  OUT R9     entry size
+Changes in v2:
+ - collect Reviewed-by;
+ - Explains the impact of the change in patch 1 changelog;
+ - Add patch 3.
 
-Comments?
+v1: https://lore.kernel.org/all/20250708080314.43081-1-xiaoyao.li@intel.com/ 
 
-take care,
-  Gerd
+Xiaoyao Li (3):
+  x86/tdx: Fix the typo of TDX_ATTR_MIGRTABLE
+  KVM: TDX: Remove redundant definitions of TDX_TD_ATTR_*
+  KVM: TDX: Rename KVM_SUPPORTED_TD_ATTRS to KVM_SUPPORTED_TDX_TD_ATTRS
+
+ arch/x86/coco/tdx/debug.c         | 2 +-
+ arch/x86/include/asm/shared/tdx.h | 4 ++--
+ arch/x86/kvm/vmx/tdx.c            | 6 +++---
+ arch/x86/kvm/vmx/tdx_arch.h       | 6 ------
+ 4 files changed, 6 insertions(+), 12 deletions(-)
+
+
+base-commit: e4775f57ad51a5a7f1646ac058a3d00c8eec1e98
+prerequisite-patch-id: 96c55dfc551bf62e0b18e75547ba3bf671e30ee8
+-- 
+2.43.0
 
