@@ -1,108 +1,100 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC10D1B0421;
-	Fri, 11 Jul 2025 23:08:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B795225771
+	for <linux-coco@lists.linux.dev>; Sat, 12 Jul 2025 22:07:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752275304; cv=fail; b=eMqO3ZfLpYnKRhWJDTepFDHcwM3kUpibVAfLRjpGUmltPWM2F3g4zr+rdWCTijPqig1NySetsZJT54+2RQx+oZhe3U9/4TzLWHuRylorieC04Mj6I3M3gaizY28v4Z+VCUrWh6iqEaWa6BpsCmdGI4RXKv+xJ85n0b/PDjLHatg=
+	t=1752358056; cv=fail; b=DQuYZe6EODtdBruxF7VUmzkkEgDDf3E4fAt9Uq2QD+GAdRbMnSaBVK1/slEX34SNOq3JOzFb3TQnIACfstTeFlZob2sLpf8B6Iv8JQo5UgNIiChJVPGijaBQD3koSsVn3cRPQ33KTSdA4W8/pjXnhM/d4ZyVZRU7vUca7lWyj3s=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752275304; c=relaxed/simple;
-	bh=LnSRQnpil1yc8KCkxyLNYhvRM8f7v6tBix0eYifuE4I=;
+	s=arc-20240116; t=1752358056; c=relaxed/simple;
+	bh=nlNmjQ1ZfcVHBcF6RJ8IQeN1vWb0t9zVFdhyDx+EsNA=;
 	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
-	 Content-Type:MIME-Version; b=Tsq4KIHHii2rfUcRPtMD1ZbnuBNSV8Vtt6rWhqGwB7vtbn6ubLbKY3v8FBM6XBuvqa7pJis3Jpq01Ab5LDUMb3ls6dLA2bBQRIrp0AUwUngfdNQH7VhBfTGiYk9Anj4/xQe3LncnsIpangsfzo8i8MZILU8hIZlSEYJ6Tv/lREI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hB0wsj2C; arc=fail smtp.client-ip=192.198.163.9
+	 Content-Type:MIME-Version; b=VrWR1HuF0KIjdWNcmdqSlg8rXltd04iqhwHJsFZBzs1AhekqPvITT3nhH8x9IfZtmhpaCS8No8WKzTQVQx4mEJowclSvsZ8bEuxisySrSrdViNLLTzrH4s44SZuTF6PHuRQOBAOnGEtwoMJXfr/GDN02YMjp8AVssmTYOM1SuVw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jk739ZjH; arc=fail smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hB0wsj2C"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jk739ZjH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752275303; x=1783811303;
+  t=1752358054; x=1783894054;
   h=from:date:to:cc:message-id:in-reply-to:references:
    subject:content-transfer-encoding:mime-version;
-  bh=LnSRQnpil1yc8KCkxyLNYhvRM8f7v6tBix0eYifuE4I=;
-  b=hB0wsj2CGVPC/VwxpHAQ3jjAYLGZv9X19aC+kKqk4JoUhVlXi7J7tI7d
-   oY1lRJqNfvPmhsdnfygcFHiqWPwLtgF/JEAEmXkkO06OJ0SY2bEMBm1VJ
-   LYinHX6+wWGRaBNtOOxIhpbT62kZq8jA6HWoIsZDyFwBQ0KUFjcvVFYns
-   Vhjf+WoaXWU3E7f/1JBxjrxx1SNRgO2JN4Wmml+YM4CRrakj3CUTBlxWQ
-   958JezOUGI01lk/0KiQz6kDCRCmHY0EvQDjeCXSR8/em7ciyjtpnJoZaF
-   NwohGncTJ7i/u+g8B7Z1y6WEK5FLjK9QkO/gL0pCm0XhoS+b/CeJY8ros
-   Q==;
-X-CSE-ConnectionGUID: fgWmovz1QO+tmXbIvVtGMw==
-X-CSE-MsgGUID: pGT9TIJTRKiWYmF0kl5Vtw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="65275671"
-X-IronPort-AV: E=Sophos;i="6.16,304,1744095600"; 
-   d="scan'208";a="65275671"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 16:08:22 -0700
-X-CSE-ConnectionGUID: 2rgacI5ZT2+wQnOuuPXk2Q==
-X-CSE-MsgGUID: TNmgnFlbRW6zSkt1y43p+g==
+  bh=nlNmjQ1ZfcVHBcF6RJ8IQeN1vWb0t9zVFdhyDx+EsNA=;
+  b=jk739ZjHK6Yf6jgILZsm2mPlL5z6D7b89sR6mZmnM4N5oc5TU9iR4OuU
+   hFzKBVPha3aL56Lhbfs+QeorwG0zPkuj+FwQwXZRaYRhl6tnI6P2Hmmml
+   zGbjnvsxaXDDMoLJ4UCWcW8H8PpvSDuLdJWwlu36briv38zcCBUI1dmKA
+   d7RY7t3sDeOxMtkZdu26aQIXER2JDAOJCS748IK88IuD7xNXbryI4zaao
+   YI3OszRc/M0ak+9qNNfv+DkM6itdqxbEeiJ1UmZkReKWISmT2wZdDqtfr
+   qhGYP4kJBxCmlYldR9NUhaKQNU86ZLVortMnLfqU9pR2Gh6iKktnwWvNl
+   A==;
+X-CSE-ConnectionGUID: MKbb/QeaSeSDr0SUoeHVZw==
+X-CSE-MsgGUID: KinDG+cLQkWEmWTX/DggAw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="66053466"
+X-IronPort-AV: E=Sophos;i="6.16,307,1744095600"; 
+   d="scan'208";a="66053466"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2025 15:07:33 -0700
+X-CSE-ConnectionGUID: fWHik764ToaaVe9kHTXisg==
+X-CSE-MsgGUID: Y+onwmCNTzS0I4H9M/f54g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,305,1744095600"; 
-   d="scan'208";a="156263239"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 16:08:22 -0700
+X-IronPort-AV: E=Sophos;i="6.16,307,1744095600"; 
+   d="scan'208";a="157353392"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2025 15:07:32 -0700
 Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Sat, 12 Jul 2025 15:07:31 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
  ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 11 Jul 2025 16:08:21 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.2.1544.25 via Frontend Transport; Sat, 12 Jul 2025 15:07:31 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (40.107.92.88) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Fri, 11 Jul 2025 16:08:21 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (40.107.244.79)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 11 Jul 2025 16:08:20 -0700
+ 15.2.1544.25; Sat, 12 Jul 2025 15:07:31 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Eg6OobsLRdDr6Fkm/Rp3VllKN/KwQIy1NIgK02ZWGRHe2dMaPWkNMKEys0K5awIJOZn7WAStfn3w5IMv6v486xVXMeYE3Pr4QlF0GOAEGlknkS9N/SjxswS7bsOG3wDknMGVg8EtoH7A58WorgCgPxqYx3aHjGPzA1/JFyPOEjcp0WERnrdIKcwdxJlTGddPe86jvWRp0bKsUcS3EinvSQZ5k1mgRHIs6GBVJzO+msov50uB2USwFDQ+/146cj+29dve3h6m8oySCJSFiO39uWyGdOs5tkGAhRnur4FXYMhnq+yy7xLSOLstjqLmeBjvc1muF8B/5YsTgQnyfBuxvQ==
+ b=jQLzJj1m8e4sPXJIMJVTxEQ45HCE6jw17aiB7mpMZw30WgqhKYPc3NKknRlaVgXLfafbt/jCBYBAwOhfMHwvUV/PzHIlg+yVNbgJH6UoCdngbXNwi7ey3ZYbGC6zL2ctbQDRM+J+xR/1w2s0lFYNW/05dEUMNjVLIragAENa7o9RWT8gPEPLZNLmtnoq6vExPXaN+BWkIxY2oI0PowLPixqDJRZk6NvoSKutrKATJSyyumY+AY5Zj1aLE+qb0H4AJi7LdfAjBWnbxWfn3bw3jw6gWc8jdilHuJhaQaIRlSHmUon5viY7ml1a40BRYOylzF1Vz/c9KpEUW1zAyH8SXw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DwPpueauNlYaO+H0tgRZRF8QlJzQLEaWn2gU/cQ1nH8=;
- b=YXNqNzGc+N7VcaLOcJLSJNxDLJlGn6v++oHs0MAtc8u6mxNz44qe5nKpw0mzGul+gUYYnjPIn84Mu2AFfpGFfBoW4kSdJiMV4CNMi4KldxgsPbJhYMr9JmIxGIM+QXaU5W35MYdDNW2tP+yFatlpWcPhsFRRw92eobLT3Yfb4bBrDs6tM5IugVdhWoxZVCOL/ELm4y8ajRgfArNuWm4nRJXjsDYEmbzBI+JdmYVPvNrCjnCMwKIXfHF6O1uDP1n4OF2iDbAHdSFX3mj4Gs3GCrjs2e7CqS3RrPwPYPIa7X2XFmyJURIV9iK1e6k+mho3ljH+KycOYcrBierrK5UqEg==
+ bh=cqCJ+a+CVBoxdf8M0+lSAcxKvAPbUsNq3ZJUcmsY3Ys=;
+ b=XW41Vs+EtoUF2/SF+hVv8TVPmr876Na2nV+idyb4JnCTjfTWnMUlE/8B9EPVVjP/nfefpsLi6VBqLf4cYY8rmKoXS7vYPJYHFt/rgbxda9PJ0q0u7YC/ALocF66IvgOpcKQeOi5F0Ushr/tTzsSPKxn2wGXFXZ13RkycE1o2h79Hqjd2laW7246qnhoSy9kyNfn+86d53w9J1jWMZbAbpozVss6Nmyp8rAYvgQ9a4qSSmGFkuOqLEENKhZwGFD9Y/+oaW8Km2RWdCLpRymKdHmp70+IlfOAAi2vLiA9xTdLMEL98j011MwCdTou/Fir6shKHj/8cYki34DhBVfHoPQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by SJ5PPF0F15BC42D.namprd11.prod.outlook.com (2603:10b6:a0f:fc02::80e) with
+ by DM4PR11MB8201.namprd11.prod.outlook.com (2603:10b6:8:18a::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.27; Fri, 11 Jul
- 2025 23:08:19 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.25; Sat, 12 Jul
+ 2025 22:07:29 +0000
 Received: from PH8PR11MB8107.namprd11.prod.outlook.com
  ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8%6]) with mapi id 15.20.8901.024; Fri, 11 Jul 2025
- 23:08:19 +0000
+ ([fe80::6b05:74cf:a304:ecd8%6]) with mapi id 15.20.8901.024; Sat, 12 Jul 2025
+ 22:07:29 +0000
 From: <dan.j.williams@intel.com>
-Date: Fri, 11 Jul 2025 16:08:16 -0700
-To: Xu Yilun <yilun.xu@linux.intel.com>, Alexey Kardashevskiy <aik@amd.com>
-CC: <kvm@vger.kernel.org>, <sumit.semwal@linaro.org>,
-	<christian.koenig@amd.com>, <pbonzini@redhat.com>, <seanjc@google.com>,
-	<alex.williamson@redhat.com>, <jgg@nvidia.com>, <dan.j.williams@intel.com>,
-	<linux-coco@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
-	<linux-media@vger.kernel.org>, <linaro-mm-sig@lists.linaro.org>,
-	<vivek.kasireddy@intel.com>, <yilun.xu@intel.com>,
-	<linux-kernel@vger.kernel.org>, <lukas@wunner.de>, <yan.y.zhao@intel.com>,
-	<daniel.vetter@ffwll.ch>, <leon@kernel.org>, <baolu.lu@linux.intel.com>,
-	<zhenzhong.duan@intel.com>, <tao1.su@intel.com>, <linux-pci@vger.kernel.org>,
-	<zhiw@nvidia.com>, <simona.vetter@ffwll.ch>,
-	<shameerali.kolothum.thodi@huawei.com>, <aneesh.kumar@kernel.org>,
-	<iommu@lists.linux.dev>, <kevin.tian@intel.com>
-Message-ID: <68719960cc414_1d3d10056@dwillia2-xfh.jf.intel.com.notmuch>
-In-Reply-To: <aFvTL6MUkVZrPoBS@yilunxu-OptiPlex-7050>
-References: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
- <e886855f-25cc-4274-9f11-fe0e5b025284@amd.com>
- <f5958bda-838a-4ed6-84c6-fef62cd0b28f@amd.com>
- <aFvTL6MUkVZrPoBS@yilunxu-OptiPlex-7050>
-Subject: Re: [RFC PATCH 00/30] Host side (KVM/VFIO/IOMMUFD) support for TDISP
- using TSM
+Date: Sat, 12 Jul 2025 15:07:27 -0700
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Dan Williams
+	<dan.j.williams@intel.com>
+CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>,
+	<gregkh@linuxfoundation.org>, <lukas@wunner.de>, <aneesh.kumar@kernel.org>,
+	<suzuki.poulose@arm.com>, <sameo@rivosinc.com>, <aik@amd.com>,
+	<jgg@nvidia.com>, <zhiw@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>, "Xu
+ Yilun" <yilun.xu@linux.intel.com>
+Message-ID: <6872dc9fdd76_11344100fb@dwillia2-mobl4.notmuch>
+In-Reply-To: <20250617135145.0000376b@huawei.com>
+References: <20250516054732.2055093-1-dan.j.williams@intel.com>
+ <20250516054732.2055093-4-dan.j.williams@intel.com>
+ <20250617135145.0000376b@huawei.com>
+Subject: Re: [PATCH v3 03/13] PCI/TSM: Authenticate devices via platform TSM
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR05CA0067.namprd05.prod.outlook.com
- (2603:10b6:a03:332::12) To PH8PR11MB8107.namprd11.prod.outlook.com
+X-ClientProxiedBy: SJ0PR03CA0207.namprd03.prod.outlook.com
+ (2603:10b6:a03:2ef::32) To PH8PR11MB8107.namprd11.prod.outlook.com
  (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -111,118 +103,421 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SJ5PPF0F15BC42D:EE_
-X-MS-Office365-Filtering-Correlation-Id: 464d6e67-db3a-4ff6-3ed6-08ddc0cfd31b
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DM4PR11MB8201:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0b626080-3d8d-4766-de61-08ddc1907da3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?R3pQY1V6REJRR2trRitTNmpvenZPWFlXSllIcE5yamIzSXRzT210YWJtcVFK?=
- =?utf-8?B?YUZQUllRcFdGaXoyTE5UNFhuYlh2c21iUE1HbmRNY2xROTYrZVZ5S3V1MzAv?=
- =?utf-8?B?b1MzbmV3dXBxL0kxNEdhU3h6QTVPTXFRSFh0UDgrUmFLcWpmMVllSnJUZnd6?=
- =?utf-8?B?TWMzbHlGWGRzemVRait3QitKV1V5cmpuRzg0VzFPZEIxbi9TU2J4ZUZvN2pE?=
- =?utf-8?B?Y1d3MlovRGx0RmhaREpUVndDK2tFTmV6elB4blFhMEtoMWhGNVlPMEprZXlL?=
- =?utf-8?B?UmJWbndZUUFSTXlTSmpNRXprNXhkK1gyUzZKYkNyQmQzb2FRdjlIRGhtV282?=
- =?utf-8?B?VTlkTGJTbDRtUitYR3ZvZzZCelozZ05QNEdWWjMvVGFrMitHSzhqQTUzOW1z?=
- =?utf-8?B?aXNRNVhNazVDVURXcGdOVGRvdDVGVE1PM0tGNXFWRVl0cUpUQXd5T0RyQVVz?=
- =?utf-8?B?a1B2dmJlUjRQdWRySUtsbGJBVWtSNk8wQm42NjhlRFNEUVVTdU5nUWppbFJu?=
- =?utf-8?B?bE1MMkFkMElvQXVRK1ZOQ0ErTGEzb0Q3VkxBZTlxYkVuUEU1ZVNIckxLVUhx?=
- =?utf-8?B?SW1vc1NtODJLNDNhcFVZTVk5bWh3YWZPd3hxcXdqb3hGYTZYSlpUTzQ5UEo5?=
- =?utf-8?B?b2NVMXh5ZGpnWWdWV25YSEV1QzlvRzMvb2ZzRG5sU01Mcy9uYkRYR1lucVpQ?=
- =?utf-8?B?RVk1U0JkS3FnK0xMN01mRnlGQm1Ka3dPN2lkS05IMWpvcWw1K2RLazRUZVJQ?=
- =?utf-8?B?b3oxKzczZzZHdU9KKzhKZ1J3K0REcmt0OW1ud1JSUGV2YzFxQmwxWi9ZOGE3?=
- =?utf-8?B?T291bzhubVpJQk80MlVHc0d6SFRBclNoZ0Jod0QwZU1Oc0JoOGplN016NVBJ?=
- =?utf-8?B?NVV6WERVWHgvWEZreG1RYVFtazZpQW1xMDNXM0FhVWp5TXgwRloxSmw0Vi9W?=
- =?utf-8?B?ZkdrTytrWGpPaXB6OFlqWURnU2FXdDJzV0NYcitUb3ZLVFlqbC9lemJrbWkx?=
- =?utf-8?B?N3g1UUE0dWRvVENEeHgra0FhcW9kNXd6KzBPdi9ORS9henNlcWVPNlhURDdL?=
- =?utf-8?B?NlVMV3lRbFFWNmZuNWdzRlVXTGJhY052QzBUbStja3JIa1prYmxDZGh3a1ZI?=
- =?utf-8?B?R0x6YndmRWJsbWwybWNEVUVCWTNVbTJSOXRacTBIOUxPSGdPM3VXS3lmSWhw?=
- =?utf-8?B?ZDBpbS9lL09QaWE3R29GaHAvTzRGVWFJeU54b2MxczRvQTkrTVJsSVBVM2F4?=
- =?utf-8?B?TG42emRQMnFsSUZ2UE8xOGlzNEQ3cWJDVWFGWTZuRS82eEFWemFVN0FhWVlZ?=
- =?utf-8?B?cG9ZbmNoVGFJKzdRaE56THhRS2tQTGV6TkQydXhDZlJtZjJkVVBJSDRvcUUv?=
- =?utf-8?B?R1AyUWluckxkZEcyT3pYUUdzS0VNa0VWQnVRa2J6MHp0TVBvTmpzT0FiUG9M?=
- =?utf-8?B?a2txMnJtQ05vWjdWa25jMXIweHg5dXN1QlRrdnBpTG1hSGxWbUZqWDF6RFJZ?=
- =?utf-8?B?Y3ZLalIwQnZNMVVXalBvdkVUSXk2VmZRNGE4MkYzMDFXdmsxVnpEL3FiTWlV?=
- =?utf-8?B?a2FzU1FGSWFubE9NOWhaNkpmeTFQY1FTTDJsRzBYRzJiZjlMeS9MWHd6RU0y?=
- =?utf-8?B?WEg1aldCcnE4ZnNWb0RyeVBzaXQ1MGF3UVlyMnl4SmswUWtJcUVoWnpGcUZ2?=
- =?utf-8?B?L1JGWlI4ZUttNnBVRHZDQTRmcFBxSzdOL3pCMTYyYjdkQy9tQVdrUm9McWR4?=
- =?utf-8?B?VEIvWnMvNG9JVDFhSjkwRWczYkF0YjJyb3FOV2Y2cVJjUVU1UFV3L2NOTkRQ?=
- =?utf-8?B?SlRuWnNCK1JwUng0VzBYcThwRGsyZEtKMXgyR1JQd2I1NFhPVE9LUHVESVZ4?=
- =?utf-8?B?UVVSU0pYbHVsOGFjOCtFc0pKait0T3Q2UlAweHo2enFUdU8yTVk1UlhkZkpP?=
- =?utf-8?Q?mEAf+P6oEDfaEoNyP145+44+k11uIY3+?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?UnNMa09hcWRwN2l4dU45VnJ6N3dZUWk1dGdrRkpJWWJkdjJaWW9USzNkdEtn?=
+ =?utf-8?B?djQ4UHMydHNsTW0zYjUyMmtPUkhuVE1NU1lLS2tpUklycTZEQTM2ekxoWXdm?=
+ =?utf-8?B?WXpDZVRTZG5KejR0dzBpaTNkMEhVQ1dYTEgyam84Y2hWMmxsUHJlUVY3TVhL?=
+ =?utf-8?B?SGh4a0hVbHlDNzIvMHdtTjNZV0Q3VVpkYUJaUmlvcG9jQmxIN0RlNDRJWG5S?=
+ =?utf-8?B?MldiQm12akpmdW44UDM2R3BPbytjQUZuMUkvL2l1dWlkTGc5MTkwbWhGNW1D?=
+ =?utf-8?B?ZGhPUDVOTHM5RkVkYmJKZ1NoazFlb21VWTdFY0pib1BIamJUUnlXdm95SDI5?=
+ =?utf-8?B?NHVkT2tXalZic0dXaTlnZ21WTHpadGh2T1VIL2hHbG1xZlJlYU1LdDk4VXBK?=
+ =?utf-8?B?TnVmazlVbWd6aXVUM3U4NkQ5cW43WWY5cEJpblY5Z2p6WU5MMThMRDdJUkFs?=
+ =?utf-8?B?dmtlbTE2c2FDK2JDWDZaZGpCdFcwYm5hZzRmU1Z4SVdQb1d5SEIvSy9CbnpH?=
+ =?utf-8?B?Y1pqZjc4NHNoTFFTSjlwSkdUMTlCeXBHSHNWVXZ0NVYvRm1GS28wSGVPb2tY?=
+ =?utf-8?B?L2pVU09lMHlkQ1Y4dmxraDNjQmdTUHpsM0hYZWFHYy9qQmZFVkw4RFl1Nkk0?=
+ =?utf-8?B?aU51aisxNnpsZk1zVXhrNVVoaTAzUnZSbnJNUW9KL09WZ3lkUVduMnl0ejFo?=
+ =?utf-8?B?OVZOSkdiSHhOUlNkdHZEN0hNTFpEODhTVVhxTnh6T0NSaXk0UitMRUlFdmht?=
+ =?utf-8?B?NkJzTHRFZzVQUyswOVpmbFN0VVN6Zk5ZR2NJRjRpMWQ1Uk9xaHFiK1FJMEZZ?=
+ =?utf-8?B?TVRiampwTktxZU9XSjFPNjBZd2IxNXZPeFZCQyt2eHdFUXNGQ0JQaks1cVhx?=
+ =?utf-8?B?TWhDV1VEU2pIN0c2YTh2QlF2eWE3M2M1RXpWRCtWL2NLcWNwUlN0L1lFVmRz?=
+ =?utf-8?B?OTZ3RWgvUXFiZEc2empERyt3SDRQZFdseHViOG5DNTB1UEJmRjhaSkQ3NTdi?=
+ =?utf-8?B?L0VVaGN4TjhQSnNQVmt4bysxcmlqNkl3NDVLTmpwN2E2RTM3V3lqeXh0OGFI?=
+ =?utf-8?B?ZmVzK0xNMWJZejhnOVlRdlEwaVpUMlF5Slk2Y2xsZjdnd1h2NlVRWFFsREVa?=
+ =?utf-8?B?M1F6ZncwcCt4ZmRiRTVmZ1dUZXFBOVdEdHUrSEVxa2l4QTIwUStEbnZpbDdV?=
+ =?utf-8?B?cTJwQ1VkQ0c2OGRjc2FUK0c3aDNCUUl4R2VnOC9aSDYrd0ZrdmZGRVJHbjVK?=
+ =?utf-8?B?NVVLanhuNzBjS3pKREZpNDlNMXY3cnpQVGpwNGZ4alZySVM3MGFOSlVQNk9F?=
+ =?utf-8?B?MVgrTFZlS01ZU3hUZ3Q4M3VWNGwraVZ1RXRQREtLcjl3K1U1ZFZmMyttNXZl?=
+ =?utf-8?B?YXkrenEycExGRldwcm5UVzBQY2lrWjBTajdYNHdaVm9WOWFlcmk3bWg3aVFx?=
+ =?utf-8?B?b0N2bkVvcDArdi9BU0hZZTBNQjAySkp3a0h1cHRaYU9mQUZoMWRnSkFKTEtM?=
+ =?utf-8?B?T0VnMHpKOTI4dEdBajNxWFZKUmhEbFdhRWpldmJGQmwyNUNvbmJNdGVEVnI5?=
+ =?utf-8?B?RHliakkxL3pWZEN1K2xzdjBTSlYxY0lqNkgraERLKzFTTURqSTY2ek9RcnU2?=
+ =?utf-8?B?OUQyTkx0cXl0bVUrOEJ0UWxMWE10KzJzbGR0NnhpWkMzVmpETW1Sakh3SmIz?=
+ =?utf-8?B?QlUwMVlrNTNwaVNZVjI2enV5WG5IeHdqbUREVDd6a291N254VjMvcWoySzB5?=
+ =?utf-8?B?NEdaSm5PVHZiVmJ2U3Q3YXhzaUsrcFJrYlo1NFJIa1IrNzI4cGVlTEpNMkdG?=
+ =?utf-8?B?VWJtcGt0bEZ4aHJoaGpiYkJhVTdNa3M0MHBkMjdNOG0xNHY1anhQQXphQ25u?=
+ =?utf-8?B?OXhHTEtrc0hxenlIWnhBNjE4ZTNRSFlwR2FJNUttcnlNNGdpT3hvZDFXamJs?=
+ =?utf-8?Q?lfwZymbSaMI=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TFU3ekxKdHNxQk9RYjhod0QwZ05MTUoyUE43MkhoNGxSb2NMVE8wQms1Ukda?=
- =?utf-8?B?N01CbGJsSFhSU2UwaHJHanJ6NzZWUTlCUVg4a1pLQ1U1UXJEYTZocHRMcnRh?=
- =?utf-8?B?UklQVW85TStod1NUREZaYU05YkJSYS8vNTNYK1g4YXlGOUNOVjRsOXhFOXJx?=
- =?utf-8?B?V3VaYUowM1NZVFk0eW9JVmtXV0hqeXlxK0pZazBIZTJoQUdKNThNWlBiU0JO?=
- =?utf-8?B?cG5CY3N5NWNXNERramZWSHJNV2dZRXBlTGZNK3kxcjRQNWxoZ0poTDM1c0sy?=
- =?utf-8?B?dkI4c2Q1elJRSGlBVE52cmt4V011eVJmSEhlb2pNbFAwQldzTXExZkFiZkE2?=
- =?utf-8?B?bmR4UTU5MkM0anFpZmdHNXV4cFNzQWpyK3hXWW9OVWRxczcwaUtMMDZlMTBo?=
- =?utf-8?B?NUdVMzdOOHJXZUMwL0RrbjR6WGxIRWNuRlptMnM4SHZBWVNvNWxQc2ZnUlZD?=
- =?utf-8?B?b01SZzMveU12MnBRS2MrZVE2THZhaEQ0dVo4RTVMQWJKNjBUUHVaL2tjWWdB?=
- =?utf-8?B?T2N4L0lNT00wZ3pIMzlBN3JDMU5BaGlZV243K1p6bHQvTy9BU3RWWDNoZ3No?=
- =?utf-8?B?bHZpTG1MRzBab0RkN3NvZjV5ZjRmZjhBS0tHeEJJRU9CWVlXbVJQbC90QU5S?=
- =?utf-8?B?cWpXUW1KNytKVUxLVUtpcTF0NzhZQkI2T3hvRGpmS3JGeU9JT1l6TmhwRUVC?=
- =?utf-8?B?bExjQmdvbkd3VU5YZ1ZtZWt0TlVMbE1ZaHVEZXFOVVFjRkZSaGdkK0FwMkpT?=
- =?utf-8?B?ZzFXNGwzNjNDbnFZbS9aVHRzcUh3ZHRHMXRIQ3FTeUVVVzF1NFd3VTZTNFVY?=
- =?utf-8?B?NkthQWV4VlNJMTUvUFdadkdVZVBYNkgyNlI3QVFIWmNOTGdmRVBmdHFGQXkw?=
- =?utf-8?B?ZlRYbXBSVXRTTUk3RTdMMVI2Z09Xb05kaWgzakZZaDNkZ3RQc3BCV2t2UFRx?=
- =?utf-8?B?dVQyQTNibVNVQi93UGQxSUNJdE1wWlpzcERmeXowYUVCNTRzbW5ZVzFsdU5h?=
- =?utf-8?B?VGlTMDNvSGdQL1hjNHR6Z2xKWWQrWjBOQlJ5TmJ4a1VrRVVERzY5RlRNby9F?=
- =?utf-8?B?V2tnaXJ1enZ4RXF1Ujd0eDA1V3h5QzRwaDFVbks4RUhmWnJ0NHUvZ3IxOElu?=
- =?utf-8?B?L1F1WXFqWWt1Qm1hTFVCMGZuczEwYlZUWFhleDIvZDRBcDBoM3BWdTlTb2FX?=
- =?utf-8?B?WGo4QjVpMWNNdTNNWE1OY3FGampXWkZ0QTJqc3RicUhmSTY1UDQyRWJEME9H?=
- =?utf-8?B?WkJITDlONVJBa250a25DVTFObDdpcUgrdEpqa3BHK1JKWWVPTVA5OUZpV3Iv?=
- =?utf-8?B?b0c5eGdpb1FuN1RmYkdrMS9WZDY3TzhUem9Hb1FSRit0N0NDMkVWTTVmMXRZ?=
- =?utf-8?B?Z08yc0ZHd1FKNlZzNm9SRGtqcWVBczRiMTk5bHZuM2dOVER0cTE5c2VlVG15?=
- =?utf-8?B?TWU1c3hnM2g3SUNwSmF3MEE1ekZPcGhEUUdac251VkpOYWNjZWpNN0VVYXdz?=
- =?utf-8?B?OVF3bklFSktXQjlqajJBWWZmcDFUUDdSRWFoMUF5eFdGSFBiVFFQVlUxeDM2?=
- =?utf-8?B?OFduVTlaU3JPZ2xlSXlWMzd4S1VoRWxRUHRlSTJJb1hsWDF0R2M2L1RYOWpT?=
- =?utf-8?B?MWk4UWt1OENQYkxrNkdKMTFkRVFNNzBVSTZJNFpVbXNKZlFzS2MvMGtFZUM3?=
- =?utf-8?B?enl0NUQvQVhyY1dzNnhyWVRCTGdWcjlnRU9OeHA4cS9YSTVCd1NGSnhqMEdk?=
- =?utf-8?B?WGVhdnkyOHdWaS90Q2NWSmVXYlpsWDFyU1cvY0g5c2FabFIvN01CMGplUUd5?=
- =?utf-8?B?ZlZ2TFNXZFZQY3R2d0FsTjhTcU1EV0RaT2VSN254ZmJtZ01sc09PL1FsUUlr?=
- =?utf-8?B?a3ZRVjVvZ0YvRVNkc2xvbWJlQVRjSEh1YzlCM0lnMU9YY05PMmxQQVl1c3Bk?=
- =?utf-8?B?ZE1NN05IT3cxT0xaMVFnZ3dDck5RZzlBYTNxQUdGamdnbnNSUWlnd0FCNVV0?=
- =?utf-8?B?cUVvOHdZRUNVeHczemVJSWM5c0ZBRkI3eUt6NWp6ZklqMTlsd1ovVEZCbzIw?=
- =?utf-8?B?VHprS1Q2N3FuQVlVd2JUSklRQWw0aWJSY2djdDZDRTlmUS9heVJIOU5GcXdu?=
- =?utf-8?B?YWVSZzhqVTdkZnp2OExBc0taUEMxY3QzNi91U2lzbDhsK2diTk1LM0pJM0F6?=
- =?utf-8?B?cGc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 464d6e67-db3a-4ff6-3ed6-08ddc0cfd31b
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?amIvNDRTQTZETE44dWMwaUx0NllZT01QUzBhWWoyNVdVb0xpcit5dHR3NzVY?=
+ =?utf-8?B?SnB3UUpEVW5MaENGNU80bjVkeHYxS0w5Rnl6K2gzME5sSlY1VzhlY0QyMXhC?=
+ =?utf-8?B?MHdnN2NVemh0M3VpWGxVVXE0aXVvSmVocmRLMVFNcUZYYTBBUnRGMGZlTFEv?=
+ =?utf-8?B?QjR2M2VDcktyVjRpQUJlWDJURTFBaUFGRTRFb2R5QW5QMTFCNDQ3c2MrTHZu?=
+ =?utf-8?B?V3FFdk5OSlVoUnBvZ0tHekg1RXVWYkJYMVVBdDhXRk9VV2hFTDQ5S1NKREt5?=
+ =?utf-8?B?TFRzNTJpMnlOeTIra3FkMFoxdU52cnNYd2pPTkFpSnIzUVVrRzQ0TkxOdU9X?=
+ =?utf-8?B?NW16Z05DVFNKU1pxZ2x1YjVhTi9jQlFiakJFbEcwYitzOU13Wnk3MXhwT25w?=
+ =?utf-8?B?UmlScU5zT3praFo3c0RrYjlmSnJvSEc0Qkd3RERtSDRkdG9wOCtNYUlCbE9z?=
+ =?utf-8?B?Ujl5ZDd3S0RjSll0SWVCMnZKaXpkVVRXdjhoSzYxZVlQZ1R6UVplWHpaVVp6?=
+ =?utf-8?B?OVpqalVQdmczS2hWMVdqNHl6M2NGTmNlTnpmbXo3eFYvVU81SjRCa3hVVStV?=
+ =?utf-8?B?UTEyaGRwN3ZuUFk3d2cwSmgvUlN6MnlmRnYxZisrVFVXbnZNeGZtTXkwMURm?=
+ =?utf-8?B?RXJzWEc0WE1lUVJnaU5zY3ZlMjh6eHZMZm1uTjliRndQbTE0VkFycEFvdTVy?=
+ =?utf-8?B?Wlg3VDFXakFOTUZBNFVET1ZEQmx0M2I5QnVDcldkVyt4dUNBZmVmVXBOSjJT?=
+ =?utf-8?B?eDdydWJZZy9OaDN1a0lCdDZBMlp1NS93M0gyTkhETW5MWVF1cjUyNXFySkxo?=
+ =?utf-8?B?M0cyOWxrOGFGeDlSY3FGbmk3djM2dGlTS3cxK24zSDQySzU3NmRNM2phbThM?=
+ =?utf-8?B?YjNlUnRkRkZ2RDN2T21jRllYMWV6SlhmYTNORkdUbWRjVGdFdHoxeWpjRnZk?=
+ =?utf-8?B?aGx4QXpEQ1dyeVVZRGRPUjN4MnhtUDhUTDhtRjhnc25FUEk2TE9yRGdzUXA2?=
+ =?utf-8?B?WEVWbzFjVTlOSFpDZmNVLzhXVitBZ0RycThTNk1VWk45UlM5VC9uMmFSTWdh?=
+ =?utf-8?B?dXRMMTYrblFob1h3SndqY3RnVEdyWklSeFlLN1lZbGFLeWhkUGprMTI2QkdN?=
+ =?utf-8?B?ZzN6MGNiREZ1WTRpaG80R2lNZEpuUVNTZVM5WUQ4NmtwdExFTEFjbWM1NjRy?=
+ =?utf-8?B?VVUrZWpYSndETGFnalBWTkkvMHVJNGpxVGtKWjBMbXkvd3ZOVkhnN0t5WERo?=
+ =?utf-8?B?UE02TW1rcDBUcEtVbGFMdUtPeUtENTJGZXMySXlsRUJNSXMxem5idnErTGlM?=
+ =?utf-8?B?alAzdk1VRzBUS1k0UGdEQnJtUzYyUVlwNW1SajJWck5YTFZyNW5QL293Uzd6?=
+ =?utf-8?B?YXVzejloeGN0RU02OTk2b1A4TnRjVjUwdTQ4WVZMVGVBcW1kQVcxWUJLOENP?=
+ =?utf-8?B?TWYxVCt3a3ZtUFE1S2lvNUJhcHR2cEFvZGUwNWVWK2YxakF0L3NScG1FUkFL?=
+ =?utf-8?B?aHN0YW4rZmxhdm1FaU1pRkVldHp4Y0MwNnE3QlIyWjJZYjZPaGoyZi9hT3pJ?=
+ =?utf-8?B?Sm0vQmtjVjJRbiszYkoydm1DM3FWdTByWm5pY0JIQjNkNU5iTW5OM0tXSHJS?=
+ =?utf-8?B?T2J2OVhFMDRxdkRxdFord2dvUnRMQXBRdzJJU2pyWmcxQ0NzOEc5RWhHYk1O?=
+ =?utf-8?B?QzVlNTl6WkRsK1duM1crVkh0WWZLeGhHbHU5YmZGWW1pZ3psalNVSjE2eW5m?=
+ =?utf-8?B?NFFoMEhWV2NzOUtYZTc4cklOMXVUeWd4aUVtWERabXNzN0kvbWpabVlNTlB5?=
+ =?utf-8?B?ZTNYN1l3cXZ2UW1jeE1CblBiYjZyU3BCT0I1VWh4RVJHbEtxa1dMcEk3NUlY?=
+ =?utf-8?B?dXE2Z0I5WjVTSXFsUUZUOEMzbTRPQ2Z0a3pBVnhGcTlQOWVuTzJ1c2xTSkVi?=
+ =?utf-8?B?dSs4SzlJUThOZlFPVCtHZWpsVW5IUG5aNmVwalE3MytpWDIrSXRXWStiTnU3?=
+ =?utf-8?B?bExEeDQwb3ZFeFZ4dUZrV3VTdk9UVWRqTDY5WGd2UVlQZDFtUE54dm1SamNh?=
+ =?utf-8?B?R0dEWkVrZmhPbWJLaDQvVnV3S0RFRXVsSXR5RVhsby9qRGxGbm5JVllzZCt4?=
+ =?utf-8?B?QWdBK3p4enBNSGkwdE50ZkppOGMrb3NFdDFCQ0VrZ00yVGhqYW5pUDJmWm5v?=
+ =?utf-8?B?NkE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0b626080-3d8d-4766-de61-08ddc1907da3
 X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2025 23:08:19.0642
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2025 22:07:28.9603
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Su4zYD34HSNhgFZbjV0crGWqOUMeX/4BOji5x5SrWbcQOFpSbiBKPhDV6hF3yqO8qhm+K9Nyqw+P5BwRz+FnveBSVdm8DVTCK/+mtQmC/UQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF0F15BC42D
+X-MS-Exchange-CrossTenant-UserPrincipalName: ShpMm3ji6P2pR1v7FOJni27QFS5Z5gLboB76oBhPC0dV1ki9AhUaMzhWvQXnzHqPaS3t5W+fob6S2ejud08lacoN3OXJ+gQtnqkyK1vkszQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB8201
 X-OriginatorOrg: intel.com
 
-Xu Yilun wrote:
-> On Sat, Jun 21, 2025 at 11:07:24AM +1000, Alexey Kardashevskiy wrote:
-> > 
-> > 
-> > On 11/6/25 11:55, Alexey Kardashevskiy wrote:
-> > > Hi,
-> > > 
-> > > Is there a QEMU tree using this somewhere?
-> > 
-> > Ping? Thanks,
+Jonathan Cameron wrote:
+> On Thu, 15 May 2025 22:47:22 -0700
+> Dan Williams <dan.j.williams@intel.com> wrote:
 > 
-> Sorry for late. I've finally got a public tree.
+> > The PCIe 6.1 specification, section 11, introduces the Trusted Execution
+> > Environment (TEE) Device Interface Security Protocol (TDISP).  This
+> > protocol definition builds upon Component Measurement and Authentication
+> > (CMA), and link Integrity and Data Encryption (IDE). It adds support for
+> > assigning devices (PCI physical or virtual function) to a confidential
+> > VM such that the assigned device is enabled to access guest private
+> > memory protected by technologies like Intel TDX, AMD SEV-SNP, RISCV
+> > COVE, or ARM CCA.
+> > 
+> > The "TSM" (TEE Security Manager) is a concept in the TDISP specification
+> > of an agent that mediates between a "DSM" (Device Security Manager) and
+> > system software in both a VMM and a confidential VM. A VMM uses TSM ABIs
+> > to setup link security and assign devices. A confidential VM uses TSM
+> > ABIs to transition an assigned device into the TDISP "RUN" state and
+> > validate its configuration. From a Linux perspective the TSM abstracts
+> > many of the details of TDISP, IDE, and CMA. Some of those details leak
+> > through at times, but for the most part TDISP is an internal
+> > implementation detail of the TSM.
+> > 
+> > CONFIG_PCI_TSM adds an "authenticated" attribute and "tsm/" subdirectory
+> > to pci-sysfs. Consider that the TSM driver may itself be a PCI driver.
+> > Userspace can watch for the arrival of the "TSM" core device,
+> > /sys/class/tsm/tsm0/uevent, to know when the PCI core has initialized
+> > TSM services.
+> > 
+> > The common verbs that the low-level TSM drivers implement are defined by
+> > 'struct pci_tsm_ops'. For now only 'connect' and 'disconnect' are
+> > defined for secure session and IDE establishment. The 'probe' and
+> > 'remove' operations setup per-device context objects starting with
+> > 'struct pci_tsm_pf0', the device Physical Function 0 that mediates
+> > communication to the device's Security Manager (DSM).
+> > 
+> > The locking allows for multiple devices to be executing commands
+> > simultaneously, one outstanding command per-device and an rwsem
+> > synchronizes the implementation relative to TSM
+> > registration/unregistration events.
+> > 
+> > Thanks to Wu Hao for his work on an early draft of this support.
+> > 
+> > Cc: Lukas Wunner <lukas@wunner.de>
+> > Cc: Samuel Ortiz <sameo@rivosinc.com>
+> > Cc: Alexey Kardashevskiy <aik@amd.com>
+> > Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> > Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
+> > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> Trivial stuff on this one. See inline.
 > 
-> https://github.com/yiliu1765/qemu/tree/zhenzhong/devsec_tsm
+> Jonathan
 > 
-> Again, I think the changes are far from good, just work for enabling.
+> > ---
+> >  Documentation/ABI/testing/sysfs-bus-pci |  45 +++
+> >  MAINTAINERS                             |   2 +
+> >  drivers/pci/Kconfig                     |  14 +
+> >  drivers/pci/Makefile                    |   1 +
+> >  drivers/pci/pci-sysfs.c                 |   4 +
+> >  drivers/pci/pci.h                       |  10 +
+> >  drivers/pci/probe.c                     |   1 +
+> >  drivers/pci/remove.c                    |   3 +
+> >  drivers/pci/tsm.c                       | 437 ++++++++++++++++++++++++
+> >  drivers/virt/coco/host/tsm-core.c       |  19 +-
+> >  include/linux/pci-tsm.h                 | 138 ++++++++
+> >  include/linux/pci.h                     |   3 +
+> >  include/linux/tsm.h                     |   4 +-
+> >  include/uapi/linux/pci_regs.h           |   1 +
+> >  14 files changed, 679 insertions(+), 3 deletions(-)
+> >  create mode 100644 drivers/pci/tsm.c
+> >  create mode 100644 include/linux/pci-tsm.h
+> > 
+> > diff --git a/Documentation/ABI/testing/sysfs-bus-pci b/Documentation/ABI/testing/sysfs-bus-pci
+> > index 69f952fffec7..1d38e0d3a6be 100644
+> > --- a/Documentation/ABI/testing/sysfs-bus-pci
+> > +++ b/Documentation/ABI/testing/sysfs-bus-pci
+> > @@ -612,3 +612,48 @@ Description:
+> >  
+> >  		  # ls doe_features
+> >  		  0001:01        0001:02        doe_discovery
+> > +
+> > +What:		/sys/bus/pci/devices/.../tsm/
+> > +Date:		July 2024
+> 
+> Guess the date for merge?
 
-At some point I want to stage a merge tree QEMU bits here:
+No, date authored / created, but the Date: tag in these ABI entries is
+not generally useful, just going to drop it.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/devsec/qemu.git/ (not
-created yet)
+> > +Contact:	linux-coco@lists.linux.dev
+> > +Description:
+> 
+> > diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
+> > new file mode 100644
+> > index 000000000000..d00a8e471340
+> > --- /dev/null
+> > +++ b/drivers/pci/tsm.c
+> > @@ -0,0 +1,437 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * TEE Security Manager for the TEE Device Interface Security Protocol
+> > + * (TDISP, PCIe r6.1 sec 11)
+> > + *
+> > + * Copyright(c) 2024 Intel Corporation. All rights reserved.
+> > + */
+> > +
+> > +#define dev_fmt(fmt) "TSM: " fmt
+> > +
+> > +#include <linux/bitfield.h>
+> > +#include <linux/xarray.h>
+> 
+> Not seeing an xa stuff yet.
+> Check the others are all needed or push them forwards to appropriate patch.
+> 
+> > +#include <linux/sysfs.h>
+> > +
+> > +#include <linux/pci.h>
+> > +#include <linux/pci-doe.h>
+> > +#include <linux/pci-tsm.h>
+> > +#include "pci.h"
+> 
+> 
+> > +static bool pci_tsm_pf0_group_visible(struct kobject *kobj)
+> > +{
+> > +	struct device *dev = kobj_to_dev(kobj);
+> > +	struct pci_dev *pdev = to_pci_dev(dev);
+> > +
+> > +	if (pdev->tsm && is_pci_tsm_pf0(pdev))
+> > +		return true;
+> > +	return false;
+> 
+> Unless this is going to get more complex later
+> 
+> 	return pdev->tsm && is_pci_tsm_pf0(pdev);
 
-...unless Paolo or others in QEMU community are open to running a
-staging branch in qemu.git. At some point we need to collide all the
-QEMU POC branches, and I expect that needs to happen and show some
-success before the upstream projects start ingesting all these changes.
+One line works for me.
+
+> 
+> > +}
+> > +DEFINE_SIMPLE_SYSFS_GROUP_VISIBLE(pci_tsm_pf0);
+> 
+> > +
+> > +const struct attribute_group pci_tsm_auth_attr_group = {
+> > +	.attrs = pci_tsm_auth_attrs,
+> > +	.is_visible = SYSFS_GROUP_VISIBLE(pci_tsm_pf0),
+> > +};
+> 
+> 
+> > +static void pci_tsm_pf0_init(struct pci_dev *pdev)
+> > +{
+> > +	bool tee_cap;
+> > +
+> > +	tee_cap = pdev->devcap & PCI_EXP_DEVCAP_TEE;
+> 
+> Might as well put that on first line.
+
+Done.
+
+> 
+> > +
+> > +	if (!(pdev->ide_cap || tee_cap))
+> > +		return;
+> 
+> 
+> 
+> 
+> > diff --git a/drivers/virt/coco/host/tsm-core.c b/drivers/virt/coco/host/tsm-core.c
+> > index 4f64af1a8967..51146f226a64 100644
+> > --- a/drivers/virt/coco/host/tsm-core.c
+> > +++ b/drivers/virt/coco/host/tsm-core.c
+> > @@ -8,11 +8,13 @@
+> >  #include <linux/device.h>
+> >  #include <linux/module.h>
+> >  #include <linux/cleanup.h>
+> > +#include <linux/pci-tsm.h>
+> >  
+> >  static DECLARE_RWSEM(tsm_core_rwsem);
+> >  static struct class *tsm_class;
+> >  static struct tsm_core_dev {
+> >  	struct device dev;
+> > +	const struct pci_tsm_ops *pci_ops;
+> >  } *tsm_core;
+> >  
+> >  static struct tsm_core_dev *
+> > @@ -39,7 +41,8 @@ static void put_tsm_core(struct tsm_core_dev *core)
+> >  DEFINE_FREE(put_tsm_core, struct tsm_core_dev *,
+> >  	    if (!IS_ERR_OR_NULL(_T)) put_tsm_core(_T))
+> >  struct tsm_core_dev *tsm_register(struct device *parent,
+> > -				  const struct attribute_group **groups)
+> > +				  const struct attribute_group **groups,
+> > +				  const struct pci_tsm_ops *pci_ops)
+> >  {
+> >  	struct device *dev;
+> >  	int rc;
+> > @@ -61,10 +64,20 @@ struct tsm_core_dev *tsm_register(struct device *parent,
+> >  	if (rc)
+> >  		return ERR_PTR(rc);
+> >  
+> > +	rc = pci_tsm_core_register(pci_ops, NULL);
+> > +	if (rc) {
+> > +		dev_err(parent, "PCI initialization failure: %pe\n",
+> > +			ERR_PTR(rc));
+> > +		return ERR_PTR(rc);
+> > +	}
+> > +
+> >  	rc = device_add(dev);
+> > -	if (rc)
+> > +	if (rc) {
+> > +		pci_tsm_core_unregister(pci_ops);
+> >  		return ERR_PTR(rc);
+> > +	}
+> >  
+> > +	core->pci_ops = pci_ops;
+> >  	tsm_core = no_free_ptr(core);
+> >  
+> >  	return tsm_core;
+> > @@ -79,7 +92,9 @@ void tsm_unregister(struct tsm_core_dev *core)
+> >  		return;
+> >  	}
+> >  
+> > +	pci_tsm_core_unregister(core->pci_ops);
+> >  	device_unregister(&core->dev);
+> 
+> Using device_initialize() and device_add() in probe but device_unregister()
+> in remove results in trivial ordering mess like this.  I'd split the
+> remove() path so we can take down in the reverse of setup with pci_tsm_core_unregister()
+> between device_del() and put_device()
+
+Turns out in the new version I came to the same conclusion.
+
+> This ordering thing is common enough though that maybe we can just 
+> not worry about it.
+> 
+> > +
+> 
+> Push whitespace change back to earlier patch.
+
+Lost that whitespace along the way...
+
+> 
+> >  	tsm_core = NULL;
+> >  }
+> >  EXPORT_SYMBOL_GPL(tsm_unregister);
+> > diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
+> > new file mode 100644
+> > index 000000000000..00fdae087069
+> > --- /dev/null
+> > +++ b/include/linux/pci-tsm.h
+> > @@ -0,0 +1,138 @@
+> > +/* SPDX-License-Identifier: GPL-2.0 */
+> > +#ifndef __PCI_TSM_H
+> > +#define __PCI_TSM_H
+> > +#include <linux/mutex.h>
+> > +#include <linux/pci.h>
+> > +
+> > +struct pci_dev;
+> 
+> Given you have linux/pci.h no need for the forwards def.
+
+Ack.
+
+> 
+> 
+> > +
+> > +enum pci_tsm_state {
+> > +	PCI_TSM_ERR = -1,
+> > +	PCI_TSM_INIT,
+> > +	PCI_TSM_CONNECT,
+> > +};
+> > +
+> > +/**
+> > + * enum pci_tsm_type - 'struct pci_tsm' object types
+> 
+> Kernel-doc should warn on incomplete docs.  I'd add trivial comment for
+> INVALID to avoid that.
+
+pci_tsm_type is gone in the new version per Aneesh's insight that it can
+be derived from other data in the pci_tsm context.
+
+> > + * @PCI_TSM_PF0: function0 that hosts a DOE mailbox that comprehends an
+> > + *		 Interface ID per potential TDI
+> > + * @PCI_TSM_VIRTFN: physfn-0 of this device is "tsm_pf0"
+> > + * @PCI_TSM_MFD: function0 of this device is  "tsm_pf0"
+> 
+> Double space after "is" seems odd.
+> 
+> > + * @PCI_TSM_DOWNSTREAM: immediate Upstream Port of this device is "tsm_pf0"
+> > + */
+> > +enum pci_tsm_type {
+> > +	PCI_TSM_INVALID,
+> > +	PCI_TSM_PF0,
+> > +	PCI_TSM_VIRTFN,
+> > +	PCI_TSM_MFD,
+> > +	PCI_TSM_DOWNSTREAM,
+> > +};
+> > +
+> > +/**
+> > + * struct pci_tsm - Core TSM context for a given PCIe endpoint
+> > + * @pdev: indicates the type of pci_tsm object
+> 
+> How does a pci_dev indicate a type?  Maybe: Used to distinguish the type of pci_tsm object.
+
+Changed to:
+
+ @pdev: Back ref to device function, distinguishes type of pci_tsm context. 
+
+>   
+> > + * @type: pci_tsm object type to disambiguate PCI_TSM_DOWNSTREAM and PCI_TSM_PF0
+> > + *
+> > + * This structure is wrapped by a low level TSM driver and returned by
+> > + * tsm_ops.probe(), it is freed by tsm_ops.remove(). Depending on
+> > + * whether @pdev is physical function 0, another physical function, or a
+> > + * virtual function determines the pci_tsm object type. E.g. see 'struct
+> > + * pci_tsm_pf0'.
+> > + */
+> > +struct pci_tsm {
+> > +	struct pci_dev *pdev;
+> > +	enum pci_tsm_type type;
+> > +};
+> > +
+> > +/**
+> > + * struct pci_tsm_pf0 - Physical Function 0 TDISP context
+> 
+> Missing tsm and kernel-doc warns if docs are complete.
+
+Went ahead and added a simple Documentation/drivers-api/pci/tsm.rst that
+includes pci-tsm.h and tsm.c. Yes, this warning was still there in the
+latest version.
