@@ -1,263 +1,262 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2074.outbound.protection.outlook.com [40.107.96.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1718F6E
-	for <linux-coco@lists.linux.dev>; Sun, 13 Jul 2025 01:58:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF39F285CBC
+	for <linux-coco@lists.linux.dev>; Sun, 13 Jul 2025 17:45:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.74
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752371913; cv=fail; b=vBlZDis70JlY7xXKWN1l3faCsH53RMKTyMIb03h+d3qHFwl1QtjwbaRGh25pGvxCqTNJS8M5BDVMarTJ8jiZuIiIXG3iFBSXjDTRmYD5vHCjLFRjf2sXJuNUGeLAXT2wCfxhV4rRj+u5LRTGeL95aiv0luGm39Rh56GAN4yE4Zw=
+	t=1752428721; cv=fail; b=PRC0Ub9HJ1t8/aAG+YdgzEXsoymR6DqhjNyxVsiiJKIE9Gu0qaTdiz5Llogmu87MJ7NamdRMLetdmiIOZl+ZbruK0ewtU3VZfDfRdGihrhzxYbwxI5XvAUV6Hmb6gCHuTcYQjTNDcmKHWhoK8zSgwg+hH2jYSyA6fF29GpaRM64=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752371913; c=relaxed/simple;
-	bh=/jENA/IoLDqZ/2I7toDLo6WuBR+s10T73Jashj+YiMc=;
-	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
-	 Content-Type:MIME-Version; b=SsqUeYF9LhEEssotzqQaH3lWeur8E0L5QqlORlY6LgRw1XA4aGKc6RqOuK3BRNBLDLwE2VbytHf+VJMyjB2UMABCGiaXXz0ek+BELflzVBxCMmxKJ32d1QRLQHWAb5MjGk28jTVTxljIuJuX+6/6ajGI5FDYCulmM5/1c3Aio7M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BzO8KxMU; arc=fail smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1752428721; c=relaxed/simple;
+	bh=xe2pPBzPGU7KMuNF7qQAaHGdjeF575mG6jquq9jKUl4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RyH2C/Enb+qyPBuhJ2SWmk+sNJ15CMkFVVdJgUiGoTFJ1HhheKJ1nrJ6DzF/xdYh/KYPLsYFu+mQJxzARepJsysUAXsmIVh/C8I82Pe6BW1U55UowipGUYZ6vbCCXrb4kZcNNkc5I+gjWX5gVkFb8llVIIDJGaKJbUcWKydsbfs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=SdQcn/a0; arc=fail smtp.client-ip=40.107.96.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BzO8KxMU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752371912; x=1783907912;
-  h=from:date:to:cc:message-id:in-reply-to:references:
-   subject:content-transfer-encoding:mime-version;
-  bh=/jENA/IoLDqZ/2I7toDLo6WuBR+s10T73Jashj+YiMc=;
-  b=BzO8KxMUYOhvfoCRNPDvXIcfH2xV3qaa72dQ6cHwUd6X0lo4X2GMj8eJ
-   wSk4PMf4QEw+sSamTv9ZDfiD8NGDLCSx9LToG9WnU9lg5zosxWF5JCopt
-   1I7MhimzLnzQWjxd6/DwVzrLbI7Ki43kmrs65bVBz9Kgu41TfsaHzncs1
-   byGuVv8ea9PR+ygiTVjbfvXXXu1gubReGb1W3iyoOo8Fhv/0jdBzbZ4Vu
-   WwdIfLPZkSSnrAMc/ClgxnjSaC3yjBnwJ5SzW+cTLH53p8YVqymxbXPrD
-   tOoEJWpLFaDo7Fq1GcBhofRaVMgKwJmQMHNGlN8+t5wIKLRTuoR8u8beu
-   g==;
-X-CSE-ConnectionGUID: gZzpQ1KGSuuGB37a5E13Qw==
-X-CSE-MsgGUID: MwfJdHikTquBa2uVZGyPXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="77152308"
-X-IronPort-AV: E=Sophos;i="6.16,307,1744095600"; 
-   d="scan'208";a="77152308"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2025 18:58:31 -0700
-X-CSE-ConnectionGUID: h1HgiYcbRkCMOM/gkcEmzQ==
-X-CSE-MsgGUID: VR60gb9hQVmjDpbDg1OtlA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,307,1744095600"; 
-   d="scan'208";a="180335018"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2025 18:58:30 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Sat, 12 Jul 2025 18:58:30 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Sat, 12 Jul 2025 18:58:30 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (40.107.236.89)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Sat, 12 Jul 2025 18:58:29 -0700
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="SdQcn/a0"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KWC5On6tivJr37Ob6POLCD19QsBlkwRsFljTqSJ6JRNKuwXA9+y5co4FuOjuIjqxExD+wElCAr3vIEAyxpi8yLOsU+qrFywYzGEqsuf5yNPiLLpOzxjIQi7r87fb3TR6HDj5Nij7PSYbSuGCyWQ5N520wqUWUx3sEX/dwIK7VDJCNQ2buxFhGJO+bVCO9QsftYa4u48Sd+DTv3qTLJ4OLMMAIyPJijlkFWAZiaHy763Bz+5DJzh5pDPIz8PWOVATBAaOfzTk8JpAF9+B3YjuIsRaojq+LpWHg3A8Nna+/0ewfX6WbCTRgkUVccKusI2IxwsIWRmRDvvrEyDtBZSjCg==
+ b=y895OeMu/Lxf0AdD/z35BNw8OATXFDnC7GEsWMBFHKLIkPgng9RHZ3HiN31Oi8KeG3JZHPNNZzvu6tV7AnEQVvucz8LrD4B44d1jhN+swQKUJe2ILKJSLWdDJ15kYGopwK0IqN5cpovvPB7P4igpn2pivfIOy7LH8GSC7FmLG3Zlr3oItw8hB3Dvk118PI9CzoHVq4Q2QVjgHJ5n9Fbsc9U4RPdAAo7dx2KpMpZo9m5pp6QW7jDjk9WEF1mNizrvMalQMeOWYHI5cSTvtzPqf9w+hWfwIbTcDIAKBvF7Ye8d2Mg8t6/GyN55rpbovQjYPScH7dzVzohUxmxEnerEFg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uLGZMnY4nXN4CLMQM8GptvndC9N0RTdNrl6YRcUHb6g=;
- b=MWBVbFSepAljbo3eeZKVMSEO+Lc4Cm4BoYJO3d/WNp85JiV1Z/LlKhdoHmbe4TBa7ZbwGdTzXaipjCqHozSlF2vSBBCbp9Ed+wE3S+wQX8vlnPQqk7HiGIGC3nZwqZ5uBbPs7ptcU5N4F9KDIlqDNIcLBTyUvTAf28T8JvM+98FrIe8BLbpZtpXomkvmxdUonxEBxqeRGK1QkS0bamnRP+1tq3sSqUzoRWqLhgMExje65c1oo3GKKJkIEBq4xgkIUIGtBmLLkblQpTArnBHhcG0fEY0CNDlTurRFzYnpWChHCkjuG2UvcHp4cS+TmXxKZX5bFCcw03EHXhG1vlBZQQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by DS4PPF7A0031045.namprd11.prod.outlook.com (2603:10b6:f:fc02::33) with
+ bh=zCEGI5PqglRS8fSBsu+aRrpERf0SxN8K2RdzJRLZS0M=;
+ b=VA4ME89zxLR576Q75ZHtygapWjgtJ2FZQOBCvYdsH+yH4OPomHdSguYi2T1WwshTmHghHx468/ElFwSLy877mZxmokEmSadCTiczNZhAt6l2rY5LF8Kd4M8ro3p20389LLa+VwX/Tu0FBkv/4Q1i7NbT8HxETuOkhWE3KIU8DfglDpwvM3qnN/gy4ac63UucBlYJGrFQvt2GmjMxdrmh0bTV2ZLcBXYKfPlXlHZ/q7gdnbWxxUoSx/CBR1jWdq5LI05OQL3QaB+qlX1NlfTDu5Dqxkq8imcTvMGf/WaEShhoBeduoo5o1/G/x5j9KJNKplf2SJqENNTCO4YI9LFJrg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zCEGI5PqglRS8fSBsu+aRrpERf0SxN8K2RdzJRLZS0M=;
+ b=SdQcn/a0NaP9u0Ij+PhTYQCcLonWwlHlyX3knxbwOychgyH9617YaEg4aHs1y7mIf3vD7KzmEecv9+Mtx/PZD+TpwU9d5me8GpRtX87Yx1JqNRy3MhIVgyI6DLEEOPL73qrz1qSRbG3T0tT7fk8TT3IDMm7EYrMFqtdwpgY+jkw=
+Received: from MW4PR03CA0303.namprd03.prod.outlook.com (2603:10b6:303:dd::8)
+ by DM4PR12MB7645.namprd12.prod.outlook.com (2603:10b6:8:107::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.27; Sun, 13 Jul
- 2025 01:58:27 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8%6]) with mapi id 15.20.8901.024; Sun, 13 Jul 2025
- 01:58:27 +0000
-From: <dan.j.williams@intel.com>
-Date: Sat, 12 Jul 2025 18:58:13 -0700
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Dan Williams
-	<dan.j.williams@intel.com>
-CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>,
-	<gregkh@linuxfoundation.org>, <lukas@wunner.de>, <aneesh.kumar@kernel.org>,
-	<suzuki.poulose@arm.com>, <sameo@rivosinc.com>, <aik@amd.com>,
-	<jgg@nvidia.com>, <zhiw@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>, "Xu
- Yilun" <yilun.xu@linux.intel.com>
-Message-ID: <687312b5e4484_113441001d@dwillia2-mobl4.notmuch>
-In-Reply-To: <20250617143000.00001d05@huawei.com>
-References: <20250516054732.2055093-1-dan.j.williams@intel.com>
- <20250516054732.2055093-7-dan.j.williams@intel.com>
- <20250617143000.00001d05@huawei.com>
-Subject: Re: [PATCH v3 06/13] samples/devsec: Introduce a PCI device-security
- bus + endpoint sample
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR07CA0062.namprd07.prod.outlook.com
- (2603:10b6:a03:60::39) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.25; Sun, 13 Jul
+ 2025 17:45:12 +0000
+Received: from CY4PEPF0000E9D3.namprd03.prod.outlook.com
+ (2603:10b6:303:dd:cafe::ec) by MW4PR03CA0303.outlook.office365.com
+ (2603:10b6:303:dd::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8922.22 via Frontend Transport; Sun,
+ 13 Jul 2025 17:45:12 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000E9D3.mail.protection.outlook.com (10.167.241.138) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8922.22 via Frontend Transport; Sun, 13 Jul 2025 17:45:12 +0000
+Received: from kaveri.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Sun, 13 Jul
+ 2025 12:44:51 -0500
+From: Shivank Garg <shivankg@amd.com>
+To: <seanjc@google.com>, <david@redhat.com>, <vbabka@suse.cz>,
+	<willy@infradead.org>, <akpm@linux-foundation.org>, <shuah@kernel.org>,
+	<pbonzini@redhat.com>, <brauner@kernel.org>, <viro@zeniv.linux.org.uk>
+CC: <ackerleytng@google.com>, <paul@paul-moore.com>, <jmorris@namei.org>,
+	<serge@hallyn.com>, <pvorel@suse.cz>, <bfoster@redhat.com>,
+	<tabba@google.com>, <vannapurve@google.com>, <chao.gao@intel.com>,
+	<bharata@amd.com>, <nikunj@amd.com>, <michael.day@amd.com>,
+	<shdhiman@amd.com>, <yan.y.zhao@intel.com>, <Neeraj.Upadhyay@amd.com>,
+	<thomas.lendacky@amd.com>, <michael.roth@amd.com>, <aik@amd.com>,
+	<jgg@nvidia.com>, <kalyazin@amazon.com>, <peterx@redhat.com>,
+	<shivankg@amd.com>, <jack@suse.cz>, <rppt@kernel.org>, <hch@infradead.org>,
+	<cgzones@googlemail.com>, <ira.weiny@intel.com>, <rientjes@google.com>,
+	<roypat@amazon.co.uk>, <ziy@nvidia.com>, <matthew.brost@intel.com>,
+	<joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>, <byungchul@sk.com>,
+	<gourry@gourry.net>, <kent.overstreet@linux.dev>,
+	<ying.huang@linux.alibaba.com>, <apopple@nvidia.com>,
+	<chao.p.peng@intel.com>, <amit@infradead.org>, <ddutile@redhat.com>,
+	<dan.j.williams@intel.com>, <ashish.kalra@amd.com>, <gshan@redhat.com>,
+	<jgowans@amazon.com>, <pankaj.gupta@amd.com>, <papaluri@amd.com>,
+	<yuzhao@google.com>, <suzuki.poulose@arm.com>, <quic_eberman@quicinc.com>,
+	<aneeshkumar.kizhakeveetil@arm.com>, <linux-fsdevel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<linux-security-module@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <linux-coco@lists.linux.dev>
+Subject: [PATCH V9 0/7] Add NUMA mempolicy support for KVM guest-memfd
+Date: Sun, 13 Jul 2025 17:43:33 +0000
+Message-ID: <20250713174339.13981-2-shivankg@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DS4PPF7A0031045:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7ab23d5e-b1ff-49fa-87cb-08ddc1b0c1ed
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D3:EE_|DM4PR12MB7645:EE_
+X-MS-Office365-Filtering-Correlation-Id: 39c624c4-e1a7-4a64-0afd-08ddc23504d3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?Sk80Z1l3Zi8wSWdEdWhkUjErRE0yNnRzUzF0cGp6VzVQOHhLYytIMjlEbjFI?=
- =?utf-8?B?ZTFseG9GMWdkeERTYXphK25XbHNJN1Q2eTlZck4vTmFPcHk1SUM5R1gxUXlt?=
- =?utf-8?B?WDhnL3BNSWM5bmlrNFFPWmFSTWlhZXZCbUxCRUNPTXBHUnMyaFVNV216VktS?=
- =?utf-8?B?NDNhVUhtRU9Dc3dxZllSTXJ2WGczVnJBV01hMUFoN3JHMXIzdm5rdFVyTmxa?=
- =?utf-8?B?RDM0MTY2WkQ5cVZNSGxkN0JpZlZEaHVLWTVzamw0R0wyVUhmWkVaTlFIQnVU?=
- =?utf-8?B?TTNrbUdBdVlWaVhsQlZyMXJ1dlc4OW5GU2dVMjF0enZMZmxGYVQ2STBFb0tD?=
- =?utf-8?B?TGFibWVHR1VxbE94WU5yYXowVTAxUTNpWEJWd2djSy9IUE5KRTBmaHhHcFc3?=
- =?utf-8?B?YnJSeC9yV0JYeUozMTZJSDhNL0hQc2FvaVhzZzFOTXJmM1dkVmNtQS91UWJ3?=
- =?utf-8?B?WXlIUE9NUzZtSlJhY3ZadWtsK1BPWStkWmMzVXJuelcwSVc2aFlHaVBTc1JI?=
- =?utf-8?B?NHFYVmlPQkhWNjhNYXcyVTJaTWRaSWx3SGUvVy9xc3MvRnlCVG81cnEzK1pS?=
- =?utf-8?B?ZnJDU0xpZVlwVmhobDZyYTltajBHZ2dhdzJtZHJnZDJzSHV0QnIxUXNNYlNs?=
- =?utf-8?B?WFMvTzJhZEkwOUtEM2JRR24xRm85aGF2bDhBY250ckRnSG5pY1QwMFdRSDlX?=
- =?utf-8?B?RXZBYityWkwwRXNlVlNpYzZGck9NSHJrM0RzY00yM2crVnczdTd2bks1a2xN?=
- =?utf-8?B?ODR4K2FGV0JhYW52eGZCYlhPendlTGMyeTRwaTlpZC9SaHphaGpTRWxxTldV?=
- =?utf-8?B?WUpQZy9SUWEvK2REL09rRURzZTJRZ2RERGNaakpVVjdXaU1ocHFXR3MxR0sx?=
- =?utf-8?B?Nm9zdEgwL1M2NEVnejNYVTBRN0YxcVVmVE9Ya0s3T01mUTJtbVk1dHhsb3A3?=
- =?utf-8?B?MEFJSmFjREFsSENiUjlaMTZTVDcrQ0RTN1VZSC81Y0N1UXVGbTBBQ3Zrd1I5?=
- =?utf-8?B?blJRT0Vnc2FHQUJvUFNMTlVTeWkra2doM1lIUW56MGdLWk91b1ZnVUo1cGZw?=
- =?utf-8?B?ei9XcGpnMnp6c1h2a01nc2lBWXlpNCtkODU5cXlJMVFKK0tOK1BtVTR4bVdO?=
- =?utf-8?B?NjhpY1hQVlYwTEszYnVzUkQwQ1JYQWxIbFVsSEpMRnU0bWVBK3VqQlRKTy8x?=
- =?utf-8?B?bjNKWGU3c3VvZ3VGQjlhbmF4MTNoOVdwbitYSVJEOElTSmpZcmtZNHVZSlhD?=
- =?utf-8?B?TXByZ0V2L0ZobGh0ZFBJSXZ4WVV3SDFOdGJTWGhsWkkwelRuem5rSkFiVmZ1?=
- =?utf-8?B?WUVHREExM2wzS1RPRTlSK0FRbTFmN2lWa1JydFh6dDFEak9oQVpXOUU3eklE?=
- =?utf-8?B?ODNQR3lmUzF6MUFHRThEMkt5QUI1ZFltbWlXVzFjYy83SEFHeWlhZjhwWUN1?=
- =?utf-8?B?d2M4NnUwTktkemNSQXdaQ1NxOTYvQzZrVGw5am1zRkt5eWVJSUZHdWZ5My81?=
- =?utf-8?B?a1Q4bURwc0JWWXQzbGRvSTFjRDRNU1g2SFBXQ1lhV3E1eHdQRXQwVlh3N09w?=
- =?utf-8?B?RmZZcFNuNjBlR082WFhoaHc5VzNCb2VHb0Mva25ubGR3ZUk1RVRKT1c3bFYy?=
- =?utf-8?B?K0dGdnlweGFCZ2pTNEpjTUlEOXR0OHJscDVDUS9RSGd2Zk5jNDRQcmZBTUlh?=
- =?utf-8?B?a3JDYWJiVHo0UWZBMy9Nbzg0V04rU0xSWVdtbmliWnVyNThsWlRhZDFMb2VH?=
- =?utf-8?B?MStPYUhURXIveHkvN2EwdUhUa0tGS1NoRHdXQWJsSFhuK05sMjdOazdjU1ps?=
- =?utf-8?B?WVBSUzdZbzFqNzFPU0szRU9yZXhHUUVyRFhzZk5adE13V09tcUpaNzJQQzQx?=
- =?utf-8?B?V2hjdEdSN0pObmsxLzZXSG1iQmxCWU5nYmMzdDZTclFlRW95NVltb2h6VGtk?=
- =?utf-8?Q?OqH0OfTCR2g=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WjRRTlpTUHV1eCtUSzdkVm9sbWJYTERCVlo0MHc0ZHorNWM5TCs2NWZOUWNY?=
- =?utf-8?B?U09SeW5qWVlJZDJFV0RHd2lsbFgzcTBHWUxoQnIzUTI3Q2xrdjU0eVk4QnRK?=
- =?utf-8?B?b0FhVDFzMGw0VHhxSjdCTm9qL3pId3NFTlBDclFtNzN0cGFTN0FKQ3c0QVRT?=
- =?utf-8?B?MnhHcENnR0hJaDI4S3djK21IOXA0OGo1MnJqS3B1dHkwVDBqdWRSYkp1U1By?=
- =?utf-8?B?dkQ4Y2NNNlByNXVJOHVDRjl4elV4a3lNKzRDa2FJVytQbStOUzRoaGhvOTBG?=
- =?utf-8?B?YkhybnErbGxxbUtyWG1qY2xDVUwyMVF3TURuRGdocDVmNlhESDVXOWMzZmky?=
- =?utf-8?B?SzhCUmh1bU92cWJ5V1M1dVdvbVUxQ3hjRTVRc3hEYTN3T1JONlJ0UGVSQVBU?=
- =?utf-8?B?cWFLNnp5VkxHMm5MV2tjVFBTS0l0ei8rdXk1RjJIall2dTk4K1hmTHNzK3lM?=
- =?utf-8?B?aStkOEwrR0lGTlFXV245SVB1T1IyQnVVWmxueEY4dTFMWmJ1eTY2dUpnRm5u?=
- =?utf-8?B?UWcySUE3VkZldWJ0bjBQdXZDYXBlcVpQbWpwQmZOODcrSVhhZmY2VWlBRWZS?=
- =?utf-8?B?TjFiYmlHQ1Vyd0FDUkpGcUtuNFVsZFE1ZVNJa0ZveTBkU3V6YTE4eWpKWEFt?=
- =?utf-8?B?ZWJ2YlpaZ2EwaERCcFZzOWlLbUtJN1g0Sytlb0JrU3JhaFoxUjVaZTE5UVpx?=
- =?utf-8?B?eWRNbVRqc0FrbEdESUNocnRrYnFMWUp2WGtXalEyUjM1ZiswRG5WVXZiSHF1?=
- =?utf-8?B?NmNzNElOZ3pZN25lcklTZ3hrdURMaEdOeXc3V0VJK1NoUmZlNFlUMDMrckpU?=
- =?utf-8?B?TmpFSitTcUlnYzYxdmJkbms0NlFOMnlYdnNlSUQ3eVdjcWRnMDVlK3dTaFRz?=
- =?utf-8?B?TTFGZVFDQXNrM2ZyR1NMdnVBcWwyWWhKa294WUVYVng4KzYxUlV4U0hyYUFQ?=
- =?utf-8?B?NHFCOVNLRlF0alRITkc0MTB6SEFrVk9iK0dGdzVacFZCNDdTdlllUDltd3JN?=
- =?utf-8?B?QVNwNlV4bEJMNVhGbHpNYlRScnFtNHdONmN5NnE5UXNUajJTY0xPbENRSUtJ?=
- =?utf-8?B?Vk85ZEovNm1ad3hRd3pNc1Nha25NakRXRERyVDkxMDJtR0hjTTUzQjk0YTRS?=
- =?utf-8?B?d0RGMUwvK2h5KzU4N2F2WGloWWhTREJPVHREZi8ybGZBeXl4RzZrUmZEeCt3?=
- =?utf-8?B?R2xCZzlTRXg0bGYwSm9EQzhLdHVyeG9WYnc0d0FvVCs5LzQwbFArS0MrcnNp?=
- =?utf-8?B?eWxJZmw1SDY3eVdrVW1QMVF1eFRwMXQ5d1EvdklTWStQNWUyTUNxaVdzd2dv?=
- =?utf-8?B?ckRQVGVKL1ZEK294SjZFRVBBaTBvYWRZZWJpTHUrWS9RNHBXbWFncGNXeXcw?=
- =?utf-8?B?M1ZIdzlSeno1WklZOEw5WVBGNzY4K2R1dUVwVUJobWNUOE1CVnB3QnhxdlZY?=
- =?utf-8?B?Y0pjSUpuWlVhZEhmbDE1STFhZjZPcTM0dzRxenorU29ZMjBudkdhMHlzSzFX?=
- =?utf-8?B?K2tLNmdYamR2cERiWTJCTFcwOGFFK21ZY2pBakxoVnRObjl0V2pMU3dNNGNP?=
- =?utf-8?B?T1hkMk9iR0ZQM3lZSDYyRE9lQU15TzJyWWxOR3k3V2gwNEhjTnEzSVROS0dS?=
- =?utf-8?B?K24wWThicHJZYXFVSUpEV1JudXJ3bWMzSG1tUlBWSk5YQ2RCbGc1Q2VtY2Rw?=
- =?utf-8?B?YkcxS2F2b0ZvQTd3QzI4bGREWkVndmMwTTNPTnRhcWlnOWd1VTIrTHc4a3Fh?=
- =?utf-8?B?N1dMNFVEbFJOdHBPdUxDd3Zod2xnLzJhK0tlTC94L1FLRW5IZWV3WSt0T2c2?=
- =?utf-8?B?OWxycm1pYW5VMEdTa1RpakxWbXg2bURkVVFQVXkzb0FEQmJsc3BhVkFMWHpZ?=
- =?utf-8?B?RE1BZUI5THFHckRHOHZVYjA0S0hTRktWUGRIS0lMZHdLc3B3Zm1OeFBvalVy?=
- =?utf-8?B?SDFVeW9wZEQ0WnNNcllpaGNSU3BQb3Q3WVFqaU9lckdiTVJvKzMxZ1RjTjlv?=
- =?utf-8?B?cDRGNjVKU1NaTzBaam1ES3plM3FnOUpoVXZVUzNqeXhPdkFvSG1WbDBPSVJo?=
- =?utf-8?B?Zlo0REc4aUNwY1g5RWc3bGRBQjBmdENNT3ZXV3FCVGZzTGhPeEdjVXlWR09T?=
- =?utf-8?B?SDF1ZXZwRGY0Z2t3QW1jWnZackVnUEo4YzludGlxcGYrUmNuQW1EajVMaktB?=
- =?utf-8?B?Tmc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ab23d5e-b1ff-49fa-87cb-08ddc1b0c1ed
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2025 01:58:27.6307
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|36860700013|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Ig/GA8y/5/ZyfOG/K2A1zciX3CeYamLisgQHR1m8LCjhK6dr76JAnR+YfFva?=
+ =?us-ascii?Q?P3lZAcHcXLZEyhkcIz/Cc5aQo8UX66fpa3foufQnBbxSP9jEtBGpi5XR4x3I?=
+ =?us-ascii?Q?NI2kkym/LJFK/AG7h8z8rPgIVJgUAOuObP7bn17mJBLVMzoeqY82X8VnDBv9?=
+ =?us-ascii?Q?Ww4um71xmJ86WuMRSE9ocHlWs/WcmYBlJvGeyq9INDSxSR557DPY6XDKNPxW?=
+ =?us-ascii?Q?y2cDi9nqj8nP8dbk/WQof5vmdaQEnhumFeEfq0JVoRSE5SUD3kPFglptXrJQ?=
+ =?us-ascii?Q?FNnzZe5Newz4Z3kOTW2UthgDUbmORD+tVHboXuDWQsBudlm+HAOmlRQ82/yO?=
+ =?us-ascii?Q?PNjpFfRC1WZfUd6flj2hs+9Dtjk8BHtCEscLia1iPVlPtQsrBzdjUP9YXXTK?=
+ =?us-ascii?Q?fMbNL7ek0Jp37bim2k5REMUmDr95HgtRcNDLzARDfbfjJuIjHzAXWxJohEw0?=
+ =?us-ascii?Q?r3e08R54JNisb0BMUNwGlsSijV5/meYkKal5Dl4VQpakv3bPXj6a12aPFT+O?=
+ =?us-ascii?Q?ZZsiPbo5eu+GOKgETg2H6jEm5wrHZhSudoKQtIOXycfLKlsloZq6fFmAPWRd?=
+ =?us-ascii?Q?L8qJY9Xu/8A6GaCYMU6GpVH1lIe+yn9oxz3X7rnLdLM5Y7Xf+ejUu/Zu5BCH?=
+ =?us-ascii?Q?ZFnhdb23RkhvSFXqWODLSVhaR5o66uISSiza9DyrjOuWatqddGCMko3VJBoG?=
+ =?us-ascii?Q?6opQVfFl3o0UQEW3FGFQU78A6Lq7FZKBTqIr57IVobFI5GLGzJ4LggcrSVGO?=
+ =?us-ascii?Q?qk0MWrkZmzK6JKjGS676zFN6ozC9D2Xpb754Zn4yxeUEXMl9Q4Pvo+Lmn3D8?=
+ =?us-ascii?Q?UxqW00e+PLCEXttwR74e0V4pqVIUxRIf0clwAlkPQwskDsYzQ22HOeVX2wjW?=
+ =?us-ascii?Q?6xlrOn5QR6kOCuq+ilctI0wf6cfxPVs8zCY8XNd3Lpj+2Ym9wY+uFsodDphD?=
+ =?us-ascii?Q?sZv0uJhRpI9rGADalQRv5QflbmXcVo5vHtmodpLr1vUu26LhE7dBSEra4JO9?=
+ =?us-ascii?Q?iDFGjsbdiyD/4Ex2JVjjN7dL/el1Yndq/fOiA8SMc9dMKYEH1vgOu8ppYJ5Y?=
+ =?us-ascii?Q?CHVSUVqkWiU1GJyuR5R4Qkvr6LAoDioKvbeIcZbfFEDQK2SctZOcjcFjAELm?=
+ =?us-ascii?Q?oQwWBwVjNek8SQJ2YeDayK3a0ZzdUQWU+j10AsM2ddPts7WSpMybUaEWdxYR?=
+ =?us-ascii?Q?V65mOuwCs/ANa7vjTSbIr3A3bwjEzYJSVTmks+6XAgOyQV6Ze0s+f6Sh8ft1?=
+ =?us-ascii?Q?ZElMr8anrwJXb3hnpvYXv94+R5cFIvsAcPP6SCBCir/Wuplqik/TpNwM9CLs?=
+ =?us-ascii?Q?izRWEeiIdWMpxPUoKOsOsK//nyxglymd4npd0y5gV5CVKPOVl5d16mp6/Tqu?=
+ =?us-ascii?Q?dettTAcXeIWoq3kwrEAvPxJ3ejfS+EnSefVRYeUb0UMgm+ldTBx4vNMyaPGE?=
+ =?us-ascii?Q?xgCcMV7shprmpsZn83iu7AxcN9AOpo5aMMzydMoZfzVOfL7+DMQ/OA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jul 2025 17:45:12.5589
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: P4BHG72GssPX15JIqcG1JPoSqwAyMneWZAFUNJZio6p3aFgQoSJ0iwUzb75QZf9x+0vLkulyTS65mWT3KJvYECy5Ze6tXyI2kJt7NBMHRvE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF7A0031045
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 39c624c4-e1a7-4a64-0afd-08ddc23504d3
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000E9D3.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7645
 
-Jonathan Cameron wrote:
-> On Thu, 15 May 2025 22:47:25 -0700
-> Dan Williams <dan.j.williams@intel.com> wrote:
-> 
-> > Establish just enough emulated PCI infrastructure to register a sample
-> > TSM (platform security manager) driver and have it discover an IDE + TEE
-> > (link encryption + device-interface security protocol (TDISP)) capable
-> > device.
-> > 
-> > Use the existing a CONFIG_PCI_BRIDGE_EMUL to emulate an IDE capable root
-> > port, and open code the emulation of an endpoint device via simulated
-> > configuration cycle responses.
-> > 
-> > The devsec_tsm driver responds to the PCI core TSM operations as if it
-> > successfully exercised the given interface security protocol message.
-> > 
-> > The devsec_bus and devsec_tsm drivers can be loaded in either order to
-> > reflect cases like SEV-TIO where the TSM is PCI-device firmware, and
-> > cases like TDX Connect where the TSM is a software agent running on the
-> > host CPU.
-> > 
-> > Follow-on patches add common code for TSM managed IDE establishment. For
-> > now, just successfully complete setup and teardown of the DSM (device
-> > security manager) context as a building block for management of TDI
-> > (trusted device interface) instances.
-> > 
-> >  # modprobe devsec_bus
-> >     devsec_bus devsec_bus: PCI host bridge to bus 10000:00
-> >     pci_bus 10000:00: root bus resource [bus 00-01]
-> >     pci_bus 10000:00: root bus resource [mem 0xf000000000-0xffffffffff 64bit]
-> >     pci 10000:00:00.0: [8086:7075] type 01 class 0x060400 PCIe Root Port
-> >     pci 10000:00:00.0: PCI bridge to [bus 00]
-> >     pci 10000:00:00.0:   bridge window [io  0x0000-0x0fff]
-> >     pci 10000:00:00.0:   bridge window [mem 0x00000000-0x000fffff]
-> >     pci 10000:00:00.0:   bridge window [mem 0x00000000-0x000fffff 64bit pref]
-> >     pci 10000:00:00.0: bridge configuration invalid ([bus 00-00]), reconfiguring
-> >     pci 10000:01:00.0: [8086:ffff] type 00 class 0x000000 PCIe Endpoint
-> >     pci 10000:01:00.0: BAR 0 [mem 0xf000000000-0xf0001fffff 64bit pref]
-> >     pci_doe_abort: pci 10000:01:00.0: DOE: [100] Issuing Abort
-> >     pci_doe_cache_protocols: pci 10000:01:00.0: DOE: [100] Found protocol 0 vid: 1 prot: 1
-> >     pci 10000:01:00.0: disabling ASPM on pre-1.1 PCIe device.  You can enable it with 'pcie_aspm=force'
-> >     pci 10000:00:00.0: PCI bridge to [bus 01]
-> >     pci_bus 10000:01: busn_res: [bus 01] end is updated to 01
-> >  # modprobe devsec_tsm
-> >     devsec_tsm_pci_probe: pci 10000:01:00.0: devsec: tsm enabled
-> >     __pci_tsm_init: pci 10000:01:00.0: TSM: Device security capabilities detected ( ide tee ), TSM attach
-> > 
-> > Cc: Bjorn Helgaas <bhelgaas@google.com>
-> > Cc: Lukas Wunner <lukas@wunner.de>
-> > Cc: Samuel Ortiz <sameo@rivosinc.com>
-> > Cc: Alexey Kardashevskiy <aik@amd.com>
-> > Cc: Xu Yilun <yilun.xu@linux.intel.com>
-> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> 
-> Interesting bit of emulation.  Only real question I have
-> is whether you can switch from platform devices to faux bus?
-[..]
-> 
-> > +static struct platform_device *devsec_tsm;
-> > +
-> > +static int __init devsec_tsm_init(void)
-> > +{
-> 
-> Could this use the faux bus stuff or does it need to be a platform
-> device for some reason?  That support may well have crossed with this work.
+This series introduces NUMA-aware memory placement support for KVM guests
+with guest_memfd memory backends. It builds upon Fuad Tabba's work that
+enabled host-mapping for guest_memfd memory [1].
 
-Yes, this was conceived before that existed, but it is a perfect fit for
-what I need here. Switched.
+== Background == 
+KVM's guest-memfd memory backend currently lacks support for NUMA policy
+enforcement, causing guest memory allocations to be distributed across host
+nodes  according to kernel's default behavior, irrespective of any policy
+specified by the VMM. This limitation arises because conventional userspace
+NUMA control mechanisms like mbind(2) don't work since the memory isn't
+directly mapped to userspace when allocations occur.
+Fuad's work [1] provides the necessary mmap capability, and this series
+leverages it to enable mbind(2).
+
+== Implementation ==
+
+This series implements proper NUMA policy support for guest-memfd by:
+
+1. Adding mempolicy-aware allocation APIs to the filemap layer.
+2. Introducing custom inodes (via a dedicated slab-allocated inode cache,
+   kvm_gmem_inode_info) to store NUMA policy and metadata for guest memory.
+3. Implementing get/set_policy vm_ops in guest_memfd to support NUMA
+   policy.
+
+With these changes, VMMs can now control guest memory placement by mapping
+guest_memfd file descriptor and using mbind(2) to specify:
+- Policy modes: default, bind, interleave, or preferred
+- Host NUMA nodes: List of target nodes for memory allocation
+
+These Policies affect only future allocations and do not migrate existing
+memory. This matches mbind(2)'s default behavior which affects only new
+allocations unless overridden with MPOL_MF_MOVE/MPOL_MF_MOVE_ALL flags (Not
+supported for guest_memfd as it is unmovable by design).
+
+== Upstream Plan ==
+Phased approach as per David's guest_memfd extension overview [2] and
+community calls [3]:
+
+Phase 1 (this series):
+1. Focuses on shared guest_memfd support (non-CoCo VMs).
+2. Builds on Fuad's host-mapping work.
+
+Phase2 (future work):
+1. NUMA support for private guest_memfd (CoCo VMs).
+2. Depends on SNP in-place conversion support [4].
+
+This series provides a clean integration path for NUMA-aware memory
+management for guest_memfd and lays the groundwork for future confidential
+computing NUMA capabilities.
+
+Please review and provide feedback!
+
+Thanks,
+Shivank
+
+== Changelog ==
+
+- v1,v2: Extended the KVM_CREATE_GUEST_MEMFD IOCTL to pass mempolicy.
+- v3: Introduced fbind() syscall for VMM memory-placement configuration.
+- v4-v6: Current approach using shared_policy support and vm_ops (based on
+         suggestions from David [5] and guest_memfd bi-weekly upstream
+         call discussion [6]).
+- v7: Use inodes to store NUMA policy instead of file [7].
+- v8: Rebase on top of Fuad's V12: Host mmaping for guest_memfd memory.
+- v9: Rebase on top of Fuad's V13 and incorporate review comments
+
+[1] https://lore.kernel.org/all/20250709105946.4009897-1-tabba@google.com
+[2] https://lore.kernel.org/all/c1c9591d-218a-495c-957b-ba356c8f8e09@redhat.com
+[3] https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?tab=t.0#heading=h.svcbod20b5ur
+[4] https://lore.kernel.org/all/20250613005400.3694904-1-michael.roth@amd.com
+[5] https://lore.kernel.org/all/6fbef654-36e2-4be5-906e-2a648a845278@redhat.com
+[6] https://lore.kernel.org/all/2b77e055-98ac-43a1-a7ad-9f9065d7f38f@amd.com
+[7] https://lore.kernel.org/all/diqzbjumm167.fsf@ackerleytng-ctop.c.googlers.com
+
+Ackerley Tng (1):
+  KVM: guest_memfd: Use guest mem inodes instead of anonymous inodes
+
+Matthew Wilcox (Oracle) (2):
+  mm/filemap: Add NUMA mempolicy support to filemap_alloc_folio()
+  mm/filemap: Extend __filemap_get_folio() to support NUMA memory
+    policies
+
+Shivank Garg (4):
+  mm/mempolicy: Export memory policy symbols
+  KVM: guest_memfd: Add slab-allocated inode cache
+  KVM: guest_memfd: Enforce NUMA mempolicy using shared policy
+  KVM: guest_memfd: selftests: Add tests for mmap and NUMA policy
+    support
+
+ fs/bcachefs/fs-io-buffered.c                  |   2 +-
+ fs/btrfs/compression.c                        |   4 +-
+ fs/btrfs/verity.c                             |   2 +-
+ fs/erofs/zdata.c                              |   2 +-
+ fs/f2fs/compress.c                            |   2 +-
+ include/linux/pagemap.h                       |  18 +-
+ include/uapi/linux/magic.h                    |   1 +
+ mm/filemap.c                                  |  23 +-
+ mm/mempolicy.c                                |   6 +
+ mm/readahead.c                                |   2 +-
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../testing/selftests/kvm/guest_memfd_test.c  | 122 ++++++++-
+ virt/kvm/guest_memfd.c                        | 255 ++++++++++++++++--
+ virt/kvm/kvm_main.c                           |   7 +-
+ virt/kvm/kvm_mm.h                             |  10 +-
+ 15 files changed, 408 insertions(+), 49 deletions(-)
+
+-- 
+2.43.0
+---
+== Earlier Postings ==
+v8: https://lore.kernel.org/all/20250618112935.7629-1-shivankg@amd.com
+v7: https://lore.kernel.org/all/20250408112402.181574-1-shivankg@amd.com
+v6: https://lore.kernel.org/all/20250226082549.6034-1-shivankg@amd.com
+v5: https://lore.kernel.org/all/20250219101559.414878-1-shivankg@amd.com
+v4: https://lore.kernel.org/all/20250210063227.41125-1-shivankg@amd.com
+v3: https://lore.kernel.org/all/20241105164549.154700-1-shivankg@amd.com
+v2: https://lore.kernel.org/all/20240919094438.10987-1-shivankg@amd.com
+v1: https://lore.kernel.org/all/20240916165743.201087-1-shivankg@amd.com
+
