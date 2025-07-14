@@ -1,30 +1,30 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADDCD26A1AC
-	for <linux-coco@lists.linux.dev>; Mon, 14 Jul 2025 22:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF7B2277807
+	for <linux-coco@lists.linux.dev>; Mon, 14 Jul 2025 22:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752531350; cv=none; b=D/iXQtFlIf+jScUHsmxv1K+G48c4E8XEm2KBSbnBDUhkz++OcYAvulXiFBj79KfZuC0pcWYBxZJm85Ix5kVuUzwq6esteYVuREIhjcCCiYdgA102PuVhiISAAwkmxPnpEmIBGuhF7QdRQuegYP8/W6bXcCGwoEKbxJYACJE2gAs=
+	t=1752531351; cv=none; b=HAYoxtpOSXAJKbXVeSbyoyhNj5yQI+3fsLjvR8H1CZBX7Gpt6HcaOxUaMU7ES4nAZevUpKwW5opFAql+7CHQZlYIenPCQert+44jm1AtIr8bKDT4QI1kT/SnY0I5BjhNzWKAOCkFixBji/reB9s8qWK93Vd5y6UO0+6IHSN9OFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752531350; c=relaxed/simple;
-	bh=vpFbeaUJfpR1IiORx7GUhHCnaglF4Old7yjW4KUTkcc=;
+	s=arc-20240116; t=1752531351; c=relaxed/simple;
+	bh=hN0bzn33b7/bcvBUrIoUS+YL0Fauw5ocCHmmJJZGNOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rm6TtJQesvIb22mmijBTLJWhtMzPwhj+yhdDjtM5VuBM0pemQ7e2QtjLqt5624BRmqcGFeF0Ke+tvYexfSwr8ThiGTI7crz45ofzDm8fNnOaYCP6TOznoybHEq6fmn/oS7Ug0kx0RgunNuIC0F9iM+sQn10IDJ3GVo4QSszQ6A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=g03Sv0/3; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=pop/Tk2QNuf77EuQbf5/OFMt4wMw7OIVTDSwWb5KwFg2e7YA5JiPIQMAx4zFsSPftxKsbMYk5g4PQbZ1Q/UmlWWbcUEEwPL0N0FjbXW/8HSGTqwfQEgxZtHJPjBNAZVuFy69wUbK3zE2klQG/uzTsOjar3g7T8Y/ZNqNGk2+A9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Gc0UX85E; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="g03Sv0/3"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Gc0UX85E"
 Received: from romank-3650.corp.microsoft.com (unknown [131.107.160.188])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 0BF332016580;
-	Mon, 14 Jul 2025 15:15:48 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0BF332016580
+	by linux.microsoft.com (Postfix) with ESMTPSA id 20B8A2016594;
+	Mon, 14 Jul 2025 15:15:49 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 20B8A2016594
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1752531348;
-	bh=Dd110x/i0AygnNthp2uprww/BsLAD70bjtAflO6nwyg=;
+	s=default; t=1752531349;
+	bh=G1piMKMIQwdOuzoLPvU+WPXOuTN4hKPH7hsZm96BaHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g03Sv0/3uqPRINoVW/B+4iS9ql7YAbhiAfO8+BHedN3Z2EovnWsc9kkoonlwZn/V7
-	 6IClbgjd8NVhU+lXngdUbVovF+VuHu8oBW7gb0yVvCcgJk8GqL9NeQeZox59lrqCFa
-	 eXTlzeCxOYPQtwqGnMJjtYqMsWqO0PnsSsSiMT4k=
+	b=Gc0UX85ErGQszX3lQ+KML5u23xXLREkBCdgWmk1SpZilJVAdj7SDtcWFRes+ralIf
+	 EZzDgm3fCETCop3FP5+QaE0xoi1AQGjjVWu3rGiwxDEGzlcBxLhP2/fKMAvHl6UnDb
+	 AKlTnpIcvSkV75CW8pQdx3Rr8xXp/mitaivNOoM0=
 From: Roman Kisel <romank@linux.microsoft.com>
 To: alok.a.tiwari@oracle.com,
 	arnd@arndb.de,
@@ -51,9 +51,9 @@ Cc: apais@microsoft.com,
 	benhill@microsoft.com,
 	bperkins@microsoft.com,
 	sunilmut@microsoft.com
-Subject: [PATCH hyperv-next v4 04/16] arch/x86: mshyperv: Trap on access for some synthetic MSRs
-Date: Mon, 14 Jul 2025 15:15:33 -0700
-Message-ID: <20250714221545.5615-5-romank@linux.microsoft.com>
+Subject: [PATCH hyperv-next v4 08/16] Drivers: hv: remove stale comment
+Date: Mon, 14 Jul 2025 15:15:37 -0700
+Message-ID: <20250714221545.5615-9-romank@linux.microsoft.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250714221545.5615-1-romank@linux.microsoft.com>
 References: <20250714221545.5615-1-romank@linux.microsoft.com>
@@ -65,59 +65,32 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-hv_set_non_nested_msr() has special handling for SINT MSRs
-when a paravisor is present. In addition to updating the MSR on the
-host, the mirror MSR in the paravisor is updated, including with the
-proxy bit. But with Confidential VMBus, the proxy bit must not be
-used, so add a special case to skip it.
+The comment about the x2v shim is ancient and long since incorrect.
 
-Update the hv_set_non_nested_msr() function as well as
-vmbus_signal_eom() to trap on access for some synthetic MSRs.
+Remove the incorrect comment.
 
 Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
-Reviewed-by: Alok Tiwari <alok.a.tiwari@oracle.com>
 ---
- arch/x86/kernel/cpu/mshyperv.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ drivers/hv/hv.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index 07c60231d0d8..6c5a0a779c02 100644
---- a/arch/x86/kernel/cpu/mshyperv.c
-+++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -28,6 +28,7 @@
- #include <asm/apic.h>
- #include <asm/timer.h>
- #include <asm/reboot.h>
-+#include <asm/msr.h>
- #include <asm/nmi.h>
- #include <clocksource/hyperv_timer.h>
- #include <asm/msr.h>
-@@ -79,13 +80,21 @@ EXPORT_SYMBOL_GPL(hv_get_non_nested_msr);
- void hv_set_non_nested_msr(unsigned int reg, u64 value)
- {
- 	if (hv_is_synic_msr(reg) && ms_hyperv.paravisor_present) {
-+		/* The hypervisor will get the intercept. */
- 		hv_ivm_msr_write(reg, value);
- 
--		/* Write proxy bit via wrmsl instruction */
--		if (hv_is_sint_msr(reg))
--			wrmsrq(reg, value | 1 << 20);
-+		if (hv_is_sint_msr(reg)) {
-+			/*
-+			 * Write proxy bit in the case of non-confidential VMBus.
-+			 * Using wrmsrq instruction so the following goes to the paravisor.
-+			 */
-+			u32 proxy = vmbus_is_confidential() ? 0 : 1;
-+
-+			value |= (proxy << 20);
-+			native_wrmsrq(reg, value);
-+		}
- 	} else {
--		wrmsrq(reg, value);
-+		native_wrmsrq(reg, value);
- 	}
+diff --git a/drivers/hv/hv.c b/drivers/hv/hv.c
+index 816f8a14ff63..820711e954d1 100644
+--- a/drivers/hv/hv.c
++++ b/drivers/hv/hv.c
+@@ -266,11 +266,7 @@ void hv_synic_free(void)
  }
- EXPORT_SYMBOL_GPL(hv_set_non_nested_msr);
+ 
+ /*
+- * hv_synic_init - Initialize the Synthetic Interrupt Controller.
+- *
+- * If it is already initialized by another entity (ie x2v shim), we need to
+- * retrieve the initialized message and event pages.  Otherwise, we create and
+- * initialize the message and event pages.
++ * hv_synic_enable_regs - Initialize the Synthetic Interrupt Controller.
+  */
+ void hv_synic_enable_regs(unsigned int cpu)
+ {
 -- 
 2.43.0
 
