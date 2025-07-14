@@ -1,30 +1,30 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A46A27A477
-	for <linux-coco@lists.linux.dev>; Mon, 14 Jul 2025 22:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F67D23C4E3
+	for <linux-coco@lists.linux.dev>; Mon, 14 Jul 2025 22:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752531354; cv=none; b=s4aZdAM2sFVBVgsz78AlnSHKLNiIpQ8DfYwIHoB3NKhUU+jX3ldY6UwsW8eiQ1FWu6bvnL156ylas524+KOn5gp1pfpVDMhmMwwWZFN7oLLgUeSzu6VdyyL75bVXF5wDxNcUlhlYk9+ctariDT5iu1ROzn42muwnsmY0TNyLAP8=
+	t=1752531355; cv=none; b=bAtlX4pI3keBzKlXDF6wGeYK/kD2LITGGs4n3APb0ZC0paBxhruUBHpG8NKcKxLZ0vqdkOweQvaMMD20Mf9fbtJkNjjAWg4NxcOLZHOWQaHp/wehn8QIItPsoS/5/ePOMBSu3x0qhQgfDJ17Pgz1jkA+hluBAVQuxchlm51hLS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752531354; c=relaxed/simple;
-	bh=qu5wrCRGckFddgOVao5M+PQvlTFUez7DHz4TBUqUopY=;
+	s=arc-20240116; t=1752531355; c=relaxed/simple;
+	bh=NwWtU4pQqupYr0rrxiC/LfZQoDejFRAujTn7n0rRKVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kwaXG0Eqwhgxjdnj/mhQHANZk4A/zp+pQFPJpkL8/w3NVyZKHQaZhurECVujmT+C8lRpCepdLEAaPq5I7Dkd+v6Zl5+NCw1OnpRaVKylk9lqKspICM+xkwgBt+TjiXoLFn6l6zJa4797jvKXLfFhfRJ6PHxaoSqLjDQzn3pX2pI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=e3/IvBo+; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=e22t6emLuvP2ffn1iUJz3TR3drcOSVTnczqfCh1DiK7DT2oUfZnZQ5qIeH0A10luvrAwts4/C8f41Hc5tXSLe27RVuSOX++CqSQNRe8OOSoMcoj/ZOQ41ijV/E8hbxrhAj5K5VrVHHHoA4/ZWY7eJiT/um9oh+9dlLfYpI2/kU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=LdNp/KDn; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="e3/IvBo+"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="LdNp/KDn"
 Received: from romank-3650.corp.microsoft.com (unknown [131.107.160.188])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 4BB0E201B1DA;
-	Mon, 14 Jul 2025 15:15:51 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4BB0E201B1DA
+	by linux.microsoft.com (Postfix) with ESMTPSA id A6F84201A4A1;
+	Mon, 14 Jul 2025 15:15:49 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A6F84201A4A1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1752531351;
-	bh=5NILQvH5aX9tvrOJMwj2GLYW/SEBrWgpZjSjwN/upug=;
+	s=default; t=1752531349;
+	bh=8xRSjjAXOHXCVTJfOWaC61Gx4ioYySGsoSFmStFww+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e3/IvBo+FS2asdg6lPj8x9+n0F7es6nrk0eOJEmD4n/TOXw9A/m2CG03AS7J4XWoD
-	 zZW7fqoRLaENo+goNyOOJuf6yus3qNHqg0cPvCN24VYiKXmEWY9EDx6jEGbNaPHZEm
-	 JpPdjGniblXqEnyQCjGTsLH7TlUtQcgpIbpNYEAA=
+	b=LdNp/KDn3G92CXUx4Z28jlwRu6Z7unV4x9a7ziuTrswy3mjk8BmxeLHU8InX7aAn1
+	 l6AzMS9smN+pK3z5ORqp+H1p/uMghs/JfQxpJZdBJf6Mj6/XJ1VTu389YUJuax3ZSs
+	 E7+2OyFr159nV9m0oWsRDFXXcyTzizDMIQOnR3gk=
 From: Roman Kisel <romank@linux.microsoft.com>
 To: alok.a.tiwari@oracle.com,
 	arnd@arndb.de,
@@ -51,9 +51,9 @@ Cc: apais@microsoft.com,
 	benhill@microsoft.com,
 	bperkins@microsoft.com,
 	sunilmut@microsoft.com
-Subject: [PATCH hyperv-next v4 16/16] Drivers: hv: Set the default VMBus version to 6.0
-Date: Mon, 14 Jul 2025 15:15:45 -0700
-Message-ID: <20250714221545.5615-17-romank@linux.microsoft.com>
+Subject: [PATCH hyperv-next v4 10/16] Drivers: hv: Rename the SynIC enable and disable routines
+Date: Mon, 14 Jul 2025 15:15:39 -0700
+Message-ID: <20250714221545.5615-11-romank@linux.microsoft.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250714221545.5615-1-romank@linux.microsoft.com>
 References: <20250714221545.5615-1-romank@linux.microsoft.com>
@@ -65,38 +65,123 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The confidential VMBus is supported by the protocol version
-6.0 onwards.
+The confidential VMBus requires support for the both hypervisor
+facing SynIC and the paravisor one.
 
-Attempt to establish the VMBus 6.0 connection thus enabling
-the confidential VMBus features when available.
+Rename the functions that enable and disable SynIC with the
+hypervisor. No functional changes.
 
 Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
 ---
- drivers/hv/connection.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hv/channel_mgmt.c |  2 +-
+ drivers/hv/hv.c           | 11 ++++++-----
+ drivers/hv/hyperv_vmbus.h |  4 ++--
+ drivers/hv/vmbus_drv.c    |  6 +++---
+ 4 files changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/hv/connection.c b/drivers/hv/connection.c
-index eeb472019d69..7cd43463f969 100644
---- a/drivers/hv/connection.c
-+++ b/drivers/hv/connection.c
-@@ -51,6 +51,7 @@ EXPORT_SYMBOL_GPL(vmbus_proto_version);
-  * Linux guests and are not listed.
-  */
- static __u32 vmbus_versions[] = {
-+	VERSION_WIN10_V6_0,
- 	VERSION_WIN10_V5_3,
- 	VERSION_WIN10_V5_2,
- 	VERSION_WIN10_V5_1,
-@@ -65,7 +66,7 @@ static __u32 vmbus_versions[] = {
-  * Maximal VMBus protocol version guests can negotiate.  Useful to cap the
-  * VMBus version for testing and debugging purpose.
-  */
--static uint max_version = VERSION_WIN10_V5_3;
-+static uint max_version = VERSION_WIN10_V6_0;
+diff --git a/drivers/hv/channel_mgmt.c b/drivers/hv/channel_mgmt.c
+index 6f87220e2ca3..ca2fe10c110a 100644
+--- a/drivers/hv/channel_mgmt.c
++++ b/drivers/hv/channel_mgmt.c
+@@ -845,7 +845,7 @@ static void vmbus_wait_for_unload(void)
+ 			/*
+ 			 * In a CoCo VM the hyp_synic_message_page is not allocated
+ 			 * in hv_synic_alloc(). Instead it is set/cleared in
+-			 * hv_synic_enable_regs() and hv_synic_disable_regs()
++			 * hv_hyp_synic_enable_regs() and hv_hyp_synic_disable_regs()
+ 			 * such that it is set only when the CPU is online. If
+ 			 * not all present CPUs are online, the message page
+ 			 * might be NULL, so skip such CPUs.
+diff --git a/drivers/hv/hv.c b/drivers/hv/hv.c
+index a8669843c56e..94a81bb3c8c7 100644
+--- a/drivers/hv/hv.c
++++ b/drivers/hv/hv.c
+@@ -266,9 +266,10 @@ void hv_synic_free(void)
+ }
  
- module_param(max_version, uint, S_IRUGO);
- MODULE_PARM_DESC(max_version,
+ /*
+- * hv_synic_enable_regs - Initialize the Synthetic Interrupt Controller.
++ * hv_hyp_synic_enable_regs - Initialize the Synthetic Interrupt Controller
++ * with the hypervisor.
+  */
+-void hv_synic_enable_regs(unsigned int cpu)
++void hv_hyp_synic_enable_regs(unsigned int cpu)
+ {
+ 	struct hv_per_cpu_context *hv_cpu =
+ 		per_cpu_ptr(hv_context.cpu_context, cpu);
+@@ -334,14 +335,14 @@ void hv_synic_enable_regs(unsigned int cpu)
+ 
+ int hv_synic_init(unsigned int cpu)
+ {
+-	hv_synic_enable_regs(cpu);
++	hv_hyp_synic_enable_regs(cpu);
+ 
+ 	hv_stimer_legacy_init(cpu, VMBUS_MESSAGE_SINT);
+ 
+ 	return 0;
+ }
+ 
+-void hv_synic_disable_regs(unsigned int cpu)
++void hv_hyp_synic_disable_regs(unsigned int cpu)
+ {
+ 	struct hv_per_cpu_context *hv_cpu =
+ 		per_cpu_ptr(hv_context.cpu_context, cpu);
+@@ -528,7 +529,7 @@ int hv_synic_cleanup(unsigned int cpu)
+ always_cleanup:
+ 	hv_stimer_legacy_cleanup(cpu);
+ 
+-	hv_synic_disable_regs(cpu);
++	hv_hyp_synic_disable_regs(cpu);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/hv/hyperv_vmbus.h b/drivers/hv/hyperv_vmbus.h
+index 16b5cf1bca19..2873703d08a9 100644
+--- a/drivers/hv/hyperv_vmbus.h
++++ b/drivers/hv/hyperv_vmbus.h
+@@ -189,10 +189,10 @@ extern int hv_synic_alloc(void);
+ 
+ extern void hv_synic_free(void);
+ 
+-extern void hv_synic_enable_regs(unsigned int cpu);
++extern void hv_hyp_synic_enable_regs(unsigned int cpu);
+ extern int hv_synic_init(unsigned int cpu);
+ 
+-extern void hv_synic_disable_regs(unsigned int cpu);
++extern void hv_hyp_synic_disable_regs(unsigned int cpu);
+ extern int hv_synic_cleanup(unsigned int cpu);
+ 
+ /* Interface */
+diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+index 72940a64b0b6..13aca5abc7d8 100644
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -2809,7 +2809,7 @@ static void hv_crash_handler(struct pt_regs *regs)
+ 	 */
+ 	cpu = smp_processor_id();
+ 	hv_stimer_cleanup(cpu);
+-	hv_synic_disable_regs(cpu);
++	hv_hyp_synic_disable_regs(cpu);
+ };
+ 
+ static int hv_synic_suspend(void)
+@@ -2834,14 +2834,14 @@ static int hv_synic_suspend(void)
+ 	 * interrupts-disabled context.
+ 	 */
+ 
+-	hv_synic_disable_regs(0);
++	hv_hyp_synic_disable_regs(0);
+ 
+ 	return 0;
+ }
+ 
+ static void hv_synic_resume(void)
+ {
+-	hv_synic_enable_regs(0);
++	hv_hyp_synic_enable_regs(0);
+ 
+ 	/*
+ 	 * Note: we don't need to call hv_stimer_init(0), because the timer
 -- 
 2.43.0
 
