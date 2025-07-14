@@ -1,30 +1,30 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F5AE238C0C
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E16F27990D
 	for <linux-coco@lists.linux.dev>; Mon, 14 Jul 2025 22:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752531353; cv=none; b=UhsLt1RGcB6wR2R6XLj1ieP2BACnsz41EtUUdoGsQUEVAdp39kuYOwswCX2z4WnXzrGvS3MZH1mDjZhhqaqgqA4MM9pzsfIXBiUMWwqTe2BHC9pisX/OeptjBTELfwKTy8/OrM6cDApfdQN4GELt1uggBQgPjd8T07MGwdEbt+s=
+	t=1752531353; cv=none; b=BPvLV2m3tUjvvNAlVgp/+NfpJgrSbx5PscreJqKQxvMt+lE0bK11OxKXob499ZLmdZQd30DV9403maGkmsvhv/aZrE8MVn3t0T3/hrPjkRXbhHWpCOO9t/0EflvFyEKnlSGFWSC0nWxQ3PaCZD+VFJEXjJn6rqbKb3CxjmoSF3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752531353; c=relaxed/simple;
-	bh=u/KPsb1h5AglUAwekqho240DEYtuoNvGBF+U/5Ha9bE=;
+	bh=nY7Uk25eXZ9CPEhq+dyPOCFpcECMFILdyIxZJrORP78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dqvZxNHWJ7G/q8LjKSoKPf7nTpAhkh+9/nIqixmkwjbCogTz2K07yPoDsW7N1VaYSuwnPVeKXV5xA7tBr7sc4sDCy6NcUttL3omAKAPnJ62r+YjVkFOU79RpDFEI1Qz46+3ss+I303R0Sa/UMXS5Fglj/bv/WxpR5tlKtl79K8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Ht0M3ss7; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=tJ/8FiG4lCtKGAmDWV/Fvz/u2iv81/CbGuul2gyNuPpGEdfnXwRxRcsXinx6EM/ZLkq4M3wLOmH55GQnoNxZn0BW+71mQS1WEV8xcWQ+iowitkczp2xl7zWvZC6VY3zImCxGmtDTKUeSUuRxUBFq9hIWgffPxpz4aeeo+l3Jr3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=jNBpM4Dr; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Ht0M3ss7"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="jNBpM4Dr"
 Received: from romank-3650.corp.microsoft.com (unknown [131.107.160.188])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 620B22016596;
-	Mon, 14 Jul 2025 15:15:49 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 620B22016596
+	by linux.microsoft.com (Postfix) with ESMTPSA id 793BB201A4B1;
+	Mon, 14 Jul 2025 15:15:50 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 793BB201A4B1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1752531349;
-	bh=ANaSeCLcuOpQTrlS/gomE+iBc3WLPtbEx8zr3r2sN/c=;
+	s=default; t=1752531350;
+	bh=pT4iPwLX5Hd9PCSn3JAM0vAmXvwVMyakn8rD4WQrInY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ht0M3ss7YtAqN2f0e54wCb9XuZKJB5oYA780tB1InvLZ+ROTELDad1U6UroSEFbCW
-	 s8b619rf8GbIQtE13F8E1mRCqcB3no5FK/5xrw7u/BIWSqQRihq4ZnUY1rfOkeC90C
-	 LobQVx2g5Qyr1I2c+HhWYLm8edvAG3/F5Re163vA=
+	b=jNBpM4DrcoEA9sgu9QlkBKL7tQixnDlRM+9ZWYVLN8uj2NB8NP02cFs9sBREnZSq1
+	 k33hzO/oAfNtIZjkgbC+aeiEzS9A2C+RbPIJkl2SAzSyO6SSwMIRvNp+T0QJNx4Pa0
+	 gzw+EFOsOoxR8s9xD/uLg7iGI340LV6VdL2sTsEI=
 From: Roman Kisel <romank@linux.microsoft.com>
 To: alok.a.tiwari@oracle.com,
 	arnd@arndb.de,
@@ -51,9 +51,9 @@ Cc: apais@microsoft.com,
 	benhill@microsoft.com,
 	bperkins@microsoft.com,
 	sunilmut@microsoft.com
-Subject: [PATCH hyperv-next v4 09/16] Drivers: hv: Check message and event pages for non-NULL before iounmap()
-Date: Mon, 14 Jul 2025 15:15:38 -0700
-Message-ID: <20250714221545.5615-10-romank@linux.microsoft.com>
+Subject: [PATCH hyperv-next v4 13/16] Drivers: hv: Free msginfo when the buffer fails to decrypt
+Date: Mon, 14 Jul 2025 15:15:42 -0700
+Message-ID: <20250714221545.5615-14-romank@linux.microsoft.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250714221545.5615-1-romank@linux.microsoft.com>
 References: <20250714221545.5615-1-romank@linux.microsoft.com>
@@ -65,45 +65,84 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-It might happen that some hyp SynIC pages aren't allocated.
+The early failure path in __vmbus_establish_gpadl() doesn't deallocate
+msginfo if the buffer fails to decrypt.
 
-Check for that and only then call iounmap().
+Fix the leak by breaking out the cleanup code into a separate function
+and calling it where required.
 
+Fixes: d4dccf353db80 ("Drivers: hv: vmbus: Mark vmbus ring buffer visible to host in Isolation VM")
+Reported-by: Michael Kelly <mkhlinux@outlook.com>
+Closes: https://lore.kernel.org/linux-hyperv/SN6PR02MB41573796F9787F67E0E97049D472A@SN6PR02MB4157.namprd02.prod.outlook.com
 Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
 ---
- drivers/hv/hv.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/hv/channel.c | 32 ++++++++++++++++++++++----------
+ 1 file changed, 22 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/hv/hv.c b/drivers/hv/hv.c
-index 820711e954d1..a8669843c56e 100644
---- a/drivers/hv/hv.c
-+++ b/drivers/hv/hv.c
-@@ -367,8 +367,10 @@ void hv_synic_disable_regs(unsigned int cpu)
- 	 */
- 	simp.simp_enabled = 0;
- 	if (ms_hyperv.paravisor_present || hv_root_partition()) {
--		iounmap(hv_cpu->hyp_synic_message_page);
--		hv_cpu->hyp_synic_message_page = NULL;
-+		if (hv_cpu->hyp_synic_message_page) {
-+			iounmap(hv_cpu->hyp_synic_message_page);
-+			hv_cpu->hyp_synic_message_page = NULL;
-+		}
- 	} else {
- 		simp.base_simp_gpa = 0;
- 	}
-@@ -379,8 +381,10 @@ void hv_synic_disable_regs(unsigned int cpu)
- 	siefp.siefp_enabled = 0;
+diff --git a/drivers/hv/channel.c b/drivers/hv/channel.c
+index 051eeba800f2..0eb300b940db 100644
+--- a/drivers/hv/channel.c
++++ b/drivers/hv/channel.c
+@@ -409,6 +409,25 @@ static int create_gpadl_header(enum hv_gpadl_type type, void *kbuffer,
+ 	return 0;
+ }
  
- 	if (ms_hyperv.paravisor_present || hv_root_partition()) {
--		iounmap(hv_cpu->hyp_synic_event_page);
--		hv_cpu->hyp_synic_event_page = NULL;
-+		if (hv_cpu->hyp_synic_event_page) {
-+			iounmap(hv_cpu->hyp_synic_event_page);
-+			hv_cpu->hyp_synic_event_page = NULL;
-+		}
- 	} else {
- 		siefp.base_siefp_gpa = 0;
++static void vmbus_free_channel_msginfo(struct vmbus_channel_msginfo *msginfo)
++{
++	unsigned long flags;
++	struct vmbus_channel_msginfo *submsginfo, *tmp;
++
++	if (!msginfo)
++		return;
++
++	spin_lock_irqsave(&vmbus_connection.channelmsg_lock, flags);
++	list_del(&msginfo->msglistentry);
++	spin_unlock_irqrestore(&vmbus_connection.channelmsg_lock, flags);
++	list_for_each_entry_safe(submsginfo, tmp, &msginfo->submsglist,
++				 msglistentry) {
++		kfree(submsginfo);
++	}
++
++	kfree(msginfo);
++}
++
+ /*
+  * __vmbus_establish_gpadl - Establish a GPADL for a buffer or ringbuffer
+  *
+@@ -428,7 +447,7 @@ static int __vmbus_establish_gpadl(struct vmbus_channel *channel,
+ 	struct vmbus_channel_gpadl_header *gpadlmsg;
+ 	struct vmbus_channel_gpadl_body *gpadl_body;
+ 	struct vmbus_channel_msginfo *msginfo = NULL;
+-	struct vmbus_channel_msginfo *submsginfo, *tmp;
++	struct vmbus_channel_msginfo *submsginfo;
+ 	struct list_head *curr;
+ 	u32 next_gpadl_handle;
+ 	unsigned long flags;
+@@ -458,6 +477,7 @@ static int __vmbus_establish_gpadl(struct vmbus_channel *channel,
+ 			dev_warn(&channel->device_obj->device,
+ 				"Failed to set host visibility for new GPADL %d.\n",
+ 				ret);
++			vmbus_free_channel_msginfo(msginfo);
+ 			return ret;
+ 		}
  	}
+@@ -531,15 +551,7 @@ static int __vmbus_establish_gpadl(struct vmbus_channel *channel,
+ 
+ 
+ cleanup:
+-	spin_lock_irqsave(&vmbus_connection.channelmsg_lock, flags);
+-	list_del(&msginfo->msglistentry);
+-	spin_unlock_irqrestore(&vmbus_connection.channelmsg_lock, flags);
+-	list_for_each_entry_safe(submsginfo, tmp, &msginfo->submsglist,
+-				 msglistentry) {
+-		kfree(submsginfo);
+-	}
+-
+-	kfree(msginfo);
++	vmbus_free_channel_msginfo(msginfo);
+ 
+ 	if (ret) {
+ 		/*
 -- 
 2.43.0
 
