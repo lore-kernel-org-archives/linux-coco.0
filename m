@@ -1,30 +1,30 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA1E238C0C
-	for <linux-coco@lists.linux.dev>; Mon, 14 Jul 2025 22:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607A625DAFF
+	for <linux-coco@lists.linux.dev>; Mon, 14 Jul 2025 22:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752531349; cv=none; b=txnCbT9lHNaznNogue5k1RkqK2Re0K35W4tjXm7z0BSehxnJD/trRG5zFVdGxaHtoGhHoT3Or2VdnBkQXGUB9kzkqVWAbwXv9riQOOR8rjg3wyl+Iw2o8KWXCjn0N/sKqXQqmvXtg2wXXDMDY3pmP5z5FCe/4B0Fin839ot7DQg=
+	t=1752531350; cv=none; b=gGmcumruUSVYT0hDca1rrbM6+q/DPW/QhcXF0do7B/CPk1hcM7aRnJoesyIklN5iVRrdXeX2QUVMpMIUX0GK/HF35DKZIJv9Hh9VmfIqQZLaA37GlWs0nKE/CyYNeMc7yJbnGAQ5mLaX+UBmScE4zx4/6Us9Y/qiYYPkE9OzfiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752531349; c=relaxed/simple;
-	bh=OyGH4spMrhcywIaQjsDzr0V2fG7hh6BSdDn/2ukWmsQ=;
+	s=arc-20240116; t=1752531350; c=relaxed/simple;
+	bh=iaLzwCzp0IBa5pLtIbdZA0HxXWmyfYsrxH1UgdPLj6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MayNQHNCCTpInvDow+1gqXoUUkvuffGo6qp9eN1VOmPwcgLNzyzhX/B5jIzyvCgN3TXJVIXsYCfG93KYFfqx12qEj2qxOLYAGi5JlZgpMRf0yZebUAQpOufr92WNdUl/B/GzPiz2eHjC0h+aTtemejNpWMerTLaOJdNouNukiko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=QYl2kgST; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=FBnAleYi+Lrzk1vmXPH2AGU/kwKkMYlBu1Cfw5lEtGqdl6FGxTdmbOKltV/jPGILdEMRCIZUFHw7XBmFGHoweGqxZ2pnxjDyUgME6uhV+/iSXbZAMmpyBS6tIAuXq+cb4glDMaYJj1gpwJ34z2CdK4rAX6nmMam/6vzOsTAyOjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=MQMLQOas; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="QYl2kgST"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="MQMLQOas"
 Received: from romank-3650.corp.microsoft.com (unknown [131.107.160.188])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 3A8E22016578;
+	by linux.microsoft.com (Postfix) with ESMTPSA id BD5FA201657D;
 	Mon, 14 Jul 2025 15:15:47 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3A8E22016578
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com BD5FA201657D
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
 	s=default; t=1752531347;
-	bh=tF4KjrMlXUSFdjACqUuSOArtP8vWogRQxSVvgwAGV6E=;
+	bh=GZ9q8PABxSs18Zr3hF+BwFDwqPPPErZZn+AsTkCq4VM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QYl2kgSTQwafee9SG6N50zHSHIWK7KyWQexAVJDjT/Ug8JspfrHPxvxIxvor3WYmb
-	 7Y46PM4nVYwQ1D8/d0IOedp8hnIALmqli0rnZSyOsJxrjaPfxe/eoHQHKvLIoVU4+V
-	 ZRz4FXuvu67wfKh/HrohS7LO4ln71dM9ov2ZTOsg=
+	b=MQMLQOasilfc5p+57UYvb/o65rCe8PyftaAglpZ5vEVxW+RpLBF/MrhzxvaN7DiAf
+	 9pkEnIAdc1NgSLEKTHzGtN29K4tW8WeaDgd0EAPUfRPZDQFzY7rWjZqfP5jcKwmEUn
+	 NkWf1qo9U1UPIajpUyW1IScdabpMJM8YEdsPSFwA=
 From: Roman Kisel <romank@linux.microsoft.com>
 To: alok.a.tiwari@oracle.com,
 	arnd@arndb.de,
@@ -51,9 +51,9 @@ Cc: apais@microsoft.com,
 	benhill@microsoft.com,
 	bperkins@microsoft.com,
 	sunilmut@microsoft.com
-Subject: [PATCH hyperv-next v4 01/16] Documentation: hyperv: Confidential VMBus
-Date: Mon, 14 Jul 2025 15:15:30 -0700
-Message-ID: <20250714221545.5615-2-romank@linux.microsoft.com>
+Subject: [PATCH hyperv-next v4 03/16] arch: hyperv: Get/set SynIC synth.registers via paravisor
+Date: Mon, 14 Jul 2025 15:15:32 -0700
+Message-ID: <20250714221545.5615-4-romank@linux.microsoft.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250714221545.5615-1-romank@linux.microsoft.com>
 References: <20250714221545.5615-1-romank@linux.microsoft.com>
@@ -65,173 +65,207 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Define what the confidential VMBus is and describe what advantages
-it offers on the capable hardware.
+The existing Hyper-V wrappers for getting and setting MSRs are
+hv_get/set_msr(). Via hv_get/set_non_nested_msr(), they detect
+when running in a CoCo VM with a paravisor, and use the TDX or
+SNP guest-host communication protocol to bypass the paravisor
+and go directly to the host hypervisor for SynIC MSRs. The "set"
+function also implements the required special handling for the
+SINT MSRs.
+
+But in some Confidential VMBus cases, the guest wants to talk only
+with the paravisor. To accomplish this, provide new functions for
+accessing SynICs that always do direct accesses (i.e., not via
+TDX or SNP GHCB), which will go to the paravisor. The mirroring
+of the existing "set" function is also not needed. These functions
+should be used only in the specific Confidential VMBus cases that
+require them.
+
+Provide functions that allow manipulating the SynIC registers
+through the paravisor.
 
 Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
 Reviewed-by: Alok Tiwari <alok.a.tiwari@oracle.com>
 ---
- Documentation/virt/hyperv/coco.rst | 140 ++++++++++++++++++++++++++++-
- 1 file changed, 139 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/mshyperv.c | 39 ++++++++++++++++++
+ drivers/hv/hv_common.c         | 13 ++++++
+ include/asm-generic/mshyperv.h | 75 ++++++++++++++++++----------------
+ 3 files changed, 92 insertions(+), 35 deletions(-)
 
-diff --git a/Documentation/virt/hyperv/coco.rst b/Documentation/virt/hyperv/coco.rst
-index c15d6fe34b4e..e8515acfe306 100644
---- a/Documentation/virt/hyperv/coco.rst
-+++ b/Documentation/virt/hyperv/coco.rst
-@@ -178,7 +178,7 @@ These Hyper-V and VMBus memory pages are marked as decrypted:
+diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
+index c78f860419d6..07c60231d0d8 100644
+--- a/arch/x86/kernel/cpu/mshyperv.c
++++ b/arch/x86/kernel/cpu/mshyperv.c
+@@ -90,6 +90,45 @@ void hv_set_non_nested_msr(unsigned int reg, u64 value)
+ }
+ EXPORT_SYMBOL_GPL(hv_set_non_nested_msr);
  
- * VMBus monitor pages
++/*
++ * Attempt to get the SynIC register value from the paravisor.
++ *
++ * Not all paravisors support reading SynIC registers, so this function
++ * may fail. The register for the SynIC of the running CPU is accessed.
++ *
++ * Writes the SynIC register value into the memory pointed by val,
++ * and ~0ULL is on failure.
++ *
++ * Returns -ENODEV if the MSR is not a SynIC register, or another error
++ * code if getting the MSR fails (meaning the paravisor doesn't support
++ * relaying VMBus communucations).
++ */
++int hv_para_get_synic_register(unsigned int reg, u64 *val)
++{
++	if (!hv_is_synic_msr(reg))
++		return -ENODEV;
++	return native_read_msr_safe(reg, val);
++}
++
++/*
++ * Attempt to set the SynIC register value with the paravisor.
++ *
++ * Not all paravisors support setting SynIC registers, so this function
++ * may fail. The register for the SynIC of the running CPU is accessed.
++ *
++ * Sets the register to the value supplied.
++ *
++ * Returns: -ENODEV if the MSR is not a SynIC register, or another error
++ * code if writing to the MSR fails (meaning the paravisor doesn't support
++ * relaying VMBus communucations).
++ */
++int hv_para_set_synic_register(unsigned int reg, u64 val)
++{
++	if (!hv_is_synic_msr(reg))
++		return -ENODEV;
++	return native_write_msr_safe(reg, val);
++}
++
+ u64 hv_get_msr(unsigned int reg)
+ {
+ 	if (hv_nested)
+diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
+index 49898d10faff..a179ea482cb1 100644
+--- a/drivers/hv/hv_common.c
++++ b/drivers/hv/hv_common.c
+@@ -716,6 +716,19 @@ u64 __weak hv_tdx_hypercall(u64 control, u64 param1, u64 param2)
+ }
+ EXPORT_SYMBOL_GPL(hv_tdx_hypercall);
  
--* Synthetic interrupt controller (synic) related pages (unless supplied by
-+* Synthetic interrupt controller (SynIC) related pages (unless supplied by
-   the paravisor)
++int __weak hv_para_get_synic_register(unsigned int reg, u64 *val)
++{
++	*val = ~0ULL;
++	return -ENODEV;
++}
++EXPORT_SYMBOL_GPL(hv_para_get_synic_register);
++
++int __weak hv_para_set_synic_register(unsigned int reg, u64 val)
++{
++	return -ENODEV;
++}
++EXPORT_SYMBOL_GPL(hv_para_set_synic_register);
++
+ void hv_identify_partition_type(void)
+ {
+ 	/* Assume guest role */
+diff --git a/include/asm-generic/mshyperv.h b/include/asm-generic/mshyperv.h
+index 9722934a8332..9447558f425b 100644
+--- a/include/asm-generic/mshyperv.h
++++ b/include/asm-generic/mshyperv.h
+@@ -162,41 +162,6 @@ static inline u64 hv_generate_guest_id(u64 kernel_version)
+ 	return guest_id;
+ }
  
- * Per-cpu hypercall input and output pages (unless running with a paravisor)
-@@ -232,6 +232,144 @@ with arguments explicitly describing the access. See
- _hv_pcifront_read_config() and _hv_pcifront_write_config() and the
- "use_calls" flag indicating to use hypercalls.
+-/* Free the message slot and signal end-of-message if required */
+-static inline void vmbus_signal_eom(struct hv_message *msg, u32 old_msg_type)
+-{
+-	/*
+-	 * On crash we're reading some other CPU's message page and we need
+-	 * to be careful: this other CPU may already had cleared the header
+-	 * and the host may already had delivered some other message there.
+-	 * In case we blindly write msg->header.message_type we're going
+-	 * to lose it. We can still lose a message of the same type but
+-	 * we count on the fact that there can only be one
+-	 * CHANNELMSG_UNLOAD_RESPONSE and we don't care about other messages
+-	 * on crash.
+-	 */
+-	if (cmpxchg(&msg->header.message_type, old_msg_type,
+-		    HVMSG_NONE) != old_msg_type)
+-		return;
+-
+-	/*
+-	 * The cmxchg() above does an implicit memory barrier to
+-	 * ensure the write to MessageType (ie set to
+-	 * HVMSG_NONE) happens before we read the
+-	 * MessagePending and EOMing. Otherwise, the EOMing
+-	 * will not deliver any more messages since there is
+-	 * no empty slot
+-	 */
+-	if (msg->header.message_flags.msg_pending) {
+-		/*
+-		 * This will cause message queue rescan to
+-		 * possibly deliver another msg from the
+-		 * hypervisor
+-		 */
+-		hv_set_msr(HV_MSR_EOM, 0);
+-	}
+-}
+-
+ int hv_get_hypervisor_version(union hv_hypervisor_version_info *info);
  
-+Confidential VMBus
-+------------------
-+The confidential VMBus enables the confidential guest not to interact with
-+the untrusted host partition and the untrusted hypervisor. Instead, the guest
-+relies on the trusted paravisor to communicate with the devices processing
-+sensitive data. The hardware (SNP or TDX) encrypts the guest memory and the
-+register state while measuring the paravisor image using the platform security
-+processor to ensure trusted and confidential computing.
+ void hv_setup_vmbus_handler(void (*handler)(void));
+@@ -333,6 +298,8 @@ bool hv_is_isolation_supported(void);
+ bool hv_isolation_type_snp(void);
+ u64 hv_ghcb_hypercall(u64 control, void *input, void *output, u32 input_size);
+ u64 hv_tdx_hypercall(u64 control, u64 param1, u64 param2);
++int hv_para_get_synic_register(unsigned int reg, u64 *val);
++int hv_para_set_synic_register(unsigned int reg, u64 val);
+ void hyperv_cleanup(void);
+ bool hv_query_ext_cap(u64 cap_query);
+ void hv_setup_dma_ops(struct device *dev, bool coherent);
+@@ -375,6 +342,44 @@ static inline int hv_call_create_vp(int node, u64 partition_id, u32 vp_index, u3
+ #endif /* CONFIG_MSHV_ROOT */
+ bool vmbus_is_confidential(void);
+ 
++/* Free the message slot and signal end-of-message if required */
++static inline void vmbus_signal_eom(struct hv_message *msg, u32 old_msg_type)
++{
++	/*
++	 * On crash we're reading some other CPU's message page and we need
++	 * to be careful: this other CPU may already had cleared the header
++	 * and the host may already had delivered some other message there.
++	 * In case we blindly write msg->header.message_type we're going
++	 * to lose it. We can still lose a message of the same type but
++	 * we count on the fact that there can only be one
++	 * CHANNELMSG_UNLOAD_RESPONSE and we don't care about other messages
++	 * on crash.
++	 */
++	if (cmpxchg(&msg->header.message_type, old_msg_type,
++		    HVMSG_NONE) != old_msg_type)
++		return;
 +
-+Confidential VMBus provides a secure communication channel between the guest
-+and the paravisor, ensuring that sensitive data is protected from hypervisor-
-+level access through memory encryption and register state isolation.
++	/*
++	 * The cmxchg() above does an implicit memory barrier to
++	 * ensure the write to MessageType (ie set to
++	 * HVMSG_NONE) happens before we read the
++	 * MessagePending and EOMing. Otherwise, the EOMing
++	 * will not deliver any more messages since there is
++	 * no empty slot
++	 */
++	if (msg->header.message_flags.msg_pending) {
++		/*
++		 * This will cause message queue rescan to
++		 * possibly deliver another msg from the
++		 * hypervisor
++		 */
++		if (vmbus_is_confidential())
++			hv_para_set_synic_register(HV_MSR_EOM, 0);
++		else
++			hv_set_msr(HV_MSR_EOM, 0);
++	}
++}
 +
-+Confidential VMBus is an extension of Confidential Computing (CoCo) VMs
-+(a.k.a. "Isolated" VMs in Hyper-V terminology). Without Confidential VMBus,
-+guest VMBus device drivers (the "VSC"s in VMBus terminology) communicate
-+with VMBus servers (the VSPs) running on the Hyper-V host. The
-+communication must be through memory that has been decrypted so the
-+host can access it. With Confidential VMBus, one or more of the VSPs reside
-+in the trusted paravisor layer in the guest VM. Since the paravisor layer also
-+operates in encrypted memory, the memory used for communication with
-+such VSPs does not need to be decrypted and thereby exposed to the
-+Hyper-V host. The paravisor is responsible for communicating securely
-+with the Hyper-V host as necessary.
-+
-+The data won't ever leave the VM when a device is attached to VTL2, and the
-+device supports encrypted memory. Therefore, neither the host partition nor the
-+hypervisor can access the data being processed at all. The guest needs to
-+establish a VMBus connection only with the paravisor for the channels that
-+process sensitive data, and the paravisor abstracts the details of
-+communicating with the specific devices away providing the guest with the
-+well-established VSP (Virtual Service Provider) interface that has had support
-+in the Hyper-V drivers for a decade.
-+
-+In the case the device does not support encrypted memory, the paravisor
-+provides bounce-buffering, and although the data is not encrypted, the backing
-+pages aren't mapped into the host partition through SLAT. While not impossible,
-+it becomes much more difficult for the host partition to exfiltrate the data
-+than it would be with a conventional VMBus connection where the host partition
-+has direct access to the memory used for communication.
-+
-+Here is the data flow for a conventional VMBus connection (`C` stands for the
-+client or VSC, `S` for the server or VSP, the `DEVICE` is a physical one, might
-+be with multiple virtual functions)::
-+
-+  +---- GUEST ----+       +----- DEVICE ----+        +----- HOST -----+
-+  |               |       |                 |        |                |
-+  |               |       |                 |        |                |
-+  |               |       |                 ==========                |
-+  |               |       |                 |        |                |
-+  |               |       |                 |        |                |
-+  |               |       |                 |        |                |
-+  +----- C -------+       +-----------------+        +------- S ------+
-+         ||                                                   ||
-+         ||                                                   ||
-+  +------||------------------ VMBus --------------------------||------+
-+  |                     Interrupts, MMIO                              |
-+  +-------------------------------------------------------------------+
-+
-+and the Confidential VMBus connection::
-+
-+  +---- GUEST --------------- VTL0 ------+               +-- DEVICE --+
-+  |                                      |               |            |
-+  | +- PARAVISOR --------- VTL2 -----+   |               |            |
-+  | |     +-- VMBus Relay ------+    ====+================            |
-+  | |     |   Interrupts, MMIO  |    |   |               |            |
-+  | |     +-------- S ----------+    |   |               +------------+
-+  | |               ||               |   |
-+  | +---------+     ||               |   |
-+  | |  Linux  |     ||    OpenHCL    |   |
-+  | |  kernel |     ||               |   |
-+  | +---- C --+-----||---------------+   |
-+  |       ||        ||                   |
-+  +-------++------- C -------------------+               +------------+
-+          ||                                             |    HOST    |
-+          ||                                             +---- S -----+
-+  +-------||----------------- VMBus ---------------------------||-----+
-+  |                     Interrupts, MMIO                              |
-+  +-------------------------------------------------------------------+
-+
-+An implementation of the VMBus relay that offers the Confidential VMBus
-+channels is available in the OpenVMM project as a part of the OpenHCL
-+paravisor. Please refer to
-+
-+  * https://openvmm.dev/, and
-+  * https://github.com/microsoft/openvmm
-+
-+for more information about the OpenHCL paravisor.
-+
-+A guest that is running with a paravisor must determine at runtime if
-+Confidential VMBus is supported by the current paravisor. It does so by
-+first trying to establish a Confidential VMBus connection with the paravisor
-+usingstandard mechanisms where the memory remains encrypted. If this succeeds,
-+then the guest can proceed to use Confidential VMBus. If it fails, then the
-+guest must fallback to establishing a non-Confidential VMBus connection with
-+the Hyper-V host.
-+
-+Confidential VMBus is a characteristic of the VMBus connection as a whole,
-+and of each VMBus channel that is created. When a Confidential VMBus
-+connection is established, the paravisor provides the guest the message-passing
-+path that is used for VMBus device creation and deletion, and it provides a
-+per-CPU synthetic interrupt controller (SynIC) just like the SynIC that is
-+offered by the Hyper-V host. Each VMBus device that is offered to the guest
-+indicates the degree to which it participates in Confidential VMBus. The offer
-+indicates if the device uses encrypted ring buffers, and if the device uses
-+encrypted memory for DMA that is done outside the ring buffer. These settings
-+may be different for different devices using the same Confidential VMBus
-+connection.
-+
-+Although these settings are separate, in practice it'll always be encrypted
-+ring buffer only, or both encrypted ring buffer and external data. If a channel
-+is offered by the paravisor with confidential VMBus, the ring buffer can always
-+be encrypted since it's strictly for communication between the VTL2 paravisor
-+and the VTL0 guest. However, other memory regions are often used for e.g. DMA,
-+so they need to be accessible by the underlying hardware, and must be
-+unencrypted (unless the device supports encrypted memory). Currently, there are
-+not any VSPs in OpenHCL that support encrypted external memory, but future
-+versions are expected to enable this capability.
-+
-+Because some devices on a Confidential VMBus may require decrypted ring buffers
-+and DMA transfers, the guest must interact with two SynICs -- the one provided
-+by the paravisor and the one provided by the Hyper-V host when Confidential
-+VMBus is not offered. Interrupts are always signaled by the paravisor SynIC,
-+but the guest must check for messages and for channel interrupts on both SynICs.
-+
-+In the case of a confidential VMBus, regular SynIC access by the guest is
-+intercepted by the paravisor (this includes various MSRs such as the SIMP and
-+SIEFP, as well as hypercalls like HvPostMessage and HvSignalEvent). If the
-+guest actually wants to communicate with the hypervisor, it has to use special
-+mechanisms (GHCB page on SNP, or tdcall on TDX). Messages can be of either
-+kind: with confidential VMBus, messages use the paravisor SynIC, and if the
-+guest chose to communicate directly to the hypervisor, they use the hypervisor
-+SynIC. For interrupt signaling, some channels may be running on the host
-+(non-confidential, using the VMBus relay) and use the hypervisor SynIC, and
-+some on the paravisor and use its SynIC. The RelIDs are coordinated by the
-+OpenHCL VMBus server and are guaranteed to be unique regardless of whether
-+the channel originated on the host or the paravisor.
-+
- load_unaligned_zeropad()
- ------------------------
- When transitioning memory between encrypted and decrypted, the caller of
+ #if IS_ENABLED(CONFIG_HYPERV_VTL_MODE)
+ u8 __init get_vtl(void);
+ #else
 -- 
 2.43.0
 
