@@ -1,376 +1,138 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B0D27979A
-	for <linux-coco@lists.linux.dev>; Mon, 14 Jul 2025 22:15:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBE63207;
+	Tue, 15 Jul 2025 00:21:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752531355; cv=none; b=MEaNgtFXZVkJs7H4ILAWjXIHVZI8seknBjn5EHii3E/0MtjjYLIe1xd3p/MYbF9Vmw/KxFVO+/D2cqWnVUip7U4U0KWR1PRetkdUsyVyRaTB3mHwM8fNoP8C4Jw5/+998lKM3Ex4errGWHiL44mCbV4zNj0K83u2gyhlLNAfVyY=
+	t=1752538908; cv=none; b=ggZ2nsbWSvSo3BaJhQiO+jGoTSab1iJdMBw8S/3A4gp3SHJVMlTgIYTW7cavPbcq92a+09f+aYTl0SZZ3ie04reJIfIZB0wv0q1t8TljxxnHBiwav2DfJ2uB/mXbNqfo8uyyNUTzC6opl8fo5gW2ChTUUxePVT4EFc6axWvB8uU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752531355; c=relaxed/simple;
-	bh=/dJZ3cRvOzNN54jl9dU2yCgjMi/kqJvgcAhMV+mc4DU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K8r40ambBovEHVuVEENj0cnuwPcYlg6ZtRokO4AaRz+PCMotAn/lXdC7NreX3EVPqVunKs6K+zDqEtuypGuUy5xpB8BBiScUcJTuI+FBN8fNPxtObJgh0HMj2/6HlbhJ63bDfJjJ3dtK8cxzOW91L4PT+eDNHZ/5kjip49OeBa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=B69YWid3; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1752538908; c=relaxed/simple;
+	bh=ZS6y3+YZOrPGOdLZpTQcp7s63vIuVeQB/7QkEQLYFOk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EsMs+i/yV9wJIIGdki15oOcXGALgrzBTeu07SSRJB10pEvpzU3sH4PJdsGgd54SsXIxH5TIJi45KOqRrmUTYDH1+WLWS7c+An+VPDiS1aOcSWpKIoqdCdyX4XB9D7CfSwYCWXw6NTn2q3g1RH21QaOeIDYRGKEsfdXmgGRFYsHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AFV8rqaA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="B69YWid3"
-Received: from romank-3650.corp.microsoft.com (unknown [131.107.160.188])
-	by linux.microsoft.com (Postfix) with ESMTPSA id E98CB201A4A0;
-	Mon, 14 Jul 2025 15:15:49 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E98CB201A4A0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1752531350;
-	bh=j00XbzilASNTkMHd9m2L0mBdWZrnYkzsjHSAldQBM9k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B69YWid3xVys3P3BR0vAlLZVzI0tdaW4nUP1RbmsJPLJTOVfRLW8U0mgwI8msGb7W
-	 pWQDCK8Wkc6ABbSwTLrkroFeqxROp6GbDlJrZGdtB6O1wDNSj+lzhor4apfkmorXGN
-	 yrhGr8UDCfLdtMXbKRTvkkMiRlNZp3rAlRiBav3Q=
-From: Roman Kisel <romank@linux.microsoft.com>
-To: alok.a.tiwari@oracle.com,
-	arnd@arndb.de,
-	bp@alien8.de,
-	corbet@lwn.net,
-	dave.hansen@linux.intel.com,
-	decui@microsoft.com,
-	haiyangz@microsoft.com,
-	hpa@zytor.com,
-	kys@microsoft.com,
-	mhklinux@outlook.com,
-	mingo@redhat.com,
-	rdunlap@infradead.org,
-	tglx@linutronix.de,
-	Tianyu.Lan@microsoft.com,
-	wei.liu@kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	x86@kernel.org
-Cc: apais@microsoft.com,
-	benhill@microsoft.com,
-	bperkins@microsoft.com,
-	sunilmut@microsoft.com
-Subject: [PATCH hyperv-next v4 11/16] Drivers: hv: Functions for setting up and tearing down the paravisor SynIC
-Date: Mon, 14 Jul 2025 15:15:40 -0700
-Message-ID: <20250714221545.5615-12-romank@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250714221545.5615-1-romank@linux.microsoft.com>
-References: <20250714221545.5615-1-romank@linux.microsoft.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AFV8rqaA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48CDDC4CEED;
+	Tue, 15 Jul 2025 00:21:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752538908;
+	bh=ZS6y3+YZOrPGOdLZpTQcp7s63vIuVeQB/7QkEQLYFOk=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=AFV8rqaAoLjVxEuVlCUFYMLsiU1h9Va8CTIxgUvsHGrpgjCxjznNo9asxXAPIyxNp
+	 EJ9lSSpP1a2yzn/SoGXXgsK4lzWhgMAaZ2lQz0OOrYenU59HkO0Ke61jHyJIdNATFh
+	 EE3YpdPSBaf71QV2aGF75WGL6Rny8A+hwXpbNVaYABc4djiMYwF8vpQVCQcHVrU452
+	 mxaq42IdqV008WfsmPYwpkhJX4YCwjz+Ef/76maqb0MobzUj+q6IuDklEHvR9WRHEz
+	 VA1jPsoh5fFWFPS0M8YoHP7MXu+AoGkEPTw/HrKLSkhcgWAW04fXYzR98SSt7w20eR
+	 wttPzui8HE3Uw==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id E7180CE0BAF; Mon, 14 Jul 2025 17:21:47 -0700 (PDT)
+Date: Mon, 14 Jul 2025 17:21:47 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-coco@lists.linux.dev, x86@kernel.org, kvm@vger.kernel.org,
+	seanjc@google.com, pbonzini@redhat.com, eddie.dong@intel.com,
+	kirill.shutemov@intel.com, dave.hansen@intel.com,
+	dan.j.williams@intel.com, kai.huang@intel.com,
+	isaku.yamahata@intel.com, elena.reshetova@intel.com,
+	rick.p.edgecombe@intel.com, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [RFC PATCH 00/20] TD-Preserving updates
+Message-ID: <a7affba9-0cea-4493-b868-392158b59d83@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20250523095322.88774-1-chao.gao@intel.com>
+ <aHDFoIvB5+33blGp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aHDFoIvB5+33blGp@intel.com>
 
-The confidential VMBus runs with the paravisor SynIC and requires
-configuring it with the paravisor.
+On Fri, Jul 11, 2025 at 04:04:48PM +0800, Chao Gao wrote:
+> On Fri, May 23, 2025 at 02:52:23AM -0700, Chao Gao wrote:
+> >Hi Reviewers,
+> >
+> >This series adds support for runtime TDX module updates that preserve
+> >running TDX guests (a.k.a, TD-Preserving updates). The goal is to gather
+> >feedback on the feature design. Please pay attention to the following items:
+> >
+> >1. TD-Preserving updates are done in stop_machine() context. it copy-pastes
+> >   part of multi_cpu_stop() to guarantee step-locked progress on all CPUs.
+> >   But, there are a few differences between them. I am wondering whether
+> >   these differences have reached a point where abstracting a common
+> >   function might do more harm than good. See more details in patch 10.
 
-Add the functions for configuring the paravisor SynIC. Update
-overall SynIC initialization logic to initialize the SynIC if it
-is present. Finally, break out SynIC interrupt enable/disable
-code into separate functions so that SynIC interrupts can be
-enabled or disabled via the paravisor instead of the hypervisor
-if the paravisor SynIC is present.
+Please note that multi_cpu_stop() is used by a number of functions,
+so it is a good example of common code.  But you are within your rights
+to create your own function to pass to stop_machine(), and quite a
+few call sites do just that.  Most of them expect this function to be
+executed on only one CPU, but these run on multiple CPUs:
 
-Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
----
- drivers/hv/hv.c | 197 +++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 185 insertions(+), 12 deletions(-)
+o	__apply_alternatives_multi_stop(), which has CPU 0 do the
+	work and the rest wati on it.
 
-diff --git a/drivers/hv/hv.c b/drivers/hv/hv.c
-index 94a81bb3c8c7..9d85d5e62968 100644
---- a/drivers/hv/hv.c
-+++ b/drivers/hv/hv.c
-@@ -276,9 +276,8 @@ void hv_hyp_synic_enable_regs(unsigned int cpu)
- 	union hv_synic_simp simp;
- 	union hv_synic_siefp siefp;
- 	union hv_synic_sint shared_sint;
--	union hv_synic_scontrol sctrl;
- 
--	/* Setup the Synic's message page */
-+	/* Setup the Synic's message page with the hypervisor. */
- 	simp.as_uint64 = hv_get_msr(HV_MSR_SIMP);
- 	simp.simp_enabled = 1;
- 
-@@ -297,7 +296,7 @@ void hv_hyp_synic_enable_regs(unsigned int cpu)
- 
- 	hv_set_msr(HV_MSR_SIMP, simp.as_uint64);
- 
--	/* Setup the Synic's event page */
-+	/* Setup the Synic's event page with the hypervisor. */
- 	siefp.as_uint64 = hv_get_msr(HV_MSR_SIEFP);
- 	siefp.siefp_enabled = 1;
- 
-@@ -325,6 +324,11 @@ void hv_hyp_synic_enable_regs(unsigned int cpu)
- 	shared_sint.masked = false;
- 	shared_sint.auto_eoi = hv_recommend_using_aeoi();
- 	hv_set_msr(HV_MSR_SINT0 + VMBUS_MESSAGE_SINT, shared_sint.as_uint64);
-+}
-+
-+static void hv_hyp_synic_enable_interrupts(void)
-+{
-+	union hv_synic_scontrol sctrl;
- 
- 	/* Enable the global synic bit */
- 	sctrl.as_uint64 = hv_get_msr(HV_MSR_SCONTROL);
-@@ -333,13 +337,100 @@ void hv_hyp_synic_enable_regs(unsigned int cpu)
- 	hv_set_msr(HV_MSR_SCONTROL, sctrl.as_uint64);
- }
- 
-+/*
-+ * The paravisor might not support proxying SynIC, and this
-+ * function may fail.
-+ */
-+static int hv_para_synic_enable_regs(unsigned int cpu)
-+{
-+	int err;
-+	union hv_synic_simp simp;
-+	union hv_synic_siefp siefp;
-+	struct hv_per_cpu_context *hv_cpu
-+		= per_cpu_ptr(hv_context.cpu_context, cpu);
-+
-+	/* Setup the Synic's message page with the paravisor. */
-+	err = hv_para_get_synic_register(HV_MSR_SIMP, &simp.as_uint64);
-+	if (err)
-+		return err;
-+	simp.simp_enabled = 1;
-+	simp.base_simp_gpa = virt_to_phys(hv_cpu->para_synic_message_page)
-+			>> HV_HYP_PAGE_SHIFT;
-+	err = hv_para_set_synic_register(HV_MSR_SIMP, simp.as_uint64);
-+	if (err)
-+		return err;
-+
-+	/* Setup the Synic's event page with the paravisor. */
-+	err = hv_para_get_synic_register(HV_MSR_SIEFP, &siefp.as_uint64);
-+	if (err)
-+		return err;
-+	siefp.siefp_enabled = 1;
-+	siefp.base_siefp_gpa = virt_to_phys(hv_cpu->para_synic_event_page)
-+			>> HV_HYP_PAGE_SHIFT;
-+	return hv_para_set_synic_register(HV_MSR_SIEFP, siefp.as_uint64);
-+}
-+
-+static int hv_para_synic_enable_interrupts(void)
-+{
-+	union hv_synic_scontrol sctrl;
-+	int err;
-+
-+	/* Enable the global synic bit */
-+	err = hv_para_get_synic_register(HV_MSR_SCONTROL, &sctrl.as_uint64);
-+	if (err)
-+		return err;
-+	sctrl.enable = 1;
-+
-+	return hv_para_set_synic_register(HV_MSR_SCONTROL, sctrl.as_uint64);
-+}
-+
- int hv_synic_init(unsigned int cpu)
- {
-+	int err;
-+
-+	/*
-+	 * The paravisor may not support the confidential VMBus,
-+	 * check on that first.
-+	 */
-+	if (vmbus_is_confidential()) {
-+		err = hv_para_synic_enable_regs(cpu);
-+		if (err)
-+			goto fail;
-+	}
-+
-+	/*
-+	 * The SINT is set in hv_hyperv_synic_enable_regs() by calling
-+	 * hv_set_msr(). hv_set_msr() in turn has special case code for the
-+	 * SINT MSRs that write to the hypervisor version of the MSR *and*
-+	 * the paravisor version of the MSR (but *without* the proxy bit when
-+	 * VMBus is confidential). Then the code above enables interrupts
-+	 * via the paravisor if VMBus is confidential, and otherwise via the
-+	 * hypervisor.
-+	 */
-+
- 	hv_hyp_synic_enable_regs(cpu);
-+	if (vmbus_is_confidential()) {
-+		err = hv_para_synic_enable_interrupts();
-+		if (err)
-+			goto fail;
-+	} else
-+		hv_hyp_synic_enable_interrupts();
- 
- 	hv_stimer_legacy_init(cpu, VMBUS_MESSAGE_SINT);
- 
- 	return 0;
-+
-+fail:
-+	/*
-+	 * The failure may only come from enabling the paravisor SynIC.
-+	 * That in turn means that the confidential VMBus cannot be used
-+	 * which is not an error: the setup will be re-tried with the
-+	 * non-confidential VMBus.
-+	 *
-+	 * We also don't bother attempting to reset the paravisor registers
-+	 * as something isn't working there anyway.
-+	 */
-+	return err;
- }
- 
- void hv_hyp_synic_disable_regs(unsigned int cpu)
-@@ -349,7 +440,6 @@ void hv_hyp_synic_disable_regs(unsigned int cpu)
- 	union hv_synic_sint shared_sint;
- 	union hv_synic_simp simp;
- 	union hv_synic_siefp siefp;
--	union hv_synic_scontrol sctrl;
- 
- 	shared_sint.as_uint64 = hv_get_msr(HV_MSR_SINT0 + VMBUS_MESSAGE_SINT);
- 
-@@ -361,7 +451,7 @@ void hv_hyp_synic_disable_regs(unsigned int cpu)
- 
- 	simp.as_uint64 = hv_get_msr(HV_MSR_SIMP);
- 	/*
--	 * In Isolation VM, sim and sief pages are allocated by
-+	 * In Isolation VM, simp and sief pages are allocated by
- 	 * paravisor. These pages also will be used by kdump
- 	 * kernel. So just reset enable bit here and keep page
- 	 * addresses.
-@@ -391,14 +481,64 @@ void hv_hyp_synic_disable_regs(unsigned int cpu)
- 	}
- 
- 	hv_set_msr(HV_MSR_SIEFP, siefp.as_uint64);
-+}
-+
-+static void hv_hyp_synic_disable_interrupts(void)
-+{
-+	union hv_synic_scontrol sctrl;
- 
- 	/* Disable the global synic bit */
- 	sctrl.as_uint64 = hv_get_msr(HV_MSR_SCONTROL);
- 	sctrl.enable = 0;
- 	hv_set_msr(HV_MSR_SCONTROL, sctrl.as_uint64);
-+}
- 
--	if (vmbus_irq != -1)
--		disable_percpu_irq(vmbus_irq);
-+static void hv_para_synic_disable_regs(unsigned int cpu)
-+{
-+	/*
-+	 * When a get/set register error is encountered, the function
-+	 * returns as the paravisor may not support these registers.
-+	 */
-+	int err;
-+	union hv_synic_simp simp;
-+	union hv_synic_siefp siefp;
-+
-+	/*
-+	 * Don't deallocate memory here as the function is called on
-+	 * CPU online and offline operations. The guest will find
-+	 * itself without means of communication when resumed.
-+	 */
-+
-+	/* Disable SynIC's message page in the paravisor. */
-+	err = hv_para_get_synic_register(HV_MSR_SIMP, &simp.as_uint64);
-+	if (err)
-+		return;
-+	simp.simp_enabled = 0;
-+
-+	err = hv_para_set_synic_register(HV_MSR_SIMP, simp.as_uint64);
-+	if (err)
-+		return;
-+
-+	/* Disable SynIC's event page in the paravisor. */
-+	err = hv_para_get_synic_register(HV_MSR_SIEFP, &siefp.as_uint64);
-+	if (err)
-+		return;
-+	siefp.siefp_enabled = 0;
-+
-+	hv_para_set_synic_register(HV_MSR_SIEFP, siefp.as_uint64);
-+}
-+
-+static void hv_para_synic_disable_interrupts(void)
-+{
-+	union hv_synic_scontrol sctrl;
-+	int err;
-+
-+	/* Disable the global synic bit */
-+	err = hv_para_get_synic_register(HV_MSR_SCONTROL, &sctrl.as_uint64);
-+	if (err)
-+		return;
-+	sctrl.enable = 0;
-+	hv_para_set_synic_register(HV_MSR_SCONTROL, sctrl.as_uint64);
- }
- 
- #define HV_MAX_TRIES 3
-@@ -411,16 +551,18 @@ void hv_hyp_synic_disable_regs(unsigned int cpu)
-  * that the normal interrupt handling mechanism will find and process the channel interrupt
-  * "very soon", and in the process clear the bit.
-  */
--static bool hv_synic_event_pending(void)
-+static bool __hv_synic_event_pending(union hv_synic_event_flags *event, int sint)
- {
--	struct hv_per_cpu_context *hv_cpu = this_cpu_ptr(hv_context.cpu_context);
--	union hv_synic_event_flags *event =
--		(union hv_synic_event_flags *)hv_cpu->hyp_synic_event_page + VMBUS_MESSAGE_SINT;
--	unsigned long *recv_int_page = event->flags; /* assumes VMBus version >= VERSION_WIN8 */
-+	unsigned long *recv_int_page;
- 	bool pending;
- 	u32 relid;
- 	int tries = 0;
- 
-+	if (!event)
-+		return false;
-+
-+	event += sint;
-+	recv_int_page = event->flags; /* assumes VMBus version >= VERSION_WIN8 */
- retry:
- 	pending = false;
- 	for_each_set_bit(relid, recv_int_page, HV_EVENT_FLAGS_COUNT) {
-@@ -437,6 +579,17 @@ static bool hv_synic_event_pending(void)
- 	return pending;
- }
- 
-+static bool hv_synic_event_pending(void)
-+{
-+	struct hv_per_cpu_context *hv_cpu = this_cpu_ptr(hv_context.cpu_context);
-+	union hv_synic_event_flags *hyp_synic_event_page = hv_cpu->hyp_synic_event_page;
-+	union hv_synic_event_flags *para_synic_event_page = hv_cpu->para_synic_event_page;
-+
-+	return
-+		__hv_synic_event_pending(hyp_synic_event_page, VMBUS_MESSAGE_SINT) ||
-+		__hv_synic_event_pending(para_synic_event_page, VMBUS_MESSAGE_SINT);
-+}
-+
- static int hv_pick_new_cpu(struct vmbus_channel *channel)
- {
- 	int ret = -EBUSY;
-@@ -529,7 +682,27 @@ int hv_synic_cleanup(unsigned int cpu)
- always_cleanup:
- 	hv_stimer_legacy_cleanup(cpu);
- 
-+	/*
-+	 * First, disable the event and message pages
-+	 * used for communicating with the host, and then
-+	 * disable the host interrupts if VMBus is not
-+	 * confidential.
-+	 */
- 	hv_hyp_synic_disable_regs(cpu);
-+	if (!vmbus_is_confidential())
-+		hv_hyp_synic_disable_interrupts();
-+
-+	/*
-+	 * Perform the same steps for the Confidential VMBus.
-+	 * The sequencing provides the gurantee that no data
-+	 * may be posted for processing before disabling interrupts.
-+	 */
-+	if (vmbus_is_confidential()) {
-+		hv_para_synic_disable_regs(cpu);
-+		hv_para_synic_disable_interrupts();
-+	}
-+	if (vmbus_irq != -1)
-+		disable_percpu_irq(vmbus_irq);
- 
- 	return ret;
- }
--- 
-2.43.0
+o	cpu_enable_non_boot_scope_capabilities(), which works on
+	a per-CPU basis.
 
+o	do_join(), which is similar to your do_seamldr_install_module().
+	Somewhat similar, anyway.
+
+o	__ftrace_modify_code(), of which there are several, some of
+	which have some vague resemblance to your code.
+
+o	cache_rendezvous_handler(), which works on a per-CPU basis.
+
+o	panic_stop_irqoff_fn(), which is a simple barrier-wait, with
+	the last CPU to arrive doing the work.
+
+I strongly recommend looking at these functions.  They might
+suggest an improved way to do what you are trying to accomplish with
+do_seamldr_install_module().
+
+> >2. P-SEAMLDR seamcalls (specificially SEAMRET from P-SEAMLDR) clear current
+> >   VMCS pointers, which may disrupt KVM. To prevent VMX instructions in IRQ
+> >   context from encountering NULL current-VMCS pointers, P-SEAMLDR
+> >   seamcalls are called with IRQ disabled. I'm uncertain if NMIs could
+> >   cause a problem, but I believe they won't. See more information in patch 3.
+> >
+> >3. Two helpers, cpu_vmcs_load() and cpu_vmcs_store(), are added in patch 3
+> >   to save and restore the current VMCS. KVM has a variant of cpu_vmcs_load(),
+> >   i.e., vmcs_load(). Extracting KVM's version would cause a lot of code
+> >   churn, and I don't think that can be justified for reducing ~16 LoC
+> >   duplication. Please let me know if you disagree.
+> 
+> Gentle ping!
+
+I do not believe that I was CCed on the original.  Just in case you
+were wondering why I did not respond.  ;-)
+
+> There are three open issues: one regarding stop_machine() and two related to
+> interactions with KVM.
+> 
+> Sean and Paul, do you have any preferences or insights on these matters?
+
+Again, you are within your rights to create a new function and pass
+it to stop_machine().  But it seems quite likely that there is a much
+simpler way to get your job done.
+
+Either way, please add a header comment stating what your function
+is trying to do, which appears to be to wait for all CPUs to enter
+do_seamldr_install_module() and then just leave?  Sort of like
+multi_cpu_stop(), except leaving interrupts enabled and not executing a
+"msdata->fn(msdata->data);", correct?
+
+If so, something like panic_stop_irqoff_fn() might be a simpler model,
+perhaps with the touch_nmi_watchdog() and rcu_momentary_eqs() added.
+
+Oh, and one bug:  You must have interrupts disabled when you call
+rcu_momentary_eqs().  Please fix this.
+
+							Thanx, Paul
