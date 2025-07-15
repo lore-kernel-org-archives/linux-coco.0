@@ -1,98 +1,112 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F6F2D5A18
-	for <linux-coco@lists.linux.dev>; Tue, 15 Jul 2025 09:25:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7AF26E6F8
+	for <linux-coco@lists.linux.dev>; Tue, 15 Jul 2025 10:38:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752571514; cv=none; b=IZu+/2vpi+UbFiYmuRB3tXrHcLuo3/9UelzDDPko8idzPCdr+csKICpyGekcSwjHhCSCw4LiINC5BAtW0BjlfyUv4KjShmxyn0e7wKwHY48gZiZT6PfQhBLoVoTJ162qQMtqb8VdH/epXMxf6pJYbfW7Q1wP4yh13bS3wX7c3pI=
+	t=1752575896; cv=none; b=SP3WRq659tyDwzqm3C4ye8a7DzMWhWOmtkkEHJCTpj5kGFVglU4CxJcGa+YY3v41VrerJot3Vts4jg7rim6A4PiI9/1ZxZcl/l8zik1FyjPMea58On35QQqylGM1PgYN3PchIy5zWrhmfz89Z0ouYjNHG4N7Iw3FQYy2v9UhYg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752571514; c=relaxed/simple;
-	bh=SmUZ5V6oYOLVMDDyYNGnjrn4VrcjulLihcKBMLmUEKA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bMas4Rb2rNNGShXr4d28O8pUHlmBmkXVz6k3gF/GH3gEG3CRaWkuLZeLBARolRaqkboqJvSOPTDvAqWZWbHtjKivjVhoAK6yPRFodI9ADFZ1d/gHGUkBPAlRSJax4V+Hw0EV2Ar4RxuKNwqJEBC3cRLWn2xjPp61TXi6z1oZlxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KpxVkj51; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1752575896; c=relaxed/simple;
+	bh=GuOQRpiFUwJLFuIAuZc3FqEERf+Z15BAE2nEQU3m7wg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cKzleCSxlkDkzDWcDQSjQUJIRvNgRkZLdyLHauqZPBPvqsnHHmOb96k6VDihWWogZLelrB750w3h+jRq19ed19hWpMPCRPiz8XYfmCHzcB67PWJUbXVu0hhCMI0Wf6wHhuo9Pbs+MleMp9UKlQrL6r5gJTtRL49zd5BNaiUcXzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TyI91Rqt; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KpxVkj51"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TyI91Rqt"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752571513; x=1784107513;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=SmUZ5V6oYOLVMDDyYNGnjrn4VrcjulLihcKBMLmUEKA=;
-  b=KpxVkj51K5+iugxRBUr99C5hamKpJQLQLRT5J75tRq2H6BPVn5iNAmTD
-   XAscG3rD7F7rinA8ZyjB73EZlW2eKtNhTbGBKp67nJDJU+hT0+hO/+Ltc
-   kmTSW+1mWMGEZEt8wf/nsSq90fVFg8ofkzXmYM50EBwEn5+iJgNGVqWc9
-   5fPkRAKQ0P1yFQiVZM+Tr0G/2eXAVdzezRb1VvWF8riHR3nnrwEzqgRpM
-   lxi1vh2tR9d9wVHMEkmqE0Prv6WPLQfJ9yDV6MuG9xJo0IGi1Ap61sp9X
-   YeTaX0bQk4imJGdgsrbcqRX2TCZ7mPSi8BS6o+Zh7qbPkX025t5S6ZGuu
-   w==;
-X-CSE-ConnectionGUID: b5ZPSHCTTrqFpnRlBQapfw==
-X-CSE-MsgGUID: NJefpIJ3RjuEnSJwDktfGA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54636676"
+  t=1752575894; x=1784111894;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=GuOQRpiFUwJLFuIAuZc3FqEERf+Z15BAE2nEQU3m7wg=;
+  b=TyI91RqtJbhNFo6xfSgdWMKc8I2Sq1It9rBmeMjqw+hcSdqgtaPtX170
+   AXiSqqDfGt2fp2oPLBxb6Qy391fcPZYIfxJdPA8kpvj04N7c6Ziog4OVM
+   S1sOMAQSzMETvLwSQm2rEcjEGQ2uxy2a7LOCS01ZR6sWt448S0wgAHNQs
+   lwtDMHLozWVwcnHQiTGacaE4vmhG+ZE3QOiHtNDnkuWHne7HbJwD/brlY
+   TpBzx0U5fifUAiCCcbvWnTQP2mUfuJC8tkfkeTZ/q+/l77Gt5cmB3q7ff
+   AeXjH/BkaLeEx7f6Ucl/CrAOAK2WtZgK3UX7O6vfv0ElXwGCXpnJb9N/z
+   A==;
+X-CSE-ConnectionGUID: HA3XcgbYS0qIn1GDsdeqSQ==
+X-CSE-MsgGUID: m/UsmIUtShO8ca4afQr+3w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="65050877"
 X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; 
-   d="scan'208";a="54636676"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2025 02:25:13 -0700
-X-CSE-ConnectionGUID: BjsOTRxlSkqxNts3arB9nQ==
-X-CSE-MsgGUID: AWcfIymmSWaq5YWX/toxgA==
+   d="scan'208";a="65050877"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2025 03:38:14 -0700
+X-CSE-ConnectionGUID: sJ3tL2NDR76DI4DvhDehsg==
+X-CSE-MsgGUID: bI7I/AH7Q2Swr4OirwzRpg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; 
-   d="scan'208";a="161487314"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.247.1]) ([10.124.247.1])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2025 02:25:05 -0700
-Message-ID: <dfef9ca2-249f-42b4-8587-e851374e3ef3@intel.com>
-Date: Tue, 15 Jul 2025 17:25:00 +0800
+   d="scan'208";a="156597919"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa006.jf.intel.com with ESMTP; 15 Jul 2025 03:38:11 -0700
+Date: Tue, 15 Jul 2025 18:29:35 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+Cc: Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
+	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
+	jgg@nvidia.com, zhiw@nvidia.com
+Subject: Re: [RFC PATCH 3/3] iommufd/tsm: Add tsm_bind/unbind iommufd ioctls
+Message-ID: <aHYtj/jyfXD4XhZy@yilunxu-OptiPlex-7050>
+References: <yq5a5xhj5yng.fsf@kernel.org>
+ <20250529133757.462088-1-aneesh.kumar@kernel.org>
+ <20250529133757.462088-3-aneesh.kumar@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] TDX: Clean up the definitions of TDX ATTRIBUTES
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "seanjc@google.com" <seanjc@google.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
-Cc: "Lindgren, Tony" <tony.lindgren@intel.com>,
- "Hunter, Adrian" <adrian.hunter@intel.com>, "bp@alien8.de" <bp@alien8.de>,
- "x86@kernel.org" <x86@kernel.org>,
- "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
- "hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>,
- "tglx@linutronix.de" <tglx@linutronix.de>, "Huang, Kai"
- <kai.huang@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "Chatre, Reinette" <reinette.chatre@intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "Zhao, Yan Y" <yan.y.zhao@intel.com>,
- "Yamahata, Isaku" <isaku.yamahata@intel.com>
-References: <20250711132620.262334-1-xiaoyao.li@intel.com>
- <5154b5ba73f7917c0d239880d0056a40ba7f1e08.camel@intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <5154b5ba73f7917c0d239880d0056a40ba7f1e08.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250529133757.462088-3-aneesh.kumar@kernel.org>
 
-On 7/12/2025 2:02 AM, Edgecombe, Rick P wrote:
-> On Fri, 2025-07-11 at 21:26 +0800, Xiaoyao Li wrote:
->> Note, this series doesn't rename TDX_ATTR_* in asm/shared/tdx.h to
->> TDX_TD_ATTR_*, so that KVM_SUPPORTED_TDX_TD_ATTRS in patch 3 looks
->> a little inconsistent. Because I'm not sure what the preference of tip
->> maintainers on the name is. So I only honor KVM maintainer's preference
->> and leave the stuff outside KVM unchanged.
+On Thu, May 29, 2025 at 07:07:56PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> ---
+>  drivers/iommu/iommufd/iommufd_private.h |  3 +
+>  drivers/iommu/iommufd/main.c            |  5 ++
+>  drivers/iommu/iommufd/viommu.c          | 78 +++++++++++++++++++++++++
+>  include/uapi/linux/iommufd.h            | 15 +++++
+>  4 files changed, 101 insertions(+)
 > 
-> I prefer the names with "TD" based on the argument that it's clearer that it is
-> TD scoped. My read was that Sean has the same reasoning. This series changes KVM
-> code to use the non-"TD" defines. So I feel Sean's opinion counts here. We don't
-> have any x86 maintainer NAK on the other direction, so it doesn't seem like a
-> reason to give up trying.
-> 
-> That said I think this series is an overall improvement. We could always add TD
-> to the names later. But the sooner we do it, the less we'll have to change.
+> diff --git a/drivers/iommu/iommufd/iommufd_private.h b/drivers/iommu/iommufd/iommufd_private.h
+> index 80e8c76d25f2..a323e8b18125 100644
+> --- a/drivers/iommu/iommufd/iommufd_private.h
+> +++ b/drivers/iommu/iommufd/iommufd_private.h
+> @@ -606,6 +606,8 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd);
+>  void iommufd_viommu_destroy(struct iommufd_object *obj);
+>  int iommufd_vdevice_alloc_ioctl(struct iommufd_ucmd *ucmd);
+>  void iommufd_vdevice_destroy(struct iommufd_object *obj);
+> +int iommufd_vdevice_tsm_bind_ioctl(struct iommufd_ucmd *ucmd);
+> +int iommufd_vdevice_tsm_unbind_ioctl(struct iommufd_ucmd *ucmd);
 
-Just sent the v3 which adds one additional patch to rename it.
+Hello:
+
+I recently have another concern about the vdevice tsm bind/unbind API.
+And need your inputs.
+
+According to this:
+https://lore.kernel.org/all/aC9QPoEUw_nLHhV4@google.com/
+
+Sean illustrates the memory in-place conversion, that the memory
+owner - gmemfd should own & control the memory shareability) and
+the conversion. I.e. For in-place conversion,
+KVM_SET_MEMORY_ATTRIBUTES should be disabled.
+
+Private/shared MMIO must be of in-place conversion, similarly it's
+the MMIO owner should be responsible for MMIO shareability, maybe adding
+some new ioctls like MMIO_CONVERT_SHARED/PRIVATE.
+
+From previous discussion, VFIO is the MMIO owner (implement as dmabuf
+exporter), so manages MMIO shareability. And IOMMUFD vdevice is the TDI
+state owner for TSM bind/unbind. But MMIO shareability & TDI state are
+actually correlated, do we really want to manage them in 2 components?
+
+Thanks,
+Yilun
