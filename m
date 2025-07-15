@@ -1,119 +1,88 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3406C1E531
-	for <linux-coco@lists.linux.dev>; Tue, 15 Jul 2025 15:07:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB324204863
+	for <linux-coco@lists.linux.dev>; Tue, 15 Jul 2025 15:10:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752592040; cv=none; b=CekiwhZvJXa6MGRTWR3pFzakScxMQ5XVjiNXjNAv5IyZsizZQTK9E/AKWhvHLY4oouMt6wCF7nJLbAzlxDM6AxmZeDYSPz3KRGy9iPeDwlh7mochlrfPAMGFIM4RVlY52TDQLz01LXmoC9dzsfcj4GDSr9M9SueCegSqy1Xvb3g=
+	t=1752592242; cv=none; b=g8BYV5CNfnuoVOTnGZVjdSEEp1SI5EjN/5d5q+1tnMpDC2pGUqKTLzIhjVwlE8USyhd9XpJ5fKYlofLlp1H03/VOCG1pSj7KNlPvnMSGe48k/iv7rI5e7bA875kn3shKpdVfrpELHlBKgGSOhj4Xh0ItYioIAHEvme36SR4y08w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752592040; c=relaxed/simple;
-	bh=OiUBPoY0DAHzw8d+KtYaNH0kSRUC/6fupZiFxFnHvY0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=AoswB3ludN6R1zyoEFtykgZicJyrhmTW9k8D/DZhzuYs2wlOQn1Vtrxnxac5xuMZwXdmbxdHLdm+oqMeJn0TsgyWdH9aKeGgPoGK9sHyi/q0foArDvnbrjNdcn0/4NQ/Ne4BYfloa58ZaK4jewCiYKjxSCdku7svZCch3u6bMv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cBanjYnh; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1752592242; c=relaxed/simple;
+	bh=4VggX2D7gPOxcgo1aao/mMvKRzUYIRe+bl1k2gkC6I4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=IyOMja/cu1WfhPywpVcspnq+t6jgPloFgVA5DNEWY44PxYP4Thy+vma6cN2wG/k470cBB83VHEUx8RtvkQdxSG6Gi4WlUito/iCNvZanZYHllF192pL5WeSoIe4J/fhlAJAr1/Kh68WiuzoNzjDwf1bb/75gmPH1fL42ILVDbGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dbgHAVo2; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cBanjYnh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752592038;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5erOhrwI05E0mqSGdY2tucAmqc1QYuJmBFBxqV2fFFg=;
-	b=cBanjYnhsD8eVVyMfjrPOf+yVZzXHgaHbT5lg1LoMd9ibZE62IEdFyIp/CuQw4zq8Kjtdy
-	4eAj5dBKSLt1ibeF4wuiWK/F6h2NJju+Vw8mcZxVCrjcFj95oBPqoXKfLmZ7O8zbnEtTVa
-	CsX8wowAZ+p/GgOPXb67lkL1e5gbFD8=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-140-m4OLDDQePseNx4oMVWhDKA-1; Tue,
- 15 Jul 2025 11:07:13 -0400
-X-MC-Unique: m4OLDDQePseNx4oMVWhDKA-1
-X-Mimecast-MFC-AGG-ID: m4OLDDQePseNx4oMVWhDKA_1752592031
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D20041800245;
-	Tue, 15 Jul 2025 15:07:10 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.45.224.214])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 27F5E30001A1;
-	Tue, 15 Jul 2025 15:07:10 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
-	id 6FE6A1801556; Tue, 15 Jul 2025 17:07:07 +0200 (CEST)
-Date: Tue, 15 Jul 2025 17:07:07 +0200
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Jon Lange <jlange@microsoft.com>
-Cc: "Relph, Richard" <richard.relph@amd.com>, 
-	=?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>, "coconut-svsm@lists.linux.dev" <coconut-svsm@lists.linux.dev>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Subject: Re: [EXTERNAL] Re: SVSM Development Call July 2nd, 2025
-Message-ID: <757kuxy36oqteplwd3kussc73w6lqeidbu2rxmzladj3kio7ei@jider3lbnthf>
-References: <4qbnbdno6hof3llfemhxc4prm7x2vzpqmvjknykelucpqhyryz@kbgpmaoy7vmz>
- <4b862033-9c53-47ec-8eae-e9c9ce7d7d7d@amd.com>
- <cvrqixqf3odaxgpz4uzwtkfkbmgbyrndzgyl7mhlbs6vj6fnpp@5aqnndt7rm6q>
- <d579919f-6e66-4499-8634-e258af61c933@amd.com>
- <aq6225hfazqsbqgx6fhj2klst52wdfivfa6xj2ost65sg5fq2r@4yoqnv2tp5nm>
- <LV5PR21MB5210A051A344852EC30C089CCA48A@LV5PR21MB5210.namprd21.prod.outlook.com>
- <auq7txxlerpwzl542o6rkjams22cy6rb2xoi3f7lbej6u47svi@rto2jldlvxyh>
- <LV5PR21MB5210915F19D877E261E66ABACA4BA@LV5PR21MB5210.namprd21.prod.outlook.com>
- <axljobcnpe6oct5v7edaocroajirywcft5z6lgtnoh3s6tj2r6@cux7zhrgbqnc>
- <CH8PR21MB5222CC6DCC81B272390F4ABECA54A@CH8PR21MB5222.namprd21.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dbgHAVo2"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-7489ac848f3so8368422b3a.1
+        for <linux-coco@lists.linux.dev>; Tue, 15 Jul 2025 08:10:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1752592240; x=1753197040; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ryg0XVXx/d3QRix1Y2kL+AIJsLkxuJ3xCLHGA+yS2Dg=;
+        b=dbgHAVo2pWgAqY8e2u4a19lt/+5aWvWw8Mi6wrUvrWjYpy0xaVQeRnZwsNuZly0+0I
+         jXPr6QvQxK3XqYui/8pjrrM84OQF7D4FMbQ5SDv1Y/EXHt9CaLgQk0fGb6932AV751iF
+         x2IGazGazcBTDg/JBzGUDt7QdDIa3sn/mjXycdGIwh0jr+MXPISI5VYLMU0cILiB6XbA
+         bIEPPj+M69avT6o54fFOZLAY1cl1+l6JlQZlT8N0aBmC0eCRWsjkJhFNAboyfuR730q4
+         IEz696akqSrdkBlsCYWEqJDjHovzwYcZcujtV8m7s0/eRnMkf5X4cUAEuRunW4L1u0O7
+         92bQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752592240; x=1753197040;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ryg0XVXx/d3QRix1Y2kL+AIJsLkxuJ3xCLHGA+yS2Dg=;
+        b=hY+IRLVqlViHyb2Pqgc8iuGWkwINQb0WZ86O33p8o8OiesI4aF1y85uP+FF9Ra2JdA
+         1LE8K6YJ8XANAoLyB3AhnPf0Ep0CRatOqS/LcwcHBdn6ZfsfVWz0fSPi4YTxAVpo4q7o
+         /fYS8tDoZ/xZPwJj1uZaUV9Xcc6M6eJ0TOKEDTw1RsRwpphdbM8IHXMkYws2UvTGODTZ
+         H+9rj7TOVTG7Zswtws100rcUZpE7LvYnOkdd7BVsrAX2AKp9vUl7t/d+mxBiTqoCfLLi
+         JcXK9Am062HLMl6jbnIAQMrIHgdbY3uKHvZ1u93vaOz1KFlc1twy3wpF1ckITn4BaJ/4
+         ydjA==
+X-Forwarded-Encrypted: i=1; AJvYcCXHMOxQczQiVXPNghYIKHd9JDI5+rCJ82Kl73x04uLpPyO1dnv0dD7Mjwzw242lvHoD4yz4TXPDXKQq@lists.linux.dev
+X-Gm-Message-State: AOJu0YyFwComtLtrBIjUGyWccEhmFW5lrxLutdlAxH5dSVMO2vCI7lvJ
+	hxy/dWXPvDHO79HdpKVsZbchw2YloERBont0pNu2YtiSGIon8hoHHzVDur9kHqgrp0n1gHhf0vA
+	i0lQfhw==
+X-Google-Smtp-Source: AGHT+IE8AvoOdg4HoJ39XtR7Ju366xu15Xs/lxrGtWzcB0GyotBFu+SxAx156O4/XuUxhfBVnfRu+AiVvCM=
+X-Received: from pfez19.prod.google.com ([2002:aa7:8893:0:b0:746:1fcb:a9cc])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:813:b0:736:35d4:f03f
+ with SMTP id d2e1a72fcca58-74ee09a9561mr24411992b3a.6.1752592239880; Tue, 15
+ Jul 2025 08:10:39 -0700 (PDT)
+Date: Tue, 15 Jul 2025 08:10:38 -0700
+In-Reply-To: <20250715091312.563773-1-xiaoyao.li@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-In-Reply-To: <CH8PR21MB5222CC6DCC81B272390F4ABECA54A@CH8PR21MB5222.namprd21.prod.outlook.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: LF2k1stHb3idXjlbIp3b4Lm_nmynnoWDVElNyCM2I6I_1752592031
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0
+References: <20250715091312.563773-1-xiaoyao.li@intel.com>
+Message-ID: <aHZvbok0tr7U4wf1@google.com>
+Subject: Re: [PATCH v3 0/4] TDX: Clean up the definitions of TDX TD ATTRIBUTES
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: "Kirill A. Shutemov" <kas@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Kai Huang <kai.huang@intel.com>, 
+	binbin.wu@linux.intel.com, yan.y.zhao@intel.com, reinette.chatre@intel.com, 
+	adrian.hunter@intel.com, tony.lindgren@intel.com
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Jul 14, 2025 at 04:18:11PM +0000, Jon Lange wrote:
-> > Huh?  I've assumed svsm protocols can work on TDX too.
+On Tue, Jul 15, 2025, Xiaoyao Li wrote:
+> Xiaoyao Li (4):
+>   x86/tdx: Fix the typo in TDX_ATTR_MIGRTABLE
+>   KVM: TDX: Remove redundant definitions of TDX_TD_ATTR_*
+>   x86/tdx: Rename TDX_ATTR_* to TDX_TD_ATTR_*
+>   KVM: TDX: Rename KVM_SUPPORTED_TD_ATTRS to KVM_SUPPORTED_TDX_TD_ATTRS
 > 
-> In the past, they have suggested that such a calling convention is not
-> needed, because the L1 can trap and emulate calls (including TDCALL
-> requests), but I think there is now an understanding that this is not
-> sufficient.  However, I am not aware of any active work to define any
-> type of L1/L2 calling convention.
+>  arch/x86/coco/tdx/debug.c         | 26 ++++++++--------
+>  arch/x86/coco/tdx/tdx.c           |  8 ++---
+>  arch/x86/include/asm/shared/tdx.h | 50 +++++++++++++++----------------
+>  arch/x86/kvm/vmx/tdx.c            |  4 +--
+>  arch/x86/kvm/vmx/tdx_arch.h       |  6 ----
+>  5 files changed, 44 insertions(+), 50 deletions(-)
 
-Ok, so unclear at this point in time what will happen here.
-
-> I also know that for this specific question (memory carveouts),
-> Intel's proposed direction was not to rely on an L1/L2 calling
-> convention, but instead to rely on having the L1 place tables into the
-> address space of OVMF before it begins execution.  This, of course,
-> would work equally well on SEV-SNP or any other model in which an
-> SVSM-type environment can execute before the guest firmware.
-
-Well, there is the TDX Virtual Firmware Design Guide:
-https://cdrdv2-public.intel.com/733585/tdx-virtual-firmware-design-guide-rev-004-20231206.pdf
-
-Section 4.2 "TD Hand-Off Block (HOB)" describes how information can be
-passed from VMM to the firmware.  It's about EFI firmware running on TDX
-directly, without SVSM, but I think the same should work for launching
-EFI firmware under SVSM.
-
-> I know that Intel began investigating this work but I don't know how
-> far it's gotten.
-
-This does NOT sound like Intel wants reuse the existing spec.  At the
-same time it is totally unclear if and when we get more clarity here
-from Intel.
-
-Hmm.
-
-I see the point in having only one implementation for this instead of
-implementing this again and again for each platform supported.  But
-waiting for Intel until we move forward doesn't look attractive either.
-
-take care,
-  Gerd
-
+Acked-by: Sean Christopherson <seanjc@google.com>
