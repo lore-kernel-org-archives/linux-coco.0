@@ -1,150 +1,119 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7692E2EF9
-	for <linux-coco@lists.linux.dev>; Tue, 15 Jul 2025 13:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3406C1E531
+	for <linux-coco@lists.linux.dev>; Tue, 15 Jul 2025 15:07:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585624; cv=none; b=GcQbi/c5ZEj8+ca4n2w34+UniDpEhtBbbHGUocW7T0isZf8MSDyEa6yYmDHpil9r7BSg/dgQaOpP9re6P5pvrZ5asc45zTeQBuM2vlZxybvD0uv3brbvzNloQmCsSBAThnaYbEeutgfL1fc3StaNigGNGW4fYIoLI6T44FhFx7A=
+	t=1752592040; cv=none; b=CekiwhZvJXa6MGRTWR3pFzakScxMQ5XVjiNXjNAv5IyZsizZQTK9E/AKWhvHLY4oouMt6wCF7nJLbAzlxDM6AxmZeDYSPz3KRGy9iPeDwlh7mochlrfPAMGFIM4RVlY52TDQLz01LXmoC9dzsfcj4GDSr9M9SueCegSqy1Xvb3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585624; c=relaxed/simple;
-	bh=VR+8NUW3mL4ffGA48bjJUkuulhr2EyhWFt/DyW2IpGM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Acx1S/j+0ZEJkNPAxKDKiWUJ2fNlYxa8GhDAcTq+JHp/vslgZItTeLAdC4jWi1I8dxp9R5x0bAe5sDDFT9Yt6+DA0SrZyLsWEE/Esb1uqyRUcELau4CYBb5hLCTrDVRcFHiB5yMRGOmTwcr+hIqO0+XqXwSdcVyA2rlxcnsbdT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oLvyxANo; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1752592040; c=relaxed/simple;
+	bh=OiUBPoY0DAHzw8d+KtYaNH0kSRUC/6fupZiFxFnHvY0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=AoswB3ludN6R1zyoEFtykgZicJyrhmTW9k8D/DZhzuYs2wlOQn1Vtrxnxac5xuMZwXdmbxdHLdm+oqMeJn0TsgyWdH9aKeGgPoGK9sHyi/q0foArDvnbrjNdcn0/4NQ/Ne4BYfloa58ZaK4jewCiYKjxSCdku7svZCch3u6bMv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cBanjYnh; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oLvyxANo"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-235e389599fso203185ad.0
-        for <linux-coco@lists.linux.dev>; Tue, 15 Jul 2025 06:20:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752585622; x=1753190422; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WlCJGXh+DOqyEfoBPhnw3kKyfxuvyf4oF8jquZF4T+0=;
-        b=oLvyxANoWTwxB9OEayBup6jqsGr9BYWFt5UG6aeIg8YBqes+rQf8tS1xghRVsiFuZF
-         QUPplfnSTWXqAl+Wrnt1Yrnb31sm9sNQtDA0MflEU3ElsHom81zDx9SuNnpwwMoU+ks9
-         kP8Sxo3tcvcNPx3ExfO0Eirj4sUCapjUhCQSUL8N4scdtVfz2UNDt7B+xbdRnvYXU+DR
-         CRX7CaNrWTHPVoIG8+gbHTvgx2FHgwY7aZ4sfLkm5sFRlUALYLaRFiorGQ9oCrS4gVmb
-         ks302rHBKG1Y63vILT1NeL3NI9g1CxH/RLY5W9a6bUXIGWL8hKfO7WFPtOYF+nIoJvoZ
-         l+ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752585622; x=1753190422;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WlCJGXh+DOqyEfoBPhnw3kKyfxuvyf4oF8jquZF4T+0=;
-        b=mD2opiZYfW2gjRMH+VvGEP6hibB4PPynZIyReAx1158EYr0ATnAOSR20aKH0YmzYkB
-         9DlLzX1cN3cpUKZSSSmI3DP8v4wApggTeomyNW3swPQn81udwZ1ZoUdBzXc4XWzJtvzv
-         6L3gB+SFeYOcVXVn2UAIw/4pvmp3sH3Dg0kFvkKCTcLV2qRdgwCXHIVpPLR07IKPQANW
-         eqjxHbjQA59D46soxoOb87p3GXN/sOg9Oa+95zoK7Icn2LZf69Ou7krye47E1/rENaHx
-         NHcj/pFOwsFwmG+3ECXA5c0IHPg8BkcmvC0KqSDhuZW3yj2POljivpLjJJA4TBZfGZLp
-         T2/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUVBh1Xaz69g7cIzUM11YETmg4XEpWRourVeI3HVnv5Nsk0g8+HE6td4nW/qxCkOQN3gbdhfYvEOoTM@lists.linux.dev
-X-Gm-Message-State: AOJu0YxcW9tIqWlTmXuHIFaarZ8+IcOAwxz2thvh3iX0CQUedFviuYqJ
-	oYRn3b51f0QPsBHAY+gDWQfR4NlKPXZywo+L2ZQgrukDDlSnQ3JeCEn+HB9jWYjmakoN+YyHXcL
-	xy12AjQHdibjvzOoLSPYCptqFEKQPrFcuLWXpgX2h
-X-Gm-Gg: ASbGncsd6mvh4Oa3T9OXX4Q2qiID/d4abGDq+amnB2nniA/dERUEkcny3byW+WTSyVQ
-	CwziGLUFMNkpWq4V6uhGVCKxqKeyspSMfPdvCBzGzsrNaP2cym89X5G3cSMzxoMMK98WXixGR3M
-	AVDd8tgw0Driw4O/MrOBTfADeSWHDJoFxBWP4f/XUeqmjKyBQP7cGyZgIuksEft6vf3ykfTD3f1
-	QDmpD9fzKkCPsUEHHouGNhYU5IIxXE6K+IgnfI=
-X-Google-Smtp-Source: AGHT+IFmDnj7+7K2+mnfOTNdR+Aw+YaytnwDDjpn3qAQ9yqrximLoYRf4l3rk/6s3TFG9z/SXMskhFKqUBehgiK3Wys=
-X-Received: by 2002:a17:902:e84a:b0:234:c37:85a with SMTP id
- d9443c01a7336-23e1ab85c7amr2901485ad.24.1752585621695; Tue, 15 Jul 2025
- 06:20:21 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cBanjYnh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1752592038;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5erOhrwI05E0mqSGdY2tucAmqc1QYuJmBFBxqV2fFFg=;
+	b=cBanjYnhsD8eVVyMfjrPOf+yVZzXHgaHbT5lg1LoMd9ibZE62IEdFyIp/CuQw4zq8Kjtdy
+	4eAj5dBKSLt1ibeF4wuiWK/F6h2NJju+Vw8mcZxVCrjcFj95oBPqoXKfLmZ7O8zbnEtTVa
+	CsX8wowAZ+p/GgOPXb67lkL1e5gbFD8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-140-m4OLDDQePseNx4oMVWhDKA-1; Tue,
+ 15 Jul 2025 11:07:13 -0400
+X-MC-Unique: m4OLDDQePseNx4oMVWhDKA-1
+X-Mimecast-MFC-AGG-ID: m4OLDDQePseNx4oMVWhDKA_1752592031
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D20041800245;
+	Tue, 15 Jul 2025 15:07:10 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.45.224.214])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 27F5E30001A1;
+	Tue, 15 Jul 2025 15:07:10 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+	id 6FE6A1801556; Tue, 15 Jul 2025 17:07:07 +0200 (CEST)
+Date: Tue, 15 Jul 2025 17:07:07 +0200
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Jon Lange <jlange@microsoft.com>
+Cc: "Relph, Richard" <richard.relph@amd.com>, 
+	=?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>, "coconut-svsm@lists.linux.dev" <coconut-svsm@lists.linux.dev>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Subject: Re: [EXTERNAL] Re: SVSM Development Call July 2nd, 2025
+Message-ID: <757kuxy36oqteplwd3kussc73w6lqeidbu2rxmzladj3kio7ei@jider3lbnthf>
+References: <4qbnbdno6hof3llfemhxc4prm7x2vzpqmvjknykelucpqhyryz@kbgpmaoy7vmz>
+ <4b862033-9c53-47ec-8eae-e9c9ce7d7d7d@amd.com>
+ <cvrqixqf3odaxgpz4uzwtkfkbmgbyrndzgyl7mhlbs6vj6fnpp@5aqnndt7rm6q>
+ <d579919f-6e66-4499-8634-e258af61c933@amd.com>
+ <aq6225hfazqsbqgx6fhj2klst52wdfivfa6xj2ost65sg5fq2r@4yoqnv2tp5nm>
+ <LV5PR21MB5210A051A344852EC30C089CCA48A@LV5PR21MB5210.namprd21.prod.outlook.com>
+ <auq7txxlerpwzl542o6rkjams22cy6rb2xoi3f7lbej6u47svi@rto2jldlvxyh>
+ <LV5PR21MB5210915F19D877E261E66ABACA4BA@LV5PR21MB5210.namprd21.prod.outlook.com>
+ <axljobcnpe6oct5v7edaocroajirywcft5z6lgtnoh3s6tj2r6@cux7zhrgbqnc>
+ <CH8PR21MB5222CC6DCC81B272390F4ABECA54A@CH8PR21MB5222.namprd21.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250613005400.3694904-1-michael.roth@amd.com> <20250613005400.3694904-4-michael.roth@amd.com>
-In-Reply-To: <20250613005400.3694904-4-michael.roth@amd.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Tue, 15 Jul 2025 06:20:09 -0700
-X-Gm-Features: Ac12FXw0-WaLjY8qLo4gIdV3Uj1d2qvRKcayg-mqAaNlcSi7aOXIlvsa9VQBB5w
-Message-ID: <CAGtprH9gtG0s9ZCRJXx_EkRzLnBcZdbjQcOYVP_g9PzKcbkVwA@mail.gmail.com>
-Subject: Re: [PATCH RFC v1 3/5] KVM: guest_memfd: Call arch invalidation hooks
- when converting to shared
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, david@redhat.com, tabba@google.com, 
-	ackerleytng@google.com, ira.weiny@intel.com, thomas.lendacky@amd.com, 
-	pbonzini@redhat.com, seanjc@google.com, vbabka@suse.cz, joro@8bytes.org, 
-	pratikrajesh.sampat@amd.com, liam.merwick@oracle.com, yan.y.zhao@intel.com, 
-	aik@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CH8PR21MB5222CC6DCC81B272390F4ABECA54A@CH8PR21MB5222.namprd21.prod.outlook.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: LF2k1stHb3idXjlbIp3b4Lm_nmynnoWDVElNyCM2I6I_1752592031
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Thu, Jun 12, 2025 at 5:56=E2=80=AFPM Michael Roth <michael.roth@amd.com>=
- wrote:
->
-> When guest_memfd is used for both shared/private memory, converting
-> pages to shared may require kvm_arch_gmem_invalidate() to be issued to
-> return the pages to an architecturally-defined "shared" state if the
-> pages were previously allocated and transitioned to a private state via
-> kvm_arch_gmem_prepare().
->
-> Handle this by issuing the appropriate kvm_arch_gmem_invalidate() calls
-> when converting ranges in the filemap to a shared state.
->
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> ---
->  virt/kvm/guest_memfd.c | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
->
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index b77cdccd340e..f27e1f3962bb 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -203,6 +203,28 @@ static int kvm_gmem_shareability_apply(struct inode =
-*inode,
->         struct maple_tree *mt;
->
->         mt =3D &kvm_gmem_private(inode)->shareability;
-> +
-> +       /*
-> +        * If a folio has been allocated then it was possibly in a privat=
-e
-> +        * state prior to conversion. Ensure arch invalidations are issue=
-d
-> +        * to return the folio to a normal/shared state as defined by the
-> +        * architecture before tracking it as shared in gmem.
-> +        */
-> +       if (m =3D=3D SHAREABILITY_ALL) {
-> +               pgoff_t idx;
-> +
-> +               for (idx =3D work->start; idx < work->start + work->nr_pa=
-ges; idx++) {
+On Mon, Jul 14, 2025 at 04:18:11PM +0000, Jon Lange wrote:
+> > Huh?  I've assumed svsm protocols can work on TDX too.
+> 
+> In the past, they have suggested that such a calling convention is not
+> needed, because the L1 can trap and emulate calls (including TDCALL
+> requests), but I think there is now an understanding that this is not
+> sufficient.  However, I am not aware of any active work to define any
+> type of L1/L2 calling convention.
 
-It is redundant to enter this loop for VM variants that don't need
-this loop e.g. for pKVM/TDX. I think KVM can dictate a set of rules
-(based on VM type) that guest_memfd will follow for memory management
-when it's created, e.g. something like:
-1) needs pfn invalidation
-2) needs zeroing on shared faults
-3) needs zeroing on allocation
+Ok, so unclear at this point in time what will happen here.
 
-> +                       struct folio *folio =3D filemap_lock_folio(inode-=
->i_mapping, idx);
-> +
-> +                       if (!IS_ERR(folio)) {
-> +                               kvm_arch_gmem_invalidate(folio_pfn(folio)=
-,
-> +                                                        folio_pfn(folio)=
- + folio_nr_pages(folio));
-> +                               folio_unlock(folio);
-> +                               folio_put(folio);
-> +                       }
-> +               }
-> +       }
-> +
->         return kvm_gmem_shareability_store(mt, work->start, work->nr_page=
-s, m);
->  }
->
-> --
-> 2.25.1
->
+> I also know that for this specific question (memory carveouts),
+> Intel's proposed direction was not to rely on an L1/L2 calling
+> convention, but instead to rely on having the L1 place tables into the
+> address space of OVMF before it begins execution.  This, of course,
+> would work equally well on SEV-SNP or any other model in which an
+> SVSM-type environment can execute before the guest firmware.
+
+Well, there is the TDX Virtual Firmware Design Guide:
+https://cdrdv2-public.intel.com/733585/tdx-virtual-firmware-design-guide-rev-004-20231206.pdf
+
+Section 4.2 "TD Hand-Off Block (HOB)" describes how information can be
+passed from VMM to the firmware.  It's about EFI firmware running on TDX
+directly, without SVSM, but I think the same should work for launching
+EFI firmware under SVSM.
+
+> I know that Intel began investigating this work but I don't know how
+> far it's gotten.
+
+This does NOT sound like Intel wants reuse the existing spec.  At the
+same time it is totally unclear if and when we get more clarity here
+from Intel.
+
+Hmm.
+
+I see the point in having only one implementation for this instead of
+implementing this again and again for each platform supported.  But
+waiting for Intel until we move forward doesn't look attractive either.
+
+take care,
+  Gerd
+
