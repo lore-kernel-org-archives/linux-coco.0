@@ -1,138 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBE63207;
-	Tue, 15 Jul 2025 00:21:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20050274B58
+	for <linux-coco@lists.linux.dev>; Tue, 15 Jul 2025 09:21:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752538908; cv=none; b=ggZ2nsbWSvSo3BaJhQiO+jGoTSab1iJdMBw8S/3A4gp3SHJVMlTgIYTW7cavPbcq92a+09f+aYTl0SZZ3ie04reJIfIZB0wv0q1t8TljxxnHBiwav2DfJ2uB/mXbNqfo8uyyNUTzC6opl8fo5gW2ChTUUxePVT4EFc6axWvB8uU=
+	t=1752571288; cv=none; b=QEnPXotfprDmbhuyFd9Hjk9ZLTgWmTl/dzJ/igxkZspNsTQ4I+us59YO0ewSF9g2Pte+Ab0jurj032hDsPYwTmVuGMv5DCCxgA7vBEWzUCG0JN86aSvLVmynDuhPKbEb9oqv0wTRbj+HLg4SWOI7feuyjBfgE6NbcyJC9tsf/U8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752538908; c=relaxed/simple;
-	bh=ZS6y3+YZOrPGOdLZpTQcp7s63vIuVeQB/7QkEQLYFOk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EsMs+i/yV9wJIIGdki15oOcXGALgrzBTeu07SSRJB10pEvpzU3sH4PJdsGgd54SsXIxH5TIJi45KOqRrmUTYDH1+WLWS7c+An+VPDiS1aOcSWpKIoqdCdyX4XB9D7CfSwYCWXw6NTn2q3g1RH21QaOeIDYRGKEsfdXmgGRFYsHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AFV8rqaA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752571288; c=relaxed/simple;
+	bh=NunjY/ejf2tMjN3S6lPzJGqxKykBxqbGhL/h+mQFzrg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iL+NDQ2L/7bhqSE/x+NM9gEzsrksTWlMchmhvUpw3JH0VUQLT898GY158xeXzC7jPmAtg6TjqoMdsUvz+nwAznE+HJEVUWqBb7B0Yd0KlPrXzJcnlxNfCbOGTIe5Dp5T1jr14OTyF9njwaTYC7QMbFNsdjFAAXDN0KT1SnTzPnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BhMwfBf0; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AFV8rqaA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48CDDC4CEED;
-	Tue, 15 Jul 2025 00:21:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752538908;
-	bh=ZS6y3+YZOrPGOdLZpTQcp7s63vIuVeQB/7QkEQLYFOk=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=AFV8rqaAoLjVxEuVlCUFYMLsiU1h9Va8CTIxgUvsHGrpgjCxjznNo9asxXAPIyxNp
-	 EJ9lSSpP1a2yzn/SoGXXgsK4lzWhgMAaZ2lQz0OOrYenU59HkO0Ke61jHyJIdNATFh
-	 EE3YpdPSBaf71QV2aGF75WGL6Rny8A+hwXpbNVaYABc4djiMYwF8vpQVCQcHVrU452
-	 mxaq42IdqV008WfsmPYwpkhJX4YCwjz+Ef/76maqb0MobzUj+q6IuDklEHvR9WRHEz
-	 VA1jPsoh5fFWFPS0M8YoHP7MXu+AoGkEPTw/HrKLSkhcgWAW04fXYzR98SSt7w20eR
-	 wttPzui8HE3Uw==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id E7180CE0BAF; Mon, 14 Jul 2025 17:21:47 -0700 (PDT)
-Date: Mon, 14 Jul 2025 17:21:47 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-coco@lists.linux.dev, x86@kernel.org, kvm@vger.kernel.org,
-	seanjc@google.com, pbonzini@redhat.com, eddie.dong@intel.com,
-	kirill.shutemov@intel.com, dave.hansen@intel.com,
-	dan.j.williams@intel.com, kai.huang@intel.com,
-	isaku.yamahata@intel.com, elena.reshetova@intel.com,
-	rick.p.edgecombe@intel.com, Borislav Petkov <bp@alien8.de>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BhMwfBf0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752571286; x=1784107286;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=NunjY/ejf2tMjN3S6lPzJGqxKykBxqbGhL/h+mQFzrg=;
+  b=BhMwfBf05eRY17LyAx3G2dczfb+qfppL7XZoTkgzuvCYMpWZnoyBhxlV
+   EwrNO4A/nlrjY+cwdYrNdJi79dmh6OXRiQNgCh6LmhImUQs/TDdQA3dXT
+   thsHCk4fIk0McQLE2vCiRhm2AA0sCP8krmGJIFzqZ2Gh56l/v7zOf+pLv
+   Y/9AqWXmZ3HflmQyHFAcXzeifSw/ZP9yttFElIar90oD/R9f8FQKylAlp
+   9Uyx+y2B17HDajVcpymMQ2jgjMcFS9apBHqm9wOEbbZNjrjtFCQG1u1Ov
+   2WQU7dOiV6bj+TbXJnLgg4G73f2FRWRX7Z+/djKRXFaGlDNcHAfybMvs7
+   w==;
+X-CSE-ConnectionGUID: axduI074SdaD814VSDi2/w==
+X-CSE-MsgGUID: Jgxhv2NKR8KCrE3Ce1pXEg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="54003313"
+X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; 
+   d="scan'208";a="54003313"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2025 02:21:25 -0700
+X-CSE-ConnectionGUID: /3fAQin6R2iX2phJy2GJOg==
+X-CSE-MsgGUID: sBisKdXmR3St1I0hpFd4MQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; 
+   d="scan'208";a="188183672"
+Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
+  by fmviesa001.fm.intel.com with ESMTP; 15 Jul 2025 02:21:21 -0700
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+To: "Kirill A. Shutemov" <kas@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [RFC PATCH 00/20] TD-Preserving updates
-Message-ID: <a7affba9-0cea-4493-b868-392158b59d83@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20250523095322.88774-1-chao.gao@intel.com>
- <aHDFoIvB5+33blGp@intel.com>
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	x86@kernel.org,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	binbin.wu@linux.intel.com,
+	yan.y.zhao@intel.com,
+	reinette.chatre@intel.com,
+	adrian.hunter@intel.com,
+	tony.lindgren@intel.com,
+	xiaoyao.li@intel.com
+Subject: [PATCH v3 0/4] TDX: Clean up the definitions of TDX TD ATTRIBUTES
+Date: Tue, 15 Jul 2025 17:13:08 +0800
+Message-ID: <20250715091312.563773-1-xiaoyao.li@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aHDFoIvB5+33blGp@intel.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jul 11, 2025 at 04:04:48PM +0800, Chao Gao wrote:
-> On Fri, May 23, 2025 at 02:52:23AM -0700, Chao Gao wrote:
-> >Hi Reviewers,
-> >
-> >This series adds support for runtime TDX module updates that preserve
-> >running TDX guests (a.k.a, TD-Preserving updates). The goal is to gather
-> >feedback on the feature design. Please pay attention to the following items:
-> >
-> >1. TD-Preserving updates are done in stop_machine() context. it copy-pastes
-> >   part of multi_cpu_stop() to guarantee step-locked progress on all CPUs.
-> >   But, there are a few differences between them. I am wondering whether
-> >   these differences have reached a point where abstracting a common
-> >   function might do more harm than good. See more details in patch 10.
+The main purpose of this series was to remove redundant macros between
+core TDX and KVM, along with a typo fix. They were implemented as patch1
+and patch2.
 
-Please note that multi_cpu_stop() is used by a number of functions,
-so it is a good example of common code.  But you are within your rights
-to create your own function to pass to stop_machine(), and quite a
-few call sites do just that.  Most of them expect this function to be
-executed on only one CPU, but these run on multiple CPUs:
+During the review of v1 and v2, there was encouragement to refine the
+names of the macros related to TD attributes to clarify their scope.
+Thus patch3 and patch 4 are added.
 
-o	__apply_alternatives_multi_stop(), which has CPU 0 do the
-	work and the rest wati on it.
+Discussion details can be found in previrous versions.
 
-o	cpu_enable_non_boot_scope_capabilities(), which works on
-	a per-CPU basis.
 
-o	do_join(), which is similar to your do_seamldr_install_module().
-	Somewhat similar, anyway.
+Changes in v3:
+ - use the changelog provided by Rick for patch 1;
+ - collect Reviewed-by on patch 4;
+ - Add patch 3;
 
-o	__ftrace_modify_code(), of which there are several, some of
-	which have some vague resemblance to your code.
+v2: https://lore.kernel.org/all/20250711132620.262334-1-xiaoyao.li@intel.com/
+Changes in v2:
+ - collect Reviewed-by;
+ - Explains the impact of the change in patch 1 changelog;
+ - Add patch 3.
 
-o	cache_rendezvous_handler(), which works on a per-CPU basis.
+v1: https://lore.kernel.org/all/20250708080314.43081-1-xiaoyao.li@intel.com/ 
 
-o	panic_stop_irqoff_fn(), which is a simple barrier-wait, with
-	the last CPU to arrive doing the work.
+Xiaoyao Li (4):
+  x86/tdx: Fix the typo in TDX_ATTR_MIGRTABLE
+  KVM: TDX: Remove redundant definitions of TDX_TD_ATTR_*
+  x86/tdx: Rename TDX_ATTR_* to TDX_TD_ATTR_*
+  KVM: TDX: Rename KVM_SUPPORTED_TD_ATTRS to KVM_SUPPORTED_TDX_TD_ATTRS
 
-I strongly recommend looking at these functions.  They might
-suggest an improved way to do what you are trying to accomplish with
-do_seamldr_install_module().
+ arch/x86/coco/tdx/debug.c         | 26 ++++++++--------
+ arch/x86/coco/tdx/tdx.c           |  8 ++---
+ arch/x86/include/asm/shared/tdx.h | 50 +++++++++++++++----------------
+ arch/x86/kvm/vmx/tdx.c            |  4 +--
+ arch/x86/kvm/vmx/tdx_arch.h       |  6 ----
+ 5 files changed, 44 insertions(+), 50 deletions(-)
 
-> >2. P-SEAMLDR seamcalls (specificially SEAMRET from P-SEAMLDR) clear current
-> >   VMCS pointers, which may disrupt KVM. To prevent VMX instructions in IRQ
-> >   context from encountering NULL current-VMCS pointers, P-SEAMLDR
-> >   seamcalls are called with IRQ disabled. I'm uncertain if NMIs could
-> >   cause a problem, but I believe they won't. See more information in patch 3.
-> >
-> >3. Two helpers, cpu_vmcs_load() and cpu_vmcs_store(), are added in patch 3
-> >   to save and restore the current VMCS. KVM has a variant of cpu_vmcs_load(),
-> >   i.e., vmcs_load(). Extracting KVM's version would cause a lot of code
-> >   churn, and I don't think that can be justified for reducing ~16 LoC
-> >   duplication. Please let me know if you disagree.
-> 
-> Gentle ping!
+-- 
+2.43.0
 
-I do not believe that I was CCed on the original.  Just in case you
-were wondering why I did not respond.  ;-)
-
-> There are three open issues: one regarding stop_machine() and two related to
-> interactions with KVM.
-> 
-> Sean and Paul, do you have any preferences or insights on these matters?
-
-Again, you are within your rights to create a new function and pass
-it to stop_machine().  But it seems quite likely that there is a much
-simpler way to get your job done.
-
-Either way, please add a header comment stating what your function
-is trying to do, which appears to be to wait for all CPUs to enter
-do_seamldr_install_module() and then just leave?  Sort of like
-multi_cpu_stop(), except leaving interrupts enabled and not executing a
-"msdata->fn(msdata->data);", correct?
-
-If so, something like panic_stop_irqoff_fn() might be a simpler model,
-perhaps with the touch_nmi_watchdog() and rcu_momentary_eqs() added.
-
-Oh, and one bug:  You must have interrupts disabled when you call
-rcu_momentary_eqs().  Please fix this.
-
-							Thanx, Paul
