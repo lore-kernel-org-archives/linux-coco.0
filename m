@@ -1,259 +1,122 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309E117CA1B;
-	Tue, 15 Jul 2025 12:47:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A371C860A
+	for <linux-coco@lists.linux.dev>; Tue, 15 Jul 2025 12:47:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752583640; cv=none; b=iYp6UcYiq+dK9kYiOn5Oe0L7SpNk2FpafFj+7RNuvjndMNAppifCch8MIVU8lZZOeJ6FcCycWRgUPu2LyQ4rHZUbDBwpkFSc+hLSacjvzPeE2VK6JpxG55JwkuzMHQ+NshPxgQiRYHTWyng0Rjwg7O6GHgcKQXzIZ3v7U7H/CZ4=
+	t=1752583667; cv=none; b=AXPoiY8kuLk370rWn56mLGdqR3jjWmT16bJuBCowFNz5G5XKbGITDvSBLCMDmw5sgLhBscLFOqqMDxgNPD4Lj273Oo1Ad/RfJR1uAQlujm/+W/QFZe0jYnI1F9yP9E7uff8WGQ7w4qEcNKKchJbFkUTiUlGAGIdUyLOOOlzhzbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752583640; c=relaxed/simple;
-	bh=hBc8ff8HOQ5UtD+3Cw+/ByuYTKjMsXhHB0AAQYZuPe4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R3PDOpX9SyJyL5KQovNBpsj2Wri1q0UdThiRAe8Kj+WlX3aJmJ4Id/uO1tJ75MyJhZB02V24ihMuwBuI8ohnkwqj5LgThDw4slfNf/7Qh/Q6JV7qPxdMhnEJ4+vEaDqilEOOwHiJMth1XJuIIqBsYhhMdPJOjhBXn0GrVNpbG/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A8DsgzeJ; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1752583667; c=relaxed/simple;
+	bh=KYR+8WGWnfv9Y8T8MKK6057v1ckaI5RFw4T5Nl9bG3Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=G7LjRowAm58hKrvITAAU3C0cy+/eTwvkrKctzHledxam5ot1r0ZoVxJpuzjiYQVK9jLorDN0LYQCJXO0vcpu81H6MH1f14FB83M41iqF88TSrFYtZs20ygiLdwr/ABGZS8BRO/tjH3UUrWl6zbX8aXLyKGXkCEdyf4Gt0fbjDvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H0jDEVeE; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A8DsgzeJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752583638; x=1784119638;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=hBc8ff8HOQ5UtD+3Cw+/ByuYTKjMsXhHB0AAQYZuPe4=;
-  b=A8DsgzeJBfEQL9TROeGYq2DYocwOJhc/OulZfu9PSj25h+6cA45s3Se+
-   ynD4N3Vcd6wUMgv0tiJGXYpghZNJsmpgCFZ8rMqfzGzKxFq0KSEzQT/GB
-   apSX9tQZWu2tqtRQ3kBCLnuM5WCPwT8kTnmHNaaLm+W99kapjdr6OlKEA
-   4SmGmVDkN5F7WdDFJvNy4NArM9luJ6hnRx6FmZNShCI++wM2FzQRUhQC2
-   pmEb4ma0m9rI3uFuK08Ffa6JPrnl21vkpBbZ8SldTXJ34sLX9liWfuNjC
-   hdvLFfmKVInb0kMa3HSPuDfVZfYzuACxbhhMVEnNUZlkytxWkmIfv1hA0
-   A==;
-X-CSE-ConnectionGUID: 05raMbMXSzmbkHtVMrKI9A==
-X-CSE-MsgGUID: O8ZufkwTThSJQSCY+07wDQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="72377314"
-X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; 
-   d="scan'208";a="72377314"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2025 05:47:18 -0700
-X-CSE-ConnectionGUID: bTOmUedsQVaNXje9djikHw==
-X-CSE-MsgGUID: 2WRmLjLCTWe8cqpsnxua1A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; 
-   d="scan'208";a="157721361"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 15 Jul 2025 05:47:10 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ubf3s-000A49-0j;
-	Tue, 15 Jul 2025 12:47:08 +0000
-Date: Tue, 15 Jul 2025 20:46:31 +0800
-From: kernel test robot <lkp@intel.com>
-To: Roman Kisel <romank@linux.microsoft.com>, alok.a.tiwari@oracle.com,
-	arnd@arndb.de, bp@alien8.de, corbet@lwn.net,
-	dave.hansen@linux.intel.com, decui@microsoft.com,
-	haiyangz@microsoft.com, hpa@zytor.com, kys@microsoft.com,
-	mhklinux@outlook.com, mingo@redhat.com, rdunlap@infradead.org,
-	tglx@linutronix.de, Tianyu.Lan@microsoft.com, wei.liu@kernel.org,
-	linux-arch@vger.kernel.org, linux-coco@lists.linux.dev,
-	linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org, x86@kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	apais@microsoft.com, benhill@microsoft.com, bperkins@microsoft.com,
-	sunilmut@microsoft.com
-Subject: Re: [PATCH hyperv-next v4 03/16] arch: hyperv: Get/set SynIC
- synth.registers via paravisor
-Message-ID: <202507152017.8UNXIbRJ-lkp@intel.com>
-References: <20250714221545.5615-4-romank@linux.microsoft.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H0jDEVeE"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2357c61cda7so118955ad.1
+        for <linux-coco@lists.linux.dev>; Tue, 15 Jul 2025 05:47:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1752583664; x=1753188464; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Aj7ubsCPwZOZJpEqxVz8TbpdGSsesLgcauIRtiEwO7k=;
+        b=H0jDEVeEzP4pn2pokvomCUpvHeyGrtJ6IcNjVtR6OwJNnEcHzVF5gbFjeXLgBFMQmi
+         3oLNYQioLVygBEupDGpq1t73p98EyEkDF8oUw/bNu9q1N2Czbdqon6+ggRKYJEudjceM
+         ei4EEnDl4gPy6QN5SMSyBTfgprCAI4v45KQNGwoXNoNy1IxwERnpPWjN/Ry0qiKoRL1u
+         Hg27BI6eiVbXdYa90ps6If/J5kNIH8Jy85et6RC5G4TnZJlMebD9XcypIpxo+1WIxmme
+         XUmUloo+p6ibXD6pKHdazNHGlDmr8CU4D25HogQuo8nlBepZKC46kHS8Ic9hORWqmva1
+         HHZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752583664; x=1753188464;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Aj7ubsCPwZOZJpEqxVz8TbpdGSsesLgcauIRtiEwO7k=;
+        b=TK9F2km9OlJbaMvY7xVTKRe4QdgR4AJHChmR6/jz7ZMxvLjgZ50Fiwp5NcoxZSenJ/
+         kVDOIdpTM7yFriKkw0mB9FqBvJHJL9cIjWmzti/phHBBmW5RzFZyIIw6U1dELMNRFu6M
+         qFSPqpEO0+L591nf3W+WTs7ABI1Lp1r4YzeKfbIbPP7f2pQiSXgl4mLCqTeR5VtjXoIR
+         vLIK0GkEoldkNycW9lj516hP/BvJgE/mjAiwISSesqvSJSMpvfokJiflF7YY40mXrEvH
+         82zRVYsLXQZM5VtgK8GuIZzdSJfnrVHer02lb3JH3qg6ZI08Uz5TSrco90QKDIvmFNoR
+         E5Jw==
+X-Forwarded-Encrypted: i=1; AJvYcCXQM3BC8raMw6EC8R97adhEIK1PvrcMVQTuuT96p23STo9ZlJlpRQmQd0NwrB3NTjib+8rX7orBMpS3@lists.linux.dev
+X-Gm-Message-State: AOJu0YxzjFCfD7/VkwBevet846pfAMhLqHmPDXrpw15g9/6NYUwbwtzz
+	wllfnJ+PH+jwwpfcfwJPCBUg0U6ArcQgdsOeW+juVmPmXZkfmFypSN1Tn8hS6LXN4X8QuBDU1xt
+	aXi9d2Z2PhGmzi9J2m1T2rn0h5rR0yZ/pPJ5MnXGq
+X-Gm-Gg: ASbGncu8i+xltSTeWHNbUVmjJGsU/oXA6fG9tgq3oj36XFetHv9s+OzzkTguXk1vTlz
+	U09q8Cl/GRxjXxXZ3zfbUaPn5nWI/sHghEeGZJMKTLDi0A8LNfvaBOkeVcY3ZwNJwG38v0+jxqF
+	pCs9kKQneK68camauUHWBizEa2DXaTcYUmazlzTJn7dg5KHqGtceFI9CYKn3q1awiWBuC6X45Mz
+	1vFIdMqDZk8096YIEPIPIXQJYsuA6q8H+gUD0o=
+X-Google-Smtp-Source: AGHT+IH6FhoFqjhts9hPrxy/0Fq8QGuoieFjS6j7sof9NlS1UqMiOBs9T+m5042HRhsk8TgMmcHFmjT0Kfqpm1cbk+Q=
+X-Received: by 2002:a17:903:185:b0:234:9f02:e937 with SMTP id
+ d9443c01a7336-23e1b55fab4mr2002615ad.25.1752583664056; Tue, 15 Jul 2025
+ 05:47:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250714221545.5615-4-romank@linux.microsoft.com>
+References: <20250613005400.3694904-1-michael.roth@amd.com> <20250613005400.3694904-2-michael.roth@amd.com>
+In-Reply-To: <20250613005400.3694904-2-michael.roth@amd.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Tue, 15 Jul 2025 05:47:31 -0700
+X-Gm-Features: Ac12FXzMu1OlGDkOTawp9sA6enrjnahYfgISzdZFft1Fez6ANKUKFtOIvoCuXnQ
+Message-ID: <CAGtprH-vSjkNyQkdqjgnqkK7w0CM2CbewxTwq0XBOXkE8C1WvA@mail.gmail.com>
+Subject: Re: [PATCH RFC v1 1/5] KVM: guest_memfd: Remove preparation tracking
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, david@redhat.com, tabba@google.com, 
+	ackerleytng@google.com, ira.weiny@intel.com, thomas.lendacky@amd.com, 
+	pbonzini@redhat.com, seanjc@google.com, vbabka@suse.cz, joro@8bytes.org, 
+	pratikrajesh.sampat@amd.com, liam.merwick@oracle.com, yan.y.zhao@intel.com, 
+	aik@amd.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Roman,
+On Thu, Jun 12, 2025 at 5:55=E2=80=AFPM Michael Roth <michael.roth@amd.com>=
+ wrote:
+>
+> guest_memfd currently uses the folio uptodate flag to track:
+>
+>   1) whether or not a page had been cleared before initial usage
+>   2) whether or not the architecture hooks have been issued to put the
+>      page in a private state as defined by the architecture
+>
+> In practice, 2) is only actually being tracked for SEV-SNP VMs, and
+> there do not seem to be any plans/reasons that would suggest this will
+> change in the future, so this additional tracking/complexity is not
+> really providing any general benefit to guest_memfd users. Future plans
+> around in-place conversion and hugepage support, where the per-folio
+> uptodate flag is planned to be used purely to track the initial clearing
+> of folios, whereas conversion operations could trigger multiple
+> transitions between 'prepared' and 'unprepared' and thus need separate
+> tracking, will make the burden of tracking this information within
+> guest_memfd even more complex, since preparation generally happens
+> during fault time, on the "read-side" of any global locks that might
+> protect state tracked by guest_memfd, and so may require more complex
+> locking schemes to allow for concurrent handling of page faults for
+> multiple vCPUs where the "preparedness" state tracked by guest_memfd
+> might need to be updated as part of handling the fault.
+>
+> Instead of keeping this current/future complexity within guest_memfd for
+> what is essentially just SEV-SNP, just drop the tracking for 2) and have
+> the arch-specific preparation hooks get triggered unconditionally on
+> every fault so the arch-specific hooks can check the preparation state
+> directly and decide whether or not a folio still needs additional
+> preparation. In the case of SEV-SNP, the preparation state is already
+> checked again via the preparation hooks to avoid double-preparation, so
+> nothing extra needs to be done to update the handling of things there.
+>
 
-kernel test robot noticed the following build errors:
+I believe this patch doesn't need to depend on stage1/stage2 and can
+be sent directly for review on kvm tip, is that right?
 
-[auto build test ERROR on d9016a249be5316ec2476f9947356711e70a16ec]
+This update paired with zeroing modifications[1] will make uptodate
+flag redundant for guest_memfd memory.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Roman-Kisel/Documentation-hyperv-Confidential-VMBus/20250715-062125
-base:   d9016a249be5316ec2476f9947356711e70a16ec
-patch link:    https://lore.kernel.org/r/20250714221545.5615-4-romank%40linux.microsoft.com
-patch subject: [PATCH hyperv-next v4 03/16] arch: hyperv: Get/set SynIC synth.registers via paravisor
-config: i386-buildonly-randconfig-005-20250715 (https://download.01.org/0day-ci/archive/20250715/202507152017.8UNXIbRJ-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250715/202507152017.8UNXIbRJ-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507152017.8UNXIbRJ-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from arch/x86/kvm/vmx/main.c:5:
-   In file included from arch/x86/kvm/vmx/vmx.h:16:
-   In file included from arch/x86/kvm/vmx/vmx_ops.h:9:
-   In file included from arch/x86/kvm/vmx/vmx_onhyperv.h:7:
-   In file included from arch/x86/include/asm/mshyperv.h:345:
->> include/asm-generic/mshyperv.h:377:4: error: call to undeclared function 'hv_para_set_synic_register'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     377 |                         hv_para_set_synic_register(HV_MSR_EOM, 0);
-         |                         ^
-   1 error generated.
---
-   In file included from arch/x86/kvm/svm/hyperv.c:7:
-   In file included from arch/x86/kvm/svm/hyperv.h:9:
-   In file included from arch/x86/include/asm/mshyperv.h:345:
->> include/asm-generic/mshyperv.h:377:4: error: call to undeclared function 'hv_para_set_synic_register'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     377 |                         hv_para_set_synic_register(HV_MSR_EOM, 0);
-         |                         ^
-   In file included from arch/x86/kvm/svm/hyperv.c:7:
-   In file included from arch/x86/kvm/svm/hyperv.h:11:
-   In file included from arch/x86/kvm/svm/../hyperv.h:24:
-   In file included from include/linux/kvm_host.h:11:
-   include/linux/signal.h:98:11: warning: array index 3 is past the end of the array (that has type 'unsigned long[2]') [-Warray-bounds]
-      98 |                 return (set->sig[3] | set->sig[2] |
-         |                         ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/x86/kvm/svm/hyperv.c:7:
-   In file included from arch/x86/kvm/svm/hyperv.h:11:
-   In file included from arch/x86/kvm/svm/../hyperv.h:24:
-   In file included from include/linux/kvm_host.h:11:
-   include/linux/signal.h:98:25: warning: array index 2 is past the end of the array (that has type 'unsigned long[2]') [-Warray-bounds]
-      98 |                 return (set->sig[3] | set->sig[2] |
-         |                                       ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/x86/kvm/svm/hyperv.c:7:
-   In file included from arch/x86/kvm/svm/hyperv.h:11:
-   In file included from arch/x86/kvm/svm/../hyperv.h:24:
-   In file included from include/linux/kvm_host.h:11:
-   include/linux/signal.h:114:11: warning: array index 3 is past the end of the array (that has type 'const unsigned long[2]') [-Warray-bounds]
-     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
-         |                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/x86/kvm/svm/hyperv.c:7:
-   In file included from arch/x86/kvm/svm/hyperv.h:11:
-   In file included from arch/x86/kvm/svm/../hyperv.h:24:
-   In file included from include/linux/kvm_host.h:11:
-   include/linux/signal.h:114:27: warning: array index 3 is past the end of the array (that has type 'const unsigned long[2]') [-Warray-bounds]
-     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
-         |                                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/x86/kvm/svm/hyperv.c:7:
-   In file included from arch/x86/kvm/svm/hyperv.h:11:
-   In file included from arch/x86/kvm/svm/../hyperv.h:24:
-   In file included from include/linux/kvm_host.h:11:
-   include/linux/signal.h:115:5: warning: array index 2 is past the end of the array (that has type 'const unsigned long[2]') [-Warray-bounds]
-     115 |                         (set1->sig[2] == set2->sig[2]) &&
-         |                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/x86/kvm/svm/hyperv.c:7:
-   In file included from arch/x86/kvm/svm/hyperv.h:11:
-   In file included from arch/x86/kvm/svm/../hyperv.h:24:
-   In file included from include/linux/kvm_host.h:11:
-   include/linux/signal.h:115:21: warning: array index 2 is past the end of the array (that has type 'const unsigned long[2]') [-Warray-bounds]
-     115 |                         (set1->sig[2] == set2->sig[2]) &&
-         |                                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/x86/kvm/svm/hyperv.c:7:
-   In file included from arch/x86/kvm/svm/hyperv.h:11:
-   In file included from arch/x86/kvm/svm/../hyperv.h:24:
-   In file included from include/linux/kvm_host.h:11:
-   include/linux/signal.h:157:1: warning: array index 3 is past the end of the array (that has type 'const unsigned long[2]') [-Warray-bounds]
-     157 | _SIG_SET_BINOP(sigorsets, _sig_or)
-         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/signal.h:138:8: note: expanded from macro '_SIG_SET_BINOP'
-     138 |                 a3 = a->sig[3]; a2 = a->sig[2];                         \
-         |                      ^      ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/x86/kvm/svm/hyperv.c:7:
-   In file included from arch/x86/kvm/svm/hyperv.h:11:
-   In file included from arch/x86/kvm/svm/../hyperv.h:24:
-   In file included from include/linux/kvm_host.h:11:
-   include/linux/signal.h:157:1: warning: array index 2 is past the end of the array (that has type 'const unsigned long[2]') [-Warray-bounds]
-     157 | _SIG_SET_BINOP(sigorsets, _sig_or)
-         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/signal.h:138:24: note: expanded from macro '_SIG_SET_BINOP'
-     138 |                 a3 = a->sig[3]; a2 = a->sig[2];                         \
-         |                                      ^      ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/x86/kvm/svm/hyperv.c:7:
-   In file included from arch/x86/kvm/svm/hyperv.h:11:
-   In file included from arch/x86/kvm/svm/../hyperv.h:24:
-   In file included from include/linux/kvm_host.h:11:
-   include/linux/signal.h:157:1: warning: array index 3 is past the end of the array (that has type 'const unsigned long[2]') [-Warray-bounds]
-     157 | _SIG_SET_BINOP(sigorsets, _sig_or)
-         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/signal.h:139:8: note: expanded from macro '_SIG_SET_BINOP'
-     139 |                 b3 = b->sig[3]; b2 = b->sig[2];                         \
-         |                      ^      ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-
-
-vim +/hv_para_set_synic_register +377 include/asm-generic/mshyperv.h
-
-   344	
-   345	/* Free the message slot and signal end-of-message if required */
-   346	static inline void vmbus_signal_eom(struct hv_message *msg, u32 old_msg_type)
-   347	{
-   348		/*
-   349		 * On crash we're reading some other CPU's message page and we need
-   350		 * to be careful: this other CPU may already had cleared the header
-   351		 * and the host may already had delivered some other message there.
-   352		 * In case we blindly write msg->header.message_type we're going
-   353		 * to lose it. We can still lose a message of the same type but
-   354		 * we count on the fact that there can only be one
-   355		 * CHANNELMSG_UNLOAD_RESPONSE and we don't care about other messages
-   356		 * on crash.
-   357		 */
-   358		if (cmpxchg(&msg->header.message_type, old_msg_type,
-   359			    HVMSG_NONE) != old_msg_type)
-   360			return;
-   361	
-   362		/*
-   363		 * The cmxchg() above does an implicit memory barrier to
-   364		 * ensure the write to MessageType (ie set to
-   365		 * HVMSG_NONE) happens before we read the
-   366		 * MessagePending and EOMing. Otherwise, the EOMing
-   367		 * will not deliver any more messages since there is
-   368		 * no empty slot
-   369		 */
-   370		if (msg->header.message_flags.msg_pending) {
-   371			/*
-   372			 * This will cause message queue rescan to
-   373			 * possibly deliver another msg from the
-   374			 * hypervisor
-   375			 */
-   376			if (vmbus_is_confidential())
- > 377				hv_para_set_synic_register(HV_MSR_EOM, 0);
-   378			else
-   379				hv_set_msr(HV_MSR_EOM, 0);
-   380		}
-   381	}
-   382	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+[1] https://lore.kernel.org/lkml/CAGtprH-+gPN8J_RaEit=3DM_ErHWTmFHeCipC6viT=
+6PHhG3ELg6A@mail.gmail.com/
