@@ -1,112 +1,99 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7AF26E6F8
-	for <linux-coco@lists.linux.dev>; Tue, 15 Jul 2025 10:38:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEC624167B;
+	Tue, 15 Jul 2025 11:10:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752575896; cv=none; b=SP3WRq659tyDwzqm3C4ye8a7DzMWhWOmtkkEHJCTpj5kGFVglU4CxJcGa+YY3v41VrerJot3Vts4jg7rim6A4PiI9/1ZxZcl/l8zik1FyjPMea58On35QQqylGM1PgYN3PchIy5zWrhmfz89Z0ouYjNHG4N7Iw3FQYy2v9UhYg4=
+	t=1752577804; cv=none; b=iX7kUstoMNIRNZMLmV/w7lyayFfbgo45IbezviYe5nFtzlhqaMgN9MoGPl/78JcYl2B9z26IOz2IONMtABDwBIht57gQ4iKmxrr8PxrtC5M2fzhWnbhFXmXDhg0hMztsFiJ1x+S00BBla7TIRtIjP7vB6/YxKLA+Vp2BuSIxeXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752575896; c=relaxed/simple;
-	bh=GuOQRpiFUwJLFuIAuZc3FqEERf+Z15BAE2nEQU3m7wg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cKzleCSxlkDkzDWcDQSjQUJIRvNgRkZLdyLHauqZPBPvqsnHHmOb96k6VDihWWogZLelrB750w3h+jRq19ed19hWpMPCRPiz8XYfmCHzcB67PWJUbXVu0hhCMI0Wf6wHhuo9Pbs+MleMp9UKlQrL6r5gJTtRL49zd5BNaiUcXzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TyI91Rqt; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TyI91Rqt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752575894; x=1784111894;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=GuOQRpiFUwJLFuIAuZc3FqEERf+Z15BAE2nEQU3m7wg=;
-  b=TyI91RqtJbhNFo6xfSgdWMKc8I2Sq1It9rBmeMjqw+hcSdqgtaPtX170
-   AXiSqqDfGt2fp2oPLBxb6Qy391fcPZYIfxJdPA8kpvj04N7c6Ziog4OVM
-   S1sOMAQSzMETvLwSQm2rEcjEGQ2uxy2a7LOCS01ZR6sWt448S0wgAHNQs
-   lwtDMHLozWVwcnHQiTGacaE4vmhG+ZE3QOiHtNDnkuWHne7HbJwD/brlY
-   TpBzx0U5fifUAiCCcbvWnTQP2mUfuJC8tkfkeTZ/q+/l77Gt5cmB3q7ff
-   AeXjH/BkaLeEx7f6Ucl/CrAOAK2WtZgK3UX7O6vfv0ElXwGCXpnJb9N/z
-   A==;
-X-CSE-ConnectionGUID: HA3XcgbYS0qIn1GDsdeqSQ==
-X-CSE-MsgGUID: m/UsmIUtShO8ca4afQr+3w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11491"; a="65050877"
-X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; 
-   d="scan'208";a="65050877"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2025 03:38:14 -0700
-X-CSE-ConnectionGUID: sJ3tL2NDR76DI4DvhDehsg==
-X-CSE-MsgGUID: bI7I/AH7Q2Swr4OirwzRpg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,313,1744095600"; 
-   d="scan'208";a="156597919"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa006.jf.intel.com with ESMTP; 15 Jul 2025 03:38:11 -0700
-Date: Tue, 15 Jul 2025 18:29:35 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
-	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
-	jgg@nvidia.com, zhiw@nvidia.com
-Subject: Re: [RFC PATCH 3/3] iommufd/tsm: Add tsm_bind/unbind iommufd ioctls
-Message-ID: <aHYtj/jyfXD4XhZy@yilunxu-OptiPlex-7050>
-References: <yq5a5xhj5yng.fsf@kernel.org>
- <20250529133757.462088-1-aneesh.kumar@kernel.org>
- <20250529133757.462088-3-aneesh.kumar@kernel.org>
+	s=arc-20240116; t=1752577804; c=relaxed/simple;
+	bh=Da1cdmHqfF5cPQZb9asyENrgMPN99pHRn7FhxxwG5dA=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nqn49hMRW34xX5WBVeTV3lYWa/tReHKbzNVvGEH9llVwPAmMUfxv5kgOD9Eq55fr2ScLpm0cNjgG4dfFS88WoEaBWAN4ieL2xCvIkVlGJ1PP7mui9ekOMGpjAC4BP77hll2Q+bsI303uxhzrxucgpbndx5TwBKUgoc/W2DZNWUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bhGdt4hCnz6L5Hn;
+	Tue, 15 Jul 2025 19:08:50 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1EB4E140370;
+	Tue, 15 Jul 2025 19:09:58 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 15 Jul
+ 2025 13:09:56 +0200
+Date: Tue, 15 Jul 2025 12:09:55 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: <dan.j.williams@intel.com>
+CC: Xu Yilun <yilun.xu@linux.intel.com>, Alexey Kardashevskiy <aik@amd.com>,
+	<kvm@vger.kernel.org>, <sumit.semwal@linaro.org>, <christian.koenig@amd.com>,
+	<pbonzini@redhat.com>, <seanjc@google.com>, <alex.williamson@redhat.com>,
+	<jgg@nvidia.com>, <linux-coco@lists.linux.dev>,
+	<dri-devel@lists.freedesktop.org>, <linux-media@vger.kernel.org>,
+	<linaro-mm-sig@lists.linaro.org>, <vivek.kasireddy@intel.com>,
+	<yilun.xu@intel.com>, <linux-kernel@vger.kernel.org>, <lukas@wunner.de>,
+	<yan.y.zhao@intel.com>, <daniel.vetter@ffwll.ch>, <leon@kernel.org>,
+	<baolu.lu@linux.intel.com>, <zhenzhong.duan@intel.com>, <tao1.su@intel.com>,
+	<linux-pci@vger.kernel.org>, <zhiw@nvidia.com>, <simona.vetter@ffwll.ch>,
+	<shameerali.kolothum.thodi@huawei.com>, <aneesh.kumar@kernel.org>,
+	<iommu@lists.linux.dev>, <kevin.tian@intel.com>
+Subject: Re: [RFC PATCH 00/30] Host side (KVM/VFIO/IOMMUFD) support for
+ TDISP using TSM
+Message-ID: <20250715120955.00006c40@huawei.com>
+In-Reply-To: <68719960cc414_1d3d10056@dwillia2-xfh.jf.intel.com.notmuch>
+References: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
+	<e886855f-25cc-4274-9f11-fe0e5b025284@amd.com>
+	<f5958bda-838a-4ed6-84c6-fef62cd0b28f@amd.com>
+	<aFvTL6MUkVZrPoBS@yilunxu-OptiPlex-7050>
+	<68719960cc414_1d3d10056@dwillia2-xfh.jf.intel.com.notmuch>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250529133757.462088-3-aneesh.kumar@kernel.org>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Thu, May 29, 2025 at 07:07:56PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> ---
->  drivers/iommu/iommufd/iommufd_private.h |  3 +
->  drivers/iommu/iommufd/main.c            |  5 ++
->  drivers/iommu/iommufd/viommu.c          | 78 +++++++++++++++++++++++++
->  include/uapi/linux/iommufd.h            | 15 +++++
->  4 files changed, 101 insertions(+)
+On Fri, 11 Jul 2025 16:08:16 -0700
+dan.j.williams@intel.com wrote:
+
+> Xu Yilun wrote:
+> > On Sat, Jun 21, 2025 at 11:07:24AM +1000, Alexey Kardashevskiy wrote:  
+> > > 
+> > > 
+> > > On 11/6/25 11:55, Alexey Kardashevskiy wrote:  
+> > > > Hi,
+> > > > 
+> > > > Is there a QEMU tree using this somewhere?  
+> > > 
+> > > Ping? Thanks,  
+> > 
+> > Sorry for late. I've finally got a public tree.
+> > 
+> > https://github.com/yiliu1765/qemu/tree/zhenzhong/devsec_tsm
+> > 
+> > Again, I think the changes are far from good, just work for enabling.  
 > 
-> diff --git a/drivers/iommu/iommufd/iommufd_private.h b/drivers/iommu/iommufd/iommufd_private.h
-> index 80e8c76d25f2..a323e8b18125 100644
-> --- a/drivers/iommu/iommufd/iommufd_private.h
-> +++ b/drivers/iommu/iommufd/iommufd_private.h
-> @@ -606,6 +606,8 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd);
->  void iommufd_viommu_destroy(struct iommufd_object *obj);
->  int iommufd_vdevice_alloc_ioctl(struct iommufd_ucmd *ucmd);
->  void iommufd_vdevice_destroy(struct iommufd_object *obj);
-> +int iommufd_vdevice_tsm_bind_ioctl(struct iommufd_ucmd *ucmd);
-> +int iommufd_vdevice_tsm_unbind_ioctl(struct iommufd_ucmd *ucmd);
+> At some point I want to stage a merge tree QEMU bits here:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/devsec/qemu.git/ (not
+> created yet)
+> 
+> ...unless Paolo or others in QEMU community are open to running a
+> staging branch in qemu.git. At some point we need to collide all the
+> QEMU POC branches, and I expect that needs to happen and show some
+> success before the upstream projects start ingesting all these changes.
+> 
 
-Hello:
+Qemu relies heavily on gitlab infrastructure for testing - so annoying though it
+is maybe we need to host the qemu tree there - possibly mirrored to
+kernel.org.
 
-I recently have another concern about the vdevice tsm bind/unbind API.
-And need your inputs.
+Jonathan
 
-According to this:
-https://lore.kernel.org/all/aC9QPoEUw_nLHhV4@google.com/
-
-Sean illustrates the memory in-place conversion, that the memory
-owner - gmemfd should own & control the memory shareability) and
-the conversion. I.e. For in-place conversion,
-KVM_SET_MEMORY_ATTRIBUTES should be disabled.
-
-Private/shared MMIO must be of in-place conversion, similarly it's
-the MMIO owner should be responsible for MMIO shareability, maybe adding
-some new ioctls like MMIO_CONVERT_SHARED/PRIVATE.
-
-From previous discussion, VFIO is the MMIO owner (implement as dmabuf
-exporter), so manages MMIO shareability. And IOMMUFD vdevice is the TDI
-state owner for TSM bind/unbind. But MMIO shareability & TDI state are
-actually correlated, do we really want to manage them in 2 components?
-
-Thanks,
-Yilun
