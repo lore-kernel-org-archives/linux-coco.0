@@ -1,195 +1,320 @@
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2083.outbound.protection.outlook.com [40.107.95.83])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FD3288C09
-	for <linux-coco@lists.linux.dev>; Tue, 15 Jul 2025 22:56:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046A22874FF
+	for <linux-coco@lists.linux.dev>; Wed, 16 Jul 2025 07:31:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752620188; cv=fail; b=FbPpLzK5z4pFOLGIfDS908dlti+XNfNBAZ6gjVfUAc94RbMeujDtOf6kRwqqlBi1UWmzCovhnZErw3x/F/KO8G2OxiRee0B+F0hl1ia4jCF72LBALlME5pgfXvBF4MKxFjQDMF8LdGZfhFr12gVNlFol5ZqecQIVHIDOtXPjoc4=
+	t=1752651065; cv=fail; b=V2+J0eTOL4+gxvzRjxd/5+s2nuq7Lu6OQwnB85a2N//33G8jOAa90u+hgTHgssTDlRu9D2NzZC7scEg2Grav0+aDSbp9E0dgZjpPGbuZ9s5RCTrBW0K7O9Jnigt2Ts2Xvl+w0SGtycHvho4NErYjPnGxLS3pOhAqTeIb1b227aU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752620188; c=relaxed/simple;
-	bh=Du7X2dc42RYNqmuJ6CqWqJqmgNnzObopKmfFxjNTZ2Y=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W1ZEX3RS5xH/U94CR3Sgdpc/D2V4kV6eNDLOM/zs/PhkmA/+tVxF5HrmWkAAc+Ty2N08gwHpzm5nN6qd7ebxKoeUpvulYWeY8Ttjrkej9Pj+gDFnZszTMuS/ySMvIrKEn/fowFDKa4X4NBzcbvsluEOlWMIn1bzbiYGGnSJTqoQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=DwcLe2S7; arc=fail smtp.client-ip=40.107.95.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1752651065; c=relaxed/simple;
+	bh=TPnz0LFS2vfYzDuhxRURBBjyAFqeY3aX9OCBLN8a2IQ=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=WJInI36ae+AUdLzbtzg1wEwxiPXBfpKfmkcbNDgFPmvEl9PWURLUjsm3mBIE7UOPeo9lGOyHZWzqvUUJMQMkLbCdR13w7c+Epu6Gnjfy+HorLV81umgluczYccaTvzqsUg9O0tC3pXZoRsNKWvSCJKj86a2XI4moZCYWvgA0ZsQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SQ0Pn5ZP; arc=fail smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="DwcLe2S7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SQ0Pn5ZP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752651062; x=1784187062;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=TPnz0LFS2vfYzDuhxRURBBjyAFqeY3aX9OCBLN8a2IQ=;
+  b=SQ0Pn5ZPE3uqYaLm2W6LSNJOpvEHdx255u5xkuL/SRxnx1JCmMluEHJP
+   DpKvBSJAbwoy409fM0CL+/2mGVNefDZFkbZ9xW6d0un07XpSu3bllbjF+
+   +xyHiDsimUvP5z0xwcSMSZOSo6ShZSde29kURSog5HXq8a8K4fXidvov1
+   OJFis5E1XeB5r+9yq+54skk/gS2TFkoplA3iWnpHP/Kzga51wo0tjNWV/
+   NzPxnYB2nkafmBGwgrnFUzGrD8+9yrSUfgKAKEn5Lhh7DcUOHizfS8k+8
+   57dfE8NJLO3jl2MNO3j1W+PuAEdHQSoWd12EetY8v00vTV0QqkvzuML0O
+   g==;
+X-CSE-ConnectionGUID: XDmG+kzeQ4uomzhzV228lw==
+X-CSE-MsgGUID: 8gTuQ9nMQk2+a6ULuDwgtA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="66333731"
+X-IronPort-AV: E=Sophos;i="6.16,315,1744095600"; 
+   d="scan'208";a="66333731"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2025 00:31:01 -0700
+X-CSE-ConnectionGUID: pIVg6714RiqGhHI+J74Fvw==
+X-CSE-MsgGUID: Ded67RSZRsWrSiFUUYhySg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,315,1744095600"; 
+   d="scan'208";a="157522435"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2025 00:31:01 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Wed, 16 Jul 2025 00:31:00 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26 via Frontend Transport; Wed, 16 Jul 2025 00:31:00 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (40.107.243.58)
+ by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Wed, 16 Jul 2025 00:30:57 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=F33cYPUk7ltE6y6/X4t9eF7d6Cj4lpMHwytQoql0ejBDQl08OlPdZ38zg9Ls61Rmustn4ZcOWXpxfe4SeQ/RfIYo7WmLxtkLv7VmxtY7xpZB/VdbRcCykM6L9DORCKR3EKme2O3Z45PcN+FhSac0EKhRvR56k9ycbQQmbsLGHXx8+e5Vdv0boyfE6UPQoDVLxQMlbYj/N+dL1+m2k3/PAEFyHbFfKvxLAZEtVkAp4qN+OUYrQft6qNkKp3mmcGrqT5yjbvsU8o4DlCs040VR8Ydk6pMkYzpp0mf6RJ1em2yfMjGqEC1P7aCldMnSYbfZ8wggA39net/bFW51qtBMGQ==
+ b=stlGJ3Jbw+vC5H0V+mJJlIeovYA9WtpHeN9vM0gCe67oBPjizgEKXFq18ABkMgbnB/IIHghDIHC6K9QrVQHtCH30o148T/Bdii19n1AB/Z1IZOa5CX6HFiuDwxS4j31MwStbUOFCqmZKO1I8g7wdt3Y/XlqZqB2cWjzKzxL70i3fET756C7HqTavaa3rNf19lmvZiBWMYHUogYWEM88A9n6TOjBc1tSWm5f827UvamTzp33hIR/ConwAuvICkhGeAu46vZ2Ba412V4eoNdu1pNxhnAkD3UoNFm/a9exNHWW9fbqtZtiHIyBlXz2AOdSai54zU7VfG2X4k8Efu3usWg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EgaJgzjhfii8WeXLuQ32oWUkapATGNZrzZ7aaHqGtGw=;
- b=GIYgAqfxMUXrG2TBQme1MI8Fc+jB+zvxmc5fhWGvJOd0WmlyoM5bohwbkImiOWqNcF5iVr6vwRaN8H2DTK8lAkAcZHVV080mU5dSgq0ghAQBO0lzfLZ1EvpBU3fnOcwfEHFdcODbQ+rXcJFcDXfUIjztdipagYim3syO2U3nLM1tDIgxf95FbHk449dW9VZWs9UIvuNWxMWENDTdnNlmT4eDUlDJ4h97SUQudBrfEeSDKgS1daUQqVRWMkDXl66HZdzVrZVXd1UpShmJKb3wPVcMGbHIPigqcV4ltpioq8ypmA1BbqTRLshDBB3X9d2aC6sTfZqHNdE35ML0Us7OEg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EgaJgzjhfii8WeXLuQ32oWUkapATGNZrzZ7aaHqGtGw=;
- b=DwcLe2S7S1vPckiKwT7yeWb7Nyqsa3BRxm7d434imISGAXAqwwW08Tdl/sqaOSzFLMV+TiJoVOoa6WiXBaWNFFMWRTAgyCTUk2ozClyWlGpScBGwlf709zqC75bCH6hXTL2mTFfPBDtjAsNTD/2qr8qN/Kegxn+W9ERqp+8NMm4=
-Received: from CP3P284CA0067.BRAP284.PROD.OUTLOOK.COM (2603:10d6:103:6e::12)
- by DM4PR12MB6085.namprd12.prod.outlook.com (2603:10b6:8:b3::16) with
+ bh=wKDu4CXMZ8WDpN8mh4PRNIhHMfn6E+yitRQZB9Qmu2g=;
+ b=N4na5PRKE9LCKp2OzFj0cvMZdXPai4Kvd+8vclwsdJ9Sqeg39mg8P+YYMCv/7igCW6koilaMPqcWh6lXUwaAgeAQx+D1y3hgSbZio1+k5xsSqCnvbjQKEcDI3X5JAOngC26bK4CISn9SnTt2hoBicRFmp/4qsdr/i6FuI7mhQh1TmeVJHNHN4vsMQmPaJd1N9fpLWOPeyicfw8bmQGk8Q4j48tUvP8Jm8Utzwqslwmuq3ortk8CA4Yj+v/EP/H7zm+5kRCJaBRSvwH1vwzKbdJ4ofxeSn8ckyuFAdW/APlQDKG7TLMTLDuRUxh92ZI5vfWyJk61CVLl5EQSlF1iTIw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
+ by CH0PR11MB5265.namprd11.prod.outlook.com (2603:10b6:610:e0::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.35; Tue, 15 Jul
- 2025 22:56:23 +0000
-Received: from CY4PEPF0000EDD1.namprd03.prod.outlook.com
- (2603:10d6:103:6e:cafe::4c) by CP3P284CA0067.outlook.office365.com
- (2603:10d6:103:6e::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8943.17 via Frontend Transport; Tue,
- 15 Jul 2025 22:56:21 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000EDD1.mail.protection.outlook.com (10.167.241.197) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8922.22 via Frontend Transport; Tue, 15 Jul 2025 22:56:20 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 15 Jul
- 2025 17:56:19 -0500
-Date: Tue, 15 Jul 2025 17:55:23 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: Vishal Annapurve <vannapurve@google.com>
-CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <david@redhat.com>, <tabba@google.com>,
-	<ackerleytng@google.com>, <ira.weiny@intel.com>, <thomas.lendacky@amd.com>,
-	<pbonzini@redhat.com>, <seanjc@google.com>, <vbabka@suse.cz>,
-	<joro@8bytes.org>, <pratikrajesh.sampat@amd.com>, <liam.merwick@oracle.com>,
-	<yan.y.zhao@intel.com>, <aik@amd.com>
-Subject: Re: [PATCH RFC v1 1/5] KVM: guest_memfd: Remove preparation tracking
-Message-ID: <20250715225523.yzmrwghbhi56tqux@amd.com>
-References: <20250613005400.3694904-1-michael.roth@amd.com>
- <20250613005400.3694904-2-michael.roth@amd.com>
- <CAGtprH-vSjkNyQkdqjgnqkK7w0CM2CbewxTwq0XBOXkE8C1WvA@mail.gmail.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.32; Wed, 16 Jul
+ 2025 07:30:47 +0000
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::cfad:add4:daad:fb9b]) by CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::cfad:add4:daad:fb9b%6]) with mapi id 15.20.8901.033; Wed, 16 Jul 2025
+ 07:30:47 +0000
+Date: Wed, 16 Jul 2025 15:30:33 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: "Paul E. McKenney" <paulmck@kernel.org>
+CC: <linux-coco@lists.linux.dev>, <x86@kernel.org>, <kvm@vger.kernel.org>,
+	<seanjc@google.com>, <pbonzini@redhat.com>, <eddie.dong@intel.com>,
+	<kirill.shutemov@intel.com>, <dave.hansen@intel.com>,
+	<dan.j.williams@intel.com>, <kai.huang@intel.com>,
+	<isaku.yamahata@intel.com>, <elena.reshetova@intel.com>,
+	<rick.p.edgecombe@intel.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar
+	<mingo@redhat.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	<linux-kernel@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [RFC PATCH 00/20] TD-Preserving updates
+Message-ID: <aHdVGYxCP8s6ItTZ@intel.com>
+References: <20250523095322.88774-1-chao.gao@intel.com>
+ <aHDFoIvB5+33blGp@intel.com>
+ <a7affba9-0cea-4493-b868-392158b59d83@paulmck-laptop>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <a7affba9-0cea-4493-b868-392158b59d83@paulmck-laptop>
+X-ClientProxiedBy: SG2PR02CA0113.apcprd02.prod.outlook.com
+ (2603:1096:4:92::29) To CH3PR11MB8660.namprd11.prod.outlook.com
+ (2603:10b6:610:1ce::13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGtprH-vSjkNyQkdqjgnqkK7w0CM2CbewxTwq0XBOXkE8C1WvA@mail.gmail.com>
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD1:EE_|DM4PR12MB6085:EE_
-X-MS-Office365-Filtering-Correlation-Id: f2d0497a-cae5-440a-a674-08ddc3f2d0e5
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|CH0PR11MB5265:EE_
+X-MS-Office365-Filtering-Correlation-Id: be63f2b2-1110-458d-b8fe-08ddc43aae73
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700013|7416014|82310400026|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?d3hWLzVRakVVYzhZM0J4OFRBaDIwK2txcjZrQ2h0ZERaakJIRjJvY2lhQlcz?=
- =?utf-8?B?di9pR2kzQ1l6VitpRlpiUmZQQ1BLN09RTGl6elorbm1ERHNlVkF5NnMray9V?=
- =?utf-8?B?aWlLU1NPV2dpQXBneEpEM3VaeU1Zbi8xMVhGandBOWJucHpLRHJ6U0llL25n?=
- =?utf-8?B?R1BLTjBpenpzNURVUEFkYVlTb0F5WGkySVVrTjV1NExYODUrUkJEMFVNclVZ?=
- =?utf-8?B?ZTVvOHFoTHJhckhMSlNoOURidmpiemUxVlRJckxBZWRGdGlkdGdRZUl5ZTFm?=
- =?utf-8?B?ZWthQVJZOGlwOW41MEtTb1Y2V3NYWkJ1S3cwWGdVU0pwSjNtOFp3VnQrcWkv?=
- =?utf-8?B?UGt6UGc3cnNRakxOYUpWa1FBUm1KZXNaR0dXSjNZc1RoanlxR05pVHltRVZT?=
- =?utf-8?B?a21Vamt3Z0pheC9kdHlkNm9kdHFUK1lHK2pHV2ZSM3d4RW9JTmdaQUFLbUJW?=
- =?utf-8?B?aDNPbVlFQjFRS1dTQVFNbGVjcEkzd0pmRURhcTFNRGdmUkxETWpyWnMyd3kw?=
- =?utf-8?B?b0pPa042RFhHTEovYzFRT3VhTEJDelZiN0Q3cnE0RDZtYzh3Y2l4dzZ3ZmNQ?=
- =?utf-8?B?NUN0ZFhNR2VjRmVLMEpJUXVSRUdnU1I3SXdFaGpmZ3NoalRhYVJ5bmZmZisv?=
- =?utf-8?B?Mkp4MUdzckhmSDZ3ZlhseGZ3Rk83ekgraHZNZG5QSVo0SWFLSDVqSStJMVkv?=
- =?utf-8?B?ckRkSlVmZFBpN3ZTYTZWdGFVSGNPdFIxUjdwQjJjTmJ5M0VoRStEOFovcDRj?=
- =?utf-8?B?ODZBcVpJN2pBZ3pPYVpEempXYXhGOW9LS3FVRVR1RFdkaTBaM2tXc1c4T1VH?=
- =?utf-8?B?TUdWcVlPR2dJM21GaGs0SU1OUldvYUp3U0pLL2ZSSVBKTjk5d0ZtbzNpOVRa?=
- =?utf-8?B?QkVDNlB5YlBCZURGYWF4WnpIemlhWHl3c0g5VGlWOUlveU1CbVp0ZmxvN0pw?=
- =?utf-8?B?OVlmeGhOWmUycjNvRXNXZjlNSUdLQ3cvODRDejd0SnlYMzBXbFRaRVBDOU1n?=
- =?utf-8?B?MGRPTmJDSXVCUHY2MXp0Q0VncWhndGRSemszUHNBdGsyekRkWTgyR3I1cE1o?=
- =?utf-8?B?Z2poeFBMSyttQU81Ym1KVXFmNURwTHBFRjR2OG5ielZRYVA4dzJYeFNQTzJP?=
- =?utf-8?B?cHhjRXpRYW8rN01EaFRsWkRvZTExQ2h2NFNOMXdPRlVIbmd5VTJaSXc2blFo?=
- =?utf-8?B?djR4c2xOOU94ZERMUVN0OVlqZ3ZGRzk2cWFyb3JGOGtScTBMYW83WjFPZG9m?=
- =?utf-8?B?cmJ2VExzdGNaZHYzcFErSnNvOVVHb2NxZi9vbHppNkU3Vytuc05qK3hSaVor?=
- =?utf-8?B?K2doZys0a2NtUUhqb3U2QlpWZUt4cGgrNm9CK3RWMk9GbGxmODg2ekFvaFdt?=
- =?utf-8?B?M0Z3OHhrYkhEWmRpSk9pZXlvRDVoMmh2bXlTaWUzb0RRQndnQ0MremNoOTRn?=
- =?utf-8?B?M1NYeFZndEJ4YUQ2VHVyaFI4NDlKZ0hoRGd2K094QjRncDIxYjRqMFNadWtH?=
- =?utf-8?B?MHBkL3dGaFl4dDFKVk16NTc5aHNnK0VRV0VEaG5lZlRQTUNFeHpBSDRsMzJX?=
- =?utf-8?B?Q295RmJVbDhPVDg4T29vdzhiUXRtbzl6UHFQUWFObEpoK3FqVUVWZk1WSkhx?=
- =?utf-8?B?Q2g5bkgyQVdzUVFLT0l2cm5KUXBjSUFtc21BbDhEaGl5UHk4TVNtYk1hRlls?=
- =?utf-8?B?eGV3Zm5UdER2YnFHUzJjdDJaZ1BHRVNPdmlhU0FMZjV5U3dmaFpOR2p5Z0tX?=
- =?utf-8?B?Z2hMM044NHJJVGNEOXZFdXhwRFpLVVpSZnVpb1VGcnhxRExGS0ZSL012MG1Q?=
- =?utf-8?B?ZUxpNWVUaG8zaDdsajdoTGhmdldjNXdCL0cyaTFqTXJoZktYdENGUzh1STdr?=
- =?utf-8?B?TVFnQ2poVDQ4QkJiZk1vL21Dd1orelg0T2hPb2hWUlh2ZmY2cVBhRzIyK1Zl?=
- =?utf-8?B?d2V2aTlHcU1VM3l5SGJEN29BLytTWE00T01VRjVMRzZKdy9kRkEvYXUxRkhE?=
- =?utf-8?B?QWtnaXRQa2JZRVZ4TmZuVWZrTURISFpmcXdTcklsUkw3aUpIMXIyYitkamoz?=
- =?utf-8?B?MnJNVzVkMVRDbVROTlEvdzduYlQ4ak1NVHU5UT09?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(7416014)(82310400026)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2025 22:56:20.9814
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?JEBjN6gjulUoadRw8+F10UfcW8DKk+UGbbcEgx3QzuPUaFFdL5TkZjcoz7Tz?=
+ =?us-ascii?Q?zfMaKbAbENOclg8qPaP1XGeit1sFyil78OKDK9qiBPJZ8XBa17Y5SPHuE138?=
+ =?us-ascii?Q?CV8H66wzIgq+2p2XDJ51xaCfTCi5XtF/siXkS2UBNoegmPgV4lUk3cNzEa5i?=
+ =?us-ascii?Q?5fmMmBMPKl9gqQiQ9k84tIvkwig3gg1GtTBr2Qmq0M5qWNK+2dSJ63oaF9cX?=
+ =?us-ascii?Q?9JnwqSA5UhsDqmpR004DkMz3L7snsnT1J5nRqH712sVY3A3KchskjkxbXxYj?=
+ =?us-ascii?Q?BOTaR8k/+8FJ6Yo3ZOnxR/Ash6jcaFjx0A7GYiRkpoeCTmsAQdESNtlv4ADx?=
+ =?us-ascii?Q?0zGmt78qNdwFig+SifxzeZkX0hQ1TeOflPGXVOVC9IuaFT/qGRYBJico93/T?=
+ =?us-ascii?Q?tR33w7v3uGhZ6gvb434vy55tPUMn20lVNed8j7wzzlDKErZApQi6Tg9aBJLn?=
+ =?us-ascii?Q?CyXipU3AEtJJqnpBTafYEACSnbBoyPfKDpYin6xYERRx15o0xTNofDBItDPO?=
+ =?us-ascii?Q?dVjj8iGQKZlOsh+M2VbOeilRiL6O8FGDhgK4yNgyVmm29wpltclXcIYsXvrQ?=
+ =?us-ascii?Q?EwUMeVC01MW5pNsLvHNzr/5ppPXaBPSuDzpIVkknLRZ2FDQOoMSZZxTikR6C?=
+ =?us-ascii?Q?/YJSrzvChO5N817j7NUGvP4kthIXXB1h7q2Ni7KYGxb71OuLshFWC5ku9Yj/?=
+ =?us-ascii?Q?zd86VJ2LqFpr6RpxgoeNvn9yMZa+3oJ6XcS7PwcxFILGciimTeXH6rElLk4W?=
+ =?us-ascii?Q?1NxmWfycurfxbBPWLo57boGmoxbYvjtleHNKRAkenQgy0okYSQLaolusjjpY?=
+ =?us-ascii?Q?Lrx43rXSiKBe9VmZzZN01ygf9Mkpwf0krmmwgFCsFTDxxZwzp7EsYLhY13lU?=
+ =?us-ascii?Q?bvUW11TodVuLBwEqBLd7Y4CHweEB4rdFIrkyWnxX1o6JAHzbWJ395h4Qv9yD?=
+ =?us-ascii?Q?TG43s5JMYwjatUwcnaOZfh4kDNaFNlCQ7DIhp6WTOlb31U6ISg5XdaNBmjvq?=
+ =?us-ascii?Q?49A0TAp/UsVuAuG98U88mjAF3Mu1znyVOP0zGm38G2hTkoM99qNA78GjJ6ro?=
+ =?us-ascii?Q?MXTRylS8zVpfJRcvY49q/81EPnLXU7HDbYg35/akScxydH7h+p7Xq9nkXZc4?=
+ =?us-ascii?Q?vDGyU18lmDRCaR7KwEu7SwQLbGuUU7TPyU3OZgwxp9S+OjCqhry3h2ak0H8C?=
+ =?us-ascii?Q?PHBV6EHU2r4Uui1Vx/tW0g4fqy9A+aa4lWQRr5EKZYq1F2OJ7EePAEmo9PKV?=
+ =?us-ascii?Q?cFZ26FBZ1pWt5LYkKnhcWip1ifN+R3P3Uz2US8hxRbRjM55ir09vGosqwxJB?=
+ =?us-ascii?Q?MdrBcukebBUVUFK1UcIR72mKxyVRIs7wqcnlarCPseGuyjCqgtsgCoaQuZqT?=
+ =?us-ascii?Q?Adv89lHVe72WK3IcRjdCqSTcAK9KwSnFMt2dI6EvBdd4wo4sptynuVKgW1N/?=
+ =?us-ascii?Q?KCZjJuTgBtI=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?opVCtOkEuqtY6HUuE1sPLE3Bz44QqBibSERLvjHJw7me9iEC11k94ga6qpNz?=
+ =?us-ascii?Q?VwH2v28/U2tzY16FtUJYYuAqDyoXyhas1MDXKxUyamaxm4ZvWaXa2XCh/1HS?=
+ =?us-ascii?Q?NJFvefbheLaaoLCb3uBw58WSIq7NqPo+dN1h2s1vam0aVsvQSokyOFu9OUg6?=
+ =?us-ascii?Q?NKyZyjE7xptWzvsRSc6bFBBE9yHdgn6BCXRBhYn4OtI8xoMn48gCfvghCbFJ?=
+ =?us-ascii?Q?f4MY2m6vE1OPYNK2kCLy/DglLftbWEWjvdJkMxmMEG4KBUehw95LNrLMlIUw?=
+ =?us-ascii?Q?RH3Qo/vww5LL2p1DsqSG2xYqSN3X1Baa43IvumFNlvXMLHHE1dUIaR16/ZcS?=
+ =?us-ascii?Q?IzZIJYI1Z0MC7T8JhevyrVorw8t0Jtnllfuld1ECuVmWFP2y8wKE4Qmve9YR?=
+ =?us-ascii?Q?fX+XugFcdrE3mSTrqkK4PpELZI30HLG9vNyiNUWHXug3TzHYoRupvwoJfr5v?=
+ =?us-ascii?Q?m6FC80M5fSByWChOeumV/1HNm/btxdCU7cR/1CkGnqEVbawnpQgKOQg6XsSH?=
+ =?us-ascii?Q?Hsb07V0hI+H5NRVsrxXdRcFQWvysFEmptzuJN+23YBsE7oo3YGGGEJHaiy3w?=
+ =?us-ascii?Q?NnreILF0lot5j9uws/HVFZtG23k7fCP1mMKuu+a8/MpTIrFm/DzzUSfs0ceL?=
+ =?us-ascii?Q?4Bm2KOnTLmEZRLqM8BYYWgYw/K+RPXrZM+WIrGlQEpSb5IeVUueAcIzrgJJL?=
+ =?us-ascii?Q?C3de5eYR6I8PMWRLsXBuSDasf97Y7Jel3wEhocUHVXeRz/LZhu6tCTo6brAA?=
+ =?us-ascii?Q?M1OghW2RtIB8l35cWWBaVQC0lQO9LCDkAS8+HFRSkPuWGwVsvUUETXihjznH?=
+ =?us-ascii?Q?XmQXOK1Quk5f7P8WshKATBFSrHk0zm7Q8zlDqf2IVyfGFsIIRWbkaYOsf8GR?=
+ =?us-ascii?Q?MCI4s7uDpRAnTjncuiEjsq+sk2gzVbzA9bZI2SjMpsedo6jF1Xrtd0nO0wlW?=
+ =?us-ascii?Q?wejZDKHKFpxcneP8yQEeyrJV6hRIZfmTQdzbPy64DoCEUUKMXWkhGtnOwrn/?=
+ =?us-ascii?Q?ZClWKeIdqH1d1uWwe0pr77ZXTztfD5eKYmK0baG3T9BroOhoNpq1769M42tH?=
+ =?us-ascii?Q?TyySnYE3+iirSd9gmVmjI8/wjlSyP+pzF6DkrO7f9MWZLoolYPqJlxxJYZHi?=
+ =?us-ascii?Q?7asOXf4XZruxTUAQ+Adg1Pjj2yq7+GCHJbt/ZtkrxttXc4ldCYlQ1dX7GcuM?=
+ =?us-ascii?Q?YK4wkz4gEIlksbl+ekuXStTlL/lonrsAtolYt33jgHy+2ZaIx82q72i2V5N6?=
+ =?us-ascii?Q?7aZ+E1EP/J8YEwg1/uYWlRAuS6JdyuuE6Cxox81imewqhZD+KUfw8AIhcdtf?=
+ =?us-ascii?Q?BTkD9A4b+CZjRIiEABjXEPrsLoG1C8QtuB/VLtQFranYkG/cKFDzJx01EuMT?=
+ =?us-ascii?Q?8k4+gJtKxpcxhpT8ci7f9T9x3UfDH0jD9rRfsRo4fFAW/hQVyblJS3hYM634?=
+ =?us-ascii?Q?mbPCmxMtaTR9QN0x+3yhd6xrivzJQ+IQIoXijvIEa0KYkYWMbconDI4dvajl?=
+ =?us-ascii?Q?M4s7lp2/CrYjBaDaV3Sa8HN378X+2KxTbGJftrJueN3xkRu5fcpphdVSkkwA?=
+ =?us-ascii?Q?zlmS0Ym9LsIQSwuZ03BhVyxgDITMXYEKvM1OohDH?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: be63f2b2-1110-458d-b8fe-08ddc43aae73
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2025 07:30:47.2217
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f2d0497a-cae5-440a-a674-08ddc3f2d0e5
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000EDD1.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6085
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: I8JHnAbalppR72UlBQ8mQR5MTqa5lNB/wnRWR2KlmBykYmCf/FRszBijAaGgaZ6fhDiXrf2tcwGk5aG9jIIoIA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB5265
+X-OriginatorOrg: intel.com
 
-On Tue, Jul 15, 2025 at 05:47:31AM -0700, Vishal Annapurve wrote:
-> On Thu, Jun 12, 2025 at 5:55 PM Michael Roth <michael.roth@amd.com> wrote:
-> >
-> > guest_memfd currently uses the folio uptodate flag to track:
-> >
-> >   1) whether or not a page had been cleared before initial usage
-> >   2) whether or not the architecture hooks have been issued to put the
-> >      page in a private state as defined by the architecture
-> >
-> > In practice, 2) is only actually being tracked for SEV-SNP VMs, and
-> > there do not seem to be any plans/reasons that would suggest this will
-> > change in the future, so this additional tracking/complexity is not
-> > really providing any general benefit to guest_memfd users. Future plans
-> > around in-place conversion and hugepage support, where the per-folio
-> > uptodate flag is planned to be used purely to track the initial clearing
-> > of folios, whereas conversion operations could trigger multiple
-> > transitions between 'prepared' and 'unprepared' and thus need separate
-> > tracking, will make the burden of tracking this information within
-> > guest_memfd even more complex, since preparation generally happens
-> > during fault time, on the "read-side" of any global locks that might
-> > protect state tracked by guest_memfd, and so may require more complex
-> > locking schemes to allow for concurrent handling of page faults for
-> > multiple vCPUs where the "preparedness" state tracked by guest_memfd
-> > might need to be updated as part of handling the fault.
-> >
-> > Instead of keeping this current/future complexity within guest_memfd for
-> > what is essentially just SEV-SNP, just drop the tracking for 2) and have
-> > the arch-specific preparation hooks get triggered unconditionally on
-> > every fault so the arch-specific hooks can check the preparation state
-> > directly and decide whether or not a folio still needs additional
-> > preparation. In the case of SEV-SNP, the preparation state is already
-> > checked again via the preparation hooks to avoid double-preparation, so
-> > nothing extra needs to be done to update the handling of things there.
-> >
-> 
-> I believe this patch doesn't need to depend on stage1/stage2 and can
-> be sent directly for review on kvm tip, is that right?
+On Mon, Jul 14, 2025 at 05:21:47PM -0700, Paul E. McKenney wrote:
+>On Fri, Jul 11, 2025 at 04:04:48PM +0800, Chao Gao wrote:
+>> On Fri, May 23, 2025 at 02:52:23AM -0700, Chao Gao wrote:
+>> >Hi Reviewers,
+>> >
+>> >This series adds support for runtime TDX module updates that preserve
+>> >running TDX guests (a.k.a, TD-Preserving updates). The goal is to gather
+>> >feedback on the feature design. Please pay attention to the following items:
+>> >
+>> >1. TD-Preserving updates are done in stop_machine() context. it copy-pastes
+>> >   part of multi_cpu_stop() to guarantee step-locked progress on all CPUs.
+>> >   But, there are a few differences between them. I am wondering whether
+>> >   these differences have reached a point where abstracting a common
+>> >   function might do more harm than good. See more details in patch 10.
+>
+>Please note that multi_cpu_stop() is used by a number of functions,
+>so it is a good example of common code.  But you are within your rights
+>to create your own function to pass to stop_machine(), and quite a
+>few call sites do just that.  Most of them expect this function to be
+>executed on only one CPU, but these run on multiple CPUs:
+>
+>o	__apply_alternatives_multi_stop(), which has CPU 0 do the
+>	work and the rest wati on it.
+>
+>o	cpu_enable_non_boot_scope_capabilities(), which works on
+>	a per-CPU basis.
+>
+>o	do_join(), which is similar to your do_seamldr_install_module().
+>	Somewhat similar, anyway.
+>
+>o	__ftrace_modify_code(), of which there are several, some of
+>	which have some vague resemblance to your code.
+>
+>o	cache_rendezvous_handler(), which works on a per-CPU basis.
+>
+>o	panic_stop_irqoff_fn(), which is a simple barrier-wait, with
+>	the last CPU to arrive doing the work.
+>
+>I strongly recommend looking at these functions.  They might
+>suggest an improved way to do what you are trying to accomplish with
+>do_seamldr_install_module().
 
-Yes, this was actually tested initially against kvm/next and should not
-cause issues. I wanted to post the change in the context of in-place
-conversion/hugetlb work to help motivate why we're considering the
-change, but ideally we'd get this one applied soon-ish since the question
-of "how to track preparation state" seems to be throwing a wrench into all
-the planning activities and at the end of the day only SNP is making use
-of it so it seems to be becoming more trouble than it's worth at a
-fairly fast pace.
+Hi Paul,
 
--Mike
+Thanks for your feedback.
 
-> 
-> This update paired with zeroing modifications[1] will make uptodate
-> flag redundant for guest_memfd memory.
-> 
-> [1] https://lore.kernel.org/lkml/CAGtprH-+gPN8J_RaEit=M_ErHWTmFHeCipC6viT6PHhG3ELg6A@mail.gmail.com/
+Let me clarify what do_seamldr_install_module() does. Patch 10 just adds the
+skeleton (sorry for only directing you to patch 10). More functions are added by
+subsequent patches. Specifically:
+
+ * TDP_SHUTDOWN (Patch 12)
+	Shut down the running TDX module on any CPU while other CPUs must be idle
+ * TDP_CPU_INSTALL (Patch 14)
+	Load a new TDX module on all CPUs serially
+ * TDP_CPU_INIT (patch 16)
+	Initialize the new module on all CPUs in parallel
+ * TDP_RUN_UPDATE (Patch 17)
+	Import metadata from the old module on any CPU while other CPUs must be idle
+
+And there are two requirements:
+1. These steps must be executed in a lock-stepped manner, meaning all CPUs must
+   complete step X before any CPU proceeds to step X+1.
+2. If any CPU encounters an error, all CPUs should bail out rather than proceed
+   to the next step.
+
+>
+>> >2. P-SEAMLDR seamcalls (specificially SEAMRET from P-SEAMLDR) clear current
+>> >   VMCS pointers, which may disrupt KVM. To prevent VMX instructions in IRQ
+>> >   context from encountering NULL current-VMCS pointers, P-SEAMLDR
+>> >   seamcalls are called with IRQ disabled. I'm uncertain if NMIs could
+>> >   cause a problem, but I believe they won't. See more information in patch 3.
+>> >
+>> >3. Two helpers, cpu_vmcs_load() and cpu_vmcs_store(), are added in patch 3
+>> >   to save and restore the current VMCS. KVM has a variant of cpu_vmcs_load(),
+>> >   i.e., vmcs_load(). Extracting KVM's version would cause a lot of code
+>> >   churn, and I don't think that can be justified for reducing ~16 LoC
+>> >   duplication. Please let me know if you disagree.
+>> 
+>> Gentle ping!
+>
+>I do not believe that I was CCed on the original.  Just in case you
+>were wondering why I did not respond.  ;-)
+
+My bad :(. I forgot to CC you when posting the series.
+
+Btw, it seems that stop_machine.c isn't listed under any entry in MAINTAINERS.
+I found your name by checking who submitted pull requests related to
+stop_machine.c to Linus.
+
+>
+>> There are three open issues: one regarding stop_machine() and two related to
+>> interactions with KVM.
+>> 
+>> Sean and Paul, do you have any preferences or insights on these matters?
+>
+>Again, you are within your rights to create a new function and pass
+>it to stop_machine().  But it seems quite likely that there is a much
+>simpler way to get your job done.
+>
+>Either way, please add a header comment stating what your function
+>is trying to do,
+
+Sure. Will do.
+
+>which appears to be to wait for all CPUs to enter
+>do_seamldr_install_module() and then just leave?
+
+Emm, do_seamldr_install_module() does more than just a simple barrier-wait at
+the end of the series.
+
+>Sort of like
+>multi_cpu_stop(), except leaving interrupts enabled and not executing a
+>"msdata->fn(msdata->data);", correct?
+>
+>If so, something like panic_stop_irqoff_fn() might be a simpler model,
+>perhaps with the touch_nmi_watchdog() and rcu_momentary_eqs() added.
+
+As said above, lockstep is a key requirement. panic_stop_irqoff_fn()-like
+simple model cannot meet our needs here.
+
+>
+>Oh, and one bug:  You must have interrupts disabled when you call
+>rcu_momentary_eqs().  Please fix this.
+
+Actually, interrupts are disabled in multi_cpu_stop() before it calls
+msdata->fn (i.e., do_seamldr_install_module())
+
+In this context, there are two state machines involved. The MULTI_STOP_RUN
+state, part of the outer state machine, includes an inner state machine with
+the following stages:
+ * TDP_START
+ * TDP_SHUTDOWN
+ * TDP_CPU_INSTALL
+ * TDP_CPU_INIT
+ * TDP_RUN_UPDATE
+ * TDP_DONE
+
+I am concerned about the code duplication between do_seamldr_install_module()
+and multi_cpu_stop(). But, I don't see a good way to eliminate the duplication
+without adding more complexity. It seems you can also live with the duplication
+if do_seamldr_install_module() truly requires another state machine, right?
