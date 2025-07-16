@@ -1,130 +1,171 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7742C17A31B
-	for <linux-coco@lists.linux.dev>; Wed, 16 Jul 2025 13:04:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85975253359
+	for <linux-coco@lists.linux.dev>; Wed, 16 Jul 2025 15:49:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752671057; cv=none; b=Rm3EdYMJhZvIBuy38t3QzN9cnYCTVW2cXk2VrdoWxTpNvTsQgD8/bYJIV0BOtHVj3NcsExDNrLHHb41lPd+waJr3RRJ2m1VUJHyJEUPUkohOPJo0MoHkosDQzAtQNwwWjt7URM2Gll/vHJPjSWfPCKl1T1jox/NWaqKrZ1xVyFc=
+	t=1752680996; cv=none; b=aPeADLcxCqqKHA+kV/AcZp2Ag/qSNbmynrImVuLD+zeWZfjOQ6lSvcmZv2p3SPhsRW7lS83hbt6kNZVuXmqATElyVmu3o2zoufbakWysveWBSL6N4lMd4NhJLK9TPgXX/YSkY//CSIcN6eCzzihvzGhcGTQ7EY05fCb5coUUgqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752671057; c=relaxed/simple;
-	bh=8dZCYt6w2wIjaNRKHHb72EVPPX9qA4w+IQejlPvMmwQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KGOiLSGNzGTDsZ1oWXOV1zhE3E6ZXUfR4m30ROKG+dc2vTvICSyXg7C+w4en7LLwVqw2z4Tl2CMSOpjHOscwFZSOoZDHsvODKp+4EOdKDTljzNf7loBf+H1WqNxoYV4FnEarb3eOxDrU/VWlrjLmyej2JT0si8AP7SevKelXO7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hgOshfqK; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1752680996; c=relaxed/simple;
+	bh=d8bIZEoOc3jrJGXwR2ME/KuxgYazpLRM9/EKo+NWMC4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oJWYwwub7tarx/kVcSUsihm8kh3bz5HgbAaSg6MUS03gg/rtDhlN4fAXX6V5QhO8EJ16WGocLlOmpN7CJt26CeJrY2ZBb4UP3dUbpCeBg3TqDdLqlkvfDOyxO+e81SupH84MEtdh26fnMEty4QUgnU1xjzBZ9kEFoUGWjqjbg3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c0oZpu+3; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hgOshfqK"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2357c61cda7so127155ad.1
-        for <linux-coco@lists.linux.dev>; Wed, 16 Jul 2025 06:04:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752671056; x=1753275856; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LLAVZJBXA44yj6VwhHi0/bIpO+wiOkRvcyjNUHb7iac=;
-        b=hgOshfqKtiPMxQIkVOnJdmyb9EsTi9g3791mX9Nva+5k+X3aVQ1XCFHusLB0ypWm7+
-         NLmnu1yWNHZvgOKH6w7F1LuFmn3i3+Ji6qusX00mVbKXKTJTthKoc+6Nkg2PbO3Jqb6O
-         dHB+KAgOWboZ5ga5rbkotHD4iisbMDiSWgp3m6mKXuZ/BBLyk9BuIHCF6CKsEmK2Uzq6
-         GjSFPGknBWTaJafctbDUHs0ojuyE+x36HxXtkiRzKYzsNViX6XXDENQ/mvX/Y9F16+ju
-         HnFZ5Qus1FRKsUVtewewWB2wPFlMgjYnMiJMrd0sB7SBoUGib5uQM3KIqw1QElbYTeIF
-         Uxxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752671056; x=1753275856;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LLAVZJBXA44yj6VwhHi0/bIpO+wiOkRvcyjNUHb7iac=;
-        b=dIaOtTp9RPcDjLzQGZ5ihXe17rKq8bat5jTbQGpjlA/H3U9wvNRlp0mLQbGVK8HKJ/
-         n7tBy8SNI2YkHJCRVrreGKImLXeN6U0WocUCehYXwFvUxkQ8BQuzhl0ufgmGyLkQeN/u
-         byiecbafeDSZ+vRXNHdBZFRJXg9Mzbwb4Fmvts6uR0S7IgD7IbARAxW2c229U2u91pxf
-         fJixjg3vfCysL5NmbDOprwyzrHSnWBoHRYdkv4AXZRfQh0tBJyhcAib4L+3NLtw9U7t8
-         VWoEFse2eAE6IwMWz6fmuHwtn2qMMTmf9goCBQ2UR6iuKU4VWhWpZ0gsPYEp1lcCxjkW
-         vnpg==
-X-Forwarded-Encrypted: i=1; AJvYcCV0GdPtYn1n53zcqygvRPpgVszRonBL1cLHu0pOq89nC+QsUCCwHAPe4uJZvEPOOAlAEOOeGrUTcH/w@lists.linux.dev
-X-Gm-Message-State: AOJu0YzsFkYDHhFkjmzj8LT9Jc1Mna96cxdlVdDSkSCc5LbI5motyWiY
-	p4GeSBU93JUbPv7CS+rizH31h7yVt+AMlE1aI45URnA+FoLja0VmQAqj6QFqtd9zpqRdsVNHpcP
-	ptRVLj0e/hcCC6d8eajU1fYQSGUwhUk1v0gBbiM8U
-X-Gm-Gg: ASbGncslTt4kzFRBHcdcjwYbfcP9qZ8Q8PESI5XQFHPx8bb6jJpdjAyFh7m4IZ/HrbL
-	HWIqtoDJh9UdptKAb25/imRzqoepzadXlobbv5fI3JDAlKrzM6ZHMXwECJZVaNtp3S6nBV5EPgr
-	seF058+LEeYxUc9HzNp5rtz+qjH0K0o45Qh+AUjt7qf2s5iMXJmUF1laqoN3YAY5QmqVsjZXfDz
-	PF5GUnAo+9v5biTEYrb0tQO4hzXTfRr4KqgplAh
-X-Google-Smtp-Source: AGHT+IFbLmFCf84DLgEZTrPnlX/z0jXT7rSCFSdJKQ9nbT3+zWzNNW5RpYO5vzltezW/SP2qsLvtJkBHsbSo1JZDMwI=
-X-Received: by 2002:a17:902:f644:b0:234:a734:4ab9 with SMTP id
- d9443c01a7336-23e2644e3e6mr2258645ad.20.1752671055278; Wed, 16 Jul 2025
- 06:04:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c0oZpu+3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752680995; x=1784216995;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=d8bIZEoOc3jrJGXwR2ME/KuxgYazpLRM9/EKo+NWMC4=;
+  b=c0oZpu+3BNu+nOQfRGljC4lyAs5O0z1Xkp2989DO8FrwOwl2qNZFJOE7
+   dUWymrrDcFsaAwKxlVjsoVL3exArY+AsvsjF0Uw67K28kHjG2apZnn6r3
+   WlyQidERhwIJHWwa6CqJqS0iEweFwnGgCy0a4WIcoOIZpYQz/mFRRBhce
+   TE8o5Wl0ZHJWybi8VKQXw+gb2KYkgvG145bDJcPT+KQq3/M64HwEz5va5
+   46R38BfEyP1hYEoCXpD3iLvSu6R+WKMjkfwUMZZS7zkua0Ei+7j38Jjmd
+   CFminsjc0HKYwIOlG1bao6tj56/3LDBIP0PpKF7QPjXRZLRq7OP2qmNh1
+   w==;
+X-CSE-ConnectionGUID: ldvFuCESSJqnlC7wpMl1gg==
+X-CSE-MsgGUID: Sf/HIGYTT3WwAklfJ0w1gA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="54807199"
+X-IronPort-AV: E=Sophos;i="6.16,316,1744095600"; 
+   d="scan'208";a="54807199"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2025 08:49:54 -0700
+X-CSE-ConnectionGUID: Cgjm5PMzTFek6bbg55HZSA==
+X-CSE-MsgGUID: q1AYjqN5T1OKd2CXUBNxxg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,316,1744095600"; 
+   d="scan'208";a="157895131"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa009.fm.intel.com with ESMTP; 16 Jul 2025 08:49:51 -0700
+Date: Wed, 16 Jul 2025 23:41:12 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
+	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
+	zhiw@nvidia.com
+Subject: Re: [RFC PATCH 3/3] iommufd/tsm: Add tsm_bind/unbind iommufd ioctls
+Message-ID: <aHfIGJzqv+4XiO7f@yilunxu-OptiPlex-7050>
+References: <yq5a5xhj5yng.fsf@kernel.org>
+ <20250529133757.462088-1-aneesh.kumar@kernel.org>
+ <20250529133757.462088-3-aneesh.kumar@kernel.org>
+ <aHYtj/jyfXD4XhZy@yilunxu-OptiPlex-7050>
+ <20250715130949.GM2067380@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250613005400.3694904-1-michael.roth@amd.com>
- <20250613005400.3694904-4-michael.roth@amd.com> <CAGtprH9gtG0s9ZCRJXx_EkRzLnBcZdbjQcOYVP_g9PzKcbkVwA@mail.gmail.com>
- <20250715224825.gfeo5jdqjlvtn66l@amd.com>
-In-Reply-To: <20250715224825.gfeo5jdqjlvtn66l@amd.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Wed, 16 Jul 2025 06:04:03 -0700
-X-Gm-Features: Ac12FXw7GwQzMGCZjvuciUapFIHKHiW0DMmU5GVoQ0ZpnRjLUR7h_Expq8imx0o
-Message-ID: <CAGtprH9Ucr-i_T7pdCFRq63GQY6nWy8668gFoG7NSGdLuzpzRg@mail.gmail.com>
-Subject: Re: [PATCH RFC v1 3/5] KVM: guest_memfd: Call arch invalidation hooks
- when converting to shared
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, david@redhat.com, tabba@google.com, 
-	ackerleytng@google.com, ira.weiny@intel.com, thomas.lendacky@amd.com, 
-	pbonzini@redhat.com, seanjc@google.com, vbabka@suse.cz, joro@8bytes.org, 
-	pratikrajesh.sampat@amd.com, liam.merwick@oracle.com, yan.y.zhao@intel.com, 
-	aik@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250715130949.GM2067380@nvidia.com>
 
-On Tue, Jul 15, 2025 at 3:56=E2=80=AFPM Michael Roth <michael.roth@amd.com>=
- wrote:
-> > > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> > > index b77cdccd340e..f27e1f3962bb 100644
-> > > --- a/virt/kvm/guest_memfd.c
-> > > +++ b/virt/kvm/guest_memfd.c
-> > > @@ -203,6 +203,28 @@ static int kvm_gmem_shareability_apply(struct in=
-ode *inode,
-> > >         struct maple_tree *mt;
-> > >
-> > >         mt =3D &kvm_gmem_private(inode)->shareability;
-> > > +
-> > > +       /*
-> > > +        * If a folio has been allocated then it was possibly in a pr=
-ivate
-> > > +        * state prior to conversion. Ensure arch invalidations are i=
-ssued
-> > > +        * to return the folio to a normal/shared state as defined by=
- the
-> > > +        * architecture before tracking it as shared in gmem.
-> > > +        */
-> > > +       if (m =3D=3D SHAREABILITY_ALL) {
-> > > +               pgoff_t idx;
-> > > +
-> > > +               for (idx =3D work->start; idx < work->start + work->n=
-r_pages; idx++) {
-> >
-> > It is redundant to enter this loop for VM variants that don't need
-> > this loop e.g. for pKVM/TDX. I think KVM can dictate a set of rules
-> > (based on VM type) that guest_memfd will follow for memory management
-> > when it's created, e.g. something like:
-> > 1) needs pfn invalidation
-> > 2) needs zeroing on shared faults
-> > 3) needs zeroing on allocation
->
-> Makes sense. Maybe internal/reserved GUEST_MEMFD_FLAG_*'s that can be pas=
-sed
-> to kvm_gmem_create()?
+On Tue, Jul 15, 2025 at 10:09:49AM -0300, Jason Gunthorpe wrote:
+> On Tue, Jul 15, 2025 at 06:29:35PM +0800, Xu Yilun wrote:
+> > On Thu, May 29, 2025 at 07:07:56PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> > > Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> > > ---
+> > >  drivers/iommu/iommufd/iommufd_private.h |  3 +
+> > >  drivers/iommu/iommufd/main.c            |  5 ++
+> > >  drivers/iommu/iommufd/viommu.c          | 78 +++++++++++++++++++++++++
+> > >  include/uapi/linux/iommufd.h            | 15 +++++
+> > >  4 files changed, 101 insertions(+)
+> > > 
+> > > diff --git a/drivers/iommu/iommufd/iommufd_private.h b/drivers/iommu/iommufd/iommufd_private.h
+> > > index 80e8c76d25f2..a323e8b18125 100644
+> > > --- a/drivers/iommu/iommufd/iommufd_private.h
+> > > +++ b/drivers/iommu/iommufd/iommufd_private.h
+> > > @@ -606,6 +606,8 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd);
+> > >  void iommufd_viommu_destroy(struct iommufd_object *obj);
+> > >  int iommufd_vdevice_alloc_ioctl(struct iommufd_ucmd *ucmd);
+> > >  void iommufd_vdevice_destroy(struct iommufd_object *obj);
+> > > +int iommufd_vdevice_tsm_bind_ioctl(struct iommufd_ucmd *ucmd);
+> > > +int iommufd_vdevice_tsm_unbind_ioctl(struct iommufd_ucmd *ucmd);
+> > 
+> > Hello:
+> > 
+> > I recently have another concern about the vdevice tsm bind/unbind API.
+> > And need your inputs.
+> > 
+> > According to this:
+> > https://lore.kernel.org/all/aC9QPoEUw_nLHhV4@google.com/
+> > 
+> > Sean illustrates the memory in-place conversion, that the memory
+> > owner - gmemfd should own & control the memory shareability) and
+> > the conversion. I.e. For in-place conversion,
+> > KVM_SET_MEMORY_ATTRIBUTES should be disabled.
+> > 
+> > Private/shared MMIO must be of in-place conversion, similarly it's
+> > the MMIO owner should be responsible for MMIO shareability, maybe adding
+> > some new ioctls like MMIO_CONVERT_SHARED/PRIVATE.
+> 
+> Except it doesn't work like that for MMIO. Shared/private is a TDI
+> operation only and effects the whole device. We shouldn't split it
+> into two actions.
 
-Yeah, a set of internal flags in addition to what is passed by user
-space looks good to me. i.e. Something like:
+OK. IIUC you want 1 uAPI, TSM Bind, to finish all secure configuration,
+including MMIO sharebility. I think it is possible, the MMIO shareability
+is fixed after TSM Bind. iommufd could fetch TDI report to get the
+private/shared MMIO ranges and callback to VFIO.
 
--int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args)
-+int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd
-*args, u64 kvm_flags)
+> 
+> I also don't think it needs to be strictly 'in-place' as we expect the
 
->
-> -Mike
+When I said "must be in-place", I mean the MMIO resource (hpa) for one gfn is
+fixed, can't have 2 copies of backend as the current private/shared
+memory does.
+
+> VM to be idle on the MMIO during this change over. Faulting would be OK.
+
+Sorry, I don't get your point about 'strictly in-place' here?
+
+> 
+> > From previous discussion, VFIO is the MMIO owner (implement as dmabuf
+> > exporter), so manages MMIO shareability. And IOMMUFD vdevice is the TDI
+> > state owner for TSM bind/unbind. But MMIO shareability & TDI state are
+> > actually correlated, do we really want to manage them in 2 components?
+> 
+> Yes, we've been over this. There are two components, we have to split
+> it somehow. It makes more sense for iommufd to lead the ioctls because
+> it has more information about the full system.
+> 
+> Any case where we need to get back to vfio for something needs to be
+> managed with a callback of some kind. We need to get a list of what
+> those things are.
+> 
+> What do all the arches need here?
+>  - ARM I suspect has the TDI locking operation install the MMIO in the
+>    secure S2, not KVM?
+>  - AMD just leaves the MMIO mapped all the time?
+>  - x86 presumably needs to carefully map/unmap to KVM and iommu in the
+>    right sequence or you get a MCE?
+
+Yeah, for Intel TDX, basically 2 things, zap the mapping on opposite side
+page table, mark the correct shareability for correct fault in.
+
+> 
+> So what is the plan? You want to wrap this in DMABUF, but will there
+> be two DMABUFS, one for secure and one for non-secure? Is userspace
+
+No I don't expect 2 dmabufs. I image shareability could be an physical
+attribute of dmabuf and the callback to VFIO changes the shareability.
+And VFIO, the dmabuf exporter, could notify KVM/iommufd about the
+shareability change. Then KVM/iommufd unmaps their page tables.
+
+Thanks,
+Yilun
+
+> expected to map/unmap in the right sequence?
+> 
+> Something else?
+> 
+> Jason
