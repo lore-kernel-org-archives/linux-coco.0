@@ -1,225 +1,260 @@
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2069.outbound.protection.outlook.com [40.107.212.69])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5436618BBAE
-	for <linux-coco@lists.linux.dev>; Wed, 16 Jul 2025 16:31:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752683502; cv=fail; b=X0c7K8Z6osXJt6jSt9buzDVSGF+J3sQdbzvGUi0ksNpt+h96Am7MP49YIvIbBM64YsB25YB+Ur2Ur7w1Yerbi9LUlu3uNW2WUSikfU7lhQZt4kUZ0NdujiIKuV6ChUxrehNtWoKEu7LZ6LumU3MGYMyDzAKNZsyi8CfdmFWHx2E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752683502; c=relaxed/simple;
-	bh=yzUW9lymT8ZdozOfUpHpDhWvUJDmFq4f9pu6r6gGGM8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=thuoKgWaIDLfz8MJZKVJ9VFFUvmvZChASv4kAVMuajCTEt4AqebTL70aD9qmTv3on2ObP7aI9ssTJlE2NqqSu7j9333BwSZyUwUDQINGPyesCGnfjG3WplbhFjNHkzGCwmpOvdacroIknZZbEYzDsAPpzJawCjxjBxDKmwbEuUM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=b0QTRh2V; arc=fail smtp.client-ip=40.107.212.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37832E371A
+	for <linux-coco@lists.linux.dev>; Thu, 17 Jul 2025 01:27:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752715675; cv=none; b=rM1Mkay0ahciLWAIiMQVNJKrNBl/XFbk7pOaWOQKP86z1EtBGZg+Tp6yQEkxtAJ4GJQiQCkOsQDAtcDMg6Ntpeh86czFZz3l7YS+N4gdPA66ryupg7sKOOo8f01glyHG4L8Ya/wEvYd83/tA1kvXwJdIFEeudYzK9A0S6KgiENY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752715675; c=relaxed/simple;
+	bh=bH78hp3R6n3DKw5HO88BlvlyXjAwSoCV5hGl6uuBB88=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HEi43/jkniiaDMnbK3awlYXSWhOxBg+sCY/Y49Rh6sw+MxSvmonVi2swtZuXqcH28TLC9k994WWlPiiMnE+7xZoJWTa9Lu6FUS8TcwsT7kRCFv1Y/qyccnzSu/fWYZKX/Jvqw0w7LYWj1K7l4hyGpSWOlvZSzwiP5ryEQiniH2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Sa24ydfb; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="b0QTRh2V"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WgOBIlNYCKHpgv+UUTIzrvUhYExpDqgkSwSA2ehZ+26UQjxmHjESdjJBYSeHLdhdJDpiQRXmc9iAHDWpDUkLy0rh9XNqeqDYMgCgylVy92ymURA19ftLJqkROCEDibLJflTX8LLIWInwD0byY8YuiQujCENEKletM6GvOHc5iwSd3RG7+Mm4gj2GeQxOfjv52hx+NMGALlkTzOWUKgOSp6RkkE9voID/GWQqMvwsaFGTZpL9ooGrqLeq9RF44xNjzxjvWqPuhhj9D+9JC9zVHng5Od65xGmv2MXwiY39JnJZoiQ+zXvmFbtnAOfUo8IgzCn51mXoYeF0ch+d/pwlkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DO97BsPbBO4EQM9OArzwQoBUM2TTSO7KsqeIT/zoPKs=;
- b=okmV/6xUbwtgkH4kQvv3jGIJ/H/5IHwEwNNCgs6famXy0+G9r0+wULdT46s3csGURQVWuKrrD4TFZFPxNhhkXusIty9v2pEYkh3jwfEfgcWvV2BMqqoC+Lor/U3pmkNU5mSz8Y60afGNlK4OOM01honZNUuDvjF80LEvvPVXcSKvHw61xhANHXqoEWSgmP/+PLFS5aVRRlaG19D9S/GnWlbmYSsmQg4Jq+k2tUGFYnaAIMpFT4a8n6oJqNRjL/B33BxTgbh3bNdjLynPBM+wRjpwrrpnXQN4BLmCC53kbQZBA9Hu5WBpPyxxJz5DvMgt6ssjyRoLj38fot8E7nCGbQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DO97BsPbBO4EQM9OArzwQoBUM2TTSO7KsqeIT/zoPKs=;
- b=b0QTRh2VnGjK7e7J1JnjNRe35OqPno1eeJvH9w5ysc/h87IPYGD9Be/9z5CMvlgzSWsVywbCL8o5obW+yNIxImoij2kewxr9y4PRWJyujDtU7e+uihuCLY8UEDZOiyX9UHUE2lqEO9m+0jSylFQ5XhdxcWmBSf3uuoCyr5N90AS9PTai5PmHtZGcPKBJ8N3D4H/WGm/SMSSahiNYaYlQoQuJHEzIZ7t8ywwR53KJG10JHVAB4fhVnK58YRZ56iSb0cLP3cdDcfyjbMjPwakd0HWbbZNJ+GFoyicZlYURDrDpgYTugfzW04MGL5vhu2dW2RPUw5arr7XBqVQsYtKa9w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by DM3PR12MB9392.namprd12.prod.outlook.com (2603:10b6:0:44::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8901.29; Wed, 16 Jul 2025 16:31:36 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%7]) with mapi id 15.20.8901.033; Wed, 16 Jul 2025
- 16:31:36 +0000
-Date: Wed, 16 Jul 2025 13:31:34 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
-	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
-	zhiw@nvidia.com
-Subject: Re: [RFC PATCH 3/3] iommufd/tsm: Add tsm_bind/unbind iommufd ioctls
-Message-ID: <20250716163134.GA2177622@nvidia.com>
-References: <yq5a5xhj5yng.fsf@kernel.org>
- <20250529133757.462088-1-aneesh.kumar@kernel.org>
- <20250529133757.462088-3-aneesh.kumar@kernel.org>
- <aHYtj/jyfXD4XhZy@yilunxu-OptiPlex-7050>
- <20250715130949.GM2067380@nvidia.com>
- <aHfIGJzqv+4XiO7f@yilunxu-OptiPlex-7050>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aHfIGJzqv+4XiO7f@yilunxu-OptiPlex-7050>
-X-ClientProxiedBy: BL1PR13CA0450.namprd13.prod.outlook.com
- (2603:10b6:208:2c3::35) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Sa24ydfb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752715674; x=1784251674;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=bH78hp3R6n3DKw5HO88BlvlyXjAwSoCV5hGl6uuBB88=;
+  b=Sa24ydfbI57zORt4yscIOeJlylb+FrCHpU61+4HbmKlqjZ05WCstvFzJ
+   SRVnLzD9LsX9SNq3csGdqSTIe+wNLh6m/4JBKr2XHL2nd233JwuuGVfZ+
+   unVDGpKNA0by9Y7x5GqaPInSsruL72nQpFsXhpFSCbklZoURv8hri0BLu
+   9j3KhIpXNmgAz6oSyTfC1Ls8AygmpAlCfVDxoU7BlVFXynD14DqnZ16dP
+   uvLCya9aVLcGeAtunpWdr2yFYWHRafMu420PCLhiJOe1Z6MJkGtayq+qU
+   7ulOcY3G2d/VN5gIgQEAs0/SL+Pu5mci5+UvgIwhO1CApEu9P+9oHU1eG
+   Q==;
+X-CSE-ConnectionGUID: WepcRtpiSlGNLwDjwgUwdA==
+X-CSE-MsgGUID: rH+s6s2oTXOfXeUQAfIxWw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="54193306"
+X-IronPort-AV: E=Sophos;i="6.16,317,1744095600"; 
+   d="scan'208";a="54193306"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2025 18:27:53 -0700
+X-CSE-ConnectionGUID: jSx3NzMcTHudbSFGjLmckw==
+X-CSE-MsgGUID: v9byWzS1QXyEA+aDSbHwnw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,317,1744095600"; 
+   d="scan'208";a="161966049"
+Received: from unknown (HELO [10.238.3.238]) ([10.238.3.238])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2025 18:27:49 -0700
+Message-ID: <4475637c-4d34-4037-8f43-8b8280617554@linux.intel.com>
+Date: Thu, 17 Jul 2025 09:27:46 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|DM3PR12MB9392:EE_
-X-MS-Office365-Filtering-Correlation-Id: 38c08550-47f6-4bb7-0076-08ddc4863b99
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?4qn0mINzSlrEFQdt1aetpVJ1Iu1BmVE7ccIZzpzhKo9u+Pl7pO6HgBmTybyW?=
- =?us-ascii?Q?qjPtq0a3eXE8la8MpXcvNBgVBzSbSjpB9C/17DLf4OAoCrH3d1N5g7CzPr6a?=
- =?us-ascii?Q?tSebxmpegUfAoj34Q3X+/7TGq2huizeYpGOmGBfSlECYlzClLN/O26JhFSb1?=
- =?us-ascii?Q?GxEZA+QrWH2urV1eXZnq7nvC2o1uA9XhYkQlANfiXkkD9ErFKSEIlCg51EC0?=
- =?us-ascii?Q?8cOYXt9ioMWguJ1XXbtDBx1TKB2Lx6NRGQIXKTyusZ9TPuwukfuhLGtdsB3Q?=
- =?us-ascii?Q?vr0ijeD1rTTzFKkGc0osD2wEKYs0za4FpkHr3Jsv24i+W4opDUPtQEW+Efn0?=
- =?us-ascii?Q?oXqzgDHu+vbfgikadrctpd55JysAYuKd71ovVRm4fwB4nqC1HT9kjl9ma4Zb?=
- =?us-ascii?Q?j43R0MlzO7mhwP8C4wf3YBcKblpLbPAzCHuGCOaB9JkcoQxDQ7xnoXcwK7uM?=
- =?us-ascii?Q?ryRX/EQJyPX8/OAUjpMWUmWZ7hl99GwgTTyJnNaMfRS/nSjoBzxzNJt1ma1w?=
- =?us-ascii?Q?++4ECkuzh4uxUshOER0/7/KJPgZ7rUPfbx7Q5THYZ/3Iq5wOxwH1D7jumfXN?=
- =?us-ascii?Q?CtQGWpS3nKE3++0Vi55SnBdDchavJ5Xj5o7Li5S7S4FmrQXQuWbyBwxwsaub?=
- =?us-ascii?Q?QpvF2ZXrDwpfqTN1ZI7ln7OymVWLm1tq1I2/xJBneajxMdEen/N8BZBAxsbY?=
- =?us-ascii?Q?2VAsQ452NAR0jJMLmFhgb57ke80AI3roFv7x5k+E7Ni9FBlmOxyR38KnvwMt?=
- =?us-ascii?Q?8qJ9KLhVDt3AGlO8hoNk8FaAIN3Goosvl+MF1Qnl8Kky3acUiSEdO/4WrFer?=
- =?us-ascii?Q?5kmQbThMwKSD7IGrA44OBKOyf5rTgFtenknfpzT2ULayS1Zp2ZOOOZkdMMf3?=
- =?us-ascii?Q?sTMB9NIoRFue59tZ4pNpsL05JEAs0izdm4kP1igNvHgIgONipbT4t7P5Boh6?=
- =?us-ascii?Q?togOU6tnC4uw9PgrAofCVINL0rx+Qtzp8q77dD8sAYSjKetXSRShy0/EY7C6?=
- =?us-ascii?Q?vr2rWIBLxAVGMLPKYCtk1ZO4u0YO0E8o7qV5iuwX8TPp95pfK+GhfA01loJw?=
- =?us-ascii?Q?goJMSi8IWllBUXgwC8lfsLM4HgKa1fkpxdl9gi1S0eAGXCvm+3sprz7NyhxC?=
- =?us-ascii?Q?2/2sNzuKUqyO9po4BCvh0jBMI6R+achHgKDQg0OZ6HToitQZUIjTHYD07gcr?=
- =?us-ascii?Q?5BcJMy3G+JKQSpm6oSZV30jDz53T/U/GZPGSJWt6WfuxaUDSQjwZ7YhZWY9Y?=
- =?us-ascii?Q?jQDiw2LDy/rv+wHoJ9zgRpe4EzwV3XVh/VuGT9fvGSaINesDUX+5cCx1Z2+u?=
- =?us-ascii?Q?I4ImwLo1Y2Yz0bFGMjIwIfLR7+yBMiUHmDxy/ycO/kN2t2iByRmuWRVrnNaO?=
- =?us-ascii?Q?CcpIC0IlUxBUCBDYYm2ykAEQLL8Kuj3/BHWDaRSFx1O1/otd4PWMR9YqiX88?=
- =?us-ascii?Q?uGGEyfpx5l4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?v9Y/btgpt8mO1Otj+YY8Tj2K3Ih+vKCL6xdp0KFjZwPeCWO39UhzGAjvnB2P?=
- =?us-ascii?Q?/IpmKVq0PMdLZthKrcJ7AJ9M7vVWz+siyBurJ2RAx+WEVC56Gz+9cu2zMZkO?=
- =?us-ascii?Q?t52O9DxjB4ltYNnBaGu7RyrzLdnMEjz0kNk61n3kf+PVG+S7mgWY3dIXDbt/?=
- =?us-ascii?Q?ZOKvL60mN1jQOuX7ct2c9unDLl7AR+2MmMlfknNhvhAWwuFUczMIDg5c2Iyn?=
- =?us-ascii?Q?eN638Dlr82iDlpcULrFvSFDTB9zActg+ivWu09DcoyZeEvvzibzjN59zlL7F?=
- =?us-ascii?Q?jfepbNYVmWi08QR+Igh+jsTz5t2NY//N8cGNyuziw8VdBhsjXV/wmFs/aYYX?=
- =?us-ascii?Q?hg0QQQNK5DQBPH6PA7bBQ0v4oQjehOnXwNW8STFTEt1GivAiKqR6HJMtMpQp?=
- =?us-ascii?Q?kGFFRsaOqNvyZi279ca3A35x4wjQU2pbDfcEOP7LQ0X+FThqcvrtPBlIpP2t?=
- =?us-ascii?Q?fmLGaXnfUoemOXtW7jbPLExBpWWox3Om5RrFQnIOXdfyXg8Gw3KQseUnYGzo?=
- =?us-ascii?Q?9T1fw/SdiRIEUkkujV4pMLTPGkdDXG/1jjhMzeUAUvheGTvz18YjwPJmjP3l?=
- =?us-ascii?Q?DvQZG2qR/iz1r0jE94LFYweLQlBnHpOSdqyw2Ora2LuT5FEg1Dx5+rpTwikX?=
- =?us-ascii?Q?qHaWpkU0/IEydWHuPoLyyKd3tJKDceIagGjkSXqi7OE64Ak2S0RUr5ZrOqnO?=
- =?us-ascii?Q?erzHtUnrB8RrWb9FTlvCH0zPP92tEBfcyHbgDzGE1yeLg6NjRNBu9dm1SWu/?=
- =?us-ascii?Q?P/+QqrnPDenCD5cMGYGmvst/adIvXkeSt/WxT6P4oyMcmOZMsgKpfRsK69XL?=
- =?us-ascii?Q?qr5IJcG3qkFHAEAvnNdVBcc7oKz/xvdjxhWc00ehRxY+jVb9HDC4Uw4SChLU?=
- =?us-ascii?Q?X+jTyGdZJ8rz+I1sD9UbtQvkKBFkDvWDjtQrOKeLjSr7pgvMTrkNbJkXHoqE?=
- =?us-ascii?Q?eQy+LqpL+ZrJR6YSph5BPxi0pddnsjP9+XiAVwiK7Uk+tyN5P9TKFMizDxaX?=
- =?us-ascii?Q?nOi/Lk0q5gVIoEIzBU6hWWLj/yrHPHJ0mlA3tYx31Xa/SkZpgKIvMGX/ws3R?=
- =?us-ascii?Q?zHvraJapMFXwWbqVgGn+QbSnZR1w86dfMaFMHnLlsViX6tuUfJcW9YCum0HX?=
- =?us-ascii?Q?soFIzF9xrTUN5mpKS/6nEdR7LyXHA8hY6WbhJ27LFAHbghRPtEI4GuE/v90n?=
- =?us-ascii?Q?8blweXZRE4PtkPYY9EYSLShMGK84gc0FE+uBhfvU3hzyyNa8OqGSG7mHdZNk?=
- =?us-ascii?Q?7rA3dFvmxq64bgbf+xGVq2y1y+nrmj6fe2/xFeh9haY2BAIkS3kZfI5X8W9x?=
- =?us-ascii?Q?MpillUR1QCMIWfgbPRD3F23+/VwJwM3tnz/3gQ1NpisbXZRA7BSPQp04wyrd?=
- =?us-ascii?Q?533TV8Qog54sDEOaiWS8YPHC17tkjxit2xEzdwKj2WeSObVmcl5iTvAN+wi4?=
- =?us-ascii?Q?Ihp1KHMsyJ0NuTLINPLMeGx3xHrqXUTudmmVZ38exsylFh6Mpa5olIq0JU/r?=
- =?us-ascii?Q?kEQzO281n4mSJ9RLlAcoKMvjWP0w3N73ZTyhZtdDC7MG9iiknUZupfwPin9s?=
- =?us-ascii?Q?x3whhsX9oP+EfqUE7QfV0ouj0kPrmPDBih9mZlHa?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 38c08550-47f6-4bb7-0076-08ddc4863b99
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2025 16:31:36.3000
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oJY/qk83isQa/MA8snZJ95VH3SU0DN7dGYNhS1RDP2EZC3u9bTEYBsIoHgLhqzMm
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR12MB9392
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/4] x86/tdx: Rename TDX_ATTR_* to TDX_TD_ATTR_*
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: "Kirill A. Shutemov" <kas@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, Kai Huang
+ <kai.huang@intel.com>, yan.y.zhao@intel.com, reinette.chatre@intel.com,
+ adrian.hunter@intel.com, tony.lindgren@intel.com
+References: <20250715091312.563773-1-xiaoyao.li@intel.com>
+ <20250715091312.563773-4-xiaoyao.li@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20250715091312.563773-4-xiaoyao.li@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jul 16, 2025 at 11:41:12PM +0800, Xu Yilun wrote:
-> > Except it doesn't work like that for MMIO. Shared/private is a TDI
-> > operation only and effects the whole device. We shouldn't split it
-> > into two actions.
-> 
-> OK. IIUC you want 1 uAPI, TSM Bind, to finish all secure configuration,
-> including MMIO sharebility. I think it is possible, the MMIO shareability
-> is fixed after TSM Bind. iommufd could fetch TDI report to get the
-> private/shared MMIO ranges and callback to VFIO.
 
-Am I wrong? Isn't this one action? Once you do bind you MUST have no
-hypervisor mapping or x86 will explode. And once bind completes the
-hypervisor mapping is unusable on all other arches.
 
-That's one operation as far as I can tell??
+On 7/15/2025 5:13 PM, Xiaoyao Li wrote:
+> The macros TDX_ATTR_* and DEF_TDX_ATTR_* are related to TD attributes,
+> which are TD-scope attributes. Naming them as TDX_ATTR_* can be somewhat
+> confusing and might mislead people into thinking they are TDX global
+> things.
+It seems that tdx_attributes is limited to hold td attributes.
+For the same reason, is it better to rename tdx_attributes to tdx_td_attributes?
 
-> > I also don't think it needs to be strictly 'in-place' as we expect the
-> 
-> When I said "must be in-place", I mean the MMIO resource (hpa) for one gfn is
-> fixed, can't have 2 copies of backend as the current private/shared
-> memory does.
+Otherwise,
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
-Ok, I would not call that in place..
+> Rename TDX_ATTR_* to TDX_TD_ATTR_* to explicitly clarify they are
+> TD-scope things.
+>
+> Suggested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> ---
+>   arch/x86/coco/tdx/debug.c         | 26 ++++++++--------
+>   arch/x86/coco/tdx/tdx.c           |  8 ++---
+>   arch/x86/include/asm/shared/tdx.h | 50 +++++++++++++++----------------
+>   arch/x86/kvm/vmx/tdx.c            |  4 +--
+>   4 files changed, 44 insertions(+), 44 deletions(-)
+>
+> diff --git a/arch/x86/coco/tdx/debug.c b/arch/x86/coco/tdx/debug.c
+> index 28990c2ab0a1..8e477db4ce0a 100644
+> --- a/arch/x86/coco/tdx/debug.c
+> +++ b/arch/x86/coco/tdx/debug.c
+> @@ -7,21 +7,21 @@
+>   #include <linux/printk.h>
+>   #include <asm/tdx.h>
+>   
+> -#define DEF_TDX_ATTR_NAME(_name) [TDX_ATTR_##_name##_BIT] = __stringify(_name)
+> +#define DEF_TDX_TD_ATTR_NAME(_name) [TDX_TD_ATTR_##_name##_BIT] = __stringify(_name)
+>   
+>   static __initdata const char *tdx_attributes[] = {
+> -	DEF_TDX_ATTR_NAME(DEBUG),
+> -	DEF_TDX_ATTR_NAME(HGS_PLUS_PROF),
+> -	DEF_TDX_ATTR_NAME(PERF_PROF),
+> -	DEF_TDX_ATTR_NAME(PMT_PROF),
+> -	DEF_TDX_ATTR_NAME(ICSSD),
+> -	DEF_TDX_ATTR_NAME(LASS),
+> -	DEF_TDX_ATTR_NAME(SEPT_VE_DISABLE),
+> -	DEF_TDX_ATTR_NAME(MIGRATABLE),
+> -	DEF_TDX_ATTR_NAME(PKS),
+> -	DEF_TDX_ATTR_NAME(KL),
+> -	DEF_TDX_ATTR_NAME(TPA),
+> -	DEF_TDX_ATTR_NAME(PERFMON),
+> +	DEF_TDX_TD_ATTR_NAME(DEBUG),
+> +	DEF_TDX_TD_ATTR_NAME(HGS_PLUS_PROF),
+> +	DEF_TDX_TD_ATTR_NAME(PERF_PROF),
+> +	DEF_TDX_TD_ATTR_NAME(PMT_PROF),
+> +	DEF_TDX_TD_ATTR_NAME(ICSSD),
+> +	DEF_TDX_TD_ATTR_NAME(LASS),
+> +	DEF_TDX_TD_ATTR_NAME(SEPT_VE_DISABLE),
+> +	DEF_TDX_TD_ATTR_NAME(MIGRATABLE),
+> +	DEF_TDX_TD_ATTR_NAME(PKS),
+> +	DEF_TDX_TD_ATTR_NAME(KL),
+> +	DEF_TDX_TD_ATTR_NAME(TPA),
+> +	DEF_TDX_TD_ATTR_NAME(PERFMON),
+>   };
+>   
+>   #define DEF_TD_CTLS_NAME(_name) [TD_CTLS_##_name##_BIT] = __stringify(_name)
+> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> index 7b2833705d47..186915a17c50 100644
+> --- a/arch/x86/coco/tdx/tdx.c
+> +++ b/arch/x86/coco/tdx/tdx.c
+> @@ -238,14 +238,14 @@ static void __noreturn tdx_panic(const char *msg)
+>    *
+>    * TDX 1.0 does not allow the guest to disable SEPT #VE on its own. The VMM
+>    * controls if the guest will receive such #VE with TD attribute
+> - * TDX_ATTR_SEPT_VE_DISABLE.
+> + * TDX_TD_ATTR_SEPT_VE_DISABLE.
+>    *
+>    * Newer TDX modules allow the guest to control if it wants to receive SEPT
+>    * violation #VEs.
+>    *
+>    * Check if the feature is available and disable SEPT #VE if possible.
+>    *
+> - * If the TD is allowed to disable/enable SEPT #VEs, the TDX_ATTR_SEPT_VE_DISABLE
+> + * If the TD is allowed to disable/enable SEPT #VEs, the TDX_TD_ATTR_SEPT_VE_DISABLE
+>    * attribute is no longer reliable. It reflects the initial state of the
+>    * control for the TD, but it will not be updated if someone (e.g. bootloader)
+>    * changes it before the kernel starts. Kernel must check TDCS_TD_CTLS bit to
+> @@ -254,14 +254,14 @@ static void __noreturn tdx_panic(const char *msg)
+>   static void disable_sept_ve(u64 td_attr)
+>   {
+>   	const char *msg = "TD misconfiguration: SEPT #VE has to be disabled";
+> -	bool debug = td_attr & TDX_ATTR_DEBUG;
+> +	bool debug = td_attr & TDX_TD_ATTR_DEBUG;
+>   	u64 config, controls;
+>   
+>   	/* Is this TD allowed to disable SEPT #VE */
+>   	tdg_vm_rd(TDCS_CONFIG_FLAGS, &config);
+>   	if (!(config & TDCS_CONFIG_FLEXIBLE_PENDING_VE)) {
+>   		/* No SEPT #VE controls for the guest: check the attribute */
+> -		if (td_attr & TDX_ATTR_SEPT_VE_DISABLE)
+> +		if (td_attr & TDX_TD_ATTR_SEPT_VE_DISABLE)
+>   			return;
+>   
+>   		/* Relax SEPT_VE_DISABLE check for debug TD for backtraces */
+> diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+> index 11f3cf30b1ac..049638e3da74 100644
+> --- a/arch/x86/include/asm/shared/tdx.h
+> +++ b/arch/x86/include/asm/shared/tdx.h
+> @@ -20,31 +20,31 @@
+>   #define TDG_VM_RD			7
+>   #define TDG_VM_WR			8
+>   
+> -/* TDX attributes */
+> -#define TDX_ATTR_DEBUG_BIT		0
+> -#define TDX_ATTR_DEBUG			BIT_ULL(TDX_ATTR_DEBUG_BIT)
+> -#define TDX_ATTR_HGS_PLUS_PROF_BIT	4
+> -#define TDX_ATTR_HGS_PLUS_PROF		BIT_ULL(TDX_ATTR_HGS_PLUS_PROF_BIT)
+> -#define TDX_ATTR_PERF_PROF_BIT		5
+> -#define TDX_ATTR_PERF_PROF		BIT_ULL(TDX_ATTR_PERF_PROF_BIT)
+> -#define TDX_ATTR_PMT_PROF_BIT		6
+> -#define TDX_ATTR_PMT_PROF		BIT_ULL(TDX_ATTR_PMT_PROF_BIT)
+> -#define TDX_ATTR_ICSSD_BIT		16
+> -#define TDX_ATTR_ICSSD			BIT_ULL(TDX_ATTR_ICSSD_BIT)
+> -#define TDX_ATTR_LASS_BIT		27
+> -#define TDX_ATTR_LASS			BIT_ULL(TDX_ATTR_LASS_BIT)
+> -#define TDX_ATTR_SEPT_VE_DISABLE_BIT	28
+> -#define TDX_ATTR_SEPT_VE_DISABLE	BIT_ULL(TDX_ATTR_SEPT_VE_DISABLE_BIT)
+> -#define TDX_ATTR_MIGRATABLE_BIT		29
+> -#define TDX_ATTR_MIGRATABLE		BIT_ULL(TDX_ATTR_MIGRATABLE_BIT)
+> -#define TDX_ATTR_PKS_BIT		30
+> -#define TDX_ATTR_PKS			BIT_ULL(TDX_ATTR_PKS_BIT)
+> -#define TDX_ATTR_KL_BIT			31
+> -#define TDX_ATTR_KL			BIT_ULL(TDX_ATTR_KL_BIT)
+> -#define TDX_ATTR_TPA_BIT		62
+> -#define TDX_ATTR_TPA			BIT_ULL(TDX_ATTR_TPA_BIT)
+> -#define TDX_ATTR_PERFMON_BIT		63
+> -#define TDX_ATTR_PERFMON		BIT_ULL(TDX_ATTR_PERFMON_BIT)
+> +/* TDX TD attributes */
+> +#define TDX_TD_ATTR_DEBUG_BIT		0
+> +#define TDX_TD_ATTR_DEBUG		BIT_ULL(TDX_TD_ATTR_DEBUG_BIT)
+> +#define TDX_TD_ATTR_HGS_PLUS_PROF_BIT	4
+> +#define TDX_TD_ATTR_HGS_PLUS_PROF	BIT_ULL(TDX_TD_ATTR_HGS_PLUS_PROF_BIT)
+> +#define TDX_TD_ATTR_PERF_PROF_BIT	5
+> +#define TDX_TD_ATTR_PERF_PROF		BIT_ULL(TDX_TD_ATTR_PERF_PROF_BIT)
+> +#define TDX_TD_ATTR_PMT_PROF_BIT	6
+> +#define TDX_TD_ATTR_PMT_PROF		BIT_ULL(TDX_TD_ATTR_PMT_PROF_BIT)
+> +#define TDX_TD_ATTR_ICSSD_BIT		16
+> +#define TDX_TD_ATTR_ICSSD		BIT_ULL(TDX_TD_ATTR_ICSSD_BIT)
+> +#define TDX_TD_ATTR_LASS_BIT		27
+> +#define TDX_TD_ATTR_LASS		BIT_ULL(TDX_TD_ATTR_LASS_BIT)
+> +#define TDX_TD_ATTR_SEPT_VE_DISABLE_BIT	28
+> +#define TDX_TD_ATTR_SEPT_VE_DISABLE	BIT_ULL(TDX_TD_ATTR_SEPT_VE_DISABLE_BIT)
+> +#define TDX_TD_ATTR_MIGRATABLE_BIT	29
+> +#define TDX_TD_ATTR_MIGRATABLE		BIT_ULL(TDX_TD_ATTR_MIGRATABLE_BIT)
+> +#define TDX_TD_ATTR_PKS_BIT		30
+> +#define TDX_TD_ATTR_PKS			BIT_ULL(TDX_TD_ATTR_PKS_BIT)
+> +#define TDX_TD_ATTR_KL_BIT		31
+> +#define TDX_TD_ATTR_KL			BIT_ULL(TDX_TD_ATTR_KL_BIT)
+> +#define TDX_TD_ATTR_TPA_BIT		62
+> +#define TDX_TD_ATTR_TPA			BIT_ULL(TDX_TD_ATTR_TPA_BIT)
+> +#define TDX_TD_ATTR_PERFMON_BIT		63
+> +#define TDX_TD_ATTR_PERFMON		BIT_ULL(TDX_TD_ATTR_PERFMON_BIT)
+>   
+>   /* TDX TD-Scope Metadata. To be used by TDG.VM.WR and TDG.VM.RD */
+>   #define TDCS_CONFIG_FLAGS		0x1110000300000016
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index efb7d589b672..c539c2e6109f 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -62,7 +62,7 @@ void tdh_vp_wr_failed(struct vcpu_tdx *tdx, char *uclass, char *op, u32 field,
+>   	pr_err("TDH_VP_WR[%s.0x%x]%s0x%llx failed: 0x%llx\n", uclass, field, op, val, err);
+>   }
+>   
+> -#define KVM_SUPPORTED_TD_ATTRS (TDX_ATTR_SEPT_VE_DISABLE)
+> +#define KVM_SUPPORTED_TD_ATTRS (TDX_TD_ATTR_SEPT_VE_DISABLE)
+>   
+>   static __always_inline struct kvm_tdx *to_kvm_tdx(struct kvm *kvm)
+>   {
+> @@ -700,7 +700,7 @@ int tdx_vcpu_create(struct kvm_vcpu *vcpu)
+>   	vcpu->arch.l1_tsc_scaling_ratio = kvm_tdx->tsc_multiplier;
+>   
+>   	vcpu->arch.guest_state_protected =
+> -		!(to_kvm_tdx(vcpu->kvm)->attributes & TDX_ATTR_DEBUG);
+> +		!(to_kvm_tdx(vcpu->kvm)->attributes & TDX_TD_ATTR_DEBUG);
+>   
+>   	if ((kvm_tdx->xfam & XFEATURE_MASK_XTILE) == XFEATURE_MASK_XTILE)
+>   		vcpu->arch.xfd_no_write_intercept = true;
 
-> > VM to be idle on the MMIO during this change over. Faulting would be OK.
-> 
-> Sorry, I don't get your point about 'strictly in-place' here?
-
-Here I mean the iommu page table would have to atomically change "in
-place" from shared to private in a way that that is hitless to the
-guest. We don't need this, IMHO.
-
-> > Any case where we need to get back to vfio for something needs to be
-> > managed with a callback of some kind. We need to get a list of what
-> > those things are.
-> > 
-> > What do all the arches need here?
-> >  - ARM I suspect has the TDI locking operation install the MMIO in the
-> >    secure S2, not KVM?
-> >  - AMD just leaves the MMIO mapped all the time?
-> >  - x86 presumably needs to carefully map/unmap to KVM and iommu in the
-> >    right sequence or you get a MCE?
-> 
-> Yeah, for Intel TDX, basically 2 things, zap the mapping on opposite side
-> page table, mark the correct shareability for correct fault in.
-
-I expect userspace to be doing this, which is why I asked about two DMABUFs..
-
-> > So what is the plan? You want to wrap this in DMABUF, but will there
-> > be two DMABUFS, one for secure and one for non-secure? Is userspace
-> 
-> No I don't expect 2 dmabufs. I image shareability could be an physical
-> attribute of dmabuf and the callback to VFIO changes the shareability.
-> And VFIO, the dmabuf exporter, could notify KVM/iommufd about the
-> shareability change. Then KVM/iommufd unmaps their page tables.
-
-How can this work exactly?
-
-Does Intel put shared/private MMIO at the same guest address when it
-changes around? I understand other arches do not do this.
-
-Even if you do, the owning page table changes, right? In public mode
-it has to be mapped into an ioas and in private mode there is no ioas
-mapping?
-
-Seems to me that two DMABUFs is easier than trying to teach DMABUf
-about some new attribute..
-
-Userpsace can unmap all the shared DMABUFs, do a TDI BIND, then map
-private DMABUFs. DMABUFs do not change from private to shared on the
-fly.
-
-Invalidation is only an error case situation to revoke if userspace
-didn't do the above sequence right.
-
-Is that reasonable???
-
-Jason
