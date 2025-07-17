@@ -1,72 +1,99 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2066.outbound.protection.outlook.com [40.107.94.66])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB152C324F
-	for <linux-coco@lists.linux.dev>; Thu, 17 Jul 2025 12:43:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF7ECA4B
+	for <linux-coco@lists.linux.dev>; Thu, 17 Jul 2025 18:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.21
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752756220; cv=fail; b=B5ut7wlIrEN5Epxyl6bI5TRLGGg6KvbDioPkw4tW+vb7xDMzgl6ahcAsmdqO9oCzc5Cy3Mi6xsy0V6F30WQCzQ7wVCanqa4LHxqCPdSu3YLkepwgzgXAKyVcMR0bjhdhuAeb5jFIKgC2ajdsUNq/V/t/dp7jYBuTC9Pjl+HLvf0=
+	t=1752777253; cv=fail; b=Y7pwrqXnmzrNP9eArSpczkVI592ja6gq3SkVzZFrHcQc08z9j5ecewErC9RCK/koVOk+GtA+Cu3agsAO4BmB5ENxvXQ6J/mMIYCEvtQ9Bq8ivFW4BhP3yeLiq3tKpHkKmXP7Y02Q8nqk/0PXTKVZ85WInyXDNgAmHB7Own8F5uc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752756220; c=relaxed/simple;
-	bh=fxc7XpyfDcEV62lCqiLcFRUXWdY6Ed+9PuASIzRyFjQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=lBSG6Uw6tooleI5rG4jcb9109MeG0Mzl1P6siv7jQ13v4jk4Y2FeaU3EI3cdUJQajWEbcq13JVzjw8DYPopYYJXAipbOIzb1fZIrcBnh87llah7A4SpYiOcKY8nxOtgW85+zMH44jlmukLfmb3G48US5yL3FeOcZys4aTp3GOfU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=B2kqbZr6; arc=fail smtp.client-ip=40.107.94.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1752777253; c=relaxed/simple;
+	bh=hFfdt0obhROOKqI9i6ZQYwzVbCGEFeLY9WWd4U86zyQ=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=UFaGCjJba6EFKgrEwc/E9yrQ2GU1h/mkOdN4OXCMpN49zkU4Z3y0RugOKzwUHnFJy8C0RBym+4FrS4Y5Ud5i2XKiLilNbmKKh//ICFFNUzLv5eg1/uo3L2hbB5AWJRzXxeNmRdzBoK9Pu5dh/INu9SIXhbPlrniSXj7ET0hX4t4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BNabQrlY; arc=fail smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="B2kqbZr6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BNabQrlY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752777252; x=1784313252;
+  h=from:to:cc:subject:date:message-id:
+   content-transfer-encoding:mime-version;
+  bh=hFfdt0obhROOKqI9i6ZQYwzVbCGEFeLY9WWd4U86zyQ=;
+  b=BNabQrlY0SGQ5xM3MtFke93uaS4su9PQk5C7/9hEnoh08FrUhiVgeu/V
+   eLYvvULEBs4+10uApaEInksgw72YC/iL+tRTvFAfufV89R3OxB3uJI/j8
+   2LKa37mr4Qj1+JRfbPtCLqDyuMTLhRPhRsPk9qpd6HqO4zWNd8I1F4/uI
+   s975sZ6OnVdiz4T0uMgFpCuITzFOnl8zQKX3NqmwTwZcoIKGjUFqResGt
+   7a4WSs0Ds8vPto3hNg49LA0GDwiwIIdwv4bO66JJBCtIEZjbzwm7Nprmj
+   Sm0VxNxEFj1MwisC3RUaq4t1mIoHGtJCWyA4A4mmvVj1ebtrZWRyqXzRv
+   w==;
+X-CSE-ConnectionGUID: dUZOYgIETm64wr/JW0DBNw==
+X-CSE-MsgGUID: jgbObO4YQuuHeQAXLkSqDA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11495"; a="54945674"
+X-IronPort-AV: E=Sophos;i="6.16,319,1744095600"; 
+   d="scan'208";a="54945674"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2025 11:34:12 -0700
+X-CSE-ConnectionGUID: 4M7ywLwoRjKnmhObPBv4nA==
+X-CSE-MsgGUID: QIe1viDrQESVBH8ttqbirg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,319,1744095600"; 
+   d="scan'208";a="158222610"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2025 11:34:10 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Thu, 17 Jul 2025 11:34:09 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26 via Frontend Transport; Thu, 17 Jul 2025 11:34:09 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (40.107.243.52)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Thu, 17 Jul 2025 11:34:09 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SgEs8rp6soeLG02BupjsODd81mVM9Yk8wzKXLznECJpXxkVxp1m75OHKzqh3Nzb61A48CHTknTgesK0VrIu6wF8FLQpnaq5n0Pzk7wepAwwKdi0agNPFuP4DJAF6AKABGa2g+qMG2IqUbfBtbCfRPDd94xihyx85DmToEy/poPWV0UDZtwQMV73LAuaTuGXV9K9gPyApITCLpzbFosVU9DRu07mtwe+5uqBauS4O7vJPS7Y69nJWA3PBrt9/UGbYO/zGb6gv90LxJxwZbQlBlPst4vJYuQi4XgAM+L+j+E+2TSAh9t86nmkFxLQ9+G1X70KztsT7RtQFj+RvCeNEOA==
+ b=yQI2HKFjxgi4bjj/gTkTKvHpx+DGjaZ949ChF6+2shX1GeExMDhtBf5A38tSjrJJ2RVLCi2qiZP9mYr7gUmycQAuwaWPQUN7xzh2kgWFmBJvsiz4V/9SktYtuFnlj0MK5y0U6kyanhQsjIN2HDoHmocq6BDxSuI6XtpWLLRh39oSaYZD9zaOCOhl89T+HpOsXrjrxdWSsijVHQAQ4L8gFkzBbXYKpZm8yYigNl1H2FmS6N05Jl7pXLbwpFob/h1Ih2upHWEcENitZ9+GiSmRwDTHCCUg8GEuc1ZG0zti/TiQprXTFRt/Fjy+wU5uFVaFGjhg0Wz/syjO/lVgJ0PvKQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yAujl0L9R4FB5DJn5d5zsyQl6x3kLp7QJPggDrgtJRY=;
- b=w2VF+AMMkps0BDJCBo4XuxPB5J+a6QK7MICX9GaqeDvervQj2bZgAAppEIZ4sZAFFYcaEojeDFt69E24VuQIlmSUHeQx0vV0R1oZKHYDjQ4OtoYzcuZPa/vi6YboSVN44nt00/cIWODzCZaeu8lHHRBx6TYSYwd9lSnXAczP8amRAO0pMoC3Pgjd7wQw498JkjrznAl0+/S57pIAqEzKb0S09BzlitrJbEW8medQElHbl/Ed5j0lJWA+eCQmBXc/U9Ad3R7NxC/PHwd3ywNYVB9G9CTd2R8NNhCiVS5UAmkpTfP9v0YxK8SmxCSbV4nqo3/2V6zceeLg/CMtwwFpBA==
+ bh=vblZYofOPE+KnTIQwpqMbvB8U/IE8WZxJhlvzMubuww=;
+ b=YsKlHwRDlVYqcx78WvQHSnoPOaqO//gg1Y7Dku6Fihrj1QTAdduB24FF0wPf18yKki86yiDoLjgVs0SrPnEKQSuDSSHTlLKt4r8G0qJAGirI8vZYJ9T8C+UCYU2f3uiTCCz5ZUaDvKw+e5rnL7U0TEhr56gSM29mipLW0EMvo9CNb9ZZH9AZh6vdg1Jkgq0yN5a5obO5spKgP4EyJRs50ilZg0WyRH0k/4DD2NrzzyF5JVG6fHPB07ZSw7tnVttyYl2gZqRhrzMn7gfnoDHPmO/HKYkfwXednVvr0LrA+ftGOWl2uLauDjiD2xBtf9aVQ6cWk3csfE3e5W6k3ipJlw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yAujl0L9R4FB5DJn5d5zsyQl6x3kLp7QJPggDrgtJRY=;
- b=B2kqbZr6LmI+OyDUINeUgyUW4OQq72ZU2HncLNlvpXedxfB8dsi6KQeKXbUsp8JDZINPNr0Bnl8lGo4qWV38o5JVyYls/enyvkmFfJ9PnJM1/l2HXpRJ6d0JNN18X98/SdM2XH65C1UEkf3AaQFxaGLsfh8CX51Ikb4wm4GqIiPjiKRo5kvYXl6Hj4LVpl6K0rqC+CTWSYeitNv7AYQskXFe02961bVgs5MXpzBDqMR5UtcWKUV81sMLCS5Lmc30L7cZUDtzVEE7BV3fguWq1psejIEaj1jR0feSfJUjHZO8gwDmUijFJrgmGhYNaghd9vD+PgfUdxq3wcG0EC2jOw==
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by CY8PR12MB7099.namprd12.prod.outlook.com (2603:10b6:930:61::17) with
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by SN7PR11MB7066.namprd11.prod.outlook.com (2603:10b6:806:299::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.32; Thu, 17 Jul
- 2025 12:43:34 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%7]) with mapi id 15.20.8901.033; Thu, 17 Jul 2025
- 12:43:34 +0000
-Date: Thu, 17 Jul 2025 09:43:33 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
-	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
-	zhiw@nvidia.com
-Subject: Re: [RFC PATCH 3/3] iommufd/tsm: Add tsm_bind/unbind iommufd ioctls
-Message-ID: <20250717124333.GF2177622@nvidia.com>
-References: <yq5a5xhj5yng.fsf@kernel.org>
- <20250529133757.462088-1-aneesh.kumar@kernel.org>
- <20250529133757.462088-3-aneesh.kumar@kernel.org>
- <aHYtj/jyfXD4XhZy@yilunxu-OptiPlex-7050>
- <20250715130949.GM2067380@nvidia.com>
- <aHfIGJzqv+4XiO7f@yilunxu-OptiPlex-7050>
- <20250716163134.GA2177622@nvidia.com>
- <aHi0HxV1Y1TsauxF@yilunxu-OptiPlex-7050>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aHi0HxV1Y1TsauxF@yilunxu-OptiPlex-7050>
-X-ClientProxiedBy: MN2PR05CA0038.namprd05.prod.outlook.com
- (2603:10b6:208:236::7) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.35; Thu, 17 Jul
+ 2025 18:34:02 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%6]) with mapi id 15.20.8922.028; Thu, 17 Jul 2025
+ 18:34:02 +0000
+From: Dan Williams <dan.j.williams@intel.com>
+To: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <bhelgaas@google.com>, <aik@amd.com>,
+	<lukas@wunner.de>, Aneesh Kumar K.V <aneesh.kumar@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, "Isaku
+ Yamahata" <isaku.yamahata@intel.com>, John Allen <john.allen@amd.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Samuel Ortiz
+	<sameo@rivosinc.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Tom Lendacky
+	<thomas.lendacky@amd.com>, Xiaoyao Li <xiaoyao.li@intel.com>, Xu Yi lun
+	<yilun.xu@linux.intel.com>, Yilun Xu <yilun.xu@intel.com>
+Subject: [PATCH v4 00/10] PCI/TSM: Core infrastructure for PCI device security (TDISP)
+Date: Thu, 17 Jul 2025 11:33:48 -0700
+Message-ID: <20250717183358.1332417-1-dan.j.williams@intel.com>
+X-Mailer: git-send-email 2.50.1
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BYAPR21CA0030.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::40) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -74,139 +101,262 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|CY8PR12MB7099:EE_
-X-MS-Office365-Filtering-Correlation-Id: 02582768-0acf-44c7-a62b-08ddc52f8b09
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SN7PR11MB7066:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8f051278-7f3c-460f-5f25-08ddc560806b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?MebU446mT8RPP9pg1+Y9rbgcjnEKjxCFg/InrN8/lvqJPxgSgmf4piuZBVRe?=
- =?us-ascii?Q?MvM9rbzYMqps7gIfQTIefd9SC+rOGtuUKSDHKMBDotgegqiiRUaGQSgZwXAY?=
- =?us-ascii?Q?zfjnK7VTie8m1+csLJXhkWyKmkhD31v0VFchLKH1kfFWvznoMSujxcHEZmcu?=
- =?us-ascii?Q?0cgU5qoUPMVpi2jBPXKvdWg9p+sCiRC0uc9SrbY164x/g4bYqLkQvcQAraoJ?=
- =?us-ascii?Q?aRkgOmhnD7jeHttBCq18IP4byWl8sKwe09dcNhTSWxLN1rWNL5XBz6gsKnFU?=
- =?us-ascii?Q?NZ4iSCRPqWKdbrzBqSLzS4OVez5iRlyeJxhiSMNk/+Nxt5iyZ+5/h2HAvmvu?=
- =?us-ascii?Q?LDMPBco/5tyiRF/EGtherS+XmNGYpjv1olj7Bsi2tbTUnIxg3qnuVoCl/2df?=
- =?us-ascii?Q?kz+AXTqWJ8DIgnpCmqxlYCtufxq8rwMcJVm2s3vFPvTJJqYVdbQqYCj2jxG0?=
- =?us-ascii?Q?oSgpnCoJwMDFOJK+2eiRpPtg6feF8RbXHMdLJDtXHZ2mn/+pTBgAqP1NYBaw?=
- =?us-ascii?Q?L0BS4/vNkDgs8xIYN+hoWvqKy3yrjK4U9iv1fA67psKG15BGyIRJf3yJxA0G?=
- =?us-ascii?Q?OOdpGhNwQTCsWIurVn0anb6Oa1wgrI+dRnygX2AC52hfCC+JCa6ER8APyiYf?=
- =?us-ascii?Q?IegFO5ZNxmK2/n9NHCx+SlAConrliZE/5ZIURk0UmmhZTcq+iomcLOZL4yvz?=
- =?us-ascii?Q?+7C/31qm3qF+PaTatiVu9GofVrVOCpkJXEmHWJYLz8Cct7x4tJdsIRPsHBGB?=
- =?us-ascii?Q?Du5xO44qrNJ+azdol0VlZoy7jCYg/FOU9DYnN4DBwcNMHUYvcerm08FN6Oi2?=
- =?us-ascii?Q?0JGjOqplCb47hjsu4tVLHAruOKR+rzExa1nX2OREtGy+NBMotBadMRsGAzK7?=
- =?us-ascii?Q?+ZaBIAWwYozvBMesyxsIdPB9//ezk+ZCpSKUOC6K+avcFYFtAR2kU9kifBHK?=
- =?us-ascii?Q?yUof1XKPQuaqaz7jEwAeM8UW/V9EW9JRS2M/7qkJX6say5HzSyCvibgH6T95?=
- =?us-ascii?Q?em94AM4lMMnTm9tijfX8xmH4/q8ZrjdOomOMbOsM4SHqThKZYk94LlNTwiS4?=
- =?us-ascii?Q?uZ+JkcOx/XxKpY3OmJXPMLjLlbipmLcdgkXBgGJEIkYOOJlenBN2a9xCWNlt?=
- =?us-ascii?Q?9cpqqN77PXFpb1InPxcsJcR1t5ZA3K5mWoFTx+RG1/z+9TtdcvZ1TFaEpDh6?=
- =?us-ascii?Q?0Q/2up6uZIOf1LDE4r3jkWvfMnwrXXazSf2V1fAxR4LcvYG2xUWya1HhiQsc?=
- =?us-ascii?Q?5NmO7QxTBKTE4qF8EBAg6lwTkn6+9yyxG8y5RRpJBlMY0LjZ3aq4hw5HtGuz?=
- =?us-ascii?Q?pgXy7TDGy1TRqDoAALav4pynFcAFgNdu3WN6H/1omhXgd80ZJVIIwvZpHxL4?=
- =?us-ascii?Q?NaRgAstpacO7ZrRrwjzQsMWNt1q1pUmPkusKj7+J5Z9r8pIILCAaCSuP8XPF?=
- =?us-ascii?Q?CE/2KyHUECI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?UXUxeUJlSzBkVStNUHkwMUpHRjgzamZQWndvaGt3MHRGOHQvN1FhWTE3VXk2?=
+ =?utf-8?B?TWpHWWJRem5UOGFIczNOTEdCTnkrMU9ucUdXUHppQXBBdUc4NEQ3Rm5SSVJk?=
+ =?utf-8?B?R3dyWmV1aGhucks1WXp4M05wZ1BRdWRYRjZaRkJ3NHFibXVCMWFrUkNJRHFY?=
+ =?utf-8?B?R0FSaE5EdHptL3hlU3RZbXFVdzk2Z0pwaXBJb1gybS8vZU82OHN4RVFZWTB6?=
+ =?utf-8?B?anJRbTNiZE41MFhHaDUyV0t3ZEpjUTdMaXJGZ3JMNVhqWEIyMFdPL1BtNk1r?=
+ =?utf-8?B?WUF2T1h3S2R0eW5ZUEdmK1pyY0dCTEVUM1N4UkFRQ0dGZk9yd3N0em1rUy9L?=
+ =?utf-8?B?R1lWTGJjN2Nrc0FqQ3g0RTRndlNkNkg1ME12cnp0WW81bWUzWWl3akZ6SHZ0?=
+ =?utf-8?B?S21WbWR5UTZoV1pQa2FJL2NNR3R6TURPbE5uUjhpeW52bFRibllDQTZjZlcx?=
+ =?utf-8?B?R1BCc1ZvakttWWd4OTJaTnh4dU1jUU0vc2tzeTVuRkZqSjZjR3p2Z0ozSUlI?=
+ =?utf-8?B?dkZCZzBEVGVnSUFqU1Z5enJ0bk9YZCs2V1kxbFRhVDVGT3lBc1NkUjZNWlQ0?=
+ =?utf-8?B?NStCdzl2SWtSR2NZQWpjSXBxZHZ2TVFvMTdNZUxObFNiUEJPaTdqczlhV0Q4?=
+ =?utf-8?B?Tzg3UTZWaGN6VnBQUG5WTk1PRGkvVkc5OWVMVVh4bEJucW5iRWxudFlFZWZh?=
+ =?utf-8?B?Zmd4WWRsdWI2VS9PdjcycTRjSkJFTE5EZW94THZ4czFCNVJxNVNWTEcyU3dD?=
+ =?utf-8?B?WEhTN3Z3b01yZW5LcHMrZE5Mb3M2c215dVRoQTZ2WktjMEFNQjJBU0J1VW42?=
+ =?utf-8?B?dVJYMXhrUDJhaFUrUHBTcEl6SlRsUjFlRlRTbFFnVWo1SlhIZnYwa3hyUEFS?=
+ =?utf-8?B?YjE0MHZpQ0k4UGRhNkNvT3pYYkREaXE3RVVyc09NUkdodXFrVytEMEVGU09w?=
+ =?utf-8?B?TVlLdU1zSVYxdC9YQ3pCM0RCYlNQVitOOTJHa2JieXdRNFBVdG9Mam5hK2tr?=
+ =?utf-8?B?NGNtT295c0NScHB3OVBVZjRLaUQrN0xKMHA1ajFHQzkweTNKdmR6aXo4Yyto?=
+ =?utf-8?B?VWxGT3p5UHZCeWtjUEZoV2JBNiswY2dXTVltL3o3b2JCRUpVMGl5a3hNU2g0?=
+ =?utf-8?B?cHZpazRZNnhreFJGdkw4V3BLd1I4MzI4eXFXWFYyaHNpZTA5WFVUQ2E2Z0lH?=
+ =?utf-8?B?VFM1YitncVNPeGdxdU0ySG8rSGRmeS9rRDE5dEVIQ0dGSEg3eXBXQmNrbHdD?=
+ =?utf-8?B?alY1QlhKMmxsSWR3MVU0MUVNcVNTQXl3cnF3ZXgyN1dVaVFsdHl0UkVqVVc2?=
+ =?utf-8?B?K0E0YnNPcWJLNzdYWkZIU2hadVExSWJLd2JFSGp0ZlJGelJub3JZSm1DN3lw?=
+ =?utf-8?B?bkIxSCt3MEdrY1EveTVDck4rZ2l1QkRiSXVKU05raFNJbTRJMEJraDloSWJO?=
+ =?utf-8?B?R2hyNFJHOHlmRmF1bk9ISWdsUDk4bytPbXYrU1JIN2ZCOHpuT3ZoTUdsc2U5?=
+ =?utf-8?B?ZzBneXVJbVA4Y1ZIbzdrVG10MzN3dVh0RzA2NTJwdjZQNjZvZnNQdTQ2RHh4?=
+ =?utf-8?B?T3dmYk14dlE1QVRxTkJOdVdBUTJrTW9xNjRDTDVlMWJhR1AxR1hocEpQMDRR?=
+ =?utf-8?B?SHUxSXhON1hGZFZJODJRL05yZUpQc0Q0MHdrYVdvNEhkeTVlaXhJRmhFcjlN?=
+ =?utf-8?B?S0VEdElQN29uWXFTaEFFZFZ2NjRycm5NZEZCWlkvYWZOMnVFd0RHQ0U2SUdI?=
+ =?utf-8?B?K1RqcnRobjRmZk5mK1Y1d2trenJiaGJYNWtGdENEUU9KMDRFUTJIVkVja3Z4?=
+ =?utf-8?B?aElkYVJWcEFmeWh3ZDN3c09JamxheUU3a0lBTy9oKytwTnNGejltQ3l5ajV5?=
+ =?utf-8?B?bG5Mek1BR1QwMVllRFFFcGFmbVlQV3F0b2d1eWo0Sk1VbG9ZY0t6b3NtTk1s?=
+ =?utf-8?Q?uS7vLLRuAnQ=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ffyFGhZWqtHH1FAcgloOWhfJ3HfwxyP9/KSwc//BEnsk2tZCb/syTXmvyXz5?=
- =?us-ascii?Q?Cw1MrWEBXLH6hhK+bc363XQo239C6+X0hSau2NCGPnC/tqDFb/CzUkdw8QkH?=
- =?us-ascii?Q?3ebRNim65fJKlSumGiqViAPXBN845iCOX10cHHAtoVUhVH8ELl9WN2m4s5Jm?=
- =?us-ascii?Q?i4WLVuv4C2aSu5nCQ5gMxr4ecLUXc3fKOH6gIooPqInGGZNRpiXLOl7YnQHv?=
- =?us-ascii?Q?PznSEyTtwsFFymrfCw+tJJOPzFRSYWuiYOfMBX68lmWd7druQzZCyZg3JuCd?=
- =?us-ascii?Q?cTydb3n2L5bKosk7viVkEGLHI+mwI4i4SP/Qk8k2y/6TeGS0AQGC9tNHCFW/?=
- =?us-ascii?Q?XmzfLPHsJ5tA4YKqPo/vAV1qewuZdhyhjx5xlzGfmpJUX3jQxAQaxFoe0CLR?=
- =?us-ascii?Q?GlxTn1Vvcbjl7wHJpkuoQ7jg77EJuYODw2CLO8Vz0x/UOTtd8JptmPcXJDKe?=
- =?us-ascii?Q?M1z+VhsDxbIycMe7DdvIg4/Cqqwdj0MEQdHsRR+rj1t6+E9eoAnd/p4k75xW?=
- =?us-ascii?Q?wisodwV60rBxACtUhzXJtT13DmASWDfCYep1s8sepffIIwae6T7VOkWVJkFW?=
- =?us-ascii?Q?xR+PtwRKlvdSMeFp08N1Bir+nPlW1n9mMs/VArTDfq9JrlrWcunTNexg3+6i?=
- =?us-ascii?Q?kwHSc3VktJ8BlE1N/b7S4QA62BvVtRB/warWhELN291xDu/RisqkYhPf4w0P?=
- =?us-ascii?Q?f6v+suJl4CHVvP14TmF2U0IuKfBbuyFijKL4xDiQufTP5X7UXax5AJDjtwKN?=
- =?us-ascii?Q?C20VFer71+I2O6YGGXVBa7fYHuqOza+9gAxQzxs833eRxgC8lhNQUXl246Dv?=
- =?us-ascii?Q?jVc1iHMNEJ6P7gKTnMRJdUhRintoy1XrcTNBsy//+ck0p6dMdJ1EisOJHdl/?=
- =?us-ascii?Q?Bmw2B11xBW8cOhOBB/C03wGcUOsdJzVfI4Hkd0h3hT8D/WX3qscAF7nS2kmH?=
- =?us-ascii?Q?NYyvj032326MBJ3Y5mSQtP8VWPVhcfpgAZBdjOmdsbFbfhgQoKNaxNeWHfrV?=
- =?us-ascii?Q?eWAju74Eyl1hzOMqpe5prdZYtA/nyIoeT/XIRtno1lIRWiIV/HUZp5OPvQjH?=
- =?us-ascii?Q?2UaqfUqNsjBKn28ojtsdkVK5EtoDKbXPgd4PBB4rkdR8apsz4v6IhzbZIrWX?=
- =?us-ascii?Q?g2VqC+/EE2CizqD/ySp38D0YbIubIyDnDO5io3/Z/G2RwrSfokj0kzDdLDPA?=
- =?us-ascii?Q?A9+O/vXXxXics7XwW1K80xx+1F9AlP9TlTNjLd3enu9MqvXx2x+D4nOBIka5?=
- =?us-ascii?Q?ph2puXlpcu1Tv9KHC2I5oDrK80RrczCjx53R0/4ziQNXsc1g49R5qO4ua4yT?=
- =?us-ascii?Q?1QxSRca7rdNC2LjjevnbxONXnAUgGPLyvX8FfS5j8qhResNrGAXSQl2jKnW0?=
- =?us-ascii?Q?/bmUbNvRX65MM8T9Ay93V9HtcGdHX8VdgpOngJ5XnZgO+WfDbeyGcTBgQpPn?=
- =?us-ascii?Q?ZrRuZLAy76JdmcNDjIOQHmqa85d7mySp2pvuWtyovciI+ZzV7IvAVJnPUG7N?=
- =?us-ascii?Q?jiZ2wrR0S2PcXa2CCodV9Jjo+lNmroKpAzKGOSQSsnh4pH2KZnbj7GvjPQau?=
- =?us-ascii?Q?c1rSlh0zOn80ugXInbxug8kVmwV/7T+xe+YK+cds?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 02582768-0acf-44c7-a62b-08ddc52f8b09
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OXczYnBrNGRyeCszTTJBYUFWakQ2ZWNmSnF3R3ZLTWRmRkNIK2R6N3JXNHR6?=
+ =?utf-8?B?azhLVFJTWjNXclo4R1lrTmpGWStlNEQ3dHJ0VUM0L21mMUY3cEtWbFZkSTQ1?=
+ =?utf-8?B?Y0dqV0dyWmg4ZFFmU2tyM3NpOUQ2OW5ZU1RXeGl1ZDlrSkF0emhXeUZRbmtm?=
+ =?utf-8?B?QkV3N1RvQUVlVlkwa1lPcXkraVBTZkFlZExJR00xN2dMUGdkOGpaWnJuNnFF?=
+ =?utf-8?B?cCtSVjdmaGpsRWhNMEJXSkswdUFQWG5Hb1NwSStaalNMNTUvTlVFMS9nc3du?=
+ =?utf-8?B?anZsOVZteHd2ejdyZFZsOE9DNUJCK0VITDhveHJNSTI0Yk9NWUVZVFJFVHlF?=
+ =?utf-8?B?WW16bzJ2VHpybVRTRDZwV2h0ZThHOEk3UThweTNvSUxBRzZsdUxMT3JBbGZt?=
+ =?utf-8?B?dDcvZ2FFZ0J3Q2dPTExTMnJzZXZYVlYrb3MxNWxDRGRpQ3pPc29BbWQreGVx?=
+ =?utf-8?B?R0w1ZWtTZS9DYU1EMDJFMlExZE0rMFkxampIdzEzcG52ekRSMUErVXV4WENr?=
+ =?utf-8?B?QXFlYncxcmJoOGZ0aExlMWdUM1RUNjNWS3lVOWp0YmFVMW9sVURMR2FqZmZ6?=
+ =?utf-8?B?dFhHSXhLcXBTTHZjUTdQL1lvY21uSU9RUmdxREtGNDRSK05yaDB3RHVTVWJR?=
+ =?utf-8?B?NkRNZXRRQ3VwVklubm55MHd0dGhibGd6MHFRaTFWM2NVMjFYUUlzWE5CWWRu?=
+ =?utf-8?B?aGNiVXVWU2dXVEI5alhqdGcycGR6b29OWjhPa2RLeS92MlAyZW5BUy9oSUE3?=
+ =?utf-8?B?bVFFSllJWVN4Sm1ZQlg0Nk81QmJXdFhwRGZoOFNzTnV5Y2wzRmxycjNiOE56?=
+ =?utf-8?B?eUxDTEVDNmJOTkJsT1lWZVRiODBWV2NpMU44R29MendJVGpaa0xhVXRjdUJE?=
+ =?utf-8?B?V0kwQ1loRzFhS0VZQjV6NGYvK3QyUGV5S0NkWG9xdy9ZdlhEcW0yWHZCVHlZ?=
+ =?utf-8?B?R2d1dFhkV0xHZE9CQW1TenYrdldGVm1tVGpTTUJFaFV2R2pFaUZhQithSXJT?=
+ =?utf-8?B?QURvYVJrVEg2RzVMS1VhbnFUNnBFQWpydEFHUG13Ny8xT3Izb0NlSjZDVGlo?=
+ =?utf-8?B?emFtdUIvOWtTbmZVZGlxTVJXYzUxbDlqUEgyTDF4MzFaSmZPK29TSXdJNnpk?=
+ =?utf-8?B?VUovOWlzMm9UNG5BWFlVbUY1K0R1NFpIcWdkWlQ1SzdicGhVTWU2VVlUcEY2?=
+ =?utf-8?B?T0tuTFhmMXgwSnoyS3hua2NIOGNnVmRHKzRDSkZ0eUp0UVMrVjl0WHJnTmJa?=
+ =?utf-8?B?TWxtQTlaOTYvZC85MzRBdDJDNzZXMitrdnJZeDQwVlZ0U0VqRUh4c3p3YUt6?=
+ =?utf-8?B?TU5IT2JwUXNvUkdSVUlNZWRNYW81Ky82SXdZZm9JVUdyUjB3MHNQd1lXT2xx?=
+ =?utf-8?B?WmVKOVBrL3B3NjN3QmRsYThEWkh5emtkcEJrd1Z1NW9XY2g0enE5QjZXYkEy?=
+ =?utf-8?B?dkcrWDBLa3A3aGIvVWJnSWF0OGpWNVpPN0VxTTJER3l3d3RubnhreHB2ZWk1?=
+ =?utf-8?B?cm85SjZwbU1jaFd2NEc4U21XWS83ZGFBeWNRR3Z0eXJCLzFzTDlMbzlQc0xE?=
+ =?utf-8?B?VCtXWUJIdFJIcmlvSTI3NSs5bEZBanJGeWJjei96dUpjbTJBV2dhcXVnRHNv?=
+ =?utf-8?B?WGRvQVdPMDdITTlKaDVySDRUUnRZM1NFYnRCazFUc0ZlMTdLRGFmZDZ0cGh6?=
+ =?utf-8?B?V3pZVEpSMzJCT3FRRjhpemdhdjRlZktvc0IvMkl1WUkzZitVcnFjTUg0WXBv?=
+ =?utf-8?B?V3hMR0RkbUl2b05PSkR5L1J6OHZrMm4wNW5UbEpTcFFCdjFSRDRvNEx1OFVu?=
+ =?utf-8?B?WWJ4UUJDakNsY2ZtazBsZzhxNThGYUVPSElBQzdjUllkajNqdldjN2pxRkE0?=
+ =?utf-8?B?U1BoVVF4Q0ZTR0RLZnNVWkhNbkx1RkZvbVJUWThZcFpWZkFIZmozYllNay93?=
+ =?utf-8?B?RmtEdUo1dTczc0ZEcTVtLzdVa3dobTh3VGFsUHY0MDlwTVdaTGM5NitRY3ZX?=
+ =?utf-8?B?K2hycmdEZVNaR2RmU2NLMGJuRjlpZnZTUnBKVW13NlFWS1pCemFPVlVaYXBj?=
+ =?utf-8?B?aG91QkZQNmJsL3RXUlptOW1MdFBWTGNhVW5tUE9wbWxCYjVlb1BvTFBUWGh6?=
+ =?utf-8?B?cTQra2xadmpUbFB6SUlzaXdUZ3R0ay9jd0xTL2pXMzUrdVhsUHZURW84NVRK?=
+ =?utf-8?B?Wnc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8f051278-7f3c-460f-5f25-08ddc560806b
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2025 12:43:34.5472
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2025 18:34:02.0822
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KVHpIQ3oB1iXM0c72rcwEfk/78+SatkMslSfrxpS4uByopBtj5QmURbKVziivQaY
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7099
+X-MS-Exchange-CrossTenant-UserPrincipalName: MFJ6DbvkDNGXcEoBiX4wahr0jm2whC6i/DAfZjD1nmF+NL9TJCF7qC3y/5ioGJUol2KvRQWivCOIjgXgKGFRTKKyv9VM5SmjS3s8Sane/3s=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7066
+X-OriginatorOrg: intel.com
 
-On Thu, Jul 17, 2025 at 04:28:15PM +0800, Xu Yilun wrote:
-> > Seems to me that two DMABUFs is easier than trying to teach DMABUf
-> > about some new attribute..
-> > 
-> > Userpsace can unmap all the shared DMABUFs, do a TDI BIND, then map
-> > private DMABUFs. DMABUFs do not change from private to shared on the
-> > fly.
-> 
-> But the shareability of each MMIO pfn should still be recorded at the
-> time of TDI BIND. 
+Changes since v3 [1]:
+- Move the TSM core out of the host/ subdirectory since it is shared
+  with the guest (Aneesh)
+- Support multiple simultaneous TSM providers (Jason, Alexey)
+- Do not reuse the "connect" operation for both Link and Security state
+  management (Aneesh, Alexey)
+- Derive the pci_tsm instance type from details in the @pdev or @dsm
+  properties (Aneesh)
+- Delay TSM association until ->connect(), results in removing the need
+  for the @state attribute
+- Introduce reverse iterators for all PCI bus and function walking.
+- Move all per-device context setup/teardown to
+  pci_tsm_(constructor,destructor)
+- Add pci_ide_stream_release() for scope-based cleanup of IDE setup
+- Shorten the name of the "stream" sysfs link (Jonathan)
+- misc fixups (Jonathan)
+- Note creation of pci_host_bridge_type in changelog (Jonathan)
+- Drop now unused PREP_PCI_IDE_SEL_ADDR1() and related macros (Jonathan)
+- Open code PREP_PCI_IDE_SEL_RID_2 in its only caller (Jonathan)
+- Clarify the specification Stream term from a Linux "stream" object
+  (Jonathan)
+- Convert samples/devsec/ to faux device (Jonathan)
+- Drop Date: from ABI entries
+- Add basic driver-api documentation to build kdoc
+- Switch to ACQUIRE()
+- Add an explicit 'disconnect' attribute
+- Clarify the PCI_IDE_STREAM_MAX Kconfig help (Jonathan)
+- Use unsigned variables from sel_ide_offset (Jonathan)
 
-> Shareability is not only about hypervisor can map the
-> MMIO or not, it is mainly about Guest should access it in a shared or
-> private manner. According to this KVM map the pfn in EPT or S-EPT.
+[1]: http://lore.kernel.org/20250516054732.2055093-1-dan.j.williams@intel.com
 
-Yes, which is why having two dmabufs might be nice because you can
-plug the public one into the EPT and the private one into the S-EPT
-and SW can validate the right one is in the right place.
+This set is available at tsm.git#staging (rebasing branch) or
+tsm.git#devsec-20250717 (immutable tag). It passes a basic that
+exercises load/unload of the samples/devsec/ modules and
+connect/disconnect of the emulated device.
 
-> For MMIO, the shareability layout is the TDI's inherence which can be
-> get from TDI report. I.e. some MMIOs must still be accessed as shared by
-> guest even if the device is converted to private. So I think a private
-> DMABUF without sharebility layout can't support the TDI case.
+Status (complexity reductions):
+-------------------------------
 
-IMHO this even more strongly says two DMABUFs. After binding you'd get
-a new shared DMABUF that was limited to only the actual shared pages
-while the private DMABUF would be limited to only the actual private
-pages.
+Between the support for multiple TSMs, the split of "Link" and
+"Security" operations and inferring the type of 'struct pci_tsm' context
+from its properties, the implementation shed complexity.
 
-It is much simpler considering the current DMABUF APIs than trying to
-convey per-pfn shared/private indication.
+Now, ->probe() is only called in the sysfs::connect_store() path which
+means that there is no need to track the PCI_TSM_INIT and
+PCI_TSM_CONNECT states. Simply, when a Device Security Manager (DSM) is
+connected, at that point all potential TDIs (assignable functions where
+the DSM can manage its security state) are probed.
 
-> The existing shareability layout for all guest memory space is recorded
-> in KVM via KVM_SET_MEMORY_ATTRIBUTES, but now Sean's suggestion is
-> giving it back to resource owners when in-place conversion makes
-> guest_memfd fully aware of the shareability layout.
+Now, initial determination of when the "tsm/" sysfs group appears
+follows typical expectations. If at least one TSM device has been
+registered prior to a DSM device being scanned, its "tsm/" attribute
+group will appear. No more need for a pci_tsm_init() call via
+pci_init_capabilities().
 
-I would say this discussion is irrelevant to this case since we are
-not doing any kind of in-place conversion.
+The pci_tsm_destroy() path is now simply arranging for
+pci_tsm_disconnect() of all DSMs after all TDIs have gone through
+->remove() callback. This is accomplished with new "reverse" iterators
+for all PCI bus walks.
 
-1) At VM start the VMM gets the shared DMABUF and maps it to IOAS and
-   EPT
-2) Bind request comes in, VMM unmaps shared DMABUF from IOAS and EPT
-   then closes it.
-3) Bind is done
-4) VMM opens a shared and private DMABUF FD and learns the valid
-   ranges in both DMABUFs (ie what PFNS are private/shared)
-5) VMM maps the shared DMABUF fragments to the EPT and IOAS
-6) VMM maps the private DMABUF fragments to the S-EPT
-7) Unbind request comes in, VMM unmaps both shared and private DMABUFS
+Next steps:
+-----------
+The campaign to graduate this out of tsm.git#staging and into mainline
+starts in earnest when samples/devsec/ + 1 vendor implementation, or 2
+vendor implementations can demonstrate the end-to-end flow (minus
+attestation). That is the "consensus" event horizon where prior to that
+it seems reasonable for impacted subsystem maintainers to opt-out of
+reviewing all the fine details under debate. Suffice to say there are a
+lot of fine details flying around.
 
-For all error cases the kernel revokes all open DMABUFS and userspace
-is expected to close & reopen them to recover.
+To that end I expect it would help to have a tracking document in
+tsm.git#staging that catalogs the open debates and the current leanings
+of the staging tree. That is next in the hopper.
 
-From a KVM perspective when you tell it to map the DMABUF the VMM will
-also tell it the shared/private, which is basically implied by the
-GPA. There is no "conversion", userspace will destroy the memslot and
-create new ones.
+Original Cover letter:
+----------------------
 
-Isn't this pretty simple?
+Trusted execution environment (TEE) Device Interface Security Protocol
+(TDISP) is a chapter name in the PCI specification. It describes an
+alphabet soup of mechanisms, SPDM, CMA, IDE, TSM/DSM, that system
+software uses to establish trust in a device and assign it to a
+confidential virtual machine (CVM). It is protocol for dynamically
+extending the trusted computing boundary (TCB) of a CVM with a PCI
+device interface that can issue DMA to CVM private memory.
 
-Jason
+The acronym soup problem is enhanced by every major platform vendor
+having distinct TEE Security Manager (TSM) API implementations /
+capabilities, and to a lesser extent, every potential endpoint Device
+Security Manager (DSM) having its own idiosyncratic behaviors around
+TDISP state transitions.
+
+Despite all that opportunity for differentiation, there is a significant
+portion of the implementation that is cross-vendor common. However, it
+is difficult to develop, debate, test and settle all those pieces absent
+a low level TSM driver implementation to pull it all together.
+
+The proposal, of which this set is the first phase, is incrementally
+develop the shared infrastructure on top of a sample TSM driver
+implementation to enable clean vendor agnostic discussions about the
+commons. "samples/devsec/" is meant to be: just enough emulation to
+exercise all the core infrastructure, a reference implementation, and a
+simple unit test. The sample also enables coordination with the native
+PCI device security effort [2].
+
+[2]: http://lore.kernel.org/cover.1719771133.git.lukas@wunner.de
+
+Dan Williams (10):
+  coco/tsm: Introduce a core device for TEE Security Managers
+  PCI/IDE: Enumerate Selective Stream IDE capabilities
+  PCI: Introduce pci_walk_bus_reverse(), for_each_pci_dev_reverse()
+  PCI/TSM: Authenticate devices via platform TSM
+  samples/devsec: Introduce a PCI device-security bus + endpoint sample
+  PCI: Add PCIe Device 3 Extended Capability enumeration
+  PCI/IDE: Add IDE establishment helpers
+  PCI/IDE: Report available IDE streams
+  PCI/TSM: Report active IDE streams
+  samples/devsec: Add sample IDE establishment
+
+ Documentation/ABI/testing/sysfs-bus-pci       |  51 ++
+ Documentation/ABI/testing/sysfs-class-tsm     |  19 +
+ .../ABI/testing/sysfs-devices-pci-host-bridge |  29 +
+ Documentation/driver-api/pci/index.rst        |   1 +
+ Documentation/driver-api/pci/tsm.rst          |  12 +
+ MAINTAINERS                                   |   7 +-
+ drivers/base/bus.c                            |  38 +
+ drivers/pci/Kconfig                           |  28 +
+ drivers/pci/Makefile                          |   2 +
+ drivers/pci/bus.c                             |  37 +
+ drivers/pci/ide.c                             | 578 ++++++++++++++
+ drivers/pci/pci-sysfs.c                       |   4 +
+ drivers/pci/pci.h                             |  17 +
+ drivers/pci/probe.c                           |  25 +-
+ drivers/pci/remove.c                          |   3 +
+ drivers/pci/search.c                          |  63 +-
+ drivers/pci/tsm.c                             | 554 ++++++++++++++
+ drivers/virt/coco/Kconfig                     |   3 +
+ drivers/virt/coco/Makefile                    |   2 +
+ drivers/virt/coco/tsm-core.c                  | 198 +++++
+ include/linux/device/bus.h                    |   3 +
+ include/linux/pci-ide.h                       |  72 ++
+ include/linux/pci-tsm.h                       | 158 ++++
+ include/linux/pci.h                           |  36 +
+ include/linux/tsm.h                           |  15 +
+ include/uapi/linux/pci_regs.h                 |  89 +++
+ samples/Kconfig                               |  16 +
+ samples/Makefile                              |   1 +
+ samples/devsec/Makefile                       |  10 +
+ samples/devsec/bus.c                          | 711 ++++++++++++++++++
+ samples/devsec/common.c                       |  26 +
+ samples/devsec/devsec.h                       |  40 +
+ samples/devsec/tsm.c                          | 241 ++++++
+ 33 files changed, 3078 insertions(+), 11 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-class-tsm
+ create mode 100644 Documentation/driver-api/pci/tsm.rst
+ create mode 100644 drivers/pci/ide.c
+ create mode 100644 drivers/pci/tsm.c
+ create mode 100644 drivers/virt/coco/tsm-core.c
+ create mode 100644 include/linux/pci-ide.h
+ create mode 100644 include/linux/pci-tsm.h
+ create mode 100644 samples/devsec/Makefile
+ create mode 100644 samples/devsec/bus.c
+ create mode 100644 samples/devsec/common.c
+ create mode 100644 samples/devsec/devsec.h
+ create mode 100644 samples/devsec/tsm.c
+
+
+base-commit: df877487cac3509cbae2625181e7ad6748afed24
+-- 
+2.50.1
+
