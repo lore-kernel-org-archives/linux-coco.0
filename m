@@ -1,241 +1,208 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2068.outbound.protection.outlook.com [40.107.95.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFC61FBC90;
-	Fri, 18 Jul 2025 10:57:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752836240; cv=none; b=k/YkWPz292LMuggI+GX1nAOTru6OmQLc0hUXv8vM2WJpmYKP+8JC1oOUk5Hgi60TC4dmUE6Vz5TQDChMv2kj/1c6saSnmtd5DFPkSulX4OVs/ZgWUrnsgvOR1E/kqHeKneNCvHjBJjPlGodgxjChMinnWD93GHsckuUCq+thyXA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752836240; c=relaxed/simple;
-	bh=egDvUDaR9VMobj3jfwGG9Y6MP3GzIIQobcEHCHjRoKc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=gIcn7ZtiS7uyEq6pX566SpldbGqmPthZEzBSf+7PAVJCjUoBTXHO9DnGPl+TNbVNv5DtXEPitm+PbOtDeZ+n1r6ujxzlVTocUF30TFnUHr68EIeKyuS0iEPKhmtAtV8uS/HMVdvMZGaJ1q5wGm/1yfwKptKMOpHg221B6zeHalo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j8irAvlZ; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C373246761
+	for <linux-coco@lists.linux.dev>; Fri, 18 Jul 2025 12:26:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752841612; cv=fail; b=Dh+h0UqXHGagfEUkVWnEdCYACaYPbzrDjV3sipzJN3SmSw5aMbY/JkymKZwMZVKJUWe7WinpgB4gn3AsoF+yDAGZydYLXdWFjwfjcw0kslxmiAN3CnHQJO5RVnW2b2DTHwM5Zq9mDcgkzSOz7VqF+TIep9tUc/MIuTLnO5NnEhc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752841612; c=relaxed/simple;
+	bh=XnVLYb3v/6yPwoUVYsku2QXfVnM5irikKos55ASKwQ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=PSckXIVA2uQGDxILCBStCzvPQk4djvgcAKfu21TQbFDzUHVOISB0t0/5N2YFnZVflqqXU8WoN8N0Cy2GrTon+4kWtPHOMfE413TnK5IGZXLlqxUXtvAzVU1yiI2C3nP1MdRKdeobLlAL8U+oG0kLWFJn461bDeHR85tOLtQ+6Uc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rRfylGes; arc=fail smtp.client-ip=40.107.95.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j8irAvlZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89909C4CEEB;
-	Fri, 18 Jul 2025 10:57:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752836240;
-	bh=egDvUDaR9VMobj3jfwGG9Y6MP3GzIIQobcEHCHjRoKc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=j8irAvlZiYSO4cwJITR2b2jVJy7ab50Eti2L3b9ZTlfZx20T4QQAz8FWx/lL03g2I
-	 vxYdlYMcpFwRYO1bqmZRm0JRY2J67aqhDEjdFmUu2LYM2iPNlh2yAIi0r6kSxeUWmE
-	 s1I4/3ff7zpYI7MrNxNWhkoJgsqTHD1ZDOEZLy36P82yp2mbNNIYMun2/nXTjZ9iHn
-	 xFS5zo26AMHeJRB/erjdvpgI6p/1QYDHGRtLNO/16ixASKu/uNeEfo00+dBNiyiruX
-	 dJTRPZi5GxvYUJSKTVhQ+eZd2T61JZ3MeB8UkVGNz43pmz+kJcJaBKGWLHeGgPU9q4
-	 Fccis0Pcu4iZA==
-X-Mailer: emacs 30.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, bhelgaas@google.com, aik@amd.com,
-	lukas@wunner.de,
-	Ilpo =?utf-8?Q?J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Isaku Yamahata <isaku.yamahata@intel.com>,
-	John Allen <john.allen@amd.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Xu Yi lun <yilun.xu@linux.intel.com>,
-	Yilun Xu <yilun.xu@intel.com>
-Subject: Re: [PATCH v4 00/10] PCI/TSM: Core infrastructure for PCI device
- security (TDISP)
-In-Reply-To: <20250717183358.1332417-1-dan.j.williams@intel.com>
-References: <20250717183358.1332417-1-dan.j.williams@intel.com>
-Date: Fri, 18 Jul 2025 16:27:11 +0530
-Message-ID: <yq5ah5z922d4.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rRfylGes"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hR131fEign3gN2Okam1xlFc3X0BfKfKUpnZ1tRWab1OjFMnQISSe682QVb3R3p1Ulobp+BzVngIysSmP4v4IA7JZQr5DByYYxLVGboaoWgcORU8SoYMHwRity2ONtXQanQ0Uqw9ykoKMfuCP5g94rMQLV41vARDbjG4v4Y5RoF8tgyApyIw+kv/zWa671axVheU5Dvcd4fZA3Dh25cic4smFgNfFH7G1xLKJ24FbpcpabAZgaf4rAAMpkviTxgEzU8cC7eUjh+37zLVxZng8D54CVmDJmKTHi8PHBbm0pNd0yXaSreqfhcZuWGt6gW5eYk1+J02DCWPyviT5idRydQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NeBp8VlqAO5neErI/5gq8AFP7GRX92M2W+8mPhSzFD4=;
+ b=O8Ike0owZmaw9EXH8RHzlTUlQ0GW2y0Yu4YYKztqHK+7yeaVEZ+O8ksCENd5SGEXctQ8S1huvbPchUeujiuGTKn8+W996NePfm+fcCFHTCN/auylyNVEStYol+rHzHPr/w5WFCl1xpdpQexrFySna+zo0RN4PRsw72BDhDQb9Z16f98A8HdxpWpIQ3y3oZCkoiLXJqbSKMfG6IOPNjHSeWXyX/HwzXRovpiMjK2a2zEFKuUE+C7rofif4dJETf6fa3ZD3ODgx9ybFjzbUYTs+GUHbZYcn61jkDrhhb7oMZaOGNFmpubhTLBjXvJwENuBP20XHlzvcNXEUpadpSw/TQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NeBp8VlqAO5neErI/5gq8AFP7GRX92M2W+8mPhSzFD4=;
+ b=rRfylGesegav8RRmS2d/OCStzqoiv2A7XPVlf4X04Gn0TLldAsXGVOpIuGdo+5p6BGPSftbpuQOUwsNZQEwYHBpcVfXk5LA4vZZipQoVHdUTbJrXP1CEsdzqTuFDEmzqBG2d+lH+2aLItDA1f5XbbZ31snqwwVbVs2dF+C+SOhkrfKFMSTwtfAVurIJv6dti1qqsdb2YEYC+bAvTYWgW4FNHRK3pSIEtwok2wfyiBhlDEkE21kxajDSrJT7YEe/Ec3ZinKgjOpA0y7/OqbkoCZibQkq5VYxOUgehUjCSWlxzhJIRMiDW390aFYav8UjgXE7gh/9cqrUdZGyGI4hlJQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by SA0PR12MB7092.namprd12.prod.outlook.com (2603:10b6:806:2d5::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.39; Fri, 18 Jul
+ 2025 12:26:48 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%7]) with mapi id 15.20.8901.033; Fri, 18 Jul 2025
+ 12:26:47 +0000
+Date: Fri, 18 Jul 2025 09:26:46 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
+	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
+	zhiw@nvidia.com
+Subject: Re: [RFC PATCH 3/3] iommufd/tsm: Add tsm_bind/unbind iommufd ioctls
+Message-ID: <20250718122646.GB2250220@nvidia.com>
+References: <yq5a5xhj5yng.fsf@kernel.org>
+ <20250529133757.462088-1-aneesh.kumar@kernel.org>
+ <20250529133757.462088-3-aneesh.kumar@kernel.org>
+ <aHYtj/jyfXD4XhZy@yilunxu-OptiPlex-7050>
+ <20250715130949.GM2067380@nvidia.com>
+ <aHfIGJzqv+4XiO7f@yilunxu-OptiPlex-7050>
+ <20250716163134.GA2177622@nvidia.com>
+ <aHi0HxV1Y1TsauxF@yilunxu-OptiPlex-7050>
+ <20250717124333.GF2177622@nvidia.com>
+ <aHoQvkK6NOSRfTyx@yilunxu-OptiPlex-7050>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aHoQvkK6NOSRfTyx@yilunxu-OptiPlex-7050>
+X-ClientProxiedBy: MN0P223CA0020.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:208:52b::11) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|SA0PR12MB7092:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8845d53f-41ac-4e98-ffb9-08ddc5f65d57
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?fUAhRWrJ9VXn7c/pz1mt5RwpJjLWBPAAJMLfIEhgvcFzqrOxpRXNPUyAR2QN?=
+ =?us-ascii?Q?0ajDivxEhMjlIIZF28/tFwCsFN/zya7I4zAhExvtSeAVC86MvTrRClcGEyIu?=
+ =?us-ascii?Q?RrDSt2X4z+H+yuvyFIPXWTFNagqbONamPbk2GhIs9DlHMpaqpt/B1kQRSQqX?=
+ =?us-ascii?Q?aMBGLsWeJR1svLR3g6uml0uoferJ7zJ0l6JjxtCAZMNj/QaURVlcAzv1qwtU?=
+ =?us-ascii?Q?ubSvlprZTTsrG4WLuac1d3zrzXYT46/POBKkkvgdTkGKGu34a4FihwCb/zRL?=
+ =?us-ascii?Q?pNAgURQa3x8i6S20SchhvaP+3k/G1uxAbMLVpqLuUreymb7YkrCibJf6qeP7?=
+ =?us-ascii?Q?yJekIKEleEXFKyvh9X2m08Zq4qw0wm6VTx+F6pUsWDi7j8cEjkhUmt0TzVsY?=
+ =?us-ascii?Q?7m3wq+s7Igtr84Yt28b7/yzQemoFFcEBkBMBOywur6jpCZ3BF5MLEWNSPgcL?=
+ =?us-ascii?Q?GSZsBL2WWHtsmzswGjb4GgiD3+ce/E0dqobdA/yZm7nSxDVrLWx+T2tTRqNg?=
+ =?us-ascii?Q?7ZDRfAiPQmnxf/SJlghOCUpdDjYFyU/31mCCnZSE4eyGisWEWJshWqWWrg1P?=
+ =?us-ascii?Q?WsLEFGMee7JcF7dTkV6lqkm7W69La4pxw+ZLeFLZUovYBXEDYi7MCmWEMTnZ?=
+ =?us-ascii?Q?pW0tvqphPys7Nk/Lkp686XtjW229CaBZfZdldQRzrcW6X0sczFXpje/4Jmqx?=
+ =?us-ascii?Q?Da/uJQh3dLOLqRzCJsmic+BczGPEJF8dD8kMqoVR4val8rrIeX7oo60WFtd6?=
+ =?us-ascii?Q?0uH5HQqOmxHPjLBCdQ2w4FsQdxJs+LBfb79Z9KYSEtyTHuDM+stbsd8joWjx?=
+ =?us-ascii?Q?p9MwzcwmCtZf+3seZmvJizNVFKlYN9f0sTGrjN6WG1DnTiWv+inLdVJDIkxx?=
+ =?us-ascii?Q?B0sF85JeWx9ZzUXqzdEsD23QNdWkMatSyqTvhQZwhu0vtWmDY8iJYAfXpkxk?=
+ =?us-ascii?Q?n9XUM1hqB68DnJZNbxfAbtPVe9PdWdHa5x2erHOuN+toOWLYLPAeY1Bxv503?=
+ =?us-ascii?Q?Wch+vz8zG2VF33iUtgBuCk/n3lKuL9PVFvTAu28MjkjqwF+OPs0ZdzxscvS+?=
+ =?us-ascii?Q?TcXHfIkIv+L3lEl7AnS6a8g8UWHE3u1x/D6WapX5I1y9N9uY4C9C424wGjC4?=
+ =?us-ascii?Q?O3w+KOAC3L7pVzT8Us6+cV/mFLf28g885zmTktlc/ycX1mID94LKFXO20daY?=
+ =?us-ascii?Q?wrdHjYkCrY1kJjsW+c9eWeWtbVrH2oGib7rYiOGVs0PpNesw3iHRuugWVHt8?=
+ =?us-ascii?Q?DkBVXDjQXW++Vnl93J6ebq71JB0jRP/YG31/kvIpT6fkkaN197raOLOLQ+n2?=
+ =?us-ascii?Q?cBcBfA7Yx3qY05U0Qq4FrGXZFSw9NiKeSkZOtVCeua42+ODrUGsUBG49lq8b?=
+ =?us-ascii?Q?PxFaSFY31t+qf9r7nKIQYh1mzli4DKwJeAsLTzSQNdm7zkyODrO85foWzGgj?=
+ =?us-ascii?Q?pHApi7wlf/0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?SJJrsrlrCVxT8CB5Y17KCHPn48i/PVZgmLioiyBpe1IeGbWvbKoYO+v3QfYz?=
+ =?us-ascii?Q?89ewwXuPFeF5IuUpURSS3AS7SFC6GMWMzO40D9KoYb8ancLkK7UtRyqDGPOJ?=
+ =?us-ascii?Q?dOmV6hqd1+tZVVI2YPENNyOJSCNfN9QS+79P/QTyxd+ujBP59Ejkln3qdipy?=
+ =?us-ascii?Q?qaOW3LjRZCWF5SU19bAct0CVMV6x/lSwxJ6cfDtfd2DRSgltTMJ0IPvcpUu1?=
+ =?us-ascii?Q?WS11zPTcaVvXKH9Ewr5rNSn62Aho8Gz+E2nTcfpvtDKAevgFc5GGRUq6Z3N3?=
+ =?us-ascii?Q?upeh+Kw1ozkEH5oemPbAItnFU1/UKbCTJHF9pA1jBQRKt1RevtBvtknrRoBy?=
+ =?us-ascii?Q?OcoTX2DvE/zjOnmPbAZNVy2ra0rSEtdxhcXYXoVe7KHZOY2xVYS4JHs4Mlxv?=
+ =?us-ascii?Q?O0VDRBLDEEBA9M50AAI2FqYHicvIIN+gdctjxTp4+QMqRw6Mk/f40/lB9Zwi?=
+ =?us-ascii?Q?48KSbo+xEHQHl/mojG2WM0R5gg0NOw3P7AiK0nbyxqafl7+HWynBb3B9bLf2?=
+ =?us-ascii?Q?NPeZwbpuuBlubXcrfnOfBvKV0aGMV+d7bNXrr0Yi/kthjvmlgjCztWX/B7hG?=
+ =?us-ascii?Q?IMu7QLpd3/1FJLRIKFZXbvrmpnfgE59+8X6arRJz10EdxvwwfjY0JZoBS72a?=
+ =?us-ascii?Q?F6h1SDqvWUVrws+EIRLhCfIaONQGAG6tZ3K9dnEHz6/WbsKofxovcnBNl1AX?=
+ =?us-ascii?Q?IWxrS0qMqPWeMmPG/TVe49PNU5yqPLWPHDndLlHLUod/iUjkds/uAFiU7zua?=
+ =?us-ascii?Q?diSDkPkHZXByx+gDGZN+pVVKCOV4mqVlozAhKq0vBMVyYDMg6YMo2DDIUoPA?=
+ =?us-ascii?Q?1mBfKcSzADJlk+aH4Pj2gWsjfec48q5TQYGs6G9EK9twZ+J16lhttgUhLoHA?=
+ =?us-ascii?Q?ajQgQckN0bbZR8cgid/3lR99LLxCqRkTpLCL86iq0vEIwn3hJI7+8ZIXoPSs?=
+ =?us-ascii?Q?ZbVkr1383IcOBX6+g+1CkRN13ZPiOt732y8usvEPmLEufDc2KAtj2ePgSJIW?=
+ =?us-ascii?Q?eY0iembgXs540WZ+AnRYn2zGFGdb7y1fLHnWyPeRoBVoXjS/w1UVygqKSsEO?=
+ =?us-ascii?Q?tfeAf4URTkHX0SHm3g1+jf2ZbORPOw6T6ehxhBf7hgUyqqs/0uGLiTLoxb/8?=
+ =?us-ascii?Q?yuruN7RX7+s4gwGdgMROoB4sD5py9BdxabNPwjnSE3X/674DWSIpvDus6ZbL?=
+ =?us-ascii?Q?9cNbWraBCDFR1l3dPO/i1BwJuJmuzBGTPt3ajL4N/MLOQgMGhbckwF9Je0fD?=
+ =?us-ascii?Q?6bqBhWReY2IsfgrwfnNmSNOIqhbNF8ZSk7UUXvslgE+XYGKC9dg5EsEF/63M?=
+ =?us-ascii?Q?yeuMyXzvQ0wn624xS58S8NPjWaaaeo6UI3VWddRsElUMWjNe45+PSC31j4iJ?=
+ =?us-ascii?Q?VM8Zsu9pOPERT8VLZag15cF61+ygEqlZ4+eApjCnAXjZs+9/ceKIXg6/Mnhb?=
+ =?us-ascii?Q?F7p3YlEK+aVWgp1S6jb93SIXT5GYA/uIsiiip17EXw2n10hbVh+Kjvyr7wVR?=
+ =?us-ascii?Q?BVYpgMh9xXQq+DY5G6AOGjH/oYTTasIoL7Jtc62p9FqjZv+qAovZINjY6Zp7?=
+ =?us-ascii?Q?QsWa4guE1vhZjunUz3bUR94Cuy2Rq1AKgcyE4gGJ?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8845d53f-41ac-4e98-ffb9-08ddc5f65d57
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jul 2025 12:26:47.7484
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nn7Q1bAjSav2cP+TX2WI6/1Hix1/CeUg40rkgDItET4O0hIjWtGeMEatyS5berER
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7092
 
-Dan Williams <dan.j.williams@intel.com> writes:
+On Fri, Jul 18, 2025 at 05:15:42PM +0800, Xu Yilun wrote:
+> > I would say this discussion is irrelevant to this case since we are
+> > not doing any kind of in-place conversion.
+> > 
+> > 1) At VM start the VMM gets the shared DMABUF and maps it to IOAS and
+> >    EPT
+> > 2) Bind request comes in, VMM unmaps shared DMABUF from IOAS and EPT
+> >    then closes it.
+> > 3) Bind is done
+> > 4) VMM opens a shared and private DMABUF FD and learns the valid
+> >    ranges in both DMABUFs (ie what PFNS are private/shared)
+> 
+> Who decides the dmabuf be shared or private? I assume you mean
+> userspace, VFIO doesn't know about the shareability of each dmabuf?
 
-> Changes since v3 [1]:
-> - Move the TSM core out of the host/ subdirectory since it is shared
->   with the guest (Aneesh)
-> - Support multiple simultaneous TSM providers (Jason, Alexey)
-> - Do not reuse the "connect" operation for both Link and Security state
->   management (Aneesh, Alexey)
-> - Derive the pci_tsm instance type from details in the @pdev or @dsm
->   properties (Aneesh)
-> - Delay TSM association until ->connect(), results in removing the need
->   for the @state attribute
-> - Introduce reverse iterators for all PCI bus and function walking.
-> - Move all per-device context setup/teardown to
->   pci_tsm_(constructor,destructor)
-> - Add pci_ide_stream_release() for scope-based cleanup of IDE setup
-> - Shorten the name of the "stream" sysfs link (Jonathan)
-> - misc fixups (Jonathan)
-> - Note creation of pci_host_bridge_type in changelog (Jonathan)
-> - Drop now unused PREP_PCI_IDE_SEL_ADDR1() and related macros (Jonathan)
-> - Open code PREP_PCI_IDE_SEL_RID_2 in its only caller (Jonathan)
-> - Clarify the specification Stream term from a Linux "stream" object
->   (Jonathan)
-> - Convert samples/devsec/ to faux device (Jonathan)
-> - Drop Date: from ABI entries
-> - Add basic driver-api documentation to build kdoc
-> - Switch to ACQUIRE()
-> - Add an explicit 'disconnect' attribute
-> - Clarify the PCI_IDE_STREAM_MAX Kconfig help (Jonathan)
-> - Use unsigned variables from sel_ide_offset (Jonathan)
->
-> [1]: http://lore.kernel.org/20250516054732.2055093-1-dan.j.williams@intel=
-.com
->
-> This set is available at tsm.git#staging (rebasing branch) or
-> tsm.git#devsec-20250717 (immutable tag). It passes a basic that
-> exercises load/unload of the samples/devsec/ modules and
-> connect/disconnect of the emulated device.
->
-> Status (complexity reductions):
-> -------------------------------
->
-> Between the support for multiple TSMs, the split of "Link" and
-> "Security" operations and inferring the type of 'struct pci_tsm' context
-> from its properties, the implementation shed complexity.
->
-> Now, ->probe() is only called in the sysfs::connect_store() path which
-> means that there is no need to track the PCI_TSM_INIT and
-> PCI_TSM_CONNECT states. Simply, when a Device Security Manager (DSM) is
-> connected, at that point all potential TDIs (assignable functions where
-> the DSM can manage its security state) are probed.
->
-> Now, initial determination of when the "tsm/" sysfs group appears
-> follows typical expectations. If at least one TSM device has been
-> registered prior to a DSM device being scanned, its "tsm/" attribute
-> group will appear. No more need for a pci_tsm_init() call via
-> pci_init_capabilities().
->
-> The pci_tsm_destroy() path is now simply arranging for
-> pci_tsm_disconnect() of all DSMs after all TDIs have gone through
-> ->remove() callback. This is accomplished with new "reverse" iterators
-> for all PCI bus walks.
->
-> Next steps:
-> -----------
-> The campaign to graduate this out of tsm.git#staging and into mainline
-> starts in earnest when samples/devsec/ + 1 vendor implementation, or 2
-> vendor implementations can demonstrate the end-to-end flow (minus
-> attestation). That is the "consensus" event horizon where prior to that
-> it seems reasonable for impacted subsystem maintainers to opt-out of
-> reviewing all the fine details under debate. Suffice to say there are a
-> lot of fine details flying around.
->
-> To that end I expect it would help to have a tracking document in
-> tsm.git#staging that catalogs the open debates and the current leanings
-> of the staging tree. That is next in the hopper.
->
-> Original Cover letter:
-> ----------------------
->
-> Trusted execution environment (TEE) Device Interface Security Protocol
-> (TDISP) is a chapter name in the PCI specification. It describes an
-> alphabet soup of mechanisms, SPDM, CMA, IDE, TSM/DSM, that system
-> software uses to establish trust in a device and assign it to a
-> confidential virtual machine (CVM). It is protocol for dynamically
-> extending the trusted computing boundary (TCB) of a CVM with a PCI
-> device interface that can issue DMA to CVM private memory.
->
-> The acronym soup problem is enhanced by every major platform vendor
-> having distinct TEE Security Manager (TSM) API implementations /
-> capabilities, and to a lesser extent, every potential endpoint Device
-> Security Manager (DSM) having its own idiosyncratic behaviors around
-> TDISP state transitions.
->
-> Despite all that opportunity for differentiation, there is a significant
-> portion of the implementation that is cross-vendor common. However, it
-> is difficult to develop, debate, test and settle all those pieces absent
-> a low level TSM driver implementation to pull it all together.
->
-> The proposal, of which this set is the first phase, is incrementally
-> develop the shared infrastructure on top of a sample TSM driver
-> implementation to enable clean vendor agnostic discussions about the
-> commons. "samples/devsec/" is meant to be: just enough emulation to
-> exercise all the core infrastructure, a reference implementation, and a
-> simple unit test. The sample also enables coordination with the native
-> PCI device security effort [2].
->
-> [2]: http://lore.kernel.org/cover.1719771133.git.lukas@wunner.de
->
-> Dan Williams (10):
->   coco/tsm: Introduce a core device for TEE Security Managers
->   PCI/IDE: Enumerate Selective Stream IDE capabilities
->   PCI: Introduce pci_walk_bus_reverse(), for_each_pci_dev_reverse()
->   PCI/TSM: Authenticate devices via platform TSM
->   samples/devsec: Introduce a PCI device-security bus + endpoint sample
->   PCI: Add PCIe Device 3 Extended Capability enumeration
->   PCI/IDE: Add IDE establishment helpers
->   PCI/IDE: Report available IDE streams
->   PCI/TSM: Report active IDE streams
->   samples/devsec: Add sample IDE establishment
->
->  Documentation/ABI/testing/sysfs-bus-pci       |  51 ++
->  Documentation/ABI/testing/sysfs-class-tsm     |  19 +
->  .../ABI/testing/sysfs-devices-pci-host-bridge |  29 +
->  Documentation/driver-api/pci/index.rst        |   1 +
->  Documentation/driver-api/pci/tsm.rst          |  12 +
->  MAINTAINERS                                   |   7 +-
->  drivers/base/bus.c                            |  38 +
->  drivers/pci/Kconfig                           |  28 +
->  drivers/pci/Makefile                          |   2 +
->  drivers/pci/bus.c                             |  37 +
->  drivers/pci/ide.c                             | 578 ++++++++++++++
->  drivers/pci/pci-sysfs.c                       |   4 +
->  drivers/pci/pci.h                             |  17 +
->  drivers/pci/probe.c                           |  25 +-
->  drivers/pci/remove.c                          |   3 +
->  drivers/pci/search.c                          |  63 +-
->  drivers/pci/tsm.c                             | 554 ++++++++++++++
->  drivers/virt/coco/Kconfig                     |   3 +
->  drivers/virt/coco/Makefile                    |   2 +
->  drivers/virt/coco/tsm-core.c                  | 198 +++++
->  include/linux/device/bus.h                    |   3 +
->  include/linux/pci-ide.h                       |  72 ++
->  include/linux/pci-tsm.h                       | 158 ++++
->  include/linux/pci.h                           |  36 +
->  include/linux/tsm.h                           |  15 +
->  include/uapi/linux/pci_regs.h                 |  89 +++
->  samples/Kconfig                               |  16 +
->  samples/Makefile                              |   1 +
->  samples/devsec/Makefile                       |  10 +
->  samples/devsec/bus.c                          | 711 ++++++++++++++++++
->  samples/devsec/common.c                       |  26 +
->  samples/devsec/devsec.h                       |  40 +
->  samples/devsec/tsm.c                          | 241 ++++++
->  33 files changed, 3078 insertions(+), 11 deletions(-)
->  create mode 100644 Documentation/ABI/testing/sysfs-class-tsm
->  create mode 100644 Documentation/driver-api/pci/tsm.rst
->  create mode 100644 drivers/pci/ide.c
->  create mode 100644 drivers/pci/tsm.c
->  create mode 100644 drivers/virt/coco/tsm-core.c
->  create mode 100644 include/linux/pci-ide.h
->  create mode 100644 include/linux/pci-tsm.h
->  create mode 100644 samples/devsec/Makefile
->  create mode 100644 samples/devsec/bus.c
->  create mode 100644 samples/devsec/common.c
->  create mode 100644 samples/devsec/devsec.h
->  create mode 100644 samples/devsec/tsm.c
->
->
-> base-commit: df877487cac3509cbae2625181e7ad6748afed24
+I imagined userspace would put a flag in the ioctl to VFIO to get the
+dmabuf kind it wants. VFIO would have to be told from iommufd what the
+per-pfn shared/private layout is and can use that to manage the
+dmabufs.
 
-This series currently doesn=E2=80=99t include the TDI bind equivalent.
-Incorporating some of the changes from patch [1] would help lay the
-groundwork for submitting the remaining POC patches.
+> > 5) VMM maps the shared DMABUF fragments to the EPT and IOAS
+> 
+> Userspace could set a shared only memory slot.
+> 
+> > 6) VMM maps the private DMABUF fragments to the S-EPT
+> 
+> Userspace could set a private only memory slot, but maybe the concern
+> is KVM can't trust userspace about the assertion of private. 
 
-Also, could you clarify the purpose of sec_probe and sec_remove? How are
-they being used?
+I imagined kvm can query the dmabuf and learn it is all private from
+VFIO. The whole dmabuf, not per-pfn. Same for #5 it can check it is
+shared memory too.
 
-[1] https://lore.kernel.org/all/20250516054732.2055093-13-dan.j.williams@in=
-tel.com
+I sort of imagine using the same mechanism for p2p where we can mark
+memory in the dmabuf with a 'provider' indicating these details. We
+will have to see.
 
--aneesh
+> If VFIO should be aware of the shareability, IOMMUFD to VFIO callback is
+> needed after TSM bind.
+
+Yes, whever this list of per-PFN shared/private must be shared between
+VFIO and the TSM.
+
+> It is simpler on kernel side. FYR, may introduce some complexity in
+> userspace, this may result in 3+ dmabufs. There may be shared holes
+> in the BAR, and kvm slot can't be gfn sparse. This may not be a big
+> problem.
+
+Userspace probably needs to create multiple slots for sparsity
+
+Again this seems much better if userspace handles it and just uses
+simple mostly existing KVM interfaces.
+
+Why 3+ dmabufs? Isn't just one shared and one private per BAR?
+
+Jason
