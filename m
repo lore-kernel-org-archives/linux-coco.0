@@ -1,170 +1,241 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C4C291882
-	for <linux-coco@lists.linux.dev>; Fri, 18 Jul 2025 09:24:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFC61FBC90;
+	Fri, 18 Jul 2025 10:57:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752830671; cv=none; b=nboU7OhpuwHEQTXFciUI7wUzFT8KVPs4ZcEg9JJxk+RPysgho3b6T69BLsYLHJN6D0IZV8gzItqqFNSTrTMLrvB12ARumJV2Ry+SpMVRHcC22IJwX/Hkv4Tqoiw++6jluZY3XGMLBs829U+iBkoR3Qh0/7A1+OuMvBhlUTHDgBg=
+	t=1752836240; cv=none; b=k/YkWPz292LMuggI+GX1nAOTru6OmQLc0hUXv8vM2WJpmYKP+8JC1oOUk5Hgi60TC4dmUE6Vz5TQDChMv2kj/1c6saSnmtd5DFPkSulX4OVs/ZgWUrnsgvOR1E/kqHeKneNCvHjBJjPlGodgxjChMinnWD93GHsckuUCq+thyXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752830671; c=relaxed/simple;
-	bh=PZMsdOrpqKKv1q53yu5dQtVH2dzWmq1v9dtg/pYbEc4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A3BkcNuhSdPyX10FgcCZtLe0btTyPe/oMzDY5FEBqfJtKhTKSaWZiSdiVIlwS9e+3ZraSoVypRuDDwfzOek9FSTzfjo1vqgZCSBBbFFiwDKnM9VYtljJliARShfe/nRjVlKrKpvU3IoYUz9hlksM9ghV9MZiOPUYSrePRSJSCCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UHoCnv1M; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1752836240; c=relaxed/simple;
+	bh=egDvUDaR9VMobj3jfwGG9Y6MP3GzIIQobcEHCHjRoKc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=gIcn7ZtiS7uyEq6pX566SpldbGqmPthZEzBSf+7PAVJCjUoBTXHO9DnGPl+TNbVNv5DtXEPitm+PbOtDeZ+n1r6ujxzlVTocUF30TFnUHr68EIeKyuS0iEPKhmtAtV8uS/HMVdvMZGaJ1q5wGm/1yfwKptKMOpHg221B6zeHalo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j8irAvlZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UHoCnv1M"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752830670; x=1784366670;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=PZMsdOrpqKKv1q53yu5dQtVH2dzWmq1v9dtg/pYbEc4=;
-  b=UHoCnv1MkY6na2KtN6cxCtPArKgUQceZIsHZYOwTW8Efa33bhAfzLHsa
-   pRSTD4A/0SXKDFRDS9Y5zGd9RSqM8YCIYk8e2cL4RQ6e7ptMo9z1fhywU
-   AdAoZR2W2b4QrGNAE4icggat2evbupWlIChBV1xOslNyDXPnfiqbeXtQB
-   KV29t0WdkJ086uhgFSFGw/cg0DkTae0309lapoYB7JuDPlzrOhEtJ4P0N
-   wib7kYkxlOZwg/M+TTEjziKp2sWZZmhbV0CfO/AFvKGNc/i1h+7JNhmu0
-   yWwMuf4NqitdSMemZDK64Zb5Vi7Yo/27wkAF5JZx+1TwJz/R1RDHUpgFP
-   Q==;
-X-CSE-ConnectionGUID: euigHA4gRzi+LVR8cEogvQ==
-X-CSE-MsgGUID: hhxwAiFRTUetnptgVgjqYg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11495"; a="55062356"
-X-IronPort-AV: E=Sophos;i="6.16,321,1744095600"; 
-   d="scan'208";a="55062356"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2025 02:24:29 -0700
-X-CSE-ConnectionGUID: AVkak5PVQ26/buTMPFH19Q==
-X-CSE-MsgGUID: szjSVkFVTDaNFmeeaAyBxA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,321,1744095600"; 
-   d="scan'208";a="157400103"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa010.jf.intel.com with ESMTP; 18 Jul 2025 02:24:26 -0700
-Date: Fri, 18 Jul 2025 17:15:42 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
-	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
-	zhiw@nvidia.com
-Subject: Re: [RFC PATCH 3/3] iommufd/tsm: Add tsm_bind/unbind iommufd ioctls
-Message-ID: <aHoQvkK6NOSRfTyx@yilunxu-OptiPlex-7050>
-References: <yq5a5xhj5yng.fsf@kernel.org>
- <20250529133757.462088-1-aneesh.kumar@kernel.org>
- <20250529133757.462088-3-aneesh.kumar@kernel.org>
- <aHYtj/jyfXD4XhZy@yilunxu-OptiPlex-7050>
- <20250715130949.GM2067380@nvidia.com>
- <aHfIGJzqv+4XiO7f@yilunxu-OptiPlex-7050>
- <20250716163134.GA2177622@nvidia.com>
- <aHi0HxV1Y1TsauxF@yilunxu-OptiPlex-7050>
- <20250717124333.GF2177622@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j8irAvlZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89909C4CEEB;
+	Fri, 18 Jul 2025 10:57:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752836240;
+	bh=egDvUDaR9VMobj3jfwGG9Y6MP3GzIIQobcEHCHjRoKc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=j8irAvlZiYSO4cwJITR2b2jVJy7ab50Eti2L3b9ZTlfZx20T4QQAz8FWx/lL03g2I
+	 vxYdlYMcpFwRYO1bqmZRm0JRY2J67aqhDEjdFmUu2LYM2iPNlh2yAIi0r6kSxeUWmE
+	 s1I4/3ff7zpYI7MrNxNWhkoJgsqTHD1ZDOEZLy36P82yp2mbNNIYMun2/nXTjZ9iHn
+	 xFS5zo26AMHeJRB/erjdvpgI6p/1QYDHGRtLNO/16ixASKu/uNeEfo00+dBNiyiruX
+	 dJTRPZi5GxvYUJSKTVhQ+eZd2T61JZ3MeB8UkVGNz43pmz+kJcJaBKGWLHeGgPU9q4
+	 Fccis0Pcu4iZA==
+X-Mailer: emacs 30.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, bhelgaas@google.com, aik@amd.com,
+	lukas@wunner.de,
+	Ilpo =?utf-8?Q?J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Isaku Yamahata <isaku.yamahata@intel.com>,
+	John Allen <john.allen@amd.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Xu Yi lun <yilun.xu@linux.intel.com>,
+	Yilun Xu <yilun.xu@intel.com>
+Subject: Re: [PATCH v4 00/10] PCI/TSM: Core infrastructure for PCI device
+ security (TDISP)
+In-Reply-To: <20250717183358.1332417-1-dan.j.williams@intel.com>
+References: <20250717183358.1332417-1-dan.j.williams@intel.com>
+Date: Fri, 18 Jul 2025 16:27:11 +0530
+Message-ID: <yq5ah5z922d4.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250717124333.GF2177622@nvidia.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 17, 2025 at 09:43:33AM -0300, Jason Gunthorpe wrote:
-> On Thu, Jul 17, 2025 at 04:28:15PM +0800, Xu Yilun wrote:
-> > > Seems to me that two DMABUFs is easier than trying to teach DMABUf
-> > > about some new attribute..
-> > > 
-> > > Userpsace can unmap all the shared DMABUFs, do a TDI BIND, then map
-> > > private DMABUFs. DMABUFs do not change from private to shared on the
-> > > fly.
-> > 
-> > But the shareability of each MMIO pfn should still be recorded at the
-> > time of TDI BIND. 
-> 
-> > Shareability is not only about hypervisor can map the
-> > MMIO or not, it is mainly about Guest should access it in a shared or
-> > private manner. According to this KVM map the pfn in EPT or S-EPT.
-> 
-> Yes, which is why having two dmabufs might be nice because you can
-> plug the public one into the EPT and the private one into the S-EPT
-> and SW can validate the right one is in the right place.
-> 
-> > For MMIO, the shareability layout is the TDI's inherence which can be
-> > get from TDI report. I.e. some MMIOs must still be accessed as shared by
-> > guest even if the device is converted to private. So I think a private
-> > DMABUF without sharebility layout can't support the TDI case.
-> 
-> IMHO this even more strongly says two DMABUFs. After binding you'd get
-> a new shared DMABUF that was limited to only the actual shared pages
-> while the private DMABUF would be limited to only the actual private
-> pages.
-> 
-> It is much simpler considering the current DMABUF APIs than trying to
-> convey per-pfn shared/private indication.
+Dan Williams <dan.j.williams@intel.com> writes:
 
-I generally think the flow you describe is good for implementation.
-But still some details, see below.
+> Changes since v3 [1]:
+> - Move the TSM core out of the host/ subdirectory since it is shared
+>   with the guest (Aneesh)
+> - Support multiple simultaneous TSM providers (Jason, Alexey)
+> - Do not reuse the "connect" operation for both Link and Security state
+>   management (Aneesh, Alexey)
+> - Derive the pci_tsm instance type from details in the @pdev or @dsm
+>   properties (Aneesh)
+> - Delay TSM association until ->connect(), results in removing the need
+>   for the @state attribute
+> - Introduce reverse iterators for all PCI bus and function walking.
+> - Move all per-device context setup/teardown to
+>   pci_tsm_(constructor,destructor)
+> - Add pci_ide_stream_release() for scope-based cleanup of IDE setup
+> - Shorten the name of the "stream" sysfs link (Jonathan)
+> - misc fixups (Jonathan)
+> - Note creation of pci_host_bridge_type in changelog (Jonathan)
+> - Drop now unused PREP_PCI_IDE_SEL_ADDR1() and related macros (Jonathan)
+> - Open code PREP_PCI_IDE_SEL_RID_2 in its only caller (Jonathan)
+> - Clarify the specification Stream term from a Linux "stream" object
+>   (Jonathan)
+> - Convert samples/devsec/ to faux device (Jonathan)
+> - Drop Date: from ABI entries
+> - Add basic driver-api documentation to build kdoc
+> - Switch to ACQUIRE()
+> - Add an explicit 'disconnect' attribute
+> - Clarify the PCI_IDE_STREAM_MAX Kconfig help (Jonathan)
+> - Use unsigned variables from sel_ide_offset (Jonathan)
+>
+> [1]: http://lore.kernel.org/20250516054732.2055093-1-dan.j.williams@intel=
+.com
+>
+> This set is available at tsm.git#staging (rebasing branch) or
+> tsm.git#devsec-20250717 (immutable tag). It passes a basic that
+> exercises load/unload of the samples/devsec/ modules and
+> connect/disconnect of the emulated device.
+>
+> Status (complexity reductions):
+> -------------------------------
+>
+> Between the support for multiple TSMs, the split of "Link" and
+> "Security" operations and inferring the type of 'struct pci_tsm' context
+> from its properties, the implementation shed complexity.
+>
+> Now, ->probe() is only called in the sysfs::connect_store() path which
+> means that there is no need to track the PCI_TSM_INIT and
+> PCI_TSM_CONNECT states. Simply, when a Device Security Manager (DSM) is
+> connected, at that point all potential TDIs (assignable functions where
+> the DSM can manage its security state) are probed.
+>
+> Now, initial determination of when the "tsm/" sysfs group appears
+> follows typical expectations. If at least one TSM device has been
+> registered prior to a DSM device being scanned, its "tsm/" attribute
+> group will appear. No more need for a pci_tsm_init() call via
+> pci_init_capabilities().
+>
+> The pci_tsm_destroy() path is now simply arranging for
+> pci_tsm_disconnect() of all DSMs after all TDIs have gone through
+> ->remove() callback. This is accomplished with new "reverse" iterators
+> for all PCI bus walks.
+>
+> Next steps:
+> -----------
+> The campaign to graduate this out of tsm.git#staging and into mainline
+> starts in earnest when samples/devsec/ + 1 vendor implementation, or 2
+> vendor implementations can demonstrate the end-to-end flow (minus
+> attestation). That is the "consensus" event horizon where prior to that
+> it seems reasonable for impacted subsystem maintainers to opt-out of
+> reviewing all the fine details under debate. Suffice to say there are a
+> lot of fine details flying around.
+>
+> To that end I expect it would help to have a tracking document in
+> tsm.git#staging that catalogs the open debates and the current leanings
+> of the staging tree. That is next in the hopper.
+>
+> Original Cover letter:
+> ----------------------
+>
+> Trusted execution environment (TEE) Device Interface Security Protocol
+> (TDISP) is a chapter name in the PCI specification. It describes an
+> alphabet soup of mechanisms, SPDM, CMA, IDE, TSM/DSM, that system
+> software uses to establish trust in a device and assign it to a
+> confidential virtual machine (CVM). It is protocol for dynamically
+> extending the trusted computing boundary (TCB) of a CVM with a PCI
+> device interface that can issue DMA to CVM private memory.
+>
+> The acronym soup problem is enhanced by every major platform vendor
+> having distinct TEE Security Manager (TSM) API implementations /
+> capabilities, and to a lesser extent, every potential endpoint Device
+> Security Manager (DSM) having its own idiosyncratic behaviors around
+> TDISP state transitions.
+>
+> Despite all that opportunity for differentiation, there is a significant
+> portion of the implementation that is cross-vendor common. However, it
+> is difficult to develop, debate, test and settle all those pieces absent
+> a low level TSM driver implementation to pull it all together.
+>
+> The proposal, of which this set is the first phase, is incrementally
+> develop the shared infrastructure on top of a sample TSM driver
+> implementation to enable clean vendor agnostic discussions about the
+> commons. "samples/devsec/" is meant to be: just enough emulation to
+> exercise all the core infrastructure, a reference implementation, and a
+> simple unit test. The sample also enables coordination with the native
+> PCI device security effort [2].
+>
+> [2]: http://lore.kernel.org/cover.1719771133.git.lukas@wunner.de
+>
+> Dan Williams (10):
+>   coco/tsm: Introduce a core device for TEE Security Managers
+>   PCI/IDE: Enumerate Selective Stream IDE capabilities
+>   PCI: Introduce pci_walk_bus_reverse(), for_each_pci_dev_reverse()
+>   PCI/TSM: Authenticate devices via platform TSM
+>   samples/devsec: Introduce a PCI device-security bus + endpoint sample
+>   PCI: Add PCIe Device 3 Extended Capability enumeration
+>   PCI/IDE: Add IDE establishment helpers
+>   PCI/IDE: Report available IDE streams
+>   PCI/TSM: Report active IDE streams
+>   samples/devsec: Add sample IDE establishment
+>
+>  Documentation/ABI/testing/sysfs-bus-pci       |  51 ++
+>  Documentation/ABI/testing/sysfs-class-tsm     |  19 +
+>  .../ABI/testing/sysfs-devices-pci-host-bridge |  29 +
+>  Documentation/driver-api/pci/index.rst        |   1 +
+>  Documentation/driver-api/pci/tsm.rst          |  12 +
+>  MAINTAINERS                                   |   7 +-
+>  drivers/base/bus.c                            |  38 +
+>  drivers/pci/Kconfig                           |  28 +
+>  drivers/pci/Makefile                          |   2 +
+>  drivers/pci/bus.c                             |  37 +
+>  drivers/pci/ide.c                             | 578 ++++++++++++++
+>  drivers/pci/pci-sysfs.c                       |   4 +
+>  drivers/pci/pci.h                             |  17 +
+>  drivers/pci/probe.c                           |  25 +-
+>  drivers/pci/remove.c                          |   3 +
+>  drivers/pci/search.c                          |  63 +-
+>  drivers/pci/tsm.c                             | 554 ++++++++++++++
+>  drivers/virt/coco/Kconfig                     |   3 +
+>  drivers/virt/coco/Makefile                    |   2 +
+>  drivers/virt/coco/tsm-core.c                  | 198 +++++
+>  include/linux/device/bus.h                    |   3 +
+>  include/linux/pci-ide.h                       |  72 ++
+>  include/linux/pci-tsm.h                       | 158 ++++
+>  include/linux/pci.h                           |  36 +
+>  include/linux/tsm.h                           |  15 +
+>  include/uapi/linux/pci_regs.h                 |  89 +++
+>  samples/Kconfig                               |  16 +
+>  samples/Makefile                              |   1 +
+>  samples/devsec/Makefile                       |  10 +
+>  samples/devsec/bus.c                          | 711 ++++++++++++++++++
+>  samples/devsec/common.c                       |  26 +
+>  samples/devsec/devsec.h                       |  40 +
+>  samples/devsec/tsm.c                          | 241 ++++++
+>  33 files changed, 3078 insertions(+), 11 deletions(-)
+>  create mode 100644 Documentation/ABI/testing/sysfs-class-tsm
+>  create mode 100644 Documentation/driver-api/pci/tsm.rst
+>  create mode 100644 drivers/pci/ide.c
+>  create mode 100644 drivers/pci/tsm.c
+>  create mode 100644 drivers/virt/coco/tsm-core.c
+>  create mode 100644 include/linux/pci-ide.h
+>  create mode 100644 include/linux/pci-tsm.h
+>  create mode 100644 samples/devsec/Makefile
+>  create mode 100644 samples/devsec/bus.c
+>  create mode 100644 samples/devsec/common.c
+>  create mode 100644 samples/devsec/devsec.h
+>  create mode 100644 samples/devsec/tsm.c
+>
+>
+> base-commit: df877487cac3509cbae2625181e7ad6748afed24
 
-> 
-> > The existing shareability layout for all guest memory space is recorded
-> > in KVM via KVM_SET_MEMORY_ATTRIBUTES, but now Sean's suggestion is
-> > giving it back to resource owners when in-place conversion makes
-> > guest_memfd fully aware of the shareability layout.
-> 
-> I would say this discussion is irrelevant to this case since we are
-> not doing any kind of in-place conversion.
-> 
-> 1) At VM start the VMM gets the shared DMABUF and maps it to IOAS and
->    EPT
-> 2) Bind request comes in, VMM unmaps shared DMABUF from IOAS and EPT
->    then closes it.
-> 3) Bind is done
-> 4) VMM opens a shared and private DMABUF FD and learns the valid
->    ranges in both DMABUFs (ie what PFNS are private/shared)
+This series currently doesn=E2=80=99t include the TDI bind equivalent.
+Incorporating some of the changes from patch [1] would help lay the
+groundwork for submitting the remaining POC patches.
 
-Who decides the dmabuf be shared or private? I assume you mean
-userspace, VFIO doesn't know about the shareability of each dmabuf?
+Also, could you clarify the purpose of sec_probe and sec_remove? How are
+they being used?
 
-> 5) VMM maps the shared DMABUF fragments to the EPT and IOAS
+[1] https://lore.kernel.org/all/20250516054732.2055093-13-dan.j.williams@in=
+tel.com
 
-Userspace could set a shared only memory slot.
-
-> 6) VMM maps the private DMABUF fragments to the S-EPT
-
-Userspace could set a private only memory slot, but maybe the concern
-is KVM can't trust userspace about the assertion of private. Like for
-private memory, KVM now verifies the slot is backed by gmem before
-allowing the slot to be private. This is some in-kernel contract.
-Without the contract, userspace could assign arbitrary memory to KVM as
-private and explode.  If VFIO is not aware of the shareability, KVM - VFIO
-can't build the contract.
-
-If VFIO should be aware of the shareability, IOMMUFD to VFIO callback is
-needed after TSM bind.
-
-> 7) Unbind request comes in, VMM unmaps both shared and private DMABUFS
-> 
-> For all error cases the kernel revokes all open DMABUFS and userspace
-> is expected to close & reopen them to recover.
-> 
-> From a KVM perspective when you tell it to map the DMABUF the VMM will
-> also tell it the shared/private, which is basically implied by the
-> GPA. There is no "conversion", userspace will destroy the memslot and
-> create new ones.
-> 
-> Isn't this pretty simple?
-
-It is simpler on kernel side. FYR, may introduce some complexity in
-userspace, this may result in 3+ dmabufs. There may be shared holes
-in the BAR, and kvm slot can't be gfn sparse. This may not be a big
-problem.
-
-Thanks,
-Yilun
-
-> 
-> Jason
+-aneesh
