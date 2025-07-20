@@ -1,93 +1,161 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36DB16DEB3
-	for <linux-coco@lists.linux.dev>; Fri, 18 Jul 2025 19:33:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033A317BA5
+	for <linux-coco@lists.linux.dev>; Sun, 20 Jul 2025 02:45:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752867222; cv=none; b=crTT4EkXyWAT0/ROO6YnGH12zoD75Esd9/ZBOXef960733H/WEW1u9UPQxuLCKZyPSh+XQX8d9s1EIJzkrAwKguRZJYvAJVDASoppJ6kcM3T4qN7biGy1/K2qzfCmrmI5LyBGWCXgW2nFK3zUUSt/qzVmjaP3XMsV47equz4PSs=
+	t=1752979557; cv=none; b=ZtbGo+oIsK6L9TKRxnDpKBvRHUzo+NeAsXZ+1WSJBJebPPVU3Co77j6XAAvdy5Dp1uOnADn2fwhA6R7R9xOD4t7z3D+/BtSdk/LbbWi4KgFIXOHWieW/QYVPeHBLVbCh72m6aVhIo4L9LouLi+zMCxYVIvZcy77HfAMvjYWc09k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752867222; c=relaxed/simple;
-	bh=CyvRbhdzl8B7/rjJd4bHIqdDQ2pFuWYnbhUcyD8opa8=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=fYm8l507iH7FjSCM4Fi3eC7VIJuI4tDLzkPRWWiu/CAjgqkaQ1si5nzq1hRxOEIzN7nOrLOOWngKX90I5ozeOjfURTgKl6/A6nbv63uoOjSN0+i4zA2onAr6gtzgGM84im3U0WNN9E5dpIYjRtJs/YdS+/cSbJA8XYdF8yxkWm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iBZA5MOs; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1752979557; c=relaxed/simple;
+	bh=fBuEzZT35RHz0npdNmgtuCBtC1upPwB5eIkUOXpKEjE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RoFfGvTYQB8oc8wJehrkrvPqsyap9gtAUlgRgB/v019v2c9Wf8OqCBJjAdJBZFc0fLrsNIFoA9QScsNgW+M58j+issoL3E8WsJKuU3OQcv5aSW6N3UFF+TFn/MSHTtZrkhP4J7K7i82BYj66upCXCRr8UfO5BDciAXYH9BR/oGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YNZ8DNZA; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iBZA5MOs"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-ae0b2ead33cso425165166b.0
-        for <linux-coco@lists.linux.dev>; Fri, 18 Jul 2025 12:33:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1752867218; x=1753472018; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=YnfIHBK1YuvATlD8pswIArS7jif8Levot+TDLWJcJyA=;
-        b=iBZA5MOspK/q/O9FZ7zVl3HdBQz8bSrpPA9uQsrQATYBfZ9ftapbuE/JeIwmobw0P2
-         aVofeK82LvLw0MXcmFwcUjA3N/Bc5u1HJl7HKS22qGvEkguec7tYO4H6MtkHnMHevnCm
-         N32pWRXp5mMyDjGl2naOG+yT2PW1CVZAtyyBdkNtQDEgQ0qubyXbbOClwXWdADNVcBeb
-         XgCjW6Rpq3loWeBt9yvRUtKpDx5xstpvjzLrjX1gYJo03wwqTDyQQdhP0yL2tRWCnW3Q
-         Nn/kJluoL7eYO/dK5WKXdW1N1/umFyFh/w+i4Hh07WUcvEtocHtqwrjXZvO3fVunD20B
-         NJ+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752867218; x=1753472018;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YnfIHBK1YuvATlD8pswIArS7jif8Levot+TDLWJcJyA=;
-        b=aw7KOxYRIb8OwRdog65TiVO3U9CdM+BIARdcYqgCA8KzItddC50CJ5Iu2dHF6UuMIl
-         So1RtVdEmMlFZt/Lqxh0McbXLHPOlJdJCiEhFVHkwA7dJF7R3HTXSHjb7krIYbUEKolR
-         WtN2lW8w3UHMR1xFL5/J28wDYxpTZEfKN9nRkC+DpJdA7IllV1d9O1yJTdPDFo4L6XPC
-         O78apLEc1PEDyRoizfGOi4+o3GI92iP0GHd18wVKakPMqzDjOOVo/vVyVmSCi2OtkFPj
-         3FpVXRH4OwWf/vFEDKmrOR5aQg3m5d9hqr1DTLbxZHTEQGUlXxl3NSlUUdZZS4+Cv7gT
-         Fkgw==
-X-Gm-Message-State: AOJu0Yw/mPTOfYJQcqO72ApoyEfA7jIxsb0xzAYgT2BgdHYKrzjb1C62
-	B0hW/L4h7LregEv3Q0KxLjCS6sRfvcRkkPdlhLyV8mYN40vwFkf3r7HGZj3kPJPlBjdukvonXvv
-	shuFxLth2ZxTNBujCv+h51AYIOL+9o7DEh+dNL9LFoffCqTm7u5dqOn/XFw==
-X-Gm-Gg: ASbGnctiEUREvEGK7EYGtFivl7ioUM2HFX5KIj28bJOCnmBistE1dTtEelXcl7n60vh
-	IFNCXyMsg6KUPNgZmKA+9JHAsnXin0yhknfOh2ag7cnkszuB2eJVnJhWAy21vOQLjB7kA5xI7cy
-	VRsNPIs07YOp1r19tmF1LB0L8nMARbXD0Y5gUdqMQlHko3vHkpzOxhx1uQ6lWzc4FfKdtzyzcwx
-	x0+Cy8TYMnhryAimi7BzbGfzHrjPH+JHd3gsK0DnJpIXwKB2pwc
-X-Google-Smtp-Source: AGHT+IHYta+rNi07yEXoPDhqcIxRkacQwgcQZnTC+LhIIF9TSXYGJ4vgr4CXdnLfCcFjLGOn2ER/TYZB0GsvQ0Bkepw=
-X-Received: by 2002:a17:907:9450:b0:ae0:c1c4:645 with SMTP id
- a640c23a62f3a-aec6601c509mr443385366b.21.1752867218403; Fri, 18 Jul 2025
- 12:33:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YNZ8DNZA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752979556; x=1784515556;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=fBuEzZT35RHz0npdNmgtuCBtC1upPwB5eIkUOXpKEjE=;
+  b=YNZ8DNZARxnYS1f+YxERIId4ZXMGvO1FQIqkrN9hksEkj3zi/fGL1S8X
+   jJFstnUADVqTDhA3lyKtOxolQ5Eau/zReE3bRuSQqVSyMrlaEkXdIuFCQ
+   uh1EdPlpipq6zhHbeZeTxl22Jm1v8FJ5H0FzeY+orEbxJ4WEH9o3mAbFR
+   MTPI2Uz+lKvW/876D/7BkXJsZYCfpCryh6WvOpK98Db2xOMVx3wW0xQOH
+   qNrVfkxnTDBcZ0rIap17QqH3AdX75Is3zDGdiP/vpk1e4S9C8kerAc41J
+   9f2XqjoYBfQDxekW8XM4ES8ycf+7+h22uq6kvKPwismzt7m+Csr2MW4D4
+   w==;
+X-CSE-ConnectionGUID: qt06oolIQq6UcQFlsomMnA==
+X-CSE-MsgGUID: 0qf+hZ7aR3yYX1luAdBjkg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11497"; a="66673305"
+X-IronPort-AV: E=Sophos;i="6.16,325,1744095600"; 
+   d="scan'208";a="66673305"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2025 19:45:56 -0700
+X-CSE-ConnectionGUID: Jw6DyhHyRUyh6q2C0oZEvw==
+X-CSE-MsgGUID: o9S8BVBpRUG21GMoZm+NmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,325,1744095600"; 
+   d="scan'208";a="189489250"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa001.fm.intel.com with ESMTP; 19 Jul 2025 19:45:53 -0700
+Date: Sun, 20 Jul 2025 10:37:04 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
+	lukas@wunner.de, suzuki.poulose@arm.com, sameo@rivosinc.com,
+	zhiw@nvidia.com
+Subject: Re: [RFC PATCH 3/3] iommufd/tsm: Add tsm_bind/unbind iommufd ioctls
+Message-ID: <aHxWUPJ+OICtbWgy@yilunxu-OptiPlex-7050>
+References: <20250529133757.462088-1-aneesh.kumar@kernel.org>
+ <20250529133757.462088-3-aneesh.kumar@kernel.org>
+ <aHYtj/jyfXD4XhZy@yilunxu-OptiPlex-7050>
+ <20250715130949.GM2067380@nvidia.com>
+ <aHfIGJzqv+4XiO7f@yilunxu-OptiPlex-7050>
+ <20250716163134.GA2177622@nvidia.com>
+ <aHi0HxV1Y1TsauxF@yilunxu-OptiPlex-7050>
+ <20250717124333.GF2177622@nvidia.com>
+ <aHoQvkK6NOSRfTyx@yilunxu-OptiPlex-7050>
+ <20250718122646.GB2250220@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-Date: Fri, 18 Jul 2025 13:33:27 -0600
-X-Gm-Features: Ac12FXxGt-REKhyWfj7dUCewekcP1SwvSvdpI7PJpb8xmhjREdmGVYZhISYEbgg
-Message-ID: <CANLsYkwPAFm6L1SvfDFvH+fUcNV775Xop2zmOm-ufWrDWCGEZQ@mail.gmail.com>
-Subject: EAT Profile for Device Attestation
-To: linux-coco@lists.linux.dev
-Cc: Thomas Fossati <thomas.fossati@linaro.org>, Mathieu Poirier <mathieu.poirier@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250718122646.GB2250220@nvidia.com>
 
-Hi all,
+On Fri, Jul 18, 2025 at 09:26:46AM -0300, Jason Gunthorpe wrote:
+> On Fri, Jul 18, 2025 at 05:15:42PM +0800, Xu Yilun wrote:
+> > > I would say this discussion is irrelevant to this case since we are
+> > > not doing any kind of in-place conversion.
+> > > 
+> > > 1) At VM start the VMM gets the shared DMABUF and maps it to IOAS and
+> > >    EPT
+> > > 2) Bind request comes in, VMM unmaps shared DMABUF from IOAS and EPT
+> > >    then closes it.
+> > > 3) Bind is done
+> > > 4) VMM opens a shared and private DMABUF FD and learns the valid
+> > >    ranges in both DMABUFs (ie what PFNS are private/shared)
+> > 
+> > Who decides the dmabuf be shared or private? I assume you mean
+> > userspace, VFIO doesn't know about the shareability of each dmabuf?
+> 
+> I imagined userspace would put a flag in the ioctl to VFIO to get the
+> dmabuf kind it wants. VFIO would have to be told from iommufd what the
+> per-pfn shared/private layout is and can use that to manage the
+> dmabufs.
+> 
+> > > 5) VMM maps the shared DMABUF fragments to the EPT and IOAS
+> > 
+> > Userspace could set a shared only memory slot.
+> > 
+> > > 6) VMM maps the private DMABUF fragments to the S-EPT
+> > 
+> > Userspace could set a private only memory slot, but maybe the concern
+> > is KVM can't trust userspace about the assertion of private. 
+> 
+> I imagined kvm can query the dmabuf and learn it is all private from
+> VFIO. The whole dmabuf, not per-pfn. Same for #5 it can check it is
+> shared memory too.
 
-There have already been some discussions on presenting SPDM
-certificates and measurements to user space [1][2] but to the best of
-my knowledge, a standard representation of that information for
-attestation by an external verifier does not exist.
+Yes.
 
-The work presented in [3] is a proposal aiming to address that by
-defining an Evidence claims format that is generic, extensible and
-architecture agnostic.  The definition supports SPDM-compliant and
-legacy PCIe devices, with room for any number of expansions to
-accommodate other bus and protocols as they emerge.  The current
-proposal targets device assignment for TEEs but can also be used in a
-CMA-SPDM context.  The EAT presented in [3] can be used in a
-stand-alone way or embedded in a platform token as needed.
+On KVM side, userspace should firstly indicate the slot type in the
+ioctl and KVM verifies. Nowadays, KVM accepts 'private slot', which can
+be private or shared. And legacy slot, which can only be shared. We
+need to introduce a new type 'private only slot', then KVM verifies
+against dma-buf.  We will see how KVM folks think about it.
 
-I was hoping to discuss this at the KVM forum but my proposal was not
-accepted.  Since Plumbers is 5 months away I decided to start the
-conversation on this mailing list.
+> 
+> I sort of imagine using the same mechanism for p2p where we can mark
+> memory in the dmabuf with a 'provider' indicating these details. We
+> will have to see.
 
-Best regards,
-Mathieu
+Yes.
 
-[1]. https://lpc.events/event/18/contributions/1955/attachments/1396/3026/PCI_Authentication_Slides.pdf
-[2]. https://lore.kernel.org/all/cover.1719771133.git.lukas@wunner.de/
-[3]. https://datatracker.ietf.org/doc/html/draft-poirier-rats-eat-da
+> 
+> > If VFIO should be aware of the shareability, IOMMUFD to VFIO callback is
+> > needed after TSM bind.
+> 
+> Yes, whever this list of per-PFN shared/private must be shared between
+> VFIO and the TSM.
+> 
+> > It is simpler on kernel side. FYR, may introduce some complexity in
+> > userspace, this may result in 3+ dmabufs. There may be shared holes
+> > in the BAR, and kvm slot can't be gfn sparse. This may not be a big
+> > problem.
+> 
+> Userspace probably needs to create multiple slots for sparsity
+> 
+> Again this seems much better if userspace handles it and just uses
+> simple mostly existing KVM interfaces.
+> 
+> Why 3+ dmabufs? Isn't just one shared and one private per BAR?
+
+Sorry, we must have 3+ KVM slots, but can have 2 dmabufs. We can map the
+file offset to pfn ranges.
+
+KVM slot can't be for sparse GFNs. If there is a shared hole inside
+private space in the same bar, e.g.
+
+0x10000000 - 0x10001fff    private
+0x10002000 - 0x10002fff    shared
+0x10003000 - 0x101fffff    private
+
+We need 3 slots.
+
+Thanks,
+Yilun
+
+> 
+> Jason
