@@ -1,103 +1,226 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE77239E91
-	for <linux-coco@lists.linux.dev>; Tue, 22 Jul 2025 10:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3E12EB5AB
+	for <linux-coco@lists.linux.dev>; Tue, 22 Jul 2025 14:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753180234; cv=none; b=KFs0cX51+AXSe0cvN7H6RuKmTbx3he0x4M+zc7AtFMsAiP6vg4F1wJHoZWOQE1bPdRIeyUx8Q/Q3nlfyeJpAlJaxq4eEwCijR2jeIoKd0n5ZVjsv2dCTxRTO2iP2ITXpgglOWBnjC+WqkRS9Kf65hfD0tJA7LLO0+Ax8SbkLJWg=
+	t=1753195247; cv=none; b=XOjgosGOC7Md1I6jnSyluvs57ok7pZsqxNO1A7hG8CpxQ3NGDb3Nxnvo0Q/n3rEg+VRQrvTb1++iUDXV7R/vtDbAUHuBSxEIuKH5rP++hB0bgEYK9slEMzpkTw5kwY/9liZy2mP2Q+2Gtfpi2Zv86cgr/0RGfA6WaJjoFSPNTCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753180234; c=relaxed/simple;
-	bh=ChJh/7o4qBTZcSBIm+hTx2YGgyQWOtnJzJ9nvD3uRcM=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=t7Q6OgbooFT/cDZf8NwM/F3YPWYy7ieBZp1Xg6y0Nuw/ro/FPJ7mrnZJK/OzQnzNPJBTmga2EbNiAZpWOVfn2rzO1+N4OhHRm7GhPDvJwLlUvX+aXhtE45Ik7O1eMGsGopcm8JKxYe7ugrnG47Kk6SRymnLub8HP29plHyfUcpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IZ3qeP4m; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1753195247; c=relaxed/simple;
+	bh=g6fr8aNxpMhPqjfbNdJAwT69KRiiao2VoPZhgIgVUdo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=j/9k8skqaUrY92El5N2BbBxFkilgIp7SUUmI4WhOGC1w0RpdGfDutvEqp78MqGZcbejbCk9GyV+nvtLmUTgjXzk80kZpal6owVx6ygNEq1JAMMzkBc17InlC15FDKzwPbRDHvBeKlY346p5W+wYqLxv7oNFdYhxEjBfEQdUR040=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NrVS0zCY; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IZ3qeP4m"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NrVS0zCY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753180231;
+	s=mimecast20190719; t=1753195244;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=1PWSG96QyOjE4owvwQsVNEPGnP0IQkpyBAmhWlD7W0g=;
-	b=IZ3qeP4mr7UuHZbK0yQHg9uU8DGGLQDuUbRP6MHv8eG6F9OrJi0BCsiEre+bPjEbWjB6gb
-	kSbVUekczcklx1vE0a7cyKpniRXIXjWXxVVmudeau4fGUQuy+Iw6L869oqKA4KG4uyXZIn
-	w7ll1FsV1bFUHkZbVfysS42ykbiH5sM=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=KLkgHc/8d7d4QDAstqhqEvMayi/3ZoWX1vWISlyZq0E=;
+	b=NrVS0zCY8HDdWIG+LpfRPZHlRy3lzaq5hVGjsJrFiojefKMdsbCB3cqg2QBXNadSOd0I45
+	G2Cb9uAwXokOisW6vbpTmb918ihR/QkZbdovemDc2NR4Vlz0WZIonjKsboWkU/znpmtp0d
+	oKsOKGJOpbDiHVrft3/Wp8x1lmNMCc8=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-357-D-Es5aosP9ilTI-WcawYVg-1; Tue, 22 Jul 2025 06:30:30 -0400
-X-MC-Unique: D-Es5aosP9ilTI-WcawYVg-1
-X-Mimecast-MFC-AGG-ID: D-Es5aosP9ilTI-WcawYVg_1753180229
-Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-70e73d3c474so76608857b3.3
-        for <linux-coco@lists.linux.dev>; Tue, 22 Jul 2025 03:30:30 -0700 (PDT)
+ us-mta-127-bl0HGdBLOA-YhMP6s3rEtw-1; Tue, 22 Jul 2025 10:40:40 -0400
+X-MC-Unique: bl0HGdBLOA-YhMP6s3rEtw-1
+X-Mimecast-MFC-AGG-ID: bl0HGdBLOA-YhMP6s3rEtw_1753195236
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4560f28b2b1so19425625e9.2
+        for <linux-coco@lists.linux.dev>; Tue, 22 Jul 2025 07:40:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753180229; x=1753785029;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1PWSG96QyOjE4owvwQsVNEPGnP0IQkpyBAmhWlD7W0g=;
-        b=V1lDAW9TY2FtJTuldoIjWL4ohbXy5MptK85sDJd+cGAIgFaI9IJUCK7/oUfYsz7f98
-         k+q7amhVOBl2bKLNrFy9tvim+TYgE737QyvLCVFFNAoN/GSopZVxs6OXJxjdQstq9eAO
-         wfaGy2IT4D5e0ARD3ad8IvEFGhufGp9e8IO4PqfnTUKPRyXCxFyJxL8HuloS4GOl09X+
-         2tXjKup5zwLc0+WtMHI8Q4pf27EqSdgoaow1uiasvd9x/xPnfRbj1M8wX05J0++fowmr
-         EqRRGIL2Foq9v7s9HsDarC0Opr39ZDsSUn8YppdkUYDaxVlQ816S6qWf0D93Tq3PXhMH
-         DRpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV0GEw+/wBxwW+M64wnu0qbaey00q9NqPnZlDk3F9UXj4c78jt93Q2ZT8yFAWFmqbYq5PxI7jtSYtFH@lists.linux.dev
-X-Gm-Message-State: AOJu0YznHd8sws8gC7DRcl3/rr16ei1EFIojjlR6syl1QnBARwBabIUQ
-	TUfwyYHMsSTDjkxPuSwkWcCXSLflWeQyiwgErA+rbOp8cuQXvruEhmCCpv6hG3mPnu7fXka0Qa4
-	LRJRnXpgNDVj7rgLiUB2MMH78zQ3cz8yBu9LYygmIWoug8evn2NMP9/XywNlrf1soop2qMoTj0b
-	UGIrFTQqjVS+Bb3GtN1JVRypK5ovdTirG9SxSj0g==
-X-Gm-Gg: ASbGncsaRkphVCe8zq35+fPuIztBwsXZuTohIX+P4VidlPWkFY/Ls7SFbhJaxI6PoAN
-	WV2HTlZq70OifxcDd0dKlVxjZmMIBn1mrMtsDwi4lYlYfiwWuKIxGQWsx91/tccF/DUBySyH3He
-	nKfQH26MvtTTHc7Iou6hJK
-X-Received: by 2002:a05:690c:4989:b0:719:61b8:ffd2 with SMTP id 00721157ae682-71961b90322mr164461467b3.1.1753180229320;
-        Tue, 22 Jul 2025 03:30:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGISDj5C7QHitDo4ATVH5vRi7lZDrexxwtfIhcGZNLfMb5GhNTevytIb9PPu58RVgHrqfwlfE0i3d5FqcfMq/4=
-X-Received: by 2002:a05:690c:4989:b0:719:61b8:ffd2 with SMTP id
- 00721157ae682-71961b90322mr164461067b3.1.1753180228718; Tue, 22 Jul 2025
- 03:30:28 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753195236; x=1753800036;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=KLkgHc/8d7d4QDAstqhqEvMayi/3ZoWX1vWISlyZq0E=;
+        b=J8UtxhUFoXVL3yKbtgoQ7ApA0QURmBaNIz1BJGCyKEyDMFwK3p3csB046BX7BQzZnL
+         0+rhpzec6ny3NEkOte6m6E19fWg3VYWSIbDHUtt096NVpyU1Iim+NQbEUdKWocSXCeEJ
+         snY4vBBMVJ4g0T8nCvInSIlCLylX0yQ+sA1lM8t0n2xNV1jIwbrOMQgPZ2HGkZxQZmtd
+         X+ESUgKenxhCS6e+evJH3gXtjt3AaADVnfAh8cNmMASFnyZ3QY5T3wiHZZ7VsQfqnnth
+         xUH/sB5M1HGyDaxgi/dJSknGLN86t4ABCk0axo8iRZv44jxVf6+f1sg0fkpZyEWTW/Ns
+         JHRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX9RzPsvnp5wKW0Hcl97CyLSqJ2DuNL25CBy9VjV/4W6nSgiOwSRr/SLlGQexPfhHCfL//22rdZPJkx@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywv2QH3GniugeVYD4xYSjMLFHM/C4Zps6BHUe1s31USom51wZho
+	jXuwKoY8wPDXZDQep7QU9K4D/LlRLbuzsr3Omrv5NqBlWtsY8K4lU0R219KgjLk5wu4XFGpY2UE
+	eLNeMhbb9ab3Q6u4nZvTyikibPZ8KhkCsB/VBcvBsi/wtojsxPokVcG6L2E7mPkU=
+X-Gm-Gg: ASbGncsAkNJTyB6+8ZxEZr1FiN9dtCVchYR8Sdjz0saEWsWwHGxZN3161pPJFG6joPv
+	T3XPTYgWhKjDQ4DjN2MGdPPJdelAaTM4uo/By8ukYsZqWl5+RnY7o1SObbOgmaDTXNrw76mgHP5
+	W0TUxuYEGyBHe8xq0mV8SftS72KjT26PVvzqd/RsiGjcIM7GZZ0qPCbEWzb9WLAH3H/OsaCNqSb
+	QXp5twrlvNNWb1Grxjl9COwQhONaFmaS6IXfk9UDZW+UiVt/ADc1p0BV8+kR41/HAnbohQQs5Lf
+	/x5JX5nQXl5layzGDV2bJSWbhgud0dDu0QMLcJDdn3hD4Vva0u1mpYelwNiOHMJ5AYQKrjdUriR
+	BFFcH7F83RId1NeW+I+1s2QLF+NDNcRgE66A0tAkikksE0VFvb/qS9lzgJJtvKdXKLPU=
+X-Received: by 2002:a05:600c:3596:b0:445:1984:2479 with SMTP id 5b1f17b1804b1-4562e031df5mr212332595e9.5.1753195235939;
+        Tue, 22 Jul 2025 07:40:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IECMtNli8iBCH8Jdtpg8WMwaAxwFDlddcCQOBvhQ52M/6+c870zweXxX/J/td5+Uj+75e/P8Q==
+X-Received: by 2002:a05:600c:3596:b0:445:1984:2479 with SMTP id 5b1f17b1804b1-4562e031df5mr212331795e9.5.1753195235265;
+        Tue, 22 Jul 2025 07:40:35 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f28:de00:1efe:3ea4:63ba:1713? (p200300d82f28de001efe3ea463ba1713.dip0.t-ipconnect.de. [2003:d8:2f28:de00:1efe:3ea4:63ba:1713])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4563b73fa43sm131117765e9.21.2025.07.22.07.40.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Jul 2025 07:40:34 -0700 (PDT)
+Message-ID: <bdce1a12-ab73-4de1-892b-f8e849a8ab51@redhat.com>
+Date: Tue, 22 Jul 2025 16:40:31 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Stefano Garzarella <sgarzare@redhat.com>
-Date: Tue, 22 Jul 2025 12:30:17 +0200
-X-Gm-Features: Ac12FXzQ0rxSkYF0t1okQw2sypqfB_27RzOI4fxyBsvNGLGDP4_M5bxDV3Jm9iw
-Message-ID: <CAGxU2F4ZVcj6VoXDnjo6ik4Oy=OY1T9Cnw1WYB5oZvzObfEuMg@mail.gmail.com>
-Subject: SVSM Development Call July 23rd, 2025
-To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
-Cc: Nicolai Stange <nstange@suse.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V9 0/7] Add NUMA mempolicy support for KVM guest-memfd
+To: Shivank Garg <shivankg@amd.com>, seanjc@google.com, vbabka@suse.cz,
+ willy@infradead.org, akpm@linux-foundation.org, shuah@kernel.org,
+ pbonzini@redhat.com, brauner@kernel.org, viro@zeniv.linux.org.uk
+Cc: ackerleytng@google.com, paul@paul-moore.com, jmorris@namei.org,
+ serge@hallyn.com, pvorel@suse.cz, bfoster@redhat.com, tabba@google.com,
+ vannapurve@google.com, chao.gao@intel.com, bharata@amd.com, nikunj@amd.com,
+ michael.day@amd.com, shdhiman@amd.com, yan.y.zhao@intel.com,
+ Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com, michael.roth@amd.com,
+ aik@amd.com, jgg@nvidia.com, kalyazin@amazon.com, peterx@redhat.com,
+ jack@suse.cz, rppt@kernel.org, hch@infradead.org, cgzones@googlemail.com,
+ ira.weiny@intel.com, rientjes@google.com, roypat@amazon.co.uk,
+ ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ kent.overstreet@linux.dev, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ chao.p.peng@intel.com, amit@infradead.org, ddutile@redhat.com,
+ dan.j.williams@intel.com, ashish.kalra@amd.com, gshan@redhat.com,
+ jgowans@amazon.com, pankaj.gupta@amd.com, papaluri@amd.com,
+ yuzhao@google.com, suzuki.poulose@arm.com, quic_eberman@quicinc.com,
+ aneeshkumar.kizhakeveetil@arm.com, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-security-module@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-coco@lists.linux.dev
+References: <20250713174339.13981-2-shivankg@amd.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ g3eXuA==
+Organization: Red Hat
+In-Reply-To: <20250713174339.13981-2-shivankg@amd.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: mF3yRZBm_bkgVizBirc3oBcJXHJdaSRdTVuX1oljjQ0_1753180229
+X-Mimecast-MFC-PROC-ID: Ml46LkJI7j580jyqUjumqXBKjb6e2IPr2veqezKB_XE_1753195236
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On 13.07.25 19:43, Shivank Garg wrote:
+> This series introduces NUMA-aware memory placement support for KVM guests
+> with guest_memfd memory backends. It builds upon Fuad Tabba's work that
+> enabled host-mapping for guest_memfd memory [1].
+> 
+> == Background ==
+> KVM's guest-memfd memory backend currently lacks support for NUMA policy
+> enforcement, causing guest memory allocations to be distributed across host
+> nodes  according to kernel's default behavior, irrespective of any policy
+> specified by the VMM. This limitation arises because conventional userspace
+> NUMA control mechanisms like mbind(2) don't work since the memory isn't
+> directly mapped to userspace when allocations occur.
+> Fuad's work [1] provides the necessary mmap capability, and this series
+> leverages it to enable mbind(2).
+> 
+> == Implementation ==
+> 
+> This series implements proper NUMA policy support for guest-memfd by:
+> 
+> 1. Adding mempolicy-aware allocation APIs to the filemap layer.
+> 2. Introducing custom inodes (via a dedicated slab-allocated inode cache,
+>     kvm_gmem_inode_info) to store NUMA policy and metadata for guest memory.
+> 3. Implementing get/set_policy vm_ops in guest_memfd to support NUMA
+>     policy.
+> 
+> With these changes, VMMs can now control guest memory placement by mapping
+> guest_memfd file descriptor and using mbind(2) to specify:
+> - Policy modes: default, bind, interleave, or preferred
+> - Host NUMA nodes: List of target nodes for memory allocation
+> 
+> These Policies affect only future allocations and do not migrate existing
+> memory. This matches mbind(2)'s default behavior which affects only new
+> allocations unless overridden with MPOL_MF_MOVE/MPOL_MF_MOVE_ALL flags (Not
+> supported for guest_memfd as it is unmovable by design).
+> 
+> == Upstream Plan ==
+> Phased approach as per David's guest_memfd extension overview [2] and
+> community calls [3]:
+> 
+> Phase 1 (this series):
+> 1. Focuses on shared guest_memfd support (non-CoCo VMs).
+> 2. Builds on Fuad's host-mapping work.
 
-Here is the usual call for agenda items for this week's SVSM development call.
-Please send us any agenda items you have in mind or raise them in the meeting.
+Just to clarify: this is based on Fuad's stage 1 and should probably still be
+tagged "RFC" until stage-1 is finally upstream.
 
-There is one item on the list till now:
+(I was hoping stage-1 would go upstream in 6.17, but I am not sure yet if that is
+still feasible looking at the never-ending review)
 
-    * Discussion about persistent storage FS: CocoonFS proposal by
-Nicolai Stange
+I'm surprised to see that
 
+commit cbe4134ea4bc493239786220bd69cb8a13493190
+Author: Shivank Garg <shivankg@amd.com>
+Date:   Fri Jun 20 07:03:30 2025 +0000
 
-We will use the LF Zoom instance. Details of the meeting can be found
-in our governance repository at:
+     fs: export anon_inode_make_secure_inode() and fix secretmem LSM bypass
+     
+was merged with the kvm export
 
-    https://github.com/coconut-svsm/governance
+	EXPORT_SYMBOL_GPL_FOR_MODULES(anon_inode_make_secure_inode, "kvm");
 
-The link to the COCONUT-SVSM calendar is:
+I thought I commented that this is something to done separately and not really
+"fix" material.
 
-    https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?view=week
+Anyhow, good for this series, no need to touch that.
 
-The meeting will be recorded and the recording eventually published.
+-- 
+Cheers,
 
-See you all there.
-
-Ciao,
-Stefano
+David / dhildenb
 
