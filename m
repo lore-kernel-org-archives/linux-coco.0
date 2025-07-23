@@ -1,73 +1,70 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3282F17BEBF
-	for <linux-coco@lists.linux.dev>; Wed, 23 Jul 2025 08:20:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709F32EF2A9
+	for <linux-coco@lists.linux.dev>; Wed, 23 Jul 2025 15:05:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753258839; cv=none; b=vF6uHYDjT0bCnSfLlKBRulAa5uGdui96iNHC4hTdGHhXhfFSlyziBgcLJFoIA6nQSIB2npukG/hQhaES50D97a9jLYummY1w8adISAaMc2ISVxfT+DvSNx2sCcr9lubrnSnCOp0NqjBJwtXbQ+jPVjhABTxNVOWkqGUrk8OZkfE=
+	t=1753283126; cv=none; b=qEQVd0AtvBHiTExmKtTXEUEGW4tUoHY4fsrvJNH2AdbpNBGOq4hiH0NgfDZAnS9aiy4VrGzi/WVmr5jZoGBpiQ3d6/maaUs0IGO7tTpgg8UdWv56eaDubzpqhxuO832PgGZfem5aYP371z6bN9F1pYQK1k3RFtZsAVihB8gNaSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753258839; c=relaxed/simple;
-	bh=hsczvWWZZK+zZzVF7FiOuyFbg4D8AetCUGPHyHYX1wY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P/b3hDdmTB/iAVrs6n5w9RfdckVLwzyuTO8spQ5KV8ki5J/QZe6x+ZspqRqsANYDB0pzddiZPkQVofp8E+hFR90h3r6hHDf5CuPDmYnyYLy/yepXFlQmLSWlS4693nVm14KFDOL+YVqqthqTtQs1Pf4+dEqiKXp48vR74MrsPkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZeM2Gzb7; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1753283126; c=relaxed/simple;
+	bh=yv5nB3643mwqFffYhxn7JpZMpQCIFo0F3qmPkPIlgM0=;
+	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=joLGcyXQwomZa0HuKx1NFUmxIDFRR2OZRIIKHiRbkZorFEphP/KkhQlVCtzQjKQeW0Bb4XNtQoO0b9xlP+kDl75HysH6SYLtOkdRsxpR7/LWMdODcvFJ2Kn2g7N9usrBxNp+WhBsCQOgmh2GjMfU678nm0ylPAHUvQWNUYbdyPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f+rOthXq; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZeM2Gzb7"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f+rOthXq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753258837;
+	s=mimecast20190719; t=1753283123;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ArrbP6ULmISQTAdQsbfYfBJ/dfwnESI5dLXQURXYbWQ=;
-	b=ZeM2Gzb79SjUckNly7CfOFvAjReMMKT/e1iqf0P+aBDYH3MUBdNzblCz2ud+dqn0gxNVd3
-	vvKpu5M9q9zaV8++nNftE0UFRVGoIjCKpd7MsKxLYXPxTG7rETOvcBtJVgBxwEhiaxs9jZ
-	QBnN2lfjDgtKB8DKvA5HPIi6rb74lVY=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=yv5nB3643mwqFffYhxn7JpZMpQCIFo0F3qmPkPIlgM0=;
+	b=f+rOthXq91A7PkLb1LJoQXCsf7uznn253tN3ge2IieIxy3FGVbeyx7ajZyN7fRx9wTe71T
+	ZFqqPZnD+mI/bosiyX2spIC/6bB2i41msOd9PqpGsH1Is1XtTz/Mzebrb0dxRf1AttqhRH
+	T9MjLkYbbX2PdbPkdSwr/yR4OLmTrr8=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-391-ZD2rVtQjNSeDhwsHvAWNSQ-1; Wed, 23 Jul 2025 04:20:35 -0400
-X-MC-Unique: ZD2rVtQjNSeDhwsHvAWNSQ-1
-X-Mimecast-MFC-AGG-ID: ZD2rVtQjNSeDhwsHvAWNSQ_1753258835
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3a52bfda108so3077853f8f.3
-        for <linux-coco@lists.linux.dev>; Wed, 23 Jul 2025 01:20:35 -0700 (PDT)
+ us-mta-556-qA4-Q_OVOJ-TH5Xbc8fC-A-1; Wed, 23 Jul 2025 11:05:21 -0400
+X-MC-Unique: qA4-Q_OVOJ-TH5Xbc8fC-A-1
+X-Mimecast-MFC-AGG-ID: qA4-Q_OVOJ-TH5Xbc8fC-A_1753283121
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45526e19f43so28358685e9.3
+        for <linux-coco@lists.linux.dev>; Wed, 23 Jul 2025 08:05:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753258835; x=1753863635;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ArrbP6ULmISQTAdQsbfYfBJ/dfwnESI5dLXQURXYbWQ=;
-        b=vZcWoQUYLMjuawt+SSZYLEhivMh+gYluKj+mjYs/HDR+2YzqG30EtUemWF8HBT0TWN
-         pGCuV5a6mVEthPdlbJJ71HkZ/xaxmVUOB4fRio8ToyfYJ7WYj1bAwdNjkFM7JZYmikqz
-         vTO+e97f2tcPXcSO5wXAPRBlxegFgCdZbgPCU2hTkLPubOCjsq6MAf89ka2426jh0Lx+
-         j4MVqTKK3YJzZdytbkHHdHMvsphKyYHjgy90dx/JK0LoIyB3I8xJPR+ivvh8kf+lgI7T
-         YtsflGBbjKgFqVkcxyAHGP60xzwuZHg4zRvwvsIta1Mg3ShwzDooS1sNdVYENbdHH/qV
-         ZMLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUdL5BsIfO4FuKFBp1543ToZO3hG1SpVyAW3SUhhiKBAa3GoYEBRJ4bCeAVJF8oF3eJh1atYDRKmfx3@lists.linux.dev
-X-Gm-Message-State: AOJu0YzIUb1zRN9RdFtzYmfyrUeZCF29mMvDCUgBXq5ks+CcPkLKIWe9
-	6JLaRlfDLSoA4dDXz7YM2DB/J9DlvL3rxe6rdFfmICfdAMIr4WBbRU3Hh7KxNgqR8Z5pMrTF/cD
-	5N3suFPzADLX+LGfnKlK+VX+3qs1Kj9bdOOCMsHD4HaBEX1Z0zHvnd5Vp68o66vM=
-X-Gm-Gg: ASbGncvnHPJQuctzIwVkwMCX8Vz61406U/mTMTw3KKFDu5JRzOfHG59QnN3rStb+F7n
-	Y5nTUnvlEzyR//eZDA0DYuJPysnLB1lcbi310Zv4VDdWEN6+EXGzJQ0JAfFesPPkmW4zUoyJy1P
-	ZmndiZSHBsRRZeGz7CXkyVPGqPoNYNCrGirAIe/qWYdszEmiav7EptsuMrr3eA3ofiALLUbqwaw
-	lPHvvEaZVSmoxdqeX+QNhctBYoAv+LzSo+7jFZrG8zUS1kwYGvHt6LkTZ88Hxb0DX6AL3846amx
-	ZBzGkIdvTsvzz3e0XlRlP6IN+0JRzqKaaw4P2F05h06sgf1G/HieIrGbvjNaXa2zn2l7vT3iqaT
-	xHKrGbY0h9I3KuUEfuX5vaGBJV5flXNR45KJmEPPP4d2PmidhqGQYZJecB4mRm2Y0hcQ=
-X-Received: by 2002:a05:6000:2088:b0:3b5:e6f2:ab4d with SMTP id ffacd0b85a97d-3b768f0784amr1449530f8f.42.1753258834417;
-        Wed, 23 Jul 2025 01:20:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGuehv3n5C5mV94SzfgBIwheXZpqlCTL4RcfpQFRxJyOhldB5Jf2Jv2Nn3bHC1HmTGXwVtUSw==
-X-Received: by 2002:a05:6000:2088:b0:3b5:e6f2:ab4d with SMTP id ffacd0b85a97d-3b768f0784amr1449465f8f.42.1753258833789;
-        Wed, 23 Jul 2025 01:20:33 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753283120; x=1753887920;
+        h=content-transfer-encoding:organization:autocrypt:subject:to:from
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yv5nB3643mwqFffYhxn7JpZMpQCIFo0F3qmPkPIlgM0=;
+        b=NKtqJx1FadawDnObxTArfLIXpV0bpMTsQKUR7apHV2/AuPE7ccjhDmUdX8pOdBmDZy
+         oO3CpG4ozkRs4RZFGKlpOqavp+a8PZ7M2SdVzYiZH2X53w9ItYErmNo0t/TY1XQeIVYz
+         RW1KJ/R8V8QFGnfx5w784fZ558YhwbM3yX+VVfTVE/OwDrSeEi10/Qwimp4BTDQHJFQy
+         tTs7clbCN/uFkkwFwD0rMjH3LCBF47Rj9IoggQjJl7eaNWb29LTul9LK7yb/wdg95N0+
+         0sy7a2lqE2zipZDhY79a7U7Iz3H6f9fIWjW4OevJ1y6JKvNwRjWgisR9VEb5laEIIlFw
+         Ai2Q==
+X-Gm-Message-State: AOJu0YxwACho6VYvTCJJl/Boer4hHPvdOr6DbtySOc+ku3rpx9Fpndc8
+	i3qgN4EomlH0pomO+36KBWmL4TeHqYonjKH7EGBwxy75riRDC/6qMt1PfdXUZWS48B9C8XITst9
+	DTP5vsdIpwYAw2yR79nL01Kg8BuSVcI+7nqQ6Z6aHkS/WK4+L+GolXjBxjjqCM/oEIh54YzEkIc
+	RV/H7L14eUxiDcSD9nOKWor3iFR22IbU8oRANN24Mows8bPKAd
+X-Gm-Gg: ASbGncs9p3vv463o4hvENbXYdCZ68CMENu3BdRz9gCODo6A3e7m6Exd/F0dwTOeGNSY
+	SbVb8kdNLFMxKjez4CiXr0tcNiUmSJ/mLDOk3YD+NcWqYwepJEso9mmU+usqw82iwIOvPMYQ1Ak
+	ySdX47pHn88P03PuH2g2QOX9B93cGQOUiSfki5I04cAsbWbapbTX75S0tZC7hMGPMJCl9CbNaDC
+	jU6vqVyBn5nWDdhB7Q0MmzE1sgjwioIiyiuiWKGu0BVIi60m78pG0MnWt6gYSfFsk4qXj6vLZTS
+	3jDU3YzKF9amqSnhXxqUcYLJ6jGhnQWEucVXRRN8OOQ5hk6gdmAnTCDnNTnNt/+j4aYDelkUu3N
+	I/shoO/axGWpdHVKKjY7yOLJlbbrsBNfbGRbYxnvLBD+WBCwyMK8jmoDa93MP0ypE1Yk=
+X-Received: by 2002:a05:600c:6992:b0:43d:46de:b0eb with SMTP id 5b1f17b1804b1-45868c99c85mr30116455e9.12.1753283119514;
+        Wed, 23 Jul 2025 08:05:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE2F5mSqLZEunEzF7urtX2WBp8ykNV6oKnn0wFMx2cm8cOAKr3D8at2B+ii/3mueYJl1zKZiQ==
+X-Received: by 2002:a05:600c:6992:b0:43d:46de:b0eb with SMTP id 5b1f17b1804b1-45868c99c85mr30113555e9.12.1753283117177;
+        Wed, 23 Jul 2025 08:05:17 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f00:4000:a438:1541:1da1:723a? (p200300d82f004000a43815411da1723a.dip0.t-ipconnect.de. [2003:d8:2f00:4000:a438:1541:1da1:723a])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b76773a0e3sm2532813f8f.17.2025.07.23.01.20.31
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b61ca2cc06sm16564115f8f.35.2025.07.23.08.05.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Jul 2025 01:20:33 -0700 (PDT)
-Message-ID: <42146bb2-c017-43dd-aee2-1f1a893d3b17@redhat.com>
-Date: Wed, 23 Jul 2025 10:20:30 +0200
+        Wed, 23 Jul 2025 08:05:16 -0700 (PDT)
+Message-ID: <37a930a0-e1ba-4be7-8b0a-4fb5409131d4@redhat.com>
+Date: Wed, 23 Jul 2025 17:05:15 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -75,36 +72,10 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V9 0/7] Add NUMA mempolicy support for KVM guest-memfd
-To: Sean Christopherson <seanjc@google.com>
-Cc: Shivank Garg <shivankg@amd.com>, vbabka@suse.cz, willy@infradead.org,
- akpm@linux-foundation.org, shuah@kernel.org, pbonzini@redhat.com,
- brauner@kernel.org, viro@zeniv.linux.org.uk, ackerleytng@google.com,
- paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com, pvorel@suse.cz,
- bfoster@redhat.com, tabba@google.com, vannapurve@google.com,
- chao.gao@intel.com, bharata@amd.com, nikunj@amd.com, michael.day@amd.com,
- shdhiman@amd.com, yan.y.zhao@intel.com, Neeraj.Upadhyay@amd.com,
- thomas.lendacky@amd.com, michael.roth@amd.com, aik@amd.com, jgg@nvidia.com,
- kalyazin@amazon.com, peterx@redhat.com, jack@suse.cz, rppt@kernel.org,
- hch@infradead.org, cgzones@googlemail.com, ira.weiny@intel.com,
- rientjes@google.com, roypat@amazon.co.uk, ziy@nvidia.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, kent.overstreet@linux.dev,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, chao.p.peng@intel.com,
- amit@infradead.org, ddutile@redhat.com, dan.j.williams@intel.com,
- ashish.kalra@amd.com, gshan@redhat.com, jgowans@amazon.com,
- pankaj.gupta@amd.com, papaluri@amd.com, yuzhao@google.com,
- suzuki.poulose@arm.com, quic_eberman@quicinc.com,
- aneeshkumar.kizhakeveetil@arm.com, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-security-module@vger.kernel.org, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-coco@lists.linux.dev
-References: <20250713174339.13981-2-shivankg@amd.com>
- <bdce1a12-ab73-4de1-892b-f8e849a8ab51@redhat.com>
- <aH-j8bOXMfOKdpHp@google.com>
- <80a047e2-e0fb-40cd-bb88-cce05ca017ac@redhat.com>
- <aIAZtgtdy5Fw1OOi@google.com>
 From: David Hildenbrand <david@redhat.com>
+To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
+Subject: [Invitation] bi-weekly guest_memfd upstream call on 2025-07-24
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -150,39 +121,36 @@ Autocrypt: addr=david@redhat.com; keydata=
  WBe5lqcozu9LpNDH/brVSzHCSb7vjNGvvSVESDuoiHK8gNlf0v+epy5WYd7CGAgODPvDShGN
  g3eXuA==
 Organization: Red Hat
-In-Reply-To: <aIAZtgtdy5Fw1OOi@google.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: TBa_uGDQF12RNtMxnLCCT-LfeljvgfhPLSMSq0KgxoE_1753258835
+X-Mimecast-MFC-PROC-ID: lxeTiQ-6EKFZc0ZLpy1vaVtr5Dy-ugc2PgiWXQDuZ3Q_1753283121
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 23.07.25 01:07, Sean Christopherson wrote:
-> On Tue, Jul 22, 2025, David Hildenbrand wrote:
->> On 22.07.25 16:45, Sean Christopherson wrote:
->>> On Tue, Jul 22, 2025, David Hildenbrand wrote:
->>>> Just to clarify: this is based on Fuad's stage 1 and should probably still be
->>>> tagged "RFC" until stage-1 is finally upstream.
->>>>
->>>> (I was hoping stage-1 would go upstream in 6.17, but I am not sure yet if that is
->>>> still feasible looking at the never-ending review)
->>>
->>> 6.17 is very doable.
->>
->> I like your optimism :)
-> 
-> I'm not optimistic, just incompetent.
+Hi everybody,
 
-Well, I wouldn't agree with that :)
+whoops, I almost forgot.
 
-> I forgot what kernel we're on.  **6.18**
-> is very doable, 6.17 not so much.
+Our next guest_memfd upstream call is scheduled for tomorrow,
+Thursday, 2025-07-24 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
-Yes, probably best to target 6.18 than rushing this into the upcoming MR.
+We'll be using the following Google meet:
+http://meet.google.com/wxp-wtju-jzw
 
--- 
+The meeting notes can be found at [1], where we also link recordings and
+collect current guest_memfd upstream proposals. If you want an google
+calendar invitation that also covers all future meetings, just write me
+a mail.
+
+To put something to discuss onto the agenda, reply to this mail or add
+them to the "Topics/questions for next meeting(s)" section in the
+meeting notes as a comment.
+
 Cheers,
 
-David / dhildenb
+David
+
+[1]
+https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
 
