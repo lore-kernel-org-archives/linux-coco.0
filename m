@@ -1,120 +1,103 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D709126A1B6;
-	Thu, 24 Jul 2025 10:47:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6F9205ABA
+	for <linux-coco@lists.linux.dev>; Fri, 25 Jul 2025 08:05:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753354075; cv=none; b=DLh15wYQjduAzA7YASNhnGjZl3KT+A9QXUkoA/+mgiJ6J8awL7L1qLNFCQ8vZ2okm+mktIW4FPThTrL5eIXYRDy3JHf4+SO3fBhtgpvgDf/avHTE//EMBHAPDyNdePtwSfAuFDaR7DmB5Hv/VUMtBYsl25SJBiT1UiuAQzLWyWg=
+	t=1753430735; cv=none; b=Cf0SF1zlgbv06+RiBp5WccmW+zFBSfwIaUpUvL2D+hP09XkdS3k/njRZw9I6uHF58DcvKFPz39gsT9Xwp2Nr71Ms8G2ORxO7DelZtoDpJuWKDkYBrPCJwVPhby+pXYgiARZlWyy8OGmUrIJOjSD6tuOW8Hu0A3KT2Au0NcBcxQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753354075; c=relaxed/simple;
-	bh=za0tp7BwBrUVSU6SuraZ5F3wSLucXvJIf5emTmKp+Ms=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bv6KZKzMl1Y/0zaqN1J65PLCpnxZlNBDFGoPx8cF5AoR9xUm2pOr8HgEV4YrKmo+6/JbUlWEnmuMb3XlFREGXQvdAIPRKx4rz0lYKe5B05gXcQM7urj3ptYBR091bB0dgPxaoRRK7LOcMJG6OAdGzKb3lLacFuGZkab7O6zJXaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BA4951A00;
-	Thu, 24 Jul 2025 03:47:46 -0700 (PDT)
-Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C7B6C3F5A1;
-	Thu, 24 Jul 2025 03:47:47 -0700 (PDT)
-Date: Thu, 24 Jul 2025 11:47:44 +0100
-From: Joey Gouly <joey.gouly@arm.com>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>
-Subject: Re: [PATCH v9 36/43] arm64: RME: Initialize PMCR.N with number
- counter supported by RMM
-Message-ID: <20250724104744.GC2753450@e124191.cambridge.arm.com>
-References: <20250611104844.245235-1-steven.price@arm.com>
- <20250611104844.245235-37-steven.price@arm.com>
+	s=arc-20240116; t=1753430735; c=relaxed/simple;
+	bh=ajTcppa1gSdeqNwkcD1rjRYogNHde5NOslHrwv9fGRY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sXkWqV//DWgr2nortyqrqK88P82nkJmd+lKMucVpJxeiGQXGy/ahDLfbZPrcTCFyROMG0luM0MgZP20gdEN77tfNtzb8zaguf+2A5swb5IbEGDhlUmce0FQyA9xE7NokjwMNxhK4oNCA+BnBQHplNIoFQkRAEdkSPcc6UU0IOI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O0J+PyCx; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O0J+PyCx"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b34a78bb6e7so1649322a12.3
+        for <linux-coco@lists.linux.dev>; Fri, 25 Jul 2025 01:05:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753430733; x=1754035533; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ajTcppa1gSdeqNwkcD1rjRYogNHde5NOslHrwv9fGRY=;
+        b=O0J+PyCxXwcVazWgdfljUP9FajNdWfIZtXZ4FOhz73vxEIAdFAwY5KMuqGdPoN3mNr
+         NSRYGnJG3viP1EJ2Qy7NKcekjWWbY/MZ2EDYK6L3rFbWLkzpGWFYf8+Arsilazk0Kkk4
+         5n1YCqPBxF9iwLccDdwUbylhA1UG249RqEIWp1VJxfIbSj0UOhm+2vg6bf2gniQT5McK
+         AZx4eTdPPW1T3M11fvuIGWfEWaGYfXHHCSu5PP23DV4sYs3yx/brmf7D1/ni1wZwKyIb
+         ukYZMUfC4g/rNu2k3kT0uUjFarA1xTFTjKl8/Q+yWSxYG4aWCVEa5G6+VuFxjDOLeFNP
+         2V7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753430733; x=1754035533;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ajTcppa1gSdeqNwkcD1rjRYogNHde5NOslHrwv9fGRY=;
+        b=gaq3I9J1Q+R3EkjBpA3PxsJr7fYu6huUqkMwvEOIiq1zf0iDt2NQmC1hR6TDLPZC3m
+         vockF8gzKvEvH00/B/MB8HorKk7CtGXhfE5ARYtcw4/yH0nr7e9eXdOHFzbtgnLj6jP1
+         cwIBGx5i1oUx0RqCnX0YzsGX79yA+kdNzGvCpU+xO1tMfHCVFjhZzAsHBsCGXKG35W11
+         89s99yy9pTpIHVY4gC4CDRF82KrvyjpTZN64WxWhmjWNniHoh1CWAW+hzNvajINWBZ+T
+         JuOwVOf+7qVgD5kQTjgWIAZ0XlicTuTJlt37nPwLUEnDtYmG2/ilLk14iItuDGRDO+Jl
+         +8iQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUdBywwZ/Xn4TuvNNA3srqk995lUv8zl6RMZcWoUb2CjxlS45rrG1VdHDmpelHlKP1qsk8zGSZImHN4@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz4BepKeqXwoquqmJByEo3e1kp8AdjpIVIVP+zOfSymvIauDXQ7
+	v2No2E/rIFZtrsSUdXrWOA8kCyIWjnYYq7gC4IhKj5R/V7b7dA3I+r8esSZAQk3814108e+4kX6
+	XWkxPZtCuv3/OSZXIFuMqVmlwBp1A7EU=
+X-Gm-Gg: ASbGncvAcMo1ngroEKrq6Hg/H9IWTCA90aCdlBsCj1vpU3UZyTJ7BqsmByec08QXBhU
+	ebOrTCUb5djzZr6Yc6WN7TKPyy0MaHIr/hWkFaEBpkDiCdoeD+ow0zRTQ7ceWrDph2c3xp1U63+
+	tDv9QNgUrBl+d/21xDm21PegUuhbOJXPjYpgaxrMiBVwKQTQ1s08pGyjkXuxJ6fNawdZci+zGl+
+	62j
+X-Google-Smtp-Source: AGHT+IH0N7juE1ML00NeiySrFmenoxzcFgUIXMma1ZSmVk4GmnlWp8/mq5UTyMmh53UW0+vZkWi5ZEkkBePcY/NEHCk=
+X-Received: by 2002:a17:90b:2809:b0:311:fde5:c4be with SMTP id
+ 98e67ed59e1d1-31e77a1a3b7mr1399394a91.35.1753430733203; Fri, 25 Jul 2025
+ 01:05:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250611104844.245235-37-steven.price@arm.com>
+References: <20250714221545.5615-1-romank@linux.microsoft.com> <20250714221545.5615-5-romank@linux.microsoft.com>
+In-Reply-To: <20250714221545.5615-5-romank@linux.microsoft.com>
+From: Tianyu Lan <ltykernel@gmail.com>
+Date: Fri, 25 Jul 2025 16:04:57 +0800
+X-Gm-Features: Ac12FXyG2VF4VdQLGnMHOU54EmL0I-F5ODIYDs9CDmGbYwFuca8sVz3NIDMA2oI
+Message-ID: <CAMvTesCjbsG_Uw_Bttw7vL6C6QDCzx-pxAi1FBGAAS_54LcqFw@mail.gmail.com>
+Subject: Re: [PATCH hyperv-next v4 04/16] arch/x86: mshyperv: Trap on access
+ for some synthetic MSRs
+To: Roman Kisel <romank@linux.microsoft.com>
+Cc: alok.a.tiwari@oracle.com, arnd@arndb.de, bp@alien8.de, corbet@lwn.net, 
+	dave.hansen@linux.intel.com, decui@microsoft.com, haiyangz@microsoft.com, 
+	hpa@zytor.com, kys@microsoft.com, mhklinux@outlook.com, mingo@redhat.com, 
+	rdunlap@infradead.org, tglx@linutronix.de, Tianyu.Lan@microsoft.com, 
+	wei.liu@kernel.org, linux-arch@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, x86@kernel.org, apais@microsoft.com, 
+	benhill@microsoft.com, bperkins@microsoft.com, sunilmut@microsoft.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 11, 2025 at 11:48:33AM +0100, Steven Price wrote:
-> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> 
-> Provide an accurate number of available PMU counters to userspace when
-> setting up a Realm.
-> 
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-
-Reviewed-by: Joey Gouly <joey.gouly@arm.com>
-
+On Tue, Jul 15, 2025 at 6:16=E2=80=AFAM Roman Kisel <romank@linux.microsoft=
+.com> wrote:
+>
+> hv_set_non_nested_msr() has special handling for SINT MSRs
+> when a paravisor is present. In addition to updating the MSR on the
+> host, the mirror MSR in the paravisor is updated, including with the
+> proxy bit. But with Confidential VMBus, the proxy bit must not be
+> used, so add a special case to skip it.
+>
+> Update the hv_set_non_nested_msr() function as well as
+> vmbus_signal_eom() to trap on access for some synthetic MSRs.
+>
+> Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
+> Reviewed-by: Alok Tiwari <alok.a.tiwari@oracle.com>
 > ---
->  arch/arm64/include/asm/kvm_rme.h | 1 +
->  arch/arm64/kvm/pmu-emul.c        | 3 +++
->  arch/arm64/kvm/rme.c             | 5 +++++
->  3 files changed, 9 insertions(+)
-> 
-> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/asm/kvm_rme.h
-> index c8564d5aaff4..ee10fc3c1f3d 100644
-> --- a/arch/arm64/include/asm/kvm_rme.h
-> +++ b/arch/arm64/include/asm/kvm_rme.h
-> @@ -93,6 +93,7 @@ struct realm_rec {
->  void kvm_init_rme(void);
->  u32 kvm_realm_ipa_limit(void);
->  u32 kvm_realm_vgic_nr_lr(void);
-> +u8 kvm_realm_max_pmu_counters(void);
->  
->  u64 kvm_realm_reset_id_aa64dfr0_el1(const struct kvm_vcpu *vcpu, u64 val);
->  
-> diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
-> index 83f957ed0b80..0afe93bc5527 100644
-> --- a/arch/arm64/kvm/pmu-emul.c
-> +++ b/arch/arm64/kvm/pmu-emul.c
-> @@ -1014,6 +1014,9 @@ u8 kvm_arm_pmu_get_max_counters(struct kvm *kvm)
->  {
->  	struct arm_pmu *arm_pmu = kvm->arch.arm_pmu;
->  
-> +	if (kvm_is_realm(kvm))
-> +		return kvm_realm_max_pmu_counters();
-> +
->  	/*
->  	 * PMUv3 requires that all event counters are capable of counting any
->  	 * event, though the same may not be true of non-PMUv3 hardware.
-> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
-> index bf814f45a387..a31920e05cf7 100644
-> --- a/arch/arm64/kvm/rme.c
-> +++ b/arch/arm64/kvm/rme.c
-> @@ -87,6 +87,11 @@ u32 kvm_realm_vgic_nr_lr(void)
->  	return u64_get_bits(rmm_feat_reg0, RMI_FEATURE_REGISTER_0_GICV3_NUM_LRS);
->  }
->  
-> +u8 kvm_realm_max_pmu_counters(void)
-> +{
-> +	return u64_get_bits(rmm_feat_reg0, RMI_FEATURE_REGISTER_0_PMU_NUM_CTRS);
-> +}
-> +
->  u64 kvm_realm_reset_id_aa64dfr0_el1(const struct kvm_vcpu *vcpu, u64 val)
->  {
->  	u32 bps = u64_get_bits(rmm_feat_reg0, RMI_FEATURE_REGISTER_0_NUM_BPS);
-> -- 
-> 2.43.0
-> 
+
+Reviewed-by: Tianyu Lan <tiala@microsoft.com>
+
+--=20
+Thanks
+Tianyu Lan
