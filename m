@@ -1,73 +1,73 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F97D192D97
-	for <linux-coco@lists.linux.dev>; Fri, 25 Jul 2025 08:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF072820A4
+	for <linux-coco@lists.linux.dev>; Fri, 25 Jul 2025 08:23:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753431566; cv=none; b=jkJVnFOeBvBLKzhyDiQFKQmNAWC+kVYeUoUKrUzI7oICSteyt+pugtgQm6l7FAzYwWU9vUIJRiq7VagVYGwX+FANm97BgTKEAP8G/mjK+ws1HrD8qMp/3TnHJII6hdTAg3u7/Vkk6NE7A4XEHQWWoOuEwKP0zYg/FVzzfv+cXsw=
+	t=1753431838; cv=none; b=WYyyvoGnSbxTHF/nZDOn9C8alArdJfcmV5k05aMVn513ZQjH/7S2+ovYKBz4dheD+QtOfbgF9HtvB+DGLmKKadbjZkds4tfPpL7lJx10i2Ex3y9wn5CgJQUQeQ1mj4+l9cCxprw4NJx1pZke7j1grGRZD0VB8ADueQrwcJemCcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753431566; c=relaxed/simple;
-	bh=sy2xJtdA/SBfuji7K5FsjuGqNTI6m2xV98GTAoHdlaU=;
+	s=arc-20240116; t=1753431838; c=relaxed/simple;
+	bh=skfHYZImCEPR8PWUsCYUavnSxBKsiLEfsDiV0RFHlDg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=f+eApKyP3qp/gRWrVB0/1V4DnWFBq/8duR0cka4t+WoJ/NvvWt/sDm2AqEnXTJGbdoRGBiEoL7jXGtJARVWhR0sxjWlb+uWBBD5JsErh5hCVRFixW+bo5hMWMy3XgewKXwA/SmN1dSxyzsfCwNciIfx6tFvSowsNs8SWu2nSLYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ETwY6Vww; arc=none smtp.client-ip=209.85.216.46
+	 To:Cc:Content-Type; b=mceGFhGEN0+nnI+Hi3lJ3EFLTT3AAKzl40ipP9x3ukkYCwln7+Stp7i8Gwt8yqKent3S1K5/5AL3t9fA/RDNIuILf2atubTvRbjXDKvPZ4VWgmD5IfucOajgxNS77eiGBhMRkq6oqtii9UFA7I5JiXI8alBTfSKOvCaOIQ63NDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IK70Zk/f; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ETwY6Vww"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-313bb9b2f5bso1662351a91.3
-        for <linux-coco@lists.linux.dev>; Fri, 25 Jul 2025 01:19:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IK70Zk/f"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-31a93a4b399so1710366a91.0
+        for <linux-coco@lists.linux.dev>; Fri, 25 Jul 2025 01:23:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753431564; x=1754036364; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1753431837; x=1754036637; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sy2xJtdA/SBfuji7K5FsjuGqNTI6m2xV98GTAoHdlaU=;
-        b=ETwY6VwweBhFx4ZCZ7OcYoJPugifYM3eMQKTkklSBD2Y1nVQh0o+CqgTXelOmpD9yr
-         t+QKWIVpUHPPcu7PINCArkhv6FebOIyg3Mncga3xWqI4qRvk0+rPV5K0q2qBKWJJ5i4v
-         a5uD5fhhRkai1DUXLB+/zTjiobPbMnWaM6lna/Wu++2GsSOiIaUPrLjQRjTTHUcjve0N
-         Cen+K/5kQRmXzVXCu4sEhagyWajI+hefsATeZG/E2T38ZRcauWMFMDT2FdgEuSvvb/mM
-         HRkLSB8PH9m2uUDT+Er9H8bbEH6NPF10iNcksgj/xN6tTr3Bv9YScpxxaXu1MVDiK2Y+
-         PKpg==
+        bh=skfHYZImCEPR8PWUsCYUavnSxBKsiLEfsDiV0RFHlDg=;
+        b=IK70Zk/fmrE1S9zwM+JQOvJZZpMWG55JD76zp3XrV+SQ++XItB2dIW/5t+DneR4KIy
+         cF4cJIfpGVwJVVcnDI0VkaEdo4tsUak3EqVrHcwlMht70QlPrw778PnaSdXgZaN/u1H5
+         glUJfz4knoB88o3UHbVT40gpW+ObICgH3qPQZ18608lABh2hguxDw6pLHsGK40plSpKB
+         ksXTJBiQu6dQvEXbZRAHaOU2VZrQ+0ZoC9Rkv5tz6TBHKVi7m+t4PkkFKMmKoVf0znMR
+         iTLrRvlqloX0fLI5SSgopel29Mx3OpuelIqKWTZtgL2U874ENUIuzHlHD0/3FVKgOcc2
+         fi9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753431564; x=1754036364;
+        d=1e100.net; s=20230601; t=1753431837; x=1754036637;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sy2xJtdA/SBfuji7K5FsjuGqNTI6m2xV98GTAoHdlaU=;
-        b=FHgxNUg54+XbNioz/STnLiSJ3NfaxypXz4FhzO0V2aNU7st8F97nHWjJRwUBAnrXGg
-         qYrFeKtcIs+s2X/WoUK6cbUvipdAoXkl3o4ZFGdsYcEi1oxrkQKfIg+LCpPcStB25S65
-         D2DwS1RlOf/t7RemHrh8NxBJRmfe7JeMN8DcdMe7VtEQIISHE2C77LZlrR8Agbgjv5mQ
-         /VemEbpQCBckOIEyhBTcACzFM7YiNJ3hTSSE137BmP8IzcINMOlUJpdlHNYqBEaR5Tfn
-         KNeYJtVbL4H+c1VWQ9khe5wIaTmFXZdE637M7JBY2hqMK0fhCCiLbh2L25sVjaA2P2uq
-         O8ng==
-X-Forwarded-Encrypted: i=1; AJvYcCWld15kzB9LZvom0lvwyWWLTHjWfwtR55VJh/0cd3AvBXjWoySxdeuWwJFe5Qt64CwL8BGRT4Tn2Jd1@lists.linux.dev
-X-Gm-Message-State: AOJu0YxnbQ1kq5TrnZ1rU5o6ztYVp+oM6jUMFgt5mVvk7A4P+txHzsRW
-	jSbF2cfxIzCABwYU+9vzxhjxvXXBbYiBpPZ+1IUlw8okvSSvno48dQi2n8kBD/zXdE+b/1UG6XH
-	oNEnxzwuXM8i8qy32osivMznEwINE7KI=
-X-Gm-Gg: ASbGncublzXQ4WzTYC7SZkNZlUo6IHsGzN0RhrNhpTkXAWVFjkLl5jDpdTqHFEsMjpH
-	hqXHBJ0IK3n63ODCbiyhwIXRWqqWprsJbqBTW87GGYI6YF/ly84f6NKrEY/oYGM87bP2MFuxU2X
-	RIQCp4znFXlFMrgcoxccRYle3w64kzdRC0Fej57wLD3pW9rtRQWqM/zvDL0pIDF8vkedZwcgfXI
-	d8pChgXJNP/Fx4=
-X-Google-Smtp-Source: AGHT+IGgzNGe1EcM8WMPC7m9XVu+3funoe1AvSjNFRR6i7PeY6XfKo0eBJhjkZ/bHAe5BjkPVXOCBAznAQXufu35cdE=
-X-Received: by 2002:a17:90b:2e8f:b0:31c:ad57:b97a with SMTP id
- 98e67ed59e1d1-31e7785830amr1445568a91.13.1753431564324; Fri, 25 Jul 2025
- 01:19:24 -0700 (PDT)
+        bh=skfHYZImCEPR8PWUsCYUavnSxBKsiLEfsDiV0RFHlDg=;
+        b=jjmgvjzjp61JmxUe3nhtYU3SATO+h0Yh6jv7mkzB4wnRDP1qOlK3IVi+i2ImBduyZp
+         NqUw+cGimj5GmLUF3tgHOZMKGpduoFoezT8hXCfrZsKatkdG57wxwPnQDp4hqrVGEK8X
+         R7kbz8Bt6XTuHfB8lHcwjSPXvsP1CoxBeUB38p+vgCkpb21BswlV28kwBam0KDwTeakq
+         zVI7OeEtouIyaFzv66kNIrv1CznffwWHOhP7GrrCifJnsPuDWfXKbI/TE7+P3SLFhSFb
+         ln+KpkC3uqMM7jJsksc7O6+MnMVupfa/Zg6M9bTqFqt3PLRei3q504O9UyPRdDtQ3wIZ
+         EThA==
+X-Forwarded-Encrypted: i=1; AJvYcCWvLBPLzBX9rxk84GKJ53tWNM6fzjEVemArCOZQrBxyc6Ew4PgomnB2WUe8IKDKkNlc6aidL92KSiAF@lists.linux.dev
+X-Gm-Message-State: AOJu0YygrEq5q8rOu+O+7eQt5HolH/MoXBCwXyk7e7fv6MdoMmhRFu+f
+	LuzbvKJZxEewYxdSsc3eZcS6BrkpFoC6pkHc/wt27QSfUsczPwENUNrXDVyNoGVH4tVU6jW/mOW
+	AzwU+qSlhKBg3/7kc4QTGZHAu4SJCPec=
+X-Gm-Gg: ASbGncuJ071TQ4Cxwyr+UeWXaGrctwvxF/XzJZqK8b8MtyMbsmdG9xA41Or35b0rPS6
+	t0A9D5Hc4r/cPqaxDNcpn9gP0BRoqJ0M4pSKmGkNvLF9RWgm3AMu9Ncy6bk6OHvrPSIlmL7YZMS
+	IkMhbJdcTNXuSdudwReVIa833CDef+IUq3NLLtMrD+s6KXpKQyIOPxSLPfJ3AQHwI33EFKFugsJ
+	XWq
+X-Google-Smtp-Source: AGHT+IF0DLuHKttF43YAHz7O6tHgoNvhE3+8geOKGjB8lYzDiT+qyeGy5nWc+F46EyDWofuUnDxfhsVhLCEV1F6KMlM=
+X-Received: by 2002:a17:90b:2751:b0:31c:39c2:b027 with SMTP id
+ 98e67ed59e1d1-31e765d03efmr1975273a91.7.1753431836653; Fri, 25 Jul 2025
+ 01:23:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250714221545.5615-1-romank@linux.microsoft.com> <20250714221545.5615-6-romank@linux.microsoft.com>
-In-Reply-To: <20250714221545.5615-6-romank@linux.microsoft.com>
+References: <20250714221545.5615-1-romank@linux.microsoft.com> <20250714221545.5615-7-romank@linux.microsoft.com>
+In-Reply-To: <20250714221545.5615-7-romank@linux.microsoft.com>
 From: Tianyu Lan <ltykernel@gmail.com>
-Date: Fri, 25 Jul 2025 16:18:48 +0800
-X-Gm-Features: Ac12FXwAvdyBnWojo-UU5PSyFhAlYyp43g5iKOGXsvpn4ryJU_iDi-VuMF_onos
-Message-ID: <CAMvTesDdCCH5HxaX8yoA0E3OFAQ-bJSJ_LrQezM6pDXx2CTO1A@mail.gmail.com>
-Subject: Re: [PATCH hyperv-next v4 05/16] Drivers: hv: Rename fields for SynIC
- message and event pages
+Date: Fri, 25 Jul 2025 16:23:20 +0800
+X-Gm-Features: Ac12FXxL4ULjVNsTL2CjM89TDvywnTWNYgT1ZW-E5i-5hFeFE92-4wgkSmYxtro
+Message-ID: <CAMvTesBMgo_u50C5_FwfdqhGy-1k1GhrMP27BL87DTuZ-ZuV+A@mail.gmail.com>
+Subject: Re: [PATCH hyperv-next v4 06/16] Drivers: hv: Allocate the paravisor
+ SynIC pages when required
 To: Roman Kisel <romank@linux.microsoft.com>
 Cc: alok.a.tiwari@oracle.com, arnd@arndb.de, bp@alien8.de, corbet@lwn.net, 
 	dave.hansen@linux.intel.com, decui@microsoft.com, haiyangz@microsoft.com, 
@@ -80,24 +80,17 @@ Cc: alok.a.tiwari@oracle.com, arnd@arndb.de, bp@alien8.de, corbet@lwn.net,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 15, 2025 at 6:18=E2=80=AFAM Roman Kisel <romank@linux.microsoft=
+On Tue, Jul 15, 2025 at 6:16=E2=80=AFAM Roman Kisel <romank@linux.microsoft=
 .com> wrote:
 >
 > Confidential VMBus requires interacting with two SynICs -- one
 > provided by the host hypervisor, and one provided by the paravisor.
 > Each SynIC requires its own message and event pages.
 >
-> Rename the existing host-accessible SynIC message and event pages
-> with the "hyp_" prefix to clearly distinguish them from the paravisor
-> ones. The field name is also changed in mshv_root.* for consistency.
->
-> No functional changes.
+> Refactor and extend the existing code to add allocating and freeing
+> the message and event pages for the paravisor SynIC when it is
+> present.
 >
 > Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
-> ---
 
 Reviewed-by: Tianyu Lan <tiala@microsoft.com>
-
---=20
-Thanks
-Tianyu Lan
