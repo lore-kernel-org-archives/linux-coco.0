@@ -1,72 +1,73 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF82B2E5414
-	for <linux-coco@lists.linux.dev>; Fri, 25 Jul 2025 11:09:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622A92E3703
+	for <linux-coco@lists.linux.dev>; Fri, 25 Jul 2025 11:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753441756; cv=none; b=T3CjLsRalrziby23jsxKsArdoypvTBRqHfNxc8pbkBPEXV5Bh9ghhZTIFDyo+E3c8kvLHDdTGD8XKmJEkO2tFvwUeaCNj18qf5OAa4JMWbwG2L4d3rpTSCtjj0uPHSj+47pa53bLxmPlvIIg83X74TZe4Nfqy8EmffqJFMfnMcc=
+	t=1753442084; cv=none; b=cJGFxD9+vGPUGDTSDVHAxbGvokk3AyDqucR7VeNYkjDGQE2n0ZgU5689CkycwQXOw8znhdSRbs/FDiMJnQu4sTzRpTJ4gW9SDkfeDOg6xzWFYbVnhNFgPY7MLc0oz6sUc/QYqicaDL87Gp2cN4azBRi2pr4MwsIVmz/iUvvevZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753441756; c=relaxed/simple;
-	bh=r6TFW6LEnDFDgljm7T9nclsKj7smdp/z2thlL3Bp7MQ=;
+	s=arc-20240116; t=1753442084; c=relaxed/simple;
+	bh=ShnHV7JNrTopJF7AM7OfGbO3XWiG23k6eeCn8GuXIpw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=km27GBAp9M12+gVvCVV978gQRmORYYjE40Y4FQcI6PWlNQ2EB2sT1sDTu+QE0KsrtOGaCU1p/yvWX24GHK5/rrI4pyJDbfX7zQtcpWRHfm3tgg1BQhb4QMrggGzauknVlkWcXj1rl7Zg1hCiPdx5/B4uiG+XZ6qzbQPW1opNO0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hkoQxjM2; arc=none smtp.client-ip=209.85.215.176
+	 To:Cc:Content-Type; b=uATBsztbN4EQt42hnTJnsC26eQZiacCsP3OEf0X7NL4H+6Zygv7OpmaQjbzl9A1swPPGZiVGFVlgQH3su+wWWeOmsZ3zRGBEKxvLwO4SbKLqM9ectEwzIjSQzr557seVx9DWJFNVnTePFnpL3EeRIhtu2PpH1r6XSfoxX4sfkxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hqH9eWXB; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hkoQxjM2"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-b3226307787so1707158a12.1
-        for <linux-coco@lists.linux.dev>; Fri, 25 Jul 2025 04:09:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hqH9eWXB"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-234bfe37cccso16619305ad.0
+        for <linux-coco@lists.linux.dev>; Fri, 25 Jul 2025 04:14:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753441754; x=1754046554; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1753442083; x=1754046883; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=G4dcsgHJsiFuB5DH2cQD4a717boBYqK/NeHn/u7KI9k=;
-        b=hkoQxjM2YSs4H5/XyBiBPBNlevYQn1RmRCP0XRhX6vqliGHEQYWgp7izrqlZGQsEfp
-         xfa+gCCpKhTcZqU/8iPNDHZbfA/ysZR3JwB4jPr2t6bssaw+u2Cl/laZFqSrv98WtP0r
-         JM7Tb/rnVIfOkvw4sCEmuFhf2qY4ZdFpDT6RHu/Zykb69U0sb+eEH2Evnqq+TQSlDFeF
-         blK0bnb7tYLlyfLA/wEbZm3bLieBLGf3bQmMz5IXPAJzYRHaKJs01LfGWa/kLgScjVmb
-         CETfSpLYNSMdBkn7gGGQaolgEQX1q1M75+ObX2/enQ6wVtR+DN+1jKqN2Are9Ex3DJT8
-         xEIA==
+        bh=AaiH/38WONPy8fzRyhRHdFQdB6YbrzolydS9CtzX8Do=;
+        b=hqH9eWXBBZb2UB2AuFN+ccjZzDwhIYqGFyqt1Vvexdp6yowBFwcCHg89lyRo6UUQvF
+         DbdzD1AeLaIlMV5XcA+nl54dqBQU+pJ9prwXaiWw9LE0HlwnDAoBPQSQ4+I3zrpIyNKI
+         1YymjK3mWzSyzMhkEh+YgrpAgGWNhY5tG0OTPCAdYJtBrxiv4u2bGRtDEYxKKGn7FaWh
+         A0uQfyLSst7O2YfjJhIx4wZzkPA6nxzOqsbHpf5YzHoA/V5hmu2p9paLs9VZoGtuaYKv
+         0989bj/gj/trEzo6aLRo9dwAeFpAYGXckDVBMMrW2sFVq6LHEzq09v7FPC0Ld5td98LG
+         rNIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753441754; x=1754046554;
+        d=1e100.net; s=20230601; t=1753442083; x=1754046883;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=G4dcsgHJsiFuB5DH2cQD4a717boBYqK/NeHn/u7KI9k=;
-        b=nkQaXELYncemVqZ5yCf4BnVIXnqFKRn3zXPb5rvrhb57+PjeW+L/mMANQyKMTL3JIV
-         h+Wg2ike4MA73ybffV82AAB9ups8hA4k+V++n3zPYy4J4kVg5dblja1vovW29g2sV1sN
-         uFhvtffJGPshOoJ6sf4/+c3xIXiXiZrhOW72KJoQbr6zoD6zFwc5sxML+R4Cu+VSkHBd
-         TvwN2Ig5M/T5VioBLra/iBDPEWd9ZTn+v+I5ykWVk00kdbeG6gntLPTubkUsTk9W/Z4e
-         B76DRZ+TGNSMSkOukZFnshB4g00iA0lVrp+WNCMwgZY+go3BJUktUh91YxYni1mEsENc
-         V6SQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUIlP/tCKGSJOlvYs35QlkWUDy5GuVqvONYra9wSNuyv+/cLrPd7NruhKsSt8wv1JS/DBdB/6ZHgD5m@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw/BQf2VdN1DPIdhmsGESJJy9f/7535DNsLMsdSK5MXraDQaEHS
-	aw9CE+cwMWWE91V+F7wiZkqfoqUEA4c6XRo+M62BGlUyI07Nxt7ytmcLtQPpLMmqAmDcqIxPdrw
-	MmxQq47YqVhYFtG+GrgLh6kiZL1oX94c=
-X-Gm-Gg: ASbGncsip6nc+X2WcZAvR9SW4yrMCzLqyzTSeVD+xHlxuSzcTO9e88A5Fud1IQH04Qb
-	9KNhXW0Oxm0KxCcZ1mBaRkmKETwfS2flxsbB/2SGslrXW8rK0irwuN7NttCQ9jvBXEJ6On0JFyn
-	AklDqjR53VhaZ5ff3tVGzXk3WIRLtBDsOjByAoNrtvAMCUgahgK1K6LFpQdcB2nj+rXxD/dL+8O
-	8C3
-X-Google-Smtp-Source: AGHT+IHzc69ul6W9dr1PZNQjrkdeeaQAbz/elxAykodnDXCU37bqxvv59Sf0g3PkwZUP1bQTMcpl5i4V0RAyNvW6vGY=
-X-Received: by 2002:a17:90a:d40e:b0:313:1e9d:404b with SMTP id
- 98e67ed59e1d1-31e7783b3c0mr2460183a91.2.1753441754040; Fri, 25 Jul 2025
- 04:09:14 -0700 (PDT)
+        bh=AaiH/38WONPy8fzRyhRHdFQdB6YbrzolydS9CtzX8Do=;
+        b=fgaIPLrX+SyA8LC+mL8Jg21h3zmpS7dN2f9tgMjKDy32Y03pdAri2g0aQwKmScRLBv
+         Wkhm6WXQQ2hQO9EqqpAsGDYLzMbrgPKD2ySYyIRhDxH3jGtgl2H2m4U8JeE6BPak6ehK
+         w7sDyH31PMdaD0E76strrYuDGglU6KBMZ66Mv7yQ/NYWTWmuD2ol30DjrOoWdhrkQa6h
+         EwuEX+U7KHoznIGpxhLphCHgvAbJssepdsdYQ8y6BLHmd47m2tlOOJ07sT+JElDkaQHo
+         im4SozLX5zHJfQcP2wCA26ZEEAZBnQ9WzkobUJE6QCC7sSBIsRSr/+mU8OK6EqlwDLCI
+         Eunw==
+X-Forwarded-Encrypted: i=1; AJvYcCU8EHJCMr1UqdzC/98QhzU4KsTYOXi6rFhfSWVfJF0ZL/anCqWVxuuJJZAlKs5cRGDJSE6ADdUZeYwt@lists.linux.dev
+X-Gm-Message-State: AOJu0YxnIIw9EuBuAUlnmpfAOWWQwAuZTsZ0VGINq+O+6ROFyuxeOx05
+	RZ8fLkb+vqB25PMitetKPuSOWKOoXkpcVhy7sOAvDPAi6oMVegcW0gi8xll1NV4fx3bPZitUAvx
+	L69thoBzIX5BuaXNpZljEdMmS6XiGaVU=
+X-Gm-Gg: ASbGncsSV3kDc3PFQPGA/c6VUjWtQXKL9CErtmRXTFRL8v/aMR8MhT0g9MSjBLuB0KP
+	yxptXpKXZOmkHaykAG0sJnOxcY+XktrkqhHG1j6qGNTx5qbscDPckIYDKyZx1El0ix/i42n860W
+	tIZ3z/BRECoIigzyEVlhTLmaKlm42sMXKT2A5Ac2n50qE6CajQXLgd9eBS6kr9m5gUdgiDI1yvK
+	pzr
+X-Google-Smtp-Source: AGHT+IFVx1ZwuhzWu29nMel9dpd38C5+YSpTw1UCZrJubHtDeVnxnQB0fu/r5r4nXrA8TmFpU3Uh7Qk/EellC8klWWQ=
+X-Received: by 2002:a17:902:e948:b0:23f:b09f:52c7 with SMTP id
+ d9443c01a7336-23fb3043a03mr26463905ad.23.1753442082654; Fri, 25 Jul 2025
+ 04:14:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250714221545.5615-1-romank@linux.microsoft.com> <20250714221545.5615-9-romank@linux.microsoft.com>
-In-Reply-To: <20250714221545.5615-9-romank@linux.microsoft.com>
+References: <20250714221545.5615-1-romank@linux.microsoft.com> <20250714221545.5615-10-romank@linux.microsoft.com>
+In-Reply-To: <20250714221545.5615-10-romank@linux.microsoft.com>
 From: Tianyu Lan <ltykernel@gmail.com>
-Date: Fri, 25 Jul 2025 19:08:37 +0800
-X-Gm-Features: Ac12FXzPuW-X6w99YdkxRL9JtBmW1hyu8BbtCuoFQLmf7Mp6jVRHMfrBCkYMIAg
-Message-ID: <CAMvTesDEqDKXdFZ6+k6nrvEx-9+HQuC_dOdmoN5SqXmoCEKNXg@mail.gmail.com>
-Subject: Re: [PATCH hyperv-next v4 08/16] Drivers: hv: remove stale comment
+Date: Fri, 25 Jul 2025 19:14:06 +0800
+X-Gm-Features: Ac12FXwWTPyxekGMep4sx35p32LI3MXjz9EYbsvnC9mgbg1lm2slnKe57OCBYTs
+Message-ID: <CAMvTesCWTcXLxjOVyNF4pTqaQkXQsgKBXn1TQdK+n-9TfWfndA@mail.gmail.com>
+Subject: Re: [PATCH hyperv-next v4 09/16] Drivers: hv: Check message and event
+ pages for non-NULL before iounmap()
 To: Roman Kisel <romank@linux.microsoft.com>
 Cc: alok.a.tiwari@oracle.com, arnd@arndb.de, bp@alien8.de, corbet@lwn.net, 
 	dave.hansen@linux.intel.com, decui@microsoft.com, haiyangz@microsoft.com, 
@@ -82,34 +83,45 @@ Content-Transfer-Encoding: quoted-printable
 On Tue, Jul 15, 2025 at 6:16=E2=80=AFAM Roman Kisel <romank@linux.microsoft=
 .com> wrote:
 >
-> The comment about the x2v shim is ancient and long since incorrect.
+> It might happen that some hyp SynIC pages aren't allocated.
 >
-> Remove the incorrect comment.
+> Check for that and only then call iounmap().
 >
 > Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
 > ---
->  drivers/hv/hv.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
+>  drivers/hv/hv.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
 >
 > diff --git a/drivers/hv/hv.c b/drivers/hv/hv.c
-> index 816f8a14ff63..820711e954d1 100644
+> index 820711e954d1..a8669843c56e 100644
 > --- a/drivers/hv/hv.c
 > +++ b/drivers/hv/hv.c
-> @@ -266,11 +266,7 @@ void hv_synic_free(void)
->  }
+> @@ -367,8 +367,10 @@ void hv_synic_disable_regs(unsigned int cpu)
+>          */
+>         simp.simp_enabled =3D 0;
+>         if (ms_hyperv.paravisor_present || hv_root_partition()) {
+> -               iounmap(hv_cpu->hyp_synic_message_page);
+> -               hv_cpu->hyp_synic_message_page =3D NULL;
+> +               if (hv_cpu->hyp_synic_message_page) {
+> +                       iounmap(hv_cpu->hyp_synic_message_page);
+> +                       hv_cpu->hyp_synic_message_page =3D NULL;
+> +               }
+>         } else {
+>                 simp.base_simp_gpa =3D 0;
+>         }
+> @@ -379,8 +381,10 @@ void hv_synic_disable_regs(unsigned int cpu)
+>         siefp.siefp_enabled =3D 0;
 >
->  /*
-> - * hv_synic_init - Initialize the Synthetic Interrupt Controller.
-> - *
-> - * If it is already initialized by another entity (ie x2v shim), we need=
- to
-> - * retrieve the initialized message and event pages.  Otherwise, we crea=
-te and
-> - * initialize the message and event pages.
-> + * hv_synic_enable_regs - Initialize the Synthetic Interrupt Controller.
->   */
->  void hv_synic_enable_regs(unsigned int cpu)
->  {
+>         if (ms_hyperv.paravisor_present || hv_root_partition()) {
+> -               iounmap(hv_cpu->hyp_synic_event_page);
+> -               hv_cpu->hyp_synic_event_page =3D NULL;
+> +               if (hv_cpu->hyp_synic_event_page) {
+> +                       iounmap(hv_cpu->hyp_synic_event_page);
+> +                       hv_cpu->hyp_synic_event_page =3D NULL;
+> +               }
+>         } else {
+>                 siefp.base_siefp_gpa =3D 0;
+>         }
 > --
 > 2.43.0
 >
