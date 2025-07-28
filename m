@@ -1,349 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB79627465B;
-	Mon, 28 Jul 2025 13:56:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124291ACEDA
+	for <linux-coco@lists.linux.dev>; Mon, 28 Jul 2025 14:08:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753710983; cv=none; b=aLxD9HTupQKYTO7uPajqVhtsONEX22yow1is/dnIqFQ5V9FTHP+Zu3dSu7EvljGlTG/Cei1WAP0otO1l3lmdiKxs5SkqKGNn3pI3gtu58hB1RptMJX0dw4Xm5XWlc/N6BomL8JI2odpEZAncBWPZ0nPV9Xy1TuKsVr80N3eRR3M=
+	t=1753711726; cv=none; b=N/IoUXn5K6Bh82/ZpvPJwoFvIImxe/a6z/szRanmDDvoLoN73qUB0gJmB+yVr2kUuVoUsg5gZIRwmcWdwodKlnjr4+NCMTZA7t3WWFtCHCRrHZQiMm5W0jyrOsMZ8toB6LBIeWqY8if9n/ZaNgsY/IXqwZG0ahLuf8X452VSQEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753710983; c=relaxed/simple;
-	bh=zn8+WC3ldTbm6RNjuQz9vx5QH2UWKPQEGiie3mc/TX0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QAwCUOnW4/9/pPMLYAwkbil8VV6arSqswqmq6Z36SNOpd0vwTcd/BWDFeh6H1wtWEkB2XAl9+lRE7nuQGnttt4AATuO6bQZ8qRe4WPnkKkCjvI0LUJ592a9tx9MyXiIcd/gxCoULDPxNIuyQji967KC71hN8pxSPw6Ptsvm77dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iwDn3PJK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753711726; c=relaxed/simple;
+	bh=4kahnbCUUVK18hvpSBxURKB9raQB46M0iQ5FOKtQghE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q+hniWOQ2rWLAI8Hm06w77eHX6tICqyztl6+bcrx57Cg5d2t7cg3J66PDURWhKv7FeZlxfX69D+5VSzgLQVAoG9EPVEaTBChFDRKwCWRsc7MKOKb4HRfeIToXijdn+jHACFikHDvRriAVC9dO6Rl5q9o7dYatJPd6H4x1qKc5eE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=C559wDSm; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iwDn3PJK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363ECC4CEE7;
-	Mon, 28 Jul 2025 13:56:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753710983;
-	bh=zn8+WC3ldTbm6RNjuQz9vx5QH2UWKPQEGiie3mc/TX0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iwDn3PJKkGU3RyLVl3OxHfdMUwn2VTXCyKVJnN/2hUdDC+s0UE7n84uOsgnCL8we7
-	 kVlyHvgckHYXkaTMT1bY5Jwx7yWqHNc/h6/g0RjNDl8mYOdYTTY6U7jQDkQPG2gpzE
-	 Rx076j8OEGtXyTyMq57DxranmZK0MvhRtZSdzo66K5s2r3e2/PHQ6KKvSZkZqYQLBr
-	 exsNZsiuLFig4kCbDo0KZf6nApqMGZ+NO+AEVLhV++10wGSMwp9+rz38dN2qM2vN0C
-	 +tzTcNyKO0XbctfM0ibZN7vGCvo254LJbJCsm08jMv2l5fJUl88PGu/WDqCDhGd2nD
-	 H4rOXAel8FThA==
-From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-To: linux-coco@lists.linux.dev,
-	kvmarm@lists.linux.dev
-Cc: linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	aik@amd.com,
-	lukas@wunner.de,
-	Samuel Ortiz <sameo@rivosinc.com>,
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="C559wDSm"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4ab8e2c85d7so58984821cf.2
+        for <linux-coco@lists.linux.dev>; Mon, 28 Jul 2025 07:08:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1753711723; x=1754316523; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4kahnbCUUVK18hvpSBxURKB9raQB46M0iQ5FOKtQghE=;
+        b=C559wDSmPJulpG31WSKvuAZsusIH3s+Oj9hxMBMhOAXbmbElL9HwX1CuCuZrWvcxRu
+         XjvEbIMfaQivMPnuaUE08YQsMn0w+12LfhhdhRFADGmi1ZkG9X/CylgUvu90OiXReX7P
+         6L3S7t5y1/VjF77qjwD45dagL5pkQe3TBhKBQd7OF01tWUBrTdVqVVaF4zFn13iVA+AW
+         lZF0UM3xvuRk7rwX4AudOsinUzIBi9UZyQMSBBHlNrdcQshUFNRGH1fywca7WXcCte6C
+         lE7tvpj8WpagC4DDSkBjoOQTiLxwlHeos0eOwPZTy/z0HVYtgleZnn2eFA06sYuLInJn
+         uJdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753711723; x=1754316523;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4kahnbCUUVK18hvpSBxURKB9raQB46M0iQ5FOKtQghE=;
+        b=LyYaet7SDIMxuiSIllj4akuF1zm7INAIJLI0nPHbiiwo3ZiTOpK+pXJiRgtzGIrwTO
+         It/iAETybTdpd9U5R9zV1hzH88EA2xWsM9vzHpMt1+MDCX5W1oJMl8V72kjU/j80GNtA
+         ljyNdJfOxp30cm3l/VGUoS/Ou4JCESxU/cGWTWaSEXdoP4/by+T6P+gJ5YBwO4Uk2L7M
+         yJmfxjACi6kGuhTO1VDy76fkSdGrnf0Zd3hPLnWv4Opg/LCr6Yqkr6ba/buKvN+DRwvm
+         HrWU9FVUT5GCbnk+4KvCf/Dek+/syYQkyZtzrX1uYlUpjrnnpk1vvvPWCHPqLVrbvTKm
+         TFeg==
+X-Gm-Message-State: AOJu0Yyf2f+arDoKd3dKU7sJEh+NTbO3GR8vmeAkJaMOpTho+4nWckpm
+	p/ZcOajFcBWfhhg6uOset5pfJYrivtuIwq8Z/xALhd5/PjnaHSjhk/e8X0d9lARKa7Q=
+X-Gm-Gg: ASbGncsE8BaBNexv8vHeYw0lpmWZ1RoETyNSRTItp/9K9/AXQR7ZGiMIGHJ/TYOkGjO
+	1tYyKJt3sCt7F87QAK+1EXlB8cxVPw8v64dmdIGDCyL3J5mb3v4pGD6ViFHefDCXTINiYbaqjty
+	qpU//q1Nj0jgyLwW3cYqBQK8aWr2/XaTuPu16qW6y7KmQLM72m1cB9jlkvkcOWfDgPCw+43fcVs
+	9iMjTgSCv6EwobmS/a5Yt4rLdTMsurPdZ+jQqVHrKnNiwNnUOf0WqmANOJKz8p/EbaycavKPF1T
+	QdfaLfUxLFps6TFnUyzQ/lkiInbl5Ex4GEifkLyZL01noValK6UWgCUekSq6GQ/Nv8RKydPvlsx
+	QexXeAV1AU9gCkvGfboypc4mlbjythicd8bNU8OsocD80OWEkjJmfcwVc/Vka2onuHg7s
+X-Google-Smtp-Source: AGHT+IGXQH54g+OEuDAZ//VEsPFOF0VZ1eCHZSsCk3KsPn6dRKNeXLVClWZB7Vwu63ig1wAqfFoyFQ==
+X-Received: by 2002:a05:6214:929:b0:707:4509:b6c1 with SMTP id 6a1803df08f44-7074509b794mr50900796d6.11.1753711722526;
+        Mon, 28 Jul 2025 07:08:42 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70729c70979sm30626156d6.86.2025.07.28.07.08.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Jul 2025 07:08:41 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1ugOWv-00000000APv-1G4L;
+	Mon, 28 Jul 2025 11:08:41 -0300
+Date: Mon, 28 Jul 2025 11:08:41 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	aik@amd.com, lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>,
 	Xu Yilun <yilun.xu@linux.intel.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
 	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
 	Steven Price <steven.price@arm.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Subject: [RFC PATCH v1 38/38] coco: guest: arm64: Add support for fetching device info
-Date: Mon, 28 Jul 2025 19:22:15 +0530
-Message-ID: <20250728135216.48084-39-aneesh.kumar@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250728135216.48084-1-aneesh.kumar@kernel.org>
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: Re: [RFC PATCH v1 06/38] iommufd: Add and option to request for bar
+ mapping with IORESOURCE_EXCLUSIVE
+Message-ID: <20250728140841.GA26511@ziepe.ca>
 References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
+ <20250728135216.48084-7-aneesh.kumar@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250728135216.48084-7-aneesh.kumar@kernel.org>
 
-RSI_RDEV_GET_INFO returns different digest hash values, which can be
-compared with host cached values to ensure the host didn't tamper with
-the cached data.
+On Mon, Jul 28, 2025 at 07:21:43PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 
-Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
----
- arch/arm64/include/asm/rsi_cmds.h        |  12 +++
- arch/arm64/include/asm/rsi_smc.h         |  24 +++++
- drivers/virt/coco/arm-cca-guest/Kconfig  |   2 +
- drivers/virt/coco/arm-cca-guest/rsi-da.c | 128 +++++++++++++++++++++++
- drivers/virt/coco/arm-cca-guest/rsi-da.h |  13 +++
- 5 files changed, 179 insertions(+)
+Why would we need this?
 
-diff --git a/arch/arm64/include/asm/rsi_cmds.h b/arch/arm64/include/asm/rsi_cmds.h
-index 42b998f44a0e..6b90a6cdd7fb 100644
---- a/arch/arm64/include/asm/rsi_cmds.h
-+++ b/arch/arm64/include/asm/rsi_cmds.h
-@@ -276,4 +276,16 @@ static inline unsigned long __rsi_rdev_get_measurements(unsigned long vdev_id,
- 	return res.a0;
- }
- 
-+static inline unsigned long rsi_rdev_get_info(unsigned long vdev_id,
-+					      unsigned long inst_id,
-+					      unsigned long digest_phys)
-+{
-+	struct arm_smccc_res res;
-+
-+	arm_smccc_1_1_invoke(SMC_RSI_RDEV_GET_INFO,
-+			     vdev_id, inst_id, digest_phys, &res);
-+
-+	return res.a0;
-+}
-+
- #endif /* __ASM_RSI_CMDS_H */
-diff --git a/arch/arm64/include/asm/rsi_smc.h b/arch/arm64/include/asm/rsi_smc.h
-index f051db54cdc3..e2b51cf58bd4 100644
---- a/arch/arm64/include/asm/rsi_smc.h
-+++ b/arch/arm64/include/asm/rsi_smc.h
-@@ -125,6 +125,9 @@
- 
- #ifndef __ASSEMBLY__
- 
-+#define RSI_HASH_SHA_256 0
-+#define RSI_HASH_SHA_512 1
-+
- struct realm_config {
- 	union {
- 		struct {
-@@ -200,6 +203,27 @@ struct rsi_host_call {
- #define SMC_RSI_RDEV_GET_INSTANCE_ID		SMC_RSI_FID(0x19c)
- #define SMC_RSI_RDEV_CONTINUE			SMC_RSI_FID(0x1a4)
- 
-+struct rsi_device_info {
-+	union {
-+		struct {
-+			u64 flags;
-+			u64 attest_type;
-+			u64 cert_id;
-+			u8 hash_algo;
-+		};
-+		u8 padding[0x40];
-+	};
-+	union { /* 0x40  */
-+		struct {
-+			u8 cert_digest[0x40];
-+			u8 meas_digest[0x40];
-+			u8 report_digest[0x40];
-+		};
-+		u8 padding2[0x200 - 0x40];
-+	};
-+};
-+
-+#define SMC_RSI_RDEV_GET_INFO			SMC_RSI_FID(0x1a5)
- #define SMC_RSI_RDEV_GET_INTERFACE_REPORT	SMC_RSI_FID(0x1a6)
- 
- #define RSI_DEV_MEASURE_ALL		BIT(0)
-diff --git a/drivers/virt/coco/arm-cca-guest/Kconfig b/drivers/virt/coco/arm-cca-guest/Kconfig
-index 410d9c3fb2b3..6fc86c1f3900 100644
---- a/drivers/virt/coco/arm-cca-guest/Kconfig
-+++ b/drivers/virt/coco/arm-cca-guest/Kconfig
-@@ -5,6 +5,8 @@ config ARM_CCA_GUEST
- 	tristate "Arm CCA Guest driver"
- 	depends on ARM64
- 	depends on PCI_TSM
-+	select CRYPTO_SHA256
-+	select CRYPTO_SHA512
- 	select TSM_REPORTS
- 	select TSM
- 	help
-diff --git a/drivers/virt/coco/arm-cca-guest/rsi-da.c b/drivers/virt/coco/arm-cca-guest/rsi-da.c
-index 6222b10964ee..a1bb225adb4c 100644
---- a/drivers/virt/coco/arm-cca-guest/rsi-da.c
-+++ b/drivers/virt/coco/arm-cca-guest/rsi-da.c
-@@ -6,6 +6,7 @@
- #include <linux/pci.h>
- #include <linux/mem_encrypt.h>
- #include <asm/rsi_cmds.h>
-+#include <crypto/hash.h>
- 
- #include "rsi-da.h"
- 
-@@ -186,11 +187,102 @@ rsi_rdev_get_measurements(struct pci_dev *pdev, unsigned long vdev_id,
- 	return RSI_SUCCESS;
- }
- 
-+static int verify_digests(struct cca_guest_dsc *dsm)
-+{
-+	int i;
-+	int ret;
-+	u8 digest[SHA512_DIGEST_SIZE];
-+	int sdesc_size;
-+	size_t digest_size;
-+	char *hash_alg_name;
-+	struct shash_desc *shash;
-+	struct crypto_shash *alg;
-+	struct pci_dev *pdev = dsm->pci.tsm.pdev;
-+	struct {
-+		uint8_t *report;
-+		size_t size;
-+		uint8_t *digest;
-+	} reports[] = {
-+		{
-+			dsm->interface_report,
-+			dsm->interface_report_size,
-+			dsm->dev_info.report_digest
-+		},
-+		{
-+			dsm->certificate,
-+			dsm->certificate_size,
-+			dsm->dev_info.cert_digest
-+		},
-+		{
-+			dsm->measurements,
-+			dsm->measurements_size,
-+			dsm->dev_info.meas_digest
-+		}
-+	};
-+
-+
-+	if (dsm->dev_info.hash_algo == RSI_HASH_SHA_256) {
-+		hash_alg_name = "sha256";
-+		digest_size = SHA256_DIGEST_SIZE;
-+	} else if (dsm->dev_info.hash_algo == RSI_HASH_SHA_512) {
-+		hash_alg_name = "sha512";
-+		digest_size = SHA512_DIGEST_SIZE;
-+	} else {
-+		pci_err(pdev, "unknown realm hash algorithm!\n");
-+		ret = -EINVAL;
-+		goto err_out;
-+	}
-+
-+	alg = crypto_alloc_shash(hash_alg_name, 0, 0);
-+	if (IS_ERR(alg)) {
-+		pci_err(pdev, "cannot allocate %s\n", hash_alg_name);
-+		return PTR_ERR(alg);
-+	}
-+
-+	sdesc_size = sizeof(struct shash_desc) + crypto_shash_descsize(alg);
-+	shash = kzalloc(sdesc_size, GFP_KERNEL);
-+	if (!shash) {
-+		pci_err(pdev, "cannot allocate sdesc\n");
-+		ret = -ENOMEM;
-+		goto err_free_shash;
-+	}
-+	shash->tfm = alg;
-+
-+	for (i = 0; i < ARRAY_SIZE(reports); i++) {
-+		ret = crypto_shash_digest(shash, reports[i].report,
-+					  reports[i].size, digest);
-+		if (ret) {
-+			pci_err(pdev, "failed to compute digest, %d\n", ret);
-+			goto err_free_sdesc;
-+		}
-+
-+		if (memcmp(reports[i].digest, digest, digest_size)) {
-+			pci_err(pdev, "invalid digest\n");
-+			ret = -EINVAL;
-+			goto err_free_sdesc;
-+		}
-+	}
-+
-+	kfree(shash);
-+	crypto_free_shash(alg);
-+
-+	pci_info(pdev, "Successfully verified the digests\n");
-+	return 0;
-+
-+err_free_sdesc:
-+	kfree(shash);
-+err_free_shash:
-+	crypto_free_shash(alg);
-+err_out:
-+	return ret;
-+}
-+
- int rsi_device_lock(struct pci_dev *pdev)
- {
- 	unsigned long ret;
- 	unsigned long tdisp_version;
- 	struct rsi_device_measurements_params *rsi_dev_meas;
-+	struct rsi_device_info *dev_info;
- 	struct cca_guest_dsc *dsm = to_cca_guest_dsc(pdev);
- 	int vdev_id = (pci_domain_nr(pdev->bus) << 16) |
- 		PCI_DEVID(pdev->bus->number, pdev->devfn);
-@@ -252,8 +344,44 @@ int rsi_device_lock(struct pci_dev *pdev)
- 		return -EIO;
- 	}
- 
-+	/* RMM expects sizeof(dev_info) (512 bytes) aligned address */
-+	dev_info = kmalloc(sizeof(*dev_info), GFP_KERNEL);
-+	if (!dev_info) {
-+		ret = -ENOMEM;
-+		goto err_out;
-+	}
-+
-+	ret = rsi_rdev_get_info(vdev_id, dsm->instance_id, virt_to_phys(dev_info));
-+	if (ret != RSI_SUCCESS) {
-+		pci_err(pdev, "failed to get device digests (%lu)\n", ret);
-+		ret = -EIO;
-+		kfree(dev_info);
-+		goto err_out;
-+	}
-+
-+	dsm->dev_info.attest_type   = dev_info->attest_type;
-+	dsm->dev_info.cert_id       = dev_info->cert_id;
-+	dsm->dev_info.hash_algo     = dev_info->hash_algo;
-+	memcpy(dsm->dev_info.cert_digest, dev_info->cert_digest, SHA512_DIGEST_SIZE);
-+	memcpy(dsm->dev_info.meas_digest, dev_info->meas_digest, SHA512_DIGEST_SIZE);
-+	memcpy(dsm->dev_info.report_digest, dev_info->report_digest, SHA512_DIGEST_SIZE);
-+
-+	kfree(dev_info);
-+	/*
-+	 * Verify that the digests of the provided reports match with the
-+	 * digests from RMM
-+	 */
-+	ret = verify_digests(dsm);
-+	if (ret) {
-+		pci_err(pdev, "device digest validation failed (%ld)\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+err_out:
- 	return ret;
- }
-+
- static inline unsigned long rsi_rdev_start(struct pci_dev *pdev,
- 					   unsigned long vdev_id, unsigned long inst_id)
- {
-diff --git a/drivers/virt/coco/arm-cca-guest/rsi-da.h b/drivers/virt/coco/arm-cca-guest/rsi-da.h
-index f26156d9be81..e8953b8e85a3 100644
---- a/drivers/virt/coco/arm-cca-guest/rsi-da.h
-+++ b/drivers/virt/coco/arm-cca-guest/rsi-da.h
-@@ -10,6 +10,7 @@
- #include <linux/pci-tsm.h>
- #include <asm/rsi_smc.h>
- #include <asm/rhi.h>
-+#include <crypto/sha2.h>
- 
- struct pci_tdisp_device_interface_report {
- 	u16 interface_info;
-@@ -33,6 +34,17 @@ struct pci_tdisp_mmio_range {
- #define TSM_INTF_REPORT_MMIO_RESERVED		GENMASK(15, 4)
- #define TSM_INTF_REPORT_MMIO_RANGE_ID		GENMASK(31, 16)
- 
-+struct dsm_device_info {
-+	u64 flags;
-+	u64 attest_type;
-+	u64 cert_id;
-+	u64 hash_algo;
-+	u8 cert_digest[SHA512_DIGEST_SIZE];
-+	u8 meas_digest[SHA512_DIGEST_SIZE];
-+	u8 report_digest[SHA512_DIGEST_SIZE];
-+};
-+
-+
- struct cca_guest_dsc {
- 	struct pci_tsm_pf0 pci;
- 	unsigned long instance_id;
-@@ -42,6 +54,7 @@ struct cca_guest_dsc {
- 	int certificate_size;
- 	void *measurements;
- 	int measurements_size;
-+	struct dsm_device_info dev_info;
- };
- 
- static inline struct cca_guest_dsc *to_cca_guest_dsc(struct pci_dev *pdev)
--- 
-2.43.0
+I can sort of understand why Intel would need it due to their issues
+with MCE, but ARM shouldn't care either way, should it?
 
+But also why is it an iommufd option? That doesn't seem right..
+
+Jason
