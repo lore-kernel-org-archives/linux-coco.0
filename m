@@ -1,68 +1,68 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD9827816B
-	for <linux-coco@lists.linux.dev>; Tue, 29 Jul 2025 23:19:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3129E28506E
+	for <linux-coco@lists.linux.dev>; Tue, 29 Jul 2025 23:22:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753831192; cv=none; b=CgnKT94q3Pl6ZFFKV4Fl3hO7NRF89nTJAchzk6mdFoZWQ9o7etzCNopexoeM8P9Dw9mATAufrCdRb3dVSWMY3flNETp7c5446J7kIpBtgIpHJzphGPXOCPsIB44UCIHJOqs30//oXhnp0Ecb7Bv0cIo0kdl+qTP95XFT2MvHueg=
+	t=1753831367; cv=none; b=Qlh2UuNXNfjYETF/jMtP525RhOk29nLfNVqGhVe0QRDBKFeMpb+pRAZK6giNUG6MDUkf2JpyGKaAxV+QN7z0ch9Yk/UHHlkuSBVrw7peZPE1DXrKSHzjbBZne4ICyoYEVFtQkHSN+ksvKsi7UP4ZuCVi9jmbZQ8Hep9Kch7QBPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753831192; c=relaxed/simple;
-	bh=c+qevVRK65+YEsONllF903kUYgjJYX41JiZtG9/l2tM=;
+	s=arc-20240116; t=1753831367; c=relaxed/simple;
+	bh=5+SxyYSHlUovT7nMO8KUUry70XX33hvq1YMeYnlBo24=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s/6WltczSsZiNVjNomRJOaeYvTISgWKI/DxmfibtsKUVkr3jxqNUsOXVfXEypeoF89vpfKNrbkr5yi+p6CyplfnqGyqGYioRk1I42ekFGJTXmknmy02kP3r1/b6FiXAsg3+wcoJn+cGxxhYG+4uQozs++ZsmVCaR1B0L/DZhe+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=XMmcwBYH; arc=none smtp.client-ip=209.85.160.180
+	 Content-Type:Content-Disposition:In-Reply-To; b=bYe+dd4YBE0VUT1cdIBiBMowbmfLpGT8qY9cAsQpRdsMDtWmzCO1wBHZ98LxWekKmVLQnpIIhXbkO4KHe1UsiEU0L2U+WF6S9c2Hcbv4a18lQsedohuq6HRThiXgVuGVZKscN1of0Wmh575YyU44YdyjFgxa3/k8OCfEBYfibek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=QckLUOE7; arc=none smtp.client-ip=209.85.160.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="XMmcwBYH"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4aeb5eb611bso24295881cf.1
-        for <linux-coco@lists.linux.dev>; Tue, 29 Jul 2025 16:19:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="QckLUOE7"
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4ab61ecc1e8so48927891cf.1
+        for <linux-coco@lists.linux.dev>; Tue, 29 Jul 2025 16:22:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1753831190; x=1754435990; darn=lists.linux.dev;
+        d=ziepe.ca; s=google; t=1753831364; x=1754436164; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AMNPBYRiksp7mCFMd1azqDvewT0I1SAEyDTPXzSObOQ=;
-        b=XMmcwBYHD/LTP3EI7IBOnUTwcvN2zNNbu6HTaEl7cn5huAjgq2eMRLhZfNHUIf/W+p
-         T80wBPPV25lofIavXpGEEmuRdpSjshhXVn+Pwm9b7InZaDuk73KSyOOfrlP5LyOevW/6
-         7IxQ/uwFUYZIwxz5sXAEdnd+KAwOYlfslEn3q/DLjzZ4QEqUH6vKGKdM7nVtezHsiT4F
-         F8dHlQ86NFypg6G9Mux5o+4oPxyrwHfGwp+DCnxC6Ip/saitfPg2isimO9nmCjzDnhtK
-         lRSHi+rzk/jdhxTcaT9ZrBYsaIPO6J48Xj9h2IrUq1yqVoWKnTf0TGGV6eKZk5SZx8oB
-         o12w==
+        bh=evOEy7fuRGdGypQDmd9QZXrLo8EABIsGfXRQCCvlWq8=;
+        b=QckLUOE7wdM7sGMSqACx7Fnfla4aIIrLMKSV56+eDs5pvk2hnvOSZjiVg1OPRhpOet
+         n2JBlGQoO6Vc3hHGDENRZBM17/RyCWx4zGPGQFahi7+OTA50XkH+Jh4CE3ozw8o/RRmz
+         LuwWU+mkXwcQlryALd1rx2y0eyakOuJkbJ30sbQEjfB7J0Hx2sgIf9rVw8dbvfjqMhid
+         veMDj9lbhI6qLgQaSLxTPKlBZvRdb+8TQvbvw5HS1wJV+rZUITD6RYV0iYzdU7yd3nPH
+         3QONlTfFeI3dKChHyVdzn71+H0UJ2J9EoopVyfPAArUAnqN4tE/rVdYxXrU/CCJxULea
+         2Y2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753831190; x=1754435990;
+        d=1e100.net; s=20230601; t=1753831364; x=1754436164;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AMNPBYRiksp7mCFMd1azqDvewT0I1SAEyDTPXzSObOQ=;
-        b=TmPkIwdlC/isW46lB3qI1CiqvDVP/UFwFlCvbWX3UT4oFRMqcK3G/Mabny0LfsWrAJ
-         YvpUkggkvLZ8h+ZVm/+hf4p6vi1kzhX4cF6JLDJz2RIQYA732O9WiVQq5Y03u77LyVrI
-         Ennm4TsSyyGXybFbD/MWKehgYiz5c1iU9VCimDxP82qUiR+eIw9ZKHyitCNG+XK1VFUr
-         tuP8DCuVvp7qoZu34FSV7dy28gUULCpMj4qANoE9A1ikxcSbHkSxM7ZOO46+gdQUa/jK
-         jJyx42yXLTbfhEkXE2k5Dw+zDuZbOxDr93Mr/rnQdrNpMbSytzsWKl3vLH3mixAeEORs
-         8uwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVDOlJn4OgQtm+IOrh7irGJC6T4Vne+ykXxbUR96oodQ/j1z+WC5zwrDRB9u8dsUD0MO71ggBkpx3QH@lists.linux.dev
-X-Gm-Message-State: AOJu0YzWFomKnOjB/zBTScE1iuyWJQrnvjoT9okk6RsoGwzT1ib5XiKU
-	eJUig5O7AXrGsWrp2rytgnZIxBcooqBhx0sscuCaK0YZo0MTzG9mBRqKuAWAx5SukSw=
-X-Gm-Gg: ASbGncupt1jfCvzvzPncYLvzyTXl7NsDuVH4zmeUdjlox9E8MAZKGwSpKwolrBvxZbV
-	UqvaSOphKi5RQ+YMJOJCPEebT1KnwfcyasG0EiOtcGkoYvb7t/6qfXMMAgYc4zaoNJILZdmJRsG
-	1cCJ2wA8KLFJqONNwsifJgT2gbebdqtNMAc4jAUCvkfkc/56FgqsUi14EpcB+UM5XXQ4YAJTdYb
-	WiArwqQNr8ruuDUgyhhP62VDR/D3Wbhh9UADHS1g6QBWt0J9nuWwiKupoT5+nIK80fxjZ/B8v9r
-	UjKJA645rgRyXqcpZlKBFAH9atAFq/vUG72FS9dxgxRFvwVESYhQBgpYjcAHG4kpYa7RGdY5vAM
-	lVXGojGHXSKFKTQV/iYIdgd1tV2tzh6E9zAD1R5Ils5e8BNt2aZagVacCIUPSH2IONYCY1glmmF
-	LGEZk=
-X-Google-Smtp-Source: AGHT+IEYB+v/aC52I3ETJqWCtvUpxpSoF5Ed5PqfVqNjoX+1qc9FE31iT0mWajpl0SB8iOsRrvOo2g==
-X-Received: by 2002:a05:622a:351:b0:4a9:a90a:7233 with SMTP id d75a77b69052e-4aedb97af80mr26047401cf.12.1753831189896;
-        Tue, 29 Jul 2025 16:19:49 -0700 (PDT)
+        bh=evOEy7fuRGdGypQDmd9QZXrLo8EABIsGfXRQCCvlWq8=;
+        b=Brh5V9CcJ1DEh0FxAjScCCqTd4VpCIYoYD1sCVDZUQ3RP2yHChsrdBWxsyJhG37IdF
+         fOfzkRlK/ZMxd+Gt2E1qx8gvCvfEpkBgkpc4RXNGga0lWrqA3KAbvpn6crPvbe9MMraJ
+         aZBJ0PxY44Vb2XpTu7azbY6X3pnzBr6CEMoQTodqKqjiGRbXayx+to01BGad7C3xVLqV
+         aZyOXM77tTCd0nkzeLBJ9YHIw0x1+gNqmEEf7URXtbbBMG1jkD0BRtx8E/oqWz8tma55
+         3kFAdIOtAv3d36FgZloY9/fGFZ06P3H+mg6oCNA40EMzXAtAkqg+H2aIWovfjkyG451j
+         QMZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVBvcBwuIM+4CmGi6SpAQAeQvkrDfINzVylsJuMOL9eCgLFq7SeAfT+/g6Lx9XeTofmo1awsYezqJbh@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxx0/0HBaey+YxTFxiLuOu5jbPZyUvQL2eyEaUbPfJz2k1wWa6r
+	xj7oNOf44KDumgCompZ8qoTwkShNcedrfWbTyM9hLCVyNMiQPerS592bPZfFKI5YcsI=
+X-Gm-Gg: ASbGncv95VPtEzx1gcaP7LBaaXcYpGidx2L+XWCs6luQ8MdwpljJo0qLlkh7dQ2fN2t
+	kxa2xrume1+GY/SgCMcZRPfrSBp08meOEunf5U78zaYR0bKg1P+SLuJDVVET+PUisbe+9O02moU
+	fDYrO9Z3kIosOS3y8FS2EHUPb6AixJgcaw18BbecZ9PaOFEfBJmzzIXAOtnbSrjFNOJrdNkUncQ
+	SNIzw2NVUNYfhM0TiuD5QGnZ0HTzaVN1SL6/6vLxxriI3XBYFqNf7MRHaJorTWzD67yRN4/Zzsd
+	+cuqGofzKY4meMgUDupahpNo6B4ob53T+AmIBAAZ8cEpmGvUG3aMMgjyg46ZJwBAPRGVQWtfbL8
+	lIwRl9HUFLHZYFLbQFje+fZxyHId+nyiAEJCzvCiM0uflkaHBw5SK8Zn3D8TTovsJgfdPUtaatC
+	bVFGo=
+X-Google-Smtp-Source: AGHT+IEp29JmYKPTEUTfX9T0WcQPt09uHVFFYXFI1jbMPkfOwjEBLhDqzXpFec1njO1HN+oSVaPRoQ==
+X-Received: by 2002:a05:622a:8f:b0:4ab:95a7:71d7 with SMTP id d75a77b69052e-4aedbc7919dmr24915231cf.53.1753831364093;
+        Tue, 29 Jul 2025 16:22:44 -0700 (PDT)
 Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ae9963ba4bsm54605101cf.31.2025.07.29.16.19.49
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ae9951a6casm56688261cf.13.2025.07.29.16.22.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Jul 2025 16:19:49 -0700 (PDT)
+        Tue, 29 Jul 2025 16:22:43 -0700 (PDT)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1ugtbo-00000000Mhy-3zTQ;
-	Tue, 29 Jul 2025 20:19:48 -0300
-Date: Tue, 29 Jul 2025 20:19:48 -0300
+	id 1ugted-00000000MjD-0XUr;
+	Tue, 29 Jul 2025 20:22:43 -0300
+Date: Tue, 29 Jul 2025 20:22:43 -0300
 From: Jason Gunthorpe <jgg@ziepe.ca>
 To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
@@ -75,12 +75,12 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
 	Oliver Upton <oliver.upton@linux.dev>
-Subject: Re: [RFC PATCH v1 11/38] KVM: arm64: CCA: register host tsm platform
- device
-Message-ID: <20250729231948.GJ26511@ziepe.ca>
+Subject: Re: [RFC PATCH v1 12/38] coco: host: arm64: CCA host platform device
+ driver
+Message-ID: <20250729232243.GK26511@ziepe.ca>
 References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
- <20250728135216.48084-12-aneesh.kumar@kernel.org>
- <20250729181045.0000100b@huawei.com>
+ <20250728135216.48084-13-aneesh.kumar@kernel.org>
+ <20250729182244.00002f4f@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -89,22 +89,40 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250729181045.0000100b@huawei.com>
+In-Reply-To: <20250729182244.00002f4f@huawei.com>
 
-On Tue, Jul 29, 2025 at 06:10:45PM +0100, Jonathan Cameron wrote:
+On Tue, Jul 29, 2025 at 06:22:44PM +0100, Jonathan Cameron wrote:
+> > +}
+> 
+> > +static void cca_tsm_remove(void *tsm_core)
+> > +{
+> > +	tsm_unregister(tsm_core);
+> > +}
+> > +
+> > +static int cca_tsm_probe(struct platform_device *pdev)
+> > +{
+> > +	struct tsm_core_dev *tsm_core;
+> > +
+> > +	tsm_core = tsm_register(&pdev->dev, NULL, &cca_pci_ops);
+> > +	if (IS_ERR(tsm_core))
+> > +		return PTR_ERR(tsm_core);
+> > +
+> > +	return devm_add_action_or_reset(&pdev->dev, cca_tsm_remove, tsm_core);
+> 
+> So this makes two with the one in Dan's test code. 
+> devm_tsm_register() seems to be a useful generic thing to add (implementation
+> being exactly what you have here.
 
-> > +static struct platform_device cca_host_dev = {
-> Hmm. Greg is getting increasingly (and correctly in my view) grumpy with
-> platform devices being registered with no underlying resources etc as glue
-> layers.  Maybe some of that will come later.
+Pelase no, this is insane, you have a probed driver with a
+probe/remove function pairing already. Why on earth would you use devm
+just to call a remove function :(
 
-Is faux_device a better choice? I admit to not knowing entirely what
-it is for..
+Just put tsm_unregister() in the normal driver remove like it is
+supposed to be done and use the drvdata to pass the tsm_core_dev
+pointer. It is easy and normal, look at fwctl for a very simple
+example.
 
-But alternatively, why do we need a dummy "hw" struct device at all?
-Typically a subsystem like TSM should be structured to create its own
-struct devices..
-
-I would expect this to just call 'register tsm' ?
+devm is useful to solve complex things, these trivial things should be
+done normally..
 
 Jason
