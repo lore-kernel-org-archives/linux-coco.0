@@ -1,64 +1,69 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D3422759C
-	for <linux-coco@lists.linux.dev>; Tue, 29 Jul 2025 17:42:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3389298CAB
+	for <linux-coco@lists.linux.dev>; Tue, 29 Jul 2025 17:42:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753810965; cv=none; b=UcmnqUVuqRUFztpHPK7luIzpwsnhMhPN0Sb3spvhFRMUWQPw9SxdX/QkX5FTynWOpY793jKoNmwqPvGmuZ1A2mN97gqpHQ5gjrFILQpcICAnv0J8oKo485u7lDJF6+cf6bKq9z5WKor7rQoXg8KskMcFr4GgRdUhuJHe1d9OKiQ=
+	t=1753810965; cv=none; b=GwiU36DbVp96oQ93XuW/aOPnaztcr2T0gxePTupzoDJvbmQwNwWOSAePlKOUIN5fYbfISW831nyddl19a+dsAJzTMviYqOXjRbRVJD7+WySJUtIUexI9Gdv1LwFKsCih8ciJlF5fWMDJMp+bo766tHEP+NKDUSgVK6ecmiFcmu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1753810965; c=relaxed/simple;
-	bh=e7H65OUTTySjbVhc8bnRw+W3Xmwc3ESREGLczzyVkRw=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ifSG+XGRSI7eh/GCLCNtSNuiWeURjpgER13Cnmeez0ne7YHn1RYDjQ9lWaPKxhAF5TA97duKS9rMoMogeBxitLpdyqBcx9OVETkf9KZiWA/gy1GqJw9ATW9RqhYv9x2aqUd1FmErkj7j86YFV1jQo8v77tESVWG5+mCYEPec/k8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uDOyCedJ; arc=none smtp.client-ip=209.85.216.73
+	bh=Tw3eT5+iSuoQ8qKLRQi8HnYPIAcfpsKb0i0ErGvCLhc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=M7GHf1xNEmShFbXvpxAZT2G1D9sE5cfW/KcGPhbstJRkVG/JzOYyxBI2JmwZDmqVe2/aTcfZcqExfBEsgwzTwQo730ZMYVKr5sVY3Bbx8fprKpLRmx60jI5AmCRsY/+7jLQ2hatIWWmD+rQdxAl29LNoPicdrOOs397pyagmkZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JV4M9eMz; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uDOyCedJ"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-31eec17b5acso2717324a91.2
-        for <linux-coco@lists.linux.dev>; Tue, 29 Jul 2025 10:42:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JV4M9eMz"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-31ecb3a3d0aso2797776a91.3
+        for <linux-coco@lists.linux.dev>; Tue, 29 Jul 2025 10:42:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753810962; x=1754415762; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=82FN5fIR/hwkzJS9jFM+jcYFsAggMEElUtfqK1j0Xxw=;
-        b=uDOyCedJZ6Qw1fig0rxIu7XqkPLY3vhTl8knvNZQ3ZrjhXe58WO3AqpSOdUeFuSN2O
-         l6Gro7oA6oUpHNv9oZ5GfSvMK6sVBX/UcFE983/h+ppVx5HKN48BIr6I+5jUefoLmFvZ
-         MY8GwwwCfc8p28qQMi6R8D+4o1+PfVcDeYYJqCcRbh9USxdWy4Nw5q3FZEBYaHSQSlFI
-         sqGKvAzB62M/EttW99qycaZWNJzEo+k3U90d2oY381LRq18bVDVj4Ue3qeDG0CNEU6JC
-         Dh8XqVSsZ00kdV7Mrl9qvMup+6ZGiQ2DMyYtGACnLsHo0W0Oqm9e+KvJhjxrRlUFeCoT
-         fm0w==
+        d=google.com; s=20230601; t=1753810963; x=1754415763; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=28d3iRVWXUX6sIuoOntS0GSvjTzmcc+IeE+Mf6uMd/w=;
+        b=JV4M9eMz7OEWBmHfabhzvS0k2XRtpp9hgaBmrBUJ048xZS/rI+Pd3/MBcclXil2Ph1
+         yfgUqbu98B+QlMFIrs9NSXkW56tbpZSBYTs2SHxhu30WD8rirfznc3B2eN/18VGesRZb
+         fDRf6TAOPk7r1GZ/ZQdnqMxJmk1yp+ycj+OqVsfoUYMYlIacEdVfgTUEGhG+Ca4o/Myj
+         V3yqSwhQSi6fUrXP9bl9MjHXa02IyB7FD/xwhb8ZWIcC4bFCnLxsI5Hu4VOGYQyWLFeU
+         K3b1FqIDeGvHUX1h5/TS5vP+oXgUSWn/M1gOtBI8XG0kZPAaEeBiUJxg19eyeGFCUioI
+         EKOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753810962; x=1754415762;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=82FN5fIR/hwkzJS9jFM+jcYFsAggMEElUtfqK1j0Xxw=;
-        b=ehh+Cgga2O1O/MC/W7TcJE34vbRV4lbp3UKR3q2vfnmMoWxdPRkjsI53LHjRkMOm3s
-         YqxOF9ETGbHYLRHUO0g5fyKf3B6dxltX7wySy0uO/0CLJF7+PnVwu/TMCSJsSATh1uam
-         KdjTMC4I65HdQyoHKwWLywBmQ1PbSCj97eAytP1vQJaNLWJQ9LTIin4l6gZRTssTQjOo
-         NRIwheTsM/dLfup0ZP0m0u0vj/INl2qcdgoPgCdLdrX8gsPaiVhffXDZugVcxK4MmQTt
-         3sJOSlw+ehhB43T3zPzDwci282u5v7ZdHw46TMsoLkYtnAKiokL/0E0leVs1yE9SKzq7
-         /R1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXC65ANVP+02XmB1mctLHrEhoWYsd+o/iYWNFPTO38Bq0NYqBq2dg5F/gDTQaLluKTKbHMFAACHIwSt@lists.linux.dev
-X-Gm-Message-State: AOJu0YwcDH8TQ9xxFaoJcd4hKq07u8UbMiZbdLQwvHLPNlxp7Tx7wDlP
-	Db5xL6e9RLnZ7sENietCjDduYlw5aC12KZH1bT7QrfVxsknqtCpEsqV1FHSwI4RP9p4lr+w4Ydm
-	tiiW/Yg==
-X-Google-Smtp-Source: AGHT+IHL9uyOCJhKfXzpWPYdk2ktpEDltn10+YA1InNR0RiEZWVGuenP/JjoNtMCTI8JhTdD+YDYzrbjaOw=
-X-Received: from pjv8.prod.google.com ([2002:a17:90b:5648:b0:31f:37f:d381])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:e706:b0:312:daf3:bac9
- with SMTP id 98e67ed59e1d1-31f5de69a49mr434036a91.34.1753810961444; Tue, 29
- Jul 2025 10:42:41 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753810963; x=1754415763;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=28d3iRVWXUX6sIuoOntS0GSvjTzmcc+IeE+Mf6uMd/w=;
+        b=AVMhPEEaBIu0o93iNbsJTaPLagD1ci+cyeNmIs6qqEydvCqsoBSQU0QQo89O5/aEnm
+         PssmVPlkrM2g34o0mXgFwrjPQqd/WlZbQgM8FxuNd5g1oxH8wen81GDQTXHIaHbr2G+K
+         kJeIgQ5SggiwoDl9JBea/7xWXzSM5CHFqal8msMEvTRg0dSCyoPs800Zz/qtr5lYwDQi
+         9PPszS1zbEODAIS27vbrqlDo7VsnZaM5dWlPV5pZkdpsdSbjptPysgiZzhyLCjc3Cr6r
+         sGNkd9IpNtAfGgMcdy3TCdma5nKd1zgHnhwpziBfY9wezu88Ijr8nKXbP/Rfe73Vev3K
+         uH3A==
+X-Forwarded-Encrypted: i=1; AJvYcCXlZ9aVCc3WiMXO4eS7/S0qww5tUvr57iJkeIlRvduZtPsbff8NrVrfbSauj+wv971Y/ppraDUzK6vD@lists.linux.dev
+X-Gm-Message-State: AOJu0YxzJ56zoCpdvO1VkJHfCZ8EwiQWf9FUKGuYZDEPpdLrF7/14VZO
+	kMm/Lazhl+r+n5RqAz635W0dY7yJjoJ8T/bFO09EkyJCwhl6z6r93XTy9i03kCrJcKyI4IsVubH
+	0MN9RxQ==
+X-Google-Smtp-Source: AGHT+IGrgXqonk21Zb71xxleI4T0pEaWNxg21m5l9HHcgxwGP0sMZOCP8Yhgfitp+Fk5/XHGu56nse7Bq+I=
+X-Received: from pjsc23.prod.google.com ([2002:a17:90a:bf17:b0:2e0:915d:d594])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4ac5:b0:31f:2efe:ced3
+ with SMTP id 98e67ed59e1d1-31f5de2f623mr482833a91.5.1753810963229; Tue, 29
+ Jul 2025 10:42:43 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 29 Jul 2025 10:42:32 -0700
+Date: Tue, 29 Jul 2025 10:42:33 -0700
+In-Reply-To: <20250729174238.593070-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
+References: <20250729174238.593070-1-seanjc@google.com>
 X-Mailer: git-send-email 2.50.1.552.g942d659e1b-goog
-Message-ID: <20250729174238.593070-1-seanjc@google.com>
-Subject: [PATCH 0/6] KVM: Export KVM-internal symbols for sub-modules only
+Message-ID: <20250729174238.593070-2-seanjc@google.com>
+Subject: [PATCH 1/6] KVM: s390/vfio-ap: Use kvm_is_gpa_in_memslot() instead of
+ open coded equivalent
 From: Sean Christopherson <seanjc@google.com>
 To: Madhavan Srinivasan <maddy@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
 	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
@@ -78,90 +83,77 @@ Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
 	linux-s390@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Use the newfangled EXPORT_SYMBOL_GPL_FOR_MODULES() along with some macro
-shenanigans to export KVM-internal symbols if and only if KVM has one or
-more sub-modules, and only for those sub-modules, e.g. x86's kvm-amd.ko
-and/or kvm-intel.ko.
+Use kvm_is_gpa_in_memslot() to check the validity of the notification
+indicator byte address instead of open coding equivalent logic in the VFIO
+AP driver.
 
-Patch 5 gives KVM x86 the full treatment.  If anyone wants to tackle PPC,
-it should be doable to restrict KVM PPC's exports as well.
+Opportunistically use a dedicated wrapper that exists and is exported
+expressly for the VFIO AP module.  kvm_is_gpa_in_memslot() is generally
+unsuitable for use outside of KVM; other drivers typically shouldn't rely
+on KVM's memslots, and using the API requires kvm->srcu (or slots_lock) to
+be held for the entire duration of the usage, e.g. to avoid TOCTOU bugs.
+handle_pqap() is a bit of a special case, as it's explicitly invoked from
+KVM with kvm->srcu already held, and the VFIO AP driver is in many ways an
+extension of KVM that happens to live in a separate module.
 
-Patch 6 is essentially an RFC; it compiles and is tested, but it probably
-should be chunked into multiple patches.  The main reason I included it
-here is to get feedback on using kvm_types.h to define the "for KVM" macros.
-For KVM itself, kvm_types.h is a solid choice, but it feels a bit awkward
-for non-KVM usage, and including linux/kvm_types.h in non-KVM generic code,
-e.g. in kernel/, isn't viable at the moment because asm/kvm_types.h is only
-provided by architectures that actually support KVM.
+Providing a dedicated API for the VFIO AP driver will allow restricting
+the vast majority of generic KVM's exports to KVM submodules (e.g. to x86's
+kvm-{amd,intel}.ko vendor mdoules).
 
-Based on kvm/queue.
+No functional change intended.
 
-Sean Christopherson (6):
-  KVM: s390/vfio-ap: Use kvm_is_gpa_in_memslot() instead of open coded
-    equivalent
-  KVM: Export KVM-internal symbols for sub-modules only
-  KVM: x86: Move kvm_intr_is_single_vcpu() to lapic.c
-  KVM: x86: Drop pointless exports of kvm_arch_xxx() hooks
-  KVM: x86: Export KVM-internal symbols for sub-modules only
-  x86: Restrict KVM-induced symbol exports to KVM modules where
-    obvious/possible
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/s390/include/asm/kvm_host.h  | 2 ++
+ arch/s390/kvm/priv.c              | 8 ++++++++
+ drivers/s390/crypto/vfio_ap_ops.c | 2 +-
+ 3 files changed, 11 insertions(+), 1 deletion(-)
 
- arch/powerpc/include/asm/kvm_types.h |  15 ++
- arch/s390/include/asm/kvm_host.h     |   2 +
- arch/s390/kvm/priv.c                 |   8 +
- arch/x86/entry/entry.S               |   7 +-
- arch/x86/entry/entry_64_fred.S       |   3 +-
- arch/x86/events/amd/core.c           |   5 +-
- arch/x86/events/core.c               |   7 +-
- arch/x86/events/intel/lbr.c          |   3 +-
- arch/x86/events/intel/pt.c           |   7 +-
- arch/x86/include/asm/kvm_host.h      |   3 -
- arch/x86/include/asm/kvm_types.h     |  15 ++
- arch/x86/kernel/apic/apic.c          |   3 +-
- arch/x86/kernel/apic/apic_common.c   |   3 +-
- arch/x86/kernel/cpu/amd.c            |   4 +-
- arch/x86/kernel/cpu/bugs.c           |  17 +--
- arch/x86/kernel/cpu/bus_lock.c       |   3 +-
- arch/x86/kernel/cpu/common.c         |   7 +-
- arch/x86/kernel/cpu/sgx/main.c       |   3 +-
- arch/x86/kernel/cpu/sgx/virt.c       |   5 +-
- arch/x86/kernel/e820.c               |   3 +-
- arch/x86/kernel/fpu/core.c           |  21 +--
- arch/x86/kernel/fpu/xstate.c         |   7 +-
- arch/x86/kernel/hw_breakpoint.c      |   3 +-
- arch/x86/kernel/irq.c                |   3 +-
- arch/x86/kernel/kvm.c                |   5 +-
- arch/x86/kernel/nmi.c                |   5 +-
- arch/x86/kernel/process_64.c         |   5 +-
- arch/x86/kernel/reboot.c             |   5 +-
- arch/x86/kernel/tsc.c                |   1 +
- arch/x86/kvm/cpuid.c                 |  10 +-
- arch/x86/kvm/hyperv.c                |   4 +-
- arch/x86/kvm/irq.c                   |  34 +----
- arch/x86/kvm/kvm_onhyperv.c          |   6 +-
- arch/x86/kvm/lapic.c                 |  70 ++++++---
- arch/x86/kvm/lapic.h                 |   4 +-
- arch/x86/kvm/mmu/mmu.c               |  36 ++---
- arch/x86/kvm/mmu/spte.c              |  10 +-
- arch/x86/kvm/mmu/tdp_mmu.c           |   2 +-
- arch/x86/kvm/pmu.c                   |   8 +-
- arch/x86/kvm/smm.c                   |   2 +-
- arch/x86/kvm/x86.c                   | 211 +++++++++++++--------------
- arch/x86/lib/cache-smp.c             |   9 +-
- arch/x86/lib/msr.c                   |   5 +-
- arch/x86/mm/pat/memtype.c            |   3 +-
- arch/x86/mm/tlb.c                    |   5 +-
- arch/x86/virt/vmx/tdx/tdx.c          |  65 +++++----
- drivers/s390/crypto/vfio_ap_ops.c    |   2 +-
- include/linux/kvm_types.h            |  39 ++++-
- virt/kvm/eventfd.c                   |   2 +-
- virt/kvm/guest_memfd.c               |   4 +-
- virt/kvm/kvm_main.c                  | 126 ++++++++--------
- 51 files changed, 457 insertions(+), 378 deletions(-)
- create mode 100644 arch/powerpc/include/asm/kvm_types.h
-
-
-base-commit: beafd7ecf2255e8b62a42dc04f54843033db3d24
+diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
+index cb89e54ada25..449bc34e7cc3 100644
+--- a/arch/s390/include/asm/kvm_host.h
++++ b/arch/s390/include/asm/kvm_host.h
+@@ -719,6 +719,8 @@ bool kvm_s390_pv_cpu_is_protected(struct kvm_vcpu *vcpu);
+ extern int kvm_s390_gisc_register(struct kvm *kvm, u32 gisc);
+ extern int kvm_s390_gisc_unregister(struct kvm *kvm, u32 gisc);
+ 
++bool kvm_s390_is_gpa_in_memslot(struct kvm *kvm, gpa_t gpa);
++
+ static inline void kvm_arch_free_memslot(struct kvm *kvm,
+ 					 struct kvm_memory_slot *slot) {}
+ static inline void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen) {}
+diff --git a/arch/s390/kvm/priv.c b/arch/s390/kvm/priv.c
+index 9253c70897a8..7773e1e323bc 100644
+--- a/arch/s390/kvm/priv.c
++++ b/arch/s390/kvm/priv.c
+@@ -605,6 +605,14 @@ static int handle_io_inst(struct kvm_vcpu *vcpu)
+ 	}
+ }
+ 
++#if IS_ENABLED(CONFIG_VFIO_AP)
++bool kvm_s390_is_gpa_in_memslot(struct kvm *kvm, gpa_t gpa)
++{
++	return kvm_is_gpa_in_memslot(kvm, gpa);
++}
++EXPORT_SYMBOL_GPL_FOR_MODULES(kvm_s390_is_gpa_in_memslot, "vfio_ap");
++#endif
++
+ /*
+  * handle_pqap: Handling pqap interception
+  * @vcpu: the vcpu having issue the pqap instruction
+diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+index 766557547f83..eb5ff49f6fe7 100644
+--- a/drivers/s390/crypto/vfio_ap_ops.c
++++ b/drivers/s390/crypto/vfio_ap_ops.c
+@@ -354,7 +354,7 @@ static int vfio_ap_validate_nib(struct kvm_vcpu *vcpu, dma_addr_t *nib)
+ 
+ 	if (!*nib)
+ 		return -EINVAL;
+-	if (kvm_is_error_hva(gfn_to_hva(vcpu->kvm, *nib >> PAGE_SHIFT)))
++	if (!kvm_s390_is_gpa_in_memslot(vcpu->kvm, *nib))
+ 		return -EINVAL;
+ 
+ 	return 0;
 -- 
 2.50.1.552.g942d659e1b-goog
 
