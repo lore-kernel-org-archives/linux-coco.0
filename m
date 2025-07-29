@@ -1,291 +1,167 @@
-Received: from sinmsgout01.his.huawei.com (sinmsgout01.his.huawei.com [119.8.177.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7508145FE8;
-	Tue, 29 Jul 2025 17:22:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=119.8.177.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D3422759C
+	for <linux-coco@lists.linux.dev>; Tue, 29 Jul 2025 17:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753809777; cv=none; b=q80oahFL/4Yoz+Q0lGvvUm3pAi0H6gopimV5kiGqnAEKrmt0vO8nFMk17RkOS8op7XhU/kRKWRJZAJmrqIFCh+D7Z9ljhILhj2TxKJxUfwoqO8gEXztjEDz9wCF/jOb5MpfQUIqo4QLLSoNtFRe9pOFt9P0lVnkDDjkU/g3pdgs=
+	t=1753810965; cv=none; b=UcmnqUVuqRUFztpHPK7luIzpwsnhMhPN0Sb3spvhFRMUWQPw9SxdX/QkX5FTynWOpY793jKoNmwqPvGmuZ1A2mN97gqpHQ5gjrFILQpcICAnv0J8oKo485u7lDJF6+cf6bKq9z5WKor7rQoXg8KskMcFr4GgRdUhuJHe1d9OKiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753809777; c=relaxed/simple;
-	bh=KA6ZAtGQiJlSVjmLuiTBgDLX1BiB5uiH9Ra4fiesJvs=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hudbxwIiER0x3hCrLQYLVmMqalfKNw56TQqgC/IMSmrOvddRLFUGCi5RcOnZs2dczHtFVPkBxjuHdVoAnQqHZ5B6mvmVhmZ6/UUeGjTjZnbcot134lOu87aX4c3zY3wldkpI+ihMRiw+3HhjsF11BpLmoLtgsC+o9j8qumcM+IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Qlqq1BIk; arc=none smtp.client-ip=119.8.177.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1753810965; c=relaxed/simple;
+	bh=e7H65OUTTySjbVhc8bnRw+W3Xmwc3ESREGLczzyVkRw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ifSG+XGRSI7eh/GCLCNtSNuiWeURjpgER13Cnmeez0ne7YHn1RYDjQ9lWaPKxhAF5TA97duKS9rMoMogeBxitLpdyqBcx9OVETkf9KZiWA/gy1GqJw9ATW9RqhYv9x2aqUd1FmErkj7j86YFV1jQo8v77tESVWG5+mCYEPec/k8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uDOyCedJ; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Qlqq1BIk"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=G7Eom1blsic0Jqst4S9mppt/c2c/URlaFiHl3j3NJjQ=;
-	b=Qlqq1BIkB+Do2b2sP2P4EN2oBBv87w9LfLduhwHkuCc+M1NwCdnqeiLGIW+XxalvvW/mdIe8+
-	VhoehCCaWN9c0oksJa5Z1szmgvyctqqWDR1E9eaa6gOJ8dEVJz/ZvdCYW+zUmwl+T/+NOpB8dR5
-	SssciBQII81b0haM1borJMQ=
-Received: from frasgout.his.huawei.com (unknown [172.18.146.36])
-	by sinmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4bs2FM3p8Sz1P7K0;
-	Wed, 30 Jul 2025 01:21:27 +0800 (CST)
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bs2Dj6bwHz6L5Fk;
-	Wed, 30 Jul 2025 01:20:53 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 051D01402EC;
-	Wed, 30 Jul 2025 01:22:47 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 29 Jul
- 2025 19:22:46 +0200
-Date: Tue, 29 Jul 2025 18:22:44 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-CC: <linux-coco@lists.linux.dev>, <kvmarm@lists.linux.dev>,
-	<linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <aik@amd.com>,
-	<lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>, Xu Yilun
-	<yilun.xu@linux.intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, "Suzuki K
- Poulose" <Suzuki.Poulose@arm.com>, Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>, Oliver Upton <oliver.upton@linux.dev>
-Subject: Re: [RFC PATCH v1 12/38] coco: host: arm64: CCA host platform
- device driver
-Message-ID: <20250729182244.00002f4f@huawei.com>
-In-Reply-To: <20250728135216.48084-13-aneesh.kumar@kernel.org>
-References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
-	<20250728135216.48084-13-aneesh.kumar@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uDOyCedJ"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-31eec17b5acso2717324a91.2
+        for <linux-coco@lists.linux.dev>; Tue, 29 Jul 2025 10:42:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753810962; x=1754415762; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=82FN5fIR/hwkzJS9jFM+jcYFsAggMEElUtfqK1j0Xxw=;
+        b=uDOyCedJZ6Qw1fig0rxIu7XqkPLY3vhTl8knvNZQ3ZrjhXe58WO3AqpSOdUeFuSN2O
+         l6Gro7oA6oUpHNv9oZ5GfSvMK6sVBX/UcFE983/h+ppVx5HKN48BIr6I+5jUefoLmFvZ
+         MY8GwwwCfc8p28qQMi6R8D+4o1+PfVcDeYYJqCcRbh9USxdWy4Nw5q3FZEBYaHSQSlFI
+         sqGKvAzB62M/EttW99qycaZWNJzEo+k3U90d2oY381LRq18bVDVj4Ue3qeDG0CNEU6JC
+         Dh8XqVSsZ00kdV7Mrl9qvMup+6ZGiQ2DMyYtGACnLsHo0W0Oqm9e+KvJhjxrRlUFeCoT
+         fm0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753810962; x=1754415762;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=82FN5fIR/hwkzJS9jFM+jcYFsAggMEElUtfqK1j0Xxw=;
+        b=ehh+Cgga2O1O/MC/W7TcJE34vbRV4lbp3UKR3q2vfnmMoWxdPRkjsI53LHjRkMOm3s
+         YqxOF9ETGbHYLRHUO0g5fyKf3B6dxltX7wySy0uO/0CLJF7+PnVwu/TMCSJsSATh1uam
+         KdjTMC4I65HdQyoHKwWLywBmQ1PbSCj97eAytP1vQJaNLWJQ9LTIin4l6gZRTssTQjOo
+         NRIwheTsM/dLfup0ZP0m0u0vj/INl2qcdgoPgCdLdrX8gsPaiVhffXDZugVcxK4MmQTt
+         3sJOSlw+ehhB43T3zPzDwci282u5v7ZdHw46TMsoLkYtnAKiokL/0E0leVs1yE9SKzq7
+         /R1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXC65ANVP+02XmB1mctLHrEhoWYsd+o/iYWNFPTO38Bq0NYqBq2dg5F/gDTQaLluKTKbHMFAACHIwSt@lists.linux.dev
+X-Gm-Message-State: AOJu0YwcDH8TQ9xxFaoJcd4hKq07u8UbMiZbdLQwvHLPNlxp7Tx7wDlP
+	Db5xL6e9RLnZ7sENietCjDduYlw5aC12KZH1bT7QrfVxsknqtCpEsqV1FHSwI4RP9p4lr+w4Ydm
+	tiiW/Yg==
+X-Google-Smtp-Source: AGHT+IHL9uyOCJhKfXzpWPYdk2ktpEDltn10+YA1InNR0RiEZWVGuenP/JjoNtMCTI8JhTdD+YDYzrbjaOw=
+X-Received: from pjv8.prod.google.com ([2002:a17:90b:5648:b0:31f:37f:d381])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:e706:b0:312:daf3:bac9
+ with SMTP id 98e67ed59e1d1-31f5de69a49mr434036a91.34.1753810961444; Tue, 29
+ Jul 2025 10:42:41 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Tue, 29 Jul 2025 10:42:32 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.50.1.552.g942d659e1b-goog
+Message-ID: <20250729174238.593070-1-seanjc@google.com>
+Subject: [PATCH 0/6] KVM: Export KVM-internal symbols for sub-modules only
+From: Sean Christopherson <seanjc@google.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+	Andy Lutomirski <luto@kernel.org>, Xin Li <xin@zytor.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "Kirill A. Shutemov" <kas@kernel.org>, 
+	Tony Krowiak <akrowiak@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>, 
+	Jason Herne <jjherne@linux.ibm.com>, Harald Freudenberger <freude@linux.ibm.com>, 
+	Holger Dengler <dengler@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	linux-sgx@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
+	linux-s390@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 28 Jul 2025 19:21:49 +0530
-"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
+Use the newfangled EXPORT_SYMBOL_GPL_FOR_MODULES() along with some macro
+shenanigans to export KVM-internal symbols if and only if KVM has one or
+more sub-modules, and only for those sub-modules, e.g. x86's kvm-amd.ko
+and/or kvm-intel.ko.
 
-> This driver registers the pci_tsm_ops with tsm subsystem.
-> 
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+Patch 5 gives KVM x86 the full treatment.  If anyone wants to tackle PPC,
+it should be doable to restrict KVM PPC's exports as well.
 
-Hi Aneesh,
+Patch 6 is essentially an RFC; it compiles and is tested, but it probably
+should be chunked into multiple patches.  The main reason I included it
+here is to get feedback on using kvm_types.h to define the "for KVM" macros.
+For KVM itself, kvm_types.h is a solid choice, but it feels a bit awkward
+for non-KVM usage, and including linux/kvm_types.h in non-KVM generic code,
+e.g. in kernel/, isn't viable at the moment because asm/kvm_types.h is only
+provided by architectures that actually support KVM.
 
-For this main comment is around use of __free..  Dan wrote up guidance and
-added to cleanup.h after many email threads kept running into same issues
-and Linus added his requirements for that stuff to be acceptable.
+Based on kvm/queue.
 
-Anyhow, easy to fix - comments inline.
+Sean Christopherson (6):
+  KVM: s390/vfio-ap: Use kvm_is_gpa_in_memslot() instead of open coded
+    equivalent
+  KVM: Export KVM-internal symbols for sub-modules only
+  KVM: x86: Move kvm_intr_is_single_vcpu() to lapic.c
+  KVM: x86: Drop pointless exports of kvm_arch_xxx() hooks
+  KVM: x86: Export KVM-internal symbols for sub-modules only
+  x86: Restrict KVM-induced symbol exports to KVM modules where
+    obvious/possible
 
-> diff --git a/drivers/virt/coco/arm-cca-host/Kconfig b/drivers/virt/coco/arm-cca-host/Kconfig
-> new file mode 100644
-> index 000000000000..0f19fbf47613
-> --- /dev/null
-> +++ b/drivers/virt/coco/arm-cca-host/Kconfig
-> @@ -0,0 +1,12 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +#
-> +# TSM (TEE Security Manager) host drivers
-> +#
-> +config ARM_CCA_HOST
-> +	tristate "Arm CCA Host driver"
-> +	depends on ARM64
-> +	depends on PCI_TSM
-> +	select TSM
-> +
-> +	help
-> +	  The driver provides TSM backend for ARM CCA
-
-That's going to make for grumpy checkpatch!   More help.
-
-
-> diff --git a/drivers/virt/coco/arm-cca-host/arm-cca.c b/drivers/virt/coco/arm-cca-host/arm-cca.c
-> new file mode 100644
-> index 000000000000..c8b0e6db1f47
-> --- /dev/null
-> +++ b/drivers/virt/coco/arm-cca-host/arm-cca.c
-> @@ -0,0 +1,209 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (C) 2025 ARM Ltd.
-> + */
-> +
-> +#include <linux/platform_device.h>
-> +#include <linux/pci-tsm.h>
-> +#include <linux/pci-ide.h>
-> +#include <linux/module.h>
-> +#include <linux/pci.h>
-> +#include <linux/tsm.h>
-> +#include <linux/vmalloc.h>
-cleanup.h and maybe others missing.  Basically follow include what you use principles
-(flexed a little for headers that are front ends to others).
-
-> +
-> +#include "rmm-da.h"
-> +
-> +/* Number of streams that we can support at the hostbridge level */
-> +#define CCA_HB_PLATFORM_STREAMS 4
-> +
-> +/* Total number of stream id supported at root port level */
-> +#define MAX_STREAM_ID	256
-> +
-> +DEFINE_FREE(vfree, void *, if (!IS_ERR_OR_NULL(_T)) vfree(_T))
-> +static struct pci_tsm *cca_tsm_pci_probe(struct pci_dev *pdev)
-> +{
-> +	int rc;
-> +	struct pci_host_bridge *hb;
-> +	struct cca_host_dsc_pf0 *dsc_pf0 __free(vfree) = NULL;
-
-Read the stuff in cleanup.h and work out why this needs
-changing to be inline below and not use this NULL pattern here
-(unless you like grumpy Linus ;)
-
-Note that with the err_out, even if you do that you'll still be
-breaking with the guidance doc (and actually causing undefined
-behavior :)  Get rid of those gotos if you want to use __free()
+ arch/powerpc/include/asm/kvm_types.h |  15 ++
+ arch/s390/include/asm/kvm_host.h     |   2 +
+ arch/s390/kvm/priv.c                 |   8 +
+ arch/x86/entry/entry.S               |   7 +-
+ arch/x86/entry/entry_64_fred.S       |   3 +-
+ arch/x86/events/amd/core.c           |   5 +-
+ arch/x86/events/core.c               |   7 +-
+ arch/x86/events/intel/lbr.c          |   3 +-
+ arch/x86/events/intel/pt.c           |   7 +-
+ arch/x86/include/asm/kvm_host.h      |   3 -
+ arch/x86/include/asm/kvm_types.h     |  15 ++
+ arch/x86/kernel/apic/apic.c          |   3 +-
+ arch/x86/kernel/apic/apic_common.c   |   3 +-
+ arch/x86/kernel/cpu/amd.c            |   4 +-
+ arch/x86/kernel/cpu/bugs.c           |  17 +--
+ arch/x86/kernel/cpu/bus_lock.c       |   3 +-
+ arch/x86/kernel/cpu/common.c         |   7 +-
+ arch/x86/kernel/cpu/sgx/main.c       |   3 +-
+ arch/x86/kernel/cpu/sgx/virt.c       |   5 +-
+ arch/x86/kernel/e820.c               |   3 +-
+ arch/x86/kernel/fpu/core.c           |  21 +--
+ arch/x86/kernel/fpu/xstate.c         |   7 +-
+ arch/x86/kernel/hw_breakpoint.c      |   3 +-
+ arch/x86/kernel/irq.c                |   3 +-
+ arch/x86/kernel/kvm.c                |   5 +-
+ arch/x86/kernel/nmi.c                |   5 +-
+ arch/x86/kernel/process_64.c         |   5 +-
+ arch/x86/kernel/reboot.c             |   5 +-
+ arch/x86/kernel/tsc.c                |   1 +
+ arch/x86/kvm/cpuid.c                 |  10 +-
+ arch/x86/kvm/hyperv.c                |   4 +-
+ arch/x86/kvm/irq.c                   |  34 +----
+ arch/x86/kvm/kvm_onhyperv.c          |   6 +-
+ arch/x86/kvm/lapic.c                 |  70 ++++++---
+ arch/x86/kvm/lapic.h                 |   4 +-
+ arch/x86/kvm/mmu/mmu.c               |  36 ++---
+ arch/x86/kvm/mmu/spte.c              |  10 +-
+ arch/x86/kvm/mmu/tdp_mmu.c           |   2 +-
+ arch/x86/kvm/pmu.c                   |   8 +-
+ arch/x86/kvm/smm.c                   |   2 +-
+ arch/x86/kvm/x86.c                   | 211 +++++++++++++--------------
+ arch/x86/lib/cache-smp.c             |   9 +-
+ arch/x86/lib/msr.c                   |   5 +-
+ arch/x86/mm/pat/memtype.c            |   3 +-
+ arch/x86/mm/tlb.c                    |   5 +-
+ arch/x86/virt/vmx/tdx/tdx.c          |  65 +++++----
+ drivers/s390/crypto/vfio_ap_ops.c    |   2 +-
+ include/linux/kvm_types.h            |  39 ++++-
+ virt/kvm/eventfd.c                   |   2 +-
+ virt/kvm/guest_memfd.c               |   4 +-
+ virt/kvm/kvm_main.c                  | 126 ++++++++--------
+ 51 files changed, 457 insertions(+), 378 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/kvm_types.h
 
 
-> +
-> +	if (pdev->is_virtfn)
-> +		return NULL;
-> +
-> +	if (!is_pci_tsm_pf0(pdev)) {
-> +		struct pci_tsm *tsm = kzalloc(sizeof(*tsm), GFP_KERNEL);
-> +
-> +		if (!tsm)
-> +			goto err_out;
-> +
-> +		pci_tsm_initialize(pdev, tsm);
-> +		return tsm;
-> +	}
-> +
-> +	if (!pdev->ide_cap)
-> +		goto err_out;
-> +
-> +	dsc_pf0 = vcalloc(sizeof(*dsc_pf0), GFP_KERNEL);
-> +	if (!dsc_pf0)
-> +		goto err_out;
-> +
-> +	rc = pci_tsm_pf0_initialize(pdev, &dsc_pf0->pci);
-> +	if (rc)
-> +		return NULL;
-> +	/*
-> +	 * FIXME!!
-> +	 * update the hostbridge details. This should go into
-> +	 * some host bridge probe/init routine.
-> +	 * than the selective index supported by the endpoint
-> +	 */
-> +	hb = pci_find_host_bridge(pdev->bus);
-> +	pci_ide_init_nr_streams(hb, CCA_HB_PLATFORM_STREAMS);
-> +
-> +	pci_info(pdev, "tsm enabled\n");
-
-Ok. RFC I guess.  Still pci_dbg()
-
-> +	return &no_free_ptr(dsc_pf0)->pci.tsm;
-> +
-> +err_out:
-
-Why? Random mix of direct returns of NULL above and goto here.
-
-> +	return NULL;
-> +}
-> +
-> +static void cca_tsm_pci_remove(struct pci_tsm *tsm)
-> +{
-> +	struct pci_dev *pdev = tsm->pdev;
-> +	struct cca_host_dsc_pf0 *dsc_pf0;
-> +
-> +	if (WARN_ON(pdev->is_virtfn))
-> +		return;
-> +
-> +	if (!is_pci_tsm_pf0(pdev)) {
-> +
-> +		pci_dbg(tsm->pdev, "tsm disabled\n");
-> +		kfree(pdev->tsm);
-> +		return;
-> +	}
-> +
-> +	dsc_pf0 = to_cca_dsc_pf0(pdev);
-> +	pci_dbg(tsm->pdev, "tsm disabled\n");
-> +	vfree(dsc_pf0);
-> +}
-> +
-> +/* per root port unique with multiple restrictions. For now global */
-> +static DECLARE_BITMAP(cca_stream_ids, MAX_STREAM_ID);
-
-> +
-> +static void cca_tsm_disconnect(struct pci_dev *pdev)
-> +{
-> +	struct pci_dev *rp = pcie_find_root_port(pdev);
-> +	struct cca_host_dsc_pf0 *dsc_pf0;
-> +	struct pci_ide *ide;
-> +
-> +	if (WARN_ON(!is_pci_tsm_pf0(pdev)))
-> +		return;
-> +
-> +	dsc_pf0 = to_cca_dsc_pf0(pdev);
-> +	ide = dsc_pf0->sel_stream;
-> +	dsc_pf0->sel_stream = NULL;
-> +	pci_ide_stream_disable(pdev, ide);
-> +	tsm_ide_stream_unregister(ide);
-> +	pci_ide_stream_teardown(rp, ide);
-> +	pci_ide_stream_teardown(pdev, ide);
-> +	pci_ide_stream_unregister(ide);
-> +	clear_bit(ide->stream_id, cca_stream_ids);
-> +	pci_ide_stream_free(ide);
-
-Ordering subtly different from error path above.
-If there is a reason for that add a comment.
-
-> +}
-
-> +static void cca_tsm_remove(void *tsm_core)
-> +{
-> +	tsm_unregister(tsm_core);
-> +}
-> +
-> +static int cca_tsm_probe(struct platform_device *pdev)
-> +{
-> +	struct tsm_core_dev *tsm_core;
-> +
-> +	tsm_core = tsm_register(&pdev->dev, NULL, &cca_pci_ops);
-> +	if (IS_ERR(tsm_core))
-> +		return PTR_ERR(tsm_core);
-> +
-> +	return devm_add_action_or_reset(&pdev->dev, cca_tsm_remove, tsm_core);
-
-So this makes two with the one in Dan's test code. 
-devm_tsm_register() seems to be a useful generic thing to add (implementation
-being exactly what you have here.
-
-> +}
-> +
-> +static const struct platform_device_id arm_cca_host_id_table[] = {
-> +	{ RMI_DEV_NAME, 0},
-Space before } and don't provide data until there is a use for it.
-	{ RMI_DEV_NAME }
-
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(platform, arm_cca_host_id_table);
-> +
-Consistency on spacing.  I'd go for just 1 blank line for separation
-of things.
-> +
-> +static struct platform_driver cca_tsm_platform_driver = {
-> +	.probe = cca_tsm_probe,
-> +	.id_table = arm_cca_host_id_table,
-> +	.driver = {
-> +		.name = "cca_tsm",
-> +	},
-> +};
-> +
-> +MODULE_IMPORT_NS("PCI_IDE");
-> +module_platform_driver(cca_tsm_platform_driver);
-> +MODULE_DESCRIPTION("ARM CCA Host TSM driver");
-> +MODULE_LICENSE("GPL");
-
+base-commit: beafd7ecf2255e8b62a42dc04f54843033db3d24
+-- 
+2.50.1.552.g942d659e1b-goog
 
