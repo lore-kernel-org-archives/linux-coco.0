@@ -1,84 +1,67 @@
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1419224DCF9
-	for <linux-coco@lists.linux.dev>; Mon, 28 Jul 2025 14:33:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DFAE4A02
+	for <linux-coco@lists.linux.dev>; Tue, 29 Jul 2025 05:05:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753713204; cv=none; b=Da7K8NhhnX/IOCx/6zc7WFq+lJAMAkc7tiDSBXUe2aHLPD3vvlIpwEmaWX5q1p6pz4xlYklokYAGkiuJROBZf6CurZnffonr/jCWnkjvfSlRlySYZjA+NtieBvwlrdKZgrzj/JOvGTh8aP8Yqat+xWJhI49MgIt7e5Q40jeGP+A=
+	t=1753765513; cv=none; b=FqGcvzs1JrEGmmoruY6W6sajEyB8p978xk2wsMfN+3YZO49OZKBj1TVZXNasOnvCxyMYiqTiEEHZV4Ha2zhL+/KRYIKdlyt0HHGa1Ssa+2YvKnD4pX76zPf2LYXFU6yNuMJ7DH8lAl/l6DzIh8O7e+MLsE7vB5UsIOOKcXZrsho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753713204; c=relaxed/simple;
-	bh=W9cZd84LF6duF0602DMOOstiN56aNMhgPt1nX1d9jRE=;
+	s=arc-20240116; t=1753765513; c=relaxed/simple;
+	bh=5egcKgD4FYDc9odofRDQJ94rLDaE5PJqwRcIkar3lGo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VBl/f1wzPaUhBpgxwzEDhzAZcSQ8sV7HprPFIcUuU154eTtOQzY+f7oGHLXsFVMxMtAXfeZ+qexPsFWrZolESt7jASEKNdLcbZ1d1XrxN4j7Gp7DRonKSfar5fDWVyLIYGXDrh5rGCQZC63FGc4NwTcdaAoGcWGA8q2EumJpKeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=E6/isURf; arc=none smtp.client-ip=209.85.219.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=apIn3ZKNIka7XFZYLatVPgk3nHlve8EKd0odVgwi9DVsqLzupqpkqrsfEk22pnuJrOHtaH/+qIPBxxAP51sMO64AA3AVbTzoOYnGtMF79f4toonrfyarz7lPYQRv3gL6DpQCLuuUCEfPqs3rnbu0IpJ+jovtlHnSKoxH0rkufis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J+ptzz5W; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="E6/isURf"
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6fad4e6d949so17456656d6.0
-        for <linux-coco@lists.linux.dev>; Mon, 28 Jul 2025 07:33:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1753713200; x=1754318000; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VWXJt0ksyO0+qZpgSvPEVSB9f2WnFWOci7NBGJx/i70=;
-        b=E6/isURfxGFOZnRiNOZXKOboyp3TzCGS+mHxnW9uMeuH5Sy5pfchap2aVfEyYUeQC4
-         cKovsaSd/NP+zm4JYIkN4yPWKHBbzZiLA6LKI43OSruskSx5k42g8K2sTRK+bY2MTb4E
-         xRDFrwdoQvjQQ7ear6jNueU596+E5qilnthEnGSkJRpp2r0aRzmaRSGcJWM3ceR0YAFg
-         Ni4DlFcc0psZYrdKH4IGNdUeZs4m7zSLRLPXt5cVliT4H/mJneJnZQguGB8wn7uI5Kt0
-         8fnJA1Nhkt8WLu4LToZRluelE6meRaOas9B0la/iotKA9y+LA70mYs5bpibmkTsYzPOM
-         wmaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753713200; x=1754318000;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VWXJt0ksyO0+qZpgSvPEVSB9f2WnFWOci7NBGJx/i70=;
-        b=TzVBVPJlk3uBoqZGk2xXzjS7bB7ZnuEM9Lt2enwM3dE0xyCZcpDITf5ADoQxiTAtJy
-         31tsg3CgYzkXA6VP0bUEKBJQWofxJeTWYBi77P9uWHfwbsDAjfZNj3zsYb8PLxnjAUGz
-         DrYvP9gjHTuO4AaUp8JB9thz5IWw1jJjsS8bgpGeRsHZw69qCpB6yeKBauWsKlZ+TKK6
-         dq5C5d2k725JAz7W/72z8aIYwyNR9/lUDtAlVsl7WZNYKlF0l9fylg3MBF2+2mWPf9DZ
-         Ay8zqJzxoL4GDFYk1aS/dofV9TA0ZN0GYszkCDCggKc97STjRXo71VcW/WStJB8/0y93
-         /mhA==
-X-Gm-Message-State: AOJu0Yz4SMilBTTnktVHu7Bs4PaZLAH2YMMLOqw5l+OvmhXHoF4PNbhl
-	Y1pFTor9K7G3pJ2HFH2vZkkub5ljI/gNyuOlEFhsNMsKpXxDrsTwC6tTe5w6jJVXTjkkHG92Eh3
-	F+prQ
-X-Gm-Gg: ASbGncvt+DrP6RvK9c+SwF1w1XkJFRvvP8E/50ZC0ESeU6o8a1m8B/Fj/G9OcNqvFdU
-	RQcFaJccXAU6E/3ub6mqIm+da41BM6KtamImF/jgMDAvI6rgK1+1jTivOjFw+QyZu3qgIlLxS/O
-	Wpk9Qme+dpjkPowGsbVmkgEj8QC1dVBNgZbYtFswdr8lmgVqsKobbAfbD217oketv+vnblZQFuQ
-	HEf+7+xHWnIyakSYWtyUDVjY2Zkvo15g2DjYhRY6s7eUFXglPe3gk8SBDC35ZmROvFCLcxIET+Q
-	FgG9cc3lbY5Py4kp22SwcPKfaFKy0GCxoiDYGIdU9QefviPjJTWZn2yOZ0Y9QIw2xoAWD/ioOxH
-	oCfrbwHIzfEerl2sqlE/mkCmEjIiaXVDtBFT4FbQb/MZA3SqDz7wddoli0vnbqGXRQrjZOOk6Tz
-	jInzw=
-X-Google-Smtp-Source: AGHT+IHMY4rGulXXEHfYzZtPMGVblgwyt5UUI5t558D0JMhsu4TWVCWFWjqwz9Xtl5YNFBAdYTlQIg==
-X-Received: by 2002:a05:6214:224a:b0:707:9eb:d483 with SMTP id 6a1803df08f44-707205a1bcemr162291726d6.27.1753713199708;
-        Mon, 28 Jul 2025 07:33:19 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7074c37e84asm9044456d6.19.2025.07.28.07.33.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Jul 2025 07:33:19 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1ugOuk-00000000Ayl-2Dx4;
-	Mon, 28 Jul 2025 11:33:18 -0300
-Date: Mon, 28 Jul 2025 11:33:18 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	aik@amd.com, lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: Re: [RFC PATCH v1 04/38] tsm: Support DMA Allocation from private
- memory
-Message-ID: <20250728143318.GD26511@ziepe.ca>
-References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
- <20250728135216.48084-5-aneesh.kumar@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J+ptzz5W"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753765511; x=1785301511;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5egcKgD4FYDc9odofRDQJ94rLDaE5PJqwRcIkar3lGo=;
+  b=J+ptzz5WKOlsA7+GcQ1RZX0iCnv/bprfmifF37pTDICjH0+SMCkeNeLC
+   ncGITB1dpFOBz0RV4zTQfcZtbF6SX/z8/yyyjdnM2HtCg6v56P3dIudFw
+   QC5NdaWKhx7ANPOxvXcrtbWiyIY7P5TMN1MmVcbtp/A+6IJtrJJUrUWL0
+   chNCFJKJpsFcoooDAkYpHoLuxqk78kuMV7s3bm1AakOKYTVHL14KLiGaD
+   iMpiIZ3BnXJ10jEJ9naAB81myOHYciN5UpX+Mw5lVqbs6XacQmmPsEuEw
+   QZeWu7iug6bdvpHhM5L7vYD/lEM7QQdTdwJWW+ySQnVvdCF8rulH+Oaw5
+   A==;
+X-CSE-ConnectionGUID: tAo0VkW/SMOm/1gdvT+Lag==
+X-CSE-MsgGUID: LswAl/vJRT+uHhHR/XIw4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11505"; a="59671661"
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; 
+   d="scan'208";a="59671661"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2025 22:05:11 -0700
+X-CSE-ConnectionGUID: NtU2Nli6Ro2azAlZ/UeGhA==
+X-CSE-MsgGUID: WWnmbXg2QjKOC6qN3TIygg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,348,1744095600"; 
+   d="scan'208";a="162172796"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa007.fm.intel.com with ESMTP; 28 Jul 2025 22:05:06 -0700
+Date: Tue, 29 Jul 2025 12:55:51 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-coco@lists.linux.dev, x86@kernel.org, kvm@vger.kernel.org,
+	seanjc@google.com, pbonzini@redhat.com, eddie.dong@intel.com,
+	kirill.shutemov@intel.com, dave.hansen@intel.com,
+	dan.j.williams@intel.com, kai.huang@intel.com,
+	isaku.yamahata@intel.com, elena.reshetova@intel.com,
+	rick.p.edgecombe@intel.com, Farrah Chen <farrah.chen@intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 07/20] x86/virt/tdx: Expose SEAMLDR information via
+ sysfs
+Message-ID: <aIhUVyJVQ+rhRB4r@yilunxu-OptiPlex-7050>
+References: <20250523095322.88774-1-chao.gao@intel.com>
+ <20250523095322.88774-8-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -87,60 +70,74 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250728135216.48084-5-aneesh.kumar@kernel.org>
+In-Reply-To: <20250523095322.88774-8-chao.gao@intel.com>
 
-On Mon, Jul 28, 2025 at 07:21:41PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> @@ -48,3 +49,12 @@ int set_memory_decrypted(unsigned long addr, int numpages)
->  	return crypt_ops->decrypt(addr, numpages);
->  }
->  EXPORT_SYMBOL_GPL(set_memory_decrypted);
+> +static const struct attribute_group *tdx_subsys_groups[] = {
+> +	SEAMLDR_GROUP,
+> +	NULL,
+> +};
 > +
-> +bool force_dma_unencrypted(struct device *dev)
-> +{
-> +	if (dev->tdi_enabled)
-> +		return false;
+>  static void tdx_subsys_init(void)
+>  {
+>  	struct tdx_tsm *tdx_tsm;
+>  	int err;
+>  
+> +	err = get_seamldr_info();
+> +	if (err) {
+> +		pr_err("failed to get seamldr info %d\n", err);
+> +		return;
+> +	}
+> +
+>  	/* Establish subsystem for global TDX module attributes */
+> -	err = subsys_virtual_register(&tdx_subsys, NULL);
+> +	err = subsys_virtual_register(&tdx_subsys, tdx_subsys_groups);
+>  	if (err) {
+>  		pr_err("failed to register tdx_subsys %d\n", err);
+>  		return;
 
-Is this OK? I see code like this:
+As mentioned, TDX Connect also uses this virtual TSM device. And I tend
+to extend it to TDX guest, also make the guest TSM management run on
+the virtual device which represents the TDG calls and TDG_VP_VM calls.
 
-static inline dma_addr_t phys_to_dma_direct(struct device *dev,
-		phys_addr_t phys)
-{
-	if (force_dma_unencrypted(dev))
-		return phys_to_dma_unencrypted(dev, phys);
-	return phys_to_dma(dev, phys);
+So I'm considering extract the common part of tdx_subsys_init() out of
+TDX host and into a separate file, e.g.
 
-What are the ARM rules for generating dma addreses?
+---
 
-1) Device is T=0, memory is unencrypted, call dma_addr_unencrypted()
-   and do "top bit IBA set"
++source "drivers/virt/coco/tdx-tsm/Kconfig"
++
+ config TSM
+        bool
+diff --git a/drivers/virt/coco/Makefile b/drivers/virt/coco/Makefile
+index c0c3733be165..a54d3cb5b4e9 100644
+--- a/drivers/virt/coco/Makefile
++++ b/drivers/virt/coco/Makefile
+@@ -10,3 +10,4 @@ obj-$(CONFIG_INTEL_TDX_GUEST) += tdx-guest/
+ obj-$(CONFIG_ARM_CCA_GUEST)    += arm-cca-guest/
+ obj-$(CONFIG_TSM)              += tsm-core.o
+ obj-$(CONFIG_TSM_GUEST)                += guest/
++obj-y                          += tdx-tsm/
+diff --git a/drivers/virt/coco/tdx-tsm/Kconfig b/drivers/virt/coco/tdx-tsm/Kconfig
+new file mode 100644
+index 000000000000..768175f8bb2c
+--- /dev/null
++++ b/drivers/virt/coco/tdx-tsm/Kconfig
+@@ -0,0 +1,2 @@
++config TDX_TSM_BUS
++       bool
+diff --git a/drivers/virt/coco/tdx-tsm/Makefile b/drivers/virt/coco/tdx-tsm/Makefile
+new file mode 100644
+index 000000000000..09f0ac08988a
+--- /dev/null
++++ b/drivers/virt/coco/tdx-tsm/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_TDX_TSM_BUS) += tdx-tsm-bus.o
 
-2) Device is T=1, memory is encrypted, use the phys_to_dma() normally
+---
 
-3) Device it T=1, memory is uncrypted, use the phys_to_dma()
-   normally??? Seems odd, I would have guessed the DMA address sould
-   be the same as case #1?
+And put the tdx_subsys_init() in tdx-tsm-bus.c. We need to move host
+specific initializations out of tdx_subsys_init(), e.g. seamldr_group &
+seamldr fw upload.
 
-Can you document this in a comment?
-
-> diff --git a/include/linux/device.h b/include/linux/device.h
-> index 4940db137fff..d62e0dd9d8ee 100644
-> --- a/include/linux/device.h
-> +++ b/include/linux/device.h
-> @@ -688,6 +688,7 @@ struct device {
->  #ifdef CONFIG_IOMMU_DMA
->  	bool			dma_iommu:1;
->  #endif
-> +	bool			tdi_enabled:1;
->  };
-
-I would give the dev->tdi_enabled a clearer name, maybe
-dev->encrypted_dma_supported ?
-
-Also need to think carefully of a bitfield is OK here, we can't
-locklessly change a bitfield so need to audit that all members are set
-under, probably, the device lock or some other single threaded hand
-waving. It seems believable it is like that but should be checked out,
-and add a lockdep if it relies on the device lock.
-
-Jason
-
+Thanks,
+Yilun
