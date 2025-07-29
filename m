@@ -1,232 +1,124 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF7641760
-	for <linux-coco@lists.linux.dev>; Tue, 29 Jul 2025 13:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2704B1CBEAA
+	for <linux-coco@lists.linux.dev>; Tue, 29 Jul 2025 14:29:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753794391; cv=none; b=ZNI6zWRa/80K509ouLFyb/TN7FbuDvMz+/0WWyS/Bu0q9ReB46+kWFzhcJvZ3BYG+pLRO2m5fWaS2/I3Ji44NV4XygGwBzQcf/ZqMhz6n2a4UW2gaWZwKfrm86HWOytuxIStZT3QePh6hSmI7XF7HuVZyyox61Rv5a2R+X7X6ts=
+	t=1753799362; cv=none; b=a8hD2m7iAgj1ugdx/dGol8atespm83MEHl1/tVM9roxYDSWo2niWE2otiyBAcSMqV3QGuCngmLFQ3P6EvocRACoeagePfwjdlGjTllPK0ydx/vSo3edg20Vgi/itskt6driIhTUrSOSshfOZKx3GOyYW94U5UYacAF9vaE7NN9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753794391; c=relaxed/simple;
-	bh=R5Ti7hVlly6Z9J0Chutm2pgVzpn7+W7qVHeQ0bar/O0=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q/rNDZg2vPAbWy9LgIuLjYc0HWJeIStppm7ASZbur+kKY9K0Tt2i/ZipfU4nYpoZzS0oLaFicf2RvFWHTwXChSMSFgmZMoyYgzR/mU+GkVtS5MLcY+RZk5ELll5XtGxRAsXlYJFdn7cj+CVVxsvklepAcfgLk9J8TTXlLNe2s50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4brwVJ0Jlcz6J9lt;
-	Tue, 29 Jul 2025 21:02:16 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 205671400E3;
-	Tue, 29 Jul 2025 21:06:26 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 29 Jul
- 2025 15:06:25 +0200
-Date: Tue, 29 Jul 2025 14:06:23 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Dan Williams <dan.j.williams@intel.com>
-CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <bhelgaas@google.com>, <aik@amd.com>,
-	<lukas@wunner.de>
-Subject: Re: [PATCH v4 03/10] PCI: Introduce pci_walk_bus_reverse(),
- for_each_pci_dev_reverse()
-Message-ID: <20250729140623.000068a8@huawei.com>
-In-Reply-To: <20250717183358.1332417-4-dan.j.williams@intel.com>
-References: <20250717183358.1332417-1-dan.j.williams@intel.com>
-	<20250717183358.1332417-4-dan.j.williams@intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1753799362; c=relaxed/simple;
+	bh=xOGcPk1h5mkQlFHPfT4qZPTUZq5yx18xGEjyCFHAQpM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HvHXBVzo1/WFZdMlduzDahZpJfDPCvOaUopHG4uQuX4XEj69CtyhICAKfGfzHCAuQfbP6/C6lN6WFElnrGHKPezCBOLCb/Qu9YZDp2o4iVaZzXUghqd0LY7H5wwzady1WYOoYmNbpCnG/q9CFoAgfXv5n4kPDAED67lmqwCkrUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=j29O4yhb; arc=none smtp.client-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="j29O4yhb"
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7e638975262so524572485a.0
+        for <linux-coco@lists.linux.dev>; Tue, 29 Jul 2025 07:29:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1753799359; x=1754404159; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Qz67H2QziopzvIbpAdOwNF/pBaaQ95fyoFVZsRKl+KE=;
+        b=j29O4yhbeeY7Xi4n2elxBnGJfos0GzSQ+ttTVYAjMCaX44hs+SeP3fNSVwTYESZ6Tu
+         Ajod8lAtKoW3Zj+GMqGmUvt8HV8Pruhy+UU93RHz4n7sMiYYuOnUVaAe4fUkZiO5OMh+
+         mhi1hLulaVfRrJU4OQS2I8sQtWZB8VxbHX0WX8LuFECPmmxV6t6UCgabUUV/Cso8R9CZ
+         K/srzN9tfqQ0A6/UafJiREW8TSQlhg/a+ZreV2BzwqZ9wO66mCM/e+LHTBRvJWQ+XRcq
+         LzQiVuNwGYhSlHYudRGSRQwdEE/wEudyPKIWgE0SdtOHHrL+Tp7yIGIeuYRzKZuMu62A
+         9pdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753799359; x=1754404159;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qz67H2QziopzvIbpAdOwNF/pBaaQ95fyoFVZsRKl+KE=;
+        b=JqCRilWENVdHVhDxQzn1jbmUC+9dtnZVuXngA3UtzRG+RDiWcv+TCBNmUvUeDwOOuz
+         HDUfZX0nohPUYkt51KiQ/yjEFNMxh2G6YVTNtyM3+LgzTW+uOVwPokO933By1eJ2gZ2v
+         SDoyt6zfr3HzNp0nAZEYaKbOmhw0R+I3ebKtQCH6AImXHuEbLwrfqMKJ0zpY3VW+v9UP
+         QK7EZ5MzDmkVta2H+gY3uh5Q8EQI6U7djJ5Y7p0gU7Z6B2DHEp2CinsDgnxUPpowOzQp
+         MuEZ9xdQdKvC8/7cFy38dKuq39ad+uj0OXL90wfv6XUJi4NM7VYKwyjO5mN7jZmHfeOV
+         1ouA==
+X-Gm-Message-State: AOJu0YzfrmVlSrtL1kN3ic2aP3FcItl3h1PderwtTsOLj7lopQlvTiCa
+	fQa1xtPoE4g8ezJ/FP9VZsDOo/Y/U2bOQH38uKNDbkc2+KW2nO9yGnPiEQeaVLVHbFE=
+X-Gm-Gg: ASbGnctxQTZctjnquvNL/viA8MiFwHriXrbwJA07KE3urRU/s8pn1gctBFTH/fzJypA
+	uWVqXWB7/wtomi9bchb2Km0SwZ0qEweA2ho3sXAMuYmFMbAJMMPk9xdUBiZlc8iZOIJBTI3s937
+	y6HZdg/F0OuQ5z/gpNp+8ae/thrqSWPRfIHFh95pYxfZ2iUJVx8F0FYyuY+XmPEsVXPDD4sj2pu
+	YdBPKhmmrulufH1XIQ9K4DjMld8iDN9ERCCbsePjKPR4jaAaMcSiOs8yLztVmfyDzXgg8MitivD
+	VInS5IN19pIuUoXkgufc+UcmQGy6x4nfbxXTc4+9gVRw8VjHopQLBg+6KGeuEE/eCWq2g1F1kEx
+	9KT2l703pkYepDRLP31j5kDxYzEY/srTDLXMWIq0EJhHpQfcEqsbVkFCcZpHYYYN8BuUB
+X-Google-Smtp-Source: AGHT+IHYkw6eFpxfaIRVF1srsJ9FJ19UlQqBR6yhpID34uYqJijJ/A3tTeVFt7I+4cQKncFmezcccg==
+X-Received: by 2002:a05:620a:8386:b0:7e6:65ce:2bb5 with SMTP id af79cd13be357-7e665ce2c46mr224992185a.47.1753799358715;
+        Tue, 29 Jul 2025 07:29:18 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e643897b24sm431209085a.75.2025.07.29.07.29.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Jul 2025 07:29:18 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1uglKP-00000000JGf-22cn;
+	Tue, 29 Jul 2025 11:29:17 -0300
+Date: Tue, 29 Jul 2025 11:29:17 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	aik@amd.com, lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: Re: [RFC PATCH v1 06/38] iommufd: Add and option to request for bar
+ mapping with IORESOURCE_EXCLUSIVE
+Message-ID: <20250729142917.GF26511@ziepe.ca>
+References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
+ <20250728135216.48084-7-aneesh.kumar@kernel.org>
+ <20250728140841.GA26511@ziepe.ca>
+ <yq5a34afbdtl.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <yq5a34afbdtl.fsf@kernel.org>
 
-On Thu, 17 Jul 2025 11:33:51 -0700
-Dan Williams <dan.j.williams@intel.com> wrote:
-
-> PCI/TSM, the PCI core functionality for the PCIe TEE Device Interface
-> Security Protocol (TDISP), has a need to walk all subordinate functions of
-> a Device Security Manager (DSM) to setup a device security context. A DSM
-> is physical function 0 of multi-function or SRIOV device endpoint, or it is
-> an upstream switch port.
+On Tue, Jul 29, 2025 at 01:58:54PM +0530, Aneesh Kumar K.V wrote:
+> Jason Gunthorpe <jgg@ziepe.ca> writes:
 > 
-> In error scenarios or when a TEE Security Manager (TSM) device is removed
-> it needs to unwind all established DSM contexts.
+> > On Mon, Jul 28, 2025 at 07:21:43PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> >> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> >
+> > Why would we need this?
+> >
+> > I can sort of understand why Intel would need it due to their issues
+> > with MCE, but ARM shouldn't care either way, should it?
+> >
+> > But also why is it an iommufd option? That doesn't seem right..
+> >
+> > Jason
 > 
-> Introduce reverse versions of PCI device iteration helpers to mirror the
-> setup path and ensure that dependent children are handled before parents.
-> 
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> This is based on our previous discussion https://lore.kernel.org/all/20250606120919.GH19710@nvidia.com
 
-A couple of trivial comments.
+I suggested a global option, this is a per-device option, and that
+especially seems wrong for iommufd. If it is per-device that is vfio,
+if it is global then vfio can pick it up during the early phases of
+opening the device.
 
-Probably want to +CC Greg KH on next version given bits in drivers/base
+> IIUC, we intend to request the resource in exclusive mode for secure
+> guests—regardless of whether the platform is Intel or ARM. Could you
+> help clarify the MCE issue observed on Intel platforms in this context?
 
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+As I understand it Intel MCEs if the non-secure side ever reads from
+secure'd address space. So there is alot of emphasis there to ensure
+there are no CPU mappings.
 
-> diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
-> index 69048869ef1c..d894c87ce1fd 100644
-> --- a/drivers/pci/bus.c
-> +++ b/drivers/pci/bus.c
-
-include cleanup.h perhaps for access to guard()?
-
-
-> diff --git a/drivers/pci/search.c b/drivers/pci/search.c
-> index 53840634fbfc..7a4623f65256 100644
-> --- a/drivers/pci/search.c
-> +++ b/drivers/pci/search.c
-> @@ -282,6 +282,46 @@ static struct pci_dev *pci_get_dev_by_id(const struct pci_device_id *id,
->  	return pdev;
->  }
->  
-> +static struct pci_dev *pci_get_dev_by_id_reverse(const struct pci_device_id *id,
-> +						 struct pci_dev *from)
-> +{
-> +	struct device *dev;
-> +	struct device *dev_start = NULL;
-> +	struct pci_dev *pdev = NULL;
-> +
-> +	if (from)
-> +		dev_start = &from->dev;
-> +	dev = bus_find_device_reverse(&pci_bus_type, dev_start, (void *)id,
-> +				      match_pci_dev_by_id);
-> +	if (dev)
-> +		pdev = to_pci_dev(dev);
-> +	pci_dev_put(from);
-> +	return pdev;
-> +}
-> +
-> +enum pci_search_direction {
-> +	PCI_SEARCH_FORWARD,
-> +	PCI_SEARCH_REVERSE,
-> +};
-> +
-
-I don't really care, but given there are only two sane directions maybe
-a bool reverse as a parameter to __pci_get_subsys() would be sufficient? 
-
-> +static struct pci_dev *__pci_get_subsys(unsigned int vendor, unsigned int device,
-> +				 unsigned int ss_vendor, unsigned int ss_device,
-> +				 struct pci_dev *from, enum pci_search_direction dir)
-> +{
-> +	struct pci_device_id id = {
-> +		.vendor = vendor,
-> +		.device = device,
-> +		.subvendor = ss_vendor,
-> +		.subdevice = ss_device,
-> +	};
-> +
-> +	if (dir == PCI_SEARCH_FORWARD)
-> +		return pci_get_dev_by_id(&id, from);
-> +	else
-> +		return pci_get_dev_by_id_reverse(&id, from);
-> +}
-> +
-This file seems to use 1 blank line only between functions.
-> +
->  /**
->   * pci_get_subsys - begin or continue searching for a PCI device by vendor/subvendor/device/subdevice id
->   * @vendor: PCI vendor id to match, or %PCI_ANY_ID to match all vendor ids
-> @@ -302,14 +342,8 @@ struct pci_dev *pci_get_subsys(unsigned int vendor, unsigned int device,
->  			       unsigned int ss_vendor, unsigned int ss_device,
->  			       struct pci_dev *from)
->  {
-> -	struct pci_device_id id = {
-> -		.vendor = vendor,
-> -		.device = device,
-> -		.subvendor = ss_vendor,
-> -		.subdevice = ss_device,
-> -	};
-> -
-> -	return pci_get_dev_by_id(&id, from);
-> +	return __pci_get_subsys(vendor, device, ss_vendor, ss_device, from,
-> +				PCI_SEARCH_FORWARD);
->  }
->  EXPORT_SYMBOL(pci_get_subsys);
->  
-> @@ -334,6 +368,19 @@ struct pci_dev *pci_get_device(unsigned int vendor, unsigned int device,
->  }
->  EXPORT_SYMBOL(pci_get_device);
->  
-> +/*
-> + * Same semantics as pci_get_device(), except walks the PCI device list
-> + * in reverse discovery order.
-> + */
-> +struct pci_dev *pci_get_device_reverse(unsigned int vendor,
-> +				       unsigned int device,
-> +				       struct pci_dev *from)
-> +{
-> +	return __pci_get_subsys(vendor, device, PCI_ANY_ID, PCI_ANY_ID, from,
-> +				PCI_SEARCH_REVERSE);
-> +}
-> +EXPORT_SYMBOL(pci_get_device_reverse);
-> +
->  /**
->   * pci_get_class - begin or continue searching for a PCI device by class
->   * @class: search for a PCI device with this class designation
-> diff --git a/include/linux/device/bus.h b/include/linux/device/bus.h
-> index f5a56efd2bd6..99b1002b3e31 100644
-> --- a/include/linux/device/bus.h
-> +++ b/include/linux/device/bus.h
-> @@ -150,6 +150,9 @@ int bus_for_each_dev(const struct bus_type *bus, struct device *start,
->  		     void *data, device_iter_t fn);
->  struct device *bus_find_device(const struct bus_type *bus, struct device *start,
->  			       const void *data, device_match_t match);
-> +struct device *bus_find_device_reverse(const struct bus_type *bus,
-> +				       struct device *start, const void *data,
-> +				       device_match_t match);
->  /**
->   * bus_find_device_by_name - device iterator for locating a particular device
->   * of a specific name.
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index 3fac811376b5..b8bca0711967 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -575,6 +575,8 @@ struct pci_dev *pci_alloc_dev(struct pci_bus *bus);
->  
->  #define	to_pci_dev(n) container_of(n, struct pci_dev, dev)
->  #define for_each_pci_dev(d) while ((d = pci_get_device(PCI_ANY_ID, PCI_ANY_ID, d)) != NULL)
-> +#define for_each_pci_dev_reverse(d) \
-> +	while ((d = pci_get_device_reverse(PCI_ANY_ID, PCI_ANY_ID, d)) != NULL)
->  
->  static inline int pci_channel_offline(struct pci_dev *pdev)
->  {
-> @@ -1220,6 +1222,8 @@ u64 pci_get_dsn(struct pci_dev *dev);
->  
->  struct pci_dev *pci_get_device(unsigned int vendor, unsigned int device,
->  			       struct pci_dev *from);
-> +struct pci_dev *pci_get_device_reverse(unsigned int vendor, unsigned int device,
-> +				       struct pci_dev *from);
->  struct pci_dev *pci_get_subsys(unsigned int vendor, unsigned int device,
->  			       unsigned int ss_vendor, unsigned int ss_device,
->  			       struct pci_dev *from);
-> @@ -1639,6 +1643,8 @@ int pci_scan_bridge(struct pci_bus *bus, struct pci_dev *dev, int max,
->  
->  void pci_walk_bus(struct pci_bus *top, int (*cb)(struct pci_dev *, void *),
->  		  void *userdata);
-> +void pci_walk_bus_reverse(struct pci_bus *top,
-> +			  int (*cb)(struct pci_dev *, void *), void *userdata);
->  int pci_cfg_space_size(struct pci_dev *dev);
->  unsigned char pci_bus_max_busnr(struct pci_bus *bus);
->  resource_size_t pcibios_window_alignment(struct pci_bus *bus,
-> @@ -2031,6 +2037,11 @@ static inline struct pci_dev *pci_get_device(unsigned int vendor,
->  					     struct pci_dev *from)
->  { return NULL; }
->  
-> +static inline struct pci_dev *pci_get_device_reverse(unsigned int vendor,
-> +						     unsigned int device,
-> +						     struct pci_dev *from)
-> +{ return NULL; }
-> +
->  static inline struct pci_dev *pci_get_subsys(unsigned int vendor,
->  					     unsigned int device,
->  					     unsigned int ss_vendor,
-
+Jason
