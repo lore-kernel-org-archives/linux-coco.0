@@ -1,175 +1,104 @@
-Received: from sinmsgout03.his.huawei.com (sinmsgout03.his.huawei.com [119.8.177.38])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C8617C21E;
-	Wed, 30 Jul 2025 15:06:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=119.8.177.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3EA2D94B0
+	for <linux-coco@lists.linux.dev>; Wed, 30 Jul 2025 16:03:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753888000; cv=none; b=hAr5bZX4oHA69d7Z+CvnVyI/P8KC1gy5ES7jlIIo9vEpNS7mTSktWWYudJUD0AavuAY35zhXam2QbTf8BTF924Tx87ZQMCSRPVusGbl14+RKbl1Cxp3tEkMQq6GEVpdfZRLADNewPbbX+1aowJsG1Qs9DjP01oiO3KUiU87Q3U8=
+	t=1753891411; cv=none; b=uZPsAJGPGe48JWuQRlijpTCWUNXQytMPUK69U0juaibkYeElN45yUJkBSsK4fbhdgPa77v00az77xcZc/YmcHnKpcOFnzDOVeiS4yJHRP/1lHiZ5NR9NCJbbXcc/lguKG/M8RCUpgQX6wUBYacg/k3UsRQ/iHduvaBpAuxElaxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753888000; c=relaxed/simple;
-	bh=e0BDVRCEM875gKP6x03MM6K+lMJmv3rgI0YZ6tQXhdU=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jV8grvWA57eHWM42+589qQF7e8nPMo+4j9oSbPXBtKzDOjqTcT8oIyJgnkcgzomoM3wGWop9pab1jLcT7ca4mieL9lbeK9UCS9b/vDUO3h3ILXZkp2i+pMsqzEOCK4/qmSe+S4QxsNNZ6W5vj9armROGfSmaY2Sn7lggjkrPww0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=DfO/sSgX; arc=none smtp.client-ip=119.8.177.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1753891411; c=relaxed/simple;
+	bh=JD/vxYw0vyKQComxP4E1Z53ndDUYTzU3hErVNH+AgZo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JoKmHh9g0UlWege8q9+fOPZkSmf8HfZBWJQFGHLsYJsdJg0hQNTBDddbzf6uK4TQPKyU2Rzi8UGBngnFPWMhM1KyAwvWpwnfNR24DXdiwup2XBAGkS2HkyqFdyReEfCN0WfMFLpPQrs/by4gUGYh3Af/UPl9sLTmB+KC37Fwn48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Suzp+4cX; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="DfO/sSgX"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=aXXisiL7xkRknewE1Ig2ymROYafvAI7Ag6jJJ99yA+E=;
-	b=DfO/sSgXD4dDPESETdYv1zGjBjSQU28Lz6FJ0MBd2SYXBqWE/uqfo6xnAI7aDBF0oQjN4q+H6
-	e//5VPRYRPKrCKsu2NmYrQWRaKM2flzpuha5C0/6bgfKdhWwQYoSURATlTbNAfuxL6AvvkEL4bR
-	es+Mj/3KBAmvSHFqU9/bnRc=
-Received: from frasgout.his.huawei.com (unknown [172.18.146.35])
-	by sinmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4bsb9R3ZQhzMlVH;
-	Wed, 30 Jul 2025 23:04:59 +0800 (CST)
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bsb9J5bG9z6H7JQ;
-	Wed, 30 Jul 2025 23:04:52 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id D5D191402F4;
-	Wed, 30 Jul 2025 23:06:28 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 30 Jul
- 2025 17:06:27 +0200
-Date: Wed, 30 Jul 2025 16:06:26 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Suzp+4cX"
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6fadd3ad18eso60812366d6.2
+        for <linux-coco@lists.linux.dev>; Wed, 30 Jul 2025 09:03:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1753891409; x=1754496209; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JD/vxYw0vyKQComxP4E1Z53ndDUYTzU3hErVNH+AgZo=;
+        b=Suzp+4cXzfD/G53FQ6QfpAoSzMTC7udC7/m7lMRyTRjrnVyW2ULv0qJ62S/LglToi/
+         hK0CJsxQ/CwymRhvEqUfYv0IrlWrSOrQNJncH/f0XSZQx1Xfs6jV1ugD6CtVpB8QgVaz
+         +cBuvUPyqaziVDEIyc/LGDiDchJt7XfmP81uIKWeWGK3hMeIu0YFn/HtE3qH4BccVgdH
+         UkBXSxwRjQgdoCkGiIuJ3bgNl61HcWgwbJrxFFKr5FYnq0ZS+T8DG5b1hCzMwX6N7fPi
+         WnRQ6COJQQlxa7TuoIPbxmJfYO+8NQ0/8zRXm8D+TWHvVrsQM+vTplzfU1TeXe3fb1//
+         4L6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753891409; x=1754496209;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JD/vxYw0vyKQComxP4E1Z53ndDUYTzU3hErVNH+AgZo=;
+        b=o7MAh6SI8ZWNa/gZIPDtBs8tu1Zg8A6+93l0dn+atx/keejNSGTQlUe6Vl9K/TcOd8
+         ioS6MaWUB7Sapqblv8iarHpOX3ycIWeiv52GViK/4uXCZfeFT4jJr2GZkKJrtc4q6L+n
+         9hE5e+nlFNPwyBSOaaw9Z1W+o3XM2Ic0m9stOSNIQWCsgInhzjx9v4cfb389SWaHTeZG
+         KsjKO2MTblY6qAJ22qvJqhbcgd0TcRB/jyrWVPjGittpjiGiQAYvHE+20L0LnP1GyKIT
+         vqZJt66mu4Z3yeJD8ik8Xoc9FAcN9GKd14eIE9Nv0s9knTwiEnSeMJQkl3k5Q5q0cVYM
+         1lnA==
+X-Gm-Message-State: AOJu0YwufRO+hH7gvmZ3lDp0825p2tDbXYWgbTpBGEuVCVT33MVSFMKN
+	PMVVMHU42zf+4ivkx0Y/ooi8Ce30KxAOh/+tSyQN60WSjJ5bEWoN9oONVp/TIn1LByU=
+X-Gm-Gg: ASbGncs48nL+jbvf8rPLGp1WNwlem0uLd1Qoh5hothxYkdlHOuk5+P9A16MVuaemy3w
+	aRVpCtixnpOJKjU4iaD5SKcgo/MyWlyvFE7lLMV4RTAOVXGwrEmeXE7wu2+YFzkN4V8ojW5YA7F
+	a5AqQI/wHGujv/8Rnic22cRqAFJHL+VUyP4nqifh17OVmrHCVsrk3kwB1QPacwELeS9PtwRbgoP
+	7w0KLwUczaV6ousV48aphbaegRB4vE9eR85A0Xz+pah5ElHEMI21gNBF2FAUES56aE2p7fY6n3U
+	2bfzflRz1RxDzKD3ezr4URX8W89zILYuvcZrv2wVPG8Rv2Cw20LGxe3ta8lnUNhiaZWF1YBF/fJ
+	zUv6CvTvH2DFpaPhN7HhahDw0HVTx8L5fhh8c4iZSLSVqMbKp68atEk7MXrFel7nWMf4M
+X-Google-Smtp-Source: AGHT+IELABFxJjSRVnbcoDgQoyF3DZZtzde7lxM9LhmXgjrOqotsrSt3Aw3+tn7CmcIoh22Vu+LWXA==
+X-Received: by 2002:a05:6214:5296:b0:707:4825:ff41 with SMTP id 6a1803df08f44-707672d91b7mr47058816d6.42.1753891407540;
+        Wed, 30 Jul 2025 09:03:27 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70742e70964sm47845006d6.23.2025.07.30.09.03.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Jul 2025 09:03:26 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1uh9H4-00000000SCB-0SyY;
+	Wed, 30 Jul 2025 13:03:26 -0300
+Date: Wed, 30 Jul 2025 13:03:26 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
 To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-CC: <linux-coco@lists.linux.dev>, <kvmarm@lists.linux.dev>,
-	<linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <aik@amd.com>,
-	<lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>, Xu Yilun
-	<yilun.xu@linux.intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, "Suzuki K
- Poulose" <Suzuki.Poulose@arm.com>, Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>, Oliver Upton <oliver.upton@linux.dev>
-Subject: Re: [RFC PATCH v1 34/38] coco: guest: arm64: Validate mmio range
- found in the interface report
-Message-ID: <20250730160626.00003fee@huawei.com>
-In-Reply-To: <20250728135216.48084-35-aneesh.kumar@kernel.org>
+Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	aik@amd.com, lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: Re: [RFC PATCH v1 00/38] ARM CCA Device Assignment support
+Message-ID: <20250730160326.GN26511@ziepe.ca>
 References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
-	<20250728135216.48084-35-aneesh.kumar@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250728135216.48084-1-aneesh.kumar@kernel.org>
 
-On Mon, 28 Jul 2025 19:22:11 +0530
-"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
+On Mon, Jul 28, 2025 at 07:21:37PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> This patch series implements support for Device Assignment in the ARM CCA
+> architecture. The code changes are based on Alp12 specification published here
+> [1].
 
-> This starts the sequence to transition the realm device to the TDISP RUN
-> state by writing 1 to 'tsm/accept'.
-> 
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-Just some trivial stuff.
+Robin and I were talking about CCA and DMA here:
 
+https://lore.kernel.org/r/6c5fb9f0-c608-4e19-8c60-5d8cef3efbdf@arm.com
 
-> diff --git a/drivers/virt/coco/arm-cca-guest/rsi-da.c b/drivers/virt/coco/arm-cca-guest/rsi-da.c
-> index 47b379318e7c..936f844880de 100644
-> --- a/drivers/virt/coco/arm-cca-guest/rsi-da.c
-> +++ b/drivers/virt/coco/arm-cca-guest/rsi-da.c
-> @@ -215,3 +215,135 @@ int rsi_device_lock(struct pci_dev *pdev)
->  
->  	return ret;
->  }
+What do you think about pulling some of this out and trying to
+independently push a series getting the DMA API layers ready for
+device assignment?
 
-> +
-> +int rsi_update_interface_report(struct pci_dev *pdev, bool validate)
-> +{
-> +	int ret;
-> +	struct resource *r;
-> +	int msix_tbl_bar, msix_pba_bar;
-> +	unsigned int range_id;
-> +	unsigned long mmio_start_phys;
-> +	unsigned long mmio_flags = 0; /* non coherent, not limited order */
-> +	struct pci_tdisp_mmio_range *mmio_range;
-> +	struct pci_tdisp_device_interface_report *interface_report;
-> +	struct cca_guest_dsc *dsm = to_cca_guest_dsc(pdev);
-> +	int vdev_id = (pci_domain_nr(pdev->bus) << 16) |
-> +		PCI_DEVID(pdev->bus->number, pdev->devfn);
-> +
-> +
-Single line.
-> +	interface_report = (struct pci_tdisp_device_interface_report *)dsm->interface_report;
-> +	mmio_range = (struct pci_tdisp_mmio_range *)(interface_report + 1);
-> +
-> +
-Single line
+I think there will be some discussion on these points, it would be
+good to get started.
 
-> +	msix_tbl_bar = get_msix_bar(pdev, PCI_MSIX_TABLE);
-> +	msix_pba_bar = get_msix_bar(pdev, PCI_MSIX_PBA);
-> +
-> +	for (int i = 0; i < interface_report->mmio_range_count; i++, mmio_range++) {
-> +
-> +		/*FIXME!! units in 4K size*/
-> +		range_id = FIELD_GET(TSM_INTF_REPORT_MMIO_RANGE_ID, mmio_range->range_attributes);
-> +
-> +		/* no secure interrupts */
-> +		if (msix_tbl_bar != -1 && range_id == msix_tbl_bar) {
-
-That first condition can get hiked out of the loop.
-
-> +			pr_info("Skipping misx table\n");
-> +			continue;
-> +		}
-> +
-> +		if (msix_pba_bar != -1 && range_id == msix_pba_bar) {
-
-Likewise.
-
-> +			pr_info("Skipping misx pba\n");
-> +			continue;
-> +		}
-> +
-> +		r = pci_resource_n(pdev, range_id);
-> +
-> +		if (r->end == r->start ||
-> +		    ((r->end - r->start + 1) & ~PAGE_MASK) || !mmio_range->num_pages) {
-resource_size() 
-> +			pci_warn(pdev, "Skipping broken range [%d] #%d %d pages, %llx..%llx\n",
-> +				i, range_id, mmio_range->num_pages, r->start, r->end);
-> +			continue;
-> +		}
-> +
-> +		if (FIELD_GET(TSM_INTF_REPORT_MMIO_IS_NON_TEE, mmio_range->range_attributes)) {
-> +			pci_info(pdev, "Skipping non-TEE range [%d] #%d %d pages, %llx..%llx\n",
-> +				 i, range_id, mmio_range->num_pages, r->start, r->end);
-> +			continue;
-> +		}
-> +
-> +		/* No secure interrupts, we should not find this set, ignore for now. */
-> +		if (FIELD_GET(TSM_INTF_REPORT_MMIO_MSIX_TABLE, mmio_range->range_attributes) ||
-> +		    FIELD_GET(TSM_INTF_REPORT_MMIO_PBA, mmio_range->range_attributes)) {
-> +			pci_info(pdev, "Skipping MSIX (%ld/%ld) range [%d] #%d %d pages, %llx..%llx\n",
-> +				 FIELD_GET(TSM_INTF_REPORT_MMIO_MSIX_TABLE, mmio_range->range_attributes),
-> +				 FIELD_GET(TSM_INTF_REPORT_MMIO_PBA, mmio_range->range_attributes),
-> +				 i, range_id, mmio_range->num_pages, r->start, r->end);
-> +			continue;
-> +		}
-> +
-> +		mmio_start_phys = mmio_range->first_page;
-> +		if (validate)
-> +			ret = rsi_validate_dev_mapping(vdev_id, dsm->instance_id,
-> +						       r->start, r->end + 1,
-> +						       mmio_start_phys << 12, mmio_flags);
-> +		else
-> +			ret = rsi_invalidate_dev_mapping(r->start, r->end + 1);
-> +		if (ret) {
-> +			pci_err(pdev, "failed to set protection attributes for the address range\n");
-> +			return -EIO;
-> +		}
-> +	}
-> +	return 0;
-> +}
-
-
+Jason
