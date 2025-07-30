@@ -1,122 +1,89 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CE71F1317;
-	Wed, 30 Jul 2025 07:04:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D7F481A3;
+	Wed, 30 Jul 2025 08:42:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753859069; cv=none; b=ge7Hy+5VThIl0E/gLVtE66jguUtO/vW1Zs60BVjucpCzRNx+YDXXxWh8YIGbVY1OamMy8tCSQis3KndDKLuQ0fXdCOl/2mVZup392u4p+R806tqHcg+zDKDDQl8HWkqk3n606bOVaB9DwbeGPojzrPlufvd510MWGTAzZjHx2Wo=
+	t=1753864954; cv=none; b=ao9hsAV+jo0qO+NK4IE3kB8V/o+dr62eMx3nnWcm73hRsTsthuRE+elE/5KBiqDRpFMuG3kizVOwunNpbQclAGIgQ/y5CW4zK7AqW5g8b7kmtarHTh2qIwClooPuTZMUF4B/u4Hd+ToHCyPRyqI0DKomXkGGMgKmwWkgpj+MfmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753859069; c=relaxed/simple;
-	bh=hRRwxJjQE9wJHAhuatc6RMPSyGgs/xP53hoMSHC/2FU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=npO+xs0uamom6kz8omSeqBaPWlP3RFOn5sCAWZ/ZBjtiPBx2pGC1H63amckPeLldchdI1aeHsSwl9z4+HSvEBB23AbFvQSdFdOpFjWdSyHkJiVNv4uCJO42wS35F455ORNfyw1pBffg6t9ojlKRYwGtT1p90jiPGWhvlhXUW8NE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d+FizXXU; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1753864954; c=relaxed/simple;
+	bh=9jwGQtcgoGblfYqhXaAV67vOauoqIhza/+dVv/5EcsY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=XKhRyifYjJUFRTMgZ7YxjkwQN0K6GJ8kMgOdr4K6jDHAWf57h5Om0RAchhmI4L38Nof4v0/Nd0LqNASnkKzBPInfQl1hQm3Ki7XluZdJzDD1j3QgrmCstYm5bGOlhxHETtOw41ryzA0um1KEEKaFUFdzzLj8gY/KcJWshFBdlsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Go8lp2CB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d+FizXXU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1753859068; x=1785395068;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=hRRwxJjQE9wJHAhuatc6RMPSyGgs/xP53hoMSHC/2FU=;
-  b=d+FizXXUMwXt4JoZecJEYSTDfklMiN8MMtEkszEOlhIY5i7SHotKc2Wj
-   PpzTIR8FpbS96JQ7MOolvunHpUNeCs89NPFFYUO8cuc/SDGWqF5IOlNBr
-   3Yhg0XWQQx9xHSxXHACrEMsCJUr8nD1/WirBbvLF8DTLl6ATZVvugCwlZ
-   tjVWGS000pC7RBgINpKnTquuFYjMIy/uLZfjTiuTuDdbmUmILMP2rm6Ux
-   Eozdxz9hjSghUjyi6iHtIGZZwGapPhe7xpWslmbfhUURtsVwgTaGzMiCB
-   40/J3qgoU4exxAFdp+nNSgYrwT/P0Ids5ciaY65Gp63zKWOETqb7PkIBa
-   g==;
-X-CSE-ConnectionGUID: Z08Ji4LdRaaGB5oyJbaFeA==
-X-CSE-MsgGUID: PU045mxFSXuEaCZTaHbQpA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11506"; a="56229394"
-X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; 
-   d="scan'208";a="56229394"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2025 00:04:24 -0700
-X-CSE-ConnectionGUID: gxhRvuheTAG+uvZ6+T69iw==
-X-CSE-MsgGUID: kU6LqtksTKK5o0weRmGeTw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,350,1744095600"; 
-   d="scan'208";a="167122521"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa003.jf.intel.com with ESMTP; 30 Jul 2025 00:04:21 -0700
-Date: Wed, 30 Jul 2025 14:55:02 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	aik@amd.com, lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Go8lp2CB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D109FC4CEE7;
+	Wed, 30 Jul 2025 08:42:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753864954;
+	bh=9jwGQtcgoGblfYqhXaAV67vOauoqIhza/+dVv/5EcsY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Go8lp2CB+T4l9aWV40JjIjQz9FZO4AywDWuWNCU9YvLYUMCIrudTSDfUtpXxKdjM7
+	 5hgXa8GNJVppkhYV0Ixfxvw5FkHx8HfzQ9WdE8a8ADFQPdA0cEF5Yo5wAwyAXjub3t
+	 Awtm059fx20HyRQ6CIsralMYLVrmwBrNe4pcVGfgtieQS6wTaIcwuk1BcEX4EHX9ML
+	 26i1IGSdOd9CsoofII7f+W+9Ic7Di/gU6VnwZZOXLZBpGUYC9GO1yRQqXMKkNDU7vM
+	 uUrZJ1Mde6gytUo4MUD+lV5Vr+7xPSg0lbwTjUEFng6h3nssvndNAKV40CT0TAPXug
+	 7/HOZgOVF4g/g==
+X-Mailer: emacs 30.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Dan Williams <dan.j.williams@intel.com>
+Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, aik@amd.com,
+	lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
 	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
 	Steven Price <steven.price@arm.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
 	Oliver Upton <oliver.upton@linux.dev>
-Subject: Re: [RFC PATCH v1 06/38] iommufd: Add and option to request for bar
- mapping with IORESOURCE_EXCLUSIVE
-Message-ID: <aInBxnVIu+lnkzlV@yilunxu-OptiPlex-7050>
+Subject: Re: [RFC PATCH v1 11/38] KVM: arm64: CCA: register host tsm
+ platform device
+In-Reply-To: <20250729231948.GJ26511@ziepe.ca>
 References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
- <20250728135216.48084-7-aneesh.kumar@kernel.org>
- <20250728140841.GA26511@ziepe.ca>
- <yq5a34afbdtl.fsf@kernel.org>
- <20250729142917.GF26511@ziepe.ca>
+ <20250728135216.48084-12-aneesh.kumar@kernel.org>
+ <20250729181045.0000100b@huawei.com> <20250729231948.GJ26511@ziepe.ca>
+Date: Wed, 30 Jul 2025 14:12:26 +0530
+Message-ID: <yq5aqzxy9ij1.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250729142917.GF26511@ziepe.ca>
+Content-Type: text/plain
 
-On Tue, Jul 29, 2025 at 11:29:17AM -0300, Jason Gunthorpe wrote:
-> On Tue, Jul 29, 2025 at 01:58:54PM +0530, Aneesh Kumar K.V wrote:
-> > Jason Gunthorpe <jgg@ziepe.ca> writes:
-> > 
-> > > On Mon, Jul 28, 2025 at 07:21:43PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> > >> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> > >
-> > > Why would we need this?
-> > >
-> > > I can sort of understand why Intel would need it due to their issues
-> > > with MCE, but ARM shouldn't care either way, should it?
-> > >
-> > > But also why is it an iommufd option? That doesn't seem right..
-> > >
-> > > Jason
-> > 
-> > This is based on our previous discussion https://lore.kernel.org/all/20250606120919.GH19710@nvidia.com
-> 
-> I suggested a global option, this is a per-device option, and that
-> especially seems wrong for iommufd. If it is per-device that is vfio,
+Jason Gunthorpe <jgg@ziepe.ca> writes:
 
-I think this should be per-device. The original purpose of this
-pci_region_request_*() is to prevent further mmap/read/write against
-a vfio_cdev FD which would be used for private assignment. You shouldn't
-prevent all other devices from working with userspace APPs (e.g. DPDK)
-if there is one private assignment in system.
+> On Tue, Jul 29, 2025 at 06:10:45PM +0100, Jonathan Cameron wrote:
+>
+>> > +static struct platform_device cca_host_dev = {
+>> Hmm. Greg is getting increasingly (and correctly in my view) grumpy with
+>> platform devices being registered with no underlying resources etc as glue
+>> layers.  Maybe some of that will come later.
+>
+> Is faux_device a better choice? I admit to not knowing entirely what
+> it is for..
+>
+> But alternatively, why do we need a dummy "hw" struct device at all?
+> Typically a subsystem like TSM should be structured to create its own
+> struct devices..
+>
+> I would expect this to just call 'register tsm' ?
+>
 
-> if it is global then vfio can pick it up during the early phases of
-> opening the device.
-> 
-> > IIUC, we intend to request the resource in exclusive mode for secure
-> > guests—regardless of whether the platform is Intel or ARM. Could you
-> > help clarify the MCE issue observed on Intel platforms in this context?
-> 
-> As I understand it Intel MCEs if the non-secure side ever reads from
-> secure'd address space. So there is alot of emphasis there to ensure
+The goal is to have tsm class device to be parented by the platform
+device.
 
-Yeah, Intel TDX doesn't have a lower access control table for CC. So if
-host reads, the TLP sends and MCE happens.
+# ls -al
+total 0
+drwxr-xr-x    2 root     root             0 Jan 13 06:07 .
+drwxr-xr-x   23 root     root             0 Jan  1 00:00 ..
+lrwxrwxrwx    1 root     root             0 Jan 13 06:07 tsm0 -> ../../devices/platform/arm-rmi-dev/tsm/tsm0
+# pwd
+/sys/class/tsm
 
-Thanks,
-Yilun
-
-> there are no CPU mappings.
-> 
-> Jason
+-aneesh
