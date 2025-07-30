@@ -1,104 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F64292B48;
-	Wed, 30 Jul 2025 08:59:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7810723BCED;
+	Wed, 30 Jul 2025 10:09:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753865942; cv=none; b=j5FdC+P5ERNZe1qd2nYC32NCMr7kD54j8SneOogqNRa7nivtko4gkMMojuSMjfx19AOM7LFYkeEY5QwEBZC5FTDJZ3kc4W0xsgKqnlZXEoOfH6aPmDhKiF6pcWC91dade0Sx+rBUxukUkpqP27PBSBgPfslZfgfWtsPBBRa3bTI=
+	t=1753870181; cv=none; b=TikqV5r7jhU/gYkdEqpTmou1vFDNW5gzUslAobC4NVGK64sCWGYhlb3HWiAjVc9FagtQJfuoVekvdJ60lrh6aHwEFOoGu48OXEdPGgAScBRTqPV3PXHxWZj4R+y8CLU4DYjDAko07H7E9SYF+Iyn9CSlDiWuXI3S78CvWLAQLnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753865942; c=relaxed/simple;
-	bh=zT4NPRZ9FMf/6OItmdKPO5L1pWmoqk9QHmm4Af0TsIc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=WHSdK8luAZ2VKZtVvZIZZqUgr8oRByt9KTUw8SoPKiO8s9VShk95WhSLwT7pY2l2Xygra5ca9sSP6972pHk2kOzTfHrr/miCw+5pmHS8pwWBAJHj8padffXIzhmCwV6plKXrrH0F5gRVrHQN+2CAgoUU7rpcmjR1fbtt+ciMakg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m/5jUloS; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m/5jUloS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 424B6C4CEE7;
-	Wed, 30 Jul 2025 08:58:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753865942;
-	bh=zT4NPRZ9FMf/6OItmdKPO5L1pWmoqk9QHmm4Af0TsIc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=m/5jUloSppv6eyK+1hX9XhjbR4IcMIsoyFre0AlROlWOpBerfvgINP56Ul0eWnUZg
-	 3NcPCO02sfLYFVo0ehYnns8qROTmr5G2oONIEIWLkN8LR4ojxNS0TyWmr/9awAxRmc
-	 7vVDlZ60VAvif2B3xGJIbqB6sUrq0Utxp7LTtCUIi+pDRoa7FdEOOPtWe36Mlce0fC
-	 8L0AM3W0J24SxOFvQjw7OqciPVOie6yjKho7AvST6r7kdcSK+L8/MZUVKqKnYXKB66
-	 bifB1pzxHbXedXKK/QQlTuBsIIv+JC1kZqyyt8tEttpdjYMBL5c17H829GJJaS7KBp
-	 xwvmQPTgP2Tcg==
-X-Mailer: emacs 30.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, aik@amd.com,
-	lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: Re: [RFC PATCH v1 12/38] coco: host: arm64: CCA host platform
- device driver
-In-Reply-To: <20250729182244.00002f4f@huawei.com>
-References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
- <20250728135216.48084-13-aneesh.kumar@kernel.org>
- <20250729182244.00002f4f@huawei.com>
-Date: Wed, 30 Jul 2025 14:28:55 +0530
-Message-ID: <yq5ao6t29hrk.fsf@kernel.org>
+	s=arc-20240116; t=1753870181; c=relaxed/simple;
+	bh=UCyVpLH87cSFpHt6B2Knjye0VwgeSGRgyWbokISmTG8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HUSe4TC3PZHSMtF827crdhxmI+JcoTDCzU46oYdj605Qmnk2i3ozzJMk3k5GeHFHj9r7tD+Iz9X+jtpU/5KKjquLUgIcT4Mjq1GkEea/PtfFfPFxPAPG4eOfJOHKOZMUJiLWYVT7GJaXJ5xhDEsto4Y2796mCDJ4ezWM2kF7GzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D36201BC0;
+	Wed, 30 Jul 2025 03:09:30 -0700 (PDT)
+Received: from [10.57.3.117] (unknown [10.57.3.117])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 94F683F673;
+	Wed, 30 Jul 2025 03:09:36 -0700 (PDT)
+Message-ID: <bbe2a41a-8f72-4224-a0bc-225c1e35a180@arm.com>
+Date: Wed, 30 Jul 2025 11:09:35 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 04/38] tsm: Support DMA Allocation from private
+ memory
+Content-Language: en-GB
+To: Jason Gunthorpe <jgg@ziepe.ca>, "Aneesh Kumar K.V"
+ <aneesh.kumar@kernel.org>
+Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, aik@amd.com,
+ lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>,
+ Xu Yilun <yilun.xu@linux.intel.com>, Steven Price <steven.price@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, Oliver Upton <oliver.upton@linux.dev>
+References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
+ <20250728135216.48084-5-aneesh.kumar@kernel.org>
+ <20250728143318.GD26511@ziepe.ca> <yq5a5xfbbe35.fsf@kernel.org>
+ <20250729143339.GH26511@ziepe.ca>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20250729143339.GH26511@ziepe.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Jonathan Cameron <Jonathan.Cameron@huawei.com> writes:
+On 29/07/2025 15:33, Jason Gunthorpe wrote:
+> On Tue, Jul 29, 2025 at 01:53:10PM +0530, Aneesh Kumar K.V wrote:
+>> Jason Gunthorpe <jgg@ziepe.ca> writes:
+>>
+>>> On Mon, Jul 28, 2025 at 07:21:41PM +0530, Aneesh Kumar K.V (Arm) wrote:
+>>>> @@ -48,3 +49,12 @@ int set_memory_decrypted(unsigned long addr, int numpages)
+>>>>   	return crypt_ops->decrypt(addr, numpages);
+>>>>   }
+>>>>   EXPORT_SYMBOL_GPL(set_memory_decrypted);
+>>>> +
+>>>> +bool force_dma_unencrypted(struct device *dev)
+>>>> +{
+>>>> +	if (dev->tdi_enabled)
+>>>> +		return false;
+>>>
+>>> Is this OK? I see code like this:
+>>>
+>>> static inline dma_addr_t phys_to_dma_direct(struct device *dev,
+>>> 		phys_addr_t phys)
+>>> {
+>>> 	if (force_dma_unencrypted(dev))
+>>> 		return phys_to_dma_unencrypted(dev, phys);
+>>> 	return phys_to_dma(dev, phys);
+>>>
+>>> What are the ARM rules for generating dma addreses?
+>>>
+>>> 1) Device is T=0, memory is unencrypted, call dma_addr_unencrypted()
+>>>     and do "top bit IBA set"
+>>>
+>>> 2) Device is T=1, memory is encrypted, use the phys_to_dma() normally
+>>>
+>>> 3) Device it T=1, memory is uncrypted, use the phys_to_dma()
+>>>     normally??? Seems odd, I would have guessed the DMA address sould
+>>>     be the same as case #1?
+>>>
+>>> Can you document this in a comment?
+>>>
+>>
+>> If a device is operating in secure mode (T=1), it is currently assumed
+>> that only access to private (encrypted) memory is supported.
+> 
+> No, this is no how the PCI specs were written as far as I
+> understand. The XT bit thing is supposed to add more fine grained
+> device side control over what memory the DMA can target. T alone does
+> not do that.
+> 
+>> It is unclear whether devices would need to perform DMA to shared
+>> (unencrypted) memory while operating in this mode, as TLPs with T=1
+>> are generally expected to target private memory.
+> 
+> PCI SIG supports it, kernel should support it.
 
-> On Mon, 28 Jul 2025 19:21:49 +0530
-> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
->
+ACK. On Arm CCA, the device can access shared IPA, with T=1 transaction
+as long as the mapping is active in the Stage2 managed by RMM.
 
-...
+Rather than mapping the entire memory from the host, it would be ideal
+if the Coco vms have some sort of a callback to "make sure the DMA
+wouldn't fault for a device". e.g, it could be as simple as touching
+the page in Arm CCA (GFP_ZERO could do the trick, well one byte
+per Granule is good). or an ACCEPT a given page.
 
->> +
->> +#include "rmm-da.h"
->> +
->> +/* Number of streams that we can support at the hostbridge level */
->> +#define CCA_HB_PLATFORM_STREAMS 4
->> +
->> +/* Total number of stream id supported at root port level */
->> +#define MAX_STREAM_ID	256
->> +
->> +DEFINE_FREE(vfree, void *, if (!IS_ERR_OR_NULL(_T)) vfree(_T))
->> +static struct pci_tsm *cca_tsm_pci_probe(struct pci_dev *pdev)
->> +{
->> +	int rc;
->> +	struct pci_host_bridge *hb;
->> +	struct cca_host_dsc_pf0 *dsc_pf0 __free(vfree) =3D NULL;
->
-> Read the stuff in cleanup.h and work out why this needs
-> changing to be inline below and not use this NULL pattern here
-> (unless you like grumpy Linus ;)
->
-> Note that with the err_out, even if you do that you'll still be
-> breaking with the guidance doc (and actually causing undefined
-> behavior :)  Get rid of those gotos if you want to use __free()
->
->
+Is this a problem for AMDE SNP / Intel TDX ?
 
-I=E2=80=99ve already fixed up similar cases by removing the goto based on c=
-leanup.h
-docs in other functions.I must have missed this one.
+Suzuki
 
-By the way, isn't using the `NULL` pattern acceptable when there are
-no additional lock variables involved (ie, unwind order doesn't matter)?
-Or should we always follow the pattern below regardless?
 
-	struct cca_host_dsc_pf0 *dsc_pf0 __free(vfree) =3D
-		vcalloc(sizeof(*dsc_pf0), GFP_KERNEL);
 
--aneesh
+
+> 
+> Jason
+
