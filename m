@@ -1,87 +1,88 @@
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502D8223DED
-	for <linux-coco@lists.linux.dev>; Thu, 31 Jul 2025 12:17:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2552C08C1
+	for <linux-coco@lists.linux.dev>; Thu, 31 Jul 2025 12:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753964264; cv=none; b=M4Xq7JDDJyUgXkJ2rBisbjqXd79ammx3eR4QzekObUxVYrYmenjbLcx+VQfMybuPIGZpU0/BF8ar0u7xfGuLt0hkW0CGS2PYc/WPADCxeKuSPOEcF3oCqNYzLjCV3c9xSnEKJ3S7ddfvi4Ury36GBDBPFubRFIXNCaHrvUTtzGM=
+	t=1753964541; cv=none; b=Y5TfGe6tY31jzQuXmN6ZQvDe/xT5gBVYwNT+bDf8tXxfPNkzdBBOOR9NPDTbH2gbb0AFmHQE2Oks5arW/YZuHmk/w3cR3K6+LZcJwBwpRzd/iMh1mR6+6mVRX4fSLwZ5GvWtxx39fue/wIiQiOfbx3b/KukC0G4KJT3klrKSIGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753964264; c=relaxed/simple;
-	bh=lgkxQThTtfZZSUnIFCf5fUKUIMl2aWvIb0b/yw6y6ik=;
+	s=arc-20240116; t=1753964541; c=relaxed/simple;
+	bh=X+4QeaSFicbF3O5vX3PUSK7qVCr8plMhgP2gRhF3p+0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gBaIs0DQx7yEPD/TQ2JKVmbao2Wq/j7ghRaBugjtanx9vgmqWBw5sJlmYhV/aHO5I1awxAvsA4WnDOmnQI5NIuncHunxzT4z1xAU0Lat/b9SkX57IvoT/2pMpGBfe2+IjkiLwllmFhTqDaGZLh4UPskdHiTFmFQAkN+7UoV4il4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=MjG5gOpT; arc=none smtp.client-ip=209.85.219.51
+	 Content-Type:Content-Disposition:In-Reply-To; b=lx0E+MpbqQUkZ6BAf3TiTGP3fKuDFfqcUNUN6d8HbATo8VqnDN5QgWn/BF/PV9uifg6loo39/nxqF+tAdxo7Ek+RNjGamKwmE8y02ILMftHZ6dofcJNrprStTIduttpPohm+NS9DoA6W/MLSqlKD24gP5IOniHU3Z7RMqdRWybY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Wdxjg2pW; arc=none smtp.client-ip=209.85.160.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="MjG5gOpT"
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-70740598a9dso7869506d6.0
-        for <linux-coco@lists.linux.dev>; Thu, 31 Jul 2025 05:17:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Wdxjg2pW"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4aeb5eb611bso6673491cf.1
+        for <linux-coco@lists.linux.dev>; Thu, 31 Jul 2025 05:22:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1753964262; x=1754569062; darn=lists.linux.dev;
+        d=ziepe.ca; s=google; t=1753964539; x=1754569339; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=32tD2N96Q6MQNin9/Lb0EqTq3IigVZXvJ6wxZCRCR/8=;
-        b=MjG5gOpT4SRlEM61/VU0hWwPJAbGzByA0H8AdvAXCSn/TjEhKJPQ+YpKO0B6M2a+FS
-         xU/LMPVkrmD620GT2a2BRJnPnXNXF5EayWqKG4bzyr5qqKj+I0yht0g5TRJL2S3clt1/
-         eGLKYQ0iR98JJlrKf3VSzC1b348sVtdBwqeucZtbdjB8jJV1xr0g4LEdYBva6udl4Stp
-         xw0OGjgcHOICqx3AzXJOJ1TBLI365KDrqTAsiI2SZCnsyUwqWdXYtPKZVThbbx2Zp5gL
-         BiSQnRT/3iTCzIt1yRORXJMIaYYO912AGBULJGFyRkes/pIwPgMeft9j/zlkqVpt1J+G
-         RL8w==
+        bh=L1plMRIcW1Bcl6c/s/tE9fzsee7elDjFfonquyZ/HhM=;
+        b=Wdxjg2pW3gk79JkX8pp6r+pSX8CbAp0IOAllNj94EpanqAkAiz1/2ZHCOWnjyltTFt
+         AyqE/FYF6Z3omtaAomLZIjZUpqOslkPwHg5/HekN6oFR4JfmrYizmq/gfFZXgafc+c2E
+         SUZwPnYrurSH7P7ny0f1+ZXbEt5j82ke40b8W7m3unwSqauR/9LzxeU9QTE8R1PKCTKm
+         lc6JLUmiv/buoJnFRGOsFuV10Rp1UnAOWRXD7QNJillClAai6tUd5oTIWZAo6v/dUB4l
+         rG7Z37jAIzc0ub2IXPF2nJlmCSr7q0WPS7x0+FfcsSxtH8o4C3IlkV2t/YpZ8JonYe7A
+         h8Qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753964262; x=1754569062;
+        d=1e100.net; s=20230601; t=1753964539; x=1754569339;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=32tD2N96Q6MQNin9/Lb0EqTq3IigVZXvJ6wxZCRCR/8=;
-        b=m+q4zogj/rRPeF7OKeeyxxfjJIf0K2t1yL6tucnWel1BQx3Lr3L8+s5z0Q+4ls6ZZW
-         vFOM0FesgX5+lKDJbC+Rr2a02UJ1am6a6nCyGRzujG6db0Gz4/A1HWEOEud+59GcaD7/
-         b20ZVSHBlemz3ClOKnB3ICH8PFprNMAD9xdqE3LwgadqXOhvTo8wSVQcqw7of5tgZPZL
-         1dnmH0kbADT42Ozx+Ghou1PVEddSZXnQGXKLIDiQcoV3w48E1e5vsHXfewpceQj6C9qy
-         RNaG+kLNQ1YKx1eo2Fp+oTIwlNr4Epy0wLUnEtf2q6t3Vz9uJMl9YkWODcoBmNf0A/kb
-         K5lA==
-X-Forwarded-Encrypted: i=1; AJvYcCWGHEfVr5pgTqeQTV2ahSoSKqB/InOGWlbGIRZfR7wBjmFWZL8ecIEnn6t4VmSsBiUUw9MMofnhNUU9@lists.linux.dev
-X-Gm-Message-State: AOJu0YyEvctwaWpyRmR0fJjehg2X5IpFA90lY1oMXTe10cZivh/Hz3Ua
-	HgwA5DzM/wb3rxRNjeaeE+ZiAMhr3JQ6OnlDKGY9iNcMdRwK1Z6Wz132XEampYiKWnc=
-X-Gm-Gg: ASbGncuLFylBwkM+meNfQQCvC7ScmG4XOIVk4uKEePQJFDYd5MA7bhdEL5Dn96ywniX
-	gxd4D6P6tCiJM+DOdQCxg9csNJR3zseCMdhP5zD6mpYS5K6A9WOP2WHAZBRjmgB+vcxYe97+nSG
-	q6egJAnb2xjdqkakof7ZU+2LcIDpoxM6FlpvqyXAoy3jAQ384CQTf+piI7cuDvTx/1cAP+Dntw1
-	4cK0bIBcgkKgIMOpki6Y+nAydNKEfOyepkXS8AkYgHjsps5WfhLSsVmIKOj6QM0IGelM0xmRh77
-	foy/530tJDQYWt1x6SVc+p/Sd+TSym3G4R45vAsHWbh/ErQYBR7Y4Y/dyX/4kAPIDxt3IDxa9zd
-	nG2lhgJ2sRKjzWDfGZB7u1GAuNnMF5k7mvhmZKfiLFbFONc6RDPy8bt9teURsbAdyai2G
-X-Google-Smtp-Source: AGHT+IGlDd7T/UCTYlC3jJ27LG/kD/8HSLFnnlHhhhTVJjke6DkBwfMlPtU4g+DEqonThAsKUvPm4g==
-X-Received: by 2002:a05:6214:c62:b0:707:62c5:9768 with SMTP id 6a1803df08f44-707670aa577mr86346366d6.26.1753964261687;
-        Thu, 31 Jul 2025 05:17:41 -0700 (PDT)
+        bh=L1plMRIcW1Bcl6c/s/tE9fzsee7elDjFfonquyZ/HhM=;
+        b=bUr+/jOEprzsskBOc1ihOuX76/RhWdvyYMdMpPOTZwPIAQH7rPbE1kI+bENdSjrZym
+         h5wXmD8Mi3ZwWOkHyEi6tH5WDOuSOkS17xoUGseJz+nu4xViqWq42loF7TvyrY43+QBT
+         fy6WbdkZ/SzkpwcwLmt1rTTzdv5soq1zAyPeAHVEXy6tm9k7tUeJNu5V25GLbv8A9Ux+
+         CNZzunzSiM7RxZhax+n95Ny5e9b2qC0agmxLIO6FJD+3NTD0ZwoToTKNJogNZtSsWO0f
+         D1+THNQp7tq865N8XolIIl/atp8ADG5N+4ULLchBy8USxiNKVGeycfGWPMNILR7PQOFz
+         S9NA==
+X-Forwarded-Encrypted: i=1; AJvYcCV7cUjP8uZwzVBr8GXZbJUPNGD0sHQjMI9VP4xRgA5vUjQZF/pW2zvO/eCJJ+m80VTc7ABaMXDCPJ4P@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw/FDSuyjU+/U0ainGdPU2xSanVepgw7PHeYPZfDZ545DFi3RvC
+	Az2esVWcsXkRy2TnbZxQ9PJw9oPljHSQ5tc0zwKptMy+L/ltwFjt08+1+MBR40gmG5cfEL9HNv4
+	IajhN
+X-Gm-Gg: ASbGncu4bwWJL9JUGPG4LI+ivGavgb5+CDUrWiutTDx7VrJp4H3ZoZ1E5WyfXWXcjoZ
+	ym52NJd8TT4s8s4WiJ8zzaXMjYeWDIe0JMMzcN288oyDP3Y/GSbgGt/qNGtxjCnCA0x8WLiYfyS
+	oWgX3g0qq3q5D8uIZytaVVHNHJadYPcuuN0WW8+uDZMtT/p317vYbtIZwzvscD1PVb/amHGJRmQ
+	1HyoTmu+4ZvrJ4mW7F/s8BEdlsBkKBJhCqfEyAN+dWynQWHSP3AzhGwMZ+fHvyCy2o5Cq+mexEO
+	jJ8mmN5NbMCzv1tDCYIM9dsbJ48MuXirassK8kJu7hNL0fFjMh7Nyp3P0OeAYdStvkogm92qi8y
+	lf2rKCE7joKIaG89JMuG9Kzs1SbbJ+njWkYQVnu7yj9ZsyzSRGj1yDNCad2q6lIZtGpjk
+X-Google-Smtp-Source: AGHT+IEG9A1JcQH+wdTVAVeKvLLO9IN7xUQV2FzilQVc+xKe0AMZGYYJKSglwslI/+w6Csl5DatYZg==
+X-Received: by 2002:a05:622a:ca:b0:4a8:19d5:f8a5 with SMTP id d75a77b69052e-4aedbc45df3mr101058131cf.35.1753964538758;
+        Thu, 31 Jul 2025 05:22:18 -0700 (PDT)
 Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7077ca58d36sm6577016d6.38.2025.07.31.05.17.41
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4aeeec0a6dasm7661341cf.24.2025.07.31.05.22.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Jul 2025 05:17:41 -0700 (PDT)
+        Thu, 31 Jul 2025 05:22:18 -0700 (PDT)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1uhSE8-00000000oWW-2X84;
-	Thu, 31 Jul 2025 09:17:40 -0300
-Date: Thu, 31 Jul 2025 09:17:40 -0300
+	id 1uhSIb-00000000oYE-2zpl;
+	Thu, 31 Jul 2025 09:22:17 -0300
+Date: Thu, 31 Jul 2025 09:22:17 -0300
 From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>
 Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
 	linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
 	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
 	aik@amd.com, lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
 	Steven Price <steven.price@arm.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
 	Oliver Upton <oliver.upton@linux.dev>
-Subject: Re: [RFC PATCH v1 04/38] tsm: Support DMA Allocation from private
- memory
-Message-ID: <20250731121740.GQ26511@ziepe.ca>
+Subject: Re: [RFC PATCH v1 06/38] iommufd: Add and option to request for bar
+ mapping with IORESOURCE_EXCLUSIVE
+Message-ID: <20250731122217.GR26511@ziepe.ca>
 References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
- <20250728135216.48084-5-aneesh.kumar@kernel.org>
- <20250728143318.GD26511@ziepe.ca>
- <yq5a5xfbbe35.fsf@kernel.org>
- <20250729143339.GH26511@ziepe.ca>
- <bbe2a41a-8f72-4224-a0bc-225c1e35a180@arm.com>
+ <20250728135216.48084-7-aneesh.kumar@kernel.org>
+ <20250728140841.GA26511@ziepe.ca>
+ <yq5a34afbdtl.fsf@kernel.org>
+ <20250729142917.GF26511@ziepe.ca>
+ <aInBxnVIu+lnkzlV@yilunxu-OptiPlex-7050>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -90,41 +91,49 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bbe2a41a-8f72-4224-a0bc-225c1e35a180@arm.com>
+In-Reply-To: <aInBxnVIu+lnkzlV@yilunxu-OptiPlex-7050>
 
-On Wed, Jul 30, 2025 at 11:09:35AM +0100, Suzuki K Poulose wrote:
-> > > It is unclear whether devices would need to perform DMA to shared
-> > > (unencrypted) memory while operating in this mode, as TLPs with T=1
-> > > are generally expected to target private memory.
+On Wed, Jul 30, 2025 at 02:55:02PM +0800, Xu Yilun wrote:
+> On Tue, Jul 29, 2025 at 11:29:17AM -0300, Jason Gunthorpe wrote:
+> > On Tue, Jul 29, 2025 at 01:58:54PM +0530, Aneesh Kumar K.V wrote:
+> > > Jason Gunthorpe <jgg@ziepe.ca> writes:
+> > > 
+> > > > On Mon, Jul 28, 2025 at 07:21:43PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> > > >> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> > > >
+> > > > Why would we need this?
+> > > >
+> > > > I can sort of understand why Intel would need it due to their issues
+> > > > with MCE, but ARM shouldn't care either way, should it?
+> > > >
+> > > > But also why is it an iommufd option? That doesn't seem right..
+> > > >
+> > > > Jason
+> > > 
+> > > This is based on our previous discussion https://lore.kernel.org/all/20250606120919.GH19710@nvidia.com
 > > 
-> > PCI SIG supports it, kernel should support it.
+> > I suggested a global option, this is a per-device option, and that
+> > especially seems wrong for iommufd. If it is per-device that is vfio,
 > 
-> ACK. On Arm CCA, the device can access shared IPA, with T=1 transaction
-> as long as the mapping is active in the Stage2 managed by RMM.
+> I think this should be per-device.
 
-Right, I expect that the T=0 SMMU S2 translation is a perfect subset of
-the T=1 S2 rmm translation. At most pages that are not available to
-T=0 should be removed when making the subset.
+IMHO there is no use case for that, it should arguably be global to
+the whole kernel.
 
-I'm not sure what the plan is here on ARM though, do you expect to
-pre-load the entire T=0 SMMU S2 with the shared IPA aliases and rely
-on the GPT for protection or will the hypervisor dynamically change
-the T=0 SMMU S2 after each shared/private change? Same question for
-the RMM S2?
+> The original purpose of this pci_region_request_*() is to prevent
+> further mmap/read/write against a vfio_cdev FD which would be used
 
-The first option sounds fairly appealing, IMHO
+No way, the VFIO internal mmap should be controled by VFIO not by
+request region. If you want to block that it should be blocked by
+iommufd telling VFIO that the device is bound which revokes the
+mmaps/dmabufs/etc and prevents opening new ones.
 
-> Rather than mapping the entire memory from the host, it would be ideal
-> if the Coco vms have some sort of a callback to "make sure the DMA
-> wouldn't fault for a device". 
+The only thing request region should do is prevent /sys/../resource,
+/dev/mem users and so on, which is why it can and should be
+global. Arguably VFIO should always block those things but
+historically hasn't..
 
-Isn't that a different topic? For right now we expect that all pages
-are pinned and loaded into both S2s. Upon any private/shared
-conversion the pages should be reloaded into the appropriate S2s if
-required. The VM never needs to tell the hypervisor that it wants to
-do DMA.
-
-There are all sorts of options here to relax this but exploring them
-it an entirely different project that CCA, IMHO.
+There should only be one request region call in VFIO, it should
+ideally happen when the VFIO driver probes the device.
 
 Jason
