@@ -1,106 +1,131 @@
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sinmsgout01.his.huawei.com (sinmsgout01.his.huawei.com [119.8.177.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12BE7238D53
-	for <linux-coco@lists.linux.dev>; Thu, 31 Jul 2025 12:29:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0372C08C2;
+	Thu, 31 Jul 2025 13:23:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=119.8.177.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753964992; cv=none; b=n9WN4fge9qShDQWk/liHiyV9Kv+SstXxFgk8H9oOUzwhQe0rZ6t2g5817FCJ7UPwnuBP4klNHwDrx6SF/ePhay5fI5e3lD1gnMUE7aXb3FVBKWZR22yXVor5jaHPmjnt1HO5Z9ZvTSeHf2UBRaGzx1fW2hBzzB8ZlJ1sYcocHEo=
+	t=1753968190; cv=none; b=WYktB58cTvMZoUt8OH0UFydwzbFM4elEc8fAE5TKM7vn8DOEu711pixpsVAQwwnSMweVYljJriyk4QnBtvA3cpGDx25n2A7a2Zu7uCAKJaxKeTQOcj7vGM0ciraYtWvUlV3rN/Pz5R00u967se3XpqoEWF/nKJf3tx2zFrmcNDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753964992; c=relaxed/simple;
-	bh=stFuxurLK8Z8AnaZ49l9W8w7aFsmtWO77oIxpAGLTIw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s1H0mJvCNNf0rPO0Mab/qKM4FAWmV8CITdAHGDwFSyQdGOkx+nNiEzcbWVVkZhT/Va7rM5MPArQeUkiXrNGlhzY+LF+lOwGU59/a9f074SWD2himA5Agv2RvX6Xi74tlmRhpu0KMF6l7giE/A2RVjbVINGBkV9G7PmN9yBVsn9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=W2eSco0I; arc=none smtp.client-ip=209.85.219.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1753968190; c=relaxed/simple;
+	bh=ylSWYew4DfoO+Ep4rDDeoRAOzKWkyzsvf10jdAPVJKs=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BjdIijPdzZ3LERtbynCFdSW74di4XPJzc5UHOXklyTFkB+omV1gPsYLJCtl5jT+5PfDtao6Rhr6tMhcsYh6B0fQQfB/SxcUbNMFJJHvH8mGD07JiitF3oCHjZVOoMt48X1nS/Wsibw6H6CGLq5j0o6Sx8sVgcl2N3aUQGQM3+mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=jrorTtlG; arc=none smtp.client-ip=119.8.177.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="W2eSco0I"
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-7074bad0523so3304086d6.3
-        for <linux-coco@lists.linux.dev>; Thu, 31 Jul 2025 05:29:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1753964990; x=1754569790; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=r16L0lPAepHRljLoRD2C+qwfP2TiLc2fMDqSQ/mjsSA=;
-        b=W2eSco0IBoyrIjfBDcnjSPTMaH+x1lng7XSUqlc9XkC7FU506RBhuCUlfBkV8LLYT4
-         lEUgNASQYXRlH7K/qEjO8l/wQrpjpO/oe7uMgufkgamTd9s/A6wjr8aVIL3cd5OqRqs2
-         laGwVwKqkNypsc7c09cmZfBmRymzLKBdYx6QpH2rOWhrXzB6+BVzP96erYDnBLi1RwT2
-         gwZzVrt+S+kOLTgmGs6VEp604nA4GZbRaVa8P7XOiKg/NQyqF+751NgCVRRn3wrRXsnm
-         wtvvFNbYuILO76XbOVWQmPbvIyJDHBHkj2RJEbYID/i1s/uktUPwItZvtrLDbxdBv7NY
-         cLFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753964990; x=1754569790;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r16L0lPAepHRljLoRD2C+qwfP2TiLc2fMDqSQ/mjsSA=;
-        b=aLqrYJzQdx+2W+LRpK7c7IjwZs646h8VCrhKOrVlukxCVQlKQffKsPcGZZF6RAQpd6
-         P2FD8SSDWFY6LhT+Yy2He+wIe41DRsdTQZ0w6QGeHNmrJitW+zqMX/QXWnhdYjNGj7F7
-         SMT0hL9vOzrsHaZIAM3hv7ajIYdvGivJF+41K6AgZFtL9RSb3WAAPz+P3Ug9WzexY3FI
-         SUuG9mhsQbqKRhxsV6RAZ5adKQyIyX1omLPhhqON9ew6bOXmvvsDuv+2m/zZX/WYf4uG
-         ddAbAFfktzwwbeBopIJ0dy55sdyjREJ8f2zdMwyDGXwSUex9FBTX02q6sCRNVhBTD/Ce
-         xzmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWftyLkX+7KSb0q4xKTIcWPbZu/R+AKKQgow7amur6nfE0xrkI95NTA42GGcS3HBOx6ZqBY8QWz3a/8@lists.linux.dev
-X-Gm-Message-State: AOJu0YzoG8gU7lokESkUhasM1GHti3rCCJxw16m/tv+LPq9FPAb5g+fv
-	cW7KeGWm0lJ7lenFcKRrEhIFn1MgnpJADwnwZZr9hw5c2i4hWtdoiamK04NqRyXVMhM=
-X-Gm-Gg: ASbGnct+pbvGsUrqBRicZYJ3y3gksuIv+vW2X2SiBP1fZPkIpW8E5xQ6+zd8C6YnZwf
-	3A9GIomblB9MU1IwuYg+PjjbtyE7HWfX9ZGnkmEmur+z4DfRZmbzrL2kwxmEwOPsqd41p79x5rm
-	SItNC5mXEAyB6YPeI0qPlV76vqzRKOaO5wmClq/G8Ni4WqX2wSg9ma8nXmlV/rIp24jnfr4Cbxp
-	epdLe93iAMhbiO7rH8cv6BLV/DHhfi6VNM3ynBaDu9wd0SdWfDsGRH0Vht8AU6ssWYEzB+fM2rv
-	pj/dirseDIoKtiq0ampm7qCJRHqPrJAeMOqqOd7Pn+MFRGfSHuSD7rXXNWVVZQ8zS/hGzmMOrbh
-	pKRBDzpvqHqDZIn2oBdjv4RTbjecEhYJU8yopDg4PHyQiOuuingSWSO5kww9QH4RSdMkiC3LMxV
-	+U030=
-X-Google-Smtp-Source: AGHT+IGFRiq4QY4lDaxJA1kOgdG4s98/jc148KJ+4RcbhXD0Gv7ljg9jqdQ+tgIuoEfTT/tXWxH4vA==
-X-Received: by 2002:a05:6214:248a:b0:6fa:fddf:734b with SMTP id 6a1803df08f44-7076710c664mr94449716d6.24.1753964989913;
-        Thu, 31 Jul 2025 05:29:49 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7077c9d98ecsm6607476d6.2.2025.07.31.05.29.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Jul 2025 05:29:49 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1uhSPs-00000000obJ-3nd7;
-	Thu, 31 Jul 2025 09:29:48 -0300
-Date: Thu, 31 Jul 2025 09:29:48 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	aik@amd.com, lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: Re: [RFC PATCH v1 23/38] coco: guest: arm64: Update arm CCA guest
- driver
-Message-ID: <20250731122948.GU26511@ziepe.ca>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="jrorTtlG"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=++Ul7pOXhQYTZqPFLwUChurRVzJ0hpxMT+1uztC97zc=;
+	b=jrorTtlGUACY8MmSwYPSOO/hRhiHt/OPDkn5sJe79/18ur0SnNXeM0hAVOpnMKascymsch3pd
+	iSMH5orswV5xVxBDRUSMBrF6lPmVarteVIBUNYr50kJalaHWE4I1ciniVVsNXRx9DpjGEmYOH/o
+	uo5Z/mnqudZINFvTnLHB4lE=
+Received: from frasgout.his.huawei.com (unknown [172.18.146.35])
+	by sinmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4bt8qd4P3Bz1P7Jt;
+	Thu, 31 Jul 2025 21:21:33 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bt8qH75V2z6D9Ym;
+	Thu, 31 Jul 2025 21:21:15 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8373A1402EA;
+	Thu, 31 Jul 2025 21:22:53 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 31 Jul
+ 2025 15:22:52 +0200
+Date: Thu, 31 Jul 2025 14:22:50 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+CC: Aneesh Kumar K.V <aneesh.kumar@kernel.org>, Dan Williams
+	<dan.j.williams@intel.com>, <linux-coco@lists.linux.dev>,
+	<kvmarm@lists.linux.dev>, <linux-pci@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <aik@amd.com>, <lukas@wunner.de>, Samuel
+ Ortiz <sameo@rivosinc.com>, Xu Yilun <yilun.xu@linux.intel.com>, Suzuki K
+ Poulose <Suzuki.Poulose@arm.com>, Steven Price <steven.price@arm.com>,
+	"Catalin Marinas" <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+	"Will Deacon" <will@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
+	<gregkh@linuxfoundation.org>
+Subject: Re: [RFC PATCH v1 11/38] KVM: arm64: CCA: register host tsm
+ platform device
+Message-ID: <20250731142250.00005651@huawei.com>
+In-Reply-To: <20250731121133.GP26511@ziepe.ca>
 References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
- <20250728135216.48084-24-aneesh.kumar@kernel.org>
- <20250730152204.00006f79@huawei.com>
+	<20250728135216.48084-12-aneesh.kumar@kernel.org>
+	<20250729181045.0000100b@huawei.com>
+	<20250729231948.GJ26511@ziepe.ca>
+	<yq5aqzxy9ij1.fsf@kernel.org>
+	<20250730113827.000032b8@huawei.com>
+	<20250731121133.GP26511@ziepe.ca>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250730152204.00006f79@huawei.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Wed, Jul 30, 2025 at 03:22:04PM +0100, Jonathan Cameron wrote:
-> > -static void __exit arm_cca_guest_exit(void)
-> > -{
-> > -	tsm_report_unregister(&arm_cca_tsm_ops);
-> > +	return ret;
+On Thu, 31 Jul 2025 09:11:33 -0300
+Jason Gunthorpe <jgg@ziepe.ca> wrote:
+
+> On Wed, Jul 30, 2025 at 11:38:27AM +0100, Jonathan Cameron wrote:
+> > On Wed, 30 Jul 2025 14:12:26 +0530
+> > "Aneesh Kumar K.V" <aneesh.kumar@kernel.org> wrote:
+> >   
+> > > Jason Gunthorpe <jgg@ziepe.ca> writes:
+> > >   
+> > > > On Tue, Jul 29, 2025 at 06:10:45PM +0100, Jonathan Cameron wrote:
+> > > >    
+> > > >> > +static struct platform_device cca_host_dev = {    
+> > > >> Hmm. Greg is getting increasingly (and correctly in my view) grumpy with
+> > > >> platform devices being registered with no underlying resources etc as glue
+> > > >> layers.  Maybe some of that will come later.    
+> > > >
+> > > > Is faux_device a better choice? I admit to not knowing entirely what
+> > > > it is for..  
+> > 
+> > I'll go with a cautious yes to faux_device. This case of a glue device
+> > with no resources and no reason to be on a particular bus was definitely
+> > the intent but I'm not 100% sure without trying it that we don't run
+> > into any problems.
+> > 
+> > Not that many examples yet, but cpuidle-psci.c looks like a vaguely similar
+> > case to this one.  
+> > 
+> > All it really does is move the location of the device and
+> > smash together the device registration with probe/remove.
+> > That means the device disappears if probe() fails, which is cleaner
+> > in many ways than leaving a pointless stub behind.
+> > 
+> > Maybe it isn't appropriate it if is actually useful to rmmod/modprobe the
+> > driver.   
 > 
-> 	return devm_add_action_or_reset()
+> Yeah, exactly. Can a TSM driver even be modular? If it has to be built
+> in then there is no reason to do this:
 > 
-> Mind you, Jason probably won't like this ;)
+> > > The goal is to have tsm class device to be parented by the platform
+> > > device.  
+> 
+> IMHO the only real point of that is to trigger module autoloading.
+> 
+> Otherwise the tsm core should accept NULL as the parent pointer during
+> registration, it probably already does..
 
-devm in a module __exit function? How ?
+If you mean create a class device with no parent, that's also something
+we are slowly trying to fix.  Reminds me that fixing up more perf devices
+is still on my todo list.
 
-Jason
+Should be a child of something, so maybe that is a good reason for a
+faux_device here if there is nothing else to use.
+
+Jonathan
+
+> 
+> Jason
+
