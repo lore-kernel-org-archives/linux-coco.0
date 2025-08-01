@@ -1,70 +1,55 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40891C69D
-	for <linux-coco@lists.linux.dev>; Fri,  1 Aug 2025 02:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E77621B9F5;
+	Fri,  1 Aug 2025 08:31:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754014605; cv=none; b=aM9ulvLdPz8fAimzM8YC4imlRIZ2qU5IL/lmxGvlvExZTYTxZfbN6mz0GGm54hUDFoZ/PdzrIcJG0TuHgqvP0xPegQlf9eGJ4gSxy7guoux5FLg06pMCAF6eO5IxCxJ4iDCF/6ofpqBoJ+DsG2ZtO5Q8kCwJlWOzebsvqLS6QvI=
+	t=1754037095; cv=none; b=QlJPDD8maKuzf2aDaX4SGp/dDWJv/fPTbuPDT9ywH7LLH26Lx9j6nrhQjcu7doQvSrIGIH74Dlwpu0my86bXD0dF3jeqc/QyiCgzlVw7NFIJAc7nT6tANF0G0M2MwTUqrkbkbj0Df1g/suEOo1S9HL+hDa7TFXTMmNVvAs+K2ZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754014605; c=relaxed/simple;
-	bh=8DsDuKyLSQ6J57SR4sqDq8FfwCscM9sDogsCD6oZntI=;
+	s=arc-20240116; t=1754037095; c=relaxed/simple;
+	bh=5scCGip/FFvGOCm9mLa0Uv56JbL7TQeCcOdQaylPTI0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aBdrCBr88EaL1wg/z50UXXhOdX9w5r0eOKAybazJeilXIO0MhpyV0Mq2HHXtTbDcyNXpgv94p3lM1y9DgPoXNmr/OJMp1Im9on01P2oo0Zez6D1mOOsruhskWClujDiG5bAbCOZFOCiVMSVA9K7bU3RxvhsDjsN4aO9yCI52O80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EOoKQ7ZG; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ir58aMFMMHFOTUsET7Lm/BWtFSDDkuXLm039gt/8GVC3409JW2hGQal0sshJUEBsPA58EGC21nfHFn28g16S8VHFQBqLNAnW1Sl+reYkDcsrUJMo7yxLDcsO4wm2YGtTUO5ZgJ/a+M04EF7M3BSeF42J7Cdfkqhg/9gkoamBHwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMP5k6YB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EOoKQ7ZG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754014603; x=1785550603;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8DsDuKyLSQ6J57SR4sqDq8FfwCscM9sDogsCD6oZntI=;
-  b=EOoKQ7ZGmFaaIaugfWLzUnITkHXDXcQ1GoFVfZRZW6s00WciClOeoHms
-   cfowI8PVBAuZ7OsPzPet3UXihBNHNMl/PzWJa5GfvZc9iKZkOEP7xpQOM
-   Esha355Bmcyb8E5r9u7SKm+x4lYEXsW9Gd3Ag9oH4kxo4+mCHuPO05MGx
-   HWfUAj5nOBMZGLJreFvBvnIyMH6zTFJ3i1EqWCkMI237f+nXyRsJ3iYgb
-   9V/CPqJqdxOluoFUanUXELzkXPI7QMtGxr/t2rPXht19+Tqv+tFtDqCii
-   zQ20n1OPw1Ce66f/KX7bTsvTc+x4UOOl51IV4N5A2vSrQhUWWa+/Aoy8K
-   w==;
-X-CSE-ConnectionGUID: 6P1tpJiVS4aBskT+jSqw+w==
-X-CSE-MsgGUID: I/jPQEhwSxKrDMcPDC5O+Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11508"; a="56052517"
-X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; 
-   d="scan'208";a="56052517"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2025 19:16:42 -0700
-X-CSE-ConnectionGUID: RB3PguwuTm6Umpo4iIRG8A==
-X-CSE-MsgGUID: ZDI7glPKRA2D2P6X66I1Pw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; 
-   d="scan'208";a="164222086"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa010.fm.intel.com with ESMTP; 31 Jul 2025 19:16:37 -0700
-Date: Fri, 1 Aug 2025 10:07:13 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: dan.j.williams@intel.com
-Cc: Chao Gao <chao.gao@intel.com>, linux-coco@lists.linux.dev,
-	x86@kernel.org, kvm@vger.kernel.org, seanjc@google.com,
-	pbonzini@redhat.com, eddie.dong@intel.com,
-	kirill.shutemov@intel.com, dave.hansen@intel.com,
-	kai.huang@intel.com, isaku.yamahata@intel.com,
-	elena.reshetova@intel.com, rick.p.edgecombe@intel.com,
-	Farrah Chen <farrah.chen@intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 07/20] x86/virt/tdx: Expose SEAMLDR information via
- sysfs
-Message-ID: <aIwhUb3z9/cgsMwb@yilunxu-OptiPlex-7050>
-References: <20250523095322.88774-1-chao.gao@intel.com>
- <20250523095322.88774-8-chao.gao@intel.com>
- <aIhUVyJVQ+rhRB4r@yilunxu-OptiPlex-7050>
- <688bd9a164334_48e5100f1@dwillia2-xfh.jf.intel.com.notmuch>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMP5k6YB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52F88C4CEE7;
+	Fri,  1 Aug 2025 08:31:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1754037094;
+	bh=5scCGip/FFvGOCm9mLa0Uv56JbL7TQeCcOdQaylPTI0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pMP5k6YBLG+KPAlawMA+Mj/merfSzH2TqBI3GGIQEPD5nDw5e93uRVkyDyYyWHN5g
+	 gM4BluqBjK5n4E1jdD9PpmGZanbYjRgnVyocKiRReciEFEGjAq2z92AClK4YePx9yZ
+	 eSjYODSWEu0nRSpSkKw/dJcI8prJ+XZbeofLlJGI=
+Date: Fri, 1 Aug 2025 10:31:30 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	kvmarm@lists.linux.dev, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, aik@amd.com, lukas@wunner.de,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: Re: [RFC PATCH v1 11/38] KVM: arm64: CCA: register host tsm platform
+ device
+Message-ID: <2025080153-flattery-panic-1057@gregkh>
+References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
+ <20250728135216.48084-12-aneesh.kumar@kernel.org>
+ <20250729181045.0000100b@huawei.com>
+ <20250729231948.GJ26511@ziepe.ca>
+ <yq5aqzxy9ij1.fsf@kernel.org>
+ <20250730113827.000032b8@huawei.com>
+ <20250731121133.GP26511@ziepe.ca>
+ <20250731142250.00005651@huawei.com>
+ <20250731164603.GX26511@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -73,127 +58,29 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <688bd9a164334_48e5100f1@dwillia2-xfh.jf.intel.com.notmuch>
+In-Reply-To: <20250731164603.GX26511@ziepe.ca>
 
-On Thu, Jul 31, 2025 at 02:01:21PM -0700, dan.j.williams@intel.com wrote:
-> Xu Yilun wrote:
-> > > +static const struct attribute_group *tdx_subsys_groups[] = {
-> > > +	SEAMLDR_GROUP,
-> > > +	NULL,
-> > > +};
-> > > +
-> > >  static void tdx_subsys_init(void)
-> > >  {
-> > >  	struct tdx_tsm *tdx_tsm;
-> > >  	int err;
-> > >  
-> > > +	err = get_seamldr_info();
-> > > +	if (err) {
-> > > +		pr_err("failed to get seamldr info %d\n", err);
-> > > +		return;
-> > > +	}
-> > > +
-> > >  	/* Establish subsystem for global TDX module attributes */
-> > > -	err = subsys_virtual_register(&tdx_subsys, NULL);
-> > > +	err = subsys_virtual_register(&tdx_subsys, tdx_subsys_groups);
-> > >  	if (err) {
-> > >  		pr_err("failed to register tdx_subsys %d\n", err);
-> > >  		return;
-> > 
-> > As mentioned, TDX Connect also uses this virtual TSM device. And I tend
-> > to extend it to TDX guest, also make the guest TSM management run on
-> > the virtual device which represents the TDG calls and TDG_VP_VM calls.
-> > 
-> > So I'm considering extract the common part of tdx_subsys_init() out of
-> > TDX host and into a separate file, e.g.
-> > 
-> > ---
-> > 
-> > +source "drivers/virt/coco/tdx-tsm/Kconfig"
-> > +
-> >  config TSM
-> >         bool
-> > diff --git a/drivers/virt/coco/Makefile b/drivers/virt/coco/Makefile
-> > index c0c3733be165..a54d3cb5b4e9 100644
-> > --- a/drivers/virt/coco/Makefile
-> > +++ b/drivers/virt/coco/Makefile
-> > @@ -10,3 +10,4 @@ obj-$(CONFIG_INTEL_TDX_GUEST) += tdx-guest/
-> >  obj-$(CONFIG_ARM_CCA_GUEST)    += arm-cca-guest/
-> >  obj-$(CONFIG_TSM)              += tsm-core.o
-> >  obj-$(CONFIG_TSM_GUEST)                += guest/
-> > +obj-y                          += tdx-tsm/
-> > diff --git a/drivers/virt/coco/tdx-tsm/Kconfig b/drivers/virt/coco/tdx-tsm/Kconfig
-> > new file mode 100644
-> > index 000000000000..768175f8bb2c
-> > --- /dev/null
-> > +++ b/drivers/virt/coco/tdx-tsm/Kconfig
-> > @@ -0,0 +1,2 @@
-> > +config TDX_TSM_BUS
-> > +       bool
-> > diff --git a/drivers/virt/coco/tdx-tsm/Makefile b/drivers/virt/coco/tdx-tsm/Makefile
-> > new file mode 100644
-> > index 000000000000..09f0ac08988a
-> > --- /dev/null
-> > +++ b/drivers/virt/coco/tdx-tsm/Makefile
-> > @@ -0,0 +1 @@
-> > +obj-$(CONFIG_TDX_TSM_BUS) += tdx-tsm-bus.o
+On Thu, Jul 31, 2025 at 01:46:03PM -0300, Jason Gunthorpe wrote:
+> On Thu, Jul 31, 2025 at 02:22:50PM +0100, Jonathan Cameron wrote:
 > 
-> Just name it bus.c.
-
-I'm about to make the change but I see there is already tdx-guest misc
-virtual device in Guest OS:
-
-  What:		/sys/devices/virtual/misc/tdx_guest/xxxx
-
-And if we add another tdx_subsys, we have:
-
-  What:		/sys/devices/virtual/tdx/xxxx
-
-Do we really want 2 virtual devices? What's their relationship? I can't
-figure out.
-
-So I'm considering reuse the misc/tdx_guest device as a tdx root device
-in guest. And that removes the need to have a common tdx tsm bus.
-
-What do you think?
-
+> > If you mean create a class device with no parent, that's also something
+> > we are slowly trying to fix.  Reminds me that fixing up more perf devices
+> > is still on my todo list.
 > 
-> > ---
-> > 
-> > And put the tdx_subsys_init() in tdx-tsm-bus.c. We need to move host
-> > specific initializations out of tdx_subsys_init(), e.g. seamldr_group &
-> > seamldr fw upload.
+> IIRC if you create a class device with no parent it gets placed on the
+> virtual bus...
 > 
-> Just to be clear on the plan here as I think this TD Preserving set
-> should land before we start upstreamming any TDX Connect bits.
+> Do you mean we should not do that?
 > 
-> - Create drivers/virt/coco/tdx-tsm/bus.c for registering the tdx_subsys.
->   The tdx_subsys has sysfs attributes like "version" (host and guest
->   need this, but have different calls to get at the information) and
->   "firmware" (only host needs that). So the common code will take sysfs
->   groups passed as a parameter.
+> > Should be a child of something, so maybe that is a good reason for a
+> > faux_device here if there is nothing else to use.
 > 
-> - The "tdx_tsm" device which is unused in this patch set can be
+> Don't see such a big difference to have it be the child of a faux
+> device on the faux bus than to just be directly on the virtual bus?
 
-It is used in this patch, Chao creates tdx module 'version' attr on this
-device. But I assume you have different opinion: tdx_subsys represents
-the whole tdx_module and should have the 'version', and tdx_tsm is a
-sub device dedicate for TDX Connect, is it?
+Either is fine, but just never use a platform device for a
+non-platform-resource-backed device please.
 
-Thanks,
-Yilun
+thanks,
 
->   registered on the "tdx" bus to move feature support like TDX Connect
->   into a typical driver model.
-> 
-> So the change for this set is create a bus.c that is host/guest
-> agnostic, drop the tdx_tsm device and leave that to the TDX Connect
-> patches to add back. 
-> 
-> The TDX Connect pathes will register the tdx_tsm device near where the
-> bus is registered for the host and guest cases.
-> 
-> Concerns?
-> 
-> In the meantime, until this set lands in tip we can work out the
-> organization in tsm.git#staging.
+greg k-h
