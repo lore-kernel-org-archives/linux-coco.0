@@ -1,101 +1,233 @@
-Received: from sinmsgout03.his.huawei.com (sinmsgout03.his.huawei.com [119.8.177.38])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4537E22D7B6;
-	Mon,  4 Aug 2025 10:23:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=119.8.177.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873E1634;
+	Mon,  4 Aug 2025 21:52:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754303024; cv=none; b=MEzLFyQA7e0VMFL4HJeo7EjFRBcISQW+5rKK04BofS2FPvYqXIzRjDBT8cBlqa1GVpimrZCvJlMI2L4jcj31dFW/9HutHFkAs8FWA9FsIYrYtQqcxWQCVaE6pa73/O1N3Xg1B7V2Hj2dJS/VxxC8H7FlDA91ZMbwxVttnFtZHOg=
+	t=1754344349; cv=none; b=d1IeqrUJNwqcOyAIAosvbI0fkW9Le0g8ENWfOfFzpaD3Qs6u4m5EzQx01k402nA9vVLm8bqyVbET1Hz74r1YePGNxfGlo+MHf1S9rppGFAn4qk2QU4kQRxTtAdyEiy86Q3b19W6eV7KBAu/xG1XdJjTRA1ST5JbApex9wa5d8dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754303024; c=relaxed/simple;
-	bh=X1VUhgt8QW/ZfVr4EXLGfxcOIQqMZmFuJ0KQugFBrP0=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G3Jt0bFwdAxMDRH3PTO4nKdyK4GCcZlPFscV4aIRHxVfwxU3wvtaEUPNEVTedaxwEt8OpjDXo6ggi1xE0OC9tKmPTjZRUjCUbE6+UgEacZ86xrzSqxoMcQLUKOSXhibdwggNCrXamW8yoeTRwqJ+h+k2CIooff/PhxX0Knc5vYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=krZ916p6; arc=none smtp.client-ip=119.8.177.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1754344349; c=relaxed/simple;
+	bh=rLV4kTNP6xbv8+l9VQYq3ZMbQ7UGSERvE+LOo6qumgw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=JOYOT53YbKlNM0GOzU5/mQ9r7ZknrnfOQK2M6bSq/nVeYD7Ao+oQRX4DiOvSxX3gUQRgFXf0dTRHh4AouuRdS/ISPvxaJCLYHaQgP/bue1P26fgsSRzXtkj3XCqYm4T5DT6+ztj7wBtbh12OAD516XyVCxTf29NV/3yxMfwhgJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sRkCIw47; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="krZ916p6"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=yXPzIEEoaPN1VOdITWv34hp9rv4PXkmKFCr/GnHNnyQ=;
-	b=krZ916p6MflWi+t54Nh5ZPuOIQXBLK17j9mJYliCU3H8LoGXgjO1vjrCmf+7jTthc71o+Scz/
-	8gRm/qrszeSN0RjpvFGrpSumMnaTnLPyhy0sYRhp+Mugi7yKgilUQHdwE9HkleCa1H4GnJSDTuD
-	7dTPC95O7J3AD57GduXJkAQ=
-Received: from frasgout.his.huawei.com (unknown [172.18.146.37])
-	by sinmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4bwXfV5p2mzN0dZ;
-	Mon,  4 Aug 2025 18:21:54 +0800 (CST)
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bwXb96HLrz6L5Ks;
-	Mon,  4 Aug 2025 18:19:01 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0EAAA140133;
-	Mon,  4 Aug 2025 18:23:29 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 4 Aug
- 2025 12:23:28 +0200
-Date: Mon, 4 Aug 2025 11:23:26 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-CC: <linux-coco@lists.linux.dev>, <kvmarm@lists.linux.dev>,
-	<linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <aik@amd.com>,
-	<lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>, Xu Yilun
-	<yilun.xu@linux.intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, "Suzuki K
- Poulose" <Suzuki.Poulose@arm.com>, Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>, Oliver Upton <oliver.upton@linux.dev>
-Subject: Re: [RFC PATCH v1 38/38] coco: guest: arm64: Add support for
- fetching device info
-Message-ID: <20250804112326.00000f40@huawei.com>
-In-Reply-To: <yq5ao6sv8tw9.fsf@kernel.org>
-References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
-	<20250728135216.48084-39-aneesh.kumar@kernel.org>
-	<20250731113653.000000cd@huawei.com>
-	<yq5ao6sv8tw9.fsf@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sRkCIw47"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E16CAC4CEE7;
+	Mon,  4 Aug 2025 21:52:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754344349;
+	bh=rLV4kTNP6xbv8+l9VQYq3ZMbQ7UGSERvE+LOo6qumgw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=sRkCIw47ngdZqhotgjMx0Hc3pct7iRy+6IBEsglcb1owbtPEzcDnfgmG9gMFqcJtE
+	 br3ebBqK4IaZ81FTfBcvluLir0RotKHxzvpk/rs28Es19/6ObovFSQtnFNLbEdvTmS
+	 2WpIfk7TbIwoXDTEZK2g/sh0keWzLflnYw5PE0RtweU4iGmNQ+whplYNsY2eKJDYKz
+	 t/dSAxhSJq1VvkkHiX0FSUTjldCkzNkgkSJq3AJWxVKKZJXabbrEV8FPCWxSxNlo7X
+	 oU+/Gh09jXjRjbAcxaznTPYVfsbU42mfIOfLxVU5MopScM67vTUyGo9fyggA0hb4DG
+	 UjLfgtf3hoHdQ==
+Date: Mon, 4 Aug 2025 16:52:27 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	aik@amd.com, lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: Re: [RFC PATCH v1 03/38] tsm: Move dsm_dev from pci_tdi to pci_tsm
+Message-ID: <20250804215227.GA3643759@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250728135216.48084-4-aneesh.kumar@kernel.org>
 
+On Mon, Jul 28, 2025 at 07:21:40PM +0530, Aneesh Kumar K.V (Arm) wrote:
 
-> >  
-> >> +	if (!dev_info) {
-> >> +		ret = -ENOMEM;
-> >> +		goto err_out;
-> >> +	}
-> >> +
-> >> +	ret = rsi_rdev_get_info(vdev_id, dsm->instance_id, virt_to_phys(dev_info));
-> >> +	if (ret != RSI_SUCCESS) {
-> >> +		pci_err(pdev, "failed to get device digests (%lu)\n", ret);
-> >> +		ret = -EIO;
-> >> +		kfree(dev_info);
-> >> +		goto err_out;
-> >> +	}
-> >> +
-> >> +	dsm->dev_info.attest_type   = dev_info->attest_type;
-> >> +	dsm->dev_info.cert_id       = dev_info->cert_id;
-> >> +	dsm->dev_info.hash_algo     = dev_info->hash_algo;
-> >> +	memcpy(dsm->dev_info.cert_digest, dev_info->cert_digest, SHA512_DIGEST_SIZE);
-> >> +	memcpy(dsm->dev_info.meas_digest, dev_info->meas_digest, SHA512_DIGEST_SIZE);
-> >> +	memcpy(dsm->dev_info.report_digest, dev_info->report_digest, SHA512_DIGEST_SIZE);
-> >> +  
-> >
-> > Can't you memcpy the whole thing in one go?
-> >  
+Subject line should include "PCI" prefix.
+
+Needs a commit log, even if it repeats what's in the subject.  Would
+also be good to know *why* this is desirable.
+
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> ---
+>  drivers/pci/tsm.c       | 72 ++++++++++++++++++++++++-----------------
+>  include/linux/pci-tsm.h |  4 +--
+>  2 files changed, 45 insertions(+), 31 deletions(-)
 > 
-> yes. But won't that be confusing? Is there a difference?
-> Also struct dsm_device_info is not same as struct rsi_device_info. We
-> don't need to keep all that padding in dsm_device_info.
-Ah. I misread and thought they were the same structure.  No problem copying
-only relevant fields then!
+> diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
+> index 794de2f258c3..e4a3b5b37939 100644
+> --- a/drivers/pci/tsm.c
+> +++ b/drivers/pci/tsm.c
+> @@ -415,15 +415,55 @@ static enum pci_tsm_type pci_tsm_type(struct pci_dev *pdev)
+>  	return PCI_TSM_INVALID;
+>  }
+>  
+> +/* lookup the Device Security Manager (DSM) pf0 for @pdev */
 
-Jonathan
+s/lookup/Look up/ (it's a verb here)
+ 
+> +static struct pci_dev *dsm_dev_get(struct pci_dev *pdev)
+> +{
+> +	struct pci_dev *uport_pf0;
+> +
+
+Remove this blank line ...
+
+> +	struct pci_dev *pf0 __free(pci_dev_put) = pf0_dev_get(pdev);
+
+and add one here.
+
+> +	if (!pf0)
+> +		return NULL;
+> +
+> +	if (pf0 == pdev)
+> +		return no_free_ptr(pf0);
+> +
+> +	/* Check that @pf0 was not initialized as PCI_TSM_DOWNSTREAM */
+> +	if (pf0->tsm && pf0->tsm->type == PCI_TSM_PF0)
+> +		return no_free_ptr(pf0);
+> +
+> +	/*
+> +	 * For cases where a switch may be hosting TDISP services on
+> +	 * behalf of downstream devices, check the first usptream port
+> +	 * relative to this endpoint.
+
+s/usptream/upstream/
+
+> +	 */
+> +	if (!pdev->dev.parent || !pdev->dev.parent->parent)
+> +		return NULL;
+> +
+> +	uport_pf0 = to_pci_dev(pdev->dev.parent->parent);
+> +	if (!uport_pf0->tsm)
+> +		return NULL;
+> +	return pci_dev_get(uport_pf0);
+> +}
+> +
+>  /**
+>   * pci_tsm_initialize() - base 'struct pci_tsm' initialization
+>   * @pdev: The PCI device
+>   * @tsm: context to initialize
+>   */
+> -void pci_tsm_initialize(struct pci_dev *pdev, struct pci_tsm *tsm)
+> +int pci_tsm_initialize(struct pci_dev *pdev, struct pci_tsm *tsm)
+>  {
+> +	struct pci_dev *dsm_dev __free(pci_dev_put) = dsm_dev_get(pdev);
+> +	if (!dsm_dev)
+> +		return -EINVAL;
+> +
+>  	tsm->type = pci_tsm_type(pdev);
+>  	tsm->pdev = pdev;
+
+Add blank line before comment.
+
+> +	/*
+> +	 * No reference needed because when we destroy
+> +	 * dsm_dev all the tdis get destroyed before that.
+
+"tdi" looks like an initialism, which would normally be capitalized.
+
+> +	 */
+> +	tsm->dsm_dev = dsm_dev;
+> +	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(pci_tsm_initialize);
+>  
+> @@ -447,7 +487,8 @@ int pci_tsm_pf0_initialize(struct pci_dev *pdev, struct pci_tsm_pf0 *tsm)
+>  	}
+>  
+>  	tsm->state = PCI_TSM_INIT;
+> -	pci_tsm_initialize(pdev, &tsm->tsm);
+> +	if (pci_tsm_initialize(pdev, &tsm->tsm))
+> +		return -ENODEV;
+>  
+>  	return 0;
+>  }
+> @@ -612,32 +653,6 @@ int pci_tsm_doe_transfer(struct pci_dev *pdev, enum pci_doe_proto type,
+>  }
+>  EXPORT_SYMBOL_GPL(pci_tsm_doe_transfer);
+>  
+> -/* lookup the Device Security Manager (DSM) pf0 for @pdev */
+> -static struct pci_dev *dsm_dev_get(struct pci_dev *pdev)
+> -{
+> -	struct pci_dev *uport_pf0;
+> -
+> -	struct pci_dev *pf0 __free(pci_dev_put) = pf0_dev_get(pdev);
+> -	if (!pf0)
+> -		return NULL;
+> -
+> -	/* Check that @pf0 was not initialized as PCI_TSM_DOWNSTREAM */
+> -	if (pf0->tsm && pf0->tsm->type == PCI_TSM_PF0)
+> -		return no_free_ptr(pf0);
+> -
+> -	/*
+> -	 * For cases where a switch may be hosting TDISP services on
+> -	 * behalf of downstream devices, check the first usptream port
+> -	 * relative to this endpoint.
+> -	 */
+> -	if (!pdev->dev.parent || !pdev->dev.parent->parent)
+> -		return NULL;
+> -
+> -	uport_pf0 = to_pci_dev(pdev->dev.parent->parent);
+> -	if (!uport_pf0->tsm)
+> -		return NULL;
+> -	return pci_dev_get(uport_pf0);
+> -}
+
+This code move looks like it could be a separate patch that only moves
+(and fixes the typos I mentioned).
+
+Then a second patch could do what the subject claims (moving dsm_dev
+from pci_tdi to pci_tsm) so it's not buried in the simple move.
+
+>  /* Only implement non-interruptible lock for now */
+>  static struct mutex *tdi_ops_lock(struct pci_dev *pf0_dev)
+> @@ -695,7 +710,6 @@ int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u64 tdi_id)
+>  		return -ENXIO;
+>  
+>  	tdi->pdev = pdev;
+> -	tdi->dsm_dev = dsm_dev;
+>  	tdi->kvm = kvm;
+>  	pdev->tsm->tdi = tdi;
+>  
+> diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
+> index 1920ca591a42..0d4303726b25 100644
+> --- a/include/linux/pci-tsm.h
+> +++ b/include/linux/pci-tsm.h
+> @@ -38,7 +38,6 @@ enum pci_tsm_type {
+>   */
+>  struct pci_tdi {
+>  	struct pci_dev *pdev;
+> -	struct pci_dev *dsm_dev;
+>  	struct kvm *kvm;
+>  };
+>  
+> @@ -56,6 +55,7 @@ struct pci_tdi {
+>   */
+>  struct pci_tsm {
+>  	struct pci_dev *pdev;
+> +	struct pci_dev *dsm_dev;
+>  	enum pci_tsm_type type;
+>  	struct pci_tdi *tdi;
+>  };
+> @@ -173,7 +173,7 @@ void pci_tsm_core_unregister(const struct pci_tsm_ops *ops);
+>  int pci_tsm_doe_transfer(struct pci_dev *pdev, enum pci_doe_proto type,
+>  			 const void *req, size_t req_sz, void *resp,
+>  			 size_t resp_sz);
+> -void pci_tsm_initialize(struct pci_dev *pdev, struct pci_tsm *tsm);
+> +int pci_tsm_initialize(struct pci_dev *pdev, struct pci_tsm *tsm);
+>  int pci_tsm_pf0_initialize(struct pci_dev *pdev, struct pci_tsm_pf0 *tsm);
+>  int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u64 tdi_id);
+>  int pci_tsm_unbind(struct pci_dev *pdev);
+> -- 
+> 2.43.0
+> 
