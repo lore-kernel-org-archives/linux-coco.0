@@ -1,167 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A653E154BF5;
-	Mon,  4 Aug 2025 06:58:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613AE22AE5D
+	for <linux-coco@lists.linux.dev>; Mon,  4 Aug 2025 07:10:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754290720; cv=none; b=cKD+BxGF+ZKBruUS5m/KK8dTko+sdJ+Qm8MIc/VLmn7w1dn8xhOoroCwz2/dD4riMl1pnBfu6U7SUYj73kW4t8zuf5nUKk11n2CV1jb5Ceicte+DJaUd1QmHl20gLwQEaM/qBQix0Mb4nXOCt4qfPnOM7/tr7KvKLjnhRd2dPnM=
+	t=1754291421; cv=none; b=uBOZ1rHO/X96vuPVFV0tR5PnV7MrEqO4/c8mksSumre7ZKiY7m3oDhNRUWfZxYtfoxIXu1Hlu23wjg9W5GlMkS6+6bcHd4Iz8cz0uwBzaJd3pFXSuuAV4gRzCIAv6ixEqDqBfXsA4QfxKWhlNPW8Ap2qDLyen9Ro8oq3ZYIkTCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754290720; c=relaxed/simple;
-	bh=v9xHj22hdbHBZDlVa+VuQOMIt2QxRwUCOV+GzKrIJhA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=oqmgLd/4FAZNZNx+BShuZ3fl8Q3JkNEHe/bnlUpnT37xEK1LYQMx5InnaO+Pq/xQ0ES+AJ16I7HEakhLNfsx/VRILAO8gcjku3JU3J9xfgJvjQyc74vhnBR9ZUEMeqzZ4rYIYVC8HDAFWWPYWpgFNk3oWnOSEgPqSppacZ12EAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y/jdK+ut; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754291421; c=relaxed/simple;
+	bh=rZyea0tu1SNXXUMLdNWyhscMNRkf6r3aNbHQWaTsxM0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IRjb95AoHfqbUFZ4wTEn7EPCy7r77YkGXmVKKv8KsxPZ3jt0kG1q7UKBY+a7a1V2vx9RS8AyIzZYj4JcGSkWjuVKWJbhSTt+sNG18dcCkSD+1EYuJDLp+ihV8AohegHREuJtsFGBKhw6tx5UbWO3ZcIbAJwB62pnsCckWC6BdYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X8EFAfPo; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y/jdK+ut"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 505DEC4CEE7;
-	Mon,  4 Aug 2025 06:58:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754290720;
-	bh=v9xHj22hdbHBZDlVa+VuQOMIt2QxRwUCOV+GzKrIJhA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Y/jdK+ut68wZ5ohu3wdskfRvZyF3bu6qBSWXqMLqfml+LqgNX5ezRTNOo9kpWScYQ
-	 J2koYnAyY6AWUeMG0PORloDMlUkATt9dURYjg/SkGx8Hizx++TJq7FeANZlGAazH91
-	 y6GPS7zWa/qZQ0g98dJp51ZqXKK4waE5MHDPtMltTzNfIX601Tjnv/JPCQobZdo58g
-	 ZU6lDm13A2Qb9XBHampfiYuOMuUaNmJ7gO3yj2g4JEyXf3Kdm8t5tK/6TnKXcHshKQ
-	 yjBZ+hYsNSgLj/S/7yokaDCafy2QcqHHjzfCADFeSO1Izx2iuloBKg2uxJYGofi6Jf
-	 m2II9zTbLrTTQ==
-X-Mailer: emacs 30.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, aik@amd.com,
-	lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: Re: [RFC PATCH v1 04/38] tsm: Support DMA Allocation from private
- memory
-In-Reply-To: <20250802134154.GI26511@ziepe.ca>
-References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
- <20250728135216.48084-5-aneesh.kumar@kernel.org>
- <20250728143318.GD26511@ziepe.ca> <yq5a5xfbbe35.fsf@kernel.org>
- <20250729143339.GH26511@ziepe.ca> <yq5aikj69kpn.fsf@kernel.org>
- <20250802134154.GI26511@ziepe.ca>
-Date: Mon, 04 Aug 2025 12:28:33 +0530
-Message-ID: <yq5aldnz8teu.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X8EFAfPo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754291420; x=1785827420;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rZyea0tu1SNXXUMLdNWyhscMNRkf6r3aNbHQWaTsxM0=;
+  b=X8EFAfPoyAcOkR4pCropi07+O5mz4aDbGdAyySOS+BT2cmvNVBucpi7F
+   B0xAZCLQwZ/nUjp9UAN814OBHu6L0ZxyW0RlPqpajhhz/WtrYnFCRvjAV
+   0h5v7OJauqmavgnc44pQJPl71XXm7ArpTxc/Z+h1G0CiNz9Xgx6Sl6sH8
+   yubWcD4I1pmN+DmaAmAMy4LQnM1ER7OH55zLTq7mTQBZWHOGBgHQXk91D
+   4v6KKp1PQwc5IDxJSvTYvpHpmIgZi6YcvRjv1fH7hQMcgYZawiZX3kMBr
+   Hn4hCqVBDhoeO7cpKS5PzScXBdcbpnOT2FVn795/pDkQMD7MFQjzj8wdO
+   A==;
+X-CSE-ConnectionGUID: 34v4ajkxQyy435wZEli8eQ==
+X-CSE-MsgGUID: Iz78DESuSwq+9ROiha2GkQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11511"; a="74131951"
+X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; 
+   d="scan'208";a="74131951"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2025 00:10:20 -0700
+X-CSE-ConnectionGUID: V8xmCoh9RrCcKM/D/dWyaQ==
+X-CSE-MsgGUID: jWFChVK2TZmgrKGwhNDQag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,258,1747724400"; 
+   d="scan'208";a="164873821"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa010.fm.intel.com with ESMTP; 04 Aug 2025 00:10:15 -0700
+Date: Mon, 4 Aug 2025 15:00:42 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: dan.j.williams@intel.com
+Cc: Chao Gao <chao.gao@intel.com>, linux-coco@lists.linux.dev,
+	x86@kernel.org, kvm@vger.kernel.org, seanjc@google.com,
+	pbonzini@redhat.com, eddie.dong@intel.com,
+	kirill.shutemov@intel.com, dave.hansen@intel.com,
+	kai.huang@intel.com, isaku.yamahata@intel.com,
+	elena.reshetova@intel.com, rick.p.edgecombe@intel.com,
+	Farrah Chen <farrah.chen@intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 07/20] x86/virt/tdx: Expose SEAMLDR information via
+ sysfs
+Message-ID: <aJBamtHaXpeu+ZR6@yilunxu-OptiPlex-7050>
+References: <20250523095322.88774-1-chao.gao@intel.com>
+ <20250523095322.88774-8-chao.gao@intel.com>
+ <aIhUVyJVQ+rhRB4r@yilunxu-OptiPlex-7050>
+ <688bd9a164334_48e5100f1@dwillia2-xfh.jf.intel.com.notmuch>
+ <aIwhUb3z9/cgsMwb@yilunxu-OptiPlex-7050>
+ <688cdc169163a_32afb100b3@dwillia2-mobl4.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <688cdc169163a_32afb100b3@dwillia2-mobl4.notmuch>
 
-Jason Gunthorpe <jgg@ziepe.ca> writes:
+> > > - Create drivers/virt/coco/tdx-tsm/bus.c for registering the tdx_subsys.
+> > >   The tdx_subsys has sysfs attributes like "version" (host and guest
+> > >   need this, but have different calls to get at the information) and
+> > >   "firmware" (only host needs that). So the common code will take sysfs
+> > >   groups passed as a parameter.
+> > > 
+> > > - The "tdx_tsm" device which is unused in this patch set can be
+> > 
+> > It is used in this patch, Chao creates tdx module 'version' attr on this
+> > device. But I assume you have different opinion: tdx_subsys represents
+> > the whole tdx_module and should have the 'version', and tdx_tsm is a
+> > sub device dedicate for TDX Connect, is it?
+> 
+> The main reason for a tdx_tsm device in addition to the subsys is to
+> allow for deferred attachment.
 
-> On Sat, Aug 02, 2025 at 02:14:20PM +0530, Aneesh Kumar K.V wrote:
->> Jason Gunthorpe <jgg@ziepe.ca> writes:
->>=20
->> > On Tue, Jul 29, 2025 at 01:53:10PM +0530, Aneesh Kumar K.V wrote:
->> >> Jason Gunthorpe <jgg@ziepe.ca> writes:
->> >>=20
->> >> > On Mon, Jul 28, 2025 at 07:21:41PM +0530, Aneesh Kumar K.V (Arm) wr=
-ote:
->> >> >> @@ -48,3 +49,12 @@ int set_memory_decrypted(unsigned long addr, in=
-t numpages)
->> >> >>  	return crypt_ops->decrypt(addr, numpages);
->> >> >>  }
->> >> >>  EXPORT_SYMBOL_GPL(set_memory_decrypted);
->> >> >> +
->> >> >> +bool force_dma_unencrypted(struct device *dev)
->> >> >> +{
->> >> >> +	if (dev->tdi_enabled)
->> >> >> +		return false;
->> >> >
->> >> > Is this OK? I see code like this:
->> >> >
->> >> > static inline dma_addr_t phys_to_dma_direct(struct device *dev,
->> >> > 		phys_addr_t phys)
->> >> > {
->> >> > 	if (force_dma_unencrypted(dev))
->> >> > 		return phys_to_dma_unencrypted(dev, phys);
->> >> > 	return phys_to_dma(dev, phys);
->> >> >
->> >> > What are the ARM rules for generating dma addreses?
->> >> >
->> >> > 1) Device is T=3D0, memory is unencrypted, call dma_addr_unencrypte=
-d()
->> >> >    and do "top bit IBA set"
->> >> >
->> >> > 2) Device is T=3D1, memory is encrypted, use the phys_to_dma() norm=
-ally
->> >> >
->> >> > 3) Device it T=3D1, memory is uncrypted, use the phys_to_dma()
->> >> >    normally??? Seems odd, I would have guessed the DMA address sould
->> >> >    be the same as case #1?
->> >> >
->> >> > Can you document this in a comment?
->> >> >
->> >>=20
->> >> If a device is operating in secure mode (T=3D1), it is currently assu=
-med
->> >> that only access to private (encrypted) memory is supported.
->> >
->> > No, this is no how the PCI specs were written as far as I
->> > understand. The XT bit thing is supposed to add more fine grained
->> > device side control over what memory the DMA can target. T alone does
->> > not do that.
->> >
->> >> It is unclear whether devices would need to perform DMA to shared
->> >> (unencrypted) memory while operating in this mode, as TLPs with T=3D1
->> >> are generally expected to target private memory.
->> >
->> > PCI SIG supports it, kernel should support it.
->> >
->>=20
->> Would we also need a separate DMA allocation API for allocating
->> addresses intended to be shared with the non-secure hypervisor?
->>=20
->> Are there any existing drivers in the kernel that already require such
->> shared allocations, which I could use as a reference?
->
-> The most likely case in the near term is PCI P2P to shared MMIO.
->
-> I don't know any way to allocate shared memory in a driver??
->
-> At the bare minimum this patch should be documenting the correct
-> architecture and outlining any gaps in the current implementation.
->
-> I also don't really understand what the above code is even
-> doing.. Isn't the design on ARM that the IPA always encodes the
-> shared/private in the top bit?
->
-> How do we get a shared page that does not already have a phys_addr_t
-> in the shared IPA? Shouldn't the kernel have switched to the shared
-> IPA alias when it returned the swiotlb buffer? eg why do we need to do:
->
-> #define dma_addr_unencrypted(x)		((x) | PROT_NS_SHARED)
->
+I've found another reason, to dynamic control tdx tsm's lifecycle.
+tdx_tsm driver uses seamcalls so its functionality relies on tdx module
+initialization & vmxon. The former is a one way path but vmxon can be
+dynamic off by KVM. vmxoff is fatal to tdx_tsm driver especially on some
+can-not-fail destroy path.
 
-swiotlb virt addr is updated in the direct map page table such that we
-have the correct attribute set. For ex: swiotlb_update_mem_attributes
-uses set_memory_decrypted() to mark the memory as shared.
+So my idea is to remove tdx_tsm device (thus disables tdx_tsm driver) on
+vmxoff.
 
-	set_memory_decrypted((unsigned long)mem->vaddr, bytes >> PAGE_SHIFT);
+  KVM                TDX core            TDX TSM driver
+  -----------------------------------------------------
+  tdx_disable()
+                     tdx_tsm dev del
+                                         driver.remove()
+  vmxoff()
 
-However, when mapping swiotlb regions to obtain a `dma_addr_t`, we still
-need to explicitly convert the physical address:
+An alternative is to move vmxon/off management out of KVM, that requires
+a lot of complex work IMHO, Chao & I both prefer not to touch it.
 
-swiotlb_map()
-	swiotlb_addr =3D swiotlb_tbl_map_single(dev, paddr, size, 0, dir, attrs);
-        ...
 
-	/* Ensure that the address returned is DMA'ble */
-	dma_addr =3D phys_to_dma_unencrypted(dev, swiotlb_addr);
+That said, we still want to "deal with bus/driver binding logic" so faux
+is not a good fit.
 
-Note that we don=E2=80=99t update the phys_addr_t to set the top
-bit. For reference:
+> 
+> Now, that said, the faux_device infrastructure has arrived since this
+> all started and *could* replace tdx_subsys. The only concern is whether
+> the tdx_tsm driver ever needs to do probe deferral to wait for IOMMU or
+> PCI initialization to happen first.
 
-	tlb_addr =3D slot_addr(pool->start, index) + offset;
+The tdx_tsm driver needs to wait for IOMMU/PCI initialization...
 
--aneesh
+> 
+> If probe deferral is needed that requires a bus, if probe can always be
+> synchronous with TDX module init then faux_device could work.
+
+... but doesn't see need for TDX Module early init now. Again TDX Module
+init requires vmxon, so it can't be earlier than KVM init, nor the
+IOMMU/PCI init. So probe synchronous with TDX module init should be OK.
+
+But considering the tdx tsm's lifecycle concern, I still don't prefer
+faux.
+
+Thanks,
+Yilun
