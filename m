@@ -1,134 +1,74 @@
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD4C291C2F
-	for <linux-coco@lists.linux.dev>; Tue,  5 Aug 2025 16:10:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80E7293C44;
+	Tue,  5 Aug 2025 16:45:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754410238; cv=none; b=e38LYa7QH6OKJQyqb9NuttrczGdy+0qiBUAQkPoFSIXyzp+eXaH+kY0/wIkI3vVc9+UFaEjXtetDwe6C3ZvDysTP1zFr+LbrZSyutTRVV611NwrDC9CfdFfDO0YSx3GaevdLQY1TO6RikPHS5kRuqm2OM6ZU1Z9oPVUEYv05cLU=
+	t=1754412336; cv=none; b=fy1F73dQlzkwF/5l2WNAw27MCehyZl+FL7FI7DzN/s5SdYymnZFaSwh7piHr2640iCggzuk9zwmOPYBbXH46ArJOCZM1rWMsJrJgmpHPBu/sl26XK26cvgsjLsuA6mg++AbTwHM4TrGThiWbdaNeRgGlSVcikenCyS7+vs2ykB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754410238; c=relaxed/simple;
-	bh=MSerwvz14RWslmARCsAjgCCXLaUZEmefMPtv/CC0p44=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zi8n+jQTn3hGcmIIaOpLmG5ETV68msIyampqYSMryTs+bhvbm0szULRHgm1cgWP8RslYvYoqsecyzqb3cfd265uzzDiXsc0JaXmVqtVwZNFMhj8Pn/t8BNF49D7QnZDqnBNbnRbgnuq2Q9APtQ4Ua5eVV7EEA8iYxLRSMa+F9Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=PqbyuVzn; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1754412336; c=relaxed/simple;
+	bh=N3PWdGSeKle1+QoM4Yk/aMVUjJ9fb1CHaUkNyQcQPGQ=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=BmrpqhjHHyQ+B6W4LAt4QlCXVLzzx1NafG7WatDVvq80fmX9idUMIVbnQj5e/7CVvXuqYc4ZZg1ExIOrOr46P+MnXsabkL09HlxsBmQ2Iipp5DiEhAbnaSEXvV6WCcnaQOKcOLgP+CWglzj2fGN2kzGeVDoZvObxt6ENEVOxmd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=wbm3Ax0t; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="PqbyuVzn"
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7e6399d0654so298492085a.0
-        for <linux-coco@lists.linux.dev>; Tue, 05 Aug 2025 09:10:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1754410236; x=1755015036; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GUQiiaWDlCWs+LVMgQEGU5eYzs+NIuuvY+XiZIK97rA=;
-        b=PqbyuVznROU9qZuAvDnFpvqXsilWsxkHLDWx78X1qTy3id8pKRTajOOH59ZjsrFbkh
-         cL48cWBBWHh4GGP+bu/2OMKTfUI6ivk1+SAdzTgUXmSG/k7dG9ZiVdojJkRjgozYRir2
-         iOSxAaOrpd9aaPjAVmSME6qp127B0hDwvtpwK0WdPAhJgm17bm9LH9kuO4L++brcPoO6
-         Hetyn9ZtZgSRXMEbxd69t27TWZdvsf4kwYjY11h+2/cxkZodNEpY5lT2FINt9j1P091U
-         mbYXeQB9x08pJOU33w3vhMfydb+j+g5GMJQuZA/FGlRmO1JAODPg2s0nhvMl5oV7g8MX
-         G37Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754410236; x=1755015036;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GUQiiaWDlCWs+LVMgQEGU5eYzs+NIuuvY+XiZIK97rA=;
-        b=FP2CbyyueMrZ4+8SB/4BJfr738Bc/yzB6Ju4jTaCe8lh85cEfraYOoqjWXsv8wOlc/
-         iEacrMmJUUlqQRPSmyZS5VgOcFUhqqprkiDvqatYZ7Gk9FnpVqYzDBrmcAfI53Z6TaeT
-         GEK6wbiJKaPus2r130cTPaz3o31ABHIIv1GFx4+lYHAipMTyno2x+XXLsDm8Rjrp9ag0
-         t9gZRfUv2OJs1SKgmUv9TLc3gHl056qWcal6YHbpp8UKxjL68GHXveyGW95mVuaFuJvd
-         4GPox+h191VM9BFHKK/3YH3WFCL5HX2B4Ag7JiInoOO5whgp4UgIUCqyIIav1ETgnl6J
-         xLRA==
-X-Forwarded-Encrypted: i=1; AJvYcCUJIGC2bNuRBklfTBC8IkIclOoV6YfPZ2TDZUTWRdqOkjB3V5T/BMUlL6shAR/f67tWjkzLO6gwmDYP@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx9gVeS9XitysPR81qOfcACduxbURUp+grHEhKrCqXvs6H6nV/y
-	VzgKUsKReS8k5rfRcs9X8sUt/nSX3VroxIUMku2eZuz4l2DpAU8tSXKUqL5Om7YuUWo=
-X-Gm-Gg: ASbGncugA26zmRkc8eGUDoD5NAGZ6Xh2Ym5025xP2Nvzc7+phCiDTOvtuVsgx7t8svI
-	nTU771A1evXkxCIeRXsvmmCyBt4AbP7j+LYgSeb+iaQc3xqGNCNuEHiC73oC1e69Ehd6zSrfC6U
-	UI3E3BssGUWcSX+9m9LP67bloIyyZW/HfmzRS+EbOTLNY2Tlz4oug9D8nsxyxzq4N62ZYBg/B2b
-	w5aqNfQijBCuQFDgIP56yDguX+4yTg+KoirgokCS866rCh7xnGcaT6H0tqllmsVibTN1n+z8TBK
-	2QiVSxIwZazLMoHoB707mpRtsbKs6PG9tiU5KASpM8FizPkVIGdsIDg2414onSGAAgG8HAlwALD
-	0jD0TP+PeyPmKcptxyEIyl21/VWXJFJYbMrG7vvGPiJdsZBefpEjueQgIh53bOz8vIRqf09F1oi
-	IaQvw=
-X-Google-Smtp-Source: AGHT+IEjj+v1rIgRJqmyVkBhYcdet0WfxL50iTtkAjLR8rDt3iZUkWBN7QnPGs1X6WJS44VAtI66Gw==
-X-Received: by 2002:a05:620a:2649:b0:7e6:252b:9b28 with SMTP id af79cd13be357-7e69636eee2mr1728455785a.33.1754410236229;
-        Tue, 05 Aug 2025 09:10:36 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e69e15f5e0sm369670685a.69.2025.08.05.09.10.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Aug 2025 09:10:35 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1ujKFH-00000001YwL-0rt1;
-	Tue, 05 Aug 2025 13:10:35 -0300
-Date: Tue, 5 Aug 2025 13:10:35 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	aik@amd.com, lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: Re: [RFC PATCH v1 06/38] iommufd: Add and option to request for bar
- mapping with IORESOURCE_EXCLUSIVE
-Message-ID: <20250805161035.GW26511@ziepe.ca>
-References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
- <20250728135216.48084-7-aneesh.kumar@kernel.org>
- <20250728140841.GA26511@ziepe.ca>
- <yq5a34afbdtl.fsf@kernel.org>
- <20250729142917.GF26511@ziepe.ca>
- <aInBxnVIu+lnkzlV@yilunxu-OptiPlex-7050>
- <20250731122217.GR26511@ziepe.ca>
- <aJFrvsURkhpTJgh8@yilunxu-OptiPlex-7050>
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="wbm3Ax0t"
+Received: from 8bytes.org (p4ffe1b02.dip0.t-ipconnect.de [79.254.27.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 0AE1D41ECD;
+	Tue,  5 Aug 2025 18:45:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1754412326;
+	bh=N3PWdGSeKle1+QoM4Yk/aMVUjJ9fb1CHaUkNyQcQPGQ=;
+	h=Date:From:To:Subject:From;
+	b=wbm3Ax0tiIh9M76BNsZPvP6f/MJIqfIk64lP7J9AEcrz5qzC8r+MwKeljaBzvSQDQ
+	 IEvmUApEkHgNaK5+pJZjkQQCDNv4MP70mugiIdE3WlChxyy3b9+r0Y0904fN03ElMT
+	 Jux9LazOhoXpwfVvcpedlOhKKNtzmHQx3BcLUZCkvVkPJFoCp7EwTkKv7nGk5Tc6OQ
+	 x8XFgUFRoGQyqk95/7p9RgsDyEwCUFtBovn+jjhdj0Y2aiePV/1wtyu3xCA+bqErd5
+	 oIxJTHsSD6jMPsv+vFvJdgg1g8SHYd79RCuvxBJlLU9eSYsFyFdID8H4CgSSDMGF9H
+	 AT2euzMFsTEGg==
+Date: Tue, 5 Aug 2025 18:45:24 +0200
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+Subject: SVSM Development Call August 6th, 2025
+Message-ID: <ulsznoch6efwoe2kxdbfbzl7pblfwo7ux36b43goz3irucrpgx@wn55u5s6bfsb>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <aJFrvsURkhpTJgh8@yilunxu-OptiPlex-7050>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 05, 2025 at 10:26:06AM +0800, Xu Yilun wrote:
-> > IMHO there is no use case for that, it should arguably be global to
-> > the whole kernel.
-> 
-> I think there are 2 topics here:
-> 
-> 1. Prevent VFIO mmap
-> 2. Prevent /sys/../resource, /dev/mem users
-> 
-> I assume you are refering to the 2nd, then I agree.
+Hi,
 
-Yes, the region stuff is only about #2.
+Here is the usual call for agenda items for the this weeks SVSM
+development call.  Please send me any agenda items you have in mind or
+raise them in the meeting.
 
-> > 
-> > > The original purpose of this pci_region_request_*() is to prevent
-> > > further mmap/read/write against a vfio_cdev FD which would be used
-> > 
-> > No way, the VFIO internal mmap should be controled by VFIO not by
-> 
-> I assume your point is never to use more than one request region in the
-> same driver to achieve some mutual exclusion. I'm good to it. We could
-> switch to some bound flag.
+There are two agenda items currently on the list:
 
-Yes and yes
+	- Updates from todays TSC meeting
+	- Dynamic device discovery for the SVSM
 
-> > The only thing request region should do is prevent /sys/../resource,
-> > /dev/mem users and so on, which is why it can and should be
-> > global. Arguably VFIO should always block those things but
-> > historically hasn't..
-> 
-> Agree. So seems no need a global option?
+We will use the LF Zoom instance. Details of the meeting  can be found in our
+governance repository at:
 
-I'd ask Alex if he is OK with a global behavior change to make vfio
-exclusive, after any required fixing to make vfio only request the
-regions once at driver probe time..
+	https://github.com/coconut-svsm/governance
 
-Jason
+The link to the COCONUT-SVSM calendar is:
+
+	https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?view=week
+
+The meeting will be recorded and the recording eventually published.
+
+See you all there.
+
+Regards,
+
+	Jörg
