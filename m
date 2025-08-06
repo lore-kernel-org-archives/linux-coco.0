@@ -1,145 +1,358 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A961DEFD2
-	for <linux-coco@lists.linux.dev>; Wed,  6 Aug 2025 03:13:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754450021; cv=none; b=p4JDC6AjK6cew9h5u4U/dzAWY+/KMe4LqK2L/Cymtz5T/NculxvQtaXyrkGt43vIemPgc5qsWZMZdoarrHQfJF0WkWB16f9r6kr3T5pq1uUl1lZDjSOCm6cPuibEHiTsv4YY3K5rm7mz9eczg6bsmb2uWlU/heJ1YphlDAe1Jlo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754450021; c=relaxed/simple;
-	bh=FIcC/HNmPTiAO+Z06G95G1OuS8Y+G39qJToe+fbZl1A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rohU18+okR6Vvm8cC9SixWsogxePXVWw+9oabm41WlZ+OSsaJvH0MqBLRO5N4VP69PdIUgHv2PqaS7bG/7PfT5kXciH1N7IqfASUYK94FLghwr3K/PMTFbqusAjD6+2c/z4df8r1MCebyPfqCYqLWyDxa5Ap3DWXlHo1t88eVog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xuk2v2hZ; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A060054654
+	for <linux-coco@lists.linux.dev>; Wed,  6 Aug 2025 03:58:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754452716; cv=fail; b=BC2toFBVBo5m4TdC0diyJN6BzsJE3o6FFLnt2T9h1G0S5uVl7q44pY0G8QYoc4u7z15lb36/m7tUZ3pA2b1ep1zC/2093qPRSyLohkllI7XiGIYa6pfF8P19PZ07YA1q2iUtlsW0NqqqvEjW4e05j3FOdLpl86CBJkNyRJAQEJw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754452716; c=relaxed/simple;
+	bh=NCCk8MpXHm87LiZ8eNFgwQl/gD9iXwfOfoh3lUG7tYw=;
+	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
+	 Content-Type:MIME-Version; b=HB8xj1fMINyqKErO5kgpgM9gN8F4jGmEkr+68WH7mFQVQGwo8pZfm3gmrNzGT0IiA8eVaM/I2SPTjP5Nw/LaVwTsRuRG4rhXSV32Vlpv4KaL9h3Q14y+OGbgeZOFwFT+Km8HQk1lfsHZfVoRM59jsCOqRH2RQ60blieGpVB6mzY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D0VLzdqZ; arc=fail smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xuk2v2hZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D0VLzdqZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754450018; x=1785986018;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FIcC/HNmPTiAO+Z06G95G1OuS8Y+G39qJToe+fbZl1A=;
-  b=Xuk2v2hZfhl9SZGK3Ao0qdKxdyxyiXcapotM5bhO/q1Pg1MgTcY7kfdN
-   MEf9oRIWKK6LueE/A3pqft2bu/C2MQucs5W+GTV1l5vQsFfa9zIByEoYg
-   4yRrLh5eW8F0R47rV8cSOVdd+9ClIQCXSijSJ4Pq1lCVe6idySo/CGnSH
-   dURd+k0eYpJn/1DSMYaBtmyIVWBEcs3bBlu3GzB3tXZWJfaOR2wnRce5N
-   pkuPHHAmQxYAy/3vvlS4saJtXc68AA+0d8rPSDtgQcL1zqac1MkLPv/XP
-   lIgds8sZNPfZ/xyNTY4S+W0jZm/1iqasfjMjr0xYDUw/ez+uQEYvcXct1
-   w==;
-X-CSE-ConnectionGUID: Yd59GGAPS9mFmmnVAVsrHA==
-X-CSE-MsgGUID: AUxnwcMbR4mLR8PDXS8q9w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11513"; a="74218272"
+  t=1754452713; x=1785988713;
+  h=from:date:to:cc:message-id:in-reply-to:references:
+   subject:content-transfer-encoding:mime-version;
+  bh=NCCk8MpXHm87LiZ8eNFgwQl/gD9iXwfOfoh3lUG7tYw=;
+  b=D0VLzdqZB3M06v3EphGijbmhYuwQH+m0tLPXDn4P8HbiCDPwNCcy8Qbk
+   YMlUyWnDmTJWXLoKu6sEcAjYlh/PSeXbGX010QrMmvGTyyvMt2Y0MY+VF
+   HAZ/huBNv4tYS1Wt2nNYuEwOUhWTOOMnyGkTgsMjbbpOnGEb1dQdFTQLe
+   brU3Ab06H/NNZb5pT3K6wvQ8NsoRl2ktWvnHHMNw9N6s1aThQpmVd/vSZ
+   8hDCC/rSAUFhFRdMoW6JT8C1MGRNh/jc2PnL+QoCmp4x9TJ6OXQqLOmnR
+   qo3tWrJXHZkk/IEbNh+XhuZu2zzqHrqmDqlAcuCHyYkreyFuaUwGonf4K
+   Q==;
+X-CSE-ConnectionGUID: 8cK7GxC3RimCCpKFgVyxQA==
+X-CSE-MsgGUID: scLTLXB5RLKxRiqAeM8bwA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11513"; a="56472245"
 X-IronPort-AV: E=Sophos;i="6.17,268,1747724400"; 
-   d="scan'208";a="74218272"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2025 20:13:38 -0700
-X-CSE-ConnectionGUID: 5KGgxhw7TpuNy/uWze/qsA==
-X-CSE-MsgGUID: XFQl7BZ+SOSfoo6JUSuPLA==
+   d="scan'208";a="56472245"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2025 20:57:38 -0700
+X-CSE-ConnectionGUID: I6P0A6vrSM6wa/YeWqJzcA==
+X-CSE-MsgGUID: 2fUlQRd8RuKrQCJPNZ7X6A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.17,268,1747724400"; 
-   d="scan'208";a="169924374"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa004.fm.intel.com with ESMTP; 05 Aug 2025 20:13:33 -0700
-Date: Wed, 6 Aug 2025 11:03:54 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: dan.j.williams@intel.com
-Cc: Sean Christopherson <seanjc@google.com>, Chao Gao <chao.gao@intel.com>,
-	linux-coco@lists.linux.dev, x86@kernel.org, kvm@vger.kernel.org,
-	pbonzini@redhat.com, eddie.dong@intel.com,
-	kirill.shutemov@intel.com, dave.hansen@intel.com,
-	kai.huang@intel.com, isaku.yamahata@intel.com,
-	elena.reshetova@intel.com, rick.p.edgecombe@intel.com,
-	Farrah Chen <farrah.chen@intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 07/20] x86/virt/tdx: Expose SEAMLDR information via
- sysfs
-Message-ID: <aJLGGoleGIEwb8Ee@yilunxu-OptiPlex-7050>
-References: <20250523095322.88774-1-chao.gao@intel.com>
- <20250523095322.88774-8-chao.gao@intel.com>
- <aIhUVyJVQ+rhRB4r@yilunxu-OptiPlex-7050>
- <688bd9a164334_48e5100f1@dwillia2-xfh.jf.intel.com.notmuch>
- <aIwhUb3z9/cgsMwb@yilunxu-OptiPlex-7050>
- <688cdc169163a_32afb100b3@dwillia2-mobl4.notmuch>
- <aJBamtHaXpeu+ZR6@yilunxu-OptiPlex-7050>
- <68914d8f61c20_55f0910074@dwillia2-xfh.jf.intel.com.notmuch>
- <aJFUspObVxdqInBo@google.com>
- <6891826bbbe79_cff99100f7@dwillia2-xfh.jf.intel.com.notmuch>
+   d="scan'208";a="165002589"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2025 20:57:38 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Tue, 5 Aug 2025 20:57:37 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26 via Frontend Transport; Tue, 5 Aug 2025 20:57:37 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (40.107.94.60) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Tue, 5 Aug 2025 20:57:08 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BwYQTduYbfRh4eiA4QPJlqMS/W2l9W04m16mKybH4FJGNuzgyG27Mjamw0HxSoaUVDvHdee/+AVGZZ1zVpdQHeA5tRDaObR2VeofeyNciOBIQYsBplCD/zgD8DJwEP4/E3M5adQLO64s4qzLv+s4Lq5PZ2WSzLeCAjz4k90bAXCz2fAX+0oAgBgaUYMvTuxks8sHbeYhAxRt4q0IzLLvlh0WbSr9cWJWjhlv8CcaPzQCUN7hPasb5FGkKJCFSx44tKJYOrJVsLTI9vW8XaTvYrIpKVZeziS192YX7O4KPz/0l0+gMSNZdBXrK+rzeUUyCkRU8coh93EVSbWwIOdafw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3rD7MNEobeBx7HyQm4AK8jrkIvlyx1fftMVCtz8xRHE=;
+ b=ZV/L/hYlnWKDCTpph5j4EPuuXO09Xp8A3U4IJ4V5cBYCAmq3/mKozncbv+AuVsqaNynEjXIjg4wVqFPVDb8jSHnsq9QHTs7mXOXaCV2c82gOJQJeN5EyfNLxhA5IaqQHxJAtKHdbAuEjlCK50JH8vVbJsQ6fXg3Ub6kKIdf0SqJCAo6EoYOPUKUqb0N8a8RJa4K6D2vuQOsSAxY5bxbs27uiYNLmyEAG+3cKpX7P1dHLyctz0NUp2T/HO2wy7L9BSwJ8p+lV6JdoaTAiHB7sbElnjBYHM06lf+CRjcJHzDBsGyPP5rTd9r9JpCR/TkupTDj0rcxv2sjkJ12NfUzdUw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by IA0PR11MB7257.namprd11.prod.outlook.com (2603:10b6:208:43e::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.18; Wed, 6 Aug
+ 2025 03:20:32 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%2]) with mapi id 15.20.9009.013; Wed, 6 Aug 2025
+ 03:20:32 +0000
+From: <dan.j.williams@intel.com>
+Date: Tue, 5 Aug 2025 20:20:30 -0700
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Dan Williams
+	<dan.j.williams@intel.com>
+CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <bhelgaas@google.com>, <aik@amd.com>,
+	<lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>, Xu Yilun
+	<yilun.xu@linux.intel.com>
+Message-ID: <6892c9fe760_55f09100d4@dwillia2-xfh.jf.intel.com.notmuch>
+In-Reply-To: <20250729161643.000023e7@huawei.com>
+References: <20250717183358.1332417-1-dan.j.williams@intel.com>
+ <20250717183358.1332417-6-dan.j.williams@intel.com>
+ <20250729161643.000023e7@huawei.com>
+Subject: Re: [PATCH v4 05/10] samples/devsec: Introduce a PCI device-security
+ bus + endpoint sample
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR05CA0163.namprd05.prod.outlook.com
+ (2603:10b6:a03:339::18) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6891826bbbe79_cff99100f7@dwillia2-xfh.jf.intel.com.notmuch>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|IA0PR11MB7257:EE_
+X-MS-Office365-Filtering-Correlation-Id: cd05f3ca-c380-46e4-5434-08ddd4983327
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?ODBxSEFPRnhicHh5eFpJV3Q2WU16YVhQSU5mTGRWQjRRZXFNRm9BT1RIOGRM?=
+ =?utf-8?B?TmJXeEQvUHp4Tm1KSFdSYWlqTTE0QVpLZVU3RmRsanFZN1h0U2lQakZjTGVC?=
+ =?utf-8?B?eFQrRG5TdU9GUnE0dXBUaStPUFJFc1dobzdFcTFjdURGZTFMWGxOeHd2SFdI?=
+ =?utf-8?B?QmRjTEhYOXRaY2N3MzVWRklQVTd3MGo2SmhGZjNBV1llNjVmcXNzdlA0c1Nj?=
+ =?utf-8?B?aVhkakFJdVlMSEEyZnE0M245OWg4SWdzVFpaTjJwaTlLcDFCbEdvallnRjh0?=
+ =?utf-8?B?WU1QMnl5Nnh3SS9KcW9rSzNSSi9WMXIrMWJCdnBjZVA3cVFjcGZQYVZxYllI?=
+ =?utf-8?B?NXJHUFlRaGlSSnM2SEpxcGhnaThhejF6TWMxd2NKU0VadFVaYWg3VFA5bWIx?=
+ =?utf-8?B?OGFWZ0Zub0lSWGJPUjBOVnVtVHFVQUNwMHpmK01VdGZYU2J4YUZ2M3kzYUNq?=
+ =?utf-8?B?RUJGQWlrUDBtSmNlUzZnUUlDTElFckJDV2pLT1l0SzlBYWhWVGpRaXUvVm9m?=
+ =?utf-8?B?OUU4Y3A3OTRtcEFXQnVRWmJFQk9LYkQ1cGs4TGVNM0xZU21vcWc2OXBhNFJ1?=
+ =?utf-8?B?UTdwdXVVQStwUHZlOEFYWVJvdlQyZzBQUXlCbWJnSjREWWRuTFJZenA3NTMr?=
+ =?utf-8?B?RGtSSXMvUGg3dFg2Zis2aDYwNDJvakh1allxQ3cweGZhZS9ubE14MkgvWXB6?=
+ =?utf-8?B?VTR6dVVSTDJjbmFFYUU3QzFlRE56UlgxVkJ5STVTcFJXSjA2UmJhRTlCNkc5?=
+ =?utf-8?B?dVBjQzhlQXNidEFRUXZBenpTYkIzTWlMbUdiWGRXcEVLQVZLSCtSVkpSS1hK?=
+ =?utf-8?B?T2I3UjViRi9uRlgrMFp3RVEvUWRmdVRFM3BRNVdya2RLdnFFQVVwVDJrcUdE?=
+ =?utf-8?B?c09QQWJTQUl5ZjdGUmJpVDNHQzJ5NHU4dko0NHh4ZXFDekdQNVhJVGRnOGpi?=
+ =?utf-8?B?UUU0UGIrZjZ5RjNheGRva2ZjemZWRjkvVEJXMG5ZbGRpb2cxNGJZMXZvYi9w?=
+ =?utf-8?B?RDU5bkN6bHI3d3RJYUd3WjgxV1VLUE42UkkrNzNOZnpoOSttNjVKeFlpc3VT?=
+ =?utf-8?B?emFGV2tOaTl4bzdBUFJFODNxZmlCc2JRWk5tcVB3TmFsL0lhM0hpb2ZsZkt2?=
+ =?utf-8?B?UWhsdDRBU0ZMTTFoWnVxR3FkOExvb1lHWEtJSmZkM2JxUFZFSFppS3hBbmxB?=
+ =?utf-8?B?WmVJdGFtcDNFUVF4V0VKaDV1ZkhSaENCYytSb3UrZFJoUkhkdUh6Y2x0Zndy?=
+ =?utf-8?B?WVpsK2hwNnRld1hrK0ZmZ21kMXcxZWViMkZlMHRoVkNrdCtDcWdQMlVvbllZ?=
+ =?utf-8?B?TG1WVjN2c0R4Yk9ncUFhaU9WNklCbGdRYUl1eTF0Q0FybXRxVWZ6aHk1Z1FR?=
+ =?utf-8?B?YzFmZEV6bkh4WlRzSURHT01RTTFLWGYzUFlRR3NzTlZNaWlma0ZYaStoVm95?=
+ =?utf-8?B?TjNJelRGQUpkUTdHa09FRFpjTUhQU3EvdFREOUhaWTErdmh1QllheHdVMnh3?=
+ =?utf-8?B?dEdiMnc4RWtvdC9FRlFjSUx1SWlIeEdYNkhTMmZLVmpid21CZlFJZHhDbjRJ?=
+ =?utf-8?B?aDRtUVBoeE9uVVRjRnNCODkvR1J1SnROU1lMbERuUCtlR0ZCVW5ya3FLQzJx?=
+ =?utf-8?B?V251R2c3eVEzSjVpbHNtNXdQL09NaUJqZ2pRTmlTTUNDZXIvTXppMDZUQ25v?=
+ =?utf-8?B?NHQ5MGxSb0NCbng1N1JQZFpxZFZYeDhZU2hnUll6RFdjQUd4UjVwa2QxMXN1?=
+ =?utf-8?B?bytuKzR5SzRwVUJSVnJtckhRSUwxR0dSWU42L3MveTZCVEhSZ0c3ZUNQZ2d4?=
+ =?utf-8?B?aHFZeVZoMjgrUDFFbmdqWmlscHdubTFLZDBqSUtuTmowTENzQk1LemtUUE1H?=
+ =?utf-8?B?MEpSV3RLWGlQTVgxNEQ1MHlFOXVCZklCbll4VE5JSXNwMVg1b0JoN0h3Lzg0?=
+ =?utf-8?Q?prCmPEzwsa0=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bDE2RTdKYVVIUzJiVEk2cVNZMVZ0NmtReUcrak9Qd2pUUHlnT1dZOHlMUDlS?=
+ =?utf-8?B?emdjT2xjMXhPNFhka2tPaUc5ZVc0TUZLU2FDdkhhNC9PYURERFlldTJoMy9o?=
+ =?utf-8?B?ZEhpWUUrOEZCejhocHJadXVMUENTeVlVeTRQRis3WEZIWFQzV1lqanhRK2NZ?=
+ =?utf-8?B?ZWVMVW5ZbzQxQlhJZitiUjA3S2xqb21hRmgxM1UxWFVRSk82SlQ1U21QRURm?=
+ =?utf-8?B?SnZhdjlZdDNLMlNsMm9yclo4M1pVMUU5azEzQlJIQ0hlRGtKRjRsUnpzMGV1?=
+ =?utf-8?B?VmtTVEdQcW5Na1UzbyttdFhYUXRwbDFXV2lYQUdQUnlOMmo3WHNJblNaUENN?=
+ =?utf-8?B?ZEdtNzMrUUI0YnlBN2dKbittdkoyUXdQMmJPaWRlckF3bEJHWDVCWXJJNk5l?=
+ =?utf-8?B?NUJGZ0RNM1lXK0s3T3ZickJndDNwQldvZ0NTYzdhMFkvdkRKQnBlbmFreXRK?=
+ =?utf-8?B?Y21UUWJiaUt3c291dnVxNFlqb3JrK3Y0M25kY09KU055bGJHbjJ5Qi9qMkdq?=
+ =?utf-8?B?NGpPZkZvNzRQZlNGZm03bXRVR2NtUzhFTFl0WEIwNFYwQWhzcTl3QzhuY1VX?=
+ =?utf-8?B?NE9oV2xueW9PaHV0M1Z2Sjk3NzNscDZOTFQ1emhJLzVFN0ZpcXMvNnJRbGwr?=
+ =?utf-8?B?QlBIOTVIU0JBdThYN1ZJaEhKZEVtYVY4MWVkT3IvNVJXbDVKQm12YlZtT3Fh?=
+ =?utf-8?B?UUhFc2U4YXdjWERWM0UwSHJod21xQTFXU2hmeFhsNjZuaWVsaXIxNUwzTSsr?=
+ =?utf-8?B?TmExQUdGajJDSHpOWm95WU5yRkxUeEFscE9YVEhCWlM4TjdnaEM4YkRMTld1?=
+ =?utf-8?B?YzlJK2t1eFA5YUVjRkY3NFNtWVZJa0VRR21BNlRTb2p4L3lvcEowNXErWVhJ?=
+ =?utf-8?B?N2xMMXNCa1Yyd2RVZDBlNU5rZ3VETW04enlXT0k1QUdXTnNvY1JsMS83V3Iw?=
+ =?utf-8?B?OGxDdEpwMlBnbkUvM1BHVlNGUWd6eFpBcnFHaHlZeDZrTERhS2xvSHordERn?=
+ =?utf-8?B?bkYvUE90Mnh6YTlDdFk1VURGU0FnTFliSkI5dkpVYTFsdVdzTE0wVi82L3Nv?=
+ =?utf-8?B?V0pLeWZJUzBsck9kODFxQ3o5bHA4TXplRERRRThiKzRzeU5US0lOekQ1Mnhw?=
+ =?utf-8?B?d1BwRVVMb05yaFUrQ28rQzNpL2pmeHlUTnZMNnY1Y1pTTmUvdmNkQnFiQ3gv?=
+ =?utf-8?B?azBwVmY5anFQZ3pSbjN5ZXo5UzVYOUdpR2FuNGRFdWVrUzVGQkh5cHNMMW9P?=
+ =?utf-8?B?dUxEbE1iU0FhQlJaWDlnMDZtSnk3MHpNVWNxYVc3aDI4L3AvU0JZNHl1RXM2?=
+ =?utf-8?B?UUVHZXBlRlFDZ2w0UmJzeUpISmhTbkdKK0laU2FGOHJjaWt0Y2prMzFZVEFa?=
+ =?utf-8?B?TUh4YnUzYldsT214UVl1ZmtvUXdQVlhNYktPbWNLVEtTOGkxVE5abittdElK?=
+ =?utf-8?B?UDRjT1lJVGszL0EreDNWK25sUTJNMW50a3lSbHlKMWZaSHpaZmhPTml2L2Fq?=
+ =?utf-8?B?alJOVk5lUjk2OU9sQk9VUEI1L0VyZ0doYmJzU3g1K2tYOEFzNWJLSVcyejMr?=
+ =?utf-8?B?QjdmU01iK0RXcE4vTXZaVERleXpMRFgyUXBDOEZsZDB2SkVVc25GbzNsenFD?=
+ =?utf-8?B?dzJLcDd2OHlyZHBLQTc2clJrSk84SU1ZNThZaVQzUnRDL2c4Nmc1T1llTEhx?=
+ =?utf-8?B?UGRBTjZBdGM4b3N5VElRMm9YcDBKSlRmQ3FjdkFVeXQxeFV2cnNZRWVWZmtE?=
+ =?utf-8?B?V0hpUnVOZnhWYmdoUTdrM3FBVXkrOXJiazBuQ2l3NGlGckRRazZML1FPMGR5?=
+ =?utf-8?B?TllEeHhFdHZ0ZUNMd2J0VGl1NXFQQjZnRHdNNGJNZWgrb0xuRVUvekxVcE8v?=
+ =?utf-8?B?MmFSUU50aWk4SUFIQ2U0dXF2WWdKWlJXdFpEVTNQUnB3ZytRQmVRSTVBNVdM?=
+ =?utf-8?B?VS9KRU43dTVxL1V5TkFUVkpDeWxvdDBtd1p6Z1NLQTZ5dUJSOUc0THFSc2pl?=
+ =?utf-8?B?dmUvTHNocmorYXpSNE9Ud1p0dGEvd0taTjJLR3RQTy9vaWc5MEVtb21JdllO?=
+ =?utf-8?B?ZnBBWWpwTnhhVm1OOEc4TFhENGFzd2d6SWwyY3lEa1JpZjFuOTUrYUgwRTg0?=
+ =?utf-8?B?UW5PTEZ6akxOMlJjZWltN3Mrd24vWUpBZnBkY3U1Q2p1QkRFWGg1VHF3NXdK?=
+ =?utf-8?B?anc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd05f3ca-c380-46e4-5434-08ddd4983327
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2025 03:20:32.2199
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5khQ7KF6G/UVrOZqV4Hmvf3VncAfGo9mJoR+ZgBfwGhrxwhAxRH6zW7oRTxuioJ5StT3j+3Legi74aiASNituxY292WBN7aIa1w/JVyLLiI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7257
+X-OriginatorOrg: intel.com
 
-On Mon, Aug 04, 2025 at 09:02:51PM -0700, dan.j.williams@intel.com wrote:
-> Sean Christopherson wrote:
-> > On Mon, Aug 04, 2025, dan.j.williams@intel.com wrote:
-> > > Xu Yilun wrote:
-> > > > So my idea is to remove tdx_tsm device (thus disables tdx_tsm driver) on
-> > > > vmxoff.
-> > > > 
-> > > >   KVM                TDX core            TDX TSM driver
-> > > >   -----------------------------------------------------
-> > > >   tdx_disable()
-> > > >                      tdx_tsm dev del
-> > > >                                          driver.remove()
-> > > >   vmxoff()
-> > > > 
-> > > > An alternative is to move vmxon/off management out of KVM, that requires
-> > > > a lot of complex work IMHO, Chao & I both prefer not to touch it.
-> > 
-> > Eh, it's complex, but not _that_ complex.
-> > 
-> > > It is fine to require that vmxon/off management remain within KVM, and
-> > > tie the lifetime of the device to the lifetime of the kvm_intel module*.
-> > 
-> > Nah, let's do this right.  Speaking from experience; horrible, make-your-eyes-bleed
-> > experience; playing games with kvm-intel.ko to try to get and keep CPUs post-VMXON
-> > will end in tears.
-> > 
-> > And it's not just TDX-feature-of-the-day that needs VMXON to be handled outside
-> > of KVM, I'd also like to do so to allow out-of-tree hypervisors to do the "right
-> > thing"[*].  Not because I care deeply about out-of-tree hypervisors, but because
-> > the lack of proper infrastructure for utilizing virtualization hardware irks me.
-> > 
-> > The basic gist is to extract system-wide resources out of KVM and into a separate
-> > module, so that e.g. tdx_tsm or whatever can take a dependency on _that_ module
-> > and elevate refcounts as needed.  All things considered, there aren't so many
-> > system-wide resources that it's an insurmountable task.
-> >
-> > I can provide some rough patches to kickstart things.  It'll probably take me a
-> > few weeks to extract them from an old internal branch, and I can't promise they'll
-> > compile.  But they should be good enough to serve as an RFC.
-> > 
-> > https://lore.kernel.org/all/ZwQjUSOle6sWARsr@google.com
+Jonathan Cameron wrote:
+> On Thu, 17 Jul 2025 11:33:53 -0700
+> Dan Williams <dan.j.williams@intel.com> wrote:
 > 
-> Sounds reasonable to me.
+> > Establish just enough emulated PCI infrastructure to register a sample
+> > TSM (platform security manager) driver and have it discover an IDE + TEE
+> > (link encryption + device-interface security protocol (TDISP)) capable
+> > device.
+> > 
+> > Use the existing a CONFIG_PCI_BRIDGE_EMUL to emulate an IDE capable root
+> > port, and open code the emulation of an endpoint device via simulated
+> > configuration cycle responses.
+> > 
+> > The devsec_tsm driver responds to the PCI core TSM operations as if it
+> > successfully exercised the given interface security protocol message.
+> > 
+> > The devsec_bus and devsec_tsm drivers can be loaded in either order to
+> > reflect cases like SEV-TIO where the TSM is PCI-device firmware, and
+> > cases like TDX Connect where the TSM is a software agent running on the
+> > host CPU.
+> > 
+> > Follow-on patches add common code for TSM managed IDE establishment. For
+> > now, just successfully complete setup and teardown of the DSM (device
+> > security manager) context as a building block for management of TDI
+> > (trusted device interface) instances.
+> > 
+> >  # modprobe devsec_bus
+> >     devsec_bus devsec_bus: PCI host bridge to bus 10000:00
+> >     pci_bus 10000:00: root bus resource [bus 00-01]
+> >     pci_bus 10000:00: root bus resource [mem 0xf000000000-0xffffffffff 64bit]
+> >     pci 10000:00:00.0: [8086:7075] type 01 class 0x060400 PCIe Root Port
+> >     pci 10000:00:00.0: PCI bridge to [bus 00]
+> >     pci 10000:00:00.0:   bridge window [io  0x0000-0x0fff]
+> >     pci 10000:00:00.0:   bridge window [mem 0x00000000-0x000fffff]
+> >     pci 10000:00:00.0:   bridge window [mem 0x00000000-0x000fffff 64bit pref]
+> >     pci 10000:00:00.0: bridge configuration invalid ([bus 00-00]), reconfiguring
+> >     pci 10000:01:00.0: [8086:ffff] type 00 class 0x000000 PCIe Endpoint
+> >     pci 10000:01:00.0: BAR 0 [mem 0xf000000000-0xf0001fffff 64bit pref]
+> >     pci_doe_abort: pci 10000:01:00.0: DOE: [100] Issuing Abort
+> >     pci_doe_cache_protocols: pci 10000:01:00.0: DOE: [100] Found protocol 0 vid: 1 prot: 1
+> >     pci 10000:01:00.0: disabling ASPM on pre-1.1 PCIe device.  You can enable it with 'pcie_aspm=force'
+> >     pci 10000:00:00.0: PCI bridge to [bus 01]
+> >     pci_bus 10000:01: busn_res: [bus 01] end is updated to 01
+> >  # modprobe devsec_tsm
+> >     devsec_tsm_pci_probe: pci 10000:01:00.0: devsec: tsm enabled
+> >     __pci_tsm_init: pci 10000:01:00.0: TSM: Device security capabilities detected ( ide tee ), TSM attach
+> > 
+> > Cc: Bjorn Helgaas <bhelgaas@google.com>
+> > Cc: Lukas Wunner <lukas@wunner.de>
+> > Cc: Samuel Ortiz <sameo@rivosinc.com>
+> > Cc: Alexey Kardashevskiy <aik@amd.com>
+> > Cc: Xu Yilun <yilun.xu@linux.intel.com>
+> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 > 
-> Not clear on how it impacts tdx_tsm implementation. The lifetime of this
-> tdx_tsm device can still be bound by tdx_enable() / tdx_cleanup(). The
+> A fairly superficial review.  Too much staring at code today
+> to check the emulation was right and have any chance of spotting bugs!
+> 
+> > diff --git a/samples/devsec/bus.c b/samples/devsec/bus.c
+> > new file mode 100644
+> > index 000000000000..675e185fcf79
+> > --- /dev/null
+> > +++ b/samples/devsec/bus.c
+> > @@ -0,0 +1,708 @@
+> 
+> > +static int alloc_devs(struct devsec *devsec)
+> > +{
+> > +	struct device *dev = devsec->dev;
+> 
+> Similar to below.  Maybe use it inline.
 
-I assume with VMXON outside of KVM, tdx tsm driver could actively call
-tdx_bringup(), which includes VMXON, tdx_enable() and cpuhp handling.
-I.e, tdx_tsm device lifetime won't have to be bound to any other
-component, it could keep living until tdx_tsm module ends.
+ok.
 
-> refactor removes the need for the autoprobe hack below. It may also
-> preclude async vmxoff cases by pinning? Or does pinning still not solve
+> > +	for (int i = 0; i < ARRAY_SIZE(devsec->devsec_devs); i++) {
+> > +		struct devsec_dev *devsec_dev = devsec_dev_alloc(devsec);
+> > +		int rc;
+> > +
+> > +		if (IS_ERR(devsec_dev))
+> > +			return PTR_ERR(devsec_dev);
+> > +		rc = devm_add_action_or_reset(dev, destroy_devsec_dev,
+> > +					      devsec_dev);
+> > +		if (rc)
+> > +			return rc;
+> > +		devsec->devsec_devs[i] = devsec_dev;
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> 
+> 
+> > +static int init_port(struct devsec_port *devsec_port)
+> > +{
+> > +	struct pci_bridge_emul *bridge = &devsec_port->bridge;
+> > +
+> > +	*bridge = (struct pci_bridge_emul) {
+> > +		.conf = {
+> > +			.vendor = cpu_to_le16(0x8086),
+> > +			.device = cpu_to_le16(0x7075),
+> 
+> Emulating something real?  If not maybe we should get an ID from another space
+> (or reserve this one ;)
 
-not by pinning, by cpuhp handling async vmxoff won't affect seamcall
-execution.
+I am happy to switch to something else, but no, I do not have time to
+chase this through PCI SIG. I do not expect this id to cause conflicts,
+but no guarantees.
 
-> the reasons for bouncing vmx on suspend/shutdown?
+> > +			.class_revision = cpu_to_le32(0x1),
+> > +			.pref_mem_base = cpu_to_le16(PCI_PREF_RANGE_TYPE_64),
+> > +			.pref_mem_limit = cpu_to_le16(PCI_PREF_RANGE_TYPE_64),
+> > +		},
+> 
+> 
+> > +{
+> > +	struct device *dev = devsec->dev;
+> 
+> Only used once. I'd move it down there.
 
-Thanks,
-Yilun
+ok.
+
+> 
+> > +
+> > +	for (int i = 0; i < ARRAY_SIZE(devsec->devsec_ports); i++) {
+> > +		struct devsec_port *devsec_port = devsec_port_alloc();
+> > +		int rc;
+> > +
+> > +		if (IS_ERR(devsec_port))
+> > +			return PTR_ERR(devsec_port);
+> > +		rc = devm_add_action_or_reset(dev, destroy_port, devsec_port);
+> > +		if (rc)
+> > +			return rc;
+> > +		devsec->devsec_ports[i] = devsec_port;
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int __init devsec_bus_probe(struct platform_device *pdev)
+> > +{
+> > +	int rc;
+> > +	struct devsec *devsec;
+> > +	u64 mmio_size = SZ_64G;
+> > +	struct devsec_sysdata *sd;
+> > +	struct pci_host_bridge *hb;
+> > +	struct device *dev = &pdev->dev;
+> > +	u64 mmio_start = iomem_resource.end + 1 - SZ_64G;
+> > +
+> > +	hb = devm_pci_alloc_host_bridge(
+> > +		dev, sizeof(*devsec) - sizeof(struct pci_host_bridge));
+> 
+> I'd move dev up a line.
+
+clang-format disagrees and I prefer just letting a tool do my formatting.
+
+[..]
+> > +static int __init devsec_tsm_init(void)
+> > +{
+> > +	__devsec_pci_ops = &devsec_pci_ops;
+> 
+> I'm not immediately grasping why this global is needed.
+> You never check if it's set, so why not just move definition of devsec_pci_ops
+> early enough that can be directly used everywhere.
+
+Because devsec_pci_ops is used inside the ops it declares. So either
+forward declare all those ops, or do this pointer assigment dance. I
+opted for the latter as it is smaller.
