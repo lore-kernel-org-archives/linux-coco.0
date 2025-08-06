@@ -1,123 +1,102 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F6020102B
-	for <linux-coco@lists.linux.dev>; Wed,  6 Aug 2025 11:16:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0BF928C2B9
+	for <linux-coco@lists.linux.dev>; Wed,  6 Aug 2025 15:19:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754478986; cv=none; b=eVuIaRFEVz2+QP7vIZ1LQENAibwwHIAPfG7ICDJfEQevlTgB5AfEv8BmoCXv/+lKAyaWuF+PZScoI3kYDVIpp3vm9HoQMXckkHUdyjl4AKM6Y3yr481Z8WYiHWnVwprOH/pSmbiCO6s9TpxJ3BlVRsOZOMGjPqwHHeK33ReUJjs=
+	t=1754493556; cv=none; b=rGFgCPAkPtsDbOu7k93AXY0VxqHHemQxe8pZy3puPVqv1N8AQJKuvECcmrsCDAY0kpgCW9e5YiCpiUmw0LrsYOV7NaF4eEGFw5kbfxNPddod4nVxWv7nvfqr62P4LQOHdVwLw+glyfWqlOO/gdxkoQWRh57t9KVVo7uDDLrnQCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754478986; c=relaxed/simple;
-	bh=zxm5bDbzQmHdqSW1nHMqa3d8zuFaL0CYxhmDbUIdf20=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HU63q5HXWHvIHg0Vlqxo58UX7BuamoGJuUfvqesOiy2wVCDiEVKnWGhxX1aZfdh2RjPSOXsDFWRGZw16kT7fY7H9D6iuDt6oVDjrp6wWP+XcEhFCi9bmcxCszlj/eOUwrAmD2Fw1DnzPmSJ3gXuDoM23VOAA1MEukngYKLswvbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bxnkM5Ylqz6M4PP;
-	Wed,  6 Aug 2025 19:14:35 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id BE206140159;
-	Wed,  6 Aug 2025 19:16:22 +0800 (CST)
-Received: from localhost (10.81.207.60) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 6 Aug
- 2025 13:16:21 +0200
-Date: Wed, 6 Aug 2025 12:16:25 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: <dan.j.williams@intel.com>
-CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <bhelgaas@google.com>, <aik@amd.com>,
-	<lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>, Xu Yilun
-	<yilun.xu@linux.intel.com>, Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PATCH v4 05/10] samples/devsec: Introduce a PCI
- device-security bus + endpoint sample
-Message-ID: <20250806121625.00001556@huawei.com>
-In-Reply-To: <6892c9fe760_55f09100d4@dwillia2-xfh.jf.intel.com.notmuch>
-References: <20250717183358.1332417-1-dan.j.williams@intel.com>
-	<20250717183358.1332417-6-dan.j.williams@intel.com>
-	<20250729161643.000023e7@huawei.com>
-	<6892c9fe760_55f09100d4@dwillia2-xfh.jf.intel.com.notmuch>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1754493556; c=relaxed/simple;
+	bh=+SzIyp+azHzXi3wmerkgl+OB8gD77zXbcUhm1m4L1GI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=U+dHEEmlyPNf1wa0+XxJ6cksqfL30c5YlWU1MtAKlS+apzDFCwF2aQK5NBfZkv/mPw/FYFs8MfjXCugfF5YbRd+8uKeFNA0lPAjTxftsuWHUryxLyauyqbDgcmlFJDFmwtsbciL0HmuJ3ex88W3/gWfyK5zhNz2Mz1bE0GYy39k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fshTcMnx; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fshTcMnx"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-31f3b65ce07so76211a91.1
+        for <linux-coco@lists.linux.dev>; Wed, 06 Aug 2025 08:19:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1754493554; x=1755098354; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KDQStjMluPm00O/x8xuIBu0JMlXP4PdE4vThsGuTUgQ=;
+        b=fshTcMnxfMBSonSkdf+wdwZPqvEjKD1sn6iDzv5EifgltohHMcwogJjKgaeof9xRlw
+         tSzT1YRGAOWs3KJMgCD8IKq93sy4dcW4o+Qyh5aAcq1R+pJ4qB3CtqBDY+BnWs+G4u93
+         0kX3S++uKgJfCtPacJhK2NOgyKfMlaHbXba2d4aMV4CY9oMLv1JirhEQK59nsE4FfOqw
+         /644ORtxntAYsvT9ie9EcTEU06QEJV9feWI/c1XOXx8FQxkZKTkjB0vPPuLEeJbbfupf
+         POWdhej+1BkFG9NziUgNc2CMl94ojAmHHPxtqzRZzExnGO0TK/lieJbaZ3iHI2e3v98k
+         b+eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754493554; x=1755098354;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KDQStjMluPm00O/x8xuIBu0JMlXP4PdE4vThsGuTUgQ=;
+        b=WshvgsPrOGmG/iTz7mNejR+ic91IHKsfN9axX7TQZ1UnxAfxkv5mRc/YEoz7kn4iSX
+         H85xwFfKemfu+nz2cWa+6K04Z/65MmIZpSMP7dIQGLO4BPKU2diGhERRXXE/nkeLvdSH
+         TDUxvxPCpazVazBQN/Uukgxwwsj7KNYynUX1UM+nVXO06QyHVHjKiATsGcIKmZN61tnw
+         sGf2lSDBhes2iHBRMcXAJfxuuFjeNngye7yEOcpg5WgZadpDSSd6oWH7FP5jdKiAswc6
+         iyJplEaN/lapEK+amw8V+CGUUnNtfIOpYW2jdOhMmPUn7AyHZVdQ1j594uue+lTssdxq
+         3uEw==
+X-Forwarded-Encrypted: i=1; AJvYcCWQqbmlBUVBkWkiOS0q4B2ML/CgUhuYg9FG7Dt45S0IaFKOYxCts7POdsxZz2MI5DBkpxkO8EE68nIJ@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywm6ANdLDAwxGYSidjqThDfmcEO05rzAx4VGucDeMATxHc+jYE4
+	5Z7I3dfpkB57fKRF/zxYeGffETkPETV8HzIDCZniM6mOzFha+U3DaWEDUPrHfc0Zc4NrCS5OOGp
+	L6fgPEg==
+X-Google-Smtp-Source: AGHT+IE0ws3A1oPMpeyK+BWoSra1biTwg8ZIx15Eh9OYdEDbAXwg9YusjzqGIk7Bj9JXcN/gIQTc0EhEi2I=
+X-Received: from pjx15.prod.google.com ([2002:a17:90b:568f:b0:31c:32f8:3f88])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d607:b0:31e:ebb6:6499
+ with SMTP id 98e67ed59e1d1-32166cc68fdmr4543810a91.24.1754493554269; Wed, 06
+ Aug 2025 08:19:14 -0700 (PDT)
+Date: Wed, 6 Aug 2025 08:19:13 -0700
+In-Reply-To: <7f1aaf559a4f93f63f8e996938cfd957e151cb50.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Mime-Version: 1.0
+References: <aFxpuRLYA2L6Qfsi@google.com> <vgk3ql5kcpmpsoxfw25hjcw4knyugszdaeqnzur6xl4qll73xy@xi7ttxlxot2r>
+ <3e55fd58-1d1c-437a-9e0a-72ac92facbb5@intel.com> <aF1sjdV2UDEbAK2h@google.com>
+ <1fbdfffa-ac43-419c-8d96-c5bb1bdac73f@intel.com> <70484aa1b553ca250d893f80b2687b5d915e5309.camel@intel.com>
+ <aIv8wZzs1oXDCXSU@google.com> <3f39e6f85341e141f61527b3192cefde0097edb8.camel@intel.com>
+ <aIwB6X6cw9kwgJzs@google.com> <7f1aaf559a4f93f63f8e996938cfd957e151cb50.camel@intel.com>
+Message-ID: <aJNycTvk1GEWgK_Q@google.com>
+Subject: Re: [PATCHv2 01/12] x86/tdx: Consolidate TDX error handling
+From: Sean Christopherson <seanjc@google.com>
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Chao Gao <chao.gao@intel.com>, Dave Hansen <dave.hansen@intel.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, "x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
+	Kai Huang <kai.huang@intel.com>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"tglx@linutronix.de" <tglx@linutronix.de>, 
+	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, Yan Y Zhao <yan.y.zhao@intel.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-
-+CC Gerd, of off chance we can use a Redhat PCI device ID for kernel
-emulation similar to those they let Qemu use.
-
-> 
-> > > +	for (int i = 0; i < ARRAY_SIZE(devsec->devsec_devs); i++) {
-> > > +		struct devsec_dev *devsec_dev = devsec_dev_alloc(devsec);
-> > > +		int rc;
-> > > +
-> > > +		if (IS_ERR(devsec_dev))
-> > > +			return PTR_ERR(devsec_dev);
-> > > +		rc = devm_add_action_or_reset(dev, destroy_devsec_dev,
-> > > +					      devsec_dev);
-> > > +		if (rc)
-> > > +			return rc;
-> > > +		devsec->devsec_devs[i] = devsec_dev;
-> > > +	}
-> > > +
-> > > +	return 0;
-> > > +}  
+On Fri, Aug 01, 2025, Rick P Edgecombe wrote:
+> On Thu, 2025-07-31 at 16:53 -0700, Sean Christopherson wrote:
+> > On Thu, Jul 31, 2025, Rick P Edgecombe wrote:
+> > > On Thu, 2025-07-31 at 16:31 -0700, Sean Christopherson wrote:
+> > > > On Wed, Jul 30, 2025, Rick P Edgecombe wrote:
+> > > > > So STATUS_OPERAND_BUSY() seems like an ok thing to try next for v3 of this
+> > > > > series at least. Unless anyone has any strong objections ahead of time.
+> > > > 
+> > > > Can you make it IS_TDX_STATUS_OPERAND_BUSY() so that it's obviously a check and
+> > > > not a statement/value, and to scope it to TDX?
+> > > 
+> > > It's a mouthful, but I can live with it. Yea, it def should have TDX in the name.
 > > 
-> >   
-> > > +static int init_port(struct devsec_port *devsec_port)
-> > > +{
-> > > +	struct pci_bridge_emul *bridge = &devsec_port->bridge;
-> > > +
-> > > +	*bridge = (struct pci_bridge_emul) {
-> > > +		.conf = {
-> > > +			.vendor = cpu_to_le16(0x8086),
-> > > +			.device = cpu_to_le16(0x7075),  
-> > 
-> > Emulating something real?  If not maybe we should get an ID from another space
-> > (or reserve this one ;)  
+> > IS_TDX_STATUS_OP_BUSY?
 > 
-> I am happy to switch to something else, but no, I do not have time to
-> chase this through PCI SIG. I do not expect this id to cause conflicts,
-> but no guarantees.
-
-Nothing to do with the SIG - you definitely don't want to try talking them
-into giving a Vendor ID for the kernel.  That's an Intel ID so you need to find
-the owner of whatever tracker Intel uses for these.  Or maybe we can ask for
-one of the Redhat ones (maintained by Gerd).
-
+> Ehh, would nicer to have it closer to what is in the TDX docs. The worst
+> would be to read TDX_STATUS_OP_BUSY, then have to look at the value to figure
+> out which error code it actually was.
 > 
-> > > +			.class_revision = cpu_to_le32(0x1),
-> > > +			.pref_mem_base = cpu_to_le16(PCI_PREF_RANGE_TYPE_64),
-> > > +			.pref_mem_limit = cpu_to_le16(PCI_PREF_RANGE_TYPE_64),
-> > > +		},  
-> > 
-> >   
+> Maybe just drop STATUS and have IS_TDX_OPERAND_BUSY()? It still loses the ERR
+> part, which made it look like IS_ERR().
 
-...
-> > > +static int __init devsec_tsm_init(void)
-> > > +{
-> > > +	__devsec_pci_ops = &devsec_pci_ops;  
-> > 
-> > I'm not immediately grasping why this global is needed.
-> > You never check if it's set, so why not just move definition of devsec_pci_ops
-> > early enough that can be directly used everywhere.  
-> 
-> Because devsec_pci_ops is used inside the ops it declares. So either
-> forward declare all those ops, or do this pointer assigment dance. I
-> opted for the latter as it is smaller.
-Ok. I guess in emulation that's a reasonable compromise.  Maybe leave
-a comment somewhere to avoid repeat of this feedback.
-
-Jonathan
-
-> 
-
+Any of the IS_TDX_xxx options work for me.
