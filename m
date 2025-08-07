@@ -1,113 +1,166 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C52124B29;
-	Thu,  7 Aug 2025 21:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF03E1C8633;
+	Thu,  7 Aug 2025 22:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754603157; cv=none; b=uE99LOloifvA64hPLqfGkMkPsFHNgGbXkmT+h5B8XvYzkaLXS9Vks6IPzJb9MhTdzGR2nIYhosqCskXLv0yCBtNS1YXdEuevZafkrGmPSmayFCM9FKdqj5ttW2bubK+lvGj3MXINNWwKeiputnAX70xP4counErdpaOYJHqg/PQ=
+	t=1754604419; cv=none; b=Yh/Wh77/6SH8yydrF7VyG3PZNKVaOYomgZnCg87q2HmMYVtJJOYtIN+ksStjC4X4IncSZX4CqSZ5RNMxnjCdisIj+z41MXfYCmO7vF1l69rFYzTWVHPa6VIApIvvZImfQkwbt5jQSVrzjsiiJIbMM2ZKyTRS5FdN0+nz+Hm9a8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754603157; c=relaxed/simple;
-	bh=L+NVF+13JGNJ3SpYwk9loHGdcV3JgX/IGVOXLZzuTfI=;
+	s=arc-20240116; t=1754604419; c=relaxed/simple;
+	bh=1SWxxfi61RujHsu60gIIs45W2VXsmKVDVQQiD1um0cg=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=iLX1I1bihXtkuAHNjMFyrk1hfE867kZA5oxjgDfqeuDVr5ae/IbCeW+J3EMFtcNtgVcqcIaS7mclHHpr6kgjTeGjwAj2fLXvueDoPaUNYulAoKDKuJmX6djWbd4zeFAEYuI42P3uLgwhzFoJOzVdSic0OHm51vU3PQyh3Fv0aLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=heOOZV2a; arc=none smtp.client-ip=10.30.226.201
+	 Content-Disposition:In-Reply-To; b=ran1yEtNKO5N+3PYsBu9vVDKEU6FFMrh2//KwLO/PpGiBc8Mw9Cx0a7ycrixiB+SHrlbGHcEzVjw9xRL07nHJ35sw2VQUQJzE3S5ib9LKVjLYagxNk6LXRhSi3aqmWivFjwp887Q8NGOiIGi8p0rsvRrc5EtjcBuXaTGmOT542c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oH0Z+OaL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="heOOZV2a"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 115ABC4CEEB;
-	Thu,  7 Aug 2025 21:45:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oH0Z+OaL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45420C4CEEB;
+	Thu,  7 Aug 2025 22:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754603157;
-	bh=L+NVF+13JGNJ3SpYwk9loHGdcV3JgX/IGVOXLZzuTfI=;
+	s=k20201202; t=1754604418;
+	bh=1SWxxfi61RujHsu60gIIs45W2VXsmKVDVQQiD1um0cg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=heOOZV2a83lmdFL5bz1KDJ5ite60lE0S8k5/wfaozDWClL5eEKb2bljH34aAk8Q6K
-	 nZ1YbhteXS+n3GPaIk/qdLyFjHL1H5n9pPFDuAyQe+aNu5hD5SH0H6u1aO26munw0m
-	 AhF65+g8i56YXA57CCwdBxc+9ai/a3u/R6g6+EMNyE+0qQz5oZQR2x1S1AR0Stvc/6
-	 +LpgtOvczEQpH5Y2yTrmmHXMye6pHUEeoJIhQitSGua7mAV/rLvPfSQRwMY0LdWF8+
-	 Ym7diOR228PwuWX0YsOqupBF3REe50ULO0OJ/puvzI+JcUASHMwlyjfihttb9gW6N8
-	 ryjlwihN7bHxA==
-Date: Thu, 7 Aug 2025 16:45:55 -0500
+	b=oH0Z+OaLZOmV+fFy6/TagyO1FMXPmamR/gtjVpF3M+wb3LCDQnF7Fgyr3rhArTVEa
+	 +lEn6ZoykEvueSwHa6z9/HptkVvU0XO6q0dEB/GivqsrD7nyPSXS9X5boAu7Y+Y2c1
+	 PF8PM2m9t1YCZs1c+/xNMekFoCWxCUWMqMC46F8Of8ABAb/t4khx4MCTu+X08lLF3h
+	 W/SGQAsWSem0rJrYQbumhMWgtjc/tRm8HqCZnC4BGJgPEAJsD/bG+WZ52xIEXGQtT5
+	 inoqL4rqK1iLZf2nimkpbY+a9XwaaP8lklkFaGEdLMsNCy2PYsOQL6o3HT4qrT+mUG
+	 nZxizCIQEpCtw==
+Date: Thu, 7 Aug 2025 17:06:56 -0500
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: Dan Williams <dan.j.williams@intel.com>
 Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
 	linux-kernel@vger.kernel.org, bhelgaas@google.com, aik@amd.com,
-	lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>,
+	lukas@wunner.de,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
 	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: Re: [PATCH v4 05/10] samples/devsec: Introduce a PCI device-security
- bus + endpoint sample
-Message-ID: <20250807214555.GA63946@bhelgaas>
+Subject: Re: [PATCH v4 06/10] PCI: Add PCIe Device 3 Extended Capability
+ enumeration
+Message-ID: <20250807220656.GA64413@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250717183358.1332417-6-dan.j.williams@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250717183358.1332417-7-dan.j.williams@intel.com>
 
-On Thu, Jul 17, 2025 at 11:33:53AM -0700, Dan Williams wrote:
-> Establish just enough emulated PCI infrastructure to register a sample
-> TSM (platform security manager) driver and have it discover an IDE + TEE
-> (link encryption + device-interface security protocol (TDISP)) capable
-> device.
+On Thu, Jul 17, 2025 at 11:33:54AM -0700, Dan Williams wrote:
+> PCIe 6.2 Section 7.7.9 Device 3 Extended Capability Structure,
+> enumerates new link capabilities and status added for Gen 6 devices. One
+
+s/ added for Gen 6 devices//
+
+I know the "Gen 6 device" terminology is pervasive, but the spec
+suggests avoiding it because it's so ambiguous.
+
+> of the link details enumerated in that register block is the "Segment
+> Captured" status in the Device Status 3 register. That status is
+> relevant for enabling IDE (Integrity & Data Encryption) whereby
+> Selective IDE streams can be limited to a given Requester ID range
+> within a given segment.
 > 
-> Use the existing a CONFIG_PCI_BRIDGE_EMUL to emulate an IDE capable root
-> port, and open code the emulation of an endpoint device via simulated
-> configuration cycle responses.
-
-s/existing a/existing/
-
-> The devsec_tsm driver responds to the PCI core TSM operations as if it
-> successfully exercised the given interface security protocol message.
+> If a device has captured its Segment value then it knows that PCIe Flit
+> Mode is enabled via all links in the path that a configuration write
+> traversed. IDE establishment requires that "Segment Base" in
+> IDE RID Association Register 2 (PCIe 6.2 Section 7.9.26.5.4.2) be
+> programmed if the RID association mechanism is in effect.
 > 
-> The devsec_bus and devsec_tsm drivers can be loaded in either order to
-> reflect cases like SEV-TIO where the TSM is PCI-device firmware, and
-> cases like TDX Connect where the TSM is a software agent running on the
-> host CPU.
+> When / if IDE + Flit Mode capable devices arrive, the PCI core needs to
+> setup the segment base when using the RID association facility, but no
+> known deployments today depend on this.
+
+So far this mentions a lot of facts, but only the subject hints at
+what it does.  I guess it just captures the Flit Mode status, inferred
+by Segment Captured?
+
+I'm OK with basically just saying *that*, and moving some of the
+implications to places where we depend on them.
+
+> Cc: Lukas Wunner <lukas@wunner.de>
+> Cc: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Samuel Ortiz <sameo@rivosinc.com>
+> Cc: Alexey Kardashevskiy <aik@amd.com>
+> Cc: Xu Yilun <yilun.xu@linux.intel.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+>  drivers/pci/probe.c           | 12 ++++++++++++
+>  include/linux/pci.h           |  1 +
+>  include/uapi/linux/pci_regs.h |  7 +++++++
+>  3 files changed, 20 insertions(+)
 > 
-> Follow-on patches add common code for TSM managed IDE establishment. For
-> now, just successfully complete setup and teardown of the DSM (device
-> security manager) context as a building block for management of TDI
-> (trusted device interface) instances.
+> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> index e19e7a926423..9ed25035a06d 100644
+> --- a/drivers/pci/probe.c
+> +++ b/drivers/pci/probe.c
+> @@ -2271,6 +2271,17 @@ int pci_configure_extended_tags(struct pci_dev *dev, void *ign)
+>  	return 0;
+>  }
+>  
+> +static void pci_dev3_init(struct pci_dev *pdev)
+> +{
+> +	u16 cap = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_DEV3);
+> +	u32 val = 0;
+> +
+> +	if (!cap)
+> +		return;
+> +	pci_read_config_dword(pdev, cap + PCI_DEV3_STA, &val);
+> +	pdev->fm_enabled = !!(val & PCI_DEV3_STA_SEGMENT);
+> +}
+> +
+>  /**
+>   * pcie_relaxed_ordering_enabled - Probe for PCIe relaxed ordering enable
+>   * @dev: PCI device to query
+> @@ -2625,6 +2636,7 @@ static void pci_init_capabilities(struct pci_dev *dev)
+>  	pci_doe_init(dev);		/* Data Object Exchange */
+>  	pci_tph_init(dev);		/* TLP Processing Hints */
+>  	pci_rebar_init(dev);		/* Resizable BAR */
+> +	pci_dev3_init(dev);		/* Device 3 capabilities */
+>  	pci_ide_init(dev);		/* Link Integrity and Data Encryption */
+>  
+>  	pcie_report_downtraining(dev);
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index 0e5703fad0f6..a7353df51fea 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -444,6 +444,7 @@ struct pci_dev {
+>  	unsigned int	pasid_enabled:1;	/* Process Address Space ID */
+>  	unsigned int	pri_enabled:1;		/* Page Request Interface */
+>  	unsigned int	tph_enabled:1;		/* TLP Processing Hints */
+> +	unsigned int	fm_enabled:1;		/* Flit Mode (segment captured) */
+>  	unsigned int	is_managed:1;		/* Managed via devres */
+>  	unsigned int	is_msi_managed:1;	/* MSI release via devres installed */
+>  	unsigned int	needs_freset:1;		/* Requires fundamental reset */
+> diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
+> index 1b991a88c19c..2d49a4786a9f 100644
+> --- a/include/uapi/linux/pci_regs.h
+> +++ b/include/uapi/linux/pci_regs.h
+> @@ -751,6 +751,7 @@
+>  #define PCI_EXT_CAP_ID_NPEM	0x29	/* Native PCIe Enclosure Management */
+>  #define PCI_EXT_CAP_ID_PL_32GT  0x2A    /* Physical Layer 32.0 GT/s */
+>  #define PCI_EXT_CAP_ID_DOE	0x2E	/* Data Object Exchange */
+> +#define PCI_EXT_CAP_ID_DEV3	0x2F	/* Device 3 Capability/Control/Status */
+>  #define PCI_EXT_CAP_ID_IDE	0x30    /* Integrity and Data Encryption */
+>  #define PCI_EXT_CAP_ID_PL_64GT	0x31	/* Physical Layer 64.0 GT/s */
+>  #define PCI_EXT_CAP_ID_MAX	PCI_EXT_CAP_ID_PL_64GT
+> @@ -1227,6 +1228,12 @@
+>  /* Deprecated old name, replaced with PCI_DOE_DATA_OBJECT_DISC_RSP_3_TYPE */
+>  #define PCI_DOE_DATA_OBJECT_DISC_RSP_3_PROTOCOL		PCI_DOE_DATA_OBJECT_DISC_RSP_3_TYPE
+>  
+> +/* Device 3 Extended Capability */
+> +#define PCI_DEV3_CAP		0x4	/* Device 3 Capabilities Register */
+> +#define PCI_DEV3_CTL		0x8	/* Device 3 Control Register */
+> +#define PCI_DEV3_STA		0xc	/* Device 3 Status Register */
+> +#define  PCI_DEV3_STA_SEGMENT	0x8	/* Segment Captured (end-to-end flit-mode detected) */
+> +
+>  /* Compute Express Link (CXL r3.1, sec 8.1.5) */
+>  #define PCI_DVSEC_CXL_PORT				3
+>  #define PCI_DVSEC_CXL_PORT_CTL				0x0c
+> -- 
+> 2.50.1
 > 
->  # modprobe devsec_bus
->     devsec_bus devsec_bus: PCI host bridge to bus 10000:00
->     pci_bus 10000:00: root bus resource [bus 00-01]
->     pci_bus 10000:00: root bus resource [mem 0xf000000000-0xffffffffff 64bit]
->     pci 10000:00:00.0: [8086:7075] type 01 class 0x060400 PCIe Root Port
->     pci 10000:00:00.0: PCI bridge to [bus 00]
->     pci 10000:00:00.0:   bridge window [io  0x0000-0x0fff]
->     pci 10000:00:00.0:   bridge window [mem 0x00000000-0x000fffff]
->     pci 10000:00:00.0:   bridge window [mem 0x00000000-0x000fffff 64bit pref]
->     pci 10000:00:00.0: bridge configuration invalid ([bus 00-00]), reconfiguring
->     pci 10000:01:00.0: [8086:ffff] type 00 class 0x000000 PCIe Endpoint
->     pci 10000:01:00.0: BAR 0 [mem 0xf000000000-0xf0001fffff 64bit pref]
->     pci_doe_abort: pci 10000:01:00.0: DOE: [100] Issuing Abort
->     pci_doe_cache_protocols: pci 10000:01:00.0: DOE: [100] Found protocol 0 vid: 1 prot: 1
->     pci 10000:01:00.0: disabling ASPM on pre-1.1 PCIe device.  You can enable it with 'pcie_aspm=force'
->     pci 10000:00:00.0: PCI bridge to [bus 01]
->     pci_bus 10000:01: busn_res: [bus 01] end is updated to 01
-
-Most of these messages don't seem relevant to DSM/TDISP/etc.  It
-*would* be useful to have a hint about what specifically makes this an
-IDE + TEE device.  Capability visible via lspci?  Are devices at both
-ends required, e.g., a Root Port and an Endpoint?
-
-Oooh, I see (finally).  This hierarchy is all totally fabricated, no
-actual hardware involved at all.  You did say that above; it just took
-a while to sink in.
-
->  # modprobe devsec_tsm
->     devsec_tsm_pci_probe: pci 10000:01:00.0: devsec: tsm enabled
->     __pci_tsm_init: pci 10000:01:00.0: TSM: Device security capabilities detected ( ide tee ), TSM attach
-
-s/tsm/TSM/ in the message
-s/ide/IDE/
-s/tee/TEE/
-
-Looks like spurious spaces inside parens?
-
-> + * The expectation is the helpers referenceed are convenience "library"
-
-s/referenceed/referenced/
