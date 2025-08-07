@@ -1,403 +1,236 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6517B21CA1C
-	for <linux-coco@lists.linux.dev>; Thu,  7 Aug 2025 22:14:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754604887; cv=none; b=K6zpsQvmkVHJ58xmlTROjHIHW90RUt+VkIib4GtBLNfiHqmfOs+aQA/ZpViPD86ewCl7hYG91afNmbXdKotdZJcERnqdJn03vaXlPDCVLoAqiDy2F+bqrzG/J+ZlYjFvcZMUybXM6RVQihVM0K0N2iAUoavDgL/JMM3jFexwzaA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754604887; c=relaxed/simple;
-	bh=xshvLV2vb31Wkr+PIvc5fW+lxDkRCDr+2ByErhM8NDQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=DdwzuCLnu2+4j+ww1onQWqx0HML/OKuPufmoVFTNXuKToiYq1d/W6anvTAD3FDuQNAayMvTZPL/GvAJTag+s8P4k6Dcc4eGXpcPWQH1ZHBfLo9/g2deDctlDdJW3BbrAmegDmPKtT0eKF7L8BVpOPOq/2c0tkhA45LEgGKWC8jQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QXPjcqRZ; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4761E520E
+	for <linux-coco@lists.linux.dev>; Thu,  7 Aug 2025 22:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754606264; cv=fail; b=QTEw/XBeFsBB9WNiDP0VEltqEg6XRqaKoYpYGY5wbQJGx932+w2fb/j1vbeTJ04oZfjeratILxYZ1cQzTQpmS8S9GjJIy3ltERkiKo1lfoOn9dQDDmQqfBhtwjYdYtLefJNdOknuM7jGgrIKHV1Pr+FPyGfwnk1ykcogI8IfDlE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754606264; c=relaxed/simple;
+	bh=83MOCKkV9TQkqLKqg9ASih+KTUWlhxSKyBXU9JrTeTk=;
+	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
+	 Content-Type:MIME-Version; b=GbMv/DI7/hI2Ceudc7ZONzSxibc1nGq3MVr3P26TWBsY8YTdCdeBEYu9nKjOiG2dKtSwlGgxb/HKDlTVgE3Kq3DZHBdTOD8yoF7pURCNL4gD/NjAf+uKj391y8oZVri+S40hydAJ1GnO6Y2xAnHk0miXZ5b3/un57RPJGqWDyJ8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dfUCWIYy; arc=fail smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QXPjcqRZ"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3215b3229c7so1646599a91.2
-        for <linux-coco@lists.linux.dev>; Thu, 07 Aug 2025 15:14:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754604885; x=1755209685; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UfxYlW2qMJC6ED5bCsPHTl22hm4a2dt17JIaMaifM1o=;
-        b=QXPjcqRZamo0Z32MO8XPJGVCMyNMULRpms5Q0iXivDVvdijvlUMt9RCtOMtbbtm6Sc
-         4Zz9JX/0rY1y7vz+WuIS7Li9OozUjOEg416N6CVAYaSZxDLSE74nRpcB1WREHF6Ov6cN
-         Vkt1PjmbJOOUwbGWQNCoyxfDS07nmJotLurpl1+FfcHmLB75TeL/7AOhI7J4oUs5zbce
-         6/RkrMW5j3kLHwgD+ApseCnnGh3J/bWs6BZXMqUbB0eGCkoyd9MJgoxQPipJPsURFHok
-         Vf4wa5XLPdpxkVyTPXx4zs4avV5WWHT8Zr/owcEZWOsDzAE1z9UjmVcS4Fq8H6IiTMb4
-         fM+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754604885; x=1755209685;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UfxYlW2qMJC6ED5bCsPHTl22hm4a2dt17JIaMaifM1o=;
-        b=gjQ/vZ3RMpzV4BOQ+NEFl83ziKdKEKN/Z8vDzSf8zxt0lP6cmw+L1JT9YCB8/gXwcl
-         KzMBa3r7h20f2H9rl5xHxTSaTZHSumJSzrti2cibqt3uT54NWfMKGUl+fmj8P51XH2mN
-         6qlOFySxOryKWfRgc/P1oK8dMcnSoGFBlACKf7169qWiPZ1AO8E/YHxr2v4L4lwTcUQY
-         TiUaYa36B2ij3mHRRJo2kKLfqNyqM3uabj6Jzb5+B9cVn/gEZAjXuQ/awCmrinskcoMc
-         2Guoy8Ps42bm/OtnY6h5dJ+kdVbBRBCUpv8r3G8R1yuvN3VuMNO5otKYDUZyixQx2zfn
-         9C2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUrMftDvJDkJSkSiohF66UE7FiFNnmBTYIKNNSj2rbaSoZyCA3sdf1MwIY7Cj6iCkCsF46KmBuOJgWh@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw+7SPqJn3d7vWZKyZbLgJBJH5+MF4WH9m+vmE9VM2/fO7vN+bc
-	WVA8tiIAJ5iJmYyJUo6eH2aTd+7dIANd7HxaH1dNBNOMqvP+m1lKCP/HVoiSRyVTZM/O4wZIM0z
-	x9++8EQA6YmEROj2z8YU2RHefzg==
-X-Google-Smtp-Source: AGHT+IG5jNphm0eq8JKWIiHMQnDqV1k9N3zpO9NfBB3SQdGjJcZ4B0Cgeoq+hULf5zIEBAON8V8CKg4Vp024w4Pluw==
-X-Received: from pjbnw14.prod.google.com ([2002:a17:90b:254e:b0:31e:3c57:ffc8])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:4a06:b0:31f:6ddd:eef with SMTP id 98e67ed59e1d1-32183b3f4e7mr781688a91.21.1754604884089;
- Thu, 07 Aug 2025 15:14:44 -0700 (PDT)
-Date: Thu, 07 Aug 2025 15:14:42 -0700
-In-Reply-To: <diqz4iui4y00.fsf@ackerleytng-ctop.c.googlers.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dfUCWIYy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1754606263; x=1786142263;
+  h=from:date:to:cc:message-id:in-reply-to:references:
+   subject:content-transfer-encoding:mime-version;
+  bh=83MOCKkV9TQkqLKqg9ASih+KTUWlhxSKyBXU9JrTeTk=;
+  b=dfUCWIYyL72VGHELTuiXex+s/hAsl+yWJFQQnUcJB8G0j/7RLTbUcTgN
+   hFxDbW8Nb5QdcUEbusu5VkNy/EUpljwpiQuu2SihuyHpdIuy74gbLmWnS
+   9aflplR29vMS9XQYGdoYNSwlIobm9VnV57x3UknhW5Fz2Mdv9hVWaXKp5
+   E8y+F4fdK2z4RMVwLYCCyt+C5BGCI6aTQspf9Du72EERiPKIxW1A/BSY3
+   bHmNz3OiaGJEGbyj4LwaIxPc6jKWPzXiyQnBAmmvfHGpXU3l4qB/TWEed
+   stv0NcoKVatkrUFbRytgZcn92y2yu6MFXNs/3OvkuU7djWw/BGMXG5cR2
+   A==;
+X-CSE-ConnectionGUID: NvI2bBX2SaWZlSOwMSJGag==
+X-CSE-MsgGUID: jgDVNRT9ToyEK3aGxc0Y5w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11514"; a="57087060"
+X-IronPort-AV: E=Sophos;i="6.17,274,1747724400"; 
+   d="scan'208";a="57087060"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2025 15:37:42 -0700
+X-CSE-ConnectionGUID: 0NkisUPDRPCv1NEg1D0biA==
+X-CSE-MsgGUID: whH+/q0lTQ61iuGeMYKo+g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,274,1747724400"; 
+   d="scan'208";a="196174356"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2025 15:37:40 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26; Thu, 7 Aug 2025 15:37:41 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.26 via Frontend Transport; Thu, 7 Aug 2025 15:37:41 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (40.107.94.82) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Thu, 7 Aug 2025 15:37:41 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kljw2X4idzdkCzmlLByfm9TS4wmm8hWTmHsZuDMQ3DHCKyVCzvPQousMJFOgAQ0VmcjHqdKEYQo4jnXLhOZJzT5Dzt1z8RQB3hcXZYevSZFylICTAE7UgC+UJWWGIjiLIHftNuryQrWlpIF+2VH/uV1dVEWN2+cx/4hISaEUzr1+CayDtoX/yPe8W+KKjZ1JWi3BUGj6xNLdBvCF0JLc3fxPnSCbBml4rnUegcH42IXh7quTwrX+cIwv4Lex4KHZo/exeBQ0l/zomu9uPo0vw+JPJU05MFHhYgnaRsIW4p1KBnw0UCiuZfiIQPQxIzYC3mFlcoC6IG2jNKfeCxbOLw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8GeV4iU1+z08w/1uo1Tq5jyivbRLlx9Ax8xpRqRMzkw=;
+ b=cDNHsElckYWgMxGwJqpQ95E06vAa4ueX7qvin1jPeEc7HdGnTdfip+6r+0xQHVTi9zecG5ARFDK+3dGtzo668+5B4jktdJiD6RizIxptxwoi/nlhaQW1BRZwa0OMVRyYkGHHJ7kYeW/l0EUdEBBpkPpuKBd7IEO/J//CIDNJEFEpojbieLWNmo8/LFCwOwnZPhpODBe3yEQ7HHvPnIBwGUbTmIJ2nf8fFo8g9oF0VsmIbAr6N/3kO3z5iseTw+/8ohtxNXbS7qCh+Q8YU1NatVN8q8DZSbh7+jcx1kv/0PPu0F3txLVTFYXYAULu+QqKckOjMfhTYPAyS69sbQf50Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by IA0PR11MB7307.namprd11.prod.outlook.com (2603:10b6:208:437::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.15; Thu, 7 Aug
+ 2025 22:37:38 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%2]) with mapi id 15.20.9009.013; Thu, 7 Aug 2025
+ 22:37:38 +0000
+From: <dan.j.williams@intel.com>
+Date: Thu, 7 Aug 2025 15:37:36 -0700
+To: Bjorn Helgaas <helgaas@kernel.org>, Dan Williams
+	<dan.j.williams@intel.com>
+CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <bhelgaas@google.com>, <aik@amd.com>,
+	<lukas@wunner.de>, Yilun Xu <yilun.xu@intel.com>, Jonathan Cameron
+	<Jonathan.Cameron@huawei.com>, Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+Message-ID: <68952ab060b6d_cff9910033@dwillia2-xfh.jf.intel.com.notmuch>
+In-Reply-To: <20250807201236.GA60870@bhelgaas>
+References: <20250717183358.1332417-3-dan.j.williams@intel.com>
+ <20250807201236.GA60870@bhelgaas>
+Subject: Re: [PATCH v4 02/10] PCI/IDE: Enumerate Selective Stream IDE
+ capabilities
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0027.namprd03.prod.outlook.com
+ (2603:10b6:a03:33a::32) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20250713174339.13981-2-shivankg@amd.com> <20250713174339.13981-4-shivankg@amd.com>
- <1e37e4e7-aa7b-4a2a-b1aa-1243f8094dcb@redhat.com> <diqz4iui4y00.fsf@ackerleytng-ctop.c.googlers.com>
-Message-ID: <diqz1ppm4w4t.fsf@ackerleytng-ctop.c.googlers.com>
-Subject: Re: [PATCH V9 1/7] KVM: guest_memfd: Use guest mem inodes instead of
- anonymous inodes
-From: Ackerley Tng <ackerleytng@google.com>
-To: David Hildenbrand <david@redhat.com>, Shivank Garg <shivankg@amd.com>, seanjc@google.com, 
-	vbabka@suse.cz, willy@infradead.org, akpm@linux-foundation.org, 
-	shuah@kernel.org, pbonzini@redhat.com, brauner@kernel.org, 
-	viro@zeniv.linux.org.uk
-Cc: paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com, pvorel@suse.cz, 
-	bfoster@redhat.com, tabba@google.com, vannapurve@google.com, 
-	chao.gao@intel.com, bharata@amd.com, nikunj@amd.com, michael.day@amd.com, 
-	shdhiman@amd.com, yan.y.zhao@intel.com, Neeraj.Upadhyay@amd.com, 
-	thomas.lendacky@amd.com, michael.roth@amd.com, aik@amd.com, jgg@nvidia.com, 
-	kalyazin@amazon.com, peterx@redhat.com, jack@suse.cz, rppt@kernel.org, 
-	hch@infradead.org, cgzones@googlemail.com, ira.weiny@intel.com, 
-	rientjes@google.com, roypat@amazon.co.uk, ziy@nvidia.com, 
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
-	byungchul@sk.com, gourry@gourry.net, kent.overstreet@linux.dev, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, chao.p.peng@intel.com, 
-	amit@infradead.org, ddutile@redhat.com, dan.j.williams@intel.com, 
-	ashish.kalra@amd.com, gshan@redhat.com, jgowans@amazon.com, 
-	pankaj.gupta@amd.com, papaluri@amd.com, yuzhao@google.com, 
-	suzuki.poulose@arm.com, quic_eberman@quicinc.com, 
-	aneeshkumar.kizhakeveetil@arm.com, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|IA0PR11MB7307:EE_
+X-MS-Office365-Filtering-Correlation-Id: d35d5e53-d2d2-4f31-4373-08ddd6030368
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?aXlnU3kxY2hlMDZad2pXQ2dPcml4ZmVtcnU0Y3hFaHdIRmdRQXdtbGwvWDhN?=
+ =?utf-8?B?VEFBbXBnVTBXZExoV3Q4Q3BZYURRZzhSUkIvcWkrL1BpUzVuaVR3elF5c0Yw?=
+ =?utf-8?B?SlJNTG45K2ZCVDdkcy92YWhsWU01R2w3OXJOVWVUdHgyQWNYVXk2YVg4Qkd6?=
+ =?utf-8?B?engxVUx6cExOTklKZW5ydnFRckpQcVJiYkcwY3l1UjQraDhSQlp5S0ZoZFZU?=
+ =?utf-8?B?YjdQRDhyNTRwWDdoWDVDZGdBd2JULzN5SEd6SlZuTmdHUzFEc2tqc2ZTM0ov?=
+ =?utf-8?B?dFBoRVo2QXB4WVNlNzhJQ1M2SHNxR3hTNDBOcTBHWGIzK0s3eTU3ZWZHOGxE?=
+ =?utf-8?B?WHAyOVdudENsWTUwQUlVajEyK3YwZ0t5QXBIUG5acGRxeHVYMUJHYThhODV2?=
+ =?utf-8?B?N0RYTnduRTU2WWh3ald5NFhxVFlNL1Z6Zk00WHRsbWdORTNEQlY4U1d4YU5w?=
+ =?utf-8?B?VGRZRFZUZmhuMWZMMU5kL2pCeFcwSyt5Vi81RXRmL1BsNzJEY0dhclVCQzlE?=
+ =?utf-8?B?VmFIL255UTNiUGwyMXRWY2RUcEpKcFh2L21HZkFTd0R1ZGd6MTZ3MHVjMmVv?=
+ =?utf-8?B?cW51bkpCWklrMHVWRHhYUUNvbHcyeHJZeDdTWmhmc2hKUXN3anhXU05DQ0ZS?=
+ =?utf-8?B?ektwRmZlcERYb1lXT3dvWkVzM3ZvWjBaV3RnQVNDdk5BamxocmRwVUdGWjVJ?=
+ =?utf-8?B?VnJmUWR5V2tkenZGbzlSM3R6Mmd2ZkNJU3JtbnJzVmVvb2x3UXhqMWpNZzVy?=
+ =?utf-8?B?MlZPNTFmenlUd3FwMVZwY1dqWVR3SVNpaXFwNWI5OEttU2hYQjV1cmJHUVYz?=
+ =?utf-8?B?K09qOENBTk43cW1YdUlaMENpaWo4ektyQnB6cWJjN2VmamxEamFMUU5KZmEv?=
+ =?utf-8?B?VkErTG1Xb1h3RTlTZmgya2FpakU3dFpzVUEzc0J1ZmQwQ1F2bGRyVkpUcFQ0?=
+ =?utf-8?B?ZmNPY3ZLMXd3dlFHK2tmM1pDVEJzbzNJeXdHUDNSMnZMeGNhVFZVZzkxK0I2?=
+ =?utf-8?B?RGZ2WXdFamVROURCYnBIcFdnYkE2TEJ4WVgvYzAvWFZSMnUvV0lhSk1nZldo?=
+ =?utf-8?B?NDlOTHA3aUVHQVl4Q0xtZ2VIS0NkSEF5MEQ1NFhldURVMHpqN1p6OVN6YW9U?=
+ =?utf-8?B?ZHJrQldIQ2ZoQUNtUXBweWlQbTVlRjBlNVpBNWxXUnhmbXFlV2JFcWFvMkhp?=
+ =?utf-8?B?ekxKQlFjajFFdVJURU5OSTB1d3Y3U3A2VVh4Y0pPVHBLZEJYSXgrcUJqYmhu?=
+ =?utf-8?B?SWJYWE8ySEc3bVF5d1F4dCtJYXZzL2hTaEtVSVp2WVE3ampPdHBDazhoaCt6?=
+ =?utf-8?B?L3plU1hOYXM0VDZLTkZROW1SWnR1OE9HWGVyUGVXMlBFV1JrZ0F4VStpcUNS?=
+ =?utf-8?B?TFN4WWRUdVl6MkllSkZqbk1KMy80cWp4UnZWazhNc3NMRkNXblM5T2xaWWo1?=
+ =?utf-8?B?MFo0S3Rtd2xzd3B4WHdseHhxYmpvTUk5Y0FONEo3Wm9lMGtRTnA2Z2xSRHQ2?=
+ =?utf-8?B?SkVoaHMzaVI1eEpaWklvZ0wzNm1rOGx1SzdyODJUbjFpb3k5NU9SM3U3TDk2?=
+ =?utf-8?B?RHA1ZXE0VVRaY2h5KzlHMEhSNGhOYWZhWEVmbnVBejBGdDE3dnlSSXd3UmlO?=
+ =?utf-8?B?M25LanVJUzdSV1RxeUhZR3M2a1lOVVlCWFBzWUkwd3RIekhoZWdDZ1dCYm5l?=
+ =?utf-8?B?MURTcXY2Zll5V0pIZWlPc3FXTituUEVSc0F2cDRjQllGMUpLWHZJa0M3eXJS?=
+ =?utf-8?B?L0krQ0FBUWVtcW51Z0xvaWMwYkhxRXdpdnRXR2hKR0J3Vjh5U2N1d1o2SVMr?=
+ =?utf-8?B?SmdtODdVRUJPTUxrcjJFd3FlckppdCtmTFVNRVdHZFhwMVpBZkRPdm81dC9o?=
+ =?utf-8?B?dGo3ZXZpTGlvU1RuT3ZxbTdxaElJQkZHS0M0dzJ3M2hodVNtUGVNSnp2eVlR?=
+ =?utf-8?Q?Z3DNwE6XuT0=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dkhSeWszNmdETG96RWMwR3R5MHd5ZThGbWJtMXB4REF6dTN1eU5TTUJHa2FT?=
+ =?utf-8?B?d0JET1RyZU5YUzNHYVQ3MG1NREdQaStDekR5eDRwNkQwVllIa3VrUzk3eFFD?=
+ =?utf-8?B?UU5zSHBIVTU2QmdIRlRHK0FvMjBtQ2liSStSL1Q3cloxbFFuTHYyd1I0bExZ?=
+ =?utf-8?B?OFEyNXBnTDlQdytHb3FCUFFKQVRKR05YU0lGenVlQmNTS3UvMTVXRXJqSjEr?=
+ =?utf-8?B?a2g1a2h5dTFVekp2RmxNamoxWFF6Ny9aLzhPSzVqTE5xTlBkdW13MmhFRHdC?=
+ =?utf-8?B?RDQvQ3RmMHRvL2ZPYWdoc3I3VEQzZXdkZjlOTGdrRXhlNWFBdklXN0NLdnpP?=
+ =?utf-8?B?SENKemxwQnBPN2VwMndwNzE2RFVqeU9paEVobm11THUzSG1nMitYUWdVSCth?=
+ =?utf-8?B?NnRwelM3QU1RODZkbU5GUGlLT05mOHZVaVM4ZDIwZU5TQTRVYkVjc25EVDAv?=
+ =?utf-8?B?TzNtc2pPbnhTaE5JVG5vRS9GNTk0UkltcjRzUnJFNjdPNk9BcG15Z3dzZVpt?=
+ =?utf-8?B?SUdMNnhwSld3MW9sQ1k2NS9xSzQzSkNDK1dUeWRFUHJtcDdFOHhMdkxBQjQw?=
+ =?utf-8?B?OHVReEhyemZVb0lNeGRFTnd6WmUwMG0zVy9aYmhXdkpWRFQ3VzlBL3FTQldm?=
+ =?utf-8?B?UXhuS21lblhHT0hLMEkyWDhVcTZxMWFBNXB4UUZQRGxiYTRFUGdwZ2J5UFlR?=
+ =?utf-8?B?Q2o4MENhQVhBajM2bnMvRllSR3dyREI3aFh0U2gyL2wzbEFLSDg3djZyN0pT?=
+ =?utf-8?B?UGM2ZldKZit2aFlza2RZMHNoT0IrckdHM1NjSm1Ecm9kdEc2ZWtwRzAzbXYv?=
+ =?utf-8?B?RWlwdjhHSHB5L21hSkJSejVFY0RGMUZwR21CTFlrVzVWckdxNGFoak9pU3FR?=
+ =?utf-8?B?TGZoYnBoZzlNOU50SVZHRnljMmhnQ2MzYmhoR2VCdU8rN0xVeVcrTXZmd1V0?=
+ =?utf-8?B?c2pwYndQbkRlSTdVTXhvNUxmVjViYks4eENwVWxxZWNUdkFaeVhEUXZZc09E?=
+ =?utf-8?B?R3liU1U2Q3JlaEQ2Z2RnWkJhc3lHd0hPZGlsWXlwNUEveVJIcENxbW5OMGhs?=
+ =?utf-8?B?SGlGNGpKTWU2REo5bzEwNzFHRDNVRkovVG0wYzRWWitGQm0xMkhwYXlaNUxj?=
+ =?utf-8?B?UGwvbWIyZ3NKa0RLVGN6RnptMlRQY0tsSXRBK3J1RVpYK2ozVFAxOTl3WjNr?=
+ =?utf-8?B?NFJZNmZ1WEsvTmd6UjI2WlhZcFgyZXBxUzZwZVpCQnl6UlhEVHJRRmk5SllR?=
+ =?utf-8?B?aEhUN21ONlIzZXJ0emR0SUZFR3IzaEJnL3VFWjN3bm80TUpqMUlqT3krY1BK?=
+ =?utf-8?B?eUdneWl6ZlpoUGVQSUpSYW0xTS9FTDU4Rm16dC9wVE53NTRGQVJDeG1rVHQ2?=
+ =?utf-8?B?UkMyblpHai9jS1lrZjZWQzVYU0dmZ1JzUDJBVjJjVXpPTWZJNS81QThnWVlL?=
+ =?utf-8?B?djJZWG51K1I3OEs4MEcvOXFERmRuNTRlMGFTdFZaazBJMXdGbUlTdEo3TUZE?=
+ =?utf-8?B?ZUd3WElzL0F1WVROd3FBY1RvTzIwQXJyMDA0c2VvZUJYOWVSN0tPV0pFblYy?=
+ =?utf-8?B?WDcvZExVbkQxbVhXWEU2dHl1R1ZmM3VOb1ZzZFJOcFVGUGZtb2kraUhTTVA4?=
+ =?utf-8?B?Q09mZ2NkblhBUVV6c0dBT1JNYVBzMThsL2s5enhUaWRQMlVMMUU5UDNFYkxO?=
+ =?utf-8?B?d1lNZUN6MmNhZnMxSGZhWElOekVRRzArR3dtZ3hHcmpabm41TUxHZlFzMkVJ?=
+ =?utf-8?B?S2R6NDBvaVY3TDg2YkkwTFNUL3lLVklBa211ODcvbTZqUnozMzZMbTk4ZzFR?=
+ =?utf-8?B?TURhZ3k3TzBzSkUrNzRoalNXUUZ4aUFCV0MxSjlrM2JzSWhqTnlRQmpuZk5U?=
+ =?utf-8?B?RzZLMU1Qdk9DVVoyTzRORFcvQW9GMnE5YVJoeGcvTEU2TkFYSUtsMHNpa2ox?=
+ =?utf-8?B?d3RCblpEVDhoTXgvRmhRSm54Tk8vV3hCSzJzMXF4bEZKRThUNnltOEFWdXlP?=
+ =?utf-8?B?WHp2RHpkeUFrSHQza29Sa2M2emltamxkR0JWQjM4amI5VG9RL2VsU3FtUUxn?=
+ =?utf-8?B?RTN4dStOSTQ1UXFpSTZIbjh5TWNUTW9XRVdxcDdjSEJjdWFsVWdEZjlFNW0x?=
+ =?utf-8?B?U1dhd0p2YXdBZC9VYk5QbmJSNTBFUS9xSjRmQ3p4UlM0M3ZoSGlaOGhNdWFG?=
+ =?utf-8?B?b2c9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: d35d5e53-d2d2-4f31-4373-08ddd6030368
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2025 22:37:38.8137
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aKTvceuRtDbLNeOBCtwoNEieG7qGAkdor0bWLv5g6nf9CwFhMlDXRXyzsWvMJX91k7klFCeRWJpTCr19TUMWA0cMOmeflIQ/NBSQfM2HhR8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7307
+X-OriginatorOrg: intel.com
 
-Ackerley Tng <ackerleytng@google.com> writes:
+Bjorn Helgaas wrote:
+> On Thu, Jul 17, 2025 at 11:33:50AM -0700, Dan Williams wrote:
+> > Link encryption is a new PCIe feature enumerated by "PCIe 6.2 section
+> > 7.9.26 IDE Extended Capability".
+> 
+> > +++ b/drivers/pci/ide.c
+> > @@ -0,0 +1,93 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
+> > +
+> > +/* PCIe 6.2 section 6.33 Integrity & Data Encryption (IDE) */
+> > +
+> > +#define dev_fmt(fmt) "PCI/IDE: " fmt
+> > +#include <linux/pci.h>
+> > +#include <linux/bitfield.h>
+> 
+> Trend is to alphabetize these.  And I think there should be more
+> #includes here instead of using other things pulled in indirectly:
+> 
+>   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submit-checklist.rst?id=v6.16#n17
 
-> David Hildenbrand <david@redhat.com> writes:
->
+In this case I think it was only missing a:
 
-[snip]
+#include <linux/pci_regs.h>
 
->>
->> Nothing else jumped at me.
->>
->
-> Thanks for the review!
->
-> Since we're going to submit this patch through Shivank's mempolicy
-> support series, I'll follow up soon by sending a replacement patch in
-> reply to this series so Shivank could build on top of that?
->
->> -- 
->> Cheers,
->>
->> David / dhildenb
+...but more includes are needed in follow-on patches. Added those and
+alphabetized.
 
-I hope sending a patch within a reply this way works!
+> 
+> > +++ b/include/uapi/linux/pci_regs.h
+> 
+> > +#define  PCI_IDE_CAP_ALG_MASK		__GENMASK(12, 8) /* Supported Algorithms */
+> > +#define  PCI_IDE_CAP_ALG_AES_GCM_256	0    /* AES-GCM 256 key size, 96b MAC */
+> > +#define  PCI_IDE_CAP_LINK_TC_NUM_MASK	__GENMASK(15, 13) /* Link IDE TCs */
+> > +#define  PCI_IDE_CAP_SEL_NUM_MASK	__GENMASK(23, 16)/* Supported Selective IDE Streams */
+> 
+> I'm totally OK with dropping the "_MASK" suffix since I think uses are
+> completely readable without it, especially with __GENMASK()/FIELD_GET()/
+> FIELD_PREP().
 
----
-
-From 11845fed725ff68c3bad07cd9c717ae968465bf4 Mon Sep 17 00:00:00 2001
-Message-ID: <11845fed725ff68c3bad07cd9c717ae968465bf4.1754603750.git.ackerleytng@google.com>
-From: Ackerley Tng <ackerleytng@google.com>
-Date: Sun, 13 Jul 2025 17:43:35 +0000
-Subject: [PATCH 1/1] KVM: guest_memfd: Use guest mem inodes instead of
- anonymous inodes
-
-guest_memfd's inode represents memory the guest_memfd is
-providing. guest_memfd's file represents a struct kvm's view of that
-memory.
-
-Using a custom inode allows customization of the inode teardown
-process via callbacks. For example, ->evict_inode() allows
-customization of the truncation process on file close, and
-->destroy_inode() and ->free_inode() allow customization of the inode
-freeing process.
-
-Customizing the truncation process allows flexibility in management of
-guest_memfd memory and customization of the inode freeing process
-allows proper cleanup of memory metadata stored on the inode.
-
-Memory metadata is more appropriately stored on the inode (as opposed
-to the file), since the metadata is for the memory and is not unique
-to a specific binding and struct kvm.
-
-Co-developed-by: Fuad Tabba <tabba@google.com>
-Change-Id: I64925f069637323023fbff91fc8521f92b8561bd
-Signed-off-by: Fuad Tabba <tabba@google.com>
-Signed-off-by: Shivank Garg <shivankg@amd.com>
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
----
- include/uapi/linux/magic.h |   1 +
- virt/kvm/guest_memfd.c     | 128 ++++++++++++++++++++++++++++++-------
- virt/kvm/kvm_main.c        |   7 +-
- virt/kvm/kvm_mm.h          |   9 +--
- 4 files changed, 118 insertions(+), 27 deletions(-)
-
-diff --git a/include/uapi/linux/magic.h b/include/uapi/linux/magic.h
-index bb575f3ab45e5..638ca21b7a909 100644
---- a/include/uapi/linux/magic.h
-+++ b/include/uapi/linux/magic.h
-@@ -103,5 +103,6 @@
- #define DEVMEM_MAGIC		0x454d444d	/* "DMEM" */
- #define SECRETMEM_MAGIC		0x5345434d	/* "SECM" */
- #define PID_FS_MAGIC		0x50494446	/* "PIDF" */
-+#define GUEST_MEMFD_MAGIC	0x474d454d	/* "GMEM" */
-
- #endif /* __LINUX_MAGIC_H__ */
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 08a6bc7d25b60..0e93323fc8392 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -1,12 +1,16 @@
- // SPDX-License-Identifier: GPL-2.0
-+#include <linux/anon_inodes.h>
- #include <linux/backing-dev.h>
- #include <linux/falloc.h>
-+#include <linux/fs.h>
- #include <linux/kvm_host.h>
-+#include <linux/pseudo_fs.h>
- #include <linux/pagemap.h>
--#include <linux/anon_inodes.h>
-
- #include "kvm_mm.h"
-
-+static struct vfsmount *kvm_gmem_mnt;
-+
- struct kvm_gmem {
- 	struct kvm *kvm;
- 	struct xarray bindings;
-@@ -385,9 +389,45 @@ static struct file_operations kvm_gmem_fops = {
- 	.fallocate	= kvm_gmem_fallocate,
- };
-
--void kvm_gmem_init(struct module *module)
-+static int kvm_gmem_init_fs_context(struct fs_context *fc)
-+{
-+	if (!init_pseudo(fc, GUEST_MEMFD_MAGIC))
-+		return -ENOMEM;
-+
-+	fc->s_iflags |= SB_I_NOEXEC;
-+	fc->s_iflags |= SB_I_NODEV;
-+
-+	return 0;
-+}
-+
-+static struct file_system_type kvm_gmem_fs = {
-+	.name		 = "guest_memfd",
-+	.init_fs_context = kvm_gmem_init_fs_context,
-+	.kill_sb	 = kill_anon_super,
-+};
-+
-+static int kvm_gmem_init_mount(void)
-+{
-+	kvm_gmem_mnt = kern_mount(&kvm_gmem_fs);
-+
-+	if (IS_ERR(kvm_gmem_mnt))
-+		return PTR_ERR(kvm_gmem_mnt);
-+
-+	kvm_gmem_mnt->mnt_flags |= MNT_NOEXEC;
-+	return 0;
-+}
-+
-+int kvm_gmem_init(struct module *module)
- {
- 	kvm_gmem_fops.owner = module;
-+
-+	return kvm_gmem_init_mount();
-+}
-+
-+void kvm_gmem_exit(void)
-+{
-+	kern_unmount(kvm_gmem_mnt);
-+	kvm_gmem_mnt = NULL;
- }
-
- static int kvm_gmem_migrate_folio(struct address_space *mapping,
-@@ -463,11 +503,71 @@ bool __weak kvm_arch_supports_gmem_mmap(struct kvm *kvm)
- 	return true;
- }
-
-+static struct inode *kvm_gmem_inode_make_secure_inode(const char *name,
-+						      loff_t size, u64 flags)
-+{
-+	struct inode *inode;
-+
-+	inode = anon_inode_make_secure_inode(kvm_gmem_mnt->mnt_sb, name, NULL);
-+	if (IS_ERR(inode))
-+		return inode;
-+
-+	inode->i_private = (void *)(unsigned long)flags;
-+	inode->i_op = &kvm_gmem_iops;
-+	inode->i_mapping->a_ops = &kvm_gmem_aops;
-+	inode->i_mode |= S_IFREG;
-+	inode->i_size = size;
-+	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
-+	mapping_set_inaccessible(inode->i_mapping);
-+	/* Unmovable mappings are supposed to be marked unevictable as well. */
-+	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
-+
-+	return inode;
-+}
-+
-+static struct file *kvm_gmem_inode_create_getfile(void *priv, loff_t size,
-+						  u64 flags)
-+{
-+	static const char *name = "[kvm-gmem]";
-+	struct inode *inode;
-+	struct file *file;
-+	int err;
-+
-+	err = -ENOENT;
-+	if (!try_module_get(kvm_gmem_fops.owner))
-+		goto err;
-+
-+	inode = kvm_gmem_inode_make_secure_inode(name, size, flags);
-+	if (IS_ERR(inode)) {
-+		err = PTR_ERR(inode);
-+		goto err_put_module;
-+	}
-+
-+	file = alloc_file_pseudo(inode, kvm_gmem_mnt, name, O_RDWR,
-+				 &kvm_gmem_fops);
-+	if (IS_ERR(file)) {
-+		err = PTR_ERR(file);
-+		goto err_put_inode;
-+	}
-+
-+	file->f_flags |= O_LARGEFILE;
-+	file->private_data = priv;
-+
-+out:
-+	return file;
-+
-+err_put_inode:
-+	iput(inode);
-+err_put_module:
-+	module_put(kvm_gmem_fops.owner);
-+err:
-+	file = ERR_PTR(err);
-+	goto out;
-+}
-+
- static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
- {
--	const char *anon_name = "[kvm-gmem]";
- 	struct kvm_gmem *gmem;
--	struct inode *inode;
- 	struct file *file;
- 	int fd, err;
-
-@@ -481,32 +581,16 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
- 		goto err_fd;
- 	}
-
--	file = anon_inode_create_getfile(anon_name, &kvm_gmem_fops, gmem,
--					 O_RDWR, NULL);
-+	file = kvm_gmem_inode_create_getfile(gmem, size, flags);
- 	if (IS_ERR(file)) {
- 		err = PTR_ERR(file);
- 		goto err_gmem;
- 	}
-
--	file->f_flags |= O_LARGEFILE;
--
--	inode = file->f_inode;
--	WARN_ON(file->f_mapping != inode->i_mapping);
--
--	inode->i_private = (void *)(unsigned long)flags;
--	inode->i_op = &kvm_gmem_iops;
--	inode->i_mapping->a_ops = &kvm_gmem_aops;
--	inode->i_mode |= S_IFREG;
--	inode->i_size = size;
--	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
--	mapping_set_inaccessible(inode->i_mapping);
--	/* Unmovable mappings are supposed to be marked unevictable as well. */
--	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
--
- 	kvm_get_kvm(kvm);
- 	gmem->kvm = kvm;
- 	xa_init(&gmem->bindings);
--	list_add(&gmem->entry, &inode->i_mapping->i_private_list);
-+	list_add(&gmem->entry, &file_inode(file)->i_mapping->i_private_list);
-
- 	fd_install(fd, file);
- 	return fd;
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 18f29ef935437..301d48d6e00d0 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -6489,7 +6489,9 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
- 	if (WARN_ON_ONCE(r))
- 		goto err_vfio;
-
--	kvm_gmem_init(module);
-+	r = kvm_gmem_init(module);
-+	if (r)
-+		goto err_gmem;
-
- 	r = kvm_init_virtualization();
- 	if (r)
-@@ -6510,6 +6512,8 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
- err_register:
- 	kvm_uninit_virtualization();
- err_virt:
-+	kvm_gmem_exit();
-+err_gmem:
- 	kvm_vfio_ops_exit();
- err_vfio:
- 	kvm_async_pf_deinit();
-@@ -6541,6 +6545,7 @@ void kvm_exit(void)
- 	for_each_possible_cpu(cpu)
- 		free_cpumask_var(per_cpu(cpu_kick_mask, cpu));
- 	kmem_cache_destroy(kvm_vcpu_cache);
-+	kvm_gmem_exit();
- 	kvm_vfio_ops_exit();
- 	kvm_async_pf_deinit();
- 	kvm_irqfd_exit();
-diff --git a/virt/kvm/kvm_mm.h b/virt/kvm/kvm_mm.h
-index 31defb08ccbab..9fcc5d5b7f8d0 100644
---- a/virt/kvm/kvm_mm.h
-+++ b/virt/kvm/kvm_mm.h
-@@ -68,17 +68,18 @@ static inline void gfn_to_pfn_cache_invalidate_start(struct kvm *kvm,
- #endif /* HAVE_KVM_PFNCACHE */
-
- #ifdef CONFIG_KVM_GUEST_MEMFD
--void kvm_gmem_init(struct module *module);
-+int kvm_gmem_init(struct module *module);
-+void kvm_gmem_exit(void);
- int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args);
- int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
- 		  unsigned int fd, loff_t offset);
- void kvm_gmem_unbind(struct kvm_memory_slot *slot);
- #else
--static inline void kvm_gmem_init(struct module *module)
-+static inline int kvm_gmem_init(struct module *module)
- {
--
-+	return 0;
- }
--
-+static inline void kvm_gmem_exit(void) {};
- static inline int kvm_gmem_bind(struct kvm *kvm,
- 					 struct kvm_memory_slot *slot,
- 					 unsigned int fd, loff_t offset)
---
-2.50.1.703.g449372360f-goog
+Sounds good, and helps with the column width pressure. There might be
+isolated cases of "mask vs value" confusion, but I think proximity to
+FIELD_PREP()/FIELD_GET(), like you say, makes this clear.
