@@ -1,281 +1,113 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E31121E08B
-	for <linux-coco@lists.linux.dev>; Thu,  7 Aug 2025 21:34:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C52124B29;
+	Thu,  7 Aug 2025 21:45:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754602466; cv=none; b=StFD6mWwnyavlkoui5Gc8atenAE1+oxBLaAOCSeTnrnvFZTBS/zLK8opekPQMq2bsVaiNOzBr4v6i+MGL3EGxl4TlCxkvPzyODdW31/IHH6m0soEiAmAMW6eK0p+OTjg1vYnoPIAmEc0ZcN294lXw/jaKkGN9NSu6jXikbHrz1U=
+	t=1754603157; cv=none; b=uE99LOloifvA64hPLqfGkMkPsFHNgGbXkmT+h5B8XvYzkaLXS9Vks6IPzJb9MhTdzGR2nIYhosqCskXLv0yCBtNS1YXdEuevZafkrGmPSmayFCM9FKdqj5ttW2bubK+lvGj3MXINNWwKeiputnAX70xP4counErdpaOYJHqg/PQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754602466; c=relaxed/simple;
-	bh=JlG1vtTJvdw82uvVilSW6OkfU8OcNVk2IJUHb+2IkTk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kzWx5m3c9CzKxed9HkN7aSgYGERBqFWovOEL5lYOP00dhoNZ15VRLLBogLBUPD+gOhULojxr6yaLWvmuljdNPiehhX0Xmh4hvGPgMp/dEbypTKPKAyEv/KrjccrtEFUSxkJ8oLz63QVZqjoEGUBbSg12wTt8wJpcDNRFCYjf8rA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EhR+7Bc+; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
+	s=arc-20240116; t=1754603157; c=relaxed/simple;
+	bh=L+NVF+13JGNJ3SpYwk9loHGdcV3JgX/IGVOXLZzuTfI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=iLX1I1bihXtkuAHNjMFyrk1hfE867kZA5oxjgDfqeuDVr5ae/IbCeW+J3EMFtcNtgVcqcIaS7mclHHpr6kgjTeGjwAj2fLXvueDoPaUNYulAoKDKuJmX6djWbd4zeFAEYuI42P3uLgwhzFoJOzVdSic0OHm51vU3PQyh3Fv0aLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=heOOZV2a; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EhR+7Bc+"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b115fb801bcso2015425a12.3
-        for <linux-coco@lists.linux.dev>; Thu, 07 Aug 2025 14:34:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754602465; x=1755207265; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=euT/8AA//Jz5ZAvA5q9RKbxUinHczFI9QPq5RPbWgzY=;
-        b=EhR+7Bc+m60q+qnfbkDfNmLVB0oKRaxRleix6Tj/IeZpTfVcUg18wRvMQfxs/g/1nB
-         BqGUtEix5Dr+EEUAOIxpTP6sDhGHd/7UcJz6YQ35zjw/D1t7zJtrPs51UR+qQSpYWiQr
-         Qt4xtl1BXGKksnHAO6t9qa5mU5ApXjH86fWKg5KYc50JXray9j2kxpMaVTnSU6ZIuxtE
-         D05jhZQcrgCySUxJQ0B/TCaVEJMBMLc/bPZ0Ur5y8DbValZXSEy7w9F6UmR2ebqxhukZ
-         Z3dw9fPeC+zlTL1lRNuHzgUNDklif0ReB/6ZArI8zEdoeL/vG2WB1HcGH2uln0auAtY3
-         i7Pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754602465; x=1755207265;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=euT/8AA//Jz5ZAvA5q9RKbxUinHczFI9QPq5RPbWgzY=;
-        b=pzzwVsftip0WlpmeAcVlpW5h9awVaVyF/1VKe4dzmKOEiPsBO+74F7Dg7c8mb/Oi1g
-         VaBTNFirTWac8TD2Qb5y1wTTscWRbGC6L4TeBGtGt1/CkbKNxCU3mu25moBITN3JRIs+
-         vMD4eI+7gQSpzVQYJ/QeDGqnZ3YktRHApxVOXjGR0AFywMvwqAtnFK5cl1W+JKE0oHbh
-         fuwsomO62OkOR8knRThbS/DbyxFDmkCIsVT53S+guLhqBJAwLjZw44A6q01rRt88lzC/
-         Mz6i4BckkFo2w+SbvZ7Vkqqf7dYaQ6LNAmZ9aIGtgogzhUR18b880T/UjmrlStl2mJRy
-         kjqg==
-X-Forwarded-Encrypted: i=1; AJvYcCVEwlSn7Jjv0hnPEso40Imhiae5uDkVnEzwtmjF0iQz7oq1HJJP1M94KOXDj1A3hssDk6eQ4HHGbIFX@lists.linux.dev
-X-Gm-Message-State: AOJu0YxJERIcIq7t349lezoY2SlBFz91gClQP8ANcAT5n0M91kNTX9Xp
-	UFzpmcXOrxm2IQfRIMy8O7wF6kAYUkwdJLF3PJGOuzRT27zjcapvoc/R3scVRzGYy4jIjFa5Sg8
-	Ki5ADA4JTKy3RF0NKr3mr3xFvrQ==
-X-Google-Smtp-Source: AGHT+IHT05ItRE3IEgvLcZ+lHAyFN+6DaRgxPxErhggbmCLRvoYXLPmLesz+SqrwGnv72L7qbCLUCgFDzQ08eW50HQ==
-X-Received: from plbko5.prod.google.com ([2002:a17:903:7c5:b0:23f:e9a5:d20a])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:ef0a:b0:235:f459:69c7 with SMTP id d9443c01a7336-242c225dbfemr7374775ad.52.1754602464480;
- Thu, 07 Aug 2025 14:34:24 -0700 (PDT)
-Date: Thu, 07 Aug 2025 14:34:23 -0700
-In-Reply-To: <1e37e4e7-aa7b-4a2a-b1aa-1243f8094dcb@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="heOOZV2a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 115ABC4CEEB;
+	Thu,  7 Aug 2025 21:45:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754603157;
+	bh=L+NVF+13JGNJ3SpYwk9loHGdcV3JgX/IGVOXLZzuTfI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=heOOZV2a83lmdFL5bz1KDJ5ite60lE0S8k5/wfaozDWClL5eEKb2bljH34aAk8Q6K
+	 nZ1YbhteXS+n3GPaIk/qdLyFjHL1H5n9pPFDuAyQe+aNu5hD5SH0H6u1aO26munw0m
+	 AhF65+g8i56YXA57CCwdBxc+9ai/a3u/R6g6+EMNyE+0qQz5oZQR2x1S1AR0Stvc/6
+	 +LpgtOvczEQpH5Y2yTrmmHXMye6pHUEeoJIhQitSGua7mAV/rLvPfSQRwMY0LdWF8+
+	 Ym7diOR228PwuWX0YsOqupBF3REe50ULO0OJ/puvzI+JcUASHMwlyjfihttb9gW6N8
+	 ryjlwihN7bHxA==
+Date: Thu, 7 Aug 2025 16:45:55 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, bhelgaas@google.com, aik@amd.com,
+	lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: Re: [PATCH v4 05/10] samples/devsec: Introduce a PCI device-security
+ bus + endpoint sample
+Message-ID: <20250807214555.GA63946@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20250713174339.13981-2-shivankg@amd.com> <20250713174339.13981-4-shivankg@amd.com>
- <1e37e4e7-aa7b-4a2a-b1aa-1243f8094dcb@redhat.com>
-Message-ID: <diqz4iui4y00.fsf@ackerleytng-ctop.c.googlers.com>
-Subject: Re: [PATCH V9 1/7] KVM: guest_memfd: Use guest mem inodes instead of
- anonymous inodes
-From: Ackerley Tng <ackerleytng@google.com>
-To: David Hildenbrand <david@redhat.com>, Shivank Garg <shivankg@amd.com>, seanjc@google.com, 
-	vbabka@suse.cz, willy@infradead.org, akpm@linux-foundation.org, 
-	shuah@kernel.org, pbonzini@redhat.com, brauner@kernel.org, 
-	viro@zeniv.linux.org.uk
-Cc: paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com, pvorel@suse.cz, 
-	bfoster@redhat.com, tabba@google.com, vannapurve@google.com, 
-	chao.gao@intel.com, bharata@amd.com, nikunj@amd.com, michael.day@amd.com, 
-	shdhiman@amd.com, yan.y.zhao@intel.com, Neeraj.Upadhyay@amd.com, 
-	thomas.lendacky@amd.com, michael.roth@amd.com, aik@amd.com, jgg@nvidia.com, 
-	kalyazin@amazon.com, peterx@redhat.com, jack@suse.cz, rppt@kernel.org, 
-	hch@infradead.org, cgzones@googlemail.com, ira.weiny@intel.com, 
-	rientjes@google.com, roypat@amazon.co.uk, ziy@nvidia.com, 
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
-	byungchul@sk.com, gourry@gourry.net, kent.overstreet@linux.dev, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, chao.p.peng@intel.com, 
-	amit@infradead.org, ddutile@redhat.com, dan.j.williams@intel.com, 
-	ashish.kalra@amd.com, gshan@redhat.com, jgowans@amazon.com, 
-	pankaj.gupta@amd.com, papaluri@amd.com, yuzhao@google.com, 
-	suzuki.poulose@arm.com, quic_eberman@quicinc.com, 
-	aneeshkumar.kizhakeveetil@arm.com, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250717183358.1332417-6-dan.j.williams@intel.com>
 
-David Hildenbrand <david@redhat.com> writes:
+On Thu, Jul 17, 2025 at 11:33:53AM -0700, Dan Williams wrote:
+> Establish just enough emulated PCI infrastructure to register a sample
+> TSM (platform security manager) driver and have it discover an IDE + TEE
+> (link encryption + device-interface security protocol (TDISP)) capable
+> device.
+> 
+> Use the existing a CONFIG_PCI_BRIDGE_EMUL to emulate an IDE capable root
+> port, and open code the emulation of an endpoint device via simulated
+> configuration cycle responses.
 
-> On 13.07.25 19:43, Shivank Garg wrote:
->> From: Ackerley Tng <ackerleytng@google.com>
->> 
->> guest_memfd's inode represents memory the guest_memfd is
->> providing. guest_memfd's file represents a struct kvm's view of that
->> memory.
->> 
->> Using a custom inode allows customization of the inode teardown
->> process via callbacks. For example, ->evict_inode() allows
->> customization of the truncation process on file close, and
->> ->destroy_inode() and ->free_inode() allow customization of the inode
->> freeing process.
->> 
->> Customizing the truncation process allows flexibility in management of
->> guest_memfd memory and customization of the inode freeing process
->> allows proper cleanup of memory metadata stored on the inode.
->> 
->> Memory metadata is more appropriately stored on the inode (as opposed
->> to the file), since the metadata is for the memory and is not unique
->> to a specific binding and struct kvm.
->> 
->> Co-developed-by: Fuad Tabba <tabba@google.com>
->> Signed-off-by: Fuad Tabba <tabba@google.com>
->> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
->> Signed-off-by: Shivank Garg <shivankg@amd.com>
->> ---
->
-> [...]
->
->>   
->>   #include "kvm_mm.h"
->>   
->> +static struct vfsmount *kvm_gmem_mnt;
->> +
->>   struct kvm_gmem {
->>   	struct kvm *kvm;
->>   	struct xarray bindings;
->> @@ -388,9 +392,51 @@ static struct file_operations kvm_gmem_fops = {
->>   	.fallocate	= kvm_gmem_fallocate,
->>   };
->>   
->> -void kvm_gmem_init(struct module *module)
->> +static const struct super_operations kvm_gmem_super_operations = {
->> +	.statfs		= simple_statfs,
->> +};
->> +
->> +static int kvm_gmem_init_fs_context(struct fs_context *fc)
->> +{
->> +	struct pseudo_fs_context *ctx;
->> +
->> +	if (!init_pseudo(fc, GUEST_MEMFD_MAGIC))
->> +		return -ENOMEM;
->> +
->> +	ctx = fc->fs_private;
->> +	ctx->ops = &kvm_gmem_super_operations;
->
-> Curious, why is that required? (secretmem doesn't have it, so I wonder)
->
+s/existing a/existing/
 
-Good point! pseudo_fs_fill_super() fills in a struct super_operations
-which already does simple_statfs, so guest_memfd doesn't need this.
+> The devsec_tsm driver responds to the PCI core TSM operations as if it
+> successfully exercised the given interface security protocol message.
+> 
+> The devsec_bus and devsec_tsm drivers can be loaded in either order to
+> reflect cases like SEV-TIO where the TSM is PCI-device firmware, and
+> cases like TDX Connect where the TSM is a software agent running on the
+> host CPU.
+> 
+> Follow-on patches add common code for TSM managed IDE establishment. For
+> now, just successfully complete setup and teardown of the DSM (device
+> security manager) context as a building block for management of TDI
+> (trusted device interface) instances.
+> 
+>  # modprobe devsec_bus
+>     devsec_bus devsec_bus: PCI host bridge to bus 10000:00
+>     pci_bus 10000:00: root bus resource [bus 00-01]
+>     pci_bus 10000:00: root bus resource [mem 0xf000000000-0xffffffffff 64bit]
+>     pci 10000:00:00.0: [8086:7075] type 01 class 0x060400 PCIe Root Port
+>     pci 10000:00:00.0: PCI bridge to [bus 00]
+>     pci 10000:00:00.0:   bridge window [io  0x0000-0x0fff]
+>     pci 10000:00:00.0:   bridge window [mem 0x00000000-0x000fffff]
+>     pci 10000:00:00.0:   bridge window [mem 0x00000000-0x000fffff 64bit pref]
+>     pci 10000:00:00.0: bridge configuration invalid ([bus 00-00]), reconfiguring
+>     pci 10000:01:00.0: [8086:ffff] type 00 class 0x000000 PCIe Endpoint
+>     pci 10000:01:00.0: BAR 0 [mem 0xf000000000-0xf0001fffff 64bit pref]
+>     pci_doe_abort: pci 10000:01:00.0: DOE: [100] Issuing Abort
+>     pci_doe_cache_protocols: pci 10000:01:00.0: DOE: [100] Found protocol 0 vid: 1 prot: 1
+>     pci 10000:01:00.0: disabling ASPM on pre-1.1 PCIe device.  You can enable it with 'pcie_aspm=force'
+>     pci 10000:00:00.0: PCI bridge to [bus 01]
+>     pci_bus 10000:01: busn_res: [bus 01] end is updated to 01
 
->> +
->> +	return 0;
->> +}
->> +
->> +static struct file_system_type kvm_gmem_fs = {
->> +	.name		 = "kvm_guest_memory",
->
-> It's GUEST_MEMFD_MAGIC but here "kvm_guest_memory".
->
-> For secretmem it's SECRETMEM_MAGIC vs. "secretmem".
->
-> So naturally, I wonder if that is to be made consistent :)
->
+Most of these messages don't seem relevant to DSM/TDISP/etc.  It
+*would* be useful to have a hint about what specifically makes this an
+IDE + TEE device.  Capability visible via lspci?  Are devices at both
+ends required, e.g., a Root Port and an Endpoint?
 
-I'll update this to "guest_memfd" to be consistent. 
+Oooh, I see (finally).  This hierarchy is all totally fabricated, no
+actual hardware involved at all.  You did say that above; it just took
+a while to sink in.
 
->> +	.init_fs_context = kvm_gmem_init_fs_context,
->> +	.kill_sb	 = kill_anon_super,
->> +};
->> +
->> +static int kvm_gmem_init_mount(void)
->> +{
->> +	kvm_gmem_mnt = kern_mount(&kvm_gmem_fs);
->> +
->> +	if (IS_ERR(kvm_gmem_mnt))
->> +		return PTR_ERR(kvm_gmem_mnt);
->> +
->> +	kvm_gmem_mnt->mnt_flags |= MNT_NOEXEC;
->> +	return 0;
->> +}
->> +
->> +int kvm_gmem_init(struct module *module)
->>   {
->>   	kvm_gmem_fops.owner = module;
->> +
->> +	return kvm_gmem_init_mount();
->> +}
->> +
->> +void kvm_gmem_exit(void)
->> +{
->> +	kern_unmount(kvm_gmem_mnt);
->> +	kvm_gmem_mnt = NULL;
->>   }
->>   
->>   static int kvm_gmem_migrate_folio(struct address_space *mapping,
->> @@ -472,11 +518,71 @@ static const struct inode_operations kvm_gmem_iops = {
->>   	.setattr	= kvm_gmem_setattr,
->>   };
->>   
->> +static struct inode *kvm_gmem_inode_make_secure_inode(const char *name,
->> +						      loff_t size, u64 flags)
->> +{
->> +	struct inode *inode;
->> +
->> +	inode = anon_inode_make_secure_inode(kvm_gmem_mnt->mnt_sb, name, NULL);
->> +	if (IS_ERR(inode))
->> +		return inode;
->> +
->> +	inode->i_private = (void *)(unsigned long)flags;
->> +	inode->i_op = &kvm_gmem_iops;
->> +	inode->i_mapping->a_ops = &kvm_gmem_aops;
->> +	inode->i_mode |= S_IFREG;
->> +	inode->i_size = size;
->> +	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
->> +	mapping_set_inaccessible(inode->i_mapping);
->> +	/* Unmovable mappings are supposed to be marked unevictable as well. */
->> +	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
->> +
->> +	return inode;
->> +}
->> +
->> +static struct file *kvm_gmem_inode_create_getfile(void *priv, loff_t size,
->> +						  u64 flags)
->> +{
->> +	static const char *name = "[kvm-gmem]";
->> +	struct inode *inode;
->> +	struct file *file;
->> +	int err;
->> +
->> +	err = -ENOENT;
->> +	if (!try_module_get(kvm_gmem_fops.owner))
->> +		goto err;
->
-> Curious, shouldn't there be a module_put() somewhere after this function 
-> returned a file?
->
+>  # modprobe devsec_tsm
+>     devsec_tsm_pci_probe: pci 10000:01:00.0: devsec: tsm enabled
+>     __pci_tsm_init: pci 10000:01:00.0: TSM: Device security capabilities detected ( ide tee ), TSM attach
 
-This was interesting indeed, but IIUC this is correct.
+s/tsm/TSM/ in the message
+s/ide/IDE/
+s/tee/TEE/
 
-I think this flow was basically copied from __anon_inode_getfile(),
-which does this try_module_get().
+Looks like spurious spaces inside parens?
 
-The corresponding module_put() is in __fput(), which calls fops_put()
-and calls module_put() on the owner.
+> + * The expectation is the helpers referenceed are convenience "library"
 
->> +
->> +	inode = kvm_gmem_inode_make_secure_inode(name, size, flags);
->> +	if (IS_ERR(inode)) {
->> +		err = PTR_ERR(inode);
->> +		goto err_put_module;
->> +	}
->> +
->> +	file = alloc_file_pseudo(inode, kvm_gmem_mnt, name, O_RDWR,
->> +				 &kvm_gmem_fops);
->> +	if (IS_ERR(file)) {
->> +		err = PTR_ERR(file);
->> +		goto err_put_inode;
->> +	}
->> +
->> +	file->f_flags |= O_LARGEFILE;
->> +	file->private_data = priv;
->> +
->>
->
-> Nothing else jumped at me.
->
-
-Thanks for the review!
-
-Since we're going to submit this patch through Shivank's mempolicy
-support series, I'll follow up soon by sending a replacement patch in
-reply to this series so Shivank could build on top of that?
-
-> -- 
-> Cheers,
->
-> David / dhildenb
+s/referenceed/referenced/
