@@ -1,107 +1,95 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67492222DD
-	for <linux-coco@lists.linux.dev>; Mon, 11 Aug 2025 13:18:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E0920C001
+	for <linux-coco@lists.linux.dev>; Mon, 11 Aug 2025 14:34:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754918333; cv=none; b=LlmzoisTKhXz1Bpv0cjcdu1auBZY9SGVzT99stxCQjyIz6ZIG0LnNPExR43HIPNIgcFMn+cDMVsCp7ozWPp+X/H2UYu6LfpozxDy509nlt1eiZk2IGkxHiy0oz0FguGhX6VyRr+DbF4zhuDllEaQJN5GrvXnLSh5OGnGDU3jms8=
+	t=1754922858; cv=none; b=fhXdAIeRQTli3b76t8O6AmsrQM4XGrC1VdimmjBKCZjHvzDtIyu5rsTdCVTmxnXFs3BMNMzXJ2xR+ulJOo/8FBRO+i6xlffUnk2UBqgh49HINC+KANvl4OPGaQ/InIOGqmopxjZvH6ooU4QV1p507ceTNmWUPvs8Cixu6xkZ6UE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754918333; c=relaxed/simple;
-	bh=YurnktU6uLK/QMMiHdEUOXfRLMdcVqtaWTbxLFOUN3s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ltQRZpJbjx02dHg6L9zwiDrlxJI9Pc4o1+4FLJhZEBK9femgnObinbKfiKQLZ94tfmtUc7aJpcL9Zd8TcJT9YX+5SLdxkSCbNA25hZBfTRBgLC8WK6YNwr9ppq5nNfOE+NvxfrCgOl5T+wG4bACeGmbZqYODgBRH+ivv2KCH8FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=buWZLeyg; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1754922858; c=relaxed/simple;
+	bh=bruREYZz13FVqwhmiTuhvJnq89yjM0qtV4JcUUKirMo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=sXR2uCP+8CkQ01XmKwIUO7nOGuMG1CQQCJ5hK4JH7CMepjtFsUFDJeabCipDLhPql7yV1hUpbRZhLM9jDiRX9TpIMi6r9MAfXiSh1DE0PMXsdyoJ2NB+wf0WWze9gV5zHKIkFFmHeJKX7YukDk4rjG7aaresTMawGaGXGTPhY9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ivvD65mq; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="buWZLeyg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754918330;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eybU9c2mDvdB/SAMfEZIKdU5KhZDaZNeqdGbPmyFJI4=;
-	b=buWZLeyg76uX6QMJB+9yyWYf5WmLu8eFFTvjm5RtIFRgh82OVMPDrgNmEk7pBVQVhDTfWg
-	dzH1XLLGthoF7tJGSkQacJCcpYwtd/zpMa9eftCICylqQHqpxedqAyZjC6XtQVWpzT1Nv5
-	qBPFYF3xZKPufzkBKim12VR5LqpnMn8=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-124-l5x060c7OpOwLNUxTQ9DaA-1; Mon,
- 11 Aug 2025 09:18:49 -0400
-X-MC-Unique: l5x060c7OpOwLNUxTQ9DaA-1
-X-Mimecast-MFC-AGG-ID: l5x060c7OpOwLNUxTQ9DaA_1754918327
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ACC2E18002B1;
-	Mon, 11 Aug 2025 13:18:46 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.45.224.64])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A47A419560AD;
-	Mon, 11 Aug 2025 13:18:45 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
-	id 155C21800091; Mon, 11 Aug 2025 15:18:43 +0200 (CEST)
-Date: Mon, 11 Aug 2025 15:18:43 +0200
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: dan.j.williams@intel.com
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	linux-coco@lists.linux.dev, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	bhelgaas@google.com, aik@amd.com, lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>, 
-	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: Re: [PATCH v4 05/10] samples/devsec: Introduce a PCI device-security
- bus + endpoint sample
-Message-ID: <mckkt3aiggiqogigbms4kcysaaqw5toieot5vvfw55smti4acr@mbwb2oe6jp7g>
-References: <20250717183358.1332417-1-dan.j.williams@intel.com>
- <20250717183358.1332417-6-dan.j.williams@intel.com>
- <20250729161643.000023e7@huawei.com>
- <6892c9fe760_55f09100d4@dwillia2-xfh.jf.intel.com.notmuch>
- <20250806121625.00001556@huawei.com>
- <68939feeef7d9_55f09100c7@dwillia2-xfh.jf.intel.com.notmuch>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ivvD65mq"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-76c67258a9dso3248848b3a.2
+        for <linux-coco@lists.linux.dev>; Mon, 11 Aug 2025 07:34:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1754922857; x=1755527657; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=s3QC/DofyyJ1kIbquP7TygGRJBogDIdpEUbLnTdcdHg=;
+        b=ivvD65mq+FKQwMt1x79FNeVXlcYtdeexE0bYsUuqNGMBxiKJdlbqfEutmHVrxb9BP7
+         aoE8Y59q4Ao7rRP0GsBEUvH24PGwbP9tl/u1Jm8OQ/kSiSl7yQZqdsSGY5Pl/A4/afKG
+         W6ulSgMn+6qWolmnekUdoiLrUfXEyNyEv4PTkl8+SUEBtLj0fxxJ7ga/XQppNQ54kWho
+         0oNlX6q7yJKLbU8glHGiQK/FYy79zzWLd2q3V9E+f3I59a4jUo8Zj6IUsKzj83j+OYbG
+         SukZ9KuR1GdhrITfA6CIJeLf6ZUDx9BFI1c38Cj4PP1z1Z9wmye6F/yEXHx4y7abyOpP
+         l9MA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754922857; x=1755527657;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=s3QC/DofyyJ1kIbquP7TygGRJBogDIdpEUbLnTdcdHg=;
+        b=UE8OtY/mFnwo21K5KFN/rLoqzQbuwyy1FEd1L8hK/4vXa2EyJdpE65/NcIJB28lEWV
+         TuoxmYH7JRdY4g3iS7/aAMPH9G7AWQ28+ZMRFe8qH3BYaBSZoHOeQUQNxKEheaSbWrlV
+         ZWL5L6K0/Od4qFH53TpA5Hjhq8kRioUvkv5EG7KMJsEFHn9hBANKHE6DV8rBIqGaVg5R
+         ht/y2uBsmzOUQEdaI06Gv1P9fWmUOyEhaBrtX0qh5OHSoksWAX7k132Ea/jd9yNk/Wr6
+         WfrD0kh2Ae/GAxDNqo5iN+t1Vw4aG0tiovS4uvHJk3wZbIGPFdwZ4U1aUsb6EeUsdg4n
+         aA9w==
+X-Forwarded-Encrypted: i=1; AJvYcCVdWviNsOGLCdttujJw+62nnynv6pcYP9YW8/NZ00HGiw/WWS/svCvxRB2gOMbsnSx5SZd0H7EFYhUP@lists.linux.dev
+X-Gm-Message-State: AOJu0YzU7n7/ExNOWzx5LmDI4HQ+bDY5d5wefTS2e0Opk+9JWLu+QfET
+	5znfAnQ0f+2tbPT2qW0geDjyeekL9Z4A1ZEmRO/5Nk7HgCPOYbjDsbmjwyieSoM9GBTB9VjMI74
+	660H5Dg==
+X-Google-Smtp-Source: AGHT+IHDzFt+0zXjA0CUz3si8YkwDTRVPFUsiiRh4VZN4Dkprgq2wlq3CPL9ofZgO6/62HnwUQZt6ujhFVk=
+X-Received: from pgos21.prod.google.com ([2002:a63:af55:0:b0:b31:d198:ffb2])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3d8b:b0:240:6dc:9164
+ with SMTP id adf61e73a8af0-2405502ffeamr23223057637.15.1754922855887; Mon, 11
+ Aug 2025 07:34:15 -0700 (PDT)
+Date: Mon, 11 Aug 2025 07:34:14 -0700
+In-Reply-To: <20250811090605.16057-2-shivankg@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <68939feeef7d9_55f09100c7@dwillia2-xfh.jf.intel.com.notmuch>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Mime-Version: 1.0
+References: <20250811090605.16057-2-shivankg@amd.com>
+Message-ID: <aJn_ZvD2AfZBX4Ox@google.com>
+Subject: Re: [PATCH RFC V10 0/7] Add NUMA mempolicy support for KVM guest-memfd
+From: Sean Christopherson <seanjc@google.com>
+To: Shivank Garg <shivankg@amd.com>
+Cc: david@redhat.com, vbabka@suse.cz, willy@infradead.org, 
+	akpm@linux-foundation.org, shuah@kernel.org, pbonzini@redhat.com, 
+	brauner@kernel.org, viro@zeniv.linux.org.uk, ackerleytng@google.com, 
+	paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com, pvorel@suse.cz, 
+	bfoster@redhat.com, tabba@google.com, vannapurve@google.com, 
+	chao.gao@intel.com, bharata@amd.com, nikunj@amd.com, michael.day@amd.com, 
+	shdhiman@amd.com, yan.y.zhao@intel.com, Neeraj.Upadhyay@amd.com, 
+	thomas.lendacky@amd.com, michael.roth@amd.com, aik@amd.com, jgg@nvidia.com, 
+	kalyazin@amazon.com, peterx@redhat.com, jack@suse.cz, rppt@kernel.org, 
+	hch@infradead.org, cgzones@googlemail.com, ira.weiny@intel.com, 
+	rientjes@google.com, roypat@amazon.co.uk, ziy@nvidia.com, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
+	byungchul@sk.com, gourry@gourry.net, kent.overstreet@linux.dev, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, chao.p.peng@intel.com, 
+	amit@infradead.org, ddutile@redhat.com, dan.j.williams@intel.com, 
+	ashish.kalra@amd.com, gshan@redhat.com, jgowans@amazon.com, 
+	pankaj.gupta@amd.com, papaluri@amd.com, yuzhao@google.com, 
+	suzuki.poulose@arm.com, quic_eberman@quicinc.com, 
+	aneeshkumar.kizhakeveetil@arm.com, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Aug 06, 2025 at 11:33:18AM -0700, dan.j.williams@intel.com wrote:
-> Jonathan Cameron wrote:
-> > 
-> > +CC Gerd, of off chance we can use a Redhat PCI device ID for kernel
-> > emulation similar to those they let Qemu use.
-> > 
-> [..]
-> > > > Emulating something real?  If not maybe we should get an ID from another space
-> > > > (or reserve this one ;)  
-> > > 
-> > > I am happy to switch to something else, but no, I do not have time to
-> > > chase this through PCI SIG. I do not expect this id to cause conflicts,
-> > > but no guarantees.
-> > 
-> > Nothing to do with the SIG - you definitely don't want to try talking them
-> > into giving a Vendor ID for the kernel.  That's an Intel ID so you need to find
-> > the owner of whatever tracker Intel uses for these.
-> 
-> About the same level of difficulty...
-> 
-> > Or maybe we can ask for one of the Redhat ones (maintained by Gerd).
+On Mon, Aug 11, 2025, Shivank Garg wrote:
+> This series introduces NUMA-aware memory placement support for KVM guests
+> with guest_memfd memory backends. It builds upon Fuad Tabba's work (V17)
+> that enabled host-mapping for guest_memfd memory [1].
 
-Well, they are meant for virtual devices emulated by qemu (and the
-registry is docs/specs/pci-ids.rst in the qemu repo).
-
-We made exceptions to that rule before (linux/samples/vfio-mdev/mdpy.c
-got one for example).  So feel free to try sending a patch with an
-update to qemu-devel.  There should be a /good/ explanation why you want
-go that route, and "I'm to lazy to get one from my employer" is not what
-I'd consider "good".  Also it's qemu release freeze and vacation season
-right now, so don't expect this process to be fast.
-
-take care,
-  Gerd
-
+Is this still actually an RFC?  If so, why?  If not, drop tag on the next version
+(if one is needed/sent).
