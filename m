@@ -1,73 +1,73 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028C22D3735
-	for <linux-coco@lists.linux.dev>; Mon, 11 Aug 2025 14:41:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBC52D6E43
+	for <linux-coco@lists.linux.dev>; Mon, 11 Aug 2025 15:34:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754923285; cv=none; b=VPektpCTmGYd6qqrpRfurFuGvxAR1fMnhYKogWnLX7Zk5n4cAAtygiGqh4mmk5T7HbQIrsIUC+k3sP2ZyqaYikbOnGDQvTNOsy+E2qNtNUvOMpAbrcpKV5Mc/vTeaU9GTrr4Y4rZSsXxpkegVeP62xXmgly2We4ShR6GV1ZN8xY=
+	t=1754926444; cv=none; b=j5ZNppQF5Hmuz2xedk8vHQjWGsgg45hkJruCPBlTmQ0jOReMqRmMXBLeCkQ6lM+/aXoX4SZq7xd2CbcHbOJ7y97NyhhSm8xNVartL6DF9ZpAT8MxZz6xssW3K2DNYPlt6e8sO2Q2VYdrbfvVWGiTVt7kjISWV3zo5TEmiBjVJQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754923285; c=relaxed/simple;
-	bh=kbpPvhNZz6SqWU9uqkbeGc4vIVmkx079K+FGeZ8lOws=;
+	s=arc-20240116; t=1754926444; c=relaxed/simple;
+	bh=x3Gjjg/HNG+YNIf+BJSKZ7zx9EJlyvS9DJ5A8csDFq8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t8cP+eYwSN0deh8l9aM0CAD4hXiIOEVYIXqUDToT+7V3nI5HGOBJOah0V1kkpvdrTLy+x0lDE/jp4iFuyuTrxieMp75jNGIo+fD3yAXu51W/XEJb48f5GEUsoMldWwST63S601Q1qCxCk96tLNC58WnJ0/ZJoSnYxTa9o3ESRJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Akj0APD0; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=rcqTZpq+AAXhkY8mRAZheFILNszKO3cvKLKqek7gsKYLQCFEtAaH8R+LC+Y+RvTSWDefHh4NRl+bxrhcyMqX2NsZ6+5lopYzX8d7VYjf1o+DUk/Mg5F3Ucs1jXj0GZmZTdu9u19U+vkF9RminV29m5GcYs67cQCi8hjRINqNS3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Dh/LHX1J; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Akj0APD0"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Dh/LHX1J"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754923283;
+	s=mimecast20190719; t=1754926441;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4gbggx2RPFlVO4t++KHmOzrhjwslbE7WXGI1AzTGhb4=;
-	b=Akj0APD0GSx1fo0YPRuV8c1SZeO/LsLutMUxkDafmALw0XwfGhmisiybIOdewPmIoBw822
-	xYVsGDGoX6EtjqbfPqoHgPiZIQN/xLbRu+sBjDzNG7I384Cu4XBF2p5dsOkSMBIobmndLm
-	mVcCDu6uqF77mgcfRZunWuFD1VbzJa0=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=UlyMvpUnFPwPIrW3E7xZ89HT91V0N5XoNHgGKm394UY=;
+	b=Dh/LHX1JKysEGLodY7EdveyqnDz+HVGARQ4STcNFW8a1ksEhVLXkV1gMPo05MSgE9PQ8b/
+	4dE+I0/db/eKvktUA3QX9hapRgx9VIAJS6RHwRkhD2gnqmkgVcZ3STKDT4j47NL5EjidhF
+	NTckDpn8xrJpBK6grhmGvPiYJPRO8rk=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-53-qXWJciFSM2em8VYcK3NO8w-1; Mon, 11 Aug 2025 10:41:21 -0400
-X-MC-Unique: qXWJciFSM2em8VYcK3NO8w-1
-X-Mimecast-MFC-AGG-ID: qXWJciFSM2em8VYcK3NO8w_1754923281
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-459e30e4477so39210995e9.1
-        for <linux-coco@lists.linux.dev>; Mon, 11 Aug 2025 07:41:21 -0700 (PDT)
+ us-mta-52-d2rh7VbgM7ea8fWUlH3_qw-1; Mon, 11 Aug 2025 11:34:00 -0400
+X-MC-Unique: d2rh7VbgM7ea8fWUlH3_qw-1
+X-Mimecast-MFC-AGG-ID: d2rh7VbgM7ea8fWUlH3_qw_1754926439
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-451d30992bcso43420905e9.2
+        for <linux-coco@lists.linux.dev>; Mon, 11 Aug 2025 08:33:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754923280; x=1755528080;
+        d=1e100.net; s=20230601; t=1754926439; x=1755531239;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=4gbggx2RPFlVO4t++KHmOzrhjwslbE7WXGI1AzTGhb4=;
-        b=vTCataoey0XOeQ9lcqhF9GGnJRJz5kp6McfSOGyFjZg4LMHKHYSK2bebYKx7sGd9ZG
-         S5tYcpCx0guJ8azAfb2nysVw+yaAhBFnfRYsa38h4VMHgifWVOzpAFQKAP0HgXdXa0BY
-         lQ6MBiaQaw6Wi5/h7OMUOx4dVXEtbB16meF6ZsosnHpGnFoBVl9A3dHzv5uKfXeECNse
-         OknH/yPqb120svcdTfyGlmqCtZuBJvUhFhyXrlkHxRokkDfBqB00igk7bio4ftIyEXfM
-         TOugh2KaA3SGR/FzQSst4+5pBE431Z4AM9amXBPzIIyjWH6BWuyk+BAWsmI3xMtTTkMX
-         kfLg==
-X-Forwarded-Encrypted: i=1; AJvYcCWduJX9SdjR2F/BD73g8IBaVucgi5UP7M6AED6si4u96il1OvumuEU3vIRmUbaivHNWkuUjiP8JLAw8@lists.linux.dev
-X-Gm-Message-State: AOJu0YwooNsYASHWXQd78ScHg8Fu3wvwcPkQJdzAWec2di+msl9/LPKp
-	n8pGBUXdlgE93UFKAct6SfqKujrYPka0jwLen+rnJ/Mq2hhLSL4xwe8CFGGcNp1/+KqQe7X2WL2
-	s/c4XqwNXPbzAx0vnlwt5klHGqGb1oTz39L7eV+KlQmpfqhPYiO5HZNVIIXrfZsQ=
-X-Gm-Gg: ASbGnctausXG/Nden1zVIDXiPNeZnPITmVvtcSCUQTfeROentvLFRnmRm4/LAwaWKAb
-	p5HB9E8Kn7dXfk0AQ0XpTIx8tscuI2Iaav9qELXRTPnpudu4UVLyeytCG4x086NYVeuaBXhhn6j
-	GIMpFugGs5VI1uj8a9xwjIMv4lmBVehhEQV+iQsftsRFcAO95yAtA7QXiXElUiGPWLLCiGx/+xv
-	cGVkO7Buzc8ggoY0aevtGQMrBCwhbWvq+rnrgA4eqM6ZVsKXyR7jPWQQ4pqrNasJsSUh1VLBOq3
-	9d5ydWiLHPeWhZ0sUbybB+f+PTl0pV0Vmaf98/GhiRHYXusxqI73I2WBNiyG7steSUoGoL/IsN8
-	ryfWRcpYf3pzsrbCt4ZIXSANBOObLlIfjjR7RCO69W9yWdr0QRFbmUQtER43psN4iyqo=
-X-Received: by 2002:a05:6000:2408:b0:3b8:d1d9:70ba with SMTP id ffacd0b85a97d-3b900b7517dmr9713513f8f.32.1754923280172;
-        Mon, 11 Aug 2025 07:41:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFNmqOKGQy8og6iuYjR3rW+/P+X+6GleHhPef0aGzUOgh7s7rRGq5mXZf9HiFNB9XK8mxgicg==
-X-Received: by 2002:a05:6000:2408:b0:3b8:d1d9:70ba with SMTP id ffacd0b85a97d-3b900b7517dmr9713436f8f.32.1754923279410;
-        Mon, 11 Aug 2025 07:41:19 -0700 (PDT)
+        bh=UlyMvpUnFPwPIrW3E7xZ89HT91V0N5XoNHgGKm394UY=;
+        b=aBkM30dLk6hzvyEgBZejl1Xf6PbdYHixRLJZfHYvS0cL/QEk50L4PyLtoxgxi94POy
+         63qVePWoMW/lyIzrWLdRlfmm+yHJFzNuboCH1hohbSPFAGjIBLrkIpobA0mQSe6WiMyx
+         Bf4h3h0iZqaSj8nlahRNwM8Ura3pRsz/X0pHLGjRjqMsB3XtI67doicCnuVAbuoDdnXq
+         Q68sf4RnqCuCE5iaX587Gep7MwWn5VCMr5f4F7QtrC55KnE0UKhxcoRf1hoNyln3ut2D
+         KN0OX1pAcIWyvNVrWb2BMDH5b0cR0diM6w9aFFDOztC/PWqbE/YaEQSy4ASbdX/sg/lm
+         qsAg==
+X-Forwarded-Encrypted: i=1; AJvYcCWiG4Sc/8EU0Ke2VEvXcUsG6SBKa6F5RTmpxPxYMSNo/e5chrf+RZDqIwWar/YkSEztT1Chasu2Qto6@lists.linux.dev
+X-Gm-Message-State: AOJu0YzNZihCM4/Mn5vygppk7cat4fmhWpTgF1ksHoa2+Wff6B0I9q68
+	paebgnefGObGJZkmXpvD5/+PCphPweHvi6qjIUrR9fF2es+g+DDL46wonPMZl1h5zXPggQJaxOA
+	NFgAcR53xhoBfvaUMAxu7UJDF0l4+cnowovrajsxTcTBvuHozInZDMRX5Z33dWSs=
+X-Gm-Gg: ASbGncvzeFzNG4eWZE/DpW6xgbiz2BQ5dQvD8oDbdXBbisEPfI1Ho2sv5BAi5DBTQKT
+	z5Ry2T/9kAkklr1tlIYnaH12xSzasQRuFc32ICWh7JA6H5iZ4I+gnrpb65JFR2s3ABtqhmFCrdp
+	VFa8XJkPv1RK2IaTdeTuQ6UH5RS/0r01mfKp5SMiSYDDs3Og/x1I9QKlQ2FNc9lCPjWev8PfuU6
+	sY/eylkJWyywlRQhOimM0ff/I6Ftk3Y65exk7/bYyyg4ZieEECJ/Arqg4y8JjokTKSGWBcoW3MZ
+	HkTRcQ8t1wDmkG3hGSE2rgl3+QtwFS5uJosO8WMjjrhNBWqh8EKJa2tKvTaShU7r9xxn6hmeKuy
+	cJGUWYaBtd963cJDW7l1pbkwMV4z8NPx+n2qnQXLCqU49Nrbl2ULi4LviiZrXVOczFqE=
+X-Received: by 2002:a05:600c:1d02:b0:43c:fe5e:f03b with SMTP id 5b1f17b1804b1-459f4fc25cfmr136879505e9.30.1754926438559;
+        Mon, 11 Aug 2025 08:33:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHINfJIfd1vEQZgbnQNpr4RSjW8SQx0Umc0SOrTSEmk4pWketl28AJxCUWIgT4ujrBbIgNggA==
+X-Received: by 2002:a05:600c:1d02:b0:43c:fe5e:f03b with SMTP id 5b1f17b1804b1-459f4fc25cfmr136878395e9.30.1754926437911;
+        Mon, 11 Aug 2025 08:33:57 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f06:a600:a397:de1d:2f8b:b66f? (p200300d82f06a600a397de1d2f8bb66f.dip0.t-ipconnect.de. [2003:d8:2f06:a600:a397:de1d:2f8b:b66f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c48105csm41145907f8f.64.2025.08.11.07.41.16
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-459e58542f3sm257349755e9.10.2025.08.11.08.33.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Aug 2025 07:41:18 -0700 (PDT)
-Message-ID: <42956218-bda4-4089-8f43-f7352ee73b4f@redhat.com>
-Date: Mon, 11 Aug 2025 16:41:16 +0200
+        Mon, 11 Aug 2025 08:33:57 -0700 (PDT)
+Message-ID: <cee2e489-d3c9-46d4-8d34-37c637c7bbd8@redhat.com>
+Date: Mon, 11 Aug 2025 17:33:54 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -75,33 +75,32 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC V10 0/7] Add NUMA mempolicy support for KVM
- guest-memfd
-To: Sean Christopherson <seanjc@google.com>, Shivank Garg <shivankg@amd.com>
-Cc: vbabka@suse.cz, willy@infradead.org, akpm@linux-foundation.org,
- shuah@kernel.org, pbonzini@redhat.com, brauner@kernel.org,
- viro@zeniv.linux.org.uk, ackerleytng@google.com, paul@paul-moore.com,
- jmorris@namei.org, serge@hallyn.com, pvorel@suse.cz, bfoster@redhat.com,
- tabba@google.com, vannapurve@google.com, chao.gao@intel.com,
- bharata@amd.com, nikunj@amd.com, michael.day@amd.com, shdhiman@amd.com,
- yan.y.zhao@intel.com, Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com,
- michael.roth@amd.com, aik@amd.com, jgg@nvidia.com, kalyazin@amazon.com,
- peterx@redhat.com, jack@suse.cz, rppt@kernel.org, hch@infradead.org,
- cgzones@googlemail.com, ira.weiny@intel.com, rientjes@google.com,
- roypat@amazon.co.uk, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- gourry@gourry.net, kent.overstreet@linux.dev, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, chao.p.peng@intel.com, amit@infradead.org,
- ddutile@redhat.com, dan.j.williams@intel.com, ashish.kalra@amd.com,
- gshan@redhat.com, jgowans@amazon.com, pankaj.gupta@amd.com,
- papaluri@amd.com, yuzhao@google.com, suzuki.poulose@arm.com,
- quic_eberman@quicinc.com, aneeshkumar.kizhakeveetil@arm.com,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
- kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-coco@lists.linux.dev
+Subject: Re: [PATCH RFC V10 4/7] KVM: guest_memfd: Use guest mem inodes
+ instead of anonymous inodes
+To: Shivank Garg <shivankg@amd.com>, seanjc@google.com, vbabka@suse.cz,
+ willy@infradead.org, akpm@linux-foundation.org, shuah@kernel.org,
+ pbonzini@redhat.com, brauner@kernel.org, viro@zeniv.linux.org.uk
+Cc: ackerleytng@google.com, paul@paul-moore.com, jmorris@namei.org,
+ serge@hallyn.com, pvorel@suse.cz, bfoster@redhat.com, tabba@google.com,
+ vannapurve@google.com, chao.gao@intel.com, bharata@amd.com, nikunj@amd.com,
+ michael.day@amd.com, shdhiman@amd.com, yan.y.zhao@intel.com,
+ Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com, michael.roth@amd.com,
+ aik@amd.com, jgg@nvidia.com, kalyazin@amazon.com, peterx@redhat.com,
+ jack@suse.cz, rppt@kernel.org, hch@infradead.org, cgzones@googlemail.com,
+ ira.weiny@intel.com, rientjes@google.com, roypat@amazon.co.uk,
+ ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ kent.overstreet@linux.dev, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ chao.p.peng@intel.com, amit@infradead.org, ddutile@redhat.com,
+ dan.j.williams@intel.com, ashish.kalra@amd.com, gshan@redhat.com,
+ jgowans@amazon.com, pankaj.gupta@amd.com, papaluri@amd.com,
+ yuzhao@google.com, suzuki.poulose@arm.com, quic_eberman@quicinc.com,
+ aneeshkumar.kizhakeveetil@arm.com, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-security-module@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-coco@lists.linux.dev
 References: <20250811090605.16057-2-shivankg@amd.com>
- <aJn_ZvD2AfZBX4Ox@google.com>
+ <20250811090605.16057-10-shivankg@amd.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -148,28 +147,119 @@ Autocrypt: addr=david@redhat.com; keydata=
  WBe5lqcozu9LpNDH/brVSzHCSb7vjNGvvSVESDuoiHK8gNlf0v+epy5WYd7CGAgODPvDShGN
  g3eXuA==
 Organization: Red Hat
-In-Reply-To: <aJn_ZvD2AfZBX4Ox@google.com>
+In-Reply-To: <20250811090605.16057-10-shivankg@amd.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Y1tDH23Ab2sYx6SHUXSGhVX3PCwCRV2r18klxeV7IjU_1754923281
+X-Mimecast-MFC-PROC-ID: 1F1hd0q09f-faH-83JistvB8D-HVdDBl4GODrvEN2Uo_1754926439
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 11.08.25 16:34, Sean Christopherson wrote:
-> On Mon, Aug 11, 2025, Shivank Garg wrote:
->> This series introduces NUMA-aware memory placement support for KVM guests
->> with guest_memfd memory backends. It builds upon Fuad Tabba's work (V17)
->> that enabled host-mapping for guest_memfd memory [1].
+On 11.08.25 11:06, Shivank Garg wrote:
+> From: Ackerley Tng <ackerleytng@google.com>
 > 
-> Is this still actually an RFC?  If so, why?  If not, drop tag on the next version
-> (if one is needed/sent).
+> guest_memfd's inode represents memory the guest_memfd is
+> providing. guest_memfd's file represents a struct kvm's view of that
+> memory.
+> 
+> Using a custom inode allows customization of the inode teardown
+> process via callbacks. For example, ->evict_inode() allows
+> customization of the truncation process on file close, and
+> ->destroy_inode() and ->free_inode() allow customization of the inode
+> freeing process.
+> 
+> Customizing the truncation process allows flexibility in management of
+> guest_memfd memory and customization of the inode freeing process
+> allows proper cleanup of memory metadata stored on the inode.
+> 
+> Memory metadata is more appropriately stored on the inode (as opposed
+> to the file), since the metadata is for the memory and is not unique
+> to a specific binding and struct kvm.
+> 
+> Co-developed-by: Fuad Tabba <tabba@google.com>
+> Signed-off-by: Fuad Tabba <tabba@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> ---
 
-There was the complaint that !RFC meant that it would be based on a 
-consumable upstream branch.
+[...]
 
-I think once this series is rebase on top of kvm-next, we can finally 
-drop the tag.
+>   
+>   static int kvm_gmem_migrate_folio(struct address_space *mapping,
+> @@ -463,11 +503,71 @@ bool __weak kvm_arch_supports_gmem_mmap(struct kvm *kvm)
+>   	return true;
+>   }
+>   
+> +static struct inode *kvm_gmem_inode_make_secure_inode(const char *name,
+> +						      loff_t size, u64 flags)
+> +{
+> +	struct inode *inode;
+> +
+> +	inode = anon_inode_make_secure_inode(kvm_gmem_mnt->mnt_sb, name, NULL);
+> +	if (IS_ERR(inode))
+> +		return inode;
+> +
+> +	inode->i_private = (void *)(unsigned long)flags;
+> +	inode->i_op = &kvm_gmem_iops;
+> +	inode->i_mapping->a_ops = &kvm_gmem_aops;
+> +	inode->i_mode |= S_IFREG;
+> +	inode->i_size = size;
+> +	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
+> +	mapping_set_inaccessible(inode->i_mapping);
+> +	/* Unmovable mappings are supposed to be marked unevictable as well. */
+> +	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
+> +
+> +	return inode;
+> +}
+> +
+> +static struct file *kvm_gmem_inode_create_getfile(void *priv, loff_t size,
+> +						  u64 flags)
+> +{
+> +	static const char *name = "[kvm-gmem]";
+> +	struct inode *inode;
+> +	struct file *file;
+> +	int err;
+> +
+> +	err = -ENOENT;
+
+Maybe add a comment here when the module reference will get
+dropped. And maybe we should just switch to fops_get() + fops_put?
+
+/* __fput() will take care of fops_put(). */
+if (!fops_get(&kvm_gmem_fops))
+	goto err;
+
+> +
+> +	inode = kvm_gmem_inode_make_secure_inode(name, size, flags);
+> +	if (IS_ERR(inode)) {
+> +		err = PTR_ERR(inode);
+> +		goto err_put_module;
+> +	}
+> +
+> +	file = alloc_file_pseudo(inode, kvm_gmem_mnt, name, O_RDWR,
+> +				 &kvm_gmem_fops);
+> +	if (IS_ERR(file)) {
+> +		err = PTR_ERR(file);
+> +		goto err_put_inode;
+> +	}
+> +
+> +	file->f_flags |= O_LARGEFILE;
+> +	file->private_data = priv;
+> +
+> +out:
+> +	return file;
+> +
+> +err_put_inode:
+> +	iput(inode);
+> +err_put_module:
+> +	module_put(kvm_gmem_fops.owner);
+
+fops_put(&kvm_gmem_fops);
+
+?
+
+
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers,
