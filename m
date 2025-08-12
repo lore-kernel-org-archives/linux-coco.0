@@ -1,134 +1,209 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A95291C1F
-	for <linux-coco@lists.linux.dev>; Tue, 12 Aug 2025 18:45:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBDE72FFDCE
+	for <linux-coco@lists.linux.dev>; Tue, 12 Aug 2025 19:41:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024310; cv=none; b=me7m8muvLevOPCwVTpM4yQcyxiMiuaATERIHk1GLxFOCQQ6ccAroEt5EiIx8TWLy2bhn7eRAD4TMQB6SXvGzhu+U+3PZamjtbwI8XpzvnpEoOjc6QPa5EXeLx1LbhGwjz7Qpg0nvUinGOUekwdum8aJn+NwONFpza+KxZlKhtAE=
+	t=1755027679; cv=none; b=j86fRTkvXKkWH5bGAepfhr0SmGtPRF8J864T1NGGu9kqkemIxOeu1Tptx0kt4t44fotRJnDJXU+oAQMQhAWwm6pSAirMyaiGrifuF9VU/h9OJkQQc43cGO2aM5M2PESdHezT9R4bSJRQpz0sdD6CnHy8niXwv8EG4LOL252sPSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024310; c=relaxed/simple;
-	bh=k8eJflyHaGW1cyd3IMxkAyfMV4XfphhmHbTGJPhMO2A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fznPo0Lbf+HymCg8HmsrH1nbuy7ZK/E7qYlSz6FxpjgNswnym3Ph+JKe87bqNlAg7tlhfnaerIJgFAOuQitw9cyIN+bendCEN/yGK8ID1WtcHdvpdyFpO22MgjVVUSMSzwsKngf5I0BtlgUm+zApHihfneclhwtBEm41OM0Z9Gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IkmfirCg; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1755027679; c=relaxed/simple;
+	bh=sMX8kZxrzx+drnPem18BEei2lr5xzCHM9wqeYBIo6M8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lzsPGFEG9dnavMV0Hd5yC5Ebs1oI4196xOH//jdZlwQZcvIrW2xx4WXoO48fTR/i0SMZ6nF392Lw8qI50/DQE1IvX3nqQlsmnLsd0dfw07OoTrAGgD74iMcUN6GN3vQk2dHImGbcZgf9HXEVPM35adee/0mkAGTRZz/vWrd1TyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=PWsery8i; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IkmfirCg"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-242d3be5bdfso24065ad.1
-        for <linux-coco@lists.linux.dev>; Tue, 12 Aug 2025 11:45:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755024308; x=1755629108; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3aZrrKJF+13GgKsgM/uEfcdmhk0fl5dHjrt4Kw7aLp4=;
-        b=IkmfirCgtYVVjrWxE4eKnkJ4gWjCZWH0HyFZNDOYq/LOskbCgz5dDVu3hS6bKKqF5g
-         mxhNE3JIpv+pMvB/QooHRstFXA2A9F0X37orh6zVH5BY2hZtvUslLtFESnly5kvz3x7X
-         os1FT8ErJLHKcw3tgWD0XAFQW23+HI81ra5nZX05wTY+WvOcv4AKd5bQUdpfzGHXE3C6
-         2v0Rya3pe9P/+wT/VWanSF3g+j5wy4I43NM+xejrRrOIhAGslKMj+nqGJi32sQlqki7p
-         GQM5J+Er4ZPYBRl1WxudWihlICwXl/jX2xo5tmsfECRxF30HWf+E04psrZgZdmkgBRwo
-         hP7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755024308; x=1755629108;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3aZrrKJF+13GgKsgM/uEfcdmhk0fl5dHjrt4Kw7aLp4=;
-        b=Fo2y/frb0sTxwNyJswDFS9Lw8/F9ySi9u8YeUAIA/gbm03zMm9d5/5lRp5aYn4mVnC
-         K1Mxo5Hk4EjHWchrwChC3RhyStYpMsAxZ89O3Q741d0tTTFcVrVvIAcBhd/Ei1jenErl
-         y1ZerTS3S+HAr+1bGrvXRdjr1P4+PqC5NiP72+STFVdSDIJFU+XXtFwfvHldkrkUAMXr
-         xza65L23NVNxV/QGuUhM3lAtd+r9E0BzNUFCvQTeRTx/4fmwWUWgarDXHhdm9YnEFNB0
-         v51hY6kBogtiRhbKeX2RPJB+tO+dGNfKFgzwaLcLRrElg2BGjZrZ29s0SYwNdPFxKp8Q
-         LKZA==
-X-Forwarded-Encrypted: i=1; AJvYcCWUyDlFum0i9+xmlhX6VcpCxGw6TIfGLN0iUA5wikbzHiws0YM+4EFI+vBLD4UPv7FmQBQHPX71TxJo@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw0P7OE/9MEbjuhUnWTd1WEOzw07IW79XHlW1OZ3Zyy3DY5T48+
-	wc6/1znaGKQnvfTey9kvjNMjMxiuAXwjI6kUfeCs9vv7pn5TazHOV/suhScVl3k5n/RyHySMF9p
-	SjSC1uS2K3AWLxXKB1VtZXJ8mDiYwor7pVcH9FY7C
-X-Gm-Gg: ASbGncvanfSR3/gW6LDG197VRapNIVeenjcQKpPATWv0SDpQGFyz8D47ElM9Bfm9fyF
-	v8HCpCJlHnuzeK7IccAQjYbPonPLNiunTvQi5aOjGFdBN01i56hihpkfgJx8MZyoz/s3rxSCos2
-	mr/9zqufSSmdaDmHPnwgdzOKBZTi+lV3cDaUQ4Z7kPBaWlGgwxOwSxPbIzL14dQSdBOwxeagxBh
-	4O1nRgiYp1cIMs5ejHry0I4weNrJMlnrLnMm7p0
-X-Google-Smtp-Source: AGHT+IHVug2DiOO6Cvt5RmH+7vn9igq9WsESN/7t7V6c6ibS0iTghQrPWcgQ6kZA+3YKuzfUdLeF0Upsie8W0FD4eRM=
-X-Received: by 2002:a17:903:2281:b0:23d:eb0f:f49 with SMTP id
- d9443c01a7336-2430d22e961mr364945ad.14.1755024308013; Tue, 12 Aug 2025
- 11:45:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="PWsery8i"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57CDXi2O022984;
+	Tue, 12 Aug 2025 19:40:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=HIocEm
+	mHknV3Er6oSMrKwEyHDubnFR8xwjgJ/fmkaLs=; b=PWsery8i4EluNXh5/CUQX1
+	4EsQwKeUF/aCgjzawxt4iKeo308Veh3x0D+Mre7QNNCfk3rnoWzgwKZ8TObpu2k8
+	AYhuz1Bw7mx18Wkxv7BTqdfDDqT+jcIP1vQheD2uj6Pnz8kdo1oGVQqcq3MmIxMj
+	WZyt3q8qTe+ZlyBhor+hxle3qiFHboPvtiNuvqAKpawLBx7UlRPIbf1Q1CYoSDDO
+	BQikAFk2AR05hI/zbu5n4fLdajUOlqfINghC44riC7oC3mFPHEAmM0TfSBIWkiiV
+	j1+9wIltM1JesoQJM1bN+kbftKZauILLFxVMQtJHdQl30kkQqcb5+l22m+m57e5w
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48duru8kft-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Aug 2025 19:40:53 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57CJea2W000805;
+	Tue, 12 Aug 2025 19:40:53 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48duru8kfr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Aug 2025 19:40:53 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57CIj6Jv017600;
+	Tue, 12 Aug 2025 19:40:51 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48ekc3krr1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Aug 2025 19:40:51 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57CJeoKC31654170
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 Aug 2025 19:40:50 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2701758055;
+	Tue, 12 Aug 2025 19:40:50 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 288D55804B;
+	Tue, 12 Aug 2025 19:40:47 +0000 (GMT)
+Received: from [9.61.88.156] (unknown [9.61.88.156])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 12 Aug 2025 19:40:47 +0000 (GMT)
+Message-ID: <459f6b6f-4c51-492f-a137-637bb61d17bd@linux.ibm.com>
+Date: Tue, 12 Aug 2025 15:40:46 -0400
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250609191340.2051741-1-kirill.shutemov@linux.intel.com>
- <d432b8b7cfc413001c743805787990fe0860e780.camel@intel.com>
- <sjhioktjzegjmyuaisde7ui7lsrhnolx6yjmikhhwlxxfba5bh@ss6igliiimas>
- <c2a62badf190717a251d269a6905872b01e8e340.camel@intel.com>
- <aJqgosNUjrCfH_WN@google.com> <CAGtprH9TX4s6jQTq0YbiohXs9jyHGOFvQTZD9ph8nELhxb3tgA@mail.gmail.com>
- <itbtox4nck665paycb5kpu3k54bfzxavtvgrxwj26xlhqfarsu@tjlm2ddtuzp3>
- <57755acf553c79d0b337736eb4d6295e61be722f.camel@intel.com> <aJtolM_59M5xVxcY@google.com>
-In-Reply-To: <aJtolM_59M5xVxcY@google.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Tue, 12 Aug 2025 11:44:56 -0700
-X-Gm-Features: Ac12FXy4GUu5ZIRJXl7eGstfP5q8QDTUxveWfrkMVz1y6ccW3owwq_zd_PQQxe0
-Message-ID: <CAGtprH_0YWHF5HWzs3Yx+Z7Na2OsCxqG7mJPLREVfoNv9qE6mg@mail.gmail.com>
-Subject: Re: [PATCHv2 00/12] TDX: Enable Dynamic PAMT
-To: Sean Christopherson <seanjc@google.com>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, "kas@kernel.org" <kas@kernel.org>, 
-	Chao Gao <chao.gao@intel.com>, "x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
-	Kai Huang <kai.huang@intel.com>, "mingo@redhat.com" <mingo@redhat.com>, 
-	Yan Y Zhao <yan.y.zhao@intel.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"tglx@linutronix.de" <tglx@linutronix.de>, Isaku Yamahata <isaku.yamahata@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/6] KVM: s390/vfio-ap: Use kvm_is_gpa_in_memslot()
+ instead of open coded equivalent
+To: Sean Christopherson <seanjc@google.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Andy Lutomirski
+ <luto@kernel.org>, Xin Li <xin@zytor.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "Kirill A. Shutemov" <kas@kernel.org>,
+        Halil Pasic <pasic@linux.ibm.com>, Jason Herne <jjherne@linux.ibm.com>,
+        Harald Freudenberger <freude@linux.ibm.com>,
+        Holger Dengler <dengler@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+        linux-sgx@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
+        linux-s390@vger.kernel.org
+References: <20250729174238.593070-1-seanjc@google.com>
+ <20250729174238.593070-2-seanjc@google.com>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <20250729174238.593070-2-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: wUyLy7r54uq5s4N33KjtyxxIF6IG3KA9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDE4NiBTYWx0ZWRfX7aP/l7ZcVtZa
+ dZX9+xrlp4zkFuGVW4392P+pol6seqW/hahqEiQqy5LqXmJIftaeIAqDiK6lxM08bCcVJRcLLS9
+ ON2guFIKLHia+Q7PMxonf8VSge5GnRjyY+1rMpAybUP2cAGqNwT+R1ifllolXCTsDJOHI4FQp9q
+ /DKo36tMXVC/xVIEGIeOVRnGqt2DCHyaBP9vFHFeNCPpFbLVXEdIXt1isSmG/aUmAsqqYSNkqzq
+ jXASDGRHh3KryL9EGDcD1vu3eW2VGvuMiovWzjjmO6J8d6oE6clCyLvuLbf2Uvw8wJSNDkm6hh/
+ sE1YPL1lgeMCkjw/iqJO933TO4RUCTm+R3Gi70kvErflhOFpG3+J2MNomx960M1O6hVLlnKSEpJ
+ EZAAblAxhsKNGkn+v8tAv1QyuzdhnrlXxv/x/ezGWnM72keyIESm9hZybrHQYh2UjwixLv1X
+X-Authority-Analysis: v=2.4 cv=QtNe3Uyd c=1 sm=1 tr=0 ts=689b98c5 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=1XWaLZrsAAAA:8 a=VnNF1IyMAAAA:8
+ a=WMn4R6eJaF8VgN3aVUEA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: PGtZzgNN4fjfj6Pu373XoqOssQ1e8xOb
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-12_07,2025-08-11_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 lowpriorityscore=0 clxscore=1011
+ mlxlogscore=999 impostorscore=0 suspectscore=0 bulkscore=0 mlxscore=0
+ phishscore=0 malwarescore=0 spamscore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508120186
 
-On Tue, Aug 12, 2025 at 9:15=E2=80=AFAM Sean Christopherson <seanjc@google.=
-com> wrote:
+
+
+On 7/29/25 1:42 PM, Sean Christopherson wrote:
+> Use kvm_is_gpa_in_memslot() to check the validity of the notification
+> indicator byte address instead of open coding equivalent logic in the VFIO
+> AP driver.
 >
-> On Tue, Aug 12, 2025, Rick P Edgecombe wrote:
-> > On Tue, 2025-08-12 at 09:04 +0100, kas@kernel.org wrote:
-> > > > > E.g. for things like TDCS pages and to some extent non-leaf S-EPT
-> > > > > pages, on-demand PAMT management seems reasonable.  But for PAMTs=
- that
-> > > > > are used to track guest-assigned memory, which is the vaaast majo=
-rity
-> > > > > of PAMT memory, why not hook guest_memfd?
-> > > >
-> > > > This seems fine for 4K page backing. But when TDX VMs have huge pag=
-e
-> > > > backing, the vast majority of private memory memory wouldn't need P=
-AMT
-> > > > allocation for 4K granularity.
-> > > >
-> > > > IIUC guest_memfd allocation happening at 2M granularity doesn't
-> > > > necessarily translate to 2M mapping in guest EPT entries. If the DP=
-AMT
-> > > > support is to be properly utilized for huge page backings, there is=
- a
-> > > > value in not attaching PAMT allocation with guest_memfd allocation.
+> Opportunistically use a dedicated wrapper that exists and is exported
+> expressly for the VFIO AP module.  kvm_is_gpa_in_memslot() is generally
+> unsuitable for use outside of KVM; other drivers typically shouldn't rely
+> on KVM's memslots, and using the API requires kvm->srcu (or slots_lock) to
+> be held for the entire duration of the usage, e.g. to avoid TOCTOU bugs.
+> handle_pqap() is a bit of a special case, as it's explicitly invoked from
+> KVM with kvm->srcu already held, and the VFIO AP driver is in many ways an
+> extension of KVM that happens to live in a separate module.
 >
-> I don't disagree, but the host needs to plan for the worst, especially si=
-nce the
-> guest can effectively dictate the max page size of S-EPT mappings.  AFAIK=
-, there
-> are no plans to support memory overcommit for TDX guests, so unless a dep=
-loyment
-> wants to roll the dice and hope TDX guests will use hugepages for N% of t=
-heir
-> memory, the host will want to reserve 0.4% of guest memory for PAMTs to e=
-nsure
-> it doesn't unintentionally DoS the guest with an OOM condition.
+> Providing a dedicated API for the VFIO AP driver will allow restricting
+> the vast majority of generic KVM's exports to KVM submodules (e.g. to x86's
+> kvm-{amd,intel}.ko vendor mdoules).
+>
+> No functional change intended.
+>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-Reasonable guest VMs (e.g. Linux) will generally map things mostly at
-hugepage granularity, I don't think there is a reason here to be more
-conservative and just increase the cost for the well behaved guests.
-That being said, The scenario of an unreasonable guest could be
-covered in future by modifying how PAMT allocation is
-accounted/charged.
+Acked-by: Anthony Krowiak <akrowiak@linux.ibm.com>
 
-Guests are generally free to use the lazy pvalidate/accept features so
-the host can't guarantee the needed PAMT memory to be always there
-anyways.
+I only reviewed this patch in the series.
+
+> ---
+>   arch/s390/include/asm/kvm_host.h  | 2 ++
+>   arch/s390/kvm/priv.c              | 8 ++++++++
+>   drivers/s390/crypto/vfio_ap_ops.c | 2 +-
+>   3 files changed, 11 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
+> index cb89e54ada25..449bc34e7cc3 100644
+> --- a/arch/s390/include/asm/kvm_host.h
+> +++ b/arch/s390/include/asm/kvm_host.h
+> @@ -719,6 +719,8 @@ bool kvm_s390_pv_cpu_is_protected(struct kvm_vcpu *vcpu);
+>   extern int kvm_s390_gisc_register(struct kvm *kvm, u32 gisc);
+>   extern int kvm_s390_gisc_unregister(struct kvm *kvm, u32 gisc);
+>   
+> +bool kvm_s390_is_gpa_in_memslot(struct kvm *kvm, gpa_t gpa);
+> +
+>   static inline void kvm_arch_free_memslot(struct kvm *kvm,
+>   					 struct kvm_memory_slot *slot) {}
+>   static inline void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen) {}
+> diff --git a/arch/s390/kvm/priv.c b/arch/s390/kvm/priv.c
+> index 9253c70897a8..7773e1e323bc 100644
+> --- a/arch/s390/kvm/priv.c
+> +++ b/arch/s390/kvm/priv.c
+> @@ -605,6 +605,14 @@ static int handle_io_inst(struct kvm_vcpu *vcpu)
+>   	}
+>   }
+>   
+> +#if IS_ENABLED(CONFIG_VFIO_AP)
+> +bool kvm_s390_is_gpa_in_memslot(struct kvm *kvm, gpa_t gpa)
+> +{
+> +	return kvm_is_gpa_in_memslot(kvm, gpa);
+> +}
+> +EXPORT_SYMBOL_GPL_FOR_MODULES(kvm_s390_is_gpa_in_memslot, "vfio_ap");
+> +#endif
+> +
+>   /*
+>    * handle_pqap: Handling pqap interception
+>    * @vcpu: the vcpu having issue the pqap instruction
+> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+> index 766557547f83..eb5ff49f6fe7 100644
+> --- a/drivers/s390/crypto/vfio_ap_ops.c
+> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+> @@ -354,7 +354,7 @@ static int vfio_ap_validate_nib(struct kvm_vcpu *vcpu, dma_addr_t *nib)
+>   
+>   	if (!*nib)
+>   		return -EINVAL;
+> -	if (kvm_is_error_hva(gfn_to_hva(vcpu->kvm, *nib >> PAGE_SHIFT)))
+> +	if (!kvm_s390_is_gpa_in_memslot(vcpu->kvm, *nib))
+>   		return -EINVAL;
+>   
+>   	return 0;
+
