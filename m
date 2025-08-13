@@ -1,141 +1,278 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBDAF2EA469;
-	Wed, 13 Aug 2025 08:09:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DB3D2D781B;
+	Wed, 13 Aug 2025 09:30:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755072549; cv=none; b=r5BrGTjcToCX2S/IoM0m310yXXfiQNHOldZVpNiI0K8sciKo61uTpR2FyojuOfo3XkLUgweeDYNgtid15tCf3EqE0glpNH8XT1tUnYsEEWkOcYSdVzg+fJOexXyyiSByMhklCG8JHnPMz/qcP6/eSAIeHaqFClprovUX+qdcnfI=
+	t=1755077411; cv=none; b=SqFlyB9agj6sls5BzCaxzwqufT3ebL8Rn4m1oLwIbWT74kwI7asy1J4sQ79xtIyn54+x9BYd2tuvSd12UQ2ICvhpc2SKdx19F9yNOc8Ia10Zu7CwKJbkaQntjNFP0DusPkYxxOgY77TbKUPndI1Prw570I4XC4QUyZKz5eP9Ym4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755072549; c=relaxed/simple;
-	bh=D4bJE6P03e+uFhDUw6XmDkecF0BUGB3Fvqqa4yo9gc0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MaXMpk7OU96lhAarc+9YDs6N5NUn2gGW9J797TMmLDvya22OrNbzEniPVlV3yO20xHD48n1adW9UkhyqoO6SFc37Q+JKXmxygELNkBy0hCvLpr/5qfY8d7eifJmUGZap8/vZA5M/3r8IIffFcRWWgCHhHc6PhsCiXv6v3zv6SEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DVIkcAqV; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DVIkcAqV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25EFDC4CEEB;
-	Wed, 13 Aug 2025 08:09:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755072548;
-	bh=D4bJE6P03e+uFhDUw6XmDkecF0BUGB3Fvqqa4yo9gc0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DVIkcAqV4K0miVwbj5IYu40KXxM7uDUzFKWos3OpzeT+hQ0psGJ1Byo993+3sRI8J
-	 NXh016HLBFtDl9HygPioxYjqouQeBYRAzvbaEhYTBC5G9Q4kH/StikPNlvTeqslYkY
-	 0X0uEapf5mKNt+8KyRd0TeotpqXbcnQAzcAmzAAOKfLNIsDUvvr9oA9DvThKYEA8Pv
-	 OSODJbNBsWvDmNTqnPqaTPt5TyNGY7BMjFiiJBoRme2LALAr1o/oCr9pXZ7jFQT+Ip
-	 t1f7yB69Mw+lBayniBUBHXx7RSIIrT68mnTtCFnfFTt6e71YGgpOfMQwG73anJgp9+
-	 H5nK/LJsNv7Mg==
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 6AF58F40066;
-	Wed, 13 Aug 2025 04:09:07 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-09.internal (MEProxy); Wed, 13 Aug 2025 04:09:07 -0400
-X-ME-Sender: <xms:I0icaDBL2KW65_N0lBYkcRVsvu4GGPxDYH-MauUdeusdDH_tKIYP7A>
-    <xme:I0icaD4LVn9htfOlPe1j3znj3QUrJh_SA08CdDUJ3c_NeHscnTK9fNMdU9D-d0WAK
-    5MPiGMA5lo1-QAqJ7g>
-X-ME-Received: <xmr:I0icaKL-vULmVlhmMQBbvnpf_umMo30IfttuOU4zEZlcaB5uDF3AeodXqKuX>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddufeejieelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkefstddttddunecuhfhrohhmpefmihhrhihl
-    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
-    gvrhhnpedtieetueehudeluedvffeguedvfffgueehfeelueejhffhudegtdetfeeiledv
-    geenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkih
-    hrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieeh
-    hedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovh
-    drnhgrmhgvpdhnsggprhgtphhtthhopeefvddpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepshgvrghnjhgtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehrihgtkhdrph
-    drvggughgvtghomhgsvgesihhnthgvlhdrtghomhdprhgtphhtthhopehvrghnnhgrphhu
-    rhhvvgesghhoohhglhgvrdgtohhmpdhrtghpthhtoheptghhrghordhgrghosehinhhtvg
-    hlrdgtohhmpdhrtghpthhtohepgiekieeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    sghpsegrlhhivghnkedruggvpdhrtghpthhtohepkhgrihdrhhhurghnghesihhnthgvlh
-    drtghomhdprhgtphhtthhopehmihhnghhosehrvgguhhgrthdrtghomhdprhgtphhtthho
-    peihrghnrdihrdiihhgrohesihhnthgvlhdrtghomh
-X-ME-Proxy: <xmx:I0icaPyxoqQ98Dlt1btIJm7FgOVMrhttz_1RHb6auAPMJZwyX1VXrQ>
-    <xmx:I0icaCHCtrDK_1K14tW3lnbfukGDp2yOmBOZEklWC6Iu7EG5wRHpIQ>
-    <xmx:I0icaHkaztaf_AmAcMbGogOkGJ7pnoexGEvFwQfe9xPVfxiV3EAbhQ>
-    <xmx:I0icaJGz_QDy5D7AE85BFgom4hIo-pVFqdU78-sfuHsoaR24rGoQpw>
-    <xmx:I0icaKw7lYYzBSrYJXR_FxTXznawLuniisUjDLtHgnOM1dnwFerMuQ5Q>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 13 Aug 2025 04:09:06 -0400 (EDT)
-Date: Wed, 13 Aug 2025 09:09:04 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Chao Gao <chao.gao@intel.com>, "x86@kernel.org" <x86@kernel.org>, 
-	"bp@alien8.de" <bp@alien8.de>, Kai Huang <kai.huang@intel.com>, 
-	"mingo@redhat.com" <mingo@redhat.com>, Yan Y Zhao <yan.y.zhao@intel.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "tglx@linutronix.de" <tglx@linutronix.de>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>
-Subject: Re: [PATCHv2 00/12] TDX: Enable Dynamic PAMT
-Message-ID: <sd5jir2s5vr2z7xetdatbffndtjx2f5qn2kixyuappals4mzi4@yfxzqg6eeuvm>
-References: <20250609191340.2051741-1-kirill.shutemov@linux.intel.com>
- <d432b8b7cfc413001c743805787990fe0860e780.camel@intel.com>
- <sjhioktjzegjmyuaisde7ui7lsrhnolx6yjmikhhwlxxfba5bh@ss6igliiimas>
- <c2a62badf190717a251d269a6905872b01e8e340.camel@intel.com>
- <aJqgosNUjrCfH_WN@google.com>
- <CAGtprH9TX4s6jQTq0YbiohXs9jyHGOFvQTZD9ph8nELhxb3tgA@mail.gmail.com>
- <itbtox4nck665paycb5kpu3k54bfzxavtvgrxwj26xlhqfarsu@tjlm2ddtuzp3>
- <57755acf553c79d0b337736eb4d6295e61be722f.camel@intel.com>
- <aJtolM_59M5xVxcY@google.com>
+	s=arc-20240116; t=1755077411; c=relaxed/simple;
+	bh=Pmk+uWkOUl+K3Kdkg22GiyhU8hEpriQ2yHipUC+AIQo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GvTrT6tPCubvAUr6rdpglHXf6Raik+meMqVaSsBeniqJnVfauV62xLes7fAB3drxVvoV/7IZhgBHBxycL+PazQXINSnA0ycDxlWqONbKhCLcKI72C1rk0gw6zLCW+fYcqRS1Kwgo3muPbNmd2pPoKlnszR/veQKmlwW6QwVNG6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0498C12FC;
+	Wed, 13 Aug 2025 02:30:00 -0700 (PDT)
+Received: from [10.57.2.66] (unknown [10.57.2.66])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9D4303F63F;
+	Wed, 13 Aug 2025 02:30:03 -0700 (PDT)
+Message-ID: <80c46a5c-7559-4763-bbf2-6c755a4b067c@arm.com>
+Date: Wed, 13 Aug 2025 10:30:01 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 19/43] arm64: RME: Allow populating initial contents
+To: Vishal Annapurve <vannapurve@google.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>
+References: <20250611104844.245235-1-steven.price@arm.com>
+ <20250611104844.245235-20-steven.price@arm.com>
+ <CAGtprH-on3JdsHx-DyjN_z_5Z6HJoSQjJpA5o5_V6=rygMSbtQ@mail.gmail.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <CAGtprH-on3JdsHx-DyjN_z_5Z6HJoSQjJpA5o5_V6=rygMSbtQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aJtolM_59M5xVxcY@google.com>
 
-On Tue, Aug 12, 2025 at 09:15:16AM -0700, Sean Christopherson wrote:
-> On Tue, Aug 12, 2025, Rick P Edgecombe wrote:
-> > On Tue, 2025-08-12 at 09:04 +0100, kas@kernel.org wrote:
-> > > > > E.g. for things like TDCS pages and to some extent non-leaf S-EPT
-> > > > > pages, on-demand PAMT management seems reasonable.  But for PAMTs that
-> > > > > are used to track guest-assigned memory, which is the vaaast majority
-> > > > > of PAMT memory, why not hook guest_memfd?
-> > > > 
-> > > > This seems fine for 4K page backing. But when TDX VMs have huge page
-> > > > backing, the vast majority of private memory memory wouldn't need PAMT
-> > > > allocation for 4K granularity.
-> > > > 
-> > > > IIUC guest_memfd allocation happening at 2M granularity doesn't
-> > > > necessarily translate to 2M mapping in guest EPT entries. If the DPAMT
-> > > > support is to be properly utilized for huge page backings, there is a
-> > > > value in not attaching PAMT allocation with guest_memfd allocation.
+On 01/08/2025 02:56, Vishal Annapurve wrote:
+> On Wed, Jun 11, 2025 at 3:59â€¯AM Steven Price <steven.price@arm.com> wrote:
+>>
+>> +static int realm_create_protected_data_page(struct realm *realm,
+>> +                                           unsigned long ipa,
+>> +                                           kvm_pfn_t dst_pfn,
+>> +                                           kvm_pfn_t src_pfn,
+>> +                                           unsigned long flags)
+>> +{
+>> +       unsigned long rd = virt_to_phys(realm->rd);
+>> +       phys_addr_t dst_phys, src_phys;
+>> +       bool undelegate_failed = false;
+>> +       int ret, offset;
+>> +
+>> +       dst_phys = __pfn_to_phys(dst_pfn);
+>> +       src_phys = __pfn_to_phys(src_pfn);
+>> +
+>> +       for (offset = 0; offset < PAGE_SIZE; offset += RMM_PAGE_SIZE) {
+>> +               ret = realm_create_protected_data_granule(realm,
+>> +                                                         ipa,
+>> +                                                         dst_phys,
+>> +                                                         src_phys,
+>> +                                                         flags);
+>> +               if (ret)
+>> +                       goto err;
+>> +
+>> +               ipa += RMM_PAGE_SIZE;
+>> +               dst_phys += RMM_PAGE_SIZE;
+>> +               src_phys += RMM_PAGE_SIZE;
+>> +       }
+>> +
+>> +       return 0;
+>> +
+>> +err:
+>> +       if (ret == -EIO) {
+>> +               /* current offset needs undelegating */
+>> +               if (WARN_ON(rmi_granule_undelegate(dst_phys)))
+>> +                       undelegate_failed = true;
+>> +       }
+>> +       while (offset > 0) {
+>> +               ipa -= RMM_PAGE_SIZE;
+>> +               offset -= RMM_PAGE_SIZE;
+>> +               dst_phys -= RMM_PAGE_SIZE;
+>> +
+>> +               rmi_data_destroy(rd, ipa, NULL, NULL);
+>> +
+>> +               if (WARN_ON(rmi_granule_undelegate(dst_phys)))
+>> +                       undelegate_failed = true;
+>> +       }
+>> +
+>> +       if (undelegate_failed) {
+>> +               /*
+>> +                * A granule could not be undelegated,
+>> +                * so the page has to be leaked
+>> +                */
+>> +               get_page(pfn_to_page(dst_pfn));
 > 
-> I don't disagree, but the host needs to plan for the worst, especially since the
-> guest can effectively dictate the max page size of S-EPT mappings.  AFAIK, there
-> are no plans to support memory overcommit for TDX guests, so unless a deployment
-> wants to roll the dice and hope TDX guests will use hugepages for N% of their
-> memory, the host will want to reserve 0.4% of guest memory for PAMTs to ensure
-> it doesn't unintentionally DoS the guest with an OOM condition.
+> I would like to point out that the support for in-place conversion
+> with guest_memfd using hugetlb pages [1] is under discussion.
 > 
-> Ditto for any use case that wants to support dirty logging (ugh), because dirty
-> logging will require demoting all of guest memory to 4KiB mappings.
-> 
-> > > Right.
-> > > 
-> > > It also requires special handling in many places in core-mm. Like, what
-> > > happens if THP in guest memfd got split. Who would allocate PAMT for it?
-> 
-> guest_memfd?  I don't see why core-mm would need to get involved.  And I definitely
-> don't see how handling page splits in guest_memfd would be more complicated than
-> handling them in KVM's MMU.
-> 
-> > > Migration will be more complicated too (when we get there).
-> 
-> Which type of migration?  Live migration or page migration?
+> As part of the in-place conversion, the policy we are routing for is
+> to avoid any "refcounts" from KVM on folios supplied by guest_memfd as
+> in-place conversion works by splitting and merging folios during
+> memory conversion as per discussion at LPC [2].
 
-Page migration.
+CCA doesn't really support "in-place" conversions (see more detail
+below). But here the issue is that something has gone wrong and the RMM
+is refusing to give us a page back.
 
-But I think after some reading, it can be manageable.
+> 
+> The best way to avoid further use of this page with huge page support
+> around would be either:
+> 1) Explicitly Inform guest_memfd of a particular pfn being in use by
+> KVM without relying on page refcounts or
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+This might work, but note that the page is unavailable even after user
+space has freed the guest_memfd. So at some point the page needs to be
+marked so that it cannot be reallocated by the kernel. Holding a
+refcount isn't ideal but I haven't come up with a better idea.
+
+Note that this is a "should never happen" situation - the code will have
+WARN()ed already - so this is just a best effort to allow the system to
+limp on.
+
+> 2) Set the page as hwpoisoned. (Needs further discussion)
+
+This certainly sounds like a closer fit - but I'm not very familiar with
+hwpoison so I don't know how easy it would be to integrate with this.
+
+> This page refcounting strategy will have to be revisited depending on
+> which series lands first. That being said, it would be great if ARM
+> could review/verify if the series [1] works for backing CCA VMs with
+> huge pages.
+> 
+> [1] https://lore.kernel.org/kvm/cover.1747264138.git.ackerleytng@google.com/
+> [2] https://lpc.events/event/18/contributions/1764/
+> 
+>> +       }
+>> +
+>> +       return -ENXIO;
+>> +}
+>> +
+>> +static int populate_region(struct kvm *kvm,
+>> +                          phys_addr_t ipa_base,
+>> +                          phys_addr_t ipa_end,
+>> +                          unsigned long data_flags)
+>> +{
+>> +       struct realm *realm = &kvm->arch.realm;
+>> +       struct kvm_memory_slot *memslot;
+>> +       gfn_t base_gfn, end_gfn;
+>> +       int idx;
+>> +       phys_addr_t ipa = ipa_base;
+>> +       int ret = 0;
+>> +
+>> +       base_gfn = gpa_to_gfn(ipa_base);
+>> +       end_gfn = gpa_to_gfn(ipa_end);
+>> +
+>> +       idx = srcu_read_lock(&kvm->srcu);
+>> +       memslot = gfn_to_memslot(kvm, base_gfn);
+>> +       if (!memslot) {
+>> +               ret = -EFAULT;
+>> +               goto out;
+>> +       }
+>> +
+>> +       /* We require the region to be contained within a single memslot */
+>> +       if (memslot->base_gfn + memslot->npages < end_gfn) {
+>> +               ret = -EINVAL;
+>> +               goto out;
+>> +       }
+>> +
+>> +       if (!kvm_slot_can_be_private(memslot)) {
+>> +               ret = -EPERM;
+>> +               goto out;
+>> +       }
+>> +
+>> +       while (ipa < ipa_end) {
+>> +               struct vm_area_struct *vma;
+>> +               unsigned long hva;
+>> +               struct page *page;
+>> +               bool writeable;
+>> +               kvm_pfn_t pfn;
+>> +               kvm_pfn_t priv_pfn;
+>> +               struct page *gmem_page;
+>> +
+>> +               hva = gfn_to_hva_memslot(memslot, gpa_to_gfn(ipa));
+>> +               vma = vma_lookup(current->mm, hva);
+>> +               if (!vma) {
+>> +                       ret = -EFAULT;
+>> +                       break;
+>> +               }
+>> +
+>> +               pfn = __kvm_faultin_pfn(memslot, gpa_to_gfn(ipa), FOLL_WRITE,
+>> +                                       &writeable, &page);
+> 
+> Is this assuming double backing of guest memory ranges? Is this logic
+> trying to simulate a shared fault?
+
+Yes and yes...
+
+> Does memory population work with CCA if priv_pfn and pfn are the same?
+> I am curious how the memory population will work with in-place
+> conversion support available for guest_memfd files.
+
+The RMM interface doesn't support an in-place conversion. The
+RMI_DATA_CREATE operation takes the PA of the already delegated
+granule[1] along with the PA of a non-delegated granule with the data.
+
+So to mimic an in-place conversion requires copying the data from the
+page, delegating the (original) page and then using RMI_DATA_CREATE
+which copies the data back. Fundamentally because there may be memory
+encryption involved there is going to be a requirement for this double
+memcpy() approach. Note that this is only relevant during the initial
+setup phase - CCA doesn't (at least currently) permit populated pages to
+be provided to the guest when it is running.
+
+The approach this series takes pre-dates the guest_memfd discussions and
+so is assuming that the shared memory is not (directly) provided by the
+guest_memfd but is using the user space pointer provided in the memslot.
+It would be possible (with the patches proposed) for the VMM to mmap()
+the guest_memfd when the memory is being shared so as to reuse the
+physical pages.
+
+I do also plan to look at supporting the use of the guest_memfd for the
+shared memory directly. But I've been waiting for the discussions to
+conclude before attempting to implement that.
+
+[1] A 'granule' is the RMM's idea of a page size (RMM_PAGE_SIZE), which
+is currently (RMM v1.0) always 4k. So may be different when Linux is
+running with a larger page size.
+
+Thanks,
+Steve
+
+>> +
+>> +               if (is_error_pfn(pfn)) {
+>> +                       ret = -EFAULT;
+>> +                       break;
+>> +               }
+>> +
+>> +               ret = kvm_gmem_get_pfn(kvm, memslot,
+>> +                                      ipa >> PAGE_SHIFT,
+>> +                                      &priv_pfn, &gmem_page, NULL);
+>> +               if (ret)
+>> +                       break;
+>> +
+>> +               ret = realm_create_protected_data_page(realm, ipa,
+>> +                                                      priv_pfn,
+>> +                                                      pfn,
+>> +                                                      data_flags);
+>> +
+>> +               kvm_release_page_clean(page);
+>> +
+>> +               if (ret)
+>> +                       break;
+>> +
+>> +               ipa += PAGE_SIZE;
+>> +       }
+>> +
+>> +out:
+>> +       srcu_read_unlock(&kvm->srcu, idx);
+>> +       return ret;
+>> +}
+>> +
+
