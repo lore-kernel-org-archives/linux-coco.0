@@ -1,278 +1,53 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DB3D2D781B;
-	Wed, 13 Aug 2025 09:30:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E3552BEC21;
+	Wed, 13 Aug 2025 18:41:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755077411; cv=none; b=SqFlyB9agj6sls5BzCaxzwqufT3ebL8Rn4m1oLwIbWT74kwI7asy1J4sQ79xtIyn54+x9BYd2tuvSd12UQ2ICvhpc2SKdx19F9yNOc8Ia10Zu7CwKJbkaQntjNFP0DusPkYxxOgY77TbKUPndI1Prw570I4XC4QUyZKz5eP9Ym4=
+	t=1755110478; cv=none; b=Xco8Qg0m/Soh0Reh12E+57yd+Tq9PVxPmA8HLiSjTiFReK9c+HTVY+8tSGKY6zfn2GPquWS+iLcGB6dFO6DflNkfV8E3aY9L8i9oKoFDhbWmG70QEs9DpRmW74aGg41x184ny5baH3VFzx1veK/PFYJaYBsmcCsrnMsoS0dE79U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755077411; c=relaxed/simple;
-	bh=Pmk+uWkOUl+K3Kdkg22GiyhU8hEpriQ2yHipUC+AIQo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GvTrT6tPCubvAUr6rdpglHXf6Raik+meMqVaSsBeniqJnVfauV62xLes7fAB3drxVvoV/7IZhgBHBxycL+PazQXINSnA0ycDxlWqONbKhCLcKI72C1rk0gw6zLCW+fYcqRS1Kwgo3muPbNmd2pPoKlnszR/veQKmlwW6QwVNG6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0498C12FC;
-	Wed, 13 Aug 2025 02:30:00 -0700 (PDT)
-Received: from [10.57.2.66] (unknown [10.57.2.66])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9D4303F63F;
-	Wed, 13 Aug 2025 02:30:03 -0700 (PDT)
-Message-ID: <80c46a5c-7559-4763-bbf2-6c755a4b067c@arm.com>
-Date: Wed, 13 Aug 2025 10:30:01 +0100
+	s=arc-20240116; t=1755110478; c=relaxed/simple;
+	bh=5ENoyMe3/IGcFvSVhtFBaTfgiFWbnIDc71oxYhCZ+OI=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n2cvXzmw/ta2CEdxheO8UcGh8/xFwfsq3qhOzgMf8rNuvAKygIq06mVRy2sQhn2eC0MF8P0T8uo8VnMzbLErG10zvws43R0EMTSF+CnBc/mosbl7SNDyLT1eGjXPb9Z0y6TcOeRn+tYZLrG/Ts6Yy+Kc3KcyBHAR8pSH1fs5JCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=Txj3CVBV; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="Txj3CVBV"
+Received: from 8bytes.org (p54921b16.dip0.t-ipconnect.de [84.146.27.22])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 7B79052BA7;
+	Wed, 13 Aug 2025 20:41:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1755110467;
+	bh=5ENoyMe3/IGcFvSVhtFBaTfgiFWbnIDc71oxYhCZ+OI=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=Txj3CVBVnCEp+K1Dmq6uAtEKJ2lts4CJTN0CSmAg/dqUinGxiepNxK+f4JxxpZVC8
+	 EX49LnhNDuNEn/HBcLae2kHDZVlhUzB53FgwU2KmWTn3qytBoWGXIoGnPaVnsXpZid
+	 kfl1MR4N879iZR5lkc2agH7gexNCZLY+3OlBCUvTTymaRErVWVmB50nulw5rO2YNGH
+	 x5deQ9yz+FjWZbwslgR86ZUJDawX65urb+Bcaa+azoFof+h8Zj0xs3duz27MgwhoKI
+	 0U5s5HVAO/gm+a+cx3cNRsITx8wBdgetmQPGufWtMLmIpNixnqOfl9cWZ9bgjI2iEq
+	 G4Jd0JE1of16g==
+Date: Wed, 13 Aug 2025 20:41:06 +0200
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+Subject: Re: SVSM Development Call August 13th, 2025
+Message-ID: <6thtotdqpil7nb6bp3ho4nayyuggpskvpcmjteb73nrt4pni5h@nvq3x7maxvq3>
+References: <tcn7lbkdldezuzuhsvmodkunsze6kwefbsibc3r5acktj4ssgz@akyknynywlqd>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 19/43] arm64: RME: Allow populating initial contents
-To: Vishal Annapurve <vannapurve@google.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>
-References: <20250611104844.245235-1-steven.price@arm.com>
- <20250611104844.245235-20-steven.price@arm.com>
- <CAGtprH-on3JdsHx-DyjN_z_5Z6HJoSQjJpA5o5_V6=rygMSbtQ@mail.gmail.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <CAGtprH-on3JdsHx-DyjN_z_5Z6HJoSQjJpA5o5_V6=rygMSbtQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <tcn7lbkdldezuzuhsvmodkunsze6kwefbsibc3r5acktj4ssgz@akyknynywlqd>
 
-On 01/08/2025 02:56, Vishal Annapurve wrote:
-> On Wed, Jun 11, 2025 at 3:59 AM Steven Price <steven.price@arm.com> wrote:
->>
->> +static int realm_create_protected_data_page(struct realm *realm,
->> +                                           unsigned long ipa,
->> +                                           kvm_pfn_t dst_pfn,
->> +                                           kvm_pfn_t src_pfn,
->> +                                           unsigned long flags)
->> +{
->> +       unsigned long rd = virt_to_phys(realm->rd);
->> +       phys_addr_t dst_phys, src_phys;
->> +       bool undelegate_failed = false;
->> +       int ret, offset;
->> +
->> +       dst_phys = __pfn_to_phys(dst_pfn);
->> +       src_phys = __pfn_to_phys(src_pfn);
->> +
->> +       for (offset = 0; offset < PAGE_SIZE; offset += RMM_PAGE_SIZE) {
->> +               ret = realm_create_protected_data_granule(realm,
->> +                                                         ipa,
->> +                                                         dst_phys,
->> +                                                         src_phys,
->> +                                                         flags);
->> +               if (ret)
->> +                       goto err;
->> +
->> +               ipa += RMM_PAGE_SIZE;
->> +               dst_phys += RMM_PAGE_SIZE;
->> +               src_phys += RMM_PAGE_SIZE;
->> +       }
->> +
->> +       return 0;
->> +
->> +err:
->> +       if (ret == -EIO) {
->> +               /* current offset needs undelegating */
->> +               if (WARN_ON(rmi_granule_undelegate(dst_phys)))
->> +                       undelegate_failed = true;
->> +       }
->> +       while (offset > 0) {
->> +               ipa -= RMM_PAGE_SIZE;
->> +               offset -= RMM_PAGE_SIZE;
->> +               dst_phys -= RMM_PAGE_SIZE;
->> +
->> +               rmi_data_destroy(rd, ipa, NULL, NULL);
->> +
->> +               if (WARN_ON(rmi_granule_undelegate(dst_phys)))
->> +                       undelegate_failed = true;
->> +       }
->> +
->> +       if (undelegate_failed) {
->> +               /*
->> +                * A granule could not be undelegated,
->> +                * so the page has to be leaked
->> +                */
->> +               get_page(pfn_to_page(dst_pfn));
-> 
-> I would like to point out that the support for in-place conversion
-> with guest_memfd using hugetlb pages [1] is under discussion.
-> 
-> As part of the in-place conversion, the policy we are routing for is
-> to avoid any "refcounts" from KVM on folios supplied by guest_memfd as
-> in-place conversion works by splitting and merging folios during
-> memory conversion as per discussion at LPC [2].
+Meeting minutes are now available in this PR:
 
-CCA doesn't really support "in-place" conversions (see more detail
-below). But here the issue is that something has gone wrong and the RMM
-is refusing to give us a page back.
+	https://github.com/coconut-svsm/governance/pull/71
 
-> 
-> The best way to avoid further use of this page with huge page support
-> around would be either:
-> 1) Explicitly Inform guest_memfd of a particular pfn being in use by
-> KVM without relying on page refcounts or
-
-This might work, but note that the page is unavailable even after user
-space has freed the guest_memfd. So at some point the page needs to be
-marked so that it cannot be reallocated by the kernel. Holding a
-refcount isn't ideal but I haven't come up with a better idea.
-
-Note that this is a "should never happen" situation - the code will have
-WARN()ed already - so this is just a best effort to allow the system to
-limp on.
-
-> 2) Set the page as hwpoisoned. (Needs further discussion)
-
-This certainly sounds like a closer fit - but I'm not very familiar with
-hwpoison so I don't know how easy it would be to integrate with this.
-
-> This page refcounting strategy will have to be revisited depending on
-> which series lands first. That being said, it would be great if ARM
-> could review/verify if the series [1] works for backing CCA VMs with
-> huge pages.
-> 
-> [1] https://lore.kernel.org/kvm/cover.1747264138.git.ackerleytng@google.com/
-> [2] https://lpc.events/event/18/contributions/1764/
-> 
->> +       }
->> +
->> +       return -ENXIO;
->> +}
->> +
->> +static int populate_region(struct kvm *kvm,
->> +                          phys_addr_t ipa_base,
->> +                          phys_addr_t ipa_end,
->> +                          unsigned long data_flags)
->> +{
->> +       struct realm *realm = &kvm->arch.realm;
->> +       struct kvm_memory_slot *memslot;
->> +       gfn_t base_gfn, end_gfn;
->> +       int idx;
->> +       phys_addr_t ipa = ipa_base;
->> +       int ret = 0;
->> +
->> +       base_gfn = gpa_to_gfn(ipa_base);
->> +       end_gfn = gpa_to_gfn(ipa_end);
->> +
->> +       idx = srcu_read_lock(&kvm->srcu);
->> +       memslot = gfn_to_memslot(kvm, base_gfn);
->> +       if (!memslot) {
->> +               ret = -EFAULT;
->> +               goto out;
->> +       }
->> +
->> +       /* We require the region to be contained within a single memslot */
->> +       if (memslot->base_gfn + memslot->npages < end_gfn) {
->> +               ret = -EINVAL;
->> +               goto out;
->> +       }
->> +
->> +       if (!kvm_slot_can_be_private(memslot)) {
->> +               ret = -EPERM;
->> +               goto out;
->> +       }
->> +
->> +       while (ipa < ipa_end) {
->> +               struct vm_area_struct *vma;
->> +               unsigned long hva;
->> +               struct page *page;
->> +               bool writeable;
->> +               kvm_pfn_t pfn;
->> +               kvm_pfn_t priv_pfn;
->> +               struct page *gmem_page;
->> +
->> +               hva = gfn_to_hva_memslot(memslot, gpa_to_gfn(ipa));
->> +               vma = vma_lookup(current->mm, hva);
->> +               if (!vma) {
->> +                       ret = -EFAULT;
->> +                       break;
->> +               }
->> +
->> +               pfn = __kvm_faultin_pfn(memslot, gpa_to_gfn(ipa), FOLL_WRITE,
->> +                                       &writeable, &page);
-> 
-> Is this assuming double backing of guest memory ranges? Is this logic
-> trying to simulate a shared fault?
-
-Yes and yes...
-
-> Does memory population work with CCA if priv_pfn and pfn are the same?
-> I am curious how the memory population will work with in-place
-> conversion support available for guest_memfd files.
-
-The RMM interface doesn't support an in-place conversion. The
-RMI_DATA_CREATE operation takes the PA of the already delegated
-granule[1] along with the PA of a non-delegated granule with the data.
-
-So to mimic an in-place conversion requires copying the data from the
-page, delegating the (original) page and then using RMI_DATA_CREATE
-which copies the data back. Fundamentally because there may be memory
-encryption involved there is going to be a requirement for this double
-memcpy() approach. Note that this is only relevant during the initial
-setup phase - CCA doesn't (at least currently) permit populated pages to
-be provided to the guest when it is running.
-
-The approach this series takes pre-dates the guest_memfd discussions and
-so is assuming that the shared memory is not (directly) provided by the
-guest_memfd but is using the user space pointer provided in the memslot.
-It would be possible (with the patches proposed) for the VMM to mmap()
-the guest_memfd when the memory is being shared so as to reuse the
-physical pages.
-
-I do also plan to look at supporting the use of the guest_memfd for the
-shared memory directly. But I've been waiting for the discussions to
-conclude before attempting to implement that.
-
-[1] A 'granule' is the RMM's idea of a page size (RMM_PAGE_SIZE), which
-is currently (RMM v1.0) always 4k. So may be different when Linux is
-running with a larger page size.
-
-Thanks,
-Steve
-
->> +
->> +               if (is_error_pfn(pfn)) {
->> +                       ret = -EFAULT;
->> +                       break;
->> +               }
->> +
->> +               ret = kvm_gmem_get_pfn(kvm, memslot,
->> +                                      ipa >> PAGE_SHIFT,
->> +                                      &priv_pfn, &gmem_page, NULL);
->> +               if (ret)
->> +                       break;
->> +
->> +               ret = realm_create_protected_data_page(realm, ipa,
->> +                                                      priv_pfn,
->> +                                                      pfn,
->> +                                                      data_flags);
->> +
->> +               kvm_release_page_clean(page);
->> +
->> +               if (ret)
->> +                       break;
->> +
->> +               ipa += PAGE_SIZE;
->> +       }
->> +
->> +out:
->> +       srcu_read_unlock(&kvm->srcu, idx);
->> +       return ret;
->> +}
->> +
-
+-Joerg
