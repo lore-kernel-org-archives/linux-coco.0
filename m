@@ -1,53 +1,74 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E3552BEC21;
-	Wed, 13 Aug 2025 18:41:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755110478; cv=none; b=Xco8Qg0m/Soh0Reh12E+57yd+Tq9PVxPmA8HLiSjTiFReK9c+HTVY+8tSGKY6zfn2GPquWS+iLcGB6dFO6DflNkfV8E3aY9L8i9oKoFDhbWmG70QEs9DpRmW74aGg41x184ny5baH3VFzx1veK/PFYJaYBsmcCsrnMsoS0dE79U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755110478; c=relaxed/simple;
-	bh=5ENoyMe3/IGcFvSVhtFBaTfgiFWbnIDc71oxYhCZ+OI=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n2cvXzmw/ta2CEdxheO8UcGh8/xFwfsq3qhOzgMf8rNuvAKygIq06mVRy2sQhn2eC0MF8P0T8uo8VnMzbLErG10zvws43R0EMTSF+CnBc/mosbl7SNDyLT1eGjXPb9Z0y6TcOeRn+tYZLrG/Ts6Yy+Kc3KcyBHAR8pSH1fs5JCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=Txj3CVBV; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="Txj3CVBV"
-Received: from 8bytes.org (p54921b16.dip0.t-ipconnect.de [84.146.27.22])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 7B79052BA7;
-	Wed, 13 Aug 2025 20:41:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1755110467;
-	bh=5ENoyMe3/IGcFvSVhtFBaTfgiFWbnIDc71oxYhCZ+OI=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=Txj3CVBVnCEp+K1Dmq6uAtEKJ2lts4CJTN0CSmAg/dqUinGxiepNxK+f4JxxpZVC8
-	 EX49LnhNDuNEn/HBcLae2kHDZVlhUzB53FgwU2KmWTn3qytBoWGXIoGnPaVnsXpZid
-	 kfl1MR4N879iZR5lkc2agH7gexNCZLY+3OlBCUvTTymaRErVWVmB50nulw5rO2YNGH
-	 x5deQ9yz+FjWZbwslgR86ZUJDawX65urb+Bcaa+azoFof+h8Zj0xs3duz27MgwhoKI
-	 0U5s5HVAO/gm+a+cx3cNRsITx8wBdgetmQPGufWtMLmIpNixnqOfl9cWZ9bgjI2iEq
-	 G4Jd0JE1of16g==
-Date: Wed, 13 Aug 2025 20:41:06 +0200
-From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
-Subject: Re: SVSM Development Call August 13th, 2025
-Message-ID: <6thtotdqpil7nb6bp3ho4nayyuggpskvpcmjteb73nrt4pni5h@nvq3x7maxvq3>
-References: <tcn7lbkdldezuzuhsvmodkunsze6kwefbsibc3r5acktj4ssgz@akyknynywlqd>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA842046BA
+	for <linux-coco@lists.linux.dev>; Wed, 13 Aug 2025 22:03:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755122585; cv=none; b=qpb68bUydrnMy0OP1msGX8Qoc8bFy45sFsOStkZbU7WvvKQI6J3bxKy2xijJhV9BYx+YSI9KQRoJkLiw1sI7LQ3eeAZQd1HxPh98gtb9hvIxqQx7mnlis4pwUM7tRXx55HWQXQPGvB0Spw/tQ21ToyrkHl7wD3Tfbip62finLys=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755122585; c=relaxed/simple;
+	bh=Wmn6DsHQTNdV0xZRNI3J0H9OLIo2yMWrmbkWA36FagA=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=iJGikynS6x7vNBtmOvfH+gHonLmgVCashxw4tsyJwP5JjpU247aN3nMvg+fuL05qEdcKQam+tc/+Ttevo7gonFZW7EuzAgsqNb6HQyLLBqDeKzVU9ILG/vP0AcSb0f2dS6hz7BUbRJEKaCYFLbr0BnkQg8DaPFvtO0j8IewGJ0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qD7HyU4q; arc=none smtp.client-ip=209.85.217.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qD7HyU4q"
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-50f8ba4d2f2so126574137.3
+        for <linux-coco@lists.linux.dev>; Wed, 13 Aug 2025 15:03:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755122583; x=1755727383; darn=lists.linux.dev;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Wmn6DsHQTNdV0xZRNI3J0H9OLIo2yMWrmbkWA36FagA=;
+        b=qD7HyU4qZMs3hukGHcI9zBskJ8QuEKdR3b09hEyxzvtdrry4X3vgf6CAQsQZ/ihnr7
+         CyEtlZr+KuO0K/rEQHKKHZwJ3QlkD3hUYwEGALIaiXdlTETF8RtC2NIQVNIQMiIfcGNL
+         7/vFKJ73IubO3pvQsvrRHJlCxISxWnHJqBYba9baWHwk0F2OJwyfxYK4oJamu8YjGvsO
+         98tD88cfJanlhbK2+HwhReRwFFaN5RgzoEZy7kl8TbSOjLjiN3b53DQ/NjsfVSkkO+B/
+         vKYI5qOJhE+JejTwj7u6paHMnUhldmyR8FpXbYkL5LJWUXT1m6g7BIIwvya5gUMwOuRs
+         a43A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755122583; x=1755727383;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Wmn6DsHQTNdV0xZRNI3J0H9OLIo2yMWrmbkWA36FagA=;
+        b=O5K9ojsMf2+8Di4NukciXQviJNRXRHvKkWoFkHZZPbR+IXeGHkbxXhGW6DcLHDUJJU
+         /O/v3Ce1ND+uF9eQ6BxHDZS7ULrAeo74ZTIPrt1oQESMYT9zeqYrTwMan0tIVc2ZpSae
+         aBY1lbqx4hT1mWglwKvYBFoPnSuV3Bps2StvB2yoCLaM0Lld4OIJThmmDD91FvpfUhF2
+         74WAEgBArc24I3PMGPgIskjJ5jQCrFbc9lq5/+ffiEj6PnHGU7oGKrjrC0zRjx1cT7oa
+         FsbTjQiS8xvGYoGJGZqiyo9rL8yJDkXo1+h4KIvBn8SplxnB+MGTzHSR9T2kPS5PVxm9
+         KSkA==
+X-Gm-Message-State: AOJu0YwukaEw6q729apTrnLK7lKjJ3x+NTalH3LeCvykETyQBu01rhrB
+	eaDk5soRs6EwsFFcGGln4YOG3cB91ulsP2OzfijetddYKCrH7bhWNwtu0KkBd4U2rlH2hDP8J+F
+	MlwelNPp6mBBS7WChdMI5WREo0UVLklErclE8i59xNM/jzSGkSZpxdEow
+X-Gm-Gg: ASbGncsGzjNbt8aTKoaFhMQoDgHJktM23+ZRN9JwMTcXZg00iY+UT9fdvdZGaBDflaz
+	mQadWOIgjkpdzmwaoSI7i/QadfUN6mbQxKjd2iO7At5qJqOcB7qbeFWeJdOaj7PXhksJpN8z87g
+	AwVCFrLe0u+kmlYSyUZ4yBpNz4RWARM/ZPftyBGdFr9d6xIJCwRVWKc+LMRp2EMKlrk0BPOtGU2
+	3eOuewpLii6n/p3D4n/NilG9a9wmAmsxbw2Zg==
+X-Google-Smtp-Source: AGHT+IHOPZTebPBXZQ3VaHsRl9NVDhCJhW5Liuwt5InxYC482PY+s9C/MBh2eNUkYZWCUfOSt2NIPumWvKUx9nKAOZs=
+X-Received: by 2002:a05:6102:3e22:b0:4c3:64bd:93ba with SMTP id
+ ada2fe7eead31-50fe010b6cbmr418983137.11.1755122582285; Wed, 13 Aug 2025
+ 15:03:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tcn7lbkdldezuzuhsvmodkunsze6kwefbsibc3r5acktj4ssgz@akyknynywlqd>
+From: Steve Rutherford <srutherford@google.com>
+Date: Wed, 13 Aug 2025 15:02:26 -0700
+X-Gm-Features: Ac12FXx4Aqy9cKGyAiUV8lnMuXv7igu2pqEyXPyOKYuwxfNA0NtfPa58wk2Txmc
+Message-ID: <CABayD+f8k_+sq2wzYHaS8=PZUG9_EqUmZyg9mNDZ4Q5gSAuxEQ@mail.gmail.com>
+Subject: [Cancelled] CCC Kernel SIG Cancelled August 14th
+To: linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Meeting minutes are now available in this PR:
+Hi all,
 
-	https://github.com/coconut-svsm/governance/pull/71
+Cancelling this month's instance of the CCC Kernel SIG due to lack of agenda.
 
--Joerg
+Dan's VFIO/IOMMUFD huddle is still on at 8PM PDT.
+
+Thanks,
+Steve
