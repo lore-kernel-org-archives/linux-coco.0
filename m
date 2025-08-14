@@ -1,288 +1,313 @@
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2059.outbound.protection.outlook.com [40.107.95.59])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBA132142C
-	for <linux-coco@lists.linux.dev>; Thu, 14 Aug 2025 14:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755183191; cv=fail; b=P6gSLCV6W6pObNgjwYH0Xp1KAn1PWO0i4l5XOpKPc+3GXtvemjUJaUnUe3IuhvckRVxc9TXJSA/x8v1s+Kok9iQFl0ioMVK/5Cmfe9dMt07jx8XhBrpR9T32h9AW2fUquIbTMtXtJ/w9VZrvATWOsS5yoFbD0zD1arPIG7Jj7mE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755183191; c=relaxed/simple;
-	bh=Ksxwkh0bkZAoR6+8tsn9sFMxZnKRQv8kYpsTu727QfA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=duyIorSG0lSSZoU5EtwB2WloUZ2FYdKhAgP2CHur73icjHW45ZeCYe6M5TkwICc1y1Dn/137T9Fy88ogXUFUFxjL0kIkX2o6PbjE82mE4rzsQkkt8ZzMdxAVrnpPnJIsp2WQx96a9zhpbijmCiC7bzyjAOS1PwNCdM1Bf04uU1U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=gxo9+DqA; arc=fail smtp.client-ip=40.107.95.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C732405E3
+	for <linux-coco@lists.linux.dev>; Thu, 14 Aug 2025 16:26:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755188819; cv=none; b=VhzJeFwEHFjIRse4cugTTR/1oB/lapXsK9vS1wh3AaajXgypU5QUTy8ONdLOdlBhmpS5RJ7bXB0Ty5U2Um4LTpLVhwcXEzaXdb9ljcso29Vs1fUznOUJlBTNad5hVMiFs4kk33fN5y5GybNVHhWWnz+9iX+KQ0EV6tAe8+Lh/54=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755188819; c=relaxed/simple;
+	bh=9D8jNE+Xpo3zWiNPyvO4nZbQmriyK7SuBVCu8u21lTU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XOqcBeV+29yFoWQiZVfnB5Xuy1n3UfPdEOI/MJn42K4eEnCiGeMJS1prbonCbXWm2GvlCYih3NwoqqigNBWTrxrMRL/2GjBjCitOMg7SDM8scRuSpzxA3KpXowEcsIjfkn+/vKVZwZt7jI5NC7+g5y9gBpkQMAxFMLU3CwHbz20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3ByiOtAC; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="gxo9+DqA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UgjKcyS/GQWVQwGMcM86WF39T2ILqWZLaQyBU24Eb7dKCDmrK3NeoQ3IJGjockDdjL6mRwbb/RUhoHrJX/aes6CfDPNhc4m55IwjweQsvtj0MTCcznI7StsUB9phcEMpD2CdZ3MpAuMMQbsvbNEE/pusM7zQELVhT8MmGNgixRpa3rT/54COmvheIMiSly/2AHTmWJkdaSO0pVYy5fYWqxLnvZFpAF4WWRszMcnzwvk/SdS2MwZNrKdFpyoUM1k6V2EmvqlCmaY1C+1w77Oituh34MIZT8aWmtNWCdgUQk/fSFDi7vMzadE6KhtKxazEedP9s7sUDPtqyZhqG1x2ww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xnGvq9W+jPozFeNxbRJZT3hkXGVr7+SzDJ0eJPMLexw=;
- b=UwaHzvTnMcHfH+aFQgPIY+lMTno1MHq74WdWIXlTo/x9OaTErTPASv9a/EZNxAODMxq1wTIGIRc4dG8uK53HPaBzl3d3E54Eva6hfOLMo1QwjDjizPww+x04OINptaWvPaGmVBxGR/jPiaWHX4/2kUDnhwG9PoXuWkR61gZKj5z1p2sTSXw8gcFPxn0lqzMD6sOcEgCFYAuMtwWu4CRAEFNSQ8FDqf/Fvb8cTCPzhX9RpPWgmCTZxnuag7p28ZGtyMKYZrT3enLBvLCqUl8m+W8KD4fwCzh0Fuih1F4v3IgmOiNaMHIL+M25vcJMUlUo3FdkWIs52JPxYGPpFQLkSw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xnGvq9W+jPozFeNxbRJZT3hkXGVr7+SzDJ0eJPMLexw=;
- b=gxo9+DqAGAZeYXsRqPSgDFlty9uznEWS+S53K048BNxwP8B9pvKk/iOtkySLEeDwvRGktXV2qPpRpH4YhWzq8Qnv7OR5rI/0QzGes94YWogO7WZ9abogXPwU/wz9Fr1QTeq0Rh12JJm77dr382H+pEPh+HQ+GpkG94wrW/hmn88=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by DM4PR12MB6614.namprd12.prod.outlook.com (2603:10b6:8:bb::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.13; Thu, 14 Aug
- 2025 14:53:04 +0000
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f%5]) with mapi id 15.20.9031.014; Thu, 14 Aug 2025
- 14:53:04 +0000
-Message-ID: <be66626f-a871-495c-b7fa-42cd3f497245@amd.com>
-Date: Fri, 15 Aug 2025 00:52:57 +1000
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH v4 04/10] PCI/TSM: Authenticate devices via platform TSM
-To: dan.j.williams@intel.com, linux-coco@lists.linux.dev,
- linux-pci@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, bhelgaas@google.com, lukas@wunner.de,
- Samuel Ortiz <sameo@rivosinc.com>, Xu Yilun <yilun.xu@linux.intel.com>
-References: <20250717183358.1332417-1-dan.j.williams@intel.com>
- <20250717183358.1332417-5-dan.j.williams@intel.com>
- <7b6782da-1318-4dab-8230-e59a729f8f11@amd.com>
- <689d3e97760ba_27091004f@dwillia2-xfh.jf.intel.com.notmuch>
-From: Alexey Kardashevskiy <aik@amd.com>
-Content-Language: en-US
-In-Reply-To: <689d3e97760ba_27091004f@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SY5P282CA0021.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:202::7) To CH3PR12MB9194.namprd12.prod.outlook.com
- (2603:10b6:610:19f::7)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3ByiOtAC"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-242d3be5bdfso158865ad.1
+        for <linux-coco@lists.linux.dev>; Thu, 14 Aug 2025 09:26:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755188817; x=1755793617; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h2K7kLOi1msFu8PrhhDfHKdkFOSC2kCXyrMtF2tQZYY=;
+        b=3ByiOtACBgn8f4hWl0Isd6R2/LL8xf1lJ/JadIObpcCMUoIq3Qdj5E1iW97x2HfvOJ
+         M3qh+DM2w0dUt1YeBwvSHyGV6cB/3uvdvLVWYye4mkBh0NA/yCwEe2Ebbyey5iKNXWmc
+         6m3MIB8mMUaXnxZnFAqOf0Mst1+lDxUHj4SJN7z/VvgbcdP/1Ca4bocdkKHFW6ZQsDIr
+         JdYTZbLE7pid/HRzELUOa6XEihDmWu2oCJ5hgf2ZX1i6i5/Pt4a4DLYkVpl7lOh5gjr7
+         EG5s/378VNW01LEPDMoE+nb7nIgKDNlu4oM+/CHIne+glnU8taRgM1fCFXWjgf5gq1TR
+         HN2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755188817; x=1755793617;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h2K7kLOi1msFu8PrhhDfHKdkFOSC2kCXyrMtF2tQZYY=;
+        b=hzUW8EhvYJ+fwT318YIEnODBKq9wna99nUOzpTSfNyCu9WLe7kh1rs5bu7ul7LJiPT
+         kIVLC3nfnFiOiI+1tsSzhmXHcSX5XUbsxOaUIn7/IY6QZEfa7ZCUGZn2fgwleVFzmlhY
+         pmURQet43M6t6Olg4oHwPHNrx5dgrbnxXX/g65smImaORPTahjf+G+OAtzQu1V1tSuq5
+         zf/hMn8TwhA4lluMrNAqiyhz9C/ZOT7ynUXdk755ossBC0wVmGq56FyVxSesAjoPVS/h
+         syLIAavktT1FVqVZ8PVMRggOJZkScZ2ZfNN7rodB5UNkp7DeTYfBvfYg1BxoqNTmvR40
+         evfA==
+X-Forwarded-Encrypted: i=1; AJvYcCV3dX6k5T52aSpGOxG7l3IAkEyQIPF3R14vuYYfTl2C/LQ/xJ07NCVX6UAUF8uVFwmDNPgGciQ8TWrH@lists.linux.dev
+X-Gm-Message-State: AOJu0YwTA0aKsUfndhI7qZ+nTezqMsuAVl2Vt0QaPMhssHo/PRRWbDcb
+	WG/qLOfzhuIB3Ss97DkWsOhUPBv/b0GIZYRDPa/qvi2fB9YudXgP7++U3mJZXr+fCmXlTkAwrD9
+	Ef20J9u7itOgbXoDtSthP5NERg6/4+Z3Eo71MYTdd
+X-Gm-Gg: ASbGnct4xZlUzxfvc3s3Vu2eLk/LyGq56IBNh870t5knZSvkBhKawea3QE3S7q3MWgp
+	x/m8wwYuUmUMlj9EGIAAJ+RCqnkt3HtWpu792qNAHUXMb5vmqHYePpl1xCchQBVFXYQ+krxyhpX
+	13ptew1pUo+jqn2JTChpvFyGxXIzGXQAP3hvd02fHHXGXeQfVUrrDpL+4xXcvX0HnBJyw1/H7bR
+	J5XJANyf/11P0p31O/bf7YDQY48rVAXBUQ/AM9hufV9+xg=
+X-Google-Smtp-Source: AGHT+IE1Xi8qyYhndEVvODlo5R4bNQvMviK2kuxs/l6Wlpkk77oP0VdMn3+ugh6zOobZUqKHcqQ2GO1F6nzXrcqgJ8E=
+X-Received: by 2002:a17:902:f691:b0:234:b2bf:e67f with SMTP id
+ d9443c01a7336-2445a7927d9mr3506845ad.9.1755188816277; Thu, 14 Aug 2025
+ 09:26:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|DM4PR12MB6614:EE_
-X-MS-Office365-Filtering-Correlation-Id: 60c493b1-4c9e-4ff1-f72b-08dddb424566
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?THNudHhjb1dlamh5a0d6RGFTVnhJTElrVVhSTlJJZ2FmN085bk4xYlZ4U3l4?=
- =?utf-8?B?M2RFS0N4TFJzMFZIdmNWWVpIamM3ZGQ5SE94Tk1mN3dpOVh3OXlrZlZnNjlH?=
- =?utf-8?B?ZURzbVlxS2VzZ2JYYXZzcURET0YyTDJ2OWVCY2tZekZINzJ4WUtPcjhROUkv?=
- =?utf-8?B?eWEzcHR2SDBVK3R1R1hPRTJ1d3dSU3VFSi9WaWY2NGdWVyt6NFIrME1wQUY1?=
- =?utf-8?B?cUtXempkSGhvb3JZSDExUFlkUHRlcHN4cExDM200N2E2aHpETGdxTUp6dXlt?=
- =?utf-8?B?aUhQTEhMVU9ucS9wY3dQckYyYlByYWJRTEp6bTZsZ21LVnZlVldPWUszWEU3?=
- =?utf-8?B?djhPM3F6c0RMNXJjZ0VxUDBLS2laZStOYjRkMDJ5MndaUGluTUZGNVJkQ0hV?=
- =?utf-8?B?T0xheU9obmRzc1VTb2xXL1lyd3Flb25LdmttZ3kvR3g4WUp4c3Zvdnkrbm8y?=
- =?utf-8?B?NFc1RktNTUFUMlBFMHBSbS93SGdEQlo1ZWFZUHE3TEZYT1dhL2hKMzR6cE9B?=
- =?utf-8?B?UURKVnZ6M1RZWjkxNDJDZWdnY3dzU1pod0s4S1JKei9xTnJIUVhaUXF4eUJq?=
- =?utf-8?B?bys2aVlsVjBPeXBySWNWZ2llMG5FOUlSZFZsdjJqZUlmYnZDZGxuQ0VBLzc4?=
- =?utf-8?B?SGZmM1cwWjhsTHg0MVBSYzRzVUp1NVhIdTNkdi9TRGpVK2paTEpicm4wV2pE?=
- =?utf-8?B?dWFvanhuSVU1dkRIMmFqTnhCZDBRK2N1QU1paXhmcy9yRVIxcEN6cnBUV1N6?=
- =?utf-8?B?MytmamFHWnFEQkQ0Z05BTnRaRjdTQm12N0VGL1A3cTZUblVKS1A1cldqZ3J3?=
- =?utf-8?B?N01jVFFRelpLYmV2dWVsSHdVNk90QmNDaWZjSFF3OGxqbzFINFpoUG5GMUZY?=
- =?utf-8?B?aDQvU1ZKZnRCd21rbHlDellYQjJkUmdsVHFmMy9sTjh5LzgyTzVtRzB4TXVX?=
- =?utf-8?B?NE9WS0R0N0xMSTVhVldBUHQ1bEFsT3NTNFhwM1lCb2lGSWlxT2FQaWJLMWwv?=
- =?utf-8?B?YmJNUklzSmRKaG9idEN1SUl4UU1WWUp1YVFTZ0F3UE9tb2Q0UEFkWU9iQnVX?=
- =?utf-8?B?RU0xZ1FyM08yUmZ1QVppM0MwU0tOM2xlMzZTQjNESjBCM1cyQ0ZNVG5WTHdX?=
- =?utf-8?B?bWM0Y1kvdlRxdjRxelB2eEFDYk5GUGFuZUlUSjFGMk54cUJ4Y0JjV3JLNzhC?=
- =?utf-8?B?dGxERWJTUkZ2VWdKaXFWYk9jTjg3aUh1cm9MSy93cXZDQ0RUTWNlNGZTMjcw?=
- =?utf-8?B?ZXRDZ1NBMDJHeW1iV0M1VEREdjRzdDkxYmY2QVg3NlVwQzg3bmZaRVNqa2xw?=
- =?utf-8?B?NDdJNlV3dTVDb2RBcDNtT3JpZkRubnp1QjZDNHVyR0NJM3RZK2hsVERleFZM?=
- =?utf-8?B?VGtSSkN3ZXJ6WUxmZW43TVdDNC9HaUZhbDJkWlpYZTk4ajAwMjB1M1hrcmhH?=
- =?utf-8?B?cW9ZcXZ2Ly9RTGFVWXdNVWRhVnpaWDg3KzBHenRPYkhJSzF1T2JhSVJtMHpS?=
- =?utf-8?B?SW9ZSEUrS1pzRzZnTlVzL3RMRisvZm1NbEhYclZzZ2M1V3YzblAwM3F6eUFU?=
- =?utf-8?B?aW1YckhVUjRSdTh2N1IrT3NOYXZuRDlxdFJEc1lJNVZsWVFwQ1J5Q3RrY0ZX?=
- =?utf-8?B?NmpaYXlSWXNKUkxtdkhtMFMrRlYwYndHbnFYWVc2VVdrc1ZySFVkQzZvQjVM?=
- =?utf-8?B?ZGg5RUkrMmhFeStRcTNNdlBFMUxpV2xhMnJrTjJuV0FZZmQxQWM2LzZseENt?=
- =?utf-8?B?aFNPNDdEMHZBa2dRU3pnWlFIVGduVjRFUE01enRuZFZVTWF5R0NZKzRXemhF?=
- =?utf-8?B?UlZEUHUvbS95U1FFWlA3SHRUNWxiMzNlblFhak1YRWxwWURRWWYwSnBVMkpz?=
- =?utf-8?B?eDMzVVUrcklnM1VHNmY2dkFZaVRyZU1iTE5ISXRLN2k4T09xbkVkNFRoaVdD?=
- =?utf-8?Q?d8alxRxj/jQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UFJpK2lGbDdpNzBjbFZDKy9uNUNsSzNPb3ByNTBDQXoyRHMrNXliSGhBaVVq?=
- =?utf-8?B?eFhwQk1sejI0T0xhdjRBSnVzRHZoZG5KVzFvYS9RM2hibUN4Rnh0WDZubmx1?=
- =?utf-8?B?cTJ2cGY1WTgxMTlmMndiMzVkZ0ZtcFI3Y2I3ZlZtUEhUNG1rZkpFd1ZDVlFr?=
- =?utf-8?B?ZzZaM2lyYUxHMEZaMHZoUDNPNlNKRVhLNGUxN242RkhSeTBMR2YvYk5ZdjhR?=
- =?utf-8?B?b3BEMUxzVGdDdWJVMEZyRWRiT1lWeG81THgvLzdRbm5HTmJ4dkJ6endUNEdC?=
- =?utf-8?B?WGRLWXMxZWREZUtsWkU1N095cUFCaDJNTHMyTUhqejlraU5yeUFiaXpiVnRF?=
- =?utf-8?B?L1JWdXVwUXRHSVY2UEVvaGxSVSs4WjA5OE1CdnNtVFNWQStXejlaMVpxeGpD?=
- =?utf-8?B?S2JXUjQ5WlM0LzRLZUFKN2ptOCsydnZVOUNDQk1FU2V6RkpINWJCa1pyUm9y?=
- =?utf-8?B?SjVTVGVCc0FmRXFQVGhTS3FaWmo2ODN5OVdPOU55b1RoODVGN3UxVThtcnVw?=
- =?utf-8?B?Uk1LL3dUUE9pbndXaisxdnBFQ3ZhTG82N21zaExweTN5TGROYnhxdzJibSs1?=
- =?utf-8?B?UTVXRDFmS29aOXJMdjRuRng1ZVBEbHJGMkFobFMxM0xBN0lhcmplRjZqc1k2?=
- =?utf-8?B?QXROL3BmSFhwUGR3WkxSQTF0dGFUT3VsRDAxbldaMUttdzhDVXBsYU42UCtV?=
- =?utf-8?B?TnhFamJqWitmQnVNNnhKU2srNVAydEZHWkZDNTJDanloVmRHSjFqMVZpa3Va?=
- =?utf-8?B?Z3JYQ3BySWxiU0NCakJ4ZlUyRHY5Q1lRdS9LMEtldldWVjdlek04UXdyNEIx?=
- =?utf-8?B?TjcvMWxRNXg1dXVubnlDYWJ0T1BPSXFrdUVkekhrbS9hSUhZKzJTbTVtSmww?=
- =?utf-8?B?cm5MeW9JZ1RRNFFoQU1VWUlyenR5Q0NvMVZYd0ZIZTkrR0wxZHZoa2RlM0dM?=
- =?utf-8?B?ZGFZU3BhSFNHSk1qQ3ZlRWUzRm0vUVc0Q0xNYU1VcFhqeGlSQjBTbUVJZUc1?=
- =?utf-8?B?SGhOYktDRmpvRHNCeDhTclZkRGlDaDhnSTB6TGdPUHpZMVpaREVlNlkwaUZk?=
- =?utf-8?B?SlRKRXAxdjZPaisvTFZmQkFxcXFKeCtFanlUNEZXWVhaRWNReVNwWmRRUHZr?=
- =?utf-8?B?OVVFUTBLd2ZveDhORXFWT1ZGaURwbnhjQ1N5VDlhK0J4YkpwRHdaakJBajJQ?=
- =?utf-8?B?aFF4RFMxY08vOW9xZWd4ampKd2RTRDVGNGc5aG16SitmUzZkYnBpVHkxZktj?=
- =?utf-8?B?eXUzajM3bmxETmVoT3h0dDQ3QmRUc0ZBSzRmQTVZUEtaeS9OaXRSL3BDdnhL?=
- =?utf-8?B?ZHdZZkxMdGJjbjVnc091T09ETDVMSE1zbzVmb0ZGLzN4NjRDbkV0b1ZXVzdU?=
- =?utf-8?B?bnFXNUtEZTkyRWxGeGsybnBDT0tNcjRLNmVhTTU4OXBDNEpWNHNkL1hMcTVv?=
- =?utf-8?B?VE1OSHlDVFhOcU5uSlhWVlZqb1VoclBIV2ZYYzlMOTR6TVV0STVxSGk2ZDFR?=
- =?utf-8?B?MS9wS1JRQ3lON2RGVXFDODNneDZFczVwQUVTQ2FoNDZRbjQwK1RLMnRkQno0?=
- =?utf-8?B?eFNEcWIzemRUZmdhdStKS0NGN0tXVzhUM1I3SUhWSDV0L3AvSWFhQU5kWTFI?=
- =?utf-8?B?dWVrK0l4cjNrc1hOamNYcHpKYnB4VU1YSmJBK0orUkdwVVlVZCtjNHNCNWh2?=
- =?utf-8?B?aEowUFV6SGVSQU8yVXUvelF6aEVlbG82aERMVjlUdHRnQzIzRXJISWtzU2Vu?=
- =?utf-8?B?aEx2UFhYemFMZm9rUHUwNDdUTUpNZlNBbFhveWdQTElNRGl5U3JvUVBHV1Zh?=
- =?utf-8?B?MVFoa0pPaHpSQ2JrQVNxeURUUkV5WnR6RSt4U2pwSnBlMWFMYjVMcVh0NWJU?=
- =?utf-8?B?UkFwR0lnZTZGZ3BMU2JRRmdHbGJBNTBON1JENXJrRXpEMFFjTHhsUlVETWFB?=
- =?utf-8?B?K1ZHTUNkVXUwVjE3QzQrbklUNVV4ZUM5TEM3WkdlQWhiZTg2MHBTN0lGSnN0?=
- =?utf-8?B?Tjd2aEN4Q3JYbjdubkxLcWhndVl6a2hid1M5VnltL3l4TGRPMjRLTVdWQkhK?=
- =?utf-8?B?Y3V2dXAvMGp5OEZiOGkrRGZPYTVxempvNzB3TWRsaGlsMUI1bWdIOHo2MVJM?=
- =?utf-8?Q?ea8Q3LGBKwGi53dT4dbHd3+pd?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 60c493b1-4c9e-4ff1-f72b-08dddb424566
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2025 14:53:03.9656
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8S+Lbd1AJ3zEQ8tAhk1kGG9MdwpTMN6ww8q7EhyL7o8whd+tZgT3ZpT1ePue0SN7FyoIp5TB3qeYSxCGX1vIVA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6614
+References: <20250611104844.245235-1-steven.price@arm.com> <20250611104844.245235-20-steven.price@arm.com>
+ <CAGtprH-on3JdsHx-DyjN_z_5Z6HJoSQjJpA5o5_V6=rygMSbtQ@mail.gmail.com> <80c46a5c-7559-4763-bbf2-6c755a4b067c@arm.com>
+In-Reply-To: <80c46a5c-7559-4763-bbf2-6c755a4b067c@arm.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Thu, 14 Aug 2025 09:26:43 -0700
+X-Gm-Features: Ac12FXwAKtZ6w1m0fqmJfRbeB6BA7Boirvfy5XvFb88cYjZ1Wb1fbiPX78gZerA
+Message-ID: <CAGtprH_6DYk8POPy+sLc3RL0-5gcrTdPNcDWFTssOK5_U4B3Nw@mail.gmail.com>
+Subject: Re: [PATCH v9 19/43] arm64: RME: Allow populating initial contents
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
+	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
+	Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Aug 13, 2025 at 2:30=E2=80=AFAM Steven Price <steven.price@arm.com>=
+ wrote:
+>
+> On 01/08/2025 02:56, Vishal Annapurve wrote:
+> > On Wed, Jun 11, 2025 at 3:59=E2=80=AFAM Steven Price <steven.price@arm.=
+com> wrote:
+> >>
+> >> +static int realm_create_protected_data_page(struct realm *realm,
+> >> +                                           unsigned long ipa,
+> >> +                                           kvm_pfn_t dst_pfn,
+> >> +                                           kvm_pfn_t src_pfn,
+> >> +                                           unsigned long flags)
+> >> +{
+> >> +       unsigned long rd =3D virt_to_phys(realm->rd);
+> >> +       phys_addr_t dst_phys, src_phys;
+> >> +       bool undelegate_failed =3D false;
+> >> +       int ret, offset;
+> >> +
+> >> +       dst_phys =3D __pfn_to_phys(dst_pfn);
+> >> +       src_phys =3D __pfn_to_phys(src_pfn);
+> >> +
+> >> +       for (offset =3D 0; offset < PAGE_SIZE; offset +=3D RMM_PAGE_SI=
+ZE) {
+> >> +               ret =3D realm_create_protected_data_granule(realm,
+> >> +                                                         ipa,
+> >> +                                                         dst_phys,
+> >> +                                                         src_phys,
+> >> +                                                         flags);
+> >> +               if (ret)
+> >> +                       goto err;
+> >> +
+> >> +               ipa +=3D RMM_PAGE_SIZE;
+> >> +               dst_phys +=3D RMM_PAGE_SIZE;
+> >> +               src_phys +=3D RMM_PAGE_SIZE;
+> >> +       }
+> >> +
+> >> +       return 0;
+> >> +
+> >> +err:
+> >> +       if (ret =3D=3D -EIO) {
+> >> +               /* current offset needs undelegating */
+> >> +               if (WARN_ON(rmi_granule_undelegate(dst_phys)))
+> >> +                       undelegate_failed =3D true;
+> >> +       }
+> >> +       while (offset > 0) {
+> >> +               ipa -=3D RMM_PAGE_SIZE;
+> >> +               offset -=3D RMM_PAGE_SIZE;
+> >> +               dst_phys -=3D RMM_PAGE_SIZE;
+> >> +
+> >> +               rmi_data_destroy(rd, ipa, NULL, NULL);
+> >> +
+> >> +               if (WARN_ON(rmi_granule_undelegate(dst_phys)))
+> >> +                       undelegate_failed =3D true;
+> >> +       }
+> >> +
+> >> +       if (undelegate_failed) {
+> >> +               /*
+> >> +                * A granule could not be undelegated,
+> >> +                * so the page has to be leaked
+> >> +                */
+> >> +               get_page(pfn_to_page(dst_pfn));
+> >
+> > I would like to point out that the support for in-place conversion
+> > with guest_memfd using hugetlb pages [1] is under discussion.
+> >
+> > As part of the in-place conversion, the policy we are routing for is
+> > to avoid any "refcounts" from KVM on folios supplied by guest_memfd as
+> > in-place conversion works by splitting and merging folios during
+> > memory conversion as per discussion at LPC [2].
+>
+> CCA doesn't really support "in-place" conversions (see more detail
+> below). But here the issue is that something has gone wrong and the RMM
+> is refusing to give us a page back.
 
+I think I overloaded the term "in-place" conversion in this context. I
+was talking about supporting "in-place" conversion without data
+preservation. i.e. Host will use the same GPA->HPA range mapping even
+after conversions, ensuring single backing for guest memory. This is
+achieved by guest_memfd keeping track of private/shared ranges based
+on userspace IOCTLs to change the tracking metadata.
 
-On 14/8/25 11:40, dan.j.williams@intel.com wrote:
-> Alexey Kardashevskiy wrote:
->> On 18/7/25 04:33, Dan Williams wrote:
-> [..]
->>> diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
->>> new file mode 100644
->>> index 000000000000..0784cc436dd3
->>> --- /dev/null
->>> +++ b/drivers/pci/tsm.c
-> [..]
->>> +static ssize_t connect_store(struct device *dev, struct device_attribute *attr,
->>> +			     const char *buf, size_t len)
->>> +{
->>> +	struct pci_dev *pdev = to_pci_dev(dev);
->>> +	const struct pci_tsm_ops *ops;
->>> +	struct tsm_dev *tsm_dev;
->>> +	int rc, id;
->>> +
->>> +	rc = sscanf(buf, "tsm%d\n", &id);
->>
->> Why is id needed here? Are there going to be multiple DSMs per a PCI
->> device?
-> 
-> The implementation allows for multiple TSMs per platform [1], and you
-> acknowledged this earlier [2] (at least the "no globals" bit).
-> 
-> [1]: http://lore.kernel.org/683f9e141f1b1_1626e1009@dwillia2-xfh.jf.intel.com.notmuch
+>
+> >
+> > The best way to avoid further use of this page with huge page support
+> > around would be either:
+> > 1) Explicitly Inform guest_memfd of a particular pfn being in use by
+> > KVM without relying on page refcounts or
+>
+> This might work, but note that the page is unavailable even after user
+> space has freed the guest_memfd. So at some point the page needs to be
+> marked so that it cannot be reallocated by the kernel. Holding a
+> refcount isn't ideal but I haven't come up with a better idea.
+>
+> Note that this is a "should never happen" situation - the code will have
+> WARN()ed already - so this is just a best effort to allow the system to
+> limp on.
+>
+> > 2) Set the page as hwpoisoned. (Needs further discussion)
+>
+> This certainly sounds like a closer fit - but I'm not very familiar with
+> hwpoison so I don't know how easy it would be to integrate with this.
+>
 
-Right but I'd think that devices (or, more precisely, PCIe slots) are statically assigned to TSMs. A bit hard to imagine 2 TSMs in a system and ability to connect some PCI device to either of those. It is not impossible but not exactly "painfully simple".
+We had similar discussions with Intel specific SEPT management and the
+conclusion there was to just not hold refcounts and give a warning on
+such failures [1].
 
+[1] https://lore.kernel.org/kvm/20250807094241.4523-1-yan.y.zhao@intel.com/
 
-> [2]: http://lore.kernel.org/b281b714-5097-4b3a-9809-7bdcb9e004dc@amd.com
-> 
-> One of the nice properties of multiple tsm_devs is the ability to unit test
-> host and guest side TSM flows in the same kernel image.
-> 
->> I am missing the point of tsm_dev. It does not have sysfs nodes (the
->> pci_dev parent does)
-> 
-> The resource accounting symlinks for each each IDE stream point to the
-> tsm_dev, see tsm_ide_stream_register().
-> 
->> tsm_register() takes attribute_group but what would posibbly go there?
-> 
-> Any vendor specific implementation of commonly named attributes.
-> Contrast that with vendor specific attributes with vendor specific names
-> that the vendor specific device publishes.
-> 
->> certificates/meas/report blobs?
-> 
-> Perhaps.
+> > This page refcounting strategy will have to be revisited depending on
+> > which series lands first. That being said, it would be great if ARM
+> > could review/verify if the series [1] works for backing CCA VMs with
+> > huge pages.
+> >
+> > [1] https://lore.kernel.org/kvm/cover.1747264138.git.ackerleytng@google=
+.com/
+> > [2] https://lpc.events/event/18/contributions/1764/
+> >
+> >> +       }
+> >> +
+> >> +       return -ENXIO;
+> >> +}
+> >> +
+> >> +static int populate_region(struct kvm *kvm,
+> >> +                          phys_addr_t ipa_base,
+> >> +                          phys_addr_t ipa_end,
+> >> +                          unsigned long data_flags)
+> >> +{
+> >> +       struct realm *realm =3D &kvm->arch.realm;
+> >> +       struct kvm_memory_slot *memslot;
+> >> +       gfn_t base_gfn, end_gfn;
+> >> +       int idx;
+> >> +       phys_addr_t ipa =3D ipa_base;
+> >> +       int ret =3D 0;
+> >> +
+> >> +       base_gfn =3D gpa_to_gfn(ipa_base);
+> >> +       end_gfn =3D gpa_to_gfn(ipa_end);
+> >> +
+> >> +       idx =3D srcu_read_lock(&kvm->srcu);
+> >> +       memslot =3D gfn_to_memslot(kvm, base_gfn);
+> >> +       if (!memslot) {
+> >> +               ret =3D -EFAULT;
+> >> +               goto out;
+> >> +       }
+> >> +
+> >> +       /* We require the region to be contained within a single memsl=
+ot */
+> >> +       if (memslot->base_gfn + memslot->npages < end_gfn) {
+> >> +               ret =3D -EINVAL;
+> >> +               goto out;
+> >> +       }
+> >> +
+> >> +       if (!kvm_slot_can_be_private(memslot)) {
+> >> +               ret =3D -EPERM;
+> >> +               goto out;
+> >> +       }
+> >> +
+> >> +       while (ipa < ipa_end) {
+> >> +               struct vm_area_struct *vma;
+> >> +               unsigned long hva;
+> >> +               struct page *page;
+> >> +               bool writeable;
+> >> +               kvm_pfn_t pfn;
+> >> +               kvm_pfn_t priv_pfn;
+> >> +               struct page *gmem_page;
+> >> +
+> >> +               hva =3D gfn_to_hva_memslot(memslot, gpa_to_gfn(ipa));
+> >> +               vma =3D vma_lookup(current->mm, hva);
+> >> +               if (!vma) {
+> >> +                       ret =3D -EFAULT;
+> >> +                       break;
+> >> +               }
+> >> +
+> >> +               pfn =3D __kvm_faultin_pfn(memslot, gpa_to_gfn(ipa), FO=
+LL_WRITE,
+> >> +                                       &writeable, &page);
+> >
+> > Is this assuming double backing of guest memory ranges? Is this logic
+> > trying to simulate a shared fault?
+>
+> Yes and yes...
+>
+> > Does memory population work with CCA if priv_pfn and pfn are the same?
+> > I am curious how the memory population will work with in-place
+> > conversion support available for guest_memfd files.
+>
+> The RMM interface doesn't support an in-place conversion. The
+> RMI_DATA_CREATE operation takes the PA of the already delegated
+> granule[1] along with the PA of a non-delegated granule with the data.
 
-Hm. Those groups are per a TSM so no device's certificates/meas/report blobs there, right?
+Ok, I think this will need a source buffer from userspace that is
+outside guest_memfd once guest_memfd will support a single backing for
+guest memory. You might want to simulate private access fault for
+destination GPAs backed by guest_memfd ranges for this initial data
+population -> similar to how memory population works today with TDX
+VMs.
 
-> For now, I want to just focus on the mechanics of the getting a
-> TDI into the run state. The attestation flow is a separate design debate
-> one there is consensus on getting the TDI up and running.
->>> The pci_dev struct itself has *tsm now so this child device is not
->> that. Hm.
-> 
-> This tsm_dev is not a child device it is the common class representation
-> of a platform capability that can establish SPDM and optionally IDE.
+Note that with single backing around, at least for x86, KVM
+shared/private stage2 faults will always be served using guest_memfd
+as the source of truth (i.e. not via userspace pagetables for shared
+faults).
 
-Yeah, I realized that soon after I hit "send".
-
-
->>> +	if (rc != 1)
->>> +		return -EINVAL;
->>> +
->>> +	ACQUIRE(rwsem_read_intr, lock)(&pci_tsm_rwsem);
->>> +	if ((rc = ACQUIRE_ERR(rwsem_read_intr, &lock)))
->>> +		return rc;
->>> +
->>> +	if (pdev->tsm)
->>> +		return -EBUSY;
->>> +
->>> +	tsm_dev = find_tsm_dev(id);
->>
->> When PCI TSM loads, all it does is add "connect" nodes. And when write
->> to "connect" happens, this find_tsm_dev() is expected to find a
->> tsm_dev but what is going to add those in the real PCI?
-> 
-> sev_tsm_init() calls tsm_register(). Userspace catches the tsm_dev
-> KOBJECT_ADD event to run:
-> 
-> echo $TSM_DEV > /sys/bus/pci/devices/$PDEV/tsm/connect
-> 
-> [..]
->> imho "echo 0 > connect" is more descriptive than "echo 1 > disconnect", and one less sysfs node.
-> 
-> That makes it a bit too ambiguous for my taste as connect is "connect to
-> a tsm of the following identifier", so, for example, "is '0' a shorthand
-> for 'tsm0'?"
-
-Nah, ignore my "imho" then. Thanks,
-
-
-> ...and as I say that I realize disconnect as the same problem.  I will
-> update disconnect to take the tsm device name just like connect for
-> symmetry, this ambiguity concern, and in case multiple TSM connections
-> per device might ever happen way down the road.
-> 
-> [..]
->>> +/**
->>> + * pci_tsm_constructor() - base 'struct pci_tsm' initialization
->>> + * @pdev: The PCI device
->>> + * @tsm: context to initialize
->>> + * @ops: PCI operations provided by the TSM
->>> + */
->>> +int pci_tsm_constructor(struct pci_dev *pdev, struct pci_tsm *tsm,
->>> +			const struct pci_tsm_ops *ops)
->>> +{
->>> +	tsm->pdev = pdev;
->>> +	tsm->ops = ops;
->>
->> These should go down, right before "return 0". Thanks,
-> 
-> Sure, makes sense.
-> 
-> In practice @tsm will be unwound, but might as well not make it a
-> valid object while it is awaiting to be freed.
-
--- 
-Alexey
-
+>
+> So to mimic an in-place conversion requires copying the data from the
+> page, delegating the (original) page and then using RMI_DATA_CREATE
+> which copies the data back. Fundamentally because there may be memory
+> encryption involved there is going to be a requirement for this double
+> memcpy() approach. Note that this is only relevant during the initial
+> setup phase - CCA doesn't (at least currently) permit populated pages to
+> be provided to the guest when it is running.
+>
+> The approach this series takes pre-dates the guest_memfd discussions and
+> so is assuming that the shared memory is not (directly) provided by the
+> guest_memfd but is using the user space pointer provided in the memslot.
+> It would be possible (with the patches proposed) for the VMM to mmap()
+> the guest_memfd when the memory is being shared so as to reuse the
+> physical pages.
+>
+> I do also plan to look at supporting the use of the guest_memfd for the
+> shared memory directly. But I've been waiting for the discussions to
+> conclude before attempting to implement that.
+>
+> [1] A 'granule' is the RMM's idea of a page size (RMM_PAGE_SIZE), which
+> is currently (RMM v1.0) always 4k. So may be different when Linux is
+> running with a larger page size.
+>
+> Thanks,
+> Steve
+>
