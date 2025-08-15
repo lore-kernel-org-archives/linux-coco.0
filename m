@@ -1,234 +1,327 @@
-Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazolkn19010001.outbound.protection.outlook.com [52.103.66.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262383FE5F
-	for <linux-coco@lists.linux.dev>; Fri, 15 Aug 2025 02:34:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.66.1
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755225259; cv=fail; b=HhuTR+4wKJnbQyhofcEae6Jfh4/AZ9jRp0CKCIWVpf0UTlTQ39nkNSM8ssLg7kX6IAU7dNa7NCy+H8i9Y6kFXHL0hDxyWsebo+LlRvAUhtWAm5ooPFUQc8vYNdoRSGQUAr8iWJqx+W/Za26c349Hmqs3VRw4qGsvb5SoxU7Vess=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755225259; c=relaxed/simple;
-	bh=jVaci+nDhqSXnDtnjCWcV76pGUD1IBXFsx1De8ldNLg=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Gmj5OtYXo1R7fpFUMGB1Ze+gzBVvwyhNxIqLJ3vRW3oTt2d74F2zgi6TqWNGa9qfujIJMp5wTltg7NmBN+6Mya/IYb0IRnbT8kBd01z52eiYxJQzKQTUXTa8/Y/J6L0dPEoN3Arj3T20MlmtCPAUiRRHfx1vwy/Zn5iQMmzS3dw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=NKEW6fOH; arc=fail smtp.client-ip=52.103.66.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="NKEW6fOH"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fQnLsNebdTxCDy3Qr24NSIPZFylmY6b76dSwj2FneOFrhVc/Ogceg0cXGAeSuS4G418yaGUuO+fr5yb6dvDCWLk5W+c6DaUqdYlelkeIe8m/g1j4jIv6A5CjHP74rE6FyZR6v+AeFTaguWOSrFb5Q0hSrrdTQszegOQKosRsTun/M+rg/eFE7PPTTEU9hKxjIxNM54NjV0g8YAbgGP4SRqsrAq/VSXHSwtfJ3G1b9FW4SKDQuqMySiQHwBJfCwea7xUwo1YH1Wjj0OsmAA72Vg7f4QSwzm6PGgu2wxUGYbTvY+QohrOdy7m0ARU0G50P5luw+dGyJ3lQYoPbOvie6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CYeQgTICJCxGAd4Wio2dTSfQioEJRqzJgm+CJejy1zA=;
- b=kwJqhMlPIx64ZjCGPOOEf0iM5ZfHY4hVO5WMfkiiMur/OG0L+/NL8wUdVmZH1EF/W1zkh7XvkDo2QKKi0k/p6vIWK3XmB4t1fBOKrxq/K2nBQ/1J4N715VFCZ0ig77VlN30bxAbIH9IISdlmmESz23rAv4YTX/eS/H1Tv6LTKVW5uedzLbvTq5UmWlvChVRQcchkiUKqiyqn7om/inkOjg90JZF/naMtuAOkWk+DWTiYfM9N73azkJKf/ZcfAGme1/yiHotO362vWtm4YCqT+r+4aoemrrlYpK4JaOdiJMP9CiOCkEjSpsK8H41XxAdWYPOi/496WzP8yk/xCMsspA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CYeQgTICJCxGAd4Wio2dTSfQioEJRqzJgm+CJejy1zA=;
- b=NKEW6fOHbmb+6QvJKTyD6Jf/KUFuLk7zbMBFUePDcoT0hJCBDAf8QVe8BLgO0L7foSQ1LtITMRMIjx0CJ06ACN0nq4xGZU16Q4NwRSv39aEKkYNjXv5cKoil56G4ugcN4fAe88JH9zOT44iPigjhtfu0Y3J/ISRxdSCa4E/E5LXRQqVu0LFYDhRv+CVAClhxIJvw2ZRgm1fZAfvLOfckEma78hUO/BDi6SjJKGO2hWsIMTimqPtg7wGO7lCOARjJI5iYIK7o502w6c+vSfICsyrbwFuZJppJfHX8fzmkSq3j3mVw4rjviCvCn1+VGEA3B4UWEQfk7DJ8zzEF3P+CSg==
-Received: from OS9PR01MB15202.jpnprd01.prod.outlook.com
- (2603:1096:604:3b9::10) by OS7PR01MB13701.jpnprd01.prod.outlook.com
- (2603:1096:604:359::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.18; Fri, 15 Aug
- 2025 02:34:14 +0000
-Received: from OS9PR01MB15202.jpnprd01.prod.outlook.com
- ([fe80::bd40:1d2e:2d1f:e8f3]) by OS9PR01MB15202.jpnprd01.prod.outlook.com
- ([fe80::bd40:1d2e:2d1f:e8f3%5]) with mapi id 15.20.9031.014; Fri, 15 Aug 2025
- 02:34:13 +0000
-From: Shixuan Zhao <shixuan.zhao@hotmail.com>
-To: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: Shixuan Zhao <shixuan.zhao@hotmail.com>
-Subject: [PATCH] x86/tdx: support VM area addresses for tdx_enc_status_changed
-Date: Thu, 14 Aug 2025 22:34:02 -0400
-Message-ID:
- <OS9PR01MB15202A41CF04F0BBF8CE244B48D34A@OS9PR01MB15202.jpnprd01.prod.outlook.com>
-X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: CH0PR04CA0044.namprd04.prod.outlook.com
- (2603:10b6:610:77::19) To OS9PR01MB15202.jpnprd01.prod.outlook.com
- (2603:1096:604:3b9::10)
-X-Microsoft-Original-Message-ID:
- <20250815023402.44631-1-shixuan.zhao@hotmail.com>
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192A126F44D;
+	Fri, 15 Aug 2025 15:48:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755272913; cv=none; b=BpJgsyJxyFxXRD/9HVk3Z+UPcX3WEQjjkqwWDjQe6n8iq204Yc0sBqmBdyXp1ljgxQjsFEg0+9oPuKyrsQsFEXSZr+kwZ7+NW25lxuC7ns7lH0mpcd0Aa/SkJPx4BOakddpZWng4QjAXWzQzf2GPH7F9WF9ic1z7oPZysc1/MvE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755272913; c=relaxed/simple;
+	bh=udtTBB6Wuldv5fmyFD+F+56cDz1dwwYTcD4HNEovPiA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UC71DGTkRoXSwHTnEhC6Ecai6bnis2PgSbn9BKls8q1TSZLHRd/NRDW03zpZMrJveZxa8S8WUJCGg1KcDkUaCWZMImt3+nYPOoCGNyaMGVAK4pjwRiz09X9UJn8yG4NpDO34+LZXCkbzqRnQXN1/DFlvIt4SgepwZOdQkzqhDfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 01F0B1691;
+	Fri, 15 Aug 2025 08:48:22 -0700 (PDT)
+Received: from [10.1.29.14] (e122027.cambridge.arm.com [10.1.29.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 54F983F5A1;
+	Fri, 15 Aug 2025 08:48:25 -0700 (PDT)
+Message-ID: <23be7cdb-f094-4303-87ae-2fdfed80178b@arm.com>
+Date: Fri, 15 Aug 2025 16:48:23 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: OS9PR01MB15202:EE_|OS7PR01MB13701:EE_
-X-MS-Office365-Filtering-Correlation-Id: 67e30bc3-72a1-41f2-f897-08dddba4390d
-X-MS-Exchange-SLBlob-MailProps:
-	Vs63Iqe4sQkf9IxbykVEAD9mlekdOFGXAtvHuWkotm+ga1P4LOUMNB28gmzNiwjfNOQjAb3ffoA5zLTR/MuZynstf95WSIQ9Bpdbk7gbOpMH1HajljmF3TOcnJQ35CO1z75RPpmvDMCIYTCVaq1mUNX+fDHb29acRO2RJO1rBJ/GFqzxSxRk+M0Rs1mDAJ9Q96ee/zGscBTMOnIeGztoLz/uJDa24ceb8Pnh/OZRXNVC4RSpCtWqH+drlr+LFgnxDO1M+9FdGYeD01kwX791NiXk1qJIQAsYYc3FS3i91z2h1qeHcFZGA3jwsAXlAV46D5YR5GaPMYyxS0x3yAf3qTOuv9oYFbPoI0KsyDc5Fi2PC7FxdAkKxExQNOotgFM5N7KWEKDOaZvIyi5d4bB8TQw8lL5ycAc39QHhvcZHh00FIWkBdY1jEWE2OpDTc6PSuA4mBSaUpvkFZ9SsqrgyD6QwF8qHQaiEV7ncwKe1f0V4MIsdvXl3X/nD2BS3A4k0raDbaSnFOsAYYqoPK9Vb51t2d03VMDBg7ArycdXopVJ63Ql+lDyMtyxEFxCONBooK7jRv3S1AQglqC/BtfMwXQtzwFrsK/SC71FH0nKTXcQONyVFn02raTn2TyIhr3tdlhJmd9vN2EVLxfsqQ7V27u8v6064pSd9b4v2M3/1/qnjdQRDn0malwGpGkTrfvG5yM2LtpPIRsJXvXwMKFnNF9xNslXnmjVVdLZg7qGKOX0=
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|23021999003|15080799012|8060799015|19110799012|461199028|41001999006|5072599009|5062599005|13041999003|3412199025|39105399003|40105399003|440099028|12091999003|26104999006|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?pIoQNUOvtAjiEi/aQLUtD107nHuYyfKyXXoYBFc1e23LrAu4K+vYUwBXZCEh?=
- =?us-ascii?Q?cNg4sRx/VFpwYzMPcgJIIedTHcAgOUD3ZlwcTmyBjRMExMECyOszdqhphIhb?=
- =?us-ascii?Q?QokNEJPgXFi2CdiRpARo7z44M5DlV981ECjJAodE8M/KARBx7/jsOJ7FQ93e?=
- =?us-ascii?Q?nR6W4VHUzBS3zGgxdc9usb9oj3G997nTLZxygYKRKfAKGkbJjg4RtENcsAlx?=
- =?us-ascii?Q?SkrLZrgJBfs5yYmbdemzinuYlRonWpyhqcwJ+BKIavibBdUpB6NfCS2h38Gu?=
- =?us-ascii?Q?4DQVW11yO3MCRChlJpU4G4/tgLA0QE3nBgijMx7X0di48ZoJYnBSXo1UTcco?=
- =?us-ascii?Q?S+a4Tb1C6F7tWlhHc90bo/PtJv6qjR+8/Y1nuKTXCvRYiqzKpYv2aV0mqdkg?=
- =?us-ascii?Q?F+9rUBiIdoET90SX8vR4QDWvzr/eMUvGPlC2u1y7gaOOWq1fAmbLlTPhOwlC?=
- =?us-ascii?Q?cDrN57baB4W7XMJ4ChOyeIc3ApJIDNRze1ukSeX1N3zlJiAyzntiESuF8fKB?=
- =?us-ascii?Q?IsDBrXc9W4InrrV3M1qArxRrwYWn4/tQgyxl47FOraWr8BUR/+yLxMcGfqWb?=
- =?us-ascii?Q?aW5HGwhf6XJySsLsJm0b3Yk4SgzZ8HzmW4Z3c8sQqyw0eDUDpRFUWyMSAn1Y?=
- =?us-ascii?Q?+pYa6Ebr+TKCH0pRT8ZpZ4lo7UZ7RaPDxOBvtorixCtgiFYwBFIeDN78BlLj?=
- =?us-ascii?Q?1ECzCx5hfMFJJNxHZ5dcqp4UfGauXREBSzWu4e2PiLK/DYUWxGfsLC1gp4zY?=
- =?us-ascii?Q?euRWPbsCPqW082TO3vvPR3U8kiCInOMZwBI/hGjHl1YKvH55/U0onjVoQeo2?=
- =?us-ascii?Q?1ovdjrD6wXaLjRouJYU2IXSYT6lYEIHd3AujV+q7UqFPkJ5OOgnTNOO30kMP?=
- =?us-ascii?Q?3+e0OLl4dCVKwuSpks2juwnCN+zKxDWom9Mk8Or+7E1CiUuK9HyApwqe9N0b?=
- =?us-ascii?Q?j2dmLg9fEMmfEo10Lth7P8Loq4xUpYFDFtcr0fZiCXZ6riCc7LMfPbZqmvI8?=
- =?us-ascii?Q?JUX7D1PxxsKIqNjYGFA7QgvPLpCsmZ78CqomddBxu1ivNHneIoovVlflJdt/?=
- =?us-ascii?Q?V+CVUD0DoZPJAJociNZQEZxFaLPHlh0Hc6ZkMMMwXGfhlXuzhUs47eBzVBS7?=
- =?us-ascii?Q?61gWwACEOWRpAqJMY4FnzO58Xp1vE7f0D4kpcxMJxdF2VRUfpGgYIpsI4TlZ?=
- =?us-ascii?Q?/wSBU0wFcFrd3J9TbWTONVIl3+YirWU/BUFwKl8dJdbXrf2bkDMl71yiwKw5?=
- =?us-ascii?Q?Q083Tr5O0VrLxgVw/cJL5ItUL3PvW1m7F2Sjg/L2w0HdUtc3jbh/JgkM/Sem?=
- =?us-ascii?Q?qQZBgMlgEAxRWQIq9S7eerw301OfhhnjBRHMD/jEA85FSu41V+DsUsBVPtoG?=
- =?us-ascii?Q?aaHV//E=3D?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?e5fdM3cWJZPA4rIdFL6FtSzZvZyCcFG1MfAjVeK/ZihZBMt83erZ4gz72Oxy?=
- =?us-ascii?Q?zkgI5zJ6RNev6dCZVGxl3HdoENfWCXBWGuCijLoxjRlvxPROKgjImT4cvKhb?=
- =?us-ascii?Q?xg4z7wvzhSYfhuMdLHjaWFP4NW4rkALsYAcv2HSJT9xdRtAJ8uKOKHcYrVf8?=
- =?us-ascii?Q?/XO7lV31kkNADhJ1Z1m2ubxX+cP9d2hpwrQt+DIZSB+6HGYb3mpeSrRnQ+2B?=
- =?us-ascii?Q?kYbYteufDfCTUj8zEgXTXYjadfEKvrvk3a3YoMNYX6GAtzHFfpmU/cAym/RU?=
- =?us-ascii?Q?3gvqPWv7GmWzWTs0Rj2CJepkj7pnUg0TfT8tjjaoHOCt8oQ8Qv3RUtTvkmUP?=
- =?us-ascii?Q?PPevNjATfH5c1yMJpnNohGLQId3a1DlFPMysaDZGwNf2GrwMAxyViqWzkZuo?=
- =?us-ascii?Q?gGa/b7as3rBBNTK5QPB8yJP5IdKLsTbzy+awHQgS5wlxknyDqIh253eBdusU?=
- =?us-ascii?Q?CXHWhbScxtMk1vTQ7QsiA7kTICtx7SR0Lt7MmexlxSLl3x08VbAWMIATbA1m?=
- =?us-ascii?Q?oZPup06M7IuHQs1q+YKaCMdu2bwiNzXxyp0d4t1wjywLwGa4bdPLCMwbdB6l?=
- =?us-ascii?Q?arcs1jy3jhwOEfy/epjudAh5UdaZOeTWERiGw3n95XEkrRLN0NVvSX14hrxh?=
- =?us-ascii?Q?5PQCEGhfD+1cPY5B+7rGmspIUXHJ96j4KCjHw/6uNO9lEV15MbLJ2hkK1me0?=
- =?us-ascii?Q?K24fmPMAOUjKl30YmECvoIcVsvX6SzJbYD4z2CiR+9aLuH0tC0r1m+y/Oh/8?=
- =?us-ascii?Q?ruBdtgr/RA7OIh1PKtyV7UaonoVazBHmDgGKqVYrjIavHa/oVHsjglpmvmnK?=
- =?us-ascii?Q?PCfIgSilKolcMsqPOt1gpC8Xe3TxQ2TN6tIkF5pUH2ao0yi8sZcLAu3WsLxW?=
- =?us-ascii?Q?HLJCk7SxEMI2uu/dqltOUO8UcD7JJNaEaP/fYRgv+GUs63HtMBffXhjtgG6o?=
- =?us-ascii?Q?g/blSkV5ozi4hjxVBUUQFcGc5BrvJy7TVYTYQOfQggy3bLvxXp6G/VpkMhGy?=
- =?us-ascii?Q?hIJEAeAeKXWAElIbh9vMHmGOEws4Cuha2QSw9YB3HRFhXzpbyRUtRnnEzplI?=
- =?us-ascii?Q?BDuNDReTrB7o9eAC9jcB1+4yd2YC9VcW6CWPitTgZN1onhkjNWSNC9wdlpBI?=
- =?us-ascii?Q?44GMYKloPtFJlsCbZlf+nwLbjlpy8GRrdfCaOBexWpbXuL5CccmbY3UOoBPH?=
- =?us-ascii?Q?IxETiI65ErLlqUX3FXc5toaGjSyAzAVgfbj3pMFvdkDQt+HnlXUWJPcFUlbj?=
- =?us-ascii?Q?KzkyJBuz5NCmVGFg7pQKO1TKVisTIHZiAjjfjw8cc88cB0H1Rby1iJZzuKrK?=
- =?us-ascii?Q?2giUKw1J1bNj3CyKkrh6NAPf?=
-X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-9a502.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 67e30bc3-72a1-41f2-f897-08dddba4390d
-X-MS-Exchange-CrossTenant-AuthSource: OS9PR01MB15202.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Aug 2025 02:34:13.9199
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS7PR01MB13701
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 19/43] arm64: RME: Allow populating initial contents
+To: Vishal Annapurve <vannapurve@google.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>
+References: <20250611104844.245235-1-steven.price@arm.com>
+ <20250611104844.245235-20-steven.price@arm.com>
+ <CAGtprH-on3JdsHx-DyjN_z_5Z6HJoSQjJpA5o5_V6=rygMSbtQ@mail.gmail.com>
+ <80c46a5c-7559-4763-bbf2-6c755a4b067c@arm.com>
+ <CAGtprH_6DYk8POPy+sLc3RL0-5gcrTdPNcDWFTssOK5_U4B3Nw@mail.gmail.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <CAGtprH_6DYk8POPy+sLc3RL0-5gcrTdPNcDWFTssOK5_U4B3Nw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Currently tdx_enc_status_changed uses __pa which will only accept
-addresses within the linear mapping. This patch allows memory allocated
-in the VM area to be used.
+On 14/08/2025 17:26, Vishal Annapurve wrote:
+> On Wed, Aug 13, 2025 at 2:30 AM Steven Price <steven.price@arm.com> wrote:
+>>
+>> On 01/08/2025 02:56, Vishal Annapurve wrote:
+>>> On Wed, Jun 11, 2025 at 3:59 AM Steven Price <steven.price@arm.com> wrote:
+>>>>
+>>>> +static int realm_create_protected_data_page(struct realm *realm,
+>>>> +                                           unsigned long ipa,
+>>>> +                                           kvm_pfn_t dst_pfn,
+>>>> +                                           kvm_pfn_t src_pfn,
+>>>> +                                           unsigned long flags)
+>>>> +{
+>>>> +       unsigned long rd = virt_to_phys(realm->rd);
+>>>> +       phys_addr_t dst_phys, src_phys;
+>>>> +       bool undelegate_failed = false;
+>>>> +       int ret, offset;
+>>>> +
+>>>> +       dst_phys = __pfn_to_phys(dst_pfn);
+>>>> +       src_phys = __pfn_to_phys(src_pfn);
+>>>> +
+>>>> +       for (offset = 0; offset < PAGE_SIZE; offset += RMM_PAGE_SIZE) {
+>>>> +               ret = realm_create_protected_data_granule(realm,
+>>>> +                                                         ipa,
+>>>> +                                                         dst_phys,
+>>>> +                                                         src_phys,
+>>>> +                                                         flags);
+>>>> +               if (ret)
+>>>> +                       goto err;
+>>>> +
+>>>> +               ipa += RMM_PAGE_SIZE;
+>>>> +               dst_phys += RMM_PAGE_SIZE;
+>>>> +               src_phys += RMM_PAGE_SIZE;
+>>>> +       }
+>>>> +
+>>>> +       return 0;
+>>>> +
+>>>> +err:
+>>>> +       if (ret == -EIO) {
+>>>> +               /* current offset needs undelegating */
+>>>> +               if (WARN_ON(rmi_granule_undelegate(dst_phys)))
+>>>> +                       undelegate_failed = true;
+>>>> +       }
+>>>> +       while (offset > 0) {
+>>>> +               ipa -= RMM_PAGE_SIZE;
+>>>> +               offset -= RMM_PAGE_SIZE;
+>>>> +               dst_phys -= RMM_PAGE_SIZE;
+>>>> +
+>>>> +               rmi_data_destroy(rd, ipa, NULL, NULL);
+>>>> +
+>>>> +               if (WARN_ON(rmi_granule_undelegate(dst_phys)))
+>>>> +                       undelegate_failed = true;
+>>>> +       }
+>>>> +
+>>>> +       if (undelegate_failed) {
+>>>> +               /*
+>>>> +                * A granule could not be undelegated,
+>>>> +                * so the page has to be leaked
+>>>> +                */
+>>>> +               get_page(pfn_to_page(dst_pfn));
+>>>
+>>> I would like to point out that the support for in-place conversion
+>>> with guest_memfd using hugetlb pages [1] is under discussion.
+>>>
+>>> As part of the in-place conversion, the policy we are routing for is
+>>> to avoid any "refcounts" from KVM on folios supplied by guest_memfd as
+>>> in-place conversion works by splitting and merging folios during
+>>> memory conversion as per discussion at LPC [2].
+>>
+>> CCA doesn't really support "in-place" conversions (see more detail
+>> below). But here the issue is that something has gone wrong and the RMM
+>> is refusing to give us a page back.
+> 
+> I think I overloaded the term "in-place" conversion in this context. I
+> was talking about supporting "in-place" conversion without data
+> preservation. i.e. Host will use the same GPA->HPA range mapping even
+> after conversions, ensuring single backing for guest memory. This is
+> achieved by guest_memfd keeping track of private/shared ranges based
+> on userspace IOCTLs to change the tracking metadata.
 
-For VM area addresses, we do it page-by-page since there's no guarantee
-that the physical pages are contiguous. If, however, the entire range
-falls within the linear mapping, we provide a fast path that do the
-entire range just like the current version so that the performance
-would remain roughly the same as current.
+Yes, so for a destructive conversion this is fine. We can remove the
+page from the protected region and then place the same physical page in
+the shared region (or vice versa).
 
-Signed-off-by: Shixuan Zhao <shixuan.zhao@hotmail.com>
----
-Hi,
+Population is a special case because it's effectively non-destructive,
+and in that case we need both the reference data and the final
+(protected) physical page both available at same time.
 
-I recently ran into a problem where tdx_enc_status_changed was not
-implemented to handle memory mapped in the kernel VM area (e.g., ioremap
-or vmalloc). I have created a patch that tries to fix this problem. The
-overall idea is to keep a fast path for the current __pa-based routine
-if the range falls within the linear mapping, otherwise fall to a page-by-
-page page table walk for those in the VM area.
+>>
+>>>
+>>> The best way to avoid further use of this page with huge page support
+>>> around would be either:
+>>> 1) Explicitly Inform guest_memfd of a particular pfn being in use by
+>>> KVM without relying on page refcounts or
+>>
+>> This might work, but note that the page is unavailable even after user
+>> space has freed the guest_memfd. So at some point the page needs to be
+>> marked so that it cannot be reallocated by the kernel. Holding a
+>> refcount isn't ideal but I haven't come up with a better idea.
+>>
+>> Note that this is a "should never happen" situation - the code will have
+>> WARN()ed already - so this is just a best effort to allow the system to
+>> limp on.
+>>
+>>> 2) Set the page as hwpoisoned. (Needs further discussion)
+>>
+>> This certainly sounds like a closer fit - but I'm not very familiar with
+>> hwpoison so I don't know how easy it would be to integrate with this.
+>>
+> 
+> We had similar discussions with Intel specific SEPT management and the
+> conclusion there was to just not hold refcounts and give a warning on
+> such failures [1].
+> 
+> [1] https://lore.kernel.org/kvm/20250807094241.4523-1-yan.y.zhao@intel.com/
 
-It's the first time I'm submitting a patch to the kernel so although I've
-done the RTFM, feel free to discuss or point out anything improper.
+So these paths (should) all warn already. I guess the question is
+whether we want the platform to limp on in these situations or not.
+Certainly converting the WARNs to BUG_ON would be very easy, but the
+intention here was to give the user some chance to save their work
+before killing the system.
+
+Just WARNing might be ok, but if the kernel allocates the page for one
+of it's data structures then it's effectively a BUG_ON - there's no
+reasonable recovery. Reallocation into user space we can sort of handle,
+but only by killing the process.
+
+>>> This page refcounting strategy will have to be revisited depending on
+>>> which series lands first. That being said, it would be great if ARM
+>>> could review/verify if the series [1] works for backing CCA VMs with
+>>> huge pages.
+>>>
+>>> [1] https://lore.kernel.org/kvm/cover.1747264138.git.ackerleytng@google.com/
+>>> [2] https://lpc.events/event/18/contributions/1764/
+>>>
+>>>> +       }
+>>>> +
+>>>> +       return -ENXIO;
+>>>> +}
+>>>> +
+>>>> +static int populate_region(struct kvm *kvm,
+>>>> +                          phys_addr_t ipa_base,
+>>>> +                          phys_addr_t ipa_end,
+>>>> +                          unsigned long data_flags)
+>>>> +{
+>>>> +       struct realm *realm = &kvm->arch.realm;
+>>>> +       struct kvm_memory_slot *memslot;
+>>>> +       gfn_t base_gfn, end_gfn;
+>>>> +       int idx;
+>>>> +       phys_addr_t ipa = ipa_base;
+>>>> +       int ret = 0;
+>>>> +
+>>>> +       base_gfn = gpa_to_gfn(ipa_base);
+>>>> +       end_gfn = gpa_to_gfn(ipa_end);
+>>>> +
+>>>> +       idx = srcu_read_lock(&kvm->srcu);
+>>>> +       memslot = gfn_to_memslot(kvm, base_gfn);
+>>>> +       if (!memslot) {
+>>>> +               ret = -EFAULT;
+>>>> +               goto out;
+>>>> +       }
+>>>> +
+>>>> +       /* We require the region to be contained within a single memslot */
+>>>> +       if (memslot->base_gfn + memslot->npages < end_gfn) {
+>>>> +               ret = -EINVAL;
+>>>> +               goto out;
+>>>> +       }
+>>>> +
+>>>> +       if (!kvm_slot_can_be_private(memslot)) {
+>>>> +               ret = -EPERM;
+>>>> +               goto out;
+>>>> +       }
+>>>> +
+>>>> +       while (ipa < ipa_end) {
+>>>> +               struct vm_area_struct *vma;
+>>>> +               unsigned long hva;
+>>>> +               struct page *page;
+>>>> +               bool writeable;
+>>>> +               kvm_pfn_t pfn;
+>>>> +               kvm_pfn_t priv_pfn;
+>>>> +               struct page *gmem_page;
+>>>> +
+>>>> +               hva = gfn_to_hva_memslot(memslot, gpa_to_gfn(ipa));
+>>>> +               vma = vma_lookup(current->mm, hva);
+>>>> +               if (!vma) {
+>>>> +                       ret = -EFAULT;
+>>>> +                       break;
+>>>> +               }
+>>>> +
+>>>> +               pfn = __kvm_faultin_pfn(memslot, gpa_to_gfn(ipa), FOLL_WRITE,
+>>>> +                                       &writeable, &page);
+>>>
+>>> Is this assuming double backing of guest memory ranges? Is this logic
+>>> trying to simulate a shared fault?
+>>
+>> Yes and yes...
+>>
+>>> Does memory population work with CCA if priv_pfn and pfn are the same?
+>>> I am curious how the memory population will work with in-place
+>>> conversion support available for guest_memfd files.
+>>
+>> The RMM interface doesn't support an in-place conversion. The
+>> RMI_DATA_CREATE operation takes the PA of the already delegated
+>> granule[1] along with the PA of a non-delegated granule with the data.
+> 
+> Ok, I think this will need a source buffer from userspace that is
+> outside guest_memfd once guest_memfd will support a single backing for
+> guest memory. You might want to simulate private access fault for
+> destination GPAs backed by guest_memfd ranges for this initial data
+> population -> similar to how memory population works today with TDX
+> VMs.
+
+Yes, that might well be the best option. At the moment I'm not sure what
+the best approach from the perspective of the VMM is. The current setup
+is nice because the VMM can populate the VM just like a normal non-coco
+setup, so we don't need to special-case anything. Requiring the VMM to
+load the initial contents into some other memory for the purpose of the
+populate call is a little ugly.
+
+The other option is to just return to the double-memcpy() approach of
+emulating an in-place content-preserving populate by the kernel copying
+the data out of guest_memfd into a temporary page before doing the
+conversion and the RMM copying back from the temporary page. I worry
+about the performance of this, although it doesn't prevent the first
+option being added in the future if necessary. The big benefit is that
+it goes back to looking like a non-coco VM (but using guest_memfd).
+
+> Note that with single backing around, at least for x86, KVM
+> shared/private stage2 faults will always be served using guest_memfd
+> as the source of truth (i.e. not via userspace pagetables for shared
+> faults).
+
+Indeed, it's not yet clear to me whether we can only support this
+"single backing" world for CCA, or if it's going to be an option
+alongside using guest_memfd only for protected memory. Obviously we need
+the guest_memfd changes to land first too...
+
+At the moment I'm planning to post a v10 of this series soon, keeping
+the same API. But we will definitely want to support the new guest_memfd
+approach when it's ready.
 
 Thanks,
-Shixuan
+Steve
 
- arch/x86/coco/tdx/tdx.c | 42 ++++++++++++++++++++++++++++++++++-------
- 1 file changed, 35 insertions(+), 7 deletions(-)
-
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 7b2833705..c56cd429f 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -957,15 +957,11 @@ static bool tdx_map_gpa(phys_addr_t start, phys_addr_t end, bool enc)
- }
- 
- /*
-- * Inform the VMM of the guest's intent for this physical page: shared with
-- * the VMM or private to the guest.  The VMM is expected to change its mapping
-- * of the page in response.
-+ * Helper that works on a paddr range for tdx_enc_status_changed
-  */
--static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
-+static bool tdx_enc_status_changed_phys(phys_addr_t start, phys_addr_t end,
-+					bool enc)
- {
--	phys_addr_t start = __pa(vaddr);
--	phys_addr_t end   = __pa(vaddr + numpages * PAGE_SIZE);
--
- 	if (!tdx_map_gpa(start, end, enc))
- 		return false;
- 
-@@ -976,6 +972,38 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
- 	return true;
- }
- 
-+/*
-+ * Inform the VMM of the guest's intent for this vaddr range: shared with
-+ * the VMM or private to the guest.  The VMM is expected to change its mapping
-+ * of the page in response.
-+ */
-+static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
-+{
-+	unsigned long va_iter;
-+	unsigned long end_va = vaddr + numpages * PAGE_SIZE;
-+	phys_addr_t start_pa, end_pa;
-+
-+	/* fast path when the entire range is within linear mapping */
-+	if (virt_addr_valid((void *)vaddr) &&
-+	    virt_addr_valid((void *)end_va)) {
-+		start_pa = __pa(vaddr);
-+		end_pa = __pa(end_va);
-+
-+		return tdx_enc_status_changed_phys(start_pa, end_pa, enc);
-+	}
-+
-+	/* use page table walk for memory in VM area */
-+	for (va_iter = vaddr; va_iter < end_va; va_iter += PAGE_SIZE) {
-+		start_pa = slow_virt_to_phys((void *)va_iter);
-+		end_pa = start_pa + PAGE_SIZE;
-+
-+		if (!tdx_enc_status_changed_phys(start_pa, end_pa, enc))
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
- static int tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
- 					 bool enc)
- {
--- 
-2.43.0
+>>
+>> So to mimic an in-place conversion requires copying the data from the
+>> page, delegating the (original) page and then using RMI_DATA_CREATE
+>> which copies the data back. Fundamentally because there may be memory
+>> encryption involved there is going to be a requirement for this double
+>> memcpy() approach. Note that this is only relevant during the initial
+>> setup phase - CCA doesn't (at least currently) permit populated pages to
+>> be provided to the guest when it is running.
+>>
+>> The approach this series takes pre-dates the guest_memfd discussions and
+>> so is assuming that the shared memory is not (directly) provided by the
+>> guest_memfd but is using the user space pointer provided in the memslot.
+>> It would be possible (with the patches proposed) for the VMM to mmap()
+>> the guest_memfd when the memory is being shared so as to reuse the
+>> physical pages.
+>>
+>> I do also plan to look at supporting the use of the guest_memfd for the
+>> shared memory directly. But I've been waiting for the discussions to
+>> conclude before attempting to implement that.
+>>
+>> [1] A 'granule' is the RMM's idea of a page size (RMM_PAGE_SIZE), which
+>> is currently (RMM v1.0) always 4k. So may be different when Linux is
+>> running with a larger page size.
+>>
+>> Thanks,
+>> Steve
+>>
 
