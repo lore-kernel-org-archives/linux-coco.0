@@ -1,125 +1,169 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazolkn19010004.outbound.protection.outlook.com [52.103.66.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2322A3A8F7
-	for <linux-coco@lists.linux.dev>; Fri, 15 Aug 2025 17:46:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755280008; cv=none; b=Dj6MPMv++28Iqlt6hH5k63whwNPMbE0kiIRICJe39qsDdN99ogfyvx6mOb9vtX5otkj6naEb1X311j9qgKkGi6KrhnfjKC0RLv/l1l15cC7H8emTa92u3TbXkQC7Zul+aZ41JcmvpZjq6+MYDGwzHzMDVAoj0Z6lGA+Q2RfG7+8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755280008; c=relaxed/simple;
-	bh=t+Wg/DpQyDidK1Aj2g/Ezl8vUgRcEycT5CPft3M/+JY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ORPKNmJy75Z5X0/+lBRoJtKZrIH1gRfd50fWwrWbXvnt+8Hh1BY4DBb0/iL+doCO5k8TAG7eDvlTpzoh3NjbOnV7smr/9MjyAWA1zS9i8K/mDjacUjcrexStvX8/GFKA12mx5IrF5+dJMmaHbuttOL1zzQcIw+0NA7Is/O3YRUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mqnk78hf; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE47304BB5
+	for <linux-coco@lists.linux.dev>; Fri, 15 Aug 2025 18:09:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.66.4
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755281342; cv=fail; b=PSaMxD1LKRXG8Pak6CgPLu6aMRFuwOABshabYveTdIn6eTlWDr7bGI96kiQbG4ElQwyQNRpbzazeMBnKnYHNQppwwwBSCudMyidV4ZEH0UirKFnfjdcAw90fVxYpJccQm/CXT0GwSur3kubHJtTOAaoHcP4HKJ5583W258BoeO4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755281342; c=relaxed/simple;
+	bh=h1/ORmaPTXFJocF/HnX9A7FXAbWcP9lh3ZYiZ7eFKdc=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=W0GBS8FIOKUViSR0ShmUVNp1oZb69mF+h+J34tbZqifmvUAFlavlgXlkfuH3xTNhgvZSrii8XTOFv7EU2hLKr7Q1kLhlOibHgsfDeDekiSD1yJ0XnZ022KylypawgvrOs59NxDEPrVqjN4THsC+kbxNzdRrwXVNVfn2zw+ABbcw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=vHIRMwvp; arc=fail smtp.client-ip=52.103.66.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mqnk78hf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755280006; x=1786816006;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=t+Wg/DpQyDidK1Aj2g/Ezl8vUgRcEycT5CPft3M/+JY=;
-  b=mqnk78hfRwYOB5suxy8RK2LY848IkJAgeuvdGjr0lH1SinKMDbuYtfFI
-   FvSRlB9wbmuI04wbKKG5bQlIsOc7A74PFMCfkzsgzZu1lssmNXsSr2l03
-   jkZLFbSRri1lxDswLCied4VJicYV0LL2fhh9CFjj+x1Tmk8qftPZo5bOB
-   mkBAGHwRHV+cuJF7TRtsjEjr6/pxFjzo4G2ljX1w0VJi8LJo7Ww2tL0+q
-   qLYgRkq/0oPUChsgtPq+1UQhG27BBKbiYVKwwiVDxOaQ3Y0hFaoLVO0Jg
-   oDQztUk9LN2IUVxFi7+lQ18JErIsOMP1yiyhpYwg/3hJQiC03+m4sq1ye
-   w==;
-X-CSE-ConnectionGUID: w1hV/fLLQkeXZHVVQzNV8Q==
-X-CSE-MsgGUID: u6oA4YplT+W3r3ZOnYzOLg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11523"; a="57559246"
-X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
-   d="scan'208";a="57559246"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2025 10:46:45 -0700
-X-CSE-ConnectionGUID: 6U63FjjURNaM7lN6mDnuZg==
-X-CSE-MsgGUID: fF17NeaSRoarQE//TkQicw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
-   d="scan'208";a="166279962"
-Received: from linux.intel.com ([10.54.29.200])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2025 10:46:46 -0700
-Received: from [10.124.223.118] (unknown [10.124.223.118])
-	by linux.intel.com (Postfix) with ESMTP id EA10A20B5720;
-	Fri, 15 Aug 2025 10:46:44 -0700 (PDT)
-Message-ID: <ed04152f-544b-439c-8489-26f72e7e9687@linux.intel.com>
-Date: Fri, 15 Aug 2025 10:46:34 -0700
+	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="vHIRMwvp"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=N9507FQsaJcyktT3fZCGAaYMHHU436mHxAYG6soLpcPO4qzYab+LViyZjZTm2Ze76/ynzXlkcUluuXJWJKUli28OSR8w6ZTRabA5CzMPce5lvGf6uk7d/WtPneHUJNlLcymFJjVsk4CVkSaKkvIx32z58SRkkr+VYyGxq2SCe0JtNlbsI3UvLRkISOYOt2N4lfx23Ulv1BPx6BQ9KpR/TyDZKtX5PkPg8IXMVDw/CP1QppPT3HPWuvdAWqx8nFrO7enHdV0wioUKdh2Dqo5NZAsfcWBwef1SLq/U01cNzwMxCtl1H4n+n82ajw2ee2nj8rU2Q5xAzz+FTTCjThT/UA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=h1/ORmaPTXFJocF/HnX9A7FXAbWcP9lh3ZYiZ7eFKdc=;
+ b=gzMEvUnPLs4FqCVySPWOQwqJvr5eIqJWSAbdi2cUtkil3aezhaU/9HAzKaV4kNB4oU7562sCz3kRH/xFSFSez2CcxRwoZrrhTBaphM2rvvMKYq5Uqrmgax8T6W8nreoPlWEmzkMgxCcmaqBu8yi/Fayjy90VduAC+1kcLYOjphB1YvCnE1G89CBXvn7MxVxYxkvbA1tSoz0sBaIu9oMcrYC/a/tfJYk5SYaDAncnC1khvPlbYQKUIUBeKGvFxra0KWEHSaIX4ktkNs+q2WmxUpekDR5fK6ubRzb6/mSOtmFJAXyHeNExaLJXRfmDVMCVJyzF/u5lADz0oBuOhaZ7DA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=h1/ORmaPTXFJocF/HnX9A7FXAbWcP9lh3ZYiZ7eFKdc=;
+ b=vHIRMwvpjlj+JXAJs5wgh3JxLqIQao0A99It6XEX2oqxHqtJNfYDLyC29rSsw3+N/3zE1LG8MH+pNOYLuOfyVovR7BibEran9kcryDX7w0B/ia8CrezcFuGIGfK3ELHD/R/BzJe5gniGZ9K18vwTLGKEbrDrNFvzK9pgu+o22WAl+1XPLkInEEhYap8HUcthKYnYfVwyDoOmO8WPCdwKSG4I2WR2wNJ+MFkp3Jn2Gch/0u1HwXz2SwhjO3lTN56WIPwRz33oaSSMSMBVg3uW9x9+cFnhGCU7KmhXW+VrjtLLisqn8GFyl5J/1clSer9ai4XLyP04NN7f/RvY/ZwXyA==
+Received: from OS9PR01MB15202.jpnprd01.prod.outlook.com
+ (2603:1096:604:3b9::10) by TYTPR01MB10937.jpnprd01.prod.outlook.com
+ (2603:1096:400:39b::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.19; Fri, 15 Aug
+ 2025 18:08:55 +0000
+Received: from OS9PR01MB15202.jpnprd01.prod.outlook.com
+ ([fe80::bd40:1d2e:2d1f:e8f3]) by OS9PR01MB15202.jpnprd01.prod.outlook.com
+ ([fe80::bd40:1d2e:2d1f:e8f3%5]) with mapi id 15.20.9031.018; Fri, 15 Aug 2025
+ 18:08:55 +0000
+From: Shixuan Zhao <shixuan.zhao@hotmail.com>
+To: Kiryl Shutsemau <kirill@shutemov.name>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Shixuan Zhao <shixuan.zhao@hotmail.com>
+Subject: Re: [PATCH] x86/tdx: support VM area addresses for tdx_enc_status_changed
+Date: Fri, 15 Aug 2025 14:08:44 -0400
+Message-ID:
+ <OS9PR01MB1520200AB9DB1EB76C9D4B1948D34A@OS9PR01MB15202.jpnprd01.prod.outlook.com>
+X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
+Reply-To: enhnj775ryshjrqer24ki7wibngxaj5ydos7xjgone6wobuvdn@77luyq4cawva
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CH2PR05CA0045.namprd05.prod.outlook.com
+ (2603:10b6:610:38::22) To OS9PR01MB15202.jpnprd01.prod.outlook.com
+ (2603:1096:604:3b9::10)
+X-Microsoft-Original-Message-ID:
+ <20250815180844.10998-1-shixuan.zhao@hotmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/tdx: support VM area addresses for
- tdx_enc_status_changed
-To: Kiryl Shutsemau <kirill@shutemov.name>,
- Shixuan Zhao <shixuan.zhao@hotmail.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H . Peter Anvin" <hpa@zytor.com>, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <OS9PR01MB15202A41CF04F0BBF8CE244B48D34A@OS9PR01MB15202.jpnprd01.prod.outlook.com>
- <enhnj775ryshjrqer24ki7wibngxaj5ydos7xjgone6wobuvdn@77luyq4cawva>
-Content-Language: en-US
-From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <enhnj775ryshjrqer24ki7wibngxaj5ydos7xjgone6wobuvdn@77luyq4cawva>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: OS9PR01MB15202:EE_|TYTPR01MB10937:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3c979fab-de5a-4aee-cf97-08dddc26cc7b
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|8060799015|23021999003|15080799012|5072599009|41001999006|461199028|19110799012|4295299021|3412199025|440099028|40105399003|13041999003|26104999006|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Ug9ERdAXOKiiD2W6dimTtIC4go9WeOA8EHXd9TirBQDcF4p4YXUyeMzuFeF+?=
+ =?us-ascii?Q?dmv1YbidlPZ8B4X20pUHcPp84fCjc1MpC2EsvhbFhfM7pDUWq57qmLEXR53+?=
+ =?us-ascii?Q?03v8WeOFK8PmpmIoixU2RItjm+bMt8olCe5P86KY93wQeLMWfEB+zkoTddfc?=
+ =?us-ascii?Q?5M8fJRCnitJIefNcU5XAvgvlNtml9sBa6Ew6+fFKYhVtk3fO+FUDfbO1DV4N?=
+ =?us-ascii?Q?/NDftfsBSUaEtEPiMx9c+zxn4/vvra4ln8+PPtCOgmslCrjIrv1CbHVnUnu2?=
+ =?us-ascii?Q?YfPPlL4mBxyxmUBBXRqkbrMgZQuBrRSj9X8h7VmiQEb82IDIhgOeG10Mt6jl?=
+ =?us-ascii?Q?M0irTNmGS+hC2n59HSoYRh8OdBi4hpjQX7HSWl/YSpXkvPhHLS4NaUqY4DS0?=
+ =?us-ascii?Q?TolIZiWH8uvkekJkQFkwYqelJPMcZtXXFjCNVkhuTH6Pl67l6dxoVTNFSq3c?=
+ =?us-ascii?Q?0CIgsVdpUwM0k5sgceQtI7NhiRJmIpQ3geyFJtsUeoE98O8Intv/EAjkYbXk?=
+ =?us-ascii?Q?y4cVasm+YoEZ23Ej8aM/tdcHLEQguOzTsL5u8ZIciqIw1QKk0UhgIqEN5Ehm?=
+ =?us-ascii?Q?CI2dcQTOZGbSyHs3PqYYiOdYUXxBlLb1epkB6UYssEv4Lb7USQryKulxbX+Q?=
+ =?us-ascii?Q?7PLtO4Dje5DNAFv/8a8ErjIfPFmyjOUcZYL3GaYt7eINpbSnLf+Jic+qciD9?=
+ =?us-ascii?Q?Npm66GXL6OR1KfQnK4j9/o36AFnO2D2oCvyhDwS5+FtQc78BaVrPCW1c+LA3?=
+ =?us-ascii?Q?LSah5RoRqHA0kZDOTRIIKkkI72/xmT0px3hOj0R9VmykQOISyx62DAogY6+t?=
+ =?us-ascii?Q?ZRXA5ofROGCy8/6FoWoKPWLYTchzVmtv2yqmyJTK29cXShoUp5bzvbUdVh4C?=
+ =?us-ascii?Q?5N97I+p+Gde9FA2ak8T3f7OknhhfLlPnQYM7NoIrDq4dzddoGJPfRHvyTm3p?=
+ =?us-ascii?Q?MCgsjPTo2QKu76OeWRD1jmTFEMrPOpOtU/gPxjQp+nrUlCnfPXrNpHoadwI6?=
+ =?us-ascii?Q?1KTGUsz7w4ouMuHh4DrWsw7C2d8aIGZAbmMJK6EXDRuMf0IDWxTZUV2D8q5G?=
+ =?us-ascii?Q?5hMvV7wsjS8+FbCCxbyfLxRBc2kmBFypLRCyBGcsReaH29TS9ffWYIErW7cv?=
+ =?us-ascii?Q?fRFQG2ulxMsMKfAaTQRgqvUuFNyKdZb/tXi7Tcs+VSllOot/i5jLK4k0db8w?=
+ =?us-ascii?Q?ENYigswAWAgpmoB5uq0+ZiGhT3wmQWFW2m2k6xQdoVIXWzr5i46ljJZNFnNM?=
+ =?us-ascii?Q?uwwvLgfD9NxFZD9lSkPyidvEMa75tT+neIiZHIB3IQ=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?6m4K0K7SNAFz2iMr/rKeokUADJuw992O3EJpMyHs4HtvGZgd700w0fVy5YUk?=
+ =?us-ascii?Q?E4Q44TAvsPNjpxosixQfo1ynp0V/CSGgNxPvv11LrcVXipAivftVSJWKm6h0?=
+ =?us-ascii?Q?TbY4+jwgAz1rbnPFFAXKUwldhz0RY8WvKBLsczqV5JvFVHA+BUoC8WNyuo3h?=
+ =?us-ascii?Q?O/QOtCBTrtT/Z7OQS1A31sj35pgA0EX6jsKCP6nuDKPEmITATIflNGghha80?=
+ =?us-ascii?Q?qJOlqsvVsOk4R8AVAhdFh5RgB7GknnK2QH5OLpAhBxBBXPNJDBhomjbyTFzj?=
+ =?us-ascii?Q?/6Zsr9d+mHvfzmjMbYSKa5bZJak7tFB4ZTmhtdrHpqF415CUIXD0Ld2EnwbF?=
+ =?us-ascii?Q?UXKYXIcdyMJ1aW/Te6dpgMekdLPEi6wJ1xozN0zQCH68P2cTsYxYeIQVf8qz?=
+ =?us-ascii?Q?NfWERSRXcYiyHUpEdqJ+wdywyQbZuAfIBPvxBGiz2+81tZ19gP7o2J1Y5P/2?=
+ =?us-ascii?Q?DnJD9Lp//vTpPiuD7CY1oNRC1PtbFFRO3+2lRpD+LIenow+CrAA9ZuNgM3bw?=
+ =?us-ascii?Q?1xNj0Nr9MN31XLBd3Ujaos2xQIMOkd3BM8G10f4L3nM9S0g5prT4X4wky6q3?=
+ =?us-ascii?Q?4QFaLb9PTWPDwLw/0Y7634mma8QhmITjJ6jPi3f1/PUcl+yYBYNfeIzJds/k?=
+ =?us-ascii?Q?l9t8LxsDWl62vGxOq5OFKohGAgmXPp2XtVXmS1ciyWQvova68KrgvbPrcryC?=
+ =?us-ascii?Q?wnBQGVsUW0ouzZyCi3Xnc08sRDpo6fEd1PEyNB+CJPgFHBurFQWzni8pKJtL?=
+ =?us-ascii?Q?r7WUKYwMG7wbklQkQKi/GnqkwJsKIz8AI047DaaAxOBjJ90w9XS4HMYlI9i0?=
+ =?us-ascii?Q?FvPfLKl0fRZEFLZizTbesPyT9P1UKC/NGkZpd3ENy9f+HbUOBhDMs0WITBqK?=
+ =?us-ascii?Q?jWxfO/foTPBvTKjFZuI1b4AFTol7BNQkiG/RENvkPbVinTKVqgNpTdXNOi2J?=
+ =?us-ascii?Q?vLdb+mvgyK1ZHf83cIaxsO1dcruRL+3ZvyghNAWtU334xfsEALGbesf8XxqH?=
+ =?us-ascii?Q?id6w4/tKM5Je3bxx6BKvOD5vl1z2DaVdlPBwLkdmsYuji42CNsmzUh4x6Xk+?=
+ =?us-ascii?Q?Y5C5HoPekyU0ZGHaWOIx9Cm2TAfN0bc7UTZjgqisSaXX5t1SbJfEfyg62qpS?=
+ =?us-ascii?Q?+CJwz+Xnto1hvxo4p7JAkPufpmMn7Qzq/iLJNaZ8IHzvzbtab1Wq0YjNWVSt?=
+ =?us-ascii?Q?kFPKdafnI2TbDq7t1mUBiMjowPHQcThi3nu+f6XTuhlslZ1PfO8eDIga+Urj?=
+ =?us-ascii?Q?M3fxXVaiiJaIy+2E7XSjVqxQT57PxYVgn8FX4SH0+rSL3mVBHtm9QAWxOfRi?=
+ =?us-ascii?Q?DNoo/taBR3meZLmXoY1qd+Rt?=
+X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-9a502.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3c979fab-de5a-4aee-cf97-08dddc26cc7b
+X-MS-Exchange-CrossTenant-AuthSource: OS9PR01MB15202.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Aug 2025 18:08:55.7738
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYTPR01MB10937
 
-
-On 8/15/25 9:43 AM, Kiryl Shutsemau wrote:
-> On Thu, Aug 14, 2025 at 10:34:02PM -0400, Shixuan Zhao wrote:
->> Currently tdx_enc_status_changed uses __pa which will only accept
->> addresses within the linear mapping. This patch allows memory allocated
->> in the VM area to be used.
->>
->> For VM area addresses, we do it page-by-page since there's no guarantee
->> that the physical pages are contiguous. If, however, the entire range
->> falls within the linear mapping, we provide a fast path that do the
->> entire range just like the current version so that the performance
->> would remain roughly the same as current.
->>
->> Signed-off-by: Shixuan Zhao <shixuan.zhao@hotmail.com>
->> ---
->> Hi,
->>
->> I recently ran into a problem where tdx_enc_status_changed was not
->> implemented to handle memory mapped in the kernel VM area (e.g., ioremap
->> or vmalloc). I have created a patch that tries to fix this problem. The
->> overall idea is to keep a fast path for the current __pa-based routine
->> if the range falls within the linear mapping, otherwise fall to a page-by-
->> page page table walk for those in the VM area.
 > Could you tell more about use-case?
->
+
+So basically I'm writing a project involving a kernel module that
+communicates with the host which we plan to do it via a shared buffer.
+That shared buffer has to be marked as shared so that the hypervisor can
+read it. The shared buffer needs a fixed physical address in our case so
+we reserved a range and did ioremap for it.
+
 > I am not sure we ever want to convert vmalloc()ed memory to shared as it
 > will result in fracturing direct mapping.
->
+
+Currently in this patch, linear mapping memory will still be handled in
+the old way so there's technically no change to existing behaviour. These
+memory ranges are still mapped in a whole chunk instead of page-by-page It
+merely added a fall back path for vmalloc'ed or ioremap'ed or whatever
+mapping that's not in the linear mapping.
+
+tdx_enc_status_changed is called by set_memory_decrypted/encrypted which
+takes vmalloc'ed addresses just fine on other platforms like SEV. It would
+be an exception for TDX to not support VM area mappings.
+
 > And it seems to the wrong layer to make it. If we really need to go
 > this pass (I am not convinced) it has to be done in set_memory.c
->
-> Sathya, I remember you did something similar for REPORT, right?
 
-Yes, we attempted something similar for Quote buffer allocation.
+set_memory_decrypted handles vmalloc'ed memory. It's just that on TDX it
+has to call the TDX-specific enc_status_change_finish which is
+tdx_enc_status_changed that does not handle vmalloc'ed memory. This
+means that when people call the set_memory_decrypted with a vmalloc'ed,
+it will fail on TDX but will succeed in other platforms (e.g., SEV).
 
-https://patchew.org/linux/20220609025220.2615197-1-sathyanarayanan.kuppuswamy@linux.intel.com/20220609025220.2615197-4-sathyanarayanan.kuppuswamy@linux.intel.com/
-
-Our approach was to create an alias virtual mapping for the Quote buffer to
-avoid modifying direct map page attributes. However, we eventually dropped
-this idea due to the complexity of keeping the alias mapping in sync, as well
-as issues with load_unaligned_zeropad().
-
-Related discussion can be found in,
-
-https://patchew.org/linux/20220609025220.2615197-1-sathyanarayanan.kuppuswamy@linux.intel.com/20220609025220.2615197-5-sathyanarayanan.kuppuswamy@linux.intel.com/
-
->
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
-
+Thanks,
+Shixuan
