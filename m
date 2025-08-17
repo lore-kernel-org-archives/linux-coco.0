@@ -1,239 +1,272 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10olkn2067.outbound.protection.outlook.com [40.92.42.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA61A2B2DA
-	for <linux-coco@lists.linux.dev>; Sat, 16 Aug 2025 01:56:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755309411; cv=none; b=pusvD6K5Mp+yHIToQSUP6mnvui9EfH1TV3qJGj+481fGtEeNZLjvm3VwEITXQLAZnl5Xm1g/AshssOnf9WJhUBbHteL3o3Aaj9fdZt1KjDgHLsDUALgpYO7FStfwoYETXsnTlFWemQvXfuHNY0XVoa1rjoJtdzdPm8/I9uToHzs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755309411; c=relaxed/simple;
-	bh=Ej1Ms8x3fV9hlh+VBITET4wxyZCGlUYPCpJfqRg4/mk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I0dZwFNtypk7ZT5Ki1u7fwvD2mtrxQLaqYcAPwb8uiriVrqmRaDw6RlXPkBd/a5osqtbvY6epVTLXYjkTXtTpvM+LJTuemMeigt12ddloyBj6PBTw5AMira1lLoevN1yNKmtjJTC/09oAQ+EqMIisnD3M15Llvw2D/5XkGYulYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SWW6NR/I; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EFE1A0711
+	for <linux-coco@lists.linux.dev>; Sun, 17 Aug 2025 16:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.42.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755447995; cv=fail; b=As2w7prZr1TUhEPcmGJjtVEgCQKUdCwQsxy59GA9JDdUVT+/E+Z/1LlDeKT/tK2GpSgkOyOWkBZTFq4ItkMS+mI9PN6/SFKv1un6DQCd+iGNT1AX8fMtrkduL4el2fHVxRQGTHP9FNTC3QvgVUMxEqRM5yDR+VNKRn/uUO8ytYI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755447995; c=relaxed/simple;
+	bh=pYmyptbEAXjOseEzCRBkrm+Cwmv5ZeUbKybchhxqXvk=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Kb8Yy45ci38T8C/sXT9bI8D/ThXYoor+mAsXJpU8Dq7pIOsvJVVRXUCToVQNRCeiWCZU9xFMdnOM8LKVe8Zp1ibZynecnDeqZ7gfWQ5NT2HHh/XA15Stm7wS+Vqto3pmz3285UWo8vgSUI3nTz5gh70wo7b70RZO/mCzEU/kcp0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=Wxyys2zc; arc=fail smtp.client-ip=40.92.42.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SWW6NR/I"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-242d1e947feso102035ad.0
-        for <linux-coco@lists.linux.dev>; Fri, 15 Aug 2025 18:56:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755309409; x=1755914209; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=L4ItdIwW0Nn2rbKUapLvi+7KaOlcmfEY49F8WH61kT0=;
-        b=SWW6NR/IaejDYK0RW2breTGzgOVHq4vleFuh7hO7bXz8eE24V3BJJ0HNG55vA1Ty31
-         am6lF3xkAKeoML9ag0Vi3LupgInW1eb/fvJqwn+YoJ46ZyHlftvu16wOdUSBGMtrB4Dz
-         XLSBrtoDWcUfwhjoMPcnPDkdP9lsMqGKzQj8/g1tK3hSEuoyqiqXcIZbiuqHGcyx8Sem
-         c20Ha1Bcu19WTddicYDbWGsjhIEKk0csRYspCi01+42B4UVkHzazD4fZPt9APOCpEEdb
-         GE+r0E5Snxip6JfdKApqw5Tk7GDL924cd+Jbq/rah03eFamgqdvo92F5dcDR1Z6lOswu
-         3f6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755309409; x=1755914209;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=L4ItdIwW0Nn2rbKUapLvi+7KaOlcmfEY49F8WH61kT0=;
-        b=a1mEahGLrGgYOJzVuGPG9YjbcqEqgwW49Lc6WhonRYlFWrxEVK5amE/Q9F0YI7igr2
-         KBScdP2Bn4byAG7wuX71JZRUteka6gn5mr9M74CgMLeEFCgUOa7BufBaR6XiH0JQO1k/
-         advaEeq+v6L01PORqBfI5bogQ2PBf2oxur8zwkopCUkJ2jAmpPnA8jUVXlzSYuvwytvt
-         gQjbTIPpQmoU3x8NlMXP1v5DT3v+4ixc1ZYI0a66v0PtMb3Fa8gDfGO1+d/knHPabia6
-         jWN9Ibyk3FhTUyK8Biw6jc8ZkI6ERfThAl2YEOUc1eTLlgcZNp8nCxd6Aa22KmPAgHd3
-         pXbA==
-X-Forwarded-Encrypted: i=1; AJvYcCXmYMmLDzwRq85pTc+e2sAMPYtvQ6N2ymU57XT/mlnWFk2kzCVZXzygwqAuY1eRj4yJkmIXDCPaB7hb@lists.linux.dev
-X-Gm-Message-State: AOJu0YzecW5O8ZZ9R78VeeFLjJxfmb79gH08L197Nf/DK6IdTJwbRpDP
-	Qdd5HD/IhgEP5xLgDB/JqdKDaWrweWR73xgyGOFi5NQCBvCfWUpGIUCzGHMxruhJgx+ICNgqgDq
-	OqepRXgxz0ExliN9jcKPK35kdoetYS9uTAOjKgGe2
-X-Gm-Gg: ASbGncv426uUmxAAW8RAy56nGxfeKyR0qqGj6KZGbr+AY5gK4c7OO2A+V+ghuWWSwJ/
-	sn94O/B9+7r+zqyAIHI2BM+suzovqAnpq6AVl0nXNop62Fu70q/kZ86vpJKIK4gVQ/qNvQHXzMb
-	dXQLtOaF2eP2XBr7Abr4nMqRW7b1vQXtIVGFuTuLu1ERHM+m/k5rtWeoNDm6hG1HGR9yHpy3rlt
-	56xWP7PxGdeETu71n02F95naIxM1eOsY2cVHJIXp1Y=
-X-Google-Smtp-Source: AGHT+IGjIbEibm7TAU0Qy99Qr9hDz/0we50Y7edVXGYdgrm7Uw4jOk5StezzxSbZkloheGwBu8Np97ishY6Mw8oSHGs=
-X-Received: by 2002:a17:903:18e:b0:223:2630:6b86 with SMTP id
- d9443c01a7336-2447a749a14mr766545ad.7.1755309408800; Fri, 15 Aug 2025
- 18:56:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="Wxyys2zc"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=f8Q6aQk17O910d5QiTpn0wXckg7x5n4RU83QLctyFS2R80il+2QDX6rvdCGNsW8UxpY3vapWddZvp0yNm++5ewXNVfVIbEFkfI3Pn9l8vlz275bgg6GzB5u+Tm6WV5vqLjDEr8yGwQxBT1znU7aqT0eELKsb5RfFZhLW/q9brAahtn57TIrN0Nz+KxEGxqPl2J3spXiz8Ed+xsCFia137UI/MkmEM5JxU0TCqniryuDTMslROas9MlYjoC7Es6n4B3nTvt9+yzZ2dkRLtzt5Ll/nkaX7Rj5CXd5SCVH80kJIFeDOABUzjsekXURf8Ffy6zc8LS0XbV3cEB57wRDkVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0hkN8/NroO456JbFaEUT4jSpZbUs9ozBsuXROg2cGdc=;
+ b=hjoe7DiE+JwNbJeoxns3+JCR4e/Oz+o+YkSPPMhUTvpPzfGj6bwhcuIBcTU2Xna91osNuKjxDZtGft/6PFLDb0HUbfsrfkxsNag8BvoOvTXbjQsJnYv1EuAFzwNrSa+KXozIFY6uw9qF4PQHzIiSZ0SRfSQiMRTy/SRpBVVY4SjPLBPxwysapa/U1IGgcelCxEeKfdILY1MZh9D1kdYuaNVzxnarimKPttkU4awA8a30bK3sCmWUL2BLuDU3bytXhXdnC3i57DfokONPeYm23Ig44e5mJjH8PKnuTUco2v+LxcCTGqx+Z9ca6RR8T2A8u0xNBi/w+5z0xVBP65Y1RA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0hkN8/NroO456JbFaEUT4jSpZbUs9ozBsuXROg2cGdc=;
+ b=Wxyys2zc7SMSS8jjofhowtp+tsL8NoPmZOOrZFU8/aYy95N23P6q4WYEsOeY6ftsm+JiA68R72EJ/2gmyO88eshku+Gx3ESKqowd3RtWtxq6uR+L71JiSuiZHHiyJsSTKWr5UaoosXten0p8s1vM/YDR78N5kk22U5C5fe/KOknleUbQ9wm3kG2DIye257rrgONfEw+x9f3SbfKHy3o5FFoOpTaotkBCCMcnE/O/AQjHmId1O+lH+Mr5hJBe++OL3TAuCMf1omGVjVqazU/zIiyGKjPaaGV4ATLE6rt2hAqNeRMwTbjhi5qGFaxeDGMY28u9NQfjAZlJGMGepQf0rg==
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
+ by CO1PR02MB8538.namprd02.prod.outlook.com (2603:10b6:303:159::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.24; Sun, 17 Aug
+ 2025 16:26:32 +0000
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::cedd:1e64:8f61:b9df]) by SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::cedd:1e64:8f61:b9df%4]) with mapi id 15.20.9031.023; Sun, 17 Aug 2025
+ 16:26:31 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: Shixuan Zhao <shixuan.zhao@hotmail.com>, "Kirill A . Shutemov"
+	<kirill.shutemov@linux.intel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>, "H . Peter
+ Anvin" <hpa@zytor.com>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Dexuan Cui <decui@microsoft.com>
+Subject: RE: [PATCH] x86/tdx: support VM area addresses for
+ tdx_enc_status_changed
+Thread-Topic: [PATCH] x86/tdx: support VM area addresses for
+ tdx_enc_status_changed
+Thread-Index: AQHcDY4UcjcFgJKvX0yAj2M/D66z+7RnB2tA
+Date: Sun, 17 Aug 2025 16:26:31 +0000
+Message-ID:
+ <SN6PR02MB41574B8072EDC751270D3FD5D436A@SN6PR02MB4157.namprd02.prod.outlook.com>
+References:
+ <OS9PR01MB15202A41CF04F0BBF8CE244B48D34A@OS9PR01MB15202.jpnprd01.prod.outlook.com>
+In-Reply-To:
+ <OS9PR01MB15202A41CF04F0BBF8CE244B48D34A@OS9PR01MB15202.jpnprd01.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|CO1PR02MB8538:EE_
+x-ms-office365-filtering-correlation-id: f2f48e24-6f6f-4abd-34ff-08ddddaad376
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|8062599012|19110799012|8022599003|8060799015|31061999003|461199028|15080799012|41001999006|13091999003|4302099013|3412199025|440099028|13041999003|12091999003|10035399007|102099032|1602099012;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?ZLoZZD07nq53OHEvvxq9AlbHz1slds3aZ2gjVEwyO8gqzHcBxj8IRhBQF+ze?=
+ =?us-ascii?Q?lJTmILAQRxibM+xU/jrQ60FhbVdtn614zwZHH1V5i6YDwDxqH25n22KQlwji?=
+ =?us-ascii?Q?SA5H1Z0lU4WaVFx1mHLlMtGOYj88ORxgXs2BGTJRCPu5K1rlWLO0cEb9Y/yK?=
+ =?us-ascii?Q?/7SNaT3hQ5LlOp5lgtQLbkxAAAauxrYju+b78DzzHj/o34CEztFSiMGiowIj?=
+ =?us-ascii?Q?bN0Z1G3Cn89dXrpIzk0W1WbMO3QpUD3n3DUgfGuHT+iuRLWcneTwQwH8IwWD?=
+ =?us-ascii?Q?qGRuKJP2HG8g2LjZPnszJp0b5bU2uwI3pSWwaM1m5KHKA+9/cyGxd8IfgCBH?=
+ =?us-ascii?Q?DD8rsQaKJXD8QHDoCdFcBmtGTVTNvDMYzKEfWCVWqBatC2OZiRLgQGBpqWeM?=
+ =?us-ascii?Q?3QQID/+elCJl8jTXVCR7A979ecENoukWLVMreV/PiQvE0XJIer6CPIObfs8p?=
+ =?us-ascii?Q?7YrudG06WKOV/ejGwuwGgB6bdl7FIrQksJ3qkxULjL9QkmPdqNMlp9kjLGun?=
+ =?us-ascii?Q?b2F6s4LnNLAUjt2839V1vngO164+zhp8BlA8Amr0Fil9Zt4GSq9FZ+FqskdG?=
+ =?us-ascii?Q?UNseP/aFSoHJqg7H93h93Ce2I5kyRh6/zbTNnxDCqH6+R2E2KqGHFGZvLmsC?=
+ =?us-ascii?Q?zlqTyOQzDRJusBxO/BJbqtY2T4e4+aDyyzQqXG01MUW8R0sMdUK6BZDzl1CY?=
+ =?us-ascii?Q?6cx74wiodX0t6FsQ9YITpBbWwDbpqc52xZleDRV+uBs9c1Nz2+Pccvg5g76y?=
+ =?us-ascii?Q?xmtKj9+8v59dFczlMerw5FQDP7YXBZySussiMG0gEemWNsoDb2NyBB2dPWOv?=
+ =?us-ascii?Q?uPh/gxZMb8lHknttXuBsO4kepqLXR97FhaZynBaHqtW0rFA16XUjkqRsqQf6?=
+ =?us-ascii?Q?lQeQv0eddANsv5SbUFZMcxBuyKioklIXfpGE/JHsNfOCvnsHwzZ44+rtx0gF?=
+ =?us-ascii?Q?zH0Udjx/dDX+tD1jSildf/KkeOj2r7nRtKQJBrqN5TVThnnisDLfFVCu9qiF?=
+ =?us-ascii?Q?/6j7AVTxGD2aOtaa647szUp3MKWd4OnSBN2ZhvyySN2GioRSlrkTJtDTVN+T?=
+ =?us-ascii?Q?wt80zLRWjmwNosa+7aJ6leSSkSAdvZJV2jDxmkcbQOO5PoVlpZIfOTLXtE6n?=
+ =?us-ascii?Q?QC5iohAiXdHl65UvpqWnDWSyaCUd7xoED0d7fyB4Q6b0gNoCW3KS/aA9b0vt?=
+ =?us-ascii?Q?bc+/8segJKA7QwoQkpWEwy7sOznniC7wi+qeVWlLFOKDbFOnv5n3r2YG756X?=
+ =?us-ascii?Q?n2oArJfO0Fua4/9rV9yyX4OyCn52S+W6+g8bZrrVa9Nx7qRmwh+g6qF8hs0t?=
+ =?us-ascii?Q?0vASBUyP8ZP2Z0zBcLIYaNOymk261K7HSwBdJiUXMmnx4CcZkCF2UxcaoN5j?=
+ =?us-ascii?Q?VmIMOaw=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?ahx47sawW2WJm6dc4FVC/ZSc5yXBAgKWPXeK+xVgvjP+zEt9noFsZcTvQ4z0?=
+ =?us-ascii?Q?ad09aYS3JtQqq6QPEymlCrKFeop0ToGIDWjJnIp8rNNxa8oYeMnhLBSEjmYI?=
+ =?us-ascii?Q?kOUHdzMlv34MYEjx9SvVfPPhYha2AsfLCB3DFKg23JQxwzZTsGFqWfJOrpuS?=
+ =?us-ascii?Q?WMD19Ngps5hyLo6t1MBqgjl2NMKTqDpsx4ltsyBpQCZmcNELKV8MGaGmudRA?=
+ =?us-ascii?Q?OSyV4aUrvWPwQmKT4tF9lc2zupWc79nM/ixMLkGzqlgWPIq7sI4rV586ZJJT?=
+ =?us-ascii?Q?wp6mDUeB8GKxs2ApXL/wFIDK1T9ejvZlbq3bir6ubEYaiGpIQewhxtgjtph/?=
+ =?us-ascii?Q?KnXVEW23bZU4AHaKFMQSVRppPqUN1dA9vqt81pVpzVG42m7TP1SE/bcPRaON?=
+ =?us-ascii?Q?O1rK3pve80mL7KmY3UWNyTpVF/3b0ef4dmLKD4WHZFG3TKb+j79m1yWPlbb9?=
+ =?us-ascii?Q?jkqm3uEFHSgD3vTA+szc2v1wgbB2dCQC/Dq57TMwo0hXD99ERRIK8HyvcJBt?=
+ =?us-ascii?Q?o1JveQmWMa85shRCguyfR6yIX4IQkU0Y+Sav8H4SluLUH5Z+v9X/wf1Rc8Es?=
+ =?us-ascii?Q?id5qZDDJc6GwUvg96kYWhdXt+G18LQ60lm8RRnx7yGubUAgLlycUcsIm5L2/?=
+ =?us-ascii?Q?bGlwI/wXyBMcVbXeIxH6sh+WDJBer0cQwCMfteyfKzg5NQbplt1QrampLEX4?=
+ =?us-ascii?Q?D8v789dkEXCHsYDKSpU+na3PqWa+9GryrA/wYhJiO8EOtJ5WkE1AzYZfi0nq?=
+ =?us-ascii?Q?aHj/SCjQl0pbTpRKvH+m2NYwpKA2jzeNZxzoYhMupTvE5zLALZgyrbtaZcb2?=
+ =?us-ascii?Q?gSLDHY6udOTPwFrOEjwXgZNesf66sm3khpOA6lzju+0hTbvvGviWLVC+FGOX?=
+ =?us-ascii?Q?NSO8j0M96fAXkebLGgDc1n367FdvUxZO0oug6hkdyv1yuQwpKzWf9Gl9+Zfi?=
+ =?us-ascii?Q?ZgKn118eJQxyey7cXtdcoOf9k4egoZEI3jy5lev18IiD7kIf2mHfMdeKZdvL?=
+ =?us-ascii?Q?ms8ozO7ou2wSP+0HJaIVHgYnx+HfdcUsf3VGEgWD927rm+lEDIErOfvz2gK5?=
+ =?us-ascii?Q?QF5AcPRujT7Q7chq840EXt53lSabSSfoa1YpNP+05qeOTpb5DwuumLm4q3bw?=
+ =?us-ascii?Q?Y/600NyfOamKBVERO09Bfwq1PxxeRom6pIIs9ax9v3QhbbQ6TJShCgx+EtJ/?=
+ =?us-ascii?Q?OYHj4JIyK7Bcs1mJCXSaJUx9vaeICv6/fY1wUsToZD0SYQMbMLXqZMNJXZw?=
+ =?us-ascii?Q?=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250611104844.245235-1-steven.price@arm.com> <20250611104844.245235-20-steven.price@arm.com>
- <CAGtprH-on3JdsHx-DyjN_z_5Z6HJoSQjJpA5o5_V6=rygMSbtQ@mail.gmail.com>
- <80c46a5c-7559-4763-bbf2-6c755a4b067c@arm.com> <CAGtprH_6DYk8POPy+sLc3RL0-5gcrTdPNcDWFTssOK5_U4B3Nw@mail.gmail.com>
- <23be7cdb-f094-4303-87ae-2fdfed80178b@arm.com>
-In-Reply-To: <23be7cdb-f094-4303-87ae-2fdfed80178b@arm.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Fri, 15 Aug 2025 18:56:36 -0700
-X-Gm-Features: Ac12FXy9Nf5jI_ZDaA0g-5pDhbHHzOx-JhcDUdLC5lWZaTciSyoinSl41owJHk4
-Message-ID: <CAGtprH-TChZuLgb0sOU_14YGpCynw7sukLT0tP9sEzzd040dHw@mail.gmail.com>
-Subject: Re: [PATCH v9 19/43] arm64: RME: Allow populating initial contents
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
-	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
-	Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: f2f48e24-6f6f-4abd-34ff-08ddddaad376
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Aug 2025 16:26:31.7936
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR02MB8538
 
-On Fri, Aug 15, 2025 at 8:48=E2=80=AFAM Steven Price <steven.price@arm.com>=
- wrote:
->
-> On 14/08/2025 17:26, Vishal Annapurve wrote:
-> > On Wed, Aug 13, 2025 at 2:30=E2=80=AFAM Steven Price <steven.price@arm.=
-com> wrote:
-> >>
-> >> On 01/08/2025 02:56, Vishal Annapurve wrote:
-> >>> On Wed, Jun 11, 2025 at 3:59=E2=80=AFAM Steven Price <steven.price@ar=
-m.com> wrote:
-> >>>>
-> >>>> +static int realm_create_protected_data_page(struct realm *realm,
-> >>>> +                                           unsigned long ipa,
-> >>>> +                                           kvm_pfn_t dst_pfn,
-> >>>> +                                           kvm_pfn_t src_pfn,
-> >>>> +                                           unsigned long flags)
-> >>>> +{
-> >>>> +       unsigned long rd =3D virt_to_phys(realm->rd);
-> >>>> +       phys_addr_t dst_phys, src_phys;
-> >>>> +       bool undelegate_failed =3D false;
-> >>>> +       int ret, offset;
-> >>>> +
-> >>>> +       dst_phys =3D __pfn_to_phys(dst_pfn);
-> >>>> +       src_phys =3D __pfn_to_phys(src_pfn);
-> >>>> +
-> >>>> +       for (offset =3D 0; offset < PAGE_SIZE; offset +=3D RMM_PAGE_=
-SIZE) {
-> >>>> +               ret =3D realm_create_protected_data_granule(realm,
-> >>>> +                                                         ipa,
-> >>>> +                                                         dst_phys,
-> >>>> +                                                         src_phys,
-> >>>> +                                                         flags);
-> >>>> +               if (ret)
-> >>>> +                       goto err;
-> >>>> +
-> >>>> +               ipa +=3D RMM_PAGE_SIZE;
-> >>>> +               dst_phys +=3D RMM_PAGE_SIZE;
-> >>>> +               src_phys +=3D RMM_PAGE_SIZE;
-> >>>> +       }
-> >>>> +
-> >>>> +       return 0;
-> >>>> +
-> >>>> +err:
-> >>>> +       if (ret =3D=3D -EIO) {
-> >>>> +               /* current offset needs undelegating */
-> >>>> +               if (WARN_ON(rmi_granule_undelegate(dst_phys)))
-> >>>> +                       undelegate_failed =3D true;
-> >>>> +       }
-> >>>> +       while (offset > 0) {
-> >>>> +               ipa -=3D RMM_PAGE_SIZE;
-> >>>> +               offset -=3D RMM_PAGE_SIZE;
-> >>>> +               dst_phys -=3D RMM_PAGE_SIZE;
-> >>>> +
-> >>>> +               rmi_data_destroy(rd, ipa, NULL, NULL);
-> >>>> +
-> >>>> +               if (WARN_ON(rmi_granule_undelegate(dst_phys)))
-> >>>> +                       undelegate_failed =3D true;
-> >>>> +       }
-> >>>> +
-> >>>> +       if (undelegate_failed) {
-> >>>> +               /*
-> >>>> +                * A granule could not be undelegated,
-> >>>> +                * so the page has to be leaked
-> >>>> +                */
-> >>>> +               get_page(pfn_to_page(dst_pfn));
-> >>>
-> >>> I would like to point out that the support for in-place conversion
-> >>> with guest_memfd using hugetlb pages [1] is under discussion.
-> >>>
-> >>> As part of the in-place conversion, the policy we are routing for is
-> >>> to avoid any "refcounts" from KVM on folios supplied by guest_memfd a=
-s
-> >>> in-place conversion works by splitting and merging folios during
-> >>> memory conversion as per discussion at LPC [2].
-> >>
-> >> CCA doesn't really support "in-place" conversions (see more detail
-> >> below). But here the issue is that something has gone wrong and the RM=
-M
-> >> is refusing to give us a page back.
-> >
-> > I think I overloaded the term "in-place" conversion in this context. I
-> > was talking about supporting "in-place" conversion without data
-> > preservation. i.e. Host will use the same GPA->HPA range mapping even
-> > after conversions, ensuring single backing for guest memory. This is
-> > achieved by guest_memfd keeping track of private/shared ranges based
-> > on userspace IOCTLs to change the tracking metadata.
->
-> Yes, so for a destructive conversion this is fine. We can remove the
-> page from the protected region and then place the same physical page in
-> the shared region (or vice versa).
->
-> Population is a special case because it's effectively non-destructive,
-> and in that case we need both the reference data and the final
-> (protected) physical page both available at same time.
->
-> >>
-> >>>
-> >>> The best way to avoid further use of this page with huge page support
-> >>> around would be either:
-> >>> 1) Explicitly Inform guest_memfd of a particular pfn being in use by
-> >>> KVM without relying on page refcounts or
-> >>
-> >> This might work, but note that the page is unavailable even after user
-> >> space has freed the guest_memfd. So at some point the page needs to be
-> >> marked so that it cannot be reallocated by the kernel. Holding a
-> >> refcount isn't ideal but I haven't come up with a better idea.
-> >>
-> >> Note that this is a "should never happen" situation - the code will ha=
-ve
-> >> WARN()ed already - so this is just a best effort to allow the system t=
-o
-> >> limp on.
-> >>
-> >>> 2) Set the page as hwpoisoned. (Needs further discussion)
-> >>
-> >> This certainly sounds like a closer fit - but I'm not very familiar wi=
-th
-> >> hwpoison so I don't know how easy it would be to integrate with this.
-> >>
-> >
-> > We had similar discussions with Intel specific SEPT management and the
-> > conclusion there was to just not hold refcounts and give a warning on
-> > such failures [1].
-> >
-> > [1] https://lore.kernel.org/kvm/20250807094241.4523-1-yan.y.zhao@intel.=
-com/
->
-> So these paths (should) all warn already. I guess the question is
-> whether we want the platform to limp on in these situations or not.
-> Certainly converting the WARNs to BUG_ON would be very easy, but the
-> intention here was to give the user some chance to save their work
-> before killing the system.
->
-> Just WARNing might be ok, but if the kernel allocates the page for one
-> of it's data structures then it's effectively a BUG_ON - there's no
-> reasonable recovery. Reallocation into user space we can sort of handle,
-> but only by killing the process.
+From: Shixuan Zhao <shixuan.zhao@hotmail.com> Sent: Thursday, August 14, 20=
+25 7:34 PM
+>=20
+> Currently tdx_enc_status_changed uses __pa which will only accept
+> addresses within the linear mapping. This patch allows memory allocated
+> in the VM area to be used.
 
-Makes sense, this scenario is different from TDX as the host will run
-into GPT faults if accessing memory owned by the realm world with no
-good way to recover. Let's try to find the right complexity to take on
-when handling errors for such rare scenarios, without relying on
-refcounts as we start looking into huge page support.
+Dexuan Cui submitted a patch to do this about a year ago [1]. The patch has
+a long history, including being part of a larger patch set in an earlier ve=
+rsion.
+It appears that it still had an issue when the discussion stopped, and the =
+patch
+was never picked up.
 
->
-> >>> This page refcounting strategy will have to be revisited depending on
-> >>> which series lands first. That being said, it would be great if ARM
-> >>> could review/verify if the series [1] works for backing CCA VMs with
-> >>> huge pages.
-> >>>
-> >>> [1] https://lore.kernel.org/kvm/cover.1747264138.git.ackerleytng@goog=
-le.com/
-> >>> [2] https://lpc.events/event/18/contributions/1764/
+Dexuan's use case was TDX guests running on Hyper-V, and the Hyper-V
+synthetic networking driver (netvsc) needing to mark a 16 MiB vmalloc()'ed
+receive buffer area as shared. But that use case applied only when running
+without a paravisor, and it may have gone on the back-burner because
+of Azure/Hyper-V CoCo guests always running with a paravisor.
+
+Adding Dexuan to this thread in case he has additional insight into why his
+patch didn't go forward.
+
+Michael Kelley
+
+[1] https://lore.kernel.org/lkml/20240708183946.3991-1-decui@microsoft.com/
+
+>=20
+> For VM area addresses, we do it page-by-page since there's no guarantee
+> that the physical pages are contiguous. If, however, the entire range
+> falls within the linear mapping, we provide a fast path that do the
+> entire range just like the current version so that the performance
+> would remain roughly the same as current.
+>=20
+> Signed-off-by: Shixuan Zhao <shixuan.zhao@hotmail.com>
+> ---
+> Hi,
+>=20
+> I recently ran into a problem where tdx_enc_status_changed was not
+> implemented to handle memory mapped in the kernel VM area (e.g., ioremap
+> or vmalloc). I have created a patch that tries to fix this problem. The
+> overall idea is to keep a fast path for the current __pa-based routine
+> if the range falls within the linear mapping, otherwise fall to a page-by=
+-
+> page page table walk for those in the VM area.
+>=20
+> It's the first time I'm submitting a patch to the kernel so although I've
+> done the RTFM, feel free to discuss or point out anything improper.
+>=20
+> Thanks,
+> Shixuan
+>=20
+>  arch/x86/coco/tdx/tdx.c | 42 ++++++++++++++++++++++++++++++++++-------
+>  1 file changed, 35 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> index 7b2833705..c56cd429f 100644
+> --- a/arch/x86/coco/tdx/tdx.c
+> +++ b/arch/x86/coco/tdx/tdx.c
+> @@ -957,15 +957,11 @@ static bool tdx_map_gpa(phys_addr_t start, phys_add=
+r_t
+> end, bool enc)
+>  }
+>=20
+>  /*
+> - * Inform the VMM of the guest's intent for this physical page: shared w=
+ith
+> - * the VMM or private to the guest.  The VMM is expected to change its m=
+apping
+> - * of the page in response.
+> + * Helper that works on a paddr range for tdx_enc_status_changed
+>   */
+> -static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bo=
+ol enc)
+> +static bool tdx_enc_status_changed_phys(phys_addr_t start, phys_addr_t e=
+nd,
+> +					bool enc)
+>  {
+> -	phys_addr_t start =3D __pa(vaddr);
+> -	phys_addr_t end   =3D __pa(vaddr + numpages * PAGE_SIZE);
+> -
+>  	if (!tdx_map_gpa(start, end, enc))
+>  		return false;
+>=20
+> @@ -976,6 +972,38 @@ static bool tdx_enc_status_changed(unsigned long vad=
+dr, int
+> numpages, bool enc)
+>  	return true;
+>  }
+>=20
+> +/*
+> + * Inform the VMM of the guest's intent for this vaddr range: shared wit=
+h
+> + * the VMM or private to the guest.  The VMM is expected to change its m=
+apping
+> + * of the page in response.
+> + */
+> +static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bo=
+ol enc)
+> +{
+> +	unsigned long va_iter;
+> +	unsigned long end_va =3D vaddr + numpages * PAGE_SIZE;
+> +	phys_addr_t start_pa, end_pa;
+> +
+> +	/* fast path when the entire range is within linear mapping */
+> +	if (virt_addr_valid((void *)vaddr) &&
+> +	    virt_addr_valid((void *)end_va)) {
+> +		start_pa =3D __pa(vaddr);
+> +		end_pa =3D __pa(end_va);
+> +
+> +		return tdx_enc_status_changed_phys(start_pa, end_pa, enc);
+> +	}
+> +
+> +	/* use page table walk for memory in VM area */
+> +	for (va_iter =3D vaddr; va_iter < end_va; va_iter +=3D PAGE_SIZE) {
+> +		start_pa =3D slow_virt_to_phys((void *)va_iter);
+> +		end_pa =3D start_pa + PAGE_SIZE;
+> +
+> +		if (!tdx_enc_status_changed_phys(start_pa, end_pa, enc))
+> +			return false;
+> +	}
+> +
+> +	return true;
+> +}
+> +
+>  static int tdx_enc_status_change_prepare(unsigned long vaddr, int numpag=
+es,
+>  					 bool enc)
+>  {
+> --
+> 2.43.0
+>=20
+
