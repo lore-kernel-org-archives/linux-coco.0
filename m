@@ -1,157 +1,251 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B393093BF
-	for <linux-coco@lists.linux.dev>; Wed, 20 Aug 2025 14:50:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552C4221F24;
+	Wed, 20 Aug 2025 14:57:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755701424; cv=none; b=HHMv3y4Ievdf87UkR567fTAGycctaicEaldDs0lhqG9qYiGM9l8mqPUtmybGPLoVL1B9UZcXlLQc1LuIA3dIN1Wz22ZWato8Nlxe0ZRvOv7a7rC+AUrEDoTxSou6azlIoinVOljv56V1sgbb34iNFbM/gysiYMPOuaC/Fs+rA/Y=
+	t=1755701835; cv=none; b=fTBQot2XmSxyPfZwiHye2SyUxuW5JaqtmgjtOeGh86WBm6S3mjtEbWkSZs6uiv60tRs319jgTsoM+m3uiM+p8JCK7f6OlWjzJ+MCYhpdFuF3dz2beD/K5MqOnpkyZ5X6ftjtM1NvDB89gpiZ86dcliAl0Za924bs8knfrqlLcrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755701424; c=relaxed/simple;
-	bh=tvnQ4mm+tXZeMk9LeMz2m7m/7OzfKG5aXmHoWDxySPM=;
-	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=PP2gyXoEPJUnuzEJbqg73Ds8YneQFNWJiXtclxtrm1WmdPN9WDTvhO4ebbkmuxdgcQKdCQ57tzDlRpiExidhdJ6lTG/V688fLX9EifootnD3I7ZkJi4voScyfrfaqerU9KY0UcTQ3lWMX/HQ0ZudE9icFFnVYP8c7TNXCcoR7J4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PE2/Jv/A; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PE2/Jv/A"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755701420;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=UVDesp2YzkDiQhPhj3wNDxcGmY+ZKVXe2qM+mIpLJuQ=;
-	b=PE2/Jv/A990F9/HJnGkvi6wVEcdDkmP3bf80+SP/myhaab/yoXqCqSC1UYia1Ou6YIXRnG
-	PNPbBx/v4wi6jMKnrrroPgSMYqoiUHaP7m1X5cS0TYpyvlP1vUAmpaI9ZC4ti6Bjem6fiS
-	VsQoXrHGyodRu/7W8GuLMQSaS7SuSis=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-441-9KkGRe0uOmG7tLBsG9xtkw-1; Wed, 20 Aug 2025 10:50:18 -0400
-X-MC-Unique: 9KkGRe0uOmG7tLBsG9xtkw-1
-X-Mimecast-MFC-AGG-ID: 9KkGRe0uOmG7tLBsG9xtkw_1755701417
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3b9e41037e6so4225f8f.1
-        for <linux-coco@lists.linux.dev>; Wed, 20 Aug 2025 07:50:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755701417; x=1756306217;
-        h=content-transfer-encoding:autocrypt:subject:to:content-language
-         :from:user-agent:mime-version:date:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=UVDesp2YzkDiQhPhj3wNDxcGmY+ZKVXe2qM+mIpLJuQ=;
-        b=VvK7NTtyAyr47FiTixhpx7RDhsupKdYm/GiQ7jVSscg3jWHWRYCTVKy3leFUHQt9y5
-         onUcQrWeECVunOAiA17WZvtEhidJ1girbg4QyEJ4eYD8ZCL9tVMcwhKBKhANN3bfQiM7
-         Cnl51eoKY4Q/NjMjCQmAcOfko5VCmXUOYQjiRN4OPyQjNmUWrBEh1kzK4XDzQOc9UPzl
-         yXFJIskMKO5ql/I9FvlPsykJ/2JFYR/FG9R/EyjtVdrcdcdPqibRNPfKQ2pmPF66rIvp
-         UHQexoeDePy4fh8uGESTTvQbqSBKB+L/5TNh2+NCX51se4XcUrQ88z4U+se1/QqdB2/n
-         isyg==
-X-Gm-Message-State: AOJu0YzVICnj2n0Tyf15XPrboGX8+T18h0lJSDtGk4h7HIUaM7qYT+xG
-	pzSD0oHP0odb8oYIxVxP92fAf3uNx4u3yxOpl6HW8TWefY+XWbpA6QgTPWk31zMoVexPGULN3Yv
-	j4Q2Ko7TbKlw+R6rLOV6bzljPNejGTCxxeiexUGPf1M4u/QuDeCuCHjTSrNwSfOeJqkB4eoc8RA
-	lx3MIYuJv2LbDoxVDa4rtNhQkC4quVYXMumR6U/vN/OfcfZw==
-X-Gm-Gg: ASbGncslWv/stmbM8WvM6VUANkh+wr7qeadq9iNasd2R+/H1JlI44aD/JprAX57EGcE
-	YQmv+V3Ur2IqOsRDGHctn/36VKMHSQVUU/nMCrcQ4y2TLyh7qsIPEeM4IN2qRCp+POnYIJXNHx1
-	9rNQ2N2puHAwUgiXU2PluA1PELjVhBnxKeUVqOUlnayvTm4xkwUBlnl+E2OPc8fxY/FISsMxIq1
-	iUYRXB6t8dlpM5avjg5aDh7eCr5bVkEAZtv3TzaZsYHThPRhtvZGoHx9zC3LIyw0aze/j2y6ViM
-	DRX0k0IsptvVAtlbyvNRsUEkYCKu/e6FrLKRZfqRivfdA7/HcRKP3HmbUwXK7Sxu3E+wM4BERT+
-	J8oM9m8f06em6ycnRDHbsaFjYlvH+H1EBNFgkZMdSgdnvNEzxYxCa8oFum+mQviVP
-X-Received: by 2002:a05:6000:2282:b0:3b5:dafc:1525 with SMTP id ffacd0b85a97d-3c32f664611mr2236159f8f.33.1755701417018;
-        Wed, 20 Aug 2025 07:50:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEMpI9AfBVahnq7+dVkf+h2VoKoGyjqGXGgZgTRtEbKx9O3Qm4CSoB+Kss7RoTy7Q+a4bVu1g==
-X-Received: by 2002:a05:6000:2282:b0:3b5:dafc:1525 with SMTP id ffacd0b85a97d-3c32f664611mr2236098f8f.33.1755701416229;
-        Wed, 20 Aug 2025 07:50:16 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f13:de00:e9f1:62b4:5bb:5d83? (p200300d82f13de00e9f162b405bb5d83.dip0.t-ipconnect.de. [2003:d8:2f13:de00:e9f1:62b4:5bb:5d83])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c07487978bsm7822833f8f.7.2025.08.20.07.50.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 Aug 2025 07:50:15 -0700 (PDT)
-Message-ID: <2255e387-857c-4b5c-b27b-f7f2a6bcaccd@redhat.com>
-Date: Wed, 20 Aug 2025 16:50:14 +0200
+	s=arc-20240116; t=1755701835; c=relaxed/simple;
+	bh=oSPqbo2u7ZObVyUOWqaQ8fy1CTPqbAxH2ZdEDH89NVg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TWXqpbESVdHFVMjWOYBUsgDKp4MQpKnB8/dVFhoIQtVYKTH+b87b8EhUWEQn0oywsjqe9e09NuaKXNEPKWpkw6DpLAEfCEtjg+j4h/T831zttXnej5008kS1coeb3jygsfOjbTmqK3NVZ3vKO86ebEeW8fJqS+QQKeqDfDEAV9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4FD581D31;
+	Wed, 20 Aug 2025 07:57:03 -0700 (PDT)
+Received: from e122027.arm.com (unknown [10.57.2.58])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A90E83F738;
+	Wed, 20 Aug 2025 07:57:06 -0700 (PDT)
+From: Steven Price <steven.price@arm.com>
+To: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Steven Price <steven.price@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>
+Subject: [PATCH v10 00/43] arm64: Support for Arm CCA in KVM
+Date: Wed, 20 Aug 2025 15:55:20 +0100
+Message-ID: <20250820145606.180644-1-steven.price@arm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: David Hildenbrand <david@redhat.com>
-To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
-Subject: [Invitation] bi-weekly guest_memfd upstream call on 2025-08-21
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: CtqrLxGjUD8e7Igi9nC-dPgwmTqfiPp7o0Ajz7eV8ho_1755701417
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi everybody,
+This series adds support for running protected VMs using KVM under the
+Arm Confidential Compute Architecture (CCA).
 
-Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
-2025-08-21 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
+The related guest support was merged for v6.14-rc1 so you no longer need
+that separately.
 
-We'll be using the following Google meet:
-http://meet.google.com/wxp-wtju-jzw
+There are a few changes since v9, many thanks for the review
+comments. The highlights are below, and individual patches have a changelog.
 
-The meeting notes can be found at [1], where we also link recordings and
-collect current guest_memfd upstream proposals. If you want an google
-calendar invitation that also covers all future meetings, just write me
-a mail.
+ * Fix a potential issue where the host was walking the stage 2 page tables on
+   realm destruction. If the RMM didn't zero when undelegated (which it isn't
+   required to) then the kernel would attempt to work the junk values and crash.
 
-For now, nothing "big" on the agenda yet, so we'll see whatever pops up 
-(I suspect discussions around huge page support :) ).
+ * Avoid RCU stall warnings by correctly settign may_block in
+   kvm_free_stage2_pgd().
 
-To put something to discuss onto the agenda, reply to this mail or add
-them to the "Topics/questions for next meeting(s)" section in the
-meeting notes as a comment.
+ * Rebased onto v6.17-rc1.
 
-[1]
-https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
+Things to note:
 
---
-Cheers,
+ * The magic numbers for capabilities and ioctls have been updated. So
+   you'll need to update your VMM. See below for the updated kvmtool branch.
 
-David
+ * This series doesn't attempt to integrate with the guest-memfd changes that
+   are being discussed (see below).
+
+ * Vishal raised an important question about what to do in the case of
+   undelegate failures (also see below).
+
+guest-memfd
+===========
+
+This series still implements the same API as previous versions, which means
+only the private memory of the guest is backed by guest-memfd, and the shared
+portion is accessed using VMAs from the VMM. This approach is compatible with
+the proposed changes to support guest-memfd backing shared memory but would
+require the VMM to mmap() the shared memory at the appropriate time so that
+KVM can access via the VMM's VMAs.
+
+Changing to access both shared and private through the guest-memfd API
+shouldn't be difficult and could be done in a backwards compatible manner
+(with the VMM choosing which method to use). It's not clear to me whether we
+want to hold things up waiting for the full guest-memfd (and only support that
+uAPI) or if it would be fine to just support both approaches and let VMM's
+switch when they are ready.
+
+There is a slight wrinkle around the 'populate' uAPI
+(KVM_CAP_ARM_RME_POPULATE). At the moment this expects 'double mapping' - the
+contents to be populated should be in the shared memory region, but the
+physical pages for the private region are also allocated from the guest_memfd.
+Arm CCA doesn't support a true 'in-place' conversion so this is required in
+some form. However it may make sense to allow the populate call to take a user
+space pointer for the data to be copied rather than require it to be in the
+shared memory region. We do already have a "flags" argument so there's also
+scope for easily supporting both options. The current approach integrates
+quite nicely in kvmtool with the existing logic for setting up a normal
+(non-CoCo) guest. But I'm aware kvmtool isn't entirely representative of what
+VMMs do, so I'd welcome feedback on what a good populate uAPI would look like.
+
+Undelegation failure
+====================
+
+When the kernel is tearing down a CCA VM, it will attempt to "undelegate"
+pages allowing them to be used by the Normal World again. Assuming no bugs
+then these operations will always succeed. However, the RMM has the ability to
+return a failure if it considers these pages to still be in use. A failure
+like this is always a bug in the code, but it would be good to be able to
+handle these without resorting to an immediate BUG_ON().
+
+The current approach in the code is to simply WARN() and use get_page() to
+take an extra reference to the page to stop it being reused (as it will
+immediately cause a GPF if the Normal World attempts to access the page).
+
+However this will cause problems when we start supporting huge pages. It may
+be possible to use the HWPOISON infrastructure to flag the page as unusable
+(although note there is no way of 'scrubbing' a page to recover from this
+situation). The other option is to just accept this this "should never happen"
+and upgrade the WARN() to a BUG_ON() so we don't have to deal with the
+situation. A third option is to do nothing (other than WARN) and let the
+system run until the inevitable GPF which will probably bring it down (and
+hope there's enough time for the user to save work etc).
+
+I'd welcome thoughts on the best solution.
+
+====================
+
+The ABI to the RMM (the RMI) is based on RMM v1.0-rel0 specification[1].
+
+This series is based on v6.17-rc1. It is also available as a git
+repository:
+
+https://gitlab.arm.com/linux-arm/linux-cca cca-host/v10
+
+Work in progress changes for kvmtool are available from the git
+repository below:
+
+https://gitlab.arm.com/linux-arm/kvmtool-cca cca/v8
+
+[1] https://developer.arm.com/documentation/den0137/1-0rel0/
+
+Jean-Philippe Brucker (7):
+  arm64: RME: Propagate number of breakpoints and watchpoints to
+    userspace
+  arm64: RME: Set breakpoint parameters through SET_ONE_REG
+  arm64: RME: Initialize PMCR.N with number counter supported by RMM
+  arm64: RME: Propagate max SVE vector length from RMM
+  arm64: RME: Configure max SVE vector length for a Realm
+  arm64: RME: Provide register list for unfinalized RME RECs
+  arm64: RME: Provide accurate register list
+
+Joey Gouly (2):
+  arm64: RME: allow userspace to inject aborts
+  arm64: RME: support RSI_HOST_CALL
+
+Steven Price (31):
+  arm64: RME: Handle Granule Protection Faults (GPFs)
+  arm64: RME: Add SMC definitions for calling the RMM
+  arm64: RME: Add wrappers for RMI calls
+  arm64: RME: Check for RME support at KVM init
+  arm64: RME: Define the user ABI
+  arm64: RME: ioctls to create and configure realms
+  KVM: arm64: Allow passing machine type in KVM creation
+  arm64: RME: RTT tear down
+  arm64: RME: Allocate/free RECs to match vCPUs
+  KVM: arm64: vgic: Provide helper for number of list registers
+  arm64: RME: Support for the VGIC in realms
+  KVM: arm64: Support timers in realm RECs
+  arm64: RME: Allow VMM to set RIPAS
+  arm64: RME: Handle realm enter/exit
+  arm64: RME: Handle RMI_EXIT_RIPAS_CHANGE
+  KVM: arm64: Handle realm MMIO emulation
+  arm64: RME: Allow populating initial contents
+  arm64: RME: Runtime faulting of memory
+  KVM: arm64: Handle realm VCPU load
+  KVM: arm64: Validate register access for a Realm VM
+  KVM: arm64: Handle Realm PSCI requests
+  KVM: arm64: WARN on injected undef exceptions
+  arm64: Don't expose stolen time for realm guests
+  arm64: RME: Always use 4k pages for realms
+  arm64: RME: Prevent Device mappings for Realms
+  arm_pmu: Provide a mechanism for disabling the physical IRQ
+  arm64: RME: Enable PMU support with a realm guest
+  arm64: RME: Hide KVM_CAP_READONLY_MEM for realm guests
+  KVM: arm64: Expose support for private memory
+  KVM: arm64: Expose KVM_ARM_VCPU_REC to user space
+  KVM: arm64: Allow activating realms
+
+Suzuki K Poulose (3):
+  kvm: arm64: Include kvm_emulate.h in kvm/arm_psci.h
+  kvm: arm64: Don't expose debug capabilities for realm guests
+  arm64: RME: Allow checking SVE on VM instance
+
+ Documentation/virt/kvm/api.rst       |   92 +-
+ arch/arm64/include/asm/kvm_emulate.h |   38 +
+ arch/arm64/include/asm/kvm_host.h    |   13 +-
+ arch/arm64/include/asm/kvm_rme.h     |  135 ++
+ arch/arm64/include/asm/rmi_cmds.h    |  508 ++++++++
+ arch/arm64/include/asm/rmi_smc.h     |  269 ++++
+ arch/arm64/include/asm/virt.h        |    1 +
+ arch/arm64/include/uapi/asm/kvm.h    |   49 +
+ arch/arm64/kvm/Kconfig               |    1 +
+ arch/arm64/kvm/Makefile              |    2 +-
+ arch/arm64/kvm/arch_timer.c          |   44 +-
+ arch/arm64/kvm/arm.c                 |  169 ++-
+ arch/arm64/kvm/guest.c               |  108 +-
+ arch/arm64/kvm/hypercalls.c          |    4 +-
+ arch/arm64/kvm/inject_fault.c        |    5 +-
+ arch/arm64/kvm/mmio.c                |   16 +-
+ arch/arm64/kvm/mmu.c                 |  209 ++-
+ arch/arm64/kvm/pmu-emul.c            |    6 +
+ arch/arm64/kvm/psci.c                |   30 +
+ arch/arm64/kvm/reset.c               |   23 +-
+ arch/arm64/kvm/rme-exit.c            |  207 +++
+ arch/arm64/kvm/rme.c                 | 1746 ++++++++++++++++++++++++++
+ arch/arm64/kvm/sys_regs.c            |   53 +-
+ arch/arm64/kvm/vgic/vgic-init.c      |    2 +-
+ arch/arm64/kvm/vgic/vgic.c           |   61 +-
+ arch/arm64/mm/fault.c                |   31 +-
+ drivers/perf/arm_pmu.c               |   15 +
+ include/kvm/arm_arch_timer.h         |    2 +
+ include/kvm/arm_pmu.h                |    4 +
+ include/kvm/arm_psci.h               |    2 +
+ include/linux/perf/arm_pmu.h         |    5 +
+ include/uapi/linux/kvm.h             |   29 +-
+ 32 files changed, 3778 insertions(+), 101 deletions(-)
+ create mode 100644 arch/arm64/include/asm/kvm_rme.h
+ create mode 100644 arch/arm64/include/asm/rmi_cmds.h
+ create mode 100644 arch/arm64/include/asm/rmi_smc.h
+ create mode 100644 arch/arm64/kvm/rme-exit.c
+ create mode 100644 arch/arm64/kvm/rme.c
+
+-- 
+2.43.0
 
