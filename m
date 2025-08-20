@@ -1,114 +1,127 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C0D36CDE2;
-	Wed, 20 Aug 2025 15:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C887B223DFD
+	for <linux-coco@lists.linux.dev>; Wed, 20 Aug 2025 15:31:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755702037; cv=none; b=CtFZ7qWWlvM4+FgqcLkErwGzl0cNpimSsMGGTEfXIGGo5RX5ul1JzOPdQ4VTJI+vVg8X1THsm8eJDVHklJTNU4giJb1dZYnqxqfymaLuX9b2HJFExG8p7yHxqt0Y7YwZskPHRsjWjEpG/qRXjkT51y4eHi74a5AOGnn4nAFki94=
+	t=1755703893; cv=none; b=nuWRrSLeGDRsWq5xgZmPqRCGZXYpd9t9rvpUDMcI2je0CHses4yWxXk8OlndpSh7Ns0zRAgfn99d5N95Qjlh6vLs55/3/YRe7AnPa3ZfD+UoBY8LjQwJ6ayaaXMSJyaWtyMjn2Qam/3jGl3mjFOJsg8VdWnuu0GpFh1HKpLH/ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755702037; c=relaxed/simple;
-	bh=BZRXIQEzTfhUOH3gRrJChcfL6Ji+pvsTbZ8FZjpI1kg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hybMfdU+XUb3mKmG5me73zZuwP/tUUV18h7uzE75ZQKb11NP9FKgN8bwNob6cYGwq3CJ0zCi6BwyuxVm+sXwC+WV1BQNBAmfZ0sxSYsqywJde7GEPOKSDeyVBzntBoj9mQqx4LaUxnxsh4iJVKeDtC9E+g/eU+POAGtXM75N9E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2FF7B2F27;
-	Wed, 20 Aug 2025 08:00:27 -0700 (PDT)
-Received: from e122027.arm.com (unknown [10.57.2.58])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EFD343F738;
-	Wed, 20 Aug 2025 08:00:30 -0700 (PDT)
-From: Steven Price <steven.price@arm.com>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Cc: Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>
-Subject: [PATCH v10 43/43] KVM: arm64: Allow activating realms
-Date: Wed, 20 Aug 2025 15:56:03 +0100
-Message-ID: <20250820145606.180644-44-steven.price@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250820145606.180644-1-steven.price@arm.com>
-References: <20250820145606.180644-1-steven.price@arm.com>
+	s=arc-20240116; t=1755703893; c=relaxed/simple;
+	bh=s+R8aVv1kQPKJL48rz1eQ6eILA63+WLcaOOcmA0QxjM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=U2E+RSwbajdv1jbqNZdDizunmaC+NSy/wlj80dPKveI5tS0mzy8HXAWOViRP5JlidRA6vpAazOaunSKJ01aUQMqpw3W9xSJPltFu4B/BweGen7LumCq+NhskLkqEOG7HkDvK7ykauQZioCNzo+n+iSszn+1UQfj0PROrKR7KmIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JDiciy79; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JDiciy79"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-324e41e946eso119693a91.0
+        for <linux-coco@lists.linux.dev>; Wed, 20 Aug 2025 08:31:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755703891; x=1756308691; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=o9QzEQYSWbERMpwFDE3tIp6dRHsbQYsz0nj171HoUNo=;
+        b=JDiciy79jrTFbR8ULeuTIk1TPlR6wj2Oc/LLqLnKW7XaNlJxbppcbirLkJQ56dVDFW
+         KSWyK0VaMkAVSmKOakDKEzQMOTYCRF/pKhiw4T2hbeAY7hNgHIyWpxRJVtR6DBZqnpx/
+         hE+kVSrd8WxJF9U+XphnWsffPHpmYlR7RKhC2IL5nATV5id84e6ISbodRGAVCOUmvW+N
+         e72eYcGTbwX+Yy3cXjrNACZMAs1MyBSQr14hRr/siZGf7NNU1DGoZkcpo4OWwfRpOfLL
+         eBEBuiJ1VaMqATJrcxMPC13jVDtwgrwYwq3MHBKB8/9NFCIrR8s0AnCpx5L4ZRaFsVoT
+         1FHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755703891; x=1756308691;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=o9QzEQYSWbERMpwFDE3tIp6dRHsbQYsz0nj171HoUNo=;
+        b=KwStoNaEAbVN8TKMCJiztY+u/TIrS5RPw2pBQ/oekPthuhzJvAbfBdqOIvgdjH7ZB3
+         wr3G8O9HCf748qN/TxrZBA4yXmdOvJ3YxfwyBZQaNXZbhi8hGSjnm1sQwT8whqAar3bs
+         5mbkNsuIZtnu4kaT7GbkXqmrASltt3FNhn6tTs+ZHQ7yFLlR2nEEmOwfiZGFTEtCorzA
+         3kGDem3odfmXCRQ46dqv7Ff/eAMjOWHxpFXmIIHNE47uO6Tlx5CpWdsgIitPlmdMwQQb
+         2dLHmUY/7hg+lq4+yIwP7XWi8zFY5CDxpnL5VmgJjV3FXf1SdxSa7yFh1gPP3MaCTEPu
+         MKsA==
+X-Forwarded-Encrypted: i=1; AJvYcCUP8rEbHUVFwU+tgn209MgjzrXepD1sia9LqE1CID6WEzu15vZkxyHprFHjRTci4pr8BM0QX6MZwN+U@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxg0k1ufXGz7yBrVMfAUPipHItdu3/F23Nk18GKhNf1vEZDpeRx
+	zvt3UD7z1FX/9+ml5Z/Rj16r3lUSvzUD6LckGVs2EeBoriSmHbu+x1NCAYMwWwzXNm6nqiG+Kmt
+	Kk9nW4Q==
+X-Google-Smtp-Source: AGHT+IGnry6UQD9dbJDbiib0HiTkV2PQuZkHfqGug22iyfAeQKMVe3qfW45SYnYvoCN5T+mHnTS+yLo7nLU=
+X-Received: from pjbqn7.prod.google.com ([2002:a17:90b:3d47:b0:31f:d6:9cf])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:ec88:b0:312:1d2d:18df
+ with SMTP id 98e67ed59e1d1-324e143bff2mr4826196a91.23.1755703891209; Wed, 20
+ Aug 2025 08:31:31 -0700 (PDT)
+Date: Wed, 20 Aug 2025 08:31:29 -0700
+In-Reply-To: <dd58cf15476bac97b28997526faf9ff078d08b21.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20250609191340.2051741-1-kirill.shutemov@linux.intel.com>
+ <d432b8b7cfc413001c743805787990fe0860e780.camel@intel.com>
+ <sjhioktjzegjmyuaisde7ui7lsrhnolx6yjmikhhwlxxfba5bh@ss6igliiimas>
+ <c2a62badf190717a251d269a6905872b01e8e340.camel@intel.com>
+ <aJqgosNUjrCfH_WN@google.com> <f38f55de6f4d454d0288eb7f04c8c621fb7b9508.camel@intel.com>
+ <d21a66fe-d2ce-46cc-b89e-b60b03eae3da@intel.com> <6bd46f35c7e9c027c8a4c713df7dc73e1d923f5b.camel@intel.com>
+ <rxtpzxy2junchgekpjxirkiuu7h4x4xwwrblzn4u5atf6yits3@artdh2hzqa34> <dd58cf15476bac97b28997526faf9ff078d08b21.camel@intel.com>
+Message-ID: <aKXqUf9QBpLOeB3Q@google.com>
+Subject: Re: [PATCHv2 00/12] TDX: Enable Dynamic PAMT
+From: Sean Christopherson <seanjc@google.com>
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: "kas@kernel.org" <kas@kernel.org>, Chao Gao <chao.gao@intel.com>, 
+	Dave Hansen <dave.hansen@intel.com>, "x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
+	Kai Huang <kai.huang@intel.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "tglx@linutronix.de" <tglx@linutronix.de>, 
+	Yan Y Zhao <yan.y.zhao@intel.com>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-Add the ioctl to activate a realm and set the static branch to enable
-access to the realm functionality if the RMM is detected.
+On Fri, Aug 15, 2025, Rick P Edgecombe wrote:
+> On Thu, 2025-08-14 at 11:55 +0100, Kiryl Shutsemau wrote:
+> > > > > (similar pattern on the unmapping)
+> > > > > 
+> > > > > So it will only be valid contention if two threads try to fault in the >
+> > > > > > *same* 2MB
+> > > > > DPAMT region *and* lose that race around 1-3, but invalid contention if
+> > > > > > > threads try
+> > > > > to execute 2-4 at the same time for any different 2MB regions.
+> > > > > 
+> > > > > Let me go verify.
+> 
+> It lost the race only once over a couple runs. So it seems mostly invalid
+> contention.
+> 
+> > > 
+> > > Note that in absence of the global lock here, concurrent PAMT.ADD would
+> > > also trigger some cache bouncing during pamt_walk() on taking shared
+> > > lock on 1G PAMT entry and exclusive lock on 2M entries in the same
+> > > cache (4 PAMT_2M entries per cache line). This is hidden by the global
+> > > lock.
+> > > 
+> > > You would not recover full contention time by removing the global lock.
+> 
+> Hmm, yea. Another consideration is that performance sensitive users will
+> probably be using huge pages, in which case 4k PAMT will be mostly skipped.
+> 
+> But man, the number and complexity of the locks is getting a bit high across the
+> whole stack. I don't have any easy ideas.
 
-Signed-off-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
----
- arch/arm64/kvm/rme.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+FWIW, I'm not concerned about bouncing cachelines, I'm concerned about the cost
+of the SEAMCALLs.  The latency due to bouncing a cache line due to "false"
+contention is probably in the noise compared to waiting thousands of cycles for
+other SEAMCALLs to complete.
 
-diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
-index 55ef3143a7b2..299473298720 100644
---- a/arch/arm64/kvm/rme.c
-+++ b/arch/arm64/kvm/rme.c
-@@ -1253,6 +1253,20 @@ static int kvm_init_ipa_range_realm(struct kvm *kvm,
- 	return realm_init_ipa_state(kvm, addr, end);
- }
- 
-+static int kvm_activate_realm(struct kvm *kvm)
-+{
-+	struct realm *realm = &kvm->arch.realm;
-+
-+	if (kvm_realm_state(kvm) != REALM_STATE_NEW)
-+		return -EINVAL;
-+
-+	if (rmi_realm_activate(virt_to_phys(realm->rd)))
-+		return -ENXIO;
-+
-+	WRITE_ONCE(realm->state, REALM_STATE_ACTIVE);
-+	return 0;
-+}
-+
- /* Protects access to rme_vmid_bitmap */
- static DEFINE_SPINLOCK(rme_vmid_lock);
- static unsigned long *rme_vmid_bitmap;
-@@ -1400,6 +1414,9 @@ int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
- 		r = kvm_populate_realm(kvm, &args);
- 		break;
- 	}
-+	case KVM_CAP_ARM_RME_ACTIVATE_REALM:
-+		r = kvm_activate_realm(kvm);
-+		break;
- 	default:
- 		r = -EINVAL;
- 		break;
-@@ -1725,5 +1742,5 @@ void kvm_init_rme(void)
- 	if (rme_vmid_init())
- 		return;
- 
--	/* Future patch will enable static branch kvm_rme_is_available */
-+	static_branch_enable(&kvm_rme_is_available);
- }
--- 
-2.43.0
+That's also my concern with tying PAMT management to S-EPT population.  E.g. if
+a use case triggers a decent amount S-EPT churn, then dynamic PAMT support will
+exacerbate the S-EPT overhead.
 
+But IIUC, that's a limitation of the TDX-Module design, i.e. there's no way to
+hand it a pool of PAMT pages to manage.  And I suppose if a use case is churning
+S-EPT, then it's probably going to be sad no matter what.  So, as long as the KVM
+side of things isn't completely awful, I can live with on-demand PAMT management.
+
+As for the global lock, I don't really care what we go with for initial support,
+just so long as there's clear line of sight to an elegant solution _if_ we need
+shard the lock.
