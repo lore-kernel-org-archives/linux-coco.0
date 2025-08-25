@@ -1,185 +1,114 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC91254855
-	for <linux-coco@lists.linux.dev>; Mon, 25 Aug 2025 23:08:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C8172633
+	for <linux-coco@lists.linux.dev>; Mon, 25 Aug 2025 23:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756163303; cv=none; b=KAoUEcbn/D1ViDZMtHigHPn3pJzpJ5OxUmTzr1zNan4qTMm4cSW9yfEyyCd+zbpgbkRAjVUhq8spWm/mrJXLcuJ4RwXsIfy1bdto6+2FTPMMDFzHgqsZgjsToLl9ejCr1zcLILTMWojB51sMbSDKpx4vuAwRceiZA+CInDQNutM=
+	t=1756164887; cv=none; b=Wp1fvqvNvyZIs/sjoyptXb9KUprG6ZI6OYYGOMbdRfpRNnnR54HytLjrONGTbfWxuKQnYczT8emuafvkAq2P0O9l5DmM0ObmC4S+nDYzOGSd7RcX1Q/VYVwkvHSbvhdb3A0tHi0FrqmHBL2pVuv5dNx1jFXLue/asOFAPaTI/zU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756163303; c=relaxed/simple;
-	bh=JnpQNhUrspUsEG6Bk+5IiCAKB5CxWFoNLMNhiIbFz6Q=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hPkL2Uyi32SPtYUYGBw64WdrAw/BXS8Mmpt6KobIJ9HyU5KyLJ+kpIzmPeT+fOQ4OLOXJOiyTyCKrdkqY/4MCMhKXsegCztOXF3c0Mftc9D/ygzaEUMrAD+uswwMVxLjECxjYKnc7kN5aKNjA7nE6B/TeSfw4gv1jg9o0+1xmuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4C/MQT3q; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
+	s=arc-20240116; t=1756164887; c=relaxed/simple;
+	bh=kTJ1dngBPGZL1gqffFZSR9/Ri+4h6ObJ7IhyqTWKMEk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C3HWhdr22SSEg3AbmkvEw0bVe5oMHtpFI5LGrr7NXg7zxAS8LPQeUNhbQZeOZPVP0CKpS8nOjOOxjMf0LP3f5kDKmooMwn8V4JKNEMCciz8nA2CJS2S6xDv8qPiDxSZuXgINqPEK+aulu32Qy+YVjIW19umdIL8Zt155UEZeQpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=SnN8HPR1; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4C/MQT3q"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-32515a033a6so3434895a91.2
-        for <linux-coco@lists.linux.dev>; Mon, 25 Aug 2025 16:08:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756163301; x=1756768101; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6PJFrEMJOsfQGkwPQ/N5M5tBh51DW0OHIWOkD4RTR+M=;
-        b=4C/MQT3qXnBh5ZOCJxrBTHIliuj7GWHjQ4Vshg/PSRjFo11Q4UveeTajl16b6xeDZ0
-         p177R1en1oyRkF29v+QfaHwMAq77bphEnu9wp3x5B/WEnL8NH4gCs3J3mPC6NBFKC7dK
-         HZ52RGf9zM2k2PFHrKNlkQorgmXE5xexsrRpL5tGFmF5mEoi/iY0ePX2SsanB5dQiGkj
-         McrZPgvE0qxvf077KnE18/r8zDgNXxBZN2OP259t0HtRZDuELGGFWekLjjcZlUrRHW09
-         RZKNAWW7M+eYiJ1mGcFotaopDTBjmhcH+6nfdYDmaESxhfGKnY101M+V9yD66pMGnW5f
-         csEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756163301; x=1756768101;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6PJFrEMJOsfQGkwPQ/N5M5tBh51DW0OHIWOkD4RTR+M=;
-        b=VFgyqxvuXZjoNEA4FUJ8ZeIkaXQA/7/JqukMaX+i6itsEEcZgOdYrNuXBDnLuk6E2Q
-         PqIjkZXZFHHWCR65NaMjOZ8OOHe2ygwBx5vuCBASZwoaljD6v3yeIUKzlDSpCLNX5rZA
-         20Kqb9Qn724M8fj9kL9tLo/Istiad0K5053lsbuKDm1hmVNKFtSKwwNtE5TrJdL6Wzjc
-         RzajfjmPg8QJ+koUD1xwIgOufGiF6ZUA9tin03uP4/Cm+1SS0MbOxuiLl8VPYcOlkV+/
-         uyeS9L+oDOYsp9N6PgHVpSQRKu0eGNdyYA2V7mzc0Y4di6I89URWya9D7TuZEx60eysr
-         El0w==
-X-Gm-Message-State: AOJu0YyLfG5pOzcFcyhnlyejvw6TlJD+C8HWms1Vx7vWkcp/rwOeIn9R
-	7JIbEgB7cqSLoImVS5d+wJtzJoEPxTTUD/eBseOEWoPKgOdDG2HZ1wqnQq4VcTb4EEgMfWziSCz
-	MXilapsqi97zMQd/8RSjM1SM9HQ==
-X-Google-Smtp-Source: AGHT+IGrq+HLRwUNYqwfx0diY7kjY6ycSz8/ZKkUZKHTSFbsyen18fZ+mR6CbkMqwPv1W2G7A6frXbr5O63R9MtgwQ==
-X-Received: from pjbpl15.prod.google.com ([2002:a17:90b:268f:b0:325:220a:dd41])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:3f88:b0:31c:36f5:d95 with SMTP id 98e67ed59e1d1-32515e2b881mr14983372a91.2.1756163301311;
- Mon, 25 Aug 2025 16:08:21 -0700 (PDT)
-Date: Mon, 25 Aug 2025 16:08:19 -0700
-In-Reply-To: <20250613005400.3694904-2-michael.roth@amd.com>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="SnN8HPR1"
+Received: from [10.137.184.60] (unknown [131.107.160.188])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 8B38F211829D;
+	Mon, 25 Aug 2025 16:34:45 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8B38F211829D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1756164885;
+	bh=bKHUg3kN3BMPB61jq1Ou+P2RhztFLbNE1srABqKlvzE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=SnN8HPR1cy4cmflSYELKP4ObrSYZ4BRrtVGOaNcSf3i4paFe6Bfh+eKWpYx6HT01/
+	 gFNNUZ+1JXl32py2eA8FHyRV0fJv3LUkxGn047tKL8SS1dCA4ZOf2D2GDZKW6ogPIP
+	 Kq+mzrRLmMQxkRBByGX0rtYNAH6d9/0oV0EtjX2s=
+Message-ID: <0e808267-7955-4a37-8726-2a4e3040dd11@linux.microsoft.com>
+Date: Mon, 25 Aug 2025 16:34:45 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20250613005400.3694904-1-michael.roth@amd.com> <20250613005400.3694904-2-michael.roth@amd.com>
-Message-ID: <diqztt1vf198.fsf@google.com>
-Subject: Re: [PATCH RFC v1 1/5] KVM: guest_memfd: Remove preparation tracking
-From: Ackerley Tng <ackerleytng@google.com>
-To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
-Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, david@redhat.com, tabba@google.com, 
-	vannapurve@google.com, ira.weiny@intel.com, thomas.lendacky@amd.com, 
-	pbonzini@redhat.com, seanjc@google.com, vbabka@suse.cz, joro@8bytes.org, 
-	pratikrajesh.sampat@amd.com, liam.merwick@oracle.com, yan.y.zhao@intel.com, 
-	aik@amd.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH hyperv-next v4 15/16] Drivers: hv: Support establishing
+ the confidential VMBus connection
+To: dan.j.williams@intel.com
+Cc: Tianyu.Lan@microsoft.com, alok.a.tiwari@oracle.com, apais@microsoft.com,
+ arnd@arndb.de, benhill@microsoft.com, bp@alien8.de, bperkins@microsoft.com,
+ corbet@lwn.net, dave.hansen@linux.intel.com, decui@microsoft.com,
+ haiyangz@microsoft.com, hpa@zytor.com, kys@microsoft.com,
+ linux-arch@vger.kernel.org, linux-coco@lists.linux.dev
+References: <68a4ddff258de_2709100ba@dwillia2-xfh.jf.intel.com.notmuch>
+ <20250825222126.356372-1-romank@linux.microsoft.com>
+ <68aceb1ad6569_75e310067@dwillia2-mobl4.notmuch>
+Content-Language: en-US
+From: Roman Kisel <romank@linux.microsoft.com>
+In-Reply-To: <68aceb1ad6569_75e310067@dwillia2-mobl4.notmuch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Michael Roth <michael.roth@amd.com> writes:
 
-> guest_memfd currently uses the folio uptodate flag to track:
->
->   1) whether or not a page had been cleared before initial usage
->   2) whether or not the architecture hooks have been issued to put the
->      page in a private state as defined by the architecture
->
-> In practice, 2) is only actually being tracked for SEV-SNP VMs, and
-> there do not seem to be any plans/reasons that would suggest this will
-> change in the future, so this additional tracking/complexity is not
-> really providing any general benefit to guest_memfd users. Future plans
-> around in-place conversion and hugepage support, where the per-folio
-> uptodate flag is planned to be used purely to track the initial clearing
-> of folios, whereas conversion operations could trigger multiple
-> transitions between 'prepared' and 'unprepared' and thus need separate
-> tracking, will make the burden of tracking this information within
-> guest_memfd even more complex, since preparation generally happens
-> during fault time, on the "read-side" of any global locks that might
-> protect state tracked by guest_memfd, and so may require more complex
-> locking schemes to allow for concurrent handling of page faults for
-> multiple vCPUs where the "preparedness" state tracked by guest_memfd
-> might need to be updated as part of handling the fault.
->
-> Instead of keeping this current/future complexity within guest_memfd for
-> what is essentially just SEV-SNP, just drop the tracking for 2) and have
-> the arch-specific preparation hooks get triggered unconditionally on
-> every fault so the arch-specific hooks can check the preparation state
-> directly and decide whether or not a folio still needs additional
-> preparation. In the case of SEV-SNP, the preparation state is already
-> checked again via the preparation hooks to avoid double-preparation, so
-> nothing extra needs to be done to update the handling of things there.
->
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> ---
->  virt/kvm/guest_memfd.c | 47 ++++++++++++++----------------------------
->  1 file changed, 15 insertions(+), 32 deletions(-)
->
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 35f94a288e52..cc93c502b5d8 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -421,11 +421,6 @@ static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slo
->  	return 0;
->  }
->  
-> -static inline void kvm_gmem_mark_prepared(struct folio *folio)
-> -{
-> -	folio_mark_uptodate(folio);
-> -}
-> -
->  /*
->   * Process @folio, which contains @gfn, so that the guest can use it.
->   * The folio must be locked and the gfn must be contained in @slot.
-> @@ -435,13 +430,7 @@ static inline void kvm_gmem_mark_prepared(struct folio *folio)
->  static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
->  				  gfn_t gfn, struct folio *folio)
->  {
-> -	unsigned long nr_pages, i;
->  	pgoff_t index;
-> -	int r;
-> -
-> -	nr_pages = folio_nr_pages(folio);
-> -	for (i = 0; i < nr_pages; i++)
-> -		clear_highpage(folio_page(folio, i));
->  
->  	/*
->  	 * Preparing huge folios should always be safe, since it should
-> @@ -459,11 +448,8 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
 
-While working on HugeTLB support for guest_memfd, I added a test that
-tries to map a non-huge-page-aligned gmem.pgoff to a huge-page aligned
-gfn.
-
-I understand that config would destroy the performance advantages of
-huge pages, but I think the test is necessary since Yan brought up the
-use case here [1].
-
-The conclusion in that thread, I believe, was to allow binding of
-unaligned GFNs to offsets, but disallow large pages in that case. The
-next series for guest_memfd HugeTLB support will include a fix similar
-to this [2].
-
-While testing, I hit this WARN_ON with a non-huge-page-aligned
-gmem.pgoff.
-
->  	WARN_ON(!IS_ALIGNED(slot->gmem.pgoff, 1 << folio_order(folio)));
-
-Do you all think this WARN_ON can be removed?
-
-Also, do you think kvm_gmem_prepare_folio()s interface should perhaps be
-changed to take pfn, gfn, nr_pages (PAGE_SIZE pages) and level?
-
-I think taking a folio is kind of awkward since we're not really setting
-up the folio, we're setting up something mapping-related for the
-folio. Also, kvm_gmem_invalidate() doesn't take folios, which is more
-aligned with invalidating mappings rather than something folio-related.
-
-[1] https://lore.kernel.org/all/aA7UXI0NB7oQQrL2@yzhao56-desk.sh.intel.com/
-[2] https://github.com/googleprodkernel/linux-cc/commit/371ed9281e0c9ba41cfdc20b48a6c5566f61a7df
-
->  	index = gfn - slot->base_gfn + slot->gmem.pgoff;
->  	index = ALIGN_DOWN(index, 1 << folio_order(folio));
-> -	r = __kvm_gmem_prepare_folio(kvm, slot, index, folio);
-> -	if (!r)
-> -		kvm_gmem_mark_prepared(folio);
->  
-> -	return r;
-> +	return __kvm_gmem_prepare_folio(kvm, slot, index, folio);
->  }
->  
+On 8/25/2025 4:00 PM, dan.j.williams@intel.com wrote:
+> Roman Kisel wrote:
+> [..]
+>> This doesn't replace TDISP, I'll do a better job of supplementing the code changes
+>> with documentation and comments! Any suggestions are greatly appreciated.
 > 
-> [...snip...]
+> No, I am not asking for documentation and comments and I am asking how
+> any of the security claims are validated by this partially enabled L2
+> guest?
 > 
+
+As the guest is partially enabled, it relies on the trusted paravaisor
+which is fully enabled wrt running in a hardware isolated VM. The
+paravisor image is measured, there is attestation flow, and the hardware
+validates the paravisor image.
+
+[...]
+
+>> The patch set is a building block for building a confidential I/O path for the non-fully
+>> enlightened Linux guests. It would be great to have the Linux storage and network stack not
+>> to share pages with the host (and not bounce-buffer) if the storage and network are
+>> paravirtualized && use the Confidential VMBus. In the first version of the patchset I had
+>> patches for that, yet that was considered too naive to be merged in the main line kernel so
+>> I dropped them. But even without that, this patch series protects the control plane and the
+>> data plane from the host with the exception of the pages the guest might use for bounce-buffering
+>> although it could've avoided that in this case.
+> 
+> The question is what protects against the paravisor lying about its
+> identity? If the L2 guest is partially aware that a paravisor is
+> providing confidentiality then it needs some interaction with a relying
+> party to say "yes, this paravisor is indeed what it claims to be". Is
+> that some indicator passed over an established / trusted channel that I
+> overlooked?
+> 
+
+Trying to understand the question, thinking out loud. The paravisor is
+running within the same GPA space as the guest, the host/hv cannot
+access the CPU context and the memory assigned to the paravisor and the
+guest until they share the pages, the paravisor is measured and goes
+through attestation. From that, the customer has the control over the
+chain of trust. They can rebuild the paravisor if they wish to do so.
+
+>> I mentioned that the paravisor will be handling the TDISP device for such guests.
+>> As folks might know, we use the OpenHCL paravisor which is a Linux kernel with the VTL
+>> mode patches we've been upstreaming (links to the repos are in the cover letter), and
+>> the OpenVMM running in the user land. The question would be if TDISP isn't available
+>> in the Linux kernel, how one would get it working in the OpenHCL paravisor that itself
+>> runs Linux? The SEV guest device in the paravisor kernel is being extended to handle
+>> TIO. Once TDISP support is available in the mainline kernel, the paravisor will switch
+>> to using the mainline implementation.
+> 
+> Either the L2 is unenlightened and has all its mapping attempts trapped
+> and redirected to be encrypted, or the L2 is partially enlightened and
+> at a minimum validates the identity of the paravisor.
+
+-- 
+Thank you,
+Roman
+
