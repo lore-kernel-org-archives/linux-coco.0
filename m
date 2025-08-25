@@ -1,190 +1,129 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDFE2F0C50
-	for <linux-coco@lists.linux.dev>; Mon, 25 Aug 2025 13:59:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D31E25C821
+	for <linux-coco@lists.linux.dev>; Mon, 25 Aug 2025 22:21:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756130377; cv=none; b=hvbEdNgOGfBcNUiuy8/vNw3ADwMNOfskINh1rbsHxzY2/jPWlxlkbplgDiuAlhYXyRBqy53JwKoni7gIeXOfMLCnKnDTiei5yBHy+86Y66pZ1EkhDiT/hRID0NxzdvjPuspeLdAK1wv3ocDBCxHOylmSs+d0c9eRYXVFwKMr0jY=
+	t=1756160499; cv=none; b=M7VdnGlOGPLihqhxy+onpzCfl90BNr4I+er0FOcuoh7AtMlqCWEDIO5Hh9ZgKlBouissljlNAy6E1NbwmKlI3DCP2A72TZlsyIJCiOl8UGc307wNdlLjYxtH0DTQ4n6B5xsszik1+2HLq6gen229XZODVn5HNQixndxHxvHHTsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756130377; c=relaxed/simple;
-	bh=iKeLqmJlX7IFGW8KFDsUf3kfbkdQxRY+eQtPXdLNf3I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Q8eqVngDg3LCJo9obNubNCkMMVf2hmWO5wQNgmmD7kSWVdVRCn8T4UoQOfKlhHJng9l8zi87pR4gUdW6AAAZ/+doP/HXKuEm/wp4s1jBJRMm8erwvb4l1NJtvOo675mD1p/cprZiNZovyj6sMGv4qerV35PSdWka/xPjcHpBtOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Dmk8SWHu; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=1n/tRlzM; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Dmk8SWHu; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=1n/tRlzM; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1756160499; c=relaxed/simple;
+	bh=vENPD8qIYT0SxnJvVGHSlqT6IgLPf2Q+JP29FkUujyk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ooqBBy4Iv/HTUaRF1LKfjunPw5JU6/f6rylGylPe0KGLQfUaWFIyzwvt0QRQA85dYaJnR0CgwBQXX55wDdS1jiV3kncENm8NiwmOfprNUYMj48sYC6K4Sz1kA6R2C/uMiA4qqv4ULBPBPuJAETfkCVmQiLDMPpHXCVh1I0Mb2PM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ACi4l3dX; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Dmk8SWHu";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="1n/tRlzM";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Dmk8SWHu";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="1n/tRlzM"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 0784E1F78C;
-	Mon, 25 Aug 2025 13:59:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756130374; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rnmyAeC3uw6SwWB64abdw7mh5BWIFemtPdKIjCP8QD0=;
-	b=Dmk8SWHufW0/ThrkDQWH8E29p9eCuf66Tu5Nzlf/zmUVG7z32+s8sKC6RlTWa/MwYK1n9D
-	3K4ni/kVYk89Xzho2+jjvGLx+Lx2s/hIuagUc632vb9EIn7k9YVdoyAN9ChIBfpqylL59C
-	XVGWCVs3rWJy6lS77qGtrqEhAaySYGY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756130374;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rnmyAeC3uw6SwWB64abdw7mh5BWIFemtPdKIjCP8QD0=;
-	b=1n/tRlzMuBcwEoZuvkwRM7jKqbCBFCkjWIyBEd4O5yW07vB8RT5vdrZ78npVSjxWrI2JdU
-	mhyDYWFZqieTHKAQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756130374; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rnmyAeC3uw6SwWB64abdw7mh5BWIFemtPdKIjCP8QD0=;
-	b=Dmk8SWHufW0/ThrkDQWH8E29p9eCuf66Tu5Nzlf/zmUVG7z32+s8sKC6RlTWa/MwYK1n9D
-	3K4ni/kVYk89Xzho2+jjvGLx+Lx2s/hIuagUc632vb9EIn7k9YVdoyAN9ChIBfpqylL59C
-	XVGWCVs3rWJy6lS77qGtrqEhAaySYGY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756130374;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=rnmyAeC3uw6SwWB64abdw7mh5BWIFemtPdKIjCP8QD0=;
-	b=1n/tRlzMuBcwEoZuvkwRM7jKqbCBFCkjWIyBEd4O5yW07vB8RT5vdrZ78npVSjxWrI2JdU
-	mhyDYWFZqieTHKAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C5E571368F;
-	Mon, 25 Aug 2025 13:59:33 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id hR78L0VsrGjoLQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 25 Aug 2025 13:59:33 +0000
-Message-ID: <1afec70b-0424-4477-97d2-34bc2615e4b5@suse.cz>
-Date: Mon, 25 Aug 2025 15:59:33 +0200
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ACi4l3dX"
+Received: from romank-3650.corp.microsoft.com (unknown [131.107.160.188])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 717D0211829E;
+	Mon, 25 Aug 2025 15:21:27 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 717D0211829E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1756160487;
+	bh=4V+Di2CdNqpVDQpM4RzbnLiWDx2BluMDafouDHKyG8g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ACi4l3dXrgui4cUUQ8kBMoxD2n9Rl5jgG/i2exa/h/ZU+PoCXAXn/4JTYi7YcRrK2
+	 d+XzUqF8KFoexIbYxZTuJETwYGRqFVr/WnGMbBAA2v0HA7JxgE9ufZEtJeX9RLjkKO
+	 A4mxpXhnVsyl+vFZLS0X7cxaMf/5RMcL77Lt8Kcc=
+From: Roman Kisel <romank@linux.microsoft.com>
+To: dan.j.williams@intel.com
+Cc: Tianyu.Lan@microsoft.com,
+	alok.a.tiwari@oracle.com,
+	apais@microsoft.com,
+	arnd@arndb.de,
+	benhill@microsoft.com,
+	bp@alien8.de,
+	bperkins@microsoft.com,
+	corbet@lwn.net,
+	dave.hansen@linux.intel.com,
+	decui@microsoft.com,
+	haiyangz@microsoft.com,
+	hpa@zytor.com,
+	kys@microsoft.com,
+	linux-arch@vger.kernel.org,
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH hyperv-next v4 15/16] Drivers: hv: Support establishing the confidential VMBus connection
+Date: Mon, 25 Aug 2025 15:21:26 -0700
+Message-ID: <20250825222126.356372-1-romank@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <68a4ddff258de_2709100ba@dwillia2-xfh.jf.intel.com.notmuch>
+References: <68a4ddff258de_2709100ba@dwillia2-xfh.jf.intel.com.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] KVM: Export KVM-internal symbols for sub-modules only
-Content-Language: en-US
-To: Sean Christopherson <seanjc@google.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>, Andy Lutomirski
- <luto@kernel.org>, Xin Li <xin@zytor.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>,
- Josh Poimboeuf <jpoimboe@kernel.org>, Jarkko Sakkinen <jarkko@kernel.org>,
- Vitaly Kuznetsov <vkuznets@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "Kirill A. Shutemov" <kas@kernel.org>, Tony Krowiak
- <akrowiak@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
- Jason Herne <jjherne@linux.ibm.com>,
- Harald Freudenberger <freude@linux.ibm.com>,
- Holger Dengler <dengler@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
- linux-sgx@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
- linux-s390@vger.kernel.org
-References: <20250729174238.593070-1-seanjc@google.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20250729174238.593070-1-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.997];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[33];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RL81e5qggtdx371s8ik49ru6xr)];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.cz:mid]
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Spam-Score: -4.30
+Content-Transfer-Encoding: 8bit
 
-On 7/29/25 19:42, Sean Christopherson wrote:
-> Use the newfangled EXPORT_SYMBOL_GPL_FOR_MODULES() along with some macro
-> shenanigans to export KVM-internal symbols if and only if KVM has one or
+[...]
+>> +	 *
+>> +	 * All scenarios here are:
+>> +	 *	1. No paravisor,
+>> +	 *  2. Paravisor without VMBus relay, no hardware isolation,
+>> +	 *  3. Paravisor without VMBus relay, with hardware isolation,
+>> +	 *  4. Paravisor with VMBus relay, no hardware isolation,
+>> +	 *  5. Paravisor with VMBus relay, with hardware isolation.
+>> +	 *
+>>
+> I read this blurb looking for answers to my question below, no luck, and
+> left further wondering what is the comment trying to convey to future
+> maintenance?
 
-Note it was renamed to EXPORT_SYMBOL_FOR_MODULES() only in 6.17-rc3 so this
-series will need rebasing to that and adjustment. Probably best to rename
-also EXPORT_SYMBOL_GPL_FOR_KVM_INTERNAL for consistency?
+The intention was to enumerate scenarios in which the driver executes
+this code to document what to expect of the conditional statement
 
-Thanks,
-Vlastimil
+| if (ms_hyperv.paravisor_present && (hv_isolation_type_tdx() || hv_isolation_type_snp()))
 
-> more sub-modules, and only for those sub-modules, e.g. x86's kvm-amd.ko
-> and/or kvm-intel.ko.
-> 
+[...]
+
+> In comparison to PCIe TDISP where there is an explicit validation step
+> of cryptographic evidence that the platform is what it claims to be, I
+> am missing the same for this.
+>
+
+This doesn't replace TDISP, I'll do a better job of supplementing the code changes
+with documentation and comments! Any suggestions are greatly appreciated.
+
+A fully-enlightened Linux guest could just use TDISP once support for that is available
+in the Linux kernel. Before it is, the non-fully enlightened Linux guests (they can only deal
+with accepting memory and sharing memory with the host) could rely on the paravisor to talk
+to such devices. The TDISP device will be connected to the paravisor, and the paravisor will
+provide the paravirtualized storage and network over the VMBus channels to the Linux guest.
+
+The patch set is a building block for building a confidential I/O path for the non-fully
+enlightened Linux guests. It would be great to have the Linux storage and network stack not
+to share pages with the host (and not bounce-buffer) if the storage and network are
+paravirtualized && use the Confidential VMBus. In the first version of the patchset I had
+patches for that, yet that was considered too naive to be merged in the main line kernel so
+I dropped them. But even without that, this patch series protects the control plane and the
+data plane from the host with the exception of the pages the guest might use for bounce-buffering
+although it could've avoided that in this case.
+
+I mentioned that the paravisor will be handling the TDISP device for such guests.
+As folks might know, we use the OpenHCL paravisor which is a Linux kernel with the VTL
+mode patches we've been upstreaming (links to the repos are in the cover letter), and
+the OpenVMM running in the user land. The question would be if TDISP isn't available
+in the Linux kernel, how one would get it working in the OpenHCL paravisor that itself
+runs Linux? The SEV guest device in the paravisor kernel is being extended to handle
+TIO. Once TDISP support is available in the mainline kernel, the paravisor will switch
+to using the mainline implementation.
+
+> I would expect something like a paravisor signed golden measurement with
+> a certificate that can be built-in to the kernel to validate that "yes,
+> in addition to the platform claims that can be emulated, this bus
+> enumeration is signed by an authority this kernel image trusts."
+>
+> My motivation for commenting here is for alignment purposes with the
+> PCIe TDISP enabling and wider concerns about accepting other devices for
+> private operation. Specifically, I want to align on a shared
+> representation in the device-core (struct device) to communicate that a
+> device is either on a bus that has been accepted for private operation
+> (confidential-vmbus today, potentially signed-ACPI-devices tomorrow), or
+> is a device that has been individually accepted for private operation
+> (PCIe TDISP). In both cases there needs to be either a golden
+> measurement mechanism built-in, or a userspace acceptance dependency in
+> the flow.
+>
+> Otherwise what mitigates a guest conveying secrets to a device that is
+> merely emulating a trusted bus/device?
