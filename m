@@ -1,48 +1,48 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2075.outbound.protection.outlook.com [40.107.220.75])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2068.outbound.protection.outlook.com [40.107.243.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856BF42AA3
-	for <linux-coco@lists.linux.dev>; Tue, 26 Aug 2025 01:31:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8608D265CB2
+	for <linux-coco@lists.linux.dev>; Tue, 26 Aug 2025 03:08:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.68
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756171900; cv=fail; b=B52GQymr3SyqxwvCP7eOmpR1CmPbvetnSsu/zPcUQFn4RPEiG3Pqb/ExHNTKIHQzPen3H7ct8g7chzgk0OvszCt2tGkbs8DLUGCzWoZlJ7gGqfrkvvXCnkE5xwuUCnM6axAQ2fgdaO4iQN9RXQAzDXEpcabVJXM+TPdfj482rLo=
+	t=1756177703; cv=fail; b=pqJx3E3TuHaSPpoO8+qhTy8ANsvQJsTUTHeGRuiOuojDWcC+H+6cYSatbglX3uu/uY/BQPwHWcrWNQDJBFZQ47n0O8iiNiKFbBMgzuQYaXbbeo3xFFClc8btzbOo6QSsK20NQd9XZEamnkvkKx9UGst4Hix+ofDHPZIca7B653A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756171900; c=relaxed/simple;
-	bh=vQcPZLy08ot15Q7tlwr1uKpMrEL5fleaxB/XDEk2YxU=;
+	s=arc-20240116; t=1756177703; c=relaxed/simple;
+	bh=wckPai1YzTWveDC0RbahhhbTQkMBM/r8fq58q/KgN5g=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=SnGF4VSnRXIgXE4VWvi8gTo7kXAs6XMODv2CF8XZtLibz2lYJVVa5e1O4xKGtfBgoQ9sxFjYZTrTYJJ3kFte8GeFxTMPcNpZ0fExmAKB2wYcO/233o816qYFptqWdIGhhhNdEF546z+4AZ947vH0DWboxIfdwR98Mc4/039kZT0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=fERZ7iq1; arc=fail smtp.client-ip=40.107.220.75
+	 Content-Type:MIME-Version; b=mFqZ1ilTaa7w7tftZgzl/d13zEgEcJ2a47BTI56QSnjj1q1+KNf0BvCzYwBI1+EuCztu4FjAkoBtjdj5/xrS93pVNA8VMs32wrvRozCF5m55ysA1Ov0tm2QvjFBh2kgRLBjgMPNhO6qEfJ84d9KnsqjnFX7qXfnZ7owTBFIxEPc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=mSun57iQ; arc=fail smtp.client-ip=40.107.243.68
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="fERZ7iq1"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="mSun57iQ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sXdvtxfrBvi+btVEDfRpOjCU66RPM/RoD1QSLMowFGRHWXWyU06ACbhRsbPDt/nbgrg0lvwQGeq5sjs5Ws2auYin8HS5e0md+02+jlICbYQgAgSflRf4dalgiOCV08xLf9DJ+gKODmDSbOgFQouHQUCAouTQXnVgLYXryQVbtqlfyHHmSy8SFmWiZdZn/Kf93xtoJWqq2XHQnjLti0gzUzkQgfv6wU04TV4jSstpsRoq4DFW/M9jgPObAISe0jGdMdasnZ1r/qqjMmGi7tGmLvtshmKL6/QUSd+rzfpIOLU08PJRnRRydcKcXEi4ejmZy98Zkmk/hha7ip2d8ra7jQ==
+ b=Jm1d+AdSlb1iMzX4N3MR378f5gRcfwlZw9RxFcggFWce9fdlgti6v2WuRS3NpPgvAQZmS02vmSXg8qlBHG4ue9kdLmSwgPhq5Pn4rw/zF5zWWmWWdJiRAeXXDoNdDCYY4z03e4D4ZzazRW49p2pFiFxzfEM0uLtXdtExwsJqqM1ARH9ZwXp6XyFb8c/S0wF1E2J4w3Lc6G6UItIYJehzuG+y6M9+zc2ns9XYVssOBcjmcn1f59P9zjGY8fgrcFN5rttFZq0feiDKyLEUsF2mp0UdulJlMSB/UPPKTv7nHkPEM4P+sFCS3/YveMCXR3qnQ2bmHhbU4fupjihmQB+HYQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/bDisyDU4Xe+cyXpkuYNKrsN+zz21o2ORh3IsqiWDBU=;
- b=c5jtxBZKAmmNxeYXuL9o4gNeTwH/V1KKxmQiJEPFmm6arRNjJxXBxuCeeLWlz8AbiFfG5py6Cx1hL6wlP3jVphUuZJex8iYlfqx1yVIfxc5oKLf14BsZnAoBbzUS64P3iswMxwvZ6HxAnWuo+rsrehEyRxE8W2drf6hm9ziLQxe2VwMLP0CB87RoXtUWDdx4SXtnP9pOrZBPobRehGPbIrzejOyDXOSqY8hJIkByDD56jC3Wz+YRkkXMWEkW4SfHNy21f0PS+L35cK33uOUvjFnqfOrEtDGGg0/0yB7EOcrhmpeMyVWu7G5o9DX7uj0sbzkRhbLwqNi4GJ7iLdQMSw==
+ bh=cAyxYDXDn+Tp5ggx9GE+GwtwgUv/nJiXKyCep5MVL4c=;
+ b=gWkPRuM+hJX5p0LMxPUqu/EYTBu4x2elMnDa393VlP6SJgIgb7icvw/yE3VHQIsd29upWbOFD7wGJLLgMBW91MMGrboFi8XyyFJxuXRytOUvbNpuvadcKDNHGFSN42aEyDHS2b3L5pR3KoIbHSdqj7NBCELRsLac2DblrKGYZlozKb2rXaUyITSvTEZFo61GKClHOmCUEBB4ZIQpYg690lhwp3VS1nQcQ4FSYEZAU8g/CzlYIE1GODeQ6RwbmpFnY5GU8GErsf1mW77GWiV1sawcqnHbcqmvsNZPTCbdmiPFiEkpJcKElZDbwwNQwmDgW2ivs0KPPyHqZmOzMye2Gg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/bDisyDU4Xe+cyXpkuYNKrsN+zz21o2ORh3IsqiWDBU=;
- b=fERZ7iq1nykQcL3YXrLuWIR/pPImNU7ipLm3MzIUxcIFyQvfG38aze7qZDZ6lYz9MUmSeIg371PVb4h17gfPoRdrAtGP434XAlqT/s9IhCpq9fAXrAb6p0+m4ycJ1Cw4AsKPae6pk6eoLgC0Eny+bQ95TMR4wZs1lj4pqR3/4no=
+ bh=cAyxYDXDn+Tp5ggx9GE+GwtwgUv/nJiXKyCep5MVL4c=;
+ b=mSun57iQyfx3Hr9OP+25aj/z4LmWWUPcjwMvYGvvkV8tGJtGvwBBXlxxB1v0pvYfAZvobvy4iKhNcIhUYoMIU79zJNqcTJMW/p6hR7JTK/eu/AynC1FMnEVq7we1Io69pxgU7epQ03GNDLXd9qb/1DDTiK7DlOOIY/hb2rs8m6c=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by LV8PR12MB9155.namprd12.prod.outlook.com (2603:10b6:408:183::8) with
+ by DM4PR12MB7648.namprd12.prod.outlook.com (2603:10b6:8:104::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.16; Tue, 26 Aug
- 2025 01:31:34 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.20; Tue, 26 Aug
+ 2025 03:08:19 +0000
 Received: from CH3PR12MB9194.namprd12.prod.outlook.com
  ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
  ([fe80::53fb:bf76:727f:d00f%5]) with mapi id 15.20.9052.021; Tue, 26 Aug 2025
- 01:31:34 +0000
-Message-ID: <849c12a9-f801-46f8-8fff-09fbc259843e@amd.com>
-Date: Tue, 26 Aug 2025 11:31:27 +1000
+ 03:08:19 +0000
+Message-ID: <b11535a1-0b20-41ec-be3b-05d7de3a6db9@amd.com>
+Date: Tue, 26 Aug 2025 13:08:11 +1000
 User-Agent: Mozilla Thunderbird Beta
 Subject: Re: [PATCH v3 03/13] PCI/TSM: Authenticate devices via platform TSM
 To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
@@ -57,8 +57,8 @@ Content-Language: en-US
 In-Reply-To: <20250516054732.2055093-4-dan.j.williams@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SY5P282CA0150.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:205::17) To CH3PR12MB9194.namprd12.prod.outlook.com
+X-ClientProxiedBy: SY0PR01CA0001.ausprd01.prod.outlook.com
+ (2603:10c6:10:1bb::21) To CH3PR12MB9194.namprd12.prod.outlook.com
  (2603:10b6:610:19f::7)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -67,96 +67,96 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|LV8PR12MB9155:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3832537a-0d14-4ee7-1850-08dde4404a9c
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|DM4PR12MB7648:EE_
+X-MS-Office365-Filtering-Correlation-Id: 128fd81e-8904-470a-fb4a-08dde44dceb5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?eWdZMkpxRy9vdlFPL0lvbG1rK1hTOVNZZUovYi9KM2lZNkl1cEpobWY0eEpn?=
- =?utf-8?B?dXBjUFIzMWxjM1JaeEJTd1ByRWFhTk9jczhhbkJpUm40MENVMW5XeWV6V0Nj?=
- =?utf-8?B?TU5wTkR6L1RrNlg4SnJ5RE1ZVVJJWjFxb1BnMy9ONG9ZanJsZGgzSnN5RVNt?=
- =?utf-8?B?cW5laENyWDM3c3FMdnJDeVJHaWR1dmh6eFk3R2p4Q0c0cXM4QTN6QmdiNmph?=
- =?utf-8?B?bnFtNVAvR2tnbHFmK2JYb2FpZVFtK0NCNTN5ck1lWitMbGRyN1V2U1RvRXh6?=
- =?utf-8?B?RGZ6dDhMRVhEeTJnYUhSbTQ3VUw3ZkhEMW5VcmVZblFDZ2dWZksyOUk1Tlk1?=
- =?utf-8?B?VmFZRjk4UldvZFFUWkp3VmNSV0FucStwbGtZc1BqWWNyQmxpcWFqc2VMQllh?=
- =?utf-8?B?SzlYVXZ0TUlxa3N6WWVkRCtabHVidXpIV3dtdEFGZ0JUcFF4Y0tzYzkxVC9h?=
- =?utf-8?B?Ym5PRVRFeXpzdVZ4M25pZ0U5SnEzUW0ySWNPVU14MjNKL1U0Z3A1ZXMyVTFI?=
- =?utf-8?B?V3hjRktCckVOOVQzUUxQTDBqUXR3Y0pwdlhHdzNOWmpNdHlKSng3WTBLTEd0?=
- =?utf-8?B?VU93UEt5QjM3VEJsaTVsTC9xUGFrbU1rS2NyMkpybkhnR2xWOFl4MSs3bXlO?=
- =?utf-8?B?MjNIdUs5U3FPblB3VlBjcHI4NGQ3NnVEanMxT3VBV0JrZ2hhc1Rtdm9vdUZo?=
- =?utf-8?B?eDFZTTB6b3BTaVpXcTBuN09CL2laRzlDaU9uMjZHT09Ibkc1M3I3ejJEZ2Nr?=
- =?utf-8?B?TVQ4SUtXbkNodmZaS2s2SndKcm9jQ0w1WUxib2NZZERlNXNNNDh5NTZmZ1py?=
- =?utf-8?B?VG1qekU2aktTcVYzQzVTdHprODBnM3dkM2ZET2N0ajFJbzhjOXRUYk1XSVlP?=
- =?utf-8?B?YlZiYUJ1eW0yeGYxOEhkOTJkc3crTlNTdlA4QUh2RFp0UlNkeldSVnFwVS9Z?=
- =?utf-8?B?OGJPYmNwRTNHVWt0YVF3RXljMkhlQnlGUzFOQUl1MVdQVXVmZWd2cFdPV0ww?=
- =?utf-8?B?cVk4K1A5QWwrSGwyeUFqMmJvNytiNm5KelBuWlhvVmQzOUNaZlAvenh6N0ND?=
- =?utf-8?B?UWluWHl4Smdmd3RpZmVFZXJZckc2UVIvR3RHc25ORnAzaWtvMnlDUUdNc1kr?=
- =?utf-8?B?cEl0WDQxTGpUY1pCVUZxcGNLUVRnVGtPbGwvSTVadC9mQXVkM2lJYWI2WWxR?=
- =?utf-8?B?YlNWUXM2SXp4RkZzUjc2VUNoTFFsY1BxTFI2eUk4VFhuQVduczllVnhqMjJI?=
- =?utf-8?B?T3NrRTlVMndXU0piQzNyV1FGNGkzQkZsd0xVbEw2QmZTMGFHa1lyWXY2Z1Ni?=
- =?utf-8?B?aXlYeGxsK2tKdkpCNTRCUXVtSi9oR0p5cVpGYUE1VCtXTTZRMGxhQzVhaFJX?=
- =?utf-8?B?SExOa05EWGxQUU9UQk8rZHFsZC90OWRwN0RkODEwdzNYUmZMNllmMmorenV5?=
- =?utf-8?B?OWNPZzVlU3J3ZXN6a3R2RnFxZUp6RGV4bnRoeHM5T0VhL2VNM3N2bktFdHNl?=
- =?utf-8?B?WFFzbVFST1JtaVdvci8wRCs0ckl4VktMdzR3MWZ4bklOdEVjY1dkZldUdVZU?=
- =?utf-8?B?ZWpCTk9MYVZZc3VOMndoYmQvdGxTV29EeS9MN2ttZGQ1NVZHWXFKcEZwMmMz?=
- =?utf-8?B?YmRHWkpMbDN5OHdMYzNxZnB1em5MbVpZV05zSGdTVE1CeE5NdTQ4RUt5VWdo?=
- =?utf-8?B?WjQ5OWpSTnRKZU5VaVQ5T1BCSm1BQjVVY2VvQUZtWW42ZUEyak1GQXErNmw2?=
- =?utf-8?B?L1ZMUTNWdW94TkM3d01MdnhwSTBvbUJUNmlsM3AvSE54TkxNKzdBdWE5bmxw?=
- =?utf-8?B?ZXlXYWU3TVlSZ2I2a3JOUHQzVnJqdFplUk9SLzlQZVk3akY3RzdtQk5QbjA0?=
- =?utf-8?B?akU5aUUyVGh6MjAxeE9lZW9IVjJXVmY5NVNaNENNNXlSZElNZ3FWc251aWRl?=
- =?utf-8?Q?8Xgj0uEoRr0=3D?=
+	=?utf-8?B?TGdaK0diamZ0SFhrbUREbjVFWVVtdlhCbTFSUkJ4VERLNWdyamZoV0Z1WmhC?=
+ =?utf-8?B?QmI0R3FIR1lsUEdjSFlVdHQxTU5wVGZVWjFXKzJSV252SzY2RUVSZVdmL3F6?=
+ =?utf-8?B?S3Z3SDJKRGp6VStDR3NtbnAvVTFRRHlHR1AydEtKN0ZIUnhRZHl6MUVXdDMv?=
+ =?utf-8?B?bWladXR5UHRVdmJJNDhmN2svYklnQlROWURwc0tTcDhPWDRWMkU3UER0NUc5?=
+ =?utf-8?B?ZFhEYjNKeEVSRXptWEdodlRDWGRVMUhiNzJXZExlT1hyNlcwdXBvOUdWRllR?=
+ =?utf-8?B?WnN4blo2SU9YYW9uMWxjczB0b1NobmFKTGo2dnpwcXVMNEdDa0E5RFNwbFRN?=
+ =?utf-8?B?UWlBNDl4L0ZRVDRZdjAzUWt0blMydTBOK1lYNTcxWEhoKzlwV1FPbHZHUWNv?=
+ =?utf-8?B?dkpTV0k4NG5rSGRJbEwzYUNrYW5IbkRzcWlGQXoyMWp4RWUxeStGT3o1eHg1?=
+ =?utf-8?B?YjJ1MXFvYkprNmpNRUlwL240cTgwUGxxclB6aTRyQ2lFYVNFVU81bDhkMUFB?=
+ =?utf-8?B?bVZ4ejhzUjEweXFJbEFqUlIzODZaR0I3RHE3ckpIanA3OUJsVFBsOXJ0QUky?=
+ =?utf-8?B?UlB2azBuYk05b2FUN0FkY3A4QUtJL0NyUTZmUWxWdm01OEU0clJSUGhPTDA1?=
+ =?utf-8?B?bXUxNjFOOWRlTVAvYUNGT0xEemVmNmFUZTVzczVYV2xCYjh3ZWtGTG9YZVJL?=
+ =?utf-8?B?TnB6eGFaT1BaKzNTb0NGMjJ5L1BzeUVkNmJrY1RLelBKazdvVmtWeE5yNkts?=
+ =?utf-8?B?QmZaTXozZXg4d1FxZXBHOUdpb2RoVnJrVXp0OU96RytMNWFlQXY3eHBvVnlX?=
+ =?utf-8?B?L0hpUnJjVkM2NS95TWU0ME9tTmpNa1RMNUhTcFg5bkRReFFjRXZzYk9lNkJp?=
+ =?utf-8?B?Tmc5V3ZkN2MvSG1QOTYzNTluY3JVSW1iTGgrLzdaUFp4UFRuM2NHSDZ1L2M5?=
+ =?utf-8?B?UzI2WUNqZ2t2SHdURVV6SlNEcEs3MnZCVWFSczdPOFRWdWpFVG5rQ0VmaGY2?=
+ =?utf-8?B?cDBwQi83UTNkY1ZnR04zYVVBTnJDaTZvYlJTU2FtcVRFUUM0dWVjWmJEbm9v?=
+ =?utf-8?B?Z2dldmFRWkZpWnYvWGkyZUU1OVRPbHM4bnA5KzVrTjFDenpjdjZwalFvaTIz?=
+ =?utf-8?B?Vmg1ZGFnSC9ORDF1UWQrZWtzNTN2UDQ3MU4wTzZYaFVwZ2FHR2pCdjZ6SmVl?=
+ =?utf-8?B?U1huT1JDMzRDQTlJUnJFZHM0L1ZoKzBoUjZDZjZ6clpxK2lYTncxSFphVGRv?=
+ =?utf-8?B?THM0bnlsbXRMaUoyaEN1Mnk5TW1reVFocGlRdkxCUTJJQ0hpcTAxTk85emY0?=
+ =?utf-8?B?U1dxSEw3dHpjSEk5QnFlN0FPRk9Fb1M3N2V3RkllVE5WUnZxR1lMRXd0MFdI?=
+ =?utf-8?B?MDlSdjZpNjNvWEp1T0VOUm1RSFVrWi9hTzhVcGFlMCtSWjlmbElmcGJqRU1n?=
+ =?utf-8?B?L1ZmNFFiZDdsR2JDeGprK2NZaENCaFZZcERXRm5rZnVEU1BGUnFEVU9CT1Mw?=
+ =?utf-8?B?MkdiN0pDUzF4a2t1Z1g1a2ZFUld4d01jdjcwVTIraGlFdm1PeXFmN25zSXMx?=
+ =?utf-8?B?R0pJemVLRFgveXNGQXNGd2FQWXJhaE5CMExLSTNCUlNGVGZPVG1BWG5XY1hw?=
+ =?utf-8?B?YWtDKzZJejFBZlpDNkFOVWI5Ym0vQ1Z0QWRidlgrQlZHeUpObnA4bTcvUXpk?=
+ =?utf-8?B?a2wweXJRWkhzVDY1MWwvUDFwRVVORTRFS1FyWTFWSC92RzBNWExhSnA4WkY5?=
+ =?utf-8?B?VFJZMVZVRSt4TTJPb0p3RkpicXBBanl5QThHYmNYOHRlSDV5K0hFTHoyTFAy?=
+ =?utf-8?B?anNNbUM2azNNM1JhSTk5M0JKNFBKUndDWlVZWnIzazlMMlRlMVpFK2JBK1NZ?=
+ =?utf-8?B?UFo4akZuMGVXeDVlajQ3dUlkU294UG9ack1lcXpULzUxSzM5ZnlGdytKS2VF?=
+ =?utf-8?Q?LY6HUAo1kA4=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YUVzZThpQmxaQ0F1M0xIQUdSUEc3aW40TkdEVG9mOGNsSk1senlCVGpRUGJj?=
- =?utf-8?B?cWs5QWhQdXdKaXNDL3dWRFEySVJkZ0NzbWVFcnVTM05YUUZXcHpoY0tlUFN5?=
- =?utf-8?B?MFBMb2laT1VmR3R6OTNySFg1eDJ6UHJHYkNHTDBXZ3ByRE5VZHR3UXp6cDRj?=
- =?utf-8?B?Q1lqWWhHU29DZFE3NE1JdHNWSXNSVnJzSW5uNFRoY3Q1eHYvL3Yyc3pBWEFU?=
- =?utf-8?B?YWE2NXozYWRpTVJNTVgxaXZ6ajJMSVo2ZDU3NTluZ0JObmxhY044T3BRM3F6?=
- =?utf-8?B?NFl6Uzk5Mno0SFJ1ZjdZeU4vcnJkMVNXTzdYZnpxMkVCVUJORXUvdWZOczZC?=
- =?utf-8?B?aWZxcVFDYVdXK2RHakM1d3BwemcxSk42Nng1b0F2TWdUdzc5MTNpRk0zVkd6?=
- =?utf-8?B?ZlFpRk1XbVlHZDcwS0VWYVhrR0pZeDdIUGlieHYydC9hV1lvVFhLMi9MUTRV?=
- =?utf-8?B?NlFINjFXVmU4WDdyQmowYXFqWDBtaHltMytNVXVCS2VRa0VFNEFYZ3I3YTBk?=
- =?utf-8?B?NlBxU2dpRnd4WG14SmJDbFhZK2t2YTZ4UWRXUDNiV3NkZWlicThDY1gwQzNV?=
- =?utf-8?B?WVFlODRFU3UvenB1UWJQcENYdHJsOEhUdXRwdWgvWW85cjV1c0hadHVURHVo?=
- =?utf-8?B?KzUxV01iMldzQ1pSTTYwRzg2ejNHMS8zdVczNCt6cFBZdnZuL2RFNUhsK1k4?=
- =?utf-8?B?eFpmYXVDZldLOUM5NGt2V3VNaW9uOXlqL3JrY05ndmM5YTB5QlU3cnkwbmly?=
- =?utf-8?B?RjFRMW0yNHo5Q2xuMjRpVGFnM0RuRzJLZTRUZlZYbUorOGM3d0pkMjkvMURT?=
- =?utf-8?B?YTQvMHN0TEJGMzQxWXBKT1p4VFhBNEdVM3d4SDMwUzVYNXRabXVoYkh0ZGNJ?=
- =?utf-8?B?YjdOSUVqMG13MGxXWmFiUFZGVzRnSnM1eU5DZHFaak5wREhsVytyTzUrajB5?=
- =?utf-8?B?S2JIUDQ2bGZMcENzVEJFMDNhY0ZhVzQ0YklqYTlhYU5ENHVsRmRUdVNhM3lZ?=
- =?utf-8?B?Q3dQdXRHV1hjaE5GZ051MnhlVHN4UzlRZndLcEhQWTNmc3kyWFVBSXh1YS8y?=
- =?utf-8?B?WEFVWGJQSWEyOEh4S1dwNERzNzJWVGgzNEt4T1FtTTFOOWZMaVNnNS9lMTdi?=
- =?utf-8?B?UFIzV1ozNUx0WUNRcmNlWldsaTl3K3pIbVk3dHA5NDJ1cFE1aGQyMU1wd0RL?=
- =?utf-8?B?Nzc2YWQ1SU1KTUVCOXE3SFY5U1pVUjY5NjBaK2Y1VW9sQ0lFRHZkSHpiRlpV?=
- =?utf-8?B?QXVleDJkNXJrOTQrREVGVGs1YW5RclhwNXkvdjljb0kzM1VCUnp1bGNXY3FP?=
- =?utf-8?B?ViszakptYzlKL2MzcTNIQmJPVXhVU1NwSnVSQkFtNlAyWFB2U2xWVWkrY004?=
- =?utf-8?B?cmU1MEZIQ3Z2Y2hEQ0pyNGwwUnRidGo2SWFjZ2Zkc1hNVVdLZEJhOXBFa1N4?=
- =?utf-8?B?UzdJaGNrRnlDelhVRkFpd0FhNzErSWhueEY3bGQ0Q0VwSlZ4RGp2WElJajQ2?=
- =?utf-8?B?YUxKdzJWdlVYMTJnZ0NFemtvWXM3eEF6UHlTWVFIbENVcGV3cFJQM0dSN0tI?=
- =?utf-8?B?N0t2TzNkaldTejMwd1lIbWpYVE1LWGpYRis5Ymo1TVpLcngyWVhOS0pzRlNP?=
- =?utf-8?B?OXpBVUdDQ21ZMmk5NjNseFBQTzNwM3FBb2p3V00yN0o1c0FCMEt5ZWprQ0Vy?=
- =?utf-8?B?OHo2WFhqcmpPRE1pUXJrdEpCZWRLektId1g4NjlLTWlVRGEwVVZ3QzNJc3JF?=
- =?utf-8?B?MjFjdnVvUjkvSmRjamtwaGNpclR0Y0RDaWlZMjF1aHFPU0lrdGxsMi9aT0ZO?=
- =?utf-8?B?ZVMrdzRCZGY1UmVUei9DZnJMZnJucWRiRFVZYUlZbGwrRGs0cXB0QU5pb3Zt?=
- =?utf-8?B?dFdsZEEwYzY0OXpLNGhOdkRqaDdua1BUWXZyVytNcHVicVJiTkVuT2VoTW1k?=
- =?utf-8?B?Yk9iOXhqQjVjUWwxRHZiYm9CNEJvajZiRjd6b1pOTnI4VUlma2FiSXJYb09w?=
- =?utf-8?B?RkZNVVFueDhnMCtUeFNySnJyZmx1c3lnby9qVU5QaG5ZRDhZWk1WWk9uYzZB?=
- =?utf-8?B?M2ZxQ1RlcEwvT0FhcEVSa3dKdkYxaDNCR0pud2Q3UjhTek1KcXNxZU9BakRh?=
- =?utf-8?Q?2/jAxeKEM9W0DEsviFKGu63NC?=
+	=?utf-8?B?bXJCRmhnV2xaMENNdXhoNlNvc1RnVmQraXlmZnNLdHI1WklERWlRTXA0SXQ3?=
+ =?utf-8?B?ZHNhcFF5UVIrWS9oV2RIS01uT05NbjdzQlRyUkJ5MFdWS2c3Y0s0anJVYlNl?=
+ =?utf-8?B?YjlNeUxpeDhpQS9qai9qb3I1T1h6Tmx2WHY0SXpLUUJ1czNCQWdCTVIzNjkv?=
+ =?utf-8?B?NEYzMEhXR25zYUJxVC9kbjgxM2ZUNlhxaUhKN05XVWxzL1Y1QlcvWnYwcnRp?=
+ =?utf-8?B?TVZ2dHdQWUxrNXI2S3lKd09PK1pjS3VPeEx2SDVWRjcrZFVQQ3UyTC9XbFBp?=
+ =?utf-8?B?OVErRklMSUVBcElOQUtJUHBVU2dTelBTSWJrcWJ0M1NORlkxclJScFFMQ21u?=
+ =?utf-8?B?SmlocEVaWnJMbVpoeU9ISkFDVThEUjRRU25Udm1kTzlHczg5dkRZYXhEM0xo?=
+ =?utf-8?B?cDJKZ21XeUtJV3NkRnMzMkhVYi9YVlUwanVhYU9DeWxFd1ZzakdtZ01HMlYy?=
+ =?utf-8?B?OUFqejZPUjBtT25MMFZYR2JNVzZURlJmdEVJQzlla21HWXFCOHhjV2R1eUxy?=
+ =?utf-8?B?aHZ0M0lheC9RV0t1eXRwOXJ6NUFOYkJnR3I3THltc2taWStWdzU1ekMzemg0?=
+ =?utf-8?B?R1JtUXRSblRVTlFvNnREN3BsT3A5bmhneUovbzRTRHV6czdmU0hrZDBocUZa?=
+ =?utf-8?B?dU5KYWgzakRIVTZKU2tVMVMzQWRTbzhnbjVQS3U1WTBhWnd1Y2xhR3QrNmdG?=
+ =?utf-8?B?aVFVTFYyck5LUG04VDdlWGJudlhEQWhLUFBMVmN4b2RYUzRiQnlGeHlnaXJx?=
+ =?utf-8?B?N2xCTldqbFRlMDdqd29zNWZpNzdYUDlMZlYxT0FYTjlCMkNSNllHc0R4R0FX?=
+ =?utf-8?B?UjQ0MENJbGxaWStPODMrZXZndW1wOEpIMkhrK1NmZXFKMWpYdlk0TXBZaFU2?=
+ =?utf-8?B?V0RWL1hXUkZBWjl3bkpPRWZiVW1UVm9WWjBYZTVFczcwTGxHc3R6YUlGeVB5?=
+ =?utf-8?B?NHZMV2JVV09WNXZKNEN0SmkvdTM1SjlYcDJlVDdnVDdhQm01eWlyRWdKWTlu?=
+ =?utf-8?B?Mi9lV2w4OEhtQlRidnB2WTY2YzJoM0Q1UGpMSGRNTG4xNUZPQXJWQWdnUmc0?=
+ =?utf-8?B?M1VkOWNxRkl1SHB4d01EblhsRXB4bFVXMnVFRDJTQ1NESUMzaDQwbmR1bHVy?=
+ =?utf-8?B?a3BuMk9vUnNJdTM2UWNIK0dZd0p5SEhSZWRkc1F1VkpYb3lNRXlCRktncmtJ?=
+ =?utf-8?B?N1B3cis1UFdXZUR1Y1FrckRHK1RHYzUvblhTaUVBU253ZWJHcmc0Z09EZTAr?=
+ =?utf-8?B?UGl5ZjZoZXlCVjFlWGw5OXJJWVJJZWFlN1lPM0YvSjhkQXNFbDNrVWI4VXN4?=
+ =?utf-8?B?T2J5RSt0MDExYzcxR3J6NXI2UVZEZ3NJaDM0WXBid2ZVNS8veGwrSVhkUmFL?=
+ =?utf-8?B?Q3ROcHQvMlM1b0ZDVGtpdXNsVUZaZTVpVUxJS0pIZ0FFaWF2M0dpbHkxeEx4?=
+ =?utf-8?B?ZmI4SEJXMjZBTWNzUVhsWTdubkVYd1l4T0YydDNPbVh6S0E3emFrU1FLeVRJ?=
+ =?utf-8?B?OW1UbExpaFhYa0JiSS85MkZUdkZveWFBbjE0d09TYlBOcmNISGpzaFM4QmJK?=
+ =?utf-8?B?RHJvbTdaREtwTGg4TXF2OEJTLzB4VlJGektrSnFEY0Z0bzQ5QTdUTmd3QWtR?=
+ =?utf-8?B?SEVrdHlXenMrcDZwSisvVFZzL1hrU2VCMVd5K0o1M2JhaWpyanJUbFpVWFVk?=
+ =?utf-8?B?MVBTM0oreHFZZjVIZGtVTEljVUV0czhDR0ZCQUJqY0g4bUtkMnh4S2dUaUJS?=
+ =?utf-8?B?eWd1ME1PR1VwdGEvK2FaQ3E3ZWw2dGRWQ0dXbHdSSHRWTVBKaEtQa0w2SHBV?=
+ =?utf-8?B?bG9OTmpTcTNTT1M3L0lXM1FaQlBRaENtRG40ZlZlamU5NkYyTklab0FzM1p4?=
+ =?utf-8?B?Sno3Rjc4VkhrcnVaMkIwMWVCN3hMQVVjSUFVR3J5QkJaOXg3OWFMN2MvOXBy?=
+ =?utf-8?B?V01hZ2ZYbmhjUEZ3Z1lzRWdwcVBTaFN0czdvNVZZbHVKbURML0p5YzBsWGxW?=
+ =?utf-8?B?S2hEdHNvcmhoZWVCem95TVNwOHdCYjFqVnhxeWZYckJpZ3V2THlyTHpDaEp6?=
+ =?utf-8?B?elBlRE1uWmdtVmw2cUVpQngrVWx1ZnJBSktjK25LcDNZTEtJc2RqcG4rVzRa?=
+ =?utf-8?Q?GiFZJmgJvOmpa/+3P1H0jO9LQ?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3832537a-0d14-4ee7-1850-08dde4404a9c
+X-MS-Exchange-CrossTenant-Network-Message-Id: 128fd81e-8904-470a-fb4a-08dde44dceb5
 X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2025 01:31:33.9027
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2025 03:08:19.1874
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XfFXU6Ge8jwjNMvkSriRMcWUZz0knrE8Vf+tbYGHSPaoZgMhbKW4hi0KAf8R+F1LXmLWyhSVo0qMHNShAY/6Sw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9155
+X-MS-Exchange-CrossTenant-UserPrincipalName: kuwhxiJounU4VcvbEA0fkoz53X4iJpVWIogt1gpubVVRXemd7DM1ZtDHA1XSfNcW54YHXz+V9+FQofAsJWlkKw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7648
 
 
 
@@ -666,18 +666,182 @@ On 16/5/25 15:47, Dan Williams wrote:
 > + * @tsm: context to initialize
 > + */
 > +int pci_tsm_pf0_initialize(struct pci_dev *pdev, struct pci_tsm_pf0 *tsm)
+> +{
+> +	mutex_init(&tsm->lock);
+> +	tsm->doe_mb = pci_find_doe_mailbox(pdev, PCI_VENDOR_ID_PCI_SIG,
+> +					   PCI_DOE_PROTO_CMA);
+> +	if (!tsm->doe_mb) {
+> +		pci_warn(pdev, "TSM init failure, no CMA mailbox\n");
+> +		return -ENODEV;
+> +	}
+> +
+> +	tsm->state = PCI_TSM_INIT;
+> +	pci_tsm_initialize(pdev, &tsm->tsm);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(pci_tsm_pf0_initialize);
+> +
+> +static void __pci_tsm_pf0_destroy(struct pci_tsm_pf0 *tsm)
+> +{
+> +	mutex_destroy(&tsm->lock);
+> +}
+> +
+> +static void tsm_remove(struct pci_tsm *tsm)
+> +{
+> +	if (!tsm)
+> +		return;
+> +	tsm_ops->remove(tsm);
+> +}
+> +DEFINE_FREE(tsm_remove, struct pci_tsm *, if (_T) tsm_remove(_T))
+> +
+> +static void pci_tsm_pf0_init(struct pci_dev *pdev)
+> +{
+> +	bool tee_cap;
+> +
+> +	tee_cap = pdev->devcap & PCI_EXP_DEVCAP_TEE;
+> +
+> +	if (!(pdev->ide_cap || tee_cap))
+> +		return;
+> +
+> +	lockdep_assert_held_write(&pci_tsm_rwsem);
+> +	if (!tsm_ops)
+> +		return;
+> +
+> +	/*
+> +	 * If a physical device has any security capabilities it may be
+> +	 * a candidate to connect with the platform TSM
+> +	 */
+> +	struct pci_tsm *pci_tsm __free(tsm_remove) = tsm_ops->probe(pdev);
+> +
+> +	pci_dbg(pdev, "Device security capabilities detected (%s%s ), TSM %s\n",
+> +		pdev->ide_cap ? " ide" : "", tee_cap ? " tee" : "",
+> +		pci_tsm ? "attach" : "skip");
+> +
+> +	if (!pci_tsm)
+> +		return;
+> +
+> +	pdev->tsm = no_free_ptr(pci_tsm);
+> +	sysfs_update_group(&pdev->dev.kobj, &pci_tsm_auth_attr_group);
+> +	sysfs_update_group(&pdev->dev.kobj, &pci_tsm_pf0_attr_group);
+> +	if (pci_tsm_owner_attr_group)
+> +		sysfs_merge_group(&pdev->dev.kobj, pci_tsm_owner_attr_group);
+> +}
+> +
+> +static void __pci_tsm_init(struct pci_dev *pdev)
+> +{
+> +	enum pci_tsm_type type = pci_tsm_type(pdev);
+> +
+> +	switch (type) {
+> +	case PCI_TSM_PF0:
+> +		pci_tsm_pf0_init(pdev);
+> +		break;
+> +	case PCI_TSM_VIRTFN:
+> +	case PCI_TSM_MFD:
+> +	case PCI_TSM_DOWNSTREAM:
+> +		pdev->tsm = tsm_ops->probe(pdev);
+> +		break;
+> +	case PCI_TSM_INVALID:
+> +	default:
+> +		break;
+> +	}
+> +}
+> +
+> +void pci_tsm_init(struct pci_dev *pdev)
+> +{
+> +	guard(rwsem_write)(&pci_tsm_rwsem);
+> +	__pci_tsm_init(pdev);
+> +}
+> +
+> +int pci_tsm_core_register(const struct pci_tsm_ops *ops, const struct attribute_group *grp)
+> +{
+> +	struct pci_dev *pdev = NULL;
+> +
+> +	if (!ops)
+> +		return 0;
+> +	guard(rwsem_write)(&pci_tsm_rwsem);
+> +	if (tsm_ops)
+> +		return -EBUSY;
+> +	tsm_ops = ops;
+> +	pci_tsm_owner_attr_group = grp;
+> +	for_each_pci_dev(pdev)
+> +		__pci_tsm_init(pdev);
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(pci_tsm_core_register);
+> +
+> +static void pci_tsm_pf0_destroy(struct pci_dev *pdev)
+> +{
+> +	struct pci_tsm_pf0 *tsm = to_pci_tsm_pf0(pdev->tsm);
+> +
+> +	if (tsm->state > PCI_TSM_INIT)
+> +		pci_tsm_disconnect(pdev);
+> +	pdev->tsm = NULL;
+> +	if (pci_tsm_owner_attr_group)
+> +		sysfs_unmerge_group(&pdev->dev.kobj, pci_tsm_owner_attr_group);
+> +	sysfs_update_group(&pdev->dev.kobj, &pci_tsm_pf0_attr_group);
+> +	sysfs_update_group(&pdev->dev.kobj, &pci_tsm_auth_attr_group);
+> +	__pci_tsm_pf0_destroy(tsm);
+> +}
+> +
+> +static void __pci_tsm_destroy(struct pci_dev *pdev)
+> +{
+> +	struct pci_tsm *pci_tsm = pdev->tsm;
+> +
+> +	if (!pci_tsm)
+> +		return;
+> +
+> +	lockdep_assert_held_write(&pci_tsm_rwsem);
+> +
+> +	if (is_pci_tsm_pf0(pdev))
+> +		pci_tsm_pf0_destroy(pdev);
+> +	tsm_ops->remove(pci_tsm);
+> +}
+> +
+> +void pci_tsm_destroy(struct pci_dev *pdev)
+> +{
+> +	guard(rwsem_write)(&pci_tsm_rwsem);
+> +	__pci_tsm_destroy(pdev);
+> +}
+> +
+> +void pci_tsm_core_unregister(const struct pci_tsm_ops *ops)
+> +{
+> +	struct pci_dev *pdev = NULL;
+> +
+> +	if (!ops)
+> +		return;
+> +	guard(rwsem_write)(&pci_tsm_rwsem);
+> +	if (ops != tsm_ops)
+> +		return;
+> +	for_each_pci_dev(pdev)
+> +		__pci_tsm_destroy(pdev);
+> +	tsm_ops = NULL;
+> +}
+> +EXPORT_SYMBOL_GPL(pci_tsm_core_unregister);
+> +
+> +int pci_tsm_doe_transfer(struct pci_dev *pdev, enum pci_doe_proto type,
+> +			 const void *req, size_t req_sz, void *resp,
+> +			 size_t resp_sz)
 
-Here it is: struct pci_tsm_pf0 *tsm  (it is really a "dsm")
-In pci_tsm: struct pci_dev *dsm (alright)
 
-May be we need some distinction between PF0's pci_dev and pci_tsm_pf0 but still these are DSMs.
+This does not belong here yet - no user.
 
-In pci_tsm_pf0 it is: struct pci_tsm tsm, imho "base" is less confusing (I keep catching myself thinking it is a pointer to tsm_dev).
+But if you still want it - "enum pci_doe_proto" should go to pci-doe.h like this https://github.com/AMDESE/linux-kvm/commit/af12dec97ed98a9f365bbbb6925e76c556937d01
 
-"tsm" would be what you call "tsm_dev" which is ok but seeing short "tsm" used as "dsm" or "TSM data for this pci_dev" is confusing.
+> +{
+> +	struct pci_tsm_pf0 *tsm;
+> +
+> +	if (!pdev->tsm || !is_pci_tsm_pf0(pdev))
+> +		return -ENXIO;
+> +
+> +	tsm = to_pci_tsm_pf0(pdev->tsm);
+> +	if (!tsm->doe_mb)
+> +		return -ENXIO;
+> +
+> +	return pci_doe(tsm->doe_mb, PCI_VENDOR_ID_PCI_SIG, type, req, req_sz,
+> +		       resp, resp_sz);
 
-s/pci_tsm/pci_tsm_ctx/ and s/tsm/tsm_ctx/ ? Thanks,
-
+The wrapper does not seem to be very helpful - the platform driver (==TSM ==CCP) which is going to call it already knows it is a DSM and mailboxes are initialized (otherwise the DSM's pci_tsm_ops::probe() would've failed) so it can just call pci_doe() directly. Thanks,
 
 
 -- 
