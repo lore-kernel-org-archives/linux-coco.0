@@ -1,181 +1,69 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B2C30497A;
-	Wed, 27 Aug 2025 06:14:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F5FC133;
+	Wed, 27 Aug 2025 06:51:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756275285; cv=none; b=KUEZiSo4kP9fhXOmaEw79G2j8xZ2PSFGHxIJ1228FiM2WyelQ7NmfFqYqkdbI2FrVDnqDA6daMpISj+/KvZlPwKlsl6m3zBoBmojzgN3YJxQShDLVHDOPzHd6ic8yNV1KrxlvekZtR68bCc+6olR5vVRFqvrVpQrAfG3obsGUQU=
+	t=1756277510; cv=none; b=uBRyoQjPYw2kshUwwCLZO8lYbRwqB1d3SviLAsS2S+83jPjSKnKJlb1Xb0nXvf3cXjkNGyt9vFM+DY/Zq824XGDGaI347jxRi9pOVk8m87pMqGoaEFvPRAOxk3+2QCPVG4Zkw1X8LGdebW/veV6v4S+rrsnULsDZdF39D+h3C/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756275285; c=relaxed/simple;
-	bh=6d8HFXRBXSEpXSDXb2MxjyqwrI8R+nAqsKFEvmj6q5Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tdcRt26zuqkRA6OsIVEYqU1jhysDkZYWG/9JVgyOu6fZchfpXDX+PE81zYuxHargWeRFyh/0BNBLWir90npiIKCscC2oNdcCIo8d0K+OW8CvNpiUDJ9AibDpi8Ncc0VzX7i2h5yFKtzeo3RXD9PKvAkew07BS58qjHWzZ7vK9y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I5nuQvlW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756277510; c=relaxed/simple;
+	bh=HvavW8VkofQnxOqfVQEAgSIGxDbgCX+Dce+BFYqWQ+0=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=kN4YKwUpzMLuUwAeuXz07iiLOgUZtUlBZBp+nsQmtwfyIw02Pf4ItQO22KpKXcGCI6Q5O9Ojp9ONAYG+xMe6MaPlyIpjgEgflrPKTTqmFJjL5mzRz3Hn3dVk8oeFyTH3Xrejokeae8+8lIunMnNLNAkE5Qe9bJjGq1vhzYrd2BE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=lZJUT9iK; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I5nuQvlW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82698C4CEEB;
-	Wed, 27 Aug 2025 06:14:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756275285;
-	bh=6d8HFXRBXSEpXSDXb2MxjyqwrI8R+nAqsKFEvmj6q5Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=I5nuQvlWPAP5lQde/OpfNn4j017r+iO/EGT6JTBFoXGIiaxTFIm5ald0UT/cf3ksp
-	 loD0E+dbO5OKrYUvp7gENha9LgUWFq/SczesDNT+zF2xwVYbXLxANngoMThQK0123S
-	 bJ6oSOw/v071o3ashfeyH9lG/ZC5gJ1tArMCe4qg=
-Date: Wed, 27 Aug 2025 08:14:41 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	bhelgaas@google.com, yilun.xu@linux.intel.com,
-	aneesh.kumar@kernel.org, aik@amd.com,
-	Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Roman Kisel <romank@linux.microsoft.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH 3/7] device core: Introduce confidential device acceptance
-Message-ID: <2025082717-fresh-catty-3394@gregkh>
-References: <20250827035259.1356758-1-dan.j.williams@intel.com>
- <20250827035259.1356758-4-dan.j.williams@intel.com>
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="lZJUT9iK"
+Received: from 8bytes.org (p54921b16.dip0.t-ipconnect.de [84.146.27.22])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id AACFF5376F;
+	Wed, 27 Aug 2025 08:51:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1756277500;
+	bh=HvavW8VkofQnxOqfVQEAgSIGxDbgCX+Dce+BFYqWQ+0=;
+	h=Date:From:To:Subject:From;
+	b=lZJUT9iK/7VJOd6Z7JmglZSNn0ImewOtMmK1oVZ36NcQRftv4xIExrUqJxweTKhYu
+	 AdERbr3cTub5hBK/RSB4PxCE1Z+d45kwp0O9CpYU1ooapZxPA/+e83A1a3zCpBZjPR
+	 ODL7GAN5T9Z0q/DOpfvm5nqV7N6ZTbiFfT6fDxiuqmHMn4XvuU0ChuinmxX4PqFhbB
+	 cM7YNr9XyUFv/cpP1J+ZVYLx4lX6jcsqiPkXHWmkHOgDymY7o7xD1uik65Pu24N1Iq
+	 vCsK/TeKEfE0XxbM+psmjMWq+P6jscPDQwxNuZhBajLqEzfgyJgz4SUSrdUbAYt+E/
+	 vZVk68nfu10tQ==
+Date: Wed, 27 Aug 2025 08:51:39 +0200
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+Subject: SVSM Development Call August 27th, 2025
+Message-ID: <aq6ugh7c7nuqefyfxzr6aa7rdctpgoszbnrgcbd6q5w2a2zvd6@ufp2xxxu4ibi>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250827035259.1356758-4-dan.j.williams@intel.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 26, 2025 at 08:52:55PM -0700, Dan Williams wrote:
-> --- a/drivers/base/base.h
-> +++ b/drivers/base/base.h
-> @@ -98,6 +98,8 @@ struct driver_private {
->   *	the device; typically because it depends on another driver getting
->   *	probed first.
->   * @async_driver - pointer to device driver awaiting probe via async_probe
-> + * @cc_accepted - track the TEE acceptance state of the device for deferred
-> + *	probing, MMIO mapping type, and SWIOTLB bypass for private memory DMA.
->   * @device - pointer back to the struct device that this structure is
->   * associated with.
->   * @dead - This device is currently either in the process of or has been
-> @@ -115,6 +117,9 @@ struct device_private {
->  	struct list_head deferred_probe;
->  	const struct device_driver *async_driver;
->  	char *deferred_probe_reason;
-> +#ifdef CONFIG_CONFIDENTIAL_DEVICES
-> +	bool cc_accepted;
-> +#endif
->  	struct device *device;
->  	u8 dead:1;
+Hi,
 
-Why did you not just use another u8:1 at the end?  You kind of added a
-big hole in the structure that is created for every device :(
+Here is the usual call for agenda items for the this weeks SVSM
+development call.  Please send me any agenda items you have in mind or
+raise them in the meeting.
 
+We will use the LF Zoom instance. Details of the meeting  can be found in our
+governance repository at:
 
->  };
-> diff --git a/drivers/base/coco.c b/drivers/base/coco.c
-> new file mode 100644
-> index 000000000000..97c22d0e9247
-> --- /dev/null
-> +++ b/drivers/base/coco.c
-> @@ -0,0 +1,96 @@
-> +// SPDX-License-Identifier: GPL-2.0
+	https://github.com/coconut-svsm/governance
 
-No copyright at the top?  Bold :)
+The link to the COCONUT-SVSM calendar is:
 
-> +#include <linux/device.h>
-> +#include <linux/dev_printk.h>
-> +#include <linux/lockdep.h>
-> +#include "base.h"
-> +
-> +/*
-> + * Confidential devices implement encrypted + integrity protected MMIO and have
-> + * the ability to issue DMA to encrypted + integrity protected System RAM. The
-> + * device_cc_*() helpers aid buses in setting the acceptance state, drivers in
-> + * preparing and probing the acceptance state, and other kernel subsystem in
-> + * augmenting behavior in the presence of accepted devices (e.g.
-> + * ioremap_encrypted()).
-> + */
-> +
-> +/**
-> + * device_cc_accept(): Mark a device as accepted for TEE operation
+	https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?view=week
 
-What does TEE mean here?  I feel you mix "confidential" and TEE a bunch.
+The meeting will be recorded and the recording eventually published.
 
-> + * @dev: device to accept
-> + *
-> + * Confidential bus drivers use this helper to accept devices at initial
-> + * enumeration, or dynamically one attestation has been performed.
-> + *
-> + * Given that moving a device into confidential / private operation implicates
-> + * any of MMIO mapping attributes, physical address, and IOMMU mappings this
-> + * transition must be done while the device is idle (driver detached).
-> + *
-> + * This is an internal helper for buses not device drivers.
-> + */
-> +int device_cc_accept(struct device *dev)
-> +{
-> +	lockdep_assert_held(&dev->mutex);
-> +
-> +	if (dev->driver)
-> +		return -EBUSY;
-> +	dev->p->cc_accepted = true;
-> +
-> +	return 0;
-> +}
-> +
-> +int device_cc_reject(struct device *dev)
-> +{
-> +	lockdep_assert_held(&dev->mutex);
-> +
-> +	if (dev->driver)
-> +		return -EBUSY;
-> +	dev->p->cc_accepted = false;
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * device_cc_accepted(): Get the TEE operational state of a device
-> + * @dev: device to check
-> + *
-> + * Various subsystems, mm/ioremap, drivers/iommu, drivers/vfio, kernel/dma...
-> + * need to augment their behavior in the presence of confidential devices. This
-> + * simple, deliberately not exported, helper is for those built-in consumers.
-> + *
-> + * This is an internal helper for subsystems not device drivers.
-> + */
-> +bool device_cc_accepted(struct device *dev)
-> +{
-> +	return dev->p->cc_accepted;
-> +}
-> +
-> +/**
-> + * device_cc_probe(): Coordinate dynamic acceptance with a device driver
-> + * @dev: device to defer probing while acceptance pending
-> + *
-> + * Dynamically accepted devices may need a driver to perform initial
-> + * configuration to get the device into a state where it can be accepted. Use
-> + * this helper to exit driver probe at that partial device-init point and log
-> + * this TEE acceptance specific deferral reason.
-> + *
-> + * This is an exported helper for device drivers that need to coordinate device
-> + * configuration state and acceptance.
-> + */
-> +int device_cc_probe(struct device *dev)
-> +{
-> +	/*
-> +	 * See work_on_cpu() in local_pci_probe() for one reason why
-> +	 * lockdep_assert_held() can not be used here.
-> +	 */
-> +	WARN_ON_ONCE(!mutex_is_locked(&dev->mutex));
+See you all there.
 
-If not locked you just keep going?  Why not return an error?
+Regards,
 
-thanks,
-
-greg k-h
+	Jörg
