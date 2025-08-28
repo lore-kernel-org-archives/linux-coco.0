@@ -1,391 +1,222 @@
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2057.outbound.protection.outlook.com [40.107.101.57])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBA32FDC31
-	for <linux-coco@lists.linux.dev>; Thu, 28 Aug 2025 09:53:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756374838; cv=fail; b=VPh8Wt+f66Vjc3V8mAdRadstxYjN0jPS2D5ArVCqiG7OoCG9475UN+2/U+uQDGOSPr+JcVkHZMUGfHW2QlK6YAwz7SFhazUiviKwRiC8SyTDyUxFHcvXBEku0i174toDgYf0RfFSGmRBNjbUaEXzsKvSpcBSryiv9u8JWShowrM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756374838; c=relaxed/simple;
-	bh=GrYN8UzyulM1YnrK0iJf0RyVd7kc0G8Fap0zDhgYP6g=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=DamL04PElNhMVCV/v+yyoFxvpQjIjFqRA3Hdv/LnY413fnHA9TG8VzxW9QHOA8/1nW1YfVSbkvPm1lHehOwtEyjR6YgccTYN3iWzMg9r/j2N+oqVeEfuLnLk2Ab3gCDARoFqNYtuTyNT5XJR6U4e1caSC3FWuxYXvP3TfYw66AQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=XqL/fxrV; arc=fail smtp.client-ip=40.107.101.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F083081C0
+	for <linux-coco@lists.linux.dev>; Thu, 28 Aug 2025 10:06:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756375582; cv=none; b=uYfBILw1PN8xki4Edhr/ixLGnvMR4Z2ppdktyHKsfduCp5WNss8F+AjVyeVK+j5/abRfmnNQccUd90iPYA8B2AuZjYCryWHaDjt0mevUEOMjaC8jv7oCfwvyzy9MDZM3NIEip/041hNytP6wjdnBgFeMJ4p0HnaUjivQW25T6uU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756375582; c=relaxed/simple;
+	bh=ibgMcx0t2DMAR/JWdWYa3j0j+waNK81T6Ne/9aFD2pI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VtPVqS3/byratfgRTZCEjWUTXVHSarTkQoqimi7dmiTUIwKmwrTeGmlO8zOMLL+sOvXalZ0zZH0QuirOioTZim/dCKBExVp2lHUjlmkYG9fsfNmbuGEcVgNuN+ro7hs5zfJwGjuRjwiclZH5RTePfS3Jjjh0BSGIobZLElxwQDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bdu/+Evn; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="XqL/fxrV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LDYU7iHP9LTKOlBrYe71qCy4PjRGinPOjNvy+qkKu7M/vozl1MF/+lfVLe1zzRaNf/PXKFv48+9s5ImTSjlbGG1DCnN4g+Q015odrfVGU1ra07UBk/L4zJrCcIjXCiyaND1tKudL4ZK2acy87q5Bsia10f63lctzU6LX62hmqU7FT1Odk0ZibZ5YNBh3YuhKQX+HwXqH9V9bnz5dvKStSI3AyGoYS+tne0AXlFlA8Vl4cGWCURgqtH9/xl6Nkri6zwPliUt8jE+bgpuX74yUwtVvBvt9VI+8lh7yypAUUElGOyDiTNkXrbCGmjY6tFLkfSKAsjZ30cUcCJz8dhxQJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yR+uQZ3nKIN5+4PE0BjC08y5SgjxCMaOyADdLjUfirA=;
- b=liPBGOxyCZNLQGDmpKBFiKjVJ9vRGTCH02glpL19mz8RErYpxgsmgW7MhtkmHSlzzkWW/NI2yhxQYuinbIq8weTXGtvxjwr7y/H424JTcH/JWLYgbMiQYPQVcjQjPvUN6NbTCVk4s/8Ix+bdSErCf9MMOn8vV0tgjWZS6TESv+msiqHIH0YV9AprIjhWj/TSqPSdFtSA7Z6yVCFIvNz5+pqP2661q4zWijeIPtKrRMLzq5V/qGJQTisUJo/eAnEhg7HDsGJrgfFOIPwLGavMAQ/D7RmdUIN28IgOaZGSeaHm+1hq+FIFwvHAcXfA+UQvCdOPjhB+aQZYWKLl0/H3sQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yR+uQZ3nKIN5+4PE0BjC08y5SgjxCMaOyADdLjUfirA=;
- b=XqL/fxrVdnhLIE3qf+UgboGGc1EXkn/pYWCDId64VffUXuKz8qKunyLI518Y/DH81el8Sc2QR/ldcl0dhOLsyWU9u6Dv2gczCdW5U7NDbihoTuDMEJPZ++Ql2yV/Ia4EbsTzb+KcZCz9ReypaSZ/a2EdNFfvwnCZ8moOLJEalJg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by SJ1PR12MB6217.namprd12.prod.outlook.com (2603:10b6:a03:458::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.21; Thu, 28 Aug
- 2025 09:53:49 +0000
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f%5]) with mapi id 15.20.9052.021; Thu, 28 Aug 2025
- 09:53:49 +0000
-Message-ID: <e680335b-bd40-4311-aa13-58bc2b0b802c@amd.com>
-Date: Thu, 28 Aug 2025 19:53:44 +1000
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 2/7] PCI/TSM: Add pci_tsm_guest_req() for managing TDIs
-To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
- linux-pci@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, bhelgaas@google.com,
- yilun.xu@linux.intel.com, aneesh.kumar@kernel.org
-References: <20250827035259.1356758-1-dan.j.williams@intel.com>
- <20250827035259.1356758-3-dan.j.williams@intel.com>
-From: Alexey Kardashevskiy <aik@amd.com>
-Content-Language: en-US
-In-Reply-To: <20250827035259.1356758-3-dan.j.williams@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SY8P300CA0008.AUSP300.PROD.OUTLOOK.COM
- (2603:10c6:10:29d::28) To CH3PR12MB9194.namprd12.prod.outlook.com
- (2603:10b6:610:19f::7)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bdu/+Evn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756375580;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=AIuF++MW+9cppH2LcogxBtVCMHjKY7lH5B9a+qhZ5nk=;
+	b=bdu/+EvndH9UhyH0ZtPZs5gvfrDagRlK7thkh+a8MgwcZppz6adUqXtsr+qFWlkLn4jvMU
+	EgIidaV4acS53iwtM/B3xPFcDBkU5MLOwg+h7+ghla/2hiMNZlD36tgYRMbIbryjMvFOUQ
+	6e8LfP+6H+j7rqCWUMxQ7bYxZc8Fvp4=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-344-SVRrzYpfP1WYEeWGBjX0NA-1; Thu, 28 Aug 2025 06:06:18 -0400
+X-MC-Unique: SVRrzYpfP1WYEeWGBjX0NA-1
+X-Mimecast-MFC-AGG-ID: SVRrzYpfP1WYEeWGBjX0NA_1756375578
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3c79f0a5ff1so310877f8f.1
+        for <linux-coco@lists.linux.dev>; Thu, 28 Aug 2025 03:06:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756375577; x=1756980377;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AIuF++MW+9cppH2LcogxBtVCMHjKY7lH5B9a+qhZ5nk=;
+        b=YoFsSAzzs69Ki8fbu3v7AV9mRcweWovMLx0qn4NYCbwIputI8LP40tuxb20Ah3W3FK
+         uHhPhZ3IvA02LBK5IQSzXfpnWW37TounPXIOpcyoJmwELjWeovctWd538u3K4OLvaiWD
+         r8CHig+Q18jrgxbKi4/Ed9UmRlsd+cefkXnGjrIUz5BzuafyD0ySMFuDPTkfScNw2fdw
+         QHaL2aNpe4cTFqev0uVTwHpUHvSunpGCibtGdZWuq9lXcATexnxYSFO4PGa9I7J9ikB4
+         CdHxu0oBAjt/cXZvSb+YHbl2fR9Ol1fCHs7K266/xlwfhfPXPD5c3CjTV/CAdmGp/Mwi
+         l93Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU7mZ5Yp8i/1514wWkuxXq8nivXvPS4XOlmYZm2FfdJlsaKg+JmIpZMDGrDI2dfGeAqlUstjDvG7nxZ@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy9p1TL0eVezODzgVy4K121n8qxzusdnRN7hxRYvsHq762MWXY1
+	BTvoPCq9J+Etw/4O6ftBzvo59Iz2vjhyIMEoZxPv+EQhK5/LNAxLyUhRtb5mizWuA5nMdALKGIv
+	4/QPXampz6G/YY//JTeNEnm291FwB5vM4LZKXop+kOJgo6kq/FJZ16nST7cBiBqs=
+X-Gm-Gg: ASbGncvwGD4B1ctgH9vwytFdF1Pbp8+DnEssGJMbxC6jL4fx98PIgUVUVJAGNWOiOz8
+	rOLvhoUj80JK9mcG7EJS70FVJRT017K3dow4UCDUSbMN2CSoiZAaYPMWFL9z19x5etMDnCxodLJ
+	NKt7RCjqHzdtt6p42xZhQ1oeC6svTzTmKq3LYRt6K3xH11boz2LIaFvIJSUkxWDAEMdJkl5kn/Y
+	7EfIEroQ6yG9V/7fchQKv1HZLlc+Ck28ymV354KeqH0i7ztthukPAz2Tu5JzVKi8cZZV76SDTGD
+	vp+aBFd6dxxn/FZuaBWTfUxaZ0hZ6TFBSuxMmfgAp8Uv0Gd3EY6iggw9cu1kfcO9C57ydXfhPCH
+	OIYisMfr32ZrQAoaymTsMr0I9X1uFIllWykbgg9AufZrVqsQocusvP1WhS6crvL5EqgM=
+X-Received: by 2002:a5d:64e1:0:b0:3b6:436:b8ea with SMTP id ffacd0b85a97d-3c5da83c601mr15705089f8f.6.1756375577365;
+        Thu, 28 Aug 2025 03:06:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHv6FDhe/e4+uPIRUaF8D2ckX5J+70BvRLKIj3J1sQm8lva6qxwVAKdzmfSmO9HiwptWSyrXw==
+X-Received: by 2002:a5d:64e1:0:b0:3b6:436:b8ea with SMTP id ffacd0b85a97d-3c5da83c601mr15705026f8f.6.1756375576743;
+        Thu, 28 Aug 2025 03:06:16 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f28:c100:2225:10aa:f247:7b85? (p200300d82f28c100222510aaf2477b85.dip0.t-ipconnect.de. [2003:d8:2f28:c100:2225:10aa:f247:7b85])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c70e4b9f8dsm26199961f8f.9.2025.08.28.03.06.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 Aug 2025 03:06:15 -0700 (PDT)
+Message-ID: <4db9239a-efe3-43b2-b7b4-af497eb9ee28@redhat.com>
+Date: Thu, 28 Aug 2025 12:06:12 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|SJ1PR12MB6217:EE_
-X-MS-Office365-Filtering-Correlation-Id: 072a7ecf-39cc-4bc7-0a04-08dde618c987
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?V0hkdzg3eGh3anFzbDB6R29HVWVvQWM2dTZqaXVRME1BVW8xMmtuVGw3OUkz?=
- =?utf-8?B?T1owdnBEeGlnUVRzV1dHY0RUV2l0WHQ0Vmdjb2NkbGlzZFBsbTRkSjdid1ZN?=
- =?utf-8?B?dTR5eHMxTkJDeWlBVU1Db3FOQW5mTkhyeXV0d083Um50OElEU3A1d3FyTG9D?=
- =?utf-8?B?OFN4cnRWYUplcUlpZEJ5bmhuWnpDODNxWDVWUkNNaHA1c3EydVdHVmtaMWtI?=
- =?utf-8?B?K0dMV21ZWTNyeGg1dGVremNvc2V1TXUzUjY5clFoWDA1Z2c3bE9aU2pHTHFz?=
- =?utf-8?B?YXdKVERscjFZdU1uUm8wYjhBdldOb0VSWW4wS0N5M3RVcWM3MlJLQWNUK2d3?=
- =?utf-8?B?MTdncDNkSjRBZHRXNmJ5MEtNOUhxOUE1Q3BPcUlNZjRHZkRCMUtDUlhRZG52?=
- =?utf-8?B?a0NZaTZ3TmNZN2ZhQVBDWDFCN050ODIvY1pJNFZFQVJhN0xwUjdWMzB5MmMv?=
- =?utf-8?B?cncrZUtzTVQyRlZmdEhmb3NNS3JrQzBWZDg2SE0rOXNWWEI4d01QRnVQckc5?=
- =?utf-8?B?ZGFuTWVUSi9CSVVGTzJ6T3poT3hFWituRVFOTlNSaDFCd3lHSTJyMDE3MXcv?=
- =?utf-8?B?b0t0bzQrWlhISC9DdnN2RHJRbDd2enVnajFnblJFa0VycDUzK2ljcFppQ0gv?=
- =?utf-8?B?dEQrTE5mbUVIM25QN2F1SGNKcHpvL0ZxWEJSeU0yenhFU3E3OHU1VzAyUWo5?=
- =?utf-8?B?U3c5SENPSGh3N3Q5K01Ca3BwRkFQTGJYNDQ3NjNPYytSK09JcEFCVFdqRGRo?=
- =?utf-8?B?MTQwdVEwRFd1ek9IdFBvd3VYNnpMWko0ZTFmWmpjRndRYjR1UVczU3VwVlA4?=
- =?utf-8?B?MWxieXE0cURzdTA3NlF3Sk9XbS9lS3lZL3NaYzc5VzRHOFp2TkZvaDJwVHdV?=
- =?utf-8?B?aXpEK3dHb1JYTlIxcUczUmh1R1l6L0tlenREQUxkSW45MUJmUHI3MHJqMmVC?=
- =?utf-8?B?U1VrTzVKSHh4TTl1cmdvTXNQQ25nR3k3cnoyb3hSTzRHaU5abDA2WEE3cHMx?=
- =?utf-8?B?cytSNHRzRjRIMWhMY3ZZU3Q0aDVrbVlvbHNiMW9sbFQ2L2VPZG43UjJCUXVj?=
- =?utf-8?B?UW0wMkhnL2lrdm4vTmMrSERrQUhJUWxpK2cxRUpHbmYyVm95WVBpZ1E3K2Vr?=
- =?utf-8?B?QXE2Z0ZVMi9LenBxTHloczRDalE2emM2WFAzalFrMm1aOFJpeUltWk5QY1Bx?=
- =?utf-8?B?U29JeU5mZ3FHZk8rYklhTnpVcTVpQkQxSWVoU3c2aDFvU1dtT1BNV3pVZC9q?=
- =?utf-8?B?cmtVOEwwY2lnMkE4L2JqejV4Rk45OXo3S1NkNTVnSFlvZnphUE9Jc0ZKb1gz?=
- =?utf-8?B?MFlJRFVzeE4rOEdFbkhoM01jMURWY3FuNmsyY3ovN0lIMjhkU2RKM2lqNUhi?=
- =?utf-8?B?MXo0M3JoWTRhWmZReTJORTN6eE45Vm9kdXJ2anZLMloyWitQMGFMY1d6NVlM?=
- =?utf-8?B?QWRla3dMWUN6R0FzNWYycXRaWWZrYjRuSHJrKzFKWnpXby95QjNUamlkZkpQ?=
- =?utf-8?B?NE83NHFCa3Z0NEhRMFFSbDVFSCswK09ySHFKTFJuakRFaWlvajVTcHZFSnlW?=
- =?utf-8?B?NFhMOVJQVjFEYUJuTHFBY0FqdSt0aEU4RFZDUUhYRDVHbGpqRUVGRktXSUJV?=
- =?utf-8?B?Yllvb3RLTUtMYlY1a3EvT05FRW5UZWVYVkt3bEM4VURNNFJISEE3Ynk4NjIv?=
- =?utf-8?B?Q2J3a0xmMmFHZWRNSGRrV2FSU293a2lqU1ZNS2I5VXUrT1F4NFhwQTRGY0ZW?=
- =?utf-8?B?dVlWenlPT1ZFaVhXYnhMa3lTQVdLWk15TmIrK21mREJPTnp1bXRlWjlmdjI3?=
- =?utf-8?B?ZDBuVVdGNXBTeGZoY0tjQVVZb1pyRkFzbnFrSzlaUkwxcDJQV0FEOHpSMFZm?=
- =?utf-8?B?cnhWcEdxbXMyYTVEQ00weDBYaGxBMUFnYUhobW5FYTdlVUxaWXZHOVRsRUF5?=
- =?utf-8?Q?GjgFVvCY2jo=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TUpWWHZ0dnNLREdJS2s4WWpha3ZSeGxMUU4vMUVJNXpJU1FyMWsvYnBjY0Qx?=
- =?utf-8?B?aTZJdFdWVzlqSVUzSENDWER6amVtaFJoNWIvVnpOUlQycGgwZDdpcHVJU1Nh?=
- =?utf-8?B?T00ybGpvM1NoczhuK0Q4eWttODNPOElzMjNMNGZtU0RZUjE5a2FaV1pwV3hI?=
- =?utf-8?B?QmplVUp3NjBLVkplVEhxRTlSR2RaWlJhNkdvY080YWVGZldSSE13Z0Q3WFlx?=
- =?utf-8?B?ZFJ6OTNRSDdGZWw1TTc3S2VLUE9FOXU2dXNaZTNyMXdMTDRiZ0VkcjRUVVNQ?=
- =?utf-8?B?R1lGTjNLRndSZDY5MWJKcjRSRTVkZmdUa2R3UWlQV05Qdzk3MW1oanVKZ2lx?=
- =?utf-8?B?Qnp3S1A2OXl1cU9namtNV05VdllJQURBZ0c2cTVlOGpKVVg3L0ROZVBITjdn?=
- =?utf-8?B?ZkZFRGhIb01XbDV2OFJFUG04YThaZHFQVDZtTWtCTEpRUFl1aHVYWlliYjQ2?=
- =?utf-8?B?MEZrYlUxemJYSmh4ZU01RldtaHYzZUU4UWMyVll0UGZqanpCeExzeUhoQ3No?=
- =?utf-8?B?N3lqbHpDc0k4bFVpcitERXRnUlRBL1ZYVTZIWHBUTXY2MjFHd1crUldkREJK?=
- =?utf-8?B?TDV4RjNIRSt4MUxKTmltdWlRaFAyNkU2aWcyZXBCK2tYcTRUcGZ1Tm5HOHVY?=
- =?utf-8?B?WFFxTk8wSzZkM2hyVkxLcDV3QzdReG9Mb3F2MzlYSzJNdEFhRTdUcHpNVmdj?=
- =?utf-8?B?QWk3TDNWRWhITDROSng3aEhjdXpCTlU2K2tsS2lhb0IyTTRmaE5mYkRQL0lE?=
- =?utf-8?B?UE5sTXNQUWVkVmVVZjdCOTlmREJXTUxhcU9QQ2E5QXpCUWJYWEltTVdvWXNU?=
- =?utf-8?B?bkZ0Ym42dnpIT0o0QXQ4a2pXTk5uNHNreDRuclFXc0FSOVlrZ2VFRS9ZaVJC?=
- =?utf-8?B?eG1VWnB5MnB4dDE3RzgwbUJEeW00Qm9DcTJDSDZXRDFlUGl5blVYR2ZxSVls?=
- =?utf-8?B?OUZVVXliR0MvUTNRMEZ4blRxTXNydGdQNHQ1ZW5ieVhickRYWU5pb0dDaitu?=
- =?utf-8?B?bXg3Tjh1NStuNzlBWnVPSjRKY1NOVkY1NjdsaFBkWjFJTXBuWkQwZlJrN2NY?=
- =?utf-8?B?cWg0R083Y0wxUDQxbmhmcm9xaWE2UjZsQ2dMaEFwbGg3WDc0SGphV1l4RElq?=
- =?utf-8?B?N0o3bk5JMTVoalNQeVNRZ1BkWVdCNy8wWWpEN3U0ME9hd3JoeVBhUVFZN3p4?=
- =?utf-8?B?ckFrSzJVL0JoYnRoQTcyUW9ualA3Vi9Lb3M5dVlmUUE1UmlKR0ZpbFN3bnBp?=
- =?utf-8?B?U2RjVnlzNDZLeGlFZ1hWZGVZZVI5c2lic3ZZU2VzUm83Q2ZKVFBTcXpoWUlO?=
- =?utf-8?B?bTltN2FBNGozZ3BGbGJIS1h6amdvTWxiVXN0dkdEZG5Fb1h4TXJJV0JsOGJz?=
- =?utf-8?B?QW5HbEp2MStETHZ0VUxsdGFPNGFUcFAxQ3dTWWZoSGZWdWVPbWNrSWJ6NktP?=
- =?utf-8?B?aE4ybXpITHd4MWpiV3E1MnNudUxWZEo2bFE5UDlmM2EvQ1hMciszRkdHNzdJ?=
- =?utf-8?B?ekpNUkFGMXN2NHZGVEMvRkhOc0JINzZaMDJVMnJad0pocG8yOHlOaXhzTFRC?=
- =?utf-8?B?MHptcmZ4Q1RkdDM0c3Jvb0I3cUxZTzMxUDBtYitQQTkzWlE0cExyNjU3WThM?=
- =?utf-8?B?a2JqQlkwdldWR0pJL2lleHR6TllHMVgyTVh6YlFoQWtEbGtOcGJYUmZobmNy?=
- =?utf-8?B?dkxYeGtTZmRLV2pvRUJ6Rmpnc1J4WG51cHA4K2hLOExiZk5hQ0FFd3htc093?=
- =?utf-8?B?djBhV3RNVmExMmR3TUlBOEtXcmw0dytKK2FPcUtXQ3ZPNUhSOE5mdUFnWjBi?=
- =?utf-8?B?anFUek5GMFE0WXowZDR2UlpvaEhKUStMcEU4dFdiR2hDTDlnRW5TSWtuVkZo?=
- =?utf-8?B?TTI3NXhCRml5bEUxNUxheEpnWUl2cmcxWUVFVU1EanZQSkRhTDZ4OHNrOGN1?=
- =?utf-8?B?WE5XU0dpd0ZOeTdjVXlRR3A2SzJjKzdGS0kwVWFWcEhLTURCU21GYjlscHZm?=
- =?utf-8?B?T0R3ZzAyKzMzbEJOazNDWUM3TGVpaGkrZkZ2eUtFeWtRb0xCcmxlVnI0bE9S?=
- =?utf-8?B?VGllOGdLNXFqM3RtRVhEa2lGKzN2OGhSNWRsZFMzenpDUTFXTGVxV3gxVTNz?=
- =?utf-8?Q?gXIFM08Vdd3Ng3j34dor6VQA6?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 072a7ecf-39cc-4bc7-0a04-08dde618c987
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2025 09:53:49.5101
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JCVEsyDq4wPyuHWC1lkch/1A3yQnmfU63CG/RRPOYxUGW+umWBDuYERqndFJFRd8e1Ug1Nd/sW2QLXrg7ytcpg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6217
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH kvm-next V11 4/7] KVM: guest_memfd: Use guest mem inodes
+ instead of anonymous inodes
+To: Ackerley Tng <ackerleytng@google.com>, Shivank Garg <shivankg@amd.com>,
+ willy@infradead.org, akpm@linux-foundation.org, pbonzini@redhat.com,
+ shuah@kernel.org, seanjc@google.com, vbabka@suse.cz
+Cc: brauner@kernel.org, viro@zeniv.linux.org.uk, dsterba@suse.com,
+ xiang@kernel.org, chao@kernel.org, jaegeuk@kernel.org, clm@fb.com,
+ josef@toxicpanda.com, kent.overstreet@linux.dev, zbestahu@gmail.com,
+ jefflexu@linux.alibaba.com, dhavale@google.com, lihongbo22@huawei.com,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, ziy@nvidia.com, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ tabba@google.com, paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+ pvorel@suse.cz, bfoster@redhat.com, vannapurve@google.com,
+ chao.gao@intel.com, bharata@amd.com, nikunj@amd.com, michael.day@amd.com,
+ shdhiman@amd.com, yan.y.zhao@intel.com, Neeraj.Upadhyay@amd.com,
+ thomas.lendacky@amd.com, michael.roth@amd.com, aik@amd.com, jgg@nvidia.com,
+ kalyazin@amazon.com, peterx@redhat.com, jack@suse.cz, hch@infradead.org,
+ cgzones@googlemail.com, ira.weiny@intel.com, rientjes@google.com,
+ roypat@amazon.co.uk, chao.p.peng@intel.com, amit@infradead.org,
+ ddutile@redhat.com, dan.j.williams@intel.com, ashish.kalra@amd.com,
+ gshan@redhat.com, jgowans@amazon.com, pankaj.gupta@amd.com,
+ papaluri@amd.com, yuzhao@google.com, suzuki.poulose@arm.com,
+ quic_eberman@quicinc.com, linux-bcachefs@vger.kernel.org,
+ linux-btrfs@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+ linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-security-module@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-coco@lists.linux.dev
+References: <20250827175247.83322-2-shivankg@amd.com>
+ <20250827175247.83322-7-shivankg@amd.com> <diqztt1sbd2v.fsf@google.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <diqztt1sbd2v.fsf@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 0xuGzalUUj7eIXKxK03w1BMy5au2UVJuga4_l-xCG50_1756375578
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-
-
-On 27/8/25 13:52, Dan Williams wrote:
-> A PCIe device function interface assigned to a TVM is a TEE Device
-> Interface (TDI). A TDI instantiated by pci_tsm_bind() needs additional
-> steps to be accepted by a TVM and transitioned to the RUN state.
+On 28.08.25 00:43, Ackerley Tng wrote:
+> Shivank Garg <shivankg@amd.com> writes:
 > 
-> pci_tsm_guest_req() is a channel for the guest to request TDISP collateral,
-> like Device Interface Reports, and effect TDISP state changes, like
-> LOCKED->RUN transititions. Similar to IDE establishment and pci_tsm_bind(),
-
-s/transititions/transitions/
-
-> these are long running operations involving SPDM message passing via the
-> DOE mailbox, i.e. another 'struct pci_tsm_link_ops' operation.
+>>
+>> [...snip...]
+>>
 > 
-> The path for a guest to invoke pci_tsm_guest_request() is either via a kvm
-> handle_exit() or an ioctl() when an exit reason is serviced by a userspace
-> VMM.
+> I meant to send this to you before this version went out but you were
+> too quick!
 > 
-> Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->   drivers/pci/tsm.c       | 60 +++++++++++++++++++++++++++++++++++++++++
->   include/linux/pci-tsm.h | 55 +++++++++++++++++++++++++++++++++++--
->   2 files changed, 113 insertions(+), 2 deletions(-)
+> Here's a new version, Fuad and I reviewed this again internally. The
+> changes are:
 > 
-> diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
-> index 302a974f3632..3143558373e3 100644
-> --- a/drivers/pci/tsm.c
-> +++ b/drivers/pci/tsm.c
-> @@ -338,6 +338,66 @@ int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u32 tdi_id)
->   }
->   EXPORT_SYMBOL_GPL(pci_tsm_bind);
->   
-> +/**
-> + * pci_tsm_guest_req() - helper to marshal guest requests to the TSM driver
-> + * @pdev: @pdev representing a bound tdi
-> + * @scope: security model scope for the TVM request
-> + * @req_in: Input payload forwarded from the guest
-> + * @in_len: Length of @req_in
-> + * @out_len: Output length of the returned response payload
-> + *
-> + * This is a common entry point for KVM service handlers in userspace responding
+> + Sort linux/pseudo_fs.h after linux/pagemap.h (alphabetical)
+> + Don't set MNT_NOEXEC on the mount, since SB_I_NOEXEC was already set
+>    on the superblock
+> + Rename kvm_gmem_inode_make_secure_inode() to kvm_gmem_inode_create()
+>      + Emphasizes that there is a creation in this function
+>      + Remove "secure" from the function name to remove confusion that
+>        there may be a "non-secure" version
+> + In kvm_gmem_inode_create_getfile()'s error path, return ERR_PTR(err)
+>    directly instead of having a goto
+> 
+> 
+>  From ada9814b216eac129ed44dffd3acf76fce2cc08a Mon Sep 17 00:00:00 2001
+> From: Ackerley Tng <ackerleytng@google.com>
+> Date: Sun, 13 Jul 2025 17:43:35 +0000
+> Subject: [PATCH] KVM: guest_memfd: Use guest mem inodes instead of anonymous
+>   inodes
+> 
+> guest_memfd's inode represents memory the guest_memfd is
+> providing. guest_memfd's file represents a struct kvm's view of that
+> memory.
+> 
+> Using a custom inode allows customization of the inode teardown
+> process via callbacks. For example, ->evict_inode() allows
+> customization of the truncation process on file close, and
+> ->destroy_inode() and ->free_inode() allow customization of the inode
+> freeing process.
+> 
+> Customizing the truncation process allows flexibility in management of
+> guest_memfd memory and customization of the inode freeing process
+> allows proper cleanup of memory metadata stored on the inode.
+> 
+> Memory metadata is more appropriately stored on the inode (as opposed
+> to the file), since the metadata is for the memory and is not unique
+> to a specific binding and struct kvm.
+> 
+> Co-developed-by: Fuad Tabba <tabba@google.com>
+> Signed-off-by: Fuad Tabba <tabba@google.com>
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-
-KVM will have to know about the host's pci_dev which it does not. I'd postpone mentioning KVM here till it learns about pci_dev, if.
-
-
-> + * to TDI information or state change requests. The scope parameter limits
-> + * requests to TDISP state management, or limited debug.
-> + *
-> + * Returns a pointer to the response payload on success, @req_in if there is no
-> + * response to a successful request, or an ERR_PTR() on failure.
-> + *
-> + * Caller is responsible for kvfree() on the result when @ret != @req_in and
-> + * !IS_ERR_OR_NULL(@ret).
-
-Uff... So the caller (which is IOMMUFD vdevice) has to check and decide on whether to kvfree. ioctl() is likely to have 2 buffers anyway and preallocate the response buffer, why make IOMMUFD care about this?
-
-> + *
-> + * Context: Caller is responsible for calling this within the pci_tsm_bind()
-> + * state of the TDI.
-> + */
-> +void *pci_tsm_guest_req(struct pci_dev *pdev, enum pci_tsm_req_scope scope,
-> +			void *req_in, size_t in_len, size_t *out_len)
-> +{
-> +	const struct pci_tsm_ops *ops;
-> +	struct pci_tsm_pf0 *tsm_pf0;
-> +	struct pci_tdi *tdi;
-> +	int rc;
-> +
-> +	/*
-> +	 * Forbid requests that are not directly related to TDISP
-> +	 * operations
-> +	 */
-> +	if (scope > PCI_TSM_REQ_STATE_CHANGE)
-> +		return ERR_PTR(-EINVAL);
-> +
-> +	ACQUIRE(rwsem_read_intr, lock)(&pci_tsm_rwsem);
-> +	if ((rc = ACQUIRE_ERR(rwsem_read_intr, &lock)))
-
-Why double braces?
-
-> +		return ERR_PTR(rc);
-> +
-> +	if (!pdev->tsm)
-> +		return ERR_PTR(-ENXIO);
-> +
-> +	ops = pdev->tsm->ops;
-> +
-> +	if (!is_link_tsm(ops->owner))
-> +		return ERR_PTR(-ENXIO);
-> +
-> +	tsm_pf0 = to_pci_tsm_pf0(pdev->tsm);
-> +	ACQUIRE(mutex_intr, ops_lock)(&tsm_pf0->lock);
-> +	if ((rc = ACQUIRE_ERR(mutex_intr, &ops_lock)))
-> +		return ERR_PTR(rc);
-> +
-> +	tdi = pdev->tsm->tdi;
-> +	if (!tdi)
-> +		return ERR_PTR(-ENXIO);
-> +	return ops->guest_req(pdev, scope, req_in, in_len, out_len);
-> +}
-> +EXPORT_SYMBOL_GPL(pci_tsm_guest_req);
-> +
->   static void pci_tsm_unbind_all(struct pci_dev *pdev)
->   {
->   	pci_tsm_walk_fns_reverse(pdev, __pci_tsm_unbind, NULL);
-> diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
-> index 337b566adfc5..5b61aac2e9f7 100644
-> --- a/include/linux/pci-tsm.h
-> +++ b/include/linux/pci-tsm.h
-> @@ -33,14 +33,15 @@ struct pci_tsm_ops {
->   	 * @disconnect: teardown the secure link
->   	 * @bind: bind a TDI in preparation for it to be accepted by a TVM
->   	 * @unbind: remove a TDI from secure operation with a TVM
-> +	 * @guest_req: marshal TVM information and state change requests
->   	 *
->   	 * Context: @probe, @remove, @connect, and @disconnect run under
->   	 * pci_tsm_rwsem held for write to sync with TSM unregistration and
->   	 * mutual exclusion of @connect and @disconnect. @connect and
->   	 * @disconnect additionally run under the DSM lock (struct
->   	 * pci_tsm_pf0::lock) as well as @probe and @remove of the subfunctions.
-> -	 * @bind and @unbind run under pci_tsm_rwsem held for read and the DSM
-> -	 * lock.
-> +	 * @bind, @unbind, and @guest_req run under pci_tsm_rwsem held for read
-> +	 * and the DSM lock.
->   	 */
->   	struct_group_tagged(pci_tsm_link_ops, link_ops,
->   		struct pci_tsm *(*probe)(struct pci_dev *pdev);
-> @@ -50,6 +51,9 @@ struct pci_tsm_ops {
->   		struct pci_tdi *(*bind)(struct pci_dev *pdev,
->   					struct kvm *kvm, u32 tdi_id);
->   		void (*unbind)(struct pci_tdi *tdi);
-> +		void *(*guest_req)(struct pci_dev *pdev,
-
-We have pdev in pci_tdi, pci_tsm and pci_tsm_pf0 (via .base), using these in pci_tsm_ops will document better which call is allowed on what entity - DSM or TDI. Or may be ditch those back "pdev" references?
-
-
-> +				   enum pci_tsm_req_scope scope, void *req_in,
-> +				   size_t in_len, size_t *out_len);
-
-
-Out of curiosity (probably could go to the commit log) - for what kind of request and on which platform we do not know the response size in advance? On AMD, the request and response sizes are fixed.
-
-And the userspace (which makes such request) will allocate some memory before calling such ioctl(), can "void *req_in" be "void __user *reg_in"? The CCP driver is going to copy the request and response anyway as there are RMP rules about them.
-
-And what is wrong with returning "int" as an error vs ERR_PTR(), is there a recommendation for this, or something?
-
-
->   	);
->   
->   	/*
-> @@ -143,6 +147,44 @@ static inline bool is_pci_tsm_pf0(struct pci_dev *pdev)
->   	return PCI_FUNC(pdev->devfn) == 0;
->   }
->   
-> +/**
-> + * enum pci_tsm_req_scope - Scope of guest requests to be validated by TSM
-> + *
-> + * Guest requests are a transport for a TVM to communicate with a TSM + DSM for
-> + * a given TDI. A TSM driver is responsible for maintaining the kernel security
-> + * model and limit commands that may affect the host, or are otherwise outside
-> + * the typical TDISP operational model.
-> + */
-> +enum pci_tsm_req_scope {
-> +	/**
-> +	 * @PCI_TSM_REQ_INFO: Read-only, without side effects, request for
-> +	 * typical TDISP collateral information like Device Interface Reports.
-> +	 * No device secrets are permitted, and no device state is changed.
-> +	 */
-> +	PCI_TSM_REQ_INFO = 0,
-> +	/**
-> +	 * @PCI_TSM_REQ_STATE_CHANGE: Request to change the TDISP state from
-> +	 * UNLOCKED->LOCKED, LOCKED->RUN. No any other device state,
-> +	 * configuration, or data change is permitted.
-> +	 */
-> +	PCI_TSM_REQ_STATE_CHANGE = 1,
-> +	/**
-> +	 * @PCI_TSM_REQ_DEBUG_READ: Read-only request for debug information
-> +	 *
-> +	 * A method to facilitate TVM information retrieval outside of typical
-> +	 * TDISP operational requirements. No device secrets are permitted.
-> +	 */
-> +	PCI_TSM_REQ_DEBUG_READ = 2,
-> +	/**
-> +	 * @PCI_TSM_REQ_DEBUG_WRITE: Device state changes for debug purposes
-> +	 *
-> +	 * The request may affect the operational state of the device outside of
-> +	 * the TDISP operational model. If allowed, requires CAP_SYS_RAW_IO, and
-> +	 * will taint the kernel.
-> +	 */
-> +	PCI_TSM_REQ_DEBUG_WRITE = 3,
-
-
-What is going to enforce this and how? It is a guest request, ideally encrypted, and the host does not really have to know the nature of the request (if the guest wants something from the host to do in addition to what is it asking the TSM to do - then GHCB is for that). And 3 of 4 AMD TIO requests (STATE_CHANGE is a host request and no plan for DEBUG) do not fit in any category from the above anyway. imho we do not need it at least now. Thanks,
-
-
-
-> +};
-> +
->   #ifdef CONFIG_PCI_TSM
->   struct tsm_dev;
->   int pci_tsm_register(struct tsm_dev *tsm_dev);
-> @@ -154,6 +196,8 @@ int pci_tsm_pf0_constructor(struct pci_dev *pdev, struct pci_tsm_pf0 *tsm,
->   void pci_tsm_pf0_destructor(struct pci_tsm_pf0 *tsm);
->   int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u32 tdi_id);
->   void pci_tsm_unbind(struct pci_dev *pdev);
-> +void *pci_tsm_guest_req(struct pci_dev *pdev, enum pci_tsm_req_scope scope,
-> +			void *req_in, size_t in_len, size_t *out_len);
->   #else
->   static inline int pci_tsm_register(struct tsm_dev *tsm_dev)
->   {
-> @@ -169,5 +213,12 @@ static inline int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u64 tdi_id
->   static inline void pci_tsm_unbind(struct pci_dev *pdev)
->   {
->   }
-> +static inline void *pci_tsm_guest_req(struct pci_dev *pdev,
-> +				      enum pci_tsm_req_scope scope,
-> +				      void *req_in, size_t in_len,
-> +				      size_t *out_len)
-> +{
-> +	return ERR_PTR(-ENXIO);
-> +}
->   #endif
->   #endif /*__PCI_TSM_H */
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
-Alexey
+Cheers
+
+David / dhildenb
 
