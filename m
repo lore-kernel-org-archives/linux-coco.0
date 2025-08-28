@@ -1,102 +1,98 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF30027CCC4
-	for <linux-coco@lists.linux.dev>; Thu, 28 Aug 2025 20:08:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12BD8279DD6
+	for <linux-coco@lists.linux.dev>; Thu, 28 Aug 2025 21:38:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756411684; cv=fail; b=kycGGONPKB8P2E19j63sQz0KjwOhamzWhKu4CYVNDh0Ltd5qeMM0fRrryKTRdekqMLi7EqsfytIMbpGxZVPElrmD6/ysOJIzAlboXZLMjJCSNM+b4Sn33V6CZwBzKuxYFAXmOEpqErtgBqIx+WwY4rqFoK1MgB6HYnj8misRX+M=
+	t=1756417112; cv=fail; b=UUnM7eIIpm8qXjSLvJk6lo4va5UMMp2RQtFCUi49WdtD82VW92ETS9DFI2LH91kIIB7J80xUpy/RXm75DKrO31uJHirlsge+I78eV3UDXpVng+PIMbCKOwWMpI/2cEQv4zWAX7qRBj0CVOFtub98KuXLSnG3/0U5DCA5rj7/VMs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756411684; c=relaxed/simple;
-	bh=j/j+TASvvFn+ihezwOQVOhnzXnniLQwxqRsY2bStXck=;
+	s=arc-20240116; t=1756417112; c=relaxed/simple;
+	bh=gdlgLUEflSKwsJitYt5GMgH4bUxW1nimMjFOHokqL6M=;
 	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
-	 Content-Type:MIME-Version; b=Q0/CfXVpv1UkBeAnDOrgVxCXEX4wbPaFmnlJmQCYCe6Cx/kQdNxuDRhem71/UrATnhZ2EWtg6FVdCFWrwhY0UsO59bx/T1uH79PImAzVMwcOA6IRCmLup0EPj1ZmwuXw71/d/JC/M+R83lua2qpBeAJbcOi4y2dydPWXj7h0160=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZNZr38tG; arc=fail smtp.client-ip=198.175.65.20
+	 Content-Type:MIME-Version; b=gipqYHtr2xhFkIyK26sr6d+5s5fxw4sUKCyg5CNCLxYO1GgOtO5K3vVnMyNkpyJUy6SCAS50lZzAU5wH+1IG524KHkih0VIaBqfdiL8lmHSlVkNtoj/4tJ9Zr9UiwkIlGZ7a1ET+sN4m+KxWGNaxZyDPg5Rdqhh2/Cxpekla0Xo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lVJJ2AeV; arc=fail smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZNZr38tG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lVJJ2AeV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756411682; x=1787947682;
+  t=1756417110; x=1787953110;
   h=from:date:to:cc:message-id:in-reply-to:references:
    subject:content-transfer-encoding:mime-version;
-  bh=j/j+TASvvFn+ihezwOQVOhnzXnniLQwxqRsY2bStXck=;
-  b=ZNZr38tGcIHGW3CGRMOlKUqsZAgTn5Vz3OvtzUoBsIiDXZKk9L6NfQIS
-   5852h6onW+WQWsPSUZm3RcEc7bK6mtWcfXn3gC+j/6jS9nb1ppjWWjU6r
-   FBR4Q32yCEjeL0RWbpASmLScduBtW2gVlGGA87vy1QEmKviiQ2LWtkE+1
-   jgYp9M8PTu5+3saMBpuD1Gr2LUiAFtZBxN33HyLz5vbEPDfk5ZK6K1QzA
-   ervTAaCwM4eKvWK/rryK1WSlvuAIXOtYuM/Z0oWFMPDfRFn/TWQfSerMv
-   x3IitoplcJ6w0IsIT9m8VJy8T6/CZZjdEY6PxeStMyfZYFEmJDfLqZW1w
-   g==;
-X-CSE-ConnectionGUID: Vkso79rxSBGV4lgFlgNrrw==
-X-CSE-MsgGUID: E6zjsxkaQoy0FDm6kA9WsQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11536"; a="58402052"
+  bh=gdlgLUEflSKwsJitYt5GMgH4bUxW1nimMjFOHokqL6M=;
+  b=lVJJ2AeVH5GJPqMZcDGa3ITI/XO87P8H0WMiqpFZHrzpL3me410mFg7u
+   +CmNQv04A+V336k8jbRevvB17QsvasT3JEyCbU8yE4QbWgvz0tIa1fdSl
+   NceuQpyagL7RgzEOJQOCfC577qCAfmlVsiJUF/q4jW0PQUb9Nu6xbs3RN
+   /c3P6/pjt2ISUBHN69+0CjOqdqZUhI9g38GSRIZUg5hds+sJheusVqAmK
+   KHLsK2d7cXqzA5Jg5baSgNkRE8oTttbsVOvtcp9SF/NifDsLfl1BMl/YO
+   C4YbayOubMgvR0ydedzgYjKcDK57hS7Cs6C7Ib9Y8DnjndpMCqfqR+m0N
+   Q==;
+X-CSE-ConnectionGUID: XS8Dk430QfuufJQJxqrRmw==
+X-CSE-MsgGUID: ZUxHbMyBRjCEpTjx44j0sQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11536"; a="70141099"
 X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; 
-   d="scan'208";a="58402052"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2025 13:07:59 -0700
-X-CSE-ConnectionGUID: xVbf9vnMSVCCsOCueDvUZA==
-X-CSE-MsgGUID: WBMV+agnR6yI/uB1sa45AA==
+   d="scan'208";a="70141099"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2025 14:38:29 -0700
+X-CSE-ConnectionGUID: xsIxvetmRrSyRctuVzXp/A==
+X-CSE-MsgGUID: vK7MoaK5QveX/wJ5IcgSAw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; 
-   d="scan'208";a="170107184"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2025 13:07:58 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+   d="scan'208";a="170388902"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2025 14:38:29 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 28 Aug 2025 13:07:57 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ 15.2.2562.17; Thu, 28 Aug 2025 14:38:28 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Thu, 28 Aug 2025 13:07:57 -0700
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (40.107.101.83)
- by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ 15.2.2562.17 via Frontend Transport; Thu, 28 Aug 2025 14:38:28 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (40.107.236.75)
+ by edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 28 Aug 2025 13:07:57 -0700
+ 15.2.2562.17; Thu, 28 Aug 2025 14:38:26 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hIBAvk61QTiAt+GrBHPo/yAG/0R5KxDsd2zVPjN8s4b/OVzXd4we1TFxiyiPpR/U3//e94U+x4eyCofpPsEl5xZTYRM9RB1FI8imCFtpIUr7TEFU7GX0mnv4FY9hBX9R4LF3FxlySSY7jkTWJIRngufh5GSL0pmpDFHkE6C6rpc6bF/eHnbgumiF9DiIaDUgMysVgDfW0UesbPOC/5OJ7hVRxQqKH4xfGMUxcrJKZp8wQXDLb2+Ua+KUbtkciN4DfOK3NVN07wXaIU4dJtA6LsMuVLaU49pFunMk/lbQ5NSFTJCbSSixvE8RAaFMv3i/0NZTG/VCfNBgKB92937HVA==
+ b=HYWuylxyZiYPUldsbTKl0zYmWXwQSQwMO162pq5PWhDBBjpBHTNvMM3fBOL3pvqjRxiD3thZB3TrsaLWR+Miu4NKb7wR1XPQz7DazPqou/YY0fOOVc3hmAExu+eiGHPUQe7SibCEXGR9S1oSxqaM3vNH7T1o/MfpWPgIWLpOl5S0+KabkbK896oTlTb6zb6SvC3072/5o8H3X3MqqIjIpOg6QARlbtcNYgGM2rN2/gnAbOfsd0YtyUM5pkeYNl4ibTJ2TyhmG44Vf8+fmDluuqUEBBDBaAxz/qxGznf8kLzIpV6Y2Tcv8AZxEAutZ1M7Y9HNz9lmb/1URx7r03KRwg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fTo6/cA5XWeRB/dDUcjMF6INwD0Tci7p6L7bX6HK720=;
- b=pwXbMMSi3QPbO53atilNYmL4W8PyOCpfLwRgZylbOof6ViWIV/wUa3xl5phfGLl7NPIk75KYHm+AERUXzG6R1FacB8O7Tx6US1ZOUPSliTveBcrbqSAvpDDXDWDWip6lQOYs449oco3Poy7GC7VjZZRq1O0FNwTECap+feKrig2OHM7tqGmx3+FGjIS+ogdSxZhLlDC8jyJZ8WyNtv+2vzQT+pzrcpefDf3GdOTohcWkBckUD4e5fDuKP7/vcYMIJwk4DZOgrBSOe3M+39b1AoBajXRxvwKU0rkxEhRbKSJeV8cocgOm2ZQ5Qz1AsxIfaQH6PQQiqJDu5ORIMELgYA==
+ bh=JRwzYEW6gyeFHHhGeF4NLkBh7rrvbiNDrCYQ26yZi3s=;
+ b=Cqlazzrmu3gbAcMclK1P+nqKfArIaKYtBQxdxjoNbZFqrmc3MrzkhfQC9wSTTxfJRjTs5fLMP5qgPECBWOvdfWtU1WLAeFIpzLHVjUKq1P/k6l/Br4DqG1BOkgCugJ4xxFua+Xkr7FSu+0L0Q+LQJsDXrDZoK796zqo3IskqJqD4F9BfmKR/W3AvXXFZK+PsMxK3Vdg2K3O0Q2aR/4xe3ZENj83xihVJ4CSdd4vk4c/2pV85bMy6Iq41lEWRdRmnmGiX53ev/JSbDEmFR02TZxuoc8nFyGAkCcht8JLMHgUmNuRmmPC6jHMvrZx00HZk7aF+o/EPezxGfm1P/6F9nw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by DS4PPFA92F35354.namprd11.prod.outlook.com (2603:10b6:f:fc02::44) with
+ by SA2PR11MB5097.namprd11.prod.outlook.com (2603:10b6:806:11a::24) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.24; Thu, 28 Aug
- 2025 20:07:52 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.20; Thu, 28 Aug
+ 2025 21:38:15 +0000
 Received: from PH8PR11MB8107.namprd11.prod.outlook.com
  ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
  ([fe80::6b05:74cf:a304:ecd8%2]) with mapi id 15.20.9073.017; Thu, 28 Aug 2025
- 20:07:52 +0000
+ 21:38:15 +0000
 From: <dan.j.williams@intel.com>
-Date: Thu, 28 Aug 2025 13:07:50 -0700
-To: Greg KH <gregkh@linuxfoundation.org>, Dan Williams
-	<dan.j.williams@intel.com>
+Date: Thu, 28 Aug 2025 14:38:14 -0700
+To: Jason Gunthorpe <jgg@nvidia.com>, Dan Williams <dan.j.williams@intel.com>
 CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>,
-	<bhelgaas@google.com>, <yilun.xu@linux.intel.com>, <aneesh.kumar@kernel.org>,
-	<aik@amd.com>, Christoph Hellwig <hch@lst.de>, Jason Gunthorpe
-	<jgg@ziepe.ca>, Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy
-	<robin.murphy@arm.com>, Roman Kisel <romank@linux.microsoft.com>, "Samuel
- Ortiz" <sameo@rivosinc.com>, "Rafael J. Wysocki" <rafael@kernel.org>, "Danilo
- Krummrich" <dakr@kernel.org>
-Message-ID: <68b0b7169cb1b_75db1001b@dwillia2-mobl4.notmuch>
-In-Reply-To: <2025082717-fresh-catty-3394@gregkh>
+	<gregkh@linuxfoundation.org>, <bhelgaas@google.com>,
+	<yilun.xu@linux.intel.com>, <aneesh.kumar@kernel.org>, <aik@amd.com>
+Message-ID: <68b0cc4632fc5_75db10074@dwillia2-mobl4.notmuch>
+In-Reply-To: <20250827123924.GA2186489@nvidia.com>
 References: <20250827035259.1356758-1-dan.j.williams@intel.com>
- <20250827035259.1356758-4-dan.j.williams@intel.com>
- <2025082717-fresh-catty-3394@gregkh>
-Subject: Re: [PATCH 3/7] device core: Introduce confidential device acceptance
+ <20250827035259.1356758-7-dan.j.williams@intel.com>
+ <20250827123924.GA2186489@nvidia.com>
+Subject: Re: [PATCH 6/7] samples/devsec: Introduce a "Device Security TSM"
+ sample driver
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR03CA0030.namprd03.prod.outlook.com
- (2603:10b6:a03:33a::35) To PH8PR11MB8107.namprd11.prod.outlook.com
+X-ClientProxiedBy: SJ0PR13CA0023.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c0::28) To PH8PR11MB8107.namprd11.prod.outlook.com
  (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -105,205 +101,205 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DS4PPFA92F35354:EE_
-X-MS-Office365-Filtering-Correlation-Id: c9929c55-4399-469e-f854-08dde66e9197
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SA2PR11MB5097:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9bd75dad-9409-4d95-7402-08dde67b321c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?OWFoUkczVjlzeUJVNWowMGc2aSswdlF6bDByR3hyR0daOWszWmNDeVZXN21W?=
- =?utf-8?B?SjJDTE9JVXQ1cXBwbFRFcVhPUGp1WGxLa0JYVFpnYjhxdGREZWJTaVdxbnh6?=
- =?utf-8?B?dVdXNUJvS21Dc29WZ1dJcmJaQ1NLRnVYMTBHUU9PYzBrRVA0aUdNYUNCM3lW?=
- =?utf-8?B?RXYwN2toVll0NzRFVDd5L09kaGE5MS9wUk5mOGdweTNHUUhSNFRCMlBtWjJj?=
- =?utf-8?B?ZHExY1loaDMwWWlWWExYb2g4eVRYb0RKeFZ4TFFhYjRZMGJQeTl5ZGlVd245?=
- =?utf-8?B?NkJxVGE3OFU2cFdzVG5JdTBYOFViKzJKNUk5ZnVFZlNjK0xRaG5ma0JFS0lw?=
- =?utf-8?B?dGkwT3RBcW5pamtOelpsZ0piOUczQ0tmQzUreUJiVXpXME9xNXpjL1N4VXdi?=
- =?utf-8?B?M044cUllSDY1aXRWZmJ3dVU0VzF6dWxxRHZFdCt0dUpKbjFkWnl3WkowQkg5?=
- =?utf-8?B?U1NOMThvQ3VaSHZTUXRpUm1tOFN1cThqVy94RFhEVDJnK09MVEVkbHU2bWNx?=
- =?utf-8?B?bWZsSkNVS1VqaWpBZ3VIeWlHUTNMMXAzVDJLVFZRTmxGdWExVEd3Qkh6ZFBr?=
- =?utf-8?B?MGl6U2RJUmY4NDB2Z0dHb0kxbFlXM25xVkovQ1lsT3pNWE1McGVRVHcvR3hO?=
- =?utf-8?B?b1hNczVlWGxkNGROSC8vbzNKdHJ1M2Q4NkhhZW12d3BuQjM0Mko2QzFaYnd1?=
- =?utf-8?B?YnkrNXZLRWd0OTdOMStYV2U4M3I3V0h6Z09RY2tyK2xGTWJ3alZWbVFIRmJr?=
- =?utf-8?B?amdqenNEV01iTkRXUGRTS0ZDQ3lUNzBTbld4R2s0ZFYrZzJrblFDODBrUlAv?=
- =?utf-8?B?dmNhVTQ2YzRJN21qV2k2Z09sVUs5RDRuTUJzNUlsWVNFY3FObjdMdDE2anh5?=
- =?utf-8?B?ZHhyTDNvbDFBMmpHNEpqak9WUWtaanYya1JQWTFGbjZFK3VNR1R0eGxOcjNE?=
- =?utf-8?B?MXFwMVpNby9jdTdmN1JwRTdRZ0tUVWFqdWdXVTJPY1hXcjIyc3pwQlArcDRq?=
- =?utf-8?B?TzUzN3VmSk1JR213LzVqdlVpWnh6cHF0K3Y4NGNqRHB4M0xWUjk4MWpibjM0?=
- =?utf-8?B?ZnhoblFUZVByelR3T0pRMWNPeWVKeE5VaUV3N2h3QnU5NlVSOFlBZzQwZUpV?=
- =?utf-8?B?TDgwSjBDanNGNEkySTRFbThuRWdONkd3cHBLbEQ0MmIxbFNOTEZIb09HcVFF?=
- =?utf-8?B?ODl1aFVVSk5NZXRlOUI3dWY2Z2t0ZmsxL3lzbFRDYm5NU2xveUpIUGZENU5p?=
- =?utf-8?B?QmlUcUE1RUhwM1JPd2VWSEdjdlRadmtPSm94cmVVN0pFQ2svN0VqbDhXdHdD?=
- =?utf-8?B?b1QxSW1kZ3pzeTcreWNmd0hxbmlMZ0JRWVB6LzIvSlRwc3ErVVlLWUs2d1Mx?=
- =?utf-8?B?NkVzTjlSTDY1bTh4U1REZVQxWkFacVZCNnZueVMzbTZmMUxNMk1oWGhPcTNP?=
- =?utf-8?B?V2JJV0ZBNzU3VzdKS2xHT0hRZ29PRlpoYUFmVUFBK2owQzd3dXR1RitmYnhr?=
- =?utf-8?B?S1NUanFhVG5lVzFYK2FIeXBzTU5mT3VNNHNoQk1nL0RlQm00T2FFdWFHeDQz?=
- =?utf-8?B?NUlGTkdXdGFUanlCNEFJLy9YbmNqOTR1T1pla0ZMZmZ3bFhmS2hHMzkvUk5Q?=
- =?utf-8?B?TFIyYUNQd3VpR0VSNXFCcFVPeTQyTDB4N0RvdkpoWVFBVXR5SlFJTE5Bb0xj?=
- =?utf-8?B?d3k2S09qeDhyRTFrd0dUTUJieE1iV2FGWE5YS3VYcjZWc2ZyS2ZqeitIOVlI?=
- =?utf-8?B?dFJuZ3d2Znd3OTFBSk1ITVNLbGs0QXB5VXdBS2VhWTdKNEh1M3QyMGNjSy84?=
- =?utf-8?B?SUZzL1dNUndzYk1OVEZUaURRTVdCdytiK3paS0ZrSEVveHB6eTJDVTUxbmFK?=
- =?utf-8?B?b1B1eWM1b1pqYmxONWc3Wk85NDJrWUQxTFlnTzhuMXZ2d1JxQm1NeVJRdkdX?=
- =?utf-8?Q?zUx4e7C3lQU=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?bkVPQUZSa2ZFdHREMVprYVdaamI2ckVBZmxwd1hLYktPQnNvcVVTR0RBckZU?=
+ =?utf-8?B?TllDWkd5QkN4WEdoMWRJUWduS2xLaHlVM1UyMy9GSW05ZWpWbHhaamRHeUo3?=
+ =?utf-8?B?dmJ6cTNFYjBsZEZ1T3JrSG01eitIcUswM2JmT3NIMmZ3dTQyV2pETnlHa3Zn?=
+ =?utf-8?B?TGhBMytab2o4M1U5YVZhajVRUUcwUllreE5OM1ZlWVlTR0JkcnZabG82U29V?=
+ =?utf-8?B?TURZUGowK3IyT3NrMHJmRUx3V3doUUxyWUxFU3Y1QUN1bi85SmlWVkdoQldT?=
+ =?utf-8?B?S2huVUMwMXA2YmM1UVRLUmV5ZG9yRnJkaXlLVjFsZE5QQXR6bWZ3blFSMHZk?=
+ =?utf-8?B?T3dDbUw4QzZSb3JNajhUZ21uKy9UNnBpdSt4Vkx5d0M1YmttaXFSVmFTbmlh?=
+ =?utf-8?B?L1VlZm5qYmhXVVdrUTZDOEhkdHBEVXZQdXRkdUtBdmtZOXAyOTh5UllZeGZT?=
+ =?utf-8?B?RUtOakFkclpBbGdyT1daTTdmbDZrdTE4UzB2S1ZMdVlGdi9aUUVDM2FraVFq?=
+ =?utf-8?B?eVBVNGdMZ0ZPNTRHV0xTVHI1b2w3dXVxZ0R3NmdBQi9VVWszWEtwVCtBWjhM?=
+ =?utf-8?B?NVlpNDJHQ1Y1OXdybUZMcmRPZDlJdFl5TG8wYUtiR2N0bkwyMGR2UU1WRDgw?=
+ =?utf-8?B?c3o0R3BHTWJ6ZlNqcUY0bXpOUlBkWnFFL0d4NVFCdm0vUEVmS0JFQmJBUTBx?=
+ =?utf-8?B?SjJzYkpZYWV0QVBZM2ZqMVNlaUYyVFpldERpRVJnQWJZdUJRaGYvY0tLajhN?=
+ =?utf-8?B?Zk9mN3dGYWdMZ3loNFgxOE1NeXdoR2Y1YTRkdU9Kc1lEV2dwUXhPdmFsVjBG?=
+ =?utf-8?B?WFVxbXIrSnFBdHcvalA0TGtHM0tvTEtJS012ZnBCbjNJbytQcjRYTUxhWkVC?=
+ =?utf-8?B?RXUvZzdkTzQvR2ZPWTZ6cUx3VWVIVjdGRmppK3J1bGQ3NkYxSWpHZ040cEhq?=
+ =?utf-8?B?UXk0bG1lajFkZEdxVU05NEZXbGVvdkc3eUs4S1lyR00wc01YNlpTdzlPaVR2?=
+ =?utf-8?B?cHlMNTNTZVJ2Q0pIdTlBazI3bCtrenFvcmQ4YitrN1Y5ZEh2MkdLN1hIcXZD?=
+ =?utf-8?B?VHFtNkYvKytYdHNxWEttdjBFbnB3aHJaMDVuTEoweXhkdjJzMVpnWWRNQnVo?=
+ =?utf-8?B?N0oyNWxtUEo5cE1ic3RLUmxVNUVpdDRrekQxeVhvMm16a0pNU2FhQzVnaGc3?=
+ =?utf-8?B?TWU2ZGFGa3pnZTJ2QmFrQ3hqcmRscFZuaFBYQzdRWWJ4MEw3MFlWUTVXR1RV?=
+ =?utf-8?B?Q0tzK05lMGRuN1h4R1BpSzRSbm1LVlRndWFUaGR1TGVUMnpEQjlDcjRxQ3V3?=
+ =?utf-8?B?WVFaNnhRNzRxcmpiNkQ2N1ZXTzd1Z1VESW5kUE5FSm02QkxGTmVKYjZ6WWNM?=
+ =?utf-8?B?ZXREdm9RYXlZckNCWDIwM0Ruczlla3MrOXNiU1l1OS96ZDVRcGhVOTVUQWxt?=
+ =?utf-8?B?OXgwMjdJUXpWSmNBR2RkMWFDVTRjQ3FzaXpLbzcvRTJsWExicUVrK1l5aGlt?=
+ =?utf-8?B?UTV4Ym8rMVRHSFArL0NMK0I2dDFVZlA0QktzRVBIUTAxTEZBNDNvdEdEZlV2?=
+ =?utf-8?B?QmpkV0JUcSttUXRjc3c3WXA4QVl3cHc2SXZVZ1I3RjlQREtYNHhFWGpkK2p2?=
+ =?utf-8?B?Z2t3aGUxcmNCUFo2UGMrTGsvWFNKUldmdVhSZnhVU1hWdW5BZUp1TDk3KzNv?=
+ =?utf-8?B?K0VXS1pxcEZZSDllYmVTNS93L1FnRDB5YkczTDJySmcydXgvVVNXM2liN2Q0?=
+ =?utf-8?B?TjdVVFMydnhpOE1WUFV1SHdpWGRlOXZweHlwcFp3TVArOGNhRWpabWNiNWhm?=
+ =?utf-8?B?UW5UQldqVVIraDNsTnhLdm41ZUc0ejY1cEhBR0dCbFhPdm9QK0VtWFUyQkFS?=
+ =?utf-8?B?b3Y2ZGorOHNuaGQxTUEyNUcxalBYMTM5Qlk5d1J0LzV6a1VjcUtZV2F4SGtz?=
+ =?utf-8?Q?bwoNl8M3Gno=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SHlPRlV3SWhXZzJPOFhBZm5pVUNtSFVPNGxVRkY3RVk3UGY2cDNRM0dXYWlI?=
- =?utf-8?B?TlpPYlo5eExFeU5TcDVTdGF6Z2h3cHpZVzgwcTJuMHNtcXNFcjRWd0hpdTN0?=
- =?utf-8?B?UW1nRUJjME5pWm5XY2pUYjRBNWNNUjlOZHFQWUFiWTJacDRDdHp4Um5PbnpC?=
- =?utf-8?B?ZTNhcmVJUEdtbU0ybzJab0ZPMHlTNFRMOXNYYytlTjQzcDRVVU9DOTVSQVNK?=
- =?utf-8?B?ZkFHV0lsV1pIYkJxdTMvUGZYNTRWK1hTbFgrVTlmTlk5MnpkV01CT016Q3Vt?=
- =?utf-8?B?UTVDcG85WG45M3B4MnZLQ2tsV2tDbGtQVERPUHJUUW53YkdKeFlmdEhFOHlu?=
- =?utf-8?B?aDc4M3NsTUQ0L1M2eXlwQ2N6UWNGc3JBRy9BSFY4RE16ZWpGUlFzZkN1R213?=
- =?utf-8?B?bWhhK0V2U003ZXU4STdyWGs0UUs4d0VJUE4xWHlNdnRyYkRTeDRjZ1BvTWkz?=
- =?utf-8?B?a29mVWhzaTl6NUN1bWRtYS9kNUx4RXIrOExBNlk2S2FBSU85czYrMGthMEZ0?=
- =?utf-8?B?eTJzSm5EOWJYODR4SXR2VHNLb2o2cU9TQXJKRXhleUhCaWJIL1AzRzBNLzFG?=
- =?utf-8?B?VERDblpaT29TQUJGa3B2UUkzM0ZEelVIbWlPTDdoWVBwNFBXUzJ1QlpNb09D?=
- =?utf-8?B?Q01ERVNLRVNKRVdmbVIvZlRuVFgxbnRzYjVwTEN0VVlKRFJSdGh2OVdMSjJX?=
- =?utf-8?B?RG9vM2ZlbEFCd0ZQeERUcHV2N0dBUCt0M2dGQ3ZHMHBIWDdlS1NnOXdzSlJP?=
- =?utf-8?B?U2tCdk5HTnZtV00vVDc2eG93cSs5U3VJa1d1RVlLRVVwSjh0blIveWhnVy9q?=
- =?utf-8?B?SVRDbFY0NDVvajV0aFRwSlVGcExYZ3N5bVE3eUJFSlNtK2VQaTg5M0luM0Rm?=
- =?utf-8?B?QzUyUEpjT1gwMnd6NEhsSG53bzJDRmtYdFcyNEhPV3ozWC9XSGxELzlSeTJK?=
- =?utf-8?B?RUZKYXZXZWNYVDcremdtakk3UVV6K1VsQjc4eENuTVJ0L1lkdkdSZXlKT3Vi?=
- =?utf-8?B?WE5rY0FVZnEwa3ZFMzBmZjB0RnI5MHRZUkVaRU9tVTJhTC82SFVQNk0rVHFu?=
- =?utf-8?B?ZDJ6VXpYWG44NHd0MmZ6M0l0RXFtSkxacGpuSHJXM2NkanA3ZU95UHJTR21Y?=
- =?utf-8?B?ZVBpRnhyYkxLbWZ2QnpDY2RObGYyUStiU1JQUE50TzdpK3UxZTJrQVlxcDQr?=
- =?utf-8?B?Y1JrMWR6L3hHeFVYL0NXTmlDR0k0QkRiSW9SaXlnZjgzRGxoUHQrQ2ZvYlR6?=
- =?utf-8?B?VGlqRnFmeHFiWkQ3VkxwZldHOFpWTVNKVkExUEtTNnJJZUhabFVGRy8zNzE4?=
- =?utf-8?B?ZzdyR0Fma0VGUnJFT21oWW0ybmpwY0ZTY1hEQnl2L241QmVoU3ZQUlpVZXcz?=
- =?utf-8?B?bXFDOFZqTEU1OHlvVFlIVHlBdXRVOGdmamlqeTQrZTc4a1NScjhkYmZ4Sk92?=
- =?utf-8?B?bHpaYnNYSnhjV3lLTkZ6dVdYTGdndDdTL2NkckxMNGtpSXo0Y3FoWE8xKzRV?=
- =?utf-8?B?anB6bFNUNE1tUHlnNWxVNytzRWJ4K0YraGxraVlDdE5idUdpNjFQR3l4RDA1?=
- =?utf-8?B?Q0UzZmF1UmR3WUQzMFBkN1BLUkhoQWlsTXBoSm1XbHpuZ1JGSC9hU044N2pE?=
- =?utf-8?B?em84OUpmcHFpTlJvd1hYWklIWDk4RUNiZGkzUzdhOWttWUt1aUlTSFY1YTdt?=
- =?utf-8?B?dGZQYmhhdUpEb05ieDlxY0pNRW02bWlvMnptWlpVd3czRS9sTDBLeU9RWm1X?=
- =?utf-8?B?M3llaHNJQnZkMjlUOEtEUkt5czlkeWFJQUNwcFFLdEp2QmtSb3hwcS9ZOEIr?=
- =?utf-8?B?WElGTnhuTW5BbGJNT3JFNTRqcjNJWk9hWFkydytSdllJMk1oUDVSOVA0Z2Uz?=
- =?utf-8?B?UVB5cjJBODlPZ2JuZUQ1b2NLc2k4Zitab2kydTBuMFJUQ0RrZldzSWE5TDNO?=
- =?utf-8?B?N1JOVFVONjJQL3V3a2VmMHJsbnhLOWFRNnV6bUhaUEZXMmtobWQ4dWRLSzQ2?=
- =?utf-8?B?WHVkS2VaNUZDdS9iSktFU1ZheFkrSCtHSWJWVStnSzZxeFdzMG92c2d0VG1u?=
- =?utf-8?B?TVkzSG81SGJQdVlNU2pSWDVWdUN3U1liditmMkNYdmxweWs4VmRRV3R4TFhD?=
- =?utf-8?B?OUl1czBUaytGMDZ5TzJXaWtyTnFVYVk2ZkdhenhyZ04zNUhFWDhzVHgwSmlN?=
- =?utf-8?B?OHc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9929c55-4399-469e-f854-08dde66e9197
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WUlBK2hhMGloV0JTUVlBdWpXTGVaclo3MGtXRmdCSnBOdXVrODJac28yaXo1?=
+ =?utf-8?B?YUZEa0kyUGRIY2tsMmJLSjFWVmhubm8vWHhvSmJmOU5oTUNsMURFL3VjMmVa?=
+ =?utf-8?B?cGdEZUJaR0dRSGVDNTVOdzN2bTFnSnYvcEZqMFUxZ293ZGVweUk0aytyd1pW?=
+ =?utf-8?B?VDRjUkhRUXgyY1VrSmduR1k2ZTVOMXpDd1ZtUWJBeWVLb0gwdUYwWWZrWG81?=
+ =?utf-8?B?dXNPOWFJRTkrbFoxb0FlaXZQWjdwM2FTZ29mdkVydzUvbHBibWZZMUlXbkZn?=
+ =?utf-8?B?bkRVSDdOTnJzQ0tEZk5JeERIbkgrQWNwNzB0dmJTcjBDaUI5NjVnSjVNMVkv?=
+ =?utf-8?B?SmtSby9jUmt1dEFjczZFdUhFVWhwWTdGL0RWc3NUcU9hN3JYeTUzdlVMeHVx?=
+ =?utf-8?B?bVB3M2dZZytveHNnWkpXdlNjbVA2cHpYa1d3T2hpcVVORTdSMmQ2WlFTdkVT?=
+ =?utf-8?B?NXJ0ODFQUU4zZ0pRL291ejQ2a3NiYXlPNlBxbUhHRldqVWMzUWxUU2VGUWJ4?=
+ =?utf-8?B?eEo5UFByVWNsMHBxMXRwdFc1VzA2QU5EalZsazhYZklHTE9nRVR3cjBIZmMx?=
+ =?utf-8?B?VE9Zcy94UUlqbzZvQzZVbmFuNWVjbXpmN0N2Mi9UVUd1cXVINCtYaVhpNXkw?=
+ =?utf-8?B?djJTL1dlZVFDRlUxUjZ0QlZaazUzb3R1VWxtMWkybTJDOXc0ZUUremRuUFor?=
+ =?utf-8?B?MHR4Um1JcUVhaUwxcEl5dFZoTTJiVWhxc3ZrT2Z6d1RlNzNjelV4Q3BxRXFX?=
+ =?utf-8?B?bWtkdE92VkVOSHBWQ1hVMzlSRjEwT01oQXk5cERETWlGVDdUa21jZmhhOHRL?=
+ =?utf-8?B?TVg2OWRtNWtXSzlrTGc2NkxhcjdYeXFRWVlpSFBLelZGb3QySFE5RDRBcWEx?=
+ =?utf-8?B?TFdjL2ZtdU9pdWdDbyt0NjBxM2NKUlpxMThzSGo5cUVwZ0NVejRUNDBJMklt?=
+ =?utf-8?B?elNMQ1dSN2F4WXpZT1E5MkIyOEtKVkdDZHdETnVYMVRlR1V2ZW80SmQ0SS94?=
+ =?utf-8?B?bzRUSmpFVTFIUm1VRUd1ckNsV3I2ZWpaM3lxRDlpMkE2STEvMWo4Y2c5SFZR?=
+ =?utf-8?B?L2QwcjREdm5Pc3JvM0Rac2o5NTk4eWRwcFBtUUJFNFVCTnR3ZGFVMmNSOG9K?=
+ =?utf-8?B?bko5ZWxCQm9wT2I0TE5mRnE3TUZnWW5pckdZcDF1L1RrVDJsNzllQ2hwTytU?=
+ =?utf-8?B?WGlFQVJGYkp1ZkJpVVJUOFpOQWZOMUNFNlJyRVk1ZkVlUncycTdkM1JPOWNH?=
+ =?utf-8?B?Q0VjdFpZRTI1WjhsZXdMSkR0cU5lR1VyOHJ0TkdjcHBIWGJ6SDhKSnBEekRQ?=
+ =?utf-8?B?ZkwwK3RCUUhybXp6UGhTRkRxdUZvSVoxdTdaMDdQbFZ3dmpiT2c0Yjg1dzZZ?=
+ =?utf-8?B?SEN6aHl4MUU4QWhnV0N5STRtTlA1WGhOR2Y1YjdMN1ZFQ3NyaW9sN3Q4QTQv?=
+ =?utf-8?B?Wit5NXpzeHl3T05uQVFLVGhQQm8wZE9SZlJEKzdrZ0JIQTJZdlVXbFNURjhy?=
+ =?utf-8?B?dVQ3S1czVlI3dWFUZUVJRHF3ci9MbzZKWHd6andpcEJTbXR2S1ZtSnMzWEFR?=
+ =?utf-8?B?NUIxbDZMQm9SVk9weStGRDdiamE3ZW9HWnhTYjlsblVSMjR2L3NIV2dTK2Rn?=
+ =?utf-8?B?RERPTjlISGNYTUNudldNdXpUbi9zditOY2JnOEp4dzhXLy9DMVlndlE2MUJC?=
+ =?utf-8?B?OXd0T1U1aXZVendXMTg3RWtHRUxraENLck43eEswWGMvTUpkK2kvMXhnMG9o?=
+ =?utf-8?B?U2EwYkVuM0FJdllXb3dDdmN5N1lGazEvM3ZVVzZQWmNpZ3dmOFR2bUNMZUFl?=
+ =?utf-8?B?SkVCMlovQkxuUklTQjJsejNiVlRMbG1YcHA5NTN2UTZTdUQyZitzS0ZvZHRL?=
+ =?utf-8?B?L01WVUM5NzlMS2dEZnAzN2liZi92QmQ3aHorMXpuSVBHM2F2RHJwNFh5aXFW?=
+ =?utf-8?B?dmMyYW5XRE1wcHVJb1pPZDRwVkpUTFRmVVZOa0h1dVFTcUJCQWdvWWgwenQ4?=
+ =?utf-8?B?Qm1UaWtkUTlCR0ZVYnpiWVY0NHo3alorWUQ4bDAzZEx1cys5WVVDUVNvcHVI?=
+ =?utf-8?B?SWkzU1NIaDcwRkZJTWNSZWJOaHpscTZqWWpVcmVEM0hyN1kvbzdEM3hFNU1v?=
+ =?utf-8?B?ZklTYjBSV2c1NWNSeUFCNlNuSkh5MDMxa1llOWNocW9yZWFvSTZ2QWFINGlE?=
+ =?utf-8?B?Ync9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9bd75dad-9409-4d95-7402-08dde67b321c
 X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2025 20:07:52.2111
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2025 21:38:15.4236
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GDtnSlkj6lKUWcC25h7nAPDDiIcKPKHDykmotTBftanvhLZ8SYSHijRJlGuJCANzqO8tBdulV4c0YBPMkNcYP4KMTpsndGe59BTrzKKOzaw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPFA92F35354
+X-MS-Exchange-CrossTenant-UserPrincipalName: fU0r3FSsyQWJvu8jGXe+bj1X0+3P8vvgePg5JH6icUfLwEZFD+/k/G88xNjkrTIp97odvnrVb9SfdDPRDQQAiT1fNuNcxbzcCrV+Tlda7vQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5097
 X-OriginatorOrg: intel.com
 
-Greg KH wrote:
-> On Tue, Aug 26, 2025 at 08:52:55PM -0700, Dan Williams wrote:
-> > --- a/drivers/base/base.h
-> > +++ b/drivers/base/base.h
-> > @@ -98,6 +98,8 @@ struct driver_private {
-> >   *	the device; typically because it depends on another driver getting
-> >   *	probed first.
-> >   * @async_driver - pointer to device driver awaiting probe via async_probe
-> > + * @cc_accepted - track the TEE acceptance state of the device for deferred
-> > + *	probing, MMIO mapping type, and SWIOTLB bypass for private memory DMA.
-> >   * @device - pointer back to the struct device that this structure is
-> >   * associated with.
-> >   * @dead - This device is currently either in the process of or has been
-> > @@ -115,6 +117,9 @@ struct device_private {
-> >  	struct list_head deferred_probe;
-> >  	const struct device_driver *async_driver;
-> >  	char *deferred_probe_reason;
-> > +#ifdef CONFIG_CONFIDENTIAL_DEVICES
-> > +	bool cc_accepted;
-> > +#endif
-> >  	struct device *device;
-> >  	u8 dead:1;
-> 
-> Why did you not just use another u8:1 at the end?  You kind of added a
-> big hole in the structure that is created for every device :(
-
-It was the concern for colliding bitfield updates. I will go audit if
-all ->dead and ->cc_accepted updates can be guaranteed to be ordered by
-the device_lock(), or otherwise put this bool in a better place in the
-struct to not cause a hole.
-
-> >  };
-> > diff --git a/drivers/base/coco.c b/drivers/base/coco.c
-> > new file mode 100644
-> > index 000000000000..97c22d0e9247
-> > --- /dev/null
-> > +++ b/drivers/base/coco.c
-> > @@ -0,0 +1,96 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> 
-> No copyright at the top?  Bold :)
-
-Will fix.
-
-Hanlon's razor v2, "never attribute to boldness..."
-
-> > +#include <linux/device.h>
-> > +#include <linux/dev_printk.h>
-> > +#include <linux/lockdep.h>
-> > +#include "base.h"
-> > +
-> > +/*
-> > + * Confidential devices implement encrypted + integrity protected MMIO and have
-> > + * the ability to issue DMA to encrypted + integrity protected System RAM. The
-> > + * device_cc_*() helpers aid buses in setting the acceptance state, drivers in
-> > + * preparing and probing the acceptance state, and other kernel subsystem in
-> > + * augmenting behavior in the presence of accepted devices (e.g.
-> > + * ioremap_encrypted()).
-> > + */
-> > +
-> > +/**
-> > + * device_cc_accept(): Mark a device as accepted for TEE operation
-> 
-> What does TEE mean here?  I feel you mix "confidential" and TEE a bunch.
-
-The distinction in my mind of merely Confidential and TEE acceptance, is
-that a Trusted Execution Environment implies a larger attestation
-infrastructure beyond just "are the bits on the wire protected by AES
-XTS". A TEE has a launch state attestation for the TVM a vTPM or other
-Runtime Measurement Scheme to have a relying party validate that changes
-to the TVM do not violate expectations of the TEE, and in this case
-"PCIe Device Acceptance" is one more event for the TEE to validate with
-a relying party. The confidential device mechanism is just a property
-that allows the TEE to maintain its confidentiality and data integrity
-assumptions.
-
-I will include a form of that commentary in v2 because it is an
-important distinction.
-
-[..]
-> > +/**
-> > + * device_cc_probe(): Coordinate dynamic acceptance with a device driver
-> > + * @dev: device to defer probing while acceptance pending
-> > + *
-> > + * Dynamically accepted devices may need a driver to perform initial
-> > + * configuration to get the device into a state where it can be accepted. Use
-> > + * this helper to exit driver probe at that partial device-init point and log
-> > + * this TEE acceptance specific deferral reason.
-> > + *
-> > + * This is an exported helper for device drivers that need to coordinate device
-> > + * configuration state and acceptance.
-> > + */
-> > +int device_cc_probe(struct device *dev)
+Jason Gunthorpe wrote:
+> On Tue, Aug 26, 2025 at 08:52:58PM -0700, Dan Williams wrote:
+> > +static int devsec_pci_probe(struct pci_dev *pdev,
+> > +			    const struct pci_device_id *id)
 > > +{
-> > +	/*
-> > +	 * See work_on_cpu() in local_pci_probe() for one reason why
-> > +	 * lockdep_assert_held() can not be used here.
-> > +	 */
-> > +	WARN_ON_ONCE(!mutex_is_locked(&dev->mutex));
+> > +	void __iomem *base;
+> > +	int rc;
+> > +
+> > +	rc = pcim_enable_device(pdev);
+> > +	if (rc)
+> > +		return dev_err_probe(&pdev->dev, rc, "enable failed\n");
+> > +
+> > +	base = pcim_iomap_region(pdev, 0, KBUILD_MODNAME);
+> > +	if (IS_ERR(base))
+> > +		return dev_err_probe(&pdev->dev, PTR_ERR(base),
+> > +				     "iomap failed\n");
+> > +
+> > +	rc = device_cc_probe(&pdev->dev);
+> > +	if (rc)
+> > +		return rc;
 > 
-> If not locked you just keep going?  Why not return an error?
+> I really don't understand what the proposal is here?
 
-It is ok to keep going because this is a warning that should only fire
-on a kernel developer workstation when they have somehow messed up a
-bus's probe implementation. It is more for documentation purposes like
-lockdep_assert_held(). Maybe a lockdep_assert_remote_held() for this
-work_on_cpu() case where the thread holding the lock is also in charge
-of flushing work_on_cpu()?
+tl;dr I will include an end-to-end flow document in Documentation in the
+next posting.
 
-Either way, this race fails safely. If the driver proceeds with falsely
-believing the device is accepted the hardware will throw errors on MMIO
-cycles, and fail to issue DMA. Failure in the other direction just means
-the driver fall into deferred probing unnecessarily.
+> 
+> device_cc_probe() doesn't save anything, doesn't this just get into an
+> endless loop of EPROBE_DEFER? Usually the kernel will retry these
+> things during booting?
+
+Hmm, no, deferred probing retriggers after a one-time boot timeout
+(extended by driver registration events) and after any device
+successfully completes probe.
+
+1/ TVM policy decides it is committed to operate $device in confidential
+   mode.
+
+2/ Enlightened driver learns about that policy "somehow" (I am open to
+   this policy being conveyed via driver-core standard mechanism, but for
+   now assume the driver learns the policy by driver specific means).
+
+3/ Enlightened driver uses device_cc_probe() to exit its probe routine
+   at a known point where the device's configuration is ready to be
+   locked, or otherwise falls back to shared operation if confidential
+   operation is not requested. This is different than standard device
+   teardown path which may "unconfigure" the device and scuttle
+   acceptance.
+
+4/ Whenever TVM is ready to measure and accept the device it triggers
+   manual bind. Meanwhile deferred probing has probably gone into "wait
+   for userspace to manually kick this device" mode by this point.
+
+Unenlightened drivers skip all of this and just assume that the device
+arrives in a "ready-to-lock" configuration.
+
+> How does userspace accept through the sysfs retrigger probing?
+
+Yes.
+
+> As we discussed in the prior chain we need to have a policy decision
+> before auto-binding drivers at all in a CC environment, I don't see
+> that in the code though the cover letter talked about it??
+
+The aim was for the "'struct device' has an acceptance flag" discussion
+to settle before starting a "device-core policy for unaccepted devices"
+discussion. I am ok to put more logs on the fire if there is an appetite
+for that.
+
+> How does the kernel/userspace tell the difference between drivers that
+> want this early binding and those that don't?
+
+I was hoping to put the onus of that on the vendors that think they need
+this Enlightened driver path. The path of least resistance for device
+vendors is design the hardware so that it can be locked without needing
+a driver to take any configuration action ahead of time. Otherwise,
+explain to users that they need to adjust/replace the eventual udev
+sysfs script that does:
+
+   lock
+   accept
+   bind
+
+...instead needs to do:
+
+   bind (defer)
+   lock
+   accept
+   bind
+
+Now, there is a debugfs method to learn the probe deferral reason, but
+there is no requirement for debugfs to be mounted, and it turns out that
+probe deferral reason is only updated if the device is autoprobed. If
+the first time a driver sees a device is via explicit bind debugfs does
+not convey the deferral reason.
+
+> Can you write out the whole flow from a userspace perspective in one
+> of the commit messages?
+
+I will do that in v2.
+
+> This also disables BME, we talked about that a lot, the commit
+> messages didn't seem to describe what solution was settled on here?
+
+Your proposal to put 100% of the onus of not clobbering the RUN state of
+the device via configuration writes to standard registers on the VMM has
+grown on me. Make VMM responsible for trapping and declining requests to
+clear BME and MSE while the device is in LOCKED or RUN state.
+
+Enlightened drivers could skip clearing BME + MSE when locked, but
+unenlightened drivers should assume either the VMM traps the
+configuration request or the TVM must re-lock re-accept when the VMM
+fails to meet that requirement.
