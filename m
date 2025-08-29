@@ -1,441 +1,395 @@
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02olkn2060.outbound.protection.outlook.com [40.92.43.60])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C087930ACE0
-	for <linux-coco@lists.linux.dev>; Fri, 29 Aug 2025 17:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.43.60
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175BC238D3A
+	for <linux-coco@lists.linux.dev>; Fri, 29 Aug 2025 20:00:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756487000; cv=fail; b=X4K9lQQTxI5gfoiQ2d3PT40iPDEnbMRBYaOKRUDi9vLVTWK064Svbg9YYHlZEqTlTmACbVdwdp9jzA1/nIrtZcvmOxGuA/pm5HEQy5el3r//cqW7zmw1Mas6eRJ/dG8e70n8tjHe3Tf5TcEnxsIta8sr9npU08sNpc9KO2LSmZc=
+	t=1756497622; cv=fail; b=WBB7kDzTGVmkJS3zT7qmnuao3vlO0g3oMkfhse4r2K1BXR9XKmONbQ7df+ud60pvBjiid8KJwu1rdJmCMj41KnE6wK7ufTcSdUygQ7DERu1D4y0tapHgIQbP6ZKulM8XqL68P0ISZ9A/QKgIjyuoJ+asYJmdIDdi5/rHd06ubCM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756487000; c=relaxed/simple;
-	bh=nInihGDAy1mnqNrQLNv6p5SqbSCS4JOmjShbbaoyJzg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=tw6rViPuNjYXIlGprmIE9lwBu4Uk3eBBWQdTR6gBsr+iAiQfWHg657GEVGtLcSrdil6ZvH0a+lNOG9XpFjeZY6TR223BAVqDhxZfHpnAADDTh4dFpzspPXZgqXDqsrtiSuXpknQX78m6LsIbZog4BdX8+xS5Sqy26bjXQrz7nl4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=hWh4NwP4; arc=fail smtp.client-ip=40.92.43.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+	s=arc-20240116; t=1756497622; c=relaxed/simple;
+	bh=BZMbMW/uOclEm2CIZ3xXWDq6h/ECf24hdSEyzMU5JpE=;
+	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
+	 Content-Type:MIME-Version; b=eO1mUB0KU9vellNNmv9JqDx1/9WyfZGSHXVnoan/2Xa0RUESAs8rXxRHl+vLw6erZWc7MuWxhmm1jKTDFaG/sTplgHfpM1Utpc+JPGI3OJPhI6L1DIJS9up/47n17ctUyyiDM2UGuTvFOdpqY631ksnHwDr1RrGt4xf9WS+VnTU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lSYLyYcs; arc=fail smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="hWh4NwP4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lSYLyYcs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756497621; x=1788033621;
+  h=from:date:to:cc:message-id:in-reply-to:references:
+   subject:content-transfer-encoding:mime-version;
+  bh=BZMbMW/uOclEm2CIZ3xXWDq6h/ECf24hdSEyzMU5JpE=;
+  b=lSYLyYcsdeZDKZB7R2CHRGs3SmRpjJPA/I0kxuQ1JkyNl0i3u6jG4am+
+   wJUiZzdIBUx9mEUsIJYA9E6qEsXgFwRsfqxAKibzxHxGW8KWIa43j+H9P
+   NWTmqkdtckCgNBbbqUDCiXveXP4i9yjzIp0MoVpgR9B7yKiIlInQnvZ6u
+   5r0SyLG6pD7Kr7/Jm2KzESohLGwPVddarg3KSDSJSKWByP2AmE9dxpd4n
+   NZ2T0MopL+MoHiyN8l74ZqAxxjQ6FZKDr3NxoOhSt0fpBPK78GFyyELCN
+   SEPoP/nfTuKMhnBAhaqIgfTVqfCf7tq2M3mS3AaBTTLvOVx7ufiHOoCuD
+   A==;
+X-CSE-ConnectionGUID: l0OzpQvlRxuNP3kGM5bYpA==
+X-CSE-MsgGUID: emxfAIHVTh2w+vjh1QNkJA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11537"; a="84197716"
+X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; 
+   d="scan'208";a="84197716"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2025 13:00:21 -0700
+X-CSE-ConnectionGUID: Z3dhisMMTSO+qn3lEt6Xog==
+X-CSE-MsgGUID: K+HCcoYkSFiGs/AdTLbCnA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; 
+   d="scan'208";a="170849611"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2025 13:00:20 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Fri, 29 Aug 2025 13:00:19 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Fri, 29 Aug 2025 13:00:19 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (40.107.243.59)
+ by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Fri, 29 Aug 2025 13:00:19 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SEJ1IDjznGZusWv5dxXCkkDPWFWEoDpzNJsBz9IuRZqXHzPDZFkPUrrP4zAsPewl8mH5KVdwDsF98fR4R9HXbbEDkdIT7Pr4Tq6bNwUr7JFIguuNkTg+fybLY7Vj+268kAizfmV1PjrbGgj9QzraIzbwtOSKOsEEIgO9W6WQNZC24C/Xm8Y+mPudbwFpC/Vrm/tgK8/ErQDphN6wO0zKpmQgxKacN+77zBJGDR/txG4p8KKTdz5zcM3gfskNczx2SYFKSrRx1Cxm6PaxsKMFforeTPDbgBqu4adjDQpxGHqD+sxqgB9oXQciHR8EhVWtZOUsPsZyqI7HGICix/88DQ==
+ b=r2vz1p1y+VfQZXXk1cxTdedIleLYGE1m9MaTPOx9lugK8zidmGpxPRk9LWldU7zyuYNYEOAUfYfN8bx/ukM8AChBEAErtLnjRNRUec6Bgget5qTuOusKGjlf8EQBBMu1mvtKWO97cZxOB+mQVNI5MRNxMqCkkU+EdrtA7D/XTmgz8Z0zS3XVd5pthic9xpbsLY2KAltUySOJjrXJ2g5Hz0fkhSPyWJg2t30/61qhRKWCvMZysjS8gBLklDfqBM7dPzKTkTknLK9ghBtm32UjG8Jy+vIBGb9SOHyLCpLlRo5pX9cWwKVSoh1Euj2ENtTLWka8TOsqdzWolSKKNBmNUg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CQWwrDTMZEljISGFQo9ZMWL2XRKCtWlPhw8XUYgLUrI=;
- b=FtUkp72bUHrWsgam163hKmgA/HsLX2yx+BGZ9E2LIQvr5xPVGQ2fJA+8O7+VpC4ZfvGB5oTn1sEcS3Kouv/toT2M7sQvvHMG27/hUlOHfK/zrwuZ4T2SW9iGaWj5Ziy04V9RA0ssbYMfvY0UsKq5iUomfngUyGP57udMRHcXiLGJxOGXCJILo06K5er7rD71sww9yJkphVH7GwYdTXn+U0CRZ7iC+58v1daHR8fgDx1tUGOcMnnNzo3nD5RPdhudBAFZVkoA4Pr/v6cCVma1rVqWul24oZb648ADt/BtC+8P5G4RAb9+ugDIj6AGgFZJKbYtGHjlFle1gJD/pK3N+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CQWwrDTMZEljISGFQo9ZMWL2XRKCtWlPhw8XUYgLUrI=;
- b=hWh4NwP4FtllGQ9Kxg3C2Ft6NhzI9h/ILQg4tkxtHc4K/8Q8IzqUaFGKtwjdnF0RJBvor+6rs9C5jw2kDzg1rPsrmIhJf+0XbSi87g/3+1GV//QLVEDFUl+vjSSVfT8WoqzVGSA0LO128BDSrJBf8aNPecb2mpgsdBVRYDOfcW5cr/igvV2XhWQJmGtJzmuI5Yu52sUWCdhcsM161yCb1VreXcq3TnOwSGHVAn+GFecI6gNTQVc5nktLMBwDJ4dJuMKgS7fw83kKjHRX4UkDyfFowFCKtK8V+xn3QawT+GDnwdmnkm/1tbQdrITgGdTnVoJ+DbI9fGKdpbA5gWm9qQ==
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
- by PH7PR02MB9340.namprd02.prod.outlook.com (2603:10b6:510:271::11) with
+ bh=DL9K+Lqbk+FwL9Orckz/Sf+bSnd0RHNYVq+ORXaMKCI=;
+ b=LvPVPxjMDy1/6P7aIZl7ILYha2XlJFw+9xMyOTiI1vWtnFX2/R866kvOp04na4+o8lJSphWUededB+o1fl9FBrKZuvOmFR8uoxeAzvSgtj3ZKjBkraJFTSltmMMLhL/BunJ3sJ10bjiztAAiI9WRwG0csfG5sy+MwB7OGUGzaDU8jmBrdni0fiSdB/5mVT1bOoqVPxWuNTVDzJA6IYudC468OyZeDdYKOKWzP6tmjCZXKPuVJ5vjVeZDy+KWAuUm+hN4JIcjyxKaSitUda1JkyrkGAIUoDmbl/sWP0NMrT8RPR42j0aVYcZIDJxfNF04kRfXktha1zaFu/j08f5VWg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA3PR11MB8118.namprd11.prod.outlook.com (2603:10b6:806:2f1::13)
+ by SJ0PR11MB5102.namprd11.prod.outlook.com (2603:10b6:a03:2ac::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.20; Fri, 29 Aug
- 2025 17:03:14 +0000
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::cedd:1e64:8f61:b9df]) by SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::cedd:1e64:8f61:b9df%4]) with mapi id 15.20.9052.019; Fri, 29 Aug 2025
- 17:03:13 +0000
-From: Michael Kelley <mhklinux@outlook.com>
-To: Vitaly Kuznetsov <vkuznets@redhat.com>, "linux-hyperv@vger.kernel.org"
-	<linux-hyperv@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>
-CC: "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang
-	<haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui
-	<decui@microsoft.com>, "x86@kernel.org" <x86@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nuno Das Neves
-	<nunodasneves@linux.microsoft.com>, Tianyu Lan <tiala@microsoft.com>, Li Tian
-	<litian@redhat.com>, Philipp Rudo <prudo@redhat.com>
-Subject: RE: [PATCH v4] x86/hyperv: Fix kdump on Azure CVMs
-Thread-Topic: [PATCH v4] x86/hyperv: Fix kdump on Azure CVMs
-Thread-Index: AQHcF/xzlhqdNasNOEyOxxs2ytrFh7R527zQ
-Date: Fri, 29 Aug 2025 17:03:13 +0000
-Message-ID:
- <SN6PR02MB41571C1A6DE8756D72176E93D43AA@SN6PR02MB4157.namprd02.prod.outlook.com>
-References: <20250828091618.884950-1-vkuznets@redhat.com>
-In-Reply-To: <20250828091618.884950-1-vkuznets@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|PH7PR02MB9340:EE_
-x-ms-office365-filtering-correlation-id: 1fa30efb-09b2-44ea-fce5-08dde71df07c
-x-ms-exchange-slblob-mailprops:
- AZnQBsB9XmriMkceEMr8g4u6bPtbH41WpEt/WKUej2kzY3Hbp/K83VMAQyIfomNZ/ZA7I7dAtGdDgBlDg8rhGjQzUMIGL105qIUEtP/dfOlk6f8fgimSHfb6J+Zos4axRaM7Yu7E978o/kYPWGURMbJGo1e3UIfSE0/zkw9Tu2ceaFfHRCkwfrZ4HtaZG1cQF+UzM1PWBi0CnaHueZpzi0ib4gLfKwD5eCkO+Lfkz7+WMU8o1P0XxFM2WMk/T53N2pbBD1Gf9H7KS+C+EifcF1Jovf1D4l7W3VDPxh9j33T2uDtjV94hDJGy0aK752QY3o7KSJN4HmJ/OwAAgsxi1mZVdFXBcQkvbD+fazAemdxIi04qRt8cuY77Yd0Ijq24W3YDHQliftt7RrcI5SEbCY6mJKsvQGdCc5G+sw3dd+SbdV46TzxQrM9iisUpQFn23bd1w5fWowVAP0k1v32h3H0XAYo/FFHgAFfjRM37oYGg8Af9fJ1QkId3Ue60WQ4xrlhX8bAx+U2Hm4fI8j2ZNzY7eJosp+gZANFg1jl7WyjoEGLuF40zcsBQD56dqYT4sAMegm6PuOCN66u6RTS6PFMEjiLHkJSrpVo32yfI7o+3ch7+frLTsLiTni2FsnUgHQe79Xvhg1YW98b84QRz/EWWmFa1J/zOvl3g6oiVDviX25hqfTYZnuya55CuTvhcVki2vOQ/B5yzcGPkhAsRp3kgkUaI1qsQWJmTbBYhwz8AWOwzVJN/ExUmt6zTIDuEAkXD86s93JI=
-x-microsoft-antispam:
- BCL:0;ARA:14566002|8062599012|13091999003|41001999006|8060799015|19110799012|31061999003|461199028|15080799012|40105399003|3412199025|440099028|12091999003|102099032;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?ruRrEhP7v8dV5PrA18QLRH+fW9TtXVCZizL6v7ETBp4qnJcoTAYSctP9ugp9?=
- =?us-ascii?Q?+KxYS5ngE4/klb7YmyKcDKFlGN932HTTOvT5BVrBrwwtC9swP8yR21WDGs9w?=
- =?us-ascii?Q?vujGjzpRrz+w47yC3d4zK5ac8Uy4AnjW2pehsPNw/W1ajegq2FL8iknrfN4p?=
- =?us-ascii?Q?5kqw6nluICV0Udv3lmkAfBODG88C1SnBbiwznkksaJ1LAn4aLfHVoYyKH/cF?=
- =?us-ascii?Q?bZ9TaDSFkAF9nShEEYujOINH/XAlIw43JmhMZDotzU9WH2OGlzx7QwyuYIqb?=
- =?us-ascii?Q?9WvxP0orN9dWDZ0JntB1wqj/rehxVlKS9Uht06pDLtx+awELEbQvCtc3KtzI?=
- =?us-ascii?Q?TkmafErORaeKxkvKAzLEJsYBtOVygOXLrkochqC9szOONmVJQUY41Yr4odXG?=
- =?us-ascii?Q?L8m6UTV0jhjKBoInryMQZ5fyj0akEDTwKs7dlEXsXEXNP7z4YlW/UsC5Kmv2?=
- =?us-ascii?Q?af2866r2Riud8/XJhGjiBM91wBo2SZFW32J3un9sNppp0KvlSljToRW2LS5g?=
- =?us-ascii?Q?6GbLqxgfji0qRhVeihJ43E6aP1/lbDaFIBcbIyDGj28PdmKbIOXb8I/56RN0?=
- =?us-ascii?Q?HII2/Km7oDNVuCT50dtj6MHr7lohhMwgr6L5goh09V53WKnhIkFipL8jBeeu?=
- =?us-ascii?Q?UnFqVI+DjWvN41U3cMURZSI/vbIFfoODfjsHYIfLadHk7XITENGE5biOZUFI?=
- =?us-ascii?Q?ZwBfexM0n0MA93VuvF+lUps3/qWitSPixBUjWQiOJrii2J/h/+uag03jZP2d?=
- =?us-ascii?Q?rAaZHI3X3piIE3nWOYt5D22TE/3Gjm9/8KpXtEiunDo2AWWJJqHCPuQeOlIn?=
- =?us-ascii?Q?AHL6EkD28vs1fg8/POtWTrErHaX/tNIJN/MjQu8ZPrjE0BGJvQfsg/EjdULU?=
- =?us-ascii?Q?GKi9Q3S23RVZkK5s3SHr7XYjQCFaX8sisEwHUR4Eiba7v/R+WmCDK1xp1JVy?=
- =?us-ascii?Q?2LnlXgmdqgQwtm0mOCoPndOwirv0csDLQpd7ITBwFYtDhrdeUYii3jQaDX3Q?=
- =?us-ascii?Q?1p9iTR51Xbd1JjYpaYqDwHyMbp6imBZTXb5xQehO3siMotSlyAuSrLopEmrO?=
- =?us-ascii?Q?pekg7oLZgqZRIEtpYkKptJ8Wm86Df2rXkU83v21hHLBSavCkSh9chjvHS9VJ?=
- =?us-ascii?Q?zilheG9zAQQQKDApduv5av9M/h7osOxHUSEKm9PpGVKiLFU3RHQ3C50o4kJt?=
- =?us-ascii?Q?HOFxypbu/Kj5tVgw1DTFJBvsBudfxwdXx40m6VRYyh5p8NhfcsklxdPfJGsx?=
- =?us-ascii?Q?RflqpyXYQJRhX97wbdem?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?f4BrLWY9bEMfyany9RvbjXDcTvCUlyRdHJRXKJv2nXEvhiioCDNQO+FsKm9U?=
- =?us-ascii?Q?9BuzQi+/QHkMxEP4mbDe7ByRkzVypcphYbqby5+03wjxawAIiXOaImPRJE+h?=
- =?us-ascii?Q?o5eiha3aHjeFXCGz0nohqQqDG3+oq8qbGubUiCfWW0pgxGD0DR0cvOoEleT9?=
- =?us-ascii?Q?MHwuJqgSaeiXGB18ZvwQH9YCvsBYxfFa7FYfstzr79gMyFxFxHm58quski6c?=
- =?us-ascii?Q?Z5KW4VIR2RLpUB8sqqUet/qCDeARl4DAWYEXgSoXsem5YaXObAZGjDPODNhS?=
- =?us-ascii?Q?tX4k13QAuan2/O1uoAZ1V1qdaUjhDBV7nug721XGkF1K76EnjP2+pDI5MT1J?=
- =?us-ascii?Q?j8tZESET+xv/ZBxpHLMLsAP03PDvFf/bAqAThR7Iws//rPnNAl7dgsUpvZBc?=
- =?us-ascii?Q?lWn3morsFfDNAFIIiufJnoJdiT4srKqtgH9j+W3jvw8b/J2KBwubzUAL/Mob?=
- =?us-ascii?Q?/+GdglZSOJ6OMU3i3hkLmuYTqCGooWXBeD1NziyQrIvsSmZbz9tiKXloh0up?=
- =?us-ascii?Q?nA+HT8OiGqls0NZX1qLbRS8eRCTesS0NEfKZFwzup/iwEZWGQc3utzSOLb9S?=
- =?us-ascii?Q?yI73wU8gLr0Qc+wCCD8TVpTqERT16d0K24KBm5QlOzxU3pKwaBVvWsKXkFIO?=
- =?us-ascii?Q?wvIwfnPI9Pg64qAZoIHqTBIzbofmQFp6bfQZxyxrQaxURS1/yw5xRlvRHCPL?=
- =?us-ascii?Q?DvBQHRHA6J9QaeoyiYvJci1V5H6dKLYRRJERVUDbO6pm2xAhLAtryuQfiQIb?=
- =?us-ascii?Q?02K2mq262Yp4g191zZ3TJOADvS1k14lGgtaQL/8fvvoKUX/lU4Ajp4DFKEEP?=
- =?us-ascii?Q?eVJbb6EMtDeOyZ6Gvj/Qx2Zxy7n2D2cTTVIrsGaxl3GiIzxSkFIXGh0KhPIm?=
- =?us-ascii?Q?FveBTJtA7oYZp44LI6Xp+rxIFCk7cARTmyDfMRtul2pIwXJLZKRdJsZfbJvt?=
- =?us-ascii?Q?MOPnPuKRAkuRuzJW++V1SQ/wJHn4hIg8EYDIFcjxuEQNtHSY+oECr+Ls2ucD?=
- =?us-ascii?Q?bFV2URssGhGfIdC2n2npGG/GhZoPv30qDjvs9xtxC4kTT13Rr6n0ycc/HXfs?=
- =?us-ascii?Q?Ls7x6DRTPSmiVvU2JWCYjR31MThpmfeswerhrtPJ9Vhk8u+g8ffILHqJuvYm?=
- =?us-ascii?Q?/vKiSoR7GWMppUhZOggsSvXeKzLatZ9D8Aosy5IdCUmDzUhFtHOVQt0D4vl5?=
- =?us-ascii?Q?RueFEao0ETejEoI5W77FVTUfvWgLMX3tmaZBGDkeTa5nlO5s+Ce2lcwFtsQ?=
- =?us-ascii?Q?=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ 2025 20:00:12 +0000
+Received: from SA3PR11MB8118.namprd11.prod.outlook.com
+ ([fe80::c4e2:f07:bdaa:21ec]) by SA3PR11MB8118.namprd11.prod.outlook.com
+ ([fe80::c4e2:f07:bdaa:21ec%4]) with mapi id 15.20.9052.019; Fri, 29 Aug 2025
+ 20:00:11 +0000
+From: <dan.j.williams@intel.com>
+Date: Fri, 29 Aug 2025 13:00:09 -0700
+To: Jason Gunthorpe <jgg@nvidia.com>, <dan.j.williams@intel.com>
+CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>,
+	<gregkh@linuxfoundation.org>, <bhelgaas@google.com>,
+	<yilun.xu@linux.intel.com>, <aneesh.kumar@kernel.org>, <aik@amd.com>
+Message-ID: <68b206c9e3f43_75db100e4@dwillia2-mobl4.notmuch>
+In-Reply-To: <20250829160217.GL7333@nvidia.com>
+References: <20250827035259.1356758-1-dan.j.williams@intel.com>
+ <20250827035259.1356758-7-dan.j.williams@intel.com>
+ <20250827123924.GA2186489@nvidia.com>
+ <68b0cc4632fc5_75db10074@dwillia2-mobl4.notmuch>
+ <20250829160217.GL7333@nvidia.com>
+Subject: Re: [PATCH 6/7] samples/devsec: Introduce a "Device Security TSM"
+ sample driver
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY5PR20CA0025.namprd20.prod.outlook.com
+ (2603:10b6:a03:1f4::38) To SA3PR11MB8118.namprd11.prod.outlook.com
+ (2603:10b6:806:2f1::13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR11MB8118:EE_|SJ0PR11MB5102:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5a75a8e3-2e9d-4945-5f6e-08dde736a99f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?V2xVQ3JrTjBoMnRyL2g1RmREK2ZQQ0FoY2FralRmNVo2QjhkU2FoY2dPcnVI?=
+ =?utf-8?B?eW5qcnA0VWN4N1B5aGc3YnFnblNYSGRLZ1FRcUZScytMYWhzcEltMVNqY3RC?=
+ =?utf-8?B?NlRXOXpwd3BESXJvZTI5cTdDOE1oaXNTRzFLTll2YTZ2NC9xMTB6VktyS2hF?=
+ =?utf-8?B?VGJ0WEx3MVRpMWY5aHRFa24reGhna2NtR3FxRUpKRXFaSGZSMUdidXNhcWx5?=
+ =?utf-8?B?OG05M1RSUGh0Y2hZdHNsT0xNUGNWOWlBcnFhbUVBZ1JGUnBKNURockxKeEcr?=
+ =?utf-8?B?UHpDcWdHOE5pTHFsSHQveVQzWjNHbzM1ejA5a2hlNUJRbGVvdExpM2U2ejBy?=
+ =?utf-8?B?MllsRkRyMjdnVXFrbDVlZWswRHBTK2hjZjlJNGsvZE9UWmZiSFMzZ21MM3Vs?=
+ =?utf-8?B?amFObHp1dHo3bHJIdi93aS9pem1oU0NubEQzOUVPQ1RUcVNMQUIwK2l4RjJo?=
+ =?utf-8?B?VXVadlpsT2xidXk5eFV4RmZjV040WHZSamtVN2o3SWRyQm56cHN4Z3pWNjFB?=
+ =?utf-8?B?S0FhV0hjd1BFTzNNUy9tSVhJa1krcHpudjFRYjdXUlkrQlFCS0ZqVHlrOEts?=
+ =?utf-8?B?ZWNiNHRUMURhTUpQOS92ZVVHWHJWUS81c3hTNE1JZGdWVVpGSk9CRWtWWFlo?=
+ =?utf-8?B?VWdodVUrdFJsZER1VzJhTXltaUc2UWdlWFhyOHNSdHdGaHc1WWNiT1ZrL0pa?=
+ =?utf-8?B?T0pZMC9OYkxxMVZuckFDQnFldDEyYkhaWnBMNjNSdjNhTGpSdkkwcVZjOFhT?=
+ =?utf-8?B?d2N5Q3YrN2VHZjhFdUJ4R3ppRjNjczE0U2dtNWQrcUJ3UGtUOCtoWkI2Nzlu?=
+ =?utf-8?B?N2pwczk4ZS9mQXpITkxzNlNhVlgvUDRrVUJUR3FDYzhaNXAwVXdzNi9UMjEv?=
+ =?utf-8?B?SmRDM1dmN1RONlJjS0pwS0J4Y3pDL2grSUcxUGE2WXpKQ0g3WWc4WDRaTldC?=
+ =?utf-8?B?QzFwQnRrbW1GUDdJNlJVWU8xRC9mU1FpcjNxZXd6TVowMlVvQ2NvbGpCUitP?=
+ =?utf-8?B?Z0dKYkEydWpLbmlpM3lzL05GWlRaK1QrNGFZaUpYSTc0Qm84NERmN0F6U1JK?=
+ =?utf-8?B?eDVVWVY5VmpsMHFxbTR5dEFlb3p4RmJFVzVFbWJ4ZlprbDk0R3VnZENPWEdC?=
+ =?utf-8?B?L1ZvejRRc1ZTbC9MejNpUjZ4VmFKeTJjQlJxOVZjS1BRb25DY3J2Szc3SWpQ?=
+ =?utf-8?B?d2dlbWh6aCtJcmtxMjhsVWhoL2pNcjg0WnVzVDR5TXl6V1BGejYvd2pVb2Zx?=
+ =?utf-8?B?N0MwT1ZhVnhnOUlLcWhsNUZ2cnVBU3hmaVlCWGIxQ0NkdmdnWnhXY0g5REdD?=
+ =?utf-8?B?eEtoSm5Da215czZHMFdEQ2RIL1FsZGMrZ3VFNHJrMUF1OEVwL1BieUJySXRS?=
+ =?utf-8?B?SlRjRDcrTzN0NUxoa0RCSDlIQzYrY3VYTE8ySjlLVGpnV1RMb2FITG5aSmdG?=
+ =?utf-8?B?NGFLSzRVVWpXNFJPZDFQb0N5UVlCT3lwOE1MZ2xoM3FHbzFKQ0QzQ2JONlJk?=
+ =?utf-8?B?b2ExaDVKa2t4K29tQ28xclo4N3FGTmt0aDBXUWlGdGFDbFcvdklmdTB0S25r?=
+ =?utf-8?B?eGRESXJqazdqcUR5d1JxZHczaGdGUnRHUXBiR0FtNU9UL3lQMHh3RkZJM1pv?=
+ =?utf-8?B?bGRHbytRa0Y0bERMN0dyeGkxTFBRNmQyKzBiMnF0UFVQMWZLQS8rN01pOVVh?=
+ =?utf-8?B?K09CK0dLaHFKcHp4eDFTbUU5ak1RRElKaGlCY285L1JsOUREMmVOOWcvdW9L?=
+ =?utf-8?B?bThsODNHZ2Zod0h1eXY1UHc4QUR6NGlPQVQ0aCtxTEZ4VXpiYUphWHAyVjE5?=
+ =?utf-8?B?RTJhQXlHUVpPVWdrSDhXdEJrbFJxalVqS2VQeWliWVZIcFBUN0lsSFVBUUNX?=
+ =?utf-8?B?clRPOEtlS2g2c3JXc2tSV2E5THk1azdHMStndnMxSS9OM3VsbDNaRnhiaWQ2?=
+ =?utf-8?Q?TTgcLsm7LkM=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR11MB8118.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ekRHSWlSbjhENlNVZUpuaEdJRlZiWVZIM1VNQUpGL3lhdUh5b1dVbldwL2Rq?=
+ =?utf-8?B?YkZObjU2Y0lDdm94SmVVL1lIZzRSelRUZ3pIZlFMaWo1Y09JSE15ek5iRm1B?=
+ =?utf-8?B?RzZvaGhzSWFjc1pVeTR2Nzh2Rzg3b0RFeTBiSUhPLzBFZlpxSkVFdzNQVUNR?=
+ =?utf-8?B?cGtHR0ZObEh5OU0vYjdoeHlYZURJeEVqM3Y0Q2xyd1UxekN3UG0xY2ZLMi9L?=
+ =?utf-8?B?Q2ZtQjhDcFF2OUc3eE9Nb3FGUm5wWkxIZ3lwTTJad29kSndJWlM2cDR2UkVt?=
+ =?utf-8?B?ZDgwQzNNK0VDcmVkWVJMeDQ3UWdnNUN6eEpoZWpISEMxME4wRldOeFYyWDFF?=
+ =?utf-8?B?di9RL3F2TXN6M3I2Z01JcUFHME9jWnY3MWZ3d0pWOHF2UHZHbmIycFNEU2lL?=
+ =?utf-8?B?cXl3L21Rb3VsZW81eVlmQjhZY0hmY2RHUit6akN3VDdnOGtSVzZQNWN0K01B?=
+ =?utf-8?B?ZkNJWTFNUXRPVkNiQUZ6eWZvTC9ubnFDL0EvcWJhTTZkRVNMV3ZwODFmZGtB?=
+ =?utf-8?B?dzY2aHNWS1RyY1ZqYjJWaXhyUFh3Q1U2VDZ0dmhnTW9tamg1RGE3b1QvMlY5?=
+ =?utf-8?B?WVgwZWFqaXYxcU5qb0tKNUhQTi9nTVpGUWhzaE9hbnc4S2xpMXZuMnVRT0Jn?=
+ =?utf-8?B?eXhsaVZEVkxKRUNyb3VBbEt1bGN0Ym5NeHk4ZU9QVjB0bGFudlVlTnpVcFJD?=
+ =?utf-8?B?T2lSa3Fwem53ejJqUW9hZk1UK0ZrTlF3N1c1ZkdZSjRCelZBRXZjWFcydFZ0?=
+ =?utf-8?B?dmZrZXVnMlB0SE5JNFRBNUZtZTdYWW5SUmpsNGQ2N2ovVFEvd1lvRTBVUlJM?=
+ =?utf-8?B?dktNNWRjK2w5MWJLVEtWZGhwN3JRM2JnRmd1RCtMQ3gwcElHOXpjUk1MSlZK?=
+ =?utf-8?B?bW5jdTNrNHQ4UWJ3OWV3VGZGdnJORjZFNmlnTWQ2UDVHRGdTTEV4VUl0TzBv?=
+ =?utf-8?B?YTQ3OUh6UVU2Q2s4U0Z1ZmhGS2pCTldjRTc3elp4OEFSdkl0U2xOdk9WTnpy?=
+ =?utf-8?B?NlUrTUJwV1E0SkZmTnRWNjU2cjYrQk5DMENXczQrUWJQeDFuRkdidXVibUEz?=
+ =?utf-8?B?Z2Y5S1NXcEZIVytpMGhwNVF3VUZQSEs5V2JmUTltSDd1cGR1MmR5VWwzZjRa?=
+ =?utf-8?B?TkIzZmh4Mjg0QXFOQkZMa3Q1dFkxY0FnZU5YenMzaGpQRzNVRkpJc1FxRFlm?=
+ =?utf-8?B?T3V4TUpPMFhQb0JpNC9hd1dmQ01EN1RUbmMvb2VIZjZrNXRFMWtnYU0wemxL?=
+ =?utf-8?B?RmlGemNiYnRBUFE4MjhRTDNKajNGeUVPSnI2K1o1ZEJxRzcvMTVuUEdlWW5k?=
+ =?utf-8?B?cGRkZ2Q3cnBBWDRzQXd5VmNGKzdnQVZUNTRycGVCY0g5Qjg2YlVFc2s4ZFoz?=
+ =?utf-8?B?WHEwZ1NSZE1pa2svbzFMaW5Ec2xaRVhJQ05oa3RNZGNzMEh2T0tzYVJLZ3A4?=
+ =?utf-8?B?SWlIV1VoVzY1cjlnRG95cVozYmQxRGEzWDZScUpaOE9xb1g0TDRGbzFxREFl?=
+ =?utf-8?B?L3ZMaU1OcXczblBoYnZpRnZCTVRtRHUzV1E4UTExa0QvNTJ2SnhHQWRTaFpT?=
+ =?utf-8?B?bEhjeWxKZ2FlMTFDaWpjeHo0L245QnhxZjNtcWlsVWNHRHdua0FnbHl0cjRk?=
+ =?utf-8?B?eVBsZTFNK2FGMW0vNnRmZEFTcGRuYkVIUnRDUzZOeUJaMllDZGZ1aVpTZVo0?=
+ =?utf-8?B?TVh0WXhKZE96Um4wdzNldlRpZEh5MnlGcG1pR1UwQmJEeWZTQ0MyRVRxck9n?=
+ =?utf-8?B?bWFqZEVaMWNoc3N3dUVGQmZBSmxaS3JOTkpmSi9mSS9ZWTI0Ui9IMGNiejhi?=
+ =?utf-8?B?ZmF0TC9mNSs3U294TU1FS05DVWQ0N2RZQTYxMDdMaVd6Q0VjbEVMWk16Uk9G?=
+ =?utf-8?B?c3Vpb1dibWVOVlUxWkY5VzFoUWpSeUprOXg1NHpLWi8xOWNKbHFEOWZIaTRu?=
+ =?utf-8?B?QThiZEgycGhWcmdOU1VCTHNUQ2pXOEZJRFBJN0hCOXJZR1Vod0t6NGdHaFVQ?=
+ =?utf-8?B?djliOXVIcUJRT3NSNU1jL20vMkZTc3UyRUp2eSs0K254MDNtaVBGNURmY21j?=
+ =?utf-8?B?RUw4WmxjVUxkZTNOTkVNdjBuVkpsY0hZMGdTcm5Zc2lodk9keXdsWnBRaU9N?=
+ =?utf-8?B?VlVQVEVkcWZiQklUT0I3dXpIQjQ5cm5SL1I3VlRuWmlick5JNktJc3Nhcjln?=
+ =?utf-8?B?SHc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5a75a8e3-2e9d-4945-5f6e-08dde736a99f
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR11MB8118.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1fa30efb-09b2-44ea-fce5-08dde71df07c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Aug 2025 17:03:13.0968
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2025 20:00:11.8728
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR02MB9340
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /8AeopbGT66ZauZKf7/cIEggIResFkMIZbzvTHwJ+Ro3ZuYJZk3lLisBGFvadumoRyRcFdZ0gEcA73jXf+qzpNZKQPoXr1WtFFI8xX1TojI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5102
+X-OriginatorOrg: intel.com
 
-From: Vitaly Kuznetsov <vkuznets@redhat.com> Sent: Thursday, August 28, 202=
-5 2:16 AM
->=20
-> Azure CVM instance types featuring a paravisor hang upon kdump. The
-> investigation shows that makedumpfile causes a hang when it steps on a pa=
-ge
-> which was previously share with the host
-> (HVCALL_MODIFY_SPARSE_GPA_PAGE_HOST_VISIBILITY). The new kernel has no
-> knowledge of these 'special' regions (which are Vmbus connection pages,
-> GPADL buffers, ...). There are several ways to approach the issue:
-> - Convey the knowledge about these regions to the new kernel somehow.
-> - Unshare these regions before accessing in the new kernel (it is unclear
-> if there's a way to query the status for a given GPA range).
-> - Unshare these regions before jumping to the new kernel (which this patc=
-h
-> implements).
->=20
-> To make the procedure as robust as possible, store PFN ranges of shared
-> regions in a linked list instead of storing GVAs and re-using
-> hv_vtom_set_host_visibility(). This also allows to avoid memory allocatio=
-n
-> on the kdump/kexec path.
->=20
-> Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Jason Gunthorpe wrote:
+> On Thu, Aug 28, 2025 at 02:38:14PM -0700, dan.j.williams@intel.com wrote:
+> > > device_cc_probe() doesn't save anything, doesn't this just get into an
+> > > endless loop of EPROBE_DEFER? Usually the kernel will retry these
+> > > things during booting?
+> > 
+> > Hmm, no, deferred probing retriggers after a one-time boot timeout
+> > (extended by driver registration events) and after any device
+> > successfully completes probe.
+> 
+> So it is not "endless" but it is also not "single probe then wait till
+> accept". I'm not keen on using this mechanism, I think the things
+> people want to do in the T=0 mode are going to be time consuming and
+> repeatedly doing that time consuming step is not a good idea.
 
-Looks good!
+It would only ever run multiple times if the driver is built-in or
+loaded early, which is also mitigated by disabling autoprobe like you
+have below. So that problem is manageable.
 
-Adding Confidential Computing mailing list (linux-coco@lists.linux.dev)
-for visibility.
+Now, I do think it is worth exploring a convention for "cc_prepare"
+drivers, but as long as userspace is prepared to rebind post accept it
+does not really matter if it got to that point by cc_prepare driver,
+probe deferral of enlightened driver, or plain probe error plus retry.
 
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+> How about this instead:
+> 
+> 1) Drivers compiled into the kernel are "safe" and can freely bind
+>    at will during early boot
 
-> ---
-> Changes since v3 [Michael Kelley]:
->  - Employ x86_platform.guest.enc_kexec_{begin,finish} hooks.
->  - Don't use spinlock in what's now hv_vtom_kexec_finish().
->  - Handle possible hypercall failures in hv_mark_gpa_visibility()
->    symmetrically; change hv_list_enc_remove() to return -ENOMEM as well.
->  - Rebase to the latest hyperv/next.
-> ---
->  arch/x86/hyperv/ivm.c | 211 +++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 210 insertions(+), 1 deletion(-)
->=20
-> diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
-> index ade6c665c97e..a4615b889f3e 100644
-> --- a/arch/x86/hyperv/ivm.c
-> +++ b/arch/x86/hyperv/ivm.c
-> @@ -462,6 +462,195 @@ void hv_ivm_msr_read(u64 msr, u64 *value)
->  		hv_ghcb_msr_read(msr, value);
->  }
->=20
-> +/*
-> + * Keep track of the PFN regions which were shared with the host. The ac=
-cess
-> + * must be revoked upon kexec/kdump (see hv_ivm_clear_host_access()).
-> + */
-> +struct hv_enc_pfn_region {
-> +	struct list_head list;
-> +	u64 pfn;
-> +	int count;
-> +};
-> +
-> +static LIST_HEAD(hv_list_enc);
-> +static DEFINE_RAW_SPINLOCK(hv_list_enc_lock);
-> +
-> +static int hv_list_enc_add(const u64 *pfn_list, int count)
-> +{
-> +	struct hv_enc_pfn_region *ent;
-> +	unsigned long flags;
-> +	u64 pfn;
-> +	int i;
-> +
-> +	for (i =3D 0; i < count; i++) {
-> +		pfn =3D pfn_list[i];
-> +
-> +		raw_spin_lock_irqsave(&hv_list_enc_lock, flags);
-> +		/* Check if the PFN already exists in some region first */
-> +		list_for_each_entry(ent, &hv_list_enc, list) {
-> +			if ((ent->pfn <=3D pfn) && (ent->pfn + ent->count - 1 >=3D pfn))
-> +				/* Nothing to do - pfn is already in the list */
-> +				goto unlock_done;
-> +		}
-> +
-> +		/*
-> +		 * Check if the PFN is adjacent to an existing region. Growing
-> +		 * a region can make it adjacent to another one but merging is
-> +		 * not (yet) implemented for simplicity. A PFN cannot be added
-> +		 * to two regions to keep the logic in hv_list_enc_remove()
-> +		 * correct.
-> +		 */
-> +		list_for_each_entry(ent, &hv_list_enc, list) {
-> +			if (ent->pfn + ent->count =3D=3D pfn) {
-> +				/* Grow existing region up */
-> +				ent->count++;
-> +				goto unlock_done;
-> +			} else if (pfn + 1 =3D=3D ent->pfn) {
-> +				/* Grow existing region down */
-> +				ent->pfn--;
-> +				ent->count++;
-> +				goto unlock_done;
-> +			}
-> +		}
-> +		raw_spin_unlock_irqrestore(&hv_list_enc_lock, flags);
-> +
-> +		/* No adjacent region found -- create a new one */
-> +		ent =3D kzalloc(sizeof(struct hv_enc_pfn_region), GFP_KERNEL);
-> +		if (!ent)
-> +			return -ENOMEM;
-> +
-> +		ent->pfn =3D pfn;
-> +		ent->count =3D 1;
-> +
-> +		raw_spin_lock_irqsave(&hv_list_enc_lock, flags);
-> +		list_add(&ent->list, &hv_list_enc);
-> +
-> +unlock_done:
-> +		raw_spin_unlock_irqrestore(&hv_list_enc_lock, flags);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int hv_list_enc_remove(const u64 *pfn_list, int count)
-> +{
-> +	struct hv_enc_pfn_region *ent, *t;
-> +	struct hv_enc_pfn_region new_region;
-> +	unsigned long flags;
-> +	u64 pfn;
-> +	int i;
-> +
-> +	for (i =3D 0; i < count; i++) {
-> +		pfn =3D pfn_list[i];
-> +
-> +		raw_spin_lock_irqsave(&hv_list_enc_lock, flags);
-> +		list_for_each_entry_safe(ent, t, &hv_list_enc, list) {
-> +			if (pfn =3D=3D ent->pfn + ent->count - 1) {
-> +				/* Removing tail pfn */
-> +				ent->count--;
-> +				if (!ent->count) {
-> +					list_del(&ent->list);
-> +					kfree(ent);
-> +				}
-> +				goto unlock_done;
-> +			} else if (pfn =3D=3D ent->pfn) {
-> +				/* Removing head pfn */
-> +				ent->count--;
-> +				ent->pfn++;
-> +				if (!ent->count) {
-> +					list_del(&ent->list);
-> +					kfree(ent);
-> +				}
-> +				goto unlock_done;
-> +			} else if (pfn > ent->pfn && pfn < ent->pfn + ent->count - 1) {
-> +				/*
-> +				 * Removing a pfn in the middle. Cut off the tail
-> +				 * of the existing region and create a template for
-> +				 * the new one.
-> +				 */
-> +				new_region.pfn =3D pfn + 1;
-> +				new_region.count =3D ent->count - (pfn - ent->pfn + 1);
-> +				ent->count =3D pfn - ent->pfn;
-> +				goto unlock_split;
-> +			}
-> +
-> +		}
-> +unlock_done:
-> +		raw_spin_unlock_irqrestore(&hv_list_enc_lock, flags);
-> +		continue;
-> +
-> +unlock_split:
-> +		raw_spin_unlock_irqrestore(&hv_list_enc_lock, flags);
-> +
-> +		ent =3D kzalloc(sizeof(struct hv_enc_pfn_region), GFP_KERNEL);
-> +		if (!ent)
-> +			return -ENOMEM;
-> +
-> +		ent->pfn =3D new_region.pfn;
-> +		ent->count =3D new_region.count;
-> +
-> +		raw_spin_lock_irqsave(&hv_list_enc_lock, flags);
-> +		list_add(&ent->list, &hv_list_enc);
-> +		raw_spin_unlock_irqrestore(&hv_list_enc_lock, flags);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +/* Stop new private<->shared conversions */
-> +static void hv_vtom_kexec_begin(void)
-> +{
-> +	if (!IS_ENABLED(CONFIG_KEXEC_CORE))
-> +		return;
-> +
-> +	/*
-> +	 * Crash kernel reaches here with interrupts disabled: can't wait for
-> +	 * conversions to finish.
-> +	 *
-> +	 * If race happened, just report and proceed.
-> +	 */
-> +	if (!set_memory_enc_stop_conversion())
-> +		pr_warn("Failed to stop shared<->private conversions\n");
-> +}
-> +
-> +static void hv_vtom_kexec_finish(void)
-> +{
-> +	struct hv_gpa_range_for_visibility *input;
-> +	struct hv_enc_pfn_region *ent;
-> +	unsigned long flags;
-> +	u64 hv_status;
-> +	int cur, i;
-> +
-> +	local_irq_save(flags);
-> +	input =3D *this_cpu_ptr(hyperv_pcpu_input_arg);
-> +
-> +	if (unlikely(!input))
-> +		goto out;
-> +
-> +	list_for_each_entry(ent, &hv_list_enc, list) {
-> +		for (i =3D 0, cur =3D 0; i < ent->count; i++) {
-> +			input->gpa_page_list[cur] =3D ent->pfn + i;
-> +			cur++;
-> +
-> +			if (cur =3D=3D HV_MAX_MODIFY_GPA_REP_COUNT || i =3D=3D ent->count - 1=
-) {
-> +				input->partition_id =3D HV_PARTITION_ID_SELF;
-> +				input->host_visibility =3D VMBUS_PAGE_NOT_VISIBLE;
-> +				input->reserved0 =3D 0;
-> +				input->reserved1 =3D 0;
-> +				hv_status =3D hv_do_rep_hypercall(
-> +					HVCALL_MODIFY_SPARSE_GPA_PAGE_HOST_VISIBILITY,
-> +					cur, 0, input, NULL);
-> +				WARN_ON_ONCE(!hv_result_success(hv_status));
-> +				cur =3D 0;
-> +			}
-> +		}
-> +
-> +	}
-> +
-> +out:
-> +	local_irq_restore(flags);
-> +}
-> +
->  /*
->   * hv_mark_gpa_visibility - Set pages visible to host via hvcall.
->   *
-> @@ -475,6 +664,7 @@ static int hv_mark_gpa_visibility(u16 count, const u6=
-4 pfn[],
->  	struct hv_gpa_range_for_visibility *input;
->  	u64 hv_status;
->  	unsigned long flags;
-> +	int ret;
->=20
->  	/* no-op if partition isolation is not enabled */
->  	if (!hv_is_isolation_supported())
-> @@ -486,6 +676,13 @@ static int hv_mark_gpa_visibility(u16 count, const u=
-64 pfn[],
->  		return -EINVAL;
->  	}
->=20
-> +	if (visibility =3D=3D VMBUS_PAGE_NOT_VISIBLE)
-> +		ret =3D hv_list_enc_remove(pfn, count);
-> +	else
-> +		ret =3D hv_list_enc_add(pfn, count);
-> +	if (ret)
-> +		return ret;
-> +
->  	local_irq_save(flags);
->  	input =3D *this_cpu_ptr(hyperv_pcpu_input_arg);
->=20
-> @@ -506,8 +703,18 @@ static int hv_mark_gpa_visibility(u16 count, const u=
-64 pfn[],
->=20
->  	if (hv_result_success(hv_status))
->  		return 0;
-> +
-> +	if (visibility =3D=3D VMBUS_PAGE_NOT_VISIBLE)
-> +		ret =3D hv_list_enc_add(pfn, count);
->  	else
-> -		return -EFAULT;
-> +		ret =3D hv_list_enc_remove(pfn, count);
-> +	/*
-> +	 * There's no good way to recover from -ENOMEM here, the accounting is
-> +	 * wrong either way.
-> +	 */
-> +	WARN_ON_ONCE(ret);
-> +
-> +	return -EFAULT;
->  }
->=20
->  /*
-> @@ -669,6 +876,8 @@ void __init hv_vtom_init(void)
->  	x86_platform.guest.enc_tlb_flush_required =3D hv_vtom_tlb_flush_require=
-d;
->  	x86_platform.guest.enc_status_change_prepare =3D hv_vtom_clear_present;
->  	x86_platform.guest.enc_status_change_finish =3D hv_vtom_set_host_visibi=
-lity;
-> +	x86_platform.guest.enc_kexec_begin =3D hv_vtom_kexec_begin;
-> +	x86_platform.guest.enc_kexec_finish =3D hv_vtom_kexec_finish;
->=20
->  	/* Set WB as the default cache mode. */
->  	guest_force_mtrr_state(NULL, 0, MTRR_TYPE_WRBACK);
-> --
-> 2.50.1
+Agree.
 
+In the past this idea has been met with "but but typical distro kernels
+have lots of built-in drivers that *may* be unsafe", and the answer is
+"yes, a VM image with a CC aware / specific kernel config is a
+requirement".
+
+> 2) The first thing the initrd does is set
+>    /sys/bus/*/drivers_autoprobe to false.
+>    This stops all kernel driver autobinding.
+
+Makes sense for the buses userspace is prepared to manage.
+
+>    Maybe we also need a small kernel change to allow userspace to make
+>    drivers_autoprobe false for all future busses too.
+
+I do think we need a mechanism to say, "no more dynamic device
+enumeration", but a coarse and future promise "no autoprobe of any bus"
+I fear is going to have a long tail of problems especially with design
+patterns like "faux_device" and "auxiliary_device".
+
+As far as I understand, these CC environments do not immediately have
+secrets to protect at launch. Also, not sure how many are ready to
+validate the launch state of the TVM that early. I think it is more a
+case of allow everything by default to start (whatever is in ACPI, and
+T=0 PCI devices). Later the relying party either says "no, you have
+enumerated devices that should not be there", or "yes, launch state
+looks good, lock device topology, proceed with the performance
+enhancement of converting some PCI TDISP devices to T=1 operation, here
+are your secrets".
+
+That post validate model saves us from a long tail of fixes for
+subsystems that may be surprised by a new userspace acceptance loop. It
+is userspace responsibility to validate device topology relative to
+relying party expectations, and likely for the device topology to be
+static for the duration of secrets deployment.
+
+> 3) Userspace then evaluates what devices are present, checks its
+>    policy, loads modules and issues /sys/.../bind operations.
+> 
+>    We need to close the general security gap I gave earlier, userspace
+>    policy should be able to implement the statement:
+
+The gap is present when secrets are deployed and if secrets are deployed
+pre-accept the TCB is already broken.
+
+>      mlx5 is allowed to bind to a RUN device after measuring and
+>      verifying it, and never otherwise.
+
+...and if userspace binds mlx5 pre-RUN that is not the kernel's problem.
+I state that explicitly not for you, but because of the rejection of the
+"device filter" in-kernel mechanism previously.
+
+>    a) For non-TDISP devices userspace checks if a driver is "trusted"
+>       before binding it, a fancier CC only deny list stored in the
+>       initrd.
+
+Yes, necessary.
+
+>    b) For TDISP devices userspace runs through the
+>       prepare/measure/lock/run sequence then binds the final
+>       driver.
+>    c) Something something RAS driver restart
+> 
+>    Basically userspace policy is entirely in control if a device is
+>    "accepted" by the ccVM or not. The kernel won't auto bind
+>    a driver to a physical device. It would be driven off of
+>    uevents, I guess through new CC focused features in udev.
+
+Yes, the only quibble is whether that "kernel won't bind" is more a
+"userspace shall lock and validate device topology" at a certain point
+in the boot flow. Userspace may need to be prepared for some unaccepted
+devices to bind before that point.
+
+>    I think the needed kernel support is already here, the main gap I
+>    see is that the modules.alias does not include the driver names, it
+>    just has the module names. We ran into this with vfio (see below)
+>    so it would be nice to fix, though it can be worked around like
+>    VFIO did by making the driver name == module name.
+
+Yes, I think that is reasonable. Multi-driver modules are not the norm.
+
+The kernel problems to solve are "accepted" flag and maybe documenting
+to driver writers / udev developers strategies to handle the "prepare"
+problem.
+
+> 4) Userspace sequences the special "prepare" pre-T=0 drivers, perhaps
+>    discovered through modinfo matching similar to VFIO:
+> 
+>    $ grep vfio /lib/modules/`uname -r`/modules.alias
+>    alias vfio_pci:v000015B3d0000101Esv*sd*bc*sc*i* mlx5_vfio_pci
+>          ^^^^^^
+>    PCI driver but special for VFIO usage. So I imagine a
+>    ccprepare_pci:... driver variation.
+
+Novel!
+
+>    Userspace can inspect the modules.alias, find if the device's
+>    modalias has a ccprepare_pci: match and if so it will bind/unbind
+>    that driver before going to locked/run. When it reaches run it will
+>    find the pci: match and bind that driver which is the operating
+>    driver.
+> 
+>    Policy if the ccprepare device should even be permitted is also
+>    controlled by userspace.
+> 
+>    Userspace sequences all of this based on its policy to accept a
+>    device and push it to RUN, not the kernel, again probably
+>    through some new CC features in udev.
+> 
+>    The kernel side of this is a commit like cc6711b0bf36 ("PCI / VFIO:
+>    Add 'override_only' support for VFIO PCI sub system")
+
+Yeah, that looks like a viable option for these complicated drivers.
+
+For RAS I do still like the property of a driver that will field errors
+also having everything it needs to take a device from reset back to the
+ready-to-accept state. That can be solved later, and maybe the outcome 
+is "cc_prepare" is incompatible with "recovery".
+
+> This is much less kernel change and gives the big thing CC needs -
+> driver binding policy decisions in userspace.
+> 
+> > > As we discussed in the prior chain we need to have a policy decision
+> > > before auto-binding drivers at all in a CC environment, I don't see
+> > > that in the code though the cover letter talked about it??
+> > 
+> > The aim was for the "'struct device' has an acceptance flag" discussion
+> > to settle before starting a "device-core policy for unaccepted devices"
+> > discussion. I am ok to put more logs on the fire if there is an appetite
+> > for that.
+> 
+> Sure, I think you shold drop this patch from this series and have this
+> series focus only on creating an accepted struct device environment
+> that a driver can bind to and operate.
+
+You mean drop the device_cc_probe() piece. The rest of patch is starting
+the work of a "accepted struct device environment" with a single flag
+that MMIO and DMA infrastructure can reference.
+
+> This is a long journey already, once this basic support is landed we
+> still need to do all the arch support to enable DMA/IOMMU/etc as many
+> followup series.
+> 
+> The questions about when and what drivers are probed can be left to a
+> different series, at this point it will be usable for development but
+> not secure like it should be.
+
+Agree. Especially because attestation interfaces are not part of this
+series yet.
+
+> The device_cc_probe() type issue should be solved in yet another
+> series, IMHO, and that should come with a really strong justification
+> why the kernel needs to do anything at all, vs just rely on userspace
+> as I outline above.
+
+It is trivial for a driver to open code EPROBE_DEFER so
+device_cc_probe() is not putting any burden on the kernel besides
+documentation, but I will drop it for now.
+
+> > I was hoping to put the onus of that on the vendors that think they need
+> > this Enlightened driver path. The path of least resistance for device
+> > vendors is design the hardware so that it can be locked without needing
+> > a driver to take any configuration action ahead of time. Otherwise,
+> > explain to users that they need to adjust/replace the eventual udev
+> > sysfs script that does:
+> 
+> So if we already imagine changing udev, lets imagine the above
+> instead?
+
+That's the whole discussion, what are the udev requirements relative to
+the secrets deployment event.
