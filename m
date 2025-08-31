@@ -1,208 +1,417 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2089.outbound.protection.outlook.com [40.107.94.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE6B22156D
-	for <linux-coco@lists.linux.dev>; Sat, 30 Aug 2025 13:27:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.89
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756560430; cv=fail; b=fgLh9Osxne4NGgV+Bj8TSfGDZBZwLoMctsqvJz/nCbH7x/YRjPm0vqEG3h3F4enr9Qk5BaZkvh6wulhLvANgx98opBXRm2L0fUg8gkLZEolHK2LpYDGRNAW2fiQa1NuGtZ2aX56cfZpLdfegqRtK2E4PZ4972bI+BBv9fpggQfk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756560430; c=relaxed/simple;
-	bh=OzQomh91NFQNwpt8jKuEcHDTEvfcGkQEyscjW9X6DcU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=s5AyLhYVqIG6qyWQyHZ7yvH0KkIXo6B5oEePBDKVx/Q08RW6kWjNOZ6EJHoVqPfgn0KuMFovzR/lKrwIFLhuACGRdvx8xBhCcYJDE6xjZjVnLizJ694JQzXY5ODWRlrXzdTI/izVyZW0weKzY66NIGv+9O/Q8FULLLV3VIZg1DA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=dj5oS5qT; arc=fail smtp.client-ip=40.107.94.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7579F216E26
+	for <linux-coco@lists.linux.dev>; Sun, 31 Aug 2025 17:38:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756661914; cv=none; b=vCDddjV3okzYDZ7/fwnuY5eSqJI0J0G81E/LgvbKEWeJ2qI7/LEnXH0XZEtmeFsoEN+1QKpDKpJ5s8KjoUvqNSe/lv/Gx3nthy6bhec414hBa6t1+ur8qoCcGluMq9cLY2HAmc6dy/hmH7dJTt+lBIXjJ+jXrNUOwoWhAHVYMm8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756661914; c=relaxed/simple;
+	bh=3hYtiSB1bita0VH3Br12n9/2l1ftfvSAlztbr52K/+U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d8Be0MfcEjZa6DcjKyC1bBcDgJnHJkoSzhiTu+8kqLo1g+kBe9iCL+n/Q4gxwcXjp5t46tb9kXuAkJUY4PJru1qg+iefq/H6D6lrOQ9LfxnVs9EiYzz8nOXRVcrxsGXXKRGHZ94gLPFwIHxyrutMrvZpm9i+JHEXNy7DdEYLsV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d4QzoO7+; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="dj5oS5qT"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tL/Yz7qcUc7JKMDcd+nYUfsNMazAbxXYLWfO8EN9z64vbYe0nQGhGY02t4t3ILJvurSHwV5H3SvgLHZZSifkduxnjdzcRax0K90x/T0Zc/HDQqWyLbt0ur3q808H+Zq2t/3DW6Sf/jQQx2M87OLjjE+jPSfceE7WtMOTV6Etg6U7Gqju8+5jZcEy003BCnJFbHzBbvJMz5oF+eurxWEIrkPHci8aa3O0nRbkI+vQcKJkLUEM/J4RF3XAMov7tqXAtHvFgF2+q7ZAY1Q4lOdDm22jJX9dHUUJKuFuAtvyuBiau5PUxQrI5Q5EUIYEzMDWDpVpAJ5xeXcHgzCZOkv+dA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hS8RqJ6QelK2G9+7MdrtWzybDlWJHS+DMnvBl7FKy1o=;
- b=SlUv2dgYDd6UCO5BYKnMqSJiTmGBKoPQ7NDJJ6CkzTXjJIKVzjDTMMGjzzMYIrazUhjMPHzLgY1eFdti1JHHwnbVX7l86J9DiKK9nnL9MsG+dRlsItWIpXNgc3gWKav0UBPvt83sxb0J7Mli4abhV/I946RoVS4/Tfl97L8nXuSxgtFyXWidLen+25ZZzMXYfXe/8Cn3oCRVP21oyjbw4riLM7c+E6wTuHWp+2HPTreBZ1qnlE42NbU7u7Mg0xq+3BdrzHfhvBJobbhok2OxyuoRLd4+TDF7y8O9x9kefJIikEmUYBFWfJkDsZSSy2NKxfleNFPatpsb37BpGC3yeg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hS8RqJ6QelK2G9+7MdrtWzybDlWJHS+DMnvBl7FKy1o=;
- b=dj5oS5qTjJ700Tu/td4teQkG6mCrzZS3FU9gDsqByTwMuPNR/Nbz6d8sI+WXy1BJMLvy4MfZ6naeQqlglWfdfxMZ94Ru0SePeTc2pjoVvcprGxspirxTj3hbILF/GomNX/I9l1p82ckE+IpqEWe6r7wVC62NPpFo0qPGu94+b/g=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by CH2PR12MB4278.namprd12.prod.outlook.com (2603:10b6:610:ab::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.14; Sat, 30 Aug
- 2025 13:27:05 +0000
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f%5]) with mapi id 15.20.9073.021; Sat, 30 Aug 2025
- 13:27:04 +0000
-Message-ID: <00c6ea3a-8c23-44d6-80a5-d2c0cd0d9cc3@amd.com>
-Date: Sat, 30 Aug 2025 23:26:59 +1000
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH v5 04/10] PCI/TSM: Authenticate devices via platform TSM
-To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
- linux-pci@vger.kernel.org
-Cc: yilun.xu@linux.intel.com, aneesh.kumar@kernel.org,
- gregkh@linuxfoundation.org, Lukas Wunner <lukas@wunner.de>,
- Samuel Ortiz <sameo@rivosinc.com>, Bjorn Helgaas <bhelgaas@google.com>
-References: <20250827035126.1356683-1-dan.j.williams@intel.com>
- <20250827035126.1356683-5-dan.j.williams@intel.com>
-From: Alexey Kardashevskiy <aik@amd.com>
-Content-Language: en-US
-In-Reply-To: <20250827035126.1356683-5-dan.j.williams@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SYBPR01CA0018.ausprd01.prod.outlook.com (2603:10c6:10::30)
- To CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d4QzoO7+"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-327f87275d4so2030218a91.1
+        for <linux-coco@lists.linux.dev>; Sun, 31 Aug 2025 10:38:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756661912; x=1757266712; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nlwerZOMDd8NX9+kt0uKIyECi+13IfTQs20ddjfYWfM=;
+        b=d4QzoO7+QlnWbYWskthcYOUCmpxvQ+NUTo2f2N/tA1dh4DdTNXzzL3xoZODkChL628
+         6AqVpHriyaepmy1jJSP0DmBW/v+3XHzJmfxXMfMvAUpBKotDG8kdOZdRCNzyGHfewsa7
+         xsDkNh/3dnRqbJHvs8KWLK7pychHvsy+Vvs+jyziyzk7xc7qIwuRwrMonmzNunkZpaqa
+         XWYIPxkV4yef16ABxcFBVS+dKeIn6LbZx3S4giHy0FbtDa6NNunL+oyPBNdIUX6sVHAY
+         RajhMItYtRLk+UwGllLmnfxAZmxyEsgH2KoMMvzqxeLS+C0pkGSNUljRa65JwOMPDbXR
+         1rIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756661912; x=1757266712;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nlwerZOMDd8NX9+kt0uKIyECi+13IfTQs20ddjfYWfM=;
+        b=HvgTI2lm9kroLZPmvk08akfhcTd7CaBtxGTNDThdLkyFiFLhkJSwW1guMjzXJupLo0
+         VkhkKNoxuFK2bCRZvTHCfQv9tp55cG9tZi+hbrFJz0oTRMhSUcsy0daJYdSkAapF+rwk
+         hy7WcnAfajwgoHvOzsbywgo4QilVW9pP+drSl1bv0JZKkYJYOa9PX1GB+Nxit9Uh6+Ez
+         Cp05T0w6pchI1+i55qUX3nWS9pzRWZYiOrsBy7TZQrFR2TZ3mNXde9dHFHOvW71keuf8
+         fPnZztwZY3fwSgA9fTG1BBmmgntTom26LNhA/MgrRdiKvX+Xkutw8yLEC5bc/A+SldiP
+         mpVA==
+X-Forwarded-Encrypted: i=1; AJvYcCU/kMGkwUSXd/xS/kwm8IMnVnCFx4/N6M3tlqvwx09bdDx0IpT9uxigNU+FMws+cc+S5hVD9Asb/x3t@lists.linux.dev
+X-Gm-Message-State: AOJu0YzaW4pTivag0zKaRI0MFocHWE8YRkQ2zeHo67MU/bNo44kvFtKs
+	BZDqzX+EwfAvpIHZrwghrKuKiBHQF10xbUUuJEx58HFoS4qGhI9wWc6eBFxUhuxsTocGVgOLdfx
+	Lxpu5/K9Ye5FctU0Yiz5GXdWJJV3DMRY=
+X-Gm-Gg: ASbGncuI+wZGGdx7gqX36Wx76uads71WBE0JfC8L5wjbrQHLzt3V8AFb2o4k6zBVpde
+	ORnt+bVNgs0qSR22odt/a8U15fxWVD0aAVznxdN9iU6Sp45q+IUfwPDD5rcXow5+9liXc0lNGIV
+	El46ZUKH3N6ZfASZx0v4k1AobviEr3mIBa/ro16cS9lYutYcbQt22d9//k2xT2gEgI8gLNRr4FH
+	GG/XDs8
+X-Google-Smtp-Source: AGHT+IHIQ/TwkUqnG3Yvkdjgei9ZgJ1+SUcV3kxV9AtLoAVScJcAxWPCdWBWxEi7aF6VQ0HhzJwrMujmtPjhpDMzpCk=
+X-Received: by 2002:a17:902:d4c4:b0:248:96af:51e with SMTP id
+ d9443c01a7336-24944ad0aedmr65936155ad.45.1756661911600; Sun, 31 Aug 2025
+ 10:38:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|CH2PR12MB4278:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2b6cdcce-fd10-4e8e-6059-08dde7c8e8e3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dDVrVzcxaXVBamx1N3NSTjhxVy9JQW4zOUJzODBuNzU2TDhyS3hwQWZxRWIr?=
- =?utf-8?B?Q2RhU2ZpbVI4Uk11T3pVQVRsWHpNTzRBc2c2ckk4S3hxWG8wS01BMU54TnZK?=
- =?utf-8?B?U3Z0QzR5ZGtyVEVJUHhUSHFGTW53bmJNSWgwWW1SalFOSkF2aHB5UGlVd2pk?=
- =?utf-8?B?b2VNTmN4Y0VwV0tveVRvaTdXOS9pbEQ5VkpDUUh3dXg1THdrdkc2UllYL1l0?=
- =?utf-8?B?b1AvOFB2NmwrSG95VU1TQ2JudlJDcnR3MzFTN1lvWFFqZ09wNXpDQU5ZMWFw?=
- =?utf-8?B?NzFGMm5SdVp5Tkw3MGhzWFdieTF6RHY4WDhWbGs5OHA0R1REMjdMTXNITUNo?=
- =?utf-8?B?SEFuZ3FMRk1EbXU0OXp0TU5YNGpFZjBqZjduc1krUEhvZEJ4eDBKSU1VM2V4?=
- =?utf-8?B?ZStHQnN1bVZndWxDT3Mzbk04WnZUZ0Y4V2NRaFNtTGxrNXBEdVRzeXcreDhk?=
- =?utf-8?B?ZFM0UWM3WWpkcnhHNXE0R0FEZCsyQnQxaU9XS2szQXRPU21CcUJtbTNmcmNq?=
- =?utf-8?B?bG04Unk3NFI3aFM0RTczbzJFaGh0dE9QWlRhVDlRSjU2TXZuSnVPZ2FUb1VQ?=
- =?utf-8?B?L3hXWllpNkhVQ0RrVUhJLzJFRXRLeUo2YVpxaFhlQ0lOOWNCR1l0ZSt5eEFj?=
- =?utf-8?B?eElWZUhxd01HV05LS2M2V0Q5c1E5VU44bmQrY3E4T1crV2NsZm1ZaVlDOENV?=
- =?utf-8?B?ZW1nYXBWcGkwbXdPK3ZDWXZ4WDdtNUVIS0FOTDduN0tFMWZuVEZRV2lMaFJq?=
- =?utf-8?B?VkQ3VGk5QXZXeUJwbUU1cCtDbkhWNmVXdUw1MnMzcWFGK3JMMjlMKzI3RUFL?=
- =?utf-8?B?aWx4R2JXL2R5VVUzRkQ5R2Z0cytQWmdXdWd0Q2FKM1VENS85WFNWTldlc2sz?=
- =?utf-8?B?Y0tNYkJjcFRSQWZoMDVuOFZ1QVFzLy9MdThaelBYdGlMMkt2WkZxckZVKzVs?=
- =?utf-8?B?ZzB1RkY2MmdrSHF4elk2TUZ2dVpwbnJjaTVKdG1TaWZTa1dHZTc1NWplOXYv?=
- =?utf-8?B?WDRGTjNjZGhDNkJaSGMvQnQ4Y04wWGNzN2tqUDBpeVgwL09lSThJQjkvdFB6?=
- =?utf-8?B?V0VsQWpCKzkzLzNxWEc5MGRqbk8wYkN4Zm9oWkJiM2NzSEsvZWw0ZkZHTklw?=
- =?utf-8?B?cUJoVTVycHNuaDZsTXk2bUpxQmFCbmZCWXk5Z2NuZE1rM2dYUHZnelk0V0FX?=
- =?utf-8?B?SU1rM0Nlc0FMcENlbUlVaE1icWk1akNhdWp2R0x2TGtCT3ZWSGhlTXdSdlJY?=
- =?utf-8?B?cUxtZnU4TjhuaWI1a3FBTFZxVEVSbE5UVVI2UC9xUWczOWxiREdrVFVWeXY0?=
- =?utf-8?B?YjJVZG9VakY1RzVlVnJMdVdnaENhQUNwS0hLcHZYWkZIczJGRHJuazkrNnlI?=
- =?utf-8?B?YkpPR3h4TDdDN0o3bTJYU3Q4NGtId1kwRTdJdS9mVXdOUnE4UkdEdVpzaEdy?=
- =?utf-8?B?dWRYRDRnTXNjVzM2aUdqUHhTUGZ6Wjc3YXZXOE5KL3ZSS0x3c013SzRDOHBw?=
- =?utf-8?B?RzNzbmJjUmNNckV4ZU9WZ1VLaXhRbWVZUGRqWUg4NFMxU2hjdGVPdXpINVFL?=
- =?utf-8?B?VXFhN3lJVDVvR0RPZWhxVGtoTFJLSG03VTltSjI4eU9sVStzaFk4di9nemFj?=
- =?utf-8?B?L3FmZDE3SXJOemR6YkxUTHRVbnFtTCtUaGVxUzlQS2RjdjNZdnJGK2ZvZ3hO?=
- =?utf-8?B?YjE3bk5rQ1Z0cXFrSy81cm5rR3BKenFjb2w0eGx2MU1CWUthRC9aaHhUZVlJ?=
- =?utf-8?B?bEJsdmVabldObDJQWVQ0THRMRFNaSmRBL01MZnBZOTlJNGNQaEp0OW9CUUdm?=
- =?utf-8?B?SHJPTm1UZnJhcDArV0w5aE1xUEVmSkJndURPWFBUZUNUS2dLUGJNaXo2cEFE?=
- =?utf-8?B?VmhVeExxMTZVRElVVWdtSU9ISG9KQklnTHdWVjNkejc1Y0ZWZDF4aHBNUlJz?=
- =?utf-8?Q?i3iDsznr2FY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YVgxOVIxK3F5N2FmUVdidkhZa0N6K2VnMWNRbmMzUzlicGtvbXk2V1Y4WmRl?=
- =?utf-8?B?NENNRGVxbUk0ZVRUTWg0SEM4MnpFOS9OaW5TamovbmwzMkozYnhNaXFzSlVi?=
- =?utf-8?B?eGtmTUhvbW1iTTJnOEdhcktDaTc0YVVFL2V3L0VPUExrTlFWcXNKdGM0bDFJ?=
- =?utf-8?B?U0dxdUQ4TGV1MVhLK3JERUdKanlwczdabkRpdEcxbnpqdFF4Rnp3UVpaYVBE?=
- =?utf-8?B?bkUralNpajJ4NnZlakMzUHk5aW1nV2FXRkdCVlkyR1dxUUd2QU5nbStuUlFB?=
- =?utf-8?B?ZC9DVXpjNGhOdmxNc252NmVrbW1zdk5ZcXVySWp5bDZucGtialdPbWVreDJI?=
- =?utf-8?B?S0YvanVEM2VaN0djTFAyclpIT2JXZ0ltME9ubzdDSTVTZHhwbXlEZk1JN2Na?=
- =?utf-8?B?R2E3U1VWejRZV3FxeDJEVkhvRUpVdnVyKytHUWZXRGNISStuN3o2UDg4SFgy?=
- =?utf-8?B?UTErQVdLRDdqRzRuM1NFYWRNUXViaXAyY3IzL2JqclZOcnBYeG14Y2IzOFlr?=
- =?utf-8?B?aGRwQ1g1VEJZczhJdzQ3TUJtOG9LZldnYjk4TWpWaWdsNkxsaVVXUXhQS1dH?=
- =?utf-8?B?VkhJZ01DZTBMY0ZNNVZteXllb0plSi9tVG1XZC9yZGVHaSs3VmJ6ZFF3Wmt4?=
- =?utf-8?B?Qzl2Tlp3UkZFeTdUN1MveldFa0FDTWtXbEovaXFkbE43MWNpdzVPayt4UGtN?=
- =?utf-8?B?YjlXWUVrODBaWWxMbmFraS9SeCtDVzk3VDJJY050T291eU55NEcvdXd4Ull1?=
- =?utf-8?B?T3pMSys4d3dmREVyV2Z5c2gvTzRseFpTSnFCa3N3eXNVbVU1SEZYWDJZRDBp?=
- =?utf-8?B?SjlDaUtPb29LWC93VW5FSmZkeTVqY1NKNG8zZmh6SlFiQnkwRGIxWTUzWU1r?=
- =?utf-8?B?QVhXVkFIQVFwV25vdXhvR2NxU3dHK3FEYzdUdFh5ZVRVMzBic1dkVSttNkZQ?=
- =?utf-8?B?L2NSRDJwRTNuTVNhVW1OdmJ6bFZKaFZSRVZhQThGS0k5dFkyUFprOGxmNWVk?=
- =?utf-8?B?YURGOHlnWHZTNTJCV2JFZm5nczRXblFOaGlCTG1uQTdpbitMK0RpM0NHQlNK?=
- =?utf-8?B?TzhPVHFZNlFyWTJRcU1EdElzblhyZzNzMUE0Y2h5czlOQmRuV2wwTFI5MnhQ?=
- =?utf-8?B?cHVRZjlESXZqUWl5eFZ2T0pjcWxuNE0yUlAvdFNHUTg0SVM3eHU5VkxwSjg0?=
- =?utf-8?B?R0NvQUZOTjFyUmVHZUxJL05kMmUrY2tIalplVTlhK1hyeFMzekdab0lraEM4?=
- =?utf-8?B?WFZIaTZEVDAvczhCY3crRXN1QktGUXV1WXFUZ2JDYlF1aG4rTWp0ekNrV1hu?=
- =?utf-8?B?eUk3eElrcEZERHVFellCdlo5TUYrVnYybjFaVHMxUWN2WVNxMkVUdDlLNjRT?=
- =?utf-8?B?S3lZamZ1L2pLLzlPaVh3T29vSUd0WmR4bWRFMnlWby8ySTU4VVBKSnBoSzVV?=
- =?utf-8?B?a2pyZlliUmdjR0RETXp6MDR1RzNIQnlmN0Q2OXMxbUVTOGNEVGxXYXA3dEVz?=
- =?utf-8?B?MHpjcUI5VU0rU0E1ZlRENHZYK3NGRG1rWDFjVSs3V01ETUpOcEIzcDVmY3Ju?=
- =?utf-8?B?YU5RUE5PaHJLWE5zalJsZ0NIbjFCc2pxTHVjSVFNUWdQSTU0Y21WUVprL2xn?=
- =?utf-8?B?czFwckNHSnF4R3Ziak9sSzhjeXVvS1Q2T25DNzFuWTU1VDZwVVhtN08xL2xU?=
- =?utf-8?B?VStzeVIrSzFoTldNZ0w3YWZTRlFDQWV0Umd4eUhxYmQ5RjVMZGRoOGFTaytM?=
- =?utf-8?B?eEpUTDl0a1FnSHJCTTcrY1RkZXJCRGxqeW5Uc25JcnFtTWdZRnlvOE1MSGdI?=
- =?utf-8?B?VlB1cHE3bmZ6YTF5d21JOWZTQXdoeHpGcHZBcWFSbnFoS3FZeGt2b3lWUXhJ?=
- =?utf-8?B?SXZYaWVtcFFGNEl4OFVycUt5YVl6cTJmQ2c4bXczbU05NHhTWXc1TVpDMmVT?=
- =?utf-8?B?d3lDc09ZSVF6Q0FlUzF2bkNGeGh3c0JuT2dVVStMLzV3OEJEcGRKNElhY01X?=
- =?utf-8?B?ZS9LZEJQRzBRRkh5SWpHU1NvQ1B2TlVEWmNvbzBlYlBFSVcvNTNqUkE5K09T?=
- =?utf-8?B?TGpmbzdKbHVRWVNEV29BU251WFpRYko3WUdtYlMwZ0tMMlJMdmlieDBuSlFm?=
- =?utf-8?Q?8h8hT7bcJmuSgPJ5fj1e3i0Jp?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2b6cdcce-fd10-4e8e-6059-08dde7c8e8e3
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Aug 2025 13:27:04.8234
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qRSJBhAW4AMFpsdrsGenehTTh7QOxBk6qdzfxy4JPPGfLsvYBAUqqagEKs8k+QKoLJvG6ubfdHlOm5CJdwHQjg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4278
+References: <20250828091618.884950-1-vkuznets@redhat.com> <SN6PR02MB41571C1A6DE8756D72176E93D43AA@SN6PR02MB4157.namprd02.prod.outlook.com>
+In-Reply-To: <SN6PR02MB41571C1A6DE8756D72176E93D43AA@SN6PR02MB4157.namprd02.prod.outlook.com>
+From: Tianyu Lan <ltykernel@gmail.com>
+Date: Mon, 1 Sep 2025 01:37:55 +0800
+X-Gm-Features: Ac12FXy7hb5-D9Rthveefhgcq8rJD7ROMbAamRM7DEg7W5u-C0aHcB6G508ys8E
+Message-ID: <CAMvTesBgOCdu7KCn57Lf2LU3Lsvg4zkePGd6L9Zp7sVB-VjT0A@mail.gmail.com>
+Subject: Re: [PATCH v4] x86/hyperv: Fix kdump on Azure CVMs
+To: Michael Kelley <mhklinux@outlook.com>
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "K. Y. Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	Nuno Das Neves <nunodasneves@linux.microsoft.com>, Tianyu Lan <tiala@microsoft.com>, 
+	Li Tian <litian@redhat.com>, Philipp Rudo <prudo@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Sat, Aug 30, 2025 at 1:03=E2=80=AFAM Michael Kelley <mhklinux@outlook.co=
+m> wrote:
+>
+> From: Vitaly Kuznetsov <vkuznets@redhat.com> Sent: Thursday, August 28, 2=
+025 2:16 AM
+> >
+> > Azure CVM instance types featuring a paravisor hang upon kdump. The
+> > investigation shows that makedumpfile causes a hang when it steps on a =
+page
+> > which was previously share with the host
+> > (HVCALL_MODIFY_SPARSE_GPA_PAGE_HOST_VISIBILITY). The new kernel has no
+> > knowledge of these 'special' regions (which are Vmbus connection pages,
+> > GPADL buffers, ...). There are several ways to approach the issue:
+> > - Convey the knowledge about these regions to the new kernel somehow.
+> > - Unshare these regions before accessing in the new kernel (it is uncle=
+ar
+> > if there's a way to query the status for a given GPA range).
+> > - Unshare these regions before jumping to the new kernel (which this pa=
+tch
+> > implements).
+> >
+> > To make the procedure as robust as possible, store PFN ranges of shared
+> > regions in a linked list instead of storing GVAs and re-using
+> > hv_vtom_set_host_visibility(). This also allows to avoid memory allocat=
+ion
+> > on the kdump/kexec path.
+> >
+> > Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+>
+> Looks good!
+>
+> Adding Confidential Computing mailing list (linux-coco@lists.linux.dev)
+> for visibility.
+>
+> Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+>
+> > ---
+> > Changes since v3 [Michael Kelley]:
+> >  - Employ x86_platform.guest.enc_kexec_{begin,finish} hooks.
+> >  - Don't use spinlock in what's now hv_vtom_kexec_finish().
+> >  - Handle possible hypercall failures in hv_mark_gpa_visibility()
+> >    symmetrically; change hv_list_enc_remove() to return -ENOMEM as well=
+.
+> >  - Rebase to the latest hyperv/next.
+> > ---
+> >  arch/x86/hyperv/ivm.c | 211 +++++++++++++++++++++++++++++++++++++++++-
+> >  1 file changed, 210 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
+> > index ade6c665c97e..a4615b889f3e 100644
+> > --- a/arch/x86/hyperv/ivm.c
+> > +++ b/arch/x86/hyperv/ivm.c
+> > @@ -462,6 +462,195 @@ void hv_ivm_msr_read(u64 msr, u64 *value)
+> >               hv_ghcb_msr_read(msr, value);
+> >  }
+> >
+> > +/*
+> > + * Keep track of the PFN regions which were shared with the host. The =
+access
+> > + * must be revoked upon kexec/kdump (see hv_ivm_clear_host_access()).
+> > + */
+> > +struct hv_enc_pfn_region {
+> > +     struct list_head list;
+> > +     u64 pfn;
+> > +     int count;
+> > +};
+> > +
+> > +static LIST_HEAD(hv_list_enc);
+> > +static DEFINE_RAW_SPINLOCK(hv_list_enc_lock);
+> > +
+> > +static int hv_list_enc_add(const u64 *pfn_list, int count)
+> > +{
+> > +     struct hv_enc_pfn_region *ent;
+> > +     unsigned long flags;
+> > +     u64 pfn;
+> > +     int i;
+> > +
+> > +     for (i =3D 0; i < count; i++) {
+> > +             pfn =3D pfn_list[i];
+> > +
+> > +             raw_spin_lock_irqsave(&hv_list_enc_lock, flags);
+> > +             /* Check if the PFN already exists in some region first *=
+/
+> > +             list_for_each_entry(ent, &hv_list_enc, list) {
+> > +                     if ((ent->pfn <=3D pfn) && (ent->pfn + ent->count=
+ - 1 >=3D pfn))
+> > +                             /* Nothing to do - pfn is already in the =
+list */
+> > +                             goto unlock_done;
+> > +             }
+> > +
+> > +             /*
+> > +              * Check if the PFN is adjacent to an existing region. Gr=
+owing
+> > +              * a region can make it adjacent to another one but mergi=
+ng is
+> > +              * not (yet) implemented for simplicity. A PFN cannot be =
+added
+> > +              * to two regions to keep the logic in hv_list_enc_remove=
+()
+> > +              * correct.
+> > +              */
+> > +             list_for_each_entry(ent, &hv_list_enc, list) {
+> > +                     if (ent->pfn + ent->count =3D=3D pfn) {
+> > +                             /* Grow existing region up */
+> > +                             ent->count++;
+> > +                             goto unlock_done;
+> > +                     } else if (pfn + 1 =3D=3D ent->pfn) {
+> > +                             /* Grow existing region down */
+> > +                             ent->pfn--;
+> > +                             ent->count++;
+> > +                             goto unlock_done;
+> > +                     }
+> > +             }
+> > +             raw_spin_unlock_irqrestore(&hv_list_enc_lock, flags);
+> > +
+> > +             /* No adjacent region found -- create a new one */
+> > +             ent =3D kzalloc(sizeof(struct hv_enc_pfn_region), GFP_KER=
+NEL);
+> > +             if (!ent)
+> > +                     return -ENOMEM;
+> > +
+> > +             ent->pfn =3D pfn;
+> > +             ent->count =3D 1;
+> > +
+> > +             raw_spin_lock_irqsave(&hv_list_enc_lock, flags);
+> > +             list_add(&ent->list, &hv_list_enc);
+> > +
+> > +unlock_done:
+> > +             raw_spin_unlock_irqrestore(&hv_list_enc_lock, flags);
+> > +     }
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +static int hv_list_enc_remove(const u64 *pfn_list, int count)
+> > +{
+> > +     struct hv_enc_pfn_region *ent, *t;
+> > +     struct hv_enc_pfn_region new_region;
+> > +     unsigned long flags;
+> > +     u64 pfn;
+> > +     int i;
+> > +
+> > +     for (i =3D 0; i < count; i++) {
+> > +             pfn =3D pfn_list[i];
+> > +
+> > +             raw_spin_lock_irqsave(&hv_list_enc_lock, flags);
+> > +             list_for_each_entry_safe(ent, t, &hv_list_enc, list) {
+> > +                     if (pfn =3D=3D ent->pfn + ent->count - 1) {
+> > +                             /* Removing tail pfn */
+> > +                             ent->count--;
+> > +                             if (!ent->count) {
+> > +                                     list_del(&ent->list);
+> > +                                     kfree(ent);
+> > +                             }
+> > +                             goto unlock_done;
+> > +                     } else if (pfn =3D=3D ent->pfn) {
+> > +                             /* Removing head pfn */
+> > +                             ent->count--;
+> > +                             ent->pfn++;
+> > +                             if (!ent->count) {
+> > +                                     list_del(&ent->list);
+> > +                                     kfree(ent);
+> > +                             }
+> > +                             goto unlock_done;
+> > +                     } else if (pfn > ent->pfn && pfn < ent->pfn + ent=
+->count - 1) {
+> > +                             /*
+> > +                              * Removing a pfn in the middle. Cut off =
+the tail
+> > +                              * of the existing region and create a te=
+mplate for
+> > +                              * the new one.
+> > +                              */
+> > +                             new_region.pfn =3D pfn + 1;
+> > +                             new_region.count =3D ent->count - (pfn - =
+ent->pfn + 1);
+> > +                             ent->count =3D pfn - ent->pfn;
+> > +                             goto unlock_split;
+> > +                     }
+> > +
+> > +             }
+> > +unlock_done:
+> > +             raw_spin_unlock_irqrestore(&hv_list_enc_lock, flags);
+> > +             continue;
+> > +
+> > +unlock_split:
+> > +             raw_spin_unlock_irqrestore(&hv_list_enc_lock, flags);
+> > +
+> > +             ent =3D kzalloc(sizeof(struct hv_enc_pfn_region), GFP_KER=
+NEL);
+> > +             if (!ent)
+> > +                     return -ENOMEM;
+> > +
+> > +             ent->pfn =3D new_region.pfn;
+> > +             ent->count =3D new_region.count;
+> > +
+> > +             raw_spin_lock_irqsave(&hv_list_enc_lock, flags);
+> > +             list_add(&ent->list, &hv_list_enc);
+> > +             raw_spin_unlock_irqrestore(&hv_list_enc_lock, flags);
+> > +     }
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +/* Stop new private<->shared conversions */
+> > +static void hv_vtom_kexec_begin(void)
+> > +{
+> > +     if (!IS_ENABLED(CONFIG_KEXEC_CORE))
+> > +             return;
+> > +
+> > +     /*
+> > +      * Crash kernel reaches here with interrupts disabled: can't wait=
+ for
+> > +      * conversions to finish.
+> > +      *
+> > +      * If race happened, just report and proceed.
+> > +      */
+> > +     if (!set_memory_enc_stop_conversion())
+> > +             pr_warn("Failed to stop shared<->private conversions\n");
+> > +}
+> > +
+> > +static void hv_vtom_kexec_finish(void)
+> > +{
+> > +     struct hv_gpa_range_for_visibility *input;
+> > +     struct hv_enc_pfn_region *ent;
+> > +     unsigned long flags;
+> > +     u64 hv_status;
+> > +     int cur, i;
+> > +
+> > +     local_irq_save(flags);
+> > +     input =3D *this_cpu_ptr(hyperv_pcpu_input_arg);
+> > +
+> > +     if (unlikely(!input))
+> > +             goto out;
+> > +
+> > +     list_for_each_entry(ent, &hv_list_enc, list) {
+> > +             for (i =3D 0, cur =3D 0; i < ent->count; i++) {
+> > +                     input->gpa_page_list[cur] =3D ent->pfn + i;
+> > +                     cur++;
+> > +
+> > +                     if (cur =3D=3D HV_MAX_MODIFY_GPA_REP_COUNT || i =
+=3D=3D ent->count - 1) {
+> > +                             input->partition_id =3D HV_PARTITION_ID_S=
+ELF;
+> > +                             input->host_visibility =3D VMBUS_PAGE_NOT=
+_VISIBLE;
+> > +                             input->reserved0 =3D 0;
+> > +                             input->reserved1 =3D 0;
+> > +                             hv_status =3D hv_do_rep_hypercall(
+> > +                                     HVCALL_MODIFY_SPARSE_GPA_PAGE_HOS=
+T_VISIBILITY,
+> > +                                     cur, 0, input, NULL);
+> > +                             WARN_ON_ONCE(!hv_result_success(hv_status=
+));
+> > +                             cur =3D 0;
+> > +                     }
+> > +             }
+> > +
+> > +     }
+> > +
+> > +out:
+> > +     local_irq_restore(flags);
+> > +}
+> > +
+> >  /*
+> >   * hv_mark_gpa_visibility - Set pages visible to host via hvcall.
+> >   *
+> > @@ -475,6 +664,7 @@ static int hv_mark_gpa_visibility(u16 count, const =
+u64 pfn[],
+> >       struct hv_gpa_range_for_visibility *input;
+> >       u64 hv_status;
+> >       unsigned long flags;
+> > +     int ret;
+> >
+> >       /* no-op if partition isolation is not enabled */
+> >       if (!hv_is_isolation_supported())
+> > @@ -486,6 +676,13 @@ static int hv_mark_gpa_visibility(u16 count, const=
+ u64 pfn[],
+> >               return -EINVAL;
+> >       }
+> >
+> > +     if (visibility =3D=3D VMBUS_PAGE_NOT_VISIBLE)
+> > +             ret =3D hv_list_enc_remove(pfn, count);
+> > +     else
+> > +             ret =3D hv_list_enc_add(pfn, count);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> >       local_irq_save(flags);
+> >       input =3D *this_cpu_ptr(hyperv_pcpu_input_arg);
+> >
+> > @@ -506,8 +703,18 @@ static int hv_mark_gpa_visibility(u16 count, const=
+ u64 pfn[],
+> >
+> >       if (hv_result_success(hv_status))
+> >               return 0;
+> > +
+> > +     if (visibility =3D=3D VMBUS_PAGE_NOT_VISIBLE)
+> > +             ret =3D hv_list_enc_add(pfn, count);
+> >       else
+> > -             return -EFAULT;
+> > +             ret =3D hv_list_enc_remove(pfn, count);
+> > +     /*
+> > +      * There's no good way to recover from -ENOMEM here, the accounti=
+ng is
+> > +      * wrong either way.
+> > +      */
+> > +     WARN_ON_ONCE(ret);
+> > +
+> > +     return -EFAULT;
+> >  }
+> >
+> >  /*
+> > @@ -669,6 +876,8 @@ void __init hv_vtom_init(void)
+> >       x86_platform.guest.enc_tlb_flush_required =3D hv_vtom_tlb_flush_r=
+equired;
+> >       x86_platform.guest.enc_status_change_prepare =3D hv_vtom_clear_pr=
+esent;
+> >       x86_platform.guest.enc_status_change_finish =3D hv_vtom_set_host_=
+visibility;
+> > +     x86_platform.guest.enc_kexec_begin =3D hv_vtom_kexec_begin;
+> > +     x86_platform.guest.enc_kexec_finish =3D hv_vtom_kexec_finish;
+> >
+> >       /* Set WB as the default cache mode. */
+> >       guest_force_mtrr_state(NULL, 0, MTRR_TYPE_WRBACK);
+> > --
+> > 2.50.1
+>
+>
 
+Reviewed-by: Tianyu Lan <tiala@microsoft.com>
 
-On 27/8/25 13:51, Dan Williams wrote:
-
-> +struct pci_tsm_ops {
-> +	/*
-> +	 * struct pci_tsm_link_ops - Manage physical link and the TSM/DSM session
-> +	 * @probe: allocate context (wrap 'struct pci_tsm') for follow-on link
-> +	 *	   operations
-> +	 * @remove: destroy link operations context
-> +	 * @connect: establish / validate a secure connection (e.g. IDE)
-> +	 *	     with the device
-> +	 * @disconnect: teardown the secure link
-> +	 *
-> +	 * Context: @probe, @remove, @connect, and @disconnect run under
-> +	 * pci_tsm_rwsem held for write to sync with TSM unregistration and
-> +	 * mutual exclusion of @connect and @disconnect. @connect and
-> +	 * @disconnect additionally run under the DSM lock (struct
-> +	 * pci_tsm_pf0::lock) as well as @probe and @remove of the subfunctions.
-> +	 */
-> +	struct_group_tagged(pci_tsm_link_ops, link_ops,
-> +		struct pci_tsm *(*probe)(struct pci_dev *pdev);
-> +		void (*remove)(struct pci_tsm *tsm);
-> +		int (*connect)(struct pci_dev *pdev);
-> +		void (*disconnect)(struct pci_dev *pdev);
-> +	);
-> +
-> +	/*
-> +	 * struct pci_tsm_security_ops - Manage the security state of the function
-> +	 * @lock: probe and initialize the device in the LOCKED state
-> +	 * @unlock: destroy TSM context and return device to UNLOCKED state
-> +	 *
-> +	 * Context: @lock and @unlock run under pci_tsm_rwsem held for write to
-> +	 * sync with TSM unregistration and each other
-> +	 */
-> +	struct_group_tagged(pci_tsm_security_ops, devsec_ops,
-> +		struct pci_tsm *(*lock)(struct pci_dev *pdev);
-> +		void (*unlock)(struct pci_dev *pdev);
-
-
-So, following the remove() example above, this guy should take struct pci_tsm*, right? Thanks,
-
-
-> +	);
-> +	struct tsm_dev *owner;
-> +};
--- 
-Alexey
-
+--=20
+Thanks
+Tianyu Lan
