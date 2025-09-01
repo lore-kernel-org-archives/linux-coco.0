@@ -1,417 +1,212 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2082.outbound.protection.outlook.com [40.107.236.82])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7579F216E26
-	for <linux-coco@lists.linux.dev>; Sun, 31 Aug 2025 17:38:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756661914; cv=none; b=vCDddjV3okzYDZ7/fwnuY5eSqJI0J0G81E/LgvbKEWeJ2qI7/LEnXH0XZEtmeFsoEN+1QKpDKpJ5s8KjoUvqNSe/lv/Gx3nthy6bhec414hBa6t1+ur8qoCcGluMq9cLY2HAmc6dy/hmH7dJTt+lBIXjJ+jXrNUOwoWhAHVYMm8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756661914; c=relaxed/simple;
-	bh=3hYtiSB1bita0VH3Br12n9/2l1ftfvSAlztbr52K/+U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d8Be0MfcEjZa6DcjKyC1bBcDgJnHJkoSzhiTu+8kqLo1g+kBe9iCL+n/Q4gxwcXjp5t46tb9kXuAkJUY4PJru1qg+iefq/H6D6lrOQ9LfxnVs9EiYzz8nOXRVcrxsGXXKRGHZ94gLPFwIHxyrutMrvZpm9i+JHEXNy7DdEYLsV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d4QzoO7+; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495022033A
+	for <linux-coco@lists.linux.dev>; Mon,  1 Sep 2025 05:16:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.82
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756703793; cv=fail; b=mWeXF6MyNHC1LwsrSEVcWL+RyK481Ed6J/ZPPLYEMPRRu2ccPoMOFlerXzK6eGuI1nTPaX/JKqL5+NLNeqD7/V6BFbPn1XZ+ZlU09pbN0hnBi7V2AXrDewF1rDplnIrTMVszSpb7UuPOFTnoCWPQlYi1kCsnYaFCM/btErbIXzQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756703793; c=relaxed/simple;
+	bh=r8V4MdJOw8Vk5CuTrgyBgFiqBN1f6YbzBMT5Jhb7Ae4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aK8UZ4rp5dEK8W+Z3HizE3a1jLpl38cyNDiiVQeQRtid+QDdkJfdml/7pjupoKZYdU4ZAiUD+MTFAQvNY5KeQkgjlajXt8vdE8uFpCDmRxZ827DmxU4N5lNXE7/q/CroENrISvEI7h4oOaBHo24Gu1cYE1Rwg8kzfSYGbMPiubI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Yv5WjgD1; arc=fail smtp.client-ip=40.107.236.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d4QzoO7+"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-327f87275d4so2030218a91.1
-        for <linux-coco@lists.linux.dev>; Sun, 31 Aug 2025 10:38:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756661912; x=1757266712; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nlwerZOMDd8NX9+kt0uKIyECi+13IfTQs20ddjfYWfM=;
-        b=d4QzoO7+QlnWbYWskthcYOUCmpxvQ+NUTo2f2N/tA1dh4DdTNXzzL3xoZODkChL628
-         6AqVpHriyaepmy1jJSP0DmBW/v+3XHzJmfxXMfMvAUpBKotDG8kdOZdRCNzyGHfewsa7
-         xsDkNh/3dnRqbJHvs8KWLK7pychHvsy+Vvs+jyziyzk7xc7qIwuRwrMonmzNunkZpaqa
-         XWYIPxkV4yef16ABxcFBVS+dKeIn6LbZx3S4giHy0FbtDa6NNunL+oyPBNdIUX6sVHAY
-         RajhMItYtRLk+UwGllLmnfxAZmxyEsgH2KoMMvzqxeLS+C0pkGSNUljRa65JwOMPDbXR
-         1rIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756661912; x=1757266712;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nlwerZOMDd8NX9+kt0uKIyECi+13IfTQs20ddjfYWfM=;
-        b=HvgTI2lm9kroLZPmvk08akfhcTd7CaBtxGTNDThdLkyFiFLhkJSwW1guMjzXJupLo0
-         VkhkKNoxuFK2bCRZvTHCfQv9tp55cG9tZi+hbrFJz0oTRMhSUcsy0daJYdSkAapF+rwk
-         hy7WcnAfajwgoHvOzsbywgo4QilVW9pP+drSl1bv0JZKkYJYOa9PX1GB+Nxit9Uh6+Ez
-         Cp05T0w6pchI1+i55qUX3nWS9pzRWZYiOrsBy7TZQrFR2TZ3mNXde9dHFHOvW71keuf8
-         fPnZztwZY3fwSgA9fTG1BBmmgntTom26LNhA/MgrRdiKvX+Xkutw8yLEC5bc/A+SldiP
-         mpVA==
-X-Forwarded-Encrypted: i=1; AJvYcCU/kMGkwUSXd/xS/kwm8IMnVnCFx4/N6M3tlqvwx09bdDx0IpT9uxigNU+FMws+cc+S5hVD9Asb/x3t@lists.linux.dev
-X-Gm-Message-State: AOJu0YzaW4pTivag0zKaRI0MFocHWE8YRkQ2zeHo67MU/bNo44kvFtKs
-	BZDqzX+EwfAvpIHZrwghrKuKiBHQF10xbUUuJEx58HFoS4qGhI9wWc6eBFxUhuxsTocGVgOLdfx
-	Lxpu5/K9Ye5FctU0Yiz5GXdWJJV3DMRY=
-X-Gm-Gg: ASbGncuI+wZGGdx7gqX36Wx76uads71WBE0JfC8L5wjbrQHLzt3V8AFb2o4k6zBVpde
-	ORnt+bVNgs0qSR22odt/a8U15fxWVD0aAVznxdN9iU6Sp45q+IUfwPDD5rcXow5+9liXc0lNGIV
-	El46ZUKH3N6ZfASZx0v4k1AobviEr3mIBa/ro16cS9lYutYcbQt22d9//k2xT2gEgI8gLNRr4FH
-	GG/XDs8
-X-Google-Smtp-Source: AGHT+IHIQ/TwkUqnG3Yvkdjgei9ZgJ1+SUcV3kxV9AtLoAVScJcAxWPCdWBWxEi7aF6VQ0HhzJwrMujmtPjhpDMzpCk=
-X-Received: by 2002:a17:902:d4c4:b0:248:96af:51e with SMTP id
- d9443c01a7336-24944ad0aedmr65936155ad.45.1756661911600; Sun, 31 Aug 2025
- 10:38:31 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Yv5WjgD1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=J61o/9C9bcZjhcyp9yrtNFrzpfFHYcCN1IS3YOHOowKVMuqkE84e16EuoMPlMTypHQUiBfsShYQWEesXg7XAzLk1y89zdTNeX7Z7cK9yU7qpLTLxQHzDQY2LEczxPqaLKh/vtMldpHnglM6PBApLzz+nd9xJa4OAj2sFgS48Ce5tLmz1whSmzH11bYVW0B/08t3CNP6pS6hUm4vFLk24bRtgWjLLqWFdbP3qGi/Fnj9fpN1EdUMAIoPnHRNftJ0G3n/jtmi5KNNx38B4B6A/NVNI+JWL04rcBJ0leMitMZ1e4cHmsqfoH0OB+UDhiBmEdbBWcI5CS4Ye9rSfHKUXXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VhXfOjQC83Z1bt5svUICR2456jIfocxiPt6obYUFkvE=;
+ b=TREhY7Nyw4XJ/HL8jnTPEGy7OLV0GSSitk/vPRuPoZ5INPiDWJOkKyTSUwlaQGRowIZJMyaBEDPbZSFJvJFnH6SjcuPLe57PMq//tyZ9nBCZrRNUOlQjDWyo7yMVwpS9dNs62kBeVce9XdUVYiv1d4LcgkXM5AOloOk7z5rpZrSCH1/VSR35ODy7z3Y8NbLoxangqBs0QzME6JuUYVK4k6set4nP/X5F/84SOY5dfm5W9UMN+1vF9UVaotvprD7TAKthSa/GWfEOzgCeWVO+yT3f0flqynavCcM8AEYx+n9hacQeRTH4jUtceBpAZDRTltW3Wuqn753yMzEkugBlKw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VhXfOjQC83Z1bt5svUICR2456jIfocxiPt6obYUFkvE=;
+ b=Yv5WjgD1Tm8sX0UjsjR7PSE6DwGgoSCk3GuGxJH/tyb6GihfM4grl6Dw09iBYK2JAL3q1fKAwHRRb8lctJbNziFYEOI9e4DIm10WjVxHNDgOZ+8TjHyXeAH/HdBly6mB1DQBvJ8cIK6L+yaNNskjgPV6rl1GPe9g0PVkPk6gATo=
+Received: from MW2PR16CA0039.namprd16.prod.outlook.com (2603:10b6:907:1::16)
+ by SA5PPF634736581.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8cd) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.25; Mon, 1 Sep
+ 2025 05:16:28 +0000
+Received: from SJ1PEPF00002317.namprd03.prod.outlook.com
+ (2603:10b6:907:1:cafe::9a) by MW2PR16CA0039.outlook.office365.com
+ (2603:10b6:907:1::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.26 via Frontend Transport; Mon,
+ 1 Sep 2025 05:16:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ SJ1PEPF00002317.mail.protection.outlook.com (10.167.242.171) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.9094.14 via Frontend Transport; Mon, 1 Sep 2025 05:16:27 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 1 Sep
+ 2025 00:16:26 -0500
+Received: from kaveri.amd.com (10.180.168.240) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.10; Sun, 31 Aug
+ 2025 22:16:23 -0700
+From: Shivank Garg <shivankg@amd.com>
+To: <pbonzini@redhat.com>, <david@redhat.com>
+CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <shivankg@amd.com>
+Subject: [PATCH kvm-next 1/1] KVM: guest_memfd: Inline kvm_gmem_get_index() and misc cleanups
+Date: Mon, 1 Sep 2025 05:15:34 +0000
+Message-ID: <20250901051532.207874-3-shivankg@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250828091618.884950-1-vkuznets@redhat.com> <SN6PR02MB41571C1A6DE8756D72176E93D43AA@SN6PR02MB4157.namprd02.prod.outlook.com>
-In-Reply-To: <SN6PR02MB41571C1A6DE8756D72176E93D43AA@SN6PR02MB4157.namprd02.prod.outlook.com>
-From: Tianyu Lan <ltykernel@gmail.com>
-Date: Mon, 1 Sep 2025 01:37:55 +0800
-X-Gm-Features: Ac12FXy7hb5-D9Rthveefhgcq8rJD7ROMbAamRM7DEg7W5u-C0aHcB6G508ys8E
-Message-ID: <CAMvTesBgOCdu7KCn57Lf2LU3Lsvg4zkePGd6L9Zp7sVB-VjT0A@mail.gmail.com>
-Subject: Re: [PATCH v4] x86/hyperv: Fix kdump on Azure CVMs
-To: Michael Kelley <mhklinux@outlook.com>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "K. Y. Srinivasan" <kys@microsoft.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, "x86@kernel.org" <x86@kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	Nuno Das Neves <nunodasneves@linux.microsoft.com>, Tianyu Lan <tiala@microsoft.com>, 
-	Li Tian <litian@redhat.com>, Philipp Rudo <prudo@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To satlexmb09.amd.com
+ (10.181.42.218)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002317:EE_|SA5PPF634736581:EE_
+X-MS-Office365-Filtering-Correlation-Id: ac333d52-e4ad-44c8-0d0a-08dde916b439
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|36860700013|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?1e8ZP6zxTfmORq0kHNSQJCodna+wS7Wl4Y3dqwiw1kcybdK8pbaZIogC8C23?=
+ =?us-ascii?Q?z1HHFtvdyY1A1npUW3yOkdqtsUSvx8l8hkFlyKshN7vDB022ouWcgYc0mO5u?=
+ =?us-ascii?Q?vrZA8ihHv9CvCNDo5nrL9V4Ee0VI/NtSW31bvpTQ9Ml1eM5Sper3R5eIuHrt?=
+ =?us-ascii?Q?7siutKCRyqzKBeP9TULqPKkRhpFpLOf5T5WdwNC0hyXjwILZYr5XAWDYrqXo?=
+ =?us-ascii?Q?gFuC1ZnhB6pHPoLC3uOIEbnd1xm51DprCese6EW5MxngoazDNOd7Hvgvst1W?=
+ =?us-ascii?Q?tiinDKAyGmt8O7k+9P9RMCDYrXsvcK+Wfg45tuaCqkTOks/Z+hHXcZpcxIPo?=
+ =?us-ascii?Q?MMxMP5O/2yVALsL+ITE9/0bST+rVhQ+NTjRHzBR9fqIS2ophOQE7QxZnshID?=
+ =?us-ascii?Q?dYX5siPsavIJFWG7ZpRmW+2n2Jyz/Su3T2yp+5MMh9p4fDxuwn/A9UL3IDJK?=
+ =?us-ascii?Q?+NsJ/DFj9068qJMe+vZsJSG0xRRF1uDFElTDdhyeeshhW1wd3uezPtb3zEA0?=
+ =?us-ascii?Q?mmv5x/qdQnLK+6DdVt61sbsFt0OyQlQvzdLU1sgzfq7exWgWBSWq/fiFhz/a?=
+ =?us-ascii?Q?LSAjPbioItwBYzp6lP3gz9Begk3eH86yPMroK4mJaxcmjClCCYR2bGEp7Rmq?=
+ =?us-ascii?Q?gMp8U99xtaknHLcdI2HnO9X1DQ/eYBUOlBJtbiQF+9gZzyGvWwGHY/wWzLnk?=
+ =?us-ascii?Q?elGvStNlWm7acle1ioNydpGTG0M7IS+qr9+nilrof1QbKJY+bJkuCjmft0hq?=
+ =?us-ascii?Q?r+Pb/QeQwlzx7sM858q5AFZbOGaKI278bssbtgL42JgoUk7VAC+FRuCtc+IE?=
+ =?us-ascii?Q?tM7NL3b1JWSi2TEG/NzzjkI4iN+0UApZnEpogsV2IDKrpCV5ARoMhxKPjO8l?=
+ =?us-ascii?Q?+YeISYK4yUXGvgn1Cwg4sp7Pt/Mgd0WkfA6/WCN3eK/FRM489/+Fbv0PGdDa?=
+ =?us-ascii?Q?TuqNG6IbC6aix27HhWn0qTDdDGPyu200NuMB+kL7LSerEwXdZZRWUloTMjNv?=
+ =?us-ascii?Q?A2seAR8yq6B1awj2l9a6vvyEt60PkWwQYMIr5FnA6tz3lvGzfwXxYJOak9O9?=
+ =?us-ascii?Q?5GM4ewf4LqemELGh9hLQ3mJGFAILkzV9vm9J7hHYoYpK/U2YoaLGUi5xJuGG?=
+ =?us-ascii?Q?Yv6PcspmUPatcNRexaTOZnXHYcEu7zCy2o03W4JPbrdoo6699JUN1hRZ+E3y?=
+ =?us-ascii?Q?axl91FDzR89dNNSDiKbKCFmj3kTqZse4Us8CbtNxLZ3yOJvkwc6MacxJOw0V?=
+ =?us-ascii?Q?C5T2aS9SxKVIVOM+4wSMUspsuSkwP33To+l8UQosgcZyqvF6tjT5dDHKFJFA?=
+ =?us-ascii?Q?ZWy9ezTiKnnX4Eyqe3NaGK8CJxTc5WUl3nfFSUXC8JbP269uMzom/89R9Hb5?=
+ =?us-ascii?Q?wcMZ0smGSV8ymO0qFK+0Oiix/pGtr6i6NtHCXz+mKLVmHlEThrge39pqau9c?=
+ =?us-ascii?Q?qonSvxHgby9mPfZbIUE9WtwGmGw546dOJeKdHebrilLkfHUMB2rXOi+ZGogf?=
+ =?us-ascii?Q?72pedD3QySRrAPBhTnR+XTmk61EmNM0BSen1?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2025 05:16:27.7310
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac333d52-e4ad-44c8-0d0a-08dde916b439
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00002317.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF634736581
 
-On Sat, Aug 30, 2025 at 1:03=E2=80=AFAM Michael Kelley <mhklinux@outlook.co=
-m> wrote:
->
-> From: Vitaly Kuznetsov <vkuznets@redhat.com> Sent: Thursday, August 28, 2=
-025 2:16 AM
-> >
-> > Azure CVM instance types featuring a paravisor hang upon kdump. The
-> > investigation shows that makedumpfile causes a hang when it steps on a =
-page
-> > which was previously share with the host
-> > (HVCALL_MODIFY_SPARSE_GPA_PAGE_HOST_VISIBILITY). The new kernel has no
-> > knowledge of these 'special' regions (which are Vmbus connection pages,
-> > GPADL buffers, ...). There are several ways to approach the issue:
-> > - Convey the knowledge about these regions to the new kernel somehow.
-> > - Unshare these regions before accessing in the new kernel (it is uncle=
-ar
-> > if there's a way to query the status for a given GPA range).
-> > - Unshare these regions before jumping to the new kernel (which this pa=
-tch
-> > implements).
-> >
-> > To make the procedure as robust as possible, store PFN ranges of shared
-> > regions in a linked list instead of storing GVAs and re-using
-> > hv_vtom_set_host_visibility(). This also allows to avoid memory allocat=
-ion
-> > on the kdump/kexec path.
-> >
-> > Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
->
-> Looks good!
->
-> Adding Confidential Computing mailing list (linux-coco@lists.linux.dev)
-> for visibility.
->
-> Reviewed-by: Michael Kelley <mhklinux@outlook.com>
->
-> > ---
-> > Changes since v3 [Michael Kelley]:
-> >  - Employ x86_platform.guest.enc_kexec_{begin,finish} hooks.
-> >  - Don't use spinlock in what's now hv_vtom_kexec_finish().
-> >  - Handle possible hypercall failures in hv_mark_gpa_visibility()
-> >    symmetrically; change hv_list_enc_remove() to return -ENOMEM as well=
-.
-> >  - Rebase to the latest hyperv/next.
-> > ---
-> >  arch/x86/hyperv/ivm.c | 211 +++++++++++++++++++++++++++++++++++++++++-
-> >  1 file changed, 210 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
-> > index ade6c665c97e..a4615b889f3e 100644
-> > --- a/arch/x86/hyperv/ivm.c
-> > +++ b/arch/x86/hyperv/ivm.c
-> > @@ -462,6 +462,195 @@ void hv_ivm_msr_read(u64 msr, u64 *value)
-> >               hv_ghcb_msr_read(msr, value);
-> >  }
-> >
-> > +/*
-> > + * Keep track of the PFN regions which were shared with the host. The =
-access
-> > + * must be revoked upon kexec/kdump (see hv_ivm_clear_host_access()).
-> > + */
-> > +struct hv_enc_pfn_region {
-> > +     struct list_head list;
-> > +     u64 pfn;
-> > +     int count;
-> > +};
-> > +
-> > +static LIST_HEAD(hv_list_enc);
-> > +static DEFINE_RAW_SPINLOCK(hv_list_enc_lock);
-> > +
-> > +static int hv_list_enc_add(const u64 *pfn_list, int count)
-> > +{
-> > +     struct hv_enc_pfn_region *ent;
-> > +     unsigned long flags;
-> > +     u64 pfn;
-> > +     int i;
-> > +
-> > +     for (i =3D 0; i < count; i++) {
-> > +             pfn =3D pfn_list[i];
-> > +
-> > +             raw_spin_lock_irqsave(&hv_list_enc_lock, flags);
-> > +             /* Check if the PFN already exists in some region first *=
-/
-> > +             list_for_each_entry(ent, &hv_list_enc, list) {
-> > +                     if ((ent->pfn <=3D pfn) && (ent->pfn + ent->count=
- - 1 >=3D pfn))
-> > +                             /* Nothing to do - pfn is already in the =
-list */
-> > +                             goto unlock_done;
-> > +             }
-> > +
-> > +             /*
-> > +              * Check if the PFN is adjacent to an existing region. Gr=
-owing
-> > +              * a region can make it adjacent to another one but mergi=
-ng is
-> > +              * not (yet) implemented for simplicity. A PFN cannot be =
-added
-> > +              * to two regions to keep the logic in hv_list_enc_remove=
-()
-> > +              * correct.
-> > +              */
-> > +             list_for_each_entry(ent, &hv_list_enc, list) {
-> > +                     if (ent->pfn + ent->count =3D=3D pfn) {
-> > +                             /* Grow existing region up */
-> > +                             ent->count++;
-> > +                             goto unlock_done;
-> > +                     } else if (pfn + 1 =3D=3D ent->pfn) {
-> > +                             /* Grow existing region down */
-> > +                             ent->pfn--;
-> > +                             ent->count++;
-> > +                             goto unlock_done;
-> > +                     }
-> > +             }
-> > +             raw_spin_unlock_irqrestore(&hv_list_enc_lock, flags);
-> > +
-> > +             /* No adjacent region found -- create a new one */
-> > +             ent =3D kzalloc(sizeof(struct hv_enc_pfn_region), GFP_KER=
-NEL);
-> > +             if (!ent)
-> > +                     return -ENOMEM;
-> > +
-> > +             ent->pfn =3D pfn;
-> > +             ent->count =3D 1;
-> > +
-> > +             raw_spin_lock_irqsave(&hv_list_enc_lock, flags);
-> > +             list_add(&ent->list, &hv_list_enc);
-> > +
-> > +unlock_done:
-> > +             raw_spin_unlock_irqrestore(&hv_list_enc_lock, flags);
-> > +     }
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +static int hv_list_enc_remove(const u64 *pfn_list, int count)
-> > +{
-> > +     struct hv_enc_pfn_region *ent, *t;
-> > +     struct hv_enc_pfn_region new_region;
-> > +     unsigned long flags;
-> > +     u64 pfn;
-> > +     int i;
-> > +
-> > +     for (i =3D 0; i < count; i++) {
-> > +             pfn =3D pfn_list[i];
-> > +
-> > +             raw_spin_lock_irqsave(&hv_list_enc_lock, flags);
-> > +             list_for_each_entry_safe(ent, t, &hv_list_enc, list) {
-> > +                     if (pfn =3D=3D ent->pfn + ent->count - 1) {
-> > +                             /* Removing tail pfn */
-> > +                             ent->count--;
-> > +                             if (!ent->count) {
-> > +                                     list_del(&ent->list);
-> > +                                     kfree(ent);
-> > +                             }
-> > +                             goto unlock_done;
-> > +                     } else if (pfn =3D=3D ent->pfn) {
-> > +                             /* Removing head pfn */
-> > +                             ent->count--;
-> > +                             ent->pfn++;
-> > +                             if (!ent->count) {
-> > +                                     list_del(&ent->list);
-> > +                                     kfree(ent);
-> > +                             }
-> > +                             goto unlock_done;
-> > +                     } else if (pfn > ent->pfn && pfn < ent->pfn + ent=
-->count - 1) {
-> > +                             /*
-> > +                              * Removing a pfn in the middle. Cut off =
-the tail
-> > +                              * of the existing region and create a te=
-mplate for
-> > +                              * the new one.
-> > +                              */
-> > +                             new_region.pfn =3D pfn + 1;
-> > +                             new_region.count =3D ent->count - (pfn - =
-ent->pfn + 1);
-> > +                             ent->count =3D pfn - ent->pfn;
-> > +                             goto unlock_split;
-> > +                     }
-> > +
-> > +             }
-> > +unlock_done:
-> > +             raw_spin_unlock_irqrestore(&hv_list_enc_lock, flags);
-> > +             continue;
-> > +
-> > +unlock_split:
-> > +             raw_spin_unlock_irqrestore(&hv_list_enc_lock, flags);
-> > +
-> > +             ent =3D kzalloc(sizeof(struct hv_enc_pfn_region), GFP_KER=
-NEL);
-> > +             if (!ent)
-> > +                     return -ENOMEM;
-> > +
-> > +             ent->pfn =3D new_region.pfn;
-> > +             ent->count =3D new_region.count;
-> > +
-> > +             raw_spin_lock_irqsave(&hv_list_enc_lock, flags);
-> > +             list_add(&ent->list, &hv_list_enc);
-> > +             raw_spin_unlock_irqrestore(&hv_list_enc_lock, flags);
-> > +     }
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +/* Stop new private<->shared conversions */
-> > +static void hv_vtom_kexec_begin(void)
-> > +{
-> > +     if (!IS_ENABLED(CONFIG_KEXEC_CORE))
-> > +             return;
-> > +
-> > +     /*
-> > +      * Crash kernel reaches here with interrupts disabled: can't wait=
- for
-> > +      * conversions to finish.
-> > +      *
-> > +      * If race happened, just report and proceed.
-> > +      */
-> > +     if (!set_memory_enc_stop_conversion())
-> > +             pr_warn("Failed to stop shared<->private conversions\n");
-> > +}
-> > +
-> > +static void hv_vtom_kexec_finish(void)
-> > +{
-> > +     struct hv_gpa_range_for_visibility *input;
-> > +     struct hv_enc_pfn_region *ent;
-> > +     unsigned long flags;
-> > +     u64 hv_status;
-> > +     int cur, i;
-> > +
-> > +     local_irq_save(flags);
-> > +     input =3D *this_cpu_ptr(hyperv_pcpu_input_arg);
-> > +
-> > +     if (unlikely(!input))
-> > +             goto out;
-> > +
-> > +     list_for_each_entry(ent, &hv_list_enc, list) {
-> > +             for (i =3D 0, cur =3D 0; i < ent->count; i++) {
-> > +                     input->gpa_page_list[cur] =3D ent->pfn + i;
-> > +                     cur++;
-> > +
-> > +                     if (cur =3D=3D HV_MAX_MODIFY_GPA_REP_COUNT || i =
-=3D=3D ent->count - 1) {
-> > +                             input->partition_id =3D HV_PARTITION_ID_S=
-ELF;
-> > +                             input->host_visibility =3D VMBUS_PAGE_NOT=
-_VISIBLE;
-> > +                             input->reserved0 =3D 0;
-> > +                             input->reserved1 =3D 0;
-> > +                             hv_status =3D hv_do_rep_hypercall(
-> > +                                     HVCALL_MODIFY_SPARSE_GPA_PAGE_HOS=
-T_VISIBILITY,
-> > +                                     cur, 0, input, NULL);
-> > +                             WARN_ON_ONCE(!hv_result_success(hv_status=
-));
-> > +                             cur =3D 0;
-> > +                     }
-> > +             }
-> > +
-> > +     }
-> > +
-> > +out:
-> > +     local_irq_restore(flags);
-> > +}
-> > +
-> >  /*
-> >   * hv_mark_gpa_visibility - Set pages visible to host via hvcall.
-> >   *
-> > @@ -475,6 +664,7 @@ static int hv_mark_gpa_visibility(u16 count, const =
-u64 pfn[],
-> >       struct hv_gpa_range_for_visibility *input;
-> >       u64 hv_status;
-> >       unsigned long flags;
-> > +     int ret;
-> >
-> >       /* no-op if partition isolation is not enabled */
-> >       if (!hv_is_isolation_supported())
-> > @@ -486,6 +676,13 @@ static int hv_mark_gpa_visibility(u16 count, const=
- u64 pfn[],
-> >               return -EINVAL;
-> >       }
-> >
-> > +     if (visibility =3D=3D VMBUS_PAGE_NOT_VISIBLE)
-> > +             ret =3D hv_list_enc_remove(pfn, count);
-> > +     else
-> > +             ret =3D hv_list_enc_add(pfn, count);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> >       local_irq_save(flags);
-> >       input =3D *this_cpu_ptr(hyperv_pcpu_input_arg);
-> >
-> > @@ -506,8 +703,18 @@ static int hv_mark_gpa_visibility(u16 count, const=
- u64 pfn[],
-> >
-> >       if (hv_result_success(hv_status))
-> >               return 0;
-> > +
-> > +     if (visibility =3D=3D VMBUS_PAGE_NOT_VISIBLE)
-> > +             ret =3D hv_list_enc_add(pfn, count);
-> >       else
-> > -             return -EFAULT;
-> > +             ret =3D hv_list_enc_remove(pfn, count);
-> > +     /*
-> > +      * There's no good way to recover from -ENOMEM here, the accounti=
-ng is
-> > +      * wrong either way.
-> > +      */
-> > +     WARN_ON_ONCE(ret);
-> > +
-> > +     return -EFAULT;
-> >  }
-> >
-> >  /*
-> > @@ -669,6 +876,8 @@ void __init hv_vtom_init(void)
-> >       x86_platform.guest.enc_tlb_flush_required =3D hv_vtom_tlb_flush_r=
-equired;
-> >       x86_platform.guest.enc_status_change_prepare =3D hv_vtom_clear_pr=
-esent;
-> >       x86_platform.guest.enc_status_change_finish =3D hv_vtom_set_host_=
-visibility;
-> > +     x86_platform.guest.enc_kexec_begin =3D hv_vtom_kexec_begin;
-> > +     x86_platform.guest.enc_kexec_finish =3D hv_vtom_kexec_finish;
-> >
-> >       /* Set WB as the default cache mode. */
-> >       guest_force_mtrr_state(NULL, 0, MTRR_TYPE_WRBACK);
-> > --
-> > 2.50.1
->
->
+Move kvm_gmem_get_index() to the top of the file and mark it inline.
 
-Reviewed-by: Tianyu Lan <tiala@microsoft.com>
+Also clean up __kvm_gmem_get_pfn() by deferring gmem variable
+declaration until after the file pointer check, avoiding unnecessary
+initialization.
 
---=20
-Thanks
-Tianyu Lan
+Replace magic number -1UL with ULONG_MAX.
+
+No functional change intended.
+
+Signed-off-by: Shivank Garg <shivankg@amd.com>
+---
+
+Applies cleanly on kvm-next (a6ad54137) and guestmemfd-preview (3d23d4a27).
+
+ virt/kvm/guest_memfd.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
+
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 08a6bc7d25b6..537f297a53cd 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -25,6 +25,11 @@ static inline kvm_pfn_t folio_file_pfn(struct folio *folio, pgoff_t index)
+ 	return folio_pfn(folio) + (index & (folio_nr_pages(folio) - 1));
+ }
+ 
++static inline pgoff_t kvm_gmem_get_index(struct kvm_memory_slot *slot, gfn_t gfn)
++{
++	return gfn - slot->base_gfn + slot->gmem.pgoff;
++}
++
+ static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 				    pgoff_t index, struct folio *folio)
+ {
+@@ -32,6 +37,7 @@ static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slo
+ 	kvm_pfn_t pfn = folio_file_pfn(folio, index);
+ 	gfn_t gfn = slot->base_gfn + index - slot->gmem.pgoff;
+ 	int rc = kvm_arch_gmem_prepare(kvm, gfn, pfn, folio_order(folio));
++
+ 	if (rc) {
+ 		pr_warn_ratelimited("gmem: Failed to prepare folio for index %lx GFN %llx PFN %llx error %d.\n",
+ 				    index, gfn, pfn, rc);
+@@ -78,7 +84,7 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 	 * checked when creating memslots.
+ 	 */
+ 	WARN_ON(!IS_ALIGNED(slot->gmem.pgoff, 1 << folio_order(folio)));
+-	index = gfn - slot->base_gfn + slot->gmem.pgoff;
++	index = kvm_gmem_get_index(slot, gfn);
+ 	index = ALIGN_DOWN(index, 1 << folio_order(folio));
+ 	r = __kvm_gmem_prepare_folio(kvm, slot, index, folio);
+ 	if (!r)
+@@ -280,8 +286,8 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
+ 	 * Zap all SPTEs pointed at by this file.  Do not free the backing
+ 	 * memory, as its lifetime is associated with the inode, not the file.
+ 	 */
+-	kvm_gmem_invalidate_begin(gmem, 0, -1ul);
+-	kvm_gmem_invalidate_end(gmem, 0, -1ul);
++	kvm_gmem_invalidate_begin(gmem, 0, ULONG_MAX);
++	kvm_gmem_invalidate_end(gmem, 0, ULONG_MAX);
+ 
+ 	list_del(&gmem->entry);
+ 
+@@ -307,10 +313,6 @@ static inline struct file *kvm_gmem_get_file(struct kvm_memory_slot *slot)
+ 	return get_file_active(&slot->gmem.file);
+ }
+ 
+-static pgoff_t kvm_gmem_get_index(struct kvm_memory_slot *slot, gfn_t gfn)
+-{
+-	return gfn - slot->base_gfn + slot->gmem.pgoff;
+-}
+ 
+ static bool kvm_gmem_supports_mmap(struct inode *inode)
+ {
+@@ -637,7 +639,7 @@ static struct folio *__kvm_gmem_get_pfn(struct file *file,
+ 					bool *is_prepared, int *max_order)
+ {
+ 	struct file *gmem_file = READ_ONCE(slot->gmem.file);
+-	struct kvm_gmem *gmem = file->private_data;
++	struct kvm_gmem *gmem;
+ 	struct folio *folio;
+ 
+ 	if (file != gmem_file) {
+-- 
+2.43.0
+
