@@ -1,156 +1,131 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8ADB2E8B99
-	for <linux-coco@lists.linux.dev>; Tue,  2 Sep 2025 08:13:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE942BE03E;
+	Tue,  2 Sep 2025 15:04:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756800782; cv=none; b=UGurlFJWdmSwTQnmuRxxEYPR7lezlGgvILZz1Y1W7BRADpDZqMwp6SAjQ8HZtx2dFyRhPs3/Rg4LJMAbTwaXXHKhXD7u9J9Usm/7eAYVv8M76hjyZveUtNKDzuN5kqdsDp8fAUXodvk14uCfJhVq6wFy0NZ9GeiRa6mJnPLFXb8=
+	t=1756825472; cv=none; b=hpi4lp+q5hljiFfyWlFJIO1ArhVG0DUwhsXzEa/vXwjRB13LtbR/9ob53p9g7+KFySaJ1h4oUpaAWmka1RWUr4waNEMmtswOtSWaw8YvttW7599G58IUeOBZaiXigoEUw/D7KzNSp/aR82PXJ08FlvQvlS5Vzet7McOFx1Tcy5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756800782; c=relaxed/simple;
-	bh=9sIzBhJAJecUfR05pFL5MhdXUERao6Vy1uysRMC+oWo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pkCBEnVukqAA4/+dLOnSuSMHasG1pBhNACVRgbimeI9+5JbKOcqtol8SL5doKP2Taq2GcqKPeXrHK01HHU3ZlCsOA3XEE9sZBfEmi47zzS5ZkJaFphsR9T+4sI8QFWqO0dacoKGMW+5YYeUxvADuOv6uscyRdzjl5zMu2UBNwf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YYGVaIJa; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1756825472; c=relaxed/simple;
+	bh=L+4eJKu7HwlUVbOOxAqN2Ei+WeAoK62Jl9pbD3qzOxw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=XqCxGf5LjMf9vdJ7B8LAt27mQWSR9kRZqJJE5aArR6wGZqZkrqmcgBX5IRL8Ax2frASWNSDxNUw6ivmOo7mqMz0gltPbRfd1HAzuSjwJvBU9ygEv6WSoOxgK/tkeOjNXkcM2/7uNYFf12KghgIsr2pFzEFICt7W52EYcoAWiydI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b3UxqJoN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YYGVaIJa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756800779;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=i2PX4p6Mtju8RFE+SihzC69gvPquXPYyNnCIBLJZnjE=;
-	b=YYGVaIJa3UCQv0TOgyJTItoQhMnlwMX30m1ytUbVNzmHnCmBJcQC8zyDfPXlWiyn5acT9v
-	aFohOCMsZ6GUJQbw7VY5mOYMmlTzynJzgOCipk97eQCeGGRDrx9SFHd5mANRR8NKBFS9nP
-	Gg+9lkp0F9q59Mvf9lOwMmL9VDyksWc=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-679-FmAB0zVtPoyhrkezjbOWhw-1; Tue, 02 Sep 2025 04:12:58 -0400
-X-MC-Unique: FmAB0zVtPoyhrkezjbOWhw-1
-X-Mimecast-MFC-AGG-ID: FmAB0zVtPoyhrkezjbOWhw_1756800777
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3ce059e3b83so1994204f8f.3
-        for <linux-coco@lists.linux.dev>; Tue, 02 Sep 2025 01:12:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756800777; x=1757405577;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i2PX4p6Mtju8RFE+SihzC69gvPquXPYyNnCIBLJZnjE=;
-        b=p0TYlSwY3sx1ZCbgM1h8dhXf7RN84LaQ2ckNubxdXfN772Z/klHMlsIWb5XttTMXJo
-         aokuqSdoDaKaer6YWLTL+gcQ1GuYoLTc0ptDVnpDPQO+1w9YNhLbeVmKytj5IIYM4fwD
-         tgW4mTdeg8+p4lmGDzlrGAAZQ03WSwRreWqDg811acpC3Wf/+5T7rBNLUvRZQsW9gnSN
-         J4wg6nfsNSsrkUOTxdq2IWx380sAxB8peUncpRiRJiaWGdoWs2yzrtRttA5vyNtV+meD
-         C41cgZqT7LQHb2IJB5qQXgY47c6/eaxEdZKbzUR/13X6ebcSOQsRfDiWGlMfuOdKNuAh
-         x77g==
-X-Forwarded-Encrypted: i=1; AJvYcCU0R6Icli3KFG1FM4IvdCf5qwp5j2vXgIIZ43x9NXT5rop+KqE2PG0OWZGFcoFmjsb485uDRXQkhnPd@lists.linux.dev
-X-Gm-Message-State: AOJu0YxzKP+64R8lt/TBLDn3yqI8zEc0lmh1nsQi5nagFCSDGYmBBBjb
-	9/FebfvOvoILiajS3tHUyo6aiXuCylY4LnVPu+lJXL8xkdnRxkJWEcSl2ziTy8DIH1XJZX/DREe
-	mCQlX+16MKVCPeR625Y7GX6JpypuINzj5RwP3mox13Z0lEwNk+dG3L6eFfjOR9oU=
-X-Gm-Gg: ASbGncufv1cXy0DTDqczsKplEWkDLAcoAY7RkP3oRF9xW8ytEizvxtLRvchIee18LLp
-	4uopJV41/+hoJLQJpLW6B+t6VE7/FXQ+ukYkHlRrqjXjmG8Gq4GFvSpeerTvByOD8wDZKLFch+/
-	iT9RGESGwKgV/dHnsNnS87lMoGX1MRY+uP4tqi0BE+y5xwWiV1tK+Ng9bW2bQ6upt18C5KpoxJP
-	5Hqb8jJSzZtBBtToK8Stm/NEMF+WUmUbAo4gU5M4Z3L4d/THFfj5+2kv0gPg9OA8S0z/QIwt11X
-	hkqvU5tjwZh1XanFN28W6HiIjPR0wJSCfZ6UDmSaQ18DtMnuXWjGXRvqUUwXm7gdZeuN5i4BKSL
-	gf3QB/X2KIPUvvlgCrb0X8ad5vY6zMUSf/hRLLx17O8TB1r4T4Jw3ab2OcZBskuty26A=
-X-Received: by 2002:a05:6000:2c09:b0:3d4:6abb:7e01 with SMTP id ffacd0b85a97d-3d46abb82d7mr6181311f8f.41.1756800776978;
-        Tue, 02 Sep 2025 01:12:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGn7bkhRrar0ZQ3XOJwzIcLOk2yUKXwjDdnXi/Wtg5Y8XWy6yto4/cZNv0ETOrp232NZx1u5w==
-X-Received: by 2002:a05:6000:2c09:b0:3d4:6abb:7e01 with SMTP id ffacd0b85a97d-3d46abb82d7mr6181287f8f.41.1756800776558;
-        Tue, 02 Sep 2025 01:12:56 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f1f:3f00:731a:f5e5:774e:d40c? (p200300d82f1f3f00731af5e5774ed40c.dip0.t-ipconnect.de. [2003:d8:2f1f:3f00:731a:f5e5:774e:d40c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf33fb9cebsm18516909f8f.46.2025.09.02.01.12.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Sep 2025 01:12:56 -0700 (PDT)
-Message-ID: <ea4dae91-2e20-4e29-ba00-b73e6160332f@redhat.com>
-Date: Tue, 2 Sep 2025 10:12:55 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b3UxqJoN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 495D5C4CEF5;
+	Tue,  2 Sep 2025 15:04:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756825471;
+	bh=L+4eJKu7HwlUVbOOxAqN2Ei+WeAoK62Jl9pbD3qzOxw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=b3UxqJoNOYv5Sq7Mj52yRs7W9X28ZJDFIrKlLoKts24c9vsBgzKP7j+ULl9Xz6vNj
+	 2hzSH8ke6smaMr9eVGqLTpUHeDD25Hdx0p1BLFXFSWTgCdEPvVrOlc33DQGbUzEERp
+	 U3/0VzODmaggg3ts1BLpg7l3IBQU28aP1aN6yA1F/A/vB3muSBj6Aoo8nFzLHQLBi2
+	 vxgMNyysyh2h70qwWYUvy2gXO/Bj+qtsPtLJuYSYk8I45tO2UBWFzhJrmGTy5yqREH
+	 YyZ3AW2bC8PTgUe5SohnFfNAPpkvGOwiZF2BPCke4Dd09CG6c7sk47ZFvL2p6lGgnN
+	 /YiW514GnlX8A==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, bhelgaas@google.com, yilun.xu@linux.intel.com
+Subject: Re: [PATCH 1/7] PCI/TSM: Add pci_tsm_{bind,unbind}() methods for
+ instantiating TDIs
+In-Reply-To: <ccc6dc78-4338-41e6-b8d6-fedbaff4cc8e@amd.com>
+References: <20250827035259.1356758-1-dan.j.williams@intel.com>
+ <20250827035259.1356758-2-dan.j.williams@intel.com>
+ <ccc6dc78-4338-41e6-b8d6-fedbaff4cc8e@amd.com>
+Date: Tue, 02 Sep 2025 20:34:22 +0530
+Message-ID: <yq5aa53c3ngp.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 kvm-next] KVM: guest_memfd: use kvm_gmem_get_index() in
- more places and smaller cleanups
-To: Shivank Garg <shivankg@amd.com>, pbonzini@redhat.com
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev
-References: <20250902080307.153171-2-shivankg@amd.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20250902080307.153171-2-shivankg@amd.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: QHAkU_TG9qVWkoEeMjkX-T8tdmuAiI_4QJj5_SzkuZg_1756800777
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 02.09.25 10:03, Shivank Garg wrote:
-> Move kvm_gmem_get_index() to the top of the file and make it available for
-> use in more places.
-> 
-> Remove redundant initialization of the gmem variable because it's already
-> initialized.
-> 
-> Replace magic number -1UL with ULONG_MAX.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
+Alexey Kardashevskiy <aik@amd.com> writes:
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+> On 27/8/25 13:52, Dan Williams wrote:
+>
+>
+> I suggest changing "pci_tsm_{bind,unbind}()" to "pci_tsm_bind/pci_tsm_unbind" or "pci_tsm_bind/_unbind" as otherwise cannot grep for pci_tsm_bind in git log.
+>
+>
+>> After a PCIe device has established a secure link and session between a TEE
+>> Security Manager (TSM) and its local Device Security Manager (DSM), the
+>> device or its subfunctions are candidates to be bound to a private memory
+>> context, a TVM. A PCIe device function interface assigned to a TVM is a TEE
+>> Device Interface (TDI).
+>> 
+>> The pci_tsm_bind() requests the low-level TSM driver to associate the
+>> device with private MMIO and private IOMMU context resources of a given TVM
+>> represented by a @kvm argument. A device in the bound state corresponds to
+>> the TDISP protocol LOCKED state and awaits validation by the TVM. It is a
+>> 'struct pci_tsm_link_ops' operation because, similar to IDE establishment,
+>> it involves host side resource establishment and context setup on behalf of
+>> the guest. It is also expected to be performed lazily to allow for
+>> operation of the device in non-confidential "shared" context for pre-lock
+>> configuration.
+>> 
+>
+>
+>
+>> Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
+>> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+>> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+>> ---
+>>   drivers/pci/tsm.c       | 95 +++++++++++++++++++++++++++++++++++++++++
+>>   include/linux/pci-tsm.h | 30 +++++++++++++
+>>   2 files changed, 125 insertions(+)
+>> 
+>> diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
+>> index 092e81c5208c..302a974f3632 100644
+>> --- a/drivers/pci/tsm.c
+>> +++ b/drivers/pci/tsm.c
+>> @@ -251,6 +251,99 @@ static int remove_fn(struct pci_dev *pdev, void *data)
+>>   	return 0;
+>>   }
+>>   
+>> +/*
+>> + * Note, this helper only returns an error code and takes an argument for
+>> + * compatibility with the pci_walk_bus() callback prototype. pci_tsm_unbind()
+>> + * always succeeds.
+>> + */
+>> +static int __pci_tsm_unbind(struct pci_dev *pdev, void *data)
+>> +{
+>> +	struct pci_tdi *tdi;
+>> +	struct pci_tsm_pf0 *tsm_pf0;
+>> +
+>> +	lockdep_assert_held(&pci_tsm_rwsem);
+>> +
+>> +	if (!pdev->tsm)
+>> +		return 0;
+>> +
+>> +	tsm_pf0 = to_pci_tsm_pf0(pdev->tsm);
+>
+> What is expected to be passed to __pci_tsm_unbind/pci_tsm_bind as pdev - PF0 or TEE-IO VF? I guess the latter.
+>
+> But to_pci_tsm_pf0() casts the pdev's tsm to pci_tsm_pf0 which makes sense for PF0 but not for VFs.
+>
+> What do I miss and how does this work for you? Thanks,
+>
 
--- 
-Cheers
+I guess this needs
 
-David / dhildenb
+modified   drivers/pci/tsm.c
+@@ -44,7 +44,7 @@ static inline bool has_tee(struct pci_dev *pdev)
+ /* 'struct pci_tsm_pf0' wraps 'struct pci_tsm' when ->dsm == ->pdev (self) */
+ static struct pci_tsm_pf0 *to_pci_tsm_pf0(struct pci_tsm *pci_tsm)
+ {
+-	struct pci_dev *pdev = pci_tsm->pdev;
++	struct pci_dev *pdev = pci_tsm->dsm;
+ 
+ 	if (!is_pci_tsm_pf0(pdev) || !is_dsm(pdev)) {
+ 		dev_WARN_ONCE(&pdev->dev, 1, "invalid context object\n");
 
+-aneesh
