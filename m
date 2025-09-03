@@ -1,145 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115B5224B04;
-	Wed,  3 Sep 2025 15:23:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E37D28A1E6
+	for <linux-coco@lists.linux.dev>; Wed,  3 Sep 2025 15:51:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756912981; cv=none; b=p0Sn7d3v3rEH/lbYHXHmcwxe+laFqKYGq9KqksbBWiifoqp9Jwr6qUpvn5dPGfqhfi5DvN3x8ZSdhEgMvH0PSW319Ag2figbX5XsEiXLH1lPVYnBh15Y3fOkhaSI/wL+YmJt/KyxpgJEioWMWT/zQfxUD+ChqYfyMipEjUCQ/qs=
+	t=1756914688; cv=none; b=pA1Gw0CLih+E5T7FDh2rxq7JEu6xH2+HiX6b+x60VmMayFTNDbT+ZyHDVqY2TyGOozxNugSxUBqzhAlXuT6CYU99fjIdWYH6ApxjPvjZZNQnTKWJ5P4AHuZO3tSPVlV/pZq7ktpys2Pipf/06zspJrSVh5JDrBNmzr7DdHTTffk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756912981; c=relaxed/simple;
-	bh=bhYXOcXvWX1M4NXws9abVTsiqrliZnq46jgaaxlHGWw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=WRLyhS7GzDkzV+D5I3g2TxMYDDVMzPWTox/IwRQ29C/fDIRAv+R4hvezba1EFHl9tifQcU/jvT67pubedhuP4S5JP8YFhhC3Mcius68DLDdh355Un2kq0E9nHHjficLH9l9ulcJIC/K6t491LTAobtmo1DarL8lVGQ0cmVE9Kn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n5sT4Euy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756914688; c=relaxed/simple;
+	bh=ihBSYH03VzHM77PsBLbgSgiboVXS2xL0lw7aHu8s8zc=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=CpPZKlq2kFtX40UE7/XEqS272vQbtqAoKVGCbXP61KVZdjnECX0j5vDTDzAz1FOM2x3Io3ufL3fzY4prALVr6SwPspCH/vggsa50sAORZJ5CqBHA67VI0JNzPbHwjGFiUlAgDFMJ8YifC3kkXNdg667VzpJDo1ZewLBRyIoGcUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=K0014sXG; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n5sT4Euy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB5C2C4CEE7;
-	Wed,  3 Sep 2025 15:22:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756912980;
-	bh=bhYXOcXvWX1M4NXws9abVTsiqrliZnq46jgaaxlHGWw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=n5sT4EuyhdcEYZmfGvSl/RkrFHrCQtPUE8H1tl5NM1urvTsV8091ZyroJI8B8hZK9
-	 74zR1/Zg2Us6ZQgwF2txnl0eYSyDRj7cKDMbr3dxmat+Cy+4VvmNgwca1nXpUfTPA4
-	 MIpm3tOjnUaLEJ7q0JIpdrTB9VUazMJkJzY4gIovSd3P/9dQemd0AsJzEAeP+qwBJH
-	 +jBToESH0RXMzTOKcgBsXI7+Qruhll2May//Mte03FigutdB5kXv6a7qmA8uPRh32y
-	 3CLyrVnEPctyRaSqfeBgoG1qNxAXcNqbhK2qsBPC7fmZ7Wnod9MYBfCjhMXvmNQ1fW
-	 VdxAbxKQ+RZ9A==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, bhelgaas@google.com, yilun.xu@linux.intel.com,
-	aik@amd.com
-Subject: Re: [PATCH 5/7] PCI/TSM: Add Device Security (TVM Guest) operations
- support
-In-Reply-To: <20250827035259.1356758-6-dan.j.williams@intel.com>
-References: <20250827035259.1356758-1-dan.j.williams@intel.com>
- <20250827035259.1356758-6-dan.j.williams@intel.com>
-Date: Wed, 03 Sep 2025 20:52:52 +0530
-Message-ID: <yq5av7lz1rxv.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="K0014sXG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756914685;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=6pPz1Dn3KwcDP1NsdH5IyFFzXwAHxlthoHdtCNvU5f4=;
+	b=K0014sXGHMk/+Xd/jjQ2/SiSP80o1bi1WHdNkHWK7C6N/DaVkvjFVeOAXPcsM8btVVV2/0
+	xAjyJAgc5Tdnbr6yyWMEH9GZrW6gPjk+WKoYJUErUojRXfPuzhY5g2AZveNOZPV7cJ75+5
+	ctua2FP8XXyvzv9FTIKFzbdVotK5QsM=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-630-m5NULQALOmGJctJ3AnXgHg-1; Wed, 03 Sep 2025 11:51:21 -0400
+X-MC-Unique: m5NULQALOmGJctJ3AnXgHg-1
+X-Mimecast-MFC-AGG-ID: m5NULQALOmGJctJ3AnXgHg_1756914680
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3db4cfcc23eso37394f8f.3
+        for <linux-coco@lists.linux.dev>; Wed, 03 Sep 2025 08:51:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756914680; x=1757519480;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6pPz1Dn3KwcDP1NsdH5IyFFzXwAHxlthoHdtCNvU5f4=;
+        b=Im4Bu0kRF4emOgCOYIPzdoQ7qQZdfl5+FUwF/JaImx9Fj3JtTE9awXEz6MskGo9gkk
+         xMWDVSmT+518VcWutwRmpIn4ktcJa/uthSV6M0NSYanHdprMBI+cNGm2kfuma9UZN0ey
+         h1aQbcg9TfOGPenpIfhtFFFfWhhiZRGJKL7mazfhyuC69kEyvR7KTQjzNtZUPUcBz5v4
+         v/Z1tmZ8sDQvuqFPKNtRYIWAknh+57KFCPjA4uiO+Xpb6kJtVI/osL2bOuog/G8a7sv1
+         nfTzydaLE8XRoCoLzdLv9rHSfRXVr5xTfRUMl9orfZyUziiGHzZHU5eF1C86osmogP1F
+         OFsQ==
+X-Gm-Message-State: AOJu0Yy7jmXnkkKtjP5y2ZQQCTM68gg1JIOxJXFLBGmWOqe+Ps37hWde
+	ZXnsMGVeuWZx9era8jjktXpur+mCm5Jao9FF4fVdlMWURomjzSM+wfRbKTpujZRKl8mgS/KCG3C
+	5JWzmHezzzBtKcttFJD/WjvryHQFeZcPUMOCVRww06fwKF1rjGRw6N7uewtvqT+m7MFiupLrbmB
+	+cJ1P9sjxOLpuLYaZa5J5bz254WFerhUb5yUD4C1UNNf0HoA==
+X-Gm-Gg: ASbGncuwIa/JWUODJRoxjYfTlA+UEfTOZRHf3pdELmveR3dY0JqBPyQ1v07jESc5Fbp
+	Anzf3LHVmE70Pf7nV/s5gIUUfqhUsNlexFaSHNbL7IleIzB+IZUCzfnczvW6tNY6FLcXoh2okc3
+	jCJk2boXopNeacPIPd9jGMse3I1ddZioF2vD39bhw3CM5BF3fiTGA8i/OUrjUPgqy6uCTI9wJJK
+	Exr66M+QfuXGnfrKsitsZyv849ViYmiEk9CPVY169pWI+UE0RA7GAbkyc1+34B6N5Z3i2gf4Mpf
+	D9jhCcFAYpQUSk74vzYCiRceFq+KU/7Y1grVvAB9umk0qD3QA8/o0YN0EGEM7bU7h1mjRiQbFGF
+	1id20cBy0Znqqq4lSCxXV1sK1fZF51k0NLcaCHh/cXAMHmFGYqBvuIQAU4fmP2otWS2o=
+X-Received: by 2002:a05:6000:25c7:b0:3ce:9872:fd3 with SMTP id ffacd0b85a97d-3d1de5b0cd7mr13182381f8f.34.1756914680261;
+        Wed, 03 Sep 2025 08:51:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFjvLcrw1GI/BKKHqQpqdWRD2zuwbafhFNRbxschxHG7ifowWJiWnizddECBTDKy8c3BUMZQw==
+X-Received: by 2002:a05:6000:25c7:b0:3ce:9872:fd3 with SMTP id ffacd0b85a97d-3d1de5b0cd7mr13182316f8f.34.1756914679719;
+        Wed, 03 Sep 2025 08:51:19 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f09:9c00:8173:2a94:640d:dd31? (p200300d82f099c0081732a94640ddd31.dip0.t-ipconnect.de. [2003:d8:2f09:9c00:8173:2a94:640d:dd31])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7e92a42asm242463365e9.20.2025.09.03.08.51.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Sep 2025 08:51:19 -0700 (PDT)
+Message-ID: <586a6b30-f4e2-494a-b83e-08c1b01b4197@redhat.com>
+Date: Wed, 3 Sep 2025 17:51:17 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Invitation] bi-weekly guest_memfd upstream call on 2025-09-04
+From: David Hildenbrand <david@redhat.com>
+To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
+References: <5d1bf8ef-5f30-4962-bbd3-d698c0e9b7fe@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <5d1bf8ef-5f30-4962-bbd3-d698c0e9b7fe@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: _AfnoMED4m2ZBVNHDrWCmUf2qJY2I1ZT4Av2WpUxURY_1756914680
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Dan Williams <dan.j.williams@intel.com> writes:
+On 03.09.25 09:06, David Hildenbrand wrote:
+> Hi everybody,
+> 
+> Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
+> 2025-09-04 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
+Change of plans: Fuad reminded me that tomorrow is KVM forum (guess 
+who's not going ;) ), so it's probably best to skip this one.
 
-....
+Talk to you in two weeks then!
 
-> +
-> +static int pci_tsm_lock(struct pci_dev *pdev, struct tsm_dev *tsm_dev)
-> +{
-> +	const struct pci_tsm_ops *ops = tsm_pci_ops(tsm_dev);
-> +	struct pci_tsm *tsm;
-> +	int rc;
-> +
-> +	ACQUIRE(device_intr, lock)(&pdev->dev);
-> +	if ((rc = ACQUIRE_ERR(device_intr, &lock)))
-> +		return rc;
-> +
-> +	if (pdev->dev.driver)
-> +		return -EBUSY;
-> +
-> +	tsm = ops->lock(pdev);
-> +	if (IS_ERR(tsm))
-> +		return PTR_ERR(tsm);
-> +
-> +	pdev->tsm = tsm;
-> +	return 0;
-> +}
->
+-- 
+Cheers
 
-This is slightly different from connect() callback in that we don't have
-pdev->tsm initialized when calling ->lock() callback. Should we do
-something like below? (I also included the arch changes to show how
-destructor is being used.)
+David / dhildenb
 
-modified   drivers/pci/tsm.c
-@@ -917,11 +917,19 @@ int pci_tsm_devsec_constructor(struct pci_dev *pdev, struct pci_tsm_devsec *tsm,
- 	pci_tsm->tdi = NULL;
- 	pci_tsm->pdev = pdev;
- 	pci_tsm->ops = ops;
-+	pdev->tsm = pci_tsm;
- 
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(pci_tsm_devsec_constructor);
- 
-+int pci_tsm_devsec_destructor(struct pci_dev *pdev)
-+{
-+	pdev->tsm = NULL;
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(pci_tsm_devsec_destructor);
-+
- /**
-  * pci_tsm_pf0_constructor() - common 'struct pci_tsm_pf0' (DSM) initialization
-  * @pdev: Physical Function 0 PCI device (as indicated by is_pci_tsm_pf0())
-modified   drivers/virt/coco/arm-cca-guest/arm-cca.c
-@@ -217,13 +217,17 @@ static struct pci_tsm *cca_tsm_lock(struct pci_dev *pdev)
- 		return ERR_PTR(ret);
- 
- 	ret = rhi_da_vdev_set_tdi_state(vdev_id, RHI_DA_TDI_CONFIG_LOCKED);
--	if (ret)
-+	if (ret) {
-+		pci_tsm_devsec_destructor(pdev);
- 		return ERR_PTR(-EIO);
-+	}
- 
- 	/* This will be done by above rhi in later spec */
- 	ret = rsi_device_lock(pdev);
--	if (ret)
-+	if (ret) {
-+		pci_tsm_devsec_destructor(pdev);
- 		return ERR_PTR(-EIO);
-+	}
- 
- 	return &no_free_ptr(cca_dsc)->pci.base;
- }
-@@ -245,6 +249,7 @@ static void cca_tsm_unlock(struct pci_dev *pdev)
- 		return;
- 	}
- 
-+	pci_tsm_devsec_destructor(pdev);
- 	kfree(cca_dsc);
- }
- 
-modified   include/linux/pci-tsm.h
-@@ -220,6 +220,7 @@ int pci_tsm_pf0_constructor(struct pci_dev *pdev, struct pci_tsm_pf0 *tsm,
- 			    const struct pci_tsm_ops *ops);
- int pci_tsm_devsec_constructor(struct pci_dev *pdev, struct pci_tsm_devsec *tsm,
- 			       const struct pci_tsm_ops *ops);
-+int pci_tsm_devsec_destructor(struct pci_dev *pdev);
- void pci_tsm_pf0_destructor(struct pci_tsm_pf0 *tsm);
- int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u32 tdi_id);
- void pci_tsm_unbind(struct pci_dev *pdev);
-
-
-
--aneesh
