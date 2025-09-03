@@ -1,255 +1,119 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5907022172E
-	for <linux-coco@lists.linux.dev>; Wed,  3 Sep 2025 11:15:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D36225408;
+	Wed,  3 Sep 2025 15:18:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756898159; cv=none; b=K4G70byrUkpBFQN5FcvJW/ICKqwohvx4BO9Y+MssOmw5nRbdEuMIYCF9TawRXh701Q8r2q8A4DH/D2bjPW4ujsIJ0k+37Ol1JdUjOgam2QeN5ttU4feGdBM4IFz0ZmRcVBj1Jz6Kl8YEvCGUzMoxWg/F064eXmsCYNUypRR1PqM=
+	t=1756912682; cv=none; b=dTR+C0g95zZOA90YkT3E9nVr7i0acKQF8BZ+5m2TKRTQnBSjiLkmBNgu5Xb37fQlvauMW1E5kRy4hjP+0u9O8AY2IePk98r5MHsJPWpPcqJk3XtH3WTPF0GE+J7L3uNTom3e6j6EhbwTvXl5QQdktZkUmDmkgwcQV78V+6e5jBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756898159; c=relaxed/simple;
-	bh=O5Kl27XB553N7cmeBmXq/uiaTLYFFfTmRY6zD5Qm2IA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ShccA6KdbQVXcw7oJnGz0TI+n0yfO2FmEuUAiljVFUdRk2oJrSegyjaYJokR0qZD1RLvEuxGLV7C+gZjnqxMFZyIm3yO9g8D4BHyGSw2xLMJcGQbH8dDzvZyizLZlId+c+Xqkfc3suqo7BnABdJekfoEMTTNj6a9wknvJ/rmBoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YwythlQV; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1756912682; c=relaxed/simple;
+	bh=DSV80I41HNdrHgq8ScGZor8qjlma6CCCC2HAyKlmfkM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=R1y1fvKGcLwK1elcs8FOZfU6zQNoN0GJKLX6hjsBOh6nkxOuzRh+sAJ3F8x0hyo/Nn/dTSoGEY6rubnmpkj/lT3UqF78BAGe8Hfz+dLY7PQcxwpMJNn4HdZ12RrPYTKI3/nrz/QZzgf67IZP1uTFCV+DKVJ2JNK0TpNPlaWHZaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IPL/qy/b; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YwythlQV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756898156;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kVBqAzXRtaGdVaqdIdbidkD/s0lTNKoOEws6COnY9ko=;
-	b=YwythlQVxvQcs54IB9cQyVHcXm5eyuNI4507+mzd5drvfaWRPaMOKTLmw+X/HK3nTHchSz
-	jsEiPxepjB/9XaDgg9ujIe29NodO6NO22IJgrXKuwjyttwmtya6bNSv7pvrXnxVMl0WJVa
-	krtQkNacD4ir+5TVN53RcOotRW8MV9M=
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
- [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-382-P4079Md_N4WIpEN40wFhpA-1; Wed, 03 Sep 2025 07:15:55 -0400
-X-MC-Unique: P4079Md_N4WIpEN40wFhpA-1
-X-Mimecast-MFC-AGG-ID: P4079Md_N4WIpEN40wFhpA_1756898154
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-7724877cd7cso3888121b3a.1
-        for <linux-coco@lists.linux.dev>; Wed, 03 Sep 2025 04:15:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756898154; x=1757502954;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kVBqAzXRtaGdVaqdIdbidkD/s0lTNKoOEws6COnY9ko=;
-        b=N/rSdTwR6ExL0o/0u3mH0BXoEHXdC6A3hL6OabNeIk1MNm54aWVx0lywd+jZ9/Ia8E
-         Yh1Bf0zSaIwfbV9zX3dMmf5QM6DsVXTWYQ1812k0P1a1aZ2DoOPDjcrBgCJRl2TrfRaz
-         gggC0wS+PHOkVURCDMFbCWB2+WYs/2+uX9NibxZAB/HVpzrXUMVHkIfA5s6t1+oAbH0n
-         SJ/Yg7t0TguakBYYK+tWuiqqNCZ8yJ1oTYCAQNeyTZrLjvMkI7/dZqODEh5ZgUYnJc60
-         HMXyjSFBLEdjImpr8TKhAl8u8zcHAE8rm+SF01NrjKmUyc+d1XFJQpbawL/0TJdiqacn
-         vpgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXvQnRyOgq9ADEb6hPp6j5DjHzlYuGn+E/ZCUGJoDKXlBz9VYEThQZK6XXVTEfG13FasLv8V2YP29/m@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz09VDxDBrtxvIcm2KuPtO5h2JZOSNGeAnBbBQ7XIm0UXsDOf3k
-	H69kiTf8cTtb5JhO7H+slYl37RhbZq9UwIuEgsJXyJM7nDHqW5HUCTmduMY0T5LWTPrz4bftWpL
-	XZzQC93bsjk6haAmCYuJnUyI/WcLO6i0INJR3y5gqIi+SP3DkAGd7jWuu/BgYMCs=
-X-Gm-Gg: ASbGnctbvt/RkKTbR+NCCizrwf6RCkPCodQNHFf3pW+g5bqpft9OId/0eZKb0CRm1gl
-	8cOWEvC0STdkNjqjgEmWmAuaE5dJEKOwa0XcBaR3v43aRhIaWTbX1binisB//SwGbrsS8uQUnOZ
-	qvI8thgZzRpcCG3KYebBxNjogJz1wtaTxWIf5Ha8P3J8psQtsxwSp6PkLRanZarfLuVVLJv9zsF
-	NVksF8ZyycPO0gFRg767olyQXyjdZ4zx0GgW8Nd3Qe/tjJjbR0rYT0sFENLlT3wkUUQttZNvRjU
-	RFwijdrY5RcxD00zbMm89W4AjqS498Hr3yS3+bvJJkfrFc/SaU9FMcewK7XhYFXTYEwNgOH9NwL
-	JULIv
-X-Received: by 2002:a05:6a00:2d13:b0:772:2fad:ff64 with SMTP id d2e1a72fcca58-7723e257daamr16145015b3a.8.1756898154143;
-        Wed, 03 Sep 2025 04:15:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEehFXhizd/XBGs6lPLajyy1rp0g+vzzGOhiFu//IuUVahDT7Y1/d6xBov7/G/ROyWBDy0Hlg==
-X-Received: by 2002:a05:6a00:2d13:b0:772:2fad:ff64 with SMTP id d2e1a72fcca58-7723e257daamr16144978b3a.8.1756898153626;
-        Wed, 03 Sep 2025 04:15:53 -0700 (PDT)
-Received: from [192.168.68.51] (n175-34-62-5.mrk21.qld.optusnet.com.au. [175.34.62.5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7722a269e9csm16651516b3a.17.2025.09.03.04.15.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Sep 2025 04:15:52 -0700 (PDT)
-Message-ID: <0481109b-769f-464b-aa72-ad6e07bdfa78@redhat.com>
-Date: Wed, 3 Sep 2025 21:15:43 +1000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IPL/qy/b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37CD7C4CEE7;
+	Wed,  3 Sep 2025 15:17:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756912680;
+	bh=DSV80I41HNdrHgq8ScGZor8qjlma6CCCC2HAyKlmfkM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=IPL/qy/baUA54iz0l26WqXC7I6vxSBIHps2BTOdpbKZuSfgQSRIkH5klKEzNcAFi5
+	 nVV9umg4ur1hmDMmV7W+XjWSY5vXXFdP/ILKGKm1uQHcCGEYcogu3cGruka+pMES8a
+	 im18Nw2o91MtYYyi3Bi9pNnrn0X0e1e+HPIeeUqmGs3PWb5I0ea/q40sYq4oXwAFLf
+	 fuTYLhJvwvOAnWoxE39VCm31ulxbRTIPJp2HHSy28vUYyf2LLxXzz2AT3P8wbBv6wE
+	 nbn0qYtucE4TMDK6YJMO6mwaUKLJnDfp+ysCZ3BH0J8yWuqlI1l3JG61GVRduX+0Tj
+	 gauo1LmSe7hAQ==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, bhelgaas@google.com, yilun.xu@linux.intel.com,
+	aik@amd.com
+Subject: Re: [PATCH 1/7] PCI/TSM: Add pci_tsm_{bind,unbind}() methods for
+ instantiating TDIs
+In-Reply-To: <20250827035259.1356758-2-dan.j.williams@intel.com>
+References: <20250827035259.1356758-1-dan.j.williams@intel.com>
+ <20250827035259.1356758-2-dan.j.williams@intel.com>
+Date: Wed, 03 Sep 2025 20:47:53 +0530
+Message-ID: <yq5ay0qv1s66.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 05/43] arm64: RME: Check for RME support at KVM init
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve <vannapurve@google.com>
-References: <20250820145606.180644-1-steven.price@arm.com>
- <20250820145606.180644-6-steven.price@arm.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20250820145606.180644-6-steven.price@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: D9bj4DUj_PhECUP8u6WHGv-hmvLihynDROqpK0UezAY_1756898154
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 8/21/25 12:55 AM, Steven Price wrote:
-> Query the RMI version number and check if it is a compatible version. A
-> static key is also provided to signal that a supported RMM is available.
-> 
-> Functions are provided to query if a VM or VCPU is a realm (or rec)
-> which currently will always return false.
-> 
-> Later patches make use of struct realm and the states as the ioctls
-> interfaces are added to support realm and REC creation and destruction.
-> 
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v8:
->   * No need to guard kvm_init_rme() behind 'in_hyp_mode'.
-> Changes since v6:
->   * Improved message for an unsupported RMI ABI version.
-> Changes since v5:
->   * Reword "unsupported" message from "host supports" to "we want" to
->     clarify that 'we' are the 'host'.
-> Changes since v2:
->   * Drop return value from kvm_init_rme(), it was always 0.
->   * Rely on the RMM return value to identify whether the RSI ABI is
->     compatible.
-> ---
->   arch/arm64/include/asm/kvm_emulate.h | 18 +++++++++
->   arch/arm64/include/asm/kvm_host.h    |  4 ++
->   arch/arm64/include/asm/kvm_rme.h     | 56 ++++++++++++++++++++++++++++
->   arch/arm64/include/asm/virt.h        |  1 +
->   arch/arm64/kvm/Makefile              |  2 +-
->   arch/arm64/kvm/arm.c                 |  5 +++
->   arch/arm64/kvm/rme.c                 | 56 ++++++++++++++++++++++++++++
->   7 files changed, 141 insertions(+), 1 deletion(-)
->   create mode 100644 arch/arm64/include/asm/kvm_rme.h
->   create mode 100644 arch/arm64/kvm/rme.c
-> 
+Dan Williams <dan.j.williams@intel.com> writes:
+...
 
-[...]
-
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 888f7c7abf54..76177c56f1ef 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -40,6 +40,7 @@
->   #include <asm/kvm_nested.h>
->   #include <asm/kvm_pkvm.h>
->   #include <asm/kvm_ptrauth.h>
-> +#include <asm/kvm_rme.h>
->   #include <asm/sections.h>
->   
-
-Nit: The header file <asm/kvm_rme.h> has been included to <asm/kvm_host.h> and
-<linux/kvm_host.h>, which has been included to arm.c. So this explicit inclusion
-can be dropped.
-
->   #include <kvm/arm_hypercalls.h>
-> @@ -59,6 +60,8 @@ enum kvm_wfx_trap_policy {
->   static enum kvm_wfx_trap_policy kvm_wfi_trap_policy __read_mostly = KVM_WFX_NOTRAP_SINGLE_TASK;
->   static enum kvm_wfx_trap_policy kvm_wfe_trap_policy __read_mostly = KVM_WFX_NOTRAP_SINGLE_TASK;
->   
-> +DEFINE_STATIC_KEY_FALSE(kvm_rme_is_available);
-> +
->   DECLARE_KVM_HYP_PER_CPU(unsigned long, kvm_hyp_vector);
->   
->   DEFINE_PER_CPU(unsigned long, kvm_arm_hyp_stack_base);
-> @@ -2836,6 +2839,8 @@ static __init int kvm_arm_init(void)
->   
->   	in_hyp_mode = is_kernel_in_hyp_mode();
->   
-> +	kvm_init_rme();
-> +
->   	if (cpus_have_final_cap(ARM64_WORKAROUND_DEVICE_LOAD_ACQUIRE) ||
->   	    cpus_have_final_cap(ARM64_WORKAROUND_1508412))
->   		kvm_info("Guests without required CPU erratum workarounds can deadlock system!\n" \
-> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
-> new file mode 100644
-> index 000000000000..67cf2d94cb2d
-> --- /dev/null
-> +++ b/arch/arm64/kvm/rme.c
-> @@ -0,0 +1,56 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (C) 2023 ARM Ltd.
+> +/**
+> + * pci_tsm_bind() - Bind @pdev as a TDI for @kvm
+> + * @pdev: PCI device function to bind
+> + * @kvm: Private memory attach context
+> + * @tdi_id: Identifier (virtual BDF) for the TDI as referenced by the TSM and DSM
+> + *
+> + * Returns 0 on success, or a negative error code on failure.
+> + *
+> + * Context: Caller is responsible for constraining the bind lifetime to the
+> + * registered state of the device. For example, pci_tsm_bind() /
+> + * pci_tsm_unbind() limited to the VFIO driver bound state of the device.
 > + */
-> +
-> +#include <linux/kvm_host.h>
-> +
-> +#include <asm/rmi_cmds.h>
-> +#include <asm/virt.h>
-> +
-> +static int rmi_check_version(void)
+> +int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u32 tdi_id)
 > +{
-> +	struct arm_smccc_res res;
-> +	unsigned short version_major, version_minor;
-> +	unsigned long host_version = RMI_ABI_VERSION(RMI_ABI_MAJOR_VERSION,
-> +						     RMI_ABI_MINOR_VERSION);
+> +	const struct pci_tsm_ops *ops;
+> +	struct pci_tsm_pf0 *tsm_pf0;
+> +	struct pci_tdi *tdi;
 > +
-> +	arm_smccc_1_1_invoke(SMC_RMI_VERSION, host_version, &res);
+> +	if (!kvm)
+> +		return -EINVAL;
 > +
-> +	if (res.a0 == SMCCC_RET_NOT_SUPPORTED)
+> +	guard(rwsem_read)(&pci_tsm_rwsem);
+> +
+> +	if (!pdev->tsm)
+> +		return -EINVAL;
+> +
+> +	ops = pdev->tsm->ops;
+> +
+> +	if (!is_link_tsm(ops->owner))
 > +		return -ENXIO;
 > +
-> +	version_major = RMI_ABI_VERSION_GET_MAJOR(res.a1);
-> +	version_minor = RMI_ABI_VERSION_GET_MINOR(res.a1);
+> +	tsm_pf0 = to_pci_tsm_pf0(pdev->tsm);
+> +	guard(mutex)(&tsm_pf0->lock);
 > +
-> +	if (res.a0 != RMI_SUCCESS) {
-> +		unsigned short high_version_major, high_version_minor;
-> +
-> +		high_version_major = RMI_ABI_VERSION_GET_MAJOR(res.a2);
-> +		high_version_minor = RMI_ABI_VERSION_GET_MINOR(res.a2);
-> +
-> +		kvm_err("Unsupported RMI ABI (v%d.%d - v%d.%d) we want v%d.%d\n",
-> +			version_major, version_minor,
-> +			high_version_major, high_version_minor,
-> +			RMI_ABI_MAJOR_VERSION,
-> +			RMI_ABI_MINOR_VERSION);
-> +		return -ENXIO;
+> +	/* Resolve races to bind a TDI */
+> +	if (pdev->tsm->tdi) {
+> +		if (pdev->tsm->tdi->kvm == kvm)
+> +			return 0;
+> +		else
+> +			return -EBUSY;
 > +	}
 > +
-> +	kvm_info("RMI ABI version %d.%d\n", version_major, version_minor);
+> +	tdi = ops->bind(pdev, kvm, tdi_id);
+> +	if (IS_ERR(tdi))
+> +		return PTR_ERR(tdi);
+> +
+> +	pdev->tsm->tdi = tdi;
 > +
 > +	return 0;
 > +}
+> +EXPORT_SYMBOL_GPL(pci_tsm_bind);
 > +
-> +void kvm_init_rme(void)
-> +{
-> +	if (PAGE_SIZE != SZ_4K)
-> +		/* Only 4k page size on the host is supported */
-> +		return;
 
-Nit: The comment can be moved before the check, something like below. Otherwise,
-{} is needed here.
+Are we missing assigning pdev and kvm in the above function? 
 
-	/* Only 4kB page size is supported */
-	if (PAGE_SIZE != SZ_4K)
-		return;
+modified   drivers/pci/tsm.c
+@@ -356,6 +356,8 @@ int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u32 tdi_id)
+ 	if (IS_ERR(tdi))
+ 		return PTR_ERR(tdi);
+ 
++	tdi->pdev = pdev;
++	tdi->kvm = kvm;
+ 	pdev->tsm->tdi = tdi;
+ 
+ 	return 0;
 
-> +
-> +	if (rmi_check_version())
-> +		/* Continue without realm support */
-> +		return;
-
-Nit: same as above.
-
-> +
-> +	/* Future patch will enable static branch kvm_rme_is_available */
-> +}
-
-Thanks,
-Gavin
-
+-aneesh
