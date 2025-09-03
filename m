@@ -1,299 +1,233 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2049.outbound.protection.outlook.com [40.107.92.49])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2070.outbound.protection.outlook.com [40.107.92.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6EE279DDA
-	for <linux-coco@lists.linux.dev>; Tue,  2 Sep 2025 22:43:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB77676026
+	for <linux-coco@lists.linux.dev>; Wed,  3 Sep 2025 02:03:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.70
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756852995; cv=fail; b=CsbZb72aCwMcAyCvnINeamfyDE9LHbqVDuCrrGP2TaMSeZWWI0ESVH3tj8g1PiCHSY0yx3qe39nmCI6K+y60iDMSFkwlphl2PLdYyT2wWu+3gwY/jVN6jmBR3zsI5Z4LOHD3tPvJFEpQrUhR0ukGWk4TPBfzn/1CgjIZuduy+p4=
+	t=1756864994; cv=fail; b=dphBewL1PSxYlqgkdx3fW8j1OA1/UvG12soHyXjOQZjgsypakDyu9fmcbDA6Kxuy/OMGnKloy7A94u9hg7fKv8nVV15aOP/IdZ9CoPJ2UjQqVKVt2xLYs6o5sfshmRmBr+B4QZjz5GDVsur8m9P5HTWOtEN8xyvPMpuUK1XvRVQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756852995; c=relaxed/simple;
-	bh=xuymci9b5YUGIPTTq1d1RcSvkbRFReUrA5MNfAhUp8g=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S9V5v3UnoFRv1GWWPEjMkZ8iFcOdB2D/Q6hj1nBe6/F5d+f6x4WcKodCHObJmvVOexQqPVAPG5J0SRnoMdbe4+x3B8UwJPq8ALUv5ESX5msiCSZ500PzbwHdu1oB50EcpkRkLGVoK6m1+ykwgr2Y8Bz/c/pgQDfoGOKs7taGFLc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=YdjLk/qi; arc=fail smtp.client-ip=40.107.92.49
+	s=arc-20240116; t=1756864994; c=relaxed/simple;
+	bh=O9merqTOl3kXpEQSUibPXUlYsns/3v+/Si8Vy7f1xi4=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=fVdYI18d6Zm8bk4oLrq5K5kzUiutv8rzcycVJERTYPca09IaeVVOXr9WWThZSgLyxPeREStm99Xj7cctYkpKT1nsHbVZ3OD3/oBpVm5K3jY6uXxn2ajKnwQVGiO5k67x9FY3DU7MruD9adsoI44NmGgKNz4xUPbAFZgakScwS7Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=WhovScUH; arc=fail smtp.client-ip=40.107.92.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="YdjLk/qi"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="WhovScUH"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FTh2CU8DUNp0S7/9RILnddepJW6iNCU2U96Kv1DiI1GBuco6eQf324p29BqJj1iQ8kj3MGlQPmmGTpPk4J8sj817M8ELo25eF22rKB7ufaAq5nP4NYqf39JQxdkZczXiFUtEJtaVXuNbddlqp8hOySUut2jHyjIXy9jQ/4knjeNZ9sxn4yf9MoE3fJG2waTT0i1GVDKTSL6r3MGXQqD9aGWj21QJ4cow56SU1jYs73/a8C+R6JDpi8JZ1JpixmQPCMbNbLze65XJSiAdkb2rd+4Uyw/4qwOa4owa0Ctpj8rifTsHIkdvrG3SVQ3Lvr65Gp7cfq1XOkRQa5TGID1qKw==
+ b=iaPxv9siOgcYza6ni54kUwQZEXtYPDwqIZi7ae0kZfsrPvwjiT1xZ/KZ1qEfidnieqbSR4D0g9XmU35LCMSFF6WKIXUyxmMo4TzY9tKGFSBiuD2xh2gxJWfmDrQR97IYvNcUtsq6wQOf3choPWFxoJYLAW1EXMm8zEpzuFlzw25xZ2ofSoryqLf9TI99LF4n01jQzP+OKIBQfhEziWVEwTyxZvvQnSu2Zk4yx5H5pre9G9TpWQMcOPWG42GjNaQQ2MiranqZQb3if5aWmq/3ViIyAqLgKbLKA9chJR4MmFQ6Xo5gopoE5PSP/d0RjmlOYAuHC405ac1I0pW/NEtvWw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=04xCRzPpRIgPN+SAv4elmf15jgV8kBUCxtipObJJePg=;
- b=oTpoHuQuSK95NOxkbxDyb+wNx+2tCdJ/8Upw1tsa9XjcR489vDTAXKKyx1zyFSagnU4l0wxO5QS7IPkwKnfQbdM65DFtX6uKZ8oVSTJIaHjIV8WeRC9f/lbsGqAg5pOwxOp/5FJt9Ck0ipYrUNHFuUh8W5ChtYio+H6QoEo3pRxoo/ZGVsNiUimiQd0vmf9Nir4/CTTa5cjqJKAq+YHO6IYKnA99ixsVQIsOAopoPkxasm2Bw5IxR6sg8Jm9hl/0pgBYUcpi8Cxtd/Emgcjpz5MLEun1kERZyi81BjA9MwnqswuBsPLPhBrfFkJo63yNVWoAZK2BT1qJ4Eq8gTeeNA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lwn.net smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
+ bh=P2P9G5xoAfRdYe+xjLxoWHOA7aIW5+b7dVusp85rdpU=;
+ b=HUpKVV2loQSJapoHJ+/ieKEA4Lroj9GzfKVpZMPVNEG72G/rcwB+UruVlsfUHxlSw6/Anyh3Deh9XGb5YMKaP/Qh57yHcQZVEjCLQ09NLqsIWiAFde4VNS+TYiwa27o1o/lW7jzuHByiPKWcXQo/Zf8tfceKHN12LfWYwrCUvOWwzaTaAMgrhwTmPrv5Fd4fl9dTZ/AzqovlztYiTs1IMGzzSgbBymiQhS91b9X0JebmFUjhRtQ9kASR9v9vVkKZq4593Zr4JCDbmQ3kyDouID4RjliRdtm3tACvu4C3/mPWJzxOuRKpI8ETHGyeuBWXiGZftWCufIhcct5ZE0UF3g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=04xCRzPpRIgPN+SAv4elmf15jgV8kBUCxtipObJJePg=;
- b=YdjLk/qiYsZFP06ijkKWe0jYI0yxhlhcc3DidxNraf/VYwBYj5lL4X/HeSHbtLptY1JE1gYPhLG6V4B0Wjjm0ir6nJA1dnRDzzXJD3ufig6cDJQR7xg6miRVCmOA9c2HLMxaOT8egyfSf2ecVlrRYQ289QA2iNnuX/7NwBXRnKU=
-Received: from SJ0PR03CA0136.namprd03.prod.outlook.com (2603:10b6:a03:33c::21)
- by CY3PR12MB9656.namprd12.prod.outlook.com (2603:10b6:930:101::20) with
+ bh=P2P9G5xoAfRdYe+xjLxoWHOA7aIW5+b7dVusp85rdpU=;
+ b=WhovScUHVDA9cOY4r5KkCyQ/1m5tcDm3ZzhSQrEyc+fdJf5c6CIlr0me2YOZCXlEiA2QSpB4IA/lk/Alm/Ix+3hLnjwHyKha17S9cU6pmh3dZEp1NupSIRJUcGKjKrHBN5x/j9Q5tbqevl4YIMMGo1qXZeXaq8LuyBo7hJ80ows=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
+ by PH7PR12MB5711.namprd12.prod.outlook.com (2603:10b6:510:1e2::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.25; Tue, 2 Sep
- 2025 22:43:08 +0000
-Received: from MWH0EPF000971E3.namprd02.prod.outlook.com
- (2603:10b6:a03:33c:cafe::af) by SJ0PR03CA0136.outlook.office365.com
- (2603:10b6:a03:33c::21) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.27 via Frontend Transport; Tue,
- 2 Sep 2025 22:43:07 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- MWH0EPF000971E3.mail.protection.outlook.com (10.167.243.70) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9094.14 via Frontend Transport; Tue, 2 Sep 2025 22:43:07 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 2 Sep
- 2025 17:43:06 -0500
-Received: from bmoger-ubuntu.amd.com (10.180.168.240) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.10; Tue, 2 Sep
- 2025 15:43:04 -0700
-From: Babu Moger <babu.moger@amd.com>
-To: <corbet@lwn.net>, <tony.luck@intel.com>, <reinette.chatre@intel.com>,
-	<Dave.Martin@arm.com>, <james.morse@arm.com>, <tglx@linutronix.de>,
-	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>
-CC: <x86@kernel.org>, <hpa@zytor.com>, <kas@kernel.org>,
-	<rick.p.edgecombe@intel.com>, <akpm@linux-foundation.org>,
-	<paulmck@kernel.org>, <pmladek@suse.com>,
-	<pawan.kumar.gupta@linux.intel.com>, <rostedt@goodmis.org>,
-	<kees@kernel.org>, <arnd@arndb.de>, <fvdl@google.com>, <seanjc@google.com>,
-	<thomas.lendacky@amd.com>, <manali.shukla@amd.com>, <perry.yuan@amd.com>,
-	<sohil.mehta@intel.com>, <xin@zytor.com>, <peterz@infradead.org>,
-	<mario.limonciello@amd.com>, <gautham.shenoy@amd.com>, <nikunj@amd.com>,
-	<babu.moger@amd.com>, <dapeng1.mi@linux.intel.com>, <ak@linux.intel.com>,
-	<chang.seok.bae@intel.com>, <ebiggers@google.com>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>
-Subject: [PATCH v9 10/10] fs/resctrl: Update bit_usage to reflect io_alloc
-Date: Tue, 2 Sep 2025 17:41:32 -0500
-Message-ID: <549a772b83461fb4cb7b6e8dabc60724cbe96ad0.1756851697.git.babu.moger@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1756851697.git.babu.moger@amd.com>
-References: <cover.1756851697.git.babu.moger@amd.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Wed, 3 Sep
+ 2025 02:03:07 +0000
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f%5]) with mapi id 15.20.9094.015; Wed, 3 Sep 2025
+ 02:03:07 +0000
+Message-ID: <71d8abc2-82b1-491f-9075-d5259e83f9e3@amd.com>
+Date: Wed, 3 Sep 2025 12:03:01 +1000
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v5 04/10] PCI/TSM: Authenticate devices via platform TSM
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+ linux-pci@vger.kernel.org
+Cc: yilun.xu@linux.intel.com, gregkh@linuxfoundation.org,
+ Lukas Wunner <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>,
+ Bjorn Helgaas <bhelgaas@google.com>
+References: <20250827035126.1356683-1-dan.j.williams@intel.com>
+ <20250827035126.1356683-5-dan.j.williams@intel.com>
+ <yq5a4itk3n9f.fsf@kernel.org>
+From: Alexey Kardashevskiy <aik@amd.com>
+Content-Language: en-US
+In-Reply-To: <yq5a4itk3n9f.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SY5P300CA0031.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:10:1fd::17) To CH3PR12MB9194.namprd12.prod.outlook.com
+ (2603:10b6:610:19f::7)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To satlexmb09.amd.com
- (10.181.42.218)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000971E3:EE_|CY3PR12MB9656:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf7b3340-dc77-4a8a-ede0-08ddea721614
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|PH7PR12MB5711:EE_
+X-MS-Office365-Filtering-Correlation-Id: 78523589-b432-43e6-ad87-08ddea8e0637
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|82310400026|36860700013;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?PN/3BIr+aPXpn8Kjrx7JG/+o227OW9HualDE9FAbU9jyYg8yMdO/8DX17lYf?=
- =?us-ascii?Q?aE0mHKdGSiv7DCREorKNtJ3Ay6Ol8fi52kTaLpCOKVXIiK1EtTD/URF+fTDV?=
- =?us-ascii?Q?xBSRy5s0VCZLINOQ5hBwveHTHFsbFxja6RQnmmVsii1tQVOGjJSFyVwOUbQ9?=
- =?us-ascii?Q?8tjcIYskzCFrCqDzmCs53XZLTRKKiZJJvovkRtW8nVZkevjarcfP2YJFAMu1?=
- =?us-ascii?Q?vm7ny9QFnlCEx9IV4LKFrxRH/sFmuUE6xUMxK2CtsfXOmRxhamui3OQVgMpq?=
- =?us-ascii?Q?cTKDVRzK5ES+EWV4Fi2xoULmWtg9naTPUhsDu5iQ1VhdFKT1UwxkaDeO+YeQ?=
- =?us-ascii?Q?iXPaPuNRzY8GbS13r5NGsRSTM7Zv/sOTkQwtuJF4uy0QWaIs1jTju/lKi8b6?=
- =?us-ascii?Q?rov5G5Qpwz2xU1uHspEQDMtHIkZ5wZnHWkTVDceaQmTUEgLR+lWAIwJr7N6J?=
- =?us-ascii?Q?/GP0sCu2cO+omErKI3N7dnxAeSSgYwO7hDZxnJ4vCtW8UrtRHRHCcYVMzd1T?=
- =?us-ascii?Q?lRF70S83wITQXIzTFLVwroSGUkV125qJKhibgsSy/CzmHUrh15s0NewE7dBl?=
- =?us-ascii?Q?YSL28MeNxdATaJP50XfsChWP9deRVPOWb1wEeD9KeO7Ri93ED81ZH1bzvHRu?=
- =?us-ascii?Q?fimzvqR0nW6h1mtcgUPP7H1jQY1RZ5KFvptaXukaYjhbWIGKsJgVWZUP/jix?=
- =?us-ascii?Q?z7r6arA50wrdWVClMsGH6TsvnGHPlR8WIQzQqd8tlymeMIe7e96v7/XIlFkH?=
- =?us-ascii?Q?meX/n5dRpHldGpIDL7wcYNoWjZ5kSYPFQ6m65e6vSg+1ugF1h+IwWXDpdF28?=
- =?us-ascii?Q?YX9v4T+xqBbjVKuCkt8q4v116sK8sf2g3bejFNhc8Y3W+FqA56sFkL7FH1Fq?=
- =?us-ascii?Q?8b62gUCbc1TFODpVbo7mdfNVhB6D8Nh1oAfUNdnFNfKZL6N6lrxOvzI62zkq?=
- =?us-ascii?Q?bWvzEDqoiFUsqlW3CTvgNNPTlkSKEIP8zFuCNKXIYWCUyGZSaNuzAt1z1Lxa?=
- =?us-ascii?Q?u+QPRL4sb008oV7tUa9BNS0jonLJtDv7FcqlziN9mRCLvIar/BfQlklOrP1B?=
- =?us-ascii?Q?dyz2djMpZOYm6y/jxgPNy4a+z0LeiV5IF0clq/ydI+0OzeS53gvUdcGLAzHM?=
- =?us-ascii?Q?Ls39avZY07GELCF/q8px1lx/jrjmsFW1jy9MzUNufuWe1CDT0W9fCtEJcGU4?=
- =?us-ascii?Q?ZBwuZACZDSq0SuKsRYnf+GvilqZ5J/vPsGfYQhNvqnEdw1EmuhBFKzZRhoWq?=
- =?us-ascii?Q?6ij7uv29hHcIt1wBmtNUmLsXupRnFk2GVWn5GZoOVddimMt7WpLrmKHv3K8m?=
- =?us-ascii?Q?YOQf804sphE8mppopHkSy47c4AwNy/nYU4TKMBMgLG6//4YlMom5wd+f/r2G?=
- =?us-ascii?Q?Oh9HqRZUn+Sw19gN8uIoK7Da8R9Eb76rThrleuClAgIJP+2FHfc2PMc3qHaS?=
- =?us-ascii?Q?zFEIQDUa1g1x3qEpzoFyA6UNhL98aHt1RLzZ7RQ4FemTFT//NnzC4rN1FaqP?=
- =?us-ascii?Q?bOOziQ5ihHBRiSfKmoRIj5ovKWqhs6kb4IbC?=
+	=?utf-8?B?blZ0VUgrMjU2MmJSZHhpbHEwK0dnQk5MV01IM2E3L09pbThGVWNNUDFHY2NC?=
+ =?utf-8?B?b2oyckRUaG04bjBHWW0xdFJRT2FWSGZCQVd0RHRwT1ZjemJOZmpCV0ZoeEZh?=
+ =?utf-8?B?S2V2UXZxZmtNSG5neG9pcStLa2QxNm9QZjFza01tTHcvOEE3QmxXRXBmZUYr?=
+ =?utf-8?B?SGZOVUxoUVVyK0s4aElaMFBZWTZ0SHo1cVF2aklncUE5NCt5Vjc1aU8xSjhX?=
+ =?utf-8?B?d1JmV2VDaklCdzVxMURmMlR2TERjKzkrcEl4MFBHVU5QOHBkblNyNm8vcGdW?=
+ =?utf-8?B?b1NmMjlHTFMvVkloam9uWUlmaWlUNGNjY25MdVBRVFY1ZUsrM1RVME1mSEVm?=
+ =?utf-8?B?WGRPM2VrajRxd1BIRTN5QjYzbWdJUnh4OVNxby80TUN2eFZvUjJNYkc5T1hj?=
+ =?utf-8?B?K055M2phWEpZaGJsUXJ3NFVweWRZSkdUMEtSWG1xOVU0L0I0aC9MM1NDMkNQ?=
+ =?utf-8?B?QmR6bHprQ2ZnbTRncVg3Ymp0UzRlVllzdDArOHozQXhnQUVGY213SzdJY05z?=
+ =?utf-8?B?L2lBYWtJMmhnMlRJaC9KTDFoN21ndHNXRzltS3NoU1g3Vk93WXZOQ0lacDR3?=
+ =?utf-8?B?bGJTT0F0MEhHK2c4MEZ5Tm84QnhUQTZXR1N0dEJSbjNuTTg4L1dhWkpCWlNU?=
+ =?utf-8?B?RTkzQ3EwU1ZzWUh4eVl3UlREbVBuTVNOcHNzMlRicUkrQmFzSWdtNVlnL0ty?=
+ =?utf-8?B?SHFQZ2F1OTBuWWlhaCtVWE0rUVhIbHpjT00vbHdkaTRPeG1FSG43UTVIZDRx?=
+ =?utf-8?B?TWpsU3cxZm5YckY4WFd4dmsrb2pnRzgySmx1SS8yR1FjbFE4WU1pWVJPcFJq?=
+ =?utf-8?B?NFZVeXJvbjlYZ2l4OEtvWGFseW84czlrOEwrN1dDVXZST1ExZGNET2FucHlG?=
+ =?utf-8?B?VFFRdU5hTktvVHNLelJhamt2cVcxREYvUExBVXgyR0g5cXRMbnBQbDFwdVM3?=
+ =?utf-8?B?S2lCc01ZSHZQYXhydDkwdUNvWmJhZG43R1c0VU9KQXlSc0lkbHBiTU9OaXdl?=
+ =?utf-8?B?NWdGWnhZM3YyWWhLNE9GMTJLZ2tGS1RyVWNMRjE4ZDRFSlFkc3BPVmlTMWlF?=
+ =?utf-8?B?NW93QldnanVXWEJnU3cxT29GckdWYVF2VkFLZVZHRTZITHAyelV6dlBXc0hX?=
+ =?utf-8?B?VVBpQWFJVEYxb3lITWtaMFJYakVQd0tGMmlxYXR0Ym5EeEVRM1dtU3U4dFhT?=
+ =?utf-8?B?VWpIVnBnUTFUUjBsUm9idjhOMUN4UW5oSGhYL3FIa2E3eFlXRDJzSFNKb0Y2?=
+ =?utf-8?B?RUc5Mk9yb20wYmZ3WU0rL1VJT3hrR2VQWUc4ZWhlTkFpblZMcHZnd2Z1UHRY?=
+ =?utf-8?B?UFFlUS81TlA4UnFDMUFXZWZXRUxxekdnVHJMTmluczBnM1FSTlJPYXljK3FV?=
+ =?utf-8?B?MnptdUxCK3VONzFLcUV2aHg1UzYyV2JlVnQ1OTZ6ZFlLWmNzcjJoSEgyNml6?=
+ =?utf-8?B?OVBqQ2NGdTFab3N2bWhXdlVza2kwcjBNa1YrYk5ydWIxbk5jQXozdzRFNDcz?=
+ =?utf-8?B?M3pIcHl1enFYL0hwWGl1bXEyOGloTTg4eklHOWs1dUFCZmF3ZHU4aGEzS1hD?=
+ =?utf-8?B?ZEk0aUllclFRUG54dUVLdmk1eWNIQXJnR0RXTzFOWURtR2YzR2NEVmpwemp5?=
+ =?utf-8?B?UHFtUG5WelhZbnZQMkY4MWl4NzdCMFJDNnNPS3lCcTNyYnNJLzdNUlFaSWFz?=
+ =?utf-8?B?TVpORDZNQkloL1NudDZlSkwxMkJZd21JdFo1emtEeW9rTVNqcjdORWxNTUhL?=
+ =?utf-8?B?bW9XOS9ZQ29DcnkwbitmSDA2c0xPenVwNEliTTFFTjd6cU90RUJycDRWT2dx?=
+ =?utf-8?B?S2p3TTdSOXJUUkpVZEt5cXE5TlNaK2NvUjNQZGlOMGNleXRaU0RQOUlrL0hJ?=
+ =?utf-8?B?b2xYOXNOeGRLV08xcHRTcFNkRHE5REVIcE9XZWVJbU5SUEI2bjU5Y1ZnMWor?=
+ =?utf-8?Q?MClsvV3JlCQ=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(82310400026)(36860700013);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?b0ZsSUhGUnY1ZEJLK0FacktWR2NqK3VzZmtGandycDUxQ28rNTI2V25uLy92?=
+ =?utf-8?B?QUUxd0lISlF3MjE4Rno0aXV5dUVHUE1PbUd2NURGVkFkWnNZM0krblhoTndl?=
+ =?utf-8?B?MTNzb0JOVW00YjlBWEZKSisxTXlWczNXQ3Z6RWdScHJZZTJTZTZvZ3ZoSThL?=
+ =?utf-8?B?eGI5Sm1nNWhyRlN4a2VtSjBITXdteFgxQldjd3RONldxSGdGQ1lqM0NtTFoz?=
+ =?utf-8?B?T2FPRmVpazI1STMvb29JdzdmaGJMdTY1R1JiRUg5QnJuL3ZwQkRMUC90WU5o?=
+ =?utf-8?B?Lzc5VjB5VGZ3bEsvY0FkZ1ZPcmxVc1N3TVJCOXF3T0t0TGhzcGlSOGV1OTJp?=
+ =?utf-8?B?WmZnNmFrSmZORXZEVkZENUphb01XcjgrU3o2eDNpMkxxZ2dIQlRxQUhpbmdG?=
+ =?utf-8?B?aXUvN1RCSnduQ1hnZndFMThEKzlYblliT1l5UTBjaUFuNEMxRzZPMWd0dlE4?=
+ =?utf-8?B?cWNKYU1YOTVqdWs2S0J4c3RBNFJTSFhsZWRlaDJRRHp1bklMY3Y0VDYxby9l?=
+ =?utf-8?B?N3NxbHdrL0EwZldiNVYwSFY1SVdqenZ2eGtDY3RZWVdmVFNuTkNkbWlhS2Vw?=
+ =?utf-8?B?bCtFN2hvNUluV29BdCt0N1NMcWdpc2RFRTFrWkJwdlhKa01icTNNTnNSNDgv?=
+ =?utf-8?B?c1hOMk5UQ2NmNjU5b0tzT1A1SG94dDNMbXhkWkc2MFUvSGhaTW5OV1BkQndS?=
+ =?utf-8?B?T3lheGFPSUFpaWdRNTZqWHZNQkROWDh3QjBHVTZUVUE4T3RkcnpKakEvU2ow?=
+ =?utf-8?B?K1c1ZFhhZ3ZQdENua2x4d2tTdmhKaFBkNDN4UFdpM0JpSWUzUE9sWHR6eVhv?=
+ =?utf-8?B?by9OeExhUVBSSXZRaW5UUU5LaFgvTFlLMFd6cGJhMFBDOHd1OTFPTHhQVCta?=
+ =?utf-8?B?TWtoa1p2WHE3Vm5Fd0YvQTZZdlZDQkQrTUxUL3VDQ1Q4L1ozcVNBTWxlREJ1?=
+ =?utf-8?B?YmZ2ZzY4Nm0yRjZmdlBrRHJuMERmWlJLMmxzRjVpYUx3YXdLVkZjVUc1Mis0?=
+ =?utf-8?B?YTRFaU1vRXliTi9acEdGR05rUnNyYTd2TXF1NFpmL3ZybE90a2NCM1NwNzRY?=
+ =?utf-8?B?V2VHSVJZNUs5SlhjSG9qa3ovbGpWRmQwL2V4Y3JoUk1XcWxQbnNJNkZ5eFF4?=
+ =?utf-8?B?djBSRHNUTitYa1NZbFR4NEU3TnJ6YVRRVXY3VFJhSFFvM29oRnhDYnpXNWpr?=
+ =?utf-8?B?dDArdzVmamo5N2NYdGVHTGFnL01WYWZoSkI0TmJpZExtM0tBdTQycUxqYVRC?=
+ =?utf-8?B?ZHVaUjJCT2FpaUZMUXU3UDJlS2R6MDVZVDlEQ0VDazBYdXVaMkdkZ1g2OHlz?=
+ =?utf-8?B?blZuNGZ5bFlWRmViaGE0SGtyWFhndG9hSW10c2lLL29VYy83WWh2VGdTUHlq?=
+ =?utf-8?B?anY5bjdDV2s1R2tzc2xIN2VURXp1NU9QZVVib2UrSk1IZnlDdGFBdld5MGJO?=
+ =?utf-8?B?WnZmL1kwSjFoaTV0ZWg0M3ozUDZaeHhNbDU1RFg0ekllaDczcnFWUkF6SDd6?=
+ =?utf-8?B?WTh0TFpZWVo0MllNcE1mZzBjaVZ3SUxabVpzUHZFV1ZtdGlWQ2tFd1lnZUdx?=
+ =?utf-8?B?WUlCZU8zVkVyNEF3MXRZemFQeDlDdkkvVnk1TldFZSt6N2tmVFhSS2FsUENU?=
+ =?utf-8?B?UElyVVZLRFFlb1o0VklwY3g0UlFRbjJxMVhNS05jclBpTFFqYk1LczcyM0Za?=
+ =?utf-8?B?NnYxbCtHLy83WmZQS3FNVW5QbUFYMUpGZTd2MFQwOStvcXV3cUFZeS90SWsx?=
+ =?utf-8?B?am1nVFU3RnNpT0ZGM29RVmhtZkxMZ05yQ0cyamxIbTU5SWZ4WFFxSnBQMFNQ?=
+ =?utf-8?B?d2lVNlJOYTkraHh1ZHN5M21rZFNxaS9QQ3JDZHV0aSsveFdqSktYRTF4cnJB?=
+ =?utf-8?B?eE9pOUV2L3NEOFJFL1V5di9FWk5RVi82OVcvRzl0UFZDaFVxWUZuMWpPeUlW?=
+ =?utf-8?B?K3Z2ZTVMbnhLb09MWExYcjN2U1JGZFVsQUpRY0tlVUZ3S2x3UndEU1IrSitJ?=
+ =?utf-8?B?OU5xdGNpcnY3eHFkU1AyTDdCaTdXMXJBSWNkWDhiY01NT1NUWEoxSVRyT0Rw?=
+ =?utf-8?B?WHlYMmdLUGJZU0pqcU05YzFmTlZkZWhXcE5wMU1idUMyeUFONHMrWG5UODRr?=
+ =?utf-8?Q?513FahQPBput0hbr+fWduSsqf?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2025 22:43:07.2789
+X-MS-Exchange-CrossTenant-Network-Message-Id: 78523589-b432-43e6-ad87-08ddea8e0637
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 02:03:07.1662
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf7b3340-dc77-4a8a-ede0-08ddea721614
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000971E3.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9656
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CltEvMPFd5G+Onnnxm9RoNME7SJ7Fg/xWv+7FPCLgPY4YuqfwKQalrrMYzx1VuKLuueI8h4vm7b6yYmoZnydEQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5711
 
-When the io_alloc feature is enabled, a portion of the cache can be
-configured for shared use between hardware and software.
 
-Update bit_usage representation to reflect the io_alloc configuration.
-Revise the documentation for "shareable_bits" and "bit_usage" to reflect
-the impact of io_alloc feature.
 
-Signed-off-by: Babu Moger <babu.moger@amd.com>
----
-v9: Changelog update.
-    Added code comments about CDP.
-    Updated the "bit_usage" section of resctrl.rst for io_alloc.
+On 3/9/25 01:08, Aneesh Kumar K.V wrote:
+> Dan Williams <dan.j.williams@intel.com> writes:
+> 
+>> The PCIe 7.0 specification, section 11, defines the Trusted Execution
+>> Environment (TEE) Device Interface Security Protocol (TDISP).  This
+>> protocol definition builds upon Component Measurement and Authentication
+>> (CMA), and link Integrity and Data Encryption (IDE). It adds support for
+>> assigning devices (PCI physical or virtual function) to a confidential VM
+>> such that the assigned device is enabled to access guest private memory
+>> protected by technologies like Intel TDX, AMD SEV-SNP, RISCV COVE, or ARM
+>> CCA.
+>>
+>> The "TSM" (TEE Security Manager) is a concept in the TDISP specification
+>> of an agent that mediates between a "DSM" (Device Security Manager) and
+>> system software in both a VMM and a confidential VM. A VMM uses TSM ABIs
+>> to setup link security and assign devices. A confidential VM uses TSM
+>> ABIs to transition an assigned device into the TDISP "RUN" state and
+>> validate its configuration. From a Linux perspective the TSM abstracts
+>> many of the details of TDISP, IDE, and CMA. Some of those details leak
+>> through at times, but for the most part TDISP is an internal
+>> implementation detail of the TSM.
+>>
+>> CONFIG_PCI_TSM adds an "authenticated" attribute and "tsm/" subdirectory
+>> to pci-sysfs. Consider that the TSM driver may itself be a PCI driver.
+>> Userspace can watch for the arrival of a "TSM" device,
+>> /sys/class/tsm/tsm0/uevent KOBJ_CHANGE, to know when the PCI core has
+>> initialized TSM services.
+>>
+>> The operations that can be executed against a PCI device are split into
+>> two mutually exclusive operation sets, "Link" and "Security" (struct
+>> pci_tsm_{link,security}_ops). The "Link" operations manage physical link
+>> security properties and communication with the device's Device Security
+>> Manager firmware. These are the host side operations in TDISP. The
+>> "Security" operations coordinate the security state of the assigned
+>> virtual device (TDI). These are the guest side operations in TDISP. Only
+>> link management operations are defined at this stage and placeholders
+>> provided for the security operations.
+>>
+>> The locking allows for multiple devices to be executing commands
+>> simultaneously, one outstanding command per-device and an rwsem
+>> synchronizes the implementation relative to TSM
+>> registration/unregistration events.
+>>
+>> Thanks to Wu Hao for his work on an early draft of this support.
+>>
+>> Cc: Lukas Wunner <lukas@wunner.de>
+>> Cc: Samuel Ortiz <sameo@rivosinc.com>
+>> Cc: Alexey Kardashevskiy <aik@amd.com>
+>> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+>> Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
+>> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+>> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> 
+> you dropped pci_tsm_doe_transfer from an earlier version of this patch
+> in this series. Any reason for that?
 
-v8: Moved the patch to last after all the concepts are initialized.
-    Updated user doc resctrl.rst.
-    Simplified the CDT check  in rdt_bit_usage_show() as CDP_DATA and CDP_CODE
-    are in sync with io_alloc enabled.
+yeah, me, it was rather useless wrapper.
 
-v7: New patch split from earlier patch #5.
-    Added resctrl_io_alloc_closid() to return max COSID.
----
- Documentation/filesystems/resctrl.rst | 35 ++++++++++++++++-----------
- fs/resctrl/ctrlmondata.c              |  2 +-
- fs/resctrl/internal.h                 |  2 ++
- fs/resctrl/rdtgroup.c                 | 21 ++++++++++++++--
- 4 files changed, 43 insertions(+), 17 deletions(-)
+https://lore.kernel.org/r/68ae4a0c45650_75db10016@dwillia2-mobl4.notmuch
 
-diff --git a/Documentation/filesystems/resctrl.rst b/Documentation/filesystems/resctrl.rst
-index 7e3eda324de5..72ea6f3f36bc 100644
---- a/Documentation/filesystems/resctrl.rst
-+++ b/Documentation/filesystems/resctrl.rst
-@@ -90,12 +90,19 @@ related to allocation:
- 		must be set when writing a mask.
- 
- "shareable_bits":
--		Bitmask of shareable resource with other executing
--		entities (e.g. I/O). User can use this when
--		setting up exclusive cache partitions. Note that
--		some platforms support devices that have their
--		own settings for cache use which can over-ride
--		these bits.
-+		Bitmask of shareable resource with other executing entities
-+		(e.g. I/O). Applies to all instances of this resource. User
-+		can use this when setting up exclusive cache partitions.
-+		Note that some platforms support devices that have their
-+		own settings for cache use which can over-ride these bits.
-+
-+		When "io_alloc" is enabled, a portion of each cache instance can
-+		be configured for shared use between hardware and software.
-+		"bit_usage" should be used to see which portions of each cache
-+		instance is configured for hardware use via "io_alloc" feature
-+		because every cache instance can have its "io_alloc" bitmask
-+		configured independently via io_alloc_cbm.
-+
- "bit_usage":
- 		Annotated capacity bitmasks showing how all
- 		instances of the resource are used. The legend is:
-@@ -109,16 +116,16 @@ related to allocation:
- 			"H":
- 			      Corresponding region is used by hardware only
- 			      but available for software use. If a resource
--			      has bits set in "shareable_bits" but not all
--			      of these bits appear in the resource groups'
--			      schematas then the bits appearing in
--			      "shareable_bits" but no resource group will
--			      be marked as "H".
-+			      has bits set in "shareable_bits" or "io_alloc_cbm"
-+			      but not all of these bits appear in the resource
-+			      groups' schematas then the bits appearing in
-+			      "shareable_bits" or "io_alloc_cbm" but no
-+			      resource group will be marked as "H".
- 			"X":
- 			      Corresponding region is available for sharing and
--			      used by hardware and software. These are the
--			      bits that appear in "shareable_bits" as
--			      well as a resource group's allocation.
-+			      used by hardware and software. These are the bits
-+			      that appear in "shareable_bits" or "io_alloc_cbm"
-+			      as well as a resource group's allocation.
- 			"S":
- 			      Corresponding region is used by software
- 			      and available for sharing.
-diff --git a/fs/resctrl/ctrlmondata.c b/fs/resctrl/ctrlmondata.c
-index 791ecb559b50..1118054fdc2c 100644
---- a/fs/resctrl/ctrlmondata.c
-+++ b/fs/resctrl/ctrlmondata.c
-@@ -738,7 +738,7 @@ static int resctrl_io_alloc_init_cbm(struct resctrl_schema *s, u32 closid)
-  * resource. Note that if Code Data Prioritization (CDP) is enabled, the number
-  * of available CLOSIDs is reduced by half.
-  */
--static u32 resctrl_io_alloc_closid(struct rdt_resource *r)
-+u32 resctrl_io_alloc_closid(struct rdt_resource *r)
- {
- 	if (resctrl_arch_get_cdp_enabled(r->rid))
- 		return resctrl_arch_get_num_closid(r) / 2  - 1;
-diff --git a/fs/resctrl/internal.h b/fs/resctrl/internal.h
-index 5467c3ad1b6d..98b87725508b 100644
---- a/fs/resctrl/internal.h
-+++ b/fs/resctrl/internal.h
-@@ -395,6 +395,8 @@ int resctrl_io_alloc_cbm_show(struct kernfs_open_file *of, struct seq_file *seq,
- ssize_t resctrl_io_alloc_cbm_write(struct kernfs_open_file *of, char *buf,
- 				   size_t nbytes, loff_t off);
- 
-+u32 resctrl_io_alloc_closid(struct rdt_resource *r);
-+
- const char *rdtgroup_name_by_closid(int closid);
- 
- #ifdef CONFIG_RESCTRL_FS_PSEUDO_LOCK
-diff --git a/fs/resctrl/rdtgroup.c b/fs/resctrl/rdtgroup.c
-index ddac021c02d8..951d44d6f488 100644
---- a/fs/resctrl/rdtgroup.c
-+++ b/fs/resctrl/rdtgroup.c
-@@ -1068,15 +1068,17 @@ static int rdt_bit_usage_show(struct kernfs_open_file *of,
- 
- 	cpus_read_lock();
- 	mutex_lock(&rdtgroup_mutex);
--	hw_shareable = r->cache.shareable_bits;
- 	list_for_each_entry(dom, &r->ctrl_domains, hdr.list) {
- 		if (sep)
- 			seq_putc(seq, ';');
-+		hw_shareable = r->cache.shareable_bits;
- 		sw_shareable = 0;
- 		exclusive = 0;
- 		seq_printf(seq, "%d=", dom->hdr.id);
- 		for (i = 0; i < closids_supported(); i++) {
--			if (!closid_allocated(i))
-+			if (!closid_allocated(i) ||
-+			    (resctrl_arch_get_io_alloc_enabled(r) &&
-+			     i == resctrl_io_alloc_closid(r)))
- 				continue;
- 			ctrl_val = resctrl_arch_get_config(r, dom, i,
- 							   s->conf_type);
-@@ -1104,6 +1106,21 @@ static int rdt_bit_usage_show(struct kernfs_open_file *of,
- 				break;
- 			}
- 		}
-+
-+		/*
-+		 * When the "io_alloc" feature is enabled, a portion of the cache
-+		 * is configured for shared use between hardware and software.
-+		 * Also, when CDP is enabled the CBMs of L3CODE and L3DATA are kept
-+		 * in sync. So, the CBMs for "io_alloc" can be accessed through either
-+		 * L3CODE or L3DATA.
-+		 */
-+		if (resctrl_arch_get_io_alloc_enabled(r)) {
-+			ctrl_val = resctrl_arch_get_config(r, dom,
-+							   resctrl_io_alloc_closid(r),
-+							   s->conf_type);
-+			hw_shareable |= ctrl_val;
-+		}
-+
- 		for (i = r->cache.cbm_len - 1; i >= 0; i--) {
- 			pseudo_locked = dom->plr ? dom->plr->cbm : 0;
- 			hwb = test_bit(i, &hw_shareable);
+thanks,
+
+
+> 
+> -aneesh
+
 -- 
-2.34.1
+Alexey
 
