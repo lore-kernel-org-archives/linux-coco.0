@@ -1,72 +1,72 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E37D28A1E6
-	for <linux-coco@lists.linux.dev>; Wed,  3 Sep 2025 15:51:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E99B24677D
+	for <linux-coco@lists.linux.dev>; Wed,  3 Sep 2025 23:36:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756914688; cv=none; b=pA1Gw0CLih+E5T7FDh2rxq7JEu6xH2+HiX6b+x60VmMayFTNDbT+ZyHDVqY2TyGOozxNugSxUBqzhAlXuT6CYU99fjIdWYH6ApxjPvjZZNQnTKWJ5P4AHuZO3tSPVlV/pZq7ktpys2Pipf/06zspJrSVh5JDrBNmzr7DdHTTffk=
+	t=1756942577; cv=none; b=IxXbY7PZQkSWSCJvzTm9KmDYKz95qebyeK50EkJnuLCg/hglEtmKej581TULxiESnZmnFVnmrk6HAmLiwT/XInNQBVUnSRiNkbZKI7+C6RTKYXMxsvq/Z9ef65K7rsnY7LuSpqv8gL+MxMiDG/bqucEO0T1+pwR8UUEW1RGREWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756914688; c=relaxed/simple;
-	bh=ihBSYH03VzHM77PsBLbgSgiboVXS2xL0lw7aHu8s8zc=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=CpPZKlq2kFtX40UE7/XEqS272vQbtqAoKVGCbXP61KVZdjnECX0j5vDTDzAz1FOM2x3Io3ufL3fzY4prALVr6SwPspCH/vggsa50sAORZJ5CqBHA67VI0JNzPbHwjGFiUlAgDFMJ8YifC3kkXNdg667VzpJDo1ZewLBRyIoGcUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=K0014sXG; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1756942577; c=relaxed/simple;
+	bh=UQkBt8q+mpHkzeoBPwe+VU6jSJ9PJ/G13bT7jdZR32E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CJWkNC/DJEV0YfAde3voq8AGhdAdmxbhM2BGXHYqSmxD9gO7UMNIY9GSJLm80uh0rYtoWVF6yx95MgX3alWB9nS4XRJ8Zgbn+A/9G4BEPFNdua6tN4L1l8/LrRxqrk/RYXfhls1Jlh96DVHbSPDPrZoTFyIHtLu5uGJC6GiDUkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=g5dgBiF4; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="K0014sXG"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="g5dgBiF4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756914685;
+	s=mimecast20190719; t=1756942574;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6pPz1Dn3KwcDP1NsdH5IyFFzXwAHxlthoHdtCNvU5f4=;
-	b=K0014sXGHMk/+Xd/jjQ2/SiSP80o1bi1WHdNkHWK7C6N/DaVkvjFVeOAXPcsM8btVVV2/0
-	xAjyJAgc5Tdnbr6yyWMEH9GZrW6gPjk+WKoYJUErUojRXfPuzhY5g2AZveNOZPV7cJ75+5
-	ctua2FP8XXyvzv9FTIKFzbdVotK5QsM=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	 in-reply-to:in-reply-to:references:references;
+	bh=0sXropmRvRzVq8QVYH11V1C2zJovVWTZHbdPqhav95Y=;
+	b=g5dgBiF4ajtt6DapSfdrK+Z20ZqwrXleY2hCLbu4DNDPbm6sEMMc3NhhcFuCe/2ug+kjAC
+	U0IxfY/kfX2BGctZbw7r3vfLUCwM6xqf9lrHYsIAh+RWL/iqrKIVyg+3oKvzZh+8UxU7+E
+	jJEdsyRozCMMwR3DC5S8p8nR2Ggyw2A=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-630-m5NULQALOmGJctJ3AnXgHg-1; Wed, 03 Sep 2025 11:51:21 -0400
-X-MC-Unique: m5NULQALOmGJctJ3AnXgHg-1
-X-Mimecast-MFC-AGG-ID: m5NULQALOmGJctJ3AnXgHg_1756914680
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3db4cfcc23eso37394f8f.3
-        for <linux-coco@lists.linux.dev>; Wed, 03 Sep 2025 08:51:21 -0700 (PDT)
+ us-mta-457-1RdE25gvPi6N5G6xvmCqtw-1; Wed, 03 Sep 2025 19:36:13 -0400
+X-MC-Unique: 1RdE25gvPi6N5G6xvmCqtw-1
+X-Mimecast-MFC-AGG-ID: 1RdE25gvPi6N5G6xvmCqtw_1756942572
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-248eec89618so5514425ad.1
+        for <linux-coco@lists.linux.dev>; Wed, 03 Sep 2025 16:36:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756914680; x=1757519480;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:to:from:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1756942572; x=1757547372;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6pPz1Dn3KwcDP1NsdH5IyFFzXwAHxlthoHdtCNvU5f4=;
-        b=Im4Bu0kRF4emOgCOYIPzdoQ7qQZdfl5+FUwF/JaImx9Fj3JtTE9awXEz6MskGo9gkk
-         xMWDVSmT+518VcWutwRmpIn4ktcJa/uthSV6M0NSYanHdprMBI+cNGm2kfuma9UZN0ey
-         h1aQbcg9TfOGPenpIfhtFFFfWhhiZRGJKL7mazfhyuC69kEyvR7KTQjzNtZUPUcBz5v4
-         v/Z1tmZ8sDQvuqFPKNtRYIWAknh+57KFCPjA4uiO+Xpb6kJtVI/osL2bOuog/G8a7sv1
-         nfTzydaLE8XRoCoLzdLv9rHSfRXVr5xTfRUMl9orfZyUziiGHzZHU5eF1C86osmogP1F
-         OFsQ==
-X-Gm-Message-State: AOJu0Yy7jmXnkkKtjP5y2ZQQCTM68gg1JIOxJXFLBGmWOqe+Ps37hWde
-	ZXnsMGVeuWZx9era8jjktXpur+mCm5Jao9FF4fVdlMWURomjzSM+wfRbKTpujZRKl8mgS/KCG3C
-	5JWzmHezzzBtKcttFJD/WjvryHQFeZcPUMOCVRww06fwKF1rjGRw6N7uewtvqT+m7MFiupLrbmB
-	+cJ1P9sjxOLpuLYaZa5J5bz254WFerhUb5yUD4C1UNNf0HoA==
-X-Gm-Gg: ASbGncuwIa/JWUODJRoxjYfTlA+UEfTOZRHf3pdELmveR3dY0JqBPyQ1v07jESc5Fbp
-	Anzf3LHVmE70Pf7nV/s5gIUUfqhUsNlexFaSHNbL7IleIzB+IZUCzfnczvW6tNY6FLcXoh2okc3
-	jCJk2boXopNeacPIPd9jGMse3I1ddZioF2vD39bhw3CM5BF3fiTGA8i/OUrjUPgqy6uCTI9wJJK
-	Exr66M+QfuXGnfrKsitsZyv849ViYmiEk9CPVY169pWI+UE0RA7GAbkyc1+34B6N5Z3i2gf4Mpf
-	D9jhCcFAYpQUSk74vzYCiRceFq+KU/7Y1grVvAB9umk0qD3QA8/o0YN0EGEM7bU7h1mjRiQbFGF
-	1id20cBy0Znqqq4lSCxXV1sK1fZF51k0NLcaCHh/cXAMHmFGYqBvuIQAU4fmP2otWS2o=
-X-Received: by 2002:a05:6000:25c7:b0:3ce:9872:fd3 with SMTP id ffacd0b85a97d-3d1de5b0cd7mr13182381f8f.34.1756914680261;
-        Wed, 03 Sep 2025 08:51:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFjvLcrw1GI/BKKHqQpqdWRD2zuwbafhFNRbxschxHG7ifowWJiWnizddECBTDKy8c3BUMZQw==
-X-Received: by 2002:a05:6000:25c7:b0:3ce:9872:fd3 with SMTP id ffacd0b85a97d-3d1de5b0cd7mr13182316f8f.34.1756914679719;
-        Wed, 03 Sep 2025 08:51:19 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f09:9c00:8173:2a94:640d:dd31? (p200300d82f099c0081732a94640ddd31.dip0.t-ipconnect.de. [2003:d8:2f09:9c00:8173:2a94:640d:dd31])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7e92a42asm242463365e9.20.2025.09.03.08.51.17
+        bh=0sXropmRvRzVq8QVYH11V1C2zJovVWTZHbdPqhav95Y=;
+        b=nJd6d9LJp2FIOawLkcsPpUSVvsik4Xpze3LzjtiGmuCz9OEIjrOnT71cF1f/fwO5je
+         a+5Wfqqp7sW/76/DWAwGb+WtZesDkKk1mFx4WiHeZ32OCr5m8RQd5sT8v75CQGobdsyz
+         tctZrZpkzmeS1dFnxO015e4jHxBbvkluk6DvhisngSLFEbFQ3ERdAe5qfVAOu6lVVr/h
+         Kx7zFHacXTuAyNbCGTp4Brkd946JtCfd9OODAbwm+xHZs7vLBuLn1d0r2zlAM8i2P1bi
+         nBcrgw4tVhITrUx0LZwQ+hDV8rZXcrN3tga6SJNdljsAh2S4dnpapmCde7PuDiKv8W5N
+         gG7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV0/f9Ld45G+ZgYgm20zZ95VwtX6oa/T9dyLZEOi6WYk6ltdk3+syuwQmeJlQ1qxAvd5PyZAsAWD2JF@lists.linux.dev
+X-Gm-Message-State: AOJu0YwktdTC1cidJd/MlcGmiS77u48SszjjZqd7SnCT27q5nS9HKT4M
+	rWmhM8bxeV3avqZ9AoXXdTsTolSufCC5JF5uEAxB7LcdFW2C3kgX+TngaarVsFjr7e01KVhIrTH
+	+hl+NeognJsD0+PXEi3oIGYjh6NkPx9KDemEG1WzKb5V4WG2JiMS4qx09QzEAJY8=
+X-Gm-Gg: ASbGncsg1HQfhKBaozYfpzN0wLkTXqSivkGivoEr+ZnuV3zoBrRQH37deoYEElSJEHA
+	TMpD0OVtW+pcHRrigpqyAG8NukRYr4WNf0x+Pcl5TPXlTRkV3npgRGQi0TFrurhPGvPK9X1qkYE
+	fDxSFAbx343p3/vNdkRwAMRV4uZDU0PgMi6IYqf3rvbu7p9VKT81m7rPh7QfPTJ6XERU0K+tuVM
+	maydhfgXeKvr2mp2J24uJZGaJZ5ZvcVYL4VIhTkIimIodGLZ/fbYXi/JWP6oMV4Y2KhQG/76Vz0
+	NwwdjJZKSbpHOocQqCyG569OUK/hj0d6htv4GmvGndKdwx9r4CySXkN66NefhLZXZgaUGY772a7
+	Qfyez
+X-Received: by 2002:a17:902:d4cb:b0:249:3049:9748 with SMTP id d9443c01a7336-24944a98207mr213064075ad.35.1756942571796;
+        Wed, 03 Sep 2025 16:36:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHWxDvzz4guDF0h66h4LLb4oxiM+mn4RFSoqx9tFAX6Irf9VMfNEHKTbxRTX3+Sn09XeYBQ/A==
+X-Received: by 2002:a17:902:d4cb:b0:249:3049:9748 with SMTP id d9443c01a7336-24944a98207mr213063695ad.35.1756942571216;
+        Wed, 03 Sep 2025 16:36:11 -0700 (PDT)
+Received: from [192.168.68.51] (n175-34-62-5.mrk21.qld.optusnet.com.au. [175.34.62.5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2490375b6d0sm172156625ad.62.2025.09.03.16.36.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Sep 2025 08:51:19 -0700 (PDT)
-Message-ID: <586a6b30-f4e2-494a-b83e-08c1b01b4197@redhat.com>
-Date: Wed, 3 Sep 2025 17:51:17 +0200
+        Wed, 03 Sep 2025 16:36:10 -0700 (PDT)
+Message-ID: <cb387dcf-7ee0-4cf6-bf10-d043d20190f0@redhat.com>
+Date: Thu, 4 Sep 2025 09:36:00 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -74,76 +74,98 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Invitation] bi-weekly guest_memfd upstream call on 2025-09-04
-From: David Hildenbrand <david@redhat.com>
-To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
-References: <5d1bf8ef-5f30-4962-bbd3-d698c0e9b7fe@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <5d1bf8ef-5f30-4962-bbd3-d698c0e9b7fe@redhat.com>
+Subject: Re: [PATCH v10 15/43] arm64: RME: Allow VMM to set RIPAS
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve <vannapurve@google.com>
+References: <20250820145606.180644-1-steven.price@arm.com>
+ <20250820145606.180644-16-steven.price@arm.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20250820145606.180644-16-steven.price@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: _AfnoMED4m2ZBVNHDrWCmUf2qJY2I1ZT4Av2WpUxURY_1756914680
+X-Mimecast-MFC-PROC-ID: tgULt4D8L11PNk1If04KWsbptQaKtm4WLIJmL3qTA04_1756942572
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 03.09.25 09:06, David Hildenbrand wrote:
-> Hi everybody,
+On 8/21/25 12:55 AM, Steven Price wrote:
+> Each page within the protected region of the realm guest can be marked
+> as either RAM or EMPTY. Allow the VMM to control this before the guest
+> has started and provide the equivalent functions to change this (with
+> the guest's approval) at runtime.
 > 
-> Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
-> 2025-09-04 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
+> When transitioning from RIPAS RAM (1) to RIPAS EMPTY (0) the memory is
+> unmapped from the guest and undelegated allowing the memory to be reused
+> by the host. When transitioning to RIPAS RAM the actual population of
+> the leaf RTTs is done later on stage 2 fault, however it may be
+> necessary to allocate additional RTTs to allow the RMM track the RIPAS
+> for the requested range.
+> 
+> When freeing a block mapping it is necessary to temporarily unfold the
+> RTT which requires delegating an extra page to the RMM, this page can
+> then be recovered once the contents of the block mapping have been
+> freed.
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Changes from v9:
+>   * Minor coding style fixes.
+> Changes from v8:
+>   * Propagate the 'may_block' flag to allow conditional calls to
+>     cond_resched_rwlock_write().
+>   * Introduce alloc_rtt() to wrap alloc_delegated_granule() and
+>     kvm_account_pgtable_pages() and use when allocating RTTs.
+>   * Code reorganisation to allow init_ipa_state and set_ipa_state to
+>     share a common ripas_change() function,
+>   * Other minor changes following review.
+> Changes from v7:
+>   * Replace use of "only_shared" with the upstream "attr_filter" field
+>     of struct kvm_gfn_range.
+>   * Clean up the logic in alloc_delegated_granule() for when to call
+>     kvm_account_pgtable_pages().
+>   * Rename realm_destroy_protected_granule() to
+>     realm_destroy_private_granule() to match the naming elsewhere. Also
+>     fix the return codes in the function to be descriptive.
+>   * Several other minor changes to names/return codes.
+> Changes from v6:
+>   * Split the code dealing with the guest triggering a RIPAS change into
+>     a separate patch, so this patch is purely for the VMM setting up the
+>     RIPAS before the guest first runs.
+>   * Drop the useless flags argument from alloc_delegated_granule().
+>   * Account RTTs allocated for a guest using kvm_account_pgtable_pages().
+>   * Deal with the RMM granule size potentially being smaller than the
+>     host's PAGE_SIZE. Although note alloc_delegated_granule() currently
+>     still allocates an entire host page for every RMM granule (so wasting
+>     memory when PAGE_SIZE>4k).
+> Changes from v5:
+>   * Adapt to rebasing.
+>   * Introduce find_map_level()
+>   * Rename some functions to be clearer.
+>   * Drop the "spare page" functionality.
+> Changes from v2:
+>   * {alloc,free}_delegated_page() moved from previous patch to this one.
+>   * alloc_delegated_page() now takes a gfp_t flags parameter.
+>   * Fix the reference counting of guestmem pages to avoid leaking memory.
+>   * Several misc code improvements and extra comments.
+> ---
+>   arch/arm64/include/asm/kvm_rme.h |   6 +
+>   arch/arm64/kvm/mmu.c             |   8 +-
+>   arch/arm64/kvm/rme.c             | 446 +++++++++++++++++++++++++++++++
+>   3 files changed, 457 insertions(+), 3 deletions(-)
+> 
 
-Change of plans: Fuad reminded me that tomorrow is KVM forum (guess 
-who's not going ;) ), so it's probably best to skip this one.
-
-Talk to you in two weeks then!
-
--- 
-Cheers
-
-David / dhildenb
+Reviewed-by: Gavin Shan <gshan@redhat.com>
 
