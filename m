@@ -1,70 +1,72 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2FA2D47E0
-	for <linux-coco@lists.linux.dev>; Wed,  3 Sep 2025 07:06:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5907022172E
+	for <linux-coco@lists.linux.dev>; Wed,  3 Sep 2025 11:15:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756883192; cv=none; b=u2FclGCZFZkHn2hr9oWzwmlmF2Vs77LNx/bn4dB66CfsAAgukMnfmbL+j5X+4g4ElVmUfXYoBdtGIFJKVpKspaMzvvOPPP3QqD/vLzCMSEvGcn7Ctf7B+Othq8hvfCJZGATeRAogvF8CeFcNFKxZ10AgbcMaECybEo9ZjR3VT5k=
+	t=1756898159; cv=none; b=K4G70byrUkpBFQN5FcvJW/ICKqwohvx4BO9Y+MssOmw5nRbdEuMIYCF9TawRXh701Q8r2q8A4DH/D2bjPW4ujsIJ0k+37Ol1JdUjOgam2QeN5ttU4feGdBM4IFz0ZmRcVBj1Jz6Kl8YEvCGUzMoxWg/F064eXmsCYNUypRR1PqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756883192; c=relaxed/simple;
-	bh=9lzmYu0UhdH9x6Ij5HiUFbfAcV9RFXPgLIe2VogC7mc=;
-	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=ggpqY3sjWfsGdt653aYfkU5dFwxjGnjdQh/Ui/L5wd35M8HkV3WgYhR0K2NdZrp4ijKebdV5ZbosP6Np2AoqAFFc68llzogpd0hnLFk2vId/DUUuaUDT5VQmBtq7LGopYMttU3h6pHeH3sRGvVa5aERe4cQNQr9NDnLd/yeqz2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IS+gH1to; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1756898159; c=relaxed/simple;
+	bh=O5Kl27XB553N7cmeBmXq/uiaTLYFFfTmRY6zD5Qm2IA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ShccA6KdbQVXcw7oJnGz0TI+n0yfO2FmEuUAiljVFUdRk2oJrSegyjaYJokR0qZD1RLvEuxGLV7C+gZjnqxMFZyIm3yO9g8D4BHyGSw2xLMJcGQbH8dDzvZyizLZlId+c+Xqkfc3suqo7BnABdJekfoEMTTNj6a9wknvJ/rmBoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YwythlQV; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IS+gH1to"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YwythlQV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756883190;
+	s=mimecast20190719; t=1756898156;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=Y+D9yxWlv3zb+s719T1nYvszUA6hn5AyB9vVNM3BJTI=;
-	b=IS+gH1tocv9t/Q8hIbETU1xakH1y8MokvLJRDGPRCTs+u5VzskVg64/5Nvl4hruDQOvLDo
-	dTkmz7WF2ZpOkgkBgD1FGNMveTZfs3IQNfVK/xRqCnbK5VJgmI5bYSegxuFRqvI4Ya3Cnk
-	JWfDe0y4OeWDsTarc6SkAi1CKaSH5yw=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kVBqAzXRtaGdVaqdIdbidkD/s0lTNKoOEws6COnY9ko=;
+	b=YwythlQVxvQcs54IB9cQyVHcXm5eyuNI4507+mzd5drvfaWRPaMOKTLmw+X/HK3nTHchSz
+	jsEiPxepjB/9XaDgg9ujIe29NodO6NO22IJgrXKuwjyttwmtya6bNSv7pvrXnxVMl0WJVa
+	krtQkNacD4ir+5TVN53RcOotRW8MV9M=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-539-TeQWCMQ4PTeCiFKDoWKRWQ-1; Wed, 03 Sep 2025 03:06:26 -0400
-X-MC-Unique: TeQWCMQ4PTeCiFKDoWKRWQ-1
-X-Mimecast-MFC-AGG-ID: TeQWCMQ4PTeCiFKDoWKRWQ_1756883185
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45b869d3562so31218245e9.1
-        for <linux-coco@lists.linux.dev>; Wed, 03 Sep 2025 00:06:26 -0700 (PDT)
+ us-mta-382-P4079Md_N4WIpEN40wFhpA-1; Wed, 03 Sep 2025 07:15:55 -0400
+X-MC-Unique: P4079Md_N4WIpEN40wFhpA-1
+X-Mimecast-MFC-AGG-ID: P4079Md_N4WIpEN40wFhpA_1756898154
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-7724877cd7cso3888121b3a.1
+        for <linux-coco@lists.linux.dev>; Wed, 03 Sep 2025 04:15:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756883185; x=1757487985;
-        h=content-transfer-encoding:autocrypt:subject:to:content-language
-         :from:user-agent:mime-version:date:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Y+D9yxWlv3zb+s719T1nYvszUA6hn5AyB9vVNM3BJTI=;
-        b=XxNKS4VlrJxVnMPS9UtwIcjekeKuMBocBTif1rkBYbK9zCGXkHfeDPyqoGK1bf2Szo
-         AVvZYCYe7yA1TNVeCpG4WsVZa4BUYP1aR1xEGVymmWjSN3rzotjCR9rTIgIBEhy6G2c3
-         5DHB/ShhoMdJNzh0yv1xDwoThsSr9wTpRmp1Ve0UngXzan0UMR/aLwCINF4uo9n8expf
-         bR2mY3kX+N4O66ZA9UHwUV6sybkfkx6/mZQhZezPZ1OBTM2hU7s5nj91loWJSc0emM1a
-         qpVjVlZ4x5KMe9AUNkhD0V7cYFwSQ+z5NRoG6KMG9vCvdsPyrD7dI54iEWt/jj5GFvLL
-         qr8g==
-X-Gm-Message-State: AOJu0YxiVNw+UVjcoR79z3+GWWVsZ50vgHweTRcUD+HndFD4Vx6vVBjg
-	8SJF3fJkMNfNhJFs0MI77CPY5BDWujKKzV16uq9WqdMYEHW1RI1W4yFZ10eNWS0cCDiWRgThzSW
-	x1R4nTQHWv5ioAKJ8esc4c6V9OSObujLS6i4tWK2Iq3hH5WZPsmTCMUv+2j0AD0XajijGqed49Z
-	CY9SRIl1Q5n6KOE/iJ63lPqbwzPJeeYfqJb9QfjNLhQIdVlA==
-X-Gm-Gg: ASbGncsSLamHlfa1bmADz7u8JZPjtca5VSOtCY0SZT4eXi7dVsSfgq1E3Gz/wmkdfrG
-	Q0whZAKSC71SNEmUagxYLYy+5gCLe+pISCFE0HQ5R0BGlqOnrsPOdg/EVRDWPdLqdYdO60IDpGj
-	lUhGjKx8VniiEEUCzHyeqpgw6eyPUdEHaHP5aKbeqoX0rg4WVx+35fdgnpCHlmYUFJWzxwF4Irb
-	kSUVZIeaRFHPDt2caIyLcAJ6OBCZXzqYOocSZGWQpICEXSGyfoG1lA37KLdbchEQeDKEUWdX+eD
-	xh12WfFmvPPDiwrX3dosRSnV5xtFTa6rfN2SmJyKhhVlZJehiRj/jboyDBbKFuNWMoO09/TKIYq
-	0usOGGSCC6CmUgZtIS7r4wljelC+kSvbk7R8C5aWX3HwODMScC+Kh5ao0qpkJmiljOCQ=
-X-Received: by 2002:a05:600c:c04b:10b0:45b:98d4:5eb7 with SMTP id 5b1f17b1804b1-45b98d4615amr24361385e9.18.1756883185216;
-        Wed, 03 Sep 2025 00:06:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHpb9iES46gU1k0+ZA3uuV/BrR4IgrWcnRm7j0/2AFuzurkhW8jQEYi9qDtb+tVBa+08wt9oQ==
-X-Received: by 2002:a05:600c:c04b:10b0:45b:98d4:5eb7 with SMTP id 5b1f17b1804b1-45b98d4615amr24360835e9.18.1756883184533;
-        Wed, 03 Sep 2025 00:06:24 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f09:9c00:8173:2a94:640d:dd31? (p200300d82f099c0081732a94640ddd31.dip0.t-ipconnect.de. [2003:d8:2f09:9c00:8173:2a94:640d:dd31])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7e7d1319sm246236485e9.5.2025.09.03.00.06.22
+        d=1e100.net; s=20230601; t=1756898154; x=1757502954;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kVBqAzXRtaGdVaqdIdbidkD/s0lTNKoOEws6COnY9ko=;
+        b=N/rSdTwR6ExL0o/0u3mH0BXoEHXdC6A3hL6OabNeIk1MNm54aWVx0lywd+jZ9/Ia8E
+         Yh1Bf0zSaIwfbV9zX3dMmf5QM6DsVXTWYQ1812k0P1a1aZ2DoOPDjcrBgCJRl2TrfRaz
+         gggC0wS+PHOkVURCDMFbCWB2+WYs/2+uX9NibxZAB/HVpzrXUMVHkIfA5s6t1+oAbH0n
+         SJ/Yg7t0TguakBYYK+tWuiqqNCZ8yJ1oTYCAQNeyTZrLjvMkI7/dZqODEh5ZgUYnJc60
+         HMXyjSFBLEdjImpr8TKhAl8u8zcHAE8rm+SF01NrjKmUyc+d1XFJQpbawL/0TJdiqacn
+         vpgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXvQnRyOgq9ADEb6hPp6j5DjHzlYuGn+E/ZCUGJoDKXlBz9VYEThQZK6XXVTEfG13FasLv8V2YP29/m@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz09VDxDBrtxvIcm2KuPtO5h2JZOSNGeAnBbBQ7XIm0UXsDOf3k
+	H69kiTf8cTtb5JhO7H+slYl37RhbZq9UwIuEgsJXyJM7nDHqW5HUCTmduMY0T5LWTPrz4bftWpL
+	XZzQC93bsjk6haAmCYuJnUyI/WcLO6i0INJR3y5gqIi+SP3DkAGd7jWuu/BgYMCs=
+X-Gm-Gg: ASbGnctbvt/RkKTbR+NCCizrwf6RCkPCodQNHFf3pW+g5bqpft9OId/0eZKb0CRm1gl
+	8cOWEvC0STdkNjqjgEmWmAuaE5dJEKOwa0XcBaR3v43aRhIaWTbX1binisB//SwGbrsS8uQUnOZ
+	qvI8thgZzRpcCG3KYebBxNjogJz1wtaTxWIf5Ha8P3J8psQtsxwSp6PkLRanZarfLuVVLJv9zsF
+	NVksF8ZyycPO0gFRg767olyQXyjdZ4zx0GgW8Nd3Qe/tjJjbR0rYT0sFENLlT3wkUUQttZNvRjU
+	RFwijdrY5RcxD00zbMm89W4AjqS498Hr3yS3+bvJJkfrFc/SaU9FMcewK7XhYFXTYEwNgOH9NwL
+	JULIv
+X-Received: by 2002:a05:6a00:2d13:b0:772:2fad:ff64 with SMTP id d2e1a72fcca58-7723e257daamr16145015b3a.8.1756898154143;
+        Wed, 03 Sep 2025 04:15:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEehFXhizd/XBGs6lPLajyy1rp0g+vzzGOhiFu//IuUVahDT7Y1/d6xBov7/G/ROyWBDy0Hlg==
+X-Received: by 2002:a05:6a00:2d13:b0:772:2fad:ff64 with SMTP id d2e1a72fcca58-7723e257daamr16144978b3a.8.1756898153626;
+        Wed, 03 Sep 2025 04:15:53 -0700 (PDT)
+Received: from [192.168.68.51] (n175-34-62-5.mrk21.qld.optusnet.com.au. [175.34.62.5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7722a269e9csm16651516b3a.17.2025.09.03.04.15.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Sep 2025 00:06:24 -0700 (PDT)
-Message-ID: <5d1bf8ef-5f30-4962-bbd3-d698c0e9b7fe@redhat.com>
-Date: Wed, 3 Sep 2025 09:06:22 +0200
+        Wed, 03 Sep 2025 04:15:52 -0700 (PDT)
+Message-ID: <0481109b-769f-464b-aa72-ad6e07bdfa78@redhat.com>
+Date: Wed, 3 Sep 2025 21:15:43 +1000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -72,87 +74,182 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: David Hildenbrand <david@redhat.com>
-To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
-Subject: [Invitation] bi-weekly guest_memfd upstream call on 2025-09-04
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
+Subject: Re: [PATCH v10 05/43] arm64: RME: Check for RME support at KVM init
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve <vannapurve@google.com>
+References: <20250820145606.180644-1-steven.price@arm.com>
+ <20250820145606.180644-6-steven.price@arm.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20250820145606.180644-6-steven.price@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: GTPKwayD2sodimA99LeZ1m5AYEngu1fLQIRQW8VvnSE_1756883185
+X-Mimecast-MFC-PROC-ID: D9bj4DUj_PhECUP8u6WHGv-hmvLihynDROqpK0UezAY_1756898154
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hi everybody,
+On 8/21/25 12:55 AM, Steven Price wrote:
+> Query the RMI version number and check if it is a compatible version. A
+> static key is also provided to signal that a supported RMM is available.
+> 
+> Functions are provided to query if a VM or VCPU is a realm (or rec)
+> which currently will always return false.
+> 
+> Later patches make use of struct realm and the states as the ioctls
+> interfaces are added to support realm and REC creation and destruction.
+> 
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Changes since v8:
+>   * No need to guard kvm_init_rme() behind 'in_hyp_mode'.
+> Changes since v6:
+>   * Improved message for an unsupported RMI ABI version.
+> Changes since v5:
+>   * Reword "unsupported" message from "host supports" to "we want" to
+>     clarify that 'we' are the 'host'.
+> Changes since v2:
+>   * Drop return value from kvm_init_rme(), it was always 0.
+>   * Rely on the RMM return value to identify whether the RSI ABI is
+>     compatible.
+> ---
+>   arch/arm64/include/asm/kvm_emulate.h | 18 +++++++++
+>   arch/arm64/include/asm/kvm_host.h    |  4 ++
+>   arch/arm64/include/asm/kvm_rme.h     | 56 ++++++++++++++++++++++++++++
+>   arch/arm64/include/asm/virt.h        |  1 +
+>   arch/arm64/kvm/Makefile              |  2 +-
+>   arch/arm64/kvm/arm.c                 |  5 +++
+>   arch/arm64/kvm/rme.c                 | 56 ++++++++++++++++++++++++++++
+>   7 files changed, 141 insertions(+), 1 deletion(-)
+>   create mode 100644 arch/arm64/include/asm/kvm_rme.h
+>   create mode 100644 arch/arm64/kvm/rme.c
+> 
 
-Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
-2025-09-04 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
+[...]
 
-We'll be using the following Google meet:
-http://meet.google.com/wxp-wtju-jzw
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index 888f7c7abf54..76177c56f1ef 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -40,6 +40,7 @@
+>   #include <asm/kvm_nested.h>
+>   #include <asm/kvm_pkvm.h>
+>   #include <asm/kvm_ptrauth.h>
+> +#include <asm/kvm_rme.h>
+>   #include <asm/sections.h>
+>   
 
-The meeting notes can be found at [1], where we also link recordings and
-collect current guest_memfd upstream proposals. If you want an google
-calendar invitation that also covers all future meetings, just write me
-a mail.
+Nit: The header file <asm/kvm_rme.h> has been included to <asm/kvm_host.h> and
+<linux/kvm_host.h>, which has been included to arm.c. So this explicit inclusion
+can be dropped.
 
-I suspect that we will continue our discussions around "stage 2" and 
-whatever comes after that :)
+>   #include <kvm/arm_hypercalls.h>
+> @@ -59,6 +60,8 @@ enum kvm_wfx_trap_policy {
+>   static enum kvm_wfx_trap_policy kvm_wfi_trap_policy __read_mostly = KVM_WFX_NOTRAP_SINGLE_TASK;
+>   static enum kvm_wfx_trap_policy kvm_wfe_trap_policy __read_mostly = KVM_WFX_NOTRAP_SINGLE_TASK;
+>   
+> +DEFINE_STATIC_KEY_FALSE(kvm_rme_is_available);
+> +
+>   DECLARE_KVM_HYP_PER_CPU(unsigned long, kvm_hyp_vector);
+>   
+>   DEFINE_PER_CPU(unsigned long, kvm_arm_hyp_stack_base);
+> @@ -2836,6 +2839,8 @@ static __init int kvm_arm_init(void)
+>   
+>   	in_hyp_mode = is_kernel_in_hyp_mode();
+>   
+> +	kvm_init_rme();
+> +
+>   	if (cpus_have_final_cap(ARM64_WORKAROUND_DEVICE_LOAD_ACQUIRE) ||
+>   	    cpus_have_final_cap(ARM64_WORKAROUND_1508412))
+>   		kvm_info("Guests without required CPU erratum workarounds can deadlock system!\n" \
+> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
+> new file mode 100644
+> index 000000000000..67cf2d94cb2d
+> --- /dev/null
+> +++ b/arch/arm64/kvm/rme.c
+> @@ -0,0 +1,56 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2023 ARM Ltd.
+> + */
+> +
+> +#include <linux/kvm_host.h>
+> +
+> +#include <asm/rmi_cmds.h>
+> +#include <asm/virt.h>
+> +
+> +static int rmi_check_version(void)
+> +{
+> +	struct arm_smccc_res res;
+> +	unsigned short version_major, version_minor;
+> +	unsigned long host_version = RMI_ABI_VERSION(RMI_ABI_MAJOR_VERSION,
+> +						     RMI_ABI_MINOR_VERSION);
+> +
+> +	arm_smccc_1_1_invoke(SMC_RMI_VERSION, host_version, &res);
+> +
+> +	if (res.a0 == SMCCC_RET_NOT_SUPPORTED)
+> +		return -ENXIO;
+> +
+> +	version_major = RMI_ABI_VERSION_GET_MAJOR(res.a1);
+> +	version_minor = RMI_ABI_VERSION_GET_MINOR(res.a1);
+> +
+> +	if (res.a0 != RMI_SUCCESS) {
+> +		unsigned short high_version_major, high_version_minor;
+> +
+> +		high_version_major = RMI_ABI_VERSION_GET_MAJOR(res.a2);
+> +		high_version_minor = RMI_ABI_VERSION_GET_MINOR(res.a2);
+> +
+> +		kvm_err("Unsupported RMI ABI (v%d.%d - v%d.%d) we want v%d.%d\n",
+> +			version_major, version_minor,
+> +			high_version_major, high_version_minor,
+> +			RMI_ABI_MAJOR_VERSION,
+> +			RMI_ABI_MINOR_VERSION);
+> +		return -ENXIO;
+> +	}
+> +
+> +	kvm_info("RMI ABI version %d.%d\n", version_major, version_minor);
+> +
+> +	return 0;
+> +}
+> +
+> +void kvm_init_rme(void)
+> +{
+> +	if (PAGE_SIZE != SZ_4K)
+> +		/* Only 4k page size on the host is supported */
+> +		return;
 
-To put something to discuss onto the agenda, reply to this mail or add
-them to the "Topics/questions for next meeting(s)" section in the
-meeting notes as a comment.
+Nit: The comment can be moved before the check, something like below. Otherwise,
+{} is needed here.
 
-[1]
-https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
+	/* Only 4kB page size is supported */
+	if (PAGE_SIZE != SZ_4K)
+		return;
 
---
-Cheers,
+> +
+> +	if (rmi_check_version())
+> +		/* Continue without realm support */
+> +		return;
 
-David
+Nit: same as above.
 
+> +
+> +	/* Future patch will enable static branch kvm_rme_is_available */
+> +}
+
+Thanks,
+Gavin
 
