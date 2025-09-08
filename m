@@ -1,224 +1,144 @@
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2081.outbound.protection.outlook.com [40.107.95.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFBD2E174B
-	for <linux-coco@lists.linux.dev>; Mon,  8 Sep 2025 14:41:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.81
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757342491; cv=fail; b=iDE2zM5Jbo84ogjXZ4tznuyKN1ytAeOOYNZqWSllgeGH/AP4Gr4Tuh7WI/ZlDRw+lNS6cJJrSy9Qus1QvW5DiKn28AMktM/SAtDEGrL6FXUgOEjkL+GK2fRCeDZknzZquvNFyIKsJXqIQ2kmYrfqux9jc1nffYIYaS+XBRzbFiY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757342491; c=relaxed/simple;
-	bh=Gedjl2ie5Z3jDa8Jct5ns5wOAugxNnCZnvE/KaBWZjQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=CxF0Y+PqBhadWPyZf6LRnEqgw5tsyua+n5UnRSRpW7QRsPPso8bkDTmh8gCoUKk8Eg2M825yWAWB1kK43Tm+QobG1l3u5Zd2uk+OePnpzwSdnD0BssNaRJ2025Tkmh0bQVROYhxIFEeAGlo4stjEEJgrfcZ/KButKqQkww+XwXY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=o2xftqg9; arc=fail smtp.client-ip=40.107.95.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1BA221DB1
+	for <linux-coco@lists.linux.dev>; Mon,  8 Sep 2025 14:58:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757343530; cv=none; b=qVBBvht0kjSq7pR17QpzPJUshLBK0qJ236XNTnM2ltNQgbdh1i5tuoTq2Q3+FXMR0ISvMziXH0gxduEkVv1oViaW0q851osgms/lPERMAnFF3ZDrpvHms072PfoM0DAA59QD1JxOKRImi0+0P74j6jxef7EatSZYoOVuzlw7i+U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757343530; c=relaxed/simple;
+	bh=qD6rSVIGRWAFJh5ZP8autyVxm6mFsWrg8RVJ2pRgD2g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SgoVALb2QdeEbtu4ncxRHlMW+yLb+ZeGGwJwQs6QFZxGXi6QqkrIps8Yf+h/s6puoThjSEo5JjXzKwfmpCTOH0liq0f/SCcVjPNLdtbN6laovwXezYEQDCvAMU4ErOogIEmW2QarCWDiup4T6sRTpgxPNrTAjc/jk6g7DjK8hfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Ev0anl+F; arc=none smtp.client-ip=209.85.219.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="o2xftqg9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NfHcgezXGLB2G+G14UEfSguUxNziQRBe46tNPKcWfXgsj4OTkTBc8Plr71JfXrEaN6wS6SJ5SZeJtgkKIZiU0FC/cSV/cFMvuMS5nhaIK+6Rzi1eg126n+6m7WhY1soZGDeTPbXCqKnN39AZ+u1qRd1STCkKoPFtOv0DAlMU4YeGEjxxsTpAAEC7Olq1XJpXO/bxntk/3ZWq/3fqwobhEFoqG9d+52dD633etzgW6Z/TEmUsUnzQ73y1krjHpmc2DF1FJW5l5aHe9FHWYJfTMsQYa5BZuukZ+QglCOPt5efVe2kjRHG61zHXaHXPZ8F31uui2vNyOFbCBDVtC60FmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iZByfrrxLzdBnMAULlt6XtlTrUZllTd8j41qDc8Isxc=;
- b=gLgY+0f545zyr8Sii1stJpuD6i4VG0yNZaTgcKLGQiA/+EjJL+g/+Qo32Aa7FM5Tux2VTqvQXTkAyTu7o0JhWyZzmMFlPqT+voTJGBk8lJivalKOQ8LS3/a8KRaqgTH1a59VujO1cyfCt6SuX9f4mdooypmPR61P3leYyx0NYzfokxTKR+CsJi+3E7TFcfDRDvK6kt+2ByZuOv98s+TnCoST/lCMQU3JForKw2p7GgQbmDopHi94x0Algt25GAtgUs3W7o8+D+XZQj35ziSEIAa4aIttd3YvYx3UHfgxKz8a6Uk2KX4Fdo1XlcMJVk5D5KUs5u3KsrmkNUdi56kqMw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iZByfrrxLzdBnMAULlt6XtlTrUZllTd8j41qDc8Isxc=;
- b=o2xftqg9ASGtCiIBacLny7IpdLxAnczWPORGdbNZi4ZmxwGAR5e3dR+oVdlPk8S/47MtI8/BtGhn5A8LziPn11xMs4tJPzBA3Ah+xSsCeeWtSEhll+NHV86b0YDGJKzfoEeGLhFANrHXYNSlBD8FjfRCr+PioFnOfV3mpwE5R84=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from IA0PPF9A76BB3A6.namprd12.prod.outlook.com
- (2603:10b6:20f:fc04::bdc) by PH0PR12MB7862.namprd12.prod.outlook.com
- (2603:10b6:510:26d::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Mon, 8 Sep
- 2025 14:41:25 +0000
-Received: from IA0PPF9A76BB3A6.namprd12.prod.outlook.com
- ([fe80::bed0:97a3:545d:af16]) by IA0PPF9A76BB3A6.namprd12.prod.outlook.com
- ([fe80::bed0:97a3:545d:af16%7]) with mapi id 15.20.9094.021; Mon, 8 Sep 2025
- 14:41:25 +0000
-Message-ID: <d3e4ddd7-2ca2-4601-8191-53e00632bf93@amd.com>
-Date: Mon, 8 Sep 2025 09:41:22 -0500
-User-Agent: Mozilla Thunderbird
-Reply-To: babu.moger@amd.com
-Subject: Re: [PATCH v18 05/33] x86/cpufeatures: Add support for Assignable
- Bandwidth Monitoring Counters (ABMC)
-To: Reinette Chatre <reinette.chatre@intel.com>, corbet@lwn.net,
- tony.luck@intel.com, Dave.Martin@arm.com, james.morse@arm.com,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com
-Cc: x86@kernel.org, hpa@zytor.com, kas@kernel.org,
- rick.p.edgecombe@intel.com, akpm@linux-foundation.org, paulmck@kernel.org,
- frederic@kernel.org, pmladek@suse.com, rostedt@goodmis.org, kees@kernel.org,
- arnd@arndb.de, fvdl@google.com, seanjc@google.com, thomas.lendacky@amd.com,
- pawan.kumar.gupta@linux.intel.com, perry.yuan@amd.com,
- manali.shukla@amd.com, sohil.mehta@intel.com, xin@zytor.com,
- Neeraj.Upadhyay@amd.com, peterz@infradead.org, tiala@microsoft.com,
- mario.limonciello@amd.com, dapeng1.mi@linux.intel.com, michael.roth@amd.com,
- chang.seok.bae@intel.com, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, peternewman@google.com, eranian@google.com,
- gautham.shenoy@amd.com
-References: <cover.1757108044.git.babu.moger@amd.com>
- <08c0ad5eb21ab2b9a4378f43e59a095572e468d0.1757108044.git.babu.moger@amd.com>
- <fb2d5df6-543f-43da-a86a-05ecf75be46d@intel.com>
-Content-Language: en-US
-From: "Moger, Babu" <babu.moger@amd.com>
-In-Reply-To: <fb2d5df6-543f-43da-a86a-05ecf75be46d@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA1PR04CA0016.namprd04.prod.outlook.com
- (2603:10b6:806:2ce::21) To IA0PPF9A76BB3A6.namprd12.prod.outlook.com
- (2603:10b6:20f:fc04::bdc)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Ev0anl+F"
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-726e7449186so50813516d6.0
+        for <linux-coco@lists.linux.dev>; Mon, 08 Sep 2025 07:58:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1757343527; x=1757948327; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=At5jIJoawR6VKU81ZFaZespdUJb3hi00zL5H+qR/XdY=;
+        b=Ev0anl+F4lCrOygDleZpk+4k1Bg7nPsgsIEmtHEYmstTtBYGW7bjZEhR+yE9TJ5Eyi
+         TuUqUTn5PC/ITRY/FutO9TpiOvTi14ERPD74p1ePZnL9iELjPiHqlrBr0Mi/rHoFGiYF
+         eR5OBrr9V0hjQSWWum6UMZWBnGbclrvWj+tKJFzPk9Od/OaQR75/DbQUTi0ZgV5wRKlo
+         8ludH+agxsCEoK/5lrGc50GXktTqglcUTfPinfMOcvI5tEtHLim5IvNjGNdheibr45sJ
+         llIQl6BX6q4geGaDRHQ5jze6IOe3+7HHu3T7A8Cu4Drzc8aldp/imobCL1Pno9hsa4R6
+         RwOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757343527; x=1757948327;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=At5jIJoawR6VKU81ZFaZespdUJb3hi00zL5H+qR/XdY=;
+        b=YZFq/KoBbJj+LefBxk7Ql9dK+tSSfFd+5AiqIpFaImbK9pB44fuHbzyTZ+gIZ86phq
+         K+2TwyfmZ3dLhNyGbAY6/lpo12MPsilulnDItK4ikMMUTrjZURuAdW5ku62jXVup1SLb
+         DDbD3ZHHLa5HlgY+moigc+jtL3LdN4Bc2yXuc/85P1plwXyc63TvcTYIwq6Dif2iBCzM
+         BQu1So6nWZbJTSQhX6il7O9O8gRgBsAcmkpnGWyj5N/66yP3xzF2spc5z8O0MC0TG4OR
+         0pYpc7YdifhYaTP5Tph9bcUGFEYRSv7Rx/elDkMhO+r9RbHCWHyJyu9miNLY3kY/wAkj
+         y1Vw==
+X-Forwarded-Encrypted: i=1; AJvYcCXeFOI8pOgQCCLrtwXCWc1eEoYpmVX7VMZy4HhaZHvmDB7bUdqfXrPLnMv+yw2MHXp7iOCYT2AXyVEI@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyzuh2UNYqOmqcweNHx96aXtamBRWsp7PQZMjIVJAmwoiiDKkgK
+	bgNn3zgL+npTi89HCewUsX6x1pmRZ5wmnVhWi/ObNSXwcFUFqS12NNZgYER4hVzCjSo=
+X-Gm-Gg: ASbGncvYBr8P0fWbSgpM6mTIPYTCZrc0+hdO087XYwjedxbpky72sOFYEHDipqXf/XU
+	LsY47+9KRVhjt5Y8vvBQP00AXURWRqxFuBtisPwKQ1VzEoSxvQxIp5QRUd2rO3Cv1mxyAytNfWl
+	ReRRyALUFQjb4xR7kNArsTDxh9nRyw+O9fJg61VOWCg9x/dOw/mpMBQG0ScTZl2EUgXH+uaK78i
+	RTn+7AMHmbpMVrTsoJlwkxVam7NmpWBzeIooAkWdjeTGmH6iw5ysHqB86LLUf66jhzznOnLE63f
+	IMmoRkZP3UJ9v0QI0LmStNqLVbe1fpWa6X4Ez7/lWfLU/s6ZeagEkbItFCo0MjrDHDxd0/esMBx
+	3S/UF7jt6uLYcSvJvk71hqXmBvuJPb5tKn5NfF96elNWGpC7ViexOrxicl3w/c7P+Ui+fQDzBoJ
+	BAdEQ=
+X-Google-Smtp-Source: AGHT+IFTREWXmNkCHrDWnxjbQBowejD+m7z5dZM3VJ/Oa0MlcqknU/2nQMhyme6Bl98HvCKinECwig==
+X-Received: by 2002:a05:622a:2486:b0:4b3:940:e41d with SMTP id d75a77b69052e-4b5f847f8acmr78181031cf.69.1757343527463;
+        Mon, 08 Sep 2025 07:58:47 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-720ad2cbc78sm125532986d6.23.2025.09.08.07.58.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Sep 2025 07:58:46 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1uvdKP-00000003IyI-35cn;
+	Mon, 08 Sep 2025 11:58:45 -0300
+Date: Mon, 8 Sep 2025 11:58:45 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
+	linux-coco@lists.linux.dev, will@kernel.org, maz@kernel.org,
+	tglx@linutronix.de, robin.murphy@arm.com, akpm@linux-foundation.org,
+	steven.price@arm.com
+Subject: Re: [RFC PATCH] arm64: swiotlb: dma: its: Ensure shared buffers are
+ properly aligned
+Message-ID: <20250908145845.GA699673@ziepe.ca>
+References: <20250905055441.950943-1-aneesh.kumar@kernel.org>
+ <aLrh_rbzWLPw9LnH@arm.com>
+ <yq5aikht1e0z.fsf@kernel.org>
+ <aL7AoPKKKAR8285O@arm.com>
+ <b5ee1ab3-f91f-4982-95c7-516f4968a6c9@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PPF9A76BB3A6:EE_|PH0PR12MB7862:EE_
-X-MS-Office365-Filtering-Correlation-Id: ad6f2e3f-42c3-4938-8b57-08ddeee5c990
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TUdra1FVWDY1SWU2Ty9nOERtOXRoNjZPbzRsVXdzVnFyRjR5eEhmRUk5T0lo?=
- =?utf-8?B?cmFVYVdPWHhraW1hVUQwUFgxeFdGc2QvZU9wdU5XeStIZEh2cjZzRktzek5x?=
- =?utf-8?B?Qy95WlhuNFJRNFF6MEgxVnNtbExITksraHNrOGJsendDZnVYaWVraVRqcjQ4?=
- =?utf-8?B?RllyNzdaeXhvbjd6SU5uNE00Q0NFWTdRVmtLa3ZDOUR0YkFnbURSUW03YytQ?=
- =?utf-8?B?bmxiVHkvb3NVa2h1SCt3VW4vZVViSW1oeSs5MGV3dG5Eb1lPOWU0aCtuaWFk?=
- =?utf-8?B?UnBHdUhVSWplSjZqUitZdFE3anVyNWREK3hqaFcweitVWjFZWVUwektsTTBZ?=
- =?utf-8?B?UEZlV3psVm5sTmM3Q3oxY0Z5UnZueml1YkNEU0FTSmt5bGRpd3VNVzc2cEFm?=
- =?utf-8?B?RXI4TEo5R3hNeUZRRWpQaWpKNThmMjdhVzBDd0xaWjFrdEJYa1R5eUVLdUY0?=
- =?utf-8?B?ZTlNemtRVE9GQzE0S3YrbzF3YmYzSjJlam43MjNPUkpEc0xNdExkUkFGTG1u?=
- =?utf-8?B?eGxia1FrcWtKcGFYVHVBQzJzdU1tNytmVm1pVzFYODczOGozemR4Mm5DR3o5?=
- =?utf-8?B?NmRuWm5oTm5PS2dkQzc1Q3JINVFiUVZIMWRwK0lJbzZBamw4cndMeUI1L096?=
- =?utf-8?B?dzFnZGdwQlJGOFhEbEkxUWloVjl1K3V5dVpYNGE1eVd3cHlOOWVNYWVvVllV?=
- =?utf-8?B?cHFYL0ZNK0RQUXd3ZGs4V3g4T296N0E5bXlTT0FrMkRmTk5jc3Y4a1RyTWk1?=
- =?utf-8?B?V0t4SVdidTRTRUVxQkNhN1k4U2pVV1NWNXVNeUFhMUZMa3Ftc0kvQ0srNEJq?=
- =?utf-8?B?UStQcmxXdU1Cb1RxTThPdW5MR3dUV1VpUXgwck81dTgxK0h0OVQ4MWQ0aDB2?=
- =?utf-8?B?MlFwcnJaSXdmS3hXLzB2MHpvSWZPdG1DdjRyZk54YWRPR1dwVnBhRjlkM2Nx?=
- =?utf-8?B?dWNGdTAxOGQwaDAxWTNuVlhVNUM0UjJLMUFWcFZNb0tGMFhMaVMyRXdjR0k4?=
- =?utf-8?B?UllnSWZiMk1ndmtvbVozQ3h3MG5MYzVGN1EyNHJvelpGNkRGY1dzTDVQa0d1?=
- =?utf-8?B?ZE5FZndKODY1V29jUnUxVnFpbWNDWFpLeGtRSEY1dGQ5aUd0Q3A5WEJkZDFw?=
- =?utf-8?B?UlpNd1dhSVVFWWREU2ZWWXBDNklZa1lVMDJ6Q2xYZHRyTk5kZk9VbXp0cktU?=
- =?utf-8?B?YkF2UVk2RklQZ1NRd3BVTHpaLzRPTUtTVnphL0ExZHBOYm1IbE8vSW1ndGtp?=
- =?utf-8?B?VThWN25yMHVsam43ZzlLd1VVdmlKZmJ4RkFDS09CQ1p5WDhKa0hIU2swV3hx?=
- =?utf-8?B?MitWZElKZmJPQ2p5SE4yRkVlMGJtRHlxYy9seXJ0ei8wcWNpMkVNVXZORzhF?=
- =?utf-8?B?akpyVHFDSEMrcmVxQnhLbFArRFhMOXp1RkZZZEc2c3ltaHUrbC9MSjFrNC95?=
- =?utf-8?B?Vmt0SHFaU0p5QXhzaGxRMDhRYzdVQ3lsMnFSU3Byc1R4WTQ3SlVIZklWbGFS?=
- =?utf-8?B?K1JKYUNTR0lwQ3IzK1BPWEVPemhhQVdEWmZ4WitsYWJ4cTZWS0xJV0xlZmph?=
- =?utf-8?B?UmxJQTY3U0tVNHhkTEswQTlweThzOXZsdjJ3Q0x3a0QxMUlXaVNuaktOM1dp?=
- =?utf-8?B?L3c1Qm14K1ovTDhjdTJ3dzMvSUZJVFZqd2hOdzFSeGsxWU1Jb2RkYkx6OW53?=
- =?utf-8?B?Um9ESGRYMXVjN1ZmcXQ1R0FYaGo2M3hodU00ZmhhQXFSL2lJSHNYNEpqUnl0?=
- =?utf-8?B?Y0x5OE9ESnpEaWdxUUFDVGFHa3l4WUdxWVYzZHVLOEhlQWMyQ3hYbE9BR29F?=
- =?utf-8?B?aDdrK09rMytaMmREbStvWWRtd0VubmN0QnpMMlMrRUZXbG9neFNJdnBrOHA5?=
- =?utf-8?Q?3nOdkzzVF2fmt?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PPF9A76BB3A6.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?b29FTE1YbVR2TFB3cU95VENMTng1Yk5BVGNyTEozeTEwUnpobmdhaU0rcFNz?=
- =?utf-8?B?MXhLNjRmSHdBWGFJNU5QZzNOV3VDaGlpY1dCZ1U3aUJoRG1YUjRGdTZSZHEv?=
- =?utf-8?B?WTRmVTYvOU4xWm9xMnd6bVlVNFhYZnkyQkVEMkZhT2dvem80akRiZWkxRGNC?=
- =?utf-8?B?M3k5Ry85Yzh1WnEvWmx0MHE2QWY2aGRqaHhMU1pzUk5ma0ZmRFhDeVcxVGkz?=
- =?utf-8?B?dFdrVnlLNVZuZHdRN05nUEFSaUJ6dDhIYzZEaUJYNHNrYjFVSmZXYksxM2c4?=
- =?utf-8?B?NHF6cVJ2cHJoTjU0aEVBS2JzTm02UXl2STVzN2hiWWZqRUYxMnRQanJLNkZm?=
- =?utf-8?B?RW0vdGFMc09xY0JpUURxUjhNd2tOemlxb1JyR0dIN3NESS9Gd0ErMGpjL3Zn?=
- =?utf-8?B?d2pHMWp3blQ5UDZhNFVDeGpsTU1TbkJPTndQQzJYdFhvVU9SNzU4ZmsvSkFO?=
- =?utf-8?B?OXppVjg4alB1L2o2SlJHZk1JWnI1KzFTSG10OXVlUThqeGU2aithcTFPZVo0?=
- =?utf-8?B?OENwM1V5Uk5xeFpVenJYMTFkMG4vOHlUZjBYeFoyeFFQNHZnd0lGcnljZ21p?=
- =?utf-8?B?TmoyaTVKbWhVTUpUekdWNWo0ZUY4Y1ZkRGRzWDFpRnMwK0hYcVVYNWFhVjEv?=
- =?utf-8?B?SXJMbXZkZnpFYUg4MUlXSCtJdUpacmNzTlplMy93Vm1TbDIwUCt2cGpjM0NZ?=
- =?utf-8?B?S21ZOUl2TDAzSzEwVzFUYXFqUHNPZjdiemlzSlhSZGtBSTBlcWFBUzl5UDE5?=
- =?utf-8?B?Ty9ORnQyd1VaRUo3eEJHazRmeWdMbjdtYkZnaEFJZkNHdGo2TTFZR0tIbjZP?=
- =?utf-8?B?OWZJcWpmdjIwcmhDWngyL2FLRnV0ZGdLeGM4RGk5QkdYRFNmOEpzZy83Yjdn?=
- =?utf-8?B?SXViUWRpL3d4NytMYjgrUmZkWWVkWmh2dXJuQWxvZC9Nc2dBcDVIR1VIYWFU?=
- =?utf-8?B?ajgxazJaZDBTaTlXdHVSaXVMVkg3TVV3Ti9UZEpwVzVwUkNSdWc2M0RBUG9G?=
- =?utf-8?B?UHlXN2pSU1JGbHBpY1lKdXJ3TkpQOWRZRXZIdStIWHZ4UVdSMmprMy9SVWVr?=
- =?utf-8?B?ckhnT2xLU2t4LzNPTEgraWdIK0c0L0kzR3dqcWJ2UFhnYmRENng5MUk1VlJz?=
- =?utf-8?B?NVQyckVmd0ZUcTFkSUZJWW85R3Byd3pweDVLMi9vQVVObE1TT3ByK0E3NTk3?=
- =?utf-8?B?MHJ0dDhreHErL1pUenVUTFlha2lGOCtCQVhmNHNTbDNrcnFqdFdiU1I5Tkgx?=
- =?utf-8?B?UHB2SG9pT1dNd01FZ2l0NkdEWmlyb0Z1TE5XK29zZVI1dFFZNm83ZXhwcXJu?=
- =?utf-8?B?KzJDc3lCajNtRThBU1BBeklQRVBSRTE3VjVCUFFNZHkwa2ljeVdZOEZiV3Iz?=
- =?utf-8?B?M3FuK2FrVmZxZ3JubGw3Qy9jdkh4cFpkTmlFS0xWYjlGbGxzcjNUWm9HNUhw?=
- =?utf-8?B?dlVTTkxZbzVpc2hwOVU5SDBCVkN0UDczZnNCT0w1bE5rb3g0V0VBMmVZR3Nv?=
- =?utf-8?B?N0Y5UjBsdDVwc1UwTzVpWE5VNzkvSksvRktocVZFUWRjQW5yVmt0WHBIa1RZ?=
- =?utf-8?B?Y2l1ZWJyWU9xT1hFSlAzKzR5cnhmcStodFJkL2J1bHdwUlUza0ZVcnFOMUJz?=
- =?utf-8?B?UHpTSlA0YU15Z3l4L3VGeE5yb3RUem93T2R3Mk9iSWVwVmsrYzVoY2xzSGVP?=
- =?utf-8?B?Tk9wRytGU0VZdGs4cTNkeVorZzB2MTBYRVNQUjcxY3VJUzJpeERBRnRxVFBO?=
- =?utf-8?B?Ly9aK2Y1emVxN2JFMXhnRks2SHNUZWkrSnpzR3VhVGloNEJEOEppWHN3a3hz?=
- =?utf-8?B?RVZlM2hhV1dSQjhTMWhvajRMa2lCeUVvUklGTTJIUEU1NFVEM0Z1Ri9DV1Zq?=
- =?utf-8?B?QjJQa3hGeDNzOHNyVjU0SXEzNDhlMnRJeWFwVzhTanV2MU0yMmRDbGNmU28w?=
- =?utf-8?B?SS9oaGQrczlUWnZFampXUFd0NDhEL3orbWVpQ2doaHRIMm51NGZjSVdaeXpy?=
- =?utf-8?B?WW40THlHeEp0SnNud2R6a0xzQkFyWVlmVFdVVElrcU9lZTdUSGg0SnJLUEhG?=
- =?utf-8?B?MGt3NC9kQ2NVTmFWckRpMG5yOG1meVNMd3I1VTM2blkvQ1Y1Q2J2TFhkMy92?=
- =?utf-8?Q?UlGo=3D?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ad6f2e3f-42c3-4938-8b57-08ddeee5c990
-X-MS-Exchange-CrossTenant-AuthSource: IA0PPF9A76BB3A6.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2025 14:41:25.5167
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kqCF+ykmMkIDdqRmOlSNqZss8Nx+JWll70sZcYgaMIc8TE0IEmTaRoEwhhziJ53H
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7862
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b5ee1ab3-f91f-4982-95c7-516f4968a6c9@arm.com>
 
-Hi Reinette,
-
-On 9/5/25 23:49, Reinette Chatre wrote:
-> Hi Babu,
+On Mon, Sep 08, 2025 at 02:47:21PM +0100, Suzuki K Poulose wrote:
+> On 08/09/2025 12:40, Catalin Marinas wrote:
+> > On Mon, Sep 08, 2025 at 03:07:00PM +0530, Aneesh Kumar K.V wrote:
+> > > Catalin Marinas <catalin.marinas@arm.com> writes:
+> > > > On Fri, Sep 05, 2025 at 11:24:41AM +0530, Aneesh Kumar K.V (Arm) wrote:
+> > > > > When running with private memory guests, the guest kernel must allocate
+> > > > > memory with specific constraints when sharing it with the hypervisor.
+> > > > > 
+> > > > > These shared memory buffers are also accessed by the host kernel, which
+> > > > > means they must be aligned to the host kernel's page size.
+> > > > 
+> > > > So this is the case where the guest page size is smaller than the host
+> > > > one. Just trying to understand what would go wrong if we don't do
+> > > > anything here. Let's say the guest uses 4K pages and the host a 64K
+> > > > pages. Within a 64K range, only a 4K is shared/decrypted. If the host
+> > > > does not explicitly access the other 60K around the shared 4K, can
+> > > > anything still go wrong? Is the hardware ok with speculative loads from
+> > > > non-shared ranges?
+> > > 
+> > > With features like guest_memfd, the goal is to explicitly prevent the
+> > > host from mapping private memory, rather than relying on the host to
+> > > avoid accessing those regions.
+> > 
+> > Yes, if all the memory is private. At some point the guest will start
+> > sharing memory with the host. In theory, the host could map more than it
+> > was given access to as long as it doesn't touch the area around the
+> > shared range. Not ideal and it may not match the current guest_memfd API
 > 
-> On 9/5/25 2:34 PM, Babu Moger wrote:
->>
->> The ABMC feature details are documented in APM [1] available from [2].
->> [1] AMD64 Architecture Programmer's Manual Volume 2: System Programming
->> Publication # 24593 Revision 3.41 section 19.3.3.3 Assignable Bandwidth
->> Monitoring (ABMC).
->>
->> Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537 # [2]
->> Signed-off-by: Babu Moger <babu.moger@amd.com>
->> Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
->> ---
-> 
-> Apologies for not catching this earlier. I double checked to make sure
-> we get this right and I interpret Documentation/process/maintainer-tip.rst
-> to say that "Link:" should be the final tag.
-> 
+> The kernel may be taught not to touch the area, but it is tricky when
+> the shared page gets mapped into the usespace and what it does with it.
 
-That’s fine. It wasn’t very clear to me in maintainer-tip.rst.
+But what happes?
 
-I checked a few older commits, and the placement seems mixed—some have it
-at the end, but it’s not very consistent. I can update my patches
-accordingly and apply the same change across all of them.
+The entire reason we have this nasty hyper-restrictive memfd private
+memory is beacuse Intel takes a machine check if anything does it
+wrong, and that is fatal and can't be handled.
 
+Is ARM like that? I thought ARM had good faults on GPT violation that
+could be handled in the same way as a normal page fault?
 
- The ABMC feature details are documented in APM [1] available from [2].
- [1] AMD64 Architecture Programmer's Manual Volume 2: System Programming
- Publication # 24593 Revision 3.41 section 19.3.3.3 Assignable Bandwidth
- Monitoring (ABMC).
+If ARM has proper faulting then you don't have an issue mapping 64K
+into a userspace and just segfaulting the VMM if it does something
+wrong.
 
- Signed-off-by: Babu Moger <babu.moger@amd.com>
- Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
- Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537 # [2]
+If not, then sure you need all this unmapping stuff like Intel does :\
 
+> True. The GPC Page Size is going to be 4K. At present the RMM S2 page
+> size is fixed to 4K.
 
-I’ve been basing the patches on top of:
-git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git
-with `origin/HEAD -> origin/master`.
+A 4k S2 is a pointless thing to do if the VMM is only going to approve
+64k shared/private transitions :(
 
-Please let me know if this is the correct branch to use to make the merge
-process easier.
-
--- 
-Thanks
-Babu Moger
-
+Jason
