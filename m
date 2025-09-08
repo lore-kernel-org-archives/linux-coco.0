@@ -1,110 +1,132 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050BB306B34
-	for <linux-coco@lists.linux.dev>; Mon,  8 Sep 2025 15:04:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286DC30E82C;
+	Mon,  8 Sep 2025 15:39:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757343843; cv=none; b=tmtgZ05VtbzSfhIypXLmkrOeExKZarrzDfh718rDeIWtH/91NCCV1zYxNu86kMDex4glFqzUxs8oAHfxOe4bimQaZHbkHzmI9LRfA4VTUIZmVTp8Q9GBWzaOMDaVvl+7UW/GbGBRxAus4t3k5GhX7/Fi/kcygKs7faImIehjRjM=
+	t=1757345961; cv=none; b=tZZ4x9wzCnMB0TTw71mHvk4DQr5A8oCi9/RvoJ+BWBVuzS6bS1Y+913OyEI9V+FxmCI5Nw8+2LZZKJ+jLUqdjKlG+mseUMApzbkTPOgXKY4SMpNJ0aVoiEweB5+4naHCT00QqpVxEPYjGrDxcUJuPPZRgb3TbKv5HyAGyUnstBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757343843; c=relaxed/simple;
-	bh=HGi+oMw2wcRLkxRtf1WqMmGBJnptQWvmxF2SQgOWE44=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tn60rQ1dq/n6GH8BHrgXU40EhCzSJWs3YUvtu6B1oYd0mmLdI/M/L+jpqaPAPvbUnSKd85RCJ4m3RfoJHuabPa0K/zZ0i4Fxvkow4yTM5vbZB08oY+O6uk4tNsEgwVwlmjRMhGZyYkdvu3z3SQDpEgzI9pfMZlwd0NhKdtD5odo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=HDqRDB47 reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="HDqRDB47"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E00F640E01A2;
-	Mon,  8 Sep 2025 15:03:57 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id Dx_Mcpvo0WRj; Mon,  8 Sep 2025 15:03:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1757343830; bh=ZqDP/jFE+eeNiZ9/0ak0Uo6t8J44LbT5gL5scXJrlQc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HDqRDB47PMky7RLUBXKoA6kDCZCnyPhpDnieFgQyS4iYOBrtI7OUwZ3P/P24eNpMP
-	 RZjYJ7CXQ+RFxfgr3ypDGl3VVhDtMIICPKslKj8nX1uxr5YtP0G6BzLP7lnVaCP2uz
-	 p7bJWjVqW4VEJhW1BLa7jJ31az0NgFRIFrZcWa5fl5evBLwFeqA95DyeVJM8leptpe
-	 6SLuEuWHCzT5KpmMruEseNLE2tu2D9uaSVUtACO/Llshwf5JjXnDkImumc/aIM+B+M
-	 AEHu4tb2lfi7/w+1DGOmLI41Rym4P8hyDfscfmtuPyX2y41zGyVgeaR4idphgX0HkP
-	 WuvTaSBeAhUq3HDJ2W2bq2bO3vQUoVx7LbMw1fKNR8WB9AhQRbyADvfUlh7Nv6SDVT
-	 9NevJMaKGLr24cBBp7TB16Uw0cBFDHRZpNC8/IoVpRM6xlW0nK6sKCpf6bsU4IjYeD
-	 oOtilGcqln6hADP5hfLUS1rjWGwyX/LqZg/rQKq5AIvAYA4D3e2nnQw9g+FiM+B/Wi
-	 78Od1JPs8BE1Sdqe70823RvbC7x08GGS7xJl2OIb1/cJrbmFjcd5le4camLhoxJSV1
-	 mODF9ClHnVlRWBGyXGWsuLZaaCPl8y65bxGu/Uh6ErE7QG8zq4738FNzELFCfog4vS
-	 j4hb6z78v+TQWvdB7mruFrhM=
-Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id D4F9C40E015D;
-	Mon,  8 Sep 2025 15:03:07 +0000 (UTC)
-Date: Mon, 8 Sep 2025 17:03:01 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Moger, Babu" <babu.moger@amd.com>,
-	Reinette Chatre <reinette.chatre@intel.com>
-Cc: corbet@lwn.net, tony.luck@intel.com, Dave.Martin@arm.com,
-	james.morse@arm.com, tglx@linutronix.de, mingo@redhat.com,
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-	kas@kernel.org, rick.p.edgecombe@intel.com,
-	akpm@linux-foundation.org, paulmck@kernel.org, frederic@kernel.org,
-	pmladek@suse.com, rostedt@goodmis.org, kees@kernel.org,
-	arnd@arndb.de, fvdl@google.com, seanjc@google.com,
-	thomas.lendacky@amd.com, pawan.kumar.gupta@linux.intel.com,
-	perry.yuan@amd.com, manali.shukla@amd.com, sohil.mehta@intel.com,
-	xin@zytor.com, Neeraj.Upadhyay@amd.com, peterz@infradead.org,
-	tiala@microsoft.com, mario.limonciello@amd.com,
-	dapeng1.mi@linux.intel.com, michael.roth@amd.com,
-	chang.seok.bae@intel.com, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org, peternewman@google.com, eranian@google.com,
-	gautham.shenoy@amd.com
-Subject: Re: [PATCH v18 05/33] x86/cpufeatures: Add support for Assignable
- Bandwidth Monitoring Counters (ABMC)
-Message-ID: <20250908150301.GFaL7wJUiowzdhWUbu@fat_crate.local>
-References: <cover.1757108044.git.babu.moger@amd.com>
- <08c0ad5eb21ab2b9a4378f43e59a095572e468d0.1757108044.git.babu.moger@amd.com>
- <fb2d5df6-543f-43da-a86a-05ecf75be46d@intel.com>
- <d3e4ddd7-2ca2-4601-8191-53e00632bf93@amd.com>
+	s=arc-20240116; t=1757345961; c=relaxed/simple;
+	bh=bvWnm6tCvu/P7UfI+nK4JBO8Ce1IIlTtasDqStaO1SQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o8wV0bPJtfyogi+Q8eI9vutIag0fx+d00m8EHCwQkZvGgAH1XYa8VFi9g0q/uD0QtNAutshdlKzyq8HLjbG5S83K1gPGjPljUWFeV+WYr17Q5iBINHinEMBVu6fma+MY50GHMrfR5qe/l/Zd+B7ks0ifVgjkwIBtO1q+VJ/a7kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B4DA21692;
+	Mon,  8 Sep 2025 08:39:09 -0700 (PDT)
+Received: from [10.57.3.191] (unknown [10.57.3.191])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8BEEF3F63F;
+	Mon,  8 Sep 2025 08:39:15 -0700 (PDT)
+Message-ID: <d8687b08-6bb4-4645-8172-72936a51b0d8@arm.com>
+Date: Mon, 8 Sep 2025 16:39:13 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <d3e4ddd7-2ca2-4601-8191-53e00632bf93@amd.com>
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] arm64: swiotlb: dma: its: Ensure shared buffers are
+ properly aligned
+To: Jason Gunthorpe <jgg@ziepe.ca>, Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, linux-kernel@vger.kernel.org,
+ iommu@lists.linux.dev, linux-coco@lists.linux.dev, will@kernel.org,
+ maz@kernel.org, tglx@linutronix.de, robin.murphy@arm.com,
+ akpm@linux-foundation.org
+References: <20250905055441.950943-1-aneesh.kumar@kernel.org>
+ <aLrh_rbzWLPw9LnH@arm.com> <yq5aikht1e0z.fsf@kernel.org>
+ <aL7AoPKKKAR8285O@arm.com> <b5ee1ab3-f91f-4982-95c7-516f4968a6c9@arm.com>
+ <20250908145845.GA699673@ziepe.ca>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20250908145845.GA699673@ziepe.ca>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 08, 2025 at 09:41:22AM -0500, Moger, Babu wrote:
-> > Apologies for not catching this earlier. I double checked to make sur=
-e
-> > we get this right and I interpret Documentation/process/maintainer-ti=
-p.rst
-> > to say that "Link:" should be the final tag.
-> >=20
->=20
-> That=E2=80=99s fine. It wasn=E2=80=99t very clear to me in maintainer-t=
-ip.rst.
+On 08/09/2025 15:58, Jason Gunthorpe wrote:
+> On Mon, Sep 08, 2025 at 02:47:21PM +0100, Suzuki K Poulose wrote:
+>> On 08/09/2025 12:40, Catalin Marinas wrote:
+>>> On Mon, Sep 08, 2025 at 03:07:00PM +0530, Aneesh Kumar K.V wrote:
+>>>> Catalin Marinas <catalin.marinas@arm.com> writes:
+>>>>> On Fri, Sep 05, 2025 at 11:24:41AM +0530, Aneesh Kumar K.V (Arm) wrote:
+>>>>>> When running with private memory guests, the guest kernel must allocate
+>>>>>> memory with specific constraints when sharing it with the hypervisor.
+>>>>>>
+>>>>>> These shared memory buffers are also accessed by the host kernel, which
+>>>>>> means they must be aligned to the host kernel's page size.
+>>>>>
+>>>>> So this is the case where the guest page size is smaller than the host
+>>>>> one. Just trying to understand what would go wrong if we don't do
+>>>>> anything here. Let's say the guest uses 4K pages and the host a 64K
+>>>>> pages. Within a 64K range, only a 4K is shared/decrypted. If the host
+>>>>> does not explicitly access the other 60K around the shared 4K, can
+>>>>> anything still go wrong? Is the hardware ok with speculative loads from
+>>>>> non-shared ranges?
+>>>>
+>>>> With features like guest_memfd, the goal is to explicitly prevent the
+>>>> host from mapping private memory, rather than relying on the host to
+>>>> avoid accessing those regions.
+>>>
+>>> Yes, if all the memory is private. At some point the guest will start
+>>> sharing memory with the host. In theory, the host could map more than it
+>>> was given access to as long as it doesn't touch the area around the
+>>> shared range. Not ideal and it may not match the current guest_memfd API
+>>
+>> The kernel may be taught not to touch the area, but it is tricky when
+>> the shared page gets mapped into the usespace and what it does with it.
+> 
+> But what happes?
+> 
+> The entire reason we have this nasty hyper-restrictive memfd private
+> memory is beacuse Intel takes a machine check if anything does it
+> wrong, and that is fatal and can't be handled.
+> 
+> Is ARM like that? I thought ARM had good faults on GPT violation that
+> could be handled in the same way as a normal page fault?
 
-You don't need to worry about minor things like that - our scripts fix th=
-em up
-while applying.
+Arm does indeed trigger a 'good fault' in these situations, but...
 
-As to Link tags, see this here:
+> If ARM has proper faulting then you don't have an issue mapping 64K
+> into a userspace and just segfaulting the VMM if it does something
+> wrong.
 
-https://lore.kernel.org/r/CAHk-=3Dwh5AyuvEhNY9a57v-vwyr7EkPVRUKMPwj92yF_K=
-0dJHVg@mail.gmail.com
+...the VMM can cause problems. If the VMM touches the memory itself then
+things are simple - we can detect that the fault was from user space and
+trigger a SIGBUS to kill of the VMM.
 
---=20
-Regards/Gruss,
-    Boris.
+But the VMM can also attempt to pass the address into the kernel and
+cause the kernel to do a get_user_pages() call (and this is something we
+want to support for shared memory). The problem is if the kernel then
+touches the parts of the page which are protected we get a fault with no
+(easy) way to relate back to the VMM.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+guest_memfd provided a nice way around this - a dedicated allocator
+which doesn't allow mmap(). This meant we don't need to worry about user
+space handing protected memory into the kernel. It's now getting
+extended to support mmap() but only when shared, and there was a lot of
+discussion about how to ensure that there are no mmap regions when
+converting memory back to private.
+
+> If not, then sure you need all this unmapping stuff like Intel does :\
+
+We don't strictly need it, but given the complexity of handling a GPT
+violation caused by the kernel, and since the infrastructure is needed
+for Intel, it's made sense to largely follow the same path.
+
+>> True. The GPC Page Size is going to be 4K. At present the RMM S2 page
+>> size is fixed to 4K.
+> 
+> A 4k S2 is a pointless thing to do if the VMM is only going to approve
+> 64k shared/private transitions :(
+
+Indeed. The intention is that longer term the RMM would use the same S2
+page size as the host's page size. But we'd like to support
+(confidential) guests running with 4k page size under a 64k host/S2.
+
+Short-term the RMM can use a smaller page size with everything still
+working, but that's obviously not as efficient.
+
+Steve
+
