@@ -1,138 +1,112 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D93528640F
-	for <linux-coco@lists.linux.dev>; Wed, 10 Sep 2025 16:57:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B4A258CD8
+	for <linux-coco@lists.linux.dev>; Wed, 10 Sep 2025 17:18:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757523438; cv=none; b=GRC2PJoR5iAY4xDGtLwbVlPfjURZRJCZEAI2HKV7WckHevbRQWvUYYWXJ+uf+LjClksGsKQ6jxv7J3zuffzTbIsKUMeg0O1sOolaDXMi3CAvi/6XnrYZneZ0FNcWkZIoLyClbdiLEUQBxVmNNE2aFTmvHmHrjyJmPcNAh7stUZ8=
+	t=1757524737; cv=none; b=eQwhj8TkY5zOrRzLigfaQ3nOIIuMXpCixZfftS3GH9eI7wYUxLCz6sVmXpFo4hXyCVZ9WOOSMGHU38o5xqDH2eBXt/dZ0p9UN5ajMEjbiLr7c3K78MaBn8aQq460HZR98kDUcgXB362qLaihaGvtEJT3B2Sqdd8d6eSEYuwZMVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757523438; c=relaxed/simple;
-	bh=29yavP7OV8ZvespV4CLRsLc0fldknIlUzCfZijOolDI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pCaQqP4zmhvfz/ScqloOKmG/z2xgkM+8b6Padmh1ZBfNNYyX1DUcLzfgBUVD4baHEGMQOJVdCQndJKLCkn05+GwAzxv6ySOEvHObrPshSL63GOXAiT8g1J8p9OXgxys+eBp3Bz8Ju1+2LkNAkUN+x+RhuCtSixdhX9aOoWfgv0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GTMCQR3x; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1757524737; c=relaxed/simple;
+	bh=8NO5AGg49+T5ajYObkd0y9xDyV0ygdMLFtI81YL8HQI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y/HZVWlii3rSahn9nO/pkAaygRu1rOtJ48OvW608dwb6ziXgNg6sHIAec54+JlBllkeBuSBoqzPD0rqWtaSGCdnX+GCuc00v8V2agrEefV0Oot7vCbAXu0thPtaJk9FwBSlzX3eov0BReUuoDr7fh4NfKIUWi0NN9L6iVxmf8AE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=opYPZrLZ; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GTMCQR3x"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757523437; x=1789059437;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=29yavP7OV8ZvespV4CLRsLc0fldknIlUzCfZijOolDI=;
-  b=GTMCQR3xl8TtgU93Qod8KJ5ULWnLxfI++2SvM9AMVHPjMG/qBq8/Ad74
-   1sCrpg4irCFKNr1ImOjkNetrYpqSqm56aXorXVl/eG94p8erX0KgDNDcV
-   gugy3wSom3GPZSq+3gddo0KscJhlH/OtF0H4eJyLlKbvi8X09ysWuhmR5
-   S+PaP7SsIgfPnwuPMW1bMTFQvNk9MG97LCR1Mbp7gUcAJyUpyRSLElCgJ
-   tjdW4DwWo9g6xSHLQ0wgfGcqEsX4iMim5ywt8t6Ea+jfwmY7157strH1M
-   xVK9c9IalG/mxTye3pFMMqzO0+GGUYUgq7ccQ2Rf6bvsUCmaW31lRw3MA
-   A==;
-X-CSE-ConnectionGUID: 3+mTsg8vRD2bJzNbrSEfkw==
-X-CSE-MsgGUID: qBTH8cIyS9ePcLaxX/oU/g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11549"; a="70940737"
-X-IronPort-AV: E=Sophos;i="6.18,254,1751266800"; 
-   d="scan'208";a="70940737"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2025 09:57:14 -0700
-X-CSE-ConnectionGUID: zI1fsTZxQzyIEKTu0cPGbQ==
-X-CSE-MsgGUID: hNdcYcQ4SrCunwflNKG+mw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,254,1751266800"; 
-   d="scan'208";a="177731260"
-Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.110.214]) ([10.125.110.214])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2025 09:57:14 -0700
-Message-ID: <6a5b66e4-d534-41ff-8feb-ce0ad3ebdff5@intel.com>
-Date: Wed, 10 Sep 2025 09:57:13 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="opYPZrLZ"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-24cf5bcfb60so10675ad.0
+        for <linux-coco@lists.linux.dev>; Wed, 10 Sep 2025 10:18:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757524734; x=1758129534; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8NO5AGg49+T5ajYObkd0y9xDyV0ygdMLFtI81YL8HQI=;
+        b=opYPZrLZSvuUiib/oO1syJgn2ypprUWiRx0dvZpGQ/4EwAJFpQA1A+gEV2Me0mU1bO
+         2GJU3J/z1k9/mb7zaFOMh5mH1qmTvXWogofEP4BaYPMsoQwlZU8tXEQU42Fk5Khgsk4r
+         G9MQTpH9dD7Pa7zkgvEoh2x/+ptw8symw1cj3qFLX5xlWLFcnbgffb05pMrt+buXWyFl
+         W0gFaT0CShwEkZPO1Ziq6tAzsOXdGatE9lJ0xzjBfiMOviCnhmSE3mYMV2Miu7H2iH9/
+         MHY38JU3JDhZpgVLaQLjFERUjnJcQ1YlLNE1XHu9BPpj9ABKDCJTboarRvpWEKncNHJf
+         2NQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757524734; x=1758129534;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8NO5AGg49+T5ajYObkd0y9xDyV0ygdMLFtI81YL8HQI=;
+        b=sXrn+XFyOOj/8UWM99Eg3fZZqKZ05pFrxa4q+GRtJxBl7LkgvbVjNZnEGgcEowsmzr
+         D4Fan+R01CL3oKo6Ie1QHhMke9YIkVEShI4lAb/FmroPd51JLXZ1tD7GGmgK3AJH2Iyi
+         bT8HWza8nIxK+ELQ3LzvTUbLh1603tATYY8pWWkiudlhLoQG1r5a1jmx3mVpmp7TbIsh
+         /oV1D+q4q9sHBTdsrfqBmhTzu7EE3EOivTaT0wfKvzJBS1Vdn9j8oVdSEknVvTgr2GSs
+         EUHWlfahZyWfQJbTiFaBVdS/CHuov3z7GAp9MwgrLpeY1JQ3z+tSaILOHcygXMppm+TW
+         NeXw==
+X-Forwarded-Encrypted: i=1; AJvYcCXbjxILJb8SLn43+b3ZsoeaFg999uaIX0UmdcVNDOFWMTrszKjb1S25nwO+Ado7/IN0hvWfE/QW62Pv@lists.linux.dev
+X-Gm-Message-State: AOJu0YzKe9jodvmhtHWiipmyqsn9CrTHrPEoay0evEMQMLJGEBULuh2s
+	lTVemMkqtEt39BTJMM9SumWNPvojr2IhTICqGyPSuMLWRG5GpEVEXa7dQk/0Q5uOQZdlnkY5YBw
+	apuut+e6T8nsq2asy7BnSk1LTa9OMqBrwAlKn+Qzb
+X-Gm-Gg: ASbGnctpge9Bemiy+jFzp/ObdYbt2xZu84OqU//ru/0qPETWact1OELujehoeYvdCl8
+	SVDZCf4lTxlosYafPihf4BK8ZjRaHlv2SylcgabDKhh6Y3jO5fbPHwEdkUr4vYell6I4HVwyDW+
+	vHHQoFTi2QY+e62rlI8s5XU+y2NHMhYqUnRdpQ3nBQw5pUgFaAAJVF52OqC2TkDw37mbspUUqjG
+	EwjRaQwRAeyxZfbbRFI1Z/hqJWUItE38uyTtYeCz206TQJx2srkiUU=
+X-Google-Smtp-Source: AGHT+IHCUkd4DH5Y6JVUzen1aiRKVsuVwVddE1fVh3QxgdLia5R9VcHQ0lxR8oXmVv5fSqX3gWLykbYPG5i7ULXFWuU=
+X-Received: by 2002:a17:903:32c8:b0:24c:1a94:e603 with SMTP id
+ d9443c01a7336-25a7d6a471emr4327895ad.1.1757524733490; Wed, 10 Sep 2025
+ 10:18:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/virt/tdx: Use precalculated TDVPR page physical
- address
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>, Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Kai Huang <kai.huang@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>,
- Vishal Annapurve <vannapurve@google.com>, Thomas Huth <thuth@redhat.com>,
- Adrian Hunter <adrian.hunter@intel.com>, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, Farrah Chen <farrah.chen@intel.com>
-References: <20250910144453.1389652-1-dave.hansen@linux.intel.com>
- <oyagitkaefceadeqoqgycqhubw4hnlsjxf6lytazxpjnzueb4k@bmcvegkzrycq>
- <684e83b3-756b-4995-9804-6b1d0cfa4103@intel.com>
- <766raob5ltycizxfzcqh5blvdyk5girzfu2575n7gu4g7cmco5@zttwu3qwmjlm>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <766raob5ltycizxfzcqh5blvdyk5girzfu2575n7gu4g7cmco5@zttwu3qwmjlm>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250609191340.2051741-1-kirill.shutemov@linux.intel.com>
+ <2537ad07-6e49-401b-9ffa-63a07740db4a@intel.com> <p5tqgxmmwnw2ie6ea2q7b2v7ivbsebyjpucm6csrvl2eghuzw5@bods3pzhyslj>
+ <4be5db34-aadb-49e3-9a94-49d39c8bd31d@intel.com>
+In-Reply-To: <4be5db34-aadb-49e3-9a94-49d39c8bd31d@intel.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Wed, 10 Sep 2025 10:18:40 -0700
+X-Gm-Features: Ac12FXwizQV2e3Qmj9lOxxFpjbgzFrxvQifAmyKv0lv5qG3kU9tlMxyMvEl_A1w
+Message-ID: <CAGtprH-MnG6sxjbWZBLMM83j6mohzRvc-shv3XCJOjJWqwQzXQ@mail.gmail.com>
+Subject: Re: [PATCHv2 00/12] TDX: Enable Dynamic PAMT
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Kiryl Shutsemau <kirill@shutemov.name>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, pbonzini@redhat.com, seanjc@google.com, 
+	dave.hansen@linux.intel.com, rick.p.edgecombe@intel.com, 
+	isaku.yamahata@intel.com, kai.huang@intel.com, yan.y.zhao@intel.com, 
+	chao.gao@intel.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/10/25 09:12, Kiryl Shutsemau wrote:
-> On Wed, Sep 10, 2025 at 09:10:06AM -0700, Dave Hansen wrote:
->> On 9/10/25 09:06, Kiryl Shutsemau wrote:
->>>>  struct tdx_vp {
->>>>  	/* TDVP root page */
->>>>  	struct page *tdvpr_page;
->>>> +	/* precalculated page_to_phys(tdvpr_page) for use in noinstr code */
->>>> +	phys_addr_t tdvpr_pa;
->>> Missing newline above the new field?
->> I was actually trying to group the two fields together that are aliases
->> for the same logical thing.
->>
->> Is that problematic?
-> No. Just looks odd to me. But I see 'struct tdx_td' also uses similar
-> style.
+On Tue, Sep 9, 2025 at 8:24=E2=80=AFAM Dave Hansen <dave.hansen@intel.com> =
+wrote:
+>
+> On 9/9/25 04:16, Kiryl Shutsemau wrote:
+>
+> > And it is going to be very wasteful. With huge pages, in most cases, yo=
+u
+> > only need dynamic PAMT for control pages. You will have a lot of memory
+> > sitting in stash with zero use.
+>
+> I think it's going to be hard to convince me without actual data on this
+> one.
+>
 
-Your review or ack tag there seems to have been mangled by your email
-client. Could you try to resend it, please? ;)
+* With 1G page backing and with DPAMT entries created only for 4K EPT mappi=
+ngs
+- ~5MB of DPAMT memory usage for 704G guest memory size. We expect the
+DPAMT memory usage to be in MBs even with 4096G guest memory size.
+
+* With DPAMT entries created for all private memory irrespective of
+mapping granularity
+- DPAMT memory usage is around ~3GB for 704G guest memory size and
+around ~16G for 4096G guest memory size.
+
+For a 4TB guest memory size with 1G page backing, the DPAMT memory usage
+
+> Even then, we're talking about 0.4% of system memory. So how much code
+> and complexity are we talking about in order to save a *maximum* of 0.4%
+> of system memory?
+>
