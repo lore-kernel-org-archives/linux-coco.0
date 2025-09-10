@@ -1,112 +1,102 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B4A258CD8
-	for <linux-coco@lists.linux.dev>; Wed, 10 Sep 2025 17:18:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCA02D1F72
+	for <linux-coco@lists.linux.dev>; Wed, 10 Sep 2025 17:27:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757524737; cv=none; b=eQwhj8TkY5zOrRzLigfaQ3nOIIuMXpCixZfftS3GH9eI7wYUxLCz6sVmXpFo4hXyCVZ9WOOSMGHU38o5xqDH2eBXt/dZ0p9UN5ajMEjbiLr7c3K78MaBn8aQq460HZR98kDUcgXB362qLaihaGvtEJT3B2Sqdd8d6eSEYuwZMVg=
+	t=1757525254; cv=none; b=qvv0JA5+FBQxvSOamoyAf/XDrMjhF8anKZkWWTb+gzvYaeZirky+Cn1hI/2M/OgY1UERiER2fnthxh4XyaqGfSo3jYiPlu2SYL9M4CfX9xR7o5TK8SEHWkM6nsWnCO2Xp4V0XN2uFcpUZfcCF7fLNQ1JwfKaN5cMQZMbC3+pHtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757524737; c=relaxed/simple;
-	bh=8NO5AGg49+T5ajYObkd0y9xDyV0ygdMLFtI81YL8HQI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y/HZVWlii3rSahn9nO/pkAaygRu1rOtJ48OvW608dwb6ziXgNg6sHIAec54+JlBllkeBuSBoqzPD0rqWtaSGCdnX+GCuc00v8V2agrEefV0Oot7vCbAXu0thPtaJk9FwBSlzX3eov0BReUuoDr7fh4NfKIUWi0NN9L6iVxmf8AE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=opYPZrLZ; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1757525254; c=relaxed/simple;
+	bh=IbDI6NByxIuvJpDQV0z450B/UbqXV9f1soeWIoUs718=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cz76ad0NYNpO5FsiimpCdPtsfGmkpoBFSK70TilS84IaMyEomnL22tE9zipsKAcmpJ2H6bl7jIFhrhdIQsRPYFClzYNWOSaZA86pq2Z1usG3X66uWFdkyMZaajONbTh8VfLL8yop942mSRf8oQNcuRbNbBj1jEL1sJWDSbBj1hU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=YoIYZjZz; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="opYPZrLZ"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-24cf5bcfb60so10675ad.0
-        for <linux-coco@lists.linux.dev>; Wed, 10 Sep 2025 10:18:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757524734; x=1758129534; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8NO5AGg49+T5ajYObkd0y9xDyV0ygdMLFtI81YL8HQI=;
-        b=opYPZrLZSvuUiib/oO1syJgn2ypprUWiRx0dvZpGQ/4EwAJFpQA1A+gEV2Me0mU1bO
-         2GJU3J/z1k9/mb7zaFOMh5mH1qmTvXWogofEP4BaYPMsoQwlZU8tXEQU42Fk5Khgsk4r
-         G9MQTpH9dD7Pa7zkgvEoh2x/+ptw8symw1cj3qFLX5xlWLFcnbgffb05pMrt+buXWyFl
-         W0gFaT0CShwEkZPO1Ziq6tAzsOXdGatE9lJ0xzjBfiMOviCnhmSE3mYMV2Miu7H2iH9/
-         MHY38JU3JDhZpgVLaQLjFERUjnJcQ1YlLNE1XHu9BPpj9ABKDCJTboarRvpWEKncNHJf
-         2NQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757524734; x=1758129534;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8NO5AGg49+T5ajYObkd0y9xDyV0ygdMLFtI81YL8HQI=;
-        b=sXrn+XFyOOj/8UWM99Eg3fZZqKZ05pFrxa4q+GRtJxBl7LkgvbVjNZnEGgcEowsmzr
-         D4Fan+R01CL3oKo6Ie1QHhMke9YIkVEShI4lAb/FmroPd51JLXZ1tD7GGmgK3AJH2Iyi
-         bT8HWza8nIxK+ELQ3LzvTUbLh1603tATYY8pWWkiudlhLoQG1r5a1jmx3mVpmp7TbIsh
-         /oV1D+q4q9sHBTdsrfqBmhTzu7EE3EOivTaT0wfKvzJBS1Vdn9j8oVdSEknVvTgr2GSs
-         EUHWlfahZyWfQJbTiFaBVdS/CHuov3z7GAp9MwgrLpeY1JQ3z+tSaILOHcygXMppm+TW
-         NeXw==
-X-Forwarded-Encrypted: i=1; AJvYcCXbjxILJb8SLn43+b3ZsoeaFg999uaIX0UmdcVNDOFWMTrszKjb1S25nwO+Ado7/IN0hvWfE/QW62Pv@lists.linux.dev
-X-Gm-Message-State: AOJu0YzKe9jodvmhtHWiipmyqsn9CrTHrPEoay0evEMQMLJGEBULuh2s
-	lTVemMkqtEt39BTJMM9SumWNPvojr2IhTICqGyPSuMLWRG5GpEVEXa7dQk/0Q5uOQZdlnkY5YBw
-	apuut+e6T8nsq2asy7BnSk1LTa9OMqBrwAlKn+Qzb
-X-Gm-Gg: ASbGnctpge9Bemiy+jFzp/ObdYbt2xZu84OqU//ru/0qPETWact1OELujehoeYvdCl8
-	SVDZCf4lTxlosYafPihf4BK8ZjRaHlv2SylcgabDKhh6Y3jO5fbPHwEdkUr4vYell6I4HVwyDW+
-	vHHQoFTi2QY+e62rlI8s5XU+y2NHMhYqUnRdpQ3nBQw5pUgFaAAJVF52OqC2TkDw37mbspUUqjG
-	EwjRaQwRAeyxZfbbRFI1Z/hqJWUItE38uyTtYeCz206TQJx2srkiUU=
-X-Google-Smtp-Source: AGHT+IHCUkd4DH5Y6JVUzen1aiRKVsuVwVddE1fVh3QxgdLia5R9VcHQ0lxR8oXmVv5fSqX3gWLykbYPG5i7ULXFWuU=
-X-Received: by 2002:a17:903:32c8:b0:24c:1a94:e603 with SMTP id
- d9443c01a7336-25a7d6a471emr4327895ad.1.1757524733490; Wed, 10 Sep 2025
- 10:18:53 -0700 (PDT)
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="YoIYZjZz"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 698A140E01D2;
+	Wed, 10 Sep 2025 17:27:23 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id ejTizIk3HIBh; Wed, 10 Sep 2025 17:27:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1757525238; bh=AaHxBJ1T5/lzqwfAIWFqoerftxnxSVKw4mzH9fNFLvQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YoIYZjZz7DB/GNwEwUULywd3ovui4UA0jSTMFhu59QEAtf45IB08kRZFA+JHt4Z8e
+	 h8wTl7aBch86V1TbFJ6csu0YyK3MZMArHg5LKD3xKxWn7HnnTcdGejMlWP/nRuTKcH
+	 asNn23Ya35Z39N9uCWjB3qBnJFGET9cAeveBzp0xyvIGQRTWL9tiCkk2cRF0bD8Mfg
+	 Rc2fhhMbUc+6zj+UIge9ORMbI3zOdrvIuxJ54Kd2i54Kr27OJZJZGTAxsz5JkNXk3e
+	 kGbs1v8GKaF4jF8ODc564UfR7oqMwjUZSOvMSHqYnRAHQLn6Ji2sMcKT82KMK6PV/K
+	 hrW670pt2m2Ru7I+NkmUKr+oTbIr1M2u2nW1rDhG0lMpwaJ5aHl/dfe5ItJoprAGb+
+	 kSOpAH6Yw1GnSNPy/e7CfcpK8pBBfkjzcMsXgyP7jMH2HdlXnmAfRoGckzw4Q6hPQM
+	 ifjkfVFsDyUOj7U4UWcCXWJs1bls+JKyvFoKRkp+BdqEwSZsGc2VJCWCAe7nWgC7Mx
+	 OB6qBF7WLbuv8K+jHMa63UsRB2yX5v4rMttSTxkXM6d8nZv+QXBi/GTPMQW6NK/dpd
+	 Ap5kFEG/3LfRka8OpNjLATnxhZz7IXPDLPZjT4NnXXxyXjm8PxXa0PvHOBgEzBCqP0
+	 GIqu/SuwgH7nbr3m+nmFGv/g=
+Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 37CA240E00DD;
+	Wed, 10 Sep 2025 17:26:36 +0000 (UTC)
+Date: Wed, 10 Sep 2025 19:26:27 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Babu Moger <babu.moger@amd.com>
+Cc: corbet@lwn.net, tony.luck@intel.com, reinette.chatre@intel.com,
+	Dave.Martin@arm.com, james.morse@arm.com, tglx@linutronix.de,
+	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
+	hpa@zytor.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+	akpm@linux-foundation.org, paulmck@kernel.org, frederic@kernel.org,
+	pmladek@suse.com, rostedt@goodmis.org, kees@kernel.org,
+	arnd@arndb.de, fvdl@google.com, seanjc@google.com,
+	thomas.lendacky@amd.com, pawan.kumar.gupta@linux.intel.com,
+	perry.yuan@amd.com, manali.shukla@amd.com, sohil.mehta@intel.com,
+	xin@zytor.com, Neeraj.Upadhyay@amd.com, peterz@infradead.org,
+	tiala@microsoft.com, mario.limonciello@amd.com,
+	dapeng1.mi@linux.intel.com, michael.roth@amd.com,
+	chang.seok.bae@intel.com, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org, peternewman@google.com, eranian@google.com,
+	gautham.shenoy@amd.com
+Subject: Re: [PATCH v18 14/33] x86/resctrl: Add data structures and
+ definitions for ABMC assignment
+Message-ID: <20250910172627.GCaMG0w6UP4ksqZZ50@fat_crate.local>
+References: <cover.1757108044.git.babu.moger@amd.com>
+ <1eb6f7ba74f37757ebf3a45cfe84081b8e6cd89a.1757108044.git.babu.moger@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250609191340.2051741-1-kirill.shutemov@linux.intel.com>
- <2537ad07-6e49-401b-9ffa-63a07740db4a@intel.com> <p5tqgxmmwnw2ie6ea2q7b2v7ivbsebyjpucm6csrvl2eghuzw5@bods3pzhyslj>
- <4be5db34-aadb-49e3-9a94-49d39c8bd31d@intel.com>
-In-Reply-To: <4be5db34-aadb-49e3-9a94-49d39c8bd31d@intel.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Wed, 10 Sep 2025 10:18:40 -0700
-X-Gm-Features: Ac12FXwizQV2e3Qmj9lOxxFpjbgzFrxvQifAmyKv0lv5qG3kU9tlMxyMvEl_A1w
-Message-ID: <CAGtprH-MnG6sxjbWZBLMM83j6mohzRvc-shv3XCJOjJWqwQzXQ@mail.gmail.com>
-Subject: Re: [PATCHv2 00/12] TDX: Enable Dynamic PAMT
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Kiryl Shutsemau <kirill@shutemov.name>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, pbonzini@redhat.com, seanjc@google.com, 
-	dave.hansen@linux.intel.com, rick.p.edgecombe@intel.com, 
-	isaku.yamahata@intel.com, kai.huang@intel.com, yan.y.zhao@intel.com, 
-	chao.gao@intel.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1eb6f7ba74f37757ebf3a45cfe84081b8e6cd89a.1757108044.git.babu.moger@amd.com>
 
-On Tue, Sep 9, 2025 at 8:24=E2=80=AFAM Dave Hansen <dave.hansen@intel.com> =
-wrote:
->
-> On 9/9/25 04:16, Kiryl Shutsemau wrote:
->
-> > And it is going to be very wasteful. With huge pages, in most cases, yo=
-u
-> > only need dynamic PAMT for control pages. You will have a lot of memory
-> > sitting in stash with zero use.
->
-> I think it's going to be hard to convince me without actual data on this
-> one.
->
+On Fri, Sep 05, 2025 at 04:34:13PM -0500, Babu Moger wrote:
+> diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+> index 18222527b0ee..48230814098d 100644
+> --- a/arch/x86/include/asm/msr-index.h
+> +++ b/arch/x86/include/asm/msr-index.h
+> @@ -1232,6 +1232,7 @@
+>  /* - AMD: */
+>  #define MSR_IA32_MBA_BW_BASE		0xc0000200
+>  #define MSR_IA32_SMBA_BW_BASE		0xc0000280
+> +#define MSR_IA32_L3_QOS_ABMC_CFG	0xc00003fd
+>  #define MSR_IA32_L3_QOS_EXT_CFG		0xc00003ff
+>  #define MSR_IA32_EVT_CFG_BASE		0xc0000400
 
-* With 1G page backing and with DPAMT entries created only for 4K EPT mappi=
-ngs
-- ~5MB of DPAMT memory usage for 704G guest memory size. We expect the
-DPAMT memory usage to be in MBs even with 4096G guest memory size.
+Some of those MSRs are AMD-specific: why do they have "IA32" in the name and
+not "AMD64"?
 
-* With DPAMT entries created for all private memory irrespective of
-mapping granularity
-- DPAMT memory usage is around ~3GB for 704G guest memory size and
-around ~16G for 4096G guest memory size.
+-- 
+Regards/Gruss,
+    Boris.
 
-For a 4TB guest memory size with 1G page backing, the DPAMT memory usage
-
-> Even then, we're talking about 0.4% of system memory. So how much code
-> and complexity are we talking about in order to save a *maximum* of 0.4%
-> of system memory?
->
+https://people.kernel.org/tglx/notes-about-netiquette
