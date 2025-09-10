@@ -1,111 +1,244 @@
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C485321F27
-	for <linux-coco@lists.linux.dev>; Wed, 10 Sep 2025 14:21:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4626732BF4E
+	for <linux-coco@lists.linux.dev>; Wed, 10 Sep 2025 14:44:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757514075; cv=none; b=ZGox728JLfhV8bWfUFd3rRlwEuK2lERRy1QlyeHys6OPwfUrA74L5nb/9dDGAPbt1Fa/1XYpDyDNgWpXff4nvZuc9mpN1njOJz7C3LKnQa59XISh9OVqMHYO4bbHEjPdNf2GiacpBKLSiUbSgjotVjGdXWkqz9LRzK+qDG3dXiQ=
+	t=1757515497; cv=none; b=Q355LaOq4CxJfpB+Amkx6HHGGSc+10GhZ+sjGoVOW1XNed4CpfoGlndwEX6JqrSeEQwbshHNTEQ/FVfW6ewXEK8/oMsolsDKfUVlia2W19x77sZx1+srBdI7rD1Vi2uHo3iuWhFEYqIgIRl5mUDfD3e1apBuyZlRVlkx5+5G7wY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757514075; c=relaxed/simple;
-	bh=LNKhKhA6C3nXEhiScX2h3yeOP0cYoVecRbWOHC2eAUU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VyYZxlPrpJSFKC2rqDNS0dqxd0dJFO8xUughoHn5iIwZ0fjD+iDCrtCdqSK+41OUrdACywIVrYH2qTIICaLDEJOFuF2buys2+A28c+h0poBo11P37QEP4ECsL/xKOrbg01lUDCxQGg2sONsXdbfoq0raE/1n+DbgaugiebDJiyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Rf2KQtZI; arc=none smtp.client-ip=209.85.222.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1757515497; c=relaxed/simple;
+	bh=4ZCpJjnEs6upFVsJE6QwmCN3SVC1wJk8iSTFF5EfvCg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QTcEwt+SvAnidPouenH8nnkCoB5ysx5Tk/S6wNDrfdsR50iu4xJhMKbty3ffIqkbfnCfliPpnTWkPXnMiiSdVbYXPYl/y0IIqehNZNL45s9bCkYy5hMG0HzRrS6XWKFFrHLE3WhfTGTbtBeuYm93LIiLmKyNxcfuwac4KbZvcWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SdRUMzBk; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Rf2KQtZI"
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-81f9cfa70deso10147085a.1
-        for <linux-coco@lists.linux.dev>; Wed, 10 Sep 2025 07:21:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1757514072; x=1758118872; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LNKhKhA6C3nXEhiScX2h3yeOP0cYoVecRbWOHC2eAUU=;
-        b=Rf2KQtZIcASJxmT9QJWSuBlQuA1sW1v39fIMOungMiMOjx0jKJJKMkU2KTI5sWATly
-         VqBZcY68kTedJQQv4EO0/qR8RM4GWFeWmRA39T/mdoe7jGigUmd0verYlm9Db95tDDpM
-         O+pRhY2b/NTDw3b+9vT6PN01s/WlXP1j8Efqp2ksTWy40d2aqPJvPdXVT2svoEmx0QGu
-         xMuJTZN9+sPOae0Jnr/04bT7Xk0QHsR2Qf8WP0Czctz/erOIgxXvQCv4Q8jE/C3RatHu
-         u9wT8Lpm/BLn1K1TWRjZhWOvn2yhvzKVJEffeH7K8c85lvDGDxw4D6OkB7OnQBWdoUua
-         Ktkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757514072; x=1758118872;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LNKhKhA6C3nXEhiScX2h3yeOP0cYoVecRbWOHC2eAUU=;
-        b=BBe2cGhh/HBtD0MEPknDGt2FFz+pywbpDmZf1dfr2mhpDApCluP4MRYtrT5PrUEMwG
-         L3KTrFH5mCbvcdI27G6HUNp/WqYzOCHkC/FRfO+aT+SicIKnC1DTlWXHRqcu2VEqmYD3
-         vWMmN+u55xCCI9FCcMj20/MUckjjKmxsW+22/S1pnjFEm93hUR5uPz+apIReVrf4n+n4
-         VUxIxUh5AWeFIRbgn/3bv4IB8zI6Z3eEmrZc79/h+i//et5j7hY+S4Q9zDEVO68RJLbJ
-         MjWoftaqwkFRsgsclXmk4qXhSafwtOBzVbZLVJ5iKRFiLgKFYnpmA9ZUx5SIMcp/td1F
-         l7gg==
-X-Forwarded-Encrypted: i=1; AJvYcCXho0jt19kmrva6qBt/9g0PERis5BE9UP3Na0K8bmiN5BNZlfiwqF2ZUS63611i8BFo9G2EZbQ2yFxO@lists.linux.dev
-X-Gm-Message-State: AOJu0YykL5OCRNU28WITITaiGrj+YmLYPFTLtwsj6FaeqclunNEUOxsn
-	gMBfREt9IGtU5vXsn8RVoZmD0n0x/eHmMGzv84wl//XrJ9MOv4Du49KksBXxFbp57JA=
-X-Gm-Gg: ASbGncuoNdcKXbDJIyEy7bqNl4VojZ0VOnHJGaLfY6MqL0sRT4WoKFs2qMFVikgRIEk
-	LwHIfDQ8xARoAKdts/CthJme3qxGSxxpoh+uE6RJm9oBh/TovLk7/PluHh3sOz2TWQZF0Y9BeEh
-	imEpt6M+O29WOOO/yw39n/x5E0zsiUphbf55c0pYnxGmbI8VaVy8EpEWQovadIcMxUETkn54Bx1
-	22AaOPr5KeVJVEz+sO28NuXBUzU3Xh7bWxG02d6mTNU8DL8tTGwVQ/O6v+nFFI2hZcqfkR7t8e4
-	Js6lLaI1REcjgzLm9++MxOWxtpGLih3OdeKNhkhVoV/10xBkUPva2uIWOx+94fPGxyWURdXFWN0
-	cD0jZMM9KSLa+R67TZn+AA/EBWhb0z1kdhH5srIC4seMgc8SoZiD1D3JYd/fQ0pG5LJau
-X-Google-Smtp-Source: AGHT+IFQUqXdlLFuZHw73Bg4VN3PcnM2gIuoqeeTT9gq8x5We6/aliAOx3fJNb9QKgrD/fgUoao2tw==
-X-Received: by 2002:a05:620a:4054:b0:7f2:8bef:93c8 with SMTP id af79cd13be357-813c443dcbdmr1375146585a.40.1757514072083;
-        Wed, 10 Sep 2025 07:21:12 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-81b5ed732f1sm299020385a.49.2025.09.10.07.21.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Sep 2025 07:21:11 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1uwLh8-00000003roy-2q61;
-	Wed, 10 Sep 2025 11:21:10 -0300
-Date: Wed, 10 Sep 2025 11:21:10 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Arto Merilainen <amerilainen@nvidia.com>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	aik@amd.com, lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev,
-	linux-coco@lists.linux.dev
-Subject: Re: [RFC PATCH v1 34/38] coco: guest: arm64: Validate mmio range
- found in the interface report
-Message-ID: <20250910142110.GE882933@ziepe.ca>
-References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
- <20250728135216.48084-35-aneesh.kumar@kernel.org>
- <d57d12ce-78c6-4381-80eb-03e9e94f9903@nvidia.com>
- <c3291a06-1154-4c89-a77b-73e2a3ef61ee@nvidia.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SdRUMzBk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757515496; x=1789051496;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=4ZCpJjnEs6upFVsJE6QwmCN3SVC1wJk8iSTFF5EfvCg=;
+  b=SdRUMzBkQELQmcKUItuQZY3Fe3qKOsoJQ4BftqAY7jnPniRQTWaMoCQv
+   0nBH5rxwHwH0v8ZoPB0K615QQv0J7l48cI6Au9PgLXZAqDgx6FTW1qGTa
+   E7L4xu8Yw5Mp4CTe1SPJ7NOX9NpSvIv3p60C5JR5ZNOBOot526sGhj7Mp
+   37km563AfADtl6M6138Lutpeb/1zkp8Ql4hvn4bI9O43XjByFvquKh6vD
+   T4MMEOeW7ZhfD1rxC1W+ENRXd4bu4tu18mjyQEpMf0lNX0sYEzh9PrAiR
+   UHzngkMVbJWoiJyVIncJeclbh0x+8BhCl6bPEOBwARljQ4XuKqocm1iVR
+   A==;
+X-CSE-ConnectionGUID: yZeNDIJfSkGrKOE2JhBymQ==
+X-CSE-MsgGUID: NdeL7yUjQWa1vkIr4ENa6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11549"; a="77434467"
+X-IronPort-AV: E=Sophos;i="6.18,254,1751266800"; 
+   d="scan'208";a="77434467"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2025 07:44:56 -0700
+X-CSE-ConnectionGUID: cAxc3ZTJRE2PfatdL640IA==
+X-CSE-MsgGUID: 3BKSLaoaToueCnrPHYqOpQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,254,1751266800"; 
+   d="scan'208";a="173495772"
+Received: from davehans-spike.ostc.intel.com (HELO ray2.sr71.net) ([10.165.164.11])
+  by orviesa008.jf.intel.com with ESMTP; 10 Sep 2025 07:44:54 -0700
+From: Dave Hansen <dave.hansen@linux.intel.com>
+To: linux-kernel@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Kirill A. Shutemov" <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Isaku Yamahata <isaku.yamahata@intel.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Thomas Huth <thuth@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org,
+	Farrah Chen <farrah.chen@intel.com>
+Subject: [PATCH] x86/virt/tdx: Use precalculated TDVPR page physical address
+Date: Wed, 10 Sep 2025 07:44:53 -0700
+Message-Id: <20250910144453.1389652-1-dave.hansen@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c3291a06-1154-4c89-a77b-73e2a3ef61ee@nvidia.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 10, 2025 at 08:47:43AM +0300, Arto Merilainen wrote:
-> This creates a tricky problem given that RSI_VDEV_VALIDATE_MAPPING requires
-> both the ipa_base and pa_base which should correspond to the same location.
-> In above scenario, the PA of the first range would correspond to the BAR
-> base whereas the second range would correspond to a location residing after
-> the MSI-X table.
+From: Kai Huang <kai.huang@intel.com>
 
-This seems like a defect in the RSI_VDEV_VALIDATE_MAPPING - it should
-be able to consume the same format of data that the tdisp report emits
-to validate it.
+All of the x86 KVM guest types (VMX, SEV and TDX) do some special context
+tracking when entering guests. This means that the actual guest entry
+sequence must be noinstr.
 
-From a kernel side we also should be careful that the driver isn't
-tricked into mapping MMIO that is not secure when it should
-be. Presumably all the default io access functions should demand
-secure memory in T=1 mode, and special ones like the MSI-X code would
-have some special version to accept either?
+Part of entering a TDX guest is passing a physical address to the TDX
+module. Right now, that physical address is stored as a 'struct page'
+and converted to a physical address at guest entry. That page=>phys
+conversion can be complicated, can vary greatly based on kernel
+config, and it is definitely _not_ a noinstr path today.
 
-Jason
+There have been a number of tinkering approaches to try and fix this
+up, but they all fall down due to some part of the page=>phys
+conversion infrastructure not being noinstr friendly.
+
+Precalculate the page=>phys conversion and store it in the existing
+'tdx_vp' structure.  Use the new field at every site that needs a
+tdvpr physical address. Remove the now redundant tdx_tdvpr_pa().
+Remove the __flatten remnant from the tinkering.
+
+Note that only one user of the new field is actually noinstr. All
+others can use page_to_phys(). But, they might as well save the effort
+since there is a pre-calculated value sitting there for them.
+
+[ dhansen: rewrite all the text ]
+
+Signed-off-by: Kai Huang <kai.huang@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Tested-by: Farrah Chen <farrah.chen@intel.com>
+---
+ arch/x86/include/asm/tdx.h  |  2 ++
+ arch/x86/kvm/vmx/tdx.c      |  9 +++++++++
+ arch/x86/virt/vmx/tdx/tdx.c | 21 ++++++++-------------
+ 3 files changed, 19 insertions(+), 13 deletions(-)
+
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 6120461bd5ff3..6b338d7f01b7d 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -171,6 +171,8 @@ struct tdx_td {
+ struct tdx_vp {
+ 	/* TDVP root page */
+ 	struct page *tdvpr_page;
++	/* precalculated page_to_phys(tdvpr_page) for use in noinstr code */
++	phys_addr_t tdvpr_pa;
+ 
+ 	/* TD vCPU control structure: */
+ 	struct page **tdcx_pages;
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 04b6d332c1afa..75326a7449cc3 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -852,6 +852,7 @@ void tdx_vcpu_free(struct kvm_vcpu *vcpu)
+ 	if (tdx->vp.tdvpr_page) {
+ 		tdx_reclaim_control_page(tdx->vp.tdvpr_page);
+ 		tdx->vp.tdvpr_page = 0;
++		tdx->vp.tdvpr_pa = 0;
+ 	}
+ 
+ 	tdx->state = VCPU_TD_STATE_UNINITIALIZED;
+@@ -2931,6 +2932,13 @@ static int tdx_td_vcpu_init(struct kvm_vcpu *vcpu, u64 vcpu_rcx)
+ 		return -ENOMEM;
+ 	tdx->vp.tdvpr_page = page;
+ 
++	/*
++	 * page_to_phys() does not work in 'noinstr' code, like guest
++	 * entry via tdh_vp_enter(). Precalculate and store it instead
++	 * of doing it at runtime later.
++	 */
++	tdx->vp.tdvpr_pa = page_to_phys(tdx->vp.tdvpr_page);
++
+ 	tdx->vp.tdcx_pages = kcalloc(kvm_tdx->td.tdcx_nr_pages, sizeof(*tdx->vp.tdcx_pages),
+ 			       	     GFP_KERNEL);
+ 	if (!tdx->vp.tdcx_pages) {
+@@ -2993,6 +3001,7 @@ static int tdx_td_vcpu_init(struct kvm_vcpu *vcpu, u64 vcpu_rcx)
+ 	if (tdx->vp.tdvpr_page)
+ 		__free_page(tdx->vp.tdvpr_page);
+ 	tdx->vp.tdvpr_page = 0;
++	tdx->vp.tdvpr_pa = 0;
+ 
+ 	return ret;
+ }
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 330b560313afe..eac4032484626 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1504,11 +1504,6 @@ static inline u64 tdx_tdr_pa(struct tdx_td *td)
+ 	return page_to_phys(td->tdr_page);
+ }
+ 
+-static inline u64 tdx_tdvpr_pa(struct tdx_vp *td)
+-{
+-	return page_to_phys(td->tdvpr_page);
+-}
+-
+ /*
+  * The TDX module exposes a CLFLUSH_BEFORE_ALLOC bit to specify whether
+  * a CLFLUSH of pages is required before handing them to the TDX module.
+@@ -1520,9 +1515,9 @@ static void tdx_clflush_page(struct page *page)
+ 	clflush_cache_range(page_to_virt(page), PAGE_SIZE);
+ }
+ 
+-noinstr __flatten u64 tdh_vp_enter(struct tdx_vp *td, struct tdx_module_args *args)
++noinstr u64 tdh_vp_enter(struct tdx_vp *td, struct tdx_module_args *args)
+ {
+-	args->rcx = tdx_tdvpr_pa(td);
++	args->rcx = td->tdvpr_pa;
+ 
+ 	return __seamcall_dirty_cache(__seamcall_saved_ret, TDH_VP_ENTER, args);
+ }
+@@ -1583,7 +1578,7 @@ u64 tdh_vp_addcx(struct tdx_vp *vp, struct page *tdcx_page)
+ {
+ 	struct tdx_module_args args = {
+ 		.rcx = page_to_phys(tdcx_page),
+-		.rdx = tdx_tdvpr_pa(vp),
++		.rdx = vp->tdvpr_pa,
+ 	};
+ 
+ 	tdx_clflush_page(tdcx_page);
+@@ -1652,7 +1647,7 @@ EXPORT_SYMBOL_GPL(tdh_mng_create);
+ u64 tdh_vp_create(struct tdx_td *td, struct tdx_vp *vp)
+ {
+ 	struct tdx_module_args args = {
+-		.rcx = tdx_tdvpr_pa(vp),
++		.rcx = vp->tdvpr_pa,
+ 		.rdx = tdx_tdr_pa(td),
+ 	};
+ 
+@@ -1708,7 +1703,7 @@ EXPORT_SYMBOL_GPL(tdh_mr_finalize);
+ u64 tdh_vp_flush(struct tdx_vp *vp)
+ {
+ 	struct tdx_module_args args = {
+-		.rcx = tdx_tdvpr_pa(vp),
++		.rcx = vp->tdvpr_pa,
+ 	};
+ 
+ 	return seamcall(TDH_VP_FLUSH, &args);
+@@ -1754,7 +1749,7 @@ EXPORT_SYMBOL_GPL(tdh_mng_init);
+ u64 tdh_vp_rd(struct tdx_vp *vp, u64 field, u64 *data)
+ {
+ 	struct tdx_module_args args = {
+-		.rcx = tdx_tdvpr_pa(vp),
++		.rcx = vp->tdvpr_pa,
+ 		.rdx = field,
+ 	};
+ 	u64 ret;
+@@ -1771,7 +1766,7 @@ EXPORT_SYMBOL_GPL(tdh_vp_rd);
+ u64 tdh_vp_wr(struct tdx_vp *vp, u64 field, u64 data, u64 mask)
+ {
+ 	struct tdx_module_args args = {
+-		.rcx = tdx_tdvpr_pa(vp),
++		.rcx = vp->tdvpr_pa,
+ 		.rdx = field,
+ 		.r8 = data,
+ 		.r9 = mask,
+@@ -1784,7 +1779,7 @@ EXPORT_SYMBOL_GPL(tdh_vp_wr);
+ u64 tdh_vp_init(struct tdx_vp *vp, u64 initial_rcx, u32 x2apicid)
+ {
+ 	struct tdx_module_args args = {
+-		.rcx = tdx_tdvpr_pa(vp),
++		.rcx = vp->tdvpr_pa,
+ 		.rdx = initial_rcx,
+ 		.r8 = x2apicid,
+ 	};
+-- 
+2.34.1
+
