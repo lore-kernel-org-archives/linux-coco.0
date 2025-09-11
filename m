@@ -1,137 +1,109 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97242341670
-	for <linux-coco@lists.linux.dev>; Thu, 11 Sep 2025 13:41:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73383D76
+	for <linux-coco@lists.linux.dev>; Thu, 11 Sep 2025 15:09:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757598073; cv=none; b=TjHL0r/SO6uC6THT6sxmdzJKGJlCzPXWHMS8dfzUcQKBqnqdRy62/HYmEUvrrSUQ5L2o+7C+/8cvQzYp+YbIOI537/bt3tdluhBFrHPHQPUq57tnCvJlRmwGX8RcWXwX0/a4Cd+8yoPhM29lYgoyZtzyPd9STsABExI+EKLEgQU=
+	t=1757603392; cv=none; b=au4+QM8Qemfj9LHjLBmeoDJ5GsY5LUxvckdEfp/MPAo/1In/QJH+in2TU28ukJYpeLPXCGmMdQAVSt2U5CCy+brTida956jiA8qkHv3st70Yh0DLNCvB8yf1FI7yQ8MCct8+Gkfry1idq+Ef3o+BONl9XVkbYHUthnz4+TrU6Ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757598073; c=relaxed/simple;
-	bh=eLNCihb73AkP7eUzkZCYHE7Hj0pppLXFYhZ9Vl1IUQA=;
+	s=arc-20240116; t=1757603392; c=relaxed/simple;
+	bh=95uhAxbfkKFyOFgW3RXGiSoEN3G9GsJCAWc40eu/89A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RHb8Nn1dlh3zYxkSjex+Q7OsLM1G2GbmcaiXZCnDb3nM0a4SIyoaGFSiYIYxkeGPwtp1mR3VXNn75ZXFNyk61b+gpqvIu8M4FcIH1+0EJLtfT8LtyO6OJ7GpESlqGbmec6y8qz8RXimuCZQ59vPdUdEn8f1RVUTSd+JRCm0YTOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=JCDdv0I2; arc=none smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=I5WBlvvE24qZFyhSEnMWbrp8mlPqWGMFvnxMZmrYTASJgJXepsYh3iLFNPRIR1tVDDx7pWw2UBguZyEeUgaTdbpHp2NZpvhoFJCUKSzvdSkewt56666HdUbbO+nMd8P/7Qi5DpxeNc9+hbWr9/taKwR0RA7IGQnfZUB2wsuU2nU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=bMW4JEDS; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="JCDdv0I2"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4b5fb2f7295so7370501cf.1
-        for <linux-coco@lists.linux.dev>; Thu, 11 Sep 2025 06:41:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1757598070; x=1758202870; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=b9qmtOM7dk27TAU4OyKZ0knJ4KFcYKzonTZZzmEGOvc=;
-        b=JCDdv0I29Iygfi7PL5imBoxf3fWb8PUtoMirN1KWCE0vzOPVpZUPPX/B9eoJO+uDhz
-         MAtBnrw2N8InidBB075/2wc9k8rwVpGtig6d538Nig8dlkaGVD8AUDpDKcF+oIz2CwVt
-         SJPX3t4vUWzQSI22n4JwSAwzsRWYAcfekUrnMYoRpAYHIvELJ+CExY1qzgLu0vi4VIW0
-         i77q62oGyMSRHyFVXs6vVUkGDs2ht04xcjh1GWTroGyFM7OyhRYkTnueMd2AmasjaPt7
-         uVDctyI+1uhw6r6w2CZiOwVnpSSxQaC/onEOr/dDd2N9EE6AoOAPEmqyuOSDYA3eslu0
-         efWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757598070; x=1758202870;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b9qmtOM7dk27TAU4OyKZ0knJ4KFcYKzonTZZzmEGOvc=;
-        b=Hyx+GwE+kwz4KmjWcWEQkt5h1GXbipTajkH+glWhy/7w+KcECXhtsfCLznzenFuu98
-         21VvxilffJZ3Q4AiAMxYksDsLvpj2fsRhX5S7w0Iht6ZZF9seTEUOr/XFb0A9FY2sGhW
-         g6d3oQvMeuHXvGXDVKLH8jNEQ5TRzEFUHHFoC/Ekf3nO87B/fUCsPrWhx8uFpRQRXekQ
-         9L8jfI9Y5fY0A869INlLXAdktoTUfME/0MMgycQZfQmwYN1fWhk70VZ8bP2wxBbtDL5v
-         r1RyK5bsM1oNl7g2V58ulL47on2P8RhjbV0xzvJ/Cpwjh14vewMTv5J5IzXk695kiIjZ
-         c3JQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXxCC3gooi1h0GZvv7IvW1Q2DYh4Vitegp7dHeSqdU9gu1T9eTG3ZnArrgxSraSit/LkHL7HKYLJmGR@lists.linux.dev
-X-Gm-Message-State: AOJu0YwP+HqzEXiyGVcnti8byCwaoc8Y/wRO79IKtvkGHTelM1lvkmtn
-	MJNfSmGdZFbc6FLZh5IxIJSAJQKJcdTnEBchpRFAl50ax7RXwz0J4GKPXmh7X3gkGJ0=
-X-Gm-Gg: ASbGncsDbmffWt6OBgeVFPhCcbWrI3JqsO2Ry5sEIFKuTHgQKoTnMxKgIL7jHUH2bso
-	HfDjNN8EEOTgY8mf72ApsmlHhaYha335bNaGUl/Ry03WuAEsdIATaD/TcRVRqLBQGbGHhuj9Dnu
-	oa5oUEfQnN3Dr4IB8yoewJYirliMU/pYkdycVNsCbu4/Qc1xUDP0xXce2aRMkbgeNg0FjpbFCCC
-	MnebHMtAU4qB1d46eZducYzB71JLfI4sEVIMCKTQY9QI38BXXum9ZZ/Aenxzw5MT3sUTyzEkD/t
-	2vswKPXt/tRWauoNAmcfpD1XcaqVler1fh8/ogSgs3XDUb8UPpc6wzxLeygc/BFGFZhc8VYHdEo
-	AOq+2EtdCjHAEmDYPLR+BbsMvjORPLaccWAXjhrTzpBMjeA7BfsUdjnNs7ifmQ2kEZoaqit1M9l
-	HFfII=
-X-Google-Smtp-Source: AGHT+IG5BULuh1Ix3dTKx0dMR7o7+0XiARxVmRkjj0WGgmMyJMRjiHF7nh7Zr7cWchr7UEHaWH/u8g==
-X-Received: by 2002:a05:622a:1214:b0:4b5:d932:15c6 with SMTP id d75a77b69052e-4b5f847fd1emr220313931cf.34.1757598070182;
-        Thu, 11 Sep 2025 06:41:10 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-820cd703f54sm102730285a.37.2025.09.11.06.41.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Sep 2025 06:41:08 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1uwhXv-00000003zwM-3lhP;
-	Thu, 11 Sep 2025 10:41:07 -0300
-Date: Thu, 11 Sep 2025 10:41:07 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Arto Merilainen <amerilainen@nvidia.com>, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, aik@amd.com, lukas@wunner.de,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev,
-	linux-coco@lists.linux.dev
-Subject: Re: [RFC PATCH v1 34/38] coco: guest: arm64: Validate mmio range
- found in the interface report
-Message-ID: <20250911134107.GG882933@ziepe.ca>
-References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
- <20250728135216.48084-35-aneesh.kumar@kernel.org>
- <d57d12ce-78c6-4381-80eb-03e9e94f9903@nvidia.com>
- <c3291a06-1154-4c89-a77b-73e2a3ef61ee@nvidia.com>
- <yq5ay0ql364h.fsf@kernel.org>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="bMW4JEDS"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id BE94040E01A5;
+	Thu, 11 Sep 2025 15:09:44 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id PtK42-h5vEMM; Thu, 11 Sep 2025 15:09:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1757603380; bh=dq+R5oWq9WF149Sw6eDWmEVjGVrgX+aszHp1gMyx7F4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bMW4JEDSWHlnSuYPRRPaQ9rkXEJ0WZVzfqZvnNd4UAT0ziFWkRMHajNwqt2mRHCpi
+	 cGKX6q5574msDfnCgMmsU0ah6J/gPo23fc+IDmQVvPZh9m0JTLA1IG7wekOAYAq8Eu
+	 VqnvVkopu5oCNUrNrqtOIDYhmtTqQ85xrPs6a+3JyQ9aOep9+0hxUppb+Blnb3/C/0
+	 D/D4WJ70DaoL1hT7FrD32JS0mdQ28C/vpwWHnmc7yTMXnr8q3TNtKeV1QFd92fxhPu
+	 EHjOp2amle4NmfpPGQV542l4Y6vilmbYnpnDbsXc0t15cmy95Sq5XrYcry3P7r+igq
+	 bWytuVII/HfC4hvjHnFduQ7ALo4ECXzAPJFqHybg62P/tMZHwaitQdRs6Kq7B7uP9P
+	 lxnwi21qtVJh/75m62+gKAGPA73KpNkSQ4eDaE+pd9lDaWD1PMXUNNic4NVG9bhxzd
+	 InRkPWW+1lP2w+ojAazmayIaU71ItKM3QZTQ+0P9wkeWzhJpD9jl1CJK19wOWvOcAd
+	 Yzl7OmA8X2I2YrdXlsbInC3FixJHxz4/TepEcWjwVIgkxP+Xam4JV5NqhRJBvCncw9
+	 eYPwZRaJfiTV+7hFIHLdbf1Fk5Y23TRYVULf3eBWvAwtZw7jC0E3eUbqcCR+9mSodN
+	 Fv6yRg2W2fIBqUw1woAAGv/Q=
+Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 531A740E01BB;
+	Thu, 11 Sep 2025 15:08:58 +0000 (UTC)
+Date: Thu, 11 Sep 2025 17:08:50 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Babu Moger <babu.moger@amd.com>
+Cc: corbet@lwn.net, tony.luck@intel.com, reinette.chatre@intel.com,
+	Dave.Martin@arm.com, james.morse@arm.com, tglx@linutronix.de,
+	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
+	hpa@zytor.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+	akpm@linux-foundation.org, paulmck@kernel.org, frederic@kernel.org,
+	pmladek@suse.com, rostedt@goodmis.org, kees@kernel.org,
+	arnd@arndb.de, fvdl@google.com, seanjc@google.com,
+	thomas.lendacky@amd.com, pawan.kumar.gupta@linux.intel.com,
+	perry.yuan@amd.com, manali.shukla@amd.com, sohil.mehta@intel.com,
+	xin@zytor.com, Neeraj.Upadhyay@amd.com, peterz@infradead.org,
+	tiala@microsoft.com, mario.limonciello@amd.com,
+	dapeng1.mi@linux.intel.com, michael.roth@amd.com,
+	chang.seok.bae@intel.com, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org, peternewman@google.com, eranian@google.com,
+	gautham.shenoy@amd.com
+Subject: Re: [PATCH v18 26/33] fs/resctrl: Introduce mbm_assign_on_mkdir to
+ enable assignments on mkdir
+Message-ID: <20250911150850.GAaMLmAoi5fTIznQzY@fat_crate.local>
+References: <cover.1757108044.git.babu.moger@amd.com>
+ <3b73498a18ddd94b0c6ab5568a23ec42b62af52a.1757108044.git.babu.moger@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <yq5ay0ql364h.fsf@kernel.org>
+In-Reply-To: <3b73498a18ddd94b0c6ab5568a23ec42b62af52a.1757108044.git.babu.moger@amd.com>
 
-On Thu, Sep 11, 2025 at 11:03:50AM +0530, Aneesh Kumar K.V wrote:
+On Fri, Sep 05, 2025 at 04:34:25PM -0500, Babu Moger wrote:
+> The "mbm_event" counter assignment mode allows users to assign a hardware
+> counter to an RMID, event pair and monitor the bandwidth as long as it is
+> assigned.
+> 
+> Introduce a user-configurable option that determines if a counter will
+> automatically be assigned to an RMID, event pair when its associated
+> monitor group is created via mkdir. Accessible when "mbm_event" counter
+> assignment mode is enabled.
 
-> But we need to validate the interface report before accepting the device,
-> and the device driver is only loaded after the device has been accepted.
+This is just a note for the future - you don't have to go change things now:
+reading those commit messages back-to-back, there's a lot of boilerplate code
+which repeats with each commit message and there's a lot of text talking what
+the patch does.
 
-+1
+Please tone this down in the future - it is really annoying and doesn't bring
+a whole lot by repeating things or explaining the obvious. Just concentrate on
+explaining why the patch exists and mention any non-obvious things.
 
-This must work from the generic OS code.
+Everything else people can find by searching the net.
 
-So I'd say add a new TSM op:
- int validate_pci_bar_range(struct pci_dev *pdev,
-                            unsigned int bar_index, u64 tdisp_pa,
-			    u64 size,phys_addr_t *bar_offset_out);
+Thx.
 
-TSM has broadly two options to compute bar_offset_out:
+-- 
+Regards/Gruss,
+    Boris.
 
-1) Require the TDISP MMIO Offset is aligned to the BAR size and use
-   something like:
-
-    *bar_offset_out = (tdisp_pa) % pci_resource_len(pdev, bar_index);
-    ipa = pci_resource_start(pdev, bar_index) + *bar_offset_out;
-    if (size + *bar_offset_out > pci_resource_len(pdev, bar_index))
-        return -EINVAL;
-    tsm_call_to_validate(pdev, ipa, pa, size)
-
-2) Require the TSM to convert the offest'd PA to the IPA:
-
-    tsm_call_to_convert(pdev, pa, size, &ipa);
-
-    if (ipa < pci_resource_start(pdev, bar_index) ||
-        ipa >= pci_resource_end(pdev, bar_index) ||
-        (ipa + size) > pci_resource_end(pdev, bar_index))
-	return -EINVAL;
-
-    *bar_offset_out = ipa -  pci_resource_start(pdev, bar_index);
-
-Then the generic code builds a map of what parts of the BAR are secure
-and what are not.
-
-If it can't do either the TSM is unusable by Linux.
-
-Jason
+https://people.kernel.org/tglx/notes-about-netiquette
