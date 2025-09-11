@@ -1,342 +1,154 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E57BA329F24;
-	Thu, 11 Sep 2025 04:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3FB329F29;
+	Thu, 11 Sep 2025 05:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757564131; cv=none; b=X5khx3B8GivecvI1K+SU5/itezmYk5xRVOyEsBtVkWVmxySoE6uYmL5rK1jU7kbr7B14vU7rX2yskzjrMgudzb2Q9hXLE+1Ly7SDeQJUGWS/PQ81ERGVpufagpmIuSMEYfvNLFz8LBrrLYBDH94q4hhermMVKPcqTmITaW1oCEM=
+	t=1757568840; cv=none; b=TDUrFH6HTFo9UIFRNV6a5S4znpTNv7K6b7B6yL5yirWf34r5i4/AFbMn9lMD7xB4vMHLadJRmyc5cEF1Ti2OYjFcQjsUDHQUwPTejFHef0XTOAqcH2JZ9hAHl5NjJM+9su0gxlJSfSFe3ryCq69RhwdJDGpEcxhAIfQgUhsxP80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757564131; c=relaxed/simple;
-	bh=pl5ztVqBzotyrP88+BDm0jks7M0I/AiqLdfl9ck2p/k=;
+	s=arc-20240116; t=1757568840; c=relaxed/simple;
+	bh=5vWUqhvI4pD7PEFK16VOGInaekHB8D/PZdNkUx+vkzo=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=JdfAIolii6zrVKTMFoise2kp8bnL5wJGJoMZCz440ef2ZoyyfdnE8s70rnsZtm+n+7tw0JtxSheI2wr5+x1JwInpDMjEoO9vY+yv7QEJRZxhavMPX7aJs3Q45GgRshcrwBGHRzChfsqFrzl8mWl68MRY2/wzIXwS0LaSH1U401Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TTeUgwFO; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=m0IVGX4z25AZcOI7+so2E6uaFFAbEkQHwlJI4p8fhiG4rsM1umOH7EhFHmM3+HhXp7YF1Izxro0rqB5jeAGO0koAOwBQ3JvYnb06IxwYYP1T7JzB1P8EzvM2G8FIxSoVi09VIkqPUwx21hUiZZEm/oB+sp/Zz25vTuPp3ut3XAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BFT6pShU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TTeUgwFO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2857C4CEF1;
-	Thu, 11 Sep 2025 04:15:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BFT6pShU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA597C4CEF1;
+	Thu, 11 Sep 2025 05:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757564130;
-	bh=pl5ztVqBzotyrP88+BDm0jks7M0I/AiqLdfl9ck2p/k=;
+	s=k20201202; t=1757568839;
+	bh=5vWUqhvI4pD7PEFK16VOGInaekHB8D/PZdNkUx+vkzo=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=TTeUgwFOPtv3ZMu+mJOoPgDZN5SsYcBckCJNNhamVhbOuydkrvqjRH5zCQbd8Omaz
-	 0BmT7pB6ASwwowzocmtmLZCMAIOI+dBGPwINDh2XSHufQ4vs3zgaP04vyvEB0PXqrb
-	 snneQN7qUTxr7VrRnJ1lngRe3UARe9u8eJ1x/oDW7x4Idpf7si8M4e9qBAw6h/HVfG
-	 zxJ2zLd6eRk2leo7bKwn+X2gn+9x/Ix+bMHdr9Gq+6kiGuLKRMACBJM2CA/41AOPeU
-	 zmDVevDlfC7W77RYIW11dvDf9ESJ7cyTWAFkLDiO22C84vvqHNMFh3YI6ilckslNP7
-	 nE1NqLXMKJReQ==
+	b=BFT6pShUwC2LHdJj1bD7Cyqj0kBjdg10vsYiOhwd6YIqPHY3x0Rc2grk5Z0mCaj+f
+	 YlhZPsqmbVhb0043ePmfWFOwoN0s0k87pK/mSg5cTOHHNNT28CP80SL2mvi6JY0a8D
+	 PfVl0GorQ+dqp1v/FWOX1UYd4I0ZEMl5StDZov0SMkhhbdD+0P0/Q+DrOUA8QWi62a
+	 4fLqaBHMgfAZ1FF6eRyFmLr9DIEOpe7mnO5crtxbdZfabRTuLmEvJyWngMtuPmnRpU
+	 wONyDWq5cbRtqpCSVp9cYV4ZtkAgTLDZIPevlQxwTqVHdbYJhZxdLFEQA/3YMExDfO
+	 +T+cHRoziMnPA==
 X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
 From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Arto Merilainen <amerilainen@nvidia.com>, dan.j.williams@intel.com
-Cc: linux-kernel@vger.kernel.org, bhelgaas@google.com, aik@amd.com,
+To: Arto Merilainen <amerilainen@nvidia.com>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, aik@amd.com,
 	lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>,
-	Yilun Xu <yilun.xu@linux.intel.com>, linux-pci@vger.kernel.org,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev,
 	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v4 07/10] PCI/IDE: Add IDE establishment helpers
-In-Reply-To: <yq5azfbjq2nf.fsf@kernel.org>
-References: <20250717183358.1332417-1-dan.j.williams@intel.com>
- <20250717183358.1332417-8-dan.j.williams@intel.com>
- <9683c850-3152-4da5-97f1-3e86ba39e8d3@nvidia.com>
- <6896333756c9f_184e1f100ef@dwillia2-xfh.jf.intel.com.notmuch>
- <21903f51-1ed0-41a4-a8c8-cfa78ce6093d@nvidia.com>
- <yq5azfbjq2nf.fsf@kernel.org>
-Date: Thu, 11 Sep 2025 09:45:22 +0530
-Message-ID: <yq5a1pod4obp.fsf@kernel.org>
+Subject: Re: [RFC PATCH v1 34/38] coco: guest: arm64: Validate mmio range
+ found in the interface report
+In-Reply-To: <c3291a06-1154-4c89-a77b-73e2a3ef61ee@nvidia.com>
+References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
+ <20250728135216.48084-35-aneesh.kumar@kernel.org>
+ <d57d12ce-78c6-4381-80eb-03e9e94f9903@nvidia.com>
+ <c3291a06-1154-4c89-a77b-73e2a3ef61ee@nvidia.com>
+Date: Thu, 11 Sep 2025 11:03:50 +0530
+Message-ID: <yq5ay0ql364h.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Aneesh Kumar K.V <aneesh.kumar@kernel.org> writes:
+Arto Merilainen <amerilainen@nvidia.com> writes:
 
-> Arto Merilainen <amerilainen@nvidia.com> writes:
+> On 31.7.2025 14.39, Arto Merilainen wrote:
+>> On 28.7.2025 16.52, Aneesh Kumar K.V (Arm) wrote:
+>>=20
+>>> +=C2=A0=C2=A0=C2=A0 for (int i =3D 0; i < interface_report->mmio_range_=
+count; i++,=20
+>>> mmio_range++) {
+>>> +
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*FIXME!! units in 4K size*/
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 range_id =3D FIELD_GET(TSM_=
+INTF_REPORT_MMIO_RANGE_ID,=20
+>>> mmio_range->range_attributes);
+>>> +
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* no secure interrupts */
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (msix_tbl_bar !=3D -1 &&=
+ range_id =3D=3D msix_tbl_bar) {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pr_=
+info("Skipping misx table\n");
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 con=
+tinue;
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>> +
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (msix_pba_bar !=3D -1 &&=
+ range_id =3D=3D msix_pba_bar) {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pr_=
+info("Skipping misx pba\n");
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 con=
+tinue;
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>> +
+>>=20
+>>=20
+>> MSI-X and PBA can be placed to a BAR that has other registers as well.=20
+>> While the PCIe specification recommends BAR-level isolation for MSI-X=20
+>> structures, it is not mandated. It is enough to have sufficient=20
+>> isolation within the BAR. Therefore, skipping the MSI-X and PBA BARs=20
+>> altogether may leave registers unintentionally mapped via unprotected=20
+>> IPA when they should have been mapped via protected IPA.
+>>=20
+>> Instead of skipping the whole BAR, would it make sense to determine
+>> where the MSI-X related regions reside, and skip validation only from=20
+>> these regions?
 >
->> On 8.8.2025 20.26, dan.j.williams@intel.com wrote:
->>> Arto Merilainen wrote:
->>>> The first revision of this patch had address association register
->>>> programming but it has since been removed. Could you comment if there is
->>>> a reason for this change?
->>> 
->>> We chatted about it around this point in the original review thread [1].
->>> tl;dr SEV-TIO and TDX Connect did not see a strict need for it. However,
->>> the expectation was always to circle back and revive it if it turned out
->>> later to be required.
->>
->> Thank you for the reference. I suppose it is ok to rely on the default 
->> streams on the first iteration, and add a follow-up patch in the ARM CCA 
->> device assignment support series in case it is the only architecture 
->> that depends on them.
->>
->>> 
->>>> Some background: This might be problematic for ARM CCA. I recall seeing
->>>> a comment stating that the address association register programming can
->>>> be skipped on some architectures (e.g., apparently AMD uses a separate
->>>> table that contains the StreamID) but on ARM CCA the StreamID
->>>> association AFAIK happens through these registers.
->>> 
->>> Can you confirm and perhaps work with Aneesh to propose an incremental
->>> patch to add that support back? It might be something that we let the
->>> low level TSM driver control. Like an additional address association
->>> object that can be attached to 'struct pci_ide' by the low level TSM
->>> driver.
->>
->> Aneesh, could you perhaps extend the IDE driver by adding the RP address 
->> association register programming in the next revision of the DA support 
->> series?
->>
+> I re-reviewed my suggestion, and what I proposed here seems wrong.=20
+> However, I think there is a different more generic problem related to=20
+> the MSI-X table, PBA and non-TEE ranges.
 >
-> Sure, I can add that change as part of next update. 
+> If a BAR is sparse (e.g., it has TEE pages and the MSI-X table, PBA or=20
+> non-TEE areas), the TDISP interface report may contain multiple ranges=20
+> with the same range_id (/BAR id). In case a BAR contains some registers=20
+> in low addresses, the MSI-X table and other registers after the MSI-X=20
+> table, the interface report is expected to have two ranges for the same=20
+> BAR with different "first 4k page" and "size" fields.
+>
+> This creates a tricky problem given that RSI_VDEV_VALIDATE_MAPPING=20
+> requires both the ipa_base and pa_base which should correspond to the=20
+> same location. In above scenario, the PA of the first range would=20
+> correspond to the BAR base whereas the second range would correspond to=20
+> a location residing after the MSI-X table.
+>
+> Assuming that the report contains obfuscated (but linear) physical=20
+> addresses, it would be possible to create heuristics for this case.=20
+> However, the fundamental problem is that none of the "first 4k page"=20
+> fields in the ranges is guaranteed to correspond to the base of any BAR:=
+=20
+> Consider a case where the MSI-X table is in the beginning of a BAR and=20
+> it is followed by a single TEE range. If the MSI-X is not locked, the=20
+> "first 4k page" field will not correspond to the beginning of the BAR.=20
+> If the realm naiviely reads the ipa_base using pci_resouce_n() and=20
+> corresponding pa_base from the interface report, the addresses won't=20
+> match and the validation will fail.
+>
+> It seems that interpreting the interface report cannot be done without=20
+> knowledge of the device's register layout. Therefore, I don't think the=20
+> ranges can be validated/remapped automatically without involving the=20
+> device driver, but there should be APIs for reading the interface=20
+> report, and for requesting making specific ranges protected.
 >
 
-This is the change I am adding
+But we need to validate the interface report before accepting the device,
+and the device driver is only loaded after the device has been accepted.
 
- drivers/pci/ide.c                        | 128 ++++++++++++++++++++++-
- drivers/virt/coco/arm-cca-host/arm-cca.c |  13 +++
- include/linux/pci-ide.h                  |   7 ++
- 3 files changed, 147 insertions(+), 1 deletion(-)
+Can we assume that only the MSI-X table and PBA ranges may be missing
+from the interface report, while all other non-secure regions are
+reported as NON-TEE ranges?
 
-diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
-index 3f772979eacb..23d1712ba97a 100644
---- a/drivers/pci/ide.c
-+++ b/drivers/pci/ide.c
-@@ -101,7 +101,7 @@ void pci_ide_init(struct pci_dev *pdev)
- 	pdev->ide_cap = ide_cap;
- 	pdev->nr_link_ide = nr_link_ide;
- 	pdev->nr_sel_ide = nr_streams;
--	pdev->nr_ide_mem = nr_ide_mem;
-+	pdev->nr_ide_mem = min(nr_ide_mem, PCI_IDE_AASOC_REG_MAX);
- }
- 
- struct stream_index {
-@@ -213,11 +213,13 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
- 				.rid_start = pci_dev_id(rp),
- 				.rid_end = pci_dev_id(rp),
- 				.stream_index = no_free_ptr(ep_stream)->stream_index,
-+				.nr_mem = 0,
- 			},
- 			[PCI_IDE_RP] = {
- 				.rid_start = pci_dev_id(pdev),
- 				.rid_end = rid_end,
- 				.stream_index = no_free_ptr(rp_stream)->stream_index,
-+				.nr_mem = 0,
- 			},
- 		},
- 		.host_bridge_stream = no_free_ptr(hb_stream)->stream_index,
-@@ -228,6 +230,109 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
- }
- EXPORT_SYMBOL_GPL(pci_ide_stream_alloc);
- 
-+static int add_range_merge_overlap(struct range *range, int az, int nr_range,
-+				   u64 start, u64 end)
-+{
-+	int i;
-+
-+	if (start >= end)
-+		return nr_range;
-+
-+	/* get new start/end: */
-+	for (i = 0; i < nr_range; i++) {
-+
-+		if (!range[i].end)
-+			continue;
-+
-+		/* Try to add to the end */
-+		if (range[i].end + 1 == start) {
-+			range[i].end = end;
-+			return nr_range;
-+		}
-+
-+		/* Try to add to the start */
-+		if (range[i].start == end + 1) {
-+			range[i].start = start;
-+			return nr_range;
-+		}
-+	}
-+
-+	/* Need to add it: */
-+	return add_range(range, az, nr_range, start, end);
-+}
-+
-+int pci_ide_add_address_assoc_block(struct pci_dev *pdev,
-+				    struct pci_ide *ide,
-+				    u64 start, u64 end)
-+{
-+	struct pci_ide_partner *partner;
-+
-+	if (!pci_is_pcie(pdev)) {
-+		pci_warn_once(pdev, "not a PCIe device\n");
-+		return -EINVAL;
-+	}
-+
-+	switch (pci_pcie_type(pdev)) {
-+	case PCI_EXP_TYPE_ENDPOINT:
-+
-+		if (pdev != ide->pdev)
-+			return -EINVAL;
-+		partner = &ide->partner[PCI_IDE_RP];
-+		break;
-+	default:
-+		pci_warn_once(pdev, "invalid device type\n");
-+		return -EINVAL;
-+	}
-+
-+	if (partner->nr_mem >= pdev->nr_ide_mem)
-+		return -ENOMEM;
-+
-+	partner->nr_mem = add_range_merge_overlap(partner->mem,
-+					   PCI_IDE_AASOC_REG_MAX, partner->nr_mem,
-+					   start, end);
-+	return 0;
-+}
-+
-+
-+int pci_ide_merge_address_assoc_block(struct pci_dev *pdev,
-+				      struct pci_ide *ide, u64 start, u64 end)
-+{
-+	struct pci_ide_partner *partner;
-+
-+	if (!pci_is_pcie(pdev)) {
-+		pci_warn_once(pdev, "not a PCIe device\n");
-+		return -EINVAL;
-+	}
-+
-+	switch (pci_pcie_type(pdev)) {
-+	case PCI_EXP_TYPE_ENDPOINT:
-+
-+		if (pdev != ide->pdev)
-+			return -EINVAL;
-+		partner = &ide->partner[PCI_IDE_RP];
-+		break;
-+	default:
-+		pci_warn_once(pdev, "invalid device type\n");
-+		return -EINVAL;
-+	}
-+
-+	for (int i = 0; i < PCI_IDE_AASOC_REG_MAX; i++) {
-+		struct range *r = &partner->mem[i];
-+
-+		if (r->start < start)
-+			start = r->start;
-+		if (r->end > end)
-+			end = r->end;
-+		r->start = 0;
-+		r->end = 0;
-+	}
-+	partner->mem[0].start = start;
-+	partner->mem[0].end = end;
-+	partner->nr_mem = 1;
-+
-+	return 0;
-+}
-+
- /**
-  * pci_ide_stream_free() - unwind pci_ide_stream_alloc()
-  * @ide: idle IDE settings descriptor
-@@ -424,6 +529,21 @@ void pci_ide_stream_setup(struct pci_dev *pdev, struct pci_ide *ide)
- 
- 	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_2, val);
- 
-+	for (int i = 0; i < settings->nr_mem; i++) {
-+		val = FIELD_PREP(PCI_IDE_SEL_ADDR_1_VALID, 1) |
-+			FIELD_PREP(PCI_IDE_SEL_ADDR_1_BASE_LOW,
-+				   lower_32_bits(settings->mem[i].start)) |
-+			FIELD_PREP(PCI_IDE_SEL_ADDR_1_LIMIT_LOW,
-+				   lower_32_bits(settings->mem[i].end));
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_1(i), val);
-+
-+		val = upper_32_bits(settings->mem[i].end);
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_2(i), val);
-+
-+		val = upper_32_bits(settings->mem[i].start);
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_3(i), val);
-+	}
-+
- 	/*
- 	 * Setup control register early for devices that expect
- 	 * stream_id is set during key programming.
-@@ -453,6 +573,12 @@ void pci_ide_stream_teardown(struct pci_dev *pdev, struct pci_ide *ide)
- 	pos = sel_ide_offset(pdev, settings);
- 
- 	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_CTL, 0);
-+	for (int i = settings->nr_mem - 1; i >= 0; i--) {
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_3(i), 0);
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_2(i), 0);
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_1(i), 0);
-+	}
-+
- 	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_2, 0);
- 	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_1, 0);
- 	settings->setup = 0;
-diff --git a/drivers/virt/coco/arm-cca-host/arm-cca.c b/drivers/virt/coco/arm-cca-host/arm-cca.c
-index c9717698af56..28993f9277e4 100644
---- a/drivers/virt/coco/arm-cca-host/arm-cca.c
-+++ b/drivers/virt/coco/arm-cca-host/arm-cca.c
-@@ -137,6 +137,7 @@ static int cca_tsm_connect(struct pci_dev *pdev)
- {
- 	struct pci_dev *rp = pcie_find_root_port(pdev);
- 	struct cca_host_pf0_dsc *dsc_pf0;
-+	struct resource *res;
- 	struct pci_ide *ide;
- 	int rc, stream_id;
- 
-@@ -163,9 +164,21 @@ static int cca_tsm_connect(struct pci_dev *pdev)
- 	if (rc)
- 		goto err_stream;
- 
-+	/*
-+	 * Try to use the available address assoc register blocks.
-+	 * If we fail with ENOMEM, create one block covering the entire
-+	 * address range. (Should work for arm64)
-+	 */
-+	pci_dev_for_each_resource(pdev, res) {
-+		rc = pci_ide_add_address_assoc_block(pdev, ide, res->start, res->end);
-+		if (rc == -ENOMEM)
-+			pci_ide_merge_address_assoc_block(pdev, ide, res->start, res->end);
-+	}
-+
- 	pci_ide_stream_setup(pdev, ide);
- 	pci_ide_stream_setup(rp, ide);
- 
-+
- 	rc = tsm_ide_stream_register(ide);
- 	if (rc)
- 		goto err_tsm;
-diff --git a/include/linux/pci-ide.h b/include/linux/pci-ide.h
-index c3838d11af88..3d4f7f462a8d 100644
---- a/include/linux/pci-ide.h
-+++ b/include/linux/pci-ide.h
-@@ -19,6 +19,7 @@ enum pci_ide_partner_select {
- 	PCI_IDE_HB = PCI_IDE_PARTNER_MAX,
- };
- 
-+#define PCI_IDE_AASOC_REG_MAX	6
- /**
-  * struct pci_ide_partner - Per port pair Selective IDE Stream settings
-  * @rid_start: Partner Port Requester ID range start
-@@ -34,6 +35,8 @@ struct pci_ide_partner {
- 	u8 stream_index;
- 	unsigned int setup:1;
- 	unsigned int enable:1;
-+	int nr_mem;
-+	struct range mem[PCI_IDE_AASOC_REG_MAX];
- };
- 
- /**
-@@ -60,6 +63,10 @@ struct pci_ide {
- 
- struct pci_ide_partner *pci_ide_to_settings(struct pci_dev *pdev, struct pci_ide *ide);
- struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev);
-+int pci_ide_add_address_assoc_block(struct pci_dev *pdev,
-+				    struct pci_ide *ide, u64 start, u64 end);
-+int pci_ide_merge_address_assoc_block(struct pci_dev *pdev,
-+				      struct pci_ide *ide, u64 start, u64 end);
- void pci_ide_stream_free(struct pci_ide *ide);
- int  pci_ide_stream_register(struct pci_ide *ide);
- void pci_ide_stream_unregister(struct pci_ide *ide);
--- 
-2.43.0
+If so, we could retrieve the MSI-X guest real address details from
+config space and map the beginning of the BAR correctly.
 
+Dan / Yilun =E2=80=94 how is this handled in Intel TDX?
+
+From what I can see, the AMD patches appear to encounter the same issue.
+
+-aneesh
