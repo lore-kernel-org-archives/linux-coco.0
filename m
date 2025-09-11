@@ -1,275 +1,137 @@
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2041.outbound.protection.outlook.com [40.107.243.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413A72D0610;
-	Thu, 11 Sep 2025 08:31:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757579501; cv=fail; b=AwxhzYIUAO22dIGZO1XjFq/3+xfj1N7LoAqutayh8Q3ygTcQO9m4G3tJ35ssV7zQ691qhxQbL4oRt45I7scWRvLXYDzPG/9vte0PDY1URoKJgECD5mzfq1UaO9NmDiIvqh3blmjyASQeUbXDGwyWzuzBjX06ngou1XDXmJzBxVM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757579501; c=relaxed/simple;
-	bh=0z18peg5KF4YktABTp0zHPuIgwK8fyZqmlf3aAQKoSM=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=PLzzQw3ToYAvgoZaZ5d+wppVaEPOTL+GG7xn1PIo3PCV+BvtK3LhmCwcZtRaDHErHs5x26Oj6vxoHrKDjnNkukng52aPQajGfIf+nJry3rwH3gBaAQ4Y38KVJX/SXfN+mS9Sf80427JJTr7AS6ZzmsBK4efYBUhgpw6CFEKOqnU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=iuuWLvAB; arc=fail smtp.client-ip=40.107.243.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97242341670
+	for <linux-coco@lists.linux.dev>; Thu, 11 Sep 2025 13:41:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757598073; cv=none; b=TjHL0r/SO6uC6THT6sxmdzJKGJlCzPXWHMS8dfzUcQKBqnqdRy62/HYmEUvrrSUQ5L2o+7C+/8cvQzYp+YbIOI537/bt3tdluhBFrHPHQPUq57tnCvJlRmwGX8RcWXwX0/a4Cd+8yoPhM29lYgoyZtzyPd9STsABExI+EKLEgQU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757598073; c=relaxed/simple;
+	bh=eLNCihb73AkP7eUzkZCYHE7Hj0pppLXFYhZ9Vl1IUQA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RHb8Nn1dlh3zYxkSjex+Q7OsLM1G2GbmcaiXZCnDb3nM0a4SIyoaGFSiYIYxkeGPwtp1mR3VXNn75ZXFNyk61b+gpqvIu8M4FcIH1+0EJLtfT8LtyO6OJ7GpESlqGbmec6y8qz8RXimuCZQ59vPdUdEn8f1RVUTSd+JRCm0YTOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=JCDdv0I2; arc=none smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="iuuWLvAB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ATL2rJmifpn8Yl4lSNsh9X78fDguR+izyWd2OR4QE/jlx1EimGaSsBPbfdVYSKIUGiVbNNn6ldiQRdWC/Vv277r+Jb6qAtE83ZXMtsHt6iv0cjxJuZi377rkhxy3OziEfcL7MbNHK2aZjCPxvX+w+LZs2lPLKitfdWSRiJcrKpIEFxVcQPs5YswSe41uli4wNVdqHqQ17nRI1Pj044VpTwjHN7vi0tom8ntm+cPi+pUw+5/wTJtu712cIkXL3id2Ea9u118KxV2/SslpSPpkhDFR4XGMSr1udhl/U8t2Aq0Kdhz2hOY0Uyq3MOSsP+NgGtqTTzS/33YaRfGnxlPiog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Uxu3y5qiLoyHQlEoAme334VvKeAUNRrwXWEvT9Lhfl8=;
- b=d0ZlM44TUOtQu3t0SVk7s1JQ7L7TYJWDTU4O148ukPLGFoqEdhlO1kwH0+H2X4l/jeZw3vBrgLh3ufpC3dXKpEBGqKMXgG/lDgSf8auGzSxHgFBvTrbLPcr1SVqGB/jz64hqU/DXxAvhoL6RO3M+kyahctxjAdQQdfmA1ovlyKzL5N5CgYLZJ8Gjyc80FIroCnNsXysXLFyeqhG2T50DPiLa/igYjOEzjhXWnPpPakiuT+Wy2omIZNkt3WUqUvPxXJV4ZGttzYM1VlvB5oLu9JVXy3+NOpSnAffY2ujrhGv/6NrB634M7HIjT5Vx9vWLNQ56LOWqWZYSBrqbfOY63w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Uxu3y5qiLoyHQlEoAme334VvKeAUNRrwXWEvT9Lhfl8=;
- b=iuuWLvABn8gPdrlPU2MOVsXVi85Tu4TZnG8fRilCiVPU9y4IKfd1ZEKRhtotPbR4GsXFTeGynxfiMsdPAElC/l8Vmvt+3EunJkgob84WVPcs9EkXfmekz4hP506h7T5+ou55H9bT0luQsNUZ6iM/4yEcaZ9tirsHLehUorOiQyE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by DM4PR12MB8452.namprd12.prod.outlook.com (2603:10b6:8:184::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Thu, 11 Sep
- 2025 08:31:36 +0000
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f%5]) with mapi id 15.20.9094.021; Thu, 11 Sep 2025
- 08:31:36 +0000
-Message-ID: <b588a211-c3d7-40b2-88d4-76af9042feed@amd.com>
-Date: Thu, 11 Sep 2025 18:31:28 +1000
-User-Agent: Mozilla Thunderbird Beta
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="JCDdv0I2"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4b5fb2f7295so7370501cf.1
+        for <linux-coco@lists.linux.dev>; Thu, 11 Sep 2025 06:41:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1757598070; x=1758202870; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=b9qmtOM7dk27TAU4OyKZ0knJ4KFcYKzonTZZzmEGOvc=;
+        b=JCDdv0I29Iygfi7PL5imBoxf3fWb8PUtoMirN1KWCE0vzOPVpZUPPX/B9eoJO+uDhz
+         MAtBnrw2N8InidBB075/2wc9k8rwVpGtig6d538Nig8dlkaGVD8AUDpDKcF+oIz2CwVt
+         SJPX3t4vUWzQSI22n4JwSAwzsRWYAcfekUrnMYoRpAYHIvELJ+CExY1qzgLu0vi4VIW0
+         i77q62oGyMSRHyFVXs6vVUkGDs2ht04xcjh1GWTroGyFM7OyhRYkTnueMd2AmasjaPt7
+         uVDctyI+1uhw6r6w2CZiOwVnpSSxQaC/onEOr/dDd2N9EE6AoOAPEmqyuOSDYA3eslu0
+         efWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757598070; x=1758202870;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=b9qmtOM7dk27TAU4OyKZ0knJ4KFcYKzonTZZzmEGOvc=;
+        b=Hyx+GwE+kwz4KmjWcWEQkt5h1GXbipTajkH+glWhy/7w+KcECXhtsfCLznzenFuu98
+         21VvxilffJZ3Q4AiAMxYksDsLvpj2fsRhX5S7w0Iht6ZZF9seTEUOr/XFb0A9FY2sGhW
+         g6d3oQvMeuHXvGXDVKLH8jNEQ5TRzEFUHHFoC/Ekf3nO87B/fUCsPrWhx8uFpRQRXekQ
+         9L8jfI9Y5fY0A869INlLXAdktoTUfME/0MMgycQZfQmwYN1fWhk70VZ8bP2wxBbtDL5v
+         r1RyK5bsM1oNl7g2V58ulL47on2P8RhjbV0xzvJ/Cpwjh14vewMTv5J5IzXk695kiIjZ
+         c3JQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXxCC3gooi1h0GZvv7IvW1Q2DYh4Vitegp7dHeSqdU9gu1T9eTG3ZnArrgxSraSit/LkHL7HKYLJmGR@lists.linux.dev
+X-Gm-Message-State: AOJu0YwP+HqzEXiyGVcnti8byCwaoc8Y/wRO79IKtvkGHTelM1lvkmtn
+	MJNfSmGdZFbc6FLZh5IxIJSAJQKJcdTnEBchpRFAl50ax7RXwz0J4GKPXmh7X3gkGJ0=
+X-Gm-Gg: ASbGncsDbmffWt6OBgeVFPhCcbWrI3JqsO2Ry5sEIFKuTHgQKoTnMxKgIL7jHUH2bso
+	HfDjNN8EEOTgY8mf72ApsmlHhaYha335bNaGUl/Ry03WuAEsdIATaD/TcRVRqLBQGbGHhuj9Dnu
+	oa5oUEfQnN3Dr4IB8yoewJYirliMU/pYkdycVNsCbu4/Qc1xUDP0xXce2aRMkbgeNg0FjpbFCCC
+	MnebHMtAU4qB1d46eZducYzB71JLfI4sEVIMCKTQY9QI38BXXum9ZZ/Aenxzw5MT3sUTyzEkD/t
+	2vswKPXt/tRWauoNAmcfpD1XcaqVler1fh8/ogSgs3XDUb8UPpc6wzxLeygc/BFGFZhc8VYHdEo
+	AOq+2EtdCjHAEmDYPLR+BbsMvjORPLaccWAXjhrTzpBMjeA7BfsUdjnNs7ifmQ2kEZoaqit1M9l
+	HFfII=
+X-Google-Smtp-Source: AGHT+IG5BULuh1Ix3dTKx0dMR7o7+0XiARxVmRkjj0WGgmMyJMRjiHF7nh7Zr7cWchr7UEHaWH/u8g==
+X-Received: by 2002:a05:622a:1214:b0:4b5:d932:15c6 with SMTP id d75a77b69052e-4b5f847fd1emr220313931cf.34.1757598070182;
+        Thu, 11 Sep 2025 06:41:10 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-820cd703f54sm102730285a.37.2025.09.11.06.41.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Sep 2025 06:41:08 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1uwhXv-00000003zwM-3lhP;
+	Thu, 11 Sep 2025 10:41:07 -0300
+Date: Thu, 11 Sep 2025 10:41:07 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Arto Merilainen <amerilainen@nvidia.com>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, aik@amd.com, lukas@wunner.de,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev,
+	linux-coco@lists.linux.dev
 Subject: Re: [RFC PATCH v1 34/38] coco: guest: arm64: Validate mmio range
  found in the interface report
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Arto Merilainen <amerilainen@nvidia.com>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, lukas@wunner.de,
- Samuel Ortiz <sameo@rivosinc.com>, Xu Yilun <yilun.xu@linux.intel.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Suzuki K Poulose <Suzuki.Poulose@arm.com>,
- Steven Price <steven.price@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
- kvmarm@lists.linux.dev, linux-coco@lists.linux.dev
+Message-ID: <20250911134107.GG882933@ziepe.ca>
 References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
  <20250728135216.48084-35-aneesh.kumar@kernel.org>
  <d57d12ce-78c6-4381-80eb-03e9e94f9903@nvidia.com>
  <c3291a06-1154-4c89-a77b-73e2a3ef61ee@nvidia.com>
  <yq5ay0ql364h.fsf@kernel.org>
-From: Alexey Kardashevskiy <aik@amd.com>
-Content-Language: en-US
-In-Reply-To: <yq5ay0ql364h.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SY2PR01CA0031.ausprd01.prod.outlook.com
- (2603:10c6:1:15::19) To CH3PR12MB9194.namprd12.prod.outlook.com
- (2603:10b6:610:19f::7)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|DM4PR12MB8452:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0bb663e6-9eb5-4982-a140-08ddf10d9eb9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VGloWldzR242MU1BTVI1NGNSSGxlaiszVFBWSWtFVHNla0QzRzVwS3REM0lV?=
- =?utf-8?B?OTRyRGFlL1d1bnk0bmlxdkluSlh5NHNQbWV6a2k4WnQyYUNDNERqcGp6MDlL?=
- =?utf-8?B?S25Lb2w3OVlJYm9qRFpET1pTUHRjS1RNMmpqVkdUNmpMZ2hXS2ZOZkRBQ3Jn?=
- =?utf-8?B?OGN4dWMrTnhuUHhzTkJWelQvSTNseHJYVmZMcVU0LzFaUGozQmVFZ3RtbGpw?=
- =?utf-8?B?ai82bThDSlRKOGVEcXhKcFAvZVNwWW1lVmM3dG4xUkZucktZa2o1L1hIZ0gw?=
- =?utf-8?B?TVkzYWMxL1FNdUV3UFltNFRpV3JDMzlOWm5vYmVxeVVHNkxpQWNxZnlLL3RM?=
- =?utf-8?B?eHRhekhid3VIZUM1a1QzMDdPS3lpeEZOTHcrTHcwNXZSMFVEUncwQ2dxczZY?=
- =?utf-8?B?bHdFY0VncDQ2QkZHMTRuZVN5Yzl6THhpRWN2em5Yc0lBdTJIYzZLVVVvdHlE?=
- =?utf-8?B?NkVNYmFLRGphM1c1b1E4bnlJcXZRbHBOY0J0WmEwVk4vc2F6NWkrVG5mQXdo?=
- =?utf-8?B?UlhyNVV6TFRjMjJjK0ZTdEU1V3JhMUdEYUU1ckN2V3Z5eGk2RHBleGdjdkZG?=
- =?utf-8?B?TTFYK2FESmN3T040cEFQNjYzbUhPK0h5blB1elRLM0NKS216alFaRkZZUUxB?=
- =?utf-8?B?T3pQQ3pFY2dnV3h1SXVHajEvU00xczkwK3g2ZGlOQk1QVlBiQVpjV0tUTWMz?=
- =?utf-8?B?R2ZrcVNHYXh6UWlLcXRxRXNCYXlVMzBGK2FNOW1qUEI3RkptcFFOM1VwaVdp?=
- =?utf-8?B?Ry9Jb3NSZm9xQ1hZNzAxdWs0alZpV0VnMTV6RWNnbnhnbVBCWTFzNU9HajZj?=
- =?utf-8?B?WHRZZ0huSFpaUnBQSDFWdUQrRi9TalNVMmJ5eGIwb0dXVWtSdy8xWmNHU1hF?=
- =?utf-8?B?TVYrRzdCaEdXWnVDR1U4ems1aGVPbmNnWnU0dXhxZkUyVUo1OVlNVmRaZWdm?=
- =?utf-8?B?M2FCOWZYNWNmMW9uMDNNNzMxYkY1TXNkNVIrZ0JaZGcxY0tFaHhjaUk0TlJI?=
- =?utf-8?B?TEJhYWtqdDNKRW05dEF2LzcrVUJobU5BbkxlMzZoTTVvTGNQWHFXNFUzdGJX?=
- =?utf-8?B?MXhYa2JqQndjc2h1UFBJTkRCV1o1Zk5tZWtmblRyRVJXY1hheDJpakU3WnBC?=
- =?utf-8?B?eHNzZnJPMGtoTlRMbjdqcGI4Nm9qSVROVGRqNjYxMGlIU3EvTVEyLzlYaVkw?=
- =?utf-8?B?TTd2VGlEVS9mMVZHZTJQV1RVK2NPTklHa2hieXA0YXI3V0p0cXpwWThaam1O?=
- =?utf-8?B?SDh3cGl4cmtiYjRZSUkxNFZIVkdzMFVEVFg3Sy9YTGNSbVNZRlFockorOGtv?=
- =?utf-8?B?R2RiM0M4Uk5VM2RpTDZzQ3l3V0lwclltbDhVb3BrelRpN2ZxaXgwcERobHZT?=
- =?utf-8?B?L3JkSkp1OUk4cmc0S29LRlB0UFZ2M2RxOExBdUo2dE1GR0tUeFR4YnNqOS95?=
- =?utf-8?B?UnE5VVNONmNVS28zUU0zMGR0TC9vdWxFYU5kMlFnZ0d3MDB2bE9namU3SEJR?=
- =?utf-8?B?SzFWdW5uYTZqemhFYmpZYnMvcEU2VEZ0ZWN2NmI4ZXY0YVZlS2xZWnNQVXR1?=
- =?utf-8?B?OWI5R1Bja0xpemZuT1NjZCttNDJWbHl0dFhjSWhBZUxVWWNSRWtKM1lpZkNV?=
- =?utf-8?B?MHMvcjc3bUZxUUcrVXVyaDBMZ3VyYlBwWVNqSEUxQ2x2a1FoZGJpck92NE8w?=
- =?utf-8?B?K1BhSjZ3SlowSmxuN2JJZ0RkSElobEQ1QmdKaDlVU05hTUhyc2VnUHozRXp5?=
- =?utf-8?B?T3VUM0pqeUt3YXNtK3dIcWtkK0E4TVpuNlU1Y0w3OEFZM2ZHQXRjVlNUdFpQ?=
- =?utf-8?B?WWx1SndVMnB3SEN1QmJYNktvcUZ3TjZ4NTBvWjY5UDhmSjlveFF1dTdUcmxx?=
- =?utf-8?B?cUNtaG4xNGgveXFrbCsvNk5sQnlSQnJaM3ZlTXNnd3RYSi9xdWZuMnY5TmFr?=
- =?utf-8?Q?X2shtuzNeW8=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NkhPdFhlTG4xa1JOWmt4dWpUbFlHS2FXSm5RVnBSVno0Mi9JZzllalN0Ulpu?=
- =?utf-8?B?bEdvVHRjRWs0NkYybnFUc005L3NHNVZTQ09HNFpkSjhLaHMwcWpydWZzdmJX?=
- =?utf-8?B?L0NLMEZzRG9qUnNCMkRpWlB6RzVWcklQcnE3RzFZMWFJQURCbGZHcUVvT2x5?=
- =?utf-8?B?ZXhXa0RmT2k1b25MVmY1SHBadFNDTHdqSTZ3Vkh0VDkwYWxVRlplV0tyODkx?=
- =?utf-8?B?MkJKajBHbUpwditkYndyOERwMysxTWdWU20vNGlnMUF6WlJ4VFgwK1diak9s?=
- =?utf-8?B?SHhNRVRxNzdaVVY0YmpVZStyUGh0KzhZbU1jRjRYYlNITkdJSXlpWldpcE5F?=
- =?utf-8?B?cU0xTW1PclZrMTMwTGI0bE1YelRKUzhsOWpnSndpUG9uWWVIQkNoYkJBcEYx?=
- =?utf-8?B?SDRQMlZSd2o5YVRVdjR0ZjdsbzBxWUlMaW1yYjNnU2Z0Y2wwZzFGQ1ozTFZq?=
- =?utf-8?B?MlBVeWU4cE1tWHRuRnErb0EzNzJ6VXgvTFRVZFpCUkJRaGpPNXdFbU5yZFNF?=
- =?utf-8?B?MHRWdnBOZmFIQk0wcExTS3JXbSs4dG01a2M5U2R2MmxUeGRFbVQzZmtUKzF3?=
- =?utf-8?B?UHdDQTUwQW9TWlBRcHcwcUNVOTRlWE41TVhuMDdQdWt4UTdtU2JoR1VNTnZG?=
- =?utf-8?B?aDJkVTVTdkxMTWt6aHRlaVJONTJsVWt5WHJScDAxN0pZOVVOZFR1cTRHR0tv?=
- =?utf-8?B?UTlKNkJJRVdRS3p2R2xPSEhBTTA2Sk44R2RGTTVEdkZZNjZ5U2FxMHZRNndJ?=
- =?utf-8?B?VFRSYmIyeFREdXUzNkgrbkRFclIyZ0lxUGg3T21Iei9taC95Q2QyTTQ2b3Yz?=
- =?utf-8?B?anMwMTU2L3B4TUJTVXFPRFBJTkNRaUFNa1ZFbEQ3SW5wNVBmcFBzYVYydkpR?=
- =?utf-8?B?YWw4MndOSzY5cFdkY1FBR09COWFYcWFtb20rTm1Yd3dtSnJtNE1PN3hjMzNj?=
- =?utf-8?B?Z0UxQXRwa2I5am1kWUFvRXVTSWxSSnpEV2pYbVAzdFhTWkNxUk4ycjBXVzJP?=
- =?utf-8?B?bDRFY1ljOXo1UUxlc3E1ellWU2FBSUxlZzFnZnh0dTE2dFhHZlNrQnh2dko3?=
- =?utf-8?B?UXR3Mk93R3RvV2YzSWhsUS9BMHBFSjk3aUJVV2kvdDI5ZzlKSVR3QkgwNTNN?=
- =?utf-8?B?NDBhelNrZGpBS0EyQzlXUTVVV25wajYzRWRQUFVXNlJQMUVYRzExY2tpT2xm?=
- =?utf-8?B?KzBQSkpMMERRTmtJWEhKcDVuN1prT3hKQ3VweUtMNDN5SkxEZlhRTi8ybFBk?=
- =?utf-8?B?SnMreUFsYmdKZC9Yc05mb0ZBVkdpSFZ1WlF6eVM2UHpmck94UDc2UkZ2YWJW?=
- =?utf-8?B?TytrcUg3TWgvSC9ZSGU5b1FqTmxuSjR0NXhKNGs3V0M1S0hSRVFOUjlIdDBV?=
- =?utf-8?B?MVQ3VFhTb0VvK1J6bjNnMm5UNW8zaWg2Vk1CcDZiU05aWHEyVXJIaHBGcHox?=
- =?utf-8?B?T2NwS0dZa2dtd0RQUW1nQVZ5c2NFbWVSU21yQmFjL3Zkdi9sQVA1U2ZkbVhp?=
- =?utf-8?B?dElIbzVtQ3dJcGZvRW5SRTg4SWpTWXRZSmVXMG51Rmd0b09idXVSanRlZFZQ?=
- =?utf-8?B?V2ZteWpmR1hNQzErblh2UlpkRDZvQUpVaWlwQXpLbDJBWlF0NEVkWmlrRk5X?=
- =?utf-8?B?ak9vL2dZUnhNWGFFUjd5UmZPSC9MdGxPdHZUVk5pb3NpZnJhdHdZSExreEdx?=
- =?utf-8?B?eldrTVE5OWhISnpxSUxMMUlwMGt3bERyZlBzVzlIeVMrYmJQb21rZ2V2U0pI?=
- =?utf-8?B?anVQSHdIa1g4UzRTeVU4ZExIZEkvM0JLK3hxeG94SitnNEkvS0RmRm44cEtT?=
- =?utf-8?B?UUdvZEFUSDFqZlFpOW4wZ0hXclpEdWVneDNCRFdoSHM4TFI5Y0lIWXE0dnZF?=
- =?utf-8?B?aEFDL3B2TXBBbk9RSUFMVFIycld3amNrUy9waUd5ZjhWMHhVM2dmYmtQWDZn?=
- =?utf-8?B?OWNZSGVXcWRvQ0p1UmM2YlY5L296eFEvbmZrWEY5Qjh4dVF2M0NHRjNXK3VP?=
- =?utf-8?B?QzBtS3J1WVRYMGlIclFKcGZnbEZoUXN5eDBUYzM5MFVIZGM3S2ZBTkZwZnVu?=
- =?utf-8?B?TDBrbTFySmkxVXR1ZG0wQWFJMUVKalFPOHF0TFNzeU9sVVZPU0hqNUNxNjNr?=
- =?utf-8?Q?rmBB9jVZB/BUlh9zQ7vLYoBCD?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0bb663e6-9eb5-4982-a140-08ddf10d9eb9
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2025 08:31:35.9391
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ly6ooJIK61320lpvOTIkWEUAY7beQ2IF9t9u/gjEFQsdES7kBOYJR9p5aacOuNnsciTD4GV4yAyurX1eHfab2g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8452
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq5ay0ql364h.fsf@kernel.org>
 
+On Thu, Sep 11, 2025 at 11:03:50AM +0530, Aneesh Kumar K.V wrote:
 
-
-On 11/9/25 15:33, Aneesh Kumar K.V wrote:
-> Arto Merilainen <amerilainen@nvidia.com> writes:
-> 
->> On 31.7.2025 14.39, Arto Merilainen wrote:
->>> On 28.7.2025 16.52, Aneesh Kumar K.V (Arm) wrote:
->>>
->>>> +    for (int i = 0; i < interface_report->mmio_range_count; i++,
->>>> mmio_range++) {
->>>> +
->>>> +        /*FIXME!! units in 4K size*/
->>>> +        range_id = FIELD_GET(TSM_INTF_REPORT_MMIO_RANGE_ID,
->>>> mmio_range->range_attributes);
->>>> +
->>>> +        /* no secure interrupts */
->>>> +        if (msix_tbl_bar != -1 && range_id == msix_tbl_bar) {
->>>> +            pr_info("Skipping misx table\n");
->>>> +            continue;
->>>> +        }
->>>> +
->>>> +        if (msix_pba_bar != -1 && range_id == msix_pba_bar) {
->>>> +            pr_info("Skipping misx pba\n");
->>>> +            continue;
->>>> +        }
->>>> +
->>>
->>>
->>> MSI-X and PBA can be placed to a BAR that has other registers as well.
->>> While the PCIe specification recommends BAR-level isolation for MSI-X
->>> structures, it is not mandated. It is enough to have sufficient
->>> isolation within the BAR. Therefore, skipping the MSI-X and PBA BARs
->>> altogether may leave registers unintentionally mapped via unprotected
->>> IPA when they should have been mapped via protected IPA.
->>>
->>> Instead of skipping the whole BAR, would it make sense to determine
->>> where the MSI-X related regions reside, and skip validation only from
->>> these regions?
->>
->> I re-reviewed my suggestion, and what I proposed here seems wrong.
->> However, I think there is a different more generic problem related to
->> the MSI-X table, PBA and non-TEE ranges.
->>
->> If a BAR is sparse (e.g., it has TEE pages and the MSI-X table, PBA or
->> non-TEE areas), the TDISP interface report may contain multiple ranges
->> with the same range_id (/BAR id). In case a BAR contains some registers
->> in low addresses, the MSI-X table and other registers after the MSI-X
->> table, the interface report is expected to have two ranges for the same
->> BAR with different "first 4k page" and "size" fields.
->>
->> This creates a tricky problem given that RSI_VDEV_VALIDATE_MAPPING
->> requires both the ipa_base and pa_base which should correspond to the
->> same location. In above scenario, the PA of the first range would
->> correspond to the BAR base whereas the second range would correspond to
->> a location residing after the MSI-X table.
->>
->> Assuming that the report contains obfuscated (but linear) physical
->> addresses, it would be possible to create heuristics for this case.
->> However, the fundamental problem is that none of the "first 4k page"
->> fields in the ranges is guaranteed to correspond to the base of any BAR:
->> Consider a case where the MSI-X table is in the beginning of a BAR and
->> it is followed by a single TEE range. If the MSI-X is not locked, the
->> "first 4k page" field will not correspond to the beginning of the BAR.
->> If the realm naiviely reads the ipa_base using pci_resouce_n() and
->> corresponding pa_base from the interface report, the addresses won't
->> match and the validation will fail.
->>
->> It seems that interpreting the interface report cannot be done without
->> knowledge of the device's register layout. Therefore, I don't think the
->> ranges can be validated/remapped automatically without involving the
->> device driver, but there should be APIs for reading the interface
->> report, and for requesting making specific ranges protected.
->>
-> 
 > But we need to validate the interface report before accepting the device,
 > and the device driver is only loaded after the device has been accepted.
-> 
-> Can we assume that only the MSI-X table and PBA ranges may be missing
-> from the interface report, while all other non-secure regions are
-> reported as NON-TEE ranges?
 
-In case of the "some registers"+MSIX+"some more registers" BAR#X, I'd rather expect 3 ranges in the report and not just 2, for each subrange, sorted, with/without NonTEE bit set, as the PCIe spec suggests (sort of, I struggle parsing it):
++1
 
-===
-When reporting the MMIO range for a TDI, the MMIO ranges must be reported in the logical order in which the TDI MMIO
-range is configured such that the first range reported corresponds to first range of pages in the TDI and so on
-===
+This must work from the generic OS code.
 
-And if the number of pages in the report differs from the BAR size, then we should fail validation. Otherwise it is impossible to tell from the report's MMIO addresses what part of a BAR needs to be validated (==TEE) and if the guest device driver has to know it - then reports are just useless (which is hardly true).
+So I'd say add a new TSM op:
+ int validate_pci_bar_range(struct pci_dev *pdev,
+                            unsigned int bar_index, u64 tdisp_pa,
+			    u64 size,phys_addr_t *bar_offset_out);
 
+TSM has broadly two options to compute bar_offset_out:
 
-> If so, we could retrieve the MSI-X guest real address details from
-> config space and map the beginning of the BAR correctly.
-> 
-> Dan / Yilun — how is this handled in Intel TDX?
-> 
->  From what I can see, the AMD patches appear to encounter the same issue.
+1) Require the TDISP MMIO Offset is aligned to the BAR size and use
+   something like:
 
-I am skipping MSIX BAR because T=1 is tied to C=1 so after such validation, the BAR belongs to the guest and the hw will reject VFIO-PCI (==HV) attempts to write to MSIX BAR. Probably too straight forward though and I can try assigning it to the host (and add Cbit in those PTEs), and see how the PSP handles it (not). Thanks,
+    *bar_offset_out = (tdisp_pa) % pci_resource_len(pdev, bar_index);
+    ipa = pci_resource_start(pdev, bar_index) + *bar_offset_out;
+    if (size + *bar_offset_out > pci_resource_len(pdev, bar_index))
+        return -EINVAL;
+    tsm_call_to_validate(pdev, ipa, pa, size)
 
+2) Require the TSM to convert the offest'd PA to the IPA:
 
-> 
-> -aneesh
+    tsm_call_to_convert(pdev, pa, size, &ipa);
 
--- 
-Alexey
+    if (ipa < pci_resource_start(pdev, bar_index) ||
+        ipa >= pci_resource_end(pdev, bar_index) ||
+        (ipa + size) > pci_resource_end(pdev, bar_index))
+	return -EINVAL;
 
+    *bar_offset_out = ipa -  pci_resource_start(pdev, bar_index);
+
+Then the generic code builds a map of what parts of the BAR are secure
+and what are not.
+
+If it can't do either the TSM is unusable by Linux.
+
+Jason
