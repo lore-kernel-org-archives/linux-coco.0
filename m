@@ -1,109 +1,119 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73383D76
-	for <linux-coco@lists.linux.dev>; Thu, 11 Sep 2025 15:09:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6CB34F462;
+	Thu, 11 Sep 2025 15:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757603392; cv=none; b=au4+QM8Qemfj9LHjLBmeoDJ5GsY5LUxvckdEfp/MPAo/1In/QJH+in2TU28ukJYpeLPXCGmMdQAVSt2U5CCy+brTida956jiA8qkHv3st70Yh0DLNCvB8yf1FI7yQ8MCct8+Gkfry1idq+Ef3o+BONl9XVkbYHUthnz4+TrU6Ek=
+	t=1757605310; cv=none; b=LzKVO/aU7BIwOzN+4Uej+D3sLQ0jRvoQzMu5w6zk8H2ycMh5k+n/Og4xFC6KgXySh+lBDhqVOqdy0R18AsrEzY+68/UvEb75xw8vnczmZOKy5tWKmd3kovtff3wOQVEd5/Q56F3/DfqQM329t+8Uwkg+xYzGYhy5qwVZ2yCZU5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757603392; c=relaxed/simple;
-	bh=95uhAxbfkKFyOFgW3RXGiSoEN3G9GsJCAWc40eu/89A=;
+	s=arc-20240116; t=1757605310; c=relaxed/simple;
+	bh=jYpaEDuj8hmZIbVIPi8y6wFH/kWW9EUnWk8efKIm7Nc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I5WBlvvE24qZFyhSEnMWbrp8mlPqWGMFvnxMZmrYTASJgJXepsYh3iLFNPRIR1tVDDx7pWw2UBguZyEeUgaTdbpHp2NZpvhoFJCUKSzvdSkewt56666HdUbbO+nMd8P/7Qi5DpxeNc9+hbWr9/taKwR0RA7IGQnfZUB2wsuU2nU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=bMW4JEDS; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lb35f8U73U580Qnt3qQyyFT6ya3NcucjRBNqa9mgyoOAdtcIGX67FDNyKD4LGgjXu0PNdasZuA0SHb9r3nVKtycJqf7S/qcGDute4hRO7VZ/quA1gfq5jiybOjJEMvnDlJJBcbo4xYNWp3vw0SWwbCR+/rR78ss3uuzvULxJIYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fcWIm2iH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="bMW4JEDS"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id BE94040E01A5;
-	Thu, 11 Sep 2025 15:09:44 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id PtK42-h5vEMM; Thu, 11 Sep 2025 15:09:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1757603380; bh=dq+R5oWq9WF149Sw6eDWmEVjGVrgX+aszHp1gMyx7F4=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fcWIm2iH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52436C4AF09;
+	Thu, 11 Sep 2025 15:41:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757605309;
+	bh=jYpaEDuj8hmZIbVIPi8y6wFH/kWW9EUnWk8efKIm7Nc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bMW4JEDSWHlnSuYPRRPaQ9rkXEJ0WZVzfqZvnNd4UAT0ziFWkRMHajNwqt2mRHCpi
-	 cGKX6q5574msDfnCgMmsU0ah6J/gPo23fc+IDmQVvPZh9m0JTLA1IG7wekOAYAq8Eu
-	 VqnvVkopu5oCNUrNrqtOIDYhmtTqQ85xrPs6a+3JyQ9aOep9+0hxUppb+Blnb3/C/0
-	 D/D4WJ70DaoL1hT7FrD32JS0mdQ28C/vpwWHnmc7yTMXnr8q3TNtKeV1QFd92fxhPu
-	 EHjOp2amle4NmfpPGQV542l4Y6vilmbYnpnDbsXc0t15cmy95Sq5XrYcry3P7r+igq
-	 bWytuVII/HfC4hvjHnFduQ7ALo4ECXzAPJFqHybg62P/tMZHwaitQdRs6Kq7B7uP9P
-	 lxnwi21qtVJh/75m62+gKAGPA73KpNkSQ4eDaE+pd9lDaWD1PMXUNNic4NVG9bhxzd
-	 InRkPWW+1lP2w+ojAazmayIaU71ItKM3QZTQ+0P9wkeWzhJpD9jl1CJK19wOWvOcAd
-	 Yzl7OmA8X2I2YrdXlsbInC3FixJHxz4/TepEcWjwVIgkxP+Xam4JV5NqhRJBvCncw9
-	 eYPwZRaJfiTV+7hFIHLdbf1Fk5Y23TRYVULf3eBWvAwtZw7jC0E3eUbqcCR+9mSodN
-	 Fv6yRg2W2fIBqUw1woAAGv/Q=
-Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 531A740E01BB;
-	Thu, 11 Sep 2025 15:08:58 +0000 (UTC)
-Date: Thu, 11 Sep 2025 17:08:50 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Babu Moger <babu.moger@amd.com>
-Cc: corbet@lwn.net, tony.luck@intel.com, reinette.chatre@intel.com,
-	Dave.Martin@arm.com, james.morse@arm.com, tglx@linutronix.de,
-	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
-	hpa@zytor.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-	akpm@linux-foundation.org, paulmck@kernel.org, frederic@kernel.org,
-	pmladek@suse.com, rostedt@goodmis.org, kees@kernel.org,
-	arnd@arndb.de, fvdl@google.com, seanjc@google.com,
-	thomas.lendacky@amd.com, pawan.kumar.gupta@linux.intel.com,
-	perry.yuan@amd.com, manali.shukla@amd.com, sohil.mehta@intel.com,
-	xin@zytor.com, Neeraj.Upadhyay@amd.com, peterz@infradead.org,
-	tiala@microsoft.com, mario.limonciello@amd.com,
-	dapeng1.mi@linux.intel.com, michael.roth@amd.com,
-	chang.seok.bae@intel.com, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org, peternewman@google.com, eranian@google.com,
-	gautham.shenoy@amd.com
-Subject: Re: [PATCH v18 26/33] fs/resctrl: Introduce mbm_assign_on_mkdir to
- enable assignments on mkdir
-Message-ID: <20250911150850.GAaMLmAoi5fTIznQzY@fat_crate.local>
-References: <cover.1757108044.git.babu.moger@amd.com>
- <3b73498a18ddd94b0c6ab5568a23ec42b62af52a.1757108044.git.babu.moger@amd.com>
+	b=fcWIm2iHyUR4VrZ6qkus+tOxAIQRsxmQaemuNzSZKuZD/V7UwMiS04ZUp6u3FqXK8
+	 eqJ6MjAEiARkUxcNO8dkEdCpHFggpsGtISAJzTLtl+xEXBMDfDljfKSeQvuPyy9d+L
+	 ZUk0Rk782bC5LETiQnAaKwBe/2zuj4Aay44u6HUC0vyNPUvYMdzi/dmxOsOf9egoiU
+	 KPpGMHWH/71GUOti248eu3yGKSH8tQ6ntV06zXukZAvTQ2ml0MMXkHC5Gk/fHiAd4j
+	 5iQVYeatHzO2FPUMQhrEb3B2YWzhGKrV+M3SJ+eAl3rujZQL9D4x4P4MHpN/z9kkYa
+	 hg95e2wACxflg==
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 8F179F40069;
+	Thu, 11 Sep 2025 11:41:48 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Thu, 11 Sep 2025 11:41:48 -0400
+X-ME-Sender: <xms:vO3CaPiznt_k4aoGNJMbBllzBZwbK6k7OcFw5CPHFbly12MzxV6T8Q>
+    <xme:vO3CaPVedbtY4wkFkCCLuz_Ffq7lfg_g8OrHObh9xxSM_l9ZAbdAcmA9ByQsNtu2A
+    I14PdeWeBFp4qhJ0dY>
+X-ME-Received: <xmr:vO3CaDI2XVKz_avJXIack38eHa4rfkJRwTE-4JJ-8dgEnfFMw8uDyA_0uzSjcg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvieehhecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
+    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
+    hnpeehieekueevudehvedtvdffkefhueefhfevtdduheehkedthfdtheejveelueffgeen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrih
+    hllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieehhedq
+    vdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnh
+    grmhgvpdhnsggprhgtphhtthhopeefkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
+    ohepuggrvhgvrdhhrghnshgvnhesihhnthgvlhdrtghomhdprhgtphhtthhopegurghvvg
+    drhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheplhhinhhu
+    gidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhglh
+    igsehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepmhhinhhgohesrhgvughhrght
+    rdgtohhmpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepgiekie
+    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtohephhhprgesiiihthhorhdrtghomhdprhgt
+    phhtthhopehrihgtkhdrphdrvggughgvtghomhgsvgesihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:vO3CaCpJSFc3tv9nlZLWvolMCqe5LVK7dV-tf4ZTy29axwVccMrqXg>
+    <xmx:vO3CaCsmD0p3rXXAwC67bv296YfBOg0cqw-TQXT_zqajdh4L4QrJ6Q>
+    <xmx:vO3CaFXoNhfeBRZpCtP2xanVIM3nFpIE-Dy0WJEUG1g27QFyG6exqA>
+    <xmx:vO3CaG2-TsccKed2OGb74RSbvzmgIsDqWoJDkvQr_dBXHFeqOIvn-g>
+    <xmx:vO3CaOdfK0nOBq3Ea4oGU26VCqzg6iOg7GMVLx2yuerffXYuNfv-UqcI>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 11 Sep 2025 11:41:47 -0400 (EDT)
+Date: Thu, 11 Sep 2025 16:41:45 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
+	linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Kai Huang <kai.huang@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Thomas Huth <thuth@redhat.com>, 
+	Adrian Hunter <adrian.hunter@intel.com>, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	Farrah Chen <farrah.chen@intel.com>
+Subject: Re: [PATCH] x86/virt/tdx: Use precalculated TDVPR page physical
+ address
+Message-ID: <yssp7h44gdgsf36spim2puxu2tqx3cbkezcfcn4gcux2nh4wju@ebcak5bnrpv4>
+References: <20250910144453.1389652-1-dave.hansen@linux.intel.com>
+ <oyagitkaefceadeqoqgycqhubw4hnlsjxf6lytazxpjnzueb4k@bmcvegkzrycq>
+ <684e83b3-756b-4995-9804-6b1d0cfa4103@intel.com>
+ <766raob5ltycizxfzcqh5blvdyk5girzfu2575n7gu4g7cmco5@zttwu3qwmjlm>
+ <6a5b66e4-d534-41ff-8feb-ce0ad3ebdff5@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3b73498a18ddd94b0c6ab5568a23ec42b62af52a.1757108044.git.babu.moger@amd.com>
+In-Reply-To: <6a5b66e4-d534-41ff-8feb-ce0ad3ebdff5@intel.com>
 
-On Fri, Sep 05, 2025 at 04:34:25PM -0500, Babu Moger wrote:
-> The "mbm_event" counter assignment mode allows users to assign a hardware
-> counter to an RMID, event pair and monitor the bandwidth as long as it is
-> assigned.
+On Wed, Sep 10, 2025 at 09:57:13AM -0700, Dave Hansen wrote:
+> On 9/10/25 09:12, Kiryl Shutsemau wrote:
+> > On Wed, Sep 10, 2025 at 09:10:06AM -0700, Dave Hansen wrote:
+> >> On 9/10/25 09:06, Kiryl Shutsemau wrote:
+> >>>>  struct tdx_vp {
+> >>>>  	/* TDVP root page */
+> >>>>  	struct page *tdvpr_page;
+> >>>> +	/* precalculated page_to_phys(tdvpr_page) for use in noinstr code */
+> >>>> +	phys_addr_t tdvpr_pa;
+> >>> Missing newline above the new field?
+> >> I was actually trying to group the two fields together that are aliases
+> >> for the same logical thing.
+> >>
+> >> Is that problematic?
+> > No. Just looks odd to me. But I see 'struct tdx_td' also uses similar
+> > style.
 > 
-> Introduce a user-configurable option that determines if a counter will
-> automatically be assigned to an RMID, event pair when its associated
-> monitor group is created via mkdir. Accessible when "mbm_event" counter
-> assignment mode is enabled.
+> Your review or ack tag there seems to have been mangled by your email
+> client. Could you try to resend it, please? ;)
 
-This is just a note for the future - you don't have to go change things now:
-reading those commit messages back-to-back, there's a lot of boilerplate code
-which repeats with each commit message and there's a lot of text talking what
-the patch does.
+Do you mean my name spelling?
 
-Please tone this down in the future - it is really annoying and doesn't bring
-a whole lot by repeating things or explaining the obvious. Just concentrate on
-explaining why the patch exists and mention any non-obvious things.
-
-Everything else people can find by searching the net.
-
-Thx.
+I've decided to move to transliteration from Belarusian rather than
+Russian. I will update MAINTAINERS and mailmap later.
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+  Kiryl Shutsemau / Kirill A. Shutemov
