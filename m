@@ -1,120 +1,131 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628DB136351
-	for <linux-coco@lists.linux.dev>; Fri, 12 Sep 2025 03:24:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE9730EF91;
+	Fri, 12 Sep 2025 14:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757647483; cv=none; b=OLNV5OdBiqa6ESCb05PJc5UCDUNN6o25xM8nFhP0IMmXj4One/OHLMnR7CE520LzwLAnaYskkEiSbF64UXLb8QqQiMu2D16EwGcsCrnfd32RG428Mm7JvqKgo5f2JPRrbQ8rLGTWy+taVajO9ELvzCDegYLbEg3dMG+7Dr6kG2o=
+	t=1757689190; cv=none; b=qJdsWMt0akykPaTvzFJe7MHc+KiVK0nchG/KRA72t2PM5BPe288RPDJYrqd2KgK2DGnPsEWu4TJ4rp8BLKAr/2KQbkcouvYQBFe2KWS+aTac3JehPBBFPKryGew9XZ43WFz+s97Y4c976bRnW5INg7fFP6xwGnnWbQ5/xU9CR7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757647483; c=relaxed/simple;
-	bh=5UJ2uBmLOSZKYcKsuvP5CudRgULBxTsTai1D2ZlaWh0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XAhG3a7N52pfoY/+pqf05fM4OwntQBWU8TO00xLT8gWmS0F2jtgv9tEoPY/RBqollECLCnMoEKFYOGmbnacB1umM9GEMMElrRxRjEKZS8IxGNCXH9+B5bcVJ94d4+n77jZmY8l+2vBaRmMHi4ssrWI2Di5dgjod1WYJCVeWy2LI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k/IJ8lVj; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k/IJ8lVj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757647481; x=1789183481;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=5UJ2uBmLOSZKYcKsuvP5CudRgULBxTsTai1D2ZlaWh0=;
-  b=k/IJ8lVjZWBkpaqAfrvr2i14vvQvf85zrOul/Y5P9uCPu1eAgoyBiHIA
-   PCvVhOGtoUdtDFRI2sJubl67ucRlTmWqB1JQ8g329b7cWM7XKUZf/s0oZ
-   6gNzUqpCW6Hbfd5XX6U30TU3KqpG1zrKV99onE0Gyd5A1vWhBdxw82p2K
-   BRJif94FzrcAoTMS8WtWlA2FGMgMwIUUihWm6+PfYDS4OQ/h0PxfqF9Pl
-   YpUXMP0F2GI2Gf0aGEj/BmT7jkugLjPhthd3B6X0WXuaqF050mhiW0sxF
-   2YDNCuQ6qVCKgGa7KzVqmtWkdSK3FDnP7T1hLS9zMnhYF01Bwkz7z4WZz
-   w==;
-X-CSE-ConnectionGUID: 9triWr+8TPKgVChWYY4V+g==
-X-CSE-MsgGUID: RFgMkoQqRA2Tfhpz6iuGdg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11550"; a="59220371"
-X-IronPort-AV: E=Sophos;i="6.18,258,1751266800"; 
-   d="scan'208";a="59220371"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2025 20:24:40 -0700
-X-CSE-ConnectionGUID: LJS09/p/Sfy+V0Chk02U4g==
-X-CSE-MsgGUID: FhP4Wa0iRNC2oNH0aSHCQg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,258,1751266800"; 
-   d="scan'208";a="178194038"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.238.14]) ([10.124.238.14])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2025 20:24:36 -0700
-Message-ID: <ef18afaf-9372-4c93-a370-a079cbb89deb@intel.com>
-Date: Fri, 12 Sep 2025 11:24:33 +0800
+	s=arc-20240116; t=1757689190; c=relaxed/simple;
+	bh=Y63oO/Ez/Xx54356NFRLcKdmi2+o1MjmCWY+eQ6jWto=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qbAPxVuYGWWFyL+wKWiOw/eFsW45q138/t4o/d42nbBqSUmQCbotxkYE5BmOza+xJnTdyq2jmU/hUz9fsDMikrqbasc1IXKtrYeGlXZOshuHsGum4ffZMwVqubg4Ys3zgxV8wvYkOj5qaW3StunAP5Y0eighiTMYyZvQVHNxpr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C8D5C4CEF1;
+	Fri, 12 Sep 2025 14:59:48 +0000 (UTC)
+Date: Fri, 12 Sep 2025 15:59:45 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Steven Price <steven.price@arm.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
+	linux-coco@lists.linux.dev, will@kernel.org, maz@kernel.org,
+	tglx@linutronix.de, robin.murphy@arm.com, akpm@linux-foundation.org
+Subject: Re: [RFC PATCH] arm64: swiotlb: dma: its: Ensure shared buffers are
+ properly aligned
+Message-ID: <aMQ1YeoB2PsO2e17@arm.com>
+References: <20250905055441.950943-1-aneesh.kumar@kernel.org>
+ <aLrh_rbzWLPw9LnH@arm.com>
+ <yq5aikht1e0z.fsf@kernel.org>
+ <aL7AoPKKKAR8285O@arm.com>
+ <b5ee1ab3-f91f-4982-95c7-516f4968a6c9@arm.com>
+ <20250908145845.GA699673@ziepe.ca>
+ <d8687b08-6bb4-4645-8172-72936a51b0d8@arm.com>
+ <aL8RdvuDbtbUDk2D@arm.com>
+ <ea4b657e-13fa-485e-9d3c-5b395ad3d8e2@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/4] TDX: Clean up the definitions of TDX TD ATTRIBUTES
-To: "Kirill A. Shutemov" <kas@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, x86@kernel.org,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, Kai Huang
- <kai.huang@intel.com>, binbin.wu@linux.intel.com, yan.y.zhao@intel.com,
- reinette.chatre@intel.com, adrian.hunter@intel.com, tony.lindgren@intel.com
-References: <20250715091312.563773-1-xiaoyao.li@intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20250715091312.563773-1-xiaoyao.li@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ea4b657e-13fa-485e-9d3c-5b395ad3d8e2@arm.com>
 
-Dear tip/tdx maintainers,
+On Wed, Sep 10, 2025 at 11:08:19AM +0100, Steven Price wrote:
+> On 08/09/2025 18:25, Catalin Marinas wrote:
+> > On Mon, Sep 08, 2025 at 04:39:13PM +0100, Steven Price wrote:
+> >> On 08/09/2025 15:58, Jason Gunthorpe wrote:
+> >>> If ARM has proper faulting then you don't have an issue mapping 64K
+> >>> into a userspace and just segfaulting the VMM if it does something
+> >>> wrong.
+> >>
+> >> ...the VMM can cause problems. If the VMM touches the memory itself then
+> >> things are simple - we can detect that the fault was from user space and
+> >> trigger a SIGBUS to kill of the VMM.
+> > 
+> > Similarly for uaccess.
+> > 
+> >> But the VMM can also attempt to pass the address into the kernel and
+> >> cause the kernel to do a get_user_pages() call (and this is something we
+> >> want to support for shared memory). The problem is if the kernel then
+> >> touches the parts of the page which are protected we get a fault with no
+> >> (easy) way to relate back to the VMM.
+> > 
+> > I assume the host has a mechanism to check that the memory has been
+> > marked as shared by the guest and the guest cannot claim it back as
+> > private while the host is accessing it (I should dig out the CCA spec).
+> > 
+> >> guest_memfd provided a nice way around this - a dedicated allocator
+> >> which doesn't allow mmap(). This meant we don't need to worry about user
+> >> space handing protected memory into the kernel. It's now getting
+> >> extended to support mmap() but only when shared, and there was a lot of
+> >> discussion about how to ensure that there are no mmap regions when
+> >> converting memory back to private.
+> > 
+> > That's indeed problematic and we don't have a simple way to check that
+> > a user VMM address won't fault when accessed via the linear map. The
+> > vma checks we get with mmap are (host) page size based.
+> > 
+> > Can we instead only allow mismatched (or smaller) granule sizes in the
+> > guest if the VMM doesn't use the mmap() interface? It's not like
+> > trapping TCR_EL1 but simply rejecting such unaligned memory slots since
+> > the host will need to check that the memory has indeed been shared. KVM
+> > can advertise higher granules only, though the guest can ignore them.
+> > 
+> 
+> Yes, mismatched granules sizes could be supported if we disallowed
+> mmap(). This is assuming the RMM supports the required size - which is
+> currently true, but the intention is to optimise the S2 in the future by
+> matching the host page size.
+> 
+> But I'm not sure how useful that would be. The VMMs of today don't
+> expect to have to perform read()/write() calls to access the guest's
+> memory, so any user space emulation would need to also be updated to
+> deal with this restriction.
+> 
+> But that seems like a lot of effort to support something that doesn't
+> seem to have a use case. Whereas there's an obvious use case for the
+> guest and VMM sharing one (or often more) pages of (mapped) memory. The
+> part that CCA makes this tricky is that we need to pick the VMM's page
+> size rather than the guest's.
 
-Kindly ping on this series.
+Given that the vmas in Linux are page-aligned, it's too intrusive to
+support sub-page granularity in the host (if at all possible). So, based
+on the discussion here, we do need the guest to play along and share
+mappings with the granularity of the host page size. Of course, one way
+is to mandate that the guest uses the same page size as the host.
 
-It got Acked-by from KVM maintainer and Reviewed-by from other folks. 
-There is one comment from Binbin on tdx_attributes[]. What's your 
-preference on it? Would you consider applying this series and leave that 
-comment to a separate patch or expect a next version of this series with 
-that comment addressed?
+The original patch needs some more changes mentioned in this thread. It
+is missing places where we have set_memory_decrypted() but the size is
+not guaranteed to be aligned. I would also replace the
+arch_shared_mem_alignment() name with something that resembles the
+mem-encrypt API (e.g. mem_encrypt_align(size) for lack of inspiration;
+the default would return 'size' so there's no change for other
+architectures). Using 'shared' is confusing since the notion of sharing
+is not limited to confidential compute.
 
-On 7/15/2025 5:13 PM, Xiaoyao Li wrote:
-> The main purpose of this series was to remove redundant macros between
-> core TDX and KVM, along with a typo fix. They were implemented as patch1
-> and patch2.
->
-> During the review of v1 and v2, there was encouragement to refine the
-> names of the macros related to TD attributes to clarify their scope.
-> Thus patch3 and patch 4 are added. 
-> Discussion details can be found in previrous versions.
-> 
-> 
-> Changes in v3:
->   - use the changelog provided by Rick for patch 1;
->   - collect Reviewed-by on patch 4;
->   - Add patch 3;
-> 
-> v2: https://lore.kernel.org/all/20250711132620.262334-1-xiaoyao.li@intel.com/
-> Changes in v2:
->   - collect Reviewed-by;
->   - Explains the impact of the change in patch 1 changelog;
->   - Add patch 3.
-> 
-> v1: https://lore.kernel.org/all/20250708080314.43081-1-xiaoyao.li@intel.com/
-> 
-> Xiaoyao Li (4):
->    x86/tdx: Fix the typo in TDX_ATTR_MIGRTABLE
->    KVM: TDX: Remove redundant definitions of TDX_TD_ATTR_*
->    x86/tdx: Rename TDX_ATTR_* to TDX_TD_ATTR_*
->    KVM: TDX: Rename KVM_SUPPORTED_TD_ATTRS to KVM_SUPPORTED_TDX_TD_ATTRS
-> 
->   arch/x86/coco/tdx/debug.c         | 26 ++++++++--------
->   arch/x86/coco/tdx/tdx.c           |  8 ++---
->   arch/x86/include/asm/shared/tdx.h | 50 +++++++++++++++----------------
->   arch/x86/kvm/vmx/tdx.c            |  4 +--
->   arch/x86/kvm/vmx/tdx_arch.h       |  6 ----
->   5 files changed, 44 insertions(+), 50 deletions(-)
-> 
+It does feel like this could be handled at a higher level (e.g. the
+virtio code or specific device drivers doing DMA) but it won't be
+generic enough. Bouncing of decrypted DMA via swiotlb is already
+generic.
 
+BTW, with device assignment, we need a second, encrypted swiotlb as it's
+used for bouncing small buffers. Unless we mandate that all devices
+assigned to realms are fully coherent.
+
+-- 
+Catalin
