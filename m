@@ -1,218 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABD62D2390
-	for <linux-coco@lists.linux.dev>; Thu, 11 Sep 2025 23:56:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628DB136351
+	for <linux-coco@lists.linux.dev>; Fri, 12 Sep 2025 03:24:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757635019; cv=none; b=HKiQJSyjCBCJA5dXx3vm4dGZHY3Y/IAymRX4XNJgBCEpm/c9VUmA+x6tuIIp0WHoVpbzG1TpDAdOx5cCoeRUBA1WePkYPzTcpxoCez1kPu1CBZDKTXkdVI6bSCGi2FWvsBTIeFZRPybQmIleEvSysCEmaMMwKmizmdoyTxHCHbQ=
+	t=1757647483; cv=none; b=OLNV5OdBiqa6ESCb05PJc5UCDUNN6o25xM8nFhP0IMmXj4One/OHLMnR7CE520LzwLAnaYskkEiSbF64UXLb8QqQiMu2D16EwGcsCrnfd32RG428Mm7JvqKgo5f2JPRrbQ8rLGTWy+taVajO9ELvzCDegYLbEg3dMG+7Dr6kG2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757635019; c=relaxed/simple;
-	bh=YkjIlEMhUN9AsGfOne8hSGlUXNDtZeZu7Aid8icO8FY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bHRePCufQxnwuneLxZMyYTBGEzON49xP71a9cPaGx/mpIwFjmuZypnlFPQxsHz29+cfH0DkPDYoJfn/khtXRDhX7NVzg4tHtdBlJiYhlGUTxUgT8vBKF743NsldtDXeAXE0fy8T7MezfWT/MrFnWNVWsXggFxe6XoaAiDVQspvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L8gJcpW+; arc=none smtp.client-ip=192.198.163.11
+	s=arc-20240116; t=1757647483; c=relaxed/simple;
+	bh=5UJ2uBmLOSZKYcKsuvP5CudRgULBxTsTai1D2ZlaWh0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XAhG3a7N52pfoY/+pqf05fM4OwntQBWU8TO00xLT8gWmS0F2jtgv9tEoPY/RBqollECLCnMoEKFYOGmbnacB1umM9GEMMElrRxRjEKZS8IxGNCXH9+B5bcVJ94d4+n77jZmY8l+2vBaRmMHi4ssrWI2Di5dgjod1WYJCVeWy2LI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k/IJ8lVj; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L8gJcpW+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k/IJ8lVj"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757635017; x=1789171017;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=YkjIlEMhUN9AsGfOne8hSGlUXNDtZeZu7Aid8icO8FY=;
-  b=L8gJcpW+3K7SiG5sOSxWOMwFdKMVGK3+pfQUi+ObheiQ/vU41PjFcz/E
-   ILKgl203KYMhxpLWZb/mjD/I3T8ALfyvlz7mOIePw4TbdbIblTP/+perk
-   7tsGf0G/hsS7NiIeK+0vIEgIDYHMsGzp4FTlXUtY4j9ltTGrmXF75inck
-   CjsokXx7G8WVeKUeapCViwlRqsNA0uvauPjRHao49WBgmX6TojZmPyFxY
-   QsNPehg8Yodvnml+5LVyurWzvuIRPib+s4EvBuCLa2XNY3Nsz0eQa81qH
-   votyhfYgBNJJ7HJbxw/dHhUm7BnHFr6IVNqB7XHvdWJTBNQ6MpyNTONYv
+  t=1757647481; x=1789183481;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=5UJ2uBmLOSZKYcKsuvP5CudRgULBxTsTai1D2ZlaWh0=;
+  b=k/IJ8lVjZWBkpaqAfrvr2i14vvQvf85zrOul/Y5P9uCPu1eAgoyBiHIA
+   PCvVhOGtoUdtDFRI2sJubl67ucRlTmWqB1JQ8g329b7cWM7XKUZf/s0oZ
+   6gNzUqpCW6Hbfd5XX6U30TU3KqpG1zrKV99onE0Gyd5A1vWhBdxw82p2K
+   BRJif94FzrcAoTMS8WtWlA2FGMgMwIUUihWm6+PfYDS4OQ/h0PxfqF9Pl
+   YpUXMP0F2GI2Gf0aGEj/BmT7jkugLjPhthd3B6X0WXuaqF050mhiW0sxF
+   2YDNCuQ6qVCKgGa7KzVqmtWkdSK3FDnP7T1hLS9zMnhYF01Bwkz7z4WZz
    w==;
-X-CSE-ConnectionGUID: nVOF2t6HT7CzwaiOLqDqzg==
-X-CSE-MsgGUID: k98BfiwNShOdSIufisZL7Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11550"; a="70598771"
+X-CSE-ConnectionGUID: 9triWr+8TPKgVChWYY4V+g==
+X-CSE-MsgGUID: RFgMkoQqRA2Tfhpz6iuGdg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11550"; a="59220371"
 X-IronPort-AV: E=Sophos;i="6.18,258,1751266800"; 
-   d="scan'208";a="70598771"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2025 16:56:53 -0700
-X-CSE-ConnectionGUID: mI59DrZjRMKPqsQ+Ic6yTA==
-X-CSE-MsgGUID: PSqT1behRuuNxioASAyiBQ==
+   d="scan'208";a="59220371"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2025 20:24:40 -0700
+X-CSE-ConnectionGUID: LJS09/p/Sfy+V0Chk02U4g==
+X-CSE-MsgGUID: FhP4Wa0iRNC2oNH0aSHCQg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,258,1751266800"; 
-   d="scan'208";a="173393550"
-Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
-  by fmviesa007.fm.intel.com with ESMTP; 11 Sep 2025 16:56:51 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: linux-pci@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Cc: gregkh@linuxfoundation.org,
-	bhelgaas@google.com,
-	lukas@wunner.de,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Subject: [PATCH resend v6 10/10] samples/devsec: Add sample IDE establishment
-Date: Thu, 11 Sep 2025 16:56:47 -0700
-Message-ID: <20250911235647.3248419-11-dan.j.williams@intel.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250911235647.3248419-1-dan.j.williams@intel.com>
-References: <20250911235647.3248419-1-dan.j.williams@intel.com>
+   d="scan'208";a="178194038"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.238.14]) ([10.124.238.14])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2025 20:24:36 -0700
+Message-ID: <ef18afaf-9372-4c93-a370-a079cbb89deb@intel.com>
+Date: Fri, 12 Sep 2025 11:24:33 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] TDX: Clean up the definitions of TDX TD ATTRIBUTES
+To: "Kirill A. Shutemov" <kas@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, x86@kernel.org,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, Kai Huang
+ <kai.huang@intel.com>, binbin.wu@linux.intel.com, yan.y.zhao@intel.com,
+ reinette.chatre@intel.com, adrian.hunter@intel.com, tony.lindgren@intel.com
+References: <20250715091312.563773-1-xiaoyao.li@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20250715091312.563773-1-xiaoyao.li@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Exercise common setup and teardown flows for a sample platform TSM
-driver that implements the TSM 'connect' and 'disconnect' flows.
+Dear tip/tdx maintainers,
 
-This is both a template for platform specific implementations and a
-simple integration test for the PCI core infrastructure + ABI.
+Kindly ping on this series.
 
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Lukas Wunner <lukas@wunner.de>
-Cc: Samuel Ortiz <sameo@rivosinc.com>
-Cc: Alexey Kardashevskiy <aik@amd.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- samples/devsec/bus.c      |  3 ++
- samples/devsec/link_tsm.c | 70 ++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 72 insertions(+), 1 deletion(-)
+It got Acked-by from KVM maintainer and Reviewed-by from other folks. 
+There is one comment from Binbin on tdx_attributes[]. What's your 
+preference on it? Would you consider applying this series and leave that 
+comment to a separate patch or expect a next version of this series with 
+that comment addressed?
 
-diff --git a/samples/devsec/bus.c b/samples/devsec/bus.c
-index 07cf4ce82ceb..37a62c1cbba4 100644
---- a/samples/devsec/bus.c
-+++ b/samples/devsec/bus.c
-@@ -13,6 +13,7 @@
- #include "devsec.h"
- 
- #define NR_DEVSEC_BUSES 1
-+#define NR_PLATFORM_STREAMS 4
- #define NR_PORT_STREAMS 1
- #define NR_ADDR_ASSOC 1
- 
-@@ -693,6 +694,7 @@ static int __init devsec_bus_probe(struct faux_device *fdev)
- 	hb->dev.parent = dev;
- 	hb->sysdata = sd;
- 	hb->ops = &devsec_ops;
-+	pci_ide_init_nr_streams(hb, NR_PLATFORM_STREAMS);
- 
- 	rc = pci_scan_root_bus_bridge(hb);
- 	if (rc)
-@@ -730,5 +732,6 @@ static void __exit devsec_bus_exit(void)
- }
- module_exit(devsec_bus_exit);
- 
-+MODULE_IMPORT_NS("PCI_IDE");
- MODULE_LICENSE("GPL");
- MODULE_DESCRIPTION("Device Security Sample Infrastructure: TDISP Device Emulation");
-diff --git a/samples/devsec/link_tsm.c b/samples/devsec/link_tsm.c
-index 2faee8b41ede..c7a62e52f387 100644
---- a/samples/devsec/link_tsm.c
-+++ b/samples/devsec/link_tsm.c
-@@ -4,6 +4,7 @@
- #define dev_fmt(fmt) "devsec: " fmt
- #include <linux/device/faux.h>
- #include <linux/pci-tsm.h>
-+#include <linux/pci-ide.h>
- #include <linux/module.h>
- #include <linux/pci.h>
- #include <linux/tsm.h>
-@@ -93,6 +94,23 @@ static void devsec_link_tsm_pci_remove(struct pci_tsm *tsm)
- 	}
- }
- 
-+/* protected by tsm_ops lock */
-+static DECLARE_BITMAP(devsec_stream_ids, NR_TSM_STREAMS);
-+static struct pci_ide *devsec_streams[NR_TSM_STREAMS];
-+
-+static unsigned long *alloc_devsec_stream_id(unsigned long *stream_id)
-+{
-+	unsigned long id;
-+
-+	id = find_first_zero_bit(devsec_stream_ids, NR_TSM_STREAMS);
-+	if (id == NR_TSM_STREAMS)
-+		return NULL;
-+	set_bit(id, devsec_stream_ids);
-+	*stream_id = id;
-+	return stream_id;
-+}
-+DEFINE_FREE(free_devsec_stream, unsigned long *, if (_T) clear_bit(*_T, devsec_stream_ids))
-+
- /*
-  * Reference consumer for a TSM driver "connect" operation callback. The
-  * low-level TSM driver understands details about the platform the PCI
-@@ -117,11 +135,61 @@ static void devsec_link_tsm_pci_remove(struct pci_tsm *tsm)
-  */
- static int devsec_link_tsm_connect(struct pci_dev *pdev)
- {
--	return -ENXIO;
-+	struct pci_dev *rp = pcie_find_root_port(pdev);
-+	unsigned long __stream_id;
-+	int rc;
-+
-+	unsigned long *stream_id __free(free_devsec_stream) =
-+		alloc_devsec_stream_id(&__stream_id);
-+	if (!stream_id)
-+		return -EBUSY;
-+
-+	struct pci_ide *ide __free(pci_ide_stream_release) =
-+		pci_ide_stream_alloc(pdev);
-+	if (!ide)
-+		return -ENOMEM;
-+
-+	ide->stream_id = *stream_id;
-+	rc = pci_ide_stream_register(ide);
-+	if (rc)
-+		return rc;
-+
-+	pci_ide_stream_setup(pdev, ide);
-+	pci_ide_stream_setup(rp, ide);
-+
-+	rc = tsm_ide_stream_register(ide);
-+	if (rc)
-+		return rc;
-+
-+	/*
-+	 * Model a TSM that handled enabling the stream at
-+	 * tsm_ide_stream_register() time
-+	 */
-+	rc = pci_ide_stream_enable(pdev, ide);
-+	if (rc)
-+		return rc;
-+
-+	devsec_streams[*no_free_ptr(stream_id)] = no_free_ptr(ide);
-+
-+	return 0;
- }
- 
- static void devsec_link_tsm_disconnect(struct pci_dev *pdev)
- {
-+	struct pci_ide *ide;
-+	unsigned long i;
-+
-+	for_each_set_bit(i, devsec_stream_ids, NR_TSM_STREAMS)
-+		if (devsec_streams[i]->pdev == pdev)
-+			break;
-+
-+	if (i >= NR_TSM_STREAMS)
-+		return;
-+
-+	ide = devsec_streams[i];
-+	devsec_streams[i] = NULL;
-+	pci_ide_stream_release(ide);
-+	clear_bit(i, devsec_stream_ids);
- }
- 
- static struct pci_tsm_ops devsec_link_pci_ops = {
--- 
-2.51.0
+On 7/15/2025 5:13 PM, Xiaoyao Li wrote:
+> The main purpose of this series was to remove redundant macros between
+> core TDX and KVM, along with a typo fix. They were implemented as patch1
+> and patch2.
+>
+> During the review of v1 and v2, there was encouragement to refine the
+> names of the macros related to TD attributes to clarify their scope.
+> Thus patch3 and patch 4 are added. 
+> Discussion details can be found in previrous versions.
+> 
+> 
+> Changes in v3:
+>   - use the changelog provided by Rick for patch 1;
+>   - collect Reviewed-by on patch 4;
+>   - Add patch 3;
+> 
+> v2: https://lore.kernel.org/all/20250711132620.262334-1-xiaoyao.li@intel.com/
+> Changes in v2:
+>   - collect Reviewed-by;
+>   - Explains the impact of the change in patch 1 changelog;
+>   - Add patch 3.
+> 
+> v1: https://lore.kernel.org/all/20250708080314.43081-1-xiaoyao.li@intel.com/
+> 
+> Xiaoyao Li (4):
+>    x86/tdx: Fix the typo in TDX_ATTR_MIGRTABLE
+>    KVM: TDX: Remove redundant definitions of TDX_TD_ATTR_*
+>    x86/tdx: Rename TDX_ATTR_* to TDX_TD_ATTR_*
+>    KVM: TDX: Rename KVM_SUPPORTED_TD_ATTRS to KVM_SUPPORTED_TDX_TD_ATTRS
+> 
+>   arch/x86/coco/tdx/debug.c         | 26 ++++++++--------
+>   arch/x86/coco/tdx/tdx.c           |  8 ++---
+>   arch/x86/include/asm/shared/tdx.h | 50 +++++++++++++++----------------
+>   arch/x86/kvm/vmx/tdx.c            |  4 +--
+>   arch/x86/kvm/vmx/tdx_arch.h       |  6 ----
+>   5 files changed, 44 insertions(+), 50 deletions(-)
+> 
 
