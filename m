@@ -1,233 +1,110 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE96E2FD7A0;
-	Mon, 15 Sep 2025 10:55:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4FA2EB850
+	for <linux-coco@lists.linux.dev>; Mon, 15 Sep 2025 11:26:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757933744; cv=none; b=TGFB7Zxm8k7pmDcl4c5wtkylm3c0ioH230QTfr19iez55QfRuzcGW52tmckofJbfC4ng0gZotOLxcGXUWWzlMP4a5DlotaPF4jJRTQ6egjiDzrtmWR4tmFXAqpHZQ34UP2rmzERutg50VnUWM1IbS9vDcw7/QDb0Mok2HkAgPTo=
+	t=1757935578; cv=none; b=ACWT/yHAciQd7cJzou5Wa6RPNcI/dJT1ctUljRz+jokIwCkb11TMUKvgkyF0t2r071UOLQeyklUbHy7m/KaYP+DUT61M2fvwjCZJsUnUsrgjWXJNQensyI4K+r64AMuTcAct0YSFtb4vLwWfx7Xb9wQiNnQTShe7D3ItexvSwj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757933744; c=relaxed/simple;
-	bh=j9nIETp/ySj+kPeJrGjnyazf55d6hgsJGarkgCP784I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ed6fjjoXnPPT88HHH7YXZdLPj/cC72dBQdCEZHj7aloD5qO+dqfu4vgQ30MOTfz4eiZcDi3Zesy4iJRhLmj66FbvFc8ebbxFPuiL8vrLQZjW1v3+JxsD3iEQl0M4TjAQPnQfgPqUI/pyBFw8XAZMsCYVytLD31cA54uvi0VTP0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 04ABD1424;
-	Mon, 15 Sep 2025 03:55:33 -0700 (PDT)
-Received: from [10.57.5.5] (unknown [10.57.5.5])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9AFCE3F694;
-	Mon, 15 Sep 2025 03:55:36 -0700 (PDT)
-Message-ID: <cdcf1c3c-aca3-4a32-b4ca-ba1a4af5a321@arm.com>
-Date: Mon, 15 Sep 2025 11:55:28 +0100
+	s=arc-20240116; t=1757935578; c=relaxed/simple;
+	bh=EyCbsyd109jlA6dWKPGR31a04u6NZDtlezBFxPWAehg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WReSPNhztQDL6l0pmWwgMCnqb0I85lZtloQ6+f7w2/z1TSvRUClC345MYHGJr6OZZ289f4SB3H6PHjRBFuEB9+8p5VS7Vavf1RMbcGCptwyBQKMDXkKwO2CKvHC6MFTOB2bxyJ5k3itsklpoRgPvQh7I8xk+orrd36Gf9sqs1Zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=h7V6iMvm; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="h7V6iMvm"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7B29E40E019E;
+	Mon, 15 Sep 2025 11:26:06 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id Q_gETiq9zByM; Mon, 15 Sep 2025 11:26:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1757935560; bh=og5A2WyNgFf7VMif0EZi46Of8DzCnjQ3vDeonAI/acM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=h7V6iMvmKJs5863dr5nkmFZiU3qP66keqlZx93dvM7YITmmnEqhBm2jC399/6c/X9
+	 eY9gbp2YoNgadnZBfoFQRnkRzlgBnuOUnHMozopc4WqAyEnde3RgQSU2ZKcSxtYueK
+	 mHx8p9+ZPwV8veJYk7A+Ck7xylMOptWVKSqdpjw+CpAxXm+Zs+I4P0DEsXZEWdyOvp
+	 FfA4vvdC86enrUgOLIYL8T0pgOiW0/24oqTiK1bYXdnsXGFT4DfZTIeaBOiEXLSiqi
+	 14CwdGeryMyaE5B0iUBHnuV2ThAOwslGsCZBipQvKxeOPCyjjuKV/KawE6Bd068WpV
+	 V2Bmjdk1ffPhdrPbv5wfJF2mfNiyDze3a2ZZvsxj9b+ENTDuF0to2nIWwssoxxCB38
+	 Hl3aF8O3sVyvsbRT0/tYpHLQbutKZZsgUt/Xc1Pq6Q2JwemjjmoLxp27NN+L00dRDk
+	 Tb6vyvnJPk0Og9cRuZCUqT2miGRJnyCefzZ+Ha36VFdJTV+DON9EhwTszRBOWBYALn
+	 gf4fZLpCRe+tzlMPeOR1JKGjJ49XwBOBF7SRmbBYa5220t3cwGd9t1ukJ1f8PX7Oyn
+	 9J0iMhzitSbc984GGwPNmzIiYzgWY5gidjaCJ/+iE41ptd6pIkWIrQaJLl/GHFpO+9
+	 Q0/zyASL+1qe81MtgrUGcbL8=
+Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id D3EBF40E01A3;
+	Mon, 15 Sep 2025 11:25:17 +0000 (UTC)
+Date: Mon, 15 Sep 2025 13:25:10 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Babu Moger <babu.moger@amd.com>
+Cc: corbet@lwn.net, tony.luck@intel.com, reinette.chatre@intel.com,
+	Dave.Martin@arm.com, james.morse@arm.com, tglx@linutronix.de,
+	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
+	hpa@zytor.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+	akpm@linux-foundation.org, paulmck@kernel.org, frederic@kernel.org,
+	pmladek@suse.com, rostedt@goodmis.org, kees@kernel.org,
+	arnd@arndb.de, fvdl@google.com, seanjc@google.com,
+	thomas.lendacky@amd.com, pawan.kumar.gupta@linux.intel.com,
+	perry.yuan@amd.com, manali.shukla@amd.com, sohil.mehta@intel.com,
+	xin@zytor.com, Neeraj.Upadhyay@amd.com, peterz@infradead.org,
+	tiala@microsoft.com, mario.limonciello@amd.com,
+	dapeng1.mi@linux.intel.com, michael.roth@amd.com,
+	chang.seok.bae@intel.com, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org, peternewman@google.com, eranian@google.com,
+	gautham.shenoy@amd.com
+Subject: Re: [PATCH v18 00/33] x86,fs/resctrl: Support AMD Assignable
+ Bandwidth Monitoring Counters (ABMC)
+Message-ID: <20250915112510.GAaMf3lkd6Y1E_Oszg@fat_crate.local>
+References: <cover.1757108044.git.babu.moger@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 00/43] arm64: Support for Arm CCA in KVM
-To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
- <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve <vannapurve@google.com>
-References: <20250820145606.180644-1-steven.price@arm.com>
- <2aa76e3c-1e97-46d8-a8b7-c13cbbf05e8b@redhat.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <2aa76e3c-1e97-46d8-a8b7-c13cbbf05e8b@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <cover.1757108044.git.babu.moger@amd.com>
 
-On 04/09/2025 01:46, Gavin Shan wrote:
-> 
-> On 8/21/25 12:55 AM, Steven Price wrote:
->> This series adds support for running protected VMs using KVM under the
->> Arm Confidential Compute Architecture (CCA).
->>
->> The related guest support was merged for v6.14-rc1 so you no longer need
->> that separately.
->>
->> There are a few changes since v9, many thanks for the review
->> comments. The highlights are below, and individual patches have a
->> changelog.
->>
->>   * Fix a potential issue where the host was walking the stage 2 page
->> tables on
->>     realm destruction. If the RMM didn't zero when undelegated (which
->> it isn't
->>     required to) then the kernel would attempt to work the junk values
->> and crash.
->>
->>   * Avoid RCU stall warnings by correctly settign may_block in
->>     kvm_free_stage2_pgd().
->>
->>   * Rebased onto v6.17-rc1.
->>
->> Things to note:
->>
->>   * The magic numbers for capabilities and ioctls have been updated. So
->>     you'll need to update your VMM. See below for the updated kvmtool
->> branch.
->>
->>   * This series doesn't attempt to integrate with the guest-memfd
->> changes that
->>     are being discussed (see below).
->>
->>   * Vishal raised an important question about what to do in the case of
->>     undelegate failures (also see below).
->>
-> 
-> [...]
-> 
-> I tried to boot a guest using the following combinations, nothing
-> obvious went to
-> wrong except several long existing issues (described below). So feel
-> free to add:
-> 
-> Tested-by: Gavin Shan <gshan@redhat.com>
+On Fri, Sep 05, 2025 at 04:33:59PM -0500, Babu Moger wrote:
+>  .../admin-guide/kernel-parameters.txt         |    2 +-
+>  Documentation/filesystems/resctrl.rst         |  325 ++++++
+>  MAINTAINERS                                   |    1 +
+>  arch/x86/include/asm/cpufeatures.h            |    1 +
+>  arch/x86/include/asm/msr-index.h              |    2 +
+>  arch/x86/include/asm/resctrl.h                |   16 -
+>  arch/x86/kernel/cpu/resctrl/core.c            |   81 +-
+>  arch/x86/kernel/cpu/resctrl/internal.h        |   56 +-
+>  arch/x86/kernel/cpu/resctrl/monitor.c         |  248 +++-
+>  arch/x86/kernel/cpu/scattered.c               |    1 +
+>  fs/resctrl/ctrlmondata.c                      |   26 +-
+>  fs/resctrl/internal.h                         |   58 +-
+>  fs/resctrl/monitor.c                          | 1008 ++++++++++++++++-
+>  fs/resctrl/rdtgroup.c                         |  252 ++++-
+>  include/linux/resctrl.h                       |  148 ++-
+>  include/linux/resctrl_types.h                 |   18 +-
+>  16 files changed, 2019 insertions(+), 224 deletions(-)
 
-Thanks for testing!
+Ok, I've rebased and pushed out the pile into tip:x86/cache.
 
-Regards,
-Steve
+Please run it one more time to make sure all is good.
 
-> 
-> Combination
-> ===========
-> host.tf-a        https://git.trustedfirmware.org/TF-A/trusted-firmware-
-> a.git      (v2.13-rc0)
-> host.tf-rmm      https://git.codelinaro.org/linaro/dcap/
-> rmm                       (cca/v8)
-> host.edk2        git@github.com:tianocore/
-> edk2.git                                (edk2-stable202411)
-> host.kernel      git@github.com:gwshan/
-> linux.git                                  (cca/host-v10) (this series)
-> host.qemu        https://git.qemu.org/git/
-> qemu.git                                (stable-9.2)
-> host.buildroot   https://github.com/buildroot/
-> buildroot                           (master)
-> guest.qemu       https://git.codelinaro.org/linaro/dcap/
-> qemu.git                  (cca/latest) (with linux-headers sync'ed)
-> guest.kvmtool    https://gitlab.arm.com/linux-arm/kvmtool-
-> cca                     (cca/latest)
-> guest.edk2       https://git.codelinaro.org/linaro/dcap/
-> edk2                      (cca/latest)
-> guest.kernel     git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/
-> linux.git (v6.17.rc3)
-> guest.buildroot  https://github.com/buildroot/
-> buildroot                           (master)
-> 
-> Script to start the host
-> ========================
-> gshan@nvidia-grace-hopper-01:~/sandbox/qemu/host$ cat start.sh
-> #!/bin/sh
-> HOST_PATH=/home/gshan/sandbox/qemu/host
-> GUEST_PATH=/home/gshan/sandbox/qemu/guest
-> IF_UP_SCRIPT=/etc/qemu-ifup-gshan
-> IF_DOWN_SCRIPT=/etc/qemu-ifdown-gshan
-> 
-> sudo ${HOST_PATH}/qemu/build/qemu-system-aarch64                        \
-> -M virt,virtualization=on,secure=on,gic-version=3,acpi=off              \
-> -cpu max,x-rme=on -m 3G -smp 8                                          \
-> -serial mon:stdio -monitor none -nographic -nodefaults                  \
-> -bios ${HOST_PATH}/tf-a/flash.bin                                       \
-> -kernel ${HOST_PATH}/linux/arch/arm64/boot/Image                        \
-> -initrd ${HOST_PATH}/buildroot/output/images/rootfs.cpio.xz             \
-> -device pcie-root-port,bus=pcie.0,chassis=1,id=pcie.1                   \
-> -device pcie-root-port,bus=pcie.0,chassis=2,id=pcie.2                   \
-> -device pcie-root-port,bus=pcie.0,chassis=3,id=pcie.3                   \
-> -device pcie-root-port,bus=pcie.0,chassis=4,id=pcie.4                   \
-> -device virtio-9p-device,fsdev=shr0,mount_tag=shr0                      \
-> -fsdev local,security_model=none,path=${GUEST_PATH},id=shr0             \
-> -netdev tap,id=tap1,script=${IF_UP_SCRIPT},downscript=${IF_DOWN_SCRIPT} \
-> -device virtio-net-pci,bus=pcie.2,netdev=tap1,mac=b8:3f:d2:1d:3e:f1
-> 
-> Script to start the guest
-> =========================
-> gshan@nvidia-grace-hopper-01:~/sandbox/qemu/guest$ cat start_full.sh
-> #!/bin/sh
-> key="VGhlIHJlYWxtIGd1ZXN0IHBlcnNvbmFsaXphdGlvbiBrZXkgaW4gZm9ybWF0IG9mIGJhc2U2NCAgICAgICAgIA=="
-> IF_UP_SCRIPT=/etc/qemu-ifup
-> IF_DOWN_SCRIPT=/etc/qemu-ifdown
-> 
-> qemu-system-aarch64 -enable-kvm \
-> -object rme-guest,id=rme0,measurement-algorithm=sha512,personalization-
-> value=${key} \
-> -M virt,gic-version=3,confidential-guest-
-> support=rme0                               \
-> -cpu host -smp 4 -m 2G -boot
-> c                                                      \
-> -serial mon:stdio -monitor none -nographic -
-> nodefaults                              \
-> -bios /mnt/edk2/Build/ArmVirtQemu-AARCH64/RELEASE_GCC5/FV/
-> QEMU_EFI.fd               \
-> -device pcie-root-
-> port,bus=pcie.0,chassis=1,id=pcie.1                               \
-> -device pcie-root-
-> port,bus=pcie.0,chassis=2,id=pcie.2                               \
-> -drive file=/mnt/
-> rhel10.qcow2,if=none,id=drive0                                     \
-> -device virtio-blk-pci,id=virtblk0,bus=pcie.1,drive=drive0,num-
-> queues=4             \
-> -netdev
-> tap,id=tap0,script=${IF_UP_SCRIPT},downscript=${IF_DOWN_SCRIPT}             \
-> -device virtio-net-pci,bus=pcie.2,netdev=tap0,mac=b8:3f:d2:1d:3e:f9
-> 
-> Issues
-> ======
-> 1. virtio-iommu isn't supported by QEMU. The guest kernel becomes stuck
-> at IOMMU
-> probing time where the endpoint's capabilities is queried by sending
-> request over
-> virtio device's vring and the response is expected to be fed by QEMU.
-> The request
-> can't be seen by QEMU due to the wrong IOMMU address translation used in
-> QEMU as
-> virtio-iommu provides a different IOMMU address translation operations
-> to override
-> the platform one, leading the DMA address (in the shared space) can't be
-> properly
-> recognized. The information has been shared to Jean.
-> 
-> 2. 'reboot' command doesn't work in the guest. QEMU complains some
-> registers aren't
-> accessible from QEMU. I didn't sorted out a workaround for this.
-> 
-> 3. HMP command 'dump-guest-memory' causes QEMU to exit abnormally. The
-> cause is the
-> realm is reconfigured when the VM is resumed after the guest memory is
-> dumped. The
-> reconfiguration is rejected by the host, leading QEMU's abnormal exit.
-> The fix would
-> be to avoid the reconfiguration on the realm. The issue was originally
-> reported by
-> Fujitsu and all the information has been shared to Fujitsu.
-> 
-> 4. In QEMU, the CPU property 'kvm-no-adjvtime' can't be set to off.
-> Otherwise, QEMU
-> tries to access the timer registers, which have been hidden by the host.
-> So we need
-> to take the parameter (for QEMU) to by pass it: "-cpu host,kvm-no-
-> adjvtime=on".
-> 
-> 5. I didn't try virtio-mem and memory balloon, which isn't expected to
-> work, especially
-> when the guest memory is hot added or hot removed.
-> 
-> Thanks,
-> Gavin
-> 
-> 
+Thx.
 
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
