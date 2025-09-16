@@ -1,69 +1,238 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8C37E110;
-	Tue, 16 Sep 2025 12:01:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758024085; cv=none; b=Wh0XwTec7tLIx/u1kLwoGayd0edLDv0dyn4uP0Re7M0FnFkHMKbYnNQS00r4urEpJkEV+HA6Jw3aF4dn3Ygh36p8niXZZh0MhPWgGQHpy9qF0pja0cYAINxsmA+RS711tmKjMdbYsMocmprTuZ5uN7oI+wKYBDQMIdITchNvJJU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758024085; c=relaxed/simple;
-	bh=HvavW8VkofQnxOqfVQEAgSIGxDbgCX+Dce+BFYqWQ+0=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=qe3Z0Np7cW7jLMeQoBZ+uyi2DoptXn+FlMlE4E6s7/AoDa1HTi3YxsmNRpEf0tigSqSKIiWzaojwcW+aqpraK0WvwXk7XeZobRRlbrgsDAo9w1n29T16d28CpVDzZXIrI1fw01srioM5lzoLCfCdu4gWVh0pUMVSP2sMAdJotJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=xrroZBBy; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="xrroZBBy"
-Received: from 8bytes.org (p54921b16.dip0.t-ipconnect.de [84.146.27.22])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 42FC055495;
-	Tue, 16 Sep 2025 14:01:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1758024076;
-	bh=HvavW8VkofQnxOqfVQEAgSIGxDbgCX+Dce+BFYqWQ+0=;
-	h=Date:From:To:Subject:From;
-	b=xrroZBBy0y6ApjgqDnYs7qAp1Nr4uJRgXy/lYeNGKyzAiEtTd6s3CjCiR57bLPU9d
-	 wimDGvryWIjix0cCY8asgi+w4mgGdxDHQk5cjmK1qnGdkrgGhkrfcoMXrmiWQ60xUg
-	 7SlgW28YMOApg6rJRlOz64xR20aAANTW4db+0l7h2UYyG7CtDdIfXvLpec2cA6stwd
-	 w1vyX4L8A2Yri4xuazNVrtE9+eeUOj0OYXFf1RAXKBEIY1SE5+YMpxtoHW136fmv9m
-	 +SfiqvuWqMtGSfxjMJ6aAshheL3iKGGygf0ais7JOMoiMBKwl/v8ZUfZdZy4wctky5
-	 1hSIYDhRY6T+g==
-Date: Tue, 16 Sep 2025 14:01:15 +0200
-From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
-Subject: SVSM Development Call September 17th, 2025
-Message-ID: <lcem3i4xidnk3ngaeotq2qyxhylt72sx3tjznvo3uz7uhxlgp7@fbyok7ripatk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86111246BD2;
+	Tue, 16 Sep 2025 12:19:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758025153; cv=none; b=YinP31IyriDrj+FS+8ayX4P99ubW6rOMj804vzuG2dCfLw3jINSIGluXffeLVxQC+SPSRUZxF0Ye5/bgjRW9Ao/XW3BMQKWylDicXPkzVNHibY7g167Kjb1tVTgAFpDE8KWVqksEESmTvZx6K9a2hhimgralN0xlGWh9DxtfXSE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758025153; c=relaxed/simple;
+	bh=LT6YTn8ETe48vO9QSG5P9fmXeoSM6bg6W639aMUfMLI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=UdSn4BYA8WxU9Blk0oILNp9VxuuM4OqdoYWTZmSmdM2fiSRVnDH3pYQ8aaawnvDLC3igBIGmitpUmbhOibCIjXEaCVq+oJCwpDkjghrWvpf/1Xh5lFLYzOcWUp9LjCwsrhPC+k+6jWZP+aakDnmAYXEshG6NeA1y6UaGBPDFKZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q7/qIxwx; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q7/qIxwx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C94EBC4CEEB;
+	Tue, 16 Sep 2025 12:19:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758025153;
+	bh=LT6YTn8ETe48vO9QSG5P9fmXeoSM6bg6W639aMUfMLI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=q7/qIxwxP/N/akXh7NRoTkaCeTVPiStllOzioOlKJcL3manVcIAANSM1Mwl4N1Kc5
+	 Kf+YANDwAwFjmqG762r7/dkL6Og7kCxdMFIVrDWTca7U+xNk/OEKDcvi43D7Iq8yaq
+	 OlGNTkHezrMqhjSrD9wPJ0VWTdZMW8iEs9ljS7EdT32uHT/wUwZd2K2UHPsdNtvPro
+	 FsbzMZCQR/k032E0bxaJ/kNn/7YLv/RHFNDRTcAAtaiptvJ+IXhn+Eb0nFeY5tz+sO
+	 EaMp/Dynj/cUK0P8TG3eHkKSknUN1l/oW3AuDQ2LfzKpVI8CMtk3weuUrqhAcUyNdF
+	 Q0NWn1MyFskCA==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Dan Williams <dan.j.williams@intel.com>, linux-pci@vger.kernel.org,
+	linux-coco@lists.linux.dev
+Cc: gregkh@linuxfoundation.org, bhelgaas@google.com, lukas@wunner.de,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ilpo =?utf-8?Q?J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Roman Kisel <romank@linux.microsoft.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: Re: [PATCH resend v6 00/10] PCI/TSM: Core infrastructure for PCI
+ device security (TDISP)
+In-Reply-To: <20250911235647.3248419-1-dan.j.williams@intel.com>
+References: <20250911235647.3248419-1-dan.j.williams@intel.com>
+Date: Tue, 16 Sep 2025 17:48:57 +0530
+Message-ID: <yq5azfau7fpq.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Hi,
+Dan Williams <dan.j.williams@intel.com> writes:
 
-Here is the usual call for agenda items for the this weeks SVSM
-development call.  Please send me any agenda items you have in mind or
-raise them in the meeting.
+> [apologies for the duplicates, I flubbed my mailing list aliases]
+>
+> Changes since v5 [1]:
+> - Add @tsm_dev parameter to 'struct pci_tsm_link_ops::probe()' (Alexey)
+> - Fix to_pci_tsm_pf0() to walk to the DSM device (Alexey)
+> - Fix IDE establishment "default stream" setting regression (Alexey)
+> - Fix pci_ide_stream_enable() in the presence of devices that delay the
+>   "secure" transition to K_SET_GO (Alexey)
+> - Make sure pci_ide_stream_enable() has a unique error code for the
+>   "failed to go to secure state" case. (Alexey)
+> - Clarify that pci_tsm_connect() unconditionally probes all potential
+>   TDIs (Alexey)
+> - Rename 'struct pci_tsm_security_ops' to 'struct pci_tsm_devsec_ops'
+>   (Alexey)
+> - Add @tsm_dev parameter to 'struct pci_tsm_devsec_ops::lock()' (Alexey)
+> - Pass 'struct pci_tsm *' to 'struct pci_tsm_devsec_ops::unlock()' (Alexey)
+> - Rename 'struct pci_tsm::dsm' 'struct pci_tsm::dsm_dev' (Aneesh)
+> - Rename 'struct pci_tsm_pf0::base' to 'struct pci_tsm_pf0::base_tsm'
+>   (Aneesh)
+> - Make definition of 'struct tsm_dev' public, drop tsm_name() and
+>   tsm_pci_ops() helpers.
+> - Drop __devsec_pci_ops (delayed cleanup now possible with 'struct
+>   tsm_dev' public) (Jonathan)
+> - Revive pci_tsm_doe_transfer() (Aneesh)
+> - Fix tsm_unregister() to not assume that all TSMs implement PCI
+>   operations
+>
+> [1]: http://lore.kernel.org/20250827035126.1356683-1-dan.j.williams@intel.com
+>
+> This set is available at
+> https://git.kernel.org/pub/scm/linux/kernel/git/devsec/tsm.git/log/?h=staging
+> (rebasing branch) or devsec-20250911 (immutable tag). It passes a basic
+> smoke test that exercises load/unload of the samples/devsec/ modules and
+> connect/disconnect of the emulated device. Note that tag also has a
+> preview of changes that will be included in v2 of "[PATCH 0/7] PCI/TSM:
+> TEE I/O infrastructure" [2].
+>
+> [2]: http://lore.kernel.org/20250827035259.1356758-1-dan.j.williams@intel.com
+>
+> Status: ->connect() flow is nearly settled
+> ------------------------------------------
+> The review feedback continues to slow. Various folks have had their
+> naming and organization preferences adopted so I feel comfortable
+> calling this a consensus branch. Let us leave any further requests for
+> naming changes to Bjorn.
+>
+> This version seems suitable for proceeding to linux-next inclusion. That
+> inclusion depends on the guest side TEE I/O infrastructure also
+> settling. That guest set definitely needs at least a v2 [2]. In short,
+> PCI core infrastructure for TEE I/O (both host and guest) targeting
+> linux-next inclusion post v6.18-rc1.
+>
+> Next steps:
+> -----------
+> - Stage at least one vendor ->connect() implementation on top of a
+>   tsm.git#staging snapshot.
+>
+> - Find an arrangement to supplement samples/devsec/ regression testing
+>   with IDE establishment / "connect()" flow regression testing.
+>
+> Original Cover letter:
+> ----------------------
+>
+> Trusted execution environment (TEE) Device Interface Security Protocol
+> (TDISP) is a chapter name in the PCI specification. It describes an
+> alphabet soup of mechanisms, SPDM, CMA, IDE, TSM/DSM, that system
+> software uses to establish trust in a device and assign it to a
+> confidential virtual machine (CVM). It is protocol for dynamically
+> extending the trusted computing boundary (TCB) of a CVM with a PCI
+> device interface that can issue DMA to CVM private memory.
+>
+> The acronym soup problem is enhanced by every major platform vendor
+> having distinct TEE Security Manager (TSM) API implementations /
+> capabilities, and to a lesser extent, every potential endpoint Device
+> Security Manager (DSM) having its own idiosyncratic behaviors around
+> TDISP state transitions.
+>
+> Despite all that opportunity for differentiation, there is a significant
+> portion of the implementation that is cross-vendor common. However, it
+> is difficult to develop, debate, test and settle all those pieces absent
+> a low level TSM driver implementation to pull it all together.
+>
+> The proposal, of which this set is the first phase, is incrementally
+> develop the shared infrastructure on top of a sample TSM driver
+> implementation to enable clean vendor agnostic discussions about the
+> commons. "samples/devsec/" is meant to be: just enough emulation to
+> exercise all the core infrastructure, a reference implementation, and a
+> simple unit test. The sample also enables coordination with the native
+> PCI device security effort [3].
+>
+> [3]: http://lore.kernel.org/cover.1719771133.git.lukas@wunner.de
+>
+> Dan Williams (10):
+>   coco/tsm: Introduce a core device for TEE Security Managers
+>   PCI/IDE: Enumerate Selective Stream IDE capabilities
+>   PCI: Introduce pci_walk_bus_reverse(), for_each_pci_dev_reverse()
+>   PCI/TSM: Authenticate devices via platform TSM
+>   samples/devsec: Introduce a PCI device-security bus + endpoint sample
+>   PCI: Add PCIe Device 3 Extended Capability enumeration
+>   PCI/IDE: Add IDE establishment helpers
+>   PCI/IDE: Report available IDE streams
+>   PCI/TSM: Report active IDE streams
+>   samples/devsec: Add sample IDE establishment
+>
+>  Documentation/ABI/testing/sysfs-bus-pci       |  51 ++
+>  Documentation/ABI/testing/sysfs-class-tsm     |  19 +
+>  .../ABI/testing/sysfs-devices-pci-host-bridge |  26 +
+>  Documentation/driver-api/pci/index.rst        |   1 +
+>  Documentation/driver-api/pci/tsm.rst          |  12 +
+>  MAINTAINERS                                   |   7 +-
+>  drivers/base/bus.c                            |  38 +
+>  drivers/pci/Kconfig                           |  29 +
+>  drivers/pci/Makefile                          |   2 +
+>  drivers/pci/bus.c                             |  38 +
+>  drivers/pci/doe.c                             |   2 -
+>  drivers/pci/ide.c                             | 584 ++++++++++++++
+>  drivers/pci/pci-sysfs.c                       |   4 +
+>  drivers/pci/pci.h                             |  19 +
+>  drivers/pci/probe.c                           |  28 +-
+>  drivers/pci/remove.c                          |   6 +
+>  drivers/pci/search.c                          |  62 +-
+>  drivers/pci/tsm.c                             | 627 +++++++++++++++
+>  drivers/virt/coco/Kconfig                     |   3 +
+>  drivers/virt/coco/Makefile                    |   1 +
+>  drivers/virt/coco/tsm-core.c                  | 166 ++++
+>  include/linux/device/bus.h                    |   3 +
+>  include/linux/pci-doe.h                       |   4 +
+>  include/linux/pci-ide.h                       |  75 ++
+>  include/linux/pci-tsm.h                       | 159 ++++
+>  include/linux/pci.h                           |  36 +
+>  include/linux/tsm.h                           |  14 +
+>  include/uapi/linux/pci_regs.h                 |  89 +++
+>  samples/Kconfig                               |  19 +
+>  samples/Makefile                              |   1 +
+>  samples/devsec/Makefile                       |  10 +
+>  samples/devsec/bus.c                          | 737 ++++++++++++++++++
+>  samples/devsec/common.c                       |  26 +
+>  samples/devsec/devsec.h                       |  40 +
+>  samples/devsec/link_tsm.c                     | 242 ++++++
+>  35 files changed, 3167 insertions(+), 13 deletions(-)
+>  create mode 100644 Documentation/ABI/testing/sysfs-class-tsm
+>  create mode 100644 Documentation/driver-api/pci/tsm.rst
+>  create mode 100644 drivers/pci/ide.c
+>  create mode 100644 drivers/pci/tsm.c
+>  create mode 100644 drivers/virt/coco/tsm-core.c
+>  create mode 100644 include/linux/pci-ide.h
+>  create mode 100644 include/linux/pci-tsm.h
+>  create mode 100644 samples/devsec/Makefile
+>  create mode 100644 samples/devsec/bus.c
+>  create mode 100644 samples/devsec/common.c
+>  create mode 100644 samples/devsec/devsec.h
+>  create mode 100644 samples/devsec/link_tsm.c
+>
+>
+> base-commit: 650d64cdd69122cc60d309f2f5fd72bbc080dbd7
+> -- 
+> 2.51.0
+>
 
-We will use the LF Zoom instance. Details of the meeting  can be found in our
-governance repository at:
+The corresponding Arm CCA changes based on this version of the TSM core
+infrastructure can be found at:
 
-	https://github.com/coconut-svsm/governance
+ https://git.gitlab.arm.com/linux-arm/linux-cca.git cca/tdisp-upstream-post-v1.2
+ https://git.gitlab.arm.com/linux-arm/kvmtool-cca.git cca/tdisp-upstream-post-v1.2
 
-The link to the COCONUT-SVSM calendar is:
+These changes are still based on the ALP12 specification. I am not
+reposting the series yet, as I plan to rebase the v2 patchset against
+the ALP16 version of the spec. Those changes are not ready at this point.
 
-	https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?view=week
-
-The meeting will be recorded and the recording eventually published.
-
-See you all there.
-
-Regards,
-
-	Jörg
+-aneesh
