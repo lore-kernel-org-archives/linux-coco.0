@@ -1,77 +1,130 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889503016E6
-	for <linux-coco@lists.linux.dev>; Tue, 16 Sep 2025 17:10:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080C01E9B1A
+	for <linux-coco@lists.linux.dev>; Tue, 16 Sep 2025 21:32:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758042620; cv=none; b=E5wcck1IHJ/ZqJeADgS202AS8pbr+MdPp3+/T1Vs9ersz4MJyBgGogRD7+/vLBlftoij3bEOJ9DymWd28rkUYLnn+U9MVked0TPCh0tCpnDx+WFEihxI2acz5CYtkPzQGcLHLAhOqwSdMCGVc43KQe+iPY0aHKGk0rT5lpUg0X0=
+	t=1758058348; cv=none; b=nyrjrpdP/A7iq8NX+aNzxD+dq6YBajrPA07hLCTYARPzn3pSwfhqtY7+TXKLT8D0Rre80Nvn9mClVpFXRrozoVEXy7yvaBXMaWNLyzyXFyISASHWlnuEAVkRd/guu2BOnYdCZsahbELBWovNev6sheZVZRphbjf8jxgEJlPAub0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758042620; c=relaxed/simple;
-	bh=2XfpTJubQl+ljBf+rXrwQKhz/e6SXyeEvNSNPzIRgLw=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n7Hpu/4o7amZs2CvNE3KfSE7RAVqGm+OEp9rEg28whPtTRgjyowCMrCof+ydTvpYDOo4IZ9VYLimG8ShkMP7uaR8PlUkbtAqckkMS446NzlumNajekCQ6Jf4Kmwh0+1IocAn330RwWRhX23G12tR0Gtlq1pyYNsmURC5hl/nLmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cR7f35NrLz6L4xL;
-	Wed, 17 Sep 2025 01:08:43 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 51394140137;
-	Wed, 17 Sep 2025 01:10:14 +0800 (CST)
-Received: from localhost (10.203.177.15) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 16 Sep
- 2025 19:10:13 +0200
-Date: Tue, 16 Sep 2025 18:10:12 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Dan Williams <dan.j.williams@intel.com>
-CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>,
-	<gregkh@linuxfoundation.org>, <bhelgaas@google.com>,
-	<yilun.xu@linux.intel.com>, <aneesh.kumar@kernel.org>, <aik@amd.com>
-Subject: Re: [PATCH 5/7] PCI/TSM: Add Device Security (TVM Guest) operations
- support
-Message-ID: <20250916181012.000049fa@huawei.com>
-In-Reply-To: <20250827035259.1356758-6-dan.j.williams@intel.com>
-References: <20250827035259.1356758-1-dan.j.williams@intel.com>
-	<20250827035259.1356758-6-dan.j.williams@intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1758058348; c=relaxed/simple;
+	bh=Kk49ApA/Sw1WrwYfa2bmO0HYL/FPSDP1t188CDIzXfI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g5tZx+q4nzuEEnOm86oYyEKitKgO+/ce+eheod1V05wEkLA18Cdj/Z9HGDJEUx+57IuWKVEtezpnh5HcGUOBmzQDxm9+BEulDKKbt4atHkrZvtIa3t5GdpOZ0W9k157i0KB0t+HussRqkgC3Y3knmNFLYpjzRF0wAxz/oUhavKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=TZ0QM5V+; arc=none smtp.client-ip=95.215.58.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="TZ0QM5V+"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758058344;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=XfJHrhxnXCwu8VguJr9watkzFIkd93AK9ZwsyplW0KI=;
+	b=TZ0QM5V+YcLbuWR4DPMKbgYjsVzUWOmjdk1Q5Eu1ZwTDT4O6scttC8O7sZc0iD7iD9Ohff
+	MgP3tS+g4HHdbHZDVC8tS+uyYBNYhk5qEf/dXOincXcGhidOYJ7VNJ6Dv9aQX1SzQ6HXzV
+	L+LxKeK2MStRuJNzI9cQwOOanmPeIgs=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Kirill A. Shutemov" <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev
+Subject: [PATCH] KVM: TDX: Replace kmalloc + copy_from_user with memdup_user in tdx_td_init
+Date: Tue, 16 Sep 2025 23:31:29 +0200
+Message-ID: <20250916213129.2535597-2-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
+Use get_user() to retrieve the number of entries instead of allocating
+memory for 'init_vm' with the maximum size, copying 'cmd->data' to it,
+only to then read the actual entry count 'cpuid.nent' from the copy.
 
-One trivial thing noticed on a first scan through.
+Return -E2BIG early if 'nr_user_entries' exceeds KVM_MAX_CPUID_ENTRIES.
 
->  Documentation/ABI/testing/sysfs-bus-pci   |  46 ++-
->  Documentation/ABI/testing/sysfs-class-tsm |  19 ++
->  drivers/pci/Kconfig                       |   2 +
->  drivers/pci/tsm.c                         | 358 +++++++++++++++++++++-
->  drivers/virt/coco/tsm-core.c              |  41 +++
->  include/linux/device.h                    |   1 +
->  include/linux/pci-tsm.h                   |  25 +-
->  7 files changed, 482 insertions(+), 10 deletions(-)
+Use memdup_user() to allocate just enough memory to fit all entries and
+to copy 'cmd->data' from userspace. Use struct_size() instead of
+manually calculating the number of bytes to allocate and copy.
 
-> +
-> +What:		/sys/bus/pci/devices/.../tsm/lock
-> +Contact:	linux-coco@lists.linux.dev
-> +Description:
-> +		(RW) Write the name of a TSM (TEE Security Manager) device from
-> +		/sys/class/tsm to this file to request that TSM lock th device
+No functional changes intended.
 
-th device device -> the device.?
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+---
+Compile-tested only.
+---
+ arch/x86/kvm/vmx/tdx.c | 32 ++++++++++++--------------------
+ 1 file changed, 12 insertions(+), 20 deletions(-)
 
-> +		device. This puts the device in a state where it can not accept
-> +		or issue secure memory cycles (T=1 in the PCIe TLP), and
-
-
-
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 66744f5768c8..87510541d2a2 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -2742,8 +2742,10 @@ static int tdx_read_cpuid(struct kvm_vcpu *vcpu, u32 leaf, u32 sub_leaf,
+ static int tdx_td_init(struct kvm *kvm, struct kvm_tdx_cmd *cmd)
+ {
+ 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
++	struct kvm_tdx_init_vm __user *user_init_vm;
+ 	struct kvm_tdx_init_vm *init_vm;
+ 	struct td_params *td_params = NULL;
++	u32 nr_user_entries;
+ 	int ret;
+ 
+ 	BUILD_BUG_ON(sizeof(*init_vm) != 256 + sizeof_field(struct kvm_tdx_init_vm, cpuid));
+@@ -2755,28 +2757,18 @@ static int tdx_td_init(struct kvm *kvm, struct kvm_tdx_cmd *cmd)
+ 	if (cmd->flags)
+ 		return -EINVAL;
+ 
+-	init_vm = kmalloc(sizeof(*init_vm) +
+-			  sizeof(init_vm->cpuid.entries[0]) * KVM_MAX_CPUID_ENTRIES,
+-			  GFP_KERNEL);
+-	if (!init_vm)
+-		return -ENOMEM;
+-
+-	if (copy_from_user(init_vm, u64_to_user_ptr(cmd->data), sizeof(*init_vm))) {
+-		ret = -EFAULT;
+-		goto out;
+-	}
++	user_init_vm = u64_to_user_ptr(cmd->data);
++	ret = get_user(nr_user_entries, &user_init_vm->cpuid.nent);
++	if (ret)
++		return ret;
+ 
+-	if (init_vm->cpuid.nent > KVM_MAX_CPUID_ENTRIES) {
+-		ret = -E2BIG;
+-		goto out;
+-	}
++	if (nr_user_entries > KVM_MAX_CPUID_ENTRIES)
++		return -E2BIG;
+ 
+-	if (copy_from_user(init_vm->cpuid.entries,
+-			   u64_to_user_ptr(cmd->data) + sizeof(*init_vm),
+-			   flex_array_size(init_vm, cpuid.entries, init_vm->cpuid.nent))) {
+-		ret = -EFAULT;
+-		goto out;
+-	}
++	init_vm = memdup_user(user_init_vm,
++			      struct_size(user_init_vm, cpuid.entries, nr_user_entries));
++	if (IS_ERR(init_vm))
++		return PTR_ERR(init_vm);
+ 
+ 	if (memchr_inv(init_vm->reserved, 0, sizeof(init_vm->reserved))) {
+ 		ret = -EINVAL;
+-- 
+2.51.0
 
