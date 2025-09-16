@@ -1,72 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070991EDA2C;
-	Tue, 16 Sep 2025 12:31:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF8A327A1C
+	for <linux-coco@lists.linux.dev>; Tue, 16 Sep 2025 14:38:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758025902; cv=none; b=rcK6rUutC1Jnkmg9LTFzJ2y1XQwuqiMrFBF0NtKLBghZ4hWfbAl1bRXiSwC/7HkvVBtKIp0w2ZAdWJ27W7eGNGpfL4o+o+PHYYeuxlJ19t6omptcuKRgYLLmT7MOZerj4dI3nozVo2rJBpv/a4XeLlwZBqvvBQGEDoVGKgkihKk=
+	t=1758033517; cv=none; b=YOGY+8Ju0Y/c4VsLXgaZmuuzDI7Eq7r2s41yJZpNKZdu+XKKjCA2Q7kB2YFGnZ2cUrr09gWnBP1NaqZQyKIR7OUJQLP+ZGWFN86pFlzZxOfpKY0p+LlBVXlOxf5NurhS0WFYKvVSWzPcV8YiCRN23NPm4CpJ/mPY1u9cP5Vg2do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758025902; c=relaxed/simple;
-	bh=AvnnFeLhqa+1N7BjqrcIXNBRXqWXQHi29E1hGGjkXRE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=EQhf6u24y4wbm+b5X39cr2OgyXgMFP1r5Od1q4AUEPu4pg1p1LvBsp/nEKxmGX06suCLiVKzs+IwcO9qqECe39ozvDRKgQFH9ytgrww710AyV6yrhNsSjxUdsoHkF/+mRoZ2mUS5CoTAvct5bTmozIM2j5nzdMcND/BVHQRvvOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P0d/Dj5o; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P0d/Dj5o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F9FC4CEEB;
-	Tue, 16 Sep 2025 12:31:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758025901;
-	bh=AvnnFeLhqa+1N7BjqrcIXNBRXqWXQHi29E1hGGjkXRE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=P0d/Dj5oRlUj845mYfjKZ7ng1gm7rIXqPdU+u9b31iZhME+rs9C71GZZpLgHYxn6y
-	 9puhWpjl36fzXN654GNREQI6cxnY28F49FElwXS3Z5/QgVQEbnuEg0KhcpOZPPcugQ
-	 Hr8MPAE2+SqMpSLBtf4o5E9LKaX1PRIsbCldX2zc+bBTnzdXHHnCUq92b7IaDplx/e
-	 8uzxxsAdcdKpEcnFr4g8E3y9d9bFcWKR2I/ABFomxlDgZ/vLtuI6L9hQccv/92sN7x
-	 DkA27NRhwK50x6mDctSm6HKXaVPRXFGj8oJw//6Aro6Skcy8jK5U03rNa90Ml/IQOR
-	 gswxS2axnp1qw==
-From: Lee Jones <lee@kernel.org>
-To: Chanwoo Choi <cw00.choi@samsung.com>, 
- Krzysztof Kozlowski <krzk@kernel.org>, Lee Jones <lee@kernel.org>, 
- "Kirill A. Shutemov" <kas@kernel.org>, 
- Dave Hansen <dave.hansen@linux.intel.com>, 
- Rick Edgecombe <rick.p.edgecombe@intel.com>, 
- Dzmitry Sankouski <dsankouski@gmail.com>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- linux-kernel@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
- kvm@vger.kernel.org
-In-Reply-To: <20250909-max77705-fix_interrupt_handling-v3-1-233c5a1a20b5@gmail.com>
-References: <20250909-max77705-fix_interrupt_handling-v3-1-233c5a1a20b5@gmail.com>
-Subject: Re: (subset) [PATCH v3] mfd: max77705: rework interrupts
-Message-Id: <175802589907.3682989.11860525884258012047.b4-ty@kernel.org>
-Date: Tue, 16 Sep 2025 13:31:39 +0100
+	s=arc-20240116; t=1758033517; c=relaxed/simple;
+	bh=MMiBakgTXgsppLhre/lgCobdOkw5V7t+nmyIjY9of18=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OxPuNMrn3jMcZxtCWrIGKseaUOmWQIEsmsYHF1IsDA7inq4b6Gw//VG0zy3qmEccyTd8PnPqUapwwAaq6yFpFoukQSlnxhXHr030rm0X4rDDTyM/f001nVyD4QgtB4/Q49hI7x6UJREIgiVGkxfFCHMJSCFubgAZVMrVyoWju1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9D046FEC;
+	Tue, 16 Sep 2025 07:38:27 -0700 (PDT)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 22BEE3F673;
+	Tue, 16 Sep 2025 07:38:33 -0700 (PDT)
+Date: Tue, 16 Sep 2025 15:38:31 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Andre Przywara <andre.przywara@arm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	Chao Gao <chao.gao@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Salman Nabi <salman.nabi@arm.com>
+Subject: Re: [RFC PATCH 0/1] Arm Live Firmware activation support
+Message-ID: <20250916-energetic-debonair-mongrel-dfcafb@sudeepholla>
+References: <20250625142722.1911172-1-andre.przywara@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.15-dev-c81fc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250625142722.1911172-1-andre.przywara@arm.com>
 
-On Tue, 09 Sep 2025 21:23:07 +0300, Dzmitry Sankouski wrote:
-> Current implementation describes only MFD's own topsys interrupts.
-> However, max77705 has a register which indicates interrupt source, i.e.
-> it acts as an interrupt controller. There's 4 interrupt sources in
-> max77705: topsys, charger, fuelgauge, usb type-c manager.
+On Wed, Jun 25, 2025 at 03:27:21PM +0100, Andre Przywara wrote:
+> Hi,
 > 
-> Setup max77705 MFD parent as an interrupt controller. Delete topsys
-> interrupts because currently unused.
+> (please feel free to add people interested on this from the x86 side
+> as you see fit)
 > 
-> [...]
+> this is a proposal for a driver for the Arm Live Firmware Activation (LFA)
+> specification[1]. LFA provides an interface to allow "activating" firmware
+> updates without a reboot.
+> In contrast to Intel's TDX [2] approach (which seems only concerned about
+> some confidential computing related firmware blob), and even OCP's
+> "impactless" updates[3], the Arm approach just lists a number of
+> "activatable" firmware images, and does not limit their scope. In
+> particular those updates can (and will) be for firmware bits used by the
+> application processors (which OCP seems to rule out), including runtime
+> secure firmware (TF-A/BL31), confidential compute firmware, and
+> potentially even UEFI runtime firmware.
+> Initially we have the whole chain demoing the Arm Confidential Computing
+> firmware (RMM) update, which is conceptually the same as Intel's TDX
+> proposal.
+> 
+> So our design approach is to create a directory under /sys/firmware, and
+> just list all images there, as directories named by their GUID.
+> Then the properties of each image can be queried and the activation
+> triggered by the sysfs files inside each directory. For details see the
+> commit message of the patch.
+> This is admittedly a somewhat raw interface, though even in that form
+> it's good enough for testing. Eventually I would expect some fwupd
+> plugin to wrap this nicely for any admins or end users.
+> 
+> The purpose of this RFC is to get some feedback on the feasibility of
+> this interface, and to understand how this would relate to the other two
+> approaches (TDX + OCP "impactless" updates).
+> 
 
-Applied, thanks!
+Thanks for the details and I agree we need opinions from x86 community
+if possible but definitely from cloud/hyperscale community using these
+user interfaces ? While x86 and Arm may provide its own user interface,
+are hyperscale community happy with that ? I briefly read the unified
+(arch agnostic) requirements specification [3] but will there be a
+requirement to have a unified user interface from the OS ?
 
-[1/1] mfd: max77705: rework interrupts
-      commit: e3f56377ff69b0944da8780f2c5a14f10de71c13
+We don't want to define something Arm specific to just abandon it quickly
+if and when hyperscale community comes back with such a request for unified
+user interface.
 
---
-Lee Jones [李琼斯]
+I am not against having Arm specific interface, just getting clarification
+in terms of requirements even before diving into technical review of the
+patch here.
 
+Anyone from hyperscale community ? Please provide directions here.
+
+-- 
+Regards,
+Sudeep
