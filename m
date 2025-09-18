@@ -1,141 +1,146 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3CD034BA3B;
-	Thu, 18 Sep 2025 12:31:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CCBD226CF7
+	for <linux-coco@lists.linux.dev>; Thu, 18 Sep 2025 12:35:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758198715; cv=none; b=e7MKOrf70dFOgAeM53Bb2VsYXcRD+2gEuq7RmDr/Q0+yxHuqbFAMQw9zwZx7iWnxaAaBOy4Nhl51veQ2F5ktkt2tRxYcRappOiYrbxvsHlz//r8e9w9+0eMjs/lxpcghy0mLTGaAfy2s71Cjy6wzdRg/VlZ7R54dkTruvbqw+i8=
+	t=1758198925; cv=none; b=nddJxANUCPDLAgBofMjP5W05u18+u3m7xpHu6quoNzKQaQiDq5xrXY5wvyksQqda5DcxkVnHAH766D5qmcKwrK8WSlspymPPDc4C6FPwsh74sl9P51awWZbRyXEA7N69AJ0wrtFL6U8gTfezhVEZwPZcMMgl4QXUizcfGJA7eHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758198715; c=relaxed/simple;
-	bh=9YE8xRlSzp0qtaXULH+Q+S0tyjvcR7V5a6iVKARxGWY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RRn50q+aczcOBk5C6i/Nn1O7It0MTcqC8X73JbfeueDZP8wZPfx4HBrsovjRVtskUBmEqEvE1L8zF5DgUs4oEeusmZ2fZV+SOXLwrpD/UbS15NMA5xMv5PojU80nO2P/yYj5zOhxq8tK5YoGON4nfnbp4tt2rHWCRLRwlPm5I5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QKhAH4sT; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QKhAH4sT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ABDBC4AF09;
-	Thu, 18 Sep 2025 12:31:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758198715;
-	bh=9YE8xRlSzp0qtaXULH+Q+S0tyjvcR7V5a6iVKARxGWY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QKhAH4sTdDcS42MZJjyQjOGuZgD3/4jy171TaLbjCTGU3FRaZc4/90465vNUoGnlV
-	 /gv1qZUHGvREwprA6mY4T0RuAFcIbLvJsqNe/lMntY+4WpUwwVymsoFERsgiQVBTnD
-	 Zp+OjcIaDNgtSSTVqX9enOeXx2njaLZJ/AO6dlLz9PMDBCzh7alQPxshl3UaOH6Psb
-	 ayRPpeoDbYC4okqeVsaBvb8s8dNs3q7awhNnOTKyjEYrgUFK4eSRnnqvXR1L2bjkkf
-	 bxydSLbYzzJYarwnd859HDu/IBnu0dQmK1qgZWogRAD99nR3eT91Cn4AEcY4ROpsNO
-	 nqo1EiabPe0Tw==
-Date: Thu, 18 Sep 2025 13:31:49 +0100
-From: Will Deacon <will@kernel.org>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, catalin.marinas@arm.com,
-	gshan@redhat.com, aneesh.kumar@kernel.org, sami.mujawar@arm.com,
-	sudeep.holla@arm.com, steven.price@arm.com
-Subject: Re: [PATCH v2 3/3] arm64: acpi: Enable ACPI CCEL support
-Message-ID: <aMv7tbA3JGd7ZcbW@willie-the-truck>
-References: <20250908223519.1759020-1-suzuki.poulose@arm.com>
- <20250908223519.1759020-4-suzuki.poulose@arm.com>
+	s=arc-20240116; t=1758198925; c=relaxed/simple;
+	bh=ffw7ax0TPCQ17jdzTuqVFKG7mOQe23DKGJqgS3ROAs0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jtJP2Ua/7Hd4TGT6LNLVyMDEiCUJYjmFOgKSjJQHLkzoXtXp6xt4OBUy2a+IoPHEE7ifJKS0D3dOwrDcbhoU64DsTaCjkdQPpyDeZlKWUod9F2+m+5i8tZcU2GbKCuKWSfcfsO0JcEBEgqdPDLwHpOXTrUElIGqCmY5xoT8gZQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 55F801A25;
+	Thu, 18 Sep 2025 05:35:14 -0700 (PDT)
+Received: from [10.1.197.1] (ewhatever.cambridge.arm.com [10.1.197.1])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 566643F673;
+	Thu, 18 Sep 2025 05:35:21 -0700 (PDT)
+Message-ID: <fdd95a19-f787-428b-b184-a5de19469c0b@arm.com>
+Date: Thu, 18 Sep 2025 13:35:19 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250908223519.1759020-4-suzuki.poulose@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] arm64: acpi: Enable ACPI CCEL support
+To: Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, catalin.marinas@arm.com, gshan@redhat.com,
+ aneesh.kumar@kernel.org, sami.mujawar@arm.com, sudeep.holla@arm.com,
+ steven.price@arm.com
+References: <20250908223519.1759020-1-suzuki.poulose@arm.com>
+ <20250908223519.1759020-4-suzuki.poulose@arm.com>
+ <aMv7tbA3JGd7ZcbW@willie-the-truck>
+Content-Language: en-US
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <aMv7tbA3JGd7ZcbW@willie-the-truck>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 08, 2025 at 11:35:19PM +0100, Suzuki K Poulose wrote:
-> Add support for ACPI CCEL by handling the EfiACPIMemoryNVS type memory.
-> As per UEFI specifications NVS memory is reserved for Firmware use even
-> after exiting boot services. Thus map the region as read-only.
+Hi Will
+
+On 18/09/2025 13:31, Will Deacon wrote:
+> On Mon, Sep 08, 2025 at 11:35:19PM +0100, Suzuki K Poulose wrote:
+>> Add support for ACPI CCEL by handling the EfiACPIMemoryNVS type memory.
+>> As per UEFI specifications NVS memory is reserved for Firmware use even
+>> after exiting boot services. Thus map the region as read-only.
+>>
+>> Cc: Sami Mujawar <sami.mujawar@arm.com>
+>> Cc: Will Deacon <will@kernel.org>
+>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>> Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+>> Cc: Steven Price <steven.price@arm.com>
+>> Cc: Sudeep Holla <sudeep.holla@arm.com>
+>> Cc: Gavin Shan <gshan@redhat.com>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> ---
+>> Changes since v1
+>>   - Map NVS region as read-only, update comment to clarify that the region
+>>     is reserved for firmware use.
+>>
+>> ---
+>>   arch/arm64/kernel/acpi.c | 11 +++++++++++
+>>   1 file changed, 11 insertions(+)
+>>
+>> diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
+>> index 4d529ff7ba51..93b70f48a51f 100644
+>> --- a/arch/arm64/kernel/acpi.c
+>> +++ b/arch/arm64/kernel/acpi.c
+>> @@ -360,6 +360,17 @@ void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
+>>   			prot = PAGE_KERNEL_RO;
+>>   			break;
+>>   
+>> +		case EFI_ACPI_MEMORY_NVS:
+>> +			/*
+>> +			 * ACPI NVS marks an area reserved for use by the
+>> +			 * firmware, even after exiting the boot service.
+>> +			 * This may be used by the firmware for sharing dynamic
+>> +			 * tables/data (e.g., ACPI CCEL) with the OS. Map it
+>> +			 * as read-only.
+>> +			 */
+>> +			prot = PAGE_KERNEL_RO;
+>> +			break;
+>> +
 > 
-> Cc: Sami Mujawar <sami.mujawar@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-> Cc: Steven Price <steven.price@arm.com>
-> Cc: Sudeep Holla <sudeep.holla@arm.com>
-> Cc: Gavin Shan <gshan@redhat.com>
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> ---
-> Changes since v1
->  - Map NVS region as read-only, update comment to clarify that the region
->    is reserved for firmware use.
+> Shouldn't this be merged with the other case handling read-only mappings?
+> e.g. something like:
 > 
-> ---
->  arch/arm64/kernel/acpi.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
+
+I thought about it, but went against it, to keep the code separate. But
+surely this is fine. I will resend the series with the proposed change.
+
+Suzuki
+
+> 		switch (region->type) {
+> 		case EFI_LOADER_CODE:
+> 		case EFI_LOADER_DATA:
+> 		case EFI_BOOT_SERVICES_CODE:
+> 		case EFI_BOOT_SERVICES_DATA:
+> 		case EFI_CONVENTIONAL_MEMORY:
+> 		case EFI_PERSISTENT_MEMORY:
+> 			if (memblock_is_map_memory(phys) ||
+> 			    !memblock_is_region_memory(phys, size)) {
+> 				pr_warn(FW_BUG "requested region covers kernel memory @ %pa\n", &phys);
+> 				return NULL;
+> 			}
+> 			/*
+> 			 * Mapping kernel memory is permitted if the region in
+> 			 * question is covered by a single memblock with the
+> 			 * NOMAP attribute set: this enables the use of ACPI
+> 			 * table overrides passed via initramfs, which are
+> 			 * reserved in memory using arch_reserve_mem_area()
+> 			 * below. As this particular use case only requires
+> 			 * read access, fall through to the R/O mapping case.
+> 			 */
+> 			fallthrough;
 > 
-> diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
-> index 4d529ff7ba51..93b70f48a51f 100644
-> --- a/arch/arm64/kernel/acpi.c
-> +++ b/arch/arm64/kernel/acpi.c
-> @@ -360,6 +360,17 @@ void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
->  			prot = PAGE_KERNEL_RO;
->  			break;
->  
-> +		case EFI_ACPI_MEMORY_NVS:
-> +			/*
-> +			 * ACPI NVS marks an area reserved for use by the
-> +			 * firmware, even after exiting the boot service.
-> +			 * This may be used by the firmware for sharing dynamic
-> +			 * tables/data (e.g., ACPI CCEL) with the OS. Map it
-> +			 * as read-only.
-> +			 */
-> +			prot = PAGE_KERNEL_RO;
-> +			break;
-> +
+> 		case EFI_RUNTIME_SERVICES_CODE:
+> 			/*
+> 			 * This would be unusual, but not problematic per se,
+> 			 * as long as we take care not to create a writable
+> 			 * mapping for executable code.
+> 			 */
+> 			fallthrough;
+> 
+> 		case EFI_ACPI_MEMORY_NVS:
+> 			/*
+> 			 * ACPI NVS marks an area reserved for use by the
+> 			 * firmware, even after exiting the boot service.
+> 			 * This may be used by the firmware for sharing dynamic
+> 			 * tables/data (e.g., ACPI CCEL) with the OS. Map it
+> 			 * as read-only.
+> 			 */
+> 			prot = PAGE_KERNEL_RO;
+> 			break;
+> 
+> 
+> With that, I'm happy to pick up the series (let me know if you want me
+> to make the change above locally to save you a resend).
+> 
+> Will
 
-Shouldn't this be merged with the other case handling read-only mappings?
-e.g. something like:
-
-		switch (region->type) {
-		case EFI_LOADER_CODE:
-		case EFI_LOADER_DATA:
-		case EFI_BOOT_SERVICES_CODE:
-		case EFI_BOOT_SERVICES_DATA:
-		case EFI_CONVENTIONAL_MEMORY:
-		case EFI_PERSISTENT_MEMORY:
-			if (memblock_is_map_memory(phys) ||
-			    !memblock_is_region_memory(phys, size)) {
-				pr_warn(FW_BUG "requested region covers kernel memory @ %pa\n", &phys);
-				return NULL;
-			}
-			/*
-			 * Mapping kernel memory is permitted if the region in
-			 * question is covered by a single memblock with the
-			 * NOMAP attribute set: this enables the use of ACPI
-			 * table overrides passed via initramfs, which are
-			 * reserved in memory using arch_reserve_mem_area()
-			 * below. As this particular use case only requires
-			 * read access, fall through to the R/O mapping case.
-			 */
-			fallthrough;
-
-		case EFI_RUNTIME_SERVICES_CODE:
-			/*
-			 * This would be unusual, but not problematic per se,
-			 * as long as we take care not to create a writable
-			 * mapping for executable code.
-			 */
-			fallthrough;
-
-		case EFI_ACPI_MEMORY_NVS:
-			/*
-			 * ACPI NVS marks an area reserved for use by the
-			 * firmware, even after exiting the boot service.
-			 * This may be used by the firmware for sharing dynamic
-			 * tables/data (e.g., ACPI CCEL) with the OS. Map it
-			 * as read-only.
-			 */
-			prot = PAGE_KERNEL_RO;
-			break;
-
-
-With that, I'm happy to pick up the series (let me know if you want me
-to make the change above locally to save you a resend).
-
-Will
