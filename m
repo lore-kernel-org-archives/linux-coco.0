@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7AC31CA64
-	for <linux-coco@lists.linux.dev>; Thu, 18 Sep 2025 23:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C10831DD85
+	for <linux-coco@lists.linux.dev>; Thu, 18 Sep 2025 23:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758237792; cv=none; b=r0EFWjkV1B6i2l3U1vIVzRXrKWyXYotMf3rsXIpKBem5qTDOD/rb3t45pd5xhgJXcq95nMrDdVQM1Xya2UduXmrV3A2DExEXKARxS8459Pb70wf2xWAb7ebFukZDfuz9BFAFpTZOsZXma5w9WXp609us6deK6j6/qiTMFSYaLew=
+	t=1758237792; cv=none; b=IswxfkaYoHFurlwh5nPnFCBMzdvMC4y8vLs1cMP/fL1RQAIH68VSilmNbc0mTUL84V0KqC5BcNAXo6Pe41VvYbCw96PTRr+N8R4/37hQ24WjKG+lHuN5YoJL6MVKQJ3z4e3JtrMIjwtJSM2l+i3aL875d44A/0oGuz8ym0e0aVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758237792; c=relaxed/simple;
-	bh=Ou9KgexAoD6sp/ynXpup7AHQQCaYhFQ1hjMVD4ZpFfs=;
+	bh=x1kfSJSD+ZsZVDmROQy13II+aAyWoHke/JipsQ6+0Tw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kNdigiS8iSPPtqRkBxtJHJWyidugNyKxYidm1MF0givIZNCs5etvwpHDop8HV0cpB1JXNGRkW68YXYYYd1BMYrBBbz1OhIjqrpB83oQKTDu9bclJoVdaj4XvoSJZkV6f2Hj26/NVAeo4pvYSZtPL1Xb4HaxEymTa4VhXdDFpoec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Prszm5vK; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=gkcwBiw6ZjujFGkgyMt6sRVs2SzE6rGiPro0Od9MjIepmyjLsuFn9NovYvtiEmzc+bx4N/t8V6yB+cR3/PJJG2I/JlGiB0f/vGcPmDTJ8m0Qqs7tUsU0omxOk6V9nwOtEYWtHIBBh1kzZhW6bBKwjJAnbZXMyRhzjJi/8LqwDVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dOuw+fkf; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Prszm5vK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dOuw+fkf"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1758237791; x=1789773791;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Ou9KgexAoD6sp/ynXpup7AHQQCaYhFQ1hjMVD4ZpFfs=;
-  b=Prszm5vK5SGbK5WLG+xN9FHx2/KUqmxh/l2IyNWyuPB45C2qUmlOicGJ
-   dChyc64UapSKqY5ee5QHHysJ2zQWHut+82jLh9rytuPBRU9RsE4F5rxXu
-   8POpvI6y1XmlRGeO+YxGaW8QcF87LKusY2AP9Y9r32H9F2jaHScITcj1v
-   At68WzD6SUA6WYDttpzUKOyc01Ih5dOsReVTHBxaUQkURBJIljd8FPSsv
-   rUGoXE/tvYKlRjYEVUDVwqTvIOgmuKsZajX13ZOpIosD55oZTH00aYwWG
-   ylyJVuUSyQbncjFQnxTKR5R84XA7nmysp8FcQXO8ug5ouZI34RMYjCM+i
-   Q==;
-X-CSE-ConnectionGUID: ygr+BdhfSo2oov6Ait2V8A==
-X-CSE-MsgGUID: chWiHDarR/+8aOvbhe+CGA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60735475"
+  bh=x1kfSJSD+ZsZVDmROQy13II+aAyWoHke/JipsQ6+0Tw=;
+  b=dOuw+fkfcJ2hy539BFYzJk/Pg4LYZW/1oGIR+3CDbzyq52/bXck27J/f
+   5zuRJoGOw2h7IpAmfV89O+xngFZCN7GV2Rx1HXJsM8eHqAKu5moBnIn3e
+   wkFgn1a2j4JP8fAm95VPf8Ok4THWrL0yYq7uqAVDBlX2Ymcqks6iyTr40
+   LhhRfaHW7sWhRr+oYy4JzQxDrpdnRKHMBjPO7SSXTxAXIGv+1CGuEP2vq
+   ep38Brtb3FmR0RpGcRmMpSB3OS97xpUyZkFfmhPhVBredXruvX0NVw3eO
+   U0OOcfW2BB+Z3Qbm+MdoehMAw70irOVHTYgiEONQi0XUqAHhSg1NrO4zM
+   A==;
+X-CSE-ConnectionGUID: 8v3fKsG2QL+hONxD1Wf/Ow==
+X-CSE-MsgGUID: SayWLh1/S6iRh2AvMcTyZg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60735483"
 X-IronPort-AV: E=Sophos;i="6.18,276,1751266800"; 
-   d="scan'208";a="60735475"
+   d="scan'208";a="60735483"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 16:23:07 -0700
-X-CSE-ConnectionGUID: BhFvE0StRoSirSF0g5j/hg==
-X-CSE-MsgGUID: zNIK4CuoSMu8GGqTETmJ7Q==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 16:23:08 -0700
+X-CSE-ConnectionGUID: PcYxYFTjQVqHLOTcVtY++g==
+X-CSE-MsgGUID: 7oI4sD50TVK8yQ1mWtZEjA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,276,1751266800"; 
-   d="scan'208";a="176491479"
+   d="scan'208";a="176491483"
 Received: from rpedgeco-desk.jf.intel.com ([10.88.27.139])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 16:23:06 -0700
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 16:23:07 -0700
 From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 To: kas@kernel.org,
 	bp@alien8.de,
@@ -62,9 +62,9 @@ To: kas@kernel.org,
 	vannapurve@google.com
 Cc: rick.p.edgecombe@intel.com,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH v3 15/16] x86/virt/tdx: Enable Dynamic PAMT
-Date: Thu, 18 Sep 2025 16:22:23 -0700
-Message-ID: <20250918232224.2202592-16-rick.p.edgecombe@intel.com>
+Subject: [PATCH v3 16/16] Documentation/x86: Add documentation for TDX's Dynamic PAMT
+Date: Thu, 18 Sep 2025 16:22:24 -0700
+Message-ID: <20250918232224.2202592-17-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250918232224.2202592-1-rick.p.edgecombe@intel.com>
 References: <20250918232224.2202592-1-rick.p.edgecombe@intel.com>
@@ -78,98 +78,55 @@ Content-Transfer-Encoding: 8bit
 
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 
-The Physical Address Metadata Table (PAMT) holds TDX metadata for
-physical memory and must be allocated by the kernel during TDX module
-initialization.
+Expand TDX documentation to include information on the Dynamic PAMT
+feature.
 
-The exact size of the required PAMT memory is determined by the TDX
-module and may vary between TDX module versions, but currently it is
-approximately 0.4% of the system memory. This is a significant
-commitment, especially if it is not known upfront whether the machine
-will run any TDX guests.
-
-The Dynamic PAMT feature reduces static PAMT allocations. PAMT_1G and
-PAMT_2M levels are still allocated on TDX module initialization, but the
-PAMT_4K level is allocated dynamically, reducing static allocations to
-approximately 0.004% of the system memory.
-
-All pieces are in place. Enable Dynamic PAMT if it is supported.
+The new section explains PAMT support in the TDX module and how Dynamic
+PAMT affects the kernel memory use.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+[Add feedback, update log]
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 ---
 v3:
- - No changes
+ - Trim down docs to be about things that user cares about, instead
+   of development history and other details like this.
 ---
- arch/x86/include/asm/tdx.h  | 6 +++++-
- arch/x86/virt/vmx/tdx/tdx.c | 8 ++++++++
- arch/x86/virt/vmx/tdx/tdx.h | 3 ---
- 3 files changed, 13 insertions(+), 4 deletions(-)
+ Documentation/arch/x86/tdx.rst | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index e108b48af2c3..d389dc07c718 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -12,6 +12,10 @@
- #include <asm/trapnr.h>
- #include <asm/shared/tdx.h>
+diff --git a/Documentation/arch/x86/tdx.rst b/Documentation/arch/x86/tdx.rst
+index 719043cd8b46..d07132c99cc6 100644
+--- a/Documentation/arch/x86/tdx.rst
++++ b/Documentation/arch/x86/tdx.rst
+@@ -99,6 +99,27 @@ initialize::
  
-+/* Bit definitions of TDX_FEATURES0 metadata field */
-+#define TDX_FEATURES0_NO_RBP_MOD		BIT_ULL(18)
-+#define TDX_FEATURES0_DYNAMIC_PAMT		BIT_ULL(36)
+   [..] virt/tdx: module initialization failed ...
+ 
++Dynamic PAMT
++------------
 +
- #ifndef __ASSEMBLER__
- 
- #include <uapi/asm/mce.h>
-@@ -110,7 +114,7 @@ const struct tdx_sys_info *tdx_get_sysinfo(void);
- 
- static inline bool tdx_supports_dynamic_pamt(const struct tdx_sys_info *sysinfo)
- {
--	return false; /* To be enabled when kernel is ready */
-+	return sysinfo->features.tdx_features0 & TDX_FEATURES0_DYNAMIC_PAMT;
- }
- 
- int tdx_guest_keyid_alloc(void);
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index b4edc3ee495c..da21104575a6 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1043,6 +1043,8 @@ static int construct_tdmrs(struct list_head *tmb_list,
- 	return ret;
- }
- 
-+#define TDX_SYS_CONFIG_DYNAMIC_PAMT	BIT(16)
++PAMT is memory that the TDX module needs to keep data about each page
++(think like struct page). It needs to handed to the TDX module for its
++exclusive use. For normal PAMT, this is installed when the TDX module
++is first loaded and comes to about 0.4% of system memory.
 +
- static int config_tdx_module(struct tdmr_info_list *tdmr_list, u64 global_keyid)
- {
- 	struct tdx_module_args args = {};
-@@ -1070,6 +1072,12 @@ static int config_tdx_module(struct tdmr_info_list *tdmr_list, u64 global_keyid)
- 	args.rcx = __pa(tdmr_pa_array);
- 	args.rdx = tdmr_list->nr_consumed_tdmrs;
- 	args.r8 = global_keyid;
++Dynamic PAMT is a TDX feature that allows VMM to allocate part of the
++PAMT as needed (the parts for tracking 4KB size pages). The other page
++sizes (1GB and 2MB) are still allocated statically at the time of
++TDX module initialization. This reduces the amount of memory that TDX
++uses while TDs are not in use.
 +
-+	if (tdx_supports_dynamic_pamt(&tdx_sysinfo)) {
-+		pr_info("Enable Dynamic PAMT\n");
-+		args.r8 |= TDX_SYS_CONFIG_DYNAMIC_PAMT;
-+	}
++When Dynamic PAMT is in use, dmesg shows it like:
++  [..] virt/tdx: Enable Dynamic PAMT
++  [..] virt/tdx: 10092 KB allocated for PAMT
++  [..] virt/tdx: module initialized
 +
- 	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
++Dynamic PAMT is enabled automatically if supported.
++
+ TDX Interaction to Other Kernel Components
+ ------------------------------------------
  
- 	/* Free the array as it is not required anymore. */
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index 46c4214b79fb..096c78a1d438 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -86,9 +86,6 @@ struct tdmr_info {
- 	DECLARE_FLEX_ARRAY(struct tdmr_reserved_area, reserved_areas);
- } __packed __aligned(TDMR_INFO_ALIGNMENT);
- 
--/* Bit definitions of TDX_FEATURES0 metadata field */
--#define TDX_FEATURES0_NO_RBP_MOD	BIT(18)
--
- /*
-  * Do not put any hardware-defined TDX structure representations below
-  * this comment!
 -- 
 2.51.0
 
