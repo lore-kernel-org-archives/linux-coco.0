@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95FE7279346
-	for <linux-coco@lists.linux.dev>; Thu, 18 Sep 2025 23:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8BC286D70
+	for <linux-coco@lists.linux.dev>; Thu, 18 Sep 2025 23:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758237782; cv=none; b=N1z9l42EtThCmBZkEq5Up6hDKea0Dzi3ogZTaUCEl2+6etLpMDwbO18MYkAG+NmzyaGeIWxcXTSaj8qw2rZJaAgkG6xRAmOgQhxYen0Kp1SC2mPzX/tOE8E8fh2+Vx6GQsLTHE07RJRl/CymlxqOsLSsb/HoL/QU0SrKdKY10Gg=
+	t=1758237783; cv=none; b=lnDkbkC+WA/f6AzwawAMALPvxsx8QNRNn+xkTUzPADIWllcR2wDcAbbMZ6EaXxTTbG3ie/xFq6pBeP9Y5QrjdsZ2+g4ISip3st4gnzrclfOJDFVdJaUukLibQPLxezP1ZhSsZMCZWwnDQWF8M1Og8guTu06wHQLmRKq5Sb8Zuqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758237782; c=relaxed/simple;
-	bh=l9Ya3fAIbmys7dr9S11yHPk1UUFRFUDPzBo9FQ1gEYc=;
+	s=arc-20240116; t=1758237783; c=relaxed/simple;
+	bh=MCUA5YmKxvXPCOg9JB8udZ0J6e84jX8taiDa2J+Nv8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RifoZMUqVqb+TLfULW7xzd7SDuJNKRmpwCyhGsccG5dER+6DD23w4jf+a24RXfyqZIK/9hyfgCxuU46+ZHTz6I71beNUWGE1CrQ8PAmjlG6GRzju2CuczWEY90BgwTDKgiPIJCYrkIHGhojmvEQ5ceVZsHb7vaECcaXt2MCN4o0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J0YSNaQF; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=GLme7AhKKF/dlywaZPJlCBc8XFonKEgadJhKN3o0kXPnET6L3qgpWw4G58bzYfxCGoTdLOVSR4tNC45WE/+LuxvXTGJAKb+0PCsp+Jy0Cel8D0N1SS0MpEx0HCEH4GayXyZcKo3oZkprkQFnY6O5HXv/72ZQDnairFtqWtgODFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RvytDUOl; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J0YSNaQF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RvytDUOl"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758237781; x=1789773781;
+  t=1758237782; x=1789773782;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=l9Ya3fAIbmys7dr9S11yHPk1UUFRFUDPzBo9FQ1gEYc=;
-  b=J0YSNaQFj5TmYt40LYbd3046QOVkoNZX821ZUs92YviNz2ozY41GF9XW
-   uidERxxj7Gmmo17MTZuf9hPfuCsnBt4t3FMkaCWyq30F1DTr4P+/p03h+
-   3+gAQMyL0jh5EymXsXN07IBiTspz4Gg2V74Zq6/STh/sv1wzzO0Yd5/TQ
-   5dMKgPeso5DWj4DbSZddjhKt9K4zxuVlnlYaB453KS4sPLsWLNSYDo15S
-   7Z3kGWlcLpfvRAv2LIvg4T0U0od3qzV6oZZFveQhKPNstaej9RvR+gzte
-   SUeVuN3AdAuYMLwoA0hdycE2/4WwszxHLYGul9fFvUSmX3vjbNa27qT0a
-   A==;
-X-CSE-ConnectionGUID: 5r1KLDeERWy8i0UAvU5iiw==
-X-CSE-MsgGUID: iPsAAb/HQ2a1v+DvN8J0/Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60735374"
+  bh=MCUA5YmKxvXPCOg9JB8udZ0J6e84jX8taiDa2J+Nv8I=;
+  b=RvytDUOlh1UEfPOn13UwWjt0z9M0T+XRoQmfRyxJBpCnnHiwIv7MyeqE
+   H04at+OwnSSlhJ6zX6CDAxK8/5grJLDttIdyJgrMuNEHHtmGY31v8Mcb5
+   0imywC6VoDm9hpBjmRVEObbDyLHx9TfReB4QQnWUd5bTJvHlnlvIZVC5Z
+   o4A8cSrL5DvGjvj02gTb5OPpTnAIBuEFWm+4PzWlAgzs62qNUoqJzpzHF
+   e/H6M8WsfeNRWZwECrcX78Y+JOwS2QxZiXSYtNhJN1cFNUqlurW75SejR
+   E6M/p0xoQ4UocNXIDrtcdzFBKc27qGt2OIiB+Q99i4LnPgUGlPWMPlpWC
+   g==;
+X-CSE-ConnectionGUID: tKzobIDHR6ycHT0HclMDCw==
+X-CSE-MsgGUID: dvptkQ+tQy2JQv7e9F677Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60735385"
 X-IronPort-AV: E=Sophos;i="6.18,276,1751266800"; 
-   d="scan'208";a="60735374"
+   d="scan'208";a="60735385"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 16:22:59 -0700
-X-CSE-ConnectionGUID: 68HiLhR5Sc+RhmschULLqA==
-X-CSE-MsgGUID: +zicv4hBQXSItbhxdUlFvw==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 16:23:00 -0700
+X-CSE-ConnectionGUID: hQUhx2q9S4K/l6GP9ERScw==
+X-CSE-MsgGUID: kE54xP56R7mGFfjPCv4SLg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,276,1751266800"; 
-   d="scan'208";a="176491390"
+   d="scan'208";a="176491399"
 Received: from rpedgeco-desk.jf.intel.com ([10.88.27.139])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 16:22:58 -0700
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 16:22:59 -0700
 From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 To: kas@kernel.org,
 	bp@alien8.de,
@@ -60,11 +60,10 @@ To: kas@kernel.org,
 	x86@kernel.org,
 	yan.y.zhao@intel.com,
 	vannapurve@google.com
-Cc: rick.p.edgecombe@intel.com,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH v3 01/16] x86/tdx: Move all TDX error defines into <asm/shared/tdx_errno.h>
-Date: Thu, 18 Sep 2025 16:22:09 -0700
-Message-ID: <20250918232224.2202592-2-rick.p.edgecombe@intel.com>
+Cc: rick.p.edgecombe@intel.com
+Subject: [PATCH v3 03/16] x86/virt/tdx: Simplify tdmr_get_pamt_sz()
+Date: Thu, 18 Sep 2025 16:22:11 -0700
+Message-ID: <20250918232224.2202592-4-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250918232224.2202592-1-rick.p.edgecombe@intel.com>
 References: <20250918232224.2202592-1-rick.p.edgecombe@intel.com>
@@ -76,155 +75,157 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+For each memory region that the TDX module might use (TDMR), the three
+separate PAMT allocations are needed. One for each supported page size
+(1GB, 2MB, 4KB). These store information on each page in the TDMR. In
+Linux, they are allocated out of one physically contiguous block, in order
+to more efficiently use some internal TDX module book keeping resources.
+So some simple math is needed to break the single large allocation into
+three smaller allocations for each page size.
 
-Today there are two separate locations where TDX error codes are defined:
-         arch/x86/include/asm/tdx.h
-         arch/x86/kvm/vmx/tdx.h
+There are some commonalities in the math needed to calculate the base and
+size for each smaller allocation, and so an effort was made to share logic
+across the three. Unfortunately doing this turned out naturally tortured,
+with a loop iterating over the three page sizes, only to call into a
+function with a case statement for each page size. In the future Dynamic
+PAMT will add more logic that is special to the 4KB page size, making the
+benefit of the math sharing even more questionable.
 
-They have some overlap that is already defined similarly. Reduce the
-duplication and prepare to introduce some helpers for these error codes in
-the central place by unifying them. Join them at:
-        asm/shared/tdx_errno.h
-...and update the headers that contained the duplicated definitions to
-include the new unified header.
+Three is not a very high number, so get rid of the loop and just duplicate
+the small calculation three times. In doing so, setup for future Dynamic
+PAMT changes and drop a net 33 lines of code.
 
-Opportunistically massage some comments. Also, adjust
-_BITUL()->_BITULL() to address 32 bit build errors after the move.
+Since the loop that iterates over it is gone, further simplify the code by
+dropping the array of intermediate size and base storage. Just store the
+values to their final locations. Accept the small complication of having
+to clear tdmr->pamt_4k_base in the error path, so that tdmr_do_pamt_func()
+will not try to operate on the TDMR struct when attempting to free it.
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-[enhance log]
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 ---
 v3:
- - Split from "x86/tdx: Consolidate TDX error handling" (Dave, Kai)
- - Write log (Rick)
- - Fix 32 bit build error
+ - New patch
 ---
- arch/x86/include/asm/shared/tdx.h             |  1 +
- .../vmx => include/asm/shared}/tdx_errno.h    | 27 ++++++++++++++-----
- arch/x86/include/asm/tdx.h                    | 20 --------------
- arch/x86/kvm/vmx/tdx.h                        |  1 -
- 4 files changed, 22 insertions(+), 27 deletions(-)
- rename arch/x86/{kvm/vmx => include/asm/shared}/tdx_errno.h (66%)
+ arch/x86/virt/vmx/tdx/tdx.c | 69 ++++++++++---------------------------
+ 1 file changed, 18 insertions(+), 51 deletions(-)
 
-diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-index 8bc074c8d7c6..6a1646fc2b2f 100644
---- a/arch/x86/include/asm/shared/tdx.h
-+++ b/arch/x86/include/asm/shared/tdx.h
-@@ -4,6 +4,7 @@
- 
- #include <linux/bits.h>
- #include <linux/types.h>
-+#include <asm/shared/tdx_errno.h>
- 
- #define TDX_HYPERCALL_STANDARD  0
- 
-diff --git a/arch/x86/kvm/vmx/tdx_errno.h b/arch/x86/include/asm/shared/tdx_errno.h
-similarity index 66%
-rename from arch/x86/kvm/vmx/tdx_errno.h
-rename to arch/x86/include/asm/shared/tdx_errno.h
-index 6ff4672c4181..f98924fe5198 100644
---- a/arch/x86/kvm/vmx/tdx_errno.h
-+++ b/arch/x86/include/asm/shared/tdx_errno.h
-@@ -1,14 +1,14 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--/* architectural status code for SEAMCALL */
--
--#ifndef __KVM_X86_TDX_ERRNO_H
--#define __KVM_X86_TDX_ERRNO_H
-+#ifndef _X86_SHARED_TDX_ERRNO_H
-+#define _X86_SHARED_TDX_ERRNO_H
- 
-+/* Upper 32 bit of the TDX error code encodes the status */
- #define TDX_SEAMCALL_STATUS_MASK		0xFFFFFFFF00000000ULL
- 
- /*
-- * TDX SEAMCALL Status Codes (returned in RAX)
-+ * TDX SEAMCALL Status Codes
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index e962fffa73a6..38dae825bbb9 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -445,30 +445,16 @@ static int fill_out_tdmrs(struct list_head *tmb_list,
+  * PAMT size is always aligned up to 4K page boundary.
   */
-+#define TDX_SUCCESS				0ULL
- #define TDX_NON_RECOVERABLE_VCPU		0x4000000100000000ULL
- #define TDX_NON_RECOVERABLE_TD			0x4000000200000000ULL
- #define TDX_NON_RECOVERABLE_TD_NON_ACCESSIBLE	0x6000000500000000ULL
-@@ -17,6 +17,7 @@
- #define TDX_OPERAND_INVALID			0xC000010000000000ULL
- #define TDX_OPERAND_BUSY			0x8000020000000000ULL
- #define TDX_PREVIOUS_TLB_EPOCH_BUSY		0x8000020100000000ULL
-+#define TDX_RND_NO_ENTROPY			0x8000020300000000ULL
- #define TDX_PAGE_METADATA_INCORRECT		0xC000030000000000ULL
- #define TDX_VCPU_NOT_ASSOCIATED			0x8000070200000000ULL
- #define TDX_KEY_GENERATION_FAILED		0x8000080000000000ULL
-@@ -28,6 +29,20 @@
- #define TDX_EPT_ENTRY_STATE_INCORRECT		0xC0000B0D00000000ULL
- #define TDX_METADATA_FIELD_NOT_READABLE		0xC0000C0200000000ULL
+ static unsigned long tdmr_get_pamt_sz(struct tdmr_info *tdmr, int pgsz,
+-				      u16 pamt_entry_size)
++				      u16 pamt_entry_size[])
+ {
+ 	unsigned long pamt_sz, nr_pamt_entries;
++	const int tdx_pg_size_shift[] = { PAGE_SHIFT, PMD_SHIFT, PUD_SHIFT };
  
-+/*
-+ * SW-defined error codes.
-+ *
-+ * Bits 47:40 == 0xFF indicate Reserved status code class that never used by
-+ * TDX module.
-+ */
-+#define TDX_ERROR			_BITULL(63)
-+#define TDX_NON_RECOVERABLE		_BITULL(62)
-+#define TDX_SW_ERROR			(TDX_ERROR | GENMASK_ULL(47, 40))
-+#define TDX_SEAMCALL_VMFAILINVALID	(TDX_SW_ERROR | _ULL(0xFFFF0000))
-+
-+#define TDX_SEAMCALL_GP			(TDX_SW_ERROR | X86_TRAP_GP)
-+#define TDX_SEAMCALL_UD			(TDX_SW_ERROR | X86_TRAP_UD)
-+
+-	switch (pgsz) {
+-	case TDX_PS_4K:
+-		nr_pamt_entries = tdmr->size >> PAGE_SHIFT;
+-		break;
+-	case TDX_PS_2M:
+-		nr_pamt_entries = tdmr->size >> PMD_SHIFT;
+-		break;
+-	case TDX_PS_1G:
+-		nr_pamt_entries = tdmr->size >> PUD_SHIFT;
+-		break;
+-	default:
+-		WARN_ON_ONCE(1);
+-		return 0;
+-	}
++	nr_pamt_entries = tdmr->size >> tdx_pg_size_shift[pgsz];
++	pamt_sz = nr_pamt_entries * pamt_entry_size[pgsz];
+ 
+-	pamt_sz = nr_pamt_entries * pamt_entry_size;
+ 	/* TDX requires PAMT size must be 4K aligned */
+-	pamt_sz = ALIGN(pamt_sz, PAGE_SIZE);
+-
+-	return pamt_sz;
++	return PAGE_ALIGN(pamt_sz);
+ }
+ 
  /*
-  * TDX module operand ID, appears in 31:0 part of error code as
-  * detail information
-@@ -37,4 +52,4 @@
- #define TDX_OPERAND_ID_SEPT			0x92
- #define TDX_OPERAND_ID_TD_EPOCH			0xa9
- 
--#endif /* __KVM_X86_TDX_ERRNO_H */
-+#endif /* _X86_SHARED_TDX_ERRNO_H */
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 7ddef3a69866..0e795e7c0b22 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -12,26 +12,6 @@
- #include <asm/trapnr.h>
- #include <asm/shared/tdx.h>
- 
--/*
-- * SW-defined error codes.
-- *
-- * Bits 47:40 == 0xFF indicate Reserved status code class that never used by
-- * TDX module.
-- */
--#define TDX_ERROR			_BITUL(63)
--#define TDX_NON_RECOVERABLE		_BITUL(62)
--#define TDX_SW_ERROR			(TDX_ERROR | GENMASK_ULL(47, 40))
--#define TDX_SEAMCALL_VMFAILINVALID	(TDX_SW_ERROR | _UL(0xFFFF0000))
+@@ -509,25 +495,19 @@ static int tdmr_set_up_pamt(struct tdmr_info *tdmr,
+ 			    struct list_head *tmb_list,
+ 			    u16 pamt_entry_size[])
+ {
+-	unsigned long pamt_base[TDX_PS_NR];
+-	unsigned long pamt_size[TDX_PS_NR];
+-	unsigned long tdmr_pamt_base;
+ 	unsigned long tdmr_pamt_size;
+ 	struct page *pamt;
+-	int pgsz, nid;
 -
--#define TDX_SEAMCALL_GP			(TDX_SW_ERROR | X86_TRAP_GP)
--#define TDX_SEAMCALL_UD			(TDX_SW_ERROR | X86_TRAP_UD)
++	int nid;
+ 	nid = tdmr_get_nid(tdmr, tmb_list);
+ 
+ 	/*
+ 	 * Calculate the PAMT size for each TDX supported page size
+ 	 * and the total PAMT size.
+ 	 */
+-	tdmr_pamt_size = 0;
+-	for (pgsz = TDX_PS_4K; pgsz < TDX_PS_NR; pgsz++) {
+-		pamt_size[pgsz] = tdmr_get_pamt_sz(tdmr, pgsz,
+-					pamt_entry_size[pgsz]);
+-		tdmr_pamt_size += pamt_size[pgsz];
+-	}
++	tdmr->pamt_4k_size = tdmr_get_pamt_sz(tdmr, TDX_PS_4K, pamt_entry_size);
++	tdmr->pamt_2m_size = tdmr_get_pamt_sz(tdmr, TDX_PS_2M, pamt_entry_size);
++	tdmr->pamt_1g_size = tdmr_get_pamt_sz(tdmr, TDX_PS_1G, pamt_entry_size);
++	tdmr_pamt_size = tdmr->pamt_4k_size + tdmr->pamt_2m_size + tdmr->pamt_1g_size;
+ 
+ 	/*
+ 	 * Allocate one chunk of physically contiguous memory for all
+@@ -535,26 +515,16 @@ static int tdmr_set_up_pamt(struct tdmr_info *tdmr,
+ 	 * in overlapped TDMRs.
+ 	 */
+ 	pamt = alloc_contig_pages(tdmr_pamt_size >> PAGE_SHIFT, GFP_KERNEL,
+-			nid, &node_online_map);
+-	if (!pamt)
++				  nid, &node_online_map);
++	if (!pamt) {
++		/* Zero base so that the error path will skip freeing. */
++		tdmr->pamt_4k_base = 0;
+ 		return -ENOMEM;
 -
--/*
-- * TDX module SEAMCALL leaf function error codes
-- */
--#define TDX_SUCCESS		0ULL
--#define TDX_RND_NO_ENTROPY	0x8000020300000000ULL
+-	/*
+-	 * Break the contiguous allocation back up into the
+-	 * individual PAMTs for each page size.
+-	 */
+-	tdmr_pamt_base = page_to_pfn(pamt) << PAGE_SHIFT;
+-	for (pgsz = TDX_PS_4K; pgsz < TDX_PS_NR; pgsz++) {
+-		pamt_base[pgsz] = tdmr_pamt_base;
+-		tdmr_pamt_base += pamt_size[pgsz];
+ 	}
+ 
+-	tdmr->pamt_4k_base = pamt_base[TDX_PS_4K];
+-	tdmr->pamt_4k_size = pamt_size[TDX_PS_4K];
+-	tdmr->pamt_2m_base = pamt_base[TDX_PS_2M];
+-	tdmr->pamt_2m_size = pamt_size[TDX_PS_2M];
+-	tdmr->pamt_1g_base = pamt_base[TDX_PS_1G];
+-	tdmr->pamt_1g_size = pamt_size[TDX_PS_1G];
++	tdmr->pamt_4k_base = page_to_phys(pamt);
++	tdmr->pamt_2m_base = tdmr->pamt_4k_base + tdmr->pamt_4k_size;
++	tdmr->pamt_1g_base = tdmr->pamt_2m_base + tdmr->pamt_2m_size;
+ 
+ 	return 0;
+ }
+@@ -585,10 +555,7 @@ static void tdmr_do_pamt_func(struct tdmr_info *tdmr,
+ 	tdmr_get_pamt(tdmr, &pamt_base, &pamt_size);
+ 
+ 	/* Do nothing if PAMT hasn't been allocated for this TDMR */
+-	if (!pamt_size)
+-		return;
 -
- #ifndef __ASSEMBLER__
+-	if (WARN_ON_ONCE(!pamt_base))
++	if (!pamt_base)
+ 		return;
  
- #include <uapi/asm/mce.h>
-diff --git a/arch/x86/kvm/vmx/tdx.h b/arch/x86/kvm/vmx/tdx.h
-index ca39a9391db1..f4e609a745ee 100644
---- a/arch/x86/kvm/vmx/tdx.h
-+++ b/arch/x86/kvm/vmx/tdx.h
-@@ -3,7 +3,6 @@
- #define __KVM_X86_VMX_TDX_H
- 
- #include "tdx_arch.h"
--#include "tdx_errno.h"
- 
- #ifdef CONFIG_KVM_INTEL_TDX
- #include "common.h"
+ 	pamt_func(pamt_base, pamt_size);
 -- 
 2.51.0
 
