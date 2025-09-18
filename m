@@ -1,56 +1,56 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2BA26D4DA
-	for <linux-coco@lists.linux.dev>; Thu, 18 Sep 2025 06:31:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F2C2EA48F
+	for <linux-coco@lists.linux.dev>; Thu, 18 Sep 2025 07:38:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758177065; cv=none; b=n0VC9qSMOMENTcrfkavpM01t+apmTvNn6udB24VHewYqkXpGeQ3wrDbP0BeeYVMR+jLtC7t53VYp/j6HtT4PDSnJmrjGkvWZd3UcB9eVZlm8OJFPU7GXQM3vqOFvd/qpEqfZpFoAn9mFLy+IROLmqRgugFyXvUs0Ib6KiFbMOkQ=
+	t=1758181090; cv=none; b=nof3V8JESFsmOqRgD9lLt2KiSwNxPjQbLyT7XvEXzDbD4mbsaYyO4yVYaXh+6wBYNDXohmAFKFjajv1d5bgrizXxqLJdk8PrApikRcZD0bLn8eA/MWIjxfWezW2G9J1VmQWdTXMm9ZdQwLUnrHTNluyaUkllYXf8SBP0zUBAwDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758177065; c=relaxed/simple;
-	bh=1ESgdimDNbdXFB+WfS9IWJsgtjPJ0aG5/dKUvYiS78w=;
+	s=arc-20240116; t=1758181090; c=relaxed/simple;
+	bh=bgAmLiMhlZe8YpZ/L/rxaACzuljaK9Hn8eaaSBObElc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mTHjy7Wh+BXVE6Odj35rtoku+PrWq/tXvU52+y4E9XHOTbckXUddDaURJRGL6Fm4ufyn+oInzZyfrwzUjZha8gw46UCunxi1B/voSOU65wLsCepvkN5XjZ6kCwMz4B+qpPjGxe5Iy+PYvxPPy8oIFDeYlwUf5LQOozcslW+8LwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FBpE2wlU; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=rqcfAblPDPTCNxQp1yLYJfRfLsrdotAGyvIi428wCxAAxzncfdVad3F3FWbwlS9LLgw+KLKh1XKt55TXeq9xcnz7YmKkSK1rE7xWCf/0AD/FMestEUz7TiRCSCgzJ3fN/aZlttnVdOWHpJS8CJbYnOq0lBuC0hAn0q+W5bl4EYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pUTNMAWS; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FBpE2wlU"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-32ec2211659so609121a91.0
-        for <linux-coco@lists.linux.dev>; Wed, 17 Sep 2025 23:31:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pUTNMAWS"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-268141f759aso7199565ad.2
+        for <linux-coco@lists.linux.dev>; Thu, 18 Sep 2025 00:38:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758177063; x=1758781863; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1758181088; x=1758785888; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zYw7ATyO+FbNb+44lQoltDz9PEwp1UWJIGjKMOTdpb4=;
-        b=FBpE2wlUksuojF0dt0iyVV1ZiBUwgczYbHn00W6hISPrqdYCXXunT/7g7LNwIfj7Qi
-         3lckrznWnXlX3XfYawHayaR8CppikZ6WOQ/9K3iBQnl5wr1CAAd0jKpRd4EVIpAJgnPs
-         iky7A3/XIMSrsLvOYxjUlLYwLXWHuXfqYJDrtTs52TUq+7SweEwJczONGTx/cVSo1V49
-         pcza06MHPHE5TMotS0r2Z0o6cSSqvHGbmGszH2O9bC9oWv2DpJ2755EWKOh6vTfK76uu
-         k4/u2ba6+ySrS0CiT8v/jBkmgLnU7sqpiqXAFlEWleSBfo0lRYx/HUfUloGRtguxbCsb
-         ebyQ==
+        bh=QlTsY5GbnDLA8PNX/Abx8RaC8EAugacckjHGVY6QHnc=;
+        b=pUTNMAWSEE0fFVxokMsOvA8cW7vBt7TXl7EHNO4cR+CPZIsax8G4kcxvCP+C20IQx2
+         Q6HKxT3heudWGq57QVj9rbjzPd1dGkUB+UnPnYD25pwBkILW6+cKyJX56N5XCeOj23Gv
+         aw6hpf/BKCBECo7MNPrVynjySxdpLloZUa9XbSqiwdlvN4U5PDy452Qn1qRVfG6EwLSn
+         aEbOHH5BRXVENuSG4ZTENjl93ZrFPPsZfYF5VYtoTy7qHM3NemfANV5dcd1La3u2iJD+
+         iVATe7XXrrjkz6Oy8FmMhpkSRiSWKKKa6MIli8DB2GpFd6SYsJA/rb0E/SuQPT0Pw6tc
+         6K8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758177063; x=1758781863;
+        d=1e100.net; s=20230601; t=1758181088; x=1758785888;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zYw7ATyO+FbNb+44lQoltDz9PEwp1UWJIGjKMOTdpb4=;
-        b=vcw+A0Te9RktH3EHDRFz9Gjp1KJaK4VxjoWUn3M44aZQeCVgU5aBUz6NqI14P+B5bZ
-         qcQQm2Jxd3hWnc3QEWAxdp95UAbsXREOUVyMnuAOLEHk1SIQo4EtjM/du/6W9pSI+8Zw
-         FsZ+KIuvN83xwYG0VFFDL8ugBKF67AaTO2F40khuT9p8KMHaNCaw6ECaLLxX097n7VcY
-         cWFBgmfSYG4vTCaRafqe6CmBr+ZhanA5HBrHv2RdTbmb/ZxVyCVrDTrFlHWgEsrPhaDy
-         1vaeCcmNCXd2HhetEL3lTaMKPzH3lBPDCeDVCnSMVjsC3YV5DalLmf5vv3lJ/0kjoPew
-         B8vg==
-X-Forwarded-Encrypted: i=1; AJvYcCWSy0udwKooM7FohC5bY8O1Dr/6tRWLpz7gtoP4opvvId+p5PlZNJvOZvYzT1c0efBQQCC11i1tbZsT@lists.linux.dev
-X-Gm-Message-State: AOJu0YyczhCbbMJs611/sjmyemQAM/+ztVwSgPT2bWBrOv0LVG5W5tY/
-	TB/5G2RjEEfA7PWBKoF1xJOGo/A2hxvKjSXVBl5hxERvyjpEjaIgd8QekTJoDJwIrnxsqQrTekG
-	xLTgjPTcvv+B608RgbY4Urx+sPQ==
-X-Google-Smtp-Source: AGHT+IG8r6Hh7ieBZNhEHWEonWxugVqZ2GsgcsPqQV0BbYfLkp6mgTeqw5ZShceR0hVG0T5MXwZgGvkkREJdhdBrSQ==
-X-Received: from pjvv5.prod.google.com ([2002:a17:90b:5885:b0:32b:58d1:a610])
+        bh=QlTsY5GbnDLA8PNX/Abx8RaC8EAugacckjHGVY6QHnc=;
+        b=SI4/7qhKo+edVU4emgDc1FNgHZcNE31FuTc12opW5kzsz8lMAfgKJkQKFuhuksll71
+         hHNDqRLJ+yiSkfvgqixshaN39f5ruHDO61UsupVTrxK4gwjhsboEs1ZbUusNTLXk83jc
+         dp0QCcdOAFCtC2bqH+0NmVKgd2tGknVWY5zyEnhO0rse4ifQKng8ysbxK7FFkj9tsuu4
+         ZcehJaxXFaqDHvSaPsDLIeAKfFANZyGRP9DL0cmza2/lJywoESo9Y1sPvK+W7c8NhxWe
+         CZhreMXff87NciOHQu45/ET9lh0lgh2mT921KFkXsuNUb0pi1ISiv9u+CClIUU6St74Q
+         HLOA==
+X-Forwarded-Encrypted: i=1; AJvYcCXrZYmVHw7cr7eSO0Yk11tS7oWEWh8g1IolLWyeoXoFPzrouh3Zi9MHYKFQdaZlG2He430x9alJzWui@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx9KRzuWx6/jM5pkAz0mgmrmv0t2QZo9VWKjqwKIgsrjrh2O5C8
+	uCZDyaFDYx8adQtEKwpUTWD2+Z+cM6jeV/1G8S8KYC0ko3OUtBy9FVrSLVJK4PWvzOoP4tE4zeO
+	QV7LM7HBrzhSpjh9nVTkcGCn8kw==
+X-Google-Smtp-Source: AGHT+IFWHyiMZiyuig5xhyHRANmmixX2X7Nu3qdKOzaiOgRWeSBFWgY0P+tpsX/S7el9mJRQJfrg8QP8Wiu7wsmEUw==
+X-Received: from plsl15.prod.google.com ([2002:a17:903:244f:b0:267:d4d1:98df])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:5788:b0:32d:dffc:7ad6 with SMTP id 98e67ed59e1d1-32ee3f8c588mr6178959a91.33.1758177063484;
- Wed, 17 Sep 2025 23:31:03 -0700 (PDT)
-Date: Thu, 18 Sep 2025 06:31:01 +0000
-In-Reply-To: <20250916233335.wv2lf4fiejlw53o2@amd.com>
+ 2002:a17:903:144f:b0:269:874c:4e48 with SMTP id d9443c01a7336-269874c541emr20143955ad.47.1758181088219;
+ Thu, 18 Sep 2025 00:38:08 -0700 (PDT)
+Date: Thu, 18 Sep 2025 07:38:07 +0000
+In-Reply-To: <diqzo6r8p90a.fsf@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -58,8 +58,9 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20250613005400.3694904-1-michael.roth@amd.com>
- <20250613005400.3694904-2-michael.roth@amd.com> <diqztt1vf198.fsf@google.com> <20250916233335.wv2lf4fiejlw53o2@amd.com>
-Message-ID: <diqzo6r8p90a.fsf@google.com>
+ <20250613005400.3694904-2-michael.roth@amd.com> <diqztt1vf198.fsf@google.com>
+ <20250916233335.wv2lf4fiejlw53o2@amd.com> <diqzo6r8p90a.fsf@google.com>
+Message-ID: <diqzcy7op5wg.fsf@google.com>
 Subject: Re: [PATCH RFC v1 1/5] KVM: guest_memfd: Remove preparation tracking
 From: Ackerley Tng <ackerleytng@google.com>
 To: Michael Roth <michael.roth@amd.com>
@@ -71,163 +72,108 @@ Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
 	aik@amd.com
 Content-Type: text/plain; charset="UTF-8"
 
-Michael Roth <michael.roth@amd.com> writes:
+Ackerley Tng <ackerleytng@google.com> writes:
 
-> On Mon, Aug 25, 2025 at 04:08:19PM -0700, Ackerley Tng wrote:
->> Michael Roth <michael.roth@amd.com> writes:
->> 
->> > guest_memfd currently uses the folio uptodate flag to track:
->> >
->> >   1) whether or not a page had been cleared before initial usage
->> >   2) whether or not the architecture hooks have been issued to put the
->> >      page in a private state as defined by the architecture
->> >
->> > In practice, 2) is only actually being tracked for SEV-SNP VMs, and
->> > there do not seem to be any plans/reasons that would suggest this will
->> > change in the future, so this additional tracking/complexity is not
->> > really providing any general benefit to guest_memfd users. Future plans
->> > around in-place conversion and hugepage support, where the per-folio
->> > uptodate flag is planned to be used purely to track the initial clearing
->> > of folios, whereas conversion operations could trigger multiple
->> > transitions between 'prepared' and 'unprepared' and thus need separate
->> > tracking, will make the burden of tracking this information within
->> > guest_memfd even more complex, since preparation generally happens
->> > during fault time, on the "read-side" of any global locks that might
->> > protect state tracked by guest_memfd, and so may require more complex
->> > locking schemes to allow for concurrent handling of page faults for
->> > multiple vCPUs where the "preparedness" state tracked by guest_memfd
->> > might need to be updated as part of handling the fault.
->> >
->> > Instead of keeping this current/future complexity within guest_memfd for
->> > what is essentially just SEV-SNP, just drop the tracking for 2) and have
->> > the arch-specific preparation hooks get triggered unconditionally on
->> > every fault so the arch-specific hooks can check the preparation state
->> > directly and decide whether or not a folio still needs additional
->> > preparation. In the case of SEV-SNP, the preparation state is already
->> > checked again via the preparation hooks to avoid double-preparation, so
->> > nothing extra needs to be done to update the handling of things there.
->> >
->> > Signed-off-by: Michael Roth <michael.roth@amd.com>
->> > ---
->> >  virt/kvm/guest_memfd.c | 47 ++++++++++++++----------------------------
->> >  1 file changed, 15 insertions(+), 32 deletions(-)
->> >
->> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
->> > index 35f94a288e52..cc93c502b5d8 100644
->> > --- a/virt/kvm/guest_memfd.c
->> > +++ b/virt/kvm/guest_memfd.c
->> > @@ -421,11 +421,6 @@ static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slo
->> >  	return 0;
->> >  }
->> >  
->> > -static inline void kvm_gmem_mark_prepared(struct folio *folio)
->> > -{
->> > -	folio_mark_uptodate(folio);
->> > -}
->> > -
->> >  /*
->> >   * Process @folio, which contains @gfn, so that the guest can use it.
->> >   * The folio must be locked and the gfn must be contained in @slot.
->> > @@ -435,13 +430,7 @@ static inline void kvm_gmem_mark_prepared(struct folio *folio)
->> >  static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
->> >  				  gfn_t gfn, struct folio *folio)
->> >  {
->> > -	unsigned long nr_pages, i;
->> >  	pgoff_t index;
->> > -	int r;
->> > -
->> > -	nr_pages = folio_nr_pages(folio);
->> > -	for (i = 0; i < nr_pages; i++)
->> > -		clear_highpage(folio_page(folio, i));
->> >  
->> >  	/*
->> >  	 * Preparing huge folios should always be safe, since it should
->> > @@ -459,11 +448,8 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
->> 
->> While working on HugeTLB support for guest_memfd, I added a test that
->> tries to map a non-huge-page-aligned gmem.pgoff to a huge-page aligned
->> gfn.
->> 
->> I understand that config would destroy the performance advantages of
->> huge pages, but I think the test is necessary since Yan brought up the
->> use case here [1].
->> 
->> The conclusion in that thread, I believe, was to allow binding of
->> unaligned GFNs to offsets, but disallow large pages in that case. The
->> next series for guest_memfd HugeTLB support will include a fix similar
->> to this [2].
->> 
->> While testing, I hit this WARN_ON with a non-huge-page-aligned
->> gmem.pgoff.
->> 
->> >  	WARN_ON(!IS_ALIGNED(slot->gmem.pgoff, 1 << folio_order(folio)));
->> 
->> Do you all think this WARN_ON can be removed?
+> Michael Roth <michael.roth@amd.com> writes:
 >
-> I think so.. I actually ended up dropping this WARN_ON() for a similar
-> reason:
+>> On Mon, Aug 25, 2025 at 04:08:19PM -0700, Ackerley Tng wrote:
+>>> Michael Roth <michael.roth@amd.com> writes:
+>>> 
+>>> 
+>>> [...snip...]
+>>> 
+>>> > @@ -435,13 +430,7 @@ static inline void kvm_gmem_mark_prepared(struct folio *folio)
+>>> >  static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+>>> >  				  gfn_t gfn, struct folio *folio)
+>>> >  {
+>>> > -	unsigned long nr_pages, i;
+>>> >  	pgoff_t index;
+>>> > -	int r;
+>>> > -
+>>> > -	nr_pages = folio_nr_pages(folio);
+>>> > -	for (i = 0; i < nr_pages; i++)
+>>> > -		clear_highpage(folio_page(folio, i));
+>>> >  
+>>> >  	/*
+>>> >  	 * Preparing huge folios should always be safe, since it should
+>>> > @@ -459,11 +448,8 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+>>> 
+>>> While working on HugeTLB support for guest_memfd, I added a test that
+>>> tries to map a non-huge-page-aligned gmem.pgoff to a huge-page aligned
+>>> gfn.
+>>> 
+>>> I understand that config would destroy the performance advantages of
+>>> huge pages, but I think the test is necessary since Yan brought up the
+>>> use case here [1].
+>>> 
+>>> The conclusion in that thread, I believe, was to allow binding of
+>>> unaligned GFNs to offsets, but disallow large pages in that case. The
+>>> next series for guest_memfd HugeTLB support will include a fix similar
+>>> to this [2].
+>>> 
+>>> While testing, I hit this WARN_ON with a non-huge-page-aligned
+>>> gmem.pgoff.
+>>> 
+>>> >  	WARN_ON(!IS_ALIGNED(slot->gmem.pgoff, 1 << folio_order(folio)));
+>>> 
+>>> Do you all think this WARN_ON can be removed?
+>>
+>> I think so.. I actually ended up dropping this WARN_ON() for a similar
+>> reason:
+>>
+>
+> Thanks for confirming!
 >
 
-Thanks for confirming!
+Dropping this WARN_ON() actually further highlights the importance of
+separating preparedness from folio flags (and the folio).
 
->   https://github.com/AMDESE/linux/commit/c654cd144ad0d823f4db8793ebf9b43a3e8a7c48
->
-> but in that case it was to deal with memslots where most of the GPA
-> ranges are huge-page aligned to the gmemfd, and it's just that the start/end
-> GPA ranges have been split up and associated with other memslots. In that case
-> I still try to allow hugepages but force order 0 in kvm_gmem_get_pfn()
-> for the start/end ranges.
->
-> I haven't really considered the case where entire GPA range is misaligned
-> with gmemfd hugepage offsets but the proposed handling seems reasonable
-> to me... I need to take a closer look at whether the above-mentioned
-> logic is at odds with what is/will be implemented in
-> kvm_alloc_memslot_metadata() however as that seems a bit more restrictive.
->
+With huge pages being supported in guest_memfd, it's possible for just
+part of a folio to be mapped into the stage 2 page tables. One example
+of this is if userspace were to request populating just 2M in a 1G
+page. If preparedness were recorded in folio flags, then the entire 1G
+would be considered prepared even though only 2M of that page was
+prepared (updated in RMP tables).
 
-Does this help? [1] (from a WIP patch series).
+So I do support making the uptodate flag only mean zeroed, and taking
+preparedness out of the picture.
 
-KVM already checks that the guest base address (base_gfn) and the
-userspace virtual address (userspace_addr) are aligned relative to each
-other for each large page level. If they are not, large pages are
-disabled for the entire memory slot.
+With this change, kvm_gmem_prepare_folio() and
+__kvm_gmem_prepare_folio() seems to be a misnomer, since conceptually
+we're not preparing a folio, we can't assume that we're always preparing
+a whole folio once huge pages are in the picture.
 
-[1] extends that same check for slot->base_gfn and
-slot->gmem.pgoff. Hence, guest_memfd is letting KVM manage the
-mapping. guest_memfd reports max_order based on what it knows (folio
-size, and folio size is also determined by shareability), and KVM
-manages the mapping after taking account lpage_info in addition to
-max_order.
+What do you all think of taking this even further? Instead of keeping
+kvm_gmem_prepare_folio() within guest_memfd, what if we
 
-[1] https://github.com/googleprodkernel/linux-cc/commit/371ed9281e0c9ba41cfdc20b48a6c5566f61a7df
+1. Focus on preparing pfn ranges (retaining kvm_arch_gmem_prepare() is
+   good) and not folios
+   
+2. More clearly and directly associate preparing pfns with mapping
+   (rather than with getting a folio to be mapped) into stage 2 page
+   tables
 
-> Thanks,
->
-> Mike
->
+What I have in mind for (2) is to update kvm_tdp_mmu_map() to do an
+arch-specific call, when fault->is_private, to call
+kvm_arch_gmem_prepare() just before mapping the pfns and when the
+mapping level is known.
+
+The cleanup counterpart would then be to call kvm_arch_gmem_invalidate()
+somewhere in tdp_mmu_zap_leafs().
+
+kvm_arch_gmem_prepare() and kvm_arch_gmem_invalidate() would then drop
+out of guest_memfd and be moved back into the core of KVM.
+
+Technically these two functions don't even need to have gmem in the name
+since any memory can be prepared in the SNP sense, though for the
+foreseeable future gmem is the only memory supported for private memory
+in CoCo VMs.
+
+Also, to push this along a little, I feel that this series does a few
+things. What do you all think of re-focusing this series (or a part of
+this series) as "Separating SNP preparation from guest_memfd" or
+"Separating arch-specific preparation from guest_memfd"?
+
 >> 
->> Also, do you think kvm_gmem_prepare_folio()s interface should perhaps be
->> changed to take pfn, gfn, nr_pages (PAGE_SIZE pages) and level?
->> 
->> I think taking a folio is kind of awkward since we're not really setting
->> up the folio, we're setting up something mapping-related for the
->> folio. Also, kvm_gmem_invalidate() doesn't take folios, which is more
->> aligned with invalidating mappings rather than something folio-related.
->> 
->> [1] https://lore.kernel.org/all/aA7UXI0NB7oQQrL2@yzhao56-desk.sh.intel.com/
->> [2] https://github.com/googleprodkernel/linux-cc/commit/371ed9281e0c9ba41cfdc20b48a6c5566f61a7df
->> 
->> >  	index = gfn - slot->base_gfn + slot->gmem.pgoff;
->> >  	index = ALIGN_DOWN(index, 1 << folio_order(folio));
->> > -	r = __kvm_gmem_prepare_folio(kvm, slot, index, folio);
->> > -	if (!r)
->> > -		kvm_gmem_mark_prepared(folio);
->> >  
->> > -	return r;
->> > +	return __kvm_gmem_prepare_folio(kvm, slot, index, folio);
->> >  }
->> >  
->> > 
->> > [...snip...]
->> > 
+>> [...snip...]
 >> 
