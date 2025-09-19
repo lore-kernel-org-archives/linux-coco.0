@@ -1,58 +1,58 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5511313E2F
-	for <linux-coco@lists.linux.dev>; Fri, 19 Sep 2025 14:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B25313D78
+	for <linux-coco@lists.linux.dev>; Fri, 19 Sep 2025 14:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758291768; cv=none; b=YxGpUJTLV8ioyT3BfUzrj1tJkLiicBC9V+cOeMk59X2dnIrit7pD5a6ReZe4U3rfwc656OOP+0Vh93I2iHvCowZyjlQxH6dSvZTWDw+/blb00labWtldT+QTiZU6z+yYsVRKD9agCPC6s1HcgytFUZwNGGV2Ud4EoFQUlDMsNAA=
+	t=1758291768; cv=none; b=EABJmLbLJXCIlLISgm5ZyuibvXYZFKTxVEKIr11ERCMvWbRRvaa7endeejlASiCrAterMUnFfU/JoczBxFcr+NiGEmnIFKmugsqlbIGqEoAji53u5SNTXhDWMcEXP1KY/bn6g/57u2lT3GCST7Q31I00lM8xg8Qb7O0AVdcLUyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758291768; c=relaxed/simple;
-	bh=3gie8v6fJdM+HUedCG4ZohIta3K4VctlafuHNXLBBJQ=;
+	bh=8/Eshy47gAat++ekgTj0C2+AZkKJoZa4LghDU9AnPxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l0QaETKIbGasG5kzUhNWDXCdH6dvydTgVBx92vuuyPM+K8nfUlKd2bPXd8N4IoQu+0j++76JlFNnz1A9r+yQl1uYKmiLGjAf5kJbRPJ3awwzl19WB/vGhJETk/UMQMXwQ93P/amp+y7JLF6f0LTU++qeWTK8T7pyXRFk7yBzjQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ISjyHHcS; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=g6GQtfzZajl8H0CDHruRZfqxvPZ3PG4wGZm+RJD2zLFVBamz/llmkcDsm5C2hlZz1s+7P1XNEkPSWt/BTjuV2RV8+M2o/Wz5iFt7un0p55kAdRVQ8QvuYLKkOz++80qtQe00lRF4Q9kIuPa0G+YNvCaZGb3lVrUXr0SNjKTrSNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mwOtKul1; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ISjyHHcS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mwOtKul1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1758291767; x=1789827767;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=3gie8v6fJdM+HUedCG4ZohIta3K4VctlafuHNXLBBJQ=;
-  b=ISjyHHcSF628roD5vod+41oFj8fP7SE9C5hiW87UFgj7u4pRzeb5beRj
-   8SMz5VD7SnnZ0BtTQ9h0AUsmmLUoMtYSu5DSOu7siHeE5hz5GMqC7MKDb
-   qrYVs8aNrgZrC4QHxuLiiNV4OUvJk2I7vOk9+kSmysWTdl3GyVpHJugFr
-   lwy/s2ifJGAiMCJQWV6PxtdxrLUquyCo2omkpL7BLWKvOvzUrHM2U4k43
-   +eEEG78VXvVJKBwCVn5KD0XlVPKmzZrBSuVc2oKczx1sLChdco75W53gX
-   y4pbMoY3r+ZmTfj2Wx7DxvxHO3LfalB1GRyHks/nLkpdSR5JJdE2kLmT4
-   w==;
-X-CSE-ConnectionGUID: niGHVUOlRimuVZcbH7ihwQ==
-X-CSE-MsgGUID: UeAnJLfQTr21NcXgeqkkHw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60750560"
+  bh=8/Eshy47gAat++ekgTj0C2+AZkKJoZa4LghDU9AnPxw=;
+  b=mwOtKul1GlIcv1iMFtPxs9jmZnmLr7HWdyt+gROVm25seiIZjYvmcSWa
+   hMxraV2EvzMmE7+LuIvt2AX0lZ0P34dcxftkISEjpHLUJnKsxzMhS7e2k
+   Mf6Ti7aeG76GRV7jUVNIfqMVJNPYXv1hyz41RtBTveZkqIS+k8Y5W+OIf
+   g+UUvszge4Ca2zRUR0V9WTmXe+0nvWBpePC0j/oWBOj/IIOb8GvAk8vkk
+   nC7aTOHsMgvjlacMWn42IYeaPs5/G83+86LIhWuYtizfnqugLSSyR4CrQ
+   ZELOWMTuNG0LmHx174MQUpEya3xZpkLFOB1kk89fCSiNlKmEhkXfOxI2f
+   Q==;
+X-CSE-ConnectionGUID: wjFZdAyVSRClE6+dcU2WmQ==
+X-CSE-MsgGUID: lyw8Zn6LS66rOIFv6BQ0nw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60750563"
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="60750560"
+   d="scan'208";a="60750563"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
   by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 07:22:40 -0700
-X-CSE-ConnectionGUID: XpI7uzqwT/+M12SbWMouhw==
-X-CSE-MsgGUID: bXMY7kFfRRKvjeRq9PEyVw==
+X-CSE-ConnectionGUID: hzv9gJPBRra745DFTRAMhA==
+X-CSE-MsgGUID: HWkuIb+bSSOkdpRLcrRAJQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="176655047"
+   d="scan'208";a="176655050"
 Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
-  by fmviesa010.fm.intel.com with ESMTP; 19 Sep 2025 07:22:39 -0700
+  by fmviesa010.fm.intel.com with ESMTP; 19 Sep 2025 07:22:40 -0700
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-coco@lists.linux.dev,
 	linux-pci@vger.kernel.org
 Cc: xin@zytor.com,
 	chao.gao@intel.com,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>
-Subject: [RFC PATCH 18/27] coco/tdx-host: Setup all trusted IOMMUs on TDX Connect init
-Date: Fri, 19 Sep 2025 07:22:27 -0700
-Message-ID: <20250919142237.418648-19-dan.j.williams@intel.com>
+	Zhenzhong Duan <zhenzhong.duan@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: [RFC PATCH 19/27] coco/tdx-host: Add a helper to exchange SPDM messages through DOE
+Date: Fri, 19 Sep 2025 07:22:28 -0700
+Message-ID: <20250919142237.418648-20-dan.j.williams@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250919142237.418648-1-dan.j.williams@intel.com>
 References: <20250919142237.418648-1-dan.j.williams@intel.com>
@@ -64,142 +64,109 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Xu Yilun <yilun.xu@linux.intel.com>
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Setup all trusted IOMMUs on TDX Connect initialization and clear all on
-TDX Connect removal.
+TDX host uses this function to exchange TDX Module encrypted data with
+devices via SPDM. It is unfortunate that TDX passes raw DOE frames with
+headers included and the PCI DOE core wants payloads separated from
+headers.
 
-Trusted IOMMU setup is the pre-condition for all following TDX Connect
-operations such as SPDM/IDE setup. It is more of a platform
-configuration than a standalone IOMMU configuration, so put the
-implementation in tdx-host driver.
+This conversion code is about the same amount of work as teaching the PCI
+DOE driver to support raw frames. Unless and until another raw frame use
+case shows up, just do this conversion in the TDX TSM driver.
 
-There is no dedicated way to enumerate which IOMMU devices support
-trusted operations. The host has to call TDH.IOMMU.SETUP on all IOMMU
-devices and tell their trusted capability by the return value.
-
-Suggested-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
 Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/virt/coco/tdx-host/tdx-host.c | 90 +++++++++++++++++++++++++++
- 1 file changed, 90 insertions(+)
+ drivers/virt/coco/tdx-host/tdx-host.c | 61 +++++++++++++++++++++++++++
+ 1 file changed, 61 insertions(+)
 
 diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
-index 2411c7d34b6b..cdd2a4670c96 100644
+index cdd2a4670c96..f5a869443b15 100644
 --- a/drivers/virt/coco/tdx-host/tdx-host.c
 +++ b/drivers/virt/coco/tdx-host/tdx-host.c
-@@ -5,6 +5,7 @@
+@@ -5,11 +5,13 @@
   * Copyright (C) 2025 Intel Corporation
   */
  
-+#include <linux/dmar.h>
++#include <linux/bitfield.h>
+ #include <linux/dmar.h>
  #include <linux/kernel.h>
  #include <linux/module.h>
  #include <linux/mod_devicetable.h>
-@@ -128,6 +129,85 @@ static void unregister_link_tsm(void *data)
- 	tsm_unregister(link_dev);
+ #include <linux/pci.h>
++#include <linux/pci-doe.h>
+ #include <linux/pci-tsm.h>
+ #include <linux/sysfs.h>
+ #include <linux/tsm.h>
+@@ -43,6 +45,65 @@ static struct tdx_link *to_tdx_link(struct pci_tsm *tsm)
+ 	return container_of(tsm, struct tdx_link, pci.base_tsm);
  }
  
-+static DEFINE_XARRAY(tlink_iommu_xa);
++#define PCI_DOE_DATA_OBJECT_HEADER_1_OFFSET	0
++#define PCI_DOE_DATA_OBJECT_HEADER_2_OFFSET	4
++#define PCI_DOE_DATA_OBJECT_HEADER_SIZE		8
++#define PCI_DOE_DATA_OBJECT_PAYLOAD_OFFSET	PCI_DOE_DATA_OBJECT_HEADER_SIZE
 +
-+static void tdx_iommu_clear(u64 iommu_id, struct tdx_page_array *iommu_mt)
++#define PCI_DOE_PROTOCOL_SECURE_SPDM		2
++
++static int __maybe_unused tdx_spdm_msg_exchange(struct tdx_link *tlink,
++						void *request, size_t request_sz,
++						void *response, size_t response_sz)
 +{
-+	u64 r;
-+
-+	r = tdh_iommu_clear(iommu_id, iommu_mt);
-+	if (r) {
-+		pr_err("%s fail to clear tdx iommu\n", __func__);
-+		goto leak;
-+	}
-+
-+	if (tdx_page_array_ctrl_release(iommu_mt, iommu_mt->nr_pages,
-+					page_to_phys(iommu_mt->root))) {
-+		pr_err("%s fail to release metadata pages\n", __func__);
-+		goto leak;
-+	}
-+
-+	return;
-+
-+leak:
-+	tdx_page_array_ctrl_leak(iommu_mt);
-+}
-+
-+static int tdx_iommu_enable_one(struct dmar_drhd_unit *drhd)
-+{
-+	unsigned int nr_pages = tdx_sysinfo->connect.iommu_mt_page_count;
-+	u64 r, iommu_id;
++	struct pci_dev *pdev = tlink->pci.base_tsm.pdev;
++	void *req_pl_addr, *resp_pl_addr;
++	size_t req_pl_sz, resp_pl_sz;
++	u32 data, len;
++	u16 vendor;
++	u8 type;
 +	int ret;
 +
-+	struct tdx_page_array *iommu_mt __free(tdx_page_array_free) =
-+		tdx_page_array_create_iommu_mt(1, nr_pages);
-+	if (!iommu_mt)
-+		return -ENOMEM;
++	/*
++	 * pci_doe() accept DOE PAYLOAD only but request carries DOE HEADER so
++	 * shift the buffers, skip DOE HEADER in request buffer, and fill DOE
++	 * HEADER in response buffer manually.
++	 */
 +
-+	do {
-+		r = tdh_iommu_setup(drhd->reg_base_addr, iommu_mt, &iommu_id);
-+	} while (r == TDX_INTERRUPTED_RESUMABLE);
++	data = le32_to_cpu(*(__le32 *)(request + PCI_DOE_DATA_OBJECT_HEADER_1_OFFSET));
++	vendor = FIELD_GET(PCI_DOE_DATA_OBJECT_HEADER_1_VID, data);
++	type = FIELD_GET(PCI_DOE_DATA_OBJECT_HEADER_1_TYPE, data);
 +
-+	/* This drhd doesn't support tdx mode, skip. */
-+	if ((r & TDX_SEAMCALL_STATUS_MASK)  == TDX_OPERAND_INVALID)
-+		return 0;
++	data = le32_to_cpu(*(__le32 *)(request + PCI_DOE_DATA_OBJECT_HEADER_2_OFFSET));
++	len = FIELD_GET(PCI_DOE_DATA_OBJECT_HEADER_2_LENGTH, data);
 +
-+	if (r) {
-+		pr_err("fail to enable tdx mode for DRHD[0x%llx]\n",
-+		       drhd->reg_base_addr);
-+		return -EFAULT;
-+	}
++	req_pl_sz = len * sizeof(__le32) - PCI_DOE_DATA_OBJECT_HEADER_SIZE;
++	resp_pl_sz = response_sz - PCI_DOE_DATA_OBJECT_HEADER_SIZE;
++	req_pl_addr = request + PCI_DOE_DATA_OBJECT_HEADER_SIZE;
++	resp_pl_addr = response + PCI_DOE_DATA_OBJECT_HEADER_SIZE;
 +
-+	ret = xa_insert(&tlink_iommu_xa, (unsigned long)iommu_id,
-+			no_free_ptr(iommu_mt), GFP_KERNEL);
-+	if (ret) {
-+		tdx_iommu_clear(iommu_id, iommu_mt);
++	ret = pci_doe(tlink->pci.doe_mb, PCI_VENDOR_ID_PCI_SIG, type,
++		      req_pl_addr, req_pl_sz, resp_pl_addr, resp_pl_sz);
++	if (ret < 0) {
++		pci_err(pdev, "spdm msg exchange fail %d\n", ret);
 +		return ret;
 +	}
 +
-+	return 0;
-+}
++	data = FIELD_PREP(PCI_DOE_DATA_OBJECT_HEADER_1_VID, vendor) |
++	       FIELD_PREP(PCI_DOE_DATA_OBJECT_HEADER_1_TYPE, type);
++	*(__le32 *)(response + PCI_DOE_DATA_OBJECT_HEADER_1_OFFSET) = cpu_to_le32(data);
 +
-+static void tdx_iommu_disable_all(void *data)
-+{
-+	struct tdx_page_array *iommu_mt;
-+	unsigned long iommu_id;
++	len = (ret + PCI_DOE_DATA_OBJECT_HEADER_SIZE) / sizeof(__le32);
++	data = FIELD_PREP(PCI_DOE_DATA_OBJECT_HEADER_2_LENGTH, len);
++	*(__le32 *)(response + PCI_DOE_DATA_OBJECT_HEADER_2_OFFSET) = cpu_to_le32(data);
 +
-+	xa_for_each(&tlink_iommu_xa, iommu_id, iommu_mt)
-+		tdx_iommu_clear(iommu_id, iommu_mt);
-+}
++	ret += PCI_DOE_DATA_OBJECT_HEADER_SIZE;
 +
-+static int tdx_iommu_enable_all(void)
-+{
-+	int ret;
-+
-+	ret = do_for_each_drhd_unit(tdx_iommu_enable_one);
-+	if (ret)
-+		tdx_iommu_disable_all(NULL);
-+
++	pci_dbg(pdev, "%s complete: vendor 0x%x type 0x%x rsp_sz %d\n",
++		__func__, vendor, type, ret);
 +	return ret;
 +}
 +
- static int tdx_connect_init(struct device *dev)
+ static int tdx_link_connect(struct pci_dev *pdev)
  {
- 	struct tsm_dev *link;
-@@ -149,6 +229,16 @@ static int tdx_connect_init(struct device *dev)
- 		return ret;
- 	}
- 
-+	ret = tdx_iommu_enable_all();
-+	if (ret) {
-+		dev_err(dev, "Enable tdx iommu failed\n");
-+		return ret;
-+	}
-+
-+	ret = devm_add_action_or_reset(dev, tdx_iommu_disable_all, NULL);
-+	if (ret)
-+		return ret;
-+
- 	link = tsm_register(dev, &tdx_link_ops);
- 	if (IS_ERR(link)) {
- 		dev_err(dev, "failed to register TSM: (%pe)\n", link);
+ 	return -ENXIO;
 -- 
 2.51.0
 
