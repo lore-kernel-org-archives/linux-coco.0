@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36309314D25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2127313D54
 	for <linux-coco@lists.linux.dev>; Fri, 19 Sep 2025 14:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758291771; cv=none; b=co1F2qPigSZj2NF0Y4XTz4Xraq7bI4PCi/Y639j0SRymxdXh4SAitlVLnReszbkZ6DLTP2vL//ZzUqIPtQiS8aUXr91A79QP9uI4eJYlvHayY21fh5MdyHOBLH4MO4S/LgQjfSnRcCS/xz2ebDlBW7V+5JHHCeA8b42OcUqNHTM=
+	t=1758291772; cv=none; b=YPKj+IBgaWqpZHaLhsQAWciE1kJF12G9o6RjKteGZbpA8lsVkGI14gzYt5pS7/Hx5/jg+iXBiOsLhT+SKJv8YsEgb27Ilcvjy5OYvsmKyRndHvIqQ/8293ayfjRbbKDZoqh986DRkMrsVEAX7/mDaYn/zVSL2xC+bSuGopBZE6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758291771; c=relaxed/simple;
-	bh=B/xWxhQzPYzp5YNqQTe9e/ym4DltUHgdmnHVqqykTQw=;
+	s=arc-20240116; t=1758291772; c=relaxed/simple;
+	bh=4zUw67ndeXVhVWEk0qI61EPpMIM5yMbCG8feHg3bE/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZaAEmMaA0kYNhSmZHNj105svkOcWYlNgYy1q/0qCIv1J56CdSCvF0wD/79kLSMV70ZXEVcq+/5tBBsfs84H+65FC5GZzREeZxxFHYrUn+5Vv2NnyXf+dYX4UGhUP3TeVZRx0RxPRDHAdsEfylh6FAopjTSejWsUf13aWI3s97Mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SOVEYz+Y; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=gk1TTIIVsEIhTGFhX5HXEf8h7T1bDDEVdB/QieioXmT3+L+h2Iq56H9svjk9/5gTaGhoi/kMfWwUykhK4mB7WK3PwEFEZLjEVW3W9MRYch3+ZV6bojXpLB4h5tzikcF4VWuMQyXzjLn7zecuilqzwuaCvGc5pRIZBamzNGXqkwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ccgVs0VY; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SOVEYz+Y"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ccgVs0VY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1758291770; x=1789827770;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=B/xWxhQzPYzp5YNqQTe9e/ym4DltUHgdmnHVqqykTQw=;
-  b=SOVEYz+Y4mBWPqEzhCmlh7bSm6V4km76VjPY4Xmt4qvAuc1y5uA/ibv2
-   /JN2lZIwCR2NneJuhzaYaS9YvzGiCGv/QctGTbflbGcilD/RS+hBUsNc1
-   Ljp2cx25Epm2m8ndfkdfVG2MpSLc4qphlf3BJT+2rKJVT4zTugBupr/s3
-   b+XamKWeZnez47L21jPiLwMVg7iuZLb8U2Uc51q/872qvadX42xfpUxI+
-   dDIHeQTAoam59OwKGgVMh5ieBh2tzu6bYIbdKj+HtPi8H2428ewFsCVb+
-   FsBjgcdqPXqM7ybii5kwCg+VqNmbVvWw0FZvGcnyK2/ANbtjZWc1DF31C
-   Q==;
-X-CSE-ConnectionGUID: E8htmTVITqWGkWiKnC2kTA==
-X-CSE-MsgGUID: sqdgU4fZTd6vNBpVu3rH2w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60750583"
+  bh=4zUw67ndeXVhVWEk0qI61EPpMIM5yMbCG8feHg3bE/4=;
+  b=ccgVs0VYNVK5HQVDtMV/1fpRCRXQ5TSOsr/hoNhtUWQL53LAzaKQJtgx
+   ARDgRCMJQ7L29qW4Z2P/hfQNMmNzL5/RcIEwLRVgFyPAtnTaXSrcc2UnB
+   R398w+E0gexbg/qEV/7SDzC7izSv2YhpfsIbOUw84EatEmIHpMr9Kuxsq
+   Ias27PrDk7+fY5cW6HMRJ4pQh6SeP3jBdOHI37ibSCAKgfssVAFYNMuDM
+   NtWHC8mJ7coxpTmSKv2twRWMdj505vR1k52UDDHKY4KEZKKEQKPha/Bmh
+   UN/CZcRQPiSc144MVLHB3Hsr03n1U4nNSLs8EN65E3McBH9EPBo3InFcZ
+   A==;
+X-CSE-ConnectionGUID: v5VPP9uMQba+tDuPxDvGDg==
+X-CSE-MsgGUID: lSzKB9UrS8K9UhSMmU9Iww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60750586"
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="60750583"
+   d="scan'208";a="60750586"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
   by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 07:22:41 -0700
-X-CSE-ConnectionGUID: gBMVkTIpRZe/cRKyAHHhhQ==
-X-CSE-MsgGUID: J8Z1lHehQRGwvCkcwc0Tyw==
+X-CSE-ConnectionGUID: LabCWNiIRjqRa/+WWathLw==
+X-CSE-MsgGUID: Dr7OtJlASAC48bo5zMtrWQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="176655068"
+   d="scan'208";a="176655071"
 Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
   by fmviesa010.fm.intel.com with ESMTP; 19 Sep 2025 07:22:41 -0700
 From: Dan Williams <dan.j.williams@intel.com>
@@ -49,9 +49,9 @@ To: linux-coco@lists.linux.dev,
 Cc: xin@zytor.com,
 	chao.gao@intel.com,
 	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: [RFC PATCH 25/27] PCI/IDE: Export pci_ide_domain()
-Date: Fri, 19 Sep 2025 07:22:34 -0700
-Message-ID: <20250919142237.418648-26-dan.j.williams@intel.com>
+Subject: [RFC PATCH 26/27] x86/virt/tdx: Add SEAMCALL wrappers for IDE stream management
+Date: Fri, 19 Sep 2025 07:22:35 -0700
+Message-ID: <20250919142237.418648-27-dan.j.williams@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250919142237.418648-1-dan.j.williams@intel.com>
 References: <20250919142237.418648-1-dan.j.williams@intel.com>
@@ -65,47 +65,166 @@ Content-Transfer-Encoding: 8bit
 
 From: Xu Yilun <yilun.xu@linux.intel.com>
 
-Export another mini helper for TSM drivers to setup root port side IDE.
+Add several SEAMCALL wrappers for IDE stream management.
+
+- TDH.IDE.STREAM.CREATE creates IDE stream metadata buffers for TDX
+  Module, and does root port side IDE configuration.
+- TDH.IDE.STREAM.BLOCK clears the root port side IDE configuration.
+- TDH.IDE.STREAM.DELETE releases the IDE stream metadata buffers.
+- TDH.IDE.STREAM.KM deals with the IDE Key Management protocol (IDE-KM)
+
+More information see Intel TDX Connect ABI Specification [1]
+Section 3.2 TDX Connect Host-Side (SEAMCALL) Interface Functions.
+
+[1]: https://cdrdv2.intel.com/v1/dl/getContent/858625
 
 Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-[djbw: todo: move this to drivers/pci/ide.c, skip export]
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/pci/ide.c       | 3 ++-
- include/linux/pci-ide.h | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/tdx.h  | 14 ++++++
+ arch/x86/virt/vmx/tdx/tdx.c | 91 +++++++++++++++++++++++++++++++++++++
+ arch/x86/virt/vmx/tdx/tdx.h |  4 ++
+ 3 files changed, 109 insertions(+)
 
-diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
-index 851633b240e3..b56f1a3033a2 100644
---- a/drivers/pci/ide.c
-+++ b/drivers/pci/ide.c
-@@ -345,12 +345,13 @@ void pci_ide_stream_unregister(struct pci_ide *ide)
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 97e0d7a1f38d..a10e6a08874c 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -236,6 +236,20 @@ u64 tdh_spdm_disconnect(u64 spdm_id, struct page *spdm_rsp,
+ u64 tdh_spdm_mng(u64 spdm_id, u64 spdm_op, struct page *spdm_param,
+ 		 struct page *spdm_rsp, struct page *spdm_req,
+ 		 struct tdx_page_array *spdm_out, u64 *spdm_req_or_out_len);
++u64 tdh_ide_stream_create(u64 stream_info, u64 spdm_id,
++			  struct tdx_page_array *stream_mt, u64 stream_ctrl,
++			  u64 rid_assoc1, u64 rid_assoc2,
++			  u64 addr_assoc1, u64 addr_assoc2,
++			  u64 addr_assoc3,
++			  u64 *stream_id,
++			  u64 *rp_ide_id);
++u64 tdh_ide_stream_block(u64 spdm_id, u64 stream_id);
++u64 tdh_ide_stream_delete(u64 spdm_id, u64 stream_id,
++			  struct tdx_page_array *stream_mt,
++			  unsigned int *nr_released, u64 *released_hpa);
++u64 tdh_ide_stream_km(u64 spdm_id, u64 stream_id, u64 operation,
++		      struct page *spdm_rsp, struct page *spdm_req,
++		      u64 *spdm_req_len);
+ #else
+ static inline void tdx_init(void) { }
+ static inline int tdx_enable(void)  { return -ENODEV; }
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 86dd855d7361..179c976eab01 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -2523,3 +2523,94 @@ u64 tdh_spdm_mng(u64 spdm_id, u64 spdm_op, struct page *spdm_param,
+ 	return r;
  }
- EXPORT_SYMBOL_GPL(pci_ide_stream_unregister);
- 
--static int pci_ide_domain(struct pci_dev *pdev)
-+int pci_ide_domain(struct pci_dev *pdev)
- {
- 	if (pdev->fm_enabled)
- 		return pci_domain_nr(pdev->bus);
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(pci_ide_domain);
- 
- struct pci_ide_partner *pci_ide_to_settings(struct pci_dev *pdev, struct pci_ide *ide)
- {
-diff --git a/include/linux/pci-ide.h b/include/linux/pci-ide.h
-index 03e7561d4ad9..6a234ece405a 100644
---- a/include/linux/pci-ide.h
-+++ b/include/linux/pci-ide.h
-@@ -75,6 +75,7 @@ struct pci_ide {
- 	struct tsm_dev *tsm_dev;
- };
- 
-+int pci_ide_domain(struct pci_dev *pdev);
- struct pci_ide_partner *pci_ide_to_settings(struct pci_dev *pdev, struct pci_ide *ide);
- struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev);
- void pci_ide_stream_free(struct pci_ide *ide);
+ EXPORT_SYMBOL_GPL(tdh_spdm_mng);
++
++u64 tdh_ide_stream_create(u64 stream_info, u64 spdm_id,
++			  struct tdx_page_array *stream_mt, u64 stream_ctrl,
++			  u64 rid_assoc1, u64 rid_assoc2,
++			  u64 addr_assoc1, u64 addr_assoc2,
++			  u64 addr_assoc3,
++			  u64 *stream_id,
++			  u64 *rp_ide_id)
++{
++	struct tdx_module_args args = {
++		.rcx = stream_info,
++		.rdx = spdm_id,
++		.r8 = hpa_array_t_assign_raw(stream_mt),
++		.r9 = stream_ctrl,
++		.r10 = rid_assoc1,
++		.r11 = rid_assoc2,
++		.r12 = addr_assoc1,
++		.r13 = addr_assoc2,
++		.r14 = addr_assoc3,
++	};
++	u64 r;
++
++	tdx_clflush_page_array(stream_mt);
++
++	r = seamcall_saved_ret(TDH_IDE_STREAM_CREATE, &args);
++
++	*stream_id = args.rcx;
++	*rp_ide_id = args.rdx;
++
++	return r;
++}
++EXPORT_SYMBOL_GPL(tdh_ide_stream_create);
++
++u64 tdh_ide_stream_block(u64 spdm_id, u64 stream_id)
++{
++	struct tdx_module_args args = {
++		.rcx = spdm_id,
++		.rdx = stream_id,
++	};
++	u64 r;
++
++	r = seamcall(TDH_IDE_STREAM_BLOCK, &args);
++
++	return r;
++}
++EXPORT_SYMBOL_GPL(tdh_ide_stream_block);
++
++u64 tdh_ide_stream_delete(u64 spdm_id, u64 stream_id,
++			  struct tdx_page_array *stream_mt,
++			  unsigned int *nr_released, u64 *released_hpa)
++{
++	struct tdx_module_args args = {
++		.rcx = spdm_id,
++		.rdx = stream_id,
++		.r8 = hpa_array_t_release_raw(stream_mt),
++	};
++	union hpa_array_t released;
++	u64 r;
++
++	r = seamcall_ret(TDH_IDE_STREAM_DELETE, &args);
++	if (r < 0)
++		return r;
++
++	released.raw = args.rcx;
++	*nr_released = released.array_size + 1;
++	*released_hpa = released.pfn << PAGE_SHIFT;
++
++	return r;
++}
++EXPORT_SYMBOL_GPL(tdh_ide_stream_delete);
++
++u64 tdh_ide_stream_km(u64 spdm_id, u64 stream_id, u64 operation,
++		      struct page *spdm_rsp, struct page *spdm_req,
++		      u64 *spdm_req_len)
++{
++	struct tdx_module_args args = {
++		.rcx = spdm_id,
++		.rdx = stream_id,
++		.r8 = operation,
++		.r9 = page_to_phys(spdm_rsp),
++		.r10 = page_to_phys(spdm_req),
++	};
++	u64 r;
++
++	r = seamcall_ret(TDH_IDE_STREAM_KM, &args);
++
++	*spdm_req_len = args.rcx;
++
++	return r;
++}
++EXPORT_SYMBOL_GPL(tdh_ide_stream_km);
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index eb67fd9d1f55..3f73926aebec 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -52,6 +52,10 @@
+ #define TDH_IOMMU_CLEAR			129
+ #define TDH_SPDM_CREATE			130
+ #define TDH_SPDM_DELETE			131
++#define TDH_IDE_STREAM_CREATE		132
++#define TDH_IDE_STREAM_BLOCK		133
++#define TDH_IDE_STREAM_DELETE		134
++#define TDH_IDE_STREAM_KM		135
+ #define TDH_SPDM_CONNECT		142
+ #define TDH_SPDM_DISCONNECT		143
+ #define TDH_SPDM_MNG			144
 -- 
 2.51.0
 
