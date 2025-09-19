@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41DFE313D42
-	for <linux-coco@lists.linux.dev>; Fri, 19 Sep 2025 14:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB3B314A9A
+	for <linux-coco@lists.linux.dev>; Fri, 19 Sep 2025 14:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758291767; cv=none; b=PqAnEhU6fuIiHhRHbvOwKObhfFUWb2mvkCQOkCmi/Qkk3xqmN6TF0p5zGC3XJXsnKDZQvwnp22fdEa6kEJK2PEnWqiLLZhPh9Lrk/dpdyp4lXZAtiEKW4Ycd91PDFgrsa7sSmMRjwOwIrsctcLeUF51wuQt4ud3yycO7w9iEemA=
+	t=1758291767; cv=none; b=HcIuEaGWV5nXmoMojhCIl+SGkpDhnOhf4W7/m7A7rmIZA1C4w2dtVyI+K+szJ2wAue/7oE5+oTSkxb++6DRdJH/SEeyie1R+IzAZYiPoBYqwJq4BHCsAbsay96h4LH+gWMbWJu3HqWlwo+MqjHcx468nupJeAR1HO40uVjjsfrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758291767; c=relaxed/simple;
-	bh=e3xfVYwXqJujaSsqSlfONg7/fAh9csyfu+fX/XOZI/E=;
+	bh=Wf140bUYMuvWmLegSAfiHi4jwPQqHXipglSAal1VBI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cqksLLDPa071rvNnioX1KFNcxoWNF9AM/5fpi27xU6Cefa9y7Zs37AQha0E4MFWfhFXAklHqhWBb5DGC0DMpdqASsJjaR4VJ56n2C/7mP/13Ri5CRfmnXJmLuxb7dJMYejvQ4VTNCvyBy/X2ee603O5Ms1b3ZLO/Crlw529cDxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G1L746Lt; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=C6CfBJ+Ip/4m6lXGq/Cntgwk2JdabKLEkLoq1U6yIGkn+xXieLy3z36uxWRPomtRiCPnytDZ4lvlAa9fL6KERbSF8uj4MbEU4f6I4Ajms9nElwxU1DTa1BIxXRIvE6xu3kpU5TfmG3EqqdcFJWmxkQgJ/h5hYfnxOfPiJgTsbAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kzaqlj1U; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G1L746Lt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kzaqlj1U"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758291765; x=1789827765;
+  t=1758291766; x=1789827766;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=e3xfVYwXqJujaSsqSlfONg7/fAh9csyfu+fX/XOZI/E=;
-  b=G1L746LtkIXtWOBPnrDK3PsMQr9ms3bF9AonCG5jN0gIMOadu7EJY3Rt
-   9rzncXfFcGarqswJLrWkno2ydp8N4m4sijbYmuDVn5LZ1CcZZlG8U/vU2
-   y8joEBRnV+YbQ5ikopFkRHi9S5MB/gEFF+X1SXqYX6LJd19meY705Wda5
-   8cF/RXNcVQ+/Ttj7VicYau5NtQ+dYqMI9L7R/MSyRDhE5p8ohC8IezGuv
-   qWRcgH/ggTO258ImXguZfjbKpi7kqZWDITDA4EtkgNvEzhfIFAZ/ldO2S
-   5CdtvnOESHnBSxdbaqkkpH+YrivV1KSkDKYjte4A35UwLij2gAPhsRhTI
-   w==;
-X-CSE-ConnectionGUID: 0AxRdILMRs+3hjRNbpuFNw==
-X-CSE-MsgGUID: lG+4vOZXROmV1z/jZs+wlA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60750551"
+  bh=Wf140bUYMuvWmLegSAfiHi4jwPQqHXipglSAal1VBI8=;
+  b=kzaqlj1U4wB2hX6v/dxbhzVFhTvbWoBh1eN4PJC5ibOUzz8HaOdki9Bh
+   J2ef5x4ZnZsxH/i6eirEJHgIm/+O8quIVnuO2aViYG2gMg+HY4Q8Nrxcs
+   ROsPsTrWS9Z4BPNEodK6oL7QngrqptR2bRtIBYykxENsOfI8KegogT9RF
+   O7JO4ZBxCPRx6gRWbvxR96Wmz065JGIp5/scuJTiAPN2p7zComU2VPSY1
+   eNTM3PQf3Vc7l5HlWxXrT9TbyROn54aoSCeTJnvFB5j4VtqTIVuESeBI4
+   S4JjPZKFEg/5YwVD3VaIPMOfGdvHxa7GntzQ8xU0Xqhs7GeA9nt5KT570
+   g==;
+X-CSE-ConnectionGUID: FKzWcYYDTLeMPuVLI+qzeg==
+X-CSE-MsgGUID: 1Rvg1iSDQ/e+dTjDTJIAuw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60750557"
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="60750551"
+   d="scan'208";a="60750557"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
   by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 07:22:39 -0700
-X-CSE-ConnectionGUID: Cfc7uiIKTvWdUxIeNi9xNA==
-X-CSE-MsgGUID: 5IjVEx5CR8in3qPwY6fbhg==
+X-CSE-ConnectionGUID: Bqy7T1DwRO20/LSQhqFzjw==
+X-CSE-MsgGUID: niQdgvIcSKeCugN4xfvQ5g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="176655038"
+   d="scan'208";a="176655044"
 Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
   by fmviesa010.fm.intel.com with ESMTP; 19 Sep 2025 07:22:39 -0700
 From: Dan Williams <dan.j.williams@intel.com>
@@ -48,10 +48,11 @@ To: linux-coco@lists.linux.dev,
 	linux-pci@vger.kernel.org
 Cc: xin@zytor.com,
 	chao.gao@intel.com,
-	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: [RFC PATCH 15/27] x86/virt/tdx: Extend tdx_page_array to support IOMMU_MT
-Date: Fri, 19 Sep 2025 07:22:24 -0700
-Message-ID: <20250919142237.418648-16-dan.j.williams@intel.com>
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>
+Subject: [RFC PATCH 17/27] iommu/vt-d: Export a helper to do function for each dmar_drhd_unit
+Date: Fri, 19 Sep 2025 07:22:26 -0700
+Message-ID: <20250919142237.418648-18-dan.j.williams@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250919142237.418648-1-dan.j.williams@intel.com>
 References: <20250919142237.418648-1-dan.j.williams@intel.com>
@@ -65,161 +66,55 @@ Content-Transfer-Encoding: 8bit
 
 From: Xu Yilun <yilun.xu@linux.intel.com>
 
-IOMMU_MT is another TDX Module defined structure similar to HPA_ARRAY_T
-and HPA_LIST_INFO. The difference is it supports multi-order contiguous
-pages. It adds an additional NUM_PAGES field for every multi-order page
-entry [1].
+Enable the tdx-host module to get VTBAR address for every IOMMU device.
+The VTBAR address is for TDX Module to identify the IOMMU device and
+setup its trusted configuraion.
 
-Add an dedicated allocation helper for IOMMU_MT. Maybe a general
-allocation helper for multi-order is better but could postpond until
-another user appears.
-
+Suggested-by: Lu Baolu <baolu.lu@linux.intel.com>
 Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- arch/x86/include/asm/tdx.h  |  2 +
- arch/x86/virt/vmx/tdx/tdx.c | 79 ++++++++++++++++++++++++++++++++++---
- include/linux/mm.h          |  2 +
- 3 files changed, 77 insertions(+), 6 deletions(-)
+ drivers/iommu/intel/dmar.c | 16 ++++++++++++++++
+ include/linux/dmar.h       |  2 ++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index d53260aadb0b..4aae56fa225f 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -155,6 +155,8 @@ void tdx_page_array_ctrl_leak(struct tdx_page_array *array);
- int tdx_page_array_ctrl_release(struct tdx_page_array *array,
- 				unsigned int nr_released,
- 				u64 released_hpa);
-+struct tdx_page_array *
-+tdx_page_array_create_iommu_mt(unsigned int iq_order, unsigned int nr_mt_pages);
- 
- struct tdx_td {
- 	/* TD root structure: */
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 9d4cebace054..1061adcc041f 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -294,8 +294,15 @@ static int tdx_page_array_fill_root(struct tdx_page_array *array,
- 			    TDX_PAGE_ARRAY_MAX_NENTS);
- 
- 	entries = (u64 *)page_address(array->root);
--	for (i = 0; i < array->nents; i++)
--		entries[i] = page_to_phys(array->pages[offset + i]);
-+	for (i = 0; i < array->nents; i++) {
-+		struct page *page = array->pages[offset + i];
-+
-+		entries[i] = page_to_phys(page);
-+
-+		/* Now only for iommu_mt */
-+		if (compound_nr(page) > 1)
-+			entries[i] |= compound_nr(page);
-+	}
- 
- 	return array->nents;
+diff --git a/drivers/iommu/intel/dmar.c b/drivers/iommu/intel/dmar.c
+index 3ae177463774..222d66bff80a 100644
+--- a/drivers/iommu/intel/dmar.c
++++ b/drivers/iommu/intel/dmar.c
+@@ -2429,3 +2429,19 @@ bool dmar_platform_optin(void)
+ 	return ret;
  }
-@@ -305,7 +312,7 @@ static void tdx_free_pages_bulk(unsigned int nr_pages, struct page **pages)
- 	unsigned long i;
- 
- 	for (i = 0; i < nr_pages; i++)
--		__free_page(pages[i]);
-+		put_page(pages[i]);
- }
- 
- static int tdx_alloc_pages_bulk(unsigned int nr_pages, struct page **pages)
-@@ -456,10 +463,16 @@ static bool tdx_page_array_ctrl_match(struct tdx_page_array *array,
- 
- 	entries = (u64 *)page_address(array->root);
- 	for (i = 0; i < nents; i++) {
--		if (page_to_phys(array->pages[offset + i]) != entries[i]) {
-+		struct page *page = array->pages[offset + i];
-+		u64 val = page_to_phys(page);
+ EXPORT_SYMBOL_GPL(dmar_platform_optin);
 +
-+		/* Now only for iommu_mt */
-+		if (compound_nr(page) > 1)
-+			val |= compound_nr(page);
-+
-+		if (val != entries[i]) {
- 			pr_err("%s entry[%d] [0x%llx] doesn't match page hpa [0x%llx]\n",
--			       __func__, i, entries[i],
--			       page_to_phys(array->pages[offset + i]));
-+			       __func__, i, entries[i], val);
- 			return false;
- 		}
- 	}
-@@ -494,6 +507,60 @@ int tdx_page_array_ctrl_release(struct tdx_page_array *array,
- }
- EXPORT_SYMBOL_GPL(tdx_page_array_ctrl_release);
- 
-+struct tdx_page_array *
-+tdx_page_array_create_iommu_mt(unsigned int iq_order, unsigned int nr_mt_pages)
++int do_for_each_drhd_unit(int (*fn)(struct dmar_drhd_unit *))
 +{
-+	unsigned int nr_entries = 2 + nr_mt_pages;
++	struct dmar_drhd_unit *drhd;
 +	int ret;
 +
-+	if (nr_entries > TDX_PAGE_ARRAY_MAX_NENTS)
-+		return NULL;
++	guard(rwsem_read)(&dmar_global_lock);
 +
-+	struct tdx_page_array *array __free(kfree) = kzalloc(sizeof(*array),
-+							     GFP_KERNEL);
-+	if (!array)
-+		return NULL;
-+
-+	struct page *root __free(__free_page) = alloc_page(GFP_KERNEL |
-+							   __GFP_ZERO);
-+	if (!root)
-+		return NULL;
-+
-+	struct page **pages __free(kfree) = kcalloc(nr_entries, sizeof(*pages),
-+						    GFP_KERNEL);
-+	if (!pages)
-+		return NULL;
-+
-+	/* TODO: folio_alloc_node() is preferred, but need numa info */
-+	struct folio *t_iq __free(folio_put) = folio_alloc(GFP_KERNEL |
-+							   __GFP_ZERO,
-+							   iq_order);
-+	if (!t_iq)
-+		return NULL;
-+
-+	struct folio *t_ctxiq __free(folio_put) = folio_alloc(GFP_KERNEL |
-+							      __GFP_ZERO,
-+							      iq_order);
-+	if (!t_ctxiq)
-+		return NULL;
-+
-+	ret = tdx_alloc_pages_bulk(nr_mt_pages, pages + 2);
-+	if (ret)
-+		return NULL;
-+
-+	pages[0] = folio_page(no_free_ptr(t_iq), 0);
-+	pages[1] = folio_page(no_free_ptr(t_ctxiq), 0);
-+
-+	array->nr_pages = nr_entries;
-+	array->pages = no_free_ptr(pages);
-+	array->root = no_free_ptr(root);
-+
-+	tdx_page_array_fill_root(array, 0);
-+
-+	return no_free_ptr(array);
++	for_each_drhd_unit(drhd) {
++		ret = fn(drhd);
++		if (ret)
++			return ret;
++	}
++	return 0;
 +}
-+EXPORT_SYMBOL_GPL(tdx_page_array_create_iommu_mt);
-+
- static int read_sys_metadata_field(u64 field_id, u64 *data)
- {
- 	struct tdx_module_args args = {};
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 1ae97a0b8ec7..719cc479f9e7 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1360,6 +1360,8 @@ static inline void folio_put(struct folio *folio)
- 		__folio_put(folio);
- }
++EXPORT_SYMBOL_GPL(do_for_each_drhd_unit);
+diff --git a/include/linux/dmar.h b/include/linux/dmar.h
+index 692b2b445761..f4ca8e0c67e5 100644
+--- a/include/linux/dmar.h
++++ b/include/linux/dmar.h
+@@ -86,6 +86,8 @@ extern struct list_head dmar_drhd_units;
+ 				dmar_rcu_check())			\
+ 		if (i=drhd->iommu, 0) {} else 
  
-+DEFINE_FREE(folio_put, struct folio *, if (_T) folio_put(_T))
++extern int do_for_each_drhd_unit(int (*fn)(struct dmar_drhd_unit *));
 +
- /**
-  * folio_put_refs - Reduce the reference count on a folio.
-  * @folio: The folio.
+ static inline bool dmar_rcu_check(void)
+ {
+ 	return rwsem_is_locked(&dmar_global_lock) ||
 -- 
 2.51.0
 
