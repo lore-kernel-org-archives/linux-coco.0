@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C44C313D42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE36313E3D
 	for <linux-coco@lists.linux.dev>; Fri, 19 Sep 2025 14:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758291764; cv=none; b=HAZrM43gtkJJ32w6avN6eMyRh4oDugy/T3C7GStvkoZVEFpDUZN//fbTvi7cVeqCotofxEVxItLfndzmqU97Tw6fmWcp2ag+YVF4cTyr/kUptd1M9b5tAoBsJ5yR60WJa0R3mQo1r6Z5MmggfoLt27rX67Vj0dTI6qcORxoDvOY=
+	t=1758291765; cv=none; b=N7bd4YyAFgBWXgD1z5I5JDNWjmUzaxKn4uR56ulDnJazqBcROYPPQNiZ3XP4Brm3QKGk24mQeoW0L1JYL16nIaQr1Jr9ye79t01ny7zjh9VbebcvH/l3ASQyPUbQwGxb5r40TFJYOzGBIEQyQtdVZk5qclcn9EH3Vy+qvT4NQh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758291764; c=relaxed/simple;
-	bh=E3dL3oxWta3xgRIz6vny2WQW9mMupe7mYbnmMlKiju8=;
+	s=arc-20240116; t=1758291765; c=relaxed/simple;
+	bh=i94V1+cgCGxA8RfxduxqkCM4Li64xgqL9iS8N+4yG0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NDgciBk2aQmDvoCr8xkyBFB3XO1qztdXdwfRMZHvBSuqZ0AfDJdnGx8utrrOCzfYDM813MlzuZeICURxJZhCkC7pu/g26KmyDDz87b1C4RR2vhWNeb0xiOJ0dTqhYSDGNJaxIV6tLl8LWDPK9WjGTPXqdgD/maevW73ACq4avoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PpIh6WUH; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=ZtsDjZL2ff91cx8BFh7ik85xqryjuhvWaPBkmQ7xNH9fbY+T6bVM/XUWJvjEenRH18l5EHH73o6HQCirZCy/kFfRL1UgkFbuM//fHdA5VlZT8MbXueqjoGLdqMA90RtLQu2+XUxH3Xrgec02Ff+rEkTC4P80xmrpB6XI/OaqumE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M5pUtYQD; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PpIh6WUH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M5pUtYQD"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1758291763; x=1789827763;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=E3dL3oxWta3xgRIz6vny2WQW9mMupe7mYbnmMlKiju8=;
-  b=PpIh6WUHEdpbvrjmxWi4SEW3CKb8iogkbpObWcASBebYGaThNa1s8seG
-   5duPV1JoQQWzcuOqkouhw8ia7H+5dlVnL2c6bPm/fVRpmd2iE8T3ONINS
-   Akf94rQeynpQr7KVXVavz6auU+eTNerX3YIzlji6sbKZEStXK0OnFlo/p
-   7tHPXBTt9zOafxj99qexHNMmfL8+6Lr4024kJtnr5RDTejqYO+aami6wn
-   pyYM9TzZr9Vvrs1wPICyhQfcjPnR2WYYjkkQ6lRKHa2geU1Sb8tRSmxNL
-   47Re8VzqphH62FJOE+y2PEQ3Y60+NaGMV+7N5jkddGZCy7ra/8cGaKBP6
-   w==;
-X-CSE-ConnectionGUID: mZLCUEUvSsSxgSRjwrPN8A==
-X-CSE-MsgGUID: +bDeP+hOSfaRM6GeHgWJng==
-X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60750533"
+  bh=i94V1+cgCGxA8RfxduxqkCM4Li64xgqL9iS8N+4yG0c=;
+  b=M5pUtYQDkb64rpLhQVu85p3K9VkWUB6e5S/1oOTPFLoCUV0WXcimhn3U
+   VrokK1dxea0jZX/EzV+aFDJrLXUlHB6/FDG7g+XwMAS7V0dKdU5O9UXFX
+   jL3f2KZzrn2mSyQruisXIlPX0bBVeGdfKHtCpPDlykOb0cMx9TsVgFxAc
+   Vf6JYYdeIE+2HixUCiRyQshzxTHii0Qmo+yaqO0yJKA9XwDL5/kV4f0rz
+   Yp+dUCR206SnmFhqhTuGrR16qPOGDtSvqWbvMx39bnv1OphOTaMm+yBR4
+   i82xu3xl3MhUujeFFg3f7M30JyxD6xfGH05GiX/aucJ1oPqxfZc7uQC3g
+   Q==;
+X-CSE-ConnectionGUID: 7xFcIjjJSpy0SIVp3bJzew==
+X-CSE-MsgGUID: i3GqyS0BTgq95WO6m1ZC0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60750540"
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="60750533"
+   d="scan'208";a="60750540"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
   by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 07:22:38 -0700
-X-CSE-ConnectionGUID: LcTRxD12Rnmx9JdqreaWtw==
-X-CSE-MsgGUID: Gjq/GFE+TKKnbqRk4KqkLw==
+X-CSE-ConnectionGUID: qrarD7YET/CWTLpnRKt2Ww==
+X-CSE-MsgGUID: cxmqiS8MRoGxAqMgP5sXiw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="176655020"
+   d="scan'208";a="176655027"
 Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
   by fmviesa010.fm.intel.com with ESMTP; 19 Sep 2025 07:22:38 -0700
 From: Dan Williams <dan.j.williams@intel.com>
@@ -48,11 +48,10 @@ To: linux-coco@lists.linux.dev,
 	linux-pci@vger.kernel.org
 Cc: xin@zytor.com,
 	chao.gao@intel.com,
-	Dave Jiang <dave.jiang@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: [RFC PATCH 10/27] acpi: Add KEYP support to fw_table parsing
-Date: Fri, 19 Sep 2025 07:22:19 -0700
-Message-ID: <20250919142237.418648-11-dan.j.williams@intel.com>
+	Lu Baolu <baolu.lu@linux.intel.com>
+Subject: [RFC PATCH 12/27] iommu/vt-d: Cache max domain ID to avoid redundant calculation
+Date: Fri, 19 Sep 2025 07:22:21 -0700
+Message-ID: <20250919142237.418648-13-dan.j.williams@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250919142237.418648-1-dan.j.williams@intel.com>
 References: <20250919142237.418648-1-dan.j.williams@intel.com>
@@ -64,163 +63,97 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Dave Jiang <dave.jiang@intel.com>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-KEYP ACPI table can be parsed using the common fw_table handlers. Add
-additional support to detect and parse the table.
+The cap_ndoms() helper calculates the maximum available domain ID from
+the value of capability register, which can be inefficient if called
+repeatedly. Cache the maximum supported domain ID in max_domain_id field
+during initialization to avoid redundant calls to cap_ndoms() throughout
+the IOMMU driver.
 
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-[djbw: todo: drop config symbol for this]
+No functionality change.
+
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/acpi/Kconfig     | 12 ++++++++++++
- drivers/acpi/tables.c    | 14 +++++++++++++-
- include/linux/acpi.h     | 13 +++++++++++++
- include/linux/fw_table.h |  1 +
- lib/fw_table.c           |  9 +++++++++
- 5 files changed, 48 insertions(+), 1 deletion(-)
+ drivers/iommu/intel/dmar.c  |  1 +
+ drivers/iommu/intel/iommu.c | 10 +++++-----
+ drivers/iommu/intel/iommu.h |  1 +
+ 3 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index b594780a57d7..e9af80d69e02 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -600,6 +600,18 @@ config ACPI_PRMT
- 	  substantially increase computational overhead related to the
- 	  initialization of some server systems.
+diff --git a/drivers/iommu/intel/dmar.c b/drivers/iommu/intel/dmar.c
+index ec975c73cfe6..a54934c0536f 100644
+--- a/drivers/iommu/intel/dmar.c
++++ b/drivers/iommu/intel/dmar.c
+@@ -1099,6 +1099,7 @@ static int alloc_iommu(struct dmar_drhd_unit *drhd)
+ 	spin_lock_init(&iommu->lock);
+ 	ida_init(&iommu->domain_ida);
+ 	mutex_init(&iommu->did_lock);
++	iommu->max_domain_id = cap_ndoms(iommu->cap);
  
-+config ACPI_KEYP
-+	bool "ACPI KEYP Table Support for Integrity and Data Encryption (IDE)"
-+	depends on X86_64
-+	default y
-+	help
-+	  Platform KEYP table holds the KEY Configuration Unit (KCU) structures
-+	  and the base address of the KCU register block associated with each
-+	  IDE capable host bridge. Host parses this table to gets the max IDE
-+	  streams supported by each host bridge.
-+
-+	  Say Y to enable KEYP table parsing for IDE stream creation.
-+
- endif	# ACPI
- 
- config X86_PM_TIMER
-diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
-index fa9bb8c8ce95..37c72d31eac8 100644
---- a/drivers/acpi/tables.c
-+++ b/drivers/acpi/tables.c
-@@ -299,6 +299,18 @@ acpi_table_parse_cedt(enum acpi_cedt_type id,
- }
- EXPORT_SYMBOL_ACPI_LIB(acpi_table_parse_cedt);
- 
-+#ifdef CONFIG_ACPI_KEYP
-+int __init_or_acpilib
-+acpi_table_parse_keyp(enum acpi_keyp_type id,
-+		      acpi_tbl_entry_handler_arg handler_arg, void *arg)
-+{
-+	return __acpi_table_parse_entries(ACPI_SIG_KEYP,
-+					  sizeof(struct acpi_table_keyp), id,
-+					  NULL, handler_arg, arg, 0);
-+}
-+EXPORT_SYMBOL_ACPI_LIB(acpi_table_parse_keyp);
-+#endif
-+
- int __init acpi_table_parse_entries(char *id, unsigned long table_size,
- 				    int entry_id,
- 				    acpi_tbl_entry_handler handler,
-@@ -408,7 +420,7 @@ static const char table_sigs[][ACPI_NAMESEG_SIZE] __nonstring_array __initconst
- 	ACPI_SIG_PSDT, ACPI_SIG_RSDT, ACPI_SIG_XSDT, ACPI_SIG_SSDT,
- 	ACPI_SIG_IORT, ACPI_SIG_NFIT, ACPI_SIG_HMAT, ACPI_SIG_PPTT,
- 	ACPI_SIG_NHLT, ACPI_SIG_AEST, ACPI_SIG_CEDT, ACPI_SIG_AGDI,
--	ACPI_SIG_NBFT };
-+	ACPI_SIG_NBFT, ACPI_SIG_KEYP };
- 
- #define ACPI_HEADER_SIZE sizeof(struct acpi_table_header)
- 
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 1c5bb1e887cd..36662c1c7de4 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -235,6 +235,19 @@ int __init_or_acpilib
- acpi_table_parse_cedt(enum acpi_cedt_type id,
- 		      acpi_tbl_entry_handler_arg handler_arg, void *arg);
- 
-+#ifdef CONFIG_ACPI_KEYP
-+int __init_or_acpilib
-+acpi_table_parse_keyp(enum acpi_keyp_type id,
-+		      acpi_tbl_entry_handler_arg handler_arg, void *arg);
-+#else
-+static inline int acpi_table_parse_keyp(enum acpi_keyp_type id,
-+					acpi_tbl_entry_handler_arg handler_arg,
-+					void *arg)
-+{
-+	return -EOPNOTSUPP;
-+}
-+#endif
-+
- int acpi_parse_mcfg (struct acpi_table_header *header);
- void acpi_table_print_madt_entry (struct acpi_subtable_header *madt);
- 
-diff --git a/include/linux/fw_table.h b/include/linux/fw_table.h
-index 9bd605b87c4c..293252cb0b7e 100644
---- a/include/linux/fw_table.h
-+++ b/include/linux/fw_table.h
-@@ -36,6 +36,7 @@ union acpi_subtable_headers {
- 	struct acpi_prmt_module_header prmt;
- 	struct acpi_cedt_header cedt;
- 	struct acpi_cdat_header cdat;
-+	struct acpi_keyp_common_header keyp;
- };
- 
- int acpi_parse_entries_array(char *id, unsigned long table_size,
-diff --git a/lib/fw_table.c b/lib/fw_table.c
-index 16291814450e..147e3895e94c 100644
---- a/lib/fw_table.c
-+++ b/lib/fw_table.c
-@@ -20,6 +20,7 @@ enum acpi_subtable_type {
- 	ACPI_SUBTABLE_PRMT,
- 	ACPI_SUBTABLE_CEDT,
- 	CDAT_SUBTABLE,
-+	ACPI_SUBTABLE_KEYP,
- };
- 
- struct acpi_subtable_entry {
-@@ -41,6 +42,8 @@ acpi_get_entry_type(struct acpi_subtable_entry *entry)
- 		return entry->hdr->cedt.type;
- 	case CDAT_SUBTABLE:
- 		return entry->hdr->cdat.type;
-+	case ACPI_SUBTABLE_KEYP:
-+		return entry->hdr->keyp.type;
+ 	ver = readl(iommu->reg + DMAR_VER_REG);
+ 	pr_info("%s: reg_base_addr %llx ver %d:%d cap %llx ecap %llx\n",
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index 9c3ab9d9f69a..9b02007ef831 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -1356,7 +1356,7 @@ int domain_attach_iommu(struct dmar_domain *domain, struct intel_iommu *iommu)
  	}
- 	return 0;
- }
-@@ -61,6 +64,8 @@ acpi_get_entry_length(struct acpi_subtable_entry *entry)
- 		__le16 length = (__force __le16)entry->hdr->cdat.length;
  
- 		return le16_to_cpu(length);
-+	case ACPI_SUBTABLE_KEYP:
-+		return entry->hdr->keyp.length;
- 	}
- 	}
- 	return 0;
-@@ -80,6 +85,8 @@ acpi_get_subtable_header_length(struct acpi_subtable_entry *entry)
- 		return sizeof(entry->hdr->cedt);
- 	case CDAT_SUBTABLE:
- 		return sizeof(entry->hdr->cdat);
-+	case ACPI_SUBTABLE_KEYP:
-+		return sizeof(entry->hdr->keyp);
- 	}
- 	return 0;
- }
-@@ -95,6 +102,8 @@ acpi_get_subtable_type(char *id)
- 		return ACPI_SUBTABLE_CEDT;
- 	if (strncmp(id, ACPI_SIG_CDAT, 4) == 0)
- 		return CDAT_SUBTABLE;
-+	if (strncmp(id, ACPI_SIG_KEYP, 4) == 0)
-+		return ACPI_SUBTABLE_KEYP;
- 	return ACPI_SUBTABLE_COMMON;
- }
+ 	num = ida_alloc_range(&iommu->domain_ida, IDA_START_DID,
+-			      cap_ndoms(iommu->cap) - 1, GFP_KERNEL);
++			      iommu->max_domain_id - 1, GFP_KERNEL);
+ 	if (num < 0) {
+ 		pr_err("%s: No free domain ids\n", iommu->name);
+ 		goto err_unlock;
+@@ -1420,7 +1420,7 @@ static void copied_context_tear_down(struct intel_iommu *iommu,
+ 	did_old = context_domain_id(context);
+ 	context_clear_entry(context);
  
+-	if (did_old < cap_ndoms(iommu->cap)) {
++	if (did_old < iommu->max_domain_id) {
+ 		iommu->flush.flush_context(iommu, did_old,
+ 					   PCI_DEVID(bus, devfn),
+ 					   DMA_CCMD_MASK_NOBIT,
+@@ -1981,7 +1981,7 @@ static int copy_context_table(struct intel_iommu *iommu,
+ 			continue;
+ 
+ 		did = context_domain_id(&ce);
+-		if (did >= 0 && did < cap_ndoms(iommu->cap))
++		if (did >= 0 && did < iommu->max_domain_id)
+ 			ida_alloc_range(&iommu->domain_ida, did, did, GFP_KERNEL);
+ 
+ 		set_context_copied(iommu, bus, devfn);
+@@ -2897,7 +2897,7 @@ static ssize_t domains_supported_show(struct device *dev,
+ 				      struct device_attribute *attr, char *buf)
+ {
+ 	struct intel_iommu *iommu = dev_to_intel_iommu(dev);
+-	return sysfs_emit(buf, "%ld\n", cap_ndoms(iommu->cap));
++	return sysfs_emit(buf, "%ld\n", iommu->max_domain_id);
+ }
+ static DEVICE_ATTR_RO(domains_supported);
+ 
+@@ -2908,7 +2908,7 @@ static ssize_t domains_used_show(struct device *dev,
+ 	unsigned int count = 0;
+ 	int id;
+ 
+-	for (id = 0; id < cap_ndoms(iommu->cap); id++)
++	for (id = 0; id < iommu->max_domain_id; id++)
+ 		if (ida_exists(&iommu->domain_ida, id))
+ 			count++;
+ 
+diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
+index d09b92871659..d16b1a51c6d6 100644
+--- a/drivers/iommu/intel/iommu.h
++++ b/drivers/iommu/intel/iommu.h
+@@ -727,6 +727,7 @@ struct intel_iommu {
+ 	/* mutex to protect domain_ida */
+ 	struct mutex	did_lock;
+ 	struct ida	domain_ida; /* domain id allocator */
++	unsigned long	max_domain_id;
+ 	unsigned long	*copied_tables; /* bitmap of copied tables */
+ 	spinlock_t	lock; /* protect context, domain ids */
+ 	struct root_entry *root_entry; /* virtual address */
 -- 
 2.51.0
 
