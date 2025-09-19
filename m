@@ -1,67 +1,67 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70DF307486
-	for <linux-coco@lists.linux.dev>; Fri, 19 Sep 2025 09:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED632EF662
+	for <linux-coco@lists.linux.dev>; Fri, 19 Sep 2025 09:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758275089; cv=none; b=ELq0zeYD9SmsbHLaMjbuHQQ87WYS74n7qZH4GHLkhz9lnwzHF1MBZbPd6C3sIAg1vxpsVF6FUmzFoPSYZBGbpYRNM9d28x32Ohv3q4Ofnnod90P5xwIqeTIdHBi4msrjr8XeBlxAePbG5+3ZFznHEZN92HJe655hXJ2wuucoSfw=
+	t=1758275740; cv=none; b=YfpGrLcH68a9E+iCmUG3ziw1iXaMtSFW1nYLuRstgZfZG8JBYbGbT6JliaCDui7zZInVmuvjKHU7cphD/aE0aJAALK0351QvUMQ39HFjY6R8XpoXQDaNyxTI6SA+K3Ee8kzoMlGibxwnZT4kEJSS5LKmydUt9ztlBD84LPav7nA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758275089; c=relaxed/simple;
-	bh=Zc2EnsY0CcMHndLUfH9ZokqXC5xQl37IFdd7qM4BinM=;
+	s=arc-20240116; t=1758275740; c=relaxed/simple;
+	bh=9ZYD2O5yqvIh6f2etaVtF8OL7RJcUChYaE/qwOAMi68=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r0mSgMpp3N8r1Cp4/hD8xN6dS6DZgNv1UIpN1HLbsTkuQVRaaNwyUx2IMqomQtnfsW7Ab/QvaM89hHqsl1PqcHs4RwM5x1Zntf4ru6H6KZT41fJMfh1BVhKM4ON3stK5q1ZNmOQuPNulkdRcM06Wea5uSyd7xPk0bScjDWRd9ZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o9sAE3mX; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=DFi4vqfpo31C6A+0zj1HcVWdMuDHpdx75k7AE4+NkNJAWqgS2UUcj1TWqZIKcxdQEVFtcxIhZECne0mQ/gLE1aiXqGzAy3pegmkFi0kAa5AcHu1zZWp6kkYs1FgjGJ6Q3iXBDPU3NLDmFtdwQQsyrxQZvK47VS7ZVIsS/PeOVgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=baC3GNGE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o9sAE3mX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 015B1C4CEF1;
-	Fri, 19 Sep 2025 09:44:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="baC3GNGE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2376DC4CEF1;
+	Fri, 19 Sep 2025 09:55:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758275089;
-	bh=Zc2EnsY0CcMHndLUfH9ZokqXC5xQl37IFdd7qM4BinM=;
+	s=k20201202; t=1758275740;
+	bh=9ZYD2O5yqvIh6f2etaVtF8OL7RJcUChYaE/qwOAMi68=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o9sAE3mXH5E1Uvu5syp41HXl+LkJ3Jai8gXRvi7b2vtZJOF09sYUPAaybJsNiiunL
-	 5xSaydEzwkc8DiHy6j6PHl+YSwp8JeKD8GNUyS/LS1Xyf19mYxOqqH8aN6aAscAKKD
-	 ScACNMAaIOGWfTy0vsxcyDLg41XXS/nWXDFR98HF7gN80ZJOcrHddJgDjEMva+x0Rr
-	 Idbl1iz+6jPgW5mdVtymFhRY4z5M1YaxTOiBbvK9/TKdOID1kGgRT/dbIUaM5Iulp/
-	 FF0sX7mQtWWTcx+4hnH1LbxpvEtZvqQFf4V+odUYld/IbCVU7KdpZd5o0w0H06LcF8
-	 IDsvaXOrlmpXw==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 1417CF40066;
-	Fri, 19 Sep 2025 05:44:48 -0400 (EDT)
+	b=baC3GNGE1xdksGHpX5XvUBE3VcB5lk/WLyPycF2N9is0Dmedj6TUGgmQkywVsJUee
+	 EsOLpTl1u0puEOAQYlwBAt1hx7YzdDJAlnsQzzDQSdxjXWr54DkZCzAFMHhIplTZ0H
+	 9oo0lxxAUmKqg94HXULOIChSOzrId1jyqtQLVvEIkuECJrGxkyW5wmq8wUwv+AVc3a
+	 txho3XIn3AZm2+pbV8DIPkK81qKMMAVaegZfZKHlrp4JB2gxxw3yZYQZilQQq1uTGg
+	 2EF3o959iTcAWLmizpWrHDp01cqqjfa4tKZUkVzec8v7KIO6oGs9X3H1JIByceeLbV
+	 v4ERtC0A+JMvQ==
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 3B42FF40066;
+	Fri, 19 Sep 2025 05:55:39 -0400 (EDT)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Fri, 19 Sep 2025 05:44:48 -0400
-X-ME-Sender: <xms:DybNaIUyQvym_iKiasjifmprBiVzxrdTYsYhDEeJaA85y4FmIoJ_Yw>
-    <xme:DybNaN2BCGYOJkwCnYM--vu1iK0LDWd-kuCYMDT8AKhkmpTssfym7NkuEwRFGcb4H
-    AlJgvYlAgO7gJJcUNQ>
-X-ME-Received: <xmr:DybNaBuUp8FimWp9yndR6JYdkp72zwItjmrS6f1kI4LEosZ0hX-SkDcRpil_ew>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegkeekkecutefuodetggdotefrod
+  by phl-compute-09.internal (MEProxy); Fri, 19 Sep 2025 05:55:39 -0400
+X-ME-Sender: <xms:myjNaKSpRft0M17CjMw02_r2ZwJJHvB44EznM8BsQwZm6BbCa3ReBg>
+    <xme:myjNaKJ6s8wWRTwh5nH87PAsHcOx2WQDG4tmO-qvRJ9nUHnAblHHpFGDYYSOMG6BB
+    gqmDNYqQ-fpJGAUnUY>
+X-ME-Received: <xmr:myjNaDZEyo0_kh-KtL8ADANnSNDsdahLH27NcgUkCvorU5WTKtyvrSLifdOzCg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegkeeltdcutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtugfgjgestheksfdttddtjeenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepvddufeetkedvheektdefhfefjeeujeejtdejuedufefhveekkeeffeetvedvffek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepfedvpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehrihgtkhdrphdrvggughgvtghomhgsvgesihhnthgvlhdrtghomhdprhgtphhtth
-    hopegsphesrghlihgvnhekrdguvgdprhgtphhtthhopegthhgrohdrghgrohesihhnthgv
-    lhdrtghomhdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvg
-    hlrdgtohhmpdhrtghpthhtohepihhsrghkuhdrhigrmhgrhhgrthgrsehinhhtvghlrdgt
-    ohhmpdhrtghpthhtohepkhgrihdrhhhurghnghesihhnthgvlhdrtghomhdprhgtphhtth
-    hopehkvhhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidq
-    tghotghosehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkh
-    gvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:ECbNaFTjhsWHW_IzDhE-H8l2YhZqx5jadFNl4Q2MNpd0NBunuN7J7Q>
-    <xmx:ECbNaDAPRIY6SPhcLaeerYAg5YDusGdMU72Ru3qhNnZj8iYuguRFwA>
-    <xmx:ECbNaHxPx_oqJAs-kjWJZ9xWxpl3YR1Fes-P8kAbzXU020HVmk-pmQ>
-    <xmx:ECbNaLvAJYpvie9-7MVnoHHbpoDhUMbjpwRYXnNQLOABpeXP0JUvMQ>
-    <xmx:ECbNaIlcfZ5wZPb4wfwBz4WfQLVdIWokO_k6HI9OZI4BEnWDpdSnZpPO>
+    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
+    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
+    hnpeehieekueevudehvedtvdffkefhueefhfevtdduheehkedthfdtheejveelueffgeen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrih
+    hllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieehhedq
+    vdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnh
+    grmhgvpdhnsggprhgtphhtthhopeefvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
+    oheprhhitghkrdhprdgvughgvggtohhmsggvsehinhhtvghlrdgtohhmpdhrtghpthhtoh
+    epsghpsegrlhhivghnkedruggvpdhrtghpthhtoheptghhrghordhgrghosehinhhtvghl
+    rdgtohhmpdhrtghpthhtohepuggrvhgvrdhhrghnshgvnheslhhinhhugidrihhnthgvlh
+    drtghomhdprhgtphhtthhopehishgrkhhurdihrghmrghhrghtrgesihhnthgvlhdrtgho
+    mhdprhgtphhtthhopehkrghirdhhuhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtoh
+    epkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgt
+    ohgtoheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhkvg
+    hrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:myjNaABKzxu2sSXbXhS5z5-0W_pWtcvSEN2KgR32kwXkj9CxPq1oPw>
+    <xmx:myjNaNUT9xp0OH81Os2dAT3Uz-702MbCGapEafwSLMeGjElIPOX2_Q>
+    <xmx:myjNaB2ciEcOrg2hLdEK-GddKSEumHG-JxAz7Ka9EmlTCyzUvc_-yA>
+    <xmx:myjNaGU-EExkmFeJpecZLrzdELuRW9vx4AfT44Mtcbo2f2iPPD-0Dw>
+    <xmx:myjNaPDPpPnbky2_KeTujRdtDDrQ9VZCFlCvfGESI68nDGxa9G_uzUwc>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 19 Sep 2025 05:44:47 -0400 (EDT)
-Date: Fri, 19 Sep 2025 10:44:45 +0100
+ 19 Sep 2025 05:55:38 -0400 (EDT)
+Date: Fri, 19 Sep 2025 10:55:36 +0100
 From: Kiryl Shutsemau <kas@kernel.org>
 To: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@linux.intel.com, 
@@ -69,62 +69,46 @@ Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@linux.intel.com,
 	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, mingo@redhat.com, 
 	pbonzini@redhat.com, seanjc@google.com, tglx@linutronix.de, x86@kernel.org, 
 	yan.y.zhao@intel.com, vannapurve@google.com
-Subject: Re: [PATCH v3 11/16] KVM: TDX: Add x86 ops for external spt cache
-Message-ID: <x64nziosjtknntkgwmkrginncr67xp2fwdpzooabp3ysfim562@m3kdshgibz6b>
+Subject: Re: [PATCH v3 12/16] x86/virt/tdx: Add helpers to allow for
+ pre-allocating pages
+Message-ID: <l3wzjxkokrcuu7mguuojr5vnzfwjpjfxgg3d6pw5zmmgsgpdfv@wz6gvpglqkiz>
 References: <20250918232224.2202592-1-rick.p.edgecombe@intel.com>
- <20250918232224.2202592-12-rick.p.edgecombe@intel.com>
+ <20250918232224.2202592-13-rick.p.edgecombe@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250918232224.2202592-12-rick.p.edgecombe@intel.com>
+In-Reply-To: <20250918232224.2202592-13-rick.p.edgecombe@intel.com>
 
-On Thu, Sep 18, 2025 at 04:22:19PM -0700, Rick Edgecombe wrote:
-> Move mmu_external_spt_cache behind x86 ops.
-> 
-> In the mirror/external MMU concept, the KVM MMU manages a non-active EPT
-> tree for private memory (the mirror). The actual active EPT tree the
-> private memory is protected inside the TDX module. Whenever the mirror EPT
-> is changed, it needs to call out into one of a set of x86 opts that
-> implement various update operation with TDX specific SEAMCALLs and other
-> tricks. These implementations operate on the TDX S-EPT (the external).
-> 
-> In reality these external operations are designed narrowly with respect to
-> TDX particulars. On the surface, what TDX specific things are happening to
-> fulfill these update operations are mostly hidden from the MMU, but there
-> is one particular area of interest where some details leak through.
-> 
-> The S-EPT needs pages to use for the S-EPT page tables. These page tables
-> need to be allocated before taking the mmu lock, like all the rest. So the
-> KVM MMU pre-allocates pages for TDX to use for the S-EPT in the same place
-> where it pre-allocates the other page tables. It’s not too bad and fits
-> nicely with the others.
-> 
-> However, Dynamic PAMT will need even more pages for the same operations.
-> Further, these pages will need to be handed to the arch/86 side which used
-> them for DPAMT updates, which is hard for the existing KVM based cache.
-> The details living in core MMU code start to add up.
-> 
-> So in preparation to make it more complicated, move the external page
-> table cache into TDX code by putting it behind some x86 ops. Have one for
-> topping up and one for allocation. Don’t go so far to try to hide the
-> existence of external page tables completely from the generic MMU, as they
-> are currently stores in their mirror struct kvm_mmu_page and it’s quite
-> handy.
-> 
-> To plumb the memory cache operations through tdx.c, export some of
-> the functions temporarily. This will be removed in future changes.
-> 
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+On Thu, Sep 18, 2025 at 04:22:20PM -0700, Rick Edgecombe wrote:
+> In the KVM fault path pagei, tables and private pages need to be
 
-Makes sense.
+Typo.
 
-Acked-by: Kiryl Shutsemau <kas@kernel.org>
+> installed under a spin lock. This means that the operations around
+> installing PAMT pages for them will not be able to allocate pages.
+> 
+
+> +static inline struct page *get_tdx_prealloc_page(struct tdx_prealloc *prealloc)
+> +{
+> +	struct page *page;
+> +
+> +	page = list_first_entry_or_null(&prealloc->page_list, struct page, lru);
+> +	if (page) {
+> +		list_del(&page->lru);
+> +		prealloc->cnt--;
+> +	}
+> +
+
+For prealloc->cnt == 0, kvm_mmu_memory_cache_alloc() does allocation
+with GFP_ATOMIC after WARN().
+
+Do we want the same here?
+
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
