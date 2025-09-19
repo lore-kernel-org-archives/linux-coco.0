@@ -1,57 +1,57 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42211DEFE8
-	for <linux-coco@lists.linux.dev>; Fri, 19 Sep 2025 14:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12CC30B52E
+	for <linux-coco@lists.linux.dev>; Fri, 19 Sep 2025 14:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758291760; cv=none; b=uWPMpjyj/DP9FANUVQWuDIltk/lPftDiShgXFfFXFu82zNTQrRvOD5gJZnci726PXyhUjfMW32FgH2zzOV1phC2CAfkMQU70O8kOAKM9cK9hNQnxaLQfKqIVxzGdPCuFRn0S5KUhIzSSRryNQ+OM0J0nv99ob1y05in8fY314as=
+	t=1758291761; cv=none; b=kMXCnrFI/1onIaKSs6W1szOpHHU6+b+BdvMqxKQ8UzDST9bEhOXb9exSpj31B31QJvqiFpZV/seS2CYkzhFpTRp1ubKyw1EzLrFlW/DdpjX9q7JtuCJru1SQyakweJLzFeirFY+xKIG6vgqMCgeqjshMepXFkv7ldfv+WlarHB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758291760; c=relaxed/simple;
-	bh=UT3LP10GIv09NH60vo+16gFkCbLr6XpSF3y9hJk4Gpc=;
+	s=arc-20240116; t=1758291761; c=relaxed/simple;
+	bh=bPvY2JKwSMaVJOZ+P5hjTXKadrNpuEsi44qCUEaI+Xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iXlv+BtEXmTh44FHD83oUTjZloL4vZuVfE6hBtPcPL12R7SQUqJnfNcmF4W6uwuHExEltXZbumZj66Qh5o/a9JDrMe8AVuQcv+HQuwrrpcsWDW7RaEAVwOiIFSQC85QZWHVqA+DElP6wjOKS8hdq1BfUSq2uzW1frZZyREUA0PQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RnKqz9ln; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=CZMlghaqfSifAUOoNOZL2O0S2vTa99nfLlZOeihriFYL/LNn719yWtXvYHzfBbW/lH00+gsgjCJpuRqpK79OoSBt2waZPw426bg9bS0Si5na4k4xMJkadh0XFvuHAIAeG4wIACTiMezx4hoF7DKclk6RMHIW6VNmfH3BrjtkY8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZdGBtS8S; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RnKqz9ln"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZdGBtS8S"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1758291758; x=1789827758;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=UT3LP10GIv09NH60vo+16gFkCbLr6XpSF3y9hJk4Gpc=;
-  b=RnKqz9lnnVcH6WBdl+dlyzmcHXc6rn3lvoSDvd8XD9PwMid8wn3JqG3r
-   hnj3AWKzqTZW6rkBc7eJB+GL3wyiQ7ewF3h/h1PxhaWGMdgXQ3EeCHW+F
-   u2UvnwD4L1vANSB3xSJ7Ij4YcjBrZ2yeeZkLymlX+FcV7sB1NPiJ5t1SB
-   nnS0jNajEuM+4wN/xXpmNf/88HVBbr6ALK2p+1uOHBKSK4bAI0VG6p99I
-   4Z2sNaUcj7WScSX3et65KILCyMCUUyKKUFPreZNtTi2r9N8xAqhxpNbTI
-   vvqMQVnd70deFpDeic32DamlfO2jvvG9+pck3zEVQ8GhFRYP16y6q8a8O
-   g==;
-X-CSE-ConnectionGUID: HJwFvHukRSWhkidJ25fSrg==
-X-CSE-MsgGUID: xIlXKIBTRUCibAHETnjIbw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60750508"
+  bh=bPvY2JKwSMaVJOZ+P5hjTXKadrNpuEsi44qCUEaI+Xs=;
+  b=ZdGBtS8SAVVwITdNXDBryK3Q6Fwv9Q1g28W+JvIfvwdZPl45ZhtVRHSv
+   ucvug2KoqYhdf6riTh5FYGq1+jNHKODwAPCkHF9+RgFZ4/ExC6PhcqPt2
+   or87o8Vuxk6yiDmitKbKofPrVsM9U+RnY7dBnjQaNEO649rSGD4cSuHCm
+   /on7M9rAPVTP0QEQwBAzlEfB9I+aOYV+DxrfFpUmw9feLESX8xS8wIKa2
+   NHHkiH8xFVfY4pNkH0Wdg3J+2Sv9ubnKwBiCR58FSPz/e6l7VZgPdoMyJ
+   sagl4qTxJANi7cANgyK2MnVRPyJ4iXEH5TU6azwNKgxGaZiLYdZ7sz10W
+   w==;
+X-CSE-ConnectionGUID: VeoeZWUoTQqq0Iq7wybIcw==
+X-CSE-MsgGUID: DSx0qp/ASYi9odtdsvTa4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60750501"
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="60750508"
+   d="scan'208";a="60750501"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
   by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 07:22:36 -0700
-X-CSE-ConnectionGUID: 6wERUOh3RYu/C17RNlvC2g==
-X-CSE-MsgGUID: drD+kJKoQt2h5OeGJCtXVA==
+X-CSE-ConnectionGUID: oUZ5FO7TR6KzPBFdE6m4AQ==
+X-CSE-MsgGUID: DiaxjIJlSeCnYv3h3BtASg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="176654996"
+   d="scan'208";a="176654989"
 Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
-  by fmviesa010.fm.intel.com with ESMTP; 19 Sep 2025 07:22:36 -0700
+  by fmviesa010.fm.intel.com with ESMTP; 19 Sep 2025 07:22:35 -0700
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-coco@lists.linux.dev,
 	linux-pci@vger.kernel.org
 Cc: xin@zytor.com,
 	chao.gao@intel.com,
 	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: [RFC PATCH 03/27] coco/tdx-host: Support Link TSM for TDX host
-Date: Fri, 19 Sep 2025 07:22:12 -0700
-Message-ID: <20250919142237.418648-4-dan.j.williams@intel.com>
+Subject: [RFC PATCH 01/27] coco/tdx-host: Introduce a "tdx_host" device
+Date: Fri, 19 Sep 2025 07:22:10 -0700
+Message-ID: <20250919142237.418648-2-dan.j.williams@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250919142237.418648-1-dan.j.williams@intel.com>
 References: <20250919142237.418648-1-dan.j.williams@intel.com>
@@ -63,235 +63,162 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Xu Yilun <yilun.xu@linux.intel.com>
+From: Chao Gao <chao.gao@intel.com>
 
-Register a Link TSM instance to support host side TSM operations for
-TDISP, when the TDX Connect support bit is set by TDX Module in
-tdx_feature0.
+TDX depends on a platform firmware module that is invoked via instructions
+similar to vmenter (i.e. enter into a new privileged "root-mode" context to
+manage private memory and private device mechanisms). It is a software
+construct that depends on the CPU vmxon state to enable invocation of
+TDX-module ABIs. Unlike other Trusted Execution Environment (TEE) platform
+implementations that employ a firmware module running on a PCI device with
+an MMIO mailbox for communication, TDX has no hardware device to point to
+as the TEE Secure Manager (TSM).
 
-This is the main purpose of an independent tdx-host module out of TDX
-core. Recall that a TEE Security Manager (TSM) is a platform agent that
-speaks the TEE Device Interface Security Protocol (TDISP) to PCIe
-devices and manages private memory resources for the platform. An
-independent tdx-host module allows for device-security enumeration and
-initialization flows to be deferred from other TDX Module initialization
-requirements. Crucially, when / if TDX Module init moves earlier in x86
-initialization flow this driver is still guaranteed to run after IOMMU
-and PCI init (i.e. subsys_initcall() vs device_initcall()).
+Create a virtual device not only to align with other implementations but
+also to make it easier to
 
-The ability to unload the module, or unbind the driver is also useful
-for debug and coarse grained transitioning between PCI TSM operation and
-PCI CMA operation (native kernel PCI device authentication).
+ - expose metadata (e.g., TDX module version, seamldr version etc) to
+   the userspace as device attributes
 
-For now this is the basic boilerplate with operation flows to be added
-later.
+ - implement firmware uploader APIs which are tied to a device. This is
+   needed to support TDX module runtime updates
 
+ - enable TDX Connect which will share a common infrastructure with other
+   platform implementations. In the TDX Connect context, every
+   architecture has a TSM, represented by a PCIe or virtual device. The
+   new "tdx_host" device will serve the TSM role.
+
+A faux device is used as for TDX because the TDX module is singular within
+the system and lacks associated platform resources. Using a faux device
+eliminates the need to create a stub bus.
+
+The call to tdx_enable() makes the new module independent of kvm_intel.ko.
+For example, TDX Connect may be used to established to PCIe link encryption
+even if a TVM is never launched.  For now, just create the common loading
+infrastructure.
+
+Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
 Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-Co-developed-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Chao Gao <chao.gao@intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- arch/x86/include/asm/tdx.h            |   1 +
- drivers/virt/coco/tdx-host/Kconfig    |   6 ++
- drivers/virt/coco/tdx-host/tdx-host.c | 145 +++++++++++++++++++++++++-
- 3 files changed, 151 insertions(+), 1 deletion(-)
+ drivers/virt/coco/Kconfig             |  2 ++
+ drivers/virt/coco/Makefile            |  1 +
+ drivers/virt/coco/tdx-host/Kconfig    | 10 ++++++
+ drivers/virt/coco/tdx-host/Makefile   |  1 +
+ drivers/virt/coco/tdx-host/tdx-host.c | 52 +++++++++++++++++++++++++++
+ 5 files changed, 66 insertions(+)
+ create mode 100644 drivers/virt/coco/tdx-host/Kconfig
+ create mode 100644 drivers/virt/coco/tdx-host/Makefile
+ create mode 100644 drivers/virt/coco/tdx-host/tdx-host.c
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 4ce3a302d9ba..166795e34c8f 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -126,6 +126,7 @@ int tdx_enable(void);
- const char *tdx_dump_mce_info(struct mce *m);
+diff --git a/drivers/virt/coco/Kconfig b/drivers/virt/coco/Kconfig
+index bb0c6d6ddcc8..b9fb0760e917 100644
+--- a/drivers/virt/coco/Kconfig
++++ b/drivers/virt/coco/Kconfig
+@@ -15,5 +15,7 @@ source "drivers/virt/coco/arm-cca-guest/Kconfig"
  
- /* Bit definitions of TDX_FEATURES0 metadata field */
-+#define TDX_FEATURES0_TDXCONNECT	BIT_ULL(6)
- #define TDX_FEATURES0_NO_RBP_MOD	BIT_ULL(18)
+ source "drivers/virt/coco/guest/Kconfig"
  
- const struct tdx_sys_info *tdx_get_sysinfo(void);
++source "drivers/virt/coco/tdx-host/Kconfig"
++
+ config TSM
+ 	bool
+diff --git a/drivers/virt/coco/Makefile b/drivers/virt/coco/Makefile
+index cb52021912b3..b323b0ae4f82 100644
+--- a/drivers/virt/coco/Makefile
++++ b/drivers/virt/coco/Makefile
+@@ -6,6 +6,7 @@ obj-$(CONFIG_EFI_SECRET)	+= efi_secret/
+ obj-$(CONFIG_ARM_PKVM_GUEST)	+= pkvm-guest/
+ obj-$(CONFIG_SEV_GUEST)		+= sev-guest/
+ obj-$(CONFIG_INTEL_TDX_GUEST)	+= tdx-guest/
++obj-$(CONFIG_INTEL_TDX_HOST)	+= tdx-host/
+ obj-$(CONFIG_ARM_CCA_GUEST)	+= arm-cca-guest/
+ obj-$(CONFIG_TSM) 		+= tsm-core.o
+ obj-$(CONFIG_TSM_GUEST)		+= guest/
 diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
-index bf6be0fc0879..026b7d5ea4fa 100644
---- a/drivers/virt/coco/tdx-host/Kconfig
+new file mode 100644
+index 000000000000..bf6be0fc0879
+--- /dev/null
 +++ b/drivers/virt/coco/tdx-host/Kconfig
-@@ -8,3 +8,9 @@ config TDX_HOST_SERVICES
- 
- 	  Say y or m if enabling support for confidential virtual machine
- 	  support (CONFIG_INTEL_TDX_HOST). The module is called tdx_host.ko
+@@ -0,0 +1,10 @@
++config TDX_HOST_SERVICES
++	tristate "TDX Host Services Driver"
++	depends on INTEL_TDX_HOST
++	default m if INTEL_TDX_HOST
++	help
++	  Enable access to TDX host services like module update and
++	  extensions (e.g. TDX Connect).
 +
-+config TDX_CONNECT
-+	bool
-+	depends on TDX_HOST_SERVICES
-+	depends on PCI_TSM
-+	default TDX_HOST_SERVICES
++	  Say y or m if enabling support for confidential virtual machine
++	  support (CONFIG_INTEL_TDX_HOST). The module is called tdx_host.ko
+diff --git a/drivers/virt/coco/tdx-host/Makefile b/drivers/virt/coco/tdx-host/Makefile
+new file mode 100644
+index 000000000000..e61e749a8dff
+--- /dev/null
++++ b/drivers/virt/coco/tdx-host/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_TDX_HOST_SERVICES) += tdx-host.o
 diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
-index 49c205913ef6..41813ba352d0 100644
---- a/drivers/virt/coco/tdx-host/tdx-host.c
+new file mode 100644
+index 000000000000..49c205913ef6
+--- /dev/null
 +++ b/drivers/virt/coco/tdx-host/tdx-host.c
-@@ -8,7 +8,10 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/mod_devicetable.h>
-+#include <linux/pci.h>
-+#include <linux/pci-tsm.h>
- #include <linux/sysfs.h>
-+#include <linux/tsm.h>
- #include <linux/device/faux.h>
- #include <asm/cpu_device_id.h>
- #include <asm/tdx.h>
-@@ -20,6 +23,146 @@ static const struct x86_cpu_id tdx_host_ids[] = {
- };
- MODULE_DEVICE_TABLE(x86cpu, tdx_host_ids);
- 
+@@ -0,0 +1,52 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * The scope of this pointer is for TDX Connect.
-+ * Every feature should evaluate how to get tdx_sysinfo. TDX Connect expects no
-+ * tdx_sysinfo change after TDX Module update so could cache it. TDX version
-+ * sysfs expects change so should call tdx_get_sysinfo() every time.
++ * TDX host user interface driver
 + *
-+ * Maybe move TDX Connect to a separate file makes thing clearer.
++ * Copyright (C) 2025 Intel Corporation
 + */
-+static const struct tdx_sys_info *tdx_sysinfo;
 +
-+struct tdx_link {
-+	struct pci_tsm_pf0 pci;
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/mod_devicetable.h>
++#include <linux/sysfs.h>
++#include <linux/device/faux.h>
++#include <asm/cpu_device_id.h>
++#include <asm/tdx.h>
++#include <asm/tdx_global_metadata.h>
++
++static const struct x86_cpu_id tdx_host_ids[] = {
++	X86_MATCH_FEATURE(X86_FEATURE_TDX_HOST_PLATFORM, NULL),
++	{}
 +};
++MODULE_DEVICE_TABLE(x86cpu, tdx_host_ids);
 +
-+static struct tdx_link *to_tdx_link(struct pci_tsm *tsm)
++static struct faux_device *fdev;
++
++static int __init tdx_host_init(void)
 +{
-+	return container_of(tsm, struct tdx_link, pci.base_tsm);
-+}
++	int r;
 +
-+static int tdx_link_connect(struct pci_dev *pdev)
++	if (!x86_match_cpu(tdx_host_ids))
++		return -ENODEV;
++
++	/* Enable the usage of SEAMCALLs */
++	r = tdx_enable();
++	if (r)
++		return r;
++
++	fdev = faux_device_create(KBUILD_MODNAME, NULL, NULL);
++	if (!fdev)
++		return -ENODEV;
++
++	return 0;
++}
++module_init(tdx_host_init);
++
++static void __exit tdx_host_exit(void)
 +{
-+	return -ENXIO;
++	faux_device_destroy(fdev);
 +}
++module_exit(tdx_host_exit);
 +
-+static void tdx_link_disconnect(struct pci_dev *pdev)
-+{
-+}
-+
-+static struct pci_tsm_ops tdx_link_ops;
-+
-+static struct pci_tsm *tdx_link_pf0_probe(struct tsm_dev *tsm_dev,
-+					  struct pci_dev *pdev)
-+{
-+	int rc;
-+
-+	struct tdx_link *tlink __free(kfree) =
-+		kzalloc(sizeof(*tlink), GFP_KERNEL);
-+	if (!tlink)
-+		return NULL;
-+
-+	rc = pci_tsm_pf0_constructor(pdev, &tlink->pci, tsm_dev->pci_ops);
-+	if (rc)
-+		return NULL;
-+
-+	return &no_free_ptr(tlink)->pci.base_tsm;
-+}
-+
-+static void tdx_link_pf0_remove(struct pci_tsm *tsm)
-+{
-+	struct tdx_link *tlink = to_tdx_link(tsm);
-+
-+	pci_tsm_pf0_destructor(&tlink->pci);
-+	kfree(tlink);
-+}
-+
-+static struct pci_tsm *tdx_link_fn_probe(struct tsm_dev *tsm_dev,
-+					 struct pci_dev *pdev)
-+{
-+	int rc;
-+
-+	struct pci_tsm *pci_tsm __free(kfree) =
-+		kzalloc(sizeof(*pci_tsm), GFP_KERNEL);
-+	if (!pci_tsm)
-+		return NULL;
-+
-+	rc = pci_tsm_link_constructor(pdev, pci_tsm, tsm_dev->pci_ops);
-+	if (rc)
-+		return NULL;
-+
-+	return no_free_ptr(pci_tsm);
-+}
-+
-+static struct pci_tsm *tdx_link_probe(struct tsm_dev *tsm_dev, struct pci_dev *pdev)
-+{
-+	if (is_pci_tsm_pf0(pdev))
-+		return tdx_link_pf0_probe(tsm_dev, pdev);
-+
-+	return tdx_link_fn_probe(tsm_dev, pdev);
-+}
-+
-+static void tdx_link_remove(struct pci_tsm *tsm)
-+{
-+	if (is_pci_tsm_pf0(tsm->pdev)) {
-+		tdx_link_pf0_remove(tsm);
-+		return;
-+	}
-+
-+	/* for sub-functions */
-+	kfree(tsm);
-+}
-+
-+static struct pci_tsm_ops tdx_link_ops = {
-+	.probe = tdx_link_probe,
-+	.remove = tdx_link_remove,
-+	.connect = tdx_link_connect,
-+	.disconnect = tdx_link_disconnect,
-+};
-+
-+static struct tsm_dev *link_dev;
-+
-+static void unregister_link_tsm(void *data)
-+{
-+	tsm_unregister(link_dev);
-+}
-+
-+static int tdx_connect_init(struct device *dev)
-+{
-+	struct tsm_dev *link;
-+
-+	if (!IS_ENABLED(CONFIG_TDX_CONNECT))
-+		return 0;
-+
-+	tdx_sysinfo = tdx_get_sysinfo();
-+	if (!tdx_sysinfo)
-+		return -ENXIO;
-+
-+	if (!(tdx_sysinfo->features.tdx_features0 & TDX_FEATURES0_TDXCONNECT))
-+		return 0;
-+
-+	link = tsm_register(dev, &tdx_link_ops);
-+	if (IS_ERR(link)) {
-+		dev_err(dev, "failed to register TSM: (%pe)\n", link);
-+		return PTR_ERR(link);
-+	}
-+
-+	link_dev = link;
-+
-+	return devm_add_action_or_reset(dev, unregister_link_tsm, NULL);
-+}
-+
-+static int tdx_host_probe(struct faux_device *fdev)
-+{
-+	/* Only support TDX Connect now. More TDX features could be added here. */
-+	return tdx_connect_init(&fdev->dev);
-+}
-+
-+static struct faux_device_ops tdx_host_ops = {
-+	.probe = tdx_host_probe,
-+};
-+
- static struct faux_device *fdev;
- 
- static int __init tdx_host_init(void)
-@@ -34,7 +177,7 @@ static int __init tdx_host_init(void)
- 	if (r)
- 		return r;
- 
--	fdev = faux_device_create(KBUILD_MODNAME, NULL, NULL);
-+	fdev = faux_device_create(KBUILD_MODNAME, NULL, &tdx_host_ops);
- 	if (!fdev)
- 		return -ENODEV;
- 
++MODULE_DESCRIPTION("TDX Host Services");
++MODULE_LICENSE("GPL");
+
+base-commit: 0d1fbc1f1b7a3c8b14a643303dd89bcc82d3fbd0
 -- 
 2.51.0
 
