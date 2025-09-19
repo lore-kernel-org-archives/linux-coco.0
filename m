@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66D5313E2F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B533148DB
 	for <linux-coco@lists.linux.dev>; Fri, 19 Sep 2025 14:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758291766; cv=none; b=PZ0d1MdWVfc79YCHAElPLhWLvomaIsaHBUuy0QSGhxNDXKVwlXivTt7TdlpAAckx4iy3pmVMn/6bSNj3AB9xZmxGy73PypdWHDwU/XfiktImbb5es4ELB/BzmdUhT7aaKZn3XxAhrzEHQNZlxKGyGLz40hCptGITuDXVlQep9CI=
+	t=1758291766; cv=none; b=E66Ep8+Ua6l2gW16z/G7XSut3T9IJQ9lBLQ/xHWQTMxp7K8O+BvkGt7OH4W4z9GE1Z6HfcNwLQPYc2kCZx4z9JXCUp+PNwoBZpINYAelK+e/oVNpXQzWNb9iRNkGiZpGRwm529S+qq43203OTtLt9uN+HI4pDSchKCpcnZ2Tz/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758291766; c=relaxed/simple;
-	bh=oGBBuGbInNhB5lho2xIBMMPvAzNyE4JN5rZbNu2/hnw=;
+	bh=20+rjfk+uEbJYZn2Pwz3s+qLBFd5m5rPOVOdRQ/i5Nk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SmejOytGKWSCDwvbFHGeDRYatYbXang+iiujP2WF07fqtAoMc484rP/XYnqlsFvkUhwtfdjA7dOjtuJWvlkwEIXfceoxW5EpYWOsObjVuE9gQ5idmLB/TBQHri5nJhthEOF7tfXIUdVfBudKxAv5DS8UoieSm6TZfOpmx1E0Dxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lEqG+lSg; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=CjxjGMI4S1qwpE9+JYqE5WcGPoFTKPXjT74Kmk2BT1BqXtgjXBwtcexmLPLQ03oeeumjVOBWJ9qevObz4yEj9oeHeM/ZdMQjqkdajrbXkpjE3RA6zt+3oJJePzShZUO3VsZhtEZyS/ZaBowFHXZl9Bgl3kyVUMMQmDdii32CWWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dngnEPQv; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lEqG+lSg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dngnEPQv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1758291764; x=1789827764;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=oGBBuGbInNhB5lho2xIBMMPvAzNyE4JN5rZbNu2/hnw=;
-  b=lEqG+lSgGJ/D14bMrJWNz7nBloQeRI8u1hYiw3zmbDF6wk3pk/OcssHG
-   /2TIlfyB5T201zfuZnLZgzpDIIsA10HWH8BsQ+gnMdOZEdOBL6YC5kcq7
-   NUxiLpZCfKW9eL53yCXJy9IPjFjga755U0ru5+sC3AXF+omBXNQfHL3oR
-   DMjnp+fn2/7xzNezfbPwdXNTqqvI1Zqhf4RRRlHBsps9wZteUtNDYDF6R
-   haTWlkrXLGPKpFVJKznOvTbu4Se+tWW88q58mjmzyJKxmPoe/nJp5dac3
-   4B2JywrTMsuyqCBmwUVokAPNdaT7NOaP7U3gDwCLLphVEglvW4V12zE6X
-   Q==;
-X-CSE-ConnectionGUID: BTLapT4QSOK6kRDW09KalQ==
-X-CSE-MsgGUID: lcmWsAK+QEajXpMScDUmqg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60750545"
+  bh=20+rjfk+uEbJYZn2Pwz3s+qLBFd5m5rPOVOdRQ/i5Nk=;
+  b=dngnEPQv3y7TOmR9h7mQKVHL0a5kTfrS3yQ2EkSXHDCIIVRI79+Z1MDG
+   yc3kGlyiWm6je+NKtlQtJmGOHSgWAeChtfDULpUvlbpIXtvfAK6oJj5Yc
+   1y8sobYbjC1uwjrOe46Wn1LJTmikNqMgPcwXMj57vzXXKDINKQkk/vcvI
+   RIeJ76aX/n1iduy6cQu8hFysHFGSSXutA6djOmBzC2tfZp8V96d4CsTsT
+   yd9J5apAlEzzzFXXOoyJlTJJi3Y6heLfa11jwt/c1oa4Eup3YoFDniEVJ
+   V61SROkSAGKaPudMkTpELNBbMEWJ+k3iV+Jz+VfMWW0bFMRTmNdw9miIf
+   A==;
+X-CSE-ConnectionGUID: JzEnU+qGRdS2NVwyT5gghQ==
+X-CSE-MsgGUID: NP4eQwUXT32cyKKz3GT4OQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60750536"
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="60750545"
+   d="scan'208";a="60750536"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 07:22:39 -0700
-X-CSE-ConnectionGUID: a1XxVkQsR8a+FdRD6gA7+g==
-X-CSE-MsgGUID: GYLDOE+uT4ObvrX1rAlT1w==
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 07:22:38 -0700
+X-CSE-ConnectionGUID: bJI+d+zqTD2sP9AUaeWqmg==
+X-CSE-MsgGUID: sqLRI1aYT4KuQKc1eOhMPA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="176655030"
+   d="scan'208";a="176655023"
 Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
   by fmviesa010.fm.intel.com with ESMTP; 19 Sep 2025 07:22:38 -0700
 From: Dan Williams <dan.j.williams@intel.com>
@@ -48,10 +48,11 @@ To: linux-coco@lists.linux.dev,
 	linux-pci@vger.kernel.org
 Cc: xin@zytor.com,
 	chao.gao@intel.com,
-	Lu Baolu <baolu.lu@linux.intel.com>
-Subject: [RFC PATCH 13/27] iommu/vt-d: Reserve the MSB domain ID bit for the TDX module
-Date: Fri, 19 Sep 2025 07:22:22 -0700
-Message-ID: <20250919142237.418648-14-dan.j.williams@intel.com>
+	Dave Jiang <dave.jiang@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: [RFC PATCH 11/27] acpi: Add KEYP Key Configuration Unit parsing
+Date: Fri, 19 Sep 2025 07:22:20 -0700
+Message-ID: <20250919142237.418648-12-dan.j.williams@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250919142237.418648-1-dan.j.williams@intel.com>
 References: <20250919142237.418648-1-dan.j.williams@intel.com>
@@ -61,85 +62,210 @@ List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Dave Jiang <dave.jiang@intel.com>
 
-The Intel TDX Connect Architecture Specification defines some enhancements
-for the VT-d architecture to introduce IOMMU support for TEE-IO requests.
-Section 2.2, 'Trusted DMA' states that:
+Parse the KEYP Key Configuration Units (KCU), to decide the max IDE
+streams supported for each host bridge.
 
-I/O TLB and DID Isolation – When IOMMU is enabled to support TDX Connect,
-the IOMMU restricts the VMM’s DID setting, reserving the MSB bit for the
-TDX module. The TDX module always sets this reserved bit on the trusted
-DMA table. IOMMU tags IOTLB, PASID cache, and context entries to indicate
-whether they were created from TEE-IO transactions, ensuring isolation
-between TEE and non-TEE requests in translation caches.
+The KEYP table points to a number of KCU structures that each associates
+with a list of root ports (RP) via segment, bus, and devfn. Sanity check
+the KEYP table, ensure all RPs listed for each KCU are included in one
+host bridge. Then extact the max IDE streams supported to
+pci_host_bridge via pci_ide_init_nr_streams().
 
-Reserve the MSB in the domain ID for the TDX module's use.
-
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-[djbw: todo: replace SOC table with ACPI table detect]
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+[djbw: todo: find a better place for this than common host-bridge init]
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/iommu/intel/dmar.c | 29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+ drivers/acpi/Makefile              |   2 +
+ drivers/acpi/pci_root.c            |   2 +
+ drivers/acpi/x86/keyp.c            | 118 +++++++++++++++++++++++++++++
+ drivers/virt/coco/tdx-host/Kconfig |   1 +
+ include/linux/acpi.h               |   3 +
+ 5 files changed, 126 insertions(+)
+ create mode 100644 drivers/acpi/x86/keyp.c
 
-diff --git a/drivers/iommu/intel/dmar.c b/drivers/iommu/intel/dmar.c
-index a54934c0536f..3ae177463774 100644
---- a/drivers/iommu/intel/dmar.c
-+++ b/drivers/iommu/intel/dmar.c
-@@ -29,6 +29,8 @@
- #include <linux/numa.h>
- #include <linux/limits.h>
- #include <asm/irq_remapping.h>
-+#include <asm/cpu_device_id.h>
-+#include <asm/intel-family.h>
+diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+index d1b0affb844f..fdd68d402aa2 100644
+--- a/drivers/acpi/Makefile
++++ b/drivers/acpi/Makefile
+@@ -134,3 +134,5 @@ obj-$(CONFIG_ACPI_VIOT)		+= viot.o
  
- #include "iommu.h"
- #include "../irq_remapping.h"
-@@ -1033,6 +1035,31 @@ static int map_iommu(struct intel_iommu *iommu, struct dmar_drhd_unit *drhd)
- 	return err;
- }
+ obj-$(CONFIG_RISCV)		+= riscv/
+ obj-$(CONFIG_X86)		+= x86/
++
++obj-$(CONFIG_ACPI_KEYP)		+= x86/keyp.o
+diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+index 74ade4160314..633e6a00c62d 100644
+--- a/drivers/acpi/pci_root.c
++++ b/drivers/acpi/pci_root.c
+@@ -757,6 +757,8 @@ static int acpi_pci_root_add(struct acpi_device *device,
+ 		acpi_ioapic_add(root->device->handle);
+ 	}
  
-+static bool platform_is_tdxc_enhanced(void)
++	keyp_setup_nr_ide_stream(root->bus);
++
+ 	pci_lock_rescan_remove();
+ 	pci_bus_add_devices(root->bus);
+ 	pci_unlock_rescan_remove();
+diff --git a/drivers/acpi/x86/keyp.c b/drivers/acpi/x86/keyp.c
+new file mode 100644
+index 000000000000..99680f1edff7
+--- /dev/null
++++ b/drivers/acpi/x86/keyp.c
+@@ -0,0 +1,118 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * KEYP ACPI table parsing
++ *
++ * Copyright (C) 2023 Intel Corporation
++ */
++
++#include <linux/acpi.h>
++#include <linux/bitfield.h>
++#include <linux/pci.h>
++
++#define KCU_STR_CAP_NUM_STREAMS		GENMASK(8, 0)
++
++/* The bus_end is inclusive */
++struct keyp_hb_info {
++	/* input */
++	u16 segment;
++	u8 bus_start;
++	u8 bus_end;
++	/* output */
++	u8 nr_ide_streams;
++};
++
++static bool keyp_info_match(struct acpi_keyp_rp_info *rp,
++			    struct keyp_hb_info *hb)
 +{
-+	return (boot_cpu_data.x86_vfm == INTEL_GRANITERAPIDS_D ||
-+		boot_cpu_data.x86_vfm == INTEL_GRANITERAPIDS_X);
++	if (rp->segment != hb->segment)
++		return false;
++
++	if (rp->bus >= hb->bus_start && rp->bus <= hb->bus_end)
++		return true;
++
++	return false;
 +}
 +
-+static unsigned long iommu_calculate_max_domain_id(struct intel_iommu *iommu)
++static int keyp_config_unit_handler(union acpi_subtable_headers *header,
++				    void *arg, const unsigned long end)
 +{
-+	unsigned long ndoms = cap_ndoms(iommu->cap);
++	struct acpi_keyp_config_unit *acpi_cu =
++		(struct acpi_keyp_config_unit *)&header->keyp;
++	struct keyp_hb_info *hb_info = arg;
++	int rp_size, rp_count, i;
++	void __iomem *addr;
++	bool match = false;
++	u32 cap;
 +
-+	/*
-+	 * Intel TDX Connect Architecture Specification, Section 2.2 Trusted DMA
-+	 *
-+	 * When IOMMU is enabled to support TDX Connect, the IOMMU restricts
-+	 * the VMM’s DID setting, reserving the MSB bit for the TDX module. The
-+	 * TDX module always sets this reserved bit on the trusted DMA table.
-+	 */
-+	if (platform_is_tdxc_enhanced() && (iommu->ecap & BIT_ULL(50))) {
-+		pr_info_once("Most Significant Bit of domain ID reserved.\n");
-+		return ndoms >> 1;
++	rp_size = acpi_cu->header.length - sizeof(*acpi_cu);
++	if (rp_size % sizeof(struct acpi_keyp_rp_info))
++		return -EINVAL;
++
++	rp_count = rp_size / sizeof(struct acpi_keyp_rp_info);
++	if (!rp_count || rp_count != acpi_cu->root_port_count)
++		return -EINVAL;
++
++	for (i = 0; i < rp_count; i++) {
++		struct acpi_keyp_rp_info *rp_info = &acpi_cu->rp_info[i];
++
++		if (i == 0) {
++			match = keyp_info_match(rp_info, hb_info);
++			/* The host bridge already matches another KCU */
++			if (match && hb_info->nr_ide_streams)
++				return -EINVAL;
++
++			continue;
++		}
++
++		if (match ^ keyp_info_match(rp_info, hb_info))
++			return -EINVAL;
 +	}
 +
-+	return ndoms;
++	if (!match)
++		return 0;
++
++	addr = ioremap(acpi_cu->register_base_address, sizeof(cap));
++	if (!addr)
++		return -ENOMEM;
++	cap = ioread32(addr);
++	iounmap(addr);
++
++	hb_info->nr_ide_streams = FIELD_GET(KCU_STR_CAP_NUM_STREAMS, cap) + 1;
++
++	return 0;
 +}
 +
- static int alloc_iommu(struct dmar_drhd_unit *drhd)
++static u8 keyp_find_nr_ide_stream(u16 segment, u8 bus_start, u8 bus_end)
++{
++	struct keyp_hb_info hb_info = {
++		.segment = segment,
++		.bus_start = bus_start,
++		.bus_end = bus_end,
++	};
++	int rc;
++
++	rc = acpi_table_parse_keyp(ACPI_KEYP_TYPE_CONFIG_UNIT,
++				   keyp_config_unit_handler, &hb_info);
++	if (rc < 0)
++		return 0;
++
++	return hb_info.nr_ide_streams;
++}
++
++void keyp_setup_nr_ide_stream(struct pci_bus *bus)
++{
++	struct pci_host_bridge *hb = to_pci_host_bridge(bus->bridge);
++	u8 nr_ide_streams;
++
++	if (hb->nr_ide_streams > 0)
++		return;
++
++	nr_ide_streams = keyp_find_nr_ide_stream(pci_domain_nr(bus),
++						 bus->busn_res.start,
++						 bus->busn_res.end);
++	if (!nr_ide_streams)
++		return;
++
++	pci_ide_init_nr_streams(hb, nr_ide_streams);
++}
++EXPORT_SYMBOL_GPL(keyp_setup_nr_ide_stream);
+diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
+index 026b7d5ea4fa..c3f779c511e3 100644
+--- a/drivers/virt/coco/tdx-host/Kconfig
++++ b/drivers/virt/coco/tdx-host/Kconfig
+@@ -14,3 +14,4 @@ config TDX_CONNECT
+ 	depends on TDX_HOST_SERVICES
+ 	depends on PCI_TSM
+ 	default TDX_HOST_SERVICES
++	select ACPI_KEYP
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 36662c1c7de4..0165f2209d91 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -239,6 +239,7 @@ acpi_table_parse_cedt(enum acpi_cedt_type id,
+ int __init_or_acpilib
+ acpi_table_parse_keyp(enum acpi_keyp_type id,
+ 		      acpi_tbl_entry_handler_arg handler_arg, void *arg);
++void __init_or_acpilib keyp_setup_nr_ide_stream(struct pci_bus *bus);
+ #else
+ static inline int acpi_table_parse_keyp(enum acpi_keyp_type id,
+ 					acpi_tbl_entry_handler_arg handler_arg,
+@@ -246,6 +247,8 @@ static inline int acpi_table_parse_keyp(enum acpi_keyp_type id,
  {
- 	struct intel_iommu *iommu;
-@@ -1099,7 +1126,7 @@ static int alloc_iommu(struct dmar_drhd_unit *drhd)
- 	spin_lock_init(&iommu->lock);
- 	ida_init(&iommu->domain_ida);
- 	mutex_init(&iommu->did_lock);
--	iommu->max_domain_id = cap_ndoms(iommu->cap);
-+	iommu->max_domain_id = iommu_calculate_max_domain_id(iommu);
+ 	return -EOPNOTSUPP;
+ }
++
++static inline void keyp_setup_nr_ide_stream(struct pci_bus *bus) {}
+ #endif
  
- 	ver = readl(iommu->reg + DMAR_VER_REG);
- 	pr_info("%s: reg_base_addr %llx ver %d:%d cap %llx ecap %llx\n",
+ int acpi_parse_mcfg (struct acpi_table_header *header);
 -- 
 2.51.0
 
