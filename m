@@ -1,58 +1,57 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B533148DB
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8BAB313E30
 	for <linux-coco@lists.linux.dev>; Fri, 19 Sep 2025 14:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758291766; cv=none; b=E66Ep8+Ua6l2gW16z/G7XSut3T9IJQ9lBLQ/xHWQTMxp7K8O+BvkGt7OH4W4z9GE1Z6HfcNwLQPYc2kCZx4z9JXCUp+PNwoBZpINYAelK+e/oVNpXQzWNb9iRNkGiZpGRwm529S+qq43203OTtLt9uN+HI4pDSchKCpcnZ2Tz/E=
+	t=1758291766; cv=none; b=csT7sFewnF/XFd2mL3NzPobt1oDS4ms/sl0og2Le25KaPwPqLLpZmDz88Ym9shljHS4H8nfVRLFXI/sh38Qhz/OU+mS0H8+oZu8tov9H+S5V3Kuh3Wr0O5k+ZXlQjS4SWmvRscTLujJGcOaHqfkN//ynBHFT9TkiTLFjI9jj9gQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758291766; c=relaxed/simple;
-	bh=20+rjfk+uEbJYZn2Pwz3s+qLBFd5m5rPOVOdRQ/i5Nk=;
+	bh=eJ8eVwYxUVNsKnOyBrSe/dewHJwVRE0Ci5rwxy054xM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CjxjGMI4S1qwpE9+JYqE5WcGPoFTKPXjT74Kmk2BT1BqXtgjXBwtcexmLPLQ03oeeumjVOBWJ9qevObz4yEj9oeHeM/ZdMQjqkdajrbXkpjE3RA6zt+3oJJePzShZUO3VsZhtEZyS/ZaBowFHXZl9Bgl3kyVUMMQmDdii32CWWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dngnEPQv; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=Sg22yYoG1uv7wAH5yMXY8JSP9tf35w9o+hCZxCNFOfDHWN+6YWr5xaFwG0uOphNIgT+rRz/JQO4J6kxqfP9He4prEuoK4JR6EpotZpc7MExP53AjZ4SK//hKakvpxUgda7/Ow/AdqC6MOg49EnIXs4LUK3aVsk7Ss9b/0gXGQhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dqZxjG7d; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dngnEPQv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dqZxjG7d"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758291764; x=1789827764;
+  t=1758291765; x=1789827765;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=20+rjfk+uEbJYZn2Pwz3s+qLBFd5m5rPOVOdRQ/i5Nk=;
-  b=dngnEPQv3y7TOmR9h7mQKVHL0a5kTfrS3yQ2EkSXHDCIIVRI79+Z1MDG
-   yc3kGlyiWm6je+NKtlQtJmGOHSgWAeChtfDULpUvlbpIXtvfAK6oJj5Yc
-   1y8sobYbjC1uwjrOe46Wn1LJTmikNqMgPcwXMj57vzXXKDINKQkk/vcvI
-   RIeJ76aX/n1iduy6cQu8hFysHFGSSXutA6djOmBzC2tfZp8V96d4CsTsT
-   yd9J5apAlEzzzFXXOoyJlTJJi3Y6heLfa11jwt/c1oa4Eup3YoFDniEVJ
-   V61SROkSAGKaPudMkTpELNBbMEWJ+k3iV+Jz+VfMWW0bFMRTmNdw9miIf
-   A==;
-X-CSE-ConnectionGUID: JzEnU+qGRdS2NVwyT5gghQ==
-X-CSE-MsgGUID: NP4eQwUXT32cyKKz3GT4OQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60750536"
+  bh=eJ8eVwYxUVNsKnOyBrSe/dewHJwVRE0Ci5rwxy054xM=;
+  b=dqZxjG7d8z+9XGzVCs4AzJ9BpN8zuP4TUFmD4wWDy2dPM30clg1hPe+L
+   6WE6W9oNIjKNK9uzB3Ntb2aQuatsAIZ5MXjg/SP9YsIxwTdS7aJtF4H9D
+   MNdu6n+KiZXwxbnTXstgLtVqlrAzDxzGye6rWGCRaFriSkuGunXfiJd2K
+   TRDQPJDM06tbWXcoMfJSvtKarxwFWZDHWix048DXLeo41ELgqom32ev+v
+   5HqqQuOC0dUelffNC4KEbG1kO5QZPaW4FV+UyL4pDJjOKhtGNbbSpaxe1
+   Yn76jqBC84tY2L+RElRjwkN1pBD20lWefQYpqKAsrrkZKqCHMbu4Ywf3Q
+   w==;
+X-CSE-ConnectionGUID: Ubx8Vy+XRge1OUBgoC2iWA==
+X-CSE-MsgGUID: c9HVPdu4QU6Kozqm6NIoNQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60750548"
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="60750536"
+   d="scan'208";a="60750548"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 07:22:38 -0700
-X-CSE-ConnectionGUID: bJI+d+zqTD2sP9AUaeWqmg==
-X-CSE-MsgGUID: sqLRI1aYT4KuQKc1eOhMPA==
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 07:22:39 -0700
+X-CSE-ConnectionGUID: ZRX2vZWKQ5qkUe+Lu+/lQQ==
+X-CSE-MsgGUID: cYgtQgczR+qonNijiVjXtQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="176655023"
+   d="scan'208";a="176655033"
 Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
-  by fmviesa010.fm.intel.com with ESMTP; 19 Sep 2025 07:22:38 -0700
+  by fmviesa010.fm.intel.com with ESMTP; 19 Sep 2025 07:22:39 -0700
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-coco@lists.linux.dev,
 	linux-pci@vger.kernel.org
 Cc: xin@zytor.com,
 	chao.gao@intel.com,
-	Dave Jiang <dave.jiang@intel.com>,
 	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: [RFC PATCH 11/27] acpi: Add KEYP Key Configuration Unit parsing
-Date: Fri, 19 Sep 2025 07:22:20 -0700
-Message-ID: <20250919142237.418648-12-dan.j.williams@intel.com>
+Subject: [RFC PATCH 14/27] TODO: x86/virt/tdx: Read TDX Connect global metadata for TDX Connect
+Date: Fri, 19 Sep 2025 07:22:23 -0700
+Message-ID: <20250919142237.418648-15-dan.j.williams@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250919142237.418648-1-dan.j.williams@intel.com>
 References: <20250919142237.418648-1-dan.j.williams@intel.com>
@@ -64,208 +63,96 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Dave Jiang <dave.jiang@intel.com>
+From: Xu Yilun <yilun.xu@linux.intel.com>
 
-Parse the KEYP Key Configuration Units (KCU), to decide the max IDE
-streams supported for each host bridge.
+Add several global metadata fields for TDX Connect. These metadata field
+specify the number of metadata pages needed for IOMMU/IDE/SPDM setup.
 
-The KEYP table points to a number of KCU structures that each associates
-with a list of root ports (RP) via segment, bus, and devfn. Sanity check
-the KEYP table, ensure all RPs listed for each KCU are included in one
-host bridge. Then extact the max IDE streams supported to
-pci_host_bridge via pci_ide_init_nr_streams().
+TODO:
 
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
+This patch should be auto-generated by script but for now the TDX
+Connect part is not published in global_metadata.json so make the patch
+manually. The correct way should be:
+
+The code change is auto-generated by re-running the script in [1] after
+uncommenting the "td_conf" and "td_ctrl" part to regenerate the
+tdx_global_metadata.{hc} and update them to the existing ones in the
+kernel.
+
+  #python tdx.py global_metadata.json tdx_global_metadata.h \
+        tdx_global_metadata.c
+
+The 'global_metadata.json' can be fetched from [1].
+
+Link: https://cdrdv2.intel.com/v1/dl/getContent/795381 [1]
 Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-[djbw: todo: find a better place for this than common host-bridge init]
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/acpi/Makefile              |   2 +
- drivers/acpi/pci_root.c            |   2 +
- drivers/acpi/x86/keyp.c            | 118 +++++++++++++++++++++++++++++
- drivers/virt/coco/tdx-host/Kconfig |   1 +
- include/linux/acpi.h               |   3 +
- 5 files changed, 126 insertions(+)
- create mode 100644 drivers/acpi/x86/keyp.c
+ arch/x86/include/asm/tdx_global_metadata.h  |  8 ++++++++
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 18 ++++++++++++++++++
+ 2 files changed, 26 insertions(+)
 
-diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-index d1b0affb844f..fdd68d402aa2 100644
---- a/drivers/acpi/Makefile
-+++ b/drivers/acpi/Makefile
-@@ -134,3 +134,5 @@ obj-$(CONFIG_ACPI_VIOT)		+= viot.o
+diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
+index 2aa741190b93..e7948bca671a 100644
+--- a/arch/x86/include/asm/tdx_global_metadata.h
++++ b/arch/x86/include/asm/tdx_global_metadata.h
+@@ -39,12 +39,20 @@ struct tdx_sys_info_ext {
+ 	u8 ext_required;
+ };
  
- obj-$(CONFIG_RISCV)		+= riscv/
- obj-$(CONFIG_X86)		+= x86/
-+
-+obj-$(CONFIG_ACPI_KEYP)		+= x86/keyp.o
-diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-index 74ade4160314..633e6a00c62d 100644
---- a/drivers/acpi/pci_root.c
-+++ b/drivers/acpi/pci_root.c
-@@ -757,6 +757,8 @@ static int acpi_pci_root_add(struct acpi_device *device,
- 		acpi_ioapic_add(root->device->handle);
- 	}
- 
-+	keyp_setup_nr_ide_stream(root->bus);
-+
- 	pci_lock_rescan_remove();
- 	pci_bus_add_devices(root->bus);
- 	pci_unlock_rescan_remove();
-diff --git a/drivers/acpi/x86/keyp.c b/drivers/acpi/x86/keyp.c
-new file mode 100644
-index 000000000000..99680f1edff7
---- /dev/null
-+++ b/drivers/acpi/x86/keyp.c
-@@ -0,0 +1,118 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * KEYP ACPI table parsing
-+ *
-+ * Copyright (C) 2023 Intel Corporation
-+ */
-+
-+#include <linux/acpi.h>
-+#include <linux/bitfield.h>
-+#include <linux/pci.h>
-+
-+#define KCU_STR_CAP_NUM_STREAMS		GENMASK(8, 0)
-+
-+/* The bus_end is inclusive */
-+struct keyp_hb_info {
-+	/* input */
-+	u16 segment;
-+	u8 bus_start;
-+	u8 bus_end;
-+	/* output */
-+	u8 nr_ide_streams;
++struct tdx_sys_info_connect {
++	u16 ide_mt_page_count;
++	u16 spdm_mt_page_count;
++	u16 iommu_mt_page_count;
++	u16 spdm_max_dev_info_pages;
 +};
 +
-+static bool keyp_info_match(struct acpi_keyp_rp_info *rp,
-+			    struct keyp_hb_info *hb)
-+{
-+	if (rp->segment != hb->segment)
-+		return false;
-+
-+	if (rp->bus >= hb->bus_start && rp->bus <= hb->bus_end)
-+		return true;
-+
-+	return false;
-+}
-+
-+static int keyp_config_unit_handler(union acpi_subtable_headers *header,
-+				    void *arg, const unsigned long end)
-+{
-+	struct acpi_keyp_config_unit *acpi_cu =
-+		(struct acpi_keyp_config_unit *)&header->keyp;
-+	struct keyp_hb_info *hb_info = arg;
-+	int rp_size, rp_count, i;
-+	void __iomem *addr;
-+	bool match = false;
-+	u32 cap;
-+
-+	rp_size = acpi_cu->header.length - sizeof(*acpi_cu);
-+	if (rp_size % sizeof(struct acpi_keyp_rp_info))
-+		return -EINVAL;
-+
-+	rp_count = rp_size / sizeof(struct acpi_keyp_rp_info);
-+	if (!rp_count || rp_count != acpi_cu->root_port_count)
-+		return -EINVAL;
-+
-+	for (i = 0; i < rp_count; i++) {
-+		struct acpi_keyp_rp_info *rp_info = &acpi_cu->rp_info[i];
-+
-+		if (i == 0) {
-+			match = keyp_info_match(rp_info, hb_info);
-+			/* The host bridge already matches another KCU */
-+			if (match && hb_info->nr_ide_streams)
-+				return -EINVAL;
-+
-+			continue;
-+		}
-+
-+		if (match ^ keyp_info_match(rp_info, hb_info))
-+			return -EINVAL;
-+	}
-+
-+	if (!match)
-+		return 0;
-+
-+	addr = ioremap(acpi_cu->register_base_address, sizeof(cap));
-+	if (!addr)
-+		return -ENOMEM;
-+	cap = ioread32(addr);
-+	iounmap(addr);
-+
-+	hb_info->nr_ide_streams = FIELD_GET(KCU_STR_CAP_NUM_STREAMS, cap) + 1;
-+
-+	return 0;
-+}
-+
-+static u8 keyp_find_nr_ide_stream(u16 segment, u8 bus_start, u8 bus_end)
-+{
-+	struct keyp_hb_info hb_info = {
-+		.segment = segment,
-+		.bus_start = bus_start,
-+		.bus_end = bus_end,
-+	};
-+	int rc;
-+
-+	rc = acpi_table_parse_keyp(ACPI_KEYP_TYPE_CONFIG_UNIT,
-+				   keyp_config_unit_handler, &hb_info);
-+	if (rc < 0)
-+		return 0;
-+
-+	return hb_info.nr_ide_streams;
-+}
-+
-+void keyp_setup_nr_ide_stream(struct pci_bus *bus)
-+{
-+	struct pci_host_bridge *hb = to_pci_host_bridge(bus->bridge);
-+	u8 nr_ide_streams;
-+
-+	if (hb->nr_ide_streams > 0)
-+		return;
-+
-+	nr_ide_streams = keyp_find_nr_ide_stream(pci_domain_nr(bus),
-+						 bus->busn_res.start,
-+						 bus->busn_res.end);
-+	if (!nr_ide_streams)
-+		return;
-+
-+	pci_ide_init_nr_streams(hb, nr_ide_streams);
-+}
-+EXPORT_SYMBOL_GPL(keyp_setup_nr_ide_stream);
-diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
-index 026b7d5ea4fa..c3f779c511e3 100644
---- a/drivers/virt/coco/tdx-host/Kconfig
-+++ b/drivers/virt/coco/tdx-host/Kconfig
-@@ -14,3 +14,4 @@ config TDX_CONNECT
- 	depends on TDX_HOST_SERVICES
- 	depends on PCI_TSM
- 	default TDX_HOST_SERVICES
-+	select ACPI_KEYP
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 36662c1c7de4..0165f2209d91 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -239,6 +239,7 @@ acpi_table_parse_cedt(enum acpi_cedt_type id,
- int __init_or_acpilib
- acpi_table_parse_keyp(enum acpi_keyp_type id,
- 		      acpi_tbl_entry_handler_arg handler_arg, void *arg);
-+void __init_or_acpilib keyp_setup_nr_ide_stream(struct pci_bus *bus);
- #else
- static inline int acpi_table_parse_keyp(enum acpi_keyp_type id,
- 					acpi_tbl_entry_handler_arg handler_arg,
-@@ -246,6 +247,8 @@ static inline int acpi_table_parse_keyp(enum acpi_keyp_type id,
- {
- 	return -EOPNOTSUPP;
- }
-+
-+static inline void keyp_setup_nr_ide_stream(struct pci_bus *bus) {}
- #endif
+ struct tdx_sys_info {
+ 	struct tdx_sys_info_features features;
+ 	struct tdx_sys_info_tdmr tdmr;
+ 	struct tdx_sys_info_td_ctrl td_ctrl;
+ 	struct tdx_sys_info_td_conf td_conf;
+ 	struct tdx_sys_info_ext ext;
++	struct tdx_sys_info_connect connect;
+ };
  
- int acpi_parse_mcfg (struct acpi_table_header *header);
+ #endif
+diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+index 69be16c1e6ec..63e0a6e7bf29 100644
+--- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
++++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+@@ -98,6 +98,23 @@ static int get_tdx_sys_info_ext(struct tdx_sys_info_ext *sysinfo_ext)
+ 	return ret;
+ }
+ 
++static int get_tdx_sys_info_connect(struct tdx_sys_info_connect *sysinfo_connect)
++{
++	int ret = 0;
++	u64 val;
++
++	if (!ret && !(ret = read_sys_metadata_field(0x3000000100000001, &val)))
++		sysinfo_connect->ide_mt_page_count = val;
++	if (!ret && !(ret = read_sys_metadata_field(0x3000000100000002, &val)))
++		sysinfo_connect->spdm_mt_page_count = val;
++	if (!ret && !(ret = read_sys_metadata_field(0x3000000100000003, &val)))
++		sysinfo_connect->iommu_mt_page_count = val;
++	if (!ret && !(ret = read_sys_metadata_field(0x3000000100000007, &val)))
++		sysinfo_connect->spdm_max_dev_info_pages = val;
++
++	return ret;
++}
++
+ static int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
+ {
+ 	int ret = 0;
+@@ -107,6 +124,7 @@ static int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
+ 	ret = ret ?: get_tdx_sys_info_td_ctrl(&sysinfo->td_ctrl);
+ 	ret = ret ?: get_tdx_sys_info_td_conf(&sysinfo->td_conf);
+ 	ret = ret ?: get_tdx_sys_info_ext(&sysinfo->ext);
++	ret = ret ?: get_tdx_sys_info_connect(&sysinfo->connect);
+ 
+ 	return ret;
+ }
 -- 
 2.51.0
 
