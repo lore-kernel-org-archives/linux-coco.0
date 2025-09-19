@@ -1,58 +1,57 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3662D313540
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06966314B83
 	for <linux-coco@lists.linux.dev>; Fri, 19 Sep 2025 14:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758291770; cv=none; b=liYpQp8wnZrMdigg3Ow7ujuRY31qG4dAGMfpPko0kuz0lW4v6jQ5OeH4DVSEvlh0YyjTCyq/YY7/r9+SwraG2qb0vyYmGfSO/Nw4BykLYiavHzNkxHFt/ARulhEM/nEGQhCsJsZvlQZUV63SX75uDCF1YCSt/Gpa+sN0Pd4tRu4=
+	t=1758291770; cv=none; b=J3ULxn/Jd5BmlBGFp2SLXnJ6y3xcCjtCVCEfYPUjjJsHUmG8oaPAvYiCFNIYBRJDGqbdThu0lpFGG5iBZwOQMeb3o46iUZwkR3LouVKnWs4Ct/fUX8oF6JnubEW2lIwTWoPtM4VpadkYHMoxxG/Cc5IkBtC97ntrKiNjqOnS4jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758291770; c=relaxed/simple;
-	bh=s+VrYPifGniCAEB53fvfse9O+pwjCsASQjwtx05DMPw=;
+	bh=t4xS4POzAfYHRG2QoOL9x3X0dblERfi5cM6g0JJy2iU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VYBG594ftmMNOrF32N0pEQuY6CVpp/gMNLphvX+LrG9BRwu3iKic+awwz3buSKt/8rF7g5vsl05UwGX6wlFCl+J+V5PrhrAcFB11ElK4UEn/yZDxLC8Ges97t4s50J4njfpUFrZ2Rr6aMJtrmIEA1A6gaDCAftXbzaLkucsTNaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m7waNSMg; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=FCFA+EhfirVDUY66Tf8KJQ/1ShEYcGZne78uBoRzKSpIDjiks1jWpQsS2W6Z/63t/sB6otgUx1wLuL3E5KedN3QjQpihlWg/PYbXZDWhJb/kyvBHkLRiNb0m+1eD+z+Nu89R6wAy2skof4ZK5CdUAMwxDEv7KSgFXqKynNq5GPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I9GAkugs; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m7waNSMg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I9GAkugs"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758291768; x=1789827768;
+  t=1758291769; x=1789827769;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=s+VrYPifGniCAEB53fvfse9O+pwjCsASQjwtx05DMPw=;
-  b=m7waNSMgGcG/Lw30P4c7eFUXbl7P/A1PTMUrAn15H0DPy/3lXJbZmH+g
-   vtV+X+3hZJPiFPzs+Da3srfm5cgxfcnzgpk81WCHex6CUrXM8oa48Yljs
-   TW3zjL1FxfysEPQ8RRZYrURV2GZikZzc6YfZGI+xm7A6vrbFtojGBeWtV
-   kIN5jl8p7BF3XEMXAgeO/NVvQag3e7u/3iaifSrt1Vz9lDW2/RNAxSJjO
-   GHZ/kWINrBUf/SslNAJnsl/8GyD1Foyi5zHi88nZAcCH6JCQJdIoK8wuj
-   mlv4+bJ34orj0OKu1HwQ6kBaQJrmnNHxp2m5cBjDvSJobEKhrHW6im7EI
+  bh=t4xS4POzAfYHRG2QoOL9x3X0dblERfi5cM6g0JJy2iU=;
+  b=I9GAkugsJPp3iQ6eUtxWb6D70nysXkVEbkpzaJR4nkCHjOx8If0FE/AS
+   O4sRgSIKfnF4u9LT4opDKt53UCqGjxI0rj37itxLcJMpde1uzNX+rL26x
+   DGT5D6W/yGjeoKuihzrA2mgIUTbHwlXJbd0rCEIK04Hw169OODeRhTIZx
+   7nt50Q7sYZICDG5ZxN3EYI0rYF73Fb5ZGDxcaIdTV56JBObnv/T1PFbSO
+   zQjUFZX5ff5vsLFg46ZL82FKGUvGYobkenyZNSotUXqK9rb72QofhXrBT
+   ZFl+kCFrRaqpo+PBbEw5cJYvCScsggmkduwa76olc3lrrmA1U0zsLG0x1
    Q==;
-X-CSE-ConnectionGUID: k9hgbOCVSwG4QZ2pzjJfFQ==
-X-CSE-MsgGUID: QPXxIkqYRnKor97RcsDvGg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60750571"
+X-CSE-ConnectionGUID: Y4R0Ha09RNOUVMj0xXgZZg==
+X-CSE-MsgGUID: JxLQRoBmQjq/u7lfFL17rA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60750577"
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="60750571"
+   d="scan'208";a="60750577"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 07:22:40 -0700
-X-CSE-ConnectionGUID: ecfajrtDQxe31D5DbD8vQQ==
-X-CSE-MsgGUID: 5pY6XD+1Qraq1Icls7ovOw==
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 07:22:41 -0700
+X-CSE-ConnectionGUID: McjDPyQ/Rhe+OK27oqfhwQ==
+X-CSE-MsgGUID: jjisDF6TQrKFCkLHVwbNyw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="176655056"
+   d="scan'208";a="176655062"
 Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
-  by fmviesa010.fm.intel.com with ESMTP; 19 Sep 2025 07:22:40 -0700
+  by fmviesa010.fm.intel.com with ESMTP; 19 Sep 2025 07:22:41 -0700
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-coco@lists.linux.dev,
 	linux-pci@vger.kernel.org
 Cc: xin@zytor.com,
 	chao.gao@intel.com,
-	Zhenzhong Duan <zhenzhong.duan@intel.com>,
 	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: [RFC PATCH 21/27] x86/virt/tdx: Add SEAMCALL wrappers for SPDM management
-Date: Fri, 19 Sep 2025 07:22:30 -0700
-Message-ID: <20250919142237.418648-22-dan.j.williams@intel.com>
+Subject: [RFC PATCH 23/27] PCI: iov: Export pci_iov_virtfn_bus()
+Date: Fri, 19 Sep 2025 07:22:32 -0700
+Message-ID: <20250919142237.418648-24-dan.j.williams@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250919142237.418648-1-dan.j.williams@intel.com>
 References: <20250919142237.418648-1-dan.j.williams@intel.com>
@@ -64,209 +63,31 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+From: Xu Yilun <yilun.xu@linux.intel.com>
 
-Add several SEAMCALL wrappers for SPDM management. TDX Module requires
-HPA_ARRAY_T structure as input/output parameters for these SEAMCALLs.
-So use tdx_page_array as for these wrappers.
+Export pci_iov_virtfn_bus() for tdx-host module. Use it find all PCIe
+VF devices associate to a PF0, then calculate the address ranges for IDE
+Address Association Registers.
 
-- TDH.SPDM.CREATE creates SPDM session metadata buffers for TDX Module.
-- TDH.SPDM.DELETE destroys SPDM session metadata and returns these
-  buffers to host, after checking no reference attached to the metadata.
-- TDH.SPDM.CONNECT establishes a new SPDM session with the device.
-- TDH.SPDM.DISCONNECT tears down the SPDM session with the device.
-- TDH.SPDM.MNG supports three SPDM runtime operations: HEARTBEAT,
-  KEY_UPDATE and DEV_INFO_RECOLLECTION.
-
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
 Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+[djbw: todo: drop this export and teach drivers/pci/ide.c to do this]
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- arch/x86/include/asm/tdx.h  |  11 +++
- arch/x86/virt/vmx/tdx/tdx.c | 133 ++++++++++++++++++++++++++++++++++++
- arch/x86/virt/vmx/tdx/tdx.h |   5 ++
- 3 files changed, 149 insertions(+)
+ drivers/pci/iov.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 5f2bc970cf25..97e0d7a1f38d 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -225,6 +225,17 @@ u64 tdh_ext_mem_add(struct tdx_page_array *pg_arr);
- u64 tdh_ext_init(void);
- u64 tdh_iommu_setup(u64 vtbar, struct tdx_page_array *iommu_mt, u64 *iommu_id);
- u64 tdh_iommu_clear(u64 iommu_id, struct tdx_page_array *iommu_mt);
-+u64 tdh_spdm_create(u64 func_id, struct tdx_page_array *spdm_mt, u64 *spdm_id);
-+u64 tdh_spdm_delete(u64 spdm_id, struct tdx_page_array *spdm_mt,
-+		    unsigned int *nr_released, u64 *released_hpa);
-+u64 tdh_spdm_connect(u64 spdm_id, struct page *spdm_conf,
-+		     struct page *spdm_rsp, struct page *spdm_req,
-+		     struct tdx_page_array *spdm_out, u64 *spdm_req_or_out_len);
-+u64 tdh_spdm_disconnect(u64 spdm_id, struct page *spdm_rsp,
-+			struct page *spdm_req, u64 *spdm_req_len);
-+u64 tdh_spdm_mng(u64 spdm_id, u64 spdm_op, struct page *spdm_param,
-+		 struct page *spdm_rsp, struct page *spdm_req,
-+		 struct tdx_page_array *spdm_out, u64 *spdm_req_or_out_len);
- #else
- static inline void tdx_init(void) { }
- static inline int tdx_enable(void)  { return -ENODEV; }
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 0f34009411fb..86dd855d7361 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -2390,3 +2390,136 @@ u64 tdh_iommu_clear(u64 iommu_id, struct tdx_page_array *iommu_mt)
- 	return seamcall_ret(TDH_IOMMU_CLEAR, &args);
+diff --git a/drivers/pci/iov.c b/drivers/pci/iov.c
+index ac4375954c94..d1bd3419e606 100644
+--- a/drivers/pci/iov.c
++++ b/drivers/pci/iov.c
+@@ -28,6 +28,7 @@ int pci_iov_virtfn_bus(struct pci_dev *dev, int vf_id)
+ 	return dev->bus->number + ((dev->devfn + dev->sriov->offset +
+ 				    dev->sriov->stride * vf_id) >> 8);
  }
- EXPORT_SYMBOL_GPL(tdh_iommu_clear);
-+
-+union hpa_array_t {
-+	struct {
-+		u64 rsvd0:12;
-+		u64 pfn:40;
-+		u64 rsvd1:3;
-+		u64 array_size:9;
-+	};
-+	u64 raw;
-+};
-+
-+static u64 hpa_array_t_assign_raw(struct tdx_page_array *array)
-+{
-+	union hpa_array_t hat;
-+
-+	if (array->root) {
-+		hat.raw = page_to_phys(array->root);
-+		hat.array_size = array->nents - 1;
-+	} else {
-+		hat.raw = page_to_phys(array->pages[0]);
-+	}
-+
-+	return hat.raw;
-+}
-+
-+static u64 hpa_array_t_release_raw(struct tdx_page_array *array)
-+{
-+	if (array->root)
-+		return page_to_phys(array->root);
-+
-+	return 0;
-+}
-+
-+u64 tdh_spdm_create(u64 func_id, struct tdx_page_array *spdm_mt, u64 *spdm_id)
-+{
-+	struct tdx_module_args args = {
-+		.rcx = func_id,
-+		.rdx = hpa_array_t_assign_raw(spdm_mt)
-+	};
-+	u64 r;
-+
-+	tdx_clflush_page_array(spdm_mt);
-+
-+	r = seamcall_ret(TDH_SPDM_CREATE, &args);
-+
-+	*spdm_id = args.rcx;
-+
-+	return r;
-+}
-+EXPORT_SYMBOL_GPL(tdh_spdm_create);
-+
-+u64 tdh_spdm_delete(u64 spdm_id, struct tdx_page_array *spdm_mt,
-+		    unsigned int *nr_released, u64 *released_hpa)
-+{
-+	struct tdx_module_args args = {
-+		.rcx = spdm_id,
-+		.rdx = hpa_array_t_release_raw(spdm_mt),
-+	};
-+	union hpa_array_t released;
-+	u64 r;
-+
-+	r = seamcall_ret(TDH_SPDM_DELETE, &args);
-+	if (r < 0)
-+		return r;
-+
-+	released.raw = args.rcx;
-+	*nr_released = released.array_size + 1;
-+	*released_hpa = released.pfn << PAGE_SHIFT;
-+
-+	return r;
-+}
-+EXPORT_SYMBOL_GPL(tdh_spdm_delete);
-+
-+u64 tdh_spdm_connect(u64 spdm_id, struct page *spdm_conf,
-+		     struct page *spdm_rsp, struct page *spdm_req,
-+		     struct tdx_page_array *spdm_out, u64 *spdm_req_or_out_len)
-+{
-+	struct tdx_module_args args = {
-+		.rcx = spdm_id,
-+		.rdx = page_to_phys(spdm_conf),
-+		.r8 = page_to_phys(spdm_rsp),
-+		.r9 = page_to_phys(spdm_req),
-+		.r10 = hpa_array_t_assign_raw(spdm_out),
-+	};
-+	u64 r;
-+
-+	r = seamcall_ret(TDH_SPDM_CONNECT, &args);
-+
-+	*spdm_req_or_out_len = args.rcx;
-+
-+	return r;
-+}
-+EXPORT_SYMBOL_GPL(tdh_spdm_connect);
-+
-+u64 tdh_spdm_disconnect(u64 spdm_id, struct page *spdm_rsp,
-+			struct page *spdm_req, u64 *spdm_req_len)
-+{
-+	struct tdx_module_args args = {
-+		.rcx = spdm_id,
-+		.rdx = page_to_phys(spdm_rsp),
-+		.r8 = page_to_phys(spdm_req),
-+	};
-+	u64 r;
-+
-+	r = seamcall_ret(TDH_SPDM_DISCONNECT, &args);
-+
-+	*spdm_req_len = args.rcx;
-+
-+	return r;
-+}
-+EXPORT_SYMBOL_GPL(tdh_spdm_disconnect);
-+
-+u64 tdh_spdm_mng(u64 spdm_id, u64 spdm_op, struct page *spdm_param,
-+		 struct page *spdm_rsp, struct page *spdm_req,
-+		 struct tdx_page_array *spdm_out, u64 *spdm_req_or_out_len)
-+{
-+	struct tdx_module_args args = {
-+		.rcx = spdm_id,
-+		.rdx = spdm_op,
-+		.r8 = spdm_param ? page_to_phys(spdm_param) : -1,
-+		.r9 = page_to_phys(spdm_rsp),
-+		.r10 = page_to_phys(spdm_req),
-+		.r11 = spdm_out ? hpa_array_t_assign_raw(spdm_out) : -1,
-+	};
-+	u64 r;
-+
-+	r = seamcall_ret(TDH_SPDM_MNG, &args);
-+
-+	*spdm_req_or_out_len = args.rcx;
-+
-+	return r;
-+}
-+EXPORT_SYMBOL_GPL(tdh_spdm_mng);
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index 13d11c8ad33d..eb67fd9d1f55 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -50,6 +50,11 @@
- #define TDH_EXT_MEM_ADD			61
- #define TDH_IOMMU_SETUP			128
- #define TDH_IOMMU_CLEAR			129
-+#define TDH_SPDM_CREATE			130
-+#define TDH_SPDM_DELETE			131
-+#define TDH_SPDM_CONNECT		142
-+#define TDH_SPDM_DISCONNECT		143
-+#define TDH_SPDM_MNG			144
++EXPORT_SYMBOL_GPL(pci_iov_virtfn_bus);
  
- /*
-  * SEAMCALL leaf:
+ int pci_iov_virtfn_devfn(struct pci_dev *dev, int vf_id)
+ {
 -- 
 2.51.0
 
