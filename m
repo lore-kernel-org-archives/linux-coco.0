@@ -1,382 +1,230 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010031.outbound.protection.outlook.com [40.93.198.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D813C314B83
-	for <linux-coco@lists.linux.dev>; Fri, 19 Sep 2025 14:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758291772; cv=none; b=YS69gHddFWndr2xUVtyUM3gExU5waj25gjXpuyxSVi853y36Iq5PcV2DQfwVB5oVnVBbMe0Qe0O5Z5LvVcACS0aKzTXZVCt2RgX3s7qErKQHYfJoG6tTB5VIiBHxLtn3O5rtLqeUtX6/9pjKhot1bhEZyEX4N1tahCiefNCVR1w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758291772; c=relaxed/simple;
-	bh=DCXAAAawAfgafMCswTubFriMc9sUfXJi6LE8G5oPqMI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LcBB4tmkLR8/aWWY5f9HSvwjJujrEe47zjWEr/dl61H8Mn9tKScwFnUq+O0WqZ1u5pDRLgiOqSltx8YxWP1VR3JXnGW9RwzKVcEl3JBoz7DrnrmylkxhlAL6fwpVtr9gzeSZYe0wi9FeSBbHB92UtRhBr1Y3Uq0KwpMC9rMeA24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k8/UJxzR; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A7E31A546
+	for <linux-coco@lists.linux.dev>; Fri, 19 Sep 2025 15:45:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.31
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758296725; cv=fail; b=S7s2xoshFHP18AUyqyzE7TpvJO3KIudKUr6DXM+INiTI1mS/9geR/BdLvrqXEzt/rpKNj+zN09/02hfBs9b/KZBRhUFaehEueqwF3wuXflzJ2mEiE8DxwElpR8mupLe1MPVtdg8ipGr7pnwdVSMILluFDyBFvoti9TUShdLWddM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758296725; c=relaxed/simple;
+	bh=unPtWHc+4BkQY3PTJDSDOFxfOgvbQd4aZ3uu4MPrKuk=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=c5Cxw2jH8c3KqhpOTUOUxdD0s4tf/eKLCDggkH/KsbBHV91mfNRCdSbTj58r7OtAvHoFxPyZ38Qi8V18jpl1xcAgul1Jgj0+xfWH2d3H5uYsf116pma2eLO9gyzjeHr/gBOE8HIqNB3NPK6Wcbp5s+1+IOt1ueto7GEuwV+H2Xo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=5l06imIx; arc=fail smtp.client-ip=40.93.198.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k8/UJxzR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758291771; x=1789827771;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=DCXAAAawAfgafMCswTubFriMc9sUfXJi6LE8G5oPqMI=;
-  b=k8/UJxzRUIbiidpNPxflxN8f6KVjkHGePBVaQzmNzkGU9Pj0wxGGSVXq
-   qXJMlIP5DONbGTsRMIhHrIOLwLmDYB0OCyyKlYJ1SqmbiIIdI50XZcPm9
-   A4nQqq1ATz+9cMcqSieDw2oKYXcV/bIt6JSG7uRHJiIMof6z04vBRRCOG
-   r/GDAK78FRMO4d6hgicH2OEXuF/TkhnTNjgWdw3xHxQZDtIOxtIgRYb5e
-   d1T8//mUgpiIR3qu93k+5VNwD2mPQXooP7M6UU5NeRiLdas6O5xG2dxgv
-   MXtUiu8vvlB0HK+F/12nM3xk/8Fd+uR6HIis0MSKohPgDj64If69YNz7D
-   A==;
-X-CSE-ConnectionGUID: GAmtKuRqRQW2xpDdYKCcSg==
-X-CSE-MsgGUID: /XhK1RlUTs+vZrX4ZyIKbw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11557"; a="60750589"
-X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="60750589"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 07:22:42 -0700
-X-CSE-ConnectionGUID: D9Em7AQdQaqDWSC4mT+RGQ==
-X-CSE-MsgGUID: bG60RQ1/Rr2ZgK44d66YEA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="176655074"
-Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
-  by fmviesa010.fm.intel.com with ESMTP; 19 Sep 2025 07:22:41 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org
-Cc: xin@zytor.com,
-	chao.gao@intel.com,
-	Xu Yilun <yilun.xu@linux.intel.com>
-Subject: [RFC PATCH 27/27] coco/tdx-host: Implement IDE stream setup/teardown
-Date: Fri, 19 Sep 2025 07:22:36 -0700
-Message-ID: <20250919142237.418648-28-dan.j.williams@intel.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250919142237.418648-1-dan.j.williams@intel.com>
-References: <20250919142237.418648-1-dan.j.williams@intel.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="5l06imIx"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Tw/pBGW/Fs4JwXyy8vBzRqSA/OJLI+6l/G6rW+3pJ/ALrIGkODTEUBi0jbqvA7vNP3877NJnEjKfKePbxdGDXHoLM7iuuklvhBGFhX9dHTA0zH+TaNmZ0r9zJtEqjg2E2pdXHk5tqi/MApy9rptiERtga2NtirDKjIOGGt7TvDjNIfATcnWHkpHqcc5+/CpXG8ULFhLCUZevM3nqRDzUx3HuB4ZmPrWzdly7PSIb2UD9Nazv2gERKxhHgLHO5Lr0ZsSniH6w8GQtq0Ox1ySXseHiVhjz5JjJgJ8oghXaK6bAYDdkAC5r0eJgHP65uObg5dMBRKw7Fd7f1COVvFUARQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mJgPISUtLAksdeOkpwo7QEcaNDYjWQIyN40nJdzabvI=;
+ b=yF86wk4HbNqkpDmZ7ufKBDnhAd9V7uTLNVG0Xt077XBY+6GNKDSOl4k5p9QfW+d8X9O6dP2mBOpMx7UQQgmTFibZOtf25aZ6KwnTYph/q358StDKuvSXT1+ysWFwWgzFsacbOaOonX+QdjwEXUtS5QAfNV29QdA96FbKUnpQ+YoDxuUaFNv7rXDcpUcLW60gzUfIRV4z22K5PaGlBUTvCpbkj89UMw2GTGK4BoNd0ns2UgNclcjePRdcX7SgmI36EVPC/3yHgAQ/mJF1uM9g5C9wigkBE+sSHYtoWzHkoTUqc5sSvOz2dzcBSgbXpIHIfzqNOEvZlDfZxMLYnnJU2w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mJgPISUtLAksdeOkpwo7QEcaNDYjWQIyN40nJdzabvI=;
+ b=5l06imIx7X8nsqtcoO8fiaAJ8fSaf7YbvWOBqg5X2EyBgXucLO4E3zsGVvuG3RCyVJLSTAxlbxKCK52jnQbdiMJJg0nSjanyghkvD9h+kjqKmNwbXp1DwufDrtZoBkqD2taVmDZ4K3GaBEOkZyM1sxl50nVr6CRF/3LambVGiY8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from IA0PPF9A76BB3A6.namprd12.prod.outlook.com
+ (2603:10b6:20f:fc04::bdc) by MW4PR12MB6755.namprd12.prod.outlook.com
+ (2603:10b6:303:1ea::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.14; Fri, 19 Sep
+ 2025 15:45:17 +0000
+Received: from IA0PPF9A76BB3A6.namprd12.prod.outlook.com
+ ([fe80::8d61:56ca:a8ea:b2eb]) by IA0PPF9A76BB3A6.namprd12.prod.outlook.com
+ ([fe80::8d61:56ca:a8ea:b2eb%8]) with mapi id 15.20.9115.018; Fri, 19 Sep 2025
+ 15:45:16 +0000
+Message-ID: <55592492-bd86-45dd-8262-a34bc74d849f@amd.com>
+Date: Fri, 19 Sep 2025 10:45:09 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 01/10] x86/cpufeatures: Add support for L3 Smart Data
+ Cache Injection Allocation Enforcement
+To: Reinette Chatre <reinette.chatre@intel.com>,
+ Babu Moger <babu.moger@amd.com>, corbet@lwn.net, tony.luck@intel.com,
+ Dave.Martin@arm.com, james.morse@arm.com, tglx@linutronix.de,
+ mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com
+Cc: x86@kernel.org, hpa@zytor.com, kas@kernel.org,
+ rick.p.edgecombe@intel.com, akpm@linux-foundation.org, paulmck@kernel.org,
+ pmladek@suse.com, pawan.kumar.gupta@linux.intel.com, rostedt@goodmis.org,
+ kees@kernel.org, arnd@arndb.de, fvdl@google.com, seanjc@google.com,
+ thomas.lendacky@amd.com, manali.shukla@amd.com, perry.yuan@amd.com,
+ sohil.mehta@intel.com, xin@zytor.com, peterz@infradead.org,
+ mario.limonciello@amd.com, gautham.shenoy@amd.com, nikunj@amd.com,
+ dapeng1.mi@linux.intel.com, ak@linux.intel.com, chang.seok.bae@intel.com,
+ ebiggers@google.com, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org
+References: <cover.1756851697.git.babu.moger@amd.com>
+ <b799fb844e3d2add2143f6f9af6735368b546b3a.1756851697.git.babu.moger@amd.com>
+ <19fa188a-bd1d-43e6-bed0-1ca35cbf34ac@intel.com>
+Content-Language: en-US
+From: "Moger, Babu" <bmoger@amd.com>
+In-Reply-To: <19fa188a-bd1d-43e6-bed0-1ca35cbf34ac@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN7PR04CA0095.namprd04.prod.outlook.com
+ (2603:10b6:806:122::10) To IA0PPF9A76BB3A6.namprd12.prod.outlook.com
+ (2603:10b6:20f:fc04::bdc)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PPF9A76BB3A6:EE_|MW4PR12MB6755:EE_
+X-MS-Office365-Filtering-Correlation-Id: f4f7b77a-2a62-44c9-b8e0-08ddf793877b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZWxDQmlxRExnWi9rUlZ1UWpHQ2pSTVF4TktRSnd5eC8zZmJUR2p3Q2JQdHhH?=
+ =?utf-8?B?bFR3eHZGQzFPc0daWG1SREdLY1RuU1o0bSsxVWRRcmxsc1dpbW4xV0NnWlJz?=
+ =?utf-8?B?bkFqVUkzS0VXK1doMFoyWHlqTHBkaFNYK2V1c2puTHh4cjhHT002SVgzcjlh?=
+ =?utf-8?B?UVRUclNBTy9iTTVFdzhVZW9yRjNjRldwYjdiTnF5RFYyVFVGU1ZpaEVUdmlq?=
+ =?utf-8?B?RkV6eWFPM3A1bUwwWG5ML1l6OTJQSTdlTTJUb1ZRSjJVa1ZybkRzUTYyVjM0?=
+ =?utf-8?B?NmNyWEt6T01XeUxIV1pkNDVSS3lDbVIzZThBVzlUN1hyNzc5N3hPaUlLQU9M?=
+ =?utf-8?B?c25uVC9DOVEvdDdicktGZklTbEdSL3dpb3FQbUZ2cTJ6SkZCVVI4S09CVXpz?=
+ =?utf-8?B?NWsrM2FaQWFUdTJITyt3VU0xQTVOQ0NmUTJtVWVObmRNUWVtVmZ5TWFReFcz?=
+ =?utf-8?B?MXR1aFF6WXZwOTdYZXhLcmRGMEtoMVFhUkF3YzM0cHYwS0VNeTgwVW9MaFZz?=
+ =?utf-8?B?eVVKeTRNQjVYWjZXdUVxZkZWOC9WK2kzZlJWaXJ3d0ZIVmprRy9PZ1c2RkRk?=
+ =?utf-8?B?WjVyUUIxNEYveVB1UXNUSTZlZDNHWHZ5aDVmaUYvL2JiK3dheXpzSkFHY0Nl?=
+ =?utf-8?B?dk0vRktENFlnaS8xdnFIbFBmWS9MVGFqcmxUYVorSTZvcTBJSTREZGNqS2dN?=
+ =?utf-8?B?VkFaWU5FaVA4QTA5NG5MWHUzQUsxaGJJUmprRW5ra3NZNVJWL3JjQ0hmOUJj?=
+ =?utf-8?B?SlRMV1ZUbXpyeHhkMzRRcnNMMTlPclBveFBXVWd4WjZBSUQ5dTlqdHQrSURW?=
+ =?utf-8?B?d0ZmakpjaytVczVJU3dHRFRVdTlnV2Z6TXlyVTkrL0NkZisvUXY5b211NC9s?=
+ =?utf-8?B?SjhFenhkNHU2TlpRcGdCdkRoNHh4OGllV0ZmZUZma2RlNVowU0JhUUpGc0gw?=
+ =?utf-8?B?OEFiZXVFcnZYR1VMMCtrYnE2cmt2dm0vNStlc3JEdkN4b0sxd3hIV1FhRVNx?=
+ =?utf-8?B?c2RGcGErNTE4S0tYQmx3OWMwSmZETDVRUDdsZ3BRMlUzQ3lWVW5UOXFkTElk?=
+ =?utf-8?B?WFVLMWx0VVJmOHVhQWgwZ0tkY28vYnRmdWtzenRITnVVck5vT2s0b2ZUV3R6?=
+ =?utf-8?B?RDN3cGtKQ0R0QjRYcnZOQzA5SmJWZ0Q1NUxBNG5GVVNhMmREY0VlQ0wxMUdH?=
+ =?utf-8?B?VHE2UnZTRWNPWWptZzRFL1NSNzlMRjg1bEZwZ2lwWXcvSDcrSjRySHpKcGZU?=
+ =?utf-8?B?WmVWMFdDMnFGbml6Wit5MWJTNlFVMkNlTTI4N0J4QnluaEFlemVPNGxweEZp?=
+ =?utf-8?B?aGNqbmRLS1NjbVpVTTNSVURETXFCWFpBbWtsL25peWpKZWNxSUJralNUeGk2?=
+ =?utf-8?B?OW9zMWNnMEJ5ZkpOaDViaksxaWt3UHlOQ2E1RGdOa2h5Q2hlM2FLL3NmK2c2?=
+ =?utf-8?B?SzEvU2IraUFBYU5CTkxzSEFCZ0tXbG1RczZrNng1d3J0RE1RNCt2L2U1eFlx?=
+ =?utf-8?B?MnBYaVlybTZ0cnFGdWlMOE9PazVpTFRpejU5bWxoUkZvdUdHUnJNWUJvbEJM?=
+ =?utf-8?B?RWJFRmRlNExpN21uUGlDcXI3b3QxY0lVOVJoZXRWZ0IvalNmRzFJbjJKWWRn?=
+ =?utf-8?B?bmE1TDRiRjdKZEpOTWM1RXFZb2VzNE9XeTJMSkVqaDB2MDdrR0J6WW9PNTBV?=
+ =?utf-8?B?Q1JZYjdEVWNxNTMvckpCdzFwbE1pMFhYMDRYV09MWmdWTFlzdmJaMURBaHVj?=
+ =?utf-8?B?ZDBhUkVJMGpKZ3RYQWlMRTNOdnd2VlJKbjV4bGNkRTBZS3ZXOWFkK1Z0Mndj?=
+ =?utf-8?B?czFVSnVXQURrWWpDbmt6Q3RkcDErZTBZK0Y5Q0Y0SzZyeld3d0w3a1J2S09y?=
+ =?utf-8?B?WldCTVZabDQyblhhUHBPL3k1S3dHaFBxSmY5RE43NW9oOGc9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PPF9A76BB3A6.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NFYzbHNNaVY5OXVLR3VUUlFhTVF4dFd5V2pxVGw1bUc3dkgvajBabGtCUGRQ?=
+ =?utf-8?B?enpaNkJVaGNjYUZ4Q2loUGc4NFNpOGowbEVvMVJTdHBPZjM2bWpjZjBBY2Vp?=
+ =?utf-8?B?aldZdVhldVZiSlVWYU9rZHhvM1NMTDNoNWx2ZWJuWkVnZFVaSFpBeVJ0aHZ3?=
+ =?utf-8?B?UVRrRWRmOWZvU2dDdUZOc1ZzdTR4bnViSFJWc0QyOXJhR2tkQ0VSRElrd2hP?=
+ =?utf-8?B?U3ptVTBOTEErU1ROVGFDcTVhelZERFk4cGl1dloxempCSkFkc3ozTkI2amg1?=
+ =?utf-8?B?WXpSdEVodHJOWlIzdzI3SlVNYnd5SVQyazk1b3g4Y1ExOWN6S1dMbVZJM0c1?=
+ =?utf-8?B?dlRuWm13ZlhPTlA1SGk0WlVUaGdjYWtGcUwvQjVnTit6Q1dBMi8vcm1SU2FG?=
+ =?utf-8?B?YzZFcld4L1NZR3Bnd0gzb1BpNjRCSUx4TmNBWi9hSnlqaUFxb3RrUzBZU1Q2?=
+ =?utf-8?B?cFlSV2VIK2JoTWc4RVRHUnU3d01zM1NXZ0E5VnBhVjA5L1BoMlFIRWFzbjZG?=
+ =?utf-8?B?bS9pZ0U3cFFrVDlGSjlMTzF2ZG5MM2NNMFdJOXE1QldDdHNtcnNUeHB6U0Jp?=
+ =?utf-8?B?cWdwUGFaakxFYXBiSWZUTFBkUVRKV3YzSXQ1L2sxQU00OVc3VWFQU2VhclQv?=
+ =?utf-8?B?TFlUS29zUCt0RTQzWXRJT1ZFUklFVEtQRm94VjUvV1cxWmVMZnA3S2xvalo4?=
+ =?utf-8?B?S28wSWRNWlVXeU5Qandoa3pOb1VrUnc0Y0tCdWtsMDNaVkRGc1ZZTEJFZXRr?=
+ =?utf-8?B?Q0NERXJjTXpEK0FrVlBKOEZxVVdrY1dtZytoR3VxTXNZMkNnRlFPNng5M3hD?=
+ =?utf-8?B?RU82eGkvdk1OVm82cG11SVpYdFFmdS9YRUJzVDVrWERtWm5tRHhDSWtoaDdM?=
+ =?utf-8?B?bStNQ2UzTzFUeW92MXphWjRQRzhuaURRUXNyOGtKY2NaMGI0M2paQWFDRi9n?=
+ =?utf-8?B?SFRsUnVpUnpybmNYTjViTFc3OUdzVGFUVXB5eS9jbU1taVhwUVpBYW5kQXAv?=
+ =?utf-8?B?UUdTUE5xL090aW5ISVY0anpLMkhtbEhSSTJ2T0wrVG5jWjdrc3IzNnRqbWFB?=
+ =?utf-8?B?UzY3RkMrVnNkSE40a0pvOU4zZ1k2MmU3QjRxSzZMSWlGM1JCTEZ1QzNjKy9W?=
+ =?utf-8?B?YU1VeWhPSTh2aGRNSHZXTndCY1dwNUxZTzUvWXN3U2FjVFRQOTFrdDZFOHBp?=
+ =?utf-8?B?RWpYMXVzOG5Wa20vRFZicWNvMkVmVHhMb3hpUjNoc3BqN1MvMTRJbWx4ZU1J?=
+ =?utf-8?B?RGJJSGp2QklzazdRK3lURG1ZYTFzY2xzUWt2eEtPbWRYZ0JGTzVybG5NbU4w?=
+ =?utf-8?B?VE9MT1pVb3ByYjVNd3VGeVM3UDNHUU9jeldCZWZWcVVwb2lncllxK2hDbjJk?=
+ =?utf-8?B?Umx3akdWS2ZZb0hQN2prNkI5NUkyWHJobWZRb1JNakllSWVLYnEwNWhFVnFk?=
+ =?utf-8?B?NENPbi9yRGRjNFFlUVhmUnBld1IvR01ZU3VhbG9Xc3RGVm5tb3Z5V1FwVU45?=
+ =?utf-8?B?OXUxMG10eXAyakdmVWxGVm9DL3dTcW5NWFpFd2dHdG9aYnMzbFZZTTloUDQ2?=
+ =?utf-8?B?WWlULzk2a1RJNWg3MmxDZHJFNnNZMW9obzhBVWxkVXpVQUxLOHZvWVQ3S2kx?=
+ =?utf-8?B?NHY5L3paWjdJakRYNWQrQ1VMaER5YlpPR040b1ZzK1RrODU3TXo5RkxySDZh?=
+ =?utf-8?B?UzZaeGtYVHIrTGE5aGF4RVp6M3BVaENjOWRMNTRxWWNnc0R0dWtUbTc3TThq?=
+ =?utf-8?B?Ukt4SmdqNTQ5QTk0OVQrRC9jck9LVHh3cmpET0R4WEx2c0l3UGJEQkNmV0x5?=
+ =?utf-8?B?TnZNTURQOFVBdnowbEJzYVNyQkZWdGJkVFZLRWpGdmk4ZjBkZngwZ0Zkd1oz?=
+ =?utf-8?B?T2RzdXlYS0N5UllRUUx6S2NHZ0dZQWlCYlM3TE4reU9NUyt6R1FQb0VtcmQ3?=
+ =?utf-8?B?ZjN2VmpEMTR2VUdzRmFKaE5rUHI1NksrQTBjSHBlcTRqOXY2bFo3UWMrZE9N?=
+ =?utf-8?B?YlhFUGw0TktMTjJ6YjdnSDROOHdMT2lzWVkvU0FZbzBLTi9GNHZMUUFSbWk0?=
+ =?utf-8?B?Nkk1d2VsaUVwVVFHWGhibE16Sk5HUmNXQXdnZ0NVMzlCaGoyL2lPd1JYeXpt?=
+ =?utf-8?Q?ZFsI=3D?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f4f7b77a-2a62-44c9-b8e0-08ddf793877b
+X-MS-Exchange-CrossTenant-AuthSource: IA0PPF9A76BB3A6.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2025 15:45:16.3591
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jChrvaMDTuy14Gg4Ee3tDMGwmVm2FRm2aILV7E6cgBejRNbnqsFjdpqVDZXEaBG3
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6755
 
-From: Xu Yilun <yilun.xu@linux.intel.com>
+Hi Reinette,
 
-Implementation for a most straightforward Selective IDE stream setup.
-Hard code all parameters for Stream Control Register. And no IDE Key
-Refresh support.
+Thanks for the review of the series. Sorry for duplicate messages. 
+Setting the email on my new machine.
 
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- drivers/virt/coco/tdx-host/tdx-host.c | 271 +++++++++++++++++++++++++-
- 1 file changed, 270 insertions(+), 1 deletion(-)
+On 9/18/2025 12:08 AM, Reinette Chatre wrote:
+> Hi Babu,
+> 
+> (Just highlighting some changelog formatting that was needed for ABMC
+> changelogs.)
+> 
+> On 9/2/25 3:41 PM, Babu Moger wrote:
+>> Smart Data Cache Injection (SDCI) is a mechanism that enables direct
+>> insertion of data from I/O devices into the L3 cache. By directly caching
+>> data from I/O devices rather than first storing the I/O data in DRAM,
+>> SDCI reduces demands on DRAM bandwidth and reduces latency to the processor
+>> consuming the I/O data.
+>>
+>> The SDCIAE (SDCI Allocation Enforcement) PQE feature allows system software
+>> to control the portion of the L3 cache used for SDCI.
+>>
+>> When enabled, SDCIAE forces all SDCI lines to be placed into the L3 cache
+>> partitions identified by the highest-supported L3_MASK_n register, where n
+>> is the maximum supported CLOSID.
+>>
+>> Add CPUID feature bit that can be used to configure SDCIAE.
+>>
+>> The SDCIAE feature details are documented in APM [1] available from [2].
+>> [1] AMD64 Architecture Programmer's Manual Volume 2: System Programming
+>> Publication # 24593 Revision 3.41 section 19.4.7 L3 Smart Data Cache
+>> Injection Allocation Enforcement (SDCIAE)
+> 
+> Compare with how indentation of ABMC "x86,fs/resctrl: Implement resctrl_arch_config_cntr()
+> to assign a counter with ABMC" was changed during merge.
+> 
+>    [1] AMD64 Architecture Programmer's Manual Volume 2: System Programming
+>        Publication # 24593 Revision 3.41 section 19.4.7 L3 Smart Data Cache
+>        Injection Allocation Enforcement (SDCIAE)
+> 
+> (also applies to patch #4)
 
-diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
-index 258539cf0cdf..7f156d219cee 100644
---- a/drivers/virt/coco/tdx-host/tdx-host.c
-+++ b/drivers/virt/coco/tdx-host/tdx-host.c
-@@ -12,6 +12,7 @@
- #include <linux/mod_devicetable.h>
- #include <linux/pci.h>
- #include <linux/pci-doe.h>
-+#include <linux/pci-ide.h>
- #include <linux/pci-tsm.h>
- #include <linux/sysfs.h>
- #include <linux/tsm.h>
-@@ -65,6 +66,10 @@ struct tdx_link {
- 	struct tdx_page_array *spdm_mt;
- 	unsigned int dev_info_size;
- 	void *dev_info_data;
-+
-+	struct pci_ide *ide;
-+	struct tdx_page_array *stream_mt;
-+	unsigned int stream_id;
- };
- 
- static struct tdx_link *to_tdx_link(struct pci_tsm *tsm)
-@@ -345,13 +350,277 @@ static int tdx_spdm_session_setup(struct tdx_link *tlink)
- 	return 0;
- }
- 
-+enum tdx_ide_stream_km_op {
-+	TDX_IDE_STREAM_KM_SETUP = 0,
-+	TDX_IDE_STREAM_KM_REFRESH = 1,
-+	TDX_IDE_STREAM_KM_STOP = 2,
-+};
-+
-+static int tdx_ide_stream_km(struct tdx_link *tlink,
-+			     enum tdx_ide_stream_km_op op)
-+{
-+	u64 r, out_msg_sz;
-+	int ret;
-+
-+	do {
-+		r = tdh_ide_stream_km(tlink->spdm_id, tlink->stream_id, op,
-+				      tlink->in_msg, tlink->out_msg,
-+				      &out_msg_sz);
-+		ret = tdx_link_event_handler(tlink, r, out_msg_sz);
-+	} while (ret == -EAGAIN);
-+
-+	return ret;
-+}
-+
-+static int tdx_ide_stream_key_program(struct tdx_link *tlink)
-+{
-+	return tdx_ide_stream_km(tlink, TDX_IDE_STREAM_KM_SETUP);
-+}
-+
-+static void tdx_ide_stream_key_stop(struct tdx_link *tlink)
-+{
-+	tdx_ide_stream_km(tlink, TDX_IDE_STREAM_KM_STOP);
-+}
-+
-+static void add_pdev_to_addr_range(struct pci_dev *pdev,
-+				   resource_size_t *start, resource_size_t *end)
-+{
-+	resource_size_t s = ULLONG_MAX, e = 0;
-+	int i;
-+
-+	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
-+		if (!(pci_resource_flags(pdev, i) & IORESOURCE_MEM))
-+			continue;
-+
-+		/* Skip low MMIO BAR */
-+		if (pci_resource_start(pdev, i) <= U32_MAX)
-+			continue;
-+
-+		if (!pci_resource_len(pdev, i))
-+			continue;
-+
-+		s = min_t(resource_size_t, s, pci_resource_start(pdev, i));
-+		e = max_t(resource_size_t, e, pci_resource_end(pdev, i));
-+	}
-+
-+	*start = min_t(resource_size_t, s, *start);
-+	*end = max_t(resource_size_t, e, *end);
-+}
-+
-+static int match_pci_dev_by_devid(struct device *dev, const void *data)
-+{
-+	struct pci_dev *pdev = to_pci_dev(dev);
-+
-+	if (*(const unsigned int *)data == pci_dev_id(pdev))
-+		return 1;
-+
-+	return 0;
-+}
-+
-+/* OPEN: Should we add general address range support in pci/ide.c ? */
-+static void setup_addr_range(struct pci_dev *pdev,
-+			     resource_size_t *start, resource_size_t *end)
-+{
-+	struct device *dev;
-+	u32 devid;
-+	int i;
-+
-+	add_pdev_to_addr_range(pdev, start, end);
-+
-+	for (i = 0; i < pci_num_vf(pdev); i++) {
-+		devid = PCI_DEVID(pci_iov_virtfn_bus(pdev, i),
-+				  pci_iov_virtfn_devfn(pdev, i));
-+
-+		dev = bus_find_device(&pci_bus_type, NULL, &devid,
-+				      match_pci_dev_by_devid);
-+		if (dev) {
-+			add_pdev_to_addr_range(to_pci_dev(dev), start, end);
-+			put_device(dev);
-+		}
-+	}
-+}
-+
-+static void sel_stream_block_setup(struct pci_dev *pdev, struct pci_ide *ide,
-+				   u64 *rid_assoc1, u64 *rid_assoc2,
-+				   u64 *addr_assoc1, u64 *addr_assoc2,
-+				   u64 *addr_assoc3)
-+{
-+	struct pci_dev *rp = pcie_find_root_port(pdev);
-+	struct pci_ide_partner *setting = pci_ide_to_settings(rp, ide);
-+	resource_size_t start = ULLONG_MAX, end = 0;
-+
-+	*rid_assoc1 = FIELD_PREP(PCI_IDE_SEL_RID_1_LIMIT, setting->rid_end);
-+	*rid_assoc2 = PREP_PCI_IDE_SEL_RID_2(setting->rid_start, pci_ide_domain(pdev));
-+
-+	/* Only one address association register block */
-+	setup_addr_range(pdev, &start, &end);
-+
-+	*addr_assoc1 = PREP_PCI_IDE_SEL_ADDR1(start, end);
-+	*addr_assoc2 = FIELD_GET(SEL_ADDR_UPPER, end);
-+	*addr_assoc3 = FIELD_GET(SEL_ADDR_UPPER, start);
-+}
-+
-+#define STREAM_INFO_RP_DEVFN		GENMASK_ULL(7, 0)
-+#define STREAM_INFO_TYPE		BIT_ULL(8)
-+#define  STREAM_INFO_TYPE_LINK		0
-+#define  STREAM_INFO_TYPE_SEL		1
-+
-+static int tdx_ide_stream_create(struct tdx_link *tlink, struct pci_ide *ide)
-+{
-+	u64 stream_info, stream_ctrl, rid_assoc1, rid_assoc2;
-+	u64 addr_assoc1, addr_assoc2, addr_assoc3;
-+	u64 stream_id, rp_ide_id;
-+	unsigned int nr_pages = tdx_sysinfo->connect.ide_mt_page_count;
-+	struct pci_dev *pdev = tlink->pci.base_tsm.pdev;
-+	struct pci_dev *rp = pcie_find_root_port(pdev);
-+	u64 r;
-+
-+	struct tdx_page_array *stream_mt __free(tdx_page_array_free) =
-+		tdx_page_array_create(nr_pages, true);
-+	if (!stream_mt)
-+		return -ENOMEM;
-+
-+	stream_info = FIELD_PREP(STREAM_INFO_RP_DEVFN, rp->devfn);
-+	stream_info |= FIELD_PREP(STREAM_INFO_TYPE, STREAM_INFO_TYPE_SEL);
-+
-+	/*
-+	 * For Selective IDE stream, below values must be 0:
-+	 *   NPR_AGG/PR_AGG/CPL_AGG/CONF_REQ/ALGO/DEFAULT/STREAM_ID
-+	 *
-+	 * below values are configurable but now hardcode to 0:
-+	 *   PCRC/TC
-+	 */
-+	stream_ctrl = FIELD_PREP(PCI_IDE_SEL_CTL_EN, 0) |
-+		      FIELD_PREP(PCI_IDE_SEL_CTL_TX_AGGR_NPR, 0) |
-+		      FIELD_PREP(PCI_IDE_SEL_CTL_TX_AGGR_PR, 0) |
-+		      FIELD_PREP(PCI_IDE_SEL_CTL_TX_AGGR_CPL, 0) |
-+		      FIELD_PREP(PCI_IDE_SEL_CTL_PCRC_EN, 0) |
-+		      FIELD_PREP(PCI_IDE_SEL_CTL_CFG_EN, 0) |
-+		      FIELD_PREP(PCI_IDE_SEL_CTL_ALG, 0) |
-+		      FIELD_PREP(PCI_IDE_SEL_CTL_TC, 0) |
-+		      FIELD_PREP(PCI_IDE_SEL_CTL_ID, 0);
-+
-+	sel_stream_block_setup(pdev, ide, &rid_assoc1, &rid_assoc2,
-+			       &addr_assoc1, &addr_assoc2, &addr_assoc3);
-+
-+	r = tdh_ide_stream_create(stream_info, tlink->spdm_id,
-+				  stream_mt, stream_ctrl,
-+				  rid_assoc1, rid_assoc2, addr_assoc1,
-+				  addr_assoc2, addr_assoc3,
-+				  &stream_id, &rp_ide_id);
-+	if (r)
-+		return -EFAULT;
-+
-+	tlink->stream_id = stream_id;
-+	tlink->stream_mt = no_free_ptr(stream_mt);
-+
-+	pci_dbg(pdev, "%s stream id 0x%x rp ide_id 0x%llx\n", __func__,
-+		tlink->stream_id, rp_ide_id);
-+	return 0;
-+}
-+
-+static void tdx_ide_stream_delete(struct tdx_link *tlink)
-+{
-+	struct pci_dev *pdev = tlink->pci.base_tsm.pdev;
-+	unsigned int nr_released;
-+	u64 released_hpa, r;
-+
-+	r = tdh_ide_stream_block(tlink->spdm_id, tlink->stream_id);
-+	if (r) {
-+		pci_err(pdev, "ide stream block fail %llx\n", r);
-+		goto leak;
-+	}
-+
-+	r = tdh_ide_stream_delete(tlink->spdm_id, tlink->stream_id,
-+				  tlink->stream_mt, &nr_released,
-+				  &released_hpa);
-+	if (r) {
-+		pci_err(pdev, "ide stream delete fail %llx\n", r);
-+		goto leak;
-+	}
-+
-+	if (tdx_page_array_ctrl_release(tlink->stream_mt, nr_released,
-+					released_hpa)) {
-+		pci_err(pdev, "fail to release IDE stream metadata pages\n");
-+		goto leak;
-+	}
-+
-+	goto out;
-+
-+leak:
-+	tdx_page_array_ctrl_leak(tlink->stream_mt);
-+out:
-+	tlink->stream_mt = NULL;
-+}
-+
- static void tdx_ide_stream_teardown(struct tdx_link *tlink)
- {
-+	struct pci_dev *pdev = tlink->pci.base_tsm.pdev;
-+	struct pci_ide *ide = tlink->ide;
-+
-+	if (!ide)
-+		return;
-+
-+	pci_ide_stream_disable(pdev, ide);
-+	tsm_ide_stream_unregister(ide);
-+	tdx_ide_stream_key_stop(tlink);
-+	pci_ide_stream_teardown(pdev, ide);
-+	pci_ide_stream_unregister(ide);
-+	tdx_ide_stream_delete(tlink);
-+	pci_ide_stream_free(tlink->ide);
-+	tlink->ide = NULL;
- }
- 
- static int tdx_ide_stream_setup(struct tdx_link *tlink)
- {
--	return -EOPNOTSUPP;
-+	struct pci_dev *pdev = tlink->pci.base_tsm.pdev;
-+	struct pci_ide *ide;
-+	int ret;
-+
-+	ide = pci_ide_stream_alloc(pdev);
-+	if (!ide)
-+		return -ENOMEM;
-+
-+	/* Configure IDE capability for RP & get stream_id */
-+	ret = tdx_ide_stream_create(tlink, ide);
-+	if (ret)
-+		goto stream_free;
-+
-+	ide->stream_id = tlink->stream_id;
-+	ret = pci_ide_stream_register(ide);
-+	if (ret)
-+		goto tdx_stream_delete;
-+
-+	/* Configure IDE capability for target device */
-+	pci_ide_stream_setup(pdev, ide);
-+
-+	/* Key Programming for RP & target device, enable IDE stream for RP */
-+	ret = tdx_ide_stream_key_program(tlink);
-+	if (ret)
-+		goto stream_teardown;
-+
-+	ret = tsm_ide_stream_register(ide);
-+	if (ret)
-+		goto tdx_key_stop;
-+
-+	/* Enable IDE stream for target device */
-+	pci_ide_stream_enable(pdev, ide);
-+
-+	tlink->ide = ide;
-+
-+	return 0;
-+
-+tdx_key_stop:
-+	tdx_ide_stream_key_stop(tlink);
-+stream_teardown:
-+	pci_ide_stream_teardown(pdev, ide);
-+	pci_ide_stream_unregister(ide);
-+tdx_stream_delete:
-+	tdx_ide_stream_delete(tlink);
-+stream_free:
-+	pci_ide_stream_free(tlink->ide);
-+	tlink->ide = NULL;
-+	return ret;
- }
- 
- static void __tdx_link_disconnect(struct tdx_link *tlink)
--- 
-2.51.0
+Sure.
+
+> 
+>>
+>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537 # [2]
+> 
+> Please place "Link:" tag at end to reduce needed adjustments during
+> merge.
+> 
+
+Yes. Sure.
+
+Kept the Acked-by and Reviewed-by tag as is.
+
+Thanks
+
+Babu
 
