@@ -1,235 +1,69 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A84E185B48
-	for <linux-coco@lists.linux.dev>; Wed, 24 Sep 2025 06:15:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2442D74420;
+	Wed, 24 Sep 2025 06:45:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758694520; cv=none; b=o0jwvaz9lmSFf1lZbLVyn2nMCy0cS010XG+QaWwVeXWcbkIZhVVp1SjKYK3iBAYdcCER0HAKvqA5gJu83k0U7WE8QM4NxEsg2lF7KS/B1YpJhV7RqQ0NnrnHGi77J11tbEs4BU89yLzQPC4OvgyycG/cY6luMX7V385g0rOVhrc=
+	t=1758696315; cv=none; b=cbC2u5KeA9MTFq+B9KvnVFezDUU4kndIiwOAHncJDdJXmxybVNBCJL4b/V9/9Aa25dNotgfRWl+Z8T7XYWVHH7spxJy8x3R4YrLaEhpFdP4hHvgWDW8Xtp4VT1olx963of9NDEwEVQbHjE5Svxq0k2wJn64kXuzimIk/rxcrGAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758694520; c=relaxed/simple;
-	bh=UQKOU4aOyyJuEOQGOD3vHgI8e0kGhF/WCbFuBJ3fxps=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Cuy51Q4r0Ku6+76GwQsyEvDdJRz8dDRoUCIwW8VKYy77DIM1md5/8UCQhhCNtPtTXqFzTze6JO0XnGUfR/EB0xjOoXTRLqcGegfVd7lmmhT4KNqSCGNbLpF2eAyYp17ap4jf4iUK+si6thsW6qaldIqhWe4UkLKgwxeIax3wBdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JPkjhH6w; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1758696315; c=relaxed/simple;
+	bh=HvavW8VkofQnxOqfVQEAgSIGxDbgCX+Dce+BFYqWQ+0=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=kqhMI9nY4MTTF5CUuATkWVGA48zU/J2xcMgMM8UQ4W+F9S6YE3mKAZ2W2c1ccwP9N65qpMGNn3Q6WLI1pWPrZrtSZxLVCQSd0qus4d0nJfJnFiZoo3rQJZlsL181zlob3kso2jdNO1bkUGbAfwebCG6viVWl4sVARPBceaTdado=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=K+8kNXyf; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JPkjhH6w"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758694518; x=1790230518;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=UQKOU4aOyyJuEOQGOD3vHgI8e0kGhF/WCbFuBJ3fxps=;
-  b=JPkjhH6wghVC74AvZy5F3xSAhTU7A+1LBSCo300CE3aZubD2Hw520jxn
-   EuiDQm0INHFffs6NUvmqSrpPrGdVh9P0EPRkbGdISBdXepqw8mdk7oEme
-   uUdkQZ0JmtB6mQRNcmH+h1haK9FuYjKshpJC5VCs1b6oSmlU9davmvgVq
-   NoiUyodnQ5HY8ggGZa0NwnmZWNKue114Y08205v9hIDk0mfMBzgZr4Exj
-   t68ivryJAdt9LEsn1l6aP+Be/OujOv1wZooOiJFRAAW2XUHeVQEa860Y1
-   D92UA4aOxSCyTsI3OuHLidyEXCM6ay5FAevA21NZxSeXmzj8OQ8m+Wv44
-   g==;
-X-CSE-ConnectionGUID: YmmA7boxSmqfVoUr+xHsdA==
-X-CSE-MsgGUID: HAL8CExnTJmwntkfkics6w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="78420760"
-X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; 
-   d="scan'208";a="78420760"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2025 23:15:18 -0700
-X-CSE-ConnectionGUID: BwNK/+FdQIap4yTcPLbJDw==
-X-CSE-MsgGUID: j5m87MtgSauJ+9GwEE8sxg==
-X-ExtLoop1: 1
-Received: from unknown (HELO [10.238.0.107]) ([10.238.0.107])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2025 23:15:13 -0700
-Message-ID: <86ab9923-624d-4950-abea-46780e94c6ce@linux.intel.com>
-Date: Wed, 24 Sep 2025 14:15:11 +0800
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="K+8kNXyf"
+Received: from 8bytes.org (p54921b16.dip0.t-ipconnect.de [84.146.27.22])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 99D5556090;
+	Wed, 24 Sep 2025 08:45:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1758696305;
+	bh=HvavW8VkofQnxOqfVQEAgSIGxDbgCX+Dce+BFYqWQ+0=;
+	h=Date:From:To:Subject:From;
+	b=K+8kNXyftP3tZGfLUPXHCWQpSQzt/66CDuHdSiD1zrxXpPIS3S5OJzb1JASQYGIuh
+	 qj+Dzk+YLyUtGegmgRrEXb3+OOWvo0dp2BDirnH4F/dEyTpQQsMgntYKz5D9Qc6c7T
+	 uKlopWiDnRAhDJbmcKjuiOWdVPNN7/u3CQdOxhE1FmtC+WP3hcG4PR6GeXalz/vk8j
+	 L+5FMohwNuPLvOGd9RER4o/vaUHCOx/JFBNrV1AX7jAnrnORjK/7fNLqeEk/Ai67HE
+	 X4cMniqKMkV6HAhthcivtAMes7NzdZRxN5zFaQcQaLg2kfIl0cPH3cO3ZkJX+v3Xx1
+	 vjBAo1UPvF6zQ==
+Date: Wed, 24 Sep 2025 08:45:03 +0200
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+Subject: SVSM Development Call September 24th, 2025
+Message-ID: <gw3hzruia4uucn2a3dw2d5djhdv5jqrbwzifil76xd5vwajqon@pyy4tjowb5d3>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 08/16] x86/virt/tdx: Optimize tdx_alloc/free_page()
- helpers
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: kas@kernel.org, bp@alien8.de, chao.gao@intel.com,
- dave.hansen@linux.intel.com, isaku.yamahata@intel.com, kai.huang@intel.com,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, mingo@redhat.com, pbonzini@redhat.com,
- seanjc@google.com, tglx@linutronix.de, x86@kernel.org, yan.y.zhao@intel.com,
- vannapurve@google.com, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-References: <20250918232224.2202592-1-rick.p.edgecombe@intel.com>
- <20250918232224.2202592-9-rick.p.edgecombe@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20250918232224.2202592-9-rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 
+Hi,
 
+Here is the usual call for agenda items for the this weeks SVSM
+development call.  Please send me any agenda items you have in mind or
+raise them in the meeting.
 
-On 9/19/2025 7:22 AM, Rick Edgecombe wrote:
-> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
->
-> Optimize the PAMT alloc/free helpers to avoid taking the global lock when
-> possible.
->
-> The recently introduced PAMT alloc/free helpers maintain a refcount to
-> keep track of when it is ok to reclaim and free a 4KB PAMT page. This
-> refcount is protected by a global lock in order to guarantee that races
-> don’t result in the PAMT getting freed while another caller requests it
-> be mapped. But a global lock is a bit heavyweight, especially since the
-> refcounts can be (already are) updated atomically.
->
-> A simple approach would be to increment/decrement the refcount outside of
-> the lock before actually adjusting the PAMT, and only adjust the PAMT if
-> the refcount transitions from/to 0. This would correctly allocate and free
-> the PAMT page without getting out of sync. But there it leaves a race
-> where a simultaneous caller could see the refcount already incremented and
-> return before it is actually mapped.
->
-> So treat the refcount 0->1 case as a special case. On add, if the refcount
-> is zero *don’t* increment the refcount outside the lock (to 1). Always
-> take the lock in that case and only set the refcount to 1 after the PAMT
-> is actually added. This way simultaneous adders, when PAMT is not
-> installed yet, will take the slow lock path.
->
-> On the 1->0 case, it is ok to return from tdx_pamt_put() when the DPAMT is
-> not actually freed yet, so the basic approach works. Just decrement the
-> refcount before  taking the lock. Only do the lock and removal of the PAMT
-> when the refcount goes to zero.
->
-> There is an asymmetry between tdx_pamt_get() and tdx_pamt_put() in that
-> tdx_pamt_put() goes 1->0 outside the lock, but tdx_pamt_put() does 0-1
-                                                      ^
-                                                 tdx_pamt_get() ?
-> inside the lock. Because of this, there is a special race where
-> tdx_pamt_put() could decrement the refcount to zero before the PAMT is
-> actually removed, and tdx_pamt_get() could try to do a PAMT.ADD when the
-> page is already mapped. Luckily the TDX module will tell return a special
-> error that tells us we hit this case. So handle it specially by looking
-> for the error code.
->
-> The optimization is a little special, so make the code extra commented
-> and verbose.
->
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> [Clean up code, update log]
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> ---
-> v3:
->   - Split out optimization from “x86/virt/tdx: Add tdx_alloc/free_page() helpers”
->   - Remove edge case handling that I could not find a reason for
->   - Write log
-> ---
->   arch/x86/include/asm/shared/tdx_errno.h |  2 ++
->   arch/x86/virt/vmx/tdx/tdx.c             | 46 +++++++++++++++++++++----
->   2 files changed, 42 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/x86/include/asm/shared/tdx_errno.h b/arch/x86/include/asm/shared/tdx_errno.h
-> index 49ab7ecc7d54..4bc0b9c9e82b 100644
-> --- a/arch/x86/include/asm/shared/tdx_errno.h
-> +++ b/arch/x86/include/asm/shared/tdx_errno.h
-> @@ -21,6 +21,7 @@
->   #define TDX_PREVIOUS_TLB_EPOCH_BUSY		0x8000020100000000ULL
->   #define TDX_RND_NO_ENTROPY			0x8000020300000000ULL
->   #define TDX_PAGE_METADATA_INCORRECT		0xC000030000000000ULL
-> +#define TDX_HPA_RANGE_NOT_FREE			0xC000030400000000ULL
->   #define TDX_VCPU_NOT_ASSOCIATED			0x8000070200000000ULL
->   #define TDX_KEY_GENERATION_FAILED		0x8000080000000000ULL
->   #define TDX_KEY_STATE_INCORRECT			0xC000081100000000ULL
-> @@ -100,6 +101,7 @@ DEFINE_TDX_ERRNO_HELPER(TDX_SUCCESS);
->   DEFINE_TDX_ERRNO_HELPER(TDX_RND_NO_ENTROPY);
->   DEFINE_TDX_ERRNO_HELPER(TDX_OPERAND_INVALID);
->   DEFINE_TDX_ERRNO_HELPER(TDX_OPERAND_BUSY);
-> +DEFINE_TDX_ERRNO_HELPER(TDX_HPA_RANGE_NOT_FREE);
->   DEFINE_TDX_ERRNO_HELPER(TDX_VCPU_NOT_ASSOCIATED);
->   DEFINE_TDX_ERRNO_HELPER(TDX_FLUSHVP_NOT_DONE);
->   
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index af73b6c2e917..c25e238931a7 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> @@ -2117,7 +2117,7 @@ int tdx_pamt_get(struct page *page)
->   	u64 pamt_pa_array[MAX_DPAMT_ARG_SIZE];
->   	atomic_t *pamt_refcount;
->   	u64 tdx_status;
-> -	int ret;
-> +	int ret = 0;
->   
->   	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
->   		return 0;
-> @@ -2128,14 +2128,40 @@ int tdx_pamt_get(struct page *page)
->   
->   	pamt_refcount = tdx_find_pamt_refcount(hpa);
->   
-> +	if (atomic_inc_not_zero(pamt_refcount))
-> +		goto out_free;
-> +
->   	scoped_guard(spinlock, &pamt_lock) {
-> -		if (atomic_read(pamt_refcount))
-> +		/*
-> +		 * Lost race to other tdx_pamt_add(). Other task has already allocated
-> +		 * PAMT memory for the HPA.
-> +		 */
-> +		if (atomic_read(pamt_refcount)) {
-> +			atomic_inc(pamt_refcount);
->   			goto out_free;
-> +		}
->   
->   		tdx_status = tdh_phymem_pamt_add(hpa | TDX_PS_2M, pamt_pa_array);
->   
->   		if (IS_TDX_SUCCESS(tdx_status)) {
-> +			/*
-> +			 * The refcount is zero, and this locked path is the only way to
-> +			 * increase it from 0-1. If the PAMT.ADD was successful, set it
-> +			 * to 1 (obviously).
-> +			 */
-> +			atomic_set(pamt_refcount, 1);
-> +		} else if (IS_TDX_HPA_RANGE_NOT_FREE(tdx_status)) {
-> +			/*
-> +			 * Less obviously, another CPU's call to tdx_pamt_put() could have
-> +			 * decremented the refcount before entering its lock section.
-> +			 * In this case, the PAMT is not actually removed yet. Luckily
-> +			 * TDX module tells about this case, so increment the refcount
-> +			 * 0-1, so tdx_pamt_put() skips its pending PAMT.REMOVE.
-> +			 *
-> +			 * The call didn't need the pages though, so free them.
-> +			 */
->   			atomic_inc(pamt_refcount);
-> +			goto out_free;
->   		} else {
->   			pr_err("TDH_PHYMEM_PAMT_ADD failed: %#llx\n", tdx_status);
->   			goto out_free;
-> @@ -2167,15 +2193,23 @@ void tdx_pamt_put(struct page *page)
->   
->   	pamt_refcount = tdx_find_pamt_refcount(hpa);
->   
-> +	/*
-> +	 * Unlike the paired call in tdx_pamt_get(), decrement the refcount
-> +	 * outside the lock even if it's not the special 0<->1 transition.
-it's not -> it's ?
+We will use the LF Zoom instance. Details of the meeting  can be found in our
+governance repository at:
 
-> +	 * See special logic around HPA_RANGE_NOT_FREE in tdx_pamt_get().
-> +	 */
-> +	if (!atomic_dec_and_test(pamt_refcount))
-> +		return;
-> +
->   	scoped_guard(spinlock, &pamt_lock) {
-> -		if (!atomic_read(pamt_refcount))
-> +		/* Lost race with tdx_pamt_get() */
-> +		if (atomic_read(pamt_refcount))
->   			return;
->   
->   		tdx_status = tdh_phymem_pamt_remove(hpa | TDX_PS_2M, pamt_pa_array);
->   
-> -		if (IS_TDX_SUCCESS(tdx_status)) {
-> -			atomic_dec(pamt_refcount);
-> -		} else {
-> +		if (!IS_TDX_SUCCESS(tdx_status)) {
-> +			atomic_inc(pamt_refcount);
->   			pr_err("TDH_PHYMEM_PAMT_REMOVE failed: %#llx\n", tdx_status);
->   			return;
->   		}
+	https://github.com/coconut-svsm/governance
 
+The link to the COCONUT-SVSM calendar is:
+
+	https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?view=week
+
+The meeting will be recorded and the recording eventually published.
+
+See you all there.
+
+Regards,
+
+	J�rg
