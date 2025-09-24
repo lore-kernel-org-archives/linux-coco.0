@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C4027B500
-	for <linux-coco@lists.linux.dev>; Wed, 24 Sep 2025 07:58:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96442D0626
+	for <linux-coco@lists.linux.dev>; Wed, 24 Sep 2025 08:57:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758700713; cv=none; b=hzRhpkveK0z+kMLz+z6IFAsqUjqXxxjQu9IPc8BxrFloShxZ2/HSzV4Tg9y4ZO7r1htHsXIQt6rCh84yK8ZltKvS8oKMNQnmPehSfJeNtCoQ2cXTGH4RaVwAEQ3D7uycFzJW6nPoJPpVCwJUph0TcAKoZIVdHrR9mgjhikRN+pg=
+	t=1758704242; cv=none; b=gEcy+mBM2N5hPiUIqC1IevW/YZPLaveW3cqB/jyRgR19+5HRL/wFFQrj49dLnxd/w3j2+gc9ZAKqF+JBShvElzZReRmTIVzJlOw5oRgFShLbIzBSoutxgN0VTVBehvciTXnYV7gJoHl+bUINbfQYa+BnLsmJXtFOr9e5hZ14oOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758700713; c=relaxed/simple;
-	bh=mt8gJKDFaSad5gUaiDqQw9QnDOAcy7k6tffysTTxn2c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
-	 In-Reply-To:Content-Type; b=PlruT19qmgkEUStM+RBoSWW1Q6zcG1WGtFH9lgkqL7R4E53Jypz+14GkLhkWGFZ1Yx4l0xX9zg0sGynwaq/YuLyi5K5XSTSCBahJxtDkIronRpOru6gBdTb8j4dAjiPKU0NC+uGRnVeobnjJJBIZBvOy6fCcJ9Cke9bOv8tMpiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eiPT6Skc; arc=none smtp.client-ip=192.198.163.19
+	s=arc-20240116; t=1758704242; c=relaxed/simple;
+	bh=kvkpUlFHOMa5WGOYjzBXAHR8vBGu8aMkOK8bYu8QwYI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Lc6DD3L5/E3CiYBAzvYRRdxSlWjZ+cmmbcKTcHwDk/MQLB2f9gvqZxbM018svPPAZqa+UhBoqaxY/kfSj24lHaT6jlM2BdbT2xImu7bE0ZFmNEWFmPkE4BdcLaaN7zbQP0a/sz67P1NduDaPN+I1aIdNCD2FWkPYpunuCDR4KRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Kwn+zTuj; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eiPT6Skc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Kwn+zTuj"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758700711; x=1790236711;
-  h=message-id:date:mime-version:subject:to:references:from:
-   cc:in-reply-to:content-transfer-encoding;
-  bh=mt8gJKDFaSad5gUaiDqQw9QnDOAcy7k6tffysTTxn2c=;
-  b=eiPT6Skc1QyntwudAp9eBSLfev3aL0AV472eshqCyOne9gk66tpJspkW
-   7iHgruyxq+dwUdZjok4zJYd6rXEs+sZSJ0jhMoE7g1mGUp0hnlbDMgNip
-   E5v+8corEiIyz1HpVa/Nk6KbovYB+TrMdlxfOHz3tdUHL3Xg7IhTBHaGS
-   LAobsiOyY6n+GuhAbaQ9rI1LzBeiABE/vlyjqvddJI665bTFFnG40WVKl
-   6Xmd84F1kEHcbLbfComcU4MMMrHF8CyDW3nTYRPVvVaUwzmrsJV0W5Tx6
-   Wr6b+m+BsPuDNAN4dpo87pChgYuUEvqUhsRL8RtDtxGGtsVSTPRZopnHk
-   g==;
-X-CSE-ConnectionGUID: AZZE7HdgQxqT3KbUK2PVaw==
-X-CSE-MsgGUID: Ty8ksBurRrm93NlbH1hIxw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="60031999"
+  t=1758704241; x=1790240241;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=kvkpUlFHOMa5WGOYjzBXAHR8vBGu8aMkOK8bYu8QwYI=;
+  b=Kwn+zTujdvMq6m2pX2eGWuUa+FQUMsq+TSuW5odWxGeUpJjXMdX1VmJU
+   YQIRtv2MRzkl8+RnMWsKfDm4z1ntUPw9tQqX92aKTbrks5lqkqJEYU02s
+   7R8FC8zQq4cnFXpaXJH76lH+t/IlD/5r+MdEvAoO9qbxoflKAWaMOIAI5
+   v4Kex0sKWYGd4czBudZt/z2vj/zN9ldqhHnAnQISHGRcoTgq3C4jfnxku
+   b4fBKX373jt/AqV6QVstpBTHsHcc+OL8583pwmKmOcjzo3WnMZP4dxuhU
+   Sa2IE11ALsTpoTTRMDSoDJG+1N7o3pvSMfk5M70SqVs0vnvuc2fdiKEUE
+   A==;
+X-CSE-ConnectionGUID: f1ClvRG9RLqfsr+mw/jRAg==
+X-CSE-MsgGUID: aIrbrugfTaazDVW6D5xGlw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="61166411"
 X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; 
-   d="scan'208";a="60031999"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 00:58:28 -0700
-X-CSE-ConnectionGUID: JnF9D1UOTTGUFmF0/Td7rg==
-X-CSE-MsgGUID: 4gOqglb/Rn279KnsyfamHw==
+   d="scan'208";a="61166411"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 01:57:20 -0700
+X-CSE-ConnectionGUID: 9dz6sw87TnCEgt1/+f18CA==
+X-CSE-MsgGUID: F/TN14jWRIeSgK593yRD2g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; 
-   d="scan'208";a="207716846"
+   d="scan'208";a="177381649"
 Received: from unknown (HELO [10.238.0.107]) ([10.238.0.107])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 00:58:23 -0700
-Message-ID: <c605f6d7-8d9b-473d-a6d5-a38ddccc1a83@linux.intel.com>
-Date: Wed, 24 Sep 2025 15:58:21 +0800
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 01:57:16 -0700
+Message-ID: <19889f85-cfd0-4283-bd32-935ef92b3b93@linux.intel.com>
+Date: Wed, 24 Sep 2025 16:57:14 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,51 +52,84 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 11/16] KVM: TDX: Add x86 ops for external spt cache
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: Re: [PATCH v3 06/16] x86/virt/tdx: Improve PAMT refcounters
+ allocation for sparse memory
+To: "Huang, Kai" <kai.huang@intel.com>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "Zhao, Yan Y" <yan.y.zhao@intel.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+ "seanjc@google.com" <seanjc@google.com>, "mingo@redhat.com"
+ <mingo@redhat.com>, "kas@kernel.org" <kas@kernel.org>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "Yamahata, Isaku" <isaku.yamahata@intel.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "Annapurve, Vishal" <vannapurve@google.com>, "Gao, Chao"
+ <chao.gao@intel.com>, "bp@alien8.de" <bp@alien8.de>,
+ "x86@kernel.org" <x86@kernel.org>
 References: <20250918232224.2202592-1-rick.p.edgecombe@intel.com>
- <20250918232224.2202592-12-rick.p.edgecombe@intel.com>
+ <20250918232224.2202592-7-rick.p.edgecombe@intel.com>
+ <f1018ab125eb18f431ddb3dd50501914b396ee2b.camel@intel.com>
+ <e455cb2c-a51c-494e-acc1-12743c4f4d3f@linux.intel.com>
+ <7ad102d6105b6244c32e0daebcdb2ac46a5dcc68.camel@intel.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: kas@kernel.org, bp@alien8.de, chao.gao@intel.com,
- dave.hansen@linux.intel.com, isaku.yamahata@intel.com, kai.huang@intel.com,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, mingo@redhat.com, pbonzini@redhat.com,
- seanjc@google.com, tglx@linutronix.de, x86@kernel.org, yan.y.zhao@intel.com,
- vannapurve@google.com
-In-Reply-To: <20250918232224.2202592-12-rick.p.edgecombe@intel.com>
+In-Reply-To: <7ad102d6105b6244c32e0daebcdb2ac46a5dcc68.camel@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
 
-On 9/19/2025 7:22 AM, Rick Edgecombe wrote:
-> Move mmu_external_spt_cache behind x86 ops.
+On 9/24/2025 2:50 PM, Huang, Kai wrote:
+> On Tue, 2025-09-23 at 17:38 +0800, Binbin Wu wrote:
+>>>> +/*
+>>>> + * Allocate PAMT reference counters for the given PFN range.
+>>>> + *
+>>>> + * It consumes 2MiB for every 1TiB of physical memory.
+>>>> + */
+>>>> +static int alloc_pamt_refcount(unsigned long start_pfn, unsigned long end_pfn)
+>>>> +{
+>>>> +	unsigned long start, end;
+>>>> +
+>>>> +	start = (unsigned long)tdx_find_pamt_refcount(PFN_PHYS(start_pfn));
+>>>> +	end   = (unsigned long)tdx_find_pamt_refcount(PFN_PHYS(end_pfn + 1));
+>>> (sorry didn't notice this in last version)
+>>>
+>>> I don't quite follow why we need "end_pfn + 1" instead of just "end_pfn"?
+>>>
+>>> IIUC this could result in an additional 2M range being populated
+>>> unnecessarily when the end_pfn is 2M aligned.
+>> IIUC, this will not happen.
+>> The +1 page will be converted to 4KB, and will be ignored since in
+>> tdx_find_pamt_refcount() the address is divided by 2M.
+>>
+>> To handle the address unaligned to 2M, +511 should be used instead of +1?
+> OK. Thanks for catching.  But I still don't get why we need end_pfn + 1.
 >
-> In the mirror/external MMU concept, the KVM MMU manages a non-active EPT
-> tree for private memory (the mirror). The actual active EPT tree the
-> private memory is protected inside the TDX module. Whenever the mirror EPT
-> is changed, it needs to call out into one of a set of x86 opts that
-> implement various update operation with TDX specific SEAMCALLs and other
-> tricks. These implementations operate on the TDX S-EPT (the external).
+> Also, when end_pfn == 511, would this result in the second refcount being
+> returned for the @end, while the intention should be the first refcount?
 >
-> In reality these external operations are designed narrowly with respect to
-> TDX particulars. On the surface, what TDX specific things are happening to
-> fulfill these update operations are mostly hidden from the MMU, but there
-> is one particular area of interest where some details leak through.
+> For example, assuming we have a range [0, 2M), we only need one refcount.
+> And the PFN range (which comes from for_each_mem_pfn_range()) would be:
 >
-> The S-EPT needs pages to use for the S-EPT page tables. These page tables
-> need to be allocated before taking the mmu lock, like all the rest. So the
-> KVM MMU pre-allocates pages for TDX to use for the S-EPT in the same place
-> where it pre-allocates the other page tables. It’s not too bad and fits
-> nicely with the others.
+>      start_pfn == 0
+>      end_pfn   == 512
 >
-> However, Dynamic PAMT will need even more pages for the same operations.
-> Further, these pages will need to be handed to the arch/86 side which used
-arch/86 -> arch/x86
+> This will results in @start pointing to the first refcount and @end
+> pointing to the second, IIUC.
+>
+> So it seems we need:
+>
+>      start = (unsigned long)tdx_find_pamt_refcount(PFN_PHYS(start_pfn));
+>      end   = (unsigned long)tdx_find_pamt_refcount(PFN_PHYS(end_pfn) - 1));
+>      start = round_down(start, PAGE_SIZE);
+>      end   = round_up(end, PAGE_SIZE);
 
-> them for DPAMT updates, which is hard for the existing KVM based cache.
-> The details living in core MMU code start to add up.
+Checked again, this seems to be the right version.
+
 >
->
-[...]
+> ?
+
