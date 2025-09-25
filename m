@@ -1,433 +1,268 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E454B2E62D9
-	for <linux-coco@lists.linux.dev>; Thu, 25 Sep 2025 02:50:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A000A2F1FDD
+	for <linux-coco@lists.linux.dev>; Thu, 25 Sep 2025 10:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758768635; cv=none; b=jWT/8AbVz7GAxDa64FxPGys4X0qw3QwZvIt9MRBYEvQCO5ZQtLC5V6BXVthxC74m9xDK5WikoWFH5ORgCsgHT2do2sMrmFrCElEU8H7cW3ufv67qzmU1MkWWWhwmxlWoKDHyYJvj2Ajw9R4ld+r6wH16Fp7+TmJbPs1KfJk1bhI=
+	t=1758796231; cv=none; b=A94Tv+Ge5RBhaso6Qur5pVjMmv5n+agKi90Ev0ugyvsSG+/x3CQFsXacYIh+Ok3ZYAWsQmmlYIVAEO64QGiZlIgn38j78SHjXZ7PrNnX1jgKWS0vE1txG41OuK08rMjajWGOMJTFIKKXfIzJ8uBTiptfFlb22laMl3DhzN8tdtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758768635; c=relaxed/simple;
-	bh=E/2zkY+laEgtf0hi012ZsFGuFgF/uxt8cYftM4Aj9CI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=I/n8LkJQPNys5fStPNspvXZtjgvxihV2+SEdlsfdE+Q4RFsxFesQj1VOYwrc+31nQ4mQ6CmZ+bZStGe6dejNPiu6/YkPwyj+NXiEWGJCSh6tVX33+YYiAULgo8MzxWhHdkrZjEW3AClEDGAAIl1G9erIKE3+QPVtUtMu0/Z7XiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FCzOB2r2; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1758796231; c=relaxed/simple;
+	bh=AbnctzRpqXmWshNFGOVoDd3nWMcwlGGsaTGZdAa5Km4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Es0wD5Jtk2cANF0MRUAzDXjVpdKiT+HpE4ciNltUoiIydifxoBpYMYkoh6zpfU9yvirklTPJ25AuxYhMpy3BQXhhaGue7BE4wQz4K3BQGrpzoahrwEXMvYxPCr7M4U/vYLYocAp/XYfMrSL/O9jK6O2Vu+t2c7w+2S8cTxOVlxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cz0Fyvnb; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FCzOB2r2"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-277f0ea6ee6so5178415ad.0
-        for <linux-coco@lists.linux.dev>; Wed, 24 Sep 2025 19:50:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758768631; x=1759373431; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WtyEMQPJo4fqytrWkgTZ3RdyfRt093nOgUIpQGdycFA=;
-        b=FCzOB2r2k+LbdLcdvcfX4uXaQ+vmsZae55CLYxwF00uBJT363zXB+oy6vKwY6Vz9bq
-         s26yO84pjM+75BNh6fn3P5XxRjPJ5G62lIGCyG7wISUDFscm3OYr6H/0z35izA6hcFqt
-         w1+t8J0jYXna1i5G1hGJFzsOC6viKmGdW80G8lNoHBTIr4oFkiQxJlij6xAjn/7q9P/k
-         RVmsmyUJZSS8X/9jeaU4X0bakTlIEvaS/nQPHlzl0UpM8tUBlwV80ehuxDVjFo3U5QS1
-         nIOIOJICADsOvWd+LQrkpHTfhSjor54FE4GMUVrurzg278owLTXxjSLWhPtjtya1h/xM
-         ILEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758768631; x=1759373431;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WtyEMQPJo4fqytrWkgTZ3RdyfRt093nOgUIpQGdycFA=;
-        b=UnlhW9eCC51W8Lo4tOkPFya5pcKm5LU7S+GGLQD0aRAmH2RLlxrjpi/q3iYa3Nn9Ze
-         3764jfe3RcwdahBOpyCkVYShFqCFn2J8rNudl57a24zhncuVC1fsRr1J73RZ332fSeUB
-         WNwucTDETnUpXfZ5Yz1Hm00oFPjLgqEyFc61BN9XrKhYLK1G0nqMyEUpoZqXVmLy04gF
-         kUsMphpRp63RyK6h3HtE08IodcuzMr+KUaB+27txEfsSyhpT3MWnGU04xPHMSx68Cksu
-         ZfHsR+CNAgO/aadrq2PQiaytA+45D2uekTfmCKQvWh9WBE+0Kk47MXWmg75STXRraIiG
-         YlCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU77BNHrbSZlddL+jV/Z+ilu+pmZmcbTVd4gsaYxaOQralfn1fQBGX/YYU2FxW6u9Qk4XciCJ68ADLW@lists.linux.dev
-X-Gm-Message-State: AOJu0YwelLkuTWZtytVcgUC2ElkCIChl80dI8RIeO8WLu6oOxi5aATaG
-	Mcgcr4Kwh6lGB/tbX+b+3ckJlAMyf8/DJMQgrxWjG2UD+5DZvIN+hC6sbVxHcGD4X7UJsI4jUos
-	vp384Sg==
-X-Google-Smtp-Source: AGHT+IFUzTzL+1uqRK/gqbR3SSwstvzUfWk/CsgKEnRDPuVsxH9OFn3e2zcGuFZY0INSLtUo/3MF8Uc68Iw=
-X-Received: from pjbnn3.prod.google.com ([2002:a17:90b:38c3:b0:32d:e264:a78e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1b0b:b0:266:f01a:98d5
- with SMTP id d9443c01a7336-27ed4ab37a2mr23319415ad.57.1758768631155; Wed, 24
- Sep 2025 19:50:31 -0700 (PDT)
-Date: Wed, 24 Sep 2025 19:50:29 -0700
-In-Reply-To: <diqztt1sbd2v.fsf@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cz0Fyvnb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758796230; x=1790332230;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=AbnctzRpqXmWshNFGOVoDd3nWMcwlGGsaTGZdAa5Km4=;
+  b=cz0FyvnbjicczIvtGgvilqR0S4FxWw9UbV8Jm6ZADsdJSzHH3yykxQ9x
+   NCRVR3tc1cV8sRmwGArGZd6ywFuPUWsZqboMu0h/4N04A7U6JB+NwRI4U
+   BZIcKPBb19mjczUZ62G47I6Sailuunz8LaPsXDI4zDIK0o020CdGlLbyT
+   LL5xd+whqzq3sBljlMTSUxISYfvkbP60nIpoZ6Pr4QggYVogsE/y4y8sH
+   o6DII+0ZwM48nTXmZfVCidK2J76qcPTUiJIZ4fE8xz3a+l5K/Ao9x/uFF
+   9gy/TddL3uH/cNmgl8kBVoGHgJM2VtOV0rTTEKp4oWK/K1csyFs2Tl9Qj
+   w==;
+X-CSE-ConnectionGUID: BlZZsvGxTIqdZAPtKE2BhQ==
+X-CSE-MsgGUID: +QmH2Xn4SVaBm982jZGChw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11563"; a="63734573"
+X-IronPort-AV: E=Sophos;i="6.18,292,1751266800"; 
+   d="scan'208";a="63734573"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 03:30:29 -0700
+X-CSE-ConnectionGUID: w0km/078TEqfAOlCSUcjyQ==
+X-CSE-MsgGUID: mjhVJLhQRBa4AFj3UyoXAg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,292,1751266800"; 
+   d="scan'208";a="177135275"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa007.jf.intel.com with ESMTP; 25 Sep 2025 03:30:26 -0700
+Date: Thu, 25 Sep 2025 18:18:18 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Arto Merilainen <amerilainen@nvidia.com>, dan.j.williams@intel.com,
+	linux-kernel@vger.kernel.org, bhelgaas@google.com, aik@amd.com,
+	lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>,
+	linux-pci@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v4 07/10] PCI/IDE: Add IDE establishment helpers
+Message-ID: <aNUW6s9++Ely4v2R@yilunxu-OptiPlex-7050>
+References: <20250717183358.1332417-1-dan.j.williams@intel.com>
+ <20250717183358.1332417-8-dan.j.williams@intel.com>
+ <9683c850-3152-4da5-97f1-3e86ba39e8d3@nvidia.com>
+ <6896333756c9f_184e1f100ef@dwillia2-xfh.jf.intel.com.notmuch>
+ <21903f51-1ed0-41a4-a8c8-cfa78ce6093d@nvidia.com>
+ <yq5azfbjq2nf.fsf@kernel.org>
+ <yq5a1pod4obp.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20250827175247.83322-2-shivankg@amd.com> <20250827175247.83322-7-shivankg@amd.com>
- <diqztt1sbd2v.fsf@google.com>
-Message-ID: <aNSt9QT8dmpDK1eE@google.com>
-Subject: Re: [PATCH kvm-next V11 4/7] KVM: guest_memfd: Use guest mem inodes
- instead of anonymous inodes
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Shivank Garg <shivankg@amd.com>, willy@infradead.org, akpm@linux-foundation.org, 
-	david@redhat.com, pbonzini@redhat.com, shuah@kernel.org, vbabka@suse.cz, 
-	brauner@kernel.org, viro@zeniv.linux.org.uk, dsterba@suse.com, 
-	xiang@kernel.org, chao@kernel.org, jaegeuk@kernel.org, clm@fb.com, 
-	josef@toxicpanda.com, kent.overstreet@linux.dev, zbestahu@gmail.com, 
-	jefflexu@linux.alibaba.com, dhavale@google.com, lihongbo22@huawei.com, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, ziy@nvidia.com, matthew.brost@intel.com, 
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
-	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
-	tabba@google.com, paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com, 
-	pvorel@suse.cz, bfoster@redhat.com, vannapurve@google.com, chao.gao@intel.com, 
-	bharata@amd.com, nikunj@amd.com, michael.day@amd.com, shdhiman@amd.com, 
-	yan.y.zhao@intel.com, Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com, 
-	michael.roth@amd.com, aik@amd.com, jgg@nvidia.com, kalyazin@amazon.com, 
-	peterx@redhat.com, jack@suse.cz, hch@infradead.org, cgzones@googlemail.com, 
-	ira.weiny@intel.com, rientjes@google.com, roypat@amazon.co.uk, 
-	chao.p.peng@intel.com, amit@infradead.org, ddutile@redhat.com, 
-	dan.j.williams@intel.com, ashish.kalra@amd.com, gshan@redhat.com, 
-	jgowans@amazon.com, pankaj.gupta@amd.com, papaluri@amd.com, yuzhao@google.com, 
-	suzuki.poulose@arm.com, quic_eberman@quicinc.com, 
-	linux-bcachefs@vger.kernel.org, linux-btrfs@vger.kernel.org, 
-	linux-erofs@lists.ozlabs.org, linux-f2fs-devel@lists.sourceforge.net, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq5a1pod4obp.fsf@kernel.org>
 
-My apologies for the super late feedback.  None of this is critical (mechanical
-things that can be cleaned up after the fact), so if there's any urgency to
-getting this series into 6.18, just ignore it.
-
-On Wed, Aug 27, 2025, Ackerley Tng wrote:
-> Shivank Garg <shivankg@amd.com> writes:
-> @@ -463,11 +502,70 @@ bool __weak kvm_arch_supports_gmem_mmap(struct kvm *kvm)
->  	return true;
+> This is the change I am adding
+> 
+>  drivers/pci/ide.c                        | 128 ++++++++++++++++++++++-
+>  drivers/virt/coco/arm-cca-host/arm-cca.c |  13 +++
+>  include/linux/pci-ide.h                  |   7 ++
+>  3 files changed, 147 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
+> index 3f772979eacb..23d1712ba97a 100644
+> --- a/drivers/pci/ide.c
+> +++ b/drivers/pci/ide.c
+> @@ -101,7 +101,7 @@ void pci_ide_init(struct pci_dev *pdev)
+>  	pdev->ide_cap = ide_cap;
+>  	pdev->nr_link_ide = nr_link_ide;
+>  	pdev->nr_sel_ide = nr_streams;
+> -	pdev->nr_ide_mem = nr_ide_mem;
+> +	pdev->nr_ide_mem = min(nr_ide_mem, PCI_IDE_AASOC_REG_MAX);
 >  }
-> 
-> +static struct inode *kvm_gmem_inode_create(const char *name, loff_t size,
-> +					   u64 flags)
+>  
+>  struct stream_index {
+> @@ -213,11 +213,13 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
+>  				.rid_start = pci_dev_id(rp),
+>  				.rid_end = pci_dev_id(rp),
+>  				.stream_index = no_free_ptr(ep_stream)->stream_index,
+> +				.nr_mem = 0,
+>  			},
+>  			[PCI_IDE_RP] = {
+>  				.rid_start = pci_dev_id(pdev),
+>  				.rid_end = rid_end,
+>  				.stream_index = no_free_ptr(rp_stream)->stream_index,
+> +				.nr_mem = 0,
+>  			},
+>  		},
+>  		.host_bridge_stream = no_free_ptr(hb_stream)->stream_index,
+> @@ -228,6 +230,109 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
+>  }
+>  EXPORT_SYMBOL_GPL(pci_ide_stream_alloc);
+>  
+> +static int add_range_merge_overlap(struct range *range, int az, int nr_range,
+> +				   u64 start, u64 end)
 > +{
-> +	struct inode *inode;
+> +	int i;
 > +
-> +	inode = anon_inode_make_secure_inode(kvm_gmem_mnt->mnt_sb, name, NULL);
-> +	if (IS_ERR(inode))
-> +		return inode;
+> +	if (start >= end)
+> +		return nr_range;
 > +
-> +	inode->i_private = (void *)(unsigned long)flags;
-> +	inode->i_op = &kvm_gmem_iops;
-> +	inode->i_mapping->a_ops = &kvm_gmem_aops;
-> +	inode->i_mode |= S_IFREG;
-> +	inode->i_size = size;
-> +	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
-> +	mapping_set_inaccessible(inode->i_mapping);
-> +	/* Unmovable mappings are supposed to be marked unevictable as well. */
-> +	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
+> +	/* get new start/end: */
+> +	for (i = 0; i < nr_range; i++) {
 > +
-> +	return inode;
-> +}
+> +		if (!range[i].end)
+> +			continue;
 > +
-> +static struct file *kvm_gmem_inode_create_getfile(void *priv, loff_t size,
-> +						  u64 flags)
-> +{
-> +	static const char *name = "[kvm-gmem]";
-> +	struct inode *inode;
-> +	struct file *file;
-> +	int err;
+> +		/* Try to add to the end */
+> +		if (range[i].end + 1 == start) {
+> +			range[i].end = end;
+> +			return nr_range;
+> +		}
 > +
-> +	err = -ENOENT;
-> +	/* __fput() will take care of fops_put(). */
-> +	if (!fops_get(&kvm_gmem_fops))
-> +		goto err;
-> +
-> +	inode = kvm_gmem_inode_create(name, size, flags);
-> +	if (IS_ERR(inode)) {
-> +		err = PTR_ERR(inode);
-> +		goto err_fops_put;
+> +		/* Try to add to the start */
+> +		if (range[i].start == end + 1) {
+> +			range[i].start = start;
+> +			return nr_range;
+> +		}
 > +	}
 > +
-> +	file = alloc_file_pseudo(inode, kvm_gmem_mnt, name, O_RDWR,
-> +				 &kvm_gmem_fops);
-> +	if (IS_ERR(file)) {
-> +		err = PTR_ERR(file);
-> +		goto err_put_inode;
-> +	}
-> +
-> +	file->f_flags |= O_LARGEFILE;
-> +	file->private_data = priv;
-> +
-> +	return file;
-> +
-> +err_put_inode:
-> +	iput(inode);
-> +err_fops_put:
-> +	fops_put(&kvm_gmem_fops);
-> +err:
-> +	return ERR_PTR(err);
+> +	/* Need to add it: */
+> +	return add_range(range, az, nr_range, start, end);
 > +}
 
-I don't see any reason to add two helpers.  It requires quite a bit more lines
-of code due to adding more error paths and local variables, and IMO doesn't make
-the code any easier to read.
+Can add_range_with_merge() serve your purpose?
 
-Passing in "gmem" as @priv is especially ridiculous, as it adds code and
-obfuscates what file->private_data is set to.
+> +
+> +int pci_ide_add_address_assoc_block(struct pci_dev *pdev,
+> +				    struct pci_ide *ide,
+> +				    u64 start, u64 end)
+> +{
+> +	struct pci_ide_partner *partner;
+> +
+> +	if (!pci_is_pcie(pdev)) {
+> +		pci_warn_once(pdev, "not a PCIe device\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	switch (pci_pcie_type(pdev)) {
+> +	case PCI_EXP_TYPE_ENDPOINT:
+> +
+> +		if (pdev != ide->pdev)
+> +			return -EINVAL;
+> +		partner = &ide->partner[PCI_IDE_RP];
+> +		break;
 
-I get the sense that the code was written to be a "replacement" for common APIs,
-but that is nonsensical (no pun intended).
+IIUC, you want to program the RP is it? So is it better we input the to
+be programmed device (RP), not the target device (EP) with the range.
 
->  static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
->  {
-> -	const char *anon_name = "[kvm-gmem]";
->  	struct kvm_gmem *gmem;
-> -	struct inode *inode;
->  	struct file *file;
->  	int fd, err;
-> 
-> @@ -481,32 +579,16 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
->  		goto err_fd;
->  	}
-> 
-> -	file = anon_inode_create_getfile(anon_name, &kvm_gmem_fops, gmem,
-> -					 O_RDWR, NULL);
-> +	file = kvm_gmem_inode_create_getfile(gmem, size, flags);
->  	if (IS_ERR(file)) {
->  		err = PTR_ERR(file);
->  		goto err_gmem;
->  	}
-> 
-> -	file->f_flags |= O_LARGEFILE;
-> -
-> -	inode = file->f_inode;
-> -	WARN_ON(file->f_mapping != inode->i_mapping);
-> -
-> -	inode->i_private = (void *)(unsigned long)flags;
-> -	inode->i_op = &kvm_gmem_iops;
-> -	inode->i_mapping->a_ops = &kvm_gmem_aops;
-> -	inode->i_mode |= S_IFREG;
-> -	inode->i_size = size;
-> -	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
-> -	mapping_set_inaccessible(inode->i_mapping);
-> -	/* Unmovable mappings are supposed to be marked unevictable as well. */
-> -	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
-> -
->  	kvm_get_kvm(kvm);
->  	gmem->kvm = kvm;
->  	xa_init(&gmem->bindings);
-> -	list_add(&gmem->entry, &inode->i_mapping->i_private_list);
-> +	list_add(&gmem->entry, &file_inode(file)->i_mapping->i_private_list);
+> +	default:
+> +		pci_warn_once(pdev, "invalid device type\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (partner->nr_mem >= pdev->nr_ide_mem)
+> +		return -ENOMEM;
 
-I don't understand this change?  Isn't file_inode(file) == inode?
+I don't get why the desired number blocks for RP is related to the
+supported number blocks for EP.
 
-Compile tested only, and again not critical, but it's -40 LoC...
+Apart from this, I don't see the necessary to input the EP device.
 
+> +
+> +	partner->nr_mem = add_range_merge_overlap(partner->mem,
+> +					   PCI_IDE_AASOC_REG_MAX, partner->nr_mem,
+> +					   start, end);
+> +	return 0;
+> +}
+> +
+> +
+> +int pci_ide_merge_address_assoc_block(struct pci_dev *pdev,
+> +				      struct pci_ide *ide, u64 start, u64 end)
+> +{
+> +	struct pci_ide_partner *partner;
+> +
+> +	if (!pci_is_pcie(pdev)) {
+> +		pci_warn_once(pdev, "not a PCIe device\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	switch (pci_pcie_type(pdev)) {
+> +	case PCI_EXP_TYPE_ENDPOINT:
+> +
+> +		if (pdev != ide->pdev)
+> +			return -EINVAL;
+> +		partner = &ide->partner[PCI_IDE_RP];
+> +		break;
+> +	default:
+> +		pci_warn_once(pdev, "invalid device type\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	for (int i = 0; i < PCI_IDE_AASOC_REG_MAX; i++) {
+> +		struct range *r = &partner->mem[i];
+> +
+> +		if (r->start < start)
+> +			start = r->start;
+> +		if (r->end > end)
+> +			end = r->end;
+> +		r->start = 0;
+> +		r->end = 0;
+> +	}
+> +	partner->mem[0].start = start;
+> +	partner->mem[0].end = end;
+> +	partner->nr_mem = 1;
 
----
- include/uapi/linux/magic.h |  1 +
- virt/kvm/guest_memfd.c     | 75 ++++++++++++++++++++++++++++++++------
- virt/kvm/kvm_main.c        |  7 +++-
- virt/kvm/kvm_mm.h          |  9 +++--
- 4 files changed, 76 insertions(+), 16 deletions(-)
+IIUC, this function will merge previously added ranges, and the newly
+input range, into one, which is wield to me as a kAPI.
 
-diff --git a/include/uapi/linux/magic.h b/include/uapi/linux/magic.h
-index bb575f3ab45e..638ca21b7a90 100644
---- a/include/uapi/linux/magic.h
-+++ b/include/uapi/linux/magic.h
-@@ -103,5 +103,6 @@
- #define DEVMEM_MAGIC		0x454d444d	/* "DMEM" */
- #define SECRETMEM_MAGIC		0x5345434d	/* "SECM" */
- #define PID_FS_MAGIC		0x50494446	/* "PIDF" */
-+#define GUEST_MEMFD_MAGIC	0x474d454d	/* "GMEM" */
- 
- #endif /* __LINUX_MAGIC_H__ */
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 08a6bc7d25b6..73c9791879d5 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -1,12 +1,16 @@
- // SPDX-License-Identifier: GPL-2.0
-+#include <linux/anon_inodes.h>
- #include <linux/backing-dev.h>
- #include <linux/falloc.h>
-+#include <linux/fs.h>
- #include <linux/kvm_host.h>
-+#include <linux/pseudo_fs.h>
- #include <linux/pagemap.h>
--#include <linux/anon_inodes.h>
- 
- #include "kvm_mm.h"
- 
-+static struct vfsmount *kvm_gmem_mnt;
-+
- struct kvm_gmem {
- 	struct kvm *kvm;
- 	struct xarray bindings;
-@@ -385,9 +389,45 @@ static struct file_operations kvm_gmem_fops = {
- 	.fallocate	= kvm_gmem_fallocate,
- };
- 
--void kvm_gmem_init(struct module *module)
-+static int kvm_gmem_init_fs_context(struct fs_context *fc)
-+{
-+	if (!init_pseudo(fc, GUEST_MEMFD_MAGIC))
-+		return -ENOMEM;
-+
-+	fc->s_iflags |= SB_I_NOEXEC;
-+	fc->s_iflags |= SB_I_NODEV;
-+
-+	return 0;
-+}
-+
-+static struct file_system_type kvm_gmem_fs = {
-+	.name		 = "guest_memfd",
-+	.init_fs_context = kvm_gmem_init_fs_context,
-+	.kill_sb	 = kill_anon_super,
-+};
-+
-+static int kvm_gmem_init_mount(void)
-+{
-+	kvm_gmem_mnt = kern_mount(&kvm_gmem_fs);
-+
-+	if (IS_ERR(kvm_gmem_mnt))
-+		return PTR_ERR(kvm_gmem_mnt);
-+
-+	kvm_gmem_mnt->mnt_flags |= MNT_NOEXEC;
-+	return 0;
-+}
-+
-+int kvm_gmem_init(struct module *module)
- {
- 	kvm_gmem_fops.owner = module;
-+
-+	return kvm_gmem_init_mount();
-+}
-+
-+void kvm_gmem_exit(void)
-+{
-+	kern_unmount(kvm_gmem_mnt);
-+	kvm_gmem_mnt = NULL;
- }
- 
- static int kvm_gmem_migrate_folio(struct address_space *mapping,
-@@ -465,7 +505,7 @@ bool __weak kvm_arch_supports_gmem_mmap(struct kvm *kvm)
- 
- static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
- {
--	const char *anon_name = "[kvm-gmem]";
-+	static const char *name = "[kvm-gmem]";
- 	struct kvm_gmem *gmem;
- 	struct inode *inode;
- 	struct file *file;
-@@ -481,17 +521,17 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
- 		goto err_fd;
- 	}
- 
--	file = anon_inode_create_getfile(anon_name, &kvm_gmem_fops, gmem,
--					 O_RDWR, NULL);
--	if (IS_ERR(file)) {
--		err = PTR_ERR(file);
-+	/* __fput() will take care of fops_put(). */
-+	if (!fops_get(&kvm_gmem_fops)) {
-+		err = -ENOENT;
- 		goto err_gmem;
- 	}
- 
--	file->f_flags |= O_LARGEFILE;
--
--	inode = file->f_inode;
--	WARN_ON(file->f_mapping != inode->i_mapping);
-+	inode = anon_inode_make_secure_inode(kvm_gmem_mnt->mnt_sb, name, NULL);
-+	if (IS_ERR(inode)) {
-+		err = PTR_ERR(inode);
-+		goto err_fops;
-+	}
- 
- 	inode->i_private = (void *)(unsigned long)flags;
- 	inode->i_op = &kvm_gmem_iops;
-@@ -503,6 +543,15 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
- 	/* Unmovable mappings are supposed to be marked unevictable as well. */
- 	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
- 
-+	file = alloc_file_pseudo(inode, kvm_gmem_mnt, name, O_RDWR, &kvm_gmem_fops);
-+	if (IS_ERR(file)) {
-+		err = PTR_ERR(file);
-+		goto err_inode;
-+	}
-+
-+	file->f_flags |= O_LARGEFILE;
-+	file->private_data = gmem;
-+
- 	kvm_get_kvm(kvm);
- 	gmem->kvm = kvm;
- 	xa_init(&gmem->bindings);
-@@ -511,6 +560,10 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
- 	fd_install(fd, file);
- 	return fd;
- 
-+err_inode:
-+	iput(inode);
-+err_fops:
-+	fops_put(&kvm_gmem_fops);
- err_gmem:
- 	kfree(gmem);
- err_fd:
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 18f29ef93543..301d48d6e00d 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -6489,7 +6489,9 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
- 	if (WARN_ON_ONCE(r))
- 		goto err_vfio;
- 
--	kvm_gmem_init(module);
-+	r = kvm_gmem_init(module);
-+	if (r)
-+		goto err_gmem;
- 
- 	r = kvm_init_virtualization();
- 	if (r)
-@@ -6510,6 +6512,8 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
- err_register:
- 	kvm_uninit_virtualization();
- err_virt:
-+	kvm_gmem_exit();
-+err_gmem:
- 	kvm_vfio_ops_exit();
- err_vfio:
- 	kvm_async_pf_deinit();
-@@ -6541,6 +6545,7 @@ void kvm_exit(void)
- 	for_each_possible_cpu(cpu)
- 		free_cpumask_var(per_cpu(cpu_kick_mask, cpu));
- 	kmem_cache_destroy(kvm_vcpu_cache);
-+	kvm_gmem_exit();
- 	kvm_vfio_ops_exit();
- 	kvm_async_pf_deinit();
- 	kvm_irqfd_exit();
-diff --git a/virt/kvm/kvm_mm.h b/virt/kvm/kvm_mm.h
-index 31defb08ccba..9fcc5d5b7f8d 100644
---- a/virt/kvm/kvm_mm.h
-+++ b/virt/kvm/kvm_mm.h
-@@ -68,17 +68,18 @@ static inline void gfn_to_pfn_cache_invalidate_start(struct kvm *kvm,
- #endif /* HAVE_KVM_PFNCACHE */
- 
- #ifdef CONFIG_KVM_GUEST_MEMFD
--void kvm_gmem_init(struct module *module);
-+int kvm_gmem_init(struct module *module);
-+void kvm_gmem_exit(void);
- int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args);
- int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
- 		  unsigned int fd, loff_t offset);
- void kvm_gmem_unbind(struct kvm_memory_slot *slot);
- #else
--static inline void kvm_gmem_init(struct module *module)
-+static inline int kvm_gmem_init(struct module *module)
- {
--
-+	return 0;
- }
--
-+static inline void kvm_gmem_exit(void) {};
- static inline int kvm_gmem_bind(struct kvm *kvm,
- 					 struct kvm_memory_slot *slot,
- 					 unsigned int fd, loff_t offset)
+> +
+> +	return 0;
+> +}
 
-base-commit: d133892dddd6607de651b7e32510359a6af97c4c
---
+I noticed Arto has a good idea that there needs at most 2 blocks no
+matter how the mmio layout is for PF/VF/MFD..., one for 32 bit, one for
+64 bit. And the direct connected upstream bridge to the DSM device has
+already aggregated the 2 ranges on enumeration. [1] That greatly reduces
+the complexity. No need for callers to iterate the devices/resources to
+collect the ranges again.
+
+For TDX, the firmware enforces to setup only one addr block for RP, no
+matter how many supported blocks the RP actually has. That means TDX
+could only support 64 bit IDE ranges. I'd like to require an input
+parameter like "max_nr_mem_rp" for this purpose.
+
+Based on the above, I've found the only input from the caller is the
+max_nr_mem_rp, how about we just add it in pci_ide_stream_alloc(),
+input 0 if you don't need the addr block setup.
+
+[...]
+
+>  
+> @@ -163,9 +164,21 @@ static int cca_tsm_connect(struct pci_dev *pdev)
+>  	if (rc)
+>  		goto err_stream;
+>  
+> +	/*
+> +	 * Try to use the available address assoc register blocks.
+> +	 * If we fail with ENOMEM, create one block covering the entire
+> +	 * address range. (Should work for arm64)
+> +	 */
+> +	pci_dev_for_each_resource(pdev, res) {
+> +		rc = pci_ide_add_address_assoc_block(pdev, ide, res->start, res->end);
+> +		if (rc == -ENOMEM)
+> +			pci_ide_merge_address_assoc_block(pdev, ide, res->start, res->end);
+> +	}
+
+You just input the addr of PF0, not VF/MFD... any limitation? If we
+switch to get ranges from direct upstream bridge, are you still OK?
+
+Thanks,
+Yilun
