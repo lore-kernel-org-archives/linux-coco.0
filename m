@@ -1,227 +1,232 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D2031B829
-	for <linux-coco@lists.linux.dev>; Thu, 25 Sep 2025 19:54:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758830096; cv=fail; b=SrdVIb94GIil39HV6+pfWLqizOHHJWHsVbvOuDMp3KiAVX/x8iaID0kK/ksStHoSAYNthMKLNIVDqJp2jJub08Iw3l5Dr0DAGtx6gUKDUDJk5VIszJ2UYt8KVV2kxjh7EVYnZyz/C2nDL9hwX/DPRa2r6eRefQNjQQe+op5hpbw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758830096; c=relaxed/simple;
-	bh=1tQOLb0yQTwI+GbhNEUz6SS8KbBg5eSyKJot3FZz1ak=;
-	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
-	 Content-Type:MIME-Version; b=oU0XOcVvezVIf/C2UE57unmAllFuRSq6oMIeH7b8S3ROU56QxIplAERp1t0lVakVDVYhs2xUsRra9Aj6Vfx6FGua0oKV1QBVJtvbTNoVgENhVuC/BoZPbnxBwuMcNO7HLv2/CxNLG2ZpkiiUZi+aXjkCc3ipQ0YFkGGlnifQJh0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UkTSSQBF; arc=fail smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9B8322768
+	for <linux-coco@lists.linux.dev>; Thu, 25 Sep 2025 21:35:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758836124; cv=none; b=u1IHIn1Xnh0e7ZrshuL+WL245j5aUmeYnPtLNxrGbh/e5+rw8Us1roJNQ1mcd+/fouZRiGyajdxMQUrvIftoYh7nd4wFclpJYXuqKBYicNom9L8Rd5++eR/ZkL4sfWbsWc0pe+QEauTfTTVRZJ2LLo9SL3S0U+52V9xNaGnew7M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758836124; c=relaxed/simple;
+	bh=Lh1tfSZ0NF/AFO/V/8hHUF+qpGzjYGIIGuaXa4zfnL4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=pXR/ZSRNufZzGCWMDDWW0IZDQTGkFkxYNquZV3XA7x32Q/d/8iEfpQO1CizEZArpVLpsk5CUKU6mlxGtGEj2C/QfkAUcj66eaiOfML9iaoXaozrZNxsNm/X6I2Sh9x8e6yybNPhIXuWq7cLAzlQeGikHKjyEItFhzhES1UrdFmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V9bU/Hm9; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UkTSSQBF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758830094; x=1790366094;
-  h=from:date:to:cc:message-id:in-reply-to:references:
-   subject:content-transfer-encoding:mime-version;
-  bh=1tQOLb0yQTwI+GbhNEUz6SS8KbBg5eSyKJot3FZz1ak=;
-  b=UkTSSQBFXPUDPEZ76ky/l+kV5HjDgAJll1RtC4FA+4anUc0AQxquIwOj
-   AkF0Yhm1Di4zLdBhG7fOEv3khp+P/VHAELN9FUxQJQWQyHRm7UaesMNnt
-   c42lBvbHRiBZ3VUSx4c03N+njgOx7uBpJlXgstYrzTG3eoOwW1/i/A6Cf
-   ioS3XZTDObxOH2cuD/e62B9oRiGpFsjdiHod23lqJsY160MYBtLlovF9c
-   /oERI5gvn+mKxt+kBHfXgUVCW2tSJR8onfxH4nkWLmOnBM75F43x40sad
-   3eKtTzHfGq+Upr3JvXVY9PWZpPi5qnr9T3zT+o7o7zE2Ng5tNor47NDr2
-   A==;
-X-CSE-ConnectionGUID: yH+jGcD0TAy5dqA8jv96bw==
-X-CSE-MsgGUID: hJDPt771SPCgD0Qz1BrjEA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="61050701"
-X-IronPort-AV: E=Sophos;i="6.18,293,1751266800"; 
-   d="scan'208";a="61050701"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 12:54:53 -0700
-X-CSE-ConnectionGUID: RaVscc7rR0a61TYiwgF43g==
-X-CSE-MsgGUID: 6eelWWiqSduFAOJm53y9UQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,293,1751266800"; 
-   d="scan'208";a="177261916"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 12:54:54 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Thu, 25 Sep 2025 12:54:53 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Thu, 25 Sep 2025 12:54:53 -0700
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.27) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Thu, 25 Sep 2025 12:54:52 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eYufndKT4hyxNphcji57Fb2JphjQFW/lqE2UJBc4huFiXLDVXLwETVsMebqrMiGXpDnBfi0plQ74j9l6VchM5LYNIeIZBg2lxrP0NTi7eMJsfuVgFx0frEWBug7LpSYJ7XOxLbNbFWKwaFdfNr/HMms9Q+00A9VJf5GUTBDMw3iAkQ8v4zs4/PFw4A7RpWLX7ff4n/b/EOWZrUcTqAnFpo4uWdoWvMw5+Fp/N4X+F/k9l7ZRfXymG2PF68tDnqc9MOsWsOjRvRHagguFrYa95rLKJjgvn5aX1hfuAIvewJSmw8D5X08p42ozJVDgazXSmjra4/bP2yamlxcAZ/dJng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RUhpYTuXNcPWYlnGymYiUo1i+SH9YdfTnQsNuV7X87Q=;
- b=YsK4hB5TTlcc8i5MU8WTESWX/rMjDtubpFHSduRQL+Urusb5KGplnjpMmuJlEEbKPmZzLpVVhESepBaOM8BP/5ovMm92o8TXpQWRemikeGdbtK7Z98l0InA9bgumhzHgwWBDdpKPblyfZms5dVIVfazkG544EfD7vSRF7JLuQx2fMOVhRoYFw7NftGc70rC3/LzXLV32/7b79DLXkXp6s81GiALhPr20TKMEWYyEAf24H8duc8Da7wkVgNb5SsP4xVvd5eOvjCLD8pBJt0wxelYABFkLuyTgyQoe2KM0/BxwmMTlpd+U5r5SjlSdO6Xn3rb/sCmDjljIM+mCQ+XY6w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by CH3PR11MB7299.namprd11.prod.outlook.com (2603:10b6:610:14b::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.10; Thu, 25 Sep
- 2025 19:54:44 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8%2]) with mapi id 15.20.9160.008; Thu, 25 Sep 2025
- 19:54:44 +0000
-From: <dan.j.williams@intel.com>
-Date: Thu, 25 Sep 2025 12:54:42 -0700
-To: Alexey Kardashevskiy <aik@amd.com>, Dan Williams
-	<dan.j.williams@intel.com>, <linux-pci@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>
-CC: <gregkh@linuxfoundation.org>, <bhelgaas@google.com>, <lukas@wunner.de>,
-	Samuel Ortiz <sameo@rivosinc.com>, Xu Yilun <yilun.xu@linux.intel.com>
-Message-ID: <68d59e02a9538_1c791008c@dwillia2-mobl4.notmuch>
-In-Reply-To: <58386de5-7308-47ca-bedd-6844a1d8cd5f@amd.com>
-References: <20250911235647.3248419-1-dan.j.williams@intel.com>
- <20250911235647.3248419-8-dan.j.williams@intel.com>
- <58386de5-7308-47ca-bedd-6844a1d8cd5f@amd.com>
-Subject: Re: [PATCH resend v6 07/10] PCI/IDE: Add IDE establishment helpers
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR03CA0012.namprd03.prod.outlook.com
- (2603:10b6:303:8f::17) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V9bU/Hm9"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3306543e5abso1409351a91.1
+        for <linux-coco@lists.linux.dev>; Thu, 25 Sep 2025 14:35:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758836122; x=1759440922; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dyD0NvHQvKcjtkMWqtARFSwsGpym7n4r8JiRe/0tuUQ=;
+        b=V9bU/Hm9VRxcr3uPt1rtGMqJLVLjLhanEP4ia7rfnkVT3HLgmMO3p15xSCYDmxVtcG
+         iYWHcZdFI1iPkcdHs2I2JePAll0uY+OEOewOyRLAEohNeaQ3+wp7UuDt02ag/mWv5T2m
+         3cYP0seRisA180CCUyuG5AG+mjN8f1DT8wJ8luujXppExs7zj97TCmik6lcu7bEGKdAR
+         gZhXnUNG9b2DnJX/rBBYAYpLNhSql/QOHA4jpt5ygod4SlLjws+18VHmRf/NZYFBmQ2n
+         xopbVlDvXoSoLjuCdK06mdAi80Uldvp6RIGOVif4Dg7Nsw/3gE4Qx7EE3adnbdu7A8gW
+         qYeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758836122; x=1759440922;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dyD0NvHQvKcjtkMWqtARFSwsGpym7n4r8JiRe/0tuUQ=;
+        b=EkGCrAjADeI/RvQM84uR39GjA1Luh2N2SSLP98R22vHTaQnQ28nHK8xMp5i4EJvnPG
+         lB/AoMy1rVpRSno4zJesZoEog/SBWvTr5izasPEii0wvQXJIMI/4dUg43s7+ZDsaQYxp
+         hVFh3BfWvycgRZqxISoNAlMeUXhn/s4ZDjKJzI0qdFrkoq527NynpRixg71JFqw76+c6
+         cnZ94FSLWcCmQ1QmaE2bBjhfjtOiULMC8dVnxlwv9t/j5HZrFd4KINsj84SC1waFG3/J
+         90wfC51SX1r6Op/sKSpf/ZxslfVnp0E2G09D4fYdqSLmizvtrCdVB6v5jp6hWA2XrKIb
+         qo+w==
+X-Forwarded-Encrypted: i=1; AJvYcCVLoTfjl2lqqlDrXV/hnKfr1OYIOh3pnefBKFJ91sYbRZShB2eY/U4LajL9jZzH8jUWG6i3fHufKvER@lists.linux.dev
+X-Gm-Message-State: AOJu0YwZbd6hBxoxo8boT3fG5lbDoofxaMQpEhKMvEkOuP/Q6fA3Ltcw
+	e9u3kN9Mk7YJ53R418588+imeOpzK6WFBDUIp82uKCSaAHLiRj6DdWnjsM065gybR5ICUHxzigZ
+	fkaQpdg==
+X-Google-Smtp-Source: AGHT+IEF46Ap3+CoFy4DNwHeeqPSdM0QIu1/iWB0NVseFrH0JqhT9O+vdtR7XjCf1sCWIaN5eWCQMso96V4=
+X-Received: from pjj5.prod.google.com ([2002:a17:90b:5545:b0:330:6cf5:5f38])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1c07:b0:32e:ca60:6bd7
+ with SMTP id 98e67ed59e1d1-334568960d8mr4094341a91.11.1758836121051; Thu, 25
+ Sep 2025 14:35:21 -0700 (PDT)
+Date: Thu, 25 Sep 2025 14:35:19 -0700
+In-Reply-To: <20250827175247.83322-10-shivankg@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|CH3PR11MB7299:EE_
-X-MS-Office365-Filtering-Correlation-Id: 19bbd6f1-fd66-4f5c-a399-08ddfc6d5f9f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZmF6Y3pHN1NjTlhxYUNuRWovaEQ1TW5mOE9BRWtjMU0xbnFJNzJaT0RmdGlQ?=
- =?utf-8?B?NkJlTytPWko1dUJZT1hZRFd5QTZzMG42SEJKekdMalFlMHp5ZDhkZzV3T1V3?=
- =?utf-8?B?a01lRm1pOGhjU1c3MlpNelJGaTduTFRhVDJGVVpEY0dPRWVZM0QxSExhVnVB?=
- =?utf-8?B?Tng0N3ZaUjZ0Y081dVcwWTFISXJuejlmY0o5ZVVTcnZVbUU5OUp4dG5QaHVE?=
- =?utf-8?B?QVo5cjJJZlIxcmVscm5FQmc4MzB3VmZhd0JUODNZd21aWTNoUmQ0aEg5QnMy?=
- =?utf-8?B?akh6RUpQMjlZV3B3ZmdPTFBNZjdYeHZWR0JnQUsvZUUzN3B5STh4T1dxanJx?=
- =?utf-8?B?TFRqdjB2Y0U5MWx0RHRzSG1icnltUFZhWjVJMFUwaW9KZlFuK2JyZlNPS014?=
- =?utf-8?B?Zk1NczhPR3hQZE4wdmk0NzkrNmE4VnBJY2tma2ZLTS81SzcxMmx6YzRsS29p?=
- =?utf-8?B?Rzl0U0ZSSzVobmFVQUJxYXcxbTJ6TU9FNmc4OGplOGlXRitPMEZ5d0puNWVj?=
- =?utf-8?B?VE10c1V1N04xbndjUDVhbGVDK042cS82b09oajE2SVEwaGhYdHJZTnRZa0Js?=
- =?utf-8?B?L3N0UUYxL3RNT1QxSDE3QnpvSDFhNGV1T2hIZm5mUHB6dk9BN2Uxb3djanNS?=
- =?utf-8?B?dUZScGhXbkNjczhlVCtHM09oaGNzNndTcFFhNFJTMVBMZ1E4SkxPOXBYOGxq?=
- =?utf-8?B?WnVKYURsa2F5ZlZJMWRQd3d0eUpQY0xDdnRCMzcvdndpa0tVK2FwN1VwSTNW?=
- =?utf-8?B?KzRBYnUzS2lQb0UvL0J0SXJISmdEdG5MOHZPZW5DTzVjZ3ZYZGdKZGY5MDRx?=
- =?utf-8?B?RTVsV0hNc2VVbVNXY29DSEJneU5waHpoWnYzUGhjUFJZOUk4KzBMRndaYkcy?=
- =?utf-8?B?RnR5MlBUVnViOWk1eGlnbktldUczSDFBVENxcHgyRGxXY3dxdkd3aStYNmhv?=
- =?utf-8?B?ZnVTOFV5VjVydG1VQnFWOVRxT2RCcnlSd2JsRVo3MC96a25KL2dIK2N1NUM0?=
- =?utf-8?B?ekdPbVUzZTh0amV2ZkFtdmZwcWZiNVpMdnVINFR0ZDlBZlk3elhUTlMwbGxC?=
- =?utf-8?B?OE1reTNzb2c3ZDM1Y3V5ZVBic0c5bmZ2R05qZkRzU2lqY09sQTFMUnU0T0F6?=
- =?utf-8?B?YWJtL2pOR0IxR0F0YTFGOHhuTHl2SU5JUkdKcGZmeEFrN3RZVXd4b1NieWhp?=
- =?utf-8?B?V3VpL0ZCNGpCT2xIc3JzMlByd3dvTmdoL25rYXhzUExJU0tPR2xSRllDUVp4?=
- =?utf-8?B?UkhwdnVvT2hmY0lObURmSnNiQ1gxZnlIS21ldTBKUXV0bTFMSVg2N0xuZ1Y5?=
- =?utf-8?B?UXJRS2xmcUpvcVIzNEs0dVFQTUJLeXE1cDNHWThvQjZSc3ljbnBuN0IzT2tT?=
- =?utf-8?B?KzBsbm5wV2hWWHRxSCt6Z3NSZEJMZEx5QzV4UFYwNE11T3Q0Um9wZkxsc2Iv?=
- =?utf-8?B?UGNnc3E2d200T2VsNjBMVjJiaGhGbUh3RWVWTWRCQStGdGFpMHJUSGZaUmln?=
- =?utf-8?B?U09RNkd5ODBIN2xiWjFwcUpXTE1oa2d2WENLTnYrMHoyWmdoT1lyUXlmNUNV?=
- =?utf-8?B?eEJKdXhYcE9SNC9IZm1DSHdsQnJ4OVJHZlIzSVdEV25tcjNuSDFoSFJWZWIz?=
- =?utf-8?B?dUt1a3kydkJFLy9jajRpQnpGRXpQa1FrbGVoTVozRWI4Ti96UjVJM1pFbHhV?=
- =?utf-8?B?TXRTNThOc3kzOHVZMk1hb0cvbExqUU1jRno2aWRDZWhDQ2hKRy9OZlQ3eXU2?=
- =?utf-8?B?ZVZwNHVmU0dPQTdkRHVGaVVQVG0yZ2hkQVZ3R1c2SHZDblJEV3gvV2VTQlNX?=
- =?utf-8?B?ZDhMMXBwQnl1MGdLWjloWnVsZHZ2U0tCbEUva2dPbHdOelBzZ2hWMzRyWXJt?=
- =?utf-8?Q?+nrm+msXcTMfS?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SHpVajhwd1lNc05ZT2M3ZS9XT0JBSWZFb0ZJdUtSaU1nWjdLSXFpMExEcGR2?=
- =?utf-8?B?RVQ1TVlWdTVPa2dCcG1qbjF1S0k5M2NoV3IwblRwRWF5UXd5NmlaZ1F0S2I4?=
- =?utf-8?B?MjJSRVhuUkx6N1FjZkl5TXBYcXAyakMxa2ZjSDBiWnFUak5QMFFodnZCTGdF?=
- =?utf-8?B?enJMZDVrWVFiZlNZVXYrWDFiWjVta1Q3RUxsNUtHZ2tmaFBXZjQ5ZFZlMmJx?=
- =?utf-8?B?STZVbFpheXBUWkFUa2oyUHRuRllETjB0T2pjTjN2UEJIMUlmaFkxdU1DQ0Nj?=
- =?utf-8?B?TDhvQUZaWnRrUjVUb3BLbnl4LzFMTXpjQXJ4by9uWSszdjdWamJCZWV2aGFC?=
- =?utf-8?B?eUJteGFNdEJpcU5CQ0NpU001SUNHT1ZRbUJFVllvL1VJQ2JKaHBZQmx1ZEZw?=
- =?utf-8?B?NS9TVFFaMkdBNllQR3h3VEtyMlVGZDJEUzlieERZQmhYNXpFdUxJQlZXWkZm?=
- =?utf-8?B?RytMUXJBN3IvT0ViOHJwQXVnQ3IrOG9KQTIvVjMrcHBvU2VVbUc1Y0RRSnA4?=
- =?utf-8?B?R1V6Vk9KdEVzU1RnVlZQWGo3Z1pMVVBIVmxjUHpmaVZvT0lJVmlCano5SHpz?=
- =?utf-8?B?OVZqcU05d3JwVGQzZUo5ekpkM0RtN2pMcXRJSE5jcmJwWVBxY1l6Q3BrcTk2?=
- =?utf-8?B?b2l0dEg0K1ZjcVF1bE84K3lWc05LQWN0LzArSmlsaWdWNjJnS0wzRzdRek1H?=
- =?utf-8?B?YW1ETmR6YUI4YWJUZVA3aFgxZzhsVFFocEx2VjdBR3RXUDlLRmRyMEYySUJw?=
- =?utf-8?B?emNja01yVEh1bEM2ZzNhamtaTEpCTTdsam45R3BuZnF4ZFV5ZlJrcVg4clVv?=
- =?utf-8?B?bVNhM1o3eDh2b1pObWZ2YjlxYlRIcTluN2hIZEprUDljLzdmSEYrL0lRQVlR?=
- =?utf-8?B?M25MWVBoSFRnaUlLNkVJd1hhZTdQRUlGblN0Sy9UVWF1dm9jQkFEb0l5WURp?=
- =?utf-8?B?Y0xaeTJGRXQ4b0dJcEVlWG5TRGRiVVRkNldudzJHeGlnT0lYcGlCa1ZuMWFu?=
- =?utf-8?B?V0dBdCttd01RQmdGbkNvU3JBUEMrVUUwV3ZTV2hrTHRMK1Jxc1h5UXVkeWhn?=
- =?utf-8?B?QVQ4WmR4K1EwaVZnNE1Mb2dWSThLTmFUeWhoZXZLRGw4MnoyUTFUa3M4Rmx3?=
- =?utf-8?B?alBnMkErRk1IY3BYVVRDNkxIWnZvK3MyT1A3NFBMbWZJQmtzUjZKZ3RrWW1D?=
- =?utf-8?B?ZGZiZjBTa0Fab3FqU081OENJd1pwdmFTZnlRajYzeUxFU1R5QXJERWp4am5m?=
- =?utf-8?B?cEhpeUI1QmdlQVh4ZFNXemlOTkRjazJnc2Qvb3NCTnpOc3VNaHBVMmJQZ2x2?=
- =?utf-8?B?TmExV1NVNHJPNjVIbmQ5VlJvUTJ4aENTUURTSDNab1orM05QUDNjRmxJOWdR?=
- =?utf-8?B?V0RpaDI2NEpyTndXWjllekhyNFpiYWFNbm9GSVNOYTRKS1dzR0Vqamdxdi9q?=
- =?utf-8?B?NU9SeHNRUDZnMllsSVRPazN4aTUwVE9vdXRLNFBBWnI5RUtLOURMMS9IcGhX?=
- =?utf-8?B?WEQ2cWM2RjVHNm5JY3ZXV1BDcjdySnpST2tIQm1VVXN3T0NQZ0QzRm5hbzVa?=
- =?utf-8?B?eFg4MjJ0b1FqU3k0bEkrZE0rVWZPejFuNEQ3WGNKRW1YTERJY3dWaThTS1VE?=
- =?utf-8?B?aUh6WlNOOXJ4cnBPdjlpdCtxRHZNVW02WjE5MEJQSkJ6OEgxeE9aSVQ1b2VU?=
- =?utf-8?B?eFVVOFpYYUg0MmhwVUlIdWR6NTFPTk4rcTFMbW1EcElLRjNSb25PdmlxeHJu?=
- =?utf-8?B?OHlkMWtjWG8vZk45aE1veWxGTWZrdmdEL0x2VDZMMThSek4vcGE0L3pob0xN?=
- =?utf-8?B?bWpabjBteERoUmIvcC80Q0N1MTNrK0Y0VVZ5TmZwK3ljRGpyc0RMMmNVZjBr?=
- =?utf-8?B?bEF2STZhVHV2OWM4MlJmcHp6MGc1S1JORVA2bE44Rmh4MUIyVkNkUTNFZjJu?=
- =?utf-8?B?RlFGOEpOTCtwbkMzMDlHZjZCbi9XVnViYVQxMjdZbkRwRXFhQ1d3S0FQWlph?=
- =?utf-8?B?ME9vbkNLMGFnMG96ak01VjVhY3MzK1JNREM3alo5a0F2bzlIa0JkN2d3VzNV?=
- =?utf-8?B?Q1l1clpQMVVlOHpudDNQeSt4NUx3TE9MVEZCVnBlczNaVzRrL1ZkMy9NQXhG?=
- =?utf-8?B?YVFucXZvSDY1WVlqMnBEVVFtZGVSanRpeVlJejFjRnVqREdEK29RQ004d2FD?=
- =?utf-8?B?eFE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 19bbd6f1-fd66-4f5c-a399-08ddfc6d5f9f
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2025 19:54:44.5183
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5gg8GUuiDKKx+nUxiadAGGXo30TNxFF2ch2KDTYPW6XabPtnDUiSDNhakEYbpQLwy0oHLOExz0+TmbGkJefNkSnj/JdIbUnr4AoechcYmNE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7299
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0
+References: <20250827175247.83322-2-shivankg@amd.com> <20250827175247.83322-10-shivankg@amd.com>
+Message-ID: <aNW1l-Wdk6wrigM8@google.com>
+Subject: Re: [PATCH kvm-next V11 7/7] KVM: guest_memfd: selftests: Add tests
+ for mmap and NUMA policy support
+From: Sean Christopherson <seanjc@google.com>
+To: Shivank Garg <shivankg@amd.com>
+Cc: willy@infradead.org, akpm@linux-foundation.org, david@redhat.com, 
+	pbonzini@redhat.com, shuah@kernel.org, vbabka@suse.cz, brauner@kernel.org, 
+	viro@zeniv.linux.org.uk, dsterba@suse.com, xiang@kernel.org, chao@kernel.org, 
+	jaegeuk@kernel.org, clm@fb.com, josef@toxicpanda.com, 
+	kent.overstreet@linux.dev, zbestahu@gmail.com, jefflexu@linux.alibaba.com, 
+	dhavale@google.com, lihongbo22@huawei.com, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, tabba@google.com, 
+	ackerleytng@google.com, paul@paul-moore.com, jmorris@namei.org, 
+	serge@hallyn.com, pvorel@suse.cz, bfoster@redhat.com, vannapurve@google.com, 
+	chao.gao@intel.com, bharata@amd.com, nikunj@amd.com, michael.day@amd.com, 
+	shdhiman@amd.com, yan.y.zhao@intel.com, Neeraj.Upadhyay@amd.com, 
+	thomas.lendacky@amd.com, michael.roth@amd.com, aik@amd.com, jgg@nvidia.com, 
+	kalyazin@amazon.com, peterx@redhat.com, jack@suse.cz, hch@infradead.org, 
+	cgzones@googlemail.com, ira.weiny@intel.com, rientjes@google.com, 
+	roypat@amazon.co.uk, chao.p.peng@intel.com, amit@infradead.org, 
+	ddutile@redhat.com, dan.j.williams@intel.com, ashish.kalra@amd.com, 
+	gshan@redhat.com, jgowans@amazon.com, pankaj.gupta@amd.com, papaluri@amd.com, 
+	yuzhao@google.com, suzuki.poulose@arm.com, quic_eberman@quicinc.com, 
+	linux-bcachefs@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	linux-erofs@lists.ozlabs.org, linux-f2fs-devel@lists.sourceforge.net, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-Alexey Kardashevskiy wrote:
-[..]
-> > diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
-> > index 05ab8c18b768..608ce79d830f 100644
-> > --- a/drivers/pci/ide.c
-> > +++ b/drivers/pci/ide.c
-> > @@ -5,8 +5,12 @@
-> >   
-> >   #define dev_fmt(fmt) "PCI/IDE: " fmt
-> >   #include <linux/bitfield.h>
-> > +#include <linux/bitops.h>
+On Wed, Aug 27, 2025, Shivank Garg wrote:
+> Add tests for NUMA memory policy binding and NUMA aware allocation in
+> guest_memfd. This extends the existing selftests by adding proper
+> validation for:
+> - KVM GMEM set_policy and get_policy() vm_ops functionality using
+>   mbind() and get_mempolicy()
+> - NUMA policy application before and after memory allocation
 > 
-> Compiles without it.
-
-As Bjorn pointed out in his review, the recommendation is include what
-you use:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submit-checklist.rst?id=v6.17-rc7#n17
-
-> > diff --git a/include/linux/pci-ide.h b/include/linux/pci-ide.h
-> > new file mode 100644
-> > index 000000000000..5a7ffb1d826f
-> > --- /dev/null
-> > +++ b/include/linux/pci-ide.h
-> > @@ -0,0 +1,73 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
-> > +
-> > +/* PCIe 6.2 section 6.33 Integrity & Data Encryption (IDE) */
+> These tests help ensure NUMA support for guest_memfd works correctly.
 > 
-> A nit: may be refer to the version where it appeared first (r6.1).
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> ---
+>  tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+>  .../testing/selftests/kvm/guest_memfd_test.c  | 121 ++++++++++++++++++
+>  2 files changed, 122 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+> index 90f03f00cb04..c46cef2a7cd7 100644
+> --- a/tools/testing/selftests/kvm/Makefile.kvm
+> +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> @@ -275,6 +275,7 @@ pgste-option = $(call try-run, echo 'int main(void) { return 0; }' | \
+>  	$(CC) -Werror -Wl$(comma)--s390-pgste -x c - -o "$$TMP",-Wl$(comma)--s390-pgste)
+>  
+>  LDLIBS += -ldl
+> +LDLIBS += -lnuma
 
-Bjorn asked that I move all the specification references forward [1], and in
-this case I missed moving this one to r7.
+Hrm, this is going to be very annoying.  I don't have libnuma-dev installed on
+any of my <too many> systems, and I doubt I'm alone.  Installing the package is
+trivial, but I'm a little wary of foisting that requirement on all KVM developers
+and build bots.
 
-[1]: http://lore.kernel.org/20250807212716.GA62016@bhelgaas
+I'd be especially curious what ARM and RISC-V think, as NUMA is likely a bit less
+prevelant there.
+
+>  LDFLAGS += -pthread $(no-pie-option) $(pgste-option)
+>  
+>  LIBKVM_C := $(filter %.c,$(LIBKVM))
+> diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+> index b3ca6737f304..9640d04ec293 100644
+> --- a/tools/testing/selftests/kvm/guest_memfd_test.c
+> +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+> @@ -7,6 +7,8 @@
+>  #include <stdlib.h>
+>  #include <string.h>
+>  #include <unistd.h>
+> +#include <numa.h>
+> +#include <numaif.h>
+>  #include <errno.h>
+>  #include <stdio.h>
+>  #include <fcntl.h>
+> @@ -19,6 +21,7 @@
+>  #include <sys/mman.h>
+>  #include <sys/types.h>
+>  #include <sys/stat.h>
+> +#include <sys/syscall.h>
+>  
+>  #include "kvm_util.h"
+>  #include "test_util.h"
+> @@ -72,6 +75,122 @@ static void test_mmap_supported(int fd, size_t page_size, size_t total_size)
+>  	TEST_ASSERT(!ret, "munmap() should succeed.");
+>  }
+>  
+> +#define TEST_REQUIRE_NUMA_MULTIPLE_NODES()	\
+> +	TEST_REQUIRE(numa_available() != -1 && numa_max_node() >= 1)
+
+Using TEST_REQUIRE() here will result in skipping the _entire_ test.  Ideally
+this test would use fixtures so that each testcase can run in a child process
+and thus can use TEST_REQUIRE(), but that's a conversion for another day.
+
+Easiest thing would probably be to turn this into a common helper and then bail
+early.
+
+diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+index 9640d04ec293..6acb186e5300 100644
+--- a/tools/testing/selftests/kvm/guest_memfd_test.c
++++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+@@ -7,7 +7,6 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <unistd.h>
+-#include <numa.h>
+ #include <numaif.h>
+ #include <errno.h>
+ #include <stdio.h>
+@@ -75,9 +74,6 @@ static void test_mmap_supported(int fd, size_t page_size, size_t total_size)
+        TEST_ASSERT(!ret, "munmap() should succeed.");
+ }
+ 
+-#define TEST_REQUIRE_NUMA_MULTIPLE_NODES()     \
+-       TEST_REQUIRE(numa_available() != -1 && numa_max_node() >= 1)
+-
+ static void test_mbind(int fd, size_t page_size, size_t total_size)
+ {
+        unsigned long nodemask = 1; /* nid: 0 */
+@@ -87,7 +83,8 @@ static void test_mbind(int fd, size_t page_size, size_t total_size)
+        char *mem;
+        int ret;
+ 
+-       TEST_REQUIRE_NUMA_MULTIPLE_NODES();
++       if (!is_multi_numa_node_system())
++               return;
+ 
+        mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+        TEST_ASSERT(mem != MAP_FAILED, "mmap for mbind test should succeed");
+@@ -136,7 +133,8 @@ static void test_numa_allocation(int fd, size_t page_size, size_t total_size)
+        char *mem;
+        int ret, i;
+ 
+-       TEST_REQUIRE_NUMA_MULTIPLE_NODES();
++       if (!is_multi_numa_node_system())
++               return;
+ 
+        /* Clean slate: deallocate all file space, if any */
+        ret = fallocate(fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE, 0, total_size);
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+index 23a506d7eca3..d7051607e6bf 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util.h
++++ b/tools/testing/selftests/kvm/include/kvm_util.h
+@@ -21,6 +21,7 @@
+ #include <sys/eventfd.h>
+ #include <sys/ioctl.h>
+ 
++#include <numa.h>
+ #include <pthread.h>
+ 
+ #include "kvm_util_arch.h"
+@@ -633,6 +634,11 @@ static inline bool is_smt_on(void)
+        return false;
+ }
+ 
++static inline bool is_multi_numa_node_system(void)
++{
++       return numa_available() != -1 && numa_max_node() >= 1;
++}
++
+ void vm_create_irqchip(struct kvm_vm *vm);
+ 
+ static inline int __vm_create_guest_memfd(struct kvm_vm *vm, uint64_t size,
