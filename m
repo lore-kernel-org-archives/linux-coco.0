@@ -1,67 +1,66 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F75299922
-	for <linux-coco@lists.linux.dev>; Thu, 25 Sep 2025 14:17:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8961A29B8E1
+	for <linux-coco@lists.linux.dev>; Thu, 25 Sep 2025 14:22:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758809826; cv=none; b=a+EZ29oyjZTvZYb/aPT4y3MAS6XUyMmuL4WZdNJr1tSfRlyyPqne0dziJgfvSXaUwyluO7o8ya7v7w5653sCalHHqxcqikHfdgF4diBM4wOl0t5ZHw1O/9gNMFV2HzBehLrOsVhxDHs4lJ82zl70T7G2zYKdG669bKA52l2cqkg=
+	t=1758810155; cv=none; b=P1j/YkFTq/m62ltxH1Ug4It2igFyqawc9tjz0MLSMPbHUMZ76RcUp+aoczLHIA2TO12B31KAUTy2JPFh156Fl8beYrcpViDWDXiKSBcAagRbAfxnErope9qU3ieptXgqqsXOqiNp2YcKUKNCDUf7ZioTs1BdaGICasbZH6J6peY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758809826; c=relaxed/simple;
-	bh=mqqPbcRc1y90cS3KVveWh9IwNrxKa0lpS3/3p6HfGes=;
+	s=arc-20240116; t=1758810155; c=relaxed/simple;
+	bh=D7B17HCKz9nacwG7ZH5m7J7E2r4Whs5KBEZsYzJQ9uY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qnW/HOKdo3uHEAYRL3Bx9Ll0AZgEoTeepNr7sqanNmLiEgReOwTcH0v5FTvnGwMSb/gYxPQGSwKY0K2XFBQqXg5MnwlI8e+OguRmtgBC7RZK5FpRi02fZKql9qG2loZYdxfdHAoUw0/EpNbevQjZz8DMbjwod7jacYg8l/zV7Qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mU4Z2LNM; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=A78RiWsbFSMNZDBN4ClhItgHGnK8+rGiRewGjhs+ozz1mYXDdR4W12wZnqcS9nyHmDmuRLaqDnoQR/HfZbrcoiQ2kucrSueScDlP1neBxmiDpEZIzjCXHFf8jJdEWEIFzzgzl641s9ygRVrtgK4mSouFArV9C27TXHTiGWGag9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IsWjoexW; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mU4Z2LNM"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-33428befbbaso1213625a91.0
-        for <linux-coco@lists.linux.dev>; Thu, 25 Sep 2025 07:17:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IsWjoexW"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b54b37ba2d9so1601742a12.0
+        for <linux-coco@lists.linux.dev>; Thu, 25 Sep 2025 07:22:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758809823; x=1759414623; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1758810152; x=1759414952; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=q01z2q70uBCSgJYAVR+vis46yH2U6fCb9IpR1jV5kvA=;
-        b=mU4Z2LNMXb6iQ39XpE1X5afJp0S0oJeLmnokIkRv+jZSQHhMgg6U/+IsP+tiRZOdgA
-         IKSmK2cVeEj6kU8FDcVfEbWozNMeU3uy2ORWx79RZug3fS7dHIVgMg7eG7I3FfKN/dzj
-         ldN/dVRihhOp5+hfbZB1OV4a/+KjVfgrksSHGR40uL67QmbI2Ru2M409oyxYGKADFPx6
-         sjJKFghpvbaChQqWBpbEAHZgcTXMVxS67m1+FGgk+BmU8p5IrzmmsSK37PMG0nlTPQJ5
-         /6nluJ3lQWedWlNWPBPmDO6RukVI65gqTTOJTl5dkTDeOXuVL0/U0+3vIhXqgdDM8QYm
-         cfzQ==
+        bh=SblUb3K9vKSfuIkumtnWvH3DVTbw+wxBSl+ZySJr9Gg=;
+        b=IsWjoexWv7GzM+O4sxqnc2awYWhbepCYLjr6wLjSTFytILyGGTLsXO9X2HWLwT0sPP
+         BD9/e0aeraQIf/a1YJqtTIA43JJoacQo4GzWEzrdmCTAKVTWK2xF483g+U523bkjp2th
+         LPZdr/JaYBUB9NXNIezGohuAw0u/Cecb8EWGw+IN4gRW8VynNt2XnyFeisV2fwYjEeq9
+         ow96OKFddlvfKn3KqrtO0iCGROuHqRoFBku/VAikduFbN/iLtkTAuQfsDOREDrvQZkWs
+         0W030vTkCvZLEAYS532TZZrdQj4723k5ER4UC7bsrYR5buRPD2icuTjqJD9QgyjLeFSA
+         QR0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758809823; x=1759414623;
+        d=1e100.net; s=20230601; t=1758810152; x=1759414952;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=q01z2q70uBCSgJYAVR+vis46yH2U6fCb9IpR1jV5kvA=;
-        b=Ql2BOZan4Qbw1qGIup1saT8MuGRKwXsng2EkI/D+uE+K29RnXSevPTT/QhdRxWRWsQ
-         5RrhmW7+5tR94lz6zwb8aBcAnjRp8kxPhpd5Z+V4XfAEzCnOnfUwOVdj2e/SM+xNljhR
-         MGwouNT8XJtavxxtKn1l6PcNbdA/UyrVZvhpVITL8uYHmpWpTHLYfrPVcqz8kwWNOV6l
-         Lle8awvY9u8Ah49FmcRK62oKw5k2efgINkPs6hzq9tPupC0L0x7NhyEmYjPKxrvAHreg
-         a10TMjwllnCTwvS8Cc+03IjXH4ZAm0j9tBLbr58TDH1h+qcBLvnuOlMaLRY3SyehlHZh
-         uA+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUsHCFLZar05+npFeD5qZzpsFdMdSrcE/yfTH3FBn6vB0Wp3RR6icqZXp8zYL6hDzKA1WW6dJYCGHFH@lists.linux.dev
-X-Gm-Message-State: AOJu0YyjxqEuqkvAdan5sC1ZS5odBAwb/4cD6r4DM6tW58YascAKxVuz
-	dzsSBZjCGvkbCa1fPlhQWFIwsbDdEU+4+Gftpg0H4uX8QVJ7Hgf69IsPDqENaAy8PpVznwlTmEn
-	xX9cxXg==
-X-Google-Smtp-Source: AGHT+IGC7UvA+zy0Lzxdig1u574Z6HM9V6jNvtPYVpQ99Zo3hDJZ7LLoK6uH5QRKE/XipBEFnMeanJ3T9fg=
-X-Received: from pjbon17.prod.google.com ([2002:a17:90b:1d11:b0:32e:e06a:4668])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3143:b0:32e:1ff5:5af4
- with SMTP id 98e67ed59e1d1-3342a2fe9ddmr3876418a91.35.1758809822200; Thu, 25
- Sep 2025 07:17:02 -0700 (PDT)
-Date: Thu, 25 Sep 2025 07:17:00 -0700
-In-Reply-To: <aNVMIRels8iCldOj@google.com>
+        bh=SblUb3K9vKSfuIkumtnWvH3DVTbw+wxBSl+ZySJr9Gg=;
+        b=lPaFs6Knje1k8jZ4C0SfLh95h4VGk4quNjozJpWxQr7i4nTEsWWaDrDpLv5sIWksie
+         SjDetQzjPhqaIYer60wOBNeRjt7ddrDfuQK40mh7wreCkECclIa+6eeo5yJ2Rx2c6kwB
+         tEx+nPDNit4kmfYepU2DlUrpeZOtOHEWRcAFEtMhdUxQBS6WiR4NHUFlvSBwUn/jkQyV
+         VRF9XUTZ3DFXzP0Ev4BABBbV8IMpPFpdOFcagrWP/jny57A7zuJq2zZmSiroa8H84a0z
+         mfQEVflLeWoNRKafPAVr+O11naQ+33tJ66cMRy3mSVgC0UxlTtfUB7KFhyjPgEAAqyAg
+         9ouQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXKl64dgnnOQYzZV5AQNH/54Liye6CHEZLaDZpMY5QVw0ZzfN5FG/hS6d490ZVZuvZM0rAzA9zXZYIR@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw+LNHKIR/zjPQniwnz5TQUIK/oi89CfdRtY/m1xYkfhudAbaKQ
+	nFF5xgi0A1azVmhsXDsU2gNZvkSPR2nlz3jBlMnF4knlcHultEpqfsY1WJ7CeEFFXlqYnQBiTP+
+	FjK3a6A==
+X-Google-Smtp-Source: AGHT+IH/f88NvvxTkAVG4DhhjQkTxFzTBsV5SbcgowW0+JrB9EElqsyS6+jWyWSmkD83IUsL47BQyHKSocQ=
+X-Received: from pjbmj16.prod.google.com ([2002:a17:90b:3690:b0:32e:c154:c2f6])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5107:b0:32b:a311:d1ae
+ with SMTP id 98e67ed59e1d1-334567a1c56mr2743555a91.10.1758810152121; Thu, 25
+ Sep 2025 07:22:32 -0700 (PDT)
+Date: Thu, 25 Sep 2025 07:22:30 -0700
+In-Reply-To: <20250827175247.83322-9-shivankg@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20250827175247.83322-2-shivankg@amd.com> <20250827175247.83322-8-shivankg@amd.com>
- <aNVMIRels8iCldOj@google.com>
-Message-ID: <aNVO3Lr-_U5Bmvem@google.com>
-Subject: Re: [PATCH kvm-next V11 5/7] KVM: guest_memfd: Add slab-allocated
- inode cache
+References: <20250827175247.83322-2-shivankg@amd.com> <20250827175247.83322-9-shivankg@amd.com>
+Message-ID: <aNVQJqYLX17v-fsf@google.com>
+Subject: Re: [PATCH kvm-next V11 6/7] KVM: guest_memfd: Enforce NUMA mempolicy
+ using shared policy
 From: Sean Christopherson <seanjc@google.com>
 To: Shivank Garg <shivankg@amd.com>
 Cc: willy@infradead.org, akpm@linux-foundation.org, david@redhat.com, 
@@ -93,105 +92,90 @@ Cc: willy@infradead.org, akpm@linux-foundation.org, david@redhat.com,
 	linux-coco@lists.linux.dev
 Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Sep 25, 2025, Sean Christopherson wrote:
-> On Wed, Aug 27, 2025, Shivank Garg wrote:
-> > Add dedicated inode structure (kvm_gmem_inode_info) and slab-allocated
-> > inode cache for guest memory backing, similar to how shmem handles inodes.
-> > 
-> > This adds the necessary allocation/destruction functions and prepares
-> > for upcoming guest_memfd NUMA policy support changes.
-> > 
-> > Signed-off-by: Shivank Garg <shivankg@amd.com>
-> > ---
-> >  virt/kvm/guest_memfd.c | 70 ++++++++++++++++++++++++++++++++++++++++--
-> >  1 file changed, 68 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> > index 6c66a0974055..356947d36a47 100644
-> > --- a/virt/kvm/guest_memfd.c
-> > +++ b/virt/kvm/guest_memfd.c
-> > @@ -17,6 +17,15 @@ struct kvm_gmem {
-> >  	struct list_head entry;
-> >  };
-> >  
-> > +struct kvm_gmem_inode_info {
-> 
-> What about naming this simply gmem_inode?
+On Wed, Aug 27, 2025, Shivank Garg wrote:
+> @@ -26,6 +28,9 @@ static inline struct kvm_gmem_inode_info *KVM_GMEM_I(struct inode *inode)
+>  	return container_of(inode, struct kvm_gmem_inode_info, vfs_inode);
+>  }
+>  
+> +static struct mempolicy *kvm_gmem_get_pgoff_policy(struct kvm_gmem_inode_info *info,
+> +						   pgoff_t index);
+> +
+>  /**
+>   * folio_file_pfn - like folio_file_page, but return a pfn.
+>   * @folio: The folio which contains this index.
+> @@ -112,7 +117,25 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+>  {
+>  	/* TODO: Support huge pages. */
+> -	return filemap_grab_folio(inode->i_mapping, index);
+> +	struct mempolicy *policy;
+> +	struct folio *folio;
+> +
+> +	/*
+> +	 * Fast-path: See if folio is already present in mapping to avoid
+> +	 * policy_lookup.
+> +	 */
+> +	folio = __filemap_get_folio(inode->i_mapping, index,
+> +				    FGP_LOCK | FGP_ACCESSED, 0);
+> +	if (!IS_ERR(folio))
+> +		return folio;
+> +
+> +	policy = kvm_gmem_get_pgoff_policy(KVM_GMEM_I(inode), index);
+> +	folio = __filemap_get_folio_mpol(inode->i_mapping, index,
+> +					 FGP_LOCK | FGP_ACCESSED | FGP_CREAT,
+> +					 mapping_gfp_mask(inode->i_mapping), policy);
+> +	mpol_cond_put(policy);
+> +
+> +	return folio;
+>  }
+>  
+>  static void kvm_gmem_invalidate_begin(struct kvm_gmem *gmem, pgoff_t start,
+> @@ -372,8 +395,45 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+>  	return ret;
+>  }
+>  
+> +#ifdef CONFIG_NUMA
+> +static int kvm_gmem_set_policy(struct vm_area_struct *vma, struct mempolicy *mpol)
+> +{
+> +	struct inode *inode = file_inode(vma->vm_file);
+> +
+> +	return mpol_set_shared_policy(&KVM_GMEM_I(inode)->policy, vma, mpol);
+> +}
+> +
+> +static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
+> +					     unsigned long addr, pgoff_t *pgoff)
+> +{
+> +	struct inode *inode = file_inode(vma->vm_file);
+> +
+> +	*pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
+> +	return mpol_shared_policy_lookup(&KVM_GMEM_I(inode)->policy, *pgoff);
+> +}
+> +
+> +static struct mempolicy *kvm_gmem_get_pgoff_policy(struct kvm_gmem_inode_info *info,
+> +						   pgoff_t index)
 
-Heh, after looking through other filesystems, they're fairly even on appending
-_info or not.  My vote is definitely for gmem_inode.
+I keep reading this is "page offset policy", as opposed to "policy given a page
+offset".  Another oddity that is confusing is that this helper explicitly does
+get_task_policy(current), while kvm_gmem_get_policy() lets the caller do that.
+The end result is the same, but I think it would be helpful for gmem to be
+internally consistent.
 
-Before we accumulate more inode usage, e.g. for in-place conversion (which is
-actually why I started looking at this code), I think we should also settle on
-naming for gmem_file and gmem_inode variables.
+If we have kvm_gmem_get_policy() use this helper, then we can kill two birds with
+one stone:
 
-As below, "struct kvm_gmem *gmem" gets quite confusing once inodes are in the
-picture, especially since that structure isn't _the_ gmem instance, rather it's
-a VM's view of that gmem instance.  And on the other side, "info" for the inode
-is a bit imprecise, e.g. doesn't immediately make me think of inodes.
+static struct mempolicy *__kvm_gmem_get_policy(struct gmem_inode *gi,
+					       pgoff_t index)
+{
+	struct mempolicy *mpol;
 
-A few ideas:
+	mpol = mpol_shared_policy_lookup(&gi->policy, index);
+	return mpol ? mpol : get_task_policy(current);
+}
 
- (a)
-   struct gmem_inode *gmem;
-   struct gmem_file *f;
+static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
+					     unsigned long addr, pgoff_t *pgoff)
+{
+	*pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
 
- (b)
-   struct gmem_inode *gi;
-   struct gmem_file *f;
-
- (c)
-   struct gmem_inode *gi;
-   struct gmem_file *gf;
-
- (d)
-   struct gmem_inode *gmem_i;
-   struct gmem_file *gmem_f;
-
-
-I think my would be for (a) or (b).  Option (c) seems like it would be hard to
-visually differentiate between "gi" and "gf", and gmem_{i,f} are a bit verbose
-IMO.
-
-> > +	struct inode vfs_inode;
-> > +};
-> > +
-> > +static inline struct kvm_gmem_inode_info *KVM_GMEM_I(struct inode *inode)
-> 
-> And then GMEM_I()?
-> 
-> And then (in a later follow-up if we target this for 6.18, or as a prep patch if
-> we push this out to 6.19), rename kvm_gmem to gmem_file?
-> 
-> That would make guest_memfd look a bit more like other filesystems, and I don't
-> see a need to preface the local structures and helpers with "kvm_", e.g. GMEM_I()
-> is analogous to x86's to_vmx() and to_svm().
-> 
-> As for renaming kvm_gmem => gmem_file, I wandered back into this code via Ackerley's
-> in-place conversion series, and it took me a good long while to remember the roles
-> of files vs. inodes in gmem.  That's probably a sign that the code needs clarification
-> given that I wrote the original code.  :-)
-> 
-> Leveraging an old discussion[*], my thought is to get to this:
-> 
-> /*
->  * A guest_memfd instance can be associated multiple VMs, each with its own
->  * "view" of the underlying physical memory.
->  *
->  * The gmem's inode is effectively the raw underlying physical storage, and is
->  * used to track properties of the physical memory, while each gmem file is
->  * effectively a single VM's view of that storage, and is used to track assets
->  * specific to its associated VM, e.g. memslots=>gmem bindings.
->  */
-> struct gmem_file {
-> 	struct kvm *kvm;
-> 	struct xarray bindings;
-> 	struct list_head entry;
-> };
-> 
-> struct gmem_inode {
-> 	struct shared_policy policy;
-> 	struct inode vfs_inode;
-> };
-> 
-> [*] https://lore.kernel.org/all/ZLGiEfJZTyl7M8mS@google.com
+	return __kvm_gmem_get_policy(GMEM_I(file_inode(vma->vm_file)), *pgoff);
+}
