@@ -1,134 +1,238 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074DD1FDA8E
-	for <linux-coco@lists.linux.dev>; Fri, 26 Sep 2025 19:03:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092AA27FB28
+	for <linux-coco@lists.linux.dev>; Fri, 26 Sep 2025 19:36:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758913416; cv=none; b=gqNCzjGGW0gObgf4Bac1OjGFJF06y88SOaR/G0GglUrOwrMRMRHWgKXvz3Z10jPP5c+fC0ypppRMy2I3jAVOIW5uMt8PSZriCnYMmnawq3y188DzZ7QVLtC3P/np7Xm9za1O5wiqpGOcgLclEJkJkGFn7KlmzzjqQHjPZiDkhjo=
+	t=1758915392; cv=none; b=AnCbJmwLESitq6BzhwYAFyxk18kI3+o4Few2rw+LomTD18BtTDKOfZ+nBkauBvPDtBna3FRlpbc5tza2Fp7AB3zKkyD5vWUVaE5PBTLZuR/anh3jDqmVl1PaSSQjTS2RDsLng5mLQNYB7jGFxq0Sw91b4V/Sa05FkRRUrFVG/Nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758913416; c=relaxed/simple;
-	bh=/OKE/n8F2Ln0P9BTKxUVlqFkMwOyZIA42sAOKIy5agg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gjSVQzE1uj3xdspUeWYj5APMkXBi0xsViWd0Wj4LrWH6mQQxSF4rM8ea0HtZHAQv1WaLEk6EJohrMr0H5GAZy6VKYyd3sfh22ZyrUrxlEMYH8spnENMz++ehrwqCo1y4ZYApGcn0NyyIE62NC36BGkIN+f/Js7qFBNKz82UmDt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YgrKqK/n; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1758915392; c=relaxed/simple;
+	bh=mSQKwT+RgGBH3fgRBwHxAMNFrCKxSsVizA+2Gjhn/pY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=iGs8ZKnkZf/VAnHcy6e/fHJDn5PneXYvpDoiuZ1SgA/FRfL/vjYTKLb4/Zuz3cwcULx/az+8reAmEaS8UTzLsU8x5dSNbk2vIB5InF06TzFuv/6mnP/a/lVW1k+mPbf0Y4ewQMJ0EgzI9o9o4EIqfcNUllZVerXFoAcPbZF20io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mwbnnBTH; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YgrKqK/n"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758913415; x=1790449415;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=/OKE/n8F2Ln0P9BTKxUVlqFkMwOyZIA42sAOKIy5agg=;
-  b=YgrKqK/nbrI4zgm01Otw56cGJ6qe0uIxzzuW6RfnIYhpf7RxIQA5cVrt
-   zUM7rEGudOY+o1TRaVQaI21DKi0A0txIsfYiYIQUimGUHrkqKoYznjD8W
-   ODhVNVEquPAzEaWQVcj1qmBOU6Zmn0VBbFoojXlHJGGNltzuVLNzZ/o+s
-   9uSVSX5VO4dD1KJERYnl/qzMNm1v1oYHo9XoDcnb7T4fyx+BfhBDWS/IF
-   cqcWQ94vc+UoXr7WDaJjI5GBDfX5W6VBTB6uXfxYu86+u1r+zz+m0G5Fr
-   5e94ksLkSLN0vEoFq+pPRapTd6oImq9vWefH1TzBxA7cZ0VF+Px5ZMDzi
-   w==;
-X-CSE-ConnectionGUID: xKEGktt5RNi7Tz3t97nO+Q==
-X-CSE-MsgGUID: ocDdZb0lQeurV1+Gpoq1zw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11565"; a="65097572"
-X-IronPort-AV: E=Sophos;i="6.18,295,1751266800"; 
-   d="scan'208";a="65097572"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2025 12:03:33 -0700
-X-CSE-ConnectionGUID: 5/t4gNMER2CDbReS/L1PTA==
-X-CSE-MsgGUID: 3MTuP0UyT1Kjj5IVYawU6g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,295,1751266800"; 
-   d="scan'208";a="177285644"
-Received: from cmdeoliv-mobl4.amr.corp.intel.com (HELO [10.125.109.59]) ([10.125.109.59])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2025 12:03:31 -0700
-Message-ID: <0b3e3123-b15d-4dfd-8af5-710d140d1f7b@intel.com>
-Date: Fri, 26 Sep 2025 12:03:30 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mwbnnBTH"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3234811cab3so2790555a91.3
+        for <linux-coco@lists.linux.dev>; Fri, 26 Sep 2025 12:36:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758915389; x=1759520189; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ob/iOTJHVtIxulD10+qfYKaLq05XmILMIQZZtCe3LNU=;
+        b=mwbnnBTHq+mKhCwyHyzMkyT0nUavE8oh2ViSppG7xvzqfFGnUg0ZuSehC2WtWxHMy2
+         B8lY/9A+WjefV2nCakAZXhKsNnXkGYjQ43wODW+nKdpBvlK4HPHt5S1GxtkWBQ/CxF3O
+         Nk3sCC+Rc5Q0U07uNaTZfXkciJKH569PtAxga0XuD4wPc9ePxYXo26kSSP6/r3zVtKHG
+         plcRoQxlFqTjCr3+oDx3ZVE2tMUhQy2YX0JM/mk5bJj43ziHmRtp/7N8Ie/1LJvormOI
+         yUV1b41BUOEOnoEIEkeyZeduwXj2fYPVF2WG+yrZp3Y5VGhJOBiCwUPM14DMFFTJ2K76
+         Nl0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758915389; x=1759520189;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ob/iOTJHVtIxulD10+qfYKaLq05XmILMIQZZtCe3LNU=;
+        b=d4ZJV5zNTBP8tqHJnR6DIUj+BwKer9kEOICa5a65imbV66FGnZM+q/LKnkZfovzlFF
+         d5ASQtUEE9RwWKk3GzdhGQ5Pr5HiY2J/OCUO9pGsgGsINoCQ11doJsgtT3Xc3sQljQGH
+         ojz/Ehf0I0RAFkifWk3GGlWeoLxw5K0H/O79+sO3mjjg9yJgvo1uykW/KcqTZxWHbS2c
+         pPPOpEicpv0/IWLY/avKCsBVi//diCqsd9Xdt4JUTWhEKEouWd/ub08mVa1BCUa9gN4s
+         nnb1P/EUfoAEG6vrxDGrzstKw+6e/HRAFYBAO0epUmUM0u5BApj+tMPn+Aot56WXQTug
+         ydlg==
+X-Forwarded-Encrypted: i=1; AJvYcCWORVt0UaSPmz1dBzi42oR/m8Wh1a+RcX7CNr6bRGm3cR4+vgSgrlHtEKwtDiV0oluGR1idZ17froCR@lists.linux.dev
+X-Gm-Message-State: AOJu0YzZCYY1cqKx5IY1pYKODYt4/p1s8s8PkyhRhjudkdG+bPCvMbvF
+	mDesMLpEMJVve3lnosVin0hoTqUNH5oaaXhLS3wNX6AjFZ2K9iiemIQDecudNdBbBSyiUMna3kb
+	nmbrOAg==
+X-Google-Smtp-Source: AGHT+IFDksLZfiXKr/BILK4eWMYTpySqi06A6DOxX2zeNKzHO6pmJyAGRZ48y/vvPgWC6WRjoIw3qUZ+1+0=
+X-Received: from pjbaz14.prod.google.com ([2002:a17:90b:28e:b0:32d:e264:a78e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1808:b0:32b:d8bf:c785
+ with SMTP id 98e67ed59e1d1-3342a2c3979mr8949944a91.20.1758915388771; Fri, 26
+ Sep 2025 12:36:28 -0700 (PDT)
+Date: Fri, 26 Sep 2025 12:36:27 -0700
+In-Reply-To: <aNVQJqYLX17v-fsf@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/16] TDX: Enable Dynamic PAMT
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "Zhao, Yan Y" <yan.y.zhao@intel.com>
-Cc: "Gao, Chao" <chao.gao@intel.com>, "seanjc@google.com"
- <seanjc@google.com>, "bp@alien8.de" <bp@alien8.de>,
- "kas@kernel.org" <kas@kernel.org>, "Annapurve, Vishal"
- <vannapurve@google.com>, "Huang, Kai" <kai.huang@intel.com>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "Yamahata, Isaku" <isaku.yamahata@intel.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "tglx@linutronix.de" <tglx@linutronix.de>, "x86@kernel.org" <x86@kernel.org>
-References: <20250918232224.2202592-1-rick.p.edgecombe@intel.com>
- <aNX6V6OSIwly1hu4@yzhao56-desk.sh.intel.com>
- <8f772a23-ea7f-40eb-8852-49f5e3e16c15@intel.com>
- <2b951e427c3f3f06fc310d151b7c9e960c32ec3f.camel@intel.com>
- <7927271c-61e6-4f90-9127-c855a92fe766@intel.com>
- <2fc6595ba9b2b3dc59a251fbac33daa73a107a92.camel@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <2fc6595ba9b2b3dc59a251fbac33daa73a107a92.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20250827175247.83322-2-shivankg@amd.com> <20250827175247.83322-9-shivankg@amd.com>
+ <aNVQJqYLX17v-fsf@google.com>
+Message-ID: <aNbrO7A7fSjb4W84@google.com>
+Subject: Re: [PATCH kvm-next V11 6/7] KVM: guest_memfd: Enforce NUMA mempolicy
+ using shared policy
+From: Sean Christopherson <seanjc@google.com>
+To: Shivank Garg <shivankg@amd.com>
+Cc: willy@infradead.org, akpm@linux-foundation.org, david@redhat.com, 
+	pbonzini@redhat.com, shuah@kernel.org, vbabka@suse.cz, brauner@kernel.org, 
+	viro@zeniv.linux.org.uk, dsterba@suse.com, xiang@kernel.org, chao@kernel.org, 
+	jaegeuk@kernel.org, clm@fb.com, josef@toxicpanda.com, 
+	kent.overstreet@linux.dev, zbestahu@gmail.com, jefflexu@linux.alibaba.com, 
+	dhavale@google.com, lihongbo22@huawei.com, lorenzo.stoakes@oracle.com, 
+	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, tabba@google.com, 
+	ackerleytng@google.com, paul@paul-moore.com, jmorris@namei.org, 
+	serge@hallyn.com, pvorel@suse.cz, bfoster@redhat.com, vannapurve@google.com, 
+	chao.gao@intel.com, bharata@amd.com, nikunj@amd.com, michael.day@amd.com, 
+	shdhiman@amd.com, yan.y.zhao@intel.com, Neeraj.Upadhyay@amd.com, 
+	thomas.lendacky@amd.com, michael.roth@amd.com, aik@amd.com, jgg@nvidia.com, 
+	kalyazin@amazon.com, peterx@redhat.com, jack@suse.cz, hch@infradead.org, 
+	cgzones@googlemail.com, ira.weiny@intel.com, rientjes@google.com, 
+	roypat@amazon.co.uk, chao.p.peng@intel.com, amit@infradead.org, 
+	ddutile@redhat.com, dan.j.williams@intel.com, ashish.kalra@amd.com, 
+	gshan@redhat.com, jgowans@amazon.com, pankaj.gupta@amd.com, papaluri@amd.com, 
+	yuzhao@google.com, suzuki.poulose@arm.com, quic_eberman@quicinc.com, 
+	linux-bcachefs@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	linux-erofs@lists.ozlabs.org, linux-f2fs-devel@lists.sourceforge.net, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-On 9/26/25 12:00, Edgecombe, Rick P wrote:
-> So the problem is not fundamental to the approach I think. We just took
-> a shortcut by ignoring the shared locks. For line-of-sight to a path to
-> remove the global lock someday, I think we could make the 2MB granular
-> locks be reader/writer to match the TDX module. Then around the
-> SEAMCALLs that take these locks, we could take them on the kernel side
-> in the right order for whichever SEAMCALL we are making.
+On Thu, Sep 25, 2025, Sean Christopherson wrote:
+> On Wed, Aug 27, 2025, Shivank Garg wrote:
+> > @@ -26,6 +28,9 @@ static inline struct kvm_gmem_inode_info *KVM_GMEM_I(struct inode *inode)
+> >  	return container_of(inode, struct kvm_gmem_inode_info, vfs_inode);
+> >  }
+> >  
+> > +static struct mempolicy *kvm_gmem_get_pgoff_policy(struct kvm_gmem_inode_info *info,
+> > +						   pgoff_t index);
+> > +
+> >  /**
+> >   * folio_file_pfn - like folio_file_page, but return a pfn.
+> >   * @folio: The folio which contains this index.
+> > @@ -112,7 +117,25 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+> >  static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+> >  {
+> >  	/* TODO: Support huge pages. */
+> > -	return filemap_grab_folio(inode->i_mapping, index);
+> > +	struct mempolicy *policy;
+> > +	struct folio *folio;
+> > +
+> > +	/*
+> > +	 * Fast-path: See if folio is already present in mapping to avoid
+> > +	 * policy_lookup.
+> > +	 */
+> > +	folio = __filemap_get_folio(inode->i_mapping, index,
+> > +				    FGP_LOCK | FGP_ACCESSED, 0);
+> > +	if (!IS_ERR(folio))
+> > +		return folio;
+> > +
+> > +	policy = kvm_gmem_get_pgoff_policy(KVM_GMEM_I(inode), index);
+> > +	folio = __filemap_get_folio_mpol(inode->i_mapping, index,
+> > +					 FGP_LOCK | FGP_ACCESSED | FGP_CREAT,
+> > +					 mapping_gfp_mask(inode->i_mapping), policy);
+> > +	mpol_cond_put(policy);
+> > +
+> > +	return folio;
+> >  }
+> >  
+> >  static void kvm_gmem_invalidate_begin(struct kvm_gmem *gmem, pgoff_t start,
+> > @@ -372,8 +395,45 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+> >  	return ret;
+> >  }
+> >  
+> > +#ifdef CONFIG_NUMA
+> > +static int kvm_gmem_set_policy(struct vm_area_struct *vma, struct mempolicy *mpol)
+> > +{
+> > +	struct inode *inode = file_inode(vma->vm_file);
+> > +
+> > +	return mpol_set_shared_policy(&KVM_GMEM_I(inode)->policy, vma, mpol);
+> > +}
+> > +
+> > +static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
+> > +					     unsigned long addr, pgoff_t *pgoff)
+> > +{
+> > +	struct inode *inode = file_inode(vma->vm_file);
+> > +
+> > +	*pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
+> > +	return mpol_shared_policy_lookup(&KVM_GMEM_I(inode)->policy, *pgoff);
+> > +}
+> > +
+> > +static struct mempolicy *kvm_gmem_get_pgoff_policy(struct kvm_gmem_inode_info *info,
+> > +						   pgoff_t index)
+> 
+> I keep reading this is "page offset policy", as opposed to "policy given a page
+> offset".  Another oddity that is confusing is that this helper explicitly does
+> get_task_policy(current), while kvm_gmem_get_policy() lets the caller do that.
+> The end result is the same, but I think it would be helpful for gmem to be
+> internally consistent.
+> 
+> If we have kvm_gmem_get_policy() use this helper, then we can kill two birds with
+> one stone:
+> 
+> static struct mempolicy *__kvm_gmem_get_policy(struct gmem_inode *gi,
+> 					       pgoff_t index)
+> {
+> 	struct mempolicy *mpol;
+> 
+> 	mpol = mpol_shared_policy_lookup(&gi->policy, index);
+> 	return mpol ? mpol : get_task_policy(current);
+> }
+> 
+> static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
+> 					     unsigned long addr, pgoff_t *pgoff)
+> {
+> 	*pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
+> 
+> 	return __kvm_gmem_get_policy(GMEM_I(file_inode(vma->vm_file)), *pgoff);
 
-Yeah, but what if the TDX module changes its locking scheme in 5 years
-or 10? What happens to 6.17.9999-stable?
+Argh!!!!!  This breaks the selftest because do_get_mempolicy() very specifically
+falls back to the default_policy, NOT to the current task's policy.  That is
+*exactly* the type of subtle detail that needs to be commented, because there's
+no way some random KVM developer is going to know that returning NULL here is
+important with respect to get_mempolicy() ABI.
+
+On a happier note, I'm very glad you wrote a testcase :-)
+
+I've got this as fixup-to-the-fixup:
+
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index e796cc552a96..61130a52553f 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -114,8 +114,8 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+        return r;
+ }
+ 
+-static struct mempolicy *__kvm_gmem_get_policy(struct gmem_inode *gi,
+-                                              pgoff_t index)
++static struct mempolicy *kvm_gmem_get_folio_policy(struct gmem_inode *gi,
++                                                  pgoff_t index)
+ {
+ #ifdef CONFIG_NUMA
+        struct mempolicy *mpol;
+@@ -151,7 +151,7 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+        if (!IS_ERR(folio))
+                return folio;
+ 
+-       policy = __kvm_gmem_get_policy(GMEM_I(inode), index);
++       policy = kvm_gmem_get_folio_policy(GMEM_I(inode), index);
+        folio = __filemap_get_folio_mpol(inode->i_mapping, index,
+                                         FGP_LOCK | FGP_ACCESSED | FGP_CREAT,
+                                         mapping_gfp_mask(inode->i_mapping), policy);
+@@ -431,9 +431,18 @@ static int kvm_gmem_set_policy(struct vm_area_struct *vma, struct mempolicy *mpo
+ static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
+                                              unsigned long addr, pgoff_t *pgoff)
+ {
++       struct inode *inode = file_inode(vma->vm_file);
++
+         *pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
+ 
+-        return __kvm_gmem_get_policy(GMEM_I(file_inode(vma->vm_file)), *pgoff);
++       /*
++        * Note!  Directly return whatever the lookup returns, do NOT return
++        * the current task's policy as is done when looking up the policy for
++        * a specific folio.  Kernel ABI for get_mempolicy() is to return
++        * MPOL_DEFAULT when there is no defined policy, not whatever the
++        * default policy resolves to.
++        */
++        return mpol_shared_policy_lookup(&GMEM_I(inode)->policy, *pgoff);
+ }
+ #endif /* CONFIG_NUMA */
+ 
+
