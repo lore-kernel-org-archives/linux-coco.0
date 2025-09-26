@@ -1,51 +1,39 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12512F8BDA;
-	Fri, 26 Sep 2025 11:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15B72AD3D
+	for <linux-coco@lists.linux.dev>; Fri, 26 Sep 2025 12:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758884610; cv=none; b=ZGDFq/QRcAwuMAJXsNxx9wzeHmTfRybLTatFwfxfrK7eFBrK/pkS54T2X+3BX/xJ9AATULuU7qIi6L3/3HvueMCbfmWPrNtZX00MtZx4Sv8PyV4QYyaUu0N6AYj+kRem/Tu3fJpujSWQBn+Y6RiwXLlyUJF7IfDUOKXQte1gyTw=
+	t=1758889942; cv=none; b=QcfivacejTzELakscZNnkw8vFCl1OMGW+511Oh+e7zJtJ+9O2BUP0dzVSIHTCUM0KioxNYCSSRBRKpZOTNa9g95IZz1XHQnjwmLszAMBGppvUJB6wvdrki/O91ZTNlJMhZmifT4sFk2ev1DtInUvFRdBHtJUl35kNEZ6f0Omj+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758884610; c=relaxed/simple;
-	bh=NiM5bywEe+hqZEp48MCP0PMFIY9nEmXjNWVKXBI6nW4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B2t83yIikSXvEBS3ERyayL1+35zs0Xe+WwcUuucdnxnPLZm1S1nkLTJoQjryFM7T1vCkCFn/gJJ5bcQOGtVgMERtrLnZkyYJ2EM0EDK0Jnc83JsgSXMU2E9VO2Hk5WPRJG0JQwfB0OiPinrdcbZ9v3jbCKHrjHJ6Q0IIGh30Uw8=
+	s=arc-20240116; t=1758889942; c=relaxed/simple;
+	bh=tRDPzWnl8Y5b4vevP83CSJEcH/w/cjQDgATDQVHHiuU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bKq+loEMTxb088bUaLvFn5WM2ppCWcpWW7GWE2NFKzYcDYInvwA5N6WXVozH+56s5tiZoRpF097xUtCk3FT29qVldfNpLTgptu08lpHos+C3iQkdnUeFmjsstPXDeR3k1A8QT3Crey1f23jEuRB55gpc3Hdy67xquWKp37OXUuo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 35699168F;
-	Fri, 26 Sep 2025 04:03:20 -0700 (PDT)
-Received: from e122027.cambridge.arm.com (e122027.cambridge.arm.com [10.1.38.22])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D63AF3F66E;
-	Fri, 26 Sep 2025 04:03:24 -0700 (PDT)
-From: Steven Price <steven.price@arm.com>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 14E58168F;
+	Fri, 26 Sep 2025 05:32:11 -0700 (PDT)
+Received: from oss-apollo7005.oss.cambridge.arm.com (oss-apollo7005.oss.lab.cambridge.arm.com [10.7.15.171])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 497733F5A1;
+	Fri, 26 Sep 2025 05:32:17 -0700 (PDT)
+From: Salman Nabi <salman.nabi@arm.com>
+To: mark.rutland@arm.com,
+	lpieralisi@kernel.org,
+	sudeep.holla@arm.com,
+	andre.przywara@arm.com
+Cc: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Fuad Tabba <tabba@google.com>,
 	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Steven Price <steven.price@arm.com>
-Subject: [RFC PATCH 5/5] arm64: RME: Support num_aux_places & rtt_tree_pp realm parameters
-Date: Fri, 26 Sep 2025 12:02:54 +0100
-Message-ID: <20250926110254.55449-6-steven.price@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250926110254.55449-1-steven.price@arm.com>
-References: <20250926110254.55449-1-steven.price@arm.com>
+	vsethi@nvidia.com,
+	sdonthineni@nvidia.com,
+	vwadekar@nvidia.com,
+	chao.gao@intel.com,
+	ardb@kernel.org
+Subject: [RFC PATCH v2 0/1] firmware: smccc: Add support for Live Firmware Activation (LFA)
+Date: Fri, 26 Sep 2025 12:31:44 +0000
+Message-Id: <20250926123145.268728-1-salman.nabi@arm.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -54,163 +42,82 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-CCA planes provides new parameters to the VMM:
- - num_aux_planes defines the number of extra planes
- - rtt_tree_pp controls whether each plane has it's own page table tree,
-   of if they share one tree.
+Hi,
 
-Signed-off-by: Steven Price <steven.price@arm.com>
----
- arch/arm64/include/uapi/asm/kvm.h | 12 +++++
- arch/arm64/kvm/rme.c              | 77 +++++++++++++++++++++++++++++--
- 2 files changed, 86 insertions(+), 3 deletions(-)
+This patch addresses some feedback from the previous RFC, and fixes and
+improves some shortcomings discovered during internal review:
+There is now a new sysfs file to waive the kernel's CPU rendezvous
+requirement, if administrators are sure that the firmware's brief downtime
+has no effect on the kernel's drivers. Also the firmware images are now
+handled in a linked list, as this provides more flexibility for upcoming
+changes. For more details, see the original cover letter, the changelog
+below and the patch's commit message. We are still looking for feedback,
+also from other architectures, on the best userland interface.
 
-diff --git a/arch/arm64/include/uapi/asm/kvm.h b/arch/arm64/include/uapi/asm/kvm.h
-index 9b5d67ecbc5e..1d83da0f3aaa 100644
---- a/arch/arm64/include/uapi/asm/kvm.h
-+++ b/arch/arm64/include/uapi/asm/kvm.h
-@@ -440,6 +440,8 @@ enum {
- /* List of configuration items accepted for KVM_CAP_ARM_RME_CONFIG_REALM */
- #define ARM_RME_CONFIG_RPV			0
- #define ARM_RME_CONFIG_HASH_ALGO		1
-+#define ARM_RME_CONFIG_NUM_AUX_PLANES		2
-+#define ARM_RME_CONFIG_RTT_TREE_PP		3
- 
- #define ARM_RME_CONFIG_HASH_ALGO_SHA256		0
- #define ARM_RME_CONFIG_HASH_ALGO_SHA512		1
-@@ -459,6 +461,16 @@ struct arm_rme_config {
- 			__u32	hash_algo;
- 		};
- 
-+		/* cfg == ARM_RME_CONFIG_NUM_AUX_PLANES */
-+		struct {
-+			__u32	num_aux_planes;
-+		};
-+
-+		/* cfg == ARM_RME_CONFIG_RTT_TREE_PP */
-+		struct {
-+			__u32	rtt_tree_pp;
-+		};
-+
- 		/* Fix the size of the union */
- 		__u8	reserved[256];
- 	};
-diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
-index 6cb938957510..fca305da1843 100644
---- a/arch/arm64/kvm/rme.c
-+++ b/arch/arm64/kvm/rme.c
-@@ -43,6 +43,28 @@ bool kvm_rme_supports_sve(void)
- 	return rme_has_feature(RMI_FEATURE_REGISTER_0_SVE_EN);
- }
- 
-+static bool kvm_rme_supports_rtt_tree_single(void)
-+{
-+	int i = u64_get_bits(rmm_feat_reg0, RMI_FEATURE_REGISTER_0_RTT_PLANE);
-+
-+	switch (i) {
-+	case RMI_RTT_PLANE_AUX:
-+		return false;
-+	case RMI_RTT_PLANE_AUX_SINGLE:
-+	case RMI_RTT_PLANE_SINGLE:
-+		return true;
-+	default:
-+		WARN(1, "Unknown encoding for RMI_FEATURE_REGISTER_0_RTT_PLANE: %#x", i);
-+	}
-+	return false;
-+}
-+
-+static unsigned int rme_get_max_num_aux_planes(void)
-+{
-+	return u64_get_bits(rmm_feat_reg0,
-+			    RMI_FEATURE_REGISTER_0_MAX_NUM_AUX_PLANES);
-+}
-+
- static int rmi_check_version(void)
- {
- 	struct arm_smccc_res res;
-@@ -1077,6 +1099,14 @@ int realm_map_protected(struct realm *realm,
- 	return -ENXIO;
- }
- 
-+static unsigned long pi_index_to_s2tte(unsigned long idx)
-+{
-+	return FIELD_PREP(BIT(PTE_PI_IDX_0), (idx >> 0) & 1) |
-+	       FIELD_PREP(BIT(PTE_PI_IDX_1), (idx >> 1) & 1) |
-+	       FIELD_PREP(BIT(PTE_PI_IDX_2), (idx >> 2) & 1) |
-+	       FIELD_PREP(BIT(PTE_PI_IDX_3), (idx >> 3) & 1);
-+}
-+
- int realm_map_non_secure(struct realm *realm,
- 			 unsigned long ipa,
- 			 kvm_pfn_t pfn,
-@@ -1101,9 +1131,17 @@ int realm_map_non_secure(struct realm *realm,
- 		 * so for now we permit both read and write.
- 		 */
- 		unsigned long desc = phys |
--				     PTE_S2_MEMATTR(MT_S2_FWB_NORMAL) |
--				     KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R |
--				     KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
-+				     PTE_S2_MEMATTR(MT_S2_FWB_NORMAL);
-+		/*
-+		 * FIXME: Read+Write permissions for now, and no support yet
-+		 * for setting RMI_REALM_PARAM_FLAG1_RTT_S2AP_ENCODING
-+		 */
-+		if (1)
-+			desc |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R |
-+				KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
-+		else
-+			desc |= pi_index_to_s2tte(RMI_BASE_PERM_RW_INDEX);
-+
- 		ret = rmi_rtt_map_unprotected(rd, ipa, map_level, desc);
- 
- 		if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
-@@ -1653,6 +1691,33 @@ static int config_realm_hash_algo(struct realm *realm,
- 	return 0;
- }
- 
-+static int config_num_aux_planes(struct realm *realm,
-+				 struct arm_rme_config *cfg)
-+{
-+	if (cfg->num_aux_planes > rme_get_max_num_aux_planes())
-+		return -EINVAL;
-+
-+	realm->num_aux_planes = cfg->num_aux_planes;
-+	realm->params->num_aux_planes = cfg->num_aux_planes;
-+
-+	return 0;
-+}
-+
-+static int config_rtt_tree_pp(struct realm *realm,
-+			      struct arm_rme_config *cfg)
-+{
-+	if (!kvm_rme_supports_rtt_tree_single() && !cfg->rtt_tree_pp)
-+		return -EINVAL;
-+
-+	realm->rtt_tree_pp = !!cfg->rtt_tree_pp;
-+	if (realm->rtt_tree_pp)
-+		realm->params->flags1 |= RMI_REALM_PARAM_FLAG1_RTT_TREE_PP;
-+	else
-+		realm->params->flags1 &= ~RMI_REALM_PARAM_FLAG1_RTT_TREE_PP;
-+
-+	return 0;
-+}
-+
- static int kvm_rme_config_realm(struct kvm *kvm, struct kvm_enable_cap *cap)
- {
- 	struct arm_rme_config cfg;
-@@ -1672,6 +1737,12 @@ static int kvm_rme_config_realm(struct kvm *kvm, struct kvm_enable_cap *cap)
- 	case ARM_RME_CONFIG_HASH_ALGO:
- 		r = config_realm_hash_algo(realm, &cfg);
- 		break;
-+	case ARM_RME_CONFIG_NUM_AUX_PLANES:
-+		r = config_num_aux_planes(realm, &cfg);
-+		break;
-+	case ARM_RME_CONFIG_RTT_TREE_PP:
-+		r = config_rtt_tree_pp(realm, &cfg);
-+		break;
- 	default:
- 		r = -EINVAL;
- 	}
+=====================================================================
+
+this is a proposal for a driver for the Arm Live Firmware Activation (LFA)
+specification[1]. LFA provides an interface to allow "activating" firmware
+updates without a reboot.
+In contrast to Intel's TDX [2] approach (which seems only concerned about
+some confidential computing related firmware blob), and even OCP's
+"impactless" updates[3], the Arm approach just lists a number of
+"activatable" firmware images, and does not limit their scope. In
+particular those updates can (and will) be for firmware bits used by the
+application processors (which OCP seems to rule out), including runtime
+secure firmware (TF-A/BL31), confidential compute firmware, and
+potentially even UEFI runtime firmware.
+Initially we have the whole chain demoing the Arm Confidential Computing
+firmware (RMM) update, which is conceptually the same as Intel's TDX
+proposal.
+
+So our design approach is to create a directory under /sys/firmware, and
+just list all images there, as directories named by their GUID.
+Then the properties of each image can be queried and the activation
+triggered by the sysfs files inside each directory. For details see the
+commit message of the patch.
+This is admittedly a somewhat raw interface, though even in that form
+it's good enough for testing. Eventually I would expect some fwupd
+plugin to wrap this nicely for any admins or end users.
+
+The purpose of this RFC is to get some feedback on the feasibility of
+this interface, and to understand how this would relate to the other two
+approaches (TDX + OCP "impactless" updates).
+
+- Are GUID named directories under /sys/firmware/lfa a good idea?
+- Shall all three approaches be unified under a common kernel/userland
+  sysfs interface? Or can we live with separate interfaces, given the
+  different scopes, and unify this in userland, for instance via fwupd
+  plugins?
+
+=====================================================================
+
+v1...v2:
+ - added forcce_cpu_rendezvous hook for skipping cpu rendezvous for
+   firmware components that supports it.
+ - changed the static firmware images array with a dynamic linked list.
+ - the activation pending flag is retrieved directly from the lfa agent
+   for an up-to-date information.
+ - added a mapping of LFA error codes to human-readable strings.
+ - kernel error codes changed to more appropriate ones
+ - comment fix in call_lfa_activate()
+ - the "bitfields" name in variables has been refactored to an
+   appropriate "image_flags".
+ - change image_flags variable datatype to u32 from an int
+
+
+Many thanks
+Salman Nabi
+
+Salman Nabi (1):
+  firmware: smccc: Add support for Live Firmware Activation (LFA)
+
+ drivers/firmware/smccc/Kconfig  |   7 +
+ drivers/firmware/smccc/Makefile |   1 +
+ drivers/firmware/smccc/lfa_fw.c | 455 ++++++++++++++++++++++++++++++++
+ 3 files changed, 463 insertions(+)
+ create mode 100644 drivers/firmware/smccc/lfa_fw.c
+
 -- 
-2.43.0
+2.25.1
 
