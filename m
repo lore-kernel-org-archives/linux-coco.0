@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BF1189
-	for <linux-coco@lists.linux.dev>; Fri, 26 Sep 2025 14:09:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698041E0E08
+	for <linux-coco@lists.linux.dev>; Fri, 26 Sep 2025 15:19:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758895744; cv=none; b=VHFQdwelKWPRB4kr1p+oneR4ljkwwZm7m7Q93ySDZohrsDfUXmowZwC/TaAHvizq0sbTn8onZGhvBaxEQudWdLJNLid8lGUdVZ8hqj5moAOqW/F20Ts+5+Mg3rQCU0FL/454O5+ryAo2AxzNkUJS6hWisqHyafJZ5dicaw7cNWU=
+	t=1758899981; cv=none; b=P4usOMZjNCPMQGrM5sLDEOp5wmSTjTuBSIJ/qAm4en+Xzxsf0Ua6ZAyfjJQqIWLQQKN6aK9OBWFC4J3VqZo7OAwSMu44Myo2nWSMBHErOLKliJuvM4Cmu+svF9laXOm3sEgBD3Lpd72q6OEDURYhNwtMsdOiUADVGcHw/6sists=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758895744; c=relaxed/simple;
-	bh=m9CdcGwGONZQF1Pn9aP5kGiYCoQ07S3I3RFRloI2THw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Kkf5oYbyUHHG8pJYMbgVRcvLoQaKKQyLSAvnRdpat4S3VSz3hQGPTZIBTJiGvdTwVS8hYbtQlZ7VVilfsWg1EJKcu7cJleo+GK8qEDTVZbqQXXw0YvQ41eEWLKJdaM9dA9+kYz8DPT0zlQOPkG8GWmmkCwGER2CICJ1LSgVzvFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ul39qMlt; arc=none smtp.client-ip=192.198.163.10
+	s=arc-20240116; t=1758899981; c=relaxed/simple;
+	bh=K0141O9RaooOGMsvlQ1k/qxrc/irBwusYEc6wW+7eGY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=H2lvBzhAoZeVExaPDS0bQWG69yf8ErN9XxGRjOTxu0r8rKHfosz7ynki7mO+Skz9v49Hybp9rFPYvqv5fxgfrcTGwHzB8q8Eb7+dxH27nyZae8b+tFCxc//M8qRp8i0UplEp4BZHL+rWFKttoY9HhLncTtWwW6gumJh0cSwrKRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aZ0cye6l; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ul39qMlt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aZ0cye6l"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758895743; x=1790431743;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=m9CdcGwGONZQF1Pn9aP5kGiYCoQ07S3I3RFRloI2THw=;
-  b=Ul39qMltNwuGWHEPPxPV6mOhvEzGEw5TT7MFJPkYjBskooZorvj22mlF
-   ymi3KaiteZ5kAMhO7ChWQ4E4MnFTUWC+9ZsOmz8rrU6JFUMJCYr3DeqjO
-   TZrVof/jv2a9eGE4uaHSCYK0etxC0tGJJnXmsmtQdxEb2dcwemp2GrJms
-   /36L7omXo5utBsx40iBCYFmFbedq4xwb3nZDnyB3N+uPBPoMBR671zYjZ
-   5bqSrMgdVSu8dyCHoy99chlZt7HuUj2AmubShZLU/kYdPtVZZGmvS0n+q
-   EIIJhOr8vuYvwPkpLM8f/62Vq8fSpynZ58cIEtg1WZMHYtk8dBb21H+bw
-   A==;
-X-CSE-ConnectionGUID: ZFTqFUceSMOxYa2Pzg+LKQ==
-X-CSE-MsgGUID: 9F3VkfcSTpGvgNOGf9vcqQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11565"; a="72590675"
+  t=1758899979; x=1790435979;
+  h=message-id:date:mime-version:subject:to:references:from:
+   in-reply-to:content-transfer-encoding;
+  bh=K0141O9RaooOGMsvlQ1k/qxrc/irBwusYEc6wW+7eGY=;
+  b=aZ0cye6l+my21lgMOFC5A3dhGSrqxSrJ/RLRFnuFeOWmH2p/FQglEKJO
+   gSEiELJEeZxrF3IHA7UvdNrkmi/OPhMY8leK59m+C5Z+yUOkx8lK/g4FY
+   Myg8EmsdBZtBOGm5Z8eAiRVZG8OITY2wS4UXEEoW5Lcpec4EDnmXDOqD5
+   +PY7JWmczV8LJ+vY60ez3RwWUTn6/JI6bTnR5Pfm3JrCRSdUDAD/liOD0
+   yXC2AiTlLWgcLJNwRrqaMRTP05AVpxhRcEEB9YA6OmyzsnJ/Ix6p0QYPi
+   7CWgACuKDVVM0g9/pnaWPtyilrLOV78xBvzN340oaoefEybj8IL1mI4Xt
+   w==;
+X-CSE-ConnectionGUID: K/yik+uRTiucBF3ziyk2hw==
+X-CSE-MsgGUID: 5BWNx6MHQGKTrfop4IpPVw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11565"; a="78876860"
 X-IronPort-AV: E=Sophos;i="6.18,295,1751266800"; 
-   d="scan'208";a="72590675"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2025 07:09:02 -0700
-X-CSE-ConnectionGUID: zGlrDP6VQimQbgyiaBE7zg==
-X-CSE-MsgGUID: ySR6WrCWSzC3MNObouysHg==
+   d="scan'208";a="78876860"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2025 08:19:39 -0700
+X-CSE-ConnectionGUID: aYOtJMwUTB2mm75OCpZ/XQ==
+X-CSE-MsgGUID: IkY0y+JsT5CNdMSjOT5ZCA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,295,1751266800"; 
-   d="scan'208";a="176746058"
+   d="scan'208";a="177199021"
 Received: from cmdeoliv-mobl4.amr.corp.intel.com (HELO [10.125.109.59]) ([10.125.109.59])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2025 07:09:01 -0700
-Message-ID: <8f772a23-ea7f-40eb-8852-49f5e3e16c15@intel.com>
-Date: Fri, 26 Sep 2025 07:09:00 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2025 08:19:38 -0700
+Message-ID: <112cc926-30aa-4f8d-a3a6-aa2262b96916@intel.com>
+Date: Fri, 26 Sep 2025 08:19:37 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,16 +52,16 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/16] TDX: Enable Dynamic PAMT
-To: Yan Zhao <yan.y.zhao@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: kas@kernel.org, bp@alien8.de, chao.gao@intel.com,
- dave.hansen@linux.intel.com, isaku.yamahata@intel.com, kai.huang@intel.com,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, mingo@redhat.com, pbonzini@redhat.com,
- seanjc@google.com, tglx@linutronix.de, x86@kernel.org, vannapurve@google.com
+Subject: Re: [PATCH v3 12/16] x86/virt/tdx: Add helpers to allow for
+ pre-allocating pages
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>, kas@kernel.org,
+ bp@alien8.de, chao.gao@intel.com, dave.hansen@linux.intel.com,
+ isaku.yamahata@intel.com, kai.huang@intel.com, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, mingo@redhat.com,
+ pbonzini@redhat.com, seanjc@google.com, tglx@linutronix.de, x86@kernel.org,
+ yan.y.zhao@intel.com, vannapurve@google.com
 References: <20250918232224.2202592-1-rick.p.edgecombe@intel.com>
- <aNX6V6OSIwly1hu4@yzhao56-desk.sh.intel.com>
+ <20250918232224.2202592-13-rick.p.edgecombe@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -107,16 +107,22 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <aNX6V6OSIwly1hu4@yzhao56-desk.sh.intel.com>
+In-Reply-To: <20250918232224.2202592-13-rick.p.edgecombe@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 9/25/25 19:28, Yan Zhao wrote:
->> Lastly, Yan raised some last minute doubts internally about TDX
->> module locking contention. I’m not sure there is a problem, but we
->> can come to an agreement as part of the review.
-> Yes, I found a contention issue that prevents us from dropping the
-> global lock. I've also written a sample test that demonstrates this
-> contention.
-But what is the end result when this contention happens? Does everyone
-livelock?
+On 9/18/25 16:22, Rick Edgecombe wrote:
+> +/*
+> + * Simple structure for pre-allocating Dynamic
+> + * PAMT pages outside of locks.
+> + */
+> +struct tdx_prealloc {
+> +	struct list_head page_list;
+> +	int cnt;
+> +};
+
+This is compact and all. But it's really just an open-coded, simplified
+version of what mempool_t plus mempool_init_page_pool() would do.
+
+Could you take a look at that and double check that it's not a good fit
+here, please?
