@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB55276045
-	for <linux-coco@lists.linux.dev>; Fri, 26 Sep 2025 05:36:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41871E50E
+	for <linux-coco@lists.linux.dev>; Fri, 26 Sep 2025 06:32:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758865019; cv=none; b=rh0LksvtMVwYYQGxw4PrGh26jRA55NuB6rrFIGe+AhA9gquImt7+7lcXZxpM9VBE55Gx3BzNSKYCBVkTn95XxW953Eo46i+d970G6rTCQOS8Nx79gqeV0JD7s5N90ol3qR4kPsomn+7ZqBc7Cfr7HdAqiU7XD6uB4U6tSIMEfOY=
+	t=1758868365; cv=none; b=lAbziUKPLXpC2hyc9Esi7SV3LA8rfDGMnKNPqQnJeStmpvSkyvQtwprsJeQWJCG7YdIV76kJ0dwYGNRPfO1c8VuWpghY50XU56rX1NFezC0fVyodKg2qRKxGc9L14ihsIgSHE7168S4VK6JqQj+zLivUSGGePFT13L9lsc98CWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758865019; c=relaxed/simple;
-	bh=9nb9C7yie/OSQdbh2G7LM3IWi8GLACvnVZn1kIDNYYA=;
+	s=arc-20240116; t=1758868365; c=relaxed/simple;
+	bh=bppMdRX/qwB4QSiw0NafKt4DSxAl2uc1f9uyxKzpRzs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j65mOqOrJFDzYWw7RE8KTQhXMxTppTzrFNQLQPguWFekOTl8HXYp2ZhgxCHHxFqazqJO9BCMJsgjZIK7q+D6JnHYkrlSCGdNppOoBDzwSP8Xh2kiA3lXzftctaJHl+6XB6KO0f9fibMrSwFsbJNLy1VNVHxBKgoTLN/Koj+NuCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YjMUtGfO; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 In-Reply-To:Content-Type; b=qE7+XF535YcH/rW/kGGd7JUz0jT7+dOtbIwKvF3YGkFS/D7+X6p8NgkPS8jlsyi6vjNnnmMrAaGkL5uytxGl5nzApfyOQzZgg3N2/q/kWPAlJ3HC3NervJocES5DKS6xIZZM3ME44BSXpDSefYBwlwckafsgDHeiCrfthQH7/WQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h3v0ufsT; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YjMUtGfO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h3v0ufsT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758865018; x=1790401018;
+  t=1758868364; x=1790404364;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=9nb9C7yie/OSQdbh2G7LM3IWi8GLACvnVZn1kIDNYYA=;
-  b=YjMUtGfOlnyl4yQXWbpZ3puNgRiB9IKt/u/63XqZ6ydqUZyHTQwAzN/i
-   Ckqhu+FjALnoLzodwWsVKK4wiEfvyNgwbanpk/JKOZ1JRwiMxmhz9bHQg
-   0N3iGKwCk68J6A8RzhinnVfAyqjrk3QkC+WJmsXx1rPdrmz94GhLFez92
-   /uFGVTL5kM2e3EMpgOZ3sM2axPS5l36zcF3Njp7ByxAMWO2FSyAJK8RGk
-   C5v6/aTq/wWkwKTXXKO1NlvC8ssACbH69W0V9ijZlWp1d4Zk/lq+LEGTh
-   iuGnpib3YjBUdmXeSXBKrOx6IHgzwya8T8pMisEDP/xOQpU35bwnjeHh0
+  bh=bppMdRX/qwB4QSiw0NafKt4DSxAl2uc1f9uyxKzpRzs=;
+  b=h3v0ufsTtP1afvpQY8z1njrOqFvlBO7jEsVzVcHB5ruhkKqBnan1rDuD
+   Jl1yghyJIzlAK6UvQ9AEw4UfmHZTGPRONps+Lz904QxWJw01tQHPhQ3wy
+   GEyI9kmXXjCjsr4rpVYqfB2N/ocQKr4GmoAYQalFkMncftc6HqRhFKmxN
+   6cQKm0HLVm88D6NAtMUkzliPmNdc1YkBGGDqOznIQcuSvv3gOZT5A97cw
+   6aTs51Q2Wio1r6JfWrL0ufECN7Omm005wpybHamSzBDrw+JCesql0cXVp
+   ChnYdwHfXRlOYFuJoR+bcA2GhmMPCDjiv5lW4DK9+uyhU/mCbPKIftdYF
    g==;
-X-CSE-ConnectionGUID: fDaLb2FLQJmLTC4ahmrVQQ==
-X-CSE-MsgGUID: oRClgY9ZSOSzjdIg7I6DTw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="60403358"
+X-CSE-ConnectionGUID: lmpXl+GaSAygcgmorXPrEQ==
+X-CSE-MsgGUID: 8lYzaNEVSEiroxr90wJQRg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="61248042"
 X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
-   d="scan'208";a="60403358"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 22:36:57 -0700
-X-CSE-ConnectionGUID: 0kxMoV0bQ1aifC21CNIs/Q==
-X-CSE-MsgGUID: 8XrxLRCnSFupWmBt/YS6Qg==
+   d="scan'208";a="61248042"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 23:32:43 -0700
+X-CSE-ConnectionGUID: bJ4mVfvGT16mScjR8vzWoA==
+X-CSE-MsgGUID: V65c4wW9RJCihs4iuPxGTg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
-   d="scan'208";a="177456482"
-Received: from unknown (HELO [10.238.0.107]) ([10.238.0.107])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 22:36:53 -0700
-Message-ID: <c26dd87a-a92a-4a1d-a57a-4c7c8b2aa1fa@linux.intel.com>
-Date: Fri, 26 Sep 2025 13:36:51 +0800
+   d="scan'208";a="214666273"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.238.14]) ([10.124.238.14])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 23:32:38 -0700
+Message-ID: <24d2f165-f854-4996-89cf-28d644c592a3@intel.com>
+Date: Fri, 26 Sep 2025 14:32:34 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,51 +52,206 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/16] x86/tdx: Move all TDX error defines into
- <asm/shared/tdx_errno.h>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "Huang, Kai" <kai.huang@intel.com>, "Zhao, Yan Y" <yan.y.zhao@intel.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "kas@kernel.org" <kas@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "Yamahata, Isaku" <isaku.yamahata@intel.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
- "Annapurve, Vishal" <vannapurve@google.com>, "Gao, Chao"
- <chao.gao@intel.com>, "bp@alien8.de" <bp@alien8.de>,
- "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v3 02/16] x86/tdx: Add helpers to check return status
+ codes
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>, kas@kernel.org,
+ bp@alien8.de, chao.gao@intel.com, dave.hansen@linux.intel.com,
+ isaku.yamahata@intel.com, kai.huang@intel.com, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, mingo@redhat.com,
+ pbonzini@redhat.com, seanjc@google.com, tglx@linutronix.de, x86@kernel.org,
+ yan.y.zhao@intel.com, vannapurve@google.com
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 References: <20250918232224.2202592-1-rick.p.edgecombe@intel.com>
- <20250918232224.2202592-2-rick.p.edgecombe@intel.com>
- <76019bfc-cd06-4a03-9e1e-721cf63637c4@linux.intel.com>
- <ce717a9a5a7539b38b19115e0d3fa11306ddf9c3.camel@intel.com>
+ <20250918232224.2202592-3-rick.p.edgecombe@intel.com>
 Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <ce717a9a5a7539b38b19115e0d3fa11306ddf9c3.camel@intel.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20250918232224.2202592-3-rick.p.edgecombe@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+
+On 9/19/2025 7:22 AM, Rick Edgecombe wrote:
+> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+> 
+> The TDX error code has a complex structure. The upper 32 bits encode the
+> status code (higher level information), while the lower 32 bits provide
+> clues about the error, such as operand ID, CPUID leaf, MSR index, etc.
+> 
+> In practice, the kernel logic cares mostly about the status code. Whereas
+> the error details are more often dumped to warnings to be used as
+> debugging breadcrumbs. This results in a lot of code that masks the status
+> code and then checks the resulting value. Future code to support Dynamic
+> PAMT will add yet mode SEAMCALL error code checking. To prepare for this,
+> do some cleanup to reduce the boiler plate error code parsing.
+> 
+> Since the lower bits that contain details are needed for both error
+> printing and a few cases where the logical code flow does depend on them,
+> don’t reduce the boiler plate by masking the detail bits inside the
+> SEAMCALL wrappers, returning only the status code. Instead, create some
+> helpers to perform the needed masking and comparisons.
+> 
+> For the status code based checks, create a macro for generating the
+> helpers based on the name. Name the helpers IS_TDX_FOO(), based on the
+> discussion in the Link.
+> 
+> Many of the checks that consult the error details are only done in a
+> single place. It could be argued that there is not any code savings by
+> adding helpers for these checks. Add helpers for them anyway so that the
+> checks look consistent when uses with checks that are used in multiple
+> places (i.e. sc_retry_prerr()).
+> 
+> Finally, update the code that previously open coded the bit math to use
+> the helpers.
+> 
+> Link: https://lore.kernel.org/kvm/aJNycTvk1GEWgK_Q@google.com/
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> [Enhance log]
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> ---
+> v3:
+>   - Split from "x86/tdx: Consolidate TDX error handling" (Dave, Kai)
+>   - Change name from IS_TDX_ERR_FOO() to IS_TDX_FOO() after the
+>     conclusion to one of those naming debates. (Sean, Dave)
+> ---
+>   arch/x86/coco/tdx/tdx.c                 |  6 +--
+>   arch/x86/include/asm/shared/tdx_errno.h | 54 ++++++++++++++++++++++++-
+>   arch/x86/include/asm/tdx.h              |  2 +-
+>   arch/x86/kvm/vmx/tdx.c                  | 44 +++++++++-----------
+>   arch/x86/virt/vmx/tdx/tdx.c             |  8 ++--
+>   5 files changed, 80 insertions(+), 34 deletions(-)
+> 
+> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> index 7b2833705d47..96554748adaa 100644
+> --- a/arch/x86/coco/tdx/tdx.c
+> +++ b/arch/x86/coco/tdx/tdx.c
+> @@ -129,9 +129,9 @@ int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport)
+>   
+>   	ret = __tdcall(TDG_MR_REPORT, &args);
+>   	if (ret) {
+> -		if (TDCALL_RETURN_CODE(ret) == TDCALL_INVALID_OPERAND)
+> +		if (IS_TDX_OPERAND_INVALID(ret))
+>   			return -ENXIO;
+> -		else if (TDCALL_RETURN_CODE(ret) == TDCALL_OPERAND_BUSY)
+> +		else if (IS_TDX_OPERAND_BUSY(ret))
+>   			return -EBUSY;
+>   		return -EIO;
+>   	}
+
+There are TDCALL_RETURN_CODE() usages left in tdx_mcall_extend_rtmr().
+Please clean them up as well, and the definitions of TDCALL_RETURN_CODE 
+macro and friends can be removed totally:
 
 
+   /* TDX Module call error codes */
+   #define TDCALL_RETURN_CODE(a)	((a) >> 32)
+   #define TDCALL_INVALID_OPERAND	0xc0000100
+   #define TDCALL_OPERAND_BUSY	0x80000200
 
-On 9/26/2025 7:09 AM, Edgecombe, Rick P wrote:
-> On Tue, 2025-09-23 at 13:49 +0800, Binbin Wu wrote:
->>> +/*
->>> + * SW-defined error codes.
->>> + *
->>> + * Bits 47:40 == 0xFF indicate Reserved status code class that never used
->>> by
->>> + * TDX module.
->>> + */
->>> +#define TDX_ERROR			_BITULL(63)
->>> +#define TDX_NON_RECOVERABLE		_BITULL(62)
->> TDX_ERROR and TDX_NON_RECOVERABLE are defined in TDX spec as the classes of
->> TDX
->> Interface Functions Completion Status.
->>
->> For clarity, is it better to move the two before the "SW-defined error codes"
->> comment?
-> This hunk is a direct copy, any reason to change it in this patch?
-yeah, it can be done separately.
+> @@ -316,7 +316,7 @@ static void reduce_unnecessary_ve(void)
+>   {
+>   	u64 err = tdg_vm_wr(TDCS_TD_CTLS, TD_CTLS_REDUCE_VE, TD_CTLS_REDUCE_VE);
+>   
+> -	if (err == TDX_SUCCESS)
+> +	if (IS_TDX_SUCCESS(err))
+
+I would expect a separate patch to change it first to
+
+	if ((err & TDX_STATUS_MASK) == TDX_SUCCESS)
+
+because it certainly changes the semantic of the check.
+
+And this applies to some other places below, e.g.,
+
+ > -	if (err == TDX_FLUSHVP_NOT_DONE)
+ > +	if (IS_TDX_FLUSHVP_NOT_DONE(err))
+
+ > -	if (err == TDX_RND_NO_ENTROPY) {
+ > +	if (IS_TDX_RND_NO_ENTROPY(err)) {
+
+
+>   		return;
+>   
+>   	/*
+> diff --git a/arch/x86/include/asm/shared/tdx_errno.h b/arch/x86/include/asm/shared/tdx_errno.h
+> index f98924fe5198..49ab7ecc7d54 100644
+> --- a/arch/x86/include/asm/shared/tdx_errno.h
+> +++ b/arch/x86/include/asm/shared/tdx_errno.h
+> @@ -2,8 +2,10 @@
+>   #ifndef _X86_SHARED_TDX_ERRNO_H
+>   #define _X86_SHARED_TDX_ERRNO_H
+>   
+> +#include <asm/trapnr.h>
+> +
+
+This belongs to the previous patch, I think.
+
+And in that patch, the <asm/trapnr.h> can be removed from
+arch/x86/include/asm/tdx.h?
+
+>   /* Upper 32 bit of the TDX error code encodes the status */
+> -#define TDX_SEAMCALL_STATUS_MASK		0xFFFFFFFF00000000ULL
+> +#define TDX_STATUS_MASK				0xFFFFFFFF00000000ULL
+>   
+>   /*
+>    * TDX SEAMCALL Status Codes
+> @@ -52,4 +54,54 @@
+>   #define TDX_OPERAND_ID_SEPT			0x92
+>   #define TDX_OPERAND_ID_TD_EPOCH			0xa9
+>   
+> +#ifndef __ASSEMBLER__
+> +#include <linux/bits.h>
+> +#include <linux/types.h>
+> +
+> +static inline u64 TDX_STATUS(u64 err)
+> +{
+> +	return err & TDX_STATUS_MASK;
+> +}
+> +
+> +static inline bool IS_TDX_NON_RECOVERABLE(u64 err)
+> +{
+> +	return (err & TDX_NON_RECOVERABLE) == TDX_NON_RECOVERABLE;
+> +}
+> +
+> +static inline bool IS_TDX_SW_ERROR(u64 err)
+> +{
+> +	return (err & TDX_SW_ERROR) == TDX_SW_ERROR;
+> +}
+
+Kai already catched that it can be defined with DEFINE_TDX_ERRNO_HELPER()
+
+The background is that we wanted to use SEAMCALL return code to cover 
+the #GP/#UD/VMFAILINVALID cases generally so that we asked TDX 
+architecuts to reserve Class ID (0XFF) for software usage.
+
+SW_ERROR is just a Linux defined status code (in the upper 32 bits), and 
+details in the lower 32 bits to identify among #GP/#UD/VMFAILINVALID.
+
+So ...
+
+> +static inline bool IS_TDX_SEAMCALL_VMFAILINVALID(u64 err)
+> +{
+> +	return (err & TDX_SEAMCALL_VMFAILINVALID) ==
+> +		TDX_SEAMCALL_VMFAILINVALID;
+> +}
+> +
+> +static inline bool IS_TDX_SEAMCALL_GP(u64 err)
+> +{
+> +	return (err & TDX_SEAMCALL_GP) == TDX_SEAMCALL_GP;
+> +}
+> +
+> +static inline bool IS_TDX_SEAMCALL_UD(u64 err)
+> +{
+> +	return (err & TDX_SEAMCALL_UD) == TDX_SEAMCALL_UD;
+> +}
+
+... TDX_SEAMCALL_{VMFAILINVALID,GP,UD} are full 64-bit return codes, not 
+some masks. The check of
+
+	(err & TDX_SEAMCALL_*) == TDX_SEAMCALL_*
+
+isn't correct here and we need to check
+
+	err == TDX_SEAMCALL_*;
+
+e.g., The #UD is of number 6, which is 110b. If SEAMCALL could cause 
+exception of vector 111b, 1110b, 1111b, they can pass the check of 
+IS_TDX_SEAMCALL_UD()
