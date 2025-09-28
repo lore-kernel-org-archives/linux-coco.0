@@ -1,134 +1,219 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A65E29B77E
-	for <linux-coco@lists.linux.dev>; Sun, 28 Sep 2025 06:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759041626; cv=none; b=EvTIyhzIEpC84vpABVfFladpM9eDVBXVh8n4JvL86P+ztxKT+xSGGDSd/j2MKVKTuoIXX2tqsXSnNND5l6vjR1fULK9kW+D7Kam4RwGvOWy0iKerEH4Sq0LmPt90r+GZE08quHVJOLOePEOhwDEmioEfQnQUH0EmwU1/V6Xotn8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759041626; c=relaxed/simple;
-	bh=cDTxcb4B+ODUAizKTHRF3o2YDVPO24Wtl1sX30pmf1Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sSe7K2lcqeY8yBv8cj9JRt0Lcv1CMij5zIAVwBaKCumbtQYgKYSgZ++nUgC6EcblcOzRiiTadS938QDkjH0npoe5VomBHgbSjILsEKFaNI6U2umvqPSpSCoLLDzzsx7c+qYtPPyK2dXwwVvuCVfjPD8V/+us1N7QxF0Pj6AN7+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TPTD7scr; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3943215E90
+	for <linux-coco@lists.linux.dev>; Sun, 28 Sep 2025 08:37:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759048633; cv=fail; b=tNvDqN4uSVPFq/eIXthm2zbH/+W0Wv0Rn+2k1tv+MpDcCr30oXgYvmUApiSC7wnkR7DMBuUw7Skxlq+CHBsS9IcEAnty4CGnk3RHckgvXbgh+i9ULbJJzvJ93aCIXjciE0gMWsKitO/G9YHK+fQ9CC4fj2Ds4qBLyvTljhCnj4Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759048633; c=relaxed/simple;
+	bh=Fs/CU6IQs2oGVIKzA8SY1c+fSAiRmsu4pd8+WXB6VVw=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=dQFiQ+ib0s1MucaslM1ddGP8J7b5EmPnr9sqi6KFP6V5eaz+D9fhQk6x8LQuG6uwR4lFgsOrC12Wy0+K4vq+XSW0is8VGpBmM8XNgNOhd228O1NwRv0Bdwk71iBx1lXxqjINBE2JPepo1sMx/zmBnA7n4hmf1KSbSoJwkw+wWXA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bY0ATk8Y; arc=fail smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TPTD7scr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bY0ATk8Y"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759041625; x=1790577625;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=cDTxcb4B+ODUAizKTHRF3o2YDVPO24Wtl1sX30pmf1Q=;
-  b=TPTD7scr1CnpetPMDZOV29mFBXRku93aWeeoN42UVwBG14y9t20xtYec
-   hgkVqDQvcxFo4O1qaptzTBONZFKsLKIh4wM7P6SvzLsyx5pWYSeDr9iW/
-   tdd9sR7nF916MCcRl/WyTbj0XPBQ4SUAyY7pKeqsz+VPTQJf00awsj/7n
-   vl468+R/ghY0MTxJSowtETu4snM5ksTONve1zqK15y3k6X6LAu23iDbd8
-   iCFYSX9Hnd3F67V85IkP/Lvaed0wUMrjZ+RKJ0wyuUYrd1cbbEQYR+X3I
-   SfMijTEtLyOyS8AFWLeAqVxQHKpgyQk6Ea+lcE1OWZhJvwA8hm5jeHs/z
-   A==;
-X-CSE-ConnectionGUID: r37ILrhtTK6tEctu8s47fw==
-X-CSE-MsgGUID: FN3E1iQ0SvSxbI9YshROdg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="61228547"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="61228547"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2025 23:40:24 -0700
-X-CSE-ConnectionGUID: VDyHmiQCR06ImWbm1f2Vhg==
-X-CSE-MsgGUID: yfO1NG4ISXmJrNPikFM3iA==
+  t=1759048630; x=1790584630;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=Fs/CU6IQs2oGVIKzA8SY1c+fSAiRmsu4pd8+WXB6VVw=;
+  b=bY0ATk8YdQRAdEGk2H/+w2MdyyWCEQHX01MljqIlj5vZg9MYhAYb+iqG
+   vrDZs/SNDPX6PA/fFT5i44nmnhk9LXwpY/BZi/E/f6I/JJDsQ4JpZPv0j
+   pTdYz0JxghxSz63lhsBLUXvyRWLu7aLKPNklFVAkZ9NTbDApHJdbeUSzS
+   5U61EcyNKHO9/7VltoJv+NO7gKWqrKBaTYfd8AYXX1l7TLK5T4og1WSoe
+   4ZiCYSvuSWgplNzInOdST8bf3+hcFLupZN87TYbOQ/N88zQr+6i/jT85n
+   P9chPRPNq5x4l6z9wm1TP4l8UNg+aucEGw1QFjOLeHU6XQ8Nv+S/ugSVI
+   w==;
+X-CSE-ConnectionGUID: 2sUliwqOQhuCtfSWIwEJug==
+X-CSE-MsgGUID: Q8UIAGB9RaG5xWDzHqwu6Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11566"; a="86768201"
+X-IronPort-AV: E=Sophos;i="6.18,299,1751266800"; 
+   d="scan'208";a="86768201"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2025 01:37:09 -0700
+X-CSE-ConnectionGUID: kr9a6IV5TbWHrjaEiGI7fw==
+X-CSE-MsgGUID: Zs/Kxv7TTVu7EocvUUSkPg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,299,1751266800"; 
-   d="scan'208";a="177088889"
-Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.159.165])
-  by orviesa006.jf.intel.com with ESMTP; 27 Sep 2025 23:40:22 -0700
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org,
-	dan.j.williams@intel.com
-Cc: yilun.xu@intel.com,
-	yilun.xu@linux.intel.com,
-	baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com,
-	aneesh.kumar@kernel.org,
-	bhelgaas@google.com,
-	aik@amd.com,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] coco/tdx-host: Illustrate IDE Address Association Register setup
-Date: Sun, 28 Sep 2025 14:27:56 +0800
-Message-Id: <20250928062756.2188329-4-yilun.xu@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250928062756.2188329-1-yilun.xu@linux.intel.com>
-References: <20250928062756.2188329-1-yilun.xu@linux.intel.com>
+   d="scan'208";a="177550323"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2025 01:37:09 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Sun, 28 Sep 2025 01:37:08 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Sun, 28 Sep 2025 01:37:08 -0700
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.26) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Sun, 28 Sep 2025 01:37:05 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EqoZv1G1f9dZK7DYb4NriVh3u3cWvh17ldADpgRsUpAktRFrPWB8KKkbe292BFVlfWKuQfgk5R1fQKb+NEmql5BNDnHylFCwEgqg8LHIGAdc/Yf4Fx8ZIzmmpwBeficdgsOHQ4yvqe2sZapBuxG/SEwVkI1WkdQvSZf/g/XLABFCjapQmyVL44aRxP55y1Ew498+cbc1H0w4nkE0nP2jlnkxFrI8Mvx1pCOVB5ACNB7yyJ0SxErHuIWrWcNcjZbomH8bubomhK08NMHyyVO78v7U7fCcO4NzxoPPQQBmYJcYCfCf9bieiCX+0tICqkwpZyFxeDFgtOPogopNVlrTiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=I9TAEnA8U9OV4jRGhu6s05pTbjanWtdCrimRNbcsUmg=;
+ b=jP3YJ1SI/2g0jjnfS8yt+/wCwGBbzQKabMcmosndD0yYafhjgrBfZUqIxCUOA9G9iWW6baebPCM8NDS3HDHbpse7rHIh+XLFTDONqWpZ1UQKKwql8VIJlB+i9CWtbMCUfyoPok7jWfqBfzbS5oTysrgZPQrXnGQcF9fAhOJSz1ng8fpnhjHO92FDGou6JD/n4ag652zv/IO5KM1/kwur807120kV4oUfcf6dmOCt/sZEeUSzGUV4sK60hnBc8HpMuzxSCkiIkZT2Pe/p1Y1sgFh7RiEHSbCsvSXKGF9g63/PH1vabKIj2x8VJOPw2qyBr3wgZWmz3GU8Nv8rWJM/kQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6) by
+ SJ5PPFE62D2CE76.namprd11.prod.outlook.com (2603:10b6:a0f:fc02::85b) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.13; Sun, 28 Sep
+ 2025 08:36:51 +0000
+Received: from DS7PR11MB5966.namprd11.prod.outlook.com
+ ([fe80::e971:d8f4:66c4:12ca]) by DS7PR11MB5966.namprd11.prod.outlook.com
+ ([fe80::e971:d8f4:66c4:12ca%6]) with mapi id 15.20.9160.014; Sun, 28 Sep 2025
+ 08:36:51 +0000
+Date: Sun, 28 Sep 2025 16:35:42 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+CC: "Gao, Chao" <chao.gao@intel.com>, "seanjc@google.com" <seanjc@google.com>,
+	"Huang, Kai" <kai.huang@intel.com>, "kas@kernel.org" <kas@kernel.org>,
+	"Annapurve, Vishal" <vannapurve@google.com>, "bp@alien8.de" <bp@alien8.de>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"mingo@redhat.com" <mingo@redhat.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Yamahata, Isaku"
+	<isaku.yamahata@intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"tglx@linutronix.de" <tglx@linutronix.de>, "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v3 11/16] KVM: TDX: Add x86 ops for external spt cache
+Message-ID: <aNjzXoyP86S+Sw9y@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20250918232224.2202592-1-rick.p.edgecombe@intel.com>
+ <20250918232224.2202592-12-rick.p.edgecombe@intel.com>
+ <aNJGP6lwO9WOqjfh@yzhao56-desk.sh.intel.com>
+ <9f18cd1aa0d51e7cb7bb2cc360f67b8cf92ed487.camel@intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9f18cd1aa0d51e7cb7bb2cc360f67b8cf92ed487.camel@intel.com>
+X-ClientProxiedBy: KUZPR06CA0009.apcprd06.prod.outlook.com
+ (2603:1096:d10:30::6) To DS7PR11MB5966.namprd11.prod.outlook.com
+ (2603:10b6:8:71::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR11MB5966:EE_|SJ5PPFE62D2CE76:EE_
+X-MS-Office365-Filtering-Correlation-Id: ab8a2e88-c267-41cb-0aa3-08ddfe6a2bf2
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?OtSpxnS/uOdXktAnOlZqRYRD8ukg3zJVIvpOAhrN/m68+ChmtnIkClv1oa?=
+ =?iso-8859-1?Q?vyoMHff0g36TTHjr4jrRmyauN/oeE+y85bY7lTwRNrWYO69sUjYqVun/P0?=
+ =?iso-8859-1?Q?/wmtJXl00fMRMly8Ii3IZHdQk1s7IX+caYOWhNhfQ9YoqmfuX732p7c8tV?=
+ =?iso-8859-1?Q?W5DMtUZhgMQsDdyZMFmZ+bSIznralS71Qy2b0frW5UynuEgWaXFU/IsneZ?=
+ =?iso-8859-1?Q?uWsVT44Ye0HPPSnyOZC+TZMbMYJJrfr/GMboOe7xHvsJ9+kXXUtLaMYSfj?=
+ =?iso-8859-1?Q?R1UY4OeCq1UdR/VeKOcJpJoA731LqpIwlvAAOQE1HVaLFNs6L4dsxbb7qB?=
+ =?iso-8859-1?Q?5a1Z91kB/mQ3AcI4EO7mMBz0vuQ8iaIU7zIiBJjpLfeqv6dO5gX232y//H?=
+ =?iso-8859-1?Q?fjp+PySa0vhTehIq/ePNl3Yf9MVpp4vqm9J4lWIeA885SIbR/+2uJ5Lzlc?=
+ =?iso-8859-1?Q?qqFBmCjgV9m0UsHpxURpvsxMsyTvvGyLuIPGS2uusdPlRnwRrzpdFWqfv8?=
+ =?iso-8859-1?Q?r9JKMcZ36JpeFihWMu/NuoBA5HRh45qAHknZgnIovi05y9uZQrg52qjUW7?=
+ =?iso-8859-1?Q?4obnQ2+Bs29ur+3L+7/4gAJEbzfj30eEWe+k4xOhjbMs+3YMh5A57d/lua?=
+ =?iso-8859-1?Q?ve1l458u/Bl8hdRjxlot5ynIsBSoWykCQ/6Ge333DLMM3f01JSz7CyjTQt?=
+ =?iso-8859-1?Q?G9CGNrd0pzkhhnWTJgMSb9GYD40Eu/Ge+aQxVJ3sFumxvVryG5XZrB0VJt?=
+ =?iso-8859-1?Q?CN4KdX2y2y7v7r2aKdzgeH0MNAmYO6tAl6P/v+YpikCY4VUy7pDKvKBa+a?=
+ =?iso-8859-1?Q?vWGWUgNkmHpiw6gJtw/oeXH70zkqfc7hOs0LpxNXwMBZpiMhnvmEyMLSlR?=
+ =?iso-8859-1?Q?yrZ9CF8wHuhiFWEa0plZJN4+QTtSltbTFWUZYh/3pOYUqjy99bfkpSlqXs?=
+ =?iso-8859-1?Q?mNXBlLarJv+E3xAmcr+IgHaUbkjtc6iZXzRUtucjuYAXHHkv5i9HWr7MDn?=
+ =?iso-8859-1?Q?pYLEyFeakdPtj2XSC25xbRzoQ3Jc7uTRCXKpKntDD6YJYtwBUP/Qll/b54?=
+ =?iso-8859-1?Q?DysV+0ok3yS1rElDKZTd1ew7CiRZqnK9dji55NyIRZok/HsP0ui/Ep4UPG?=
+ =?iso-8859-1?Q?nEQeJrH34Dtq2s0DVjlN4DuqEHiKmGtg6NHCJ8jI+ignLlX0sNka4MBD0m?=
+ =?iso-8859-1?Q?m5MVb+DXe0GKNJ3u/cyzz+CZU12jdmMna97JNUY88I4vODGA4tOZxD0Q9e?=
+ =?iso-8859-1?Q?mb7Z5g+axRTomA0xwAYiLP5+9yu4iFPvPYMTnl1a4kxYVFkDhf4I8+NCZo?=
+ =?iso-8859-1?Q?I/M9eYvHslyxnonB/G+DqvJgucvSg4RJQd44DoY16J7MsgQuOC0r4wXx6c?=
+ =?iso-8859-1?Q?qaxUjMBbU/naO6qUz4POQM7uGzTj7CRQiEzUaqwXGG9t/HOGcj/dcMiri4?=
+ =?iso-8859-1?Q?LAHzqll4RP6MzN0HS68Qk/zzVV/jecnt/ZciOHb5W14QDyObgGWtjCXY89?=
+ =?iso-8859-1?Q?1ol8ua8cbwyw/y+7ME5tYg?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB5966.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?Xz0dsrrhO/RhhKONC9ZQfVt4c4gHcj31LymPn/9U3GRvtoVvPxvzKGBihQ?=
+ =?iso-8859-1?Q?smFQ65kSZ43jVGFsDRYnv7HfDYNCPoNgX4KKAuyc4+V0LzYkx7jJd568Kb?=
+ =?iso-8859-1?Q?8pcC+COTbw3yrHYJezYqfwrTG/Em1tHheZDPYHtHQ1MlxC9rX1Tt8ZCyr1?=
+ =?iso-8859-1?Q?JF0EhOkTmu252ZwcPZQJrMTIEqAVidHANXPentMOHOjlv40BUidg8y0PbA?=
+ =?iso-8859-1?Q?4GTSTey67RstzVou5RSZUYM6gyKKo5zWlGL6wOcgcViiEwp4T//mykTQoA?=
+ =?iso-8859-1?Q?571JHpYOIlTMzq0aFjzRTnDRVYJ1/iMsh6BwkOFVp1mwLpnlWtETtaMj/E?=
+ =?iso-8859-1?Q?txoRbMBDSLAIrHipkyMosJ4n7Ek0kparJEsdxdhhS1gFLb8klRuoqvl9Qw?=
+ =?iso-8859-1?Q?gCrfPXuYYtcQ+UjUIhGCUnuqXxtURm0aoMtWTnXYkPqcNHvSSaJr7ip5Sr?=
+ =?iso-8859-1?Q?WVtrQZrSNfgZg/fIHRksFjc0uKn5zoivic69QU+Q/0jya2RDNaaYV1V9f4?=
+ =?iso-8859-1?Q?SL6SOKGnc2DLjqhVsJAGntRO2mwbAGxH9/l+L4yyzNu0oZWmZpEjrlPP57?=
+ =?iso-8859-1?Q?9MVvf3V05IlFaQvOB+wSOw46BaIge7ZlCuvOysV07pbfvfv2S8WOechr6f?=
+ =?iso-8859-1?Q?VOHUWUVYzuxPuDNMg35fNjbufzud+d0WDx6sZoMniWN4TUX4IdphoT6fTB?=
+ =?iso-8859-1?Q?Qe0rIMAwwf7iGZ0a4GM8HLH630rVsWuCa6mahZRkwleifsfXCCpCYVHIJ5?=
+ =?iso-8859-1?Q?ZzuYzvY9ECtPf7Qdus44RHgxoewWIdhGvCPMHd/ySorDTswYyMtjqEjWCc?=
+ =?iso-8859-1?Q?GMOog61gkGXSy71USgFAYKmrBgFDcNdwaYEZiYv1hQCAKDy/BviV1jjNSX?=
+ =?iso-8859-1?Q?SWE9cDu6CSF1ExEVaiQG4WCr8aci76eeArWcvt7Uyl8UXUP6TvGSHEdWje?=
+ =?iso-8859-1?Q?2tgCJWi5kHhzsg9c1gYtP9DxiQ48FNWfyTGA5MFKaWWGImOwDRQAfpwknL?=
+ =?iso-8859-1?Q?V4VVj6oJU7VKMs6i08KqD6sYNsTL5MNgYfQNbZOe+YupYDoNj1blS2PBsZ?=
+ =?iso-8859-1?Q?NoT6kxhjsjMZkovEsAvYYeg0uT1UR8RkRFSdoQ3Vo8Ut0WXgC44tzJYpA2?=
+ =?iso-8859-1?Q?vetZ2g+ukuH9RPK6VkObLadbmACax/RPzvA49goLTsvGHkT9VSRCkSj+4/?=
+ =?iso-8859-1?Q?YsNbH03UxLnZyaI5Wab38p+FBdLyCqOLCQTT211B0K0Z1/kUr2J4UGgTj5?=
+ =?iso-8859-1?Q?RqpcsRwuELyFKZ45+UzmuMcT/kd5ltIwb6I7bCM8iFJZb4LG1QX/pstoKt?=
+ =?iso-8859-1?Q?UuajtFSq0Zpug9WeZzkwpc9wJ9GEIy0HdLnz1B79hN1+PuQLVTI9rjPe6u?=
+ =?iso-8859-1?Q?pHxYxzKiesEkD3uX09WCh+aD1Qfk3qx7OhQPB3I9d6TNN1SMLt8eJE92aG?=
+ =?iso-8859-1?Q?HcDeI2jBBaXn89umsE6vmNgYg7cHpww3UbrGEFEkd+ZDgmQG2aRfs1mIcE?=
+ =?iso-8859-1?Q?YdpiTRwFEkbTyp3bdtvFa39YTZRVxm466x2wj3OwZdqbI6IGNV6PTOmb9k?=
+ =?iso-8859-1?Q?qShcT6E66QScyie6TnuKufi7M1IxZxOFeUjgfD/5xQYxPzBzbmfq/YSSoD?=
+ =?iso-8859-1?Q?TSrSjpEJGjjkk9G/nOwvK6Y6bCaVty1Gtn?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ab8a2e88-c267-41cb-0aa3-08ddfe6a2bf2
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB5966.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2025 08:36:51.5450
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3l274WFxmwlFlyPrzRbdNKHB9sDUz348a+mIwzlCE+YIU6393nGmRt3B3tIcVks28yHaCm8iT0cI4O/qPeKuBw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFE62D2CE76
+X-OriginatorOrg: intel.com
 
-Not for devsec-staging. Just illustrate, can't compile. Please wait for:
+On Sat, Sep 27, 2025 at 06:10:44AM +0800, Edgecombe, Rick P wrote:
+> On Tue, 2025-09-23 at 15:03 +0800, Yan Zhao wrote:
+> > > @@ -625,7 +624,6 @@ static void mmu_free_memory_caches(struct
+> > > kvm_vcpu *vcpu)
+> > >   	kvm_mmu_free_memory_cache(&vcpu-
+> > > >arch.mmu_pte_list_desc_cache);
+> > >   	kvm_mmu_free_memory_cache(&vcpu-
+> > > >arch.mmu_shadow_page_cache);
+> > >   	kvm_mmu_free_memory_cache(&vcpu-
+> > > >arch.mmu_shadowed_info_cache);
+> > > -	kvm_mmu_free_memory_cache(&vcpu-
+> > > >arch.mmu_external_spt_cache);
+> > Though pre-allocated pages are eventually freed in tdx_vcpu_free() in
+> > patch 13,
+> > looks they are leaked in this patch.
+> > 
+> > BTW, why not invoke kvm_x86_call(free_external_fault_cache)(vcpu)
+> > here?
+> 
+> The thought was to reduce the number of TDX callbacks in core MMU code.
+>
+> > It looks more natural to free the remaining pre-allocated pages in
+> > mmu_free_memory_caches(), which is invoked after kvm_mmu_unload(vcpu)
+> > while tdx_vcpu_free() is before it. 
+> 
+> Hmm, that is not so tidy. But on balance I think it would still be
+> better to leave it more contained in TDX code. Any strong objection?
+No strong opinion.
 
-  [RFC PATCH v2 00/27] PCI/TSM: TDX Connect: SPDM Session and IDE Establishment
+But if we opt to do the free internal in tdx_vcpu_free(), it looks like this
+patch needs to first invoke kvm_mmu_free_memory_cache() in tdx_vcpu_free().
 
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
----
- drivers/virt/coco/tdx-host/tdx-host.c | 33 ++++-----------------------
- 1 file changed, 4 insertions(+), 29 deletions(-)
-
-diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
-index 5553c63b4083..58777225b51e 100644
---- a/drivers/virt/coco/tdx-host/tdx-host.c
-+++ b/drivers/virt/coco/tdx-host/tdx-host.c
-@@ -387,29 +387,6 @@ static void tdx_ide_stream_key_stop(struct tdx_link *tlink)
- 
- DEFINE_FREE(tdx_ide_stream_key_stop, struct tdx_link *, if (!IS_ERR_OR_NULL(_T)) tdx_ide_stream_key_stop(_T))
- 
--/* OPEN: Should we add general address range support in pci/ide.c ? */
--static void setup_addr_range(struct pci_dev *pdev,
--			     resource_size_t *start, resource_size_t *end)
--{
--	struct device *dev;
--	u32 devid;
--	int i;
--
--	add_pdev_to_addr_range(pdev, start, end);
--
--	for (i = 0; i < pci_num_vf(pdev); i++) {
--		devid = PCI_DEVID(pci_iov_virtfn_bus(pdev, i),
--				  pci_iov_virtfn_devfn(pdev, i));
--
--		dev = bus_find_device(&pci_bus_type, NULL, &devid,
--				      match_pci_dev_by_devid);
--		if (dev) {
--			add_pdev_to_addr_range(to_pci_dev(dev), start, end);
--			put_device(dev);
--		}
--	}
--}
--
- static void sel_stream_block_setup(struct pci_dev *pdev, struct pci_ide *ide,
- 				   u64 *rid_assoc1, u64 *rid_assoc2,
- 				   u64 *addr_assoc1, u64 *addr_assoc2,
-@@ -422,12 +399,10 @@ static void sel_stream_block_setup(struct pci_dev *pdev, struct pci_ide *ide,
- 	*rid_assoc1 = FIELD_PREP(PCI_IDE_SEL_RID_1_LIMIT, setting->rid_end);
- 	*rid_assoc2 = PREP_PCI_IDE_SEL_RID_2(setting->rid_start, pci_ide_domain(pdev));
- 
--	/* Only one address association register block */
--	setup_addr_range(pdev, &start, &end);
--
--	*addr_assoc1 = PREP_PCI_IDE_SEL_ADDR1(start, end);
--	*addr_assoc2 = FIELD_GET(SEL_ADDR_UPPER, end);
--	*addr_assoc3 = FIELD_GET(SEL_ADDR_UPPER, start);
-+	/* TDX Module enforces only one address association register block */
-+	*addr_assoc1 = PREP_PCI_IDE_SEL_ADDR1(setting->mem64.start, setting->mem64.end);
-+	*addr_assoc2 = FIELD_GET(SEL_ADDR_UPPER, setting->mem64.end);
-+	*addr_assoc3 = FIELD_GET(SEL_ADDR_UPPER, setting->mem64.start);
- }
- 
- #define STREAM_INFO_RP_DEVFN		GENMASK_ULL(7, 0)
--- 
-2.25.1
-
+Also, better to have a comment in mmu_free_memory_caches() to explain why
+there's no corresponding free_external_fault_cache op.
