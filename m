@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D9D2DA743
-	for <linux-coco@lists.linux.dev>; Tue, 30 Sep 2025 14:04:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05D92FFDE6
+	for <linux-coco@lists.linux.dev>; Tue, 30 Sep 2025 15:25:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759241043; cv=none; b=Wj9szcV9cBLk3pLrB1llBCoOAsJYPTi/zOWAuQUvqMHJr5PO2nDS4kwpQTyXOvmAwVj7nsO1T1XWvWaRaNx0PcKP0uufQNpyE3IlOoVZCMl7t/IzjCBNY3548YgRFeWbCA2mRkM53NA+uVYL3eHvRFxpZbAd9ffUw/grT2RQknE=
+	t=1759245944; cv=none; b=kPlO6d2niBP9zjYhUUgAssLpz9YYKpxrnI0Bp7KvxMszyCHZ+hBPoNQmkrhXla9pd/ZycvCLWWjlifRBp9ZgIoFPOEdU/qQviz6+JBUW3YUD+G3fnQ8hofnzgqq3KQYK7/AVcl59376lHB0KiVYgtPPKT+s4A4/2kd1RNuuCOps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759241043; c=relaxed/simple;
-	bh=2CzGTsrLQ+Bd44NMFXEjynn3XOAYcHLG7pZ/b1BpRVo=;
+	s=arc-20240116; t=1759245944; c=relaxed/simple;
+	bh=HBwQytcSwykONCNxeqm1o0gfZIKOYI96xjSq1aGiaLA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o1nGD9ZTANbSUUy14TfZbOEUhcZVKorOSAVCAbXwjEiK90Yb5ol574pc3+EoJfxGG1GdSYGyYTVgLvhb2oSyPMQoTDPr7PlQbP+kkqtjzTwmhaoMv5PcocfMhaarWPix/e7huoEbwnHC4Zl1P3kAjGT7vk7++UWHRhfwFoOSitQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ulv/y20t; arc=none smtp.client-ip=198.175.65.15
+	 In-Reply-To:Content-Type; b=IM6tKm3413V3VXb0X95EPqDrhqqtOsTDWiVz05IA9SKqBKPEvQKvhBsyTZAaKmQx0W6yjs38BbvEQy1KowQqm/KHaZwI9rvfVYnV/lKyOD4mFiSayW0YABB5EWbwRKrcw6GQJV+JPULtvjQxTAXtsSOkk2WHSVoOfP8gR/wgEcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Sch1TQlO; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ulv/y20t"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Sch1TQlO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759241042; x=1790777042;
+  t=1759245942; x=1790781942;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=2CzGTsrLQ+Bd44NMFXEjynn3XOAYcHLG7pZ/b1BpRVo=;
-  b=Ulv/y20tizYqFacCy8w6irNlPqRAfiIq6WyYnh/9GLY3Szd2Z27xNIXt
-   1wrNOyeqzwy85/2s70bNDvJo4zRe3wcUT01E5aQNMo9iPzQeM15tGcMeb
-   vvj4Exxn/nIGZ9lMSTH0IKrXClUDhvOt+lN0Frv4FAse061W1vrxQJFQC
-   JhM8uRFH59bzhLSsrIwblDhY8vkrEJXwOw0jyCCth7K0BJNMdUQptGNYI
-   /aLflXwBFJs1Xn3269PNphiyjoL/41ckV+oSY4JpaNs66HvdMqmL9/qzB
-   e0K7FPKK56qExaCfTAgGuwY4X46TDrX8DEJcGPHa5F90owwh7T8OM3KBY
+  bh=HBwQytcSwykONCNxeqm1o0gfZIKOYI96xjSq1aGiaLA=;
+  b=Sch1TQlOJGES0fQrAIEKwNy7ncyV6ZP2D+jwvUJ2NYzCaVvsFSFNja9N
+   rcnU0Ax8dkvsnZelIgSKJSV1tIsE5icUE2vjsNAX4Tl2QwIAisx9xpudA
+   TevEVEp5SDqp0pWa/YiQXUps44udB7+u+cRb/yjMM6rreQ/hQRRdY3HZz
+   mPIcTst4uEbcQs6Bdn5VeeWK5oEfujiAD0rGVVlGttAsI4LEzAksKP74f
+   mvIaTdfP19goGr/YAKPw+uCoACWq/wWUDsHNgbLv9qAmc5Nl870AkXhKp
+   5znVLAoKqZhypwMjXGRITWA2dFqWeli+3zyL+XoztSQi4cgBHLWOILF92
    Q==;
-X-CSE-ConnectionGUID: ZY7jpfiHSWWO1TeDOigtww==
-X-CSE-MsgGUID: hGnO/RFzQ9arLu+O1S/1ug==
-X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="65134704"
+X-CSE-ConnectionGUID: tN7nWPB7TBSJnL6+w8sraw==
+X-CSE-MsgGUID: JGLknoSFSJGlpaHp78ngOw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="61615113"
 X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; 
-   d="scan'208";a="65134704"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2025 07:04:01 -0700
-X-CSE-ConnectionGUID: kKzy1ggiRP6ZX67yLsAanw==
-X-CSE-MsgGUID: 6RDKmMd+RW2q9xL4e8vYeg==
+   d="scan'208";a="61615113"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2025 08:25:42 -0700
+X-CSE-ConnectionGUID: xPIrSchvQRGKByruv3nG5w==
+X-CSE-MsgGUID: l3OvyQB4RciR0OIF1sVnkQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; 
-   d="scan'208";a="182823883"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.238.14]) ([10.124.238.14])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2025 07:03:56 -0700
-Message-ID: <1f25ef49-fb7f-449c-be1d-71c19465219f@intel.com>
-Date: Tue, 30 Sep 2025 22:03:53 +0800
+   d="scan'208";a="177823755"
+Received: from tslove-mobl4.amr.corp.intel.com (HELO [10.125.109.151]) ([10.125.109.151])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2025 08:25:41 -0700
+Message-ID: <355ad607-52ed-42cc-9a48-63aaa49f4c68@intel.com>
+Date: Tue, 30 Sep 2025 08:25:40 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -62,16 +62,209 @@ To: Rick Edgecombe <rick.p.edgecombe@intel.com>, kas@kernel.org,
 Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 References: <20250918232224.2202592-1-rick.p.edgecombe@intel.com>
  <20250918232224.2202592-8-rick.p.edgecombe@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
 In-Reply-To: <20250918232224.2202592-8-rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 9/19/2025 7:22 AM, Rick Edgecombe wrote:
-
+On 9/18/25 16:22, Rick Edgecombe wrote:
 ...
+> +/*
+> + * The TDX spec treats the registers like an array, as they are ordered
+> + * in the struct. The array size is limited by the number or registers,
+> + * so define the max size it could be for worst case allocations and sanity
+> + * checking.
+> + */
+> +#define MAX_DPAMT_ARG_SIZE (sizeof(struct tdx_module_args) - \
+> +			    offsetof(struct tdx_module_args, rdx))
+> +
+> +/*
+> + * Treat struct the registers like an array that starts at RDX, per
+> + * TDX spec. Do some sanitychecks, and return an indexable type.
+> + */
+> +static u64 *dpamt_args_array_ptr(struct tdx_module_args *args)
+> +{
+> +	WARN_ON_ONCE(tdx_dpamt_entry_pages() > MAX_DPAMT_ARG_SIZE);
+> +
+> +	/*
+> +	 * FORTIFY_SOUCE could inline this and complain when callers copy
+> +	 * across fields, which is exactly what this is supposed to be
+> +	 * used for. Obfuscate it.
+> +	 */
+> +	return (u64 *)((u8 *)args + offsetof(struct tdx_module_args, rdx));
+> +}
 
+There are a lot of ways to to all of this jazz to alias an array over
+the top of a bunch of named structure fields. My worry about this
+approach is that it intentionally tries to hide the underlying type from
+the compiler.
+
+It could be done with a bunch of union/struct voodoo like 'struct page':
+
+struct tdx_module_args {
+	u64 rcx;
+	union {
+		struct {
+			u64 rdx;
+			u64 r8;
+			u64 r9;
+			...
+		};
+		u64 array[FOO];
+	};
+}
+
+Or a separate structure:
+
+struct tdx_module_array_args {
+	u64 rcx;
+	u64 array[FOO];
+};
+
+So that you could do something simpler:
+
+u64 *dpamt_args_array_ptr(struct tdx_module_args *args)
+{
+	return ((struct tdx_module_array_args *)args)->array;
+}
+
+Along with one of these somewhere:
+
+BUILD_BUG_ON(sizeof(struct tdx_module_array_args) !=
+	     sizeof(struct tdx_module_array));
+
+I personally find the offsetof() tricks to be harder to follow than
+either of those.
+
+> +static int alloc_pamt_array(u64 *pa_array)
+> +{
+> +	struct page *page;
+> +
+> +	for (int i = 0; i < tdx_dpamt_entry_pages(); i++) {
+> +		page = alloc_page(GFP_KERNEL);
+> +		if (!page)
+> +			return -ENOMEM;
+> +		pa_array[i] = page_to_phys(page);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static void free_pamt_array(u64 *pa_array)
+> +{
+> +	for (int i = 0; i < tdx_dpamt_entry_pages(); i++) {
+> +		if (!pa_array[i])
+> +			break;
+> +
+> +		reset_tdx_pages(pa_array[i], PAGE_SIZE);
+
+One nit: this reset is unnecessary in the error cases here where the
+array never gets handed to the TDX module. Right?
+
+> +		/*
+> +		 * It might have come from 'prealloc', but this is an error
+> +		 * path. Don't be fancy, just free them. TDH.PHYMEM.PAMT.ADD
+> +		 * only modifies RAX, so the encoded array is still in place.
+> +		 */
+> +		__free_page(phys_to_page(pa_array[i]));
+> +	}
+> +}
+> +
+> +/*
+> + * Add PAMT memory for the given HPA. Return's negative error code
+> + * for kernel side error conditions (-ENOMEM) and 1 for TDX Module
+> + * error. In the case of TDX module error, the return code is stored
+> + * in tdx_err.
+> + */
+> +static u64 tdh_phymem_pamt_add(unsigned long hpa, u64 *pamt_pa_array)
+> +{
+> +	struct tdx_module_args args = {
+> +		.rcx = hpa,
+> +	};
+> +	u64 *args_array = dpamt_args_array_ptr(&args);
+> +
+> +	WARN_ON_ONCE(!IS_ALIGNED(hpa & PAGE_MASK, PMD_SIZE));
+> +
+> +	/* Copy PAMT page PA's into the struct per the TDX ABI */
+> +	memcpy(args_array, pamt_pa_array,
+> +	       tdx_dpamt_entry_pages() * sizeof(*args_array));
+
+This uses 'sizeof(*args_array)'.
+
+> +	return seamcall(TDH_PHYMEM_PAMT_ADD, &args);
+> +}
+> +
+> +/* Remove PAMT memory for the given HPA */
+> +static u64 tdh_phymem_pamt_remove(unsigned long hpa, u64 *pamt_pa_array)
+> +{
+> +	struct tdx_module_args args = {
+> +		.rcx = hpa,
+> +	};
+> +	u64 *args_array = dpamt_args_array_ptr(&args);
+> +	u64 ret;
+> +
+> +	WARN_ON_ONCE(!IS_ALIGNED(hpa & PAGE_MASK, PMD_SIZE));
+> +
+> +	ret = seamcall_ret(TDH_PHYMEM_PAMT_REMOVE, &args);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Copy PAMT page PA's out of the struct per the TDX ABI */
+> +	memcpy(pamt_pa_array, args_array,
+> +	       tdx_dpamt_entry_pages() * sizeof(u64));
+
+While this one is sizeof(u64).
+
+Could we make it consistent, please?
+
+
+> +/* Serializes adding/removing PAMT memory */
+> +static DEFINE_SPINLOCK(pamt_lock);
+> +
 > +/* Bump PAMT refcount for the given page and allocate PAMT memory if needed */
 > +int tdx_pamt_get(struct page *page)
 > +{
@@ -92,13 +285,6 @@ On 9/19/2025 7:22 AM, Rick Edgecombe wrote:
 > +
 > +	scoped_guard(spinlock, &pamt_lock) {
 > +		if (atomic_read(pamt_refcount))
-
-It's not what I expect the refcount to work (maybe I miss something 
-seriously?)
-
-My understanding/expectation is that, when refcount is not zero it needs 
-to increment the refcount instead of simply return. And ...
-
 > +			goto out_free;
 > +
 > +		tdx_status = tdh_phymem_pamt_add(hpa | TDX_PS_2M, pamt_pa_array);
@@ -109,8 +295,22 @@ to increment the refcount instead of simply return. And ...
 > +			pr_err("TDH_PHYMEM_PAMT_ADD failed: %#llx\n", tdx_status);
 > +			goto out_free;
 > +		}
+
+I'm feeling like the states here are under-commented.
+
+	1. PAMT already allocated
+	2. 'pamt_pa_array' consumed, bump the refcount
+	3. TDH_PHYMEM_PAMT_ADD failed
+
+#1 and #3 need to free the allocation.
+
+Could we add comments to that effect, please?
+
 > +	}
-> +
+
+This might get easier to read if the pr_err() gets dumped in
+tdh_phymem_pamt_add() instead.
+
 > +	return ret;
 > +out_free:
 > +	free_pamt_array(pamt_pa_array);
@@ -138,12 +338,6 @@ to increment the refcount instead of simply return. And ...
 > +
 > +	scoped_guard(spinlock, &pamt_lock) {
 > +		if (!atomic_read(pamt_refcount))
-
-...
-
-when refcount > 1, decrease it.
-when refcount is 1, decrease it and remove the PAMT page pair.
-
 > +			return;
 > +
 > +		tdx_status = tdh_phymem_pamt_remove(hpa | TDX_PS_2M, pamt_pa_array);
@@ -159,4 +353,63 @@ when refcount is 1, decrease it and remove the PAMT page pair.
 > +	free_pamt_array(pamt_pa_array);
 > +}
 > +EXPORT_SYMBOL_GPL(tdx_pamt_put);
+
+It feels like there's some magic in terms of how the entire contents of
+pamt_pa_array[] get zeroed so that this ends up being safe.
+
+Could that get commented, please?
+
+> +/* Allocate a page and make sure it is backed by PAMT memory */
+
+This comment is giving the "what" but is weak on the "why". Could we add
+this?
+
+	This ensures that the page can be used as TDX private
+	memory and obtain TDX protections.
+
+> +struct page *tdx_alloc_page(void)
+> +{
+> +	struct page *page;
+> +
+> +	page = alloc_page(GFP_KERNEL);
+> +	if (!page)
+> +		return NULL;
+> +
+> +	if (tdx_pamt_get(page)) {
+> +		__free_page(page);
+> +		return NULL;
+> +	}
+> +
+> +	return page;
+> +}
+> +EXPORT_SYMBOL_GPL(tdx_alloc_page);
+> +
+> +/* Free a page and release its PAMT memory */
+
+Also:
+
+	After this, the page is can no longer be protected by TDX.
+
+> +void tdx_free_page(struct page *page)
+> +{
+> +	if (!page)
+> +		return;
+> +
+> +	tdx_pamt_put(page);
+> +	__free_page(page);
+> +}
+> +EXPORT_SYMBOL_GPL(tdx_free_page);
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+> index 82bb82be8567..46c4214b79fb 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.h
+> +++ b/arch/x86/virt/vmx/tdx/tdx.h
+> @@ -46,6 +46,8 @@
+>  #define TDH_PHYMEM_PAGE_WBINVD		41
+>  #define TDH_VP_WR			43
+>  #define TDH_SYS_CONFIG			45
+> +#define TDH_PHYMEM_PAMT_ADD		58
+> +#define TDH_PHYMEM_PAMT_REMOVE		59
+>  
+>  /*
+>   * SEAMCALL leaf:
 
