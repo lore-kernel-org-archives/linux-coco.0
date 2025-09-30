@@ -1,160 +1,94 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7EB72367CF
-	for <linux-coco@lists.linux.dev>; Tue, 30 Sep 2025 07:04:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CDA1C862F;
+	Tue, 30 Sep 2025 09:07:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759215855; cv=none; b=APjilmrcRz6/mY7NaK2DO7Z5U4QKvPI6NsyjY4PA112OvQ3kEaxPEOlWZcvvgNrtyFBBd699Pxf38tfeD8Sr2TxCnCMrcSD0vRi65PpVT7eg1QMkU+k2azbCg2XTOU8HEpIHfTtgMNoW6PWEu4AEpPvhwmNlWxWg8qufW1s1VgM=
+	t=1759223254; cv=none; b=k+fk/310RUPF79o1M5dHH4gkJw6rU4eiGjj34lrsVD2QmZdPnIoZd/5KDcIeEkJdDvifCLlrTYRqbpw8gziIWf16HtguVbz+rcADJl/QpbZbw2VOmXwNcWbpKPKnr2nrDvQPYDxg2HRtL2Wx0a8To7LZQBpJ7fU0KWFkyR6lRJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759215855; c=relaxed/simple;
-	bh=wkhZAHsBoKKngbAAqQTVMDLeDlcckAP1gUo2JTFae0M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hMFkGs/JN4v8UcWXG22avuJqChyNjtr6zE25GZsOpOAEy8qSWFul8ZJsv10L0Zm5CLr56pcrris2hyMX7W0WInDUamvDB/prBxKPV0+YWFI2A2E7rTWmkUmW+f9R37AdzXmTdAr5vuT0Hoe6yAu5eSBZdqsmlpX1qOCtjW04cSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=rQ0tmSjC; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=rQ0tmSjC; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1759223254; c=relaxed/simple;
+	bh=xc3KH1WSU2OPGTdPqjb3BoZZr9G+9kOmNh7pmQcpJnw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XsL5gsBW42s4o+u97IofO00N0nR/nDVVxMCZz/zIBzfg4nZ0PPr1+ULi5O4ikIt63fM93h7CTCZdONS+OJUNQipbKTpFqhuEVS7tkHvKeqJeTbUNXJn9TJ51vNBlLyk4CQujhdyLezjkF2TIzle6zk74UrNqEmiaCDkizIb3pa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SYnVYuB9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="rQ0tmSjC";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="rQ0tmSjC"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 72D4D3374B;
-	Tue, 30 Sep 2025 07:04:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1759215846; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NSf+6D4MbYL+XlpJyDDayy5soUcQQSx27jf/xJMjXUI=;
-	b=rQ0tmSjCv0szHdlkeG8DWbThL3VPzsomAzP86KV/RmMPylBtOnVbuuGCOGXvwKLx+oVaa/
-	9URzm6ibpBE9UhxTWC3zeOFVlUYSrpftVEfRfBbDi1ZTTXoEevhubUwff+kW+T+msk/IAQ
-	9miHnUPVRnET3ZgEclbXWGetuMcS1rQ=
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=rQ0tmSjC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1759215846; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NSf+6D4MbYL+XlpJyDDayy5soUcQQSx27jf/xJMjXUI=;
-	b=rQ0tmSjCv0szHdlkeG8DWbThL3VPzsomAzP86KV/RmMPylBtOnVbuuGCOGXvwKLx+oVaa/
-	9URzm6ibpBE9UhxTWC3zeOFVlUYSrpftVEfRfBbDi1ZTTXoEevhubUwff+kW+T+msk/IAQ
-	9miHnUPVRnET3ZgEclbXWGetuMcS1rQ=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0BE6013A3F;
-	Tue, 30 Sep 2025 07:04:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id YOwbAeaA22iARwAAD6G6ig
-	(envelope-from <jgross@suse.com>); Tue, 30 Sep 2025 07:04:06 +0000
-From: Juergen Gross <jgross@suse.com>
-To: linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	linux-coco@lists.linux.dev
-Cc: xin@zytor.com,
-	Juergen Gross <jgross@suse.com>,
-	"Kirill A. Shutemov" <kas@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SYnVYuB9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FFADC4CEF7;
+	Tue, 30 Sep 2025 09:07:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759223254;
+	bh=xc3KH1WSU2OPGTdPqjb3BoZZr9G+9kOmNh7pmQcpJnw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SYnVYuB9wRsh8JpixpG1urK32nQRNVo4zkI1bubhQf/u4xrIIiBCzBAH9PyT5peti
+	 wWWlPneCmW+r7lgdSXm2xISyo+PWqhqRyjaXIU/sSu3rr8oCMXj794GCIGkiVgVGba
+	 3uImsB+Bbc9w4a9BeUjFlMb/4BUNJxbBXS+eDzGF5flBCUBLloz02i/PigOC/Zt6FK
+	 fhuUPc/zs9u7+rIkYD+WEk5KfnZp6JWCbxqR/X2Zqbv2iWpOFQHU61hxP5WbeoVVmf
+	 BBX/OlVLe82efRcsK5DO/aLMxz0h5TAILD7oBfha0SI1laYlHQVX9Wq+V6orFE3pQK
+	 zHq88m+vwDnhw==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 918B9F40068;
+	Tue, 30 Sep 2025 05:07:32 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Tue, 30 Sep 2025 05:07:32 -0400
+X-ME-Sender: <xms:1J3baCHUlm8xhf1e04YPY2VOMYxKbeqCMFEfB9h7z5vKg_xe1B87XA>
+    <xme:1J3baKaOlfIFfyQjDo1KkLUSEempytb91BiCGnefeaIOUC2iw-0jmUpfXLQ5mjj-d
+    FPPLoiNZbSPMZoNZR8essAOQ9prH_IdD-_SPXaT3K3XBfZvvKK2d88>
+X-ME-Received: <xmr:1J3baD0CqSY1zOUzwiwNXAniqPlFU6iOaVV7jxqRwBADkOT10d_sC6UssbrHWw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdektdegjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
+    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
+    hnpeehieekueevudehvedtvdffkefhueefhfevtdduheehkedthfdtheejveelueffgeen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrih
+    hllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieehhedq
+    vdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnh
+    grmhgvpdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
+    ohepjhhgrhhoshhssehsuhhsvgdrtghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnh
+    gvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopeigkeeisehkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopehlihhnuhigqdgtohgtoheslhhishhtshdrlhhinhhugi
+    druggvvhdprhgtphhtthhopeigihhnseiihihtohhrrdgtohhmpdhrtghpthhtohepuggr
+    vhgvrdhhrghnshgvnheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehtgh
+    hlgieslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhopehmihhnghhosehrvgguhhgr
+    thdrtghomhdprhgtphhtthhopegsphesrghlihgvnhekrdguvg
+X-ME-Proxy: <xmx:1J3baCd2Qw5LUUyBG0gMR4RscM9vWfs-NrRDBx-O-EYPX9kOwJ_wHA>
+    <xmx:1J3baFBmjusv_8hS-N17y5IdItVUKvm3ahHkoY6uERMQaO_AXyHqCw>
+    <xmx:1J3baE0hH4tZi10izr1ZM5m8wvF_ZenesZc2Xu-CNQKmnIGy2Tgl-w>
+    <xmx:1J3baFNgV0ioUOQQRdkkzOk2N6LFi6D1xLASNewCmUlPr8boHz1eww>
+    <xmx:1J3baCc9_r7UkVXxDSXXd5PGmPbXD6sHj3oIgE_tY5o573WFW7FDh7E5>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 30 Sep 2025 05:07:32 -0400 (EDT)
+Date: Tue, 30 Sep 2025 10:07:29 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Juergen Gross <jgross@suse.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, 
+	linux-coco@lists.linux.dev, xin@zytor.com, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v2 01/12] coco/tdx: Rename MSR access helpers
-Date: Tue, 30 Sep 2025 09:03:45 +0200
-Message-ID: <20250930070356.30695-2-jgross@suse.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250930070356.30695-1-jgross@suse.com>
+Subject: Re: [PATCH v2 01/12] coco/tdx: Rename MSR access helpers
+Message-ID: <u75crquhikiczvurynpzytyuge47xagjq3yn5uacx3r65e4lhu@oq362xe2k3v3>
 References: <20250930070356.30695-1-jgross@suse.com>
+ <20250930070356.30695-2-jgross@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.com:+];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	R_RATELIMIT(0.00)[to_ip_from(RLkdkdrsxe9hqhhs5ask8616i6)];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.com:mid,suse.com:dkim,suse.com:email]
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 72D4D3374B
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250930070356.30695-2-jgross@suse.com>
 
-In order to avoid a name clash with some general MSR access helpers
-after a future MSR infrastructure rework, rename the TDX specific
-helpers.
+On Tue, Sep 30, 2025 at 09:03:45AM +0200, Juergen Gross wrote:
+> In order to avoid a name clash with some general MSR access helpers
+> after a future MSR infrastructure rework, rename the TDX specific
+> helpers.
+> 
+> Signed-off-by: Juergen Gross <jgross@suse.com>
 
-Signed-off-by: Juergen Gross <jgross@suse.com>
----
- arch/x86/coco/tdx/tdx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 7b2833705d47..500166c1a161 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -468,7 +468,7 @@ static void __cpuidle tdx_safe_halt(void)
- 	raw_local_irq_enable();
- }
- 
--static int read_msr(struct pt_regs *regs, struct ve_info *ve)
-+static int tdx_read_msr(struct pt_regs *regs, struct ve_info *ve)
- {
- 	struct tdx_module_args args = {
- 		.r10 = TDX_HYPERCALL_STANDARD,
-@@ -489,7 +489,7 @@ static int read_msr(struct pt_regs *regs, struct ve_info *ve)
- 	return ve_instr_len(ve);
- }
- 
--static int write_msr(struct pt_regs *regs, struct ve_info *ve)
-+static int tdx_write_msr(struct pt_regs *regs, struct ve_info *ve)
- {
- 	struct tdx_module_args args = {
- 		.r10 = TDX_HYPERCALL_STANDARD,
-@@ -842,9 +842,9 @@ static int virt_exception_kernel(struct pt_regs *regs, struct ve_info *ve)
- 	case EXIT_REASON_HLT:
- 		return handle_halt(ve);
- 	case EXIT_REASON_MSR_READ:
--		return read_msr(regs, ve);
-+		return tdx_read_msr(regs, ve);
- 	case EXIT_REASON_MSR_WRITE:
--		return write_msr(regs, ve);
-+		return tdx_write_msr(regs, ve);
- 	case EXIT_REASON_CPUID:
- 		return handle_cpuid(regs, ve);
- 	case EXIT_REASON_EPT_VIOLATION:
 -- 
-2.51.0
-
+  Kiryl Shutsemau / Kirill A. Shutemov
