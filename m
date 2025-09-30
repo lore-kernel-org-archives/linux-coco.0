@@ -1,276 +1,162 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C41925A2AE
-	for <linux-coco@lists.linux.dev>; Tue, 30 Sep 2025 12:29:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D9D2DA743
+	for <linux-coco@lists.linux.dev>; Tue, 30 Sep 2025 14:04:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759235396; cv=none; b=TBZAvFr0qTdRQGrPRVK6RhAQMTGmeO6tVCF4J6NnY/9+U0UE9S/3TOlhfIliABNMsdtodQ21Y1wjRioilBzLm48UNYiIK5ZpYrVWIohJZIH6hl3Aw7YAxYUvmaNtnm7hQTqkqTRz2BNf1VhpFoPFzvbc52Lh8LXpBtaNPvnvi4U=
+	t=1759241043; cv=none; b=Wj9szcV9cBLk3pLrB1llBCoOAsJYPTi/zOWAuQUvqMHJr5PO2nDS4kwpQTyXOvmAwVj7nsO1T1XWvWaRaNx0PcKP0uufQNpyE3IlOoVZCMl7t/IzjCBNY3548YgRFeWbCA2mRkM53NA+uVYL3eHvRFxpZbAd9ffUw/grT2RQknE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759235396; c=relaxed/simple;
-	bh=GDmus2CGw+l5vE3v3aGHGnfFjE/5q50mDpeUd0fkz+M=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=VBpPg1ZHN0d/+nGnIseRYDeeJP+gaP4HKpPU7YWT2MJQyNcvyMn/rZrFpyNYrOHOoSyZ7AVwq5UVAigCTwKuV7p01qHyr44ZTYnnc2b/4FgfBFeu6Ja2jrOxjTg3pxBXwKWMBHMl81guW7FTVZVl3vvh+T/BL1TZNqORI3O666c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cT9Ju5ms; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1759241043; c=relaxed/simple;
+	bh=2CzGTsrLQ+Bd44NMFXEjynn3XOAYcHLG7pZ/b1BpRVo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o1nGD9ZTANbSUUy14TfZbOEUhcZVKorOSAVCAbXwjEiK90Yb5ol574pc3+EoJfxGG1GdSYGyYTVgLvhb2oSyPMQoTDPr7PlQbP+kkqtjzTwmhaoMv5PcocfMhaarWPix/e7huoEbwnHC4Zl1P3kAjGT7vk7++UWHRhfwFoOSitQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ulv/y20t; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cT9Ju5ms"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ulv/y20t"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759235395; x=1790771395;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=GDmus2CGw+l5vE3v3aGHGnfFjE/5q50mDpeUd0fkz+M=;
-  b=cT9Ju5msFdPcIQ33AHDQXVlKSuRqwrFEXPp9BLIeP5M2LRGfr5qsMWT5
-   fVCum9eJNa3fxat48HaNEiMniSKJwaJnR+97fRTt4swNa+z2KhL/3WAKL
-   YJxp1o3IcWuJ0MjCiJVmDJQa9fauZcUdQBKZCSdUuFo+ra3LmNQItgpvV
-   mvKkJEDpMMzsAgqmirtXgVUdAv6jEdWlKaENRm3rH2Ea94dCZ8vK7IYLi
-   UzaQwbMwzbLmQJZHswt06Uaui+9owBynsHOcKMQXDGZ1EdSjjIfrn6dp2
-   gJf0ApA4wM/bHPweogG2vdm+on21HGxBIMKabSEtKehsrwRZshfEFmFxZ
-   A==;
-X-CSE-ConnectionGUID: QuUu+eazQCefH6ADrSSJkQ==
-X-CSE-MsgGUID: FGEiNSJRRHeX/wQfstiQzA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="84106628"
+  t=1759241042; x=1790777042;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=2CzGTsrLQ+Bd44NMFXEjynn3XOAYcHLG7pZ/b1BpRVo=;
+  b=Ulv/y20tizYqFacCy8w6irNlPqRAfiIq6WyYnh/9GLY3Szd2Z27xNIXt
+   1wrNOyeqzwy85/2s70bNDvJo4zRe3wcUT01E5aQNMo9iPzQeM15tGcMeb
+   vvj4Exxn/nIGZ9lMSTH0IKrXClUDhvOt+lN0Frv4FAse061W1vrxQJFQC
+   JhM8uRFH59bzhLSsrIwblDhY8vkrEJXwOw0jyCCth7K0BJNMdUQptGNYI
+   /aLflXwBFJs1Xn3269PNphiyjoL/41ckV+oSY4JpaNs66HvdMqmL9/qzB
+   e0K7FPKK56qExaCfTAgGuwY4X46TDrX8DEJcGPHa5F90owwh7T8OM3KBY
+   Q==;
+X-CSE-ConnectionGUID: ZY7jpfiHSWWO1TeDOigtww==
+X-CSE-MsgGUID: hGnO/RFzQ9arLu+O1S/1ug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="65134704"
 X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; 
-   d="scan'208";a="84106628"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2025 05:29:54 -0700
-X-CSE-ConnectionGUID: OCEuioj0RVGP0Gcgvu7szw==
-X-CSE-MsgGUID: 0PYDBXcMS+iyKgM01kzEXg==
+   d="scan'208";a="65134704"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2025 07:04:01 -0700
+X-CSE-ConnectionGUID: kKzy1ggiRP6ZX67yLsAanw==
+X-CSE-MsgGUID: 6RDKmMd+RW2q9xL4e8vYeg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,304,1751266800"; 
-   d="scan'208";a="182527025"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.162])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2025 05:29:50 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Tue, 30 Sep 2025 15:29:46 +0300 (EEST)
-To: Xu Yilun <yilun.xu@linux.intel.com>
-cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org, 
-    dan.j.williams@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com, 
-    zhenzhong.duan@intel.com, aneesh.kumar@kernel.org, bhelgaas@google.com, 
-    aik@amd.com, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/3] PCI/IDE: Add Address Association Register setup for
- RP
-In-Reply-To: <20250928062756.2188329-3-yilun.xu@linux.intel.com>
-Message-ID: <d58dfdf5-0058-a03f-dd75-5afb8ae69e04@linux.intel.com>
-References: <20250928062756.2188329-1-yilun.xu@linux.intel.com> <20250928062756.2188329-3-yilun.xu@linux.intel.com>
+   d="scan'208";a="182823883"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.238.14]) ([10.124.238.14])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2025 07:03:56 -0700
+Message-ID: <1f25ef49-fb7f-449c-be1d-71c19465219f@intel.com>
+Date: Tue, 30 Sep 2025 22:03:53 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 07/16] x86/virt/tdx: Add tdx_alloc/free_page() helpers
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>, kas@kernel.org,
+ bp@alien8.de, chao.gao@intel.com, dave.hansen@linux.intel.com,
+ isaku.yamahata@intel.com, kai.huang@intel.com, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, mingo@redhat.com,
+ pbonzini@redhat.com, seanjc@google.com, tglx@linutronix.de, x86@kernel.org,
+ yan.y.zhao@intel.com, vannapurve@google.com
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+References: <20250918232224.2202592-1-rick.p.edgecombe@intel.com>
+ <20250918232224.2202592-8-rick.p.edgecombe@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20250918232224.2202592-8-rick.p.edgecombe@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sun, 28 Sep 2025, Xu Yilun wrote:
+On 9/19/2025 7:22 AM, Rick Edgecombe wrote:
 
-> Add Address Association Register setup for Root Ports.
-> 
-> The address ranges for RP side Address Association Registers should
-> cover memory addresses for all PFs/VFs/downstream devices of the DSM
-> device. A simple solution is to get the aggregated 32-bit and 64-bit
-> address ranges from directly connected downstream port (either an RP or
-> a switch port) and set into 2 Address Association Register blocks.
-> 
-> There is a case the platform doesn't require Address Association
-> Registers setup and provides no register block for RP (AMD). Will skip
-> the setup in pci_ide_stream_setup().
-> 
-> Also imaging another case where there is only one block for RP.
-> Prioritize 64-bit address ranges setup for it. No strong reason for the
-> preference until a real use case comes.
-> 
-> The Address Association Register setup for Endpoint Side is still
-> uncertain so isn't supported in this patch.
-> 
-> Take the oppotunity to export some mini helpers for Address Association
-> Registers setup. TDX Connect needs the provided aggregated address
-> ranges but will use specific firmware calls for actual setup instead of
-> pci_ide_stream_setup().
-> 
-> Co-developed-by: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-> Co-developed-by: Arto Merilainen <amerilainen@nvidia.com>
-> Signed-off-by: Arto Merilainen <amerilainen@nvidia.com>
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> ---
->  include/linux/pci-ide.h | 11 +++++++
->  drivers/pci/ide.c       | 64 ++++++++++++++++++++++++++++++++++++++++-
->  2 files changed, 74 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/pci-ide.h b/include/linux/pci-ide.h
-> index 5adbd8b81f65..ac84fb611963 100644
-> --- a/include/linux/pci-ide.h
-> +++ b/include/linux/pci-ide.h
-> @@ -6,6 +6,15 @@
->  #ifndef __PCI_IDE_H__
->  #define __PCI_IDE_H__
->  
-> +#define SEL_ADDR1_LOWER GENMASK(31, 20)
-> +#define SEL_ADDR_UPPER GENMASK_ULL(63, 32)
-> +#define PREP_PCI_IDE_SEL_ADDR1(base, limit)                    \
-> +	(FIELD_PREP(PCI_IDE_SEL_ADDR_1_VALID, 1) |             \
-> +	 FIELD_PREP(PCI_IDE_SEL_ADDR_1_BASE_LOW,          \
-> +		    FIELD_GET(SEL_ADDR1_LOWER, (base))) | \
-> +	 FIELD_PREP(PCI_IDE_SEL_ADDR_1_LIMIT_LOW,         \
-> +		    FIELD_GET(SEL_ADDR1_LOWER, (limit))))
-> +
->  #define PREP_PCI_IDE_SEL_RID_2(base, domain)               \
->  	(FIELD_PREP(PCI_IDE_SEL_RID_2_VALID, 1) |          \
->  	 FIELD_PREP(PCI_IDE_SEL_RID_2_BASE, (base)) | \
-> @@ -42,6 +51,8 @@ struct pci_ide_partner {
->  	unsigned int default_stream:1;
->  	unsigned int setup:1;
->  	unsigned int enable:1;
-> +	struct range mem32;
-> +	struct range mem64;
->  };
->  
->  /**
-> diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
-> index 7633b8e52399..8db1163737e5 100644
-> --- a/drivers/pci/ide.c
-> +++ b/drivers/pci/ide.c
-> @@ -159,7 +159,11 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
->  	struct stream_index __stream[PCI_IDE_HB + 1];
->  	struct pci_host_bridge *hb;
->  	struct pci_dev *rp;
-> +	struct pci_dev *br;
+...
 
-Why not join with the previous line?
-
->  	int num_vf, rid_end;
-> +	struct range mem32 = {}, mem64 = {};
-> +	struct pci_bus_region region;
-> +	struct resource *res;
->  
->  	if (!pci_is_pcie(pdev))
->  		return NULL;
-> @@ -206,6 +210,24 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
->  	else
->  		rid_end = pci_dev_id(pdev);
->  
-> +	br = pci_upstream_bridge(pdev);
-> +	if (!br)
-> +		return NULL;
-> +
-> +	res = &br->resource[PCI_BRIDGE_MEM_WINDOW];
-
-pci_resource_n()
-
-> +	if (res->flags & IORESOURCE_MEM) {
-> +		pcibios_resource_to_bus(br->bus, &region, res);
-> +		mem32.start = region.start;
-> +		mem32.end = region.end;
-> +	}
-> +
-> +	res = &br->resource[PCI_BRIDGE_PREF_MEM_WINDOW];
-
-Ditto.
-
-> +	if (res->flags & IORESOURCE_PREFETCH) {
-
-While I don't know much about what's going on here, is this assuming the 
-bridge window is not disabled solely based on this flag check?
-
-Previously inactive bridge window flags were reset but that's no longer 
-the case after the commit 8278c6914306 ("PCI: Preserve bridge window 
-resource type flags") (currently in pci/resource)?
-
--- 
- i.
-
-> +		pcibios_resource_to_bus(br->bus, &region, res);
-> +		mem64.start = region.start;
-> +		mem64.end = region.end;
-> +	}
-> +
->  	*ide = (struct pci_ide) {
->  		.pdev = pdev,
->  		.partner = {
-> @@ -218,6 +240,8 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
->  				.rid_start = pci_dev_id(pdev),
->  				.rid_end = rid_end,
->  				.stream_index = no_free_ptr(rp_stream)->stream_index,
-> +				.mem32 = mem32,
-> +				.mem64 = mem64,
->  			},
->  		},
->  		.host_bridge_stream = no_free_ptr(hb_stream)->stream_index,
-> @@ -397,6 +421,21 @@ static void set_ide_sel_ctl(struct pci_dev *pdev, struct pci_ide *ide,
->  	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_CTL, val);
->  }
->  
-> +static void set_ide_sel_addr(struct pci_dev *pdev, int pos, int assoc_idx,
-> +			     struct range *mem)
+> +/* Bump PAMT refcount for the given page and allocate PAMT memory if needed */
+> +int tdx_pamt_get(struct page *page)
 > +{
-> +	u32 val;
+> +	unsigned long hpa = ALIGN_DOWN(page_to_phys(page), PMD_SIZE);
+> +	u64 pamt_pa_array[MAX_DPAMT_ARG_SIZE];
+> +	atomic_t *pamt_refcount;
+> +	u64 tdx_status;
+> +	int ret;
 > +
-> +	val = PREP_PCI_IDE_SEL_ADDR1(mem->start, mem->end);
-> +	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_1(assoc_idx), val);
+> +	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
+> +		return 0;
 > +
-> +	val = FIELD_GET(SEL_ADDR_UPPER, mem->end);
-> +	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_2(assoc_idx), val);
+> +	ret = alloc_pamt_array(pamt_pa_array);
+> +	if (ret)
+> +		return ret;
 > +
-> +	val = FIELD_GET(SEL_ADDR_UPPER, mem->start);
-> +	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_3(assoc_idx), val);
+> +	pamt_refcount = tdx_find_pamt_refcount(hpa);
+> +
+> +	scoped_guard(spinlock, &pamt_lock) {
+> +		if (atomic_read(pamt_refcount))
+
+It's not what I expect the refcount to work (maybe I miss something 
+seriously?)
+
+My understanding/expectation is that, when refcount is not zero it needs 
+to increment the refcount instead of simply return. And ...
+
+> +			goto out_free;
+> +
+> +		tdx_status = tdh_phymem_pamt_add(hpa | TDX_PS_2M, pamt_pa_array);
+> +
+> +		if (IS_TDX_SUCCESS(tdx_status)) {
+> +			atomic_inc(pamt_refcount);
+> +		} else {
+> +			pr_err("TDH_PHYMEM_PAMT_ADD failed: %#llx\n", tdx_status);
+> +			goto out_free;
+> +		}
+> +	}
+> +
+> +	return ret;
+> +out_free:
+> +	free_pamt_array(pamt_pa_array);
+> +	return ret;
 > +}
+> +EXPORT_SYMBOL_GPL(tdx_pamt_get);
 > +
->  /**
->   * pci_ide_stream_setup() - program settings to Selective IDE Stream registers
->   * @pdev: PCIe device object for either a Root Port or Endpoint Partner Port
-> @@ -410,6 +449,7 @@ static void set_ide_sel_ctl(struct pci_dev *pdev, struct pci_ide *ide,
->  void pci_ide_stream_setup(struct pci_dev *pdev, struct pci_ide *ide)
->  {
->  	struct pci_ide_partner *settings = pci_ide_to_settings(pdev, ide);
-> +	u8 assoc_idx = 0;
->  	int pos;
->  	u32 val;
->  
-> @@ -424,6 +464,21 @@ void pci_ide_stream_setup(struct pci_dev *pdev, struct pci_ide *ide)
->  	val = PREP_PCI_IDE_SEL_RID_2(settings->rid_start, pci_ide_domain(pdev));
->  	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_2, val);
->  
-> +	/*
-> +	 * Feel free to change the default stratagy, Intel & AMD don't directly
-> +	 * setup RP registers.
-> +	 *
-> +	 * 64 bit memory first, assuming it's more popular.
-> +	 */
-> +	if (assoc_idx < pdev->nr_ide_mem && settings->mem64.end != 0) {
-> +		set_ide_sel_addr(pdev, pos, assoc_idx, &settings->mem64);
-> +		assoc_idx++;
+> +/*
+> + * Drop PAMT refcount for the given page and free PAMT memory if it is no
+> + * longer needed.
+> + */
+> +void tdx_pamt_put(struct page *page)
+> +{
+> +	unsigned long hpa = ALIGN_DOWN(page_to_phys(page), PMD_SIZE);
+> +	u64 pamt_pa_array[MAX_DPAMT_ARG_SIZE];
+> +	atomic_t *pamt_refcount;
+> +	u64 tdx_status;
+> +
+> +	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
+> +		return;
+> +
+> +	hpa = ALIGN_DOWN(hpa, PMD_SIZE);
+> +
+> +	pamt_refcount = tdx_find_pamt_refcount(hpa);
+> +
+> +	scoped_guard(spinlock, &pamt_lock) {
+> +		if (!atomic_read(pamt_refcount))
+
+...
+
+when refcount > 1, decrease it.
+when refcount is 1, decrease it and remove the PAMT page pair.
+
+> +			return;
+> +
+> +		tdx_status = tdh_phymem_pamt_remove(hpa | TDX_PS_2M, pamt_pa_array);
+> +
+> +		if (IS_TDX_SUCCESS(tdx_status)) {
+> +			atomic_dec(pamt_refcount);
+> +		} else {
+> +			pr_err("TDH_PHYMEM_PAMT_REMOVE failed: %#llx\n", tdx_status);
+> +			return;
+> +		}
 > +	}
 > +
-> +	/* 64 bit memory in lower block and 32 bit in higher block, any risk? */
-> +	if (assoc_idx < pdev->nr_ide_mem && settings->mem32.end != 0)
-> +		set_ide_sel_addr(pdev, pos, assoc_idx, &settings->mem32);
-> +
->  	/*
->  	 * Setup control register early for devices that expect
->  	 * stream_id is set during key programming.
-> @@ -445,7 +500,7 @@ EXPORT_SYMBOL_GPL(pci_ide_stream_setup);
->  void pci_ide_stream_teardown(struct pci_dev *pdev, struct pci_ide *ide)
->  {
->  	struct pci_ide_partner *settings = pci_ide_to_settings(pdev, ide);
-> -	int pos;
-> +	int pos, i;
->  
->  	if (!settings)
->  		return;
-> @@ -453,6 +508,13 @@ void pci_ide_stream_teardown(struct pci_dev *pdev, struct pci_ide *ide)
->  	pos = sel_ide_offset(pdev, settings);
->  
->  	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_CTL, 0);
-> +
-> +	for (i = 0; i < pdev->nr_ide_mem; i++) {
-> +		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_1(i), 0);
-> +		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_2(i), 0);
-> +		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_3(i), 0);
-> +	}
-> +
->  	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_2, 0);
->  	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_1, 0);
->  	settings->setup = 0;
-> 
+> +	free_pamt_array(pamt_pa_array);
+> +}
+> +EXPORT_SYMBOL_GPL(tdx_pamt_put);
+
