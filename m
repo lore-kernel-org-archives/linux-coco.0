@@ -1,733 +1,242 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24AB2EACF8
-	for <linux-coco@lists.linux.dev>; Wed,  1 Oct 2025 20:20:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D11A2882AA
+	for <linux-coco@lists.linux.dev>; Wed,  1 Oct 2025 20:49:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759350060; cv=fail; b=cRXKsih8gpfih+fhuxDQ9Iw6ipxlTx1SjZ+I/xqPXBjn6azvcxp0fo8SuzCovy2XYycKbSQC/0LncoLJig19X1sxINs6Paq9HvYrfOjHxIb6ux1ejjQbpkXNU9DZoehT9rHfSRPDWN7+GFh7H3ZB+ezxhGd7AfvAlZc2oSliUu4=
+	t=1759351799; cv=fail; b=NV598bzTCtpCeb/g5iyI4iFbXrLAL80f6LqLw7tv5t9tkSdKCkOCNCZKCjbAMEy19d9ivZ+yEGeUzDPRjPA+GlSvwpdPITv26vZfuGv36YrimYhIps5bxYfVDaXnPZ0/9TnMLDECOyJZWekgFjz9/iT/4LiuC7xrenpc3XjDQM4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759350060; c=relaxed/simple;
-	bh=2BJul5dMNWF6g4qwaK+o8M7sr90Xv/a6ym5Zpth/3I0=;
-	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
-	 Content-Type:MIME-Version; b=aCspWpG+FKZWOvhWoklR7nHVUgKXYL7CAjduND2u3xwAb/uo0chkGMBUJQxaQoJPVfy7R1GAM/gc5uvcD89eX14CTfiFM9ehMXLnfKjL7lUHCQMfp4mW+B8p6EENSiHUsCr3KyEEs1O6rDF1rZwAl/E88eGpnL/EJiFa9LC6UIg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MlviN/93; arc=fail smtp.client-ip=192.198.163.8
+	s=arc-20240116; t=1759351799; c=relaxed/simple;
+	bh=MrzlQ/K6YfDfJcOUwONsfapW1fhnubDpMCsGFzTbIxM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=C/61iLYYk+qw+3jSJemds9JlME5DX8BwPbv4/X+RkrqxM9Ci4QRYXtroCzQY5si24X40lTTF48aGnu4+ZP/TzCWmRnjfxYYYiraEqXfwluWpIx2nvn11DD/d3AX/c1d8IpN6Q0PJwLhzzlXGO+A6KIgY9NkKPeRhFznambgLgJo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mGkIdLdy; arc=fail smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MlviN/93"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mGkIdLdy"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759350058; x=1790886058;
-  h=from:date:to:cc:message-id:in-reply-to:references:
-   subject:content-transfer-encoding:mime-version;
-  bh=2BJul5dMNWF6g4qwaK+o8M7sr90Xv/a6ym5Zpth/3I0=;
-  b=MlviN/93XLZiSNiP/FfOk+1TY0FfTTg1s3Ri6e0smFxiS4J//w6PggpJ
-   MZ8imt/rrhKqVdn4DvNfjMCHwyPjOxBmrZWOYU2YC2k6t+y7rrKZeXsay
-   oiAev8tMt+pbKBX6hxsTxCbP4JKKDbV4lCFzl/PDSIrvn5FnOZZu3oHEt
-   dScm8d+lwZWkt7cqQNt6yyRzrfKwRt/h2uUmJm8K1p/cFRs56IY6KQEW0
-   +C3CL7CrxPX3qOCLATdSjQkc8tpJ4UCfaMvsWz33FedWYnNxyFfZbaQQr
-   X7rUMfZ9XLEdBy3Iwhgkb5GsATTYt8lFypX0Ph0xkLpJDtmlFS3IiFb3d
-   w==;
-X-CSE-ConnectionGUID: 7WV6jhZvTM22KwAtwIosBw==
-X-CSE-MsgGUID: v34G/EmsQ1+727hlt8sRoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="79285970"
+  t=1759351795; x=1790887795;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=MrzlQ/K6YfDfJcOUwONsfapW1fhnubDpMCsGFzTbIxM=;
+  b=mGkIdLdy47lQTJST1OR4oamcvN5IZCVz5IANWopIJ4jplujt6WB3O9T1
+   gh4/yrw/cLK6dorXmXAbj9xf118LXtpjcUB42jJ2+c+GQ+qxk+rP4jzDf
+   Zg2lRe31UDF9YGUhBUX1OUU0BDJugQLUfUpTtGozNTNDCzZNXEnw+ImzG
+   feU8TtScemvBGBaz2jQ/XunwFfh55wB715S69a/cBe2+XpLga/XI6Psy9
+   yRbzN4eYvPlwVa3LwiolIoeC0SAoee6tysmqIshT/S/qH4eoHqiNbtcc2
+   dOrxG7TIK92UySc1eykVql3miJmTNId66EYAjnZGwR7AUhQa/WisMJNc5
+   g==;
+X-CSE-ConnectionGUID: HWovwq+7RVGYVn/6/FGYEg==
+X-CSE-MsgGUID: G8q6Vml5QUq5db5xgIyE7w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="71885013"
 X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; 
-   d="scan'208";a="79285970"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 13:20:56 -0700
-X-CSE-ConnectionGUID: MHHj3ODBQGijnNt+hMl4OA==
-X-CSE-MsgGUID: Sprtp7soRpeHo7msCpOjNQ==
+   d="scan'208";a="71885013"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 13:49:54 -0700
+X-CSE-ConnectionGUID: EVtCLZKLRtCzaq2zSfo26g==
+X-CSE-MsgGUID: 0mj0f1A0SKSk3UPBJPyr7A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; 
-   d="scan'208";a="177992504"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 13:20:55 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+   d="scan'208";a="184067533"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 13:49:54 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Wed, 1 Oct 2025 13:20:54 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ 15.2.2562.27; Wed, 1 Oct 2025 13:49:53 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Wed, 1 Oct 2025 13:20:54 -0700
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.58) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ 15.2.2562.27 via Frontend Transport; Wed, 1 Oct 2025 13:49:53 -0700
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.26) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Wed, 1 Oct 2025 13:20:54 -0700
+ 15.2.2562.27; Wed, 1 Oct 2025 13:49:52 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PN1KrrKhK6aG5WnOb201DS9DoxNCUndi6gAeM0SCmjXjf928aQYvM8TosP/ck2jtIPMyj7x6muaDELVoO23G8i/eKIXTeo09f/+e5D5RHKS9Bfcrphl3K3OwmpmLzvxDjcGvDzdEM7ec1k5OGmSCx3MArBtMsC7iAgPsfjU79xIQVmyJStl3lb1RlIjpnUeVLEC9Ua48kIyK/vfd9xmPgcq4ShE8oxxH1EqKE9Vmy66HNGp3Yeo4ulgpe1EnV/PJL0qbEZDB+ekou299MVI6r/zbzW75tuFL6sd6H6y3ynOjiTedrJtcAayRhEh76pmgZyzXNccVQJMkSzWFcBSDuQ==
+ b=NVHIj5h+NmQudM8fI6PFd7ei03vynUXTRCM7vTLXDXvDtnx2AjB4fTglVCkfMicLb2AV/cotgzlalw805ta1Y9RUIzPRgoed0QaBYiscHyn/qsafMAO3nbEXojYFFf+76MyzFekcuNdpP9qrDbxQzOVuWwNOj2Eiy9UIB4Cda5Yjj/btEiH09uddrCbo5rSbF6yG60xZu1mxsCY2hLQmQwBhZWVbwrkxUSnc5fLKa2gkfYfX1bBOOOzbg3cFx4pRundSgybiyJGc3vogOWgTWKiREvpvqkD8i+fO+U+AucKcsfoJaFrThxi5cQK1jSPkeLw0JeJdvQJ+6SkJipjweA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5+qasQqkYKnpTDDyqXO6KUCvw+zX5tvHxPjwwxybbcE=;
- b=NmxLtwuiv9+z0v5NxtnYIoS6NJM6Crh0Kaa0gjp/brxVd1YtbvPX2HkNasVp7QZoSP+tw7C6eHItjc4cRjXoaOEAZkDzPfn7nJowWc6pa9noxDb2XHBRudwwlW851EAk9jdJ7KH+7Raew4b2GgxXjj3qKP0zsFb/o1eYVsvLo5JPQWOi4Ouz4s6FoCBx/4o87Wo1wx3cU4gcT8nFWV3udFzAsi9nb/zfy0SgBDXqOowchNGeEZdV1N8pB6b0MTn17AIhdV+jG50SUqjeNhp+Hh5Fmg3mKMWxDercGDiFNuSHlDKqyTl9XGb+rjcmGp3KCOZPa5SFU0k6kvlzmfU6Lg==
+ bh=MrzlQ/K6YfDfJcOUwONsfapW1fhnubDpMCsGFzTbIxM=;
+ b=W2Ty/nY1Ya6Q9S/C2CRUWjxoMhyz3V9YB/A10cBeXFu6zo5T3fSrlJqU5k17MOHOA0qvL/q/W3zhJUnyJPC+jY895eUMi/ZXasOj03yyOKIddEBhgYkca+dNHclsnmh6FWgO+1Qe6dPPqukb7uwOIWjrX/FLmZZGyzM9957dpeNnoFUtu/dTilED7GF2mNW6MV0TwRNES42gecRo1W1Y6l2YbeHlgr4Kk7FIyI56KVZtxYA6bA3v8gqR/wUJvXutLfvdGCJ+YN6xIPNsDzWLQhUe29vmv+v9UM6NnJKfgpaAl9+gnB+rULdcS6t33/kKvc3udwC+l2cYLIbM1SUDSQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
+Received: from BL1PR11MB5525.namprd11.prod.outlook.com (2603:10b6:208:31f::10)
+ by MW4PR11MB6572.namprd11.prod.outlook.com (2603:10b6:303:1ee::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.11; Wed, 1 Oct
+ 2025 20:49:49 +0000
+Received: from BL1PR11MB5525.namprd11.prod.outlook.com
+ ([fe80::1a2f:c489:24a5:da66]) by BL1PR11MB5525.namprd11.prod.outlook.com
+ ([fe80::1a2f:c489:24a5:da66%6]) with mapi id 15.20.9160.017; Wed, 1 Oct 2025
+ 20:49:49 +0000
+From: "Huang, Kai" <kai.huang@intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>
+CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "Zhao, Yan Y" <yan.y.zhao@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"seanjc@google.com" <seanjc@google.com>, "mingo@redhat.com"
+	<mingo@redhat.com>, "kas@kernel.org" <kas@kernel.org>, "tglx@linutronix.de"
+	<tglx@linutronix.de>, "Yamahata, Isaku" <isaku.yamahata@intel.com>,
+	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "Annapurve, Vishal"
+	<vannapurve@google.com>, "Gao, Chao" <chao.gao@intel.com>, "bp@alien8.de"
+	<bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v3 06/16] x86/virt/tdx: Improve PAMT refcounters
+ allocation for sparse memory
+Thread-Topic: [PATCH v3 06/16] x86/virt/tdx: Improve PAMT refcounters
+ allocation for sparse memory
+Thread-Index: AQHcKPM0s1whGFHeVUeSuikKt1/NBLSaGz4AgAZuegCAAWNMgIAAI4YAgApzb4CAAKnXAIAAi7KAgAAebgA=
+Date: Wed, 1 Oct 2025 20:49:49 +0000
+Message-ID: <2e0edb645393e2c75d4133b67706d2902fd51f3c.camel@intel.com>
+References: <20250918232224.2202592-1-rick.p.edgecombe@intel.com>
+		 <20250918232224.2202592-7-rick.p.edgecombe@intel.com>
+		 <f1018ab125eb18f431ddb3dd50501914b396ee2b.camel@intel.com>
+		 <e455cb2c-a51c-494e-acc1-12743c4f4d3f@linux.intel.com>
+		 <7ad102d6105b6244c32e0daebcdb2ac46a5dcc68.camel@intel.com>
+		 <19889f85-cfd0-4283-bd32-935ef92b3b93@linux.intel.com>
+		 <ca13c7f77f2d36fa12e25cf2b9fb61861c9ed38c.camel@intel.com>
+		 <894408f8987034fcbe945f7c46b68a840d333527.camel@intel.com>
+	 <404c3dddef3025537d2942386ab0ea0f72ab9dc3.camel@intel.com>
+In-Reply-To: <404c3dddef3025537d2942386ab0ea0f72ab9dc3.camel@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by DS7PR11MB6152.namprd11.prod.outlook.com (2603:10b6:8:9b::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9160.18; Wed, 1 Oct 2025 20:20:51 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8%2]) with mapi id 15.20.9160.008; Wed, 1 Oct 2025
- 20:20:51 +0000
-From: <dan.j.williams@intel.com>
-Date: Wed, 1 Oct 2025 13:20:48 -0700
-To: Xu Yilun <yilun.xu@linux.intel.com>, <linux-coco@lists.linux.dev>,
-	<linux-pci@vger.kernel.org>, <dan.j.williams@intel.com>
-CC: <yilun.xu@intel.com>, <yilun.xu@linux.intel.com>,
-	<baolu.lu@linux.intel.com>, <zhenzhong.duan@intel.com>,
-	<aneesh.kumar@kernel.org>, <bhelgaas@google.com>, <aik@amd.com>,
-	<linux-kernel@vger.kernel.org>, =?UTF-8?B?SWxwbyBKw6RydmluZW4=?=
-	<ilpo.jarvinen@linux.intel.com>
-Message-ID: <68dd8d20aafb4_1fa2100f0@dwillia2-mobl4.notmuch>
-In-Reply-To: <20250928062756.2188329-3-yilun.xu@linux.intel.com>
-References: <20250928062756.2188329-1-yilun.xu@linux.intel.com>
- <20250928062756.2188329-3-yilun.xu@linux.intel.com>
-Subject: Re: [PATCH 2/3] PCI/IDE: Add Address Association Register setup for
- RP
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL1PR11MB5525:EE_|MW4PR11MB6572:EE_
+x-ms-office365-filtering-correlation-id: c36e96e6-d608-4551-c1e7-08de012c1065
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|7416014|366016|38070700021;
+x-microsoft-antispam-message-info: =?utf-8?B?aDV1RTUvaXp3WW5SeGI1YUMyUDY5R0ZTKzhxWGxkSjZycytCMjR1NnZKczk3?=
+ =?utf-8?B?dkIwbUs5Vkx5Q0V4b0VCNGFtRnVVRXV5U0UxYnVsR1B0UWJ3OFR1OHZiYVBv?=
+ =?utf-8?B?amRDQjBQVUtNNXIvTkdQYzVuR2c1QXRweGJiSGdZNnZXcGpTVURLLzNXZUJm?=
+ =?utf-8?B?QVA0SENLWGJjVFQxTzhzenRuOFFiSFhKWnhjRFBJYlZsMTlmUDllaUZWOHI3?=
+ =?utf-8?B?T2xjKzViS3Y2azZ5Y1FkTkYvM3d3U2UxS2tiVVRFNks3ZmpyNnUrY3hLY2Nu?=
+ =?utf-8?B?blJUVW1WQjA4dnhxemhjTzc5NkRyY3h4Wi9zNGxPTDFtNlZFTVl2VDhrb0RY?=
+ =?utf-8?B?V2JWTjZCMHVJVFBMOWlnUTZKUFU5VVhUOUFKdWZDd3QyeWtzV2pwTnZOemNF?=
+ =?utf-8?B?d2ZnTWQrQmNkS0pBaDc5UEJFaWk5Y3U3d0dkTFdZTUhpUVl1L25sOUkyTmdi?=
+ =?utf-8?B?MHRXRDhjTEVadnU5SUlaaXdaQkxweWtnbnJJQzFRZ1YvOUlFckQzMnNXYnlT?=
+ =?utf-8?B?aGt1dXVvMW94dVNSNGhSTHlrT0pZL1hIeTZHZmJFdFM3QUFmNDVidUZsSFVv?=
+ =?utf-8?B?ODZwemVVdndRRnJlV3lyMjZiWjU3d1BFR1ZvcmpnSEF6Rlphc0kzd3pnS21n?=
+ =?utf-8?B?U2pyZE1hNDQ5QkJFNnNjR3Y4YlpoZmxOdS80ZTRObHpobnVXNUFiVkE1Y3ky?=
+ =?utf-8?B?VHg3NHFDd1lZTXBWVzcrbDk0ZytEUXZvamF4Mlp6Nm1ZbXhUZzJOR2E5RHA3?=
+ =?utf-8?B?SUNvMEQ0OHlwdGlYRFBHZFFTUGJlTjhjZE8wS3hQL2xEK0RWQXNwMVdIa25F?=
+ =?utf-8?B?OHNDM3l3VnpKM3VWK0JRYVJrWktxN3E2TkhSSHNJNEZac01pRm5UTFNNbmFZ?=
+ =?utf-8?B?TzVGWkpOYW5LRWg1OTVEMzdqbkFsVmlLbWd2R0gyVVFjY1UzL3UxNFZaeHJu?=
+ =?utf-8?B?L2lvaTR3T29NVFdyTkVwLzdYZk5QYklpbGNWbHRKSUY4dHdZMmwxOE1udE5C?=
+ =?utf-8?B?dnZGZnpFckxERzE0cUF2eXFzK2R3RFVYdkZMSnh3RHhVVjkvZkFjbWMzQ3Jw?=
+ =?utf-8?B?V0E4ZDNxdTBzR2QyajJtRDcwcDJ6NWlmVk1HRnErOGF0N0pTaE5WbVdHaWhQ?=
+ =?utf-8?B?WVlHcEJReGszVFRMRDVxUWRJTmNvSFFSMWZ5QlVCVzdINXg0YTZCc2NKSFM3?=
+ =?utf-8?B?WUQ4TzA1dUY4b2Q5eTRNNzBSNTUwS1U5TTBTRTZwc0ZPcFE3TXFwdjMzalBs?=
+ =?utf-8?B?UitqdWFBVHBNSVBxTWp5cnFvSVlwTk54SFRxNHA4dmJybFo4bExBZVVrS2Fq?=
+ =?utf-8?B?amRhdkhIa2FsNW9nOW4xcndST1JIUkNNR1BWU05nYzBHbkJXaUxTVjNETVhs?=
+ =?utf-8?B?a0k3L1huQWEwTUdybDN1UzQxY1FycHFldkttZ1p3TEpFeUlhYjBNSHVacW5Y?=
+ =?utf-8?B?SjU3MmduUWVqejcvakM3WlNiclZubExiUHhQZlBwWkRzNWlIaTRzOTdKN0RN?=
+ =?utf-8?B?VC9BT0JmQlcxUlpQWGY2MVRmaU9HYzI1d0dqcWxmZ0xGQW5ueDgxMXFrMWwx?=
+ =?utf-8?B?bnJadHQ3WEM5NUU5OXpsVVVFaGRJZW00cklLYzluL0ZhUGcrQWZsRGtlcFpZ?=
+ =?utf-8?B?dDZMV2RPWUNrMU5Zd1lrMTEvcXFhdTJvcGFHakhKZ3pzbm9aV1JHRnFDUGts?=
+ =?utf-8?B?amhDYUNqRGFPOVNtREpZWFB0a3BoL0p6cHkwQ1ZuNmJWRVB6V3BIV011THZW?=
+ =?utf-8?B?eFE2ZEZaSC9iWWRpZnBnQzIvNDlGUnQ2WUpnbmtLY1RIL2taSXpWazhpeWth?=
+ =?utf-8?B?cHZ5NEwzVDYvS3hKdHdSSDVkQ0JSS0V4VUdmaTNHZjc2NVBucldqK0ZCeWVF?=
+ =?utf-8?B?NWdxR2lzQ1FuaWxFWkFRdGtIZmUxa0Nzc2xDV1FORTg0eGF5SUtLV0dJRURi?=
+ =?utf-8?B?cFpDZEJ0VzBydmxCNEs2WUhEeG1IbEo2V2RhTFFDQnlma2ZUdHdjMGt0ZGNk?=
+ =?utf-8?B?WHIrdFM4dVFZVnNjTHBCTWphRDNvY0JIdDE2bjFrYmlIeTFIODkyUUYrdUxY?=
+ =?utf-8?Q?LFs0SW?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR11MB5525.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?SWpyQXFYYlc3RWV0K2J1US80aGwyT2pHRWFvRU1sUWUwYk9oRWdDU3E0Lzl4?=
+ =?utf-8?B?RGFBclZJb0hzTjJWdnVtK3JtS3hMWTRBN2VmL3cwQ1FJaDNWWGxYYXV3elVI?=
+ =?utf-8?B?V2s2Ty90WE9wWGpmdFJURVNJNmd5RnIvNWsvZ1gvTlNWeWZ2L1FkbTFEOEw1?=
+ =?utf-8?B?NEVYaU4wU2ZlVWl5UjVZanNCb1ZHMkl1ZG9DcFJlN0NwRlBIamZ5ZngvOHZo?=
+ =?utf-8?B?RFhheXBpRzJGMW1pbnhIWHNjSjI5WmhhaFlzV21PNHU4SnFTbDEzcXYwZ1NK?=
+ =?utf-8?B?cFNkY3ZPeUZaU2tmQzZmMVFlWXZLOG0wSS9Rd1dhYlp4NTE5TEQ4OUhBM3BM?=
+ =?utf-8?B?QWNJTnJicjhzUGxpZ01SdnpDeVVTYzlyU1h6dDlkRE1TWCt2ZmxmcWl2MDhL?=
+ =?utf-8?B?UVJTSkw1VlFqRWlyZ2pWdW9pamI2Nno0YklhN0MrUUpoSE5DTzdXSkpxa200?=
+ =?utf-8?B?WU1naDh5RitURGNYak40anVnVEpFTXQ2SlJxVzhOcVRLMVhVUzh6bzJSQS91?=
+ =?utf-8?B?NDAxYW1EQnRmVVZaZlJBcEFXQzVmWnVEckxySGI4bGNSS2gralpTL29CMXp3?=
+ =?utf-8?B?MnRYNkZRSkRTSHpPVVhmdEpkM3lPeXVxSVlFbGRDa2wwa3FZaDNKTndoa0xU?=
+ =?utf-8?B?RjR5UVdpY1FUU25GY1ZkYU42NE8zVjZGTkttRGE4RHBZaHVXQzVzV1l6Nklv?=
+ =?utf-8?B?Q0dHVDF2SGpJVXl0WHgzaWdQTzVSWTArNjJ6MmZMeEEzU0pXTEdZSnJ1dHl5?=
+ =?utf-8?B?WFpMeW5mSEJGZGF1Y3c1MGtTZkpoTW03SFVNSW05K2lNMFc3c3dpYzNNV0VM?=
+ =?utf-8?B?UHl0T0w1R0Y1WkdJQWw3QmlYZXhlZkVDR1hoaHJvNWdxQU1hZG4xZVRCNmpl?=
+ =?utf-8?B?eWhJZkttYUFHRi9tVDZjeWJneXpkMDdZWjdlanNxUlYzaEw3MkxaSThTRkpt?=
+ =?utf-8?B?V3lhaHBLRjNWRHVRbFJCQ2xsM0JjTWxMblIwT21jN2ZKNDZ5YXViMzVxNVVU?=
+ =?utf-8?B?UkVDUXpmWW50ZDgzTkNHSVZETnhQR2ZQb2JISjZabzFCZVdCNmtHKzFlS0Fn?=
+ =?utf-8?B?WkdXVVk4ZFNaVFg2ZVd6MW5DRUtUcXFYc1pqQVdlSFc2OTBxSml3RVVMekJY?=
+ =?utf-8?B?YkVpVjJEZjd3aFF5V0QwbVVFWFI2SEtGcXpCN2FVSnZIMGVhT3VyeFptMlda?=
+ =?utf-8?B?Zzh3NlhnUUtDRTc5MW9pU2JBNndqSGFieDFyUzZ4N08xU21xakhqTjF4L2dt?=
+ =?utf-8?B?a0ZvZElnQmVTL1FkMXNZY3ZTYzFwbXRsclRwUUpUVmxheE5aOTZsdUpBaFRj?=
+ =?utf-8?B?Z1hYaXU3WDM4dk1EbEdLMFhqakxuZGJOcTUyQ1AxVmxDZE9iQTlOcFE5cSt4?=
+ =?utf-8?B?SjBPYUM5M1dFZHZVY2VzV2xJZ1dNaVZ4dFBIUTlTMGpmdVJYK0FvVzkrMFN5?=
+ =?utf-8?B?NVBFK2QzL1VXOWc1ZjB0anJQanVDbFVlWG9wejVDKzVMNm43SjNrWmdZYTU3?=
+ =?utf-8?B?d3JpNFFtbzRKTTl1Ni9WV3dUVWExaFBlWDlWdHFSRHZMdTJvQW50QUsvV2o5?=
+ =?utf-8?B?WkdKQVB3QSsrdFNXcG5HVzNnaWwxUWRRNlZBVFJHczFpNVZQWEttbkZMc0tG?=
+ =?utf-8?B?U0Y3ZnJHb1lkQ3VjY0VnUDUyRUQxMFdIWXR6NUwzbXAyd3g4TWNLSGtQSkt5?=
+ =?utf-8?B?THNsRDJEOS9NZDdENDdMT2N4WFZzNkFjQ0hVczVpcVlkWkhHZG9vWHBjdnJJ?=
+ =?utf-8?B?UXBXZG45cGJkd2lHcExxa1Yya1Rkc0s4bitiMWJkd3B6aGVUYmlVZHEyN3ZE?=
+ =?utf-8?B?WkRnUHhWQnpVM1RqR2Frb2phaHozNEdNUHVXTmpKcFd4UTU3UFFCOW0wTThU?=
+ =?utf-8?B?emExNFhwN2d6b0FUcjA1RXV0YjFXT2llT3doeEI3SjM5VW1ySEJrSVNhbnQw?=
+ =?utf-8?B?SE9WcEJ2TEZFTVVocU5SRGcrUmNDcmRKNDhWUk1LWGIxTk84Mmx6eWFhaDRr?=
+ =?utf-8?B?RDlRTEdqbW5lcmowM3VZaUE1UFM5d3FZckw5bmxORjByYS9rSytVQmxJVlNF?=
+ =?utf-8?B?Ti9rT3lZYWpYNkV1T0NBUFdYdXlLd01yaWFvZGpkdzdMTTR0dnBhRmN6aE5q?=
+ =?utf-8?Q?x/09vhsgTqJJHHxgmH2SBrZkn?=
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR03CA0030.namprd03.prod.outlook.com
- (2603:10b6:303:8f::35) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+Content-ID: <29C50CA48BE80A40BE5C91146F2B96C0@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DS7PR11MB6152:EE_
-X-MS-Office365-Filtering-Correlation-Id: f1576d02-9752-417c-510e-08de0128041c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?SGFrL04xcXR6QzJKSTdlWTVnZEN5ckFTT1FyMG5adU1yeVZNLytiSk9IQ1Rl?=
- =?utf-8?B?dmlJaGNnZGtZUUdiVlJWRjdlQXNDNTZ3TlpQNU1TNjg0N01taGJPaTdwQUZG?=
- =?utf-8?B?RCtlaFBlYjRMbXE4ZEhzRGY3ZEJHZE52UlRZbkhNdEtnMU56Y0F1SUwzZ0Vh?=
- =?utf-8?B?S2djZTVsM2xSZU9ackZTb2xCSnlYUjR0cENRc1Nubk4rVVFpeDlHQVRoM25y?=
- =?utf-8?B?VkRlOE9hYWdyR1p3VnlRaVZYWWU1b2piSlpKTDNVZlBWUGcvaXdCSzB0RHhC?=
- =?utf-8?B?KytuVmtMWFh5OUZPdFlUR1NITXRoaHN5cHAvTkk2SGpFWXVENURESm1jSGxy?=
- =?utf-8?B?K3htWlVUb2RpLzVmckM4ci9sL3YvdnNsaDVaWjIvbS92U2ZqUHMyT1hKSGV1?=
- =?utf-8?B?aTNBRzE3Qkw5ZkJ4eVlvaXkyNUYvS1BnTnUydnphSVdYZFp2YXd4MXVHZzVt?=
- =?utf-8?B?cnJxbjRVekVzQVVQbzFsaHZvaW9za0IvZzhDQTdOZGl1eHhaS3Z1alpBaXYy?=
- =?utf-8?B?aXROYnhmRk4wdXNoeS9EbnI4ZWIzcUE0dEpWQVFvdlRwMm9FWEpITDhhSDV2?=
- =?utf-8?B?eDdXTFVOUGRaR3NpM2R1T0x0Q1kzcFBHcVdURU5SNUROdSszS2R6ZzBRSmR2?=
- =?utf-8?B?cW5vVVRxVXZGeHhhUzhQMFJWUFJwWkl1V3UwNmtlKysxWjJRZWpkNEhBbUVZ?=
- =?utf-8?B?cUFpWTlONXJqY1oxdkNuazBGMndWY2VTcCtDRzM4QlZvdVo2M2dRNG1odlNC?=
- =?utf-8?B?a3Badmo0ZUdybmt0R3g2M2ZseWVDNTdIZjJ5UmdrYWFZSkdSc0Y5RnJqcDNZ?=
- =?utf-8?B?OHYxUU5ZemlLVmZacjVDWWl5UU9mSFRPZWlkUk1nOXppQ0gyelJLcGFFZHlN?=
- =?utf-8?B?QWpYUGRqV0hlbjhxSmtScVpsS1RWL3NxdHYxQkV3RWRuUXVLdmcya1NqMmVR?=
- =?utf-8?B?MDBteHVCcXFycnVxZjdMUkJnenFQLzNkVDFpK2h0YU1YZ2FFaDFXdWpDK2t0?=
- =?utf-8?B?MEFPS1U4VFdJSTlGd21JaTBlUktmSG85K1N6R2xsSDlSTjJWRitQekdEVzBH?=
- =?utf-8?B?Mm5oZWFqOTYyMVhGSDdoRjBDVnUrTDZ2Rjl1NnI4WlpPU1lucFJTWG5mb0Fy?=
- =?utf-8?B?VFowTkpRRzBNRmp4Ujh6UU0vYkh2UHIrUUJac0YyQlRrTEQ1amkycWtIVEp3?=
- =?utf-8?B?b2YrUlVkekE0WU9sNlNHK2c5Zk9yakdoUC9aK2t5WUgvaUZyNEpDTXp6dDFO?=
- =?utf-8?B?ME9lWCtFOUhVeXorS3ZvSlh3bERxQnhac1ZJUTNvNjN5aDRsb3hKQWs5dE5D?=
- =?utf-8?B?MVZYaFlQOGx6eVdFYkJ5QmJLUldaaFl1S2drbElYeU0wTnQwNTZuZjFwZTJn?=
- =?utf-8?B?dHNMOTBhODVUZUdmcHkyTVJRRGY2MWdzYnhyclRIVkhvYTJpUU5IRi9SSmN2?=
- =?utf-8?B?OFJiMmR0SzVIL3dqRkJOdW1OWk96ZENweWpyTE8ya3lGVGNLckFTQ3FBZllm?=
- =?utf-8?B?YTFIZTZpQW4xYUxtajc0V0ErRlU3eWthNElQSTBzNlJxOE5sWWFNdkJhSVhz?=
- =?utf-8?B?LzlaMTFEaTZUQjhUa2FiRndwaTZwNHFPTU94UkwvRmZHMDdubWlkSHVmMEtp?=
- =?utf-8?B?ZDZuY0RaZEVlemc4aWlJd3hDREhaUHFJb1NEaUZBazVvZUV4djAwWGs2RGVy?=
- =?utf-8?B?SUlzVG94OGlDMlA4S2UrTVJGSGdKc0huak5pZklTMDB4VWZ4MEpwdlVsMGxj?=
- =?utf-8?B?UHNGbmkwMm0vZkhzZDNzRU9RaHprMnlBRmVKQVptMjdOWkNGc3JOcDA2WkNy?=
- =?utf-8?B?RWNBelFZUGhqNHkwL0UrejRQYktyMHhkdFlTeFJEdm5IVEFGTG1GdUNwQzNo?=
- =?utf-8?B?Ymp5Wk5tdjFuV0xLazMra3hCbXZOUmFEMFJ5bmFlaE81VktoeW5CcnN1VkUw?=
- =?utf-8?Q?r9SAfrN0FVbYGg+EzNE6WwkTEKB2ohaY?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?V0Q5RFRDSXd3UWJPakViS2NqWmQ1cDliSWF2MlVOVzlnbnFRMzBheUNBMHZh?=
- =?utf-8?B?TkZRdk5ia1BGbTZuK3hLTUVEbmVSV3JOdnBFS3N0YnRWckY3WW96ZXRlTm1G?=
- =?utf-8?B?a3ZOTDJmUEx1SWsvQit0K2FkMU85ems5eXExYW1mdzg1Z3ZDNFlPZlVSWnM1?=
- =?utf-8?B?eDU2Qm56R2RUTFhrTXpFL0JFV3JOa2czTk5BNUVWR04rNlUxbTdySXpZNDJ1?=
- =?utf-8?B?RlVJQjRxZVBPUloyUEU0S3BmcjFxVTVoK1JUNHBMTjMybEpleEtZRlUyTVV1?=
- =?utf-8?B?UUpQWUxNOTFYR281R296UWI4NjBKR0VNRmVUckJRK2lIaVlkWGg5YWNkbmN1?=
- =?utf-8?B?a0dwQksxZXVHT0xGbXl5ZlFsYzRQeEhlUHo2QXhBclZjMDlSNzN5ZTI0RVRl?=
- =?utf-8?B?cDRhOUZYZGt5cWtRWlZId1RpWGJKWkZKSXB2NTlmd2ttcEZmUzVkYkc2Y0lE?=
- =?utf-8?B?VDQ3cXJGZHp2U2JoOEJOZVpNMzRNU0NGZ0I5bVVNY2tWMUx5VmpWdDM5NWs0?=
- =?utf-8?B?UExFdHJxN2JKWlorWS85cUtQUXh2dHRVYWpIdnVyR29TVkpoVDU5d2xrbWJL?=
- =?utf-8?B?ci9yS0t2TytEOHE3c3Q4azNlK29TcHhWNy9iTXVkSzJXUFliVmNrZmk0TThV?=
- =?utf-8?B?MFIzMW9aeUtJQko3dyswZStrcXVwMTUyaXFuZXI1ZWo3eVFCR0tJekNwdUZV?=
- =?utf-8?B?NXA2VGFCclYzTm94cm9IZ2NRNWgrQnIraEVvU21oeWxmbGVXemU1WWZnRDly?=
- =?utf-8?B?KzZjaGIzVGRyVisrMXNNSWF4eTRXQWZkcWsyNE5oVURzQnpGeUVmaFpkZHJu?=
- =?utf-8?B?MzN6bk5uNVdYUzJoa3Znd2psTHVZbGgyZ0lBSXZ6cVRTNlFQSWpRMmxWaXpi?=
- =?utf-8?B?SGsycUNQcmdObmZkbW4yc2pyQTNOWENTZnB1Z0VMMlB5WFRZRVpqTXZ6a09T?=
- =?utf-8?B?VkloQlJjc3B2a1J1dDR6dHAvT2tKTWQrbmFwU2tXUGZYclpVM0ZTMHJKKzdi?=
- =?utf-8?B?aUNQTkUyTktnWlZlSEFTNlpvWlUrMTVpcHpxakZlZHlnTmRjZGo1bVp6N01k?=
- =?utf-8?B?QzViTExWR0VMTWZMSVpNR2NYRkdrNmxtZUtwZEpmM25xK2xQR1hOZ1htdDRF?=
- =?utf-8?B?cklSV3YzKzlhaGI3dUxZMFM4WXFCSzRtMDhOcTRHRkZyb01OK09aS04vcnZY?=
- =?utf-8?B?Zm1EQkkxMElJbXl1OG92RWpsTzgxNGNwK0JXRThwcUNlNkRrdyttSmg0RThV?=
- =?utf-8?B?SkRhQVRQd2d4czJ5cUZ5YlZFRCtsb2N2NFdkNk1lNDN5RS8ybzVxbVhybEt4?=
- =?utf-8?B?NW9sengxbGhNYjVzRlZlcHdkdzcrQzlRMlZab1FlRHMrbFMrSDF6ZEhQL0Y4?=
- =?utf-8?B?YzQvL3NXL01lVjFBL3F3ZkJzeGZGaUY4R010VWxzcFB6UUhid0dvemJpdzBr?=
- =?utf-8?B?UEJrdG5qZlhQQy9kWHROQnpVMmJMZEFXM3BiaDI3MGdYRnBET3ZBTzhEbDFp?=
- =?utf-8?B?WlNtMUZxeXZOalJJN1dJaUg4cVQ4UkZTNVJGdTZmM3VNQ2hoa2hSVHlwSjFL?=
- =?utf-8?B?N3ZoQVhpSGVCN3U0UnJpNWhiTkNnU2Rxa3Fya2JRdk1UZE5RcnVsVE53SzVR?=
- =?utf-8?B?d24ya1UyOWQ0WWM4NXBBNlRpejB2M3JUR3lveUZvWFk1b3RIbDhjL0ViYkVu?=
- =?utf-8?B?cWtydjhWdmZuUkdyaVhFN2tzckZIaGJHelQxYk1qamZULzIzVXlQM3RlcnV1?=
- =?utf-8?B?bkhWZmMvaUdhS2JuVGZHdWRXNXJWS3hjNXArS29rWW1GdnU5L1lLNEhxNVhG?=
- =?utf-8?B?RUxFK1R4aThqV3NFd1M0bTJOYXBxWm5adWNCWllCeFVQREQvK1FZeEQ4UW9i?=
- =?utf-8?B?QUpEaGtLNGxJalJIRVVvdzk3cDRiV29CNmliZ3NTMGtvOVpOS2lwaUxnMkkw?=
- =?utf-8?B?dkNtZUdyVXR0eWxtNDRIeGxMWmc1OEMrYTNBdTV3b3lsbU9YRGFmZ2xDWXph?=
- =?utf-8?B?WE0vVkNjemRZeWRjWWxDQVhxOUtxVEk4TW5ucVJPZVJJRjhSeWczT2l4VGRN?=
- =?utf-8?B?SDBNa3lPMGdQMXFJVnJCSy9Bb1l6VmdEcWZGUHlsdU53bzJ5Wmh1N3UzbXIy?=
- =?utf-8?B?THBMZUV4aE9wclhMTThuY29FSEFXTi9lVXlOUjYvRVNjTDRidkIwVzQwZmdP?=
- =?utf-8?B?UGc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: f1576d02-9752-417c-510e-08de0128041c
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2025 20:20:51.3973
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5525.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c36e96e6-d608-4551-c1e7-08de012c1065
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Oct 2025 20:49:49.8274
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NQYN8aCZFTDMY2+IXS24C48rFmOjQrwoyqg2P8yWcusOSxeHGjoJahuAD6nGHNhvilm1GcDzYjBs5EjYAzb33lwQ+qS+zSEo0d08g0ynBeY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB6152
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: PMoVk1QeCGBQ0apD3U017kgaTTh/a0xAki7JH+txF60LIt99zq2ZXET8evV13j1isXW8bj6HY/JgWpKrq5tDPA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB6572
 X-OriginatorOrg: intel.com
 
-[ Add Ilpo for resource_assigned() usage proposal below ]
-
-Xu Yilun wrote:
-> Add Address Association Register setup for Root Ports.
-
-Perhaps it would be more accurate to call this "Address Association for
-downstream MMIO" to clearly distinguish it from memory cycles targetting
-the root port.
-
-> The address ranges for RP side Address Association Registers should
-> cover memory addresses for all PFs/VFs/downstream devices of the DSM
-> device. A simple solution is to get the aggregated 32-bit and 64-bit
-> address ranges from directly connected downstream port (either an RP or
-> a switch port) and set into 2 Address Association Register blocks.
-
-For the bridge the split is not 32-bit vs 64-bit. The split is
-non-prefetchable vs prefetchable where the latter is potentially 64-bit,
-but not always.
-
-> There is a case the platform doesn't require Address Association
-> Registers setup and provides no register block for RP (AMD). Will skip
-> the setup in pci_ide_stream_setup().
-
-Instead of calling out architecture specific details this can say
-
-"Just like RID association, address associations will be set by default
-if hardware sets 'Number of Address Association Register Blocks' in the
-'Selective IDE Stream Capability Register' to a non-zero value.
-Alternatively, TSM drivers can opt-out of the settings by zero'ing out
-the probed region."
-
-> Also imaging another case where there is only one block for RP.
-> Prioritize 64-bit address ranges setup for it. No strong reason for the
-> preference until a real use case comes.
-
-Rather than invent a new a policy just follow the PCI bridge
-specification precedent where memory is mandatory and
-prefetchable-memory is optional. If a bridge maps both, check if the
-device needs both. If the device needs both and the platform only
-provides 1 address association block then setup the non-optional BAR
-first. If that results in an incomplete solution that is a quirk that
-the vendor needs to solve, not the core PCI implementation.
-
-Specifically, if that happens, the solution might be either a quirk to
-disable address associations, or a quirk to disable one of the ranges.
-Which path to take is unknown until there is a practical problem to
-solve.
-
-> The Address Association Register setup for Endpoint Side is still
-> uncertain so isn't supported in this patch.
-> 
-> Take the oppotunity to export some mini helpers for Address Association
-> Registers setup. TDX Connect needs the provided aggregated address
-> ranges but will use specific firmware calls for actual setup instead of
-> pci_ide_stream_setup().
-> 
-> Co-developed-by: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-> Co-developed-by: Arto Merilainen <amerilainen@nvidia.com>
-> Signed-off-by: Arto Merilainen <amerilainen@nvidia.com>
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> ---
->  include/linux/pci-ide.h | 11 +++++++
->  drivers/pci/ide.c       | 64 ++++++++++++++++++++++++++++++++++++++++-
->  2 files changed, 74 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/pci-ide.h b/include/linux/pci-ide.h
-> index 5adbd8b81f65..ac84fb611963 100644
-> --- a/include/linux/pci-ide.h
-> +++ b/include/linux/pci-ide.h
-> @@ -6,6 +6,15 @@
->  #ifndef __PCI_IDE_H__
->  #define __PCI_IDE_H__
->  
-> +#define SEL_ADDR1_LOWER GENMASK(31, 20)
-> +#define SEL_ADDR_UPPER GENMASK_ULL(63, 32)
-> +#define PREP_PCI_IDE_SEL_ADDR1(base, limit)                    \
-> +	(FIELD_PREP(PCI_IDE_SEL_ADDR_1_VALID, 1) |             \
-> +	 FIELD_PREP(PCI_IDE_SEL_ADDR_1_BASE_LOW,          \
-> +		    FIELD_GET(SEL_ADDR1_LOWER, (base))) | \
-> +	 FIELD_PREP(PCI_IDE_SEL_ADDR_1_LIMIT_LOW,         \
-> +		    FIELD_GET(SEL_ADDR1_LOWER, (limit))))
-> +
->  #define PREP_PCI_IDE_SEL_RID_2(base, domain)               \
->  	(FIELD_PREP(PCI_IDE_SEL_RID_2_VALID, 1) |          \
->  	 FIELD_PREP(PCI_IDE_SEL_RID_2_BASE, (base)) | \
-> @@ -42,6 +51,8 @@ struct pci_ide_partner {
->  	unsigned int default_stream:1;
->  	unsigned int setup:1;
->  	unsigned int enable:1;
-> +	struct range mem32;
-> +	struct range mem64;
->  };
->  
->  /**
-> diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
-> index 7633b8e52399..8db1163737e5 100644
-> --- a/drivers/pci/ide.c
-> +++ b/drivers/pci/ide.c
-> @@ -159,7 +159,11 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
->  	struct stream_index __stream[PCI_IDE_HB + 1];
->  	struct pci_host_bridge *hb;
->  	struct pci_dev *rp;
-> +	struct pci_dev *br;
->  	int num_vf, rid_end;
-> +	struct range mem32 = {}, mem64 = {};
-
-Per-above these should be mem_assoc, and pref_assoc;
-
-> +	struct pci_bus_region region;
-> +	struct resource *res;
->  
->  	if (!pci_is_pcie(pdev))
->  		return NULL;
-> @@ -206,6 +210,24 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
->  	else
->  		rid_end = pci_dev_id(pdev);
->  
-> +	br = pci_upstream_bridge(pdev);
-> +	if (!br)
-> +		return NULL;
-> +
-> +	res = &br->resource[PCI_BRIDGE_MEM_WINDOW];
-> +	if (res->flags & IORESOURCE_MEM) {
-
-Per Ilpo this can now just be a size check.
-
-> +		pcibios_resource_to_bus(br->bus, &region, res);
-> +		mem32.start = region.start;
-> +		mem32.end = region.end;
-> +	}
-> +
-> +	res = &br->resource[PCI_BRIDGE_PREF_MEM_WINDOW];
-> +	if (res->flags & IORESOURCE_PREFETCH) {
-> +		pcibios_resource_to_bus(br->bus, &region, res);
-> +		mem64.start = region.start;
-> +		mem64.end = region.end;
-> +	}
-> +
->  	*ide = (struct pci_ide) {
->  		.pdev = pdev,
->  		.partner = {
-> @@ -218,6 +240,8 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
->  				.rid_start = pci_dev_id(pdev),
->  				.rid_end = rid_end,
->  				.stream_index = no_free_ptr(rp_stream)->stream_index,
-> +				.mem32 = mem32,
-> +				.mem64 = mem64,
->  			},
->  		},
->  		.host_bridge_stream = no_free_ptr(hb_stream)->stream_index,
-> @@ -397,6 +421,21 @@ static void set_ide_sel_ctl(struct pci_dev *pdev, struct pci_ide *ide,
->  	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_CTL, val);
->  }
->  
-> +static void set_ide_sel_addr(struct pci_dev *pdev, int pos, int assoc_idx,
-> +			     struct range *mem)
-> +{
-> +	u32 val;
-> +
-> +	val = PREP_PCI_IDE_SEL_ADDR1(mem->start, mem->end);
-> +	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_1(assoc_idx), val);
-> +
-> +	val = FIELD_GET(SEL_ADDR_UPPER, mem->end);
-> +	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_2(assoc_idx), val);
-> +
-> +	val = FIELD_GET(SEL_ADDR_UPPER, mem->start);
-> +	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_3(assoc_idx), val);
-> +}
-> +
->  /**
->   * pci_ide_stream_setup() - program settings to Selective IDE Stream registers
->   * @pdev: PCIe device object for either a Root Port or Endpoint Partner Port
-> @@ -410,6 +449,7 @@ static void set_ide_sel_ctl(struct pci_dev *pdev, struct pci_ide *ide,
->  void pci_ide_stream_setup(struct pci_dev *pdev, struct pci_ide *ide)
->  {
->  	struct pci_ide_partner *settings = pci_ide_to_settings(pdev, ide);
-> +	u8 assoc_idx = 0;
->  	int pos;
->  	u32 val;
->  
-> @@ -424,6 +464,21 @@ void pci_ide_stream_setup(struct pci_dev *pdev, struct pci_ide *ide)
->  	val = PREP_PCI_IDE_SEL_RID_2(settings->rid_start, pci_ide_domain(pdev));
->  	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_2, val);
->  
-> +	/*
-> +	 * Feel free to change the default stratagy, Intel & AMD don't directly
-> +	 * setup RP registers.
-> +	 *
-> +	 * 64 bit memory first, assuming it's more popular.
-> +	 */
-> +	if (assoc_idx < pdev->nr_ide_mem && settings->mem64.end != 0) {
-> +		set_ide_sel_addr(pdev, pos, assoc_idx, &settings->mem64);
-> +		assoc_idx++;
-> +	}
-> +
-> +	/* 64 bit memory in lower block and 32 bit in higher block, any risk? */
-> +	if (assoc_idx < pdev->nr_ide_mem && settings->mem32.end != 0)
-> +		set_ide_sel_addr(pdev, pos, assoc_idx, &settings->mem32);
-> +
-
-Per-above, just drop the 64-bit policy and assumption. It will naturally
-fail if the required number of address associations is insufficient.
-I.e. either we are in the AMD situation and no amount of address
-association is required, or we are in the ARM / Intel situation where it
-assigns memory then prefetch-memory (if both are present). If both of
-those are required and the hardware only supports 1 address association
-then that hardware vendor is responsible for figuring out a quirk.
-
-Otherwise Linux expects that any hardware that requires address
-association always produces at least 2 address association blocks at the
-root port, or otherwise arranges for only one memory window type to be
-active.
-
->  	/*
->  	 * Setup control register early for devices that expect
->  	 * stream_id is set during key programming.
-> @@ -445,7 +500,7 @@ EXPORT_SYMBOL_GPL(pci_ide_stream_setup);
->  void pci_ide_stream_teardown(struct pci_dev *pdev, struct pci_ide *ide)
->  {
->  	struct pci_ide_partner *settings = pci_ide_to_settings(pdev, ide);
-> -	int pos;
-> +	int pos, i;
->  
->  	if (!settings)
->  		return;
-> @@ -453,6 +508,13 @@ void pci_ide_stream_teardown(struct pci_dev *pdev, struct pci_ide *ide)
->  	pos = sel_ide_offset(pdev, settings);
->  
->  	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_CTL, 0);
-> +
-> +	for (i = 0; i < pdev->nr_ide_mem; i++) {
-> +		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_1(i), 0);
-> +		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_2(i), 0);
-> +		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_3(i), 0);
-> +	}
-
-Hmm, if we are going to clear all on stop then probably should also
-clear all unused on setup just to be consistent.
-
-> +
->  	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_2, 0);
->  	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_1, 0);
->  	settings->setup = 0;
-> -- 
-> 2.25.1
-> 
-
-Here are the proposed incremental changes addressing the above. The new
-pci_ide_stream_to_regs() helper can later be exported to TSM drivers
-that need a formatted copy of the register settings. I prefer that to
-exporting the internals (the PREP_() macros for register setup and the
-pci_ide_domain()).
-
--- >8 --
-diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-index b46e42bcafe3..e7c14ce1b1d0 100644
---- a/include/linux/ioport.h
-+++ b/include/linux/ioport.h
-@@ -336,6 +336,12 @@ static inline bool resource_union(const struct resource *r1, const struct resour
- 	return true;
- }
- 
-+/* Check if this resource is added to a resource tree or detached. */
-+static inline bool resource_assigned(struct resource *res)
-+{
-+	return res->parent != NULL;
-+}
-+
- int find_resource_space(struct resource *root, struct resource *new,
- 			resource_size_t size, struct resource_constraint *constraint);
- 
-diff --git a/include/linux/pci-ide.h b/include/linux/pci-ide.h
-index ad4fcde75a56..4e33fa6944a1 100644
---- a/include/linux/pci-ide.h
-+++ b/include/linux/pci-ide.h
-@@ -28,6 +28,9 @@ enum pci_ide_partner_select {
-  * @rid_start: Partner Port Requester ID range start
-  * @rid_end: Partner Port Requester ID range end
-  * @stream_index: Selective IDE Stream Register Block selection
-+ * @mem_assoc: PCI bus memory address association for targetting peer partner
-+ * @pref_assoc: (optional) PCI bus prefetchable memory address association for
-+ *		targetting peer partner
-  * @default_stream: Endpoint uses this stream for all upstream TLPs regardless of
-  *		    address and RID association registers
-  * @setup: flag to track whether to run pci_ide_stream_teardown() for this
-@@ -38,11 +41,33 @@ struct pci_ide_partner {
- 	u16 rid_start;
- 	u16 rid_end;
- 	u8 stream_index;
-+	struct pci_bus_region mem_assoc;
-+	struct pci_bus_region pref_assoc;
- 	unsigned int default_stream:1;
- 	unsigned int setup:1;
- 	unsigned int enable:1;
--	struct range mem32;
--	struct range mem64;
-+};
-+
-+/**
-+ * struct pci_ide_regs - Hardware register association settings for Selective
-+ *			 IDE Streams
-+ * @rid_1: IDE RID Association Register 1
-+ * @rid_2: IDE RID Association Register 2
-+ * @addr: Up to two address association blocks (IDE Address Association Register
-+ *	  1 through 3) for MMIO and prefetchable MMIO
-+ * @nr_addr: Number of address association blocks initialized
-+ *
-+ * See pci_ide_stream_to_regs()
-+ */
-+struct pci_ide_regs {
-+	u32 rid_1;
-+	u32 rid_2;
-+	struct {
-+		u32 assoc1;
-+		u32 assoc2;
-+		u32 assoc3;
-+	} addr[2];
-+	int nr_addr;
- };
- 
- /**
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 3a71f30211a5..ca97590de116 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -877,6 +877,11 @@ struct pci_bus_region {
- 	pci_bus_addr_t	end;
- };
- 
-+static inline pci_bus_addr_t pci_bus_region_size(const struct pci_bus_region *region)
-+{
-+	return region->end - region->start + 1;
-+}
-+
- struct pci_dynids {
- 	spinlock_t		lock;	/* Protects list, index */
- 	struct list_head	list;	/* For IDs added at runtime */
-diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
-index 7b2aa0b30376..8e30b75f1f4d 100644
---- a/drivers/pci/ide.c
-+++ b/drivers/pci/ide.c
-@@ -157,13 +157,13 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
- {
- 	/* EP, RP, + HB Stream allocation */
- 	struct stream_index __stream[PCI_IDE_HB + 1];
-+	struct pci_bus_region pref_assoc = { 0, -1 };
-+	struct pci_bus_region mem_assoc = { 0, -1 };
-+	struct resource *res, *mem, *pref;
- 	struct pci_host_bridge *hb;
-+	int num_vf, rid_end;
- 	struct pci_dev *rp;
- 	struct pci_dev *br;
--	int num_vf, rid_end;
--	struct range mem32 = {}, mem64 = {};
--	struct pci_bus_region region;
--	struct resource *res;
- 
- 	if (!pci_is_pcie(pdev))
- 		return NULL;
-@@ -214,18 +214,20 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
- 	if (!br)
- 		return NULL;
- 
--	res = &br->resource[PCI_BRIDGE_MEM_WINDOW];
--	if (res->flags & IORESOURCE_MEM) {
--		pcibios_resource_to_bus(br->bus, &region, res);
--		mem32.start = region.start;
--		mem32.end = region.end;
--	}
--
--	res = &br->resource[PCI_BRIDGE_PREF_MEM_WINDOW];
--	if (res->flags & IORESOURCE_PREFETCH) {
--		pcibios_resource_to_bus(br->bus, &region, res);
--		mem64.start = region.start;
--		mem64.end = region.end;
-+	/*
-+	 * Check if the device consumes memory and/or prefetch-memory. Setup
-+	 * downstream address association ranges for each.
-+	 */
-+	mem = pci_resource_n(br, PCI_BRIDGE_MEM_WINDOW);
-+	pref = pci_resource_n(br, PCI_BRIDGE_PREF_MEM_WINDOW);
-+	pci_dev_for_each_resource(pdev, res) {
-+		if (resource_assigned(mem) && resource_contains(mem, res) &&
-+		    !pci_bus_region_size(&mem_assoc))
-+			pcibios_resource_to_bus(br->bus, &mem_assoc, mem);
-+
-+		if (resource_assigned(pref) && resource_contains(pref, res) &&
-+		    !pci_bus_region_size(&pref_assoc))
-+			pcibios_resource_to_bus(br->bus, &pref_assoc, pref);
- 	}
- 
- 	*ide = (struct pci_ide) {
-@@ -235,13 +237,16 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
- 				.rid_start = pci_dev_id(rp),
- 				.rid_end = pci_dev_id(rp),
- 				.stream_index = no_free_ptr(ep_stream)->stream_index,
-+				/* Disable upstream address association */
-+				.mem_assoc = { 0, -1 },
-+				.pref_assoc = { 0, -1 },
- 			},
- 			[PCI_IDE_RP] = {
- 				.rid_start = pci_dev_id(pdev),
- 				.rid_end = rid_end,
- 				.stream_index = no_free_ptr(rp_stream)->stream_index,
--				.mem32 = mem32,
--				.mem64 = mem64,
-+				.mem_assoc = mem_assoc,
-+				.pref_assoc = pref_assoc,
- 			},
- 		},
- 		.host_bridge_stream = no_free_ptr(hb_stream)->stream_index,
-@@ -420,19 +425,61 @@ static void set_ide_sel_ctl(struct pci_dev *pdev, struct pci_ide *ide,
- 	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_CTL, val);
- }
- 
--static void set_ide_sel_addr(struct pci_dev *pdev, int pos, int assoc_idx,
--			     struct range *mem)
-+#define SEL_ADDR1_LOWER GENMASK(31, 20)
-+#define SEL_ADDR_UPPER GENMASK_ULL(63, 32)
-+#define PREP_PCI_IDE_SEL_ADDR1(base, limit)               \
-+	(FIELD_PREP(PCI_IDE_SEL_ADDR_1_VALID, 1) |        \
-+	 FIELD_PREP(PCI_IDE_SEL_ADDR_1_BASE_LOW,          \
-+		    FIELD_GET(SEL_ADDR1_LOWER, (base))) | \
-+	 FIELD_PREP(PCI_IDE_SEL_ADDR_1_LIMIT_LOW,         \
-+		    FIELD_GET(SEL_ADDR1_LOWER, (limit))))
-+
-+static void mem_assoc_to_regs(struct pci_bus_region *region,
-+			      struct pci_ide_regs *regs, int idx)
- {
--	u32 val;
-+	regs->addr[idx].assoc1 =
-+		PREP_PCI_IDE_SEL_ADDR1(region->start, region->end);
-+	regs->addr[idx].assoc2 = FIELD_GET(SEL_ADDR_UPPER, region->end);
-+	regs->addr[idx].assoc3 = FIELD_GET(SEL_ADDR_UPPER, region->start);
-+}
-+
-+/**
-+ * pci_ide_stream_to_regs() - convert IDE settings to association register values
-+ * @pdev: PCIe device object for either a Root Port or Endpoint Partner Port
-+ * @ide: registered IDE settings descriptor
-+ * @regs: output register values
-+ */
-+static void pci_ide_stream_to_regs(struct pci_dev *pdev, struct pci_ide *ide,
-+				   struct pci_ide_regs *regs)
-+{
-+	struct pci_ide_partner *settings = pci_ide_to_settings(pdev, ide);
-+	int pos, assoc_idx = 0;
-+
-+	memset(regs, 0, sizeof(*regs));
-+
-+	if (!settings)
-+		return;
- 
--	val = PREP_PCI_IDE_SEL_ADDR1(mem->start, mem->end);
--	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_1(assoc_idx), val);
-+	pos = sel_ide_offset(pdev, settings);
-+
-+	regs->rid_1 = FIELD_PREP(PCI_IDE_SEL_RID_1_LIMIT, settings->rid_end);
-+
-+	regs->rid_2 = FIELD_PREP(PCI_IDE_SEL_RID_2_VALID, 1) |
-+		      FIELD_PREP(PCI_IDE_SEL_RID_2_BASE, settings->rid_start) |
-+		      FIELD_PREP(PCI_IDE_SEL_RID_2_SEG, pci_ide_domain(pdev));
-+
-+	if (pdev->nr_ide_mem && pci_bus_region_size(&settings->mem_assoc)) {
-+		mem_assoc_to_regs(&settings->mem_assoc, regs, assoc_idx);
-+		assoc_idx++;
-+	}
- 
--	val = FIELD_GET(SEL_ADDR_UPPER, mem->end);
--	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_2(assoc_idx), val);
-+	if (pdev->nr_ide_mem > assoc_idx &&
-+	    pci_bus_region_size(&settings->pref_assoc)) {
-+		mem_assoc_to_regs(&settings->pref_assoc, regs, assoc_idx);
-+		assoc_idx++;
-+	}
- 
--	val = FIELD_GET(SEL_ADDR_UPPER, mem->start);
--	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_3(assoc_idx), val);
-+	regs->nr_addr = assoc_idx;
- }
- 
- /**
-@@ -448,38 +495,34 @@ static void set_ide_sel_addr(struct pci_dev *pdev, int pos, int assoc_idx,
- void pci_ide_stream_setup(struct pci_dev *pdev, struct pci_ide *ide)
- {
- 	struct pci_ide_partner *settings = pci_ide_to_settings(pdev, ide);
--	u8 assoc_idx = 0;
-+	struct pci_ide_regs regs;
- 	int pos;
--	u32 val;
- 
- 	if (!settings)
- 		return;
- 
--	pos = sel_ide_offset(pdev, settings);
-+	pci_ide_stream_to_regs(pdev, ide, &regs);
- 
--	val = FIELD_PREP(PCI_IDE_SEL_RID_1_LIMIT, settings->rid_end);
--	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_1, val);
--
--	val = FIELD_PREP(PCI_IDE_SEL_RID_2_VALID, 1) |
--	      FIELD_PREP(PCI_IDE_SEL_RID_2_BASE, settings->rid_start) |
--	      FIELD_PREP(PCI_IDE_SEL_RID_2_SEG, pci_ide_domain(pdev));
-+	pos = sel_ide_offset(pdev, settings);
- 
--	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_2, val);
-+	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_1, regs.rid_1);
-+	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_2, regs.rid_2);
- 
--	/*
--	 * Feel free to change the default stratagy, Intel & AMD don't directly
--	 * setup RP registers.
--	 *
--	 * 64 bit memory first, assuming it's more popular.
--	 */
--	if (assoc_idx < pdev->nr_ide_mem && settings->mem64.end != 0) {
--		set_ide_sel_addr(pdev, pos, assoc_idx, &settings->mem64);
--		assoc_idx++;
-+	for (int i = 0; i < regs.nr_addr; i++) {
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_1(i),
-+				       regs.addr[i].assoc1);
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_2(i),
-+				       regs.addr[i].assoc2);
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_3(i),
-+				       regs.addr[i].assoc3);
- 	}
- 
--	/* 64 bit memory in lower block and 32 bit in higher block, any risk? */
--	if (assoc_idx < pdev->nr_ide_mem && settings->mem32.end != 0)
--		set_ide_sel_addr(pdev, pos, assoc_idx, &settings->mem32);
-+	/* clear extra unused address association blocks */
-+	for (int i = regs.nr_addr; i < pdev->nr_ide_mem; i++) {
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_1(i), 0);
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_2(i), 0);
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_3(i), 0);
-+	}
- 
- 	/*
- 	 * Setup control register early for devices that expect
+T24gV2VkLCAyMDI1LTEwLTAxIGF0IDE5OjAwICswMDAwLCBFZGdlY29tYmUsIFJpY2sgUCB3cm90
+ZToNCj4gSSBndWVzcyB3ZSBhcmUgcmVhbGx5IGRvaW5nIHR3byBzZXBhcmF0ZSBjYWxjdWxhdGlv
+bnMuIEZpcnN0IGNhbGN1bGF0ZSB0aGUgcmFuZ2UNCj4gb2YgcmVmY291bnRzIHdlIG5lZWQsIGFu
+ZCB0aGVuIGNhbGN1bGF0ZSB0aGUgcmFuZ2Ugb2Ygdm1hbGxvYyBzcGFjZSB3ZSBuZWVkLiBIb3cN
+Cj4gYWJvdXQgdGhpcywgaXMgaXQgY2xlYXJlciB0byB5b3U/IEl0IGlzIHZlcnkgc3BlY2lmaWMg
+YWJvdXQgd2hhdC93aHkgd2UgYWN0dWFsbHkNCj4gYXJlIGRvaW5nLCBidXQgYXQgdGhlIGV4cGVu
+c2Ugb2YgbWluaW1pemluZyBvcGVyYXRpb25zLiBJbiB0aGlzIHNsb3cgcGF0aCwgSQ0KPiB0aGlu
+ayBjbGFyaXR5IGlzIHRoZSBwcmlvcml0eS4NCj4gDQo+IHN0YXRpYyBpbnQgYWxsb2NfcGFtdF9y
+ZWZjb3VudCh1bnNpZ25lZCBsb25nIHN0YXJ0X3BmbiwgdW5zaWduZWQgbG9uZyBlbmRfcGZuKQ0K
+PiB7DQo+IAl1bnNpZ25lZCBsb25nIHJlZmNvdW50X2ZpcnN0LCByZWZjb3VudF9sYXN0Ow0KPiAJ
+dW5zaWduZWQgbG9uZyBtYXBwaW5nX3N0YXJ0LCBtYXBwaW5nX2VuZDsNCj4gDQo+IAkvKg0KPiAJ
+ICogJ3N0YXJ0X3BmbicgaXMgaW5jbHVzaXZlIGFuZCAnZW5kX3BmbicgaXMgZXhjbHVzaXZlLiBG
+aW5kIHRoZQ0KPiAJICogcmFuZ2Ugb2YgcmVmY291bnRzIHRoZSBwZm4gcmFuZ2Ugd2lsbCBuZWVk
+Lg0KPiAJICovDQo+IAlyZWZjb3VudF9maXJzdCA9ICh1bnNpZ25lZCBsb25nKXRkeF9maW5kX3Bh
+bXRfcmVmY291bnQoc3RhcnRfcGZuKTsNCj4gCXJlZmNvdW50X2xhc3TCoMKgID0gKHVuc2lnbmVk
+IGxvbmcpdGR4X2ZpbmRfcGFtdF9yZWZjb3VudChlbmRfcGZuIC0gMSk7DQo+IA0KPiAJLyoNCj4g
+CSAqIENhbGN1bGF0ZSB0aGUgcGFnZSBhbGlnbmVkIHJhbmdlIHRoYXQgaW5jbHVkZXMgdGhlIHJl
+ZmNvdW50cy4gVGhlDQo+IAkgKiB0ZWFyZG93biBsb2dpYyBuZWVkcyB0byBoYW5kbGUgcG90ZW50
+aWFsbHkgb3ZlcmxhcHBpbmcgcmVmY291bnQNCj4gCSAqIG1hcHBpbmdzIHJlc3VsdGluZyBmcm9t
+IHRoZSBhbGlnbm1lbnRzLg0KPiAJICovDQo+IAltYXBwaW5nX3N0YXJ0ID0gcm91bmRfZG93bihy
+ZWZjb3VudF9maXJzdCwgUEFHRV9TSVpFKTsNCj4gCW1hcHBpbmdfZW5kwqDCoCA9IHJvdW5kX3Vw
+KHJlZmNvdW50X2xhc3QgKyBzaXplb2YoKnBhbXRfcmVmY291bnRzKSwNCj4gUEFHRV9TSVpFKTsN
+Cj4gDQo+IA0KPiAJcmV0dXJuIGFwcGx5X3RvX3BhZ2VfcmFuZ2UoJmluaXRfbW0sIG1hcHBpbmdf
+c3RhcnQsIG1hcHBpbmdfZW5kIC0NCj4gbWFwcGluZ19zdGFydCwNCj4gCQkJCcKgwqAgcGFtdF9y
+ZWZjb3VudF9wb3B1bGF0ZSwgTlVMTCk7DQo+IH0NCg0KWWVhaCBpdCdzIGJldHRlciBhbmQgY2xl
+YXJlci4gIExHVE0uICBUaGFua3MuDQo=
