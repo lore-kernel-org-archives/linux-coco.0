@@ -1,104 +1,207 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 478062652AC
-	for <linux-coco@lists.linux.dev>; Wed,  1 Oct 2025 11:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288182E611B;
+	Wed,  1 Oct 2025 11:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759318226; cv=none; b=lBbDc01VgTtOjtn35ESD17zRasWdprZeR8XsANKqKw5vAOayy6q6W9eHephT7kieiE0qHZ6Sft07jPHUZdQy70NxrP9SRXQ1BNO/KKgl5Lcc9+Hnw3kz779Iz6puhyQOKA3QG6TkDh9P39GwSXL67rS4Xi5HzGAjS5O64vnXaFg=
+	t=1759319924; cv=none; b=fVeQWB7Z1SY4R08gWo6TSpDeYja11FEEWEZXreVWIQYN4NgYYw/GPA6DbH+xWom+SC9mo1mUzsoRjS2HhDfAgTPiVyVvsEWgnthW4f6DM0dYlIeXAzJ10Tr9RW0/MeAkwO5cWx/1Gf+uzjM2PA8YVu+1/23ZkPUap/Bak44GbYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759318226; c=relaxed/simple;
-	bh=/O7hNSAsIGDyvmS3NbIwiUzg0VS3xLz1rSxyQ8x9G38=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HGubdwk+CtpmLea0MjwwwaJsuafgsZzgspPgA1Bx6kRo9OqzzUSO6Zmd0UkmLCuOxQJrgXJRL5KYVAGzQFfJdgpf5joeTm71uzxnEBKBEovISpsjGcweGl2XfZ3LgoRrvGOBT6u1Hi/te5XG6AMaQtZ7Y+RobnLJs2+5v9dYtSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LsDD6oRb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759319924; c=relaxed/simple;
+	bh=q2oyD5KugDIaW6JSBh1QBJ0TUR6MW5UO2WCtAgLmeh8=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LMIJhE1DmN+XEtQdpKi1cC2VRCm7mOHjK5y329aLWhwBOk5dbAE2KoNVX7clCujy0nitrTO6lGzNW6pgy7UBRhE53hw8DVcgHD3OadtdqbdVdspI6cdgNqwJNr+56SClLrgueTcpX3iDa0RseSLaRers9ZhQbK13/q4KbXfl1FE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qZCPm84S; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LsDD6oRb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 895C5C4AF0B;
-	Wed,  1 Oct 2025 11:30:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qZCPm84S"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABEC3C4CEF4;
+	Wed,  1 Oct 2025 11:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759318225;
-	bh=/O7hNSAsIGDyvmS3NbIwiUzg0VS3xLz1rSxyQ8x9G38=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LsDD6oRbstHikBnhHFxza0IdPZ4pFsgJsoeZ9Cx9LPW3zCIwrd/qvR8X7LYfR+TQm
-	 K6dhD4cr5a6rlT4DWhHQLSBQQNIx95HefnUbyNLE6DCNBFpbnkaYDNe6hha6uGpIEN
-	 sif6szEFx6xinWa6q7i3326KN7Fqgjfm7aiirdm/FwKBSM4mS6JKiN18AtRnKyZUWN
-	 GFh5RIuVirTy6E4lN+C7hT+am73jlLQvXt84k7wTIOBduabZWKIeSQdx9E85QkHYKm
-	 I2DVxbpDH0iCFR+EbiUfnH5WtLQGPhNk4rj0hTpseN+a0LtRz5EMaUlOIrNp+wgd2b
-	 4CHM23E236Syw==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 752ACF40066;
-	Wed,  1 Oct 2025 07:30:24 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Wed, 01 Oct 2025 07:30:24 -0400
-X-ME-Sender: <xms:0BDdaJ8AAKBpeHFnHKT535YpHuEvXE0WHonVWCPZvwiGT3vdhaUIGA>
-    <xme:0BDdaFkozq_uJ4gVNOXBBcB1WI_B30x_QF8SI3OR5hHD3rN7dMgcq51gN1cana-ZR
-    _l_IjiIwl2Gpx_bix_X2xuA_7RUFyaJvVXJpLPaHUGi7fh9NBhjN-g>
-X-ME-Received: <xmr:0BDdaGaDxiZEPQOD6J3FgW9x8mXmm3RqHQoJGd0ENdpn7dPUeMws6QY8B3axlQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdekfedtvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
-    hnpefhieekteelledugefhffekfffgjedtveevgffgjeeffeegvdekteetudeggefgkeen
-    ucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepkhhirhhilhhlodhmvghsmhhtphgruhhthhhpvghr
-    shhonhgrlhhithihqdduieduudeivdeiheehqddvkeeggeegjedvkedqkhgrsheppehkvg
-    hrnhgvlhdrohhrghesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepudeg
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegthhgrohdrghgrohesihhnthgvlh
-    drtghomhdprhgtphhtthhopehlihhnuhigqdgtohgtoheslhhishhtshdrlhhinhhugidr
-    uggvvhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlh
-    drohhrghdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopegu
-    rghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepug
-    grnhdrjhdrfihilhhlihgrmhhssehinhhtvghlrdgtohhmpdhrtghpthhtohephihilhhu
-    nhdrgihusehlihhnuhigrdhinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:0BDdaFMe7YZfxW49JDfYRoGKmqLl2b3wU2x0a4dIMcCPOO_0XQUd7g>
-    <xmx:0BDdaGe5PkpLZOoMD25G85OnJobxljGzJ8Xu5-f4-Pro9HRYs-YQ2g>
-    <xmx:0BDdaLGWN6q5vWjZuacIpd8FNbFl4c7zXkp7DHvPx9GhKP8MJoA5pw>
-    <xmx:0BDdaBt7oKVUFdz67r-FhLL3EYyjvUf0Okulij_dlNSUAyZ3BkJSmg>
-    <xmx:0BDdaFrq0Wr0p5ZavjqjSukS3oZiCzOlgXzpchYG4S_owGFlQtzO9T_v>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 1 Oct 2025 07:30:23 -0400 (EDT)
-Date: Wed, 1 Oct 2025 12:30:21 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Dan Williams <dan.j.williams@intel.com>, Xu Yilun <yilun.xu@linux.intel.com>
-Subject: Re: [PATCH 2/2] coco/tdx-host: Expose TDX module version
-Message-ID: <oww7wb2ejpaa7v53vp7vhvk7irs2ivccxudjruwk3tepjjf7fd@txbol63ypkkc>
-References: <20251001022309.277238-1-chao.gao@intel.com>
- <20251001022309.277238-3-chao.gao@intel.com>
+	s=k20201202; t=1759319923;
+	bh=q2oyD5KugDIaW6JSBh1QBJ0TUR6MW5UO2WCtAgLmeh8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=qZCPm84S00rcJ/5DZZiAQBlbVyFTQO+QHK5ZY/4bD3YhlyN4HVP7XkS2p9o0/WGh3
+	 Fu0nDDQctiP6lxSelsLnadRvYKULsWI1WRhAhmH6CXE1dLQ89MYv9TvbMUz125aMY0
+	 b7MnaqQtvm381/diXi6A8LLLTaUlgQvmOS3WMVGXEudJ5Tjr//6BHC0XKb6J7bBdHg
+	 V1waUBZjdW9YJvCaUhesrG2cMrLgerZcmHlbd6wtZ1SApJXoP+jvecGK65TRwkZ/iq
+	 L2rqLAFdjZC53pMBqGe9hGrOgSBfKJol4kn4Fhtc/G9JstpqBcvX0WfuNp+3Jwww3a
+	 pUBGKgU9Bopng==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1v3vTl-0000000AnCw-1j7p;
+	Wed, 01 Oct 2025 11:58:41 +0000
+Date: Wed, 01 Oct 2025 12:58:40 +0100
+Message-ID: <86ldluzvdb.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu
+ <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>
+Subject: Re: [PATCH v10 03/43] arm64: RME: Add SMC definitions for calling the RMM
+In-Reply-To: <747ab990-d02d-4e7c-9007-a7ac73bb1062@arm.com>
+References: <20250820145606.180644-1-steven.price@arm.com>
+	<20250820145606.180644-4-steven.price@arm.com>
+	<86o6qrym2b.wl-maz@kernel.org>
+	<747ab990-d02d-4e7c-9007-a7ac73bb1062@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251001022309.277238-3-chao.gao@intel.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Tue, Sep 30, 2025 at 07:22:45PM -0700, Chao Gao wrote:
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index c1ad1294560c..7560dcf8a53d 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -27333,6 +27333,7 @@ L:	x86@kernel.org
->  L:	linux-coco@lists.linux.dev
->  S:	Supported
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git x86/tdx
-> +F:	Documentation/ABI/testing/sysfs-devices-faux-tdx-host
->  F:	Documentation/ABI/testing/sysfs-devices-virtual-misc-tdx_guest
->  F:	arch/x86/boot/compressed/tdx*
->  F:	arch/x86/coco/tdx/
+On Wed, 01 Oct 2025 12:00:14 +0100,
+Steven Price <steven.price@arm.com> wrote:
+> 
+> Hi Marc,
+> 
+> On 01/10/2025 11:05, Marc Zyngier wrote:
+> > On Wed, 20 Aug 2025 15:55:23 +0100,
+> > Steven Price <steven.price@arm.com> wrote:
+> >>
+> >> The RMM (Realm Management Monitor) provides functionality that can be
+> >> accessed by SMC calls from the host.
+> >>
+> >> The SMC definitions are based on DEN0137[1] version 1.0-rel0
+> >>
+> >> [1] https://developer.arm.com/documentation/den0137/1-0rel0/
+> >>
+> >> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> >> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> >> Signed-off-by: Steven Price <steven.price@arm.com>
+> >> ---
+> >> Changes since v9:
+> >>  * Corrected size of 'ripas_value' in struct rec_exit. The spec states
+> >>    this is an 8-bit type with padding afterwards (rather than a u64).
+> >> Changes since v8:
+> >>  * Added RMI_PERMITTED_GICV3_HCR_BITS to define which bits the RMM
+> >>    permits to be modified.
+> >> Changes since v6:
+> >>  * Renamed REC_ENTER_xxx defines to include 'FLAG' to make it obvious
+> >>    these are flag values.
+> >> Changes since v5:
+> >>  * Sorted the SMC #defines by value.
+> >>  * Renamed SMI_RxI_CALL to SMI_RMI_CALL since the macro is only used for
+> >>    RMI calls.
+> >>  * Renamed REC_GIC_NUM_LRS to REC_MAX_GIC_NUM_LRS since the actual
+> >>    number of available list registers could be lower.
+> >>  * Provided a define for the reserved fields of FeatureRegister0.
+> >>  * Fix inconsistent names for padding fields.
+> >> Changes since v4:
+> >>  * Update to point to final released RMM spec.
+> >>  * Minor rearrangements.
+> >> Changes since v3:
+> >>  * Update to match RMM spec v1.0-rel0-rc1.
+> >> Changes since v2:
+> >>  * Fix specification link.
+> >>  * Rename rec_entry->rec_enter to match spec.
+> >>  * Fix size of pmu_ovf_status to match spec.
+> >> ---
+> >>  arch/arm64/include/asm/rmi_smc.h | 269 +++++++++++++++++++++++++++++++
+> >>  1 file changed, 269 insertions(+)
+> >>  create mode 100644 arch/arm64/include/asm/rmi_smc.h
+> >>
+> >> diff --git a/arch/arm64/include/asm/rmi_smc.h b/arch/arm64/include/asm/rmi_smc.h
+> >> new file mode 100644
+> >> index 000000000000..1000368f1bca
+> >> --- /dev/null
+> >> +++ b/arch/arm64/include/asm/rmi_smc.h
+> > 
+> > [...]
+> > 
+> >> +#define RMI_PERMITTED_GICV3_HCR_BITS	(ICH_HCR_EL2_UIE |		\
+> >> +					 ICH_HCR_EL2_LRENPIE |		\
+> >> +					 ICH_HCR_EL2_NPIE |		\
+> >> +					 ICH_HCR_EL2_VGrp0EIE |		\
+> >> +					 ICH_HCR_EL2_VGrp0DIE |		\
+> >> +					 ICH_HCR_EL2_VGrp1EIE |		\
+> >> +					 ICH_HCR_EL2_VGrp1DIE |		\
+> >> +					 ICH_HCR_EL2_TDIR)
+> > 
+> > Why should KVM care about what bits the RMM wants to use? Also, why
+> > should KVM be forbidden to use the TALL0, TALL1 and TC bits? If
+> > interrupt delivery is the host's business, then the RMM has no
+> > business interfering with the GIC programming.
+> 
+> The RMM receives the guest's GIC state in a field within the REC entry
+> structure (enter.gicv3_hcr). The RMM spec states that the above is the
+> list of fields that will be considered and that everything else must be
+> 0[1]. So this is used to filter the configuration to make sure it's
+> valid for the RMM.
+> 
+> In terms of TALL0/TALL1/TC bits: these control trapping to EL2, and when
+> in a realm guest the RMM is EL2 - so it's up to the RMM to configure
+> these bits appropriately as it is the RMM which will have to deal with
+> the trap.
 
-The entry was updated recently:
+And I claim this is *wrong*. Again, if the host is in charge of
+interrupt injection, then the RMM has absolutely no business is
+deciding what can or cannot be trapped. There is zero information
+exposed by these traps that the host is not already aware of.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/tree/MAINTAINERS?h=x86/tdx#n27325
+> [1] RWVGFJ in the 1.0 spec from
+> https://developer.arm.com/documentation/den0137/latest
 
-I think you need to rebase onto current tip tree.
+Well, until someone explains what this is protecting against, I
+consider this as broken.
+
+> >> +	union { /* 0x300 */
+> >> +		struct {
+> >> +			u64 gicv3_hcr;
+> >> +			u64 gicv3_lrs[REC_MAX_GIC_NUM_LRS];
+> >> +			u64 gicv3_misr;
+> > 
+> > Why do we care about ICH_MISR_EL2? Surely we get everything in the
+> > registers themselves, right? I think this goes back to my question
+> > above: why is the RMM getting in the way of ICH_*_EL2 accesses?
+> 
+> As mentioned above, the state of the guest's GIC isn't passed through
+> the CPU's registers, but instead using the rec_enter/rec_exit
+> structures. So unlike a normal guest entry we don't set all the CPU's
+> register state before entering, but instead hand over a shared data
+> structure and the RMM is responsible for actually programming the
+> registers on the CPU. Since many of the registers are (deliberately)
+> unavailable to the host (e.g. all the GPRs) it makes some sense the RMM
+> also handles the GIC registers save/restore.
+
+And I claim this is nonsense. There is nothing in these registers that
+the host doesn't need to know about, which is why they are basically
+copied over.
+
+It all feels just wrong.
+
+	M.
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Without deviation from the norm, progress is not possible.
