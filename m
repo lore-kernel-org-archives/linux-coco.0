@@ -1,215 +1,299 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17004186E2E;
-	Wed,  1 Oct 2025 15:54:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759334072; cv=none; b=L7RnD2/uWiXeHg47YzuwxDqegbCY4ttN9/FZ1mWSbXZVRVCZvH3BjGnZsvJGEDkQKcKErpMRaxj/gKAARJ3aYZhLtnuGqBaqRXoAmFBzelTsLn5j0l1Bu9cQwzX5/vS0lkEp9wVzCSxdWFoagoD8Uwl8uEuClVnBb20z6t8dOMc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759334072; c=relaxed/simple;
-	bh=4eTy9j/oRpCIZBMNIPeWmUYMx0fev6jqKTFO8roxJdg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N9frXlnT5k6EgvlAnefqUX79ErCsgx2oUbR8fBl45rByicxnxZmRJp2nQ+vG50Vxwvmtg0UhiN6qONOoNT4vU+edRnQBGm/xOyHih5WO0NWy7MRp1IAG1Hfpt20ILgjTy/GzwbIg/uqsTbtO9v8x0Iftc5ILQRQhbwQ2sHnNZTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6EA751692;
-	Wed,  1 Oct 2025 08:54:21 -0700 (PDT)
-Received: from [10.57.0.204] (unknown [10.57.0.204])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CFFF43F66E;
-	Wed,  1 Oct 2025 08:54:23 -0700 (PDT)
-Message-ID: <a89b9047-7d0c-41c7-93a3-f31e55315ebd@arm.com>
-Date: Wed, 1 Oct 2025 16:54:21 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07CC2D47EA
+	for <linux-coco@lists.linux.dev>; Wed,  1 Oct 2025 19:00:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759345259; cv=fail; b=hMo707+M4f2zAIYOl/WcZAMiXbCR1xr5EL7yOpQ6Y51Njrt8an8Ziyfxi5YViIF6bbDl9Hxb9ey0lvTfJl8Mf40+HUxhTEH117NLMCz+ERYEQbKMBUUWPn+IxT+vvfk3rkQJXo+uqqO4m++VtP/XmXIxSNPPG69bE5pzVQkQBs0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759345259; c=relaxed/simple;
+	bh=1vwsJW2KLyaGCq9gdIoimFkFmZEFRH3MBKwGpthKiHQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=B6/TdMpkTSNONal4JschFpzOolNc9/uKD+SjHttqGxI/wGT1eR68saYVeAg1ILRrigRVTIWyOeyyOeM51pTVZQA6DmGWhkMHmy9pGifAMlaOCFdNBUN0ct0Oy6vzXNC9p//CKBjF6Yji+ZCBhvXHmzS9iM47cTlHO+5mXASRpt4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OHP9XiY4; arc=fail smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OHP9XiY4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1759345258; x=1790881258;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=1vwsJW2KLyaGCq9gdIoimFkFmZEFRH3MBKwGpthKiHQ=;
+  b=OHP9XiY4R7Srbg6d1zq4K810wmAK1WKdVaw8YpY6Qg+3bIu2CXTAfth5
+   DupEUgGEmxdBiE99mehnulNW8puR6ykaQrwn00M71alnSmXJI+/qv2kDf
+   mBjSR8wS6XTcpO1oVu6LsYgGH2fzMCZaFFWbZiURs+v1ZSuvNLlNL6PvD
+   ncc113ddkORIWoPd4INwY4qzNoTxpJZyCR1sW682yuq/LzDmYFGjeYcvl
+   CyJTiRqF9n6lStwJYWh1NpfHXINWBzX9gQTVRERaEPbtDDcTYG1lK9lXB
+   54fX8mOoOeVm3Qke9MhWY39zn+Nw3clWcDFbB8gQVlgyZLxGu0i2anJ4p
+   Q==;
+X-CSE-ConnectionGUID: Jlw7AJHOSouUS7XJE+hZ4Q==
+X-CSE-MsgGUID: Z7w9kMLiRISKadB0JryHyg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="65453445"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="65453445"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 12:00:58 -0700
+X-CSE-ConnectionGUID: CoIhalLMTQmy+5a9ymJ97A==
+X-CSE-MsgGUID: FfpiX0tTRgiD7NWUZZVKIA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; 
+   d="scan'208";a="178484769"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 12:00:57 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Wed, 1 Oct 2025 12:00:56 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Wed, 1 Oct 2025 12:00:56 -0700
+Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.17) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Wed, 1 Oct 2025 12:00:56 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Sn5C632lzLiP03qPqC6Bo8t79BfZpmKywpYzXtEDmCeWByLZLfcchh4s+BL/h1DMxwlZs2sz3+boBlNgKOrUgRUEIVYG3QJyzGJ/x6aExP0l7PVTFT5coiwmKxE9soiN+/MlHfSKacqierAws/p7QW0akimIVu5oOwpGUxJWgdnyk5GsoR8z+0sgQxrtL3HIeGPrM/SYZfYqw8ij0ZYfcVNez36OZ5/h9hTSgb/elugNttE9dq3YOMyctwJTYhyHY55LEP7lSj/xOqFkgs/ig/DHv2Iol992GKimHUu2jx60lnyRs6aVc/D3wE0MVkaP1Eqj2Q6tQxTbE9Y5m7yoGQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1vwsJW2KLyaGCq9gdIoimFkFmZEFRH3MBKwGpthKiHQ=;
+ b=alHGYwTmj4qnnsvST+dztCH26aS3RMOdFgTga4C5uvn46qLE2cXaEu0NH2Tg5N/VOKonBmrclqxonFJc197TE4xORDf/8XthExVuT0LDSGETUAdg+NJ5glQeLsgkpJLPPu89BsBmjDfvI1I8VROD5HgVcX4DINSLMwUjM0B3JPwp90d/eHqGlxZnam9PxZAYUQY0VWAyIibf+9Q82IPgc8GbpJQ/QzgDAyO2shNd02WjwanptxQeuCr0n0IK8atlFrezTJP2aAKd81MMq1DeeieFFalnjQESAPYx506oREqTKS7fmZBRdTOESVd1V7qvdtmw3IGw0n0V7dLcOku4OQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com (2603:10b6:208:372::10)
+ by CY8PR11MB7057.namprd11.prod.outlook.com (2603:10b6:930:53::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.17; Wed, 1 Oct
+ 2025 19:00:52 +0000
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::edb2:a242:e0b8:5ac9]) by MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::edb2:a242:e0b8:5ac9%5]) with mapi id 15.20.9160.017; Wed, 1 Oct 2025
+ 19:00:51 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "Huang, Kai" <kai.huang@intel.com>, "binbin.wu@linux.intel.com"
+	<binbin.wu@linux.intel.com>
+CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "Zhao, Yan Y" <yan.y.zhao@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org"
+	<kas@kernel.org>, "seanjc@google.com" <seanjc@google.com>, "mingo@redhat.com"
+	<mingo@redhat.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"tglx@linutronix.de" <tglx@linutronix.de>, "Yamahata, Isaku"
+	<isaku.yamahata@intel.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "kirill.shutemov@linux.intel.com"
+	<kirill.shutemov@linux.intel.com>, "Annapurve, Vishal"
+	<vannapurve@google.com>, "Gao, Chao" <chao.gao@intel.com>, "bp@alien8.de"
+	<bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v3 06/16] x86/virt/tdx: Improve PAMT refcounters
+ allocation for sparse memory
+Thread-Topic: [PATCH v3 06/16] x86/virt/tdx: Improve PAMT refcounters
+ allocation for sparse memory
+Thread-Index: AQHcKPM0eZqFwOSc+ES1GzTBQe5/Z7SaG0KAgAZudgCAAWNPAIAAI4MAgApzb4CAAKnbgIAAi6yA
+Date: Wed, 1 Oct 2025 19:00:51 +0000
+Message-ID: <404c3dddef3025537d2942386ab0ea0f72ab9dc3.camel@intel.com>
+References: <20250918232224.2202592-1-rick.p.edgecombe@intel.com>
+	 <20250918232224.2202592-7-rick.p.edgecombe@intel.com>
+	 <f1018ab125eb18f431ddb3dd50501914b396ee2b.camel@intel.com>
+	 <e455cb2c-a51c-494e-acc1-12743c4f4d3f@linux.intel.com>
+	 <7ad102d6105b6244c32e0daebcdb2ac46a5dcc68.camel@intel.com>
+	 <19889f85-cfd0-4283-bd32-935ef92b3b93@linux.intel.com>
+	 <ca13c7f77f2d36fa12e25cf2b9fb61861c9ed38c.camel@intel.com>
+	 <894408f8987034fcbe945f7c46b68a840d333527.camel@intel.com>
+In-Reply-To: <894408f8987034fcbe945f7c46b68a840d333527.camel@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.44.4-0ubuntu2 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN0PR11MB5963:EE_|CY8PR11MB7057:EE_
+x-ms-office365-filtering-correlation-id: a3339da8-a480-4425-716d-08de011cd70e
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700021;
+x-microsoft-antispam-message-info: =?utf-8?B?eStyS0NBZ1dCNXRHbGZhRTFneG11Skd5REdiRW5LT1ZtbWVaS2wwemxXM293?=
+ =?utf-8?B?NTdvb3RJNnZLUWJBNHZURzlqT25ZV0NZamE4R1Z6ZmNkT2ZHakFMZWt6Wncz?=
+ =?utf-8?B?aVJkcmtuUTQ3ajZXTEJ6MndHQ3RmMFl4T01BWW9BUElGSVdwUFFQbWVGNXZl?=
+ =?utf-8?B?VHhycDRvR3JaY2RCaU1IU2U5bW5zZHh0djg5YkhNRDdBSFM2ckxnd0UxVVdq?=
+ =?utf-8?B?RXlhRHZnVGV4a25WQ09JdWZYc3VPNjg3NE5LTzF5MmJ5YkJzdjlQRk1GekE2?=
+ =?utf-8?B?NjhKRW1HSSttUGp2RU8rZWI2dlliZHdUUFY1MDVQb1h6Z3A3TWpvcUV5RmpH?=
+ =?utf-8?B?d09hOEJjZ0d0amE1NTM4VlhxNFRuT0hlK0FldkwxaW9McVhSTHJhbEtLWmFu?=
+ =?utf-8?B?dDR5V05PcWJXZTBKNDlsWUtCaFFOVmVnQWlYa0hKVlp3aWxaTXVZQy9BV2ZZ?=
+ =?utf-8?B?MG9XSjY3U2dnajlOdTlDY21MTzVwL3Q4K0JlWExkV1pVc2dYUmg3ck1iOHJH?=
+ =?utf-8?B?dDBDY2g0Q3RubnlvOXQveHV6ZElobXZydDRkU3gzMmhtNktvS0dIZXJadTJs?=
+ =?utf-8?B?S1dsRFc2Um81U2VOaGcvSkFrcW9TUlJlSGNieitydGlyR3JpUlZobjZOc2dY?=
+ =?utf-8?B?RjZSZG85YmJUcHRpdFpCa2dRL3hkZFA2VE9lcjFqNXpEMXM0NGNqc2Y4SUxx?=
+ =?utf-8?B?K0tva05HTXNKYUVkZ2J6U3F4Z1RCTE1ndGFRdm5zL2FNR1E5dmxYUUtYbmp3?=
+ =?utf-8?B?VWoyeVNnclFDSWMwQWswcFRLOSs0c2ZxV1prTUVFNk95SlAzRy9PS3dmRldZ?=
+ =?utf-8?B?NzkwbEFZYW9UZTdKQjJVTmgrb3lHaDZZczlDTEJTR0UwVkh1Rk1vMXNFZFRQ?=
+ =?utf-8?B?bklLaHVUMEJQV3FZcTYreVRNSlpLaGU2VGpzNXdicWhVa09iWjhzRis2K0h1?=
+ =?utf-8?B?WHU3cDJUN0lKQkJNM3dSU1JBQzBjcUZBYkdTRUpMN2p1S3cwTGhHT25yTlhY?=
+ =?utf-8?B?VTE4WFlqVlVlckovWXNOMHFWUFpGTjMwUVI3ODlqWExPanpMNmZjVzd1R0N2?=
+ =?utf-8?B?YTVhQ213Z2V1L2M3YlZad3FncU1uV2MrVXlCb00vTmR5d3Y0L0xIVmUraXJj?=
+ =?utf-8?B?dktEOFpGRlpHQStadGF1ZS96bzRSS21PSURsKzY1TjhZcllzQTBOOHhqODhC?=
+ =?utf-8?B?WExKSUxjQS9tajVITWFSbEIxeFIvK1VQbVJZOWhTdzVJeHFoUnY5OGI4THAz?=
+ =?utf-8?B?RlBnM1NFMkN3VU5seGlkNE16RFJOMS8rQlAwWXVRYnB6NHdKSmlqZnhTZ29C?=
+ =?utf-8?B?K0F4OG9hTnE3YmVzVi82RnpWVlZyRGNydWFzZUtUNzNsc3ArQldnTmxOdG1Q?=
+ =?utf-8?B?ZHNkV0xaUnEzTEFGd2xYT0NwSW9VbWdaMGJXc1djM3ljcXhYbG91Z2cxdlVV?=
+ =?utf-8?B?dUhYZW5mWVMwRjJKNVM5bExHRlc0RWY2Rm4xbWN1Z01sc3dyYjF0MkNpRVM2?=
+ =?utf-8?B?WGtVd3BCcEMxLy9yM05CTUdmMy9TS2w1L0NlWSsrdkwzaTdiTkhHczRpUnRh?=
+ =?utf-8?B?YW1wOGZQL2oxZFREUlBtZWNidXk5cGpxMi9STDQrenl3SmpUVU8rNG1mRmRs?=
+ =?utf-8?B?cXN1KytWRWJ4Ly9IbXl6eG1mVEs2Mks5QlpaTktZb09oN0M1MWxYOTZVa3Bn?=
+ =?utf-8?B?OEJsaFhiM1Y3MWtGU0hTYzBsaG4yNk1HMlZ3NXhLTXZnM3cySXlabm8xTGdH?=
+ =?utf-8?B?NG01Q1Z6ckMwY0NvWkpMa3pZNVQweEVEN0dvZkg5MWJTVEIrL3pSUk1YS1ZS?=
+ =?utf-8?B?a3VaQUFxUFBvZVdJd2REakIrOEt0OXFQZEtXZEtOMmlBYnBmZ1BTNVk2UHhW?=
+ =?utf-8?B?cVZjYWRjTFE1dGJubU1Nd1BtTUZKMUZsc2hDV2h1ei9aUTVYSGFhcU4zQUtG?=
+ =?utf-8?B?Uk9uSkpMR3dyYXRvaWdwQ0hyU0YvUFJUK0ZRTVJCY1h2bi9pc1E0VzVYdXVQ?=
+ =?utf-8?B?WjZ2WXZRem9IQUJvNWxSRUZWNFhFK2dxVi9jdElrYTNteExIVFRkaFFQbzNQ?=
+ =?utf-8?Q?8uSmw0?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5963.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?cWlrR3NQODErYS9FWEkwZ3JCaGhhczU3dm1jalNZMmFmL1IrQ3J1SFBQNkNR?=
+ =?utf-8?B?UG5qSXhyZXpZVytxSkc4UHVJbUE5RU1BaERoMm9oSG9rTXhoRjZ1TEFxUWhY?=
+ =?utf-8?B?RHRyVlZaUjl1aWtBRm90Z0UrdU1FdkpCWFh1b094QVBZUlp1bExJU0ZNV3U3?=
+ =?utf-8?B?aENOQ28rK2RJcHNHR2l6L3hyaVkyZ0dIMm9OZ1JBTVZIU2VzRzVtS2NEOUpn?=
+ =?utf-8?B?ZnNyZGRybGhwQjhZYTRpT21ERXZuaVRnSHA5YUJaakhIQmRLZFp3OE4ra3Vy?=
+ =?utf-8?B?T0ZZQ2NJSlB5N0FlL0poMHZOMVcvOVlRWmxIaTZCSHhjWWVTd1U2aGR3aDNR?=
+ =?utf-8?B?bnZTNXFHQXAvcFh5eDQ4T0RvdWpYd3U2RGMvSVlnR1doSU02Ry9yeTRYTUtu?=
+ =?utf-8?B?NldDK3Nlbzh1RzJrT2VaQW9iaGpzVjR6U0ljcU11bnBZYkc1UnhtaHNtSjZI?=
+ =?utf-8?B?Ylp0Q1dJZEdTQ2gyWGRmTTFBYi9POEpVbThlb3RHOUhvd0I1cnZrZ3d0M243?=
+ =?utf-8?B?ektjcGlNWFduSk1TQnZ0V2FHZEE3ZUJFcVNFbGxEcEQ5MTZ6MXZGaTJON3ZZ?=
+ =?utf-8?B?emNhT2lodnFuR3VpRVF3SUVRYUU3NjdnTHB6dVlVN0hrNTJuZzd0SXg1dGlP?=
+ =?utf-8?B?NVpVTXFVTWYrdysvM1FXSEt3VndoQ3JCeHRoK1hOR1U2cU5ITWVORlhGZytQ?=
+ =?utf-8?B?OXp2Ylp2Qk1GOS8zNjBsZ2pvMVNkN2QweVl0d2toSW1ISW9jaWtRR283cEtv?=
+ =?utf-8?B?bVdPSDVMQlh0a09RTDlINlBxL2hrVFhXRXdKU1hFYzRwTENFYUplSFlqRFdW?=
+ =?utf-8?B?ZXlYNm41eGUzdFJPeVNNTk1ZclQ3NDdDRHFTVTJLSkMzZXdQaGNXRXJlN0pP?=
+ =?utf-8?B?SmxPRUp5YU9QK3Y4a0IvNjQvTzFQL2UyRVp6UDJ4eEtXQ3ZpODRjS01KMHZI?=
+ =?utf-8?B?VVY0WDZJRENHa3pOMHEvaHBCTFBVZ0htaDJRS0xXRU1jbEp0dnJ0dVNmTzhY?=
+ =?utf-8?B?SnZ4eUxYV2luQmI4UVNLcXUxMlp4SUZFOXN5UXlCTTU2V210RFhYZVRqMlU2?=
+ =?utf-8?B?U3JqMlpkS09wUmw4TnZ0SVZHWDZGZGxmZHpSL0U2VTJzNTdiT1pObXBFV24z?=
+ =?utf-8?B?VUJLVXhrM1VqWm1VV05PR20xbklUNmM1TnZ5N1R2eVhaTmZjbHcyMDE5U3hM?=
+ =?utf-8?B?TmdYekljRlhlcm5aeVhKdkpuOFJtdGdIbzNzejJkeS9XK1E5RHpKWlk4SDdM?=
+ =?utf-8?B?dXBCd0ZHNys3bnAydTR4Y1kzbWNKYU9wSkxac2ZPREtuOHgwN3MrcjczeGRw?=
+ =?utf-8?B?NXVTenVIYmJzbWI3L0d2YWloaGFzT2JYcHZVUXJ4Rkp6VUYwL1lnekRDSFZv?=
+ =?utf-8?B?NWJqWG8vV1hFeUREbThwRzFJV0oyRzk5dmJhallsK1UwRXNUdWlPdGg3enBY?=
+ =?utf-8?B?VkQ4VU85NllTWnlydGJTYXNOQ1hqaW9WK3ZabXFMZFFVcGQ5ZVF0Syt2alFt?=
+ =?utf-8?B?WW91V2d4QmR1T2dncitjMGhlbWZCT3pPUUV6eTBKa25pdE9sRnpiMUdMTUsy?=
+ =?utf-8?B?cS9WV1FyaXd0QkRpR3RDQ004NG92QStZc3NHS1NSNk56REs3MzhxcVlkbzk2?=
+ =?utf-8?B?RWJzd0VVOUswMEo4Y3dBUkZpaVp1SXAzMGl5TUo1WlZqWi82VW5ueVRwZWJ5?=
+ =?utf-8?B?ckc3TzdveDk0T0w0c2hvd1ZnSU1zcTJPVE5pSHoxd051TVVNaGhXbHArdUhs?=
+ =?utf-8?B?a1cxTy9OSXJ1a09DT1VZei9KOXNwSDhFaFVnTU8rR1BsR0lmVHl0bzhWYVpx?=
+ =?utf-8?B?eTNMTjJleWRHV20rTW4wSy8rbzg4QzdJUGRic3c1VENKY2Q1aEFoamZ3Z0dt?=
+ =?utf-8?B?VU15ZHBpdlVodklBVEplSlJWdnVwU29CWDBUVjJqR2IzU3F1MlZtRVZxU0l3?=
+ =?utf-8?B?d1NLV1g1b1c2dGRFMGpkdDN2QWRoQ0tXME5tVno4bm12alJsTnV4d2tWZDVH?=
+ =?utf-8?B?RFUxSjliZmFUQWhSK01FSkg1VHZzQkJYUDZOa3Q5eDArQ0FlMm5lazlZTDdR?=
+ =?utf-8?B?N0xlRUFORXNVcVRHN2p4MkZ1SUpMWXl2b09IdGw1OWd6aTg2U0xRU2hsRHVE?=
+ =?utf-8?B?dk82NlhCeDJCaGsvaklpNUhuUlpSd2F4OW5ueXR6WXVGOTdPYjBjcGFWQUFT?=
+ =?utf-8?B?T2c9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <D66DEC0B21DE4E4F9D4A376F99A4BD81@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 09/43] KVM: arm64: Allow passing machine type in KVM
- creation
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>
-References: <20250820145606.180644-1-steven.price@arm.com>
- <20250820145606.180644-10-steven.price@arm.com>
- <86frc2zq6m.wl-maz@kernel.org>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <86frc2zq6m.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5963.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a3339da8-a480-4425-716d-08de011cd70e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Oct 2025 19:00:51.1681
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: VMwPlqjVpY9F/+BevsFr0jDxx6QNry505eRULh09/e41x4rAo2PXrHuq9dqDyr0CbEOB5cisPTZnknY+wxj8BcJX8pm4fPdbjqqUip70eP4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7057
+X-OriginatorOrg: intel.com
 
-On 01/10/2025 14:50, Marc Zyngier wrote:
-> On Wed, 20 Aug 2025 15:55:29 +0100,
-> Steven Price <steven.price@arm.com> wrote:
->>
->> Previously machine type was used purely for specifying the physical
->> address size of the guest. Reserve the higher bits to specify an ARM
->> specific machine type and declare a new type 'KVM_VM_TYPE_ARM_REALM'
->> used to create a realm guest.
->>
->> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Reviewed-by: Gavin Shan <gshan@redhat.com>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->> Changes since v9:
->>  * Explictly set realm.state to REALM_STATE_NONE rather than rely on the
->>    zeroing of the structure.
->> Changes since v7:
->>  * Add some documentation explaining the new machine type.
->> Changes since v6:
->>  * Make the check for kvm_rme_is_available more visible and report an
->>    error code of -EPERM (instead of -EINVAL) to make it explicit that
->>    the kernel supports RME, but the platform doesn't.
->> ---
->>  Documentation/virt/kvm/api.rst | 16 ++++++++++++++--
->>  arch/arm64/kvm/arm.c           | 16 ++++++++++++++++
->>  arch/arm64/kvm/mmu.c           |  3 ---
->>  include/uapi/linux/kvm.h       | 19 +++++++++++++++----
->>  4 files changed, 45 insertions(+), 9 deletions(-)
->>
->> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
->> index 69c0a9eba6c5..fad3191df311 100644
->> --- a/Documentation/virt/kvm/api.rst
->> +++ b/Documentation/virt/kvm/api.rst
->> @@ -181,8 +181,20 @@ flag KVM_VM_MIPS_VZ.
->>  ARM64:
->>  ^^^^^^
->>  
->> -On arm64, the physical address size for a VM (IPA Size limit) is limited
->> -to 40bits by default. The limit can be configured if the host supports the
->> +On arm64, the machine type identifier is used to encode a type and the
->> +physical address size for the VM. The lower byte (bits[7-0]) encode the
->> +address size and the upper bits[11-8] encode a machine type. The machine
->> +types that might be available are:
->> +
->> + ======================   ============================================
->> + KVM_VM_TYPE_ARM_NORMAL   A standard VM
->> + KVM_VM_TYPE_ARM_REALM    A "Realm" VM using the Arm Confidential
->> +                          Compute extensions, the VM's memory is
->> +                          protected from the host.
->> + ======================   ============================================
->> +
->> +The physical address size for a VM (IPA Size limit) is limited to 40bits
->> +by default. The limit can be configured if the host supports the
->>  extension KVM_CAP_ARM_VM_IPA_SIZE. When supported, use
->>  KVM_VM_TYPE_ARM_IPA_SIZE(IPA_Bits) to set the size in the machine type
->>  identifier, where IPA_Bits is the maximum width of any physical
->> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
->> index 8c0e9ec34f0a..5b582b705eee 100644
->> --- a/arch/arm64/kvm/arm.c
->> +++ b/arch/arm64/kvm/arm.c
->> @@ -172,6 +172,22 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
->>  	mutex_unlock(&kvm->lock);
->>  #endif
->>  
->> +	if (type & ~(KVM_VM_TYPE_ARM_MASK | KVM_VM_TYPE_ARM_IPA_SIZE_MASK))
->> +		return -EINVAL;
->> +
->> +	switch (type & KVM_VM_TYPE_ARM_MASK) {
->> +	case KVM_VM_TYPE_ARM_NORMAL:
->> +		break;
->> +	case KVM_VM_TYPE_ARM_REALM:
->> +		if (!static_branch_unlikely(&kvm_rme_is_available))
->> +			return -EPERM;
-> 
-> EPERM? That's rather odd. You can only do that if the CCA capability
-> has been advertised. So asking for it when you can find that it is not
-> there deserves more of an EINVAL response.
-
-Ack
-
->> +		WRITE_ONCE(kvm->arch.realm.state, REALM_STATE_NONE);
->> +		kvm->arch.is_realm = true;
->> +		break;
->> +	default:
->> +		return -EINVAL;
->> +	}
->> +
->>  	kvm_init_nested(kvm);
->>  
->>  	ret = kvm_share_hyp(kvm, kvm + 1);
->> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->> index de10dbde4761..130f28dfb3cb 100644
->> --- a/arch/arm64/kvm/mmu.c
->> +++ b/arch/arm64/kvm/mmu.c
->> @@ -881,9 +881,6 @@ static int kvm_init_ipa_range(struct kvm *kvm,
->>  	if (kvm_is_realm(kvm))
->>  		kvm_ipa_limit = kvm_realm_ipa_limit();
->>  
->> -	if (type & ~KVM_VM_TYPE_ARM_IPA_SIZE_MASK)
->> -		return -EINVAL;
->> -
-> 
-> How about the *other* bits? You need to be able to detect that
-> userspace is using the reserved bits and error out.
-
-That check is now further up in kvm_arch_init_vm():
-
->> +	if (type & ~(KVM_VM_TYPE_ARM_MASK | KVM_VM_TYPE_ARM_IPA_SIZE_MASK))
->> +		return -EINVAL;
-
-(along with the default branch in the switch handling unknown 'types')
-
->>  	phys_shift = KVM_VM_TYPE_ARM_IPA_SIZE(type);
->>  	if (is_protected_kvm_enabled()) {
->>  		phys_shift = kvm_ipa_limit;
->> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
->> index 7dafb443368a..b70ecee918de 100644
->> --- a/include/uapi/linux/kvm.h
->> +++ b/include/uapi/linux/kvm.h
->> @@ -672,14 +672,25 @@ struct kvm_enable_cap {
->>  #define KVM_S390_SIE_PAGE_OFFSET 1
->>  
->>  /*
->> - * On arm64, machine type can be used to request the physical
->> - * address size for the VM. Bits[7-0] are reserved for the guest
->> - * PA size shift (i.e, log2(PA_Size)). For backward compatibility,
->> - * value 0 implies the default IPA size, 40bits.
->> + * On arm64, machine type can be used to request both the machine type and
->> + * the physical address size for the VM.
->> + *
->> + * Bits[11-8] are reserved for the ARM specific machine type.
->> + *
->> + * Bits[7-0] are reserved for the guest PA size shift (i.e, log2(PA_Size)).
->> + * For backward compatibility, value 0 implies the default IPA size, 40bits.
->>   */
->> +#define KVM_VM_TYPE_ARM_SHIFT		8
->> +#define KVM_VM_TYPE_ARM_MASK		(0xfULL << KVM_VM_TYPE_ARM_SHIFT)
->> +#define KVM_VM_TYPE_ARM(_type)		\
->> +	(((_type) << KVM_VM_TYPE_ARM_SHIFT) & KVM_VM_TYPE_ARM_MASK)
->> +#define KVM_VM_TYPE_ARM_NORMAL		KVM_VM_TYPE_ARM(0)
->> +#define KVM_VM_TYPE_ARM_REALM		KVM_VM_TYPE_ARM(1)
-> 
-> Why can't that be just "PROTECTED", using bit 31, just like pKVM?  I
-> don't see the point in deviating from an established practice.
-
-As far as I'm aware this pKVM practise isn't upstream. We also need to
-distinguish between pKVM and CCA - it's entirely possible that both
-might coexist on the same platform.
-
-This is just extending a proposal that Will posted years ago[1] for pkvm
-with room for more types - that used bit 8 for a
-KVM_VM_TYPE_ARM_PROTECTED flag. I agree there might be an argument for
-the realm type being 2 if we want to keep 1 for pKVM. But it looks like
-downstream pKVM has done something different and incompatible anyway.
-
-Thanks,
-Steve
-
-[1]
-https://lists.infradead.org/pipermail/linux-arm-kernel/2022-May/744865.html
+T24gV2VkLCAyMDI1LTEwLTAxIGF0IDEwOjQwICswMDAwLCBIdWFuZywgS2FpIHdyb3RlOg0KPiBP
+biBXZWQsIDIwMjUtMTAtMDEgYXQgMDA6MzIgKzAwMDAsIEVkZ2Vjb21iZSwgUmljayBQIHdyb3Rl
+Og0KPiA+IA0KPiA+IFBhcnQgb2YgdGhlIHByb2JsZW0gaXMgdGhhdCB0ZHhfZmluZF9wYW10X3Jl
+ZmNvdW50KCkgZXhwZWN0cyB0aGUgaHBhIHBhc3NlZCBpbg0KPiA+IHRvIGJlIFBNRCBhbGlnbmVk
+LiBUaGUgb3RoZXIgY2FsbGVycyBvZiB0ZHhfZmluZF9wYW10X3JlZmNvdW50KCkgYWxzbyBtYWtl
+IHN1cmUNCj4gPiB0aGF0IHRoZSBQQSBwYXNzZWQgaW4gaXMgMk1CIGFsaWduZWQgYmVmb3JlIGNh
+bGxpbmcsIGFuZCBjb21wdXRlIHRoaXMgc3RhcnRpbmcNCj4gPiB3aXRoIGEgUEZOLiBTbyB0byB0
+cnkgdG8gbWFrZSBpdCBlYXNpZXIgdG8gcmVhZCBhbmQgYmUgY29ycmVjdCB3aGF0IGRvIHlvdSB0
+aGluaw0KPiA+IGFib3V0IHRoZSBiZWxvdzoNCj4gPiANCj4gPiBzdGF0aWMgYXRvbWljX3QgKnRk
+eF9maW5kX3BhbXRfcmVmY291bnQodW5zaWduZWQgbG9uZyBwZm4pIHsNCj4gPiAgICAgdW5zaWdu
+ZWQgbG9uZyBocGEgPSBBTElHTl9ET1dOKHBmbiwgUE1EX1NJWkUpOw0KPiANCj4gU2hvdWxkbid0
+IGl0IGJlOg0KPiANCj4gCWhwYSA9IEFMSUdOX0RPV04oUEZOX1BIWVMocGZuKSwgUE1EX1NJWkUp
+KTsNCj4gPw0KDQpFcnIsIHllcy4NCg0KPiA+IA0KPiA+ICAgICByZXR1cm4gJnBhbXRfcmVmY291
+bnRzW2hwYSAvIFBNRF9TSVpFXTsNCj4gPiB9DQo+ID4gDQo+ID4gLyoNCj4gPiAgKiAnc3RhcnRf
+cGZuJyBpcyBpbmNsdXNpdmUgYW5kICdlbmRfcGZuJyBpcyBleGNsdXNpdmUuwqANCj4gPiANCj4g
+DQo+IEkgdGhpbmsgJ2VuZF9wZm4nIGlzIGV4Y2x1c2l2ZSBpcyBhIGxpdHRsZSBiaXQgY29uZnVz
+aW5nPw0KPiANCg0KSXQncyB0cnlpbmcgdG8gc2F5IHRoYXQgZW5kX3BmbiBpcyBhbiBleGNsdXNp
+dmUgcmFuZ2UgdmFsdWUsIHNvIHRoZSByYW5nZSBpbg0KcXVlc3Rpb24gZG9lcyBub3QgYWN0dWFs
+bHkgaW5jbHVkZSBlbmRfcGZuLiBUaGF0IGlzIGhvdyB0aGUgY2FsbGluZyBjb2RlIGxvb2tlZA0K
+dG8gbWUsIGJ1dCBwbGVhc2UgY2hlY2suDQoNCk1heWJlIEkgY2FuIGNsYXJpZnkgdGhhdCBzdGFy
+dF9wZm4gYW5kIGVuZF9wZm4gYXJlIGEgcmFuZ2U/IEl0IHNlZW1zIHJlZHVuZGFudC4NCg0KPiAg
+IEl0IHNvdW5kcyBsaWtlDQo+IHRoZSBwaHlzaWNhbCByYW5nZSBmcm9tIFBGTl9QSFlTKGVuZF9w
+Zm4gLSAxKSB0byBQRk5fUEhZUyhlbmRfcGZuKSBpcyBhbHNvDQo+IGV4Y2x1c2l2ZSwgYnV0IGl0
+IGlzIGFjdHVhbGx5IG5vdD8NCj4gDQoNCk5vdCBzdXJlIHdoYXQgeW91IG1lYW4uIEZvciBjbGFy
+aXR5LCB3aGVuIGRlc2NyaWJpbmcgYSByYW5nZSBzb21ldGltZXMgdGhlIHN0YXJ0DQpvciBlbmQg
+aW5jbHVkZSB0aGF0IHZhbHVlLCBhbmQgc29tZXRpbWVzIHRoZXkgZG9uJ3QuIFNvIGV4Y2x1c2l2
+ZSBoZXJlIG1lYW5zDQp0aGF0IHRoZSBlbmRfcGZuIGlzIG5vdCBpbmNsdWRlZCBpbiB0aGUgcmFu
+Z2UuIEFzIGluIHdlIGRvbid0IG5lZWQgYSByZWZjb3VudA0KYWxsb2NhdGlvbiBmb3IgZW5kX3Bm
+bi4NCg0KPiAgIFRvIG1lIGl0J3MgbW9yZSBsaWtlIG9ubHkgdGhlIHBoeXNpY2FsDQo+IGFkZHJl
+c3MgUEZOX1BIWVMoZW5kX3BmbikgaXMgZXhjbHVzaXZlLg0KPiANCj4gPiBDb21wdXRlIHRoZcKg
+DQo+ID4gICogcGFnZSByYW5nZSB0byBiZSBpbmNsdXNpdmUgb2YgdGhlIHN0YXJ0IGFuZCBlbmQg
+cmVmY291bnQNCj4gPiAgKiBhZGRyZXNzZXMgYW5kIGF0IGxlYXN0IGEgcGFnZSBpbiBzaXplLiBU
+aGUgdGVhcmRvd24gbG9naWMgbmVlZHMNCj4gPiAgKiB0byBoYW5kbGUgcG90ZW50aWFsbHkgb3Zl
+cmxhcHBpbmcgcmVmY291bnRzIG1hcHBpbmdzIHJlc3VsdGluZw0KPiA+ICAqIGZyb20gdGhpcy4N
+Cj4gPiAgKi8NCj4gPiBzdGFydCA9ICh1bnNpZ25lZCBsb25nKXRkeF9maW5kX3BhbXRfcmVmY291
+bnQoc3RhcnRfcGZuKTsNCj4gPiBlbmQgICA9ICh1bnNpZ25lZCBsb25nKXRkeF9maW5kX3BhbXRf
+cmVmY291bnQoZW5kX3BmbiAtIDEpOw0KPiA+IHN0YXJ0ID0gQUxJR05fRE9XTihzdGFydCwgUEFH
+RV9TSVpFKTsNCj4gPiBlbmQgICA9IEFMSUdOX0RPV04oZW5kLCBQQUdFX1NJWkUpICsgUEFHRV9T
+SVpFOw0KPiANCj4gVGhpcyBsb29rcyBmaW5lIHRvIG1lLiAgSSBtZWFuIHRoZSByZXN1bHQgc2hv
+dWxkIGJlIGNvcnJlY3QsIGJ1dCB0aGUNCj4gJ2VuZF9wZm4gLSAxJyAoZHVlIHRvICdlbmRfcGZu
+JyBpcyBleGNsdXNpdmUpIGlzIGEgYml0IGNvbmZ1c2luZyB0byBtZSBhcw0KPiBzYWlkIGFib3Zl
+LCBidXQgbWF5YmUgaXQncyBvbmx5IG1lLCBzbyBmZWVsIGZyZWUgdG8gaWdub3JlLg0KDQpTb3Jy
+eSwgSSdtIG5vdCBmb2xsb3dpbmcgdGhlIGNvbmZ1c2lvbi4gTWF5YmUgd2UgY2FuIGhhdmUgYSBx
+dWljayBjaGF0IHdoZW4geW91DQpjb21lIG9ubGluZS4NCg0KPiANCj4gT3IsIGFzIHNhaWQgYWJv
+dmUsIEkgdGhpbmsgdGhlIHByb2JsZW0gb2YgdGhlICJBYm92ZSBmaXgiIGlzIHdoZW4NCj4gY2Fs
+Y3VsYXRpbmcgdGhlIEBlbmQgd2UgZGlkbid0IGNvbnNpZGVyIHRoZSBjYXNlIHdoZXJlIGl0IGVx
+dWFscyB0byBAc3RhcnQNCj4gYW5kIGlzIGFscmVhZHkgcGFnZSBhbGlnbmVkLiAgRG9lcyBiZWxv
+dyB3b3JrIChhc3N1bWluZw0KPiB0ZHhfZmluZF9wYW10X3JlZmNvdW50KCkgc3RpbGwgdGFrZXMg
+J2hwYScpPw0KPiANCj4gICAgIHN0YXJ0ID0gKHVuc2lnbmVkIGxvbmcpdGR4X2ZpbmRfcGFtdF9y
+ZWZjb3VudChQRk5fUEhZUyhzdGFydF9wZm4pKTsNCj4gICAgIGVuZCAgID0gKHVuc2lnbmVkIGxv
+bmcpdGR4X2ZpbmRfcGFtdF9yZWZjb3VudChQRk5fUEhZUyhlbmRfcGZuKSAtIDEpKTsNCj4gICAg
+IHN0YXJ0ID0gUEFHRV9BTElHTl9ET1dOKHN0YXJ0KTsNCj4gICAgIGVuZCAgID0gUEFHRV9BTElH
+Tl9ET1dOKGVuZCkgKyBQQUdFX1NJWkU7DQoNClRoZSByZWZjb3VudHMgYXJlIGFjdHVhbGx5IHBl
+ciBwYWdlL3BmbiBub3QgcGVyIFBBLiBTbyBJIHRoaW5rIGludHJvZHVjaW5nIHRoZQ0KY29uY2Vw
+dCBvZiBhIHJlZmNvdW50IGZvciBhIFBBLCBlc3BlY2lhbGx5IGFzIHBhcnQgb2YgdGhlIGludGVy
+ZmFjZXMgaXMgYWRkaW5nDQpjb25mdXNpb24uIFRoZSBtYXRoIGhhcHBlbnMgdG8gd29yayBvdXQs
+IGJ1dCBpdCdzIGEgbGF5ZXIgb2YgaW5kaXJlY3Rpb24uDQoNClRoZSBvdGhlciBwcm9ibGVtIHRo
+aXMgY29sbGlkZXMgd2l0aCBpcyB0aGF0IHRkeF9maW5kX3BhbXRfcmVmY291bnQoKSBjYWxsZXJz
+DQphbGwgaGF2ZSB0byBjb252ZXJ0IFBGTiB0byBQQS4gVGhpcyBzaG91bGQgYmUgZml4ZWQuDQoN
+Cg0KSSBndWVzcyB3ZSBhcmUgcmVhbGx5IGRvaW5nIHR3byBzZXBhcmF0ZSBjYWxjdWxhdGlvbnMu
+IEZpcnN0IGNhbGN1bGF0ZSB0aGUgcmFuZ2UNCm9mIHJlZmNvdW50cyB3ZSBuZWVkLCBhbmQgdGhl
+biBjYWxjdWxhdGUgdGhlIHJhbmdlIG9mIHZtYWxsb2Mgc3BhY2Ugd2UgbmVlZC4gSG93DQphYm91
+dCB0aGlzLCBpcyBpdCBjbGVhcmVyIHRvIHlvdT8gSXQgaXMgdmVyeSBzcGVjaWZpYyBhYm91dCB3
+aGF0L3doeSB3ZSBhY3R1YWxseQ0KYXJlIGRvaW5nLCBidXQgYXQgdGhlIGV4cGVuc2Ugb2YgbWlu
+aW1pemluZyBvcGVyYXRpb25zLiBJbiB0aGlzIHNsb3cgcGF0aCwgSQ0KdGhpbmsgY2xhcml0eSBp
+cyB0aGUgcHJpb3JpdHkuDQoNCnN0YXRpYyBpbnQgYWxsb2NfcGFtdF9yZWZjb3VudCh1bnNpZ25l
+ZCBsb25nIHN0YXJ0X3BmbiwgdW5zaWduZWQgbG9uZyBlbmRfcGZuKQ0Kew0KCXVuc2lnbmVkIGxv
+bmcgcmVmY291bnRfZmlyc3QsIHJlZmNvdW50X2xhc3Q7DQoJdW5zaWduZWQgbG9uZyBtYXBwaW5n
+X3N0YXJ0LCBtYXBwaW5nX2VuZDsNCg0KCS8qDQoJICogJ3N0YXJ0X3BmbicgaXMgaW5jbHVzaXZl
+IGFuZCAnZW5kX3BmbicgaXMgZXhjbHVzaXZlLiBGaW5kIHRoZQ0KCSAqIHJhbmdlIG9mIHJlZmNv
+dW50cyB0aGUgcGZuIHJhbmdlIHdpbGwgbmVlZC4NCgkgKi8NCglyZWZjb3VudF9maXJzdCA9ICh1
+bnNpZ25lZCBsb25nKXRkeF9maW5kX3BhbXRfcmVmY291bnQoc3RhcnRfcGZuKTsNCglyZWZjb3Vu
+dF9sYXN0ICAgPSAodW5zaWduZWQgbG9uZyl0ZHhfZmluZF9wYW10X3JlZmNvdW50KGVuZF9wZm4g
+LSAxKTsNCg0KCS8qDQoJICogQ2FsY3VsYXRlIHRoZSBwYWdlIGFsaWduZWQgcmFuZ2UgdGhhdCBp
+bmNsdWRlcyB0aGUgcmVmY291bnRzLiBUaGUNCgkgKiB0ZWFyZG93biBsb2dpYyBuZWVkcyB0byBo
+YW5kbGUgcG90ZW50aWFsbHkgb3ZlcmxhcHBpbmcgcmVmY291bnQNCgkgKiBtYXBwaW5ncyByZXN1
+bHRpbmcgZnJvbSB0aGUgYWxpZ25tZW50cy4NCgkgKi8NCgltYXBwaW5nX3N0YXJ0ID0gcm91bmRf
+ZG93bihyZWZjb3VudF9maXJzdCwgUEFHRV9TSVpFKTsNCgltYXBwaW5nX2VuZCAgID0gcm91bmRf
+dXAocmVmY291bnRfbGFzdCArIHNpemVvZigqcGFtdF9yZWZjb3VudHMpLA0KUEFHRV9TSVpFKTsN
+Cg0KDQoJcmV0dXJuIGFwcGx5X3RvX3BhZ2VfcmFuZ2UoJmluaXRfbW0sIG1hcHBpbmdfc3RhcnQs
+IG1hcHBpbmdfZW5kIC0NCm1hcHBpbmdfc3RhcnQsDQoJCQkJICAgcGFtdF9yZWZjb3VudF9wb3B1
+bGF0ZSwgTlVMTCk7DQp9DQoNCj4gDQo+IEFueXdheSwgZG9uJ3QgaGF2ZSBzdHJvbmcgb3Bpbmlv
+biBoZXJlLCBzbyB1cCB0byB5b3UuDQoNCg==
