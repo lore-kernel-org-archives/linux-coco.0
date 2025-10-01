@@ -1,272 +1,213 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A212C028B
-	for <linux-coco@lists.linux.dev>; Wed,  1 Oct 2025 10:55:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607502C21F2;
+	Wed,  1 Oct 2025 11:00:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759316162; cv=none; b=mI5kNrFu8FwsPDmKvt0qjjMY2QVWBpvVmm4Ry6FC4mh+DJynciBQa7/oYPsIV8TY7iNfQr39LT2WWFPF6FsM8uyDGaEFPHjzETQv9+d3/bn3dlMGSCMzYCbO0LOMCFLbPoa34uqUS/xYPazWT3XCc+n7mOKA6wHIUZAP+BJdQ9Y=
+	t=1759316426; cv=none; b=pv/PP4hIvT91yzKRb/r0jyn6yklDd4p6x2E2zi5vVw/fcua+O9mpnU0rUokGteZOQ9163h+BujBbGc9Xk4OYPyAnhjrGIywNdGGE5AZcHJgLg1m/yaFLGHuXppbkxQ1xaaLYz/oqmFPx8ZfBYGWYUlomRRfO/Pxwd8CN1gJq+mY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759316162; c=relaxed/simple;
-	bh=/cW6k727QVf0vtuGeGln5O6rogt5i5bXTUrItaPcGpU=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=ZNfSS5cdbQBfWUYRRxMYSls7tzaqR9P91n3zPCHhKLHfk6qNfhQ9s8fwfR5bDWwDkuflL8S7o4gfaMxzwawiNSP+hqVf1wsJLm9LgiY+yV4Z6XfBLOmDjLzH8JRELHql17anFsL59aLRZTBS0/PRuOA0VfNKgTjUsOlbj3vg26A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MpHk2GRo; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MpHk2GRo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759316160; x=1790852160;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=/cW6k727QVf0vtuGeGln5O6rogt5i5bXTUrItaPcGpU=;
-  b=MpHk2GRoTphbnN4ORNSlZcZJ1QAGQ5jf/2u1Qf4ApuzW/tqnFlYGuizG
-   i+gIFHNIE1uxYBKBz1YU2ldSXu/q/zw5m50YIP407uauboHRMJkEt+a+M
-   KjmgvvsgI46EQtk/zyr/QdA5hzDcqsS/5yao199ZZmtLFaDRSdJokrAMy
-   Jm0AsHPFf77Yk21ABhvfbeAl+73YCny3ZIAHThc+7dcYsdZfb9CjwoAdr
-   ZfLAfcL84IiVLwpl1wuK42kZ0a4qEcNmGwgOalf/oLK8yVxBjJ+rVkZTb
-   KK3h3OfqFhbxjz7ZZg965YbonGCjROlCF4+BqBQNvosnVN8tcFWQe50Xg
-   A==;
-X-CSE-ConnectionGUID: Bkh5/LtCQ6SnNIVXDfN/Ew==
-X-CSE-MsgGUID: CAeVsK0iQhSrJmy5L470Yw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="61295177"
-X-IronPort-AV: E=Sophos;i="6.18,306,1751266800"; 
-   d="scan'208";a="61295177"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 03:56:00 -0700
-X-CSE-ConnectionGUID: MtDxMKnGS9iKrb7vW46/1g==
-X-CSE-MsgGUID: i1kxk438T3uxURhjwE/Umg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,306,1751266800"; 
-   d="scan'208";a="178362295"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.85])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 03:55:56 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Wed, 1 Oct 2025 13:55:51 +0300 (EEST)
-To: dan.j.williams@intel.com
-cc: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev, 
-    linux-pci@vger.kernel.org, yilun.xu@intel.com, baolu.lu@linux.intel.com, 
-    zhenzhong.duan@intel.com, aneesh.kumar@kernel.org, bhelgaas@google.com, 
-    aik@amd.com, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/3] PCI/IDE: Add Address Association Register setup for
- RP
-In-Reply-To: <68dc7b5389621_1fa210090@dwillia2-mobl4.notmuch>
-Message-ID: <2b9f7f7b-d6a4-be59-14d4-7b4ffccfe373@linux.intel.com>
-References: <20250928062756.2188329-1-yilun.xu@linux.intel.com> <20250928062756.2188329-3-yilun.xu@linux.intel.com> <d58dfdf5-0058-a03f-dd75-5afb8ae69e04@linux.intel.com> <68dc7b5389621_1fa210090@dwillia2-mobl4.notmuch>
+	s=arc-20240116; t=1759316426; c=relaxed/simple;
+	bh=3ru9c1ecAoC6W72Wb/VITcP/ZIDp+n1MNRQULN/BlhI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YEEc1wZuyQSAywJXFqkK71ZiIurakPYqxyhokhQutekvSG4DveXpMNXslDGoqVG69kmr1j5AvdSvH7fxp1yrz/7VbrGkJ3JltaWKJKlyOmzcynmxELiCzMLQ31rbGMUgwkOkbSwXnOSVMleFq2vhc/Mssx+2m16RWG+U8y2q79Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8995816F2;
+	Wed,  1 Oct 2025 04:00:15 -0700 (PDT)
+Received: from [10.57.0.204] (unknown [10.57.0.204])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 06CB33F59E;
+	Wed,  1 Oct 2025 04:00:18 -0700 (PDT)
+Message-ID: <747ab990-d02d-4e7c-9007-a7ac73bb1062@arm.com>
+Date: Wed, 1 Oct 2025 12:00:14 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323328-1805926643-1759314304=:982"
-Content-ID: <55b4f511-a8eb-d042-1770-c1924665519f@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 03/43] arm64: RME: Add SMC definitions for calling the
+ RMM
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>
+References: <20250820145606.180644-1-steven.price@arm.com>
+ <20250820145606.180644-4-steven.price@arm.com> <86o6qrym2b.wl-maz@kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <86o6qrym2b.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi Marc,
 
---8323328-1805926643-1759314304=:982
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <7a251bc9-21ea-ac94-b6ce-874cd737972c@linux.intel.com>
+On 01/10/2025 11:05, Marc Zyngier wrote:
+> On Wed, 20 Aug 2025 15:55:23 +0100,
+> Steven Price <steven.price@arm.com> wrote:
+>>
+>> The RMM (Realm Management Monitor) provides functionality that can be
+>> accessed by SMC calls from the host.
+>>
+>> The SMC definitions are based on DEN0137[1] version 1.0-rel0
+>>
+>> [1] https://developer.arm.com/documentation/den0137/1-0rel0/
+>>
+>> Reviewed-by: Gavin Shan <gshan@redhat.com>
+>> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>> Changes since v9:
+>>  * Corrected size of 'ripas_value' in struct rec_exit. The spec states
+>>    this is an 8-bit type with padding afterwards (rather than a u64).
+>> Changes since v8:
+>>  * Added RMI_PERMITTED_GICV3_HCR_BITS to define which bits the RMM
+>>    permits to be modified.
+>> Changes since v6:
+>>  * Renamed REC_ENTER_xxx defines to include 'FLAG' to make it obvious
+>>    these are flag values.
+>> Changes since v5:
+>>  * Sorted the SMC #defines by value.
+>>  * Renamed SMI_RxI_CALL to SMI_RMI_CALL since the macro is only used for
+>>    RMI calls.
+>>  * Renamed REC_GIC_NUM_LRS to REC_MAX_GIC_NUM_LRS since the actual
+>>    number of available list registers could be lower.
+>>  * Provided a define for the reserved fields of FeatureRegister0.
+>>  * Fix inconsistent names for padding fields.
+>> Changes since v4:
+>>  * Update to point to final released RMM spec.
+>>  * Minor rearrangements.
+>> Changes since v3:
+>>  * Update to match RMM spec v1.0-rel0-rc1.
+>> Changes since v2:
+>>  * Fix specification link.
+>>  * Rename rec_entry->rec_enter to match spec.
+>>  * Fix size of pmu_ovf_status to match spec.
+>> ---
+>>  arch/arm64/include/asm/rmi_smc.h | 269 +++++++++++++++++++++++++++++++
+>>  1 file changed, 269 insertions(+)
+>>  create mode 100644 arch/arm64/include/asm/rmi_smc.h
+>>
+>> diff --git a/arch/arm64/include/asm/rmi_smc.h b/arch/arm64/include/asm/rmi_smc.h
+>> new file mode 100644
+>> index 000000000000..1000368f1bca
+>> --- /dev/null
+>> +++ b/arch/arm64/include/asm/rmi_smc.h
+> 
+> [...]
+> 
+>> +#define RMI_PERMITTED_GICV3_HCR_BITS	(ICH_HCR_EL2_UIE |		\
+>> +					 ICH_HCR_EL2_LRENPIE |		\
+>> +					 ICH_HCR_EL2_NPIE |		\
+>> +					 ICH_HCR_EL2_VGrp0EIE |		\
+>> +					 ICH_HCR_EL2_VGrp0DIE |		\
+>> +					 ICH_HCR_EL2_VGrp1EIE |		\
+>> +					 ICH_HCR_EL2_VGrp1DIE |		\
+>> +					 ICH_HCR_EL2_TDIR)
+> 
+> Why should KVM care about what bits the RMM wants to use? Also, why
+> should KVM be forbidden to use the TALL0, TALL1 and TC bits? If
+> interrupt delivery is the host's business, then the RMM has no
+> business interfering with the GIC programming.
 
-On Tue, 30 Sep 2025, dan.j.williams@intel.com wrote:
-> Ilpo J=E4rvinen wrote:
-> > On Sun, 28 Sep 2025, Xu Yilun wrote:
-> >=20
-> > > Add Address Association Register setup for Root Ports.
-> > >=20
-> > > The address ranges for RP side Address Association Registers should
-> > > cover memory addresses for all PFs/VFs/downstream devices of the DSM
-> > > device. A simple solution is to get the aggregated 32-bit and 64-bit
-> > > address ranges from directly connected downstream port (either an RP =
-or
-> > > a switch port) and set into 2 Address Association Register blocks.
-> > >=20
-> > > There is a case the platform doesn't require Address Association
-> > > Registers setup and provides no register block for RP (AMD). Will ski=
-p
-> > > the setup in pci_ide_stream_setup().
-> > >=20
-> > > Also imaging another case where there is only one block for RP.
-> > > Prioritize 64-bit address ranges setup for it. No strong reason for t=
-he
-> > > preference until a real use case comes.
-> > >=20
-> > > The Address Association Register setup for Endpoint Side is still
-> > > uncertain so isn't supported in this patch.
-> > >=20
-> > > Take the oppotunity to export some mini helpers for Address Associati=
-on
-> > > Registers setup. TDX Connect needs the provided aggregated address
-> > > ranges but will use specific firmware calls for actual setup instead =
-of
-> > > pci_ide_stream_setup().
-> > >=20
-> > > Co-developed-by: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-> > > Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-> > > Co-developed-by: Arto Merilainen <amerilainen@nvidia.com>
-> > > Signed-off-by: Arto Merilainen <amerilainen@nvidia.com>
-> > > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> > > ---
-> > >  include/linux/pci-ide.h | 11 +++++++
-> > >  drivers/pci/ide.c       | 64 +++++++++++++++++++++++++++++++++++++++=
-+-
-> > >  2 files changed, 74 insertions(+), 1 deletion(-)
-> > >=20
-> > > diff --git a/include/linux/pci-ide.h b/include/linux/pci-ide.h
-> > > index 5adbd8b81f65..ac84fb611963 100644
-> > > --- a/include/linux/pci-ide.h
-> > > +++ b/include/linux/pci-ide.h
-> > > @@ -6,6 +6,15 @@
-> > >  #ifndef __PCI_IDE_H__
-> > >  #define __PCI_IDE_H__
-> > > =20
-> > > +#define SEL_ADDR1_LOWER GENMASK(31, 20)
-> > > +#define SEL_ADDR_UPPER GENMASK_ULL(63, 32)
-> > > +#define PREP_PCI_IDE_SEL_ADDR1(base, limit)                    \
-> > > +=09(FIELD_PREP(PCI_IDE_SEL_ADDR_1_VALID, 1) |             \
-> > > +=09 FIELD_PREP(PCI_IDE_SEL_ADDR_1_BASE_LOW,          \
-> > > +=09=09    FIELD_GET(SEL_ADDR1_LOWER, (base))) | \
-> > > +=09 FIELD_PREP(PCI_IDE_SEL_ADDR_1_LIMIT_LOW,         \
-> > > +=09=09    FIELD_GET(SEL_ADDR1_LOWER, (limit))))
-> > > +
-> > >  #define PREP_PCI_IDE_SEL_RID_2(base, domain)               \
-> > >  =09(FIELD_PREP(PCI_IDE_SEL_RID_2_VALID, 1) |          \
-> > >  =09 FIELD_PREP(PCI_IDE_SEL_RID_2_BASE, (base)) | \
-> > > @@ -42,6 +51,8 @@ struct pci_ide_partner {
-> > >  =09unsigned int default_stream:1;
-> > >  =09unsigned int setup:1;
-> > >  =09unsigned int enable:1;
-> > > +=09struct range mem32;
-> > > +=09struct range mem64;
-> > >  };
-> > > =20
-> > >  /**
-> > > diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
-> > > index 7633b8e52399..8db1163737e5 100644
-> > > --- a/drivers/pci/ide.c
-> > > +++ b/drivers/pci/ide.c
-> > > @@ -159,7 +159,11 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_=
-dev *pdev)
-> > >  =09struct stream_index __stream[PCI_IDE_HB + 1];
-> > >  =09struct pci_host_bridge *hb;
-> > >  =09struct pci_dev *rp;
-> > > +=09struct pci_dev *br;
-> >=20
-> > Why not join with the previous line?
-> >=20
-> > >  =09int num_vf, rid_end;
-> > > +=09struct range mem32 =3D {}, mem64 =3D {};
-> > > +=09struct pci_bus_region region;
-> > > +=09struct resource *res;
-> > > =20
-> > >  =09if (!pci_is_pcie(pdev))
-> > >  =09=09return NULL;
-> > > @@ -206,6 +210,24 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_=
-dev *pdev)
-> > >  =09else
-> > >  =09=09rid_end =3D pci_dev_id(pdev);
-> > > =20
-> > > +=09br =3D pci_upstream_bridge(pdev);
-> > > +=09if (!br)
-> > > +=09=09return NULL;
-> > > +
-> > > +=09res =3D &br->resource[PCI_BRIDGE_MEM_WINDOW];
-> >=20
-> > pci_resource_n()
-> >=20
-> > > +=09if (res->flags & IORESOURCE_MEM) {
-> > > +=09=09pcibios_resource_to_bus(br->bus, &region, res);
-> > > +=09=09mem32.start =3D region.start;
-> > > +=09=09mem32.end =3D region.end;
-> > > +=09}
-> > > +
-> > > +=09res =3D &br->resource[PCI_BRIDGE_PREF_MEM_WINDOW];
-> >=20
-> > Ditto.
-> >=20
-> > > +=09if (res->flags & IORESOURCE_PREFETCH) {
-> >=20
-> > While I don't know much about what's going on here, is this assuming th=
-e=20
-> > bridge window is not disabled solely based on this flag check?
->=20
-> Indeed it does seem to be assumining that the flag is only set when the
-> resource is valid and active.
->=20
-> > Previously inactive bridge window flags were reset but that's no longer=
-=20
-> > the case after the commit 8278c6914306 ("PCI: Preserve bridge window=20
-> > resource type flags") (currently in pci/resource)?
->=20
-> Thanks for the heads up. It does seem odd that both IORESOURCE_UNSET and
-> IORESOURCE_DISABLED are both being set and the check allows for either.
+The RMM receives the guest's GIC state in a field within the REC entry
+structure (enter.gicv3_hcr). The RMM spec states that the above is the
+list of fields that will be considered and that everything else must be
+0[1]. So this is used to filter the configuration to make sure it's
+valid for the RMM.
 
-I'm a bit lost on what check you're referring to.
+In terms of TALL0/TALL1/TC bits: these control trapping to EL2, and when
+in a realm guest the RMM is EL2 - so it's up to the RMM to configure
+these bits appropriately as it is the RMM which will have to deal with
+the trap.
 
-If you refer to the check in pci_bus_alloc_from_region() added by that=20
-commit, now that I relook at it, it would probably be better written as=20
-!r->parent (a TODO entry added to verify it).
+[1] RWVGFJ in the 1.0 spec from
+https://developer.arm.com/documentation/den0137/latest
 
-> Is that assuming that other call paths not touched in that set may only
-> set one of those flags?
+>> +
+>> +struct rec_enter {
+>> +	union { /* 0x000 */
+>> +		u64 flags;
+>> +		u8 padding0[0x200];
+>> +	};
+>> +	union { /* 0x200 */
+>> +		u64 gprs[REC_RUN_GPRS];
+>> +		u8 padding1[0x100];
+>> +	};
+>> +	union { /* 0x300 */
+>> +		struct {
+>> +			u64 gicv3_hcr;
+>> +			u64 gicv3_lrs[REC_MAX_GIC_NUM_LRS];
+>> +		};
+>> +		u8 padding2[0x100];
+>> +	};
+>> +	u8 padding3[0x400];
+>> +};
+>> +
+>> +#define RMI_EXIT_SYNC			0x00
+>> +#define RMI_EXIT_IRQ			0x01
+>> +#define RMI_EXIT_FIQ			0x02
+>> +#define RMI_EXIT_PSCI			0x03
+>> +#define RMI_EXIT_RIPAS_CHANGE		0x04
+>> +#define RMI_EXIT_HOST_CALL		0x05
+>> +#define RMI_EXIT_SERROR			0x06
+>> +
+>> +struct rec_exit {
+>> +	union { /* 0x000 */
+>> +		u8 exit_reason;
+>> +		u8 padding0[0x100];
+>> +	};
+>> +	union { /* 0x100 */
+>> +		struct {
+>> +			u64 esr;
+>> +			u64 far;
+>> +			u64 hpfar;
+>> +		};
+>> +		u8 padding1[0x100];
+>> +	};
+>> +	union { /* 0x200 */
+>> +		u64 gprs[REC_RUN_GPRS];
+>> +		u8 padding2[0x100];
+>> +	};
+>> +	union { /* 0x300 */
+>> +		struct {
+>> +			u64 gicv3_hcr;
+>> +			u64 gicv3_lrs[REC_MAX_GIC_NUM_LRS];
+>> +			u64 gicv3_misr;
+> 
+> Why do we care about ICH_MISR_EL2? Surely we get everything in the
+> registers themselves, right? I think this goes back to my question
+> above: why is the RMM getting in the way of ICH_*_EL2 accesses?
 
-Presence of either of those flags indicates the bridge window resource is=
-=20
-not usable "normally". There's also res->parent which directly tells if=20
-the resource is assigned. Out of those three, res->parent is the preferred=
-=20
-way to know if the resource is usable normally (aka. "assigned"), however,=
-=20
-res->parent check can only be used if this code runs late enough.
+As mentioned above, the state of the guest's GIC isn't passed through
+the CPU's registers, but instead using the rec_enter/rec_exit
+structures. So unlike a normal guest entry we don't set all the CPU's
+register state before entering, but instead hand over a shared data
+structure and the RMM is responsible for actually programming the
+registers on the CPU. Since many of the registers are (deliberately)
+unavailable to the host (e.g. all the GPRs) it makes some sense the RMM
+also handles the GIC registers save/restore.
 
-To me IORESOURCE_UNSET looks unnecessary flag and would want to get rid of=
-=20
-it entirely as res->parent mostly tells the same information. But I don't=
-=20
-expect that to be an easy change, and there's also the init transient=20
-where res->parent is not yet set which complicates things.
+Thanks,
+Steve
 
-But until IORESOURCE_UNSET is gone, it alone can indicate the resource is=
-=20
-not in usable state. And so can IORESOURCE_DISABLED.
+>> +			u64 gicv3_vmcr;
+>> +		};
+> 
+> Thanks,
+> 
+> 	M.
+> 
 
-The resource fitting code clears DISABLED (while sizing bridge windows)=20
-before UNSET (on assignment), so they have different meaning even if=20
-there's overlap on the consumer side depending on use case. The resource=20
-fitting/assignment code cares for this distinction, see e.g.=20
-pdev_resource_assignable() which only checks for DISABLED because, well,=20
-we're about to attempt to turn UNSET into !UNSET.
-
-> Otherwise, the change to mark the resource as zero-sized feels a better
-> / more explicit protocol than checking for flags. IDE setup only cares
-> that any downstream MMIO get included in the stream.
-
-If this particular code here runs after resources have been assigned by=20
-the kernel, please check res->parent to know if the resource is assigned=20
-or not.
-
-I'm considering adding resource_assigned() helper for this purpose as=20
-res->parent check looks too odd and may alienate developers from using it=
-=20
-if they don't know about the internals of the resource management.
-
-If the bridge window resource is assigned, it should have the expected=20
-flags and IMO it's useless to check for the flags (if flags are not right=
-=20
-for the bridge window resources that is assigned, we've a bug elsewhere in=
-=20
-the code).
-
-
-As a sidenote, there are lots of !res->flags and !pci_resource_len(...),=20
-etc. checks which are often custom implementations resource_assigned(),=20
-they all are landmines that make my life harder as I'd want to make=20
-further improvements to resource behavior.
-
---=20
- i.
---8323328-1805926643-1759314304=:982--
