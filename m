@@ -1,50 +1,25 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D861E8324
-	for <linux-coco@lists.linux.dev>; Wed,  1 Oct 2025 15:15:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 309DF259CA0;
+	Wed,  1 Oct 2025 15:19:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759331750; cv=none; b=twFuNuuZUF+KnioFhCpLwtlDqhLqfzB/B+CkQ/QwmnAHMOkSUvnkM1xtlhMKboY6eZpjA4smeWSPrC9iXz5gBNMFBUU2NYMItof6qUzUg2CqG0WjUrSUt2PEZdiX+jlp/VTLTfIe7B0bhqzPsYMxgTZ8AD5yYYZKlSNGOxN5tYY=
+	t=1759331967; cv=none; b=Ap/9RHI7WuL6vSC3XrKnZ/QcdT01NIEnm97ZQYeOP2dguywItVGNddcW3PaB+jP9q124KDvSs9BlxFBe6+RqTwYDSStEQpC/xmDvYzEV2HZD3LX9usBvQhZGWBoEigxYHdEOpNQy0n3s8rB7Wa5YcnOOcCx1H32NKyz6bwxixAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759331750; c=relaxed/simple;
-	bh=6pTpU+kGvBX8+7h6LOtAhbReUDqVyCc2BftGEIyPhls=;
+	s=arc-20240116; t=1759331967; c=relaxed/simple;
+	bh=AuwwvpeSpDso60zCvsa1OUltjVmGQt8y3NeOBslXwNk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mcdXLX8RBueXyflbGR4QqqB5SZcMpTZkSRgergsedvPx4NDdCFIq++xiCGyxcqhLOqqbPqxeU6Gy9Cb2vxTin9GGNHB7+CTF+2L4E/7fIRb3MkUycpJrNcZrSaDrqlprnebf6Z8SOljEfWJDNKsMsAqcXMOrHeDBoqVkyCSyfck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IYVmj2ZI; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IYVmj2ZI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759331747; x=1790867747;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=6pTpU+kGvBX8+7h6LOtAhbReUDqVyCc2BftGEIyPhls=;
-  b=IYVmj2ZIKwgQKoYnofDidnr2Sn5jEuvTxaT4DX7wMkawerLdAn94YK4S
-   Z0hhcSWzoVCGtPielU4cQZW2AKz9Ip/rn6/I6LOntMomgxu+cphgkXm7B
-   9xqECv8gfzUkNQ/+38E+2iAN8xlR63j/am49wUr/FKx1EUjmDSz/XbA4w
-   ZjFl7uVvmfJr1Jx2fbP/QEcKohLJdtb6ittWFFJS6x1GcSQc0TxeicN6g
-   xlt9JOjcc0KcQPt21uL1Kt9MsbAr9Xy2/WEHOK1U7kuLuVUMI2PaOterF
-   wfH2s75t0fTpV4rqn/RqYuVamuXywl3LThkakc8CUafYnSs5hUTx1aGyB
-   w==;
-X-CSE-ConnectionGUID: ISTZ4LojT2mH1wuPh330qA==
-X-CSE-MsgGUID: otxUUbC6TtmayDVW+9B9fA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="65428716"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="65428716"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 08:15:47 -0700
-X-CSE-ConnectionGUID: qQmZ6MdPTaCs379L+xWNwQ==
-X-CSE-MsgGUID: VbrzzagYSg2zy8HvHuSNHg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,307,1751266800"; 
-   d="scan'208";a="178417321"
-Received: from cmdeoliv-mobl4.amr.corp.intel.com (HELO [10.125.109.184]) ([10.125.109.184])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 08:15:47 -0700
-Message-ID: <934568ea-b9a0-4ea8-b62f-2edfd2e64f9f@intel.com>
-Date: Wed, 1 Oct 2025 08:15:46 -0700
+	 In-Reply-To:Content-Type; b=B2KGxWb+XzBfMgU8qx/73YTZvjrs5uTvu8OnokI6hr1FVB7YBCI0txZa9+dtKRHOCReMsGM9gpKs+gmhzOAp6JSK8uFb+oGKqsPU20/g0noL8fSqXjxGg2D9R/ekJFcCvfjFItWDkshXoqbbhVZDgVtrIToVOrlVNZI03WlJbjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7DB241424;
+	Wed,  1 Oct 2025 08:19:16 -0700 (PDT)
+Received: from [10.57.0.204] (unknown [10.57.0.204])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C5E213F59E;
+	Wed,  1 Oct 2025 08:19:18 -0700 (PDT)
+Message-ID: <765f8a3e-2bdd-4352-ba89-99ce3dbc6e4c@arm.com>
+Date: Wed, 1 Oct 2025 16:19:16 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,72 +27,55 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] x86/virt/tdx: Retrieve TDX module version
-To: Chao Gao <chao.gao@intel.com>, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, x86@kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, "Kirill A. Shutemov" <kas@kernel.org>,
- Kai Huang <kai.huang@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Dan Williams <dan.j.williams@intel.com>
-References: <20251001022309.277238-1-chao.gao@intel.com>
- <20251001022309.277238-2-chao.gao@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20251001022309.277238-2-chao.gao@intel.com>
+Subject: Re: [PATCH v10 08/43] kvm: arm64: Don't expose debug capabilities for
+ realm guests
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>
+References: <20250820145606.180644-1-steven.price@arm.com>
+ <20250820145606.180644-9-steven.price@arm.com> <86ikgyzrzj.wl-maz@kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <86ikgyzrzj.wl-maz@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 9/30/25 19:22, Chao Gao wrote:
-> +	if (!ret && !(ret = read_sys_metadata_field(0x0800000100000003, &val)))
-> +		sysinfo_version->minor_version = val;
-> +	if (!ret && !(ret = read_sys_metadata_field(0x0800000100000004, &val)))
-> +		sysinfo_version->major_version = val;
-> +	if (!ret && !(ret = read_sys_metadata_field(0x0800000100000005, &val)))
-> +		sysinfo_version->update_version = val;
+On 01/10/2025 14:11, Marc Zyngier wrote:
+> On Wed, 20 Aug 2025 15:55:28 +0100,
+> Steven Price <steven.price@arm.com> wrote:
+>>
+>> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>
+>> RMM v1.0 provides no mechanism for the host to perform debug operations
+>> on the guest. So don't expose KVM_CAP_SET_GUEST_DEBUG and report 0
+>> breakpoints and 0 watch points.
+> 
+> What is the guest seeing for the same things?
 
-Heh, how long does this take in practice to get 6 bytes of data out of
-the module? When is the point that we move  over to TDH.SYS.RDALL?
+The number of breakpoints/watchpoints is configured using the usual
+architectural register ID_AA64DFR0_EL1. So the VMM can configure the
+guest as it pleases to be able to debug itself.
+
+Obviously CCA is about the host not seeing into the guest so debugging
+the guest is generally not permitted.
+
+RMM v1.1 should provide some mechanisms for the host to debug a realm -
+but this would also change the attestation measurement so needs buy in
+from the guest's attestation flow. I don't think the RMM API for that is
+finalised yet, and I certainly don't have any Linux patches.
+
+Thanks,
+Steve
+
