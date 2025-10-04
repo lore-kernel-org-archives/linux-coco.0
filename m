@@ -1,297 +1,229 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42BA9255F28
-	for <linux-coco@lists.linux.dev>; Fri,  3 Oct 2025 18:18:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759515511; cv=fail; b=RcYcGmTQZ2AZ/FH8RPTpIx9iECFyT5JGSapPWqn/G/7rup5/2F0U8wAQHxOzudy9SRPiZQ1z4Sz3YK5koJR7zQsSiXdiMpFEUDJ4KBfRAozG0+FpxLlNzSBf5jk7QZ60Ga9zV+IZvy9VIqFH0u6K4c0LNGahdkm1q8Xq8FJDcDA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759515511; c=relaxed/simple;
-	bh=HRUUYJFPJCAgvp1Kn3D6wJ09jbkgmLjw/VIYZzREn74=;
-	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
-	 Content-Type:MIME-Version; b=PcMKv6QA33291elQYgPai8RRNtyLL8Dnk3eucFfEQxX/Ek36JX4SAqX9FjZIWao+9PefrqnBxhoQzw8HNzoX6TrqDxzQnZQRj0Q8eJOdLp1eGFFQrwjPURhJ7901Pv1OYU1NvJpLz8vXSLc/2FDGnZ3IHB7rH7X+ZwOkToBaCeM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YPG68aOi; arc=fail smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43CE31CDFAC
+	for <linux-coco@lists.linux.dev>; Sat,  4 Oct 2025 11:19:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759576780; cv=none; b=MdrzV7WVVkOZSTb+0vLPntO5ESpTB0t0l4b5yRDj0/mf+NID+frXa4u0qS+e7h8xQKTkEhJaGRrQNqXanBhfIrxMR2TfPSE3OFiAXq8rqyjh5V+g9PpaqXKlWL34DzXRUmGlozYc9wAFJKlSjnzfup2Z3y8iXKJKVTS3io3CsuE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759576780; c=relaxed/simple;
+	bh=Hkj+kHrByMjgvX24xgSn41xHW2ARhQn1MGNjIACeu2c=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=tLAbL/j9U65YH7squide08KpkA5qEDlrivZFeowhOA/BxtV2hwdT7NZWu5OFV24DX1x8NH3E1hysJjuOGmnJ/0yID+Aly0Bl17s6L54wFdKInS24h+5M0QlpXV/XtNeQt4GOYWeOKKNy9ck7bFbsvFZreLTl59RPR9N0w0+5jnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=XiK8Gt+f; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=WytkRI06; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=XiK8Gt+f; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=WytkRI06; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YPG68aOi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759515510; x=1791051510;
-  h=from:date:to:cc:message-id:in-reply-to:references:
-   subject:content-transfer-encoding:mime-version;
-  bh=HRUUYJFPJCAgvp1Kn3D6wJ09jbkgmLjw/VIYZzREn74=;
-  b=YPG68aOiRDCzFosvixIcrBofJ6sL7QN/507wcsA1l2ARHTlpoy1yPbWs
-   IQG0NqTlrXZijyHO3+eqVEj6KUg4iA7/+rpPzDFieYLVXVfAH9Z8dRn1M
-   usuE1eriM18Rria6QfMySadXa1jKrHt9C/prxJHzjyRFJI+DRwGWuTSFh
-   0qhTvKV4JqwtXlItlqqMRj19+PKMjfMs1IcrqxUgY3EichLxp9LhbWGQ8
-   fbmf89AVoJAisRk8JGIvbfLI2ArCEnG8kW0bL3hlhPk9nEjiwKvaJAla3
-   6MhNXK8GCFNVV/R2WJ0GP+9tYd0G0VM6azMqjTC/yzh/gAZy9Wh+nPLDD
-   A==;
-X-CSE-ConnectionGUID: BOsc4vFERQS5sEKDkrAzyg==
-X-CSE-MsgGUID: JEKA4WNKSAG9RsaYAOUFQQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11571"; a="61711017"
-X-IronPort-AV: E=Sophos;i="6.18,313,1751266800"; 
-   d="scan'208";a="61711017"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2025 11:18:29 -0700
-X-CSE-ConnectionGUID: k1MLOrw4TbWufIxqS0cDSA==
-X-CSE-MsgGUID: EUMXDf/STb6b/WWVH91DzQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,313,1751266800"; 
-   d="scan'208";a="179776972"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2025 11:18:29 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Fri, 3 Oct 2025 11:18:28 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Fri, 3 Oct 2025 11:18:28 -0700
-Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.45) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Fri, 3 Oct 2025 11:18:27 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EOLBMrGNs0YgmfRSRfazZqhNM7ncocYex0pEy3sH0kA+mH9j1frUANqYueu4yjfWJFxgz6MYApFp0WzPBLrZsTYx6M2pN+OIo/Z+0BelwPzfw3OrtQGPFZqiPZM/3No8E5aI4C5gJsh6qXpGiCGTLRX3jTwnGq4zW+Q5AuX//lKeajuU5F8tSNcF6WUHSerK2jYm6/HAwkpzn623HjMvtr8as9BlLmfC7VESTZOL+F6YzxurP60i5lgwUNslvwwP5+hN6vaFmKvfavPLOhjgHmOfBdQ9XZRvUDDGU85l2FbN5M2vxEmSvJyMlpF5vX8AC7e21HgVCKwlfQq3fZlytg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NoOIHLjpun/dn0Lv0DYi9Y47IRmPrgZ39yMxjxDeGLY=;
- b=aGvKZfxOUd8C0Y7GsJt9bYa++lOUuDCuc8pgZWbdBEOypeYQDLBKuz6evJ/bAO8k9VfOzZ7ytvZQsi4o2Bv58bei+HBXDQ52cKUOn+ESRs8vH7ctG3mBbdgLIqsKtZI4t1Yh1N5CsfmHttDIvq3po197/PbCIlINsHwXRkl50bjayJu5TLx5h+xUl9FYCX8XETwEC0eL4SJHQchTBeGd5WEueSvApvi8dEzUsoV7TImGSKsfTJQyd9L9ykM5SRrj2ixHf33eSx4gqvUBLHdOAavuBb5Tt3Ns2enTb0Wpu2WtDhSDkhpOkBFGtvhRr/k7EWl+eLI+b7PXtCFzwd/JDw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by LV8PR11MB8558.namprd11.prod.outlook.com (2603:10b6:408:1ed::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.16; Fri, 3 Oct
- 2025 18:18:22 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::1ff:1e09:994b:21ff]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::1ff:1e09:994b:21ff%4]) with mapi id 15.20.9182.015; Fri, 3 Oct 2025
- 18:18:21 +0000
-From: <dan.j.williams@intel.com>
-Date: Fri, 3 Oct 2025 11:18:19 -0700
-To: Xu Yilun <yilun.xu@linux.intel.com>, <dan.j.williams@intel.com>
-CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>,
-	<yilun.xu@intel.com>, <baolu.lu@linux.intel.com>, <zhenzhong.duan@intel.com>,
-	<aneesh.kumar@kernel.org>, <bhelgaas@google.com>, <aik@amd.com>,
-	<linux-kernel@vger.kernel.org>, =?UTF-8?B?SWxwbyBKw6RydmluZW4=?=
-	<ilpo.jarvinen@linux.intel.com>
-Message-ID: <68e0136bd9bcf_1992810012@dwillia2-mobl4.notmuch>
-In-Reply-To: <aN9iKtxzv83Y/qvy@yilunxu-OptiPlex-7050>
-References: <20250928062756.2188329-1-yilun.xu@linux.intel.com>
- <20250928062756.2188329-3-yilun.xu@linux.intel.com>
- <68dd8d20aafb4_1fa2100f0@dwillia2-mobl4.notmuch>
- <aN9iKtxzv83Y/qvy@yilunxu-OptiPlex-7050>
-Subject: Re: [PATCH 2/3] PCI/IDE: Add Address Association Register setup for
- RP
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR03CA0212.namprd03.prod.outlook.com
- (2603:10b6:a03:39f::7) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="XiK8Gt+f";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="WytkRI06";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="XiK8Gt+f";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="WytkRI06"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 711A821DD1;
+	Sat,  4 Oct 2025 11:19:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1759576770; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xSejlmI7K9PSgpBuff6QeP1uc0AzIKYXYCxedt+UTJ8=;
+	b=XiK8Gt+fqN2G8gDnx4r7gPjqnHaaKZR6bt6fJBhz8f9BseF389Pi5xY9gZkwKOBWwxIRtp
+	mwVN/EJ9YQdgSHblry9K2Z9GIvleXCqjgW5ITygievH0A1XYVJLdOU/0BAca7sGV/uIfGg
+	+xiAF82c2S+9wcS005c+bgMOkuMHsxQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1759576770;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xSejlmI7K9PSgpBuff6QeP1uc0AzIKYXYCxedt+UTJ8=;
+	b=WytkRI064UyIxgrpTZ8d2kz2EOHVp7CSdGtqPQXMj+pPlesMown+uT6vh7cxlneELpSsZO
+	QwEiJ0IVydCHRaAg==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XiK8Gt+f;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WytkRI06
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1759576770; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xSejlmI7K9PSgpBuff6QeP1uc0AzIKYXYCxedt+UTJ8=;
+	b=XiK8Gt+fqN2G8gDnx4r7gPjqnHaaKZR6bt6fJBhz8f9BseF389Pi5xY9gZkwKOBWwxIRtp
+	mwVN/EJ9YQdgSHblry9K2Z9GIvleXCqjgW5ITygievH0A1XYVJLdOU/0BAca7sGV/uIfGg
+	+xiAF82c2S+9wcS005c+bgMOkuMHsxQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1759576770;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xSejlmI7K9PSgpBuff6QeP1uc0AzIKYXYCxedt+UTJ8=;
+	b=WytkRI064UyIxgrpTZ8d2kz2EOHVp7CSdGtqPQXMj+pPlesMown+uT6vh7cxlneELpSsZO
+	QwEiJ0IVydCHRaAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 185FC1366F;
+	Sat,  4 Oct 2025 11:19:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id CuvVA8IC4WjqEQAAD6G6ig
+	(envelope-from <nstange@suse.de>); Sat, 04 Oct 2025 11:19:30 +0000
+From: Nicolai Stange <nstange@suse.de>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: coconut-svsm@lists.linux.dev,  "linux-coco@lists.linux.dev"
+ <linux-coco@lists.linux.dev>,  Jon Lange <jlange@microsoft.com>,
+  "kraxel@redhat.com" <kraxel@redhat.com>,  "Relph, Richard"
+ <Richard.Relph@amd.com>,  "Rodel, Jorg" <Joerg.Roedel@amd.com>,  Melody
+ Wang <huibo.wang@amd.com>, James Bottomley
+ <James.Bottomley@HansenPartnership.com>, Nicolai Stange <nstange@suse.de>
+Subject: Re: SVSM draft specification (v1.01 draft #3)
+In-Reply-To: <39cc8435-5643-4a16-8eb5-5e12f15566a1@amd.com> (Tom Lendacky's
+	message of "Fri, 3 Oct 2025 11:01:38 -0500")
+References: <39cc8435-5643-4a16-8eb5-5e12f15566a1@amd.com>
+Date: Sat, 04 Oct 2025 13:19:29 +0200
+Message-ID: <87bjmmj4n2.fsf@>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|LV8PR11MB8558:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8d7a1493-0e4a-47e8-1cd1-08de02a93c37
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?V0dCdkJnMFFIanlrZ2RiRzluVmpBY1FRUWFOZTRKRGUwdG1qeXpwTWpNcCtz?=
- =?utf-8?B?ZkhHSEVnUU5COWVyQWRyRXQ4TDZPalBqNDJGZTFPa2xYSW1saDdYakhqUHVE?=
- =?utf-8?B?aDExWHREajBlb01rcENxUmkwS3E4OU96UnVKOU5OYjA2Ty9ubFF1NTBDa1Ix?=
- =?utf-8?B?OElPc0JZeVFDdFJNeDAyeENBV3hPZnE2QUFwYWRZcmhuZURJeG01Zi8wdlFM?=
- =?utf-8?B?NXVWSVJyVFU0MWQybDBlRWlaSnZ0a0c1VTNWNXczaytHeTE1T2Y3ZWlxRVUz?=
- =?utf-8?B?WitMYVBuQm9zeGhLdGxSamRCRVVFVTBZL2lWOXF3R2VLdG1aRVV0N1N2VUVG?=
- =?utf-8?B?Q0xHMW1WWTFaVDRvNjN2RTR4RVVWN1ZEMUdnNURRK2kxb0pZWVJKcTdNL2t2?=
- =?utf-8?B?TERoS3p4MGJ6QmNBenNFR2lYekNxQnI4MXU2WVVSM1hyVFE0VTd4c1Rwd2xk?=
- =?utf-8?B?all5RkVuWU1CU0RnVmNJVkRvT0VZSGtBcmlST3ZjWEo0dUE0dktuRlcyZ3JS?=
- =?utf-8?B?MStlQVhEakJTUnorK1ZxWXlRK01GeTZiMW56SmpTNExQVEtUY09MTGFoQlZp?=
- =?utf-8?B?MVZVOHRNcE1JOHRQODN5UFJ5TkFIcnlxY0JuTXkrTGlaQnZnOWxpcFFpcjZB?=
- =?utf-8?B?RTZodWhkTTByV29zc2VpMmxhOHhFWHVMckdpdG9Malp6M05TZzhEMWZyUDkx?=
- =?utf-8?B?YU16SEpYdmtSYXJOc3JtTXlMNHJ1UWZLMEdkZXVYcysydHVjTU0wSmM5cU5I?=
- =?utf-8?B?TjNFVmJjK0hxc29tRU5qUnc0NUduYWxzdmZ1d2kycXdGN2thTTJFWFJPcS9p?=
- =?utf-8?B?MnZVaW42KzhBanBmRzBIUE85eHlNNC9mZzJmQkVIRGFycndQclIrZEloV2pB?=
- =?utf-8?B?YmhPM04vUUwvZSszK21UTE1QcXFxM3A3aEZRRmkrakd3YS85RWJ3bTN3ZHhs?=
- =?utf-8?B?Wi9qNmRTKzJpRU95OUd6Y2FKVm5iRVRJWDY2bzV0dXlGa0RQRjJxeHg1eWU5?=
- =?utf-8?B?S1liRER5bG55U04xOEU1UDhXb0JibllMZHZhNTJaN2VhRXNxSXBaQVl2UEFm?=
- =?utf-8?B?RlZFUmExS0NJTUpQa1ZUWk1KdmlHd21MOWowdGVkUGR6MS94d0V6RXhOQWZz?=
- =?utf-8?B?QTJCWnhMVHVLek5adlI5bFhlVnJSVlRSb2lvSEVQWDdxaHFlSCtWbzhOc2Fx?=
- =?utf-8?B?NmVHbElpek1WZ01qdEtFOGcxL0puRG9Ga3Nnc3ppL3EzR0NxN3dsVE9UOXNy?=
- =?utf-8?B?blo0NGFiWHdjL2IzTHZIUGJtbGFmb2hnM3J1dE1oUUttdHhBcHUwdGNGUjVt?=
- =?utf-8?B?MHBrclVxTnlXV2UxNCtnWElyRDBqMllCSkhiYnZPOHJkM00yQ3N2bE9qZmhy?=
- =?utf-8?B?UGRJa3J2cHo3TFRrUzBDUzZYSkRNNlJPMmZBYlZ4L2Z2V0tkTXVZN29JVGc1?=
- =?utf-8?B?YldEWHhDY1A1eEdvVi9EVU5sT3ZvSFU0RHFOY2F0Zk5sZjZDeEJlSFFMVHBz?=
- =?utf-8?B?V3Nud0lpdVhWUW43dmhEQWFVdEUxck1ZSVI2WU9vRzF2SkNQTXhEZnpHekd6?=
- =?utf-8?B?Z2I5NkhseHJWTlRaS2FSVnBWdUl6S0dpbHB5dzh3TTMxUFYzUnRMbjdKTUtE?=
- =?utf-8?B?MjhDd1Q0ejRYdmlLS053dzI2b3dUVnkrSUU3YUdwNEI1M1d5aHlDNW0vaUZ3?=
- =?utf-8?B?ZUxpOHFCZG1QSWJVNkVXMDhFeG5DQTM0amgxUS9uYVhPdnM4b3daZVVtTHFB?=
- =?utf-8?B?QkRGN3NzazI1L1lJaCtxZ1lwYm9VVlgzZEQ0ZDYxOVBGL3BqNG51MXZZVmE3?=
- =?utf-8?B?NzNDWng3ZlpNcE1zNXp1dVYvZzh4Zm9SN1U4bkQvTHJnV05od2QvbVhybVdp?=
- =?utf-8?B?YXlpZDRXQUJaS1g1em9Zckt3S3BqUi9hTTE4RTRJbmZoUkNHdE5PaUVLUEww?=
- =?utf-8?Q?yYrEhhNOOKG7UW2WiOX0Z60uJrScccIU?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RXkrZHBuMTlrRGtyeWgvWDdhNlNDQjVUMlk5SGNkdmxac05zRkJ2SmVsTzhR?=
- =?utf-8?B?SVNIWU1GTEZqVEtnZVd5V2w0MlU0MitJbGZUY3FYNnlnb3ZtanVrNFQ1dTVk?=
- =?utf-8?B?dm1wMUV0RzNEdC9yUkovZUpydFRxeHVoVGd2cmJuUEtQRWxab1draUlvRUZ3?=
- =?utf-8?B?T21NSURidUZBWUpuM0V5N1R1L2VpeFBTSCtYQmppNHNOQjNHVDJJMTcvaFJr?=
- =?utf-8?B?MXFWUVpLT2NRaWtnZGdCY1dsZkxRWUk3YnFLR3FrWUdrUVprU3UvVzVLbENu?=
- =?utf-8?B?bXczZ2ZGT1BBR1BiMVg1VEhtSFgwUWVWOURPWGF6NXRVMUVhTndveUJ5aGxj?=
- =?utf-8?B?cGJ0Q3UwamZQaWRHQnRvaE04dnlNc0RhYkhNblh2T05Rd3dSTlRFd1FWZTBa?=
- =?utf-8?B?SEh1N0VEVWNrY1JaVGJKclpYVEN6VEJ0YzdaZDkxdVZmSWhoMnlqR2lvUU4w?=
- =?utf-8?B?OHN2ME5hTk83L3c4Yk9NNzZ5Sm5JRmcrTkI1MzMzWWRYRlI1VWJ0eGxYWkJm?=
- =?utf-8?B?U0NmUTlucEZLaTF4eVpVdHBMSHNlWHQ5T0R5T1poVVU5dHp1U3Y4ZlBRMVNp?=
- =?utf-8?B?YmdDa2JiWlkwaWxnTURkN05mZ3VEZDUxTm9TNnNjeVNIckFpK21nNGN3YXJ6?=
- =?utf-8?B?VW1VKy9UQTZDMGROS3Jqdnd2Sm1pZG9vZmRxT1Vza0R1MWZkd1hKRFJOYlZV?=
- =?utf-8?B?c1J0eGZndENkcDM2UVlXandvOVhDcjRQb1Z2MThCTENEZ2Z5bjVlbThXZUhn?=
- =?utf-8?B?dDhsUE5OVEVkTFlRZ0d2cGZQcXlBeHh2QkFiN2ZDM0lUWnhGdDI5N1ZkeG9o?=
- =?utf-8?B?VFg0WnZ2YUtkVGFqRjRrSTBhMTM2TFdoVXQxbGFIa29iSFZLdmVXL09GRU1K?=
- =?utf-8?B?NlNVMmhxSXpPR0VmWTU2N0NLUUcwTE4rcU1FOHhseUE4YXhYMDZ6d09sUmxD?=
- =?utf-8?B?NWpkQ3MxSDhMU3BMalNtRjJVejJKZktFUGhmVnhTZDRTY0xsTWtqWmpKbHJH?=
- =?utf-8?B?eElhUzFtUGRqclZTaGJZamxIVGR5cDg4eVh1MW1xQzhRbkFvdUZoTGdGT0tI?=
- =?utf-8?B?elNUNFcwYzNWWTBKTjhQM2xWRnh0MnkzR0pUKzMrK2FsL0JkR3FzMnZWZXhy?=
- =?utf-8?B?N2RaUXQ2TGdSTVhJZ3g3dlcrSEJwMi9tS2R3UnRvSGY1aVlNaXdGTXIySGYw?=
- =?utf-8?B?citITFVmeEN6QUZTakFFZjVYNzZueUkxclhYK2NOMHliZGpjd0FyUFg1SGhU?=
- =?utf-8?B?U3JUUGh6LzNNeEVSSHZXZXJtSlNvT2tDZ3FsRWRTSFlWRGtaRkRWaU1FM3Fh?=
- =?utf-8?B?M21xc1VYUlZIVk5qeVd4cDFGeFN0eHl2Vjc0RDVFMERuSS9rYzRuVFRzV1dT?=
- =?utf-8?B?cndRSHp4L1czdVl1REdzZ3ROdnJaSGNjYmZiNDJDMGp6ZVM0aDBQNlVzVm5G?=
- =?utf-8?B?N3l0TDdtakZwQ1ZhUEpYbDUveU5EdmtpVDJSQitCY3FIc2hjV3ZtMU1UMHI0?=
- =?utf-8?B?U3VEMU9mcFMvVmFmbEx1TGd3T3FZb01ESE9FUzZsRlZFU1ZDeUZ2RGs0Qnc5?=
- =?utf-8?B?aUVqRTluT3dDSjRzWHh6OHJCYTN5elJOUllqN2Y1MXlwZFpDTUYyTW1weHRk?=
- =?utf-8?B?NW5zdnBFN2xwWWVjcURTaXFrYStiWXdKb1FQVkZCRHF0emNndnJJdDlyYVo1?=
- =?utf-8?B?eGUzV0ZORkNMOUtXVzdmWDRuQ0RtTEJPbmcvY0tlMUNmVE5mNEFqNmpJZGJ2?=
- =?utf-8?B?dFQ3MjIwcDNnV2Q3ZGRsL2JwN1JrTGRITG0xbG1uZEFwMzJ5WHhHeFVGaHlC?=
- =?utf-8?B?ekEydGgxNXpSUzZiazRPdU5UdzJTdVowUmhUOG1aRE1xa0g2OThMQ001c2RS?=
- =?utf-8?B?K0Zpb1RZK3p6SkNzL2xvcXhPS0hONjFhcGJGam1DTDVldmpNYkJ6Zm5iQXlv?=
- =?utf-8?B?L1JiRjdEVGxSemltNmxlOHpyellqMytjZXUzZGQyZ2EzMnlvREFxejlpcTFw?=
- =?utf-8?B?K2VRQ2NxZ1Q5eVFoMld3aEJkT2NZem5PSzNtaFNoWTVzRk52cUNUZmJibWZY?=
- =?utf-8?B?a1lYdS9GRUhrMjcrTmQ4Z2JMd3EwQkRXTU1hR0FQelZKeG9MdERpaitkbkFi?=
- =?utf-8?B?SitCZDEvUEs5dGM5REZGbXh6T1FQTEpTbnFOWndib3pMd2NkelVuZTRqNWNH?=
- =?utf-8?B?SkE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8d7a1493-0e4a-47e8-1cd1-08de02a93c37
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Oct 2025 18:18:21.8622
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VKR9bU8N+K5PQDsAiClxjPW9i5dxb818pDDIWyvT7dakfUttDWxChvrhTBHMRlh4A+Z1Wu1QoJeMA/Kc7zSvMo88hRPoDcUkqqeZcAAyBDg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR11MB8558
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: 711A821DD1
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-2.31 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	INVALID_MSGID(1.70)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	ARC_NA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -2.31
 
-Xu Yilun wrote:
-> > Per-above, just drop the 64-bit policy and assumption. It will naturally
-> > fail if the required number of address associations is insufficient.
-> > I.e. either we are in the AMD situation and no amount of address
-> > association is required, or we are in the ARM / Intel situation where it
-> > assigns memory then prefetch-memory (if both are present). If both of
-> 
-> Intel can't assign both memory now.
-> 
-> In my patch, the new policy only applies to pci_ide_stream_setup(rp)
-> which TDX won't use. pci_ide_stream_alloc() just listed the 2 memory
-> ranges regardless the actuall number of address association blocks.
-> That's why I said TDX is not the user of the new policy.
-> 
-> > those are required and the hardware only supports 1 address association
-> > then that hardware vendor is responsible for figuring out a quirk.
-> 
-> But if we want the address association register setting all controlled by
-> PCI IDE core, TDX is the practical problem and needs a quirk. I see there
-> is only 1 address association block for RP in my test ENV, and the test
-> device requires perf memory to be IDE protected and later private
-> assigned.
+Hi Tom,
 
-The address association setting is not *controlled* by the PCI IDE core,
-it is simply *initialized* by the PCI IDE core. The PCI IDE core should
-always be a library, not a mid-layer when it comes to policy. So, if TDX
-knows that only prefetchable memory will ever be protected then it can
-do the following:
+Tom Lendacky <thomas.lendacky@amd.com> writes:
 
-        struct pci_ide *ide __free(pci_ide_stream_release) =
-                pci_ide_stream_alloc(pdev);
-        if (!ide)
-                return -ENOMEM;
-	...
-        rp_settings = pci_ide_to_settings(rp, ide);
-        /* only support address association for prefetchable memory */
-        rp_settings->mem_assoc = { 0, -1 };
+> Attached is the next version of the draft SVSM specification with the
+> following changes since the previous version:
+>
+>   - APIC emulation protocol added
+>     - Coconut-SVSM will need to be audited, as the current APIC emulation
+>       code does not completely match the "Alternate Injection Support"
+>       specification on which this protocol is based.
+>   - Reboot protocol added
 
-[..]
-> > +	/*
-> > +	 * Check if the device consumes memory and/or prefetch-memory. Setup
-> > +	 * downstream address association ranges for each.
-> > +	 */
-> > +	mem = pci_resource_n(br, PCI_BRIDGE_MEM_WINDOW);
-> > +	pref = pci_resource_n(br, PCI_BRIDGE_PREF_MEM_WINDOW);
-> > +	pci_dev_for_each_resource(pdev, res) {
-> > +		if (resource_assigned(mem) && resource_contains(mem, res) &&
-> 
-> We still need to cover all sub-functions of the dsm device, only
-> check the need of the dsm device is not enough. But if we check all
-> functions, we don't have to check then.
+there's an ongoing discussion at GH ([1]) on how a reboot should
+interact with the _TPM_Init (think an emulated TPM power cycle) and that
+should probably get resolved before making the spec update effective.
 
-True, good point, no real need to limit the stream just based on the DSM
-device just do:
+I'm trying my best to summarize the problem in what follows, James
+(CCed) might have some additional input.
 
-        if (resource_assigned(mem))
-                pcibios_resource_to_bus(br->bus, &mem_assoc, mem);
-        if (resource_assigned(pref))
-                pcibios_resource_to_bus(br->bus, &pref_assoc, pref);
+So, naively, a cold reset of the firmware, which qualifies as a reset of
+what's called the "Root of Trust for Measurement" (RTM) in TCG
+terminology, would require a reset of the TPM, i.e. to make it enter the
+_TPM_Init state, c.f. the TCG TPM 2.0 Library v184, part 1
+("Architecture"), sec. 10.2.2 ("Initialization State"). Quote: "It
+should not be possible to reset the TPM without resetting the RTM. It
+should not be possible to reset the RTM without resetting the TPM."
 
-I was hoping that limiting it to the bridge windows that are used might
-naturally result in the non-prefetchable memory window dropping out.
-However, better to associate all downstream memory by default and let
-the TSM driver trim associations it does not want to support.
+In particular, a reset of the TPM causes a reinitialization of all PCRs
+to their respective default values as defined in the platform profile
+(constant all-zeroes or all-ones in most cases).
 
-[..]
-> > + * pci_ide_stream_to_regs() - convert IDE settings to association register values
-> > + * @pdev: PCIe device object for either a Root Port or Endpoint Partner Port
-> > + * @ide: registered IDE settings descriptor
-> > + * @regs: output register values
-> > + */
-> > +static void pci_ide_stream_to_regs(struct pci_dev *pdev, struct pci_ide *ide,
-> > +				   struct pci_ide_regs *regs)
-> > +{
-> > +	struct pci_ide_partner *settings = pci_ide_to_settings(pdev, ide);
-> > +	int pos, assoc_idx = 0;
-> > +
-> > +	memset(regs, 0, sizeof(*regs));
-> > +
-> > +	if (!settings)
-> > +		return;
-> >  
-> > -	val = PREP_PCI_IDE_SEL_ADDR1(mem->start, mem->end);
-> > -	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_1(assoc_idx), val);
-> > +	pos = sel_ide_offset(pdev, settings);
-> > +
-> > +	regs->rid_1 = FIELD_PREP(PCI_IDE_SEL_RID_1_LIMIT, settings->rid_end);
-> > +
-> > +	regs->rid_2 = FIELD_PREP(PCI_IDE_SEL_RID_2_VALID, 1) |
-> > +		      FIELD_PREP(PCI_IDE_SEL_RID_2_BASE, settings->rid_start) |
-> > +		      FIELD_PREP(PCI_IDE_SEL_RID_2_SEG, pci_ide_domain(pdev));
-> > +
-> > +	if (pdev->nr_ide_mem && pci_bus_region_size(&settings->mem_assoc)) {
-> 
-> I image the quirk for TDX is, reset the RP side settings->mem_assoc back
-> to {0, -1} before calling this function.
+At the current stage of the SVSM development, that's fine and could
+easily get implemented.
 
-Oh, yup, you predicted my response above.
+However, James remarked in the course of the linked GH discussion that
+establishing such semantics now would prohibit us from letting the SVSM
+measure dynamic parts + configuration of itself into the TPM PCRs in the
+future. IIUC, the idea is to record standard TCG events capturing the
+dynamic aspects of the SVSM into the firmware's PCR-measured eventlog
+(for the firmware event log c.f. [2], EFI_TCG2_PROTOCOL.GetEventLog),
+which is quite appealing, because it would integrate transparently with
+existing workflows and tools like `tpm2_eventlog` etc..
 
-Now, I worry that some device will need its memory window protected in
-addition to its prefetch window, but that is an architecture limitation
-that the TDX Module will need to solve when / if it happens.
+So assuming we do not want to preclude the implementation of something
+like that in the future, the question is how to define interactions with
+the new `SVSM_REBOOT_EXECUTE` protocol command.
+
+From a high-level, AFAICT, we probably would have to
+a.) Convey all or a subsequence of the eventlog to the relaunched
+    firmware. If a subsequence, then that would have to contain all TCG
+    event records relevant to the SVSM's self-measurements.
+b.) Either do a "partial" TPM reset, making it to re-enter _TPM_Init,
+    but keep some subset of PCRs (*) at their current values in case the
+    full event log is conveyed, or do a full TPM reset and issue initial
+    PCR extends from the SVSM corresponding to the to be conveyed log in
+    case of a proper subsequence.
+
+The "relevant log subsequence" option is technically feasible in theory,
+but would require the SVSM to keep a log of its own events for the
+replay at firmware relaunch. James, who entered the GH discussion with a
+suggestion to hand the full log over with some mechanism resembling the
+one from Linux kexec warm reboots, later on mentioned some drawbacks
+with the approach of having the SVSM replay an internally stored log at
+firmware relaunch, please refer to [1] for details.
+
+I myself don't have an opinion on the topic, but as a hand-over
+mechanism for the TCG event log would likely require support from the
+newly proposed `SVSM_REBOOT_EXECUTE` command, I wanted to make you aware
+of the pending discussion.
+
+Thanks!
+
+Nicolai
+
+[1] https://github.com/coconut-svsm/svsm/pull/808#issuecomment-3361113788
+[2] https://trustedcomputinggroup.org/resource/tcg-efi-protocol-specificati=
+on/
+
+(*) Which one is not clear to me yet -- the obvious candidate is PCR[0]
+    and possibly some more, but there might be interactions with the
+    H-CRTM semantics, which require to initialize the PCR[0] differently
+    depending on whether the firmware issued a H-CRTM measurement
+    sequence before invoking TPM2_Startup() or not, c.f. TCG TPM 2.0
+    Library v184, part 1, ("Architecture"), sec. 32.3 ("H-CRTM before
+    TPM2_Startup() and TPM2_Startup() without H-CRTM").
+
+> Please review. If there are no or only minor comments, this draft will
+> become the next version of the specification.
+
+--=20
+SUSE Software Solutions Germany GmbH, Frankenstra=C3=9Fe 146, 90461 N=C3=BC=
+rnberg, Germany
+GF: Ivo Totev, Andrew McDonald, Werner Knoblich
+(HRB 36809, AG N=C3=BCrnberg)
