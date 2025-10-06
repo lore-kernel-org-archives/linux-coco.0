@@ -1,378 +1,102 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C77B3FC7
-	for <linux-coco@lists.linux.dev>; Mon,  6 Oct 2025 03:58:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE5614386D
+	for <linux-coco@lists.linux.dev>; Mon,  6 Oct 2025 14:41:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759723103; cv=none; b=BuiqWFVu6RdNob5jJCXgMquUvkGk9GaupEjrRCbzmksGukHqXRjh2oRrWsYqUuzgGTDb9+pBoRBc/CSG1b3wYfieaC41h2XBnz3nuVyQi/edlKJjlqUnRveco9r4n8PF6CUh39ERVJ2dAOIYYXgRJQK4SsoRiT2x4MwwoDToquY=
+	t=1759761714; cv=none; b=sJb0ezth1BTzjJU8INhN76u/ko7efZ9TFgAynfP8ymPQFjrN8N05LaE9GC5pHecL7AwpY1Ap+ekDKiJ3lWNQ+9hwC3CEOTMGnFxXW1fVXJ3kjk13ewC1GjcW9SxK6vXg8a/O0KYSPCMU3fiKqlCHR1X2OEvTMeHYUflLgG/1om0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759723103; c=relaxed/simple;
-	bh=daJBxd6HVKNES5hXjPzSIqGXw7yQl0iUIqP4BhOvv0g=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=J9/UhnrLb5VllQbIAixmRL7zSsThwJudPK6lx2ZI73SWBCQqN+WTR4yVydojIeB95ciiUtJYof8MP7/+r5nAL95A76gOhQTtFexFQXtUOIA0jN5cF/3h9bYgs0EjgArtIsNg0ZRkRCbJzDGZEFIXUPqzO3CbWgU8vjmfTykeZNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jf6upqJf; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1759761714; c=relaxed/simple;
+	bh=hibbnGnU3QECPZ6XnLJVURE4JHkyRFFdkx1txeFXrk8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ozP/PgV56MrJoZz+9HNdXWhtB7cEZ8YQDgFG+RmgcvcEBMnf/ppxOgS6M0Ui48kjuHD8GfZRcwzbMN7SXse1qfJ9suCqopvGd/ZtvkESuVmJqUJSV+50lae42wg4I0bqcTRaX/2/Vb38lTSlqozRHc5TKZsBs7UIXWK58xmxZCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=Z2AmWhaN; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jf6upqJf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759723101; x=1791259101;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=daJBxd6HVKNES5hXjPzSIqGXw7yQl0iUIqP4BhOvv0g=;
-  b=Jf6upqJfntxf6ywe/mp7blMp/utXsSGGug5EzUbyyieqIM8FLZWPhH6A
-   hTPHROCIGBOgBydPWC+l4bfxymv2/wmqYfUmoLffi/BZ3IJwxZQnXb2Vu
-   cS5yy5nrkQAGg+HpbEKWwqN09TpX1IRoQHcAJvjoL2vIjP175gdKFEq/D
-   zXCt8/p9PB/VfekBTezuZf+K9wrB5b6S2otDzCuYg271dZcLNKzYx0DuZ
-   gRjQgTKyvW46j7pRU2NGaiMya+ZWRNEYC3DuNpweoRsGwakutFGhH/96V
-   X6rhDVdHZiykpUlLq6lT2yPHi1C4qu6/78BHyyHdiXao8zvSDDHNrj14c
-   Q==;
-X-CSE-ConnectionGUID: ME3gzNrXTTKepZd8wVH7fg==
-X-CSE-MsgGUID: 9V25P4vtQr+vq3br237VEA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11573"; a="87360479"
-X-IronPort-AV: E=Sophos;i="6.18,319,1751266800"; 
-   d="scan'208";a="87360479"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2025 20:58:20 -0700
-X-CSE-ConnectionGUID: Ghiu5MQWQmiSHGwNBy2F9w==
-X-CSE-MsgGUID: vkQGKNbETxCKAHyAfJ+K2w==
-X-ExtLoop1: 1
-Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.159.165])
-  by fmviesa003.fm.intel.com with ESMTP; 05 Oct 2025 20:58:17 -0700
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org,
-	dan.j.williams@intel.com
-Cc: yilun.xu@intel.com,
-	yilun.xu@linux.intel.com,
-	baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com,
-	aneesh.kumar@kernel.org,
-	bhelgaas@google.com,
-	aik@amd.com,
-	linux-kernel@vger.kernel.org,
-	amerilainen@nvidia.com,
-	ilpo.jarvinen@linux.intel.com
-Subject: [PATCH v2] PCI/IDE: Add Address Association Register setup for downstream MMIO
-Date: Mon,  6 Oct 2025 11:45:38 +0800
-Message-Id: <20251006034538.2240772-1-yilun.xu@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="Z2AmWhaN"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3ee12332f3dso4388817f8f.2
+        for <linux-coco@lists.linux.dev>; Mon, 06 Oct 2025 07:41:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc.com; s=google; t=1759761710; x=1760366510; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hz+Rkixx7LLpkGutsP5m+f97XLiW/dBpijXGClCMzvg=;
+        b=Z2AmWhaN4Hqj+EqlfO5zmMTxmAbZN4G73VLxaDadX0JoyL0g8PEoVXnhs9o9gMJ9F8
+         U6k3KXvzVUqd7oXMoOBiq04kLnCS/PwGNV0y2gdgv2uUG6gq3cJzQVt1rSgXcrUr8OmA
+         JSgydMc16YbjAxcIzPnP7KJnm9LxPtDE6hqL4oAC9PI2FXE21Q2KsxieMS91Ve6EeWFu
+         txL99/dtIePfHfOOGdkHVLIP8tSxs94VjB/F3n3uEWgzlsV3Oq9av/Crti7ixggnd2x/
+         aopoY0aLcngkkTKkqqDJypBw6bpbVsMhK5kmAC74nrEWIafsvgS9MM/GtkF0ZWtLVrBD
+         9VMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759761710; x=1760366510;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hz+Rkixx7LLpkGutsP5m+f97XLiW/dBpijXGClCMzvg=;
+        b=CwVxF3TBord5ryLvoMXCDn+bcqtZ5xhZwegZ7+NZKWRyrsZvppGPzBIonxD96XQyDB
+         IA1KhRxiHwMkI9xXOzu23ez8ppMsxLNwkClWYFzzeQfWWxUZrjmXAf3iMVKSBnuuv32w
+         zcd8lc7Q16BHgN4paSn7Yql8ZwNuaMroWOSYD6CdjklvjBr5nAPVQFvMgw8xePTGfCQS
+         MzZMVqfTj3sNP/xZtz0Mmi44EYryU+DoTPs2NaIO4I+iJoMW9P9WolVd23hOpLJjcDKd
+         YVHGgxczQjnl3dpQbeZe1/3FUVq8Rj+tbjEnkIZ16RtsHaTCny6nmFa6B1R/6xrZKxo8
+         uQ7Q==
+X-Gm-Message-State: AOJu0Yz11Y7G0FH4SY81Yt/pohu08kPp1xqZLTStJHDZTGvJN1bhfBLc
+	vqFn93//E07bzNwRPvEvfA8lhjXkUf5qzHMc/jTozLFeQLs2ns4xdkWKI2NiN/JkNU4=
+X-Gm-Gg: ASbGncsngQf40zY3gUo4PMybGY2BZj6vccPoj2qBgkqedFER1eP0Cu6GM1MtFew9vtO
+	Wc1xoPuYwTxe3Tt0wPkYC5JAUvM1aFjX121VGgsY+VdRcDZsZf0XEFZJkOSy/ZvYoewBQ9u20hm
+	/hARtHCWDiacdU7P8unC7D7+y5USZKtPGiaoZIirZc2sd7bLqVagRvc0x3H7H0GtdZB71PMGop1
+	5IhAfgmtT6DBhRpu1h3ljq3k7cx6MCooW/4dPG9ROfU5k0PWPa2X/YSpUOt++7ljVqE42T0YUWy
+	Q1Egs4nAtnLbZJb5iuIG7Pr/i9+c0B0cb4doYCEpwNz4+xctlHxsSX7rqNXjimzKJLLuNGf/S7f
+	jtiTU/RpmFIxyf17V4t0D+L/LghylxIEbrQmuzj2pa/qn
+X-Google-Smtp-Source: AGHT+IGp2kpGC3tLU0TDUDe5UOS8YTL+TFbJB6Ca2hXCgzJwI7mQpc3V7iorKqz3mSJ5Vw/OVFNcaA==
+X-Received: by 2002:a05:6000:2dc3:b0:3f7:b7ac:f3d2 with SMTP id ffacd0b85a97d-425671ab145mr8349496f8f.43.1759761709818;
+        Mon, 06 Oct 2025 07:41:49 -0700 (PDT)
+Received: from vermeer ([2a01:cb1d:8190:7100:5984:e25b:cf23:2e9e])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8f0846sm21385065f8f.45.2025.10.06.07.41.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Oct 2025 07:41:48 -0700 (PDT)
+Date: Mon, 6 Oct 2025 16:41:46 +0200
+From: Samuel Ortiz <sameo@rivosinc.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org, xin@zytor.com,
+	chao.gao@intel.com, Dave Jiang <dave.jiang@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>
+Subject: Re: [RFC PATCH 09/27] ACPICA: Add KEYP table definitions
+Message-ID: <aOPVKpkZK9nFOo49@vermeer>
+References: <20250919142237.418648-1-dan.j.williams@intel.com>
+ <20250919142237.418648-10-dan.j.williams@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250919142237.418648-10-dan.j.williams@intel.com>
 
-Add Address Association Register setup for downstream MMIO
+Hi Dan, Dave,
 
-The address ranges for RP side Address Association Registers should
-cover memory addresses for all PFs/VFs/downstream devices of the DSM
-device. A simple solution is to get the aggregated memory range and
-prefetchable-memory range from directly connected downstream port
-(either an RP or a switch port) and set into 2 Address Association
-Register blocks.
+On Fri, Sep 19, 2025 at 07:22:18AM -0700, Dan Williams wrote:
+> From: Dave Jiang <dave.jiang@intel.com>
+> 
+> Add KEYP ACPI table definition defined by [1].
+> 
+> Software uses this table to discover the base address of the Key
+> Configuration Unit (KCU) register block associated with each IDE capable
+> host bridge. TDX host only gets the max IDE streams supported from KCU,
+> it doesn't access other parts since host won't directly touch the host
+> side IDE configuration, TDX Module does.
 
-Just like RID association, address associations will be set by default
-if hardware sets 'Number of Address Association Register Blocks' in the
-'Selective IDE Stream Capability Register' to a non-zero value.
-Alternatively, TSM drivers can opt-out of the settings by zero'ing out
-the probed region.
+Can you share more about how the TDX Module knows about where the KCU
+register block is? Is the host VMM supposed to explicitly "donate" that
+MMIO region to the TSM before TDH_IDE_STREAM_KM?
 
-If the directly connected downstream port provides both memory range
-and prefetchable-memory range but the platform only provides 1 Address
-Association Register block then setup the former first. This follows the
-PCI bridge specification precedent where memory is mandatory and
-prefetchable-memory is optional. Priortize the mandatory one. If the
-platform can't fit into the default setup, TSM drivers can always change
-the setting before setup. E.g. zero'ing out the memory range so that
-prefetchable-memory range could be setup.
+I'm asking that question to potentially align the RISC-V TEE-IO spec [1]
+with a similar KEYP based implementation, as I think it is simpler.
 
-The Address Association Register setup for Endpoint Side is still
-uncertain so isn't supported in this patch.
+Cheers,
+Samuel.
 
-Co-developed-by: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-Co-developed-by: Arto Merilainen <amerilainen@nvidia.com>
-Signed-off-by: Arto Merilainen <amerilainen@nvidia.com>
-Co-developed-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
----
- include/linux/ioport.h  |   6 +++
- include/linux/pci-ide.h |  27 ++++++++++
- include/linux/pci.h     |   5 ++
- drivers/pci/ide.c       | 115 ++++++++++++++++++++++++++++++++++++----
- 4 files changed, 144 insertions(+), 9 deletions(-)
-
-diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-index b46e42bcafe3..64776795e485 100644
---- a/include/linux/ioport.h
-+++ b/include/linux/ioport.h
-@@ -336,6 +336,12 @@ static inline bool resource_union(const struct resource *r1, const struct resour
- 	return true;
- }
- 
-+/* Check if this resource is added to a resource tree or detached. */
-+static inline bool resource_assigned(struct resource *res)
-+{
-+	return res->parent;
-+}
-+
- int find_resource_space(struct resource *root, struct resource *new,
- 			resource_size_t size, struct resource_constraint *constraint);
- 
-diff --git a/include/linux/pci-ide.h b/include/linux/pci-ide.h
-index a30f9460b04a..3d130c8aaaa7 100644
---- a/include/linux/pci-ide.h
-+++ b/include/linux/pci-ide.h
-@@ -24,6 +24,9 @@ enum pci_ide_partner_select {
-  * @rid_start: Partner Port Requester ID range start
-  * @rid_start: Partner Port Requester ID range end
-  * @stream_index: Selective IDE Stream Register Block selection
-+ * @mem_assoc: PCI bus memory address association for targeting peer partner
-+ * @pref_assoc: (optional) PCI bus prefetchable memory address association for
-+ *		targeting peer partner
-  * @default_stream: Endpoint uses this stream for all upstream TLPs regardless of
-  *		    address and RID association registers
-  * @setup: flag to track whether to run pci_ide_stream_teardown() for this
-@@ -34,11 +37,35 @@ struct pci_ide_partner {
- 	u16 rid_start;
- 	u16 rid_end;
- 	u8 stream_index;
-+	struct pci_bus_region mem_assoc;
-+	struct pci_bus_region pref_assoc;
- 	unsigned int default_stream:1;
- 	unsigned int setup:1;
- 	unsigned int enable:1;
- };
- 
-+/**
-+ * struct pci_ide_regs - Hardware register association settings for Selective
-+ *			 IDE Streams
-+ * @rid_1: IDE RID Association Register 1
-+ * @rid_2: IDE RID Association Register 2
-+ * @addr: Up to two address association blocks (IDE Address Association Register
-+ *	  1 through 3) for MMIO and prefetchable MMIO
-+ * @nr_addr: Number of address association blocks initialized
-+ *
-+ * See pci_ide_stream_to_regs()
-+ */
-+struct pci_ide_regs {
-+	u32 rid_1;
-+	u32 rid_2;
-+	struct {
-+		u32 assoc1;
-+		u32 assoc2;
-+		u32 assoc3;
-+	} addr[2];
-+	int nr_addr;
-+};
-+
- /**
-  * struct pci_ide - PCIe Selective IDE Stream descriptor
-  * @pdev: PCIe Endpoint in the pci_ide_partner pair
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 3a71f30211a5..ca97590de116 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -877,6 +877,11 @@ struct pci_bus_region {
- 	pci_bus_addr_t	end;
- };
- 
-+static inline pci_bus_addr_t pci_bus_region_size(const struct pci_bus_region *region)
-+{
-+	return region->end - region->start + 1;
-+}
-+
- struct pci_dynids {
- 	spinlock_t		lock;	/* Protects list, index */
- 	struct list_head	list;	/* For IDs added at runtime */
-diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
-index 851633b240e3..c835d440bfa9 100644
---- a/drivers/pci/ide.c
-+++ b/drivers/pci/ide.c
-@@ -157,8 +157,11 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
- {
- 	/* EP, RP, + HB Stream allocation */
- 	struct stream_index __stream[PCI_IDE_HB + 1];
-+	struct pci_bus_region pref_assoc = { 0, -1 };
-+	struct pci_bus_region mem_assoc = { 0, -1 };
-+	struct resource *mem, *pref;
- 	struct pci_host_bridge *hb;
--	struct pci_dev *rp;
-+	struct pci_dev *rp, *br;
- 	int num_vf, rid_end;
- 
- 	if (!pci_is_pcie(pdev))
-@@ -206,6 +209,21 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
- 	else
- 		rid_end = pci_dev_id(pdev);
- 
-+	br = pci_upstream_bridge(pdev);
-+	if (!br)
-+		return NULL;
-+
-+	/*
-+	 * Check if the device consumes memory and/or prefetch-memory. Setup
-+	 * downstream address association ranges for each.
-+	 */
-+	mem = pci_resource_n(br, PCI_BRIDGE_MEM_WINDOW);
-+	pref = pci_resource_n(br, PCI_BRIDGE_PREF_MEM_WINDOW);
-+	if (resource_assigned(mem))
-+		pcibios_resource_to_bus(br->bus, &mem_assoc, mem);
-+	if (resource_assigned(pref))
-+		pcibios_resource_to_bus(br->bus, &pref_assoc, pref);
-+
- 	*ide = (struct pci_ide) {
- 		.pdev = pdev,
- 		.partner = {
-@@ -213,11 +231,16 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
- 				.rid_start = pci_dev_id(rp),
- 				.rid_end = pci_dev_id(rp),
- 				.stream_index = no_free_ptr(ep_stream)->stream_index,
-+				/* Disable upstream address association */
-+				.mem_assoc = { 0, -1 },
-+				.pref_assoc = { 0, -1 },
- 			},
- 			[PCI_IDE_RP] = {
- 				.rid_start = pci_dev_id(pdev),
- 				.rid_end = rid_end,
- 				.stream_index = no_free_ptr(rp_stream)->stream_index,
-+				.mem_assoc = mem_assoc,
-+				.pref_assoc = pref_assoc,
- 			},
- 		},
- 		.host_bridge_stream = no_free_ptr(hb_stream)->stream_index,
-@@ -396,6 +419,61 @@ static void set_ide_sel_ctl(struct pci_dev *pdev, struct pci_ide *ide,
- 	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_CTL, val);
- }
- 
-+#define SEL_ADDR1_LOWER GENMASK(31, 20)
-+#define SEL_ADDR_UPPER GENMASK_ULL(63, 32)
-+#define PREP_PCI_IDE_SEL_ADDR1(base, limit)			\
-+	(FIELD_PREP(PCI_IDE_SEL_ADDR_1_VALID, 1) |		\
-+	 FIELD_PREP(PCI_IDE_SEL_ADDR_1_BASE_LOW,		\
-+		    FIELD_GET(SEL_ADDR1_LOWER, (base))) |	\
-+	 FIELD_PREP(PCI_IDE_SEL_ADDR_1_LIMIT_LOW,		\
-+		    FIELD_GET(SEL_ADDR1_LOWER, (limit))))
-+
-+static void mem_assoc_to_regs(struct pci_bus_region *region,
-+			      struct pci_ide_regs *regs, int idx)
-+{
-+	regs->addr[idx].assoc1 =
-+		PREP_PCI_IDE_SEL_ADDR1(region->start, region->end);
-+	regs->addr[idx].assoc2 = FIELD_GET(SEL_ADDR_UPPER, region->end);
-+	regs->addr[idx].assoc3 = FIELD_GET(SEL_ADDR_UPPER, region->start);
-+}
-+
-+/**
-+ * pci_ide_stream_to_regs() - convert IDE settings to association register values
-+ * @pdev: PCIe device object for either a Root Port or Endpoint Partner Port
-+ * @ide: registered IDE settings descriptor
-+ * @regs: output register values
-+ */
-+static void pci_ide_stream_to_regs(struct pci_dev *pdev, struct pci_ide *ide,
-+				   struct pci_ide_regs *regs)
-+{
-+	struct pci_ide_partner *settings = pci_ide_to_settings(pdev, ide);
-+	int assoc_idx = 0;
-+
-+	memset(regs, 0, sizeof(*regs));
-+
-+	if (!settings)
-+		return;
-+
-+	regs->rid_1 = FIELD_PREP(PCI_IDE_SEL_RID_1_LIMIT, settings->rid_end);
-+
-+	regs->rid_2 = FIELD_PREP(PCI_IDE_SEL_RID_2_VALID, 1) |
-+		      FIELD_PREP(PCI_IDE_SEL_RID_2_BASE, settings->rid_start) |
-+		      FIELD_PREP(PCI_IDE_SEL_RID_2_SEG, pci_ide_domain(pdev));
-+
-+	if (pdev->nr_ide_mem && pci_bus_region_size(&settings->mem_assoc)) {
-+		mem_assoc_to_regs(&settings->mem_assoc, regs, assoc_idx);
-+		assoc_idx++;
-+	}
-+
-+	if (pdev->nr_ide_mem > assoc_idx &&
-+	    pci_bus_region_size(&settings->pref_assoc)) {
-+		mem_assoc_to_regs(&settings->pref_assoc, regs, assoc_idx);
-+		assoc_idx++;
-+	}
-+
-+	regs->nr_addr = assoc_idx;
-+}
-+
- /**
-  * pci_ide_stream_setup() - program settings to Selective IDE Stream registers
-  * @pdev: PCIe device object for either a Root Port or Endpoint Partner Port
-@@ -409,22 +487,34 @@ static void set_ide_sel_ctl(struct pci_dev *pdev, struct pci_ide *ide,
- void pci_ide_stream_setup(struct pci_dev *pdev, struct pci_ide *ide)
- {
- 	struct pci_ide_partner *settings = pci_ide_to_settings(pdev, ide);
-+	struct pci_ide_regs regs;
- 	int pos;
--	u32 val;
- 
- 	if (!settings)
- 		return;
- 
-+	pci_ide_stream_to_regs(pdev, ide, &regs);
-+
- 	pos = sel_ide_offset(pdev, settings);
- 
--	val = FIELD_PREP(PCI_IDE_SEL_RID_1_LIMIT, settings->rid_end);
--	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_1, val);
-+	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_1, regs.rid_1);
-+	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_2, regs.rid_2);
- 
--	val = FIELD_PREP(PCI_IDE_SEL_RID_2_VALID, 1) |
--	      FIELD_PREP(PCI_IDE_SEL_RID_2_BASE, settings->rid_start) |
--	      FIELD_PREP(PCI_IDE_SEL_RID_2_SEG, pci_ide_domain(pdev));
-+	for (int i = 0; i < regs.nr_addr; i++) {
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_1(i),
-+				       regs.addr[i].assoc1);
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_2(i),
-+				       regs.addr[i].assoc2);
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_3(i),
-+				       regs.addr[i].assoc3);
-+	}
- 
--	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_2, val);
-+	/* clear extra unused address association blocks */
-+	for (int i = regs.nr_addr; i < pdev->nr_ide_mem; i++) {
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_1(i), 0);
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_2(i), 0);
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_3(i), 0);
-+	}
- 
- 	/*
- 	 * Setup control register early for devices that expect
-@@ -447,7 +537,7 @@ EXPORT_SYMBOL_GPL(pci_ide_stream_setup);
- void pci_ide_stream_teardown(struct pci_dev *pdev, struct pci_ide *ide)
- {
- 	struct pci_ide_partner *settings = pci_ide_to_settings(pdev, ide);
--	int pos;
-+	int pos, i;
- 
- 	if (!settings)
- 		return;
-@@ -455,6 +545,13 @@ void pci_ide_stream_teardown(struct pci_dev *pdev, struct pci_ide *ide)
- 	pos = sel_ide_offset(pdev, settings);
- 
- 	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_CTL, 0);
-+
-+	for (i = 0; i < pdev->nr_ide_mem; i++) {
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_1(i), 0);
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_2(i), 0);
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_3(i), 0);
-+	}
-+
- 	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_2, 0);
- 	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_1, 0);
- 	settings->setup = 0;
--- 
-2.25.1
-
+[1] https://github.com/riscv-non-isa/riscv-ap-tee-io/blob/main/src/07-theory_operations.adoc#root-of-trust-spdm-session
