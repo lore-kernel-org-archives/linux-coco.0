@@ -1,281 +1,340 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11021086.outbound.protection.outlook.com [40.93.194.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB0F1EBFFF
-	for <linux-coco@lists.linux.dev>; Tue,  7 Oct 2025 01:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E457464;
+	Tue,  7 Oct 2025 02:20:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.86
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759800208; cv=fail; b=VljbQFCGM2l+chIEarJ9lwCTZ70q5RkzhNAwYWkodWqz5Rhl4yetVGaZ0lr8/7i+bjj0ufSWzwsGY+TIgu4X/w6bCTfG/pol2DGJ1nYtG+bgg5Mq4yeaoZFc5GmzFnUqJC/bm5ZMkrtus2kewTF3IqRVLu7Pcr22qS1T+rcjEv8=
+	t=1759803653; cv=fail; b=j0/06Xvxb+Z15dcjNY+oI7Apbt2bV4a89FJChnKhxQwOue56NVd4Z+gZvWDWFLV0TKU/xIBia7QseD2+0SE5y7Ltdr5u0T3zhrFSOdvVVohaDywQhx1hY0QrmYV5SSk38aE7h/ZaCPDV65EHMRSjMtGT+v7OLXEtWcGDsUxUT3g=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759800208; c=relaxed/simple;
-	bh=9UmvSUZZ7vN7aOseFgWa6db7JoESY7085INIaPCjLLw=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=cxM8Ix/Og8SVBXCYHq4hSNI2SQuEoV1G/lgKCA+oi3ELhuWqtnaSJ70r8/YRpfe5rybd1QxyOitJW9xd9trH+oKuZ0KHwjcykqjfp8RokgHORWvNNbq+XiIqC9gIQfqWrw54ieTBUSDhyBZghT6M+6T7x/DVxHa7nM8p8fR9r4U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EFHdzskn; arc=fail smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1759803653; c=relaxed/simple;
+	bh=ONNjftRtP32uu4iyDq49bq4UjbYhNPw35ObR1mMFg3A=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=pQDYX6KMyvNtFVFzCCQ9ty1q/jOeVUV31Ts0eEAnhS4KsQ5/AhhClDFJUMsKWY703mZtabqpQTiHRkvRpwsJHqnzyXhNgSZQD4wYQcntmm475CfaeJY9VovvktnJY6xlFSBI0QuO4aehYizUZoGn6R2awfsxl10NGCYulItZT+w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=dkWcdqt+; arc=fail smtp.client-ip=40.93.194.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EFHdzskn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759800207; x=1791336207;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=9UmvSUZZ7vN7aOseFgWa6db7JoESY7085INIaPCjLLw=;
-  b=EFHdzsknnvmaW+CQIOeHh4EA4HwxmcRqF/8DHla4y2AL/3WdsFy3mdFO
-   7kp39eq+ItkCmWWjlhuu53kHEyuMTAmNBwe63AqSejjraO+a3X4HgdWeY
-   IX20l84Ne9tjm8mlGbY0kyAqLYtn+KLPD7PZ1pTPCwLK2E3SjuGvfyBKU
-   9BXbWcl8H7SgWfitzElJDjXj9gAgTNzjOqPFWZ9LnJXOZTfpQEsydrMC5
-   cUX9AJeYwqODIkKPutGz6eFY7yZBrwl/2Ais0X+/FgkEezE16/II8fKOM
-   3xvgehj54D7xeJc+y0TgfHuCNy/947etAvK4cU/iKUF5r3xANpoZSeuuw
-   A==;
-X-CSE-ConnectionGUID: lk8fRGMpS0y/Bbb/Tb7PBw==
-X-CSE-MsgGUID: zzQHquJ2S+ubsY4oCb0PvA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11574"; a="49535869"
-X-IronPort-AV: E=Sophos;i="6.18,321,1751266800"; 
-   d="scan'208";a="49535869"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2025 18:23:26 -0700
-X-CSE-ConnectionGUID: MnSFZu3JQpmNhFG9JA4MdA==
-X-CSE-MsgGUID: LRwpZ5vtQkaUw1MUb4wY8A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,321,1751266800"; 
-   d="scan'208";a="217105996"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2025 18:23:26 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Mon, 6 Oct 2025 18:23:25 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Mon, 6 Oct 2025 18:23:25 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.4) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Mon, 6 Oct 2025 18:23:24 -0700
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="dkWcdqt+"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g0hNXWCKjJdkFafWygkJlPsS6Yd1ma37E808ERcof/mhyiYSlwtNjmzEVPZrxlUllMLRAyAR/WhZbQ8QbTzDtZ0PZldJxPhqxUPDmfNt3xon5MgJSc7VJ4Ye6Rip+rfX4O535SaQytfgzENH67tk+Mx54t4RGe3RM4uh/sJc3nrfOMzu3k6LUUc7c95PKEb9a6aLys5d5oknw0zWJ07qqukawh6N+XadivBxCxBRSSfL0akEUSzsSdOcw19CuF1wV9b0B3Rerw85VC1ZbSVhJNW8AaI0MIgWfKcqIGe/Lsk2XWxh/jfu2KU6jmLtxQFgfHNhhT5MEwpadeaEBMb0cQ==
+ b=rL+1uBdvCicT4Z9CrSegobLfHGzF3pjzTT86BImTam9tojZ1gGwdCGAsYMJ+wve4WIGjEbIOGWQsZz7n0u9j5/HSJKtwWfWqMBYReLAvwzuQn+h/wK46RCnt/JAaHHKdMTa642/4Fir7u8Cd50zaaRsnYi6oxYPSi1B5SAef4lOkxXCdKYu5jAdgqp0N7i9CrwXroTQOD5+gvQy/hWVaGqJgMtt0TthqHpDRqz8VWlRI18v0se+jqI38MluNYO5D/D3CdokMBBHYrc1UUOvgWeQZZ7UwAwcoX6/tjLTcL/kmQ3/j/ilxDk6Dadq/XFH4u7L0ihUaHgX/M4yV1u8AXw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RiOfhTz5DZ6QlZkrdsprVH4siipCs6lSvE2K5JMo84E=;
- b=T6Haewlkt5opphpg77kI1mTh9i0gQMTSw7OJTkRXZTksiP0Pix8BBcq+6Tpf4+jK5SaK7PXFGIuSfxmMFx8sDClqlLcH6LtoE1+7uFSrD7p9aaOmUQcOZQig/92zpC8qg2SXAqjcNUvps67VgmHTgQ2W1332nL2hnnOhKFf0MiDGbMM6xE+kSUBo9OiKIr2wKOICvE6DKOKu8NxbJVlQQkysV/69xytFkutHmt8cBz2uV4/Fh9pTeGdqDF1p+8mczuglMixmnifQ0OD4hxKkfNywYXJTha/XgyeYqJDpuO7osk8H6YwU2O171XqPHSPL+H1p+XaKCbbfWe+gvfKnFg==
+ bh=u+Onk7UFATga3zrDFff4iat4PfV9R/WP1iuEpg+L1Eo=;
+ b=n8owvHLCNc8WSrIt2ViKqCzkZrCerSAxFZgh2Zp9OuiJER442gmNnqbemsETBzDWTp7BstgbS9faub6UYFb0auC4SPbBn4uxFCPLhuZ31U5Df2ZXfCaHZWBoLnfL9uUTOm/ig/tNHU7vwco81LsZyJJZmuBg42eVdmWEUXoHNPR8Ni87NThs6cs00mxe9JG802SZBrV2tMTM9Hj6IPnqIQ5lNvIRaBwq4ZtNzqz95O5ETXvFcgs8hSiBf9NzkvLBI+vq3lYc+1+Smk0qYi2AcvWuCdy6NeTQhTn4fEcn2Z9BxGZ6we+4d9Gjw7ZxuYxXoi/T3O50E+MjGbFPHZsgVw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ2PR11MB7573.namprd11.prod.outlook.com (2603:10b6:a03:4d2::10)
- by DM3PPF7C7D8332C.namprd11.prod.outlook.com (2603:10b6:f:fc00::f31) with
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=u+Onk7UFATga3zrDFff4iat4PfV9R/WP1iuEpg+L1Eo=;
+ b=dkWcdqt+eNKv3+RgxTM0ibol9S6Xg1uEWeVFhFth10EoDCRsJLW/F6+Y/wnv+vLta/2OvjOVrxoKFZ6H8Gc5OX7qAWYfTiTjvR1ktyXksZCDhKs0VAEJRhdsebOtsEIm9RAdbkR4a1D/VI3x5mQIcfe2+UtEl4G2NtlOQO+q9rM=
+Received: from CH8PR21MB5222.namprd21.prod.outlook.com (2603:10b6:610:262::21)
+ by CH8PR21MB5316.namprd21.prod.outlook.com (2603:10b6:610:272::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.19; Tue, 7 Oct
- 2025 01:23:16 +0000
-Received: from SJ2PR11MB7573.namprd11.prod.outlook.com
- ([fe80::61a:aa57:1d81:a9cf]) by SJ2PR11MB7573.namprd11.prod.outlook.com
- ([fe80::61a:aa57:1d81:a9cf%3]) with mapi id 15.20.9182.017; Tue, 7 Oct 2025
- 01:23:16 +0000
-Message-ID: <2cdc5b52-a00c-4772-8221-8d98b787722a@intel.com>
-Date: Mon, 6 Oct 2025 18:23:15 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fs/resctrl: Fix MBM events being unconditionally enabled
- in mbm_event mode
-To: <babu.moger@amd.com>, <tony.luck@intel.com>, <Dave.Martin@arm.com>,
-	<james.morse@arm.com>, <dave.hansen@linux.intel.com>, <bp@alien8.de>
-CC: <kas@kernel.org>, <rick.p.edgecombe@intel.com>,
-	<linux-kernel@vger.kernel.org>, <x86@kernel.org>,
-	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>
-References: <6082147693739c4514e4a650a62f805956331d51.1759263540.git.babu.moger@amd.com>
- <a8f30dba-8319-4ce4-918c-288934be456e@intel.com>
- <b86dca12-bccc-46b1-8466-998357deae69@amd.com>
-From: Reinette Chatre <reinette.chatre@intel.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.9; Tue, 7 Oct
+ 2025 02:20:48 +0000
+Received: from CH8PR21MB5222.namprd21.prod.outlook.com
+ ([fe80::ac59:5722:f945:8e7d]) by CH8PR21MB5222.namprd21.prod.outlook.com
+ ([fe80::ac59:5722:f945:8e7d%5]) with mapi id 15.20.9203.007; Tue, 7 Oct 2025
+ 02:20:48 +0000
+From: Jon Lange <jlange@microsoft.com>
+To: Tom Lendacky <thomas.lendacky@amd.com>, Nicolai Stange <nstange@suse.de>
+CC: "coconut-svsm@lists.linux.dev" <coconut-svsm@lists.linux.dev>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"kraxel@redhat.com" <kraxel@redhat.com>, "Relph, Richard"
+	<Richard.Relph@amd.com>, "Rodel, Jorg" <Joerg.Roedel@amd.com>, Melody Wang
+	<huibo.wang@amd.com>, James Bottomley <James.Bottomley@HansenPartnership.com>
+Subject: RE: [EXTERNAL] Re: SVSM draft specification (v1.01 draft #3)
+Thread-Topic: [EXTERNAL] Re: SVSM draft specification (v1.01 draft #3)
+Thread-Index: AQHcNSDFaTKRonNYjkyYuGuNj7UBrrS1at4AgACJhxA=
+Date: Tue, 7 Oct 2025 02:20:48 +0000
+Message-ID:
+ <CH8PR21MB522287B7C4739DD5AAC83B16CAE0A@CH8PR21MB5222.namprd21.prod.outlook.com>
+References: <39cc8435-5643-4a16-8eb5-5e12f15566a1@amd.com> <87bjmmj4n2.fsf@>
+ <8953f72f-edd2-edde-dc43-3782dbac8c16@amd.com>
+In-Reply-To: <8953f72f-edd2-edde-dc43-3782dbac8c16@amd.com>
+Accept-Language: en-US
 Content-Language: en-US
-In-Reply-To: <b86dca12-bccc-46b1-8466-998357deae69@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR06CA0015.namprd06.prod.outlook.com
- (2603:10b6:a03:d4::28) To SJ2PR11MB7573.namprd11.prod.outlook.com
- (2603:10b6:a03:4d2::10)
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=8de7b0ae-1d32-471e-8ce6-4b048d8a705d;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2025-10-07T02:08:52Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Tag=10,
+ 3, 0, 1;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH8PR21MB5222:EE_|CH8PR21MB5316:EE_
+x-ms-office365-filtering-correlation-id: e029f5db-2be1-4453-446b-08de05482156
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|1800799024|10070799003|366016|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?4hQBNVv3cS7NXUiX/UwIiTrtiecgacb9AXtgp8hjlK7l8KIv024+CYpGSnxl?=
+ =?us-ascii?Q?tSx60dp7YufubHsZltLvXvXJYqFJ5ZsnU8lMnQjVXTziOuS6MJOg1LoBakgt?=
+ =?us-ascii?Q?1pWdy60DrGew4LmvSXVgFjrTjq3NmD/BgZKLLGkhF1L1GIEDXDPJAeP8NRBE?=
+ =?us-ascii?Q?7HED+EKMNKLyBo5FFEvXshda6mOvT85OWLQHT6Tx6ux4Mn7bv6MvXlwsNL3Z?=
+ =?us-ascii?Q?tmEBu/wvLUkOFAvGw2H2mlnb6roT0tida7xoUQl/uAExBu9FuSLJUszJtopd?=
+ =?us-ascii?Q?i+zMWiF/biLvxdmYDl5m9yw1qudMjhBVHqBI8nZ5ThizpIJDsXWTo7RtB3t/?=
+ =?us-ascii?Q?q48a5IJLXXTd79SD7g+Tg6nHjSa1YPhD7Lq/qtsKeUqSeBiPWsvI0Ja/1aSV?=
+ =?us-ascii?Q?Nx2VgtXLTx+fR12QBVrbdFqJ/1nBxRvhiYLbRmQe8Wdo6gcS0ZjnzS6UVrk2?=
+ =?us-ascii?Q?KmVN9ZYfRfk8cPEgQePyYm7Kx0DVVCqdwsbZ39WdxLZGGwtgPRfHdj3csO+o?=
+ =?us-ascii?Q?ZHZfxCcZQnN+TbZjJmDLnF6zeHgLoIVJSe2p1oQfjLEZw1dcfTiK99WAlxtg?=
+ =?us-ascii?Q?DpEvle4NOtPC+f21Vwe7uHap3a/w5xgS3QZunl1rx/FGOf7CQQKeBvIs3cde?=
+ =?us-ascii?Q?zBtSb2AjnXqZX4971B7+m+uA4WiWpFddcamW83Mx055DMMMU7LVwHDCw6ISS?=
+ =?us-ascii?Q?DByhktpZWuetUHxJVTRd6QVTPHSlZY0WWLr9HL7F/+XEUOMGZ0Xd2nwYTv5Y?=
+ =?us-ascii?Q?E8FCG5JBbIcg1uMvqscB+5LaqaePiib2/C3q7k6enpazAQLN8R4PegvWtFyx?=
+ =?us-ascii?Q?N8tpxALxhDQLOronju+arTdLh0clYP0Lsr/YHJxrfUyIa9z5nr8uCApfL3tU?=
+ =?us-ascii?Q?Y5R4HeXM3w+RfxvTFECexHKK4iytguHuZSyiJ7tt/mGmUSrzysLXl6X/o6+9?=
+ =?us-ascii?Q?igpyZr6RPuUinzF6ayipHFM9VZxZMB7ZYah9HS4SZFeHhIme6kxmuCoIZL3p?=
+ =?us-ascii?Q?yUjZUJtaJ5g/rPzmZiCsbRyUVqGu82wPISNOQfiXLEQhXOhsq7LTHRaUpWj+?=
+ =?us-ascii?Q?TgvEUEoaqRu9x7YO2SqhcLi905xOTJ6cr9v0XSQ+MgoPsmA5a61vkW5HSE3Z?=
+ =?us-ascii?Q?IB4/12ci3P+mpqMOnCNbbtwWQ3cn8LzsYXQCZSCn8EwMNizRMWWWVJrF0rHa?=
+ =?us-ascii?Q?6QFeU3jOTrEW+g/s91qLlMK5g3JDo33PnitOF+wuGbcHUJqdhPaOt3wpGfN6?=
+ =?us-ascii?Q?PbNc2wC75nH9u2TM8IPq1YoA7jQfjj7dI8mDbtmIDUwj+V2SBapBU5P88azb?=
+ =?us-ascii?Q?D7kxpdP7sY6Yg1xB5FVvWVY1X+CDLLZlMA+k9VrtgLeV15YtkZqSnDkjm6fv?=
+ =?us-ascii?Q?UK93+kgxW/+4p1h3g/48ptH5MSIfoSnl0Tix/zYHhWnkuEMLfLGoLYy8oU6R?=
+ =?us-ascii?Q?Tjbnz43AWc/QOFnur4bImKxfbmPpBt6OZl6q9TBd86I3LaQEImGD8I51vT5P?=
+ =?us-ascii?Q?tBRp97vUDUqIw/8xXCH0LYXj15Nxq/YHygW0?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH8PR21MB5222.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(10070799003)(366016)(38070700021);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?HWtbNfXq1tK9qkP9ZnLfUEEIfGeHuq7sjdFjhSsofj2xok+AfgxTXxwq8+o+?=
+ =?us-ascii?Q?glOjMUWjrfU49G+zFrTcXWmiHJT4/0KgIlXQqWvX4iOKxsQtchFI7hB47Urc?=
+ =?us-ascii?Q?lWcKq1+Kz7HAajx4rOZumYvKsgGMU17m9yPRv0vcK6pVKI66atcpluZ/H2+z?=
+ =?us-ascii?Q?fGclSWCUhxL7QIPgZ24xdYjo+vZhL/C0X9qMO7lhCmxLgtMjCcJ8fTSE9JpS?=
+ =?us-ascii?Q?9avnRbuz4mIa5C8um0iNF/T6dRvNHi8CSSiAyiLVY4wTO/CBHYcJAG4B2bZw?=
+ =?us-ascii?Q?z+k4ewS4WeHv+z+p31TNZTzZnz+t2QSS01NsCs487spmzZnfQZ+secXiVIWI?=
+ =?us-ascii?Q?Y48DvnzsieGfM51yafqP4crOLqCkprqfZpHI6Ohwx8KegPp3KiHsbm0BeIEc?=
+ =?us-ascii?Q?qjCV6aTRzLIRzShHTp8nSkVdpswWlDm+JdCu9W6mOn6NxhVl7gOUt9eY1wgz?=
+ =?us-ascii?Q?8cbRx8G65GraeZOOr893jtMAh15d/H6ztYBPFSkBLXf64i36CcykCdzdXHnb?=
+ =?us-ascii?Q?DPZFxprWM1TfNG/xlA3ga3cwt/cvATTO8ndagto1XtRclRRCBU921gxI9kcG?=
+ =?us-ascii?Q?8RpbYEISqKqrjVYjFOivibJ5HfurY9ovH2IVybcQW75Ocz0xWBcMznjwvFmy?=
+ =?us-ascii?Q?3jiYe7l4o3tYE1THcEo0W6fT1oeIOCsKouCK0+E5nfr6KoR4tfTV3Iju/R1B?=
+ =?us-ascii?Q?sb00Bu+UZQkKbStLWW6FkTVY003eIrDwM+2Wymdbi8uNbC3ACMIpddbaRO0F?=
+ =?us-ascii?Q?M7kg1P3swVn5eVMxlgMP3/thFfpZB9Qf7HYfpDNhECEeLsuZHiDTbdIEUhtZ?=
+ =?us-ascii?Q?S9WdC+bzUVgfJnkro+5BknfXh8ZEt7c7AhmDJyYYjhMuSaa7tcSfpqx7K04T?=
+ =?us-ascii?Q?/fENy9a5swKV4wXx4XBIi9XG3l4aFbgRNp/xfv2e4VMDIdNGIo8eG5tsqVfq?=
+ =?us-ascii?Q?JtwR6p+9EmUYbW7lbzMdze2Y5Rvl9t8eKs2mGTFUey7xQ3SqcZ051fUwCnqP?=
+ =?us-ascii?Q?QpB3L8WVqgVITQiV6pV4pm73ichPi5gyGDU6FAskKhMpGl+o1HHYaPxpJPzr?=
+ =?us-ascii?Q?bQyDNasjweR/ORp6+BtqR846AEW0QEOhfBNshPTVOlIAp3u8hCQySTyvNYuR?=
+ =?us-ascii?Q?7i1Hr9/sfio07kYr/vXIfQaKrdnmXzK0i0H960ZhfZW/H7RLMGUaZmELElyu?=
+ =?us-ascii?Q?mJpHogH+oWLH39TN652bD3sJoxH6hn3ZXISABnZLDgIl1Q4i7kpM3R7lYBs4?=
+ =?us-ascii?Q?6LQNZDnAxatiPXcDLZkYNJq1+rGKCirgCjZblDDzzUdyK8jEP1WKRfgPsThl?=
+ =?us-ascii?Q?Yb/uycNuzrtDoJ9JiTw/xIt9L+39A9kBLiMd+sRo23Xq6bDgp9Vb8iDWSKW8?=
+ =?us-ascii?Q?yhYIEpr51EK4+5NHQDNr+ne6dFUAakX7xyI/ULIDAP3qdLY3mvonMyRtxfSz?=
+ =?us-ascii?Q?Xf/f0MhCQn2iLojxvkDnPzjyI6wd2rr93LFdIj/vxtgqqri9NLkMniZQGG1K?=
+ =?us-ascii?Q?zjOAKSkmPOfKwemVI/RZ//UzvRkZUx9o9Smwcmwjb7cjo2QPKQT82if/myex?=
+ =?us-ascii?Q?f0cRWpzWWVoeiovO3zVTwwmbZBaz3UXlYF/P7DJAGSGDCgIqdkwq9jKBlITR?=
+ =?us-ascii?Q?EtpiqhLIIKuVpuMSaD1KJjZe4WmI3lIMNLofP96d5QEp?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR11MB7573:EE_|DM3PPF7C7D8332C:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5d744cf5-5b8c-4f24-bb21-08de05401778
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?UTN3N21wVHlFcVdCZ0lveWFUZHo4Y2FOR2JmMCtqTHBRYWpMMTFpdm5ucXR2?=
- =?utf-8?B?b0I3V212RjBtK3JqYk8zMmVMeGtlZDNBUkxCZnBueUp4S2MvWnAza1lDSWlN?=
- =?utf-8?B?eU5JWlBBVVA3REJFak5DYSt1dFFFMCtBUmdpRkoxMW1jMTUvWGhyMG92NUIz?=
- =?utf-8?B?cUgyRHl1YkNNNno3eU9JUkIrY0U3RHpoTzRPelJ5d0x5SENpZWFrTC96SFo4?=
- =?utf-8?B?UEZEbDJKZzZaSzM5dnBGRE9CT0h0blREV2VBcEF2VmRBVGF3a0k5Y3Y1ZlJL?=
- =?utf-8?B?UFM0SGcvUFVOZzFKYmZZblRwZkFCUktqWmRoL0ZlS2ZhRTc2RWNoaS8vd3lv?=
- =?utf-8?B?OS94NlJDeWplaFpYNFZzWGtYTmlpV252ZG1KSXovK0FZbElKd04xQWhaQzAy?=
- =?utf-8?B?N3MxQWN1T294UG9iR2hnYXp2dWpTY3dJZmlBSUp0TkF3czFKZHBKRVhybjV1?=
- =?utf-8?B?TU5XS1cwVmEyL3FIZzFPWDlrMjZmV0NKbWlmUFd1NjBPQ3JVNzlYMUdjcnlx?=
- =?utf-8?B?dDB3YmJsSFpSWFVXMEh5TFQzc2hucDd2bjRUUWNmQlNkdytwZG9iYmsyaWFN?=
- =?utf-8?B?bTd3TTVVa0creXVVdEtiUzZpYUZTL2Q2ZVBYZjZNV3Fvd3VreW1NUGcyVFpw?=
- =?utf-8?B?RGRLMkc2VzF1MG4xNnFPMW54aHZiNHdpVkQ2cTZlWUFwS0NWWkFlNXhuNFZB?=
- =?utf-8?B?ckJ5S3ZlY0k3Z3U2VXRoTmpsY3pSck9maWZQdEFTek4za0xJNGJVTEJaT1dD?=
- =?utf-8?B?Uk95TFZ4TWc2Q0dsU1lpQlFkaVJRdm5nUnFEV0Frdk4rWGYybmtGelI3QnNn?=
- =?utf-8?B?cE9DbWIwdFVHS2N0SEIvYkwwNTdlVW42bytCVVFNcXFDUDkzUXJsdHd1ZFZJ?=
- =?utf-8?B?MDRoNFZTV0pQMFZReFpNckFUbGZqRmVMcUlnNzBxbHBXMFIwYU5qZDc2ekJ3?=
- =?utf-8?B?UnFDQ0M5NUE3b3gwZGROWmZWREdmUGozWnlGVE1HeXFyTHNxdk5xT005UzZw?=
- =?utf-8?B?Ny9WWTk4alR0ZFYxMEMzbm1DNXdkdlJRQ1Byekt1aTJiUlpOQnpKZWVUT3Rz?=
- =?utf-8?B?cDBJUFFvZ0NJSXpYQUVZTWdXSmg2TExYOTM0bCtQTjB6V25xbFVJaUFrUEpx?=
- =?utf-8?B?bU13cktCbUFkM0o0V1QvOWVQdkkzQ1VyV1BqMjNiSGNUWDBLa2lMeFFCOHhO?=
- =?utf-8?B?TU9tQ2VrZ0NLdGxpczhhZk9OMjVBdkZFUCtvLzVvZ204ejdKVDFOYlFHbTdx?=
- =?utf-8?B?Ly9BczZWRFVXRlNJejRkYnlCcTUweEk0L1pTbFBUNzVQT1BLWHdIcW4xb2VO?=
- =?utf-8?B?VHpNRHQ4U1l2TnQ4eHpQT1VtUVRrcjIvTUxzY3V3LzFYc2hsUnlCY3ZzQ1ZF?=
- =?utf-8?B?QWN0U29ibzNjNkIzV200NkI2WUsyNzFmS2xTdG9KVUxEU2wxVk9ZL3hkaWdT?=
- =?utf-8?B?SHJySUt6SjVoeVBQY3lELzN5czEyaVl3eFA0d0MyV3dCNjVueHpPM09XbldZ?=
- =?utf-8?B?dU9OYmNzUkpGZStHaVp0NUtvM043Y3hCVy9aamFGakJNeTRTTUJZNVdiSGJJ?=
- =?utf-8?B?VmFkcnVEQ2RwTThxVGVhNWlSTEwzN3daajdEYy91UXVrQ1VjUjdNNm1kWkp6?=
- =?utf-8?B?WnVBV2JmSGhjNEtqUjliZW51TFVqaWlwTXpBNzJRZEVkMGMvNXdmVkxOdVN1?=
- =?utf-8?B?b215NmwxNndsTXBDODh5eVByb0Q5c2U4amlMbk92SjRtUC9Ua2hUMjBxcjZ6?=
- =?utf-8?B?YkxPVTk2amVyRmdseUxXR2xXcEtLbDhkWE9vRlZTeGpDOGkyZnRmSVdLTTVD?=
- =?utf-8?B?b041OTlKKzJPYTVsOVZOeVZFQUt5NHJEcmVMZHZiUmRQVmdRNlE4TEloOGh2?=
- =?utf-8?B?OHNjWVovTUI3MDhJK3hvLytwOFBxMm0yYTVXS29iZ2tmdDljaFEzREhqYmhP?=
- =?utf-8?Q?43Usu4wuvqMvo5thNSIBkDxfnFVD4SV2?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB7573.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aHZCOVU4aXNXaWc4VVF5OFFpY0RMTW5Ea2RlSjBFN01KMGo1UDYyTDNuTi9w?=
- =?utf-8?B?TXh5UldEUFlJQ0VVVytEZ1cvL1YwY1QwUUxPV2ROZGxZZFozSVIvOHVwVHgr?=
- =?utf-8?B?bzdGN1pQOGxBdlplTDR3akh3UFBDY0RGTnhLWm41ZmoxSXl0RW9VUVF0dWxR?=
- =?utf-8?B?TXZOZlJpOE5tUTJGYStOZ2Y1TGtya2RESjVFdlJibW0zanBGQ08zV0VsMDFS?=
- =?utf-8?B?RWxJUjZmZ3FQMFBxWGJ2VGFnRmVmclk5QytnbVYreGxyRS9wVC9qRDBicGRL?=
- =?utf-8?B?N2c1RkRWUnZhZXpCM2xsRDMwZWR5Z1JmNWxkdkZqdzMvenhqSEVDNUdFTjRT?=
- =?utf-8?B?R2NMalAxaHpEbGhsMjhqVGpta1lhY3N5RUZsNHcxZHdDNEo0RGVvTDRCOWpl?=
- =?utf-8?B?d3dsSCsraGtxNExmZDdvOFFXK2lkdW1zL0tXaXllQ0Uwd08ydVhTNUI2RHg2?=
- =?utf-8?B?bFZrQWdWVFlBd0xCWURIUnZWa21HWTBLM1R4ZU1nM0UxUVFKc3NSMG51Wmc0?=
- =?utf-8?B?eVo2dGpCSDhrS0lTU3JEeEVyQnFHbldiekd4a2VlRlNYTjMvM21IQUh3NTc5?=
- =?utf-8?B?bFBvWGpRUjJpaDhOcGt3a3hwQnBlNlBzYXFKcXpSN3JuWndXaDFXek5hdDNH?=
- =?utf-8?B?R0V1RTIyaGZ5ckgvMTRmT1BkQjF5Z0RIZGpTeG5LTHpIdkxObGJDVTZqd2l5?=
- =?utf-8?B?STVxYUN0Q1FuVU1DSThiTTdaZDJtcU5Sclh0NXN3cngzRjR3cjVSb2pVWTIr?=
- =?utf-8?B?VUZvVmJFRk5ZcnVFSlQ5RVhNUlFLcG1HT3h2SDQrUjhJcTJUNUdacUlxeGpa?=
- =?utf-8?B?R1h1ay85MDZZWDhBdkMxZWZYSzltbTlRTXVVazNGUXJHaEV2VkNJVUJhc1d0?=
- =?utf-8?B?eHhHTURRR2xzTmhuVVVVMFdIOHdNRHZ0M2hWcmVyS2lERmlDMFlkRERGU0kr?=
- =?utf-8?B?SmpMN0VTTWFPcDRwdHJSL1ZZQytKK0FqY3NsakQ0TFYzNkhDM1VlWTVTQTcx?=
- =?utf-8?B?S3NUOTY5MUdxbVNYWVdrWGs5MU5QcW5lRmQ5d3psV25QSUlvZXJWNHB6Rysz?=
- =?utf-8?B?RGtsYnh3NE1GNTdOamhZRGNmL1VIcW1SdHF0RXYzUnYxUTZkc1liRWFlZ25T?=
- =?utf-8?B?UjF1QjhiZC9mK2NJYS9SOFZQVWUvWjBGdmpzOXFmYkliM2VVR21qYXZDS0Vm?=
- =?utf-8?B?Z0lyQTdNMzNJeFBDOENKanJGTGlWVXpFeEVKWDQvQkhha3I3d1pCVUpqWXJs?=
- =?utf-8?B?ZVl4anNLcmVEMFFVZWY2UVY2Nm0zWUxSaktheTBDbUp3c3ZRb0l1VnpUYlJq?=
- =?utf-8?B?aFVSaFRuYSsxaE16MkxHUjZ4K2gzd2RyMXZrRERzTGJ0MkZUbnBON0M2anJW?=
- =?utf-8?B?ejF1UHprdUhkcEIxYnc4bVQySlpubmtsZ3ZLWnNNeXdEQytBYkpTVVFldkJ5?=
- =?utf-8?B?Z2ZQWldMeFM5M1k4ZWR6RUJLVUg5V2dETWpLbGZ6cVdjdCtGbmRMejJoTFla?=
- =?utf-8?B?SGVYa2RMMWNlaG5lS2EwNW5ScWsyVU00cXZRMFo3bnVhNlgzbSs4VVhSZ1Zs?=
- =?utf-8?B?SCtpTXk2Y3ArN3VrTklZb1liRmh6SFZqbjdMZ2dTQ1lkcEZNM2hQM2FxWHlY?=
- =?utf-8?B?dFhNWHl5ZUNnQThvSE90MlA5ajhpazlHY1R6YjlVYjNlS3N5RHBMZjdKZERi?=
- =?utf-8?B?TkpTR3FQL1RkaENGWThvS0FzT1AwdElQYytKeDYrT29FMzhMTnJQM2YzRTds?=
- =?utf-8?B?M2s1WjZhVEcrKy8zaG5ObkNxZmlwM1BnMXhyeUxvSDNRbHpIdjc1bWdNSGx0?=
- =?utf-8?B?bEIxL3AyRFFnRkZid0duOVRZVU1UMnFWcWYwZmRqaGRNeVEvU3NqbmtxZlph?=
- =?utf-8?B?OFRvTWdQYVE3NkQxY25Cbi8vcGljOGZSS1Q4TW02SElobWpQQ0hqdWx2c2gx?=
- =?utf-8?B?b0FkK0JheFFwMTd1b2Zia3ZrNmpmR3BmTm1kek1lWXk1cWI4R0hWYzdqcUJu?=
- =?utf-8?B?c1lzeFFjMFpOVmRmdTZkSVZyVEQ3bVZIUTVJZUpBeWduMEF5NEo5YmVvL1ls?=
- =?utf-8?B?TFQ4K2ZwSUwvMjlNTlNrdzBneU1Rby83TW1paXFHdFEwZDI4b1hxRHNub1A3?=
- =?utf-8?B?QmF1UnQ4Tlg4TVJIaitBMm1GdnMzd1NiU0NaRWcwWlE3OGlRd05jNFhFQ01O?=
- =?utf-8?B?Zmc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5d744cf5-5b8c-4f24-bb21-08de05401778
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB7573.namprd11.prod.outlook.com
+X-OriginatorOrg: microsoft.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2025 01:23:16.4393
+X-MS-Exchange-CrossTenant-AuthSource: CH8PR21MB5222.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e029f5db-2be1-4453-446b-08de05482156
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Oct 2025 02:20:48.7675
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oRmwQDNOdYXSuAW/3vj+3mUyDAKJy6ZT8fUROFzQp9pyRG3mlJKVR1EQiYTLZ3yJHnD+f2NAUhUDhDOEs5ypa1qsHIQTD6kQN6gzcuyl+0c=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPF7C7D8332C
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: DjmNa5p4gSc3vaQsY5bHi9DwwqXmMl2rM8OjTCpmyBAqiwAJ5ZacUuunzuMZUNCWvFnRXznSQgGBE7F38Qib/w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH8PR21MB5316
 
-Hi Babu,
+Tom said something that concerns me greatly:
 
-On 10/6/25 1:38 PM, Moger, Babu wrote:
-> Hi Reinette,
-> 
-> On 10/6/25 12:56, Reinette Chatre wrote:
->> Hi Babu,
->>
->> On 9/30/25 1:26 PM, Babu Moger wrote:
->>> resctrl features can be enabled or disabled using boot-time kernel
->>> parameters. To turn off the memory bandwidth events (mbmtotal and
->>> mbmlocal), users need to pass the following parameter to the kernel:
->>> "rdt=!mbmtotal,!mbmlocal".
->>
->> ah, indeed ... although, the intention behind the mbmtotal and mbmlocal kernel
->> parameters was to connect them to the actual hardware features identified
->> by X86_FEATURE_CQM_MBM_TOTAL and X86_FEATURE_CQM_MBM_LOCAL respectively.
->>
->>
->>> Found that memory bandwidth events (mbmtotal and mbmlocal) cannot be
->>> disabled when mbm_event mode is enabled. resctrl_mon_resource_init()
->>> unconditionally enables these events without checking if the underlying
->>> hardware supports them.
->>
->> Technically this is correct since if hardware supports ABMC then the
->> hardware is no longer required to support X86_FEATURE_CQM_MBM_TOTAL and
->> X86_FEATURE_CQM_MBM_LOCAL in order to provide mbm_total_bytes
->> and mbm_local_bytes. 
->>
->> I can see how this may be confusing to user space though ...
->>
->>>
->>> Remove the unconditional enablement of MBM features in
->>> resctrl_mon_resource_init() to fix the problem. The hardware support
->>> verification is already done in get_rdt_mon_resources().
->>
->> I believe by "hardware support" you mean hardware support for 
->> X86_FEATURE_CQM_MBM_TOTAL and X86_FEATURE_CQM_MBM_LOCAL. Wouldn't a fix like
->> this then require any system that supports ABMC to also support
->> X86_FEATURE_CQM_MBM_TOTAL and X86_FEATURE_CQM_MBM_LOCAL to be able to 
->> support mbm_total_bytes and mbm_local_bytes?
-> 
-> Yes. That is correct. Right now, ABMC and X86_FEATURE_CQM_MBM_TOTAL/
-> X86_FEATURE_CQM_MBM_LOCAL are kind of tightly coupled. We have not clearly
-> separated the that.
+> Right, the base idea of a reboot would be that everything should appear a=
+s if the guest was re-launched.
 
-Are you speaking from resctrl side since from what I understand these are
-independent features from the hardware side?
+This is a great principle to state, but one that will almost certainly be u=
+nable to make correct in the way the guest expects.  Because the SVSM does =
+not restart, any code in the SVSM that must return to the reset state must =
+implement explicit code to do so.  We could certainly define some sort of s=
+ubscription mechanism that permits each running service to be advised when =
+a guest reboot occurs, but it's up to each service to implement it correctl=
+y.  Any service that fails to implement this correctly will violate the exp=
+ectation of the guest.  If we had a bunch of existing code, it would be a l=
+ost cause to audit 100% of it and confirm that it conforms to the reboot ex=
+pectations.  We have at least a fighting chance given that we have very lit=
+tle existing code, but declaring a requirement to new code to implement reb=
+oot correctly doesn't mean that it's reasonable - or even possible - for ne=
+w code modules to do so.
 
->> This problem seems to be similar to the one solved by [1] since
->> by supporting ABMC there is no "hardware does not support mbmtotal/mbmlocal"
->> but instead there only needs to be a check if the feature has been disabled
->> by command line. That is, add a rdt_is_feature_enabled() check to the
->> existing "!resctrl_is_mon_event_enabled()" check?
-> 
-> Enable or disable needs to be done at get_rdt_mon_resources(). It needs to
-> be done early in  the initialization before calling domain_add_cpu() where
-> event data structures (mbm_states aarch_mbm_states) are allocated.
+On top of that, remember that one goal of the COCONUT-SVSM project is to pr=
+ovide cross-platform compatibility for any functionality that isn't coupled=
+ to a single architecture.  There's nothing about reboot that is inherently=
+ bound to SEV-SNP, so there will be an expectation that this can be support=
+ed on Intel TDX or Arm CCA.  Both of those architectures implement one-way =
+extensible measurement registers, and I fully expect that in the future, th=
+e COCONUT-SVSM kernel will offer services to enable use of those measuremen=
+t registers.  When such registers are used, it is impossible for the SVSM t=
+o return to a reset state because the underlying platform doesn't permit an=
+y rollback of measurement registers.  In fact, I wouldn't be surprised if A=
+MD defines such registers in the future as well, so this may end up being a=
+ universal problem.  I don't know how to reconcile "appear as if the guest =
+was re-launched" with one-way extensible measurements.
 
-Good point. My mistake to suggest the event should be enabled by
-resctrl fs.
+We are defining the reboot protocol as its own protocol, with the ability t=
+o define extensibility in any way we want.  I think we are going to be in a=
+ much better position if we define reboot this way: (a) executing reboot re=
+starts the guest but has no effect by itself on any other SVSM state, (b) t=
+he reboot protocol is defined to offer extension points that permit other p=
+rotocols to advertise whether they can participate in reboot, or whether th=
+eir state persists across guest reboots, and (c) the guest must opt into se=
+rvice resets for the set of services that it expects to reset, which of cou=
+rse will be constrained by the set of services that support reset.  Such a =
+design makes the operation of reboot entirely explicit, with no unpleasant =
+surprises that arise because some SVSM service failed to implement reboot c=
+orrectly - or failed to realize it was supposed to implement it at all.
 
-> 
+-Jon
+
+-----Original Message-----
+From: Tom Lendacky <thomas.lendacky@amd.com>=20
+Sent: Monday, October 6, 2025 10:57 AM
+To: Nicolai Stange <nstange@suse.de>
+Cc: coconut-svsm@lists.linux.dev; linux-coco@lists.linux.dev; Jon Lange <jl=
+ange@microsoft.com>; kraxel@redhat.com; Relph, Richard <Richard.Relph@amd.c=
+om>; Rodel, Jorg <Joerg.Roedel@amd.com>; Melody Wang <huibo.wang@amd.com>; =
+James Bottomley <James.Bottomley@HansenPartnership.com>
+Subject: [EXTERNAL] Re: SVSM draft specification (v1.01 draft #3)
+
+On 10/4/25 06:19, Nicolai Stange wrote:
+> Hi Tom,
+>=20
+> Tom Lendacky <thomas.lendacky@amd.com> writes:
+>=20
+>> Attached is the next version of the draft SVSM specification with the=20
+>> following changes since the previous version:
 >>
->> But wait ... I think there may be a bigger problem when considering systems
->> that support ABMC but not X86_FEATURE_CQM_MBM_TOTAL and X86_FEATURE_CQM_MBM_LOCAL.
->> Shouldn't resctrl prevent such a system from switching to "default" 
->> mbm_assign_mode? Otherwise resctrl will happily let such a system switch
->> to default mode and when user attempts to read an event file resctrl will
->> attempt to read it via MSRs that are not supported.
->> Looks like ABMC may need something similar to CONFIG_RESCTRL_ASSIGN_FIXED
->> to handle this case in show() while preventing user space from switching to
->> "default" mode on write()?
-> 
-> This may not be an issue right now. When X86_FEATURE_CQM_MBM_TOTAL and
-> X86_FEATURE_CQM_MBM_LOCAL are not supported then mon_data files of these
-> events are not created.
+>>   - APIC emulation protocol added
+>>     - Coconut-SVSM will need to be audited, as the current APIC emulatio=
+n
+>>       code does not completely match the "Alternate Injection Support"
+>>       specification on which this protocol is based.
+>>   - Reboot protocol added
+>=20
+> there's an ongoing discussion at GH ([1]) on how a reboot should=20
+> interact with the _TPM_Init (think an emulated TPM power cycle) and=20
+> that should probably get resolved before making the spec update effective=
+.
+>=20
+> I'm trying my best to summarize the problem in what follows, James
+> (CCed) might have some additional input.
+>=20
+> So, naively, a cold reset of the firmware, which qualifies as a reset=20
+> of what's called the "Root of Trust for Measurement" (RTM) in TCG=20
+> terminology, would require a reset of the TPM, i.e. to make it enter=20
+> the _TPM_Init state, c.f. the TCG TPM 2.0 Library v184, part 1=20
+> ("Architecture"), sec. 10.2.2 ("Initialization State"). Quote: "It=20
+> should not be possible to reset the TPM without resetting the RTM. It=20
+> should not be possible to reset the RTM without resetting the TPM."
 
-By "right now" I assume you mean the current implementation? I think your statement
-assumes that no CPUs come or go after resctrl_mon_resource_init() enables the MBM events?
-Current implementation will enable MBM events if ABMC is supported. When the
-first CPU of a domain comes online after that then resctrl will create the mon_data
-files. These files will remain if a user then switches to default mode and if
-the user then attempts to read one of these counters then I expect problems.
+Right, the base idea of a reboot would be that everything should appear as =
+if the guest was re-launched.
 
-Reinette
+>=20
+> In particular, a reset of the TPM causes a reinitialization of all=20
+> PCRs to their respective default values as defined in the platform=20
+> profile (constant all-zeroes or all-ones in most cases).
+
+Yes.
+
+>=20
+> At the current stage of the SVSM development, that's fine and could=20
+> easily get implemented.
+>=20
+> However, James remarked in the course of the linked GH discussion that=20
+> establishing such semantics now would prohibit us from letting the=20
+> SVSM measure dynamic parts + configuration of itself into the TPM PCRs=20
+> in the future. IIUC, the idea is to record standard TCG events=20
+> capturing the dynamic aspects of the SVSM into the firmware's=20
+> PCR-measured eventlog (for the firmware event log c.f. [2],=20
+> EFI_TCG2_PROTOCOL.GetEventLog), which is quite appealing, because it=20
+> would integrate transparently with existing workflows and tools like `tpm=
+2_eventlog` etc..
+
+Couldn't that be replayed by the SVSM into the TPM on "reboot?"
+
+>=20
+> So assuming we do not want to preclude the implementation of something=20
+> like that in the future, the question is how to define interactions=20
+> with the new `SVSM_REBOOT_EXECUTE` protocol command.
+>=20
+> From a high-level, AFAICT, we probably would have to
+> a.) Convey all or a subsequence of the eventlog to the relaunched
+>     firmware. If a subsequence, then that would have to contain all TCG
+>     event records relevant to the SVSM's self-measurements.
+> b.) Either do a "partial" TPM reset, making it to re-enter _TPM_Init,
+>     but keep some subset of PCRs (*) at their current values in case the
+>     full event log is conveyed, or do a full TPM reset and issue initial
+>     PCR extends from the SVSM corresponding to the to be conveyed log in
+>     case of a proper subsequence.
+>=20
+> The "relevant log subsequence" option is technically feasible in=20
+> theory, but would require the SVSM to keep a log of its own events for=20
+> the replay at firmware relaunch. James, who entered the GH discussion=20
+> with a suggestion to hand the full log over with some mechanism=20
+> resembling the one from Linux kexec warm reboots, later on mentioned=20
+> some drawbacks with the approach of having the SVSM replay an=20
+> internally stored log at firmware relaunch, please refer to [1] for detai=
+ls.
+>=20
+> I myself don't have an opinion on the topic, but as a hand-over=20
+> mechanism for the TCG event log would likely require support from the=20
+> newly proposed `SVSM_REBOOT_EXECUTE` command, I wanted to make you=20
+> aware of the pending discussion.
+
+Maybe we need a QUERY command to determine if REBOOT is possible then.
+If we add/have dynamic measurements but they can't be replayed back into th=
+e TPM to present a "fresh" boot environment, then the QUERY command returns=
+ an indicator that REBOOT is not possible.
+
+Thoughts?
+
+Thanks,
+Tom
+
+>=20
+> Thanks!
+>=20
+> Nicolai
+>=20
+> [1]=20
+> https://nam06.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fgith
+> ub.com%2Fcoconut-svsm%2Fsvsm%2Fpull%2F808%23issuecomment-3361113788&da
+> ta=3D05%7C02%7Cjlange%40microsoft.com%7C111c90c2ab2f460b823608de0501b85f
+> %7C72f988bf86f141af91ab2d7cd011db47%7C1%7C0%7C638953702155666999%7CUnk
+> nown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJ
+> XaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3D6%2BQemUT
+> nSthBlMW3HXDAkS%2BUkwBQMAjOhEQdZPsE5mo%3D&reserved=3D0
+> [2]=20
+> https://nam06.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Ftrus
+> tedcomputinggroup.org%2Fresource%2Ftcg-efi-protocol-specification%2F&d
+> ata=3D05%7C02%7Cjlange%40microsoft.com%7C111c90c2ab2f460b823608de0501b85
+> f%7C72f988bf86f141af91ab2d7cd011db47%7C1%7C0%7C638953702155682015%7CUn
+> known%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOi
+> JXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3DWaLeG8dI
+> QvXNaKB4Kvj%2BFedamG1XETV8SFj27u54ZE8%3D&reserved=3D0
+>=20
+> (*) Which one is not clear to me yet -- the obvious candidate is PCR[0]
+>     and possibly some more, but there might be interactions with the
+>     H-CRTM semantics, which require to initialize the PCR[0] differently
+>     depending on whether the firmware issued a H-CRTM measurement
+>     sequence before invoking TPM2_Startup() or not, c.f. TCG TPM 2.0
+>     Library v184, part 1, ("Architecture"), sec. 32.3 ("H-CRTM before
+>     TPM2_Startup() and TPM2_Startup() without H-CRTM").
+>=20
+>> Please review. If there are no or only minor comments, this draft=20
+>> will become the next version of the specification.
+>=20
