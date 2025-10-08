@@ -1,46 +1,82 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011024.outbound.protection.outlook.com [40.93.194.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8877A283CAF;
-	Wed,  8 Oct 2025 13:28:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759930106; cv=none; b=YFbsSTrzce4Q/qR1iWj7tAhxcLNrne1ztpF71ceE46NIF7BxQq2RkGVnPWWSkTjR9vNOCRvl/jk8WToBL/iuPp1nnGRdrmOZkYNhmdGoHOiDUzCq6He3jUuyl6mgFqhU7tWE2FXRMoM3rhnqR54Yh+qZ18G1KnIM/+jEHTPg0gw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759930106; c=relaxed/simple;
-	bh=3pzYmZsg41AQcq91tl/+v0TTgt/Rx1I3erEHNiUptHw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gt+bz7YyC6zB910vUV/WAtnrupKw7Wd2FoWeLKJeLPGWcxK+oIun+6XM5XX9zTQZTzPJwzCBq02tXCTPT6IhjLyIpROUmSwhuDq58OLALgF6Djbqg6e1PPpI+Z7RnErzS74/v25x22POg+OJkyMUcXurXtCVUwbrWCudlDJvl1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ALqSMpby; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321F82C0F91
+	for <linux-coco@lists.linux.dev>; Wed,  8 Oct 2025 19:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759950609; cv=fail; b=hfqYrZFs4vIbMOAlIxz4wcMGv6jLkTr9D9qPC+GR3mg6HNu7NOAj7+I4g4F4C6f+j8ENOWNZFYLLk22pElsaDqSS6Pb/zsfhBLhGN6E2xUGiWAipA+tu5StCjgUhzzGFcMLEizM32PC8p/e962vtfwjGiiJXjwWJcyQudVOXBPs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759950609; c=relaxed/simple;
+	bh=J6ppa/VFKr4p6k8mhGLfOeD5Lh+oy80zjTK6orWBV4E=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bxCDdnyA/LwlscmFFe6iG14yhGKszdxdFfoacahecIc42zlhk3/mjwDag01/wKWfPyMCgRpGcMNV3ouqS74HcAzbI6XV5HkWD9NxQnWYQK+iD84OTyBvjzI1rmiccN/9EtLEGopelpiU3pc4FI/IheLdSgJa7pm3YZwVkj9IBfM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Xy84jaOz; arc=fail smtp.client-ip=40.93.194.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ALqSMpby"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAAE7C4CEF5;
-	Wed,  8 Oct 2025 13:28:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759930106;
-	bh=3pzYmZsg41AQcq91tl/+v0TTgt/Rx1I3erEHNiUptHw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ALqSMpbyhOP/U2/Oba7VywE4t3mM6yESXdsSrrpLY8YjKp6mKpbHvMLMh0VSTh4Gl
-	 L5jEQ/fY28WB9CD+FLEjXXVBRWbikg56myQTW8uFGRbUluX6h/87QNoF/v1GsPCd5Y
-	 dui0SpY/S+OZClkcOfz6BnXyZEX6HEy9Wx8lIfrWiQtQSPAR1BGeeaUmV/lvDweDcA
-	 XVWQoHZCk0OLh1YuJUtCnOqWi3xl21AKNElSEqU9Vj/pLe7fY4P645Z3wzp/Fjbj5K
-	 0yRIBe9yIuL2v8uqVYQBdOVaoOw08DcKGc/UQRJmHPMU/nRS6kN5nTMb5ZkkfRYC4E
-	 zjQSUr5lLbaqQ==
-From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-To: linux-coco@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Sami Mujawar <sami.mujawar@arm.com>,
-	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Subject: [PATCH] coco: guest: arm64: Update ARM CCA guest driver
-Date: Wed,  8 Oct 2025 18:57:58 +0530
-Message-ID: <20251008132758.784275-1-aneesh.kumar@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Xy84jaOz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oAvMTj6ORZGkazNOgyTDK8IBgw9QSUupByvGAogESWzwdx2oCiOAjcP9kxqNlHXD4KX3ZIU/uOe7oxDNvuHp3gkBmzBFeGIsz9QZqDw1etFZhrWf64ahSugI01977P9/Gk1WlW/680TB1Emuz/0vT4b3jbSayZm8pB1pzaJ3JulzTYu+avhMY1il1qknEu1a1+fiZDPOiucTBM2Wt5Cya6fcq5xlBWibixka+cCX0JG6ovGbSO4vMSOynDMSrqLfBFHJpJIQSiEDH3vGJkMxwNoN4ZuPW1tIPKPKTAmqg5b+YDQP5Qjgazjv2URr7zIcan0vSzK+CD7r2OHrawx0UA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hf+YYeTQWrcuuCIS+3A7q4yxtZaY1yZKvZdXSJmVK88=;
+ b=ZtjKz/rEz/JYURnAG4kyf1mYpCe+0i03a0m6ZhNpz9ucGkpDyabHKfynNSeAUT7dRLg6mryy8TFcJ3f1+pZROKam38oLs3yyW9K0KZIWXx1cXUJTWGbzxV9vH6x7lFgVdiAQZggZ0Vuo8ARiSMIJCjILqysKIHQL0Set7AerNRF4yE9YP4u5FjjpPRFVxaSkXyNWadfGspH9816H4vvsG/XZJZa3qlBA9puq9AazeeJ3feJIiGqlCJJVNdh9HydJVnEGUHz9Q3bPmOcl5QAvpiffqNl/kwOU3tNXlG3rhFz3bB2DrK407gpjSgL0n8gP9n2Vszo3ZsyVj9rAq/xDHw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=arm.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hf+YYeTQWrcuuCIS+3A7q4yxtZaY1yZKvZdXSJmVK88=;
+ b=Xy84jaOzHWjVg3MNKgCFE8GwR9/oLyrUepUc1o7oyj4pK2ed2UGztoBhyL5VAYoa8sOUqdHoILZSwCSYxRvfyWzcnUbdlxxdzJM5NDg1UaJ4RppIBzX2Qxj5G8/E5hG5eLbkTEkbNxRlZSIbkwXEHFbpEfzQdSt0I9/HTFlhbBu08YUsSZ/tWD20X7a/02EHy1N4Rz2Wvm3L1XdCnWfFi8DTc9kMsscQqV9r/FOjSOv7FR9lAvcR8S8HjR9WW4VDGTg33c2Cak0FbrLx13m7dMiBvxorCp7gAUp49s8b2geoRC8RWM2Ljbmx9udZAI2qiiUfoD984wksUylOa4LcJA==
+Received: from BN1PR14CA0013.namprd14.prod.outlook.com (2603:10b6:408:e3::18)
+ by SA1PR12MB5640.namprd12.prod.outlook.com (2603:10b6:806:23e::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.9; Wed, 8 Oct
+ 2025 19:09:58 +0000
+Received: from BL02EPF0001A0FE.namprd03.prod.outlook.com
+ (2603:10b6:408:e3:cafe::8c) by BN1PR14CA0013.outlook.office365.com
+ (2603:10b6:408:e3::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9182.20 via Frontend Transport; Wed,
+ 8 Oct 2025 19:09:58 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ BL02EPF0001A0FE.mail.protection.outlook.com (10.167.242.105) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9203.9 via Frontend Transport; Wed, 8 Oct 2025 19:09:58 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 8 Oct
+ 2025 12:09:42 -0700
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Wed, 8 Oct 2025 12:09:42 -0700
+Received: from build-vvidwans-focal-20250627.internal (10.127.8.10) by
+ mail.nvidia.com (10.126.190.182) with Microsoft SMTP Server id 15.2.2562.20
+ via Frontend Transport; Wed, 8 Oct 2025 12:09:42 -0700
+From: Vedashree Vidwans <vvidwans@nvidia.com>
+To: <salman.nabi@arm.com>, <lpieralisi@kernel.org>, <mark.rutland@arm.com>,
+	<sudeep.holla@arm.com>, <andre.przywara@arm.com>
+CC: <ardb@kernel.org>, <chao.gao@intel.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-coco@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <sdonthineni@nvidia.com>,
+	<vsethi@nvidia.com>, <vwadekar@nvidia.com>, Vedashree Vidwans
+	<vvidwans@nvidia.com>
+Subject: [RFC PATCH 3/3] firmware: smccc: LFA: modify activation approach
+Date: Wed, 8 Oct 2025 19:09:07 +0000
+Message-ID: <20251008190907.181412-4-vvidwans@nvidia.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20251008190907.181412-1-vvidwans@nvidia.com>
+References: <20251008190907.181412-1-vvidwans@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -48,186 +84,202 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FE:EE_|SA1PR12MB5640:EE_
+X-MS-Office365-Filtering-Correlation-Id: ae2d9bda-9bf8-40bd-b97e-08de069e4603
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|1800799024|376014|82310400026|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?feks78hQxOLJFxzPx07hjww9a6xWEEIRC9UzdmwRujUJ9+088E1m4CMkocwN?=
+ =?us-ascii?Q?r+Nd+XUoI7hR+d45FNryut0VXaJPRs/vJGlzqpSbrE80kx/TL3sQ3Irj1ixf?=
+ =?us-ascii?Q?i8VJA7ctrqAhqxVEMfqgXVsLwc2EtUG1uFUXCzW9Sk9d5PdSoO9TbwcESMO4?=
+ =?us-ascii?Q?/bY2QihVIkflxuriuFqNzAYOknFqOtG5VylttqVkGkMSC4S0O+Tyvc+l+Wad?=
+ =?us-ascii?Q?Qw4RiqI9AA0WfZfa/2TZ5TkzSnY+6QNq/h3ZSIbJ92rXw1FLaBYxhXmk2tp4?=
+ =?us-ascii?Q?n8oqtlh+9wsC70xFHD01cWzryp6c1KP4kg6Pufimb14QjVeMsKSh7MoU5j/g?=
+ =?us-ascii?Q?cvnqMJsFlANns6VYTkEzaeCOQPeusDTmegZeXmvRH6/4gbQCYuEr+rZquwMC?=
+ =?us-ascii?Q?rpjSpBjvDcxjp369acby+ThqM3Zk+PosUy0kK0++cwzV66eJYTQAzaJC1yQb?=
+ =?us-ascii?Q?Ul59c8ZC2Nmyx/MTCft1rC6tkL/QcVjRtqiA2A30lWpClg1UHMuTb3DSQ852?=
+ =?us-ascii?Q?Sxf0DYpqn0Ok5WyYy7DHWpcZGuHfNyiN0iTARo8TmHq6OL3shxW9kxsGkhh3?=
+ =?us-ascii?Q?J7UcVRX4sfl/q5LI0oaFnyCkk7tJPH9lxZuTO6xHnVCdu17bJmlhiYTw+Fg6?=
+ =?us-ascii?Q?3itf0Mj/LbFTpQF/4L9dfhqZzdomRpMMsmOL1fwOkTfpEh90Pv1JyH6pz0oO?=
+ =?us-ascii?Q?fNEVQnJOoF+Du26PgdIz5uhsvh6lNPNPgb9RJkePm6u76Z7R/J6CQJDptUwx?=
+ =?us-ascii?Q?uZa4CNbeJcbal7GG2S5YRJJTvmcvh0FWVt/BcsUo53/1uZILfxr99r4Rqss9?=
+ =?us-ascii?Q?r3iG8g6sG04LYw1iEyXfZktxPEezLg8pK1J3gRm586owndLnecDJtdR6Lk87?=
+ =?us-ascii?Q?GKi2hRWxbdImLJ8/qva2qdcC6u02VrSraekYu+yFzP/Gv2hcXd1tgxQzy/X/?=
+ =?us-ascii?Q?xr6zUWocH3sLG21orgkhR15OdvH4aOKDDHWqTDk2E2OYSW0I7VK+soa7U+Zk?=
+ =?us-ascii?Q?9iBkzWlKkxQeBvoINHlMZ0kCDYmsMYyiO2Rg18yQ+Y5OXLLbae40XZEfEoPb?=
+ =?us-ascii?Q?jnXw2A18eCrmDr6sWjxcWrqkfKq2qXHX3gnDdHckiJMHn5UN/XbmrhJRt3rT?=
+ =?us-ascii?Q?+zcae5KtyxQ7CCbei2a/IDtmbqDnfbKjTtAZnB9WBNv54mcYV2tSqsMlgOpP?=
+ =?us-ascii?Q?MWRhtwgyqyBRnF+93bzt1JhY5L+Cs+x41SpFdXzDj4aXfOhmUq1wBWcYngbv?=
+ =?us-ascii?Q?xa0w9YeE+f/t4Gx9L2jiZthKFm73c80p+TdFAaJUY7FYwoKi9kQQQLHh6i1o?=
+ =?us-ascii?Q?2Szm9XkXF1c3sEfOnHFzgunF7YzDF5h5nYUi0M+0XwYPxs6/guNTOR6LAJMK?=
+ =?us-ascii?Q?9WxEDNuCqyjnQ5vQScaRg3Pw8WT1MEeDT8+Vorvq4sDMgzRliQyjrGotO6aA?=
+ =?us-ascii?Q?BLN2CFiSJyWAtoopmjR5GvfJLQJF/pMGGJG5tz+gpmXO/MKujgIUvB0TDWAy?=
+ =?us-ascii?Q?1kd/CHLhA+rhqZmqMfdiWnGtMg/kR3lciE0ZMG1UYpuM9yrToEv0sN/aWbmQ?=
+ =?us-ascii?Q?BM9NadzmYRvEMjKcF3Y=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2025 19:09:58.0700
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ae2d9bda-9bf8-40bd-b97e-08de069e4603
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF0001A0FE.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5640
 
-Make preparatory updates to the ARM CCA guest driver:
+Currently, on a LFA IRQ, all activable firmware components are primed
+activated sequentially. Modify the approach to prime all firmware
+components followed by activation of all components sequentially. This
+approach will minimize the time where old and new firmware component
+images co-exist.
 
- - Switch from using a platform device to a faux device (based on
-   feedback in [1])
- - Rename the device from `arm-cca-dev` to `arm-rsi-dev`, so that the
-   host driver can register an equivalent `arm-rmi-dev`
-
-These changes are purely structural and introduce no new functionality.
-Subsequent patches will extend this driver to add guest device
-assignment support.
-
-[1] https://lore.kernel.org/all/2025073035-bulginess-rematch-b92e@gregkh
-
-Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+Signed-off-by: Vedashree Vidwans <vvidwans@nvidia.com>
 ---
-NOTE:
-This patch is sent early outside the patchseries to avoid userspace from
-depending on the presence of the newly introduced platform device.
-The platform device was added in v6.14-rc1. 
+ drivers/firmware/smccc/lfa_fw.c | 74 +++++++++++++++++++++++++++++----
+ 1 file changed, 66 insertions(+), 8 deletions(-)
 
- arch/arm64/include/asm/rsi.h                  |  2 +-
- arch/arm64/kernel/rsi.c                       | 15 -----
- drivers/virt/coco/arm-cca-guest/Makefile      |  3 +
- .../{arm-cca-guest.c => arm-cca.c}            | 65 +++++++++++--------
- 4 files changed, 41 insertions(+), 44 deletions(-)
- rename drivers/virt/coco/arm-cca-guest/{arm-cca-guest.c => arm-cca.c} (85%)
-
-diff --git a/arch/arm64/include/asm/rsi.h b/arch/arm64/include/asm/rsi.h
-index b42aeac05340..26ef6143562b 100644
---- a/arch/arm64/include/asm/rsi.h
-+++ b/arch/arm64/include/asm/rsi.h
-@@ -10,7 +10,7 @@
- #include <linux/jump_label.h>
- #include <asm/rsi_cmds.h>
+diff --git a/drivers/firmware/smccc/lfa_fw.c b/drivers/firmware/smccc/lfa_fw.c
+index b36b8d7457c30..dead2282cd04b 100644
+--- a/drivers/firmware/smccc/lfa_fw.c
++++ b/drivers/firmware/smccc/lfa_fw.c
+@@ -46,6 +46,10 @@
+ #define LFA_PRIME_CALL_AGAIN		BIT(0)
+ #define LFA_ACTIVATE_CALL_AGAIN		BIT(0)
  
--#define RSI_PDEV_NAME "arm-cca-dev"
-+#define RSI_DEV_NAME "arm-rsi-dev"
- 
- DECLARE_STATIC_KEY_FALSE(rsi_present);
- 
-diff --git a/arch/arm64/kernel/rsi.c b/arch/arm64/kernel/rsi.c
-index ce4778141ec7..569ef08750e5 100644
---- a/arch/arm64/kernel/rsi.c
-+++ b/arch/arm64/kernel/rsi.c
-@@ -140,18 +140,3 @@ void __init arm64_rsi_init(void)
- 
- 	static_branch_enable(&rsi_present);
- }
--
--static struct platform_device rsi_dev = {
--	.name = RSI_PDEV_NAME,
--	.id = PLATFORM_DEVID_NONE
--};
--
--static int __init arm64_create_dummy_rsi_dev(void)
--{
--	if (is_realm_world() &&
--	    platform_device_register(&rsi_dev))
--		pr_err("failed to register rsi platform device\n");
--	return 0;
--}
--
--arch_initcall(arm64_create_dummy_rsi_dev)
-diff --git a/drivers/virt/coco/arm-cca-guest/Makefile b/drivers/virt/coco/arm-cca-guest/Makefile
-index 69eeba08e98a..609462ea9438 100644
---- a/drivers/virt/coco/arm-cca-guest/Makefile
-+++ b/drivers/virt/coco/arm-cca-guest/Makefile
-@@ -1,2 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0-only
-+#
- obj-$(CONFIG_ARM_CCA_GUEST) += arm-cca-guest.o
++/* PRIME COMPLETE status */
++#define LFA_PRIME_COMPLETE_FALSE	false
++#define LFA_PRIME_COMPLETE_TRUE		true
 +
-+arm-cca-guest-$(CONFIG_TSM) +=  arm-cca.o
-diff --git a/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c b/drivers/virt/coco/arm-cca-guest/arm-cca.c
-similarity index 85%
-rename from drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
-rename to drivers/virt/coco/arm-cca-guest/arm-cca.c
-index 0c9ea24a200c..89d9e7f8eb5d 100644
---- a/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
-+++ b/drivers/virt/coco/arm-cca-guest/arm-cca.c
-@@ -1,8 +1,9 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * Copyright (C) 2023 ARM Ltd.
-+ * Copyright (C) 2025 ARM Ltd.
-  */
- 
-+#include <linux/device/faux.h>
- #include <linux/arm-smccc.h>
- #include <linux/cc_platform.h>
- #include <linux/kernel.h>
-@@ -181,52 +182,60 @@ static int arm_cca_report_new(struct tsm_report *report, void *data)
- 	return ret;
- }
- 
--static const struct tsm_report_ops arm_cca_tsm_ops = {
-+static const struct tsm_report_ops arm_cca_tsm_report_ops = {
- 	.name = KBUILD_MODNAME,
- 	.report_new = arm_cca_report_new,
+ /* Prime loop limits, TODO: tune after testing */
+ #define LFA_PRIME_BUDGET_US		30000000 /* 30s cap */
+ #define LFA_PRIME_POLL_DELAY_US		10       /* 10us between polls */
+@@ -104,6 +108,7 @@ struct image_props {
+ 	bool may_reset_cpu;
+ 	bool cpu_rendezvous;
+ 	bool cpu_rendezvous_forced;
++	bool prime_complete;
+ 	struct kobject *image_dir;
+ 	struct kobj_attribute image_attrs[LFA_ATTR_NR_IMAGES];
  };
+@@ -229,6 +234,27 @@ static int call_lfa_activate(void *data)
+ }
  
--/**
-- * arm_cca_guest_init - Register with the Trusted Security Module (TSM)
-- * interface.
-- *
-- * Return:
-- * * %0        - Registered successfully with the TSM interface.
-- * * %-ENODEV  - The execution context is not an Arm Realm.
-- * * %-EBUSY   - Already registered.
-- */
--static int __init arm_cca_guest_init(void)
-+static void unregister_cca_tsm_report(void *data)
+ static int activate_fw_image(struct image_props *attrs)
 +{
-+	tsm_report_unregister(&arm_cca_tsm_report_ops);
++	int ret;
++
++	/*
++	 * We want to force CPU rendezvous if either cpu_rendezvous or
++	 * cpu_rendezvous_forced is set. The flag value is flipped as
++	 * it is called skip_cpu_rendezvous in the spec.
++	 */
++	if (!(attrs->cpu_rendezvous_forced || attrs->cpu_rendezvous)) {
++		pr_warn("CPU rendezvous is expected to be selected.");
++		return -EAGAIN;
++	}
++
++	ret = stop_machine(call_lfa_activate, attrs, cpu_online_mask);
++	if (ret != 0)
++		return lfa_cancel(attrs);
++
++	return ret;
 +}
 +
-+static int cca_tsm_probe(struct faux_device *fdev)
++static int prime_fw_image(struct image_props *attrs)
  {
- 	int ret;
+ 	struct arm_smccc_1_2_regs args = { 0 };
+ 	struct arm_smccc_1_2_regs res = { 0 };
+@@ -285,10 +311,6 @@ static int activate_fw_image(struct image_props *attrs)
+ 			return ret;
+ 	}
  
- 	if (!is_realm_world())
- 		return -ENODEV;
- 
--	ret = tsm_report_register(&arm_cca_tsm_ops, NULL);
--	if (ret < 0)
-+	ret = tsm_report_register(&arm_cca_tsm_report_ops, NULL);
-+	if (ret < 0) {
- 		pr_err("Error %d registering with TSM\n", ret);
-+		return ret;
-+	}
-+
-+	ret = devm_add_action_or_reset(&fdev->dev, unregister_cca_tsm_report, NULL);
-+	if (ret < 0) {
-+		pr_err("Error %d registering devm action\n", ret);
-+		unregister_cca_tsm_report(NULL);
-+		return ret;
-+	}
- 
+-	ret = stop_machine(call_lfa_activate, attrs, cpu_online_mask);
+-	if (ret != 0)
+-		return lfa_cancel(attrs);
+-
  	return ret;
  }
--module_init(arm_cca_guest_init);
  
--/**
-- * arm_cca_guest_exit - unregister with the Trusted Security Module (TSM)
-- * interface.
-- */
--static void __exit arm_cca_guest_exit(void)
-+static struct faux_device *cca_tsm;
+@@ -396,6 +418,17 @@ static ssize_t activate_store(struct kobject *kobj, struct kobj_attribute *attr,
+ 		return -EAGAIN;
+ 	}
+ 
++	ret = prime_fw_image(attrs);
++	if (ret) {
++		pr_err("Firmware prime failed: %s\n",
++			lfa_error_strings[-ret]);
++		mutex_unlock(&lfa_lock);
++		return -ECANCELED;
++	}
 +
-+static const struct faux_device_ops cca_device_ops = {
-+	.probe = cca_tsm_probe,
-+};
++	/* Update prime complete status */
++	attrs->prime_complete = LFA_PRIME_COMPLETE_TRUE;
 +
-+static int __init cca_tsm_init(void)
- {
--	tsm_report_unregister(&arm_cca_tsm_ops);
-+	cca_tsm = faux_device_create(RSI_DEV_NAME, NULL, &cca_device_ops);
-+	if (!cca_tsm)
-+		return -ENOMEM;
-+	return 0;
- }
--module_exit(arm_cca_guest_exit);
-+module_init(cca_tsm_init);
+ 	ret = activate_fw_image(attrs);
+ 	if (ret) {
+ 		pr_err("Firmware activation failed: %s\n",
+@@ -469,6 +502,8 @@ static int create_fw_inventory(char *fw_uuid, int seq_id, u32 image_flags)
+ 	INIT_LIST_HEAD(&attrs->image_node);
+ 	attrs->image_name = image_name;
+ 	attrs->cpu_rendezvous_forced = 1;
++	/* Reset prime complete status */
++	attrs->prime_complete = LFA_PRIME_COMPLETE_FALSE;
+ 	set_image_flags(attrs, seq_id, image_flags);
  
--/* modalias, so userspace can autoload this module when RSI is available */
--static const struct platform_device_id arm_cca_match[] __maybe_unused = {
--	{ RSI_PDEV_NAME, 0},
--	{ }
--};
-+static void __exit cca_tsm_exit(void)
-+{
-+	faux_device_destroy(cca_tsm);
-+}
-+module_exit(cca_tsm_exit);
+ 	/*
+@@ -573,16 +608,39 @@ static irqreturn_t lfa_irq_thread(int irq, void *data)
+ 	if (ret != 0)
+ 		goto exit_unlock;
  
--MODULE_DEVICE_TABLE(platform, arm_cca_match);
- MODULE_AUTHOR("Sami Mujawar <sami.mujawar@arm.com>");
- MODULE_DESCRIPTION("Arm CCA Guest TSM Driver");
- MODULE_LICENSE("GPL");
+-	/*
+-	 * Execute PRIME and ACTIVATE for each FW component
+-	 * Start from first FW component
+-	 */
++	/* Execute PRIME for all FW components */
+ 	list_for_each_entry(attrs, &lfa_fw_images, image_node) {
+ 		if ((!attrs->activation_capable) || (!attrs->activation_pending)) {
+ 			/* LFA not applicable for this FW component, continue to next component */
+ 			continue;
+ 		}
+ 
++		ret = prime_fw_image(attrs);
++		if (ret) {
++			pr_err("Firmware %s prime failed: %s\n",
++				attrs->image_name, lfa_error_strings[-ret]);
++			goto exit_unlock;
++		}
++
++		/* Update prime complete status */
++		attrs->prime_complete = LFA_PRIME_COMPLETE_TRUE;
++	}
++
++	/* Execute ACTIVATE for all FW components */
++	list_for_each_entry(attrs, &lfa_fw_images, image_node) {
++		if ((!attrs->activation_capable) || (!attrs->activation_pending)) {
++			/* LFA not applicable for this FW component, continue to next component */
++			continue;
++		}
++
++		if (!attrs->prime_complete) {
++			/*
++			 * ACTIVATE not applicable for this FW component,
++			 * continue to next component
++			 */
++			continue;
++		}
++
+ 		ret = activate_fw_image(attrs);
+ 		if (ret) {
+ 			pr_err("Firmware %s activation failed: %s\n",
 -- 
-2.43.0
+2.25.1
 
