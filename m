@@ -1,68 +1,146 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D4F25D1F5
-	for <linux-coco@lists.linux.dev>; Thu,  9 Oct 2025 08:13:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C202D9EE6
+	for <linux-coco@lists.linux.dev>; Thu,  9 Oct 2025 10:25:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759997613; cv=none; b=EK25SqYlaAb2V8iibGg42LMOTyXgB4VQTgpmpo8aapApOnagFOOh22yV0bSGORiFdyHvEwrivNfZeiSR60AoEOFSSfZ3TGAsz9VZDaBlnwFH+7AYGZYQ5FJghSU0lKW8XxRW2jGAkAe4ulCdCeJVclJpDP+P+t2LQswqf0+eNTU=
+	t=1760005540; cv=none; b=J+w7SJBuOqmt+rppR233YldNAwOO7K54piU68f4CBPA9im/fyXCVU8zFX4sC023PMVpdvqyNA6OFyKwBWHNwtEQeIJlO+eRiV/hYEd6Qj4bZSmX+XIcvxP/qPO1ZFu+8ky7yTaks9egWtw2W/aYT5JMD5uoKDJ+rRfVUFoJ6da4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759997613; c=relaxed/simple;
-	bh=/mhrOfJYmZpD6Yss7l6sfik86/51FFB1qIV0SvX5uxc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NxEHgJlf2OWGpeFKlz9178kmtl2BrgMrsUX3GNpMlazlRKq8W+7Ukihm5NJQZiPcqWuTlYvXzQfsOSmaV2Ot+SmzmRFxbC0Ri7L538cS/snAw9a7PAS0Pblaq02NxaNEVYZJGDZz/l2Q2H3KC3/3EOXZpE5iXcFNvI+h1I2uSfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 282BA176A;
-	Thu,  9 Oct 2025 01:13:23 -0700 (PDT)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C3F8D3F738;
-	Thu,  9 Oct 2025 01:13:28 -0700 (PDT)
-Date: Thu, 9 Oct 2025 09:13:25 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Vedashree Vidwans <vvidwans@nvidia.com>
-Cc: <salman.nabi@arm.com>, <lpieralisi@kernel.org>, <mark.rutland@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, <andre.przywara@arm.com>,
-	<ardb@kernel.org>, <chao.gao@intel.com>,
-	<linux-arm-kernel@lists.infradead.org>,
-	<linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<sdonthineni@nvidia.com>, <vsethi@nvidia.com>,
-	<vwadekar@nvidia.com>
-Subject: Re: [RFC PATCH 2/3] firmware: smccc: LFA: refactor, add device node
- support
-Message-ID: <20251009-calculating-glorious-oriole-ceccf6@sudeepholla>
-References: <20251008190907.181412-1-vvidwans@nvidia.com>
- <20251008190907.181412-3-vvidwans@nvidia.com>
+	s=arc-20240116; t=1760005540; c=relaxed/simple;
+	bh=ZrmCf5EyoHPRNw8k1PRAHmD4BI5qSX9aWBvSf7QYYC8=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TDZbthMUJ/EYoIl+BLhHEjg1LkCtHoX1B29n3ryKBD2QxaTaOKE74lqAhfg26kjV1pWoamqgE2Bj5L4LRMX7tscrYR9LRJRRii6+9WZHn+5QRZxVSk7PlPaL6NgjSyFULejprTab4AfGkJoYSyZSZHA2E+w+OY5AyLpI3cKqIos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cj5bQ1ZCgz6FGkL;
+	Thu,  9 Oct 2025 18:24:50 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6FABA1400CA;
+	Thu,  9 Oct 2025 18:25:32 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 9 Oct
+ 2025 11:25:31 +0100
+Date: Thu, 9 Oct 2025 11:25:29 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+CC: <linux-coco@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Steven Price <steven.price@arm.com>, "Gavin
+ Shan" <gshan@redhat.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, "Jeremy
+ Linton" <jeremy.linton@arm.com>, Sami Mujawar <sami.mujawar@arm.com>
+Subject: Re: [PATCH] coco: guest: arm64: Update ARM CCA guest driver
+Message-ID: <20251009112529.00001b41@huawei.com>
+In-Reply-To: <20251008132758.784275-1-aneesh.kumar@kernel.org>
+References: <20251008132758.784275-1-aneesh.kumar@kernel.org>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251008190907.181412-3-vvidwans@nvidia.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Wed, Oct 08, 2025 at 07:09:06PM +0000, Vedashree Vidwans wrote:
-> - Add support for LFA device node in the kernel driver. Implement
-> probe() to register LFA interrupt and threaded interrupt service
-> function.
-> - CPUs will be rendezvoused during activation.
-> - On IRQ, driver will query FW components then triggers activation of
-> capable and pending components.
-> - Mutex synchronization is implemented to avoid concurrent LFA updates
-> through interrupt and sysfs interfaces.
-> - Refactor LFA CANCEL logic into independent lfa_cancel() function.
-> - Enhance PRIME/ACTIVATION functions to touch watchdog and implement
-> timeouts.
+On Wed,  8 Oct 2025 18:57:58 +0530
+"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
+
+> Make preparatory updates to the ARM CCA guest driver:
 > 
-> Signed-off-by: Vedashree Vidwans <vvidwans@nvidia.com>
+>  - Switch from using a platform device to a faux device (based on
+>    feedback in [1])
+>  - Rename the device from `arm-cca-dev` to `arm-rsi-dev`, so that the
+>    host driver can register an equivalent `arm-rmi-dev`
+> 
+> These changes are purely structural and introduce no new functionality.
+> Subsequent patches will extend this driver to add guest device
+> assignment support.
+> 
+> [1] https://lore.kernel.org/all/2025073035-bulginess-rematch-b92e@gregkh
+> 
+
+Slight preference for:
+Link: https://lore.kernel.org/all/2025073035-bulginess-rematch-b92e@gregkh #1
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 > ---
->  drivers/firmware/smccc/lfa_fw.c | 299 ++++++++++++++++++++++++++++----
+> NOTE:
+> This patch is sent early outside the patchseries to avoid userspace from
+> depending on the presence of the newly introduced platform device.
+> The platform device was added in v6.14-rc1. 
+> 
 
-I was expecting to the devicetree binding based on $subject but no.
-So this patch can't be reviewed without one.
+A few trivial things inline. With those in mind.
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
--- 
-Regards,
-Sudeep
+> diff --git a/drivers/virt/coco/arm-cca-guest/Makefile b/drivers/virt/coco/arm-cca-guest/Makefile
+> index 69eeba08e98a..609462ea9438 100644
+> --- a/drivers/virt/coco/arm-cca-guest/Makefile
+> +++ b/drivers/virt/coco/arm-cca-guest/Makefile
+> @@ -1,2 +1,5 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+> +#
+
+Unrelated change. I'd drop it.
+
+>  obj-$(CONFIG_ARM_CCA_GUEST) += arm-cca-guest.o
+> +
+> +arm-cca-guest-$(CONFIG_TSM) +=  arm-cca.o
+
+extra space after = seems a bit odd.
+
+> diff --git a/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c b/drivers/virt/coco/arm-cca-guest/arm-cca.c
+> similarity index 85%
+> rename from drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
+> rename to drivers/virt/coco/arm-cca-guest/arm-cca.c
+> index 0c9ea24a200c..89d9e7f8eb5d 100644
+> --- a/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
+> +++ b/drivers/virt/coco/arm-cca-guest/arm-cca.c
+> @@ -1,8 +1,9 @@
+>  // SPDX-License-Identifier: GPL-2.0-only
+>  /*
+> - * Copyright (C) 2023 ARM Ltd.
+> + * Copyright (C) 2025 ARM Ltd.
+
+I'd expect a date range rather than updating copyright for whole file
+like this. The untouched bit will still be 2023 era code.
+
+>   */
+
+> +static int cca_tsm_probe(struct faux_device *fdev)
+>  {
+>  	int ret;
+>  
+>  	if (!is_realm_world())
+>  		return -ENODEV;
+>  
+> -	ret = tsm_report_register(&arm_cca_tsm_ops, NULL);
+> -	if (ret < 0)
+> +	ret = tsm_report_register(&arm_cca_tsm_report_ops, NULL);
+> +	if (ret < 0) {
+>  		pr_err("Error %d registering with TSM\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = devm_add_action_or_reset(&fdev->dev, unregister_cca_tsm_report, NULL);
+> +	if (ret < 0) {
+> +		pr_err("Error %d registering devm action\n", ret);
+
+I believe (not checked today) that devm_add_action_or_reset() can only fail
+with -ENOMEM due to an allocation failure and we generally don't print
+extra error messages if that happens.
+So I would drop this pr_err.
+
+> +		unregister_cca_tsm_report(NULL);
+> +		return ret;
+> +	}
+>  
+>  	return ret;
+>  }
+
+
