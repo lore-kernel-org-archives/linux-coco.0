@@ -1,140 +1,68 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53CD81D5147;
-	Thu,  9 Oct 2025 07:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D4F25D1F5
+	for <linux-coco@lists.linux.dev>; Thu,  9 Oct 2025 08:13:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759994243; cv=none; b=uoE/U5fCKjukOMIl6jcFAJ44K79vXd5CwLGcA4HR4JHPlPI/wgbOjdf2Dz78JEyvtxSBqbSBCmNK37zJ6N8DiTwGq2SO3WkIUuXq84L/3kghBMex/MH0oOKf6kxRvxmjxg4sy/S7/bvpKAbaRvjCz0bcFUAM0K1dWo/O9fXPDpw=
+	t=1759997613; cv=none; b=EK25SqYlaAb2V8iibGg42LMOTyXgB4VQTgpmpo8aapApOnagFOOh22yV0bSGORiFdyHvEwrivNfZeiSR60AoEOFSSfZ3TGAsz9VZDaBlnwFH+7AYGZYQ5FJghSU0lKW8XxRW2jGAkAe4ulCdCeJVclJpDP+P+t2LQswqf0+eNTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759994243; c=relaxed/simple;
-	bh=qpw+6J2ytukjMwUmxCZyRh0+7i8HVvt1dA1nhFhJDmU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=BNC/oceX+tU1YGuoKylkuACpQ/f/PVh+ztmpYCG+vj0CNV+yTP3JbRlrKeeewH8y/OKpKH9uPRGD6KQpTFtByPKLOVzio4fmUFaPGrsyr6X2zXJIXSPJKA+ugPJTY8OaxyX+ibM9lwxQUfFzWp4PBjdoLVyuaR596FNKQuGT+W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qxabBT8/; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qxabBT8/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071D0C4CEE7;
-	Thu,  9 Oct 2025 07:17:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759994242;
-	bh=qpw+6J2ytukjMwUmxCZyRh0+7i8HVvt1dA1nhFhJDmU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=qxabBT8/OBr9oWRsRZC1T4SCz/d/UL9LHnDRBeT7LDEoOnY+JcC5Ohyn1VkvPB+TZ
-	 vSgOdO85UFh3UoszH9719MuF7wO7/Pskv+1/Ng2ROmVD4wyEZzJByKOKYSzPrDgHdb
-	 5c/DfzhDI9lL4N11239fttCX6M3z66/aZ84n4HgVDBIMwkGweyFNzW6dDYhckhE3iL
-	 Go5yre6HVBnDlrQJkT85vwQF03rQgOymEEf4UpDKpf7d52/HfC85wUVCSEC0Zu4fR1
-	 UZ9BqOKHsYBT2Q2vrMJV5xHTRfiQz8gFYwXjbM/wUvO97hAfsYzJERUJ5aJLr6sCNj
-	 1zcsL+43/ZMFw==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: dan.j.williams@intel.com, Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	kvmarm@lists.linux.dev, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, aik@amd.com, lukas@wunner.de,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>, gregkh@linuxfounation.org
-Subject: Re: [RFC PATCH v1 11/38] KVM: arm64: CCA: register host tsm
- platform device
-In-Reply-To: <688d61b1c4c8c_55f09100f4@dwillia2-xfh.jf.intel.com.notmuch>
-References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
- <20250728135216.48084-12-aneesh.kumar@kernel.org>
- <20250729181045.0000100b@huawei.com> <20250729231948.GJ26511@ziepe.ca>
- <yq5aqzxy9ij1.fsf@kernel.org> <20250730113827.000032b8@huawei.com>
- <20250731121133.GP26511@ziepe.ca>
- <688d61b1c4c8c_55f09100f4@dwillia2-xfh.jf.intel.com.notmuch>
-Date: Thu, 09 Oct 2025 12:47:14 +0530
-Message-ID: <yq5aikgoa6it.fsf@kernel.org>
+	s=arc-20240116; t=1759997613; c=relaxed/simple;
+	bh=/mhrOfJYmZpD6Yss7l6sfik86/51FFB1qIV0SvX5uxc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NxEHgJlf2OWGpeFKlz9178kmtl2BrgMrsUX3GNpMlazlRKq8W+7Ukihm5NJQZiPcqWuTlYvXzQfsOSmaV2Ot+SmzmRFxbC0Ri7L538cS/snAw9a7PAS0Pblaq02NxaNEVYZJGDZz/l2Q2H3KC3/3EOXZpE5iXcFNvI+h1I2uSfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 282BA176A;
+	Thu,  9 Oct 2025 01:13:23 -0700 (PDT)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C3F8D3F738;
+	Thu,  9 Oct 2025 01:13:28 -0700 (PDT)
+Date: Thu, 9 Oct 2025 09:13:25 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Vedashree Vidwans <vvidwans@nvidia.com>
+Cc: <salman.nabi@arm.com>, <lpieralisi@kernel.org>, <mark.rutland@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>, <andre.przywara@arm.com>,
+	<ardb@kernel.org>, <chao.gao@intel.com>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<sdonthineni@nvidia.com>, <vsethi@nvidia.com>,
+	<vwadekar@nvidia.com>
+Subject: Re: [RFC PATCH 2/3] firmware: smccc: LFA: refactor, add device node
+ support
+Message-ID: <20251009-calculating-glorious-oriole-ceccf6@sudeepholla>
+References: <20251008190907.181412-1-vvidwans@nvidia.com>
+ <20251008190907.181412-3-vvidwans@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251008190907.181412-3-vvidwans@nvidia.com>
 
-<dan.j.williams@intel.com> writes:
+On Wed, Oct 08, 2025 at 07:09:06PM +0000, Vedashree Vidwans wrote:
+> - Add support for LFA device node in the kernel driver. Implement
+> probe() to register LFA interrupt and threaded interrupt service
+> function.
+> - CPUs will be rendezvoused during activation.
+> - On IRQ, driver will query FW components then triggers activation of
+> capable and pending components.
+> - Mutex synchronization is implemented to avoid concurrent LFA updates
+> through interrupt and sysfs interfaces.
+> - Refactor LFA CANCEL logic into independent lfa_cancel() function.
+> - Enhance PRIME/ACTIVATION functions to touch watchdog and implement
+> timeouts.
+> 
+> Signed-off-by: Vedashree Vidwans <vvidwans@nvidia.com>
+> ---
+>  drivers/firmware/smccc/lfa_fw.c | 299 ++++++++++++++++++++++++++++----
 
-> Jason Gunthorpe wrote:
->> On Wed, Jul 30, 2025 at 11:38:27AM +0100, Jonathan Cameron wrote:
->> > On Wed, 30 Jul 2025 14:12:26 +0530
->> > "Aneesh Kumar K.V" <aneesh.kumar@kernel.org> wrote:
->> >=20
->> > > Jason Gunthorpe <jgg@ziepe.ca> writes:
->> > >=20
->> > > > On Tue, Jul 29, 2025 at 06:10:45PM +0100, Jonathan Cameron wrote:
->> > > >=20=20
->> > > >> > +static struct platform_device cca_host_dev =3D {=20=20
->> > > >> Hmm. Greg is getting increasingly (and correctly in my view) grum=
-py with
->> > > >> platform devices being registered with no underlying resources et=
-c as glue
->> > > >> layers.  Maybe some of that will come later.=20=20
->> > > >
->> > > > Is faux_device a better choice? I admit to not knowing entirely wh=
-at
->> > > > it is for..
->> >=20
->> > I'll go with a cautious yes to faux_device. This case of a glue device
->> > with no resources and no reason to be on a particular bus was definite=
-ly
->> > the intent but I'm not 100% sure without trying it that we don't run
->> > into any problems.
->> >=20
->> > Not that many examples yet, but cpuidle-psci.c looks like a vaguely si=
-milar
->> > case to this one.=20=20
->> >=20
->> > All it really does is move the location of the device and
->> > smash together the device registration with probe/remove.
->> > That means the device disappears if probe() fails, which is cleaner
->> > in many ways than leaving a pointless stub behind.
->> >=20
->> > Maybe it isn't appropriate it if is actually useful to rmmod/modprobe =
-the
->> > driver.=20
->>=20
->> Yeah, exactly. Can a TSM driver even be modular? If it has to be built
->> in then there is no reason to do this:
->
-> For example, CRYPTO_DEV_CCP_DD, the AMD PCI device driver that will call
-> tsm_register(), is already modular.
->
->> > > The goal is to have tsm class device to be parented by the platform
->> > > device.
->>=20
->> IMHO the only real point of that is to trigger module autoloading.
->
-> Right. For TDX, and I expect CCA as well, the arch code that knows that
-> PCI/TSM functionality is available and can register a device, may be
-> running too early to attach a driver to that device.
->
-> I.e. I would like to just use faux_device, but without the ability to do
-> EPROBE_DEFER, for example to await the plaform IOMMU driver. It needs to
-> move to its own bus so the attach event can be handled at a better time.
->
+I was expecting to the devicetree binding based on $subject but no.
+So this patch can't be reviewed without one.
 
-One of the issues I=E2=80=99ve run into after switching to the faux_device =
-model
-is determining how to automatically load the guest and host TSM drivers
-based on the availability of the device assignment feature.
-
-The platform device previously provided a clean abstraction for this
-behavior, which made autoloading straightforward
-
->
->> Otherwise the tsm core should accept NULL as the parent pointer during
->> registration, it probably already does..
->
-> Yes, NULL @parent "just works" with tsm_register().
->
-> However, I expect all tsm_register() callers to be from modular drivers.
-
--aneesh
+-- 
+Regards,
+Sudeep
