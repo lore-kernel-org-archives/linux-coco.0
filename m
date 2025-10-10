@@ -1,25 +1,25 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D59B7283C97
-	for <linux-coco@lists.linux.dev>; Fri, 10 Oct 2025 11:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8DE286898;
+	Fri, 10 Oct 2025 12:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760096916; cv=none; b=RTOfWW4+ZbpnlBToGOpdF97xqQ99d1bja85PSp2bMKDlX+nQh6ziFw1/2iTnbIJZgLKec2ujU22o1NSXY3S740sFm07PN0AUN/08LujyyDyH3r4r9LTIwavw/ohnDCJsCG8bSN2pFYWv9nM5ne3Js4lfi+SmJe+cua8Vik/51O4=
+	t=1760098262; cv=none; b=nRzj0/bPaD+yH5QuWdw/FUgbP6ZhXxrLrBl8Z+uZEb3t2Un3BiY4u6cakbc+jcanBK9CpJeM3erYAQ9bKnqYxV3XBNXGe68jl7WJfYYZbC+UJgb08MBCilWdn9IW8se7EK7nWHlcReZHHW+kCylBipTXik6DjPX1cH2dsFpHKYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760096916; c=relaxed/simple;
-	bh=ykqxNFIiImfOy+/ooWN95ocKoQ/PJj4CQlL/ShSfoK4=;
+	s=arc-20240116; t=1760098262; c=relaxed/simple;
+	bh=Rf79rZFiOw6r+O6kn1K8Xn5L0CWlYxIVq8z4Vl++tBg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q0kToon1RD4DjxgWta0y6kPzAqK6MGZwIe0GDEzTrKRAn1dGrfoIT7bXZPrfug0Igr2txl/KUy6b9kK9Z5TEznRhXROQrwtmtX6jJ4Ls1U/+5g9ZGXMELYCpplweMS1Xe9TDfkDwaRErokJOd7qJkL8B88DQuiw1yTQXgHdnVg0=
+	 In-Reply-To:Content-Type; b=D33292Q+18v6N/IZj4sS8Kc0mBh1luuz7MyxWDUj65vZ7pHulpHl83XGkws++7zye7CCFrF3NcV4pWbyd1GlbOSGpe7k/wkEiwWbCfPt9MIU6wCjU5bDXb9ok68MnGTUQSLIpiKhud0Z7e3kRhs1ixWE+fgvIFc1+PZF3fS7Z94=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 266AE1596;
-	Fri, 10 Oct 2025 04:48:26 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2A1721596;
+	Fri, 10 Oct 2025 05:10:52 -0700 (PDT)
 Received: from [192.168.20.16] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6CF2C3F738;
-	Fri, 10 Oct 2025 04:48:33 -0700 (PDT)
-Message-ID: <ed3d71a3-b454-4e9b-97bb-7eb4d0b770ec@arm.com>
-Date: Fri, 10 Oct 2025 06:48:32 -0500
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1E04C3F738;
+	Fri, 10 Oct 2025 05:10:59 -0700 (PDT)
+Message-ID: <b3ec55da-822a-4098-b030-4d76825f358e@arm.com>
+Date: Fri, 10 Oct 2025 07:10:58 -0500
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -27,59 +27,84 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] coco: guest: arm64: Update ARM CCA guest driver
-To: dan.j.williams@intel.com, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, Steven Price <steven.price@arm.com>,
- Gavin Shan <gshan@redhat.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
- Sami Mujawar <sami.mujawar@arm.com>
-References: <20251008132758.784275-1-aneesh.kumar@kernel.org>
- <yq5aldlka6oi.fsf@kernel.org> <20251009113557.000053e6@huawei.com>
- <68e86e45599bc_199281005d@dwillia2-mobl4.notmuch>
+Subject: Re: [RFC PATCH v1 11/38] KVM: arm64: CCA: register host tsm platform
+ device
+To: Greg KH <gregkh@linuxfoundation.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Dan Williams <dan.j.williams@intel.com>,
+ linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, aik@amd.com,
+ lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>,
+ Xu Yilun <yilun.xu@linux.intel.com>,
+ Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+ Steven Price <steven.price@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, Oliver Upton <oliver.upton@linux.dev>
+References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
+ <20250728135216.48084-12-aneesh.kumar@kernel.org>
+ <20250729181045.0000100b@huawei.com> <20250729231948.GJ26511@ziepe.ca>
+ <yq5aqzxy9ij1.fsf@kernel.org> <20250730113827.000032b8@huawei.com>
+ <20250730132333.00006fbf@huawei.com>
+ <2025073035-bulginess-rematch-b92e@gregkh>
 Content-Language: en-US
 From: Jeremy Linton <jeremy.linton@arm.com>
-In-Reply-To: <68e86e45599bc_199281005d@dwillia2-mobl4.notmuch>
+In-Reply-To: <2025073035-bulginess-rematch-b92e@gregkh>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 Hi,
 
-Hi,
 
-On 10/9/25 9:24 PM, dan.j.williams@intel.com wrote:
-> Jonathan Cameron wrote:
->> On Thu, 09 Oct 2025 12:43:49 +0530
->> Aneesh Kumar K.V <aneesh.kumar@kernel.org> wrote:
+On 7/30/25 8:07 AM, Greg KH wrote:
+> On Wed, Jul 30, 2025 at 01:23:33PM +0100, Jonathan Cameron wrote:
+>> On Wed, 30 Jul 2025 11:38:27 +0100
+>> Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 >>
->>> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> writes:
+>>> On Wed, 30 Jul 2025 14:12:26 +0530
+>>> "Aneesh Kumar K.V" <aneesh.kumar@kernel.org> wrote:
 >>>
->>>> Make preparatory updates to the ARM CCA guest driver:
->>>>
->>>>   - Switch from using a platform device to a faux device (based on
->>>>     feedback in [1])
->>>>   - Rename the device from `arm-cca-dev` to `arm-rsi-dev`, so that the
->>>>     host driver can register an equivalent `arm-rmi-dev`
->>>>
->>>> These changes are purely structural and introduce no new functionality.
->>>> Subsequent patches will extend this driver to add guest device
->>>> assignment support.
->>>>
->>>> [1] https://lore.kernel.org/all/2025073035-bulginess-rematch-b92e@gregkh
->>>>   
+>>>> Jason Gunthorpe <jgg@ziepe.ca> writes:
+>>>>    
+>>>>> On Tue, Jul 29, 2025 at 06:10:45PM +0100, Jonathan Cameron wrote:
+>>>>>     
+>>>>>>> +static struct platform_device cca_host_dev = {
+>>>>>> Hmm. Greg is getting increasingly (and correctly in my view) grumpy with
+>>>>>> platform devices being registered with no underlying resources etc as glue
+>>>>>> layers.  Maybe some of that will come later.
+>>>>>
+>>>>> Is faux_device a better choice? I admit to not knowing entirely what
+>>>>> it is for..
 >>>
->>> I noticed that, this will break autoloading of the driver.
->>
->> Ah indeed.  You'd need to arrange for the arch code to call the init()
->> directly (possibly arch_initcall() as before or maybe directly from
->> arm64_rsi_init), which makes it tricky to do in a module as there
->> is nothing to kick off module autoloading. You could kick that off
->> explicitly but that's a bit ugly.
+>>> I'll go with a cautious yes to faux_device. This case of a glue device
+>>> with no resources and no reason to be on a particular bus was definitely
+>>> the intent but I'm not 100% sure without trying it that we don't run
+>>> into any problems.
+>>>
+>>> Not that many examples yet, but cpuidle-psci.c looks like a vaguely similar
+>>> case to this one.
+>>>
+>>> All it really does is move the location of the device and
+>>> smash together the device registration with probe/remove.
+>>> That means the device disappears if probe() fails, which is cleaner
+>>> in many ways than leaving a pointless stub behind.
+>>>
+>>> Maybe it isn't appropriate it if is actually useful to rmmod/modprobe the
+>>> driver.
+>>>
+>>> +CC Greg on basis I may have wrong end of the stick ;)
+>> This time with at least one less typo in Greg's email address.
 > 
-> Does ARM64 not have the equivalent of MODULE_DEVICE_TABLE(x86cpu, ...)?
+> Yes, use faux_device if you need/want a struct device to represent
+> something in the tree and it does NOT have any real platform resources
+> behind it.  That's explicitly what it was designed for.
 
-No, it doesn't. There is a hwcap based method, but that requires 
-allocating a hwcap.
+Right, but this code is intended to trigger the kmod/userspace module 
+loader.
 
+AFAIK, the faux device is currently missing a faux_device_id in 
+mod_devicetable, alias matching logic in file2alias, and probably a few 
+other things which keeps it from performing this function.
+
+thanks,
 
