@@ -1,34 +1,73 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6432D0629;
-	Fri, 10 Oct 2025 12:38:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADE32EDD6F
+	for <linux-coco@lists.linux.dev>; Fri, 10 Oct 2025 13:59:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760099933; cv=none; b=LwqSOnXCJf6gRmXbheyndDKaShbZBwcAZpjydESEPlEGqWpW+D26zVnHpX5nPJ3GFfOZYRaTErRvKDOTIafFJUgB3bfXYUVwvfX4Shvq+IoJpZyebEd2/ojGgkJTCr7rRb0mukwnz2zsxSehCXT70de0I7tx1ENiBbHffXSC16w=
+	t=1760104767; cv=none; b=XgccA81PGHMEHO5IJAxalz9T/9Wcw34SJSNbANHlKJYh/GETFr+7XOzkpQjjiJU07tp9gAqP2ezfB1QdN3KMnTc8LUKEMvvfgpuFg82TRPAojVaw4BNi9l1jwl2Vlr+zPi59S3Lw1c+gaDKRZYrej9qU8SBrq9QHkb+IHuUZ+0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760099933; c=relaxed/simple;
-	bh=p2dq1+BYCl83wtRQDI4S8QRU072WIE+qdJpzYKgqGwk=;
+	s=arc-20240116; t=1760104767; c=relaxed/simple;
+	bh=hZPZVS2QtrtI/5LeWNnPEpjPSsnogRA4qP9cGK1n1G4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P5TOJ/IekRUMTqfFwNJl4edVWp0LCd/8xdN7QzpDDOFZo+sgAg3KrHYWfQPcfFQE67JGeYTBkSkgcJSf03RZzxA8g53LloLmGh6s2UHqlZMhBYqpjgKTnxnBCqrmZwhc+MPnAeLZged0gT7EHGshTTEwI3o9W/2yTVAgcee19XY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gCxelIpC; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=AqtPAlbf8HiMiURIUW5SX6hzWSzuZaMu1id68XATfIPNPO6OEwLaDRhFOSGsNvn6uIgmhyXjIp6dKxNYW+UZHZxmLzLtDix7FS/m2oaxiDX2gMRgcYxyskrCDcIZBrniMJaIk99vM2JnDQozgocfaS29eohjRkD+LksdpJ5YKPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=fzZAQ3Py; arc=none smtp.client-ip=209.85.222.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gCxelIpC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87526C4CEF1;
-	Fri, 10 Oct 2025 12:38:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1760099933;
-	bh=p2dq1+BYCl83wtRQDI4S8QRU072WIE+qdJpzYKgqGwk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gCxelIpCywnl2nZ+0zzEYviCt/IR7PSgK9ywEfdoWQn+oAPWP7F11LRUhgwqcpVge
-	 VRUUfQbpTeDkgpT6ATNWtNlJNzpyVp3Ok6k/i3dDGVy/2vxfxa+aX2gebckUC0W++P
-	 daAx7QgJQ2VIKINmVs97v+NZSTJ9hvGWv5Wb1mjk=
-Date: Fri, 10 Oct 2025 14:38:50 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="fzZAQ3Py"
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-858183680b4so271560385a.2
+        for <linux-coco@lists.linux.dev>; Fri, 10 Oct 2025 06:59:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1760104765; x=1760709565; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VNvJ31G0uSRPH3SSYUmcqBJNw8nBZA0aR9UpQ5R7KAM=;
+        b=fzZAQ3Py2bcUm9lYJvHwciv9/R4mEv57MOeJU8xSjk1ltDnKdJXPDNmWnYaz1Gct8t
+         JYkZk26dhPFinb49VUjUOL5/0+W1UktkX1/W7yKVJiKeNx0SeQHnKHAnEHsAENdG7WnR
+         +GZ4J8d/zC++yPa8E9QQYZ/eDh7I0aV4JlQHBTE5b/EE5fYN7+dEgZl1WJ1nxdjyqzNo
+         fqe4+0SRgkOiHCIZ1qF/9GcfWNcJ7FR+mZkf3qEXLbnb5CyyHLgZzy4FE3VMeZ7Vnsiy
+         +GCF+Yox+m/9RR0YoegkPPNbTNDapQVAVpFqBKtNn5a7osMUW9ZvffZBj2wSsuiQaZwG
+         0P0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760104765; x=1760709565;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VNvJ31G0uSRPH3SSYUmcqBJNw8nBZA0aR9UpQ5R7KAM=;
+        b=R634tQCTwyrdQt3PRfTlwUeGdaGEW1C9Ubk/k9YS+jT3zpXajvdNWfPuGIrcdPOiQ/
+         hoP5AiERH4MiceBFPbp63Ko7alAcRpx38Kx9eqXQ8HGsd5CXCSDvmTEQaWrkl/hIhOt4
+         MHjuf23DoUZD70+Oo5N9vjr6Alm0k4WOzFO5EPvls8aM2Ot9XQUG14WWGMk5lyFhibtr
+         ZFcMjAk907nDKqab1imGkS8J5u+tiEpr0UU2wERZn49BvoinSgDS8YlkWHQKHEFPTmk5
+         0X1RlK3TnOZPBErU6ulfgrZ868X+xrppbdUKfWEI4IY2TrglEfPpm08DO672KpRtMWDy
+         IB/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCX+6ctFwXCEQO6GtjfEfHnzrgzXucf35YyB5t6tGzGDX0DyMx7CTu3M1B7cWyaQ10JzurOXTvEwePUE@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx2ZqNC4Sa2RE+MKKnXwACmzA4azL0sUzLfMM5hYuF/w6bFCRsE
+	LxLZfoWlYa4lFvMPszU627iQeGUhOVzu1Ckh4kC6G/jawa31s17roJ1TNexGhBVktIM=
+X-Gm-Gg: ASbGncsovXK+lgQ9JRVHU2cfDVGiczRaPPWa0WIDWXPSKcvZZeWh8jQnNcMzsc6pFUJ
+	d3cH6JS3nrZf3V9k5mRr+/ov3kMfVAhlzodhtO/+/0sm9FsBYFYRn3igJARmIKO9ZERG7vdT2A/
+	bNf8oOcsNt/F5DCw5tEkY4lBcEl94zWW5OE/YWkcOrQdjOZKh160tDZAUqKkkuonVVuFy3rUdDS
+	Oqg97MPJN2HThXusBz1/QhApoajWNj3M1KJktvwnBN1LuIgcshXUkZlx0/3q2pApAy53EtZ5JW+
+	HrT7u+LMzBwnwvY/B4Is1gSaxTw5mqAD1lqFEV8Pgl+2/kU11Gzzf33Y46XRGjjTquhKXDWbz8u
+	DJistp5pPsBKLeLw0ZincOtdkbjP9IKycYXmEdRbUjwyAvkxf+GAnoB8stcH7YwuCU8OxCR50D7
+	758BYvn4cyr51E259/HU+0/w==
+X-Google-Smtp-Source: AGHT+IExPwaL1TTGwP76ooAIbGqIBucYWqZgImMdJPw3egaQEtYFbCr/oHIOKZgGp1qijtOpyq8L8A==
+X-Received: by 2002:a05:620a:414f:b0:86f:4009:dea6 with SMTP id af79cd13be357-883527c7719mr1533083385a.59.1760104764491;
+        Fri, 10 Oct 2025 06:59:24 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-884a293bcbasm413337685a.58.2025.10.10.06.59.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Oct 2025 06:59:23 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1v7DeU-0000000GVew-44jV;
+	Fri, 10 Oct 2025 10:59:22 -0300
+Date: Fri, 10 Oct 2025 10:59:22 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
 To: Jeremy Linton <jeremy.linton@arm.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc: Greg KH <gregkh@linuxfoundation.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
 	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
 	kvmarm@lists.linux.dev, linux-pci@vger.kernel.org,
 	linux-kernel@vger.kernel.org, aik@amd.com, lukas@wunner.de,
@@ -41,7 +80,7 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Oliver Upton <oliver.upton@linux.dev>
 Subject: Re: [RFC PATCH v1 11/38] KVM: arm64: CCA: register host tsm platform
  device
-Message-ID: <2025101020-tiara-procreate-e56f@gregkh>
+Message-ID: <20251010135922.GC3833649@ziepe.ca>
 References: <20250728135216.48084-1-aneesh.kumar@kernel.org>
  <20250728135216.48084-12-aneesh.kumar@kernel.org>
  <20250729181045.0000100b@huawei.com>
@@ -62,46 +101,6 @@ Content-Disposition: inline
 In-Reply-To: <b3ec55da-822a-4098-b030-4d76825f358e@arm.com>
 
 On Fri, Oct 10, 2025 at 07:10:58AM -0500, Jeremy Linton wrote:
-> Hi,
-> 
-> 
-> On 7/30/25 8:07 AM, Greg KH wrote:
-> > On Wed, Jul 30, 2025 at 01:23:33PM +0100, Jonathan Cameron wrote:
-> > > On Wed, 30 Jul 2025 11:38:27 +0100
-> > > Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
-> > > 
-> > > > On Wed, 30 Jul 2025 14:12:26 +0530
-> > > > "Aneesh Kumar K.V" <aneesh.kumar@kernel.org> wrote:
-> > > > 
-> > > > > Jason Gunthorpe <jgg@ziepe.ca> writes:
-> > > > > > On Tue, Jul 29, 2025 at 06:10:45PM +0100, Jonathan Cameron wrote:
-> > > > > > > > +static struct platform_device cca_host_dev = {
-> > > > > > > Hmm. Greg is getting increasingly (and correctly in my view) grumpy with
-> > > > > > > platform devices being registered with no underlying resources etc as glue
-> > > > > > > layers.  Maybe some of that will come later.
-> > > > > > 
-> > > > > > Is faux_device a better choice? I admit to not knowing entirely what
-> > > > > > it is for..
-> > > > 
-> > > > I'll go with a cautious yes to faux_device. This case of a glue device
-> > > > with no resources and no reason to be on a particular bus was definitely
-> > > > the intent but I'm not 100% sure without trying it that we don't run
-> > > > into any problems.
-> > > > 
-> > > > Not that many examples yet, but cpuidle-psci.c looks like a vaguely similar
-> > > > case to this one.
-> > > > 
-> > > > All it really does is move the location of the device and
-> > > > smash together the device registration with probe/remove.
-> > > > That means the device disappears if probe() fails, which is cleaner
-> > > > in many ways than leaving a pointless stub behind.
-> > > > 
-> > > > Maybe it isn't appropriate it if is actually useful to rmmod/modprobe the
-> > > > driver.
-> > > > 
-> > > > +CC Greg on basis I may have wrong end of the stick ;)
-> > > This time with at least one less typo in Greg's email address.
-> > 
 > > Yes, use faux_device if you need/want a struct device to represent
 > > something in the tree and it does NOT have any real platform resources
 > > behind it.  That's explicitly what it was designed for.
@@ -109,19 +108,32 @@ On Fri, Oct 10, 2025 at 07:10:58AM -0500, Jeremy Linton wrote:
 > Right, but this code is intended to trigger the kmod/userspace module
 > loader.
 
-Why?
+Faux devices are not intended to be bound, it says so right on the label:
 
-> AFAIK, the faux device is currently missing a faux_device_id in
-> mod_devicetable, alias matching logic in file2alias, and probably a few
-> other things which keeps it from performing this function.
+ * A "simple" faux bus that allows devices to be created and added
+ * automatically to it.  This is to be used whenever you need to create a
+ * device that is not associated with any "real" system resources, and do
+ * not want to have to deal with a bus/driver binding logic.  It is
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+ * intended to be very simple, with only a create and a destroy function
+ * available.
 
-How would a faux device ever expect to get auto-loaded?  That's not what
-is supposed to be happening here at all.
+auxiliary_device is quite similar to faux except it is intended to be
+bound to drivers, supports module autoloading and so on.
 
-If you have real hardware backing something, then use the real driver
-type.  that is NOT a faux driver, which is, as the name says, for "fake"
-devices that you wish to add to the device/driver tree.
+What you have here is the platform firmware provides the ARM SMC
+(Secure Monitor Call Calling Convention) interface which is a generic
+function call multiplexer between the OS and ARM firmware.
 
-thanks,
+Then we have things like the TSM subsystem that want to load a driver
+to use calls over SMC if the underlying platform firmware supports the
+RSI group of SMC APIs. You'd have a TSM subsystem driver that uses the
+RSI call group over SMC that autobinds when the RSI call group is
+detected when the SMC is first discovered.
 
-greg k-h
+So you could use auxiliary_device, you'd consider SMC itself to be the
+shared HW block and all the auxiliary drivers are per-subsystem
+aspects of that shared SMC interface. It is not a terrible fit for
+what it was intended for at least.
+
+Jason
