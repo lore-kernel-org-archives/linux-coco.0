@@ -1,60 +1,59 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BB972614
-	for <linux-coco@lists.linux.dev>; Fri, 10 Oct 2025 05:01:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202D41F63CD
+	for <linux-coco@lists.linux.dev>; Fri, 10 Oct 2025 07:48:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760072472; cv=none; b=DvuCxGsEAj3/XFWafVx+DaXXY+qmgBKGP18QTmk6K42ynCoMZOnwWq2EgIq4Sg5hRUjoSuAUuKUTvwRIjJvEoqB5KG9PLewMfYooq8He5CnSUi3UwnEwanUoiFc4MsfXk2L9iBTsRjBT09RYZX3jTLrXCc2cbyJ69MKARDUMkgI=
+	t=1760082489; cv=none; b=RwX7PDpB3AbPD/EucFPC2S9h5I2kbileYLJmY8qgiI1lZC4pKzmjZDXF2rEUbpmOEX394EYf18qnktKi1kphzAWIwpAlxLuPUdLklzSAM4f5qsUvI+hGsVzALQ00QPE8/SfKHCWuBpx0VDl4v8S+MnF9nkkbEGzAtik2NUYgSPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760072472; c=relaxed/simple;
-	bh=3cnwdrJOwxkyJQe55hTvzk1zWVrendZOcMWkOmDMTZg=;
+	s=arc-20240116; t=1760082489; c=relaxed/simple;
+	bh=QR+79gInbBZ5CxZA6OjrYv3Y8tlDpMYUPUR117w2zXw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MlcU9D4a51OPc2oRwODPCBBoVETPsSm3SrZAohX/+o+9RcOhrMe5SKbRM3RExMFMmShvMg8C69f7FPwMHI6UJG9En8Gix5pl1zBNrxponNDM+tWdFQsd2Ls6867ZPc9XhfRFSfODJKuqur4qOo9HSWZEWBVVUuYsDvSNLDgKpqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FBil4LyQ; arc=none smtp.client-ip=198.175.65.10
+	 Content-Type:Content-Disposition:In-Reply-To; b=HTYEIBPDkGaS3vqrPdpttNRv7k1nPYXGK9rkMN/LOCZogt5408JSEfWGkyFreztRkj3D1YCwRNmQPD2IIisAL8SRwDFjn6GX4zA9xOeTAihz55JLmuGbCSAphQFTbqFjsoWyy78oW1nJgukCzCKcp457Oweu0WsZsvw3lSdF9fM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HfePWmk3; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FBil4LyQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HfePWmk3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760072471; x=1791608471;
+  t=1760082487; x=1791618487;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=3cnwdrJOwxkyJQe55hTvzk1zWVrendZOcMWkOmDMTZg=;
-  b=FBil4LyQpb0eS8tkkL52ZLFWU/a0nioM9a2OZIrwzhxSAyRHD2xxlCxs
-   WgzGYrCijmMKF1/8GZWAgb1lmSOVp7QipDF9SbsaUw36R2z9ovtLRjTRU
-   8agX00J2G0BTvUSZtitBe4IEyk3XxBfteVGT9M0T0+wsdpCixYlhvTXXF
-   E0O4TC4Z+CBSg5SnCEtBIA+SfQ0oiR1wHbMbVGGlF7Fh+t7aA0vza5Ylz
-   gd4j2Z2S5/kJaWqb8Mk5WGwpn9FYkXyovdjNxtrS9Wd8G7Aa03OMfqpVQ
-   rwEHre/ITMkPHfxZdIfaIVitRpfH86aW3HQzPHF0q/Dz8yeUJ4I4in9N+
-   Q==;
-X-CSE-ConnectionGUID: kL9FH754RBOYG1m/d58KSw==
-X-CSE-MsgGUID: +5cq4hBHQGG/NkKV+0JyTw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11577"; a="79733365"
+  bh=QR+79gInbBZ5CxZA6OjrYv3Y8tlDpMYUPUR117w2zXw=;
+  b=HfePWmk3e0XFvNdoWKTvegGwOfLy8+Rx/MDVCxmaN6otYIsjTzBwaM6T
+   zMeOz9jnjzlcBOLsoKW4WrE0bpEMCnH9rWngtrV+PJUBJrqG+2emPugtQ
+   Tu9uxaAlG7amy4NDYl3qBz4brw4g1Ms/jPMWXh4ni/jNkKRaSGEQpADw4
+   axY+meD+ooc37hmNXsKfbuXYIN/xoPHGHMCzLO75ws1GdXCH4ubrHBmFS
+   z66pfEVs2jTKoLuO75yMLooVe7roPfYkQCfz1ahlJoeawJelPQXSamHRD
+   4AlV0MLpwvPQR9uOlMm5McKKMfL2+JHQHtSofJo4TADlE3fjL0breRDos
+   g==;
+X-CSE-ConnectionGUID: 5vpVFE4uS3+5AE3pIaWW3Q==
+X-CSE-MsgGUID: TEHErVjHSjmHS/io1ysdrA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11577"; a="62398542"
 X-IronPort-AV: E=Sophos;i="6.19,218,1754982000"; 
-   d="scan'208";a="79733365"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2025 22:01:10 -0700
-X-CSE-ConnectionGUID: WUpT8L4SRQiUwNxPsMm76g==
-X-CSE-MsgGUID: Fv7Ita3jQmeNKt7wlPgS5w==
+   d="scan'208";a="62398542"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2025 00:48:04 -0700
+X-CSE-ConnectionGUID: 0TZkgInARuqoVsBgMAxh3g==
+X-CSE-MsgGUID: 5QCkOTztRsuMm5SdW/rXRQ==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,218,1754982000"; 
+   d="scan'208";a="180931670"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa003.fm.intel.com with ESMTP; 09 Oct 2025 22:01:08 -0700
-Date: Fri, 10 Oct 2025 12:48:17 +0800
+  by orviesa008.jf.intel.com with ESMTP; 10 Oct 2025 00:48:02 -0700
+Date: Fri, 10 Oct 2025 15:35:11 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
-To: dan.j.williams@intel.com
-Cc: Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org, gregkh@linuxfoundation.org,
-	bhelgaas@google.com, aneesh.kumar@kernel.org
-Subject: Re: [PATCH 2/7] PCI/TSM: Add pci_tsm_guest_req() for managing TDIs
-Message-ID: <aOiQEc9+LYwNsFLH@yilunxu-OptiPlex-7050>
-References: <20250827035259.1356758-1-dan.j.williams@intel.com>
- <20250827035259.1356758-3-dan.j.williams@intel.com>
- <e680335b-bd40-4311-aa13-58bc2b0b802c@amd.com>
- <68b0d30e2a18c_75db10050@dwillia2-mobl4.notmuch>
- <101dc0bb-d6d1-4f29-81fb-fb1ff78891ba@amd.com>
- <68b2640726bd8_75db1000@dwillia2-mobl4.notmuch>
+To: Samuel Ortiz <sameo@rivosinc.com>
+Cc: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org, xin@zytor.com, chao.gao@intel.com,
+	Dave Jiang <dave.jiang@intel.com>
+Subject: Re: [RFC PATCH 09/27] ACPICA: Add KEYP table definitions
+Message-ID: <aOi3L/Kv1s9Jw/Eo@yilunxu-OptiPlex-7050>
+References: <20250919142237.418648-1-dan.j.williams@intel.com>
+ <20250919142237.418648-10-dan.j.williams@intel.com>
+ <aOPVKpkZK9nFOo49@vermeer>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -63,59 +62,38 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <68b2640726bd8_75db1000@dwillia2-mobl4.notmuch>
+In-Reply-To: <aOPVKpkZK9nFOo49@vermeer>
 
-> > >> Out of curiosity (probably could go to the commit log) - for what kind
-> > >> of request and on which platform we do not know the response size in
-> > >> advance? On AMD, the request and response sizes are fixed.
-
-For TDX, the maximum response size are decided by guest, that's because
-GHCI says guest should allocate request/response pages big enough for the
-GHCI call. But guest may not know the actual response data size generated
-by host.
-
-> > > 
-> > > I don't know. Given this is to support any possible combination of TSM
-> > > and ABI I took inspiration from fwctl which is trying to solve a similar
-> > > common transport problem.
+On Mon, Oct 06, 2025 at 04:41:46PM +0200, Samuel Ortiz wrote:
+> Hi Dan, Dave,
+> 
+> On Fri, Sep 19, 2025 at 07:22:18AM -0700, Dan Williams wrote:
+> > From: Dave Jiang <dave.jiang@intel.com>
 > > 
-> > If guest_req() returns NULL - what is it - error (no response) or
-> > success ("request successfully accepted, no response needed")? The PSP
-> > returns fw_err (which I pass in my guest_request hook), does this
-> > interface suggest that my TSM dev should allocate a sizeof(fw_err)
-> > buffer at least, and if there is more - then
-> > sizeof(fw_err)+sizeof(response)? I thought TDX does return an error
-> > code too, surprised to see it missing here.
+> > Add KEYP ACPI table definition defined by [1].
+> > 
+> > Software uses this table to discover the base address of the Key
+> > Configuration Unit (KCU) register block associated with each IDE capable
+> > host bridge. TDX host only gets the max IDE streams supported from KCU,
+> > it doesn't access other parts since host won't directly touch the host
+> > side IDE configuration, TDX Module does.
 > 
-> As we talked about on the CCC call it sounds like at least TDX also
-> wants to pass an explicit FW response code separate from the response
-> buffer, so I will fix this up to not follow fwctl.
+> Can you share more about how the TDX Module knows about where the KCU
+> register block is? Is the host VMM supposed to explicitly "donate" that
+> MMIO region to the TSM before TDH_IDE_STREAM_KM?
 
-Now the API looks like:
+No, host VMM doesn't tell TSM about the KCU region. BIOS assigns the KCU
+regions, it tells host where is the KCU by generating KEYP, it tells
+TDX Module the same info by generating another info table.
 
- int pci_tsm_guest_req(struct pci_dev *pdev, enum pci_tsm_req_scope scope,
-                       void *req_in, size_t in_len, void *req_out,
-                       size_t out_len, u64 *tsm_code)
-
-I understand the out_len should be the maximum response size decided by
-guest, then I need an extra parameter actual_out_len.
-
-
-Another thing is, the req_in/out bufers are user buffers passed in from
-QEMU, but IOMMUFD does't have to copy them. We could offload the work to
-TSM driver. It is because only TSM driver knows/cares the actual valid
-data size in these pages, it could do copy_from/to_user() in most
-efficient way.
-
-----8<----
-
- int pci_tsm_guest_req(struct pci_dev *pdev, enum pci_tsm_req_scope scope,
--                     void *req_in, size_t in_len, void *req_out,
--                     size_t out_len, u64 *tsm_code)
-+                     void __user *req_in, size_t in_len, void __user *req_out,
-+                     size_t out_len, size_t *actual_out_len, u64 *tsm_code)
-
+Thanks,
+Yilun
 
 > 
-
-
+> I'm asking that question to potentially align the RISC-V TEE-IO spec [1]
+> with a similar KEYP based implementation, as I think it is simpler.
+> 
+> Cheers,
+> Samuel.
+> 
+> [1] https://github.com/riscv-non-isa/riscv-ap-tee-io/blob/main/src/07-theory_operations.adoc#root-of-trust-spdm-session
