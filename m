@@ -1,164 +1,154 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF1A6276051
-	for <linux-coco@lists.linux.dev>; Fri, 10 Oct 2025 22:04:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA2E2765E6
+	for <linux-coco@lists.linux.dev>; Fri, 10 Oct 2025 22:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760133862; cv=none; b=SH9vpYzBw+hVqbysfFyR13LM032PBtpEqqLwqFBjTlXUWeaQSCpVPbEDe+RNYyFQ30zTCauzV3IbQnPbkFBd5YQ9gduakvM9+4nd9X2PnESsPVjnd6rBu/pUJq7mJT46lAanbFrwuM8ndhg1N71S8B6PVdzKUPOHC5yJfEywr3k=
+	t=1760135688; cv=none; b=KPXHzv7oV4QWLaFSwjNYTR3MnC3+zWisLjJep98cAuI9AXAvgFBZ9v17NOd32unAoa9twKjecpfkKBMkfQzq3xkOF5DUR6LQ1M+H69zflcjonpGRzTRqUWME/TUhBmlOvi7fCrQ8pZ0IL9XTc7zCSpVaCurS5yuGoT9pDI7L1TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760133862; c=relaxed/simple;
-	bh=fiWFhBmnXVNpJMyu1KdW1wPURNpipX/se+mCAmgbMfM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GuBNRdiy7pbv3NzhYiofYSbgNXRItF/X4/9gpmOFtzRFX+qIVTJ6aAGERY25mK55jHGfWnSKWEztBNSdHHMXXoDI3UhZ09Fr2HRNoktKU04UfBEI6BZMvBFVVFG0G+CcCq1JTFk+eImEUSrJxI5xyEhDOW+AIMM5CZu62qWg0L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ir16J6Tv; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1760135688; c=relaxed/simple;
+	bh=Pk2+8/IwqNSzhAu614JVEvZm09rKZH8rHw8rZM0DYaY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HpNMi9PAzKYsyFGfQgtoUfavTxahfDQdkVBaOgMD1IHeG0zGMSTc76lYhudtB3XrSgvkM28PJPLDBZdxGyB+rzai627dabvsDWS14+deed4/CX6BQlOtMYhToe5CmsiXU+qT1TBGzodbhqu1pi0z06wlKZAfP5YWdMXSG6H7BK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=MroeFHwW; arc=none smtp.client-ip=209.85.219.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ir16J6Tv"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b5edecdf94eso8364063a12.2
-        for <linux-coco@lists.linux.dev>; Fri, 10 Oct 2025 15:04:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="MroeFHwW"
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-7f7835f4478so21378596d6.1
+        for <linux-coco@lists.linux.dev>; Fri, 10 Oct 2025 15:34:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760133860; x=1760738660; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=/zWlSX8DyUzRe9Li2JnpKDvY+0TGXw1UHSLvOrmpoc8=;
-        b=Ir16J6TvqNB3SF+W/ZhIL3m3XFnBdJKQvZMxpZOzdipSrkG52CfN64oqNWCtBA5+aM
-         yHhA9FJnw6J3wyUe1+bmon12UevrWhKGGeuCyQmSPzDwVUTGUJTVbjRHAPJya1AZ64nY
-         BSWMVVm5hu8qfH8MJgHaO71obOlDZYaZvXio/XVJw/lVWH/8lzOFpsLL9JDtNbXioU/2
-         bX8pHETTHdBYR10L0Is5t69PVygRNKLyEqWrstM3h95+tKhomdXb/HMPvihyRC1VOU4N
-         2q5HfDhU9xTm7SY2FzEcVfxiCEuQatoETMeoVOO+tLzxFRlkHwT7jwuhtyXtrEeQsWj5
-         ldzg==
+        d=ziepe.ca; s=google; t=1760135685; x=1760740485; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=e2mC6oaVhDB8uY07Xh45M+WrV8K3BihoQCe6CsvnzAk=;
+        b=MroeFHwWHKWFSzKjv9MfOQ2TOYSqNme52LLuOQoVFjuCIcLariskw63j6BjaJ16Q08
+         vpAYJC2rk+/LLWoXFxuRl58YBh5gltbzSnOi4NjRv1iq2dHbS29FuQZFi4bsMtwR1S3j
+         AfAuS0LzO7iFCrtSH8LACQ+4BAnHRsUVsbB3KBhz9pZwJ0QXJHZ7+f5/sahOzTocl2Nn
+         z4K9cAHUb1UT8uNmG6dwKKCnGwoyTcIFteFH6+AWxSsFh4tB9gxkGS4u9SaIAiVQBRRR
+         Pd+HTC6KNvjcrM+uDdB8TP9fAGKJw0lka5LSKMdIq/SN8pMGpM/LAWj8Bf+OTuOQYTt8
+         iMUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760133860; x=1760738660;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/zWlSX8DyUzRe9Li2JnpKDvY+0TGXw1UHSLvOrmpoc8=;
-        b=dluG9qR+l3eK0AY+pOvIhec0xhWbv4u2/UKPJ6JPtLpnGkbH0io+f4Rg19FOVD9I0X
-         J7BFYa9k8gskFTG2vUikDPTzIzg1qt/Zyf/Yv8yoDXF0HJ1Y3Y0dzmSvqCMrisOLqI/x
-         qOGhOg+UA8Z3hBqMFmFyMzggzSnZHY0+T9mwkDA7pmlKWiAjIi7HX9rcHwXaHk7xtFv6
-         zDql3g+0YhV36jqJx5JG6yRsQTj3wzfwxHk05k7viLJykonBg5KeS3a0JczByZEIwCnm
-         Wwro6KJAYbmHtusWojfdiDUkOxCOZJ1LQefg+Tsor+taarDD/AmdURoXdF/ozzR4frs4
-         s+lQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVNL4FE0HXzRtMlKHDccl5N2+peO7DySXFUdLVGjjshObZ3gnB+ldsl2jMlLFd6tatSx5yejVbfNLQ4@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz8BOGArAzAnpCxeqPfIU5WZpmZF5i+Vq6iRYkqQZn6epdz+ErA
-	N0ROnp1D9IBILSos4EzMRaVAjcsiS3TC6f1vpfIKb1sIlme1oCG3pZgRwEfLOOqtRPqTiF8A6jV
-	rifLkvw==
-X-Google-Smtp-Source: AGHT+IEHOxGS/S94kHuqCPOuRdy7tjdj1GXwqOLUftwCbLIcV6PzVsh1I3YOlDMqz5KOmjUZSEt2hxkw5TE=
-X-Received: from pjto23.prod.google.com ([2002:a17:90a:c717:b0:33b:51fe:1a8b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1806:b0:32d:db5b:7636
- with SMTP id 98e67ed59e1d1-33b513cdaf5mr18862070a91.27.1760133860154; Fri, 10
- Oct 2025 15:04:20 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 10 Oct 2025 15:04:02 -0700
-In-Reply-To: <20251010220403.987927-1-seanjc@google.com>
+        d=1e100.net; s=20230601; t=1760135685; x=1760740485;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=e2mC6oaVhDB8uY07Xh45M+WrV8K3BihoQCe6CsvnzAk=;
+        b=FpqD5BSr2tRikJowYVmV3/4f23STU2Bk0fWh6LKIExle0t8DKmfJeHhHwpQdMURi6m
+         MjvacRsoH51mfO0d6hIhH+Kvp/J7DjZC2fo//R9Vl43dcU58kPQbgJYlXsmKJObIP54b
+         OSR7lWkMnxP1thOinIWNiCrXioWgAUEAR/QyGLnntOfXcKl/yHsV5zmm8RWhVuKGMhTs
+         0tbHuh8x6+nvzx100X1I7nCEBMZtntHEIN9scCLhLOPNhindw9xeohtMgC8GuLn6mv3S
+         9myHqM0V7p9ckFfc3KIgJzKRYxIdm1QaAExyCVjvPxZ/9VeyiOZZY5qXdKsC1K6i1Wn9
+         P7DQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXZqhIwofuzHUeDrhYZn/8ygy09TcJgT3BTal/2hEDZU0Lz5kFRevZogRFU1z9+tCKd9oZY85X+gT6R@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz7NEfLPhWSPL/Y4mMfC4mCI3yJdv97Ke9/46mfl2LnXAWGsQAk
+	cg9iruisso26SfmtCsLC4XE0KNZjZ5NsY/o+rvApQ5pLQbdydB3GVE6CqOuis9rr2MY=
+X-Gm-Gg: ASbGnctreWFClvwvz8TfvhmVhBbAESbr89LG8FkjRTWz1JW24gWNFYN3sEWz6//oXMG
+	DYbGRwhnt8W1sI3vKVVkjrQSJLVWq743tnKPqbQHjt0T/UdxTEssH0xoTrAD5nufhSUBv1WfkS8
+	YXBG0oR3H9ZytVpR/RB8SDXGe53/lWiGZC0s4qJViCrRss0nSRH6AvoMH2qaRaAkF2lz1BSHFcT
+	zQB+Qd78hFFOrUzomWeMqjzI7lcwlW2KMaVGzkFhdjz30Mp9f4ggtm5CPGImTWnOt8I82pnGy7z
+	vIjdBhVRtmORM4OVIIXUWGn8jOCB1NZU2zHI1qkzjlAB97OzvMrHuTRT0+v1d9wQsW42ikeseF6
+	8G0Rs9Rl4p+qSojuQj4E1Pm/GjBGpGgh3FNiaYwsRX3io/jPHVcT1+thupyoXtop0QJLtk5eiE9
+	zaiNEZEjGMEC0=
+X-Google-Smtp-Source: AGHT+IECAcR/KGy/e7wbySPEFRjHLCdMYKTul/IVB6jvzNGBmryovZWE46iccPi7Pk1ulqBzRKwDww==
+X-Received: by 2002:a05:622a:5984:b0:4cb:57b4:4d6c with SMTP id d75a77b69052e-4e6eaccc73cmr181726641cf.12.1760135685384;
+        Fri, 10 Oct 2025 15:34:45 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e706de73ccsm26004611cf.45.2025.10.10.15.34.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Oct 2025 15:34:44 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1v7LhE-0000000Ghev-0UWp;
+	Fri, 10 Oct 2025 19:34:44 -0300
+Date: Fri, 10 Oct 2025 19:34:44 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: dan.j.williams@intel.com
+Cc: Jeremy Linton <jeremy.linton@arm.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	aik@amd.com, lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: Re: [RFC PATCH v1 11/38] KVM: arm64: CCA: register host tsm platform
+ device
+Message-ID: <20251010223444.GA3938986@ziepe.ca>
+References: <yq5aqzxy9ij1.fsf@kernel.org>
+ <20250730113827.000032b8@huawei.com>
+ <20250730132333.00006fbf@huawei.com>
+ <2025073035-bulginess-rematch-b92e@gregkh>
+ <b3ec55da-822a-4098-b030-4d76825f358e@arm.com>
+ <20251010135922.GC3833649@ziepe.ca>
+ <4a7d84b2-2ec4-4773-a2d5-7b63d5c683cf@arm.com>
+ <20251010153046.GF3833649@ziepe.ca>
+ <f6cf20f6-0f19-4814-b917-4f92dad39648@arm.com>
+ <68e953f484464_1992810065@dwillia2-mobl4.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20251010220403.987927-1-seanjc@google.com>
-X-Mailer: git-send-email 2.51.0.740.g6adb054d12-goog
-Message-ID: <20251010220403.987927-5-seanjc@google.com>
-Subject: [RFC PATCH 4/4] KVM: Bury kvm_{en,dis}able_virtualization() in
- kvm_main.c once more
-From: Sean Christopherson <seanjc@google.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"Kirill A. Shutemov" <kas@kernel.org>, Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, Chao Gao <chao.gao@intel.com>, 
-	Dan Williams <dan.j.williams@intel.com>, Xin Li <xin@zytor.com>, 
-	Kai Huang <kai.huang@intel.com>, Adrian Hunter <adrian.hunter@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <68e953f484464_1992810065@dwillia2-mobl4.notmuch>
 
-Now that TDX handles doing VMXON without KVM's involvement, bury the
-top-level APIs to enable and disable virtualization back in kvm_main.c.
+On Fri, Oct 10, 2025 at 11:44:04AM -0700, dan.j.williams@intel.com wrote:
+> Jeremy Linton wrote:
+> > On 10/10/25 10:30 AM, Jason Gunthorpe wrote:
+> > > On Fri, Oct 10, 2025 at 10:28:36AM -0500, Jeremy Linton wrote:
+> > > 
+> > >>> So you could use auxiliary_device, you'd consider SMC itself to be the
+> > >>> shared HW block and all the auxiliary drivers are per-subsystem
+> > >>> aspects of that shared SMC interface. It is not a terrible fit for
+> > >>> what it was intended for at least.
+> > >>
+> > >> Turns out that changing any of this, will at the moment break systemd's
+> > >> confidential vm detection, because they wanted the earliest indicator the
+> > >> guest was capable and that turned out to be this platform device.
+> > > 
+> > > Having systemd detect a software created platform device sounds
+> > > compltely crazy, don't do that. Make a proper sysfs uapi for such a
+> > > general idea please.
+> > 
+> > Yes, I agree, its just at the time the statment was around what is the 
+> > most reliable early indicator, and since there isn't a hwcap or anything 
+> > that ended up being the choice, as disgusting as it is.
+> > 
+> > Presumably once all this works out the sysfs/api surface will be more 
+> > 'defined'
+> 
+> It has definition today.
+> 
+> All guest-side TSM drivers currently call tsm_report_register(), that
+> establishes /sys/kernel/config/tsm/report which is the common cross-arch
+> transport for retrieving CVM launch attestation reports.
 
-No functional change intended.
+I suspect this ins't a TSM question but an existing question if any of
+the underlying CC frameworks are enabled. 
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- include/linux/kvm_host.h |  8 --------
- virt/kvm/kvm_main.c      | 17 +++++++++++++----
- 2 files changed, 13 insertions(+), 12 deletions(-)
+It is this stuff:
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index c4f18e6b1604..8eb1b0908e1e 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2595,12 +2595,4 @@ long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
- 				    struct kvm_pre_fault_memory *range);
- #endif
- 
--#ifdef CONFIG_KVM_GENERIC_HARDWARE_ENABLING
--int kvm_enable_virtualization(void);
--void kvm_disable_virtualization(void);
--#else
--static inline int kvm_enable_virtualization(void) { return 0; }
--static inline void kvm_disable_virtualization(void) { }
--#endif
--
- #endif
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 4b61889289f0..6bec30b6b6c1 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -1111,6 +1111,9 @@ static inline struct kvm_io_bus *kvm_get_bus_for_destruction(struct kvm *kvm,
- 					 !refcount_read(&kvm->users_count));
- }
- 
-+static int kvm_enable_virtualization(void);
-+static void kvm_disable_virtualization(void);
-+
- static struct kvm *kvm_create_vm(unsigned long type, const char *fdname)
- {
- 	struct kvm *kvm = kvm_arch_alloc_vm();
-@@ -5678,7 +5681,7 @@ static struct syscore_ops kvm_syscore_ops = {
- 	.shutdown = kvm_shutdown,
- };
- 
--int kvm_enable_virtualization(void)
-+static int kvm_enable_virtualization(void)
- {
- 	int r;
- 
-@@ -5723,9 +5726,8 @@ int kvm_enable_virtualization(void)
- 	--kvm_usage_count;
- 	return r;
- }
--EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_enable_virtualization);
- 
--void kvm_disable_virtualization(void)
-+static void kvm_disable_virtualization(void)
- {
- 	guard(mutex)(&kvm_usage_lock);
- 
-@@ -5736,7 +5738,6 @@ void kvm_disable_virtualization(void)
- 	cpuhp_remove_state(CPUHP_AP_KVM_ONLINE);
- 	kvm_arch_disable_virtualization();
- }
--EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_disable_virtualization);
- 
- static int kvm_init_virtualization(void)
- {
-@@ -5752,6 +5753,14 @@ static void kvm_uninit_virtualization(void)
- 		kvm_disable_virtualization();
- }
- #else /* CONFIG_KVM_GENERIC_HARDWARE_ENABLING */
-+static int kvm_enable_virtualization(void)
-+{
-+	return 0;
-+}
-+static void kvm_disable_virtualization(void)
-+{
-+
-+}
- static int kvm_init_virtualization(void)
- {
- 	return 0;
--- 
-2.51.0.740.g6adb054d12-goog
+https://github.com/systemd/systemd/blob/main/src/basic/confidential-virt.c
+https://github.com/systemd/systemd/commit/2572bf6a39b6c548acef07fd25f461c5a88560af
 
+  Like the s390 detection logic, the sysfs path being checked is not labeled
+  as ABI, and may change in the future. It was chosen because its
+  directly tied to the kernel's detection of the realm service interface
+  rather to the Trusted Security Module (TSM) which is what is being
+  triggered by the device entry.
+
+Maybe a /sys/firmware/smc/rsi file might be appropriate?
+
+Given how small a deployed fooprint ARM CCA has right now (ie none) it
+would be good to fix this ASAP so it doesn't become entrenched.
+
+Jason
