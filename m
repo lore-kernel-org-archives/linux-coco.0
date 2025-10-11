@@ -1,517 +1,235 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC0728E5
-	for <linux-coco@lists.linux.dev>; Sat, 11 Oct 2025 00:04:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760141056; cv=none; b=AzK/62EbPvQnwb+yXyoKaXx8u3F3ArGtcllBkn3vtsZC+iFWnib/5cf4LgqccFqKfmQYewJ0asc/8slMcKWpkVzSthA6Mi4Z4PzRH/OJ/V1P/tAMNfTWuDSWQeojjOZZ09UDL1wV6k4GXsXoHlfTUI8intah92h8RtQpL1QKFEA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760141056; c=relaxed/simple;
-	bh=EMCeJzh4QxUgEsQtdgMSE2Y4sHlaNB7EpMQkGRglw0Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aBfw0MSSyJHYr+YBhSiAwDw21GHLEG+Q3hUkhstFK2DKaBRd+5H2gyNBhCsp9l1ALmYc25dd69f+qBI6vl/H3+aT3/j8Sou4cYWb3hjQY72yQ49tvMFgzGENVNjLPcOzJZ3Uv92IBwt+pc8cDqN7cgnMP1EAyVs24V5MzDA732c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C86FC1595;
-	Fri, 10 Oct 2025 17:04:05 -0700 (PDT)
-Received: from minigeek.lan (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EAAE23F59E;
-	Fri, 10 Oct 2025 17:04:11 -0700 (PDT)
-Date: Sat, 11 Oct 2025 01:03:48 +0100
-From: Andre Przywara <andre.przywara@arm.com>
-To: Vedashree Vidwans <vvidwans@nvidia.com>
-Cc: <salman.nabi@arm.com>, <lpieralisi@kernel.org>, <mark.rutland@arm.com>,
- <sudeep.holla@arm.com>, <ardb@kernel.org>, <chao.gao@intel.com>,
- <linux-arm-kernel@lists.infradead.org>, <linux-coco@lists.linux.dev>,
- <linux-kernel@vger.kernel.org>, <sdonthineni@nvidia.com>,
- <vsethi@nvidia.com>, <vwadekar@nvidia.com>
-Subject: Re: [RFC PATCH 2/3] firmware: smccc: LFA: refactor, add device node
- support
-Message-ID: <20251011010348.67ca808c@minigeek.lan>
-In-Reply-To: <20251008190907.181412-3-vvidwans@nvidia.com>
-References: <20251008190907.181412-1-vvidwans@nvidia.com>
- <20251008190907.181412-3-vvidwans@nvidia.com>
-Organization: Arm Ltd.
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.31; x86_64-slackware-linux-gnu)
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011018.outbound.protection.outlook.com [52.101.62.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8818C2BAF9
+	for <linux-coco@lists.linux.dev>; Sat, 11 Oct 2025 18:04:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760205889; cv=fail; b=iTxfFVgDaaGY1WSj1TvLEiO2XfTIAFMRcM4VVd7AMNE4PMN0VZYftZjarteXU2f+9taam8NNdGe0jgAwy/hxe0LJf8D6Dsd0i8YRiCADgzVi24Vfc3xRyy9KJrqxa5ojlunWmS3thokNu/wRutBiOOMLgHrNsZ0YMqpbfdgfrrk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760205889; c=relaxed/simple;
+	bh=I0qoBnCC68GvLd2unx9uJoRrgoJEdiZp62ZVHoX/rAY=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=XZ0pFyF2UzKEsdrit4eAOhrJeGWg1GtnWyELtlGegCQr5B3IhVj02voljxm8g4x8cL10/6PqQCAkrrU184qXJ+RcehKRmHUSbYU2d0oAQrL/7mr1oWs3jFRUVtRo4yvYRgqpNrsYt8b2Z1eTCh4dPZGROQrBiQb6U8Zwbzovm3s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=AlLyFKur; arc=fail smtp.client-ip=52.101.62.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="AlLyFKur"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=T4y+1o3TBeL1+WkXjeRSWnZYbmjo51xoWAIrdWguZ9n01vKGSGzZ7EeS++73HwtV4trhwjsTn/FUIv+sDQnOdHDC1xpV9EGxmrM9/HViDNFMPWH3quJHG+Q8Gqpe+IJs2SdhP7/ilGzwMtOObyhNhMsPpATCf7RNnzY31NyKECwryAgGwDwlSFnmqXqZncYYC3fKwkP20tMKSX8X/f48790ew6j5SLbmeKY6MGWFfCha5flkr0InvrwekrkeRwmsAdliCwPaIyt0L2DNYSIfuM8KpMlWtMOUzXjb02Mi7tAl/e2j+Cz1PPUBgYnq28I0ENNxnUbBLbvgu5+9hBhiaw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=z9ujf9zl02XPCLvrdJMvpgXS3dPvRBPt6sU46BWRWp0=;
+ b=goAOrFkImp6+VlidCvo8GVZok/L/+2ETHsJpC3qu36B7lVoaUDOuAwLg3HhJNwpZZemA0hZSo9ROyXWAhIqIqLlDhhkWFKaQ8GwEwLHPy5Q6BKPexle0h2qfSxC3ij/SWquvWaENDfqTTwxNFc1S3lXnNmmHu10Z3AJJXEkEaAJqnKS4+oxWr1mJgazZC4YnLQ+SGN1N9T3OhIzw0XBoBxgX3FujE9qwKBFUiBSUBgNGhgnA2EuNO4ZOHzClhTwb9ktcwa0QoxvYsOK5AsbnsalZeFm0IW5XZn2EeEaEsXUEd56SqLYvQXcB2uSwF0EIN3Hf91A0tWV981xbVRF+NQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=z9ujf9zl02XPCLvrdJMvpgXS3dPvRBPt6sU46BWRWp0=;
+ b=AlLyFKurk82TV2MolgDh3TSvUWKNU0jk9QOYiAvwQrpuYrqTbJF1PWvhA6mDaRYJiuts3pdOMMbqhVKhRGSmbZkcnQYDLP95d9yoVldxg63hDhX3GjibOUZmOB455SMuLqcc6ARm3kt94dDM2j5CDz5FlsQn6uknuegnQlzFYGs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from IA0PR12MB8301.namprd12.prod.outlook.com (2603:10b6:208:40b::13)
+ by CY5PR12MB6551.namprd12.prod.outlook.com (2603:10b6:930:41::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.11; Sat, 11 Oct
+ 2025 18:04:44 +0000
+Received: from IA0PR12MB8301.namprd12.prod.outlook.com
+ ([fe80::e929:57f5:f4db:5823]) by IA0PR12MB8301.namprd12.prod.outlook.com
+ ([fe80::e929:57f5:f4db:5823%4]) with mapi id 15.20.9203.009; Sat, 11 Oct 2025
+ 18:04:44 +0000
+Message-ID: <57e1b0de-00d4-4137-a56b-5135ece6736e@amd.com>
+Date: Sat, 11 Oct 2025 23:34:36 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2 kvm-next] KVM: guest_memfd: use kvm_gmem_get_index() in
+ more places and smaller cleanups
+To: Sean Christopherson <seanjc@google.com>
+Cc: pbonzini@redhat.com, david@redhat.com, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
+References: <20250902080307.153171-2-shivankg@amd.com>
+ <aOlCBEw1DpdLlWA1@google.com>
+Content-Language: en-US
+From: "Garg, Shivank" <shivankg@amd.com>
+In-Reply-To: <aOlCBEw1DpdLlWA1@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BM1PR01CA0155.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:b00:68::25) To IA0PR12MB8301.namprd12.prod.outlook.com
+ (2603:10b6:208:40b::13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8301:EE_|CY5PR12MB6551:EE_
+X-MS-Office365-Filtering-Correlation-Id: a2099eb4-e157-4887-094d-08de08f0a7ec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?OS9LV0d1cWsxcnJsb3pHNFNQK3ltaWxWQ283RmJzQUc1a3ZvRjJDWlE0RmlY?=
+ =?utf-8?B?aG9zanVPL010K1V3Y2RWaEtUL0k3Qk5iV1ZuM0R1M2RxWUMrdnZZcURQYVNY?=
+ =?utf-8?B?ZDBlWXc3RWNzWm5KTVZRVXNDVnE1bjYrbHdxeUZteFdiQ25ZQWhkaUV0elVz?=
+ =?utf-8?B?OFZhQzJTRklHV3FQVFhyR0k2UFNoOGgrT0Y4MW0zU09qWXhoV1l2QzRnclZv?=
+ =?utf-8?B?VW5kamV4MHl4L1Q0RlZVM21PZkdqQUl5ZXlZaGdieVJWWjdvYVBHaFNuemlS?=
+ =?utf-8?B?Ry8xS1RCdjBCMTJScGVqTzFGTFBoOWkzY2tjazI0SUkra09QTVJWN0VtcWNR?=
+ =?utf-8?B?Y2RYOGlDb1lJc3BHZFlEajRndDJXTnRoc0laNU1xb3dFVE9MaGdzMVphdHpm?=
+ =?utf-8?B?SG1PM3BVOTlVTVhzMWkrNCtzR3lhaEptK1FFTnVjdWFKOHRoejErQXVEVTR6?=
+ =?utf-8?B?Z1hWcWk0RG5GY05JSThqT3R6N29nTmpML213UXpGbnpzbklieDV6NUpUNnI1?=
+ =?utf-8?B?WDROVWNlVmIzVUZHcy95aUQ1WUdacjlkeS9hNUhNRjJnRzI4bU9BQjVKTXg0?=
+ =?utf-8?B?eFJsZXRyWHYzVC9ZS3hGVnJSNW1ndzZPYzJoOVltMEg1TnJEWlVMYnJjRDgx?=
+ =?utf-8?B?RHBuYnZNSHQrWVJ5K01rR08zY25SYVcySFpnWGZzV1JkOXBqMHMwM25oQTlx?=
+ =?utf-8?B?TzhsWmxSNGhGQnhpWUFuellzQ20zekwyZi8yWHhnRHdLRnlqeWN3SE4yWmo2?=
+ =?utf-8?B?MWJ6WTlmclZScTJoT1lxbEhsczBuVzY4UzVQcmliNVBGaktHUGVHK1Z4VlJ5?=
+ =?utf-8?B?SEZtUUFMZGRvSnFka0tiWUEvRmZDcDhHajRRMnZTTE1NVm1YNkRJS2t1YXBD?=
+ =?utf-8?B?Z2VXZUJuSmc2V01xNEV5bjYvQ1daODFwNHI3dldHbVpSblJVL05rYWV2Y0tp?=
+ =?utf-8?B?dng5TTQ3blptclNxd3NhamJQQm9remgwMEE3MkoxM0VrSVNlSExGVVBKamV2?=
+ =?utf-8?B?ZGpZTHpSSnlvMk45TWNkbzY3YW1tREZSNHVKeTJEc1lyVFlNdUUyNVd1L1cy?=
+ =?utf-8?B?SkdEbmVacGc1WjQzbmwxRDlzWk9XSklBWkUzNm5MTFlCejJqWFdyMUNDK0R6?=
+ =?utf-8?B?VDhSRzJuVHBLcldyT3Y0cE1MZXF0WlFJK3dJTnRrTkdiN1FwcEo4ZHIydlR2?=
+ =?utf-8?B?NllLUWtYL0xsVUFLSVZaVXBvZWJGOHVWQU0xSDBQZjFzUzdzOUEwWnVRdkx4?=
+ =?utf-8?B?cjQ5bHh6a05QVTkvaEoyMSt2NjhwNmtoczdMbUt5dWxXMGJzVHl0dUNsWUJs?=
+ =?utf-8?B?d0xTWnZ6bkdtVkFRdHdJQ2FCNFlXR2wvdW5pdFJQK0srVk5OYTk1dXRISUNz?=
+ =?utf-8?B?N1JzY2xxVnRBbEUvcHh5cWxLRHdRT2pxRld4cWQxMWtFZmlDOGVBNmtNR3pB?=
+ =?utf-8?B?bE1yMmNsak9OQ2xtdkV5T2NpNFBMOTB0QkhIeEo0a1FheGVMUUdOYnZXd0wx?=
+ =?utf-8?B?V2pydFJWbGhoQ1p4amw1c2RvS2RGQmxyYmJiTzNnQS9UTzI3cTdIaFFzcDlZ?=
+ =?utf-8?B?em1uNXFwWUVVdEU0aVkzYlpGdWJyYnM3emRCOTg3c0xXWVIwTUR0R3Bra1hy?=
+ =?utf-8?B?b092MzhoOFJlY3ZvWTlnODhreVZqZ1JIWjFZMmJhM3d6cSsxZnlFNWF0L1FH?=
+ =?utf-8?B?QjFJWHZNZ01VblpKQlR2K2ROMmtGYXJrOWMxcStRK2w3am0xWEkwQWxYY21W?=
+ =?utf-8?B?NWlhRkJoVnhkTzM5bjJ4TDJ6ZlE2L1ExVEFQSitQOFdIQjVzNnJkM09zTzRB?=
+ =?utf-8?B?SGZIMzB6NmtYb1RzQVdIcE1XcXpLdG9VTWdPYXZHQlJ5MzN3cjRZVzNhbThF?=
+ =?utf-8?B?NmhNTythczRaYlRadTF4cHRLVGNyWExwYjlyeDZZQ3VPRnlIMzhWZXh5b1p6?=
+ =?utf-8?Q?avoB2OZd+650T9BBmP1JwgN09VGNXuYG?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8301.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Z0pSVlRDbzRlUlJqcGtKZjJGNkdBSlhoakdiMGZYWmVSeWdzUnJJZnVDZWV3?=
+ =?utf-8?B?ZzFUeHYrUmhIZ1A3RENDU3FBZ2pVc05NblFWQVplYjZsVU5tdVNiV1BLQVdi?=
+ =?utf-8?B?S1o1emcrZElHZ3RlMnNpeTUveUZ6ZklrY2pyaHRoM1E0QnkySC9Eb2UwV2tD?=
+ =?utf-8?B?ZmVhWVFVRFljZXA1UnE1aUJKMVk1Y0poay9vMER5VHRtaUx5dUNIaDNuUWp4?=
+ =?utf-8?B?RFhialdDRXhiZGU4L1hQUG96YTZNczdEY0dWS0paQmdxckM1QTdHeXBOZEdj?=
+ =?utf-8?B?NEloN2U2Z1JVWXlvUHhtZ25IMElxWTB3SXJQRGtOS2JVS0RHNUxJUUZEYXU4?=
+ =?utf-8?B?VE03cUZYbEZFcnMxaGVwYUhSWFRNOUplK1gyR3hiVDhta25ZWUJHT0lTOG8x?=
+ =?utf-8?B?T2pFcndPZUFuREZ1ZHBwTjErV1B2QVpHRWJwTjc2ZUphNkJHbWh4TFlRaXRn?=
+ =?utf-8?B?OGZrczRUNjFsTUd3dG9NSC9jaWhHOTU5bklhUktTNFYxbDgwcHJCZ1ZuaWV1?=
+ =?utf-8?B?TTVxUWszNmhtWXBYVHZ6NFBVYWZOaXh5d0RtUmdkUHR4Q2l3YzBTRUpjbnIz?=
+ =?utf-8?B?dTgzblpuQnFOb3JwWFBJOVA5a3Z5c1hpa3NyNjJ3VXgvUCtja3c4VTdtZHVj?=
+ =?utf-8?B?aHBOQ1I2c0NlRmhSbHM5aDZRdUFzcXUyVndpYjcyM2RmQjNHT2taemtMb0Qv?=
+ =?utf-8?B?V2oxMTk0dDl6NTFxa0h2ZU9lSW01UmVqSlhwa2VndW5JbG5CVnFCN0Q4YW9F?=
+ =?utf-8?B?cTBFQnU3bkFVRGpYa2x3TG9RTUNNWWp3L2N6SlFpdG5vRnBZUkFFdU9yZG9I?=
+ =?utf-8?B?c0xCb24ycFVYVHAwSVM1bDYwMmtrR1B2TFRwcENtWlFiZnFqcVROWmdIdkhB?=
+ =?utf-8?B?ZmpNRVFuTDdLVmJmeUxqdEV6azFKelhnMytFS09SNXUwWnFCRHhBeXNDYUc3?=
+ =?utf-8?B?MDJJa3k4ZTlueTJKY0VQemFmd3pyamIzcG9qTDBkOEdWMjZWWTlONGd6cGdz?=
+ =?utf-8?B?NkxuV2hlR1g1b3VFU095cS82S3V1VjV0VHBuREJUYXlBbDdseGZVcE5uc2ZM?=
+ =?utf-8?B?aHFYTzBRaVgycEc3Z0JVcnZpcVAyV2hJMVp1c3FYSFUxdkxneXdYbEpjMkVl?=
+ =?utf-8?B?R3k5b29lb09uYkxDSHlBdG01L3ZDQ3hnYndIcWlBZ2ZWaE9VOWtuMko0S3dJ?=
+ =?utf-8?B?QXFsNzZPVkNsMzdhZGRmMHV4UjZFNHdZYUZwNVNtbjdtWExiUjJMdERNZ1VL?=
+ =?utf-8?B?RXFCdC9XVjY3RitQSkRmRVZia2pjRnNMOFhmWmxPRGxkdDFvamFPSm1tS1Na?=
+ =?utf-8?B?Q0hRWmVSZkRVdXdvUDhuL0JuTG9PMGViZE4zMm1OZEpWUXE0cHVkMEVtc0RC?=
+ =?utf-8?B?bHdjSXl6cXFVQ2M3bTdQa1htenVHY0Ivd1Q5R1IreERGN0g1K2hqZzN6Y3Zz?=
+ =?utf-8?B?ZWJSSHUwcDRaRFpEWlQ3VytPd1VSY3lHTkVoUWFSUDU2VzRnWTc3TmllTjJG?=
+ =?utf-8?B?eW9qMW4zdVU2ZWswbUZHQ2NFVkwvYXd0N29NS3Riak5rY1l4Rnd3Z3JETmxm?=
+ =?utf-8?B?eW1XNVlYYWlIYnZVanBWNlBQa3JPTTYxNm1pbkJlSW5PYUpXK0d5TUQvelZI?=
+ =?utf-8?B?bk4xU3B4OE55d2czZW1NSW1wU3VqM25XQUprMk83UFpVemlYekl5MzNzTXZq?=
+ =?utf-8?B?Vy82a3ZDZ3pGYTg3SW9udDlNUGZuYXpOdU90WURjL3JXZzVwK0FvUUMvZFZn?=
+ =?utf-8?B?eUlpYWhYK2x4R2VuamN2ZThQT0IvRG5KdHpwRWxYUGVuVVlGelRaL3h2R25F?=
+ =?utf-8?B?NVJ2bVdHVlBtY2RpSkN3VXNVc1RBUElKV1p0OFVqOXZTWkg2cUY2VG91alJq?=
+ =?utf-8?B?Q21JMmpWRnZiVDBWL0duK2ZPaXNZK1FOUUJFSlU4Q0xPWThOSzVKamlTRjli?=
+ =?utf-8?B?b3dQS0Rmc2tBbGQ0MUpiNFE2MDd4Mkk3U1hLaXEydGpYQ2VsVTVZWVFTMm5z?=
+ =?utf-8?B?dFRRVkJUWHBXbytjdjdwNWlnNXRZWit5NGczQVorekF6eW1FUENpZ0czTUlw?=
+ =?utf-8?B?ODNXTDI2OFdOQitJd0tJZmlJb2c1b0EyNlJxUTFmMW92ajJwL1MyM0NQZUph?=
+ =?utf-8?Q?UxvpeTv/3zWLiZjkyH6pfKCeF?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a2099eb4-e157-4887-094d-08de08f0a7ec
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8301.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2025 18:04:44.3344
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zwgYgdO1peDaDt5Y7FR3CF8eTQObeZEm1bkmKQhYjaK/e5F6p4n8rpX8KcGVM5I3MxYvh+rxsQfQDnF+6IhBsQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6551
 
-On Wed, 8 Oct 2025 19:09:06 +0000
-Vedashree Vidwans <vvidwans@nvidia.com> wrote:
 
-Hi Vedashree,
 
-thanks for sharing this code, that's much appreciated! I wonder whether
-it's possible to split this patch up, as it's doing multiple things at
-once, and it's harder to follow, review and comment on.
-The bullet points below basically give away how to split this: first do
-the refactors and fixes, then add each feature, in a separate patch.
-
-Just one general comment for now ...
-
-> - Add support for LFA device node in the kernel driver. Implement
-
-That "device node" put me off a bit, do you mean you register a platform
-device, to connect this to that ACPI node?
-I wonder if we can use this new faux device instead of a platform
-device, since it's not a real device? Or maybe even query the ACPI or
-DT nodes without a device at all, like using of_find_compatible_node()
-or something?
-
-Cheers,
-Andre
-
-> probe() to register LFA interrupt and threaded interrupt service
-> function.
-> - CPUs will be rendezvoused during activation.
-> - On IRQ, driver will query FW components then triggers activation of
-> capable and pending components.
-> - Mutex synchronization is implemented to avoid concurrent LFA updates
-> through interrupt and sysfs interfaces.
-> - Refactor LFA CANCEL logic into independent lfa_cancel() function.
-> - Enhance PRIME/ACTIVATION functions to touch watchdog and implement
-> timeouts.
->
-> Signed-off-by: Vedashree Vidwans <vvidwans@nvidia.com>
-> ---
->  drivers/firmware/smccc/lfa_fw.c | 299 ++++++++++++++++++++++++++++----
->  1 file changed, 262 insertions(+), 37 deletions(-)
+On 10/10/2025 10:57 PM, Sean Christopherson wrote:
+> TL;DR: Please split this into three patches, call out the use of
+> kvm_gmem_get_index() in kvm_gmem_prepare_folio, and unless someone feels strongly
+> about the ULONG_MAX change, just drop it.
 > 
-> diff --git a/drivers/firmware/smccc/lfa_fw.c b/drivers/firmware/smccc/lfa_fw.c
-> index 49f7feb6a211b..b36b8d7457c30 100644
-> --- a/drivers/firmware/smccc/lfa_fw.c
-> +++ b/drivers/firmware/smccc/lfa_fw.c
-> @@ -16,7 +16,15 @@
->  #include <linux/uuid.h>
->  #include <linux/array_size.h>
->  #include <linux/list.h>
-> -
-> +#include <linux/interrupt.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/acpi.h>
-> +#include <linux/nmi.h>
-> +#include <linux/ktime.h>
-> +#include <linux/delay.h>
-> +#include <linux/mutex.h>
-> +
-> +#define DRIVER_NAME	"ARM_LFA"
->  #define LFA_ERROR_STRING(name) \
->  	[name] = #name
->  #undef pr_fmt
-> @@ -34,6 +42,18 @@
->  #define LFA_1_0_FN_ACTIVATE		LFA_1_0_FN(5)
->  #define LFA_1_0_FN_CANCEL		LFA_1_0_FN(6)
->  
-> +/* CALL_AGAIN flags (returned in res.a1[0]) */
-> +#define LFA_PRIME_CALL_AGAIN		BIT(0)
-> +#define LFA_ACTIVATE_CALL_AGAIN		BIT(0)
-> +
-> +/* Prime loop limits, TODO: tune after testing */
-> +#define LFA_PRIME_BUDGET_US		30000000 /* 30s cap */
-> +#define LFA_PRIME_POLL_DELAY_US		10       /* 10us between polls */
-> +
-> +/* Activation loop limits, TODO: tune after testing */
-> +#define LFA_ACTIVATE_BUDGET_US		20000000 /* 20s cap */
-> +#define LFA_ACTIVATE_POLL_DELAY_US	10       /* 10us between polls */
-> +
->  /* LFA return values */
->  #define LFA_SUCCESS			0
->  #define LFA_NOT_SUPPORTED		1
-> @@ -114,8 +134,9 @@ static const struct fw_image_uuid {
->  };
->  
->  static struct kobject *lfa_dir;
-> +static DEFINE_MUTEX(lfa_lock);
->  
-> -static int get_nr_lfa_components(void)
-> +static unsigned long get_nr_lfa_components(void)
+> On Tue, Sep 02, 2025, Shivank Garg wrote:
+>> Move kvm_gmem_get_index() to the top of the file and make it available for
+>> use in more places.
+> 
+> Not just "in more places", specifically for kvm_gmem_prepare_folio().  And this
+> also has kvm_gmem_prepare_folio() _use_ the helper.  That detail matters, because
+> without having actual user, such code movement would be completely arbitrary and
+> likely pointless churn.  E.g. AFAICT, it's not needed for the NUMA support or
+> even for the WIP-but-functional in-place conversion patches I have.
+> 
+>> Remove redundant initialization of the gmem variable because it's already
+>> initialized.
+>>
+>> Replace magic number -1UL with ULONG_MAX.
+> 
+> This is quite clearly three distinct patches.  Yes, they're trivial, but that's
+> exactly why they should be split up: it takes so, so little brain power to review
+> super trivial patches.  Bundling such patches together almost always increases
+> the total review cost relative to if they are split up.  I.e. if split, the cost
+> is A + B + C, but bundled together, the cost is A + B + C + X, where 'X' is the
+> extra effort it takes to figure out what changes go with what part of the changelog.
+> And sometimes (and for me, it's the case here), X > A + B + C, which makes for
+> grumpy reviewers.
+> 
+> Case in point, it took me way too long to spot the new use of kvm_gmem_get_index()
+> in kvm_gmem_prepare_folio(), due to the noise from the other changes getting in
+> the way.
+> 
+> More importantly, bundling things together like this makes it an all-or-nothing
+> proposition.  That matters, because I don't want to take the ULONG_MAX change.
+> The -1 pattern is meaningful (at least, IMO), as KVM is very specifically
+> invalidating 0 => 0xffffffff_ffffffff.  I don't love hiding those details behind
+> ULONG_MAX.  I realize it's a somewhat silly position, because xarray uses ULONG_MAX
+> for it's terminal value, but it gets weird in the guest_memfd code because @end is
+> used for both the xarray and for gfn range sent over to KVM.
+> 
+> Amusingly, the -1UL is also technically wrong, because @end is exclusive.  AFAIK
+> it's not actually possible to populate offset -1, so it's a benign off-by-one,
+> but I think super duper technically, we would want something absurd like this:
+> 
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index cfbb2f1aa1ab..f4d15cda2029 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -231,12 +231,13 @@ static void __kvm_gmem_invalidate_begin(struct gmem_file *f, pgoff_t start,
+>                                         pgoff_t end,
+>                                         enum kvm_gfn_range_filter attr_filter)
 >  {
->  	struct arm_smccc_1_2_regs args = { 0 };
->  	struct arm_smccc_1_2_regs res = { 0 };
-> @@ -130,11 +151,40 @@ static int get_nr_lfa_components(void)
->  	return res.a1;
->  }
+> +       pgoff_t last  = end == -1UL ? ULONG_MAX : end;
+>         bool flush = false, found_memslot = false;
+>         struct kvm_memory_slot *slot;
+>         struct kvm *kvm = f->kvm;
+>         unsigned long index;
 >  
-> +static int lfa_cancel(void *data)
-> +{
-> +	struct image_props *attrs = data;
-> +	struct arm_smccc_1_2_regs args = { 0 };
-> +	struct arm_smccc_1_2_regs res = { 0 };
-> +
-> +	args.a0 = LFA_1_0_FN_CANCEL;
-> +	args.a1 = attrs->fw_seq_id;
-> +	arm_smccc_1_2_invoke(&args, &res);
-> +
-> +	/*
-> +	 * When firmware activation is called with "skip_cpu_rendezvous=1",
-> +	 * LFA_CANCEL can fail with LFA_BUSY if the activation could not be
-> +	 * cancelled.
-> +	 */
-> +	if (res.a0 == LFA_SUCCESS) {
-> +		pr_info("Activation cancelled for image %s",
-> +			attrs->image_name);
-> +	} else {
-> +		pr_err("Firmware activation could not be cancelled: %ld",
-> +		       (long)res.a0);
-> +		return -EIO;
-> +	}
-> +
-> +	return res.a0;
-> +}
-> +
->  static int call_lfa_activate(void *data)
->  {
->  	struct image_props *attrs = data;
->  	struct arm_smccc_1_2_regs args = { 0 };
->  	struct arm_smccc_1_2_regs res = { 0 };
-> +	ktime_t end = ktime_add_us(ktime_get(), LFA_ACTIVATE_BUDGET_US);
-> +	int ret;
+> -       xa_for_each_range(&f->bindings, index, slot, start, end - 1) {
+> +       xa_for_each_range(&f->bindings, index, slot, start, last) {
+>                 pgoff_t pgoff = slot->gmem.pgoff;
 >  
->  	args.a0 = LFA_1_0_FN_ACTIVATE;
->  	args.a1 = attrs->fw_seq_id; /* fw_seq_id under consideration */
-> @@ -148,9 +198,32 @@ static int call_lfa_activate(void *data)
->  	 */
->  	args.a2 = !(attrs->cpu_rendezvous_forced || attrs->cpu_rendezvous);
->  
-> -	do {
-> +	for (;;) {
-> +		/* Touch watchdog, ACTIVATE shouldn't take longer than watchdog_thresh */
-> +		touch_nmi_watchdog();
->  		arm_smccc_1_2_invoke(&args, &res);
-> -	} while (res.a0 == 0 && res.a1 == 1);
-> +
-> +		if ((long)res.a0 < 0) {
-> +			pr_err("ACTIVATE for image %s failed: %s",
-> +				attrs->image_name, lfa_error_strings[-res.a0]);
-> +			return res.a0;
-> +		}
-> +		if (!(res.a1 & LFA_ACTIVATE_CALL_AGAIN))
-> +			break; /* ACTIVATE successful */
-> +
-> +		/* SMC returned with call_again flag set */
-> +		if (ktime_before(ktime_get(), end)) {
-> +			udelay(LFA_ACTIVATE_POLL_DELAY_US);
-> +			continue;
-> +		}
-> +
-> +		pr_err("ACTIVATE timed out for image %s", attrs->image_name);
-> +		ret = lfa_cancel(attrs);
-> +		if (ret == 0)
-> +			return -ETIMEDOUT;
-> +		else
-> +			return ret;
-> +	}
->  
->  	return res.a0;
->  }
-> @@ -159,8 +232,24 @@ static int activate_fw_image(struct image_props *attrs)
->  {
->  	struct arm_smccc_1_2_regs args = { 0 };
->  	struct arm_smccc_1_2_regs res = { 0 };
-> +	ktime_t end = ktime_add_us(ktime_get(), LFA_PRIME_BUDGET_US);
->  	int ret;
->  
-> +	if (attrs->may_reset_cpu) {
-> +		pr_err("Firmware component requires unsupported CPU reset");
-> +		return -EINVAL;
-> +	}
-> +
-> +	/*
-> +	 * We want to force CPU rendezvous if either cpu_rendezvous or
-> +	 * cpu_rendezvous_forced is set. The flag value is flipped as
-> +	 * it is called skip_cpu_rendezvous in the spec.
-> +	 */
-> +	if (!(attrs->cpu_rendezvous_forced || attrs->cpu_rendezvous)) {
-> +		pr_warn("CPU rendezvous is expected to be selected.");
-> +		return -EAGAIN;
-> +	}
-> +
->  	/*
->  	 * LFA_PRIME/ACTIVATE will return 1 in res.a1 if the firmware
->  	 * priming/activation is still in progress. In that case
-> @@ -169,20 +258,36 @@ static int activate_fw_image(struct image_props *attrs)
->  	 */
->  	args.a0 = LFA_1_0_FN_PRIME;
->  	args.a1 = attrs->fw_seq_id; /* fw_seq_id under consideration */
-> -	do {
-> +	for (;;) {
-> +		/* Touch watchdog, PRIME shouldn't take longer than watchdog_thresh */
-> +		touch_nmi_watchdog();
->  		arm_smccc_1_2_invoke(&args, &res);
-> -		if (res.a0 != LFA_SUCCESS) {
-> -			pr_err("LFA_PRIME failed: %s\n",
-> -				lfa_error_strings[-res.a0]);
->  
-> +		if ((long)res.a0 < 0) {
-> +			pr_err("LFA_PRIME for image %s failed: %s\n",
-> +				attrs->image_name, lfa_error_strings[-res.a0]);
->  			return res.a0;
->  		}
-> -	} while (res.a1 == 1);
-> +		if (!(res.a1 & LFA_PRIME_CALL_AGAIN))
-> +			break; /* PRIME successful */
->  
-> -	if (attrs->cpu_rendezvous_forced || attrs->cpu_rendezvous)
-> -		ret = stop_machine(call_lfa_activate, attrs, cpu_online_mask);
-> -	else
-> -		ret = call_lfa_activate(attrs);
-> +		/* SMC returned with call_again flag set */
-> +		if (ktime_before(ktime_get(), end)) {
-> +			udelay(LFA_PRIME_POLL_DELAY_US);
-> +			continue;
-> +		}
-> +
-> +		pr_err("PRIME timed out for image %s", attrs->image_name);
-> +		ret = lfa_cancel(attrs);
-> +		if (ret == 0)
-> +			return -ETIMEDOUT;
-> +		else
-> +			return ret;
-> +	}
-> +
-> +	ret = stop_machine(call_lfa_activate, attrs, cpu_online_mask);
-> +	if (ret != 0)
-> +		return lfa_cancel(attrs);
->  
->  	return ret;
->  }
-> @@ -286,23 +391,23 @@ static ssize_t activate_store(struct kobject *kobj, struct kobj_attribute *attr,
->  					 image_attrs[LFA_ATTR_ACTIVATE]);
->  	int ret;
->  
-> -	if (attrs->may_reset_cpu) {
-> -		pr_err("Firmware component requires unsupported CPU reset\n");
-> -
-> -		return -EINVAL;
-> +	if (!mutex_trylock(&lfa_lock)) {
-> +		pr_err("Mutex locked, try again");
-> +		return -EAGAIN;
->  	}
->  
->  	ret = activate_fw_image(attrs);
->  	if (ret) {
->  		pr_err("Firmware activation failed: %s\n",
->  			lfa_error_strings[-ret]);
-> -
-> +		mutex_unlock(&lfa_lock);
->  		return -ECANCELED;
->  	}
->  
->  	pr_info("Firmware activation succeeded\n");
->  
->  	/* TODO: refresh image flags here*/
-> +	mutex_unlock(&lfa_lock);
->  	return count;
->  }
->  
-> @@ -311,26 +416,11 @@ static ssize_t cancel_store(struct kobject *kobj, struct kobj_attribute *attr,
->  {
->  	struct image_props *attrs = container_of(attr, struct image_props,
->  						 image_attrs[LFA_ATTR_CANCEL]);
-> -	struct arm_smccc_1_2_regs args = { 0 };
-> -	struct arm_smccc_1_2_regs res = { 0 };
-> -
-> -	args.a0 = LFA_1_0_FN_CANCEL;
-> -	args.a1 = attrs->fw_seq_id;
-> -	arm_smccc_1_2_invoke(&args, &res);
-> +	int ret;
->  
-> -	/*
-> -	 * When firmware activation is called with "skip_cpu_rendezvous=1",
-> -	 * LFA_CANCEL can fail with LFA_BUSY if the activation could not be
-> -	 * cancelled.
-> -	 */
-> -	if (res.a0 == LFA_SUCCESS) {
-> -		pr_info("Activation cancelled for image %s\n",
-> -			attrs->image_name);
-> -	} else {
-> -		pr_err("Firmware activation could not be cancelled: %s\n",
-> -		       lfa_error_strings[-res.a0]);
-> -		return -EINVAL;
-> -	}
-> +	ret = lfa_cancel(attrs);
-> +	if (ret != 0)
-> +		return ret;
->  
->  	return count;
->  }
-> @@ -418,6 +508,11 @@ static int create_fw_images_tree(void)
->  	int ret, num_of_components;
->  
->  	num_of_components = get_nr_lfa_components();
-> +	if (num_of_components <= 0) {
-> +		pr_err("Error getting number of LFA components");
-> +		return -ENODEV;
-> +	}
-> +
->  	args.a0 = LFA_1_0_FN_GET_INVENTORY;
->  	for (int i = 0; i < num_of_components; i++) {
->  		args.a1 = i; /* fw_seq_id under consideration */
-> @@ -437,6 +532,125 @@ static int create_fw_images_tree(void)
->  	return 0;
->  }
->  
-> +static int refresh_fw_images_tree(void)
-> +{
-> +	int ret;
-> +	/*
-> +	 * Ideally, this function should invoke the GET_INVENTORY SMC
-> +	 * for each firmware image and update the corresponding details
-> +	 * in the firmware image tree node.
-> +	 * There are several edge cases to consider:
-> +	 *    - The number of firmware components may change.
-> +	 *    - The mapping between firmware sequence IDs and
-> +	 *      firmware image UUIDs may be modified.
-> +	 * As a result, it is possible that the firmware image tree nodes
-> +	 * will require updates. Additionally, GET_INVENTORY SMC provides
-> +	 * all current and revised information. Therefore, retaining the
-> +	 * existing fw_images_tree data is not justified. Reconstructing
-> +	 * the firmware images tree will simplify the code and keep data
-> +	 * up-to-date.
-> +	 */
-> +	// Clean current inventory details
-> +	clean_fw_images_tree();
-> +
-> +	// Update new inventory details
-> +	ret = create_fw_images_tree();
-> +	if (ret != 0)
-> +		kobject_put(lfa_dir);
-> +
-> +	return ret;
-> +}
-> +
-> +static irqreturn_t lfa_irq_thread(int irq, void *data)
-> +{
-> +	struct image_props *attrs = NULL;
-> +	int ret;
-> +
-> +	mutex_lock(&lfa_lock);
-> +
-> +	// Update new inventory details
-> +	ret = refresh_fw_images_tree();
-> +	if (ret != 0)
-> +		goto exit_unlock;
-> +
-> +	/*
-> +	 * Execute PRIME and ACTIVATE for each FW component
-> +	 * Start from first FW component
-> +	 */
-> +	list_for_each_entry(attrs, &lfa_fw_images, image_node) {
-> +		if ((!attrs->activation_capable) || (!attrs->activation_pending)) {
-> +			/* LFA not applicable for this FW component, continue to next component */
-> +			continue;
-> +		}
-> +
-> +		ret = activate_fw_image(attrs);
-> +		if (ret) {
-> +			pr_err("Firmware %s activation failed: %s\n",
-> +				attrs->image_name, lfa_error_strings[-ret]);
-> +			goto exit_unlock;
-> +		}
-> +
-> +		pr_info("Firmware %s activation succeeded", attrs->image_name);
-> +	}
-> +
-> +	// Update new inventory details
-> +	ret = refresh_fw_images_tree();
-> +	if (ret != 0)
-> +		goto exit_unlock;
-> +
-> +exit_unlock:
-> +	mutex_unlock(&lfa_lock);
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static int __init lfa_probe(struct platform_device *pdev)
-> +{
-> +	int err;
-> +	unsigned int irq;
-> +
-> +	err = platform_get_irq_byname_optional(pdev, "fw-store-updated-interrupt");
-> +	if (err < 0)
-> +		err = platform_get_irq(pdev, 0);
-> +	if (err < 0) {
-> +		pr_err("Interrupt not found, functionality will be unavailable.");
-> +
-> +		/* Bail out without failing the driver. */
-> +		return 0;
-> +	}
-> +	irq = err;
-> +
-> +	err = request_threaded_irq(irq, NULL, lfa_irq_thread, IRQF_ONESHOT, DRIVER_NAME, NULL);
-> +	if (err != 0) {
-> +		pr_err("Interrupt setup failed, functionality will be unavailable.");
-> +
-> +		/* Bail out without failing the driver. */
-> +		return 0;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct of_device_id lfa_of_ids[] = {
-> +	{ .compatible = "arm,armhf000", },
-> +	{ },
-> +};
-> +MODULE_DEVICE_TABLE(of, lfa_of_ids);
-> +
-> +static const struct acpi_device_id lfa_acpi_ids[] = {
-> +	{"ARMHF000"},
-> +	{},
-> +};
-> +MODULE_DEVICE_TABLE(acpi, lfa_acpi_ids);
-> +
-> +static struct platform_driver lfa_driver = {
-> +	.probe = lfa_probe,
-> +	.driver = {
-> +		.name = DRIVER_NAME,
-> +		.of_match_table = lfa_of_ids,
-> +		.acpi_match_table = ACPI_PTR(lfa_acpi_ids),
-> +	},
-> +};
-> +
->  static int __init lfa_init(void)
->  {
->  	struct arm_smccc_1_2_regs args = { 0 };
-> @@ -464,22 +678,33 @@ static int __init lfa_init(void)
->  	pr_info("Arm Live Firmware Activation (LFA): detected v%ld.%ld\n",
->  		res.a0 >> 16, res.a0 & 0xffff);
->  
-> +	err = platform_driver_register(&lfa_driver);
-> +	if (err < 0)
-> +		pr_err("Platform driver register failed");
-> +
-> +
->  	lfa_dir = kobject_create_and_add("lfa", firmware_kobj);
->  	if (!lfa_dir)
->  		return -ENOMEM;
->  
-> +	mutex_lock(&lfa_lock);
->  	err = create_fw_images_tree();
->  	if (err != 0)
->  		kobject_put(lfa_dir);
->  
-> +	mutex_unlock(&lfa_lock);
->  	return err;
->  }
->  module_init(lfa_init);
->  
->  static void __exit lfa_exit(void)
->  {
-> +	mutex_lock(&lfa_lock);
->  	clean_fw_images_tree();
-> +	mutex_unlock(&lfa_lock);
-> +
->  	kobject_put(lfa_dir);
-> +	platform_driver_unregister(&lfa_driver);
->  }
->  module_exit(lfa_exit);
->  
+>                 struct kvm_gfn_range gfn_range = {
+> 
 
+
+Thanks for the detailed feedback and review, Sean.
+I didn't think enough about this from a reviewer/maintainer's perspective.
+I'll split this up, make suggested changes, drop the ULONG_MAX
+change, and rebase on kvm-x86 gmem for v3.
+
+Thanks again,
+Shivank
