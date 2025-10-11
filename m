@@ -1,154 +1,231 @@
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA2E2765E6
-	for <linux-coco@lists.linux.dev>; Fri, 10 Oct 2025 22:34:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF5C290F
+	for <linux-coco@lists.linux.dev>; Sat, 11 Oct 2025 00:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760135688; cv=none; b=KPXHzv7oV4QWLaFSwjNYTR3MnC3+zWisLjJep98cAuI9AXAvgFBZ9v17NOd32unAoa9twKjecpfkKBMkfQzq3xkOF5DUR6LQ1M+H69zflcjonpGRzTRqUWME/TUhBmlOvi7fCrQ8pZ0IL9XTc7zCSpVaCurS5yuGoT9pDI7L1TI=
+	t=1760141000; cv=none; b=t8MtUPimT316/8UPUy2qYiwkL2dSjA5riEnbcqo0YRfZlFr85KYhJ2h1VeWJH/TmJJeCbDfEb7fTLJ/pXTpuVDmprd9MJh6DzctRfwbiozFCtmm7MMIML9mmvnH1+8OaRN9j3Konvt0TxdTQVjO/fsTGlvLTuDbE2XMUw+KS8cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760135688; c=relaxed/simple;
-	bh=Pk2+8/IwqNSzhAu614JVEvZm09rKZH8rHw8rZM0DYaY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HpNMi9PAzKYsyFGfQgtoUfavTxahfDQdkVBaOgMD1IHeG0zGMSTc76lYhudtB3XrSgvkM28PJPLDBZdxGyB+rzai627dabvsDWS14+deed4/CX6BQlOtMYhToe5CmsiXU+qT1TBGzodbhqu1pi0z06wlKZAfP5YWdMXSG6H7BK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=MroeFHwW; arc=none smtp.client-ip=209.85.219.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="MroeFHwW"
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-7f7835f4478so21378596d6.1
-        for <linux-coco@lists.linux.dev>; Fri, 10 Oct 2025 15:34:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1760135685; x=1760740485; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=e2mC6oaVhDB8uY07Xh45M+WrV8K3BihoQCe6CsvnzAk=;
-        b=MroeFHwWHKWFSzKjv9MfOQ2TOYSqNme52LLuOQoVFjuCIcLariskw63j6BjaJ16Q08
-         vpAYJC2rk+/LLWoXFxuRl58YBh5gltbzSnOi4NjRv1iq2dHbS29FuQZFi4bsMtwR1S3j
-         AfAuS0LzO7iFCrtSH8LACQ+4BAnHRsUVsbB3KBhz9pZwJ0QXJHZ7+f5/sahOzTocl2Nn
-         z4K9cAHUb1UT8uNmG6dwKKCnGwoyTcIFteFH6+AWxSsFh4tB9gxkGS4u9SaIAiVQBRRR
-         Pd+HTC6KNvjcrM+uDdB8TP9fAGKJw0lka5LSKMdIq/SN8pMGpM/LAWj8Bf+OTuOQYTt8
-         iMUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760135685; x=1760740485;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e2mC6oaVhDB8uY07Xh45M+WrV8K3BihoQCe6CsvnzAk=;
-        b=FpqD5BSr2tRikJowYVmV3/4f23STU2Bk0fWh6LKIExle0t8DKmfJeHhHwpQdMURi6m
-         MjvacRsoH51mfO0d6hIhH+Kvp/J7DjZC2fo//R9Vl43dcU58kPQbgJYlXsmKJObIP54b
-         OSR7lWkMnxP1thOinIWNiCrXioWgAUEAR/QyGLnntOfXcKl/yHsV5zmm8RWhVuKGMhTs
-         0tbHuh8x6+nvzx100X1I7nCEBMZtntHEIN9scCLhLOPNhindw9xeohtMgC8GuLn6mv3S
-         9myHqM0V7p9ckFfc3KIgJzKRYxIdm1QaAExyCVjvPxZ/9VeyiOZZY5qXdKsC1K6i1Wn9
-         P7DQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXZqhIwofuzHUeDrhYZn/8ygy09TcJgT3BTal/2hEDZU0Lz5kFRevZogRFU1z9+tCKd9oZY85X+gT6R@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz7NEfLPhWSPL/Y4mMfC4mCI3yJdv97Ke9/46mfl2LnXAWGsQAk
-	cg9iruisso26SfmtCsLC4XE0KNZjZ5NsY/o+rvApQ5pLQbdydB3GVE6CqOuis9rr2MY=
-X-Gm-Gg: ASbGnctreWFClvwvz8TfvhmVhBbAESbr89LG8FkjRTWz1JW24gWNFYN3sEWz6//oXMG
-	DYbGRwhnt8W1sI3vKVVkjrQSJLVWq743tnKPqbQHjt0T/UdxTEssH0xoTrAD5nufhSUBv1WfkS8
-	YXBG0oR3H9ZytVpR/RB8SDXGe53/lWiGZC0s4qJViCrRss0nSRH6AvoMH2qaRaAkF2lz1BSHFcT
-	zQB+Qd78hFFOrUzomWeMqjzI7lcwlW2KMaVGzkFhdjz30Mp9f4ggtm5CPGImTWnOt8I82pnGy7z
-	vIjdBhVRtmORM4OVIIXUWGn8jOCB1NZU2zHI1qkzjlAB97OzvMrHuTRT0+v1d9wQsW42ikeseF6
-	8G0Rs9Rl4p+qSojuQj4E1Pm/GjBGpGgh3FNiaYwsRX3io/jPHVcT1+thupyoXtop0QJLtk5eiE9
-	zaiNEZEjGMEC0=
-X-Google-Smtp-Source: AGHT+IECAcR/KGy/e7wbySPEFRjHLCdMYKTul/IVB6jvzNGBmryovZWE46iccPi7Pk1ulqBzRKwDww==
-X-Received: by 2002:a05:622a:5984:b0:4cb:57b4:4d6c with SMTP id d75a77b69052e-4e6eaccc73cmr181726641cf.12.1760135685384;
-        Fri, 10 Oct 2025 15:34:45 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e706de73ccsm26004611cf.45.2025.10.10.15.34.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Oct 2025 15:34:44 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1v7LhE-0000000Ghev-0UWp;
-	Fri, 10 Oct 2025 19:34:44 -0300
-Date: Fri, 10 Oct 2025 19:34:44 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: dan.j.williams@intel.com
-Cc: Jeremy Linton <jeremy.linton@arm.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	aik@amd.com, lukas@wunner.de, Samuel Ortiz <sameo@rivosinc.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: Re: [RFC PATCH v1 11/38] KVM: arm64: CCA: register host tsm platform
- device
-Message-ID: <20251010223444.GA3938986@ziepe.ca>
-References: <yq5aqzxy9ij1.fsf@kernel.org>
- <20250730113827.000032b8@huawei.com>
- <20250730132333.00006fbf@huawei.com>
- <2025073035-bulginess-rematch-b92e@gregkh>
- <b3ec55da-822a-4098-b030-4d76825f358e@arm.com>
- <20251010135922.GC3833649@ziepe.ca>
- <4a7d84b2-2ec4-4773-a2d5-7b63d5c683cf@arm.com>
- <20251010153046.GF3833649@ziepe.ca>
- <f6cf20f6-0f19-4814-b917-4f92dad39648@arm.com>
- <68e953f484464_1992810065@dwillia2-mobl4.notmuch>
+	s=arc-20240116; t=1760141000; c=relaxed/simple;
+	bh=ub0A7HPzqziR/uLMSAO5SqyND8AeFH4+Pwi28QJF+ZA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hdzRcFecOqiG9ozef3xr9F3ADnMPdohIXrfeXpGCqahgKYMxyqjKNYr+lLdx3j2MuDJs8KHYH2q7ybDtpS6NzuJTkqPVPhGBnA4U5Ma/9UpYQyMF1ebHZxuiTLYwaDM8Wknv+AukFnl8CTAwYtXJM/cMiV4aFk2ocBhtinAhvTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 399C11595;
+	Fri, 10 Oct 2025 17:03:09 -0700 (PDT)
+Received: from minigeek.lan (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 35FA03F59E;
+	Fri, 10 Oct 2025 17:03:15 -0700 (PDT)
+Date: Sat, 11 Oct 2025 01:02:51 +0100
+From: Andre Przywara <andre.przywara@arm.com>
+To: Vedashree Vidwans <vvidwans@nvidia.com>
+Cc: <salman.nabi@arm.com>, <lpieralisi@kernel.org>, <mark.rutland@arm.com>,
+ <sudeep.holla@arm.com>, <ardb@kernel.org>, <chao.gao@intel.com>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-coco@lists.linux.dev>,
+ <linux-kernel@vger.kernel.org>, <sdonthineni@nvidia.com>,
+ <vsethi@nvidia.com>, <vwadekar@nvidia.com>
+Subject: Re: [RFC PATCH 1/3] firmware: smccc: LFA: use smcc 1.2
+Message-ID: <20251011010251.50c8be14@minigeek.lan>
+In-Reply-To: <20251008190907.181412-2-vvidwans@nvidia.com>
+References: <20251008190907.181412-1-vvidwans@nvidia.com>
+ <20251008190907.181412-2-vvidwans@nvidia.com>
+Organization: Arm Ltd.
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.31; x86_64-slackware-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <68e953f484464_1992810065@dwillia2-mobl4.notmuch>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 10, 2025 at 11:44:04AM -0700, dan.j.williams@intel.com wrote:
-> Jeremy Linton wrote:
-> > On 10/10/25 10:30 AM, Jason Gunthorpe wrote:
-> > > On Fri, Oct 10, 2025 at 10:28:36AM -0500, Jeremy Linton wrote:
-> > > 
-> > >>> So you could use auxiliary_device, you'd consider SMC itself to be the
-> > >>> shared HW block and all the auxiliary drivers are per-subsystem
-> > >>> aspects of that shared SMC interface. It is not a terrible fit for
-> > >>> what it was intended for at least.
-> > >>
-> > >> Turns out that changing any of this, will at the moment break systemd's
-> > >> confidential vm detection, because they wanted the earliest indicator the
-> > >> guest was capable and that turned out to be this platform device.
-> > > 
-> > > Having systemd detect a software created platform device sounds
-> > > compltely crazy, don't do that. Make a proper sysfs uapi for such a
-> > > general idea please.
-> > 
-> > Yes, I agree, its just at the time the statment was around what is the 
-> > most reliable early indicator, and since there isn't a hwcap or anything 
-> > that ended up being the choice, as disgusting as it is.
-> > 
-> > Presumably once all this works out the sysfs/api surface will be more 
-> > 'defined'
+On Wed, 8 Oct 2025 19:09:05 +0000
+Vedashree Vidwans <vvidwans@nvidia.com> wrote:
+
+Hi Vedashree,
+
+> Update driver to use SMCCC 1.2+ version as mentioned in the LFA spec.
+
+ah, right, good catch, one call is using x4, so this must be the v1.2
+calling convention.
+
+Just one small thing below...
+
+> Signed-off-by: Vedashree Vidwans <vvidwans@nvidia.com>
+> ---
+>  drivers/firmware/smccc/lfa_fw.c | 80 +++++++++++++++++++++++----------
+>  1 file changed, 56 insertions(+), 24 deletions(-)
 > 
-> It has definition today.
-> 
-> All guest-side TSM drivers currently call tsm_report_register(), that
-> establishes /sys/kernel/config/tsm/report which is the common cross-arch
-> transport for retrieving CVM launch attestation reports.
+> diff --git a/drivers/firmware/smccc/lfa_fw.c b/drivers/firmware/smccc/lfa_fw.c
+> index 1f333237271d8..49f7feb6a211b 100644
+> --- a/drivers/firmware/smccc/lfa_fw.c
+> +++ b/drivers/firmware/smccc/lfa_fw.c
+> @@ -117,9 +117,13 @@ static struct kobject *lfa_dir;
+>  
+>  static int get_nr_lfa_components(void)
+>  {
+> -	struct arm_smccc_res res = { 0 };
+> +	struct arm_smccc_1_2_regs args = { 0 };
+> +	struct arm_smccc_1_2_regs res = { 0 };
 
-I suspect this ins't a TSM question but an existing question if any of
-the underlying CC frameworks are enabled. 
+>  
+> -	arm_smccc_1_1_invoke(LFA_1_0_FN_GET_INFO, 0x0, &res);
+> +	args.a0 = LFA_1_0_FN_GET_INFO;
+> +	args.a1 = 0; /* lfa_info_selector = 0 */
+> +
+> +	arm_smccc_1_2_invoke(&args, &res);
 
-It is this stuff:
+I wonder if we can share the same struct for both request and reply?
+	arm_smccc_1_2_invoke(&args, &args);
 
-https://github.com/systemd/systemd/blob/main/src/basic/confidential-virt.c
-https://github.com/systemd/systemd/commit/2572bf6a39b6c548acef07fd25f461c5a88560af
+Looks like a lot of stack space used for just a few registers.
+Same for the other occasions where we just do the smc once.
 
-  Like the s390 detection logic, the sysfs path being checked is not labeled
-  as ABI, and may change in the future. It was chosen because its
-  directly tied to the kernel's detection of the realm service interface
-  rather to the Trusted Security Module (TSM) which is what is being
-  triggered by the device entry.
+Cheers,
+Andre.
 
-Maybe a /sys/firmware/smc/rsi file might be appropriate?
+>  	if (res.a0 != LFA_SUCCESS)
+>  		return res.a0;
+>  
+> @@ -129,20 +133,23 @@ static int get_nr_lfa_components(void)
+>  static int call_lfa_activate(void *data)
+>  {
+>  	struct image_props *attrs = data;
+> -	struct arm_smccc_res res = { 0 };
+> +	struct arm_smccc_1_2_regs args = { 0 };
+> +	struct arm_smccc_1_2_regs res = { 0 };
+> +
+> +	args.a0 = LFA_1_0_FN_ACTIVATE;
+> +	args.a1 = attrs->fw_seq_id; /* fw_seq_id under consideration */
+> +	/*
+> +	 * As we do not support updates requiring a CPU reset (yet),
+> +	 * we pass 0 in args.a3 and args.a4, holding the entry point and context
+> +	 * ID respectively.
+> +	 * We want to force CPU rendezvous if either cpu_rendezvous or
+> +	 * cpu_rendezvous_forced is set. The flag value is flipped as
+> +	 * it is called skip_cpu_rendezvous in the spec.
+> +	 */
+> +	args.a2 = !(attrs->cpu_rendezvous_forced || attrs->cpu_rendezvous);
+>  
+>  	do {
+> -		/*
+> -		 * As we do not support updates requiring a CPU reset (yet),
+> -		 * we pass 0 in x3 and x4, holding the entry point and context
+> -		 * ID respectively.
+> -		 * We want to force CPU rendezvous if either cpu_rendezvous or
+> -		 * cpu_rendezvous_forced is set. The flag value is flipped as
+> -		 * it is called skip_cpu_rendezvous in the spec.
+> -		 */
+> -		arm_smccc_1_1_invoke(LFA_1_0_FN_ACTIVATE, attrs->fw_seq_id,
+> -			!(attrs->cpu_rendezvous_forced || attrs->cpu_rendezvous),
+> -			0, 0, &res);
+> +		arm_smccc_1_2_invoke(&args, &res);
+>  	} while (res.a0 == 0 && res.a1 == 1);
+>  
+>  	return res.a0;
+> @@ -150,7 +157,8 @@ static int call_lfa_activate(void *data)
+>  
+>  static int activate_fw_image(struct image_props *attrs)
+>  {
+> -	struct arm_smccc_res res = { 0 };
+> +	struct arm_smccc_1_2_regs args = { 0 };
+> +	struct arm_smccc_1_2_regs res = { 0 };
+>  	int ret;
+>  
+>  	/*
+> @@ -159,8 +167,10 @@ static int activate_fw_image(struct image_props *attrs)
+>  	 * LFA_PRIME/ACTIVATE will need to be called again.
+>  	 * res.a1 will become 0 once the prime/activate process completes.
+>  	 */
+> +	args.a0 = LFA_1_0_FN_PRIME;
+> +	args.a1 = attrs->fw_seq_id; /* fw_seq_id under consideration */
+>  	do {
+> -		arm_smccc_1_1_invoke(LFA_1_0_FN_PRIME, attrs->fw_seq_id, &res);
+> +		arm_smccc_1_2_invoke(&args, &res);
+>  		if (res.a0 != LFA_SUCCESS) {
+>  			pr_err("LFA_PRIME failed: %s\n",
+>  				lfa_error_strings[-res.a0]);
+> @@ -211,13 +221,16 @@ static ssize_t activation_pending_show(struct kobject *kobj,
+>  {
+>  	struct image_props *attrs = container_of(attr, struct image_props,
+>  					 image_attrs[LFA_ATTR_ACT_PENDING]);
+> -	struct arm_smccc_res res = { 0 };
+> +	struct arm_smccc_1_2_regs args = { 0 };
+> +	struct arm_smccc_1_2_regs res = { 0 };
+>  
+>  	/*
+>  	 * Activation pending status can change anytime thus we need to update
+>  	 * and return its current value
+>  	 */
+> -	arm_smccc_1_1_invoke(LFA_1_0_FN_GET_INVENTORY, attrs->fw_seq_id, &res);
+> +	args.a0 = LFA_1_0_FN_GET_INVENTORY;
+> +	args.a1 = attrs->fw_seq_id;
+> +	arm_smccc_1_2_invoke(&args, &res);
+>  	if (res.a0 == LFA_SUCCESS)
+>  		attrs->activation_pending = !!(res.a3 & BIT(1));
+>  
+> @@ -298,9 +311,12 @@ static ssize_t cancel_store(struct kobject *kobj, struct kobj_attribute *attr,
+>  {
+>  	struct image_props *attrs = container_of(attr, struct image_props,
+>  						 image_attrs[LFA_ATTR_CANCEL]);
+> -	struct arm_smccc_res res = { 0 };
+> +	struct arm_smccc_1_2_regs args = { 0 };
+> +	struct arm_smccc_1_2_regs res = { 0 };
+>  
+> -	arm_smccc_1_1_invoke(LFA_1_0_FN_CANCEL, attrs->fw_seq_id, &res);
+> +	args.a0 = LFA_1_0_FN_CANCEL;
+> +	args.a1 = attrs->fw_seq_id;
+> +	arm_smccc_1_2_invoke(&args, &res);
+>  
+>  	/*
+>  	 * When firmware activation is called with "skip_cpu_rendezvous=1",
+> @@ -395,14 +411,17 @@ static int create_fw_inventory(char *fw_uuid, int seq_id, u32 image_flags)
+>  
+>  static int create_fw_images_tree(void)
+>  {
+> -	struct arm_smccc_res res = { 0 };
+> +	struct arm_smccc_1_2_regs args = { 0 };
+> +	struct arm_smccc_1_2_regs res = { 0 };
+>  	struct uuid_regs image_uuid;
+>  	char image_id_str[40];
+>  	int ret, num_of_components;
+>  
+>  	num_of_components = get_nr_lfa_components();
+> +	args.a0 = LFA_1_0_FN_GET_INVENTORY;
+>  	for (int i = 0; i < num_of_components; i++) {
+> -		arm_smccc_1_1_invoke(LFA_1_0_FN_GET_INVENTORY, i, &res);
+> +		args.a1 = i; /* fw_seq_id under consideration */
+> +		arm_smccc_1_2_invoke(&args, &res);
+>  		if (res.a0 == LFA_SUCCESS) {
+>  			image_uuid.uuid_lo = res.a1;
+>  			image_uuid.uuid_hi = res.a2;
+> @@ -420,10 +439,23 @@ static int create_fw_images_tree(void)
+>  
+>  static int __init lfa_init(void)
+>  {
+> -	struct arm_smccc_res res = { 0 };
+> +	struct arm_smccc_1_2_regs args = { 0 };
+> +	struct arm_smccc_1_2_regs res = { 0 };
+>  	int err;
+>  
+> -	arm_smccc_1_1_invoke(LFA_1_0_FN_GET_VERSION, &res);
+> +	/* LFA requires SMCCC version >= 1.2 */
+> +	if (arm_smccc_get_version() < ARM_SMCCC_VERSION_1_2) {
+> +		pr_err("Not supported with SMCCC version %u", arm_smccc_get_version());
+> +		return -ENODEV;
+> +	}
+> +
+> +	if (arm_smccc_1_1_get_conduit() == SMCCC_CONDUIT_NONE) {
+> +		pr_err("Invalid SMCCC conduit");
+> +		return -ENODEV;
+> +	}
+> +
+> +	args.a0 = LFA_1_0_FN_GET_VERSION;
+> +	arm_smccc_1_2_invoke(&args, &res);
+>  	if (res.a0 == -LFA_NOT_SUPPORTED) {
+>  		pr_err("Arm Live Firmware activation(LFA): no firmware agent found\n");
+>  		return -ENODEV;
 
-Given how small a deployed fooprint ARM CCA has right now (ie none) it
-would be good to fix this ASAP so it doesn't become entrenched.
-
-Jason
