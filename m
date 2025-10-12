@@ -1,235 +1,186 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011018.outbound.protection.outlook.com [52.101.62.18])
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012068.outbound.protection.outlook.com [40.107.200.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8818C2BAF9
-	for <linux-coco@lists.linux.dev>; Sat, 11 Oct 2025 18:04:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0215D1A7AE3
+	for <linux-coco@lists.linux.dev>; Sun, 12 Oct 2025 07:16:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.68
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760205889; cv=fail; b=iTxfFVgDaaGY1WSj1TvLEiO2XfTIAFMRcM4VVd7AMNE4PMN0VZYftZjarteXU2f+9taam8NNdGe0jgAwy/hxe0LJf8D6Dsd0i8YRiCADgzVi24Vfc3xRyy9KJrqxa5ojlunWmS3thokNu/wRutBiOOMLgHrNsZ0YMqpbfdgfrrk=
+	t=1760253390; cv=fail; b=LkRR2wvBPTKdcaFzXYPrm+y87VPVZujCxPV6mHes40McMRK5aqxLl/iv2drzJXerfEQ0K0CdLgX+n17F81m2AXu7VWMQMhfDPVkjc4c5VscYfsbkv0V1Mwl/TWONoZxwrBWyyRvGgjqkVboj5lLcW6usyZ/SKwtvRnQYDWlyBfU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760205889; c=relaxed/simple;
-	bh=I0qoBnCC68GvLd2unx9uJoRrgoJEdiZp62ZVHoX/rAY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=XZ0pFyF2UzKEsdrit4eAOhrJeGWg1GtnWyELtlGegCQr5B3IhVj02voljxm8g4x8cL10/6PqQCAkrrU184qXJ+RcehKRmHUSbYU2d0oAQrL/7mr1oWs3jFRUVtRo4yvYRgqpNrsYt8b2Z1eTCh4dPZGROQrBiQb6U8Zwbzovm3s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=AlLyFKur; arc=fail smtp.client-ip=52.101.62.18
+	s=arc-20240116; t=1760253390; c=relaxed/simple;
+	bh=yGRXxVcCzwNnu4I0wpWDu+e4VGWbxWx2xxa8wbVHYhA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AkBNlCh9ojP10cPI1vTobw2T7pA0qYkZTZmM8wL0dkPdB1C5lSXN675fIYHjgEa8+tnWvzYnpGqIShyG/m3/T5JcRvt4xEoFYA9e65tA5IgCcBeeSaYIJV5KqHKeiebtaw9UzZV0A8wOaqbLR/E8mF4roIhzZ/1DbsyfEusrY5c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=iRmnX57i; arc=fail smtp.client-ip=40.107.200.68
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="AlLyFKur"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="iRmnX57i"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=T4y+1o3TBeL1+WkXjeRSWnZYbmjo51xoWAIrdWguZ9n01vKGSGzZ7EeS++73HwtV4trhwjsTn/FUIv+sDQnOdHDC1xpV9EGxmrM9/HViDNFMPWH3quJHG+Q8Gqpe+IJs2SdhP7/ilGzwMtOObyhNhMsPpATCf7RNnzY31NyKECwryAgGwDwlSFnmqXqZncYYC3fKwkP20tMKSX8X/f48790ew6j5SLbmeKY6MGWFfCha5flkr0InvrwekrkeRwmsAdliCwPaIyt0L2DNYSIfuM8KpMlWtMOUzXjb02Mi7tAl/e2j+Cz1PPUBgYnq28I0ENNxnUbBLbvgu5+9hBhiaw==
+ b=MhGPzrvR+L1hoQJ3hHUYYaHsoD0FjfxLZ8Nu43fHBLx09JK5k3q3tg66nLQUh15/rNZ5pOvokqUj12LGplYDKWZKhCtflNkIult8OFd4WZyMJBe2+lpLXCzrFfBJqhkE1trZVEm6RvRYSjripz2kvAvpduC17i6qsA/tmLh2LdEdR33xR9G/uRVGUTSHaSktAuf0gXfwDAETgtNTJq3x4Kuu/kxxtfvSqmy39yJtZyXhxj0X4pvqTQ/Q3kE4d/DM3pOhJOXYnCpKNjdwaB6jLCAkfLWBJs9tbCwOrxEzo08/uy/47N/Ymj+9aTiv53ztMULDp9h79Ayfwi+XVcGamQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=z9ujf9zl02XPCLvrdJMvpgXS3dPvRBPt6sU46BWRWp0=;
- b=goAOrFkImp6+VlidCvo8GVZok/L/+2ETHsJpC3qu36B7lVoaUDOuAwLg3HhJNwpZZemA0hZSo9ROyXWAhIqIqLlDhhkWFKaQ8GwEwLHPy5Q6BKPexle0h2qfSxC3ij/SWquvWaENDfqTTwxNFc1S3lXnNmmHu10Z3AJJXEkEaAJqnKS4+oxWr1mJgazZC4YnLQ+SGN1N9T3OhIzw0XBoBxgX3FujE9qwKBFUiBSUBgNGhgnA2EuNO4ZOHzClhTwb9ktcwa0QoxvYsOK5AsbnsalZeFm0IW5XZn2EeEaEsXUEd56SqLYvQXcB2uSwF0EIN3Hf91A0tWV981xbVRF+NQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+ bh=DRs3XYJOYEDTeSMCyd7+htsKQ5oP0VOs+Cun73uka2E=;
+ b=I7dxl1khXN+iAy57BZGUBtqrqeAdRJJVuqo5wouPUCunCWLsirzJSt4ln6gOFYbiiPh/goHibqITcvvpFP6pKTl1h2UuYueXZT/PbKTvpfOiK4Fp8QE/RnmpXNy2Zf2GGYlr+XqbGmJXg4lGZpIMFsRRljJAAbrE7rV69YJvlk0GGmkv6zUZySEZGgEZrjJbE5GaBOw5h5DO3Jk96/i0PCkcqthronXscv+i59k+d6/QS1xQv6HGIFgbYByNFSphGrdAFlAZ/L0iknvnM7PuJpgEp+aBkdVQbn/f6A5+seO74FnJcqg1YhTUD2QC38lKwOSanUXrtZhGk28hyaVNNA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=z9ujf9zl02XPCLvrdJMvpgXS3dPvRBPt6sU46BWRWp0=;
- b=AlLyFKurk82TV2MolgDh3TSvUWKNU0jk9QOYiAvwQrpuYrqTbJF1PWvhA6mDaRYJiuts3pdOMMbqhVKhRGSmbZkcnQYDLP95d9yoVldxg63hDhX3GjibOUZmOB455SMuLqcc6ARm3kt94dDM2j5CDz5FlsQn6uknuegnQlzFYGs=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from IA0PR12MB8301.namprd12.prod.outlook.com (2603:10b6:208:40b::13)
- by CY5PR12MB6551.namprd12.prod.outlook.com (2603:10b6:930:41::9) with
+ bh=DRs3XYJOYEDTeSMCyd7+htsKQ5oP0VOs+Cun73uka2E=;
+ b=iRmnX57i5tyZWxr3X5vAW5ICCq0FkNnixyHpOCa/c2JVPEb/oAu3mnNCJVUKLV6dKWmdg2GYiNLKvwOnOklbJOG4mvp3XcmfB10oD88oLt6Nv8bp0sA0q8QvWNuksxRyd5HBFDYIdPgmVrdeQcrsy/t0ZuByDHc+fpLnloskOOQ=
+Received: from BN8PR12CA0017.namprd12.prod.outlook.com (2603:10b6:408:60::30)
+ by SA0PR12MB4429.namprd12.prod.outlook.com (2603:10b6:806:73::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.11; Sat, 11 Oct
- 2025 18:04:44 +0000
-Received: from IA0PR12MB8301.namprd12.prod.outlook.com
- ([fe80::e929:57f5:f4db:5823]) by IA0PR12MB8301.namprd12.prod.outlook.com
- ([fe80::e929:57f5:f4db:5823%4]) with mapi id 15.20.9203.009; Sat, 11 Oct 2025
- 18:04:44 +0000
-Message-ID: <57e1b0de-00d4-4137-a56b-5135ece6736e@amd.com>
-Date: Sat, 11 Oct 2025 23:34:36 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 kvm-next] KVM: guest_memfd: use kvm_gmem_get_index() in
- more places and smaller cleanups
-To: Sean Christopherson <seanjc@google.com>
-Cc: pbonzini@redhat.com, david@redhat.com, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
-References: <20250902080307.153171-2-shivankg@amd.com>
- <aOlCBEw1DpdLlWA1@google.com>
-Content-Language: en-US
-From: "Garg, Shivank" <shivankg@amd.com>
-In-Reply-To: <aOlCBEw1DpdLlWA1@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BM1PR01CA0155.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:b00:68::25) To IA0PR12MB8301.namprd12.prod.outlook.com
- (2603:10b6:208:40b::13)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.11; Sun, 12 Oct
+ 2025 07:16:23 +0000
+Received: from BN1PEPF00004682.namprd03.prod.outlook.com
+ (2603:10b6:408:60:cafe::88) by BN8PR12CA0017.outlook.office365.com
+ (2603:10b6:408:60::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9203.12 via Frontend Transport; Sun,
+ 12 Oct 2025 07:16:23 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN1PEPF00004682.mail.protection.outlook.com (10.167.243.88) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9228.7 via Frontend Transport; Sun, 12 Oct 2025 07:16:23 +0000
+Received: from kaveri.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Sun, 12 Oct
+ 2025 00:16:20 -0700
+From: Shivank Garg <shivankg@amd.com>
+To: <pbonzini@redhat.com>, <seanjc@google.com>
+CC: <david@redhat.com>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <shivankg@amd.com>
+Subject: [PATCH V3 kvm-x86/gmem 1/2] KVM: guest_memfd: move kvm_gmem_get_index() and use in kvm_gmem_prepare_folio()
+Date: Sun, 12 Oct 2025 07:16:06 +0000
+Message-ID: <20251012071607.17646-1-shivankg@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8301:EE_|CY5PR12MB6551:EE_
-X-MS-Office365-Filtering-Correlation-Id: a2099eb4-e157-4887-094d-08de08f0a7ec
+X-MS-TrafficTypeDiagnostic: BN1PEPF00004682:EE_|SA0PR12MB4429:EE_
+X-MS-Office365-Filtering-Correlation-Id: e3622320-e0c1-467a-36bf-08de095f3fdc
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|36860700013|1800799024|13003099007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?OS9LV0d1cWsxcnJsb3pHNFNQK3ltaWxWQ283RmJzQUc1a3ZvRjJDWlE0RmlY?=
- =?utf-8?B?aG9zanVPL010K1V3Y2RWaEtUL0k3Qk5iV1ZuM0R1M2RxWUMrdnZZcURQYVNY?=
- =?utf-8?B?ZDBlWXc3RWNzWm5KTVZRVXNDVnE1bjYrbHdxeUZteFdiQ25ZQWhkaUV0elVz?=
- =?utf-8?B?OFZhQzJTRklHV3FQVFhyR0k2UFNoOGgrT0Y4MW0zU09qWXhoV1l2QzRnclZv?=
- =?utf-8?B?VW5kamV4MHl4L1Q0RlZVM21PZkdqQUl5ZXlZaGdieVJWWjdvYVBHaFNuemlS?=
- =?utf-8?B?Ry8xS1RCdjBCMTJScGVqTzFGTFBoOWkzY2tjazI0SUkra09QTVJWN0VtcWNR?=
- =?utf-8?B?Y2RYOGlDb1lJc3BHZFlEajRndDJXTnRoc0laNU1xb3dFVE9MaGdzMVphdHpm?=
- =?utf-8?B?SG1PM3BVOTlVTVhzMWkrNCtzR3lhaEptK1FFTnVjdWFKOHRoejErQXVEVTR6?=
- =?utf-8?B?Z1hWcWk0RG5GY05JSThqT3R6N29nTmpML213UXpGbnpzbklieDV6NUpUNnI1?=
- =?utf-8?B?WDROVWNlVmIzVUZHcy95aUQ1WUdacjlkeS9hNUhNRjJnRzI4bU9BQjVKTXg0?=
- =?utf-8?B?eFJsZXRyWHYzVC9ZS3hGVnJSNW1ndzZPYzJoOVltMEg1TnJEWlVMYnJjRDgx?=
- =?utf-8?B?RHBuYnZNSHQrWVJ5K01rR08zY25SYVcySFpnWGZzV1JkOXBqMHMwM25oQTlx?=
- =?utf-8?B?TzhsWmxSNGhGQnhpWUFuellzQ20zekwyZi8yWHhnRHdLRnlqeWN3SE4yWmo2?=
- =?utf-8?B?MWJ6WTlmclZScTJoT1lxbEhsczBuVzY4UzVQcmliNVBGaktHUGVHK1Z4VlJ5?=
- =?utf-8?B?SEZtUUFMZGRvSnFka0tiWUEvRmZDcDhHajRRMnZTTE1NVm1YNkRJS2t1YXBD?=
- =?utf-8?B?Z2VXZUJuSmc2V01xNEV5bjYvQ1daODFwNHI3dldHbVpSblJVL05rYWV2Y0tp?=
- =?utf-8?B?dng5TTQ3blptclNxd3NhamJQQm9remgwMEE3MkoxM0VrSVNlSExGVVBKamV2?=
- =?utf-8?B?ZGpZTHpSSnlvMk45TWNkbzY3YW1tREZSNHVKeTJEc1lyVFlNdUUyNVd1L1cy?=
- =?utf-8?B?SkdEbmVacGc1WjQzbmwxRDlzWk9XSklBWkUzNm5MTFlCejJqWFdyMUNDK0R6?=
- =?utf-8?B?VDhSRzJuVHBLcldyT3Y0cE1MZXF0WlFJK3dJTnRrTkdiN1FwcEo4ZHIydlR2?=
- =?utf-8?B?NllLUWtYL0xsVUFLSVZaVXBvZWJGOHVWQU0xSDBQZjFzUzdzOUEwWnVRdkx4?=
- =?utf-8?B?cjQ5bHh6a05QVTkvaEoyMSt2NjhwNmtoczdMbUt5dWxXMGJzVHl0dUNsWUJs?=
- =?utf-8?B?d0xTWnZ6bkdtVkFRdHdJQ2FCNFlXR2wvdW5pdFJQK0srVk5OYTk1dXRISUNz?=
- =?utf-8?B?N1JzY2xxVnRBbEUvcHh5cWxLRHdRT2pxRld4cWQxMWtFZmlDOGVBNmtNR3pB?=
- =?utf-8?B?bE1yMmNsak9OQ2xtdkV5T2NpNFBMOTB0QkhIeEo0a1FheGVMUUdOYnZXd0wx?=
- =?utf-8?B?V2pydFJWbGhoQ1p4amw1c2RvS2RGQmxyYmJiTzNnQS9UTzI3cTdIaFFzcDlZ?=
- =?utf-8?B?em1uNXFwWUVVdEU0aVkzYlpGdWJyYnM3emRCOTg3c0xXWVIwTUR0R3Bra1hy?=
- =?utf-8?B?b092MzhoOFJlY3ZvWTlnODhreVZqZ1JIWjFZMmJhM3d6cSsxZnlFNWF0L1FH?=
- =?utf-8?B?QjFJWHZNZ01VblpKQlR2K2ROMmtGYXJrOWMxcStRK2w3am0xWEkwQWxYY21W?=
- =?utf-8?B?NWlhRkJoVnhkTzM5bjJ4TDJ6ZlE2L1ExVEFQSitQOFdIQjVzNnJkM09zTzRB?=
- =?utf-8?B?SGZIMzB6NmtYb1RzQVdIcE1XcXpLdG9VTWdPYXZHQlJ5MzN3cjRZVzNhbThF?=
- =?utf-8?B?NmhNTythczRaYlRadTF4cHRLVGNyWExwYjlyeDZZQ3VPRnlIMzhWZXh5b1p6?=
- =?utf-8?Q?avoB2OZd+650T9BBmP1JwgN09VGNXuYG?=
+	=?us-ascii?Q?kiAfSyqoVBkWhvanJcUeYL/DPXf8IA4FuEprlzRDwH52Y23FguO1Na3jSDuD?=
+ =?us-ascii?Q?0XMLHrtdZKtchJffZAsPC7n5CvBaK78viDljgPygVpHbyhUhQ9UCbEVB3ORO?=
+ =?us-ascii?Q?jr611+pCGz1NtVrxnSNmUooUw88yDxzeVn1utMQl2sYsvCgDoOcicsgt3Ap4?=
+ =?us-ascii?Q?Vh2tjb4HuQaaF71JMyiFEJ2EjGkCuy1EHu/jRQJPw5n7cy9pfsI4J2GiJ7ej?=
+ =?us-ascii?Q?OjDuSrpPpMWp76g8tWVYQ7TyYX6RvXJdyBTrSeKfBdM5/Asa05EVlRKE5bkU?=
+ =?us-ascii?Q?Q8ZX3gygR9+p/2Pmo7u3pjnc1YpLjl1wdFzTm5TKBzBbSUEtmTSXkUUjNbOR?=
+ =?us-ascii?Q?0HebjmdpSLqOs8/i2c2Wyx3bZqJilO5EQMLpjzt7y6OBDXrOKQdv3782TstR?=
+ =?us-ascii?Q?9vi5KZfGEx5zKRGBkScGVd+s6vOmPyfgHOFT/xGqD80AaSAFirCOZto220o7?=
+ =?us-ascii?Q?S9VXCgPCdhLLqz2fmncr0ArfeFMxylL9iC6yosBTRJUrrhkTJwGNkGhVXgcf?=
+ =?us-ascii?Q?3T7ky/+o2yJFzfeegnhgzXDcY6Wbvqv0Omw9a3EwQK8K06IB3Dawi//NQ4q1?=
+ =?us-ascii?Q?NILCxEzmiP/QgnULImIm+afCSdfa4PMEZF0ndo+BenkVLgRiP4HGjtOylixd?=
+ =?us-ascii?Q?Lbv1wiuLYindysv5cm0wtW+/Yxv3ezWpMn7q45ViuRfdIDQAgq/VHCPtvDXS?=
+ =?us-ascii?Q?5p1kBBdsoSsFcsI+GxDmrw4DXic3WifQlM5CLgvO/DJa/Jqs7VbeIw7Qrpu5?=
+ =?us-ascii?Q?0/Uw0FX7KwUDLg1I68+SPKSst9plsU5k5UdndUXe7aqahgW0LFUv6wS/HSaq?=
+ =?us-ascii?Q?36CedzHabM69x26Y+J8oWmLml5hvAPVxuVp8Gon9d/ASLJmnKW/IWg4oiF/i?=
+ =?us-ascii?Q?7Qg6pBS5zi/ptX1K351MzkrG6OzokVwS20EOs9F6IiWRGyotjXU9+4l6exvd?=
+ =?us-ascii?Q?SCX2ecAAaivzQsICulpW4dqdfehzj/xQ9ZMLNE/YIw4eoF8H2TlCPBzhlNlc?=
+ =?us-ascii?Q?EixkK6E+kIVcxSzuS9QMmhUfw3JybLmzRfWvACzXvNs5w5t3YdpyEhJy/xZ2?=
+ =?us-ascii?Q?jlEf7khsTYkXLtfh26EYAv8zZDYrHV5CvKxtSgS7Vw8HNRdXIpEf8u32WLap?=
+ =?us-ascii?Q?JGdtbW2EodHMWGVWPsZCELx9gMSyfxqSY9fUoU1BwxPG2I2slwRp8F1ta/Wc?=
+ =?us-ascii?Q?wcN1to6UZUFvKdqip5dxzD6K3OubRQRU5rOhng5KA4JqUduSz/w+y9si9uUb?=
+ =?us-ascii?Q?W3mSZ3lX3CgRyYpMyKUTtlb9edRKNBPI320IHkluud8XNpdJINaQjskqqUrT?=
+ =?us-ascii?Q?zLdwouuEXqTbb3Y5iMYTROq1eOMK7Hd376UfXELZwJk9Dkm7XLiNCEVbZ3dI?=
+ =?us-ascii?Q?DJtarZD8xsbLwVfV+tdhD9m7oKIYOMf+ylcvKvR0c0LKiJacZ3Bm5EOEf46J?=
+ =?us-ascii?Q?t9z9GgiZU2N2Eo3ThFSsHI9pcV8nnmqer9j1AtbSti0+tz4rTkFhyULG2KIC?=
+ =?us-ascii?Q?Zw6hRFzxhBR7gzbws421uXQ5dzv7Ku0AgeJUkiQ0vZhpw9bDG3QYlRt/e2A4?=
+ =?us-ascii?Q?PvRdKqVlnIWA7JpCIAsNMHLPFtl62D6SehnZKWmS?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8301.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Z0pSVlRDbzRlUlJqcGtKZjJGNkdBSlhoakdiMGZYWmVSeWdzUnJJZnVDZWV3?=
- =?utf-8?B?ZzFUeHYrUmhIZ1A3RENDU3FBZ2pVc05NblFWQVplYjZsVU5tdVNiV1BLQVdi?=
- =?utf-8?B?S1o1emcrZElHZ3RlMnNpeTUveUZ6ZklrY2pyaHRoM1E0QnkySC9Eb2UwV2tD?=
- =?utf-8?B?ZmVhWVFVRFljZXA1UnE1aUJKMVk1Y0poay9vMER5VHRtaUx5dUNIaDNuUWp4?=
- =?utf-8?B?RFhialdDRXhiZGU4L1hQUG96YTZNczdEY0dWS0paQmdxckM1QTdHeXBOZEdj?=
- =?utf-8?B?NEloN2U2Z1JVWXlvUHhtZ25IMElxWTB3SXJQRGtOS2JVS0RHNUxJUUZEYXU4?=
- =?utf-8?B?VE03cUZYbEZFcnMxaGVwYUhSWFRNOUplK1gyR3hiVDhta25ZWUJHT0lTOG8x?=
- =?utf-8?B?T2pFcndPZUFuREZ1ZHBwTjErV1B2QVpHRWJwTjc2ZUphNkJHbWh4TFlRaXRn?=
- =?utf-8?B?OGZrczRUNjFsTUd3dG9NSC9jaWhHOTU5bklhUktTNFYxbDgwcHJCZ1ZuaWV1?=
- =?utf-8?B?TTVxUWszNmhtWXBYVHZ6NFBVYWZOaXh5d0RtUmdkUHR4Q2l3YzBTRUpjbnIz?=
- =?utf-8?B?dTgzblpuQnFOb3JwWFBJOVA5a3Z5c1hpa3NyNjJ3VXgvUCtja3c4VTdtZHVj?=
- =?utf-8?B?aHBOQ1I2c0NlRmhSbHM5aDZRdUFzcXUyVndpYjcyM2RmQjNHT2taemtMb0Qv?=
- =?utf-8?B?V2oxMTk0dDl6NTFxa0h2ZU9lSW01UmVqSlhwa2VndW5JbG5CVnFCN0Q4YW9F?=
- =?utf-8?B?cTBFQnU3bkFVRGpYa2x3TG9RTUNNWWp3L2N6SlFpdG5vRnBZUkFFdU9yZG9I?=
- =?utf-8?B?c0xCb24ycFVYVHAwSVM1bDYwMmtrR1B2TFRwcENtWlFiZnFqcVROWmdIdkhB?=
- =?utf-8?B?ZmpNRVFuTDdLVmJmeUxqdEV6azFKelhnMytFS09SNXUwWnFCRHhBeXNDYUc3?=
- =?utf-8?B?MDJJa3k4ZTlueTJKY0VQemFmd3pyamIzcG9qTDBkOEdWMjZWWTlONGd6cGdz?=
- =?utf-8?B?NkxuV2hlR1g1b3VFU095cS82S3V1VjV0VHBuREJUYXlBbDdseGZVcE5uc2ZM?=
- =?utf-8?B?aHFYTzBRaVgycEc3Z0JVcnZpcVAyV2hJMVp1c3FYSFUxdkxneXdYbEpjMkVl?=
- =?utf-8?B?R3k5b29lb09uYkxDSHlBdG01L3ZDQ3hnYndIcWlBZ2ZWaE9VOWtuMko0S3dJ?=
- =?utf-8?B?QXFsNzZPVkNsMzdhZGRmMHV4UjZFNHdZYUZwNVNtbjdtWExiUjJMdERNZ1VL?=
- =?utf-8?B?RXFCdC9XVjY3RitQSkRmRVZia2pjRnNMOFhmWmxPRGxkdDFvamFPSm1tS1Na?=
- =?utf-8?B?Q0hRWmVSZkRVdXdvUDhuL0JuTG9PMGViZE4zMm1OZEpWUXE0cHVkMEVtc0RC?=
- =?utf-8?B?bHdjSXl6cXFVQ2M3bTdQa1htenVHY0Ivd1Q5R1IreERGN0g1K2hqZzN6Y3Zz?=
- =?utf-8?B?ZWJSSHUwcDRaRFpEWlQ3VytPd1VSY3lHTkVoUWFSUDU2VzRnWTc3TmllTjJG?=
- =?utf-8?B?eW9qMW4zdVU2ZWswbUZHQ2NFVkwvYXd0N29NS3Riak5rY1l4Rnd3Z3JETmxm?=
- =?utf-8?B?eW1XNVlYYWlIYnZVanBWNlBQa3JPTTYxNm1pbkJlSW5PYUpXK0d5TUQvelZI?=
- =?utf-8?B?bk4xU3B4OE55d2czZW1NSW1wU3VqM25XQUprMk83UFpVemlYekl5MzNzTXZq?=
- =?utf-8?B?Vy82a3ZDZ3pGYTg3SW9udDlNUGZuYXpOdU90WURjL3JXZzVwK0FvUUMvZFZn?=
- =?utf-8?B?eUlpYWhYK2x4R2VuamN2ZThQT0IvRG5KdHpwRWxYUGVuVVlGelRaL3h2R25F?=
- =?utf-8?B?NVJ2bVdHVlBtY2RpSkN3VXNVc1RBUElKV1p0OFVqOXZTWkg2cUY2VG91alJq?=
- =?utf-8?B?Q21JMmpWRnZiVDBWL0duK2ZPaXNZK1FOUUJFSlU4Q0xPWThOSzVKamlTRjli?=
- =?utf-8?B?b3dQS0Rmc2tBbGQ0MUpiNFE2MDd4Mkk3U1hLaXEydGpYQ2VsVTVZWVFTMm5z?=
- =?utf-8?B?dFRRVkJUWHBXbytjdjdwNWlnNXRZWit5NGczQVorekF6eW1FUENpZ0czTUlw?=
- =?utf-8?B?ODNXTDI2OFdOQitJd0tJZmlJb2c1b0EyNlJxUTFmMW92ajJwL1MyM0NQZUph?=
- =?utf-8?Q?UxvpeTv/3zWLiZjkyH6pfKCeF?=
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700013)(1800799024)(13003099007);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a2099eb4-e157-4887-094d-08de08f0a7ec
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8301.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2025 18:04:44.3344
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2025 07:16:23.0715
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: e3622320-e0c1-467a-36bf-08de095f3fdc
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zwgYgdO1peDaDt5Y7FR3CF8eTQObeZEm1bkmKQhYjaK/e5F6p4n8rpX8KcGVM5I3MxYvh+rxsQfQDnF+6IhBsQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6551
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF00004682.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4429
 
+Move kvm_gmem_get_index() to the top of the file so that it can be used
+in kvm_gmem_prepare_folio() to replace the open-coded calculation.
 
+No functional change intended.
 
-On 10/10/2025 10:57 PM, Sean Christopherson wrote:
-> TL;DR: Please split this into three patches, call out the use of
-> kvm_gmem_get_index() in kvm_gmem_prepare_folio, and unless someone feels strongly
-> about the ULONG_MAX change, just drop it.
-> 
-> On Tue, Sep 02, 2025, Shivank Garg wrote:
->> Move kvm_gmem_get_index() to the top of the file and make it available for
->> use in more places.
-> 
-> Not just "in more places", specifically for kvm_gmem_prepare_folio().  And this
-> also has kvm_gmem_prepare_folio() _use_ the helper.  That detail matters, because
-> without having actual user, such code movement would be completely arbitrary and
-> likely pointless churn.  E.g. AFAICT, it's not needed for the NUMA support or
-> even for the WIP-but-functional in-place conversion patches I have.
-> 
->> Remove redundant initialization of the gmem variable because it's already
->> initialized.
->>
->> Replace magic number -1UL with ULONG_MAX.
-> 
-> This is quite clearly three distinct patches.  Yes, they're trivial, but that's
-> exactly why they should be split up: it takes so, so little brain power to review
-> super trivial patches.  Bundling such patches together almost always increases
-> the total review cost relative to if they are split up.  I.e. if split, the cost
-> is A + B + C, but bundled together, the cost is A + B + C + X, where 'X' is the
-> extra effort it takes to figure out what changes go with what part of the changelog.
-> And sometimes (and for me, it's the case here), X > A + B + C, which makes for
-> grumpy reviewers.
-> 
-> Case in point, it took me way too long to spot the new use of kvm_gmem_get_index()
-> in kvm_gmem_prepare_folio(), due to the noise from the other changes getting in
-> the way.
-> 
-> More importantly, bundling things together like this makes it an all-or-nothing
-> proposition.  That matters, because I don't want to take the ULONG_MAX change.
-> The -1 pattern is meaningful (at least, IMO), as KVM is very specifically
-> invalidating 0 => 0xffffffff_ffffffff.  I don't love hiding those details behind
-> ULONG_MAX.  I realize it's a somewhat silly position, because xarray uses ULONG_MAX
-> for it's terminal value, but it gets weird in the guest_memfd code because @end is
-> used for both the xarray and for gfn range sent over to KVM.
-> 
-> Amusingly, the -1UL is also technically wrong, because @end is exclusive.  AFAIK
-> it's not actually possible to populate offset -1, so it's a benign off-by-one,
-> but I think super duper technically, we would want something absurd like this:
-> 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index cfbb2f1aa1ab..f4d15cda2029 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -231,12 +231,13 @@ static void __kvm_gmem_invalidate_begin(struct gmem_file *f, pgoff_t start,
->                                         pgoff_t end,
->                                         enum kvm_gfn_range_filter attr_filter)
->  {
-> +       pgoff_t last  = end == -1UL ? ULONG_MAX : end;
->         bool flush = false, found_memslot = false;
->         struct kvm_memory_slot *slot;
->         struct kvm *kvm = f->kvm;
->         unsigned long index;
->  
-> -       xa_for_each_range(&f->bindings, index, slot, start, end - 1) {
-> +       xa_for_each_range(&f->bindings, index, slot, start, last) {
->                 pgoff_t pgoff = slot->gmem.pgoff;
->  
->                 struct kvm_gfn_range gfn_range = {
-> 
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Shivank Garg <shivankg@amd.com>
+---
 
+Changelog:
+V3:
+- Split into distinct patches per Sean's feedback, drop whitespace and
+  ULONG_MAX change.
+V2:
+- https://lore.kernel.org/all/20250902080307.153171-2-shivankg@amd.com
+- Incorporate David's suggestions.
+V1:
+- https://lore.kernel.org/all/20250901051532.207874-3-shivankg@amd.com
 
-Thanks for the detailed feedback and review, Sean.
-I didn't think enough about this from a reviewer/maintainer's perspective.
-I'll split this up, make suggested changes, drop the ULONG_MAX
-change, and rebase on kvm-x86 gmem for v3.
+ virt/kvm/guest_memfd.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Thanks again,
-Shivank
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index fbca8c0972da..22dacf49a04d 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -25,6 +25,11 @@ static inline kvm_pfn_t folio_file_pfn(struct folio *folio, pgoff_t index)
+ 	return folio_pfn(folio) + (index & (folio_nr_pages(folio) - 1));
+ }
+ 
++static pgoff_t kvm_gmem_get_index(struct kvm_memory_slot *slot, gfn_t gfn)
++{
++	return gfn - slot->base_gfn + slot->gmem.pgoff;
++}
++
+ static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 				    pgoff_t index, struct folio *folio)
+ {
+@@ -78,7 +83,7 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 	 * checked when creating memslots.
+ 	 */
+ 	WARN_ON(!IS_ALIGNED(slot->gmem.pgoff, 1 << folio_order(folio)));
+-	index = gfn - slot->base_gfn + slot->gmem.pgoff;
++	index = kvm_gmem_get_index(slot, gfn);
+ 	index = ALIGN_DOWN(index, 1 << folio_order(folio));
+ 	r = __kvm_gmem_prepare_folio(kvm, slot, index, folio);
+ 	if (!r)
+@@ -335,11 +340,6 @@ static inline struct file *kvm_gmem_get_file(struct kvm_memory_slot *slot)
+ 	return get_file_active(&slot->gmem.file);
+ }
+ 
+-static pgoff_t kvm_gmem_get_index(struct kvm_memory_slot *slot, gfn_t gfn)
+-{
+-	return gfn - slot->base_gfn + slot->gmem.pgoff;
+-}
+-
+ static bool kvm_gmem_supports_mmap(struct inode *inode)
+ {
+ 	const u64 flags = (u64)inode->i_private;
+-- 
+2.43.0
+
