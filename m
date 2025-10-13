@@ -1,121 +1,131 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB20239E80
-	for <linux-coco@lists.linux.dev>; Mon, 13 Oct 2025 14:04:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A059C23D7EF
+	for <linux-coco@lists.linux.dev>; Mon, 13 Oct 2025 14:23:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760364282; cv=none; b=s7vDVsbjZG8TzUG4cyzS4lpFWVLk4xIwP+ln0CEtECNthY6sNOQHVVlhBYwXk5I4+7IDKppvtuZaVZzjo0C7xBoS4+V/EQfVaysdEWcUkQxaSGVT2Rpghaad8ll+eybARS+9e+iGqd7iC8QwPIyzCp4uyQJU2EpcV03M+9Of2zU=
+	t=1760365414; cv=none; b=JXpbmHtnL7GeErqydAc3MEbw0MI4bQqyvMHvoj6liYCCfSknv49aZY/DScgtC+70ffn7zUzDdQVuEiDxSGc0OlgSpAGOwQOzXlmx/on8215wuLIyrgrqVGZ9s7wapdW1hrcokAxayC+uPzWDWxiwzStHa0kp2ivQUp7O9LRvfXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760364282; c=relaxed/simple;
-	bh=k7Wnh0MDFRkiNum8Z2X+Q1EMJvXMBuyi/5gO1W0mwIk=;
+	s=arc-20240116; t=1760365414; c=relaxed/simple;
+	bh=dJqtEcjgvo9hPngB+YtUypzu7HzbSy5gU34M7TIkozU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ie4XqhjB/2xKP/mtX/TXvt9aPJH0D6hrM4hYGz6JanxSk/OtUodKNyORO3kla/YqCT9JAwIaMxkHCu+ThHIGo7XhKsODgUZD2QmSsrEGurKjJeKOWtp7IrIKNWKvjQ8A0igL3NtwFHGblm01EZGk7pti/t8U56tiRsWS7VKqTBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tu3UG9wD; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=qbUnVHRojx7EDpAE/1X0GpcKgdQjBHz9KM/fDbbJNHkDVJQWzTCzfMpZEooAhqs/LIY9jfI6PhvvEJt3WxmwRakpIG35Ho86ComhTi6Jt3xhdzkjRlHZL/1pfo91bXiusSO30fpFFc6JUmskvhKeLZc6Uh/PKn9cFdqKOdjhPkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=18Mc6K9k; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tu3UG9wD"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-27ee214108cso172897995ad.0
-        for <linux-coco@lists.linux.dev>; Mon, 13 Oct 2025 07:04:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="18Mc6K9k"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-32ee62ed6beso12924926a91.2
+        for <linux-coco@lists.linux.dev>; Mon, 13 Oct 2025 07:23:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760364278; x=1760969078; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1760365412; x=1760970212; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TXpOOr+C08LiSxfY7wTnlbBjPJg18+PGY+BCgjJ/7/c=;
-        b=tu3UG9wDzVCbeyb1bs0bPwBJm0WE0SdBue+SJKm4jcrqu5/wny+bb0do10Dt57+et2
-         DGb1kE6rtvCHAAx2zGVJkJypEg/z17OIEHgHsPa2FVQIZQpNSG/RSl+jhbL8ZAI8zDGO
-         pM9pfPGA5iKc4+MJ8uxJGkWWjWWZTyWsWLfXq/SjcNSS1Z6LhKgdOh/twY78NKLwNSke
-         QbpsEt/cKH3751R68gz+wItbodF2i6xnCcmLPNCYicmVpDlh4FBa04IlmFZKcDnVvnu3
-         08EqzkrgcrLL9fiSB+9ENwdcTZCkCkXG/i/lN5LPcL81saE7+ThK+p/Q9RcSYMWiPZaW
-         JCrQ==
+        bh=/IA0q+BCGyp+0QkRiU+mRotiQ2wwtZhT82w0C29Tzhk=;
+        b=18Mc6K9kO7y0hHoTcSPJOt0JvkWNbk+gxsjGvwe4VBjNFUpbPr40xzdHEu4VjS81R4
+         qp+sy6AOvPk2jkGEqg/Q2u15wrRW2+v77SEhQEATA2UFJkpXrNwTrFjpRYx58EBqlvtq
+         8slg3vL5EPj7mXNW+5XQkDIuQKZxdIX8CwljGIeDImrJG8UrhWIBfyapmYO/RJZXUdRK
+         OnLHld4qI0v4mFdLR7WLsALOYdIo5S6CBT1ppFRjC2NkRZiPVFe5HLpIcz+OFDcyhVkl
+         VyKX+N7qC1jAeEgaEFNUcaTjV1XcYTLysstFaFXzyXLeN5159CzWtpr6FsUdj8g+YK/k
+         5eGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760364278; x=1760969078;
+        d=1e100.net; s=20230601; t=1760365412; x=1760970212;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TXpOOr+C08LiSxfY7wTnlbBjPJg18+PGY+BCgjJ/7/c=;
-        b=s6FPtqQBZzR1vW4FyObIExT/0kiPjOGP28RJlM6Tej9vPtKWDaPsGK4+5mvTQ7BUMX
-         3wBYbINnZMhmy5dS4Mcg7gTAs9CH3jQN59gQ0fDKxKo/1ophYsxwkGAmhBfqJ3EjdlnM
-         GDQiUAe5YiA7BgfuLp53MDTpvvA3o8InOaXghoJE+KJnuZFMg/34EwevOO1Awt4eSM4I
-         UjLa6V6AelUW6beUbkGoFMEy8mim6eggRM/HNLFSRskOCdvDumvGehxGHORlCoB2/NRZ
-         c5zJwz7N7Qq08tzymR1/n9cvJXJY7tSAuFVpi1j4uYWoEXYcvxTlPpCOB15lFrot39Wv
-         kJew==
-X-Forwarded-Encrypted: i=1; AJvYcCXruHcivbdG3gWLiY3NxNU+EKY7XB8TsIuJqJQNFpVIibME4vSKhC0dc87fbX72FTT8zun2R6irYF8E@lists.linux.dev
-X-Gm-Message-State: AOJu0YxXWgaImfDjfeNR9IEuVdri4wJYIzJGrHE7/fnfJtrEtrrdRD7D
-	GZ0GDD9YfOsxxLf1iJFgNesMu178/uHSaMa4no5XN+tK6JsnVVSxf06mPD6kWyuEbNLXvFZt4DK
-	gZxpRFw==
-X-Google-Smtp-Source: AGHT+IHwYmKV6bklpg5vtbSKVTRl7C6XEgSh9a6Y5HHFfYZD2Yg6qM+/GQ0Os6vJiLGLtryEtk6AaBRhVnQ=
-X-Received: from pjbst8.prod.google.com ([2002:a17:90b:1fc8:b0:330:523b:2b23])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:910:b0:258:9d26:1860
- with SMTP id d9443c01a7336-290273ffeb7mr293116575ad.40.1760364278498; Mon, 13
- Oct 2025 07:04:38 -0700 (PDT)
-Date: Mon, 13 Oct 2025 07:04:37 -0700
-In-Reply-To: <20251012071607.17646-1-shivankg@amd.com>
+        bh=/IA0q+BCGyp+0QkRiU+mRotiQ2wwtZhT82w0C29Tzhk=;
+        b=Gf95TeIDwJsAgXsc2mQVR+584lGFFglDs03uJZP7PB0OQlbNGY9Aj80DbvTXjSCjU0
+         8A8/Nk+ZUutwyzEJ2teWoFm3xQmGSRKmEy4Q0x9q14/t52IQz7qLzef+8cT7dxNLaahN
+         w1fi1kdZNtRWHlTWPu3yehpGzrLeO3MwZ4+2vDYuBDgWFvgeA1rBOTZwp3saKoOVaAc1
+         uqCtUzQZ7zhLHR84FgAJVi7pUAC2qPgVfY+3vVfgt7FHmoTsVpxw3tGy61gbHIzdCnY4
+         GWSgl8dHwxyGq0K0LwozrHJZRXjvEHxpDGiXg425vJovrJq9xRn/B3MYafPyPFLm2o1s
+         2GRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWJj71guCncNJAtUGrLNpjtIjx4lRvJnUM1YkLjGEtWkEWtsnZ7GgI8TQIhV9jYkRTMiQCqkJmKvW2G@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw6UsVwleK1GBFSPgpqP0+Rn1UpfpprUGX6vF+lUmwMGSFIeig1
+	IjP62X43yqqUAITFsFakPDPlQNi87S8c2RtZwgVAMdwiHNdWnRqYsrPsaf2DJfcbXWVnMXA/kY/
+	swN7RHQ==
+X-Google-Smtp-Source: AGHT+IEtt/r42k36nNjq1mgNkzGtA8MgFLr+mcoAjoS9JXR/HT4Da0zxS7NKvGB/ApBa7EI/8Iui2bia50k=
+X-Received: from pjrx21.prod.google.com ([2002:a17:90a:bc95:b0:33b:51fe:1a81])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1d89:b0:32e:c649:e583
+ with SMTP id 98e67ed59e1d1-33b513b3e14mr24273677a91.22.1760365411945; Mon, 13
+ Oct 2025 07:23:31 -0700 (PDT)
+Date: Mon, 13 Oct 2025 07:23:30 -0700
+In-Reply-To: <aOz1X4ywkG3nG2Up@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20251012071607.17646-1-shivankg@amd.com>
-Message-ID: <aO0G9Ycu_SlISBih@google.com>
-Subject: Re: [PATCH V3 kvm-x86/gmem 1/2] KVM: guest_memfd: move
- kvm_gmem_get_index() and use in kvm_gmem_prepare_folio()
+References: <20251010220403.987927-1-seanjc@google.com> <20251010220403.987927-4-seanjc@google.com>
+ <aOz1X4ywkG3nG2Up@intel.com>
+Message-ID: <aO0LYuzdRHsB7aPj@google.com>
+Subject: Re: [RFC PATCH 3/4] KVM: x86/tdx: Do VMXON and TDX-Module
+ initialization during tdx_init()
 From: Sean Christopherson <seanjc@google.com>
-To: Shivank Garg <shivankg@amd.com>
-Cc: pbonzini@redhat.com, david@redhat.com, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+To: Chao Gao <chao.gao@intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"Kirill A. Shutemov" <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	Dan Williams <dan.j.williams@intel.com>, Xin Li <xin@zytor.com>, 
+	Kai Huang <kai.huang@intel.com>, Adrian Hunter <adrian.hunter@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 
-FWIW, there's no need to put the base (target?) branch in the subject.  The
-branch name is often incomplete information; by the time someone goes to apply
-the patch, the branch may have changed significantly, or maybe have even been
-deleted, e.g. I use ephemeral topic branch for kvm-x86 that get deleted once
-their content is merge to kvm/next.
+On Mon, Oct 13, 2025, Chao Gao wrote:
+> >-static int __tdx_enable(void)
+> >+static __init int tdx_enable(void)
+> > {
+> >+	enum cpuhp_state state;
+> > 	int ret;
+> > 
+> >+	if (!cpu_feature_enabled(X86_FEATURE_XSAVE)) {
+> >+		pr_err("XSAVE is required for TDX\n");
+> >+		return -EINVAL;
+> >+	}
+> >+
+> >+	if (!cpu_feature_enabled(X86_FEATURE_MOVDIR64B)) {
+> >+		pr_err("MOVDIR64B is required for TDX\n");
+> >+		return -EINVAL;
+> >+	}
+> >+
+> >+	if (!cpu_feature_enabled(X86_FEATURE_SELFSNOOP)) {
+> >+		pr_err("Self-snoop is required for TDX\n");
+> >+		return -ENODEV;
+> >+	}
+> >+
+> >+	state = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "virt/tdx:online",
+> >+				  tdx_online_cpu, tdx_offline_cpu);
+> >+	if (state < 0)
+> >+		return state;
+> >+
+> > 	ret = init_tdx_module();
+> 
+> ...
+> 
+> >@@ -1445,11 +1462,6 @@ void __init tdx_init(void)
+> > 		return;
+> > 	}
+> > 
+> >-#if defined(CONFIG_ACPI) && defined(CONFIG_SUSPEND)
+> >-	pr_info("Disable ACPI S3. Turn off TDX in the BIOS to use ACPI S3.\n");
+> >-	acpi_suspend_lowlevel = NULL;
+> >-#endif
+> >-
+> > 	/*
+> > 	 * Just use the first TDX KeyID as the 'global KeyID' and
+> > 	 * leave the rest for TDX guests.
+> >@@ -1458,22 +1470,30 @@ void __init tdx_init(void)
+> > 	tdx_guest_keyid_start = tdx_keyid_start + 1;
+> > 	tdx_nr_guest_keyids = nr_tdx_keyids - 1;
+> > 
+> >+	err = tdx_enable();
+> >+	if (err)
+> >+		goto err_enable;
+> 
+> IIRC, existing TDX modules require all CPUs to have completed per-CPU
+> initialization before TDMR/PAMT initialization.
+> 
+> But at this point, APs are not online, so tdx_enable() will fail here.
 
-From Documentation/process/maintainer-kvm-x86.rst, my strong preference is that
-contributors always use kvm-x86/next as the base branch,
-
-  Base Tree/Branch
-  ~~~~~~~~~~~~~~~~
-  Fixes that target the current release, a.k.a. mainline, should be based on
-  ``git://git.kernel.org/pub/scm/virt/kvm/kvm.git master``.  Note, fixes do not
-  automatically warrant inclusion in the current release.  There is no singular
-  rule, but typically only fixes for bugs that are urgent, critical, and/or were
-  introduced in the current release should target the current release.
-  
-  Everything else should be based on ``kvm-x86/next``, i.e. there is no need to
-  select a specific topic branch as the base.  If there are conflicts and/or
-  dependencies across topic branches, it is the maintainer's job to sort them
-  out.
-  
-  The only exception to using ``kvm-x86/next`` as the base is if a patch/series
-  is a multi-arch series, i.e. has non-trivial modifications to common KVM code
-  and/or has more than superficial changes to other architectures' code.  Multi-
-  arch patch/series should instead be based on a common, stable point in KVM's
-  history, e.g. the release candidate upon which ``kvm-x86 next`` is based.  If
-  you're unsure whether a patch/series is truly multi-arch, err on the side of
-  caution and treat it as multi-arch, i.e. use a common base.
-
-and then use the --base option with git format-patch to capture the exact hash.
-
-  Git Base
-  ~~~~~~~~
-  If you are using git version 2.9.0 or later (Googlers, this is all of you!),
-  use ``git format-patch`` with the ``--base`` flag to automatically include the
-  base tree information in the generated patches.
-  
-  Note, ``--base=auto`` works as expected if and only if a branch's upstream is
-  set to the base topic branch, e.g. it will do the wrong thing if your upstream
-  is set to your personal repository for backup purposes.  An alternative "auto"
-  solution is to derive the names of your development branches based on their
-  KVM x86 topic, and feed that into ``--base``.  E.g. ``x86/pmu/my_branch_name``,
-  and then write a small wrapper to extract ``pmu`` from the current branch name
-  to yield ``--base=x/pmu``, where ``x`` is whatever name your repository uses to
-  track the KVM x86 remote.
-
-My pushes to kvm-x86/next are always --force pushes (it's rebuilt like linux-next,
-though far less frequently), but when pushing, I also push a persistent tag so
-that the exact object for each incarnation of kvm-x86/next is reachable.  Combined
-with --base, that makes it easy to apply a patch/series even months/years after
-the fact (assuming I didn't screw up or forget the tag).
+Ah.  Maybe invoke tdx_enable() through a subsys_initcall() then?
