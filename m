@@ -1,67 +1,67 @@
 Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A059C23D7EF
-	for <linux-coco@lists.linux.dev>; Mon, 13 Oct 2025 14:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975A026FA57
+	for <linux-coco@lists.linux.dev>; Mon, 13 Oct 2025 17:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760365414; cv=none; b=JXpbmHtnL7GeErqydAc3MEbw0MI4bQqyvMHvoj6liYCCfSknv49aZY/DScgtC+70ffn7zUzDdQVuEiDxSGc0OlgSpAGOwQOzXlmx/on8215wuLIyrgrqVGZ9s7wapdW1hrcokAxayC+uPzWDWxiwzStHa0kp2ivQUp7O9LRvfXk=
+	t=1760377763; cv=none; b=nFye3+q2d+X8u8zJTAlWZpmcEf+g7pSAmsm/XqmAgQD104XeLoMOWsXJF/ILGa2r8IVD0SKp5OHTUNRWJ+a5ArdUPBZTH5c9da/quzPtoMW5W++bkqH9TNctXGqTMwHAeUaCWW3hwwyu+GPXU2Dkxr2UiAjH4sOA607JeqtQECI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760365414; c=relaxed/simple;
-	bh=dJqtEcjgvo9hPngB+YtUypzu7HzbSy5gU34M7TIkozU=;
+	s=arc-20240116; t=1760377763; c=relaxed/simple;
+	bh=YpOrvarDsgX+BoUcJp30a+73+gS1d+gCoNWkzrol2Qg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qbUnVHRojx7EDpAE/1X0GpcKgdQjBHz9KM/fDbbJNHkDVJQWzTCzfMpZEooAhqs/LIY9jfI6PhvvEJt3WxmwRakpIG35Ho86ComhTi6Jt3xhdzkjRlHZL/1pfo91bXiusSO30fpFFc6JUmskvhKeLZc6Uh/PKn9cFdqKOdjhPkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=18Mc6K9k; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=DYr9/krVIvx4nsgo3Jlq4I5KhhaHW+AO3dyoHnbXN177LM7Q93b+L9g423ePNu/xO7czW4zuQEv9U547eOhrnYLrdSNcwcJwRdgIPsaE7E6+Rwb99S9/ytZUDq2nGppt/5ICX2gAsoTstmCCHPT0lc0k0q5LYfof9Ou4VcIbh/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LyLbc737; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="18Mc6K9k"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-32ee62ed6beso12924926a91.2
-        for <linux-coco@lists.linux.dev>; Mon, 13 Oct 2025 07:23:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LyLbc737"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-33428befd39so19932935a91.0
+        for <linux-coco@lists.linux.dev>; Mon, 13 Oct 2025 10:49:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760365412; x=1760970212; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1760377761; x=1760982561; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/IA0q+BCGyp+0QkRiU+mRotiQ2wwtZhT82w0C29Tzhk=;
-        b=18Mc6K9kO7y0hHoTcSPJOt0JvkWNbk+gxsjGvwe4VBjNFUpbPr40xzdHEu4VjS81R4
-         qp+sy6AOvPk2jkGEqg/Q2u15wrRW2+v77SEhQEATA2UFJkpXrNwTrFjpRYx58EBqlvtq
-         8slg3vL5EPj7mXNW+5XQkDIuQKZxdIX8CwljGIeDImrJG8UrhWIBfyapmYO/RJZXUdRK
-         OnLHld4qI0v4mFdLR7WLsALOYdIo5S6CBT1ppFRjC2NkRZiPVFe5HLpIcz+OFDcyhVkl
-         VyKX+N7qC1jAeEgaEFNUcaTjV1XcYTLysstFaFXzyXLeN5159CzWtpr6FsUdj8g+YK/k
-         5eGg==
+        bh=LukZPy5/CZdWHCV/h7XbMjLCjzkVUD5w5QgJZZyHQqI=;
+        b=LyLbc737pGizUNknK5Sm5DGw3h1tIRk9aELViEzR9e3cWD/OWkL7GLBEnFGNh8TSqh
+         nrioVtQcWKRJvqWqKZaaSLO2j5hYyvVLrSf8HjrzTgkBeI6/cf3OAYNUw0rNClPDGzoJ
+         ZBNCsai3I2XM5WBYGpyrLqtMs7lx38pnyNS+JuyHGOXhBAYwgwPnS+XKXT2CHSgbZepU
+         rwK770WSXftL/qXuKj6afJkNekH7dJops1hca0gmPnTPRw7jxghKum8q19i3U95QEtrO
+         JRm5s0yHeTijt086+BtacOOWPgGyg918yzGilknmLJXkpipvlz3H3xaalXWopYAauwKo
+         hRPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760365412; x=1760970212;
+        d=1e100.net; s=20230601; t=1760377761; x=1760982561;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/IA0q+BCGyp+0QkRiU+mRotiQ2wwtZhT82w0C29Tzhk=;
-        b=Gf95TeIDwJsAgXsc2mQVR+584lGFFglDs03uJZP7PB0OQlbNGY9Aj80DbvTXjSCjU0
-         8A8/Nk+ZUutwyzEJ2teWoFm3xQmGSRKmEy4Q0x9q14/t52IQz7qLzef+8cT7dxNLaahN
-         w1fi1kdZNtRWHlTWPu3yehpGzrLeO3MwZ4+2vDYuBDgWFvgeA1rBOTZwp3saKoOVaAc1
-         uqCtUzQZ7zhLHR84FgAJVi7pUAC2qPgVfY+3vVfgt7FHmoTsVpxw3tGy61gbHIzdCnY4
-         GWSgl8dHwxyGq0K0LwozrHJZRXjvEHxpDGiXg425vJovrJq9xRn/B3MYafPyPFLm2o1s
-         2GRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWJj71guCncNJAtUGrLNpjtIjx4lRvJnUM1YkLjGEtWkEWtsnZ7GgI8TQIhV9jYkRTMiQCqkJmKvW2G@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw6UsVwleK1GBFSPgpqP0+Rn1UpfpprUGX6vF+lUmwMGSFIeig1
-	IjP62X43yqqUAITFsFakPDPlQNi87S8c2RtZwgVAMdwiHNdWnRqYsrPsaf2DJfcbXWVnMXA/kY/
-	swN7RHQ==
-X-Google-Smtp-Source: AGHT+IEtt/r42k36nNjq1mgNkzGtA8MgFLr+mcoAjoS9JXR/HT4Da0zxS7NKvGB/ApBa7EI/8Iui2bia50k=
-X-Received: from pjrx21.prod.google.com ([2002:a17:90a:bc95:b0:33b:51fe:1a81])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1d89:b0:32e:c649:e583
- with SMTP id 98e67ed59e1d1-33b513b3e14mr24273677a91.22.1760365411945; Mon, 13
- Oct 2025 07:23:31 -0700 (PDT)
-Date: Mon, 13 Oct 2025 07:23:30 -0700
-In-Reply-To: <aOz1X4ywkG3nG2Up@intel.com>
+        bh=LukZPy5/CZdWHCV/h7XbMjLCjzkVUD5w5QgJZZyHQqI=;
+        b=Xifqgg+gquEf5EUj7G0yowTB9uhE9KppJ6IfvQAClEzZt8k2IALM9dYmL08LhxJ4UF
+         /i1PvRwk9myKKAfH6EcyVao2ZisGRdqH1BKzJnx8js6uYtP8YGb15f3I8OR4qADnZwEf
+         L2clFU68E0s2R7Mg1SIWs9sdb1qhT/EN4lDvykkDAjhcOIQ12pmsDD0v5wjfIXiaoRDx
+         Mp5XjHW7LiTsMJf3MMK4ah1g5Uc/1KXt0UCL9nX4f58D4hFdghT5EUoGbJOMj3x8NxUC
+         7zdvERZ7Xcj0kh/o1pITYSAKj51hPVJjAkg2YDjfXvydtlHttmdlXbtc6W1WI8aMN94m
+         55lg==
+X-Forwarded-Encrypted: i=1; AJvYcCVcA9tc/zBUMKRrjOtjPdGt2CyJHiLoywgNfqKsIGqwaKsCEl5Gpi1cKpX8N05w43ii+UmXdtbhrTHU@lists.linux.dev
+X-Gm-Message-State: AOJu0YzKLe4GQGV5p+9xMieCMxdkYIcrdUMEIdIZcUSK/fj2T7E61E8N
+	NdENyjCpnknEYF26TC6QfREYlMtfhcyr5MJDOwQsHJu0+xwpKWJmLlm5Xe/ECKyTSF7oi+x3LR7
+	Bjumr5g==
+X-Google-Smtp-Source: AGHT+IEHWN8e42GwQBxFY89j15A3l2TcV+QryJNJewInavabM7dzmeX+taQwOLPmxj1PdL/WYv3lcA396qk=
+X-Received: from pjbfr8.prod.google.com ([2002:a17:90a:e2c8:b0:32d:57a8:8ae6])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1b50:b0:32d:a0f7:fa19
+ with SMTP id 98e67ed59e1d1-33b51375940mr33870345a91.17.1760377760845; Mon, 13
+ Oct 2025 10:49:20 -0700 (PDT)
+Date: Mon, 13 Oct 2025 10:49:19 -0700
+In-Reply-To: <aOz8gHzmZ8PdsgNw@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20251010220403.987927-1-seanjc@google.com> <20251010220403.987927-4-seanjc@google.com>
- <aOz1X4ywkG3nG2Up@intel.com>
-Message-ID: <aO0LYuzdRHsB7aPj@google.com>
-Subject: Re: [RFC PATCH 3/4] KVM: x86/tdx: Do VMXON and TDX-Module
- initialization during tdx_init()
+References: <20251010220403.987927-1-seanjc@google.com> <20251010220403.987927-3-seanjc@google.com>
+ <aOz8gHzmZ8PdsgNw@intel.com>
+Message-ID: <aO07n_1LYtY8Oio6@google.com>
+Subject: Re: [RFC PATCH 2/4] KVM: x86: Extract VMXON and EFER.SVME enablement
+ to kernel
 From: Sean Christopherson <seanjc@google.com>
 To: Chao Gao <chao.gao@intel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
@@ -73,59 +73,28 @@ Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borisl
 Content-Type: text/plain; charset="us-ascii"
 
 On Mon, Oct 13, 2025, Chao Gao wrote:
-> >-static int __tdx_enable(void)
-> >+static __init int tdx_enable(void)
-> > {
-> >+	enum cpuhp_state state;
-> > 	int ret;
-> > 
-> >+	if (!cpu_feature_enabled(X86_FEATURE_XSAVE)) {
-> >+		pr_err("XSAVE is required for TDX\n");
-> >+		return -EINVAL;
-> >+	}
+> >+void __init x86_virt_init(void)
+> >+{
+> >+	cpu_emergency_virt_cb *vmx_cb = NULL, *svm_cb = NULL;
 > >+
-> >+	if (!cpu_feature_enabled(X86_FEATURE_MOVDIR64B)) {
-> >+		pr_err("MOVDIR64B is required for TDX\n");
-> >+		return -EINVAL;
-> >+	}
+> >+	if (x86_virt_is_vmx())
+> >+		vmx_cb = x86_vmx_init();
 > >+
-> >+	if (!cpu_feature_enabled(X86_FEATURE_SELFSNOOP)) {
-> >+		pr_err("Self-snoop is required for TDX\n");
-> >+		return -ENODEV;
-> >+	}
+> >+	if (x86_virt_is_svm())
+> >+		svm_cb = x86_svm_init();
 > >+
-> >+	state = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "virt/tdx:online",
-> >+				  tdx_online_cpu, tdx_offline_cpu);
-> >+	if (state < 0)
-> >+		return state;
+> >+	if (!vmx_cb && !svm_cb)
+> >+		return;
 > >+
-> > 	ret = init_tdx_module();
+> >+	if (WARN_ON_ONCE(vmx_cb && svm_cb))
+> >+		return;
+> >+
+> >+	cpu_emergency_register_virt_callback(vmx_cb ? : svm_cb);
 > 
-> ...
-> 
-> >@@ -1445,11 +1462,6 @@ void __init tdx_init(void)
-> > 		return;
-> > 	}
-> > 
-> >-#if defined(CONFIG_ACPI) && defined(CONFIG_SUSPEND)
-> >-	pr_info("Disable ACPI S3. Turn off TDX in the BIOS to use ACPI S3.\n");
-> >-	acpi_suspend_lowlevel = NULL;
-> >-#endif
-> >-
-> > 	/*
-> > 	 * Just use the first TDX KeyID as the 'global KeyID' and
-> > 	 * leave the rest for TDX guests.
-> >@@ -1458,22 +1470,30 @@ void __init tdx_init(void)
-> > 	tdx_guest_keyid_start = tdx_keyid_start + 1;
-> > 	tdx_nr_guest_keyids = nr_tdx_keyids - 1;
-> > 
-> >+	err = tdx_enable();
-> >+	if (err)
-> >+		goto err_enable;
-> 
-> IIRC, existing TDX modules require all CPUs to have completed per-CPU
-> initialization before TDMR/PAMT initialization.
-> 
-> But at this point, APs are not online, so tdx_enable() will fail here.
+> To be consistent with x86_virt_{get,put}_cpu(), perhaps we can have a common
+> emergency callback and let reboot.c call it directly, with the common callback
+> routing to svm/vmx code according to the hardware type.
 
-Ah.  Maybe invoke tdx_enable() through a subsys_initcall() then?
+Oh, yeah, that's a much better idea, especially if x86_virt_init() runs
+unconditionally during boot (as proposed).  cpu_emergency_disable_virtualization()
+can be dropped entirely (it'd just be a one-line wrapper).
