@@ -1,92 +1,56 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013031.outbound.protection.outlook.com [40.93.196.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5EC307AEF
-	for <linux-coco@lists.linux.dev>; Tue, 14 Oct 2025 20:57:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6884F1E8836
+	for <linux-coco@lists.linux.dev>; Tue, 14 Oct 2025 22:45:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.31
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760475431; cv=fail; b=TW+iIHtNcT3jtWlYr8lALqMKm0A8lfCeCCW4xnucwOf2shGha7k3pjYWPUKpw3Ez6yLEjV20sLYZ6IXATnrFvvRO6S930CYoIJlfBRgCBihxe+cFiVBazkmpOByM7UvQi6id8CunT1dMLHdNIXdyiQzQyqg6zidJUrjcVmZACOw=
+	t=1760481937; cv=fail; b=MYrW5S6wbn4pWCRPs0KzTmpCIly32/iOStE5bE0INH8MXR62uMjLy1DM+tCsyfB350o/KIFvohXEpORnddstml3u2NGzm7Edgfpt3SfqysE3rXePMxyhxhAotoetn6VgIdcQxQUf9APXfQVk6sttGSbCPknEeRzdIqCchRmEkjE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760475431; c=relaxed/simple;
-	bh=mNLzh4PZTWTYyEbU8E6JnOFhSvuesW7R0a+xD42Hcj4=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=fk+4E91ji7ScOfLPpK2w3oLhLBSA0eKfYkmyAZrIGMfxhvTF9/RWbuEINtjjUsrSogXdkbK1hHfQvog0FTNzh+VJVd87ooGntGf5PMD2/LVXzpCuY3FrZVDwWv0WFkPrFktILeFyVEAkHQfPBxml0nvqRrtVADsngy6PqGQpSYc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e6ACBng3; arc=fail smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1760481937; c=relaxed/simple;
+	bh=ZiH/C+4gY/BEMfTS+PdKW7xBuAtEZMkS1jhDuSFvDOo=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=IExbHwmcrkaaTvyNEFkRzSBO8jnwcv0Z50s+TgzqnkMyYYCxxj3mvm6WGNf6uNvt1HKeyvrXto1bsU+2HzMNJnUZG/FEEQW2zWs5RmvS2zmz0Rpb+Sr8ZfNzwZKzkmjISyoloBt+/lTZRc+UltkDeghUZUqs+jAee/ZqHBSvBDI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=q7f8rdzB; arc=fail smtp.client-ip=40.93.196.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e6ACBng3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760475429; x=1792011429;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=mNLzh4PZTWTYyEbU8E6JnOFhSvuesW7R0a+xD42Hcj4=;
-  b=e6ACBng3apykdtcnUMEt8zDBnnYGpjXMEgYKzjMX0NIhUWkjnTluD8HN
-   7z9fA6qGyEJOlCTTx0Z53i306bZ7QYL49xX66I1NRgoRcWvZWMhR3PFzz
-   yn/fcj0nDFG6LKta7CUqo3uHKlHZPRNn1pU0ko/8lRuYrB2Z/Aojk6EuL
-   S2X5G0bYVGO4hRteVv66DKhu9SYh5aX5PImgzHTVhaLAZMVOTf12mI2+8
-   D0QkxenTADExWkm3D6HwTH21xZbixN3YdzhWGAItlX79NE7VOLos97X2J
-   Ghu3kYPvrvf2HC6c3BFHCzDyYQkTOs45VvwX4bDJDUv2N9UaijJoJMNBP
-   A==;
-X-CSE-ConnectionGUID: GOsnAq6BSdCydukTue7X8A==
-X-CSE-MsgGUID: h7x8VoL1RTKK1fJUAymF5w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11582"; a="80278566"
-X-IronPort-AV: E=Sophos;i="6.19,229,1754982000"; 
-   d="scan'208";a="80278566"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 13:57:08 -0700
-X-CSE-ConnectionGUID: cVkvcbZLRjiZAR8zBYfUSQ==
-X-CSE-MsgGUID: k1YahRs8RHy9lm52IyMvcw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,229,1754982000"; 
-   d="scan'208";a="181529746"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 13:57:08 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Tue, 14 Oct 2025 13:57:07 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Tue, 14 Oct 2025 13:57:07 -0700
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.18) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Tue, 14 Oct 2025 13:57:07 -0700
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="q7f8rdzB"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kMiEjr6zjygs/gmTQHdpBS8R6g9UqwuksPNHvr0BQv4vfpEFbqARt2r+6iP/WXVex1hfjlAN/SmpeC5PcYHoBOIG8o7O8HzXgCmNF1Phor/OsdL6v568V/v+gU9WLUViE36gzzyYJkg+DfiO/H5VR3mJBI1kNf/yx5cStsuBZFmRvZ0HMLqtamYOThMEsJKWrpVYjGF86+HZWDx5qlu0q81zZq9dtMWoV1/+fQSwcXdu9KZqHSKSeAAsBPSpyjJ4WlcGyIY+Lomol+J4f9EVsIMFcl1cZ8rRYQQCdiAHuPkZIrIgJdFD97XjgX6sONLgK2quJaUdyYe4Mp29K/te7g==
+ b=fxzAnrkepjShIMANgfg7/zkCtSjA4zWP1+KCNsN/dSl3Fep8BG8UiJu+DIonKznp0ljczpfCAfkBKyv0Vbf6nZOCxxu8PLoQbAzY24/1D6YlZjxCepV5YDRr8ww3RaRP9EDi1fNsL1ccw793QZXy8IIsL8OUp2aKpqBO/Df+4fPccppWUBtfQCVq2ZXA8LB8mJhZnS08o2Uv3wXQPiVPDZfTtUytj/QYXoIU/Svofk7f1N+Qw/o5AhS5kRUpnWxQkBEWV76X63qD3I8HQju1Qzq/k9mxZDju3twxEMyT8oIqmKAKF6hQ1Joxiij1cEppHjU/NZQV5sc9jkTV+Yz7HA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tDVDKnfdg0e3ng1R/bvmiNCIoQWKi6WoCcCk233OV+Q=;
- b=NSGXtfSjWycPmtTx9gvAiQEjJc2YBGLkpiVM2TJ5Ghtkrl8UBas3KWofadGJjzN9lwi2tuVGyGxCfpGJbOgxj5jc8RT+QKXue9u3j85W7cuo/DCFJT2FiP5u4DBY2nwO1Vz7+IgB+8UBYvSgFIq46tLjj9ok+pXjdy3vol8Kojxnd69BZDpoZySE6b4awqv9/4j0ammMJBM6mFfEaQTjyFhf14EuGUm0qs+a17gBmsi0lH88KtKeOYIyRSYKYkzcQrZ0USKIHxTmkY32yGqm2+aOPyEwIbYK2/gpbuPXnB7tu9kMTEFeIWp0nhhPLqL/2heKw6jTYyuR2p3uN+FGgw==
+ bh=zL1OSJLhFRj1T5dzH3Fiqbek2rhkC8388K4Eb95trME=;
+ b=ypRrNNEI9R/m7ldJtAsu6brSgE26dmYfiNX6ufN1GQWn/txIEm9quv033Z/r2LaN1teVygWBK0yoPlgBUuDeB3XX0QV43M/G21fT/cJdb0cRTK9I8gcl22wd2Bp9DP+jtCCGiyJ4q9BAO5weC3gehjfeVOmxS+lOA+LQLqWxphdGzdHAB7mm5SBbmmhk33cN8HXgU3ef6LhYmK2BhPdYY70ud5adoA+QvZ2xlbFHF52zmzyWNqwRiIjbQOosjc/0zT2XYRKUjpPkrJopgTM6XOY9pAlD8kycH77dM0rDYrRllj6uiOfCKl257KA1DKc4pFYAhWbmbjziNxIe4UCf2A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zL1OSJLhFRj1T5dzH3Fiqbek2rhkC8388K4Eb95trME=;
+ b=q7f8rdzBornbe3SKezch+CHh9zEbB2Ah+12XY6+Q/6RZqWa0QxgA2yC0hzzOjlOBytnjujZ6dJbRD3AB3hEwvewzTC1tTkItnDm0dRZLN+C2w8eWkzdDBH0OM2EggoV1BQlDKqWaywnap999748eBmxzarMEaLKnIe80i9p6Xnc=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ2PR11MB7573.namprd11.prod.outlook.com (2603:10b6:a03:4d2::10)
- by SA2PR11MB5129.namprd11.prod.outlook.com (2603:10b6:806:11f::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.10; Tue, 14 Oct
- 2025 20:57:05 +0000
-Received: from SJ2PR11MB7573.namprd11.prod.outlook.com
- ([fe80::61a:aa57:1d81:a9cf]) by SJ2PR11MB7573.namprd11.prod.outlook.com
- ([fe80::61a:aa57:1d81:a9cf%3]) with mapi id 15.20.9228.009; Tue, 14 Oct 2025
- 20:57:04 +0000
-Message-ID: <a9472e2f-d4a2-484a-b9a9-63c317a2de82@intel.com>
-Date: Tue, 14 Oct 2025 13:57:02 -0700
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from IA0PPF9A76BB3A6.namprd12.prod.outlook.com
+ (2603:10b6:20f:fc04::bdc) by BL3PR12MB6427.namprd12.prod.outlook.com
+ (2603:10b6:208:3b6::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.12; Tue, 14 Oct
+ 2025 22:45:31 +0000
+Received: from IA0PPF9A76BB3A6.namprd12.prod.outlook.com
+ ([fe80::8d61:56ca:a8ea:b2eb]) by IA0PPF9A76BB3A6.namprd12.prod.outlook.com
+ ([fe80::8d61:56ca:a8ea:b2eb%8]) with mapi id 15.20.9203.009; Tue, 14 Oct 2025
+ 22:45:30 +0000
+Message-ID: <a75b2fa6-409c-4b33-9142-7be02bf6d217@amd.com>
+Date: Tue, 14 Oct 2025 17:45:27 -0500
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] fs/resctrl: Fix MBM events being unconditionally enabled
  in mbm_event mode
-To: Babu Moger <bmoger@amd.com>, <babu.moger@amd.com>, <tony.luck@intel.com>,
-	<Dave.Martin@arm.com>, <james.morse@arm.com>, <dave.hansen@linux.intel.com>,
-	<bp@alien8.de>
-CC: <kas@kernel.org>, <rick.p.edgecombe@intel.com>,
-	<linux-kernel@vger.kernel.org>, <x86@kernel.org>,
-	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>
+To: Reinette Chatre <reinette.chatre@intel.com>, babu.moger@amd.com,
+ tony.luck@intel.com, Dave.Martin@arm.com, james.morse@arm.com,
+ dave.hansen@linux.intel.com, bp@alien8.de
+Cc: kas@kernel.org, rick.p.edgecombe@intel.com, linux-kernel@vger.kernel.org,
+ x86@kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org
 References: <6082147693739c4514e4a650a62f805956331d51.1759263540.git.babu.moger@amd.com>
  <a8f30dba-8319-4ce4-918c-288934be456e@intel.com>
  <b86dca12-bccc-46b1-8466-998357deae69@amd.com>
@@ -96,14 +60,15 @@ References: <6082147693739c4514e4a650a62f805956331d51.1759263540.git.babu.moger@
  <3f3b4ca6-e11e-4258-b60c-48b823b7db4f@intel.com>
  <0e52d4fe-0ff7-415a-babd-acf3c39f9d30@amd.com>
  <7292333a-a4f1-4217-8c72-436812f29be8@amd.com>
-From: Reinette Chatre <reinette.chatre@intel.com>
+ <a9472e2f-d4a2-484a-b9a9-63c317a2de82@intel.com>
 Content-Language: en-US
-In-Reply-To: <7292333a-a4f1-4217-8c72-436812f29be8@amd.com>
-Content-Type: text/plain; charset="UTF-8"
+From: "Moger, Babu" <bmoger@amd.com>
+In-Reply-To: <a9472e2f-d4a2-484a-b9a9-63c317a2de82@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MW4PR04CA0167.namprd04.prod.outlook.com
- (2603:10b6:303:85::22) To SJ2PR11MB7573.namprd11.prod.outlook.com
- (2603:10b6:a03:4d2::10)
+X-ClientProxiedBy: SA1PR03CA0017.namprd03.prod.outlook.com
+ (2603:10b6:806:2d3::13) To IA0PPF9A76BB3A6.namprd12.prod.outlook.com
+ (2603:10b6:20f:fc04::bdc)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -111,327 +76,395 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR11MB7573:EE_|SA2PR11MB5129:EE_
-X-MS-Office365-Filtering-Correlation-Id: a17ae8f1-104f-43bb-141b-08de0b643aed
+X-MS-TrafficTypeDiagnostic: IA0PPF9A76BB3A6:EE_|BL3PR12MB6427:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5cf4e20e-34fe-4580-d8e0-08de0b7360b3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?L00vQlpjWTM3ekp1TU4zNE5CUitwYXA2OVcvYlZZc044dTBpNmRuNXMrcjZi?=
- =?utf-8?B?b1QvdUZHQTJsQmgvdnViOVArU0pqK1B3QVhPR2QwZ2taRlRUUXo2c2FqcmFN?=
- =?utf-8?B?M09QM043QzVQWVUxSGtWOHBrM0w5NW9BVmYzZDV5OU1tQzVjTUIxL3ZQdHZv?=
- =?utf-8?B?cjk3WEd5VWlPbHZWQlRaS3ByMFN2OFVycWxzblF1b1pIQldoVmpRRlFrb3ZU?=
- =?utf-8?B?QWhLQytVcmJTTG1BZE1kSHljWEg3cHB1ckR1dCtmR1VPM05DeFRaSTJMMnpo?=
- =?utf-8?B?b3RPVHNvT2tLL2hVc0RuRTY4ckgyNzhnUFVKMXFhY2lRT3hwbWNoVGc0V295?=
- =?utf-8?B?ZGhnM1hTWUdXYjFocDlFSFJxTGtrTVNhcW42ekpqM2tsSlF5SEMrNFZMVWhy?=
- =?utf-8?B?cFlEQVh1Vm0xdDl6L25iVSs3eTcxay9XaUJCdldLQ1hTMTNja2g2TjVRYU9h?=
- =?utf-8?B?UVp0SnZVWjIwZmNnNGU2MnIwUklUL0JrdlFjTU04amp6N0dDcS9HOWNpdDNK?=
- =?utf-8?B?dkRsS1cwdGVmMW5zdmo1THV3VmQvQkQ1N1VUMHRYUHNjYzlCYkQ5a0tvOFFF?=
- =?utf-8?B?KzlhNFZsdWZhNHRHRGJYUnVoVHc3ZWR1MGc2QTRBSXFreG0va3o2UWVtdDdz?=
- =?utf-8?B?bGlxNmxJR0hVNVY1ZGhVT0NzYTFJUkJzdkU1ZXJlV0t5bmFOaHJYN2YrTjJu?=
- =?utf-8?B?cWU5SUFDbDN1S3o1ODlXZHR2MjMwMS9RdW5obEhsOFk3Z0NQd0djTkRZdDhy?=
- =?utf-8?B?N3RzT2d3TUN1TmtRd2xiMUY2UmtBbGtCcGRycThYRGkzeWJMU2p6bFYrZFVv?=
- =?utf-8?B?eFJBdFZ2cHUyMTlOSG1CZ056SjA0K0JGa3hkR2dhUEFoUzhtV2RnSnRXZ29V?=
- =?utf-8?B?ZDVPYXE2bFdZR0l2cVZPTzZqUHRDYUZHYzVXZmhUaHBJN09tUlU4YkVXdFRS?=
- =?utf-8?B?MWxhVmEwWmg3MkNzSmFMbnVCd1lyYW4rVFpkSUM0S0hsMGsxUVl1MytOQ2M0?=
- =?utf-8?B?Z1N5MjRZYk9OZlF5b1BKc09PYmdwL1A1amczZG9EMHVST1llUnlzcmZXaUU1?=
- =?utf-8?B?YjZhUmk1OXFPNWtxeTR1b2ZTT2JaMUw5NWNPOEoxdXNiNG5sZVltY1ZWdG1q?=
- =?utf-8?B?YUlRTDlJdXh3dHpSb1ZGSXVTazFmOFY1ZEdENXR0UHN5MWZ2MENhd3VtMDZm?=
- =?utf-8?B?NmNrNTRMWGIyV1g3T0FiSEJldTFLMXlHbk8vRlIxNTR3T0M5VWladkNQTEhC?=
- =?utf-8?B?MlNQVTVobDZXRE5wVHdBUFoyMVp2Wjh4VVhTTkgzWWtsaTY5RllWK0w4eWtw?=
- =?utf-8?B?Z3JkZVM5MWw5SkU3a01uQnhWY1ppSWplQ0FWcEdHWjMxaTJiSlBJT2pMUU9N?=
- =?utf-8?B?RUcxVmtQUDltNW5yNGZHdmx5Z2QzRkdBSWFYN1FPY2JsQzBOeWhNMEo3T1R4?=
- =?utf-8?B?ZW85a01URnNmWU9qWmxkY3BmeUZJSzRXVHlDN3ZuVVNJOUVtaHNSaGxabitB?=
- =?utf-8?B?aGFCeEJzWWlNdjBTblpFSkFTTDJ0UTNqMG16MHZuNWtleUtiRmpjZkpQbCtD?=
- =?utf-8?B?YWVNTEljNUJyM083Ky9wd2lBMHlHdzVlWGppUW9kT2d4Z2FtY2ltSWE4OW5E?=
- =?utf-8?B?bTZpVEtSSmRTUUllNHVkOUE2U25OT0VVUWE4QXFPM1dwT0NTVlE5MitMWHpp?=
- =?utf-8?B?YSttQ3dIeFRieXpYR2RSVnA2OThOWmxSTUZ2YlFCbDJIa3dKVGJIUmxObXUy?=
- =?utf-8?B?OXhsNXJmSEZzL2Z4Zm9DS2ZzL3N2b2NlZjBIVXJNQWJrUk9ObFduQ1YrQWFO?=
- =?utf-8?B?cjY5MnJ6cGUxaWxNbXJoUXZwMmcxZ0J3eDFHME0xWkhkZU5KZlhsNzBBSjBB?=
- =?utf-8?B?ZmRVNENZYjY5R1M4Z0JHbXpsSVRBOSthYTVnT1pRbGxJWHM5Qms0ZC8wMzZW?=
- =?utf-8?Q?Qisr4An15h4Zm/z9BAoPuKNCf15lIWw5?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB7573.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?aTNMK3g3STl5MjJsTnUzZDVkZ1RsUzVaVWpJczdTMG5kMUZhdWNDa0NmVHpo?=
+ =?utf-8?B?djdMMnhzb2g4SWlPQVVSUnd0WHVPRXlQNm4xWlJ6aUVXcHNQRlNFYmFyalhu?=
+ =?utf-8?B?WVhXUWQxQnM3VUxSMVdRRFZxdnpMUGNyRWxQWlk1NlZlM3NoUElES2IwbHNm?=
+ =?utf-8?B?RWFKYlFVRlJ3TGJxUnYxNDAzMXJzajE3ajlidVh0SGp2VjNLMXBhdE5WNXEv?=
+ =?utf-8?B?NHRDdTNmdnFCTGd4My9ZS1ZKeCtoQXNXbDFiRG81RHFtWjRJcGFzaUUxcnBG?=
+ =?utf-8?B?bHZjb2JCWWFRSVlKZVZwOHB1L0ViaFppZXdWQm1Ed2g1UzVqU3BjTVU5WC80?=
+ =?utf-8?B?VjBueUpUeHZsQk5BcHpjTnVycGU0d1VDYmlGcGpibE5kWnBIeVhMcExnYjIw?=
+ =?utf-8?B?UHdZWExyOFltZTZyb3htUzF3azZvam83d3RVUVpFNURBNlFkbjFiSktqUGZx?=
+ =?utf-8?B?cHREc3Zka3ZXWjQ0Wmt5Q29EemVBblU5bmREMCthS1NsMkIwdXdyL3l4RktE?=
+ =?utf-8?B?Mi81T090K2paUXRXSnNVYytIUFBPMnFBRGhicDJ0RjBCQTFUVHpIM01PVW5j?=
+ =?utf-8?B?NVFURFNxUnZaZEovcFJqTnZFdjZKZHY2ZHc3QzNNalVxSVNmQXEzQStWdmF6?=
+ =?utf-8?B?YlAyT2RXanUrNERzb0RmZzJBMkpZRHZiTTNlKzFEU2VLeXBHWXpQZEZ2SlRr?=
+ =?utf-8?B?YlF3V2Q5SHUrUFRjWVVnMEI2Vlk4UFQ4VlBpWURpdkNkWEpVbHVPN2tGYmZz?=
+ =?utf-8?B?SVBMTXU3UitFelFOekxJYjZiT0FYMHBVR0krTHQrK01WYThWelZFNGlldUVa?=
+ =?utf-8?B?dEJmeHc4SDBEQTNzMENDZExDL0k3dmZCQ3p1aXdHUFF5SHBpSCtSREVvekdI?=
+ =?utf-8?B?Tmp1c0Jsemp6YVhVZlhoTmJuN0dIUFVjNlVrSjBMUjlEWmtnOExKMHdlNWpY?=
+ =?utf-8?B?bG9Hc1F3bzlVZXVwcXVWSUh5Y0JIOC9DNTEvcm5JQ1hTNmNjNmdWZEZtNUtZ?=
+ =?utf-8?B?S21vQ1daM3l1VndQblR4WDdkM1NqQlAxQlJ2aHliU3lpQ3pUWHU3T0RyUmtu?=
+ =?utf-8?B?WXkrcVpOS3BTN2p0TDZQbnRmZkxMaUVjK1BKeC9yV2R6U0lQMU1BMUVTZFV0?=
+ =?utf-8?B?a1BKbmFqWkY3QTNUbkdGL2VGanFvVFdqVUE2dmVQWTFVT3o0bzNqdm82bnV5?=
+ =?utf-8?B?RFM5K21Ec1dSTTJoaGNjUHZQc200cGJDVmJIQmZXcGw3akZ2alExNHEwZ0Vx?=
+ =?utf-8?B?SkhaRFlzN3hJb0ZyenlxbHZLdDgycW85djBGWXFuTUV6ZHBtNzNwYzVPUTU3?=
+ =?utf-8?B?N3dRMVdYMXg1c2QrZ3lHNk9VYkpzdkt5Y2lVQ0dxWDJpUE1kUU05MUtvZG5D?=
+ =?utf-8?B?bFYrbDJlR054Y0E2QVZYR2svbHhVT3ZnMXYxbFh0SmpPVlNmbUNwcWR3TXRt?=
+ =?utf-8?B?VHRxS08wMFJlV1llak43d3ZaYkV5RUxtU2tCaFdiTzU3Y1VMZitGQ0tCWFJs?=
+ =?utf-8?B?dUg5UzBjRDdpckEveEFZdDF5b2w3UVl4cVdvV2RGbmtBeGJ3V2JvSnRyNi9J?=
+ =?utf-8?B?eFFhbWN2aGhtdEdGbHhKUVh4dkpIYmE1Vmt1RzZqYUtZekNaOVlydHNKamQr?=
+ =?utf-8?B?TFUyaFRSWGFNd040ZkoxZ0dOY2RoRmJWV0tXeXAyVEI1Qm8zZjA3Vi9acG9z?=
+ =?utf-8?B?OGF3WUc4WjNuTEJ3TW02TTNhbXBZMkZJQ3lXTk8wY3p3QVZyblNPdkhoUVpx?=
+ =?utf-8?B?ZVFqcHJ6WUtvMWZKWURKMTVpSnE1R0JreFRwa2hHdUc3K1JBcDVMU05XK2I2?=
+ =?utf-8?B?VmhLdHEyN3ZDTzVQSk1mWWUvSUFRR1hUUjkwci8ycG9UT1pyZHpsdTlsSFZZ?=
+ =?utf-8?B?YmlTUSt0a3Y0RWVWQTNoc3IzMTFyNnhwdFZBY1pEam5Ed2daQjl3WTFMYm1z?=
+ =?utf-8?Q?7QoEhsWKIq/TpsyZ6hV6ncGmVf+emW6H?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PPF9A76BB3A6.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZGw3czk0N3Bld2k4NlJNeG8xdHRXclJ2U0x4MjV1NnlMMk9teWNHbEdmQk9a?=
- =?utf-8?B?UWRlM2tkRTc0MGdnOWxSL1NJUzM5cjgxaTdIZXA3UWk4S29UNGdrU2d5RXVn?=
- =?utf-8?B?YXdQdkdsTWNVNXRqY2RkM0FUVkhIdW1wUWNYRVZHTTVpRFNPSXdNcllvK2o1?=
- =?utf-8?B?aWVmUUlzNkpOemlmWHBQWWF1MHBnS2xyNDNvWlpBY04zRHJEcUNwWExiaFE1?=
- =?utf-8?B?R0V1M1Z6TWhGMmljWm1kRVdUVjdJcjdYZzRGbEF1MTdrYjdrbWJUam9QSVcx?=
- =?utf-8?B?c3dNMUwxNE4xU2dzSnR0QkgvZkhYdGdmaURqNEM2VUNQNERNWUppUm1KaUxq?=
- =?utf-8?B?cnlpMTV3RmhxNytuTUF3RStCaU5zSlFZRUtVK01RdjIzd1dwMVFaUFlZWFNk?=
- =?utf-8?B?ckE4RURHVjJYN3YvYW1Na2FoWDRpMTgrZmx4NHIzaXBpMDZ5WjNHOWdVdDQ1?=
- =?utf-8?B?aVd5UmxxQUh4b1R1UnR1TW9wY0FlTnJBVzUvclhLWWZhdkhQa0MyWGQyVEQ4?=
- =?utf-8?B?Tlg2L0pubnd0bDBUem9OeGxseVNsR1haYVhtTFNQTWlwVTlXTk1zUmxzL0or?=
- =?utf-8?B?SXRWOWNJL2huMVhOU0U5Mkowd2dsRlBaUC83SmpZc3hqdU8xZytTbnJpUXZN?=
- =?utf-8?B?WEhLOTBDejlsZHhlNVJLTHViNmhDOG5tY05yY2UzV0V3TkpKeFhseWdyUjlP?=
- =?utf-8?B?UkwxWjc2RE9NT1pDSURXM2Q5OWIzaEVDQWdIVkxBRGVzMU0weVRPV1V1NnJC?=
- =?utf-8?B?aUtwMENyVEhGZDRIWnhWMlcxOGFKNitycUs2MGNGNE9XMmZLVld3Zk9FWGhi?=
- =?utf-8?B?c3BhNXFXdllZOStxMjk5R0x3ZFFnYU40RDdQbURrMDV4eG9oUGF6aVNCMTJX?=
- =?utf-8?B?aG5jOHlkSThXTWVrT3VIVTNhak5mV3RUQzl4dngybTFZeWFOSThBSHpkOERs?=
- =?utf-8?B?SHZMa1JYL3hPbjYrdlN4R3h1RVhCaFNyVHFqSlNjeXlDR245RWxNYTV0dVY2?=
- =?utf-8?B?bTZZSDZxYjFxVWpGeHFMdmErNkE0OW4yQWpDRk9jSmdhenp0ZFRGUUpaMC9I?=
- =?utf-8?B?NFNJbHJLeXR4SGF4UnRkSy9JVlpxQnpLUE5qNnNmOUR6UHo4YlZQNUpQamJM?=
- =?utf-8?B?YUtkV2ZQRFVWbVpFUlk1YWwvMXRBZ2FkRFVBQWI5ZTk2d2xJWmNQRWlTLzdq?=
- =?utf-8?B?Tk01cElhaWJRdkVpOENmT1dYR1NDMVVIU3diemJNWWRKVEp4cExMZVlieDRh?=
- =?utf-8?B?ckJpdnRNQlVubzN4L0dDbGcrNTNNdDhlNEN1WXBVNlN0ZjVQSEtJMnQ1d2tS?=
- =?utf-8?B?RHpoK3cyWFBybjZxNm1jdFNiZnFKWVMyUnpWSzFSZ0tyK1c5M0lyVUNXWlZV?=
- =?utf-8?B?TzlWRTZhRDV5K0FwK1NOdTJxeVlLYnY3TnY3cTdpTkVKRFBIemg0S2xrcURM?=
- =?utf-8?B?cnpMOUc4aEMzRGlBaVdpblhiTXJKSzc1bVE0U0UvWGJ5RzRtSHpGN1VjK0l4?=
- =?utf-8?B?dVZuYzdJQVlJcHdDTHl4N3M3ZUROcjdMcmw0aXgxenFTN0dSNnF0Wm1UcXNG?=
- =?utf-8?B?N2wvb3IvLzRmV1U3bnVEU0VNVWRCNDZNTWd4eW1iMGg0OXY3VFhzK242NmpT?=
- =?utf-8?B?SHlUc3pLZTVpa3dJRTdNYnRad0gvN25iYUFmWmVjV3llR0hwd2dpWHVIeUh1?=
- =?utf-8?B?cWYyOEtrLzRuWktkZ044ZzAydHlNYXBWWUF5ZXRtSjh4L2pUaFpkQmlBRkZj?=
- =?utf-8?B?Nzkrcmk5bVRya1NCUU1SNjh6ZjJQdGpQZHlVTFYxVk4wYlh4OS91SUNWeEtk?=
- =?utf-8?B?bVpVNTRWTi8wN0t6TmdKNjU1ZE51MUdiNmpLdzBxZnBubWFjSmUzcXE0Qldu?=
- =?utf-8?B?ZWJZT0VyN1orWTcwU3YzLzRDMjlrQXNoQ09VYlFDanpBYXBtWnVUYWRUSHM0?=
- =?utf-8?B?VlBZcEdWS1o3dTlvbFAzdW91dXlKZmgyT2huRGp1eEYvcFpEYlBxa1RZTXd0?=
- =?utf-8?B?K0JtNEs5UXJKdzBFYkZSV0N5OFNrUzNueG9GS0Q3cmtwVEZ0QVVCY3J0dmda?=
- =?utf-8?B?bGhLZFpPaHZLQVVvYU9Od0loNGFER200MURYN3Nzcy9pOEtyYmxoWHZRWTZX?=
- =?utf-8?B?bWRjcVE5SFh4U0QzZWZaaGFiQ3JIZWtiSXlOUVBxWjFPaHdyZGJ6R3VMb1VR?=
- =?utf-8?B?aEE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: a17ae8f1-104f-43bb-141b-08de0b643aed
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB7573.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?M2EzWmhUTnpoaWd3cjVZM0NkWTB0NW9UcDZxWVgvV3lQUEsxVVpBdlVsS2My?=
+ =?utf-8?B?d2RRS0tBdjM3dmduZEVxOXJ4QXl3WDBndGwydUhnTmoySG1Edk9WMUF3Ykh3?=
+ =?utf-8?B?bWhUWm1jNjlZdDhuaDR0RmxzRU9GbUF2bThVUytEV3pkTkxUc2VnZWl2c0lw?=
+ =?utf-8?B?RVl2S0I0dC82b2ZtSklCTThvQkRqMEJWV2xwSWduNGR5Zy8rMytKRW9pWHNL?=
+ =?utf-8?B?RWlEbk9JMnZ0M0VVY0xGc2VYZGlEZExobkV1SnorRkdYVHlrTlhSWFhBWUQ1?=
+ =?utf-8?B?VkozNWcrU0ZlOVF1L0FycTBLOXhhbHlzWXVlYWw4bTFRU2twNkhZbm5PUmpS?=
+ =?utf-8?B?RkYyWXNSeFpTSStob00wcGxJNWxzczN0WWdVOWJCcDdRanlyMUpreEVzZTZJ?=
+ =?utf-8?B?M1hpZHNsMTVaMmJFT1c0eFBIWU8vK3F2Y3pZc2oyMXdocHA5YllaVTJFdFdY?=
+ =?utf-8?B?Q1o0aFg5Q01OTFdCdlZ6QjlDUGsxOUVmakRDbkRxNitsc1lweGxFYXJZaUxs?=
+ =?utf-8?B?WEpQZ1pYQUN2Ym03RkVuRkV3NDFtcEt4MFR0ZnQ3cmJOQzRFUkNkd0pUbUw3?=
+ =?utf-8?B?a2NXdjNhcG1EaG5ZVFNHbG5KRHZkSVdWTFVoeUVtTUlsMkM3MHl2aVlFMVo5?=
+ =?utf-8?B?ZlV0MVVJTklGMUFtbSswYWlLckx0OXVHbFVaaExrMWRSWnJWRmVSOWpabSt2?=
+ =?utf-8?B?S3ZleUk3cExoTTgvQitmSGJYSVpMTnFCb3YwTzEvcWhDUXB2ZDVxN3dLcW9x?=
+ =?utf-8?B?WHZmdlNpUzhuZzFiT1VRdVhrWEJLUHowZDdCbjhocVZPajRaN09wY1hud3NJ?=
+ =?utf-8?B?LzJVN2h0OGZTaExBY0g2dWlLT050WkhsSzkxeXRMRWk5OTF3VFFXTFk5c1Qw?=
+ =?utf-8?B?SVlrZytUMXFFOFFnSlhNazBYNzFkM1llMm5SZFJuVWJ2WWhxbGllTnVKcENm?=
+ =?utf-8?B?K0dRUUFHMTc2cEFqdFZSemtOQ3prcXowVzVlQVIxeWNCSk9qYjByZTZzU005?=
+ =?utf-8?B?ditlYmZVWjBMKzhtRGF3YzBoc2gwNk82cFdUNFd0TDZoRnNETTZvNUdselFa?=
+ =?utf-8?B?MGJ1NHNCWmd0UThWZzlvdlFRWkl4MjEvWEFXbnN6K1lTQ3U3Z2R5d0RwdkJq?=
+ =?utf-8?B?d1U3eElCaityaHJEczVMRUV0RzhDRjFKUXZtdE1hdDlYWm54YzRXOGExU29W?=
+ =?utf-8?B?ODI3Lzg4cmtoeUttcHh6N0FIenVjK01oVnRQT2xyWFRhamRKUENxdG80b2do?=
+ =?utf-8?B?dU02dkliQ2hiS0pHOXZNbDVuRUFjbUpWNHZSN3lkNFFNekxQdGJSeG1tRC9U?=
+ =?utf-8?B?YkhxVzZjdDNsVVJTTVd1M0RXaVJ1bHorZ1B4cG9LTVZNSkpTNGZ6dW5ZZUIr?=
+ =?utf-8?B?cXVTdStZajJST2gvdFZTVStyQTlFZE5wenR3anJ5ak9xdUFLemhrdnRSd2Ru?=
+ =?utf-8?B?NU5ISDJoLzE5blFjalI0d3NNMVFUYVdEdkpvMGp2djIrQ2VqL1d4TzZuNG5j?=
+ =?utf-8?B?S1Y3dDAzYVh2ZHk1N0txWjJJaHVnVDRyZ3NJdGV2QUxzZ0F1WDlYUmZyT1hx?=
+ =?utf-8?B?RnRmSzhJbnJRNWhiekQ2ZHBlOUY2L3NZTVFYSHhVYWpsbzlBRUplcUVWQ2lE?=
+ =?utf-8?B?QlBRb2lIWFBrOGNpL2phQU9KSGxEMlU3dE1HMG13NVBPUTF2bndnV05LQy9F?=
+ =?utf-8?B?MmcvT2FzNmJNdE43SU1WUjRsV2liTGNsNU0vN0pXU0JVRnE4N3pvSHNCQk5P?=
+ =?utf-8?B?ZXhKNHY5QzdSV1JCcERWWFJ4L1RodzczMGtxd29oNHdLT0VSaWtBL1FRcytK?=
+ =?utf-8?B?UmozTDZTNUppWGVtNFNxOHBNeGJBN2Z0ektHYW5LMlBCYU9VaDcvTHV6Ylhx?=
+ =?utf-8?B?VXU4c2drNFQ4OXlsL1lLbGZERUFTTFZsWWFoSy81UEZyU3FteG5VM0t3dVZH?=
+ =?utf-8?B?alF6RXV0NWlZSjMvMXJZc25JdXU5Wk05bjB2ZXFoV2Vub0JzeXRnUEhaeGsr?=
+ =?utf-8?B?amcrNUNEakZ4c3A3Q2JMYTdaUEdZNUFCaFkxVjdscXhQbHhpMExMdjhBaDIv?=
+ =?utf-8?B?TnRoNkl0NW5LTDh5Yy9vLzhqd3V3dGVOTE9RZk9MVzg4cVVzOGdZcnFBc0or?=
+ =?utf-8?Q?ztHg=3D?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5cf4e20e-34fe-4580-d8e0-08de0b7360b3
+X-MS-Exchange-CrossTenant-AuthSource: IA0PPF9A76BB3A6.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2025 20:57:04.8079
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2025 22:45:30.6883
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ynn1V95jSQvfEJKjUqL2p1yHCzpGPhVkNWt9AEKlAG9WE84Be0BEHXHfwahdNRpq784isJmvyaugfyZkHY+oPT4HaktsLrrDMeNN1vZ+QIU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5129
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: lXrGqYWrDQQRZEzeUiwKEqBtGwk3Kv07ZhKY9yYFHAtA9XNTeZYH1SNptjGabi44
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6427
 
-Hi Babu,
+Hi Reinette,
 
-On 10/14/25 10:43 AM, Babu Moger wrote:
-> On 10/14/25 12:38, Babu Moger wrote:
->> On 10/14/25 11:24, Reinette Chatre wrote:
->>> On 10/7/25 7:38 PM, Reinette Chatre wrote:
->>>> On 10/7/25 10:36 AM, Babu Moger wrote:
->>>>> On 10/6/25 20:23, Reinette Chatre wrote:
->>>>>> On 10/6/25 1:38 PM, Moger, Babu wrote:
->>>>>>> On 10/6/25 12:56, Reinette Chatre wrote:
->>>>>>>> On 9/30/25 1:26 PM, Babu Moger wrote:
-
-...
-
->>>>>>>> But wait ... I think there may be a bigger problem when considering systems
->>>>>>>> that support ABMC but not X86_FEATURE_CQM_MBM_TOTAL and X86_FEATURE_CQM_MBM_LOCAL.
->>>>>>>> Shouldn't resctrl prevent such a system from switching to "default"
->>>>>>>> mbm_assign_mode? Otherwise resctrl will happily let such a system switch
->>>>>>>> to default mode and when user attempts to read an event file resctrl will
->>>>>>>> attempt to read it via MSRs that are not supported.
->>>>>>>> Looks like ABMC may need something similar to CONFIG_RESCTRL_ASSIGN_FIXED
->>>>>>>> to handle this case in show() while preventing user space from switching to
->>>>>>>> "default" mode on write()?
->>>>>>> This may not be an issue right now. When X86_FEATURE_CQM_MBM_TOTAL and
->>>>>>> X86_FEATURE_CQM_MBM_LOCAL are not supported then mon_data files of these
->>>>>>> events are not created.
->>>>>> By "right now" I assume you mean the current implementation? I think your statement
->>>>>> assumes that no CPUs come or go after resctrl_mon_resource_init() enables the MBM events?
->>>>>> Current implementation will enable MBM events if ABMC is supported. When the
->>>>>> first CPU of a domain comes online after that then resctrl will create the mon_data
->>>>>> files. These files will remain if a user then switches to default mode and if
->>>>>> the user then attempts to read one of these counters then I expect problems.
->>>>> Yes. It will be a problem in the that case.
->>>> Thinking about this more the issue is not about the mon_data files being created since
->>>> they are only created if resctrl is mounted and resctrl_mon_resource_init() is run
->>>> before creating the mountpoint. From what I can tell current MBM events supported by
->>>> ABMC will be enabled at the time resctrl can be mounted so if X86_FEATURE_CQM_MBM_TOTAL
->>>> and X86_FEATURE_CQM_MBM_LOCAL are not supported but ABMC is then I believe the
->>>> mon_data files will be created.
->>>>
->>>> There is a problem with the actual domain creation during resctrl initialization
->>>> where the MBM state data structures are created and depend on the events being
->>>> enabled then.
->>>> resctrl assumes that if an event is enabled then that event's associated
->>>> rdt_mon_domain::mbm_states and rdt_hw_mon_domain::arch_mbm_states exist and if
->>>> those data structures are created (or not created) during CPU online and MBM
->>>> event comes online later then there will be invalid memory accesses.
->>>>
->>>> The conclusion is the same though ... the events need to be initialized during
->>>> resctrl initialization as you note above.
->>>>
->>>>> I am not clear on using config option you mentioned above.
->>>> This is more about what is accomplished by the config option than whether it is
->>>> a config option that controls the flow. More below but I believe there may be
->>>> scenarios where only mbm_event is supported and in that case I expect, even on AMD,
->>>> it may be possible that there is no supported "default" mode and thus:
->>>>   # cat /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
->>>>    [mbm_event]
->>>>
->>>>> What about using the check resctrl_is_mon_event_enabled() in
->>>>>
->>>>> resctrl_mbm_assign_mode_show() and resctrl_mbm_assign_mode_write() ?
->>>>>
->>>> Trying to think through how to support a system that can switch between default
->>>> and mbm_event mode I see a couple of things to consider. This is as I am thinking
->>>> through the flows without able to experiment. I think it may help if you could sanity
->>>> check this with perhaps a few experiments to considering the flows yourself to see where
->>>> I am missing things.
->>>>
->>>> When we are clear on the flows to support and how to interact with user space it will
->>>> be easier to start exchanging code.
->>>>
->>>> a) MBM state data structures
->>>>     As mentioned above, rdt_mon_domain::mbm_states and rdt_hw_mon_domain::arch_mbm_states
->>>>     are created during CPU online based on MBM event enabled state. During runtime
->>>>     an enabled MBM event is assumed to have state.
->>>>     To me this implies that any possible MBM event should be enabled during early
->>>>     initialization.
->>>>     A consequence is that any possible MBM event will have its associated event file
->>>>     created even if the active mode of the time cannot support it. (I do not think
->>>>     we want to have event files come and go).
->>>> b) Switching between modes.
->>>>     From what I can tell switching mode is always allowed as long as system supports
->>>>     assignable counters and that may not be correct. Consider a system that supports
->>>>     ABMC but does not support X86_FEATURE_CQM_MBM_TOTAL and/or X86_FEATURE_CQM_MBM_LOCAL ...
->>>>     should it be allowed to switch to "default" mode? At this time I believe this is allowed
->>>>     yet this is an unusable state (as far as MBM goes) and I expect any attempt at reading
->>>>     an event file will result in invalid MSR access?
->>>>     Complexity increases if there is a mismatch in supported events, for example if mbm_event
->>>>     mode supports total and local but default mode only supports one. Should it be allowed
->>>>     to switch modes? If so, user can then still read from both files, the check whether assignable
->>>>     counters is enabled will fail and resctrl will attempt to read both via the counter MSRs,
->>>>     even an unsupported event (continued below).
->>>> c) Read of event file
->>>>     A user can read from event file any time even if active mode (default or mbm_event) does
->>>>     not support it. If mbm_event mode is enabled then resctrl will attempt to use counters,
->>>>     if default mode is enabled then resctrl will attempt to use MSRs.
->>>>     This currently entirely depends on whether mbm_event mode is enabled or not.
->>>>     Perhaps we should add checks here to prevent user from reading an event if the
->>>>     active mode does not support it? Alternatively prevent user from switching to a mode
->>>>     that cannot be supported.
->>>>
->>>> Look forward to how you view things and thoughts on how user may expect to interact with these
->>>> features.
->>
->>
->> Yea.  Taken note of all your points. Sorry for the Iate response. I was investigating on how to fix in a proper way.
->>
->>
->>> I am concerned about this issue. The original changelog only mentions that events are enabled when
->>> they should not be but it looks to me that there is a more serious issue if the user then attempts
->>> to read from such an event. Have you tried the scenario when a user boots with the parameters
->>> mentioned in changelog (rdt=!mbmtotal,!mbmlocal) and then attempts to read one of these events?
->>> Reading from the event will attempt to access its architectural state but from what I can tell
->>> that will not be allocated since the events are not enabled at the time of the allocation.
->>
->>
->> Yes. I saw the issues. It fails to mount in my case with panic trace.
-
-(Just to ensure that there is not anything else going on) Could you please confirm if the panic is from
-mon_add_all_files()->mon_event_read()->mon_event_count()->__mon_event_count()->resctrl_arch_reset_rmid()
-that creates the MBM event files during mount and then does the initial read of RMID to determine the
-starting count? 
-
-
->>
->>
->>>
->>> This needs to be fixed during this cycle. A week has passed since my previous message so I do not
->>
->>
->> Yes. I understand your concern.
->>
->>
->>> think that it will be possible to create a full featured solution that keeps X86_FEATURE_ABMC
->>> and X86_FEATURE_CQM_MBM_TOTAL/X86_FEATURE_CQM_MBM_LOCAL independent.
->>
->>
->> Agree.
->>
->>
->>>
->>> What do you think of something like below that builds on your original change and additionally
->>> enforces dependency between these features to support the resctrl assumptions? From what I understand
->>> this is ok for current AMD hardware? A not-as-urgent follow-up can make these features independent
->>> again?
->>
->>
->> Yes. I tested it. Works fine.  It defaults to "default" mode if both the events(local and total) are disabled in kernel parameter. That is expected.
-
-Thank you very much for considering it and trying it out. Could you please also check if it
-behaves sanely when just one of the MBM events is enabled? For example by just booting with
-"rdt=!mbmtotal" or "rdt=!mbmlocal". Only one event's file should be created while it should
-still be possible to switch between default and mbm_event mode, event reads from the event
-file working as expected in both modes.
-
-
->>> diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
->>> index c8945610d455..fd42fe7b2fdc 100644
->>> --- a/arch/x86/kernel/cpu/resctrl/monitor.c
->>> +++ b/arch/x86/kernel/cpu/resctrl/monitor.c
->>> @@ -452,7 +452,16 @@ int __init rdt_get_mon_l3_config(struct rdt_resource *r)
->>>           r->mon.mbm_cfg_mask = ecx & MAX_EVT_CONFIG_BITS;
->>>       }
->>>   -    if (rdt_cpu_has(X86_FEATURE_ABMC)) {
->>> +    /*
->>> +     * resctrl assumes a system that supports assignable counters can
->>> +     * switch to "default" mode. Ensure that there is a "default" mode
->>> +     * to switch to. This enforces a dependency between the independent
->>> +     * X86_FEATURE_ABMC and X86_FEATURE_CQM_MBM_TOTAL/X86_FEATURE_CQM_MBM_LOCAL
->>> +     * hardware features.
->>> +     */
->>> +    if (rdt_cpu_has(X86_FEATURE_ABMC) &&
->>> +        (rdt_cpu_has(X86_FEATURE_CQM_MBM_TOTAL) ||
->>> +         rdt_cpu_has(X86_FEATURE_CQM_MBM_LOCAL))) {
->>>           r->mon.mbm_cntr_assignable = true;
->>>           cpuid_count(0x80000020, 5, &eax, &ebx, &ecx, &edx);
->>>           r->mon.num_mbm_cntrs = (ebx & GENMASK(15, 0)) + 1;
->>> diff --git a/fs/resctrl/monitor.c b/fs/resctrl/monitor.c
->>> index 4076336fbba6..572a9925bd6c 100644
->>> --- a/fs/resctrl/monitor.c
->>> +++ b/fs/resctrl/monitor.c
->>> @@ -1782,15 +1782,13 @@ int resctrl_mon_resource_init(void)
->>>           mba_mbps_default_event = QOS_L3_MBM_TOTAL_EVENT_ID;
->>>         if (r->mon.mbm_cntr_assignable) {
->>> -        if (!resctrl_is_mon_event_enabled(QOS_L3_MBM_TOTAL_EVENT_ID))
->>> - resctrl_enable_mon_event(QOS_L3_MBM_TOTAL_EVENT_ID);
->>> -        if (!resctrl_is_mon_event_enabled(QOS_L3_MBM_LOCAL_EVENT_ID))
->>> - resctrl_enable_mon_event(QOS_L3_MBM_LOCAL_EVENT_ID);
->>> -        mon_event_all[QOS_L3_MBM_TOTAL_EVENT_ID].evt_cfg = r->mon.mbm_cfg_mask;
->>> -        mon_event_all[QOS_L3_MBM_LOCAL_EVENT_ID].evt_cfg = r->mon.mbm_cfg_mask &
->>> -                                   (READS_TO_LOCAL_MEM |
->>> -                                    READS_TO_LOCAL_S_MEM |
->>> - NON_TEMP_WRITE_TO_LOCAL_MEM);
->>> +        if (resctrl_is_mon_event_enabled(QOS_L3_MBM_TOTAL_EVENT_ID))
->>> +            mon_event_all[QOS_L3_MBM_TOTAL_EVENT_ID].evt_cfg = r->mon.mbm_cfg_mask;
->>> +        if (resctrl_is_mon_event_enabled(QOS_L3_MBM_LOCAL_EVENT_ID))
->>> +            mon_event_all[QOS_L3_MBM_LOCAL_EVENT_ID].evt_cfg = r->mon.mbm_cfg_mask &
->>> +                                       (READS_TO_LOCAL_MEM |
->>> +                                        READS_TO_LOCAL_S_MEM |
->>> + NON_TEMP_WRITE_TO_LOCAL_MEM);
->>>           r->mon.mbm_assign_on_mkdir = true;
->>>           resctrl_file_fflags_init("num_mbm_cntrs",
->>>                        RFTYPE_MON_INFO | RFTYPE_RES_CACHE);
->>>
->>>
->>>
->>>
+On 10/14/2025 3:57 PM, Reinette Chatre wrote:
+> Hi Babu,
 > 
-> I can send the official patch if you are ok to go ahead with the patch.
+> On 10/14/25 10:43 AM, Babu Moger wrote:
+>> On 10/14/25 12:38, Babu Moger wrote:
+>>> On 10/14/25 11:24, Reinette Chatre wrote:
+>>>> On 10/7/25 7:38 PM, Reinette Chatre wrote:
+>>>>> On 10/7/25 10:36 AM, Babu Moger wrote:
+>>>>>> On 10/6/25 20:23, Reinette Chatre wrote:
+>>>>>>> On 10/6/25 1:38 PM, Moger, Babu wrote:
+>>>>>>>> On 10/6/25 12:56, Reinette Chatre wrote:
+>>>>>>>>> On 9/30/25 1:26 PM, Babu Moger wrote:
+> 
+> ...
+> 
+>>>>>>>>> But wait ... I think there may be a bigger problem when considering systems
+>>>>>>>>> that support ABMC but not X86_FEATURE_CQM_MBM_TOTAL and X86_FEATURE_CQM_MBM_LOCAL.
+>>>>>>>>> Shouldn't resctrl prevent such a system from switching to "default"
+>>>>>>>>> mbm_assign_mode? Otherwise resctrl will happily let such a system switch
+>>>>>>>>> to default mode and when user attempts to read an event file resctrl will
+>>>>>>>>> attempt to read it via MSRs that are not supported.
+>>>>>>>>> Looks like ABMC may need something similar to CONFIG_RESCTRL_ASSIGN_FIXED
+>>>>>>>>> to handle this case in show() while preventing user space from switching to
+>>>>>>>>> "default" mode on write()?
+>>>>>>>> This may not be an issue right now. When X86_FEATURE_CQM_MBM_TOTAL and
+>>>>>>>> X86_FEATURE_CQM_MBM_LOCAL are not supported then mon_data files of these
+>>>>>>>> events are not created.
+>>>>>>> By "right now" I assume you mean the current implementation? I think your statement
+>>>>>>> assumes that no CPUs come or go after resctrl_mon_resource_init() enables the MBM events?
+>>>>>>> Current implementation will enable MBM events if ABMC is supported. When the
+>>>>>>> first CPU of a domain comes online after that then resctrl will create the mon_data
+>>>>>>> files. These files will remain if a user then switches to default mode and if
+>>>>>>> the user then attempts to read one of these counters then I expect problems.
+>>>>>> Yes. It will be a problem in the that case.
+>>>>> Thinking about this more the issue is not about the mon_data files being created since
+>>>>> they are only created if resctrl is mounted and resctrl_mon_resource_init() is run
+>>>>> before creating the mountpoint. From what I can tell current MBM events supported by
+>>>>> ABMC will be enabled at the time resctrl can be mounted so if X86_FEATURE_CQM_MBM_TOTAL
+>>>>> and X86_FEATURE_CQM_MBM_LOCAL are not supported but ABMC is then I believe the
+>>>>> mon_data files will be created.
+>>>>>
+>>>>> There is a problem with the actual domain creation during resctrl initialization
+>>>>> where the MBM state data structures are created and depend on the events being
+>>>>> enabled then.
+>>>>> resctrl assumes that if an event is enabled then that event's associated
+>>>>> rdt_mon_domain::mbm_states and rdt_hw_mon_domain::arch_mbm_states exist and if
+>>>>> those data structures are created (or not created) during CPU online and MBM
+>>>>> event comes online later then there will be invalid memory accesses.
+>>>>>
+>>>>> The conclusion is the same though ... the events need to be initialized during
+>>>>> resctrl initialization as you note above.
+>>>>>
+>>>>>> I am not clear on using config option you mentioned above.
+>>>>> This is more about what is accomplished by the config option than whether it is
+>>>>> a config option that controls the flow. More below but I believe there may be
+>>>>> scenarios where only mbm_event is supported and in that case I expect, even on AMD,
+>>>>> it may be possible that there is no supported "default" mode and thus:
+>>>>>    # cat /sys/fs/resctrl/info/L3_MON/mbm_assign_mode
+>>>>>     [mbm_event]
+>>>>>
+>>>>>> What about using the check resctrl_is_mon_event_enabled() in
+>>>>>>
+>>>>>> resctrl_mbm_assign_mode_show() and resctrl_mbm_assign_mode_write() ?
+>>>>>>
+>>>>> Trying to think through how to support a system that can switch between default
+>>>>> and mbm_event mode I see a couple of things to consider. This is as I am thinking
+>>>>> through the flows without able to experiment. I think it may help if you could sanity
+>>>>> check this with perhaps a few experiments to considering the flows yourself to see where
+>>>>> I am missing things.
+>>>>>
+>>>>> When we are clear on the flows to support and how to interact with user space it will
+>>>>> be easier to start exchanging code.
+>>>>>
+>>>>> a) MBM state data structures
+>>>>>      As mentioned above, rdt_mon_domain::mbm_states and rdt_hw_mon_domain::arch_mbm_states
+>>>>>      are created during CPU online based on MBM event enabled state. During runtime
+>>>>>      an enabled MBM event is assumed to have state.
+>>>>>      To me this implies that any possible MBM event should be enabled during early
+>>>>>      initialization.
+>>>>>      A consequence is that any possible MBM event will have its associated event file
+>>>>>      created even if the active mode of the time cannot support it. (I do not think
+>>>>>      we want to have event files come and go).
+>>>>> b) Switching between modes.
+>>>>>      From what I can tell switching mode is always allowed as long as system supports
+>>>>>      assignable counters and that may not be correct. Consider a system that supports
+>>>>>      ABMC but does not support X86_FEATURE_CQM_MBM_TOTAL and/or X86_FEATURE_CQM_MBM_LOCAL ...
+>>>>>      should it be allowed to switch to "default" mode? At this time I believe this is allowed
+>>>>>      yet this is an unusable state (as far as MBM goes) and I expect any attempt at reading
+>>>>>      an event file will result in invalid MSR access?
+>>>>>      Complexity increases if there is a mismatch in supported events, for example if mbm_event
+>>>>>      mode supports total and local but default mode only supports one. Should it be allowed
+>>>>>      to switch modes? If so, user can then still read from both files, the check whether assignable
+>>>>>      counters is enabled will fail and resctrl will attempt to read both via the counter MSRs,
+>>>>>      even an unsupported event (continued below).
+>>>>> c) Read of event file
+>>>>>      A user can read from event file any time even if active mode (default or mbm_event) does
+>>>>>      not support it. If mbm_event mode is enabled then resctrl will attempt to use counters,
+>>>>>      if default mode is enabled then resctrl will attempt to use MSRs.
+>>>>>      This currently entirely depends on whether mbm_event mode is enabled or not.
+>>>>>      Perhaps we should add checks here to prevent user from reading an event if the
+>>>>>      active mode does not support it? Alternatively prevent user from switching to a mode
+>>>>>      that cannot be supported.
+>>>>>
+>>>>> Look forward to how you view things and thoughts on how user may expect to interact with these
+>>>>> features.
+>>>
+>>>
+>>> Yea.  Taken note of all your points. Sorry for the Iate response. I was investigating on how to fix in a proper way.
+>>>
+>>>
+>>>> I am concerned about this issue. The original changelog only mentions that events are enabled when
+>>>> they should not be but it looks to me that there is a more serious issue if the user then attempts
+>>>> to read from such an event. Have you tried the scenario when a user boots with the parameters
+>>>> mentioned in changelog (rdt=!mbmtotal,!mbmlocal) and then attempts to read one of these events?
+>>>> Reading from the event will attempt to access its architectural state but from what I can tell
+>>>> that will not be allocated since the events are not enabled at the time of the allocation.
+>>>
+>>>
+>>> Yes. I saw the issues. It fails to mount in my case with panic trace.
+> 
+> (Just to ensure that there is not anything else going on) Could you please confirm if the panic is from
+> mon_add_all_files()->mon_event_read()->mon_event_count()->__mon_event_count()->resctrl_arch_reset_rmid()
+> that creates the MBM event files during mount and then does the initial read of RMID to determine the
+> starting count?
 
-I am ok to go ahead with this patch. Please do rewrite the subject and changelog to highlight the
-severity. I'd recommend that the changelog be something like:
+It happens just before that (at mbm_cntr_get). We have not allocated 
+d->cntr_cfg for the counters.
+===================Panic trace =================================
 
+349.330416] BUG: kernel NULL pointer dereference, address: 0000000000000008
+[  349.338187] #PF: supervisor read access in kernel mode
+[  349.343914] #PF: error_code(0x0000) - not-present page
+[  349.349644] PGD 10419f067 P4D 0
+[  349.353241] Oops: Oops: 0000 [#1] SMP NOPTI
+[  349.357905] CPU: 45 UID: 0 PID: 3449 Comm: mount Not tainted 
+6.18.0-rc1+ #120 PREEMPT(voluntary)
+[  349.367803] Hardware name: AMD Corporation PURICO/PURICO, BIOS 
+RPUT1003E 12/11/2024
+[  349.376334] RIP: 0010:mbm_cntr_get+0x56/0x90
+[  349.381096] Code: 45 8d 41 fe 83 f8 01 77 3d 8b 7b 50 85 ff 7e 36 49 
+8b 84 24 f0 04 00 00 45 31 c0 eb 0d 41 83 c0 01 48 83 c0 10 44 39 c7 74 
+1c <48> 3b 50 08 75 ed 3b 08 75 e9 48 83 c4 10 44 89 c0 5b 41 5c 41 5d
+[  349.402037] RSP: 0018:ff56bba58655f958 EFLAGS: 00010246
+[  349.407861] RAX: 0000000000000000 RBX: ffffffff9525b900 RCX: 
+0000000000000002
+[  349.415818] RDX: ffffffff95d526a0 RSI: ff1f5d52517c1800 RDI: 
+0000000000000020
+[  349.423774] RBP: ff56bba58655f980 R08: 0000000000000000 R09: 
+0000000000000001
+[  349.431730] R10: ff1f5d52c616a6f0 R11: fffc6a2f046c3980 R12: 
+ff1f5d52517c1800
+[  349.439687] R13: 0000000000000001 R14: ffffffff95d526a0 R15: 
+ffffffff9525b968
+[  349.447635] FS:  00007f17926b7800(0000) GS:ff1f5d59d45ff000(0000) 
+knlGS:0000000000000000
+[  349.456659] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  349.463064] CR2: 0000000000000008 CR3: 0000000147afe002 CR4: 
+0000000000771ef0
+[  349.471022] PKRU: 55555554
+[  349.474033] Call Trace:
+[  349.476755]  <TASK>
+[  349.479091]  ? kernfs_add_one+0x114/0x170
+[  349.483560]  rdtgroup_assign_cntr_event+0x9b/0xd0
+[  349.488795]  rdtgroup_assign_cntrs+0xab/0xb0
+[  349.493553]  rdt_get_tree+0x4be/0x770
+[  349.497623]  vfs_get_tree+0x2e/0xf0
+[  349.501508]  fc_mount+0x18/0x90
+[  349.505007]  path_mount+0x360/0xc50
+[  349.508884]  ? putname+0x68/0x80
+[  349.512479]  __x64_sys_mount+0x124/0x150
+[  349.516848]  x64_sys_call+0x2133/0x2190
+[  349.521123]  do_syscall_64+0x74/0x970
 
-	The following BUG/PANIC/splat(?) is encountered on mount of resctrl fs after booting
-	a system that has X86_FEATURE_ABMC with the "rdt=!mbmtotal,!mbmlocal" kernel parameters:
-
-	<trimmed backtrace>
-
-	<problem description>
-
-	<description of fix that also mentions it adds dependency where there is none and why this
-	 is ok (for now?)>
+==================================================================
 
 > 
-> Let me know if I can add Signoff from you or you can respond after it is reviewed.
+> 
+>>>
+>>>
+>>>>
+>>>> This needs to be fixed during this cycle. A week has passed since my previous message so I do not
+>>>
+>>>
+>>> Yes. I understand your concern.
+>>>
+>>>
+>>>> think that it will be possible to create a full featured solution that keeps X86_FEATURE_ABMC
+>>>> and X86_FEATURE_CQM_MBM_TOTAL/X86_FEATURE_CQM_MBM_LOCAL independent.
+>>>
+>>>
+>>> Agree.
+>>>
+>>>
+>>>>
+>>>> What do you think of something like below that builds on your original change and additionally
+>>>> enforces dependency between these features to support the resctrl assumptions? From what I understand
+>>>> this is ok for current AMD hardware? A not-as-urgent follow-up can make these features independent
+>>>> again?
+>>>
+>>>
+>>> Yes. I tested it. Works fine.  It defaults to "default" mode if both the events(local and total) are disabled in kernel parameter. That is expected.
+> 
+> Thank you very much for considering it and trying it out. Could you please also check if it
+> behaves sanely when just one of the MBM events is enabled? For example by just booting with
+> "rdt=!mbmtotal" or "rdt=!mbmlocal". Only one event's file should be created while it should
+> still be possible to switch between default and mbm_event mode, event reads from the event
+> file working as expected in both modes.
 
-You could add below tags or we can just do the usual review. Either works for me. Let me know if
-you would like more collaboration on the changelog.
+Yes. Checked already. Going to check again running few more tests.
 
-Co-developed-by: Reinette Chatre <reinette.chatre@intel.com>
-Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
+> 
+> 
+>>>> diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
+>>>> index c8945610d455..fd42fe7b2fdc 100644
+>>>> --- a/arch/x86/kernel/cpu/resctrl/monitor.c
+>>>> +++ b/arch/x86/kernel/cpu/resctrl/monitor.c
+>>>> @@ -452,7 +452,16 @@ int __init rdt_get_mon_l3_config(struct rdt_resource *r)
+>>>>            r->mon.mbm_cfg_mask = ecx & MAX_EVT_CONFIG_BITS;
+>>>>        }
+>>>>    -    if (rdt_cpu_has(X86_FEATURE_ABMC)) {
+>>>> +    /*
+>>>> +     * resctrl assumes a system that supports assignable counters can
+>>>> +     * switch to "default" mode. Ensure that there is a "default" mode
+>>>> +     * to switch to. This enforces a dependency between the independent
+>>>> +     * X86_FEATURE_ABMC and X86_FEATURE_CQM_MBM_TOTAL/X86_FEATURE_CQM_MBM_LOCAL
+>>>> +     * hardware features.
+>>>> +     */
+>>>> +    if (rdt_cpu_has(X86_FEATURE_ABMC) &&
+>>>> +        (rdt_cpu_has(X86_FEATURE_CQM_MBM_TOTAL) ||
+>>>> +         rdt_cpu_has(X86_FEATURE_CQM_MBM_LOCAL))) {
+>>>>            r->mon.mbm_cntr_assignable = true;
+>>>>            cpuid_count(0x80000020, 5, &eax, &ebx, &ecx, &edx);
+>>>>            r->mon.num_mbm_cntrs = (ebx & GENMASK(15, 0)) + 1;
+>>>> diff --git a/fs/resctrl/monitor.c b/fs/resctrl/monitor.c
+>>>> index 4076336fbba6..572a9925bd6c 100644
+>>>> --- a/fs/resctrl/monitor.c
+>>>> +++ b/fs/resctrl/monitor.c
+>>>> @@ -1782,15 +1782,13 @@ int resctrl_mon_resource_init(void)
+>>>>            mba_mbps_default_event = QOS_L3_MBM_TOTAL_EVENT_ID;
+>>>>          if (r->mon.mbm_cntr_assignable) {
+>>>> -        if (!resctrl_is_mon_event_enabled(QOS_L3_MBM_TOTAL_EVENT_ID))
+>>>> - resctrl_enable_mon_event(QOS_L3_MBM_TOTAL_EVENT_ID);
+>>>> -        if (!resctrl_is_mon_event_enabled(QOS_L3_MBM_LOCAL_EVENT_ID))
+>>>> - resctrl_enable_mon_event(QOS_L3_MBM_LOCAL_EVENT_ID);
+>>>> -        mon_event_all[QOS_L3_MBM_TOTAL_EVENT_ID].evt_cfg = r->mon.mbm_cfg_mask;
+>>>> -        mon_event_all[QOS_L3_MBM_LOCAL_EVENT_ID].evt_cfg = r->mon.mbm_cfg_mask &
+>>>> -                                   (READS_TO_LOCAL_MEM |
+>>>> -                                    READS_TO_LOCAL_S_MEM |
+>>>> - NON_TEMP_WRITE_TO_LOCAL_MEM);
+>>>> +        if (resctrl_is_mon_event_enabled(QOS_L3_MBM_TOTAL_EVENT_ID))
+>>>> +            mon_event_all[QOS_L3_MBM_TOTAL_EVENT_ID].evt_cfg = r->mon.mbm_cfg_mask;
+>>>> +        if (resctrl_is_mon_event_enabled(QOS_L3_MBM_LOCAL_EVENT_ID))
+>>>> +            mon_event_all[QOS_L3_MBM_LOCAL_EVENT_ID].evt_cfg = r->mon.mbm_cfg_mask &
+>>>> +                                       (READS_TO_LOCAL_MEM |
+>>>> +                                        READS_TO_LOCAL_S_MEM |
+>>>> + NON_TEMP_WRITE_TO_LOCAL_MEM);
+>>>>            r->mon.mbm_assign_on_mkdir = true;
+>>>>            resctrl_file_fflags_init("num_mbm_cntrs",
+>>>>                         RFTYPE_MON_INFO | RFTYPE_RES_CACHE);
+>>>>
+>>>>
+>>>>
+>>>>
+>>
+>> I can send the official patch if you are ok to go ahead with the patch.
+> 
+> I am ok to go ahead with this patch. Please do rewrite the subject and changelog to highlight the
+> severity. I'd recommend that the changelog be something like:
+> 
+> 
+> 	The following BUG/PANIC/splat(?) is encountered on mount of resctrl fs after booting
+> 	a system that has X86_FEATURE_ABMC with the "rdt=!mbmtotal,!mbmlocal" kernel parameters:
+> 
+> 	<trimmed backtrace>
+> 
+> 	<problem description>
+> 
+> 	<description of fix that also mentions it adds dependency where there is none and why this
+> 	 is ok (for now?)>
+> 
 
-Reinette
+Yes. Sure.
+
+
+>>
+>> Let me know if I can add Signoff from you or you can respond after it is reviewed.
+> 
+> You could add below tags or we can just do the usual review. Either works for me. Let me know if
+> you would like more collaboration on the changelog.
+
+Sure. Will send you the full change log first.
+
+> 
+> Co-developed-by: Reinette Chatre <reinette.chatre@intel.com>
+> Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
+> 
+
+thanks
+Babu
