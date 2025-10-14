@@ -1,462 +1,580 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E425A2DCF5B
-	for <linux-coco@lists.linux.dev>; Tue, 14 Oct 2025 08:35:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760430956; cv=fail; b=pbcMq01PRbSApeyH5JpFOUgvxQCn9Ffzn6FyKxObxIiChh4+FJL4IJnqV/Fe2vKTuUih2q/MTh0yTYZcbWaddZPySQNZZ1KvrbeDO/iK/ACVCxXfP6Ai3t2BlT4rUxr6MUGSNE6cBKpPHikTHT1oD50kWPBAqHv05pBSzav8e4w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760430956; c=relaxed/simple;
-	bh=iCeHtWpvvVt0Buwia36b8PhYJYP8R0A1JdIXQFS3zqg=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=GfdQhB5MSKeq8PE3y5xuzZlxor1vNSD8FyVqxHS7/fx3llKVuxTIK1ZkqwUqX2eUJ6RR59yl89mS1WnYLgn85gXrgn5Q7F8Jh03TfjdnSr8G030wMQHLrEXxGBcKD5MKdsZB6YOtoXzcS/7zBavw4W/dMiFyoxIHFWQ7K3mV9hs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XlR/axRs; arc=fail smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XlR/axRs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760430954; x=1791966954;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=iCeHtWpvvVt0Buwia36b8PhYJYP8R0A1JdIXQFS3zqg=;
-  b=XlR/axRskjqdgQJJx93Dx3V/20kbQotWJgH0Vkf1mGOFaP2Vxau47qnZ
-   ACfTVHsom6mB2ytMf3AhNpV7xk/OBnnldvMVnbNW3LRgEDbmS6j7MqNRG
-   yduE5vSJ8k9glztJztDUBTT4ZNMVf1/OCQadzvfuUClLj2bEWbtqETLh2
-   RSlT+r1APiPV3lPn9WhUK0efahbBpNocrUd+u3BWk0/IIi0BMMFhzKw18
-   FDqlZHRaPocNEfs08ZB1fnJ9e75gUOxyo4hfPAz8o714sjt4Tli880swS
-   0mShxoOBO7ZJwOYH6V7jOmnTvc8KMi9irSant3eH/yPtXwNyOzGIgJf2n
-   w==;
-X-CSE-ConnectionGUID: mnexDshSSf2RnZls6rDHyg==
-X-CSE-MsgGUID: 9HP5EcCjTESsUCpwyV09fQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11581"; a="66438431"
-X-IronPort-AV: E=Sophos;i="6.19,227,1754982000"; 
-   d="scan'208";a="66438431"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 01:35:54 -0700
-X-CSE-ConnectionGUID: bk2c6rX2SwapUV0PgR4LIw==
-X-CSE-MsgGUID: 2TMT3f+HS5WUAksSBbgHgA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,227,1754982000"; 
-   d="scan'208";a="186080564"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 01:35:53 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Tue, 14 Oct 2025 01:35:52 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Tue, 14 Oct 2025 01:35:52 -0700
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.2) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Tue, 14 Oct 2025 01:35:52 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Glmfwey1lIUDCYSuxBFkuXUk0Lqt/vJEw1pBAiFnFIIKs+GyphcajJafxKa39QDgByhMC9EwgIOggJEBrRsnr9hdnUWge7oqv+VXU0PwQxuPg3x1sRiwf8stOUV39rxnqN3SqxT14HVEIzRcoybFZFtjIr4YE/Ailm8PfQIfhlnQ8Wk+/SyaDvqvU7CszYws2va96Iiomuk7sZv+EJDwxrRgeqBROkClSW/9SFGCkJA3Wk2zTvPvuw75483GPpHXnYtziTVNCnFBWFGcUmflRPWTw6eGg15bAF7af5x+c8yXrf47XXgwB4NL0qClAKx7R9GRzMCJmTpe6V/Y+3Hkkg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YyiapA3pCdnPBwyJ1uDz2PdxOnuVIrPQPadhGIW9DNY=;
- b=xJiFLrXuR32JrDvjmKxEfhOKMn25YtXoFJXPNMxNZDYgk8KWuG0sM+igmnOGpCNTexqYGk1AkwERTQexudFeJI5hXI0PzfZtQDsXXU7VMtM0O0jfpecNFCtbWPWsS0nZFxlpUov4nuurATokihTNeePJB0Nfj/XjxRzVAvufr/mCCAzdIicEpfpTS0dK34CZ9pHPaRxoz+fUl+s+3eLYwcijA9PaLqOG/bqGzDX+15tTjIMzZOLj87mWUEVrDxBk2nsLF2wZlUBIi5aJVxi5YWkMNQSmEaT0sPITPu+z4SrZxtCmdYuTRMi5Xck9ch4wMELAIWGc7cGp+K93oDPmQw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
- by PH8PR11MB7024.namprd11.prod.outlook.com (2603:10b6:510:220::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.12; Tue, 14 Oct
- 2025 08:35:45 +0000
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf%7]) with mapi id 15.20.9203.009; Tue, 14 Oct 2025
- 08:35:45 +0000
-Date: Tue, 14 Oct 2025 16:35:33 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: Rick P Edgecombe <rick.p.edgecombe@intel.com>, "x86@kernel.org"
-	<x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"mingo@redhat.com" <mingo@redhat.com>, "tglx@linutronix.de"
-	<tglx@linutronix.de>, "bp@alien8.de" <bp@alien8.de>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>, Kai Huang <kai.huang@intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Dan J Williams
-	<dan.j.williams@intel.com>, Adrian Hunter <adrian.hunter@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "xin@zytor.com" <xin@zytor.com>
-Subject: Re: [RFC PATCH 3/4] KVM: x86/tdx: Do VMXON and TDX-Module
- initialization during tdx_init()
-Message-ID: <aO4LVTvnsvt/UA+4@intel.com>
-References: <20251010220403.987927-1-seanjc@google.com>
- <20251010220403.987927-4-seanjc@google.com>
- <ffc9e29aa6b9175bde23a522409a731d5de5f169.camel@intel.com>
- <aO1oKWbjeswQ-wZO@google.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <aO1oKWbjeswQ-wZO@google.com>
-X-ClientProxiedBy: KU2P306CA0066.MYSP306.PROD.OUTLOOK.COM
- (2603:1096:d10:39::17) To CH3PR11MB8660.namprd11.prod.outlook.com
- (2603:10b6:610:1ce::13)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA1EE2FC025
+	for <linux-coco@lists.linux.dev>; Tue, 14 Oct 2025 10:58:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760439526; cv=none; b=XsM0wQhrJwqAvw2krGKoJQS94FH/Dj/xMuFdk/b5T4O1xnOm77fKLgZVk8yWge8/ZOLL7ViJT/WthV6nhB3YhIYB3fSWCCbGbn8LzyDk7IO/bfKWlyWuiLGqBvQylhYjWOW7ijiWBpLRx3sw65l/Bnf+BjWbGIe+S19IcRrGgo4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760439526; c=relaxed/simple;
+	bh=5tNUuCR4d0x4dSOsBZuY8Z7tzYB72pjxRgcXhTJ+YHY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ngQB0I2/4g5GZSihOvpK2RDmq7hKQUMUlanjjI4vB5UwGE0gBmWIHGB4rJEuwijmoDIkOIDIn92F+k3Mxictbw43672CbfY6UeEUvbKIESiGsktOZ5BuoirOXEDv/zXhtVm32UkIoFLc07/ikS0mbRRXFKN+ftTQMtUDqfqzwU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 448FB1A9A;
+	Tue, 14 Oct 2025 03:58:35 -0700 (PDT)
+Received: from donnerap.manchester.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8EC893F66E;
+	Tue, 14 Oct 2025 03:58:41 -0700 (PDT)
+Date: Tue, 14 Oct 2025 11:58:37 +0100
+From: Andre Przywara <andre.przywara@arm.com>
+To: Vedashree Vidwans <vvidwans@nvidia.com>
+Cc: Salman Nabi <salman.nabi@arm.com>, <lpieralisi@kernel.org>,
+ <mark.rutland@arm.com>, <sudeep.holla@arm.com>, <ardb@kernel.org>,
+ <chao.gao@intel.com>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <sdonthineni@nvidia.com>, <vsethi@nvidia.com>, <vwadekar@nvidia.com>
+Subject: Re: [RFC PATCH 2/3] firmware: smccc: LFA: refactor, add device node
+ support
+Message-ID: <20251014115837.4ad17e38@donnerap.manchester.arm.com>
+In-Reply-To: <b0a1c2ab-c040-41cb-9dad-49442a03993b@nvidia.com>
+References: <20251008190907.181412-1-vvidwans@nvidia.com>
+	<20251008190907.181412-3-vvidwans@nvidia.com>
+	<12598032-3f12-42db-8fc9-6ef879d9a3ba@arm.com>
+	<b0a1c2ab-c040-41cb-9dad-49442a03993b@nvidia.com>
+Organization: ARM
+X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.32; aarch64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|PH8PR11MB7024:EE_
-X-MS-Office365-Filtering-Correlation-Id: b249ecf6-bd42-4b70-4137-08de0afcab22
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?cGBnAojAlsf2QA8l1XKI3jdWYLj2BA+XaDo6zcOXJmTX9vuHLQnFy+kUsgP1?=
- =?us-ascii?Q?eaVwGZn4DSdX9TPC318Z4BQdwYrbaHmGSqYLgDwk90qhLX9vSbjg1m/y0I6p?=
- =?us-ascii?Q?UPCKs+Z+3B2YPdvmKdgo3M2txqM6suOYLXp+JGybuiwWzUnWy3tk5EZxbbzF?=
- =?us-ascii?Q?A32xmXkO910kCGftgq8eHpJ0YQNjCRwdfe59nXblXSwEUQFu2SmUBensnaME?=
- =?us-ascii?Q?H0zV69hYYF027N/mt8FrNL1Ppae9OEkP9WIvG2tqAsJA0idQ8GaKor8+QHX+?=
- =?us-ascii?Q?VdAJ8pH65uCHYE86+V3v3CoBZuVVu/172YAuzfhNPsDExvwXCsELRp3bzfQt?=
- =?us-ascii?Q?59TSSZcMSLD7sSEUcVfSUNj9GzsefKjP4LDpi5bywQa+hSrqIqVHQcRJsNZa?=
- =?us-ascii?Q?jDYpMbm5xUO3xZa6VbXauP7N547XJlzAI+XQyl2P6LkwKSUjn3+R+xxM+k2T?=
- =?us-ascii?Q?n+6CB1SgRIjemlV76En7Hi9cTCM18l1Dp6kCmIOuOPla/luAjUTpydJwyuEP?=
- =?us-ascii?Q?2muxk5zcQO94rI5jGfdIzwf4i7NvUj8j1iN4PfiARI0zqeLc2rE2AZG917oc?=
- =?us-ascii?Q?2pZCSEAy1bbEWbbPwnCB/QaXC3mV3kV9vr/U8HWBlsrhn+iG/JQX1F00Cq6g?=
- =?us-ascii?Q?WRX6GPwElElBEJzl8sx5SMY/kCukfettwg0hVTkoPF6S5COxaGnTe2LCwCZa?=
- =?us-ascii?Q?nNH2VHNqMHK8SVUoikWDierBSOKZqCxfGzT1OBDBOAs9OBXomlSE2yD2Hh8D?=
- =?us-ascii?Q?R7wvjUg8YVDQNBwii1d81OhoRyvSNjkIWxDOqu/JYPjE/pnMK+41fpsMlNs8?=
- =?us-ascii?Q?HgDb9DFnKdG+TjpSmohr8W6LYrPV57u42Cre6Gf2uLfS+pIFxhceanhS/eKS?=
- =?us-ascii?Q?8lJ2v+FORb8APh8IfLW5cUU+yINpV2Ve2br8MykJw7ceSWXaVCSSHfcJlEVC?=
- =?us-ascii?Q?WEp5Lzlx42TPPjnRBEj5zsIrwu/RZnwqq/h1/x2+caNB/4p1CJZbjn5+am/a?=
- =?us-ascii?Q?z6AfcTuv5pmX4atqlMPkH2Keh9LY0nlp8adLu1DGqPzWNoj2USMgL5enW9Fm?=
- =?us-ascii?Q?E0Xa79lRbI4+7PnNRRqR+rbWdtBE9XA5NmGTMl6pQxqxRspNZYayJ3n45kwE?=
- =?us-ascii?Q?7u9cywHFGWU0QJ8yLBdCgUNSZOwNuTcAgwpxll/x1frqBVaAF71sBMmJJilY?=
- =?us-ascii?Q?DhtvXcLjRPjBrzYJPXH2nmbhON3cM5CqCNs4Y15Cbi922HBfkqtUn9UISym8?=
- =?us-ascii?Q?gVxDjUlsomVawko+LWF/YT/A9ohri9+IYjhMpfrgpeEIhDrm4Ve3JI2ABA/r?=
- =?us-ascii?Q?/DSoxBN6xbomK4N0+1cO7ZqvD4+BQLmnPmZBOByY2lRsJZBVCxyQwPKRnp6R?=
- =?us-ascii?Q?Zk2ytekB7OvCeEd2KhOscQK+fAJE0Om3gYZI86Y8WoZZNlDUcZf3z0k32J6a?=
- =?us-ascii?Q?gjMRf08KFJ0vVbC7GgLMYDPrsCQSDX2g?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?XnP+l0hnBIBPVgBa04Ajt+4K6gId+2XzDNy9t0PPGNmMKWYB/u/nq28I4kJ7?=
- =?us-ascii?Q?s02h2jKHT2PW0EqdJC0mr/kt1Zag0M6AzASyQqSNP351sj9x5IkMyU8RcKBD?=
- =?us-ascii?Q?AtR2ogSpiacImcKSK8XifbF4KrE14EimVvpUw9dIuq7lHK7ZLNEoIVg0ag2v?=
- =?us-ascii?Q?IU/cOB91y2udHAnJEka5xI8wWc5KWoMK+HNzWy8FKaULm7VXgfFpk6Q+67T/?=
- =?us-ascii?Q?HDVwbsiyeIuJ/lFOYABOgfNwYbw0hVA6PQpC3bhLr75d0EvQoZt/PvzU3gMf?=
- =?us-ascii?Q?DbcgOxBoixF0g1Ozt8sjr0C3824UCRHLdb4l2P3fnQJrR+cmrYVThkPlUUjn?=
- =?us-ascii?Q?b203g4d/O0aT/2likZRqKJJXexuFVKjR+Hu+8E2XUtz2ZMyUAiZ9byi82MFa?=
- =?us-ascii?Q?ESipRi+AfI/5IAjd4JWCLAqtGR5zhW2IRzr8LK9/uX8wyUS6utNGeQ8kdNeU?=
- =?us-ascii?Q?hsV17IwvbVwoo74ztAjPcYQfGsO1ZoaYT9lYsOlEhZznMLQTtxsOR4zM43a5?=
- =?us-ascii?Q?3umHfSGQGeCL/AJCLVzM120QFxT5Ey4b83kmdV4ny53yKAhSLUC9oywTYqUT?=
- =?us-ascii?Q?X8vIFDD8VvYY92XgRbOpobfDqC5IIMLitCJORBxPdlOq6vhe2MVbnvsPMhfG?=
- =?us-ascii?Q?pNoVOKVCVURPXN9QqIQNiFyMVrRBshFUguDRDOi4R3xv8HDufTF2DkTL164J?=
- =?us-ascii?Q?U5nB+TLHAAsD1pGfSH2VVPitV/hts+fhK+WX7ZgXtL1UodMsRp1umh6cEiPa?=
- =?us-ascii?Q?uPnyZXxurHd9Sjd7NjZ90Gu+ywFeZx+bHPOq9LJsfKWLi1Vizx/cZ/519sTa?=
- =?us-ascii?Q?uywjSni5N8LZYCJY0h3L7SUIpoFYBCF/bDWXHm9RP2I6uz40MKzl8NFgXtkD?=
- =?us-ascii?Q?u87EpP5u3afdrUGkuIX8e3sE33fHgG2I5uB5Xtnsbu8kBjCzKmiPYhc1lbWN?=
- =?us-ascii?Q?3MqNxbhfmuMsDltf/BfG1s1nBRfqQ91vVn7rXcvDfbfOjMqkBzyxNm19LdXC?=
- =?us-ascii?Q?qtVnMFBzQq9T+d+Bav+F+bSUET3vEQ1/QOWwx+Efd4RVdtGQId7Vg9/GkEgN?=
- =?us-ascii?Q?qG04AS9obcIJSEot9iNuavmuwaZl4HQk/bogs/cRNoz88dboo9JJEvYZsSad?=
- =?us-ascii?Q?mW6KEcBlg5hyuc8/rOZQlL6Yx7+AkZjIxE3t4JJUdEpt2pa4yP7pm6pZF7Uu?=
- =?us-ascii?Q?+krUZX3HLuoDe2zkbs+IEczKggIrCUOM6lbJuSr6XtJxzjLigUGNrrHA2sEv?=
- =?us-ascii?Q?Ig8kXFiJSyCxqcWxEIcvKeFUnBwl+Aae9rHJ+kgnmkvDhj+FsQfHUQLIeefJ?=
- =?us-ascii?Q?ZnaDsI9y6NUvK2GT04IPeQJ15G+uPzrnB41DBBOku8efIaNnQw4t4Qmg2HQ8?=
- =?us-ascii?Q?rEA5aC8rjdgzPQOETasr5u/tYoOeFS3tkvGrQfS0qasdqq8r8/VqMz6OMIV5?=
- =?us-ascii?Q?bMTKldL/IILG/dJNOL+w/g5ksQomj9QLKEKBJs2modUztO/C0PI2Qkrc4GP/?=
- =?us-ascii?Q?Qk79eqi39TSu14sTAa0ka9LcfkrGj3hhinm56GxJjUF3PaEVqwtmXwmP8/1a?=
- =?us-ascii?Q?4cKOatwdSVruU9+wZq7TZCaulUSKzb1dphE2dhFl?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: b249ecf6-bd42-4b70-4137-08de0afcab22
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2025 08:35:45.4557
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8SteGGTwUBAAr3TYvfTbfm85Ag3u+DTPS6EHhL8mKOFK0b/2VQmQzrzi7iRVHxIHIU+H+EztJddFR/x9ki/Bxg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB7024
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 13, 2025 at 01:59:21PM -0700, Sean Christopherson wrote:
->On Mon, Oct 13, 2025, Rick P Edgecombe wrote:
->> On Fri, 2025-10-10 at 15:04 -0700, Sean Christopherson wrote:
->> > @@ -3524,34 +3453,31 @@ static int __init __tdx_bringup(void)
->> >  	if (td_conf->max_vcpus_per_td < num_present_cpus()) {
->> >  		pr_err("Disable TDX: MAX_VCPU_PER_TD (%u) smaller than number of logical CPUs (%u).\n",
->> >  				td_conf->max_vcpus_per_td, num_present_cpus());
->> > -		goto get_sysinfo_err;
->> > +		return -EINVAL;
->> >  	}
->> >  
->> >  	if (misc_cg_set_capacity(MISC_CG_RES_TDX, tdx_get_nr_guest_keyids()))
->> > -		goto get_sysinfo_err;
->> > +		return -EINVAL;
->> >  
->> >  	/*
->> > -	 * Leave hardware virtualization enabled after TDX is enabled
->> > -	 * successfully.  TDX CPU hotplug depends on this.
->> > +	 * TDX-specific cpuhp callback to disallow offlining the last CPU in a
->> > +	 * packing while KVM is running one or more TDs.  Reclaiming HKIDs
->> > +	 * requires doing PAGE.WBINVD on every package, i.e. offlining all CPUs
->> > +	 * of a package would prevent reclaiming the HKID.
->> >  	 */
->> > +	r = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "kvm/cpu/tdx:online",
->> > +			      tdx_online_cpu, tdx_offline_cpu);
->> 
->> Could pass NULL instead of tdx_online_cpu() and delete this version of
->> tdx_online_cpu().
->
->Oh, nice, I didn't realize (or forgot) the startup call is optional.
+On Mon, 13 Oct 2025 13:47:33 -0700
+Vedashree Vidwans <vvidwans@nvidia.com> wrote:
+
+Hi Veda,
+
+> On 10/10/25 10:35, Salman Nabi wrote:
+> > External email: Use caution opening links or attachments
+> > 
+> > 
+> > Hi Vedashree,
+> > 
+> > Thank you for sending those pathces over. I just have a few comments.
+> > 
+> > On 10/8/25 20:09, Vedashree Vidwans wrote:  
+> >> - Add support for LFA device node in the kernel driver. Implement
+> >> probe() to register LFA interrupt and threaded interrupt service
+> >> function.
+> >> - CPUs will be rendezvoused during activation.
+> >> - On IRQ, driver will query FW components then triggers activation of
+> >> capable and pending components.
+> >> - Mutex synchronization is implemented to avoid concurrent LFA updates
+> >> through interrupt and sysfs interfaces.
+> >> - Refactor LFA CANCEL logic into independent lfa_cancel() function.
+> >> - Enhance PRIME/ACTIVATION functions to touch watchdog and implement
+> >> timeouts.
+> >>
+> >> Signed-off-by: Vedashree Vidwans <vvidwans@nvidia.com>
+> >> ---
+> >>   drivers/firmware/smccc/lfa_fw.c | 299 ++++++++++++++++++++++++++++----
+> >>   1 file changed, 262 insertions(+), 37 deletions(-)
+> >>
+> >> diff --git a/drivers/firmware/smccc/lfa_fw.c b/drivers/firmware/smccc/lfa_fw.c
+> >> index 49f7feb6a211b..b36b8d7457c30 100644
+> >> --- a/drivers/firmware/smccc/lfa_fw.c
+> >> +++ b/drivers/firmware/smccc/lfa_fw.c
+> >> @@ -16,7 +16,15 @@
+> >>   #include <linux/uuid.h>
+> >>   #include <linux/array_size.h>
+> >>   #include <linux/list.h>
+> >> -
+> >> +#include <linux/interrupt.h>
+> >> +#include <linux/platform_device.h>
+> >> +#include <linux/acpi.h>
+> >> +#include <linux/nmi.h>
+> >> +#include <linux/ktime.h>
+> >> +#include <linux/delay.h>
+> >> +#include <linux/mutex.h>
+> >> +
+> >> +#define DRIVER_NAME  "ARM_LFA"
+> >>   #define LFA_ERROR_STRING(name) \
+> >>        [name] = #name
+> >>   #undef pr_fmt
+> >> @@ -34,6 +42,18 @@
+> >>   #define LFA_1_0_FN_ACTIVATE          LFA_1_0_FN(5)
+> >>   #define LFA_1_0_FN_CANCEL            LFA_1_0_FN(6)
+> >>
+> >> +/* CALL_AGAIN flags (returned in res.a1[0]) */
+> >> +#define LFA_PRIME_CALL_AGAIN         BIT(0)
+> >> +#define LFA_ACTIVATE_CALL_AGAIN              BIT(0)
+> >> +
+> >> +/* Prime loop limits, TODO: tune after testing */
+> >> +#define LFA_PRIME_BUDGET_US          30000000 /* 30s cap */
+> >> +#define LFA_PRIME_POLL_DELAY_US              10       /* 10us between polls */
+> >> +
+> >> +/* Activation loop limits, TODO: tune after testing */
+> >> +#define LFA_ACTIVATE_BUDGET_US               20000000 /* 20s cap */
+> >> +#define LFA_ACTIVATE_POLL_DELAY_US   10       /* 10us between polls */
+> >> +
+> >>   /* LFA return values */
+> >>   #define LFA_SUCCESS                  0
+> >>   #define LFA_NOT_SUPPORTED            1
+> >> @@ -114,8 +134,9 @@ static const struct fw_image_uuid {
+> >>   };
+> >>
+> >>   static struct kobject *lfa_dir;
+> >> +static DEFINE_MUTEX(lfa_lock);
+> >>
+> >> -static int get_nr_lfa_components(void)
+> >> +static unsigned long get_nr_lfa_components(void)
+> >>   {
+> >>        struct arm_smccc_1_2_regs args = { 0 };
+> >>        struct arm_smccc_1_2_regs res = { 0 };
+> >> @@ -130,11 +151,40 @@ static int get_nr_lfa_components(void)
+> >>        return res.a1;
+> >>   }
+> >>
+> >> +static int lfa_cancel(void *data)
+> >> +{
+> >> +     struct image_props *attrs = data;
+> >> +     struct arm_smccc_1_2_regs args = { 0 };
+> >> +     struct arm_smccc_1_2_regs res = { 0 };
+> >> +
+> >> +     args.a0 = LFA_1_0_FN_CANCEL;
+> >> +     args.a1 = attrs->fw_seq_id;
+> >> +     arm_smccc_1_2_invoke(&args, &res);
+> >> +
+> >> +     /*
+> >> +      * When firmware activation is called with "skip_cpu_rendezvous=1",
+> >> +      * LFA_CANCEL can fail with LFA_BUSY if the activation could not be
+> >> +      * cancelled.
+> >> +      */
+> >> +     if (res.a0 == LFA_SUCCESS) {
+> >> +             pr_info("Activation cancelled for image %s",
+> >> +                     attrs->image_name);
+> >> +     } else {
+> >> +             pr_err("Firmware activation could not be cancelled: %ld",
+> >> +                    (long)res.a0);
+> >> +             return -EIO;
+> >> +     }
+> >> +
+> >> +     return res.a0;
+> >> +}
+> >> +
+> >>   static int call_lfa_activate(void *data)
+> >>   {
+> >>        struct image_props *attrs = data;
+> >>        struct arm_smccc_1_2_regs args = { 0 };
+> >>        struct arm_smccc_1_2_regs res = { 0 };
+> >> +     ktime_t end = ktime_add_us(ktime_get(), LFA_ACTIVATE_BUDGET_US);
+> >> +     int ret;
+> >>
+> >>        args.a0 = LFA_1_0_FN_ACTIVATE;
+> >>        args.a1 = attrs->fw_seq_id; /* fw_seq_id under consideration */
+> >> @@ -148,9 +198,32 @@ static int call_lfa_activate(void *data)
+> >>         */
+> >>        args.a2 = !(attrs->cpu_rendezvous_forced || attrs->cpu_rendezvous);
+> >>
+> >> -     do {
+> >> +     for (;;) {
+> >> +             /* Touch watchdog, ACTIVATE shouldn't take longer than watchdog_thresh */
+> >> +             touch_nmi_watchdog();
+> >>                arm_smccc_1_2_invoke(&args, &res);
+> >> -     } while (res.a0 == 0 && res.a1 == 1);
+> >> +
+> >> +             if ((long)res.a0 < 0) {
+> >> +                     pr_err("ACTIVATE for image %s failed: %s",
+> >> +                             attrs->image_name, lfa_error_strings[-res.a0]);
+> >> +                     return res.a0;
+> >> +             }
+> >> +             if (!(res.a1 & LFA_ACTIVATE_CALL_AGAIN))
+> >> +                     break; /* ACTIVATE successful */
+> >> +
+> >> +             /* SMC returned with call_again flag set */
+> >> +             if (ktime_before(ktime_get(), end)) {
+> >> +                     udelay(LFA_ACTIVATE_POLL_DELAY_US);
+> >> +                     continue;
+> >> +             }
+> >> +
+> >> +             pr_err("ACTIVATE timed out for image %s", attrs->image_name);
+> >> +             ret = lfa_cancel(attrs);
+> >> +             if (ret == 0)
+> >> +                     return -ETIMEDOUT;
+> >> +             else
+> >> +                     return ret;
+> >> +     }
+> >>
+> >>        return res.a0;
+> >>   }
+> >> @@ -159,8 +232,24 @@ static int activate_fw_image(struct image_props *attrs)
+> >>   {
+> >>        struct arm_smccc_1_2_regs args = { 0 };
+> >>        struct arm_smccc_1_2_regs res = { 0 };
+> >> +     ktime_t end = ktime_add_us(ktime_get(), LFA_PRIME_BUDGET_US);
+> >>        int ret;
+> >>
+> >> +     if (attrs->may_reset_cpu) {
+> >> +             pr_err("Firmware component requires unsupported CPU reset");
+> >> +             return -EINVAL;
+> >> +     }
+> >> +
+> >> +     /*
+> >> +      * We want to force CPU rendezvous if either cpu_rendezvous or
+> >> +      * cpu_rendezvous_forced is set. The flag value is flipped as
+> >> +      * it is called skip_cpu_rendezvous in the spec.
+> >> +      */
+> >> +     if (!(attrs->cpu_rendezvous_forced || attrs->cpu_rendezvous)) {
+> >> +             pr_warn("CPU rendezvous is expected to be selected.");
+> >> +             return -EAGAIN;
+> >> +     }  
+> > 
+> > The purpose of cpu_rendezvous_forced was to allow firmware components, that dont
+> > require cpu rendezvous, bypass kernel's conservative approach of always requiring
+> > cpu_rendezvous. This was per the feedback on the first LFA RFC patch. If we are
+> > happy forcing cpu rendezvou than I don't see the point of cpu_rendezvous_forced
+> > switch.
+> >   
+> For current situation, enforcing CPU rendezvous appears to be the most 
+> practical approach for our usecase. I agree that cpu_rendezvous_forced 
+> switch is redundant but it enforces the situation that kernel can handle.
+>  From my perspective, it is challenging for kernel driver to reliably 
+> determine whether any process will use services from the firmware that's 
+> being updated. We should revisit whether the switch is necessary in the 
+> future, especially based on requirements, feedback and validation data.
+
+I completely agree that using the CPU rendezvous is the safest option from
+the kernel side, but we also got feedback that it's not acceptable to
+enforce this for *every* firmware component, as gathering hundreds of
+cores just for updating some board controller firmware that does not
+provide a kernel interface is not helpful.
+Hence we deliberately introduced the cpu_rendezvous_forced file, which
+defaults to 1, so out of the box you get the CPU rendezvous behaviour. But
+it allows a system administrator to opt out of the rendezvous, just for
+this particular firmware component, based on knowledge that the kernel
+will be fine. It's kind of a "I know what I am doing" switch, so it's the
+admin's responsibility when they screw up the machine in the process.
+
+Cheers,
+Andre
+
+>> +
+> >>        /*
+> >>         * LFA_PRIME/ACTIVATE will return 1 in res.a1 if the firmware
+> >>         * priming/activation is still in progress. In that case
+> >> @@ -169,20 +258,36 @@ static int activate_fw_image(struct image_props *attrs)
+> >>         */
+> >>        args.a0 = LFA_1_0_FN_PRIME;
+> >>        args.a1 = attrs->fw_seq_id; /* fw_seq_id under consideration */
+> >> -     do {
+> >> +     for (;;) {
+> >> +             /* Touch watchdog, PRIME shouldn't take longer than watchdog_thresh */
+> >> +             touch_nmi_watchdog();
+> >>                arm_smccc_1_2_invoke(&args, &res);
+> >> -             if (res.a0 != LFA_SUCCESS) {
+> >> -                     pr_err("LFA_PRIME failed: %s\n",
+> >> -                             lfa_error_strings[-res.a0]);
+> >>
+> >> +             if ((long)res.a0 < 0) {
+> >> +                     pr_err("LFA_PRIME for image %s failed: %s\n",
+> >> +                             attrs->image_name, lfa_error_strings[-res.a0]);
+> >>                        return res.a0;
+> >>                }
+> >> -     } while (res.a1 == 1);
+> >> +             if (!(res.a1 & LFA_PRIME_CALL_AGAIN))
+> >> +                     break; /* PRIME successful */
+> >>
+> >> -     if (attrs->cpu_rendezvous_forced || attrs->cpu_rendezvous)
+> >> -             ret = stop_machine(call_lfa_activate, attrs, cpu_online_mask);
+> >> -     else
+> >> -             ret = call_lfa_activate(attrs);
+> >> +             /* SMC returned with call_again flag set */
+> >> +             if (ktime_before(ktime_get(), end)) {
+> >> +                     udelay(LFA_PRIME_POLL_DELAY_US);
+> >> +                     continue;
+> >> +             }
+> >> +
+> >> +             pr_err("PRIME timed out for image %s", attrs->image_name);
+> >> +             ret = lfa_cancel(attrs);
+> >> +             if (ret == 0)
+> >> +                     return -ETIMEDOUT;
+> >> +             else
+> >> +                     return ret;
+> >> +     }
+> >> +
+> >> +     ret = stop_machine(call_lfa_activate, attrs, cpu_online_mask);
+> >> +     if (ret != 0)
+> >> +             return lfa_cancel(attrs);
+> >>
+> >>        return ret;
+> >>   }
+> >> @@ -286,23 +391,23 @@ static ssize_t activate_store(struct kobject *kobj, struct kobj_attribute *attr,
+> >>                                         image_attrs[LFA_ATTR_ACTIVATE]);
+> >>        int ret;
+> >>
+> >> -     if (attrs->may_reset_cpu) {
+> >> -             pr_err("Firmware component requires unsupported CPU reset\n");
+> >> -
+> >> -             return -EINVAL;
+> >> +     if (!mutex_trylock(&lfa_lock)) {
+> >> +             pr_err("Mutex locked, try again");
+> >> +             return -EAGAIN;
+> >>        }
+> >>
+> >>        ret = activate_fw_image(attrs);
+> >>        if (ret) {
+> >>                pr_err("Firmware activation failed: %s\n",
+> >>                        lfa_error_strings[-ret]);
+> >> -
+> >> +             mutex_unlock(&lfa_lock);
+> >>                return -ECANCELED;
+> >>        }
+> >>
+> >>        pr_info("Firmware activation succeeded\n");
+> >>
+> >>        /* TODO: refresh image flags here*/
+> >> +     mutex_unlock(&lfa_lock);
+> >>        return count;
+> >>   }
+> >>
+> >> @@ -311,26 +416,11 @@ static ssize_t cancel_store(struct kobject *kobj, struct kobj_attribute *attr,
+> >>   {
+> >>        struct image_props *attrs = container_of(attr, struct image_props,
+> >>                                                 image_attrs[LFA_ATTR_CANCEL]);
+> >> -     struct arm_smccc_1_2_regs args = { 0 };
+> >> -     struct arm_smccc_1_2_regs res = { 0 };
+> >> -
+> >> -     args.a0 = LFA_1_0_FN_CANCEL;
+> >> -     args.a1 = attrs->fw_seq_id;
+> >> -     arm_smccc_1_2_invoke(&args, &res);
+> >> +     int ret;
+> >>
+> >> -     /*
+> >> -      * When firmware activation is called with "skip_cpu_rendezvous=1",
+> >> -      * LFA_CANCEL can fail with LFA_BUSY if the activation could not be
+> >> -      * cancelled.
+> >> -      */
+> >> -     if (res.a0 == LFA_SUCCESS) {
+> >> -             pr_info("Activation cancelled for image %s\n",
+> >> -                     attrs->image_name);
+> >> -     } else {
+> >> -             pr_err("Firmware activation could not be cancelled: %s\n",
+> >> -                    lfa_error_strings[-res.a0]);
+> >> -             return -EINVAL;
+> >> -     }
+> >> +     ret = lfa_cancel(attrs);
+> >> +     if (ret != 0)
+> >> +             return ret;
+> >>
+> >>        return count;
+> >>   }
+> >> @@ -418,6 +508,11 @@ static int create_fw_images_tree(void)
+> >>        int ret, num_of_components;
+> >>
+> >>        num_of_components = get_nr_lfa_components();
+> >> +     if (num_of_components <= 0) {
+> >> +             pr_err("Error getting number of LFA components");
+> >> +             return -ENODEV;
+> >> +     }
+> >> +
+> >>        args.a0 = LFA_1_0_FN_GET_INVENTORY;
+> >>        for (int i = 0; i < num_of_components; i++) {
+> >>                args.a1 = i; /* fw_seq_id under consideration */
+> >> @@ -437,6 +532,125 @@ static int create_fw_images_tree(void)
+> >>        return 0;
+> >>   }
+> >>
+> >> +static int refresh_fw_images_tree(void)
+> >> +{
+> >> +     int ret;
+> >> +     /*
+> >> +      * Ideally, this function should invoke the GET_INVENTORY SMC
+> >> +      * for each firmware image and update the corresponding details
+> >> +      * in the firmware image tree node.
+> >> +      * There are several edge cases to consider:
+> >> +      *    - The number of firmware components may change.
+> >> +      *    - The mapping between firmware sequence IDs and
+> >> +      *      firmware image UUIDs may be modified.
+> >> +      * As a result, it is possible that the firmware image tree nodes
+> >> +      * will require updates. Additionally, GET_INVENTORY SMC provides
+> >> +      * all current and revised information. Therefore, retaining the
+> >> +      * existing fw_images_tree data is not justified. Reconstructing
+> >> +      * the firmware images tree will simplify the code and keep data
+> >> +      * up-to-date.
+> >> +      */
+> >> +     // Clean current inventory details
+> >> +     clean_fw_images_tree();  
+> > 
+> > This isn't an optimal approach to updating the firmware components. Removing a
+> > directory that a user is currently looking at will still linger around as its
+> > ref count won't get 0. Also, an attribute read/write operation during an
+> > activation for example, reading the activation pending flag will result in
+> > the mutex lock waiting to acquire the lock which will keep the attribute file
+> > around. Trying to remove said object may result in unpredictable behaviour.
+> > We have a WIP patch that is supposed to refresh the data i.e. firmware images
+> > attributes and seq_ids, instead of deleting the objects and re-creating them.
+> > Only firmware images that are removed from the LFA agent following an
+> > activation would be removed.
+> >   
+> Okay, I understand.
+> I will add a placeholder to refresh the fw_images_tree() to unblock rest 
+> of the changes. I will hold back to use your implementation and/or 
+> brainstorm more approaches in parallel.>> +
+> >> +     // Update new inventory details
+> >> +     ret = create_fw_images_tree();
+> >> +     if (ret != 0)
+> >> +             kobject_put(lfa_dir);
+> >> +
+> >> +     return ret;
+> >> +}
+> >> +
+> >> +static irqreturn_t lfa_irq_thread(int irq, void *data)
+> >> +{
+> >> +     struct image_props *attrs = NULL;
+> >> +     int ret;
+> >> +
+> >> +     mutex_lock(&lfa_lock);  
+> > 
+> > mutex_lock() can sleep and is unsafe in an interrupt context, mutex_trylock()
+> > doesn't sleep but is still considered illegal in an interrupt context as
+> > mutex_unlock() can still sleep.
+> >   
+> The lfa_irq_thread() is a thread_fn passed to request_threaded_irq(). 
+>  From what I understand, thread_fn runs in a process context as a kernel 
+> thread and therefore can use sleeping locks such as mutex_lock(), 
+> wait_event() and msleep().>> +
+> >> +     // Update new inventory details
+> >> +     ret = refresh_fw_images_tree();  
+> > 
+> > According to the LFA specification IIRC the firmware images and their seq_ids
+> > may change following an activation, not after an update that is pending an
+> > activation. Thus the refresh should happen soon after an activation only.
+> > 
+> > Kind Regards
+> > Salman
+> >   
+> Thank you for pointing that out. If I understand the spec correctly, it 
+> is possible that number of components can change after an activation and 
+> so we would have to refresh complete fw_images_tree.
+> So the flow I would follow for activation is:
+> 1. Get inventory for all FW components
+> 2. PRIME-ACTIVATE first activable component in the list.
+> 3. Go to 1, until no component is pending activation.
 > 
->> Also could remove the error handling too.
->
->No.  Partly on prinicple, but also because CPUHP_AP_ONLINE_DYN can fail if the
->kernel runs out of dynamic entries (currently limited to 40).  The kernel WARNs
->if it runs out of entries, but KVM should still do the right thing.
->
->> Also, can we name the two tdx_offline_cpu()'s differently? This one is all about
->> keyid's being in use. tdx_hkid_offline_cpu()?
->
->Ya.  And change the description to "kvm/cpu/tdx:hkid_packages"?  Or something
->like that.
->
-
-Is it a good idea to consolidate the two tdx_offline_cpu() functions, i.e.,
-integrate KVM's version into x86 core?
-
-From 97165f9933f48d588f5390e2d543d9880c03532d Mon Sep 17 00:00:00 2001
-From: Chao Gao <chao.gao@intel.com>
-Date: Tue, 14 Oct 2025 01:00:06 -0700
-Subject: [PATCH] x86/virt/tdx: Consolidate TDX CPU hotplug handling
-
-The core kernel registers a CPU hotplug callback to do VMX and TDX init
-and deinit while KVM registers a separate CPU offline callback to block
-offlining the last online CPU in a socket.
-
-Splitting TDX-related CPU hotplug handling across two components is odd
-and adds unnecessary complexity.
-
-Consolidate TDX-related CPU hotplug handling by integrating KVM's
-tdx_offline_cpu() to the one in the core kernel.
-
-Also move nr_configured_hkid to the core kernel because tdx_offline_cpu()
-references it. Since HKID allocation and free are handled in the core
-kernel, it's more natural to track used HKIDs there.
-
-Signed-off-by: Chao Gao <chao.gao@intel.com>
----
- arch/x86/kvm/vmx/tdx.c      | 67 +------------------------------------
- arch/x86/virt/vmx/tdx/tdx.c | 49 +++++++++++++++++++++++++--
- 2 files changed, 47 insertions(+), 69 deletions(-)
-
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index d89382971076..beac8ab4cbc1 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -46,8 +46,6 @@ module_param_named(tdx, enable_tdx, bool, 0444);
- #define TDX_SHARED_BIT_PWL_5 gpa_to_gfn(BIT_ULL(51))
- #define TDX_SHARED_BIT_PWL_4 gpa_to_gfn(BIT_ULL(47))
- 
--static enum cpuhp_state tdx_cpuhp_state __ro_after_init;
--
- static const struct tdx_sys_info *tdx_sysinfo;
- 
- void tdh_vp_rd_failed(struct vcpu_tdx *tdx, char *uclass, u32 field, u64 err)
-@@ -206,8 +204,6 @@ static int init_kvm_tdx_caps(const struct tdx_sys_info_td_conf *td_conf,
-  */
- static DEFINE_MUTEX(tdx_lock);
- 
--static atomic_t nr_configured_hkid;
--
- static bool tdx_operand_busy(u64 err)
- {
-	return (err & TDX_SEAMCALL_STATUS_MASK) == TDX_OPERAND_BUSY;
-@@ -255,7 +251,6 @@ static inline void tdx_hkid_free(struct kvm_tdx *kvm_tdx)
- {
-	tdx_guest_keyid_free(kvm_tdx->hkid);
-	kvm_tdx->hkid = -1;
--	atomic_dec(&nr_configured_hkid);
-	misc_cg_uncharge(MISC_CG_RES_TDX, kvm_tdx->misc_cg, 1);
-	put_misc_cg(kvm_tdx->misc_cg);
-	kvm_tdx->misc_cg = NULL;
-@@ -2487,8 +2482,6 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
- 
-	ret = -ENOMEM;
- 
--	atomic_inc(&nr_configured_hkid);
--
-	tdr_page = alloc_page(GFP_KERNEL);
-	if (!tdr_page)
-		goto free_hkid;
-@@ -3343,51 +3336,10 @@ int tdx_gmem_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn, bool is_private)
-	return PG_LEVEL_4K;
- }
- 
--static int tdx_online_cpu(unsigned int cpu)
--{
--	return 0;
--}
--
--static int tdx_offline_cpu(unsigned int cpu)
--{
--	int i;
--
--	/* No TD is running.  Allow any cpu to be offline. */
--	if (!atomic_read(&nr_configured_hkid))
--		return 0;
--
--	/*
--	 * In order to reclaim TDX HKID, (i.e. when deleting guest TD), need to
--	 * call TDH.PHYMEM.PAGE.WBINVD on all packages to program all memory
--	 * controller with pconfig.  If we have active TDX HKID, refuse to
--	 * offline the last online cpu.
--	 */
--	for_each_online_cpu(i) {
--		/*
--		 * Found another online cpu on the same package.
--		 * Allow to offline.
--		 */
--		if (i != cpu && topology_physical_package_id(i) ==
--				topology_physical_package_id(cpu))
--			return 0;
--	}
--
--	/*
--	 * This is the last cpu of this package.  Don't offline it.
--	 *
--	 * Because it's hard for human operator to understand the
--	 * reason, warn it.
--	 */
--#define MSG_ALLPKG_ONLINE \
--	"TDX requires all packages to have an online CPU. Delete all TDs in order to offline all CPUs of a package.\n"
--	pr_warn_ratelimited(MSG_ALLPKG_ONLINE);
--	return -EBUSY;
--}
--
- static int __init __tdx_bringup(void)
- {
-	const struct tdx_sys_info_td_conf *td_conf;
--	int r, i;
-+	int i;
- 
-	for (i = 0; i < ARRAY_SIZE(tdx_uret_msrs); i++) {
-		/*
-@@ -3459,23 +3411,7 @@ static int __init __tdx_bringup(void)
-	if (misc_cg_set_capacity(MISC_CG_RES_TDX, tdx_get_nr_guest_keyids()))
-		return -EINVAL;
- 
--	/*
--	 * TDX-specific cpuhp callback to disallow offlining the last CPU in a
--	 * packing while KVM is running one or more TDs.  Reclaiming HKIDs
--	 * requires doing PAGE.WBINVD on every package, i.e. offlining all CPUs
--	 * of a package would prevent reclaiming the HKID.
--	 */
--	r = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "kvm/cpu/tdx:online",
--			      tdx_online_cpu, tdx_offline_cpu);
--	if (r < 0)
--		goto err_cpuhup;
--
--	tdx_cpuhp_state = r;
-	return 0;
--
--err_cpuhup:
--	misc_cg_set_capacity(MISC_CG_RES_TDX, 0);
--	return r;
- }
- 
- int __init tdx_bringup(void)
-@@ -3531,7 +3467,6 @@ void tdx_cleanup(void)
-		return;
- 
-	misc_cg_set_capacity(MISC_CG_RES_TDX, 0);
--	cpuhp_remove_state(tdx_cpuhp_state);
- }
- 
- void __init tdx_hardware_setup(void)
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index bf1c1cdd9690..201ecb4ad20d 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -58,6 +58,8 @@ static LIST_HEAD(tdx_memlist);
- static struct tdx_sys_info tdx_sysinfo __ro_after_init;
- static bool tdx_module_initialized __ro_after_init;
- 
-+static atomic_t nr_configured_hkid;
-+
- typedef void (*sc_err_func_t)(u64 fn, u64 err, struct tdx_module_args *args);
- 
- static inline void seamcall_err(u64 fn, u64 err, struct tdx_module_args *args)
-@@ -190,6 +192,40 @@ static int tdx_online_cpu(unsigned int cpu)
- 
- static int tdx_offline_cpu(unsigned int cpu)
- {
-+	int i;
-+
-+	/* No TD is running.  Allow any cpu to be offline. */
-+	if (!atomic_read(&nr_configured_hkid))
-+		goto done;
-+
-+	/*
-+	 * In order to reclaim TDX HKID, (i.e. when deleting guest TD), need to
-+	 * call TDH.PHYMEM.PAGE.WBINVD on all packages to program all memory
-+	 * controller with pconfig.  If we have active TDX HKID, refuse to
-+	 * offline the last online cpu.
-+	 */
-+	for_each_online_cpu(i) {
-+		/*
-+		 * Found another online cpu on the same package.
-+		 * Allow to offline.
-+		 */
-+		if (i != cpu && topology_physical_package_id(i) ==
-+				topology_physical_package_id(cpu))
-+			goto done;
-+	}
-+
-+	/*
-+	 * This is the last cpu of this package.  Don't offline it.
-+	 *
-+	 * Because it's hard for human operator to understand the
-+	 * reason, warn it.
-+	 */
-+#define MSG_ALLPKG_ONLINE \
-+	"TDX requires all packages to have an online CPU. Delete all TDs in order to offline all CPUs of a package.\n"
-+	pr_warn_ratelimited(MSG_ALLPKG_ONLINE);
-+	return -EBUSY;
-+
-+done:
-	x86_virt_put_cpu(X86_FEATURE_VMX);
-	return 0;
- }
-@@ -1505,15 +1541,22 @@ EXPORT_SYMBOL_GPL(tdx_get_nr_guest_keyids);
- 
- int tdx_guest_keyid_alloc(void)
- {
--	return ida_alloc_range(&tdx_guest_keyid_pool, tdx_guest_keyid_start,
--			       tdx_guest_keyid_start + tdx_nr_guest_keyids - 1,
--			       GFP_KERNEL);
-+	int ret;
-+
-+	ret = ida_alloc_range(&tdx_guest_keyid_pool, tdx_guest_keyid_start,
-+			      tdx_guest_keyid_start + tdx_nr_guest_keyids - 1,
-+			      GFP_KERNEL);
-+	if (ret >= 0)
-+		atomic_inc(&nr_configured_hkid);
-+
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(tdx_guest_keyid_alloc);
- 
- void tdx_guest_keyid_free(unsigned int keyid)
- {
-	ida_free(&tdx_guest_keyid_pool, keyid);
-+	atomic_dec(&nr_configured_hkid);
- }
- EXPORT_SYMBOL_GPL(tdx_guest_keyid_free);
- 
--- 
-2.47.3
-
+> Regards,
+> Veda>> +     if (ret != 0)
+> >> +             goto exit_unlock;
+> >> +
+> >> +     /*
+> >> +      * Execute PRIME and ACTIVATE for each FW component
+> >> +      * Start from first FW component
+> >> +      */
+> >> +     list_for_each_entry(attrs, &lfa_fw_images, image_node) {
+> >> +             if ((!attrs->activation_capable) || (!attrs->activation_pending)) {
+> >> +                     /* LFA not applicable for this FW component, continue to next component */
+> >> +                     continue;
+> >> +             }
+> >> +
+> >> +             ret = activate_fw_image(attrs);
+> >> +             if (ret) {
+> >> +                     pr_err("Firmware %s activation failed: %s\n",
+> >> +                             attrs->image_name, lfa_error_strings[-ret]);
+> >> +                     goto exit_unlock;
+> >> +             }
+> >> +
+> >> +             pr_info("Firmware %s activation succeeded", attrs->image_name);
+> >> +     }
+> >> +
+> >> +     // Update new inventory details
+> >> +     ret = refresh_fw_images_tree();
+> >> +     if (ret != 0)
+> >> +             goto exit_unlock;
+> >> +
+> >> +exit_unlock:
+> >> +     mutex_unlock(&lfa_lock);
+> >> +     return IRQ_HANDLED;
+> >> +}
+> >> +
+> >> +static int __init lfa_probe(struct platform_device *pdev)
+> >> +{
+> >> +     int err;
+> >> +     unsigned int irq;
+> >> +
+> >> +     err = platform_get_irq_byname_optional(pdev, "fw-store-updated-interrupt");
+> >> +     if (err < 0)
+> >> +             err = platform_get_irq(pdev, 0);
+> >> +     if (err < 0) {
+> >> +             pr_err("Interrupt not found, functionality will be unavailable.");
+> >> +
+> >> +             /* Bail out without failing the driver. */
+> >> +             return 0;
+> >> +     }
+> >> +     irq = err;
+> >> +
+> >> +     err = request_threaded_irq(irq, NULL, lfa_irq_thread, IRQF_ONESHOT, DRIVER_NAME, NULL);
+> >> +     if (err != 0) {
+> >> +             pr_err("Interrupt setup failed, functionality will be unavailable.");
+> >> +
+> >> +             /* Bail out without failing the driver. */
+> >> +             return 0;
+> >> +     }
+> >> +
+> >> +     return 0;
+> >> +}
+> >> +
+> >> +static const struct of_device_id lfa_of_ids[] = {
+> >> +     { .compatible = "arm,armhf000", },
+> >> +     { },
+> >> +};
+> >> +MODULE_DEVICE_TABLE(of, lfa_of_ids);
+> >> +
+> >> +static const struct acpi_device_id lfa_acpi_ids[] = {
+> >> +     {"ARMHF000"},
+> >> +     {},
+> >> +};
+> >> +MODULE_DEVICE_TABLE(acpi, lfa_acpi_ids);
+> >> +
+> >> +static struct platform_driver lfa_driver = {
+> >> +     .probe = lfa_probe,
+> >> +     .driver = {
+> >> +             .name = DRIVER_NAME,
+> >> +             .of_match_table = lfa_of_ids,
+> >> +             .acpi_match_table = ACPI_PTR(lfa_acpi_ids),
+> >> +     },
+> >> +};
+> >> +
+> >>   static int __init lfa_init(void)
+> >>   {
+> >>        struct arm_smccc_1_2_regs args = { 0 };
+> >> @@ -464,22 +678,33 @@ static int __init lfa_init(void)
+> >>        pr_info("Arm Live Firmware Activation (LFA): detected v%ld.%ld\n",
+> >>                res.a0 >> 16, res.a0 & 0xffff);
+> >>
+> >> +     err = platform_driver_register(&lfa_driver);
+> >> +     if (err < 0)
+> >> +             pr_err("Platform driver register failed");
+> >> +
+> >> +
+> >>        lfa_dir = kobject_create_and_add("lfa", firmware_kobj);
+> >>        if (!lfa_dir)
+> >>                return -ENOMEM;
+> >>
+> >> +     mutex_lock(&lfa_lock);
+> >>        err = create_fw_images_tree();
+> >>        if (err != 0)
+> >>                kobject_put(lfa_dir);
+> >>
+> >> +     mutex_unlock(&lfa_lock);
+> >>        return err;
+> >>   }
+> >>   module_init(lfa_init);
+> >>
+> >>   static void __exit lfa_exit(void)
+> >>   {
+> >> +     mutex_lock(&lfa_lock);
+> >>        clean_fw_images_tree();
+> >> +     mutex_unlock(&lfa_lock);
+> >> +
+> >>        kobject_put(lfa_dir);
+> >> +     platform_driver_unregister(&lfa_driver);
+> >>   }
+> >>   module_exit(lfa_exit);
+> >>  
+> 
 
