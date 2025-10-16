@@ -1,64 +1,69 @@
 Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBD62DEA6B
-	for <linux-coco@lists.linux.dev>; Thu, 16 Oct 2025 22:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146302DA744
+	for <linux-coco@lists.linux.dev>; Thu, 16 Oct 2025 22:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760653700; cv=none; b=pTnhUZoL3dte8O2RY3yW02YT3HJAtSCZTuOFDZtUN/EN4YtGfw9kSfEz7Fuy5uE9pGs/Up3HcMGhxiG5BK1hfXQeFIARHGMCgrxMXBpdO3eKIca8MzRm0VC5b/nsajjou9UWAXeGDeZPgTcagRg99hXQTN9Bqx537uQiodW2cwA=
+	t=1760653703; cv=none; b=rRU5bHhMnG/WRMqMU+pNLElnHhldc/ElOuFJ7b5dkZz6J+1jHcsWSvVxltVWQFgUeA9mlQ7hFURgFo414i4bInRBbnAjrwofFYwaH0wYuLO2xv5wIE0bSZWf9Llzizvki3+i3+qwDzkVqRKV5UdygM/STaJYNnkO6bHlfs1HdpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760653700; c=relaxed/simple;
-	bh=bawSMseT0CqNbdyIWWkFAuACxkZoXEqOQliCkUUeOWE=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=rEojR1BRZ1X4Q5HUSPgZl6n4V0O9JxdNM+LUUvkTs9te298zLM3PSDhZBr5CG8k0nQs5SxjRffRpfsifJZOAXjt/Yh80ST8v8w9HY8nXH4oYMh4SqZv2jDa7aqtCMtq5/DouhVvljq9Q10glok2IOcbbfw8AZwksMu0TfCqQY2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EOHnXzec; arc=none smtp.client-ip=209.85.216.74
+	s=arc-20240116; t=1760653703; c=relaxed/simple;
+	bh=yw51Q166Lc381x4Xu3XmbBkTFmjBPCZNcIy/n1Tj+/Q=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=PxYbh0X9ND8iiU/M4NrgWeh1vp/YWbjrRfWuj7UjaHl2K/MpdHHFsPS4xkipAgJwvv2uqRFrS/vUhcuAf/bMuuw7QFfnwR2I49ZjtYtjc9XltY7o1Or2KplUdcRb8Ntlk43QBgCRLz8InYhS+MNBiL5jiFERbp5zV0QSTB/AMkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jgwOJ4uC; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EOHnXzec"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-33428befc08so2942831a91.2
-        for <linux-coco@lists.linux.dev>; Thu, 16 Oct 2025 15:28:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jgwOJ4uC"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-32ee62ed6beso1892821a91.2
+        for <linux-coco@lists.linux.dev>; Thu, 16 Oct 2025 15:28:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760653699; x=1761258499; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ohe5whqaVI6MNw62Ja9bMHiL/FYf6oWYICNGFV1EN3Y=;
-        b=EOHnXzeczQAFexQh57mYWk1kH6GkcLMdHmpVQzoflHn3nVm9OGsJE4D5r/RusunLbX
-         wnJXu7b56oRRgmUqAm1y1qENrtblmuHK8yTbMEwSlbw/CO4Y0FVX94BWgeZ0uquMcrKJ
-         FKqnUJcYuf199T7Hf1EtaRL+O5rO7peO7HsHq5qI0YXDF+1c9VFO2XX9CPBC50VjyD1b
-         dNtTR1a+8w2aLjE1R48xUUEWmpTrV+9Tw4NaXikWm7otK7jt/TkHBSYuHkq5uxPLjgtR
-         S3brjtKKVz4bEIyHwlOw3CqGTPL5dPokQ6GiM4LrNSZTmktaK/poAgadjeK0MTy0j8cr
-         Y6Ag==
+        d=google.com; s=20230601; t=1760653701; x=1761258501; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=40vdtZU/KoPpmX9suWkabYPY075MZ6BH4jE7OVELxWw=;
+        b=jgwOJ4uC5hUnMjjn4tAr8NOYtoV56s8MoarJczA1tf1vuDIKR9x7miZimGrNQDoKPS
+         QoNGrSzhktu6zWy2LZtVzQK7FlpxaTfnEONHcx3rTDdV0v6Gy0MJnaYf6ShncDsOhFZS
+         xvu+RVN1IG4ko91W6FQAuU78hw+IjXai9N0wxlSDm9+vjRJt3eeGG4vFdgJV0f5/iDak
+         dPxMS98KYpbYFptkENreQ764HO7JXqNxM5EzQP33NH7q8LhhIq/UMA7KjCA8iV8Xlmws
+         oLP8/GydncDlljx8N+58Wfn0382HTFleWiso+UqDsT2qfPUxqSo8k5pf1Izb5G99mEaE
+         2tnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760653699; x=1761258499;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ohe5whqaVI6MNw62Ja9bMHiL/FYf6oWYICNGFV1EN3Y=;
-        b=HKq/YcmRwfvRNnJGroD5Jb836GbKzAwTD8T4t59jU+vYB2oFChwSdRl7IoqgUZ3Utq
-         pfh0nN+hneLNSJlBUzBr+Cf1hMeFXgHKiuuaehtxFJgWr1mVP18XNkkIxhIFCpEuJpLi
-         9Prm/aidlis0ZmIYrSFEkpEdsdJEhGY3Di0YQpdgVjt0NC9YrsCvGAojkHAj5CxPcJDL
-         AmDOfW5E2k9FkZb2BZQZYJ5mFmLi0uMrfvAOPN1KTv05pjxwqBJyqDYTPh1bXOW1W+B7
-         RkdsQRbb3IHrtLaRCCtlUhjFHqFKg/gMnDa50rGJTHvQviQaWegGV9DV4Ik+8o/X+rH9
-         M1TA==
-X-Forwarded-Encrypted: i=1; AJvYcCXzAx4J1BNwpGfMiFXuaL+DRe+jGEck0JTiI9PYwz4rn59/zuz7yJCeWpYavZ6Qlq+Xk0r0uwk27Jx/@lists.linux.dev
-X-Gm-Message-State: AOJu0YzOUvm6jivbc06AxyKYCStIIWJqwhy2psEFV71f5v/XnaHJoRnX
-	W8E4ir2ZZGYptBZ7fhMiWdQj1Lk6T61hSWfYMxNea8jMEWO/zoOWjlDGtNwae9oplL9lGRstzwH
-	A41DJAw==
-X-Google-Smtp-Source: AGHT+IHEsNMvTZlam2jisTHrsVJg/i/9Fu9TLaM2OcVaUKqK6KMKAv8tlmP6fh1nAXeNkUWB5CqnY8FjWds=
-X-Received: from pjsc4.prod.google.com ([2002:a17:90a:bf04:b0:33b:9fa3:a535])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:244b:b0:334:7bce:8391
- with SMTP id adf61e73a8af0-334a86500d6mr1818085637.56.1760653698581; Thu, 16
- Oct 2025 15:28:18 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1760653701; x=1761258501;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=40vdtZU/KoPpmX9suWkabYPY075MZ6BH4jE7OVELxWw=;
+        b=nsL/2eBr2ma/vHiXa+ucLKq7sOZ/Ru0stybM20zZhDrELUe66uj5S5Z/35kbtbsiUe
+         r8uDoeaY/o/EgBggbbDvmrWBA1O5CoMTXHONw/AyZ83Bqa1tyyOjgKQ7CLInGCy5v2m7
+         BqjhW3WdJ2PvIu7Q+kY/26SYlSekJYuo5MmP1nHt/qhEwvnFRZEyELKcKNffQCBEF3jQ
+         sUBwTBLkcG99N5kQtJrYl8LzI6jfaxI3RaYGGaeVEX8OTKU/71bmBVJxhPIjL7A+Az4w
+         hNk5WHkswR9fd4wCjsa9ssR0MeVCFKdO0sEbkoYINvVpHDzvhMTkKeY3h6Jqzb/fCaCI
+         hyUw==
+X-Forwarded-Encrypted: i=1; AJvYcCVd0H+/UYhHO0N/HR5zMYLbL+XHUCHimH8pCvPGpMBFW1lMGqFEDNh5pwIJab4O//AQLgJTZqAJc7N3@lists.linux.dev
+X-Gm-Message-State: AOJu0YyW2wEfXHvAFpdwtOEOkCL9d4aDEGHr+EpNbTk8ITXtCfprMxsr
+	LUvD05wEFfs3b+GcjjcNKnLTrzC47ht1WHGfMtS33we0S2MORmcOCwrSjb63ZPLchTnPGeTx8LJ
+	OYWC4UQ==
+X-Google-Smtp-Source: AGHT+IH6Vt5HCZ4OsiTtySVHgnNCPAx3kKlqIVZQcPIWh1JDleJgFcxQ9QlzXiMEeW/9zOz/TZlBnAw47FY=
+X-Received: from pjbos7.prod.google.com ([2002:a17:90b:1cc7:b0:33b:52d6:e13e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:54cc:b0:33b:dbdc:65f2
+ with SMTP id 98e67ed59e1d1-33bdbdc660bmr324878a91.22.1760653701294; Thu, 16
+ Oct 2025 15:28:21 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 16 Oct 2025 15:28:12 -0700
+Date: Thu, 16 Oct 2025 15:28:13 -0700
+In-Reply-To: <20251016222816.141523-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
+References: <20251016222816.141523-1-seanjc@google.com>
 X-Mailer: git-send-email 2.51.0.858.gf9c4a03a3a-goog
-Message-ID: <20251016222816.141523-1-seanjc@google.com>
-Subject: [PATCH v4 0/4] KVM: x86: User-return MSR cleanups
+Message-ID: <20251016222816.141523-2-seanjc@google.com>
+Subject: [PATCH v4 1/4] KVM: TDX: Synchronize user-return MSRs immediately
+ after VP.ENTER
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	"Kirill A. Shutemov" <kas@kernel.org>
@@ -68,40 +73,97 @@ Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
 	Hou Wenlong <houwenlong.hwl@antgroup.com>
 Content-Type: text/plain; charset="UTF-8"
 
-This is a combo of Hou's series to clean up the "IRQs disabled" mess(es), and
-my one-off patch to drop "cache" from a few names that escalated.  I tagged it
-v4 since Hou's last posting was v3, and this is much closer to Hou's series
-than anything else.
+Immediately synchronize the user-return MSR values after a successful
+VP.ENTER to minimize the window where KVM is tracking stale values in the
+"curr" field, and so that the tracked value is synchronized before IRQs
+are enabled.
 
-v4:
- - Tweak changelog regarding the "cache" rename to try and better capture
-   the details of how .curr is used. [Yan]
- - Synchronize the cache immediately after TD-Exit to minimize the window
-   where the cache is stale (even with the reboot change, it's still nice to
-   minimize the window). [Yan]
- - Leave the user-return notifier registered on reboot/shutdown so that the
-   common code doesn't have to be paranoid about being interrupted.
+This is *very* technically a bug fix, as a forced shutdown/reboot will
+invoke kvm_shutdown() without waiting for tasks to be frozen, and so the
+on_each_cpu() calls to kvm_disable_virtualization_cpu() will call
+kvm_on_user_return() from IRQ context and thus could consume a stale
+values->curr if the IRQ hits while KVM is active.  That said, the real
+motivation is to minimize the window where "curr" is stale, as the same
+forced shutdown/reboot flaw has effectively existed for all of non-TDX
+for years, as kvm_set_user_return_msr() runs with IRQs enabled.  Not to
+mention that a stale MSR is the least of the kernel's concerns if a reboot
+is forced while KVM is active.
 
-v3: https://lore.kernel.org/all/15fa59ba7f6f849082fb36735e784071539d5ad2.1758002303.git.houwenlong.hwl@antgroup.com
+Fixes: e0b4f31a3c65 ("KVM: TDX: restore user ret MSRs")
+Cc: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/vmx/tdx.c | 20 +++++++++++++-------
+ arch/x86/kvm/vmx/tdx.h |  2 +-
+ 2 files changed, 14 insertions(+), 8 deletions(-)
 
-v1 (cache): https://lore.kernel.org/all/20250919214259.1584273-1-seanjc@google.com
-
-Hou Wenlong (1):
-  KVM: x86: Don't disable IRQs when unregistering user-return notifier
-
-Sean Christopherson (3):
-  KVM: TDX: Synchronize user-return MSRs immediately after VP.ENTER
-  KVM: x86: Leave user-return notifier registered on reboot/shutdown
-  KVM: x86: Drop "cache" from user return MSR setter that skips WRMSR
-
- arch/x86/include/asm/kvm_host.h |  4 +--
- arch/x86/kvm/vmx/tdx.c          | 28 ++++++++++-------
- arch/x86/kvm/vmx/tdx.h          |  2 +-
- arch/x86/kvm/x86.c              | 56 +++++++++++++++++++--------------
- 4 files changed, 53 insertions(+), 37 deletions(-)
-
-
-base-commit: f222788458c8a7753d43befef2769cd282dc008e
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 326db9b9c567..2f3dfe9804b5 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -780,6 +780,14 @@ void tdx_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
+ 		vt->msr_host_kernel_gs_base = read_msr(MSR_KERNEL_GS_BASE);
+ 
+ 	vt->guest_state_loaded = true;
++
++	/*
++	 * Several of KVM's user-return MSRs are clobbered by the TDX-Module if
++	 * VP.ENTER succeeds, i.e. on TD-Exit.  Mark those MSRs as needing an
++	 * update to synchronize the "current" value in KVM's cache with the
++	 * value in hardware (loaded by the TDX-Module).
++	 */
++	to_tdx(vcpu)->need_user_return_msr_sync = true;
+ }
+ 
+ struct tdx_uret_msr {
+@@ -807,7 +815,6 @@ static void tdx_user_return_msr_update_cache(void)
+ static void tdx_prepare_switch_to_host(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_vt *vt = to_vt(vcpu);
+-	struct vcpu_tdx *tdx = to_tdx(vcpu);
+ 
+ 	if (!vt->guest_state_loaded)
+ 		return;
+@@ -815,11 +822,6 @@ static void tdx_prepare_switch_to_host(struct kvm_vcpu *vcpu)
+ 	++vcpu->stat.host_state_reload;
+ 	wrmsrl(MSR_KERNEL_GS_BASE, vt->msr_host_kernel_gs_base);
+ 
+-	if (tdx->guest_entered) {
+-		tdx_user_return_msr_update_cache();
+-		tdx->guest_entered = false;
+-	}
+-
+ 	vt->guest_state_loaded = false;
+ }
+ 
+@@ -1059,7 +1061,11 @@ fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 		update_debugctlmsr(vcpu->arch.host_debugctl);
+ 
+ 	tdx_load_host_xsave_state(vcpu);
+-	tdx->guest_entered = true;
++
++	if (tdx->need_user_return_msr_sync) {
++		tdx_user_return_msr_update_cache();
++		tdx->need_user_return_msr_sync = false;
++	}
+ 
+ 	vcpu->arch.regs_avail &= TDX_REGS_AVAIL_SET;
+ 
+diff --git a/arch/x86/kvm/vmx/tdx.h b/arch/x86/kvm/vmx/tdx.h
+index ca39a9391db1..9434a6371d67 100644
+--- a/arch/x86/kvm/vmx/tdx.h
++++ b/arch/x86/kvm/vmx/tdx.h
+@@ -67,7 +67,7 @@ struct vcpu_tdx {
+ 	u64 vp_enter_ret;
+ 
+ 	enum vcpu_tdx_state state;
+-	bool guest_entered;
++	bool need_user_return_msr_sync;
+ 
+ 	u64 map_gpa_next;
+ 	u64 map_gpa_end;
 -- 
 2.51.0.858.gf9c4a03a3a-goog
 
