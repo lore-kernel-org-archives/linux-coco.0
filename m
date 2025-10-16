@@ -1,159 +1,106 @@
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3AC1D54FE
-	for <linux-coco@lists.linux.dev>; Thu, 16 Oct 2025 14:17:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18F117C21E
+	for <linux-coco@lists.linux.dev>; Thu, 16 Oct 2025 17:48:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760624253; cv=none; b=GZo/xGug6+324V9/TJui6XlVQsZjPDnODZSiPc3wJTd13hMggaTy6E5allVaWMhR56vooY4/IeOTC5eVaQLY3ikKFQ0OHkR7i7NyuzxldRFxXIkvr6EyE9u0d2njOSlfO+57UyDvLKL1UcMTveG2fN3PqOtGXu7uxiR1iXmYeAU=
+	t=1760636888; cv=none; b=eaUa63mMV1G7xdiwDTgefuxuo7xpFLIMypwA5sK3UvMyTlUhEl85hwk2qyrX7dgwKTHtsX//W4zfpMH22ajSg2rA0yEWX/PqAgp41Kh6tuXI08YiRkcToDyr9cLN7FTf1MRUeH+EaOw5TuHo35XmawJaTuGGQ4m1TB4so4MPO9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760624253; c=relaxed/simple;
-	bh=MjX01ygQ/3tk/sGwgwk/36ebQMdAkveFRCJrUinD/Og=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UhiJ5ns/YGC4Wt9FZ0HJzn4DlN9IXLL7BB05pA1bwjVOisKXFrnVLJLvFigM/usXukWsqeJeB9CbvmGPyiejklTkF7u4YgrCxRyjh9WJMvyuOqrRhuuEyp/0ogJ9lYbidFq3PS030+FCS7VOdJ6mqExESO3rZFvD+JwQB+Bh+gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=o2ykd4I9; arc=none smtp.client-ip=209.85.219.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+	s=arc-20240116; t=1760636888; c=relaxed/simple;
+	bh=XIQCpGHFTs8D7F3SIyvmjJUsyahbXveHC0UC/BYLDKU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Q2DK7IjAq1a0BCv989or0wMFHf92ekdk7xJBrawtDZoJJ6jfywsknPoShm8jO6mao0gxqrI7qLYjLexS58//W5X4y2DawSRXdwNy3ihp2bQqtU6LvD5SzXPktuvv2sUsWDuYIJacN1pbEXTNyL9gtxoAwUYIqcL/rEPxlQPmz88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=crOu3HGS; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="o2ykd4I9"
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-87c1f3f4373so5551536d6.2
-        for <linux-coco@lists.linux.dev>; Thu, 16 Oct 2025 07:17:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="crOu3HGS"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-27d67abd215so18545ad.0
+        for <linux-coco@lists.linux.dev>; Thu, 16 Oct 2025 10:48:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1760624251; x=1761229051; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vDx8+7T+MYrCmWnRteKVa1iC6/sCWZvHc99T+OB8RqU=;
-        b=o2ykd4I9CkdJM0JI5loNsPldUui33qzZ2CT7Q/5QBZgJ1m5YLshLjBkMgkGKWgLOJl
-         r0vxZyfP9cR3h7ZF28jSryBJJVVwZ9lp4yF8+w8x7bfCPWf3lwbFKS4xV+y7jx/EU3P6
-         8D19y9IIU2cCBJTmvghhzYcONVpLPucsJKGszKj4vUYvJrhUMvVhJGmCCAI+a2h0ZoBc
-         6x1mykLzHKqV8I7ubFy0pjN9mNGPkdZddXNtczhzZMTJH8ay524ASlsDWfYUo1OhUvxk
-         tntcdqvTHVNsxdgQu9kV7T698bSbGmQg0/jl7IBoKKSxwGYjPu+HILldIe8QXx4aDFla
-         xmnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760624251; x=1761229051;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1760636886; x=1761241686; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vDx8+7T+MYrCmWnRteKVa1iC6/sCWZvHc99T+OB8RqU=;
-        b=HAykyuAu+l5DM4tNpW5TGoaC30aMbIaZ8BPET/C0Uum9xULLZAzOzWAPZnhCEmFlkA
-         cDzmT2D/MpPiSpn35m3Rz8Fyvtu4I1hVH1jURpHCFkR+DjBZQ3wT5CVlUghafBpq8QYW
-         t590++YDijUunY9e/BA1QnddyRdOEhhBf0xXtfGK8hkXqb1S4kjQXGKOyHu3PNSl/QZq
-         8glL/x/RE2M5Vno86/shzTC9aFNzUpac67+/kwkIc7QgKQD0goKaqz3NkkBhvNHZtzm9
-         xy3aDA5NPqbczfhkFthF5iKbQaAwX9Z4N1Tj69UjF+FcWYXyHuWOzk/YHJoNNrL5TfV5
-         rILA==
-X-Forwarded-Encrypted: i=1; AJvYcCWPqOIVWJdWVNmGHKLElBoEgLsSjayWx7CbbkODKoldBRbHtactg1KwkQLz+KgsKFxB6UdNsaj/RvKK@lists.linux.dev
-X-Gm-Message-State: AOJu0YxXKNTmjxipAIjU8vNY0LvkDjRJ7KzGZhPB7MrSY6SVMKl5FjiC
-	FkCL3bZINl13g5KGWxg1KrqF4J+JOK36SS7IomFs68bpkJnl48gv6gliVR5cHFi8j3E=
-X-Gm-Gg: ASbGnculx2/yRNckOk2WfrFauL5dSaiprJBz59ZGhu8+PtpfwqKj97jNq1UbwDvGBnl
-	WxZFaz7itmU36dQbpYRLQ7yM3Otr9pCVzI6Xk8avTDcaAveidRvvSPolPh3Kvgq/Lg9ljpWGNg1
-	CrBLBX1XPoqnTiiLoxA5HJkgoLXge71XJfvrVXTmcVUlIKeoJeHCcL9LNMilrvbXAVOUV0ibnn/
-	lbbgcrA567E3/62fNfqI/+29LBnEk1zQaCAqrZKrJLWn4QQih/krBOyVODTHpV4d+7vcX6Jgvw6
-	kdDL2xV7QuEG9DU3OqHEDBQ/HQ1xh2RU/2FRbIcZ8YKpV0g4///SWierT/sU+x0LegsWW/D5t48
-	ykYZCDGhloqMoMWDJPvDJvZVz0Rq29hfTWNTzgNb75MhagE8SixGC663YfjIkOxLJ1FexABiP/3
-	lVin/tSqRjJCN2t5cYU6TIs5KiMPv/4OpzB+sw2cZS9QbWEb71basWnPukFtGlWdTZvv/A2w==
-X-Google-Smtp-Source: AGHT+IEMapVQRI0ck2KCGxvEYuBB3a+08a/2JspNz86EbcND1SGuRInp+B2xwxF3NumJMeFQLVJPkQ==
-X-Received: by 2002:ac8:5883:0:b0:4e8:99b0:b35e with SMTP id d75a77b69052e-4e89d263140mr4179321cf.30.1760624250594;
-        Thu, 16 Oct 2025 07:17:30 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e8955b07e9sm13309541cf.27.2025.10.16.07.17.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Oct 2025 07:17:29 -0700 (PDT)
-Date: Thu, 16 Oct 2025 10:17:25 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Shivank Garg <shivankg@amd.com>, jgowans@amazon.com, mhocko@suse.com,
-	jack@suse.cz, kvm@vger.kernel.org, david@redhat.com,
-	linux-btrfs@vger.kernel.org, aik@amd.com, papaluri@amd.com,
-	kalyazin@amazon.com, peterx@redhat.com, linux-mm@kvack.org,
-	clm@fb.com, ddutile@redhat.com, linux-kselftest@vger.kernel.org,
-	shdhiman@amd.com, gshan@redhat.com, ying.huang@linux.alibaba.com,
-	shuah@kernel.org, roypat@amazon.co.uk, matthew.brost@intel.com,
-	linux-coco@lists.linux.dev, zbestahu@gmail.com,
-	lorenzo.stoakes@oracle.com, linux-bcachefs@vger.kernel.org,
-	ira.weiny@intel.com, dhavale@google.com, jmorris@namei.org,
-	willy@infradead.org, hch@infradead.org, chao.gao@intel.com,
-	tabba@google.com, ziy@nvidia.com, rientjes@google.com,
-	yuzhao@google.com, xiang@kernel.org, nikunj@amd.com,
-	serge@hallyn.com, amit@infradead.org, thomas.lendacky@amd.com,
-	ashish.kalra@amd.com, chao.p.peng@intel.com, yan.y.zhao@intel.com,
-	byungchul@sk.com, michael.day@amd.com, Neeraj.Upadhyay@amd.com,
-	michael.roth@amd.com, bfoster@redhat.com, bharata@amd.com,
-	josef@toxicpanda.com, Liam.Howlett@oracle.com,
-	ackerleytng@google.com, dsterba@suse.com, viro@zeniv.linux.org.uk,
-	jefflexu@linux.alibaba.com, jaegeuk@kernel.org,
-	dan.j.williams@intel.com, surenb@google.com, vbabka@suse.cz,
-	paul@paul-moore.com, joshua.hahnjy@gmail.com, apopple@nvidia.com,
-	brauner@kernel.org, quic_eberman@quicinc.com, rakie.kim@sk.com,
-	cgzones@googlemail.com, pvorel@suse.cz,
-	linux-erofs@lists.ozlabs.org, kent.overstreet@linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net, pankaj.gupta@amd.com,
-	linux-security-module@vger.kernel.org, lihongbo22@huawei.com,
-	linux-fsdevel@vger.kernel.org, pbonzini@redhat.com,
-	akpm@linux-foundation.org, vannapurve@google.com,
-	suzuki.poulose@arm.com, rppt@kernel.org, jgg@nvidia.com
-Subject: Re: [f2fs-dev] [PATCH kvm-next V11 6/7] KVM: guest_memfd: Enforce
- NUMA mempolicy using shared policy
-Message-ID: <aPD-dbl5KWNSHu5R@gourry-fedora-PF4VCD3F>
-References: <20250827175247.83322-2-shivankg@amd.com>
- <20250827175247.83322-9-shivankg@amd.com>
- <aNVQJqYLX17v-fsf@google.com>
- <aNbrO7A7fSjb4W84@google.com>
- <aPAWFQyFLK4EKWVK@gourry-fedora-PF4VCD3F>
- <aPAkxp67-R9aQ8oN@google.com>
+        bh=XIQCpGHFTs8D7F3SIyvmjJUsyahbXveHC0UC/BYLDKU=;
+        b=crOu3HGSBjOv7Helb9UM4VKi6wC5IeKla6bDooZYpvYGv3gfNTAMRkz0YwC8FHDO+F
+         leSsoQM+kr1HeyKkNagloGIa5v6asjAr4Le/BVSC5iDLwy1gXzWRx5EhIJTYd2wzM5Ei
+         xzVxEdvnn+ZQP0VYSkblNdXvI+VLcaPJMky/EGcORc9p4Qy54Yz9ufDNbAAu65K+FcjV
+         dmZgl6jjLSRn533y+DzomEnlcdC9foN4x7SWkxlHD0PcYhxUbengoOiaQlu6rDfcSVIA
+         QcKdhM0dUb7evdXjFEUUOMxEO+3N1D9Ejh+vK31rO5b9Po2DgA1WXk7eUWFH7JyCjJXa
+         8NXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760636886; x=1761241686;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XIQCpGHFTs8D7F3SIyvmjJUsyahbXveHC0UC/BYLDKU=;
+        b=F32IK8NDy1Tni87LJwPsJmuolhYF98AELHYDw+yaUo6M7MM694O5vQK6EK5EddaI9r
+         KVgZKhHQY9zd79hdLcMLbqecIym4hIVxF1HLqy+BjYXRaAZC2cSDXuERmk7iBZsZXIVS
+         aQVZ6jg+VPbzpIDBGVw1rLyjXgXwhZjJMsO2isYbDz6Tm6/x2NBvRFofO9LHoYfUoqrp
+         spHkxHmcqqFpo3cqFISj74DsmWszhNRWfWXNXMt0AfJ9a/84SIEPQDVBVP8VDB31hsbk
+         dhTKZL9Qx1XVF0Xbdt43JUvXENfLbV4i74qd3tIpvD1H+wqpeaXR9txGuVIh1aQgbiAO
+         hqeA==
+X-Forwarded-Encrypted: i=1; AJvYcCVSqm2IKGHcDTNVxeUmdRxgKAxdgSL6+R8b6j90WS792arVWU1Ce5LLsMVIGxBngeR4s3ARVnckbaLA@lists.linux.dev
+X-Gm-Message-State: AOJu0YyHC0nPbBRwOD8aaZs2+dHlzL80FR8g9aBon2DYbaM/mh/ADJNf
+	bWoUJSaDIsGOFCjXoBHAHw7LP2MLWHHvYgWc+cTD3TCqd3iIrQuMQl1cmAL2nQ0IiO3ZKpvZWT4
+	j5P49M1F8whet5t7LYn8vg1NB02nrq7YTySYbS7kF
+X-Gm-Gg: ASbGncu+T3KFBO3Ar6AKunGzDM4LMld2zepjLCC/mN9Ps9fgvUE+qtMoMIEx+lPDBZ8
+	0umIEmQjKtk8/8MOU6xmkpFO2c9iZjoQE66vSvOg+iGiMLkKZLWMy/HSTftjny/sISt13k7PY80
+	vcISm/xwcLIw/4xlS5EboST2ZKtbEYr+WLVfiI2j9V5NR52h41CFZyt9w07otHCxFEcYdXl/jwA
+	l3GBUBXW4KCRhwa4eXWWbNOCp3ycb0l19L7A3efCAa+WZmuE9SRTyavOQvl4T1eN4BeC4k9ZY9u
+	WkN2OtJMSzrSqfA=
+X-Google-Smtp-Source: AGHT+IHVcKL4wh6YEMgcfGrWaQIV27++i8BjLFUHYBK9dHzibsv5bCpUNLu+1lfFKvZaku1glcfoQfosqVGGAkS66zQ=
+X-Received: by 2002:a17:903:2a8e:b0:268:cc5:5e44 with SMTP id
+ d9443c01a7336-290879ec5acmr11967435ad.6.1760636885521; Thu, 16 Oct 2025
+ 10:48:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aPAkxp67-R9aQ8oN@google.com>
+References: <20251001025442.427697-1-chao.gao@intel.com> <CAGtprH_FzXjnC0Rbctpvm2_kqAAnUOfnaT4885fBiAi7s0jcXw@mail.gmail.com>
+ <IA1PR11MB949522AA3819E217C5467B51E7E8A@IA1PR11MB9495.namprd11.prod.outlook.com>
+ <5b4c2bb3-cfde-4559-a59d-0ff9f2a250b4@intel.com> <IA1PR11MB94955392108F5A662D469134E7E9A@IA1PR11MB9495.namprd11.prod.outlook.com>
+In-Reply-To: <IA1PR11MB94955392108F5A662D469134E7E9A@IA1PR11MB9495.namprd11.prod.outlook.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Thu, 16 Oct 2025 10:47:52 -0700
+X-Gm-Features: AS18NWDlhMybkSceF2x0lM8xipUiMvCelI5ThZAWBI2ddK_PtsbHuGfes4sdQgg
+Message-ID: <CAGtprH96B5K9Hk5h0FgxSUBa-pik=E=dLrO-4oxx76dxb9=7wQ@mail.gmail.com>
+Subject: Re: [PATCH v2 00/21] Runtime TDX Module update support
+To: "Reshetova, Elena" <elena.reshetova@intel.com>
+Cc: "Hansen, Dave" <dave.hansen@intel.com>, "Gao, Chao" <chao.gao@intel.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, 
+	"Chatre, Reinette" <reinette.chatre@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>, 
+	"Huang, Kai" <kai.huang@intel.com>, "Williams, Dan J" <dan.j.williams@intel.com>, 
+	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, "sagis@google.com" <sagis@google.com>, 
+	"paulmck@kernel.org" <paulmck@kernel.org>, "nik.borisov@suse.com" <nik.borisov@suse.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 15, 2025 at 03:48:38PM -0700, Sean Christopherson wrote:
-> On Wed, Oct 15, 2025, Gregory Price wrote:
-> > why is __kvm_gmem_get_policy using
-> > 	mpol_shared_policy_lookup()
-> > instead of
-> > 	get_vma_policy()
-> 
-> With the disclaimer that I haven't followed the gory details of this series super
-> closely, my understanding is...
-> 
-> Because the VMA is a means to an end, and we want the policy to persist even if
-> the VMA goes away.
-> 
+On Wed, Oct 15, 2025 at 11:46=E2=80=AFPM Reshetova, Elena
+<elena.reshetova@intel.com> wrote:
+>
+> > ...
+> > > But the situation can be avoided fully, if TD preserving update is no=
+t
+> > conducted
+> > > during the TD build time.
+> >
+> > Sure, and the TDX module itself could guarantee this as well as much as
+> > the kernel could. It could decline to allow module updates during TD
+> > builds, or error out the TD build if it collides with an update.
+>
+> TDX module has a functionality to decline going into SHUTDOWN state
+> (pre-requisite for TD preserving update) if TD build or any problematic
+> operation is in progress. It requires VMM to opt-in into this feature.
 
-Ah, you know, now that i've taken a close look, I can see that you've
-essentially modeled this after ipc/shm.c | mm/shmem.c pattern.
-
-What's had me scratching my chin is that shm/shmem already has a
-mempolicy pattern which ends up using folio_alloc_mpol() where the
-relationship is
-
-tmpfs: sb_info->mpol = default set by user
-  create_file: inode inherits copy of sb_info->mpol
-    fault:    mpol = shmem_get_pgoff_policy(info, index, order, &ilx);
-             folio = folio_alloc_mpol(gfp, order, mpol, ilx, numa_node_id())
-
-So this inode mempolicy in guest_memfd is really acting more as a the
-filesystem-default mempolicy, which you want to survive even if userland
-never maps the memory/unmaps the memory.
-
-So the relationship is more like
-
-guest_memfd -> creates fd/inode <- copies task mempolicy (if set)
-  vm:  allocates memory via filemap_get_folio_mpol()
-  userland mmap(fd):
-  	creates new inode<->vma mapping
-	vma->mpol = kvm_gmem_get_policy()
-	calls to set/get_policy/mbind go through kvm_gmem 
-
-This makes sense, sorry for the noise.  Have been tearing apart
-mempolicy lately and I'm disliking the general odor coming off
-it as a whole.  I had been poking at adding mempolicy support to
-filemap and you got there first.  Overall I think there are still
-other problems with mempolicy, but this all looks fine as-is.
-
-~Gregory
+Is this opt-in enabled as part of this series? If not, what is the
+mechanism to enable this opt-in?
