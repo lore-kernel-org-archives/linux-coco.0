@@ -1,57 +1,57 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49872E7197
-	for <linux-coco@lists.linux.dev>; Thu, 16 Oct 2025 22:28:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75412E7BD4
+	for <linux-coco@lists.linux.dev>; Thu, 16 Oct 2025 22:28:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760653708; cv=none; b=rvMIlRS/aLoH01wNmYKcay7kU0EzRyLMMlPtDpFNT6JxqDjCdEvOMoatvBIz5gHk+g25obJKDBdM1cKfVPbqgC3A+h7SeVM6uBEaX51LlWhUADFO9UO9E0Pq/dAJW1JVzP8M9pqzsUZuDS4kNpxj6w78yLs/6+d31hYsXmG+ogU=
+	t=1760653710; cv=none; b=crFz7fVODwnO4Q5iiFcxO6L9nM87Xwxn4O7C4zA5zapFDi1F0kDnnZIvWfJ7jQrIOETJ5B5pP3X8VlkJmuFFZfafHqi9kwsWn6ASZKtbCwHDJHsOvn350RCgSSKQT6ktK2p3x0Qve0OrrU0s43OPgG9UIxv7oslPZKenZefdXH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760653708; c=relaxed/simple;
-	bh=CiIKDZ3tD54lm+dMIg58E0d1ZctLY3/7BjNtbiYBFp8=;
+	s=arc-20240116; t=1760653710; c=relaxed/simple;
+	bh=oY878RYH2mslJwg0qdtPgRwIaldHQ7WLLqDkmC1ip5g=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gHOQbD13OP3H7a+yQyPm0F2NnwhlhsXg/L6sxnXqKIhy5X5doJk5YOCQAFEcagkVFGAX0EZrv+J9StMxO9DklJjnAUYnsF5LRsJn/8U20o5zGGy+/ksYgCxI52fKtsjWbxN9Wj4GBsldPBrdSVSDXuZPup3Dr6ki40HqMVuinp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RDLK0/c7; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=j5LeEskR9rhYNS6PHGofmRb0KofHMvbdCVIIf4B8v/ECJvPzy1RSuD9KHA6JIcBTKFGFPBr4Suo3h2jN8bUOTwGZe9a3VtZ0raiaN7PvOBV55A7vxKprfbj1lxw5jaIpKVl8uY6/lk25oPsFYciIQRDO7c0T55KnamkmgL6wD/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Is0O8dXC; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RDLK0/c7"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-33428befc08so2943004a91.2
-        for <linux-coco@lists.linux.dev>; Thu, 16 Oct 2025 15:28:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Is0O8dXC"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3352a336ee1so2753539a91.0
+        for <linux-coco@lists.linux.dev>; Thu, 16 Oct 2025 15:28:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760653706; x=1761258506; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1760653708; x=1761258508; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=C7RYKj2bkYamtj/tpY96rNXOI7drHoDq8hs/glpL7oY=;
-        b=RDLK0/c7RRCqI0M9BYWglW4s+9ionDclxEyw/88Xs0Iwcaj8r9xZOkv7E+VGMjX3FU
-         AMaigboma904iyn6ILZ+iawoqItKZxfXK96yooh9WsDN/d8OLVMwa4xqlO/UPgy5caYN
-         XdZNKCIh4/NsSPm19iT4ykXn/FSwfLSU0UvAYAnV8HELVQKoh/N3CRl6sE/LT4vZ+Iy0
-         mbjsfTjPLgnjl/echQ7aMtQ4GNzU1HAjrqQ8O2f/6zO+6BoKL7zv6HjPmkwIJib6Zznc
-         e/2rPaKCsTwUPGhTrEurnVYCi81dr+xUrfCGci+CgxUPXwyWHBPTJyz7eVJdsBqdCgk5
-         APlQ==
+        bh=sod+h68sOef8XvTYH5hL66cOeE3tT8hv2lEauZbhw70=;
+        b=Is0O8dXCMcPXnEqM6DZ2DdT3IwpnIvkR/JgyOWgVG5D5Z7ZLnI2fS8oIBcxoR292FD
+         FNOPCqh/viHpZjg3F+u/hwcKCd9Vs8YDckIX7s03tHWIue4Q++XTJtimGGrrstQQhO2W
+         ZOHUzPGN/O/X9IqpLAyjmUhUhnNSde53Nika3tjCuv1GZSBMhme/sW3gE98+LtSoUJ0p
+         j5JfLAiPEFpjKXcmFh0V2wt2+zGlrgrO5yJombjCiLUshmrpasuvuMo+mNuHW3h4kBuU
+         3RCVOrUO09Vumsomv5CT3T/xZ0c3r4dlipZtKRm9FcxydDhjbfYPwEwKr/MaT1EoCzdX
+         Agdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760653706; x=1761258506;
+        d=1e100.net; s=20230601; t=1760653708; x=1761258508;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=C7RYKj2bkYamtj/tpY96rNXOI7drHoDq8hs/glpL7oY=;
-        b=KEi52Sp+NFMjpYfwVc/LZ5ONmvKb6He2HxoH++hypQ52ZypPKl3EjNnHATgH9KiInQ
-         zUTOuHyw9+9P2K7TLIo69RRg2Y3EhlWYvlZTsd7zQbZYNbB5oerf6gVjCV1ldJT78gDt
-         gpHHNmKG99x83nRD/tP8Z16cJ7GnAI9ULeKVJeWnaRWnkevuWDIhBLCrFq7yU7eGC/1A
-         yBGqqJ0XTtvYSZ9Q+CGi/Egu62M84b2BhOm5GlWudeGaTwXSMCyRKhKmHq3Zp6BB7vVW
-         YXe8iyjG0XLzUxhGZPApPwpQsZnSZLs+Ou0587Qz+yeqicqQktgDiOBE2lJ7pBZUZeUc
-         o9jQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUcP/jsYxEPyHcAguSvvltkNlwKYzKtGc6euNgQ/ftv2kfuSh8LiZA7IBg8hnteSFvFHjLJQEpeQ6X0@lists.linux.dev
-X-Gm-Message-State: AOJu0YzIGM8HOU5134T32LBOVHe6oC4ldcn7oI3M+Dw8YsGPW2bWEHOe
-	9q7ZhMFx27uOGaK4I4Zgd/pf+iA9hhmQv9wSL6KLNlbwKSjnL9L55rbdh0B/b53DL4wDpPf2qya
-	nTN8jMQ==
-X-Google-Smtp-Source: AGHT+IHr7rgfcDHrp89GOkrAJeRqbJYehFtjyPEFfaSBcGteYS74wj9nr9cTOyxVow6+nxcyA3NcfEsIUQE=
-X-Received: from pjbpa17.prod.google.com ([2002:a17:90b:2651:b0:33b:51fe:1a8c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4d12:b0:33b:cfaa:d01a
- with SMTP id 98e67ed59e1d1-33bcfaad01dmr1276533a91.25.1760653706135; Thu, 16
- Oct 2025 15:28:26 -0700 (PDT)
+        bh=sod+h68sOef8XvTYH5hL66cOeE3tT8hv2lEauZbhw70=;
+        b=QqvupmlvAO9qF8Ezni7Iup81BlfW+cbxRYb7Iad91TkNgrKtH+McWNC6JKDB0fzXBv
+         IkOB1QwMLrNoUN65RyrEXHImA3FTxtD4s4y1+ACrfkUq/2dcm6IX0Yprf9SNo8nGutj2
+         fDyG/y3s2Z3XIqdcmylJg6nx+Yek9cxUy3nGc47/4Q/GQuT3ObIoB7IXKQJiwfBbafdx
+         x2C/C3zFjngXN/yIBJf+eUmOK+g78eLy13f75O+vtizSkj79GL22qiWhF/m61E95A0mq
+         mA8UbrCET9X/8dFpVCH/ggCjX+77FOSixC2wQAd1X37+694YgfyvX6UYC/RuY+BZi9EW
+         pQhg==
+X-Forwarded-Encrypted: i=1; AJvYcCUorLNyQ0Q8MOUgnX+Z/ImptBixr5UBb28OPoyfRxBn4qZaOaBPTcM8HThAdRuQ9UYJtJ0cwMCDvjgr@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy+ejfHOT30rfSJdULWsKuiG8pUruAv0iN01UBpKsgTKp8+4vEL
+	/CFM2VVSq42Voy1w3A2f+5LLg4akjsMg9PZUaFdQG3F91GoLJ2TRMRhyXlDp8c0kArPTTlwhi4t
+	hTdvBHg==
+X-Google-Smtp-Source: AGHT+IEwdDYnEGjMumhEIrDhiWelgfr9l1shpL6etMLfOeb3DaDY5Ntm6comWTq6+d8o1CvS2P0n7vWtfUo=
+X-Received: from pjbhi22.prod.google.com ([2002:a17:90b:30d6:b0:33b:51fe:1a83])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1c89:b0:32e:7bbc:bf13
+ with SMTP id 98e67ed59e1d1-33bcf91b83bmr1495993a91.34.1760653707913; Thu, 16
+ Oct 2025 15:28:27 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 16 Oct 2025 15:28:15 -0700
+Date: Thu, 16 Oct 2025 15:28:16 -0700
 In-Reply-To: <20251016222816.141523-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -61,9 +61,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20251016222816.141523-1-seanjc@google.com>
 X-Mailer: git-send-email 2.51.0.858.gf9c4a03a3a-goog
-Message-ID: <20251016222816.141523-4-seanjc@google.com>
-Subject: [PATCH v4 3/4] KVM: x86: Don't disable IRQs when unregistering
- user-return notifier
+Message-ID: <20251016222816.141523-5-seanjc@google.com>
+Subject: [PATCH v4 4/4] KVM: x86: Drop "cache" from user return MSR setter
+ that skips WRMSR
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	"Kirill A. Shutemov" <kas@kernel.org>
@@ -73,54 +73,137 @@ Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
 	Hou Wenlong <houwenlong.hwl@antgroup.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Hou Wenlong <houwenlong.hwl@antgroup.com>
+Rename kvm_user_return_msr_update_cache() to __kvm_set_user_return_msr()
+and use the helper in kvm_set_user_return_msr() to make it obvious that
+the double-underscores version is doing a subset of the work of the "full"
+setter.
 
-Remove the code to disable IRQs when unregistering KVM's user-return
-notifier now that KVM doesn't invoke kvm_on_user_return() when disabling
-virtualization via IPI function call, i.e. now that there's no need to
-guard against re-entrancy via IPI callback.
+While the function does indeed update a cache, the nomenclature is
+slightly misleading now that there is a "get" helper (see commit
+9bc366350734 ("KVM: x86: Add helper to retrieve current value of user
+return MSR"), as the current value isn't _just_ the cached value, it's
+also the value that's currently loaded in hardware (modulo the fact that
+writing .curr and the actual MSR isn't atomic and may have significant
+"delays" in certain setups).
 
-Note, disabling IRQs has largely been unnecessary since commit
-a377ac1cd9d7b ("x86/entry: Move user return notifier out of loop") moved
-fire_user_return_notifiers() into the section with IRQs disabled.  In doing
-so, the commit somewhat inadvertently fixed the underlying issue that
-was papered over by commit 1650b4ebc99d ("KVM: Disable irq while
-unregistering user notifier").  I.e. in practice, the code and comment
-has been stale since commit a377ac1cd9d7b.
+Opportunistically rename "index" to "slot" in the prototypes.  The user-
+return APIs deliberately use "slot" to try and make it more obvious that
+they take the slot within the array, not the index of the MSR.
 
-Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
-[sean: rewrite changelog after rebasing, drop lockdep assert]
+Opportunistically tweak the local TDX helper to drop "cache" from its
+name and to use "sync" instead of "update", so that it's more obvious the
+goal is to sync (with hardware), versus doing some arbitrary update.
+
+No functional change intended.
+
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Reviewed-by: Yan Zhao <yan.y.zhao@intel.com>
+Link: https://lore.kernel.org/all/aM2EvzLLmBi5-iQ5@google.com [1]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  4 ++--
+ arch/x86/kvm/vmx/tdx.c          | 10 +++++-----
+ arch/x86/kvm/x86.c              | 21 ++++++++++-----------
+ 3 files changed, 17 insertions(+), 18 deletions(-)
 
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 48598d017d6f..dc2476f25c75 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -2377,8 +2377,8 @@ int kvm_pv_send_ipi(struct kvm *kvm, unsigned long ipi_bitmap_low,
+ 
+ int kvm_add_user_return_msr(u32 msr);
+ int kvm_find_user_return_msr(u32 msr);
+-int kvm_set_user_return_msr(unsigned index, u64 val, u64 mask);
+-void kvm_user_return_msr_update_cache(unsigned int index, u64 val);
++int kvm_set_user_return_msr(unsigned int slot, u64 val, u64 mask);
++void __kvm_set_user_return_msr(unsigned int slot, u64 val);
+ u64 kvm_get_user_return_msr(unsigned int slot);
+ 
+ static inline bool kvm_is_supported_user_return_msr(u32 msr)
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 2f3dfe9804b5..b7e2957d53d9 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -803,13 +803,13 @@ static struct tdx_uret_msr tdx_uret_msrs[] = {
+ 	{.msr = MSR_TSC_AUX,},
+ };
+ 
+-static void tdx_user_return_msr_update_cache(void)
++static void tdx_sync_user_return_msrs(void)
+ {
+ 	int i;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(tdx_uret_msrs); i++)
+-		kvm_user_return_msr_update_cache(tdx_uret_msrs[i].slot,
+-						 tdx_uret_msrs[i].defval);
++		__kvm_set_user_return_msr(tdx_uret_msrs[i].slot,
++					  tdx_uret_msrs[i].defval);
+ }
+ 
+ static void tdx_prepare_switch_to_host(struct kvm_vcpu *vcpu)
+@@ -1063,7 +1063,7 @@ fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 	tdx_load_host_xsave_state(vcpu);
+ 
+ 	if (tdx->need_user_return_msr_sync) {
+-		tdx_user_return_msr_update_cache();
++		tdx_sync_user_return_msrs();
+ 		tdx->need_user_return_msr_sync = false;
+ 	}
+ 
+@@ -3446,7 +3446,7 @@ static int __init __tdx_bringup(void)
+ 		 *
+ 		 * this_cpu_ptr(user_return_msrs)->registered isn't checked
+ 		 * because the registration is done at vcpu runtime by
+-		 * tdx_user_return_msr_update_cache().
++		 * tdx_sync_user_return_msrs().
+ 		 */
+ 		tdx_uret_msrs[i].slot = kvm_find_user_return_msr(tdx_uret_msrs[i].msr);
+ 		if (tdx_uret_msrs[i].slot == -1) {
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 386dc2401f58..394a30bb33da 100644
+index 394a30bb33da..68daf94e0deb 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -581,18 +581,10 @@ static void kvm_on_user_return(struct user_return_notifier *urn)
- 	struct kvm_user_return_msrs *msrs
- 		= container_of(urn, struct kvm_user_return_msrs, urn);
- 	struct kvm_user_return_msr_values *values;
--	unsigned long flags;
+@@ -655,6 +655,15 @@ static void kvm_user_return_register_notifier(struct kvm_user_return_msrs *msrs)
+ 	}
+ }
  
--	/*
--	 * Disabling irqs at this point since the following code could be
--	 * interrupted and executed through kvm_arch_disable_virtualization_cpu()
--	 */
--	local_irq_save(flags);
--	if (msrs->registered) {
--		msrs->registered = false;
--		user_return_notifier_unregister(urn);
--	}
--	local_irq_restore(flags);
-+	msrs->registered = false;
-+	user_return_notifier_unregister(urn);
++void __kvm_set_user_return_msr(unsigned int slot, u64 value)
++{
++	struct kvm_user_return_msrs *msrs = this_cpu_ptr(user_return_msrs);
 +
- 	for (slot = 0; slot < kvm_nr_uret_msrs; ++slot) {
- 		values = &msrs->values[slot];
- 		if (values->host != values->curr) {
++	msrs->values[slot].curr = value;
++	kvm_user_return_register_notifier(msrs);
++}
++EXPORT_SYMBOL_GPL(__kvm_set_user_return_msr);
++
+ int kvm_set_user_return_msr(unsigned slot, u64 value, u64 mask)
+ {
+ 	struct kvm_user_return_msrs *msrs = this_cpu_ptr(user_return_msrs);
+@@ -667,21 +676,11 @@ int kvm_set_user_return_msr(unsigned slot, u64 value, u64 mask)
+ 	if (err)
+ 		return 1;
+ 
+-	msrs->values[slot].curr = value;
+-	kvm_user_return_register_notifier(msrs);
++	__kvm_set_user_return_msr(slot, value);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_set_user_return_msr);
+ 
+-void kvm_user_return_msr_update_cache(unsigned int slot, u64 value)
+-{
+-	struct kvm_user_return_msrs *msrs = this_cpu_ptr(user_return_msrs);
+-
+-	msrs->values[slot].curr = value;
+-	kvm_user_return_register_notifier(msrs);
+-}
+-EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_user_return_msr_update_cache);
+-
+ u64 kvm_get_user_return_msr(unsigned int slot)
+ {
+ 	return this_cpu_ptr(user_return_msrs)->values[slot].curr;
 -- 
 2.51.0.858.gf9c4a03a3a-goog
 
