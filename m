@@ -1,264 +1,119 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011026.outbound.protection.outlook.com [40.93.194.26])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3544021B1BC
-	for <linux-coco@lists.linux.dev>; Fri, 17 Oct 2025 11:31:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.26
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760700695; cv=fail; b=bf8VNjSpHg3bbfmTcxDyB+qSI+3jJ7E9n5SlfRjob66MCzQfY8t7Vc6cchdjC3opNQQGEOlQs8EofJ5E0lojH6UgITb9e/MENXTn3rzPlI+pp+NUL8glCPulqiy0q4gjxnUpHfTyDUe4mlLjG22/tfBwkluMUtGvSc2pBMlsPcY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760700695; c=relaxed/simple;
-	bh=eSXJmfAZeX2UcKv0r7X7ZJvnmNqj4gk2QBgXAtNUG90=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Buiw64EVNLU5JIaAukee5du/PMxwghmF3fRO9Y8TsynAf9RJwWcPOabauz4eRedR+6KykWNPFGR6LBBnBD/GHnLpxieXFC9CczJxncutQSoJPDPONijCsBLcu5rsMdOqa+AskZ8WrT5X0Lr0DXpg0U8ZcC+9bz6h7gaXAQzFvQU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=YV12dWiv; arc=fail smtp.client-ip=40.93.194.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="YV12dWiv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nVL7DUgN4pOS9UxN5oWicz0tCncjyC73w5+Yi0oWErMhMN8d3wEn4a18CLvaPicPYaofpsDB9gDBxaeDWKqGFzNGPvjlaXxn9QcMYxw0Q9lV8KkNfA9DFOlRgYb/eb80ESxquLdUT6zAUb5myUiYt+uflfBxyT8i6TbKMnanZ8XS/R9QEX6OAmq+/UveMdFjxDn1+6TpbzGt+DvjPxx9WUOjTy1L20sP1eXssjR1YqWHBq1YVkxqunrfvS/mMVVHiZ3luxhS/eQssi2hPMXaMQVhOEKNplXp6/oSGyHT75TtwJvLxWyFzdafrdhPs0FN4UEPPTGPYLjUIRrHQpKjrw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3Uo+uvSffdo68vVMRFT3LhFhHIV17nzh0dLz+arQquk=;
- b=I60tJcQmF3Baogb3M87DLeRH9R6S46p/EP4WasaY+45yJwIKKIN8dK59hkgV8sVnMhrVYZbnAq9VzocOAExoWI6npsIFMOkQmiDqK5WZFSllQeYna571dR/r88yAL1Pr86BuPvn76e9csKc7eBlpQ1lxje7P8XHYBvOyD+mv1frOKZU8yQUBByxeBUl02/P89M0DgoyzBNSrcDk3mGrNoBQQA5XRRzWngpEsk8dPFfCgWsyD99jwdDck/IdeHc2cUMoQHUzXoncpAOf5mGjpH6oXy3aPk2eFHkRv1+/C21G2IUpB5p+5WGWz5irzxH3wIKsYULTK87WAhLq7j2C98g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3Uo+uvSffdo68vVMRFT3LhFhHIV17nzh0dLz+arQquk=;
- b=YV12dWiv80YQM7WYyf3rnh+UmDpRfCO5WUsdHyR2PEkHCbvnLRaj9+k8osaATONdnoebxtR+zjJs8IXal4H8hxEcZsM5L2zodmCft++CXm0GZWa85A64fVICHIzOMOUIzQuw1cTT0kRXRKGtpFfLxPrSju6eJWDTrWI78XqkX1M=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by CH1PR12MB9669.namprd12.prod.outlook.com (2603:10b6:610:2af::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.13; Fri, 17 Oct
- 2025 11:31:30 +0000
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::53fb:bf76:727f:d00f%7]) with mapi id 15.20.9228.011; Fri, 17 Oct 2025
- 11:31:30 +0000
-Message-ID: <43070157-cfc3-4ef2-8b2a-e677515e8bce@amd.com>
-Date: Fri, 17 Oct 2025 22:31:12 +1100
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH v5 07/10] PCI/IDE: Add IDE establishment helpers
-To: dan.j.williams@intel.com, linux-coco@lists.linux.dev,
- linux-pci@vger.kernel.org
-Cc: yilun.xu@linux.intel.com, aneesh.kumar@kernel.org,
- gregkh@linuxfoundation.org, Bjorn Helgaas <bhelgaas@google.com>,
- Lukas Wunner <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>
-References: <20250827035126.1356683-1-dan.j.williams@intel.com>
- <20250827035126.1356683-8-dan.j.williams@intel.com>
- <eeca3820-01dd-4abc-a437-cf46dc718ab6@amd.com>
- <68ba3c9f508ed_75e3100ef@dwillia2-mobl4.notmuch>
-Content-Language: en-US
-From: Alexey Kardashevskiy <aik@amd.com>
-In-Reply-To: <68ba3c9f508ed_75e3100ef@dwillia2-mobl4.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SY8P300CA0004.AUSP300.PROD.OUTLOOK.COM
- (2603:10c6:10:29d::25) To CH3PR12MB9194.namprd12.prod.outlook.com
- (2603:10b6:610:19f::7)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1CE1337102;
+	Fri, 17 Oct 2025 14:55:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760712910; cv=none; b=qZWp2zZKjlVrWxDAeblxXGyV+4oFx1wSN1nvS0EsTI+y3J8qxmE4otUyndc7EJ58once5vTZfB+TgeOkTuoGr4o0Jo6hhiqHzTy+vqDxjCvOP1122IwgqRDCBXzThEcekk3TPsGVVPzo9QRShcKA8NR2kqgJEVN2xJHeNnYRbLQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760712910; c=relaxed/simple;
+	bh=Vp8HhGM8KTiB8jGFS7+z9LvVlE4Sj+m2pqa3oGGzWCo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sBcCkYrHyoFPCTd6YZj8Pq+yYD8jsx00erVUZAuja1ttPoQE0+nYa1gei+5nZ36EvdtF677mmGhcIIevX2JeuZYn0WaREseR7bz7AJcPVmIRKUOGw2YJNnRATTEbZ//mmTfdC/xDeX3OjuUMO809VDhWjzM0h0V8RiNy5tYEPSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 522A7153B;
+	Fri, 17 Oct 2025 07:55:00 -0700 (PDT)
+Received: from [10.57.36.104] (unknown [10.57.36.104])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8C9463F66E;
+	Fri, 17 Oct 2025 07:55:03 -0700 (PDT)
+Message-ID: <461fa23f-9add-40e5-a0d0-759030e7c70b@arm.com>
+Date: Fri, 17 Oct 2025 15:55:01 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|CH1PR12MB9669:EE_
-X-MS-Office365-Filtering-Correlation-Id: b96ff560-69a2-4b71-26a7-08de0d70b772
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NlBRZEt2bDdKNG9IRm10bWtKdmVoN3dET2laUU1sMnBOcHdPZm9oWkV5Y0dj?=
- =?utf-8?B?aDhpaGxQY2xWU3pwS0ZjZGk0eVNIWG8zYkVMcS92Y21WbkJjWHBGci9lbzBM?=
- =?utf-8?B?YklMOGpHRjlaVGx5NWdOSklpa2tKQ1Q0bnF3TEhoSVhqb1JZNnNGYUlpVjNL?=
- =?utf-8?B?dkszYWRyMkVyQTV1T2hiUUtOYStxVDIreGQ3ZTc3b1NDa3JxN2s1amlwNjkr?=
- =?utf-8?B?RVdQS2tDZUJQbVdmc1A0dHRyblNUVGhPN1hJWDVyR01mbHpObjhEQ0RnMHF6?=
- =?utf-8?B?dzJ6c2phYVVYUlJXUXJjSGxPRTYvRzQyN1J2WVRVOXo5RU9KclRWOEM0Q0w3?=
- =?utf-8?B?QzVUeHlvODU1TWN5cy80Wk5adW5acitXR0ZUWkJhM2pJeFFjYTNnMDFTaGtt?=
- =?utf-8?B?OCtZc01raDhKRThQcmhUMjBPYVBXbGw4WU9JSnBXSkpFaFJ0MUtTaVcrMldz?=
- =?utf-8?B?dmpHZjhlRTA5dFJQQUJaWWk0ODZUWENpRmVKc0lNdjlmeG5WbGduMlBXb0ZR?=
- =?utf-8?B?SGk4emlxb2U2cnB2a2srSTR6b25HUC9hbnY5dU81dWlJYXJ6VHZjYnpsRmhm?=
- =?utf-8?B?NFdXV2NreUk2dGYzVU53eVNBVFM1UWNrV2xpc0J1cEdOeHpaS1h5VEtSNlUv?=
- =?utf-8?B?OEUraENacXVsQ082SjJOazJTQ0VtcFY1M3ZCSVRyQ0hpcXVkY3Q1cVNxY2dS?=
- =?utf-8?B?U3kyK2tacnV1RmlvRlpBcVlzQzFKeTB1R25vZEZOMTlLaVVXMXd2YlplbW40?=
- =?utf-8?B?VnBEc2pjeHFxbnMzWFNtRkFFMkE5Vm9VS29lMWVNeTJiSnBreEsrZzVFMCsv?=
- =?utf-8?B?ODJrZDdnUUpoTzhrZ1h1emhybEdvYU8xZldFZXJuUmdoUTV4amJrNGtpR1V2?=
- =?utf-8?B?a0M2ZjNmb25LS1pRNFFlVUhDSFNYYkorQU85ZXA4UllRMCtWZzFjNUFZUnVY?=
- =?utf-8?B?Szl5NU90Mi84YjZNVHhIWk9UcG0xOXpDSGFpL0owNXpiRkp0dGF1TkZaWGxh?=
- =?utf-8?B?eUMvWC9lT1Fhdms0Nlh3Ky82ZVVGL0hvQUE2TWQwaE8reWxPNU9BUWdBNmlw?=
- =?utf-8?B?aVFvdGVJdTdzQjVTeGZXZE5VQ2xkQVNxNXA3OGxTbVltbXRld2tHM0lMeHNK?=
- =?utf-8?B?NGZzTHhaTG5BQzA5VlF4MnFMQVp2YUVlWUpncldGbm5nVWJtT1Njai8vQ3ZN?=
- =?utf-8?B?VTY0MENwK2FrQ1laYkgzSW56NERmUC9tUTQ1NFYvazd6KzJhWmZxYU5ZNEJo?=
- =?utf-8?B?dWZXbWJmZDhHbkdrcjE5aG91MFhkQ2lwUzlRWlJPRFR2RTFqZS91NEswem4y?=
- =?utf-8?B?ZzIvbEJRWmNNWlJVUHBrMUVNckIvVmlNMTB2ODFyRkc4elk1dmpTcThPY3V4?=
- =?utf-8?B?V2pIVFNidTNMTGFDaHFZMGJiSUFnT0dHY2Zqc3BWN3VvQWttYTZQOW9jRGdp?=
- =?utf-8?B?RC85RHcxb2pnVVAreVVFUlVRelowdWtCdzUyREdFVklMR0hLeUxZS0w0L045?=
- =?utf-8?B?NXhqK3VLR2JvV1lBeHcyS1ZDMG5hcVVMZnFVdXNSWFMrSW9ia2szSTU4VjZH?=
- =?utf-8?B?anBvSW03UDBka1RvNlJ3N3VUa0U3Tlg3bmJEcDBJTzFLRVBqbm5WMW9sOXRY?=
- =?utf-8?B?aWFtanoybzdISW0vUWwybVNKN29LTTRwd0IwUnFOSWViQXBoY3FFejVyWFJ3?=
- =?utf-8?B?SFQvY09Ua1hXdTAzazczRzN1cTBORHJvL0ROc3UwM0RTOG1hZEx5Rmx1d3gx?=
- =?utf-8?B?R3hybXM4dTRDOEJGUjNpYzRXd2k0dHA0RkJKQXg2Z2F3bXFKdmpSTUhNKzdR?=
- =?utf-8?B?QzY4dlM3Rlo3Y1VWWFVkaTRHTVBPeDdDSzlCeWhoU2FPb3F6NDRyd2ZRUjIw?=
- =?utf-8?B?d0dGcUZxYThHc1JJZ1ZRQ2FyWXlOOHNPcXB2ejBMZlJ4SjdlT3ZFOTJXNVBh?=
- =?utf-8?B?RDhUdjJIYW80aEoySHZPTng2akFhazNpOUlhdU5IK1did1RXajMxWEVYNVNR?=
- =?utf-8?B?WThRd0d1bG1RPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bzR0ajNoa2xraUNncitqM1YrNkRTaVNkT3VIOFVQQ1QzS1FjMWxlUDRZSWY2?=
- =?utf-8?B?OHhjK0Z4c3VhQmVsOVE3dVEzdGpRUytyaXprL3hWenNJUHFXa0tYb2w2V3R4?=
- =?utf-8?B?NC9IRGtkMFBtb1FDOHhzUC85QjF4ZTBRU2g4MlJmVlBHWXhLWDZURjg4S1dB?=
- =?utf-8?B?ZGRzTVVJVTVtZy9EZVZkVzJqcWlwYVBrbUVKVVkwV0tjOTRmeXAwUVRvdklm?=
- =?utf-8?B?T3BSVlNic2s4NlBVVXk5eFJySGdsNjlUN2h1cWZsaitSYWpLYnhtZ1U0ZUpZ?=
- =?utf-8?B?NlcydExFRCtEdkJkVGRlVFZZTjVVK0RCSXh5ckNXdUNOdFVNRTdLbzV5YjJW?=
- =?utf-8?B?d2llb1NGT013NkpjaU01WnNvaDZhbzRndUdxK3llM3JTVjdxd1ExUkg0S004?=
- =?utf-8?B?WXYxQS80K3VYVzBkUEhxKzdJa2tzRmwzNDAyQ0tJWVFSdTJtSW8vRkpCY2tt?=
- =?utf-8?B?TkZhZ1BQWUVPRFpKemYwMXJPTHlhczQyd1l2cmNpeFJ4ZWkxbDRYUWxJaEE0?=
- =?utf-8?B?K2RPbzQ2S1d2dXdoUU5mcUo1QWg3K0Q2MXVRSEdqcGlETnRLN0tUelRmN2x1?=
- =?utf-8?B?Y1o3cFpLVHJtVEpyVDBLQ3BjdXBNeC84YkljT1EycEg5dWFsQnBpSjl3KzU4?=
- =?utf-8?B?VTRUTUJpY1pRZkQ1TDNJTzFOWW5ncTcxRnlZVmhjbjY5aVhqajBNbGtBK1Fo?=
- =?utf-8?B?M2pGSDVjZlZOdVpYZCtCa3pGL1V5WjJFUjFYMlA3aTBJbEhPWTNzemkyKzFV?=
- =?utf-8?B?R0pHMVBIVDh0RFZxMVBWUDNvV3Z0YXN4MTQ3di9GT0tiK2FtNkJSSU8wSklz?=
- =?utf-8?B?RWl5blpxV01QRWdHNDBsaGdUTzY3dmYxT2RyTjlhNUFQK1VTcmF0Vkp6dTh3?=
- =?utf-8?B?UHR1bVkyTjFnendqbWlyMk1UR2REYmNrUDlkTTNwZlo1eEZXbXBKRzlVbUww?=
- =?utf-8?B?VkVaUmlNSGdFdmJNN1BmSE1Gd2ZwSGFESWYveEYvZXRNOVU0RUFaUEFPWGlB?=
- =?utf-8?B?R2Ntb0lSd1pxNFlvbFRUYjNmSGJYK1lNb1diL1BxYnRuZ0xtZW81ZE0vN1lF?=
- =?utf-8?B?UlkrWkFUajVrY0pCaDA2UVFIY2owM3U2OGp4aDFWa2lMQW9yMG0zMitWUzUz?=
- =?utf-8?B?RldDam83MUQ2YXp4L3pDeUt6aTRpZGtWMnpVUGtkbjUrZEVFS2x1UUNlc2dt?=
- =?utf-8?B?b3R6Uktwa3E0UUdaQWhOaXQxeHFhTVBCMUFDZ2UrSmhtRmhMT1MxWHdBRTdR?=
- =?utf-8?B?V3RIWUFmeTc2UTlMdjZzZ094bytIRW9UbzlnNll0ZHdlVnZjcHF3eDNWTEhR?=
- =?utf-8?B?QU5yMy81aGt0N0wvVlpETGR1bmJyNXJlOHpFaGV6UVVjZWlkVzdJNkl2UHpt?=
- =?utf-8?B?Q2xjTEVOM1gyeklwWHZpQmFJSW9ZVFg3cnhiTlJYbzc1R1pqK0VGQmVUYkRr?=
- =?utf-8?B?WjBKbmdidXowdFl3Y0YreTYzaG5nZ2U4YVU4RXpQczdobjd2SlFxQk00WmZu?=
- =?utf-8?B?eEVvcllRZm41Q1VQMVR2K2I2UU9qcDlGdU56ajFlZWt5dGdEUk45V1FaaWxp?=
- =?utf-8?B?c3dJcG9UckUxYWhLbi9VUHQvU0M3TzFwUlk1bW1lWWJ6S2tzYlVONDFweWJq?=
- =?utf-8?B?NElZVXA0U1Evd3hzdFJjMWhuUEhTdDFRT0NleTlNVHA3MGxPckIxMnV6T20z?=
- =?utf-8?B?b2J1SGNnMm8wVnM3Myt0K1lqRndmRWhra3QxNVlzb0kvY3R5cWp6dXgrYWZO?=
- =?utf-8?B?RVprMXJPY29xbEF2bi9wcEJsVUFFb3dVa3p0M0ZvNmJBenJBbnl1RFBSWVp1?=
- =?utf-8?B?QmVLdWdsNm9vdzRwc09ZNWRqRWtkR3l4NTZMUS9rc1JsWXVwS1R0YlVOd2VT?=
- =?utf-8?B?WWxKUnNkeGxocVZ4V3pONFphbUlNcklORlVrU3lTejJHNFlKbnZNOUtjSitz?=
- =?utf-8?B?TzF6TFV2Y1ErUCttTEE5bk9YN2MzZEV2QThHNnNhYkhMQ0ROMWpHbkd5L2kr?=
- =?utf-8?B?SEtHbUNyL0JySStOdERyY1duM2Z2VlpZaTJRVTh3aUFmYnFEZXNuYTFPaDh1?=
- =?utf-8?B?QUtYaEY1aDB2QVJadjkrWkY3UzlURHFFcXE3OUl5TEtpY2pOOS9kR1NxcERW?=
- =?utf-8?Q?YHwNPy0GpdeVM+53TSxhVjMpx?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b96ff560-69a2-4b71-26a7-08de0d70b772
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2025 11:31:30.1327
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: efbza7pq+HneHapTgms2G3abw2MJTcsaph2ioFglsdzYd3rkPp2EO7IMmx2kuH/F/alQig2CTFCotFTNW3umCg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PR12MB9669
+User-Agent: Mozilla Thunderbird
+Subject: [PATCH v11 00/42] arm64: Support for Arm CCA in KVM
+To: kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>
+References: <20250820145606.180644-1-steven.price@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20250820145606.180644-1-steven.price@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+Hi all,
 
+v6.18-rc1 is out, so I've rebased and refreshed the series. Branches are
+below:
 
-On 5/9/25 11:27, dan.j.williams@intel.com wrote:
-> Alexey Kardashevskiy wrote:
-> [..]
->>> +static void set_ide_sel_ctl(struct pci_dev *pdev, struct pci_ide *ide, int pos,
->>> +			    bool enable)
->>> +{
->>> +	u32 val = FIELD_PREP(PCI_IDE_SEL_CTL_ID, ide->stream_id) |
->>> +		  FIELD_PREP(PCI_IDE_SEL_CTL_CFG_EN, pdev->ide_cfg) |
->>
->> There was:
->> FIELD_PREP(PCI_IDE_SEL_CTL_DEFAULT, 1) |
->>
->> and now it is gone, why? And it is not in any change log, took me a while to find out what broke.
-> 
-> Oh, sorry, it results from this feedback.
-> 
-> http://lore.kernel.org/9683c850-3152-4da5-97f1-3e86ba39e8d3@nvidia.com
-> 
-> ...but since the address association registers are not programmed then
-> nothing routes TLPs to the IDE stream. My mistake.
-> 
-> We may eventually need the ability for the stream allocation path to also
-> allocate a traffic class in the root-port, but for now this assumes single
-> device TC==0.
-> 
-> For now I am adding this:
-> 
-> -- 8< --
-> diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
-> index 4f5aa42e05ef..610603865d9e 100644
-> --- a/drivers/pci/ide.c
-> +++ b/drivers/pci/ide.c
-> @@ -379,10 +379,12 @@ struct pci_ide_partner *pci_ide_to_settings(struct pci_dev *pdev, struct pci_ide
->   }
->   EXPORT_SYMBOL_GPL(pci_ide_to_settings);
->   
-> -static void set_ide_sel_ctl(struct pci_dev *pdev, struct pci_ide *ide, int pos,
-> +static void set_ide_sel_ctl(struct pci_dev *pdev, struct pci_ide *ide,
-> +			    struct pci_ide_partner *settings, int pos,
->   			    bool enable)
->   {
->   	u32 val = FIELD_PREP(PCI_IDE_SEL_CTL_ID, ide->stream_id) |
-> +		  FIELD_PREP(PCI_IDE_SEL_CTL_DEFAULT, settings->default_stream) |
->   		  FIELD_PREP(PCI_IDE_SEL_CTL_CFG_EN, pdev->ide_cfg) |
->   		  FIELD_PREP(PCI_IDE_SEL_CTL_TEE_LIMITED, pdev->ide_tee_limit) |
->   		  FIELD_PREP(PCI_IDE_SEL_CTL_EN, enable);
-> @@ -424,7 +426,7 @@ void pci_ide_stream_setup(struct pci_dev *pdev, struct pci_ide *ide)
->   	 * Setup control register early for devices that expect
->   	 * stream_id is set during key programming.
->   	 */
-> -	set_ide_sel_ctl(pdev, ide, pos, false);
-> +	set_ide_sel_ctl(pdev, ide, settings, pos, false);
->   	settings->setup = 1;
->   }
->   EXPORT_SYMBOL_GPL(pci_ide_stream_setup);
-> @@ -481,12 +483,12 @@ int pci_ide_stream_enable(struct pci_dev *pdev, struct pci_ide *ide)
->   
->   	pos = sel_ide_offset(pdev, settings);
->   
-> -	set_ide_sel_ctl(pdev, ide, pos, true);
-> +	set_ide_sel_ctl(pdev, ide, settings, pos, true);
->   
->   	pci_read_config_dword(pdev, pos + PCI_IDE_SEL_STS, &val);
->   	if (FIELD_GET(PCI_IDE_SEL_STS_STATE, val) !=
->   	    PCI_IDE_SEL_STS_STATE_SECURE) {
-> -		set_ide_sel_ctl(pdev, ide, pos, false);
-> +		set_ide_sel_ctl(pdev, ide, settings, pos, false);
->   		return -ENXIO;
->   	}
->   
-> diff --git a/include/linux/pci-ide.h b/include/linux/pci-ide.h
-> index cf1f7a10e8e0..a2d3fb4a289b 100644
-> --- a/include/linux/pci-ide.h
-> +++ b/include/linux/pci-ide.h
-> @@ -24,6 +24,8 @@ enum pci_ide_partner_select {
->    * @rid_start: Partner Port Requester ID range start
->    * @rid_start: Partner Port Requester ID range end
->    * @stream_index: Selective IDE Stream Register Block selection
-> + * @default_stream: Endpoint uses this stream for all upstream TLPs regardless of
-> + * 		    address and RID association registers
->    * @setup: flag to track whether to run pci_ide_stream_teardown() for this
->    *	   partner slot
->    * @enable: flag whether to run pci_ide_stream_disable() for this partner slot
-> @@ -32,6 +34,7 @@ struct pci_ide_partner {
->   	u16 rid_start;
->   	u16 rid_end;
->   	u8 stream_index;
-> +	unsigned int default_stream:1;
+kernel: https://gitlab.arm.com/linux-arm/linux-cca cca-host/v11
+kvmtool: https://gitlab.arm.com/linux-arm/kvmtool-cca cca/v9
 
+However I'm not going to spam you all with the patches because there are
+some significant changes that are still to be worked out which Marc has
+pointed out (thanks for the review!). Specifically:
 
-This sets "Default" on both ends and the rootport does not need it in my setup (it does not seem to affect anything though) - the  rootport always knows the stream ID from the RMP entry of a MMIO being accessed. May be move it to pci_ide_partner? Thanks,
+ * We've agreed that the uAPI should be more like "normal" KVM. So
+   rather than expose the underlying operations (create RECs, init
+   RIPAS, populate memory, activate), the VMM should set this up 'as
+   normal' (but using the guestmem_fd capabilities to mark the memory
+   private) and then on first vcpu run the realm should be configured,
+   RIPAS set based on the memslots/guestmem_fd and any data written in
+   the guestmem_fd populated into the realm.
 
->   	unsigned int setup:1;
->   	unsigned int enable:1;
->   };
+   The upshot of which is that a VMM will require only minimal changes
+   to support CCA, and the ordering requirements (for attestation of
+   setting up the realm will be handled by KVM).
 
--- 
-Alexey
+   Since this is a big change in the uAPI it's going to take a while to
+   prototype and figure out all the details, so please bear with me
+   while I work on an updated version.
+
+ * There are issues with the PMU handling where the host is not provided
+   with as much flexibility it should. For the PMU it's not possible for
+   the host to maintain a PMU counter while the realm is executing. This
+   means that sensible uses like getting an overflow interrupt on the
+   cycle counter break with the use of a realm. This, however, will
+   require a spec update to fix as the RMM will need to in some cases
+   emulate the PMU registers.
+
+ * The GIC handling is also more restrictive then it should be. Although
+   the host is responsible for emulating the GIC, it is unable to set
+   trap bits, restricting the host's ability to do this. There is
+   concern that this could limit the ability to implement hardware
+   workarounds in the future. Again a spec update is needed to fix this.
+
+However, changes that you can see (in the branch) include:
+
+ * Fixing the naming of various symbols. There were previously a lot of
+   instances of "rme" in functions which were not directly related to
+   the hardware extension. These are now renamed to "rmi" reflecting
+   that they are part of the interface to the RMM.
+   (This is the only change affecting kvmtool, although it is also
+   binary compatible)
+
+ * The code now checks with the hardware feature (RME) before probing
+   for RMI.
+
+ * There is now an allowlist for CAPs rather than individually disabling
+   the ones known to be an issue with realms. (This also simplified the
+   code, dropping one patch).
+
+ * Fixes for the vgic handling: make sure the VGIC v4 state is
+   synchronised and only populate valid lrs.
+
+ * A few other minor updates from reviews, and some minor changes from
+   rebasing.
+
+Thanks,
+Steve
 
