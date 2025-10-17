@@ -1,204 +1,163 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B184E3208
-	for <linux-coco@lists.linux.dev>; Fri, 17 Oct 2025 15:27:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98612FE56A
+	for <linux-coco@lists.linux.dev>; Fri, 17 Oct 2025 17:10:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760714846; cv=none; b=Q9jyupzeXbLrN0ZCTzZFW0Q7GpcnzdgAipg8psL86xg1mrouobkT4TN49AEnPUIXa3/uUABjxNU7pgV6M8dOaXy571hfRf0IhOIVkpttk3SJe1sCgky6a7C7Nt4ILiZwPaguroZReZgVqxJu6rzubVxslMmMruhJ/3fx3apr/+g=
+	t=1760721020; cv=none; b=ukYwRB6l1KL6a0b7T+g/gItFI1gHUHJcX/pr5s/Gk/ZDO/FCw0JqvgR/gcv+4+63mGuN50/Kx0CDwp+XAA7DtcGDk2M1/Ef2GSJzsya1ugQidyP+MkZd+ddE7TT5HDFDjBQSxcfW8o5H2AcKMH7bzkmcuZKobLjkAf/eLquUkRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760714846; c=relaxed/simple;
-	bh=3aZ/p1HpFYU923O5p/q4vA96EIt39CRccY3dgGPfSyc=;
+	s=arc-20240116; t=1760721020; c=relaxed/simple;
+	bh=BCRpauX8EGhu4tSnjwT10f6Zoi0e1G8sa0Y+n+4d9jU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hqmqe7sOlr7AkFmdjJXYiaocArZSqEl+zpuXOBLEU8vMq+9aNCGiTpxZmg0XahNCrZ0/2/KU30CQgT1ghRnay6Ar4G8u4hQRpMWpazNS8IvvuCxaRdjDj1b4TOFsnPH0wG+5FfB3jJ+H2KaMdIPzHqOd258L2xJxJiXqj5pNFTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SGsDGx08; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=eUxNMsY1C+n9ujacooG4LAnd1/BWZsF9BZ0BM1y8hOTecZoZlUWkKETaXcaplfrYztsMiyqS/Ayr/tp+t6lNXivDFdgZeEmJd0mWOr2fhovV3DURChlX8Mw1M56CNNOl9B0snm4g5L44eScgKsdUtvCnWUXD43JOLeyG27+fRWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q+4Im4t8; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SGsDGx08"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-26e4fcc744dso13727945ad.3
-        for <linux-coco@lists.linux.dev>; Fri, 17 Oct 2025 08:27:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q+4Im4t8"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-33428befbbaso2644527a91.0
+        for <linux-coco@lists.linux.dev>; Fri, 17 Oct 2025 10:10:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760714844; x=1761319644; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1760721017; x=1761325817; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ss/8g+etyv1zIY4NyclRxI5mt3qeT/bquVhBLMxoBys=;
-        b=SGsDGx08KD/3opxVzj6UIhbo+wgiZnM+yzlEf16QLlJzpzdUHXanBFaBVHfTXdkfZG
-         MjlTj8GaEbwtdmntSa31J/XqQAFXmTaRqYDK++XtGzZc5Kb8xSmUFL1jwm531OyEwVnK
-         KVHWW/kSw7KD2jtyr698v5+qZiqtTA+I5LNrVkBkitQyYqx687LCfJizjsXaN6VJMTS4
-         QM+67PlUivavIic09Hd3uMJb0a+gSthwcTgLMGQiWh3GOBieT09WzcDTZGwbLe6NdTxz
-         FR0gHrMMk3nDvWs00oFN6SH9gVhpHc3xG5cDujt6cCJh9yVUwvr9uD5qMTIuRhLRSjP6
-         aIPQ==
+        bh=ifJ61lnza1eEGqNIU2Rf5rvGvVu/vXThPUsXhboidrg=;
+        b=q+4Im4t80UI0gwPxvez1xTU4FC+CBzxyiXX4SHSQy0YIqa+fLY3OKWYDnXJ8UGxgKU
+         6wS7N88lykcdQlQ0eeVSVWi0UMN90hCMQRRVXmHdtxJHGDzEpaYj7FIrZ2B4DnEWjrHf
+         pFuH2W44Bl8dLbiNTxhcYmj/qfU0Ns/G+u7yF4vRVOvSvFv+rhBDzmj3YOoo+wc8HXAY
+         wlRi/7n54TTappNK9g72WKBIBz93fRWJeh9PIwZ+Dq0YJYI72EFp+G+19FiuC+DWBYqp
+         xfktBSmRIpHtF3+rffBuoI+gnqmxCXckqW4CzwmI29LWJzN4a/OpRgeZpRYc3a/ASVnO
+         MeVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760714844; x=1761319644;
+        d=1e100.net; s=20230601; t=1760721017; x=1761325817;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ss/8g+etyv1zIY4NyclRxI5mt3qeT/bquVhBLMxoBys=;
-        b=S3c+TeAa35Jzo6vrf5LIDRarRxIvZm6sp9FdD4LPbjQ12eCyMM9fZV1WTysHePXMa7
-         //JWme+iBkujpduRfLJ5TOzmTthBemJQnbrYs2sxJvk6wkby1nW73dtNwtVUwSkdsrZD
-         pqfhhrs1+PBD+2hfQTyIQE/z9qf9ZzZCGfwbMsLRUrA5EDTKVgol+Df7pNX4EnRaxmd5
-         AXKaqMBKkgnKqEIWjaZnQ+Ew0eeczgL1zUdFL0z5A75rN7B8Ha2rJfvGX4YttzXOY06L
-         6KtSF8jdVLSib+LleHeogW8KtOUEkCg2puvFjLmu5VPrhXgLaPqGeuBuk2vOmNLX7SUO
-         KSyA==
-X-Forwarded-Encrypted: i=1; AJvYcCXyk+0DCAMavp3SEvvlVcrvcCg3ZeBhDkzSbrjyPfEJuEzo5shwLifxE7PjXLvYOa/VYNBoC76guazy@lists.linux.dev
-X-Gm-Message-State: AOJu0YxlTWmvcQ6WpqZGdZ9D7SHw1MyP6tYg+1ZPuj5DgV9087bNu3fL
-	ujhzEAXm97aaf6JiID0ohZxzyFrQbn1s5nucQhVMMAbk0TJuiu3+cPdJeVlFY9r0T9+0EWkny/T
-	UlQ44dg==
-X-Google-Smtp-Source: AGHT+IGU12bTnRG/I4W0jIR1RxuzbBA+lTiUxcvs3Lm7U4yONDzuiQ14vzbiGb18p1Twgo/9xWWrXrqIhvA=
-X-Received: from plrd20.prod.google.com ([2002:a17:902:aa94:b0:24c:7ef0:65c3])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f78b:b0:290:ab61:6a4f
- with SMTP id d9443c01a7336-290c9cb367fmr42913425ad.15.1760714844098; Fri, 17
- Oct 2025 08:27:24 -0700 (PDT)
-Date: Fri, 17 Oct 2025 08:27:22 -0700
-In-Reply-To: <aPHU+RZKwCK0BK7t@intel.com>
+        bh=ifJ61lnza1eEGqNIU2Rf5rvGvVu/vXThPUsXhboidrg=;
+        b=Y5XWeSq/V6GKuvlTsO8vQLWBXz+wpbykWm+Cixw/SfQ6zu5WB8GqohESqqr48Xkjzz
+         c9XZPTuS2RD/D7GdAcW3zUfo2AcHXujavc+I7+6RANTJxFOl9Nyrcn1o5tcxZm8imi4F
+         3rCz+96TSAgvtriMTWgOe0TXn5yonGtKqx9eX2G1QwTTkSBenEzpPbAabCBb6oWwrZN8
+         5S7+Lgdrlc7EYvbalT66HDWaAssgsWo9Yqk9x7nca5Pm0h4XP/h8VBpHva8p5rF1jnqJ
+         qh2ghM4cqSlIsTOe1vUotYdW89TZCztLJvqY92ppGQrf2/cqIACeAhb8dQoMEV6Q9KWR
+         3vbA==
+X-Forwarded-Encrypted: i=1; AJvYcCUdRb7vBjAe8gre9x3xEoBDaa7FjH6rfKTFjZO2EYt8N8ZXL6HLhywDFfRJd2GETLG5BQoh9JBE+9YM@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw2hV2LJ1pmRO7mkVU4SHfOVZ6fq7zVtHkgVC/ZaSHV0968iFmY
+	7yGJjnX/2+v1cdv/GBCMAhwlpUR9xt5jxPGxaU6SWSpWyEdL35hHfuDHDCEvcCXLxJgax34y9qs
+	TUAgaMg==
+X-Google-Smtp-Source: AGHT+IEUYB0R7dtvKf9oX+a/EZzYYKzh3p3ExodHlnWKuRtJXwDliYrt7t1caDRrBgIsgz5MAIKuOjmjxVk=
+X-Received: from pjbgz13.prod.google.com ([2002:a17:90b:ecd:b0:33b:51fe:1a72])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3c0e:b0:33b:c5de:6a4e
+ with SMTP id 98e67ed59e1d1-33bcf853711mr5333787a91.5.1760721017415; Fri, 17
+ Oct 2025 10:10:17 -0700 (PDT)
+Date: Fri, 17 Oct 2025 10:10:15 -0700
+In-Reply-To: <aPICkLKEMFI2OouB@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20251016222816.141523-1-seanjc@google.com> <20251016222816.141523-3-seanjc@google.com>
- <aPHU+RZKwCK0BK7t@intel.com>
-Message-ID: <aPJgWhywMXZdiyU5@google.com>
-Subject: Re: [PATCH v4 2/4] KVM: x86: Leave user-return notifier registered on reboot/shutdown
+References: <20251010220403.987927-1-seanjc@google.com> <20251010220403.987927-3-seanjc@google.com>
+ <aPICkLKEMFI2OouB@intel.com>
+Message-ID: <aPJ4d3frVpRA7WKG@google.com>
+Subject: Re: [RFC PATCH 2/4] KVM: x86: Extract VMXON and EFER.SVME enablement
+ to kernel
 From: Sean Christopherson <seanjc@google.com>
 To: Chao Gao <chao.gao@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>, kvm@vger.kernel.org, 
-	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Yan Zhao <yan.y.zhao@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Hou Wenlong <houwenlong.hwl@antgroup.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"Kirill A. Shutemov" <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	Dan Williams <dan.j.williams@intel.com>, Xin Li <xin@zytor.com>, 
+	Kai Huang <kai.huang@intel.com>, Adrian Hunter <adrian.hunter@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 
 On Fri, Oct 17, 2025, Chao Gao wrote:
-> > bool kvm_vcpu_is_reset_bsp(struct kvm_vcpu *vcpu)
-> >@@ -14363,6 +14377,11 @@ module_init(kvm_x86_init);
-> > 
-> > static void __exit kvm_x86_exit(void)
+> > void vmx_emergency_disable_virtualization_cpu(void)
 > > {
-> >+	int cpu;
+> > 	int cpu = raw_smp_processor_id();
+> > 	struct loaded_vmcs *v;
+> > 
+> >-	kvm_rebooting = true;
+> >-
+> >-	/*
+> >-	 * Note, CR4.VMXE can be _cleared_ in NMI context, but it can only be
+> >-	 * set in task context.  If this races with VMX is disabled by an NMI,
+> >-	 * VMCLEAR and VMXOFF may #UD, but KVM will eat those faults due to
+> >-	 * kvm_rebooting set.
+> >-	 */
+> >-	if (!(__read_cr4() & X86_CR4_VMXE))
+> >-		return;
+> >+	WARN_ON_ONCE(!virt_rebooting);
+> >+	virt_rebooting = true;
+> 
+> This is unnecessary as virt_rebooting has been set to true ...
+> 
+> >+static void x86_vmx_emergency_disable_virtualization_cpu(void)
+> >+{
+> >+	virt_rebooting = true;
+> 
+> ... here.
+> 
+> and ditto for SVM.
+
+Yeah, I wasn't sure what to do.  I agree it's redundant, but it's harmless,
+whereas not having virt_rebooting set would be Very Bad (TM).  I think you're
+probably right, and we should just assume we aren't terrible at programming.
+Setting the flag in KVM could even hide latent bugs, e.g. if code runs before
+x86_virt_invoke_kvm_emergency_callback().
+
+> >+	/*
+> >+	 * Note, CR4.VMXE can be _cleared_ in NMI context, but it can only be
+> >+	 * set in task context.  If this races with VMX being disabled via NMI,
+> >+	 * VMCLEAR and VMXOFF may #UD, but the kernel will eat those faults due
+> >+	 * to virt_rebooting being set.
+> >+	 */
+> >+	if (!(__read_cr4() & X86_CR4_VMXE))
+> >+		return;
 > >+
-> >+	for_each_possible_cpu(cpu)
-> >+		WARN_ON_ONCE(per_cpu_ptr(user_return_msrs, cpu)->registered);
+> >+	x86_virt_invoke_kvm_emergency_callback();
+> >+
+> >+	x86_vmx_cpu_vmxoff();
+> >+}
+> >+
 > 
-> Is it OK to reference user_return_msrs during kvm.ko unloading? IIUC,
-> user_return_msrs has already been freed during kvm-{intel,amd}.ko unloading.
-> See:
+> <snip>
 > 
-> vmx_exit/svm_exit()
->   -> kvm_x86_vendor_exit()
->        -> free_percpu(user_return_msrs);
+> >+void x86_virt_put_cpu(int feat)
+> >+{
+> >+	if (WARN_ON_ONCE(!this_cpu_read(virtualization_nr_users)))
+> >+		return;
+> >+
+> >+	if (this_cpu_dec_return(virtualization_nr_users) && !virt_rebooting)
+> >+		return;
+> 
+> any reason to check virt_rebooting here?
+> 
+> It seems unnecessary because both the emergency reboot case and shutdown case
+> work fine without it, and keeping it might prevent us from discovering real
+> bugs, e.g., KVM or TDX failing to decrease the refcount.
 
-Ouch.  Guess who didn't run with KASAN...
+*sigh*
 
-And rather than squeezing the WARN into this patch, I'm strongly leaning toward
-adding it in a prep patch, as the WARN is valuable irrespective of how KVM handles
-reboot.
+I simply misread my own code (and I suspect I pivoted on what I was doing).  I
+just spent ~10 minutes typing up various responses about how the emergency code
+needs to _force_ VMX/SVM off, but I kept overlooking the fact that the emergency
+hooks bypass the refcounting (which is obviously very intentional).  /facepalm
 
-Not yet tested...
+So yeah, I agree that exempting the refcount on virt_rebooting is bad here.
+E.g. if kvm_shutdown() runs before tdx_shutdown(), then KVM will pull the rug
+out from under TDX, and hw/virt.c will attempt to disable virtualization twice.
+Which is "fine" thanks to the hardening, but gross and unnecessary.
 
---
-From: Sean Christopherson <seanjc@google.com>
-Date: Fri, 17 Oct 2025 06:10:30 -0700
-Subject: [PATCH 2/5] KVM: x86: WARN if user-return MSR notifier is registered
- on exit
+Thanks so much!
 
-When freeing the per-CPU user-return MSRs structures, WARN if any CPU has
-a registered notifier to help detect and/or debug potential use-after-free
-issues.  The lifecycle of the notifiers is rather convoluted, and has
-several non-obvious paths where notifiers are unregistered, i.e. isn't
-exactly the most robust code possible.
-
-The notifiers they are registered on-demand in KVM, on the first WRMSR to
-a tracked register.  _Usually_ the notifier is unregistered whenever the
-CPU returns to userspace.  But because any given CPU isn't guaranteed to
-return to userspace, e.g. the CPU could be offlined before doing so, KVM
-also "drops", a.k.a. unregisters, the notifiers when virtualization is
-disabled on the CPU.
-
-Further complicating the unregister path is the fact that the calls to
-disable virtualization come from common KVM, and the per-CPU calls are
-guarded by a per-CPU flag (to harden _that_ code against bugs, e.g. due to
-mishandling reboot).  Reboot/shutdown in particular is problematic, as KVM
-disables virtualization via IPI function call, i.e. from IRQ context,
-instead of using the cpuhp framework, which runs in task context.  I.e. on
-reboot/shutdown, drop_user_return_notifiers() is called asynchronously.
-
-Forced reboot/shutdown is the most problematic scenario, as userspace tasks
-are not frozen before kvm_shutdown() is invoked, i.e. KVM could be actively
-manipulating the user-return MSR lists and/or notifiers when the IPI
-arrives.  To a certain extent, all bets are off when userspace forces a
-reboot/shutdown, but KVM should at least avoid a use-after-free, e.g. to
-avoid crashing the kernel when trying to reboot.
-
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/x86.c | 33 +++++++++++++++++++++++++--------
- 1 file changed, 25 insertions(+), 8 deletions(-)
-
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index b4b5d2d09634..334a911b36c5 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -575,6 +575,27 @@ static inline void kvm_async_pf_hash_reset(struct kvm_vcpu *vcpu)
- 		vcpu->arch.apf.gfns[i] = ~0;
- }
- 
-+static int kvm_init_user_return_msrs(void)
-+{
-+	user_return_msrs = alloc_percpu(struct kvm_user_return_msrs);
-+	if (!user_return_msrs) {
-+		pr_err("failed to allocate percpu user_return_msrs\n");
-+		return -ENOMEM;
-+	}
-+	kvm_nr_uret_msrs = 0;
-+	return 0;
-+}
-+
-+static void kvm_free_user_return_msrs(void)
-+{
-+	int cpu;
-+
-+	for_each_possible_cpu(cpu)
-+		WARN_ON_ONCE(per_cpu_ptr(user_return_msrs, cpu)->registered);
-+
-+	free_percpu(user_return_msrs);
-+}
-+
- static void kvm_on_user_return(struct user_return_notifier *urn)
- {
- 	unsigned slot;
-@@ -10032,13 +10053,9 @@ int kvm_x86_vendor_init(struct kvm_x86_init_ops *ops)
- 		return -ENOMEM;
- 	}
- 
--	user_return_msrs = alloc_percpu(struct kvm_user_return_msrs);
--	if (!user_return_msrs) {
--		pr_err("failed to allocate percpu kvm_user_return_msrs\n");
--		r = -ENOMEM;
-+	r = kvm_init_user_return_msrs();
-+	if (r)
- 		goto out_free_x86_emulator_cache;
--	}
--	kvm_nr_uret_msrs = 0;
- 
- 	r = kvm_mmu_vendor_module_init();
- 	if (r)
-@@ -10141,7 +10158,7 @@ int kvm_x86_vendor_init(struct kvm_x86_init_ops *ops)
- out_mmu_exit:
- 	kvm_mmu_vendor_module_exit();
- out_free_percpu:
--	free_percpu(user_return_msrs);
-+	kvm_free_user_return_msrs();
- out_free_x86_emulator_cache:
- 	kmem_cache_destroy(x86_emulator_cache);
- 	return r;
-@@ -10170,7 +10187,7 @@ void kvm_x86_vendor_exit(void)
- #endif
- 	kvm_x86_call(hardware_unsetup)();
- 	kvm_mmu_vendor_module_exit();
--	free_percpu(user_return_msrs);
-+	kvm_free_user_return_msrs();
- 	kmem_cache_destroy(x86_emulator_cache);
- #ifdef CONFIG_KVM_XEN
- 	static_key_deferred_flush(&kvm_xen_enabled);
--- 
+> >+
+> >+	if (x86_virt_is_vmx() && feat == X86_FEATURE_VMX)
+> >+		x86_vmx_put_cpu();
+> >+	else if (x86_virt_is_svm() && feat == X86_FEATURE_SVM)
+> >+		x86_svm_put_cpu();
+> >+	else
+> >+		WARN_ON_ONCE(1);
+> >+}
+> >+EXPORT_SYMBOL_GPL(x86_virt_put_cpu);
