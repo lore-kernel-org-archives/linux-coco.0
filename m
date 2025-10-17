@@ -1,119 +1,204 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1CE1337102;
-	Fri, 17 Oct 2025 14:55:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B184E3208
+	for <linux-coco@lists.linux.dev>; Fri, 17 Oct 2025 15:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760712910; cv=none; b=qZWp2zZKjlVrWxDAeblxXGyV+4oFx1wSN1nvS0EsTI+y3J8qxmE4otUyndc7EJ58once5vTZfB+TgeOkTuoGr4o0Jo6hhiqHzTy+vqDxjCvOP1122IwgqRDCBXzThEcekk3TPsGVVPzo9QRShcKA8NR2kqgJEVN2xJHeNnYRbLQ=
+	t=1760714846; cv=none; b=Q9jyupzeXbLrN0ZCTzZFW0Q7GpcnzdgAipg8psL86xg1mrouobkT4TN49AEnPUIXa3/uUABjxNU7pgV6M8dOaXy571hfRf0IhOIVkpttk3SJe1sCgky6a7C7Nt4ILiZwPaguroZReZgVqxJu6rzubVxslMmMruhJ/3fx3apr/+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760712910; c=relaxed/simple;
-	bh=Vp8HhGM8KTiB8jGFS7+z9LvVlE4Sj+m2pqa3oGGzWCo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sBcCkYrHyoFPCTd6YZj8Pq+yYD8jsx00erVUZAuja1ttPoQE0+nYa1gei+5nZ36EvdtF677mmGhcIIevX2JeuZYn0WaREseR7bz7AJcPVmIRKUOGw2YJNnRATTEbZ//mmTfdC/xDeX3OjuUMO809VDhWjzM0h0V8RiNy5tYEPSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 522A7153B;
-	Fri, 17 Oct 2025 07:55:00 -0700 (PDT)
-Received: from [10.57.36.104] (unknown [10.57.36.104])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8C9463F66E;
-	Fri, 17 Oct 2025 07:55:03 -0700 (PDT)
-Message-ID: <461fa23f-9add-40e5-a0d0-759030e7c70b@arm.com>
-Date: Fri, 17 Oct 2025 15:55:01 +0100
+	s=arc-20240116; t=1760714846; c=relaxed/simple;
+	bh=3aZ/p1HpFYU923O5p/q4vA96EIt39CRccY3dgGPfSyc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=hqmqe7sOlr7AkFmdjJXYiaocArZSqEl+zpuXOBLEU8vMq+9aNCGiTpxZmg0XahNCrZ0/2/KU30CQgT1ghRnay6Ar4G8u4hQRpMWpazNS8IvvuCxaRdjDj1b4TOFsnPH0wG+5FfB3jJ+H2KaMdIPzHqOd258L2xJxJiXqj5pNFTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SGsDGx08; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SGsDGx08"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-26e4fcc744dso13727945ad.3
+        for <linux-coco@lists.linux.dev>; Fri, 17 Oct 2025 08:27:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760714844; x=1761319644; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ss/8g+etyv1zIY4NyclRxI5mt3qeT/bquVhBLMxoBys=;
+        b=SGsDGx08KD/3opxVzj6UIhbo+wgiZnM+yzlEf16QLlJzpzdUHXanBFaBVHfTXdkfZG
+         MjlTj8GaEbwtdmntSa31J/XqQAFXmTaRqYDK++XtGzZc5Kb8xSmUFL1jwm531OyEwVnK
+         KVHWW/kSw7KD2jtyr698v5+qZiqtTA+I5LNrVkBkitQyYqx687LCfJizjsXaN6VJMTS4
+         QM+67PlUivavIic09Hd3uMJb0a+gSthwcTgLMGQiWh3GOBieT09WzcDTZGwbLe6NdTxz
+         FR0gHrMMk3nDvWs00oFN6SH9gVhpHc3xG5cDujt6cCJh9yVUwvr9uD5qMTIuRhLRSjP6
+         aIPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760714844; x=1761319644;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ss/8g+etyv1zIY4NyclRxI5mt3qeT/bquVhBLMxoBys=;
+        b=S3c+TeAa35Jzo6vrf5LIDRarRxIvZm6sp9FdD4LPbjQ12eCyMM9fZV1WTysHePXMa7
+         //JWme+iBkujpduRfLJ5TOzmTthBemJQnbrYs2sxJvk6wkby1nW73dtNwtVUwSkdsrZD
+         pqfhhrs1+PBD+2hfQTyIQE/z9qf9ZzZCGfwbMsLRUrA5EDTKVgol+Df7pNX4EnRaxmd5
+         AXKaqMBKkgnKqEIWjaZnQ+Ew0eeczgL1zUdFL0z5A75rN7B8Ha2rJfvGX4YttzXOY06L
+         6KtSF8jdVLSib+LleHeogW8KtOUEkCg2puvFjLmu5VPrhXgLaPqGeuBuk2vOmNLX7SUO
+         KSyA==
+X-Forwarded-Encrypted: i=1; AJvYcCXyk+0DCAMavp3SEvvlVcrvcCg3ZeBhDkzSbrjyPfEJuEzo5shwLifxE7PjXLvYOa/VYNBoC76guazy@lists.linux.dev
+X-Gm-Message-State: AOJu0YxlTWmvcQ6WpqZGdZ9D7SHw1MyP6tYg+1ZPuj5DgV9087bNu3fL
+	ujhzEAXm97aaf6JiID0ohZxzyFrQbn1s5nucQhVMMAbk0TJuiu3+cPdJeVlFY9r0T9+0EWkny/T
+	UlQ44dg==
+X-Google-Smtp-Source: AGHT+IGU12bTnRG/I4W0jIR1RxuzbBA+lTiUxcvs3Lm7U4yONDzuiQ14vzbiGb18p1Twgo/9xWWrXrqIhvA=
+X-Received: from plrd20.prod.google.com ([2002:a17:902:aa94:b0:24c:7ef0:65c3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f78b:b0:290:ab61:6a4f
+ with SMTP id d9443c01a7336-290c9cb367fmr42913425ad.15.1760714844098; Fri, 17
+ Oct 2025 08:27:24 -0700 (PDT)
+Date: Fri, 17 Oct 2025 08:27:22 -0700
+In-Reply-To: <aPHU+RZKwCK0BK7t@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH v11 00/42] arm64: Support for Arm CCA in KVM
-To: kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>
-References: <20250820145606.180644-1-steven.price@arm.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20250820145606.180644-1-steven.price@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20251016222816.141523-1-seanjc@google.com> <20251016222816.141523-3-seanjc@google.com>
+ <aPHU+RZKwCK0BK7t@intel.com>
+Message-ID: <aPJgWhywMXZdiyU5@google.com>
+Subject: Re: [PATCH v4 2/4] KVM: x86: Leave user-return notifier registered on reboot/shutdown
+From: Sean Christopherson <seanjc@google.com>
+To: Chao Gao <chao.gao@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>, kvm@vger.kernel.org, 
+	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Yan Zhao <yan.y.zhao@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Hou Wenlong <houwenlong.hwl@antgroup.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Hi all,
+On Fri, Oct 17, 2025, Chao Gao wrote:
+> > bool kvm_vcpu_is_reset_bsp(struct kvm_vcpu *vcpu)
+> >@@ -14363,6 +14377,11 @@ module_init(kvm_x86_init);
+> > 
+> > static void __exit kvm_x86_exit(void)
+> > {
+> >+	int cpu;
+> >+
+> >+	for_each_possible_cpu(cpu)
+> >+		WARN_ON_ONCE(per_cpu_ptr(user_return_msrs, cpu)->registered);
+> 
+> Is it OK to reference user_return_msrs during kvm.ko unloading? IIUC,
+> user_return_msrs has already been freed during kvm-{intel,amd}.ko unloading.
+> See:
+> 
+> vmx_exit/svm_exit()
+>   -> kvm_x86_vendor_exit()
+>        -> free_percpu(user_return_msrs);
 
-v6.18-rc1 is out, so I've rebased and refreshed the series. Branches are
-below:
+Ouch.  Guess who didn't run with KASAN...
 
-kernel: https://gitlab.arm.com/linux-arm/linux-cca cca-host/v11
-kvmtool: https://gitlab.arm.com/linux-arm/kvmtool-cca cca/v9
+And rather than squeezing the WARN into this patch, I'm strongly leaning toward
+adding it in a prep patch, as the WARN is valuable irrespective of how KVM handles
+reboot.
 
-However I'm not going to spam you all with the patches because there are
-some significant changes that are still to be worked out which Marc has
-pointed out (thanks for the review!). Specifically:
+Not yet tested...
 
- * We've agreed that the uAPI should be more like "normal" KVM. So
-   rather than expose the underlying operations (create RECs, init
-   RIPAS, populate memory, activate), the VMM should set this up 'as
-   normal' (but using the guestmem_fd capabilities to mark the memory
-   private) and then on first vcpu run the realm should be configured,
-   RIPAS set based on the memslots/guestmem_fd and any data written in
-   the guestmem_fd populated into the realm.
+--
+From: Sean Christopherson <seanjc@google.com>
+Date: Fri, 17 Oct 2025 06:10:30 -0700
+Subject: [PATCH 2/5] KVM: x86: WARN if user-return MSR notifier is registered
+ on exit
 
-   The upshot of which is that a VMM will require only minimal changes
-   to support CCA, and the ordering requirements (for attestation of
-   setting up the realm will be handled by KVM).
+When freeing the per-CPU user-return MSRs structures, WARN if any CPU has
+a registered notifier to help detect and/or debug potential use-after-free
+issues.  The lifecycle of the notifiers is rather convoluted, and has
+several non-obvious paths where notifiers are unregistered, i.e. isn't
+exactly the most robust code possible.
 
-   Since this is a big change in the uAPI it's going to take a while to
-   prototype and figure out all the details, so please bear with me
-   while I work on an updated version.
+The notifiers they are registered on-demand in KVM, on the first WRMSR to
+a tracked register.  _Usually_ the notifier is unregistered whenever the
+CPU returns to userspace.  But because any given CPU isn't guaranteed to
+return to userspace, e.g. the CPU could be offlined before doing so, KVM
+also "drops", a.k.a. unregisters, the notifiers when virtualization is
+disabled on the CPU.
 
- * There are issues with the PMU handling where the host is not provided
-   with as much flexibility it should. For the PMU it's not possible for
-   the host to maintain a PMU counter while the realm is executing. This
-   means that sensible uses like getting an overflow interrupt on the
-   cycle counter break with the use of a realm. This, however, will
-   require a spec update to fix as the RMM will need to in some cases
-   emulate the PMU registers.
+Further complicating the unregister path is the fact that the calls to
+disable virtualization come from common KVM, and the per-CPU calls are
+guarded by a per-CPU flag (to harden _that_ code against bugs, e.g. due to
+mishandling reboot).  Reboot/shutdown in particular is problematic, as KVM
+disables virtualization via IPI function call, i.e. from IRQ context,
+instead of using the cpuhp framework, which runs in task context.  I.e. on
+reboot/shutdown, drop_user_return_notifiers() is called asynchronously.
 
- * The GIC handling is also more restrictive then it should be. Although
-   the host is responsible for emulating the GIC, it is unable to set
-   trap bits, restricting the host's ability to do this. There is
-   concern that this could limit the ability to implement hardware
-   workarounds in the future. Again a spec update is needed to fix this.
+Forced reboot/shutdown is the most problematic scenario, as userspace tasks
+are not frozen before kvm_shutdown() is invoked, i.e. KVM could be actively
+manipulating the user-return MSR lists and/or notifiers when the IPI
+arrives.  To a certain extent, all bets are off when userspace forces a
+reboot/shutdown, but KVM should at least avoid a use-after-free, e.g. to
+avoid crashing the kernel when trying to reboot.
 
-However, changes that you can see (in the branch) include:
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/x86.c | 33 +++++++++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 8 deletions(-)
 
- * Fixing the naming of various symbols. There were previously a lot of
-   instances of "rme" in functions which were not directly related to
-   the hardware extension. These are now renamed to "rmi" reflecting
-   that they are part of the interface to the RMM.
-   (This is the only change affecting kvmtool, although it is also
-   binary compatible)
-
- * The code now checks with the hardware feature (RME) before probing
-   for RMI.
-
- * There is now an allowlist for CAPs rather than individually disabling
-   the ones known to be an issue with realms. (This also simplified the
-   code, dropping one patch).
-
- * Fixes for the vgic handling: make sure the VGIC v4 state is
-   synchronised and only populate valid lrs.
-
- * A few other minor updates from reviews, and some minor changes from
-   rebasing.
-
-Thanks,
-Steve
-
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index b4b5d2d09634..334a911b36c5 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -575,6 +575,27 @@ static inline void kvm_async_pf_hash_reset(struct kvm_vcpu *vcpu)
+ 		vcpu->arch.apf.gfns[i] = ~0;
+ }
+ 
++static int kvm_init_user_return_msrs(void)
++{
++	user_return_msrs = alloc_percpu(struct kvm_user_return_msrs);
++	if (!user_return_msrs) {
++		pr_err("failed to allocate percpu user_return_msrs\n");
++		return -ENOMEM;
++	}
++	kvm_nr_uret_msrs = 0;
++	return 0;
++}
++
++static void kvm_free_user_return_msrs(void)
++{
++	int cpu;
++
++	for_each_possible_cpu(cpu)
++		WARN_ON_ONCE(per_cpu_ptr(user_return_msrs, cpu)->registered);
++
++	free_percpu(user_return_msrs);
++}
++
+ static void kvm_on_user_return(struct user_return_notifier *urn)
+ {
+ 	unsigned slot;
+@@ -10032,13 +10053,9 @@ int kvm_x86_vendor_init(struct kvm_x86_init_ops *ops)
+ 		return -ENOMEM;
+ 	}
+ 
+-	user_return_msrs = alloc_percpu(struct kvm_user_return_msrs);
+-	if (!user_return_msrs) {
+-		pr_err("failed to allocate percpu kvm_user_return_msrs\n");
+-		r = -ENOMEM;
++	r = kvm_init_user_return_msrs();
++	if (r)
+ 		goto out_free_x86_emulator_cache;
+-	}
+-	kvm_nr_uret_msrs = 0;
+ 
+ 	r = kvm_mmu_vendor_module_init();
+ 	if (r)
+@@ -10141,7 +10158,7 @@ int kvm_x86_vendor_init(struct kvm_x86_init_ops *ops)
+ out_mmu_exit:
+ 	kvm_mmu_vendor_module_exit();
+ out_free_percpu:
+-	free_percpu(user_return_msrs);
++	kvm_free_user_return_msrs();
+ out_free_x86_emulator_cache:
+ 	kmem_cache_destroy(x86_emulator_cache);
+ 	return r;
+@@ -10170,7 +10187,7 @@ void kvm_x86_vendor_exit(void)
+ #endif
+ 	kvm_x86_call(hardware_unsetup)();
+ 	kvm_mmu_vendor_module_exit();
+-	free_percpu(user_return_msrs);
++	kvm_free_user_return_msrs();
+ 	kmem_cache_destroy(x86_emulator_cache);
+ #ifdef CONFIG_KVM_XEN
+ 	static_key_deferred_flush(&kvm_xen_enabled);
+-- 
