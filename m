@@ -1,129 +1,143 @@
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22EF82036E9
-	for <linux-coco@lists.linux.dev>; Fri, 17 Oct 2025 21:40:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C73741388
+	for <linux-coco@lists.linux.dev>; Sat, 18 Oct 2025 00:02:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760737214; cv=none; b=VUSAkdO8qJrSyaQ3E02KHtEhMRHm2K+eCl6eTmyS1+6fINLsGtagm6MYthxh/gaRYvrg6KLw0w4u3B4jZtQOJSSM/p2yhjzUcqxWQ/HZmwPkIjNnQQ8lbRz3nO9+hIcdbS1T/IxEj6z7hEMwhFB3L+cTTidYc8XEhj4Iw2YGPYU=
+	t=1760745731; cv=none; b=jcfPaYK81tlH6s0V3xI6xGXRleiOUgo2FOOvs9cc4HF6vYycg1qRlM+tuwDSv5MMUFHpV+v0iDkdj8ovDi/Uu+uNEOESXhEldUOZEN6iJO0MGNCeYJMCPJGGQM3TqPuwsV+u7pwqTl//y6KsIgfQpbdCsrIbgzpRo0bbGjnPkOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760737214; c=relaxed/simple;
-	bh=xec44dz02vCzqSvijFwW8T2pHLkXyzKFGftXYWemhVQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ev5rU3AFYBL/UP/1XMMVs7s/yDBWMwckmsa1+4iYwYvem/M+Q5HNi0Z+0fTgFLzXsDXTQnyvoAaimLPwR14fE3c9KBynaCw25q4E5veXi08Fmcju6DMxrkMyNTJxpPAXrDGtPhFZhAuDQIpE3/DIp9Kga3TUgKOHmt9lWzyABUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fzLZ7AIS; arc=none smtp.client-ip=91.218.175.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1760745731; c=relaxed/simple;
+	bh=PFFaPl522Tuh1RF/N52HE3b8Oto9E5SoDFOd5u3Qg7E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=noxI5D3D44eT+u6wyRyacqpWPKirLB0gQeDMSVGlBwBz3FN3vmON5CXyjjHt/RTxxZ7vlq5W1Ue4Dvs63sn3TGinwnSBz/RFxA81nz9z+XiS1hTnJh2BNefQVtQnPEDdLk15ilyGQ4AOh4P3Xz7MF9AK3QgM90qCxOUQn6x4J/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=paa61k+0; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fzLZ7AIS"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760737209;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=hqHjkEGF/llF28r0KVHF88JX9zjukAmNil/u6FvmQxs=;
-	b=fzLZ7AISgoCCLOzUnu8Ze+zJBMVwV4g50CzFM0nk2VGdJYWih62y9aeUZInyTEYO+WKK28
-	lgsks1RFgkRvY7BkniSUbQkpo/JwXM/49dNmuJiABrl511+ZL/Pje5qSVYC5motBTNpCAy
-	dbq0I46MOCfHUeGpCj0mNJx/pHGWm5k=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Kirill A. Shutemov" <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Subject: [PATCH] KVM: TDX: Use struct_size and simplify tdx_get_capabilities
-Date: Fri, 17 Oct 2025 23:39:14 +0200
-Message-ID: <20251017213914.167301-1-thorsten.blum@linux.dev>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="paa61k+0"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-27eeafd4882so74345ad.0
+        for <linux-coco@lists.linux.dev>; Fri, 17 Oct 2025 17:02:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760745729; x=1761350529; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PFFaPl522Tuh1RF/N52HE3b8Oto9E5SoDFOd5u3Qg7E=;
+        b=paa61k+0gfFZm1QRIKcZGab94AZPcfY0YdGz+NdSxY9GA6VgE6rz2jfe72uOpEICBL
+         nlZJpDHDWcOHoNesp0WsHAHB4w1EjqcEO4hXOXEaEpixHB9XbX9LEUoMUt0kimqikeOR
+         ybNc2ycbd8JQwL332DhJRGSUKV8Uzx4k7G6kUBS5w88kIc3a/JUXkKzWSYKnzDUIyjxV
+         T/eUFWhJHCwI0G2RRSsZwvo0JoB7sIlRb8CKBU1GltwZdvq00UyvM/l6iNIcLvPDqYLQ
+         +elT/XWKkw9L5QpGvjbWgCYh7Xrl+Mq5nAyXBm+nuJ5QqV8XPYJaKxB7mdl0N1NOFTOe
+         zmrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760745729; x=1761350529;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PFFaPl522Tuh1RF/N52HE3b8Oto9E5SoDFOd5u3Qg7E=;
+        b=UXfsRdSOQGghmf37uXIHTjnHo0ehWI7APzradxLyNGXdneYyDKR4AbCRGDd3vNs151
+         ZS/vNKbmU4WVm7GEXljtbMD6YmqidPnNrZe1HNzr2ofyPBCQ11uhWNJaYmb2L0ld7Hpg
+         CRMSg2118ZpVeyag2yClnvr1hWMa8NEjeMk1Ud8Tqo2FDdQ1mfNLIe3KUkA7TCqGF6YU
+         Qq75KqMvoBD9LP3yxIDBsp0B4O/RgxznpdJQ91Ac/w9C4AiIKTNscqQsvL0k5qWPGNeD
+         w+kSKklWnL8FyAkcHCXsTANd2YdXZvDeroLmZOdVPEbu16CubUOyxPN4WxsfMwu5wx5j
+         JA3w==
+X-Forwarded-Encrypted: i=1; AJvYcCU+LzuO3oBzZV6sx5NBokVbs6fECpVpfY70d9vGCoV9XmWF3Qb/AffDK2Y9k2F1ZgZLYBh0lP1q6Y4e@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx0hmye092v9uv7dE8DGra7f3BqOAdcsUfzil+ncLXW7CtjNj+t
+	wtVxX7jFPKEqsEw7ULtAsFx1vWvKtXXF4JzoIweGKaVmT80aCUxcaxKHHI7SocDN2hzx2Byu4TX
+	7QOZxlfJJfp78chWlI3kTevEl84f0NBJpJqEsfqAe
+X-Gm-Gg: ASbGncvnhTUEcZxQQ6Xss6Kr79svxKFLg56dJ48+7GPvqda8TSSlJhzUP3+fojhfDVI
+	XDLVzyC8jfS53uWno91ZzT0wWlF/l2QblSWcPXuWd/YY+0kYX4swqIAaBPqh0GsFvHNtptP4GIS
+	MEJpo7/bjt9zf5ZdghY8QQXik0qCteu4392T0D61c2Ub8JzQl36y7uiYqMKvrQ0zD5saPlCk9sJ
+	xk44dW7rBmC/C+Mla5EseSEQXIk3r0YNwUapKwgPpJ3cf7JbRUTXByeBSiUZgnWddwsIsKMCAzD
+	MGwDjBg4aywe+AgMkCg6JYC8dA==
+X-Google-Smtp-Source: AGHT+IGS6D0cEerAch1ZNAxH+28FjiEz6Ek4jRtm0Z30Nd4P9X26VfzqUo7NNhK4jwKy2fUMCLADwy7nvB+KqxLEqHY=
+X-Received: by 2002:a17:903:230a:b0:24b:1741:1a4c with SMTP id
+ d9443c01a7336-290877a3fb0mr20388215ad.0.1760745728557; Fri, 17 Oct 2025
+ 17:02:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+References: <20251001025442.427697-1-chao.gao@intel.com> <CAGtprH_FzXjnC0Rbctpvm2_kqAAnUOfnaT4885fBiAi7s0jcXw@mail.gmail.com>
+ <IA1PR11MB949522AA3819E217C5467B51E7E8A@IA1PR11MB9495.namprd11.prod.outlook.com>
+ <5b4c2bb3-cfde-4559-a59d-0ff9f2a250b4@intel.com> <IA1PR11MB94955392108F5A662D469134E7E9A@IA1PR11MB9495.namprd11.prod.outlook.com>
+ <CAGtprH96B5K9Hk5h0FgxSUBa-pik=E=dLrO-4oxx76dxb9=7wQ@mail.gmail.com> <IA1PR11MB9495BB77A4FAFBD78600416AE7F6A@IA1PR11MB9495.namprd11.prod.outlook.com>
+In-Reply-To: <IA1PR11MB9495BB77A4FAFBD78600416AE7F6A@IA1PR11MB9495.namprd11.prod.outlook.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Fri, 17 Oct 2025 17:01:55 -0700
+X-Gm-Features: AS18NWAQzNIk6iX2cjplI6mE1nRy77pJKpI0Ok4V-Hgp0sUCgMwBGuwBq0CrWrc
+Message-ID: <CAGtprH-h_axusSLTWsEZ6QoxgmVs0nVknqNJx-iskpsg_qHKFg@mail.gmail.com>
+Subject: Re: [PATCH v2 00/21] Runtime TDX Module update support
+To: "Reshetova, Elena" <elena.reshetova@intel.com>
+Cc: "Hansen, Dave" <dave.hansen@intel.com>, "Gao, Chao" <chao.gao@intel.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, 
+	"Chatre, Reinette" <reinette.chatre@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>, 
+	"Huang, Kai" <kai.huang@intel.com>, "Williams, Dan J" <dan.j.williams@intel.com>, 
+	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, "sagis@google.com" <sagis@google.com>, 
+	"paulmck@kernel.org" <paulmck@kernel.org>, "nik.borisov@suse.com" <nik.borisov@suse.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Retrieve the number of user entries with get_user() first and return
--E2BIG early if 'user_caps' is too small to fit 'caps'.
+On Fri, Oct 17, 2025 at 3:08=E2=80=AFAM Reshetova, Elena
+<elena.reshetova@intel.com> wrote:
+>
+>
+> > > > ...
+> > > > > But the situation can be avoided fully, if TD preserving update i=
+s not
+> > > > conducted
+> > > > > during the TD build time.
+> > > >
+> > > > Sure, and the TDX module itself could guarantee this as well as muc=
+h as
+> > > > the kernel could. It could decline to allow module updates during T=
+D
+> > > > builds, or error out the TD build if it collides with an update.
+> > >
+> > > TDX module has a functionality to decline going into SHUTDOWN state
+> > > (pre-requisite for TD preserving update) if TD build or any problemat=
+ic
+> > > operation is in progress. It requires VMM to opt-in into this feature=
+.
+> >
+> > Is this opt-in enabled as part of this series? If not, what is the
+> > mechanism to enable this opt-in?
+>
+> For the information about how it works on TDX module side,
+> please consult the latest ABI spec, definition of TDH.SYS.SHUTDOWN leaf,
+> page 321:
+> https://cdrdv2.intel.com/v1/dl/getContent/733579
+>
 
-Allocate memory for 'caps' only after checking the user buffer's number
-of entries, thus removing two gotos and the need for premature freeing.
+Thanks Elena. Should the patch [1] from this series be modified to
+handle the TDX module shutdown as per:
+"If supported by the TDX Module, the host VMM can set the
+AVOID_COMPAT_SENSITIVE flag to request the TDX Module to fail
+TDH.SYS.UPDATE if any of the TDs are currently in a state that is
+impacted by the update-sensitive cases"
 
-Use struct_size() instead of manually calculating the number of bytes to
-allocate for 'caps', including the nested flexible array.
+The documentation below doesn't make sense to me:
+"The compatibility checks done by TDH.SYS.UPDATE do not include the
+following cases:
+* If any TD was initialized by an older TDX Module that did enumerate
+TDX_FEATURES0.UPDATE_COMPATIBLITY as 1, TDH.SYS.SHUTDOWN does not
+check for a TD build in progress condition for that TD.
+* If any TD migration session is in progress, it was initialized by an
+older TDX Module that did enumerate TDX_FEATURES0.UPDATE_COMPATIBLITY
+as 1"
 
-Finally, copy 'caps' to user space with a single copy_to_user() call.
+Was it supposed to say below?
+"If any TD was initialized by an older TDX Module that did enumerate
+TDX_FEATURES0.UPDATE_COMPATIBLITY as 0, TDH.SYS.SHUTDOWN does not
+check for a TD build in progress condition for that TD"
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
-Compile-tested only.
----
- arch/x86/kvm/vmx/tdx.c | 32 ++++++++++++--------------------
- 1 file changed, 12 insertions(+), 20 deletions(-)
-
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 0a49c863c811..23d638b4a003 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -2282,37 +2282,29 @@ static int tdx_get_capabilities(struct kvm_tdx_cmd *cmd)
- 	if (cmd->flags)
- 		return -EINVAL;
- 
--	caps = kzalloc(sizeof(*caps) +
--		       sizeof(struct kvm_cpuid_entry2) * td_conf->num_cpuid_config,
--		       GFP_KERNEL);
--	if (!caps)
--		return -ENOMEM;
--
- 	user_caps = u64_to_user_ptr(cmd->data);
--	if (get_user(nr_user_entries, &user_caps->cpuid.nent)) {
--		ret = -EFAULT;
--		goto out;
--	}
-+	ret = get_user(nr_user_entries, &user_caps->cpuid.nent);
-+	if (ret)
-+		return ret;
- 
--	if (nr_user_entries < td_conf->num_cpuid_config) {
--		ret = -E2BIG;
--		goto out;
--	}
-+	if (nr_user_entries < td_conf->num_cpuid_config)
-+		return -E2BIG;
-+
-+	caps = kzalloc(struct_size(caps, cpuid.entries,
-+				   td_conf->num_cpuid_config), GFP_KERNEL);
-+	if (!caps)
-+		return -ENOMEM;
- 
- 	ret = init_kvm_tdx_caps(td_conf, caps);
- 	if (ret)
- 		goto out;
- 
--	if (copy_to_user(user_caps, caps, sizeof(*caps))) {
-+	if (copy_to_user(user_caps, caps, struct_size(caps, cpuid.entries,
-+						      caps->cpuid.nent))) {
- 		ret = -EFAULT;
- 		goto out;
- 	}
- 
--	if (copy_to_user(user_caps->cpuid.entries, caps->cpuid.entries,
--			 caps->cpuid.nent *
--			 sizeof(caps->cpuid.entries[0])))
--		ret = -EFAULT;
--
- out:
- 	/* kfree() accepts NULL. */
- 	kfree(caps);
--- 
-2.51.0
-
+[1] https://lore.kernel.org/all/20251001025442.427697-15-chao.gao@intel.com=
+/
