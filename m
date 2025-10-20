@@ -1,133 +1,115 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D471EA7F4
-	for <linux-coco@lists.linux.dev>; Mon, 20 Oct 2025 14:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F169A212F98
+	for <linux-coco@lists.linux.dev>; Mon, 20 Oct 2025 14:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760969675; cv=none; b=U5ITjIjxRWlxT/C2xg6iVEmnwknRI8KjQxB/e8vanlKY/qmGBjTHYvRAktU68qqkKakknSv+NbtXo50vxBJ7GgkDxd/DRZwxlzxmF/YzC54M4YZggDSj21S2y8GDGvE2eDLtMQAdEDWnJ5VoUuT0fg5J/ZHdG8o370QtetMqJuc=
+	t=1760971353; cv=none; b=Q9w6XH9spoRbRfDFsJOWa/+4/5WmuVq/zrJl1RE8azg3JC+4Sf3XtTLjo8oFtnlohfFskuO/cyD8enY6Yjh5e9c/0/7zriLFE51hahZUwiXD031eb2SEZHq/kIqltRV+TNdoIQ0B4ZEd3NLDwbPRKxuxwIPonn+2Bs2efaHOuqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760969675; c=relaxed/simple;
-	bh=Cmsj1XmTfhPHzLjqWK4xOLsRId2IS31r6IY3bSlZjYo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HU9INcH9DJdqdrA71Ygk4gK37lNZnozcpa8PXIuKE4iHhX+bytyMWqKrlYtZymH/dvf0KD4SMbpJ5HZGfJYUUys4xkxO1ZHcf9dKsOSS9WdagxMyoZ1YobXk1OdYg3QVxvowInFCylZn9ostOQksgq5v5URhZtjM7j8ARcydR2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EJtDCSbu; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1760971353; c=relaxed/simple;
+	bh=AUm+U1cdUJCUKS7ZA7tvxHQEACWT09VkO+uyfX+/uWw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=uAPj+UhffNqlVe80k8D6/MBtGoLeY2Yq6SgiMZa9BhN8Rv9FL83hjbAon9O6fJLoAQylqIBWROdUPX7qmMEbhlc2i/2kjhVT59KqYF+79sFx8YrnJJyp7NNJHbM66eRtLNgTaWVwdp1iV5u7GV/x8QGL2kx6f43SXHKAOSNswH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z3KA80G7; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EJtDCSbu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760969673; x=1792505673;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Cmsj1XmTfhPHzLjqWK4xOLsRId2IS31r6IY3bSlZjYo=;
-  b=EJtDCSbuCSS44Y5sx2NxO2YyMxxPSZsOAZ35YkgPDJiqJ+nDh1wdjq76
-   nG+NKZfDqZhebPW92AFLE1mysq70K8S7qxyVkXFa+Rb7XDNMusOyAuQpp
-   e/ZplKj5jb1DFFItCn3FsS2axSLbb4Cl4bcxCHqe+K80kUfz/w6EB06qp
-   NlT1j7OL/YtHc6E4+lWLGV9uhJi0pBgw9vmk5d0QUrphk39D53MIOAfYs
-   Phca4SmXJ/Hfjz463KfcMc9F/nQJGRiW1V0hqkunHLhHB7pclrDpsFUZb
-   kxzEQS8eaUCD52ciSIJ0n2HvxHmKhorKs58exv8SBmLyjFiVQrJVYUAOk
-   w==;
-X-CSE-ConnectionGUID: 0P6MOuopSQySEcYoa3y5+w==
-X-CSE-MsgGUID: 7ePPfQ2LQviRW+cV9qvZ9A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="88552509"
-X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; 
-   d="scan'208";a="88552509"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 07:14:33 -0700
-X-CSE-ConnectionGUID: nVvo5u9cRcWCXP7R0/A5+g==
-X-CSE-MsgGUID: ZdQbRta0RV+doT+CZXQivA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; 
-   d="scan'208";a="182528974"
-Received: from jdoman-mobl3.amr.corp.intel.com (HELO [10.125.108.101]) ([10.125.108.101])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 07:14:32 -0700
-Message-ID: <872c17f3-9ded-46b2-a036-65fc2abaf2e6@intel.com>
-Date: Mon, 20 Oct 2025 07:14:31 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z3KA80G7"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-28eb14e3cafso89692255ad.1
+        for <linux-coco@lists.linux.dev>; Mon, 20 Oct 2025 07:42:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760971351; x=1761576151; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=r/WpZ95ObL14bxrV4qoPKrRDt1vTTzIm3G3nDoruhqI=;
+        b=Z3KA80G7uH77uLBj5iBm1/BNOPqqbmyIIxc/MzLvYZ4J38RWAf+XBwMUCogzK8A/L3
+         kpGp0i585apszrfFfA/oHwZ3lGA0EN9Odhob1EhGMCTD9hsRuP0FGpULTjcubrTe1a45
+         62njadGTW+i+jaItVMU0vR0IAny/hP48Ei+ZHWIkiPExxclzSxc7kEiEPeBDldHmZLUr
+         sJu2UPVmEfqDmQpiO4phJ1KGvgib4QY9SedZ2eXOSA3NZKl8ApYWHLbzu2V5raGLk2o9
+         otGB6TRWkao/Mr3U1/9rXBYR4yZPG6xm5NkqbOjZd0c25jyM/WsGu1gi0ALBnM2t/+w2
+         HRyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760971351; x=1761576151;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=r/WpZ95ObL14bxrV4qoPKrRDt1vTTzIm3G3nDoruhqI=;
+        b=eRtw0gNgrRvXcV81NUdi+XaJ7iREjMpOayTor3f4aJga7FAzmWKcQ3iJfdrIY5Qz47
+         ChEZRA4r/S+k0BQqHCZM3vKd2AXkJB/Hu7b9SpWQ+6pzs0+eNi8D6r4cVDfhhVxMzr3+
+         Q5c1cSHsVfsk2xFP1TITaoLHJ7U+8LVyaeHfNLWSaFyl6o2PQDt68QGo7hPflAYENJYY
+         65xd9rB0benRxB3dPUbb3DqFPKJADo8yJN787Im7VowWhUttS/zRS/NR9aHYXiUPULEO
+         s+jcJJJkuuH+Gc9EUi8vLaeqSGPveSOStnJEw1x44wsc/W1XsPxKY6n6WDVO26umUT1u
+         FsuA==
+X-Forwarded-Encrypted: i=1; AJvYcCXM8IM1VUIo2+oda2R4s0lGTXgYfK8OG0h6xTFrlIcpVjYZ/kDBz4S8M9OhI0nlZDzOWRSbppLOJp9f@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx+61ZgV1uANAWolqyunR0lWcRc859TPN5Wn5g7Wbc7fiXLGQot
+	6wyxcJClFOX3+dZDU+l0TKr2mCNktxcki/mnrTXzUWgUkP+vh7UTY1UKxiQJUWCxa1OIaiRtgDY
+	KRNcCzg==
+X-Google-Smtp-Source: AGHT+IG5bkRz1Grck5fnmgvosqDspDZYYbROSXUDaOdreC4Lek0m1RZScrTovv3SkUBdnFvn817DXQ6Q8sI=
+X-Received: from pjro20.prod.google.com ([2002:a17:90a:b894:b0:33b:dd01:d6fc])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d508:b0:28a:2e51:9272
+ with SMTP id d9443c01a7336-290cbc3f200mr190082845ad.48.1760971351111; Mon, 20
+ Oct 2025 07:42:31 -0700 (PDT)
+Date: Mon, 20 Oct 2025 07:42:29 -0700
+In-Reply-To: <872c17f3-9ded-46b2-a036-65fc2abaf2e6@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/virt/tdx: Use precalculated TDVPR page physical
- address
-To: Sean Christopherson <seanjc@google.com>,
- Dave Hansen <dave.hansen@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- "Kirill A. Shutemov" <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Kai Huang <kai.huang@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>,
- Vishal Annapurve <vannapurve@google.com>, Thomas Huth <thuth@redhat.com>,
- Adrian Hunter <adrian.hunter@intel.com>, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, Farrah Chen <farrah.chen@intel.com>
+Mime-Version: 1.0
 References: <20250910144453.1389652-1-dave.hansen@linux.intel.com>
- <aPY_yC45suT8sn8F@google.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <aPY_yC45suT8sn8F@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <aPY_yC45suT8sn8F@google.com> <872c17f3-9ded-46b2-a036-65fc2abaf2e6@intel.com>
+Message-ID: <aPZKVaUT9GZbPHBI@google.com>
+Subject: Re: [PATCH] x86/virt/tdx: Use precalculated TDVPR page physical address
+From: Sean Christopherson <seanjc@google.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, "Kirill A. Shutemov" <kas@kernel.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Kai Huang <kai.huang@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Thomas Huth <thuth@redhat.com>, 
+	Adrian Hunter <adrian.hunter@intel.com>, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	Farrah Chen <farrah.chen@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On 10/20/25 06:57, Sean Christopherson wrote:
-> Why do these structures track struct page everywhere?
+On Mon, Oct 20, 2025, Dave Hansen wrote:
+> On 10/20/25 06:57, Sean Christopherson wrote:
+> > Why do these structures track struct page everywhere?
+> 
+> I asked for it at some point. It allows an unambiguous reference to
+> normal, (mostly) allocated physical memory. It means that you (mostly)
+> can't accidentally swap in a virtual address, pfn, or something else
+> that's not a physical address into the variable.
+> 
+> The TDX ABI is just littered with u64's. There's almost no type safety
+> anywhere. This is one place to bring a wee little bit of order to the chaos.
+> 
+> In a perfect world, we'd have sparse annotations for the vaddr, paddr,
+> pfn, dma_addr_t and all the other address spaces. Until then, I like
+> passing struct page around.
 
-I asked for it at some point. It allows an unambiguous reference to
-normal, (mostly) allocated physical memory. It means that you (mostly)
-can't accidentally swap in a virtual address, pfn, or something else
-that's not a physical address into the variable.
+But that clearly doesn't work since now the raw paddr is being passed in many
+places, and we end up with goofy code like this where one param takes a raw paddr,
+and another uses page_to_phys().
 
-The TDX ABI is just littered with u64's. There's almost no type safety
-anywhere. This is one place to bring a wee little bit of order to the chaos.
+@@ -1583,7 +1578,7 @@ u64 tdh_vp_addcx(struct tdx_vp *vp, struct page *tdcx_page)
+ {
+        struct tdx_module_args args = {
+                .rcx = page_to_phys(tdcx_page),
+-               .rdx = tdx_tdvpr_pa(vp),
++               .rdx = vp->tdvpr_pa,
+        };
 
-In a perfect world, we'd have sparse annotations for the vaddr, paddr,
-pfn, dma_addr_t and all the other address spaces. Until then, I like
-passing struct page around.
+
+If some form of type safety is the goal, why not do something like this?
+
+  typedef void __private *tdx_page_t;
+
+Or maybe even define a new address space.
+
+  # define __tdx __attribute__((noderef, address_space(__tdx)))
+
+The effective type safety is limited to sparse, but if you keep the tdx code free
+of warnings, then any and all warnings from build bots can be treated as "fatal"
+errors from a maintenance perspective.
