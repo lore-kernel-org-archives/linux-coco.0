@@ -1,112 +1,163 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A0026A1BB
-	for <linux-coco@lists.linux.dev>; Mon, 20 Oct 2025 15:25:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF7620D4E9
+	for <linux-coco@lists.linux.dev>; Mon, 20 Oct 2025 15:43:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760973931; cv=none; b=oLZcShvaSHUb364q6tKwAoz5zT/mPwoPrWCWaEQYpXxBrueNeSXu3jSeLjB8nQOOx/6Op8u+8zKjxQbZONKtSprr6zz/mmIj1fMXgS93lIJ8PN1+ZU/eLQ8j489RhwT5NI92s/LbjR1reUModspCFzF7kpZ+xLLX2te+ADOZGoE=
+	t=1760974995; cv=none; b=PO8g3g6tr1G3/gKToRd4o8u8kAjrVCFwzS1Hhwd6LI6LfoeRn16tAHDc0tmP6wBtQz/TM/rPRH3vjg08hkANga0tt5J58oP9nL13odlBfRB4klNB2VU5yowiDB6NiPx5QdvHgzSQmUQg9//ICQkZM2aUZAff5yag4L9QqK0ZBSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760973931; c=relaxed/simple;
-	bh=X2cNT2jodYHE9VXEpV2Jc+n9s/IGEDlBeAa8Q4UPTyw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JcEwQxQ8TasTDhHAQFZkyzZMrzxMxuWa3l7GJEs14+TrenBpNQh11zCs0MMl/qegyjFh2Mm5V1ELO/Zc7Di1Q8dD1GM1SIiysO4CvSUjQCjGZuY2njT1z1k0ZuFKa6Hv6NaVYoFIBo/jlDuzNab7wxSHgtnZoj+nXrMqUjqk890=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EZpTc3O6; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1760974995; c=relaxed/simple;
+	bh=qwRWHpEu1zQFX3Ylzuw8c3s8iB7lF6OCikLwVIzyyBc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ODSbugK3QedhRZW2jDYgzdGFAaAqVfuiB+jVKJXHa5g4XEuJAnuDhFaok7XpkGNGkHT6lnxm1DW/Vjh/UmMv2povBBLpgJtgRu55Lu8OmeUkD37OCEVxMHSbvlNYZ54nXG2yp5wTFng/1tmXgbuMyzJZws11d0BaqbR5xa2kzTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gpS94EL2; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EZpTc3O6"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-33da1f30fdfso3494939a91.3
-        for <linux-coco@lists.linux.dev>; Mon, 20 Oct 2025 08:25:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760973929; x=1761578729; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8duMiPUW3Ov9cGPKQdSL4cotcPZI8856r/Bae2VnHbg=;
-        b=EZpTc3O6/OEUeS1S97rSE7NpqricspXnyY9+rW/afuDVT5pLkpv8kJjNM505jyKCuZ
-         1VPOIeZRGAas07tFEWxHxPFX1BbA22NUY2lyFf3Uc69VQ7uTI7eGThHCV4w0PRdItMNQ
-         RreXb9+w88Cfvk8aK1uqI2S60BPdB7Rh+PyUKJ52Vf6mUAZFafIX2kGlnA3dtFQTWnZ7
-         O+yfmEoWKOajsnEIO3cU/a3NyXE1KJUj2S7NomfUz0IcZ+kgmZzjkGix2vZ/AX8GzqZJ
-         PzS2Dqkuw4SsbCDdKgF1tYHPHagURG/5IsbDLYsRbOVQuEE3aiop1LTQgNF2f1CYtzdO
-         Dkkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760973929; x=1761578729;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8duMiPUW3Ov9cGPKQdSL4cotcPZI8856r/Bae2VnHbg=;
-        b=bi2zE+EyXF4goMtq4HNVzM2srOxONuw33GJtKNyBu/dWA9mRCg56/iLAh88pVT1CBT
-         gTTatIFobU3Hw//wCyBgvHbO6SYy/dwUUAUyWKH/Qm2/c0skOM+4PCMX/wCViB2xENMC
-         kb72Crs+ym0vbGLnDFQjGgZ+NxgNd+7yc5EgyPQimyirivfP8r4RRDPuD1LW0bnn5pny
-         e216B8hkrMpSRoK0X7NBNN4rghe4nU5N2/xAsRMdvZ7AJsqa5Y1dq/7MxWBq3loQP43N
-         ZUbCVDJ8nQSSPsaE87RzZVoQD7OhP6Mnyj3KZGxJkZHq6KyUHU8n8PPwe74zIvWdaDgC
-         QU2g==
-X-Forwarded-Encrypted: i=1; AJvYcCWyULm3sxq6ijgDJWAZf+Qt4nMqueCLrNRDLa6sTegqi0zLV0fBuD2srnXDiybsLSeiNZDD7fGlpRBc@lists.linux.dev
-X-Gm-Message-State: AOJu0YyOzvJlf6F4LRY5dACu9JvoIsYxLhkmfTeLibOubHbvTAR2JGhK
-	taM7lBR0Ehg+eGGF61eOQfMvVwL1V1dd9IHqzvlAcNRPpoIhTriCHYdvGaS4Xjt7+RYfOd3rLtu
-	dKBKQuw==
-X-Google-Smtp-Source: AGHT+IFqW3qIYEVTbpVnhf/SO53CXDCgtTQdekIynQUGkmgpYGTVsnP6gv23UN57ly+8fm7EenYdxfMTkTw=
-X-Received: from pjsc19.prod.google.com ([2002:a17:90a:bf13:b0:33b:ab21:aff7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3c0e:b0:330:a228:d32
- with SMTP id 98e67ed59e1d1-33bcf86b401mr19164126a91.10.1760973929211; Mon, 20
- Oct 2025 08:25:29 -0700 (PDT)
-Date: Mon, 20 Oct 2025 08:25:23 -0700
-In-Reply-To: <033f56f9-fb66-4bf5-b25a-f2f8b964cd4e@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gpS94EL2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760974994; x=1792510994;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=qwRWHpEu1zQFX3Ylzuw8c3s8iB7lF6OCikLwVIzyyBc=;
+  b=gpS94EL2/oBt0jBl8XSX3hZCWHLg9/RIH+Wb5sgJbZMomJg0e23AE+Tg
+   ZJnEiRFxY5EZ9SLzo9YDj5WRUGo1g9VMXe+dIHf19HmS1FAiRRHrCujhq
+   2Dn/m1ftQBfRqeXHNC54TheN5/wRhR2hshmQmmYaUq6J2hA9Ovded+YsU
+   ircyYCXe491AL117TZwBQdL4GBd5DmfdRw0O2DkXaMYerdKDLXPXGJXAo
+   wmNByOOIslg77GFX0IEwKnkqI0ZHPUtjdztpprDiaCepAMMUUv1Xq0N1n
+   BTeNhD0S5X6GXoxEmoZAXNxHqNt99YeLLBlbHUYSAsM/rIiv/o/zVso3c
+   Q==;
+X-CSE-ConnectionGUID: EmBCs7yoSEKnQDpDap8Dbw==
+X-CSE-MsgGUID: f/GB+KcGQw+n1VAtkXInYA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63187270"
+X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; 
+   d="scan'208";a="63187270"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 08:43:13 -0700
+X-CSE-ConnectionGUID: g5GaqVYJR8matJWXsSNH4w==
+X-CSE-MsgGUID: AUhzoKaBSs+KURdMQZw6Pw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,242,1754982000"; 
+   d="scan'208";a="182545712"
+Received: from jdoman-mobl3.amr.corp.intel.com (HELO [10.125.108.101]) ([10.125.108.101])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2025 08:43:13 -0700
+Message-ID: <ad9b3b96-324a-4661-b43e-0b31cb7a7b51@intel.com>
+Date: Mon, 20 Oct 2025 08:43:12 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/virt/tdx: Use precalculated TDVPR page physical
+ address
+To: Sean Christopherson <seanjc@google.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, "Kirill A. Shutemov" <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Kai Huang <kai.huang@intel.com>,
+ Isaku Yamahata <isaku.yamahata@intel.com>,
+ Vishal Annapurve <vannapurve@google.com>, Thomas Huth <thuth@redhat.com>,
+ Adrian Hunter <adrian.hunter@intel.com>, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, Farrah Chen <farrah.chen@intel.com>
 References: <20250910144453.1389652-1-dave.hansen@linux.intel.com>
- <aPY_yC45suT8sn8F@google.com> <872c17f3-9ded-46b2-a036-65fc2abaf2e6@intel.com>
- <aPZKVaUT9GZbPHBI@google.com> <033f56f9-fb66-4bf5-b25a-f2f8b964cd4e@intel.com>
-Message-ID: <aPZUY90M0B3Tu3no@google.com>
-Subject: Re: [PATCH] x86/virt/tdx: Use precalculated TDVPR page physical address
-From: Sean Christopherson <seanjc@google.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, "Kirill A. Shutemov" <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Kai Huang <kai.huang@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Thomas Huth <thuth@redhat.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	Farrah Chen <farrah.chen@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+ <aPY_yC45suT8sn8F@google.com>
+ <872c17f3-9ded-46b2-a036-65fc2abaf2e6@intel.com>
+ <aPZKVaUT9GZbPHBI@google.com>
+ <033f56f9-fb66-4bf5-b25a-f2f8b964cd4e@intel.com>
+ <aPZUY90M0B3Tu3no@google.com>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <aPZUY90M0B3Tu3no@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 20, 2025, Dave Hansen wrote:
-> On 10/20/25 07:42, Sean Christopherson wrote:
-> >> In a perfect world, we'd have sparse annotations for the vaddr, paddr,
-> >> pfn, dma_addr_t and all the other address spaces. Until then, I like
-> >> passing struct page around.
-> > But that clearly doesn't work since now the raw paddr is being passed in many
-> > places, and we end up with goofy code like this where one param takes a raw paddr,
-> > and another uses page_to_phys().
-> > 
-> > @@ -1583,7 +1578,7 @@ u64 tdh_vp_addcx(struct tdx_vp *vp, struct page *tdcx_page)
-> >  {
-> >         struct tdx_module_args args = {
-> >                 .rcx = page_to_phys(tdcx_page),
-> > -               .rdx = tdx_tdvpr_pa(vp),
-> > +               .rdx = vp->tdvpr_pa,
-> >         };
+On 10/20/25 08:25, Sean Christopherson wrote:
+>>> @@ -1583,7 +1578,7 @@ u64 tdh_vp_addcx(struct tdx_vp *vp, struct page *tdcx_page)
+>>>  {
+>>>         struct tdx_module_args args = {
+>>>                 .rcx = page_to_phys(tdcx_page),
+>>> -               .rdx = tdx_tdvpr_pa(vp),
+>>> +               .rdx = vp->tdvpr_pa,
+>>>         };
+>> I'm kinda dense normally and my coffee hasn't kicked in yet. What
+>> clearly does not work there?
+> Relying on struct page to provide type safety.
 > 
-> I'm kinda dense normally and my coffee hasn't kicked in yet. What
-> clearly does not work there?
+>> Yeah, vp->tdvpr_pa is storing a physical address as a raw u64 and not a
+>> 'struct page'. That's not ideal. But it's also for a pretty good reason.
+> Right, but my point is that regradless of the justification, every exception to
+> passing a struct page diminishes the benefits of using struct page in the first
+> place.
 
-Relying on struct page to provide type safety.
+Yeah, I'm in total agreement with you there.
 
-> Yeah, vp->tdvpr_pa is storing a physical address as a raw u64 and not a
-> 'struct page'. That's not ideal. But it's also for a pretty good reason.
+But I don't think there's any type scheme that won't have exceptions or
+other downsides.
 
-Right, but my point is that regradless of the justification, every exception to
-passing a struct page diminishes the benefits of using struct page in the first
-place.
+u64's are really nice for prototyping because you can just pass those
+suckers around anywhere and the compiler will never say a thing. But we
+know the downsides of too many plain integer types getting passed around.
 
-> The "use 'struct page *' instead of u64 for physical addresses" thingy
-> is a good pattern, not an absolute rule. Use it when you can, but
-> abandon it for the greater good when necessary.
-> 
-> I don't hate the idea of a tdx_page_t. I'm just not sure it's worth the
-> trouble. I'd certainly take a good look at the patches if someone hacked
-> it together.
+Sparse-enforced address spaces are pretty nifty, but they can get messy
+around the edges of the subsystem where the type is used. You end up
+with lots of ugly force casts there to bend the compiler to your will.
+
+'struct page *' isn't perfect either. As we saw, you can't get from it
+to a physical address easily in noinstr code. It doesn't work everywhere
+either.
+
+So I dunno. Sounds like there is no shortage of imperfect ways skin this
+cat. Yay, engineering!
+
+But, seriously, if you're super confident that a sparse-enforced address
+space is the way to go, it's not *that* hard to go look at it. TDX isn't
+that big. I can go poke at it for a bit.
