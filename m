@@ -1,89 +1,134 @@
 Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DC32673AA
-	for <linux-coco@lists.linux.dev>; Mon, 20 Oct 2025 15:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3BC52765EA
+	for <linux-coco@lists.linux.dev>; Mon, 20 Oct 2025 15:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760975501; cv=none; b=E+GteEz44UDoZ6TB3V11/eYey45Vyino+QxfR/pG/daSevZasoNWxAiNP67Y6TgBPPwVk8g+O+PTUloxmuEmwdVLRnV0HX2CExNVaP1UoHsRnUlfUTyz0cyfcWEP0R0RGas1BbMwb6BuaJs72pW7HNaJAlQuD0K/VVzIdohueqI=
+	t=1760975530; cv=none; b=n3xonXTvldw/kc/KkQE0KVZ2L9gHyeKgRd69PY0gS0IcOdzDFLZrkpRr4KImRZRbnF/wba+gY67UdG0yfKB6TNuEpYECSZ8MLczaau1xIvDEmo3Q+6IJzmOab8iwo7oCxfK0hAX/ysAMNv+ZG9Y6jKyAboV/N9+6MpU9FyrAHUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760975501; c=relaxed/simple;
-	bh=CKoBgkqf/XEfME922InMtGklfFRfPcNzmQcSSx+gDg8=;
+	s=arc-20240116; t=1760975530; c=relaxed/simple;
+	bh=nh7KmG91llH0eTJy2kGD6whEVv3qZowTvAaONNXWCzA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=cJeLcNd9cyMQGKea0FvPizvYqOmpyG1b+W7XoGEcTamMDe2HL9jiXXh+zeLJTP17tVSJlhtBhgcAZUS8Lf3I96+q/6pSM5UuRJG4rpsJsmO8UGVv+0VksdVD/n8Acs79kX4rusr71qcygmy1DVqKnzKM4IbNkhCnk2jvNeduNu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YO1xn/hR; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=mC4+SvxI8YfoQMb2t4a/8nFX4JiV8AmwrJv967ARkVkqCcSVRV0k2MYiGaeV6IiN+ZquSO/Fe8BgpE6kt70lWPTT0Uik6WlxSyDHy/7UsTx3qWp2btB3jkTSiFu1l9BJFoz8WFR+8FjRJhWPO1lhhyzsPFsuN8QDVzRDDpNjZ2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DIz/BnqD; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YO1xn/hR"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-32edda89a37so4072234a91.1
-        for <linux-coco@lists.linux.dev>; Mon, 20 Oct 2025 08:51:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DIz/BnqD"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-33baf262850so4461660a91.0
+        for <linux-coco@lists.linux.dev>; Mon, 20 Oct 2025 08:52:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760975499; x=1761580299; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1760975527; x=1761580327; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cYUu49s1qQu/J7CEp2f/HidgNr2LRMkTfT3HoRdnoms=;
-        b=YO1xn/hRVBkEkrRj9Y/toQg777W1wjM44uXJsKR0Zx4mMRVlNOxrjEHIli5gXx9MZ6
-         lkse5ozbpE8wMmTVidKEaKauF8kb9RBLar3NJyyONYimpX9U3ksGQ1IJ1prT52EIj9J9
-         NirCLjHN3u/NzPVrFakyK3iq1ULdmTjhd64whD8szvNz/PTnRGGRiZtJ20Ecrx7Turer
-         nit2zL1P+oHGXfHZi/tqcSth6itBL2UisWwOOaOSKeYVG+f8k0q65zkQ7EolfoSVhWjY
-         t6yTLQHjngotqeQcLG+zW34O5t4aaqfnqHc8GyYJlLbpa/JvYsJmTZ9uDvEuNfdpZ3Nr
-         tuJQ==
+        bh=YUxEjev6w4f1umuBxGfAcuaZR32QUUEbuSMBs3oceNE=;
+        b=DIz/BnqDI9BFiPSPW9uUmHFT9VlnSjzfK0fWvuMbistIqA6LcbuoLgEzzGChkZnLVw
+         AP/uWMCJvM9pKeIJPlA5wg4YXl/DOMARgRC8/c88/e3ULMMpSNWbk76qjWNH7UHQeB1b
+         4Zy1dWjcIrpNELyt+8rlUXQIhccBO6ZuludIqQjHu2U+MBTtSLOJc8K7PUXXk/WJp/9B
+         ygttzIexLmeXms3NdeqjtjbDkQ6Zv1HM7UYILuc1woPxowGZ9QKOIMGOd1rtTbxw/eqZ
+         HJXaN9RMzoosEwJgbP34n5XXwI6vW7X96MkXHWdXzKig+QbFdUOf8XPN1AEPfFCyhgtx
+         2wBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760975499; x=1761580299;
+        d=1e100.net; s=20230601; t=1760975527; x=1761580327;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cYUu49s1qQu/J7CEp2f/HidgNr2LRMkTfT3HoRdnoms=;
-        b=DfR8T4h4wisPTaT1KMoPVBY8wFk7LtTtvKApGs+UIzlUj5A2Z6Sc1lpxj03icVPr+Y
-         RbcVR3yC+Mts4FCZTi9AvjVLKg85BMjX2K/y+TKplkn1/kD1YGo7b4PDgVb4h6ooCbWg
-         AWYlARLQzXExzGeDabl0IGtXN1A+ZAmoYsZztx75FmhmmyrP3UTygET4JqLay/fXjIAT
-         woHzfn5G3hvCN/D/YREhyLZhRNnBGLE47tjVkwvUHYjsltPeAq3v1ujh+B5wzJbGJv0n
-         W0gMN9TD2IOW/B889YTSpS4tfJ15AzoJVzylE7FvZZDuIqAiz67I14ZwjwKE0ZZQr5Qy
-         bUOw==
-X-Forwarded-Encrypted: i=1; AJvYcCVBW67XyzFzolREZc9uzo4+A0gaX7dRqxsetzp3znGF1/Yqs7+AkSjSbW2cySfROlpYb78ssqbr2o9s@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzj0TCmPgIjGw+Yir/R7Obrk4bgQ5lqmMdjLXSmhuvWB68f0Yn3
-	R92r0m4ypDTyEQ9kO1sH8ssJzzyhCLokPQcz5NxizFWmkAEOo8VNu/9k9rKW4QN38ODhnS2lf/P
-	Kwtk6PQ==
-X-Google-Smtp-Source: AGHT+IEmHzJuE6dE4nrX5KbKswTjRN4AmO6OE3CoX4/WcyLoexCBYoVpnD8cbgW3LeQsrjZci0AAX2Zf2ag=
-X-Received: from pjbqd13.prod.google.com ([2002:a17:90b:3ccd:b0:339:e59f:e26])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1d44:b0:32b:ca6f:1245
- with SMTP id 98e67ed59e1d1-33bcf85b2ebmr16254869a91.5.1760975499241; Mon, 20
- Oct 2025 08:51:39 -0700 (PDT)
-Date: Mon, 20 Oct 2025 08:51:37 -0700
-In-Reply-To: <176055115910.1528299.15660583671377559341.b4-ty@google.com>
+        bh=YUxEjev6w4f1umuBxGfAcuaZR32QUUEbuSMBs3oceNE=;
+        b=lCUQrzvySc/6YqfPkMNpqAaUrlukQQyEdyFMYOsAL3pqHl86cTX3zZ5VQdHpAu+78S
+         xz7KKs534QY84wFsFxbfuJjzKZMGoEfkaZnTsV9JcLvd8dH2qSmOMQj0qbOiCgU4Wumf
+         4COywx7GHiFrPb8Mhay5NQaQ9elHzCzB2u3FfBzJDJqqGi8fstP/e+jP7XmjrD010ZMO
+         nF6ITMaNaNOhICgVvaZL2z8hUWgXnij+9vTsTyExWG8xL9kL0OReH/gqLBM4s4a84zh+
+         sXcKx4DIs0ifsNg7ZPXj1r4BH0oouqgLYZBlpJrNnYwIsoEwb2WCEMLJ2hByfhjuXw6J
+         Kwyg==
+X-Forwarded-Encrypted: i=1; AJvYcCVFEcF4GYqhcvsp39pvcLh77yYkLgysuxfAM0nHHhaVpQCzWd6vOe/BPVjw7S5kr781TvUEPDsxzSpg@lists.linux.dev
+X-Gm-Message-State: AOJu0YwvbqOL+ce95oZBfwMdGBn5B3+W3jSyjvCkVONc+I6fWdOk+QxO
+	2jPdqqtCk1/m+GYWX5skHOo9IsPmSkyPumxklWyoM4jzc3hY/s0cglYhsfz5e6iwaKYRA9qC2mh
+	+1Gdkyg==
+X-Google-Smtp-Source: AGHT+IHcZobfkAMYLqgP+952/xufHk4lZqraqyIEs0BsZFGgLzowAsqRVArAQbVQNZgQWXn7bmNPNT9qaaI=
+X-Received: from pjbds19.prod.google.com ([2002:a17:90b:8d3:b0:33b:51fe:1a84])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4d85:b0:330:4a1d:223c
+ with SMTP id 98e67ed59e1d1-33bcf87f421mr15625676a91.15.1760975526813; Mon, 20
+ Oct 2025 08:52:06 -0700 (PDT)
+Date: Mon, 20 Oct 2025 08:52:05 -0700
+In-Reply-To: <176055105546.1527431.3611256810380818215.b4-ty@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20251012071607.17646-1-shivankg@amd.com> <176055115910.1528299.15660583671377559341.b4-ty@google.com>
-Message-ID: <aPZaiQR6jVTKkHY5@google.com>
-Subject: Re: [PATCH V3 kvm-x86/gmem 1/2] KVM: guest_memfd: move
- kvm_gmem_get_index() and use in kvm_gmem_prepare_folio()
+References: <20250827175247.83322-2-shivankg@amd.com> <176055105546.1527431.3611256810380818215.b4-ty@google.com>
+Message-ID: <aPZapWWFGyqjA2e3@google.com>
+Subject: Re: [PATCH kvm-next V11 0/7] Add NUMA mempolicy support for KVM guest-memfd
 From: Sean Christopherson <seanjc@google.com>
-To: pbonzini@redhat.com, Shivank Garg <shivankg@amd.com>
-Cc: david@redhat.com, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
+To: willy@infradead.org, akpm@linux-foundation.org, david@redhat.com, 
+	pbonzini@redhat.com, shuah@kernel.org, vbabka@suse.cz, 
+	Shivank Garg <shivankg@amd.com>
+Cc: brauner@kernel.org, viro@zeniv.linux.org.uk, dsterba@suse.com, 
+	xiang@kernel.org, chao@kernel.org, jaegeuk@kernel.org, clm@fb.com, 
+	josef@toxicpanda.com, kent.overstreet@linux.dev, zbestahu@gmail.com, 
+	jefflexu@linux.alibaba.com, dhavale@google.com, lihongbo22@huawei.com, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, ziy@nvidia.com, matthew.brost@intel.com, 
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
+	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+	tabba@google.com, ackerleytng@google.com, paul@paul-moore.com, 
+	jmorris@namei.org, serge@hallyn.com, pvorel@suse.cz, bfoster@redhat.com, 
+	vannapurve@google.com, chao.gao@intel.com, bharata@amd.com, nikunj@amd.com, 
+	michael.day@amd.com, shdhiman@amd.com, yan.y.zhao@intel.com, 
+	Neeraj.Upadhyay@amd.com, thomas.lendacky@amd.com, michael.roth@amd.com, 
+	aik@amd.com, kalyazin@amazon.com, peterx@redhat.com, jack@suse.cz, 
+	hch@infradead.org, cgzones@googlemail.com, ira.weiny@intel.com, 
+	rientjes@google.com, roypat@amazon.co.uk, chao.p.peng@intel.com, 
+	amit@infradead.org, ddutile@redhat.com, dan.j.williams@intel.com, 
+	ashish.kalra@amd.com, gshan@redhat.com, jgowans@amazon.com, 
+	pankaj.gupta@amd.com, papaluri@amd.com, yuzhao@google.com, 
+	suzuki.poulose@arm.com, quic_eberman@quicinc.com, 
+	linux-bcachefs@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	linux-erofs@lists.ozlabs.org, linux-f2fs-devel@lists.sourceforge.net, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-coco@lists.linux.dev, Jason Gunthorpe <jgg@ziepe.ca>
 Content-Type: text/plain; charset="us-ascii"
 
 On Wed, Oct 15, 2025, Sean Christopherson wrote:
-> On Sun, 12 Oct 2025 07:16:06 +0000, Shivank Garg wrote:
-> > Move kvm_gmem_get_index() to the top of the file so that it can be used
-> > in kvm_gmem_prepare_folio() to replace the open-coded calculation.
+> On Wed, 27 Aug 2025 17:52:41 +0000, Shivank Garg wrote:
+> > This series introduces NUMA-aware memory placement support for KVM guests
+> > with guest_memfd memory backends. It builds upon Fuad Tabba's work (V17)
+> > that enabled host-mapping for guest_memfd memory [1] and can be applied
+> > directly applied on KVM tree [2] (branch kvm-next, base commit: a6ad5413,
+> > Merge branch 'guest-memfd-mmap' into HEAD)
 > > 
-> > No functional change intended.
+> > == Background ==
+> > KVM's guest-memfd memory backend currently lacks support for NUMA policy
+> > enforcement, causing guest memory allocations to be distributed across host
+> > nodes  according to kernel's default behavior, irrespective of any policy
+> > specified by the VMM. This limitation arises because conventional userspace
+> > NUMA control mechanisms like mbind(2) don't work since the memory isn't
+> > directly mapped to userspace when allocations occur.
+> > Fuad's work [1] provides the necessary mmap capability, and this series
+> > leverages it to enable mbind(2).
+> > 
+> > [...]
 > 
-> Applied to kvm-x86 gmem, thanks!
+> Applied the non-KVM change to kvm-x86 gmem.  We're still tweaking and iterating
+> on the KVM changes, but I fully expect them to land in 6.19.
 > 
-> [1/2] KVM: guest_memfd: move kvm_gmem_get_index() and use in kvm_gmem_prepare_folio()
->       https://github.com/kvm-x86/linux/commit/6cae60a1f507
-> [2/2] KVM: guest_memfd: remove redundant gmem variable initialization
->       https://github.com/kvm-x86/linux/commit/54eb8ea478b1
+> Holler if you object to taking these through the kvm tree.
+> 
+> [1/7] mm/filemap: Add NUMA mempolicy support to filemap_alloc_folio()
+>       https://github.com/kvm-x86/linux/commit/601aa29f762f
+> [2/7] mm/filemap: Extend __filemap_get_folio() to support NUMA memory policies
+>       https://github.com/kvm-x86/linux/commit/2bb25703e5bd
+> [3/7] mm/mempolicy: Export memory policy symbols
+>       https://github.com/kvm-x86/linux/commit/e1b4cf7d6be3
 
 FYI, I rebased these onto 6.18-rc2 to avoid a silly merge.  New hashes:
 
-[1/2] KVM: guest_memfd: move kvm_gmem_get_index() and use in kvm_gmem_prepare_folio()
-      https://github.com/kvm-x86/linux/commit/049e560d4f47
-[2/2] KVM: guest_memfd: remove redundant gmem variable initialization
-      https://github.com/kvm-x86/linux/commit/3f1078a445d9
+[1/3] mm/filemap: Add NUMA mempolicy support to filemap_alloc_folio()
+      https://github.com/kvm-x86/linux/commit/7f3779a3ac3e
+[2/3] mm/filemap: Extend __filemap_get_folio() to support NUMA memory policies
+      https://github.com/kvm-x86/linux/commit/16a542e22339
+[3/3] mm/mempolicy: Export memory policy symbols
+      https://github.com/kvm-x86/linux/commit/f634f10809ec
