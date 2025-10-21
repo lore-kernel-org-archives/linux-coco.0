@@ -1,124 +1,135 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C4C34575F
-	for <linux-coco@lists.linux.dev>; Tue, 21 Oct 2025 16:56:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0014334C159
+	for <linux-coco@lists.linux.dev>; Tue, 21 Oct 2025 17:51:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761065783; cv=none; b=SSy4O4plQYb76qmh6KFMIKt+qr9E9LNaeKwd0sRHW9+fOxjjM1TecuzMlzsHltP/LTdfNWY10Y9zbx6RPRzpKseGGM73mU0cWukGSsTqBEAG6uUqa9sCjegTm0ZCkaPbKlEidZYGaJbbiwHIZDmNMw+0/4agJzoc22nrm3C6zKg=
+	t=1761069074; cv=none; b=BbrKRCyW+KPfPr9FrprP/1f56Yjp8XgdOh8vFyCCNfLtTYg3IbzTAtqgV5EWs4WqFmene9n+IayQY7blX37TTiOsrBOQslWTSI0lS4RYC7IX+2KQkhqkbXmnFW8IC9F0M9zvsvJb4IZUeKuxJX2AaBsQpv6tIuw4/yfOzy2WN0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761065783; c=relaxed/simple;
-	bh=RDkmhC4PKjh9lbEZgOEdown78rPWmXw4ycUHNJGAVxA=;
+	s=arc-20240116; t=1761069074; c=relaxed/simple;
+	bh=IvjvTfof1NX7f0a6Mj/sydhqvdCdvq4pVhC8YJjU2Nc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=iahgJqpXifbnJG02JtPDI0htHjMNemyI1qw/6rv8sSqBNeE1KZafAImGbMcTHDrzGQ5HlOdhLhCgD1YH8c3v3ceHby/JnwsUdyXt1qgbQmZ5js9m1kvPfer4ade4yM2ZqIWqiJAv5Kw30X0D/j3ayTm1a248fUMVwxvM/UUoePU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nUwNyp0A; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=OlFTs0anp7AFxm/FGPMKzV/Q4mWv6Cm70H37hn8Q9MC9Ksk8xDY2wXltL9np0Zq6UIObY1no+XnQxWoQaGNaF3aB44+bxW4iwsaXjkP+epNTVK283yR5kjo/cEbIWp42Q3EywUNCWnwHFLL//5CT3X7a872K09y9ho+VCC4HXpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t8hLj+Y9; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nUwNyp0A"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b5533921eb2so3654659a12.0
-        for <linux-coco@lists.linux.dev>; Tue, 21 Oct 2025 09:56:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t8hLj+Y9"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-33c6140336eso9520914a91.3
+        for <linux-coco@lists.linux.dev>; Tue, 21 Oct 2025 10:51:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761065781; x=1761670581; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1761069072; x=1761673872; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QUj6Jzqtl7pAwgzbknudC50aTFamgZNMeXgKkiBAGZE=;
-        b=nUwNyp0ASOFk3o4Xy5bhf5hGZDNZE+BOUZxjY7dHBwuwGIkWBq3ofMB6CMKZ4M/z78
-         0RsfaPA+P6H5a6rixofLEB0a8Fb6WNtRs3lbSQVY2C7OA3joJ3+sINGCSzfAPvqQ56/q
-         2bD/A505V/iTgiwnEeSKBuGb/bLJ+Hk/0YAT28EiG12G09l4YtgzYhu0rzDuyAqcnhSY
-         AfLMNVDknZFMRuPlXxm0xmIFRNglwYQE1mVz2hPyFXiKLFSbYzaWP1eMPrprltRitYtb
-         f0YdWc5u/0RoTOJ7wwAoxQhbCzq1WZGrzLDhTv7tF3mH/i4CexsVn5Lnb3SSg+myWVRu
-         YWtg==
+        bh=7Mbuo7BVKgUb8P9fXKLxWi8r7pdvvGC3+QWIjFuJjuE=;
+        b=t8hLj+Y90w2Ze33+KS3PFV/bt8BL3JMyb0VB5NkhwNa1+tx/HxWESnBGlKi06SM8E6
+         BFOSH5OiK4cK9olab44MzQDINdEJiipfJJFQsMtXFPdhRhIiBJGPuXewiuV969m8MBnE
+         UhazoecS+p6orhYTJK2mj9fdZ849qJYHXzE6VqXrXu0PIGJawJCqSrwdRlz/kDoI40jR
+         BQzdSYvDGzzypOCqHUsvmb9yTmPRhqpxJ4liQ+yZrKARNRjEuP1YtHXrglQqjq2yIAwR
+         1IGfrN9xDDu/kNRCKkkeNw4WQgiKHbl7kwC3UmsSXtsw3GWrjKL1qJkkdEGFPRWFP16J
+         +nxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761065781; x=1761670581;
+        d=1e100.net; s=20230601; t=1761069072; x=1761673872;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QUj6Jzqtl7pAwgzbknudC50aTFamgZNMeXgKkiBAGZE=;
-        b=BENfZ5P6amPiivXk2NNvZ3e4LdwQq8EIcdsq5ItC5P1FJyr898Q8nRlvSH2w3dOTbb
-         amE0RP0Yvelkkm2uJwcOf3obRmjJSMTiCXbQDJfonn4kE1SVZQflZFnNlD1Uh2aPirmY
-         3SakEiOrVK3dpsMtYBPzTDAz0rfNvkI1R5tmxCI0DMx4rgyLDr5jMeZdGh8w1LLlLj8a
-         764ZdcDFDLcq0zOwskpugTXpeOEP/mfONO7d59o3uOrjJpCzOZRdDgLB9w5wpmIljNuh
-         81C6KDC3hjabzflii2mU2x4XhTRkLc1f35rwzd4zMzhCXwQE52IkMt088wyERag2cxyP
-         Urpw==
-X-Forwarded-Encrypted: i=1; AJvYcCXIHUXi+u2OCANKaerB8h3io3m6EVqgPH33XMDK/YhWDl4wKQ+YllTHyIcgKWtBifkPNhGRPPkabU1s@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxna+wJTSLean7RxvjbD8okmsY0wL+Sw/1a+50pQVE7O+4zAFAQ
-	zSHSCpd3cq0J8gcp7558n2Od2TUCqrSDiT7YEYIXXqP4LJZQQoWr7G1NSsgjBJAvP+BhVJMdA+r
-	zz16ddA==
-X-Google-Smtp-Source: AGHT+IGOqKmUzCbfjGYr8B2jY/C1mdIZnvxK8+ss+AVkwVotQdjiGEd+3SJ7VfMTaFoQGYSh7+8f99sR5n0=
-X-Received: from pjre3.prod.google.com ([2002:a17:90a:b383:b0:33b:51fe:1a75])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e88e:b0:250:1c22:e78
- with SMTP id d9443c01a7336-290c9c89c9amr235880025ad.1.1761065780727; Tue, 21
- Oct 2025 09:56:20 -0700 (PDT)
-Date: Tue, 21 Oct 2025 09:56:19 -0700
-In-Reply-To: <d0b369c65e33518d57a40a70c0d13f70bd64db47.camel@intel.com>
+        bh=7Mbuo7BVKgUb8P9fXKLxWi8r7pdvvGC3+QWIjFuJjuE=;
+        b=NbjDv72prLBpWwnIRDa/SsuZ8Id87GPO0oOYWFAzNJYNGeohP58SAQmvaujffqmBM+
+         qDmqyuUtR0vJsdI9v+6PgIVttwA5v+1WEONJNpsqWpMd0R8g2STWcQjVKK1+QtzFB2F3
+         SY1yHh0W2qknzTgWT6TZT+8rEkS8Kkg1Mg9csYbV5iw19+naDd7dEhY5IptPRR307zmH
+         FXxt28QmKctXtdbVkJ85NkgUP3oj14tLS8+qc8kgbcyWfwKhxigT5wxizojnnCzpgrsi
+         +yHqtRh04fTVjn7RtybRcn6mIAJWtZIX4SI+M1eoyw7f2QpeE1MyCASTj0mVJfke3S2b
+         jLYw==
+X-Forwarded-Encrypted: i=1; AJvYcCWcYInRAwhGFJyc2ZgV2Kkwnf5qQL4ZfzB8VD05YTI7p2VDH6LIDPKducG4bq5dT7wpX2YvccKMGfpN@lists.linux.dev
+X-Gm-Message-State: AOJu0YzJ5hvSU/fRpOu8fJMlpq8zLJLNvmldbd2uC7fwfUc8VJLRxao+
+	u8mIpnXNzMCUwsN/m/ZVvX5eHdPp+khBKpDIiBOLD6PISOntLkrhdziTlsfCWloTTEHIJuvo42f
+	RtfeuAw==
+X-Google-Smtp-Source: AGHT+IGX3APteug86Z/yM6rsjQlQapXW6AnpEVut4Vor4TAnyP5V7CP03xYzW1CnKx74JWZadXlmwf6StGE=
+X-Received: from pjbnl2.prod.google.com ([2002:a17:90b:3842:b0:33b:51fe:1a73])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3e43:b0:334:2a38:2a05
+ with SMTP id 98e67ed59e1d1-33bcf86b628mr24656863a91.8.1761069072343; Tue, 21
+ Oct 2025 10:51:12 -0700 (PDT)
+Date: Tue, 21 Oct 2025 10:51:11 -0700
+In-Reply-To: <ad9b3b96-324a-4661-b43e-0b31cb7a7b51@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-24-seanjc@google.com>
- <d0b369c65e33518d57a40a70c0d13f70bd64db47.camel@intel.com>
-Message-ID: <aPe7M1aUPwqDmQbY@google.com>
-Subject: Re: [PATCH v3 23/25] KVM: TDX: Use guard() to acquire kvm->lock in tdx_vm_ioctl()
+References: <20250910144453.1389652-1-dave.hansen@linux.intel.com>
+ <aPY_yC45suT8sn8F@google.com> <872c17f3-9ded-46b2-a036-65fc2abaf2e6@intel.com>
+ <aPZKVaUT9GZbPHBI@google.com> <033f56f9-fb66-4bf5-b25a-f2f8b964cd4e@intel.com>
+ <aPZUY90M0B3Tu3no@google.com> <ad9b3b96-324a-4661-b43e-0b31cb7a7b51@intel.com>
+Message-ID: <aPfID-MxqHleKTz0@google.com>
+Subject: Re: [PATCH] x86/virt/tdx: Use precalculated TDVPR page physical address
 From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "frankja@linux.ibm.com" <frankja@linux.ibm.com>, 
-	"maz@kernel.org" <maz@kernel.org>, "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, 
-	"pjw@kernel.org" <pjw@kernel.org>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, 
-	"kas@kernel.org" <kas@kernel.org>, "maobibo@loongson.cn" <maobibo@loongson.cn>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "maddy@linux.ibm.com" <maddy@linux.ibm.com>, 
-	"palmer@dabbelt.com" <palmer@dabbelt.com>, "imbrenda@linux.ibm.com" <imbrenda@linux.ibm.com>, 
-	"zhaotianrui@loongson.cn" <zhaotianrui@loongson.cn>, "anup@brainfault.org" <anup@brainfault.org>, 
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Kai Huang <kai.huang@intel.com>, 
-	Yan Y Zhao <yan.y.zhao@intel.com>, "michael.roth@amd.com" <michael.roth@amd.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Ira Weiny <ira.weiny@intel.com>, 
-	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
-	"ackerleytng@google.com" <ackerleytng@google.com>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
-	Vishal Annapurve <vannapurve@google.com>, 
-	"kvm-riscv@lists.infradead.org" <kvm-riscv@lists.infradead.org>, 
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, 
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "x86@kernel.org" <x86@kernel.org>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, "Kirill A. Shutemov" <kas@kernel.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Kai Huang <kai.huang@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Thomas Huth <thuth@redhat.com>, 
+	Adrian Hunter <adrian.hunter@intel.com>, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	Farrah Chen <farrah.chen@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Oct 21, 2025, Rick P Edgecombe wrote:
-> On Thu, 2025-10-16 at 17:32 -0700, Sean Christopherson wrote:
-> > Use guard() in tdx_vm_ioctl() to tidy up the code a small amount, but more
-> > importantly to minimize the diff of a future change, which will use
-> > guard-like semantics to acquire and release multiple locks.
+On Mon, Oct 20, 2025, Dave Hansen wrote:
+> On 10/20/25 08:25, Sean Christopherson wrote:
+> >>> @@ -1583,7 +1578,7 @@ u64 tdh_vp_addcx(struct tdx_vp *vp, struct page *tdcx_page)
+> >>>  {
+> >>>         struct tdx_module_args args = {
+> >>>                 .rcx = page_to_phys(tdcx_page),
+> >>> -               .rdx = tdx_tdvpr_pa(vp),
+> >>> +               .rdx = vp->tdvpr_pa,
+> >>>         };
+> >> I'm kinda dense normally and my coffee hasn't kicked in yet. What
+> >> clearly does not work there?
+> > Relying on struct page to provide type safety.
 > > 
-> > No functional change intended.
+> >> Yeah, vp->tdvpr_pa is storing a physical address as a raw u64 and not a
+> >> 'struct page'. That's not ideal. But it's also for a pretty good reason.
+> > Right, but my point is that regradless of the justification, every exception to
+> > passing a struct page diminishes the benefits of using struct page in the first
+> > place.
 > 
-> There is a tiny functional change. In the default case it no longer re-copies
-> the struct back to userspace.
+> Yeah, I'm in total agreement with you there.
+> 
+> But I don't think there's any type scheme that won't have exceptions or
+> other downsides.
+> 
+> u64's are really nice for prototyping because you can just pass those
+> suckers around anywhere and the compiler will never say a thing. But we
+> know the downsides of too many plain integer types getting passed around.
+> 
+> Sparse-enforced address spaces are pretty nifty, but they can get messy
+> around the edges of the subsystem where the type is used. You end up
+> with lots of ugly force casts there to bend the compiler to your will.
+> 
+> 'struct page *' isn't perfect either. As we saw, you can't get from it
+> to a physical address easily in noinstr code. It doesn't work everywhere
+> either.
+> 
+> So I dunno. Sounds like there is no shortage of imperfect ways skin this
+> cat. Yay, engineering!
+> 
+> But, seriously, if you're super confident that a sparse-enforced address
 
-No?  The default case doesn't copy the struct back even before this patch, it
-explicitly skips the copy_to_user().
+Heh, I dunno about "super confident", but I do think it will be the most robust
+overall, and will be helpful for readers by documenting which pages/assets are
+effectively opaque handles things that are owned by the TDX-Module.
 
-	mutex_lock(&kvm->lock);
+KVM uses the sparse approach in KVM's TDP MMU implementation to typedef PTE
+pointers, which are RCU-protected.
 
-	switch (tdx_cmd.id) {
-	case KVM_TDX_CAPABILITIES:
-		r = tdx_get_capabilities(&tdx_cmd);
-		break;
-	case KVM_TDX_INIT_VM:
-		r = tdx_td_init(kvm, &tdx_cmd);
-		break;
-	case KVM_TDX_FINALIZE_VM:
-		r = tdx_td_finalize(kvm, &tdx_cmd);
-		break;
-	default:
-		r = -EINVAL;
-		goto out;  <====================
-	}
+  typedef u64 __rcu *tdp_ptep_t;
 
-	if (copy_to_user(argp, &tdx_cmd, sizeof(struct kvm_tdx_cmd)))
-		r = -EFAULT;
+There are handful of one open-coded rcu_dereference() calls, but the vast majority
+of dereferences get routed through helpers that deal with the gory details.  And
+of the open-coded calls, I distinctly remember two being interesting cases where
+the __rcu enforcement forced us to slow down and think about exactly the lifetime
+of the PTE.  I.e. even the mildly painful "overhead" has been a net positive.
 
-out:
-	mutex_unlock(&kvm->lock);
-	return r;
+> space is the way to go, it's not *that* hard to go look at it. TDX isn't
+> that big. I can go poke at it for a bit.
