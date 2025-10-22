@@ -1,67 +1,66 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A677A2EBBA9
-	for <linux-coco@lists.linux.dev>; Wed, 22 Oct 2025 18:12:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19ECB34DCE1
+	for <linux-coco@lists.linux.dev>; Wed, 22 Oct 2025 19:08:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761156774; cv=none; b=IOBeQL4LQCDFMZz+dRraXUOCMsfLWCGFHrd3FLDKjc/s96+1gindh90YBkLd3yTFSgF9ygneRZ2+sNZ8SynXYVTcot8DJ8njC/537WPcI6o9a1XGF6IAYmvx8GcJUNzb7r2W2PpuESHBhXDdXS4wmZvsY9jVF9/T97xZe+zAJEg=
+	t=1761160129; cv=none; b=DGEb51HtRd9LnRETxSKpGN3A4A2IU7Grc2aPeUvA9NeZu9MbSvFPvNifEOlTukNDxztSIXIq4oFKtlObgoeecAdO/F2/9Yle9DZt464ZyqUu1DWCnkrfVbFEbTFkRsuSn+xhp2u5+G19KST7oQUL0wiRNW+AYlUe7uG1g6J8++Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761156774; c=relaxed/simple;
-	bh=UmH1svExxe3696H3/lrjYo2eB/zUc0gH+XKx1eKRj0s=;
+	s=arc-20240116; t=1761160129; c=relaxed/simple;
+	bh=k7EXMNgqSkOA+7R9iYr3lcFkZvZ8bFqZ1wal4qwtUZY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Bg2RGhaaMXKIa6vKREMNaTxsgDrlZTg4gdA7Q/mV6hwOc35i7ffG2paw/NI5dJ39LrfAZykgI5VWESm0TL/xety+LNQEPXrGbjkRrCMVIzCQjt8WRfRauRqHaAm7FbHAdCeDDCAIUrawp0yXc4nql2PJFFmWFbXlGuyW8x1lEdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=y7QAMZe/; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=GKOdEjr9TEHSYWaDKqkygtOfVayHOkv2+kLeeFrgOtgK1KcB/7iEx0tcefMaVwndKWRPJICXnVBgdFOBnMXx0D7ahhpxdUbXiLrEAE0CxyWlWSf8J3W/KLm9u0D/Vqch7ogsHvCe5Jc4f2mv/1PtpsLgkPTZPDyMs0mNyxR5AV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X1H8d0mJ; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="y7QAMZe/"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-32eb864fe90so2978522a91.3
-        for <linux-coco@lists.linux.dev>; Wed, 22 Oct 2025 11:12:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X1H8d0mJ"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b557abaad02so11518544a12.3
+        for <linux-coco@lists.linux.dev>; Wed, 22 Oct 2025 12:08:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761156772; x=1761761572; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1761160127; x=1761764927; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=V5F7t24lC7jgleOK3FW+MwSMdfYKm48DJa8i0z/06to=;
-        b=y7QAMZe/QMxl9khd5tm4q1dq2HnNpPIvZur6ltSBDaOstKUNGgVz/nz8h00Qn3Tw1R
-         yT6J/nhDiC/NF7P1xS/qe8fEXJhEdm3f8ds2zwvfWs3/JPoUxd19m1BuBwA6X3HXoncw
-         ALDS72j7x+TEHZK14rgZWbv7LFbaZ7N4g37A0auEnQjuCf3Q654WuTg/96h6TAxlG4tK
-         oC1XoR8DFk+qNDyFhAto+u6tjU7BDzF4A5uQ495H7HHlsnfnN+/mxKCNui5+I/1p8xBC
-         OjVmc14HZB7i/T0LclvERNNpKSl8CubUKz4Mkoc+dtpThkvxRJSUvoKVwvj1kRwf9y0Q
-         B50g==
+        bh=wREzy7rE27X1qKmfXOWprRl7YFBX8aFkFx3LWlFCsNc=;
+        b=X1H8d0mJmJfbSsjk5p3z8XhkTtL2Poca2dm1CBT0pYw8t2armrATNxLByJR0bgCGFY
+         nGxchRiM9CfRdL2Be3x4pyHzrfbEYOxi5RoJyUBomRChqFnWq1OfC6BVqeDc/K8VSJ7n
+         lUcgVkKJDWFxfH6Jf1eI2FWe/TM0OqbfgPlboI2zA4pJAn34vlemD1Z2CG/fKog3HC+I
+         D7oV4moul6zHOGGOAHEr7WmBXPUL7/z3JOP+COPuJb5hjOPSQNBu+HFqr947T1Vv/hJU
+         cr5e9YEI7SALW9pseuTF9tL09B9kR2KoCDtAoO1bx1+t2hN3hFyAL1RQej3YUNSEhj41
+         80Kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761156772; x=1761761572;
+        d=1e100.net; s=20230601; t=1761160127; x=1761764927;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=V5F7t24lC7jgleOK3FW+MwSMdfYKm48DJa8i0z/06to=;
-        b=BAPVQ8+INmrAAhFZ3Q8196b54Q4GQK3ur2ppgmYqQOUrW2yLewesHkhwRpbOVY5CjM
-         v0hyckmr40fVGnohZJTiPnL8y0+y+TIza7BC2rINNe7rLbz0CMAzY7MojPONg2Q6bJP7
-         cmKPqUGOwCUx2bZNSg3228G3s3W4O+axsBJTIHX/VlalUdz8MKOjWuMB8zOiQjzLAaED
-         BfYcYkMK2nzD9B/iGRi5Pvv9s5rev5doSxzbBV4Xq+T/4E1U/YQxPAXtjIZgyQW+xPjs
-         7X9V80RWIQg35wSn7pM46/p0muwp8vH3QZxOrRBnuUfQwlH4Oba+CMXxyYpi9XUSmb32
-         UtQg==
-X-Forwarded-Encrypted: i=1; AJvYcCW5MkyEd03ziEfOAaYtLWiYxmm4pwipy54uTHXD+gn42ihnrUHzba1BqVR+zwFWIWS3v2iwebs5HoZQ@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx1VBBjWO7Dq1NwnM6aT0ItSjKU10aHY2p/khh6ylJR0QKenGNJ
-	LLexMOExfXqJ8mO33rsmvaAwOM5yzWdnwDhscvMY6dFLuFVpj6GxLGw5cPZ4wyeiaHOnud9bCxl
-	P7zNFxQ==
-X-Google-Smtp-Source: AGHT+IFAZr0wpbGx7b8wp6kFow05WwkzX+gl9q/tJGKoWGxIdF2WxHsL5OqcbuH+85tLuHrz8145UQS6wJM=
-X-Received: from pjbnm19.prod.google.com ([2002:a17:90b:19d3:b0:33d:cdb9:9adf])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3f8d:b0:33b:be31:8193
- with SMTP id 98e67ed59e1d1-33bcf85d59dmr30647063a91.6.1761156768896; Wed, 22
- Oct 2025 11:12:48 -0700 (PDT)
-Date: Wed, 22 Oct 2025 11:12:47 -0700
-In-Reply-To: <aPiQYBoDlUmrQxEw@yzhao56-desk.sh.intel.com>
+        bh=wREzy7rE27X1qKmfXOWprRl7YFBX8aFkFx3LWlFCsNc=;
+        b=oWuFA1BtbY95FzMazyxD9gP9/VcPQ+pbkFUSuC1g947l0mmTbegZJQt+74d1tLKHWp
+         QCWFwcK+2k2/yBtN+RrfOmvnri+lurpiisDqOjolFoydeCnRH5qNj3557bT3FMEccRbA
+         w0DFKBUP/bVmxmyzORvANPfk80G+G00xQMBZEWine8IIT7ZsozDi3hnhGX2mkrgij2ZT
+         ECvvLj2kmnP3ATYg2xDpvR+haAbg2OjPtwsEO9Sy8GDJ0gCZVVEl4EH4kjP9YrvNFamg
+         HuzMupLPfSOlZ9fUW5Kf7y8RF4eQ8ttOSNJy/1VWp2HDL7Q1r6HukDRcLDNs2YZ47t4v
+         vCjg==
+X-Forwarded-Encrypted: i=1; AJvYcCWTZEJKN4if2PedGwZJ6V5exsLhPw7PG4rtCaDiiCWcWjvn2ZtbDsg4ruV1lbIr2N8wvN0W6Ff/JPAx@lists.linux.dev
+X-Gm-Message-State: AOJu0YyAti1v4iSAXcv60Hc6+zRnFZkE053ySVAjNr6hHy5aZhPFnSGh
+	m+d3SJTH6/tHB22BnBt0a/Fx6aTCPZNagq/jmCXH7b6VV89GffpPyYWplCONdMgDYuCH28teiqe
+	fpr/3aw==
+X-Google-Smtp-Source: AGHT+IG7bMbvOV7PjecaO9CgeAeXZcwC+wb3hcO8vOg4iH6Jor9tS/5vQmEcVRzTkSnVuCY2g2HzBv4NWV8=
+X-Received: from pjbpc16.prod.google.com ([2002:a17:90b:3b90:b0:330:9870:9f18])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:218a:b0:2e5:c9ee:96fa
+ with SMTP id adf61e73a8af0-334a861743bmr28027967637.34.1761160127099; Wed, 22
+ Oct 2025 12:08:47 -0700 (PDT)
+Date: Wed, 22 Oct 2025 12:08:45 -0700
+In-Reply-To: <aPiZ2DEQ6qW5r5rY@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-5-seanjc@google.com>
- <aPcG3LMA0qX5H5YI@yzhao56-desk.sh.intel.com> <aPe2pDYSpVFxDRWv@google.com> <aPiQYBoDlUmrQxEw@yzhao56-desk.sh.intel.com>
-Message-ID: <aPken0s-0MfdSd5o@google.com>
-Subject: Re: [PATCH v3 04/25] KVM: x86/mmu: Add dedicated API to map
- guest_memfd pfn into TDP MMU
+References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-11-seanjc@google.com>
+ <aPiZ2DEQ6qW5r5rY@yzhao56-desk.sh.intel.com>
+Message-ID: <aPkrvWcm3JF9WlVd@google.com>
+Subject: Re: [PATCH v3 10/25] KVM: x86/mmu: Drop the return code from kvm_x86_ops.remove_external_spte()
 From: Sean Christopherson <seanjc@google.com>
 To: Yan Zhao <yan.y.zhao@intel.com>
 Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
@@ -83,124 +82,37 @@ Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
 Content-Type: text/plain; charset="us-ascii"
 
 On Wed, Oct 22, 2025, Yan Zhao wrote:
-> On Tue, Oct 21, 2025 at 09:36:52AM -0700, Sean Christopherson wrote:
-> > On Tue, Oct 21, 2025, Yan Zhao wrote:
-> > > On Thu, Oct 16, 2025 at 05:32:22PM -0700, Sean Christopherson wrote:
-> > > > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> > > > index 18d69d48bc55..ba5cca825a7f 100644
-> > > > --- a/arch/x86/kvm/mmu/mmu.c
-> > > > +++ b/arch/x86/kvm/mmu/mmu.c
-> > > > @@ -5014,6 +5014,65 @@ long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
-> > > >  	return min(range->size, end - range->gpa);
-> > > >  }
-> > > >  
-> > > > +int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn)
-> > > > +{
-> > > > +	struct kvm_page_fault fault = {
-> > > > +		.addr = gfn_to_gpa(gfn),
-> > > > +		.error_code = PFERR_GUEST_FINAL_MASK | PFERR_PRIVATE_ACCESS,
-> > > > +		.prefetch = true,
-> > > > +		.is_tdp = true,
-> > > > +		.nx_huge_page_workaround_enabled = is_nx_huge_page_enabled(vcpu->kvm),
-> > > > +
-> > > > +		.max_level = PG_LEVEL_4K,
-> > > > +		.req_level = PG_LEVEL_4K,
-> > > > +		.goal_level = PG_LEVEL_4K,
-> > > > +		.is_private = true,
-> > > > +
-> > > > +		.gfn = gfn,
-> > > > +		.slot = kvm_vcpu_gfn_to_memslot(vcpu, gfn),
-> > > > +		.pfn = pfn,
-> > > > +		.map_writable = true,
-> > > > +	};
-> > > > +	struct kvm *kvm = vcpu->kvm;
-> > > > +	int r;
-> > > > +
-> > > > +	lockdep_assert_held(&kvm->slots_lock);
-> > > Do we need to assert that filemap_invalidate_lock() is held as well?
-> > 
-> > Hrm, a lockdep assertion would be nice to have, but it's obviously not strictly
-> > necessary, and I'm not sure it's worth the cost.  To safely assert, KVM would need
-> Not sure. Maybe just add a comment?
-> But even with kvm_assert_gmem_invalidate_lock_held() and
-> lockdep_assert_held(&kvm->slots_lock), it seems that
-> kvm_tdp_mmu_map_private_pfn() still can't guarantee that the pfn is not stale.
-
-At some point we have to assume correctness.  E.g. one could also argue that
-holding every locking in the universe still doesn't ensure the pfn is fresh,
-because theoretically guest_memfd could violate the locking scheme.
-
-Aha!  And to further harden and document this code, this API can be gated on
-CONFIG_KVM_GUEST_MEMFD=y, as pointed out by the amazing-as-always test bot:
-
-https://lore.kernel.org/all/202510221928.ikBXHGCf-lkp@intel.com
-
-We could go a step further and gate it on CONFIG_KVM_INTEL_TDX=y, but I don't
-like that idea as I think it'd would be a net negative in terms of documenation,
-compared to checking CONFIG_KVM_GUEST_MEMFD.  And in general I don't want to set
-a precedent of ifdef-ing common x86 based on what vendor code _currently_ needs
-an API.
-
-> e.g., if hypothetically those locks were released and re-acquired after getting
-> the pfn.
+> On Thu, Oct 16, 2025 at 05:32:28PM -0700, Sean Christopherson wrote:
+> > Opportunistically pass the spte instead of the pfn, as the API is clearly
+> > about removing an spte.
+> >From my perspective, "remove_external_spte" means removing an external SPTE (not
+> a mirror SPTE). So passing in pfn_for_gfn seems reasonable as well.
 > 
-> > to first assert that the file refcount is elevated, e.g. to guard against
-> > guest_memfd _really_ screwing up and not grabbing a reference to the underlying
-> > file.
-> > 
-> > E.g. it'd have to be something like this:
-> > 
-> > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> > index 94d7f32a03b6..5d46b2ac0292 100644
-> > --- a/arch/x86/kvm/mmu/mmu.c
-> > +++ b/arch/x86/kvm/mmu/mmu.c
-> > @@ -5014,6 +5014,18 @@ long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
-> >         return min(range->size, end - range->gpa);
-> >  }
-> >  
-> > +static void kvm_assert_gmem_invalidate_lock_held(struct kvm_memory_slot *slot)
-> > +{
-> > +#ifdef CONFIG_PROVE_LOCKING
-> > +       if (WARN_ON_ONCE(!kvm_slot_has_gmem(slot)) ||
-> > +           WARN_ON_ONCE(!slot->gmem.file) ||
-> > +           WARN_ON_ONCE(!file_count(slot->gmem.file)))
-> > +               return;
-> > +
-> > +       lockdep_assert_held(file_inode(&slot->gmem.file)->i_mapping->invalidate_lock));
-> 	  lockdep_assert_held(&file_inode(slot->gmem.file)->i_mapping->invalidate_lock);
-> > +#endif
-> > +}
-> > +
-> >  int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn)
-> >  {
-> >         struct kvm_page_fault fault = {
-> > @@ -5038,6 +5050,8 @@ int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn)
-> >  
-> >         lockdep_assert_held(&kvm->slots_lock);
-> >  
-> > +       kvm_assert_gmem_invalidate_lock_held(fault.slot);
-> > +
-> >         if (KVM_BUG_ON(!tdp_mmu_enabled, kvm))
-> >                 return -EIO;
-> > --
-> > 
-> > Which I suppose isn't that terrible?
-> Is it good if we test is_page_fault_stale()? e.g.,
+> Additionally, passing in the pfn eliminates potential concerns about incorrect
+> spte content.
 
-No, because it can only get false positives, e.g. if an mmu_notifier invalidation
-on shared, non-guest_memfd memory.  Though a sanity check would be nice to have;
-I believe we can simply do:
+No, it just makes bugs harder to debug.  E.g. it doesn't magically guarantee the
+@pfn matches the pfn that was mapped into the S-EPT.
 
-diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-index c5734ca5c17d..440fd8f80397 100644
---- a/arch/x86/kvm/mmu/tdp_mmu.c
-+++ b/arch/x86/kvm/mmu/tdp_mmu.c
-@@ -1273,6 +1273,8 @@ int kvm_tdp_mmu_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
-        struct kvm_mmu_page *sp;
-        int ret = RET_PF_RETRY;
- 
-+       KVM_MMU_WARN_ON(!root || root->role.invalid);
-+
-        kvm_mmu_hugepage_adjust(vcpu, fault);
- 
-        trace_kvm_mmu_spte_requested(fault);
+> > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> > index 48598d017d6f..7e92aebd07e8 100644
+> > --- a/arch/x86/include/asm/kvm_host.h
+> > +++ b/arch/x86/include/asm/kvm_host.h
+> > @@ -1855,8 +1855,8 @@ struct kvm_x86_ops {
+> >  				 void *external_spt);
+> >  
+> >  	/* Update external page table from spte getting removed, and flush TLB. */
+> > -	int (*remove_external_spte)(struct kvm *kvm, gfn_t gfn, enum pg_level level,
+> > -				    kvm_pfn_t pfn_for_gfn);
+> > +	void (*remove_external_spte)(struct kvm *kvm, gfn_t gfn, enum pg_level level,
+> > +				     u64 spte);
+
+Thinking more about what "spte" actually tracks, I think I'll rename it to
+"mirror_spte".
+
+> Also update set_external_spte?
+
+Ooh, yeah, good call.  And we can use the mirror_spte information to assert that
+KVM expects full RWX permissions, e.g. that we aren't creation a security hole by
+letting the guest write memory that KVM thinks is read-only (extreme paranoia,
+more for documentation purposes).
