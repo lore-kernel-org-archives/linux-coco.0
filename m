@@ -1,173 +1,206 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D7B2D7BF
-	for <linux-coco@lists.linux.dev>; Wed, 22 Oct 2025 15:42:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A677A2EBBA9
+	for <linux-coco@lists.linux.dev>; Wed, 22 Oct 2025 18:12:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761147749; cv=none; b=sTZ15zGalaknY/lTFyPW7UJS+hHwXN9LtT0ZOAF+i0HhUfyCSsVZX2BQ2MhQIj2Y9jxAvpFURlFIaAV9GkwzB4m1vOuBYN2m3djVR/4I7skRaBM4Dk3+AAp5699fVNpQxvULNSWe0LKMrDAD0mpqRhUI4aswj2yYc/oSGRgbRC0=
+	t=1761156774; cv=none; b=IOBeQL4LQCDFMZz+dRraXUOCMsfLWCGFHrd3FLDKjc/s96+1gindh90YBkLd3yTFSgF9ygneRZ2+sNZ8SynXYVTcot8DJ8njC/537WPcI6o9a1XGF6IAYmvx8GcJUNzb7r2W2PpuESHBhXDdXS4wmZvsY9jVF9/T97xZe+zAJEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761147749; c=relaxed/simple;
-	bh=lrh9trOuUbfB9tr4S4CppAg4eYIoTFqaZqvi7679HzI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LNIzues3idkQUePwJM07kln3hTQdJkuivJDaq8hwBeatN2XgtID/M/g/CTySDHQlS+Q/hjHkOtT0OTF6tBm7JSnYuySW6rvLvHzDFWuis6Im00nI7kFhUHvY5ZUe5/wGN965NsH36q7LarBfO8tiqT7GUeGMDaRwiw6El2KFzEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cQr8Yz/s; arc=none smtp.client-ip=209.85.214.179
+	s=arc-20240116; t=1761156774; c=relaxed/simple;
+	bh=UmH1svExxe3696H3/lrjYo2eB/zUc0gH+XKx1eKRj0s=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Bg2RGhaaMXKIa6vKREMNaTxsgDrlZTg4gdA7Q/mV6hwOc35i7ffG2paw/NI5dJ39LrfAZykgI5VWESm0TL/xety+LNQEPXrGbjkRrCMVIzCQjt8WRfRauRqHaAm7FbHAdCeDDCAIUrawp0yXc4nql2PJFFmWFbXlGuyW8x1lEdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=y7QAMZe/; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cQr8Yz/s"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-27eeafd4882so233675ad.0
-        for <linux-coco@lists.linux.dev>; Wed, 22 Oct 2025 08:42:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="y7QAMZe/"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-32eb864fe90so2978522a91.3
+        for <linux-coco@lists.linux.dev>; Wed, 22 Oct 2025 11:12:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761147747; x=1761752547; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UzoL+yZOu+8De1TKJwlUHggqh8pBAGHO5eUlyyjXTpk=;
-        b=cQr8Yz/sY6YKbAtBA6hzYDPCQMOTpcJNs7czc3OHNXTubERJxhtOzQY3gXq91e7TUT
-         QiAIPut+JWB8Ik98fwv2rW1GkDDGUCv/o6euJ6axzJAuvjnL/4GxKQzfC3cFdj6xffEQ
-         olIY5/zHhBMuAZn13j4avnc3s3yxgOWjgv8tBaI5spT5vrnT3Gusa4eqISG1j5M7ksWh
-         lx3fgfdhjyZQRPPXw1TJtR1NOl1din3Ug7H1LnyDOHcwdUuxWxW9yDlmGgMCtjGa4Hpi
-         5ich8ig42jBTQ1Dp8sQTUOoqw1zX0WnOq9BReJwgvNRbcLlM2p1WeOdeiMur13k4eA1Q
-         H3RA==
+        d=google.com; s=20230601; t=1761156772; x=1761761572; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=V5F7t24lC7jgleOK3FW+MwSMdfYKm48DJa8i0z/06to=;
+        b=y7QAMZe/QMxl9khd5tm4q1dq2HnNpPIvZur6ltSBDaOstKUNGgVz/nz8h00Qn3Tw1R
+         yT6J/nhDiC/NF7P1xS/qe8fEXJhEdm3f8ds2zwvfWs3/JPoUxd19m1BuBwA6X3HXoncw
+         ALDS72j7x+TEHZK14rgZWbv7LFbaZ7N4g37A0auEnQjuCf3Q654WuTg/96h6TAxlG4tK
+         oC1XoR8DFk+qNDyFhAto+u6tjU7BDzF4A5uQ495H7HHlsnfnN+/mxKCNui5+I/1p8xBC
+         OjVmc14HZB7i/T0LclvERNNpKSl8CubUKz4Mkoc+dtpThkvxRJSUvoKVwvj1kRwf9y0Q
+         B50g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761147747; x=1761752547;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UzoL+yZOu+8De1TKJwlUHggqh8pBAGHO5eUlyyjXTpk=;
-        b=n6OChSLaOQurgwvuxAIRiIvL22Pr18uS0lvmFZc14vQty+8Fg++hv32xgLk0MK/F2H
-         jZm2na8xuGIk6q3FEAxMCRrELTwPdaxlSxoJ112TWt8Of33e0joE5qBbg283D2EAv5c4
-         ATDerrVSSna/+cqEK38KlJOu2ByFumXCwt1DkICNN3r0Gsqd7v552/wSjnlx9zu2lM1e
-         3HIsrLHsPxwDoFZ6yjcf2GEBDWik3j+iDfikeGR7raf4jWjgUEgePUWR1m4GC23STD3f
-         L98/ZN8oVYmzbAB0m/p/+m4l9wbZwjNln2YqyX9pHQnW7+bsFVxXNpBrHt560EF8gKYH
-         Ha2w==
-X-Forwarded-Encrypted: i=1; AJvYcCUzo+/6dvDUgBkGh9FYZuGChKdiusbfUyzxqQS62eDO65RLiQICAf8G72h8L5qlKNFuMXnkqK070UBl@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw5dwmi6xNHhMAYjFPw6O6cGTXQequa3LiWr6SZyHvB//pLiAmQ
-	JFTtOA5oCJwS5qwx5MbG5zNG78/VDY1STbWZ67w0sKh0NYdOzSZu+KYiZNaQLZgzgtDzdRTEYAR
-	uQi4n8wG12TRts8SzsMizSznl/q5Sef02/zIWEdCE
-X-Gm-Gg: ASbGncs9GaFGd61pIabgLDa1BuBDXjaHJfeV8TKXBX17UK3DqGan7l0FFG9Ss4BvJeT
-	OIzB2LGUkkBHHMqmm3atK7FjIUeyUsWUbhvIqE5WBW/YbXaDtyFLePiOfVIU5Wi9D3Ai9mqPrcU
-	TAfpM+KxfZ/PuNzSH2jWwIVOk3RoWnFVXTABCR+k2PdPqXoC0eNBChsT3pMCRcZawXsN80LWa+U
-	kxDGzLPbvXFV8J3KppsOBtt4TOdNmp4IhDZQcO+cRwLq+Locmgg1/5v2bPJ+VFQA1gJLYFTy3zy
-	XE53EayyL0qPDF4q0AZBmrnTgad6
-X-Google-Smtp-Source: AGHT+IHN5wM7xniJlXhXiDrVzdda1CBjT3wNmDvc4ugbOBZyMG4cRzMe9o5SvQOygWk52Qt8pxDlzqXiMUa6QjXw8Yg=
-X-Received: by 2002:a17:902:f54a:b0:26a:8171:daf8 with SMTP id
- d9443c01a7336-29300ace4c2mr2290455ad.8.1761147746628; Wed, 22 Oct 2025
- 08:42:26 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761156772; x=1761761572;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=V5F7t24lC7jgleOK3FW+MwSMdfYKm48DJa8i0z/06to=;
+        b=BAPVQ8+INmrAAhFZ3Q8196b54Q4GQK3ur2ppgmYqQOUrW2yLewesHkhwRpbOVY5CjM
+         v0hyckmr40fVGnohZJTiPnL8y0+y+TIza7BC2rINNe7rLbz0CMAzY7MojPONg2Q6bJP7
+         cmKPqUGOwCUx2bZNSg3228G3s3W4O+axsBJTIHX/VlalUdz8MKOjWuMB8zOiQjzLAaED
+         BfYcYkMK2nzD9B/iGRi5Pvv9s5rev5doSxzbBV4Xq+T/4E1U/YQxPAXtjIZgyQW+xPjs
+         7X9V80RWIQg35wSn7pM46/p0muwp8vH3QZxOrRBnuUfQwlH4Oba+CMXxyYpi9XUSmb32
+         UtQg==
+X-Forwarded-Encrypted: i=1; AJvYcCW5MkyEd03ziEfOAaYtLWiYxmm4pwipy54uTHXD+gn42ihnrUHzba1BqVR+zwFWIWS3v2iwebs5HoZQ@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx1VBBjWO7Dq1NwnM6aT0ItSjKU10aHY2p/khh6ylJR0QKenGNJ
+	LLexMOExfXqJ8mO33rsmvaAwOM5yzWdnwDhscvMY6dFLuFVpj6GxLGw5cPZ4wyeiaHOnud9bCxl
+	P7zNFxQ==
+X-Google-Smtp-Source: AGHT+IFAZr0wpbGx7b8wp6kFow05WwkzX+gl9q/tJGKoWGxIdF2WxHsL5OqcbuH+85tLuHrz8145UQS6wJM=
+X-Received: from pjbnm19.prod.google.com ([2002:a17:90b:19d3:b0:33d:cdb9:9adf])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3f8d:b0:33b:be31:8193
+ with SMTP id 98e67ed59e1d1-33bcf85d59dmr30647063a91.6.1761156768896; Wed, 22
+ Oct 2025 11:12:48 -0700 (PDT)
+Date: Wed, 22 Oct 2025 11:12:47 -0700
+In-Reply-To: <aPiQYBoDlUmrQxEw@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20251001025442.427697-1-chao.gao@intel.com> <CAGtprH_FzXjnC0Rbctpvm2_kqAAnUOfnaT4885fBiAi7s0jcXw@mail.gmail.com>
- <IA1PR11MB949522AA3819E217C5467B51E7E8A@IA1PR11MB9495.namprd11.prod.outlook.com>
- <5b4c2bb3-cfde-4559-a59d-0ff9f2a250b4@intel.com> <IA1PR11MB94955392108F5A662D469134E7E9A@IA1PR11MB9495.namprd11.prod.outlook.com>
- <CAGtprH96B5K9Hk5h0FgxSUBa-pik=E=dLrO-4oxx76dxb9=7wQ@mail.gmail.com>
- <IA1PR11MB9495BB77A4FAFBD78600416AE7F6A@IA1PR11MB9495.namprd11.prod.outlook.com>
- <CAGtprH-h_axusSLTWsEZ6QoxgmVs0nVknqNJx-iskpsg_qHKFg@mail.gmail.com> <aPiEakpcADuQHqQ3@intel.com>
-In-Reply-To: <aPiEakpcADuQHqQ3@intel.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Wed, 22 Oct 2025 08:42:13 -0700
-X-Gm-Features: AS18NWCKamJJqOgfaVBvWApA5RD4LCnBz687TAXQf72Y4CIsxZQOYxW8E_FTLCQ
-Message-ID: <CAGtprH8q5U6h3p5iDYtwRiyVG_xF8hDwq6G34hLt-jhe+MRNaA@mail.gmail.com>
-Subject: Re: [PATCH v2 00/21] Runtime TDX Module update support
-To: Chao Gao <chao.gao@intel.com>
-Cc: "Reshetova, Elena" <elena.reshetova@intel.com>, "Hansen, Dave" <dave.hansen@intel.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, 
-	"Chatre, Reinette" <reinette.chatre@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>, 
-	"Huang, Kai" <kai.huang@intel.com>, "Williams, Dan J" <dan.j.williams@intel.com>, 
-	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, "sagis@google.com" <sagis@google.com>, 
-	"paulmck@kernel.org" <paulmck@kernel.org>, "nik.borisov@suse.com" <nik.borisov@suse.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
-	Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-5-seanjc@google.com>
+ <aPcG3LMA0qX5H5YI@yzhao56-desk.sh.intel.com> <aPe2pDYSpVFxDRWv@google.com> <aPiQYBoDlUmrQxEw@yzhao56-desk.sh.intel.com>
+Message-ID: <aPken0s-0MfdSd5o@google.com>
+Subject: Re: [PATCH v3 04/25] KVM: x86/mmu: Add dedicated API to map
+ guest_memfd pfn into TDP MMU
+From: Sean Christopherson <seanjc@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Kirill A. Shutemov" <kas@kernel.org>, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Ira Weiny <ira.weiny@intel.com>, Kai Huang <kai.huang@intel.com>, 
+	Michael Roth <michael.roth@amd.com>, Vishal Annapurve <vannapurve@google.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Oct 22, 2025 at 12:15=E2=80=AFAM Chao Gao <chao.gao@intel.com> wrot=
-e:
->
-> On Fri, Oct 17, 2025 at 05:01:55PM -0700, Vishal Annapurve wrote:
-> >On Fri, Oct 17, 2025 at 3:08=E2=80=AFAM Reshetova, Elena
-> ><elena.reshetova@intel.com> wrote:
-> >>
-> >>
-> >> > > > ...
-> >> > > > > But the situation can be avoided fully, if TD preserving updat=
-e is not
-> >> > > > conducted
-> >> > > > > during the TD build time.
-> >> > > >
-> >> > > > Sure, and the TDX module itself could guarantee this as well as =
-much as
-> >> > > > the kernel could. It could decline to allow module updates durin=
-g TD
-> >> > > > builds, or error out the TD build if it collides with an update.
-> >> > >
-> >> > > TDX module has a functionality to decline going into SHUTDOWN stat=
-e
-> >> > > (pre-requisite for TD preserving update) if TD build or any proble=
-matic
-> >> > > operation is in progress. It requires VMM to opt-in into this feat=
-ure.
-> >> >
-> >> > Is this opt-in enabled as part of this series? If not, what is the
-> >> > mechanism to enable this opt-in?
-> >>
-> >> For the information about how it works on TDX module side,
-> >> please consult the latest ABI spec, definition of TDH.SYS.SHUTDOWN lea=
-f,
-> >> page 321:
-> >> https://cdrdv2.intel.com/v1/dl/getContent/733579
-> >>
-> >
-> >Thanks Elena. Should the patch [1] from this series be modified to
-> >handle the TDX module shutdown as per:
->
-> Hi Vishal,
->
-> I will fix this issue in the next version.
->
-> The plan is to opt in post-update compatibility detection in the TDX
-> Module. If incompatibilities are found, the module will return errors to
-> any TD build or migration operations that were initiated prior to the
-> updates. Please refer to the TDH.SYS.UPDATE leaf definition in the ABI
-> spec above for details.
->
-> I prefer this approach because:
->
-> a. it guarantees forward progress. In contrast, failing updates would
->    require admins to retry TDX Module updates, and no progress would be
->    made unless they can successfully avoid race conditions between TDX
->    module updates and TD build/migration operations. However, if such rac=
-e
->    conditions could be reliably prevented, this issue wouldn't require a
->    fix in the first place.
+On Wed, Oct 22, 2025, Yan Zhao wrote:
+> On Tue, Oct 21, 2025 at 09:36:52AM -0700, Sean Christopherson wrote:
+> > On Tue, Oct 21, 2025, Yan Zhao wrote:
+> > > On Thu, Oct 16, 2025 at 05:32:22PM -0700, Sean Christopherson wrote:
+> > > > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> > > > index 18d69d48bc55..ba5cca825a7f 100644
+> > > > --- a/arch/x86/kvm/mmu/mmu.c
+> > > > +++ b/arch/x86/kvm/mmu/mmu.c
+> > > > @@ -5014,6 +5014,65 @@ long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
+> > > >  	return min(range->size, end - range->gpa);
+> > > >  }
+> > > >  
+> > > > +int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn)
+> > > > +{
+> > > > +	struct kvm_page_fault fault = {
+> > > > +		.addr = gfn_to_gpa(gfn),
+> > > > +		.error_code = PFERR_GUEST_FINAL_MASK | PFERR_PRIVATE_ACCESS,
+> > > > +		.prefetch = true,
+> > > > +		.is_tdp = true,
+> > > > +		.nx_huge_page_workaround_enabled = is_nx_huge_page_enabled(vcpu->kvm),
+> > > > +
+> > > > +		.max_level = PG_LEVEL_4K,
+> > > > +		.req_level = PG_LEVEL_4K,
+> > > > +		.goal_level = PG_LEVEL_4K,
+> > > > +		.is_private = true,
+> > > > +
+> > > > +		.gfn = gfn,
+> > > > +		.slot = kvm_vcpu_gfn_to_memslot(vcpu, gfn),
+> > > > +		.pfn = pfn,
+> > > > +		.map_writable = true,
+> > > > +	};
+> > > > +	struct kvm *kvm = vcpu->kvm;
+> > > > +	int r;
+> > > > +
+> > > > +	lockdep_assert_held(&kvm->slots_lock);
+> > > Do we need to assert that filemap_invalidate_lock() is held as well?
+> > 
+> > Hrm, a lockdep assertion would be nice to have, but it's obviously not strictly
+> > necessary, and I'm not sure it's worth the cost.  To safely assert, KVM would need
+> Not sure. Maybe just add a comment?
+> But even with kvm_assert_gmem_invalidate_lock_held() and
+> lockdep_assert_held(&kvm->slots_lock), it seems that
+> kvm_tdp_mmu_map_private_pfn() still can't guarantee that the pfn is not stale.
 
-TD build operations are much more frequent than TDX module update
-operations. Retrying TD build operation will need additional KVM and
-userspace VMM changes IIUC (assuming TD build process needs to be
-restarted from the scratch). IMO, it would be simpler to handle TDX
-module update failures by retrying.
+At some point we have to assume correctness.  E.g. one could also argue that
+holding every locking in the universe still doesn't ensure the pfn is fresh,
+because theoretically guest_memfd could violate the locking scheme.
 
-Admin logic to update TDX modules can be designed to either retry
-failed TDX module updates or to be more robust, adds some
-synchronization with VM creation attempts on the host. i.e. I think
-it's fine to punt this problem of ensuring the forward progress to
-user-space admin logic on the host.
+Aha!  And to further harden and document this code, this API can be gated on
+CONFIG_KVM_GUEST_MEMFD=y, as pointed out by the amazing-as-always test bot:
 
->
-> b. it eliminates false alarms that could occur with the "block update"
->    approach. Under the "block update" approach, updates would be rejected
->    whenever TD build operations are running, regardless of whether the ne=
-w
->    module is actually compatible (e.g., when using the same crypto librar=
-y as
->    the current module). In contrast, the post-update detection approach o=
-nly
->    fails TD build or migration operations when genuine incompatibilities
->    exist.
+https://lore.kernel.org/all/202510221928.ikBXHGCf-lkp@intel.com
+
+We could go a step further and gate it on CONFIG_KVM_INTEL_TDX=y, but I don't
+like that idea as I think it'd would be a net negative in terms of documenation,
+compared to checking CONFIG_KVM_GUEST_MEMFD.  And in general I don't want to set
+a precedent of ifdef-ing common x86 based on what vendor code _currently_ needs
+an API.
+
+> e.g., if hypothetically those locks were released and re-acquired after getting
+> the pfn.
+> 
+> > to first assert that the file refcount is elevated, e.g. to guard against
+> > guest_memfd _really_ screwing up and not grabbing a reference to the underlying
+> > file.
+> > 
+> > E.g. it'd have to be something like this:
+> > 
+> > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> > index 94d7f32a03b6..5d46b2ac0292 100644
+> > --- a/arch/x86/kvm/mmu/mmu.c
+> > +++ b/arch/x86/kvm/mmu/mmu.c
+> > @@ -5014,6 +5014,18 @@ long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
+> >         return min(range->size, end - range->gpa);
+> >  }
+> >  
+> > +static void kvm_assert_gmem_invalidate_lock_held(struct kvm_memory_slot *slot)
+> > +{
+> > +#ifdef CONFIG_PROVE_LOCKING
+> > +       if (WARN_ON_ONCE(!kvm_slot_has_gmem(slot)) ||
+> > +           WARN_ON_ONCE(!slot->gmem.file) ||
+> > +           WARN_ON_ONCE(!file_count(slot->gmem.file)))
+> > +               return;
+> > +
+> > +       lockdep_assert_held(file_inode(&slot->gmem.file)->i_mapping->invalidate_lock));
+> 	  lockdep_assert_held(&file_inode(slot->gmem.file)->i_mapping->invalidate_lock);
+> > +#endif
+> > +}
+> > +
+> >  int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn)
+> >  {
+> >         struct kvm_page_fault fault = {
+> > @@ -5038,6 +5050,8 @@ int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn)
+> >  
+> >         lockdep_assert_held(&kvm->slots_lock);
+> >  
+> > +       kvm_assert_gmem_invalidate_lock_held(fault.slot);
+> > +
+> >         if (KVM_BUG_ON(!tdp_mmu_enabled, kvm))
+> >                 return -EIO;
+> > --
+> > 
+> > Which I suppose isn't that terrible?
+> Is it good if we test is_page_fault_stale()? e.g.,
+
+No, because it can only get false positives, e.g. if an mmu_notifier invalidation
+on shared, non-guest_memfd memory.  Though a sanity check would be nice to have;
+I believe we can simply do:
+
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+index c5734ca5c17d..440fd8f80397 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -1273,6 +1273,8 @@ int kvm_tdp_mmu_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+        struct kvm_mmu_page *sp;
+        int ret = RET_PF_RETRY;
+ 
++       KVM_MMU_WARN_ON(!root || root->role.invalid);
++
+        kvm_mmu_hugepage_adjust(vcpu, fault);
+ 
+        trace_kvm_mmu_spte_requested(fault);
