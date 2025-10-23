@@ -1,162 +1,133 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66C52F0670
-	for <linux-coco@lists.linux.dev>; Thu, 23 Oct 2025 17:10:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1566E347BBF
+	for <linux-coco@lists.linux.dev>; Thu, 23 Oct 2025 17:27:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761239407; cv=none; b=WqEUflG7UFz4xmuNGgth9Ggfpy3nySomvfZuHfRsY4E2LbUyEe6CqJ7Gp0/qd/bzgne1Yt15ZWFtKLxKlNYOgLT1oAFBzM3nfzxQMJ+diDcw9EBHB/7HGKPuVL2hJyXDin4SByUSnizN4OslpZPZtXyycABaVC0Sm85v8UeMdXA=
+	t=1761240440; cv=none; b=n04+En3qumhVpaRZjpNOneLqdY4fAmeOn5ritAsqI/xvirjGKoGVm8+azVftWOl1eECVlxlMOxzSZCDkqTqTnpII0MSdWHMYAYzDQp4ZIUkTIqZXlPb4wNWC73U1MbaoltujJxydtD6EBqcWD4e6OBIeYmU8BKswX+izkmEsQhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761239407; c=relaxed/simple;
-	bh=+Tzm05G8OP9Ub45Ed00gm//RkZgsf1afggpDogpUKf8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BvCvQKqH297QDCMlKRNCd5HLn2BpFwXDqJx8d7N3ClW9WzBnawnnRBzGmM/hkyUGpwUoy0pWxaCsaZsvh+jd2cYxWAO2N9rJ/XDtRSegPWr/ukzT7V8oMAnh45x0vzuXN28B4bnLUy4EjKX93zUCc2HpGfkxiYr9TFLbDoHZMBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WiN8gAnJ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1761240440; c=relaxed/simple;
+	bh=XVDzXI4Y1e4iRpQIyW9vAwBiWIuzXTa0TJZpBTTKBPM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=PkTfcso34yaIeuYi+n4mPr+qIzX7+OFMqY9i/0e5NzlrKhfH/LDDifTjNAKss4le0gRDqGwRyaTkuIBCtGSqQAnyfFtsKg+HxfP8DIAg8yMH4xqaPX07+2GweEoKC87nvwRtdoWPfG+31cHX4NtKarCQay8M2XLZLT6VRBO/Trg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Vm4K4HO7; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WiN8gAnJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761239404;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=sIho/DDzaUGECoEpXxSYe8QzakIm7oukB+I/Bz1nx2A=;
-	b=WiN8gAnJGCLR1ta+lx2vOJQiqtO5cNcTfpULkzmoatoBO/a1l5HZMaH0N+DX0mG1KtZI42
-	kRLqjhGmEyM1o091eQ5FpMcwTuC1b+F2KagYZWRbuErGZ8/aWlxSof8BLSWaRTJq/MU81o
-	n/Go5bf2AN64ibl5lRVyqZqaASrhgaQ=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-211-_-gYPoceMsuizIWj0VTBAw-1; Thu, 23 Oct 2025 13:10:03 -0400
-X-MC-Unique: _-gYPoceMsuizIWj0VTBAw-1
-X-Mimecast-MFC-AGG-ID: _-gYPoceMsuizIWj0VTBAw_1761239402
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-42700160169so864840f8f.1
-        for <linux-coco@lists.linux.dev>; Thu, 23 Oct 2025 10:10:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761239402; x=1761844202;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Vm4K4HO7"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-277f0ea6fbaso13278985ad.0
+        for <linux-coco@lists.linux.dev>; Thu, 23 Oct 2025 10:27:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761240437; x=1761845237; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=sIho/DDzaUGECoEpXxSYe8QzakIm7oukB+I/Bz1nx2A=;
-        b=PQLVa7D3bATD6AOamgNxV64sXJRHCxUABfk+p/8v3xoomApjI3R+IVblOTzofA9sWm
-         Rt+ddlQ3PC2evKA92fjm7QEk4KQKXfqqGO98ARJmlsfYqb7cbs66/b4x449pyxVDvf3n
-         yOLCIGBN9opQ5cHKPqrBW25zTPV+3CRgA2bOMRqKZbdxPVzakphHRRcZpC1tEngiNiOc
-         Z6YiTCyxFKf4XedgtbWJ+Yess31gToQrc53m8ZWiKRvxstv+4dtLJ7398wAnGYg+xjnB
-         m30r+aIkHS7EHcYLnyuwTVfIhf59gHyOdcjVkVDtmFHHjRMfCJoGx5r8ll6NlhEZjpVG
-         0y3g==
-X-Forwarded-Encrypted: i=1; AJvYcCWgkrHoCm2NwOAxzeiplVkLIJXejGUPyXOLsFKozXVJ6/6j+0sX4M9ITvbW4iINH1rXIhgRHzxhsTr+@lists.linux.dev
-X-Gm-Message-State: AOJu0Yye4MciDvbreinhhTDAY6dC2XVAEmU0E1kJ5E+PGsDdHtm5RwRn
-	hHRXEcB5cI5d6K4UNEgDZz9ReaqVZ7H/ENrVXAm8fdnNPpjD/jpyfTZD6giWly2JR7dtsaVfBnj
-	dAutIP6Tto5nex7Iedtf8DmfhHr15nNg8G1xwx6/CokVbCW6uQrJNXzTV6Otc0yQ=
-X-Gm-Gg: ASbGncvOqN65wA6CGLgHLwGDLgv2mJDonzpFXchzcbgayvSbeDpBpGrlD4nHu07zEAQ
-	LR2kFnxOLIuEgBS5GoYaUnuf+M3eZavA2uRpdPjuuJGP4audEQPDZNfsoT4SP6AGHHDOjzqvsXl
-	G/P7dGVdpYrOZYF73wIF5nlR1/NryzLLh0NR1uSpuS8A1GXLYngM3IzJS4IYYuoYLiovKBOzM0D
-	zHwhbLEE16heqDJtQnwq717Vd/jDCGdDeR8z29+owxsUh9au04vicCP70omnk11OxxZwQxAWvG+
-	ceanP67fiflh74+1ZWtzC2OUUIONJ7BNP3cUEkYOCpU7nOnC9qMzuVFGQhWVYVTEJ644xvhwpe1
-	NgUKAYLws2BpfGBw8++O/4RdIL1iaW1lFb99ev2VLcpS2pYFRRWZfLKJbVrMWmGR5npsxGnJEfj
-	ZOWg==
-X-Received: by 2002:a05:6000:2dc3:b0:426:d54d:224d with SMTP id ffacd0b85a97d-42704d7ebbamr21063043f8f.27.1761239401984;
-        Thu, 23 Oct 2025 10:10:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGeBhshgveus83Fujm4tgQ2AjCJ8NaeUFWeh9Yb6sABVsAFvyZkwYO71LXFd/b8AbLwDNMtzw==
-X-Received: by 2002:a05:6000:2dc3:b0:426:d54d:224d with SMTP id ffacd0b85a97d-42704d7ebbamr21063025f8f.27.1761239401614;
-        Thu, 23 Oct 2025 10:10:01 -0700 (PDT)
-Received: from [192.168.10.48] ([151.61.22.175])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-429897e763csm4959502f8f.6.2025.10.23.10.10.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Oct 2025 10:10:01 -0700 (PDT)
-Message-ID: <8901c04b-6fb8-4964-a8dc-5a871d026a70@redhat.com>
-Date: Thu, 23 Oct 2025 19:09:58 +0200
+        bh=PMd4YohbYBDUY30TTRBHmO9DyPvx8MjhdR/tVFXtYYI=;
+        b=Vm4K4HO7DcQ0iNQGySj3ZZiyEVBaXX2tKHbXivZ9jVaAJZMqvv9j73XEu/45NghDI6
+         rPY3VKN9oOQrHmIq+niTWsrzS2rQUvRxX2KqFyG5mvnDrBHNJGAydOsvUb00B9c7jyL8
+         adlRs15lZu0LiCWzIgDWd57xwWVGPigJKsjwMey84eKc7m5ZrfcuDDghqq4BWRiRpWvb
+         JcttsTHbeUNQ9ah/l06HIsJEDohAI0mzknxNw1DNOgYPeFe6nkOtqg5q2I+tnVALFh9L
+         FD5hozTL4hO49Z0/9c7dhwbwPaqU2h5R4P7YXKj2tfa2kl3vmMeKpVlJdPFP8iOLGXWZ
+         ZXzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761240437; x=1761845237;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=PMd4YohbYBDUY30TTRBHmO9DyPvx8MjhdR/tVFXtYYI=;
+        b=CaIeL5mq/jozamTmCkiQt51B9qb9jRBvHEfpVMuwDbKVivIVGT/usKtSdgLDJ2qLK6
+         PMnyc4l/9GYhAP+QXhOMEHHR5fpwjq38/roGzCDhHNjMGDyntrpGE1v5Z5Mm0Dvld1GB
+         PEj/DsFa5aOnGxUioACM4Mak5USsm/2r1EmSzY/avq0emAZL5gT4U4ySFdGuRjkAzF0P
+         b2yBBlWCN221Yv3yoKr5wPEcT4ZIzNkOumewrUxhizxC7H0mVOD7FK+PJ02YpKluH5qW
+         Y98fcLnH3o9uSLNYbZxafAGoKzfiDUF9yF/l0b9EcJCv19ukf2lnnDhX5e9E0srZ+a+r
+         WsmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUqwI/BezbDG2ps+9YfLdegk4nBLqRRyTD/EUQRhiOlyxKNaMcFvYG3DfwQW/N3hgTlp+rla+p2Pbi/@lists.linux.dev
+X-Gm-Message-State: AOJu0YwSClvxoMg0RWshvvto3YZII7kVgwEc1tsH5n43/2uSczpXI8Sf
+	bXCC320bRL/TMzov2UlM9UXdFXWB3N0gy/OdHeEhPO/2IAM+AxeoOUZ4tM1IiI0t2QOjjje9uii
+	MBt7tvw==
+X-Google-Smtp-Source: AGHT+IFjhG//1khxmFCKdE4+6wWu9+6PA/jOl4XyR0eCgR53v+ZECkEt8twGk0B4jVNQwQCsevpreYrKXxc=
+X-Received: from pjuj5.prod.google.com ([2002:a17:90a:d005:b0:33b:a35b:861])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:db11:b0:240:48f4:40f7
+ with SMTP id d9443c01a7336-290cba4efc9mr387536115ad.39.1761240437319; Thu, 23
+ Oct 2025 10:27:17 -0700 (PDT)
+Date: Thu, 23 Oct 2025 10:27:16 -0700
+In-Reply-To: <707a01ee36c28863bdc6a4444a5560e9a0b19597.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: KVM Planes with SVSM on Linux v6.17
-To: Christoph Hellwig <hch@infradead.org>, =?UTF-8?B?SsO2cmcgUsO2ZGVs?=
- <joro@8bytes.org>
-Cc: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, qemu-devel@nongnu.org,
- Sean Christopherson <seanjc@google.com>, Thomas.Lendacky@amd.com,
- huibo.wang@amd.com, pankaj.gupta@amd.com
-References: <wmymrx6xyc55p6dpa7yhfbxgcslqgucdjmyr7ep3mfesx4ssgq@qz5kskcrnnsg>
- <aPpE8emZ9n4N7S-T@infradead.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <aPpE8emZ9n4N7S-T@infradead.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: whxcck1paN3ggshHef0febbJBHnXj-3Q7nkGIRPbtQw_1761239402
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-15-seanjc@google.com>
+ <707a01ee36c28863bdc6a4444a5560e9a0b19597.camel@intel.com>
+Message-ID: <aPpldKdiQYYnl4uC@google.com>
+Subject: Re: [PATCH v3 14/25] KVM: TDX: Bug the VM if extended the initial
+ measurement fails
+From: Sean Christopherson <seanjc@google.com>
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "frankja@linux.ibm.com" <frankja@linux.ibm.com>, 
+	"maz@kernel.org" <maz@kernel.org>, "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, 
+	"pjw@kernel.org" <pjw@kernel.org>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, 
+	"kas@kernel.org" <kas@kernel.org>, "maobibo@loongson.cn" <maobibo@loongson.cn>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "maddy@linux.ibm.com" <maddy@linux.ibm.com>, 
+	"palmer@dabbelt.com" <palmer@dabbelt.com>, "imbrenda@linux.ibm.com" <imbrenda@linux.ibm.com>, 
+	"zhaotianrui@loongson.cn" <zhaotianrui@loongson.cn>, "anup@brainfault.org" <anup@brainfault.org>, 
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Kai Huang <kai.huang@intel.com>, 
+	Yan Y Zhao <yan.y.zhao@intel.com>, "michael.roth@amd.com" <michael.roth@amd.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Ira Weiny <ira.weiny@intel.com>, 
+	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
+	"ackerleytng@google.com" <ackerleytng@google.com>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
+	Vishal Annapurve <vannapurve@google.com>, 
+	"kvm-riscv@lists.infradead.org" <kvm-riscv@lists.infradead.org>, 
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, 
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "x86@kernel.org" <x86@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/23/25 17:08, Christoph Hellwig wrote:
-> On Wed, Oct 22, 2025 at 10:35:28AM +0200, Jörg Rödel wrote:
->> Hi all,
->>
->> This morning I pushed out my current Linux and QEMU branches which support
->> running COCONUT-SVSM on AMD SEV-SNP based on kernel v6.17 and the original KVM
->> Planes patch-set from Paolo.
-> 
-> Can you explain what this alphabet-soup even means?
+On Tue, Oct 21, 2025, Rick P Edgecombe wrote:
+> On Thu, 2025-10-16 at 17:32 -0700, Sean Christopherson wrote:
+> > WARN and terminate the VM if TDH_MR_EXTEND fails, as extending the
+> > measurement should fail if and only if there is a KVM bug, or if the S-=
+EPT
+> > mapping is invalid, and it should be impossible for the S-EPT mappings =
+to
+> > be removed between kvm_tdp_mmu_map_private_pfn() and tdh_mr_extend().
+> >=20
+> > Holding slots_lock prevents zaps due to memslot updates,
+> > filemap_invalidate_lock() prevents zaps due to guest_memfd PUNCH_HOLE,
+> > and all usage of kvm_zap_gfn_range() is mutually exclusive with S-EPT
+> > entries that can be used for the initial image.=C2=A0 The call from sev=
+.c is
+> > obviously mutually exclusive, TDX disallows KVM_X86_QUIRK_IGNORE_GUEST_=
+PAT
+> > so same goes for kvm_noncoherent_dma_assignment_start_or_stop, and whil=
+e
+> > __kvm_set_or_clear_apicv_inhibit() can likely be tripped while building=
+ the
+> > image, the APIC page has its own non-guest_memfd memslot and so can't b=
+e
+> > used for the initial image, which means that too is mutually exclusive.
+> >=20
+> > Opportunistically switch to "goto" to jump around the measurement code,
+> > partly to make it clear that KVM needs to bail entirely if extending th=
+e
+> > measurement fails, partly in anticipation of reworking how and when
+> > TDH_MEM_PAGE_ADD is done.
+> >=20
+> > Fixes: d789fa6efac9 ("KVM: TDX: Handle vCPU dissociation")
+> > Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+>=20
+> Per the discussion in v2, shouldn't it go after patch 24 'KVM: TDX: Guard=
+ VM
+> state transitions with "all" the locks'? Otherwise it introduces a KVM_BU=
+G_ON()
+> that can be triggered from userspace. not a huge deal though.
 
-With pleasure :)
-
-- SEV-SNP: virtualization feature to encrypt VM memory (SEV) and also 
-protect from attacks from the hypervisor (SNP), by matching the 
-hypervisor's page tables against a reverse page mapping (from host 
-physical to guest physical address) maintained by processor firmware in 
-collaboration with the guest
-
-- VMPL (bonus): SNP feature to create privilege levels within a single 
-VM, for example to manage persistent secrets.  The firmware at VMPL0 can 
-hold secrets that even the guest OS at VMPL1+ cannot access.
-
-- KVM planes: KVM feature to  create privilege levels within a single 
-VM, including VMPLs
-
-- SVSM (Secure VM Service Module): privileged firmware running at VMPL0
-
-- COCONUT-SVSM: one implementation of SVSM
-
-Paolo
-
+Oh, right.  And then the changelog needs to be updated too.
