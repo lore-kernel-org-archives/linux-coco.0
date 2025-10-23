@@ -1,201 +1,170 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E35878F2E
-	for <linux-coco@lists.linux.dev>; Thu, 23 Oct 2025 21:10:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3848405C
+	for <linux-coco@lists.linux.dev>; Thu, 23 Oct 2025 22:01:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761253850; cv=none; b=Ys69a3JjkqSAermXdVGk1FAwvIf4UESzgWLBpgo6Zjwo5m1Z0KfLE2L9MjATh8/BTU+3o9TEqJ2lHogGPJSn2JKyMjoLSLj5HP616YAs+1c87Phxin75EDGZiHciDrajvk7Lo4gK6Y1p3awgnKvXueXr2fsUPUSD0iwPz3aSNgY=
+	t=1761256862; cv=none; b=PNORXe1cN3Cvy5IolPhcs6Gj/XKdL1nDMQQHBVTKKeQLsq9iU2zrs0+DNMgC1pQd6G0EADzJuOX5THvA/rpLSLLwthw+VvpxLMmtY1/A/yfYzO1TApwPeKqdHY40QDsjTeuTAczCLlVLBFFvbqENtOhi1vchH6Wo44g6FVYDLog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761253850; c=relaxed/simple;
-	bh=ZeXj6RHOgJiffLwS5fM8bhz4WNccfTBQc+5AvcbfMB8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ja8NYw9QCLupywOaUEiC0qaQ8tIxNwRrh+l1P5f13DpTnVVAw6mYUEOsctn+Xuhk/9uh4cgR6ptW+dgNUzNbbaDbuh1JQU43nJVAzReXIzZDniyAOL9eH5lHuWdPQ9pNUCvW8Li1MJqsxyTyCpur4ZCHHFhpq8SRy0+GgprhO40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OVxq+t+q; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1761256862; c=relaxed/simple;
+	bh=fSsdRWecqQa6nNgrFLCmMLEOAUbyDJ50RnVjL+MYgvo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hOdVP5l15ldTw4u2BFmp1wDb1I/hdw3NrnWMWu+9m+M4klg8SFI/bPVDar477zr3KwPzX6tTKF/3TmEgTR3FqTWXl8nddiEeStzjXspTsQTvpOJRj77eI8c/TLql18+T8HnNbweQY+49w6sesYqag0hFkGfxOMan7i27DH24ayA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sf1jvY5A; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OVxq+t+q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761253848; x=1792789848;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ZeXj6RHOgJiffLwS5fM8bhz4WNccfTBQc+5AvcbfMB8=;
-  b=OVxq+t+qsxHJoPdozGgGTFvOZ07tUFDyr5QIHp+hs1l5b4Ta+V/EsSdm
-   KGxFrtsPALRuOdmETRTsr/VXXguiiP2/kEmvlHEAwW3A98BOhv8y599Th
-   sYS4iOrhgNQiNKJW/3JTnOpa3jqOfWq5zhnJB+GmfSXWUA4KRU8yrHwpl
-   Zar5vEWyFiF56MrgNBgsOGBpw6HPenN9uRgoh94durqXJNDmivomr7KUy
-   Ut7YDlDPWhx+FTPml4/akrP8OjlbzZaEqpW1T7YkVqvPFVejkiaB1yvgN
-   mQpYFL95ZA24zKFkgMwLczmjs/d7zq6RazGjOSkLpgPiMrAY45+g+7aXy
-   g==;
-X-CSE-ConnectionGUID: E8I7frBASkKfpFyy6Di37A==
-X-CSE-MsgGUID: rkoba6oOR+aELzgZdLXejQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63342477"
-X-IronPort-AV: E=Sophos;i="6.19,250,1754982000"; 
-   d="scan'208";a="63342477"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 14:10:48 -0700
-X-CSE-ConnectionGUID: zgERDZQJSl+348MR+kVQ2Q==
-X-CSE-MsgGUID: V5IyUYd4RpqXuYm43kUzSg==
-X-ExtLoop1: 1
-Received: from tfalcon-desk.amr.corp.intel.com (HELO [10.125.108.251]) ([10.125.108.251])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 14:10:47 -0700
-Message-ID: <aad8ae43-a7bd-42b2-9452-2bdee82bf0d8@intel.com>
-Date: Thu, 23 Oct 2025 14:10:46 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sf1jvY5A"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-290d48e9f1fso34905ad.1
+        for <linux-coco@lists.linux.dev>; Thu, 23 Oct 2025 15:01:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761256860; x=1761861660; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iK4oKnHNzcuq0rwncmx4pYGQWpDWxT04xX+7yY0pJF8=;
+        b=sf1jvY5AlCDtmiYSY2O3NaIZqcDUp0ZVs3XKYcNb9XODZNcmCsIgw7HRf7EJDpI7VZ
+         ZM1xZOElWcHnUf98vq6W8E1e1QV5teZjwvGZ5yM1iA/091tpexrPIoJa9361BfzMREr8
+         82nF7iBj/dqAPB1mIcfjNKtGptJ0d11SxYhyPkHpF/PdVuoWE7PYGcuCbaMwvxe1aDYb
+         NjtjJvZPSbXGGOFqX64YOn8YhlZMhLtYPTJGL/3W8zeht3Btjr3U/egchtsEIaJ/YWyg
+         C9TKRBWV7aIiyblXlQDKg5kYQkWfQkg0vF37imoXFyABRmTS0cJjNOA8wZIPnug2g8x7
+         KheQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761256860; x=1761861660;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iK4oKnHNzcuq0rwncmx4pYGQWpDWxT04xX+7yY0pJF8=;
+        b=TBhqsjAkQHnVTe9u6VTV0tB0iFmMabPvs5RO78clyP37L3utcMwrNaGA/p16jYernL
+         C2DzNW11sxHOSyC35TPD1nJ7ShtZXteWDgxLX8iVY7KDefrQdZ5g1gFBVASyjwLHqlQy
+         9GxnWqFSCVvTPgtFmqoAlX3DaMMF1+odGqV47sJRLE/YbWQm1KaiMy9m5yrD3lYaw54t
+         U/wpLK7aVAac1pkH6OLDLu9LKAz+addDpwiDGtx8V2XecgHIlRSheb7DffWsrPaYG4pB
+         7FyMsa9VdDYIROn2oxUxDaa30L2FFVZfnl86+jIr4twuq/+gJfm7Anbf1EYcINCVzAcS
+         Su0w==
+X-Forwarded-Encrypted: i=1; AJvYcCWaNjg3ibKbqt1hQz4Ptp1/K/RJ7tdQnHoLkquvr1uHPYKdEJy1IGYKBisphtivKZSSccfQ2uQk3gEi@lists.linux.dev
+X-Gm-Message-State: AOJu0YwxOFISsv94y5/vsBMVgSEeQIor1aSg9orZkwlsOM04zKvnwYES
+	cq2Vz7hPfW+8zUGITkXHOMcZbdBD0AcnWnWhOTlDtlfgBMZddrn02r/7M1P3sPSjxSR78/pL53q
+	Pus02cyeAGdC2e2jlWkQ5eL+iJracmJq5Vc46eGWd
+X-Gm-Gg: ASbGncsQix239tJH2X3HuVrenZS2jlksPQ/iHcBv1dfwrXFv1K5rvNX2hNB17MrgnfM
+	ihOBkrhDhPooMzSF/u2haqVRW+kWwQCxQ0fc1gHes/Uj7SF6BXyPnQYaJ98WoYybToDdKzlXsUn
+	iJTXOl6MF0UIIiFWSSM+LXvBWj+lcqXcIQ6thnOsOPsqCl3SFdUnOr6BkywbCphRwE9N1xtFC1q
+	L19K0P4Ye861+snxx7wUkx6QWuuCw1yW3HpDuziAt9WGJp3RVCyniZMAtSrEGt4M5wcBl9ACjnI
+	gN7ytsuz8yFhRQHzaLHL4aYIosv+VDhIR3PLlmU=
+X-Google-Smtp-Source: AGHT+IHz6r7O35iYyVRRBZJLFA/qCXABDW4tGQEbAQ+cdGVt03tHSYlQ4wP2Y0e+2Ox9XlZzezDFi6Kw4IgvUynJ1yg=
+X-Received: by 2002:a17:902:f542:b0:290:dc44:d6fa with SMTP id
+ d9443c01a7336-294896994b2mr1236445ad.16.1761256859241; Thu, 23 Oct 2025
+ 15:00:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/21] Runtime TDX Module update support
-To: Vishal Annapurve <vannapurve@google.com>, Chao Gao <chao.gao@intel.com>
-Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>,
- "Chatre, Reinette" <reinette.chatre@intel.com>,
- "Weiny, Ira" <ira.weiny@intel.com>, "Huang, Kai" <kai.huang@intel.com>,
- "Williams, Dan J" <dan.j.williams@intel.com>,
- "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
- "sagis@google.com" <sagis@google.com>,
- "paulmck@kernel.org" <paulmck@kernel.org>,
- "nik.borisov@suse.com" <nik.borisov@suse.com>, Borislav Petkov
- <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
- "Kirill A. Shutemov" <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- Thomas Gleixner <tglx@linutronix.de>
-References: <20251001025442.427697-1-chao.gao@intel.com>
- <CAGtprH_FzXjnC0Rbctpvm2_kqAAnUOfnaT4885fBiAi7s0jcXw@mail.gmail.com>
+References: <20251001025442.427697-1-chao.gao@intel.com> <CAGtprH_FzXjnC0Rbctpvm2_kqAAnUOfnaT4885fBiAi7s0jcXw@mail.gmail.com>
  <IA1PR11MB949522AA3819E217C5467B51E7E8A@IA1PR11MB9495.namprd11.prod.outlook.com>
- <5b4c2bb3-cfde-4559-a59d-0ff9f2a250b4@intel.com>
- <IA1PR11MB94955392108F5A662D469134E7E9A@IA1PR11MB9495.namprd11.prod.outlook.com>
+ <5b4c2bb3-cfde-4559-a59d-0ff9f2a250b4@intel.com> <IA1PR11MB94955392108F5A662D469134E7E9A@IA1PR11MB9495.namprd11.prod.outlook.com>
  <CAGtprH96B5K9Hk5h0FgxSUBa-pik=E=dLrO-4oxx76dxb9=7wQ@mail.gmail.com>
  <IA1PR11MB9495BB77A4FAFBD78600416AE7F6A@IA1PR11MB9495.namprd11.prod.outlook.com>
  <CAGtprH-h_axusSLTWsEZ6QoxgmVs0nVknqNJx-iskpsg_qHKFg@mail.gmail.com>
- <aPiEakpcADuQHqQ3@intel.com>
- <CAGtprH8q5U6h3p5iDYtwRiyVG_xF8hDwq6G34hLt-jhe+MRNaA@mail.gmail.com>
- <CAGtprH9bLpQQ_2UOOShd15hPwMqwW+gwo1TzczLbwGdNkcJHhg@mail.gmail.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <CAGtprH9bLpQQ_2UOOShd15hPwMqwW+gwo1TzczLbwGdNkcJHhg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <aPiEakpcADuQHqQ3@intel.com> <CAGtprH8q5U6h3p5iDYtwRiyVG_xF8hDwq6G34hLt-jhe+MRNaA@mail.gmail.com>
+ <CAGtprH9bLpQQ_2UOOShd15hPwMqwW+gwo1TzczLbwGdNkcJHhg@mail.gmail.com> <aad8ae43-a7bd-42b2-9452-2bdee82bf0d8@intel.com>
+In-Reply-To: <aad8ae43-a7bd-42b2-9452-2bdee82bf0d8@intel.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Thu, 23 Oct 2025 15:00:43 -0700
+X-Gm-Features: AS18NWCc7EBWpHeHGZgKjL9rt91xyVTzV83dAB2GikFO-hGA2BC5MLJCuOQbeH4
+Message-ID: <CAGtprH89JhD+sPStX=aOSRh5B0WMaiBZcA2hC0p0-AzbGkyheA@mail.gmail.com>
+Subject: Re: [PATCH v2 00/21] Runtime TDX Module update support
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Chao Gao <chao.gao@intel.com>, "Reshetova, Elena" <elena.reshetova@intel.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, 
+	"Chatre, Reinette" <reinette.chatre@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>, 
+	"Huang, Kai" <kai.huang@intel.com>, "Williams, Dan J" <dan.j.williams@intel.com>, 
+	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, "sagis@google.com" <sagis@google.com>, 
+	"paulmck@kernel.org" <paulmck@kernel.org>, "nik.borisov@suse.com" <nik.borisov@suse.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/23/25 13:31, Vishal Annapurve wrote:
-...
->> Admin logic to update TDX modules can be designed to either retry
->> failed TDX module updates or to be more robust, adds some
->> synchronization with VM creation attempts on the host. i.e. I think
->> it's fine to punt this problem of ensuring the forward progress to
->> user-space admin logic on the host.
-> Discussed offline with Erdem Aktas on this. From Google's perspective
-> "Avoid updates during updatesensitive times" seems a better option as
-> I mentioned above.
-> 
-> To avoid having to choose which policy to enforce in kernel, a better
-> way could be to:
-> * Allow user space opt-in for "Avoid updates during updatesensitive times" AND
-> * Allow user space opt-in for "Detect incompatibility after update" as well OR
-> * Keep "Detect incompatibility after update" enabled by default based
-> on the appetite for avoiding silent corruption scenarios.
+On Thu, Oct 23, 2025 at 2:10=E2=80=AFPM Dave Hansen <dave.hansen@intel.com>=
+ wrote:
+>
+> On 10/23/25 13:31, Vishal Annapurve wrote:
+> ...
+> >> Admin logic to update TDX modules can be designed to either retry
+> >> failed TDX module updates or to be more robust, adds some
+> >> synchronization with VM creation attempts on the host. i.e. I think
+> >> it's fine to punt this problem of ensuring the forward progress to
+> >> user-space admin logic on the host.
+> > Discussed offline with Erdem Aktas on this. From Google's perspective
+> > "Avoid updates during updatesensitive times" seems a better option as
+> > I mentioned above.
+> >
+> > To avoid having to choose which policy to enforce in kernel, a better
+> > way could be to:
+> > * Allow user space opt-in for "Avoid updates during updatesensitive tim=
+es" AND
+> > * Allow user space opt-in for "Detect incompatibility after update" as =
+well OR
+> > * Keep "Detect incompatibility after update" enabled by default based
+> > on the appetite for avoiding silent corruption scenarios.
+>
+> I'd really prefer to keep this simple. Adding new opt-in ABIs up the
+> wazoo doesn't seem great.
+>
+> I think I've heard three requirements in the end:
+>
+> 1. Guarantee module update forward progress
+> 2. Avoid "corrupt" TD build processes by letting the build/update
+>    race happen
+> 3. Don't complicate the build process by forcing it to error out
+>    if a module update clobbers a build
+>
+> One thing I don't think I've heard anyone be worried about is how timely
+> the update process is. So how about this: Updates wait for any existing
+> builds to complete. But, new builds wait for updates. That can be done
+> with a single rwsem:
+>
+> struct rw_semaphore update_rwsem;
+>
+> tdx_td_init()
+> {
+>         ...
+> +       down_read_interruptible(&update_rwsem);
+>         kvm_tdx->state =3D TD_STATE_INITIALIZED;
+>
+> tdx_td_finalize()
+> {
+>         ...
+> +       up_read(&update_rwsem);
+>         kvm_tdx->state =3D TD_STATE_RUNNABLE;
+>
+> A module update does:
+>
+>         down_write_interruptible(&update_rwsem);
+>         do_actual_update();
+>         up_write(&update_rwsem);
+>
+> There would be no corruption issues, no erroring out of the build
+> process, and no punting to userspace to ensure forward progress.
+>
+> The big downside is that both the build process and update process can
+> appear to hang for a long time. It'll also be a bit annoying to ensure
+> that there are up_read(&update_rwsem)'s if the kvm_tdx object gets torn
+> down during a build.
+>
+> But the massive upside is that there's no new ABI and all the
+> consistency and forward progress guarantees are in the kernel. If we
+> want new ABIs around it that give O_NONBLOCK semantics to build or
+> update, that can be added on after the fact.
+>
+> Plus, if userspace *WANTS* to coordinate the whole shebang, they're free
+> to. They'd never see long hangs because they would be coordinating.
+>
+> Thoughts?
 
-I'd really prefer to keep this simple. Adding new opt-in ABIs up the
-wazoo doesn't seem great.
-
-I think I've heard three requirements in the end:
-
-1. Guarantee module update forward progress
-2. Avoid "corrupt" TD build processes by letting the build/update
-   race happen
-3. Don't complicate the build process by forcing it to error out
-   if a module update clobbers a build
-
-One thing I don't think I've heard anyone be worried about is how timely
-the update process is. So how about this: Updates wait for any existing
-builds to complete. But, new builds wait for updates. That can be done
-with a single rwsem:
-
-struct rw_semaphore update_rwsem;
-
-tdx_td_init()
-{
-	...
-+	down_read_interruptible(&update_rwsem);
-	kvm_tdx->state = TD_STATE_INITIALIZED;
-
-tdx_td_finalize()
-{
-	...
-+	up_read(&update_rwsem);
-	kvm_tdx->state = TD_STATE_RUNNABLE;
-
-A module update does:
-
-	down_write_interruptible(&update_rwsem);
-	do_actual_update();
-	up_write(&update_rwsem);
-
-There would be no corruption issues, no erroring out of the build
-process, and no punting to userspace to ensure forward progress.
-
-The big downside is that both the build process and update process can
-appear to hang for a long time. It'll also be a bit annoying to ensure
-that there are up_read(&update_rwsem)'s if the kvm_tdx object gets torn
-down during a build.
-
-But the massive upside is that there's no new ABI and all the
-consistency and forward progress guarantees are in the kernel. If we
-want new ABIs around it that give O_NONBLOCK semantics to build or
-update, that can be added on after the fact.
-
-Plus, if userspace *WANTS* to coordinate the whole shebang, they're free
-to. They'd never see long hangs because they would be coordinating.
-
-Thoughts?
+Yeah, this approach sounds reasonable.
