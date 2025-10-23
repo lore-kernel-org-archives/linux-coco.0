@@ -1,133 +1,196 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1566E347BBF
-	for <linux-coco@lists.linux.dev>; Thu, 23 Oct 2025 17:27:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E443D23505E
+	for <linux-coco@lists.linux.dev>; Thu, 23 Oct 2025 20:32:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761240440; cv=none; b=n04+En3qumhVpaRZjpNOneLqdY4fAmeOn5ritAsqI/xvirjGKoGVm8+azVftWOl1eECVlxlMOxzSZCDkqTqTnpII0MSdWHMYAYzDQp4ZIUkTIqZXlPb4wNWC73U1MbaoltujJxydtD6EBqcWD4e6OBIeYmU8BKswX+izkmEsQhw=
+	t=1761251527; cv=none; b=gnWDvWD7ML8lrgNzN0bu2uWiNesTGHx1vC9hGcfSmV7RIphq2hFKeI2G13192zCN4blz9b4jjA0bcUFOcow7XLJneiRbxKoh1hCmycO9ymY26+OmWEKA5YmkWsBESLj9xeeoYCl/jPJrnXl4hyDkZeBfsVy/3Zrr7srQ7/2ZUKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761240440; c=relaxed/simple;
-	bh=XVDzXI4Y1e4iRpQIyW9vAwBiWIuzXTa0TJZpBTTKBPM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PkTfcso34yaIeuYi+n4mPr+qIzX7+OFMqY9i/0e5NzlrKhfH/LDDifTjNAKss4le0gRDqGwRyaTkuIBCtGSqQAnyfFtsKg+HxfP8DIAg8yMH4xqaPX07+2GweEoKC87nvwRtdoWPfG+31cHX4NtKarCQay8M2XLZLT6VRBO/Trg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Vm4K4HO7; arc=none smtp.client-ip=209.85.214.202
+	s=arc-20240116; t=1761251527; c=relaxed/simple;
+	bh=236312neeVJG7LyErAG0496ByhyKDmHLJg+2zCLiD1Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=M4xs8Y3QneEbpjzzZ+kRI6rUq4iIjzd+Cje1dCeiNXDqYUuXKqz7XxEZn0sGlnhT9C2B+jCMsXsCDybx6ZR1of+ESZP5QRSnCj57XiqieWuobj70cet+mP5bnltuC+4++8RXRbj6WEu8qfXxf0sLe+SiJCIIsBXQIqqwAvO5euM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oe1ymEKL; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Vm4K4HO7"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-277f0ea6fbaso13278985ad.0
-        for <linux-coco@lists.linux.dev>; Thu, 23 Oct 2025 10:27:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oe1ymEKL"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-290d48e9f1fso15785ad.1
+        for <linux-coco@lists.linux.dev>; Thu, 23 Oct 2025 13:32:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761240437; x=1761845237; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PMd4YohbYBDUY30TTRBHmO9DyPvx8MjhdR/tVFXtYYI=;
-        b=Vm4K4HO7DcQ0iNQGySj3ZZiyEVBaXX2tKHbXivZ9jVaAJZMqvv9j73XEu/45NghDI6
-         rPY3VKN9oOQrHmIq+niTWsrzS2rQUvRxX2KqFyG5mvnDrBHNJGAydOsvUb00B9c7jyL8
-         adlRs15lZu0LiCWzIgDWd57xwWVGPigJKsjwMey84eKc7m5ZrfcuDDghqq4BWRiRpWvb
-         JcttsTHbeUNQ9ah/l06HIsJEDohAI0mzknxNw1DNOgYPeFe6nkOtqg5q2I+tnVALFh9L
-         FD5hozTL4hO49Z0/9c7dhwbwPaqU2h5R4P7YXKj2tfa2kl3vmMeKpVlJdPFP8iOLGXWZ
-         ZXzg==
+        d=google.com; s=20230601; t=1761251524; x=1761856324; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=b3GbqcC/WnvG2wxuPd40YtqR08PLkAH1Q85YMJct8AQ=;
+        b=oe1ymEKL7UMX7hXHxiuN09H/oq3XJ0oOgLNxjZyDk5pZ8VFw9SB896gh9RXv2FvHAW
+         znFQTUR1RvyB37JLivOgdRoSIaRl5GisRAh5Fpg8god5CP4QJ45gxQaYMwO4mfZSHGtC
+         Z7lMInVAIiAYx9A3Nw3NWMFFbx3dD6SULjSPL4sK7BeKVyClqR8OYq5muPWasFyJSktV
+         PxTXiST/GVxbqW6E1ctHXCLG/2DcJIUIuitUlc7ruXJHVpZql+QU6JoOFyg6uJnXNl5m
+         n93eNiv/U5yS1HOXrfXrPYYZIPW4mYxqSg85NrkoqRbvspxeclyZLfQNQOJvnLLsBxRU
+         snsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761240437; x=1761845237;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=PMd4YohbYBDUY30TTRBHmO9DyPvx8MjhdR/tVFXtYYI=;
-        b=CaIeL5mq/jozamTmCkiQt51B9qb9jRBvHEfpVMuwDbKVivIVGT/usKtSdgLDJ2qLK6
-         PMnyc4l/9GYhAP+QXhOMEHHR5fpwjq38/roGzCDhHNjMGDyntrpGE1v5Z5Mm0Dvld1GB
-         PEj/DsFa5aOnGxUioACM4Mak5USsm/2r1EmSzY/avq0emAZL5gT4U4ySFdGuRjkAzF0P
-         b2yBBlWCN221Yv3yoKr5wPEcT4ZIzNkOumewrUxhizxC7H0mVOD7FK+PJ02YpKluH5qW
-         Y98fcLnH3o9uSLNYbZxafAGoKzfiDUF9yF/l0b9EcJCv19ukf2lnnDhX5e9E0srZ+a+r
-         WsmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUqwI/BezbDG2ps+9YfLdegk4nBLqRRyTD/EUQRhiOlyxKNaMcFvYG3DfwQW/N3hgTlp+rla+p2Pbi/@lists.linux.dev
-X-Gm-Message-State: AOJu0YwSClvxoMg0RWshvvto3YZII7kVgwEc1tsH5n43/2uSczpXI8Sf
-	bXCC320bRL/TMzov2UlM9UXdFXWB3N0gy/OdHeEhPO/2IAM+AxeoOUZ4tM1IiI0t2QOjjje9uii
-	MBt7tvw==
-X-Google-Smtp-Source: AGHT+IFjhG//1khxmFCKdE4+6wWu9+6PA/jOl4XyR0eCgR53v+ZECkEt8twGk0B4jVNQwQCsevpreYrKXxc=
-X-Received: from pjuj5.prod.google.com ([2002:a17:90a:d005:b0:33b:a35b:861])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:db11:b0:240:48f4:40f7
- with SMTP id d9443c01a7336-290cba4efc9mr387536115ad.39.1761240437319; Thu, 23
- Oct 2025 10:27:17 -0700 (PDT)
-Date: Thu, 23 Oct 2025 10:27:16 -0700
-In-Reply-To: <707a01ee36c28863bdc6a4444a5560e9a0b19597.camel@intel.com>
+        d=1e100.net; s=20230601; t=1761251524; x=1761856324;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=b3GbqcC/WnvG2wxuPd40YtqR08PLkAH1Q85YMJct8AQ=;
+        b=cUN68pjhhnua2UjclnpV1siu7tezcFSDwE/rvRgOUAjfkU6/gAzAXt4e1YeEdPAO7u
+         GQ9aA9mX7Ta0jpI7m0soduZopEb3bhgls2kRUCAt7vYgLNXVIlqAiuTbRv9cpnrfduaZ
+         sBQNafXlJpb5oFO4Fy58JnQoArO3FB2anNED7n3fHgPc7Z8ihDAcBSZVWPrM+WZUlBEP
+         ueJlNnhOtt64oXisLySTnC/uhiyz0NDM2JDRxgw6Wn2KWxijxdaqYlqRDo1UK5LWxVdF
+         pJUdotCjAu64V+NTM3HS5GPDSMT7Z/dr1mztbmDxyYbVGM7S/gUPyNk0dboRxuP4Evth
+         DuvA==
+X-Forwarded-Encrypted: i=1; AJvYcCXrD1drmnz2BYnoyJ3fYevUBPFLxrxYMlnSqiiDfaHSFGDjzfH0EA+Moi/4CR8vc+Krog87vPWIvxLv@lists.linux.dev
+X-Gm-Message-State: AOJu0YydtPWuTQUjCzvwz6hrDERjr8rY2Lfm1gfnEvaiPF2xtRJtDjV8
+	lS2hOkOry6uzBR1AbaOULPBxlPs+IgbLqTJ1iGHXxnLasahx6QVhwi2empPVHJUTO5HFW5ftML0
+	61VMp03Biuu/hZ+vQ43WcK1QwyxP/YBz/oJiXLhbT
+X-Gm-Gg: ASbGncvOa27gH3r8zD1l8nNoDYeFEuFn33EH2E2J+WszJ+2Ktu5l6bPhwr7MOvguGUM
+	K2FdO79i6EqUfToc9unVIzKzzZUYCA0QOxrCUeP6YzYK/CcKzT/E78vT+Bi4LUWJZ21LQLgMWmP
+	DpQflN09+d7JJGmCp5hDh6cIjyK9eV0R5XbeubJHcM7/JbL7B5GbtFZb8RdkBuLMX/pUKZfG26k
+	kONPVN8uhz3WQMzHGbMKMzWS028hmGFiJ3mj7UWpgTDOSZj4Ykz4TqoWE7u+gqrzngTMNg+vazs
+	jmTwhBHqCUaZb0QhLb0Z1Q0a98qoHyHR0YrRxOU=
+X-Google-Smtp-Source: AGHT+IFqYTO9OhaGbvTF+gc6PUoCmonC3RLRYQV6NT0QUylhUdb10TIEy7SswDyj+FbJvNKxFB7OdRyEx1bzxgb75ys=
+X-Received: by 2002:a17:903:32c5:b0:291:6858:ee60 with SMTP id
+ d9443c01a7336-294894eb3f3mr913195ad.4.1761251523468; Thu, 23 Oct 2025
+ 13:32:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-15-seanjc@google.com>
- <707a01ee36c28863bdc6a4444a5560e9a0b19597.camel@intel.com>
-Message-ID: <aPpldKdiQYYnl4uC@google.com>
-Subject: Re: [PATCH v3 14/25] KVM: TDX: Bug the VM if extended the initial
- measurement fails
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "frankja@linux.ibm.com" <frankja@linux.ibm.com>, 
-	"maz@kernel.org" <maz@kernel.org>, "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, 
-	"pjw@kernel.org" <pjw@kernel.org>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, 
-	"kas@kernel.org" <kas@kernel.org>, "maobibo@loongson.cn" <maobibo@loongson.cn>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "maddy@linux.ibm.com" <maddy@linux.ibm.com>, 
-	"palmer@dabbelt.com" <palmer@dabbelt.com>, "imbrenda@linux.ibm.com" <imbrenda@linux.ibm.com>, 
-	"zhaotianrui@loongson.cn" <zhaotianrui@loongson.cn>, "anup@brainfault.org" <anup@brainfault.org>, 
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Kai Huang <kai.huang@intel.com>, 
-	Yan Y Zhao <yan.y.zhao@intel.com>, "michael.roth@amd.com" <michael.roth@amd.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Ira Weiny <ira.weiny@intel.com>, 
-	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
-	"ackerleytng@google.com" <ackerleytng@google.com>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
-	Vishal Annapurve <vannapurve@google.com>, 
-	"kvm-riscv@lists.infradead.org" <kvm-riscv@lists.infradead.org>, 
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, 
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20251001025442.427697-1-chao.gao@intel.com> <CAGtprH_FzXjnC0Rbctpvm2_kqAAnUOfnaT4885fBiAi7s0jcXw@mail.gmail.com>
+ <IA1PR11MB949522AA3819E217C5467B51E7E8A@IA1PR11MB9495.namprd11.prod.outlook.com>
+ <5b4c2bb3-cfde-4559-a59d-0ff9f2a250b4@intel.com> <IA1PR11MB94955392108F5A662D469134E7E9A@IA1PR11MB9495.namprd11.prod.outlook.com>
+ <CAGtprH96B5K9Hk5h0FgxSUBa-pik=E=dLrO-4oxx76dxb9=7wQ@mail.gmail.com>
+ <IA1PR11MB9495BB77A4FAFBD78600416AE7F6A@IA1PR11MB9495.namprd11.prod.outlook.com>
+ <CAGtprH-h_axusSLTWsEZ6QoxgmVs0nVknqNJx-iskpsg_qHKFg@mail.gmail.com>
+ <aPiEakpcADuQHqQ3@intel.com> <CAGtprH8q5U6h3p5iDYtwRiyVG_xF8hDwq6G34hLt-jhe+MRNaA@mail.gmail.com>
+In-Reply-To: <CAGtprH8q5U6h3p5iDYtwRiyVG_xF8hDwq6G34hLt-jhe+MRNaA@mail.gmail.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Thu, 23 Oct 2025 13:31:50 -0700
+X-Gm-Features: AS18NWBm1eSgqBL9wFCx_Q-96MkmMC0i2iF8YLZuC-hfgkp5DIWbNEmuyET8Qgs
+Message-ID: <CAGtprH9bLpQQ_2UOOShd15hPwMqwW+gwo1TzczLbwGdNkcJHhg@mail.gmail.com>
+Subject: Re: [PATCH v2 00/21] Runtime TDX Module update support
+To: Chao Gao <chao.gao@intel.com>
+Cc: "Reshetova, Elena" <elena.reshetova@intel.com>, "Hansen, Dave" <dave.hansen@intel.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, 
+	"Chatre, Reinette" <reinette.chatre@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>, 
+	"Huang, Kai" <kai.huang@intel.com>, "Williams, Dan J" <dan.j.williams@intel.com>, 
+	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, "sagis@google.com" <sagis@google.com>, 
+	"paulmck@kernel.org" <paulmck@kernel.org>, "nik.borisov@suse.com" <nik.borisov@suse.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 21, 2025, Rick P Edgecombe wrote:
-> On Thu, 2025-10-16 at 17:32 -0700, Sean Christopherson wrote:
-> > WARN and terminate the VM if TDH_MR_EXTEND fails, as extending the
-> > measurement should fail if and only if there is a KVM bug, or if the S-=
-EPT
-> > mapping is invalid, and it should be impossible for the S-EPT mappings =
-to
-> > be removed between kvm_tdp_mmu_map_private_pfn() and tdh_mr_extend().
-> >=20
-> > Holding slots_lock prevents zaps due to memslot updates,
-> > filemap_invalidate_lock() prevents zaps due to guest_memfd PUNCH_HOLE,
-> > and all usage of kvm_zap_gfn_range() is mutually exclusive with S-EPT
-> > entries that can be used for the initial image.=C2=A0 The call from sev=
-.c is
-> > obviously mutually exclusive, TDX disallows KVM_X86_QUIRK_IGNORE_GUEST_=
-PAT
-> > so same goes for kvm_noncoherent_dma_assignment_start_or_stop, and whil=
-e
-> > __kvm_set_or_clear_apicv_inhibit() can likely be tripped while building=
- the
-> > image, the APIC page has its own non-guest_memfd memslot and so can't b=
-e
-> > used for the initial image, which means that too is mutually exclusive.
-> >=20
-> > Opportunistically switch to "goto" to jump around the measurement code,
-> > partly to make it clear that KVM needs to bail entirely if extending th=
-e
-> > measurement fails, partly in anticipation of reworking how and when
-> > TDH_MEM_PAGE_ADD is done.
-> >=20
-> > Fixes: d789fa6efac9 ("KVM: TDX: Handle vCPU dissociation")
-> > Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > ---
->=20
-> Per the discussion in v2, shouldn't it go after patch 24 'KVM: TDX: Guard=
- VM
-> state transitions with "all" the locks'? Otherwise it introduces a KVM_BU=
-G_ON()
-> that can be triggered from userspace. not a huge deal though.
+On Wed, Oct 22, 2025 at 8:42=E2=80=AFAM Vishal Annapurve <vannapurve@google=
+.com> wrote:
+>
+> On Wed, Oct 22, 2025 at 12:15=E2=80=AFAM Chao Gao <chao.gao@intel.com> wr=
+ote:
+> >
+> > On Fri, Oct 17, 2025 at 05:01:55PM -0700, Vishal Annapurve wrote:
+> > >On Fri, Oct 17, 2025 at 3:08=E2=80=AFAM Reshetova, Elena
+> > ><elena.reshetova@intel.com> wrote:
+> > >>
+> > >>
+> > >> > > > ...
+> > >> > > > > But the situation can be avoided fully, if TD preserving upd=
+ate is not
+> > >> > > > conducted
+> > >> > > > > during the TD build time.
+> > >> > > >
+> > >> > > > Sure, and the TDX module itself could guarantee this as well a=
+s much as
+> > >> > > > the kernel could. It could decline to allow module updates dur=
+ing TD
+> > >> > > > builds, or error out the TD build if it collides with an updat=
+e.
+> > >> > >
+> > >> > > TDX module has a functionality to decline going into SHUTDOWN st=
+ate
+> > >> > > (pre-requisite for TD preserving update) if TD build or any prob=
+lematic
+> > >> > > operation is in progress. It requires VMM to opt-in into this fe=
+ature.
+> > >> >
+> > >> > Is this opt-in enabled as part of this series? If not, what is the
+> > >> > mechanism to enable this opt-in?
+> > >>
+> > >> For the information about how it works on TDX module side,
+> > >> please consult the latest ABI spec, definition of TDH.SYS.SHUTDOWN l=
+eaf,
+> > >> page 321:
+> > >> https://cdrdv2.intel.com/v1/dl/getContent/733579
+> > >>
+> > >
+> > >Thanks Elena. Should the patch [1] from this series be modified to
+> > >handle the TDX module shutdown as per:
+> >
+> > Hi Vishal,
+> >
+> > I will fix this issue in the next version.
+> >
+> > The plan is to opt in post-update compatibility detection in the TDX
+> > Module. If incompatibilities are found, the module will return errors t=
+o
+> > any TD build or migration operations that were initiated prior to the
+> > updates. Please refer to the TDH.SYS.UPDATE leaf definition in the ABI
+> > spec above for details.
+> >
+> > I prefer this approach because:
+> >
+> > a. it guarantees forward progress. In contrast, failing updates would
+> >    require admins to retry TDX Module updates, and no progress would be
+> >    made unless they can successfully avoid race conditions between TDX
+> >    module updates and TD build/migration operations. However, if such r=
+ace
+> >    conditions could be reliably prevented, this issue wouldn't require =
+a
+> >    fix in the first place.
+>
+> TD build operations are much more frequent than TDX module update
+> operations. Retrying TD build operation will need additional KVM and
+> userspace VMM changes IIUC (assuming TD build process needs to be
+> restarted from the scratch). IMO, it would be simpler to handle TDX
+> module update failures by retrying.
+>
+> Admin logic to update TDX modules can be designed to either retry
+> failed TDX module updates or to be more robust, adds some
+> synchronization with VM creation attempts on the host. i.e. I think
+> it's fine to punt this problem of ensuring the forward progress to
+> user-space admin logic on the host.
 
-Oh, right.  And then the changelog needs to be updated too.
+Discussed offline with Erdem Aktas on this. From Google's perspective
+"Avoid updates during updatesensitive times" seems a better option as
+I mentioned above.
+
+To avoid having to choose which policy to enforce in kernel, a better
+way could be to:
+* Allow user space opt-in for "Avoid updates during updatesensitive times" =
+AND
+* Allow user space opt-in for "Detect incompatibility after update" as well=
+ OR
+* Keep "Detect incompatibility after update" enabled by default based
+on the appetite for avoiding silent corruption scenarios.
+
+>
+> >
+> > b. it eliminates false alarms that could occur with the "block update"
+> >    approach. Under the "block update" approach, updates would be reject=
+ed
+> >    whenever TD build operations are running, regardless of whether the =
+new
+> >    module is actually compatible (e.g., when using the same crypto libr=
+ary as
+> >    the current module). In contrast, the post-update detection approach=
+ only
+> >    fails TD build or migration operations when genuine incompatibilitie=
+s
+> >    exist.
