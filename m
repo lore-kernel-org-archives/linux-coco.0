@@ -1,110 +1,62 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DCD3328FC
-	for <linux-coco@lists.linux.dev>; Thu, 23 Oct 2025 15:00:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88BFE320A1D;
+	Thu, 23 Oct 2025 15:08:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761231602; cv=none; b=LFGWqhIyn5r1XrMCzbV/wwNN0JjTWHa+VG8ivQKjlVfG4r9Mxr02HV2qZi8KhxCKnR9Aw8wMdYAZ7inyMx/XWaniCIHKo8+2e4L0tm4RQ9iE25NAuIgCLSZM1qRAs6Eo+yVZ0cYSF1BHJpW5xcIijPh3KcHYeXLZ10wE/z8LEow=
+	t=1761232118; cv=none; b=FVm3Z7FdN+WstMRsztzi84eHPDwNAaN+znCd3NBX0GtyhiQWiTbGmRbAggqJg1uqxGc5/ynqh+jzBlYxLMKD4yHx2Du5tJFaupn5dNlOgWvgDK8UrdK54MpFlbUyHSo3mrGFwESdWyulFm9w517U/w+1S9n0XxXsGx8zYyL/mF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761231602; c=relaxed/simple;
-	bh=cCjw14mLE9P+iI4RdSZoroo4x5ze1Fp0XffjVUeu23Q=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Ear4uDl40FF3ALnoD96OaK9Hxl3//vO6Y/iVP7yCA9FFddB8kBJUTaJZxSF901Bs9OCGKqKDpejFiiSviCSyhoengO0Ih5pyNCeJBQRfEyf5s1SbY5Pa4BzVImjIdy/a8ikdHoCzmrsGupjH8YHm6Rgnk05H9DBCVRAiszYGHhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lulYKaOq; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1761232118; c=relaxed/simple;
+	bh=7tB3X5RSOKBgMzA7Vk5D1Py0bompEayS9GxtLYhIrpA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ned2abix8UY8hBELZh/n9Gc8HweZ7VV5uP8U1tb3K41Wr4tYd4OS2zst2aoekPvXWVtRtW+O5PjM71+JLadHyzhNm72JEo40vf2UwjHXJIyLKc4Ob4c3ee0fvwE9W0IljEgra086gWc90Hzu3ZnOzuweTW2eNz+UoO+7mE504gU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=avSsCJpg; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lulYKaOq"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-33baef12edaso925318a91.0
-        for <linux-coco@lists.linux.dev>; Thu, 23 Oct 2025 08:00:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761231600; x=1761836400; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DsY3zzD8XUrRiTLyLBawfwaQI9/sErmot+/rfYHcY0U=;
-        b=lulYKaOq/TcTSltLmKJBDonwuU391kqfUdLAy49yAcWJ+jpzNlLU8GajY3pjFxzERC
-         lh8NFPxrEDgUxuUDVVCaOrgXcSk7fBX352krBjfVFGGlI+gEthVzsQU8ctgJ7c1Bd5D/
-         6T2Ss3dzabxs/sZxaWX7ROpZZHa1aagDkHcxUFA7aaCUaPkfGFSA8lAEtrgrrNZ/WICi
-         kFwsolRf79hc5oeE6RpXaJggrBQwCaJUpxhF6l7cz9jCIrRuODA95SvA7UUwjUlFPV1K
-         T8+4k6hLgXMcJSdvOgGg3g7VDH56hllRXJAuwtiLhTJWFkA6zCOXeYKUoa9fhClzoKCe
-         zY8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761231600; x=1761836400;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DsY3zzD8XUrRiTLyLBawfwaQI9/sErmot+/rfYHcY0U=;
-        b=bnD74AmW+61UBV7jjAzOJpKgImMmn1W+3tESUgP+dzgl1ZbEZeZZzdlD3sz59hp57V
-         QNmL0QAIJ4VSyq3Z2CSyDjOnrPTx5i36t+cPsVpcAvsyO95pNQJsv1SoUEIHurvodq9S
-         TN4ZTdy4fP+AGrTAbYNxVt5sgShmTMvxDy/8NprsmDMJAXGSAh+e/c71FPmjVOX8PpfT
-         84BcG39QhXByuuDilyU8HEnfL5wIvSjEItFbJhuO/7UtutFOrjkLiJIljypGgm7FfecR
-         Nlc1itePLwG5GRhUmMDk2Teivz7ayMTagEUKLM42jwUVJnTOdypChAnJIZUmQXulB3Li
-         0nlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVUs0f20bW3VYZRdbWI15pLFcyEgMinQjNz/UC4WSBt5nKMM4W9hV5dxgDf9UU3qBMdvb0UO8UGJ4Ak@lists.linux.dev
-X-Gm-Message-State: AOJu0YyDLRrxAemjWhynv8GHfQdDWRvYvgt+0NaxSDYbRZOxk9UFprkJ
-	F4WWe3gEbc038bxrk8ImSZ9O9BCXXHkPl2WNRvam9pSZJTaR3V3gYNHqHreK3x8PVpzHocd1iPi
-	E20FzMw==
-X-Google-Smtp-Source: AGHT+IGIKST/5gTXkhLeNb6+zo5OEJ6E7Tz0ILKzp1TDg+5uVro2JJ+z5T3UkH4GmCDPjUQAuY2o81CumRA=
-X-Received: from pjbsp15.prod.google.com ([2002:a17:90b:52cf:b0:330:a006:a384])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5291:b0:32e:859:c79
- with SMTP id 98e67ed59e1d1-33bcec1ab25mr31136898a91.0.1761231599767; Thu, 23
- Oct 2025 07:59:59 -0700 (PDT)
-Date: Thu, 23 Oct 2025 07:59:58 -0700
-In-Reply-To: <28136b62074550826efa3f57b1f7be07f571abdc.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="avSsCJpg"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Transfer-Encoding
+	:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=vUd9iejmQ3YIoCZIrpCmvS9LgqpBQbgMRVezSirRowk=; b=avSsCJpghnTcVUnnYsy1KPz7Bm
+	VaZgVYc8z5ZU2TlVYuBcoicMDzu9qYYyJ1KfbbjeantAq42rZAidTQgctxDU4mpAro4+7lxelHELv
+	VIgMiVehJvaADt6ZMF/Zk8uyw6sc0AKJ2P/JMlp/QLDgUDWVGrXFklP5TMjb+lrFrMJkPrYvAeNug
+	dtIse1769tluZFc6HCS/t/KzBV1vxwpuvNtUP4IW4LFjtZtK0bY6qigApTtCMaQ8vjc2eyY9q57Je
+	hUn9HIha4lueegkCHrvS5vSWqj9xhMwfcSeWAxVDlgC/lJBxOXkcslMPltiwmlGY+0lAvuGHOS59+
+	GpYzmPeg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vBwvZ-00000006hj5-2ZSu;
+	Thu, 23 Oct 2025 15:08:33 +0000
+Date: Thu, 23 Oct 2025 08:08:33 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
+Cc: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org, qemu-devel@nongnu.org,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>, Thomas.Lendacky@amd.com,
+	huibo.wang@amd.com, pankaj.gupta@amd.com
+Subject: Re: KVM Planes with SVSM on Linux v6.17
+Message-ID: <aPpE8emZ9n4N7S-T@infradead.org>
+References: <wmymrx6xyc55p6dpa7yhfbxgcslqgucdjmyr7ep3mfesx4ssgq@qz5kskcrnnsg>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-10-seanjc@google.com>
- <28136b62074550826efa3f57b1f7be07f571abdc.camel@intel.com>
-Message-ID: <aPpC7mt3CwWuhv1p@google.com>
-Subject: Re: [PATCH v3 09/25] KVM: TDX: Fold tdx_sept_drop_private_spte() into tdx_sept_remove_private_spte()
-From: Sean Christopherson <seanjc@google.com>
-To: Kai Huang <kai.huang@intel.com>
-Cc: "chenhuacai@kernel.org" <chenhuacai@kernel.org>, "frankja@linux.ibm.com" <frankja@linux.ibm.com>, 
-	"maz@kernel.org" <maz@kernel.org>, "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, 
-	"pjw@kernel.org" <pjw@kernel.org>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, 
-	"kas@kernel.org" <kas@kernel.org>, "maobibo@loongson.cn" <maobibo@loongson.cn>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "maddy@linux.ibm.com" <maddy@linux.ibm.com>, 
-	"palmer@dabbelt.com" <palmer@dabbelt.com>, "imbrenda@linux.ibm.com" <imbrenda@linux.ibm.com>, 
-	"zhaotianrui@loongson.cn" <zhaotianrui@loongson.cn>, "anup@brainfault.org" <anup@brainfault.org>, 
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Yan Y Zhao <yan.y.zhao@intel.com>, 
-	"michael.roth@amd.com" <michael.roth@amd.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Ira Weiny <ira.weiny@intel.com>, 
-	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
-	"ackerleytng@google.com" <ackerleytng@google.com>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
-	"kvm-riscv@lists.infradead.org" <kvm-riscv@lists.infradead.org>, Vishal Annapurve <vannapurve@google.com>, 
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, 
-	Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
-	"linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <wmymrx6xyc55p6dpa7yhfbxgcslqgucdjmyr7ep3mfesx4ssgq@qz5kskcrnnsg>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-On Thu, Oct 23, 2025, Kai Huang wrote:
-> On Thu, 2025-10-16 at 17:32 -0700, Sean Christopherson wrote:
-> > Fold tdx_sept_drop_private_spte() into tdx_sept_remove_private_spte() to
-> > avoid having to differnatiate between "zap", "drop", and "remove", and to
-> 		  ^
-> 		  differentiate
+On Wed, Oct 22, 2025 at 10:35:28AM +0200, Jörg Rödel wrote:
+> Hi all,
 > 
-> Nit: it's a wee bit confusing that you mentioned "zap", because after this
-> patch tdx_sept_zap_private_spte() is still there.  But it may be only me
-> feeling that way.
+> This morning I pushed out my current Linux and QEMU branches which support
+> running COCONUT-SVSM on AMD SEV-SNP based on kernel v6.17 and the original KVM
+> Planes patch-set from Paolo.
 
-Hmm, yeah, I agree that's a confusing/misleading.  How about this?
-
-  KVM: TDX: Fold tdx_sept_drop_private_spte() into tdx_sept_remove_private_spte()
-  
-  Fold tdx_sept_drop_private_spte() into tdx_sept_remove_private_spte() as a
-  step towards having "remove" be the only and only function that deals with
-  removing/zapping/dropping a SPTE, e.g. to avoid having to differentiate
-  between "zap", "drop", and "remove".  Eliminating the "drop" helper also
-  gets rid of what is effectively dead code due to redundant checks, e.g. on
-  an HKID being assigned.
-  
-  No functional change intended.
+Can you explain what this alphabet-soup even means?
