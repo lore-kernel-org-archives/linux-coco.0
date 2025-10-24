@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B61221710
-	for <linux-coco@lists.linux.dev>; Fri, 24 Oct 2025 02:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C36C22F386
+	for <linux-coco@lists.linux.dev>; Fri, 24 Oct 2025 02:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761271462; cv=none; b=RIobt67PqXwahln/5z5OUDCNwCqudfspaAji19n5VCD0b5ExiK4XkLZgbM/RVWik4eWcUeV8V9DgjM1mUssKdbJvs0nKvsfp6faW5ePRAAapWxotA1Flucv6Z1vWOAioMo/KLzyO7hXPOhxLP2swi5gzhiC4asJy06e2VUrGZfA=
+	t=1761271463; cv=none; b=TFdSpdqdXAxzuLsqlxYHFERr8F9276IEHOgXY/DVPx9iTfLTNgagFug7Ufbbl5xBI+zJH2ilm+hyDAbSL2Swja9n9nYylfJ+RjxwcdunDxQ7EMZHx8TvKIyctj4J49DfVfIWGCRHqZWyzyj1WOT3P1t5VBaXukizhLTOWvwE4Qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761271462; c=relaxed/simple;
-	bh=+fFZaPOxKKFP1Y8B3sc4//72UBC6J+SAsBM42404vGM=;
+	s=arc-20240116; t=1761271463; c=relaxed/simple;
+	bh=gqmP6v7SBzdUu4/0ddGH3gnejwqBt/2HoaQemSO54SM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GTmVX3BcSCStnASwS26laYswBR+xPbWanQVHDjWaDPmxhUnrj2JmrgGDpQc+F/UmWN3id9Y+IvhZ/UhitA4pf7wu9EpRGK8zplgF3raykEjJvz+kLmivVAG1E2QpcVyiZAuiyIjX6eKH/EuPg2OkXJCkzqtJsqG0UZbk8ROtRLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lMR461ud; arc=none smtp.client-ip=192.198.163.12
+	 MIME-Version; b=Nc8nLl+yGvq7k62yhHBI82qySYFRxtx+vjt8Ws93dg7DXNJioBFXSWhLCvifGYCzGF5K5u6gy0X3l8dvRRoGQfx3y8m7B/sCSwNYiDjd4xrNwLSUJPBg/y9lzQSqNaq0PqDE/LhzvtWYXN/nXmhr5/bBvJzQPeibjdM+FwFw0xE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gh/f7OO1; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lMR461ud"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gh/f7OO1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761271461; x=1792807461;
+  t=1761271462; x=1792807462;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=+fFZaPOxKKFP1Y8B3sc4//72UBC6J+SAsBM42404vGM=;
-  b=lMR461ud7eGTA3G5WBkyz42+SeGO6Qbli5WHLUuYbqND1xWT38W9OY+n
-   ri+PGzlo66G1v4Jk4LIHquVna0enHnrzJU2hD1KQ28+Nan5M3GYZudtV6
-   P1aPrRnSjb4eXgT42XCIZuKm3NKUbkPhZKsfqqEK2uZj7PjCYWjt/Ov/z
-   XpE5EI7dulK66Oj/8T9wt88SqO+JlVmVzM2M4tYuOSjZhUEYPaTUY2qU3
-   aG3t5rKqhf3ooy7EibtqqIc/t8ptynUwbwkUNl/lrvIdsNyI+dcnCHcHc
-   GpzhNXzq+QraQEnmWHzeyf2W60wrKzFyritZw/ExAmn2RAkN19LOifUu5
+  bh=gqmP6v7SBzdUu4/0ddGH3gnejwqBt/2HoaQemSO54SM=;
+  b=gh/f7OO14QUFmNA29GBeuY6Nqp3WcS3GEPWsA4pQqUQib4AWWbuIQd/M
+   jLJyjBvDEWrxOtsRIeycwtcJXAB+JRWoYBfOhVoIRdQgB7olQQzAUpxla
+   ftFS3Up3QwKik+B+LHrS/Wq7a8vq1Jvo55PnGVwZqY88AOmXNLBbdT0DM
+   Ft2BVFmgUJihRb6Nx1X3qdUSnSSXXIeR2cTxwtQoNjUy4m87qIbI1aQ8D
+   eW1CL8woF5bHeIEAjZRge8heizRCmnwSWAUdurLF3OYY8N4iJlinQsBUz
+   CcV+g3nWQP4yp81KCs6mr9ubENFUDTIvwqqvYAjKHMR+smjKUj+CQbANn
    g==;
-X-CSE-ConnectionGUID: crl2bCDtSBmrY7DO+7ekQQ==
-X-CSE-MsgGUID: Fj0fJk7wS/OWCvLGMiH1mQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="67319379"
+X-CSE-ConnectionGUID: VpRG/ZewREuAwiRLULIoSA==
+X-CSE-MsgGUID: vrvssXwWSIebld7HljN4PQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="67319381"
 X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; 
-   d="scan'208";a="67319379"
+   d="scan'208";a="67319381"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 19:04:18 -0700
-X-CSE-ConnectionGUID: l4E7l39pQ+OPJNS9VizM0Q==
-X-CSE-MsgGUID: Tv/XuO3RTJWeBvhT2G35ow==
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 19:04:19 -0700
+X-CSE-ConnectionGUID: IaSsUruJTRKhKlwh6VXRlQ==
+X-CSE-MsgGUID: W9zeHdXsSraPzrr3dbd5ew==
 X-ExtLoop1: 1
 Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
-  by fmviesa003.fm.intel.com with ESMTP; 23 Oct 2025 19:04:17 -0700
+  by fmviesa003.fm.intel.com with ESMTP; 23 Oct 2025 19:04:18 -0700
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-coco@lists.linux.dev,
 	linux-pci@vger.kernel.org
@@ -48,14 +48,10 @@ Cc: aik@amd.com,
 	yilun.xu@linux.intel.com,
 	aneesh.kumar@kernel.org,
 	bhelgaas@google.com,
-	gregkh@linuxfoundation.org,
-	Lukas Wunner <lukas@wunner.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>
-Subject: [PATCH v7 5/9] PCI: Add PCIe Device 3 Extended Capability enumeration
-Date: Thu, 23 Oct 2025 19:04:14 -0700
-Message-ID: <20251024020418.1366664-6-dan.j.williams@intel.com>
+	gregkh@linuxfoundation.org
+Subject: [PATCH v7 6/9] PCI: Establish document for PCI host bridge sysfs attributes
+Date: Thu, 23 Oct 2025 19:04:15 -0700
+Message-ID: <20251024020418.1366664-7-dan.j.williams@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251024020418.1366664-1-dan.j.williams@intel.com>
 References: <20251024020418.1366664-1-dan.j.williams@intel.com>
@@ -65,96 +61,55 @@ List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-PCIe r7.0 Section 7.7.9 Device 3 Extended Capability Structure, defines the
-canonical location for determining the Flit Mode of a device. This status
-is a dependency for PCIe IDE enabling. Add a new fm_enabled flag to 'struct
-pci_dev'.
+In preparation for adding more host bridge sysfs attributes, document the
+existing naming format and 'firmware_node' attribute.
 
-Cc: Lukas Wunner <lukas@wunner.de>
-Cc: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Samuel Ortiz <sameo@rivosinc.com>
-Cc: Alexey Kardashevskiy <aik@amd.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- include/linux/pci.h           |  1 +
- include/uapi/linux/pci_regs.h |  7 +++++++
- drivers/pci/probe.c           | 12 ++++++++++++
- 3 files changed, 20 insertions(+)
+ .../ABI/testing/sysfs-devices-pci-host-bridge | 19 +++++++++++++++++++
+ MAINTAINERS                                   |  1 +
+ 2 files changed, 20 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-devices-pci-host-bridge
 
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 2f9c0cb6a50a..ea94799c81b0 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -450,6 +450,7 @@ struct pci_dev {
- 	unsigned int	pasid_enabled:1;	/* Process Address Space ID */
- 	unsigned int	pri_enabled:1;		/* Page Request Interface */
- 	unsigned int	tph_enabled:1;		/* TLP Processing Hints */
-+	unsigned int	fm_enabled:1;		/* Flit Mode (segment captured) */
- 	unsigned int	is_managed:1;		/* Managed via devres */
- 	unsigned int	is_msi_managed:1;	/* MSI release via devres installed */
- 	unsigned int	needs_freset:1;		/* Requires fundamental reset */
-diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
-index f2759c1097bc..3add74ae2594 100644
---- a/include/uapi/linux/pci_regs.h
-+++ b/include/uapi/linux/pci_regs.h
-@@ -755,6 +755,7 @@
- #define PCI_EXT_CAP_ID_NPEM	0x29	/* Native PCIe Enclosure Management */
- #define PCI_EXT_CAP_ID_PL_32GT  0x2A    /* Physical Layer 32.0 GT/s */
- #define PCI_EXT_CAP_ID_DOE	0x2E	/* Data Object Exchange */
-+#define PCI_EXT_CAP_ID_DEV3	0x2F	/* Device 3 Capability/Control/Status */
- #define PCI_EXT_CAP_ID_IDE	0x30    /* Integrity and Data Encryption */
- #define PCI_EXT_CAP_ID_PL_64GT	0x31	/* Physical Layer 64.0 GT/s */
- #define PCI_EXT_CAP_ID_MAX	PCI_EXT_CAP_ID_PL_64GT
-@@ -1246,6 +1247,12 @@
- /* Deprecated old name, replaced with PCI_DOE_DATA_OBJECT_DISC_RSP_3_TYPE */
- #define PCI_DOE_DATA_OBJECT_DISC_RSP_3_PROTOCOL		PCI_DOE_DATA_OBJECT_DISC_RSP_3_TYPE
- 
-+/* Device 3 Extended Capability */
-+#define PCI_DEV3_CAP		0x04	/* Device 3 Capabilities Register */
-+#define PCI_DEV3_CTL		0x08	/* Device 3 Control Register */
-+#define PCI_DEV3_STA		0x0c	/* Device 3 Status Register */
-+#define  PCI_DEV3_STA_SEGMENT	0x8	/* Segment Captured (end-to-end flit-mode detected) */
+diff --git a/Documentation/ABI/testing/sysfs-devices-pci-host-bridge b/Documentation/ABI/testing/sysfs-devices-pci-host-bridge
+new file mode 100644
+index 000000000000..8c3a652799f1
+--- /dev/null
++++ b/Documentation/ABI/testing/sysfs-devices-pci-host-bridge
+@@ -0,0 +1,19 @@
++What:		/sys/devices/pciDDDD:BB
++		/sys/devices/.../pciDDDD:BB
++Contact:	linux-pci@vger.kernel.org
++Description:
++		A PCI host bridge device parents a PCI bus device topology. PCI
++		controllers may also parent host bridges. The DDDD:BB format
++		conveys the PCI domain (ACPI segment) number and root bus number
++		(in hexadecimal) of the host bridge. Note that the domain number
++		may be larger than the 16-bits that the "DDDD" format implies
++		for emulated host-bridges.
 +
- /* Compute Express Link (CXL r3.1, sec 8.1.5) */
- #define PCI_DVSEC_CXL_PORT				3
- #define PCI_DVSEC_CXL_PORT_CTL				0x0c
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index d1467348c169..3b54f1720be5 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -2283,6 +2283,17 @@ int pci_configure_extended_tags(struct pci_dev *dev, void *ign)
- 	return 0;
- }
- 
-+static void pci_dev3_init(struct pci_dev *pdev)
-+{
-+	u16 cap = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_DEV3);
-+	u32 val = 0;
-+
-+	if (!cap)
-+		return;
-+	pci_read_config_dword(pdev, cap + PCI_DEV3_STA, &val);
-+	pdev->fm_enabled = !!(val & PCI_DEV3_STA_SEGMENT);
-+}
-+
- /**
-  * pcie_relaxed_ordering_enabled - Probe for PCIe relaxed ordering enable
-  * @dev: PCI device to query
-@@ -2667,6 +2678,7 @@ static void pci_init_capabilities(struct pci_dev *dev)
- 	pci_doe_init(dev);		/* Data Object Exchange */
- 	pci_tph_init(dev);		/* TLP Processing Hints */
- 	pci_rebar_init(dev);		/* Resizable BAR */
-+	pci_dev3_init(dev);		/* Device 3 capabilities */
- 	pci_ide_init(dev);		/* Link Integrity and Data Encryption */
- 
- 	pcie_report_downtraining(dev);
++What:		pciDDDD:BB/firmware_node
++Contact:	linux-pci@vger.kernel.org
++Description:
++		(RO) Symlink to the platform firmware device object "companion"
++		of the host bridge. For example, an ACPI device with an _HID of
++		PNP0A08 (/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00). See
++		/sys/devices/pciDDDD:BB entry for details about the DDDD:BB
++		format.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index ebf6988666eb..9b961fb11b09 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -19896,6 +19896,7 @@ Q:	https://patchwork.kernel.org/project/linux-pci/list/
+ B:	https://bugzilla.kernel.org
+ C:	irc://irc.oftc.net/linux-pci
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git
++F:	Documentation/ABI/testing/sysfs-devices-pci-host-bridge
+ F:	Documentation/PCI/
+ F:	Documentation/devicetree/bindings/pci/
+ F:	arch/x86/kernel/early-quirks.c
 -- 
 2.51.0
 
