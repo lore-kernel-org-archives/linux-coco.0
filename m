@@ -1,150 +1,166 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C1A531D36B
-	for <linux-coco@lists.linux.dev>; Fri, 24 Oct 2025 16:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05B2347BCE
+	for <linux-coco@lists.linux.dev>; Fri, 24 Oct 2025 18:02:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761325044; cv=none; b=VVTQCUomEpXHXsuv1J37fPpKr5iBogYmoToOlGkQWgIy1QuTrSgRugSc9sVfREU1XqYn5vw7ysuZu+ajdgsg/sVjXRBwk+KY5lADUh2PO0rQtcdmolH7j8AdbRSuSxqRimC06Clqm9gIlvWdsJHlb1LNMNrK7g49l45gehf2fic=
+	t=1761328973; cv=none; b=ekPr9ZmqFGApaWypyRO5LF8DOH3EezOgxYBtTIasMMzYp27BNO2JlDYW4i9OJz3xSEigSWEUTbmVYw+snBBapdS++ofrYvmG/2mIm09vTJZmlUtOofgkmqdU+AKTu6iF6KgsYrhOSxA0Nlqcg5FykJFk5rJ1Uvm8UH4ZHfxiZY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761325044; c=relaxed/simple;
-	bh=znxPntvSK0iLuvDlLrIc6oUoFoqXWddOvlpeLWfjD/8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=APrPzk8PtUlf8j//O869PiNC5oeygFTvED1eoH5oYcYGNiPIg9OoF5l7wdbo/4wuifZblvZBXs476jvnkUPMLHW9X6gDy3r4FTsCIO+2tfbSCAR8dRK3fGB0jYufKz8D+Lx9BrNaJWf+TMgg4Zp38isROWq4CNWysdw6pk+DnIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lXsDjtKh; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1761328973; c=relaxed/simple;
+	bh=v7jjhQRygi54OOkAexn7Ztbxj0wNCzmMN4Xosb7Acro=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JL1gm8uC5OM0w9rsbgl5LfGqHWo5RXi4u5L8MDpak/Zn4YsYieGsQhg0pALODNOAT2OUu+cp68m5pxlGVo+6pgp/eYIyr7o3vehrr5JpRK4Xmvfnfszc9SQgLL1RAt7Sq4HY8ZR1stWpwD79Gu1mbQ21CheJxENjOAMXXfcK9UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WKJKTOYQ; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lXsDjtKh"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-33d8970ae47so2123253a91.1
-        for <linux-coco@lists.linux.dev>; Fri, 24 Oct 2025 09:57:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761325041; x=1761929841; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kCSFoTED+bN9czctrBnViFjaUxjZI+PzjY/BcjiPyhU=;
-        b=lXsDjtKhCaY1rBJc2jqehOuknakz0A98ZaSpRzNq1GsPDmAUV2o+6BPsaH8P/FcxuT
-         Lc7hg0U6P4tJ1Xv7CzOGMsh8Q7YdEWHUIgWF6GsCh4swV4RdE7aUlTbkQNEKYlaWKyd5
-         hVWmCQ2IMBG/eQKi/v03ejeMX2dvcih2ZhfY32v6z0VWMm5azYVVi9QpxIVs662H+dCN
-         fTlG06Op9BL5KkezFF62XjC1NM4jmYmJdBP6XZ2/4YtjNE20sRxTgXzdA5N6JVLo6QFf
-         a4kpSl+pE2lGhs94yyBx0dQAZpimQtQZIYNtPXza0c0TjDic3hKOWFtrmu4D0oDpdUUU
-         RR9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761325041; x=1761929841;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kCSFoTED+bN9czctrBnViFjaUxjZI+PzjY/BcjiPyhU=;
-        b=Mea8vcTvvLjF5SyDaDxY9YDs3vqC9ybnjNQLi9g4CG0Gv9Z4dQdokOgYHLBNhlNB9s
-         3UR2MJ1Yc+qlwn6Lh1fz4jdATNpo4/jopNh6p59EztPDWPMXJcYfLqtTLHZX3baZtPUp
-         pr/S09conuh2kgPFhSTT9Cdh2MezasMVCiIRLf8E530MDTatnlW+jq74bvbmq7WAZiR2
-         snj4v7OluZlPa5+iUonjPGYSfWkZdSBDPfqvFAl7wUjFZoWwoJ35AgDq77fx4YnAUplZ
-         Op57RPfB0o8khOAt5wizPoSO2foAejBdzEzL/NO3mOZ26r3LKhRveBg33lx4J7r+jiS8
-         t92Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUF6bUUpsgTzB+loUXJdN0kE8V3Ev0vRoIwOQt3EKxzkPrZJRu7/NoOvhh14FW/JDlZmzSBj4y+laGJ@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywza6tnGNCToCBgGlktaas0Z7IVQaPsOKBempQgBoEgUBnRoQC1
-	jogJyCqea3QYzGMPIP4HwOQ9Hffc/AvkVW+aAwHspdQOSLOhQSRPe+LZDn6OZlDG0zUX760xj80
-	/XHdl/Q==
-X-Google-Smtp-Source: AGHT+IHXmSeD3kNK6POSE1hGR7Jvio0RnirzUH7WSrLaKZ09lPaFZJIUb09S/aBT/hnx0ZxmJITFzdMKVRo=
-X-Received: from pjnu4.prod.google.com ([2002:a17:90a:8904:b0:339:dc19:ae5d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:48c8:b0:33b:ba55:f5dd
- with SMTP id 98e67ed59e1d1-33bcf93ab88mr32766320a91.37.1761325041555; Fri, 24
- Oct 2025 09:57:21 -0700 (PDT)
-Date: Fri, 24 Oct 2025 09:57:20 -0700
-In-Reply-To: <aPtOtzGLigbY0Vqw@yzhao56-desk.sh.intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WKJKTOYQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761328972; x=1792864972;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=v7jjhQRygi54OOkAexn7Ztbxj0wNCzmMN4Xosb7Acro=;
+  b=WKJKTOYQWVc+L+FHiQ2c1B3Iq8afevitBtGtvOA33D/Vbd/dbXDxUacC
+   4IV6iWgGQ77jxE77UjL/eeW7JwhMCNz2fEytyoXZ7XtGrnn9F1LOXQS8d
+   xxAITTsuXzlTwzIEKN/hM9gyeoe94TK5HlgkqR0DbvGM4OltMZwVdPedt
+   1POem7dz6v2GkNRtKn2nh+XKPTnUfWcyfAuiC4zx9kva67+8bn23g6V/v
+   wQl/73YlfeWju2GfhAfpRLEj6g0RVUhFgrO4bezDqHvlx2fZNKJ72DZFr
+   acXSfZkXy1go/1jn7ttkIdX5K1R2YWe2ZHkToL74zG9hrvXW34fJPSmoH
+   w==;
+X-CSE-ConnectionGUID: 8RpxnzS8Q6+YdX2fz0ySUw==
+X-CSE-MsgGUID: jj/VXrn/Rnujvzl9gP+d+g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74860527"
+X-IronPort-AV: E=Sophos;i="6.19,253,1754982000"; 
+   d="scan'208";a="74860527"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2025 11:02:50 -0700
+X-CSE-ConnectionGUID: pQqplbAiRlWiBqLu7iy8ZA==
+X-CSE-MsgGUID: Jg7yDgbLSkatZYMLTE/4aQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,253,1754982000"; 
+   d="scan'208";a="188784768"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO [10.125.109.44]) ([10.125.109.44])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2025 11:02:50 -0700
+Message-ID: <ca688bca-df3f-4d82-97e7-20fc26f7d69e@intel.com>
+Date: Fri, 24 Oct 2025 11:02:49 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-25-seanjc@google.com>
- <aPtOtzGLigbY0Vqw@yzhao56-desk.sh.intel.com>
-Message-ID: <aPuv8F8iDp3SLb9q@google.com>
-Subject: Re: [PATCH v3 24/25] KVM: TDX: Guard VM state transitions with "all"
- the locks
-From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
-	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Kirill A. Shutemov" <kas@kernel.org>, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Ira Weiny <ira.weiny@intel.com>, Kai Huang <kai.huang@intel.com>, 
-	Michael Roth <michael.roth@amd.com>, Vishal Annapurve <vannapurve@google.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/21] Runtime TDX Module update support
+To: Chao Gao <chao.gao@intel.com>
+Cc: Vishal Annapurve <vannapurve@google.com>,
+ "Reshetova, Elena" <elena.reshetova@intel.com>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "x86@kernel.org" <x86@kernel.org>,
+ "Chatre, Reinette" <reinette.chatre@intel.com>,
+ "Weiny, Ira" <ira.weiny@intel.com>, "Huang, Kai" <kai.huang@intel.com>,
+ "Williams, Dan J" <dan.j.williams@intel.com>,
+ "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
+ "sagis@google.com" <sagis@google.com>,
+ "paulmck@kernel.org" <paulmck@kernel.org>,
+ "nik.borisov@suse.com" <nik.borisov@suse.com>, Borislav Petkov
+ <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ "Kirill A. Shutemov" <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>
+References: <IA1PR11MB949522AA3819E217C5467B51E7E8A@IA1PR11MB9495.namprd11.prod.outlook.com>
+ <5b4c2bb3-cfde-4559-a59d-0ff9f2a250b4@intel.com>
+ <IA1PR11MB94955392108F5A662D469134E7E9A@IA1PR11MB9495.namprd11.prod.outlook.com>
+ <CAGtprH96B5K9Hk5h0FgxSUBa-pik=E=dLrO-4oxx76dxb9=7wQ@mail.gmail.com>
+ <IA1PR11MB9495BB77A4FAFBD78600416AE7F6A@IA1PR11MB9495.namprd11.prod.outlook.com>
+ <CAGtprH-h_axusSLTWsEZ6QoxgmVs0nVknqNJx-iskpsg_qHKFg@mail.gmail.com>
+ <aPiEakpcADuQHqQ3@intel.com>
+ <CAGtprH8q5U6h3p5iDYtwRiyVG_xF8hDwq6G34hLt-jhe+MRNaA@mail.gmail.com>
+ <CAGtprH9bLpQQ_2UOOShd15hPwMqwW+gwo1TzczLbwGdNkcJHhg@mail.gmail.com>
+ <aad8ae43-a7bd-42b2-9452-2bdee82bf0d8@intel.com> <aPsuD2fbYwCccgNi@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <aPsuD2fbYwCccgNi@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 24, 2025, Yan Zhao wrote:
-> On Thu, Oct 16, 2025 at 05:32:42PM -0700, Sean Christopherson wrote:
-> > Acquire kvm->lock, kvm->slots_lock, and all vcpu->mutex locks when
-> > servicing ioctls that (a) transition the TD to a new state, i.e. when
-> > doing INIT or FINALIZE or (b) are only valid if the TD is in a specific
-> > state, i.e. when initializing a vCPU or memory region.  Acquiring "all"
-> > the locks fixes several KVM_BUG_ON() situations where a SEAMCALL can fail
-> > due to racing actions, e.g. if tdh_vp_create() contends with either
-> > tdh_mr_extend() or tdh_mr_finalize().
-> > 
-> > For all intents and purposes, the paths in question are fully serialized,
-> > i.e. there's no reason to try and allow anything remotely interesting to
-> > happen.  Smack 'em with a big hammer instead of trying to be "nice".
-> > 
-> > Acquire kvm->lock to prevent VM-wide things from happening, slots_lock to
-> > prevent kvm_mmu_zap_all_fast(), and _all_ vCPU mutexes to prevent vCPUs
-> slots_lock to prevent kvm_mmu_zap_memslot()?
-> kvm_mmu_zap_all_fast() does not operate on the mirror root.
-
-Oh, right.
-
-> We may have missed a zap in the guest_memfd punch hole path:
+On 10/24/25 00:43, Chao Gao wrote:
+...
+> Beyond "the kvm_tdx object gets torn down during a build," I see two potential
+> issues:
 > 
-> The SEAMCALLs tdh_mem_range_block(), tdh_mem_track() tdh_mem_page_remove()
-> in the guest_memfd punch hole path are only protected by the filemap invaliate
-> lock and mmu_lock, so they could contend with v1 version of tdh_vp_init().
->
-> (I'm writing a selftest to verify this, haven't been able to reproduce
-> tdh_vp_init(v1) returning BUSY yet. However, this race condition should be
-> theoretically possible.)
+> 1. TD Build and TDX migration aren't purely kernel processes -- they span multiple
+>    KVM ioctls. Holding a read-write lock throughout the entire process would
+>    require exiting to userspace while the lock is held. I think this is
+>    irregular, but I'm not sure if it's acceptable for read-write semaphores.
+
+Sure, I guess it's irregular. But look at it this way: let's say we
+concocted some scheme to use a TD build refcount and a module update
+flag, had them both wait_event_interruptible() on each other, and then
+did wakeups. That would get the same semantics without an rwsem.
+
+So is your issue with the rwsem, or the idea that one bit of userspace
+can block another bit of userspace from doing something for arbitrary
+lengths of time?
+
+The one thing that worries me is solidly tying the build-side
+down_read() to the lifetime of kvm_tdx. But that shouldn't be rocket
+science. There also isn't a down_write_interruptible(), only
+down_write_killable().
+
+> 2. The kernel may need to hold this read-write lock for operations not yet
+>    defined in the future. The TDX Module Base spec [*] notes on page 55:
 > 
-> Resources              SHARED  users              EXCLUSIVE users
-> ------------------------------------------------------------------------
-> (1) TDR                tdh_mng_rdwr               tdh_mng_create
->                        tdh_vp_create              tdh_mng_add_cx
->                        tdh_vp_addcx               tdh_mng_init
->                        tdh_vp_init(v0)            tdh_mng_vpflushdone
->                        tdh_vp_enter               tdh_mng_key_config
->                        tdh_vp_flush               tdh_mng_key_freeid
->                        tdh_vp_rd_wr               tdh_mr_extend
->                        tdh_mem_sept_add           tdh_mr_finalize
->                        tdh_mem_sept_remove        tdh_vp_init(v1)
->                        tdh_mem_page_aug           tdh_mem_page_add
->                        tdh_mem_page_remove
->                        tdh_mem_range_block
->                        tdh_mem_track
->                        tdh_mem_range_unblock
->                        tdh_phymem_page_reclaim
-> 
-> Do you think we can acquire the mmu_lock for cmd KVM_TDX_INIT_VCPU?
-
-Ugh, I'd rather not?  Refresh me, what's the story with "v1"?  Are we now on v2?
-If this is effectively limited to deprecated TDX modules, my vote would be to
-ignore the flaw and avoid even more complexity in KVM.
-
-> > @@ -3155,12 +3198,13 @@ int tdx_vcpu_unlocked_ioctl(struct kvm_vcpu *vcpu, void __user *argp)
-> >  	if (r)
-> >  		return r;
-> >  
-> > +	CLASS(tdx_vm_state_guard, guard)(kvm);
-> Should we move the guard to inside each cmd? Then there's no need to acquire the
-> locks in the default cases. 
-
-No, I don't think it's a good tradeoff.  We'd also need to move vcpu_{load,put}()
-into the cmd helpers, and theoretically slowing down a bad ioctl invocation due
-to taking extra locks is a complete non-issue.
+>    : Future TDX Module versions may have different or additional update-sensitive
+>    : cases. By design, such cases apply to a small portion of the overall TD
+>    : lifecycle.
+Sure... But that's not a license for the TDX module to do completely
+silly things. Elena is on cc here for a reason and I'm sure she'll
+ensure that nothing silly gets put into the TDX module that will cause
+problems here.
