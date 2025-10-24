@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FF626FD9A
-	for <linux-coco@lists.linux.dev>; Fri, 24 Oct 2025 20:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA572E6CBE
+	for <linux-coco@lists.linux.dev>; Fri, 24 Oct 2025 20:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761336823; cv=none; b=puac+/sXJkUbf8zsaRhzYZtXTpLz9+zLsL+Jh/XWz2QSxNwBNb8mh0kqJ6hU+4z1i5uCp53iq7selIBFt0LF+q22dHZtvzDLYiPp9PKINe7qvL2rgBrsAiYeIZWP/o69OSmQvFrgHqM/j9ZqdG51Ej3hTOR3FqXf3xOAZ0tCA+I=
+	t=1761336893; cv=none; b=u4Pk+asChSBJSLmd7FVwmbohAuQoeb2uf4bTb7hnxaFl+Dtt3sYv5bGGYp+ewJgLhXk4KG/pVwgNWDS1XNgj0piNrrvAcaLxNvLVmTLAiiYfM1zndOw83LY1tcFpkSM7qJq2Vh7CB0AuGBAAfUWI1Z+qCm7jdwLLaOx2HWSi68I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761336823; c=relaxed/simple;
-	bh=j3v5TNMbUFZB30eKW14I321bGNuowEE00eakVRG41Gk=;
+	s=arc-20240116; t=1761336893; c=relaxed/simple;
+	bh=cg/YObBlYETxR8RXHfEISwwC9KkMJl2BXmchL+rYBv0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p+gEa/kgmdKHowcWrLiYutt8LUm3g29cm4lRXy5hagP4+uWL7ChS87KEqjts9EFcB6pTobu4tHPIcBaqf7z/1+eQ6aGZrZuoa3G2ubvSOu/iNHVFkSa3Y/EuFh8EDZD/nmFNvxN5vjlCrPXPuV3luPyYCBGSYeIwIuv8xCceuUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TyZySqVp; arc=none smtp.client-ip=198.175.65.9
+	 In-Reply-To:Content-Type; b=MHsx4WMPCOvLD7nSHbWzZwn1s8u1OZnE7lwhcQnLGPccGnBAm/RbwKan+LtCIO7urR4iCTRgXnl15Kwi4XssbHZY9YD+b8WmNgfW+7TtN8YVyqB0Fjadye1qmVuBIlsn488Rr4gTJk3GQTfzUJWFyaVAaBJEKIl9su2HWOz7mzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GGadB26c; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TyZySqVp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GGadB26c"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761336822; x=1792872822;
+  t=1761336892; x=1792872892;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=j3v5TNMbUFZB30eKW14I321bGNuowEE00eakVRG41Gk=;
-  b=TyZySqVpYHun8+7bX5H2OjxJxUQVR957RQ8w+c6UMUdvcaI+vvTP+4Hu
-   9qiDToFMGI4Xh79MFKWxZcd+jgDBlTpTnVG7yrM2nlt9Po86C/rHZvMFD
-   TrlVFpt+v7hv+1YBWX3s7cK20xQKev5WkvVyz2lCzXbJ25vuAkcfcioEh
-   awNSP3M83NuTjWp++nba0Rp/2bopkUd7/gxTTpkrigD59odLv2/1wyXTl
-   i1JYJkTXQj7RyHBE69t90Uvj5GdGWgZRM2O4fiG82emJFL7Tvisx4zM8a
-   /gLMjBUX9ah/GxAu6s3bL+fDsxvVHDBFyZo78Bd/wiNUoOlGo47Jx9nS+
-   A==;
-X-CSE-ConnectionGUID: KNq2KL/DSVS49uaZ2Ys0Og==
-X-CSE-MsgGUID: P0x5LysqSRS/fxJCrBtbNQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="86153514"
+  bh=cg/YObBlYETxR8RXHfEISwwC9KkMJl2BXmchL+rYBv0=;
+  b=GGadB26cfdkOHE5ou6SXODzDottALel3drA6IAgLETugFJUvRp9OBYyb
+   lT4j0DPZnebZZ850WdnXf0u2uRYsv1M7AR19MVxfFmeBqd1piUBHSGfiF
+   hHE13XTjL6SuoI0zBt63yIsbp19G8l3T7QuD05IcxioEqyIshQXPuHm8+
+   hwNzNbo5y/ku2DxyuHjtheGKOysT5JBJrY5KD8azDx7+7OVexbmBj7Jrc
+   r6Uu2oougGY4QcxW1hLIipWthZV6K9d4I6WhhVWUXYNcqspeCeOF0WYzv
+   DZbSMIXPSpGcfyXvJNTBUe/lYVPhvJ0hQ3FgB3l12snrXUy7JigS2jAJK
+   g==;
+X-CSE-ConnectionGUID: 6HOGpfSSRpuHhnvOtC6WrA==
+X-CSE-MsgGUID: 5sxL5BFBQV+xpHeLEzdEeA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="86153584"
 X-IronPort-AV: E=Sophos;i="6.19,253,1754982000"; 
-   d="scan'208";a="86153514"
+   d="scan'208";a="86153584"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2025 13:13:41 -0700
-X-CSE-ConnectionGUID: P9cW1H75QuuPAB04qIwYaQ==
-X-CSE-MsgGUID: hrkB1Sj2RYGhD/jdDOzsHw==
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2025 13:14:51 -0700
+X-CSE-ConnectionGUID: SvR/jMdJSf6U0cY4FK2Swg==
+X-CSE-MsgGUID: yQ/qLSV+QLuXhXVHkKaCaQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,253,1754982000"; 
-   d="scan'208";a="188815297"
+   d="scan'208";a="188815549"
 Received: from aschofie-mobl2.amr.corp.intel.com (HELO [10.125.109.44]) ([10.125.109.44])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2025 13:13:40 -0700
-Message-ID: <2e49e80f-fab0-4248-8dae-76543e3c6ae3@intel.com>
-Date: Fri, 24 Oct 2025 13:13:40 -0700
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2025 13:14:51 -0700
+Message-ID: <45c85e40-d049-4242-a251-d541e60d6e7d@intel.com>
+Date: Fri, 24 Oct 2025 13:14:50 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -53,14 +53,14 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 00/21] Runtime TDX Module update support
-To: dan.j.williams@intel.com, Chao Gao <chao.gao@intel.com>
-Cc: Vishal Annapurve <vannapurve@google.com>,
- "Reshetova, Elena" <elena.reshetova@intel.com>,
+To: Sean Christopherson <seanjc@google.com>, dan.j.williams@intel.com
+Cc: Chao Gao <chao.gao@intel.com>, Vishal Annapurve <vannapurve@google.com>,
+ Elena Reshetova <elena.reshetova@intel.com>,
  "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
  "x86@kernel.org" <x86@kernel.org>,
- "Chatre, Reinette" <reinette.chatre@intel.com>,
- "Weiny, Ira" <ira.weiny@intel.com>, "Huang, Kai" <kai.huang@intel.com>,
+ Reinette Chatre <reinette.chatre@intel.com>, Ira Weiny
+ <ira.weiny@intel.com>, Kai Huang <kai.huang@intel.com>,
  "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
  "sagis@google.com" <sagis@google.com>,
  "paulmck@kernel.org" <paulmck@kernel.org>,
@@ -68,12 +68,9 @@ Cc: Vishal Annapurve <vannapurve@google.com>,
  <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
  "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
  "Kirill A. Shutemov" <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ Rick P Edgecombe <rick.p.edgecombe@intel.com>,
  Thomas Gleixner <tglx@linutronix.de>
-References: <IA1PR11MB949522AA3819E217C5467B51E7E8A@IA1PR11MB9495.namprd11.prod.outlook.com>
- <5b4c2bb3-cfde-4559-a59d-0ff9f2a250b4@intel.com>
- <IA1PR11MB94955392108F5A662D469134E7E9A@IA1PR11MB9495.namprd11.prod.outlook.com>
- <CAGtprH96B5K9Hk5h0FgxSUBa-pik=E=dLrO-4oxx76dxb9=7wQ@mail.gmail.com>
+References: <CAGtprH96B5K9Hk5h0FgxSUBa-pik=E=dLrO-4oxx76dxb9=7wQ@mail.gmail.com>
  <IA1PR11MB9495BB77A4FAFBD78600416AE7F6A@IA1PR11MB9495.namprd11.prod.outlook.com>
  <CAGtprH-h_axusSLTWsEZ6QoxgmVs0nVknqNJx-iskpsg_qHKFg@mail.gmail.com>
  <aPiEakpcADuQHqQ3@intel.com>
@@ -82,6 +79,7 @@ References: <IA1PR11MB949522AA3819E217C5467B51E7E8A@IA1PR11MB9495.namprd11.prod.
  <aad8ae43-a7bd-42b2-9452-2bdee82bf0d8@intel.com> <aPsuD2fbYwCccgNi@intel.com>
  <ca688bca-df3f-4d82-97e7-20fc26f7d69e@intel.com>
  <68fbd63450c7c_10e910021@dwillia2-mobl4.notmuch>
+ <aPvaw6NgPBq1paUh@google.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -127,70 +125,22 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <68fbd63450c7c_10e910021@dwillia2-mobl4.notmuch>
+In-Reply-To: <aPvaw6NgPBq1paUh@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 10/24/25 12:40, dan.j.williams@intel.com wrote:
-> Dave Hansen wrote:
->> On 10/24/25 00:43, Chao Gao wrote:
->> ...
->>> Beyond "the kvm_tdx object gets torn down during a build," I see two potential
->>> issues:
->>>
->>> 1. TD Build and TDX migration aren't purely kernel processes -- they span multiple
->>>    KVM ioctls. Holding a read-write lock throughout the entire process would
->>>    require exiting to userspace while the lock is held. I think this is
->>>    irregular, but I'm not sure if it's acceptable for read-write semaphores.
->>
->> Sure, I guess it's irregular. But look at it this way: let's say we
->> concocted some scheme to use a TD build refcount and a module update
->> flag, had them both wait_event_interruptible() on each other, and then
->> did wakeups. That would get the same semantics without an rwsem.
+On 10/24/25 13:00, Sean Christopherson wrote:
+> C'mon people (especially the Google folks), this is the ***exact***
+> same problem as certificate updates for SNP[1].  Y'all suggested
+> holding a lock across a userspace exit back then, and Dan's analysis
+> confirms my reaction from back then that "Holding a lock across an
+> exit to userspace seems wildly unsafe."[2]
 > 
-> This sounds unworkable to me.
+> In the end, it took more time to understand the problem then to
+> sketch out and test a solution[3].
 > 
-> First, you cannot return to userspace while holding a lock. Lockdep will
-> rightfully scream:
-> 
->     "WARNING: lock held when returning to user space!"
+> Unless this somehow puts the host (kernel) at risk, this is a
+> userspace problem.
 
-Well, yup, it sure does look that way for normal lockdep-annotated lock
-types. It does seem like a sane rule to have for most things.
-
-But, just to be clear, this is a lockdep thing and a good, solid
-semantic to have. It's not a rule that no kernel locking structure can
-ever be held when returning to userspace.
-
-> The complexity of ensuring that a multi-stage ABI transaction completes
-> from the kernel side is painful. If that process dies in the middle of
-> its ABI sequence who cleans up these references?
-
-The 'struct kvm_tdx' has to get destroyed at some point. It also has a
-'kvm_tdx_state' field that could be tied very tightly to the build
-status. The reference gets cleaned up before the point when the
-kvm_tdx->state memory is freed.
-
-> The operational mechanism to make sure that one process flow does not
-> mess up another process flow is for those process to communicate with
-> *userspace* file locks, or for those process to check for failures after
-> the fact and retry. Unless you can make the build side an atomic ABI,
-> this is a documentation + userspace problem, not a kernel problem.
-
-Yeah, that's a totally valid take on it.
-
-My only worry is that the module update is going to be off in another
-world from the thing building TDs. We had a similar set of challenges
-around microcode updates, CPUSVN and SGX enclaves.
-
-The guy doing "echo 1 > /sys/.../whatever" wasn't coordinating with
-every entity on the system that might run an SGX enclave. It certainly
-didn't help that enclave creation is typically done by unprivileged
-users. Maybe the KVM/TDX world is a _bit_ more narrow and they will be
-talking to each other, or the /dev/kvm permissions will be a nice funnel
-to get them talking to each other.
-
-The SGX solution, btw, was to at least ensure forward progress (CPUSVN
-update) when the last enclave goes away. So new enclaves aren't
-*prevented* from starting but the window when the first one starts
-(enclave count going from 0->1) is leveraged to do the update.
+If there's an similar SEV-SNP problem and accepted solution punted to
+userspace that TDX can leverage, I'm 100% on board with that. Let's do that.
