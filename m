@@ -1,195 +1,218 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2854438B
-	for <linux-coco@lists.linux.dev>; Sat, 25 Oct 2025 12:01:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9882F7ADB;
+	Sat, 25 Oct 2025 16:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761393707; cv=none; b=sHeughXKXoIrqx7sirJy3jt5Ls5NAcm6bH5av6vnOrpis1Wa53kGgGBtfzEhKGj3M1ttXtnw1Nv49Q/mWHW6MLn7AxX9MmspdKQZCGmvMF70WWsnV/8Yl9kf5uxYahtyHNGFv2Hpre3tKhq6m+YJO6nE/+T3LuDQTDenKpnXuXs=
+	t=1761409356; cv=none; b=D36BNAUYSqu0zAaTUZy451G0o1EJNOwKfX24XhJ2rI5Fq7ZcY+3szgC98Gqf2EU/BWQxtBYmQvYw4ZT+FcT/ctEJxxP+O7hBCKwWdNKG7G4ij/MFtmNCc8wt1UP6auBVmE8/wSOPGWPJg9LGarbTJsLhMWN60/2bbLcdNh26Zgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761393707; c=relaxed/simple;
-	bh=Ujk6iqU9KVQba16+hYEER1mwVvVVDjpdFhZvHMW80rY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nj/XQpPUmic0j7HuD3Ek24poV/a8XXW9QHKjNUiYDuPv2seCXUi8iOLp6Ak7HwdY2+DF9OntknMo3yHRZBru5Ni43w5oc/zcunXdiT9Ua28S8wIbk4RguBrijcECsqRMXjv3f+L0FqyShV2iWae5/1+ihR73H3BqTYaaGAQ3UKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gOd744Ls; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1761409356; c=relaxed/simple;
+	bh=Scyd5qEDWJqJQEzt5obIOadjeCJCp5CBwuOwu4LwHsc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NcW7sY4tTc2chMN7H+2q0GhmV7RrxGq7+nuQ+70XUawwusararwkRX/JjZGmRK33lyQw+cC1uH2YNgyt2+O669Aw9KwbiIb4sCNb/CEoavGYhUOkdoeT4BIXHk5MRMAGffoqugRIJ3pnvoLVyhanHExx1CAKokodr+rPh+C6Y68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UirOREv9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gOd744Ls"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-290da96b37fso92965ad.1
-        for <linux-coco@lists.linux.dev>; Sat, 25 Oct 2025 05:01:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761393702; x=1761998502; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UizpXQElhPRHwiW9M8i1Z/oMEyZZiusg6Iw3HkMKgh0=;
-        b=gOd744Lsna8d0Umt6oaL6z4O7Q44hOSpieGRj3hvJFauXhDBn5tlBvbJ6tYTbYz7Cf
-         7qzMVh9AFGmfIKqco8VurPh/Jl+7/tIyytNJHm8n5XSsun0EbORRMaknw1TT6dPINVpF
-         kIi/q+Q0u5TiN+kfdb+BKbK/AksAZwXeiEFFG8rvGdwf9fg6IRQfi0Cf20VMHhfDyTqu
-         23Qj+8jvyNPnr/A+YzFD8S+04HoSkrayccVahQOtq3pCtlvrulI4VGTY5rY2FBoAbG2b
-         Zy3UnBAerPcK12niBgHHgOesrNGMMmg+LxHBcLlv0YUU1S5sMtQ+bya31C8Vq397pXLh
-         +/6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761393702; x=1761998502;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UizpXQElhPRHwiW9M8i1Z/oMEyZZiusg6Iw3HkMKgh0=;
-        b=ZHgOYwaU+xH86DO74+29ka6SG0DJf7tQ7S20sT4NoID4cQKmQoorluALchRMrCJ2Ye
-         QZapD7NJZEPX0DWC4eIkgYneaXTJTMgfmDdc6ZbgfCCh0zlydOFsD/XWQ14D+ui/rU6x
-         kxCIPeW0eJhD+ogdCt7Tw/4yLvLcvuEZqgaOTEwzAwAiBx0Ypm0jJBu3T7vh2esLRlGY
-         uxJE3dcvcXY55CjLFSuwzaj7Q9JobgfmLw4V3DZrQgCI1txrm5sYR0TqgpR/1xkzZQ/S
-         FwHUmqgO7mckS7Xip5dUxz5xvLSMp3aQkRMP5Va60cdRwQp2StJeL6aWKLAoXmNDyz0+
-         kxaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVGtnlQBQN6TAtAwqXCVm+6/yJ1ed6vT4GWl9k4hCW43bl7M40pEkWqoUyNeQZMQyGW8duYwgfjhK05@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxkvb/KPCnNXgijOFNOv+YdWM1PNqLFprSQgxXOVhmMlNGTBZI2
-	xAvTCEOt/stiyojRrsjSvfHEAE6ek9gEvvq1UBz/XgIHbvV//U5tjkS6MLf0GL0H5m2fy+nCwrx
-	ocqLHQC2SEoTf3obHccucLFsWhTmVYmGxQiU2MR6X
-X-Gm-Gg: ASbGncvlTcXsVOLBFAiguc5E5Vfztrg1Be/ODz0IY4JN3lqv1Wst+VVBypv1RcmoeV2
-	qUGs9jVE3nAyJybd1MWlGVsW7nvtdXB72uENXLpUXZWSrkF6QhUwAopjl0NI/28neVWzX3Uy120
-	Lyd9esRBtDhP6ZDQO4wE9NR7QkxZG4UuI2UFLcTIJRWKzpgfmKbR/couTnpnENQB/R1Im6vYyLW
-	YAdMJY/w0Qh6SkIdx5I/XXstY51jmsMK9UQRfipPBIcApase4yPVH3dz4Yic137Jc+4BA7htDxu
-	4eYQ9PgX5Kf/wRt8hKs15gdOWwc=
-X-Google-Smtp-Source: AGHT+IEI2TSIun1IQZ8gSsT/X/tnWJAFJ2FTuEjF7iDh6pIoKmtjLLDyAcns7/bM8l2+hr917GxvO4CZCLFjLdxLWAI=
-X-Received: by 2002:a17:902:c951:b0:290:be4a:40d2 with SMTP id
- d9443c01a7336-29497dd75e0mr2938595ad.13.1761393700674; Sat, 25 Oct 2025
- 05:01:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UirOREv9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F706C4CEFB;
+	Sat, 25 Oct 2025 16:22:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761409356;
+	bh=Scyd5qEDWJqJQEzt5obIOadjeCJCp5CBwuOwu4LwHsc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=UirOREv9sYR8FYy4at1GfAVYjMzSo5NJOhpIzdhF0yOhFCzQVn5hQO5QRKZgai+Tx
+	 qWDFi4xJsYnwAdptGQFnPKlhNiXZmXfZ6HYOHIX/isfX8ECymfyN02d5OhNC4rZ3tR
+	 OZ4D36dXf9ogcmLbUZvfvV/XnerBfEIP4oWOVHVXTL96dLfYawmt6Qj3s7hEHpGLD7
+	 2IJCVidxoVTnnCGnbynDeRN/65wpJZ9bh7gvFEtwcZVSHVabpr1p5I7YRwTAc2jYuG
+	 JbBuaffdmOY0qwBMDxrZPMMk4zh/BGldwLGooti+QaXFYikX/qLlql2m7U0patgZGK
+	 3wol22IpvaeTw==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Kai Huang <kai.huang@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Farrah Chen <farrah.chen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	kas@kernel.org,
+	dwmw@amazon.co.uk,
+	mingo@kernel.org,
+	bp@alien8.de,
+	alexandre.f.demers@gmail.com,
+	coxu@redhat.com,
+	peterz@infradead.org,
+	x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.17] x86/kexec: Disable kexec/kdump on platforms with TDX partial write erratum
+Date: Sat, 25 Oct 2025 11:58:39 -0400
+Message-ID: <20251025160905.3857885-288-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251025160905.3857885-1-sashal@kernel.org>
+References: <20251025160905.3857885-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <IA1PR11MB949522AA3819E217C5467B51E7E8A@IA1PR11MB9495.namprd11.prod.outlook.com>
- <5b4c2bb3-cfde-4559-a59d-0ff9f2a250b4@intel.com> <IA1PR11MB94955392108F5A662D469134E7E9A@IA1PR11MB9495.namprd11.prod.outlook.com>
- <CAGtprH96B5K9Hk5h0FgxSUBa-pik=E=dLrO-4oxx76dxb9=7wQ@mail.gmail.com>
- <IA1PR11MB9495BB77A4FAFBD78600416AE7F6A@IA1PR11MB9495.namprd11.prod.outlook.com>
- <CAGtprH-h_axusSLTWsEZ6QoxgmVs0nVknqNJx-iskpsg_qHKFg@mail.gmail.com>
- <aPiEakpcADuQHqQ3@intel.com> <CAGtprH8q5U6h3p5iDYtwRiyVG_xF8hDwq6G34hLt-jhe+MRNaA@mail.gmail.com>
- <CAGtprH9bLpQQ_2UOOShd15hPwMqwW+gwo1TzczLbwGdNkcJHhg@mail.gmail.com>
- <aad8ae43-a7bd-42b2-9452-2bdee82bf0d8@intel.com> <aPsuD2fbYwCccgNi@intel.com>
- <ca688bca-df3f-4d82-97e7-20fc26f7d69e@intel.com> <68fbd63450c7c_10e910021@dwillia2-mobl4.notmuch>
- <2e49e80f-fab0-4248-8dae-76543e3c6ae3@intel.com> <68fbebc54e776_10e9100fd@dwillia2-mobl4.notmuch>
- <10786082-94e0-454e-a581-7778b3a22e26@intel.com> <CAGtprH8AbW4P2t-wHVcTdfLwf3SJK5mxP1CbsMHTgMYEpLiWjQ@mail.gmail.com>
- <68fc2af6305be_10e210029@dwillia2-mobl4.notmuch> <CAGtprH8-UGFkh4NmuY1ETPYmg7Uk+bm24Er2PPxf8tUOSR_byQ@mail.gmail.com>
-In-Reply-To: <CAGtprH8-UGFkh4NmuY1ETPYmg7Uk+bm24Er2PPxf8tUOSR_byQ@mail.gmail.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Sat, 25 Oct 2025 05:01:26 -0700
-X-Gm-Features: AS18NWBG8_jgcTaN3yRxZ4uL7cLH-mCOXBGmB6GYKsB1rQG36As2Sx9bgP6jg5E
-Message-ID: <CAGtprH9pBFENEOs7fcu-UMwU6Eiygw3h8L_Yxvc5S4mNsZvPxA@mail.gmail.com>
-Subject: Re: [PATCH v2 00/21] Runtime TDX Module update support
-To: dan.j.williams@intel.com
-Cc: Dave Hansen <dave.hansen@intel.com>, Chao Gao <chao.gao@intel.com>, 
-	"Reshetova, Elena" <elena.reshetova@intel.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, 
-	"Chatre, Reinette" <reinette.chatre@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>, 
-	"Huang, Kai" <kai.huang@intel.com>, "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, 
-	"sagis@google.com" <sagis@google.com>, "paulmck@kernel.org" <paulmck@kernel.org>, 
-	"nik.borisov@suse.com" <nik.borisov@suse.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.17.5
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sat, Oct 25, 2025 at 4:55=E2=80=AFAM Vishal Annapurve <vannapurve@google=
-.com> wrote:
->
-> On Fri, Oct 24, 2025 at 6:42=E2=80=AFPM <dan.j.williams@intel.com> wrote:
-> >
-> > Vishal Annapurve wrote:
-> > > On Fri, Oct 24, 2025 at 2:19=E2=80=AFPM Dave Hansen <dave.hansen@inte=
-l.com> wrote:
-> > > >
-> > > > On 10/24/25 14:12, dan.j.williams@intel.com wrote:
-> > > > >> The SGX solution, btw, was to at least ensure forward progress (=
-CPUSVN
-> > > > >> update) when the last enclave goes away. So new enclaves aren't
-> > > > >> *prevented* from starting but the window when the first one star=
-ts
-> > > > >> (enclave count going from 0->1) is leveraged to do the update.
-> > > > > The status quo does ensure forward progress. The TD does get buil=
-t and
-> > > > > the update does complete, just the small matter of TD attestation
-> > > > > failures, right?
-> > >
-> > > I would think that it's not a "small" problem if confidential
-> > > workloads on the hosts are not able to pass attestation.
-> >
-> > "Small" as in "not the kernel's problem". Userspace asked for the
-> > update, update is documented to clobber build sometimes, userspace ran
-> > an update anyway. Userspace asked for the clobber.
-> >
-> > It would be lovely if this clobbering does not happen at all and the
-> > update mechanism did not come with this misfeature. Otherwise, the kern=
-el
-> > has no interface to solve that problem. The best it can do is document
-> > that this new update facility has this side effect.
->
-> In this case, host kernel has a way to ensure that userspace can't
-> trigger such clobbering at all. That IIUC is "Avoid updates during
-> update sensitive times". Best kernel can do is prevent userspace from
-> screwing up the state of TDs.
->
-> >
-> > Userspace always has the choice to not update, coordinate update with
-> > build, or do nothing and let tenants try to launch again.  Userspace
-> > could even retry the build and hide the tenant failure if it knew about
-> > the clobber,
->
-> IIUC host userspace has no way to know if the TD state got clobbered.
->
-> > but be clear that the problem is the clobber not the kernel
-> > doing what userspace asked.
-> >
-> > The clobber, as I understand, is also limited to cases where the update
-> > includes crypto library changes. I am not sure how often that happens i=
-n
-> > practice. Suffice to say, the fact that the clobber is conditioned on
-> > the contents of the update also puts it further away from being a kerne=
-l
->
-> The knowledge of things getting clobbered are well much further away
-> from userspace.
->
-> > problem. The clobber does not corrupt kernel state.
-> >
-> > > > Oh, yeah, for sure.
-> > > >
-> > > > If we do _nothing_ in the kernel (no build vs. module update
-> > > > synchronization), then the downside is being exposed to attestation
-> > > > failures if userspace either also does nothing or has bugs.
-> > > >
-> > > > That's actually, by far, my preferred solution to this whole mess:
-> > > > Userspace plays stupid games, userspace wins stupid prizes.
-> > > >
-> > >
-> > > IIUC, enforcing "Avoid updates during update sensitive times" is not
-> > > that complex and will ensure to avoid any issues with user space
-> > > logic.
-> >
-> > Userspace logic avoids issues by honoring the documentation that these
-> > ABIs sequences need synchronization. Otherwise, kernel blocking update
-> > during build just trades one error for another.
->
-> Kernel blocking update during build makes the production systems much
-> safer and prevents userspace from screwing up the state that it has no
-> way to detect after the fact.
->
-> >
-> > Treat this like any other userspace solution for requiring "atomic"
-> > semantics when the kernel mechanisms are not themselves designed to be
-> > atomic, wrap it in userspace synchronization.
->
-> In general if this is something userspace detectable I would agree,
-> TDX module is the closest entity that can detect the problematic
-> sequence and the host kernel has a very simple way to ensure that such
-> a problematic sequence is not at all allowed to happen by toggling
-> some seamcall controls. It would be very helpful IMO to ensure that
-> userspace is not able to screw up production workloads especially if
-> the mess is not all visible to userspace.
+From: Kai Huang <kai.huang@intel.com>
 
-Detecting is one thing, undoing the mess is disruptive and not easy to
-orchestrate in this case.
+[ Upstream commit b18651f70ce0e45d52b9e66d9065b831b3f30784 ]
+
+Some early TDX-capable platforms have an erratum: A kernel partial
+write (a write transaction of less than cacheline lands at memory
+controller) to TDX private memory poisons that memory, and a subsequent
+read triggers a machine check.
+
+On those platforms, the old kernel must reset TDX private memory before
+jumping to the new kernel, otherwise the new kernel may see unexpected
+machine check.  Currently the kernel doesn't track which page is a TDX
+private page.  For simplicity just fail kexec/kdump for those platforms.
+
+Leverage the existing machine_kexec_prepare() to fail kexec/kdump by
+adding the check of the presence of the TDX erratum (which is only
+checked for if the kernel is built with TDX host support).  This rejects
+kexec/kdump when the kernel is loading the kexec/kdump kernel image.
+
+The alternative is to reject kexec/kdump when the kernel is jumping to
+the new kernel.  But for kexec this requires adding a new check (e.g.,
+arch_kexec_allowed()) in the common code to fail kernel_kexec() at early
+stage.  Kdump (crash_kexec()) needs similar check, but it's hard to
+justify because crash_kexec() is not supposed to abort.
+
+It's feasible to further relax this limitation, i.e., only fail kexec
+when TDX is actually enabled by the kernel.  But this is still a half
+measure compared to resetting TDX private memory so just do the simplest
+thing for now.
+
+The impact to userspace is the users will get an error when loading the
+kexec/kdump kernel image:
+
+  kexec_load failed: Operation not supported
+
+This might be confusing to the users, thus also print the reason in the
+dmesg:
+
+  [..] kexec: Not allowed on platform with tdx_pw_mce bug.
+
+Signed-off-by: Kai Huang <kai.huang@intel.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Tested-by: Farrah Chen <farrah.chen@intel.com>
+Link: https://lore.kernel.org/all/20250901160930.1785244-5-pbonzini%40redhat.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+LLM Generated explanations, may be completely bogus:
+
+YES
+
+**Why This Fix Matters**
+- Prevents machine checks during kexec/kdump on early TDX-capable
+  platforms with the “partial write to TDX private memory” erratum.
+  Without this, the new kernel may hit an MCE after the old kernel
+  jumps, which is a hard failure affecting users.
+
+**What Changed**
+- Adds an early guard in the kexec image load path to reject kexec/kdump
+  if the CPU bug is present:
+  - `arch/x86/kernel/machine_kexec_64.c:361`: `if
+    (boot_cpu_has_bug(X86_BUG_TDX_PW_MCE)) { ... return -EOPNOTSUPP; }`
+  - `arch/x86/kernel/machine_kexec_64.c:362`: Prints a one-time reason:
+    “Not allowed on platform with tdx_pw_mce bug”
+  - The check runs before page table setup and other preparation,
+    minimizing side effects.
+
+**Where the Bug Flag Comes From**
+- Bug flag definition: `arch/x86/include/asm/cpufeatures.h:543` defines
+  `X86_BUG_TDX_PW_MCE`.
+- Detection/enablement on TDX host platforms:
+  - `arch/x86/kernel/cpu/common.c:2124`: Calls `tdx_init()` during boot
+    CPU identification.
+  - `arch/x86/virt/vmx/tdx/tdx.c:1465`: `tdx_init()` calls
+    `check_tdx_erratum()`.
+  - `arch/x86/virt/vmx/tdx/tdx.c:1396`: `check_tdx_erratum()` sets the
+    bug via `setup_force_cpu_bug(X86_BUG_TDX_PW_MCE)` for affected
+    models (`:1407`).
+- If TDX host support is not built, `tdx_init()` is a stub and the bug
+  bit is never set (guard becomes a no-op). This scopes the behavior to
+  kernels configured with TDX host support as intended.
+
+**Effect on Callers**
+- kexec fast-fails when loading the image:
+  - `kernel/kexec.c:142`: `ret = machine_kexec_prepare(image);`
+  - `kernel/kexec_file.c:416`: `ret = machine_kexec_prepare(image);`
+- Userspace sees `EOPNOTSUPP` and dmesg logs the rationale, avoiding a
+  crash later at handoff.
+
+**Scope and Risk**
+- Small, localized change; no architectural refactor.
+- Only affects x86-64 kexec/kdump on systems where the bug flag is set;
+  no behavioral change for others.
+- Conservative by design: disallows kexec/kdump to prevent hard machine
+  checks.
+- Reuse of existing CPU-bug infrastructure ensures correctness and
+  stability.
+
+**Dependencies/Backport Notes**
+- Requires `X86_BUG_TDX_PW_MCE` to exist and be set on affected hardware
+  (see cpufeatures and TDX init paths). If a target stable branch lacks
+  this bug flag or `tdx_init()` path, the guard must be adapted or
+  prerequisite patches included.
+
+**Stable Criteria**
+- Fixes a real user-visible reliability issue (hard MCE on reboot-to-
+  crash kernel).
+- Minimal and contained change with low regression risk.
+- No new features or architectural changes; limited to x86 kexec path.
+- Behavior matches stable policy: prefer preventing fatal errors over
+  risky runtime mitigation.
+
+Given the above, this is a good candidate for backporting to stable
+trees that include TDX host infrastructure and the corresponding bug
+flag.
+
+ arch/x86/kernel/machine_kexec_64.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
+index 697fb99406e6b..754e95285b910 100644
+--- a/arch/x86/kernel/machine_kexec_64.c
++++ b/arch/x86/kernel/machine_kexec_64.c
+@@ -346,6 +346,22 @@ int machine_kexec_prepare(struct kimage *image)
+ 	unsigned long reloc_end = (unsigned long)__relocate_kernel_end;
+ 	int result;
+ 
++	/*
++	 * Some early TDX-capable platforms have an erratum.  A kernel
++	 * partial write (a write transaction of less than cacheline
++	 * lands at memory controller) to TDX private memory poisons that
++	 * memory, and a subsequent read triggers a machine check.
++	 *
++	 * On those platforms the old kernel must reset TDX private
++	 * memory before jumping to the new kernel otherwise the new
++	 * kernel may see unexpected machine check.  For simplicity
++	 * just fail kexec/kdump on those platforms.
++	 */
++	if (boot_cpu_has_bug(X86_BUG_TDX_PW_MCE)) {
++		pr_info_once("Not allowed on platform with tdx_pw_mce bug\n");
++		return -EOPNOTSUPP;
++	}
++
+ 	/* Setup the identity mapped 64bit page table */
+ 	result = init_pgtable(image, __pa(control_page));
+ 	if (result)
+-- 
+2.51.0
+
