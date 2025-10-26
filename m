@@ -1,89 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E83A224AED;
-	Sat, 25 Oct 2025 16:53:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEC44438B;
+	Sun, 26 Oct 2025 03:19:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761411236; cv=none; b=Rc1OE6fDr80ghZg8ZmLOEmQ17KncHVTL6E7OMjI++KfC5PDGHvpPfgDnbqfFMq/o5SggYNRWPoM5aa8T2ZC790IBJoEeqFOxfPHLGH1zRp3sSNIRKUvsR3JWS+Dnwk/56F9j1Gs8wMo+PVD0E+DT5uXdgeykY0YNTyqOfn91UE8=
+	t=1761448785; cv=none; b=UygNSFdWR8ZvQ4OX2ZA/zKJclDIR3JlJ3Y4i4thlVR18x/hFeCuAibVeKbRsOr/ZJUot0M8r8XaTZB3QGvvVpKbCnE0ZcqIx6vjuTIohYPZMQ6RHiKMWMQLx2H5BHExtppJSt6IyR2Gx5rHxNaRLxEjG1kg9mo9iVqaFHXpAaz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761411236; c=relaxed/simple;
-	bh=316Rt5F5vtnh+ViWAlx9dI2vqWP7zbk1bW1G77/F07s=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=AMqK06Eg2J7OB0X759c+yQnjqYvn8whGSpnpP6L7ZoY3pTqbR+392/QiPCRcQ2kXltZJZQXr50UiLTkB6mmsbd6OYDk871wiOX+MMEsppCIBetfuVKDeMGI4rasrXuWaaSKwcrNxuzWlWwMBNg5pfsWVWyUG1J5WaoHYCAnhLnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c7I9bmfU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761448785; c=relaxed/simple;
+	bh=jhvetm3H87iUHHYE09iE2tTkdfLH4FBYut7SC7D/hOE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p2Phu+fW7UxiADrzLDuSeTTQ4BCY/oi1jG1E9TbG8eVL9aeOxr/8s/BQEqg8hqfqiCsEEiFLb4xnOBEHvwogPtPOEhgz37a7x0byC68bV6XUeXqKgZD8e9qZ2LQf5ID8ysihNeKc92ZR1qKant8ozUwy3uSfuFGQ9k3wtuo+NqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AhlX70SR; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c7I9bmfU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F69C4CEF5;
-	Sat, 25 Oct 2025 16:53:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761411235;
-	bh=316Rt5F5vtnh+ViWAlx9dI2vqWP7zbk1bW1G77/F07s=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=c7I9bmfUtWC7anEduK6k7QqzFS9ZDDpvu2LeU5OO0BPx/nl+PjIe+U9dA1G7g3IGh
-	 1EMj1XnW7G2tjOOcImibHr4VZg/Ha0nWTme7RbdRYo7TGUuuSJmmrEjNVsG4/Xd4Vc
-	 kXE/DIt5XZPBhKJLUZMSRy/NDFN8MFUlJuWYerGx1LyXOK5b210XQxmAAjOvu2fS/q
-	 aqfzl2qVBGuIHnLsOzerQq+mr72yancRQP3H7P5nvohE6SUfXIjt6Ncv58nIIDMyIe
-	 oP0WJHe+FN+JZDUfp9IOUMjPqQcDsOeMlwEyoMe6V/upMqHZFp7io3zFNNFWszILcN
-	 s1/8FusIvN6JA==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AhlX70SR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761448784; x=1792984784;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jhvetm3H87iUHHYE09iE2tTkdfLH4FBYut7SC7D/hOE=;
+  b=AhlX70SRHkLhBf+JLkFKU5pZ7evyXw6cbrwgat8fObxse7Iu0BnwLVxl
+   YQrB7eNMuRgoehQT5QRS2UwbY5IZm9qf3aqV4ChCBj7QS3XztTFzvPF7a
+   1eppVHSzsZdINqUbIcQ5zd1RhfeMT02hui0sQmUiWpS8C3RMxgpMxcShd
+   VEVnWEMyH1JCMI2PKLjbxVqSpY2kU4jJQwaRa/hey1FdNsNKCNAnuJ9CJ
+   LGNDkXmI/5QzP+wdhyHBOX7OqLED5pXWEAYZV9C8SvdPKExt5gmW5sp/l
+   S+PrLVUrO2asLPzk3ZMizUBBVal21Fdrk+8HB08lY8MWqooaU9Stcbiw4
+   Q==;
+X-CSE-ConnectionGUID: VQCmsXQ9QfKaj1Ng6D9WvA==
+X-CSE-MsgGUID: lqeMtNTvRi+4KWVMFhGC2Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="75015652"
+X-IronPort-AV: E=Sophos;i="6.19,255,1754982000"; 
+   d="scan'208";a="75015652"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2025 20:19:44 -0700
+X-CSE-ConnectionGUID: WMg552D4S/69sqbZS06q2g==
+X-CSE-MsgGUID: Ehc/Y636SfmRDkXjhYQwpw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,255,1754982000"; 
+   d="scan'208";a="183960472"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by orviesa010.jf.intel.com with ESMTP; 25 Oct 2025 20:19:40 -0700
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vCrIA-000Fqv-0e;
+	Sun, 26 Oct 2025 03:19:38 +0000
+Date: Sun, 26 Oct 2025 11:18:35 +0800
+From: kernel test robot <lkp@intel.com>
 To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
 	linux-pci@vger.kernel.org
-Cc: aik@amd.com, yilun.xu@linux.intel.com, bhelgaas@google.com,
-	gregkh@linuxfoundation.org, Lukas Wunner <lukas@wunner.de>,
-	Samuel Ortiz <sameo@rivosinc.com>
-Subject: Re: [PATCH v7 7/9] PCI/IDE: Add IDE establishment helpers
-In-Reply-To: <20251024020418.1366664-8-dan.j.williams@intel.com>
-References: <20251024020418.1366664-1-dan.j.williams@intel.com>
- <20251024020418.1366664-8-dan.j.williams@intel.com>
-Date: Sat, 25 Oct 2025 22:23:47 +0530
-Message-ID: <yq5a3476q5wk.fsf@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, aik@amd.com,
+	yilun.xu@linux.intel.com, aneesh.kumar@kernel.org,
+	bhelgaas@google.com, gregkh@linuxfoundation.org,
+	Lukas Wunner <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>
+Subject: Re: [PATCH v7 4/9] PCI/TSM: Establish Secure Sessions and Link
+ Encryption
+Message-ID: <202510261309.SZsIB3mq-lkp@intel.com>
+References: <20251024020418.1366664-5-dan.j.williams@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251024020418.1366664-5-dan.j.williams@intel.com>
 
-Dan Williams <dan.j.williams@intel.com> writes:
-...
+Hi Dan,
 
-> +DEFINE_FREE(free_stream, struct stream_index *, if (_T) free_stream_index(_T))
-> +static struct stream_index *alloc_stream_index(struct ida *ida, u8 max,
-> +					       struct stream_index *stream)
-> +{
-> +	int id;
-> +
-> +	if (!max)
-> +		return NULL;
-> +
-> +	id = ida_alloc_range(ida, 0, max - 1, GFP_KERNEL);
-> +	if (id < 0)
-> +		return NULL;
-> +
-> +	*stream = (struct stream_index) {
-> +		.ida = ida,
-> +		.stream_index = id,
-> +	};
-> +	return stream;
-> +}
-> +
+kernel test robot noticed the following build errors:
 
-We do
+[auto build test ERROR on 211ddde0823f1442e4ad052a2f30f050145ccada]
 
-struct stream_index *hb_stream __free(free_stream) = alloc_stream_index(
-		&hb->ide_stream_ida, hb->nr_ide_streams, &__stream[PCI_IDE_HB]);
+url:    https://github.com/intel-lab-lkp/linux/commits/Dan-Williams/coco-tsm-Introduce-a-core-device-for-TEE-Security-Managers/20251024-100622
+base:   211ddde0823f1442e4ad052a2f30f050145ccada
+patch link:    https://lore.kernel.org/r/20251024020418.1366664-5-dan.j.williams%40intel.com
+patch subject: [PATCH v7 4/9] PCI/TSM: Establish Secure Sessions and Link Encryption
+config: i386-randconfig-005-20251025 (https://download.01.org/0day-ci/archive/20251026/202510261309.SZsIB3mq-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251026/202510261309.SZsIB3mq-lkp@intel.com/reproduce)
 
-and the default value for hb->nr_ide_streams is 256
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510261309.SZsIB3mq-lkp@intel.com/
 
-void pci_ide_init_host_bridge(struct pci_host_bridge *hb)
-{
-	hb->nr_ide_streams = 256;
-}
+All errors (new ones prefixed by >>):
 
-That overflows the u8 max argument for alloc_stream_index and results in
-a NULL return.
+>> ld.lld: error: undefined symbol: find_tsm_dev
+   >>> referenced by tsm.c:257 (drivers/pci/tsm.c:257)
+   >>>               drivers/pci/tsm.o:(connect_store) in archive vmlinux.a
+   >>> did you mean: find_dsm_dev
+   >>> defined in: vmlinux.a(drivers/pci/tsm.o)
 
--aneesh
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for TSM
+   Depends on [n]: VIRT_DRIVERS [=n]
+   Selected by [y]:
+   - PCI_TSM [=y] && PCI [=y]
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
