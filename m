@@ -1,41 +1,41 @@
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D242F334684
-	for <linux-coco@lists.linux.dev>; Wed, 29 Oct 2025 13:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E6E354710
+	for <linux-coco@lists.linux.dev>; Wed, 29 Oct 2025 13:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761744836; cv=none; b=dUfsI4Sfx9FNXLJmttOvKh2ZrvAHjbTm8adV5hU5sl8SRiDCy/ChZUTq031Q+uBUBQh4tub+v+xJwpZAAtxdywN6in3aXSTK852vwxFvXy9uP0VWd9v6/obR5hrQ9ragOvreTy7xkQfJiB1MRNwoniaK/cCvbF84A1/EocRBxtw=
+	t=1761745331; cv=none; b=cVw34uShxDKcNTN6IVapx6WCgWJ7dCKaQ6J/29l9854YrS4sSEfB1Ab8VFAVcWEU04nskcXrdJT/Kbi0uk6XGq5Evj90HGP7FJx8jIWHYO/FrOu+AluqBBq1tFSKIdJMXgr7iM8+trGLigYnN8wZ9NUGYxPaMyBt++i+cYfWetM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761744836; c=relaxed/simple;
-	bh=jlev8PE/xgx2AUTioaa7Y5hmKoVv5SOK7CK6euPPQys=;
+	s=arc-20240116; t=1761745331; c=relaxed/simple;
+	bh=6EiUeYwp6JEW9gRRiKZhU1A/+Z+ldm014bop4I8PQUo=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uZCSDX1A+TmZ9eC4BpRPRr8w9DrA3L6Dgx2mg2i9RB79vzg6bQGxflGjhr1Br3jrJdIrs49TfKRkIn/kvXzdww/HapbddwVppyvqW2KccxPOMFYvpIjBFVLqp7obtDIyKftRiEMQhw/Cd2NTNEN9S+PWCJU7Ts+967b35rYWrRw=
+	 MIME-Version:Content-Type; b=BRDp2kgsd/XywBFxTybbW603QmZg1OeFC4CFDXj4v/PUJ74b7VG+VQL/RXAmks3lP/9cTnzx+PS5hllz7s3Kt350SK0zFmjuv9yYkWJfycbb8dANo3iTOGqqoMDFOBFuXxkHjdYtBF7rVLSLf19NgBbLM9KCl9zxasJFnZAPT1U=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4cxSr52c0vzJ46C9;
-	Wed, 29 Oct 2025 21:33:41 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4cxT0p0DtqzHnH4v;
+	Wed, 29 Oct 2025 13:41:14 +0000 (UTC)
 Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 35D7A140373;
-	Wed, 29 Oct 2025 21:33:51 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id A14EE140373;
+	Wed, 29 Oct 2025 21:42:06 +0800 (CST)
 Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
  (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 29 Oct
- 2025 13:33:50 +0000
-Date: Wed, 29 Oct 2025 13:33:49 +0000
+ 2025 13:42:06 +0000
+Date: Wed, 29 Oct 2025 13:42:04 +0000
 From: Jonathan Cameron <jonathan.cameron@huawei.com>
 To: Dan Williams <dan.j.williams@intel.com>
 CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>, <aik@amd.com>,
 	<yilun.xu@linux.intel.com>, <aneesh.kumar@kernel.org>, <bhelgaas@google.com>,
 	<gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v7 1/9] coco/tsm: Introduce a core device for TEE
- Security Managers
-Message-ID: <20251029133349.000057cf@huawei.com>
-In-Reply-To: <20251024020418.1366664-2-dan.j.williams@intel.com>
+Subject: Re: [PATCH v7 2/9] PCI/IDE: Enumerate Selective Stream IDE
+ capabilities
+Message-ID: <20251029134204.00005e76@huawei.com>
+In-Reply-To: <20251024020418.1366664-3-dan.j.williams@intel.com>
 References: <20251024020418.1366664-1-dan.j.williams@intel.com>
-	<20251024020418.1366664-2-dan.j.williams@intel.com>
+	<20251024020418.1366664-3-dan.j.williams@intel.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -48,71 +48,85 @@ Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
  dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Thu, 23 Oct 2025 19:04:10 -0700
+On Thu, 23 Oct 2025 19:04:11 -0700
 Dan Williams <dan.j.williams@intel.com> wrote:
 
-> A "TSM" is a platform component that provides an API for securely
-> provisioning resources for a confidential guest (TVM) to consume. The
-> name originates from the PCI specification for platform agent that
-> carries out operations for PCIe TDISP (TEE Device Interface Security
-> Protocol).
+> Link encryption is a new PCIe feature enumerated by "PCIe r7.0 section
+> 7.9.26 IDE Extended Capability".
 > 
-> Instances of this core device are parented by a device representing the
-> platform security function like CONFIG_CRYPTO_DEV_CCP or
-> CONFIG_INTEL_TDX_HOST.
+> It is both a standalone port + endpoint capability, and a building block
+> for the security protocol defined by "PCIe r7.0 section 11 TEE Device
+> Interface Security Protocol (TDISP)". That protocol coordinates device
+> security setup between a platform TSM (TEE Security Manager) and a
+> device DSM (Device Security Manager). While the platform TSM can
+> allocate resources like Stream ID and manage keys, it still requires
+> system software to manage the IDE capability register block.
 > 
-> This device interface is a frontend to the aspects of a TSM and TEE I/O
-> that are cross-architecture common. This includes mechanisms like
-> enumerating available platform TEE I/O capabilities and provisioning
-> connections between the platform TSM and device DSMs (Device Security
-> Manager (TDISP)).
+> Add register definitions and basic enumeration in preparation for
+> Selective IDE Stream establishment. A follow on change selects the new
+> CONFIG_PCI_IDE symbol. Note that while the IDE specification defines
+> both a point-to-point "Link Stream" and a Root Port to endpoint
+> "Selective Stream", only "Selective Stream" is considered for Linux as
+> that is the predominant mode expected by Trusted Execution Environment
+> Security Managers (TSMs), and it is the security model that limits the
+> number of PCI components within the TCB in a PCIe topology with
+> switches.
 > 
-> For now this is just the scaffolding for registering a TSM device sysfs
-> interface.
-> 
-> Cc: Alexey Kardashevskiy <aik@amd.com>
-> Cc: Xu Yilun <yilun.xu@linux.intel.com>
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Co-developed-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+> Co-developed-by: Alexey Kardashevskiy <aik@amd.com>
+> Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
+> Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-Dan,
+Trivial comments only. Just ignore if you like.
 
-My usual problem of having forgotten all the details since I last
-looked applies, so I'll take another look at the lot.
-
-One trivial comment below.
-
-> diff --git a/drivers/virt/coco/tsm-core.c b/drivers/virt/coco/tsm-core.c
+> diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
 > new file mode 100644
-> index 000000000000..a64b776642cf
+> index 000000000000..aa54d088129d
 > --- /dev/null
-> +++ b/drivers/virt/coco/tsm-core.c
-> @@ -0,0 +1,109 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
-Maybe worth updating as in general this has evolved a bit this year
-I think.
+> +++ b/drivers/pci/ide.c
 
-> +
-> +static void put_tsm_dev(struct tsm_dev *tsm_dev)
+> +void pci_ide_init(struct pci_dev *pdev)
 > +{
-> +	if (!IS_ERR_OR_NULL(tsm_dev))
-> +		put_device(&tsm_dev->dev);
-> +}
+> +	u16 nr_link_ide, nr_ide_mem, nr_streams;
+> +	u16 ide_cap;
+> +	u32 val;
 > +
-> +DEFINE_FREE(put_tsm_dev, struct tsm_dev *,
-> +	    if (!IS_ERR_OR_NULL(_T)) put_tsm_dev(_T))
+> +	if (!pci_is_pcie(pdev))
+> +		return;
+> +
+> +	ide_cap = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_IDE);
+> +	if (!ide_cap)
+> +		return;
+> +
+> +	pci_read_config_dword(pdev, ide_cap + PCI_IDE_CAP, &val);
+> +	if ((val & PCI_IDE_CAP_SELECTIVE) == 0)
+> +		return;
+> +
+> +	/*
+> +	 * Require endpoint IDE capability to be paired with IDE Root Port IDE
+> +	 * capability.
+> +	 */
+> +	if (pci_pcie_type(pdev) == PCI_EXP_TYPE_ENDPOINT) {
+> +		struct pci_dev *rp = pcie_find_root_port(pdev);
+> +
+> +		if (!rp->ide_cap)
+> +			return;
+> +	}
+> +
+> +	if (val & PCI_IDE_CAP_SEL_CFG)
+> +		pdev->ide_cfg = 1;
+	pdev->ide_cfg = FIELD_GET(PCI_IDE_CAP_SEL_CFG, val);
+will give more compact code. Entirely up to you.
 
-I'm entirely on board with the normal argument behind the !IS_ERR_OR_NULL()
-check and the fact it lets the compiler remove an indirect call in some
-cases.  However, here you have the protection here and in put_tsm_dev()
-that is only called via this path.  That seems excessive.
+> +
+> +	if (val & PCI_IDE_CAP_TEE_LIMITED)
+> +		pdev->ide_tee_limit = 1;
+likewise, could just use FIELD_GET() to save a line.
 
-
-
-
+> +
+> +}
 
 
