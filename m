@@ -1,130 +1,169 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6F82DECC2
-	for <linux-coco@lists.linux.dev>; Tue, 28 Oct 2025 23:48:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25FD2D8390
+	for <linux-coco@lists.linux.dev>; Wed, 29 Oct 2025 00:56:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761695337; cv=none; b=K9PEJvCWk7l0rxBMlcK1G5PS+h/u5y/MBe+43WbXu/CLTO6ek5FjP7QFHWQxnVZpIk+XqBRawPc5ep+UH0VOc3orGihwIH6ebImOV4krD7s7QlpnCJqYkD3D9sA9pOpJuJqncTEh69ysg4ihmncs9jy8irpmJ2eCXkLFUNtpyKg=
+	t=1761699389; cv=none; b=L2ZmCmsTBMo145DABtnb+P0ZysvxaTIetdsoxevgFmsGF1FfBhiwRHTmMwbYFaQ6Fk6OyYdokTy0Ceb/G4CYXkPwkXYwFWtNFTTiW6LTDwHaGTtJqmwOiqSceBw+hhXhkvFZAehdVHE43VecUQ/nohxPl16ZNjoI+LFHdQ1bI8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761695337; c=relaxed/simple;
-	bh=ZbT2A+Vw6lNOZ/qUmwMRZ8Kq1LUvWqnlxqNJAqgnSss=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Zy335L70cHm1t/8l1UnckJrLaTxMR936utuJ9EWNQ/MPp07FHNqyYeAtY++ZYpPbC76Imm8CF6wjzhNwwUVfZPbqC64S7KVyZMRI+4jmCHXkAbN4mYyGQhBmvB/7SIudld9VmUzxTg68m5vEPR2gm5NSUrFkV8CnMP9JZKyvzzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dmzjAU5z; arc=none smtp.client-ip=209.85.214.175
+	s=arc-20240116; t=1761699389; c=relaxed/simple;
+	bh=h/EPR5R47qLSS906RL+S0spd7IC9iAe0ya9Jgl77/eI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=FZTX2u8m8oxz2nHk/j2H262lif9H8HhfN3bT/S1wCwxEYfWjvCtyTUuIBi0MTBZeuKJgWNOrKHyLGap9+rSEmCmAd0LJjX+enRv/k7R9aPDqXPemQ/ha8UBC1uWgMaZlvw3RQ0Ks1v4jtDkbpH8+rJW3oQIW9ITVVlRC7SSY/z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=odJxsTH5; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dmzjAU5z"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-27eeafd4882so95615ad.0
-        for <linux-coco@lists.linux.dev>; Tue, 28 Oct 2025 16:48:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="odJxsTH5"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b62ebb4e7c7so5212018a12.3
+        for <linux-coco@lists.linux.dev>; Tue, 28 Oct 2025 17:56:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761695336; x=1762300136; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZbT2A+Vw6lNOZ/qUmwMRZ8Kq1LUvWqnlxqNJAqgnSss=;
-        b=dmzjAU5zlUWHmorVDjIUAWlkiNlfgYwSPor9Sc+cw3INSiKZ9wokxYeWnkIDHH9xyz
-         m/JH9UhBc22RmWNItu+XRkX9XYv89TOUoVxXmXE0qRgtPU8T4QacpzxBWmiVj7nRfGeJ
-         O1Di1jfjzi9RSCnGb9qc75MrOZo5jknHraAtRWEexnKXh8D1UOUECciu96wiv+tI7jed
-         kg03NqpED8e/9xxRhy+UJikNvy9irvmrtL2enDepkml+vjRwKZUVSEBETjjjB/OPo9yt
-         OHgiDa2yCABG8KRxDyrhQwge3PH1A/KTUSKFxjAckH5OdDOXbU0QmrGkTSwPHmU8evG8
-         VWmw==
+        d=google.com; s=20230601; t=1761699387; x=1762304187; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=upoMfybmbc/1ds2YKNLV5b3LJhcfmEcs/moGK/drz3I=;
+        b=odJxsTH5e6bVIIGTTnXgG3yTqqmihGyiKXDRlryIFJ87hU+2z7iELx+BKV0u9UOp6Y
+         DckWmQy7aTX0PYDfVTSnr3AfHUAssZqwBKZ5k6KM+Fk+pjnYi/NvF3hTJnIKnzzA+3NA
+         gl8OScUwCUTeGSYg92S56mFtK/LxoLOvMnNjrBwlipgXS2k1l2gpoPEGskAanXp2Ncjt
+         AXh1qTzdtimHdOFDiq7D0L5GHi3OSn41JnMo8JMcb4IbX/qfa1qpoR1MO5tMIIEHMMr9
+         lhGCFKuMlsIoD8ce3Ora76wxjmWU47skuyslzW3jw/oXh/TgC6mH3fljH54uA07u7En8
+         ga5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761695336; x=1762300136;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZbT2A+Vw6lNOZ/qUmwMRZ8Kq1LUvWqnlxqNJAqgnSss=;
-        b=aBzWUDXOPk7DaC76FisX89oiT8efnSvUFtL7rLexRT4LyCEP1tiEQ5659NGFD7geT6
-         K6LzVg/sE+MiAo+zgrJQrBQQ14ovSjr2vP72JASFbgC5A0N8UEcyv/GSU/GdpCJUQFmm
-         Pnc8pB3wUcmYvXILIIOHOYTidUorzTEArHD8f4+IzTn57/n0w9rpf5Yi+zQ7n2gl0aCZ
-         mbsi4NQHBfn1CIsXTVecG0t0z+s20N6GhdeS039By/s7fdWJ8JofE7sHbxjGK4Va3GJX
-         vnyIH/sH/JPlVjA1z5zlc2VbUmmbddiW6Uo0O/uavqzJMe8cylmUBxCy43OKkwTN01ZA
-         RkPg==
-X-Forwarded-Encrypted: i=1; AJvYcCU3B0tk2SfPkKVPq1T3IUOr6mbqpEB1kVSrjMVr1w6YpmRv1b9E0cDX2F5q4626OSdfuqJRt/MV1x1o@lists.linux.dev
-X-Gm-Message-State: AOJu0YwxOdZllr1jYGEl0xB1mMjyCEHjY3NLfEl7nnwuqIfLYMWrTTgq
-	DxghFKtoQZ4abuxTT5ibbZ+mHQtab2i0QvFg2X7K4f+Y9Ew/TPaBKHbWbZ2MGcbe52EJaVhpJjp
-	BbHeLSZMq/r+gtD1A6MuhQR4P8P9zK/chesx5xznW
-X-Gm-Gg: ASbGncu98Ym79zeIXF3qkUZAK1vscx+9t4rcbVLyK/rAtlUMT0IFpLkdVoQCUnHG0Yp
-	ujPIG2g3B04ddFneqxTFe3EVHd9KVWqrOgciGKf8KtaoCNN+Eg/Mnpzk3CJ1IDJWMLOk6p3Sj5Q
-	1EZe/Jgodt+vGLdohnPBqTyextnocz/LXM8VAe3Su0G2veSjaJa9nI+mD0vKPsgdoM4uzTej6G+
-	KhkgCIQu5tf6OGDc9TplKsYLq8StMtpBxcDhDmdlI5mgS+qhX/LVLaC5J0i3RxSoK8PAq5Dh1jh
-	5czx6N1ojWE1
-X-Google-Smtp-Source: AGHT+IEH1HYet/cTCj2aXSyyZiV9HwWqewoRD3tX+XWKyrvQKLMujhqSX93kDRTXrgJqgzxFO2H9Rtj07lfRGWZ366k=
-X-Received: by 2002:a17:902:e5c6:b0:270:bd33:f8d0 with SMTP id
- d9443c01a7336-294de75d9f2mr2463525ad.14.1761695334995; Tue, 28 Oct 2025
- 16:48:54 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761699387; x=1762304187;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=upoMfybmbc/1ds2YKNLV5b3LJhcfmEcs/moGK/drz3I=;
+        b=e8Ht01woh+J4Se/7aLGRqq2HoNpf8nDvUWW4Ocjq6fKgAQn1zgRG1QRQyrDCgX4Sts
+         xR5Yf9HU2QvRhU/pceA1BQ5SHg9mcIXPCKC+xeV5X0ka7nDZ7uSbiHNb4i0oyuKQPIGs
+         IqUo7rNtDUV74RtbVId0waJREpYpX3KVlaUcwUbxrczAX5r1jMGh7CoTui9MJP+O4CTl
+         NgZLenZjvxkmemNeTXF7lo+o06rfFzOO/H3ZeP5stkAvEf1xs+rJ8+lzgwiBW0Klw1Cb
+         DyBgRLydrng5y2cO+9af16vapyNYbhA12Zy2uXQXKeYRsMq3FMQ784FlKatdc9Zj/Cr4
+         TCYw==
+X-Forwarded-Encrypted: i=1; AJvYcCU2E3SByczBidBSpSvmrBEu5AbtDvVmukvTlKEM7HLklwmYt/xuklhDbxZJfJ66miBcKg4h6+Kz77U6@lists.linux.dev
+X-Gm-Message-State: AOJu0YyxYB9cT2sbnh6PksjvdtoRNwZF88U9G2Eyb0nQNBzvNCCYVZ01
+	zTBZloM8ui97labam0x3P5NWmHzA9Jb2REs4110OYd7SMOLolLq8AAzcMzcqnQkvJPfjskI+tN0
+	UX0sCMw==
+X-Google-Smtp-Source: AGHT+IF+uxnoaodwmY/BiGEU5Z7mQidEmCh9G0+H4xmKLgoqPmRen8KmIjN2RVaOC05lHdTEPvjF5gcEGj4=
+X-Received: from pjha4.prod.google.com ([2002:a17:90a:4804:b0:33b:cf89:6fe6])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:57c4:b0:33b:c995:5d92
+ with SMTP id 98e67ed59e1d1-3403a2aab6dmr1121219a91.32.1761699387051; Tue, 28
+ Oct 2025 17:56:27 -0700 (PDT)
+Date: Tue, 28 Oct 2025 17:56:25 -0700
+In-Reply-To: <CAAYXXYyVC0Sm+1PBw=xoYNDV7aa54c_6KTGjMdwVaBAJOd8Hpw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <IA1PR11MB949522AA3819E217C5467B51E7E8A@IA1PR11MB9495.namprd11.prod.outlook.com>
- <5b4c2bb3-cfde-4559-a59d-0ff9f2a250b4@intel.com> <IA1PR11MB94955392108F5A662D469134E7E9A@IA1PR11MB9495.namprd11.prod.outlook.com>
- <CAGtprH96B5K9Hk5h0FgxSUBa-pik=E=dLrO-4oxx76dxb9=7wQ@mail.gmail.com>
- <IA1PR11MB9495BB77A4FAFBD78600416AE7F6A@IA1PR11MB9495.namprd11.prod.outlook.com>
- <CAGtprH-h_axusSLTWsEZ6QoxgmVs0nVknqNJx-iskpsg_qHKFg@mail.gmail.com>
- <aPiEakpcADuQHqQ3@intel.com> <CAGtprH8q5U6h3p5iDYtwRiyVG_xF8hDwq6G34hLt-jhe+MRNaA@mail.gmail.com>
- <CAGtprH9bLpQQ_2UOOShd15hPwMqwW+gwo1TzczLbwGdNkcJHhg@mail.gmail.com>
- <aad8ae43-a7bd-42b2-9452-2bdee82bf0d8@intel.com> <aPsuD2fbYwCccgNi@intel.com>
- <ca688bca-df3f-4d82-97e7-20fc26f7d69e@intel.com> <68fbd63450c7c_10e910021@dwillia2-mobl4.notmuch>
- <2e49e80f-fab0-4248-8dae-76543e3c6ae3@intel.com> <68fbebc54e776_10e9100fd@dwillia2-mobl4.notmuch>
- <10786082-94e0-454e-a581-7778b3a22e26@intel.com> <CAGtprH8AbW4P2t-wHVcTdfLwf3SJK5mxP1CbsMHTgMYEpLiWjQ@mail.gmail.com>
+Mime-Version: 1.0
+References: <10786082-94e0-454e-a581-7778b3a22e26@intel.com>
+ <CAGtprH8AbW4P2t-wHVcTdfLwf3SJK5mxP1CbsMHTgMYEpLiWjQ@mail.gmail.com>
  <68fc2af6305be_10e210029@dwillia2-mobl4.notmuch> <CAGtprH8-UGFkh4NmuY1ETPYmg7Uk+bm24Er2PPxf8tUOSR_byQ@mail.gmail.com>
  <68fe92d8eef5f_10e210057@dwillia2-mobl4.notmuch> <CAGtprH8g5212M26HPneyaHPq8VKS=x4TU4Q4vbDZqt_gYLO=TA@mail.gmail.com>
  <68ffbfb53f8b5_10e210078@dwillia2-mobl4.notmuch> <CAGtprH-rv9T1ano+ti=3eU4FO2APCOcR06buPALggAwUnka3Dg@mail.gmail.com>
- <690026ac52509_10e2100cd@dwillia2-mobl4.notmuch>
-In-Reply-To: <690026ac52509_10e2100cd@dwillia2-mobl4.notmuch>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Tue, 28 Oct 2025 16:48:42 -0700
-X-Gm-Features: AWmQ_bmtZqgTQwT0jpqG7SIdFIelXscyZJ7yedZ8yMDeBBP-fQ391CU839cFBM8
-Message-ID: <CAGtprH9HnuDy4TDZ145-a0LWs7Y=94RSiEkTR++e1Ws6wLUbQw@mail.gmail.com>
+ <690026ac52509_10e2100cd@dwillia2-mobl4.notmuch> <CAAYXXYyVC0Sm+1PBw=xoYNDV7aa54c_6KTGjMdwVaBAJOd8Hpw@mail.gmail.com>
+Message-ID: <aQFmOZCdw64z14cJ@google.com>
 Subject: Re: [PATCH v2 00/21] Runtime TDX Module update support
-To: dan.j.williams@intel.com
-Cc: Dave Hansen <dave.hansen@intel.com>, Chao Gao <chao.gao@intel.com>, 
-	"Reshetova, Elena" <elena.reshetova@intel.com>, 
+From: Sean Christopherson <seanjc@google.com>
+To: Erdem Aktas <erdemaktas@google.com>
+Cc: dan.j.williams@intel.com, Vishal Annapurve <vannapurve@google.com>, 
+	Dave Hansen <dave.hansen@intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Elena Reshetova <elena.reshetova@intel.com>, 
 	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, 
-	"Chatre, Reinette" <reinette.chatre@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>, 
-	"Huang, Kai" <kai.huang@intel.com>, "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, 
+	Reinette Chatre <reinette.chatre@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Kai Huang <kai.huang@intel.com>, "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, 
 	"sagis@google.com" <sagis@google.com>, "paulmck@kernel.org" <paulmck@kernel.org>, 
 	"nik.borisov@suse.com" <nik.borisov@suse.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
 	Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+	Rick P Edgecombe <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 27, 2025 at 7:13=E2=80=AFPM <dan.j.williams@intel.com> wrote:
->
-> Vishal Annapurve wrote:
-> [..]
-> > Problem 2 should be solved in the TDX module as it is the state owner
-> > and should be given a chance to ensure that nothing else can affect
-> > it's state. Kernel is just opting-in to toggle the already provided
-> > TDX module ABI. I don't think this is adding complexity to the kernel.
->
-> It makes the interface hard to reason about, that is complexity.
->
-> Consider an urgent case where update is more important than the
-> consistency of ongoing builds. The kernel's job is its own self
-> consistency and security model,
+On Tue, Oct 28, 2025, Erdem Aktas wrote:
+> On Mon, Oct 27, 2025 at 7:14=E2=80=AFPM <dan.j.williams@intel.com> wrote:
+> >
+> > Vishal Annapurve wrote:
+> > [..]
+> > > Problem 2 should be solved in the TDX module as it is the state owner
+> > > and should be given a chance to ensure that nothing else can affect
+> > > it's state. Kernel is just opting-in to toggle the already provided
+> > > TDX module ABI. I don't think this is adding complexity to the kernel=
+.
+> >
+> > It makes the interface hard to reason about, that is complexity.
+>=20
+> Could you clarify what you mean here? What interface do you need to
+> reason about? TDX module has a feature as described in its spec, this
+> is nothing to do with the kernel. Kernel executes the TDH.SYS.SHUTDOWN
+> and if it fails, it will return the error code back to the user space.
+> There is nothing here to reason about and it is not clear how it is
+> adding the complexity to the kernel.
 
-I would consider the TDX module as more privileged than the kernel
-itself in certain aspects. So it's not fine to expose an ABI to
-userspace which affects kernel state consistency, but it's fine to
-expose an ABI that can affect TDX module state consistency?
+Userspace needs to reason about error codes and potential sources of those =
+error
+codes.  That said, I agree that having the kernel set AVOID_COMPAT_SENSITIV=
+E by
+default (I vote for setting it unconditionally), doesn't add meaningful
+complexity; the kernel would just need to document that the update mechanis=
+m can
+return -EBUSY (or whatever), and why/when.
 
-> when that remains in tact root is allowed to make informed decisions.
->
-> You might say, well add a --force option for that, and that is also
-> userspace prerogative to perform otherwise destructive operations with
-> the degrees of freedom the kernel allows.
->
-> I think we have reached the useful end of this thread. I support moving
-> ahead with the dead simple, "this may clobber your builds", for now. We
-> can always circle back to add more complexity later if that proves "too
-> simple" in practice.
->
+For me, that seems far less daunting/complex than attempting to document wh=
+at all
+can go wrong if the kernel _doesn't_ set AVOID_COMPAT_SENSITIVE.  Because I=
+MO,
+regardless of whether or not the kernel sets AVOID_COMPAT_SENSITIVE, the ke=
+rnel
+is making a decision and defining behavior, and that behavior needs to be
+documented.  If AVOID_COMPAT_SENSITIVE didn't exist, then I would agree thi=
+s is
+purely a userspace vs. TDX-Module problem, but it does exist, and not setti=
+ng the
+flag defines ABI just as much as setting the flag does.
+
+The failure mode also matters, a lot.  "Sorry dear customer, we corrupted y=
+our VM"
+is very, very different than "A handful of machines in our fleet haven't co=
+mpleted
+an (optional?) update".
+
+> > Consider an urgent case where update is more important than the
+> > consistency of ongoing builds. The kernel's job is its own self
+> > consistency and security model, when that remains in tact root is
+> > allowed to make informed decisions.
+> >
+> The whole update is initiated by the userspace, imo, it is not the
+> kernel's job to decide what to do.=20
+
+I think you and Dan are in violent agreement.  I _think_ what Dan is saying=
+ that
+the kernel needs to protect itself, e.g. by rejecting an update if the kern=
+el knows
+the system is in a bad state.  But other than that, userspace can do whatev=
+er.
+
+AFAICT, the only disagreement is whether or not to set AVOID_COMPAT_SENSITI=
+VE.
+
+> It should try to update the TDX module and return error code back to the
+> userspace if it fails.
+
++1.  Unless there's a wrinkle I'm missing, failing with -EBUSY seems like t=
+he
+obvious choice.
+=20
+> > You might say, well add a --force option for that, and that is also
+> > userspace prerogative to perform otherwise destructive operations with
+> > the degrees of freedom the kernel allows.
+>=20
+> IMO, It is something userspace should decide, kernel's job is to
+> provide the necessary interface about it.
+
+I disagree, I don't think userspace should even get the option.  IMO, not s=
+etting
+AVOID_COMPAT_SENSITIVE is all kinds of crazy.
