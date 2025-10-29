@@ -1,132 +1,122 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E6E354710
-	for <linux-coco@lists.linux.dev>; Wed, 29 Oct 2025 13:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A58A299AB3
+	for <linux-coco@lists.linux.dev>; Wed, 29 Oct 2025 13:48:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761745331; cv=none; b=cVw34uShxDKcNTN6IVapx6WCgWJ7dCKaQ6J/29l9854YrS4sSEfB1Ab8VFAVcWEU04nskcXrdJT/Kbi0uk6XGq5Evj90HGP7FJx8jIWHYO/FrOu+AluqBBq1tFSKIdJMXgr7iM8+trGLigYnN8wZ9NUGYxPaMyBt++i+cYfWetM=
+	t=1761745719; cv=none; b=rIYOrPoUDa1H/6LpV8kXbLV4DnnB2A+R1Bw3Vg/yTjNhnNyeFCQDZTI+yYN4caW+vZiQtGNQUsCZjFi+20WO5VPxpBMdTA54e/gq7qzhm1BJ7fMotDtUM9/RXTcK7qgAXnqxl/5x+dOoxIFzbwNyEbz98eqQOoAqJ5AJN8ompIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761745331; c=relaxed/simple;
-	bh=6EiUeYwp6JEW9gRRiKZhU1A/+Z+ldm014bop4I8PQUo=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BRDp2kgsd/XywBFxTybbW603QmZg1OeFC4CFDXj4v/PUJ74b7VG+VQL/RXAmks3lP/9cTnzx+PS5hllz7s3Kt350SK0zFmjuv9yYkWJfycbb8dANo3iTOGqqoMDFOBFuXxkHjdYtBF7rVLSLf19NgBbLM9KCl9zxasJFnZAPT1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4cxT0p0DtqzHnH4v;
-	Wed, 29 Oct 2025 13:41:14 +0000 (UTC)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id A14EE140373;
-	Wed, 29 Oct 2025 21:42:06 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 29 Oct
- 2025 13:42:06 +0000
-Date: Wed, 29 Oct 2025 13:42:04 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Dan Williams <dan.j.williams@intel.com>
-CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>, <aik@amd.com>,
-	<yilun.xu@linux.intel.com>, <aneesh.kumar@kernel.org>, <bhelgaas@google.com>,
-	<gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v7 2/9] PCI/IDE: Enumerate Selective Stream IDE
- capabilities
-Message-ID: <20251029134204.00005e76@huawei.com>
-In-Reply-To: <20251024020418.1366664-3-dan.j.williams@intel.com>
-References: <20251024020418.1366664-1-dan.j.williams@intel.com>
-	<20251024020418.1366664-3-dan.j.williams@intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1761745719; c=relaxed/simple;
+	bh=9PVB5zBv2zFukgLFPs6dQjhYsTqNgJk+vg6V5Vp4m2c=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=isTLMWlY9CV+TL+eswVW1N5xdeqkj0fK8qnknxV9N4y1l7tqbOJ4W6akCt0QswZ6ItAjT91ySzOUYYlU329IF3fN5ruxw8imrjd3Z1C8kpiKWhra6iI/JCMavHhreb4fsV6/Fq9xKPGXukiLkoS4Y7jKPpc2zt7pRT+A5sr2ijg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NSzeywnp; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NSzeywnp"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3324538ceb0so11643717a91.1
+        for <linux-coco@lists.linux.dev>; Wed, 29 Oct 2025 06:48:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761745717; x=1762350517; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xdHccMmYepT/ISL0jGN7yG+GkzRFqfu9waW3qgcJU44=;
+        b=NSzeywnp8U3ZVjubiq9Adg3q0Mzbkj5PpbaBVYlBJsVMCaw28ebBO9d9FOCtpuhKS2
+         Oo/vTskd5aWaPykP/eNlKZ7qo1ScTY6P1JC1wM7DFCvFQlu59iXsU5b7HiwrTfIql+8n
+         Fn+S3nXt91dXmYVcjxFAx1g3AWYzafdW1Z9JsKKuA8VB5MgMW8r1MksFDYdHaVHJuEJ3
+         kb/wBc5+dhv7hEcHEH4IaLULNk9n0fWmvAqlYsR0nggzBTIbdWvVgWYAkBHFzUUh+UcW
+         Je6lGLlQ/V7ZmXwgLIgriETUYE5Znv+nKlDW4d92V7laUBXPGFf5aUDn17DeiN59XU02
+         wP5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761745717; x=1762350517;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xdHccMmYepT/ISL0jGN7yG+GkzRFqfu9waW3qgcJU44=;
+        b=d6ngexFtCJTiaJn3IjBMNjEDpIGHc0PBOQK9fGgfsZGm/hbyinAVNVaWJIHWzPdOeV
+         h4S4MUwxgSNQ1dH54Nh3HMbL3jrNmEmAXLJITANtzB/1S7pcylNF44C11hwO894RilRY
+         a+UA1y0/wlpvasLhRzSeLZcSO7duyeujhToIqJgY3fplLTzXoJLJ1jvgHn2ZGtY84GNT
+         4sLT8iqlAjOJ+RA1JJQlV5zK/tHCeyamYgsyz/yArc0+J80LNYvj8AH5ByNlxlCRSR2E
+         nRarx1ivT5ilD7qM8wmEhVf0bbD1Y7X4vHX3WmCz3k03/2f2wVg/KphPFx+9VZ0rHe7F
+         QLIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXACU7jgm3cKDFzCrBgFqJfYdefZANmOyxB92wvtUoH3VN9+K3luWzISRAxLMyejcnclnN05vHxCdjf@lists.linux.dev
+X-Gm-Message-State: AOJu0YyOEjtHJV0Byp0df7xuWy20034HGw/0blhPP0oA0evN9uGaJ1sr
+	wy73MUDxMD92/Q0GSeskSKUrDaOHYnNzrHtTXMx8TD1saFZaQjcRBAmo9CJhZcLlaNY7TQDH4an
+	nnKWicA==
+X-Google-Smtp-Source: AGHT+IG197XQ5HcKAVF2KhAkc6YfgtWRX32xq7sEgnaKNI+rXoWYFC+1cgH/mDXdCdhip0xmxN5QjKReWFM=
+X-Received: from pjbsv7.prod.google.com ([2002:a17:90b:5387:b0:340:3e18:b5c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:498c:b0:32e:32e4:9789
+ with SMTP id 98e67ed59e1d1-3403a143401mr3210393a91.3.1761745717502; Wed, 29
+ Oct 2025 06:48:37 -0700 (PDT)
+Date: Wed, 29 Oct 2025 06:48:35 -0700
+In-Reply-To: <6901792e39d13_10e9100ed@dwillia2-mobl4.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+Mime-Version: 1.0
+References: <68fc2af6305be_10e210029@dwillia2-mobl4.notmuch>
+ <CAGtprH8-UGFkh4NmuY1ETPYmg7Uk+bm24Er2PPxf8tUOSR_byQ@mail.gmail.com>
+ <68fe92d8eef5f_10e210057@dwillia2-mobl4.notmuch> <CAGtprH8g5212M26HPneyaHPq8VKS=x4TU4Q4vbDZqt_gYLO=TA@mail.gmail.com>
+ <68ffbfb53f8b5_10e210078@dwillia2-mobl4.notmuch> <CAGtprH-rv9T1ano+ti=3eU4FO2APCOcR06buPALggAwUnka3Dg@mail.gmail.com>
+ <690026ac52509_10e2100cd@dwillia2-mobl4.notmuch> <CAAYXXYyVC0Sm+1PBw=xoYNDV7aa54c_6KTGjMdwVaBAJOd8Hpw@mail.gmail.com>
+ <aQFmOZCdw64z14cJ@google.com> <6901792e39d13_10e9100ed@dwillia2-mobl4.notmuch>
+Message-ID: <aQIbM5m09G0FYTzE@google.com>
+Subject: Re: [PATCH v2 00/21] Runtime TDX Module update support
+From: Sean Christopherson <seanjc@google.com>
+To: dan.j.williams@intel.com
+Cc: Erdem Aktas <erdemaktas@google.com>, Vishal Annapurve <vannapurve@google.com>, 
+	Dave Hansen <dave.hansen@intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Elena Reshetova <elena.reshetova@intel.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, 
+	Reinette Chatre <reinette.chatre@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Kai Huang <kai.huang@intel.com>, "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, 
+	"sagis@google.com" <sagis@google.com>, "paulmck@kernel.org" <paulmck@kernel.org>, 
+	"nik.borisov@suse.com" <nik.borisov@suse.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Rick P Edgecombe <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, 23 Oct 2025 19:04:11 -0700
-Dan Williams <dan.j.williams@intel.com> wrote:
-
-> Link encryption is a new PCIe feature enumerated by "PCIe r7.0 section
-> 7.9.26 IDE Extended Capability".
+On Tue, Oct 28, 2025, dan.j.williams@intel.com wrote:
+> Sean Christopherson wrote:
+> [..]
+> > > IMO, It is something userspace should decide, kernel's job is to
+> > > provide the necessary interface about it.
+> > 
+> > I disagree, I don't think userspace should even get the option.  IMO, not setting
+> > AVOID_COMPAT_SENSITIVE is all kinds of crazy.
 > 
-> It is both a standalone port + endpoint capability, and a building block
-> for the security protocol defined by "PCIe r7.0 section 11 TEE Device
-> Interface Security Protocol (TDISP)". That protocol coordinates device
-> security setup between a platform TSM (TEE Security Manager) and a
-> device DSM (Device Security Manager). While the platform TSM can
-> allocate resources like Stream ID and manage keys, it still requires
-> system software to manage the IDE capability register block.
-> 
-> Add register definitions and basic enumeration in preparation for
-> Selective IDE Stream establishment. A follow on change selects the new
-> CONFIG_PCI_IDE symbol. Note that while the IDE specification defines
-> both a point-to-point "Link Stream" and a Root Port to endpoint
-> "Selective Stream", only "Selective Stream" is considered for Linux as
-> that is the predominant mode expected by Trusted Execution Environment
-> Security Managers (TSMs), and it is the security model that limits the
-> number of PCI components within the TCB in a PCIe topology with
-> switches.
-> 
-> Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-> Co-developed-by: Alexey Kardashevskiy <aik@amd.com>
-> Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
-> Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> Do see Table 4.4: "Comparison of Update Incompatibility Detection and/or
+> Avoidance Methods" from the latest base architecture specification [1].
+> It lists out the pros and cons of not setting AVOID_COMPAT_SENSITIVE.
+> This thread has only argued the merits of "None" and "Avoid updates
+> during update- sensitive times". It has not discussed "Detect
+> incompatibility after update", but let us not do that.
 
-Trivial comments only. Just ignore if you like.
+But we already are discussing that, because the "None" option is just punting
+"Detect incompatibility after update" to something other than the VMM.  Doing
+literally nothing isn't an option.  The fact that it's even listed in the table,
+not to mention has "Simplest." listed as a pro, makes me question whether or not
+the authors actually understand how software built around the TDX-Module is used
+in practice.
 
-> diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
-> new file mode 100644
-> index 000000000000..aa54d088129d
-> --- /dev/null
-> +++ b/drivers/pci/ide.c
+If an update causes a TD build to fail, or to generate the wrong measurement, or
+whatever "Failures due to incompatibilities" means, *something* eventually needs
+to take action.  Doing nothing is certainly the simplest option for the hypervisor
+and VMM, but when looking at the entire stack/ecosystem, it's the most complex
+option as it bleeds the damage into multiple, potentially-unknown components of
+the stack.  Either that, or I'm grossly misunderstanding what "Failures" means.
 
-> +void pci_ide_init(struct pci_dev *pdev)
-> +{
-> +	u16 nr_link_ide, nr_ide_mem, nr_streams;
-> +	u16 ide_cap;
-> +	u32 val;
-> +
-> +	if (!pci_is_pcie(pdev))
-> +		return;
-> +
-> +	ide_cap = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_IDE);
-> +	if (!ide_cap)
-> +		return;
-> +
-> +	pci_read_config_dword(pdev, ide_cap + PCI_IDE_CAP, &val);
-> +	if ((val & PCI_IDE_CAP_SELECTIVE) == 0)
-> +		return;
-> +
-> +	/*
-> +	 * Require endpoint IDE capability to be paired with IDE Root Port IDE
-> +	 * capability.
-> +	 */
-> +	if (pci_pcie_type(pdev) == PCI_EXP_TYPE_ENDPOINT) {
-> +		struct pci_dev *rp = pcie_find_root_port(pdev);
-> +
-> +		if (!rp->ide_cap)
-> +			return;
-> +	}
-> +
-> +	if (val & PCI_IDE_CAP_SEL_CFG)
-> +		pdev->ide_cfg = 1;
-	pdev->ide_cfg = FIELD_GET(PCI_IDE_CAP_SEL_CFG, val);
-will give more compact code. Entirely up to you.
+That section also states:
 
-> +
-> +	if (val & PCI_IDE_CAP_TEE_LIMITED)
-> +		pdev->ide_tee_limit = 1;
-likewise, could just use FIELD_GET() to save a line.
+  Future TDX Module versions may have different or additional update-sensitive cases.
 
-> +
-> +}
-
-
+Which means that from an ABI perspective, "Avoid updates during update-sensitive
+times" is the _ONLY_ viable option.  My read of that is that future TDX-Modules
+can effectively change the failure modes for a existing KVM ioctls.  That is an
+ABI change and will break userspace, e.g. if userspace is sane and expects certain
+operations to succeed.
