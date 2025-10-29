@@ -1,41 +1,40 @@
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E842BE7CD
-	for <linux-coco@lists.linux.dev>; Wed, 29 Oct 2025 16:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D552E33F8BE
+	for <linux-coco@lists.linux.dev>; Wed, 29 Oct 2025 16:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761755476; cv=none; b=V7B3o106Rp9SbIKgImKUVhXlbpa/G+iLsWJ/zPd17I15pfIqrK5++pVJsUhLzjyQuV84H/8jtJjySO9rgGb7n7jAR9asIgUXt+7nZf4aFtqwiAIspth+5GeO+3pdHNwKpxYFWRscBn7UsMLL28NW65CaCE7kQ6MfjY1E5tbopGI=
+	t=1761755684; cv=none; b=TfbcxgJNi5a4/r63cB87Myog4FwzhDNnWMvWNyxH2JSSuUg9I59bSu9r5NobEdaz75K255VOB8W3U9wznGgE1AyGPYt/mBcdRTbrsij+0fGJbdFXmENqZiS65jEXrn8y1+C2CDmJ0jMY0/k2BGlg5yR2Xi3YV95mGJvh2IBZapg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761755476; c=relaxed/simple;
-	bh=GxlAG7pxgonSTqzQqs8W/DcFKII6LcS7gpmlXKgt/Zk=;
+	s=arc-20240116; t=1761755684; c=relaxed/simple;
+	bh=LfGAviVUOEpXKmGXo+inIe1wSjvHmiakAtbRxVoDs4c=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WHootCQUQwr2aqxVVMJ9V3HbaJE5OVQvCX/MO0QTaiUd8aImZz3UnfV6MmD5SOMs0etHr1n5lS8LLFa51ox+Y2oUoMs53eCtK8gPGVLR1QQfcK0AF1NUQ4x9lLwKC80grPocnceLG2EGj6b7PIXu1n4Lw2vwqaoE7ke948NZdvY=
+	 MIME-Version:Content-Type; b=dsyyo/0cOtoBcZq2rFeEsmSFniW2mVGbKw7+IicAujFx7AkSKYOvcuMeqIah4UpWrzOIdD58kAJ7qUMRvvliBRfH+k7G3qoMyXIBUWHel0sAxkEzyKDRV6bEhymhlqyX/0F4DeJTzlY9tAzlQy9rm1Fny3nBILKqM5/4/RrrVVk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4cxXmj1HGhzJ46BS;
-	Thu, 30 Oct 2025 00:31:01 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cxXmq5yB1z6GD69;
+	Thu, 30 Oct 2025 00:31:07 +0800 (CST)
 Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 39393140278;
-	Thu, 30 Oct 2025 00:31:11 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id E29E2140370;
+	Thu, 30 Oct 2025 00:34:40 +0800 (CST)
 Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
  (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 29 Oct
- 2025 16:31:10 +0000
-Date: Wed, 29 Oct 2025 16:31:09 +0000
+ 2025 16:34:40 +0000
+Date: Wed, 29 Oct 2025 16:34:38 +0000
 From: Jonathan Cameron <jonathan.cameron@huawei.com>
 To: Dan Williams <dan.j.williams@intel.com>
 CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>, <aik@amd.com>,
 	<yilun.xu@linux.intel.com>, <aneesh.kumar@kernel.org>, <bhelgaas@google.com>,
-	<gregkh@linuxfoundation.org>, Lukas Wunner <lukas@wunner.de>, Samuel Ortiz
-	<sameo@rivosinc.com>
-Subject: Re: [PATCH v7 8/9] PCI/IDE: Report available IDE streams
-Message-ID: <20251029163109.000030ae@huawei.com>
-In-Reply-To: <20251024020418.1366664-9-dan.j.williams@intel.com>
+	<gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v7 9/9] PCI/TSM: Report active IDE streams
+Message-ID: <20251029163438.00001391@huawei.com>
+In-Reply-To: <20251024020418.1366664-10-dan.j.williams@intel.com>
 References: <20251024020418.1366664-1-dan.j.williams@intel.com>
-	<20251024020418.1366664-9-dan.j.williams@intel.com>
+	<20251024020418.1366664-10-dan.j.williams@intel.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -48,100 +47,83 @@ Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
  dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Thu, 23 Oct 2025 19:04:17 -0700
+On Thu, 23 Oct 2025 19:04:18 -0700
 Dan Williams <dan.j.williams@intel.com> wrote:
 
-> The limited number of link-encryption (IDE) streams that a given set of
-> host bridges supports is a platform specific detail. Provide
-> pci_ide_init_nr_streams() as a generic facility for either platform TSM
-> drivers, or PCI core native IDE, to report the number available streams.
-> After invoking pci_ide_init_nr_streams() an "available_secure_streams"
-> attribute appears in PCI host bridge sysfs to convey that count.
+> Given that the platform TSM owns IDE Stream ID allocation, report the
+> active streams via the TSM class device. Establish a symlink from the
+> class device to the PCI endpoint device consuming the stream, named by
+> the Stream ID.
 > 
-> Introduce a device-type, @pci_host_bridge_type, now that both a release
-> method and sysfs attribute groups are being specified for all 'struct
-> pci_host_bridge' instances.
-> 
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Lukas Wunner <lukas@wunner.de>
-> Cc: Samuel Ortiz <sameo@rivosinc.com>
-> Cc: Alexey Kardashevskiy <aik@amd.com>
-> Cc: Xu Yilun <yilun.xu@linux.intel.com>
 > Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 > Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Couple of trivial things noticed whilst refreshing my memory.
+
 > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
 
-New day, new comments.  Nothing huge, but I would avoid the defining
-an attr group to NULL as that feels like storing up bugs for the future.
-
-> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> index d3f16be40102..8b356dd09105 100644
-> --- a/drivers/pci/pci.h
-> +++ b/drivers/pci/pci.h
-> @@ -616,9 +616,12 @@ static inline void pci_doe_sysfs_teardown(struct pci_dev *pdev) { }
->  #ifdef CONFIG_PCI_IDE
->  void pci_ide_init(struct pci_dev *dev);
->  void pci_ide_init_host_bridge(struct pci_host_bridge *hb);
-> +extern const struct attribute_group pci_ide_attr_group;
-> +#define PCI_IDE_ATTR_GROUP (&pci_ide_attr_group)
->  #else
->  static inline void pci_ide_init(struct pci_dev *dev) { }
->  static inline void pci_ide_init_host_bridge(struct pci_host_bridge *hb) { }
-> +#define PCI_IDE_ATTR_GROUP NULL
-
-This only works if we assume nothing else ever ends up in pci_host_bridge_groups.
-i.e. it's fragile - think of someone adding something after this.
-Whilst I don't like ifdefs inline, there isn't a better option for this case that
-I can think of.
-
->  #endif
+> diff --git a/drivers/virt/coco/tsm-core.c b/drivers/virt/coco/tsm-core.c
+> index 4499803cf20d..c0dae531b64f 100644
+> --- a/drivers/virt/coco/tsm-core.c
+> +++ b/drivers/virt/coco/tsm-core.c
+> @@ -2,14 +2,17 @@
+>  /* Copyright(c) 2024 Intel Corporation. All rights reserved. */
 >  
->  #ifdef CONFIG_PCI_TSM
-> diff --git a/include/linux/pci-ide.h b/include/linux/pci-ide.h
-> index e638f9429bf9..85645b0a8620 100644
-> --- a/include/linux/pci-ide.h
-> +++ b/include/linux/pci-ide.h
-> @@ -63,6 +63,7 @@ struct pci_ide {
->  	const char *name;
->  };
->  
-> +void pci_ide_set_nr_streams(struct pci_host_bridge *hb, u16 nr);
->  struct pci_ide_partner *pci_ide_to_settings(struct pci_dev *pdev,
->  					    struct pci_ide *ide);
->  struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev);
-> diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
-> index 302f7bae6c96..44f62da5e191 100644
-> --- a/drivers/pci/ide.c
-> +++ b/drivers/pci/ide.c
+>  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+> +#define dev_fmt(fmt) KBUILD_MODNAME ": " fmt
 
-> +/**
-> + * pci_ide_set_nr_streams() - sets size of the pool of IDE Stream resources
-> + * @hb: host bridge boundary for the stream pool
-> + * @nr: number of streams
-> + *
-> + * Platform PCI init and/or expert test module use only. Limit IDE
-> + * Stream establishment by setting the number of stream resources
-> + * available at the host bridge. Platform init code must set this before
-> + * the first pci_ide_stream_alloc() call if the platform has less than the
-> + * default of 256 streams per host-bridge.
-> + *
-> + * The "PCI_IDE" symbol namespace is required because this is typically
-> + * a detail that is settled in early PCI init. I.e. this export is not
-> + * for endpoint drivers.
-> + */
-> +void pci_ide_set_nr_streams(struct pci_host_bridge *hb, u16 nr)
+Why is this dev_fmt() in this patch (which doesn't seem to introduce
+anything that would use it)?
+
+>  
+>  #include <linux/tsm.h>
+>  #include <linux/idr.h>
+> +#include <linux/pci.h>
+>  #include <linux/rwsem.h>
+>  #include <linux/device.h>
+>  #include <linux/module.h>
+>  #include <linux/cleanup.h>
+>  #include <linux/pci-tsm.h>
+> +#include <linux/pci-ide.h>
+>  
+>  static struct class *tsm_class;
+>  static DECLARE_RWSEM(tsm_rwsem);
+> @@ -106,6 +109,32 @@ void tsm_unregister(struct tsm_dev *tsm_dev)
+>  }
+>  EXPORT_SYMBOL_GPL(tsm_unregister);
+>  
+> +/* must be invoked between tsm_register / tsm_unregister */
+> +int tsm_ide_stream_register(struct pci_ide *ide)
 > +{
-> +	if (nr > 256)
-> +		nr = 256;
-
-
-hb->nr_ide_streams = min(nr, 256);
-maybe
-
-> +	hb->nr_ide_streams = nr;
-> +	WARN_ON_ONCE(!ida_is_empty(&hb->ide_stream_ida));
-> +	sysfs_update_group(&hb->dev.kobj, &pci_ide_attr_group);
+> +	struct pci_dev *pdev = ide->pdev;
+> +	struct pci_tsm *tsm = pdev->tsm;
+> +	struct tsm_dev *tsm_dev = tsm->tsm_dev;
+> +	int rc;
+> +
+> +	rc = sysfs_create_link(&tsm_dev->dev.kobj, &pdev->dev.kobj, ide->name);
+> +	if (rc)
+> +		return rc;
+> +
+> +	ide->tsm_dev = tsm_dev;
+> +	return 0;
 > +}
-> +EXPORT_SYMBOL_NS_GPL(pci_ide_set_nr_streams, "PCI_IDE");
+> +EXPORT_SYMBOL_GPL(tsm_ide_stream_register);
+> +
+> +void tsm_ide_stream_unregister(struct pci_ide *ide)
+> +{
+> +	struct tsm_dev *tsm_dev = ide->tsm_dev;
+> +
+> +	sysfs_remove_link(&tsm_dev->dev.kobj, ide->name);
+> +	ide->tsm_dev = NULL;
 
+Trivial preference for reverse order of register.  That means
+setting this NULL before removing the link.
+
+
+> +}
+> +EXPORT_SYMBOL_GPL(tsm_ide_stream_unregister);
+> +
+>  static void tsm_release(struct device *dev)
+>  {
+>  	struct tsm_dev *tsm_dev = container_of(dev, typeof(*tsm_dev), dev);
 
