@@ -1,161 +1,305 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57067262E
-	for <linux-coco@lists.linux.dev>; Wed, 29 Oct 2025 14:05:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1961134888D
+	for <linux-coco@lists.linux.dev>; Wed, 29 Oct 2025 15:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761746738; cv=none; b=DArdANfR+8XTGvEPtslePhcFP0+BcRPrsEsA+3QKzY7Sw24t/PxgiOPt1UMqwsZgm8kQ7lFL3WdTlZo4zwLcHb+W3DuT21MkYlAdwqAH5PIcWXVp7euTH1EhH/MCzvnLjH+KysMJPfi9JpYvb1+Esr+LMrJbgB+47EMiwbcXfsc=
+	t=1761753192; cv=none; b=fzYkRy65+PQ+7Swkxwi4rQyxU6PuOWTvs7/QoLZp443sxs+Z5eIvCHxjDvK+pU4+pUh6uiFhL8ZSdGxWYtdBriKF1tBK82nPmIiJy/yMZkXLCA027SI7x2AaVMvP30d4oNLeJHEV2t+D2gPyMvw22jRgD1o8/nV1rb0MZPNefKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761746738; c=relaxed/simple;
-	bh=yJFe02mQTayTg3e4UiCyzVPf1kc7DRlcXkw6+ZW1Co0=;
-	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=peH3/u9ZeFNbV3yvI+yBhXBULJG/TTSwh19+O90zuc9zu5Ni5X9ObPIg9KkEVOgSA0dxcr4eiDofcvyxfBmOlsNKF50U2AmLnCtcXjJnyDm4R8GFmfGnTOh4OLzRxuMswUYfkB+TDMZcch3KIccOzPGGfgGdfaDU3ujUFUxdJCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XERhqO5e; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XERhqO5e"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761746735;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=cnslAE1BZQVrAKABEOK7rtluaysr6PV5JU1KbGuTZi4=;
-	b=XERhqO5e/iOHF8Wt0/G0fHwA3GnigDGfqAjM9eqYHwL6TH6AxgcBLGZFp+R/q3cXIfaRvq
-	pFk/F55S1oa+3oOsr/zdMYpmIEWLp3r7Q3g+ASffJE7fVOsDYRVXXglESRGXW+OoGNMBn0
-	A2b6RKNVLfaprpr87Tqf1DcklqZEw/A=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-488-_eYKjUpRNSuTOu4c0O7RVA-1; Wed, 29 Oct 2025 10:05:34 -0400
-X-MC-Unique: _eYKjUpRNSuTOu4c0O7RVA-1
-X-Mimecast-MFC-AGG-ID: _eYKjUpRNSuTOu4c0O7RVA_1761746733
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-63c585eb47bso803682a12.1
-        for <linux-coco@lists.linux.dev>; Wed, 29 Oct 2025 07:05:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761746733; x=1762351533;
-        h=content-transfer-encoding:autocrypt:subject:to:content-language
-         :from:user-agent:mime-version:date:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cnslAE1BZQVrAKABEOK7rtluaysr6PV5JU1KbGuTZi4=;
-        b=jQ6a6pmUz3Iq6HRXd4AXVBXpM+x1NVAWd3CQoXb49fRiG7n8Dt/Jb6byKw4Pn7cWz0
-         j6QwixpIQWtVJNnXxniRASAqvW1fKon6q6YlTGD8xnyIfz6Vt3aW1ITHHFVUD0R+WAEh
-         sePYHBkfNE3fcoy3oTgl0DIwgn3fVN6v/JWZuKP71nILKJ2i7Qmdob0UP2BCiUMmtlsX
-         E7AJaL7m79xULCmUxowBm8BdMVJIybJGteEZFjODZN09ntThDO9yzKj6DNqrJc/u+NU3
-         0E9F2CgzBinnZjtRKLtSgJg3RHj72pzat60+BIpAPOAa6RWrluSeYGT/ZkISzm9kTLw6
-         rLOw==
-X-Gm-Message-State: AOJu0YxKq0J6yNHUghTk6+gLvTY1tj25pkJZBbDTs6UPE0M3S9xrTMYh
-	08DTdypklqlZ3YYl7midGB/HCZSlCgJCqVB5GyardnOfmDymZQ+Z6XLBBP+To7LOOp3wLZn+HPi
-	sIZl/ux196y9LbCIEPJpRGiXPMMmsLTuhNHOF3OqltcFv+o7dPOA5l32/UcJRyy13FErogPJUJ/
-	SuR+YIb3yKF0v1A7tJoIICwGV2g3VuG2QM3+zhcMUieUEmOA==
-X-Gm-Gg: ASbGncsEoxJyE2rU8lqmTeTvj5vL/Yb6Pq1UzbfWw9CQz8SomVhQc0GQlltSsIhDeMj
-	HBLszcQz2JOa9QZJ0QQnFNGgI4x+Qhtv2zCPx5XgaRLVKyB/UgHSv0gNek4nnBgrSpk2PZL4LWy
-	NZ6A5+zZoZzsAqagU+5TBecVhtxvPpuOm0UGQMU/NlaAJ2KT9UgDPb5OziGKeR7wBvpuAZUuLau
-	MqsAOBF1W5HJgiKZhxFTQMq5jwUqX1VnPU2aGQHiZ68cKACMXJcy7c0ac6hSIPwqPlbsqsNIVGU
-	OxFCpo+3YsXyFrUaxqCx8WN83P1xyyveWFBe253l0Tb1wJZW3CM4A8B5f8YRrss2+BwdpWs+1b2
-	pDPT3gUtFEN0FpAZyLf2G4Q==
-X-Received: by 2002:a05:6402:4305:b0:639:db35:62df with SMTP id 4fb4d7f45d1cf-640430c4203mr2738896a12.3.1761746732832;
-        Wed, 29 Oct 2025 07:05:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFzL9nsIzjqYVEDAPqxer68RLicZll6N15l3UlZtS3k0Ux6XvHSf70IZUbFQ651og2L846wOQ==
-X-Received: by 2002:a05:6000:613:b0:407:d776:4434 with SMTP id ffacd0b85a97d-429a83e5134mr6401396f8f.30.1761746241529;
-        Wed, 29 Oct 2025 06:57:21 -0700 (PDT)
-Received: from [10.32.64.156] (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4771e2358cdsm51810715e9.16.2025.10.29.06.57.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Oct 2025 06:57:20 -0700 (PDT)
-Message-ID: <f289e9f9-7c6b-4451-b78e-f22473c1d006@redhat.com>
-Date: Wed, 29 Oct 2025 14:57:19 +0100
+	s=arc-20240116; t=1761753192; c=relaxed/simple;
+	bh=GXyHcijDIwhDfbtb13z2Z7TFAHIg9SK0o+juXHHhxQ8=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uBGk0SZTXKk30hx5msf3WGCf9fNCkBv/7d13YxgAcZuuadrB5YRq4wmWwxU24+6dg0f+U6qVccBZNQMCmbzqAlxm1rXjLGTFfx0p9b6zBHc4xfSoX35Pp6NbOm5h9r/Yp5UkLGx1YVcEGHrUdnf1eg+lHIQmlQOVWJIBvT1Kmcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4cxWvx2DXBzHnGfT;
+	Wed, 29 Oct 2025 15:52:13 +0000 (UTC)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1B7D6140370;
+	Wed, 29 Oct 2025 23:53:06 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 29 Oct
+ 2025 15:53:05 +0000
+Date: Wed, 29 Oct 2025 15:53:03 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Dan Williams <dan.j.williams@intel.com>
+CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>, <aik@amd.com>,
+	<yilun.xu@linux.intel.com>, <aneesh.kumar@kernel.org>, <bhelgaas@google.com>,
+	<gregkh@linuxfoundation.org>, Lukas Wunner <lukas@wunner.de>, Samuel Ortiz
+	<sameo@rivosinc.com>
+Subject: Re: [PATCH v7 4/9] PCI/TSM: Establish Secure Sessions and Link
+ Encryption
+Message-ID: <20251029155303.00001e88@huawei.com>
+In-Reply-To: <20251024020418.1366664-5-dan.j.williams@intel.com>
+References: <20251024020418.1366664-1-dan.j.williams@intel.com>
+	<20251024020418.1366664-5-dan.j.williams@intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: David Hildenbrand <david@redhat.com>
-To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
-Subject: [Invitation] bi-weekly guest_memfd upstream call on 2025-10-29
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 7zko5bxP1FkWYqCfgwWwMzEVhosDozwoCCDmhVR0tDc_1761746733
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-Hi everybody,
+On Thu, 23 Oct 2025 19:04:13 -0700
+Dan Williams <dan.j.williams@intel.com> wrote:
 
-Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
-2025-10-29 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
+> The PCIe 7.0 specification, section 11, defines the Trusted Execution
+> Environment (TEE) Device Interface Security Protocol (TDISP).  This
+> protocol definition builds upon Component Measurement and Authentication
+> (CMA), and link Integrity and Data Encryption (IDE). It adds support for
+> assigning devices (PCI physical or virtual function) to a confidential VM
+> such that the assigned device is enabled to access guest private memory
+> protected by technologies like Intel TDX, AMD SEV-SNP, RISCV COVE, or ARM
+> CCA.
+> 
+> The "TSM" (TEE Security Manager) is a concept in the TDISP specification
+> of an agent that mediates between a "DSM" (Device Security Manager) and
+> system software in both a VMM and a confidential VM. A VMM uses TSM ABIs
+> to setup link security and assign devices. A confidential VM uses TSM
+> ABIs to transition an assigned device into the TDISP "RUN" state and
+> validate its configuration. From a Linux perspective the TSM abstracts
+> many of the details of TDISP, IDE, and CMA. Some of those details leak
+> through at times, but for the most part TDISP is an internal
+> implementation detail of the TSM.
+> 
+> CONFIG_PCI_TSM adds an "authenticated" attribute and "tsm/" subdirectory
+> to pci-sysfs. Consider that the TSM driver may itself be a PCI driver.
+> Userspace can watch for the arrival of a "TSM" device,
+> /sys/class/tsm/tsm0/uevent KOBJ_CHANGE, to know when the PCI core has
+> initialized TSM services.
+> 
+> The operations that can be executed against a PCI device are split into
+> two mutually exclusive operation sets, "Link" and "Security" (struct
+> pci_tsm_{link,security}_ops). The "Link" operations manage physical link
+> security properties and communication with the device's Device Security
+> Manager firmware. These are the host side operations in TDISP. The
+> "Security" operations coordinate the security state of the assigned
+> virtual device (TDI). These are the guest side operations in TDISP.
+> 
+> Only "link", Secure Session and physical Link Encryption, operations are
+> defined at this stage with placeholders for the device security, Trusted
+> Computing Base entry / exit, operations.
 
-We'll be using the following Google meet:
-http://meet.google.com/wxp-wtju-jzw
+That list probably needs an 'and'
 
-The meeting notes can be found at [1], where we also link recordings and
-collect current guest_memfd upstream proposals. If you want an google
-calendar invitation that also covers all future meetings, just write me
-a mail.
+> 
+> The locking allows for multiple devices to be executing commands
+> simultaneously, one outstanding command per-device and an rwsem
+> synchronizes the implementation relative to TSM registration/unregistration
+> events.
+> 
+> Thanks to Wu Hao for his work on an early draft of this support.
+> 
+> Cc: Lukas Wunner <lukas@wunner.de>
+> Cc: Samuel Ortiz <sameo@rivosinc.com>
+> Cc: Alexey Kardashevskiy <aik@amd.com>
+> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-In this meeting, we'll definitely have Ackerley give us an overview of 
-work-in-progress HugeTLB support and likely we will talk about the 
-in-place conversion patches that are already on the list! Further, 
-Michael wants to talk about using the SWIOTLB for all most/shared pages 
-we touched upon in the last meeting.
+Some comments on comments/documentation inline.  With those addressed
+(which should be straight forward)
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
-To put something to discuss onto the agenda, reply to this mail or add
-them to the "Topics/questions for next meeting(s)" section in the
-meeting notes as a comment.
+> diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
+> new file mode 100644
+> index 000000000000..e3107ede2a0f
+> --- /dev/null
+> +++ b/include/linux/pci-tsm.h
+> @@ -0,0 +1,159 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef __PCI_TSM_H
+> +#define __PCI_TSM_H
+> +#include <linux/mutex.h>
+> +#include <linux/pci.h>
+> +
+> +struct pci_tsm;
+See below for note on a duplicate of this.
 
-[1]
-https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
+> +struct tsm_dev;
+> +
+> +/*
+> + * struct pci_tsm_ops - manage confidential links and security state
+> + * @link_ops: Coordinate PCIe SPDM and IDE establishment via a platform TSM.
+> + *	      Provide a secure session transport for TDISP state management
+> + *	      (typically bare metal physical function operations).
+> + * @sec_ops: Lock, unlock, and interrogate the security state of the
 
--- 
-Cheers
+devsec_ops?
 
-David / dhildenb
+> + *	     function via the platform TSM (typically virtual function
+> + *	     operations).
+> + * @owner: Back reference to the TSM device that owns this instance.
+Not seeing this below.
+
+> + *
+> + * This operations are mutually exclusive either a tsm_dev instance
+> + * manages physical link properties or it manages function security
+> + * states like TDISP lock/unlock.
+> + */
+> +struct pci_tsm_ops {
+> +	/*
+> +	 * struct pci_tsm_link_ops - Manage physical link and the TSM/DSM session
+> +	 * @probe: establish context with the TSM (allocate / wrap 'struct
+> +	 *	   pci_tsm') for follow-on link operations
+> +	 * @remove: destroy link operations context
+> +	 * @connect: establish / validate a secure connection (e.g. IDE)
+> +	 *	     with the device
+> +	 * @disconnect: teardown the secure link
+> +	 *
+> +	 * Context: @probe, @remove, @connect, and @disconnect run under
+> +	 * pci_tsm_rwsem held for write to sync with TSM unregistration and
+> +	 * mutual exclusion of @connect and @disconnect. @connect and
+> +	 * @disconnect additionally run under the DSM lock (struct
+> +	 * pci_tsm_pf0::lock) as well as @probe and @remove of the subfunctions.
+> +	 */
+> +	struct_group_tagged(pci_tsm_link_ops, link_ops,
+> +		struct pci_tsm *(*probe)(struct tsm_dev *tsm_dev,
+> +					 struct pci_dev *pdev);
+> +		void (*remove)(struct pci_tsm *tsm);
+> +		int (*connect)(struct pci_dev *pdev);
+> +		void (*disconnect)(struct pci_dev *pdev);
+> +	);
+> +
+> +	/*
+> +	 * struct pci_tsm_devsec_ops - Manage the security state of the function
+> +	 * @lock: establish context with the TSM (allocate / wrap 'struct
+> +	 *	  pci_tsm') for follow-on security state transitions from the
+> +	 *	  LOCKED state
+> +	 * @unlock: destroy TSM context and return device to UNLOCKED state
+> +	 *
+> +	 * Context: @lock and @unlock run under pci_tsm_rwsem held for write to
+> +	 * sync with TSM unregistration and each other
+> +	 */
+> +	struct_group_tagged(pci_tsm_devsec_ops, devsec_ops,
+> +		struct pci_tsm *(*lock)(struct tsm_dev *tsm_dev,
+> +					struct pci_dev *pdev);
+> +		void (*unlock)(struct pci_tsm *tsm);
+> +	);
+> +};
+
+
+> +#ifdef CONFIG_PCI_TSM
+> +struct tsm_dev;
+
+Seems to be declared already (not under an ifdef) above.
+
+> +int pci_tsm_register(struct tsm_dev *tsm_dev);
+...
+
+
+> diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
+> new file mode 100644
+> index 000000000000..094650454aa7
+> --- /dev/null
+> +++ b/drivers/pci/tsm.c
+
+> +static int pci_tsm_connect(struct pci_dev *pdev, struct tsm_dev *tsm_dev)
+> +{
+> +	int rc;
+> +	struct pci_tsm_pf0 *tsm_pf0;
+> +	const struct pci_tsm_ops *ops = tsm_dev->pci_ops;
+> +	struct pci_tsm *pci_tsm __free(tsm_remove) = ops->probe(tsm_dev, pdev);
+> +
+> +	/* connect()  mutually exclusive with subfunction pci_tsm_init() */
+
+Extra space after ()
+
+> +	lockdep_assert_held_write(&pci_tsm_rwsem);
+> +
+> +	if (!pci_tsm)
+> +		return -ENXIO;
+> +
+> +	pdev->tsm = pci_tsm;
+> +	tsm_pf0 = to_pci_tsm_pf0(pdev->tsm);
+> +
+> +	/* mutex_intr assumes connect() is always sysfs/user driven */
+> +	ACQUIRE(mutex_intr, lock)(&tsm_pf0->lock);
+> +	if ((rc = ACQUIRE_ERR(mutex_intr, &lock)))
+> +		return rc;
+> +
+> +	rc = ops->connect(pdev);
+> +	if (rc)
+> +		return rc;
+> +
+> +	pdev->tsm = no_free_ptr(pci_tsm);
+> +
+> +	/*
+> +	 * Now that the DSM is established, probe() all the potential
+> +	 * dependent functions. Failure to probe a function is not fatal
+> +	 * to connect(), it just disables subsequent security operations
+> +	 * for that function.
+> +	 *
+> +	 * Note this is done unconditionally, without regard to finding
+> +	 * PCI_EXP_DEVCAP_TEE on the dependent function, for robustness. The DSM
+> +	 * is the ultimate arbiter of security state relative to a given
+> +	 * interface id, and if it says it can manage TDISP state of a function,
+> +	 * let it.
+> +	 */
+> +	if (has_tee(pdev))
+> +		pci_tsm_walk_fns(pdev, probe_fn, pdev);
+> +	return 0;
+> +}
+
+
+
+> +/*
+> + * Find the PCI Device instance that serves as the Device Security Manager (DSM)
+> + * for @pdev. Note that no additional reference is held for the resulting device
+> + * because @pdev always has a longer registered lifetime than its DSM by virtue
+> + * of being a child of, or identical to, its DSM.
+
+This comment has me confused.  I would normally expect parent to have the guaranteed
+longer life span than the child. This seems to say the opposite.
+Code itself is fine.
+
+
+> + */
+> +static struct pci_dev *find_dsm_dev(struct pci_dev *pdev)
+> +{
+> +	struct device *grandparent;
+> +	struct pci_dev *uport;
+> +
+> +	if (is_pci_tsm_pf0(pdev))
+> +		return pdev;
+> +
+> +	struct pci_dev *pf0 __free(pci_dev_put) = pf0_dev_get(pdev);
+> +	if (!pf0)
+> +		return NULL;
+> +
+> +	if (is_dsm(pf0))
+> +		return pf0;
+> +
+> +	/*
+> +	 * For cases where a switch may be hosting TDISP services on behalf of
+> +	 * downstream devices, check the first upstream port relative to this
+> +	 * endpoint.
+> +	 */
+> +	if (!pdev->dev.parent)
+> +		return NULL;
+> +	grandparent = pdev->dev.parent->parent;
+> +	if (!grandparent)
+> +		return NULL;
+> +	if (!dev_is_pci(grandparent))
+> +		return NULL;
+> +	uport = to_pci_dev(grandparent);
+> +	if (!pci_is_pcie(uport) ||
+> +	    pci_pcie_type(uport) != PCI_EXP_TYPE_UPSTREAM)
+> +		return NULL;
+> +
+> +	if (is_dsm(uport))
+> +		return uport;
+> +	return NULL;
+> +}
 
 
