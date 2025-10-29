@@ -1,122 +1,181 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A58A299AB3
-	for <linux-coco@lists.linux.dev>; Wed, 29 Oct 2025 13:48:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1A23314CE
+	for <linux-coco@lists.linux.dev>; Wed, 29 Oct 2025 14:00:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761745719; cv=none; b=rIYOrPoUDa1H/6LpV8kXbLV4DnnB2A+R1Bw3Vg/yTjNhnNyeFCQDZTI+yYN4caW+vZiQtGNQUsCZjFi+20WO5VPxpBMdTA54e/gq7qzhm1BJ7fMotDtUM9/RXTcK7qgAXnqxl/5x+dOoxIFzbwNyEbz98eqQOoAqJ5AJN8ompIQ=
+	t=1761746409; cv=none; b=X4RGfvlq1nqUW+OWvjdSorbbg48GY9/rGJhnRGHYv5sayqiRDcJg4tHOvkiZ2MB6Pio3W9+Q2XwgrJlZF34/Lzc87GQcMahaLOoR7QeYkLXO9yCmD9N60XLc2cPPvsoW5+Z+cBejBn4BXZFyyEjgDvbt4dtUafy6hGDvDw1YCPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761745719; c=relaxed/simple;
-	bh=9PVB5zBv2zFukgLFPs6dQjhYsTqNgJk+vg6V5Vp4m2c=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=isTLMWlY9CV+TL+eswVW1N5xdeqkj0fK8qnknxV9N4y1l7tqbOJ4W6akCt0QswZ6ItAjT91ySzOUYYlU329IF3fN5ruxw8imrjd3Z1C8kpiKWhra6iI/JCMavHhreb4fsV6/Fq9xKPGXukiLkoS4Y7jKPpc2zt7pRT+A5sr2ijg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NSzeywnp; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NSzeywnp"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3324538ceb0so11643717a91.1
-        for <linux-coco@lists.linux.dev>; Wed, 29 Oct 2025 06:48:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761745717; x=1762350517; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xdHccMmYepT/ISL0jGN7yG+GkzRFqfu9waW3qgcJU44=;
-        b=NSzeywnp8U3ZVjubiq9Adg3q0Mzbkj5PpbaBVYlBJsVMCaw28ebBO9d9FOCtpuhKS2
-         Oo/vTskd5aWaPykP/eNlKZ7qo1ScTY6P1JC1wM7DFCvFQlu59iXsU5b7HiwrTfIql+8n
-         Fn+S3nXt91dXmYVcjxFAx1g3AWYzafdW1Z9JsKKuA8VB5MgMW8r1MksFDYdHaVHJuEJ3
-         kb/wBc5+dhv7hEcHEH4IaLULNk9n0fWmvAqlYsR0nggzBTIbdWvVgWYAkBHFzUUh+UcW
-         Je6lGLlQ/V7ZmXwgLIgriETUYE5Znv+nKlDW4d92V7laUBXPGFf5aUDn17DeiN59XU02
-         wP5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761745717; x=1762350517;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xdHccMmYepT/ISL0jGN7yG+GkzRFqfu9waW3qgcJU44=;
-        b=d6ngexFtCJTiaJn3IjBMNjEDpIGHc0PBOQK9fGgfsZGm/hbyinAVNVaWJIHWzPdOeV
-         h4S4MUwxgSNQ1dH54Nh3HMbL3jrNmEmAXLJITANtzB/1S7pcylNF44C11hwO894RilRY
-         a+UA1y0/wlpvasLhRzSeLZcSO7duyeujhToIqJgY3fplLTzXoJLJ1jvgHn2ZGtY84GNT
-         4sLT8iqlAjOJ+RA1JJQlV5zK/tHCeyamYgsyz/yArc0+J80LNYvj8AH5ByNlxlCRSR2E
-         nRarx1ivT5ilD7qM8wmEhVf0bbD1Y7X4vHX3WmCz3k03/2f2wVg/KphPFx+9VZ0rHe7F
-         QLIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXACU7jgm3cKDFzCrBgFqJfYdefZANmOyxB92wvtUoH3VN9+K3luWzISRAxLMyejcnclnN05vHxCdjf@lists.linux.dev
-X-Gm-Message-State: AOJu0YyOEjtHJV0Byp0df7xuWy20034HGw/0blhPP0oA0evN9uGaJ1sr
-	wy73MUDxMD92/Q0GSeskSKUrDaOHYnNzrHtTXMx8TD1saFZaQjcRBAmo9CJhZcLlaNY7TQDH4an
-	nnKWicA==
-X-Google-Smtp-Source: AGHT+IG197XQ5HcKAVF2KhAkc6YfgtWRX32xq7sEgnaKNI+rXoWYFC+1cgH/mDXdCdhip0xmxN5QjKReWFM=
-X-Received: from pjbsv7.prod.google.com ([2002:a17:90b:5387:b0:340:3e18:b5c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:498c:b0:32e:32e4:9789
- with SMTP id 98e67ed59e1d1-3403a143401mr3210393a91.3.1761745717502; Wed, 29
- Oct 2025 06:48:37 -0700 (PDT)
-Date: Wed, 29 Oct 2025 06:48:35 -0700
-In-Reply-To: <6901792e39d13_10e9100ed@dwillia2-mobl4.notmuch>
+	s=arc-20240116; t=1761746409; c=relaxed/simple;
+	bh=n78vuiFB36alAdum1oEPD8c15C51uU5Ec+YjMOpB55A=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TL7UlpGFDJ3d8jKwomCeEUggnBdg/qHdCdSptxacBTLqlG+aA551wM+maaMeekSpWLatoMlNg3Cra1oQsvNHgM6eQCwfKBYvOydEMO4j8TfqBceu6xtxche0r2I1w3M9QjMxLPYLYWCHcPBFv79/gK353ne7UXBMl6SIl4j0nwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cxTNV13sWz67D7n;
+	Wed, 29 Oct 2025 21:58:18 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7CF4D1402ED;
+	Wed, 29 Oct 2025 22:00:04 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 29 Oct
+ 2025 14:00:03 +0000
+Date: Wed, 29 Oct 2025 14:00:02 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Dan Williams <dan.j.williams@intel.com>
+CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>, <aik@amd.com>,
+	<yilun.xu@linux.intel.com>, <aneesh.kumar@kernel.org>, <bhelgaas@google.com>,
+	<gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v7 3/9] PCI: Introduce pci_walk_bus_reverse(),
+ for_each_pci_dev_reverse()
+Message-ID: <20251029140002.0000596f@huawei.com>
+In-Reply-To: <20251024020418.1366664-4-dan.j.williams@intel.com>
+References: <20251024020418.1366664-1-dan.j.williams@intel.com>
+	<20251024020418.1366664-4-dan.j.williams@intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <68fc2af6305be_10e210029@dwillia2-mobl4.notmuch>
- <CAGtprH8-UGFkh4NmuY1ETPYmg7Uk+bm24Er2PPxf8tUOSR_byQ@mail.gmail.com>
- <68fe92d8eef5f_10e210057@dwillia2-mobl4.notmuch> <CAGtprH8g5212M26HPneyaHPq8VKS=x4TU4Q4vbDZqt_gYLO=TA@mail.gmail.com>
- <68ffbfb53f8b5_10e210078@dwillia2-mobl4.notmuch> <CAGtprH-rv9T1ano+ti=3eU4FO2APCOcR06buPALggAwUnka3Dg@mail.gmail.com>
- <690026ac52509_10e2100cd@dwillia2-mobl4.notmuch> <CAAYXXYyVC0Sm+1PBw=xoYNDV7aa54c_6KTGjMdwVaBAJOd8Hpw@mail.gmail.com>
- <aQFmOZCdw64z14cJ@google.com> <6901792e39d13_10e9100ed@dwillia2-mobl4.notmuch>
-Message-ID: <aQIbM5m09G0FYTzE@google.com>
-Subject: Re: [PATCH v2 00/21] Runtime TDX Module update support
-From: Sean Christopherson <seanjc@google.com>
-To: dan.j.williams@intel.com
-Cc: Erdem Aktas <erdemaktas@google.com>, Vishal Annapurve <vannapurve@google.com>, 
-	Dave Hansen <dave.hansen@intel.com>, Chao Gao <chao.gao@intel.com>, 
-	Elena Reshetova <elena.reshetova@intel.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, 
-	Reinette Chatre <reinette.chatre@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Kai Huang <kai.huang@intel.com>, "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, 
-	"sagis@google.com" <sagis@google.com>, "paulmck@kernel.org" <paulmck@kernel.org>, 
-	"nik.borisov@suse.com" <nik.borisov@suse.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Rick P Edgecombe <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Tue, Oct 28, 2025, dan.j.williams@intel.com wrote:
-> Sean Christopherson wrote:
-> [..]
-> > > IMO, It is something userspace should decide, kernel's job is to
-> > > provide the necessary interface about it.
-> > 
-> > I disagree, I don't think userspace should even get the option.  IMO, not setting
-> > AVOID_COMPAT_SENSITIVE is all kinds of crazy.
+On Thu, 23 Oct 2025 19:04:12 -0700
+Dan Williams <dan.j.williams@intel.com> wrote:
+
+> PCI/TSM, the PCI core functionality for the PCIe TEE Device Interface
+> Security Protocol (TDISP), has a need to walk all subordinate functions of
+> a Device Security Manager (DSM) to setup a device security context. A DSM
+> is physical function 0 of multi-function or SR-IOV device endpoint, or it
+> is an upstream switch port.
 > 
-> Do see Table 4.4: "Comparison of Update Incompatibility Detection and/or
-> Avoidance Methods" from the latest base architecture specification [1].
-> It lists out the pros and cons of not setting AVOID_COMPAT_SENSITIVE.
-> This thread has only argued the merits of "None" and "Avoid updates
-> during update- sensitive times". It has not discussed "Detect
-> incompatibility after update", but let us not do that.
+> In error scenarios or when a TEE Security Manager (TSM) device is removed
+> it needs to unwind all established DSM contexts.
+> 
+> Introduce reverse versions of PCI device iteration helpers to mirror the
+> setup path and ensure that dependent children are handled before parents.
+> 
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-But we already are discussing that, because the "None" option is just punting
-"Detect incompatibility after update" to something other than the VMM.  Doing
-literally nothing isn't an option.  The fact that it's even listed in the table,
-not to mention has "Simplest." listed as a pro, makes me question whether or not
-the authors actually understand how software built around the TDX-Module is used
-in practice.
+Bit of archaeology was needed as there are some existing oddities in the
+functions this is based on.
 
-If an update causes a TD build to fail, or to generate the wrong measurement, or
-whatever "Failures due to incompatibilities" means, *something* eventually needs
-to take action.  Doing nothing is certainly the simplest option for the hypervisor
-and VMM, but when looking at the entire stack/ecosystem, it's the most complex
-option as it bleeds the damage into multiple, potentially-unknown components of
-the stack.  Either that, or I'm grossly misunderstanding what "Failures" means.
+My suggestions for this are don't use guard() and drop the void * cast that
+we should cleanup in the existing code.
 
-That section also states:
+> diff --git a/drivers/pci/bus.c b/drivers/pci/bus.c
+> index f26aec6ff588..1c981ca72b03 100644
+> --- a/drivers/pci/bus.c
+> +++ b/drivers/pci/bus.c
+> @@ -8,6 +8,7 @@
+>   */
+>  #include <linux/module.h>
+>  #include <linux/kernel.h>
+> +#include <linux/cleanup.h>
+>  #include <linux/pci.h>
+>  #include <linux/errno.h>
+>  #include <linux/ioport.h>
+> @@ -432,6 +433,27 @@ static int __pci_walk_bus(struct pci_bus *top, int (*cb)(struct pci_dev *, void
+>  	return ret;
+>  }
+>  
+> +static int __pci_walk_bus_reverse(struct pci_bus *top,
+> +				  int (*cb)(struct pci_dev *, void *),
+> +				  void *userdata)
+> +{
+> +	struct pci_dev *dev;
+> +	int ret = 0;
+> +
+> +	list_for_each_entry_reverse(dev, &top->devices, bus_list) {
+> +		if (dev->subordinate) {
+> +			ret = __pci_walk_bus_reverse(dev->subordinate, cb,
+> +						     userdata);
+> +			if (ret)
+> +				break;
+> +		}
+> +		ret = cb(dev, userdata);
+> +		if (ret)
+> +			break;
+> +	}
+> +	return ret;
 
-  Future TDX Module versions may have different or additional update-sensitive cases.
+I see this is local style so fair enough, but I'd have gone with early
+returns as it's a simple case of return ret if it is ever set.
 
-Which means that from an ABI perspective, "Avoid updates during update-sensitive
-times" is the _ONLY_ viable option.  My read of that is that future TDX-Modules
-can effectively change the failure modes for a existing KVM ioctls.  That is an
-ABI change and will break userspace, e.g. if userspace is sane and expects certain
-operations to succeed.
+> +}
+
+> +/**
+> + * pci_walk_bus_reverse - walk devices on/under bus, calling callback.
+> + * @top: bus whose devices should be walked
+> + * @cb: callback to be called for each device found
+> + * @userdata: arbitrary pointer to be passed to callback
+> + *
+> + * Same semantics as pci_walk_bus(), but walks the bus in reverse order.
+> + */
+> +void pci_walk_bus_reverse(struct pci_bus *top,
+> +			  int (*cb)(struct pci_dev *, void *), void *userdata)
+> +{
+> +	guard(rwsem_read)(&pci_bus_sem);
+
+So this ends up different to pci_walk_bus.  I'd be tempted to just
+not bother bringing a single guard() usage here. Gain is trivial and
+mixing and matching style in a file isn't particularly nice.
+
+I'd not mind changing pci_walk_bus() as well but that would need
+to be a trivial precursor patch I think.
+
+> +	__pci_walk_bus_reverse(top, cb, userdata);
+> +}
+> +EXPORT_SYMBOL_GPL(pci_walk_bus_reverse);
+> +
+
+> diff --git a/drivers/pci/search.c b/drivers/pci/search.c
+> index 53840634fbfc..e6e84dc62e82 100644
+> --- a/drivers/pci/search.c
+> +++ b/drivers/pci/search.c
+> @@ -282,6 +282,45 @@ static struct pci_dev *pci_get_dev_by_id(const struct pci_device_id *id,
+>  	return pdev;
+>  }
+>  
+> +static struct pci_dev *pci_get_dev_by_id_reverse(const struct pci_device_id *id,
+> +						 struct pci_dev *from)
+> +{
+> +	struct device *dev;
+> +	struct device *dev_start = NULL;
+> +	struct pci_dev *pdev = NULL;
+> +
+> +	if (from)
+> +		dev_start = &from->dev;
+> +	dev = bus_find_device_reverse(&pci_bus_type, dev_start, (void *)id,
+
+That (void *) is casting away a const but bus_find_device_reverse takes
+a const void *.
+I think you are fine just relying on implicit cast for that parameter.
+
+Not that important and pci_get_device_by_id() does have same odd casting.
+Looks like way back bus_find_device() didn't take a const pointer 
+
+Seems to be true in 3.19 (random choice jumping back through time on elixir)
+but not sure when it changed.
+
+Anyhow, would be nice to clean that up in existing code if anyone is bored
+enough.
+
+> +				      match_pci_dev_by_id);
+> +	if (dev)
+> +		pdev = to_pci_dev(dev);
+> +	pci_dev_put(from);
+> +	return pdev;
+> +}
+
+
