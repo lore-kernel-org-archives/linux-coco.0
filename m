@@ -1,193 +1,112 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C902FDC25
-	for <linux-coco@lists.linux.dev>; Thu, 30 Oct 2025 11:43:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99FFE1EEA49;
+	Thu, 30 Oct 2025 14:05:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761824640; cv=none; b=Giijwgik+kV8j7gNOpPErvq036hKJ21o/rbTXbk9c8GBCxpSHKMnsnBYgf02DRV5R/4LrwYq+As6wEjyOb2BGl1xHv3XMNA0d6HX+NTTIb7ODPIUL1iLuwlG2HM1Yh1r03crwDNGSyAhmMSxjUETC7iUemBWceHeDbLcEmsFOnE=
+	t=1761833100; cv=none; b=queg4CYBNHDFApsjjA1ukhWcc3W6o7soP0UGbcKLqtuaGOMCf+F4B0jduGJwnVmXHRKmoFpg6yN9mxPAr5J573ZJWBI4njAN+CVkID+0eqRK1QPWjnTdA/wI9ryHFZ+OurmCVe1G9bff1Pa0xoado21a4xDcBTnZBnNuI44O02k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761824640; c=relaxed/simple;
-	bh=iR185h3VvF4CPoc5rhCxDqkfTGvVNOZnZk2oTNSZNww=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KWKWC8l8OmW6M3vOg4UvMhnfcJAANgeruE4Casifar0cIe+MEZ7cjVeXrLEyPDGAPBNjXPPpvpfbfPDo7KYRn8Ayy0/Y8MeAAIw9eJXQL22Oby9Ui4Oq1AUhaKad9/w/ckVB4xSmPq6YzH30CK5m3Ts6KF6yYo2ojJjdNaQWUDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cy2Jt0K84z6K6JZ;
-	Thu, 30 Oct 2025 19:42:06 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4A2971402F0;
-	Thu, 30 Oct 2025 19:43:55 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 30 Oct
- 2025 11:43:54 +0000
-Date: Thu, 30 Oct 2025 11:43:53 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Dan Williams <dan.j.williams@intel.com>
-CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>,
-	<xin@zytor.com>, <chao.gao@intel.com>, Xu Yilun <yilun.xu@linux.intel.com>
-Subject: Re: [RFC PATCH 27/27] coco/tdx-host: Implement IDE stream
- setup/teardown
-Message-ID: <20251030114353.00007c92@huawei.com>
-In-Reply-To: <20250919142237.418648-28-dan.j.williams@intel.com>
-References: <20250919142237.418648-1-dan.j.williams@intel.com>
-	<20250919142237.418648-28-dan.j.williams@intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1761833100; c=relaxed/simple;
+	bh=LKSA5kjPUGMHZZpJTjFfuRmu0oSOpXV4X1NFS+NHl88=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lZ/IfhuG08XtwQTdQEYEmVw+yBcYzRg3kM4TUBI6CTdl1IHn7d1WUowtPRx8SXBL9catbsuvfvhAUsozEYwAhcAe+7kaRnl0/VcIuvmkanu0kPJkp3GuMUopXgugaoCW3I/DZlT2S39XwE60WUxSbeH4dB36wFvW+ylcvy+Nejs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NsfZ0knt; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NsfZ0knt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829C7C4CEF8;
+	Thu, 30 Oct 2025 14:04:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761833100;
+	bh=LKSA5kjPUGMHZZpJTjFfuRmu0oSOpXV4X1NFS+NHl88=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=NsfZ0kntiAAsYA/kbFbts7G/hkZ5mjULzmVn4OOb+bvMDEeI4UV85RG8tiH3Fy/1n
+	 ATqDUoQCP40EGyAa3WZG2f43NTwWO8F1BoslC2m3O9V+WzT+UD4ho9n/MHaQoQG6Cn
+	 QQvtBUKZlcpiHorOKaknMwCMzty+K/OkYxh6LXlrMvuE9GzXTNz13HKx6EEdkHUrz5
+	 DANQe7JhWNbNQBSvIs7LqhWC79cp2d75NzIrgFU9MLRoPoVHnzdn3hgAxP6HyGd/LP
+	 dvnsMZMCUga58NKKuAWhUab5ncePZz9/nAeS+gQCRLTm3QeiPMY1zXiFVQXqZz8iaT
+	 tpMYVKxttIE6Q==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	dan.j.williams@intel.com, aik@amd.com, lukas@wunner.de,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: Re: [PATCH RESEND v2 06/12] coco: host: arm64: Add RMM device
+ communication helpers
+In-Reply-To: <20251029183306.0000485c@huawei.com>
+References: <20251027095602.1154418-1-aneesh.kumar@kernel.org>
+ <20251027095602.1154418-7-aneesh.kumar@kernel.org>
+ <20251029183306.0000485c@huawei.com>
+Date: Thu, 30 Oct 2025 19:34:51 +0530
+Message-ID: <yq5asef0cwos.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+Content-Type: text/plain
 
-On Fri, 19 Sep 2025 07:22:36 -0700
-Dan Williams <dan.j.williams@intel.com> wrote:
+Jonathan Cameron <jonathan.cameron@huawei.com> writes:
 
-> From: Xu Yilun <yilun.xu@linux.intel.com>
-> 
-> Implementation for a most straightforward Selective IDE stream setup.
-> Hard code all parameters for Stream Control Register. And no IDE Key
-> Refresh support.
-> 
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-A few small things in here.
+> On Mon, 27 Oct 2025 15:25:56 +0530
+> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
+>
 
-Jonathan
+...
 
-> ---
->  drivers/virt/coco/tdx-host/tdx-host.c | 271 +++++++++++++++++++++++++-
->  1 file changed, 270 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
-> index 258539cf0cdf..7f156d219cee 100644
-> --- a/drivers/virt/coco/tdx-host/tdx-host.c
-> +++ b/drivers/virt/coco/tdx-host/tdx-host.c
+>> +void pdev_communicate_work(struct work_struct *work)
+>> +{
+>> +	unsigned long state;
+>> +	struct pci_tsm *tsm;
+>> +	struct dev_comm_work *setup_work;
+>> +	struct cca_host_pf0_dsc *pf0_dsc;
+>> +
+>> +	setup_work = container_of(work, struct dev_comm_work, work);
+>> +	tsm = setup_work->tsm;
+>> +	pf0_dsc = to_cca_pf0_dsc(tsm->dsm_dev);
+> Could combine these 3 with declarations for shorter code without much
+> change to readability.
+>
 
+Not sure about this.
 
-> +static void tdx_ide_stream_delete(struct tdx_link *tlink)
-> +{
-> +	struct pci_dev *pdev = tlink->pci.base_tsm.pdev;
-> +	unsigned int nr_released;
-> +	u64 released_hpa, r;
-> +
-> +	r = tdh_ide_stream_block(tlink->spdm_id, tlink->stream_id);
-> +	if (r) {
-> +		pci_err(pdev, "ide stream block fail %llx\n", r);
-> +		goto leak;
-> +	}
-> +
-> +	r = tdh_ide_stream_delete(tlink->spdm_id, tlink->stream_id,
-> +				  tlink->stream_mt, &nr_released,
-> +				  &released_hpa);
-> +	if (r) {
-> +		pci_err(pdev, "ide stream delete fail %llx\n", r);
-> +		goto leak;
-> +	}
-> +
-> +	if (tdx_page_array_ctrl_release(tlink->stream_mt, nr_released,
-> +					released_hpa)) {
-> +		pci_err(pdev, "fail to release IDE stream metadata pages\n");
-> +		goto leak;
-> +	}
-> +
-> +	goto out;
-> +
-> +leak:
-> +	tdx_page_array_ctrl_leak(tlink->stream_mt);
-> +out:
-> +	tlink->stream_mt = NULL;
+ static void pdev_communicate_work(struct work_struct *work)
+ {
+ 	unsigned long state;
+-	struct pci_tsm *tsm;
+-	struct dev_comm_work *setup_work;
+-	struct cca_host_pf0_dsc *pf0_dsc;
+-
+-	setup_work = container_of(work, struct dev_comm_work, work);
+-	tsm = setup_work->tsm;
+-	pf0_dsc = to_cca_pf0_dsc(tsm->dsm_dev);
++	struct dev_comm_work *setup_work = container_of(work,
++							struct dev_comm_work,
++							work);
++	struct pci_tsm *tsm = setup_work->tsm;
++	struct cca_host_pf0_dsc *pf0_dsc = to_cca_pf0_dsc(tsm->dsm_dev);
+ 
+ 	guard(mutex)(&pf0_dsc->object_lock);
+ 	state = do_pdev_communicate(tsm, setup_work->target_state);
 
-Similar to the other case below. I'd just duplicate this last line
-in the interests of simpler code flow.
+>> +
+>> +	guard(mutex)(&pf0_dsc->object_lock);
+>> +	state = do_pdev_communicate(tsm, setup_work->target_state);
+>> +	WARN_ON(state != setup_work->target_state);
+>> +
+>> +	complete(&setup_work->complete);
+>> +}
+>
 
-> +}
-> +
->  static void tdx_ide_stream_teardown(struct tdx_link *tlink)
->  {
-> +	struct pci_dev *pdev = tlink->pci.base_tsm.pdev;
-> +	struct pci_ide *ide = tlink->ide;
-> +
-> +	if (!ide)
-> +		return;
-> +
-> +	pci_ide_stream_disable(pdev, ide);
-> +	tsm_ide_stream_unregister(ide);
-> +	tdx_ide_stream_key_stop(tlink);
-> +	pci_ide_stream_teardown(pdev, ide);
-> +	pci_ide_stream_unregister(ide);
-> +	tdx_ide_stream_delete(tlink);
-> +	pci_ide_stream_free(tlink->ide);
-Use ide local variable
-
-> +	tlink->ide = NULL;
-Can you do this earlier so it's reverse of ordering in the
-setup function?
->  }
->  
->  static int tdx_ide_stream_setup(struct tdx_link *tlink)
->  {
-> -	return -EOPNOTSUPP;
-> +	struct pci_dev *pdev = tlink->pci.base_tsm.pdev;
-> +	struct pci_ide *ide;
-> +	int ret;
-> +
-> +	ide = pci_ide_stream_alloc(pdev);
-> +	if (!ide)
-> +		return -ENOMEM;
-> +
-> +	/* Configure IDE capability for RP & get stream_id */
-> +	ret = tdx_ide_stream_create(tlink, ide);
-> +	if (ret)
-> +		goto stream_free;
-> +
-> +	ide->stream_id = tlink->stream_id;
-> +	ret = pci_ide_stream_register(ide);
-> +	if (ret)
-> +		goto tdx_stream_delete;
-> +
-> +	/* Configure IDE capability for target device */
-> +	pci_ide_stream_setup(pdev, ide);
-> +
-> +	/* Key Programming for RP & target device, enable IDE stream for RP */
-> +	ret = tdx_ide_stream_key_program(tlink);
-> +	if (ret)
-> +		goto stream_teardown;
-> +
-> +	ret = tsm_ide_stream_register(ide);
-> +	if (ret)
-> +		goto tdx_key_stop;
-> +
-> +	/* Enable IDE stream for target device */
-> +	pci_ide_stream_enable(pdev, ide);
-> +
-> +	tlink->ide = ide;
-> +
-> +	return 0;
-> +
-> +tdx_key_stop:
-> +	tdx_ide_stream_key_stop(tlink);
-> +stream_teardown:
-> +	pci_ide_stream_teardown(pdev, ide);
-> +	pci_ide_stream_unregister(ide);
-> +tdx_stream_delete:
-> +	tdx_ide_stream_delete(tlink);
-> +stream_free:
-> +	pci_ide_stream_free(tlink->ide);
-(ide) I think because...
-> +	tlink->ide = NULL;
-How is this set in any path that gets here?  Looks
-like it is only assigned right at the end after all error paths.
-
-> +	return ret;
->  }
->  
->  static void __tdx_link_disconnect(struct tdx_link *tlink)
-
+-aneesh
