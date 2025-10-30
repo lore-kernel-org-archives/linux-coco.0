@@ -1,428 +1,211 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF982E9730
-	for <linux-coco@lists.linux.dev>; Thu, 30 Oct 2025 19:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761854220; cv=fail; b=VOh0dLChgcvSu5KYNCEqTE2JJ7yldX+BTpOQYEL+8gnCp3587Ja5g271NOtTxHD0hwNNFFDTVMcxf4dctFkICVREZIM2BgPjeT0+7yP6BaWIefb8TvqEwiIrsswan/eiPi6+tUoElIhK66wvSh/Y+1BtWPJpWydt1NCfyHUp6s4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761854220; c=relaxed/simple;
-	bh=SK+cMb+U30TDiVZqOhnRsmnxO99ArDN2PaioZykd0mw=;
-	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
-	 Content-Type:MIME-Version; b=IyM65lQeoywPa7HjFVlK893rZzzJYjvbGCIAvomTTVywAUhZN07kl/wZoIslrOHqDOvGszWjOGMSc/EF4uMuZCsupX8yqbSAo7voxYcsLS2GLQUrGi3gIUfTBZgQIvHOOM6dPWQwo+5fDDx3Z71CKchLxRtJCSjNlc/zC4plBQo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a/Z5SkOZ; arc=fail smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D781136E357
+	for <linux-coco@lists.linux.dev>; Thu, 30 Oct 2025 20:09:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761855001; cv=none; b=oUBvYBByQ+ywwZHC2F/b6/O6bBd1mqUN4jlW6AObjUj84bJH1K3540CS55QCDxTqveB0RYQqjmPDvLH+POkC2OYIhWJVbw3HZhEREFPR5RdKzYJhgJrYSvNKJt6QwCBNfn8PtSYei4n9d71XqDyyvQob9uvoW3FXFa8yc/RyVjk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761855001; c=relaxed/simple;
+	bh=iWqK9o5Q9lSs0dNS4loIwGhdjpS9qDnFS67Z8kLa5ZY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=u3GVurx5bJGzj/MLC0qL5u2BXLkg9SQCEhgzHKpl/VKTwy9FJez2Wc6g1/buAtyUuT0Pj8F2T80ncGcepO+v+WnHbtqKx3NANZqXKeAxb9TF4dl0nOwq3TmyGag5vAZtJmVF6PHdSnaIasQ0GouUgnzNazyldixzv1Rv9O/LNbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DTGqI55w; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a/Z5SkOZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761854218; x=1793390218;
-  h=from:date:to:cc:message-id:in-reply-to:references:
-   subject:content-transfer-encoding:mime-version;
-  bh=SK+cMb+U30TDiVZqOhnRsmnxO99ArDN2PaioZykd0mw=;
-  b=a/Z5SkOZNKQF9WfEYcHZnoVdtBi155pWvAb/p3cmjwg298iw33bifJhg
-   dzn4zGMfzIMBqenoONqrcJ02eHJhbFIJlSbKJrE7bRR0MxdJC+Dtn/cBP
-   TtKKehBb41elYGpCZAVeyQmie/9sngmnUWYcLN4DW25XCUfD86HFiTjNr
-   94NAxx1R2N0bAUEsmgGZpQ+vPuQbHNsOLyswuCmDOp7NrqHzUI6fdklwv
-   ev9xqVXD7UYPxU8w9HHfKRx6IRvcwVS+yrz4xvRdadTklKZGQrBierxJi
-   MfJBJeGjKdmhxVz3t3XPVSpTUqa1YA8onaIw01SfhyXpghce4Cm+DuLS0
-   g==;
-X-CSE-ConnectionGUID: 7jooI459R+CxYNsXJkG9cA==
-X-CSE-MsgGUID: Lv6jDQRjTDCHfwvrFeqS5w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="63919716"
-X-IronPort-AV: E=Sophos;i="6.19,267,1754982000"; 
-   d="scan'208";a="63919716"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 12:56:58 -0700
-X-CSE-ConnectionGUID: tegggPE3RPy207yfl0dnSA==
-X-CSE-MsgGUID: 7Mk07VHyRU6ZrI7rMJ7CaQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,267,1754982000"; 
-   d="scan'208";a="185734072"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 12:56:57 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Thu, 30 Oct 2025 12:56:57 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Thu, 30 Oct 2025 12:56:57 -0700
-Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.37) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Thu, 30 Oct 2025 12:56:57 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Kdh/jsNCx6RYFo6xWhJ9ijH+T+zn4OjC73saYHh03bX27yZyDibB40K+S9dW+dbcGsX5OaRuwndS2l+D1q3YbCoe2YrfzwKlVd5/mpqGiWd9rtqJZq6QCr4jDWdBcfYsl1gbpX6uSDxYZi04F1cmDB1qNIKOmVeHiYZNlazynnxHMDe9RFhYjkyRbi05rk3u+Nt3at3qS9e+WisDhVaN0mVWa9elcITbXi4I52/Qin10Ds+MBe7izpkvybgKn0bEgue6Kiq1EfkHfhVgDCI/0SgIssMAqqzg8kbOZF5B1jJIlkgSpgBZt06wVOoCMKqdEE8t4cgJ8d5GhXPp8Hbl+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1QwEXdaZb5rb+v4os0mYigz5Ef/+bBA6GXCW8PY+7e0=;
- b=rz581Nxd805bNs2upoctb6PCxDptoxmugZJkQuYOPYn4sfznEvk1V6kVd6tc3/BmPeoa6qUTPeWfCDtcUhXwfQ/NqEwNqFMhOYWuDA0NifZI9eCExr142bOeQapqmLAI1galq0bKdCJ4cf7N2i0O5BmIInVJDyq1Jexgm9z9CStk27xy7wC65CuszPBhUCQ6Z8AbVwf+ZA/Nf0s4bphbGFLS4MbvsLTivn+FTztrbaQ17xE75qBAY4SY4YtVKJsi9dStSnn/25uj532aPygCN16ioowyrKpyeSWIr9YKA87BUeoJCu8RBjiiv7zbZ1yN71fviuhenNgt6l6AtsC0kw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by BL3PR11MB6508.namprd11.prod.outlook.com (2603:10b6:208:38f::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.12; Thu, 30 Oct
- 2025 19:56:51 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8%5]) with mapi id 15.20.9275.013; Thu, 30 Oct 2025
- 19:56:51 +0000
-From: <dan.j.williams@intel.com>
-Date: Thu, 30 Oct 2025 12:56:50 -0700
-To: Jonathan Cameron <jonathan.cameron@huawei.com>, Dan Williams
-	<dan.j.williams@intel.com>
-CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>, <aik@amd.com>,
-	<yilun.xu@linux.intel.com>, <aneesh.kumar@kernel.org>, <bhelgaas@google.com>,
-	<gregkh@linuxfoundation.org>, Lukas Wunner <lukas@wunner.de>, Samuel Ortiz
-	<sameo@rivosinc.com>
-Message-ID: <6903c302cc162_10e910050@dwillia2-mobl4.notmuch>
-In-Reply-To: <20251029155303.00001e88@huawei.com>
-References: <20251024020418.1366664-1-dan.j.williams@intel.com>
- <20251024020418.1366664-5-dan.j.williams@intel.com>
- <20251029155303.00001e88@huawei.com>
-Subject: Re: [PATCH v7 4/9] PCI/TSM: Establish Secure Sessions and Link
- Encryption
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR08CA0029.namprd08.prod.outlook.com
- (2603:10b6:a03:100::42) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DTGqI55w"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-33d8970ae47so1738450a91.1
+        for <linux-coco@lists.linux.dev>; Thu, 30 Oct 2025 13:09:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761854999; x=1762459799; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zrcNX0WZe6UQQAW+Y1acRpaDavildHCqqfp5zf8UBT8=;
+        b=DTGqI55wzEYVW1NB2h+8LrW+7l5/EARBomcA83qYy3dScTQHKy3xOSFqexBiGs7Ql8
+         iAiwUTMCaBGvAb1rAPbRmAWyWOgaSTVLrmLWfI+pRNYo/XmLrPnlNQFgaNLG74nVYP4w
+         5WMdlJPgJASLCSDhikpa8RxIdxY4V4OXSg6JTvv2ByITKrWtoM3Fwi5OcZA4Zz+wEBJs
+         JNRiJVhe3/LlfdcN0zhwdnumXGf3sF3mpB6v2SySQ/CFUoABSp3ne9zYekrv6ZbWY1y8
+         WAd+NwM3c6HuGnRuOA8KAd2M5vzQCV+/Owk3Z3YEJv1IxA0jd+yiffsoUnAtaa7M6KIi
+         66/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761854999; x=1762459799;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zrcNX0WZe6UQQAW+Y1acRpaDavildHCqqfp5zf8UBT8=;
+        b=a/g+XEiEEhCfOEbulxRjGra1ljR+he7FWt/+G935n03LtVzB8643XO3bItZc2SReU/
+         oQuTF/psonzYDBkG+nxsb21Rh1+i8aL0A/VSDsr5p75D2Jc+UoUN1XYRv/We7wsT7yfN
+         AUxBUJBCX2W9HWxE1WUFRMHH4hkQ10QJ4gS3HkwiCWGTqqGa/7Fiwi5aAG6HPE6eT3BE
+         giUAPtnbdWF2aVF52xMEAQoEUgfXrS0PWt6MLpAXdnBmVyvnFmYAXOYXZETmn1Kb3NIh
+         zp/TMaHgF9h7w1FSs4J9zniq3bG924JGK0KDa1RBHDXeX4FpO9YCHKeG8KpBYTmRC5QG
+         2QSA==
+X-Forwarded-Encrypted: i=1; AJvYcCXcSXdUs04jK44H5qVQwTYVO9oxvPxD+O46Sx8X/BkPMEMYOlNqrDkPF/AThrHa1EO2VlKEBqUY/NdS@lists.linux.dev
+X-Gm-Message-State: AOJu0YwDJ3djS54O09Bu9r2kFcqOnQZ2zJyNOBynZcb50n2BT2yQcArS
+	oO6ebCA1IX3g0tEc/DZfhlwUC+Fb5ySoDllVkAuxwqJwBq4vJDZzudLiruQDJLAzyO/vjcUimst
+	e++30IA==
+X-Google-Smtp-Source: AGHT+IHHZpNGbgjLGw+ZYpoCrFPTV304XH1EL6WE9wIH48O/1tSukWUG1dLDd7KIv/LOoUL3Sr92aGNZzYE=
+X-Received: from pjvp23.prod.google.com ([2002:a17:90a:df97:b0:339:e59f:e26])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d40c:b0:33b:b020:5968
+ with SMTP id 98e67ed59e1d1-34083071b1emr1223925a91.21.1761854998946; Thu, 30
+ Oct 2025 13:09:58 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Thu, 30 Oct 2025 13:09:23 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|BL3PR11MB6508:EE_
-X-MS-Office365-Filtering-Correlation-Id: 00a11921-6542-4d00-75f1-08de17ee77e6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?MDF1VTdTcGFNRnNYOWhFaVQrTGJGaW5pNTR5bDZFbVVsUGd3dnlqRGtNaWww?=
- =?utf-8?B?cUR0N3ExUy9SMWVKNndQaDFENGVFa0FtYm0xZFREUm1PUEJmTmVrUlFkWUM0?=
- =?utf-8?B?d3poTGhxNzFzRy9UbG42RW1PVW9PK011bkg2U2ZLTE1iV3pKZFBjVC9yYUdn?=
- =?utf-8?B?VXZSZUNqUGo3Z3g2eDQ1SG00UWNaZjNBWXlJV3NRVGYveFRkQlNRK2JwT2Rp?=
- =?utf-8?B?QzAyRXRNRGVFQ1IwaDcyMi92elpXN2F1NFZCME52TjlwQThpU2RsYUhUcWFz?=
- =?utf-8?B?dDJ3ME5oL3V3cXdwQWljQ3VSTjI1clowZTV6bmF3WFVVM3NVcUJ2N093bnRv?=
- =?utf-8?B?Y3VCTjF0M0lCSnN6VjRyb0oxekpTR3Q5VDMvaUc3M3M5NlVNKyszSFpjbUR5?=
- =?utf-8?B?dXkrWWxETnBjN0NHRjdjVlY4VkFSOFZ5UTQvYkE1L3YwWTFDNjNOUmpXUG1p?=
- =?utf-8?B?SUpFUFUyN2drVkpNdUZEUHdHZWdmMlFLV3pQa0FwRXF5TDBySnJzd1V1UllK?=
- =?utf-8?B?WmVwVTh0eDYxd09KR21DUXlWbnh2RjN1TmJxaUJJM1YvYkNnYXplVGRuKzVs?=
- =?utf-8?B?OVhYdDdVWnVFSlhIN29MUCtDYzJkMnQzeU9TTW5jTjJTU0JVTkNiNmpQWXNp?=
- =?utf-8?B?cDVsL0pGMlgxTlc5RWxoRmFxMnFwMmpzVUdzcmE3Y29TR0pyZys0QXZiWTY1?=
- =?utf-8?B?VTlIazl1bnR1TTlWNEQwS2g3Q01KMlc4a2NiK1E0QkRGYjdzVE4rZEtpNjRD?=
- =?utf-8?B?ckE1dGlRTG1IOWhIdG0vbFluYm1xUDJlNTBzLzdtdjdNZlNYZDFtRjBQTlVN?=
- =?utf-8?B?bUZWdlRBaGRWL0xQMXI0aW5XTXNtNTZDZlh6RGhxM25IT2hZcHFjY0w3RnND?=
- =?utf-8?B?RC94dWJheW5wbG1UbGIzOHBFeWVXNG95empadERwM3hTaUo0NnlONjBhNWxX?=
- =?utf-8?B?REtmQ0xhRE5ydWFTdjVJdGZWTWVnT2ZlM2xZM2lPUXF3L09oZzVuR3lsK3or?=
- =?utf-8?B?aXZpV1NsVDZjOG1NUXdFdUVPRUtaVSsrcnZMd0VaajRZSUpzR3FvbXFlT1RH?=
- =?utf-8?B?L01BZW5zbU1Ha0RRMUtJL1owZHpRbGlRRlcxNE1la29PK2lscmRpZGdVMm8y?=
- =?utf-8?B?MXM1TzViTklBTnBjS2NhUG9EWlF5THF1Vy9TNDlvR3dES0Y1OFNNZXhmcVZv?=
- =?utf-8?B?VGRXcFB2TGd0c1NHRFIzSm1mVHZTVW1IQmRLUmVmWGpieFhOK0NpRTBzaHJD?=
- =?utf-8?B?Nk5HVVBLZm81clBrUy9LeFFDMGlkZVN2MEYweSs4MXJMMHFuZ1dsOWd2OGNQ?=
- =?utf-8?B?bFlodWFBWmdLazRzZjJqcmNGVzhjSHkxWDFaaXVWWVhxMzd6YnBVa2h1a2Zs?=
- =?utf-8?B?SEVhbXZGMkVNd25FajZmeU1EOVBKS29ISG9JdVdqc0tpQnlmaTFueHdYUElL?=
- =?utf-8?B?UkY2YTBBSTl3NVdTU05GTTB1emdxWGhFRTFNdUlMMWxGZHo1MXV6Z0tydnVs?=
- =?utf-8?B?L1BMbnk0REhRcy90aU0vNnpzOHliaDZPZGhqc01vc1pYalpvNkpHamt3TUpK?=
- =?utf-8?B?ODgxbTN6MWhCM25uaEtqdEpBcjRnU1BBM2ZiOHRTRzVIRlNNT0crcnJIU0dV?=
- =?utf-8?B?UmEyQ2o1MVJvRHMxOWt1aGRuVjdjL2MxM1dydzU4eVF1MUthdEpTQ2ExdGlL?=
- =?utf-8?B?cEphUDg4aFB1TzZTdC93VCszajJldE1IdXRsQ2hnelBiRXFCZmFLallUYjF5?=
- =?utf-8?B?eXhKdW5SbDBLblVHZ1pudTFFU1Z6cXBvZGI1LzVKOSsyblErUnVrOCszVXdB?=
- =?utf-8?B?dW9rL2psdk1YaTZKRDNuQVQxN3luMmdnSDdJVGdvaFNjSnd4UnNWd2JJN1Fw?=
- =?utf-8?B?d1dvdmlPbFFuU3gzWHdaWEEreHh2bmhFM01uZmZrVnBPM2lNTWRoZC92SzlQ?=
- =?utf-8?Q?L7+2JQKVRcNQOSUV9I5n6eJZd1TXz95t?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VGRsTFpQQzNEZzUrYUdCMmw2N2N6azBsRWFyVk9iUlhXcENoWGxGZlJUWGpE?=
- =?utf-8?B?c3diMUFwOE9sWWE0MWp0bHpwaXN2eGRKVTY2NEg5aVkra3VCRnpDNFlYSlF1?=
- =?utf-8?B?L0NPWWZvWVJNTTJxTDdKSVZYWnhyZDJSWnZMaEZpT1MwbmJoQjdpWTRKbFlB?=
- =?utf-8?B?V09vSVhFUzYyOWlHNjBubkhucjR1N2dzUjFBZkpHQjZaMDZlV09XN3RGYjZi?=
- =?utf-8?B?b2xkZzhxTm1uV2ZCUkY1WVFBN0wwbGpKVXJJVkRmU0g3aDZDbFhNRmtMdEtv?=
- =?utf-8?B?YVZvd2tnbFRHOWZOb2ZXdjBZM2xzTHhmUzFIYmJ3V3pyODRQazE3R1E4U3ZS?=
- =?utf-8?B?ZVMrdTg4Wk9uaEdQa1ZWaTVOYkt2clpMelpwME0zN3RHR3Rrb3ZTaEV5anFM?=
- =?utf-8?B?NXNlOUJWK0FUZldSL3FHWWY0U282cWVxUnByWmlGMldDQy83QmxLQTl2ZUgx?=
- =?utf-8?B?SlA1SUQrYnU5MmhKQWlaYVo4NXVYb2RONHJJRFlOYU11eGxkOUJmTURYQzRn?=
- =?utf-8?B?Z3JBSitoMG1TWlZPMWlaMGEvWExFU1BUNmtWZU5DNHQySGZjYlVYQ0pvcXZz?=
- =?utf-8?B?NDFDc2w2bDFwVG91OFg0aHJYUU10RHJWenplY1E1UW5WMDQ5dU9nZFdLNVpr?=
- =?utf-8?B?VGc4c2NiZDhzck9mTGdTSlZRcnJkRDBDalB0MDg5dHNzZEd0alUrd2hIMmE1?=
- =?utf-8?B?RytWb2RvNytKeU14M3hDM2p0NVE2eGFYekxLbGsxdTEva2ZuMHdPUVMzZWtH?=
- =?utf-8?B?TWxXL01LZ3l4Qjd4T25pT2ZldzNXeEk0eDZkYm50YUF2SVJLYWQ0RnJLbGFl?=
- =?utf-8?B?WXhReEtxeitRamJ2VFFlQy9qT1NOWERHeER3VVJoblJ3MGtRZnBZL0w5d0Rt?=
- =?utf-8?B?MldxRG5DRytXT3ZBN2ZVSU9lWDVESUcwTlloamlYbElZTXhVbGFUKzVCRHla?=
- =?utf-8?B?WitFd3ZDM3l4S3ZhRWtwcjFnVzd4TWNKMS9QejhpVlVzK2ZWdGd0M0l0Q1l5?=
- =?utf-8?B?b1pXUmk3MXZCVys3TDkrY2NTZmg5YjdJM3BNVFppOXBKWUdKcWp1YW40VDFx?=
- =?utf-8?B?TXhTcHNuMTBPRTVyeDlEUUROUzVHdWJ5cjNRTDRSTDVLZzlCQnZQTGdJUkJZ?=
- =?utf-8?B?MVZXaElQMUFtZm44a0lGNDN3aWpzc2dId29uSTgvYVlqUUNrRHIzU1U4eVJK?=
- =?utf-8?B?cHN1UnVvc21iKzYxUVhLc3UwUUw3bXdlWEUxcEJ4UEI2TWlPUTBCMkNFZEd3?=
- =?utf-8?B?N0FCSStuOXE4SGxvZGtiY2t1YzZtTnVxcXpGM2FKaWtqSjRGck1xSnEyMnpJ?=
- =?utf-8?B?SEhvSXRxRytUNWQ3cXllb3N4VlA2czNkaXVDcHdmQ3dLSHM5ZVRrZDQ4QlBa?=
- =?utf-8?B?ay9JUjZZdGROWUNTTDhONHhQR3FpSXlZTGR6c2RCSUVIUXNMa1NIeGJaK3U5?=
- =?utf-8?B?MkNzZFB3RTh4WkI1ODltbkFkL0svRGNlNmlFcWxqMHhGcHBuckRvMWR2QlYx?=
- =?utf-8?B?d0xmMEVEYlZ3RmNCS2pxaWUwWXBYUlZ3bEpSaTlpNVk2Rm1rK2xweWkxSUh4?=
- =?utf-8?B?U2FseDE0RG5zRUlnUStNeUtueDFrTjA2QU5oMFRDcEVoM0tDTExkbTV3UzBE?=
- =?utf-8?B?WmZCU0E5bEM2bWsyV0ZoT0xlVXM3RlJ3UmNQY3BiL2o1T3MrOEt1MkhOdXh3?=
- =?utf-8?B?TE45VEM3eFV2cVRkUmQ0c0pNK3k1Sko4cUJaWTU0NkE3a2ZVdnVMR2JRSis3?=
- =?utf-8?B?VU8wcG01VXJ2YmNUNzI0OHNWUXBhcU53VEtmS1dnYU1TTlp6eDNVeHRsL3Qv?=
- =?utf-8?B?L3FKenBXVDI4eEduTUdoZVo2cm01TjhWUEtLbENlKzhSWFFNbWxKQ2VoQnNs?=
- =?utf-8?B?YUhQUGk5ZW8rVFlMRzJ4cmIyMWRqWCs3VE8yeElpenpEd2RvWCtkRkcwRFk2?=
- =?utf-8?B?TlJPTkZIYW5XQmkzdjRhUjh0aXV5K0ZuaEZEaStzaWNtd0JFNVp1bC9Ybitt?=
- =?utf-8?B?Sy9ic0g2a0lhbVYwanJnRytYYUIvVjZKK0N6M24xSFBVUG9wT09FcVlrVzZu?=
- =?utf-8?B?RGJtbDJxZnRySkdFVXMveVFpUk5YU2NKTFdjNTduT2pTTFdWTk1EVlExYUIy?=
- =?utf-8?B?MnBXWWFVSHVnV2dQOVBDbjRNTUVYN2o1U0ZMcTFKQzRYa214Mm9EUWd1dXo2?=
- =?utf-8?B?YUE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 00a11921-6542-4d00-75f1-08de17ee77e6
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2025 19:56:51.6755
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rqJMFgdMKnPNqIupSHkcR2D2/AxQA6ydMU7ImSlTYomjL91Z8FelCXr/tex4UCL7EFPq7ar5cn43XnK2mGRZjjkMbcflwRsQShRneFb5C/0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR11MB6508
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.1.930.gacf6e81ea2-goog
+Message-ID: <20251030200951.3402865-1-seanjc@google.com>
+Subject: [PATCH v4 00/28] KVM: x86/mmu: TDX post-populate cleanups
+From: Sean Christopherson <seanjc@google.com>
+To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, x86@kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>, 
+	Kai Huang <kai.huang@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Michael Roth <michael.roth@amd.com>, Yan Zhao <yan.y.zhao@intel.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Ackerley Tng <ackerleytng@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Jonathan Cameron wrote:
-[..]
-> > Only "link", Secure Session and physical Link Encryption, operations are
-> > defined at this stage with placeholders for the device security, Trusted
-> > Computing Base entry / exit, operations.
-> 
-> That list probably needs an 'and'
+Non-x86 folks, as with v3, patches 1 and 2 are likely the only thing of
+interest here.  They make kvm_arch_vcpu_async_ioctl() mandatory and then
+rename it to kvm_arch_vcpu_unlocked_ioctl().
 
-No, but went ahead and added parentheses to make it clearer.
+As for the x86 side...
 
-> > The locking allows for multiple devices to be executing commands
-> > simultaneously, one outstanding command per-device and an rwsem
-> > synchronizes the implementation relative to TSM registration/unregistration
-> > events.
-> > 
-> > Thanks to Wu Hao for his work on an early draft of this support.
-> > 
-> > Cc: Lukas Wunner <lukas@wunner.de>
-> > Cc: Samuel Ortiz <sameo@rivosinc.com>
-> > Cc: Alexey Kardashevskiy <aik@amd.com>
-> > Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-> > Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
-> > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> 
-> Some comments on comments/documentation inline.  With those addressed
-> (which should be straight forward)
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> 
-> > diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
-> > new file mode 100644
-> > index 000000000000..e3107ede2a0f
-> > --- /dev/null
-> > +++ b/include/linux/pci-tsm.h
-> > @@ -0,0 +1,159 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +#ifndef __PCI_TSM_H
-> > +#define __PCI_TSM_H
-> > +#include <linux/mutex.h>
-> > +#include <linux/pci.h>
-> > +
-> > +struct pci_tsm;
-> See below for note on a duplicate of this.
-> 
-> > +struct tsm_dev;
-> > +
-> > +/*
-> > + * struct pci_tsm_ops - manage confidential links and security state
-> > + * @link_ops: Coordinate PCIe SPDM and IDE establishment via a platform TSM.
-> > + *	      Provide a secure session transport for TDISP state management
-> > + *	      (typically bare metal physical function operations).
-> > + * @sec_ops: Lock, unlock, and interrogate the security state of the
-> 
-> devsec_ops?
+Clean up the TDX post-populate paths (and many tangentially related paths) to
+address locking issues between gmem and TDX's post-populate hook[*], and
+within KVM itself (KVM doesn't ensure full mutual exclusivity between paths
+that for all intents and purposes the TDX-Module requires to be serialized).
 
-Yes.
+I apologize if I missed any trailers or feedback, I think I got everything...
 
-> 
-> > + *	     function via the platform TSM (typically virtual function
-> > + *	     operations).
-> > + * @owner: Back reference to the TSM device that owns this instance.
-> Not seeing this below.
+[*] http://lore.kernel.org/all/aG_pLUlHdYIZ2luh@google.com
 
-It is gone now. The reason kernel-doc is not complaining is because this
-not actually a kernel-doc formatted comment. In any event, now cleaned
-up.
+v4:
+ - Collect reviews/acks.
+ - Add a lockdep assertion in kvm_tdp_mmu_map_private_pfn(). [Yan]
+ - Wrap kvm_tdp_mmu_map_private_pfn() with CONFIG_KVM_GUEST_MEMFD=y. [test bot]
+ - Improve (or add) comments. [Kai, and probably others]
+ - s/spte/mirror_spte to make it clear what's being passed in
+ - Update set_external_spte() to take @mirror_spte as well. [Yan]
+ - Move the KVM_BUG_ON() on tdh_mr_extend() failure to the end. [Rick]
+ - Take "all" the locks in tdx_vm_ioctl(). [Kai]
+ - WARN if KVM attempts to map SPTEs into an invalid root. [Yan]
+ - Use tdx_flush_vp_on_cpu() instead of tdx_disassociate_vp() when freeing
+   a vCPU in VCPU_TD_STATE_UNINITIALIZED state. [Yan]
 
-> > + *
-> > + * This operations are mutually exclusive either a tsm_dev instance
-> > + * manages physical link properties or it manages function security
-> > + * states like TDISP lock/unlock.
-> > + */
-> > +struct pci_tsm_ops {
-> > +	/*
-> > +	 * struct pci_tsm_link_ops - Manage physical link and the TSM/DSM session
-> > +	 * @probe: establish context with the TSM (allocate / wrap 'struct
-> > +	 *	   pci_tsm') for follow-on link operations
-> > +	 * @remove: destroy link operations context
-> > +	 * @connect: establish / validate a secure connection (e.g. IDE)
-> > +	 *	     with the device
-> > +	 * @disconnect: teardown the secure link
-> > +	 *
-> > +	 * Context: @probe, @remove, @connect, and @disconnect run under
-> > +	 * pci_tsm_rwsem held for write to sync with TSM unregistration and
-> > +	 * mutual exclusion of @connect and @disconnect. @connect and
-> > +	 * @disconnect additionally run under the DSM lock (struct
-> > +	 * pci_tsm_pf0::lock) as well as @probe and @remove of the subfunctions.
-> > +	 */
-> > +	struct_group_tagged(pci_tsm_link_ops, link_ops,
-> > +		struct pci_tsm *(*probe)(struct tsm_dev *tsm_dev,
-> > +					 struct pci_dev *pdev);
-> > +		void (*remove)(struct pci_tsm *tsm);
-> > +		int (*connect)(struct pci_dev *pdev);
-> > +		void (*disconnect)(struct pci_dev *pdev);
-> > +	);
-> > +
-> > +	/*
-> > +	 * struct pci_tsm_devsec_ops - Manage the security state of the function
-> > +	 * @lock: establish context with the TSM (allocate / wrap 'struct
-> > +	 *	  pci_tsm') for follow-on security state transitions from the
-> > +	 *	  LOCKED state
-> > +	 * @unlock: destroy TSM context and return device to UNLOCKED state
-> > +	 *
-> > +	 * Context: @lock and @unlock run under pci_tsm_rwsem held for write to
-> > +	 * sync with TSM unregistration and each other
-> > +	 */
-> > +	struct_group_tagged(pci_tsm_devsec_ops, devsec_ops,
-> > +		struct pci_tsm *(*lock)(struct tsm_dev *tsm_dev,
-> > +					struct pci_dev *pdev);
-> > +		void (*unlock)(struct pci_tsm *tsm);
-> > +	);
-> > +};
-> 
-> 
-> > +#ifdef CONFIG_PCI_TSM
-> > +struct tsm_dev;
-> 
-> Seems to be declared already (not under an ifdef) above.
+v3:
+ - https://lore.kernel.org/all/20251017003244.186495-1-seanjc@google.com
+ - Collect more reviews.
+ - Add the async_ioctl() => unlocked_ioctl() patches, and use the "unlocked"
+   variant in the TDX vCPU sub-ioctls so they can take kvm->lock outside of
+   vcpu->mutex.
+ - Add a patch to document that vcpu->mutex is taken *outside* kvm->slots_lock.
+ - Add the tdx_vm_state_guard CLASS() to take kvm->lock, all vcpu->mutex locks,
+   and kvm->slots_lock, in order to make tdx_td_init(), tdx_td_finalize(),
+   tdx_vcpu_init_mem_region(), and tdx_vcpu_init() mutually exclusive with
+   each other, and mutually exclusvie with basically anything that can result
+   in contending one of the TDX-Module locks (can't remember which one).
+ - Refine the changelog for the "Drop PROVE_MMU=y" patch. [Binbin]
 
-Yes, the Alexey request to drop owner and only have @tsm_dev in 'struct
-pci_tsm' moved the need for this declaration earlier.
+v2:
+ - Collect a few reviews (and ignore some because the patches went away).
+   [Rick, Kai, Ira]
+ - Move TDH_MEM_PAGE_ADD under mmu_lock and drop nr_premapped. [Yan, Rick]
+ - Force max_level = PG_LEVEL_4K straightaway. [Yan]
+ - s/kvm_tdp_prefault_page/kvm_tdp_page_prefault. [Rick]
+ - Use Yan's version of "Say no to pinning!".  [Yan, Rick]
+ - Tidy up helpers and macros to reduce boilerplate and copy+pate code, and
+   to eliminate redundant/dead code (e.g. KVM_BUG_ON() the same error
+   multiple times).
+ - KVM_BUG_ON() if TDH_MR_EXTEND fails (I convinced myself it can't).
 
-> > diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
-> > new file mode 100644
-> > index 000000000000..094650454aa7
-> > --- /dev/null
-> > +++ b/drivers/pci/tsm.c
-> 
-> > +static int pci_tsm_connect(struct pci_dev *pdev, struct tsm_dev *tsm_dev)
-> > +{
-> > +	int rc;
-> > +	struct pci_tsm_pf0 *tsm_pf0;
-> > +	const struct pci_tsm_ops *ops = tsm_dev->pci_ops;
-> > +	struct pci_tsm *pci_tsm __free(tsm_remove) = ops->probe(tsm_dev, pdev);
-> > +
-> > +	/* connect()  mutually exclusive with subfunction pci_tsm_init() */
-> 
-> Extra space after ()
+v1: https://lore.kernel.org/all/20250827000522.4022426-1-seanjc@google.com
 
-Got it.
 
-[..]
-> > +/*
-> > + * Find the PCI Device instance that serves as the Device Security Manager (DSM)
-> > + * for @pdev. Note that no additional reference is held for the resulting device
-> > + * because @pdev always has a longer registered lifetime than its DSM by virtue
-> > + * of being a child of, or identical to, its DSM.
-> 
-> This comment has me confused.  I would normally expect parent to have the guaranteed
-> longer life span than the child. This seems to say the opposite.
-> Code itself is fine.
+Sean Christopherson (26):
+  KVM: Make support for kvm_arch_vcpu_async_ioctl() mandatory
+  KVM: Rename kvm_arch_vcpu_async_ioctl() to
+    kvm_arch_vcpu_unlocked_ioctl()
+  KVM: TDX: Drop PROVE_MMU=y sanity check on to-be-populated mappings
+  KVM: x86/mmu: Add dedicated API to map guest_memfd pfn into TDP MMU
+  KVM: x86/mmu: WARN if KVM attempts to map into an invalid TDP MMU root
+  Revert "KVM: x86/tdp_mmu: Add a helper function to walk down the TDP
+    MMU"
+  KVM: x86/mmu: Rename kvm_tdp_map_page() to kvm_tdp_page_prefault()
+  KVM: TDX: Return -EIO, not -EINVAL, on a KVM_BUG_ON() condition
+  KVM: TDX: Fold tdx_sept_drop_private_spte() into
+    tdx_sept_remove_private_spte()
+  KVM: x86/mmu: Drop the return code from
+    kvm_x86_ops.remove_external_spte()
+  KVM: TDX: WARN if mirror SPTE doesn't have full RWX when creating
+    S-EPT mapping
+  KVM: TDX: Avoid a double-KVM_BUG_ON() in tdx_sept_zap_private_spte()
+  KVM: TDX: Use atomic64_dec_return() instead of a poor equivalent
+  KVM: TDX: Fold tdx_mem_page_record_premap_cnt() into its sole caller
+  KVM: TDX: ADD pages to the TD image while populating mirror EPT
+    entries
+  KVM: TDX: Fold tdx_sept_zap_private_spte() into
+    tdx_sept_remove_private_spte()
+  KVM: TDX: Combine KVM_BUG_ON + pr_tdx_error() into TDX_BUG_ON()
+  KVM: TDX: Derive error argument names from the local variable names
+  KVM: TDX: Assert that mmu_lock is held for write when removing S-EPT
+    entries
+  KVM: TDX: Add macro to retry SEAMCALLs when forcing vCPUs out of guest
+  KVM: TDX: Add tdx_get_cmd() helper to get and validate sub-ioctl
+    command
+  KVM: TDX: Convert INIT_MEM_REGION and INIT_VCPU to "unlocked" vCPU
+    ioctl
+  KVM: TDX: Use guard() to acquire kvm->lock in tdx_vm_ioctl()
+  KVM: TDX: Don't copy "cmd" back to userspace for KVM_TDX_CAPABILITIES
+  KVM: TDX: Guard VM state transitions with "all" the locks
+  KVM: TDX: Bug the VM if extending the initial measurement fails
 
-Right, comment flipped the polarity of the lifetime. It was meant to say
-that registered children always extend the life of their DSM ancestor.
+Yan Zhao (2):
+  KVM: TDX: Drop superfluous page pinning in S-EPT management
+  KVM: TDX: Fix list_add corruption during vcpu_load()
 
- 4:  722f1b0155cf !  4:  77789285d040 PCI/TSM: Establish Secure Sessions and Link Encryption
-    @@ Commit message
-         "Security" operations coordinate the security state of the assigned
-         virtual device (TDI). These are the guest side operations in TDISP.
-     
-    -    Only "link", Secure Session and physical Link Encryption, operations are
-    -    defined at this stage with placeholders for the device security, Trusted
-    -    Computing Base entry / exit, operations.
-    +    Only "link" (Secure Session and physical Link Encryption) operations are
-    +    defined at this stage. There are placeholders for the device security
-    +    (Trusted Computing Base entry / exit) operations.
-     
-         The locking allows for multiple devices to be executing commands
-         simultaneously, one outstanding command per-device and an rwsem
-    @@ Commit message
-         Cc: Samuel Ortiz <sameo@rivosinc.com>
-         Cc: Alexey Kardashevskiy <aik@amd.com>
-         Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-    +    Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-         Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
-         Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-         Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-    @@ include/linux/pci-tsm.h (new)
-     + * @link_ops: Coordinate PCIe SPDM and IDE establishment via a platform TSM.
-     + *	      Provide a secure session transport for TDISP state management
-     + *	      (typically bare metal physical function operations).
-    -+ * @sec_ops: Lock, unlock, and interrogate the security state of the
-    -+ *	     function via the platform TSM (typically virtual function
-    -+ *	     operations).
-    -+ * @owner: Back reference to the TSM device that owns this instance.
-    ++ * @devsec_ops: Lock, unlock, and interrogate the security state of the
-    ++ *		function via the platform TSM (typically virtual function
-    ++ *		operations).
-     + *
-     + * This operations are mutually exclusive either a tsm_dev instance
-     + * manages physical link properties or it manages function security
-    @@ include/linux/pci-tsm.h (new)
-     +}
-     +
-     +#ifdef CONFIG_PCI_TSM
-    -+struct tsm_dev;
-     +int pci_tsm_register(struct tsm_dev *tsm_dev);
-     +void pci_tsm_unregister(struct tsm_dev *tsm_dev);
-     +int pci_tsm_link_constructor(struct pci_dev *pdev, struct pci_tsm *tsm,
-    @@ drivers/pci/tsm.c (new)
-     +	const struct pci_tsm_ops *ops = tsm_dev->pci_ops;
-     +	struct pci_tsm *pci_tsm __free(tsm_remove) = ops->probe(tsm_dev, pdev);
-     +
-    -+	/* connect()  mutually exclusive with subfunction pci_tsm_init() */
-    ++	/* connect() mutually exclusive with subfunction pci_tsm_init() */
-     +	lockdep_assert_held_write(&pci_tsm_rwsem);
-     +
-     +	if (!pci_tsm)
-    @@ drivers/pci/tsm.c (new)
-     +/*
-     + * Find the PCI Device instance that serves as the Device Security Manager (DSM)
-     + * for @pdev. Note that no additional reference is held for the resulting device
-    -+ * because @pdev always has a longer registered lifetime than its DSM by virtue
-    -+ * of being a child of, or identical to, its DSM.
-    ++ * because that resulting object always has a registered lifetime
-    ++ * greater-than-or-equal to that of the @pdev argument. This is by virtue of
-    ++ * @pdev being a descendant of, or identical to, the returned DSM device.
-     + */
-     +static struct pci_dev *find_dsm_dev(struct pci_dev *pdev)
-     +{
-    @@ drivers/virt/coco/tsm-core.c: static struct tsm_dev *alloc_tsm_dev(struct device
-     +	return tsm_dev;
-     +}
-     +
-    - static void put_tsm_dev(struct tsm_dev *tsm_dev)
-    - {
-    - 	if (!IS_ERR_OR_NULL(tsm_dev))
-    -@@ drivers/virt/coco/tsm-core.c: static void put_tsm_dev(struct tsm_dev *tsm_dev)
-      DEFINE_FREE(put_tsm_dev, struct tsm_dev *,
-    - 	    if (!IS_ERR_OR_NULL(_T)) put_tsm_dev(_T))
-    + 	    if (!IS_ERR_OR_NULL(_T)) put_device(&_T->dev))
-      
-     -struct tsm_dev *tsm_register(struct device *parent)
-     +struct tsm_dev *tsm_register(struct device *parent, struct pci_tsm_ops *pci_ops)
+ arch/arm64/kvm/arm.c               |   6 +
+ arch/loongarch/kvm/Kconfig         |   1 -
+ arch/loongarch/kvm/vcpu.c          |   4 +-
+ arch/mips/kvm/Kconfig              |   1 -
+ arch/mips/kvm/mips.c               |   4 +-
+ arch/powerpc/kvm/Kconfig           |   1 -
+ arch/powerpc/kvm/powerpc.c         |   4 +-
+ arch/riscv/kvm/Kconfig             |   1 -
+ arch/riscv/kvm/vcpu.c              |   4 +-
+ arch/s390/kvm/Kconfig              |   1 -
+ arch/s390/kvm/kvm-s390.c           |   4 +-
+ arch/x86/include/asm/kvm-x86-ops.h |   1 +
+ arch/x86/include/asm/kvm_host.h    |   7 +-
+ arch/x86/kvm/mmu.h                 |   3 +-
+ arch/x86/kvm/mmu/mmu.c             |  87 +++-
+ arch/x86/kvm/mmu/tdp_mmu.c         |  50 +--
+ arch/x86/kvm/vmx/main.c            |   9 +
+ arch/x86/kvm/vmx/tdx.c             | 659 ++++++++++++++---------------
+ arch/x86/kvm/vmx/tdx.h             |   8 +-
+ arch/x86/kvm/vmx/x86_ops.h         |   1 +
+ arch/x86/kvm/x86.c                 |  13 +
+ include/linux/kvm_host.h           |  14 +-
+ virt/kvm/Kconfig                   |   3 -
+ virt/kvm/kvm_main.c                |   6 +-
+ 24 files changed, 468 insertions(+), 424 deletions(-)
+
+
+base-commit: 4cc167c50eb19d44ac7e204938724e685e3d8057
+-- 
+2.51.1.930.gacf6e81ea2-goog
+
