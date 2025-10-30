@@ -1,41 +1,41 @@
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB571EF39E
-	for <linux-coco@lists.linux.dev>; Thu, 30 Oct 2025 10:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0901351FB5
+	for <linux-coco@lists.linux.dev>; Thu, 30 Oct 2025 10:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761821374; cv=none; b=dAupMXEb0Ik0Jlxpddw+kzrBiCWn0dTxHy2oJMweeYSnr/69APQY/pl7u2gjAioGd4cMRZ11nuHAM1srfyx3HjA+CSLhtF6YAT61yDwbvzqdbpwS8Qr4XiICOM3vZk7WEpqQ07/+zPTdCQKr+UT+IRId0FZ1eYDfvPLDODHsKKA=
+	t=1761821757; cv=none; b=Z1QU/Epp37wgjlHN4rZWFxI8I2lFd6JvfstpOib9Fhiz4r4LsVn47uwUmKTWNQt/An24g06tBxo7gcr2Bp84vIOtfSD7gDZi/oAkhNbjRoOo5/pzzWs26gaGZkzVlG43pY/XxWmKpxi2YamkLdCWiQY8F5/hqUzAiTPk6JJRVBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761821374; c=relaxed/simple;
-	bh=AXFYvrAG1l1zzLnLOoY5lPMX2+huQyn3aPau7P+xyM8=;
+	s=arc-20240116; t=1761821757; c=relaxed/simple;
+	bh=hd8PakLvmTrF4Noiua5H5VRLbKqQCbvNI8Yfhnf2B8U=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JxahMX798MJ9Nj8ZhmaevFOU+5xnd96X4WfHzqjxy6w+ttOxSHc6vYrDrrmtBWKrekVkx6coXpx95eIZzYrFdrKmP5hM+zyIZMqjpHDdZzxUM614hQiZmvCVmtN7ZLCRP13Mltf0uXj/VP7rMhcwslbRIap4QJq471/soRNZahc=
+	 MIME-Version:Content-Type; b=HmA3Uco8BbatgZltcxelJ8O3ctwNAumv6iYLQhcIsdAv1xsNpXW4XoEmZ75vtyx/TDBwLsOrjLf558e/UsUlqubFQYDuEz64XqxXpOrJIRY7hzqXisQsv6RBVoAajidED0yX+i+6bJs+MH1qEQz+85O58H8tolmAjZFccwApXuM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cy13g5x8rz6M4WJ;
-	Thu, 30 Oct 2025 18:45:35 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cy1C50D4Yz6M4V2;
+	Thu, 30 Oct 2025 18:52:01 +0800 (CST)
 Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id EA779140427;
-	Thu, 30 Oct 2025 18:49:27 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 1EB1D1402F9;
+	Thu, 30 Oct 2025 18:55:53 +0800 (CST)
 Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
  (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 30 Oct
- 2025 10:49:27 +0000
-Date: Thu, 30 Oct 2025 10:49:26 +0000
+ 2025 10:55:52 +0000
+Date: Thu, 30 Oct 2025 10:55:51 +0000
 From: Jonathan Cameron <jonathan.cameron@huawei.com>
 To: Dan Williams <dan.j.williams@intel.com>
 CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>,
 	<xin@zytor.com>, <chao.gao@intel.com>, Xu Yilun <yilun.xu@linux.intel.com>,
 	Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: Re: [RFC PATCH 05/27] x86/virt/tdx: Add tdx_page_array helpers for
- new TDX Module objects
-Message-ID: <20251030104926.000066c3@huawei.com>
-In-Reply-To: <20250919142237.418648-6-dan.j.williams@intel.com>
+Subject: Re: [RFC PATCH 08/27] x86/virt/tdx: Add tdx_enable_ext() to enable
+ of TDX Module Extensions
+Message-ID: <20251030105551.00002fe4@huawei.com>
+In-Reply-To: <20250919142237.418648-9-dan.j.williams@intel.com>
 References: <20250919142237.418648-1-dan.j.williams@intel.com>
-	<20250919142237.418648-6-dan.j.williams@intel.com>
+	<20250919142237.418648-9-dan.j.williams@intel.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -48,186 +48,71 @@ Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
  dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Fri, 19 Sep 2025 07:22:14 -0700
+On Fri, 19 Sep 2025 07:22:17 -0700
 Dan Williams <dan.j.williams@intel.com> wrote:
 
 > From: Xu Yilun <yilun.xu@linux.intel.com>
 > 
-> Add struct tdx_page_array definition for new TDX Module object
-> types - HPA_ARRAY_T and HPA_LIST_INFO. They are used as input/output
-> parameters in newly defined SEAMCALLs. Also define some helpers to
-> allocate, setup and free tdx_page_array.
+> tdx_enable() implements a simple state machine with @tdx_module_status to
+> determine if TDX is already enabled, or failed to enable. Add another state
+> to that enum (TDX_MODULE_INITIALIZED_EXT) to track if extensions have been enabled.
 > 
-> HPA_ARRAY_T and HPA_LIST_INFO are similar in most aspects. They both
-> represent a list of pages for TDX Module accessing. There are several
-> use cases for these 2 structures:
+> The extension initialization uses the new TDH.EXT.MEM.ADD and TDX.EXT.INIT
+> seamcalls.
 > 
->  - As SEAMCALL inputs. They are claimed by TDX Module as control pages.
->  - As SEAMCALL outputs. They were TDX Module control pages and now are
->    released.
->  - As SEAMCALL inputs. They are just medium for exchanging data blobs
->    in one SEAMCALL. TDX Module will not hold them as control pages.
-> 
-> The 2 structures both need a 'root page' which contains a list of HPAs.
-> They compress the HPA of the root page and the number of valid HPAs into
-> a 64 bit raw value for SEAMCALL parameters. The root page is always a
-> medium for passing data pages, TDX Module never keeps the root page.
-> 
-> A main difference is HPA_ARRAY_T requires singleton mode when
-> containing just 1 functional page (page0). In this mode the root page is
-> not needed and the HPA field of the raw value directly points to the
-> page0.
-> 
-> Another small difference is HPA_LIST_INFO contains a 'first entry' field
-> which could be filled by TDX Module. This simplifies host by providing
-> the same structure when re-invoke the interrupted SEAMCALL. No need for
-> host to touch this field.
-> 
-> Typical usages of the tdx_page_array:
-> 
-> 1. Add control pages:
->  - struct tdx_page_array *array = tdx_page_array_create(nr_pages, ...);
->  - seamcall(TDH_XXX_CREATE, array, ...);
-> 
-> 2. Release control pages:
->  - seamcall(TDX_XXX_DELETE, array, &nr_released, &released_hpa);
->  - tdx_page_array_ctrl_release(array, nr_released, released_hpa);
-> 
-> 3. Exchange data blobs:
->  - struct tdx_page_array *array = tdx_page_array_create(nr_pages, ...);
->  - seamcall(TDX_XXX, array, ...);
->  - Read data from array.
->  - tdx_page_array_free(array);
-> 
-> 4. Note the root page contains 512 HPAs at most, if more pages are
->    required, refilling the tdx_page_array is needed.
-> 
->  - struct tdx_page_array *array = tdx_page_array_alloc(nr_pages, ...);
->  - for each 512-page bulk
->    - tdx_page_array_fill_root(array, offset);
->    - seamcall(TDH_XXX_ADD, array, ...);
-> 
-> In case 2, SEAMCALLs output the released page array in the form of
-> HPA_ARRAY_T or PAGE_LIST_INFO. tdx_page_array_ctrl_release() is
-> responsible for checking if the output pages match the original input
-> pages. If failed to match, the safer way is to leak the control pages,
-> tdx_page_array_ctrl_leak() should be called.
-> 
-> The usage of tdx_page_array will be in following patches.
+> Note that this extension initialization does not impact existing in-flight
+> SEAMCALLs that are not implemented by the extension. So only the first user
+> of an extension-seamcall needs invoke this helper.
 > 
 > Co-developed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-One trivial thing + I think that introduction of a DEFINE_FREE() needs
-to be more obvious to MM folk that it will be buried in here.
-
-Looks fine but needs an Ack.
+A few more trivial comments.
 
 > diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index ada2fd4c2d54..bc5b8e288546 100644
+> index d47b2612c816..9d4cebace054 100644
 > --- a/arch/x86/virt/vmx/tdx/tdx.c
 > +++ b/arch/x86/virt/vmx/tdx/tdx.c
 
+> +
+> +DEFINE_FREE(tdx_ext_mempool_free, struct tdx_page_array *, if (!IS_ERR_OR_NULL(_T)) tdx_ext_mempool_free(_T))
+Very long line. Add a break somewhere!
 
 
-> +static bool tdx_page_array_ctrl_match(struct tdx_page_array *array,
-> +				      unsigned int offset,
-> +				      unsigned int nr_released,
-> +				      u64 released_hpa)
+> +/**
+> + * tdx_enable_ext - Enable TDX module extensions.
+> + *
+> + * This function assumes the caller has done VMXON.
+> + *
+> + * This function can be called in parallel by multiple callers.
+> + *
+> + * Return 0 if TDX module extension is enabled successfully, otherwise error.
+> + */
+> +int tdx_enable_ext(void)
 > +{
-> +	unsigned int nents;
-> +	u64 *entries;
-> +	int i;
+> +	int ret;
 > +
-> +	if (offset >= array->nr_pages)
-> +		return 0;
-> +
-> +	nents = umin(array->nr_pages - offset, TDX_PAGE_ARRAY_MAX_NENTS);
-> +
-> +	if (nents != nr_released) {
-> +		pr_err("%s nr_released [%d] doesn't match page array nents [%d]\n",
-> +		       __func__, nr_released, nents);
-> +		return false;
-> +	}
-> +
-> +	if (!array->root) {
-> +		if (page_to_phys(array->pages[0]) != released_hpa) {
-> +			pr_err("%s released_hpa [0x%llx] doesn't match page0 hpa [0x%llx]\n",
-> +			       __func__, released_hpa,
-> +			       page_to_phys(array->pages[0]));
-> +			return false;
-> +		}
-> +
-> +		return true;
-> +	}
-> +
-> +	if (page_to_phys(array->root) != released_hpa) {
-> +		pr_err("%s released_hpa [0x%llx] doesn't match root page hpa [0x%llx]\n",
-> +		       __func__, released_hpa, page_to_phys(array->root));
-> +		return 0;
-return false
+> +	mutex_lock(&tdx_module_lock);
+guard() perhaps which would make early returns an option if nothing esle
+gets added after the switch.
 
+> +
+> +	switch (tdx_module_status) {
+> +	case TDX_MODULE_INITIALIZED:
+> +		ret = __tdx_enable_ext();
+> +		break;
+> +	case TDX_MODULE_INITIALIZED_EXT:
+> +		ret = 0;
+> +		break;
+> +	default:
+> +		ret = -EINVAL;
+> +		break;
 > +	}
 > +
-> +	entries = (u64 *)page_address(array->root);
-> +	for (i = 0; i < nents; i++) {
-> +		if (page_to_phys(array->pages[offset + i]) != entries[i]) {
-> +			pr_err("%s entry[%d] [0x%llx] doesn't match page hpa [0x%llx]\n",
-> +			       __func__, i, entries[i],
-> +			       page_to_phys(array->pages[offset + i]));
-> +			return false;
-> +		}
-> +	}
+> +	mutex_unlock(&tdx_module_lock);
 > +
-> +	return true;
+> +	return ret;
 > +}
-> +
-> +/* For releasing control pages which are created by tdx_page_array_create() */
-> +int tdx_page_array_ctrl_release(struct tdx_page_array *array,
-> +				unsigned int nr_released,
-> +				u64 released_hpa)
-> +{
-> +	int i;
-> +	u64 r;
-> +
-> +	if (WARN_ON(array->nr_pages > TDX_PAGE_ARRAY_MAX_NENTS))
-> +		return -EINVAL;
-> +
-> +	if (WARN_ON(!tdx_page_array_ctrl_match(array, 0, nr_released,
-> +					       released_hpa)))
-> +		return -EFAULT;
-> +
-> +	for (i = 0; i < array->nr_pages; i++) {
-> +		r = tdh_phymem_page_wbinvd_hkid(tdx_global_keyid,
-> +						array->pages[i]);
-> +		if (WARN_ON(r))
-> +			return -EFAULT;
-> +	}
-> +
-> +	tdx_page_array_free(array);
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(tdx_page_array_ctrl_release);
-
-> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-> index 5ebf26fcdcfa..f0a651155872 100644
-> --- a/include/linux/gfp.h
-> +++ b/include/linux/gfp.h
-> @@ -385,6 +385,8 @@ extern void free_pages(unsigned long addr, unsigned int order);
->  #define __free_page(page) __free_pages((page), 0)
->  #define free_page(addr) free_pages((addr), 0)
->  
-> +DEFINE_FREE(__free_page, struct page *, if (_T) __free_page(_T))
-
-This is at least more 'normal' than the CCA set one for free_page.
-Burying it down here means getting an MM review. I'd be tempted to find
-an alternative use somewhere else and post this stand alone to get that
-review done.
- 
-> +
->  void page_alloc_init_cpuhp(void);
->  int decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp);
->  void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp);
-
+> +EXPORT_SYMBOL_GPL(tdx_enable_ext);
