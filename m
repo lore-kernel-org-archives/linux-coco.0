@@ -1,75 +1,253 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F4C329381;
-	Thu, 30 Oct 2025 08:44:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2492D9493
+	for <linux-coco@lists.linux.dev>; Thu, 30 Oct 2025 09:05:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761813892; cv=none; b=AqQsyCabaPY7wyU5ThmnHgo/omVtz9EBn5pykocWwQ9MO3+BMO8opUJhdewvnbAzjoZ55bgSquN1+EVcU5ZNflcb385OCsN6coRx8I40rXQSV3fw7JHPgCHmemRtpaw0yrMbfOxB26iK668WrDIR0w4DthG133UVDR5bcPnPKYA=
+	t=1761815108; cv=none; b=VdLPt7vtJo4CAeHKzcIOafoQqXOHSS0vjZU0ze6wL4IIiChT290S0OC8ee2Cf22BtRRKtDd+X3Y1naYTR0v+/j8QBb87s94HIYw5k4O9bp2TPLEPjIq7BJyehuY8ny442SIlknV+tsG6KbyJ8La8tP4UWgLljAfXiUcmeYrakeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761813892; c=relaxed/simple;
-	bh=6dybDKX7+8hY8anqIxc/y/vMKgfpFG/JnzMwdU4JUOU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=b3jvNpgwoOvMMepPMOI6pVUQl6BIVJDRaeI3EJc+1sve1tnFyEcbpmJPJGka9xx8jUP+LNJg9LA7JCrZOqXlVdaQiY0tMdu0JilevjrPZ9fdSB9BiXgn45TJ2wvC3Gt0yeiQL1b3TncYF5dBXqKzUEofD5e9opdUcQNNceIDrJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tl3YINTB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761815108; c=relaxed/simple;
+	bh=7y0f7DM/9Fu681tu7EA5itbeJa5mk7ik9CostNPDHl4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nVyKYJLnwH6ruT9nbay0HnRb7/MVzVFXD+B7MA8Dnpj3qAZ8aQccQVtzHU5SpfAmUh0puZU/l/uGBxaIdbgGqUIhjrUK1xzfW++pYVgWcMjeB2lULno+Udydn3tWQyAfEr/5NCBuGu3vMrEuXDAE8JdUNFNmRjpDAF2zzBGqEe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=YopriDsc; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=drmB1LGG; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=YopriDsc; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=drmB1LGG; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tl3YINTB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B98F7C4CEF1;
-	Thu, 30 Oct 2025 08:44:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761813891;
-	bh=6dybDKX7+8hY8anqIxc/y/vMKgfpFG/JnzMwdU4JUOU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=tl3YINTBCky5gPU7q3VpgRownmw4sMgXMIb2LK5ZwSqU5X941nZo/d/8kXncj0GTJ
-	 yaYH796cLicsWvjv9/v1lfIeqf3xdkxFXNiQVo+DXm/ujU/zHVn452RZezpRCA+hhl
-	 8ZH498Je9gE+6t8cuyiG8/Y6UQgKXQKbPOFyH3AftHaCoS/RASEhNCSkmxj3d1ex6b
-	 4AWEe9CwKeEcPQqJZ6QYK9JyPp4PcX5QdFhL3W552iAOHutDdBcClRnrl9qVX5B7/6
-	 tMIiZNCipVRcRz79gKpP0aP2o1kzFhHbWsFrso7IRDVILAd0o0dthaXZsBjx0d2sqI
-	 kbSlj2FsIFrHA==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	dan.j.williams@intel.com, aik@amd.com, lukas@wunner.de,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: Re: [PATCH RESEND v2 05/12] coco: host: arm64: Build and register
- RMM pdev descriptors
-In-Reply-To: <20251029173743.00006d48@huawei.com>
-References: <20251027095602.1154418-1-aneesh.kumar@kernel.org>
- <20251027095602.1154418-6-aneesh.kumar@kernel.org>
- <20251029173743.00006d48@huawei.com>
-Date: Thu, 30 Oct 2025 14:14:43 +0530
-Message-ID: <yq5a3470eq2s.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="YopriDsc";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="drmB1LGG";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="YopriDsc";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="drmB1LGG"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 494E31F8B8;
+	Thu, 30 Oct 2025 09:05:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1761815103; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lzKO/XeWMBH3INZbM+ZTs291o3A5XJvv3T24IEcIOZQ=;
+	b=YopriDsc5qeQCfVYMnRLQQhrsLxUH/KR6tXmcMXSakvRYuBWztgEoXyXPmP6bzgwXokX2A
+	LNISEtkogbdLBYZEnxmsdibifkHmhWGWwe5p9ZgQbOWU6Kcq7/+yqsaBLyPanmcvMMyFW8
+	1vlbIeQpSvERQbRIv3xPl46R7v+bCh4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1761815103;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lzKO/XeWMBH3INZbM+ZTs291o3A5XJvv3T24IEcIOZQ=;
+	b=drmB1LGGmgBmQKIEWGXtVXtjQUycADaFpplEwMvR3TEcAMoBpkHWOP/1Sm9nB1sHv7HaBy
+	OqxSHwFCRJpnOCCw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=YopriDsc;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=drmB1LGG
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1761815103; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lzKO/XeWMBH3INZbM+ZTs291o3A5XJvv3T24IEcIOZQ=;
+	b=YopriDsc5qeQCfVYMnRLQQhrsLxUH/KR6tXmcMXSakvRYuBWztgEoXyXPmP6bzgwXokX2A
+	LNISEtkogbdLBYZEnxmsdibifkHmhWGWwe5p9ZgQbOWU6Kcq7/+yqsaBLyPanmcvMMyFW8
+	1vlbIeQpSvERQbRIv3xPl46R7v+bCh4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1761815103;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lzKO/XeWMBH3INZbM+ZTs291o3A5XJvv3T24IEcIOZQ=;
+	b=drmB1LGGmgBmQKIEWGXtVXtjQUycADaFpplEwMvR3TEcAMoBpkHWOP/1Sm9nB1sHv7HaBy
+	OqxSHwFCRJpnOCCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C005B13393;
+	Thu, 30 Oct 2025 09:05:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id TdU1LD4qA2myWQAAD6G6ig
+	(envelope-from <clopez@suse.de>); Thu, 30 Oct 2025 09:05:02 +0000
+Message-ID: <74df9e1d-69f4-43e6-89fe-3290b94ab8dd@suse.de>
+Date: Thu, 30 Oct 2025 10:04:57 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/9] coco/tsm: Introduce a core device for TEE Security
+ Managers
+To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+ linux-pci@vger.kernel.org
+Cc: aik@amd.com, yilun.xu@linux.intel.com, aneesh.kumar@kernel.org,
+ bhelgaas@google.com, gregkh@linuxfoundation.org,
+ Jonathan Cameron <jonathan.cameron@huawei.com>
+References: <20251024020418.1366664-1-dan.j.williams@intel.com>
+ <20251024020418.1366664-2-dan.j.williams@intel.com>
+From: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
+Content-Language: en-US
+In-Reply-To: <20251024020418.1366664-2-dan.j.williams@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: 494E31F8B8
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_TLS_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:mid];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Score: -4.51
 
-Jonathan Cameron <jonathan.cameron@huawei.com> writes:
+Hi,
 
-> On Mon, 27 Oct 2025 15:25:55 +0530
-> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
+On 10/24/25 4:04 AM, Dan Williams wrote:
+> A "TSM" is a platform component that provides an API for securely
+> provisioning resources for a confidential guest (TVM) to consume. The
+> name originates from the PCI specification for platform agent that
+> carries out operations for PCIe TDISP (TEE Device Interface Security
+> Protocol).
+> 
+> Instances of this core device are parented by a device representing the
+> platform security function like CONFIG_CRYPTO_DEV_CCP or
+> CONFIG_INTEL_TDX_HOST.
+> 
+> This device interface is a frontend to the aspects of a TSM and TEE I/O
+> that are cross-architecture common. This includes mechanisms like
+> enumerating available platform TEE I/O capabilities and provisioning
+> connections between the platform TSM and device DSMs (Device Security
+> Manager (TDISP)).
+> 
+> For now this is just the scaffolding for registering a TSM device sysfs
+> interface.
+> 
+> Cc: Alexey Kardashevskiy <aik@amd.com>
+> Cc: Xu Yilun <yilun.xu@linux.intel.com>
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Co-developed-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+>  drivers/virt/coco/Kconfig                 |   3 +
+>  drivers/virt/coco/Makefile                |   1 +
+>  Documentation/ABI/testing/sysfs-class-tsm |   9 ++
+>  include/linux/tsm.h                       |   4 +
+>  drivers/virt/coco/tsm-core.c              | 109 ++++++++++++++++++++++
+>  MAINTAINERS                               |   2 +-
+>  6 files changed, 127 insertions(+), 1 deletion(-)
+>  create mode 100644 Documentation/ABI/testing/sysfs-class-tsm
+>  create mode 100644 drivers/virt/coco/tsm-core.c
+> 
+> diff --git a/drivers/virt/coco/Kconfig b/drivers/virt/coco/Kconfig
+> index 819a97e8ba99..bb0c6d6ddcc8 100644
+> --- a/drivers/virt/coco/Kconfig
+> +++ b/drivers/virt/coco/Kconfig
+> @@ -14,3 +14,6 @@ source "drivers/virt/coco/tdx-guest/Kconfig"
+>  source "drivers/virt/coco/arm-cca-guest/Kconfig"
+>  
+>  source "drivers/virt/coco/guest/Kconfig"
+> +
+> +config TSM
+> +	bool
+> diff --git a/drivers/virt/coco/Makefile b/drivers/virt/coco/Makefile
+> index f918bbb61737..cb52021912b3 100644
+> --- a/drivers/virt/coco/Makefile
+> +++ b/drivers/virt/coco/Makefile
+> @@ -7,4 +7,5 @@ obj-$(CONFIG_ARM_PKVM_GUEST)	+= pkvm-guest/
+>  obj-$(CONFIG_SEV_GUEST)		+= sev-guest/
+>  obj-$(CONFIG_INTEL_TDX_GUEST)	+= tdx-guest/
+>  obj-$(CONFIG_ARM_CCA_GUEST)	+= arm-cca-guest/
+> +obj-$(CONFIG_TSM) 		+= tsm-core.o
+>  obj-$(CONFIG_TSM_GUEST)		+= guest/
+> diff --git a/Documentation/ABI/testing/sysfs-class-tsm b/Documentation/ABI/testing/sysfs-class-tsm
+> new file mode 100644
+> index 000000000000..2949468deaf7
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-class-tsm
+> @@ -0,0 +1,9 @@
+> +What:		/sys/class/tsm/tsmN
+> +Contact:	linux-coco@lists.linux.dev
+> +Description:
+> +		"tsmN" is a device that represents the generic attributes of a
+> +		platform TEE Security Manager.  It is typically a child of a
+> +		platform enumerated TSM device. /sys/class/tsm/tsmN/uevent
+> +		signals when the PCI layer is able to support establishment of
+> +		link encryption and other device-security features coordinated
+> +		through a platform tsm.
+> diff --git a/include/linux/tsm.h b/include/linux/tsm.h
+> index 431054810dca..aa906eb67360 100644
+> --- a/include/linux/tsm.h
+> +++ b/include/linux/tsm.h
+> @@ -5,6 +5,7 @@
+>  #include <linux/sizes.h>
+>  #include <linux/types.h>
+>  #include <linux/uuid.h>
+> +#include <linux/device.h>
+>  
+>  #define TSM_REPORT_INBLOB_MAX 64
+>  #define TSM_REPORT_OUTBLOB_MAX SZ_32K
+> @@ -109,4 +110,7 @@ struct tsm_report_ops {
+>  
+>  int tsm_report_register(const struct tsm_report_ops *ops, void *priv);
+>  int tsm_report_unregister(const struct tsm_report_ops *ops);
+> +struct tsm_dev;
+> +struct tsm_dev *tsm_register(struct device *parent);
+> +void tsm_unregister(struct tsm_dev *tsm_dev);
+>  #endif /* __TSM_H */
+> diff --git a/drivers/virt/coco/tsm-core.c b/drivers/virt/coco/tsm-core.c
+> new file mode 100644
+> index 000000000000..a64b776642cf
+> --- /dev/null
+> +++ b/drivers/virt/coco/tsm-core.c
+> @@ -0,0 +1,109 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/* Copyright(c) 2024 Intel Corporation. All rights reserved. */
+> +
+> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+> +
+> +#include <linux/tsm.h>
+> +#include <linux/idr.h>
+> +#include <linux/rwsem.h>
+> +#include <linux/device.h>
+> +#include <linux/module.h>
+> +#include <linux/cleanup.h>
+> +
+> +static struct class *tsm_class;
+> +static DECLARE_RWSEM(tsm_rwsem);
+> +static DEFINE_IDR(tsm_idr);
 
-...
+The IDR documentation states it is deprecated and one should use XArray
+in its place. Is there any particular reason to use IDR instead in this
+patch series?
 
->>  
->> +int pdev_create(struct pci_dev *pdev);
-> That is a very generic name to find in a header, even one buried deep in drivers.
-> I'd prefix it with somethin more specific rmi_pdev_create() or something like that.
-
-May be I can call this cca_pdev_create, because rmi_pdev_create()
-already exist.
-
--aneesh
+Best,
+Carlos
