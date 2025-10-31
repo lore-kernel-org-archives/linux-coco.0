@@ -1,235 +1,138 @@
-Received: from sinmsgout02.his.huawei.com (sinmsgout02.his.huawei.com [119.8.177.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3948834846E;
-	Fri, 31 Oct 2025 12:07:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=119.8.177.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ACFB34B667
+	for <linux-coco@lists.linux.dev>; Fri, 31 Oct 2025 14:32:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761912463; cv=none; b=q3r+YnosfoCkQ6UGgwoAkeRUQatlCTkjEZW3k2COj9C4g8Fv683JG1QxRqHlimoILlQNjeS778Y6zO+SRABCESiI8lOLBg+NmVsMH5TTkUCk+v6N8M2olc8vIW3UgFZVveTQjJd+tplar2/tV28d8jwVdqB55s6ZkXfLwg0r9HY=
+	t=1761921123; cv=none; b=Y0O24HnFluAaE+l6IAV6xpQe4VBFFGxPlUu+PFHT34A3yOI0HUof6o/bZED8bEA8lu3eZsDLzS2pvkKWxDOZ7DjEhTW8EcBACPh5lt/PLVAj3oK3rLfUe4qjIdUUWDzQA5/P4myz7kOKjXD6KIdbRGiu3YncrGKM3uDOJSncJdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761912463; c=relaxed/simple;
-	bh=axhskxiBo2zPW17sTIBm+Goy9FupOra+dPrV5xh2Rh8=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uI4wqx2NIQ+KpWg3Z4fNULN6kQ8ojSQtj5R7xjkzhCzwxRg7flDXAY6GTFYbvUUaojI+09ebwnzZjzDe+tLF0hH5bWAaaopn2QIWaG9D21udUrKxhaP2Lx+/hBb5Cky9MzDJpHZ0wLZMOetMsewdPgJxZ9VzbKiI7l9fIcHdVSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=N6Zj/egf; arc=none smtp.client-ip=119.8.177.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1761921123; c=relaxed/simple;
+	bh=ztfuXoIA/8/IzjLvWd47nqIEIo1a/dLhajOHezVjkdI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ln2mLAMH5ba1FgdvE4PUstoRumVUx4f+MXDuGTPPuNfmw1BZbEzEPpo6igRLDL0FYK1SspVANdZT2epXDD5eX5zBlNvlkMEmRSlKYrSC3mKkvF9qB1XmLHcnkF4uzHrrQz4WYMfpHHebOvZ0joTzryDb4iERPdL9oJUI7DFgCeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wFXZeqjr; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="N6Zj/egf"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=9TolKU4YCUfsB69h9PmW4OYgivzsAp8onhB9iwqpHl4=;
-	b=N6Zj/egfxBgO1FKnSEx/io0wWg+UUnAHCKtrPJVhD/6OGp0sXP5jRPQkmReGL76/jRUaq/GZD
-	xDZdkYV817aO4vELHUBJKtikjIHGG6ThsXVno/85oMnEnMRk6Iwsl2G1KWTzYSTjO+zB+I/6Atb
-	EKwZ8rfTCG4sqVH96LpOU3I=
-Received: from frasgout.his.huawei.com (unknown [172.18.146.32])
-	by sinmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4cyfpt1qxFz1vnNV;
-	Fri, 31 Oct 2025 20:06:46 +0800 (CST)
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4cyfph13qYzHnGcf;
-	Fri, 31 Oct 2025 12:06:36 +0000 (UTC)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 875C01402E9;
-	Fri, 31 Oct 2025 20:07:32 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 31 Oct
- 2025 12:07:31 +0000
-Date: Fri, 31 Oct 2025 12:07:30 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-CC: <linux-coco@lists.linux.dev>, <kvmarm@lists.linux.dev>,
-	<linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<dan.j.williams@intel.com>, <aik@amd.com>, <lukas@wunner.de>, Samuel Ortiz
-	<sameo@rivosinc.com>, Xu Yilun <yilun.xu@linux.intel.com>, Jason Gunthorpe
-	<jgg@ziepe.ca>, Suzuki K Poulose <Suzuki.Poulose@arm.com>, Steven Price
-	<steven.price@arm.com>, Bjorn Helgaas <helgaas@kernel.org>, Catalin Marinas
-	<catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon
-	<will@kernel.org>, Oliver Upton <oliver.upton@linux.dev>
-Subject: Re: [PATCH RESEND v2 06/12] coco: host: arm64: Add RMM device
- communication helpers
-Message-ID: <20251031120730.00003758@huawei.com>
-In-Reply-To: <yq5ams57cx9q.fsf@kernel.org>
-References: <20251027095602.1154418-1-aneesh.kumar@kernel.org>
-	<20251027095602.1154418-7-aneesh.kumar@kernel.org>
-	<20251029183306.0000485c@huawei.com>
-	<yq5apla4cqex.fsf@kernel.org>
-	<20251030181246.00006328@huawei.com>
-	<yq5ams57cx9q.fsf@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wFXZeqjr"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ea12242d2eso378871cf.1
+        for <linux-coco@lists.linux.dev>; Fri, 31 Oct 2025 07:32:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761921120; x=1762525920; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=G95L3DLvS/DNATNYDSMXETdETrIxVgxQLONU1k6QAU4=;
+        b=wFXZeqjrX6GVB5MDsJHPJh8M1h42qHWiooWE3sJttKs00dWQdHQCI8Jga6sZNidVXZ
+         JQ36kczYV2tiLVWccuQDp4LPjvPgUxhbZOQnQl/g7gBaCJ1YHWWPbSq4aD4HyTpL0YAN
+         GylJUKH9m8AOQz+esPF9sgQatpev8pdwcc7xOuboin9wIVUx86eaIJt4o69iT8R9yd25
+         YROmJpx1upUWb5kmXC64MtpRkRYaZSqguU2hSLuqnbY53uEhgpeVUdzilXM6zyxxgAYP
+         NHFDz55TLRCj/T3GgdhE3AWxr7ogIVELcDOrBtVA1lLLcwau/TDvgJ/0IIQl4y51uqeQ
+         O45A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761921120; x=1762525920;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=G95L3DLvS/DNATNYDSMXETdETrIxVgxQLONU1k6QAU4=;
+        b=h0G/KZi1/og1Bh+UVArXSBI1fmcmqLD8vb75VDFt1u98OXwm1qAKAc1FWr7PGQ0NzQ
+         qdxmjdjbBFCX/h9tJdNCoBFUCGVyZK94wr16PqWnGWiUXOG1z9nKQSNBQd2UNHVqr5eU
+         aUveSQUMuWlgAD0OIh41TFG657T1bxmMAKtBMcJESlS0ZQR7nHVE71GNOn45BSgjxGci
+         b2/A/0CYVHmA1YF52a1+ygPqK20eUG58c3+tE5sq6IAwwWZAqi92WJpr17Rd3SprWeCq
+         5J7BJHMuF9Wirr/SKm9Bw9QgprYw83Khk5QemIpdkvErdiH8z7ExiNzsqCdHf1aQsj7N
+         gRMw==
+X-Forwarded-Encrypted: i=1; AJvYcCW5UWeyahBc8s0wbUJS6iOiCKXftwtulA8fRAH2sjBo0KjYkN+RSi2pDMkYIvWmEila3qRe5znPe38Y@lists.linux.dev
+X-Gm-Message-State: AOJu0YxfdJQ2QAVUcdhupuVmvAZh2AIUQDrBnyS/48bzJSM6/Ze3w4tu
+	Csfb31noAUOyhuvQEXd+V3fqMFG7RS3TR7UEtajcSsNqjIS61G82x+gU8JVvfI/lKsAvDC6X27u
+	Ci0Gkd+gs4kCH1FBaNnEIbIaFFJwTUd2Rl3Lw1+v3
+X-Gm-Gg: ASbGncuinH+9oiWAfJIEuOtnCYwJ2KzWaK0KN9OWNv72HX/efbz9ZIqZQmABsYcxXik
+	2lwk2ycROAZt/ved9PjFS/TjmAh6XyA2zp8ClWf1C6kI1QQBoioNWboyiEMqWpjYWNtspEHreoG
+	1QIdACgOq95zpj2mpfpc7XCx26HLy3Qwm17D1mH1UdViyfDwW1ekylJsgWMFGdPgvQb93Ss2c8d
+	+OLIFH7N5rHh9OzmApv6STCMttGnlRXG00H8Vyckfa9qvPAtJaf7oWhQVmzadvEjxB4CG6kys3W
+	9V/cYRLNTZnxe6NDwJ9Z6Q+raEw=
+X-Google-Smtp-Source: AGHT+IF/Qso4SJD1J9Awit7eARmSYManprQ6V5RDK+znSyKxcoLwTsKzFBHsprkHmdeX77HTkMxjecZ+rWe1vvB8RLY=
+X-Received: by 2002:a05:622a:1817:b0:4b4:9590:e091 with SMTP id
+ d75a77b69052e-4ed3385bca2mr5839331cf.5.1761921120002; Fri, 31 Oct 2025
+ 07:32:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+References: <20251001025442.427697-1-chao.gao@intel.com> <20251001025442.427697-8-chao.gao@intel.com>
+ <CAAhR5DEQw9eMVJ_mWRP3G=XqmsR4_46xh030_Vtyx3HzWXn3wA@mail.gmail.com> <6903ef44cbf81_10e9100f4@dwillia2-mobl4.notmuch>
+In-Reply-To: <6903ef44cbf81_10e9100f4@dwillia2-mobl4.notmuch>
+From: Sagi Shahar <sagis@google.com>
+Date: Fri, 31 Oct 2025 09:31:49 -0500
+X-Gm-Features: AWmQ_bmbnxKmBqKoD8vD9Ui7lZxDASP_7X1rDLL5Fan3JEh-qcGYvqIWKACARo8
+Message-ID: <CAAhR5DGvDoCd_OZURF604LO0JOHoFjWM8Btk8uS_jzJVfk5J2w@mail.gmail.com>
+Subject: Re: [PATCH v2 07/21] coco/tdx-host: Expose P-SEAMLDR information via sysfs
+To: dan.j.williams@intel.com
+Cc: Chao Gao <chao.gao@intel.com>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org, reinette.chatre@intel.com, 
+	ira.weiny@intel.com, kai.huang@intel.com, yilun.xu@linux.intel.com, 
+	vannapurve@google.com, paulmck@kernel.org, nik.borisov@suse.com, 
+	Farrah Chen <farrah.chen@intel.com>, "Kirill A. Shutemov" <kas@kernel.org>, 
+	Dave Hansen <dave.hansen@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 31 Oct 2025 13:34:33 +0530
-"Aneesh Kumar K.V" <aneesh.kumar@kernel.org> wrote:
-
-> Jonathan Cameron <jonathan.cameron@huawei.com> writes:
-> 
-> > On Thu, 30 Oct 2025 21:50:22 +0530
-> > "Aneesh Kumar K.V" <aneesh.kumar@kernel.org> wrote:
-> >  
-> >> Jonathan Cameron <jonathan.cameron@huawei.com> writes:
-> >>   
-> >> > On Mon, 27 Oct 2025 15:25:56 +0530
-> >> > "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
-> >> >    
-> >> 
-> >> ...
-> >>   
-> >> >> +static int __do_dev_communicate(enum dev_comm_type type,
-> >> >> +				struct pci_tsm *tsm, unsigned long error_state)
-> >> >> +{
-> >> >> +	int ret;
-> >> >> +	int state;
-> >> >> +	struct rmi_dev_comm_enter *io_enter;
-> >> >> +	struct cca_host_pf0_dsc *pf0_dsc = to_cca_pf0_dsc(tsm->dsm_dev);
-> >> >> +
-> >> >> +	io_enter = &pf0_dsc->comm_data.io_params->enter;
-> >> >> +	io_enter->resp_len = 0;
-> >> >> +	io_enter->status = RMI_DEV_COMM_NONE;
-> >> >> +
-> >> >> +	ret = ___do_dev_communicate(type, tsm);    
-> >> >
-> >> > Think up a more meaningful name.  Counting _ doesn't make for readable code.
-> >> >    
-> >> 
-> >> I am not sure about this. What do you think?
-> >> 
-> >> modified   drivers/virt/coco/arm-cca-host/rmi-da.c
-> >> @@ -188,7 +188,7 @@ static inline gfp_t cache_obj_id_to_gfp_flags(u8 cache_obj_id)
-> >>  	return GFP_KERNEL_ACCOUNT;
-> >>  }
-> >>  
-> >> -static int ___do_dev_communicate(enum dev_comm_type type, struct pci_tsm *tsm)
-> >> +static int __do_dev_communicate(enum dev_comm_type type, struct pci_tsm *tsm)
-> >>  {
-> >>  	gfp_t cache_alloc_flags;
-> >>  	int ret, nbytes, cp_len;
-> >> @@ -319,7 +319,7 @@ static int ___do_dev_communicate(enum dev_comm_type type, struct pci_tsm *tsm)
-> >>  	return 0;
-> >>  }
-> >>  
-> >> -static int __do_dev_communicate(enum dev_comm_type type,
-> >> +static int do_dev_communicate(enum dev_comm_type type,
-> >>  				struct pci_tsm *tsm, unsigned long error_state)
-> >>  {
-> >>  	int ret;
-> >> @@ -331,7 +331,7 @@ static int __do_dev_communicate(enum dev_comm_type type,
-> >>  	io_enter->resp_len = 0;
-> >>  	io_enter->status = RMI_DEV_COMM_NONE;
-> >>  
-> >> -	ret = ___do_dev_communicate(type, tsm);
-> >> +	ret = __do_dev_communicate(type, tsm);
-> >>  	if (ret) {
-> >>  		if (type == PDEV_COMMUNICATE)
-> >>  			rmi_pdev_abort(virt_to_phys(pf0_dsc->rmm_pdev));
-> >> @@ -355,14 +355,14 @@ static int __do_dev_communicate(enum dev_comm_type type,
-> >>  	return state;
-> >>  }
-> >>  
-> >> -static int do_dev_communicate(enum dev_comm_type type, struct pci_tsm *tsm,
-> >> -			      unsigned long target_state,
-> >> -			      unsigned long error_state)
-> >> +static int move_dev_to_state(enum dev_comm_type type, struct pci_tsm *tsm,  
+On Thu, Oct 30, 2025 at 6:05=E2=80=AFPM <dan.j.williams@intel.com> wrote:
+>
+> Sagi Shahar wrote:
+> > On Tue, Sep 30, 2025 at 9:55=E2=80=AFPM Chao Gao <chao.gao@intel.com> w=
+rote:
+> > >
+> > > TDX Module updates require userspace to select the appropriate module
+> > > to load. Expose necessary information to facilitate this decision. Tw=
+o
+> > > values are needed:
+> > >
+> > > - P-SEAMLDR version: for compatibility checks between TDX Module and
+> > >                      P-SEAMLDR
+> > > - num_remaining_updates: indicates how many updates can be performed
+> > >
+> > > Expose them as tdx-host device attributes.
+> > >
+> > > Note that P-SEAMLDR sysfs nodes are hidden when INTEL_TDX_MODULE_UPDA=
+TE
+> > > isn't enabled or when P-SEAMLDR isn't loaded by BIOS, both of which
+> > > cause seamldr_get_info() to return NULL.
+> > >
+> > > Signed-off-by: Chao Gao <chao.gao@intel.com>
+> > > Tested-by: Farrah Chen <farrah.chen@intel.com>
+> > > ---
+> > >  .../ABI/testing/sysfs-devices-faux-tdx-host   | 25 ++++++++
+> > >  drivers/virt/coco/tdx-host/tdx-host.c         | 63 +++++++++++++++++=
++-
+> > >  2 files changed, 87 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/Documentation/ABI/testing/sysfs-devices-faux-tdx-host b/=
+Documentation/ABI/testing/sysfs-devices-faux-tdx-host
 > >
-> > Naming is always tricky.  Not sure why this name is appropriate given it's definitely
-> > still related to dev_communicate.
+> > Trying to apply this patch locally fails because
+> > sysfs-devices-faux-tdx-host does not exist. There are also conflicts
+> > around drivers/virt/coco/tdx-host/tdx-host.c.
 > >
-> > Maybe just squash do_dev_communicate and __do_dev_coummnicate.
-> > Slightly long lines will be the result but not too bad.
-> > I haven't checked what it ends up as after the whole series though
-> > so maybe it doesn't work out.
-> >
-> > static int do_dev_communicate(enum dev_comm_type type, struct pci_tsm *tsm,
-> > 			      unsigned long target_state,
-> > 			      unsigned long error_state)
-> > {
-> > 	
-> >
-> > 	do {
-> > 		int state, ret;
-> > 		struct rmi_dev_comm_enter *io_enter;
-> > 		struct cca_host_pf0_dsc *pf0_dsc = to_cca_pf0_dsc(tsm->dsm_dev);
-> >
-> > 		io_enter = &pf0_dsc->comm_data.io_params->enter;
-> > 		io_enter->resp_len = 0;
-> > 		io_enter->status = RMI_DEV_COMM_NONE;
-> >
-> > 		ret = ___do_dev_communicate(type, tsm);
-> > //renamed
-> >
-> > 		if (ret) {
-> > 			if (type == PDEV_COMMUNICATE)
-> > 				rmi_pdev_abort(virt_to_phys(pf0_dsc->rmm_pdev));
-> >
-> > 			state = error_state;
-> > 		} else {
-> > 			/*
-> > 			 * Some device communication error will transition the
-> > 			 * device to error state. Report that.
-> > 			 */
-> > 			if (type == PDEV_COMMUNICATE)
-> > 				ret = rmi_pdev_get_state(virt_to_phys(pf0_dsc->rmm_pdev),
-> > 							 (enum rmi_pdev_state *)&state);
-> > 			if (ret)
-> > 				state = error_state;
-> > 		}
-> > 	
-> > 		if (state == error_state) {
-> > 			pci_err(tsm->pdev, "device communication error\n");
-> > 			return state;
-> > 		}
-> > 		if (state == target_state)
-> > 			return state;
-> > 	} while (1);
-> > }
-> > Jonathan
-> >  
-> 
-> I need the existing __do_dev_communicate for a followup patch where the
-> device communication won't loop till state transition.
+> > I'm looking at the base commit specified in the cover letter [1] but
+> > even the current head of the tsm/tdx tree [2] doesn't have the
+> > sysfs-devices-faux-tdx-host file. Are there any other dependencies for
+> > this series?
+>
+> I hit the same head scratcher, but then realized that Chao did say that
+> you also need to apply:
+>
+> https://lore.kernel.org/linux-coco/20251001022309.277238-1-chao.gao@intel=
+.com
+>
+> ...so:
+>
+> git checkout -b $branch 9332e088937f
+> b4 shazam 20251001022309.277238-1-chao.gao@intel.com
+> b4 shazam 20251001025442.427697-1-chao.gao@intel.com
+>
+> ...works for me.
 
-Ah. I'd missed that. Fair enough.
-
-
-> -static int __do_dev_communicate(enum dev_comm_type type,
-> +static int do_dev_communicate(enum dev_comm_type type,
->  				struct pci_tsm *tsm, unsigned long error_state)
->  {
->  	int ret;
-> @@ -331,7 +331,7 @@ static int __do_dev_communicate(enum dev_comm_type type,
->  	io_enter->resp_len = 0;
->  	io_enter->status = RMI_DEV_COMM_NONE;
->  
-> -	ret = ___do_dev_communicate(type, tsm);
-> +	ret = _do_dev_communicate(type, tsm);
->  	if (ret) {
->  		if (type == PDEV_COMMUNICATE)
->  			rmi_pdev_abort(virt_to_phys(pf0_dsc->rmm_pdev));
-> @@ -355,14 +355,14 @@ static int __do_dev_communicate(enum dev_comm_type type,
->  	return state;
->  }
->  
-> -static int do_dev_communicate(enum dev_comm_type type, struct pci_tsm *tsm,
-> +static int wait_for_dev_state(enum dev_comm_type type, struct pci_tsm *tsm,
-This name conveys what the wrapper adds to the inner call but neglects that inner bit.
-
-do_dev_communicate_and_wait_for_xxx or
-do_dev_communicate_synchronous()  // maybe - it's approximately a synchronous wrapper of async operation.
-Or something along those lines perhaps?
-
-
->  			      unsigned long target_state,
->  			      unsigned long error_state)
->  {
-
-
+Thanks, I missed that one. It's working now
