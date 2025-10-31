@@ -1,285 +1,94 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6542EB841
-	for <linux-coco@lists.linux.dev>; Fri, 31 Oct 2025 16:55:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B572F6567
+	for <linux-coco@lists.linux.dev>; Fri, 31 Oct 2025 17:12:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761929741; cv=none; b=j836fKTIa4d+pIjLsGvpFh42LtdVjso9bx3B5OcHAOtV3mHxcU63U590VVOAgnaivOHK6evBc79AEt+xYxGd9rnbNi7UFfE0HCoK1B18o6X598q4yDa5h5ns6SKkyEcQhEFMKNxoJ1+0FHYF8LnJqNtWn5e9phh2c3ETA/RpsNA=
+	t=1761930725; cv=none; b=VzWtV0N1h5jvgJF5ZkMuOrThU13sJ2Z+4KCqiCdVMzTxdF3X32JhYk5z4CcvIECbp+vAYtP7QClxyWbX6CLC7qJIozFyjXQXSJaxYR2407iM9NMDK41zZ5ol2rGcEEOMJYZPgbk4vWT+xAZ23ChDFg5UcSaGDDw/JURZU2CP+Ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761929741; c=relaxed/simple;
-	bh=56YP9bOOwpxRWaqA+O3PwGVFgv7zsAGCzkLhzmLCRpQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kFU6f6bq4t3+AlKK93pu0K2OHkeRIo7QmWWUK4xceGy5h+hb2M6zFikYnVJ8F3lHWIUULpTq/EAg6ldfT8XzMngDia9GEmoRMlWLY48LBmpliuXfGSSZria2QeIcAVIsfhhvl0evDIXjU3UdtOrwxJ8O5TJKTfSuW5PBw904xmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zkCw3z46; arc=none smtp.client-ip=209.85.160.182
+	s=arc-20240116; t=1761930725; c=relaxed/simple;
+	bh=2Py81n9yIbaq9LVne2Z6xEysNPQOVrfItEqxp5YA7aE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=QB21nf9sCsfPBnz3boc+yupoG2ZrqaeRCG5jVZ1XA6Gm3DLz1WhhG3kl/vqlYcH7Qcy78g3YDAvdFcJIVZYDeOI5pA2ua58cC8gu5niYmWtYlBk/VNdUlA6wgWeY1aTanFjvuTc/8KsKllIGzpSQWR53iC0RVbdmHeDe2rVoSL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sHDU/8JR; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zkCw3z46"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4ed0c8e4dbcso10331cf.0
-        for <linux-coco@lists.linux.dev>; Fri, 31 Oct 2025 09:55:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sHDU/8JR"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-33baf262850so2901126a91.0
+        for <linux-coco@lists.linux.dev>; Fri, 31 Oct 2025 10:12:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761929739; x=1762534539; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=x2PgiNfT03NpyavbwhUGeVVJeE0kuxyW1JyOtkY0SVg=;
-        b=zkCw3z46jRB0Lw5X5jVsU5aVeputVWabbquaXiKFsQnng5XTg2bOX18cvgpu5HIBX5
-         1fcT6ZVJ3Vi7MBfKrAtFe9oPClTQ7CsINm2wLEftptj6QiurATJZ4Q6DNaxou7p3tuId
-         TJgbulPiXXn+rsGn86PlbTLLMZyoWdyFV+AEW/nkDSuRMOdwtjB+XELH8jGbbdUW9U2E
-         7/zRPtHGKXyHmWleiw6maaY1+UJ6SjZrrRoEHX3gVeUypcUxh5sfVqkSimvUNX2DuiJ7
-         cYz2YjnLs/esg19vmAE1EjifqkPuLygWSexgRjAMwkN+Gk9+Syzm3RWJazmO+Bl2QMPE
-         Vkgg==
+        d=google.com; s=20230601; t=1761930723; x=1762535523; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HjXjY8ls4xQvqV6pquPYuHe7QqNVj5FW0YEflavTuCM=;
+        b=sHDU/8JRRjU8crK8EZBgCp/Purmdputee6iKZSKOEkPaJlVQVksZYRnrOgjX1P/3VZ
+         u9ACChdjQXdDMHGdFD/E/91Wcpf74VTdffhc8VpXAS7McjCGIHDbAw0mM43g7ILmhXXD
+         RuZ5iFHy0HUX6NCXHoJMcre2MCpzPX7cVTR3XLx1Hx0Kje6Ir8/3VoafpfO9edYgCqyF
+         pl8NcFUF8ZHw8FhuI55tOAH1mnzyIUpfq11ccUQ8SMn9r1az73JEEbLYRvMXec6ocbhd
+         RO7tIAMhM5zTLPZ5u+bf47qAPlzBokZQVUmWpL3aKMhMwAYWru8ALgfYQa5gXFDTXYHc
+         Cw+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761929739; x=1762534539;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=x2PgiNfT03NpyavbwhUGeVVJeE0kuxyW1JyOtkY0SVg=;
-        b=DEkdX7v0s6EdaVHtHBJtF6AdVC7Rp8iW3vS/FVbzi+s7q7v9deiErATEtnj9BOK+el
-         GzFOhiGudRJN9ogdXmQOGdWIcYN+bTE4iDUnSVlqmU8D5ne9NQdHTi6G8viIJgN+vmmX
-         NGtIqzA80U92wXsykhiVVxHSbyVN5FFjzZnMaqZ36ZLrREk873QHphnafIzkLwTsj9k/
-         qAjq61mMlm94lAFdSYHnkEaH5IsMh+Tdvj6fBfTde82NhORlhDf7DWjalK46h/Dj4+ql
-         gzvHhuvJ9T12qiG56n66oKFuBq+ltKRKqNfukzliwDmXm8ty11o5xkiyfqdVUAmgxcvc
-         +jww==
-X-Gm-Message-State: AOJu0YzbRXq1d5QSGwpD4csOyoVAKN7K4ovz9JK4dRFMQKfzPlOZ2Rp6
-	8CxmwooyeIBo5etRdccD8zL9deLiLFzOCmXYCek9ZNCYOPKgTsdWhtCiQz5KfJ0z/tL9PPg952l
-	/Vw36OaiEKVvsQMo2YPFyOX+qcZwZoKvYp97xPMOZ
-X-Gm-Gg: ASbGncs1rtuVsc+HKwBUWoouKWM/4UaFqfCuDawUAx8QhAxoha5rxQ1bmtAS0NFGqZb
-	j5mlpLrDVyOfPLtaJG+/AkNr4jN33qwajFGEeBpkV02gqvSBWEpkk72+JTuRiYXDXcJtYxUiXmT
-	AbFFxXKWB6ukewVIKf/hv2vOZ+bIMKluEJIgl06pqEtyd6NBWGkLvhzhRKHMHInZBKnAMQuzzMW
-	0zeSVgQipY1WyIiKoQ0JfF81Keov3l7DE1OKB0FHtHlk2mH7iFFyJJ96hjzL4cBrNFeZyr/9maz
-	Cnxj9kOKRBUZUv6jHNM9DGVT1Mar0PIFlJYYtg==
-X-Google-Smtp-Source: AGHT+IEJfbaI9O8W6tmM+KPDJeLSPU2pRJ3c2ODobEUnDZqE66zG4QbCQYq9QXR0kiOjpXSXTYj8u13C633eOGbldWU=
-X-Received: by 2002:a05:622a:e:b0:4ed:2f7d:bd46 with SMTP id
- d75a77b69052e-4ed338c4dc1mr6590451cf.13.1761929738538; Fri, 31 Oct 2025
- 09:55:38 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761930723; x=1762535523;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HjXjY8ls4xQvqV6pquPYuHe7QqNVj5FW0YEflavTuCM=;
+        b=QiFVMtDvW1eH1jRRCPIDrZ64ucrJ55E30gmYF7Cca0FXkexYcSmxScgmY/cjCfF7si
+         ZWunoSj+23glOtBn2rURGSp7CQDskMupb8GPLA4Gzrpsv9zk+mOdBbBRNbX+c2ai+3qH
+         DzVT2Zm7Cc4myBZY4e/CrWFCqi0ejYZhJeO+iTodBtbZV/qDFz/R6hR+NUFiH4x0G8rh
+         4mut8k87+u1xPySgqY4SEJtdud/NlWYOA2bpLp4SzEQUmokTupclyD/k4VrR0YReBQPN
+         Jz2mT7+bytnlPqUm64R+taxHCQrbbL53DvzdGqN0IbNHPeRKhqTn53R20aI6ydP2RQrR
+         ELHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVaT+x9vTW6SbC4wXNC0EtbUPEnABzfsRutL1XMfXqey94eGClGC61cEiW4BdXEswbYMsiqgRXsaFVY@lists.linux.dev
+X-Gm-Message-State: AOJu0YzUAqSlX7QTm9JvaDDsAhyWSx6LC+Io79gh6wl8s1grYi4PhVju
+	ara9qXyGXC1qKlCbfOO9aVgYV+5LbfLzflkebUQNUETNof1yavGxTSth0xC4Jy9RiBuF4x9drYh
+	vlil3bQ==
+X-Google-Smtp-Source: AGHT+IGfSgMUQo+5u2P6PetuRGaKK3ywl60OSkXvDDKeMxjcSsBTGVvS+p3TiopL8XWw5d9McqxPGzj/wX4=
+X-Received: from pjbsr13.prod.google.com ([2002:a17:90b:4e8d:b0:340:b55d:7a07])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:388d:b0:32e:d599:1f66
+ with SMTP id 98e67ed59e1d1-34083089300mr5226937a91.30.1761930723259; Fri, 31
+ Oct 2025 10:12:03 -0700 (PDT)
+Date: Fri, 31 Oct 2025 10:12:01 -0700
+In-Reply-To: <aQRzWb3Fu6ywdE9t@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20251001025442.427697-1-chao.gao@intel.com>
-In-Reply-To: <20251001025442.427697-1-chao.gao@intel.com>
-From: Sagi Shahar <sagis@google.com>
-Date: Fri, 31 Oct 2025 11:55:27 -0500
-X-Gm-Features: AWmQ_bkPE5YTmxbtr1eAnNNvO5lcJ4CGGWinWFilxPEZHxRyXdDTaeKu0umSWCY
-Message-ID: <CAAhR5DF74PhX_YpMebbqnZOJom-sR=1s7xbhrk5WCTS8jn7U7Q@mail.gmail.com>
-Subject: Re: [PATCH v2 00/21] Runtime TDX Module update support
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	reinette.chatre@intel.com, ira.weiny@intel.com, kai.huang@intel.com, 
-	dan.j.williams@intel.com, yilun.xu@linux.intel.com, vannapurve@google.com, 
-	paulmck@kernel.org, nik.borisov@suse.com, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20251030200951.3402865-1-seanjc@google.com> <20251030200951.3402865-9-seanjc@google.com>
+ <aQRzWb3Fu6ywdE9t@yzhao56-desk.sh.intel.com>
+Message-ID: <aQTt4R4CflSuVnCX@google.com>
+Subject: Re: [PATCH v4 08/28] KVM: TDX: Drop superfluous page pinning in S-EPT management
+From: Sean Christopherson <seanjc@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Kirill A. Shutemov" <kas@kernel.org>, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Ira Weiny <ira.weiny@intel.com>, Kai Huang <kai.huang@intel.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Michael Roth <michael.roth@amd.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Ackerley Tng <ackerleytng@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Sep 30, 2025 at 9:54=E2=80=AFPM Chao Gao <chao.gao@intel.com> wrote=
-:
->
-> Changelog:
-> v1->v2:
->  - Replace tdx subsystem with a "tdx-host" device implementation
->  - Reorder patches to reduce reviewer's mental "list of things to look ou=
-t for"
->  - Replace "TD-Preserving update" with "runtime TDX Module Update"
->  - Drop the temporary "td_preserving_ready" flag
->  - Move low-level SEAMCALL helpers to its own header file
->  - Don't create a new, inferior framework to save/restore VMCS
->  - Minor cleanups and changelog improvements for clarity and consistency
->  - Collect review tags
->  - I didn't add Sagi Shahar's Tested-by due to various changes/reorder et=
-c.
->  - v1: https://lore.kernel.org/kvm/20250523095322.88774-1-chao.gao@intel.=
-com/
->
-> Hi Reviewers,
->
-> This series adds support for runtime TDX Module updates that preserve
-> running TDX guests.
->
-> =3D=3D Background =3D=3D
->
-> Intel TDX isolates Trusted Domains (TDs), or confidential guests, from th=
-e
-> host. A key component of Intel TDX is the TDX Module, which enforces
-> security policies to protect the memory and CPU states of TDs from the
-> host. However, the TDX Module is software that require updates.
->
-> =3D=3D Problems =3D=3D
->
-> Currently, the TDX Module is loaded by the BIOS at boot time, and the onl=
-y
-> way to update it is through a reboot, which results in significant system
-> downtime. Users expect the TDX Module to be updatable at runtime without
-> disrupting TDX guests.
->
-> =3D=3D Solution =3D=3D
->
-> On TDX platforms, P-SEAMLDR[1] is a component within the protected SEAM
-> range. It is loaded by the BIOS and provides the host with functions to
-> install a TDX Module at runtime.
->
-> Implement a TDX Module update facility via the fw_upload mechanism. Given
-> that there is variability in which module update to load based on feature=
-s,
-> fix levels, and potentially reloading the same version for error recovery
-> scenarios, the explicit userspace chosen payload flexibility of fw_upload
-> is attractive.
->
-> This design allows the kernel to accept a bitstream instead of loading a
-> named file from the filesystem, as the module selection and policy
-> enforcement for TDX Modules are quite complex (see more in patch 8). By
-> doing so, much of this complexity is shifted out of the kernel. The kerne=
-l
-> need to expose information, such as the TDX Module version, to userspace.
-> Userspace must understand the TDX Module versioning scheme and update
-> policy to select the appropriate TDX Module (see "TDX Module Versioning"
-> below).
->
-> In the unlikely event the update fails, for example userspace picks an
-> incompatible update image, or the image is otherwise corrupted, all TDs
-> will experience SEAMCALL failures and be killed. The recovery of TD
-> operation from that event requires a reboot.
->
-> Given there is no mechanism to quiesce SEAMCALLs, the TDs themselves must
-> pause execution over an update. The most straightforward way to meet the
-> 'pause TDs while update executes' constraint is to run the update in
-> stop_machine() context. All other evaluated solutions export more
-> complexity to KVM, or exports more fragility to userspace.
->
-> =3D=3D How to test this series =3D=3D
->
-> This series can be tested using the userspace tool that is able to
-> select the appropriate TDX module and install it via the interfaces
-> exposed by this series:
->
->  # git clone https://github.com/intel/tdx-module-binaries
->  # cd tdx-module-binaries
->  # python version_select_and_load.py --update
->
-> =3D=3D Base commit =3D=3D
->
-> This series is based on:
-> https://git.kernel.org/pub/scm/linux/kernel/git/devsec/tsm.git/commit/?h=
-=3Dtdx&id=3D9332e088937f
+On Fri, Oct 31, 2025, Yan Zhao wrote:
+> >   - Increasing the folio reference count only upon S-EPT zapping failure[5].
+> Nit: There's a warning:
+> 
+> WARNING: Prefer a maximum 75 chars per line (possible unwrapped commit description?)
 
-Can you clarify which patches are needed from this tree? Is it just
-"coco/tdx-host: Introduce a "tdx_host" device" or is this series also
-depends on other patches?
-
-More specifically, does this series depend on "Move VMXON/VMXOFF
-handling from KVM to CPU lifecycle"?
-
->
-> and the TDX Module version series at:
-> https://lore.kernel.org/linux-coco/20251001022309.277238-1-chao.gao@intel=
-.com
->
->
-> =3D=3D Other information relevant to Runtime TDX Module updates =3D=3D
->
-> =3D=3D=3D TDX Module versioning =3D=3D=3D
->
-> Each TDX Module is assigned a version number x.y.z, where x represents th=
-e
-> "major" version, y the "minor" version, and z the "update" version.
->
-> Runtime TDX Module updates are restricted to Z-stream releases.
->
-> Note that Z-stream releases do not necessarily guarantee compatibility. A
-> new release may not be compatible with all previous versions. To address =
-this,
-> Intel provides a separate file containing compatibility information, whic=
-h
-> specifies the minimum module version required for a particular update. Th=
-is
-> information is referenced by the tool to determine if two modules are
-> compatible.
->
-> =3D=3D=3D TCB Stability =3D=3D=3D
->
-> Updates change the TCB as viewed by attestation reports. In TDX there is
-> a distinction between launch-time version and current version where
-> runtime TDX Module updates cause that latter version number to change,
-> subject to Z-stream constraints.
->
-> The concern that a malicious host may attack confidential VMs by loading
-> insecure updates was addressed by Alex in [3]. Similarly, the scenario
-> where some "theoretical paranoid tenant" in the cloud wants to audit
-> updates and stop trusting the host after updates until audit completion
-> was also addressed in [4]. Users not in the cloud control the host machin=
-e
-> and can manage updates themselves, so they don't have these concerns.
->
-> See more about the implications of current TCB version changes in
-> attestation as summarized by Dave in [5].
->
-> =3D=3D=3D TDX Module Distribution Model =3D=3D=3D
->
-> At a high level, Intel publishes all TDX Modules on the github [2], along
-> with a mapping_file.json which documents the compatibility information
-> about each TDX Module and a userspace tool to install the TDX Module. OS
-> vendors can package these modules and distribute them. Administrators
-> install the package and use the tool to select the appropriate TDX Module
-> and install it via the interfaces exposed by this series.
->
-> [1]: https://cdrdv2.intel.com/v1/dl/getContent/733584
-> [2]: https://github.com/intel/tdx-module-binaries
-> [3]: https://lore.kernel.org/all/665c5ae0-4b7c-4852-8995-255adf7b3a2f@ama=
-zon.com/
-> [4]: https://lore.kernel.org/all/5d1da767-491b-4077-b472-2cc3d73246d6@ama=
-zon.com/
-> [5]: https://lore.kernel.org/all/94d6047e-3b7c-4bc1-819c-85c16ff85abf@int=
-el.com/
->
->
-> Chao Gao (20):
->   x86/virt/tdx: Print SEAMCALL leaf numbers in decimal
->   x86/virt/tdx: Use %# prefix for hex values in SEAMCALL error messages
->   x86/virt/tdx: Prepare to support P-SEAMLDR SEAMCALLs
->   x86/virt/seamldr: Introduce a wrapper for P-SEAMLDR SEAMCALLs
->   x86/virt/seamldr: Retrieve P-SEAMLDR information
->   coco/tdx-host: Expose P-SEAMLDR information via sysfs
->   coco/tdx-host: Implement FW_UPLOAD sysfs ABI for TDX Module updates
->   x86/virt/seamldr: Block TDX Module updates if any CPU is offline
->   x86/virt/seamldr: Verify availability of slots for TDX Module updates
->   x86/virt/seamldr: Allocate and populate a module update request
->   x86/virt/seamldr: Introduce skeleton for TDX Module updates
->   x86/virt/seamldr: Abort updates if errors occurred midway
->   x86/virt/seamldr: Shut down the current TDX module
->   x86/virt/tdx: Reset software states after TDX module shutdown
->   x86/virt/seamldr: Handle TDX Module update failures
->   x86/virt/seamldr: Install a new TDX Module
->   x86/virt/seamldr: Do TDX per-CPU initialization after updates
->   x86/virt/tdx: Establish contexts for the new TDX Module
->   x86/virt/tdx: Update tdx_sysinfo and check features post-update
->   x86/virt/tdx: Enable TDX Module runtime updates
->
-> Kai Huang (1):
->   x86/virt/tdx: Move low level SEAMCALL helpers out of <asm/tdx.h>
->
->  .../ABI/testing/sysfs-devices-faux-tdx-host   |  25 ++
->  arch/x86/Kconfig                              |  12 +
->  arch/x86/include/asm/seamldr.h                |  29 ++
->  arch/x86/include/asm/tdx.h                    |  38 +-
->  arch/x86/include/asm/tdx_global_metadata.h    |   5 +
->  arch/x86/virt/vmx/tdx/Makefile                |   1 +
->  arch/x86/virt/vmx/tdx/seamcall.h              | 106 +++++
->  arch/x86/virt/vmx/tdx/seamldr.c               | 382 ++++++++++++++++++
->  arch/x86/virt/vmx/tdx/tdx.c                   | 149 ++++---
->  arch/x86/virt/vmx/tdx/tdx.h                   |  12 +-
->  arch/x86/virt/vmx/tdx/tdx_global_metadata.c   |  13 +
->  drivers/virt/coco/tdx-host/tdx-host.c         | 189 ++++++++-
->  12 files changed, 884 insertions(+), 77 deletions(-)
->  create mode 100644 arch/x86/include/asm/seamldr.h
->  create mode 100644 arch/x86/virt/vmx/tdx/seamcall.h
->  create mode 100644 arch/x86/virt/vmx/tdx/seamldr.c
->
-> --
-> 2.47.3
->
+Checkpatch is a (very helpful) tool, but it is not authoritative in any way.
+Similar to the how "wrap at 80 chars" is a soft rule that can and should be
+broken depending on context, checkpatch should also be ignored for things like
+this.  If someone says that the period making the line "too long" actually makes
+this unreadable for them, then they're just trolling at that point :-)
