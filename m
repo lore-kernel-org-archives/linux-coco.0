@@ -1,200 +1,202 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D9E2FD661
-	for <linux-coco@lists.linux.dev>; Fri, 31 Oct 2025 17:57:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5C831579B
+	for <linux-coco@lists.linux.dev>; Fri, 31 Oct 2025 21:28:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761933455; cv=none; b=rBbuIyNdbE9XgCOCNG6C0Ckw/yMUz8NIgCEWWJvVEmZ9OhV5wPuZei8sdoz9qQeIQuqrQ/EzXfmG/61sGpmg28jgkYlSj4WaljlyMc+Y7gnV085/UJY9/JB237i9g0G1uGUDoSrerSVTgSJ4Um90V0Zl/4EMqak/5Ctm6msfXVc=
+	t=1761946140; cv=none; b=RYFB1Qjn8en1yd/ggtE0cmZaXZraNCq+gVpZ1fKz10aIppwP3MInCt8CtThsL1DS0QU+Q8GCDZpHlSWgsuNFLg+GMgpa6HmMglGNHB/YuzrMUyYwqEuzrwSz1tl9GCOFLCRANUmLXUOpbAz0gJ1T6bkAJakWzvJZaYgYlhsADmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761933455; c=relaxed/simple;
-	bh=w+l2KnhOSPqcCidvxKmZoV7YhTgpct2Y/GQfmSENZX4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FZVNlNf/YqnwwndRjSdaMj6ecRcidiSpNSfTfg9/EY/dlnsCXU4RL6pAnkHvXv/Vw1jPwSfYuyK68FZsUPffHt+QbQIUekO6flHGlTxCD5yb6IUgjlOwKOiyxRAdiFvQut34WNHwAI3TgIreco1qrSmtd7eLmqYJSB+yyw5CTgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yjBZ6mkj; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1761946140; c=relaxed/simple;
+	bh=1G8qRuErF8GgTGqucbYdUsT9Z9+h3SPQ8N4hTV6R9mI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZlFpa0Tta37O4Muc2iloALesOUJ7iaKFUzL/JvsS0jc4BF8pSizKI4491R3HokOnIr+9ZlGgDCEnP3ryb6bfQOBM3x++rhbAVjlZewMl6HFARHN9Ef5fW4P8hjCT+W8NF+hmsH1Yu7NzV2HGNObKatB8vZueJ3zT0E/GfQOpdCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AqVuyFPQ; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yjBZ6mkj"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-27eeafd4882so20345ad.0
-        for <linux-coco@lists.linux.dev>; Fri, 31 Oct 2025 10:57:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761933453; x=1762538253; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lA5McjZLTPeaIiPTmwBlsqsNvLJ/0YB/eoqpy0U2piE=;
-        b=yjBZ6mkjMxdGiylYzArvwetygyB9SynpDAURDgW3PCCUHkncRplqPKoUjr2RCDNGKP
-         IclWUfaLSAxsBIXF4YI4Xl5lXbQhnHxTB+K3KcWmf/qhLBk0aR9gPfKMq/1ZvBVklOr0
-         UIQE7z635p5EiZUj9LtXI6u946o7jSZffS6sTPH5rNsS/fOKnlSyAH7baRS9Ws0DCExR
-         bg0eJdhTM75NOZKw1Nor/O2F2FP3zXuKySTTKZG/pGYo/DfCLHDU9f7TZ+C0WSrJTCFp
-         utMmbMlpaFv58p0XmhbK86b6mbZ2lYeH+zUzWup1DpiDwlgCGPGF8T0XLW5HsHo9vzw5
-         w65Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761933453; x=1762538253;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lA5McjZLTPeaIiPTmwBlsqsNvLJ/0YB/eoqpy0U2piE=;
-        b=kCmsoAMGpIqTv6eJ1Ju266c9wN7bYs92ips5Ut8epupno9CCiMvHEzIFczBTNDIsBd
-         M2ZLo9FQ73EHMf711nkZsdJYUUxg4kKvi5mPxk6vjo1q1l/k/Pik6N6R+BjNAoiXA/Fe
-         uKHe44bL3lGBgJVT5fktga1qbHmgpMGM0SFslIYbxhmuHOxDFgVY8p6s9MzmTNh59Ngf
-         5Z8n+Ghl/kxcffZlBhNGbTLAW4M0RbKYDTHaD7jKNB8yJ4EYhH/blm+ZcsxSeJ6B288r
-         XsMiGaCMDVGUYlHbWPDegef70O8LjUSkAWZc2hwVishZ+/3eWLiwII+xnnQyn9rkxwaF
-         u/1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVf1JV4zwD8zywxO1xSMUPxW8EQatOAEtHJTjjDfukzlyTzYo73FnRqt1c3li5HdKHHNLmNIk/lbo25@lists.linux.dev
-X-Gm-Message-State: AOJu0YzvaSFNfJXbh1ArD4Y3YpCT9DMsPH7GCcLC1fAmWiPi1d6JiqDw
-	hGDadwqOzOwKRSn/4qQg3np2IF3WDMomJeRIVaC7WmNEXUiia/KVVgZbPi9gyne5JfJkaI1gWL9
-	tlaj4/EEuNHK582vdvharchmUSjiq3QFnyBm7OcnT
-X-Gm-Gg: ASbGnct5kiOFacfE04DcIrCSp4DldT4X5duHJpcI43MZZ8WvPwHbOkj67+OIWA/1KwV
-	QVXv8ZdStdiZ4x2ypxVYXUUMTXGdvV3O1SseHWnLktmrelAVrFjaPutphpZdH8Ga+Xu/0q4u3jw
-	Yqw10YaWpC/v1B+cDXf/cYbVsVtZa21kno6hjfvmOc9j+pER4LNpZzfD0QQr+4bJ+8fSSoo0/g5
-	8T+fztbMH5PJJZ+57GMObwb4wiM1mIM5SFiJys25SQa0OKFzB6RFajEqjfC74mY1jsan36orkTQ
-	dN2jCptZ/64Ttgt0HkBWbABHWXLy
-X-Google-Smtp-Source: AGHT+IH52ONiunJDDawQVCijIuSE1WTf+MEIQuJ+bSRpyZ0rrSGKJGCZKm4jtJfrXlgC7tzB7Eax2KkIUaW7cADasEc=
-X-Received: by 2002:a17:903:1ce:b0:292:b6a0:80df with SMTP id
- d9443c01a7336-29554bb5aaemr335185ad.10.1761933452880; Fri, 31 Oct 2025
- 10:57:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AqVuyFPQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761946138; x=1793482138;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=1G8qRuErF8GgTGqucbYdUsT9Z9+h3SPQ8N4hTV6R9mI=;
+  b=AqVuyFPQWbvuQnA3pPjnll9PxuvKg3B0Q/7QtnWlxjt/cNi31Iz9Lr4t
+   BD+67ryBaJwVswfUAqnv4fM2hQ53NpgtYTGlpJqm58mj387K/43oWql8g
+   BsZaokQon1pmE8FfSq2ICWeKoHrdJr3yLKetQUgXRGuGhmU4fusfliM/4
+   w3hme5dHJTJNVLZI/H7podcS/JTCmbRlPJfwvKqceSfuxjWcig8yA585/
+   g54V50QaDG1Zzlgtxop+tXuyyCo/CwWAo4idilz0J/mu1HhafxvKYOr2m
+   0f/bDVHgvmYgnr6yqiHgP9w3WXYGPl7IFNrBeOyvoPfsft6jYq+w1GDKN
+   Q==;
+X-CSE-ConnectionGUID: 2eXOaWHYT2WYeC5VJbb3bA==
+X-CSE-MsgGUID: HEvXyHSBQXamMtboEGuV7g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64043618"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="64043618"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 14:28:58 -0700
+X-CSE-ConnectionGUID: h7iZ9APtT4yLqWJgAMegYQ==
+X-CSE-MsgGUID: ngcy0mRNQC2NP7mHij0o9g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,270,1754982000"; 
+   d="scan'208";a="216986651"
+Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
+  by orviesa002.jf.intel.com with ESMTP; 31 Oct 2025 14:28:59 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: linux-pci@vger.kernel.org
+Cc: linux-coco@lists.linux.dev,
+	gregkh@linuxfoundation.org,
+	aik@amd.com,
+	aneesh.kumar@kernel.org,
+	yilun.xu@linux.intel.com,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Samuel Ortiz <sameo@rivosinc.com>
+Subject: [PATCH v8 0/9] PCI/TSM: Core infrastructure for PCI device security (TDISP)
+Date: Fri, 31 Oct 2025 14:28:52 -0700
+Message-ID: <20251031212902.2256310-1-dan.j.williams@intel.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251001025442.427697-1-chao.gao@intel.com> <CAAhR5DF74PhX_YpMebbqnZOJom-sR=1s7xbhrk5WCTS8jn7U7Q@mail.gmail.com>
-In-Reply-To: <CAAhR5DF74PhX_YpMebbqnZOJom-sR=1s7xbhrk5WCTS8jn7U7Q@mail.gmail.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Fri, 31 Oct 2025 10:57:20 -0700
-X-Gm-Features: AWmQ_bldOnJMqaHQe0Ts3A4WPbB0FJ1ezLt9Jpnrpzo2fVxtPV1Mx-JEfS1PIQY
-Message-ID: <CAGtprH9UTqC-wmOhfjr2qNk2X-BDJokmLYjET=Zm+Zu+QHZ6Dw@mail.gmail.com>
-Subject: Re: [PATCH v2 00/21] Runtime TDX Module update support
-To: Sagi Shahar <sagis@google.com>
-Cc: Chao Gao <chao.gao@intel.com>, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, x86@kernel.org, reinette.chatre@intel.com, 
-	ira.weiny@intel.com, kai.huang@intel.com, dan.j.williams@intel.com, 
-	yilun.xu@linux.intel.com, paulmck@kernel.org, nik.borisov@suse.com, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 31, 2025 at 9:55=E2=80=AFAM Sagi Shahar <sagis@google.com> wrot=
-e:
->
-> On Tue, Sep 30, 2025 at 9:54=E2=80=AFPM Chao Gao <chao.gao@intel.com> wro=
-te:
-> >
-> > Changelog:
-> > v1->v2:
-> >  - Replace tdx subsystem with a "tdx-host" device implementation
-> >  - Reorder patches to reduce reviewer's mental "list of things to look =
-out for"
-> >  - Replace "TD-Preserving update" with "runtime TDX Module Update"
-> >  - Drop the temporary "td_preserving_ready" flag
-> >  - Move low-level SEAMCALL helpers to its own header file
-> >  - Don't create a new, inferior framework to save/restore VMCS
-> >  - Minor cleanups and changelog improvements for clarity and consistenc=
-y
-> >  - Collect review tags
-> >  - I didn't add Sagi Shahar's Tested-by due to various changes/reorder =
-etc.
-> >  - v1: https://lore.kernel.org/kvm/20250523095322.88774-1-chao.gao@inte=
-l.com/
-> >
-> > Hi Reviewers,
-> >
-> > This series adds support for runtime TDX Module updates that preserve
-> > running TDX guests.
-> >
-> > =3D=3D Background =3D=3D
-> >
-> > Intel TDX isolates Trusted Domains (TDs), or confidential guests, from =
-the
-> > host. A key component of Intel TDX is the TDX Module, which enforces
-> > security policies to protect the memory and CPU states of TDs from the
-> > host. However, the TDX Module is software that require updates.
-> >
-> > =3D=3D Problems =3D=3D
-> >
-> > Currently, the TDX Module is loaded by the BIOS at boot time, and the o=
-nly
-> > way to update it is through a reboot, which results in significant syst=
-em
-> > downtime. Users expect the TDX Module to be updatable at runtime withou=
-t
-> > disrupting TDX guests.
-> >
-> > =3D=3D Solution =3D=3D
-> >
-> > On TDX platforms, P-SEAMLDR[1] is a component within the protected SEAM
-> > range. It is loaded by the BIOS and provides the host with functions to
-> > install a TDX Module at runtime.
-> >
-> > Implement a TDX Module update facility via the fw_upload mechanism. Giv=
-en
-> > that there is variability in which module update to load based on featu=
-res,
-> > fix levels, and potentially reloading the same version for error recove=
-ry
-> > scenarios, the explicit userspace chosen payload flexibility of fw_uplo=
-ad
-> > is attractive.
-> >
-> > This design allows the kernel to accept a bitstream instead of loading =
-a
-> > named file from the filesystem, as the module selection and policy
-> > enforcement for TDX Modules are quite complex (see more in patch 8). By
-> > doing so, much of this complexity is shifted out of the kernel. The ker=
-nel
-> > need to expose information, such as the TDX Module version, to userspac=
-e.
-> > Userspace must understand the TDX Module versioning scheme and update
-> > policy to select the appropriate TDX Module (see "TDX Module Versioning=
-"
-> > below).
-> >
-> > In the unlikely event the update fails, for example userspace picks an
-> > incompatible update image, or the image is otherwise corrupted, all TDs
-> > will experience SEAMCALL failures and be killed. The recovery of TD
-> > operation from that event requires a reboot.
-> >
-> > Given there is no mechanism to quiesce SEAMCALLs, the TDs themselves mu=
-st
-> > pause execution over an update. The most straightforward way to meet th=
-e
-> > 'pause TDs while update executes' constraint is to run the update in
-> > stop_machine() context. All other evaluated solutions export more
-> > complexity to KVM, or exports more fragility to userspace.
-> >
-> > =3D=3D How to test this series =3D=3D
-> >
-> > This series can be tested using the userspace tool that is able to
-> > select the appropriate TDX module and install it via the interfaces
-> > exposed by this series:
-> >
-> >  # git clone https://github.com/intel/tdx-module-binaries
-> >  # cd tdx-module-binaries
-> >  # python version_select_and_load.py --update
-> >
-> > =3D=3D Base commit =3D=3D
-> >
-> > This series is based on:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/devsec/tsm.git/commit/?=
-h=3Dtdx&id=3D9332e088937f
->
-> Can you clarify which patches are needed from this tree? Is it just
-> "coco/tdx-host: Introduce a "tdx_host" device" or is this series also
-> depends on other patches?
->
-> More specifically, does this series depend on "Move VMXON/VMXOFF
-> handling from KVM to CPU lifecycle"?
->
+Changes since v7 [1]:
+- Pick up Reviewed-by tags from Jonathan, Alexey, and Aneesh.
+- Simplify put_tsm_dev() (Jonathan)
+- Misc cleanups (Jonathan)
+- Drop IDR usage (switched to class_find_device()) (Carlos)
+- Keep local drivers/bus/pci.c style for pci_walk_bus_reverse() (Jonathan)
+- Clarify commit message for "PCI/TSM: Establish Secure Sessions and
+  Link Encryption" (Jonathan)
+- Fixup up documentation for 'struct pci_tsm_ops' (Jonathan)
+- Clarify DSM lifetime comment (Jonathan)
+- Fix alloc_stream_index() when the host bridge supports 256 streams
+  (Aneesh)
+- Drop PCI_IDE_ATTR_GROUP in favor of ifdef in C (Jonathan)
+- Mirror setup sequence at unwind in tsm_unregister() (Jonathan)
 
-Hi Chao,
+[1]: http://lore.kernel.org/20251024020418.1366664-1-dan.j.williams@intel.com
 
-Is this non-RFC series dependent on RFC patches?
+This set will be available on Monday at
+https://git.kernel.org/pub/scm/linux/kernel/git/devsec/tsm.git/log/?h=staging
+(rebasing branch) or devsec-20251103 (immutable tag). That branch
+additionally contains address association support, Stream ID uniqueness
+compability quirk, updated samples/devsec/ (now with multifunction
+device and simple bind support), and an updated preview of v2 of "[PATCH
+0/7] PCI/TSM: TEE I/O infrastructure" (fixes x86 encrypted ioremap and
+other changes) [2].
 
-What's the intended order of upstreaming the features and dependencies
-being discussed here?
+[2]: http://lore.kernel.org/20250827035259.1356758-1-dan.j.williams@intel.com
+
+It passes an updated regression test using samples/devsec/. See this
+commit on the staging branch for that test:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/devsec/tsm.git/commit/?id=44932bffdcc1
+
+Status: sufficient review for linux-next
+----------------------------------------
+Thanks to the folks that gave this topic another review this past week.
+At this point it feels ready for linux-next exposure especially after
+seeing work-in-progress rebases for SEV-TIO, CCA, and TDX Connect.
+
+Next steps:
+-----------
+- Push this series to linux-next
+
+- Post the next rev of "PCI/TSM: TEE I/O infrastructure"
+
+- See at least one vendor "connect" implementation queued in an arch
+  tree, or pull one into tsm.git
+
+Updated Cover letter:
+---------------------
+
+Trusted execution environment (TEE) Device Interface Security Protocol
+(TDISP) is a chapter name in the PCI Express Base Specification (r7.0).
+It describes an alphabet soup of mechanisms, SPDM, CMA, IDE, TSM/DSM,
+that system software uses to establish trust in a device and assign it
+to a confidential virtual machine (CVM). It is a protocol for
+dynamically extending the Trusted Computing Boundary (TCB) of a CVM with
+a PCI device interface enabled to issue DMA to CVM private memory.
+
+The acronym soup problem is extended by each platform architecture
+having distinct TEE Security Manager (TSM) API implementations /
+capabilities, and each endpoint Device Security Manager (DSM) having its
+own idiosyncratic behaviors and requirements around TDISP state
+transitions.
+
+Despite all that opportunity for differentiation, there is a significant
+portion of the implementation that is cross-vendor common. The PCI/TSM
+extension of the PCI core subsystem is a library for TSM drivers to
+establish link encryption and enable device access to confidential
+memory.
+
+This foundational phase is focused on host-side link encryption, the
+next phase focuses on guest-side locking and accepting devices, the
+phase after that focuses on all the host-side setup for private DMA and
+private MMIO. There are more phases beyond that, like device
+attestation, but the goal is upstream manageable incremental steps that
+provide tangible value to Linux at each step.
+
+Dan Williams (9):
+  coco/tsm: Introduce a core device for TEE Security Managers
+  PCI/IDE: Enumerate Selective Stream IDE capabilities
+  PCI: Introduce pci_walk_bus_reverse(), for_each_pci_dev_reverse()
+  PCI/TSM: Establish Secure Sessions and Link Encryption
+  PCI: Add PCIe Device 3 Extended Capability enumeration
+  PCI: Establish document for PCI host bridge sysfs attributes
+  PCI/IDE: Add IDE establishment helpers
+  PCI/IDE: Report available IDE streams
+  PCI/TSM: Report active IDE streams
+
+ drivers/pci/Kconfig                           |  18 +
+ drivers/virt/coco/Kconfig                     |   3 +
+ drivers/pci/Makefile                          |   2 +
+ drivers/virt/coco/Makefile                    |   1 +
+ Documentation/ABI/testing/sysfs-bus-pci       |  51 ++
+ Documentation/ABI/testing/sysfs-class-tsm     |  19 +
+ .../ABI/testing/sysfs-devices-pci-host-bridge |  45 ++
+ Documentation/driver-api/pci/index.rst        |   1 +
+ Documentation/driver-api/pci/tsm.rst          |  21 +
+ drivers/pci/pci.h                             |  19 +
+ include/linux/device/bus.h                    |   3 +
+ include/linux/pci-doe.h                       |   4 +
+ include/linux/pci-ide.h                       |  81 +++
+ include/linux/pci-tsm.h                       | 157 +++++
+ include/linux/pci.h                           |  28 +
+ include/linux/tsm.h                           |  17 +
+ include/uapi/linux/pci_regs.h                 |  89 +++
+ drivers/base/bus.c                            |  38 ++
+ drivers/pci/bus.c                             |  39 ++
+ drivers/pci/doe.c                             |   2 -
+ drivers/pci/ide.c                             | 587 ++++++++++++++++
+ drivers/pci/pci-sysfs.c                       |   4 +
+ drivers/pci/probe.c                           |  31 +-
+ drivers/pci/remove.c                          |   6 +
+ drivers/pci/search.c                          |  62 +-
+ drivers/pci/tsm.c                             | 643 ++++++++++++++++++
+ drivers/virt/coco/tsm-core.c                  | 163 +++++
+ MAINTAINERS                                   |   7 +-
+ 28 files changed, 2128 insertions(+), 13 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-class-tsm
+ create mode 100644 Documentation/ABI/testing/sysfs-devices-pci-host-bridge
+ create mode 100644 Documentation/driver-api/pci/tsm.rst
+ create mode 100644 include/linux/pci-ide.h
+ create mode 100644 include/linux/pci-tsm.h
+ create mode 100644 drivers/pci/ide.c
+ create mode 100644 drivers/pci/tsm.c
+ create mode 100644 drivers/virt/coco/tsm-core.c
+
+
+base-commit: 211ddde0823f1442e4ad052a2f30f050145ccada
+-- 
+2.51.0
+
