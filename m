@@ -1,45 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5C831579B
-	for <linux-coco@lists.linux.dev>; Fri, 31 Oct 2025 21:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11AA53161AA
+	for <linux-coco@lists.linux.dev>; Fri, 31 Oct 2025 21:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761946140; cv=none; b=RYFB1Qjn8en1yd/ggtE0cmZaXZraNCq+gVpZ1fKz10aIppwP3MInCt8CtThsL1DS0QU+Q8GCDZpHlSWgsuNFLg+GMgpa6HmMglGNHB/YuzrMUyYwqEuzrwSz1tl9GCOFLCRANUmLXUOpbAz0gJ1T6bkAJakWzvJZaYgYlhsADmg=
+	t=1761946142; cv=none; b=KE9mxc4tNOQQDA9hbeapDYKxZ6sN5w6xPuepqpNGu+ZT9OReQkQwE4APU5/I4vqNMaCubAVK0no23jX9FlK27M32dxFlfRmm45V5Y4MArYgR3Gc6J/2jwddPRvNBBhXfba1xGilEO3rJgIoIcESwny9r4uhriLsUKtDurX0b1cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761946140; c=relaxed/simple;
-	bh=1G8qRuErF8GgTGqucbYdUsT9Z9+h3SPQ8N4hTV6R9mI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZlFpa0Tta37O4Muc2iloALesOUJ7iaKFUzL/JvsS0jc4BF8pSizKI4491R3HokOnIr+9ZlGgDCEnP3ryb6bfQOBM3x++rhbAVjlZewMl6HFARHN9Ef5fW4P8hjCT+W8NF+hmsH1Yu7NzV2HGNObKatB8vZueJ3zT0E/GfQOpdCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AqVuyFPQ; arc=none smtp.client-ip=198.175.65.17
+	s=arc-20240116; t=1761946142; c=relaxed/simple;
+	bh=1lossAJE14LmDIPvPRT4cFk8SVxyOGzy9M8FYkzKBUE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qt2Mw9HjxOMNhOWCUkVbzbjUnJna9tsjcvzI9Vf+IBfphj5adkuF3ow++VKl02vbRJ+1LRF9BpraOb5U1QwFd5U5SJdg3D7pisZLFA5TKmMqBFU0ErtK5HD0CwQoQKH8E8GqbQ037dMx8a1fQeOWh7vpWchizbXU88Ez5YblCE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ef2wHdG6; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AqVuyFPQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ef2wHdG6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761946138; x=1793482138;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=1G8qRuErF8GgTGqucbYdUsT9Z9+h3SPQ8N4hTV6R9mI=;
-  b=AqVuyFPQWbvuQnA3pPjnll9PxuvKg3B0Q/7QtnWlxjt/cNi31Iz9Lr4t
-   BD+67ryBaJwVswfUAqnv4fM2hQ53NpgtYTGlpJqm58mj387K/43oWql8g
-   BsZaokQon1pmE8FfSq2ICWeKoHrdJr3yLKetQUgXRGuGhmU4fusfliM/4
-   w3hme5dHJTJNVLZI/H7podcS/JTCmbRlPJfwvKqceSfuxjWcig8yA585/
-   g54V50QaDG1Zzlgtxop+tXuyyCo/CwWAo4idilz0J/mu1HhafxvKYOr2m
-   0f/bDVHgvmYgnr6yqiHgP9w3WXYGPl7IFNrBeOyvoPfsft6jYq+w1GDKN
+  t=1761946140; x=1793482140;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=1lossAJE14LmDIPvPRT4cFk8SVxyOGzy9M8FYkzKBUE=;
+  b=ef2wHdG6N1y+wV/KdMhxd+OAQ7YHmpyegV1M7HhPfPGRMXJNtwqVfayw
+   5JEn6bv/q74GR+pCI2JrPNW7Y0y0Gg2aOiM6CVwYH1uzFyqzhJznXz+qG
+   zkn46F0Zig+002GX0m5Q6mSSp7VmxQzf3iunsdgj8FUOFl+UCH50pzKm4
+   a1Jsfp6f02VCFJPLB0EjWOZNMX9ioYRaPx9iwD4zpswTYA+Audl6cweSE
+   tiH0zSDvNVpNW1Z5fyImHq6avkqw5nb/ndWiuPdoGep30Fojab5t1qTac
+   WaSWt6bXcDTVj/9+ERDf/Huc8FvVJMh1aQA8tIQowivB795fxCrxEyZPi
    Q==;
-X-CSE-ConnectionGUID: 2eXOaWHYT2WYeC5VJbb3bA==
-X-CSE-MsgGUID: HEvXyHSBQXamMtboEGuV7g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64043618"
+X-CSE-ConnectionGUID: dLSwZR4MTcOeLrJbRbkstA==
+X-CSE-MsgGUID: 1Vx51LVqT2SUdWtabj5HVg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64043619"
 X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="64043618"
+   d="scan'208";a="64043619"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
   by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 14:28:58 -0700
-X-CSE-ConnectionGUID: h7iZ9APtT4yLqWJgAMegYQ==
-X-CSE-MsgGUID: ngcy0mRNQC2NP7mHij0o9g==
+X-CSE-ConnectionGUID: rUeSNwubRl20xZYN8J2BQQ==
+X-CSE-MsgGUID: N/uKVFLuR8aqULc0neXpwQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,270,1754982000"; 
-   d="scan'208";a="216986651"
+   d="scan'208";a="216986655"
 Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
   by orviesa002.jf.intel.com with ESMTP; 31 Oct 2025 14:28:59 -0700
 From: Dan Williams <dan.j.williams@intel.com>
@@ -49,154 +50,236 @@ Cc: linux-coco@lists.linux.dev,
 	aik@amd.com,
 	aneesh.kumar@kernel.org,
 	yilun.xu@linux.intel.com,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Samuel Ortiz <sameo@rivosinc.com>
-Subject: [PATCH v8 0/9] PCI/TSM: Core infrastructure for PCI device security (TDISP)
-Date: Fri, 31 Oct 2025 14:28:52 -0700
-Message-ID: <20251031212902.2256310-1-dan.j.williams@intel.com>
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH v8 1/9] coco/tsm: Introduce a core device for TEE Security Managers
+Date: Fri, 31 Oct 2025 14:28:53 -0700
+Message-ID: <20251031212902.2256310-2-dan.j.williams@intel.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251031212902.2256310-1-dan.j.williams@intel.com>
+References: <20251031212902.2256310-1-dan.j.williams@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Changes since v7 [1]:
-- Pick up Reviewed-by tags from Jonathan, Alexey, and Aneesh.
-- Simplify put_tsm_dev() (Jonathan)
-- Misc cleanups (Jonathan)
-- Drop IDR usage (switched to class_find_device()) (Carlos)
-- Keep local drivers/bus/pci.c style for pci_walk_bus_reverse() (Jonathan)
-- Clarify commit message for "PCI/TSM: Establish Secure Sessions and
-  Link Encryption" (Jonathan)
-- Fixup up documentation for 'struct pci_tsm_ops' (Jonathan)
-- Clarify DSM lifetime comment (Jonathan)
-- Fix alloc_stream_index() when the host bridge supports 256 streams
-  (Aneesh)
-- Drop PCI_IDE_ATTR_GROUP in favor of ifdef in C (Jonathan)
-- Mirror setup sequence at unwind in tsm_unregister() (Jonathan)
+A "TSM" is a platform component that provides an API for securely
+provisioning resources for a confidential guest (TVM) to consume. The
+name originates from the PCI specification for platform agent that
+carries out operations for PCIe TDISP (TEE Device Interface Security
+Protocol).
 
-[1]: http://lore.kernel.org/20251024020418.1366664-1-dan.j.williams@intel.com
+Instances of this core device are parented by a device representing the
+platform security function like CONFIG_CRYPTO_DEV_CCP or
+CONFIG_INTEL_TDX_HOST.
 
-This set will be available on Monday at
-https://git.kernel.org/pub/scm/linux/kernel/git/devsec/tsm.git/log/?h=staging
-(rebasing branch) or devsec-20251103 (immutable tag). That branch
-additionally contains address association support, Stream ID uniqueness
-compability quirk, updated samples/devsec/ (now with multifunction
-device and simple bind support), and an updated preview of v2 of "[PATCH
-0/7] PCI/TSM: TEE I/O infrastructure" (fixes x86 encrypted ioremap and
-other changes) [2].
+This device interface is a frontend to the aspects of a TSM and TEE I/O
+that are cross-architecture common. This includes mechanisms like
+enumerating available platform TEE I/O capabilities and provisioning
+connections between the platform TSM and device DSMs (Device Security
+Manager (TDISP)).
 
-[2]: http://lore.kernel.org/20250827035259.1356758-1-dan.j.williams@intel.com
+For now this is just the scaffolding for registering a TSM device sysfs
+interface.
 
-It passes an updated regression test using samples/devsec/. See this
-commit on the staging branch for that test:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/devsec/tsm.git/commit/?id=44932bffdcc1
-
-Status: sufficient review for linux-next
-----------------------------------------
-Thanks to the folks that gave this topic another review this past week.
-At this point it feels ready for linux-next exposure especially after
-seeing work-in-progress rebases for SEV-TIO, CCA, and TDX Connect.
-
-Next steps:
------------
-- Push this series to linux-next
-
-- Post the next rev of "PCI/TSM: TEE I/O infrastructure"
-
-- See at least one vendor "connect" implementation queued in an arch
-  tree, or pull one into tsm.git
-
-Updated Cover letter:
----------------------
-
-Trusted execution environment (TEE) Device Interface Security Protocol
-(TDISP) is a chapter name in the PCI Express Base Specification (r7.0).
-It describes an alphabet soup of mechanisms, SPDM, CMA, IDE, TSM/DSM,
-that system software uses to establish trust in a device and assign it
-to a confidential virtual machine (CVM). It is a protocol for
-dynamically extending the Trusted Computing Boundary (TCB) of a CVM with
-a PCI device interface enabled to issue DMA to CVM private memory.
-
-The acronym soup problem is extended by each platform architecture
-having distinct TEE Security Manager (TSM) API implementations /
-capabilities, and each endpoint Device Security Manager (DSM) having its
-own idiosyncratic behaviors and requirements around TDISP state
-transitions.
-
-Despite all that opportunity for differentiation, there is a significant
-portion of the implementation that is cross-vendor common. The PCI/TSM
-extension of the PCI core subsystem is a library for TSM drivers to
-establish link encryption and enable device access to confidential
-memory.
-
-This foundational phase is focused on host-side link encryption, the
-next phase focuses on guest-side locking and accepting devices, the
-phase after that focuses on all the host-side setup for private DMA and
-private MMIO. There are more phases beyond that, like device
-attestation, but the goal is upstream manageable incremental steps that
-provide tangible value to Linux at each step.
-
-Dan Williams (9):
-  coco/tsm: Introduce a core device for TEE Security Managers
-  PCI/IDE: Enumerate Selective Stream IDE capabilities
-  PCI: Introduce pci_walk_bus_reverse(), for_each_pci_dev_reverse()
-  PCI/TSM: Establish Secure Sessions and Link Encryption
-  PCI: Add PCIe Device 3 Extended Capability enumeration
-  PCI: Establish document for PCI host bridge sysfs attributes
-  PCI/IDE: Add IDE establishment helpers
-  PCI/IDE: Report available IDE streams
-  PCI/TSM: Report active IDE streams
-
- drivers/pci/Kconfig                           |  18 +
- drivers/virt/coco/Kconfig                     |   3 +
- drivers/pci/Makefile                          |   2 +
- drivers/virt/coco/Makefile                    |   1 +
- Documentation/ABI/testing/sysfs-bus-pci       |  51 ++
- Documentation/ABI/testing/sysfs-class-tsm     |  19 +
- .../ABI/testing/sysfs-devices-pci-host-bridge |  45 ++
- Documentation/driver-api/pci/index.rst        |   1 +
- Documentation/driver-api/pci/tsm.rst          |  21 +
- drivers/pci/pci.h                             |  19 +
- include/linux/device/bus.h                    |   3 +
- include/linux/pci-doe.h                       |   4 +
- include/linux/pci-ide.h                       |  81 +++
- include/linux/pci-tsm.h                       | 157 +++++
- include/linux/pci.h                           |  28 +
- include/linux/tsm.h                           |  17 +
- include/uapi/linux/pci_regs.h                 |  89 +++
- drivers/base/bus.c                            |  38 ++
- drivers/pci/bus.c                             |  39 ++
- drivers/pci/doe.c                             |   2 -
- drivers/pci/ide.c                             | 587 ++++++++++++++++
- drivers/pci/pci-sysfs.c                       |   4 +
- drivers/pci/probe.c                           |  31 +-
- drivers/pci/remove.c                          |   6 +
- drivers/pci/search.c                          |  62 +-
- drivers/pci/tsm.c                             | 643 ++++++++++++++++++
- drivers/virt/coco/tsm-core.c                  | 163 +++++
- MAINTAINERS                                   |   7 +-
- 28 files changed, 2128 insertions(+), 13 deletions(-)
+Cc: Xu Yilun <yilun.xu@linux.intel.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Co-developed-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Alexey Kardashevskiy <aik@amd.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
+ drivers/virt/coco/Kconfig                 |  3 +
+ drivers/virt/coco/Makefile                |  1 +
+ Documentation/ABI/testing/sysfs-class-tsm |  9 +++
+ include/linux/tsm.h                       | 11 +++
+ drivers/virt/coco/tsm-core.c              | 93 +++++++++++++++++++++++
+ MAINTAINERS                               |  2 +-
+ 6 files changed, 118 insertions(+), 1 deletion(-)
  create mode 100644 Documentation/ABI/testing/sysfs-class-tsm
- create mode 100644 Documentation/ABI/testing/sysfs-devices-pci-host-bridge
- create mode 100644 Documentation/driver-api/pci/tsm.rst
- create mode 100644 include/linux/pci-ide.h
- create mode 100644 include/linux/pci-tsm.h
- create mode 100644 drivers/pci/ide.c
- create mode 100644 drivers/pci/tsm.c
  create mode 100644 drivers/virt/coco/tsm-core.c
 
-
-base-commit: 211ddde0823f1442e4ad052a2f30f050145ccada
+diff --git a/drivers/virt/coco/Kconfig b/drivers/virt/coco/Kconfig
+index 819a97e8ba99..bb0c6d6ddcc8 100644
+--- a/drivers/virt/coco/Kconfig
++++ b/drivers/virt/coco/Kconfig
+@@ -14,3 +14,6 @@ source "drivers/virt/coco/tdx-guest/Kconfig"
+ source "drivers/virt/coco/arm-cca-guest/Kconfig"
+ 
+ source "drivers/virt/coco/guest/Kconfig"
++
++config TSM
++	bool
+diff --git a/drivers/virt/coco/Makefile b/drivers/virt/coco/Makefile
+index f918bbb61737..cb52021912b3 100644
+--- a/drivers/virt/coco/Makefile
++++ b/drivers/virt/coco/Makefile
+@@ -7,4 +7,5 @@ obj-$(CONFIG_ARM_PKVM_GUEST)	+= pkvm-guest/
+ obj-$(CONFIG_SEV_GUEST)		+= sev-guest/
+ obj-$(CONFIG_INTEL_TDX_GUEST)	+= tdx-guest/
+ obj-$(CONFIG_ARM_CCA_GUEST)	+= arm-cca-guest/
++obj-$(CONFIG_TSM) 		+= tsm-core.o
+ obj-$(CONFIG_TSM_GUEST)		+= guest/
+diff --git a/Documentation/ABI/testing/sysfs-class-tsm b/Documentation/ABI/testing/sysfs-class-tsm
+new file mode 100644
+index 000000000000..2949468deaf7
+--- /dev/null
++++ b/Documentation/ABI/testing/sysfs-class-tsm
+@@ -0,0 +1,9 @@
++What:		/sys/class/tsm/tsmN
++Contact:	linux-coco@lists.linux.dev
++Description:
++		"tsmN" is a device that represents the generic attributes of a
++		platform TEE Security Manager.  It is typically a child of a
++		platform enumerated TSM device. /sys/class/tsm/tsmN/uevent
++		signals when the PCI layer is able to support establishment of
++		link encryption and other device-security features coordinated
++		through a platform tsm.
+diff --git a/include/linux/tsm.h b/include/linux/tsm.h
+index 431054810dca..cd97c63ffa32 100644
+--- a/include/linux/tsm.h
++++ b/include/linux/tsm.h
+@@ -5,6 +5,7 @@
+ #include <linux/sizes.h>
+ #include <linux/types.h>
+ #include <linux/uuid.h>
++#include <linux/device.h>
+ 
+ #define TSM_REPORT_INBLOB_MAX 64
+ #define TSM_REPORT_OUTBLOB_MAX SZ_32K
+@@ -107,6 +108,16 @@ struct tsm_report_ops {
+ 	bool (*report_bin_attr_visible)(int n);
+ };
+ 
++struct tsm_dev {
++	struct device dev;
++	int id;
++};
++
++DEFINE_FREE(put_tsm_dev, struct tsm_dev *,
++	    if (!IS_ERR_OR_NULL(_T)) put_device(&_T->dev))
++
+ int tsm_report_register(const struct tsm_report_ops *ops, void *priv);
+ int tsm_report_unregister(const struct tsm_report_ops *ops);
++struct tsm_dev *tsm_register(struct device *parent);
++void tsm_unregister(struct tsm_dev *tsm_dev);
+ #endif /* __TSM_H */
+diff --git a/drivers/virt/coco/tsm-core.c b/drivers/virt/coco/tsm-core.c
+new file mode 100644
+index 000000000000..347507cc5e3f
+--- /dev/null
++++ b/drivers/virt/coco/tsm-core.c
+@@ -0,0 +1,93 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Copyright(c) 2024-2025 Intel Corporation. All rights reserved. */
++
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
++#include <linux/tsm.h>
++#include <linux/rwsem.h>
++#include <linux/device.h>
++#include <linux/module.h>
++#include <linux/cleanup.h>
++
++static struct class *tsm_class;
++static DECLARE_RWSEM(tsm_rwsem);
++static DEFINE_IDA(tsm_ida);
++
++static struct tsm_dev *alloc_tsm_dev(struct device *parent)
++{
++	struct device *dev;
++	int id;
++
++	struct tsm_dev *tsm_dev __free(kfree) =
++		kzalloc(sizeof(*tsm_dev), GFP_KERNEL);
++	if (!tsm_dev)
++		return ERR_PTR(-ENOMEM);
++
++	id = ida_alloc(&tsm_ida, GFP_KERNEL);
++	if (id < 0)
++		return ERR_PTR(id);
++
++	tsm_dev->id = id;
++	dev = &tsm_dev->dev;
++	dev->parent = parent;
++	dev->class = tsm_class;
++	device_initialize(dev);
++
++	return no_free_ptr(tsm_dev);
++}
++
++struct tsm_dev *tsm_register(struct device *parent)
++{
++	struct tsm_dev *tsm_dev __free(put_tsm_dev) = alloc_tsm_dev(parent);
++	struct device *dev;
++	int rc;
++
++	if (IS_ERR(tsm_dev))
++		return tsm_dev;
++
++	dev = &tsm_dev->dev;
++	rc = dev_set_name(dev, "tsm%d", tsm_dev->id);
++	if (rc)
++		return ERR_PTR(rc);
++
++	rc = device_add(dev);
++	if (rc)
++		return ERR_PTR(rc);
++
++	return no_free_ptr(tsm_dev);
++}
++EXPORT_SYMBOL_GPL(tsm_register);
++
++void tsm_unregister(struct tsm_dev *tsm_dev)
++{
++	device_unregister(&tsm_dev->dev);
++}
++EXPORT_SYMBOL_GPL(tsm_unregister);
++
++static void tsm_release(struct device *dev)
++{
++	struct tsm_dev *tsm_dev = container_of(dev, typeof(*tsm_dev), dev);
++
++	ida_free(&tsm_ida, tsm_dev->id);
++	kfree(tsm_dev);
++}
++
++static int __init tsm_init(void)
++{
++	tsm_class = class_create("tsm");
++	if (IS_ERR(tsm_class))
++		return PTR_ERR(tsm_class);
++
++	tsm_class->dev_release = tsm_release;
++	return 0;
++}
++module_init(tsm_init)
++
++static void __exit tsm_exit(void)
++{
++	class_destroy(tsm_class);
++}
++module_exit(tsm_exit)
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("TEE Security Manager Class Device");
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 545a4776795e..06285f3a24df 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -26097,7 +26097,7 @@ M:	David Lechner <dlechner@baylibre.com>
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/trigger-source/*
+ 
+-TRUSTED SECURITY MODULE (TSM) INFRASTRUCTURE
++TRUSTED EXECUTION ENVIRONMENT SECURITY MANAGER (TSM)
+ M:	Dan Williams <dan.j.williams@intel.com>
+ L:	linux-coco@lists.linux.dev
+ S:	Maintained
 -- 
 2.51.0
 
