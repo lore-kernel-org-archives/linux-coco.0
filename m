@@ -1,108 +1,96 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483B633CE81
-	for <linux-coco@lists.linux.dev>; Tue,  4 Nov 2025 17:55:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901072D2488
+	for <linux-coco@lists.linux.dev>; Tue,  4 Nov 2025 17:57:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762278958; cv=none; b=jiOed2E84oObw40PS7dIfst9HHJ8ZtbZYLeD1OewVtzq2PbV5nI6PXQoqvC6x4Ddf+NN9w3T1IYfWSTE6/r3eDxj1zPpfaCyuGOaPqQDq1Y880KpVdopTPalsniJq8phjfR7DPPs+eAEE86rWbcncSghPP4vh2RUbzkPhsu1IuY=
+	t=1762279050; cv=none; b=duDc4rZ68fL+e3toZBIHKgK2V0lzTk0RxeNfiFQ1obmr8n1JrTuWDAiX6jv/22KFFU1RNfQwLa7rbNpzlBrhiBymyllqZSn0d9BKAku7r8Fuj1GU1t9MekieHdKTo0n782UQy4F6dq5ciJbzX3Jcbd02xcvhkc9f/1M3pxKamlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762278958; c=relaxed/simple;
-	bh=BUYcGl9NZGpuOAWhoQj8GR5JI856Kts3SQBxJmzRUIM=;
+	s=arc-20240116; t=1762279050; c=relaxed/simple;
+	bh=EKtg11I2y89dxK71syiNOTNg3HE8V+Mj31tEd40SOxE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tZJAARmXmuPQo9ayT5ay9Ofad7I1W0fA0Thd5A7XXlsDRNK643eJ2Aynxoh4G1EmtVodk8pufEImFO+o8Njdo+u2hVsiclwebNQthwVH5jkl3S2+Tu0UXyNRhu74MLry52jqB77YGgSSz39rqSnGL08jQLBhznAjobEVtk4ThcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ff8L/jg4; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=uiPhxV0OAICrVBpNL+wRJfDoDO/sWiLUs5ehAioyMF9DLlqIOH2SK93GDiGeE7VdWi7VuBZbQXNOpAXo2JuAGerFLxQjg3Z9ZzyllSiMyPJiVQGiBX5t2g+3eKwTUPCn1r/rz+HVjxCDQEmE3sTWooQ9Fr916hxHMD/w9lN834c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HPiqO0G0; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ff8L/jg4"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-286a252bfbfso142441205ad.3
-        for <linux-coco@lists.linux.dev>; Tue, 04 Nov 2025 09:55:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HPiqO0G0"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-29555415c09so41916525ad.0
+        for <linux-coco@lists.linux.dev>; Tue, 04 Nov 2025 09:57:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762278957; x=1762883757; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1762279048; x=1762883848; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HabTony5q8jGMwRLhhSbUAct1TYC0rmzBuxU6atPXUo=;
-        b=Ff8L/jg4zhgxwYgALPeXLh7ZNJOKE3IzykrEQluULYnmd16SUq34A+32R+eET2YFnN
-         GgpPjBqYrC3siEQ+XIoXLW2gRAUTIQZk17AY+qkyNKmqdtyE302rM+8cC6iIDXubaDQ0
-         sLGS6C6fyR+MwQ0HbMIUPaL7JDGAmlgsVToXzxxXLKljR43Whn5YDjHkWJ2AAEuDv23V
-         dJztGgcDC0fOl6J7+SQAdwZfUZCNBm8HG41x3l7iqrQolimgSj2g2kI8uME+17Z4A7DM
-         Rk3fD2IC7Nr5COvO5FKgmTgZXMC45SHbUWkC0MUFGfWmfO2D1IbXn+dcd83u/lHK6qMv
-         ABBw==
+        bh=kxFvD6gKxB44i1bxk1sbjy38espILrC0yFM/UcBrpew=;
+        b=HPiqO0G0CclvjWePPkqamwPsUnzl+mcpYndGD+XKIGT/g2Sq20JwIfEAKkJVcoGhOo
+         YHODfjj7Tob7296nrz3GE6vazURwFYTMKl9gSP/9sQEEPZgi8F5A9dCCiGV8YsV3M3P6
+         y6WfuL6uRrm85yrl4j8YVJh4b9czEnN44lWdhN4FfT7TfuEEP9p13GZLYgUrJ8JkYSSv
+         wSZYdv47B4xDhx+HbM6UNiangXo4PAB7xut8dzZ4BmU6Dtbx3N6S5SAxUGcmo6JZrsSW
+         5M240r4t+LMMUKWG0SkkndfcMcI/8NLvd0oOSgPwF6WApR5q/yFYuqkD1nhuELTWfXx/
+         nFzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762278957; x=1762883757;
+        d=1e100.net; s=20230601; t=1762279048; x=1762883848;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HabTony5q8jGMwRLhhSbUAct1TYC0rmzBuxU6atPXUo=;
-        b=J0xHGiVQsoJ59yAK+5bRgifrGr0mYCJX6UJRhWGhQVvDi7nizatC8z8Ha+8PLJPfCC
-         LK5KmtujaYoIsw6O6PBlwmVL58udMw/9KFT5SsHpaHik1ML8AoDaAdrGWmZdr+vAIY90
-         jx82Hq/hDAGLfEe2bPt8LItxaUW5drSDcTJHcabuJnaKy78XtxcwjbjMfzLHsjkHLJYc
-         o+c/lDNn6BE46Bi+ZXB7ewFLf+SBks90OqBWT3/sp9Q047huWsevP8wkukZMg+Q/t0HX
-         e3vyGgJs41Q/a2o4GZjhrtO5Mq/UlCV6fH99kAWKxyMQN7B4fzGevkFy4N2FDBlU7L09
-         /cJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU0shHezeGhDO5egiN9F3BgmJcnIjtmsOOAuczvn5660u1uNYFtpYrnBWxgFughGDmgI/hC3fe+QxDQ@lists.linux.dev
-X-Gm-Message-State: AOJu0YwwZod03X838RxBgZTH6SztFWWj9Nrmgi4h2Ef46cNRi2JT8F1z
-	Az0fWXGUHxVD7OuN9A+b64uZmU8CIlAKrm4Z/Pa5K0rv6oRBl16sxQbtl1yAfDs60VUUyddGIDm
-	VZRHj3w==
-X-Google-Smtp-Source: AGHT+IGCC3k5DOGjKU381UnrWK5meBDp0CQEAkWKfU/p8BnI8t61V9nT/piCEqlmbyG4yA03Pg0rxUssPWM=
-X-Received: from plbkf3.prod.google.com ([2002:a17:903:5c3:b0:295:fb8:7fb1])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f550:b0:295:68df:da34
- with SMTP id d9443c01a7336-2962ae56047mr5899775ad.53.1762278956590; Tue, 04
- Nov 2025 09:55:56 -0800 (PST)
-Date: Tue, 4 Nov 2025 09:55:54 -0800
-In-Reply-To: <aQnH3EmN97cAKDEO@yzhao56-desk.sh.intel.com>
+        bh=kxFvD6gKxB44i1bxk1sbjy38espILrC0yFM/UcBrpew=;
+        b=R+YObDty8nT1Mn6nyU9TUehMAXRxNzX9Z/aXgGMiwy8tZWXN57whY+GXuJuIlS//bv
+         14Zn5IIRjQBc5GYzyQfi24W/cGR4ulNug/bTWbPykab+3SKLk8TSNsd7cewWA12NpV4z
+         Zwa6lr87rweFoEMYm7v9KhqOskDT0ZLDRgdEok7FlmowvlRXgtGeDv8r/9Cz8tzVYg4b
+         bJJCo54dDpU+WBCxyYcIdKZr8knqRlbaQ9SBLqVGQBhomo/7heaLJyLG5POgp5NIb2pP
+         w9KuvZwRcUQ3Wkd1Ie8ah0T3FNV+gsYERKE1pjYT2sDCwhrzCqOKgASo2BeThzg64Dxo
+         Flzw==
+X-Forwarded-Encrypted: i=1; AJvYcCXfYeElmNcKWGkY9b7iD8hYLcJxqt5LNMYTWFPKwPuOceLumFWMhlcxX1NVAMA0psVK/xEDKPDY6J1F@lists.linux.dev
+X-Gm-Message-State: AOJu0YzVLcel2NIv9DVmbXm8oGWfucuqlg5sWcICSoI6ZBhHDOkf62F6
+	nUrG8tEHAMNN0IQ1gqc83JWtSyxYeNtIGQE2FvL/DqaBXuxAbElJMM426KSW7VVithO0PS8mBSr
+	QhJSnXg==
+X-Google-Smtp-Source: AGHT+IFJG/V0EfaymcoM6cPfayQ+DGikxVc9kN5RoO6CmqYed2gXkivkS54tuPy9BQi+XScmFB78yDVh2jQ=
+X-Received: from plblv11.prod.google.com ([2002:a17:903:2a8b:b0:290:28e2:ce5d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ffcf:b0:295:2c8e:8e56
+ with SMTP id d9443c01a7336-2962ae715edmr5562415ad.44.1762279047867; Tue, 04
+ Nov 2025 09:57:27 -0800 (PST)
+Date: Tue, 4 Nov 2025 09:57:26 -0800
+In-Reply-To: <aQMi/n9DVyeaWsVH@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20251030191528.3380553-1-seanjc@google.com> <20251030191528.3380553-2-seanjc@google.com>
- <aQhJol0CvT6bNCJQ@yzhao56-desk.sh.intel.com> <aQmmBadeFp/7CDmH@yzhao56-desk.sh.intel.com>
- <969d1b3a-2a82-4ff1-85c5-705c102f0f8b@intel.com> <aQnH3EmN97cAKDEO@yzhao56-desk.sh.intel.com>
-Message-ID: <aQo-KhJ9nb0MMAy4@google.com>
-Subject: Re: [PATCH v5 1/4] KVM: TDX: Explicitly set user-return MSRs that
- *may* be clobbered by the TDX-Module
+References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-5-seanjc@google.com>
+ <aPhjYcOFjL1Z8m2s@yzhao56-desk.sh.intel.com> <aQMi/n9DVyeaWsVH@yzhao56-desk.sh.intel.com>
+Message-ID: <aQo-hus99rE7WBgb@google.com>
+Subject: Re: [PATCH v3 04/25] KVM: x86/mmu: Add dedicated API to map
+ guest_memfd pfn into TDP MMU
 From: Sean Christopherson <seanjc@google.com>
 To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Kirill A. Shutemov" <kas@kernel.org>, kvm@vger.kernel.org, x86@kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Hou Wenlong <houwenlong.hwl@antgroup.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Kirill A. Shutemov" <kas@kernel.org>, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Ira Weiny <ira.weiny@intel.com>, Kai Huang <kai.huang@intel.com>, 
+	Michael Roth <michael.roth@amd.com>, Vishal Annapurve <vannapurve@google.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Nov 04, 2025, Yan Zhao wrote:
-> On Tue, Nov 04, 2025 at 04:40:44PM +0800, Xiaoyao Li wrote:
-> > On 11/4/2025 3:06 PM, Yan Zhao wrote:
-> > > Another nit:
-> > > Remove the tdx_user_return_msr_update_cache() in the comment of __tdx_bringup().
-> > > 
-> > > Or could we just invoke tdx_user_return_msr_update_cache() in
-> > > tdx_prepare_switch_to_guest()?
+On Thu, Oct 30, 2025, Yan Zhao wrote:
+> On Wed, Oct 22, 2025 at 12:53:53PM +0800, Yan Zhao wrote:
+> > On Thu, Oct 16, 2025 at 05:32:22PM -0700, Sean Christopherson wrote:
+> > > Link: https://lore.kernel.org/all/20250709232103.zwmufocd3l7sqk7y@amd.com
 > > 
-> > No. It lacks the WRMSR operation to update the hardware value, which is the
-> > key of this patch.
-> As [1], I don't think the WRMSR operation to update the hardware value is
-> necessary. The value will be updated to guest value soon any way if
-> tdh_vp_enter() succeeds, or the hardware value remains to be the host value or
-> the default value.
+> > Hi Sean,                                                                         
+> > 
+> > Will you post [1] to fix the AB-BA deadlock issue for huge page in-place
+> > conversion as well?
 
-As explained in the original thread:  
-
- : > If the MSR's do not get clobbered, does it matter whether or not they get
- : > restored.
- : 
- : It matters because KVM needs to know the actual value in hardware.  If KVM thinks
- : an MSR is 'X', but it's actually 'Y', then KVM could fail to write the correct
- : value into hardware when returning to userspace and/or when running a different
- : vCPU.
-
-I.e. updating the cache effectively corrupts state if the TDX-Module doesn't
-clobber MSRs as expected, i.e. if the current value is preserved in hardware.
-
-> But I think invoking tdx_user_return_msr_update_cache() in
-> tdx_prepare_switch_to_guest() is better than in
-> tdx_prepare_switch_to_host().
-> 
-> [1] https://lore.kernel.org/kvm/aQhJol0CvT6bNCJQ@yzhao56-desk.sh.intel.com/
->  
+If you (or anyone) has the bandwidth, please pick it up.  I won't have cycles to
+look at that for many weeks (potentially not even this calendar year).
