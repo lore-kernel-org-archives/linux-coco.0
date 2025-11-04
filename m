@@ -1,279 +1,201 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072D530BF55
-	for <linux-coco@lists.linux.dev>; Tue,  4 Nov 2025 08:40:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762245652; cv=none; b=c19jiA3ECkDcPcP6WGSs9z40bsp+wwZjkPNzv3oRJqiI1sMmI69ohTSWMLtWvlhLgbRrx+/KMf90lWIuOQZ24ksLgCPf2VDIge7IgV97dJs7meIIt8wPXvAgL4bnLDnFI+FDVWxdSk613aNDMQ7BA7c3rGO4VgYAkMrVPWYCAbk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762245652; c=relaxed/simple;
-	bh=/kotX95hkDFIgCqqnpADvX9fQVyajMzAMdwz5YIkGtc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=qL/et9HVOHpHRQe35RltV4e9PGNTfWZL9Ct0w7GQIzPCvJFtc2zDXP2jioOdt9woniorgfU9xDHhYlvBn+PPAWGqk47QdUa75tZ09rit8Tc5wN13wo9qKRQSKon8pqopNQBrsJy13XxS4W8yXpVQFaRDBjL8lq9MnZ0ELUuN8k4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZJLlz4D3; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3C423F294
+	for <linux-coco@lists.linux.dev>; Tue,  4 Nov 2025 09:32:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762248767; cv=fail; b=Gi1SHDmMi+v6dzLYJDapOdsUyyvnF3rGPHwbdJWYdatXMO4BCxA3gg5n7Gg+uUYBEoQj8HQOxgAYeC227RiFpijnhg1MKvs4UwXGn+G/SUNUU2iFsFKQOADaz8nWrDFp2MT9VaMHS1mZxn3NycrO4h9+J14LRIXUNwRZbTLnji8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762248767; c=relaxed/simple;
+	bh=N481nwiY3AuDp0/txJnzq39HGUhCX5inY5wC5LpE/GY=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=oZOQS47B6UwcvXq9xgg69+o1UrhOsMoj5T46O46UW0aiPDOBbNUoVBcvG4ALgbX/Hv3poVcowxIQ590b9SHwpyxgqnArqEPdHlgYOGSIAz62v5WCtujs4jZHDAky2TBj9asjGenCQCMMUA3AxSWJWKDhAueMekG6HkQqy2XTEd8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mCtx1QUx; arc=fail smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZJLlz4D3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mCtx1QUx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762245651; x=1793781651;
-  h=message-id:date:mime-version:subject:to:references:from:
-   in-reply-to:content-transfer-encoding;
-  bh=/kotX95hkDFIgCqqnpADvX9fQVyajMzAMdwz5YIkGtc=;
-  b=ZJLlz4D3ApeJ3myoQC85F9S3PBSRPazJ7ePkU8WbxU7aHlnhur4h4gio
-   dAOzGfsEZbxzLmB11GYqFq7XXfh/j79k1NPqyyPqPx0Ka2z6fow+5/iyl
-   b21HXvlbwLj4TUdz2b4yFmB7v2ZFrUZdaP/8yFSFlL3XrnJAxNPaZGM8v
-   or7tjbN52biTG+rBwXSAjinSb3ZHmkdiog150asoYuSCMkFHDdLyUadB5
-   zw9KuHAM34845llp0VCnm0spSbftWlOU08wQDtCa2vd4T0t799iQD9El3
-   Nqxv51fQSawYn1T5Dz90jbNw31a/1SDfUghRPNLnaU1UJd0IMT/E0x1zV
-   A==;
-X-CSE-ConnectionGUID: 7DO3E//kRx2PPdE4kqPz+w==
-X-CSE-MsgGUID: 1gn1Qn/cQ9iNYObuDXuAWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64262399"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="64262399"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 00:40:50 -0800
-X-CSE-ConnectionGUID: yh2Q3imiSSqJ6OzEATaAmQ==
-X-CSE-MsgGUID: Zm3LOWhkTmOPPNQWnHKWbg==
+  t=1762248766; x=1793784766;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   in-reply-to:mime-version;
+  bh=N481nwiY3AuDp0/txJnzq39HGUhCX5inY5wC5LpE/GY=;
+  b=mCtx1QUxzuq+6XNhDf9wnTwAA2hqQZzInwMs3nePxP5SuuUc+KjvMXOq
+   wvZzzBvgDwmhx9cw9JCc+fVKq+inqUU4lsaip1HgxS0tUXToFrAXQ3aCn
+   1US2ZkmJkkuNh+S3rLomkA/EdzW77gjnDYik/vpKDTJvPiCvBCwjoywRS
+   JEqU2Ea7TzVQ7K0nvjv3hElze7VN9r+HaTX9wWSylM9mvQhpc2TlzBvjd
+   x0DGXSSWInPTGXT40n9OxjBEBMeU5wc34unKjmoEcC45j1TjPKI307z/h
+   J60bZkpAAbPvcIaPLYpQVoMn7MEEWC+BKxfY5fFEPQb4Bb+5bpvGEfSpD
+   g==;
+X-CSE-ConnectionGUID: vAflPlFkRg+cEX1K7MUQUg==
+X-CSE-MsgGUID: P5xk/aWsToyzPnrlqoKewg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="74942375"
+X-IronPort-AV: E=Sophos;i="6.19,278,1754982000"; 
+   d="scan'208";a="74942375"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 01:32:45 -0800
+X-CSE-ConnectionGUID: B1MMF34CTCSayOIQCutFDQ==
+X-CSE-MsgGUID: 8XymuR5nTumk+L7aXAJWDQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,278,1754982000"; 
-   d="scan'208";a="187252803"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.49]) ([10.124.240.49])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 00:40:47 -0800
-Message-ID: <969d1b3a-2a82-4ff1-85c5-705c102f0f8b@intel.com>
-Date: Tue, 4 Nov 2025 16:40:44 +0800
+   d="scan'208";a="210616192"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 01:32:45 -0800
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Tue, 4 Nov 2025 01:32:45 -0800
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Tue, 4 Nov 2025 01:32:45 -0800
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.50) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Tue, 4 Nov 2025 01:32:44 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZfwnAhNuhtw4O0mEUQKKvJin/yu2xQwbWeKo+6y9QY2sWC8Aky6XjBDiWlnFXWHagkiHqvo+KKoXUdO5rOL2Q2Kig1XwTaPReFeQNMbwblO/Trc1wkWJvX4WyW1byfHXgUCiR+68RTVf0w/7K6ql+Lks+81CRZEZb7azj6yuAHHlZ3PIdnzEkBV4ir/QlYd5Q5LOO7rkhYqWB9YEOxE8qOtaDZG8gqBChspB4MEjRgzePuBsWkSYlALFO4ohfKmrJxzwMBgw4qRuUPtQPo6EfnjYW/KhveO2dr8inG7LisHObgbMe1QWZK264MtuLxTTngreIqJRUhnXdT2F5gYyqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zKhpf6dslFOjOIB6fX1iuHTLsE8wFj3INpSgxJe/Tnc=;
+ b=XqrMlqTlla9aQb03a5mvC/wJM/AXENFaC2qCnMlnSCRZA3h/n48rKlEvysqSmt/us+vP8cJ84hTtoUvzdNrtZVKROb2AuUSYOIw84TcB/LdR0x6pY3vn8jmoEAEPFd4TBpWZbmbD4PHWOtWtx1YRB7SXc5kqe/qm4Gil7/8rjG5XwTR4KY2/WcLRy0fScrkQ4dZnqdLHMmjg6brZrQnW/P58DBpk/WKsbMdkfmtAs9oH6aiBJJsuNkYxD42OJkCowrW994N1oTIqBRhw9Skl1ZBz8spOYB0BpQ9oQvfJsvOyRjaA6j/J73SkPpnFMBZ2xO25Y+vZ0S9ZjOV2V1iADA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6) by
+ IA1PR11MB7942.namprd11.prod.outlook.com (2603:10b6:208:3fa::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.16; Tue, 4 Nov
+ 2025 09:32:37 +0000
+Received: from DS7PR11MB5966.namprd11.prod.outlook.com
+ ([fe80::e971:d8f4:66c4:12ca]) by DS7PR11MB5966.namprd11.prod.outlook.com
+ ([fe80::e971:d8f4:66c4:12ca%6]) with mapi id 15.20.9275.015; Tue, 4 Nov 2025
+ 09:32:37 +0000
+Date: Tue, 4 Nov 2025 17:31:08 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>,
+	<kvm@vger.kernel.org>, <x86@kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Hou Wenlong <houwenlong.hwl@antgroup.com>
+Subject: Re: [PATCH v5 1/4] KVM: TDX: Explicitly set user-return MSRs that
+ *may* be clobbered by the TDX-Module
+Message-ID: <aQnH3EmN97cAKDEO@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20251030191528.3380553-1-seanjc@google.com>
+ <20251030191528.3380553-2-seanjc@google.com>
+ <aQhJol0CvT6bNCJQ@yzhao56-desk.sh.intel.com>
+ <aQmmBadeFp/7CDmH@yzhao56-desk.sh.intel.com>
+ <969d1b3a-2a82-4ff1-85c5-705c102f0f8b@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <969d1b3a-2a82-4ff1-85c5-705c102f0f8b@intel.com>
+X-ClientProxiedBy: KU0P306CA0095.MYSP306.PROD.OUTLOOK.COM
+ (2603:1096:d10:22::8) To DS7PR11MB5966.namprd11.prod.outlook.com
+ (2603:10b6:8:71::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/4] KVM: TDX: Explicitly set user-return MSRs that
- *may* be clobbered by the TDX-Module
-To: Yan Zhao <yan.y.zhao@intel.com>, Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, "Kirill A. Shutemov" <kas@kernel.org>,
- kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Hou Wenlong <houwenlong.hwl@antgroup.com>
-References: <20251030191528.3380553-1-seanjc@google.com>
- <20251030191528.3380553-2-seanjc@google.com>
- <aQhJol0CvT6bNCJQ@yzhao56-desk.sh.intel.com>
- <aQmmBadeFp/7CDmH@yzhao56-desk.sh.intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <aQmmBadeFp/7CDmH@yzhao56-desk.sh.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR11MB5966:EE_|IA1PR11MB7942:EE_
+X-MS-Office365-Filtering-Correlation-Id: e1f6f621-7b78-4ab1-f02f-08de1b85175a
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?CTVy5Ke2u/P0OpSOoyghPu/EFKGnaEmfJj844SdwiJfiH+6EZ3NBcZmFw9jr?=
+ =?us-ascii?Q?MrruA3rdG6L+k3oh4VwOeXdzfCQgWBHMo6pmb/Q9V6gSOu3WGpK4MWTsDtbG?=
+ =?us-ascii?Q?MfQ/F2mLIcnnlje6mPRn3xY81AqNChc7qqJasomy23bvA4oSHe7Z9XrrpG3J?=
+ =?us-ascii?Q?GjqwEUXB3RzZOZ38DeC68QEUtNGshkavm8Hf7XH4dzDUvPSDOCcD4MOlWwnF?=
+ =?us-ascii?Q?TdFJ2/4zF1es2eAG5uOMwGOs3jIuyGEsKPC1SsC3CzVwHi1gYfniHRDoC2OQ?=
+ =?us-ascii?Q?O6I7zuwGzDvm9WhlBtov6FXc0PkisTXeF3RMYTkQs3m0QJIQAhCoAutBAesW?=
+ =?us-ascii?Q?orFkZmDW9c8OgvEZ8SH5RSgdYmhnCfNXaq5IikfPRLqybQHXGNnrkRv1fiZ3?=
+ =?us-ascii?Q?2k4PsfQ2quADHrRcIYKIPHDh71Y/vFC4lqGxe/zmGoDULGB9gOYCLDBs3lMJ?=
+ =?us-ascii?Q?LCbTq9lu0aBkbZPyx7ADoc8p10q2aA5kBvX+Pxi4apG6lGywb5fCOL3UsJtv?=
+ =?us-ascii?Q?g21Wwl/QMISqGdfl1gsr6OIL7kZF7B8De2DL3U/fqIHlPw8slPN80epc8dJW?=
+ =?us-ascii?Q?tO1RTHHBFHvQpufRj+gSVWfnN8rgoHoamx9nYq2eo56I2SCSP9lhQAph0OMF?=
+ =?us-ascii?Q?gMGL8vM1qUm2jp1pi5d+ZLGMqNTyrdS9eC/DzMi0kkR8RLHgOXDuBfBf8nEl?=
+ =?us-ascii?Q?0w7NWtn9ll+IIZyRgT1Y0gm4y0wsWEuQvxCSYpTCSB8WsneUA8G/msfrj2A2?=
+ =?us-ascii?Q?SDGKNqLOeRs9Blt8EwmARhmq/QPJFHPdgzMRHyHv9KYlfQ21zdlvR8qfqzxz?=
+ =?us-ascii?Q?aDpv2EdtKV5QugZlkhrkVfzfvqYx7InzXnJ3QiJL7DympeVa6KfowkYUY+rC?=
+ =?us-ascii?Q?mV+240Iz5g5f09OenacazCqO1jKpdfC26IMWR2Yms8mZ2fb8t2qqq5kL9tmB?=
+ =?us-ascii?Q?EZZPpd09mKDNcnqdUUzEW4cxlMbx6zfq69IjygRCpHby2L4Xe/7zWMxS6YAY?=
+ =?us-ascii?Q?V2UZy4ohksaKqGKH2160chGe9uL3cWqHhTKRHhe2uuynGvDKe4elE/6kWrHV?=
+ =?us-ascii?Q?6ldW9RHa3zMjvvjezfAACsyG/gA3auVZgtVK2wpe2Y2ES+FGgQHQhT/z2DT3?=
+ =?us-ascii?Q?ahpF8qFHM/nXebUDcNXMKb3ovKdD6E3mRB5zv5dyqcIoi6uBzJVzFORUJS92?=
+ =?us-ascii?Q?XyG13H4p84JE8MtrMHowmrckDVIVjQbCjDKEP1KdrCnO8g6PAltC6L4IsClb?=
+ =?us-ascii?Q?vgbWSOHHWv0lF64MqSpj1Zwu/MBm7tdHtX69XbSgyT8DDBqtvpZh53jHLZl4?=
+ =?us-ascii?Q?YuPYMw2djSUds92o35BKCkGvGB2rNMC3gqCwjs+SvejXgMlVTUlAZZwrpOmr?=
+ =?us-ascii?Q?p1TZgZRmcx5PHNI1ln1a6Cqcr0B0sVRwmd8QRltoEcWForBBKhpN+CF/a38t?=
+ =?us-ascii?Q?+bYaCO523u23Y2RqpumRRU2l3RIT05MW?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB5966.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?t5rLIVrX9u8MOPe2MeVeSTtTLi1xyp9rhAIMK/jwE4hTqM2mw7r5/DwBVZem?=
+ =?us-ascii?Q?5Xo+Kum1P4ivyJGtL7rv3qgn/bwamOLLvNACoAxm4mazZ0Pk9IjaxHmC0OrO?=
+ =?us-ascii?Q?q4Er5i2Wll6wugGe3sfmRNRfuJdKuHxP+VFZvqiaOx+w7d4HKHEGF7FFgwJP?=
+ =?us-ascii?Q?9whWNCDiD74Qi/nSNahmqZCbeFOaEDKjHEZUQF/P5RJ4jDH+Jbc7vAUkAKBh?=
+ =?us-ascii?Q?LsxicvZ4+C9QCJVai9l3+9mp4GG3qukdk7hZUb9C0wZQx8+b+Bwbqd4XHei1?=
+ =?us-ascii?Q?l4qL0BhTkeLe/vRhyvhq2bySFkTjEJl91ZAAcDYEMBL421dmDEhWOeCyOIyz?=
+ =?us-ascii?Q?5N0pl84OWBRF0Y37MEaoO7c+2L2CubFV3j0WqJK7A/81PJK6h2v7dEalytop?=
+ =?us-ascii?Q?3wmWZtdNvaij9iPzxgqbWGbWvLKV9q2g/k47CvVECwB9Ex+pKjqyGrNDhSjB?=
+ =?us-ascii?Q?97HNO/jw5Ihs/wFBNzA5QWKXv9hbHajrftok7qNwqm9yzgZ2ccx73JAujydQ?=
+ =?us-ascii?Q?6qTUDZNMe+yeYFuufJj7LZieCeSRJimnM4jPB5z2vMsKqg4bMiiopEa3kKDk?=
+ =?us-ascii?Q?wsMwiJY49SrK+pxsuSvmcDSgNNvYe4qUupWFtpc/aGmOVRMGDhUb9dhdDIFk?=
+ =?us-ascii?Q?8l4vs98UkuxgFiO8RzfPq3UX/kDgDGFD5MPNerPB8SjzQAT7l5AmyrDqz+FP?=
+ =?us-ascii?Q?wLew2qzS+Fay0U7EWZZiWFRzHsVO1al1n3ghl9iVfBqdky6jk+LTV2jBZdh4?=
+ =?us-ascii?Q?S0lUVXjaUzxVU6MRB1qyt9eL9Ti3UfIdYOMCSRM/eO+r28Eec3jn06YmU9MX?=
+ =?us-ascii?Q?yTQzeldfoZ4htk5YPvb3QPvm1or2UkyDQLm4rknMoBuTLCXuLracU0xDRdxy?=
+ =?us-ascii?Q?ZgSgvthMC64b4fYl3mNsYSfrtlcnRVQ85kHKItOSVhYqa0gpB1TOVfQh2+MG?=
+ =?us-ascii?Q?eqBcntdcUmot6vyaPSdDXXnfc7y1cFCiyvtrBji+gw9lPi7zb2IoHefAVgsh?=
+ =?us-ascii?Q?U1hy2qphJK9SJtwv6b0mdotjeQRJsj23vcR/yrtUJ5A1GgiarC3kyCREnFQ4?=
+ =?us-ascii?Q?iD8CQ5ZfRnhdrT+KieHISGPfMrMIxgfDNbiBCPn2vJRgjQ3G5UrGob/31ZCT?=
+ =?us-ascii?Q?3GqkqOpMSGwkLP+TeJl5cRCbULYua8hQVxpCc5C14feyEFcR2in0jOvDO+dl?=
+ =?us-ascii?Q?98LTGb07TAo5bzzRmSbilxadtgtwXiOBtR59BsP6Q+W+krGUnlNCJqLJas+M?=
+ =?us-ascii?Q?c/TczgYUqDWUJS1CC5gysNAdKqmukrsWWqCcivPKC97ZvW6Ii1EQCmAw5l9X?=
+ =?us-ascii?Q?vFVMoS/PGH3MgrdJxHfPVYz6P+0Cozl/4Z5dC69mG/e0HT/26LwV+znNMenJ?=
+ =?us-ascii?Q?WEsz7bb7WSy98Z81wosL0Q9NEv1+ebKSCBuJ3av3nc9AQeXG8tBQr3iWqmgb?=
+ =?us-ascii?Q?BQ/2DyBIj41QXSbm5OSQSuKZSFCVsCOoQ/hX+rWTFYyV9Z90NCGiyczNhGVf?=
+ =?us-ascii?Q?N54QGbPa5lzQ8CN3r93vAI8WDqSP2U7w9fC9xakdTYAD/D5pUyyH9zRQAMj8?=
+ =?us-ascii?Q?NTxMKYNneb+qg3MkxBzKFeNuGvLunI6WSaI5SFas?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: e1f6f621-7b78-4ab1-f02f-08de1b85175a
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB5966.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2025 09:32:37.1919
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OG42L3W8bSBsX8br9DQAkAheK1Wkc+WX7p0wJdttH1L+b4gVzs8sTstww4d198ShnSDhfX8ES0BBT0L7z+xIkQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7942
+X-OriginatorOrg: intel.com
 
-On 11/4/2025 3:06 PM, Yan Zhao wrote:
-> Another nit:
-> Remove the tdx_user_return_msr_update_cache() in the comment of __tdx_bringup().
+On Tue, Nov 04, 2025 at 04:40:44PM +0800, Xiaoyao Li wrote:
+> On 11/4/2025 3:06 PM, Yan Zhao wrote:
+> > Another nit:
+> > Remove the tdx_user_return_msr_update_cache() in the comment of __tdx_bringup().
+> > 
+> > Or could we just invoke tdx_user_return_msr_update_cache() in
+> > tdx_prepare_switch_to_guest()?
 > 
-> Or could we just invoke tdx_user_return_msr_update_cache() in
-> tdx_prepare_switch_to_guest()?
+> No. It lacks the WRMSR operation to update the hardware value, which is the
+> key of this patch.
+As [1], I don't think the WRMSR operation to update the hardware value is
+necessary. The value will be updated to guest value soon any way if
+tdh_vp_enter() succeeds, or the hardware value remains to be the host value or
+the default value.
 
-No. It lacks the WRMSR operation to update the hardware value, which is 
-the key of this patch.
+But I think invoking tdx_user_return_msr_update_cache() in
+tdx_prepare_switch_to_guest() is better than in
+tdx_prepare_switch_to_host().
 
-> On Mon, Nov 03, 2025 at 02:20:18PM +0800, Yan Zhao wrote:
->> On Thu, Oct 30, 2025 at 12:15:25PM -0700, Sean Christopherson wrote:
->>> Set all user-return MSRs to their post-TD-exit value when preparing to run
->>> a TDX vCPU to ensure the value that KVM expects to be loaded after running
->>> the vCPU is indeed the value that's loaded in hardware.  If the TDX-Module
->>> doesn't actually enter the guest, i.e. doesn't do VM-Enter, then it won't
->>> "restore" VMM state, i.e. won't clobber user-return MSRs to their expected
->>> post-run values, in which case simply updating KVM's "cached" value will
->>> effectively corrupt the cache due to hardware still holding the original
->>> value.
->> This paragraph is confusing.
->>
->> The flow for the TDX module for the user-return MSRs is:
->>
->> 1. Before entering guest, i.e., inside tdh_vp_enter(),
->>     a) if VM-Enter is guaranteed to succeed, load MSRs with saved guest value;
->>     b) otherwise, do nothing and return to VMM.
->>
->> 2. After VMExit, before returning to VMM,
->>     save guest value and restore MSRs to default values.
->>
->>
->> Failure of tdh_vp_enter() (i.e., in case of 1.b), the hardware values of the
->> MSRs should be either host value or default value, while with
->> msrs->values[slot].curr being default value.
->>
->> As a result, the reasoning of "hardware still holding the original value" is not
->> convincing, since the original value is exactly the host value.
->>
->>> In theory, KVM could conditionally update the current user-return value if
->>> and only if tdh_vp_enter() succeeds, but in practice "success" doesn't
->>> guarantee the TDX-Module actually entered the guest, e.g. if the TDX-Module
->>> synthesizes an EPT Violation because it suspects a zero-step attack.
->>>
->>> Force-load the expected values instead of trying to decipher whether or
->>> not the TDX-Module restored/clobbered MSRs, as the risk doesn't justify
->>> the benefits.  Effectively avoiding four WRMSRs once per run loop (even if
->>> the vCPU is scheduled out, user-return MSRs only need to be reloaded if
->>> the CPU exits to userspace or runs a non-TDX vCPU) is likely in the noise
->>> when amortized over all entries, given the cost of running a TDX vCPU.
->>> E.g. the cost of the WRMSRs is somewhere between ~300 and ~500 cycles,
->>> whereas the cost of a _single_ roundtrip to/from a TDX guest is thousands
->>> of cycles.
->>>
->>> Fixes: e0b4f31a3c65 ("KVM: TDX: restore user ret MSRs")
->>> Cc: stable@vger.kernel.org
->>> Cc: Yan Zhao <yan.y.zhao@intel.com>
->>> Cc: Xiaoyao Li <xiaoyao.li@intel.com>
->>> Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
->>> Signed-off-by: Sean Christopherson <seanjc@google.com>
->>> ---
->>>   arch/x86/include/asm/kvm_host.h |  1 -
->>>   arch/x86/kvm/vmx/tdx.c          | 52 +++++++++++++++------------------
->>>   arch/x86/kvm/vmx/tdx.h          |  1 -
->>>   arch/x86/kvm/x86.c              |  9 ------
->>>   4 files changed, 23 insertions(+), 40 deletions(-)
->>>
->>> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
->>> index 48598d017d6f..d158dfd1842e 100644
->>> --- a/arch/x86/include/asm/kvm_host.h
->>> +++ b/arch/x86/include/asm/kvm_host.h
->>> @@ -2378,7 +2378,6 @@ int kvm_pv_send_ipi(struct kvm *kvm, unsigned long ipi_bitmap_low,
->>>   int kvm_add_user_return_msr(u32 msr);
->>>   int kvm_find_user_return_msr(u32 msr);
->>>   int kvm_set_user_return_msr(unsigned index, u64 val, u64 mask);
->>> -void kvm_user_return_msr_update_cache(unsigned int index, u64 val);
->>>   u64 kvm_get_user_return_msr(unsigned int slot);
->>>   
->>>   static inline bool kvm_is_supported_user_return_msr(u32 msr)
->>> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
->>> index 326db9b9c567..cde91a995076 100644
->>> --- a/arch/x86/kvm/vmx/tdx.c
->>> +++ b/arch/x86/kvm/vmx/tdx.c
->>> @@ -763,25 +763,6 @@ static bool tdx_protected_apic_has_interrupt(struct kvm_vcpu *vcpu)
->>>   	return tdx_vcpu_state_details_intr_pending(vcpu_state_details);
->>>   }
->>>   
->>> -/*
->>> - * Compared to vmx_prepare_switch_to_guest(), there is not much to do
->>> - * as SEAMCALL/SEAMRET calls take care of most of save and restore.
->>> - */
->>> -void tdx_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
->>> -{
->>> -	struct vcpu_vt *vt = to_vt(vcpu);
->>> -
->>> -	if (vt->guest_state_loaded)
->>> -		return;
->>> -
->>> -	if (likely(is_64bit_mm(current->mm)))
->>> -		vt->msr_host_kernel_gs_base = current->thread.gsbase;
->>> -	else
->>> -		vt->msr_host_kernel_gs_base = read_msr(MSR_KERNEL_GS_BASE);
->>> -
->>> -	vt->guest_state_loaded = true;
->>> -}
->>> -
->>>   struct tdx_uret_msr {
->>>   	u32 msr;
->>>   	unsigned int slot;
->>> @@ -795,19 +776,38 @@ static struct tdx_uret_msr tdx_uret_msrs[] = {
->>>   	{.msr = MSR_TSC_AUX,},
->>>   };
->>>   
->>> -static void tdx_user_return_msr_update_cache(void)
->>> +void tdx_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
->>>   {
->>> +	struct vcpu_vt *vt = to_vt(vcpu);
->>>   	int i;
->>>   
->>> +	if (vt->guest_state_loaded)
->>> +		return;
->>> +
->>> +	if (likely(is_64bit_mm(current->mm)))
->>> +		vt->msr_host_kernel_gs_base = current->thread.gsbase;
->>> +	else
->>> +		vt->msr_host_kernel_gs_base = read_msr(MSR_KERNEL_GS_BASE);
->>> +
->>> +	vt->guest_state_loaded = true;
->>> +
->>> +	/*
->>> +	 * Explicitly set user-return MSRs that are clobbered by the TDX-Module
->>> +	 * if VP.ENTER succeeds, i.e. on TD-Exit, with the values that would be
->>> +	 * written by the TDX-Module.  Don't rely on the TDX-Module to actually
->>> +	 * clobber the MSRs, as the contract is poorly defined and not upheld.
->>> +	 * E.g. the TDX-Module will synthesize an EPT Violation without doing
->>> +	 * VM-Enter if it suspects a zero-step attack, and never "restore" VMM
->>> +	 * state.
->>> +	 */
->>>   	for (i = 0; i < ARRAY_SIZE(tdx_uret_msrs); i++)
->>> -		kvm_user_return_msr_update_cache(tdx_uret_msrs[i].slot,
->>> -						 tdx_uret_msrs[i].defval);
->>> +		kvm_set_user_return_msr(tdx_uret_msrs[i].slot,
->>> +					tdx_uret_msrs[i].defval, -1ull);
->>>   }
->>>   
->>>   static void tdx_prepare_switch_to_host(struct kvm_vcpu *vcpu)
->>>   {
->>>   	struct vcpu_vt *vt = to_vt(vcpu);
->>> -	struct vcpu_tdx *tdx = to_tdx(vcpu);
->>>   
->>>   	if (!vt->guest_state_loaded)
->>>   		return;
->>> @@ -815,11 +815,6 @@ static void tdx_prepare_switch_to_host(struct kvm_vcpu *vcpu)
->>>   	++vcpu->stat.host_state_reload;
->>>   	wrmsrl(MSR_KERNEL_GS_BASE, vt->msr_host_kernel_gs_base);
->>>   
->>> -	if (tdx->guest_entered) {
->>> -		tdx_user_return_msr_update_cache();
->>> -		tdx->guest_entered = false;
->>> -	}
->>> -
->>>   	vt->guest_state_loaded = false;
->>>   }
->>>   
->>> @@ -1059,7 +1054,6 @@ fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
->>>   		update_debugctlmsr(vcpu->arch.host_debugctl);
->>>   
->>>   	tdx_load_host_xsave_state(vcpu);
->>> -	tdx->guest_entered = true;
->>>   
->>>   	vcpu->arch.regs_avail &= TDX_REGS_AVAIL_SET;
->>>   
->>> diff --git a/arch/x86/kvm/vmx/tdx.h b/arch/x86/kvm/vmx/tdx.h
->>> index ca39a9391db1..7f258870dc41 100644
->>> --- a/arch/x86/kvm/vmx/tdx.h
->>> +++ b/arch/x86/kvm/vmx/tdx.h
->>> @@ -67,7 +67,6 @@ struct vcpu_tdx {
->>>   	u64 vp_enter_ret;
->>>   
->>>   	enum vcpu_tdx_state state;
->>> -	bool guest_entered;
->>>   
->>>   	u64 map_gpa_next;
->>>   	u64 map_gpa_end;
->>> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
->>> index b4b5d2d09634..639589af7cbe 100644
->>> --- a/arch/x86/kvm/x86.c
->>> +++ b/arch/x86/kvm/x86.c
->>> @@ -681,15 +681,6 @@ int kvm_set_user_return_msr(unsigned slot, u64 value, u64 mask)
->>>   }
->>>   EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_set_user_return_msr);
->>>   
->>> -void kvm_user_return_msr_update_cache(unsigned int slot, u64 value)
->>> -{
->>> -	struct kvm_user_return_msrs *msrs = this_cpu_ptr(user_return_msrs);
->>> -
->>> -	msrs->values[slot].curr = value;
->>> -	kvm_user_return_register_notifier(msrs);
->>> -}
->>> -EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_user_return_msr_update_cache);
->>> -
->>>   u64 kvm_get_user_return_msr(unsigned int slot)
->>>   {
->>>   	return this_cpu_ptr(user_return_msrs)->values[slot].curr;
->>> -- 
->>> 2.51.1.930.gacf6e81ea2-goog
->>>
-
+[1] https://lore.kernel.org/kvm/aQhJol0CvT6bNCJQ@yzhao56-desk.sh.intel.com/
+ 
