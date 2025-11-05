@@ -1,135 +1,277 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C802A3385A7
-	for <linux-coco@lists.linux.dev>; Wed,  5 Nov 2025 15:26:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2A632D7C7
+	for <linux-coco@lists.linux.dev>; Wed,  5 Nov 2025 15:27:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762356398; cv=none; b=Wh33MzTtSWI2DAHBtLytc3+FWvw2Q5kUoDuhVlQoVALmZt/iyU3+nRYj3qmhaRswFgg6xZLheZV6SRZ4VkEGNLBQsgi8WSdIP5OJZeQ6LR3yJ4gZLqhvM1M8YOlwBxMAA2ok8PoF0ERTUjNEuzHaUVkfZ80ltlKE+q98EmvE0es=
+	t=1762356437; cv=none; b=ASPVCopvuX/cVs7+Sf/UX4pXFM8rppoW7ryHWUb748BO8MwvaZpfJT99m/xuT5gSw2XXue3VOn87EgSA+TEizCxWcJ2+pXc8fb3BWqWzZ4hlb6XnS747CMii6g+rPbaGxXVt/vog3qgiDuJfciEa5TweV474ylpymOewPxuqOf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762356398; c=relaxed/simple;
-	bh=d8JWxeRGmjq8jXPHzr0bSzSADeEyMQIUeCD2xQhaO6I=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Vz2+ZtkeDhkhw+6M7n/+WreuCz5YkEm9npiSWjNGDQxvjmiJeuZx8AmkbmBx7bXwln7E/enjZC+lEUbnto8HZ+P0d45ArTWL5IUVldzkjA14hz8jn/XvumHiI/A0XGXFl8iJ0nM1Tdoj15q2DrmjCRJNbx2pCURCL2bADq/adgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vHLDgpud; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vHLDgpud"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-34176460924so2154326a91.3
-        for <linux-coco@lists.linux.dev>; Wed, 05 Nov 2025 07:26:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762356395; x=1762961195; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dmjmfo22QwufKip+RFN2GwcKXDk7+fDMohFzNqFh1wo=;
-        b=vHLDgpud1UqaRvz1DNy0hmhbLnUZUDv/QSD4xhUkQemkpsUlpvR6D3TsXorLbazEz/
-         TaWYfbWJR3PrqtvZ2DvbXE5fEl+4rSsPVYAE46jbe52CzHaFPGis9wBUk+rrVqc8CTWW
-         mA141lGYy8Kl1zhxJlrz+MDW6QgHl9f3rV9cpTyA/bT55d7IZXKnefmcyHBOZCmSbHpR
-         wnWu79nUEN7vZw2rRQNqlr2e/vA7Lk9QZIUctlpS0yZekYwzGlj4lieONBvINwTXCwrF
-         7wVfceD9j+ozbnsaZAkFx36MkEeQN5IGOwYVXFdOwjqNJ+MslhPrGEsvFY8OCEooxiQG
-         hCfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762356395; x=1762961195;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dmjmfo22QwufKip+RFN2GwcKXDk7+fDMohFzNqFh1wo=;
-        b=jnNqGFh3+PovoMmZQSus9wUiUauFhYEOCtlb/galZjCG/7ckcacBRCkxbGs0+CdNOE
-         j+SA+SGshlf4OP98hs63ZSLVUd9aDqIBKBPingC/XeizuJUWFrqjT6rS1s/8GjnSqzmO
-         ChabGVgr36jyQEY5nRtvWVDui+2nu5B8SEkDI4TbyF7ff2iE0qLjl1mugYtaQ/btLpoh
-         FH6DhQ031RhumTXWn8moGHbS1OazBoDNDaCrTVrM8xFUmdUtRTev4SMBdV6kmy+7OJzb
-         9QA6qHJ5TgwQMM+nNBaG7w2oYSSPT2gAereqzbBvu2DHXp1X6scZBE3tOHMuI6IPa1Xs
-         VDqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVqegXnW54cML6dicBLqnyPd/vAjffWZcUtaq64EFzp1D4jxPD0HlKtLf4A5kAhxnxmYdYAx/zKtoiU@lists.linux.dev
-X-Gm-Message-State: AOJu0YzVc36ucVLn4yddkqddep/P461sJ+5OU2DoLSmV3KDY55cNA9Xi
-	2Rq2Aw5sB539iXWBt5my7GGybm6xs3H1eZW5VoW6qmyxcCppkaywflpqhpu5ZUg1hNbuvda3nR7
-	rt247zQ==
-X-Google-Smtp-Source: AGHT+IEksiko2nLkYHDcuQoizh41Xk4dhEPlLcSxUswEaWhydqjlp9gNPv6q5VYl/pXem0FsGEVxprPZGIk=
-X-Received: from pjbtc7.prod.google.com ([2002:a17:90b:5407:b0:340:b503:505f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:384d:b0:340:9cf1:54d0
- with SMTP id 98e67ed59e1d1-341a6c08e65mr4623520a91.1.1762356395074; Wed, 05
- Nov 2025 07:26:35 -0800 (PST)
-Date: Wed, 5 Nov 2025 07:26:33 -0800
-In-Reply-To: <aQsBI1/SIXGbf9nA@yzhao56-desk.sh.intel.com>
+	s=arc-20240116; t=1762356437; c=relaxed/simple;
+	bh=TDa1DdTRjz4h1URATHtFjAE0bvoyH8zjMAxoTfRq6ck=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TxGMsCCKc1iRjOYOnqzJH1pM3GzxH2s6EWSJsB3wK85+oBiKDbcXKv5KglpCjGNu9h7RUFyPptKMxZAfyuRmjq1i6mO+4MXEC26hjv3NPhDiiSjCjXFkZ78zQLqCHeP5BHI1BPtV/UXIxDo6ZbIgH1zRXqdGXh/F6clcunr93FA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4d1q1c75JzzHnGjs;
+	Wed,  5 Nov 2025 23:27:00 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8856D1402A5;
+	Wed,  5 Nov 2025 23:27:06 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 5 Nov
+ 2025 15:27:05 +0000
+Date: Wed, 5 Nov 2025 15:27:04 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Dan Williams <dan.j.williams@intel.com>
+CC: <linux-pci@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<bhelgaas@google.com>, <aneesh.kumar@kernel.org>, <yilun.xu@linux.intel.com>,
+	<aik@amd.com>
+Subject: Re: [PATCH 3/6] PCI/IDE: Initialize an ID for all IDE streams
+Message-ID: <20251105152704.00002741@huawei.com>
+In-Reply-To: <20251105040055.2832866-4-dan.j.williams@intel.com>
+References: <20251105040055.2832866-1-dan.j.williams@intel.com>
+	<20251105040055.2832866-4-dan.j.williams@intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20251017003244.186495-1-seanjc@google.com> <20251017003244.186495-5-seanjc@google.com>
- <aPhjYcOFjL1Z8m2s@yzhao56-desk.sh.intel.com> <aQMi/n9DVyeaWsVH@yzhao56-desk.sh.intel.com>
- <aQo-hus99rE7WBgb@google.com> <aQr9jW/7zwWJaDFf@yzhao56-desk.sh.intel.com> <aQsBI1/SIXGbf9nA@yzhao56-desk.sh.intel.com>
-Message-ID: <aQtsqXPaZo2SMdJU@google.com>
-Subject: Re: [PATCH v3 04/25] KVM: x86/mmu: Add dedicated API to map
- guest_memfd pfn into TDP MMU
-From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
-	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Kirill A. Shutemov" <kas@kernel.org>, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Ira Weiny <ira.weiny@intel.com>, Kai Huang <kai.huang@intel.com>, 
-	Michael Roth <michael.roth@amd.com>, Vishal Annapurve <vannapurve@google.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Wed, Nov 05, 2025, Yan Zhao wrote:
-> On Wed, Nov 05, 2025 at 03:32:29PM +0800, Yan Zhao wrote:
-> > On Tue, Nov 04, 2025 at 09:57:26AM -0800, Sean Christopherson wrote:
-> > > On Thu, Oct 30, 2025, Yan Zhao wrote:
-> > > > On Wed, Oct 22, 2025 at 12:53:53PM +0800, Yan Zhao wrote:
-> > > > > On Thu, Oct 16, 2025 at 05:32:22PM -0700, Sean Christopherson wrote:
-> > > > > > Link: https://lore.kernel.org/all/20250709232103.zwmufocd3l7sqk7y@amd.com
-> > > > > 
-> > > > > Hi Sean,                                                                         
-> > > > > 
-> > > > > Will you post [1] to fix the AB-BA deadlock issue for huge page in-place
-> > > > > conversion as well?
-> > > 
-> > > If you (or anyone) has the bandwidth, please pick it up.  I won't have cycles to
-> > > look at that for many weeks (potentially not even this calendar year).
-> > Got it!
-> > On the other hand, do you think we can address the warning as below?
-> > The code is based on [2].
-> Hmm, updated the diff.
+On Tue,  4 Nov 2025 20:00:52 -0800
+Dan Williams <dan.j.williams@intel.com> wrote:
+
+> The PCIe spec defines two types of streams - selective and link.  Each
+> stream has an ID from the same bucket so a stream ID does not tell the
+> type.  The spec defines an "enable" bit for every stream and required
+> stream IDs to be unique among all enabled stream but there is no such
+> requirement for disabled streams.
 > 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 7b4a4474d468..543e1eb9db65 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -853,6 +853,9 @@ static int kvm_gmem_init_inode(struct inode *inode, loff_t size, u64 flags)
->         inode->i_size = size;
->         mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
->         mapping_set_inaccessible(inode->i_mapping);
-> +       if (flags &GUEST_MEMFD_FLAG_MMAP)
-> +               lockdep_set_subclass(&inode->i_mapping->invalidate_lock, 1);
-> +
->         /* Unmovable mappings are supposed to be marked unevictable as well. */
->         WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
+> However, when IDE_KM is programming keys, an IDE-capable device needs
+> to know the type of stream being programmed to write it directly to
+> the hardware as keys are relatively large, possibly many of them and
+> devices often struggle with keeping around rather big data not being
+> used.
 > 
+> Walk through all streams on a device and initialise the IDs to some
+> unique number, both link and selective.
+> 
+> The weakest part of this proposal is the host bridge ide_stream_ids_ida.
+> Technically, a Stream ID only needs to be unique within a given partner
+> pair. However, with "anonymous" / unassigned streams there is no convenient
+> place to track the available ids. Proceed with an ida in the host bridge
+> for now, but consider moving this tracking to be an ide_stream_ids_ida per
+> device.
+> 
+> Co-developed-by: Alexey Kardashevskiy <aik@amd.com>
+> Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+
+A small side discussion on whether a new type of cleanup helper makes
+sense here for allocations that need to stash some data which is never
+used except in __free. Bit of an odd corner case but could see something
+similar for pool allocators (Which is kind of what we have here).
+
+> ---
+>  drivers/pci/pci.h       |   2 +
+>  include/linux/pci-ide.h |   6 ++
+>  include/linux/pci.h     |   1 +
+>  drivers/pci/ide.c       | 133 ++++++++++++++++++++++++++++++++++++++++
+>  drivers/pci/remove.c    |   1 +
+>  5 files changed, 143 insertions(+)
+> 
+> diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
+> index d7fc741f3a26..33b3c54c62a1 100644
+> --- a/drivers/pci/ide.c
+> +++ b/drivers/pci/ide.c
+> @@ -35,8 +35,54 @@ static int sel_ide_offset(struct pci_dev *pdev,
+>  				settings->stream_index, pdev->nr_ide_mem);
+>  }
 >  
-> > As noted in [3], the only scenario can trigger the warning after [2] is when a
-> > process creates a TDX VM with non-in-place-conversion guest_memfd and a normal
-> > VM with in-place-conversion guest_memfd. The two invalidate_lock's don't contend
-> > with each other theoretically.
+> +static bool reserve_stream_index(struct pci_dev *pdev, u8 idx)
+> +{
+> +	int ret;
+> +
+> +	ret = ida_alloc_range(&pdev->ide_stream_ida, idx, idx, GFP_KERNEL);
+> +	if (ret < 0)
+> +		return false;
+> +	return true;
 
-Hmm, no, I think we need to hoist gup() call outside of filemap_invalidate_lock(),
-because I don't think this is strictly limited to TDX VMs without in-place
-conversion.  Even with in-place conversion, I think KVM should allow the source
-page to be shared memory, at which point I believe this becomes a legimate AB-BA
-issue.
+	return ret >= 0; perhaps
 
-In general, playing lockdep games with so many subsystems involved terrifies me.
 
-> > [2] https://lore.kernel.org/all/cover.1760731772.git.ackerleytng@google.com/
-> > [3] https://lore.kernel.org/all/aQMi%2Fn9DVyeaWsVH@yzhao56-desk.sh.intel.com/
+> +}
+> +
+> +static bool reserve_stream_id(struct pci_host_bridge *hb, u8 id)
+> +{
+> +	int ret;
+> +
+> +	ret = ida_alloc_range(&hb->ide_stream_ids_ida, id, id, GFP_KERNEL);
+> +	if (ret < 0)
+> +		return false;
+> +	return true;
+
+	return ret >= 0;
+
+> +}
+> +
+> +static bool claim_stream(struct pci_host_bridge *hb, u8 stream_id,
+> +			 struct pci_dev *pdev, u8 stream_idx)
+> +{
+> +	dev_info(&hb->dev, "Stream ID %d active at init\n", stream_id);
+> +	if (!reserve_stream_id(hb, stream_id)) {
+> +		dev_info(&hb->dev, "Failed to claim %s Stream ID %d\n",
+> +			 stream_id == PCI_IDE_RESERVED_STREAM_ID ? "reserved" :
+> +								   "active",
+> +			 stream_id);
+
+Good to have a comment on why we carry on anyway.
+
+> +		return false;
+> +	}
+> +
+> +	/* No stream index to reserve in the Link IDE case */
+> +	if (!pdev)
+> +		return true;
+> +
+> +	if (!reserve_stream_index(pdev, stream_idx)) {
+> +		pci_info(pdev, "Failed to claim active Selective Stream %d\n",
+> +			 stream_idx);
+Likewise. Why is this not an error.
+> +		return false;
+> +	}
+> +
+> +	return true;
+> +}
+> +
+>  void pci_ide_init(struct pci_dev *pdev)
+>  {
+> +	struct pci_host_bridge *hb = pci_find_host_bridge(pdev->bus);
+>  	u16 nr_link_ide, nr_ide_mem, nr_streams;
+>  	u16 ide_cap;
+>  	u32 val;
+> @@ -83,6 +129,7 @@ void pci_ide_init(struct pci_dev *pdev)
+>  		int pos = __sel_ide_offset(ide_cap, nr_link_ide, i, nr_ide_mem);
+>  		int nr_assoc;
+>  		u32 val;
+> +		u8 id;
+>  
+>  		pci_read_config_dword(pdev, pos + PCI_IDE_SEL_CAP, &val);
+>  
+> @@ -98,6 +145,51 @@ void pci_ide_init(struct pci_dev *pdev)
+>  		}
+>  
+>  		nr_ide_mem = nr_assoc;
+> +
+> +		/*
+> +		 * Claim Stream IDs and Selective Stream blocks that are already
+> +		 * active on the device
+> +		 */
+> +		pci_read_config_dword(pdev, pos + PCI_IDE_SEL_CTL, &val);
+> +		id = FIELD_GET(PCI_IDE_SEL_CTL_ID, val);
+> +		if ((val & PCI_IDE_SEL_CTL_EN) &&
+> +		    !claim_stream(hb, id, pdev, i))
+> +			return;
+Related to above, I'm not sure why we just eat this problem with a print.
+
+> +	}
+> +
+> +	/* Reserve link stream-ids that are already active on the device */
+> +	for (u16 i = 0; i < nr_link_ide; ++i) {
+> +		int pos = ide_cap + PCI_IDE_LINK_STREAM_0 + i * PCI_IDE_LINK_BLOCK_SIZE;
+> +		u8 id;
+> +
+> +		pci_read_config_dword(pdev, pos + PCI_IDE_LINK_CTL_0, &val);
+> +		id = FIELD_GET(PCI_IDE_LINK_CTL_ID, val);
+> +		if ((val & PCI_IDE_LINK_CTL_EN) &&
+> +		    !claim_stream(hb, id, NULL, -1))
+> +			return;
+> +	}
+
+
+> @@ -301,6 +393,28 @@ void pci_ide_stream_release(struct pci_ide *ide)
+>  }
+>  EXPORT_SYMBOL_GPL(pci_ide_stream_release);
+>  
+> +struct pci_ide_stream_id {
+> +	struct pci_host_bridge *hb;
+> +	u8 stream_id;
+> +};
+> +
+> +static struct pci_ide_stream_id *alloc_stream_id(struct pci_host_bridge *hb,
+> +						 u8 stream_id,
+> +						 struct pci_ide_stream_id *sid)
+
+Doesn't feel like an allocation function to me. Maybe a rename if
+it doesn't gain some allocation abilities later?
+
+> +{
+> +	if (!reserve_stream_id(hb, stream_id))
+> +		return NULL;
+> +
+> +	*sid = (struct pci_ide_stream_id) {
+> +		.hb = hb,
+> +		.stream_id = stream_id,
+> +	};
+> +
+> +	return sid;
+> +}
+> +DEFINE_FREE(free_stream_id, struct pci_ide_stream_id *,
+> +	    if (_T) ida_free(&_T->hb->ide_stream_ids_ida, _T->stream_id))
+> +
+>  /**
+>   * pci_ide_stream_register() - Prepare to activate an IDE Stream
+>   * @ide: IDE settings descriptor
+> @@ -313,6 +427,7 @@ int pci_ide_stream_register(struct pci_ide *ide)
+>  {
+>  	struct pci_dev *pdev = ide->pdev;
+>  	struct pci_host_bridge *hb = pci_find_host_bridge(pdev->bus);
+> +	struct pci_ide_stream_id __sid;
+>  	u8 ep_stream, rp_stream;
+>  	int rc;
+>  
+> @@ -321,6 +436,13 @@ int pci_ide_stream_register(struct pci_ide *ide)
+>  		return -ENXIO;
+>  	}
+>  
+> +	struct pci_ide_stream_id *sid __free(free_stream_id) =
+> +		alloc_stream_id(hb, ide->stream_id, &__sid);
+
+Given the use of __sid as magic storage, I wonder if this can
+be a CLASS with that storage wrapped up alongside a flag
+we clear to make the destructor a no op. Similar to what happens for
+spin_lock_irqsave where we stash flags etc via __DEFINE_UNLOCK_GUARD() 
+
+Would need something a little more complex than current retain_and_null_ptr()
+as it would need to set _T.ptr = NULL rather that _T = NULL.
+
+
+> +	if (!sid) {
+> +		pci_err(pdev, "Setup fail: Stream ID %d in use\n", ide->stream_id);
+> +		return -EBUSY;
+> +	}
+> +
+>  	ep_stream = ide->partner[PCI_IDE_EP].stream_index;
+>  	rp_stream = ide->partner[PCI_IDE_RP].stream_index;
+>  	const char *name __free(kfree) = kasprintf(GFP_KERNEL, "stream%d.%d.%d",
+> @@ -335,6 +457,9 @@ int pci_ide_stream_register(struct pci_ide *ide)
+>  
+>  	ide->name = no_free_ptr(name);
+>  
+> +	/* Stream ID reservation recorded in @ide is now successfully registered */
+> +	retain_and_null_ptr(sid);
+> +
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(pci_ide_stream_register);
+
+
