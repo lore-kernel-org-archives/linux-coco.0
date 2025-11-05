@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7FA24466B
-	for <linux-coco@lists.linux.dev>; Wed,  5 Nov 2025 04:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF87247295
+	for <linux-coco@lists.linux.dev>; Wed,  5 Nov 2025 04:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762315258; cv=none; b=cDLW9mxVlAiqqBm/m1yeuoVFBohOfSN9W1NZ7HJuShEy4tEru6YJ/jdG3TbN7scNHTFlA0+oMD2lVHwZX63vIHx/iJzVuevbPZm2jx5LUhubJWaxTa1Fjgjma4IjZmctYHYHXH3MD49/pkrcKLqPdRB2Uus0IK16s93SNhSyduA=
+	t=1762315258; cv=none; b=kVTaONy/oPrbImAXkcK2jAde2tIGCMksKkKR7Yr6FrPPy+SnNxo+prfz8Qw5HP7hF/hEEkmnlHZrwPbedGGnGdZJpyzxEXXBairnJWw8jmgBQmLPPOIKGZ2EoV97vKRnZkaglJVNjirbPwKUWnztofeE0RqXRt4pUQ8Ch8BKMCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1762315258; c=relaxed/simple;
-	bh=96V0NhQmHVtGzM4xn7IuAwJ4SxRHsBMzdkCQb2Jzux8=;
+	bh=Fgif/ab0hPNxI2vmvzCrDwkWad3BHlMPbbQsgYFhf4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GtvEOOG0hc2gaRYhd/YIVDxp1Y1gv5hZyfqRot5DENPqVU2CCXixm94sAC/hez2SiU0FrlBXJwFmHK5l24Bz2fkIej1C6n3nu4oDsHVrPzuugdsaarVRyzwmcdPsyzYLaNLuojiQrkzpj1AYWznLNJTrYRXpdOTjgU6zXrfyqqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VazHkz6l; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version; b=gN8bmU8jmzfdihLYQ7Exnlb9GNVUjuGVhSve+uirWct4NPsPu+2Rh16WOPBg70EPk01M9t1jqyS3bYG3NEWIFXlPAR5xziaWxgiYPPF5YdcnZSxK4SQMe0WPqBaXQht3byEMgL+YBFGsM77oPxE4DixjfJRsIV7dkmao1wzhvKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U0TDgJI4; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VazHkz6l"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U0TDgJI4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1762315257; x=1793851257;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=96V0NhQmHVtGzM4xn7IuAwJ4SxRHsBMzdkCQb2Jzux8=;
-  b=VazHkz6leqHOU/7jlx2wYpxMckMYHyDUjurcJTE6elFhozPd+kIxli9x
-   VasW3F/zrSrT87i/PT82cvre7wqAR8r2cNydbXV1sVjDq72KB5K6tD06k
-   LPaS0/lNd+4qFqPmZSg6Ii+FFx5NZFWxaKGjQ9P38w6RybVfOHfazs/7M
-   mhEbl/G4NU09VDYerf798TBeNR+KJNBk+8KUhpWVpyWlCFEIjJ1ruwkZp
-   B7vsJeYPgcYMP5iW/3GVl856lELBdvsYkixijYr9DHnaYeSFJdB+ivJ/4
-   MPswzPhzwm5uWqEUz75qrm4AQXVfNDwu95DSnugtU70pH7UCGQuVsrnA2
-   Q==;
-X-CSE-ConnectionGUID: b8L72lkZRImbQjWjd6MgAw==
-X-CSE-MsgGUID: kgL/oPrwTU6ba2QtIweJRA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="68259483"
+  bh=Fgif/ab0hPNxI2vmvzCrDwkWad3BHlMPbbQsgYFhf4s=;
+  b=U0TDgJI45J6VOkeDG61i1/JxFVEm/kJSrN6xZ1zZh9S8V0zwhSVzRfD+
+   jlknTMRGI5QVFqE2DeG9aiHN2ITFeHovcWOBWlN7lu51hnngnxnTudOIC
+   CEENZ1RcIuYyYUgv16dYlpIGjPlT95XzCtq9BNRY8GHzmDZUEYuYcoRWx
+   PtldzDwG3VkLdfOzRuX8mZMcRJj9cdEvCrXLLrEXUOqxPChkGMbS5XjFc
+   pOpSbAd5vAJsuh+x+l2uOGCmnpUu8kiLiEVKktwg4LOgotffgOkdp9Nba
+   Uvox3tRFYaz96PfLKoeHjdkOCBO8W2FWDwUg2+JUzXNShWlcn34mFycij
+   A==;
+X-CSE-ConnectionGUID: Wx7BxhuERWGHbXm+E6OGfQ==
+X-CSE-MsgGUID: 61KA4RS8Q4ebrAJT0NfsUg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="68259485"
 X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="68259483"
+   d="scan'208";a="68259485"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
   by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 20:00:53 -0800
-X-CSE-ConnectionGUID: xnamRr+ZRRSdtxJsn/ayrQ==
-X-CSE-MsgGUID: Zr3KuuLART+EF9NWshKk/w==
+X-CSE-ConnectionGUID: mkCHUgTDRWGhouwWjJbbCA==
+X-CSE-MsgGUID: Nsg4Ar7qSW6OVrLLRwhadw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,280,1754982000"; 
-   d="scan'208";a="224588536"
+   d="scan'208";a="224588546"
 Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
   by orviesa001.jf.intel.com with ESMTP; 04 Nov 2025 20:00:52 -0800
 From: Dan Williams <dan.j.williams@intel.com>
@@ -50,9 +50,9 @@ Cc: linux-coco@lists.linux.dev,
 	aneesh.kumar@kernel.org,
 	yilun.xu@linux.intel.com,
 	aik@amd.com
-Subject: [PATCH 3/6] PCI/IDE: Initialize an ID for all IDE streams
-Date: Tue,  4 Nov 2025 20:00:52 -0800
-Message-ID: <20251105040055.2832866-4-dan.j.williams@intel.com>
+Subject: [PATCH 5/6] PCI/TSM: Add pci_tsm_guest_req() for managing TDIs
+Date: Tue,  4 Nov 2025 20:00:54 -0800
+Message-ID: <20251105040055.2832866-6-dan.j.williams@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251105040055.2832866-1-dan.j.williams@intel.com>
 References: <20251105040055.2832866-1-dan.j.williams@intel.com>
@@ -64,303 +64,229 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The PCIe spec defines two types of streams - selective and link.  Each
-stream has an ID from the same bucket so a stream ID does not tell the
-type.  The spec defines an "enable" bit for every stream and required
-stream IDs to be unique among all enabled stream but there is no such
-requirement for disabled streams.
+A PCIe device function interface assigned to a TVM is a TEE Device
+Interface (TDI). A TDI instantiated by pci_tsm_bind() needs additional
+steps taken by the TVM to be accepted into the TVM's Trusted Compute
+Boundary (TCB) and transitioned to the RUN state.
 
-However, when IDE_KM is programming keys, an IDE-capable device needs
-to know the type of stream being programmed to write it directly to
-the hardware as keys are relatively large, possibly many of them and
-devices often struggle with keeping around rather big data not being
-used.
+pci_tsm_guest_req() is a channel for the guest to request TDISP collateral,
+like Device Interface Reports, and effect TDISP state changes, like
+LOCKED->RUN transititions. Similar to IDE establishment and pci_tsm_bind(),
+these are long running operations involving SPDM message passing via the
+DOE mailbox.
 
-Walk through all streams on a device and initialise the IDs to some
-unique number, both link and selective.
+The path for a TVM to invoke pci_tsm_guest_req() is:
+* TSM triggers exit via guest-to-host-interface ABI (implementation specific)
+* VMM invokes handler (KVM handle_exit() -> userspace io)
+* handler issues request (userspace io handler -> ioctl() ->
+  pci_tsm_guest_req())
+* handler supplies response
+* VMM posts response, notifies/re-enters TVM
 
-The weakest part of this proposal is the host bridge ide_stream_ids_ida.
-Technically, a Stream ID only needs to be unique within a given partner
-pair. However, with "anonymous" / unassigned streams there is no convenient
-place to track the available ids. Proceed with an ida in the host bridge
-for now, but consider moving this tracking to be an ide_stream_ids_ida per
-device.
+This path is purely a transport for messages from TVM to platform TSM. By
+design the host kernel does not and must not care about the content of
+these messages. I.e. the host kernel is not in the TCB of the TVM.
 
-Co-developed-by: Alexey Kardashevskiy <aik@amd.com>
-Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
+As this is an opaque passthrough interface, similar to fwctl, the kernel
+requires that implementations stay within the bounds defined by 'enum
+pci_tsm_req_scope'. Violation of those expectations likely has market and
+regulatory consequences. Out of scope requests are blocked by default.
+
+Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/pci/pci.h       |   2 +
- include/linux/pci-ide.h |   6 ++
- include/linux/pci.h     |   1 +
- drivers/pci/ide.c       | 133 ++++++++++++++++++++++++++++++++++++++++
- drivers/pci/remove.c    |   1 +
- 5 files changed, 143 insertions(+)
+ include/linux/pci-tsm.h | 62 ++++++++++++++++++++++++++++++++++++++--
+ drivers/pci/tsm.c       | 63 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 123 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index f6ffe5ee4717..641c0b53c4e3 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -616,10 +616,12 @@ static inline void pci_doe_sysfs_teardown(struct pci_dev *pdev) { }
- #ifdef CONFIG_PCI_IDE
- void pci_ide_init(struct pci_dev *dev);
- void pci_ide_init_host_bridge(struct pci_host_bridge *hb);
-+void pci_ide_destroy(struct pci_dev *dev);
- extern const struct attribute_group pci_ide_attr_group;
- #else
- static inline void pci_ide_init(struct pci_dev *dev) { }
- static inline void pci_ide_init_host_bridge(struct pci_host_bridge *hb) { }
-+static inline void pci_ide_destroy(struct pci_dev *dev) { }
- #endif
+diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
+index 95b6a46423bb..8b000753b65b 100644
+--- a/include/linux/pci-tsm.h
++++ b/include/linux/pci-tsm.h
+@@ -3,6 +3,7 @@
+ #define __PCI_TSM_H
+ #include <linux/mutex.h>
+ #include <linux/pci.h>
++#include <linux/sockptr.h>
  
- #ifdef CONFIG_PCI_TSM
-diff --git a/include/linux/pci-ide.h b/include/linux/pci-ide.h
-index 55283c8490e4..40f0be185120 100644
---- a/include/linux/pci-ide.h
-+++ b/include/linux/pci-ide.h
-@@ -92,6 +92,12 @@ struct pci_ide {
- 	struct tsm_dev *tsm_dev;
- };
+ struct pci_tsm;
+ struct tsm_dev;
+@@ -33,14 +34,15 @@ struct pci_tsm_ops {
+ 	 * @disconnect: teardown the secure link
+ 	 * @bind: bind a TDI in preparation for it to be accepted by a TVM
+ 	 * @unbind: remove a TDI from secure operation with a TVM
++	 * @guest_req: marshal TVM information and state change requests
+ 	 *
+ 	 * Context: @probe, @remove, @connect, and @disconnect run under
+ 	 * pci_tsm_rwsem held for write to sync with TSM unregistration and
+ 	 * mutual exclusion of @connect and @disconnect. @connect and
+ 	 * @disconnect additionally run under the DSM lock (struct
+ 	 * pci_tsm_pf0::lock) as well as @probe and @remove of the subfunctions.
+-	 * @bind and @unbind run under pci_tsm_rwsem held for read and the DSM
+-	 * lock.
++	 * @bind, @unbind, and @guest_req run under pci_tsm_rwsem held for read
++	 * and the DSM lock.
+ 	 */
+ 	struct_group_tagged(pci_tsm_link_ops, link_ops,
+ 		struct pci_tsm *(*probe)(struct tsm_dev *tsm_dev,
+@@ -51,6 +53,11 @@ struct pci_tsm_ops {
+ 		struct pci_tdi *(*bind)(struct pci_dev *pdev,
+ 					struct kvm *kvm, u32 tdi_id);
+ 		void (*unbind)(struct pci_tdi *tdi);
++		ssize_t (*guest_req)(struct pci_tdi *tdi,
++				     enum pci_tsm_req_scope scope,
++				     sockptr_t req_in, size_t in_len,
++				     sockptr_t req_out, size_t out_len,
++				     u64 *tsm_code);
+ 	);
  
-+/*
-+ * Some devices need help with aliased stream-ids even for idle streams. Use
-+ * this id as the "never enabled" place holder.
+ 	/*
+@@ -152,6 +159,46 @@ static inline bool is_pci_tsm_pf0(struct pci_dev *pdev)
+ 	return PCI_FUNC(pdev->devfn) == 0;
+ }
+ 
++/**
++ * enum pci_tsm_req_scope - Scope of guest requests to be validated by TSM
++ *
++ * Guest requests are a transport for a TVM to communicate with a TSM + DSM for
++ * a given TDI. A TSM driver is responsible for maintaining the kernel security
++ * model and limit commands that may affect the host, or are otherwise outside
++ * the typical TDISP operational model.
 + */
-+#define PCI_IDE_RESERVED_STREAM_ID 255
-+
- void pci_ide_set_nr_streams(struct pci_host_bridge *hb, u16 nr);
- struct pci_ide_partner *pci_ide_to_settings(struct pci_dev *pdev,
- 					    struct pci_ide *ide);
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 0a66230e28cf..1a31353dc109 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -619,6 +619,7 @@ struct pci_host_bridge {
- #ifdef CONFIG_PCI_IDE
- 	u16 nr_ide_streams; /* Max streams possibly active in @ide_stream_ida */
- 	struct ida ide_stream_ida;
-+	struct ida ide_stream_ids_ida; /* track unique ids per domain */
- #endif
- 	u8 (*swizzle_irq)(struct pci_dev *, u8 *); /* Platform IRQ swizzler */
- 	int (*map_irq)(const struct pci_dev *, u8, u8);
-diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
-index d7fc741f3a26..33b3c54c62a1 100644
---- a/drivers/pci/ide.c
-+++ b/drivers/pci/ide.c
-@@ -35,8 +35,54 @@ static int sel_ide_offset(struct pci_dev *pdev,
- 				settings->stream_index, pdev->nr_ide_mem);
- }
- 
-+static bool reserve_stream_index(struct pci_dev *pdev, u8 idx)
-+{
-+	int ret;
-+
-+	ret = ida_alloc_range(&pdev->ide_stream_ida, idx, idx, GFP_KERNEL);
-+	if (ret < 0)
-+		return false;
-+	return true;
-+}
-+
-+static bool reserve_stream_id(struct pci_host_bridge *hb, u8 id)
-+{
-+	int ret;
-+
-+	ret = ida_alloc_range(&hb->ide_stream_ids_ida, id, id, GFP_KERNEL);
-+	if (ret < 0)
-+		return false;
-+	return true;
-+}
-+
-+static bool claim_stream(struct pci_host_bridge *hb, u8 stream_id,
-+			 struct pci_dev *pdev, u8 stream_idx)
-+{
-+	dev_info(&hb->dev, "Stream ID %d active at init\n", stream_id);
-+	if (!reserve_stream_id(hb, stream_id)) {
-+		dev_info(&hb->dev, "Failed to claim %s Stream ID %d\n",
-+			 stream_id == PCI_IDE_RESERVED_STREAM_ID ? "reserved" :
-+								   "active",
-+			 stream_id);
-+		return false;
-+	}
-+
-+	/* No stream index to reserve in the Link IDE case */
-+	if (!pdev)
-+		return true;
-+
-+	if (!reserve_stream_index(pdev, stream_idx)) {
-+		pci_info(pdev, "Failed to claim active Selective Stream %d\n",
-+			 stream_idx);
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
- void pci_ide_init(struct pci_dev *pdev)
- {
-+	struct pci_host_bridge *hb = pci_find_host_bridge(pdev->bus);
- 	u16 nr_link_ide, nr_ide_mem, nr_streams;
- 	u16 ide_cap;
- 	u32 val;
-@@ -83,6 +129,7 @@ void pci_ide_init(struct pci_dev *pdev)
- 		int pos = __sel_ide_offset(ide_cap, nr_link_ide, i, nr_ide_mem);
- 		int nr_assoc;
- 		u32 val;
-+		u8 id;
- 
- 		pci_read_config_dword(pdev, pos + PCI_IDE_SEL_CAP, &val);
- 
-@@ -98,6 +145,51 @@ void pci_ide_init(struct pci_dev *pdev)
- 		}
- 
- 		nr_ide_mem = nr_assoc;
-+
-+		/*
-+		 * Claim Stream IDs and Selective Stream blocks that are already
-+		 * active on the device
-+		 */
-+		pci_read_config_dword(pdev, pos + PCI_IDE_SEL_CTL, &val);
-+		id = FIELD_GET(PCI_IDE_SEL_CTL_ID, val);
-+		if ((val & PCI_IDE_SEL_CTL_EN) &&
-+		    !claim_stream(hb, id, pdev, i))
-+			return;
-+	}
-+
-+	/* Reserve link stream-ids that are already active on the device */
-+	for (u16 i = 0; i < nr_link_ide; ++i) {
-+		int pos = ide_cap + PCI_IDE_LINK_STREAM_0 + i * PCI_IDE_LINK_BLOCK_SIZE;
-+		u8 id;
-+
-+		pci_read_config_dword(pdev, pos + PCI_IDE_LINK_CTL_0, &val);
-+		id = FIELD_GET(PCI_IDE_LINK_CTL_ID, val);
-+		if ((val & PCI_IDE_LINK_CTL_EN) &&
-+		    !claim_stream(hb, id, NULL, -1))
-+			return;
-+	}
-+
-+	for (u16 i = 0; i < nr_streams; i++) {
-+		int pos = __sel_ide_offset(ide_cap, nr_link_ide, i, nr_ide_mem);
-+
-+		pci_read_config_dword(pdev, pos + PCI_IDE_SEL_CAP, &val);
-+		if (val & PCI_IDE_SEL_CTL_EN)
-+			continue;
-+		val &= ~PCI_IDE_SEL_CTL_ID;
-+		val |= FIELD_PREP(PCI_IDE_SEL_CTL_ID, PCI_IDE_RESERVED_STREAM_ID);
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_CTL, val);
-+	}
-+
-+	for (u16 i = 0; i < nr_link_ide; ++i) {
-+		int pos = ide_cap + PCI_IDE_LINK_STREAM_0 +
-+			  i * PCI_IDE_LINK_BLOCK_SIZE;
-+
-+		pci_read_config_dword(pdev, pos, &val);
-+		if (val & PCI_IDE_LINK_CTL_EN)
-+			continue;
-+		val &= ~PCI_IDE_LINK_CTL_ID;
-+		val |= FIELD_PREP(PCI_IDE_LINK_CTL_ID, PCI_IDE_RESERVED_STREAM_ID);
-+		pci_write_config_dword(pdev, pos, val);
- 	}
- 
- 	pdev->ide_cap = ide_cap;
-@@ -301,6 +393,28 @@ void pci_ide_stream_release(struct pci_ide *ide)
- }
- EXPORT_SYMBOL_GPL(pci_ide_stream_release);
- 
-+struct pci_ide_stream_id {
-+	struct pci_host_bridge *hb;
-+	u8 stream_id;
++enum pci_tsm_req_scope {
++	/**
++	 * @PCI_TSM_REQ_INFO: Read-only, without side effects, request for
++	 * typical TDISP collateral information like Device Interface Reports.
++	 * No device secrets are permitted, and no device state is changed.
++	 */
++	PCI_TSM_REQ_INFO = 0,
++	/**
++	 * @PCI_TSM_REQ_STATE_CHANGE: Request to change the TDISP state from
++	 * UNLOCKED->LOCKED, LOCKED->RUN, or other architecture specific state
++	 * changes to support those transitions for a TDI. No other (unrelated
++	 * to TDISP) device / host state, configuration, or data change is
++	 * permitted.
++	 */
++	PCI_TSM_REQ_STATE_CHANGE = 1,
++	/**
++	 * @PCI_TSM_REQ_DEBUG_READ: Read-only request for debug information
++	 *
++	 * A method to facilitate TVM information retrieval outside of typical
++	 * TDISP operational requirements. No device secrets are permitted.
++	 */
++	PCI_TSM_REQ_DEBUG_READ = 2,
++	/**
++	 * @PCI_TSM_REQ_DEBUG_WRITE: Device state changes for debug purposes
++	 *
++	 * The request may affect the operational state of the device outside of
++	 * the TDISP operational model. If allowed, requires CAP_SYS_RAW_IO, and
++	 * will taint the kernel.
++	 */
++	PCI_TSM_REQ_DEBUG_WRITE = 3,
 +};
 +
-+static struct pci_ide_stream_id *alloc_stream_id(struct pci_host_bridge *hb,
-+						 u8 stream_id,
-+						 struct pci_ide_stream_id *sid)
-+{
-+	if (!reserve_stream_id(hb, stream_id))
-+		return NULL;
-+
-+	*sid = (struct pci_ide_stream_id) {
-+		.hb = hb,
-+		.stream_id = stream_id,
-+	};
-+
-+	return sid;
-+}
-+DEFINE_FREE(free_stream_id, struct pci_ide_stream_id *,
-+	    if (_T) ida_free(&_T->hb->ide_stream_ids_ida, _T->stream_id))
-+
- /**
-  * pci_ide_stream_register() - Prepare to activate an IDE Stream
-  * @ide: IDE settings descriptor
-@@ -313,6 +427,7 @@ int pci_ide_stream_register(struct pci_ide *ide)
+ #ifdef CONFIG_PCI_TSM
+ int pci_tsm_register(struct tsm_dev *tsm_dev);
+ void pci_tsm_unregister(struct tsm_dev *tsm_dev);
+@@ -166,6 +213,9 @@ int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u32 tdi_id);
+ void pci_tsm_unbind(struct pci_dev *pdev);
+ void pci_tsm_tdi_constructor(struct pci_dev *pdev, struct pci_tdi *tdi,
+ 			     struct kvm *kvm, u32 tdi_id);
++ssize_t pci_tsm_guest_req(struct pci_dev *pdev, enum pci_tsm_req_scope scope,
++			  sockptr_t req_in, size_t in_len, sockptr_t req_out,
++			  size_t out_len, u64 *tsm_code);
+ #else
+ static inline int pci_tsm_register(struct tsm_dev *tsm_dev)
  {
- 	struct pci_dev *pdev = ide->pdev;
- 	struct pci_host_bridge *hb = pci_find_host_bridge(pdev->bus);
-+	struct pci_ide_stream_id __sid;
- 	u8 ep_stream, rp_stream;
- 	int rc;
- 
-@@ -321,6 +436,13 @@ int pci_ide_stream_register(struct pci_ide *ide)
- 		return -ENXIO;
- 	}
- 
-+	struct pci_ide_stream_id *sid __free(free_stream_id) =
-+		alloc_stream_id(hb, ide->stream_id, &__sid);
-+	if (!sid) {
-+		pci_err(pdev, "Setup fail: Stream ID %d in use\n", ide->stream_id);
-+		return -EBUSY;
-+	}
-+
- 	ep_stream = ide->partner[PCI_IDE_EP].stream_index;
- 	rp_stream = ide->partner[PCI_IDE_RP].stream_index;
- 	const char *name __free(kfree) = kasprintf(GFP_KERNEL, "stream%d.%d.%d",
-@@ -335,6 +457,9 @@ int pci_ide_stream_register(struct pci_ide *ide)
- 
- 	ide->name = no_free_ptr(name);
- 
-+	/* Stream ID reservation recorded in @ide is now successfully registered */
-+	retain_and_null_ptr(sid);
-+
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(pci_ide_stream_register);
-@@ -353,6 +478,7 @@ void pci_ide_stream_unregister(struct pci_ide *ide)
- 
- 	sysfs_remove_link(&hb->dev.kobj, ide->name);
- 	kfree(ide->name);
-+	ida_free(&hb->ide_stream_ids_ida, ide->stream_id);
- 	ide->name = NULL;
- }
- EXPORT_SYMBOL_GPL(pci_ide_stream_unregister);
-@@ -614,6 +740,8 @@ void pci_ide_init_host_bridge(struct pci_host_bridge *hb)
+@@ -187,5 +237,13 @@ static inline int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u64 tdi_id
+ static inline void pci_tsm_unbind(struct pci_dev *pdev)
  {
- 	hb->nr_ide_streams = 256;
- 	ida_init(&hb->ide_stream_ida);
-+	ida_init(&hb->ide_stream_ids_ida);
-+	reserve_stream_id(hb, PCI_IDE_RESERVED_STREAM_ID);
  }
- 
- static ssize_t available_secure_streams_show(struct device *dev,
-@@ -682,3 +810,8 @@ void pci_ide_set_nr_streams(struct pci_host_bridge *hb, u16 nr)
- 	sysfs_update_group(&hb->dev.kobj, &pci_ide_attr_group);
- }
- EXPORT_SYMBOL_NS_GPL(pci_ide_set_nr_streams, "PCI_IDE");
-+
-+void pci_ide_destroy(struct pci_dev *pdev)
++static inline ssize_t pci_tsm_guest_req(struct pci_dev *pdev,
++					enum pci_tsm_req_scope scope,
++					sockptr_t req_in, size_t in_len,
++					sockptr_t req_out, size_t out_len,
++					u64 *tsm_code)
 +{
-+	ida_destroy(&pdev->ide_stream_ida);
++	return -ENXIO;
 +}
-diff --git a/drivers/pci/remove.c b/drivers/pci/remove.c
-index 803391892c4a..417a9ea59117 100644
---- a/drivers/pci/remove.c
-+++ b/drivers/pci/remove.c
-@@ -70,6 +70,7 @@ static void pci_destroy_dev(struct pci_dev *dev)
- 	up_write(&pci_bus_sem);
+ #endif
+ #endif /*__PCI_TSM_H */
+diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
+index f0e38d7fee38..4dd518b45eea 100644
+--- a/drivers/pci/tsm.c
++++ b/drivers/pci/tsm.c
+@@ -354,6 +354,69 @@ int pci_tsm_bind(struct pci_dev *pdev, struct kvm *kvm, u32 tdi_id)
+ }
+ EXPORT_SYMBOL_GPL(pci_tsm_bind);
  
- 	pci_doe_destroy(dev);
-+	pci_ide_destroy(dev);
- 	pcie_aspm_exit_link_state(dev);
- 	pci_bridge_d3_update(dev);
- 	pci_pwrctrl_unregister(&dev->dev);
++/**
++ * pci_tsm_guest_req() - helper to marshal guest requests to the TSM driver
++ * @pdev: @pdev representing a bound tdi
++ * @scope: caller asserts this passthrough request is limited to TDISP operations
++ * @req_in: Input payload forwarded from the guest
++ * @in_len: Length of @req_in
++ * @req_out: Output payload buffer response to the guest
++ * @out_len: Length of @req_out on input, bytes filled in @req_out on output
++ * @tsm_code: Optional TSM arch specific result code for the guest TSM
++ *
++ * This is a common entry point for requests triggered by userspace KVM-exit
++ * service handlers responding to TDI information or state change requests. The
++ * scope parameter limits requests to TDISP state management, or limited debug.
++ * This path is only suitable for commands and results that are the host kernel
++ * has no use, the host is only facilitating guest to TSM communication.
++ *
++ * Returns 0 on success and -error on failure and positive "residue" on success
++ * but @req_out is filled with less then @out_len, or @req_out is NULL and a
++ * residue number of bytes were not consumed from @req_in.  On success or
++ * failure @tsm_code may be populated with a TSM implementation specific result
++ * code for the guest to consume.
++ *
++ * Context: Caller is responsible for calling this within the pci_tsm_bind()
++ * state of the TDI.
++ */
++ssize_t pci_tsm_guest_req(struct pci_dev *pdev, enum pci_tsm_req_scope scope,
++			  sockptr_t req_in, size_t in_len, sockptr_t req_out,
++			  size_t out_len, u64 *tsm_code)
++{
++	struct pci_tsm_pf0 *tsm_pf0;
++	struct pci_tdi *tdi;
++	int rc;
++
++	/*
++	 * Forbid requests that are not directly related to TDISP
++	 * operations
++	 */
++	if (scope > PCI_TSM_REQ_STATE_CHANGE)
++		return -EINVAL;
++
++	ACQUIRE(rwsem_read_intr, lock)(&pci_tsm_rwsem);
++	if ((rc = ACQUIRE_ERR(rwsem_read_intr, &lock)))
++		return rc;
++
++	if (!pdev->tsm)
++		return -ENXIO;
++
++	if (!is_link_tsm(pdev->tsm->tsm_dev))
++		return -ENXIO;
++
++	tsm_pf0 = to_pci_tsm_pf0(pdev->tsm);
++	ACQUIRE(mutex_intr, ops_lock)(&tsm_pf0->lock);
++	if ((rc = ACQUIRE_ERR(mutex_intr, &ops_lock)))
++		return rc;
++
++	tdi = pdev->tsm->tdi;
++	if (!tdi)
++		return -ENXIO;
++	return to_pci_tsm_ops(pdev->tsm)->guest_req(tdi, scope, req_in, in_len,
++						    req_out, out_len, tsm_code);
++}
++EXPORT_SYMBOL_GPL(pci_tsm_guest_req);
++
+ static void pci_tsm_unbind_all(struct pci_dev *pdev)
+ {
+ 	pci_tsm_walk_fns_reverse(pdev, __pci_tsm_unbind, NULL);
 -- 
 2.51.0
 
