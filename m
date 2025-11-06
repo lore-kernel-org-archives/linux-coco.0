@@ -1,195 +1,156 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011039.outbound.protection.outlook.com [40.93.194.39])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0FA1DF254;
-	Thu,  6 Nov 2025 03:40:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.39
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762400428; cv=fail; b=pgfRo/rLdw3nc7opt4C+1hQ9Zjhvs1scI/HzoZ/S5T5mBBtMSuSQ7BONexo9fk003nULgBUizNAkq6TGu5LTuCtZJX+N/5sOs6I8nQ8/GzM2ciM0GJ3vMbJEu4q4wyjCT+OoEH++HCB6mWf3sFLy2GkfjuNUgiKy1jmcyWDIqbg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762400428; c=relaxed/simple;
-	bh=+s6ZJpmxynzX6LMNVtJ+PaEmyDz4J9eHFIOVMraiOFk=;
-	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=QMwh5vYjOiBzzWQ7pQ3A2OGSqEgsH8zFKFFJflE187Mpr6LjLARa6kuzgCnCvHBWL54PdYp9EfGGrwBrTP0AanMix0Mfr0dZPV3GPZHRRABYl65xKqCeFzeTItC6gpBbeqKyQyOy/PABwJRsdWRPHrc/y8gCbwl4tc4fuJ5Ue7I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=3btLGBNU; arc=fail smtp.client-ip=40.93.194.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B05A12B94
+	for <linux-coco@lists.linux.dev>; Thu,  6 Nov 2025 05:32:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762407175; cv=none; b=Ht4r0o67bv47lfuJ9rPTXRflm4gLRrcz9eJUel3eWrAUXhrF7LCCESmwgeV07iG4qLOE21WTsdKKys8NmtS7/C8wmxevBhQFozodcMozyxKaaSs8UQyVVR8G0QHNoEyLO4lW/U4c4dmOL3CD0+MROTcc6i39DYJV3O9bsIC3xdM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762407175; c=relaxed/simple;
+	bh=dYFY6jnUpiXgj5PLMHXwpCT3ul2RIVubhKiYN9VOHeE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sJTttxZtBUycbeauyDET5fWNdEJk1neohwbi+udiy+msfMMvugWSDJmewy/kYcS8TbT7ygDHa63oGT23l815HIbNOQD4Yq5VhsaUDfF4x6jrW/QSE/xD4O8V0I5IIY6z1Kcs5wcGofMsfZScrY7aozwkT3DGGxzpi9rHq4K5Grc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=REF7shGR; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="3btLGBNU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wmwtpJAgFumF3yhm+fFQ3WFRJeWrFvA/WZtZ4HifACoCFC1xEHozKkHrKstLzLOir0N9RUcYN4oFrTPwh/7ZeVVgKPLf32NMg7gNo3KvYNwOtoDMOJ683ObEV9qY9O2JzxFADDw9KWoI76XEJ9mR+L+llfDBcsSXszVfysWNro1C8LjHtkayAVi3pRmwuTFyC9mO84VBhoT071MMOU4YUmBIDffAWK9y9WHCIGDZCzFVAcBuertZSLrovJ8k6PQQWuUe1tw2CeunQ0Qe62HzlV43zEN9pZAUT1LOtjdWXfC8QTe53O9awCSpoWcw2GnLcC6MyCw0AsxTkwVWLmZCqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=12ZeGXRvAV01nEBa1XrPYdowMSmOQ3JaYHQ/tRDvNVg=;
- b=lTeIwj83CGw+UT7OUxIW80fLfZ/CS8pIFgWiXZXfgjdqgpUxlVc8p+gZIliTer+NT/D0HvLIDiiocWHzFS3qkVQ4oupyRlFaJUZDOfy8svxRVHFqbxOeHVeRnHmydehc9HDMs48vNYGXFftN9HUdhA94cyZKaovk1TEHBA7J14cRGOJSI/haip2EndRPIUpKrzigyJ1oBn+nT9kVXtDtskSg3I1zUb08D+punACX+1o5EQ2XHy8gI0/nwhx87q4AtBxakpL7aCkSx/eSaApIp9c3ML2aJtqgPy+TgBpI48Rwsw0ekszvRY72ReBoJV0UMrtRAIpsBhoN4miE6fjijQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=12ZeGXRvAV01nEBa1XrPYdowMSmOQ3JaYHQ/tRDvNVg=;
- b=3btLGBNUEA0Xb8Oq8nj/QmpZqzbk9OPPKbRlFfgG9vM/RZvrgUxQxTGHi2M8KwTqVYVwsXk7FilL99VKxEI0OD9yJr3ZfeHHCQDUyKt3UFfQv65o0O9G5SEGIgd0rueZ/q0oChIFf5qKnUD2fLUKTnjwmaCu8CRwwmoqjuQSfJk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from IA1PR12MB8285.namprd12.prod.outlook.com (2603:10b6:208:3f6::19)
- by CY8PR12MB7755.namprd12.prod.outlook.com (2603:10b6:930:87::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.8; Thu, 6 Nov
- 2025 03:40:23 +0000
-Received: from IA1PR12MB8285.namprd12.prod.outlook.com
- ([fe80::641e:18ea:bbe:19e1]) by IA1PR12MB8285.namprd12.prod.outlook.com
- ([fe80::641e:18ea:bbe:19e1%5]) with mapi id 15.20.9298.007; Thu, 6 Nov 2025
- 03:40:23 +0000
-Message-ID: <79f2ac24-c716-4dcc-aa56-288a2539013e@amd.com>
-Date: Wed, 5 Nov 2025 19:40:20 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: SVSM draft specification (v1.01 draft #3)
-From: Melody Wang <huibo.wang@amd.com>
-To: "Lendacky, Thomas" <Thomas.Lendacky@amd.com>,
- "coconut-svsm@lists.linux.dev" <coconut-svsm@lists.linux.dev>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- Jon Lange <jlange@microsoft.com>
-Cc: "kraxel@redhat.com" <kraxel@redhat.com>,
- "Relph, Richard" <Richard.Relph@amd.com>, "Rodel, Jorg"
- <Joerg.Roedel@amd.com>
-References: <39cc8435-5643-4a16-8eb5-5e12f15566a1@amd.com>
- <e1ff5baa-39d5-408b-afea-79cb398f0ac4@amd.com>
- <466b9735-279d-4353-8ec7-8edc54c24986@amd.com>
- <CY8PR12MB830036BA88DD5997A707ACAB95C2A@CY8PR12MB8300.namprd12.prod.outlook.com>
-Content-Language: en-US
-In-Reply-To: <CY8PR12MB830036BA88DD5997A707ACAB95C2A@CY8PR12MB8300.namprd12.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PH8PR22CA0003.namprd22.prod.outlook.com
- (2603:10b6:510:2d1::6) To IA1PR12MB8285.namprd12.prod.outlook.com
- (2603:10b6:208:3f6::19)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="REF7shGR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762407173; x=1793943173;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dYFY6jnUpiXgj5PLMHXwpCT3ul2RIVubhKiYN9VOHeE=;
+  b=REF7shGRUpe44GtB7GE5tyOAXaP98i3vfGWOwDAr8gwFRNrCoqj424Bu
+   B+Wj95apW+rfB7yTuv/pCibcU17nKOxU9EHga0ghHi1F8xSpjBx2XfrTS
+   +yvRmDf97Wkub7Z2ZPNJC7LJDQOAeZICQJd+14Xd0EGMeIo/WR4/ICVhE
+   AywNfli2AOE7sjupkKkPtO2MM+nCEXbELmYXLV7SRRTmTa4iVBEirZoqY
+   +a9VnZNLpehMNC22nKMG7c69vuQieuelOtIDMXartPqT6mi2q0lQl0Unh
+   WFOGxU52SW3+ACXuFSLOgCzpQe4huzVSDF2G1PVXUPZzfIrBX7e35DtPd
+   w==;
+X-CSE-ConnectionGUID: 70Y/bxvCSA+VK3K1+Mh1Cw==
+X-CSE-MsgGUID: B9LJBBxYT/CPMVBERbO1Yg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="64570657"
+X-IronPort-AV: E=Sophos;i="6.19,283,1754982000"; 
+   d="scan'208";a="64570657"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2025 21:32:52 -0800
+X-CSE-ConnectionGUID: jqEYUw3lRTKI+hbD6aQ68Q==
+X-CSE-MsgGUID: HGY1AkkARrmqqoPM0QTaXw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,283,1754982000"; 
+   d="scan'208";a="192835393"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa005.jf.intel.com with ESMTP; 05 Nov 2025 21:32:50 -0800
+Date: Thu, 6 Nov 2025 13:18:41 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: dan.j.williams@intel.com
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
+	linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+	xin@zytor.com, chao.gao@intel.com
+Subject: Re: [RFC PATCH 20/27] coco/tdx-host: Add connect()/disconnect()
+ handlers prototype
+Message-ID: <aQwvsbZy50ac+xid@yilunxu-OptiPlex-7050>
+References: <20250919142237.418648-1-dan.j.williams@intel.com>
+ <20250919142237.418648-21-dan.j.williams@intel.com>
+ <20251030112055.00001fcb@huawei.com>
+ <69093bf7d6ee_74f59100fe@dwillia2-mobl4.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR12MB8285:EE_|CY8PR12MB7755:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5b3aa96c-0e7b-4f32-ff9a-08de1ce6375a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UHRLUEh2NUlpRndHZG9ncU1DS0FxbmFGbVNDZ0UvTlNlNEhlZzUxdDgxWFBG?=
- =?utf-8?B?SkIzZjdrTkk4WmdqT3AwMHRZTUhjQ1JUb2VYb0RUbzdnVFNwZFllNld3V2J2?=
- =?utf-8?B?TnFPNExsQVQ5RVpLUmJWb2IyOERZRllYYkh1ak5sMzlmYmxUQTNKYkZSME9X?=
- =?utf-8?B?YnhuSjlFdkZRSnJUT2syU2hJMEwzUkR4clVoTWFvZnowb21MYWNWWlJidVlq?=
- =?utf-8?B?elJaK01MZEp2dk53czNUdjFVdlNoaC9UN3BDU091ZUZyOHFsUVBML0Vhanpu?=
- =?utf-8?B?bTlvZlBPbWdRR3ZEdHVVNkVmNk9BU1Y3TEp1WlJjTEw5c2UrT2ZyRko1TVh6?=
- =?utf-8?B?MytCRmFzSGkwZ3k2NlduT0p2Znk5ZVVNa3l6YkRRYnZkTnpIQjRvMFU0RGE1?=
- =?utf-8?B?RnpzMjNVZUcwTGFNK0FSaFlzL2ZYcUVXV21iMjlIZWIxZ0RFWWlsTHV6RVl2?=
- =?utf-8?B?L2p2MllmNDNCczBWZU4yemw2R3JKRWZkWVlhZklOcDdSQ015QXFuak93cGxC?=
- =?utf-8?B?MVdIWEl4RW9BS2FHVmJQejNIOHd0YU9abWxrM2pHTXFZZkVnZTc4REV6cFFP?=
- =?utf-8?B?V2dneGRqWVNTOENOc09pV1NFMG9uOStTK21uZ2FHYTNmaGZhN2MrMXBPOXF3?=
- =?utf-8?B?SUdqcXNFNkpmdVpsQ2JrYnprUnlEOSs3eFFFUUdqa2xqejBHSjdGYWoyM09U?=
- =?utf-8?B?c05yalo3QXBmdlFNTkVMZHdNY1krVTk0K1pnWWVoWk1RblZ1WUdmZ0FLY1Bw?=
- =?utf-8?B?NGtJR1ZBMUJDQ2dHVlpCMnorYWo5RHhwYzMrY1VGdmJDVnBBNFcvMktTOVVR?=
- =?utf-8?B?cTltemVTT0JwY0VhQUJSeW9ReS94SWlkWmsxRTRnYlVQNDVqUXV1SmJMMW9J?=
- =?utf-8?B?enlFYnZGQUNQRXp6QnRWclZaaTlVYU1WM0g2QU40OUdvbzRoR01KTGpSRE5n?=
- =?utf-8?B?WlVwVVRodEtWUVZmTUE1QS9WOTg5cE12UjhVZjQ0ZUQ2UXJJTGhGQmNiMmdt?=
- =?utf-8?B?cTY5Z0NkMG8vL1NNU0xxNVJsR3NiR3IrUEJhTnluUFI2aVUwVUhpc0VqRzA4?=
- =?utf-8?B?Tk1sU2J0TWw0aEd4N052eWlFUFFhRkFlelV1bGFjcERkR1JORlBDcWRQbXdn?=
- =?utf-8?B?OTRKcGVzQXhrU28rQ25HelNKQlVZN1hmckNFL3RIMW40WE1LaC9ZYWRwdjNL?=
- =?utf-8?B?OFdyUnEzS0NMMnlpbHNUbk5QWDVjTlI5OHhaZFB6T1kyU280TWR3anl3dGw0?=
- =?utf-8?B?VVpBd0g2Q3hCZHdkbzRmRUk0TjJGOEhlQWNDQ0VGdVMyVkhna21KUlJSODdR?=
- =?utf-8?B?RmlrOVpNcVRVeTZLMzZEcFArWWk4OWp4ZmF5ZTExRmVwQzRKRmhMbHpHSzBk?=
- =?utf-8?B?b3pmV2huM2ZQSTR4QnNKQ3VMOFVGNDAyQnJhRHpwc1Y3bnJ1R3JGM2RpYkRv?=
- =?utf-8?B?cUp0VlNWd0pYeTJmU3QrUEU3R2JkTjhwcWdSTm9paHJCNWFlbVYwbXV0ZWpI?=
- =?utf-8?B?MkthdU9kWC8ydHpkUjMwTTVrdnZRV1NFTUdXeHhDYzB4d3JBMnpIN1B3dUlB?=
- =?utf-8?B?OHdEOUFKa0I5dzdUcERRYWI2dnZoZjJPYUhmNiszNjR3SndZWUxiakwxV1Bo?=
- =?utf-8?B?bnVyS01Sd2dnQWErT1lhTTVtemp4cTFHYldHeEYxYXM2Mk9sWkUvVVRLVlYv?=
- =?utf-8?B?S1dGUUNtcDBRbzhSMkszQmFyWHF4dW1pQkhtbURlVllRQnc0VDVEZ3phaitS?=
- =?utf-8?B?d2plWjNTSkVVVU4ydExybUNWQko4dUlaWEpvb2RzQzNoenBMcmpLdmJ5cTl6?=
- =?utf-8?B?VitzTVFJMVV6V1lsaW1WZk42WW8vcThTQVQ1YnU1OEdiVnhNUGJnUjE3WTFK?=
- =?utf-8?B?SmlYT1dKejBjczI0cjZuUStsUGdTNytmTmFGcVFESFFkTE1oVEFDY09DV0w1?=
- =?utf-8?Q?H4mfKb0Aztgpzt0AAlNKSPSQId8zUDhY?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB8285.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cGUwYThnclVYNEo0M0thQWJTZlArZDNrYlBMK1dYWXJpbkwwL1V6aDFxTFo5?=
- =?utf-8?B?UEZmODRkS0NFSzBqOEhMNmZvSmhCS0xENC9aUVdvRjVvNzcycndYYVp0dFl5?=
- =?utf-8?B?NDJ0ZkVlYW5vcE5mOTdYdC94UUo5eVpycnJRM0dtV2RLaU1OWHRUL0lOaDZC?=
- =?utf-8?B?UHVYUXg5RHBHTzVzejNyZk5yakEyVjUwQ0NoSlJEMDNuOVBud3BLdUxDYlBP?=
- =?utf-8?B?VCs2aTRZdjFGWEpuaDdlZWJsVFVzclA0K2VnanE0SnJGZ0hSVWdZNitZM08z?=
- =?utf-8?B?WFFsTzZqRm5DQ252TzNxUUQwRTJEWWN1OUVtVklPUzI3aHdyVFo1VW9ZK2or?=
- =?utf-8?B?QnllNzJzaVFydHdaWnNiTGJTZGduSVRDWkNoYURjT1BoZG8vSmZ4T3A1TUc3?=
- =?utf-8?B?dUZiaVdDNDNyUTFFZWhyMHJsTEhHVkN1S1d6bTBvRW9wMVVmelc2WmhmY0hW?=
- =?utf-8?B?UlFVZ01pWGQraFg2Z2hkMzZDeGk1ZkNoQ3NINmRQSUMzVytIMExiUzNQVmJs?=
- =?utf-8?B?SHJuSHdzZjQ5N0IxRlpFZG81N0oxeEd3TDFQQXpBeUlkVnlrN3hNWTcwTlg1?=
- =?utf-8?B?Q1hOckU4eXFWYzZDRG1ydUVnWHhGMm03UFJyQ1JtdUxYbFlJYTVadjJ1Y01h?=
- =?utf-8?B?SHYzRnpJd1ZzVXF4Vk9lUUw1QWdqZXZNTnQraThRUnAwVktydFVvYzBTZ0Iy?=
- =?utf-8?B?SCtOL2dLR0toenkyK0dZdWMvMmN0bzF4Ti9JbHhyQ1lRWFhvVm9RcmpiS3ZV?=
- =?utf-8?B?ZC9YeFZFekM2TnlCam9tZ2tqMGI4NXFtSjJCMURCWFdIRHdsdDFkZVFQK2pw?=
- =?utf-8?B?VXdIUkZCN0NkeFFTQlh1SmFNU3NqYVFPMzFoZ2kwZ0N3aWg1M2I5YWxEZk9M?=
- =?utf-8?B?eHQ5Z3JtVEwxWVh1M0c5aDQ1SWkycWdqdm0zZWxVdnBpTjRpN1V2VHdNOXpE?=
- =?utf-8?B?bGZ1ZGJzcWNVRGh6RlRyYkNNN3QxR0ZGNDRYS2xVeEM5U3pDMHlCZWFMbm1D?=
- =?utf-8?B?UzRhSnJxNHR2Tko2WVEvUi83cnUveTh0V283OFdqUm53ODhGclNBM3g2Mzdj?=
- =?utf-8?B?T1lJNWFFcUVxdlZHc0lZMGJ6LzJXczUvRThiRXZ4djR1NTNsam14b1IyR0M3?=
- =?utf-8?B?UkN3NTVqMitaNjNXTnRQOUdqUndLZGc4WWtNdVhwMjRHZTZCTkpVR0dIblBp?=
- =?utf-8?B?V3ZSZEl1eGcvbnM3djVMbUYyQlRDckpzTlJqbFExYUdkYzBrSUJQckRsYkdw?=
- =?utf-8?B?d250VlhYUU8zQXQ5T1RoUWFMbWIwMUxPOGMvVmpxU1AzcTVrZWZ0eTMvQ2Zp?=
- =?utf-8?B?NU9xSkZXdVh5dDZJVEp0cVFQbU1DZzNpV2JvQWlEVThCOFdTdlAzb0pBOW1w?=
- =?utf-8?B?Z0wwTmdNaUxlenpXY0hhTkFkMUhTeWVPUHB6TUgzNGg5WDBmWUxzVzVYUzVQ?=
- =?utf-8?B?dnZra3EybDVPcEtZOHhQSjhEV2dqaVhsRjVSc28vcC9xWHBpcDlaY1RQR1Jn?=
- =?utf-8?B?dWZzTWwycjlZeVlCSWVsRDcrNm9ReXlYN1l3czJRNTREeExQeWJJeEdzNWZK?=
- =?utf-8?B?djA3UDZxdEtOYkc4UW9CQ3Nlb013UWp6ODZDSnhlOXlTMzBSbWNWeVlqTDc4?=
- =?utf-8?B?S3p6WDRXVFliK1pLZEcvaUFqTmZEcU4zSWdXT1EycHhTNHN5Z00xcXljV2R5?=
- =?utf-8?B?VVQ4ekFyRzh1cVB3OWRNYzdERXJDQUpyYlZRcjNaNlBlM25SMEowYUgyWVN1?=
- =?utf-8?B?SkVxc1ZURnBqMmY2ajY5eTA1UjcvSlpZL3NRRXBhcHVoMG1ZTXl3ekZzMHl0?=
- =?utf-8?B?aG5Lay9ZK2QwL2d6VWhDL1o3ZWNUaHB2NFN0bmlzL1U0N0NONFZ6eVJIeHRp?=
- =?utf-8?B?WmgwV3ZwbVlQc09MOXhwTVgybDFudERvT08yenZ2MlNQWlZoUHVJRHg3Q05t?=
- =?utf-8?B?V3QzMEFkMEJkcm5QUlJRSHdZcGFMUXByRHJBU0IxWCtaei9SL05DaWI1cXlJ?=
- =?utf-8?B?bkl3dHFrLzN1Q013MHlxVUE4WVdUUVJvOGRGTWxlZDJ1OHd1Y093L1o2Uk1D?=
- =?utf-8?B?a0N5dU9Ra2lmbXJFc3JzbkVrVTN2L1VvRDJBM3JXR08vYVp2Mm02ZEFBZjFU?=
- =?utf-8?Q?cUkMKhddhY9aZEwhlR2T7ubT3?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5b3aa96c-0e7b-4f32-ff9a-08de1ce6375a
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB8285.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2025 03:40:23.1786
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: l0WabV+TmYeZAiTN8kmnQyrh/MwXfTavwOHx4mjx34PfaJ7QWLYL97S/l2ywPGrEKB6Ip12kaWjE5IjoE4f1aw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7755
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <69093bf7d6ee_74f59100fe@dwillia2-mobl4.notmuch>
 
-Sorry the last email was not sent to the mailing list, resend this email 
-to fix it.
-
-Hi Jon,
-
-As mentioned in my previous two emails, the DFR is no longer needed and 
-isn’t supported in X2APIC. Should we remove the DFR from the Alternate 
-Injection spec?
-
-Also, the LDR isn’t currently implemented in the SVSM. Should we plan to 
-add it, or remove it from the spec as well?
-
-Thanks,
-Melody
-
-On 11/5/25 5:07 PM, Wang, Huibo wrote:
+On Mon, Nov 03, 2025 at 03:34:15PM -0800, dan.j.williams@intel.com wrote:
+> Jonathan Cameron wrote:
+> > On Fri, 19 Sep 2025 07:22:29 -0700
+> > Dan Williams <dan.j.williams@intel.com> wrote:
+> > 
+> > > From: Xu Yilun <yilun.xu@linux.intel.com>
+> > > 
+> > > Add basic skeleton for connect()/disconnect() handlers. The major steps
+> > > are SPDM setup first and then IDE selective stream setup.
+> > > 
+> > > No detailed TDX Connect implementation.
+> > > 
+> > > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> > > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > Feels like use of __free() in here is inappropriate to me.
+> > 
+> > > ---
+> > >  drivers/virt/coco/tdx-host/tdx-host.c | 49 ++++++++++++++++++++++++++-
+> > >  1 file changed, 48 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
+> > > index f5a869443b15..0d052a1acf62 100644
+> > > --- a/drivers/virt/coco/tdx-host/tdx-host.c
+> > > +++ b/drivers/virt/coco/tdx-host/tdx-host.c
+> > > @@ -104,13 +104,60 @@ static int __maybe_unused tdx_spdm_msg_exchange(struct tdx_link *tlink,
+> > >  	return ret;
+> > 
+> > > +
+> > > +static void __tdx_link_disconnect(struct tdx_link *tlink)
+> > > +{
+> > > +	tdx_ide_stream_teardown(tlink);
+> > > +	tdx_spdm_session_teardown(tlink);
+> > > +}
+> > > +
+> > > +DEFINE_FREE(__tdx_link_disconnect, struct tdx_link *, if (_T) __tdx_link_disconnect(_T))
+> > > +
+> > >  static int tdx_link_connect(struct pci_dev *pdev)
+> > >  {
+> > > -	return -ENXIO;
+> > > +	struct tdx_link *tlink = to_tdx_link(pdev->tsm);
+> > > +	int ret;
+> > > +
+> > > +	struct tdx_link *__tlink __free(__tdx_link_disconnect) = tlink;
+> > I'm not a fan on an ownership pass like this just for purposes of cleaning up.
 > 
-> Hi Jon,
+> Yeah this needs a rethink. The session and the stream are independent
+> resources. It can be a composite object that encapsulates both
+> resources, but not tlink directly.
 > 
-> As mentioned in my previous two emails, the *DFR* is no longer needed 
-> and isn’t supported in *X2APIC*. Should we remove the DFR from the 
-> *Alternate Injection* spec?
-> Also, the *LDR* isn’t currently implemented in the *SVSM*. Should we 
-> plan to add it, or remove it from the spec as well?
-> Thanks,
-> Melody
+> ...chalk this up to RFC expediency.
+> 
+> > I'd be a bit happier if you could make it
+> > 	struct tdx_link *tlink __free(__tdx_link_disconnect) = to_tdx_link(pdev->dsm);
+> > 
+> > but I still don't really like it.  I think I'd just not use __free and stick
+> > to traditional cleanup in via a goto. 
+> 
+> I would not go that far, but certainly I can see that being preferable
+> than reusing the existing base 'struct tdx_link *' as the cleanup
+> variable.
 
--- 
-Thanks,
-Melody
+The latest implementation internally is as follows. tlink_spdm &
+tlink_ide represent independent resources though they point to the same
+instance. I'm already comfortable about this code:
 
+static int tdx_link_connect(struct pci_dev *pdev)
+{
+	struct tdx_link *tlink = to_tdx_link(pdev->tsm);
+
+	struct tdx_link *tlink_spdm __free(tdx_spdm_session_teardown) =
+		tdx_spdm_session_setup(tlink);
+	if (IS_ERR(tlink_spdm)) {
+		pci_err(pdev, "fail to setup spdm session\n");
+		return PTR_ERR(tlink_spdm);
+	}
+
+	struct tdx_link *tlink_ide __free(tdx_ide_stream_teardown) =
+		tdx_ide_stream_setup(tlink);
+	if (IS_ERR(tlink_ide)) {
+		pci_err(pdev, "fail to setup ide stream\n");
+		return PTR_ERR(tlink_ide);
+	}
+
+	retain_and_null_ptr(tlink_spdm);
+	retain_and_null_ptr(tlink_ide);
+
+	return 0;
+}
