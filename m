@@ -1,61 +1,57 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B05A12B94
-	for <linux-coco@lists.linux.dev>; Thu,  6 Nov 2025 05:32:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B02E271476
+	for <linux-coco@lists.linux.dev>; Thu,  6 Nov 2025 07:49:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762407175; cv=none; b=Ht4r0o67bv47lfuJ9rPTXRflm4gLRrcz9eJUel3eWrAUXhrF7LCCESmwgeV07iG4qLOE21WTsdKKys8NmtS7/C8wmxevBhQFozodcMozyxKaaSs8UQyVVR8G0QHNoEyLO4lW/U4c4dmOL3CD0+MROTcc6i39DYJV3O9bsIC3xdM=
+	t=1762415360; cv=none; b=eFpf1wp0UgKizY0jrIEU0KAhC4T1wfgAQQG2c6VewnLBL23x2siqHLBsjqXGdL9Po9ZQWvHwXRez/P0EgiGAF+u9r0WuwJk/6LpMdgsdBQcqcj4YhKkRH+LcknL2mk2Smn0Bap1X/AWeIUaLo+rOU3lFzEpbBzxSvM2r+40HC8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762407175; c=relaxed/simple;
-	bh=dYFY6jnUpiXgj5PLMHXwpCT3ul2RIVubhKiYN9VOHeE=;
+	s=arc-20240116; t=1762415360; c=relaxed/simple;
+	bh=7fr0FGmy2TGAjLSMYF4Kc3wKuxrdsBuMItL2A+ZjXAc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sJTttxZtBUycbeauyDET5fWNdEJk1neohwbi+udiy+msfMMvugWSDJmewy/kYcS8TbT7ygDHa63oGT23l815HIbNOQD4Yq5VhsaUDfF4x6jrW/QSE/xD4O8V0I5IIY6z1Kcs5wcGofMsfZScrY7aozwkT3DGGxzpi9rHq4K5Grc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=REF7shGR; arc=none smtp.client-ip=192.198.163.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=ulk7Flz48WihWZcZxD37FOWGwGPaTBKjziC3lOG3sPu0iKuDMnsiZDW11kK37OTmSjtlN1wREXOaYuTIHC8LLYqJ/Fx0J1aqnRVJq2JxYW/NS0GSogyEpR+SzT1qhlZJQvjFmvbT9VGAgjz6hgfFvinQ7EvrivX6J6mFBd4y6LQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R5MizLFS; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="REF7shGR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R5MizLFS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762407173; x=1793943173;
+  t=1762415359; x=1793951359;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=dYFY6jnUpiXgj5PLMHXwpCT3ul2RIVubhKiYN9VOHeE=;
-  b=REF7shGRUpe44GtB7GE5tyOAXaP98i3vfGWOwDAr8gwFRNrCoqj424Bu
-   B+Wj95apW+rfB7yTuv/pCibcU17nKOxU9EHga0ghHi1F8xSpjBx2XfrTS
-   +yvRmDf97Wkub7Z2ZPNJC7LJDQOAeZICQJd+14Xd0EGMeIo/WR4/ICVhE
-   AywNfli2AOE7sjupkKkPtO2MM+nCEXbELmYXLV7SRRTmTa4iVBEirZoqY
-   +a9VnZNLpehMNC22nKMG7c69vuQieuelOtIDMXartPqT6mi2q0lQl0Unh
-   WFOGxU52SW3+ACXuFSLOgCzpQe4huzVSDF2G1PVXUPZzfIrBX7e35DtPd
+  bh=7fr0FGmy2TGAjLSMYF4Kc3wKuxrdsBuMItL2A+ZjXAc=;
+  b=R5MizLFS1Hd0Z4iwKgt5XEKetG5YTP6YQtgbiRqtw9cIjkuL+mb3m4lQ
+   r5O/8rnFeS9gmOFgYqHTXVzTBghU+/Q0jYv3FwgbsF1yY44GwelRlWtMs
+   P8TsPhs1LzmdLnfd6YFg4cG+KP9buBUY186IllWBhKlY2lwxcRQWQ/NJD
+   X3JinraaG8B4tVsHmzzsxkdp/FZslZMBef7S7Cjg8SK/R1xgXr7uBvyfS
+   r8gAvj+Y1ycQEuExpMkpMLEFVwql02PqqhV1JNFkr6tzxm+kjHNazJVEt
+   nRNEswewtwjFzHZSdsfG4G/we6DbAOSxovGBFt2UJMy6eEh0QLdT5PR04
    w==;
-X-CSE-ConnectionGUID: 70Y/bxvCSA+VK3K1+Mh1Cw==
-X-CSE-MsgGUID: B9LJBBxYT/CPMVBERbO1Yg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="64570657"
-X-IronPort-AV: E=Sophos;i="6.19,283,1754982000"; 
-   d="scan'208";a="64570657"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2025 21:32:52 -0800
-X-CSE-ConnectionGUID: jqEYUw3lRTKI+hbD6aQ68Q==
-X-CSE-MsgGUID: HGY1AkkARrmqqoPM0QTaXw==
+X-CSE-ConnectionGUID: XFTBqkbtRbeQbg5yMlXaVw==
+X-CSE-MsgGUID: 7ZTXbun2TamtRmTTtYpaFA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="75995974"
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; 
+   d="scan'208";a="75995974"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2025 23:49:19 -0800
+X-CSE-ConnectionGUID: tPp/aWGlSqCWbNFtUhVpmQ==
+X-CSE-MsgGUID: 2k8FFwewTr+aqRxU4cRCLA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,283,1754982000"; 
-   d="scan'208";a="192835393"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa005.jf.intel.com with ESMTP; 05 Nov 2025 21:32:50 -0800
-Date: Thu, 6 Nov 2025 13:18:41 +0800
+  by fmviesa003.fm.intel.com with ESMTP; 05 Nov 2025 23:49:17 -0800
+Date: Thu, 6 Nov 2025 15:35:06 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
-To: dan.j.williams@intel.com
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
-	linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	xin@zytor.com, chao.gao@intel.com
-Subject: Re: [RFC PATCH 20/27] coco/tdx-host: Add connect()/disconnect()
- handlers prototype
-Message-ID: <aQwvsbZy50ac+xid@yilunxu-OptiPlex-7050>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org, xin@zytor.com, chao.gao@intel.com,
+	Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: Re: [RFC PATCH 22/27] coco/tdx-host: Implement SPDM session setup
+Message-ID: <aQxPqjCUAMYwTvkI@yilunxu-OptiPlex-7050>
 References: <20250919142237.418648-1-dan.j.williams@intel.com>
- <20250919142237.418648-21-dan.j.williams@intel.com>
- <20251030112055.00001fcb@huawei.com>
- <69093bf7d6ee_74f59100fe@dwillia2-mobl4.notmuch>
+ <20250919142237.418648-23-dan.j.williams@intel.com>
+ <20251030113622.00001e2b@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -64,93 +60,82 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <69093bf7d6ee_74f59100fe@dwillia2-mobl4.notmuch>
+In-Reply-To: <20251030113622.00001e2b@huawei.com>
 
-On Mon, Nov 03, 2025 at 03:34:15PM -0800, dan.j.williams@intel.com wrote:
-> Jonathan Cameron wrote:
-> > On Fri, 19 Sep 2025 07:22:29 -0700
-> > Dan Williams <dan.j.williams@intel.com> wrote:
-> > 
-> > > From: Xu Yilun <yilun.xu@linux.intel.com>
-> > > 
-> > > Add basic skeleton for connect()/disconnect() handlers. The major steps
-> > > are SPDM setup first and then IDE selective stream setup.
-> > > 
-> > > No detailed TDX Connect implementation.
-> > > 
-> > > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> > > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> > Feels like use of __free() in here is inappropriate to me.
-> > 
-> > > ---
-> > >  drivers/virt/coco/tdx-host/tdx-host.c | 49 ++++++++++++++++++++++++++-
-> > >  1 file changed, 48 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
-> > > index f5a869443b15..0d052a1acf62 100644
-> > > --- a/drivers/virt/coco/tdx-host/tdx-host.c
-> > > +++ b/drivers/virt/coco/tdx-host/tdx-host.c
-> > > @@ -104,13 +104,60 @@ static int __maybe_unused tdx_spdm_msg_exchange(struct tdx_link *tlink,
-> > >  	return ret;
-> > 
-> > > +
-> > > +static void __tdx_link_disconnect(struct tdx_link *tlink)
-> > > +{
-> > > +	tdx_ide_stream_teardown(tlink);
-> > > +	tdx_spdm_session_teardown(tlink);
-> > > +}
-> > > +
-> > > +DEFINE_FREE(__tdx_link_disconnect, struct tdx_link *, if (_T) __tdx_link_disconnect(_T))
-> > > +
-> > >  static int tdx_link_connect(struct pci_dev *pdev)
-> > >  {
-> > > -	return -ENXIO;
-> > > +	struct tdx_link *tlink = to_tdx_link(pdev->tsm);
-> > > +	int ret;
-> > > +
-> > > +	struct tdx_link *__tlink __free(__tdx_link_disconnect) = tlink;
-> > I'm not a fan on an ownership pass like this just for purposes of cleaning up.
+> > +struct spdm_config_info_t {
+> > +	u32 vmm_spdm_cap;
+> > +#define SPDM_CAP_HBEAT          BIT(13)
+> > +#define SPDM_CAP_KEY_UPD        BIT(14)
+> > +	u8 spdm_session_policy;
+> > +	u8 certificate_slot_mask;
+> > +	u8 raw_bitstream_requested;
+> > +	u8 reserved[];
+> Given the only use in here that I can immediately spot is on the
+> stack with nothing in reserved (so zero size) + you then memcpy that into
+> another buffer, why bother having reserved in this declaration?
+
+I'll delete the reserved.
+
+> > +} __packed;
+> > +
+> >  static struct pci_tsm_ops tdx_link_ops;
+> >  
+> >  static struct pci_tsm *tdx_link_pf0_probe(struct tsm_dev *tsm_dev,
+> >  					  struct pci_dev *pdev)
+> >  {
+> > +	const struct spdm_config_info_t spdm_config_info = {
+> > +		/* use a default configuration, may require user input later */
+> > +		.vmm_spdm_cap = SPDM_CAP_KEY_UPD,
+> > +		.certificate_slot_mask = 0xff,
+> > +	};
+> >  	int rc;
+> >  
+> >  	struct tdx_link *tlink __free(kfree) =
+> > @@ -176,6 +423,29 @@ static struct pci_tsm *tdx_link_pf0_probe(struct tsm_dev *tsm_dev,
+> >  	if (rc)
+> >  		return NULL;
+> >  
+> > +	tlink->func_id = tdisp_func_id(pdev);
+> > +
+> > +	struct page *in_msg_page __free(__free_page) =
+> > +		alloc_page(GFP_KERNEL | __GFP_ZERO);
+> > +	if (!in_msg_page)
+> > +		return NULL;
+> > +
+> > +	struct page *out_msg_page __free(__free_page) =
+> > +		alloc_page(GFP_KERNEL | __GFP_ZERO);
+> > +	if (!out_msg_page)
+> > +		return NULL;
+> > +
+> > +	struct page *spdm_conf __free(__free_page) =
+> > +		alloc_page(GFP_KERNEL | __GFP_ZERO);
+> > +	if (!spdm_conf)
+> > +		return NULL;
+> > +
+> > +	memcpy(page_address(spdm_conf), &spdm_config_info, sizeof(spdm_config_info));
+> > +
+> > +	tlink->in_msg = no_free_ptr(in_msg_page);
+> > +	tlink->out_msg = no_free_ptr(out_msg_page);
+> > +	tlink->spdm_conf = no_free_ptr(spdm_conf);
+> > +
+> >  	return &no_free_ptr(tlink)->pci.base_tsm;
+> >  }
+> >  
+> > @@ -183,6 +453,9 @@ static void tdx_link_pf0_remove(struct pci_tsm *tsm)
+> >  {
+> >  	struct tdx_link *tlink = to_tdx_link(tsm);
+> >  
+> > +	__free_page(tlink->in_msg);
+> > +	__free_page(tlink->out_msg);
+> > +	__free_page(tlink->spdm_conf);
+> Trivial but I'd prefer to see these freed in reverse order of allocation
+> of where they are set. Just makes reviewing a tiny bit easier as the code
+> evolves.
+
+Will do.
+
 > 
-> Yeah this needs a rethink. The session and the stream are independent
-> resources. It can be a composite object that encapsulates both
-> resources, but not tlink directly.
+> >  	pci_tsm_pf0_destructor(&tlink->pci);
+> >  	kfree(tlink);
+> >  }
 > 
-> ...chalk this up to RFC expediency.
-> 
-> > I'd be a bit happier if you could make it
-> > 	struct tdx_link *tlink __free(__tdx_link_disconnect) = to_tdx_link(pdev->dsm);
-> > 
-> > but I still don't really like it.  I think I'd just not use __free and stick
-> > to traditional cleanup in via a goto. 
-> 
-> I would not go that far, but certainly I can see that being preferable
-> than reusing the existing base 'struct tdx_link *' as the cleanup
-> variable.
-
-The latest implementation internally is as follows. tlink_spdm &
-tlink_ide represent independent resources though they point to the same
-instance. I'm already comfortable about this code:
-
-static int tdx_link_connect(struct pci_dev *pdev)
-{
-	struct tdx_link *tlink = to_tdx_link(pdev->tsm);
-
-	struct tdx_link *tlink_spdm __free(tdx_spdm_session_teardown) =
-		tdx_spdm_session_setup(tlink);
-	if (IS_ERR(tlink_spdm)) {
-		pci_err(pdev, "fail to setup spdm session\n");
-		return PTR_ERR(tlink_spdm);
-	}
-
-	struct tdx_link *tlink_ide __free(tdx_ide_stream_teardown) =
-		tdx_ide_stream_setup(tlink);
-	if (IS_ERR(tlink_ide)) {
-		pci_err(pdev, "fail to setup ide stream\n");
-		return PTR_ERR(tlink_ide);
-	}
-
-	retain_and_null_ptr(tlink_spdm);
-	retain_and_null_ptr(tlink_ide);
-
-	return 0;
-}
