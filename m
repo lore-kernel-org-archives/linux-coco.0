@@ -1,60 +1,59 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D0833E7
-	for <linux-coco@lists.linux.dev>; Sat,  8 Nov 2025 15:59:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926B821C173
+	for <linux-coco@lists.linux.dev>; Sat,  8 Nov 2025 16:30:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762617570; cv=none; b=cxONy+rw9UHcJDlm6x8vqHoxyfiAVpdkGXfVZ6qBZgSHY20O72MAOrOZ+n0ksNekICYj6+Dxi5Sy+96/ommQuiDCwKQvgADMoEKS4BbdcfCIzOUVNIHbiE/4w8IZx2HMPOZEle6APkySPxP3VooFu0gsSndEORQyGJj0bMmvV3c=
+	t=1762619409; cv=none; b=I6chd7t8A6Kc31rdVFwIbg8YO5cjI5mKtUeCZT+FY1pmC3pG1Yfd2DG8lkqx42ihEVnCMGFeP2/FflQVxuBEv6pHcY044hjMFSXuuZ+5fP74kXapCHR/rPYxd6EcqJ2hYmF4voca6X+WFZY5koHzyGwx+ejVLBA8QDP5bf+3sTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762617570; c=relaxed/simple;
-	bh=SWz6gu02dAtpWz/P4x1Pdt/Zmtr9UNLsVuK+uxaYo8E=;
+	s=arc-20240116; t=1762619409; c=relaxed/simple;
+	bh=KLATWUqwVXbxBZdEjJ7uo2sQ3g7+y5KId9IwBrf7ewg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=he+4EYZlEuKuR0U/kTAcxnzbx5uoR7Y+8UaowBbjg5WVsaIWWzpDIn1QcKI3b0s7aLg3qLMSj7HT11x6KNupQG7Wm/gQJ5fXrqTEajeZXJu8u3WCG96DaR8+JDl9xQVXXCoWxdTM6vfeXuuxRLt6eXO6jm2sD1CfuDmai3F4fRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cB0oPqUg; arc=none smtp.client-ip=198.175.65.13
+	 Content-Type:Content-Disposition:In-Reply-To; b=uIpse8a+UrqTOGmi83pof/tWK/NethK39II/fFfXCz72ov0ubB0dffAdJ+ZnXXQcdqBwmwW+SqM4MlrjHqBsK3QelyZT8UyDBcHyIoZhywHyi2H752I+fp5//9EHQ1qS7B0ACYxov8NsII8Sc9128uspHmRKxeCli5ooPZKeAT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g5F54Awa; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cB0oPqUg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g5F54Awa"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762617569; x=1794153569;
+  t=1762619406; x=1794155406;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=SWz6gu02dAtpWz/P4x1Pdt/Zmtr9UNLsVuK+uxaYo8E=;
-  b=cB0oPqUgvicAv21Xi/qwm5BnpIcNgyrneUgAOeVvuLEK3jkCWEo212uw
-   yw401bMJAQ5scY9hKWe/unax62TJmClXO4cYI7Zn6BooGpLU7KOQkufB+
-   0kEwl/9FSPadEF8v+zlTu0qiwXJNJ2Oz7ifyn/xZnDtIWJH1k5k2m2vtC
-   vhQtLpmvh6qCNDkFij4xURjJE+sTPoMlidbTBLHbGzwdGkmCiu5xPkYp/
-   ku9/n7/3y2uDz6ON+N2raWc/axAw8kTJ+7dsR/99LSKLO4IdbhbG/lztY
-   qxDjvevHfT/Oa/HGT4bUHo71QFPy7JTKoWdMh7Eur9wpMDTK5CGPYlmd0
-   g==;
-X-CSE-ConnectionGUID: gbjQRdFzQ6GOme8QJ+1Fhg==
-X-CSE-MsgGUID: i+vudgpGRSWNCjslkUztyA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11607"; a="75849413"
+  bh=KLATWUqwVXbxBZdEjJ7uo2sQ3g7+y5KId9IwBrf7ewg=;
+  b=g5F54Awa8t0XWhva1czrPURNJzb7NpDNHvdT5QxPGZtWeECrgfWHC7hP
+   mUuxNhzjBi31WRE/ylsEIBnPJzG3kDcuRLPtEpVk6PX728A/A7GnAcIxD
+   Mo3BV+EWQiwG213JMo7AoCzporXQ3reW4LDzO1PXj1s+hVY0M1dsU0a7P
+   qQyJglTDKXxZl7Cpf3g5qDQbVXijbkhSgz2NBjw2N6k+qAXZMo/OLblHu
+   LlFsXlgr9fwQMs1nfWX676QrnZrrLFePmDoCKXDdYs/mghUj77VzN6lS/
+   FanHGMOe/OiPf2jRF6FOTB6kUBEvMvbNOUOhw86QVl6x4Umj0VJh4iMb9
+   A==;
+X-CSE-ConnectionGUID: vgqgl6/bRg61LPy87wuB5Q==
+X-CSE-MsgGUID: fWOP1Q4GRNWdFC7Smk3r6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11607"; a="64438589"
 X-IronPort-AV: E=Sophos;i="6.19,289,1754982000"; 
-   d="scan'208";a="75849413"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2025 07:59:28 -0800
-X-CSE-ConnectionGUID: 9NqH486MSDuIM0JxyZtFcQ==
-X-CSE-MsgGUID: LP7DwtGvQoyG4GswHFHnkQ==
+   d="scan'208";a="64438589"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2025 08:30:06 -0800
+X-CSE-ConnectionGUID: xty1xsjLTHCr/+TF0W3FVA==
+X-CSE-MsgGUID: GmMbBg13Te2Tg8IoY3ThUQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,289,1754982000"; 
-   d="scan'208";a="187601444"
+   d="scan'208";a="211728746"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa010.jf.intel.com with ESMTP; 08 Nov 2025 07:59:27 -0800
-Date: Sat, 8 Nov 2025 23:45:09 +0800
+  by fmviesa002.fm.intel.com with ESMTP; 08 Nov 2025 08:30:04 -0800
+Date: Sun, 9 Nov 2025 00:15:47 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: Dan Williams <dan.j.williams@intel.com>
 Cc: linux-pci@vger.kernel.org, linux-coco@lists.linux.dev,
 	gregkh@linuxfoundation.org, aik@amd.com, aneesh.kumar@kernel.org,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH v8 1/9] coco/tsm: Introduce a core device for TEE
- Security Managers
-Message-ID: <aQ9lhQSB8t1VGZ8v@yilunxu-OptiPlex-7050>
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v8 2/9] PCI/IDE: Enumerate Selective Stream IDE
+ capabilities
+Message-ID: <aQ9ss3oK7ds4Srd9@yilunxu-OptiPlex-7050>
 References: <20251031212902.2256310-1-dan.j.williams@intel.com>
- <20251031212902.2256310-2-dan.j.williams@intel.com>
+ <20251031212902.2256310-3-dan.j.williams@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -63,34 +62,37 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251031212902.2256310-2-dan.j.williams@intel.com>
+In-Reply-To: <20251031212902.2256310-3-dan.j.williams@intel.com>
 
-On Fri, Oct 31, 2025 at 02:28:53PM -0700, Dan Williams wrote:
-> A "TSM" is a platform component that provides an API for securely
-> provisioning resources for a confidential guest (TVM) to consume. The
-> name originates from the PCI specification for platform agent that
-> carries out operations for PCIe TDISP (TEE Device Interface Security
-> Protocol).
+On Fri, Oct 31, 2025 at 02:28:54PM -0700, Dan Williams wrote:
+> Link encryption is a new PCIe feature enumerated by "PCIe r7.0 section
+> 7.9.26 IDE Extended Capability".
 > 
-> Instances of this core device are parented by a device representing the
-> platform security function like CONFIG_CRYPTO_DEV_CCP or
-> CONFIG_INTEL_TDX_HOST.
+> It is both a standalone port + endpoint capability, and a building block
+> for the security protocol defined by "PCIe r7.0 section 11 TEE Device
+> Interface Security Protocol (TDISP)". That protocol coordinates device
+> security setup between a platform TSM (TEE Security Manager) and a
+> device DSM (Device Security Manager). While the platform TSM can
+> allocate resources like Stream ID and manage keys, it still requires
+> system software to manage the IDE capability register block.
 > 
-> This device interface is a frontend to the aspects of a TSM and TEE I/O
-> that are cross-architecture common. This includes mechanisms like
-> enumerating available platform TEE I/O capabilities and provisioning
-> connections between the platform TSM and device DSMs (Device Security
-> Manager (TDISP)).
+> Add register definitions and basic enumeration in preparation for
+> Selective IDE Stream establishment. A follow on change selects the new
+> CONFIG_PCI_IDE symbol. Note that while the IDE specification defines
+> both a point-to-point "Link Stream" and a Root Port to endpoint
+> "Selective Stream", only "Selective Stream" is considered for Linux as
+> that is the predominant mode expected by Trusted Execution Environment
+> Security Managers (TSMs), and it is the security model that limits the
+> number of PCI components within the TCB in a PCIe topology with
+> switches.
 > 
-> For now this is just the scaffolding for registering a TSM device sysfs
-> interface.
-> 
-> Cc: Xu Yilun <yilun.xu@linux.intel.com>
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Co-developed-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> Co-developed-by: Alexey Kardashevskiy <aik@amd.com>
+> Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
+> Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > Reviewed-by: Alexey Kardashevskiy <aik@amd.com>
+> Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
 
 Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
 
