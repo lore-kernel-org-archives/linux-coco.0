@@ -1,134 +1,89 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E43D28B7DB
-	for <linux-coco@lists.linux.dev>; Mon, 10 Nov 2025 03:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4322228C00D
+	for <linux-coco@lists.linux.dev>; Mon, 10 Nov 2025 03:59:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762747126; cv=none; b=JCxomkydbk3/xt4TLg26Ws4/vxMDPHGZske/wYhMxf8Ztx/FO+l7HciP9OMeOg55InJFbuBm6q3+R9ixB/F18LrvlHLRe7Ba5iXrSB/8Ie56PHvs2MpmAFdLF/wzH5CSK9AJkZVWliTmNd42XnDXVcQk8dHfZd9c3JP83RDLkoQ=
+	t=1762747191; cv=none; b=M0qNCI3i/yFyjwc0f5w3+CwYVA1bXnYd2gRtq2RVHQBMYzf+5dBLTmh83/MJCAYt4PsnVJlInRVqFN9hDvCr0OeLALhABPkJy19+3ul2WWhNb/D0515kWvR2NbnJdeVlyrK5Kxw0N7BTvrD4W3sYysJ4B0Kl9fg28Ws2DjYk9uM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762747126; c=relaxed/simple;
-	bh=IR4tchos/E8hgWZcbbM8s8lqpQ1h4sKfPoc9AVB+plI=;
+	s=arc-20240116; t=1762747191; c=relaxed/simple;
+	bh=I0FjTHzU8X0vmig/FJeYke3iDTi4CGAfUw2yqwkABOQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p0TRyrcjKi6Ot8eK5ISKBueuhmrJvC+DM5FklJH4HxmnF9Ga7sQWZQ537vMGNTsGl6PARkuxZ/6jvj5eztgSuze4cDxomUPSsD2XHZB8Q0/4moun3SSldgIVx2d8b3/NaoZ7gfD9E+WtAo3bz/0svuJ4uLDw/Wj9uyUzNLvOTUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K7NbbK+8; arc=none smtp.client-ip=198.175.65.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=PEMQo9GmGnwyftrebUIQWIpXD3EqFmRZfVRA9PMcRVh8gFJd5RIWVYH4UgSLcNPsesT/jSyIi73TMhCaYq14WI+mIxRdDy2aCgmFKE1PYRXqeNobKh/r5a9TRC3yfEa4Eydaha53+9RQApwshjPCNnuWSBwQ5J77EtztLNMVhD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kgRQmmCq; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K7NbbK+8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kgRQmmCq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762747124; x=1794283124;
+  t=1762747189; x=1794283189;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IR4tchos/E8hgWZcbbM8s8lqpQ1h4sKfPoc9AVB+plI=;
-  b=K7NbbK+83kvCvDgc+j3n9dxhldmSYLhcvOnjqLXQthn9DZ0PCgP+FyBP
-   mfGcVZgO94P2yyrKBw9Jj7O+WPXQ/fzQSKH2gwi0LxBjIkMQY/cQHJcj/
-   11Uw8W28Kqd6VI0VBB9GOqz2wZL8EMLGRwZxDMTU/Wuu8uooZH22ezZtm
-   wnGx7DNq8m0AoFEyx9Bd16jTHzsEWzP+5+UidIkk0aZ2EBjqRiIvQWU4J
-   x/GbtG4FBBCkNLZ81Wa6/aSEJJdAaXgYMHdvgeiVflHF0P1wDKRhjwZQj
-   lPBG9WTnZ04b3eenNFqm4NPYH8PdLbsX/YAA6JR/xaZvXgbwvYzJ+eKwn
-   w==;
-X-CSE-ConnectionGUID: lWmd15bdR+i8So/qp9NIQQ==
-X-CSE-MsgGUID: IL18q/NqTuyFF9mOg+vdBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11608"; a="64949370"
-X-IronPort-AV: E=Sophos;i="6.19,292,1754982000"; 
-   d="scan'208";a="64949370"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2025 19:58:44 -0800
-X-CSE-ConnectionGUID: lItjY3QqSGGOFJMfltOF7w==
-X-CSE-MsgGUID: Xx1VV85/Q2OleUdn3aWbWw==
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=I0FjTHzU8X0vmig/FJeYke3iDTi4CGAfUw2yqwkABOQ=;
+  b=kgRQmmCqRcMwd1vWqqK4prIZCFBuYLIHN4rBWzi4NwHtIpPQ298tQflT
+   wWk8jlMOqmCJZwVm2pnQSixb7t8p/d7lSnrvm3l2p2QWyuuSwN1z894OG
+   Lg7FRPFOIu8Wq91T3d0N8cIQNUkuW3OhCMXh1UOxBu5+CUaYBgCXq0HEb
+   83CqrtZLFnbu2ISHS5njyoMRCSvB+jBYm+PjtCamDI4uvL9PABsANMe9v
+   ibv/0eFEYXmud6I+cCUQoXrvbeHHFLTu+L4LvJ2m7MCd+mr5d+3GEvsu+
+   OtPTgH86W7g3tkhJQWjTjq0cb6cVjG1YYN/zgCl/bG4p6umK7DitwOTSD
+   g==;
+X-CSE-ConnectionGUID: qcbodIegS/+YIx1ouWj5GA==
+X-CSE-MsgGUID: uZtggfQMSv+q4WEnuKgQ9w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64705082"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="64705082"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2025 19:59:46 -0800
+X-CSE-ConnectionGUID: ZwNJci3ZTIOtMRUDTP0I6w==
+X-CSE-MsgGUID: +scLqliaR6O1mA8geYiCmw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,292,1754982000"; 
-   d="scan'208";a="219299468"
+   d="scan'208";a="211972496"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa001.fm.intel.com with ESMTP; 09 Nov 2025 19:58:41 -0800
-Date: Mon, 10 Nov 2025 11:44:19 +0800
+  by fmviesa002.fm.intel.com with ESMTP; 09 Nov 2025 19:59:36 -0800
+Date: Mon, 10 Nov 2025 11:45:15 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: Dan Williams <dan.j.williams@intel.com>
 Cc: linux-pci@vger.kernel.org, linux-coco@lists.linux.dev,
 	gregkh@linuxfoundation.org, aik@amd.com, aneesh.kumar@kernel.org,
-	Lukas Wunner <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
 	Bjorn Helgaas <bhelgaas@google.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
 	Jonathan Cameron <jonathan.cameron@huawei.com>
-Subject: Re: [PATCH v8 4/9] PCI/TSM: Establish Secure Sessions and Link
- Encryption
-Message-ID: <aRFfk14DJWEVhC/R@yilunxu-OptiPlex-7050>
+Subject: Re: [PATCH v8 5/9] PCI: Add PCIe Device 3 Extended Capability
+ enumeration
+Message-ID: <aRFfy8gQi6+JwLTQ@yilunxu-OptiPlex-7050>
 References: <20251031212902.2256310-1-dan.j.williams@intel.com>
- <20251031212902.2256310-5-dan.j.williams@intel.com>
+ <20251031212902.2256310-6-dan.j.williams@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251031212902.2256310-5-dan.j.williams@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251031212902.2256310-6-dan.j.williams@intel.com>
 
-> +#ifdef CONFIG_PCI_TSM
-> +int pci_tsm_register(struct tsm_dev *tsm_dev);
-> +void pci_tsm_unregister(struct tsm_dev *tsm_dev);
-> +int pci_tsm_link_constructor(struct pci_dev *pdev, struct pci_tsm *tsm,
-> +			     struct tsm_dev *tsm_dev);
-> +int pci_tsm_pf0_constructor(struct pci_dev *pdev, struct pci_tsm_pf0 *tsm,
-> +			    struct tsm_dev *tsm_dev);
-> +void pci_tsm_pf0_destructor(struct pci_tsm_pf0 *tsm);
-> +int pci_tsm_doe_transfer(struct pci_dev *pdev, u8 type, const void *req,
-> +			 size_t req_sz, void *resp, size_t resp_sz);
-> +#else
-> +static inline int pci_tsm_register(struct tsm_dev *tsm_dev)
-> +{
-> +	return 0;
-> +}
-> +static inline void pci_tsm_unregister(struct tsm_dev *tsm_dev)
-> +{
-> +}
-> +static inline int pci_tsm_doe_transfer(struct pci_dev *pdev, u8 type,
-> +				       const void *req, size_t req_sz,
-> +				       void *resp, size_t resp_sz)
-
-Any concern to keep the stub without PCI_TSM?
-pci_tsm_pf0_constructor/destructor() don't do this.
-
-> +{
-> +	return -ENXIO;
-> +}
-> +#endif
-
-[...]
-
-> diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
-> new file mode 100644
-> index 000000000000..6a2849f77adc
-> --- /dev/null
-> +++ b/drivers/pci/tsm.c
-> @@ -0,0 +1,643 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Interface with platform TEE Security Manager (TSM) objects as defined by
-> + * PCIe r7.0 section 11 TEE Device Interface Security Protocol (TDISP)
-> + *
-> + * Copyright(c) 2024-2025 Intel Corporation. All rights reserved.
-> + */
-> +
-> +#define dev_fmt(fmt) "PCI/TSM: " fmt
-> +
-> +#include <linux/bitfield.h>
-
-No need the bitfield.h
-
-> +#include <linux/pci.h>
-> +#include <linux/pci-doe.h>
-> +#include <linux/pci-tsm.h>
-> +#include <linux/sysfs.h>
-> +#include <linux/tsm.h>
-> +#include <linux/xarray.h>
-
-No need the xarray.h
-
-Anyway, they are all minor and cause no impact, I don't expect a new
-version.
+On Fri, Oct 31, 2025 at 02:28:57PM -0700, Dan Williams wrote:
+> PCIe r7.0 Section 7.7.9 Device 3 Extended Capability Structure, defines the
+> canonical location for determining the Flit Mode of a device. This status
+> is a dependency for PCIe IDE enabling. Add a new fm_enabled flag to 'struct
+> pci_dev'.
+> 
+> Cc: Lukas Wunner <lukas@wunner.de>
+> Cc: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Samuel Ortiz <sameo@rivosinc.com>
+> Cc: Alexey Kardashevskiy <aik@amd.com>
+> Cc: Xu Yilun <yilun.xu@linux.intel.com>
+> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
 Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
 
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
