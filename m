@@ -1,145 +1,99 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F302EB87F
-	for <linux-coco@lists.linux.dev>; Mon, 10 Nov 2025 11:52:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A1A2264BA
+	for <linux-coco@lists.linux.dev>; Mon, 10 Nov 2025 15:39:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762775580; cv=none; b=tnlijVu4Vyx9UbWVdj5g861S319qSMPHH2ZAu5Xscqg9nMYb8IELLr/gTn0gkbgg/H0B9Z++hkmWpIWpiSkTdeojuVTor3aDtgC1zUCcx3wbJjp5Z5TzS7J5JqihNwJxFPmXCAeYvjivNVmBjt+ZNnB5r9Awyy1kfz4isqj5pl4=
+	t=1762789141; cv=none; b=OFYBN/yVlxlH8jWG+6K4/8Vv9YQ1cB8Zgqi5dj013ENPj6m9iHjbAQR7x0eMF51D1KS9lhJyqhvrZ1nfxk7JZR8nn33ofZ0yLDvopiDM0hM6loZ19i5TEX8bfx/UGHxeXCzxvgqHJbp5QgkOkVE/7EJO65oerrDUxruhI2DfhYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762775580; c=relaxed/simple;
-	bh=UInVXx6PfxMGWatXk87n8xA//u7uJm12qA+8CDGNxIQ=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cTWrGOesjF1yJIxSrYGRXWK1dpukeknjlAkFy0J1i9I1wxG5j5DLA5HXmW12RRpv/ClVpAOQ9tDAuBcq/yNARb/x+NaHqSWD7eKaomeAvRXqxDdmHPzwQ8yoa57HJ99CsOSJ/duwhgvAGqCHNQ65hfkF3MQeeHbnO1BnrKkRwzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4d4p1m2PNtzJ46h2;
-	Mon, 10 Nov 2025 19:52:28 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 85A05140257;
-	Mon, 10 Nov 2025 19:52:57 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Mon, 10 Nov
- 2025 11:52:56 +0000
-Date: Mon, 10 Nov 2025 11:52:55 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: <dan.j.williams@intel.com>
-CC: <linux-pci@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<bhelgaas@google.com>, <aneesh.kumar@kernel.org>, <yilun.xu@linux.intel.com>,
-	<aik@amd.com>
-Subject: Re: [PATCH 3/6] PCI/IDE: Initialize an ID for all IDE streams
-Message-ID: <20251110115255.000010f3@huawei.com>
-In-Reply-To: <690be315ed059_74f761007a@dwillia2-mobl4.notmuch>
-References: <20251105040055.2832866-1-dan.j.williams@intel.com>
-	<20251105040055.2832866-4-dan.j.williams@intel.com>
-	<20251105152704.00002741@huawei.com>
-	<690be315ed059_74f761007a@dwillia2-mobl4.notmuch>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1762789141; c=relaxed/simple;
+	bh=cDyMaHDdkuq+asAIgegu+SPgoFRi3jHo3jco+i8TKbA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=nJVb9bh9iOHqU05Rg+wqDsVX04CN7zmKFuP1jvvXhKCRq89fdbhsSTK1QhLPyK8TW5u2dZqHQXoQccWv03hNvf4saVwLzGqnVyF/kW1xpfyxDegSAdWZquVIlB3/x7uApi/CCqryQoO/PHmXjBb3RXamcDEmXmLF06Grkaf8rZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AJBSNKqM; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AJBSNKqM"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3436d81a532so5179877a91.3
+        for <linux-coco@lists.linux.dev>; Mon, 10 Nov 2025 07:39:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762789140; x=1763393940; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=laNhRLQX0XMVmOMwAG0d7wv5H+B5etUz5b1epi6/2Eg=;
+        b=AJBSNKqMRcecmx/CqB6ExfSRuvlsoyUp+Qaw6iTWGkuYLo1hecwwD3BCu2C1xB8hCm
+         gtkUKBCt31bp8uIDfs4jGeCQxBbKpJA1EglR2ckubuxtYvDByZXoCup1xVDRRDx0UPao
+         J15bj1DbLFHRj1F7d3toRN/TpWXIlcw46GbkM3e5nWwnFCvZMqiceaeqOkAMkBZCNjuz
+         Z9dsco7rbuxEiiRCJY8KxUGllH8LnZNfkqe03oyddHSiN15/Dj/Ex0GKj1/vvx6HWXxe
+         8T26+l8CnI7Gm0fcUUF1TPt2XDQKoV9aLYtc/5vCQi4h+yhP6WbTUnEgQzC8FRzSp4eZ
+         juEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762789140; x=1763393940;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=laNhRLQX0XMVmOMwAG0d7wv5H+B5etUz5b1epi6/2Eg=;
+        b=S/VV13ChD5HmzTSiYl1RrFzTOSU4zR/BhaFmXYJu3Si6cWiu+HeyKF1EHl9p5teN+s
+         CPbwbhO2WIuKVNMFTC05tiNx9wTzMr+UJnOCjQE197TX7IxvxJVd85jVMvuyEkP9RyVT
+         q+jSrscC+8l5wmZ81p+LIxHqTZkfo3ZjrD+TcPCvNiIOusmJpl2EBoaVXDP1nIlChmj4
+         S3e1sXapS95OKhZrgY90qTfqphWj6j8cisX/k/Ey73Kv62/upyUbDhAPqeBT1HHIkkjb
+         rTgbRvq6y4Pj8/+BiK3B7iBg34WMSBEFjsvz7MbD/TmtKsCTQpb7AexUoey0d2sTlX2/
+         EnKg==
+X-Forwarded-Encrypted: i=1; AJvYcCX7USQPkGYlBEcx1eYTj/BxRtw/gUMRck9gEvBPQWXA5CNPYDBzg3JvHwq7UxfrpSQMDoXbm86oq4vy@lists.linux.dev
+X-Gm-Message-State: AOJu0YwPD2FCIULC4o4wLEQtZfeyRLNU7doWG1EwXD9AznC4UyNQw8Kd
+	HEinlBNT5RsgpxcxQCI3H+ruAc/50dkzZjCfnMlmbyUGvyrXFgjf0LBDIZ6ZAGSn26wkT7eMutc
+	ivk6fSg==
+X-Google-Smtp-Source: AGHT+IHZTL6lBepPCG1wa5BSSf8eoaJ1ttmPlXua2WSmSSk5CeBLMKSmijCYjH2CcNBTA0SMfZe8CXJqtak=
+X-Received: from pjtv19.prod.google.com ([2002:a17:90a:c913:b0:33e:3612:2208])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:388e:b0:343:6c71:6d31
+ with SMTP id 98e67ed59e1d1-3436cb29ad3mr11615416a91.11.1762789139688; Mon, 10
+ Nov 2025 07:38:59 -0800 (PST)
+Date: Mon, 10 Nov 2025 07:37:21 -0800
+In-Reply-To: <20251030191528.3380553-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+Mime-Version: 1.0
+References: <20251030191528.3380553-1-seanjc@google.com>
+X-Mailer: git-send-email 2.51.2.1041.gc1ab5b90ca-goog
+Message-ID: <176278796784.917175.10578129282144167896.b4-ty@google.com>
+Subject: Re: [PATCH v5 0/4] KVM: x86: User-return MSR fix+cleanups
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Kirill A. Shutemov" <kas@kernel.org>
+Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Yan Zhao <yan.y.zhao@intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Hou Wenlong <houwenlong.hwl@antgroup.com>
+Content-Type: text/plain; charset="utf-8"
 
-
-> > > ---
-> > >  drivers/pci/pci.h       |   2 +
-> > >  include/linux/pci-ide.h |   6 ++
-> > >  include/linux/pci.h     |   1 +
-> > >  drivers/pci/ide.c       | 133 ++++++++++++++++++++++++++++++++++++++++
-> > >  drivers/pci/remove.c    |   1 +
-> > >  5 files changed, 143 insertions(+)
-> > > 
-> > > diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
-> > > index d7fc741f3a26..33b3c54c62a1 100644
-> > > --- a/drivers/pci/ide.c
-> > > +++ b/drivers/pci/ide.c
-
+On Thu, 30 Oct 2025 12:15:24 -0700, Sean Christopherson wrote:
+> Fix a bug in TDX where KVM will incorrectly update the current user-return
+> MSR values when the TDX-Module doesn't actually clobber the relevant MSRs,
+> and then cleanup and harden the user-return MSR code, e.g. against forced
+> reboots.
 > 
-> > > +}
-> > > +
-> > > +static bool claim_stream(struct pci_host_bridge *hb, u8 stream_id,
-> > > +			 struct pci_dev *pdev, u8 stream_idx)
-> > > +{
-> > > +	dev_info(&hb->dev, "Stream ID %d active at init\n", stream_id);
-> > > +	if (!reserve_stream_id(hb, stream_id)) {
-> > > +		dev_info(&hb->dev, "Failed to claim %s Stream ID %d\n",
-> > > +			 stream_id == PCI_IDE_RESERVED_STREAM_ID ? "reserved" :
-> > > +								   "active",
-> > > +			 stream_id);  
-> > 
-> > Good to have a comment on why we carry on anyway.  
+> v5:
+>  - Set TDX MSRs to their expected post-run value during
+>    tdx_prepare_switch_to_guest() instead of trying to predict what value
+>    is in hardware after the SEAMCALL. [Yan]
+>  - Free user_return_msrs at kvm_x86_vendor_exit(), not kvm_x86_exit(). [Chao]
 > 
-> ...but we do not carry on. When claim_stream() fails pci_ide_init()
-> fails. So this dev_info() is there to clue in an admin wondering why IDE
-> capabilities may not be available for some devices.
+> [...]
 
-Ok. Failure isn't an error as such, but stuff just doesn't get set up.
-Fair enough.
+Applied to kvm-x86 misc, thanks!
 
+[1/4] KVM: TDX: Explicitly set user-return MSRs that *may* be clobbered by the TDX-Module
+      https://github.com/kvm-x86/linux/commit/c0711f8c610e
+[2/4] KVM: x86: WARN if user-return MSR notifier is registered on exit
+      https://github.com/kvm-x86/linux/commit/b371174d2fa6
+[3/4] KVM: x86: Leave user-return notifier registered on reboot/shutdown
+      https://github.com/kvm-x86/linux/commit/2baa33a8ddd6
+[4/4] KVM: x86: Don't disable IRQs when unregistering user-return notifier
+      https://github.com/kvm-x86/linux/commit/995d504100cf
 
-> > > +	if (!reserve_stream_id(hb, stream_id))
-> > > +		return NULL;
-> > > +
-> > > +	*sid = (struct pci_ide_stream_id) {
-> > > +		.hb = hb,
-> > > +		.stream_id = stream_id,
-> > > +	};
-> > > +
-> > > +	return sid;
-> > > +}
-> > > +DEFINE_FREE(free_stream_id, struct pci_ide_stream_id *,
-> > > +	    if (_T) ida_free(&_T->hb->ide_stream_ids_ida, _T->stream_id))
-> > > +
-> > >  /**
-> > >   * pci_ide_stream_register() - Prepare to activate an IDE Stream
-> > >   * @ide: IDE settings descriptor
-> > > @@ -313,6 +427,7 @@ int pci_ide_stream_register(struct pci_ide *ide)
-> > >  {
-> > >  	struct pci_dev *pdev = ide->pdev;
-> > >  	struct pci_host_bridge *hb = pci_find_host_bridge(pdev->bus);
-> > > +	struct pci_ide_stream_id __sid;
-> > >  	u8 ep_stream, rp_stream;
-> > >  	int rc;
-> > >  
-> > > @@ -321,6 +436,13 @@ int pci_ide_stream_register(struct pci_ide *ide)
-> > >  		return -ENXIO;
-> > >  	}
-> > >  
-> > > +	struct pci_ide_stream_id *sid __free(free_stream_id) =
-> > > +		alloc_stream_id(hb, ide->stream_id, &__sid);  
-> > 
-> > Given the use of __sid as magic storage, I wonder if this can
-> > be a CLASS with that storage wrapped up alongside a flag
-> > we clear to make the destructor a no op. Similar to what happens for
-> > spin_lock_irqsave where we stash flags etc via __DEFINE_UNLOCK_GUARD() 
-> > 
-> > Would need something a little more complex than current retain_and_null_ptr()
-> > as it would need to set _T.ptr = NULL rather that _T = NULL.  
-> 
-> Interesting. It is rare to have this kind of request model in core code.
-> Most of the "discover the platform published resource + request it"
-> happens in driver probe contexts and devm cleanup is available for that
-> (e.g.  devm_request_mem_region()). If we can find more users for such a
-> scope-based-cleanup model I would cheer on the person that wanted to
-> take that on.
-> 
-> Otherwise the "magic storage" approach is also taken with:
-> 
->     struct stream_index __stream[PCI_IDE_HB + 1];
->     ...
->     alloc_stream_index(..., &__stream[...]);
-> 
-Agreed. Potentially this is something for another day. 
-
-Jonathan
-
-
+--
+https://github.com/kvm-x86/linux/tree/next
