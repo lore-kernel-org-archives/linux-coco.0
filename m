@@ -1,162 +1,271 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA4E26E706
-	for <linux-coco@lists.linux.dev>; Mon, 10 Nov 2025 15:43:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762789394; cv=none; b=D1h2d/tOUO4g3JfLgUekanjjR2vdgUfgy300gRo3GHRRkwP5CrvkU3ydKKzGyQetM+yr6o/xevFTD5oO8ZixgkbT3a2higOEWBZ5ugPkxuJL5QqAsGed0UQn4z62tO+4TNNNqzBGdXIfe8z3Oo0HrC4oT1kyL1ZEXYMeOApgK7Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762789394; c=relaxed/simple;
-	bh=Z6QBCawmA0V88I7dtIc6ikzQytNDqs3gMMcaJjnYR/s=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=NELnuwqPBi/WODUAIhKmfiCPmhhdZfFYRXiIgzslt3sZWkOQB5hr63cNOHvL+Atn0yyk/vYqlDDihE3l2KFpq1YX9oddzp8r1KAC2Uz/POIrq+yHVt7vDUFHmndJMG8sLOf94Pz8RTLfh3RrH+vG9JqQQX98c+OXtzoe0wMW6qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gf+BmCKf; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B847B2D8760
+	for <linux-coco@lists.linux.dev>; Mon, 10 Nov 2025 22:19:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762813183; cv=fail; b=B6cUeGIugRmfpCZM+RxysiKwMoOP5biKeW5ypvrfVT92iWVZh9tmMaZEs0LlI5Gb54jleK27Lg0g1mkdIknQ9EzHawEmUuEsqwCMYLh5BGFgUnUadgBXRIQ7tF8K0sqfko3jIIeaquZDXgmeWAVSJqnRLD6nGl0WAEifIvwG63c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762813183; c=relaxed/simple;
+	bh=THg3Oaka9Rpw6qGYDA+RYL2n7q8T3y9ZNQVvGJ9SNko=;
+	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
+	 Content-Type:MIME-Version; b=fLislgZoxn1c//jvkD7A7pTu3EZw5s6bhmULnqufGH5ZBRGMBDeMslnvAsK0SEgCCroMovYsQw/8hj5IK8W7Q5+/7WoGF4JqSOfGB5If7p43J8ndPrlBEiscPJ12tzmjqcG3/pE/Bqm+VZWBxJ5b4vseBxoYjazm2n/jmFU1KJo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZeYJziS9; arc=fail smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gf+BmCKf"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-33da21394adso3372634a91.1
-        for <linux-coco@lists.linux.dev>; Mon, 10 Nov 2025 07:43:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762789392; x=1763394192; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=87FfliXTeIYU4Ti4q0mlK1AlR2N3oXTPIRkcYWMY8TY=;
-        b=Gf+BmCKfmAIBCtqgl8CWC2KVDJZAvbomroByBQC5cr1Zp/X763KCNZ2J/v8m1pMSC3
-         x0VXBddqEzzRHGHEaCzZypmq5jIXJIBXZH56vextlwdj68mCm6VroxnLwrG1Ctdm/F5e
-         rrl8OjolbddSAcA3KwEcWxGB6jQpcHgRFash3YAX7lkdBJJZ9Wj7xhhmXxl9a5eh+eop
-         foiKf3XvvAFdVyMrxgHEDPamjl64lLHJGoo2i+5GPMam6WyG/SCqiVqrLnsxX9U+Zs6H
-         5aYHTW7LC/HxGheUxKHQTxZboT19gwHwEl3vrDwxwm7FL+bb2iqcrur4upT4t3JXgkhG
-         ltdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762789392; x=1763394192;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=87FfliXTeIYU4Ti4q0mlK1AlR2N3oXTPIRkcYWMY8TY=;
-        b=uPQ6gA5N5OdnUejj4vJjft7aaEkw5PljvyQ3gfGF09uyWupRFIUic5Zv4HVXa5Mdbm
-         xljPe587RZXX38Y+X6VHzsG/dEnzvWVPONoV73IZxLljhWk8y4a13epIcd4nk+FJRJL5
-         SXV764HxV6Cy9d72+uI9j4tPApzGa5VWCHjXkwOyh2tJHHzzNJTegEPm7PuPpPBlWXTx
-         8iijJ8LfJicMFeWEprheXW3ay3UV366z3/ZwFO3WECb2C0cDiKBaoSop3F8XzuUuimxU
-         yDHgFm+s8/BdSZv2Tvn+/oEfi1e2e+kL3tEUhWFZ7ebEkUy230m+o8ojM6AD1WD4W2Hl
-         QMiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXe/Ks3VD/CKmls4x9RAuOORtEiLnBZhhw6f4i4tXPiTOv94Zd/4gk9OWC4gVPX++lmYroexYYrAIfp@lists.linux.dev
-X-Gm-Message-State: AOJu0YzPuW2tPCCoYQavImKjfkm0XCZPoljkVinYM1ZnYu2i3Yc9yMbu
-	VVg2c/XrcdRDESfqn3tMFBEv/ZMNo190fIotIVAqI6EOxtqNm4l7CfhTd2ZOX983hehgQLUs+ea
-	IxtBl/g==
-X-Google-Smtp-Source: AGHT+IGU2QqcHJOpKVyUh8wnC6DXg/rmfR5MmGRMoX3raYINDU0h+4Ytj4+FRCcbgxWr/CiKwQo1uRnxIsY=
-X-Received: from pjbdw16.prod.google.com ([2002:a17:90b:950:b0:343:6849:31ae])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4a10:b0:341:124f:474f
- with SMTP id 98e67ed59e1d1-3436cd0c3e9mr10428985a91.32.1762789392114; Mon, 10
- Nov 2025 07:43:12 -0800 (PST)
-Date: Mon, 10 Nov 2025 07:37:29 -0800
-In-Reply-To: <20251030200951.3402865-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZeYJziS9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762813182; x=1794349182;
+  h=from:date:to:cc:message-id:in-reply-to:references:
+   subject:content-transfer-encoding:mime-version;
+  bh=THg3Oaka9Rpw6qGYDA+RYL2n7q8T3y9ZNQVvGJ9SNko=;
+  b=ZeYJziS99gDZ3i5qsNXuUw12YAAPllyoqXQ+zInrVcNJb4otlzNNFcUP
+   sXi6KyMsBy/ApFprCDi+MRb8B5TGHbwrRvqCu7MRpMzYHxEZ9p55IEjKo
+   ttCzd3QrzvYnjoTOrQLQcyXPz7nYoNwXF8+JZneSjCKokzcXdWMupIAZw
+   1D6qV/MVUJowOHfsYs1N/ziZxD+cCSl+Uh0e61Zbr9zoP8GxPUZ0c5ofa
+   E1bfAQZjm98YbDvRN3tcAelK3Ir7S/Y+OGE1ROSnEtK6qOexxpbzkz76X
+   UBXqHIyOX5sshhq/2AhpiFl8bXGsf9Rq/Em0H4UNgjcFlPucxyh54GjlI
+   w==;
+X-CSE-ConnectionGUID: Gnqg2baNQouoIdYi0kv3Vw==
+X-CSE-MsgGUID: oaek42iqSweFdI72qAKQMw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="68513173"
+X-IronPort-AV: E=Sophos;i="6.19,294,1754982000"; 
+   d="scan'208";a="68513173"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 14:19:41 -0800
+X-CSE-ConnectionGUID: Pccc4+bGQSuC3hM1yDcR9w==
+X-CSE-MsgGUID: mnT53z0pRS2ReeR/xAs9Xw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,294,1754982000"; 
+   d="scan'208";a="189029695"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 14:19:41 -0800
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Mon, 10 Nov 2025 14:19:40 -0800
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Mon, 10 Nov 2025 14:19:40 -0800
+Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.27) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Mon, 10 Nov 2025 14:19:40 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=k9T8VQCb4/7tqjKGx3OeMLJxRgcbQfBil6T2o337flIzOgcB40ytadvosiCkrb5R/U55MFELqn4HUXFBy6sf7zebrYwl5Z4GNwNPOw96Azx7J5DcUdfsm/QCvPvgYCfppGid+UUUOixjj2SKdqKvrU5dt5BE7wKykUy5HrGmk+Qgc61Oa5NXba7bEfOrYkGnm9emr+45Ov2BXybNsQkWJOkB9qwLmOLAOUbtnjpBM+8G3A9kqctidvt72HhJ7gRl4xaLx7gaGj2m7rohyI8VcSsRc5Ad70N8a0rWAEIjTrV35f4fMj6isvNeP/3LYidJJbV8P1za6h4fPJHW00i9sQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bDBmQw8YjmNKbT2c8+7cDSV71fQXKzgPoXeO8JVZ4DM=;
+ b=J/DjrLdKjTFJbeFfmXmlMggQ2GRe6ESHInydxyAk9Ww1a9Q4hi4Jew6NZ0Yw8Cn+5qVMosTEmCbBMjaxsUABwznK7prayyib1YqorYzgliirwWNagZBbLhf7/5nfB4VZfK6DDSa1qLet8CcI0mPmarbfpA1MypK0kAFSaAICZ2ZhUBgjq1Lp75ZWO0OHi5D/5KaCRWlvPwRv2iilaaSmdmM03zU4yPpMH1YCm2usuGqdXiaMNBTjPxFXge+o4oAxbP2wqIDQ9f82sWsmG1TxyakVpVe4hxboTd8W4wko8OHuqhywZia9o5umHvf63tr1+SHFbAFFWmBiVhZG/aB4eg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by SA0PR11MB4558.namprd11.prod.outlook.com (2603:10b6:806:9e::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Mon, 10 Nov
+ 2025 22:19:38 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%5]) with mapi id 15.20.9298.015; Mon, 10 Nov 2025
+ 22:19:38 +0000
+From: <dan.j.williams@intel.com>
+Date: Mon, 10 Nov 2025 15:19:36 -0800
+To: Xu Yilun <yilun.xu@linux.intel.com>, Dan Williams
+	<dan.j.williams@intel.com>
+CC: <linux-pci@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<gregkh@linuxfoundation.org>, <aik@amd.com>, <aneesh.kumar@kernel.org>,
+	"Lukas Wunner" <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>, Bjorn
+ Helgaas <bhelgaas@google.com>, Jonathan Cameron <jonathan.cameron@huawei.com>
+Message-ID: <691273081685_1d9110038@dwillia2-mobl4.notmuch>
+In-Reply-To: <aRFfk14DJWEVhC/R@yilunxu-OptiPlex-7050>
+References: <20251031212902.2256310-1-dan.j.williams@intel.com>
+ <20251031212902.2256310-5-dan.j.williams@intel.com>
+ <aRFfk14DJWEVhC/R@yilunxu-OptiPlex-7050>
+Subject: Re: [PATCH v8 4/9] PCI/TSM: Establish Secure Sessions and Link
+ Encryption
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY5PR03CA0014.namprd03.prod.outlook.com
+ (2603:10b6:a03:1e0::24) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20251030200951.3402865-1-seanjc@google.com>
-X-Mailer: git-send-email 2.51.2.1041.gc1ab5b90ca-goog
-Message-ID: <176278827443.918905.17609380057567446021.b4-ty@google.com>
-Subject: Re: [PATCH v4 00/28] KVM: x86/mmu: TDX post-populate cleanups
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
-	Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Kirill A. Shutemov" <kas@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, x86@kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Ira Weiny <ira.weiny@intel.com>, 
-	Kai Huang <kai.huang@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Michael Roth <michael.roth@amd.com>, Yan Zhao <yan.y.zhao@intel.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Ackerley Tng <ackerleytng@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SA0PR11MB4558:EE_
+X-MS-Office365-Filtering-Correlation-Id: 762d3acd-6ab3-4446-e5a2-08de20a73ca6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?bVgvVEZLeFBEVks4V01wbGltTGF6YkNFQnJWbzlqcHJFZ0RUbFNFZkdVYmlY?=
+ =?utf-8?B?T21udFNUSHMvaFlyaWI5ME1YWHcyUmRVVjBqMXpFTFlMNFErKzBYd1VkZG1L?=
+ =?utf-8?B?a29pYzRGV3gxZTdIVGN3L0NycHZqZFlPanVSeHFRRGowR1pyaDBobHJMd0p6?=
+ =?utf-8?B?eXRSUE1mTmFEVk9iVkFWdkZHOXliUUNsZmd6cHdtL1pQMml0aG52cDRjMEJM?=
+ =?utf-8?B?WEJwYWVVTFJ6VW85bGFqWDRtM21LSjJmRGc5Uk1teTV6aDBKOElpY0RBUUY1?=
+ =?utf-8?B?UVpYeFNpUC9CLzhYSHkwL0Y4c20rYnArOVYzdm80SFRNZmxaNXNEN05hN3JI?=
+ =?utf-8?B?LzBWbWh1OG04VVJOVmlpVnFSUm9BUmhpcjZsY1NPQkZseGxDSjlCQzJMZE9K?=
+ =?utf-8?B?WmRnWVc4ckxxUFVKR2lnLzVDT3dDTkRpSUtYeUd6dGRabmhzMitxaDNiS0cy?=
+ =?utf-8?B?NEpZVmdWajJDTks1aHFzN1lTcm9HVy90czdtSUNvcW16ZDBtbStRTEhFNFNU?=
+ =?utf-8?B?dzk3UkljeXY5ZnpOdTAwbUZjLzY5My8ralhyUWYxNWxVMWtOR0pLQU1ENVZh?=
+ =?utf-8?B?K0lTQVRhQ010amd0VjROZ2dqUTRqYzZFUWlIYlVxM05paDdma2ZoQkoxb1dG?=
+ =?utf-8?B?RUNRZ1hnbUtJcXluSERrTE1YWWNjTStLUkNLL3l1cTN6cnNKcnUzWEZienNS?=
+ =?utf-8?B?Z3VjQVJhWnpUNTNoK3Z2TWE3a2RRS2JqZlRIeFFlZXVud2Zsc1grUm9QSmRz?=
+ =?utf-8?B?OXdjWlJJRmF4OEpTNXpBU1dScDU2bUV6NHJucXRDcjVJZUpTNUFUc0F1TFdS?=
+ =?utf-8?B?S1NXMS9wcng4ZzM5MnhjY2V1TTFQK21hZ2I0STFEQVk3RzlRa1JVdWpKM1dI?=
+ =?utf-8?B?RmF5czNSTjF0ckZ1TlU0MEM5emVlN3MyNzlKNitDeE1XdmlnRVNtRGFUa3Bh?=
+ =?utf-8?B?L3JocU9rbVlaQmM3aXowaHZZUHRldjBHSUc4SndQWXNlUkxmUlozaXV4RDM1?=
+ =?utf-8?B?U0k3dHdYSmtRZ0Zhd0N4RHFBd2NneVZ5VW1zMVpkb01PUjhXVWw3OW5OQnBH?=
+ =?utf-8?B?MlllQWhHc0dCNkY3QnJYRm81emlWbXZ5MzNHVUpWdncxS1IwQVJjWEQ1ZS8r?=
+ =?utf-8?B?WjVwb3FsMXR4RGU4MEZCSzI1dm56WHR1Rk9teUx3aUNXOFBjaDZEM2VvTU05?=
+ =?utf-8?B?MkhVNjFoeDRZRFRCWlEyM1BTU3JseEtYUzBqSXBxT25hc1htYThnYmJRaXg1?=
+ =?utf-8?B?WEJkU3dLb1NKTUpqT0JKbmdraUFGOU84aGczZUFLRlgzTXM2RTVxUzE3emxE?=
+ =?utf-8?B?U1Jmajk2b2pSQVErK1pGTXNvNHJxRWtCVHk0ZVkxMDdtQjZucnMrYTY5YVNN?=
+ =?utf-8?B?RmovNzRKejZOcm9DeUdtb0Z4MlFSM3lBVEVEb1N0VUQvdXNZd1kzc2VtZ3lr?=
+ =?utf-8?B?Y1c3RGt2VnowR2svM0pYc3h5bTZPdkxsUHZNdDIwQ1lPTzhPN3VCOUplaXc0?=
+ =?utf-8?B?cDM1WllYTlNlM29rRkZxdGhSUHYzbWpkNWtxZUNzYUN0eW5nTGF4QVNkS2xS?=
+ =?utf-8?B?MU9ianFNVjlsN2h4dGVtK3VSUk01UGNpQ1hNQzAxRkVhUG53TnpFTnRuTHVq?=
+ =?utf-8?B?dGY4dnFyRCtmbVZBcHdVTXNLek8zNzBBOVZldWtCcHllL2lPaUZvZDIzYTFC?=
+ =?utf-8?B?QzVUTlY0UTlJWkFlTUJNbkRMaktuV2g2K2ZURkxLbW5jVUN5NWxtMHNxc2Q2?=
+ =?utf-8?B?R0JVeHpxa2l1UFhpTnBPNFhyVXJvSjBPOHZERnpOdW5Ua0UxWHFYc1YwNlhP?=
+ =?utf-8?B?ZzZsN1VFemNKcWh6K1dkcHVlQ1NpdVpLb0ppaklXUU80NXVWSVNTUVNWY2Fz?=
+ =?utf-8?B?K2FLRXlPRmhSQ1l6enp3NXRIcXV3SUdtWEE0YmdDL25EVTZ2T1JpYStNWTNL?=
+ =?utf-8?Q?fu+sfhvbQ+p9zdXV5SuSRmm2+OjBPrj8?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Qml1L2E2Q2ZnY0lUWWhqb1gvR25iVzFaMVd6cU0yZzgxRWtIdDdzMzVqWWRv?=
+ =?utf-8?B?K0M2cCtPaC9RL2pFSjJ6VzFVSlRIK201K3JwN1pOYkVUWFBjWjcxem8yWjJZ?=
+ =?utf-8?B?SlVlQ2p0WGFlQ0tPWjJVVWR3ZUNGaTFDNHVoeVE5My9aRW5SQkNFWlJNdzhO?=
+ =?utf-8?B?Nk0wTE8rcXRWNkVhMWVPOHRtNDl4WHhDSWxZV2RQTUIxQTB5NjVPczBmN3JS?=
+ =?utf-8?B?dkJ0RmRva2V5VUN5MkVNRVUrUzl3UC9McHdEZWE3WHN2R0lNdFdJUE1TMHU1?=
+ =?utf-8?B?L0VMbDdNSDZzdUQwdlN2dTc1TVNHSUlzWitaeVVzWStFc3JFSlZaSVJqd3dh?=
+ =?utf-8?B?NllqbXhDMXJGNDdTUXIzU3UyRjNZUWUzc0xRVTFPRkdRbXRBcFd1TmJyMVY3?=
+ =?utf-8?B?bzhYdmQyQ2NLOWZxN1B1bmRPVk5HNnB5akJjaTRZMjdhcEkzR2d0ZEVTTENJ?=
+ =?utf-8?B?T0xFQjJxNkxFd3R2OEVnT29DT1RqZmFuQ0wrUE84Y29UeVp4amlGMFJWUmdH?=
+ =?utf-8?B?WWxCR3czQ1NWSUtSaDBqNCtXT2pBU2NhK1FlVmtTSERFVEJWWnFEQy85VXc5?=
+ =?utf-8?B?TFNIcGo1KzIwQjJveUY5TC9Sc01VcjM2Z1VweUxDWWRGSWdVTzRJMDl4K0RU?=
+ =?utf-8?B?ZmVsYWtnYVpGSDhOWTMxY0V5Z1dOTlVkUnFXcTJYaTMxWkhxOGd6Y3A2Z3ZT?=
+ =?utf-8?B?MU1IM2R0UlRwVG5Hd3dHdzF3a3M4bDQ4cnVWVXpLZkNGTDFtNlhJWUhJUzUz?=
+ =?utf-8?B?aWgvV3FCWW9nd25tUHlBYm9qWksvNVdaRFM5dFlGWkRobWJwTWlkc3NiNE1N?=
+ =?utf-8?B?eGZHTkhaOFVtbC9ORHlTSE04a2VkQnVzTnFXUjVYTnFST3R2SUFYamN4NHYz?=
+ =?utf-8?B?cFNmL3dxcVBKZFl6YVhhZXZqZTB3RWVzRHhuS1cxOUdwbDBoejBVcDd0cERW?=
+ =?utf-8?B?TnJXQitOZWJXMUNETE1VZnMvVjFTRU5SYTJuY2RDNUlYLzFGYkRLM2R6ZlJr?=
+ =?utf-8?B?cnNKVkhhSWlBOXBNQndVd2pFdk9TMXJGY0phV0VWM2ROSENkUGMwKzhzOWNl?=
+ =?utf-8?B?c2xvRG96RkVFSGpjaGtSVGlib2ZyWVFlMm9oR3MyMEhscG9tVWsvMmVEVi9R?=
+ =?utf-8?B?SUlmNHROTUJ3bzJRcEs2ZzFTcXFCL2dZZy9VdXZlVm9IMnhhellFVUMrdWZo?=
+ =?utf-8?B?R0ZaVVM2WXc4UDVMNnVjR1JTTXRCYkUvLzRnQkhld1BRSU1ndmZGQlBUNEZt?=
+ =?utf-8?B?bzY1V25EMDJQQ3pobTYyZFJFUWd3K3kvQVFNWEpCWDBnQXhuNDZ3YnZCV2lw?=
+ =?utf-8?B?Tk52NDdhbCtscm9IeDlKMHFvdUphMW1jQ3lmVnRseTA4YWxJNGREdUVsY2Fm?=
+ =?utf-8?B?Sk1ub1hJNkJKeXlBODRnWUpkRzVaS25mTmVWblgyNVdlWnhTOWE3OFg4VEhu?=
+ =?utf-8?B?QU1JbTBSTXVsTjVtclpjcUJsUFM5MlpGOVhmY0VnN1dIVHVrQ3FxTE1ybGtB?=
+ =?utf-8?B?OXFsUHM0bnpXc0tOUnNZTEdmUkpOQStxZ0NHaUhUd3NZZXp6dS81Y2JNTC9s?=
+ =?utf-8?B?UTgvSGlJZGFvVzBzL0FndUFIbURjdlJKdEkvbnA3NUhydlBrT0VBS29TL1Z2?=
+ =?utf-8?B?SWJ5MlFCTy9Fa1JvNHpTTTNlNFJtcitaY0tDVEFSWUFpUFBmZks3cHBhWlpr?=
+ =?utf-8?B?SmNENUtQODIwZlBYZGQyaTdsYldWRzdCYVdSMmsxUHhHK3pPbmRTZ1lJNUxk?=
+ =?utf-8?B?cWIrMUJGK3RhbzF6TWY2Z2dGamNBNGVacC9RWCt3SXZXMXM5TzJFYVVFSEpy?=
+ =?utf-8?B?U3NWU3FBMnJsWWdtcFROWVRlT3pLRXNNSUtnK1pINHU5Y3RIdmo5SFpVcFFz?=
+ =?utf-8?B?YjNIdTdKQ3VxSTl3dFJKWW9ZQ3EwZ3ZIQnRadTNOL2FSL3p4cFJQR3JkTEZh?=
+ =?utf-8?B?MHlkRXYyTzRkUVBsMFB4MjY2NnlpSVFMMUwxNkYrRzdpQW9mVklRdGJUaEhm?=
+ =?utf-8?B?aDFaanpKNGVhU2F1dms4NUp2YllzZENKMEJNdXhDUmx3QlBHTHZvQXBwYldp?=
+ =?utf-8?B?RlR3UXBMYjRWWEFqWUY5QjVhMmh6eVJMNlcxZ05QdnVpRm5qYkEvWDFrK0l6?=
+ =?utf-8?B?aVZyTENBTkdkNCtuUk05bENYcERjVGtqSHNVOEVVQzUxc3NmSzRCd2NYSHdq?=
+ =?utf-8?B?Y1E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 762d3acd-6ab3-4446-e5a2-08de20a73ca6
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2025 22:19:38.4356
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jilnRkwIPuv4Mwu8dVn+sl1lMaWf8s7DgsXZtB9rBUMCCFnctHE4lzmHTjmTqLQpiZcaZ8H+y99ui4EHjieW0zmsrG6r9xskbxD1O76nnx0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4558
+X-OriginatorOrg: intel.com
 
-On Thu, 30 Oct 2025 13:09:23 -0700, Sean Christopherson wrote:
-> Non-x86 folks, as with v3, patches 1 and 2 are likely the only thing of
-> interest here.  They make kvm_arch_vcpu_async_ioctl() mandatory and then
-> rename it to kvm_arch_vcpu_unlocked_ioctl().
+Xu Yilun wrote:
+> > +#ifdef CONFIG_PCI_TSM
+> > +int pci_tsm_register(struct tsm_dev *tsm_dev);
+> > +void pci_tsm_unregister(struct tsm_dev *tsm_dev);
+> > +int pci_tsm_link_constructor(struct pci_dev *pdev, struct pci_tsm *tsm,
+> > +			     struct tsm_dev *tsm_dev);
+> > +int pci_tsm_pf0_constructor(struct pci_dev *pdev, struct pci_tsm_pf0 *tsm,
+> > +			    struct tsm_dev *tsm_dev);
+> > +void pci_tsm_pf0_destructor(struct pci_tsm_pf0 *tsm);
+> > +int pci_tsm_doe_transfer(struct pci_dev *pdev, u8 type, const void *req,
+> > +			 size_t req_sz, void *resp, size_t resp_sz);
+> > +#else
+> > +static inline int pci_tsm_register(struct tsm_dev *tsm_dev)
+> > +{
+> > +	return 0;
+> > +}
+> > +static inline void pci_tsm_unregister(struct tsm_dev *tsm_dev)
+> > +{
+> > +}
+> > +static inline int pci_tsm_doe_transfer(struct pci_dev *pdev, u8 type,
+> > +				       const void *req, size_t req_sz,
+> > +				       void *resp, size_t resp_sz)
 > 
-> As for the x86 side...
+> Any concern to keep the stub without PCI_TSM?
+> pci_tsm_pf0_constructor/destructor() don't do this.
+
+True. There should be no callers of this when CONFIG_PCI_TSM=n. Will
+append a cleanup for this.
+
 > 
-> Clean up the TDX post-populate paths (and many tangentially related paths) to
-> address locking issues between gmem and TDX's post-populate hook[*], and
-> within KVM itself (KVM doesn't ensure full mutual exclusivity between paths
-> that for all intents and purposes the TDX-Module requires to be serialized).
+> > +{
+> > +	return -ENXIO;
+> > +}
+> > +#endif
 > 
 > [...]
+> 
+> > diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
+> > new file mode 100644
+> > index 000000000000..6a2849f77adc
+> > --- /dev/null
+> > +++ b/drivers/pci/tsm.c
+> > @@ -0,0 +1,643 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * Interface with platform TEE Security Manager (TSM) objects as defined by
+> > + * PCIe r7.0 section 11 TEE Device Interface Security Protocol (TDISP)
+> > + *
+> > + * Copyright(c) 2024-2025 Intel Corporation. All rights reserved.
+> > + */
+> > +
+> > +#define dev_fmt(fmt) "PCI/TSM: " fmt
+> > +
+> > +#include <linux/bitfield.h>
+> 
+> No need the bitfield.h
+> 
+> > +#include <linux/pci.h>
+> > +#include <linux/pci-doe.h>
+> > +#include <linux/pci-tsm.h>
+> > +#include <linux/sysfs.h>
+> > +#include <linux/tsm.h>
+> > +#include <linux/xarray.h>
+> 
+> No need the xarray.h
+> 
+> Anyway, they are all minor and cause no impact, I don't expect a new
+> version.
 
-Applied to kvm-x86 tdx, with fixups for the various typos.  Thanks for all the
-reviews and testing!
+Ah yes, holdovers from early versions, will append your reviewed-by in
+the pull request.
 
-Other KVM arch maintainers, please holler if you want a stable tag for the
-kvm_arch_vcpu_async_ioctl() changes (they're based directly on v6.18-rc4).
+> 
+> Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+> 
 
-[01/28] KVM: Make support for kvm_arch_vcpu_async_ioctl() mandatory
-        https://github.com/kvm-x86/linux/commit/0a0da3f92118
-[02/28] KVM: Rename kvm_arch_vcpu_async_ioctl() to kvm_arch_vcpu_unlocked_ioctl()
-        https://github.com/kvm-x86/linux/commit/50efc2340a59
-[03/28] KVM: TDX: Drop PROVE_MMU=y sanity check on to-be-populated mappings
-        https://github.com/kvm-x86/linux/commit/5294a4b93e07
-[04/28] KVM: x86/mmu: Add dedicated API to map guest_memfd pfn into TDP MMU
-        https://github.com/kvm-x86/linux/commit/3ab3283dbb2c
-[05/28] KVM: x86/mmu: WARN if KVM attempts to map into an invalid TDP MMU root
-        https://github.com/kvm-x86/linux/commit/c1f173fb3389
-[06/28] Revert "KVM: x86/tdp_mmu: Add a helper function to walk down the TDP MMU"
-        https://github.com/kvm-x86/linux/commit/fe7413e39810
-[07/28] KVM: x86/mmu: Rename kvm_tdp_map_page() to kvm_tdp_page_prefault()
-        https://github.com/kvm-x86/linux/commit/6de2fb089bb2
-[08/28] KVM: TDX: Drop superfluous page pinning in S-EPT management
-        https://github.com/kvm-x86/linux/commit/ce7b5695397b
-[09/28] KVM: TDX: Return -EIO, not -EINVAL, on a KVM_BUG_ON() condition
-        https://github.com/kvm-x86/linux/commit/e6348c90dda9
-[10/28] KVM: TDX: Fold tdx_sept_drop_private_spte() into tdx_sept_remove_private_spte()
-        https://github.com/kvm-x86/linux/commit/b836503300dc
-[11/28] KVM: x86/mmu: Drop the return code from kvm_x86_ops.remove_external_spte()
-        https://github.com/kvm-x86/linux/commit/7139c8606505
-[12/28] KVM: TDX: WARN if mirror SPTE doesn't have full RWX when creating S-EPT mapping
-        https://github.com/kvm-x86/linux/commit/b9d5cf6de0b6
-[13/28] KVM: TDX: Avoid a double-KVM_BUG_ON() in tdx_sept_zap_private_spte()
-        https://github.com/kvm-x86/linux/commit/24adff397052
-[14/28] KVM: TDX: Use atomic64_dec_return() instead of a poor equivalent
-        https://github.com/kvm-x86/linux/commit/af96d5452e5e
-[15/28] KVM: TDX: Fold tdx_mem_page_record_premap_cnt() into its sole caller
-        https://github.com/kvm-x86/linux/commit/b4b2b6eda5af
-[16/28] KVM: TDX: ADD pages to the TD image while populating mirror EPT entries
-        https://github.com/kvm-x86/linux/commit/6b5b71ffabf9
-[17/28] KVM: TDX: Fold tdx_sept_zap_private_spte() into tdx_sept_remove_private_spte()
-        https://github.com/kvm-x86/linux/commit/14c9938619be
-[18/28] KVM: TDX: Combine KVM_BUG_ON + pr_tdx_error() into TDX_BUG_ON()
-        https://github.com/kvm-x86/linux/commit/597d7068702f
-[19/28] KVM: TDX: Derive error argument names from the local variable names
-        https://github.com/kvm-x86/linux/commit/55560b6be5bc
-[20/28] KVM: TDX: Assert that mmu_lock is held for write when removing S-EPT entries
-        https://github.com/kvm-x86/linux/commit/2ff14116982c
-[21/28] KVM: TDX: Add macro to retry SEAMCALLs when forcing vCPUs out of guest
-        https://github.com/kvm-x86/linux/commit/3d626ce5a8cc
-[22/28] KVM: TDX: Add tdx_get_cmd() helper to get and validate sub-ioctl command
-        https://github.com/kvm-x86/linux/commit/59d5c1ed6df2
-[23/28] KVM: TDX: Convert INIT_MEM_REGION and INIT_VCPU to "unlocked" vCPU ioctl
-        https://github.com/kvm-x86/linux/commit/94428e3ba325
-[24/28] KVM: TDX: Use guard() to acquire kvm->lock in tdx_vm_ioctl()
-        https://github.com/kvm-x86/linux/commit/0b76e827b29d
-[25/28] KVM: TDX: Don't copy "cmd" back to userspace for KVM_TDX_CAPABILITIES
-        https://github.com/kvm-x86/linux/commit/f26061fe2c25
-[26/28] KVM: TDX: Guard VM state transitions with "all" the locks
-        https://github.com/kvm-x86/linux/commit/15945e9ec195
-[27/28] KVM: TDX: Bug the VM if extending the initial measurement fails
-        https://github.com/kvm-x86/linux/commit/ad44aa4c5d3f
-[28/28] KVM: TDX: Fix list_add corruption during vcpu_load()
-        https://github.com/kvm-x86/linux/commit/1e3a825c9ec9
 
---
-https://github.com/kvm-x86/linux/tree/next
