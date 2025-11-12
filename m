@@ -1,127 +1,137 @@
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BE834252B
-	for <linux-coco@lists.linux.dev>; Wed, 12 Nov 2025 17:16:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D58346FD0
+	for <linux-coco@lists.linux.dev>; Wed, 12 Nov 2025 17:39:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762967802; cv=none; b=VhwICiKuJFBm2uwT9d5mHK4i4FTRbhcP6A0FXLIbg7V4dffu7Mia7AoSwzEzO3w4pWMTn+aKvlzd+JLOqXTEOddUzZRrWwyi4yyx2HWBwj46fLUqoawzZNfXUmUup3uMuy/FphlPYQZ+sNGjdYtFVlwCR89RdNSwPEBWAM5LEuk=
+	t=1762969189; cv=none; b=ho5P0dO46MstepGN3+Sb041DhxolKJ5elhW5nxqCQWbsZR4BjzSUYxQVzBSi+Zo8umgCQ5NxIjps8eRYFPZfo+TRiMkaF14InOQhmMyN/qT1stk48I/O/RXZzS9Q3AcqlGIPldfqDNAbRIThDPX8iL+6ZqHuUVxnpWu5NZitwiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762967802; c=relaxed/simple;
-	bh=+7m4xZA64frkoZpYTIp4oVaRqCNkEaWjXxWByElWYhk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PDffDCKfKpLiKkEgu2WnNgQ9OC7UG4OF2UEfOFBC2drQloNQBu+B0K3LxD/yYhkIUh2Tk4uAZhFcSn31WvkqupxmvyxZUFjALrzR/9pRgycmazQLp+KRIj8vFP190EN3gcMlyGZehAj6JGxBuZxVyhrmWqEI/Q76s6TQiQbdvsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=VrPWNinj; arc=none smtp.client-ip=95.215.58.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1762969189; c=relaxed/simple;
+	bh=cQTvfgJcnon9Tazw0uXymglv7tr+UGFUUQGDrTC8H5s=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=BArDFVbcaGgN430gu+zsNUYbK7m+QXg688NJv4a0SWmgl7n/sGV2d4mXN4tKiomd0IGW3g0neIfcb71Y0mE0WePzCEj2cmIlqvSVCVlLSjschrAezGiGiJDiFRyHNt0Cc8oERHqSvixE+2lD4aB+ODaLeusblHtnl+WH7/QjI1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VIKoNpzf; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="VrPWNinj"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762967798;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=dOR6g1F2BDK3nYzApHZ5sQ5z1U7yn9CBpAv3iTkq2zc=;
-	b=VrPWNinjH0kJgpbSuCbQykwCl0PcRSIrwWRSUiRsk9v2mBmkx4eWHGAa5uj4Q1zToFsr34
-	Qx8FAbjfp8w+JT4cXhjOVc5Enk5UziGJThJu7qLtFIG7+Ijnzlqv0UbplCOM8csGWOnENh
-	qID5GHm3W5N0YDSy0vPrbvJsU/DLbwE=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Kirill A. Shutemov" <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Subject: [PATCH RESEND] KVM: TDX: Use struct_size and simplify tdx_get_capabilities
-Date: Wed, 12 Nov 2025 18:16:30 +0100
-Message-ID: <20251112171630.3375-1-thorsten.blum@linux.dev>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VIKoNpzf"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-343725e6243so998792a91.1
+        for <linux-coco@lists.linux.dev>; Wed, 12 Nov 2025 09:39:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762969187; x=1763573987; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Al8Jq0oWPVD59rhTUTD0bttySyzqdJx7uMImvbMrtTk=;
+        b=VIKoNpzfcDFFfvgX6Femk/o88kgXFzS+guJU3qr+643b3BYtSVSZlV5k5GFBPqbkl5
+         T+mfjBTbH6PcUxgJN72oMHO/LMODJ+kYiUIcHSMK/Y/ugUMwh8osh2CvVuD9SE0SNwPK
+         74y/CiJqK8AfWGDG+bJVeJUhkp/yZcMKxVra/iVRRmjHU2VcMaYf9iDBUv1pSSSGlArL
+         a+UxqqKeO0bsJsH/UTTxyff941VyfPAv5jM+jO/btiXA1s64IzfeE51mLwFf2cOBDsve
+         oaS4qvF76SUl/cWA5Tr+FAV4iXgaRu2N2iyZZqKpZQizN2FiRK8ADaKrpJwkncJqXLjb
+         9kVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762969187; x=1763573987;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Al8Jq0oWPVD59rhTUTD0bttySyzqdJx7uMImvbMrtTk=;
+        b=HxWmgms0WoHEd00OZyn+GtQ0pW4wXCrLzmwDFRj+GxxyqTD9n5D1aAyMwi9Ra6UiKT
+         KipA3DZrlNIm3b4KI4jkuo1RKJvuo1eVNFdDz4WETKCYtsvsP8HC5jmpYZ8keMiT4D0N
+         JuWINNWCr4okjLJdVGs98hJaAnB6fk9Z6t5zkXN3UEDePhM2Wd4gH/q0vrrjsP+OLfiB
+         p5PCO2NAFZHZ8rFRTO6SnqXRFPPjgpOcUvAWNpK3bj0G9A2QrTCEu8AW7ANEHxyDAKlp
+         qzNGYaW4yDmGyoywMt/01yp3eu/l00tsVGvkCLEIRgn8kqYzUoC6vPsU3H7SJXrab6Ri
+         9YFA==
+X-Forwarded-Encrypted: i=1; AJvYcCW1RjoOTYURPsblrgTT6QZbp4YW13VtGcxV+POjX1CrOZ3jjywoV1ieCmSylWPY9QacDdOEUOkQup4B@lists.linux.dev
+X-Gm-Message-State: AOJu0YwPzpGdw46xGekm/e5bJI5gaqVu4RJ2dMu5GQsf089GDBBfsb2I
+	74b7bZJ+AP4xGw4KWaF1SqFdwphn1P/mSWU3cRyh7DRtDywW+R5Ei8TvD6vdotVaWf51nh2VzdB
+	UMSTcNQ==
+X-Google-Smtp-Source: AGHT+IFPhXy58yihQJ69w+xNEF4NV2MXVm+vSkkcvlcTqNBe2Kw+QHSUNQCz0RwaERkCFBa+qLKJT/z5qkw=
+X-Received: from pjnx3.prod.google.com ([2002:a17:90a:8a83:b0:340:e8f7:1b44])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5201:b0:32e:3592:581a
+ with SMTP id 98e67ed59e1d1-343eaca9dbfmr208175a91.17.1762969187027; Wed, 12
+ Nov 2025 09:39:47 -0800 (PST)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Wed, 12 Nov 2025 09:39:40 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.2.1041.gc1ab5b90ca-goog
+Message-ID: <20251112173944.1380633-1-seanjc@google.com>
+Subject: [PATCH 0/4] x86: Restrict KVM-induced symbol exports to KVM
+From: Sean Christopherson <seanjc@google.com>
+To: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Xin Li <xin@zytor.com>, "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Jarkko Sakkinen <jarkko@kernel.org>, 
+	"Kirill A. Shutemov" <kas@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-sgx@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Kai Huang <kai.huang@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Retrieve the number of user entries with get_user() first and return
--E2BIG early if 'user_caps' is too small to fit 'caps'.
+Leverage and extend KVM's macro shenanigans to export symbols for KVM if
+and only if kvm{,-amd,intel}.ko is being built as a module, and only for
+the KVM modules that are being built.
 
-Allocate memory for 'caps' only after checking the user buffer's number
-of entries, thus removing two gotos and the need for premature freeing.
+Note, this approach isn't 100% precise, as exports that are only strictly
+necessary for one of KVM's modules will get exported for all KVM modules.
+But I don't see any value in being super precise as it's not like kvm.ko is
+any more trustworthy tha kvm-{amd,intel}.ko (and it's easy to circumvent
+"for module" exports by abusing module names (in out-of-tree code)).  And
+maintaining precise exports would likely be a nightmare (as would writing
+the macros to get the exports right).
 
-Use struct_size() instead of manually calculating the number of bytes to
-allocate for 'caps', including the nested flexible array.
+Patches 1-3 drop superfluous exports that I found while digging around for
+KVM-only exports.
 
-Finally, copy 'caps' to user space with a single copy_to_user() call.
+Sean Christopherson (4):
+  x86/bugs: Drop unnecessary export of "x86_spec_ctrl_base"
+  x86/mtrr: Drop unnecessary export of "mtrr_state"
+  x86/mm: Drop unnecessary export of "ptdump_walk_pgd_level_debugfs"
+  x86: Restrict KVM-induced symbol exports to KVM modules where
+    obvious/possible
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- arch/x86/kvm/vmx/tdx.c | 32 ++++++++++++--------------------
- 1 file changed, 12 insertions(+), 20 deletions(-)
+ arch/x86/entry/entry.S             |  7 ++-
+ arch/x86/entry/entry_64.S          |  3 +-
+ arch/x86/entry/entry_64_fred.S     |  3 +-
+ arch/x86/events/amd/core.c         |  5 ++-
+ arch/x86/events/core.c             |  7 +--
+ arch/x86/events/intel/lbr.c        |  3 +-
+ arch/x86/events/intel/pt.c         |  7 +--
+ arch/x86/include/asm/kvm_types.h   |  5 +++
+ arch/x86/kernel/apic/apic.c        |  3 +-
+ arch/x86/kernel/apic/apic_common.c |  3 +-
+ arch/x86/kernel/cpu/amd.c          |  4 +-
+ arch/x86/kernel/cpu/bugs.c         | 18 ++++----
+ arch/x86/kernel/cpu/bus_lock.c     |  3 +-
+ arch/x86/kernel/cpu/common.c       |  7 +--
+ arch/x86/kernel/cpu/mtrr/generic.c |  1 -
+ arch/x86/kernel/cpu/sgx/main.c     |  3 +-
+ arch/x86/kernel/cpu/sgx/virt.c     |  5 ++-
+ arch/x86/kernel/e820.c             |  3 +-
+ arch/x86/kernel/fpu/core.c         | 21 ++++-----
+ arch/x86/kernel/fpu/xstate.c       |  7 +--
+ arch/x86/kernel/hw_breakpoint.c    |  3 +-
+ arch/x86/kernel/irq.c              |  3 +-
+ arch/x86/kernel/kvm.c              |  5 ++-
+ arch/x86/kernel/nmi.c              |  5 +--
+ arch/x86/kernel/process_64.c       |  5 +--
+ arch/x86/kernel/reboot.c           |  5 ++-
+ arch/x86/kernel/tsc.c              |  1 +
+ arch/x86/lib/cache-smp.c           |  9 ++--
+ arch/x86/lib/msr.c                 |  5 ++-
+ arch/x86/mm/dump_pagetables.c      |  1 -
+ arch/x86/mm/pat/memtype.c          |  3 +-
+ arch/x86/mm/tlb.c                  |  5 ++-
+ arch/x86/virt/vmx/tdx/tdx.c        | 69 +++++++++++++++---------------
+ include/linux/kvm_types.h          | 14 ++++++
+ 34 files changed, 144 insertions(+), 107 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 0a49c863c811..23d638b4a003 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -2282,37 +2282,29 @@ static int tdx_get_capabilities(struct kvm_tdx_cmd *cmd)
- 	if (cmd->flags)
- 		return -EINVAL;
- 
--	caps = kzalloc(sizeof(*caps) +
--		       sizeof(struct kvm_cpuid_entry2) * td_conf->num_cpuid_config,
--		       GFP_KERNEL);
--	if (!caps)
--		return -ENOMEM;
--
- 	user_caps = u64_to_user_ptr(cmd->data);
--	if (get_user(nr_user_entries, &user_caps->cpuid.nent)) {
--		ret = -EFAULT;
--		goto out;
--	}
-+	ret = get_user(nr_user_entries, &user_caps->cpuid.nent);
-+	if (ret)
-+		return ret;
- 
--	if (nr_user_entries < td_conf->num_cpuid_config) {
--		ret = -E2BIG;
--		goto out;
--	}
-+	if (nr_user_entries < td_conf->num_cpuid_config)
-+		return -E2BIG;
-+
-+	caps = kzalloc(struct_size(caps, cpuid.entries,
-+				   td_conf->num_cpuid_config), GFP_KERNEL);
-+	if (!caps)
-+		return -ENOMEM;
- 
- 	ret = init_kvm_tdx_caps(td_conf, caps);
- 	if (ret)
- 		goto out;
- 
--	if (copy_to_user(user_caps, caps, sizeof(*caps))) {
-+	if (copy_to_user(user_caps, caps, struct_size(caps, cpuid.entries,
-+						      caps->cpuid.nent))) {
- 		ret = -EFAULT;
- 		goto out;
- 	}
- 
--	if (copy_to_user(user_caps->cpuid.entries, caps->cpuid.entries,
--			 caps->cpuid.nent *
--			 sizeof(caps->cpuid.entries[0])))
--		ret = -EFAULT;
--
- out:
- 	/* kfree() accepts NULL. */
- 	kfree(caps);
+
+base-commit: 19e2126bba55df9de15d9100b922df1dad6d39a4
 -- 
-2.51.1
+2.51.2.1041.gc1ab5b90ca-goog
 
