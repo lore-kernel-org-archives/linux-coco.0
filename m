@@ -1,57 +1,57 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70851347BC3
-	for <linux-coco@lists.linux.dev>; Wed, 12 Nov 2025 17:39:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AAB34A796
+	for <linux-coco@lists.linux.dev>; Wed, 12 Nov 2025 17:39:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762969193; cv=none; b=uLYfHqpvcP9yzJn8gHq6ESZEjTDzVN/YOrkMmVkd3H6dXmDgD/CKiZzejiZpvXv4bJvtpBNJtDGiDOyEoC3tYlSMyKQQGYpDsfesWVUovy4XPGyGLK1COC7bVYAVR2Bm5hkV8uCb3d2iPLR9CvOwpSc32iqNc+o9+MhZQsAz4RA=
+	t=1762969195; cv=none; b=J+d1NBW1J9MhoSEafVPmBtguqj/05e1/FAfHTpTrjeN3fn+eCUHCxML7qkUjGTDW6lf5Mecr9OBZVawsZOK9v3AwwYAexRfKj1waHNgeHoNrmdCMR9zlNcV40bcA91o2MeKk+5duy+cCdSyTuEGvx4InhidAhYtCSmxnNLbt3TQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762969193; c=relaxed/simple;
-	bh=WiNWbvfwoo+8EdAa9Uz8Q0T/2sNuMxxs4D8jJ5u/WA8=;
+	s=arc-20240116; t=1762969195; c=relaxed/simple;
+	bh=lbv7KBOnId+FabH1167dMbnJJpBWntZ2AQurHl0Ymh4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=eczAZet6TpXUOuQKFlNJdaboOzSBSvInA7talFuBlAFuCOFM6lZz3yy5vX7dcaL+VuJrJcK+oAWNft5zeM7K3kwEOvixE5rWHWArRLjMA7m2gkk+JS6lGIYTnmfN5XUaLnH4JSFC9D65dV3sx+B2kuSIiTztbXizQvuPtdu3oAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MbAnIi6E; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=bAsW8ahB0Dbm/C+/Gv4ovqDC+b5AHotMwO56qpi/qwqWnIvCxbDqv+GFzRp9OYXaDuQk3IgeawT03AQ07RGsoEGiFpjbPuu+5COytZh0ANmt+G3BSRgM/kGOXU21K5YazBjWx8gWqQJ1XddWDmnUc/fEQfLwjvSmmVBg3eKUzQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Fz2lXgrT; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MbAnIi6E"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-7ad1e8ab328so885710b3a.0
-        for <linux-coco@lists.linux.dev>; Wed, 12 Nov 2025 09:39:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Fz2lXgrT"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b5edecdf94eso2134598a12.2
+        for <linux-coco@lists.linux.dev>; Wed, 12 Nov 2025 09:39:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762969190; x=1763573990; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1762969192; x=1763573992; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=3jB11KRi3IX+N8TsZocIARdIpUY/Xl/OcZwePjrIV+8=;
-        b=MbAnIi6Er1BvNncOsBrC6RfIGz3a7ZH7R0MXEC3xy7JFblon8I9AaAY6LXQhco6IWl
-         40k7QB0dYa0du5UEkHipc0yvXpr4zQc16PiYy7+K7Lty1wTJKw6QS1qDdHePAP2w3ufb
-         usN/jwCGeVgSeR0URaonqjMDpB2NzSTudc1ybunRui0XIok7O/3XjQQV6r0aRuRjBENf
-         Ve/hKUCdBIufDB+khoCwa4YGIlounGgaRbOss6u6ghd7F3iHQbFmhT7osRfrLYojn13D
-         R9tuAi/XvNEEyZz7DY/H0jgkzIYRJoC7FnHijOOhTe4FX87BWSP5JGP4luBE+Jv6ZFna
-         k1MQ==
+        bh=5TnDpCtdkW5EjfNm/WK8+BC1Q5HsHLmqdVi4Osqi6cA=;
+        b=Fz2lXgrTerlRBoPAcUZxuj9ALod6xlePpDbQgXmD1SO1zHzqKGM0K//wvQ2awYRzXe
+         xBiVgQWT4QIGhphkJ5ZmVZdomYxSN79uTZD+OBedOZIhPXzMFmkBX191iaMT+y5/Scew
+         jk93rdctRUiC7PjdsuGpsJ6ivn3fvqSNeTOGM+NwSWuUpL5QJUMlb0HpLTsdYmn33OVe
+         Nk6033B82zS8N6ty4wFZrRZ/4d+mkxFjRPvbvYXBjVgQOqNwtKgDgpqQlxvq43pFI7hG
+         1xnUeczCk1C/HXU0XP4huVWCxjhGekwTKXhQQh+AJeg6yXhSEDYapQSS87ltAeUfOwHT
+         46LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762969190; x=1763573990;
+        d=1e100.net; s=20230601; t=1762969192; x=1763573992;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=3jB11KRi3IX+N8TsZocIARdIpUY/Xl/OcZwePjrIV+8=;
-        b=PWK2AZJGDGao+r6wZVWQxCbF/m294SBFrIuJEsLU8g9xnAUDetpIaYk7ELAkxArV1g
-         jqzT7kE/wvnBi2IP+ealG9ZqGtWpDtrvnobN/8hXF8jKVu7Tnh8vlra04wp7gsxOP9py
-         O27c3AmVobwBzqvAs5MmfJyLDK55TzUJ/nOxxW/DmWPXhTHTkKPqUSLvnc+Ap3thi/I9
-         EKRoYKd1W21XofeRQZ6rtHRHxVqUO0xIbVP4ym39c2CIvVPZjWTK1/8O/UJDjKN5IlxZ
-         N66OxerHrtxFmC4b3NiTt2jQLwovEQ9D9sgLXOVQKcngKowICpXv66dmBBw1tTN8jGyP
-         6r5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX4QY08H79dR22OEYPOkv3m3UobTwat0NcI5AwswRg+TfcXB6b1Y+wI//8pJUAyLTaCd8iYwTgeCTrU@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyc9zPMQ+unO0+rfhqKZHMiEimBBW7OoBf5uI+Ko33JTU4BVXao
-	IhW51yZl5BHy1gljYZquPrqfg7z1n7RFvfT+6zK8YZp/vCJLMIrYF06qCN5GXz19j2xjo5AlHaX
-	34ZFFlw==
-X-Google-Smtp-Source: AGHT+IEzUdshi4KJh5WFIAXko+n+YEgi4OqqdjsC4s4GZ3jRZGaScEAL16+P4T3e1ewsgL1T8TGXhgEoctI=
-X-Received: from pge1.prod.google.com ([2002:a05:6a02:2d01:b0:bac:6acd:817e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:4305:b0:343:9397:c4d5
- with SMTP id adf61e73a8af0-3590908eb63mr5330693637.12.1762969190457; Wed, 12
- Nov 2025 09:39:50 -0800 (PST)
+        bh=5TnDpCtdkW5EjfNm/WK8+BC1Q5HsHLmqdVi4Osqi6cA=;
+        b=amcH9Zsl5Vbky4IPQkepA2vCyzhVEfGIPM9kImstZifcBpISr7yjcF5jqZ6Dx7uPd7
+         I3xGvSwwC+SfyL+z69x/zKu8W4T9SpyXXlwXCcdOajw2uNTDyVK/waTX+YsWeklFKGVd
+         MNgAqBsF71sJgsbZaolsvU/F0yAm6ON3MpmDs/WgsmrnZ+e0mUdd7ofyFEmKi/N2LBvT
+         zoN5+aH88h2lvmALJxAOJ7GqTQIMj6OVPC419qSmHXoPjiS/npJXQluSw3g2ZovXjc4y
+         mcl8+Mfqb7nSN9qqbQe4HB5gzch3Mp856P3ZN+zOuxp1lu57oVGGXMevNuMlLN27+Ys1
+         +T1w==
+X-Forwarded-Encrypted: i=1; AJvYcCU83Giob2Vklod1O/GmgDPPIJnsV3a73bJpD+OoFR0zNjmOlsp+8lRVbItrKu/KS8oBOb8miPAMDT6h@lists.linux.dev
+X-Gm-Message-State: AOJu0YzTRaH8Do2BiMFuNYd436HBaDkQB2HtnACtKIq4qQVTjazky07h
+	4E5YPoQZopaM8KLW8zwKYYz16iIg62mCzvXKlDJRqFObqM37Sdrv5mSryUquo8HskWbUNjb8pAx
+	lClgBIQ==
+X-Google-Smtp-Source: AGHT+IHz/l05PZRgfyqRId2a6PpuZL13C+FOannHS5GzYwvPYmTtNXM3YC7Qpo5B6cCtNaEfJoKUfU9w7hc=
+X-Received: from pjbeu11.prod.google.com ([2002:a17:90a:f94b:b0:338:3e6b:b835])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4a91:b0:341:761c:3330
+ with SMTP id 98e67ed59e1d1-343dde8addfmr4774092a91.23.1762969192338; Wed, 12
+ Nov 2025 09:39:52 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 12 Nov 2025 09:39:42 -0800
+Date: Wed, 12 Nov 2025 09:39:43 -0800
 In-Reply-To: <20251112173944.1380633-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -61,8 +61,8 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20251112173944.1380633-1-seanjc@google.com>
 X-Mailer: git-send-email 2.51.2.1041.gc1ab5b90ca-goog
-Message-ID: <20251112173944.1380633-3-seanjc@google.com>
-Subject: [PATCH 2/4] x86/mtrr: Drop unnecessary export of "mtrr_state"
+Message-ID: <20251112173944.1380633-4-seanjc@google.com>
+Subject: [PATCH 3/4] x86/mm: Drop unnecessary export of "ptdump_walk_pgd_level_debugfs"
 From: Sean Christopherson <seanjc@google.com>
 To: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
 	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
@@ -76,28 +76,28 @@ Cc: linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
 	Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Don't export "mtrr_state" as usage is limited to arch/x86/kernel/cpu/mtrr
-(and nothing outside of that directory even includes the local mtrr.h).
+Don't export "ptdump_walk_pgd_level_debugfs" as its sole user is
+arch/x86/mm/debug_pagetables.c, which can't be built as a module.
 
 No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kernel/cpu/mtrr/generic.c | 1 -
+ arch/x86/mm/dump_pagetables.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/mtrr/generic.c b/arch/x86/kernel/cpu/mtrr/generic.c
-index 8c18327eb10b..0863733858dc 100644
---- a/arch/x86/kernel/cpu/mtrr/generic.c
-+++ b/arch/x86/kernel/cpu/mtrr/generic.c
-@@ -89,7 +89,6 @@ static int mtrr_state_set;
- u64 mtrr_tom2;
+diff --git a/arch/x86/mm/dump_pagetables.c b/arch/x86/mm/dump_pagetables.c
+index a4700ef6eb64..2afa7a23340e 100644
+--- a/arch/x86/mm/dump_pagetables.c
++++ b/arch/x86/mm/dump_pagetables.c
+@@ -486,7 +486,6 @@ void ptdump_walk_pgd_level_debugfs(struct seq_file *m, struct mm_struct *mm,
+ #endif
+ 	ptdump_walk_pgd_level_core(m, mm, pgd, false, false);
+ }
+-EXPORT_SYMBOL_GPL(ptdump_walk_pgd_level_debugfs);
  
- struct mtrr_state_type mtrr_state;
--EXPORT_SYMBOL_GPL(mtrr_state);
- 
- /* Reserved bits in the high portion of the MTRRphysBaseN MSR. */
- u32 phys_hi_rsvd;
+ void ptdump_walk_user_pgd_level_checkwx(void)
+ {
 -- 
 2.51.2.1041.gc1ab5b90ca-goog
 
