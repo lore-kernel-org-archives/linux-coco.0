@@ -1,82 +1,55 @@
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA072673B0
-	for <linux-coco@lists.linux.dev>; Wed, 12 Nov 2025 21:22:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F7A2E8B80;
+	Wed, 12 Nov 2025 22:03:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762982531; cv=none; b=XpXFyW1FCUVFz+GDyfnXzRSsn+4eRsjzjzV/PNFMu8WxT7k+RW68iVAybcSutF76HiaWaktY6RbuZEyy5hU+5OObqT04JjpREOUIvNsWcuC/BhCnpPxdexr2Mk91akzii9cxbQhdjJ5jFXwrtc1FIF1t+j1Kxevmj2G+n0yMir0=
+	t=1762985016; cv=none; b=TlRnpQsbThDnOFnqaUHAUz/MNv38H+Myn3VtyK/ttXVrYfBdmGGteECKUVLtFkXJoHolFLnwJjPr4repljx37EdWawQ8QKHt6JMDJg9/UYqRL/5zeRvh82/fk9d/mhaTswvNrVyexZFw+pSy3jKhN8GCUL+IBKX37bjFEb94lCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762982531; c=relaxed/simple;
-	bh=4SgRlDDvU5istjyUir1XwDs733sVp33z3Rp103M2gAQ=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=iK2B++o+ODbvBMUTu3WeBVqhumJidwS36hINny4G5LfwOd4pPkfx5uRQeCJsqX1HfYi6/C6oS7/mJ/G44PXrBXsEcbYiHlXTE5J5fFFU52o4kt/AMtVMI/7gn+Cj+kNBBSOHOmwkpLzkXnSFTnqy1VQqXGrFxr29fFcLmiPtUJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=am92Mmc6; arc=none smtp.client-ip=91.218.175.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1762985016; c=relaxed/simple;
+	bh=yKV8TJsHnx35D9JEFF1IPTZAHE8WaPXIxtWuhKVspfM=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QoNVc4FMWM1qaPLBuaa4kK2umGYR70kSMoO0uqle49fqCu0BYUMO7BDXDaJRkD9jGSFvb9kkfRDXyWLJGt7JGqjrE7XNmWpGt5jZMu4aHsGzWar1y57egMoHX/KFD29mqMFTXjjyGfET+EDITfvnaq7ao26EWKHKP3jPhU3z5wI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=gksBj1uT; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="am92Mmc6"
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762982526;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4SgRlDDvU5istjyUir1XwDs733sVp33z3Rp103M2gAQ=;
-	b=am92Mmc6V1CmAgaBbJ+aUSSO3USMV7oCACilqoA2O+FCF6/5JIJlOUvyH8rgcfuNMMZSAu
-	7kT2b0mvzdMcQmhqnFG/x6JkWwwuhY2VFfmssN7hit5UIb504pdV/1MkW4rBfLegpt0occ
-	/JuhJ/WilLM64y6Y23zmRhI/FjboKak=
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="gksBj1uT"
+Received: from 8bytes.org (p549214ac.dip0.t-ipconnect.de [84.146.20.172])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 3059C5B215;
+	Wed, 12 Nov 2025 23:03:33 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1762985013;
+	bh=yKV8TJsHnx35D9JEFF1IPTZAHE8WaPXIxtWuhKVspfM=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=gksBj1uTEmLqP52xQEmJuSZMY6J9kGQ109024ik8QX5IB7tu/Qwc6vnmfKHELphF7
+	 NKbzTHXRLdDHlVB5nZPpm5tQ63OoxovLJtS4i1d3kf8pm7L/D+sw/8nX1OapuYU4eU
+	 L4ATDtN4+BFjAeD1nUF72+gJANE4bG1SgPYwZ8HH9uDu8FT6vpCjPxZtjZU2hZvTcb
+	 iJ9OCdoOE3BW8QiSQ9w6W7PbL6HWpFrpQTAPVAe84UCcOrbMG4k/uIfeOzblDLcjRS
+	 J3W/3pR6y6kygSdV+KcdgyEuY44XpWSOEXr88NyCz8s7yjQp1je2el5VY8vFJQ87K7
+	 ehCBAhUt5v3OA==
+Date: Wed, 12 Nov 2025 23:03:32 +0100
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+Subject: Re: SVSM Development Call November 12th, 2025
+Message-ID: <bu3llkybpmpazfuqh4yniw3lmxn6rrnygr6azihihrmfqx4j4k@ki2edzq25bko>
+References: <s5lzpd7oaqibweihjmqidr6etqmw36avgvvz22htqly5jbqiqh@vqzp54r5cxao>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH RESEND] KVM: TDX: Use struct_size and simplify
- tdx_get_capabilities
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Thorsten Blum <thorsten.blum@linux.dev>
-In-Reply-To: <4a2a74e01bfd31bc4bd7a672452c2d3d513c33db.camel@intel.com>
-Date: Wed, 12 Nov 2025 22:22:02 +0100
-Cc: "seanjc@google.com" <seanjc@google.com>,
- "x86@kernel.org" <x86@kernel.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "bp@alien8.de" <bp@alien8.de>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "hpa@zytor.com" <hpa@zytor.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "kas@kernel.org" <kas@kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <79605B58-CBB6-460D-8B72-F648F962E1BA@linux.dev>
-References: <20251112171630.3375-1-thorsten.blum@linux.dev>
- <4a2a74e01bfd31bc4bd7a672452c2d3d513c33db.camel@intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-X-Migadu-Flow: FLOW_OUT
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <s5lzpd7oaqibweihjmqidr6etqmw36avgvvz22htqly5jbqiqh@vqzp54r5cxao>
 
-On 12. Nov 2025, at 20:59, Edgecombe, Rick P wrote:
-> It looks like you are conducting a treewide pattern matching cleanup?
+Meeting minutes are now available here:
 
-Just a few instances here and there, but not really treewide.
+	https://github.com/coconut-svsm/governance/pull/85
 
-> In the handling of get_user(nr_user_entries, &user_caps->cpuid.nent), =
-the old
-> code forced -EFAULT, this patch doesn't. But it leaves the =
-copy_to_user()'s to
-> still force EFAULT. Why?
+Cheers,
 
-get_user() already returns -EFAULT and the error can just be forwarded,
-whereas copy_to_user() returns the number of bytes that could not be
-copied and we must return -EFAULT manually.
-
-> Tested-by: Rick Edgecombe <rick.p.edgecombe@intel.com> (really the TDX =
-CI)
-
-Thanks,
-Thorsten
-
+	Joerg
