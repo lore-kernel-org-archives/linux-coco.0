@@ -1,83 +1,93 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877EF34CFCE
-	for <linux-coco@lists.linux.dev>; Thu, 13 Nov 2025 12:10:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1D730AAD7
+	for <linux-coco@lists.linux.dev>; Thu, 13 Nov 2025 16:29:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763035846; cv=none; b=SWhcUtEo7nQAUG+cI+cKZ7075VR+N8hBlqumAwFGtZyDBzcwX9exOv8k8/bJAzR54T7dmA1arhhmUkASvB0byWXE6Rr7t6zk3Assyp8wX6OE2Ypd5l0CJzQMNSfjIHjoFvzbKVgMh8YVZ9oaGItevG8wunX4OFYy+//qqtU9yu4=
+	t=1763051352; cv=none; b=W3KXQANb3dYb+ZOPzHFxsRcXcFYVRbRNs3paDx8kZBz/+cP4QDCvGNhe09Gm81yxxl8QDL7gxj7BwMODy03rlchqRpSJBF+FcCQeZTSKjPhRfClKEVClZ14BzS/Nm3v8uyygQH7wKg41l5vG9t5xWNixVHRpS1XGJfa1HFgjJzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763035846; c=relaxed/simple;
-	bh=lakeWmHgrc2U9tY8RiNTC8pnxxL49rH34SFqxnVfQrQ=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mKEvV7ydpEu6n9oJbGrW45uDVxdGN0tD3mNJVP3FFjtZ3l+aOGmDF3AYqa2XM3D88vRNSkJXWGKMILsJeZm9QC/0GEtdd4XTN6pbWFo11vhdEhtgwdgrP9Qiarw4qS2faaoWqQYHFyU0cx5DXPvlB5fzmMw6p3QpUL6s6vYBIEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4d6fH10JTdzHnGjs;
-	Thu, 13 Nov 2025 20:10:21 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 05EAD1401DC;
-	Thu, 13 Nov 2025 20:10:42 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 13 Nov
- 2025 12:10:41 +0000
-Date: Thu, 13 Nov 2025 12:10:39 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Dan Williams <dan.j.williams@intel.com>
-CC: <linux-pci@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<bhelgaas@google.com>, <aneesh.kumar@kernel.org>, <yilun.xu@linux.intel.com>,
-	<aik@amd.com>, Lukas Wunner <lukas@wunner.de>, Samuel Ortiz
-	<sameo@rivosinc.com>, Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: Re: [PATCH 6/6] PCI/TSM: Add 'dsm' and 'bound' attributes for
- dependent functions
-Message-ID: <20251113121039.000039ab@huawei.com>
-In-Reply-To: <20251105040055.2832866-7-dan.j.williams@intel.com>
-References: <20251105040055.2832866-1-dan.j.williams@intel.com>
-	<20251105040055.2832866-7-dan.j.williams@intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1763051352; c=relaxed/simple;
+	bh=JPzSVp59ZCmlDUI9Beydu0hu21hddcAy+tsckcJKHLI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=uswx50AhyXZtyqpO47MtsyvW5ymGmYUF/QAI6rwwgnQj1b0EGr3PsFyjP2QmpOtVZDlAbnoXeX9I+QPcz2NwlX3FgXyhhPCB1fa6Wbl9WoHbESjpAZf4cXHjGimEq8qYsfgpFMRDMAfqjJ7skmz5uagJy6sIED+zZ8PD1lfNHoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q8zVT3nD; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q8zVT3nD"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-297f587dc2eso12902235ad.2
+        for <linux-coco@lists.linux.dev>; Thu, 13 Nov 2025 08:29:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1763051350; x=1763656150; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jggj5Ym/rIR7T7fXmMSGr1c+7mHxEtZV9zaRb5SwErk=;
+        b=q8zVT3nDw1NbUt7Xt4q3lq4I53qyv6ZztrOONG5bsdWQI7V4NCLfU0hVUC60gZmCD1
+         BI76sB56MakEA0n/21ziEg0vooIRC08it/7Tq/8Vukzob2P3hF+5R0Oz2MuLASipGk1S
+         UOMwChEcC/maxUAZCAUcb431T1Qam8jzHuKMkDcrSwYN5NVJgBOEKwpa6ZVEffzwm+FZ
+         WHAnWhan0sruHW+2TdKcrieak1GfSuVkQZ9XKgeEISmfSeI4/mACADL27GLtxhnZzoc0
+         g0egOwSg/KFBfwHMG36OHaibxpGMY+2QLyCSYaBC/HFlwPEhmRPKRelG8SjGyngZTlJH
+         OZNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763051350; x=1763656150;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jggj5Ym/rIR7T7fXmMSGr1c+7mHxEtZV9zaRb5SwErk=;
+        b=dEn1hnpZs9soENr34ZcFzn2PvmvEt5QZFhF1XJGj1AdaX2MfkBJnWhQhiN8bSrUFWU
+         6luunyRzjbue4ShnzI35Q4S7Q4XpLWfLokM8zzYwX2NtucHCHVttdAW2vLMx3yBcmzz0
+         Gj4ULdiAZjfRIyKIptTBWVY6EIYgBwTa3BZU88B0Wscgf32AQvJKs8AHt7tyZ2SbcA8K
+         gZhKpqDvGoNOJVTP5KqeKu/szuZgjdTfX1ZrsvR5UY8UGnBYefZtNnaGYnP2u8zvW+6b
+         Q45Ya3eZMzy16wz5LUqWWDaWTr3pgsG030rrZ0kqqMVx7devCSIJ2JBRZ0fDNCWmn3Id
+         OZNw==
+X-Forwarded-Encrypted: i=1; AJvYcCUGboRBtks5aN9Ss2TUpVP8ukBE16qyHGezIAdiPDmMOtGIAQhefajpXsNuUq+jEx6+V9MC05CkuqF4@lists.linux.dev
+X-Gm-Message-State: AOJu0YyYGXa8YTYrgen601hvl6G0rC4+Ni/hCdjdnxeErJwcfLW4l4SF
+	trw0JyqUvHhwJ5QIsLtMsqgPHQ+OpAxK9akMO5AHZKnljGE9ERHZhZTE4JTlhrOyylSqFrbp30B
+	KSaQvOw==
+X-Google-Smtp-Source: AGHT+IGN4f1Z5MZfxK3TyPutsSVmoeFbSOAbtCMPNamHDfo8B2Hxzq7CUQshCWhzAT4nMU/PWEj7huMl4y8=
+X-Received: from plbkj13.prod.google.com ([2002:a17:903:6cd:b0:268:cfa:6a80])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f683:b0:298:60d5:d27a
+ with SMTP id d9443c01a7336-29860d5d2famr21044725ad.28.1763051350343; Thu, 13
+ Nov 2025 08:29:10 -0800 (PST)
+Date: Thu, 13 Nov 2025 08:29:08 -0800
+In-Reply-To: <0d9e4840da85ae419b5f583c9dacee1588a509ba.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+Mime-Version: 1.0
+References: <20251112171630.3375-1-thorsten.blum@linux.dev>
+ <4a2a74e01bfd31bc4bd7a672452c2d3d513c33db.camel@intel.com>
+ <aRTtGQlywvaPmb8v@google.com> <0d9e4840da85ae419b5f583c9dacee1588a509ba.camel@intel.com>
+Message-ID: <aRYHVHOex4zkyt5z@google.com>
+Subject: Re: [PATCH RESEND] KVM: TDX: Use struct_size and simplify tdx_get_capabilities
+From: Sean Christopherson <seanjc@google.com>
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: "bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>, 
+	"thorsten.blum@linux.dev" <thorsten.blum@linux.dev>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"mingo@redhat.com" <mingo@redhat.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kas@kernel.org" <kas@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue,  4 Nov 2025 20:00:55 -0800
-Dan Williams <dan.j.williams@intel.com> wrote:
-
-> PCI/TSM sysfs for physical function 0 devices, i.e. the "DSM" (Device
-> Security Manager), contains the 'connect' and 'disconnect' attributes.
-> After a successful 'connect' operation the DSM, its dependent functions
-> (SR-IOV virtual functions, non-zero multi-functions, or downstream
-> endpoints of a switch DSM) are candidates for being transitioned into a
-> TDISP (TEE Device Interface Security Protocol) operational state, via
-> pci_tsm_bind(). At present sysfs is blind to which devices are capable of
-> TDISP operation and it is ambiguous which functions are serviced by which
-> DSMs.
+On Thu, Nov 13, 2025, Rick P Edgecombe wrote:
+> On Wed, 2025-11-12 at 12:24 -0800, Sean Christopherson wrote:
+> > Your CI caught me just in time; I applied this locally last week, but haven't
+> > fully pushed it to kvm-x86 yet. :-)
 > 
-> Add a 'dsm' attribute to identify a function's DSM device, and add a
-> 'bound' attribute to identify when a function has entered a TDISP
-> operational state.
-> 
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Lukas Wunner <lukas@wunner.de>
-> Cc: Samuel Ortiz <sameo@rivosinc.com>
-> Cc: Alexey Kardashevskiy <aik@amd.com>
-> Cc: Xu Yilun <yilun.xu@linux.intel.com>
-> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Repeat of tag from v1. It was only patch I tagged in that version
-so no problem that you missed it, or forgot to say why you dropped
-it intentionally.
+> The TDX CI tracks some upstream branches. Is there one in kvm_x86 tree that
+> would be useful? It's not foolproof enough to warrant sending out automated
+> mails. But we monitor it and might notice TDX specific issues. Ideally we would
+> not be chasing generic bugs in like scratch code not headed upstream or
+> something.
 
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Assuming you're tracking linux-next, I wouldn't bother adding kvm-x86 as kvm-x86/next
+is fed into linux-next.  I do push to topic branches, e.g. kvm-x86/tdx, before
+merging to kvm-x86/next, but at best you might "gain" a day or two, and the entire
+reason I do "half" pushes is so that I can run everything through my testing
+before "officially" publishing it to the world.
 
-
+All in all, explicitly tracking anything kvm-x86 would likely be a net negative.
