@@ -1,235 +1,74 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F23C141
-	for <linux-coco@lists.linux.dev>; Thu, 13 Nov 2025 03:05:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2433133DEFE
+	for <linux-coco@lists.linux.dev>; Thu, 13 Nov 2025 11:28:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763003153; cv=none; b=PguGYLaOjV5ygIUSVWrCrQykAjBkL2dOnhpN71gHBlaAjyrxZRBT4IMVMs8nh/lY7Mt1TKGNYTBMJPA0c7YctF3tcL+ktsqBJTn6KZf2nrkkQWjNdKmWeNnqcjKInjp8nUIRJWXA4HFmKfT1gJPLAGOm+5TnrHU/s6hvvugtlZ4=
+	t=1763033325; cv=none; b=EA/KTyoZD3JniMJymHuMQWfUiBnSr0sykr7k+wOJIi8v3kmjntUj8xZ54C4vkrJ5Cc5WeFhnzQ6t/cUsKDd32LP5DePuY/a5DsuKusLvRdB4y2fvy9RPCwwSHserpU1y8H4l+kEbD3mt7GUPWklJd1jKy7QWHXSIT7Kt+pcFISs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763003153; c=relaxed/simple;
-	bh=OPZiwCZiR/3E+pQMnVYSdp1L5WAWONyGq2M+EGz6XbQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pwNt9uMvvIJp6lLYHahfGPehbngPllRLOcuXH4ETCwZ1aRC1d6gufA/k7Z6wTnRsRdhLuto6yKPUVfSiXGQp1KQPKTDvkKsXQ5L4LYe8+Utne+p1f6uBCE3n6LlkgDtecxGVremduXEwT3G9Swq6MKNRMUT6uq4PgDcVmAEXugg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MsMYvCQE; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MsMYvCQE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763003149; x=1794539149;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=OPZiwCZiR/3E+pQMnVYSdp1L5WAWONyGq2M+EGz6XbQ=;
-  b=MsMYvCQELa5jYGkRfxZBQyYTT9ehlDwX3EoBeA7Y+dTYmrQA6vTqyeI4
-   Z+0KyMTOCAL/AXPFm8jL+LPNF3GwzymlW7WlQk7uPE6fcoxuuZm+J/sFM
-   gJowygyLz7//QHV1d2E+RWg34IQS4C3uBDy1Ohepmbb51vCeUFlKvkIA7
-   elJqjKwpHTcB8I9AVyRYGHvetyLr6UrV6fmrwOZvGFOusDO/ylQ2Acd1c
-   Sounz+H+aC5HtyFPQrNGz0uhq989WwKUu7vy9QgWgufUR/2xHmrmQ9++K
-   /MQTpiYQ/GP0AIf/oQ4PWyK+ZoTrrkoXe1UorF0fDxRs8pS7GbJNCf/U4
-   A==;
-X-CSE-ConnectionGUID: Z3VrJxZzTOGdAc/Wt8L4jA==
-X-CSE-MsgGUID: 8BTLlkA9R5ql4nHyVNwvSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="64785788"
-X-IronPort-AV: E=Sophos;i="6.19,300,1754982000"; 
-   d="scan'208";a="64785788"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2025 19:05:49 -0800
-X-CSE-ConnectionGUID: KL+SABqfT521X9nnvRySsg==
-X-CSE-MsgGUID: rvb/MIsjQBqqRt0iRAf32g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,300,1754982000"; 
-   d="scan'208";a="194371065"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa004.fm.intel.com with ESMTP; 12 Nov 2025 19:05:47 -0800
-Date: Thu, 13 Nov 2025 10:51:17 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: dan.j.williams@intel.com
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
-	linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	xin@zytor.com, chao.gao@intel.com
-Subject: Re: [RFC PATCH 20/27] coco/tdx-host: Add connect()/disconnect()
- handlers prototype
-Message-ID: <aRVHpdQ637ltYJku@yilunxu-OptiPlex-7050>
-References: <20250919142237.418648-1-dan.j.williams@intel.com>
- <20250919142237.418648-21-dan.j.williams@intel.com>
- <20251030112055.00001fcb@huawei.com>
- <69093bf7d6ee_74f59100fe@dwillia2-mobl4.notmuch>
- <aQwvsbZy50ac+xid@yilunxu-OptiPlex-7050>
- <69128889c6c2d_1d911009f@dwillia2-mobl4.notmuch>
+	s=arc-20240116; t=1763033325; c=relaxed/simple;
+	bh=hFIdchMz70SRW7I6tXRAH6ooNypVtLfMibRNFhxHWqw=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uuVWZ1ci/Ay8Hdv6qH6UncYoymxLuiPcsGVHO2ek6NGwMEzWYyJ5id/uBSvDDgcYlgKnRMgJMdH6N6RPfz4kiD2wMENGpMr/pclkRX54/G5yXJZHDJiQfxQDn4qPw4MgPYhJPgCD6bD2rQ4qo5LIgWD7a1T0XfUe67i0HEb/x84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4d6dLH4jPczJ46rT;
+	Thu, 13 Nov 2025 19:28:07 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id AAC7F140277;
+	Thu, 13 Nov 2025 19:28:41 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 13 Nov
+ 2025 11:28:41 +0000
+Date: Thu, 13 Nov 2025 11:28:40 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Dan Williams <dan.j.williams@intel.com>
+CC: <linux-pci@vger.kernel.org>, <linux-coco@lists.linux.dev>, kernel test
+ robot <lkp@intel.com>
+Subject: Re: [PATCH v2 1/8] drivers/virt: Drop VIRT_DRIVERS build dependency
+Message-ID: <20251113112840.00002faa@huawei.com>
+In-Reply-To: <20251113021446.436830-2-dan.j.williams@intel.com>
+References: <20251113021446.436830-1-dan.j.williams@intel.com>
+	<20251113021446.436830-2-dan.j.williams@intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <69128889c6c2d_1d911009f@dwillia2-mobl4.notmuch>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Mon, Nov 10, 2025 at 04:51:21PM -0800, dan.j.williams@intel.com wrote:
-> Xu Yilun wrote:
-> > On Mon, Nov 03, 2025 at 03:34:15PM -0800, dan.j.williams@intel.com wrote:
-> > > Jonathan Cameron wrote:
-> > > > On Fri, 19 Sep 2025 07:22:29 -0700
-> > > > Dan Williams <dan.j.williams@intel.com> wrote:
-> > > > 
-> > > > > From: Xu Yilun <yilun.xu@linux.intel.com>
-> > > > > 
-> > > > > Add basic skeleton for connect()/disconnect() handlers. The major steps
-> > > > > are SPDM setup first and then IDE selective stream setup.
-> > > > > 
-> > > > > No detailed TDX Connect implementation.
-> > > > > 
-> > > > > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> > > > > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> > > > Feels like use of __free() in here is inappropriate to me.
-> > > > 
-> > > > > ---
-> > > > >  drivers/virt/coco/tdx-host/tdx-host.c | 49 ++++++++++++++++++++++++++-
-> > > > >  1 file changed, 48 insertions(+), 1 deletion(-)
-> > > > > 
-> > > > > diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
-> > > > > index f5a869443b15..0d052a1acf62 100644
-> > > > > --- a/drivers/virt/coco/tdx-host/tdx-host.c
-> > > > > +++ b/drivers/virt/coco/tdx-host/tdx-host.c
-> > > > > @@ -104,13 +104,60 @@ static int __maybe_unused tdx_spdm_msg_exchange(struct tdx_link *tlink,
-> > > > >  	return ret;
-> > > > 
-> > > > > +
-> > > > > +static void __tdx_link_disconnect(struct tdx_link *tlink)
-> > > > > +{
-> > > > > +	tdx_ide_stream_teardown(tlink);
-> > > > > +	tdx_spdm_session_teardown(tlink);
-> > > > > +}
-> > > > > +
-> > > > > +DEFINE_FREE(__tdx_link_disconnect, struct tdx_link *, if (_T) __tdx_link_disconnect(_T))
-> > > > > +
-> > > > >  static int tdx_link_connect(struct pci_dev *pdev)
-> > > > >  {
-> > > > > -	return -ENXIO;
-> > > > > +	struct tdx_link *tlink = to_tdx_link(pdev->tsm);
-> > > > > +	int ret;
-> > > > > +
-> > > > > +	struct tdx_link *__tlink __free(__tdx_link_disconnect) = tlink;
-> > > > I'm not a fan on an ownership pass like this just for purposes of cleaning up.
-> > > 
-> > > Yeah this needs a rethink. The session and the stream are independent
-> > > resources. It can be a composite object that encapsulates both
-> > > resources, but not tlink directly.
-> > > 
-> > > ...chalk this up to RFC expediency.
-> > > 
-> > > > I'd be a bit happier if you could make it
-> > > > 	struct tdx_link *tlink __free(__tdx_link_disconnect) = to_tdx_link(pdev->dsm);
-> > > > 
-> > > > but I still don't really like it.  I think I'd just not use __free and stick
-> > > > to traditional cleanup in via a goto. 
-> > > 
-> > > I would not go that far, but certainly I can see that being preferable
-> > > than reusing the existing base 'struct tdx_link *' as the cleanup
-> > > variable.
-> > 
-> > The latest implementation internally is as follows. tlink_spdm &
-> > tlink_ide represent independent resources though they point to the same
-> > instance. I'm already comfortable about this code:
-> > 
-> > static int tdx_link_connect(struct pci_dev *pdev)
-> > {
-> > 	struct tdx_link *tlink = to_tdx_link(pdev->tsm);
-> > 
-> > 	struct tdx_link *tlink_spdm __free(tdx_spdm_session_teardown) =
-> > 		tdx_spdm_session_setup(tlink);
-> 
-> The question I have is why does tdx_spdm_session_setup() return a
-> 'struct tdx_link' instance and not a new 'struct tdx_spdm' object to
-> represent the new resources that were acquired? 'struct tdx_link' is
-> base infrastructure created by ->probe(). Perhaps 'struct tdx_spdm'
-> could be:
-> 
-> struct tdx_spdm {
->        u64 spdm_id;
->        struct page *spdm_conf;
->        struct tdx_page_array *spdm_mt;
-> }
-> 
-> ...and then tdx_link becomes:
-> 
-> struct tdx_link {
-> 	...
-> 	struct tdx_spdm spdm;
-> };
-> 
-> ...and you can do:
-> 
->        struct tdx_spdm *spdm __free(tdx_spdm_session_teardown) =
->                tdx_spdm_session_setup(tlink);
-> 
-> tlink->spdm = *no_free_ptr(spdm);
-> 
-> ...to assign it back to the preallocated space in @tlink, or make
-> it dynamically allocated.
-> 
-> struct tdx_link {
-> 	...
-> 	struct tdx_spdm *spdm;
-> };
-> 
-> tlink->spdm = no_free_ptr(spdm);
+On Wed, 12 Nov 2025 18:14:39 -0800
+Dan Williams <dan.j.williams@intel.com> wrote:
 
-It works for sure. I have also thought about this solution, but dropped.
-I don't wanna see the usage of auto-cleanup impose too much influences
-to the code/structure design, even if it shows better modularity.
-
-It is normal in kernel that a base structure contains several
-sub-features and we just group them with blank lines. Some fields may be
-used accoss 1-2 features and doesn't have a clear owner. If we ask for
-strict structure/flow design for auto-cleanup, people may reluctant to
-switch to auto-cleanup, thought is it over-engineering?
-
-IOW, I like this current piece of code cause it is in perfect balance.
-I don't have to change the mindset much for code design. I get the benifit
-of auto-cleanup, and the local cleanup handlers (tlink_spdm, tlink_ide)
-are cheap but clearly tell me what will happen if any step fails.
-
+> All of the objects in drivers/virt/ have their own configuration symbols to
+> gate compilation. I.e. nothing gets added to the kernel with
+> CONFIG_VIRT_DRIVERS=y in isolation.
 > 
-> > 	if (IS_ERR(tlink_spdm)) {
-> > 		pci_err(pdev, "fail to setup spdm session\n");
-> > 		return PTR_ERR(tlink_spdm);
-> > 	}
-> > 
-> > 	struct tdx_link *tlink_ide __free(tdx_ide_stream_teardown) =
-> > 		tdx_ide_stream_setup(tlink);
-> > 	if (IS_ERR(tlink_ide)) {
-> > 		pci_err(pdev, "fail to setup ide stream\n");
-> > 		return PTR_ERR(tlink_ide);
-> > 	}
+> Unconditionally descend into drivers/virt/ so that consumers do not need to
+> add an additional CONFIG_VIRT_DRIVERS dependency.
 > 
-> No strict need for scope-based cleanup if this is the last resource
-> acquisition,
-
-So if we don't do auto-cleanup for the last one, do we still need a
-structure for that? If not,
-
- struct tdx_link {
-	struct tdx_spdm *spdm;
-	
-	int ide_stream_field1;
-	int ide_stream_field2;
-	...
- }
-
-seems so wierd.
-
-> but maybe there are other PCI/TSM core things to do that
-> are not shown.
-
-There is no following items for now but I think cleanup for the last one
-is good. Otherwise we may face with the same problem as goto, that we
-see unrelated changes (add cleanup for previous one) when we add a new
-step.
-
-Thanks,
-Yilun
-
+> Fix warnings of the form:
+> 
+>     Kconfig warnings: (for reference only)
+>        WARNING: unmet direct dependencies detected for TSM
+>        Depends on [n]: VIRT_DRIVERS [=n]
+>        Selected by [y]:
+>        - PCI_TSM [=y] && PCI [=y]
+> 
+> ...where PCI_TSM selects CONFIG_TSM, but fails to select
+> CONFIG_VIRT_DRIVERS.
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202511041832.ylcgIiqN-lkp@intel.com/
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Seems reasonable to me.
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
