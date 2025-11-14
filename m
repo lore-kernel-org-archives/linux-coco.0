@@ -1,74 +1,61 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010013.outbound.protection.outlook.com [52.101.193.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2E628C00D
-	for <linux-coco@lists.linux.dev>; Thu, 13 Nov 2025 23:09:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763075374; cv=fail; b=KrEyXdDoCe6jFmoVHQCP0hO4XTH5QzCepgtAcPckLcXxxk6l1bf4a/k3N+DUNtboHPDt9gH4ZIuuPLIusr4PalRR57uI+54q6VLn1+ehBM/SryVXNXSfOHvtwzbfY2gZtd08N6bKfUQ8wYh21SsVjqQYCLVWIAGQnaQhLfZCYlg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763075374; c=relaxed/simple;
-	bh=vYxKY+PKHpZafw/ibdQxVrcXsSuCtVM4iZ2iNHIauuM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QX0uM1XhTFD9DgniTLVCmMwa88CnUXz99U18X8JWZ9yrIeBwBg5JloCy5TVjCoCMRo9WE7gGbxN2qYbg7/TbUdUsjJSGJvYxwm/0BJqqCkdEVdHU8kjZ1r17ikwmuUKZhdJM0gnEzvHnjfc/bgHf4OH5itkdNz6lw71+ap6Ea/8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=2xEXnTec; arc=fail smtp.client-ip=52.101.193.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592E121254B
+	for <linux-coco@lists.linux.dev>; Fri, 14 Nov 2025 01:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763082107; cv=none; b=TEbIJ6vwGOsrYpibXtJgwVJl9yvgr0kqAUByazCS/ge85MZAFQvjGf2twmDKo6aoWd+tIwMBUHABdN9tYmz90/kVtr7LxYqTW/gIc8bCQaq/sUXHtKBtRgViHr+ak7rcX00dh+s30KqgEw5UoLyAM1hJvumexktvJpAZ+dMMzAY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763082107; c=relaxed/simple;
+	bh=MtUKqYGKde1czohfUDsFsJOWKAWJvM4fSRI6/y+ZFC8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kgpVks7dDl1GOPoXTcqNK38a5Mn3QyE8jEh7FeKP9NgXoqCXaGe6KlYTS+svha8LNxsofb0KteCmo3aWMTLCvQs/ojSvdCNmGlT6YcHaTA2ecdsLvytNPgST0MfMvtb4lz7J2W8CIhPCFrB5TjHX6oxOMh1y3YuJHuzz45Ayatc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WMZM95nd; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="2xEXnTec"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lla1/c91gvX6++UZIBekIlL24rGZ4Ru54LGVt7ARoxSc8td7jHi4DJgIIyRkiAuKy4owqbqBtCHsT3SSKROSHPnjjojFrLdzqu0c7kGgInTVLaIXtenJnQdqaMmP1Q9OQ6E8/Bto0V6E171WyEjWny2b0UX/OBxU7qRB9yzPtm4uc65/FXfoC7R0qC3WMo4YGyxlLFzfVqCpSlKa15dBfbk0kZY6+U+x+SNA0oeq0YE5kOYq+76A5/4xcOTQs51cPxGxQZqmxaDxrjs3ZMVtUWAuRp6rWMSbcWJn9Usrbqa3RcQu79wpXaVTrT2ZWJisZhl4CDnTr4gH7Wpn33hw9A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xpQSDK9aHEVrpkD7yjKCdEJ5JuhlcCG/Uhbef5nM3n0=;
- b=PAwJg30VtEheFhmnnVrEQPq9MiMPP1yoUizD0t1LQdn2AtjBo2goNjM6v8sxEIFg3GbVLNxd9TvGOgxh7r9KTXW+mWPYSyCl6E6U7Wgvj4NaSjnMDXvi+I026HIyg+B3rEE/UVWIIWvxg+eC4Z3UU++bW9wpiJeA3Pb2zuwaXSzil9GqOf9tC0KUj87uA9syMxWpEF7NXn2+E/2BU9acsB6QRWao8GK1WoJjC3ke8I0Jk/2iZrOFTZNAAgMijhXS8g1r1xLSv1xNf0IN60/PczCCxCEadsu4qWBqfw58/DGcOjCtN3GuK8V50LAM41+TyncYEnXdL8VukTM3eYqAsg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xpQSDK9aHEVrpkD7yjKCdEJ5JuhlcCG/Uhbef5nM3n0=;
- b=2xEXnTecwszeDPJf5OXQYw4jBY40tAGzlKB7kG/vD/QIRJCmk7Gdi0FTDpXLF9C04X8Q/gLuVFQHz54J7lTW6lXeHaq4WME52G89Fl+89KETjzPIsuyNxuageVCWLWkxUz1KjVPxjKYbNQVqmTfOD86/hklrAyGVEvC1Nq9S3VQ=
-Received: from SJ0PR03CA0105.namprd03.prod.outlook.com (2603:10b6:a03:333::20)
- by DS0PR12MB7899.namprd12.prod.outlook.com (2603:10b6:8:149::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.15; Thu, 13 Nov
- 2025 23:09:23 +0000
-Received: from SJ5PEPF00000207.namprd05.prod.outlook.com
- (2603:10b6:a03:333:cafe::54) by SJ0PR03CA0105.outlook.office365.com
- (2603:10b6:a03:333::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9320.17 via Frontend Transport; Thu,
- 13 Nov 2025 23:09:20 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ5PEPF00000207.mail.protection.outlook.com (10.167.244.40) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9320.13 via Frontend Transport; Thu, 13 Nov 2025 23:09:20 +0000
-Received: from localhost (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 13 Nov
- 2025 15:09:19 -0800
-From: Michael Roth <michael.roth@amd.com>
-To: <kvm@vger.kernel.org>
-CC: <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <thomas.lendacky@amd.com>,
-	<pbonzini@redhat.com>, <seanjc@google.com>, <vbabka@suse.cz>,
-	<ashish.kalra@amd.com>, <liam.merwick@oracle.com>, <david@redhat.com>,
-	<vannapurve@google.com>, <ackerleytng@google.com>, <aik@amd.com>,
-	<ira.weiny@intel.com>, <yan.y.zhao@intel.com>
-Subject: [PATCH 3/3] KVM: guest_memfd: GUP source pages prior to populating guest memory
-Date: Thu, 13 Nov 2025 17:07:59 -0600
-Message-ID: <20251113230759.1562024-4-michael.roth@amd.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251113230759.1562024-1-michael.roth@amd.com>
-References: <20251113230759.1562024-1-michael.roth@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WMZM95nd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763082105; x=1794618105;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=MtUKqYGKde1czohfUDsFsJOWKAWJvM4fSRI6/y+ZFC8=;
+  b=WMZM95ndSOb/Au7lkIYda6W/G5ukhgonOCUngzE+v+8ZMJZTw8ROgFoQ
+   6Gfea/A4ErrmUbuzJL5K7Hkh8hdTa6duz5edaj+vKnYSO7bvk4+BBYsY3
+   9j1kg0GrMGJniYvHcm84HUPyEZ/EycwZyJuzN7wWWmlpz8C8ogasvFzz7
+   uTU6+fpZCQctGxC2Gw6yECM7dqYCqQ3NTQMV/gsl7WktetkJOjRVOpSpY
+   NngQz9TLoIla98LPWRzB05EuRhdWmWUg5YAz6o5A4WEZYh3bsW7/jQFVU
+   QAOJ7zt3UIA+naOk/kCOI60g3zG/oah61k/We/a6ye3jAMW0XcFMiLvVS
+   A==;
+X-CSE-ConnectionGUID: /4Vn3a9sQ62DcuqpEqMOBw==
+X-CSE-MsgGUID: PQtVyOibRI6xXdb6MFxYnQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="68802595"
+X-IronPort-AV: E=Sophos;i="6.19,303,1754982000"; 
+   d="scan'208";a="68802595"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 17:01:44 -0800
+X-CSE-ConnectionGUID: RLZJzny8R+aQzdQxRcovSA==
+X-CSE-MsgGUID: Tq1km/tyQ8O61U9a8eFeEA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,303,1754982000"; 
+   d="scan'208";a="226985894"
+Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
+  by orviesa001.jf.intel.com with ESMTP; 13 Nov 2025 17:01:45 -0800
+From: Dan Williams <dan.j.williams@intel.com>
+To: linux-pci@vger.kernel.org
+Cc: linux-coco@lists.linux.dev,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Arto Merilainen <amerilainen@nvidia.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>
+Subject: [PATCH v3 4/8] PCI/IDE: Add Address Association Register setup for downstream MMIO
+Date: Thu, 13 Nov 2025 17:02:27 -0800
+Message-ID: <20251114010227.567693-1-dan.j.williams@intel.com>
+X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20251113021446.436830-5-dan.j.williams@intel.com>
+References: <20251113021446.436830-5-dan.j.williams@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -76,308 +63,314 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF00000207:EE_|DS0PR12MB7899:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1f22bad5-2012-491e-894c-08de2309ad78
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|7416014|376014|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?v4yK1gf9VQPiCD6O3xQ0fwLuSI0Aevv7L7i+uzeruq5RLE9zO3uzzjbNSFIL?=
- =?us-ascii?Q?rpI9R3DihqaSiZg2zMB28JpZPjUvdN/KSCRajuM0zuHjtbP0lGQWM0dClFwz?=
- =?us-ascii?Q?uujebrzaGPPyiH5qgPypnH6CPp1BZSUF61G+CBLb3QhKFkVloh5zeg89CKX+?=
- =?us-ascii?Q?KhVEbig5I9PNAJWO9hh587jE9JF1pp82PVehZuYxFec6+2C1d+acU/672IGY?=
- =?us-ascii?Q?DebnxMvuCJfoxWskrH73rgKMPrOO10aqBn9rOmIzZqA3N9y5PKwd+2p3m0Zc?=
- =?us-ascii?Q?oaH2d0ewFoWZoHX/V3aZfCigZUZhhpZa/toLjp1DjNapjif5pGAmfgt9XUX1?=
- =?us-ascii?Q?8/iRoNeTxdqYAwlVRi5g/+yCwaqkWtRaydl3n9FoRAXPTpu33eUawcI7wLLs?=
- =?us-ascii?Q?XsBAv3GZMJxFe8RV+ZaOaCdgacEpQ1ACWFbcezY6NzixtAQTIi+nKN4BL1Gg?=
- =?us-ascii?Q?4LnQxGyfOmo9CCmh82+cTKMDEqqRcJezcmqn6IVXCiSABBcXiCb8AYTzTPNh?=
- =?us-ascii?Q?arSVaigpxGPdK9lkbxdcNENJRD/an+GsOcqmESsMJGgP7VbQQd8oqxLZuGDd?=
- =?us-ascii?Q?ZCdbGeRqkWCbCI88Qnj8MwtxWQQEDk//aeYm87IMe71Sbzclo8c4cCSjc1IN?=
- =?us-ascii?Q?CrDRYkyPQb29mqGivEtL76wOxT3YpPAP42xfPzv/CFt1ygYAyleMXoSbF6iP?=
- =?us-ascii?Q?ZQIiZLkIGkXXGTDRB3YdAcB0VkZUvCyDYiwkFucMDPU05D7SwHAOo4h3LDhP?=
- =?us-ascii?Q?l582zZGEJB2DjQ94M6egCZ/vkArGLXy8PhXjTaWceUt+y3YF1ohJXkPaFDWy?=
- =?us-ascii?Q?RyvYLmRZPE5uGlZwhlXQk2gcZ9qlSui5GxIH0SliU3ZCQtUBG2YKIdSFbPNY?=
- =?us-ascii?Q?w+7vW+EByPGFJVMuZGG7tCC/n4qRx5oepT0X9gtBUqMGkRW1fe1QbyoBR2yQ?=
- =?us-ascii?Q?QjPL3gNFRDEINWMnItHofGUYtF7NCEBhgJbYYxrAnnLVoV8020kkbJQyMRTc?=
- =?us-ascii?Q?Ipzks9ezz08L6GQEvaPKR3gK+xuYWSoHZdBD3Hy4oe65CoSeZrFf6uZyto2a?=
- =?us-ascii?Q?gRk6ICE8YYW0B8BmvXFXhWJT7zc6kMKAONjjZe+Ed1Z/Wtq6Xrrf6qiQChW2?=
- =?us-ascii?Q?W+OlV2uEeBpmLnvrNTpYPM6gNYUfqmUNkO8d9sl3dclfYcoZl5vmEoZcfJnD?=
- =?us-ascii?Q?Qso7cVZPz1mrGk16zh5KTnwLhrJOyvrMGol3grebeW5RSpJoPWqgsyHCqZ5c?=
- =?us-ascii?Q?0BznFYuLduK4YDzILIPbnq2DdXgToqvM6Lb4KIfZGctiYL42IJT33nUWIhqS?=
- =?us-ascii?Q?ULj/53moJ0fe8G6xTTVZQ9a7A119L3bRfN1AQy8cq0fmmafyquqpTjH8XUHY?=
- =?us-ascii?Q?rh9N/3j59Rbz+szx2C0JzXEBR1nhNZSj9GTMAvzpKPeu6M4b25zwIrW4QJVA?=
- =?us-ascii?Q?d7D52EiDjFmBVvvGZ9fxpMkkCmqC/KuyvSp7CVMWlTib8tFlPxFJza2CvbsO?=
- =?us-ascii?Q?CWLxuW0fr7Hs/3DdexQdqXrOV2hL7iTj6n/KyVgwYkemG4s1G+09QI1bO5lx?=
- =?us-ascii?Q?jCV8ufNYL6Azmw93W9s=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(7416014)(376014)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2025 23:09:20.3887
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1f22bad5-2012-491e-894c-08de2309ad78
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF00000207.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7899
 
-Currently the post-populate callbacks handle copying source pages into
-private GPA ranges backed by guest_memfd, where kvm_gmem_populate()
-acquires the filemap invalidate lock, then calls a post-populate
-callback which may issue a get_user_pages() on the source pages prior to
-copying them into the private GPA (e.g. TDX).
+From: Xu Yilun <yilun.xu@linux.intel.com>
 
-This will not be compatible with in-place conversion, where the
-userspace page fault path will attempt to acquire filemap invalidate
-lock while holding the mm->mmap_lock, leading to a potential ABBA
-deadlock[1].
+The address ranges for downstream Address Association Registers need to
+cover memory addresses for all functions (PFs/VFs/downstream devices)
+managed by a Device Security Manager (DSM). The proposed solution is get
+the memory (32-bit only) range and prefetchable-memory (64-bit capable)
+range from the immediate ancestor downstream port (either the direct-attach
+RP or deepest switch port when switch attached).
 
-Address this by hoisting the GUP above the filemap invalidate lock so
-that these page faults path can be taken early, prior to acquiring the
-filemap invalidate lock.
+Similar to RID association, address associations will be set by default if
+hardware sets 'Number of Address Association Register Blocks' in the
+'Selective IDE Stream Capability Register' to a non-zero value. TSM drivers
+can opt-out of the settings by zero'ing out unwanted / unsupported address
+ranges. E.g. TDX Connect only supports prefetachable (64-bit capable)
+memory ranges for the Address Association setting.
 
-It's not currently clear whether this issue is reachable with the
-current implementation of guest_memfd, which doesn't support in-place
-conversion, however it does provide a consistent mechanism to provide
-stable source/target PFNs to callbacks rather than punting to
-vendor-specific code, which allows for more commonality across
-architectures, which may be worthwhile even without in-place conversion.
+If the immediate downstream port provides both a memory range and
+prefetchable-memory range, but the IDE partner port only provides 1 Address
+Association Register block then the TSM driver can pick which range to
+associate, or let the PCI core prioritize memory.
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Michael Roth <michael.roth@amd.com>
+Note, the Address Association Register setup for upstream requests is still
+uncertain so is not included.
+
+Co-developed-by: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+Co-developed-by: Arto Merilainen <amerilainen@nvidia.com>
+Signed-off-by: Arto Merilainen <amerilainen@nvidia.com>
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+Co-developed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Link: https://patch.msgid.link/20251113021446.436830-5-dan.j.williams@intel.com
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- arch/x86/kvm/svm/sev.c   | 40 ++++++++++++++++++++++++++------------
- arch/x86/kvm/vmx/tdx.c   | 21 +++++---------------
- include/linux/kvm_host.h |  3 ++-
- virt/kvm/guest_memfd.c   | 42 ++++++++++++++++++++++++++++++++++------
- 4 files changed, 71 insertions(+), 35 deletions(-)
+Changes since v2:
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 0835c664fbfd..d0ac710697a2 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2260,7 +2260,8 @@ struct sev_gmem_populate_args {
- };
- 
- static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pfn,
--				  void __user *src, int order, void *opaque)
-+				  struct page **src_pages, loff_t src_offset,
-+				  int order, void *opaque)
- {
- 	struct sev_gmem_populate_args *sev_populate_args = opaque;
- 	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
-@@ -2268,7 +2269,7 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pf
- 	int npages = (1 << order);
- 	gfn_t gfn;
- 
--	if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src))
-+	if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src_pages))
- 		return -EINVAL;
- 
- 	for (gfn = gfn_start, i = 0; gfn < gfn_start + npages; gfn++, i++) {
-@@ -2284,14 +2285,21 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pf
- 			goto err;
- 		}
- 
--		if (src) {
--			void *vaddr = kmap_local_pfn(pfn + i);
-+		if (src_pages) {
-+			void *src_vaddr = kmap_local_pfn(page_to_pfn(src_pages[i]));
-+			void *dst_vaddr = kmap_local_pfn(pfn + i);
- 
--			if (copy_from_user(vaddr, src + i * PAGE_SIZE, PAGE_SIZE)) {
--				ret = -EFAULT;
--				goto err;
-+			memcpy(dst_vaddr, src_vaddr + src_offset, PAGE_SIZE - src_offset);
-+			kunmap_local(src_vaddr);
-+
-+			if (src_offset) {
-+				src_vaddr = kmap_local_pfn(page_to_pfn(src_pages[i + 1]));
-+
-+				memcpy(dst_vaddr + PAGE_SIZE - src_offset, src_vaddr, src_offset);
-+				kunmap_local(src_vaddr);
- 			}
--			kunmap_local(vaddr);
-+
-+			kunmap_local(dst_vaddr);
- 		}
- 
- 		ret = rmp_make_private(pfn + i, gfn << PAGE_SHIFT, PG_LEVEL_4K,
-@@ -2331,12 +2339,20 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn_start, kvm_pfn_t pf
- 	if (!snp_page_reclaim(kvm, pfn + i) &&
- 	    sev_populate_args->type == KVM_SEV_SNP_PAGE_TYPE_CPUID &&
- 	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM) {
--		void *vaddr = kmap_local_pfn(pfn + i);
-+		void *src_vaddr = kmap_local_pfn(page_to_pfn(src_pages[i]));
-+		void *dst_vaddr = kmap_local_pfn(pfn + i);
- 
--		if (copy_to_user(src + i * PAGE_SIZE, vaddr, PAGE_SIZE))
--			pr_debug("Failed to write CPUID page back to userspace\n");
-+		memcpy(src_vaddr + src_offset, dst_vaddr, PAGE_SIZE - src_offset);
-+		kunmap_local(src_vaddr);
-+
-+		if (src_offset) {
-+			src_vaddr = kmap_local_pfn(page_to_pfn(src_pages[i + 1]));
-+
-+			memcpy(src_vaddr, dst_vaddr + PAGE_SIZE - src_offset, src_offset);
-+			kunmap_local(src_vaddr);
-+		}
- 
--		kunmap_local(vaddr);
-+		kunmap_local(dst_vaddr);
- 	}
- 
- 	/* pfn + i is hypervisor-owned now, so skip below cleanup for it. */
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 57ed101a1181..dd5439ec1473 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -3115,37 +3115,26 @@ struct tdx_gmem_post_populate_arg {
- };
- 
- static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
--				  void __user *src, int order, void *_arg)
-+				  struct page **src_pages, loff_t src_offset,
-+				  int order, void *_arg)
- {
- 	struct tdx_gmem_post_populate_arg *arg = _arg;
- 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
- 	u64 err, entry, level_state;
- 	gpa_t gpa = gfn_to_gpa(gfn);
--	struct page *src_page;
- 	int ret, i;
- 
- 	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
- 		return -EIO;
- 
--	if (KVM_BUG_ON(!PAGE_ALIGNED(src), kvm))
-+	/* Source should be page-aligned, in which case src_offset will be 0. */
-+	if (KVM_BUG_ON(src_offset))
- 		return -EINVAL;
- 
--	/*
--	 * Get the source page if it has been faulted in. Return failure if the
--	 * source page has been swapped out or unmapped in primary memory.
--	 */
--	ret = get_user_pages_fast((unsigned long)src, 1, 0, &src_page);
--	if (ret < 0)
--		return ret;
--	if (ret != 1)
--		return -ENOMEM;
--
--	kvm_tdx->page_add_src = src_page;
-+	kvm_tdx->page_add_src = src_pages[i];
- 	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
- 	kvm_tdx->page_add_src = NULL;
- 
--	put_page(src_page);
--
- 	if (ret || !(arg->flags & KVM_TDX_MEASURE_MEMORY_REGION))
- 		return ret;
- 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index d93f75b05ae2..7e9d2403c61f 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2581,7 +2581,8 @@ int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_ord
-  * Returns the number of pages that were populated.
+Fix a build error when pci_bus_addr_t is a 32-bit value (0day)
+
+ include/linux/pci-ide.h |  32 +++++++++++
+ include/linux/pci.h     |   5 ++
+ drivers/pci/ide.c       | 117 ++++++++++++++++++++++++++++++++++++----
+ 3 files changed, 145 insertions(+), 9 deletions(-)
+
+diff --git a/include/linux/pci-ide.h b/include/linux/pci-ide.h
+index d0f10f3c89fc..93194338e4d0 100644
+--- a/include/linux/pci-ide.h
++++ b/include/linux/pci-ide.h
+@@ -28,21 +28,53 @@ enum pci_ide_partner_select {
+  * @rid_start: Partner Port Requester ID range start
+  * @rid_end: Partner Port Requester ID range end
+  * @stream_index: Selective IDE Stream Register Block selection
++ * @mem_assoc: PCI bus memory address association for targeting peer partner
++ * @pref_assoc: PCI bus prefetchable memory address association for
++ *		targeting peer partner
+  * @default_stream: Endpoint uses this stream for all upstream TLPs regardless of
+  *		    address and RID association registers
+  * @setup: flag to track whether to run pci_ide_stream_teardown() for this
+  *	   partner slot
+  * @enable: flag whether to run pci_ide_stream_disable() for this partner slot
++ *
++ * By default, pci_ide_stream_alloc() initializes @mem_assoc and @pref_assoc
++ * with the immediate ancestor downstream port memory ranges (i.e. Type 1
++ * Configuration Space Header values). Caller may zero size ({0, -1}) the range
++ * to drop it from consideration at pci_ide_stream_setup() time.
   */
- typedef int (*kvm_gmem_populate_cb)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
--				    void __user *src, int order, void *opaque);
-+				    struct page **src_pages, loff_t src_offset,
-+				    int order, void *opaque);
+ struct pci_ide_partner {
+ 	u16 rid_start;
+ 	u16 rid_end;
+ 	u8 stream_index;
++	struct pci_bus_region mem_assoc;
++	struct pci_bus_region pref_assoc;
+ 	unsigned int default_stream:1;
+ 	unsigned int setup:1;
+ 	unsigned int enable:1;
+ };
  
- long kvm_gmem_populate(struct kvm *kvm, gfn_t gfn, void __user *src, long npages,
- 		       kvm_gmem_populate_cb post_populate, void *opaque);
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 9160379df378..e9ac3fd4fd8f 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -814,14 +814,17 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
++/**
++ * struct pci_ide_regs - Hardware register association settings for Selective
++ *			 IDE Streams
++ * @rid1: IDE RID Association Register 1
++ * @rid2: IDE RID Association Register 2
++ * @addr: Up to two address association blocks (IDE Address Association Register
++ *	  1 through 3) for MMIO and prefetchable MMIO
++ * @nr_addr: Number of address association blocks initialized
++ *
++ * See pci_ide_stream_to_regs()
++ */
++struct pci_ide_regs {
++	u32 rid1;
++	u32 rid2;
++	struct {
++		u32 assoc1;
++		u32 assoc2;
++		u32 assoc3;
++	} addr[2];
++	int nr_addr;
++};
++
+ /**
+  * struct pci_ide - PCIe Selective IDE Stream descriptor
+  * @pdev: PCIe Endpoint in the pci_ide_partner pair
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 2c8dbae4916c..ba39ca78b382 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -870,6 +870,11 @@ struct pci_bus_region {
+ 	pci_bus_addr_t	end;
+ };
  
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
++static inline pci_bus_addr_t pci_bus_region_size(const struct pci_bus_region *region)
++{
++	return region->end - region->start + 1;
++}
 +
-+#define GMEM_GUP_NPAGES (1UL << PMD_ORDER)
-+
- long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long npages,
- 		       kvm_gmem_populate_cb post_populate, void *opaque)
+ struct pci_dynids {
+ 	spinlock_t		lock;	/* Protects list, index */
+ 	struct list_head	list;	/* For IDs added at runtime */
+diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
+index da5b1acccbb4..2e0856a4307b 100644
+--- a/drivers/pci/ide.c
++++ b/drivers/pci/ide.c
+@@ -155,8 +155,11 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
  {
- 	struct kvm_memory_slot *slot;
--	void __user *p;
--
-+	struct page **src_pages;
- 	int ret = 0, max_order;
--	long i;
-+	loff_t src_offset = 0;
-+	long i, src_npages;
+ 	/* EP, RP, + HB Stream allocation */
+ 	struct stream_index __stream[PCI_IDE_HB + 1];
++	struct pci_bus_region pref_assoc = { 0, -1 };
++	struct pci_bus_region mem_assoc = { 0, -1 };
++	struct resource *mem, *pref;
+ 	struct pci_host_bridge *hb;
+-	struct pci_dev *rp;
++	struct pci_dev *rp, *br;
+ 	int num_vf, rid_end;
  
- 	lockdep_assert_held(&kvm->slots_lock);
+ 	if (!pci_is_pcie(pdev))
+@@ -197,6 +200,21 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
+ 	else
+ 		rid_end = pci_dev_id(pdev);
  
-@@ -836,9 +839,28 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
- 	if (!file)
- 		return -EFAULT;
- 
-+	npages = min_t(ulong, slot->npages - (start_gfn - slot->base_gfn), npages);
-+	npages = min_t(ulong, npages, GMEM_GUP_NPAGES);
++	br = pci_upstream_bridge(pdev);
++	if (!br)
++		return NULL;
 +
-+	if (src) {
-+		src_npages = IS_ALIGNED((unsigned long)src, PAGE_SIZE) ? npages : npages + 1;
++	/*
++	 * Check if the device consumes memory and/or prefetch-memory. Setup
++	 * downstream address association ranges for each.
++	 */
++	mem = pci_resource_n(br, PCI_BRIDGE_MEM_WINDOW);
++	pref = pci_resource_n(br, PCI_BRIDGE_PREF_MEM_WINDOW);
++	if (resource_assigned(mem))
++		pcibios_resource_to_bus(br->bus, &mem_assoc, mem);
++	if (resource_assigned(pref))
++		pcibios_resource_to_bus(br->bus, &pref_assoc, pref);
 +
-+		src_pages = kmalloc_array(src_npages, sizeof(struct page *), GFP_KERNEL);
-+		if (!src_pages)
-+			return -ENOMEM;
-+
-+		ret = get_user_pages_fast((unsigned long)src, src_npages, 0, src_pages);
-+		if (ret < 0)
-+			return ret;
-+
-+		if (ret != src_npages)
-+			return -ENOMEM;
-+
-+		src_offset = (loff_t)(src - PTR_ALIGN_DOWN(src, PAGE_SIZE));
-+	}
-+
- 	filemap_invalidate_lock(file->f_mapping);
- 
--	npages = min_t(ulong, slot->npages - (start_gfn - slot->base_gfn), npages);
- 	for (i = 0; i < npages; i += (1 << max_order)) {
- 		struct folio *folio;
- 		gfn_t gfn = start_gfn + i;
-@@ -869,8 +891,8 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
- 			max_order--;
- 		}
- 
--		p = src ? src + i * PAGE_SIZE : NULL;
--		ret = post_populate(kvm, gfn, pfn, p, max_order, opaque);
-+		ret = post_populate(kvm, gfn, pfn, src ? &src_pages[i] : NULL,
-+				    src_offset, max_order, opaque);
- 		if (!ret)
- 			folio_mark_uptodate(folio);
- 
-@@ -882,6 +904,14 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
- 
- 	filemap_invalidate_unlock(file->f_mapping);
- 
-+	if (src) {
-+		long j;
-+
-+		for (j = 0; j < src_npages; j++)
-+			put_page(src_pages[j]);
-+		kfree(src_pages);
-+	}
-+
- 	return ret && !i ? ret : i;
+ 	*ide = (struct pci_ide) {
+ 		.pdev = pdev,
+ 		.partner = {
+@@ -204,11 +222,16 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
+ 				.rid_start = pci_dev_id(rp),
+ 				.rid_end = pci_dev_id(rp),
+ 				.stream_index = no_free_ptr(ep_stream)->stream_index,
++				/* Disable upstream address association */
++				.mem_assoc = { 0, -1 },
++				.pref_assoc = { 0, -1 },
+ 			},
+ 			[PCI_IDE_RP] = {
+ 				.rid_start = pci_dev_id(pdev),
+ 				.rid_end = rid_end,
+ 				.stream_index = no_free_ptr(rp_stream)->stream_index,
++				.mem_assoc = mem_assoc,
++				.pref_assoc = pref_assoc,
+ 			},
+ 		},
+ 		.host_bridge_stream = no_free_ptr(hb_stream)->stream_index,
+@@ -385,6 +408,63 @@ static void set_ide_sel_ctl(struct pci_dev *pdev, struct pci_ide *ide,
+ 	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_CTL, val);
  }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_populate);
+ 
++#define SEL_ADDR1_LOWER GENMASK(31, 20)
++#define SEL_ADDR_UPPER GENMASK_ULL(63, 32)
++#define PREP_PCI_IDE_SEL_ADDR1(base, limit)			\
++	(FIELD_PREP(PCI_IDE_SEL_ADDR_1_VALID, 1) |		\
++	 FIELD_PREP(PCI_IDE_SEL_ADDR_1_BASE_LOW,		\
++		    FIELD_GET(SEL_ADDR1_LOWER, (base))) |	\
++	 FIELD_PREP(PCI_IDE_SEL_ADDR_1_LIMIT_LOW,		\
++		    FIELD_GET(SEL_ADDR1_LOWER, (limit))))
++
++static void mem_assoc_to_regs(struct pci_bus_region *region,
++			      struct pci_ide_regs *regs, int idx)
++{
++	/* convert to u64 range for bitfield size checks */
++	struct range r = { region->start, region->end };
++
++	regs->addr[idx].assoc1 = PREP_PCI_IDE_SEL_ADDR1(r.start, r.end);
++	regs->addr[idx].assoc2 = FIELD_GET(SEL_ADDR_UPPER, r.end);
++	regs->addr[idx].assoc3 = FIELD_GET(SEL_ADDR_UPPER, r.start);
++}
++
++/**
++ * pci_ide_stream_to_regs() - convert IDE settings to association register values
++ * @pdev: PCIe device object for either a Root Port or Endpoint Partner Port
++ * @ide: registered IDE settings descriptor
++ * @regs: output register values
++ */
++static void pci_ide_stream_to_regs(struct pci_dev *pdev, struct pci_ide *ide,
++				   struct pci_ide_regs *regs)
++{
++	struct pci_ide_partner *settings = pci_ide_to_settings(pdev, ide);
++	int assoc_idx = 0;
++
++	memset(regs, 0, sizeof(*regs));
++
++	if (!settings)
++		return;
++
++	regs->rid1 = FIELD_PREP(PCI_IDE_SEL_RID_1_LIMIT, settings->rid_end);
++
++	regs->rid2 = FIELD_PREP(PCI_IDE_SEL_RID_2_VALID, 1) |
++		     FIELD_PREP(PCI_IDE_SEL_RID_2_BASE, settings->rid_start) |
++		     FIELD_PREP(PCI_IDE_SEL_RID_2_SEG, pci_ide_domain(pdev));
++
++	if (pdev->nr_ide_mem && pci_bus_region_size(&settings->mem_assoc)) {
++		mem_assoc_to_regs(&settings->mem_assoc, regs, assoc_idx);
++		assoc_idx++;
++	}
++
++	if (pdev->nr_ide_mem > assoc_idx &&
++	    pci_bus_region_size(&settings->pref_assoc)) {
++		mem_assoc_to_regs(&settings->pref_assoc, regs, assoc_idx);
++		assoc_idx++;
++	}
++
++	regs->nr_addr = assoc_idx;
++}
++
+ /**
+  * pci_ide_stream_setup() - program settings to Selective IDE Stream registers
+  * @pdev: PCIe device object for either a Root Port or Endpoint Partner Port
+@@ -398,22 +478,34 @@ static void set_ide_sel_ctl(struct pci_dev *pdev, struct pci_ide *ide,
+ void pci_ide_stream_setup(struct pci_dev *pdev, struct pci_ide *ide)
+ {
+ 	struct pci_ide_partner *settings = pci_ide_to_settings(pdev, ide);
++	struct pci_ide_regs regs;
+ 	int pos;
+-	u32 val;
+ 
+ 	if (!settings)
+ 		return;
+ 
++	pci_ide_stream_to_regs(pdev, ide, &regs);
++
+ 	pos = sel_ide_offset(pdev, settings);
+ 
+-	val = FIELD_PREP(PCI_IDE_SEL_RID_1_LIMIT, settings->rid_end);
+-	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_1, val);
++	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_1, regs.rid1);
++	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_2, regs.rid2);
+ 
+-	val = FIELD_PREP(PCI_IDE_SEL_RID_2_VALID, 1) |
+-	      FIELD_PREP(PCI_IDE_SEL_RID_2_BASE, settings->rid_start) |
+-	      FIELD_PREP(PCI_IDE_SEL_RID_2_SEG, pci_ide_domain(pdev));
++	for (int i = 0; i < regs.nr_addr; i++) {
++		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_1(i),
++				       regs.addr[i].assoc1);
++		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_2(i),
++				       regs.addr[i].assoc2);
++		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_3(i),
++				       regs.addr[i].assoc3);
++	}
+ 
+-	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_2, val);
++	/* clear extra unused address association blocks */
++	for (int i = regs.nr_addr; i < pdev->nr_ide_mem; i++) {
++		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_1(i), 0);
++		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_2(i), 0);
++		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_3(i), 0);
++	}
+ 
+ 	/*
+ 	 * Setup control register early for devices that expect
+@@ -436,7 +528,7 @@ EXPORT_SYMBOL_GPL(pci_ide_stream_setup);
+ void pci_ide_stream_teardown(struct pci_dev *pdev, struct pci_ide *ide)
+ {
+ 	struct pci_ide_partner *settings = pci_ide_to_settings(pdev, ide);
+-	int pos;
++	int pos, i;
+ 
+ 	if (!settings)
+ 		return;
+@@ -444,6 +536,13 @@ void pci_ide_stream_teardown(struct pci_dev *pdev, struct pci_ide *ide)
+ 	pos = sel_ide_offset(pdev, settings);
+ 
+ 	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_CTL, 0);
++
++	for (i = 0; i < pdev->nr_ide_mem; i++) {
++		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_1(i), 0);
++		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_2(i), 0);
++		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_3(i), 0);
++	}
++
+ 	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_2, 0);
+ 	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_1, 0);
+ 	settings->setup = 0;
+
+base-commit: a4438f06b1db15ce3d831ce82b8767665638aa2a
+prerequisite-patch-id: b494ce8950cbed66695e82312da2670630e370a3
+prerequisite-patch-id: 0dc62753148ccead5e13d13a344a73aafcf6b1a7
+prerequisite-patch-id: d73d8429dc29238718ade8fc48f0cb96fc777d0d
 -- 
-2.25.1
+2.51.1
 
