@@ -1,376 +1,300 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592E121254B
-	for <linux-coco@lists.linux.dev>; Fri, 14 Nov 2025 01:01:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763082107; cv=none; b=TEbIJ6vwGOsrYpibXtJgwVJl9yvgr0kqAUByazCS/ge85MZAFQvjGf2twmDKo6aoWd+tIwMBUHABdN9tYmz90/kVtr7LxYqTW/gIc8bCQaq/sUXHtKBtRgViHr+ak7rcX00dh+s30KqgEw5UoLyAM1hJvumexktvJpAZ+dMMzAY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763082107; c=relaxed/simple;
-	bh=MtUKqYGKde1czohfUDsFsJOWKAWJvM4fSRI6/y+ZFC8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kgpVks7dDl1GOPoXTcqNK38a5Mn3QyE8jEh7FeKP9NgXoqCXaGe6KlYTS+svha8LNxsofb0KteCmo3aWMTLCvQs/ojSvdCNmGlT6YcHaTA2ecdsLvytNPgST0MfMvtb4lz7J2W8CIhPCFrB5TjHX6oxOMh1y3YuJHuzz45Ayatc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WMZM95nd; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49F423875D;
+	Fri, 14 Nov 2025 01:51:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763085092; cv=fail; b=pS141H0xvy/zTPDfWKTCJXvvrS96JmpJJCCRcZTmfcpShux3V8mNlWTun8ARgdEByUwr+afBcOl60vTHMYI0Kj01TCrJ+g9CUPCd05UgDj5KeZmxwIDpC5rd/1sX3zvetEEMFpyM6ngxD2r9COVF81r/KAZSvP0h1hlRi+iBd14=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763085092; c=relaxed/simple;
+	bh=MsCeXZ7JvDrHnF6/HYLiTXv8TdE4/viALgA+87HMRak=;
+	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
+	 Content-Type:MIME-Version; b=eK4d89U9TfDBzJZ775ZgoQdRqAfFpAWrcrejhifB0/XQoUlI76rF7AdKXA+xosRHpySZRSjw3T/z7r5VialaMwx9R83TkYV6LL7KCtj/LSZQhXZIILMco3FqIn8jprtZw4AG22QwCOa9ue9OEky6S5FOQMvXxM2004IVXxvYjxI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WguQTuCZ; arc=fail smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WMZM95nd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WguQTuCZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763082105; x=1794618105;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=MtUKqYGKde1czohfUDsFsJOWKAWJvM4fSRI6/y+ZFC8=;
-  b=WMZM95ndSOb/Au7lkIYda6W/G5ukhgonOCUngzE+v+8ZMJZTw8ROgFoQ
-   6Gfea/A4ErrmUbuzJL5K7Hkh8hdTa6duz5edaj+vKnYSO7bvk4+BBYsY3
-   9j1kg0GrMGJniYvHcm84HUPyEZ/EycwZyJuzN7wWWmlpz8C8ogasvFzz7
-   uTU6+fpZCQctGxC2Gw6yECM7dqYCqQ3NTQMV/gsl7WktetkJOjRVOpSpY
-   NngQz9TLoIla98LPWRzB05EuRhdWmWUg5YAz6o5A4WEZYh3bsW7/jQFVU
-   QAOJ7zt3UIA+naOk/kCOI60g3zG/oah61k/We/a6ye3jAMW0XcFMiLvVS
+  t=1763085091; x=1794621091;
+  h=from:date:to:cc:message-id:in-reply-to:references:
+   subject:content-transfer-encoding:mime-version;
+  bh=MsCeXZ7JvDrHnF6/HYLiTXv8TdE4/viALgA+87HMRak=;
+  b=WguQTuCZzSkGjsbpiKdcg1BkY9gEOOCuoRG3VcbsK7AwJKZUC0wRsmUl
+   HtQf3C1tmz2B1uL8RtLC9B0zvOZGn4mJ8g8T8E77gn/sVIOVOoFCFFsSU
+   a1gqtr+X8QURYy6Y6WuYLSiNEWAtHFbzUZScETaUSejqX7I79thg5wLTy
+   HmtTDrb6CE79lgW7hB2lDMZUKa6HJ8C3uMG4WWHDJyFKuRq0Y2zc5s9ZQ
+   dQ2VPXgz3V1nWwT9nzcbWVEgJpWyX8e21a/RoQhkSssk6LCyXCUcIeip6
+   FQq95oJT8Dbqm+T9kifXwowsMjvDISmqZ7M49eanwceHDCnlzkPHzl5hU
    A==;
-X-CSE-ConnectionGUID: /4Vn3a9sQ62DcuqpEqMOBw==
-X-CSE-MsgGUID: PQtVyOibRI6xXdb6MFxYnQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="68802595"
+X-CSE-ConnectionGUID: JU4fy+xKRWSESLH5GqUOew==
+X-CSE-MsgGUID: 12LbilQhRmaBtyZMP+nrxg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="64382332"
 X-IronPort-AV: E=Sophos;i="6.19,303,1754982000"; 
-   d="scan'208";a="68802595"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 17:01:44 -0800
-X-CSE-ConnectionGUID: RLZJzny8R+aQzdQxRcovSA==
-X-CSE-MsgGUID: Tq1km/tyQ8O61U9a8eFeEA==
+   d="scan'208";a="64382332"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 17:51:30 -0800
+X-CSE-ConnectionGUID: UtCzHglOQr+J5WfimHoPbg==
+X-CSE-MsgGUID: 7o4S7PPtRFq3cU7/2bvBeg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,303,1754982000"; 
-   d="scan'208";a="226985894"
-Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
-  by orviesa001.jf.intel.com with ESMTP; 13 Nov 2025 17:01:45 -0800
-From: Dan Williams <dan.j.williams@intel.com>
-To: linux-pci@vger.kernel.org
-Cc: linux-coco@lists.linux.dev,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Arto Merilainen <amerilainen@nvidia.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>
-Subject: [PATCH v3 4/8] PCI/IDE: Add Address Association Register setup for downstream MMIO
-Date: Thu, 13 Nov 2025 17:02:27 -0800
-Message-ID: <20251114010227.567693-1-dan.j.williams@intel.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251113021446.436830-5-dan.j.williams@intel.com>
-References: <20251113021446.436830-5-dan.j.williams@intel.com>
+   d="scan'208";a="190426278"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 17:51:29 -0800
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Thu, 13 Nov 2025 17:51:28 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Thu, 13 Nov 2025 17:51:28 -0800
+Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.56) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Thu, 13 Nov 2025 17:51:28 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=migQSjfyIOmYVN8VIVP6AaTSkNdz4yUfxTMh3KyFk/oFvW677aKeXh6mpl4GgBjUVvWfrJ3VwCS4GwV+1RLA3DQxQVU7h5tTA/JbYvvR1HQWgA1vVtsKNLpi9O1dUw9v0Pu3Bl+FqlVdzFq42pYYh4ERQ8TBb3QMUb4Kd9xOxUni1C/4mGIarCAiQg/zgZOs/NNEACQ9JKapdaj6+TzBDgpfypF9xpJyFO9QjulDmHRh+9gIX/G+ZRm89iFT/hjDLX2CmkYbuttA3O97lVRuGrel0o5f+6XwGtuvMYBUIj8vNjOyw63D1pe3xB+ix7yXawuujSoHLuSQdOn+KNMrsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rPnbclblpYKhvZxGVR4NqLFDRj4j08OrDud4LhA3L1I=;
+ b=KcOHPcoEUn9j+Rjvp3vNlTRTmz/T92DQzjFQ/hArqF4aATAfzXfIrIgyEMB3WEINHLbAc8MtGPvhouwRuhZpl54Vrmcp96tH5OKPXZCUPT75+IQAvPfSjYAaAhNCZZklw4cEsJdzIvp1E8O1Lz388bgwKlw8+yFYH43lSXQdzQVwgq5SKBWMNWVlxa2h3OQ/7Ae3YRTHTa4i2+ZIzoWeUKmHSB2TYzEh77XYS/p4xTTPnP8R8TALu4WzwP7dxoDExUTcBqIxR7nE4P8Wt8n51BI5wFdiendnSZ9T8pKH5RS/BNMJc5LXngfWeS0CSAJ5zjyUWvgWRu7QtEtA2WLEIg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by SA1PR11MB8319.namprd11.prod.outlook.com (2603:10b6:806:38c::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.17; Fri, 14 Nov
+ 2025 01:51:18 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::1ff:1e09:994b:21ff]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::1ff:1e09:994b:21ff%4]) with mapi id 15.20.9320.013; Fri, 14 Nov 2025
+ 01:51:18 +0000
+From: <dan.j.williams@intel.com>
+Date: Thu, 13 Nov 2025 17:51:16 -0800
+To: Alexey Kardashevskiy <aik@amd.com>, <linux-kernel@vger.kernel.org>
+CC: <linux-crypto@vger.kernel.org>, <linux-pci@vger.kernel.org>, Tom Lendacky
+	<thomas.lendacky@amd.com>, John Allen <john.allen@amd.com>, Herbert Xu
+	<herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
+	Ashish Kalra <ashish.kalra@amd.com>, Joerg Roedel <joro@8bytes.org>, "Suravee
+ Suthikulpanit" <suravee.suthikulpanit@amd.com>, Will Deacon
+	<will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Dan Williams
+	<dan.j.williams@intel.com>, Bjorn Helgaas <bhelgaas@google.com>, Eric Biggers
+	<ebiggers@google.com>, Brijesh Singh <brijesh.singh@amd.com>, Gary R Hook
+	<gary.hook@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>, Kim Phillips
+	<kim.phillips@amd.com>, Vasant Hegde <vasant.hegde@amd.com>, Jason Gunthorpe
+	<jgg@ziepe.ca>, "Michael Roth" <michael.roth@amd.com>, Jonathan Cameron
+	<jonathan.cameron@huawei.com>, Xu Yilun <yilun.xu@linux.intel.com>, Gao
+ Shiyuan <gaoshiyuan@baidu.com>, "Sean Christopherson" <seanjc@google.com>,
+	Nikunj A Dadhania <nikunj@amd.com>, Dionna Glaze <dionnaglaze@google.com>,
+	<iommu@lists.linux.dev>, <linux-coco@lists.linux.dev>, Alexey Kardashevskiy
+	<aik@amd.com>
+Message-ID: <69168b145da7f_10154100fd@dwillia2-mobl4.notmuch>
+In-Reply-To: <20251111063819.4098701-2-aik@amd.com>
+References: <20251111063819.4098701-1-aik@amd.com>
+ <20251111063819.4098701-2-aik@amd.com>
+Subject: Re: [PATCH kernel 1/6] PCI/TSM: Add secure SPDM DOE mailbox
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY3PR05CA0039.namprd05.prod.outlook.com
+ (2603:10b6:a03:39b::14) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SA1PR11MB8319:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2f20e8aa-7278-4b8c-3f00-08de23204d6d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|366016|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?c3FsaGc3eER1Q2gvb1ZrK212UlB3TXkxR3dvVkZLUEhqV2F5WDUrcnFnV0pG?=
+ =?utf-8?B?eHZ5ZnZjTXdjb1hZSGkxZnFDRUtEZENwcHA4VlVlMHNBRVY0VHhNRGhMeUpu?=
+ =?utf-8?B?VmtCc0ZZblg4QUtrMVg3MVRZd1M4dWVIR1FpVUpLL21oeHpFT0FGZGQ0NnYy?=
+ =?utf-8?B?TkNpSnAwOFIxTVFCSkd6NGVtSDgrTzBnVnlQdWZHTE1JUU1janRWREhNRjMx?=
+ =?utf-8?B?K1Y3V2o1ZFBvMXBVUEdSbFN4OXo2SXg0dFBLQWY1ejZ5QVN6cWtjQ3NVUDlh?=
+ =?utf-8?B?b25WYlFEZG8yb0ZlbkNucXNmeG91VUQvYi9INHB5YkJuWE0rOHFyZG5wK2hR?=
+ =?utf-8?B?SlYwYjRIamZoZ3JPcUtBYWFwcFVyTDhCUWFuYWI5RXA3SDZhRU1xOHNKRyta?=
+ =?utf-8?B?MmtjYTQwdVRiOWVGclJQcFVSZmFxUzBKZjlwKzkxeWwyZmlLbnhIR01IWUVo?=
+ =?utf-8?B?ZjVWTzh1Q0QyNmNOY0NKaVZKT0R2Q3BIRmNucU9oNmw4Q0NrMFBEaGY1RlRG?=
+ =?utf-8?B?ajZWZ2hnWUxzVk1JYVBGTjMrUkxjWjBRczVDYitoMnJHc2RXbStpWlA4T2du?=
+ =?utf-8?B?UFJXTncrVU1rVFFBQVUycUJ4R1NWbUhZRXZYQlBlck0xUEpEdDZoWnZSV0ta?=
+ =?utf-8?B?Y3NKa2lhQjF4Y3R6RUQrM3lmS0pZZFlIRnhiekI2ZEhrdENUYjhVME13ME8z?=
+ =?utf-8?B?SUpCRFRnMzNzMFg5OVk1cGgwdTJaOVJrZUxOZWhlc3ppa0pSbVVwYWVQVU9Q?=
+ =?utf-8?B?aDN4ZCt4VjNUZVpXS0ZTY3JlMkdRVmlOQnhPb1hSZXN1Mk5HQ0Zkb0ZhSExK?=
+ =?utf-8?B?ejRFN3BmeEpnV0lWakRvU1U3Y2FqTjc5M1psZUN4V2xFdy9uSlc5MXJLM3dX?=
+ =?utf-8?B?ZUs0ZXN0cXdLb0tObEZCdDFmd0VBWTZ0TkRGbUVUZ2VuUFdDZG5MN1NibHNr?=
+ =?utf-8?B?cmRnNTBuMkZ4VTM4YmRqZEFjS1ZkTHVhZ2RXTkNJR0Q5Q3hBUmhJL2ZiYURX?=
+ =?utf-8?B?dy9zOHdMVk5md0J4dllUU1J1aTE2dDFiSy9Qa3F4aWFLUUdrMkF4NFZaV3VH?=
+ =?utf-8?B?aHU1L3VpVEF2VXBaRkJQdkdjemNla1B6UUljdGhuWHYvQk02L0ZNSjNIUytN?=
+ =?utf-8?B?UGdtMG1VeGoxclkxLzhTbytQVzFiLzRhRFVPdklOUkhSUjc3SVgvWVRiMXBq?=
+ =?utf-8?B?T1hFL0QwQnVVTlQvOHQvUWdpL2hscVovVWg5L1NtVE94d3JVQTJjTG42NGhP?=
+ =?utf-8?B?enphQk5qakpzVkMzK0FtUU5VTkNTS0hlUzdzMkZhZGNjNEpkOUVjZVM0N2dx?=
+ =?utf-8?B?QXRoSHUyRVhZK2M5bmRWWjVUNFVMR1VKY3pKMUxMeklmUk1zWU1wWE5yTDNX?=
+ =?utf-8?B?L2VpT1V4dDBLZGJkQ0tycmdscTFBbDN6TTd5RGg5L1ZPc2YrNW51eTN0cUdq?=
+ =?utf-8?B?N242Tms4NGx4TkpqNnNqSEJjSVdCN2pIQ1BmR3plNkNhRjBDZTRxS2dqQkxW?=
+ =?utf-8?B?QUpOZkdpV0ZQTnU0VGgzaE9HRXlkQUpqaDhoajlKNnJtVVBZSmJGeXE5T3lp?=
+ =?utf-8?B?dU1Ka1prSUFDR0FlVFVpdnVZWnF3dnFQa2sxWWp1WDU2TXZEVXhUMjROOHhy?=
+ =?utf-8?B?bnpManVDOENRUDFlQzJWM280amNOZENDZzg2TWJILzdEVGsxTUdNOUJZVlpp?=
+ =?utf-8?B?SVhpU0ZiWmxVSFFlalArdDhGam1pQ0hSaVVrTnBBYkFrMU5SWHBJRi9kWnJk?=
+ =?utf-8?B?RThhc0h4UmxFTmN3TFF1YmhwNko2SkNqOVZ1QVovNkxNY1NPQ0VpUkRRTEds?=
+ =?utf-8?B?Y2Ira3dXaXRMZDN4TEsyRTNNRG9YSnJLRkZncE43U3dCM2FCRjgvaFFGcWQ4?=
+ =?utf-8?B?M3RiQTVZRmtRdWllZVhCak1vY3YzNFNBeEdzWFhGcXZ0Wmo0d0s4SSs0WXAr?=
+ =?utf-8?Q?7uQhtyxQCMa/3tsfbwCsyv82eaPvJdKM?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QlBKdHZoSzZuazRZdlpVRmRuV0VPWURZVC9qa0FqTEFTckd1S1hMWHVxdnF3?=
+ =?utf-8?B?OC92KzAzN2dFUjVONnUzNUFNNUJISEU0SlZOYWlqUE1xT3FjWWFNek1zUzBo?=
+ =?utf-8?B?VkxtY3BsUEo1N0lXUjhHdnVkOXhYeHBRbDhNYitqTjdNUTlBemMxR3Z2b3Rp?=
+ =?utf-8?B?ZUl0M0hVN2J2aG1JWHZxS2tJa3dwbTQ0c3o5R2ZjejhOam1wT0luM1c2NFVJ?=
+ =?utf-8?B?OUFxNGFzTzlxRUtJK2lvSUdFRElYbWgydjVVU3BYSWpObSsxUFU3WXA0Wjg3?=
+ =?utf-8?B?TVVWbllCRWRVd09zSEIrbmVQbVhpOXdGcWRkOVJxM3ZRbDlPSmUxY0xSTENa?=
+ =?utf-8?B?Q2NsRTN0M1hHYkZkeEJwR0JMMWk2RFdFcUdPV3ZyQmkxR0ZzNWl2Z3FkR3Nz?=
+ =?utf-8?B?Yi9GUm9QdExXUnJDSm50Z0JnU2JwZUtPb2UzVDdGZm45OFZUVkpqRDI0Q1lH?=
+ =?utf-8?B?aWdvOWszM1RNUHpFaGtENVpYZ05uREpwbXQ0ZjV1WlRGZjIza3VxbDJLVWo2?=
+ =?utf-8?B?ZjBobGVYbVcwbVJyaFpZSHRoWmlDdjRXY1RzNWNSRHZvRVVleXpycGU5R0lT?=
+ =?utf-8?B?Tzk4dmFWVUR2eFl3L3daaHdPcHNQVlFzcnVWSXpzL2tWRXl3TDIvaHhNTGpw?=
+ =?utf-8?B?bWlaSHIxYjROKzMxQms5MWZZQndWMGw3Unh6Q2U1ci9MU29YdFlPbnpNelBn?=
+ =?utf-8?B?T3BDWTRYWFJBUE85SGcyYm1oT0hNbzBjSzFQN2RwajlhN3hXTFdyeGFHV21B?=
+ =?utf-8?B?Qkp1TDFQMDZJNmlJeWNPOEpkZXJOWXg2WmpWbVhkYU1FR0Nnbmwra0pxYmlI?=
+ =?utf-8?B?N3FVRmUzM05jZzR6RnNSVVdiYjcrUi90NVBnaldJNG9aRkZkSjhQWGJhT1NJ?=
+ =?utf-8?B?K0Fxd2ZWaE5LSlp6ZDNqd0lFb0MvMjlWSDlvTFZTalpnWVlpTlhxWDZheG1k?=
+ =?utf-8?B?YXRDQmZ1RjJPdzBkMm9YcjZGRFJLeERrUnVlSHA0NGNiaGJydGlYNFR3T1JB?=
+ =?utf-8?B?ZTVBQmxSUmFQMXJya3ZsUWUreE93UVF0TEt2OHY1QVRxbXVqdndsSnpLQU1D?=
+ =?utf-8?B?OVJCbjdzelZiSWlUdEQxQXlpZDYycitWUldiTmtUSjU1dHBEVjB0Z05Fb0pL?=
+ =?utf-8?B?TEJKTnNRZjArallXVC9ac25CUlpnMFZ5ZVV3WExlYjl0Qmpqak1od0pnNTRx?=
+ =?utf-8?B?bjJ1VlpXbHpzcTIyeU5oLzJIUkEzUzVscUozeDNHUEE1S3VRTllRUmplT2la?=
+ =?utf-8?B?NThJOCtiUTZudkdraFJSNTV0UnNTV2RVU1Y0c1d6TDN6MlArbW1URjFCYXU2?=
+ =?utf-8?B?blpIbkFNM29UamowTFpVODNYZEs3cHFVRU5VeUlMalVTMyt6YmVIR2hRTVFh?=
+ =?utf-8?B?YkpEWG5jcExxREhiVnhnc2pIWDVSUWRSWTdKREtMc0dUZUFFeWVyaUtIRGlj?=
+ =?utf-8?B?Y1N3elhGckF5Rk5PU0hDS2trVTBYSnNvTlJJaWd6d1dFQTMwYlErTUdUVFda?=
+ =?utf-8?B?TVRBMmJYNnRQQlVsL1dYSkpTdW1pN0NkMEtBdEZXYnkvWVhJY2VpMnJlQUt1?=
+ =?utf-8?B?TTRhZXdmWWRtMit3QkIyMTR4QXlXS3JTV1FQYWVmU2FoYUJseWEzbmlyNXE5?=
+ =?utf-8?B?NWFiejZQMndUSFFTV01SWEFvZkF4ZjQ1Q3JkUUpNZG4xUVdBYUliSWM4SU9q?=
+ =?utf-8?B?NjdyLy8yVzF6bGZLcXhQekpvUjgzTEd0bUlWRDJMK0NKR0NGSFRvMWUrV09X?=
+ =?utf-8?B?cXJpOVVJTnJpUFZ2cHNFODFmekVXekczcnE3RHVwbWtKditZTlpCOFRuZVQv?=
+ =?utf-8?B?Rks3NU1qUGdpNEtqNFZZZ2xZMHRtNGZIelBjRlMxRWI0a01nR2gxN3NRMkd6?=
+ =?utf-8?B?QkR1c085c3JRaVU2eG5iaExnQTRYQ2RoSFM1dEtkWW5xOTBmNVhsNDJEajhR?=
+ =?utf-8?B?bFB1b0tXRm1BNnU0MEozRlpTbUllUTVjc1luRVdBMVpjeE1xd3RSQTl5K1VD?=
+ =?utf-8?B?UGg1T3FaZFE1SnBFbS80enIyYlJLa0w5WG5GbUg5MS81T0wzUlZIeVdnOExk?=
+ =?utf-8?B?anVOMEFCa0tqS3RlQ1poZ3NhVHhxOVZ4RS9qampBYmEyeGRYNmZ2NmtqQ2Y0?=
+ =?utf-8?B?U09pYVJpUkNBS3JoRzYvdXkwYjZIN3ZmbDBBckpKajJNcGxhUlVPYXNsQ1dT?=
+ =?utf-8?B?ZGc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2f20e8aa-7278-4b8c-3f00-08de23204d6d
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2025 01:51:18.1217
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oBWojHNt5kuOO6vAuufI8erWrDxhofpfUhWdZRFoNzXdRsG3ld8C/MNUthgKcyq/eSgDE3Ag13jVMRMjVxosJb9/Y9fmOu5es5yR5Phs7hQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8319
+X-OriginatorOrg: intel.com
 
-From: Xu Yilun <yilun.xu@linux.intel.com>
+Alexey Kardashevskiy wrote:
+> The IDE key programming happens via Secure SPDM channel, initialise it
+> at the PF0 probing.
+> 
+> Add the SPDM certificate slot (up to 8 are allowed by SPDM), the platform
+> is expected to select one.
+> 
+> While at this, add a common struct for SPDM request/response as these
+> are going to needed by every platform.
+> 
+> Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
+> ---
+> 
+> (!tsm->doe_mb_sec) is definitely an error on AMD SEV-TIO, is not it on other platforms?
 
-The address ranges for downstream Address Association Registers need to
-cover memory addresses for all functions (PFs/VFs/downstream devices)
-managed by a Device Security Manager (DSM). The proposed solution is get
-the memory (32-bit only) range and prefetchable-memory (64-bit capable)
-range from the immediate ancestor downstream port (either the direct-attach
-RP or deepest switch port when switch attached).
+I think you just happen to have a multi-DOE test device, or a device
+that has a PCI_DOE_FEATURE_SSESSION DOE and not a PCI_DOE_FEATURE_CMA
+DOE.
 
-Similar to RID association, address associations will be set by default if
-hardware sets 'Number of Address Association Register Blocks' in the
-'Selective IDE Stream Capability Register' to a non-zero value. TSM drivers
-can opt-out of the settings by zero'ing out unwanted / unsupported address
-ranges. E.g. TDX Connect only supports prefetachable (64-bit capable)
-memory ranges for the Address Association setting.
+> ---
+>  include/linux/pci-tsm.h | 14 ++++++++++++++
+>  drivers/pci/tsm.c       |  4 ++++
+>  2 files changed, 18 insertions(+)
+> 
+> diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
+> index 40c5e4c31a3f..b6866f7c14b4 100644
+> --- a/include/linux/pci-tsm.h
+> +++ b/include/linux/pci-tsm.h
+> @@ -10,6 +10,14 @@ struct tsm_dev;
+>  struct kvm;
+>  enum pci_tsm_req_scope;
+>  
+> +/* SPDM control structure for DOE */
+> +struct tsm_spdm {
+> +	unsigned long req_len;
+> +	void *req;
+> +	unsigned long rsp_len;
+> +	void *rsp;
+> +};
 
-If the immediate downstream port provides both a memory range and
-prefetchable-memory range, but the IDE partner port only provides 1 Address
-Association Register block then the TSM driver can pick which range to
-associate, or let the PCI core prioritize memory.
+I would only add things to the core that the core needs, or all
+implementations can unify. You can see that tdx_spdm_msg_exchange() can
+not use this common definition for example.
 
-Note, the Address Association Register setup for upstream requests is still
-uncertain so is not included.
+> +
+>  /*
+>   * struct pci_tsm_ops - manage confidential links and security state
+>   * @link_ops: Coordinate PCIe SPDM and IDE establishment via a platform TSM.
+> @@ -130,11 +138,17 @@ struct pci_tsm {
+>   * @base_tsm: generic core "tsm" context
+>   * @lock: mutual exclustion for pci_tsm_ops invocation
+>   * @doe_mb: PCIe Data Object Exchange mailbox
+> + * @doe_mb_sec: DOE mailbox used when secured SPDM is requested
+> + * @spdm: cached SPDM request/response buffers for the link
+> + * @cert_slot: SPDM certificate slot
+>   */
+>  struct pci_tsm_pf0 {
+>  	struct pci_tsm base_tsm;
+>  	struct mutex lock;
+>  	struct pci_doe_mb *doe_mb;
+> +	struct pci_doe_mb *doe_mb_sec;
 
-Co-developed-by: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-Co-developed-by: Arto Merilainen <amerilainen@nvidia.com>
-Signed-off-by: Arto Merilainen <amerilainen@nvidia.com>
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-Co-developed-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Link: https://patch.msgid.link/20251113021446.436830-5-dan.j.williams@intel.com
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
-Changes since v2:
+See below, pci_tsm_pf0 should only ever need one doe_mb instance.
 
-Fix a build error when pci_bus_addr_t is a 32-bit value (0day)
+> +	struct tsm_spdm spdm;
 
- include/linux/pci-ide.h |  32 +++++++++++
- include/linux/pci.h     |   5 ++
- drivers/pci/ide.c       | 117 ++++++++++++++++++++++++++++++++++++----
- 3 files changed, 145 insertions(+), 9 deletions(-)
+Per above, just move @tsm_spdm into the TIO object that wraps
+pci_tsm_pf0.
 
-diff --git a/include/linux/pci-ide.h b/include/linux/pci-ide.h
-index d0f10f3c89fc..93194338e4d0 100644
---- a/include/linux/pci-ide.h
-+++ b/include/linux/pci-ide.h
-@@ -28,21 +28,53 @@ enum pci_ide_partner_select {
-  * @rid_start: Partner Port Requester ID range start
-  * @rid_end: Partner Port Requester ID range end
-  * @stream_index: Selective IDE Stream Register Block selection
-+ * @mem_assoc: PCI bus memory address association for targeting peer partner
-+ * @pref_assoc: PCI bus prefetchable memory address association for
-+ *		targeting peer partner
-  * @default_stream: Endpoint uses this stream for all upstream TLPs regardless of
-  *		    address and RID association registers
-  * @setup: flag to track whether to run pci_ide_stream_teardown() for this
-  *	   partner slot
-  * @enable: flag whether to run pci_ide_stream_disable() for this partner slot
-+ *
-+ * By default, pci_ide_stream_alloc() initializes @mem_assoc and @pref_assoc
-+ * with the immediate ancestor downstream port memory ranges (i.e. Type 1
-+ * Configuration Space Header values). Caller may zero size ({0, -1}) the range
-+ * to drop it from consideration at pci_ide_stream_setup() time.
-  */
- struct pci_ide_partner {
- 	u16 rid_start;
- 	u16 rid_end;
- 	u8 stream_index;
-+	struct pci_bus_region mem_assoc;
-+	struct pci_bus_region pref_assoc;
- 	unsigned int default_stream:1;
- 	unsigned int setup:1;
- 	unsigned int enable:1;
- };
- 
-+/**
-+ * struct pci_ide_regs - Hardware register association settings for Selective
-+ *			 IDE Streams
-+ * @rid1: IDE RID Association Register 1
-+ * @rid2: IDE RID Association Register 2
-+ * @addr: Up to two address association blocks (IDE Address Association Register
-+ *	  1 through 3) for MMIO and prefetchable MMIO
-+ * @nr_addr: Number of address association blocks initialized
-+ *
-+ * See pci_ide_stream_to_regs()
-+ */
-+struct pci_ide_regs {
-+	u32 rid1;
-+	u32 rid2;
-+	struct {
-+		u32 assoc1;
-+		u32 assoc2;
-+		u32 assoc3;
-+	} addr[2];
-+	int nr_addr;
-+};
-+
- /**
-  * struct pci_ide - PCIe Selective IDE Stream descriptor
-  * @pdev: PCIe Endpoint in the pci_ide_partner pair
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 2c8dbae4916c..ba39ca78b382 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -870,6 +870,11 @@ struct pci_bus_region {
- 	pci_bus_addr_t	end;
- };
- 
-+static inline pci_bus_addr_t pci_bus_region_size(const struct pci_bus_region *region)
-+{
-+	return region->end - region->start + 1;
-+}
-+
- struct pci_dynids {
- 	spinlock_t		lock;	/* Protects list, index */
- 	struct list_head	list;	/* For IDs added at runtime */
-diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
-index da5b1acccbb4..2e0856a4307b 100644
---- a/drivers/pci/ide.c
-+++ b/drivers/pci/ide.c
-@@ -155,8 +155,11 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
- {
- 	/* EP, RP, + HB Stream allocation */
- 	struct stream_index __stream[PCI_IDE_HB + 1];
-+	struct pci_bus_region pref_assoc = { 0, -1 };
-+	struct pci_bus_region mem_assoc = { 0, -1 };
-+	struct resource *mem, *pref;
- 	struct pci_host_bridge *hb;
--	struct pci_dev *rp;
-+	struct pci_dev *rp, *br;
- 	int num_vf, rid_end;
- 
- 	if (!pci_is_pcie(pdev))
-@@ -197,6 +200,21 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
- 	else
- 		rid_end = pci_dev_id(pdev);
- 
-+	br = pci_upstream_bridge(pdev);
-+	if (!br)
-+		return NULL;
-+
-+	/*
-+	 * Check if the device consumes memory and/or prefetch-memory. Setup
-+	 * downstream address association ranges for each.
-+	 */
-+	mem = pci_resource_n(br, PCI_BRIDGE_MEM_WINDOW);
-+	pref = pci_resource_n(br, PCI_BRIDGE_PREF_MEM_WINDOW);
-+	if (resource_assigned(mem))
-+		pcibios_resource_to_bus(br->bus, &mem_assoc, mem);
-+	if (resource_assigned(pref))
-+		pcibios_resource_to_bus(br->bus, &pref_assoc, pref);
-+
- 	*ide = (struct pci_ide) {
- 		.pdev = pdev,
- 		.partner = {
-@@ -204,11 +222,16 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
- 				.rid_start = pci_dev_id(rp),
- 				.rid_end = pci_dev_id(rp),
- 				.stream_index = no_free_ptr(ep_stream)->stream_index,
-+				/* Disable upstream address association */
-+				.mem_assoc = { 0, -1 },
-+				.pref_assoc = { 0, -1 },
- 			},
- 			[PCI_IDE_RP] = {
- 				.rid_start = pci_dev_id(pdev),
- 				.rid_end = rid_end,
- 				.stream_index = no_free_ptr(rp_stream)->stream_index,
-+				.mem_assoc = mem_assoc,
-+				.pref_assoc = pref_assoc,
- 			},
- 		},
- 		.host_bridge_stream = no_free_ptr(hb_stream)->stream_index,
-@@ -385,6 +408,63 @@ static void set_ide_sel_ctl(struct pci_dev *pdev, struct pci_ide *ide,
- 	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_CTL, val);
- }
- 
-+#define SEL_ADDR1_LOWER GENMASK(31, 20)
-+#define SEL_ADDR_UPPER GENMASK_ULL(63, 32)
-+#define PREP_PCI_IDE_SEL_ADDR1(base, limit)			\
-+	(FIELD_PREP(PCI_IDE_SEL_ADDR_1_VALID, 1) |		\
-+	 FIELD_PREP(PCI_IDE_SEL_ADDR_1_BASE_LOW,		\
-+		    FIELD_GET(SEL_ADDR1_LOWER, (base))) |	\
-+	 FIELD_PREP(PCI_IDE_SEL_ADDR_1_LIMIT_LOW,		\
-+		    FIELD_GET(SEL_ADDR1_LOWER, (limit))))
-+
-+static void mem_assoc_to_regs(struct pci_bus_region *region,
-+			      struct pci_ide_regs *regs, int idx)
-+{
-+	/* convert to u64 range for bitfield size checks */
-+	struct range r = { region->start, region->end };
-+
-+	regs->addr[idx].assoc1 = PREP_PCI_IDE_SEL_ADDR1(r.start, r.end);
-+	regs->addr[idx].assoc2 = FIELD_GET(SEL_ADDR_UPPER, r.end);
-+	regs->addr[idx].assoc3 = FIELD_GET(SEL_ADDR_UPPER, r.start);
-+}
-+
-+/**
-+ * pci_ide_stream_to_regs() - convert IDE settings to association register values
-+ * @pdev: PCIe device object for either a Root Port or Endpoint Partner Port
-+ * @ide: registered IDE settings descriptor
-+ * @regs: output register values
-+ */
-+static void pci_ide_stream_to_regs(struct pci_dev *pdev, struct pci_ide *ide,
-+				   struct pci_ide_regs *regs)
-+{
-+	struct pci_ide_partner *settings = pci_ide_to_settings(pdev, ide);
-+	int assoc_idx = 0;
-+
-+	memset(regs, 0, sizeof(*regs));
-+
-+	if (!settings)
-+		return;
-+
-+	regs->rid1 = FIELD_PREP(PCI_IDE_SEL_RID_1_LIMIT, settings->rid_end);
-+
-+	regs->rid2 = FIELD_PREP(PCI_IDE_SEL_RID_2_VALID, 1) |
-+		     FIELD_PREP(PCI_IDE_SEL_RID_2_BASE, settings->rid_start) |
-+		     FIELD_PREP(PCI_IDE_SEL_RID_2_SEG, pci_ide_domain(pdev));
-+
-+	if (pdev->nr_ide_mem && pci_bus_region_size(&settings->mem_assoc)) {
-+		mem_assoc_to_regs(&settings->mem_assoc, regs, assoc_idx);
-+		assoc_idx++;
-+	}
-+
-+	if (pdev->nr_ide_mem > assoc_idx &&
-+	    pci_bus_region_size(&settings->pref_assoc)) {
-+		mem_assoc_to_regs(&settings->pref_assoc, regs, assoc_idx);
-+		assoc_idx++;
-+	}
-+
-+	regs->nr_addr = assoc_idx;
-+}
-+
- /**
-  * pci_ide_stream_setup() - program settings to Selective IDE Stream registers
-  * @pdev: PCIe device object for either a Root Port or Endpoint Partner Port
-@@ -398,22 +478,34 @@ static void set_ide_sel_ctl(struct pci_dev *pdev, struct pci_ide *ide,
- void pci_ide_stream_setup(struct pci_dev *pdev, struct pci_ide *ide)
- {
- 	struct pci_ide_partner *settings = pci_ide_to_settings(pdev, ide);
-+	struct pci_ide_regs regs;
- 	int pos;
--	u32 val;
- 
- 	if (!settings)
- 		return;
- 
-+	pci_ide_stream_to_regs(pdev, ide, &regs);
-+
- 	pos = sel_ide_offset(pdev, settings);
- 
--	val = FIELD_PREP(PCI_IDE_SEL_RID_1_LIMIT, settings->rid_end);
--	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_1, val);
-+	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_1, regs.rid1);
-+	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_2, regs.rid2);
- 
--	val = FIELD_PREP(PCI_IDE_SEL_RID_2_VALID, 1) |
--	      FIELD_PREP(PCI_IDE_SEL_RID_2_BASE, settings->rid_start) |
--	      FIELD_PREP(PCI_IDE_SEL_RID_2_SEG, pci_ide_domain(pdev));
-+	for (int i = 0; i < regs.nr_addr; i++) {
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_1(i),
-+				       regs.addr[i].assoc1);
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_2(i),
-+				       regs.addr[i].assoc2);
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_3(i),
-+				       regs.addr[i].assoc3);
-+	}
- 
--	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_2, val);
-+	/* clear extra unused address association blocks */
-+	for (int i = regs.nr_addr; i < pdev->nr_ide_mem; i++) {
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_1(i), 0);
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_2(i), 0);
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_3(i), 0);
-+	}
- 
- 	/*
- 	 * Setup control register early for devices that expect
-@@ -436,7 +528,7 @@ EXPORT_SYMBOL_GPL(pci_ide_stream_setup);
- void pci_ide_stream_teardown(struct pci_dev *pdev, struct pci_ide *ide)
- {
- 	struct pci_ide_partner *settings = pci_ide_to_settings(pdev, ide);
--	int pos;
-+	int pos, i;
- 
- 	if (!settings)
- 		return;
-@@ -444,6 +536,13 @@ void pci_ide_stream_teardown(struct pci_dev *pdev, struct pci_ide *ide)
- 	pos = sel_ide_offset(pdev, settings);
- 
- 	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_CTL, 0);
-+
-+	for (i = 0; i < pdev->nr_ide_mem; i++) {
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_1(i), 0);
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_2(i), 0);
-+		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_ADDR_3(i), 0);
-+	}
-+
- 	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_2, 0);
- 	pci_write_config_dword(pdev, pos + PCI_IDE_SEL_RID_1, 0);
- 	settings->setup = 0;
+> +	u8 cert_slot;
+>  };
+>  
+>  struct pci_tsm_mmio {
+> diff --git a/drivers/pci/tsm.c b/drivers/pci/tsm.c
+> index ed8a280a2cf4..378748b15825 100644
+> --- a/drivers/pci/tsm.c
+> +++ b/drivers/pci/tsm.c
+> @@ -1067,6 +1067,10 @@ int pci_tsm_pf0_constructor(struct pci_dev *pdev, struct pci_tsm_pf0 *tsm,
+>  		pci_warn(pdev, "TSM init failure, no CMA mailbox\n");
+>  		return -ENODEV;
+>  	}
+> +	tsm->doe_mb_sec = pci_find_doe_mailbox(pdev, PCI_VENDOR_ID_PCI_SIG,
+> +					       PCI_DOE_FEATURE_SSESSION);
+> +	if (!tsm->doe_mb_sec)
+> +		pci_warn(pdev, "TSM init failed to init SSESSION mailbox\n");
 
-base-commit: a4438f06b1db15ce3d831ce82b8767665638aa2a
-prerequisite-patch-id: b494ce8950cbed66695e82312da2670630e370a3
-prerequisite-patch-id: 0dc62753148ccead5e13d13a344a73aafcf6b1a7
-prerequisite-patch-id: d73d8429dc29238718ade8fc48f0cb96fc777d0d
--- 
-2.51.1
+So it is surprising to find that a device supports PCI_DOE_FEATURE_CMA,
+but requires the TSM to also use the PCI_DOE_FEATURE_SSESSION mailbox?
+A PCI_DOE_FEATURE_CMA mailbox is capable of supporting secure sessions
+and IDE.
 
+When a device supports multiple DOE, the VMM does need to pick one, but the
+hope was that "first CMA DOE" would work, but apparently you have a
+device that wants to violate this simple heuristic?
+
+What happens on this device if you use the CMA mailbox for IDE
+establishment and secure sessions?
