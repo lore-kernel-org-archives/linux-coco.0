@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8571E9B1A
-	for <linux-coco@lists.linux.dev>; Mon, 17 Nov 2025 19:19:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B35248896
+	for <linux-coco@lists.linux.dev>; Mon, 17 Nov 2025 23:05:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763407198; cv=none; b=mfkfZWbpSiwja0pjW2IUv4kyrZ3orCK4evfibHUhNqgXJMFiF906A79CRKxxYkIDKXFxXW1TPoowJeDA5WqLNdpijd3uobJVWS5Hgj2cpfSDH1GqaJ1OaQGYA8v0vENBOIHuiV4lxl9A1EY26mldpM5OGxJ8VOAPJY/ru9nfWZ4=
+	t=1763420753; cv=none; b=krIMb0a+6Sf0QPxJsP9a41oJCqdQi9TMLZsyDSX7iKSRMRuqT/6NZYZ3B8PGx4LYJb1AkNsHYPPFcyg574N+56RCb4KdV/dmz6S8xjgOrvJP6wzo10Ud7rJt/30blDwpdI+n1RnyDpeOUqn7HH6DBQOzG6xjJLjRvF+8N09G3Zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763407198; c=relaxed/simple;
-	bh=DxSJjZKM5URmk3fo7Akgt1UxU7aR3ec07Z4qjw0rbX0=;
+	s=arc-20240116; t=1763420753; c=relaxed/simple;
+	bh=7VWQ6QHhJXLvXS96A0WVw+/v0phI/0+nQtjKzota4C4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cA5rpmRr3wfkf3VqMAcmNNio6TwO8F/zww/o8wXXAjecXsJNFZRxcoODj2NubDNFKQ7jyU+PrrWGg7LsB7efv9GFtBRGSWdsynPSPEKI2rcIiouBmEyCMAlqQL21do2kpSMxmozk332MOffaTB/fH66IrTKvsGPiM5HCk+WRD0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WGfHvDQw; arc=none smtp.client-ip=198.175.65.20
+	 In-Reply-To:Content-Type; b=iJERGNkzn1UPLnT/sakwPXyNLB4Z4Wy4Gr7+0Xg5zChE9ZFei8Xj9fyCn8T1E5CKI47RgeRzSoSpKOs7BuF9S4BCsrL8UIoKTGL6ODsoObeQ8oBZNbn8X6gFg6HvQj2R+ltq6XMeOBQJyFt4nxEd3E/K+64DGZTSzXX1ypWpZU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JnK1q4N2; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WGfHvDQw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JnK1q4N2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763407194; x=1794943194;
+  t=1763420752; x=1794956752;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=DxSJjZKM5URmk3fo7Akgt1UxU7aR3ec07Z4qjw0rbX0=;
-  b=WGfHvDQwQwT71oHs6fVWz+4bBSEpa5N9qkbPt2Fg4pWfZEL6PeDq5gve
-   4ut9LI5Ejwq8EsEP3s9Pjr2Sao/VD9dvHdU1FZo70Tt8m+dt2eXPO/dk1
-   c1oYPVsU98kr2FPlqZ71OIH4KPBu7XEUw6RNfBhXtq9mnpAHi3ao8gWdR
-   g4BjkFFqI912qm3rRKC2Qt1/1MahtAxSbwgGySDnOp7GK0bTgQ1RJXQlC
-   i1CXF6S5aUCgWI00/B6GJitYtfKl993skPGvT8clCW84S1tyPnvGs3A0R
-   O1DQnEM78Izk2tOmpaAeJ/9IFIB5wGZ5oJzanfesams9yqhwwMrHG8BSQ
-   Q==;
-X-CSE-ConnectionGUID: 05v6mcFtRF6+lB9QTstJFw==
-X-CSE-MsgGUID: CZ7CVA5CS6yU6wEgmCOvqA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="65124188"
-X-IronPort-AV: E=Sophos;i="6.19,312,1754982000"; 
-   d="scan'208";a="65124188"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 11:19:50 -0800
-X-CSE-ConnectionGUID: S+in89atShmaPr/ebjhEWg==
-X-CSE-MsgGUID: 2fgOD75HS4esCQX87PHKLA==
+  bh=7VWQ6QHhJXLvXS96A0WVw+/v0phI/0+nQtjKzota4C4=;
+  b=JnK1q4N2+YpkoJTM+gMtwLHy5nyW+6rW3X154LZ51o1cPfkUrNow/UV2
+   OUUOzV2z+38ynTLOtIjCSRfMojIrIhvZq0l0e1NxDmHXe83fJ8+srSndP
+   /McIvw7QSX0N+2hJwIslESRqQ2un6qd4IL3lxcLSYtk1dHGui+NGoggbX
+   KxR+K7msx35m74JIZdzYtoBZ+s89GYH/iTFpO/2rD5mShNvhGymM5PINy
+   BpA6IhBmilvIerhdiNcFK11OdhxlumdKIUo2OX8twXOgXnWBYUczvfsKB
+   qbleElBKNP+fMrUldSHCP+19PO6gbcm07CLGqdgkwiof4pvTHH0HcYg7y
+   A==;
+X-CSE-ConnectionGUID: IeH31np6Tn6qM+u80TAPBA==
+X-CSE-MsgGUID: JlWNz4ReQj+vprlgbYy+Ig==
+X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="65473871"
+X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; 
+   d="scan'208";a="65473871"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 15:05:51 -0800
+X-CSE-ConnectionGUID: O6DQq88nRhSDXv8ZVi98iQ==
+X-CSE-MsgGUID: PAm2tSTQSqeILwlsB8ic6A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,312,1754982000"; 
-   d="scan'208";a="189830567"
+X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; 
+   d="scan'208";a="190734719"
 Received: from aschofie-mobl2.amr.corp.intel.com (HELO [10.125.109.33]) ([10.125.109.33])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 11:19:49 -0800
-Message-ID: <c9f72a69-e220-4914-b047-60020e6e487d@intel.com>
-Date: Mon, 17 Nov 2025 11:19:49 -0800
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 15:05:51 -0800
+Message-ID: <64e8f61a-101e-4cfe-8f99-b5f6b9c9afa5@intel.com>
+Date: Mon, 17 Nov 2025 15:05:50 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 15/26] x86/virt/tdx: Extend tdx_page_array to support
- IOMMU_MT
+Subject: Re: [PATCH v1 00/26] PCI/TSM: TDX Connect: SPDM Session and IDE
+ Establishment
 To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev,
  linux-pci@vger.kernel.org
 Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
@@ -61,7 +61,6 @@ Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
  rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
  dan.j.williams@intel.com, kas@kernel.org, x86@kernel.org
 References: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
- <20251117022311.2443900-16-yilun.xu@linux.intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -107,65 +106,19 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20251117022311.2443900-16-yilun.xu@linux.intel.com>
+In-Reply-To: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 11/16/25 18:22, Xu Yilun wrote:
-> +struct tdx_page_array *
-> +tdx_page_array_create_iommu_mt(unsigned int iq_order, unsigned int nr_mt_pages)
-> +{
-> +	unsigned int nr_entries = 2 + nr_mt_pages;
-> +	int ret;
-> +
-> +	if (nr_entries > TDX_PAGE_ARRAY_MAX_NENTS)
-> +		return NULL;
-> +
-> +	struct tdx_page_array *array __free(kfree) = kzalloc(sizeof(*array),
-> +							     GFP_KERNEL);
-> +	if (!array)
-> +		return NULL;
-> +
-> +	struct page *root __free(__free_page) = alloc_page(GFP_KERNEL |
-> +							   __GFP_ZERO);
-> +	if (!root)
-> +		return NULL;
-> +
-> +	struct page **pages __free(kfree) = kcalloc(nr_entries, sizeof(*pages),
-> +						    GFP_KERNEL);
-> +	if (!pages)
-> +		return NULL;
-> +
-> +	/* TODO: folio_alloc_node() is preferred, but need numa info */
-> +	struct folio *t_iq __free(folio_put) = folio_alloc(GFP_KERNEL |
-> +							   __GFP_ZERO,
-> +							   iq_order);
-> +	if (!t_iq)
-> +		return NULL;
-> +
-> +	struct folio *t_ctxiq __free(folio_put) = folio_alloc(GFP_KERNEL |
-> +							      __GFP_ZERO,
-> +							      iq_order);
-> +	if (!t_ctxiq)
-> +		return NULL;
-> +
-> +	ret = tdx_alloc_pages_bulk(nr_mt_pages, pages + 2);
-> +	if (ret)
-> +		return NULL;
-> +
-> +	pages[0] = folio_page(no_free_ptr(t_iq), 0);
-> +	pages[1] = folio_page(no_free_ptr(t_ctxiq), 0);
-> +
-> +	array->nr_pages = nr_entries;
-> +	array->pages = no_free_ptr(pages);
-> +	array->root = no_free_ptr(root);
-> +
-> +	tdx_page_array_fill_root(array, 0);
-> +
-> +	return no_free_ptr(array);
-> +}
-> +EXPORT_SYMBOL_GPL(tdx_page_array_create_iommu_mt);
+> This is a new version of the RFC [1]. It is based on Dan's
+> "Link" TSM Core infrastructure [2][3] + Sean's VMXON RFC [4]. All
+> together they enable the SPDM Session and IDE Establishment for TDX
+> Connect. This series and its base commits are available in Dan's
+> tsm.git#staging [5].
 
-Please endeavor to find another way to do this. This is virtually a
-copy-and-paste of the earlier code. Please refactor it in way that you
-don't need the copy-and-paste.
+What are your expectations from posting this series? You cc'd me on it.
+What would you like me to do with it? Is it ready to be merged? Are you
+looking for reviews?
+
+Or, is it just kinda being thrown out here so we can see what you are up to?
