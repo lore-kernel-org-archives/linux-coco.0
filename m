@@ -1,95 +1,123 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E6D33291B
-	for <linux-coco@lists.linux.dev>; Mon, 17 Nov 2025 15:13:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921B92DE714
+	for <linux-coco@lists.linux.dev>; Mon, 17 Nov 2025 16:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763392407; cv=none; b=MnY2bi++9m7ycsVvhRmDpdWIcshckfyJsSNDFAyIxtEEUOLGjNg67+egV3H0oJdSu0nHOohlnYPDMWnMOFhebGiWtwJwOLdAPSt4DpI9MFo/6Gyel/aaBevna8ZgowfrXI82y7w2EBP95pBzrLZCW57KIA6TCGcgsyNhXBXYbeU=
+	t=1763397708; cv=none; b=QLyrTk2YE0NhmOmtginUQilE7Sn6mW/dj9TGEjUr7Ljw2oi8bLhrSPsTonHB1n4mxsSTolEJvbYTXMS0mmqAqpGcMCGJxPamCaF5m6Hsjd2v8y2APA/ZRM+uSc+vdTAsFBxO1IDX2utrtUOJDyC2yFv5jBgthJFqPPnC5fRmGDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763392407; c=relaxed/simple;
-	bh=OBvsF9gYOTJDqXss7CjhmAyEM0ox4oqYdV/ncbetlbA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V6FScxiCWBO3uxgX/fbDgyq8obVFvYZay1UGa+JhC1eYrCsAYt5nT1F0KgfXwlkakLXhI6YzjotNM7an089vyVyl5+oa33WWM2iDuQ9f6rdC5mGClGzNb3GI0xuGcRW2jLk1naxExK4bi1JZNU9czGr8tbJQ/1ps3UPhPLLwP4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=COELKfPU; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1763397708; c=relaxed/simple;
+	bh=lHBneE7jlVuRFMvm3BTfoDmJOllftmroA4PV9f01yFg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Y+V7qICXGNTwv9tRObrGjNNfhgz/7D5YoqZs8rNiRSBp4LTg0Tlj154iteHTRqu3uYV/x3QQ7Fsl5EPfCQq4kGxDbDUnZZCXsvhAMY3u/KGEafG40oAfE8BAgHW4yIlieaFOKuWWGI7rF6HT35VWV3NqXBsM9GHe8Yd8g0G9bkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U+Z4Mpkz; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="COELKfPU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U+Z4Mpkz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763392405; x=1794928405;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=OBvsF9gYOTJDqXss7CjhmAyEM0ox4oqYdV/ncbetlbA=;
-  b=COELKfPU+7cZScRGZD7Z64kKHLVp7EmAEcS1tIiA7KFZdrP1rDwwAsci
-   iHJEFwYLFr1nS+/Jpyt5dd2tcc8TcNP3hsaITipxVC1rW4j9IV7EBHyPx
-   9wdqgnuLZ4iVrzPXx2ERDwsbb2GyjzfLvslxu3l87AMM5E6K/4TVkOmnj
-   uR/pJt8mh/n8xNrovFRGNaUjMSBEd7NiFgdDGz9EhBr7mVMGT/HiCXp1Q
-   9pfTwWAGgc4OthQi/f70PQ9LwWQzR90dy2eg1on2E+KBO6RZ+xeVAARlg
-   E0TI93y31TrGYP2vXQ1KO2nCecg25K7NWKdSgz4mg+ndzDhaaZIoolZPc
+  t=1763397707; x=1794933707;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=lHBneE7jlVuRFMvm3BTfoDmJOllftmroA4PV9f01yFg=;
+  b=U+Z4MpkzhG6NjfY73ARu+jPtFCXYVNruWdGgs4X5zyCOSRrLKmp3BN68
+   hC2NHSl2tqbN3dkTsFPJ0nct+k8T+Yt3IYvapYGFnpJ8yhD9sq8g4juuz
+   w20YhGAsU1TJSVdBlaaunyN+G7kdAikK9Rh05d2sby25QTLkiM5l8fMAs
+   dNSx/gY1boahjMRjPj9w/TCHvDiKMw7cTfx9KZSdeq1EVX1XNN2WbJoU1
+   ovFhIB2uOtkYdoK1vGFyaEubmqjVIZnUn+OQ4Fj1Drnu06f7x8BgNc9Sn
+   MZ2IAw/mO3VXsvJfAVK0XsxAt3Npq3f2rDJPyzQfsBSbF52PyrM01kxcU
    A==;
-X-CSE-ConnectionGUID: KT9cHpI2Q9i363HXHaWpUA==
-X-CSE-MsgGUID: b68JLiZhQ6u/yvtYZxyBXQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="69014025"
+X-CSE-ConnectionGUID: 6Yywz9SbSKywzQ28Cwd+4w==
+X-CSE-MsgGUID: Ds67sBv3QAu+insm7+sWIg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="76752377"
 X-IronPort-AV: E=Sophos;i="6.19,312,1754982000"; 
-   d="scan'208";a="69014025"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 07:13:24 -0800
-X-CSE-ConnectionGUID: bBStdWu1R3mgedFTda+0DA==
-X-CSE-MsgGUID: rw0Hy/rDSbGoH6t0WsFHGQ==
+   d="scan'208";a="76752377"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 08:41:46 -0800
+X-CSE-ConnectionGUID: Igju4QJpSEi4mMLw/3rs2w==
+X-CSE-MsgGUID: dY5XSvOWRDSSA0qkl+6OFw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,312,1754982000"; 
-   d="scan'208";a="189769969"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa010.jf.intel.com with ESMTP; 17 Nov 2025 07:13:22 -0800
-Date: Mon, 17 Nov 2025 22:58:38 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-pci@vger.kernel.org, linux-coco@lists.linux.dev,
-	Jonathan.Cameron@huawei.com, Bjorn Helgaas <bhelgaas@google.com>,
-	Lukas Wunner <lukas@wunner.de>, Samuel Ortiz <sameo@rivosinc.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Subject: Re: [PATCH v2 8/8] PCI/TSM: Add 'dsm' and 'bound' attributes for
- dependent functions
-Message-ID: <aRs4HnWBzJuD4mVt@yilunxu-OptiPlex-7050>
-References: <20251113021446.436830-1-dan.j.williams@intel.com>
- <20251113021446.436830-9-dan.j.williams@intel.com>
+   d="scan'208";a="190170757"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO [10.125.109.33]) ([10.125.109.33])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 08:41:45 -0800
+Message-ID: <96d66314-a0f8-4c63-8f0d-1d392882e007@intel.com>
+Date: Mon, 17 Nov 2025 08:41:37 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251113021446.436830-9-dan.j.williams@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 06/26] x86/virt/tdx: Add tdx_page_array helpers for new
+ TDX Module objects
+To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev,
+ linux-pci@vger.kernel.org
+Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
+ yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
+ rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
+ dan.j.williams@intel.com, kas@kernel.org, x86@kernel.org
+References: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
+ <20251117022311.2443900-7-yilun.xu@linux.intel.com>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20251117022311.2443900-7-yilun.xu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 12, 2025 at 06:14:46PM -0800, Dan Williams wrote:
-> PCI/TSM sysfs for physical function 0 devices, i.e. the "DSM" (Device
-> Security Manager), contains the 'connect' and 'disconnect' attributes.
-> After a successful 'connect' operation the DSM, its dependent functions
-> (SR-IOV virtual functions, non-zero multi-functions, or downstream
-> endpoints of a switch DSM) are candidates for being transitioned into a
-> TDISP (TEE Device Interface Security Protocol) operational state, via
-> pci_tsm_bind(). At present sysfs is blind to which devices are capable of
-> TDISP operation and it is ambiguous which functions are serviced by which
-> DSMs.
-> 
-> Add a 'dsm' attribute to identify a function's DSM device, and add a
-> 'bound' attribute to identify when a function has entered a TDISP
-> operational state.
-> 
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Lukas Wunner <lukas@wunner.de>
-> Cc: Samuel Ortiz <sameo@rivosinc.com>
-> Cc: Alexey Kardashevskiy <aik@amd.com>
-> Cc: Xu Yilun <yilun.xu@linux.intel.com>
-> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+On 11/16/25 18:22, Xu Yilun wrote:
+> +	struct page *root __free(__free_page) = alloc_page(GFP_KERNEL |
+> +							   __GFP_ZERO);
+> +	if (!root)
+> +		return NULL;
 
-Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+Why don't you just kcalloc() this like the rest of them?
 
+Then you won't need "mm: Add __free() support for __free_page()" either,
+right?
