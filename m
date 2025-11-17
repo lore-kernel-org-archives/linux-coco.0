@@ -1,96 +1,125 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E821832C92A
-	for <linux-coco@lists.linux.dev>; Mon, 17 Nov 2025 12:12:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150901E008B;
+	Mon, 17 Nov 2025 14:00:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763381542; cv=none; b=TnE6ZDnrv4CRW8/NhP8IqAmmuJqhKx/eUvzE3pBX8s0By7FbPqGDl3caCGj3HEpfJ1TMESDD6epo9OZm7ROYvxC0Ba5+DOCv1GtP74ke+znVM4VEVCi5Qr8bNeKHk7G7kkBd7eqX736nw1BjxY5t28ru7aOeAxVBs9tYQfrohjg=
+	t=1763388020; cv=none; b=DzYze663c13Ai1igQQtk0ca+VNdLEabq66d2FGwdsgyd8DwC4hWfEDsphl/3M795mwJ0jJDqx4EG0UQVYfIJ2GGnAN5mUpwHxkLkUoyQeQ2OVOwA1Q7DTIbx3FLxCBSA+eO/XbDWrQOtdCBQnt6ClsuXew1dIOy2dCijIKCdroA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763381542; c=relaxed/simple;
-	bh=hHkkkuzcm+OZgcYuNf2+6konfNd6VrAMNQZDC0IlSeY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OxTc2+aqjtpxinVpo19dAvnqOuKiSzA0GDjgjETCUO7WaBxm3k1uZ/wdcHTEZ5AmwJrhoy0nUef5FjbV3f26/S0NIj8uL+zyYOkT5gRxYerhGcbBFxDED801f/3wBqc8T904K+fpXgsQrw8sGYfYVCuAfrgcLikCZlZKrlaW+dY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BCc9FN/b; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1763388020; c=relaxed/simple;
+	bh=YoL7p6wREBJKyjLBhUuUwEP3qFVZ0NeQwm26ZY6pEnA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fa2Qni8MKZnFHCgn2wf4ZOiK6r6GEazex+2KBLOCI78OSJIltmzJzIHBa3VlzsrkjLvH/uNeZb8f/G9de2cXQc4PHgc0LHp+qt0dfIpgvYPU2j9Tp67PUpFlx7zjYNGSasto66+ayzmy2q946JUo4djVQJO52a82T4725pLbwUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b1y8nGwj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BCc9FN/b"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763381539; x=1794917539;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=hHkkkuzcm+OZgcYuNf2+6konfNd6VrAMNQZDC0IlSeY=;
-  b=BCc9FN/bievtA+XL58uIHwZlBBDz2Y+gdGu9dlPqauthsIR8WUXAftnW
-   q0UjInJ39AbHdimPB0jntRY0VSpoMFEg0ZFAZbYQXHga2Cwj6AEPeVyof
-   n9vUzOONpcTZonD1vPwKCE+FhNDwZEYzZydXZG8tydNmMw6YulZhXg6Bs
-   Rwi2v/ZMS82nxmRzdRHf70XJBcmI84sS9c6o7/b01LtVDf/6CYItRaw1u
-   rUWx+8iSadx2d3fHKvwVHOYNVSgBA6nw7Fmepi+J5GTpgLLm/c1ikvDdl
-   trvh3z/cFZNRDvl1tI99/LrhX9Bn6b9SrKrcWAnJWEFhyWcX6M67jZ16k
-   Q==;
-X-CSE-ConnectionGUID: GvmDjQwzR1ebFV4OvOJvQw==
-X-CSE-MsgGUID: LZVMG71wRHyJon+zTbfDyg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="65279960"
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; 
-   d="scan'208";a="65279960"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 04:12:18 -0800
-X-CSE-ConnectionGUID: twGw8rNGQZilaZjenVGMPQ==
-X-CSE-MsgGUID: R2rrSy3cSiKopfRyRGYLNw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; 
-   d="scan'208";a="190230655"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa009.jf.intel.com with ESMTP; 17 Nov 2025 04:12:17 -0800
-Date: Mon, 17 Nov 2025 19:57:34 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-pci@vger.kernel.org, linux-coco@lists.linux.dev,
-	Jonathan.Cameron@huawei.com
-Subject: Re: [PATCH v2 7/8] PCI/TSM: Add pci_tsm_guest_req() for managing TDIs
-Message-ID: <aRsNrmcc5p2wUg9r@yilunxu-OptiPlex-7050>
-References: <20251113021446.436830-1-dan.j.williams@intel.com>
- <20251113021446.436830-8-dan.j.williams@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b1y8nGwj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E040C4CEF1;
+	Mon, 17 Nov 2025 14:00:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763388019;
+	bh=YoL7p6wREBJKyjLBhUuUwEP3qFVZ0NeQwm26ZY6pEnA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=b1y8nGwj5b/wA+Agu1M816LSZBkSamGPKqceMhspZxR2FVJb4RT+T8p0fJBDGgb5h
+	 j4AJrZh3Owv7cS+6C7roATZCD0nEwxzn+RVbn50BpEw+nxU9DyMyIPzc/5jkW1g3Wo
+	 72cBqzDUnO7Js2pFDcQSmiXvPIowRYTX4xVvMQsIr0elrIHY0K4wDNEH7kCxNC5+Qm
+	 R2ZkU15k1IxWYyvUQY5mteVDotrxWQ1ZlxAz9rsj4WG2tAdz7S5/KhsE9pYOKHKNJ+
+	 aM7lRNQB1YirkFWPBuvVhO0RTl300qVlO65kekzUGpRbTXEvEk0JdhCYowbaVRJZVU
+	 AFctSR3E51c/g==
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: linux-coco@lists.linux.dev,
+	kvmarm@lists.linux.dev
+Cc: linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	dan.j.williams@intel.com,
+	aik@amd.com,
+	lukas@wunner.de,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+Subject: [PATCH v2 00/11] TSM: Implement ->lock()/->accept() callbacks for ARM CCA TDISP setup
+Date: Mon, 17 Nov 2025 19:29:56 +0530
+Message-ID: <20251117140007.122062-1-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251113021446.436830-8-dan.j.williams@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 12, 2025 at 06:14:45PM -0800, Dan Williams wrote:
-> A PCIe device function interface assigned to a TVM is a TEE Device
-> Interface (TDI). A TDI instantiated by pci_tsm_bind() needs additional
-> steps taken by the TVM to be accepted into the TVM's Trusted Compute
-> Boundary (TCB) and transitioned to the RUN state.
-> 
-> pci_tsm_guest_req() is a channel for the guest to request TDISP collateral,
-> like Device Interface Reports, and effect TDISP state changes, like
-> LOCKED->RUN transititions. Similar to IDE establishment and pci_tsm_bind(),
-              ^
-transition
 
-[...]
+This patch series implements the TSM ->lock(), ->unlock and ->accept() callbacks
+required for the TDISP setup with ARM CCA described in the RMM ALP17 specification [1].
 
-> +ssize_t pci_tsm_guest_req(struct pci_dev *pdev, enum pci_tsm_req_scope scope,
-> +			  sockptr_t req_in, size_t in_len, sockptr_t req_out,
-> +			  size_t out_len, u64 *tsm_code)
-> +{
-> +	struct pci_tsm_pf0 *tsm_pf0;
-> +	struct pci_tdi *tdi;
-> +	int rc;
-> +
-> +	/* Forbid requests that are not directly related to TDISP operations */
-> +	if (scope > PCI_TSM_REQ_STATE_CHANGE)
-> +		return -EINVAL;
+The series builds upon the TSM framework patches posted at [2] . A git repository
+containing all the related changes is available at [3].
 
-So we are not ready for PCI_TSM_REQ_DEBUG_READ/WRITE, is it?
+Testing / Usage
 
-Others look good to me.
+echo ${DEVICE} > /sys/bus/pci/devices/${DEVICE}/driver/unbind
 
-Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+To Transition the device to TDISP LOCK state:
+echo tsm0 > /sys/bus/pci/devices/${DEVICE}/tsm/lock
+
+To Transition the device to TDISP RUN state:
+echo 1 > /sys/bus/pci/devices/${DEVICE}/tsm/accept
+
+echo ${DEVICE} > /sys/bus/pci/drivers_probe 
+
+[1] https://developer.arm.com/-/cdn-downloads/permalink/Architectures/Armv9/DEN0137_1.1-alp17.zip
+[2] https://lore.kernel.org/all/20251024020418.1366664-1-dan.j.williams@intel.com/
+[3] https://git.gitlab.arm.com/linux-arm/linux-cca.git cca/topics/cca-guest-setup-upstream-v2
+
+
+Aneesh Kumar K.V (Arm) (11):
+  coco: guest: arm64: Guest TSM callback and realm device lock support
+  coco: guest: arm64: Add Realm Host Interface and guest DA helper
+  coco: guest: arm64: Add support for guest initiated TDI bind/unbind
+  coco: guest: arm64: Add support for updating interface reports from
+    device
+  coco: guest: arm64: Add support for updating measurements from device
+  coco: guest: arm64: Add support for reading cached objects from host
+  coco: guest: arm64: Validate Realm MMIO mappings from TDISP report
+  coco: guest: arm64: Add support for fetching and verifying device info
+  coco: guest: arm64: Wire Realm TDISP RUN/STOP transitions into guest
+    driver
+  coco: arm64: dma: Update force_dma_unencrypted for accepted devices
+  coco: guest: arm64: Enable vdev DMA after attestation
+
+ arch/arm64/include/asm/mem_encrypt.h      |   6 +-
+ arch/arm64/include/asm/rhi.h              |  77 +++++
+ arch/arm64/include/asm/rsi.h              |   3 +
+ arch/arm64/include/asm/rsi_cmds.h         |  81 +++++
+ arch/arm64/include/asm/rsi_smc.h          |  58 ++++
+ arch/arm64/kernel/rsi.c                   |  11 +
+ arch/arm64/mm/mem_encrypt.c               |  10 +
+ drivers/virt/coco/Makefile                |   2 +-
+ drivers/virt/coco/arm-cca-guest/Kconfig   |  10 +-
+ drivers/virt/coco/arm-cca-guest/Makefile  |   3 +-
+ drivers/virt/coco/arm-cca-guest/arm-cca.c |  95 +++++-
+ drivers/virt/coco/arm-cca-guest/rhi-da.c  | 330 ++++++++++++++++++++
+ drivers/virt/coco/arm-cca-guest/rhi-da.h  |  18 ++
+ drivers/virt/coco/arm-cca-guest/rsi-da.c  | 354 ++++++++++++++++++++++
+ drivers/virt/coco/arm-cca-guest/rsi-da.h  |  83 +++++
+ include/linux/swiotlb.h                   |   5 +
+ 16 files changed, 1137 insertions(+), 9 deletions(-)
+ create mode 100644 arch/arm64/include/asm/rhi.h
+ create mode 100644 drivers/virt/coco/arm-cca-guest/rhi-da.c
+ create mode 100644 drivers/virt/coco/arm-cca-guest/rhi-da.h
+ create mode 100644 drivers/virt/coco/arm-cca-guest/rsi-da.c
+ create mode 100644 drivers/virt/coco/arm-cca-guest/rsi-da.h
+
+-- 
+2.43.0
 
