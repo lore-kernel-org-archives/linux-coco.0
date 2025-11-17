@@ -1,124 +1,267 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B35248896
-	for <linux-coco@lists.linux.dev>; Mon, 17 Nov 2025 23:05:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA17242D87
+	for <linux-coco@lists.linux.dev>; Mon, 17 Nov 2025 23:58:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763420753; cv=none; b=krIMb0a+6Sf0QPxJsP9a41oJCqdQi9TMLZsyDSX7iKSRMRuqT/6NZYZ3B8PGx4LYJb1AkNsHYPPFcyg574N+56RCb4KdV/dmz6S8xjgOrvJP6wzo10Ud7rJt/30blDwpdI+n1RnyDpeOUqn7HH6DBQOzG6xjJLjRvF+8N09G3Zg=
+	t=1763423930; cv=none; b=WwgYVIDsESsDJgROa0dI2wMct7U6lYPIsNFc46u7NVk03s15qqHfpGkQwm9XzGgvEf1bi0zTQVKVVFUp5wV/eZ+gE5WhzxBw780U6aMUq6hYiGTQnVO1LwojIsbL7+VVNRQAj8kNT4WnfKfB6RjZhRw5iSUT0AD1RnLPYDwfhMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763420753; c=relaxed/simple;
-	bh=7VWQ6QHhJXLvXS96A0WVw+/v0phI/0+nQtjKzota4C4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iJERGNkzn1UPLnT/sakwPXyNLB4Z4Wy4Gr7+0Xg5zChE9ZFei8Xj9fyCn8T1E5CKI47RgeRzSoSpKOs7BuF9S4BCsrL8UIoKTGL6ODsoObeQ8oBZNbn8X6gFg6HvQj2R+ltq6XMeOBQJyFt4nxEd3E/K+64DGZTSzXX1ypWpZU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JnK1q4N2; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1763423930; c=relaxed/simple;
+	bh=wu6ivN9wLxRLGaox/McaTMnz0CXdPngRCjo8bc4gHMI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=dRFcQdPjF55NZlTXRxpZ9yqDxT+MyCStclWWNkjW8mGwhI+VpajnlLFiM1WiHV7gcZ/0AZu4TxZaaLpT8x8bu+lTM5NudNjcCo3wpPHeY5aiaUIpJwbcdqun2tIFQzFX4OU+M3sidUiRTSRWBzX1mt9NIO3aNkATfJrKrNkvE0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dnkLNl18; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JnK1q4N2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763420752; x=1794956752;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=7VWQ6QHhJXLvXS96A0WVw+/v0phI/0+nQtjKzota4C4=;
-  b=JnK1q4N2+YpkoJTM+gMtwLHy5nyW+6rW3X154LZ51o1cPfkUrNow/UV2
-   OUUOzV2z+38ynTLOtIjCSRfMojIrIhvZq0l0e1NxDmHXe83fJ8+srSndP
-   /McIvw7QSX0N+2hJwIslESRqQ2un6qd4IL3lxcLSYtk1dHGui+NGoggbX
-   KxR+K7msx35m74JIZdzYtoBZ+s89GYH/iTFpO/2rD5mShNvhGymM5PINy
-   BpA6IhBmilvIerhdiNcFK11OdhxlumdKIUo2OX8twXOgXnWBYUczvfsKB
-   qbleElBKNP+fMrUldSHCP+19PO6gbcm07CLGqdgkwiof4pvTHH0HcYg7y
-   A==;
-X-CSE-ConnectionGUID: IeH31np6Tn6qM+u80TAPBA==
-X-CSE-MsgGUID: JlWNz4ReQj+vprlgbYy+Ig==
-X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="65473871"
-X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; 
-   d="scan'208";a="65473871"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 15:05:51 -0800
-X-CSE-ConnectionGUID: O6DQq88nRhSDXv8ZVi98iQ==
-X-CSE-MsgGUID: PAm2tSTQSqeILwlsB8ic6A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; 
-   d="scan'208";a="190734719"
-Received: from aschofie-mobl2.amr.corp.intel.com (HELO [10.125.109.33]) ([10.125.109.33])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 15:05:51 -0800
-Message-ID: <64e8f61a-101e-4cfe-8f99-b5f6b9c9afa5@intel.com>
-Date: Mon, 17 Nov 2025 15:05:50 -0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dnkLNl18"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7a998ab7f87so8761476b3a.3
+        for <linux-coco@lists.linux.dev>; Mon, 17 Nov 2025 15:58:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1763423928; x=1764028728; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5ygYEskeqBNerRcGoe7wVhcGY+hSYx1t0h+PLU7ikDc=;
+        b=dnkLNl18Qxz4SAxKuhBuCIdGqON/aFrkzkbVEIBQZOKy0gmNlHaFDMtQoTQlr5a3nD
+         A2KI7730Q32W3Tfrp+FNn6K1Z7NL8/21SyleBLyEhAtxJh+9gmfZQUoGERVxbEIzGhpQ
+         kTcrS1pSzx+pB5/BvrkPHSqrSet6t3VNp4KhwHKteAgElyZOCwlaHnnewUpP8lqr8f+l
+         ISusieTMq7vcAsV1RQCtbD/DFCSsIJolS0zfPPyp+5xQgh973idJxeKOLtS65mesGbyO
+         EvXclfbICqZha7MHs2ZdQg0XDvNmGkvEh9lsqusC/etpFFyNp4k4VyjVaub77sSOMqvT
+         uA6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763423928; x=1764028728;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5ygYEskeqBNerRcGoe7wVhcGY+hSYx1t0h+PLU7ikDc=;
+        b=GiCj4rA+cDQvSBTkcArCmtduTXtPyZhT3RGS3KsymsnHaWSvHx9d/v20hHbiLV4+4q
+         33SrNK2zqC+JWxkRPo9kllELJKMKxj2tIV5NHgkOb/4aSc6SwjAlvExkwVSwIiuRzkPZ
+         DetXWUvU9XJP8v3QAQRpPxqWxATvXZB0WeRktCjFZCFkWAX17ehTovt6YijWiNf7HR4t
+         5JvhjhvUltN13+UdbykWmk6wMJfBJgysdWL62D0Z7MKaWhj+SL0iDWkXXZgGHR7L3Cd7
+         gs5wQncHmNPXbLxmy3l2NHU6jh+pxkCHyVVK/sDZNGxSo7WmwAQkxhrbXjdl0Ptb3ncV
+         1VOA==
+X-Gm-Message-State: AOJu0YxYmr7gUQ7XOxsTbvSSDHMqloICZwQ2+Jdt/+YUDF+wnhoU8voT
+	Y/S98/5WgeUKsK0XdALPOLHpcbtG2fUCoX73nB+GlYks/E60U3oplrBEnPECSK+646XdQVamwCk
+	nSEDyTn4bSiWUU6V8NfdbWbG25w==
+X-Google-Smtp-Source: AGHT+IFxWXTBTtI2UukXobkfyKxRwRm4n7RvJLDKs/34/nWfTRqU+euiKxMKHvOHpr1hhg/cnjE46GW2X2zehltdJA==
+X-Received: from pfbhm22.prod.google.com ([2002:a05:6a00:6716:b0:7b8:fc17:3960])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:2d27:b0:7b8:7219:63e8 with SMTP id d2e1a72fcca58-7ba3aaca144mr15697963b3a.14.1763423928025;
+ Mon, 17 Nov 2025 15:58:48 -0800 (PST)
+Date: Mon, 17 Nov 2025 15:58:46 -0800
+In-Reply-To: <20251113230759.1562024-2-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 00/26] PCI/TSM: TDX Connect: SPDM Session and IDE
- Establishment
-To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev,
- linux-pci@vger.kernel.org
-Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
- yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
- rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
- dan.j.williams@intel.com, kas@kernel.org, x86@kernel.org
-References: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
- oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
- 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
- ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
- VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
- iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
- c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
- pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
- ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
- QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
- c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
- LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
- lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
- MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
- IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
- aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
- I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
- E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
- F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
- CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
- P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
- 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
- GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
- MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
- Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
- lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
- 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
- qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
- BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
- 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
- vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
- FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
- l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
- yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
- +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
- asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
- WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
- sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
- KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
- MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
- hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
- vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20251113230759.1562024-1-michael.roth@amd.com> <20251113230759.1562024-2-michael.roth@amd.com>
+Message-ID: <diqzqztwb495.fsf@google.com>
+Subject: Re: [PATCH 1/3] KVM: guest_memfd: Remove preparation tracking
+From: Ackerley Tng <ackerleytng@google.com>
+To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
+Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, thomas.lendacky@amd.com, pbonzini@redhat.com, 
+	seanjc@google.com, vbabka@suse.cz, ashish.kalra@amd.com, 
+	liam.merwick@oracle.com, david@redhat.com, vannapurve@google.com, aik@amd.com, 
+	ira.weiny@intel.com, yan.y.zhao@intel.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 11/16/25 18:22, Xu Yilun wrote:
-> This is a new version of the RFC [1]. It is based on Dan's
-> "Link" TSM Core infrastructure [2][3] + Sean's VMXON RFC [4]. All
-> together they enable the SPDM Session and IDE Establishment for TDX
-> Connect. This series and its base commits are available in Dan's
-> tsm.git#staging [5].
+Michael Roth <michael.roth@amd.com> writes:
 
-What are your expectations from posting this series? You cc'd me on it.
-What would you like me to do with it? Is it ready to be merged? Are you
-looking for reviews?
+> guest_memfd currently uses the folio uptodate flag to track:
+>
+>   1) whether or not a page has been cleared before initial usage
+>   2) whether or not the architecture hooks have been issued to put the
+>      page in a private state as defined by the architecture
+>
+> In practice, 2) is only actually being tracked for SEV-SNP VMs, and
+> there do not seem to be any plans/reasons that would suggest this will
+> change in the future, so this additional tracking/complexity is not
+> really providing any general benefit to guest_memfd users. Future plans
+> around in-place conversion and hugepage support, where the per-folio
+> uptodate flag is planned to be used purely to track the initial clearing
+> of folios, whereas conversion operations could trigger multiple
+> transitions between 'prepared' and 'unprepared' and thus need separate
+> tracking, will make the burden of tracking this information within
+> guest_memfd even more complex, since preparation generally happens
+> during fault time, on the "read-side" of any global locks that might
+> protect state tracked by guest_memfd, and so may require more complex
+> locking schemes to allow for concurrent handling of page faults for
+> multiple vCPUs where the "preparedness" state tracked by guest_memfd
+> might need to be updated as part of handling the fault.
+>
+> Instead of keeping this current/future complexity within guest_memfd for
+> what is essentially just SEV-SNP, just drop the tracking for 2) and have
+> the arch-specific preparation hooks get triggered unconditionally on
+> every fault so the arch-specific hooks can check the preparation state
+> directly and decide whether or not a folio still needs additional
+> preparation. In the case of SEV-SNP, the preparation state is already
+> checked again via the preparation hooks to avoid double-preparation, so
+> nothing extra needs to be done to update the handling of things there.
+>
 
-Or, is it just kinda being thrown out here so we can see what you are up to?
+This looks good to me, thanks!
+
+What do you think of moving preparation (or SNP-specific work) to be
+done when the page is actually mapped by KVM instead? So whatever's done
+in preparation is now called from KVM instead of within guest_memfd [1]?
+
+I'm concerned about how this preparation needs to be done for the entire
+folio. With huge pages, could it be weird if actually only one page in
+the huge page is faulted in, and hence only that one page needs to be
+prepared, instead of the entire huge page?
+
+In the other series [2], there was a part about how guest_memfd should
+invalidate the shared status on conversion from private to shared. Is
+that still an intended step, after this series to remove preparation
+tracking?
+
+[1] https://lore.kernel.org/all/diqzcy7op5wg.fsf@google.com/
+[2] https://lore.kernel.org/all/20250613005400.3694904-4-michael.roth@amd.com/
+
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> ---
+>  virt/kvm/guest_memfd.c | 47 ++++++++++++++----------------------------
+>  1 file changed, 15 insertions(+), 32 deletions(-)
+>
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index fdaea3422c30..9160379df378 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -76,11 +76,6 @@ static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slo
+>  	return 0;
+>  }
+>  
+> -static inline void kvm_gmem_mark_prepared(struct folio *folio)
+> -{
+> -	folio_mark_uptodate(folio);
+> -}
+> -
+>  /*
+>   * Process @folio, which contains @gfn, so that the guest can use it.
+>   * The folio must be locked and the gfn must be contained in @slot.
+> @@ -90,13 +85,7 @@ static inline void kvm_gmem_mark_prepared(struct folio *folio)
+>  static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  				  gfn_t gfn, struct folio *folio)
+>  {
+> -	unsigned long nr_pages, i;
+>  	pgoff_t index;
+> -	int r;
+> -
+> -	nr_pages = folio_nr_pages(folio);
+> -	for (i = 0; i < nr_pages; i++)
+> -		clear_highpage(folio_page(folio, i));
+>  
+>  	/*
+>  	 * Preparing huge folios should always be safe, since it should
+> @@ -114,11 +103,8 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  	WARN_ON(!IS_ALIGNED(slot->gmem.pgoff, folio_nr_pages(folio)));
+>  	index = kvm_gmem_get_index(slot, gfn);
+>  	index = ALIGN_DOWN(index, folio_nr_pages(folio));
+> -	r = __kvm_gmem_prepare_folio(kvm, slot, index, folio);
+> -	if (!r)
+> -		kvm_gmem_mark_prepared(folio);
+>  
+> -	return r;
+> +	return __kvm_gmem_prepare_folio(kvm, slot, index, folio);
+>  }
+>  
+>  /*
+> @@ -420,7 +406,7 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+>  
+>  	if (!folio_test_uptodate(folio)) {
+>  		clear_highpage(folio_page(folio, 0));
+> -		kvm_gmem_mark_prepared(folio);
+> +		folio_mark_uptodate(folio);
+>  	}
+>  
+>  	vmf->page = folio_file_page(folio, vmf->pgoff);
+> @@ -757,7 +743,7 @@ void kvm_gmem_unbind(struct kvm_memory_slot *slot)
+>  static struct folio *__kvm_gmem_get_pfn(struct file *file,
+>  					struct kvm_memory_slot *slot,
+>  					pgoff_t index, kvm_pfn_t *pfn,
+> -					bool *is_prepared, int *max_order)
+> +					int *max_order)
+>  {
+>  	struct file *slot_file = READ_ONCE(slot->gmem.file);
+>  	struct gmem_file *f = file->private_data;
+> @@ -787,7 +773,6 @@ static struct folio *__kvm_gmem_get_pfn(struct file *file,
+>  	if (max_order)
+>  		*max_order = 0;
+>  
+> -	*is_prepared = folio_test_uptodate(folio);
+>  	return folio;
+>  }
+>  
+> @@ -797,19 +782,25 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  {
+>  	pgoff_t index = kvm_gmem_get_index(slot, gfn);
+>  	struct folio *folio;
+> -	bool is_prepared = false;
+>  	int r = 0;
+>  
+>  	CLASS(gmem_get_file, file)(slot);
+>  	if (!file)
+>  		return -EFAULT;
+>  
+> -	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, &is_prepared, max_order);
+> +	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, max_order);
+>  	if (IS_ERR(folio))
+>  		return PTR_ERR(folio);
+>  
+> -	if (!is_prepared)
+> -		r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+> +	if (!folio_test_uptodate(folio)) {
+> +		unsigned long i, nr_pages = folio_nr_pages(folio);
+> +
+> +		for (i = 0; i < nr_pages; i++)
+> +			clear_highpage(folio_page(folio, i));
+> +		folio_mark_uptodate(folio);
+> +	}
+> +
+> +	r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+>  
+>  	folio_unlock(folio);
+>  
+> @@ -852,7 +843,6 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+>  		struct folio *folio;
+>  		gfn_t gfn = start_gfn + i;
+>  		pgoff_t index = kvm_gmem_get_index(slot, gfn);
+> -		bool is_prepared = false;
+>  		kvm_pfn_t pfn;
+>  
+>  		if (signal_pending(current)) {
+> @@ -860,19 +850,12 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+>  			break;
+>  		}
+>  
+> -		folio = __kvm_gmem_get_pfn(file, slot, index, &pfn, &is_prepared, &max_order);
+> +		folio = __kvm_gmem_get_pfn(file, slot, index, &pfn, &max_order);
+>  		if (IS_ERR(folio)) {
+>  			ret = PTR_ERR(folio);
+>  			break;
+>  		}
+>  
+> -		if (is_prepared) {
+> -			folio_unlock(folio);
+> -			folio_put(folio);
+> -			ret = -EEXIST;
+> -			break;
+> -		}
+> -
+>  		folio_unlock(folio);
+>  		WARN_ON(!IS_ALIGNED(gfn, 1 << max_order) ||
+>  			(npages - i) < (1 << max_order));
+> @@ -889,7 +872,7 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+>  		p = src ? src + i * PAGE_SIZE : NULL;
+>  		ret = post_populate(kvm, gfn, pfn, p, max_order, opaque);
+>  		if (!ret)
+> -			kvm_gmem_mark_prepared(folio);
+> +			folio_mark_uptodate(folio);
+>  
+>  put_folio_and_exit:
+>  		folio_put(folio);
+> -- 
+> 2.25.1
