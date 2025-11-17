@@ -1,65 +1,57 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C36E2D8DB0
-	for <linux-coco@lists.linux.dev>; Mon, 17 Nov 2025 05:11:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7F327280F
+	for <linux-coco@lists.linux.dev>; Mon, 17 Nov 2025 11:26:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763356298; cv=none; b=QuxxLqQ/qAm6O1Y7IPMkFlK1SoMd+roDNeSrlj+Kid9VnybaIc76+YrrFFIxsdqHYwMrSDgQYkAs/MU5mSWRspa45aDxsotdIhe5BkU/C9qyj1V+pDbelWIJg6gUYPXGatPBLp2rjtfInTs0VyxSlIArqwnfmOHZhf0gvse4IIM=
+	t=1763378764; cv=none; b=qnOCWg+W9tlXHHSpzjqLAJShBm7213CAIObygconIxHrGYov4PfoNSwsbIqqq13nJwe8bl44LCncYH8j6wlytkgfE5AGAGU3Rbiu1XygAVCt5UsLsW1ikiRGO5J7Mzh93g8MaREAk4D49lr9jsGogKaXvsOvi2WEn4l2J5fc3ZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763356298; c=relaxed/simple;
-	bh=MGyyMgQNRMj89rmL2Aope18G1ElVNFRh1ZCxZUFgYHI=;
+	s=arc-20240116; t=1763378764; c=relaxed/simple;
+	bh=x+iTw4g9lbiDbrutja7M5tjrA2Jgw1r2YkCf2t6rOxw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ot3wON4UvCKG8QgYDqO6XmnqjU3YjUoSgnvCGExzsiLcY/R1VeIw0k7IoRNkbZ1ss2KUZdQWNIP/AJQDtGUcnOu1P2Eusmy4mK7BOPpeEqu+NYyHi7HLQoNBU8Ejxn3subePg/hG1PoDDfzBzHwFk1d641B+XmayJg618yvXzt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kkLj2TT4; arc=none smtp.client-ip=198.175.65.20
+	 Content-Type:Content-Disposition:In-Reply-To; b=E6qSB4kRemJh/ucQTTOr8RI+IAZJFsDlZ9cUcEZhBhUyJYtohj6JUmutBs8nz65RAvT6R9xFPkXbGbEKEhN4iTi47vcx+0AkeIk8VBu9/MCHPsQt+FHytVF4qMHC0T5ldOqoTUDrJeJMoG2G9KHz4Nivw7WkaQ+3FeLaewqoVi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Dasis97o; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kkLj2TT4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Dasis97o"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763356296; x=1794892296;
+  t=1763378762; x=1794914762;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=MGyyMgQNRMj89rmL2Aope18G1ElVNFRh1ZCxZUFgYHI=;
-  b=kkLj2TT4ZA6gYHYawf9yv+PicBKefANBSyp/ymn4ltctrU0YJ/qppZAU
-   tt7rx3BNO6hVQ5/6trsuiCblX6phUYZow+5GvXAH52at4yqOVi8DgGVcS
-   RaXgb/foDlA922GyXoPC61F3+WriGQTI9zxJaTrbgWPEkJ1IDvJOpQHf/
-   igGLVYn2hWbJ8dTIwYvZkCKiOT9Xp1K2+cD5iF0VJEXK95tWaB8yTnLtb
-   Dwz5et/PtS/VByrntcPJoEGtnHJi9Ug3ozGsuzbTSNKHquQD5iibPKBQj
-   ihK+jqCMrO28isZe94cqCWyAGkHGxlqCwOZHXkQuEkKcJlyiJUGwf0nk+
-   w==;
-X-CSE-ConnectionGUID: s/N38Q+zQx6UeOjl2yBQqQ==
-X-CSE-MsgGUID: 8UFhLBFdTDybLoCZ/x4VVw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="65060279"
+  bh=x+iTw4g9lbiDbrutja7M5tjrA2Jgw1r2YkCf2t6rOxw=;
+  b=Dasis97oJE2Yrwcqt8iLJR2eOGw1dP/bE5H1RYjnEWjEF3tV3Xr1L+Ob
+   x7b8y99+CQmDKRtplFBamZydgJtEu2lsvlG54i4jVIwdW1ph2ukIgmJVS
+   o+zLIvvmCKrEUGlYxxfgYsuJjxqEIZHN9wTsL1cnA/VfuPXxF7Ml8Lptg
+   7Ds1CkBfS6aCeWFOVzOw+GdO4pPg0qoLgmOl/jEAEd6XTAvQJnNqDKZ5X
+   PNie6Vq7IeUQBB2VS3i5RlAJgdhg2QUzJWW73cR0vW5BXBoDolvakZxTp
+   b0dQpqsyMC0S+dO/wj8kgG6aQjDEPrY9nNF3aypr2KQEupWwSpMwDd+AL
+   A==;
+X-CSE-ConnectionGUID: +u2CX+1mQSiikIl3NF0M6g==
+X-CSE-MsgGUID: uUfibGKbR++JW5ILZsKMwg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="76725220"
 X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; 
-   d="scan'208";a="65060279"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2025 21:11:36 -0800
-X-CSE-ConnectionGUID: 5vAUe8wMSjiBhRceq0e0+g==
-X-CSE-MsgGUID: GgHZzgH5Q2mkbGpnyCrAMA==
+   d="scan'208";a="76725220"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 03:26:02 -0800
+X-CSE-ConnectionGUID: 4kLHzUwUTkCUaQgLVOPpeg==
+X-CSE-MsgGUID: dI6PeNCkTD2HP1IurChfVw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; 
-   d="scan'208";a="194803453"
+   d="scan'208";a="213825467"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa004.jf.intel.com with ESMTP; 16 Nov 2025 21:11:34 -0800
-Date: Mon, 17 Nov 2025 12:56:52 +0800
+  by fmviesa002.fm.intel.com with ESMTP; 17 Nov 2025 03:26:00 -0800
+Date: Mon, 17 Nov 2025 19:11:18 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
-To: dan.j.williams@intel.com
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
-	linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	xin@zytor.com, chao.gao@intel.com
-Subject: Re: [RFC PATCH 20/27] coco/tdx-host: Add connect()/disconnect()
- handlers prototype
-Message-ID: <aRqrFKV/5hinDiYg@yilunxu-OptiPlex-7050>
-References: <20250919142237.418648-1-dan.j.williams@intel.com>
- <20250919142237.418648-21-dan.j.williams@intel.com>
- <20251030112055.00001fcb@huawei.com>
- <69093bf7d6ee_74f59100fe@dwillia2-mobl4.notmuch>
- <aQwvsbZy50ac+xid@yilunxu-OptiPlex-7050>
- <69128889c6c2d_1d911009f@dwillia2-mobl4.notmuch>
- <aRVHpdQ637ltYJku@yilunxu-OptiPlex-7050>
- <69178ebd69506_10154100a9@dwillia2-mobl4.notmuch>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: linux-pci@vger.kernel.org, linux-coco@lists.linux.dev,
+	Jonathan.Cameron@huawei.com, Alexey Kardashevskiy <aik@amd.com>
+Subject: Re: [PATCH v2 5/8] PCI/IDE: Initialize an ID for all IDE streams
+Message-ID: <aRsC1q0NsyZ2aKjO@yilunxu-OptiPlex-7050>
+References: <20251113021446.436830-1-dan.j.williams@intel.com>
+ <20251113021446.436830-6-dan.j.williams@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -68,66 +60,67 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <69178ebd69506_10154100a9@dwillia2-mobl4.notmuch>
+In-Reply-To: <20251113021446.436830-6-dan.j.williams@intel.com>
 
-On Fri, Nov 14, 2025 at 12:19:09PM -0800, dan.j.williams@intel.com wrote:
-> Xu Yilun wrote:
-> [..]
-> > IOW, I like this current piece of code cause it is in perfect balance.
-> > I don't have to change the mindset much for code design. I get the benifit
-> > of auto-cleanup, and the local cleanup handlers (tlink_spdm, tlink_ide)
-> > are cheap but clearly tell me what will happen if any step fails.
-> 
-> I think in this case of conflicting minor preferences the tie goes to
-> the submitter. While I personally think the discipline of clearly
-> delineating objects and ownerships yields maintainability benefits, I
-> also do not hate the model of "extend existing object with scope based
-> setup".
-> 
-> So,
-> 
-> Acked-by: Dan Williams <dan.j.williams@intel.com>
-> 
-> > > > 	if (IS_ERR(tlink_spdm)) {
-> > > > 		pci_err(pdev, "fail to setup spdm session\n");
-> > > > 		return PTR_ERR(tlink_spdm);
-> > > > 	}
-> > > > 
-> > > > 	struct tdx_link *tlink_ide __free(tdx_ide_stream_teardown) =
-> > > > 		tdx_ide_stream_setup(tlink);
-> > > > 	if (IS_ERR(tlink_ide)) {
-> > > > 		pci_err(pdev, "fail to setup ide stream\n");
-> > > > 		return PTR_ERR(tlink_ide);
-> > > > 	}
-> > > 
-> > > No strict need for scope-based cleanup if this is the last resource
-> > > acquisition,
-> > 
-> > So if we don't do auto-cleanup for the last one, do we still need a
-> > structure for that? If not,
-> > 
-> >  struct tdx_link {
-> > 	struct tdx_spdm *spdm;
-> > 	
-> > 	int ide_stream_field1;
-> > 	int ide_stream_field2;
-> > 	...
-> >  }
-> > 
-> > seems so wierd.
-> 
-> Yeah, a little clunky.
-> 
-> > > but maybe there are other PCI/TSM core things to do that
-> > > are not shown.
-> > 
-> > There is no following items for now but I think cleanup for the last one
-> > is good. Otherwise we may face with the same problem as goto, that we
-> > see unrelated changes (add cleanup for previous one) when we add a new
-> > step.
-> 
-> Again, this is a case of I still disagree with shipping the dead code,
+> @@ -98,6 +141,51 @@ void pci_ide_init(struct pci_dev *pdev)
+>  		}
+>  
+>  		nr_ide_mem = nr_assoc;
+> +
+> +		/*
+> +		 * Claim Stream IDs and Selective Stream blocks that are already
+> +		 * active on the device
+> +		 */
+> +		pci_read_config_dword(pdev, pos + PCI_IDE_SEL_CTL, &val);
+> +		id = FIELD_GET(PCI_IDE_SEL_CTL_ID, val);
+> +		if ((val & PCI_IDE_SEL_CTL_EN) &&
+> +		    !claim_stream(hb, id, pdev, i))
+> +			return;
+> +	}
+> +
+> +	/* Reserve link stream-ids that are already active on the device */
+> +	for (u16 i = 0; i < nr_link_ide; ++i) {
+                                         ^
+i++. Since i++ is used in previous patch, better keep all loops aligned.
 
-OK. Will delete the last scope-based cleanup
 
-> but not enough to NAK your preference.
+> +		int pos = ide_cap + PCI_IDE_LINK_STREAM_0 + i * PCI_IDE_LINK_BLOCK_SIZE;
+> +		u8 id;
+> +
+> +		pci_read_config_dword(pdev, pos + PCI_IDE_LINK_CTL_0, &val);
+> +		id = FIELD_GET(PCI_IDE_LINK_CTL_ID, val);
+> +		if ((val & PCI_IDE_LINK_CTL_EN) &&
+> +		    !claim_stream(hb, id, NULL, -1))
+> +			return;
+> +	}
+> +
+> +	for (u16 i = 0; i < nr_streams; i++) {
+> +		int pos = __sel_ide_offset(ide_cap, nr_link_ide, i, nr_ide_mem);
+> +
+> +		pci_read_config_dword(pdev, pos + PCI_IDE_SEL_CAP, &val);
+> +		if (val & PCI_IDE_SEL_CTL_EN)
+> +			continue;
+> +		val &= ~PCI_IDE_SEL_CTL_ID;
+> +		val |= FIELD_PREP(PCI_IDE_SEL_CTL_ID, PCI_IDE_RESERVED_STREAM_ID);
+
+FIELD_MODIFY could save a line.
+
+> +		pci_write_config_dword(pdev, pos + PCI_IDE_SEL_CTL, val);
+> +	}
+> +
+> +	for (u16 i = 0; i < nr_link_ide; ++i) {
+
+ditto
+
+> +		int pos = ide_cap + PCI_IDE_LINK_STREAM_0 +
+> +			  i * PCI_IDE_LINK_BLOCK_SIZE;
+> +
+> +		pci_read_config_dword(pdev, pos, &val);
+> +		if (val & PCI_IDE_LINK_CTL_EN)
+> +			continue;
+> +		val &= ~PCI_IDE_LINK_CTL_ID;
+> +		val |= FIELD_PREP(PCI_IDE_LINK_CTL_ID, PCI_IDE_RESERVED_STREAM_ID);
+
+ditto
+
+Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
