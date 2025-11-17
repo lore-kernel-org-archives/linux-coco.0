@@ -1,48 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6D3301499
-	for <linux-coco@lists.linux.dev>; Mon, 17 Nov 2025 16:52:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3650F30E85C
+	for <linux-coco@lists.linux.dev>; Mon, 17 Nov 2025 17:34:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763398368; cv=none; b=VDaqS3DzJ4VSEqChN/Q4EIwlhHRWWvgfdxpftF1FESZ7ThyWtM+aqc6BRCGnhmY7QgUSkO489yJYmtpkOw/XmGhv7SKDWo1DtFvKqPN+a6JCkGVSi3VB/s+7Hyl02WH2hxFWTAHrmNtAhncRWDIhli5uLfzQxHz61VHXCwKBOvM=
+	t=1763400874; cv=none; b=J5ur8HQyUbYm/3C6HViC6tefjjwc/rV/Dt7zpUHYft5wecnmaHtTmjtETMQF11Ru0bOedITmsYAgiY6/jnxgMEFi6QNIEIgVttPYV9oxIdrt5T9YeZC8KwjSICm6NVVaqPco/DrkoXQ4Oyvp7SCEOp9AJpXxK2Mw+I/o2ikwQyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763398368; c=relaxed/simple;
-	bh=bKujbumiMtG0QwgexkoYwFkbNiG9F7VnIFSueeVhi30=;
+	s=arc-20240116; t=1763400874; c=relaxed/simple;
+	bh=oeTn00A7A4orN8LyUXiqAvW9aE1W8uyYgcBTVb8y/qA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qqYnsRlJRTVPsMq+354YTn9HBKD1hsmcvfgj5BnpBnlQ8nN3YR8mXcOFvdUOW+v5PuS93/ruyGBetRiVOnd08uuwIroIlMl+f4H07LttFNvixkR5gSG8xvxRMIgMvBC6GVM5KrUtAsmTedB3QebneUk9JZDQaT8gSp8BmI6TceQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lAfgMEbJ; arc=none smtp.client-ip=198.175.65.14
+	 In-Reply-To:Content-Type; b=e94uQc0Eo70JDxD4iPyCVUZ60I6qVETjidBjuYYmLocoUBp8VpiC80y7PsT6wbvBEUpgYbWLHrxU2ABVEQEk4rKY7TiXcV/sYVz3oC3saVyGuH//L+QWxdnJ+waS2PfeOQ+SzyK/TN2m7TWXJ4ucbqmzXRg34KioFwRQ+QKk31I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AksLsWzF; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lAfgMEbJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AksLsWzF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763398367; x=1794934367;
+  t=1763400872; x=1794936872;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=bKujbumiMtG0QwgexkoYwFkbNiG9F7VnIFSueeVhi30=;
-  b=lAfgMEbJFbLjyMkked2QkzjKSP/L+BfVPE9bAr5+hu8XElk8PIDkr/rw
-   gd1bbYCnVWXhCLJ7FI+6QdbYRb2sbMt4kYMKbMW1dDPUAOp1tFH3xf7nU
-   +p4668W2qA9+J13/TFZDYZG1qxyJAcazmCg0rXm48TDXtvy9OCCZHUMj0
-   DZ26bGSoG3S3pjspSzEVj1oXWXVnjBEaQah2FeeQx4OUiJ0pwW2TZqfUL
-   eUCYjMuRmFU7c0FeOqVnAJFJSzLJNae7p2I37+0E/V44nP86SyCLgYMav
-   RVpmLoJcqrVcf75PdCod7EDUqD8rA6850MDB3HRCr1vHhus3Fx4xpNSWv
-   w==;
-X-CSE-ConnectionGUID: awM3i7peSY+FM0+tqnsTsA==
-X-CSE-MsgGUID: Uw9sWudcQa2oiWqeA1VuxQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="69251797"
+  bh=oeTn00A7A4orN8LyUXiqAvW9aE1W8uyYgcBTVb8y/qA=;
+  b=AksLsWzFkCBYE3a9UYSeBuI/eQ6KdGm3snzeseOIgaSe+S8xLrrKYVjv
+   E9xQ7PABZR62zhvY1G1iWy5IHRcIDWAxif3J764kE1D/30FThmR7iVmOA
+   CzuTIUHN81+Qa7UK2QWo0RSqEDOSaBaVoNn0N5vrUhoP9q11A/YoskXVX
+   Kk95/zveGCpSzmJLDgyg3hM5EtLXHV3PKWkVRXmJmPzopCjLXR2uLwu8M
+   8sSRzNMIlTRqnljdWqNbEHuNEMAIQycypztwdR6MYKrFZb0GywoOquHde
+   s70hdAfWFw5lBAh+OHKrJS1zH6ZaF+olP7pB37AzolavOlenFeNkM/uf3
+   A==;
+X-CSE-ConnectionGUID: etI/UAtMSOO9q/6d40pQkA==
+X-CSE-MsgGUID: BnaWYYYQTr641iFlgwNPRA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="65447776"
 X-IronPort-AV: E=Sophos;i="6.19,312,1754982000"; 
-   d="scan'208";a="69251797"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 08:52:46 -0800
-X-CSE-ConnectionGUID: 8y0xm0IKSp2+knMhrg5ngw==
-X-CSE-MsgGUID: AkD/AF2wQ4G1NyY26NR/zw==
+   d="scan'208";a="65447776"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 09:34:32 -0800
+X-CSE-ConnectionGUID: QC+PLg5rTZa5PIalvlKOvg==
+X-CSE-MsgGUID: U1rE4C1sRvWNj9E8w3kemg==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,312,1754982000"; 
+   d="scan'208";a="213905629"
 Received: from aschofie-mobl2.amr.corp.intel.com (HELO [10.125.109.33]) ([10.125.109.33])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 08:52:41 -0800
-Message-ID: <89a4e42d-b0fd-49b0-8d51-df7bac0d5e5b@intel.com>
-Date: Mon, 17 Nov 2025 08:52:36 -0800
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 09:34:31 -0800
+Message-ID: <cfcfb160-fcd2-4a75-9639-5f7f0894d14b@intel.com>
+Date: Mon, 17 Nov 2025 09:34:30 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -50,8 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 07/26] x86/virt/tdx: Read TDX global metadata for TDX
- Module Extensions
+Subject: Re: [PATCH v1 08/26] x86/virt/tdx: Add tdx_enable_ext() to enable of
+ TDX Module Extensions
 To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev,
  linux-pci@vger.kernel.org
 Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
@@ -59,7 +61,7 @@ Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
  rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
  dan.j.williams@intel.com, kas@kernel.org, x86@kernel.org
 References: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
- <20251117022311.2443900-8-yilun.xu@linux.intel.com>
+ <20251117022311.2443900-9-yilun.xu@linux.intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -105,49 +107,427 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20251117022311.2443900-8-yilun.xu@linux.intel.com>
+In-Reply-To: <20251117022311.2443900-9-yilun.xu@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
+I really dislike subjects like this. I honestly don't need to know what
+the function's name is. The _rest_ of the subject is just words that
+don't tell me _anything_ about what this patch does.
+
+In this case, I suspect it's because the patch is doing about 15
+discrete things and it's impossible to write a subject that's anything
+other than some form of:
+
+	x86/virt/tdx: Implement $FOO by making miscellaneous changes
+
+So it's a symptom of the real disease.
+
 On 11/16/25 18:22, Xu Yilun wrote:
-> +static __init int get_tdx_sys_info_ext(struct tdx_sys_info_ext *sysinfo_ext)
+> From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> 
+> Add a kAPI tdx_enable_ext() for kernel to enable TDX Module Extensions
+> after basic TDX Module initialization.
+> 
+> The extension initialization uses the new TDH.EXT.MEM.ADD and
+> TDX.EXT.INIT seamcalls. TDH.EXT.MEM.ADD add pages to a shared memory
+> pool for extensions to consume.
+
+"Shared memory" is an exceedingly unfortunate term to use here. They're
+TDX private memory, right?
+
+> The number of pages required is
+> published in the MEMORY_POOL_REQUIRED_PAGES field from TDH.SYS.RD. Then
+> on TDX.EXT.INIT, the extensions consume from the pool and initialize.
+
+This all seems backwards to me. I don't need to read the ABI names in
+the changelog. I *REALLY* don't need to read the TDX documentation names
+for them. If *ANYTHING* these names should be trivialy mappable to the
+patch that sits below this changelog. They're not.
+
+This changelog _should_ begin:
+
+	Currently, TDX module memory use is relatively static. But, some
+	new features (called "TDX Module Extensions") need to use memory
+	more dynamically.
+
+How much memory does this consume?
+
+> TDH.EXT.MEM.ADD is the first user of tdx_page_array. It provides pages
+> to TDX Module as control (private) pages. A tdx_clflush_page_array()
+> helper is introduced to flush shared cache before SEAMCALL, to avoid
+> shared cache write back damages these private pages.
+
+First, this talks about "control pages". But I don't know what a control
+page is.
+
+Second, these all need to be in imperative voice. Not:
+
+	It provides pages to TDX Module as control (private) pages.
+
+Do this:
+
+	Provide pages to TDX Module as control (private) pages.
+
+> TDH.EXT.MEM.ADD uses HPA_LIST_INFO as parameter so could leverage the
+> 'first_entry' field to simplify the interrupted - retry flow. Host
+> don't have to care about partial page adding and 'first_entry'.
+> 
+> Use a new version TDH.SYS.CONFIG for VMM to tell TDX Module which
+> optional features (e.g. TDX Connect, and selecting TDX Connect implies
+> selecting TDX Module Extensions) to use and let TDX Module update its
+> global metadata (e.g. memory_pool_required_pages for TDX Module
+> Extensions). So after calling this new version TDH.SYS.CONFIG, VMM
+> updates the cached tdx_sysinfo.
+> 
+> Note that this extension initialization does not impact existing
+> in-flight SEAMCALLs that are not implemented by the extension. So only
+> the first user of an extension-seamcall needs invoke this helper.
+
+Ahh, so this is another bit of very useful information buried deep in
+this changelog.
+
+Extensions consume memory, but they're *optional*.
+
+> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+> index 3a3ea3fa04f2..1eeb77a6790a 100644
+> --- a/arch/x86/include/asm/tdx.h
+> +++ b/arch/x86/include/asm/tdx.h
+> @@ -125,11 +125,13 @@ static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
+>  #define seamcall(_fn, _args)		sc_retry(__seamcall, (_fn), (_args))
+>  #define seamcall_ret(_fn, _args)	sc_retry(__seamcall_ret, (_fn), (_args))
+>  #define seamcall_saved_ret(_fn, _args)	sc_retry(__seamcall_saved_ret, (_fn), (_args))
+> +int tdx_enable_ext(void);
+>  const char *tdx_dump_mce_info(struct mce *m);
+>  
+>  /* Bit definitions of TDX_FEATURES0 metadata field */
+>  #define TDX_FEATURES0_TDXCONNECT	BIT_ULL(6)
+>  #define TDX_FEATURES0_NO_RBP_MOD	BIT_ULL(18)
+> +#define TDX_FEATURES0_EXT		BIT_ULL(39)
+>  
+>  const struct tdx_sys_info *tdx_get_sysinfo(void);
+>  
+> @@ -223,6 +225,7 @@ u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *td);
+>  u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, struct page *page);
+>  #else
+>  static inline void tdx_init(void) { }
+> +static inline int tdx_enable_ext(void) { return -ENODEV; }
+>  static inline u32 tdx_get_nr_guest_keyids(void) { return 0; }
+>  static inline const char *tdx_dump_mce_info(struct mce *m) { return NULL; }
+>  static inline const struct tdx_sys_info *tdx_get_sysinfo(void) { return NULL; }
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+> index 4370d3d177f6..b84678165d00 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.h
+> +++ b/arch/x86/virt/vmx/tdx/tdx.h
+> @@ -46,6 +46,8 @@
+>  #define TDH_PHYMEM_PAGE_WBINVD		41
+>  #define TDH_VP_WR			43
+>  #define TDH_SYS_CONFIG			45
+> +#define TDH_EXT_INIT			60
+> +#define TDH_EXT_MEM_ADD			61
+>  
+>  /*
+>   * SEAMCALL leaf:
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index 9a5c32dc1767..bbf93cad5bf2 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -59,6 +59,9 @@ static LIST_HEAD(tdx_memlist);
+>  static struct tdx_sys_info tdx_sysinfo __ro_after_init;
+>  static bool tdx_module_initialized __ro_after_init;
+>  
+> +static DEFINE_MUTEX(tdx_module_ext_lock);
+> +static bool tdx_module_ext_initialized;
+> +
+>  typedef void (*sc_err_func_t)(u64 fn, u64 err, struct tdx_module_args *args);
+>  
+>  static inline void seamcall_err(u64 fn, u64 err, struct tdx_module_args *args)
+> @@ -517,7 +520,7 @@ EXPORT_SYMBOL_GPL(tdx_page_array_ctrl_release);
+>  #define HPA_LIST_INFO_PFN		GENMASK_U64(51, 12)
+>  #define HPA_LIST_INFO_LAST_ENTRY	GENMASK_U64(63, 55)
+>  
+> -static u64 __maybe_unused hpa_list_info_assign_raw(struct tdx_page_array *array)
+> +static u64 hpa_list_info_assign_raw(struct tdx_page_array *array)
+>  {
+>  	return FIELD_PREP(HPA_LIST_INFO_FIRST_ENTRY, 0) |
+>  	       FIELD_PREP(HPA_LIST_INFO_PFN, page_to_pfn(array->root)) |
+> @@ -1251,7 +1254,14 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+>  	args.rcx = __pa(tdmr_pa_array);
+>  	args.rdx = tdmr_list->nr_consumed_tdmrs;
+>  	args.r8 = global_keyid;
+> -	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
+> +
+> +	if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_TDXCONNECT) {
+> +		args.r9 |= TDX_FEATURES0_TDXCONNECT;
+> +		args.r11 = ktime_get_real_seconds();
+> +		ret = seamcall_prerr(TDH_SYS_CONFIG | (1ULL << TDX_VERSION_SHIFT), &args);
+> +	} else {
+> +		ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
+> +	}
+
+I'm in the first actual hunk of code and I'm lost. I don't have any idea
+what the "(1ULL << TDX_VERSION_SHIFT)" is doing.
+
+Also, bifurcating code paths is discouraged. It's much better to not
+copy and paste the code and instead name your variables and change
+*them* in a single path:
+
+    u64 module_function = TDH_SYS_CONFIG;
+    u64 features = 0;
+    u64 timestamp = 0;
+
+    if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_TDXCONNECT) {
+	features |= TDX_FEATURES0_TDXCONNECT;
+	timestamp = ktime_get_real_seconds();
+	module_function |= 1ULL << TDX_VERSION_SHIFT;
+    }
+
+    ret = seamcall_prerr(module_function, &args);
+
+This would also provide a place to say what the heck is going on with
+the whole "(1ULL << TDX_VERSION_SHIFT)" thing. Just hacking it in and
+open-coding makes it actually harder to comment and describe it.
+
+>  	/* Free the array as it is not required anymore. */
+>  	kfree(tdmr_pa_array);
+> @@ -1411,6 +1421,11 @@ static __init int init_tdx_module(void)
+>  	if (ret)
+>  		goto err_free_pamts;
+>  
+> +	/* configuration to tdx module may change tdx_sysinfo, update it */
+> +	ret = get_tdx_sys_info(&tdx_sysinfo);
+> +	if (ret)
+> +		goto err_reset_pamts;
+> +
+>  	/* Config the key of global KeyID on all packages */
+>  	ret = config_global_keyid();
+>  	if (ret)
+> @@ -1488,6 +1503,160 @@ static __init int tdx_enable(void)
+>  }
+>  subsys_initcall(tdx_enable);
+>  
+> +static int enable_tdx_ext(void)
 > +{
-> +	int ret = 0;
-> +	u64 val;
+
+Comments, please. "ext" can mean too many things. What does this do and
+why can it fail?
+
+> +	struct tdx_module_args args = {};
+> +	u64 r;
 > +
-> +	if (!ret && !(ret = read_sys_metadata_field(0x3100000100000000, &val)))
-> +		sysinfo_ext->memory_pool_required_pages = val;
-> +	if (!ret && !(ret = read_sys_metadata_field(0x3100000100000001, &val)))
-> +		sysinfo_ext->ext_required = val;
+> +	if (!tdx_sysinfo.ext.ext_required)
+> +		return 0;
+
+Is this an optimization or is it functionally required?
+
+> +	do {
+> +		r = seamcall(TDH_EXT_INIT, &args);
+> +		cond_resched();
+> +	} while (r == TDX_INTERRUPTED_RESUMABLE);
 > +
-> +	return ret;
+> +	if (r != TDX_SUCCESS)
+> +		return -EFAULT;
+> +
+> +	return 0;
+> +}
+> +
+> +static void tdx_ext_mempool_free(struct tdx_page_array *mempool)
+> +{
+> +	/*
+> +	 * Some pages may have been touched by the TDX module.
+> +	 * Flush cache before returning these pages to kernel.
+> +	 */
+> +	wbinvd_on_all_cpus();
+> +	tdx_page_array_free(mempool);
+> +}
+> +
+> +DEFINE_FREE(tdx_ext_mempool_free, struct tdx_page_array *,
+> +	    if (!IS_ERR_OR_NULL(_T)) tdx_ext_mempool_free(_T))
+> +
+> +/*
+> + * The TDX module exposes a CLFLUSH_BEFORE_ALLOC bit to specify whether
+> + * a CLFLUSH of pages is required before handing them to the TDX module.
+> + * Be conservative and make the code simpler by doing the CLFLUSH
+> + * unconditionally.
+> + */
+> +static void tdx_clflush_page(struct page *page)
+> +{
+> +	clflush_cache_range(page_to_virt(page), PAGE_SIZE);
 > +}
 
-These were OK-ish when they were being generated by a script.
+arch/x86/virt/vmx/tdx/tdx.c has:
 
-Now that they're being generated by and edited by humans, they
-need to actually be readable.
-
-Can we please get this down to something that looks more like:
-
-	MACRO(&sysinfo_ext->memory_pool_required_pages, 0x3100000100000000);
-	MACRO(&sysinfo_ext->ext_required,		0x3100000100000001);
-
-You can generate code in that macro, or generate a struct like
-this:
-
-static __init int get_tdx_sys_info_ext(struct tdx_sys_info_ext *sysinfo_ext)
+static void tdx_clflush_page(struct page *page)
 {
-	int ret = 0;
-	struct tdx_metadata_init[] = {
-		MACRO(&sysinfo_ext->memory_pool_required_pages, 0x3100000100000000),
-		MACRO(&sysinfo_ext->ext_required,		0x3100000100000001),
-		{},
-	};
-
-	return tdx_...(sysinfo_ext, tdx_metadata_init);
+        clflush_cache_range(page_to_virt(page), PAGE_SIZE);
 }
 
-and have the helper parse the structure.
+Seems odd to see this here.
 
-But, either way, the method that's being proposed here needs to go.
+> +static void tdx_clflush_page_array(struct tdx_page_array *array)
+> +{
+> +	for (int i = 0; i < array->nents; i++)
+> +		tdx_clflush_page(array->pages[array->offset + i]);
+> +}
+> +
+> +static int tdx_ext_mem_add(struct tdx_page_array *mempool)
+> +{
+
+I just realized the 'mempool' has nothing to do with 'struct mempool',
+which makes this a rather unfortunate naming choice.
+
+> +	struct tdx_module_args args = {
+> +		.rcx = hpa_list_info_assign_raw(mempool),
+> +	};
+> +	u64 r;
+> +
+> +	tdx_clflush_page_array(mempool);
+> +
+> +	do {
+> +		r = seamcall_ret(TDH_EXT_MEM_ADD, &args);
+> +		cond_resched();
+> +	} while (r == TDX_INTERRUPTED_RESUMABLE);
+> +
+> +	if (r != TDX_SUCCESS)
+> +		return -EFAULT;
+> +
+> +	return 0;
+> +}
+> +
+> +static struct tdx_page_array *tdx_ext_mempool_setup(void)
+> +{
+> +	unsigned int nr_pages, nents, offset = 0;
+> +	int ret;
+> +
+> +	nr_pages = tdx_sysinfo.ext.memory_pool_required_pages;
+> +	if (!nr_pages)
+> +		return NULL;
+> +
+> +	struct tdx_page_array *mempool __free(tdx_page_array_free) =
+> +		tdx_page_array_alloc(nr_pages);
+> +	if (!mempool)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	while (1) {
+> +		nents = tdx_page_array_fill_root(mempool, offset);
+
+This is really difficult to understand. It's not really filling a
+"root", it's populating an array. The structure of the loop is also
+rather non-obvious. It's doing:
+
+	while (1) {
+		fill(&array);
+		tell_tdx_module(&array);
+	}
+
+Why can't it be:
+
+	while (1)
+		fill(&array);
+	while (1)
+		tell_tdx_module(&array);
+
+for example?
+
+> +		if (!nents)
+> +			break;
+> +
+> +		ret = tdx_ext_mem_add(mempool);
+> +		if (ret)
+> +			return ERR_PTR(ret);
+> +
+> +		offset += nents;
+> +	}
+> +
+> +	return no_free_ptr(mempool);
+> +}
+
+This patch is getting waaaaaaaaaaaaaaay too long. I'd say it needs to be
+4 or 5 patches, just eyeballing it.
+
+Call be old fashioned, but I suspect the use of __free() here is atually
+hurting readability.
+
+> +static int init_tdx_ext(void)
+> +{
+> +	int ret;
+> +
+> +	if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
+> +		return -EOPNOTSUPP;
+> +
+> +	struct tdx_page_array *mempool __free(tdx_ext_mempool_free) =
+> +		tdx_ext_mempool_setup();
+> +	/* Return NULL is OK, means no need to setup mempool */
+> +	if (IS_ERR(mempool))
+> +		return PTR_ERR(mempool);
+
+That's a somewhat odd comment to put above an if() that doesn't return NULL.
+
+> +	ret = enable_tdx_ext();
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Extension memory is never reclaimed once assigned */
+> +	if (mempool)
+> +		tdx_page_array_ctrl_leak(no_free_ptr(mempool));
+> +
+> +	return 0;
+> +}
+
+
+
+> +/**
+> + * tdx_enable_ext - Enable TDX module extensions.
+> + *
+> + * This function can be called in parallel by multiple callers.
+> + *
+> + * Return 0 if TDX module extension is enabled successfully, otherwise error.
+> + */
+> +int tdx_enable_ext(void)
+> +{
+> +	int ret;
+> +
+> +	if (!tdx_module_initialized)
+> +		return -ENOENT;
+> +
+> +	guard(mutex)(&tdx_module_ext_lock);
+> +
+> +	if (tdx_module_ext_initialized)
+> +		return 0;
+> +
+> +	ret = init_tdx_ext();
+> +	if (ret) {
+> +		pr_debug("module extension initialization failed (%d)\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	pr_debug("module extension initialized\n");
+> +	tdx_module_ext_initialized = true;
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(tdx_enable_ext);
+> +
+>  static bool is_pamt_page(unsigned long phys)
+>  {
+>  	struct tdmr_info_list *tdmr_list = &tdx_tdmr_list;
+> @@ -1769,17 +1938,6 @@ static inline u64 tdx_tdr_pa(struct tdx_td *td)
+>  	return page_to_phys(td->tdr_page);
+>  }
+>  
+> -/*
+> - * The TDX module exposes a CLFLUSH_BEFORE_ALLOC bit to specify whether
+> - * a CLFLUSH of pages is required before handing them to the TDX module.
+> - * Be conservative and make the code simpler by doing the CLFLUSH
+> - * unconditionally.
+> - */
+> -static void tdx_clflush_page(struct page *page)
+> -{
+> -	clflush_cache_range(page_to_virt(page), PAGE_SIZE);
+> -}
+
+Ahh, here's the code move.
+
+This should be in its own patch.
+
+
