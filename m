@@ -1,64 +1,68 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB00130BF7D
-	for <linux-coco@lists.linux.dev>; Tue, 18 Nov 2025 22:23:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9492C30E0E4
+	for <linux-coco@lists.linux.dev>; Tue, 18 Nov 2025 22:23:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763504614; cv=none; b=L47I/HzTyYJtblziyxk/krTsQy0eQJuMG3XshChkrIDc9/azXySs26Dg7ul8HNBcTjQA2nx8ojdsMavI4DnNhuwSASVKnVfYAzZnDbVi5TFk6gXv2VLRi8jip1+MGFv1EW/TsvEG8SBZiw69z7XlzVTdtyN+0Pd7SGLNUwla8hM=
+	t=1763504615; cv=none; b=YLobV2Ah14bpkvZz7k8Hh3P/TnkAh40Nc+ty1QVEtqUcyD+VZF+2wGyRMw5XpHJ4cCylyBTatt2qujMu+N2TJ78mY0otXvnlSqZieQ5Ivnw9GQITxQBYBiy2yG7noQCm6xYhFSPynwxFV43S8YWXXrH8Haf0roUBo0RExFeA8Ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763504614; c=relaxed/simple;
-	bh=1iQs026hZoi5t1uCrSj4KT0sve/8LeLDIXGloj9+TvI=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=s+pX39/bgcbSTcM7BK1atMzcJyOds5Gydex0PEjByRWH83jnUR+lcZYWWd7UarLSJpgDKJEMuHyZsX9xTNO+ZCvUBL/kCFjtjb6vvxKSpSf9hiZNzBVYHo2foWSXdzTQ7c8lhPMLNHF4uCdMpJR8f79aDEcU3sazs2IEEzxz95Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CCiItxt4; arc=none smtp.client-ip=209.85.210.202
+	s=arc-20240116; t=1763504615; c=relaxed/simple;
+	bh=gkOFf1GrseR4lyx+m5A0i8MM9/uAsLY1WwIpa5M2Cos=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=BVFdB3e8JMbKgZMo05TKWkboEZ5ENJAfYQPntxGyMhMCfXW+sDvH5IVsbBF8ZG8/iz68/SwQNA+lBNtGpokfdV1HLcVepY99yd0pdfdk3Dai88XOFZOQMaWfAGccshyMphufEnl2MOcDkZC0tpFVyqHlWE9ifrQTP3CIMXnrCiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y3tGMeYn; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CCiItxt4"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7c240728e2aso1228264b3a.3
-        for <linux-coco@lists.linux.dev>; Tue, 18 Nov 2025 14:23:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y3tGMeYn"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-299d221b749so7881145ad.3
+        for <linux-coco@lists.linux.dev>; Tue, 18 Nov 2025 14:23:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763504611; x=1764109411; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rgYuW8UOyWLUyyathvu0pA9lXS215ZKHalLPZAaX/EM=;
-        b=CCiItxt4K77GIhVQiUQXg55BbJQfCmybdWjuyUjSZHOaJgaG/LqPhx+CSeowxqRtQ1
-         /IRmZ73gDa+XzqNO18szwyzCRyaJq71nA+hlWYiGcSbeKLafoPBESBRHYiOjKvJcigLh
-         tfsq1mrXTNjaurXtC70MRtwNyuYHbrvhMrp0Ce8u5ZdafHxjPamgo5cxgobj96pdnzNd
-         LWACZUS/iNsIkAzW2U3xopczBPU+8LOv7V+APD/Z48qB3n4O8Hb1ZiBR+3n6YbgcJgHy
-         ZWR+yMFIs2K5ux+RrrskwKgtgk70oqx+klMh+/l1CrPRtdqhDNtEXoApxiBNAjfRl4Ax
-         whxA==
+        d=google.com; s=20230601; t=1763504613; x=1764109413; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=EoozWi2o0AP/cWaOLQLnk9g/zPkjhcGQ8ZSDyR31DRY=;
+        b=Y3tGMeYnA6lM8p/J5ocENAqfKX3RFPDOt3HtssKPAcHIMh6nooL9mvjDxrb86Az2Zi
+         HRyuzIk5MIxtL1JqLyjPf774qL9eWa3/AF7AW28egj+IUuNC6XsCfj4Bk/DcjenQVtGx
+         Yel6ErfSxggBCmzWTCss1UOTHFJsIyqGVbTUGbi9i4yzWEB0EqWSVVL8EazrR6/Y4buf
+         P8KKwvPyeN7WGKCZhqT8Faey19xfgp8/3b6he32k4+wBINJUnHJeUqyN/dnlqCjrXGTx
+         QxIB+PWJWynIgs0VxPtkwAAHylM7lKmufYru6DL7XZ7tHH+AQ8IWe/k2Rdwu7E0TATPz
+         uWSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763504611; x=1764109411;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rgYuW8UOyWLUyyathvu0pA9lXS215ZKHalLPZAaX/EM=;
-        b=Hq3gAB+0IBHXJ4X2Zm+mhC8IBEUrcVhTAf54566DH6KrqOryo1TOvNBJnau/AdSRPR
-         L+7P2NyajaPKq313yQN3B2Mxt0vtHFM0HhOjAa78JMcq/e1ZG4gw3TCIJjINkcZ6L/JH
-         lseuWtGUy2BR/tyrAbLkApMiTxnuMst1tZw/YpM+0HmeadaHcUgEJicPnV/wcn19OdpI
-         jeGCTXKOqUH2DjVePbMruQ5hqYX+nsJiY9P914sLHlnIDRVRGcU4dLdhknQvkjI0GSdf
-         5Crp5HolLgY1/Emrtx13YDZ4uwcBogFT3oZgWEwpqQfDZjappItFZDJqYHYDSBnWwSxd
-         0wRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWewAXM3ji0FkDAnMngPXsVfng8kGNtN7wl3l77fytYZOrZbhxGz7MBgk2APiQVWs4JGyHW0y+GlsE8@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw9YXuM69d+HoPPF3Mu4tY3V/JqeU/ovYzV2ITDdq3v5JBLuhG2
-	E6CyiqxLiRhaIQOCg9nJ6vgCsMiVa+VOma80O8q7l6uTKoPVMP8EHGxWg2JxUNNWTDMej1RcBRE
-	Q3VOpLQ==
-X-Google-Smtp-Source: AGHT+IFXkFEO29YFXjyiYY3HorCCsF26L2b/h6RaXMwbRwLOl5iJ+9ZCln9TDezx9nP45smTnRSHgsQ+a4k=
-X-Received: from pfbik6.prod.google.com ([2002:a05:6a00:8d06:b0:7ba:f8d1:3475])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7484:b0:34e:5dd4:b1b5
- with SMTP id adf61e73a8af0-35b9fc781d9mr20603421637.2.1763504610944; Tue, 18
- Nov 2025 14:23:30 -0800 (PST)
+        d=1e100.net; s=20230601; t=1763504613; x=1764109413;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EoozWi2o0AP/cWaOLQLnk9g/zPkjhcGQ8ZSDyR31DRY=;
+        b=rkKJNYplhDW2ONLp9uo3r31+H+borHdWi91tkRW10Si1wqQGtwUCb+6wFurhfB6yCl
+         F6QdAHsDTfZFzHGBNiwpyYzXnO5FaeSColCGbtJIpuewrotvEHczHLVY9Ak+XgXzFZEH
+         3k/mAKyOD9Utd1ksCcVXQgeUHMlX6Dho8PhAxU9vT43SX7+qAZT1epQXR0ajLehOU12J
+         w2di46K4eFxHyLi7Jmvk8sQv4vGIr9FJa25epKavN3m7h1wfARVwgHavVWrbOq/I5HKd
+         LaUFAjkSUwWjeE25vR0V0JKN91IjOBJzU1pnmGp8vJO7bb2qiHH26La5hApfCSMYJ2UO
+         Dt5w==
+X-Forwarded-Encrypted: i=1; AJvYcCVf7LLjRyZAenIQMZM0r+FvaeG2xZtOkMCnXzNdbVFsXBN4W6yaRHbvTI0BLe357q7W60IlRX8w2FlC@lists.linux.dev
+X-Gm-Message-State: AOJu0YyuQMV5OG5mNtB/b2BPFEu3D7ziV0+DgJ7knE1lZkwpbQee3hIT
+	N6EqMuZ0M4VM6wOwLY/gHDUWLS1LS5uaE0QRcM07JCzowkGwJ+ousI6wBm4MEYac+M60lnR8PJK
+	J3LsjZw==
+X-Google-Smtp-Source: AGHT+IGBpr2o1tN68nNDCesi9FJp0PssJ7eoZdkj6lok22m/Q8r6RJE+NAbbob2Q0BzsFgmO0oAokh9ajl8=
+X-Received: from plbjc5.prod.google.com ([2002:a17:903:25c5:b0:295:68e0:66ed])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:11c6:b0:297:e1f5:191b
+ with SMTP id d9443c01a7336-2986a6abf3cmr224167275ad.11.1763504612758; Tue, 18
+ Nov 2025 14:23:32 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 18 Nov 2025 14:23:24 -0800
+Date: Tue, 18 Nov 2025 14:23:25 -0800
+In-Reply-To: <20251118222328.2265758-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
+References: <20251118222328.2265758-1-seanjc@google.com>
 X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
-Message-ID: <20251118222328.2265758-1-seanjc@google.com>
-Subject: [PATCH v2 0/4] KVM: x86: Cleanup #MC and XCR0/XSS/PKRU handling
+Message-ID: <20251118222328.2265758-2-seanjc@google.com>
+Subject: [PATCH v2 1/4] KVM: SVM: Handle #MCs in guest outside of fastpath
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	"Kirill A. Shutemov" <kas@kernel.org>
@@ -67,43 +71,67 @@ Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
 	Jon Kohler <jon@nutanix.com>, Tony Lindgren <tony.lindgren@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Optimize XCR0/XSS loads that are currently done on every VM-Enter and VM-Exit,
-by handling them outside of KVM's fastpath inner loop.
+Handle Machine Checks (#MC) that happen in the guest (by forwarding them
+to the host) outside of KVM's fastpath so that as much host state as
+possible is re-loaded before invoking the kernel's #MC handler.  The only
+requirement is that KVM invokes the #MC handler before enabling IRQs (and
+even that could _probably_ be relaxed to handling #MCs before enabling
+preemption).
 
-Context switching at entry/exit is unnecessary behavior inherited from a
-hack-a-fix that papered over an egregious #MC handling bug where the kernel #MC
-handler would call schedule() from atomic contexts.  The resulting #GP due to
-trying to swap FPU state with a guest XCR0/XSS was "fixed" by loading the host
-values before handling #MCs from the guest.
+Waiting to handle #MCs until "more" host state is loaded hardens KVM
+against flaws in the #MC handler, which has historically been quite
+brittle. E.g. prior to commit 5567d11c21a1 ("x86/mce: Send #MC singal from
+task work"), the #MC code could trigger a schedule() with IRQs and
+preemption disabled.  That led to a KVM hack-a-fix in commit 1811d979c716
+("x86/kvm: move kvm_load/put_guest_xcr0 into atomic context").
 
-Thankfully, the #MC mess has long since been cleaned up, so it's once again
-safe to swap XCR0/XSS outside of the fastpath (but with IRQs still disabled!).
+Note, except for #MCs on VM-Enter, VMX already handles #MCs outside of the
+fastpath.
 
-Note, Binbin's kvm_load_xfeatures() still applies cleanly on top, so I
-deliberately didn't include it here (but am still planning on applying it).
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Jon Kohler <jon@nutanix.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/svm/svm.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-v2:
- - Collect reviews. [Jon, Rick]
- - Fix TDX (suprisingly, not servicing host IRQs is problematic, /s). [Tony]
-
-v1: https://lore.kernel.org/all/20251030224246.3456492-1-seanjc@google.com
-
-Sean Christopherson (4):
-  KVM: SVM: Handle #MCs in guest outside of fastpath
-  KVM: VMX: Handle #MCs on VM-Enter/TD-Enter outside of the fastpath
-  KVM: x86: Load guest/host XCR0 and XSS outside of the fastpath run
-    loop
-  KVM: x86: Load guest/host PKRU outside of the fastpath run loop
-
- arch/x86/kvm/svm/svm.c | 20 ++++++++---------
- arch/x86/kvm/vmx/tdx.c |  3 ---
- arch/x86/kvm/vmx/vmx.c | 20 +++++++++--------
- arch/x86/kvm/x86.c     | 51 +++++++++++++++++++++++++++++-------------
- arch/x86/kvm/x86.h     |  2 --
- 5 files changed, 55 insertions(+), 41 deletions(-)
-
-
-base-commit: 4531ff85d9251ff429a633bdb55209d3360f39f2
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 9aac0eb3a490..bf34378ebe2d 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4321,14 +4321,6 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 
+ 	vcpu->arch.regs_avail &= ~SVM_REGS_LAZY_LOAD_SET;
+ 
+-	/*
+-	 * We need to handle MC intercepts here before the vcpu has a chance to
+-	 * change the physical cpu
+-	 */
+-	if (unlikely(svm->vmcb->control.exit_code ==
+-		     SVM_EXIT_EXCP_BASE + MC_VECTOR))
+-		svm_handle_mce(vcpu);
+-
+ 	trace_kvm_exit(vcpu, KVM_ISA_SVM);
+ 
+ 	svm_complete_interrupts(vcpu);
+@@ -4631,8 +4623,16 @@ static int svm_check_intercept(struct kvm_vcpu *vcpu,
+ 
+ static void svm_handle_exit_irqoff(struct kvm_vcpu *vcpu)
+ {
+-	if (to_svm(vcpu)->vmcb->control.exit_code == SVM_EXIT_INTR)
++	switch (to_svm(vcpu)->vmcb->control.exit_code) {
++	case SVM_EXIT_EXCP_BASE + MC_VECTOR:
++		svm_handle_mce(vcpu);
++		break;
++	case SVM_EXIT_INTR:
+ 		vcpu->arch.at_instruction_boundary = true;
++		break;
++	default:
++		break;
++	}
+ }
+ 
+ static void svm_setup_mce(struct kvm_vcpu *vcpu)
 -- 
 2.52.0.rc1.455.g30608eb744-goog
 
