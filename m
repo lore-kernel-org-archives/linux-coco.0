@@ -1,57 +1,57 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFB8311971
-	for <linux-coco@lists.linux.dev>; Tue, 18 Nov 2025 22:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E3A31B124
+	for <linux-coco@lists.linux.dev>; Tue, 18 Nov 2025 22:23:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763504618; cv=none; b=W3v9arqRVOoo83rPi//g1kzLXiXz/wu6w/wUmLObhEg/zPIvnTkI1d69gdwsajxG858rthTpB5YN29swJ1nc1wckPMe4cqpEmZDmTFs0n4XFIO/UmlsdVJjU7NxbGqLU9mz2dzik2EEi/kEGgYOwp/HkHRUqTebzZ0p+JHCXebY=
+	t=1763504620; cv=none; b=WQF+zUvj+On6L7QSBxG4yqIANk+oWToEK8ZKU8mVKu606rwgzmBtAw+25m9IRTpxEphpGPg8SsaS4b+Pj4wk+t/OZi5nTtuOai1UEdKNIgsf6xXvhHFzDTT9I4zErzstK/51OC81MkOk5clynzhCvsbd6QWGC45DXsPKWhQuVzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763504618; c=relaxed/simple;
-	bh=ZcXkqhGD9PzgbbKyCx8gdo8aDoDPwaqdJrHsFW+B7ME=;
+	s=arc-20240116; t=1763504620; c=relaxed/simple;
+	bh=Z/DjTbMxxtwfS6uS1n7NXBorkMmU7tvMoEYXRuGPlFQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=j7L0jxtaxHrzrMYyKhHBVNx1MENGOsAFMEdEgkERjC7CIf8iCw9xMLaTUcK5PB5yWYlLKYlfWthcHTCmI3FdjxsBvbNTYXtfN26Nqz8L51yFw1Fnx7Xlk+T8Qtzxzux9nx+Avq7CCDhLAgDT1vk80gnU/jNFfwtyJXZ6V1r1NEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CvZ44MlB; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=lOWF2NaHigJIm6IuOKc8zmCPDbtLdjxygz838lktl14UHuLBxOLkGhhaCCKunq6hJrEDQHHHE0EkTb9etn5d/DbUqz3lY+hsM23eHQ2yRtwG1IjvZKiCUtCZjIoN7uRxhy3x3PrYJbFR+/WhyJPv9Rqo0Wc5U/oznr3IWLt96Pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xD0n37LD; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CvZ44MlB"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2954d676f9dso48230075ad.0
-        for <linux-coco@lists.linux.dev>; Tue, 18 Nov 2025 14:23:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xD0n37LD"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-297f8a2ba9eso155736955ad.3
+        for <linux-coco@lists.linux.dev>; Tue, 18 Nov 2025 14:23:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763504616; x=1764109416; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1763504618; x=1764109418; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=sX0elw2DqT+JqQ8ikKrHK9opKrqwOpcjb2Urt9cPTN8=;
-        b=CvZ44MlB8ePxHldMDWu+xP/4YDB/DYfzZrk/4KAV4eB4K1vG6TZTiWBrkpf9qwUhJF
-         ZnCFKbQWHxFbMeUc9WpZFJR1Crk/qvxrnPX1AxNipT+pfeuDolaqXk1p1xzpJOnTePzY
-         nbu8DOqIPqRBMCyX0r7cPokcFHX0E3YPJ+eno1+ryQE55nQGdnGx7MAyqVAj2jwbwCZQ
-         Fx0yQAJoH3oebWyCu2z6tPpMdo+Y53GhQTyjwTJ4nQkS1ThJtio+BQm8FUIX5/l0LQYH
-         FByEmbH+LZsE+W/fATI50KDV0ssDDCWhg0uIvr/brHfHlntF2L7Y4YNNeCEvu9MCRSiu
-         rHjg==
+        bh=k6abdiQWX2NNeyGNyymJ5zH7pnooPhs4/ECKEvEmQik=;
+        b=xD0n37LDe/KJWl4l6TftX6skb7UfKzeQm9cwWSi4ncYhqc0zVruNLKIRyfjxEVj0kG
+         4cwa8myJ4VmoinvWjrMhdBPZ6/485W8gAmO6vyjKtfBAZCWn8098wV2VNQX2VB3W+xnz
+         0fgLT4JjRz7rSmq9IsNHRWjODi05A1iAbSe98e/tUlRF716XZJFl9Kw83AZBIistSOQm
+         oJkCwcLwMao1Y1ItnEB7nk+mWNFiBzjMLAfwobRZ/PkG+a2f7XcHDTolnlagi/P7rOgj
+         EOVbjIDuzp50e+W3kitfVVKZOPjCoicvPsB+ecblfWce+WpGeL4sl9wE7XEAhgdYGnoA
+         aZuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763504616; x=1764109416;
+        d=1e100.net; s=20230601; t=1763504618; x=1764109418;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=sX0elw2DqT+JqQ8ikKrHK9opKrqwOpcjb2Urt9cPTN8=;
-        b=SOK1B3dCkT7rHIIQkBvXi9hYD1R3uVotLLQrlS/RLcsGN4G4FunNqeOW67ywaW/Ath
-         HBuAMgLSUiE8eI+GWrVTCdCo444pq+YdJWbOQcMKNqTZnBmag11cUVbLbaZcpQqph99F
-         WDZ4BGkv1UAmmdXTL6dylsBjr98UXsOMpNvaow7jIgbVXuI2c7kIXVtb8sA2Ecr/EBCx
-         nFzx4gElEpIG/RMkXOWKKgKJxY06y6VcemsZ9eOa3CgCz3zGmH7ZZi395NbL4VbQQmJu
-         2ycqSoSiWOjw4UYHv6nBWaFRB/bEILkI9r9NVtpNSs9EtSSeuUI+2O1Mwav3didFL+Lm
-         /9pw==
-X-Forwarded-Encrypted: i=1; AJvYcCU7ZwaC9V7UglA+GXlnznSGeTXQRt0eaV67mrdy1eGD2aksgBAfGwlfnBGersr2OTMnaviIuipTO5Xl@lists.linux.dev
-X-Gm-Message-State: AOJu0YxQeoWFn1M5FUmK9UoK1vW+JapkK5Q2mFhryyKfyGhG4ee6d8zW
-	hCugpkF6k7hUWKNUZ2+5+doI7t9rug9l6x9rFXO9bwz+9c8GCHHSaqKRgv/I0eceGnz8l0/Cc30
-	KotUB6Q==
-X-Google-Smtp-Source: AGHT+IHub6aQoEkwDwmYjltvKOLCy+EyIsxZ+4Fg008fmfhq1lkJD2yOYl4kqF1FuX4dDzXK27Kcuy57/mg=
-X-Received: from plop7.prod.google.com ([2002:a17:902:8a87:b0:273:67d3:6303])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1211:b0:297:d6c1:26e
- with SMTP id d9443c01a7336-2986a6b7bd1mr211711575ad.6.1763504616132; Tue, 18
- Nov 2025 14:23:36 -0800 (PST)
+        bh=k6abdiQWX2NNeyGNyymJ5zH7pnooPhs4/ECKEvEmQik=;
+        b=FRWSouT86moukz5yf+bj2E+f3HtiaAdSVIFvWgBHE+2dydfzahHJYRTpqKqMQ4fg9/
+         b2+wIuDTakrbYSdlOHzD7P34BYTzHkb36C2oBQV2NMf499vLS1k+oZT5IjtreL39SfVG
+         cAmok/Yf7Y3mK/RFv5ehSI7nBog3M7vQ7kwjhOVnbRLd0NJ0tVb0crSH2tUDbdHN8Fl2
+         KPuNYZAfjqKqCxclqukDF/8pUttXeJ1D6n81wK8DDuAjKOTbLNeGh4Exg9Cf8OS0aGfh
+         0lFk5SOHwItl1JIhnvrnJgXrSj91mfztPZHh3tJqmL3N8ELYjDxd+hX+XnBXzcfjqzos
+         RmGA==
+X-Forwarded-Encrypted: i=1; AJvYcCVK0c6N0N6x52jpMp5wStpk5wvXsMALfuXuc8Zys+woHJpTntUSFp9hziwkcT++4mI0z6+jIP5OH0d5@lists.linux.dev
+X-Gm-Message-State: AOJu0Yztn22dB2Jc0aOmjx6KIgbWusFjZuUYpWoDChNUioc9u45fmeI2
+	DwStmLnlf8WgLB1O+xFCF2Lt2gEUTX2EOkjqwtIlyekh4f7EBGYJW9ZbOcAJOdglYjsNH4nLdGy
+	XgwOypA==
+X-Google-Smtp-Source: AGHT+IGDcfTyticzqgBK5utKn+m9UElTi2gzKfFB2rNfhe1Y5J2SFjpR1n1x5g/sAvVBxZxGoKfHROFByYI=
+X-Received: from plbko13.prod.google.com ([2002:a17:903:7cd:b0:297:ddac:51ad])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2b0e:b0:295:9d7f:9296
+ with SMTP id d9443c01a7336-29a054a857amr6014265ad.45.1763504617836; Tue, 18
+ Nov 2025 14:23:37 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 18 Nov 2025 14:23:27 -0800
+Date: Tue, 18 Nov 2025 14:23:28 -0800
 In-Reply-To: <20251118222328.2265758-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -61,9 +61,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20251118222328.2265758-1-seanjc@google.com>
 X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
-Message-ID: <20251118222328.2265758-4-seanjc@google.com>
-Subject: [PATCH v2 3/4] KVM: x86: Load guest/host XCR0 and XSS outside of the
- fastpath run loop
+Message-ID: <20251118222328.2265758-5-seanjc@google.com>
+Subject: [PATCH v2 4/4] KVM: x86: Load guest/host PKRU outside of the fastpath
+ run loop
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	"Kirill A. Shutemov" <kas@kernel.org>
@@ -72,143 +72,149 @@ Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
 	Jon Kohler <jon@nutanix.com>, Tony Lindgren <tony.lindgren@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Move KVM's swapping of XFEATURE masks, i.e. XCR0 and XSS, out of the
-fastpath loop now that the guts of the #MC handler runs in task context,
-i.e. won't invoke schedule() with preemption disabled and clobber state
-(or crash the kernel) due to trying to context switch XSTATE with a mix
-of host and guest state.
+Move KVM's swapping of PKRU outside of the fastpath loop, as there is no
+KVM code anywhere in the fastpath that accesses guest/userspace memory,
+i.e. that can consume protection keys.
 
-For all intents and purposes, this reverts commit 1811d979c716 ("x86/kvm:
-move kvm_load/put_guest_xcr0 into atomic context"), which papered over an
-egregious bug/flaw in the #MC handler where it would do schedule() even
-though IRQs are disabled.  E.g. the call stack from the commit:
+As documented by commit 1be0e61c1f25 ("KVM, pkeys: save/restore PKRU when
+guest/host switches"), KVM just needs to ensure the host's PKRU is loaded
+when KVM (or the kernel at-large) may access userspace memory.  And at the
+time of commit 1be0e61c1f25, KVM didn't have a fastpath, and PKU was
+strictly contained to VMX, i.e. there was no reason to swap PKRU outside
+of vmx_vcpu_run().
 
-  kvm_load_guest_xcr0
-  ...
-  kvm_x86_ops->run(vcpu)
-    vmx_vcpu_run
-      vmx_complete_atomic_exit
-        kvm_machine_check
-          do_machine_check
-            do_memory_failure
-              memory_failure
-                lock_page
+Over time, the "need" to swap PKRU close to VM-Enter was likely falsely
+solidified by the association with XFEATUREs in commit 37486135d3a7
+("KVM: x86: Fix pkru save/restore when guest CR4.PKE=0, move it to x86.c"),
+and XFEATURE swapping was in turn moved close to VM-Enter/VM-Exit as a
+KVM hack-a-fix ution for an #MC handler bug by commit 1811d979c716
+("x86/kvm: move kvm_load/put_guest_xcr0 into atomic context").
 
-Commit 1811d979c716 "fixed" the immediate issue of XRSTORS exploding, but
-completely ignored that scheduling out a vCPU task while IRQs and
-preemption is wildly broken.  Thankfully, commit 5567d11c21a1 ("x86/mce:
-Send #MC singal from task work") (somewhat incidentally?) fixed that flaw
-by pushing the meat of the work to the user-return path, i.e. to task
-context.
+Deferring the PKRU loads shaves ~40 cycles off the fastpath for Intel,
+and ~60 cycles for AMD.  E.g. using INVD in KVM-Unit-Test's vmexit.c,
+with extra hacks to enable CR4.PKE and PKRU=(-1u & ~0x3), latency numbers
+for AMD Turin go from ~1560 => ~1500, and for Intel Emerald Rapids, go
+from ~810 => ~770.
 
-KVM has also hardened itself against #MC goofs by moving #MC forwarding to
-kvm_x86_ops.handle_exit_irqoff(), i.e. out of the fastpath.  While that's
-by no means a robust fix, restoring as much state as possible before
-handling the #MC will hopefully provide some measure of protection in the
-event that #MC handling goes off the rails again.
-
-Note, KVM always intercepts XCR0 writes for vCPUs without protected state,
-e.g. there's no risk of consuming a stale XCR0 when determining if a PKRU
-update is needed; kvm_load_host_xfeatures() only reads, and never writes,
-vcpu->arch.xcr0.
-
-Deferring the XCR0 and XSS loads shaves ~300 cycles off the fastpath for
-Intel, and ~500 cycles for AMD.  E.g. using INVD in KVM-Unit-Test's
-vmexit.c, which an extra hack to enable CR4.OXSAVE, latency numbers for
-AMD Turin go from ~2000 => 1500, and for Intel Emerald Rapids, go from
-~1300 => ~1000.
-
-Cc: Jon Kohler <jon@nutanix.com>
 Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Reviewed-by: Jon Kohler <jon@nutanix.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 39 ++++++++++++++++++++++++++-------------
- 1 file changed, 26 insertions(+), 13 deletions(-)
+ arch/x86/kvm/svm/svm.c |  2 --
+ arch/x86/kvm/vmx/vmx.c |  4 ----
+ arch/x86/kvm/x86.c     | 14 ++++++++++----
+ arch/x86/kvm/x86.h     |  2 --
+ 4 files changed, 10 insertions(+), 12 deletions(-)
 
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index bf34378ebe2d..1c67c1a6771d 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4246,7 +4246,6 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 		svm_set_dr6(vcpu, DR6_ACTIVE_LOW);
+ 
+ 	clgi();
+-	kvm_load_guest_xsave_state(vcpu);
+ 
+ 	/*
+ 	 * Hardware only context switches DEBUGCTL if LBR virtualization is
+@@ -4289,7 +4288,6 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 	    vcpu->arch.host_debugctl != svm->vmcb->save.dbgctl)
+ 		update_debugctlmsr(vcpu->arch.host_debugctl);
+ 
+-	kvm_load_host_xsave_state(vcpu);
+ 	stgi();
+ 
+ 	/* Any pending NMI will happen here */
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index f369c499b2c3..9b8a6405da95 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7475,8 +7475,6 @@ fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 	if (vcpu->guest_debug & KVM_GUESTDBG_SINGLESTEP)
+ 		vmx_set_interrupt_shadow(vcpu, 0);
+ 
+-	kvm_load_guest_xsave_state(vcpu);
+-
+ 	pt_guest_enter(vmx);
+ 
+ 	atomic_switch_perf_msrs(vmx);
+@@ -7520,8 +7518,6 @@ fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 
+ 	pt_guest_exit(vmx);
+ 
+-	kvm_load_host_xsave_state(vcpu);
+-
+ 	if (is_guest_mode(vcpu)) {
+ 		/*
+ 		 * Track VMLAUNCH/VMRESUME that have made past guest state
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index f98c5afa3e41..d8d547c5e014 100644
+index d8d547c5e014..9586a26eb27e 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -1216,13 +1216,12 @@ void kvm_lmsw(struct kvm_vcpu *vcpu, unsigned long msw)
+@@ -1246,7 +1246,7 @@ static void kvm_load_host_xfeatures(struct kvm_vcpu *vcpu)
+ 	}
  }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_lmsw);
  
 -void kvm_load_guest_xsave_state(struct kvm_vcpu *vcpu)
-+static void kvm_load_guest_xfeatures(struct kvm_vcpu *vcpu)
++static void kvm_load_guest_pkru(struct kvm_vcpu *vcpu)
  {
  	if (vcpu->arch.guest_state_protected)
  		return;
+@@ -1257,9 +1257,8 @@ void kvm_load_guest_xsave_state(struct kvm_vcpu *vcpu)
+ 	     kvm_is_cr4_bit_set(vcpu, X86_CR4_PKE)))
+ 		wrpkru(vcpu->arch.pkru);
+ }
+-EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_load_guest_xsave_state);
  
- 	if (kvm_is_cr4_bit_set(vcpu, X86_CR4_OSXSAVE)) {
--
- 		if (vcpu->arch.xcr0 != kvm_host.xcr0)
- 			xsetbv(XCR_XFEATURE_ENABLED_MASK, vcpu->arch.xcr0);
- 
-@@ -1230,6 +1229,27 @@ void kvm_load_guest_xsave_state(struct kvm_vcpu *vcpu)
- 		    vcpu->arch.ia32_xss != kvm_host.xss)
- 			wrmsrq(MSR_IA32_XSS, vcpu->arch.ia32_xss);
- 	}
-+}
-+
-+static void kvm_load_host_xfeatures(struct kvm_vcpu *vcpu)
-+{
-+	if (vcpu->arch.guest_state_protected)
-+		return;
-+
-+	if (kvm_is_cr4_bit_set(vcpu, X86_CR4_OSXSAVE)) {
-+		if (vcpu->arch.xcr0 != kvm_host.xcr0)
-+			xsetbv(XCR_XFEATURE_ENABLED_MASK, kvm_host.xcr0);
-+
-+		if (guest_cpu_cap_has(vcpu, X86_FEATURE_XSAVES) &&
-+		    vcpu->arch.ia32_xss != kvm_host.xss)
-+			wrmsrq(MSR_IA32_XSS, kvm_host.xss);
-+	}
-+}
-+
-+void kvm_load_guest_xsave_state(struct kvm_vcpu *vcpu)
-+{
-+	if (vcpu->arch.guest_state_protected)
-+		return;
- 
- 	if (cpu_feature_enabled(X86_FEATURE_PKU) &&
- 	    vcpu->arch.pkru != vcpu->arch.host_pkru &&
-@@ -1251,17 +1271,6 @@ void kvm_load_host_xsave_state(struct kvm_vcpu *vcpu)
- 		if (vcpu->arch.pkru != vcpu->arch.host_pkru)
+-void kvm_load_host_xsave_state(struct kvm_vcpu *vcpu)
++static void kvm_load_host_pkru(struct kvm_vcpu *vcpu)
+ {
+ 	if (vcpu->arch.guest_state_protected)
+ 		return;
+@@ -1272,7 +1271,6 @@ void kvm_load_host_xsave_state(struct kvm_vcpu *vcpu)
  			wrpkru(vcpu->arch.host_pkru);
  	}
--
--	if (kvm_is_cr4_bit_set(vcpu, X86_CR4_OSXSAVE)) {
--
--		if (vcpu->arch.xcr0 != kvm_host.xcr0)
--			xsetbv(XCR_XFEATURE_ENABLED_MASK, kvm_host.xcr0);
--
--		if (guest_cpu_cap_has(vcpu, X86_FEATURE_XSAVES) &&
--		    vcpu->arch.ia32_xss != kvm_host.xss)
--			wrmsrq(MSR_IA32_XSS, kvm_host.xss);
--	}
--
  }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_load_host_xsave_state);
+-EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_load_host_xsave_state);
  
-@@ -11311,6 +11320,8 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 	if (vcpu->arch.guest_fpu.xfd_err)
- 		wrmsrq(MSR_IA32_XFD_ERR, vcpu->arch.guest_fpu.xfd_err);
+ #ifdef CONFIG_X86_64
+ static inline u64 kvm_guest_supported_xfd(struct kvm_vcpu *vcpu)
+@@ -11350,6 +11348,12 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
  
-+	kvm_load_guest_xfeatures(vcpu);
+ 	guest_timing_enter_irqoff();
+ 
++	/*
++	 * Swap PKRU with hardware breakpoints disabled to minimize the number
++	 * of flows where non-KVM code can run with guest state loaded.
++	 */
++	kvm_load_guest_pkru(vcpu);
 +
- 	if (unlikely(vcpu->arch.switch_db_regs &&
- 		     !(vcpu->arch.switch_db_regs & KVM_DEBUGREG_AUTO_SWITCH))) {
- 		set_debugreg(DR7_FIXED_1, 7);
-@@ -11397,6 +11408,8 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 	vcpu->mode = OUTSIDE_GUEST_MODE;
- 	smp_wmb();
+ 	for (;;) {
+ 		/*
+ 		 * Assert that vCPU vs. VM APICv state is consistent.  An APICv
+@@ -11378,6 +11382,8 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 		++vcpu->stat.exits;
+ 	}
  
-+	kvm_load_host_xfeatures(vcpu);
++	kvm_load_host_pkru(vcpu);
 +
  	/*
- 	 * Sync xfd before calling handle_exit_irqoff() which may
- 	 * rely on the fact that guest_fpu::xfd is up-to-date (e.g.
+ 	 * Do this here before restoring debug registers on the host.  And
+ 	 * since we do this before handling the vmexit, a DR access vmexit
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index f3dc77f006f9..24c754b0db2e 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -622,8 +622,6 @@ static inline void kvm_machine_check(void)
+ #endif
+ }
+ 
+-void kvm_load_guest_xsave_state(struct kvm_vcpu *vcpu);
+-void kvm_load_host_xsave_state(struct kvm_vcpu *vcpu);
+ int kvm_spec_ctrl_test_value(u64 value);
+ int kvm_handle_memory_failure(struct kvm_vcpu *vcpu, int r,
+ 			      struct x86_exception *e);
 -- 
 2.52.0.rc1.455.g30608eb744-goog
 
