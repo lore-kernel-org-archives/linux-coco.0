@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0404255F2C
-	for <linux-coco@lists.linux.dev>; Tue, 18 Nov 2025 18:33:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB871366DD7
+	for <linux-coco@lists.linux.dev>; Tue, 18 Nov 2025 19:09:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763490791; cv=none; b=UT8hKQTGVnJh7WYcmghGYA/oErtAXVrW7aERch+hSpj4X4pFdMy3GtV/MJZjVrKBxR8NBr69+FmLRDCf7W6UVOJQHF+aWgBtrWcyprwo0D+CyAYHXypZelyTFFSAQfYprRfiyinGKNT46Axj80I3wwWpwv7cfD5rhPoCBsvYCvM=
+	t=1763492955; cv=none; b=IYnOBYgffi/3l/Yua+d8NH9VyPL2vB9/aIlHkS7VZ+KDkEYtLsgEB8PQ0KTBVcizThs64Qo1vFnQY6jODRsNFR8nrO2dxyJn/PWZ04agcxdvpsm2AxmguJ3Aof+XzwgEuEEQbZar8MunZlnJHSeYMEusev2w9A0vyclt1jLHZM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763490791; c=relaxed/simple;
-	bh=oFp7Ht22PPUOh7/5jmB3tdowm7xKcV8JqdKM5rlq1w4=;
+	s=arc-20240116; t=1763492955; c=relaxed/simple;
+	bh=5ln9yQLShanL8HNdyhz0x5apv7YrZKXZwF/7CPu5SOg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p1Ccppi7IurPwtbW94fbvxhgBrGN6HaRErEyZhmSiLZGbz7Vrz4CcWF68hPCLmav+fJmLYWTxciZYpHqVbm5OKvKj/DiXCaYCbmPiVvLNvTFZ2F/0kpg44vz7Uqc/fNWcdHPiBwmdwz+vStBtesaC12X57mgUJG6hFBINOD54k8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d23Wj7YQ; arc=none smtp.client-ip=198.175.65.16
+	 In-Reply-To:Content-Type; b=aB3SrNAB+Fbr5ZyWEb8+x+6lO933p45cK7ETP1Vy6pSA9av8EwMge6+CA5Nssp4JYcyhSDagHb7GOCnTTQSEQJDGYUoBglP/kiKqbsjy0jiN4s4iDYgIZZEGvzE3l7HNzFmvez3hl5bd2GvyTdfpLstJxDPUS4/kTHdr5LtH/z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e+mGwKal; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d23Wj7YQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e+mGwKal"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763490790; x=1795026790;
+  t=1763492954; x=1795028954;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=oFp7Ht22PPUOh7/5jmB3tdowm7xKcV8JqdKM5rlq1w4=;
-  b=d23Wj7YQYGo4W+k3aaTclqty+YAiLTaXum3ebdWFr2lUwWNddGHp66T7
-   a514IsW3Dx51EQ28w2GKNDt0XcX4cjIdK6WzdlRzev7tcSz+j34hU4kJi
-   Db/UVLrhyFZkWIYueVCZOrOsyA99kVuakZzZBLxnPIDFR4JtaC1cd38Xg
-   fLQ+HUifunA2gSufRzmife72cG3SAfnonVab+oulWbbnmgyqSaV85Yg3L
-   +kgqw9xyWLffVdPo1J7qy5uToEc3t7RUmdZZ/9hzWvWGiJz+Hj7xk8tei
-   WhW3e7AvK2Xh/5U3T4ilbfDNMXuz3SYOo2miAPeXLWzgtcaytsji6u7j7
+  bh=5ln9yQLShanL8HNdyhz0x5apv7YrZKXZwF/7CPu5SOg=;
+  b=e+mGwKalova8uMYo8AY0iQXfjeMtFcu8KxBK3Hoei18AlGgNXmW47xn3
+   S15B7eIlWwrrczbgRrXpZ2u0Y2MeviTmEo9UyikmK8z23IJT5pf7UcJdv
+   y1IjBgWmib0HIBaYEGFR3tzR2akAcSGSEgAqvh/NOvpIT70+8dhBRQ7Vg
+   jPM/GIn3bxk87hG5F3GEhvz89ZWnsU/XcYFxSwMmZnGGhoRH5WMBuIUZ3
+   Ae9sxirGzDLnkcTSh3KBd8jirq/1xt/UWX/urTNlbf8x2vAkXzluqu38m
+   swVMJ13ZNDihHjOHyatb092OLrJTADnp5WX4toLgBFpZiJTXzJqge5YmH
    w==;
-X-CSE-ConnectionGUID: 6Nw1v9zWQrKeCKtRBQNhIQ==
-X-CSE-MsgGUID: 7GGlJtCtSgS4QBDds9okuw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="65683107"
+X-CSE-ConnectionGUID: kjuj29ROTASP+r/pw1VFgg==
+X-CSE-MsgGUID: bBB2WaSLSmS7/iq/Sq/tdQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="68132429"
 X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; 
-   d="scan'208";a="65683107"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 10:32:15 -0800
-X-CSE-ConnectionGUID: cd/Mj0+5TSeZ7Q+fNCuX5A==
-X-CSE-MsgGUID: NDjD6f09S9WLT+etscKxVw==
+   d="scan'208";a="68132429"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 11:09:13 -0800
+X-CSE-ConnectionGUID: 14Dg1cXzThuvCVYU85e6uw==
+X-CSE-MsgGUID: YpnGESm+S/a5CSITpAygFA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; 
-   d="scan'208";a="195141541"
-Received: from dwoodwor-mobl2.amr.corp.intel.com (HELO [10.125.109.119]) ([10.125.109.119])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 10:32:15 -0800
-Message-ID: <62bec236-4716-4326-8342-1863ad8a3f24@intel.com>
-Date: Tue, 18 Nov 2025 10:32:13 -0800
+   d="scan'208";a="191627364"
+Received: from tslove-mobl4.amr.corp.intel.com (HELO [10.125.109.142]) ([10.125.109.142])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 11:09:12 -0800
+Message-ID: <70056924-1702-4020-b805-014efb87afdd@intel.com>
+Date: Tue, 18 Nov 2025 11:09:12 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,18 +52,16 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 08/26] x86/virt/tdx: Add tdx_enable_ext() to enable of
- TDX Module Extensions
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
- chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
+Subject: Re: [PATCH v1 06/26] x86/virt/tdx: Add tdx_page_array helpers for new
+ TDX Module objects
+To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev,
+ linux-pci@vger.kernel.org
+Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
  yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
  rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
  dan.j.williams@intel.com, kas@kernel.org, x86@kernel.org
 References: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
- <20251117022311.2443900-9-yilun.xu@linux.intel.com>
- <cfcfb160-fcd2-4a75-9639-5f7f0894d14b@intel.com>
- <aRyphEW2jpB/3Ht2@yilunxu-OptiPlex-7050>
+ <20251117022311.2443900-7-yilun.xu@linux.intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -109,160 +107,59 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <aRyphEW2jpB/3Ht2@yilunxu-OptiPlex-7050>
+In-Reply-To: <20251117022311.2443900-7-yilun.xu@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 11/18/25 09:14, Xu Yilun wrote:
-....>>> The extension initialization uses the new TDH.EXT.MEM.ADD and
->>> TDX.EXT.INIT seamcalls. TDH.EXT.MEM.ADD add pages to a shared memory
->>> pool for extensions to consume.
->>
->> "Shared memory" is an exceedingly unfortunate term to use here. They're
->> TDX private memory, right?
-> 
-> Sorry, they are indeed TDX private memory. Here 'shared' means the
-> memory in the pool will be consumed by multiple new features but this
-> is TDX Module internal details that I should not ramble, especially in
-> TDX context.
-... and you'll find a better term in the next revision. Right?
+On 11/16/25 18:22, Xu Yilun wrote:
+...> +	struct tdx_page_array *array __free(kfree) = kzalloc(sizeof(*array),
+> +							     GFP_KERNEL);
+> +	if (!array)
+> +		return NULL;
 
-...>> How much memory does this consume?
-> 
-> 12800 pages.
+I just reworked this to use normal goto's. It looks a billion times
+better. Please remove all these __free()'s unless you have specific
+evidence that they make the code better.
 
-Oof. That's more than I expected and it's also getting up to the amount
-that you don't want to just eat without saying seomthing about it.
+Maybe I'm old fashioned, but I don't see anything wrong with:
 
-Could you please at least dump a pr_info() out about how much memory
-this consumes?
+static struct tdx_pglist *tdx_pglist_alloc(unsigned int nr_pages)
+{
+        struct tdx_page_array *array = NULL;
+        struct page **pages = NULL;
+        struct page *root = NULL;
+        int ret;
 
->>> TDH.EXT.MEM.ADD is the first user of tdx_page_array. It provides pages
->>> to TDX Module as control (private) pages. A tdx_clflush_page_array()
->>> helper is introduced to flush shared cache before SEAMCALL, to avoid
->>> shared cache write back damages these private pages.
->>
->> First, this talks about "control pages". But I don't know what a control
->> page is.
-> 
-> It refers to pages provided to TDX Module to hold all kinds of control
-> structures or metadata. E.g. TDR, TDCS, TDVPR... With TDX Connect we
-> have more, SPDM metadata, IDE metadata...
+        if (!nr_pages)
+                return NULL;
 
-Please *say* that. Explain how existing TDX metadata consumes memory and
-how this new mechanism is different.
+        array = kzalloc(sizeof(*array), GFP_KERNEL);
+        if (!array)
+                goto out_free;
 
-BTW... Do you see how I'm trimming context as I reply? Could you please
-endeavor to do the same?
+        root = kzalloc(PAGE_SIZE, GFP_KERNEL);
+        if (!root)
+                goto out_free;
 
->>> @@ -1251,7 +1254,14 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
->>>  	args.rcx = __pa(tdmr_pa_array);
->>>  	args.rdx = tdmr_list->nr_consumed_tdmrs;
->>>  	args.r8 = global_keyid;
->>> -	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
->>> +
->>> +	if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_TDXCONNECT) {
->>> +		args.r9 |= TDX_FEATURES0_TDXCONNECT;
->>> +		args.r11 = ktime_get_real_seconds();
->>> +		ret = seamcall_prerr(TDH_SYS_CONFIG | (1ULL << TDX_VERSION_SHIFT), &args);
->>> +	} else {
->>> +		ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
->>> +	}
->>
->> I'm in the first actual hunk of code and I'm lost. I don't have any idea
->> what the "(1ULL << TDX_VERSION_SHIFT)" is doing.
-> 
-> TDX Module defines the version field in its leaf to specify updated
-> parameter set. The existing user is:
-> 
-> u64 tdh_vp_init(struct tdx_vp *vp, u64 initial_rcx, u32 x2apicid)
-> {
-> 	struct tdx_module_args args = {
-> 		.rcx = vp->tdvpr_pa,
-> 		.rdx = initial_rcx,
-> 		.r8 = x2apicid,
-> 	};
-> 
-> 	/* apicid requires version == 1. */
-> 	return seamcall(TDH_VP_INIT | (1ULL << TDX_VERSION_SHIFT), &args);
-> }
+        pages = kcalloc(nr_pages, sizeof(*pages), GFP_KERNEL);
+        if (!pages)
+                goto out_free;
 
-OK, so there's a single existing user with this thing open coded.
+        ret = tdx_alloc_pages_bulk(nr_pages, pages);
+        if (ret)
+                goto out_free;
 
-You're adding a second user, so you just copied and pasted the existing
-code. Is there a better way to do this? For instance, can we just pass
-the version number to *ALL* seamcall()s?
+        array->nr_pages	= nr_pages;
+        array->pages	= pages;
+        array->root	= root;
 
+        return array;
 
+out_free:
+        kfree(array);
+        kfree(root);
+        kfree(pages);
 
-...>> This is really difficult to understand. It's not really filling a
->> "root", it's populating an array. The structure of the loop is also
-> 
-> It is populating the root page with part (512 pages at most) of the array.
-> So is it better name the function tdx_page_array_populate_root()?
-
-That's getting a bit verbose.
-
->> rather non-obvious. It's doing:
->>
->> 	while (1) {
->> 		fill(&array);
->> 		tell_tdx_module(&array);
->> 	}
-> 
-> There is some explanation in Patch #6:
-
-That doesn't really help me, or future reviewers.
-
->  4. Note the root page contains 512 HPAs at most, if more pages are
->    required, refilling the tdx_page_array is needed.
-> 
->  - struct tdx_page_array *array = tdx_page_array_alloc(nr_pages);
->  - for each 512-page bulk
->    - tdx_page_array_fill_root(array, offset);
->    - seamcall(TDH_XXX_ADD, array, ...);
-
-Great! That is useful information to have here, in the code.
-
->> Why can't it be:
->>
->> 	while (1)
->> 		fill(&array);
->> 	while (1)
->> 		tell_tdx_module(&array);
-> 
-> The consideration is, no need to create as much supporting
-> structures (struct tdx_page_array *, struct page ** and root page) for
-> each 512-page bulk. Use one and re-populate it in loop is efficient.
-
-Huh? What is it efficient for? Are you saving a few pages of _temporary_
-memory?
-
-I'm not following at all.
-
->>> +static int init_tdx_ext(void)
->>> +{
->>> +	int ret;
->>> +
->>> +	if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
->>> +		return -EOPNOTSUPP;
->>> +
->>> +	struct tdx_page_array *mempool __free(tdx_ext_mempool_free) =
->>> +		tdx_ext_mempool_setup();
->>> +	/* Return NULL is OK, means no need to setup mempool */
->>> +	if (IS_ERR(mempool))
->>> +		return PTR_ERR(mempool);
->>
->> That's a somewhat odd comment to put above an if() that doesn't return NULL.
-> 
-> I meant to explain why using IS_ERR instead of IS_ERR_OR_NULL. I can
-> impove the comment.
-
-I'd kinda rather the code was improved. Why cram everything into a
-pointer if you don't need to. This would be just fine, no?
-
-	ret = tdx_ext_mempool_setup(&mempool);
-	if (ret)
-		return ret;
-
+        return NULL;
+}
 
