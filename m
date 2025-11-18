@@ -1,220 +1,85 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E3A31B124
-	for <linux-coco@lists.linux.dev>; Tue, 18 Nov 2025 22:23:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B093830C637;
+	Tue, 18 Nov 2025 23:15:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763504620; cv=none; b=WQF+zUvj+On6L7QSBxG4yqIANk+oWToEK8ZKU8mVKu606rwgzmBtAw+25m9IRTpxEphpGPg8SsaS4b+Pj4wk+t/OZi5nTtuOai1UEdKNIgsf6xXvhHFzDTT9I4zErzstK/51OC81MkOk5clynzhCvsbd6QWGC45DXsPKWhQuVzU=
+	t=1763507712; cv=none; b=XiIsWCCjmnYUzDZqPwa14d6LiZLnDOGAxTfRA3zw04NoIxQMoRjh/bWE7P35SOWzbRwLvJ1A7ikqa4UOblrs1/LUNbimTyQNrGVbH4mEb1ce3eY4byW6YI+/bvK3d8T6y7bqVwU6RUHiUYokCXAJrq5sQg9/nTp1Yh/blD96g3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763504620; c=relaxed/simple;
-	bh=Z/DjTbMxxtwfS6uS1n7NXBorkMmU7tvMoEYXRuGPlFQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=lOWF2NaHigJIm6IuOKc8zmCPDbtLdjxygz838lktl14UHuLBxOLkGhhaCCKunq6hJrEDQHHHE0EkTb9etn5d/DbUqz3lY+hsM23eHQ2yRtwG1IjvZKiCUtCZjIoN7uRxhy3x3PrYJbFR+/WhyJPv9Rqo0Wc5U/oznr3IWLt96Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xD0n37LD; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1763507712; c=relaxed/simple;
+	bh=ezq0GBoKks1ZDN8ylGI96mRLE71dnwsmeFSq+cT44Ac=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e5UqCsG13gGcEc7VmO0UVzrJfHXxaLtou3R3Orcg0H5IE2GgL1fhObLGLM9Jm7C/cSuH2zkOUkNxLgCMumutjunCyNH4pPOEhI8+0JgsW7JxLXk6VEWTtfQ8JHEXbk02tD9jvMEsT1EWgboVtKAAhxPdsorcqThbXWARNyuVPHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HzUyfLby; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xD0n37LD"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-297f8a2ba9eso155736955ad.3
-        for <linux-coco@lists.linux.dev>; Tue, 18 Nov 2025 14:23:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763504618; x=1764109418; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=k6abdiQWX2NNeyGNyymJ5zH7pnooPhs4/ECKEvEmQik=;
-        b=xD0n37LDe/KJWl4l6TftX6skb7UfKzeQm9cwWSi4ncYhqc0zVruNLKIRyfjxEVj0kG
-         4cwa8myJ4VmoinvWjrMhdBPZ6/485W8gAmO6vyjKtfBAZCWn8098wV2VNQX2VB3W+xnz
-         0fgLT4JjRz7rSmq9IsNHRWjODi05A1iAbSe98e/tUlRF716XZJFl9Kw83AZBIistSOQm
-         oJkCwcLwMao1Y1ItnEB7nk+mWNFiBzjMLAfwobRZ/PkG+a2f7XcHDTolnlagi/P7rOgj
-         EOVbjIDuzp50e+W3kitfVVKZOPjCoicvPsB+ecblfWce+WpGeL4sl9wE7XEAhgdYGnoA
-         aZuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763504618; x=1764109418;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=k6abdiQWX2NNeyGNyymJ5zH7pnooPhs4/ECKEvEmQik=;
-        b=FRWSouT86moukz5yf+bj2E+f3HtiaAdSVIFvWgBHE+2dydfzahHJYRTpqKqMQ4fg9/
-         b2+wIuDTakrbYSdlOHzD7P34BYTzHkb36C2oBQV2NMf499vLS1k+oZT5IjtreL39SfVG
-         cAmok/Yf7Y3mK/RFv5ehSI7nBog3M7vQ7kwjhOVnbRLd0NJ0tVb0crSH2tUDbdHN8Fl2
-         KPuNYZAfjqKqCxclqukDF/8pUttXeJ1D6n81wK8DDuAjKOTbLNeGh4Exg9Cf8OS0aGfh
-         0lFk5SOHwItl1JIhnvrnJgXrSj91mfztPZHh3tJqmL3N8ELYjDxd+hX+XnBXzcfjqzos
-         RmGA==
-X-Forwarded-Encrypted: i=1; AJvYcCVK0c6N0N6x52jpMp5wStpk5wvXsMALfuXuc8Zys+woHJpTntUSFp9hziwkcT++4mI0z6+jIP5OH0d5@lists.linux.dev
-X-Gm-Message-State: AOJu0Yztn22dB2Jc0aOmjx6KIgbWusFjZuUYpWoDChNUioc9u45fmeI2
-	DwStmLnlf8WgLB1O+xFCF2Lt2gEUTX2EOkjqwtIlyekh4f7EBGYJW9ZbOcAJOdglYjsNH4nLdGy
-	XgwOypA==
-X-Google-Smtp-Source: AGHT+IGDcfTyticzqgBK5utKn+m9UElTi2gzKfFB2rNfhe1Y5J2SFjpR1n1x5g/sAvVBxZxGoKfHROFByYI=
-X-Received: from plbko13.prod.google.com ([2002:a17:903:7cd:b0:297:ddac:51ad])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2b0e:b0:295:9d7f:9296
- with SMTP id d9443c01a7336-29a054a857amr6014265ad.45.1763504617836; Tue, 18
- Nov 2025 14:23:37 -0800 (PST)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 18 Nov 2025 14:23:28 -0800
-In-Reply-To: <20251118222328.2265758-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HzUyfLby"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23AB5C16AAE;
+	Tue, 18 Nov 2025 23:15:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763507712;
+	bh=ezq0GBoKks1ZDN8ylGI96mRLE71dnwsmeFSq+cT44Ac=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HzUyfLbyg7ek3Nu+QriMcCxO/hKGazIIEbRlgFlQayxo2GTNORTHsCFEVlQgr1oz6
+	 p/o0A4emuejz9JZ49SeZ3UV5hrA0+030fm2fqPSjjB9ruLUxoiNMIE27Y381PbS/L0
+	 v53FXMR+eZS+Y4c8W22A4lDromplbl3zHhl8QPjrdK08Qp4bqSCazFz8NGtmv6GokV
+	 bCjJeL2sfArJc8jpT207gwC24qw1PeOkanmeoMAPnJ1i5vvD32szv1dGIUcGtKlaFl
+	 P1vryDaOchQ9TkiZtUJ64BDnOJxuh1bTxXCq1c2lndVPiGlvbiODOO1817kFsdjnoK
+	 H5bsZg2nN72zQ==
+Date: Tue, 18 Nov 2025 15:15:07 -0800
+From: Drew Fustini <fustini@kernel.org>
+To: Babu Moger <bmoger@amd.com>
+Cc: Babu Moger <babu.moger@amd.com>, corbet@lwn.net, tony.luck@intel.com,
+	reinette.chatre@intel.com, Dave.Martin@arm.com, james.morse@arm.com,
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+	kas@kernel.org, rick.p.edgecombe@intel.com,
+	akpm@linux-foundation.org, paulmck@kernel.org, frederic@kernel.org,
+	pmladek@suse.com, rostedt@goodmis.org, kees@kernel.org,
+	arnd@arndb.de, fvdl@google.com, seanjc@google.com,
+	thomas.lendacky@amd.com, pawan.kumar.gupta@linux.intel.com,
+	perry.yuan@amd.com, manali.shukla@amd.com, sohil.mehta@intel.com,
+	xin@zytor.com, Neeraj.Upadhyay@amd.com, peterz@infradead.org,
+	tiala@microsoft.com, mario.limonciello@amd.com,
+	dapeng1.mi@linux.intel.com, michael.roth@amd.com,
+	chang.seok.bae@intel.com, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org, peternewman@google.com, eranian@google.com,
+	gautham.shenoy@amd.com
+Subject: Re: [PATCH v18 00/33] x86,fs/resctrl: Support AMD Assignable
+ Bandwidth Monitoring Counters (ABMC)
+Message-ID: <aRz9+475zDOEK46G@x1>
+References: <cover.1757108044.git.babu.moger@amd.com>
+ <aRoJAbfn+oBkc/sb@x1>
+ <4102be40-7334-4845-b812-8481fbbc62ca@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20251118222328.2265758-1-seanjc@google.com>
-X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
-Message-ID: <20251118222328.2265758-5-seanjc@google.com>
-Subject: [PATCH v2 4/4] KVM: x86: Load guest/host PKRU outside of the fastpath
- run loop
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	"Kirill A. Shutemov" <kas@kernel.org>
-Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Jon Kohler <jon@nutanix.com>, Tony Lindgren <tony.lindgren@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4102be40-7334-4845-b812-8481fbbc62ca@amd.com>
 
-Move KVM's swapping of PKRU outside of the fastpath loop, as there is no
-KVM code anywhere in the fastpath that accesses guest/userspace memory,
-i.e. that can consume protection keys.
+On Mon, Nov 17, 2025 at 09:07:20AM -0600, Babu Moger wrote:
+> Hi Drew,
+[snip]
+> Looks like you are on Zen 4 system. ABMC is available on Zen 5 or later
+> servers.
+> 
+> #lscpu
+> Vendor ID:                AuthenticAMD
+> Model name:            AMD EPYC 9655 96-Core Processor
+> CPU family:              26
+> 
+> Thanks for trying.
+> 
+> -Babu Moger
 
-As documented by commit 1be0e61c1f25 ("KVM, pkeys: save/restore PKRU when
-guest/host switches"), KVM just needs to ensure the host's PKRU is loaded
-when KVM (or the kernel at-large) may access userspace memory.  And at the
-time of commit 1be0e61c1f25, KVM didn't have a fastpath, and PKU was
-strictly contained to VMX, i.e. there was no reason to swap PKRU outside
-of vmx_vcpu_run().
+Thank for letting me know. I didn't realize until now that the last
+digit is the Zen generation. Cherry Servers offer an EPYC 9255 so I'll
+give that a try.
 
-Over time, the "need" to swap PKRU close to VM-Enter was likely falsely
-solidified by the association with XFEATUREs in commit 37486135d3a7
-("KVM: x86: Fix pkru save/restore when guest CR4.PKE=0, move it to x86.c"),
-and XFEATURE swapping was in turn moved close to VM-Enter/VM-Exit as a
-KVM hack-a-fix ution for an #MC handler bug by commit 1811d979c716
-("x86/kvm: move kvm_load/put_guest_xcr0 into atomic context").
-
-Deferring the PKRU loads shaves ~40 cycles off the fastpath for Intel,
-and ~60 cycles for AMD.  E.g. using INVD in KVM-Unit-Test's vmexit.c,
-with extra hacks to enable CR4.PKE and PKRU=(-1u & ~0x3), latency numbers
-for AMD Turin go from ~1560 => ~1500, and for Intel Emerald Rapids, go
-from ~810 => ~770.
-
-Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Reviewed-by: Jon Kohler <jon@nutanix.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/svm/svm.c |  2 --
- arch/x86/kvm/vmx/vmx.c |  4 ----
- arch/x86/kvm/x86.c     | 14 ++++++++++----
- arch/x86/kvm/x86.h     |  2 --
- 4 files changed, 10 insertions(+), 12 deletions(-)
-
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index bf34378ebe2d..1c67c1a6771d 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4246,7 +4246,6 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 		svm_set_dr6(vcpu, DR6_ACTIVE_LOW);
- 
- 	clgi();
--	kvm_load_guest_xsave_state(vcpu);
- 
- 	/*
- 	 * Hardware only context switches DEBUGCTL if LBR virtualization is
-@@ -4289,7 +4288,6 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 	    vcpu->arch.host_debugctl != svm->vmcb->save.dbgctl)
- 		update_debugctlmsr(vcpu->arch.host_debugctl);
- 
--	kvm_load_host_xsave_state(vcpu);
- 	stgi();
- 
- 	/* Any pending NMI will happen here */
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index f369c499b2c3..9b8a6405da95 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7475,8 +7475,6 @@ fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 	if (vcpu->guest_debug & KVM_GUESTDBG_SINGLESTEP)
- 		vmx_set_interrupt_shadow(vcpu, 0);
- 
--	kvm_load_guest_xsave_state(vcpu);
--
- 	pt_guest_enter(vmx);
- 
- 	atomic_switch_perf_msrs(vmx);
-@@ -7520,8 +7518,6 @@ fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 
- 	pt_guest_exit(vmx);
- 
--	kvm_load_host_xsave_state(vcpu);
--
- 	if (is_guest_mode(vcpu)) {
- 		/*
- 		 * Track VMLAUNCH/VMRESUME that have made past guest state
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index d8d547c5e014..9586a26eb27e 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -1246,7 +1246,7 @@ static void kvm_load_host_xfeatures(struct kvm_vcpu *vcpu)
- 	}
- }
- 
--void kvm_load_guest_xsave_state(struct kvm_vcpu *vcpu)
-+static void kvm_load_guest_pkru(struct kvm_vcpu *vcpu)
- {
- 	if (vcpu->arch.guest_state_protected)
- 		return;
-@@ -1257,9 +1257,8 @@ void kvm_load_guest_xsave_state(struct kvm_vcpu *vcpu)
- 	     kvm_is_cr4_bit_set(vcpu, X86_CR4_PKE)))
- 		wrpkru(vcpu->arch.pkru);
- }
--EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_load_guest_xsave_state);
- 
--void kvm_load_host_xsave_state(struct kvm_vcpu *vcpu)
-+static void kvm_load_host_pkru(struct kvm_vcpu *vcpu)
- {
- 	if (vcpu->arch.guest_state_protected)
- 		return;
-@@ -1272,7 +1271,6 @@ void kvm_load_host_xsave_state(struct kvm_vcpu *vcpu)
- 			wrpkru(vcpu->arch.host_pkru);
- 	}
- }
--EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_load_host_xsave_state);
- 
- #ifdef CONFIG_X86_64
- static inline u64 kvm_guest_supported_xfd(struct kvm_vcpu *vcpu)
-@@ -11350,6 +11348,12 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 
- 	guest_timing_enter_irqoff();
- 
-+	/*
-+	 * Swap PKRU with hardware breakpoints disabled to minimize the number
-+	 * of flows where non-KVM code can run with guest state loaded.
-+	 */
-+	kvm_load_guest_pkru(vcpu);
-+
- 	for (;;) {
- 		/*
- 		 * Assert that vCPU vs. VM APICv state is consistent.  An APICv
-@@ -11378,6 +11382,8 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		++vcpu->stat.exits;
- 	}
- 
-+	kvm_load_host_pkru(vcpu);
-+
- 	/*
- 	 * Do this here before restoring debug registers on the host.  And
- 	 * since we do this before handling the vmexit, a DR access vmexit
-diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-index f3dc77f006f9..24c754b0db2e 100644
---- a/arch/x86/kvm/x86.h
-+++ b/arch/x86/kvm/x86.h
-@@ -622,8 +622,6 @@ static inline void kvm_machine_check(void)
- #endif
- }
- 
--void kvm_load_guest_xsave_state(struct kvm_vcpu *vcpu);
--void kvm_load_host_xsave_state(struct kvm_vcpu *vcpu);
- int kvm_spec_ctrl_test_value(u64 value);
- int kvm_handle_memory_failure(struct kvm_vcpu *vcpu, int r,
- 			      struct x86_exception *e);
--- 
-2.52.0.rc1.455.g30608eb744-goog
-
+Drew
