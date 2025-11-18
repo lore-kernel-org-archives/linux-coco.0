@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF6823BCFF
-	for <linux-coco@lists.linux.dev>; Tue, 18 Nov 2025 13:02:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263E832E12B
+	for <linux-coco@lists.linux.dev>; Tue, 18 Nov 2025 13:14:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763470966; cv=none; b=lyq065y4kekeFmw2wGQLsburMoH9QKSHdLebGxhAoE3yJ2iuhvoB8dVnA8G6t+eCfBrW4x3iXCtDDL0dON0+oGbgHeJDvrY54QhqfnrZTJzyauHlC/W9Ywb1VjnFb5lBTanh47wzfB600LLtJbGdTXY1VVeaNSr/2Ivtu66vtyA=
+	t=1763471694; cv=none; b=BVyvMDLsdbExqfx6uL0+aH/YDr6zeUYJhTotkIgNayZGUqsxE92L1gMGgkuT10/+d5MB7Ndnq7YDohh+yT54FMK3WYrqMOTJuB2hlMSAih+B4xwGOKOk1VMHm2FjHw6Q18ilHczTgvyhP+/WgnvSHvvflHp0sgZKfwq8fElV2jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763470966; c=relaxed/simple;
-	bh=l8Q8mNGhNmk90OG2libW1IjxLLKiGopo3PW17f7lBv4=;
+	s=arc-20240116; t=1763471694; c=relaxed/simple;
+	bh=6eM5MEhpy8qjHBQhtFNZN0yn242L+U7uvd1kx4IHV/E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pKsKFcxCiXzHCVP1jgK1WVTQKNNP2TOqaJmwSFm/E1OASR1B37TqYzAGc3Q9Lex/o3Ohrj4kImN23zoq7oVeYoufrqDdF64lKw9qQ+cUDrOpcUJFjqNcksWUHLYqV9i1lmMZq0lAh1VXb9S2IPlUC4T/Rz56x1fCCgPoUBJ6Yh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iJO4bEhY; arc=none smtp.client-ip=192.198.163.11
+	 Content-Type:Content-Disposition:In-Reply-To; b=MYUp9yzvI1henfpViH0mQctxBPFjCUwoedFjK7r9e6uB7i4gD6mSRd7FZXY9vmbjhNmjT7Vy0FxhfvCZAHpE99PL5diCRaJDsbMNqxyCd18H8uIDLLxpX1yrIYe5/Jp/hB0LgEON4jmRMGws5lAiQZQzwGjAcj0ybwjYTNOBJyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mAGIomI2; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iJO4bEhY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mAGIomI2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763470964; x=1795006964;
+  t=1763471692; x=1795007692;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=l8Q8mNGhNmk90OG2libW1IjxLLKiGopo3PW17f7lBv4=;
-  b=iJO4bEhYveRVsJVsT4HqcNUfzw+Fkd/KjVmcdgIcvWpM5ObAwm0sRLD0
-   39RGj7X8KLc1S5OugvCdpEOQVDcjQkSF1SaWVUrdTwhvDv3JKdrLb8AIv
-   3Xp+0GbQrxF5oS4eJy9JO0JAHWhduFd3fywdudRRx4eYMU+5Hc7KXb128
-   Y91kbQmWt2nK7L6DJfpG1qTaPxUpuC3mjk2f4ygdlf+KwUWo1Rzos6BMJ
-   +ys0cc2j5n0rnEdfwRlPnWL7bR5Onq9Cm5Ph2D5i/V1Co4EGqhOzFLwka
-   Oa7FQFTxnLAtLIB4exSFMIdGgFUERF68CnmlFVF7TeEMo773GvuOFa8lG
-   Q==;
-X-CSE-ConnectionGUID: qv/L/SESTv+gY6wwJw56xA==
-X-CSE-MsgGUID: PSH/A49nRYOMvE/W8XdzaA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="76093102"
+  bh=6eM5MEhpy8qjHBQhtFNZN0yn242L+U7uvd1kx4IHV/E=;
+  b=mAGIomI2GRIWPp9ms0iyg8NbaUUnxz3aMLg433BKBwVsPVBBIijM5K9v
+   CTEIumnBSTPbwvGiwp2qVLoQqvmtz9NoOtnfZGaFID8s5ehm4yKSxWB3A
+   sKhK/GbmzvyuYF0gtxGn5bk1Ef3NUIEH2nY8dZaXF37IJrVALHFtZMWlf
+   57eVq3mLqZH12jg0lLgMtRdQp2Z/QoZ7hwP2QfgLx38mZN0SdEYqQtpJY
+   M0eN/5XZIpQy4oVlGw4EngWsZbQFWWOANp9/J/hASX12h+sGZOzB619N8
+   ByY+6QkKzt+WY5QjMdOI5U7f1C2jlgSLUaz4BD71P6w8y+NMc580RYjl3
+   A==;
+X-CSE-ConnectionGUID: eMzQlc3gR6qgM7wvdLN8eg==
+X-CSE-MsgGUID: oiq7ESfdSeeULpx2Q4/YDw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="69361868"
 X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; 
-   d="scan'208";a="76093102"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 05:02:44 -0800
-X-CSE-ConnectionGUID: kbqC98dGShC0fqX/e+8oJQ==
-X-CSE-MsgGUID: VnGycLDxQZOHE/3HgxdoIg==
+   d="scan'208";a="69361868"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 05:14:51 -0800
+X-CSE-ConnectionGUID: q0noG09pSv+jtV0xmXaiGA==
+X-CSE-MsgGUID: NncBD5WsSnCq7CwXI6o+VA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; 
-   d="scan'208";a="190553929"
+   d="scan'208";a="194870125"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa009.jf.intel.com with ESMTP; 18 Nov 2025 05:02:41 -0800
-Date: Tue, 18 Nov 2025 20:47:55 +0800
+  by orviesa003.jf.intel.com with ESMTP; 18 Nov 2025 05:14:48 -0800
+Date: Tue, 18 Nov 2025 21:00:02 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: Dave Hansen <dave.hansen@intel.com>
 Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
@@ -51,12 +51,12 @@ Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
 	yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
 	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
 	dan.j.williams@intel.com, kas@kernel.org, x86@kernel.org
-Subject: Re: [PATCH v1 06/26] x86/virt/tdx: Add tdx_page_array helpers for
- new TDX Module objects
-Message-ID: <aRxq+/zNuBTobD7i@yilunxu-OptiPlex-7050>
+Subject: Re: [PATCH v1 07/26] x86/virt/tdx: Read TDX global metadata for TDX
+ Module Extensions
+Message-ID: <aRxt0prMKusEEt2+@yilunxu-OptiPlex-7050>
 References: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
- <20251117022311.2443900-7-yilun.xu@linux.intel.com>
- <96d66314-a0f8-4c63-8f0d-1d392882e007@intel.com>
+ <20251117022311.2443900-8-yilun.xu@linux.intel.com>
+ <89a4e42d-b0fd-49b0-8d51-df7bac0d5e5b@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -65,100 +65,57 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <96d66314-a0f8-4c63-8f0d-1d392882e007@intel.com>
+In-Reply-To: <89a4e42d-b0fd-49b0-8d51-df7bac0d5e5b@intel.com>
 
-On Mon, Nov 17, 2025 at 08:41:37AM -0800, Dave Hansen wrote:
+On Mon, Nov 17, 2025 at 08:52:36AM -0800, Dave Hansen wrote:
 > On 11/16/25 18:22, Xu Yilun wrote:
-> > +	struct page *root __free(__free_page) = alloc_page(GFP_KERNEL |
-> > +							   __GFP_ZERO);
-> > +	if (!root)
-> > +		return NULL;
+> > +static __init int get_tdx_sys_info_ext(struct tdx_sys_info_ext *sysinfo_ext)
+> > +{
+> > +	int ret = 0;
+> > +	u64 val;
+> > +
+> > +	if (!ret && !(ret = read_sys_metadata_field(0x3100000100000000, &val)))
+> > +		sysinfo_ext->memory_pool_required_pages = val;
+> > +	if (!ret && !(ret = read_sys_metadata_field(0x3100000100000001, &val)))
+> > +		sysinfo_ext->ext_required = val;
+> > +
+> > +	return ret;
+> > +}
 > 
-> Why don't you just kcalloc() this like the rest of them?
+> These were OK-ish when they were being generated by a script.
+> 
+> Now that they're being generated by and edited by humans, they
+> need to actually be readable.
 
-It's feasible for this patch, see the code below.
-
-But when I'm trying to address the copy-and-paste concern in Patch #15,
-I realize the common part is the allocation of the supporting structures
-(struct tdx_page_array *, struct page **, the root page), and the
-different part is the allocation of data pages that TDX module requires.
-So I don't think I should allocate root page along with the data pages
-here.
+I agree. Further more, let me figure out if we could require minimum
+boilerplate code when a new field is added.
 
 > 
-> Then you won't need "mm: Add __free() support for __free_page()" either,
-> right?
+> Can we please get this down to something that looks more like:
+> 
+> 	MACRO(&sysinfo_ext->memory_pool_required_pages, 0x3100000100000000);
+> 	MACRO(&sysinfo_ext->ext_required,		0x3100000100000001);
+> 
+> You can generate code in that macro, or generate a struct like
+> this:
+> 
+> static __init int get_tdx_sys_info_ext(struct tdx_sys_info_ext *sysinfo_ext)
+> {
+> 	int ret = 0;
+> 	struct tdx_metadata_init[] = {
+> 		MACRO(&sysinfo_ext->memory_pool_required_pages, 0x3100000100000000),
+> 		MACRO(&sysinfo_ext->ext_required,		0x3100000100000001),
+> 		{},
+> 	};
+> 
+> 	return tdx_...(sysinfo_ext, tdx_metadata_init);
+> }
+> 
+> and have the helper parse the structure.
+> 
+> But, either way, the method that's being proposed here needs to go.
 
-mm.. But I still need this scope-based cleanup in later patch:
+I'll try and may need a seperate refactoring patch for the existing
+code.
 
-  [PATCH v1 22/26] coco/tdx-host: Implement SPDM session setup
 
-
---------------8<------
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index b5ad3818f222..bb62f8639040 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -148,6 +148,7 @@ struct tdx_page_array {
-        unsigned int offset;
-        unsigned int nents;
-        struct page *root;
-+       struct page **raw;
- };
-
- void tdx_page_array_free(struct tdx_page_array *array);
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index fd622445d3d6..c41af2260475 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -360,15 +360,16 @@ void tdx_page_array_free(struct tdx_page_array *array)
-        if (!array)
-                return;
-
--       __free_page(array->root);
--       tdx_free_pages_bulk(array->nr_pages, array->pages);
--       kfree(array->pages);
-+       tdx_free_pages_bulk(array->nr_pages + 1, array->raw);
-+       kfree(array->raw);
-        kfree(array);
- }
- EXPORT_SYMBOL_GPL(tdx_page_array_free);
-
- static struct tdx_page_array *tdx_page_array_alloc(unsigned int nr_pages)
- {
-+       /* Need an extra root page to hold the page array HPA list */
-+       unsigned int nr_pages_alloc = nr_pages + 1;
-        int ret;
-
-        if (!nr_pages)
-@@ -379,23 +380,19 @@ static struct tdx_page_array *tdx_page_array_alloc(unsigned int nr_pages)
-        if (!array)
-                return NULL;
-
--       struct page *root __free(__free_page) = alloc_page(GFP_KERNEL |
--                                                          __GFP_ZERO);
--       if (!root)
--               return NULL;
--
--       struct page **pages __free(kfree) = kcalloc(nr_pages, sizeof(*pages),
--                                                   GFP_KERNEL);
--       if (!pages)
-+       struct page **raw __free(kfree) = kcalloc(nr_pages_alloc, sizeof(*raw),
-+                                                 GFP_KERNEL);
-+       if (!raw)
-                return NULL;
-
--       ret = tdx_alloc_pages_bulk(nr_pages, pages);
-+       ret = tdx_alloc_pages_bulk(nr_pages_alloc, raw);
-        if (ret)
-                return NULL;
-
-+       array->root = raw[0];
-+       array->pages = raw + 1;
-        array->nr_pages = nr_pages;
--       array->pages = no_free_ptr(pages);
--       array->root = no_free_ptr(root);
-+       array->raw = no_free_ptr(raw);
-
-        return no_free_ptr(array);
- }
