@@ -1,165 +1,109 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB871366DD7
-	for <linux-coco@lists.linux.dev>; Tue, 18 Nov 2025 19:09:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB00130BF7D
+	for <linux-coco@lists.linux.dev>; Tue, 18 Nov 2025 22:23:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763492955; cv=none; b=IYnOBYgffi/3l/Yua+d8NH9VyPL2vB9/aIlHkS7VZ+KDkEYtLsgEB8PQ0KTBVcizThs64Qo1vFnQY6jODRsNFR8nrO2dxyJn/PWZ04agcxdvpsm2AxmguJ3Aof+XzwgEuEEQbZar8MunZlnJHSeYMEusev2w9A0vyclt1jLHZM8=
+	t=1763504614; cv=none; b=L47I/HzTyYJtblziyxk/krTsQy0eQJuMG3XshChkrIDc9/azXySs26Dg7ul8HNBcTjQA2nx8ojdsMavI4DnNhuwSASVKnVfYAzZnDbVi5TFk6gXv2VLRi8jip1+MGFv1EW/TsvEG8SBZiw69z7XlzVTdtyN+0Pd7SGLNUwla8hM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763492955; c=relaxed/simple;
-	bh=5ln9yQLShanL8HNdyhz0x5apv7YrZKXZwF/7CPu5SOg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aB3SrNAB+Fbr5ZyWEb8+x+6lO933p45cK7ETP1Vy6pSA9av8EwMge6+CA5Nssp4JYcyhSDagHb7GOCnTTQSEQJDGYUoBglP/kiKqbsjy0jiN4s4iDYgIZZEGvzE3l7HNzFmvez3hl5bd2GvyTdfpLstJxDPUS4/kTHdr5LtH/z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e+mGwKal; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1763504614; c=relaxed/simple;
+	bh=1iQs026hZoi5t1uCrSj4KT0sve/8LeLDIXGloj9+TvI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=s+pX39/bgcbSTcM7BK1atMzcJyOds5Gydex0PEjByRWH83jnUR+lcZYWWd7UarLSJpgDKJEMuHyZsX9xTNO+ZCvUBL/kCFjtjb6vvxKSpSf9hiZNzBVYHo2foWSXdzTQ7c8lhPMLNHF4uCdMpJR8f79aDEcU3sazs2IEEzxz95Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CCiItxt4; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e+mGwKal"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763492954; x=1795028954;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=5ln9yQLShanL8HNdyhz0x5apv7YrZKXZwF/7CPu5SOg=;
-  b=e+mGwKalova8uMYo8AY0iQXfjeMtFcu8KxBK3Hoei18AlGgNXmW47xn3
-   S15B7eIlWwrrczbgRrXpZ2u0Y2MeviTmEo9UyikmK8z23IJT5pf7UcJdv
-   y1IjBgWmib0HIBaYEGFR3tzR2akAcSGSEgAqvh/NOvpIT70+8dhBRQ7Vg
-   jPM/GIn3bxk87hG5F3GEhvz89ZWnsU/XcYFxSwMmZnGGhoRH5WMBuIUZ3
-   Ae9sxirGzDLnkcTSh3KBd8jirq/1xt/UWX/urTNlbf8x2vAkXzluqu38m
-   swVMJ13ZNDihHjOHyatb092OLrJTADnp5WX4toLgBFpZiJTXzJqge5YmH
-   w==;
-X-CSE-ConnectionGUID: kjuj29ROTASP+r/pw1VFgg==
-X-CSE-MsgGUID: bBB2WaSLSmS7/iq/Sq/tdQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="68132429"
-X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; 
-   d="scan'208";a="68132429"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 11:09:13 -0800
-X-CSE-ConnectionGUID: 14Dg1cXzThuvCVYU85e6uw==
-X-CSE-MsgGUID: YpnGESm+S/a5CSITpAygFA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; 
-   d="scan'208";a="191627364"
-Received: from tslove-mobl4.amr.corp.intel.com (HELO [10.125.109.142]) ([10.125.109.142])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 11:09:12 -0800
-Message-ID: <70056924-1702-4020-b805-014efb87afdd@intel.com>
-Date: Tue, 18 Nov 2025 11:09:12 -0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CCiItxt4"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7c240728e2aso1228264b3a.3
+        for <linux-coco@lists.linux.dev>; Tue, 18 Nov 2025 14:23:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1763504611; x=1764109411; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rgYuW8UOyWLUyyathvu0pA9lXS215ZKHalLPZAaX/EM=;
+        b=CCiItxt4K77GIhVQiUQXg55BbJQfCmybdWjuyUjSZHOaJgaG/LqPhx+CSeowxqRtQ1
+         /IRmZ73gDa+XzqNO18szwyzCRyaJq71nA+hlWYiGcSbeKLafoPBESBRHYiOjKvJcigLh
+         tfsq1mrXTNjaurXtC70MRtwNyuYHbrvhMrp0Ce8u5ZdafHxjPamgo5cxgobj96pdnzNd
+         LWACZUS/iNsIkAzW2U3xopczBPU+8LOv7V+APD/Z48qB3n4O8Hb1ZiBR+3n6YbgcJgHy
+         ZWR+yMFIs2K5ux+RrrskwKgtgk70oqx+klMh+/l1CrPRtdqhDNtEXoApxiBNAjfRl4Ax
+         whxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763504611; x=1764109411;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rgYuW8UOyWLUyyathvu0pA9lXS215ZKHalLPZAaX/EM=;
+        b=Hq3gAB+0IBHXJ4X2Zm+mhC8IBEUrcVhTAf54566DH6KrqOryo1TOvNBJnau/AdSRPR
+         L+7P2NyajaPKq313yQN3B2Mxt0vtHFM0HhOjAa78JMcq/e1ZG4gw3TCIJjINkcZ6L/JH
+         lseuWtGUy2BR/tyrAbLkApMiTxnuMst1tZw/YpM+0HmeadaHcUgEJicPnV/wcn19OdpI
+         jeGCTXKOqUH2DjVePbMruQ5hqYX+nsJiY9P914sLHlnIDRVRGcU4dLdhknQvkjI0GSdf
+         5Crp5HolLgY1/Emrtx13YDZ4uwcBogFT3oZgWEwpqQfDZjappItFZDJqYHYDSBnWwSxd
+         0wRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWewAXM3ji0FkDAnMngPXsVfng8kGNtN7wl3l77fytYZOrZbhxGz7MBgk2APiQVWs4JGyHW0y+GlsE8@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw9YXuM69d+HoPPF3Mu4tY3V/JqeU/ovYzV2ITDdq3v5JBLuhG2
+	E6CyiqxLiRhaIQOCg9nJ6vgCsMiVa+VOma80O8q7l6uTKoPVMP8EHGxWg2JxUNNWTDMej1RcBRE
+	Q3VOpLQ==
+X-Google-Smtp-Source: AGHT+IFXkFEO29YFXjyiYY3HorCCsF26L2b/h6RaXMwbRwLOl5iJ+9ZCln9TDezx9nP45smTnRSHgsQ+a4k=
+X-Received: from pfbik6.prod.google.com ([2002:a05:6a00:8d06:b0:7ba:f8d1:3475])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7484:b0:34e:5dd4:b1b5
+ with SMTP id adf61e73a8af0-35b9fc781d9mr20603421637.2.1763504610944; Tue, 18
+ Nov 2025 14:23:30 -0800 (PST)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Tue, 18 Nov 2025 14:23:24 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 06/26] x86/virt/tdx: Add tdx_page_array helpers for new
- TDX Module objects
-To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev,
- linux-pci@vger.kernel.org
-Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
- yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
- rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
- dan.j.williams@intel.com, kas@kernel.org, x86@kernel.org
-References: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
- <20251117022311.2443900-7-yilun.xu@linux.intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20251117022311.2443900-7-yilun.xu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
+Message-ID: <20251118222328.2265758-1-seanjc@google.com>
+Subject: [PATCH v2 0/4] KVM: x86: Cleanup #MC and XCR0/XSS/PKRU handling
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Kirill A. Shutemov" <kas@kernel.org>
+Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Jon Kohler <jon@nutanix.com>, Tony Lindgren <tony.lindgren@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 11/16/25 18:22, Xu Yilun wrote:
-...> +	struct tdx_page_array *array __free(kfree) = kzalloc(sizeof(*array),
-> +							     GFP_KERNEL);
-> +	if (!array)
-> +		return NULL;
+Optimize XCR0/XSS loads that are currently done on every VM-Enter and VM-Exit,
+by handling them outside of KVM's fastpath inner loop.
 
-I just reworked this to use normal goto's. It looks a billion times
-better. Please remove all these __free()'s unless you have specific
-evidence that they make the code better.
+Context switching at entry/exit is unnecessary behavior inherited from a
+hack-a-fix that papered over an egregious #MC handling bug where the kernel #MC
+handler would call schedule() from atomic contexts.  The resulting #GP due to
+trying to swap FPU state with a guest XCR0/XSS was "fixed" by loading the host
+values before handling #MCs from the guest.
 
-Maybe I'm old fashioned, but I don't see anything wrong with:
+Thankfully, the #MC mess has long since been cleaned up, so it's once again
+safe to swap XCR0/XSS outside of the fastpath (but with IRQs still disabled!).
 
-static struct tdx_pglist *tdx_pglist_alloc(unsigned int nr_pages)
-{
-        struct tdx_page_array *array = NULL;
-        struct page **pages = NULL;
-        struct page *root = NULL;
-        int ret;
+Note, Binbin's kvm_load_xfeatures() still applies cleanly on top, so I
+deliberately didn't include it here (but am still planning on applying it).
 
-        if (!nr_pages)
-                return NULL;
+v2:
+ - Collect reviews. [Jon, Rick]
+ - Fix TDX (suprisingly, not servicing host IRQs is problematic, /s). [Tony]
 
-        array = kzalloc(sizeof(*array), GFP_KERNEL);
-        if (!array)
-                goto out_free;
+v1: https://lore.kernel.org/all/20251030224246.3456492-1-seanjc@google.com
 
-        root = kzalloc(PAGE_SIZE, GFP_KERNEL);
-        if (!root)
-                goto out_free;
+Sean Christopherson (4):
+  KVM: SVM: Handle #MCs in guest outside of fastpath
+  KVM: VMX: Handle #MCs on VM-Enter/TD-Enter outside of the fastpath
+  KVM: x86: Load guest/host XCR0 and XSS outside of the fastpath run
+    loop
+  KVM: x86: Load guest/host PKRU outside of the fastpath run loop
 
-        pages = kcalloc(nr_pages, sizeof(*pages), GFP_KERNEL);
-        if (!pages)
-                goto out_free;
+ arch/x86/kvm/svm/svm.c | 20 ++++++++---------
+ arch/x86/kvm/vmx/tdx.c |  3 ---
+ arch/x86/kvm/vmx/vmx.c | 20 +++++++++--------
+ arch/x86/kvm/x86.c     | 51 +++++++++++++++++++++++++++++-------------
+ arch/x86/kvm/x86.h     |  2 --
+ 5 files changed, 55 insertions(+), 41 deletions(-)
 
-        ret = tdx_alloc_pages_bulk(nr_pages, pages);
-        if (ret)
-                goto out_free;
 
-        array->nr_pages	= nr_pages;
-        array->pages	= pages;
-        array->root	= root;
-
-        return array;
-
-out_free:
-        kfree(array);
-        kfree(root);
-        kfree(pages);
-
-        return NULL;
-}
+base-commit: 4531ff85d9251ff429a633bdb55209d3360f39f2
+-- 
+2.52.0.rc1.455.g30608eb744-goog
 
