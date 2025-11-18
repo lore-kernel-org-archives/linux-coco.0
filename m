@@ -1,121 +1,70 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263E832E12B
-	for <linux-coco@lists.linux.dev>; Tue, 18 Nov 2025 13:14:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0793A79C5;
+	Tue, 18 Nov 2025 17:10:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763471694; cv=none; b=BVyvMDLsdbExqfx6uL0+aH/YDr6zeUYJhTotkIgNayZGUqsxE92L1gMGgkuT10/+d5MB7Ndnq7YDohh+yT54FMK3WYrqMOTJuB2hlMSAih+B4xwGOKOk1VMHm2FjHw6Q18ilHczTgvyhP+/WgnvSHvvflHp0sgZKfwq8fElV2jA=
+	t=1763485809; cv=none; b=LRVwkyM32yWbx3kpcCdCf5Zt4VPCGJgGQOdV3kdMPH/UA35bPMoC/OIx8xtG0ktIDvAFu1yhqjk1n2xrWj8u9eP3CJFa4vF7dV118XVRJfckFTlv0DFpni/sqpsCFuzwqbfYY6sKcauYQIK7uPqlJj+GXFl8wjDQo7ztrt+HwVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763471694; c=relaxed/simple;
-	bh=6eM5MEhpy8qjHBQhtFNZN0yn242L+U7uvd1kx4IHV/E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MYUp9yzvI1henfpViH0mQctxBPFjCUwoedFjK7r9e6uB7i4gD6mSRd7FZXY9vmbjhNmjT7Vy0FxhfvCZAHpE99PL5diCRaJDsbMNqxyCd18H8uIDLLxpX1yrIYe5/Jp/hB0LgEON4jmRMGws5lAiQZQzwGjAcj0ybwjYTNOBJyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mAGIomI2; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1763485809; c=relaxed/simple;
+	bh=gvagssODxCXQt77uWV/N4glreWH9YebloZywPcuCBUI=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=bIXNJOQbpIpzEpE3PrVjjbQnZcKn2lbb0aWDgE+Ft1zVKEWbmj/j36RINbyczNijjwDc3i+dNzsMXdFi0nqN/de+T51WrYbyPtTSMUzmAr32RoZyPBEuG9U6rjDiW8t9cA5CrgVnMTx+wTlSvVAsUU8COkIdkHxUqaOP+XMkd/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=mtEdwtDR; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mAGIomI2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763471692; x=1795007692;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6eM5MEhpy8qjHBQhtFNZN0yn242L+U7uvd1kx4IHV/E=;
-  b=mAGIomI2GRIWPp9ms0iyg8NbaUUnxz3aMLg433BKBwVsPVBBIijM5K9v
-   CTEIumnBSTPbwvGiwp2qVLoQqvmtz9NoOtnfZGaFID8s5ehm4yKSxWB3A
-   sKhK/GbmzvyuYF0gtxGn5bk1Ef3NUIEH2nY8dZaXF37IJrVALHFtZMWlf
-   57eVq3mLqZH12jg0lLgMtRdQp2Z/QoZ7hwP2QfgLx38mZN0SdEYqQtpJY
-   M0eN/5XZIpQy4oVlGw4EngWsZbQFWWOANp9/J/hASX12h+sGZOzB619N8
-   ByY+6QkKzt+WY5QjMdOI5U7f1C2jlgSLUaz4BD71P6w8y+NMc580RYjl3
-   A==;
-X-CSE-ConnectionGUID: eMzQlc3gR6qgM7wvdLN8eg==
-X-CSE-MsgGUID: oiq7ESfdSeeULpx2Q4/YDw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="69361868"
-X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; 
-   d="scan'208";a="69361868"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 05:14:51 -0800
-X-CSE-ConnectionGUID: q0noG09pSv+jtV0xmXaiGA==
-X-CSE-MsgGUID: NncBD5WsSnCq7CwXI6o+VA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; 
-   d="scan'208";a="194870125"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa003.jf.intel.com with ESMTP; 18 Nov 2025 05:14:48 -0800
-Date: Tue, 18 Nov 2025 21:00:02 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
-	yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
-	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
-	dan.j.williams@intel.com, kas@kernel.org, x86@kernel.org
-Subject: Re: [PATCH v1 07/26] x86/virt/tdx: Read TDX global metadata for TDX
- Module Extensions
-Message-ID: <aRxt0prMKusEEt2+@yilunxu-OptiPlex-7050>
-References: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
- <20251117022311.2443900-8-yilun.xu@linux.intel.com>
- <89a4e42d-b0fd-49b0-8d51-df7bac0d5e5b@intel.com>
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="mtEdwtDR"
+Received: from 8bytes.org (p549214ac.dip0.t-ipconnect.de [84.146.20.172])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 3EEF15B860;
+	Tue, 18 Nov 2025 18:10:00 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1763485800;
+	bh=gvagssODxCXQt77uWV/N4glreWH9YebloZywPcuCBUI=;
+	h=Date:From:To:Subject:From;
+	b=mtEdwtDRMTREalADiTH3Cu5+VSOnOWTNcIoCDWO/hT+VTW5igowstHXu20YDpvyt6
+	 R+UsnGgb8spBc3O3VK60A9g6BRH0sBQ4k/0AvHWseqrR+hbaiygM8pqC71ClsausCc
+	 bsbUxP5l4PzXrIpJDrs17d0rJi5EG+g753JfXdRKKf/EujibdSnKhWCB5WegMPCkh0
+	 DL89LrzMQ8UhZ/JA3T/PKeq4gjxJwx/8Tsy1emJ2cqHzIPKmIiO8PMSby4PHrLnLKb
+	 Asa7C4UI3PSqqkNqe8gohSdjW1WYzI3nKSpk202ew9ggdF/kx29gidPju2528aeSTY
+	 WI1Ed2XZTe1Pg==
+Date: Tue, 18 Nov 2025 18:09:59 +0100
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+Subject: SVSM Development Call November 19th, 2025
+Message-ID: <cba55jdxpvqmcaor77arlgak34ixrcevfc33mhq4tkyybuiqi6@xzthbzosur4j>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <89a4e42d-b0fd-49b0-8d51-df7bac0d5e5b@intel.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 17, 2025 at 08:52:36AM -0800, Dave Hansen wrote:
-> On 11/16/25 18:22, Xu Yilun wrote:
-> > +static __init int get_tdx_sys_info_ext(struct tdx_sys_info_ext *sysinfo_ext)
-> > +{
-> > +	int ret = 0;
-> > +	u64 val;
-> > +
-> > +	if (!ret && !(ret = read_sys_metadata_field(0x3100000100000000, &val)))
-> > +		sysinfo_ext->memory_pool_required_pages = val;
-> > +	if (!ret && !(ret = read_sys_metadata_field(0x3100000100000001, &val)))
-> > +		sysinfo_ext->ext_required = val;
-> > +
-> > +	return ret;
-> > +}
-> 
-> These were OK-ish when they were being generated by a script.
-> 
-> Now that they're being generated by and edited by humans, they
-> need to actually be readable.
+Hi,
 
-I agree. Further more, let me figure out if we could require minimum
-boilerplate code when a new field is added.
+Here is the usual call for agenda items for the this weeks SVSM
+development call.  Please send me any agenda items you have in mind or
+raise them in the meeting.
 
-> 
-> Can we please get this down to something that looks more like:
-> 
-> 	MACRO(&sysinfo_ext->memory_pool_required_pages, 0x3100000100000000);
-> 	MACRO(&sysinfo_ext->ext_required,		0x3100000100000001);
-> 
-> You can generate code in that macro, or generate a struct like
-> this:
-> 
-> static __init int get_tdx_sys_info_ext(struct tdx_sys_info_ext *sysinfo_ext)
-> {
-> 	int ret = 0;
-> 	struct tdx_metadata_init[] = {
-> 		MACRO(&sysinfo_ext->memory_pool_required_pages, 0x3100000100000000),
-> 		MACRO(&sysinfo_ext->ext_required,		0x3100000100000001),
-> 		{},
-> 	};
-> 
-> 	return tdx_...(sysinfo_ext, tdx_metadata_init);
-> }
-> 
-> and have the helper parse the structure.
-> 
-> But, either way, the method that's being proposed here needs to go.
+We will use the LF Zoom instance. Details of the meeting  can be found in our
+governance repository at:
 
-I'll try and may need a seperate refactoring patch for the existing
-code.
+	https://github.com/coconut-svsm/governance
 
+The link to the COCONUT-SVSM calendar is:
 
+	https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?view=week
+
+The meeting will be recorded and the recording eventually published.
+
+Stefano volunteered to lead the meeting tomorrow as I unfortunately can not
+make it to the call.
+
+Regards,
+
+	Jörg
