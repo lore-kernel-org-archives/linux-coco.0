@@ -1,148 +1,161 @@
-Received: from sinmsgout03.his.huawei.com (sinmsgout03.his.huawei.com [119.8.177.38])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C24327BF6;
-	Wed, 19 Nov 2025 16:11:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=119.8.177.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1546A36C0B4
+	for <linux-coco@lists.linux.dev>; Wed, 19 Nov 2025 16:19:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763568719; cv=none; b=dLsLsZ/uITMEprl3JNEMB7COEjMxONa5QVgAAPUQdeqAuKhg0H8hQut/MipoS7JoLSwe17iCoAzXvvTVaY2YRz1QMbcCuKJ0pf5wMRTJCFugc3nxeyhnk5VnnbsPZOkK1DSOxKm7pSxAGL1TxPDRSykPUaLC7O5VtvRqGV+KSnI=
+	t=1763569177; cv=none; b=YitpGf0QbzkETfOWHcsjGuSyC8GtpobnuxC9UaYWPKmhXT8SQ766dYU6YMz5SkLle7NgPR7i7yCYkVZVV2xcDmD2wHGECyUBtuZapccAetVx8ERHIjCsjdFlo5MdDDAufKi+pJSxjvUqskvsKVrySklwueaNkn//HgAd3fjfG6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763568719; c=relaxed/simple;
-	bh=VKtIi9EYMzDKzvT85LA50F6VBpmoAORqCYOXVXARLsg=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T4mrk3J4hX1oGsNOqeNxjd5mC6thWBcnso+xHf4kJP55uUylJUE00Vma23W93KeiKFyMXN1YozalvP1OQy3b6OL7za1Z5XgPTE1fBYlw0G5e/2btnFmP5svssDan9pukiFOdwGLuU8VWRtha9uzlrphwuPMOrZNdjf3QUTSJrgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=N3AamHaH; arc=none smtp.client-ip=119.8.177.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1763569177; c=relaxed/simple;
+	bh=OA8gn/YzyU9QJjLkkmCVVlAPNeQrmXxpBK4TmhRysJg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cl1N8/KkR2atZNqvPZU5Icrg1J2JNosJ3vZURqHV+1na9lzDq8cjcjLkI/5XYWR/odfqpQgVqqQmkG96ye9g70dCh/WejkOT89pTjlNQoc7I6WxxouzVIsjhIsph4EFS5v8vpGhcXuXS959I0ic3HxesH8tLtJWNNUuG816yKI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DMOfvHuF; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="N3AamHaH"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=uPer+0zUouYQflZKOjIi8F+VvjFsXukWzLta7c51w5Y=;
-	b=N3AamHaHSG59kZl8zhI/w7eV5iJkjtLu2WLkCRedFEni5oK+iJnpiqwEBCrVT+JqdWxuHjkmg
-	yn0Af0G0tylxhQGSHAypKjtU2fu4rmN/JfxuwemxSxrxfRUHzgaDP005Rtui2hBUoK0Y0Z2PCUb
-	5m8M2rSa0sm/ojZhFMOeZgk=
-Received: from frasgout.his.huawei.com (unknown [172.18.146.32])
-	by sinmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4dBQxv18WwzMtYq;
-	Wed, 19 Nov 2025 23:53:38 +0800 (CST)
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dBQyZ2n6TzHnGhy;
-	Wed, 19 Nov 2025 23:54:14 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6AD1E14033C;
-	Wed, 19 Nov 2025 23:54:47 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Wed, 19 Nov
- 2025 15:54:46 +0000
-Date: Wed, 19 Nov 2025 15:54:44 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-CC: <linux-coco@lists.linux.dev>, <kvmarm@lists.linux.dev>,
-	<linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<dan.j.williams@intel.com>, <aik@amd.com>, <lukas@wunner.de>, Samuel Ortiz
-	<sameo@rivosinc.com>, Xu Yilun <yilun.xu@linux.intel.com>, Jason Gunthorpe
-	<jgg@ziepe.ca>, Suzuki K Poulose <Suzuki.Poulose@arm.com>, Steven Price
-	<steven.price@arm.com>, Bjorn Helgaas <helgaas@kernel.org>, Catalin Marinas
-	<catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon
-	<will@kernel.org>, Oliver Upton <oliver.upton@linux.dev>
-Subject: Re: [PATCH v2 04/11] coco: guest: arm64: Add support for updating
- interface reports from device
-Message-ID: <20251119155444.00002925@huawei.com>
-In-Reply-To: <20251117140007.122062-5-aneesh.kumar@kernel.org>
-References: <20251117140007.122062-1-aneesh.kumar@kernel.org>
-	<20251117140007.122062-5-aneesh.kumar@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DMOfvHuF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763569176; x=1795105176;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=OA8gn/YzyU9QJjLkkmCVVlAPNeQrmXxpBK4TmhRysJg=;
+  b=DMOfvHuFwBCcyM4ilrTbi8jF4k8MItM1jcgN9k/WMf3jpxcm2VoEYl3C
+   g4rQhTO++tB9Ll0USN6XV/QM9DHdZKfsXY9dXOg7AzJ/5RGHqEj3VZVhV
+   y+ozLuv8Yd4m3qsF05fiGNgStl+AhUpwqivU2rgVXh26pqFhlBP0M03LB
+   bkjF5MIzzUwRI0NU25rsjp9kPqZa2Rh2dCEq0m3gfPIzyJzSGi5D8lncW
+   OTDZ26E08Rt0ya8ZDy+RtnQGg2CU0BMtGlkxM1uKj0H0fHiKfnsAZR54S
+   tbhCVQ+ElINZCxYdlbfKx4Ss4HPNWvbDd2DkV3RlNMLgaEVCsgE6D83zO
+   w==;
+X-CSE-ConnectionGUID: Wn80jzzSRvCPPDutgpVwAg==
+X-CSE-MsgGUID: 1NJ0RVvSQy+Uh8QJmhZl/w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11618"; a="76973350"
+X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; 
+   d="scan'208";a="76973350"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2025 08:19:35 -0800
+X-CSE-ConnectionGUID: 3ueiC5/MQ8SdcwUdOpebOw==
+X-CSE-MsgGUID: UzHUWHAKRDawcyxReKFthw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; 
+   d="scan'208";a="190908121"
+Received: from puneetse-mobl.amr.corp.intel.com (HELO [10.125.109.180]) ([10.125.109.180])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2025 08:19:35 -0800
+Message-ID: <97eff128-52e5-4dcd-a684-9fb2e465f995@intel.com>
+Date: Wed, 19 Nov 2025 08:19:34 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 00/26] PCI/TSM: TDX Connect: SPDM Session and IDE
+ Establishment
+To: dan.j.williams@intel.com, Xu Yilun <yilun.xu@linux.intel.com>,
+ linux-coco@lists.linux.dev, linux-pci@vger.kernel.org
+Cc: chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
+ yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
+ rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com, kas@kernel.org,
+ x86@kernel.org
+References: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
+ <3c069d9f-501e-4fde-8ec7-7ea60e4159d0@intel.com>
+ <691de76151967_1aaf41001e@dwillia2-mobl4.notmuch>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <691de76151967_1aaf41001e@dwillia2-mobl4.notmuch>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
- dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Mon, 17 Nov 2025 19:30:00 +0530
-"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
+On 11/19/25 07:50, dan.j.williams@intel.com wrote:
+> "PCI/TSM: PCIe Link Encryption Establishment via TDX platform services"
 
-> Support collecting interface reports using RSI calls. The fetched
-> interface report will be cached in the host.
+That is, indeed, much better!
+
+>> On 11/16/25 18:22, Xu Yilun wrote:
+>>>  arch/x86/virt/vmx/tdx/tdx.c                   | 740 ++++++++++++-
+>>>  arch/x86/virt/vmx/tdx/tdx_global_metadata.c   |  32 +
+>>
+>> Let me know if anyone feels differently, but I really think the "TDX
+>> Host Extensions" need to be reviewed as a different patch set. Sure,
+>> they are a dependency for "TDX Connect". But, in the end, the host
+>> extension enabling does not interact at *ALL* with the later stuff. It's
+>> purely:
 > 
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> I feel differently.
+> 
+>> 	* Ask the TDX module how much memory it wants
+>> 	* Feed it with that much memory
+>>
+>> ... and voila! The fancy new extension works. Right?
+> 
+> Right, minor implementation detail of new ABIs. What does a "TDX
+> Host Extensions" patch set do that does not introduce new ABI? Linux
+> should not merge a patch that gives resources to the TDX Module
+> independent of a intent to use the ABIs.
 
-> diff --git a/drivers/virt/coco/arm-cca-guest/arm-cca.c b/drivers/virt/coco/arm-cca-guest/arm-cca.c
-> index f4c9e529c43e..7988ff6d4b2e 100644
-> --- a/drivers/virt/coco/arm-cca-guest/arm-cca.c
-> +++ b/drivers/virt/coco/arm-cca-guest/arm-cca.c
-> @@ -212,6 +212,12 @@ static struct pci_tsm *cca_tsm_lock(struct tsm_dev *tsm_dev, struct pci_dev *pde
->  	if (ret)
->  		return ERR_PTR(-EIO);
->  
-> +	ret = cca_update_device_object_cache(pdev, cca_dsc);
-> +	if (ret) {
-> +		cca_device_unlock(pdev);
-> +		return ERR_PTR(-EIO);
+I was looking at the "merge" and "review" as different steps of the
+process. I totally agree we shouldn't send "TDX Host Extensions" to
+Linus without an in-tree user ready to use it.
 
-Why not return ERR_PTR(ret);
+But I do think there's some value in breaking this series up into pieces
+that are relatively unrelated, even if there is a functional dependency
+between them. My gut says that would be best done with two or more
+actually separate postings. But, I'd also be quite open to reworking
+this series into two distinct, logical parts.
 
-> +	}
-> +
->  	return &no_free_ptr(cca_dsc)->pci.base_tsm;
->  }
->  
-> diff --git a/drivers/virt/coco/arm-cca-guest/rhi-da.c b/drivers/virt/coco/arm-cca-guest/rhi-da.c
-> index 3430d8df4424..f4fb8577e1b5 100644
-> --- a/drivers/virt/coco/arm-cca-guest/rhi-da.c
-> +++ b/drivers/virt/coco/arm-cca-guest/rhi-da.c
-> @@ -156,3 +156,47 @@ int rhi_vdev_set_tdi_state(struct pci_dev *pdev, unsigned long target_state)
->  
->  	return ret;
->  }
-> +
-> +static inline int rhi_vdev_get_interface_report(unsigned long vdev_id,
-> +						unsigned long *cookie)
-> +{
-> +	unsigned long ret;
-> +
-> +	struct rsi_host_call *rhi_call __free(kfree) =
-> +		kmalloc(sizeof(struct rsi_host_call), GFP_KERNEL);
-> +	if (!rhi_call)
-> +		return -ENOMEM;
-> +
-> +	rhi_call->imm = 0;
-> +	rhi_call->gprs[0] = RHI_DA_VDEV_GET_INTERFACE_REPORT;
-> +	rhi_call->gprs[1] = vdev_id;
-> +
-> +	ret = rsi_host_call(virt_to_phys(rhi_call));
+like:
 
-Given every rsi_host_call I've seen in here is passed
-output of virt_to_phys() maybe a wrapper that does that is worthwhile?
+	Patches   1-4: New mm support and cleanups
+	Patches   5-9: TDX Module Extensions, including "gifted" memory
+	Patches 10-12: tdx_host device support
+	Patches 12-99: KVM and/or PCI gunk Dave can mostly ignore :)
 
-rsi_host_call_va() or something like that.
-
-> +	if (ret != RSI_SUCCESS)
-> +		return -EIO;
-> +
-> +	*cookie = rhi_call->gprs[1];
-> +	return map_rhi_da_error(rhi_call->gprs[0]);
-> +}
-
-
-> diff --git a/drivers/virt/coco/arm-cca-guest/rsi-da.h b/drivers/virt/coco/arm-cca-guest/rsi-da.h
-> index d1f4641a0fa1..fd4792a50daf 100644
-> --- a/drivers/virt/coco/arm-cca-guest/rsi-da.h
-> +++ b/drivers/virt/coco/arm-cca-guest/rsi-da.h
-> @@ -31,4 +31,6 @@ static inline int rsi_vdev_id(struct pci_dev *pdev)
->  
->  int cca_device_lock(struct pci_dev *pdev);
->  int cca_device_unlock(struct pci_dev *pdev);
-> +int cca_update_device_object_cache(struct pci_dev *pdev, struct cca_guest_dsc *dsc);
-> +
-
-If the blank line makes sense, should have been in previous patch.
-
->  #endif
-
+But the important part is considering what the logical pieces are,
+breaking up the series into those chapters, and telling the story of
+this series be told by putting them in order.
