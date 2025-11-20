@@ -1,64 +1,41 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB186D531
-	for <linux-coco@lists.linux.dev>; Thu, 20 Nov 2025 06:44:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2960F19995E;
+	Thu, 20 Nov 2025 08:43:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763621045; cv=none; b=Y9a7X/Aq5HqsgZJISzuvAgUimLD252TEzrXiYUetDea9W23e7A+hNfOAp+89QlzuUYTw0CWk+hnvHafdai+gsdX2OMIiVMWIVmVPkQhLrX0RSOkhy87HwUp/ToEmisNkmHYCqigJq2saVsR6f3FT/0q88MDh4dOj/xafP1px9/M=
+	t=1763628234; cv=none; b=eK1nF79xWp6NoTpqZvn0JhwwZJPrN0k7h9w61f66NpgN+mwGYChfZI3hS8DECOxGVRkrgK1yX2DdtXpeST5K85rjEijWRMV36q7JIM6sS211v0KHoG126uR9ocGciBwNxpPX6cVxXOL2gmzVLnhNMktOxJG6ijhAKASrPPS4xHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763621045; c=relaxed/simple;
-	bh=/k95Ch2WZrUhShfgashJIMCWCIu5BoQ14eRPgopSWeQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e5xPhidpJr9K3O7RfplR5jIo+vzPaDlezDlfriPs0y4zfk/5HUCrpkkCNmb7lGRmboUvjU8b3qt6M7fOTWg+CdTfZ4dO0rcK5nZd2kcnfjBb4z83SXwytv6TDsDXEir4P3JoEMVKGS2kULc7TFWe8l/AtTiDfL0G5aGNAB3SkbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aDznXJEQ; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1763628234; c=relaxed/simple;
+	bh=ls2jXTNC7vXaqYRUSa+wLXwmQ04zv41CI8RSuWVwcX4=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tgSuor5N9xkEb/LLDHEsUYIcfj+Vt6S2xceT8Mu1ltY3F7enJWswSj17nvq2Oz6Q+Zi1u3qreaw9CpEJfqGiLSKfl2PjhsFWR3Ce8gau8LpkmmpC9ahLFDrOlsFAd1ZLC/5A9A1mlA4VKCTQGXOYCGkJqoBDgJVcwpWyJ7S1g14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=1CQDFgrM; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aDznXJEQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763621044; x=1795157044;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=/k95Ch2WZrUhShfgashJIMCWCIu5BoQ14eRPgopSWeQ=;
-  b=aDznXJEQLxN93ebGRl/uwTOaLb7CLQUIXrXfmRbcK4hxQsoLIJEraUFb
-   Q4snnHJVKG7TG0fIP/arBPPXJEFekZFS/PodI4k3IB6xRH1pV4utigSEG
-   Y8sN/F10yqrei+cYIt/awm5ME2ilNc+j8jjBBQRXudXtt7fyKQnAKdLCT
-   32ULSiHIR/O/ZdiSt03VT1dsB5VBeyM/zhozo9YSPFAFiLB81iDb993Y8
-   4TLQAo5gML3+6uxIamX+7BiroxetXqRkRbrGBSC7wMCl8vmxbX137yX4i
-   nHxMKhQUhkGbab6Rn5lwmYCyHE+A9vJB10zepbtUAL6rMtp/j9ejdGnzP
-   Q==;
-X-CSE-ConnectionGUID: KBplck3pTA6rTwEZQ9YIZA==
-X-CSE-MsgGUID: pofs7wFBTx6mGCCG2V3nBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11618"; a="65715053"
-X-IronPort-AV: E=Sophos;i="6.19,317,1754982000"; 
-   d="scan'208";a="65715053"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2025 22:43:53 -0800
-X-CSE-ConnectionGUID: dUwpGbNjSvS0KlgjEVNfHQ==
-X-CSE-MsgGUID: fXH9vQb4RHa0u5j4sjp4Yw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,317,1754982000"; 
-   d="scan'208";a="195756499"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa004.jf.intel.com with ESMTP; 19 Nov 2025 22:43:49 -0800
-Date: Thu, 20 Nov 2025 14:28:58 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: dan.j.williams@intel.com
-Cc: Dave Hansen <dave.hansen@intel.com>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org, chao.gao@intel.com, dave.jiang@intel.com,
-	baolu.lu@linux.intel.com, yilun.xu@intel.com,
-	zhenzhong.duan@intel.com, kvm@vger.kernel.org,
-	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
-	kas@kernel.org, x86@kernel.org
-Subject: Re: [PATCH v1 06/26] x86/virt/tdx: Add tdx_page_array helpers for
- new TDX Module objects
-Message-ID: <aR61KpJ6c2azfwAn@yilunxu-OptiPlex-7050>
-References: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
- <20251117022311.2443900-7-yilun.xu@linux.intel.com>
- <70056924-1702-4020-b805-014efb87afdd@intel.com>
- <691dee3f569dc_1aaf41001e@dwillia2-mobl4.notmuch>
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="1CQDFgrM"
+Received: from 8bytes.org (p549214ac.dip0.t-ipconnect.de [84.146.20.172])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 26EDF5AF47;
+	Thu, 20 Nov 2025 09:43:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1763628225;
+	bh=ls2jXTNC7vXaqYRUSa+wLXwmQ04zv41CI8RSuWVwcX4=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=1CQDFgrMA1jOtHJGvxcko0k8ba4LOAl9VNms62Wc49nD+c5KUSIPTYuQouyp+tOIY
+	 CKitskmgFDtx31HhdKyLW40wccD2herPKt0FM8O7IzYP/aLpMU8AHySKsSmjIYBDBc
+	 bXDgggwIiC3zspusychmz4LufyKcOlA+5luqp+m8gHRJ7jawnI09p4XYJs7ffzS5A9
+	 YaNil8oozM2Hbdw4Sp5IXEKQ8lbibPTiYBZYwGdhSiilVhs2Q6xNgS9n//0k0aJnCi
+	 hQngsFG/Y2bw0LiUggLTun4e9SDYVZHDp5JjR8ruGk1FidUSc4xkmyCSVojPVkziso
+	 /UKfaJbNub98w==
+Date: Thu, 20 Nov 2025 09:43:44 +0100
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+Subject: Re: SVSM Development Call November 19th, 2025
+Message-ID: <yot4sbmsys5uym7paqjvofqqewjss4ajnbdlp3s6m3sn325pk5@wootdlhhlhsp>
+References: <cba55jdxpvqmcaor77arlgak34ixrcevfc33mhq4tkyybuiqi6@xzthbzosur4j>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -67,43 +44,12 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <691dee3f569dc_1aaf41001e@dwillia2-mobl4.notmuch>
+In-Reply-To: <cba55jdxpvqmcaor77arlgak34ixrcevfc33mhq4tkyybuiqi6@xzthbzosur4j>
 
-On Wed, Nov 19, 2025 at 08:20:15AM -0800, dan.j.williams@intel.com wrote:
-> Dave Hansen wrote:
-> > On 11/16/25 18:22, Xu Yilun wrote:
-> > ...> +	struct tdx_page_array *array __free(kfree) = kzalloc(sizeof(*array),
-> > > +							     GFP_KERNEL);
-> > > +	if (!array)
-> > > +		return NULL;
-> > 
-> > I just reworked this to use normal goto's. It looks a billion times
-> > better. Please remove all these __free()'s unless you have specific
-> > evidence that they make the code better.
-> > 
-> > Maybe I'm old fashioned, but I don't see anything wrong with:
-> > 
-> > static struct tdx_pglist *tdx_pglist_alloc(unsigned int nr_pages)
-> > {
-> >         struct tdx_page_array *array = NULL;
-> >         struct page **pages = NULL;
-> >         struct page *root = NULL;
-> >         int ret;
-> > 
-> >         if (!nr_pages)
-> >                 return NULL;
-> > 
-> >         array = kzalloc(sizeof(*array), GFP_KERNEL);
-> >         if (!array)
-> >                 goto out_free;
-> > 
-> >         root = kzalloc(PAGE_SIZE, GFP_KERNEL);
-> >         if (!root)
-> >                 goto out_free;
-> 
-> I think this s/alloc_page/kcalloc/ is the bulk of the improvement, that
-> is a good change I missed.
+Meeting minutes are now available in this PR:
 
-s/alloc_page/kzalloc, is it?
+	https://github.com/coconut-svsm/governance/pull/86
 
-Yes, I agree. I almost missed the change here.
+Regards,
+
+	Joerg
