@@ -1,291 +1,236 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from sinmsgout01.his.huawei.com (sinmsgout01.his.huawei.com [119.8.177.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF0F33C185
-	for <linux-coco@lists.linux.dev>; Thu, 20 Nov 2025 15:23:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3A524A05D;
+	Thu, 20 Nov 2025 17:32:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=119.8.177.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763652222; cv=none; b=Mcyak6Vn+5TrTyy2sr2FdKzy0Lve7A/guN8/kXJMKhdviQ2Oh9HuifNYZODTzpbSl6K0JZy8EnZbyvehsT/CLkOOyxzZJJGik4opWckkrZz9pCekphi5ACMEYgvdOy96MoEFu1GuU14mwZPv1OfBSNgUWApO44YfTxtT7/uRzGE=
+	t=1763659938; cv=none; b=NHAzwSH1r134DaB5xZcZihSmd5h6iqKRVQGj8Mu+AMoVIai8o/BJ5I3egmv83nHtM1B3FR0rRJhj5W4BNx7lBzys9HhigVoHsNSpMlS9zwsXFX3IG9UJVFTWp93AUtwvXXYdrcidyY3mQN0/vnCO1uowM5VmTGR5vU4XOFapPTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763652222; c=relaxed/simple;
-	bh=bj15Y9VvxernGXOXAHezLeGkYBBoJT0P5MFHGRZHdKY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z579jMy9mcOQGcQLrxitNpnKVLpKbx5A80ghZqQI4EJESljkvF3jW0aTj7HXjvDPVo4laRpQ6CD7cRgxjZiNls2ZtKDdGCbp1XuHb9B62wLdREXoUKaGsCsVHUJmD3MLJEzok28tC65HvodsaYUx9YXz4JqnO9lSX85n7/2pHgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nd8bwrOy; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1763659938; c=relaxed/simple;
+	bh=9/c+ELr1/fHues8ZWflDDWYNjH0kSYLiJWym/CrYVZw=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=frirblrSWPWetjmA3M53yFTkrJ1ZwYe4iGPA6UuDNxvncmLC6tOgO7xe7bjw7orLBp63Xsj/3BhdN6IolDorWXy1m3KTZGzDm5FDzpGV7lH0goPT+OJWXY7MXhYX7xH+RY9LNMS/5CGyDXAWqP4IHi+rpmKO0CXZsmFfyOs7Z1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=KPst2i0q; arc=none smtp.client-ip=119.8.177.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nd8bwrOy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763652221; x=1795188221;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=bj15Y9VvxernGXOXAHezLeGkYBBoJT0P5MFHGRZHdKY=;
-  b=Nd8bwrOydN4FwZmhwIy3ibXxDazhYoKh41ekJmJy+tk1em/G8KyknPrq
-   Fq2EtNLDyLqZl2PdURXNtG/YcbXWrcuFgaa8ZohAnwkgBOo7wJjTyeCT6
-   +3WPvJocmAOY8dex9bEGZLKzeZzfBWGQEDfFCZ+mNE4baAvDfb7OSD2t6
-   kOEhw+X4GXmKUR32fj6rg6HhhuDwSUWHlR7A/wJ8svagOr8Oj4Z6/0Ssm
-   mJgMOx2ek/LPFmepg6UcZQ3Tuog8HxR1ikDR1BMAvVZ9Il4E1X5llvluL
-   pCSqPIfk82wjU8yCYW2+m5btnoHVfZmYJynGykp5pb0avkhgGRCRxu8dw
-   w==;
-X-CSE-ConnectionGUID: nlztUUr0TgawvpQBS6D3dQ==
-X-CSE-MsgGUID: eJy6eTtpSPGS9eMikm8OVg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="65763637"
-X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; 
-   d="scan'208";a="65763637"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 07:23:41 -0800
-X-CSE-ConnectionGUID: poaTVW1nRHCa58cdzfOw5w==
-X-CSE-MsgGUID: 73x9Rz1PT1qkJmj6xyLN/w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; 
-   d="scan'208";a="214749631"
-Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.109.230]) ([10.125.109.230])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 07:23:40 -0800
-Message-ID: <13e894a8-474f-465a-a13a-5d892efbfadb@intel.com>
-Date: Thu, 20 Nov 2025 07:23:39 -0800
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="KPst2i0q"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=mXOkmgMomugKQo+k2FQLzUzQiiA115Atzcu83W/SPKg=;
+	b=KPst2i0qTU8MfV5I+OsuoeDxcG3Lkz28HjMKVG1+Rx8qvyV36gvjwjpYVza1wH324V/YkwW3J
+	yIuZNER1Un3TacpmCIV28Xh342p2DRNybKmBqoxha/V/Ny447FpfM3s0+RoV7OujF2BmHLnBn1M
+	YWx1ppycWMExhelFp8mPR4U=
+Received: from frasgout.his.huawei.com (unknown [172.18.146.33])
+	by sinmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4dC53X51J1z1P7SP;
+	Fri, 21 Nov 2025 01:30:48 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dC5432vNFzJ46CH;
+	Fri, 21 Nov 2025 01:31:15 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 384A71402FD;
+	Fri, 21 Nov 2025 01:32:01 +0800 (CST)
+Received: from localhost (10.48.159.58) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 20 Nov
+ 2025 17:32:00 +0000
+Date: Thu, 20 Nov 2025 17:31:57 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+CC: <linux-coco@lists.linux.dev>, <kvmarm@lists.linux.dev>,
+	<linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<dan.j.williams@intel.com>, <aik@amd.com>, <lukas@wunner.de>, Samuel Ortiz
+	<sameo@rivosinc.com>, Xu Yilun <yilun.xu@linux.intel.com>, Jason Gunthorpe
+	<jgg@ziepe.ca>, Suzuki K Poulose <Suzuki.Poulose@arm.com>, Steven Price
+	<steven.price@arm.com>, Bjorn Helgaas <helgaas@kernel.org>, Catalin Marinas
+	<catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon
+	<will@kernel.org>, Oliver Upton <oliver.upton@linux.dev>
+Subject: Re: [PATCH v2 06/11] coco: guest: arm64: Add support for reading
+ cached objects from host
+Message-ID: <20251120173157.00007fc4@huawei.com>
+In-Reply-To: <20251117140007.122062-7-aneesh.kumar@kernel.org>
+References: <20251117140007.122062-1-aneesh.kumar@kernel.org>
+	<20251117140007.122062-7-aneesh.kumar@kernel.org>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 08/26] x86/virt/tdx: Add tdx_enable_ext() to enable of
- TDX Module Extensions
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
- chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
- yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
- rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
- dan.j.williams@intel.com, kas@kernel.org, x86@kernel.org
-References: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
- <20251117022311.2443900-9-yilun.xu@linux.intel.com>
- <cfcfb160-fcd2-4a75-9639-5f7f0894d14b@intel.com>
- <aRyphEW2jpB/3Ht2@yilunxu-OptiPlex-7050>
- <62bec236-4716-4326-8342-1863ad8a3f24@intel.com>
- <aR6ws2yzwQumApb9@yilunxu-OptiPlex-7050>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <aR6ws2yzwQumApb9@yilunxu-OptiPlex-7050>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 
-On 11/19/25 22:09, Xu Yilun wrote:
-> On Tue, Nov 18, 2025 at 10:32:13AM -0800, Dave Hansen wrote:
-...
->> Please *say* that. Explain how existing TDX metadata consumes memory and
->> how this new mechanism is different.
+On Mon, 17 Nov 2025 19:30:02 +0530
+"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
+
+> Teach rsi_device_start() to pull the interface report and device
+> certificate from the host by querying size, sharing a decrypted buffer
+> for the read, copying the payload to private memory. Also track the
+> fetched blobs in struct cca_guest_dsc so later stages can hand them to
+> the attestation flow.
 > 
-> Yes.
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> ---
+>  arch/arm64/include/asm/rhi.h             |  7 +++
+>  drivers/virt/coco/arm-cca-guest/rhi-da.c | 80 ++++++++++++++++++++++++
+>  drivers/virt/coco/arm-cca-guest/rhi-da.h |  1 +
+>  drivers/virt/coco/arm-cca-guest/rsi-da.h |  8 +++
+>  4 files changed, 96 insertions(+)
 > 
-> Existing ways to provide an array of metadata pages to TDX Module
-> varies:
-> 
->  1. Assign each HPA for each SEAMCALL register.
->  2. Call the same seamcall multiple times.
->  3. Assign the PA of HPA-array in one register and the page number in
->     another register.
-> 
-> TDX Module defines new interfaces trying to unify the page array
-> provision. It is similar to the 3rd method. The new objects HPA_ARRAY_T
-> and HPA_LIST_INFO need a 'root page' which contains a list of HPAs.
-> They collapse the HPA of the root page and the number of valid HPAs
-> into a 64 bit raw value for one SEAMCALL parameter.
-> 
-> I think these words should be in:
-> 
->   x86/virt/tdx: Add tdx_page_array helpers for new TDX Module objects
+> diff --git a/arch/arm64/include/asm/rhi.h b/arch/arm64/include/asm/rhi.h
+> index ce2ed8a440c3..738470dfb869 100644
+> --- a/arch/arm64/include/asm/rhi.h
+> +++ b/arch/arm64/include/asm/rhi.h
+> @@ -39,6 +39,13 @@
+>  				 RHI_DA_FEATURE_VDEV_SET_TDI_STATE)
+>  #define RHI_DA_FEATURES			SMC_RHI_CALL(0x004B)
+>  
+> +#define RHI_DA_OBJECT_CERTIFICATE		0x1
+> +#define RHI_DA_OBJECT_MEASUREMENT		0x2
+> +#define RHI_DA_OBJECT_INTERFACE_REPORT		0x3
+> +#define RHI_DA_OBJECT_VCA			0x4
+> +#define RHI_DA_OBJECT_SIZE		SMC_RHI_CALL(0x004C)
+> +#define RHI_DA_OBJECT_READ		SMC_RHI_CALL(0x004D)
+> +
+>  #define RHI_DA_VDEV_CONTINUE		SMC_RHI_CALL(0x0051)
+>  #define RHI_DA_VDEV_GET_INTERFACE_REPORT SMC_RHI_CALL(0x0052)
+>  
+> diff --git a/drivers/virt/coco/arm-cca-guest/rhi-da.c b/drivers/virt/coco/arm-cca-guest/rhi-da.c
+> index aa17bb3ee562..d29aee0fca58 100644
+> --- a/drivers/virt/coco/arm-cca-guest/rhi-da.c
+> +++ b/drivers/virt/coco/arm-cca-guest/rhi-da.c
+> @@ -248,3 +248,83 @@ int rhi_update_vdev_measurements_cache(struct pci_dev *pdev,
+>  
+>  	return ret;
+>  }
+> +
+> +int rhi_read_cached_object(int vdev_id, int da_object_type, void **object, int *object_size)
+> +{
+> +	int ret;
+> +	int max_data_len;
+> +	struct page *shared_pages;
+> +	void *data_buf_shared, *data_buf_private;
+> +	struct rsi_host_call *rhicall;
+> +
+> +	rhicall = kmalloc(sizeof(struct rsi_host_call), GFP_KERNEL);
+> +	if (!rhicall)
+> +		return -ENOMEM;
+> +
+> +	rhicall->imm = 0;
+> +	rhicall->gprs[0] = RHI_DA_OBJECT_SIZE;
+> +	rhicall->gprs[1] = vdev_id;
+> +	rhicall->gprs[2] = da_object_type;
+> +
+> +	ret = rsi_host_call(virt_to_phys(rhicall));
+> +	if (ret != RSI_SUCCESS) {
+> +		ret = -EIO;
+> +		goto err_return;
+> +	}
+> +
+> +	if (rhicall->gprs[0] != RHI_DA_SUCCESS) {
+> +		ret = -EIO;
+> +		goto err_return;
+> +	}
+> +
+> +	/* validate against the max cache object size used on host. */
+> +	max_data_len = rhicall->gprs[1];
+> +	if (max_data_len > MAX_CACHE_OBJ_SIZE || max_data_len == 0) {
+> +		ret = -EIO;
+> +		goto err_return;
+> +	}
+> +	*object_size = max_data_len;
 
-That's not quite what I was hoping for.
+I raise this below, but not sure why this is set way before setting
+*object.  Can set it later and use max_data_len which I think is
+clearer naming anyway.
 
-I want an overview of how this new memory fits into the overall scheme.
-I'd argue that these "control pages" are most similar to the PAMT:
-There's some back-and-forth with the module about how much memory it
-needs, the kernel allocates it, hands it over, and never gets it back.
+> +
+> +	data_buf_private = kmalloc(*object_size, GFP_KERNEL);
+> +	if (!data_buf_private) {
+> +		ret = -ENOMEM;
+> +		goto err_return;
+> +	}
+> +
+> +	shared_pages = alloc_shared_pages(NUMA_NO_NODE, GFP_KERNEL, max_data_len);
+> +	if (!shared_pages) {
+> +		ret = -ENOMEM;
+> +		goto err_shared_alloc;
+> +	}
+> +	data_buf_shared = page_address(shared_pages);
+> +
+> +	rhicall->imm = 0;
+> +	rhicall->gprs[0] = RHI_DA_OBJECT_READ;
+> +	rhicall->gprs[1] = vdev_id;
+> +	rhicall->gprs[2] = da_object_type;
+> +	rhicall->gprs[3] = 0; /* offset within the data buffer */
+> +	rhicall->gprs[4] = max_data_len;
+> +	rhicall->gprs[5] = virt_to_phys(data_buf_shared);
+> +	ret = rsi_host_call(virt_to_phys(rhicall));
+> +	if (ret != RSI_SUCCESS || rhicall->gprs[0] != RHI_DA_SUCCESS) {
+> +		ret = -EIO;
+> +		goto err_rhi_call;
+> +	}
+> +
+> +	memcpy(data_buf_private, data_buf_shared, *object_size);
 
-That's the level that this needs to be presented at: a high-level
-logical overview.
+Given data_buf_private() only seems useful if we aren't in an error
+condition, why not move allocation to here and use kmemdup() ?
 
-...> I think it may be too heavy. We have a hundred SEAMCALLs and I expect
-> few needs version 1. I actually think v2 is nothing different from a new
-> leaf. How about something like:
-> 
-> --- a/arch/x86/virt/vmx/tdx/tdx.h
-> +++ b/arch/x86/virt/vmx/tdx/tdx.h
-> @@ -46,6 +46,7 @@
->  #define TDH_PHYMEM_PAGE_WBINVD         41
->  #define TDH_VP_WR                      43
->  #define TDH_SYS_CONFIG                 45
-> +#define TDH_SYS_CONFIG_V1              (TDH_SYS_CONFIG | (1ULL << TDX_VERSION_SHIFT))
-> 
-> And if a SEAMCALL needs export, add new tdh_foobar() helper. Anyway
-> the parameter list should be different.
+> +	free_shared_pages(shared_pages, max_data_len);
+> +
+> +	*object = data_buf_private;
+> +	kfree(rhicall);
+> +	return 0;
+> +
+> +err_rhi_call:
+> +	free_shared_pages(shared_pages, max_data_len);
+> +err_shared_alloc:
+> +	kfree(data_buf_private);
+> +err_return:
+> +	*object = NULL;
 
-I'd need quite a bit of convincing that this is the right way.
+Is it necessary to zero the passed in variable given this function never
+touched it and is returning an error. If it is, can you do that unconditionally
+at start of function and override only on success?
 
-What is the scenario where there's a:
+> +	*object_size = 0;
 
-	TDH_SYS_CONFIG_V1
-and
-	TDH_SYS_CONFIG_V2
+Likewise for the size - I'm not sure why you set that much earlier
+than *object.
 
-in the tree at the same time?
+With those two gone, this feels like it would be well suited for
+some __free magic to handle everything here.
+You will need to deal with the free_shared_pages() though which will
+require an extra structure definition and helpers to wrap up what
+is allocated - similar to what tdx_page_array_alloc does (though without
+the bulk aspects of that)
 
-Second, does it hurt to pass the version along with other calls, like
-... (naming a random one) ... TDH_PHYMEM_PAGE_WBINVD ?
+http://lore.kernel.org/all/20251117022311.2443900-7-yilun.xu@linux.intel.com/
 
-Even if we did this, we wouldn't copy and paste "(1ULL <<
-TDX_VERSION_SHIFT)" all over the place, right? We'd create a more
-concise, cleaner macro and then use it everywhere. Right?
-	
->>>> rather non-obvious. It's doing:
->>>>
->>>> 	while (1) {
->>>> 		fill(&array);
->>>> 		tell_tdx_module(&array);
->>>> 	}
->>>
->>> There is some explanation in Patch #6:
->>
->> That doesn't really help me, or future reviewers.
->>
->>>  4. Note the root page contains 512 HPAs at most, if more pages are
->>>    required, refilling the tdx_page_array is needed.
->>>
->>>  - struct tdx_page_array *array = tdx_page_array_alloc(nr_pages);
->>>  - for each 512-page bulk
->>>    - tdx_page_array_fill_root(array, offset);
->>>    - seamcall(TDH_XXX_ADD, array, ...);
->>
->> Great! That is useful information to have here, in the code.
+Or given the shared page stuff is the inner most aspect anyway you could
+just do a helper function from alloc_shared_pages to free_shared_pages
+calls so that you can call that free_shared_pages unconditionally before
+checking return value.
 
-I asked in my last message, but perhaps it was missed: Could you please
-start clearing irrelevant context in your replies. Like that hunk ^
+Note that if you do go with DEFINE_FREE() you 'could' pass in the storage.
+I objected to that elsewhere but there is precedence.  So have a
+struct shared_pages {
+	struct page *page;
+	size_t order;
+}
+define one on the stack and pass it in so that you avoid an extra allocation.
+Not a pattern I particularly like though and this isn't expected to be
+a particularly fast path so I'd just dynamically allocate a struct shared_pages
+inside alloc_shared_pages.
 
->>>> Why can't it be:
->>>>
->>>> 	while (1)
->>>> 		fill(&array);
->>>> 	while (1)
->>>> 		tell_tdx_module(&array);
->>>
->>> The consideration is, no need to create as much supporting
->>> structures (struct tdx_page_array *, struct page ** and root page) for
->>> each 512-page bulk. Use one and re-populate it in loop is efficient.
->>
->> Huh? What is it efficient for? Are you saving a few pages of _temporary_
->> memory?
-> 
-> In this case yes, cause no way to reclaim TDX Module EXT required pages.
-> But when reclaimation is needed, will hold these supporting structures
-> long time.
-> 
-> Also I want the tdx_page_array object itself not been restricted by 512
-> pages, so tdx_page_array users don't have to manage an array of array.
 
-I suspect we're not really talking about the same thing here.
+> +	kfree(rhicall);
+> +	return ret;
+> +}
 
-In any case, I'm not a super big fan of how tdx_ext_mempool_setup() is
-written. Can you please take another pass at it and try to simplify it
-and make it easier to follow?
 
-This would be a great opportunity to bring in some of your colleagues to
-take a look. You can solicit them for suggestions.
-
->>>>> +static int init_tdx_ext(void)
->>>>> +{
->>>>> +	int ret;
->>>>> +
->>>>> +	if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
->>>>> +		return -EOPNOTSUPP;
->>>>> +
->>>>> +	struct tdx_page_array *mempool __free(tdx_ext_mempool_free) =
->>>>> +		tdx_ext_mempool_setup();
->>>>> +	/* Return NULL is OK, means no need to setup mempool */
->>>>> +	if (IS_ERR(mempool))
->>>>> +		return PTR_ERR(mempool);
->>>>
->>>> That's a somewhat odd comment to put above an if() that doesn't return NULL.
->>>
->>> I meant to explain why using IS_ERR instead of IS_ERR_OR_NULL. I can
->>> impove the comment.
->>
->> I'd kinda rather the code was improved. Why cram everything into a
->> pointer if you don't need to. This would be just fine, no?
->>
->> 	ret = tdx_ext_mempool_setup(&mempool);
->> 	if (ret)
->> 		return ret;
-> 
-> It's good.
-> 
-> The usage of pointer is still about __free(). In order to auto-free
-> something, we need an object handler for something. I think this is a
-> more controversial usage of __free() than pure allocation. We setup
-> something and want auto-undo something on failure.
-I'm not sure what you are trying to say here. By saying "It's good" are
-you agreeing that my suggested structure is good and that you will use
-it? Or are you saying that the original structure is good?
-
-Second, what is an "object handler"? Are you talking about the function
-that is pointed to by __free()?
-
-Third, are you saying that the original code structure is somehow
-connected to __free()? I thought that all of these were logically
-equivalent:
-
-	void *foo __free(foofree) = alloc_foo();
-
-	void *foo __free(foofree) = NULL:
-	foo = alloc_foo();
-
-	void *foo __free(foofree) = NULL;
-	populate_foo(&foo);
-
-Is there something special about doing the variable assignment at the
-variable declaration spot?
