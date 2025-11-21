@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0EA2DCF45
-	for <linux-coco@lists.linux.dev>; Fri, 21 Nov 2025 06:09:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E69613AA2F
+	for <linux-coco@lists.linux.dev>; Fri, 21 Nov 2025 07:53:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763705350; cv=none; b=diKTq6eps5NIY0X7GQn1+ajTQGmUlgSnASlmVV3k4ACyo31NS731AgxKTupMG3KJk33d9b6HXL/yxuuysGyT8U4n8FhzZe0TLrOQv58+MdLwsgMt9/5PqAQ/jcKDcTwo+Bb5RMkHQ3sthcsCJbzaftI8pZ7CKmtLIgZ4yKq+P28=
+	t=1763711635; cv=none; b=OaGIVVi4wQxrR/Rd3OxJMR/COa8JLaESJGMHKo0/vARNVasU2ywy1kcB/M9NzSP6a0boGUcw/kmJvFuPDi0wDiHO7dxGD6W9okBtMA+M/qzZ9BM9xIMduMrHj9GHAPBihP8jHaMiyf7PDtU1nJgF+lJH+46e5R3eA+PvA170CAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763705350; c=relaxed/simple;
-	bh=UC5urBcdaR5woWofccN9NZTgo51AUxQjysKrUr+1mkI=;
+	s=arc-20240116; t=1763711635; c=relaxed/simple;
+	bh=ws8vlINOwUn0WW3T2syZg99ahajDb3vlQunbcHB+4jA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a8UueeSlMdUo8g1D2FGwHv1eIEm5z9s3loijuIen+9lhDYDnG49syBx9ze347r2frhGetce/ZGXIP8FzYANXiaePSMaWNcCt2Xkv+x1Hl3K6dN6IGRXbvXGNPQosi7R+UL2Z6CqrbrADlD6ykcghTY9HDpAfANZYJfFokL8vnvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AKYkSajq; arc=none smtp.client-ip=192.198.163.10
+	 In-Reply-To:Content-Type; b=CiC1foB+pejHTlmWyvz87PYwH2HsefCu9yxhhIEUqDF1iAHv9nDSOL/R0FpdVz6YeSpIps9g5Ypsn4Win50V/ljkuEE5Mo/eHt3f62QjH2OWhfgC+3r0bNJQAbcXIDDqD+2hGD5bmqdLUbyHCOdqKkAu7YIRf6MQ9BqhPwnhk6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D8PcgDX4; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AKYkSajq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D8PcgDX4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763705348; x=1795241348;
+  t=1763711634; x=1795247634;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=UC5urBcdaR5woWofccN9NZTgo51AUxQjysKrUr+1mkI=;
-  b=AKYkSajqbHrr2v/FCmN0SQhEPHQ9hLsvBcfyjPTA5Kuhg6yhxX7sqYM3
-   NLeBREObYfet+Exrs2AB4/dunsje01DEg1L1gmf65Sv6fkG41APpE815s
-   wB040JqkKmbUg5Z3mTI6PGnNi2v0bkdQce0sKjOJEgny6TBrXsIHeFG7h
-   7lfX/ClxznRR/jj3mD5xKAjKr0GKtJpSTe27nBdst6zT2biRupRFmxiW2
-   nUR6OXBSOu+FtRnPY8E/iguZo/Z2Wfim4r+5Q9ZThQMi74sCgMhkbmPjT
-   3d17sR+OvmeKAF9PdzEkAtlFfV6LbQOD9Y7sbW6bxbldSkHtlIg2U+7vZ
-   A==;
-X-CSE-ConnectionGUID: eaXLYuobSvehDi+X6yuX3Q==
-X-CSE-MsgGUID: e5U9plTiSp2efWRRuXYzSQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="77154104"
+  bh=ws8vlINOwUn0WW3T2syZg99ahajDb3vlQunbcHB+4jA=;
+  b=D8PcgDX4u14JaRZOPZcWGdRoYk2EKTG6Up2+shpju9IbqIMLcYvRViXb
+   BrNVoJNf+pkRgU9vfOdQmn3dlZdjjHjZ9nlU5a0C2eAnA/6GeahnRfbWl
+   rup/Q3Rb/QBCw0VZCYL0gNBD5fcrTJBw2x39CkR0F/xZsei9Q+yQIofSh
+   qkrS18Evh40glVW/apvJZ14mor+bf/bojWMoU7a7secwfNnAcZyQwQ7ex
+   Y3Ygo8IjtgFRbwkRBEswuug4Bj3+uaESDqaR7J3JYyRh8+uiLBZiQp9Xo
+   1KjezNwkGfng7EsLxFG3u9qMTTaaPqOk5jMK7lG8CSmbdJbd7fA8IoLvK
+   g==;
+X-CSE-ConnectionGUID: 2yHCP2EzTR22+uNiue2Rcw==
+X-CSE-MsgGUID: QnWOa8XESnCt0W1hTPad5w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="69666913"
 X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; 
-   d="scan'208";a="77154104"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 22:09:05 -0800
-X-CSE-ConnectionGUID: ibcPd2pKQRqisE+/9juuYQ==
-X-CSE-MsgGUID: SRw66EwuTX6+sLM5L7juTA==
+   d="scan'208";a="69666913"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 23:53:53 -0800
+X-CSE-ConnectionGUID: NAREq+E0THmm6zcY78iLzQ==
+X-CSE-MsgGUID: 3sR6GW4TQfeve2bMcaXGGw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; 
-   d="scan'208";a="195889120"
+   d="scan'208";a="191875240"
 Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.241.55]) ([10.124.241.55])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 22:09:03 -0800
-Message-ID: <9098c603-70c0-4a22-a27b-4917ec0601d9@linux.intel.com>
-Date: Fri, 21 Nov 2025 14:09:00 +0800
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 23:53:48 -0800
+Message-ID: <526f295a-326c-4999-8078-53fb758759ef@linux.intel.com>
+Date: Fri, 21 Nov 2025 15:53:46 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,106 +52,144 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] KVM: VMX: Handle #MCs on VM-Enter/TD-Enter outside
- of the fastpath
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, "Kirill A. Shutemov"
- <kas@kernel.org>, kvm@vger.kernel.org, x86@kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, Jon Kohler <jon@nutanix.com>,
- Tony Lindgren <tony.lindgren@linux.intel.com>
-References: <20251118222328.2265758-1-seanjc@google.com>
- <20251118222328.2265758-3-seanjc@google.com>
+Subject: Re: [PATCH v2 04/21] x86/virt/tdx: Prepare to support P-SEAMLDR
+ SEAMCALLs
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org,
+ reinette.chatre@intel.com, ira.weiny@intel.com, kai.huang@intel.com,
+ dan.j.williams@intel.com, yilun.xu@linux.intel.com, sagis@google.com,
+ vannapurve@google.com, paulmck@kernel.org, nik.borisov@suse.com,
+ Farrah Chen <farrah.chen@intel.com>, "Kirill A. Shutemov" <kas@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
+References: <20251001025442.427697-1-chao.gao@intel.com>
+ <20251001025442.427697-5-chao.gao@intel.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20251118222328.2265758-3-seanjc@google.com>
+In-Reply-To: <20251001025442.427697-5-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
 
-On 11/19/2025 6:23 AM, Sean Christopherson wrote:
-> Handle Machine Checks (#MC) that happen on VM-Enter (VMX or TDX) outside
-> of KVM's fastpath so that as much host state as possible is re-loaded
-> before invoking the kernel's #MC handler.  The only requirement is that
-> KVM invokes the #MC handler before enabling IRQs (and even that could
-> _probably_ be related to handling #MCs before enabling preemption).
+On 10/1/2025 10:52 AM, Chao Gao wrote:
+> P-SEAMLDR is another component alongside the TDX module within the
+> protected SEAM range. P-SEAMLDR can update the TDX module at runtime.
+> Software can talk with P-SEAMLDR via SEAMCALLs with the bit 63 of RAX
+> (leaf number) set to 1 (a.k.a P-SEAMLDR SEAMCALLs).
 >
-> Waiting to handle #MCs until "more" host state is loaded hardens KVM
-> against flaws in the #MC handler, which has historically been quite
-> brittle. E.g. prior to commit 5567d11c21a1 ("x86/mce: Send #MC singal from
-> task work"), the #MC code could trigger a schedule() with IRQs and
-> preemption disabled.  That led to a KVM hack-a-fix in commit 1811d979c716
-> ("x86/kvm: move kvm_load/put_guest_xcr0 into atomic context").
+> P-SEAMLDR SEAMCALLs differ from SEAMCALLs of the TDX module in terms of
+> error codes and the handling of the current VMCS.
 >
-> Note, vmx_handle_exit_irqoff() is common to VMX and TDX guests.
+> In preparation for adding support for P-SEAMLDR SEAMCALLs, do the two
+> following changes to SEAMCALL low-level helpers:
 >
-> Cc: Tony Lindgren <tony.lindgren@linux.intel.com>
-> Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Cc: Jon Kohler <jon@nutanix.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> 1) Tweak sc_retry() to retry on "lack of entropy" errors reported by
+>     P-SEAMLDR because it uses a different error code.
+>
+> 2) Add seamldr_err() to log error messages on P-SEAMLDR SEAMCALL failures.
+>
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> Tested-by: Farrah Chen <farrah.chen@intel.com>
 > ---
->   arch/x86/kvm/vmx/tdx.c |  3 ---
->   arch/x86/kvm/vmx/vmx.c | 16 +++++++++++-----
->   2 files changed, 11 insertions(+), 8 deletions(-)
+> Add seamldr_prerr() as a macro to be consistent with existing code. If
+> maintainers would like to switch these to static inline functions then I
+> would be happy to add a new patch to convert existing macros to static
+> inline functions and build on that.
 >
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index e6105a527372..2d7a4d52ccfb 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-> @@ -1110,9 +1110,6 @@ fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
->   	if (unlikely((tdx->vp_enter_ret & TDX_SW_ERROR) == TDX_SW_ERROR))
->   		return EXIT_FASTPATH_NONE;
+> v2:
+>   - use a macro rather than an inline function for seamldr_err() for
+>     consistency.
+> ---
+>   arch/x86/include/asm/tdx.h       |  5 +++++
+>   arch/x86/virt/vmx/tdx/seamcall.h | 29 ++++++++++++++++++++++++++++-
+>   2 files changed, 33 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+> index e872a411a359..7ad026618a23 100644
+> --- a/arch/x86/include/asm/tdx.h
+> +++ b/arch/x86/include/asm/tdx.h
+> @@ -32,6 +32,11 @@
+>   #define TDX_SUCCESS		0ULL
+>   #define TDX_RND_NO_ENTROPY	0x8000020300000000ULL
 >   
-> -	if (unlikely(vmx_get_exit_reason(vcpu).basic == EXIT_REASON_MCE_DURING_VMENTRY))
-> -		kvm_machine_check();
-> -
->   	trace_kvm_exit(vcpu, KVM_ISA_VMX);
+> +/* P-SEAMLDR SEAMCALL leaf function error codes */
+> +#define SEAMLDR_RND_NO_ENTROPY	0x8000000000030001ULL
+> +
+> +#define SEAMLDR_SEAMCALL_MASK	_BITUL(63)
+> +
+>   #ifndef __ASSEMBLER__
 >   
->   	if (unlikely(tdx_failed_vmentry(vcpu)))
-> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-> index fdcc519348cd..f369c499b2c3 100644
-> --- a/arch/x86/kvm/vmx/vmx.c
-> +++ b/arch/x86/kvm/vmx/vmx.c
-> @@ -7062,10 +7062,19 @@ void vmx_handle_exit_irqoff(struct kvm_vcpu *vcpu)
-
-I think the bug in v1 is because the fact that the function is the common path
-for both VMX and TDX is overlooked. Do you think it is worth a comment to
-tell the function is the common path for both VMX and TDX?
-
-Otherwise,
-Reviewed-by: Binbin Wu <binbin.wu@linxu.intel.com>
-
-
->   	if (to_vt(vcpu)->emulation_required)
->   		return;
+>   #include <uapi/asm/mce.h>
+> diff --git a/arch/x86/virt/vmx/tdx/seamcall.h b/arch/x86/virt/vmx/tdx/seamcall.h
+> index 71b6ffddfa40..3f462e58d68e 100644
+> --- a/arch/x86/virt/vmx/tdx/seamcall.h
+> +++ b/arch/x86/virt/vmx/tdx/seamcall.h
+> @@ -14,6 +14,19 @@ u64 __seamcall_saved_ret(u64 fn, struct tdx_module_args *args);
 >   
-> -	if (vmx_get_exit_reason(vcpu).basic == EXIT_REASON_EXTERNAL_INTERRUPT)
-> +	switch (vmx_get_exit_reason(vcpu).basic) {
-> +	case EXIT_REASON_EXTERNAL_INTERRUPT:
->   		handle_external_interrupt_irqoff(vcpu, vmx_get_intr_info(vcpu));
-> -	else if (vmx_get_exit_reason(vcpu).basic == EXIT_REASON_EXCEPTION_NMI)
-> +		break;
-> +	case EXIT_REASON_EXCEPTION_NMI:
->   		handle_exception_irqoff(vcpu, vmx_get_intr_info(vcpu));
-> +		break;
-> +	case EXIT_REASON_MCE_DURING_VMENTRY:
-> +		kvm_machine_check();
-> +		break;
-> +	default:
-> +		break;
-> +	}
+>   typedef u64 (*sc_func_t)(u64 fn, struct tdx_module_args *args);
+>   
+> +static inline bool is_seamldr_call(u64 fn)
+> +{
+> +	return fn & SEAMLDR_SEAMCALL_MASK;
+> +}
+> +
+> +static inline bool sc_need_retry(u64 fn, u64 error_code)
+> +{
+> +	if (is_seamldr_call(fn))
+
+Comparing to TDX module seamcall, seamldr seamcall should be much less.
+Maybe unlikely()?
+
+> +		return error_code == SEAMLDR_RND_NO_ENTROPY;
+> +	else
+> +		return error_code == TDX_RND_NO_ENTROPY;
+> +}
+> +
+>   static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
+>   			   struct tdx_module_args *args)
+>   {
+> @@ -22,7 +35,7 @@ static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
+>   
+>   	do {
+>   		ret = func(fn, args);
+> -	} while (ret == TDX_RND_NO_ENTROPY && --retry);
+> +	} while (sc_need_retry(fn, ret) && --retry);
+>   
+>   	return ret;
+>   }
+> @@ -48,6 +61,17 @@ static inline void seamcall_err_ret(u64 fn, u64 err,
+>   			args->r9, args->r10, args->r11);
 >   }
 >   
->   /*
-> @@ -7528,9 +7537,6 @@ fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
->   	if (unlikely(vmx->fail))
->   		return EXIT_FASTPATH_NONE;
+> +static inline void seamldr_err(u64 fn, u64 err, struct tdx_module_args *args)
+> +{
+> +	/*
+> +	 * Get the actual leaf number. No need to print the bit used to
+> +	 * differentiate between P-SEAMLDR and TDX module as the "P-SEAMLDR"
+> +	 * string in the error message already provides that information.
+> +	 */
+> +	fn &= ~SEAMLDR_SEAMCALL_MASK;
+> +	pr_err("P-SEAMLDR (%lld) failed: 0x%016llx\n", fn, err);
+
+%lld -> %llu ?
+
+And 0x% -> %# to align with seamcall_err().
+
+
+
+> +}
+> +
+>   static __always_inline int sc_retry_prerr(sc_func_t func,
+>   					  sc_err_func_t err_func,
+>   					  u64 fn, struct tdx_module_args *args)
+> @@ -76,4 +100,7 @@ static __always_inline int sc_retry_prerr(sc_func_t func,
+>   #define seamcall_prerr_ret(__fn, __args)					\
+>   	sc_retry_prerr(__seamcall_ret, seamcall_err_ret, (__fn), (__args))
 >   
-> -	if (unlikely((u16)vmx_get_exit_reason(vcpu).basic == EXIT_REASON_MCE_DURING_VMENTRY))
-> -		kvm_machine_check();
-> -
->   	trace_kvm_exit(vcpu, KVM_ISA_VMX);
->   
->   	if (unlikely(vmx_get_exit_reason(vcpu).failed_vmentry))
+> +#define seamldr_prerr(__fn, __args)						\
+> +	sc_retry_prerr(__seamcall, seamldr_err, (__fn), (__args))
+> +
+>   #endif
 
