@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B57355816
-	for <linux-coco@lists.linux.dev>; Fri, 21 Nov 2025 15:15:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91E22DC790
+	for <linux-coco@lists.linux.dev>; Fri, 21 Nov 2025 15:38:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763738116; cv=none; b=Pob15daIE+E+6kebs3IcWewW+uJSqYa/T7DUU4Af3gCivFkTrMpmLkoLet/vqPxBdA2jktGNgbfPM3QiuWGy2JLXRTQeiaM3ny7ZdF9TESV7OKYg9w72BHO2IIrBnPeJUpm5OVlBm6EN3ulUNTHFyODwpMrINKfixXJHSxJUCZA=
+	t=1763739486; cv=none; b=hyzmSyClVHb5qnwVnbD9SOIJmv8cViLGgKQC0JFlc2VZa9089+ag5IMzKlHueImPcCJ1fFRffuy0hmNAdBZ5YjS/c0dq3cDSdajyQbHVh497CgkI8osuklYjwWjGRsoB3fYTOK8RJFhI72RR9QStXSj0lnuikcijrmsgvhtDcsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763738116; c=relaxed/simple;
-	bh=tGkLoaIerxSzCgo8kr0dzfb3bmHGcG6BnOlM4l+YMg4=;
+	s=arc-20240116; t=1763739486; c=relaxed/simple;
+	bh=JAjG/DfPgPKciqBAdlbKeG8TDMceEkz0PgvgiZYXbd8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YYgzcdcrRQEqW1gRY/+8cNrcH+Jw+aTgKyhyQtYny9UehqjJB0NEqlzlI6AqobBWtplt6Y9dQHjj5kj5SyEYypKBdGsuhAExHQnR91wbP2IYdjCSSMbN+1f0QsYO6T+67867D6Ekq5WQHNkSEfc//dgtMJCgC9yesw71TuPAgOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RVLB8nPd; arc=none smtp.client-ip=198.175.65.14
+	 In-Reply-To:Content-Type; b=qbr+0jkDTPucZnhRcg5jrtYuFFsx2Z9LTZwoVOAD8JIFrKyrRR9TG8isyIzlShXw+zntKAl7tcY/mH8T2eJcG/pFUYoSRwDR06XQpKULuxSiA7fZ5In3LpQ3TRszBmxvGUBFqMUd9befVhusxQHWNtg3iJPUsztNCS3syS6Cx7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JRQUMELd; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RVLB8nPd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JRQUMELd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763738115; x=1795274115;
+  t=1763739485; x=1795275485;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=tGkLoaIerxSzCgo8kr0dzfb3bmHGcG6BnOlM4l+YMg4=;
-  b=RVLB8nPd70IetbwiaInnhZWFvIykdtPeOD7keAFYtHqvdMDRjGp/HUzS
-   oAKA9Xal0mVs7jFYAPMM6MJnEnTNcHJgWyBZU/5P1BPcNLgRkLcqwQY4c
-   HS8sj/fiaPkw3JQPCG2vwfe6km9mMT0GTtRXw1bnX35VpPgy5YTpNUeZe
-   G7Pdi2G5xMwrQTBcevP7nk3noRvYAbjmra8rBVStfEU3nRkzNCgnPnQkG
-   UbGvEc/I3gnoy4Pn5zSuYgjIH+B5WRSG/b9EKOzzZ9zE2da65KWyz7Iks
-   arS8AZZPMMOuZIT+DBWO507xK5U8oJYaqVHi/j4ScCQDviBKCNCb3CmhO
+  bh=JAjG/DfPgPKciqBAdlbKeG8TDMceEkz0PgvgiZYXbd8=;
+  b=JRQUMELdQ5zNKQGQcal2Yz8aaB0z3SU2G5nK/FiC3OYGvobja5dGIasT
+   mnZKxnX+Cgqy0LK3JEjvUr6m4uo2pTbuFYtBWt4nQ+1CKvRPRQ0cIPOC/
+   fQC/mCwYSJ49gRSJsr6R4v05VhsKz/rOpjAb5LJOigoezxdJZd+6WQJoY
+   PkRYFgezpSBkl2rEK320OK5DIuo+TfbT1TaaWRVaDGeTPQ6p68XWAtOaM
+   xMDwVHuOJOf0ywJjYErATouKPgEGDaXf3A3avfbW5y7EXDaW0wMTaPyDr
+   YDC7aBm1L4H1o0aJmuHaMzkQWJDAp1ikC7qa6EqsR46geAB+67Zeo4EU/
    A==;
-X-CSE-ConnectionGUID: bd56bmMESzi3wV9kPAHiGw==
-X-CSE-MsgGUID: 9p8u9VHEQWy/lE5F6hwlxQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11620"; a="69690053"
+X-CSE-ConnectionGUID: SNwSJzIvRmmcSEq6fcIuxg==
+X-CSE-MsgGUID: FGNluj49QxOYoHZqZ6eNlA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11620"; a="68436748"
 X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; 
-   d="scan'208";a="69690053"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 07:15:15 -0800
-X-CSE-ConnectionGUID: fpyK4875SNCv4NIwY/lWmQ==
-X-CSE-MsgGUID: amSWJXh2SBCjtU4H+qZSog==
+   d="scan'208";a="68436748"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 07:38:04 -0800
+X-CSE-ConnectionGUID: z147qz+oTwOIWUzKAKSHgw==
+X-CSE-MsgGUID: e5TUEhq0SDehgnzdwc+taw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; 
-   d="scan'208";a="191499047"
+   d="scan'208";a="222349929"
 Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.110.33]) ([10.125.110.33])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 07:15:15 -0800
-Message-ID: <ca331aa3-6304-4e07-9ed9-94dc69726382@intel.com>
-Date: Fri, 21 Nov 2025 07:15:13 -0800
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 07:38:03 -0800
+Message-ID: <167d9540-2d9a-4367-bc68-b96494bc4044@intel.com>
+Date: Fri, 21 Nov 2025 07:38:03 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -68,6 +68,7 @@ References: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
  <aR6ws2yzwQumApb9@yilunxu-OptiPlex-7050>
  <13e894a8-474f-465a-a13a-5d892efbfadb@intel.com>
  <aSBg+5rS1Y498gHx@yilunxu-OptiPlex-7050>
+ <ca331aa3-6304-4e07-9ed9-94dc69726382@intel.com>
 Content-Language: en-US
 From: Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -113,87 +114,30 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <aSBg+5rS1Y498gHx@yilunxu-OptiPlex-7050>
+In-Reply-To: <ca331aa3-6304-4e07-9ed9-94dc69726382@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 11/21/25 04:54, Xu Yilun wrote:
-...
-> For now, TDX Module Extensions consume quite large amount of memory
-> (12800 pages), print this readout value on TDX Module Extentions
-> initialization.
-
-Overall, the description is looking better, thanks!
-
-A few more nits, though. Please don't talk about things in terms of
-number of pages. Just give the usage in megabytes.
-
-
->>> --- a/arch/x86/virt/vmx/tdx/tdx.h
->>> +++ b/arch/x86/virt/vmx/tdx/tdx.h
->>> @@ -46,6 +46,7 @@
->>>  #define TDH_PHYMEM_PAGE_WBINVD         41
->>>  #define TDH_VP_WR                      43
->>>  #define TDH_SYS_CONFIG                 45
->>> +#define TDH_SYS_CONFIG_V1              (TDH_SYS_CONFIG | (1ULL << TDX_VERSION_SHIFT))
->>>
->>> And if a SEAMCALL needs export, add new tdh_foobar() helper. Anyway
->>> the parameter list should be different.
->>
->> I'd need quite a bit of convincing that this is the right way.
->>
->> What is the scenario where there's a:
->>
->> 	TDH_SYS_CONFIG_V1
->> and
->> 	TDH_SYS_CONFIG_V2
->>
->> in the tree at the same time?
+On 11/21/25 07:15, Dave Hansen wrote:
+> On 11/21/25 04:54, Xu Yilun wrote:
+> ...
+>> For now, TDX Module Extensions consume quite large amount of memory
+>> (12800 pages), print this readout value on TDX Module Extentions
+>> initialization.
+> Overall, the description is looking better, thanks!
 > 
-> I assume you mean TDH_SYS_CONFIG & TDH_SYS_CONFIG_V1.
+> A few more nits, though. Please don't talk about things in terms of
+> number of pages. Just give the usage in megabytes.
 
-Sure. But I wasn't being that literal about it. My point was whether we
-need two macros for two simultaneous uses of the same seamcall.
+Oh, and please at least have a discussion with the memory management
+folks about consuming this amount of memory forever. I think it's quite
+possible they will prefer it be allocated in a way other than thousands
+of plain old allocations.
 
-> If you want to enable optional features via this seamcall, you must use
-> v1, otherwise v0 & v1 are all good. Mm... I suddenly don't see usecase
-> they must co-exist. Unconditionally use v1 is fine. So does TDH_VP_INIT.
-> 
-> Does that mean we don't have to keep versions, always use the latest is
-> good? (Proper Macro to be used...)
-> 
->  -#define TDH_SYS_CONFIG                 45
->  +#define TDH_SYS_CONFIG                 (45 | (1ULL << TDX_VERSION_SHIFT))
+For example, imagine memory was fragmented and those 12800 pages came
+from 12,800 different 2M regions. Well, now you've got ~50GB of memory
+that is _permanently_ fragmented and will never be able to satisfy a 2M
+allocation.
 
-That's my theory: we don't need to keep versions.
-
->> Second, does it hurt to pass the version along with other calls, like
->> ... (naming a random one) ... TDH_PHYMEM_PAGE_WBINVD ?
-> 
-> I see no runtime hurt, just an extra zero parameter passed around.
-> 
-> And version change always goes with more parameters, if we add version
-> parameter, it looks like:
-> 
->  u64 tdh_phymem_page_wbinvd_tdr(int version, struct tdx_td *td, int new_param1, int new_param2);
-> 
-> For readability, I prefer the following, they provide clear definitions:
-> 
->  u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *td);
->  u64 tdh_phymem_page_wbinvd_tdr_1(struct tdx_td *td, int new_param1, int new_param2);
-> 
-> But I hope eventually we don't have to keep versions, then we don't have to choose:
-> 
->  u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *td, int new_param1, int new_param2);
-
-Sure, but that's not happening today. So for TDX_FEATURES0_TDXCONNECT at
-least, config_tdx_module() doesn't change.
-
-> The TDX Module can only accept one root page (i.e. 512 HPAs at most), while
-> struct tdx_page_array contains the whole EXT memory (12800 pages). So we
-> can't populate all pages into one root page then tell TDX Module. We need to
-> populate one batch, tell tdx module, then populate the next batch, tell
-> tdx module...
-
-That is, indeed, the information that I was looking for. Can you please
-ensure that makes it into code comments?
+You might get an answer that it's better to do a small number of
+max-size buddy allocations than a large number of PAGE_SIZE allocations.
