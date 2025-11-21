@@ -1,143 +1,96 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91E22DC790
-	for <linux-coco@lists.linux.dev>; Fri, 21 Nov 2025 15:38:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE172FFFA5
+	for <linux-coco@lists.linux.dev>; Fri, 21 Nov 2025 18:56:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763739486; cv=none; b=hyzmSyClVHb5qnwVnbD9SOIJmv8cViLGgKQC0JFlc2VZa9089+ag5IMzKlHueImPcCJ1fFRffuy0hmNAdBZ5YjS/c0dq3cDSdajyQbHVh497CgkI8osuklYjwWjGRsoB3fYTOK8RJFhI72RR9QStXSj0lnuikcijrmsgvhtDcsM=
+	t=1763751376; cv=none; b=NHWhkREECe/uKfWAaO+9CyoSKc6oJNAbJegQVhEUDEvu2GDqwVpvAnO6T+cc2RcIyu7mruKhOv21KjwSLcZS6abNsI1HrKa+tNMDZHbp06dG9TENSYB7Dp26lxL/iiyJItwovwEhpSDD7NEDVLFh0jr2ecqz+l9scK8CZAGZrAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763739486; c=relaxed/simple;
-	bh=JAjG/DfPgPKciqBAdlbKeG8TDMceEkz0PgvgiZYXbd8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qbr+0jkDTPucZnhRcg5jrtYuFFsx2Z9LTZwoVOAD8JIFrKyrRR9TG8isyIzlShXw+zntKAl7tcY/mH8T2eJcG/pFUYoSRwDR06XQpKULuxSiA7fZ5In3LpQ3TRszBmxvGUBFqMUd9befVhusxQHWNtg3iJPUsztNCS3syS6Cx7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JRQUMELd; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1763751376; c=relaxed/simple;
+	bh=pA6HhH8cYu8tFmUOKlzpU3Wp08scGDLJ7KsfyRnftss=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=nk/FBj24pQzMN/oz5/EWXh+Wp7UeDAjmMPGjdxX4AKj+DKPmtiNhNGGfJ83RF3Ds99zEejenGXo/11D5aVclIvkH4l9DPewMQ6/8FLOgy/MYHMWf18XCs48lX/dY7xOXV5iZVlIfJ22DvmQj43xQIQQvtdAGv1wKOO+KGJCjopA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=N4TGar6u; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JRQUMELd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763739485; x=1795275485;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=JAjG/DfPgPKciqBAdlbKeG8TDMceEkz0PgvgiZYXbd8=;
-  b=JRQUMELdQ5zNKQGQcal2Yz8aaB0z3SU2G5nK/FiC3OYGvobja5dGIasT
-   mnZKxnX+Cgqy0LK3JEjvUr6m4uo2pTbuFYtBWt4nQ+1CKvRPRQ0cIPOC/
-   fQC/mCwYSJ49gRSJsr6R4v05VhsKz/rOpjAb5LJOigoezxdJZd+6WQJoY
-   PkRYFgezpSBkl2rEK320OK5DIuo+TfbT1TaaWRVaDGeTPQ6p68XWAtOaM
-   xMDwVHuOJOf0ywJjYErATouKPgEGDaXf3A3avfbW5y7EXDaW0wMTaPyDr
-   YDC7aBm1L4H1o0aJmuHaMzkQWJDAp1ikC7qa6EqsR46geAB+67Zeo4EU/
-   A==;
-X-CSE-ConnectionGUID: SNwSJzIvRmmcSEq6fcIuxg==
-X-CSE-MsgGUID: FGNluj49QxOYoHZqZ6eNlA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11620"; a="68436748"
-X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; 
-   d="scan'208";a="68436748"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 07:38:04 -0800
-X-CSE-ConnectionGUID: z147qz+oTwOIWUzKAKSHgw==
-X-CSE-MsgGUID: e5TUEhq0SDehgnzdwc+taw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; 
-   d="scan'208";a="222349929"
-Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.110.33]) ([10.125.110.33])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 07:38:03 -0800
-Message-ID: <167d9540-2d9a-4367-bc68-b96494bc4044@intel.com>
-Date: Fri, 21 Nov 2025 07:38:03 -0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="N4TGar6u"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-29b760316a8so4167635ad.2
+        for <linux-coco@lists.linux.dev>; Fri, 21 Nov 2025 10:56:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1763751374; x=1764356174; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dyfHUqL6df9F6XiTb90JYkfND1n7NtpKe8YZliaM9OQ=;
+        b=N4TGar6uW3D2lVJHigP3GEKcMOr92qtzQPpt9bgsKy0gVb5un9ODMiqCUsxH+oklAc
+         cNttk7wy9yoIj1cFo+UaF+nuosWHoA+hEBHkz9V/syPYj0JBMRn8cupb5+8fkCqTvasu
+         0vWCzFSLsRBytlIV6dhh3RlS9H1uXBLoEzB6mDu+AKtBfKLK22XRy70q5VlB0OidzKKZ
+         viA6x1h/X59qh0hsIbDMDnvvSpV3OO5arIwDv2bI6QPckELVZvG2xA8GjfC3qR9ZPspc
+         PSJ+8UQETij++MBwnWMsl9uHZGQoxBGISg/qvIHDQWlPNJd3ewFa+O/CFrXlV0FOpOKz
+         ClOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763751374; x=1764356174;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dyfHUqL6df9F6XiTb90JYkfND1n7NtpKe8YZliaM9OQ=;
+        b=duvSr/Qj32JenFyOF85yYF0LihwNNJlRna95L4Veuw9zUnBRGylhTN7z6KzOOxoVf4
+         hUa3LwYcLzoYwVhXcA0iz3MO7+MFXpz5bL6Gj6X/usrAi3hDwD+vyMIcWROeo0OPSwDK
+         lD7TZyG3kuuWHO+xjGzBHpXko0PwuKvLE3NhbtDPdDYcSWCxuPsT9mwJXkKEf4kwsLqU
+         oTWVjDo31SVIQI2jvLtePS/1ngZjNmBLjOwsMztxF77rjih2dy8GdpqNTrFZ06Ld9U4A
+         59n+7iaIKFNgXcTb1wntK6xCpuxTkMl5Lz6lYjJmjhfMhp1ilqQL6pPJDsDO6KEydGVW
+         wWaw==
+X-Forwarded-Encrypted: i=1; AJvYcCVipKCHDraAxBzl7wFk9SWqNfbudLMKvpYvGYcIk2WGh6ypBdHPfl8i18biNfkQjcyw8qPEgjUZD6Xm@lists.linux.dev
+X-Gm-Message-State: AOJu0YzyRGFLRml8+QYHFsHoMMnINsgNxnmdu8h1a5Pfc+EsSiTl8S2a
+	o/eIO3CwroxRjktCkPnnG2qOikQpEwd4Q4Ds6u8I70C16y0LD/6fskG7Tm3Rm5HMmdeg16P4SQr
+	VMPH7qQ==
+X-Google-Smtp-Source: AGHT+IGGb1aHI5E6UaxYSqn4n/1r9BCGdlieziJtcx6wMic5y2PJaDDWne0NG5Ox3KhGZrA49vtPf+i99x4=
+X-Received: from plhy6.prod.google.com ([2002:a17:902:d646:b0:298:1181:af51])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:46c8:b0:24c:965a:f94d
+ with SMTP id d9443c01a7336-29b6c699252mr39885405ad.46.1763751374581; Fri, 21
+ Nov 2025 10:56:14 -0800 (PST)
+Date: Fri, 21 Nov 2025 10:55:31 -0800
+In-Reply-To: <20251118222328.2265758-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 08/26] x86/virt/tdx: Add tdx_enable_ext() to enable of
- TDX Module Extensions
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
- chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
- yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
- rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
- dan.j.williams@intel.com, kas@kernel.org, x86@kernel.org
-References: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
- <20251117022311.2443900-9-yilun.xu@linux.intel.com>
- <cfcfb160-fcd2-4a75-9639-5f7f0894d14b@intel.com>
- <aRyphEW2jpB/3Ht2@yilunxu-OptiPlex-7050>
- <62bec236-4716-4326-8342-1863ad8a3f24@intel.com>
- <aR6ws2yzwQumApb9@yilunxu-OptiPlex-7050>
- <13e894a8-474f-465a-a13a-5d892efbfadb@intel.com>
- <aSBg+5rS1Y498gHx@yilunxu-OptiPlex-7050>
- <ca331aa3-6304-4e07-9ed9-94dc69726382@intel.com>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <ca331aa3-6304-4e07-9ed9-94dc69726382@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20251118222328.2265758-1-seanjc@google.com>
+X-Mailer: git-send-email 2.52.0.rc2.455.g230fcf2819-goog
+Message-ID: <176375129628.290245.2248166569099413567.b4-ty@google.com>
+Subject: Re: [PATCH v2 0/4] KVM: x86: Cleanup #MC and XCR0/XSS/PKRU handling
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Kirill A. Shutemov" <kas@kernel.org>
+Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Jon Kohler <jon@nutanix.com>, Tony Lindgren <tony.lindgren@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
 
-On 11/21/25 07:15, Dave Hansen wrote:
-> On 11/21/25 04:54, Xu Yilun wrote:
-> ...
->> For now, TDX Module Extensions consume quite large amount of memory
->> (12800 pages), print this readout value on TDX Module Extentions
->> initialization.
-> Overall, the description is looking better, thanks!
+On Tue, 18 Nov 2025 14:23:24 -0800, Sean Christopherson wrote:
+> Optimize XCR0/XSS loads that are currently done on every VM-Enter and VM-Exit,
+> by handling them outside of KVM's fastpath inner loop.
 > 
-> A few more nits, though. Please don't talk about things in terms of
-> number of pages. Just give the usage in megabytes.
+> Context switching at entry/exit is unnecessary behavior inherited from a
+> hack-a-fix that papered over an egregious #MC handling bug where the kernel #MC
+> handler would call schedule() from atomic contexts.  The resulting #GP due to
+> trying to swap FPU state with a guest XCR0/XSS was "fixed" by loading the host
+> values before handling #MCs from the guest.
+> 
+> [...]
 
-Oh, and please at least have a discussion with the memory management
-folks about consuming this amount of memory forever. I think it's quite
-possible they will prefer it be allocated in a way other than thousands
-of plain old allocations.
+Applied to kvm-x86 misc, thanks!
 
-For example, imagine memory was fragmented and those 12800 pages came
-from 12,800 different 2M regions. Well, now you've got ~50GB of memory
-that is _permanently_ fragmented and will never be able to satisfy a 2M
-allocation.
+[1/4] KVM: SVM: Handle #MCs in guest outside of fastpath
+      https://github.com/kvm-x86/linux/commit/ebd1a3365500
+[2/4] KVM: VMX: Handle #MCs on VM-Enter/TD-Enter outside of the fastpath
+      https://github.com/kvm-x86/linux/commit/63669bd1d50f
+[3/4] KVM: x86: Load guest/host XCR0 and XSS outside of the fastpath run loop
+      https://github.com/kvm-x86/linux/commit/75c69c82f211
+[4/4] KVM: x86: Load guest/host PKRU outside of the fastpath run loop
+      https://github.com/kvm-x86/linux/commit/7649412af3ea
 
-You might get an answer that it's better to do a small number of
-max-size buddy allocations than a large number of PAGE_SIZE allocations.
+--
+https://github.com/kvm-x86/linux/tree/next
