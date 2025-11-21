@@ -1,59 +1,65 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187DD2DCF4C
-	for <linux-coco@lists.linux.dev>; Fri, 21 Nov 2025 13:09:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B57355816
+	for <linux-coco@lists.linux.dev>; Fri, 21 Nov 2025 15:15:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763730560; cv=none; b=P3ScmuhCCnaC6BGDVguLKgfFqfiFmLwlSOsPIf3711AlxvuiWqIdi0mGYESRfVVi6vjX6DVAMceIr/G3WoF0egD2ayQPZzawgkmSkm3GXL6F32emQSdABhaT0BLCZ6LZlC5a6ZjW+s7L4u1sREbUm9VfkhN5GjLkev+BhwALYqg=
+	t=1763738116; cv=none; b=Pob15daIE+E+6kebs3IcWewW+uJSqYa/T7DUU4Af3gCivFkTrMpmLkoLet/vqPxBdA2jktGNgbfPM3QiuWGy2JLXRTQeiaM3ny7ZdF9TESV7OKYg9w72BHO2IIrBnPeJUpm5OVlBm6EN3ulUNTHFyODwpMrINKfixXJHSxJUCZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763730560; c=relaxed/simple;
-	bh=Mx8HU1WWOmumCvnpOXz2MRvFcRa3p7T/im80j8iH4Jc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hk2JiVX5VBiCbB1H5LtIRFwhwIpdRPlWZP+p85OlnL3l+2T/DQUjIMDRVqKjtAeqgc+AuV2yZDfG+0emwQjNmtdo4/6qpt7mlbMP/Ufle9oQ6mOystd+Fogp3zPv/VA2eSNIeJtjpMz/Cq2QLeYx3V1tp0M3F3UmpgKf9n7l3gU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CLJi7yG7; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1763738116; c=relaxed/simple;
+	bh=tGkLoaIerxSzCgo8kr0dzfb3bmHGcG6BnOlM4l+YMg4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YYgzcdcrRQEqW1gRY/+8cNrcH+Jw+aTgKyhyQtYny9UehqjJB0NEqlzlI6AqobBWtplt6Y9dQHjj5kj5SyEYypKBdGsuhAExHQnR91wbP2IYdjCSSMbN+1f0QsYO6T+67867D6Ekq5WQHNkSEfc//dgtMJCgC9yesw71TuPAgOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RVLB8nPd; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CLJi7yG7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RVLB8nPd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763730558; x=1795266558;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Mx8HU1WWOmumCvnpOXz2MRvFcRa3p7T/im80j8iH4Jc=;
-  b=CLJi7yG7bAdPAIHdMYvdxurMrIkWkuS1gAUgR5E2DxVeyS5AzBUKxcp4
-   RWW38KupGIRGV2WqCexdli4IdIUp//Kbit8lsXGeDWsZ+bgvvr8rSSn1K
-   R/7A/rWJ8Wttu1VKXMC/ewuC5MrUfeRQtL0aE1B8dDoM03SDd5KEnoNdt
-   UfoTZOjIQHfvibuJcFQgbKoiLhxDGAuZbuwz2aNYGrPALiECgkPYbF4Rm
-   GYbjpv161Q7E6LT/Ny8kyDVVWJrRQbnqPxajHm9b9lcIF6nxModBQNZGC
-   Rd0YFSY5LVnydieQyedRd9YiZRj+FuD9c3LhymEERHQVSUdK15sGPhRwS
-   Q==;
-X-CSE-ConnectionGUID: 27yuvmuxTTSl7/7ZXljRXw==
-X-CSE-MsgGUID: K1jDBjPWSGSS4bScWEUDBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="76505777"
-X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; 
-   d="scan'208";a="76505777"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 05:09:17 -0800
-X-CSE-ConnectionGUID: cglKvljOQ4ad6mlqkP7kKg==
-X-CSE-MsgGUID: rBcSODACTTC7Ti6Rcm0ksg==
+  t=1763738115; x=1795274115;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=tGkLoaIerxSzCgo8kr0dzfb3bmHGcG6BnOlM4l+YMg4=;
+  b=RVLB8nPd70IetbwiaInnhZWFvIykdtPeOD7keAFYtHqvdMDRjGp/HUzS
+   oAKA9Xal0mVs7jFYAPMM6MJnEnTNcHJgWyBZU/5P1BPcNLgRkLcqwQY4c
+   HS8sj/fiaPkw3JQPCG2vwfe6km9mMT0GTtRXw1bnX35VpPgy5YTpNUeZe
+   G7Pdi2G5xMwrQTBcevP7nk3noRvYAbjmra8rBVStfEU3nRkzNCgnPnQkG
+   UbGvEc/I3gnoy4Pn5zSuYgjIH+B5WRSG/b9EKOzzZ9zE2da65KWyz7Iks
+   arS8AZZPMMOuZIT+DBWO507xK5U8oJYaqVHi/j4ScCQDviBKCNCb3CmhO
+   A==;
+X-CSE-ConnectionGUID: bd56bmMESzi3wV9kPAHiGw==
+X-CSE-MsgGUID: 9p8u9VHEQWy/lE5F6hwlxQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11620"; a="69690053"
+X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; 
+   d="scan'208";a="69690053"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 07:15:15 -0800
+X-CSE-ConnectionGUID: fpyK4875SNCv4NIwY/lWmQ==
+X-CSE-MsgGUID: amSWJXh2SBCjtU4H+qZSog==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; 
-   d="scan'208";a="191368929"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa007.fm.intel.com with ESMTP; 21 Nov 2025 05:09:14 -0800
-Date: Fri, 21 Nov 2025 20:54:19 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
-	yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
-	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
-	dan.j.williams@intel.com, kas@kernel.org, x86@kernel.org
+X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; 
+   d="scan'208";a="191499047"
+Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.110.33]) ([10.125.110.33])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 07:15:15 -0800
+Message-ID: <ca331aa3-6304-4e07-9ed9-94dc69726382@intel.com>
+Date: Fri, 21 Nov 2025 07:15:13 -0800
+Precedence: bulk
+X-Mailing-List: linux-coco@lists.linux.dev
+List-Id: <linux-coco.lists.linux.dev>
+List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
+List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v1 08/26] x86/virt/tdx: Add tdx_enable_ext() to enable of
  TDX Module Extensions
-Message-ID: <aSBg+5rS1Y498gHx@yilunxu-OptiPlex-7050>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+ chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
+ yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
+ rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
+ dan.j.williams@intel.com, kas@kernel.org, x86@kernel.org
 References: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
  <20251117022311.2443900-9-yilun.xu@linux.intel.com>
  <cfcfb160-fcd2-4a75-9639-5f7f0894d14b@intel.com>
@@ -61,221 +67,133 @@ References: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
  <62bec236-4716-4326-8342-1863ad8a3f24@intel.com>
  <aR6ws2yzwQumApb9@yilunxu-OptiPlex-7050>
  <13e894a8-474f-465a-a13a-5d892efbfadb@intel.com>
-Precedence: bulk
-X-Mailing-List: linux-coco@lists.linux.dev
-List-Id: <linux-coco.lists.linux.dev>
-List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
-List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <13e894a8-474f-465a-a13a-5d892efbfadb@intel.com>
+ <aSBg+5rS1Y498gHx@yilunxu-OptiPlex-7050>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <aSBg+5rS1Y498gHx@yilunxu-OptiPlex-7050>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> I want an overview of how this new memory fits into the overall scheme.
-> I'd argue that these "control pages" are most similar to the PAMT:
-> There's some back-and-forth with the module about how much memory it
-> needs, the kernel allocates it, hands it over, and never gets it back.
-> 
-> That's the level that this needs to be presented at: a high-level
-> logical overview.
-
-OK. I can split out a patch dedicate to the memory feeding, and put
-the overview in changelog.
-
-
-x86/virt/tdx: Add extra memory to TDX Module for Extentions
-
-Currently, TDX module memory use is relatively static. But, some new
-features (called "TDX Module Extensions") need to use memory more
-dynamically. While 'static' here means the kernel provides necessary
-amount of memory to TDX Module for its initialization, 'dynamic' means
-extra memory be added after TDX Module initialization and before the
-first optional usage of TDX Module Extension. So add a new memory
-feeding process backed by a new SEAMCALL TDH.EXT.MEM.ADD.
-
-The process is mostly the same as adding PAMT. The kernel queries TDX
-Module how much memory needed, allocates it, hands it over and never
-gets it back.
-
-more details...
-
-For now, TDX Module Extensions consume quite large amount of memory
-(12800 pages), print this readout value on TDX Module Extentions
-initialization.
-
-> 
-> ...> I think it may be too heavy. We have a hundred SEAMCALLs and I expect
-> > few needs version 1. I actually think v2 is nothing different from a new
-
-Sorry for typo, there is no v2 yet.
-
-> > leaf. How about something like:
-> > 
-> > --- a/arch/x86/virt/vmx/tdx/tdx.h
-> > +++ b/arch/x86/virt/vmx/tdx/tdx.h
-> > @@ -46,6 +46,7 @@
-> >  #define TDH_PHYMEM_PAGE_WBINVD         41
-> >  #define TDH_VP_WR                      43
-> >  #define TDH_SYS_CONFIG                 45
-> > +#define TDH_SYS_CONFIG_V1              (TDH_SYS_CONFIG | (1ULL << TDX_VERSION_SHIFT))
-> > 
-> > And if a SEAMCALL needs export, add new tdh_foobar() helper. Anyway
-> > the parameter list should be different.
-> 
-> I'd need quite a bit of convincing that this is the right way.
-> 
-> What is the scenario where there's a:
-> 
-> 	TDH_SYS_CONFIG_V1
-> and
-> 	TDH_SYS_CONFIG_V2
-> 
-> in the tree at the same time?
-
-I assume you mean TDH_SYS_CONFIG & TDH_SYS_CONFIG_V1.
-
-If you want to enable optional features via this seamcall, you must use
-v1, otherwise v0 & v1 are all good. Mm... I suddenly don't see usecase
-they must co-exist. Unconditionally use v1 is fine. So does TDH_VP_INIT.
-
-Does that mean we don't have to keep versions, always use the latest is
-good? (Proper Macro to be used...)
-
- -#define TDH_SYS_CONFIG                 45
- +#define TDH_SYS_CONFIG                 (45 | (1ULL << TDX_VERSION_SHIFT))
-
-> 
-> Second, does it hurt to pass the version along with other calls, like
-> ... (naming a random one) ... TDH_PHYMEM_PAGE_WBINVD ?
-
-I see no runtime hurt, just an extra zero parameter passed around.
-
-And version change always goes with more parameters, if we add version
-parameter, it looks like:
-
- u64 tdh_phymem_page_wbinvd_tdr(int version, struct tdx_td *td, int new_param1, int new_param2);
-
-For readability, I prefer the following, they provide clear definitions:
-
- u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *td);
- u64 tdh_phymem_page_wbinvd_tdr_1(struct tdx_td *td, int new_param1, int new_param2);
-
-
-But I hope eventually we don't have to keep versions, then we don't have to choose:
-
- u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *td, int new_param1, int new_param2);
-
-
-> 
-> Even if we did this, we wouldn't copy and paste "(1ULL <<
-> TDX_VERSION_SHIFT)" all over the place, right? We'd create a more
-> concise, cleaner macro and then use it everywhere. Right?
-
-Sure. Will do.
-
+On 11/21/25 04:54, Xu Yilun wrote:
 ...
+> For now, TDX Module Extensions consume quite large amount of memory
+> (12800 pages), print this readout value on TDX Module Extentions
+> initialization.
 
-> >>>> 	while (1)
-> >>>> 		fill(&array);
-> >>>> 	while (1)
-> >>>> 		tell_tdx_module(&array);
-> >>>
-> >>> The consideration is, no need to create as much supporting
-> >>> structures (struct tdx_page_array *, struct page ** and root page) for
-> >>> each 512-page bulk. Use one and re-populate it in loop is efficient.
+Overall, the description is looking better, thanks!
 
-Sorry, I went through the history again and thought I got off track from
-here. I was trying to explain why I choose to let struct tdx_page_array
-not restricted by 512 pages. But that's not your question.
+A few more nits, though. Please don't talk about things in terms of
+number of pages. Just give the usage in megabytes.
 
-For your question why:
 
-  while (1) {
-        fill(&array);
-        tell_tdx_module(&array);
-  }
-
-not:
-
-  while (1)
-        fill(&array);
-  while (1)
-        tell_tdx_module(&array);
-
-The TDX Module can only accept one root page (i.e. 512 HPAs at most), while
-struct tdx_page_array contains the whole EXT memory (12800 pages). So we
-can't populate all pages into one root page then tell TDX Module. We need to
-populate one batch, tell tdx module, then populate the next batch, tell
-tdx module...
-
-I assume when you said "Great! That is useful information to have here,
-in the code." The concern was solved.
-
-> I suspect we're not really talking about the same thing here.
-
-Sorry I deviated from the question.
-
+>>> --- a/arch/x86/virt/vmx/tdx/tdx.h
+>>> +++ b/arch/x86/virt/vmx/tdx/tdx.h
+>>> @@ -46,6 +46,7 @@
+>>>  #define TDH_PHYMEM_PAGE_WBINVD         41
+>>>  #define TDH_VP_WR                      43
+>>>  #define TDH_SYS_CONFIG                 45
+>>> +#define TDH_SYS_CONFIG_V1              (TDH_SYS_CONFIG | (1ULL << TDX_VERSION_SHIFT))
+>>>
+>>> And if a SEAMCALL needs export, add new tdh_foobar() helper. Anyway
+>>> the parameter list should be different.
+>>
+>> I'd need quite a bit of convincing that this is the right way.
+>>
+>> What is the scenario where there's a:
+>>
+>> 	TDH_SYS_CONFIG_V1
+>> and
+>> 	TDH_SYS_CONFIG_V2
+>>
+>> in the tree at the same time?
 > 
-> In any case, I'm not a super big fan of how tdx_ext_mempool_setup() is
-> written. Can you please take another pass at it and try to simplify it
-> and make it easier to follow?
+> I assume you mean TDH_SYS_CONFIG & TDH_SYS_CONFIG_V1.
 
-Yes. I plan to remove the __free(). This gives the chance to re-organize
-things from the start.
+Sure. But I wasn't being that literal about it. My point was whether we
+need two macros for two simultaneous uses of the same seamcall.
 
+> If you want to enable optional features via this seamcall, you must use
+> v1, otherwise v0 & v1 are all good. Mm... I suddenly don't see usecase
+> they must co-exist. Unconditionally use v1 is fine. So does TDH_VP_INIT.
 > 
-> This would be a great opportunity to bring in some of your colleagues to
-> take a look. You can solicit them for suggestions.
-
-Yes.
-
-...
-
-> >> I'd kinda rather the code was improved. Why cram everything into a
-> >> pointer if you don't need to. This would be just fine, no?
-> >>
-> >> 	ret = tdx_ext_mempool_setup(&mempool);
-> >> 	if (ret)
-> >> 		return ret;
-> > 
-> > It's good.
-> > 
-> > The usage of pointer is still about __free(). In order to auto-free
-> > something, we need an object handler for something. I think this is a
-> > more controversial usage of __free() than pure allocation. We setup
-> > something and want auto-undo something on failure.
-> I'm not sure what you are trying to say here. By saying "It's good" are
-> you agreeing that my suggested structure is good and that you will use
-> it? Or are you saying that the original structure is good?
-
-I mean your suggestion is good. I'll use it since I will remove
-__free().
-
+> Does that mean we don't have to keep versions, always use the latest is
+> good? (Proper Macro to be used...)
 > 
-> Second, what is an "object handler"? Are you talking about the function
-> that is pointed to by __free()?
+>  -#define TDH_SYS_CONFIG                 45
+>  +#define TDH_SYS_CONFIG                 (45 | (1ULL << TDX_VERSION_SHIFT))
 
-Sorry, should be object handle, it refers to the pointer, the
-struct tdx_page_array *mempool
+That's my theory: we don't need to keep versions.
 
+>> Second, does it hurt to pass the version along with other calls, like
+>> ... (naming a random one) ... TDH_PHYMEM_PAGE_WBINVD ?
 > 
-> Third, are you saying that the original code structure is somehow
-> connected to __free()?
+> I see no runtime hurt, just an extra zero parameter passed around.
+> 
+> And version change always goes with more parameters, if we add version
+> parameter, it looks like:
+> 
+>  u64 tdh_phymem_page_wbinvd_tdr(int version, struct tdx_td *td, int new_param1, int new_param2);
+> 
+> For readability, I prefer the following, they provide clear definitions:
+> 
+>  u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *td);
+>  u64 tdh_phymem_page_wbinvd_tdr_1(struct tdx_td *td, int new_param1, int new_param2);
+> 
+> But I hope eventually we don't have to keep versions, then we don't have to choose:
+> 
+>  u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *td, int new_param1, int new_param2);
 
-Yes.
+Sure, but that's not happening today. So for TDX_FEATURES0_TDXCONNECT at
+least, config_tdx_module() doesn't change.
 
-> I thought that all of these were logically
-> equivalent:
-> 
-> 	void *foo __free(foofree) = alloc_foo();
-> 
-> 	void *foo __free(foofree) = NULL:
-> 	foo = alloc_foo();
-> 
-> 	void *foo __free(foofree) = NULL;
-> 	populate_foo(&foo);
-> 
-> Is there something special about doing the variable assignment at the
-> variable declaration spot?
+> The TDX Module can only accept one root page (i.e. 512 HPAs at most), while
+> struct tdx_page_array contains the whole EXT memory (12800 pages). So we
+> can't populate all pages into one root page then tell TDX Module. We need to
+> populate one batch, tell tdx module, then populate the next batch, tell
+> tdx module...
 
-Yes, Dan explained it.
+That is, indeed, the information that I was looking for. Can you please
+ensure that makes it into code comments?
