@@ -1,112 +1,164 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015A025EF87;
-	Mon, 24 Nov 2025 08:28:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD8F2EF67F
+	for <linux-coco@lists.linux.dev>; Mon, 24 Nov 2025 08:56:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763972927; cv=none; b=lGItb1JXkpQQ/H2pv7yOMMRdKe/Zy5gFKzG6quC2tUpCyhvLxo8lIGD++siYk2X9vXvO5YKKuzMWbnPXHuQeXkaln4/EueFboELVPU38cuWPxfYir4yLDMfgCw8LsE+Zur9mKrkTqNYNBqWl2fYzLqZ+glMaRl02kSCb9JXeKYE=
+	t=1763974585; cv=none; b=fbseDZaEGeVd5yO0dn1lB+0ISlXlfqifIDdvg9M1KJwdhAvNb08uQFZEgQyfp8xAqA68MQskOTh5rdkUUjvsIuk8JfTlv9e0C8YARE9O+7pCvVCxDOWr5zILkRJBQBQcNduy8Qye9B834WI3ZZR5+Q8V4zrj1Tc3bI+aIM5T8+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763972927; c=relaxed/simple;
-	bh=T+MPGyJriR1QBClsWWwkOpi+qR0ocPEU1Z7hsuWSSiA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=FcC41yG5MeegTgvMxHhkPRRXImTxDl9+Go/qDR6p8xR0IpeaG+u0FTD67lJV3Kf6Di3kNF1c4zjY3OHc6ChK8+zvkQbwX5sdnclgzmIe6zPmN06dpCulc3IVYoM60tyQGXMSoZTaZtwtv9oP4yX6to8U/Jx3VG4QhgJ8Dsau8s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UMXCiXOu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763974585; c=relaxed/simple;
+	bh=Jm+teq8+3Q9frtKYeahT0HHK2VI/U5Z9xTgTT0mlHkc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dKGbgDxQnIZW0UIs/tU8ylgOpSHItfMSSPjGVaXgGdbgDZTpqUhLPZiHelDY9hQH56ezRV+7IrY/DXbVhdAoidlgDgIbw59zWnUa/FoVoObN/rlYL4zYVRoPizm435XUpGtiUJdK4mGUJVIaWBk0BnFhS7MDWLyTqKzgxBxhYd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ijEu0H7o; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UMXCiXOu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE2BDC4CEF1;
-	Mon, 24 Nov 2025 08:28:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763972926;
-	bh=T+MPGyJriR1QBClsWWwkOpi+qR0ocPEU1Z7hsuWSSiA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=UMXCiXOunP9qrY+cJl3V2GxBKEcQ5LWV6YoWhqw3NnG4I8HkHc2YhDwNjSxWpv2vr
-	 5YU7olXypGz9sXJkztfarx5lTI9NMaXFE3j6svmbZxEAkAH7o5KyIawMQFamFKEU7C
-	 N0rk4Nyv+/CK7KduzjmTOMQMimuYRCH9QIoI0ooMeEj7E/e25EwVAKxEutCLB9GU/u
-	 wwFktzNVz21GhHtCV0K/I/8WiH3cfmz9gHacUg6AatcdM08nszOsTq5J85cc3s/oYH
-	 Fn59NNJhA/UE0s0yuxpeD/xFQzQ7VFVADS58DkmjLsRMuyhc+SrpqNp4MJcSp3R2O7
-	 RtQ9Mct5vq/0w==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	dan.j.williams@intel.com, aik@amd.com, lukas@wunner.de,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: Re: [PATCH v2 08/11] coco: guest: arm64: Add support for fetching
- and verifying device info
-In-Reply-To: <20251120175432.00004af8@huawei.com>
-References: <20251117140007.122062-1-aneesh.kumar@kernel.org>
- <20251117140007.122062-9-aneesh.kumar@kernel.org>
- <20251120175432.00004af8@huawei.com>
-Date: Mon, 24 Nov 2025 13:58:38 +0530
-Message-ID: <yq5ay0nvltqh.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ijEu0H7o"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763974583; x=1795510583;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Jm+teq8+3Q9frtKYeahT0HHK2VI/U5Z9xTgTT0mlHkc=;
+  b=ijEu0H7oLROzpOu1E3qFKW9VX4MAlwsI6dnZadNVwOHn8ZrRzkcOPefB
+   ElgpaFhkAEGdX12NpDLyS+ro/uV2kW3r+qoH3T2OEEp4j2Lz5Q9r1UzJ1
+   ulwL0M7o8xfjrB03f+yAEkbCpUSInmpXqCmeBBjI0CBGcZUmbeylINj1y
+   d6c/zxZ4vPi3VmCgTZ5xeBZmGBKGrx9kKI7fYla3eEUYQ5pGi24l+QUiK
+   IPlSbATixc7h19JgKbsT0dyUWHiszs7asJFZ+kdVHaBTCFze0wkJVyLb9
+   Wtsy1mQWpxmNqQtO5M2oyPyq+DJUjevi1gXAs+8xAZOHaFxHzneQrt7Zb
+   A==;
+X-CSE-ConnectionGUID: Gn4mZv2bR9OB4I+jlQeJcQ==
+X-CSE-MsgGUID: S55OYKv/SGGr0qg7Eeaz5Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11622"; a="77330659"
+X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
+   d="scan'208";a="77330659"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 00:56:22 -0800
+X-CSE-ConnectionGUID: h29LzYTXQJ2XO/Md6x/71Q==
+X-CSE-MsgGUID: xTJbEjixScy/JUNmCCD1qg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
+   d="scan'208";a="197395735"
+Received: from yinghaoj-desk.ccr.corp.intel.com (HELO [10.238.1.225]) ([10.238.1.225])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 00:56:17 -0800
+Message-ID: <86e2d5fa-4d68-4200-98d1-77113bc3c1da@linux.intel.com>
+Date: Mon, 24 Nov 2025 16:56:15 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 02/16] x86/tdx: Add helpers to check return status
+ codes
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@intel.com,
+ isaku.yamahata@intel.com, kai.huang@intel.com, kas@kernel.org,
+ kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, mingo@redhat.com, pbonzini@redhat.com,
+ seanjc@google.com, tglx@linutronix.de, vannapurve@google.com,
+ x86@kernel.org, yan.y.zhao@intel.com, xiaoyao.li@intel.com,
+ binbin.wu@intel.com, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
+ <20251121005125.417831-3-rick.p.edgecombe@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20251121005125.417831-3-rick.p.edgecombe@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Jonathan Cameron <jonathan.cameron@huawei.com> writes:
 
-> On Mon, 17 Nov 2025 19:30:04 +0530
-> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
+
+On 11/21/2025 8:51 AM, Rick Edgecombe wrote:
+[...]
 >
+> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> index 7b2833705d47..167c5b273c40 100644
+> --- a/arch/x86/coco/tdx/tdx.c
+> +++ b/arch/x86/coco/tdx/tdx.c
+> @@ -129,9 +129,9 @@ int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport)
+>   
+>   	ret = __tdcall(TDG_MR_REPORT, &args);
+>   	if (ret) {
+> -		if (TDCALL_RETURN_CODE(ret) == TDCALL_INVALID_OPERAND)
+> +		if (IS_TDX_OPERAND_INVALID(ret))
+>   			return -ENXIO;
+> -		else if (TDCALL_RETURN_CODE(ret) == TDCALL_OPERAND_BUSY)
+> +		else if (IS_TDX_OPERAND_BUSY(ret))
+>   			return -EBUSY;
+>   		return -EIO;
+>   	}
+> @@ -165,9 +165,9 @@ int tdx_mcall_extend_rtmr(u8 index, u8 *data)
+>   
+>   	ret = __tdcall(TDG_MR_RTMR_EXTEND, &args);
+>   	if (ret) {
+> -		if (TDCALL_RETURN_CODE(ret) == TDCALL_INVALID_OPERAND)
+> +		if (IS_TDX_OPERAND_INVALID(ret))
+>   			return -ENXIO;
+> -		if (TDCALL_RETURN_CODE(ret) == TDCALL_OPERAND_BUSY)
+> +		if (IS_TDX_OPERAND_BUSY(ret))
 
-...
+After the changes in tdx_mcall_get_report0() and tdx_mcall_extend_rtmr(), the
+macros defined in arch/x86/coco/tdx/tdx.c can be removed:
 
->
->> +		return -EIO;
->> +	}
->> +
->> +	dsc->dev_info.cert_id       =3D dev_info->cert_id;
->> +	dsc->dev_info.hash_algo     =3D dev_info->hash_algo;
->> +	dsc->dev_info.lock_nonce    =3D dev_info->lock_nonce;
->> +	dsc->dev_info.meas_nonce    =3D dev_info->meas_nonce;
->> +	dsc->dev_info.report_nonce  =3D dev_info->report_nonce;
->> +	memcpy(dsc->dev_info.cert_digest, dev_info->cert_digest, SHA512_DIGEST=
-_SIZE);
->> +	memcpy(dsc->dev_info.meas_digest, dev_info->meas_digest, SHA512_DIGEST=
-_SIZE);
->> +	memcpy(dsc->dev_info.report_digest, dev_info->report_digest, SHA512_DI=
-GEST_SIZE);
->
-> So copy everything other than flags.  Any reason why not flags?
->
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 7b2833705d47..f72b7dfdacd1 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -33,11 +33,6 @@
+  #define VE_GET_PORT_NUM(e)     ((e) >> 16)
+  #define VE_IS_IO_STRING(e)     ((e) & BIT(4))
 
-The flags field currently carries p2p_enabled and p2p_bound, but these
-aren=E2=80=99t used yet. I=E2=80=99ll drop flags from dsc->dev_info for now=
- and
-reintroduce it once there=E2=80=99s an actual user.
+-/* TDX Module call error codes */
+-#define TDCALL_RETURN_CODE(a)  ((a) >> 32)
+-#define TDCALL_INVALID_OPERAND 0xc0000100
+-#define TDCALL_OPERAND_BUSY    0x80000200
+-
+  #define TDREPORT_SUBTYPE_0     0
 
->> +
->> +	kfree(dev_info);
->> +	/*
->> +	 * Verify that the digests of the provided reports match with the
->> +	 * digests from RMM
->> +	 */
->> +	ret =3D verify_digests(dsc);
->> +	if (ret) {
->> +		pci_err(pdev, "device digest validation failed (%d)\n", ret);
->> +		return ret;
->> +	}
->> +
->> +	ret =3D cca_apply_interface_report_mappings(pdev, true);
->> +	if (ret) {
->> +		pci_err(pdev, "failed to validate the interface report\n");
->> +		return -EIO;
->> +	}
->> +
->> +	return 0;
->> +}
+  static atomic_long_t nr_shared;
+
+>   			return -EBUSY;
+>   		return -EIO;
+>   	}
+> @@ -316,7 +316,7 @@ static void reduce_unnecessary_ve(void)
+>   {
+>   	u64 err = tdg_vm_wr(TDCS_TD_CTLS, TD_CTLS_REDUCE_VE, TD_CTLS_REDUCE_VE);
+>   
+> -	if (err == TDX_SUCCESS)
+> +	if (IS_TDX_SUCCESS(err))
+>   		return;
+>   
+>   	/*
+> diff --git a/arch/x86/include/asm/shared/tdx_errno.h b/arch/x86/include/asm/shared/tdx_errno.h
+> index 3aa74f6a6119..e302aed31b50 100644
+> --- a/arch/x86/include/asm/shared/tdx_errno.h
+> +++ b/arch/x86/include/asm/shared/tdx_errno.h
+> @@ -5,7 +5,7 @@
+>   #include <asm/trapnr.h>
+>   
+>   /* Upper 32 bit of the TDX error code encodes the status */
+> -#define TDX_SEAMCALL_STATUS_MASK		0xFFFFFFFF00000000ULL
+> +#define TDX_STATUS_MASK				0xFFFFFFFF00000000ULL
+>   
+>   /*
+>    * TDX SEAMCALL Status Codes
+> @@ -54,4 +54,49 @@
+>   #define TDX_OPERAND_ID_SEPT			0x92
+>   #define TDX_OPERAND_ID_TD_EPOCH			0xa9
+>   
+> +#ifndef __ASSEMBLER__
+> +#include <linux/bits.h>
+> +#include <linux/types.h>
+> +
+> +static inline u64 TDX_STATUS(u64 err)
+> +{
+> +	return err & TDX_STATUS_MASK;
+> +}
+
+Should be tagged with __always_inline since it's used in noinstr range.
+
+[...]
