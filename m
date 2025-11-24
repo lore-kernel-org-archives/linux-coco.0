@@ -1,68 +1,48 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B34238C1B
-	for <linux-coco@lists.linux.dev>; Mon, 24 Nov 2025 11:07:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795C126F467;
+	Mon, 24 Nov 2025 13:14:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763982433; cv=none; b=KRRIMmWNAIf1csyV8dR2aHgnURb6YplMUGp2BBWTGGj2//Iiv252rDypkoSKquD8MYj6mOBAPTRbhkvQXVDqoD3ARHVBcnIchrA4PU2hMFO6prmxkM4r5+GkHoZSc997AwcWI9o47cwbWOWdHChM3/CYzGfqkK2htIcuR5R8ouc=
+	t=1763990070; cv=none; b=hkV/VSOtfYM9Fob9CyLRYDkBply6w8HMZLA6WvBawtJBUmHp8nYVB5okP/0boQaAiu6jYB80opwSjA2gISwBnI7NnmjZKVOR0hj5RGYFikffTn4eOSDse72v1F6QfIFNFRHVCGxN8fz9IXz8Ydnqwr6xvpt2iqnA2NJO9QZ6XUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763982433; c=relaxed/simple;
-	bh=1zHIvNEf+NEropyB/UiSTJ/BYa9+kSRseH9TJzhz5aY=;
+	s=arc-20240116; t=1763990070; c=relaxed/simple;
+	bh=RkP3XoBrROfWxpPBrDgZoNSdZ6SM16qUrh12yE+95MM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L8TUCGnsqtCweVgf/oXjGMUiqZAz9x8xAq2M3B8JdTIXhjCElKIG194GK3lLbGO6xEXrWNQ6h+sCZmSXIKMHe3Kkxii7Sc39H1zeBS3ytIaQaq2O+oY0omTTPx64rg+SfhwFK7JAI+Eq8AeDFzkyKFPe7pSIXtHrw/RVki0MgR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G7eAzWb7; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=h9LyaVBK7znPWaAG2E8s2XYpEwuhz5m39EKcWhY0WHUijCSXQ/uTmV2W56k2UQzDTCJsjdwK3pof/GLOYJ3MDqq4UgvLNfQRayYhfEyrzI/aK7GJhRxOFz2ZsHILK02C+q+w/O5XU/6WghUNtKFYAfDsTuujkibJ9Chu67zNoZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jmZ/16DT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G7eAzWb7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763982431; x=1795518431;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1zHIvNEf+NEropyB/UiSTJ/BYa9+kSRseH9TJzhz5aY=;
-  b=G7eAzWb7IocJdC9N91G6A7b2CeSfEGC3i8djQ32L0XxqRzO5trXaXtHz
-   fKnRmGdkhEjPd5VY0dlqSCa9UdCn1ffHl6KUsfboEfuseuhCvecwsFUeQ
-   ObaAwdLO7nvrbIjoK8x534mOznHK30Np12ANJ3ozu2sH6WC/s+nIYtZc5
-   zF6FbjnD4B1uidMmNx7mMnn1m8wMMjEfG/bKXLLK49tBpEhAxVYVkZcOR
-   3C/1V8lgRcJ5VeaBwlHdN8tmWdHmQCkceopXZBnD1xw+hSjY0DCS7edQf
-   scefYXK8ufEJwFay+d6yKIfVkWjDmj/bP2ZBLfJZAJ873L10+dXRn4hBl
-   w==;
-X-CSE-ConnectionGUID: xkY6DtM7TuuUvZHGrShlZw==
-X-CSE-MsgGUID: nN7SlOomRKuv/KyIyeUxfg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11622"; a="66139179"
-X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
-   d="scan'208";a="66139179"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 03:07:11 -0800
-X-CSE-ConnectionGUID: pegE1URWRviKK6oQP8pXLg==
-X-CSE-MsgGUID: d3x5067aS+SRVZGCOqU64w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
-   d="scan'208";a="197230778"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa004.fm.intel.com with ESMTP; 24 Nov 2025 03:07:07 -0800
-Date: Mon, 24 Nov 2025 18:52:05 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	chao.gao@intel.com, dave.jiang@intel.com, baolu.lu@linux.intel.com,
-	yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
-	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
-	dan.j.williams@intel.com, kas@kernel.org, x86@kernel.org
-Subject: Re: [PATCH v1 08/26] x86/virt/tdx: Add tdx_enable_ext() to enable of
- TDX Module Extensions
-Message-ID: <aSQ41bTeYKo29Zim@yilunxu-OptiPlex-7050>
-References: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
- <20251117022311.2443900-9-yilun.xu@linux.intel.com>
- <cfcfb160-fcd2-4a75-9639-5f7f0894d14b@intel.com>
- <aRyphEW2jpB/3Ht2@yilunxu-OptiPlex-7050>
- <62bec236-4716-4326-8342-1863ad8a3f24@intel.com>
- <aR6ws2yzwQumApb9@yilunxu-OptiPlex-7050>
- <13e894a8-474f-465a-a13a-5d892efbfadb@intel.com>
- <aSBg+5rS1Y498gHx@yilunxu-OptiPlex-7050>
- <ca331aa3-6304-4e07-9ed9-94dc69726382@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jmZ/16DT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E64EC116C6;
+	Mon, 24 Nov 2025 13:14:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763990070;
+	bh=RkP3XoBrROfWxpPBrDgZoNSdZ6SM16qUrh12yE+95MM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jmZ/16DT0AV5S1MN9ZABpryaAZ3eE5oVUK1vVTDTfYkNQzDDlagWodLtTcSEHSRHE
+	 bBx8CzXdWq6kmAoB0um7jWzu6RT21Mfp0Y3UUfrAI5iWePndMdFXpN7ipEpuY+4Xvg
+	 wUGWCymAWyCllQgPeKsZ8sBhc3U6xtF/RTRcQlBafh5TYS2ZCqC8fIh3Ys8LYgDJUW
+	 xYw++b6a0Eae2yMUU3qNcVzlRd20nTzHxqDqLVCgqcj6fbs1H77qJSk8OYmdc7VyP/
+	 Hx1Yi91I9FhKM2ctMbelRoQU4RInZZX77QIz2CdYeKYKZ2up2tFxBslyS0aHGgWBZz
+	 S4d793LsYiBxg==
+Date: Mon, 24 Nov 2025 13:14:24 +0000
+From: Will Deacon <will@kernel.org>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev, catalin.marinas@arm.com,
+	gshan@redhat.com, aneesh.kumar@kernel.org, sami.mujawar@arm.com,
+	sudeep.holla@arm.com, steven.price@arm.com,
+	regressions@lists.linux.dev
+Subject: Re: [REGRESSION] GHES firmware can't be readonly - Was: Re: [PATCH
+ v3 3/3] arm64: acpi: Enable ACPI CCEL support
+Message-ID: <aSRaME9ZO-nchE1I@willie-the-truck>
+References: <20250918125618.2125733-1-suzuki.poulose@arm.com>
+ <20250918125618.2125733-4-suzuki.poulose@arm.com>
+ <20251121224611.07efa95a@foz.lan>
+ <4a750da6-7883-4afa-94c1-4806677e61c2@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -71,31 +51,61 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ca331aa3-6304-4e07-9ed9-94dc69726382@intel.com>
+In-Reply-To: <4a750da6-7883-4afa-94c1-4806677e61c2@arm.com>
 
-> A few more nits, though. Please don't talk about things in terms of
-> number of pages. Just give the usage in megabytes.
-
-Yes.
-
-...
-
-> >  -#define TDH_SYS_CONFIG                 45
-> >  +#define TDH_SYS_CONFIG                 (45 | (1ULL << TDX_VERSION_SHIFT))
+On Mon, Nov 24, 2025 at 05:21:00AM +0000, Suzuki K Poulose wrote:
+> On 21/11/2025 21:46, Mauro Carvalho Chehab wrote:
+> > Hi,
+> > 
+> > Em Thu, 18 Sep 2025 13:56:18 +0100
+> > Suzuki K Poulose <suzuki.poulose@arm.com> escreveu:
+> > 
+> > > Add support for ACPI CCEL by handling the EfiACPIMemoryNVS type memory.
+> > > As per UEFI specifications NVS memory is reserved for Firmware use even
+> > > after exiting boot services. Thus map the region as read-only.
+> > > 
+> > > Cc: Sami Mujawar <sami.mujawar@arm.com>
+> > > Cc: Will Deacon <will@kernel.org>
+> > > Cc: Catalin Marinas <catalin.marinas@arm.com>
+> > > Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+> > > Cc: Steven Price <steven.price@arm.com>
+> > > Cc: Sudeep Holla <sudeep.holla@arm.com>
+> > > Cc: Gavin Shan <gshan@redhat.com>
+> > > Reviewed-by: Gavin Shan <gshan@redhat.com>
+> > > Tested-by: Sami Mujawar <sami.mujawar@arm.com>
+> > > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> > > ---
+> > >   arch/arm64/kernel/acpi.c | 10 ++++++++++
+> > >   1 file changed, 10 insertions(+)
+> > > 
+> > > diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
+> > > index 4d529ff7ba51..b3195b3b895f 100644
+> > > --- a/arch/arm64/kernel/acpi.c
+> > > +++ b/arch/arm64/kernel/acpi.c
+> > > @@ -357,6 +357,16 @@ void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
+> > >   			 * as long as we take care not to create a writable
+> > >   			 * mapping for executable code.
+> > >   			 */
+> > > +			fallthrough;
+> > > +
+> > > +		case EFI_ACPI_MEMORY_NVS:
+> > > +			/*
+> > > +			 * ACPI NVS marks an area reserved for use by the
+> > > +			 * firmware, even after exiting the boot service.
+> > > +			 * This may be used by the firmware for sharing dynamic
+> > > +			 * tables/data (e.g., ACPI CCEL) with the OS. Map it
+> > > +			 * as read-only.
+> > > +			 */
+> > >   			prot = PAGE_KERNEL_RO;
+> > 
+> > Please revert this change.
+> > 
+> > Making area reserved to be used by firmware breaks some APEI
+> > notification mechanisms:
 > 
-> That's my theory: we don't need to keep versions.
+> Thanks for the report. Clearly, we missed this case. I am happy for this
+> patch to be reverted and we can work out the handling of NVS later.
 
-Good to know.
+I'll revert the change shortly.
 
-...
-
-> > The TDX Module can only accept one root page (i.e. 512 HPAs at most), while
-> > struct tdx_page_array contains the whole EXT memory (12800 pages). So we
-> > can't populate all pages into one root page then tell TDX Module. We need to
-> > populate one batch, tell tdx module, then populate the next batch, tell
-> > tdx module...
-> 
-> That is, indeed, the information that I was looking for. Can you please
-> ensure that makes it into code comments?
-
-Yes.
+Will
