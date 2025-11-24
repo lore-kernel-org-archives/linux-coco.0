@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD8F2EF67F
-	for <linux-coco@lists.linux.dev>; Mon, 24 Nov 2025 08:56:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEFD2F6165
+	for <linux-coco@lists.linux.dev>; Mon, 24 Nov 2025 09:26:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763974585; cv=none; b=fbseDZaEGeVd5yO0dn1lB+0ISlXlfqifIDdvg9M1KJwdhAvNb08uQFZEgQyfp8xAqA68MQskOTh5rdkUUjvsIuk8JfTlv9e0C8YARE9O+7pCvVCxDOWr5zILkRJBQBQcNduy8Qye9B834WI3ZZR5+Q8V4zrj1Tc3bI+aIM5T8+Y=
+	t=1763976415; cv=none; b=VRRk7ejVmv2x/iM4hcmVZNoheS0Ts7vY+4bNM2/4mESlZnDBp39COYvui0c+KapqP2RwAccVhdOCz+d7rnQbgFLwY4VnWbUUuT0FRRen8XcirK6EWSoHad4CXVW9NiZsBCB1NMUKnjxXjdYl3fGelMrPWFbYp9KCbTDPwbUq8f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763974585; c=relaxed/simple;
-	bh=Jm+teq8+3Q9frtKYeahT0HHK2VI/U5Z9xTgTT0mlHkc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dKGbgDxQnIZW0UIs/tU8ylgOpSHItfMSSPjGVaXgGdbgDZTpqUhLPZiHelDY9hQH56ezRV+7IrY/DXbVhdAoidlgDgIbw59zWnUa/FoVoObN/rlYL4zYVRoPizm435XUpGtiUJdK4mGUJVIaWBk0BnFhS7MDWLyTqKzgxBxhYd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ijEu0H7o; arc=none smtp.client-ip=192.198.163.10
+	s=arc-20240116; t=1763976415; c=relaxed/simple;
+	bh=9SztITqQ4D3qybTDRMRxELb+sO2S4C65ekZnrR7/ltU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
+	 In-Reply-To:Content-Type; b=F0LIFI1bu321IINE+01LwL22Vp9ORTL2vsEhZ6f47/pnktZg30wC1BVD6JQFHBedvqpHllVaa6AmfzfGkJH+xC32nPWxkR1Ux+M+hGfTbf7mY0Vek+ECsnJ+9SA5gpZrEY7kZEbGmccy7s+5PMjKf2X8saN1cUbUp2UC6lE5ex8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BdsojQxA; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ijEu0H7o"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BdsojQxA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763974583; x=1795510583;
-  h=message-id:date:mime-version:subject:to:cc:references:
+  t=1763976414; x=1795512414;
+  h=message-id:date:mime-version:subject:to:references:cc:
    from:in-reply-to:content-transfer-encoding;
-  bh=Jm+teq8+3Q9frtKYeahT0HHK2VI/U5Z9xTgTT0mlHkc=;
-  b=ijEu0H7oLROzpOu1E3qFKW9VX4MAlwsI6dnZadNVwOHn8ZrRzkcOPefB
-   ElgpaFhkAEGdX12NpDLyS+ro/uV2kW3r+qoH3T2OEEp4j2Lz5Q9r1UzJ1
-   ulwL0M7o8xfjrB03f+yAEkbCpUSInmpXqCmeBBjI0CBGcZUmbeylINj1y
-   d6c/zxZ4vPi3VmCgTZ5xeBZmGBKGrx9kKI7fYla3eEUYQ5pGi24l+QUiK
-   IPlSbATixc7h19JgKbsT0dyUWHiszs7asJFZ+kdVHaBTCFze0wkJVyLb9
-   Wtsy1mQWpxmNqQtO5M2oyPyq+DJUjevi1gXAs+8xAZOHaFxHzneQrt7Zb
-   A==;
-X-CSE-ConnectionGUID: Gn4mZv2bR9OB4I+jlQeJcQ==
-X-CSE-MsgGUID: S55OYKv/SGGr0qg7Eeaz5Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11622"; a="77330659"
+  bh=9SztITqQ4D3qybTDRMRxELb+sO2S4C65ekZnrR7/ltU=;
+  b=BdsojQxAGHMNY1XIAQAMT15NtO9qgYK+FfriTERHgfK0gfKM+WHgxQCA
+   GtdD+kLvTGl7G69xMD65SzsRdzbJa1WLqR8Y8zUWUvSHsGvrIOnar2YOs
+   aAbFISMhEDiA9tL8xyCXkecF9lfPDiqazTaq0Gd5tAufVDgUiQL/QoZie
+   9uKypjdfrmsl4hwpvOCNQzHCCYSyQhxL4qfudJ9NhMfRl0HIlCTJNeMV7
+   IKRYA7j/vaw/Bb7KTFXJKTFQsG1O8dmKmXqHAjViMscQUHtOJQjOVHhtr
+   L6fy/38M4a5LfoLE7bCR2214PcLArPim2bHtzWt+qdSB/6w3rDlfF9Zxi
+   g==;
+X-CSE-ConnectionGUID: mDcOjOyDRzm0199OLWCBWA==
+X-CSE-MsgGUID: NULP//T4RrSWAQCS3dr9yQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11622"; a="66012222"
 X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
-   d="scan'208";a="77330659"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 00:56:22 -0800
-X-CSE-ConnectionGUID: h29LzYTXQJ2XO/Md6x/71Q==
-X-CSE-MsgGUID: xTJbEjixScy/JUNmCCD1qg==
+   d="scan'208";a="66012222"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 01:26:53 -0800
+X-CSE-ConnectionGUID: V3jA9flGQ/mn3WvLx5K9Ag==
+X-CSE-MsgGUID: X54GqQKRTIqJ3wxYtORRuQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; 
-   d="scan'208";a="197395735"
+   d="scan'208";a="223251405"
 Received: from yinghaoj-desk.ccr.corp.intel.com (HELO [10.238.1.225]) ([10.238.1.225])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 00:56:17 -0800
-Message-ID: <86e2d5fa-4d68-4200-98d1-77113bc3c1da@linux.intel.com>
-Date: Mon, 24 Nov 2025 16:56:15 +0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 01:26:48 -0800
+Message-ID: <8eba534b-7fcf-43b2-a304-091993faef1c@linux.intel.com>
+Date: Mon, 24 Nov 2025 17:26:46 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,113 +52,102 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 02/16] x86/tdx: Add helpers to check return status
- codes
+Subject: Re: [PATCH v4 03/16] x86/virt/tdx: Simplify tdmr_get_pamt_sz()
 To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
+ <20251121005125.417831-4-rick.p.edgecombe@intel.com>
+Content-Language: en-US
 Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@intel.com,
  isaku.yamahata@intel.com, kai.huang@intel.com, kas@kernel.org,
  kvm@vger.kernel.org, linux-coco@lists.linux.dev,
  linux-kernel@vger.kernel.org, mingo@redhat.com, pbonzini@redhat.com,
  seanjc@google.com, tglx@linutronix.de, vannapurve@google.com,
  x86@kernel.org, yan.y.zhao@intel.com, xiaoyao.li@intel.com,
- binbin.wu@intel.com, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
- <20251121005125.417831-3-rick.p.edgecombe@intel.com>
-Content-Language: en-US
+ binbin.wu@intel.com
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20251121005125.417831-3-rick.p.edgecombe@intel.com>
+In-Reply-To: <20251121005125.417831-4-rick.p.edgecombe@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
 
 On 11/21/2025 8:51 AM, Rick Edgecombe wrote:
-[...]
+> For each memory region that the TDX module might use (TDMR), the three
+> separate PAMT allocations are needed. One for each supported page size
+> (1GB, 2MB, 4KB). These store information on each page in the TDMR. In
+> Linux, they are allocated out of one physically contiguous block, in order
+> to more efficiently use some internal TDX module book keeping resources.
+> So some simple math is needed to break the single large allocation into
+> three smaller allocations for each page size.
 >
-> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> index 7b2833705d47..167c5b273c40 100644
-> --- a/arch/x86/coco/tdx/tdx.c
-> +++ b/arch/x86/coco/tdx/tdx.c
-> @@ -129,9 +129,9 @@ int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport)
->   
->   	ret = __tdcall(TDG_MR_REPORT, &args);
->   	if (ret) {
-> -		if (TDCALL_RETURN_CODE(ret) == TDCALL_INVALID_OPERAND)
-> +		if (IS_TDX_OPERAND_INVALID(ret))
->   			return -ENXIO;
-> -		else if (TDCALL_RETURN_CODE(ret) == TDCALL_OPERAND_BUSY)
-> +		else if (IS_TDX_OPERAND_BUSY(ret))
->   			return -EBUSY;
->   		return -EIO;
+> There are some commonalities in the math needed to calculate the base and
+> size for each smaller allocation, and so an effort was made to share logic
+> across the three. Unfortunately doing this turned out naturally tortured,
+> with a loop iterating over the three page sizes, only to call into a
+> function with a case statement for each page size. In the future Dynamic
+> PAMT will add more logic that is special to the 4KB page size, making the
+> benefit of the math sharing even more questionable.
+>
+> Three is not a very high number, so get rid of the loop and just duplicate
+> the small calculation three times. In doing so, setup for future Dynamic
+> PAMT changes and drop a net 33 lines of code.
+>
+> Since the loop that iterates over it is gone, further simplify the code by
+> dropping the array of intermediate size and base storage. Just store the
+> values to their final locations. Accept the small complication of having
+> to clear tdmr->pamt_4k_base in the error path, so that tdmr_do_pamt_func()
+> will not try to operate on the TDMR struct when attempting to free it.
+>
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+
+One nit below.
+
+[...]
+> @@ -535,26 +518,18 @@ static int tdmr_set_up_pamt(struct tdmr_info *tdmr,
+>   	 * in overlapped TDMRs.
+>   	 */
+>   	pamt = alloc_contig_pages(tdmr_pamt_size >> PAGE_SHIFT, GFP_KERNEL,
+> -			nid, &node_online_map);
+> -	if (!pamt)
+> +				  nid, &node_online_map);
+> +	if (!pamt) {
+> +		/*
+> +		 * tdmr->pamt_4k_base is zero so the
+> +		 * error path will skip freeing.
+> +		 */
+>   		return -ENOMEM;
+Nit:
+Do you think it's OK to move the comment up so to avoid multiple lines of
+comments as well as the curly braces?
+
+         /* tdmr->pamt_4k_base is zero so the error path will skip freeing. */
+         if (!pamt)
+             return -ENOMEM;
+
+> -
+> -	/*
+> -	 * Break the contiguous allocation back up into the
+> -	 * individual PAMTs for each page size.
+> -	 */
+> -	tdmr_pamt_base = page_to_pfn(pamt) << PAGE_SHIFT;
+> -	for (pgsz = TDX_PS_4K; pgsz < TDX_PS_NR; pgsz++) {
+> -		pamt_base[pgsz] = tdmr_pamt_base;
+> -		tdmr_pamt_base += pamt_size[pgsz];
 >   	}
-> @@ -165,9 +165,9 @@ int tdx_mcall_extend_rtmr(u8 index, u8 *data)
 >   
->   	ret = __tdcall(TDG_MR_RTMR_EXTEND, &args);
->   	if (ret) {
-> -		if (TDCALL_RETURN_CODE(ret) == TDCALL_INVALID_OPERAND)
-> +		if (IS_TDX_OPERAND_INVALID(ret))
->   			return -ENXIO;
-> -		if (TDCALL_RETURN_CODE(ret) == TDCALL_OPERAND_BUSY)
-> +		if (IS_TDX_OPERAND_BUSY(ret))
-
-After the changes in tdx_mcall_get_report0() and tdx_mcall_extend_rtmr(), the
-macros defined in arch/x86/coco/tdx/tdx.c can be removed:
-
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 7b2833705d47..f72b7dfdacd1 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -33,11 +33,6 @@
-  #define VE_GET_PORT_NUM(e)     ((e) >> 16)
-  #define VE_IS_IO_STRING(e)     ((e) & BIT(4))
-
--/* TDX Module call error codes */
--#define TDCALL_RETURN_CODE(a)  ((a) >> 32)
--#define TDCALL_INVALID_OPERAND 0xc0000100
--#define TDCALL_OPERAND_BUSY    0x80000200
--
-  #define TDREPORT_SUBTYPE_0     0
-
-  static atomic_long_t nr_shared;
-
->   			return -EBUSY;
->   		return -EIO;
->   	}
-> @@ -316,7 +316,7 @@ static void reduce_unnecessary_ve(void)
->   {
->   	u64 err = tdg_vm_wr(TDCS_TD_CTLS, TD_CTLS_REDUCE_VE, TD_CTLS_REDUCE_VE);
+> -	tdmr->pamt_4k_base = pamt_base[TDX_PS_4K];
+> -	tdmr->pamt_4k_size = pamt_size[TDX_PS_4K];
+> -	tdmr->pamt_2m_base = pamt_base[TDX_PS_2M];
+> -	tdmr->pamt_2m_size = pamt_size[TDX_PS_2M];
+> -	tdmr->pamt_1g_base = pamt_base[TDX_PS_1G];
+> -	tdmr->pamt_1g_size = pamt_size[TDX_PS_1G];
+> +	tdmr->pamt_4k_base = page_to_phys(pamt);
+> +	tdmr->pamt_2m_base = tdmr->pamt_4k_base + tdmr->pamt_4k_size;
+> +	tdmr->pamt_1g_base = tdmr->pamt_2m_base + tdmr->pamt_2m_size;
 >   
-> -	if (err == TDX_SUCCESS)
-> +	if (IS_TDX_SUCCESS(err))
->   		return;
->   
->   	/*
-> diff --git a/arch/x86/include/asm/shared/tdx_errno.h b/arch/x86/include/asm/shared/tdx_errno.h
-> index 3aa74f6a6119..e302aed31b50 100644
-> --- a/arch/x86/include/asm/shared/tdx_errno.h
-> +++ b/arch/x86/include/asm/shared/tdx_errno.h
-> @@ -5,7 +5,7 @@
->   #include <asm/trapnr.h>
->   
->   /* Upper 32 bit of the TDX error code encodes the status */
-> -#define TDX_SEAMCALL_STATUS_MASK		0xFFFFFFFF00000000ULL
-> +#define TDX_STATUS_MASK				0xFFFFFFFF00000000ULL
->   
->   /*
->    * TDX SEAMCALL Status Codes
-> @@ -54,4 +54,49 @@
->   #define TDX_OPERAND_ID_SEPT			0x92
->   #define TDX_OPERAND_ID_TD_EPOCH			0xa9
->   
-> +#ifndef __ASSEMBLER__
-> +#include <linux/bits.h>
-> +#include <linux/types.h>
-> +
-> +static inline u64 TDX_STATUS(u64 err)
-> +{
-> +	return err & TDX_STATUS_MASK;
-> +}
-
-Should be tagged with __always_inline since it's used in noinstr range.
-
+>   	return 0;
+>   }
+>
 [...]
