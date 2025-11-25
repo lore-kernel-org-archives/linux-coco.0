@@ -1,151 +1,75 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7357E2DAFBA
-	for <linux-coco@lists.linux.dev>; Tue, 25 Nov 2025 09:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43AB23246FE;
+	Tue, 25 Nov 2025 14:17:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764062051; cv=none; b=eQwu7C5KeAObElvxfL3wEzEvf7VWADNBa0fHHpfGk5PsWYw1OUhxyVQw4ltxjnwMyveu7k02/XE5VFLr5h7U0pAtjxTCCu6rQElwm0EMtDHmFbCQhL1+kLQSO72df7v0nDoanmS5PVm1XigOh05CTS3C4PvI15eYD5O6yogwQ/I=
+	t=1764080250; cv=none; b=KiV4Z99zMsTCU68aLndB6Ja3u7BgwVFtJVKdojtuMe7JumxI3JALTcjfiqQ1GODtUa+7/9amWSWKt3q+ODn44fp3+bngtumLWCBNOcgpN4sFLKY5YbySE2sm7Mm6C9cdBL+3M5UjdzZtUsfTR8TEeL+wGGTUiWCodMWtHyE08EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764062051; c=relaxed/simple;
-	bh=3lhJ6hy1eRtw+FaDUJ3gGgqvzhLKanxpNv7sYm/ergk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FUwgNyelPDOq58Mi1u1NgBUlL4+QEup6b13MAwFs6t6SqDdg6U4bEpkQ6q1flu3LY8Sd+UNDnyYZf1ByRIFrqEs3+qs+TtRA89naY0wM5K8LAzIJvuuR9PHnkHlpCZLSvkCt18ZWEvcOyE+JazUhElY2fcPHMarAXOpaZojt/YE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KSR6H/nZ; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1764080250; c=relaxed/simple;
+	bh=3FKv5aLjimGVl+0YYJReTdnukho31uuGhNJwMpjAnoo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EaxyFRecZlL+GZQFBPttNUqbt2ijs24fmspz4us/X+8wCizMK56FOZ1YX8hJKey9BwO153WH8Y/Cz2bT7T1aC5gNOLtu3PJ1bEAVyzqrBcuw8oN7GVV1LNdP3BMa7NcqX8lVUAMYzyxfxGuLw5fiqD65W1Ul5J5hyWdoWM21hlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=4cdJrNqa; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KSR6H/nZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764062048; x=1795598048;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=3lhJ6hy1eRtw+FaDUJ3gGgqvzhLKanxpNv7sYm/ergk=;
-  b=KSR6H/nZQoeo1SdeAExN2LV5iHrTZRrPyAJ/6prBOrPvf+N1oKjOMDvp
-   7A8D/BKhqnPENu72J/0GDM8uNnArp0COkGVI7hiovbxjbw2rHomdiKcki
-   ySF7VgS2asCkAeAC5gw5YvCUfT+fZq+y9g3SEPqFMabtlNjs7weeJ3XGh
-   PqKqUBRO5ZeGAPHaH1kWEXlM7kApKP4pjGkXNc78OYm8pbFY2xH1PltLs
-   ZrWCqZYdi+nuNOGl4zPPNnmi1BzEntdbg7zuzoUiOptL3wCbIxALdaIHh
-   2UY2rUjIUi2kg67EWk7wZB+PBQlDuHkPjwXmOUciu//5jma2YACxqPtEf
-   A==;
-X-CSE-ConnectionGUID: L84ZM0QjR4GXQNzB5OxWGQ==
-X-CSE-MsgGUID: 96XY71p+SAyIhlsANgemGA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="76698420"
-X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; 
-   d="scan'208";a="76698420"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 01:14:08 -0800
-X-CSE-ConnectionGUID: 5v6NpJF/QVmKtgmtwRIr5g==
-X-CSE-MsgGUID: po6x+6lgTyeUIEXLTACSbg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; 
-   d="scan'208";a="197064494"
-Received: from yinghaoj-desk.ccr.corp.intel.com (HELO [10.238.1.225]) ([10.238.1.225])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 01:14:03 -0800
-Message-ID: <3e09b8fb-a24c-4c50-9203-30dce333c4fc@linux.intel.com>
-Date: Tue, 25 Nov 2025 17:14:01 +0800
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="4cdJrNqa"
+Received: from 8bytes.org (p549214ac.dip0.t-ipconnect.de [84.146.20.172])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 0FBE75AB13;
+	Tue, 25 Nov 2025 15:17:27 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1764080247;
+	bh=3FKv5aLjimGVl+0YYJReTdnukho31uuGhNJwMpjAnoo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=4cdJrNqaOkz9O/XGjxTEF9Q++fnK4VPshQF30DqerbRcrHiaZvyDQPb8wv4r7kWHD
+	 GEPJ4TftydX1NPAdheJL6I5wXSupdKWnesGA1XQIg4CX3gaWL/8Hqz5kLmc7Q3iDHl
+	 Zig8JQT9UuSZPc3WD9dC/wRghDcJhK0A2ubLAC69Y7ihSse60f0TIEgFe1DektCJOk
+	 VqplO0l0gLv/HeGj5r/JoacJQ39lE5PRQi1+GXa9OiwYLZHl7o9gPZh+I/A3Bwliia
+	 UKqRnscw0ze2v2fLvWpLujnPKKy6UE9LI0RddGXtb+tPh17X1gxAeumxB4VyeAe4Aj
+	 Xqy8YM0cKqJEQ==
+Date: Tue, 25 Nov 2025 15:17:25 +0100
+From: Joerg Roedel <joro@8bytes.org>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	Tom Lendacky <thomas.lendacky@amd.com>, John Allen <john.allen@amd.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
+	Ashish Kalra <ashish.kalra@amd.com>, Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>, 
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	"Borislav Petkov (AMD)" <bp@alien8.de>, Kim Phillips <kim.phillips@amd.com>, 
+	Jerry Snitselaar <jsnitsel@redhat.com>, Vasant Hegde <vasant.hegde@amd.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Gao Shiyuan <gaoshiyuan@baidu.com>, 
+	Sean Christopherson <seanjc@google.com>, Nikunj A Dadhania <nikunj@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, Amit Shah <amit.shah@amd.com>, Peter Gonda <pgonda@google.com>, 
+	iommu@lists.linux.dev, "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH kernel v2 0/5] PCI/TSM: Enabling core infrastructure on
+Message-ID: <jlut4svio3kbj5x4e7xjv3fra3ekt5jjswq7awue7idbp366kk@2dgmes7xtlol>
+References: <20251121080629.444992-1-aik@amd.com>
+ <b56046b5-1fa2-404f-b99f-353ec8567621@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 10/16] KVM: TDX: Allocate PAMT memory for vCPU control
- structures
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@intel.com,
- isaku.yamahata@intel.com, kai.huang@intel.com, kas@kernel.org,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, mingo@redhat.com, pbonzini@redhat.com,
- seanjc@google.com, tglx@linutronix.de, vannapurve@google.com,
- x86@kernel.org, yan.y.zhao@intel.com, xiaoyao.li@intel.com,
- binbin.wu@intel.com
-References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
- <20251121005125.417831-11-rick.p.edgecombe@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20251121005125.417831-11-rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b56046b5-1fa2-404f-b99f-353ec8567621@amd.com>
 
+Hey Alexey,
 
+On Sat, Nov 22, 2025 at 02:35:03PM +1100, Alexey Kardashevskiy wrote:
+> I should have cc'ed linux-coco@lists.linux.dev. And vim ate "AMD" from the
+> subject line. Should I repost now? Thanks,
 
-On 11/21/2025 8:51 AM, Rick Edgecombe wrote:
-> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
->
-> TDX vCPU control structures are provided to the TDX module at 4KB page
-> size and require PAMT backing. This means for Dynamic PAMT they need to
-> also have 4KB backings installed.
->
-> Previous changes introduced tdx_alloc_page()/tdx_free_page() that can
-> allocate a page and automatically handle the DPAMT maintenance. Use them
-> for vCPU control structures instead of alloc_page()/__free_page().
->
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> [update log]
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+A full repost it not needed, imho. Just reply with linux-coco on CC for
+awareness. Everyone on that list can then lookup the full thread on lore.
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Just make sure to Cc linux-coco on the next version.
 
-> ---
-> v3:
->   - Write log. Reame from “Allocate PAMT memory for TDH.VP.CREATE and
->     TDH.VP.ADDCX”.
->   - Remove new line damage
-> ---
->   arch/x86/kvm/vmx/tdx.c | 12 +++++-------
->   1 file changed, 5 insertions(+), 7 deletions(-)
->
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index 8c4c1221e311..b6d7f4b5f40f 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-> @@ -2882,7 +2882,7 @@ static int tdx_td_vcpu_init(struct kvm_vcpu *vcpu, u64 vcpu_rcx)
->   	int ret, i;
->   	u64 err;
->   
-> -	page = alloc_page(GFP_KERNEL);
-> +	page = tdx_alloc_page();
->   	if (!page)
->   		return -ENOMEM;
->   	tdx->vp.tdvpr_page = page;
-> @@ -2902,7 +2902,7 @@ static int tdx_td_vcpu_init(struct kvm_vcpu *vcpu, u64 vcpu_rcx)
->   	}
->   
->   	for (i = 0; i < kvm_tdx->td.tdcx_nr_pages; i++) {
-> -		page = alloc_page(GFP_KERNEL);
-> +		page = tdx_alloc_page();
->   		if (!page) {
->   			ret = -ENOMEM;
->   			goto free_tdcx;
-> @@ -2924,7 +2924,7 @@ static int tdx_td_vcpu_init(struct kvm_vcpu *vcpu, u64 vcpu_rcx)
->   			 * method, but the rest are freed here.
->   			 */
->   			for (; i < kvm_tdx->td.tdcx_nr_pages; i++) {
-> -				__free_page(tdx->vp.tdcx_pages[i]);
-> +				tdx_free_page(tdx->vp.tdcx_pages[i]);
->   				tdx->vp.tdcx_pages[i] = NULL;
->   			}
->   			return -EIO;
-> @@ -2952,16 +2952,14 @@ static int tdx_td_vcpu_init(struct kvm_vcpu *vcpu, u64 vcpu_rcx)
->   
->   free_tdcx:
->   	for (i = 0; i < kvm_tdx->td.tdcx_nr_pages; i++) {
-> -		if (tdx->vp.tdcx_pages[i])
-> -			__free_page(tdx->vp.tdcx_pages[i]);
-> +		tdx_free_page(tdx->vp.tdcx_pages[i]);
->   		tdx->vp.tdcx_pages[i] = NULL;
->   	}
->   	kfree(tdx->vp.tdcx_pages);
->   	tdx->vp.tdcx_pages = NULL;
->   
->   free_tdvpr:
-> -	if (tdx->vp.tdvpr_page)
-> -		__free_page(tdx->vp.tdvpr_page);
-> +	tdx_free_page(tdx->vp.tdvpr_page);
->   	tdx->vp.tdvpr_page = NULL;
->   	tdx->vp.tdvpr_pa = 0;
->   
+Regards,
 
+	Joerg
