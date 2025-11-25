@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8602D6619
-	for <linux-coco@lists.linux.dev>; Tue, 25 Nov 2025 08:10:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2582D877D
+	for <linux-coco@lists.linux.dev>; Tue, 25 Nov 2025 09:11:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764058203; cv=none; b=eomJ41FKCNvPwgUuQt4BJGMBY0zhoLWAMG4iRYTdypwT6chtVtZ9UDX0NKmaURyXWGlMbGeFc45wGmR372eOvghimu7y+OzdDozimudpq5Vqx2OKahhmKh5M6nFYLePZt39R2uOv58jfvpU6vdyDhyV4B+iheq9Z08aK3EIs5KM=
+	t=1764061890; cv=none; b=AEnt+4rzgEG+TNZ7zLXCU8mHqBTAuhgu/0pvBxBByCbBNFn8pwwon5boxVne6FudOT8khfF3bZNulUFRztDFOA1hwSZCGYLIwNU1aslYIbaBTdBlb9cCQ+AYxnusB0z1JjvsOJfvULf1FA3+XgdcjRiStot8NfmNd57z1zpoTRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764058203; c=relaxed/simple;
-	bh=hwpDaKWSDHJ2P36LukNL+0xtVFpRjTz2H9WP7hWrNvk=;
+	s=arc-20240116; t=1764061890; c=relaxed/simple;
+	bh=Pv2x6/d7lrO6sZIW1bbnKCxbfhqsZJJdNkWShg2nV0I=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hXV/QHwBd4GZunjJN8mjN6APs+XBVXvnZQ69x7VU51o6UvOd8ss2H3EgfkVIBs4HrZpTr+8WenqAQH6yP8SfmVqoEkR0PS7/8IeD7E61528S2Oxr1vPQTSeaT5UoVGnOyf8heSViSRZauc3tTJAuqFTuZRfM0V7ZQimb+ImMsLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Wys0z1r4; arc=none smtp.client-ip=198.175.65.17
+	 In-Reply-To:Content-Type; b=fL9lXIk1jk1//ezjUD9LNH7F+DUofTIejVhpJTElNZUILbqTkJmrru7lp615lTYBbzt2jxvGYpFUsIq+OTex64Q1GNVIm3tcmpuwlYxiAP3iMM55kVjO84DesbJoDpPlQVjbC4exbQA6/0KatkTAAhyX+UAZL+NoZ4tCM97WG40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SSCV/SLF; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wys0z1r4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SSCV/SLF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764058202; x=1795594202;
+  t=1764061889; x=1795597889;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=hwpDaKWSDHJ2P36LukNL+0xtVFpRjTz2H9WP7hWrNvk=;
-  b=Wys0z1r4HispP986SyhblrOaxoRXPzNxo4hnUAzA5n3EiFSA9xZSbyh8
-   IGWUIp6DZOjiWdZ/4xr9VGJVLjUygoiKJ+OKiUl4VfKCyZH8frifa8jnb
-   lY1Q6tusIiZgdAzjXQFaQcl4qLUNIrQndJYjhh0TGo6ECXSCMOAAn06OI
-   DUY3nR1SNLaLsqGKP6ceotbzzc+vc3dd2VlazDgzHK5Z5R//AQhKPj7i+
-   5F6PQhKUIzZxLFtHPjI7K4s/34KS5LSiZK2AgKifZCs50IdSdtlPsu8fq
-   BrU+J04ygbE3hzESsb+EoVLuZISZGbBjvS3Lz2JZyArWFO8uLI52qaZHz
-   w==;
-X-CSE-ConnectionGUID: 3WnsYD6aTEm34DdpzUYuTw==
-X-CSE-MsgGUID: OLtRpRKRTKm5WIuqF/kYhw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="66024292"
-X-IronPort-AV: E=Sophos;i="6.20,224,1758610800"; 
-   d="scan'208";a="66024292"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 00:10:01 -0800
-X-CSE-ConnectionGUID: f1yzQwdhQkqM3HQS9JkInw==
-X-CSE-MsgGUID: sO+iD+y6R62C1FCxq50Rgg==
+  bh=Pv2x6/d7lrO6sZIW1bbnKCxbfhqsZJJdNkWShg2nV0I=;
+  b=SSCV/SLFZ7HDctrWWPvd4pzy5VCgyZzG0hGJFDz6xGAlBIUS2MSrBuCG
+   93LfbWRc792Ne1bQij7wJ0Bpy6+0AQeo0ydYZ+36asLxXEfEfY3AwpWy1
+   e2enZOab8nNG4YAaByKkbQ/mOlrOilid8L4x24Md4PYom0exuQxg9xvbE
+   3Zp6dg1VI8rsSW8ySWGgxMAL1Ef4Wfw0U69s1GynR/cDvoKuumd6vkHmc
+   qkc0WE4rk3IYHPO+D6MDdJYS6liKUlqHZY1dSzE4QHsgg8oQ0k0YF/XCX
+   aQRvWlJrnnlagTjEd8nzg5K/UUv8X42EJ9UXcEH37+T0KHNOo7UCW9+al
+   g==;
+X-CSE-ConnectionGUID: 6Ys6SWDCQ463IPFTxP8Uow==
+X-CSE-MsgGUID: nKBvrQwQTVypygUuumiTYQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="76698160"
+X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; 
+   d="scan'208";a="76698160"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 01:11:28 -0800
+X-CSE-ConnectionGUID: 6ZY5i+58QsusNzHaoxfOTQ==
+X-CSE-MsgGUID: skGEpnpPT5qsyZhF307jUA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,224,1758610800"; 
-   d="scan'208";a="192571594"
+X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; 
+   d="scan'208";a="197063699"
 Received: from yinghaoj-desk.ccr.corp.intel.com (HELO [10.238.1.225]) ([10.238.1.225])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 00:09:56 -0800
-Message-ID: <12144256-b71a-4331-8309-2e805dc120d1@linux.intel.com>
-Date: Tue, 25 Nov 2025 16:09:53 +0800
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 01:11:22 -0800
+Message-ID: <516a8e3d-cae6-440c-94f2-a648cd6c1749@linux.intel.com>
+Date: Tue, 25 Nov 2025 17:11:19 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,7 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/16] x86/virt/tdx: Add tdx_alloc/free_page() helpers
+Subject: Re: [PATCH v4 09/16] KVM: TDX: Allocate PAMT memory for TD control
+ structures
 To: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@intel.com,
  isaku.yamahata@intel.com, kai.huang@intel.com, kas@kernel.org,
@@ -62,117 +63,94 @@ Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@intel.com,
  x86@kernel.org, yan.y.zhao@intel.com, xiaoyao.li@intel.com,
  binbin.wu@intel.com
 References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
- <20251121005125.417831-8-rick.p.edgecombe@intel.com>
+ <20251121005125.417831-10-rick.p.edgecombe@intel.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20251121005125.417831-8-rick.p.edgecombe@intel.com>
+In-Reply-To: <20251121005125.417831-10-rick.p.edgecombe@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
 
 On 11/21/2025 8:51 AM, Rick Edgecombe wrote:
-[...]
->   
-> +/* Number PAMT pages to be provided to TDX module per 2M region of PA */
-           ^                                             ^
-           of                                           2MB
-> +static int tdx_dpamt_entry_pages(void)
-> +{
-> +	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
-> +		return 0;
-> +
-> +	return tdx_sysinfo.tdmr.pamt_4k_entry_size * PTRS_PER_PTE / PAGE_SIZE;
-> +}
-> +
-> +/*
-> + * The TDX spec treats the registers like an array, as they are ordered
-> + * in the struct. The array size is limited by the number or registers,
-> + * so define the max size it could be for worst case allocations and sanity
-> + * checking.
-> + */
-> +#define MAX_TDX_ARG_SIZE(reg) (sizeof(struct tdx_module_args) - \
-> +			       offsetof(struct tdx_module_args, reg))
-
-This should be the maximum number of registers could be used to pass the
-addresses of the pages (or other information), it needs to be divided by sizeof(u64).
-
-Also, "SIZE" in the name could be confusing.
-
-> +#define TDX_ARG_INDEX(reg) (offsetof(struct tdx_module_args, reg) / \
-> +			    sizeof(u64))
-> +
-> +/*
-> + * Treat struct the registers like an array that starts at RDX, per
-> + * TDX spec. Do some sanitychecks, and return an indexable type.
-sanitychecks -> sanity checks
-
-> + */
-[...]
-> +/* Serializes adding/removing PAMT memory */
-> +static DEFINE_SPINLOCK(pamt_lock);
-> +
-> +/* Bump PAMT refcount for the given page and allocate PAMT memory if needed */
-> +int tdx_pamt_get(struct page *page)
-> +{
-> +	u64 pamt_pa_array[MAX_TDX_ARG_SIZE(rdx)];
-> +	atomic_t *pamt_refcount;
-> +	u64 tdx_status;
-> +	int ret;
-> +
-> +	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
-> +		return 0;
-> +
-> +	ret = alloc_pamt_array(pamt_pa_array);
-> +	if (ret)
-> +		goto out_free;
-> +
-> +	pamt_refcount = tdx_find_pamt_refcount(page_to_pfn(page));
-> +
-> +	scoped_guard(spinlock, &pamt_lock) {
-> +		/*
-> +		 * If the pamt page is already added (i.e. refcount >= 1),
-> +		 * then just increment the refcount.
-> +		 */
-> +		if (atomic_read(pamt_refcount)) {
-> +			atomic_inc(pamt_refcount);
-
-So far, all atomic operations are inside the spinlock.
-May be better to add some info in the change log that atomic is needed due to
-the optimization in the later patch?
-
-> +			goto out_free;
-> +		}
-> +
-> +		/* Try to add the pamt page and take the refcount 0->1. */
-> +
-> +		tdx_status = tdh_phymem_pamt_add(page, pamt_pa_array);
-> +		if (!IS_TDX_SUCCESS(tdx_status)) {
-> +			pr_err("TDH_PHYMEM_PAMT_ADD failed: %#llx\n", tdx_status);
-
-Can use pr_tdx_error().
-
-Aslo, so for in this patch, when this SEAMCALL failed, does it indicate a bug?
-
-> +			goto out_free;
-> +		}
-> +
-> +		atomic_inc(pamt_refcount);
-> +	}
-> +
-> +	return ret;
-
-Maybe just return 0 here since all error paths must be directed to out_free.
-
-> +out_free:
-> +	/*
-> +	 * pamt_pa_array is populated or zeroed up to tdx_dpamt_entry_pages()
-> +	 * above. free_pamt_array() can handle either case.
-> +	 */
-> +	free_pamt_array(pamt_pa_array);
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(tdx_pamt_get);
-> +
+> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 >
-[...]
+> TDX TD control structures are provided to the TDX module at 4KB page size
+> and require PAMT backing. This means for Dynamic PAMT they need to also
+> have 4KB backings installed.
+>
+> Previous changes introduced tdx_alloc_page()/tdx_free_page() that can
+> allocate a page and automatically handle the DPAMT maintenance. Use them
+> for vCPU control structures instead of alloc_page()/__free_page().
+
+vCPU -> TD
+
+>
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> [update log]
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+One typo above.
+
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+
+> ---
+> v3:
+>   - Write log. Rename from “KVM: TDX: Allocate PAMT memory in __tdx_td_init()”
+> ---
+>   arch/x86/kvm/vmx/tdx.c | 16 ++++++----------
+>   1 file changed, 6 insertions(+), 10 deletions(-)
+>
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index 0eed334176b3..8c4c1221e311 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -2398,7 +2398,7 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
+>   
+>   	atomic_inc(&nr_configured_hkid);
+>   
+> -	tdr_page = alloc_page(GFP_KERNEL);
+> +	tdr_page = tdx_alloc_page();
+>   	if (!tdr_page)
+>   		goto free_hkid;
+>   
+> @@ -2411,7 +2411,7 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
+>   		goto free_tdr;
+>   
+>   	for (i = 0; i < kvm_tdx->td.tdcs_nr_pages; i++) {
+> -		tdcs_pages[i] = alloc_page(GFP_KERNEL);
+> +		tdcs_pages[i] = tdx_alloc_page();
+>   		if (!tdcs_pages[i])
+>   			goto free_tdcs;
+>   	}
+> @@ -2529,10 +2529,8 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
+>   teardown:
+>   	/* Only free pages not yet added, so start at 'i' */
+>   	for (; i < kvm_tdx->td.tdcs_nr_pages; i++) {
+> -		if (tdcs_pages[i]) {
+> -			__free_page(tdcs_pages[i]);
+> -			tdcs_pages[i] = NULL;
+> -		}
+> +		tdx_free_page(tdcs_pages[i]);
+> +		tdcs_pages[i] = NULL;
+>   	}
+>   	if (!kvm_tdx->td.tdcs_pages)
+>   		kfree(tdcs_pages);
+> @@ -2548,15 +2546,13 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
+>   
+>   free_tdcs:
+>   	for (i = 0; i < kvm_tdx->td.tdcs_nr_pages; i++) {
+> -		if (tdcs_pages[i])
+> -			__free_page(tdcs_pages[i]);
+> +		tdx_free_page(tdcs_pages[i]);
+>   	}
+>   	kfree(tdcs_pages);
+>   	kvm_tdx->td.tdcs_pages = NULL;
+>   
+>   free_tdr:
+> -	if (tdr_page)
+> -		__free_page(tdr_page);
+> +	tdx_free_page(tdr_page);
+>   	kvm_tdx->td.tdr_page = NULL;
+>   
+>   free_hkid:
+
