@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCB01F5825
-	for <linux-coco@lists.linux.dev>; Tue, 25 Nov 2025 01:27:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E4B481B1
+	for <linux-coco@lists.linux.dev>; Tue, 25 Nov 2025 01:50:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764034060; cv=none; b=lfpledSW99NCEmWhFJWeHmZ2+ZdTXwfYHbs6yUfMCZ6EFXG/od0dEM0IuhXV4VJlxAjC4+kkO0P9K5Dmsn65sU4sC2fr3QMzxck95UEjJf9HPQvW3i8bP+sUofbYAcZ8sl9GVwNhOBkCLflaJWzLGJx5UODkGJTebQZc89xPojg=
+	t=1764035424; cv=none; b=mOCJP1O7ZCY9iVnZuFNS+eNaPufAhKFrO8n96juEW/SIkSHfKlGGlVz7BrgYTaR0mq7jMTy5msVoOjcF5WGtaWm/99F6RukIUHmXo1DWT2x8CS1WNluBmfYnm62MwYKm7fllYQ/tjW+FdrN2tEKLcd6QIs/vkuJPTS9QeuXluwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764034060; c=relaxed/simple;
-	bh=7D3YTZVaAhtS21oXZxgvYUu671mV7+8gqJLNhLRMrls=;
+	s=arc-20240116; t=1764035424; c=relaxed/simple;
+	bh=UDRu0hzZEvxvPSW9YvleBJsVvQ54Ad1fInxtjRIFpM4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qAF4M23M/L3LM1J5mZCky8X5RDFHRfh/5rJGL0xO/t8syIsPljNC5u4bczNWm/ZAU6BJfTl4V9znoax4U5bvsiN+6T9DN1kN5dWkBh6Ghj9tHQorRLOvXKB9rYNcEoAfvXI2Lz1mtitA8rojhgMA2xWPY5VO0FkKIinf1cacqTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NMQRp4cN; arc=none smtp.client-ip=198.175.65.12
+	 In-Reply-To:Content-Type; b=YEztAkrkHaCixTZDQhBzdEytb8EyrUC5ih3tc5K541noJdZbI7zrDUD/HzGzCavhxWM562y0YZ/vaewQr1Ij5BDbGD+PzLmVI40GIGQxOyv4sWiRp2r64yKCZ1f93QVjP0rhZf+9j+CNX0snj/2v4/DP8VND+kxgrx9kpKzblrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K20rhK46; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NMQRp4cN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K20rhK46"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764034058; x=1795570058;
+  t=1764035422; x=1795571422;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=7D3YTZVaAhtS21oXZxgvYUu671mV7+8gqJLNhLRMrls=;
-  b=NMQRp4cNOJ1mO615yRZ1W9/DuODsR5V0AYIp+XTin2LixWD/2MKBh9kU
-   FfKAT4pj618OQq0rZk5Iclh0PI0JpjJytozztaqeFV5XaCc1sCidxQosq
-   lkIhcRmQJ4rlb5SUZWVq+pqADmA0APMzSCvjDokeU4UNnc+7Ge38uu+5w
-   G5fEtp+r/sWIc+/xwGKrGKe2PbKIJDZdlSdJzUaEqkLNh3S7sm9neg7J2
-   INzWQ9PCX+MJ/ar7IsH9o6YKmSwn/mPeVjXQImKPCn9gJ8Cl0G3Ncwo9D
-   Wp9UV+/oIEEW+Xm4vVzKbcKvc6J2yRIxkU5SwWILAYXjXQo7l3SWQB6pT
-   A==;
-X-CSE-ConnectionGUID: dyZKh6gURf+avA+c+smwyQ==
-X-CSE-MsgGUID: Zw+94UeDSLSRPMwyvwUORg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="77521089"
+  bh=UDRu0hzZEvxvPSW9YvleBJsVvQ54Ad1fInxtjRIFpM4=;
+  b=K20rhK46iKbiYI3Qhq+g1T2hapm3GT/PVFGXc/KNSooDnN9Pe3o4tAmV
+   8iMDssTL6eoNFJcYEp0M7nZTOeqdcaDWD6Cncr5fgJTWJNl5oVRKWEGUB
+   GV7L8htYR89LPjIapd8HYWBzYOHiohdTIz4tV6j0ji1SwMiBRc21EkVRH
+   oFW9UCWji8Z7lJ4yz5cpIXqxk5KVhiLyg7f8E3gRBVDMehGarE15yc00U
+   pUPL1YedRYGWtkJz+IkZJFIrchgs7SR3M8pJDlEvdGDHx65LnWzauWcwU
+   P/GPQYW3lkMaMLoqz+tfsoVbiLw7d2xL0MWRscfXTP+ZaURMlI9Pp85EW
+   w==;
+X-CSE-ConnectionGUID: 8CApdgj2RG6EJR95eR5K0Q==
+X-CSE-MsgGUID: v/w+mvndQV2DsmtW/fDLLw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="65992911"
 X-IronPort-AV: E=Sophos;i="6.20,224,1758610800"; 
-   d="scan'208";a="77521089"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 17:27:37 -0800
-X-CSE-ConnectionGUID: kHWrSVefRD6JpvW8KQRNmw==
-X-CSE-MsgGUID: V6z1ht6FTnqmSv4H6SxBDA==
+   d="scan'208";a="65992911"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 17:50:22 -0800
+X-CSE-ConnectionGUID: 7wwxNJRZRXStGBx0pX5fqA==
+X-CSE-MsgGUID: ERzQqdnoSBKbzPXqnxvzPQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,224,1758610800"; 
-   d="scan'208";a="196958254"
+   d="scan'208";a="192306348"
 Received: from yinghaoj-desk.ccr.corp.intel.com (HELO [10.238.1.225]) ([10.238.1.225])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 17:27:33 -0800
-Message-ID: <23965509-7b15-4dc1-b734-6e66575581a8@linux.intel.com>
-Date: Tue, 25 Nov 2025 09:27:30 +0800
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 17:50:18 -0800
+Message-ID: <51dc2009-ff3e-4419-9dab-b46db7b2e15d@linux.intel.com>
+Date: Tue, 25 Nov 2025 09:50:15 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,70 +52,90 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 03/16] x86/virt/tdx: Simplify tdmr_get_pamt_sz()
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "Huang, Kai" <kai.huang@intel.com>, "Li, Xiaoyao" <xiaoyao.li@intel.com>,
- "Hansen, Dave" <dave.hansen@intel.com>, "Zhao, Yan Y"
- <yan.y.zhao@intel.com>, "Wu, Binbin" <binbin.wu@intel.com>,
- "kas@kernel.org" <kas@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "Yamahata, Isaku" <isaku.yamahata@intel.com>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "Annapurve, Vishal" <vannapurve@google.com>, "Gao, Chao"
- <chao.gao@intel.com>, "bp@alien8.de" <bp@alien8.de>,
- "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v4 04/16] x86/virt/tdx: Allocate page bitmap for Dynamic
+ PAMT
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@intel.com,
+ isaku.yamahata@intel.com, kai.huang@intel.com, kas@kernel.org,
+ kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, mingo@redhat.com, pbonzini@redhat.com,
+ seanjc@google.com, tglx@linutronix.de, vannapurve@google.com,
+ x86@kernel.org, yan.y.zhao@intel.com, xiaoyao.li@intel.com,
+ binbin.wu@intel.com
 References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
- <20251121005125.417831-4-rick.p.edgecombe@intel.com>
- <8eba534b-7fcf-43b2-a304-091993faef1c@linux.intel.com>
- <f495fed769914a476bace0fd7eb58bebd933f6af.camel@intel.com>
+ <20251121005125.417831-5-rick.p.edgecombe@intel.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <f495fed769914a476bace0fd7eb58bebd933f6af.camel@intel.com>
+In-Reply-To: <20251121005125.417831-5-rick.p.edgecombe@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
 
 
-On 11/25/2025 3:47 AM, Edgecombe, Rick P wrote:
-> On Mon, 2025-11-24 at 17:26 +0800, Binbin Wu wrote:
->> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Thanks.
+On 11/21/2025 8:51 AM, Rick Edgecombe wrote:
+> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 >
->> One nit below.
->>
->> [...]
->>> @@ -535,26 +518,18 @@ static int tdmr_set_up_pamt(struct tdmr_info *tdmr,
->>>     	 * in overlapped TDMRs.
->>>     	 */
->>>     	pamt = alloc_contig_pages(tdmr_pamt_size >> PAGE_SHIFT, GFP_KERNEL,
->>> -			nid, &node_online_map);
->>> -	if (!pamt)
->>> +				  nid, &node_online_map);
->>> +	if (!pamt) {
->>> +		/*
->>> +		 * tdmr->pamt_4k_base is zero so the
->>> +		 * error path will skip freeing.
->>> +		 */
->>>     		return -ENOMEM;
->> Nit:
->> Do you think it's OK to move the comment up so to avoid multiple lines of
->> comments as well as the curly braces?
-> Yea, I think that is a good point. But I'm also thinking that this comment is
-> not clear enough. There is no error path to speak of in this function, so maybe:
+> The Physical Address Metadata Table (PAMT) holds TDX metadata for physical
+> memory and must be allocated by the kernel during TDX module
+> initialization.
 >
-> 	/*
-> 	 * tdmr->pamt_4k_base is still zero so the error
-> 	 * path of the caller will skip freeing the pamt.
-> 	 */
+> The exact size of the required PAMT memory is determined by the TDX module
+> and may vary between TDX module versions. Currently it is approximately
+> 0.4% of the system memory. This is a significant commitment, especially if
+> it is not known upfront whether the machine will run any TDX guests.
 >
-> If you agree I will keep your RB.
-Yes, please.
+> For normal PAMT, each memory region that the TDX module might use (TDMR)
+> needs three separate PAMT allocations. One for each supported page size
+> (1GB, 2MB, 4KB).
+>
+> At a high level, Dynamic PAMT still has the 1GB and 2MB levels allocated
+> on TDX module initialization, but the 4KB level allocated dynamically at
+> TD runtime. However, in the details, the TDX module still needs some per
+> 4KB page data. The TDX module exposed how many bits per page need to be
+> allocated (currently it is 1). The bits-per-page value can then be used to
+> calculate the size to pass in place of the 4KB allocations in the TDMR,
+> which TDX specs call "PAMT_PAGE_BITMAP".
+>
+> So in effect, Dynamic PAMT just needs a different (smaller) size
+> allocation for the 4KB level part of the allocation. Although it is
+> functionally something different, it is passed in the same way the 4KB page
+> size PAMT allocation is.
+>
+> Begin to implement Dynamic PAMT in the kernel by reading the bits-per-page
+> needed for Dynamic PAMT. Calculate the size needed for the bitmap,
+> and use it instead of the 4KB size determined for normal PAMT, in the case
+> of Dynamic PAMT. In doing so, reduce the static allocations to
+> approximately 0.004%, a 100x improvement.
+>
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> [Enhanced log]
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 
->>           /* tdmr->pamt_4k_base is zero so the error path will skip freeing. */
->>           if (!pamt)
->>               return -ENOMEM;
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+
+One nit below.
+
+[...]
+> diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+> index 13ad2663488b..00ab0e550636 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+> @@ -33,6 +33,13 @@ static int get_tdx_sys_info_tdmr(struct tdx_sys_info_tdmr *sysinfo_tdmr)
+>   		sysinfo_tdmr->pamt_2m_entry_size = val;
+>   	if (!ret && !(ret = read_sys_metadata_field(0x9100000100000012, &val)))
+>   		sysinfo_tdmr->pamt_1g_entry_size = val;
+> +	/*
+> +	 * Don't fail here if tdx_supports_dynamic_pamt() isn't supported. The
+
+A bit weird to say "if tdx_supports_dynamic_pamt() isn't supported", how about
+using "if dynamic PAMT isn't supported"?
+
+> +	 * TDX code can fallback to normal PAMT if it's not supported.
+> +	 */
+> +	if (!ret && tdx_supports_dynamic_pamt(&tdx_sysinfo) &&
+> +	    !(ret = read_sys_metadata_field(0x9100000100000013, &val)))
+> +		sysinfo_tdmr->pamt_page_bitmap_entry_bits = val;
+>   
+>   	return ret;
+>   }
 
