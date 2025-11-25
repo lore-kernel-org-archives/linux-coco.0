@@ -1,67 +1,230 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E732D73B8;
-	Tue, 25 Nov 2025 18:40:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764096041; cv=none; b=RdJo1yXecc2fOvnYjYdf5H5j0SS41X9pzJHrMmocm4Z1KlJwyAB+9qGbe7u32RnWcgqRa/WyakiHdB98KsgApnwwnLkqq1V1PgPpF50UWWqC8ICh3Sg8t6iQnRemVQz9Uv4x824mN28Kcq72GToOpCHLQ1ljxAs5cf966chxrtE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764096041; c=relaxed/simple;
-	bh=cN9SIyNwo95jy4YmcdSbP/Y0OBBIN+7gklB2u4GoByU=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=pOLAMcMaGA5qEI3j1BlmghuFBqT1EERsXuQ9k7nF8/weOFdio8r0G9oeWVYAmPTa1wF8grTrcXzrJsgH+Tg/dj8ny6eCc3hgvzfew3z+NnwIgT846t5B9firgz+UPnDEhtit6noDZWkEciOiQcRvAXMoD6vM9pK02GkxdGFds5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=uUkrbmRk; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="uUkrbmRk"
-Received: from 8bytes.org (p549214ac.dip0.t-ipconnect.de [84.146.20.172])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 455505AB13;
-	Tue, 25 Nov 2025 19:40:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1764096037;
-	bh=cN9SIyNwo95jy4YmcdSbP/Y0OBBIN+7gklB2u4GoByU=;
-	h=Date:From:To:Subject:From;
-	b=uUkrbmRkZ/aHXpUhUQ16IMY0hrybysrmTmqHcu797dVJH3OY4qoWQt9Iyk9V3aSy8
-	 HaE2ck6gb1bKmDyYD68unHTSe9NN9XaOz/6kVLZKDftTxxOOPtGSpEtv7Q9J5H7knd
-	 5xk7pKo2E0gIc0IoJ4/6x199MfVmWQUFPD7H9jp4XFoJ0Upz1tOZcB3NOtl6zPpmG2
-	 4YBal6aUH+Lhd6QHErSZjA07w2ID8/ACPz/WgIayBCdqBwoa3OrlZhJcAukh74CgSl
-	 JKVZ4lSNJTDQBJ+yMyOyOEtck94VIku75TLUCbjCJtN9s12UvCZ6An0PJhaoRtAEwr
-	 X2IbVRaD2dSng==
-Date: Tue, 25 Nov 2025 19:40:36 +0100
-From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
-Subject: SVSM Development Call November 26th, 2025
-Message-ID: <tqu2fjqbhrwsmritqthp7f3qucqljxc3ivxm2wmtdbgdrpt6hm@7qj7ocuwoksw>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9946E2D060E
+	for <linux-coco@lists.linux.dev>; Tue, 25 Nov 2025 20:19:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764101985; cv=none; b=tqH+NjuJYaFefTCQ4n05wQHBSc0X5f5E5zwgFzG78Z7EzTQHecshOMfo0jcVgtvl+7OS0VrZa3C+/831ZeTKzkXWHU2D0CaBfHsohf5cz9yB79l4PTH2gtO0MDuzv6U7zAL1uyvGOmjSM2RERN5dUiEBjptkHtJ0o4+jIxzBzps=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764101985; c=relaxed/simple;
+	bh=TfXLQ7eMP7rkYU5fTK9bIte/OyK7lqXUWNtmDfb3dac=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Xl6T4MIhZ0tDmscbHV35O0dHLuwYxI5TL7mSmzFEeRLN9mQZtaSI8f9uIybeV9I7NRcododVkjisc7yge20gT/hqldOkbzF86P6Y2BeHjqNF9puqYjALPtInYY6ZNUOMIdtt2YYFSykV4FqO6nB6VjjMOOw9mRa8iA7f5Ol5RGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YvqpN4Lj; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YvqpN4Lj"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-295c64cb951so38905ad.0
+        for <linux-coco@lists.linux.dev>; Tue, 25 Nov 2025 12:19:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1764101983; x=1764706783; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RHnBbe3Vz2qssfWJEc+r2TwEWDPYjkvuNmONn0WVHOs=;
+        b=YvqpN4Lj4K9sOtvApT1CTZJtXuVHwqy5IUqaswIWgMV5Ok15auCwE4Zf9UYPnIqJ0Z
+         Kw4yElTvQl7pSWiZQahXh/9xbS2enYM3613exs+61zAbI2gVQBgEOsCfc3/UkJCNtHoV
+         whKXrVXuOjuEQ5LKRavaGklO8XHlkY9mfHQHR9Ib+1yBGleKT9KP1matt6Z5rpHOKHJk
+         3ipRtXn3CfJ5WBel1qeGx88jTwmt8RzmqAVS9Mef+qIrwTvdx3pAVxNjuHJ9dBl8QtDe
+         P3j9ogpbnB6p3D5I0v4vtiGizvkZRu+BP/R5jerEiqko8yLkgZblHEs3R7A1QlE6uR1W
+         OX6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764101983; x=1764706783;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=RHnBbe3Vz2qssfWJEc+r2TwEWDPYjkvuNmONn0WVHOs=;
+        b=qMmso/PNiC5j1rptTkSITdbzOU4Vxz03YLO63w2xOBXhVwa2AgSga4CXOFKj4y8dgP
+         HWrXEHxsCLsa90kcOfgxn2pYT4GPDb9AnZhR/6hY8Wc592mMQbq3W6LS4V/bKV3nAJOi
+         QZKQri7bdioW7qaVyqy0jchfT+3yL0zCymMMGwyn0ACMFvP0TbPIeGAn6Q2qkGpuEHUf
+         WAlCrNoaURf1SZ2zW3WQwFSx9rIZimAbB2HmC7YZwvyl3k5BRRSLLaG3cl5KIjN0g4PL
+         R40Bv8QqD1JeCyEcn3rUV7LY6nmvnwS2YuRPZkUfymqDhVlcCwdzeud4mPzNVsZdSvpT
+         WczQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVA+bOQQNwSIkR/jhrvFEHLA7INj3iswgJzE6NmhnL7gCHfSlOwQpZg41hwHYkt1fAsUZqj6lLJlWTj@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx+TN3oHy5+DAb3p/nQ9IQA9i5AWAiDxyvamWDSm6o49cYmiUHh
+	DAo6vDUaUee2lipSitNp8xpbenm8iAkQi+m6WtaWtv0scCr6qtAdDyWjE/Tq11rnwIBOelzAO3x
+	FEdFo/CDhvnyDAkHNw1Fzj8e2JzvfCw/jWOonqlki
+X-Gm-Gg: ASbGnctq4ctEDjU3PpW38smdZNxqs56mDMDwN+ANIrj3ocS7VKvkFskpM1lF8DTsJlA
+	7EGAm0WHondBeTYab8Hct/3ED+isW2iJqg6OevgKCkqCwRLe5qkTwYb6EZYeIA/PqVdSiFbfLJ2
+	GxAfVcXARoCHP0FWUaS1v7lYZcM3jb30DkAafLR2JEmgg5iQmja1H0ywDytnUVlJgTO09Qq13wR
+	vECS0idGNWQOfnNdRUTLuxdTxkoy1lxpRIoHfIBZ3yT65gQDxyj1cs84Px5BIe92Th85B7Z8DOZ
+	z9h/6IMjwMppcqHVzgI6zN6o
+X-Google-Smtp-Source: AGHT+IF779IW4vsIcrs2I3YvHsOxMox3kgZbhhBFciEEFQDtvBW9XhXWERcz3VmUskBP6M6LUqEOOJF1Dsvqi8UvFOM=
+X-Received: by 2002:a05:7022:6289:b0:11a:2c18:9e70 with SMTP id
+ a92af1059eb24-11dc328a4c5mr20026c88.11.1764101982376; Tue, 25 Nov 2025
+ 12:19:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
+In-Reply-To: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Tue, 25 Nov 2025 12:19:30 -0800
+X-Gm-Features: AWmQ_bkGaBaAKmGuHN0VfSyMJxYxC_cB_ZllFi8Kt1CG5QaGEqyEGvIM4EGFCOo
+Message-ID: <CAGtprH9=p03WtA8-cf8xL4F48jdtD046AwRV3bigMjc-JD=0=w@mail.gmail.com>
+Subject: Re: [PATCH v4 00/16] TDX: Enable Dynamic PAMT
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@intel.com, 
+	isaku.yamahata@intel.com, kai.huang@intel.com, kas@kernel.org, 
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	mingo@redhat.com, pbonzini@redhat.com, seanjc@google.com, tglx@linutronix.de, 
+	x86@kernel.org, yan.y.zhao@intel.com, xiaoyao.li@intel.com, 
+	binbin.wu@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Thu, Nov 20, 2025 at 4:51=E2=80=AFPM Rick Edgecombe
+<rick.p.edgecombe@intel.com> wrote:
+>
+> Hi,
+>
+> This is 4th revision of Dynamic PAMT, which is a new feature that reduces
+> the memory use of TDX. For background information, see the v3
+> coverletter[0]. V4 mostly consists of incorporating the feedback from v3.
+> Notably what it *doesn=E2=80=99t* change is the solution for pre-allocati=
+ng DPAMT
+> backing pages. (more info below in =E2=80=9CChanges=E2=80=9D)
+>
+> I think this series isn=E2=80=99t quite ready to ask for merging just yet=
+. I=E2=80=99d
+> appreciate another round of review especially looking for any issues in t=
+he
+> refcount allocation/mapping and the pamt get/put lock-refcount dance. And
+> hopefully collect some RBs.
+>
+> Sean/Paolo, we have mostly banished this all to TDX code except for =E2=
+=80=9CKVM:
+> TDX: Add x86 ops for external spt cache=E2=80=9D patch. That and =E2=80=
+=9Cx86/virt/tdx:
+> Add helpers to allow for pre-allocating pages=E2=80=9D are probably the r=
+emaining
+> possibly controversial parts of your domain. If you only have a short tim=
+e
+> to spend at this point, I=E2=80=99d point you at those two patches.
+>
+> Since most of the changes are in arch/x86, I=E2=80=99d think this feature=
+ could be
+> a candidate for eventually merging through tip with Sean or Paolo=E2=80=
+=99s ack.
+> But it is currently based on kvm-x86/next in order to build on top of the
+> post-populate cleanup series. Next time I=E2=80=99ll probably target tip =
+if people
+> think that is a good way forward.
+>
+> Changes
+> =3D=3D=3D=3D=3D=3D=3D
+> There were two good suggestions around the pre-allocated pages solution
+> last time, but neither ended up working out:
+>
+> 1. Dave suggested to use mempool_t instead of the linked list based
+> structure, in order to not re-invent the wheel. This turned out to not
+> quite fit. The problems were that there wasn=E2=80=99t really a =E2=80=9C=
+topup=E2=80=9D mechanism,
+> or an atomic fallback (which matches the kvm cache behavior). This result=
+s
+> in very similar code being built around mempool that was built around the
+> linked list. It was an overall harder to follow solution for not much cod=
+e
+> savings.
+>
+> I strongly considered going back to Kiryl=E2=80=99s original solution whi=
+ch passed
+> a callback function pointer for allocating DPAMT pages, and an opaque
+> void * that the callback could use to find the kvm_mmu_memory_cache. I
+> thought that readability issues of passing the opaque void * between
+> subsystems outweighed the small code duplication in the simple, familiar
+> patterned linked list-based code. So I ended up leaving it.
+>
+> 2. Kai suggested (but later retracted the idea) that since the external
+> page table cache was moved to TDX code, it could simply install DPAMT
+> pages for the cache at topup time. Then the installation of DPAMT backing
+> for S-EPT page tables could be done outside of the mmu_lock. It could als=
+o
+> be argued that it makes the design simpler in a way, because the external
+> page table cache acts like it did before. Anything in there could be simp=
+ly
+> used.
+>
+> At the time my argument against this was that whether a huge page would b=
+e
+> installed (and thus, whether DPAMT backing was needed) for the guest
+> private memory would not be known until later, so early install solution
+> would need special late handling for TDX huge pages. After some internal
+> discussions I at looked how we could simplify the series by punting on TD=
+X
+> huge pages needs.
+>
+> But it turns out that this other design was actually more complex and had
+> more LOC than the previous solution. So it was dropped, and again, I went
+> back to the original solution.
+>
+>
+> I=E2=80=99m really starting to think that, while the overall solution her=
+e isn=E2=80=99t
+> the most elegant, we might not have much more to squeeze from it. So
+> design-wise, I think we should think about calling it done.
+>
+> Testing
+> =3D=3D=3D=3D=3D=3D=3D
+> Based on kvm-x86/next (4531ff85d925). Testing was the usual, except I als=
+o
+> tested with TDX modules that don't support DPAMT, and with the two
+> optimization patches removed: =E2=80=9CImprove PAMT refcounters allocatio=
+n for
+> sparse memory=E2=80=9D and =E2=80=9Cx86/virt/tdx: Optimize tdx_alloc/free=
+_page() helpers=E2=80=9D.
+>
+> [0] https://lore.kernel.org/kvm/20250918232224.2202592-1-rick.p.edgecombe=
+@intel.com/
+>
+>
+> Kirill A. Shutemov (13):
+>   x86/tdx: Move all TDX error defines into <asm/shared/tdx_errno.h>
+>   x86/tdx: Add helpers to check return status codes
+>   x86/virt/tdx: Allocate page bitmap for Dynamic PAMT
+>   x86/virt/tdx: Allocate reference counters for PAMT memory
+>   x86/virt/tdx: Improve PAMT refcounts allocation for sparse memory
+>   x86/virt/tdx: Add tdx_alloc/free_page() helpers
+>   x86/virt/tdx: Optimize tdx_alloc/free_page() helpers
+>   KVM: TDX: Allocate PAMT memory for TD control structures
+>   KVM: TDX: Allocate PAMT memory for vCPU control structures
+>   KVM: TDX: Handle PAMT allocation in fault path
+>   KVM: TDX: Reclaim PAMT memory
+>   x86/virt/tdx: Enable Dynamic PAMT
+>   Documentation/x86: Add documentation for TDX's Dynamic PAMT
+>
+> Rick Edgecombe (3):
+>   x86/virt/tdx: Simplify tdmr_get_pamt_sz()
+>   KVM: TDX: Add x86 ops for external spt cache
+>   x86/virt/tdx: Add helpers to allow for pre-allocating pages
+>
+>  Documentation/arch/x86/tdx.rst              |  21 +
+>  arch/x86/coco/tdx/tdx.c                     |  10 +-
+>  arch/x86/include/asm/kvm-x86-ops.h          |   3 +
+>  arch/x86/include/asm/kvm_host.h             |  14 +-
+>  arch/x86/include/asm/shared/tdx.h           |   8 +
+>  arch/x86/include/asm/shared/tdx_errno.h     | 104 ++++
+>  arch/x86/include/asm/tdx.h                  |  78 ++-
+>  arch/x86/include/asm/tdx_global_metadata.h  |   1 +
+>  arch/x86/kvm/mmu/mmu.c                      |   6 +-
+>  arch/x86/kvm/mmu/mmu_internal.h             |   2 +-
+>  arch/x86/kvm/vmx/tdx.c                      | 160 ++++--
+>  arch/x86/kvm/vmx/tdx.h                      |   3 +-
+>  arch/x86/kvm/vmx/tdx_errno.h                |  40 --
+>  arch/x86/virt/vmx/tdx/tdx.c                 | 587 +++++++++++++++++---
+>  arch/x86/virt/vmx/tdx/tdx.h                 |   5 +-
+>  arch/x86/virt/vmx/tdx/tdx_global_metadata.c |   7 +
+>  16 files changed, 854 insertions(+), 195 deletions(-)
+>  create mode 100644 arch/x86/include/asm/shared/tdx_errno.h
+>  delete mode 100644 arch/x86/kvm/vmx/tdx_errno.h
+>
+> --
+> 2.51.2
+>
 
-Here is the usual call for agenda items for the this weeks SVSM
-development call.  Please send me any agenda items you have in mind or
-raise them in the meeting.
-
-We will use the LF Zoom instance. Details of the meeting  can be found in our
-governance repository at:
-
-	https://github.com/coconut-svsm/governance
-
-The link to the COCONUT-SVSM calendar is:
-
-	https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?view=week
-
-The meeting will be recorded and the recording eventually published.
-
-Regards,
-
-	Jörg
+acked-by: Vishal Annapurve <vannapurve@google.com>.
