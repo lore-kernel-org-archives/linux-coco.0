@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C301EB195
-	for <linux-coco@lists.linux.dev>; Tue, 25 Nov 2025 03:15:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8602D6619
+	for <linux-coco@lists.linux.dev>; Tue, 25 Nov 2025 08:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764040531; cv=none; b=PIlg83ZfPExqn6iJd61JWv8VkTuT5HCioqaT0hEwPglCXNkpf3pkTzw9ibx6gX0irqWJzgXT7uesPs4OHW6rlU3koFErHp2b4jqcFytqqujoq1m7ZEwagXuTMdF8eyn5agEZ/5kAXF72GrjmZ0CMvfzPfvCTAHJo0eG6jMw1Xo4=
+	t=1764058203; cv=none; b=eomJ41FKCNvPwgUuQt4BJGMBY0zhoLWAMG4iRYTdypwT6chtVtZ9UDX0NKmaURyXWGlMbGeFc45wGmR372eOvghimu7y+OzdDozimudpq5Vqx2OKahhmKh5M6nFYLePZt39R2uOv58jfvpU6vdyDhyV4B+iheq9Z08aK3EIs5KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764040531; c=relaxed/simple;
-	bh=DTUimPmdhhmxVdAjWQGOKOU+xBdpFumluibCB6RZp+s=;
+	s=arc-20240116; t=1764058203; c=relaxed/simple;
+	bh=hwpDaKWSDHJ2P36LukNL+0xtVFpRjTz2H9WP7hWrNvk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hmzkL+lfDUfvaHbbTdznruHy2z11v6X9svGkDkv5bzco2N7+jX/yuL7bK35hbqBoiKdYdZGQJ/3bTgX3Ykf39UBi7u4Y7Bo/I4mKJWEnM4nXfwTTanpufPJgdGzNWb/Fj1j4inrIknMiRSWheYIUaqliGzjKk/f/Po97mRFPEKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FePvlHRy; arc=none smtp.client-ip=198.175.65.20
+	 In-Reply-To:Content-Type; b=hXV/QHwBd4GZunjJN8mjN6APs+XBVXvnZQ69x7VU51o6UvOd8ss2H3EgfkVIBs4HrZpTr+8WenqAQH6yP8SfmVqoEkR0PS7/8IeD7E61528S2Oxr1vPQTSeaT5UoVGnOyf8heSViSRZauc3tTJAuqFTuZRfM0V7ZQimb+ImMsLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Wys0z1r4; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FePvlHRy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wys0z1r4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764040529; x=1795576529;
+  t=1764058202; x=1795594202;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=DTUimPmdhhmxVdAjWQGOKOU+xBdpFumluibCB6RZp+s=;
-  b=FePvlHRyCiEGhD5SZdfszuOZk1z1lVZYB7dD1TABeH/JtaaZQ4hxyMRN
-   zDz+Thsj+iHSlCkrZuiP5PtiANYljr8Gn8c8PUxs3QZZKfHBGqqggJIC3
-   8vjtjpr3ozxWPRNdqdjrNc+PXmzcHBTrB7GXrtLskwLlAZE7oUGM1Lbr+
-   rHuH4sO/0ueBMQf8GzR756qWwDVkQPGvU+FEbeFvlamtuV3hBGHZSJOLl
-   L+Ik91HZcCJ3qVDqysHPRMursTADHLNFO+QZixJJQCzfkOw7RyvExTpWw
-   5w8MuuiQT+sdRFwxm0u61GYIe30lrZcmvooShFTklv3mkCFdVpP2qbR0w
-   A==;
-X-CSE-ConnectionGUID: XZRy56e3SK2fUBWSWg8wvQ==
-X-CSE-MsgGUID: ZiWFoWVlSE6yB+xcTgJldQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="65757648"
+  bh=hwpDaKWSDHJ2P36LukNL+0xtVFpRjTz2H9WP7hWrNvk=;
+  b=Wys0z1r4HispP986SyhblrOaxoRXPzNxo4hnUAzA5n3EiFSA9xZSbyh8
+   IGWUIp6DZOjiWdZ/4xr9VGJVLjUygoiKJ+OKiUl4VfKCyZH8frifa8jnb
+   lY1Q6tusIiZgdAzjXQFaQcl4qLUNIrQndJYjhh0TGo6ECXSCMOAAn06OI
+   DUY3nR1SNLaLsqGKP6ceotbzzc+vc3dd2VlazDgzHK5Z5R//AQhKPj7i+
+   5F6PQhKUIzZxLFtHPjI7K4s/34KS5LSiZK2AgKifZCs50IdSdtlPsu8fq
+   BrU+J04ygbE3hzESsb+EoVLuZISZGbBjvS3Lz2JZyArWFO8uLI52qaZHz
+   w==;
+X-CSE-ConnectionGUID: 3WnsYD6aTEm34DdpzUYuTw==
+X-CSE-MsgGUID: OLtRpRKRTKm5WIuqF/kYhw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="66024292"
 X-IronPort-AV: E=Sophos;i="6.20,224,1758610800"; 
-   d="scan'208";a="65757648"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 19:15:28 -0800
-X-CSE-ConnectionGUID: 5h1yorYtSVi+QRHdFjEdSQ==
-X-CSE-MsgGUID: FHROwhlfSC+YT76mIm9Z4w==
+   d="scan'208";a="66024292"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 00:10:01 -0800
+X-CSE-ConnectionGUID: f1yzQwdhQkqM3HQS9JkInw==
+X-CSE-MsgGUID: sO+iD+y6R62C1FCxq50Rgg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,224,1758610800"; 
-   d="scan'208";a="192748261"
+   d="scan'208";a="192571594"
 Received: from yinghaoj-desk.ccr.corp.intel.com (HELO [10.238.1.225]) ([10.238.1.225])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 19:15:24 -0800
-Message-ID: <468165b7-46aa-4321-a47f-a97befaa993f@linux.intel.com>
-Date: Tue, 25 Nov 2025 11:15:22 +0800
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 00:09:56 -0800
+Message-ID: <12144256-b71a-4331-8309-2e805dc120d1@linux.intel.com>
+Date: Tue, 25 Nov 2025 16:09:53 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +52,7 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 06/16] x86/virt/tdx: Improve PAMT refcounts allocation
- for sparse memory
+Subject: Re: [PATCH v4 07/16] x86/virt/tdx: Add tdx_alloc/free_page() helpers
 To: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@intel.com,
  isaku.yamahata@intel.com, kai.huang@intel.com, kas@kernel.org,
@@ -63,80 +62,117 @@ Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@intel.com,
  x86@kernel.org, yan.y.zhao@intel.com, xiaoyao.li@intel.com,
  binbin.wu@intel.com
 References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
- <20251121005125.417831-7-rick.p.edgecombe@intel.com>
+ <20251121005125.417831-8-rick.p.edgecombe@intel.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20251121005125.417831-7-rick.p.edgecombe@intel.com>
+In-Reply-To: <20251121005125.417831-8-rick.p.edgecombe@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
 
 
 On 11/21/2025 8:51 AM, Rick Edgecombe wrote:
 [...]
-> +
-> +/* Unmap a page from the PAMT refcount vmalloc region */
-> +static int pamt_refcount_depopulate(pte_t *pte, unsigned long addr, void *data)
+>   
+> +/* Number PAMT pages to be provided to TDX module per 2M region of PA */
+           ^                                             ^
+           of                                           2MB
+> +static int tdx_dpamt_entry_pages(void)
 > +{
-> +	struct page *page;
-> +	pte_t entry;
+> +	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
+> +		return 0;
 > +
-> +	spin_lock(&init_mm.page_table_lock);
-> +
-> +	entry = ptep_get(pte);
-> +	/* refcount allocation is sparse, may not be populated */
-
-Not sure this comment about "sparse" is accurate since this function is called via
-apply_to_existing_page_range().
-
-And the check for not present just for sanity check?
-> +	if (!pte_none(entry)) {
-> +		pte_clear(&init_mm, addr, pte);
-> +		page = pte_page(entry);
-> +		__free_page(page);
-> +	}
-> +
-> +	spin_unlock(&init_mm.page_table_lock);
-> +
-> +	return 0;
+> +	return tdx_sysinfo.tdmr.pamt_4k_entry_size * PTRS_PER_PTE / PAGE_SIZE;
 > +}
 > +
-> +/* Unmap all PAMT refcount pages and free vmalloc range */
->   static void free_pamt_metadata(void)
->   {
-> +	size_t size;
-> +
->   	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
->   		return;
->   
-> +	size = max_pfn / PTRS_PER_PTE * sizeof(*pamt_refcounts);
-> +	size = round_up(size, PAGE_SIZE);
-> +
-> +	apply_to_existing_page_range(&init_mm,
-> +				     (unsigned long)pamt_refcounts,
-> +				     size, pamt_refcount_depopulate,
-> +				     NULL);
->   	vfree(pamt_refcounts);
->   	pamt_refcounts = NULL;
->   }
-> @@ -288,10 +393,19 @@ static int build_tdx_memlist(struct list_head *tmb_list)
->   		ret = add_tdx_memblock(tmb_list, start_pfn, end_pfn, nid);
->   		if (ret)
->   			goto err;
-> +
-> +		/* Allocated PAMT refcountes for the memblock */
-> +		ret = alloc_pamt_refcount(start_pfn, end_pfn);
-> +		if (ret)
-> +			goto err;
->   	}
->   
->   	return 0;
->   err:
-> +	/*
-> +	 * Only free TDX memory blocks here, PAMT refcount pages
-> +	 * will be freed in the init_tdx_module() error path.
-> +	 */
->   	free_tdx_memlist(tmb_list);
->   	return ret;
->   }
+> +/*
+> + * The TDX spec treats the registers like an array, as they are ordered
+> + * in the struct. The array size is limited by the number or registers,
+> + * so define the max size it could be for worst case allocations and sanity
+> + * checking.
+> + */
+> +#define MAX_TDX_ARG_SIZE(reg) (sizeof(struct tdx_module_args) - \
+> +			       offsetof(struct tdx_module_args, reg))
 
+This should be the maximum number of registers could be used to pass the
+addresses of the pages (or other information), it needs to be divided by sizeof(u64).
+
+Also, "SIZE" in the name could be confusing.
+
+> +#define TDX_ARG_INDEX(reg) (offsetof(struct tdx_module_args, reg) / \
+> +			    sizeof(u64))
+> +
+> +/*
+> + * Treat struct the registers like an array that starts at RDX, per
+> + * TDX spec. Do some sanitychecks, and return an indexable type.
+sanitychecks -> sanity checks
+
+> + */
+[...]
+> +/* Serializes adding/removing PAMT memory */
+> +static DEFINE_SPINLOCK(pamt_lock);
+> +
+> +/* Bump PAMT refcount for the given page and allocate PAMT memory if needed */
+> +int tdx_pamt_get(struct page *page)
+> +{
+> +	u64 pamt_pa_array[MAX_TDX_ARG_SIZE(rdx)];
+> +	atomic_t *pamt_refcount;
+> +	u64 tdx_status;
+> +	int ret;
+> +
+> +	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
+> +		return 0;
+> +
+> +	ret = alloc_pamt_array(pamt_pa_array);
+> +	if (ret)
+> +		goto out_free;
+> +
+> +	pamt_refcount = tdx_find_pamt_refcount(page_to_pfn(page));
+> +
+> +	scoped_guard(spinlock, &pamt_lock) {
+> +		/*
+> +		 * If the pamt page is already added (i.e. refcount >= 1),
+> +		 * then just increment the refcount.
+> +		 */
+> +		if (atomic_read(pamt_refcount)) {
+> +			atomic_inc(pamt_refcount);
+
+So far, all atomic operations are inside the spinlock.
+May be better to add some info in the change log that atomic is needed due to
+the optimization in the later patch?
+
+> +			goto out_free;
+> +		}
+> +
+> +		/* Try to add the pamt page and take the refcount 0->1. */
+> +
+> +		tdx_status = tdh_phymem_pamt_add(page, pamt_pa_array);
+> +		if (!IS_TDX_SUCCESS(tdx_status)) {
+> +			pr_err("TDH_PHYMEM_PAMT_ADD failed: %#llx\n", tdx_status);
+
+Can use pr_tdx_error().
+
+Aslo, so for in this patch, when this SEAMCALL failed, does it indicate a bug?
+
+> +			goto out_free;
+> +		}
+> +
+> +		atomic_inc(pamt_refcount);
+> +	}
+> +
+> +	return ret;
+
+Maybe just return 0 here since all error paths must be directed to out_free.
+
+> +out_free:
+> +	/*
+> +	 * pamt_pa_array is populated or zeroed up to tdx_dpamt_entry_pages()
+> +	 * above. free_pamt_array() can handle either case.
+> +	 */
+> +	free_pamt_array(pamt_pa_array);
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(tdx_pamt_get);
+> +
+>
+[...]
