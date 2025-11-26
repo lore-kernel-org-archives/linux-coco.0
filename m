@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030B17D098
-	for <linux-coco@lists.linux.dev>; Wed, 26 Nov 2025 05:57:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9233F31A57B
+	for <linux-coco@lists.linux.dev>; Wed, 26 Nov 2025 08:53:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764136628; cv=none; b=u4aoywA4SzlezS72yUM63LpfoStVvBE9DqNneK3ntX2ekz6VfuFLpnV/0uP1XLxbgQX+oNJbRvPoS6yhrbzUz6LMTvW1c9vlCtQum3LcPF44Gs/ZINEKDTbZ2Pud7rGM2/Y6QbwTAAzJZLfQC9xPIL+mwBDmOvG5c5imCFE8mP4=
+	t=1764147236; cv=none; b=vCxmlwxne/a5UyvFpMuao3LmW/88Z6nvyTdTVsg7JCAKOpSL/Ul+43En+9uCY05syeDG/+DZPbWRUpJQBKfjhugpr5kQZP8cjcIVKRXT9J5/fDdEwNZ/kMp3z8Qf4Isw1c5S8N8r2r0hAPTAVg+PYfmjof++2hf64Wvk8IqBhRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764136628; c=relaxed/simple;
-	bh=OTho8qU9BnrmvKsPVD0CjGlxrwouddko8CkHyyFCX0E=;
+	s=arc-20240116; t=1764147236; c=relaxed/simple;
+	bh=GcJCeUzYW3rAHS/xy3+BKcSNNgv9xvPJbkZ7fPqWYQg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SxGQ8Mi4cEY8kEt8NZySHmxpLYabBoEOgqzt7J0A7miU1aL0rzJkAu4KLBvORdgP5Z6g4mS8X//4EJaSslYyAwxQU7XBdtvq+RGFyjihO1r7Dt5rmHs7WH1GC/H1K0a9fgcVE3WIJXBC6DzpUt845bE/ga/BDsAwYBRhr5MWjZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=holDNDsO; arc=none smtp.client-ip=192.198.163.10
+	 In-Reply-To:Content-Type; b=qDjpS+F2c+HLmz6BQSSIPWqbvE9vArvvJyogD6aZIsJ5LwUWThwoUS5VIpYqQihW4jFHmx0ILlm1kLQ7INqVskirEa/u1RPEi7yx7T9/3E10CwfyBF3gZqSEnxyP5kwErQjt8jP1ed420X05k0txHigYl7hlIDWUPTT4Mdjt5Oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=chjvhDSv; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="holDNDsO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="chjvhDSv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764136626; x=1795672626;
+  t=1764147234; x=1795683234;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=OTho8qU9BnrmvKsPVD0CjGlxrwouddko8CkHyyFCX0E=;
-  b=holDNDsOrDjGx6L9xSBQjpJE45Sb7V+bHpAve4O2YU0kjpmuLSfa2rsH
-   3MBE0PGfB5kOp/ulu+D8p90miPMr0Wh0mDILvwt2+P4/srLN7w/jh/cIF
-   u5VGZMDnjocd2BAgTEXcedzOO62qE2MlyPal6B1jnGw5E6Bb/zN9U8aSB
-   5Jo6adsTrW5Jx2HQqbci2EDeFwuT8IpJIEAiRG2a5VoqzooYRt+s0ztKY
-   KIY8CHEqFDQ2ORY1ZoVcV5kCYnO7qVuHy3GvD5/nl2QQO7s66AXhcOpqm
-   j91MHsLlzYlq3r46y7qe7d6IXjLHZ0n8M91Fcb1a+3MYd4B2aJPX6Q5It
-   A==;
-X-CSE-ConnectionGUID: 6RXQrkAcQUSwQxatG7J4fw==
-X-CSE-MsgGUID: SaEPAuisRDmJ3bfhkoGVuw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11624"; a="77531154"
-X-IronPort-AV: E=Sophos;i="6.20,227,1758610800"; 
-   d="scan'208";a="77531154"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 21:57:05 -0800
-X-CSE-ConnectionGUID: gOmtEBbFQkeeWX6QiWeAIw==
-X-CSE-MsgGUID: rsdwU4YdSpumb6k26X48/Q==
+  bh=GcJCeUzYW3rAHS/xy3+BKcSNNgv9xvPJbkZ7fPqWYQg=;
+  b=chjvhDSvMGI4wfEKxYGP0p56QW6dBYlbpaY0SczjkSHliFqdM+HUx3Ih
+   tDsqf1rYMO3lA4EMzfmHOhytNEFnstGM/IzOOOpwlRlbikD47WMVrhjvM
+   qurPTQDgfeCPAZfMu3fJLt5qDXnDshwK3gAK1jTLgUrScAu6wFklhCt3S
+   zpAvxhdykup1kyfNZ/zZeB0BlC4DWYQhLVUHAD63eZAAflufp//LuPDIm
+   msFToqro9UnojgJMkeeLyf9hhcuQ/o2ata354MAc6UxY+2+QgN4J5ngTx
+   ewEO4omXvLv1n5Gavepfr6N3Z00rGeSrnXKFnLMZeHUnY0O7UuNC1E9I3
+   g==;
+X-CSE-ConnectionGUID: +ao6XwHgTY6LBkQnaojLmQ==
+X-CSE-MsgGUID: OBR87GTLQdWP+mT9qI+Qtg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11624"; a="77287064"
+X-IronPort-AV: E=Sophos;i="6.20,228,1758610800"; 
+   d="scan'208";a="77287064"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2025 00:53:54 -0800
+X-CSE-ConnectionGUID: CHD+AxMoQRajwuhy4D9fjg==
+X-CSE-MsgGUID: 8fH566+MS1S78xX7KuTHSA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,227,1758610800"; 
-   d="scan'208";a="223550488"
+X-IronPort-AV: E=Sophos;i="6.20,228,1758610800"; 
+   d="scan'208";a="192015221"
 Received: from yinghaoj-desk.ccr.corp.intel.com (HELO [10.238.1.225]) ([10.238.1.225])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 21:57:00 -0800
-Message-ID: <8d5c0f57-bf91-4ea3-bd7e-5a02bcb5cc09@linux.intel.com>
-Date: Wed, 26 Nov 2025 13:56:57 +0800
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2025 00:53:50 -0800
+Message-ID: <7fd9ebae-58f9-4908-87db-4317f30deae6@linux.intel.com>
+Date: Wed, 26 Nov 2025 16:53:47 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,7 +52,7 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 13/16] KVM: TDX: Handle PAMT allocation in fault path
+Subject: Re: [PATCH v4 14/16] KVM: TDX: Reclaim PAMT memory
 To: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@intel.com,
  isaku.yamahata@intel.com, kai.huang@intel.com, kas@kernel.org,
@@ -62,10 +62,10 @@ Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@intel.com,
  x86@kernel.org, yan.y.zhao@intel.com, xiaoyao.li@intel.com,
  binbin.wu@intel.com
 References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
- <20251121005125.417831-14-rick.p.edgecombe@intel.com>
+ <20251121005125.417831-15-rick.p.edgecombe@intel.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20251121005125.417831-14-rick.p.edgecombe@intel.com>
+In-Reply-To: <20251121005125.417831-15-rick.p.edgecombe@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
@@ -74,56 +74,102 @@ Content-Transfer-Encoding: 8bit
 On 11/21/2025 8:51 AM, Rick Edgecombe wrote:
 > From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 >
-> Install PAMT pages for TDX call backs called during the fault path.
+> Call tdx_free_page() and tdx_pamt_put() on the paths that free TDX
+> pages.
 >
-> There are two distinct cases when the kernel needs to allocate PAMT memory
-> in the fault path: for SEPT page tables in tdx_sept_link_private_spt() and
-> for leaf pages in tdx_sept_set_private_spte().
+> The PAMT memory holds metadata for TDX-protected memory. With Dynamic
+> PAMT, PAMT_4K is allocated on demand. The kernel supplies the TDX module
+> with a few pages that cover 2M of host physical memory.
 >
-> These code paths run in atomic context. Previous changes have made the
-> fault path top up the per-VCPU pool for memory allocations. Use it to do
-> tdx_pamt_get/put() for the fault path operations.
+> PAMT memory can be reclaimed when the last user is gone. It can happen
+> in a few code paths:
 >
-> In the generic MMU these ops are inside functions that don’t always
-> operate from the vCPU contexts (for example zap paths), which means they
-> don’t have a struct kvm_vcpu handy. But for TDX they are always in a vCPU
-> context. Since the pool of pre-allocated pages is on the vCPU, use
-> kvm_get_running_vcpu() to get the vCPU. In case a new path appears where
-> this is not the  case, leave some KVM_BUG_ON()’s.
+> - On TDH.PHYMEM.PAGE.RECLAIM in tdx_reclaim_td_control_pages() and
+>    tdx_reclaim_page().
+>
+> - On TDH.MEM.PAGE.REMOVE in tdx_sept_drop_private_spte().
+>
+> - In tdx_sept_zap_private_spte() for pages that were in the queue to be
+>    added with TDH.MEM.PAGE.ADD, but it never happened due to an error.
+>
+> - In tdx_sept_free_private_spt() for SEPT pages;
+>
+> Add tdx_pamt_put() for memory that comes from guest_memfd and use
+> tdx_free_page() for the rest.
+
+External page table pages are not from guest_memfd,  but tdx_pamt_put() is used
+in tdx_sept_free_private_spt() for them.
+
 >
 > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> [Add feedback, update log]
+> [Minor log tweak]
 > Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 > ---
 > v4:
->   - Do prealloc.page_list initialization in tdx_td_vcpu_init() in case
->     userspace doesn't call KVM_TDX_INIT_VCPU.
+>   - Rebasing on post-populate series required some changes on how PAMT
+>     refcounting was handled in the KVM_TDX_INIT_MEM_REGION path. Now
+>     instead of incrementing DPAMT refcount on the fake add in the fault
+>     path, it only increments it when tdh_mem_page_add() actually succeeds,
+>     like in tdx_mem_page_aug(). Because of this, the special handling for
+>     the case tdx_is_sept_zap_err_due_to_premap() cared about is unneeded.
 >
 > v3:
->   - Use new pre-allocation method
->   - Updated log
->   - Some extra safety around kvm_get_running_vcpu()
+>   - Minor log tweak to conform kvm/x86 style.
 > ---
->   arch/x86/kvm/vmx/tdx.c | 44 ++++++++++++++++++++++++++++++++++++------
->   1 file changed, 38 insertions(+), 6 deletions(-)
+>   arch/x86/kvm/vmx/tdx.c | 14 +++++++++++---
+>   1 file changed, 11 insertions(+), 3 deletions(-)
 >
 > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index 61a058a8f159..24322263ac27 100644
+> index 24322263ac27..f8de50e7dc7f 100644
 > --- a/arch/x86/kvm/vmx/tdx.c
 > +++ b/arch/x86/kvm/vmx/tdx.c
-> @@ -683,6 +683,8 @@ int tdx_vcpu_create(struct kvm_vcpu *vcpu)
->   	if (!irqchip_split(vcpu->kvm))
->   		return -EINVAL;
+> @@ -360,7 +360,7 @@ static void tdx_reclaim_control_page(struct page *ctrl_page)
+>   	if (tdx_reclaim_page(ctrl_page))
+>   		return;
 >   
-> +	INIT_LIST_HEAD(&tdx->prealloc.page_list);
+> -	__free_page(ctrl_page);
+> +	tdx_free_page(ctrl_page);
+>   }
+>   
+>   struct tdx_flush_vp_arg {
+> @@ -597,7 +597,7 @@ static void tdx_reclaim_td_control_pages(struct kvm *kvm)
+>   
+>   	tdx_quirk_reset_page(kvm_tdx->td.tdr_page);
+>   
+> -	__free_page(kvm_tdx->td.tdr_page);
+> +	tdx_free_page(kvm_tdx->td.tdr_page);
+>   	kvm_tdx->td.tdr_page = NULL;
+>   }
+>   
+> @@ -1827,6 +1827,8 @@ static int tdx_sept_free_private_spt(struct kvm *kvm, gfn_t gfn,
+>   				     enum pg_level level, void *private_spt)
+>   {
+>   	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
+> +	struct page *page = virt_to_page(private_spt);
+> +	int ret;
+>   
+>   	/*
+>   	 * free_external_spt() is only called after hkid is freed when TD is
+> @@ -1843,7 +1845,12 @@ static int tdx_sept_free_private_spt(struct kvm *kvm, gfn_t gfn,
+>   	 * The HKID assigned to this TD was already freed and cache was
+>   	 * already flushed. We don't have to flush again.
+>   	 */
+> -	return tdx_reclaim_page(virt_to_page(private_spt));
+> +	ret = tdx_reclaim_page(virt_to_page(private_spt));
+> +	if (ret)
+> +		return ret;
 > +
+> +	tdx_pamt_put(page);
+> +	return 0;
+>   }
+>   
+>   static void tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
+> @@ -1895,6 +1902,7 @@ static void tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
+>   		return;
+>   
+>   	tdx_quirk_reset_page(page);
+> +	tdx_pamt_put(page);
+>   }
+>   
+>   void tdx_deliver_interrupt(struct kvm_lapic *apic, int delivery_mode,
 
-Should this change be moved to patch 12?
-Because the pre-alloc page list has started to be used in patch 12 for external
-page tables even without enabling dynamic PAMT.
-
->   	fpstate_set_confidential(&vcpu->arch.guest_fpu);
->   	vcpu->arch.apic->guest_apic_protected = true;
->   	INIT_LIST_HEAD(&tdx->vt.pi_wakeup_list);
->
-[...]
