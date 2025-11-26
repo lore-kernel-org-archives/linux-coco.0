@@ -1,162 +1,232 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E384F2FFDDC
-	for <linux-coco@lists.linux.dev>; Wed, 26 Nov 2025 13:35:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15873043A5
+	for <linux-coco@lists.linux.dev>; Wed, 26 Nov 2025 14:45:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764164135; cv=none; b=EqoeZ6X0iKDV9OZwTNZKSpSwkX9OvmT5S6/4B5flAL8t+Zvie9/y96BxeKs87d5+NytnH+zc6C2uWmqsnznoZdpI9RyJSgeqX3G83BLafwADsCtnwzNGzZXHFC66eIkDb9XiD3LX5Ixv0bQoT+sMtNaxE4GhoJhVsrsvH4IzbOY=
+	t=1764168356; cv=none; b=TpXkwv75e/8M1MpbuG26NeiPP01JDn4QGO582SKuospPaNKHokpXxootO/EHMfKYtzTjCmDweN22fKIlITZWPms7aJSY76vJyVg8h2P0Gd+LdhrPepfVEwMhSk3qYSJpvU+xz54NYoyY9dWSEbLhiwkyRRFo5SyiA6jTjciBeY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764164135; c=relaxed/simple;
-	bh=4XGqkkwvJhzBKDjFg2Nnsb4TmPPMhIbPH+8e/8mp2ng=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K8sLDsEiTHQO9q4qpD6ZhfI7W91eVMzGhdlEVW4I/AvthSVuUlXU1HSmTykEe4D1mQ+iZBnPcW6DN/wYVH4ev6P6ZLbfkZJY3a/CUGmfxWDIeZuoTj1/l/RoszsUT3JthFLTl6pwkoWlabmlVSV3o17pyFpUEOo13GEm4WKuLT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JY0C6mtp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764168356; c=relaxed/simple;
+	bh=bAwZ/h3G+Zjo9ptE3c/wRgetC5mvgj2Vpa06A/+N83Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hAn5ghrqhFWc8q83y55ShozzqugGbEA5PPwMX9rUG/ZPKRVT3YySN8rz3F2h34V7/42G6me+FadteHvPFIyNzg1a06L9gu/JHX9mA+dfwp6vSqMHaF+63/2TK4vKzEoj6WYcJ4PNKGgBptMnbSmTBcy8LlQwPiuZdCQkauPNMPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=RccJxv0B; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JY0C6mtp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2347BC4AF09;
-	Wed, 26 Nov 2025 13:35:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764164134;
-	bh=4XGqkkwvJhzBKDjFg2Nnsb4TmPPMhIbPH+8e/8mp2ng=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JY0C6mtpEbbp8hcUXrcQeLTsv2QwCTGEhvheJbSbf7I3ZphXKsTqTlk2skKroOQc8
-	 acK62TJD1T09SzIrsALglUVSqkHIDbWmPfEaNo5CGR9qSpHukKdhX04Nd8AUrbhKHb
-	 Fwz6lsYUM3lleDDzcZtJ8++h49Kc3sS/4Zqt5G6qI6M37DgLm/WI9yf+2x++29v5jx
-	 pP5Cwk6p24jpOVq0tLtRARQgWztVE8x24sIeT4XTN9jEfNxcMBqMi8+MiWtZDib9lL
-	 0JCVHBIb6f9//JJULKJOX/PlTKvJVKWdxLp0yt3k4D2exnvr0fmrFzmi9ZV1fUwdM8
-	 /KlMpPRi778Iw==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 40BCAF4006A;
-	Wed, 26 Nov 2025 08:35:33 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Wed, 26 Nov 2025 08:35:33 -0500
-X-ME-Sender: <xms:JQInaa42TQblY7RRf2U3HRqhwrs1gYxEOQHsaLzUaroUTex35cd7aA>
-    <xme:JQInaUB8cMhxadfJ9Z2TTPjUWtjV5Bx6X5GDZ3-MdSGSqaNKo4-HcG77qrc9GO2Ob
-    R7WRZZMlV9JnTcvePiUzB0aoUvT854x5NSDv3kEhEVCxMnwt_pJBw>
-X-ME-Received: <xmr:JQInaXTFXG0TNo27PTzFVbCMA8O7DpjiKrd-14OKgpWAQyoWivMwKSfcn2pD3Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvgeeggeelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepheeikeeuveduheevtddvffekhfeufefhvedtudehheektdfhtdehjeevleeuffeg
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepvdekpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopeigihgrohihrghordhlihesihhnthgvlhdrtghomhdprhgtphhtthhopegurghvvg
-    drhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepthhglhig
-    sehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrd
-    gtohhmpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepgiekiees
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtohephhhprgesiiihthhorhdrtghomhdprhgtph
-    htthhopehrihgtkhdrphdrvggughgvtghomhgsvgesihhnthgvlhdrtghomhdprhgtphht
-    thhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:JQInabaJyxx-mbaF31wM2g5jEO4gi9ZFCSAo9P8W6mAtSojQzS4UkQ>
-    <xmx:JQInacXUREImYZ0LM3YGbGi9tX2s5j6lQ1KHKNfgnq2adxGMYZarvQ>
-    <xmx:JQInaYWJmbk3LcuJXtl-xVWAqXl0VhJKXAw-QuWpxbAZaoSQhQps2A>
-    <xmx:JQInae8x-_dIwaLy3xxK5f57bLc0WEVBJ6FjLHCfIWzm6Rh7nNjh6A>
-    <xmx:JQInaVr-t4hQ_Ks12EFzYVlmgxgBhQd-iuPSK5VdHB8Bl8ixa1l6YqIt>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 26 Nov 2025 08:35:32 -0500 (EST)
-Date: Wed, 26 Nov 2025 13:35:31 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, Reinette Chatre <reinette.chatre@intel.com>, 
-	Chenyi Qiang <chenyi.qiang@intel.com>, chao.p.peng@intel.com
-Subject: Re: [PATCH 1/2] x86/split_lock: Don't try to handle user split lock
- in TDX guest
-Message-ID: <qvsi3xht4kn3iwkx5xw2p7zsq4cvpg4xhq3ra52fe34xjpixfo@fsgchsobc343>
-References: <20251126100205.1729391-1-xiaoyao.li@intel.com>
- <20251126100205.1729391-2-xiaoyao.li@intel.com>
- <lvobu4gpfsjg63syubgy2jwcja72folflrst7bu2eqv6rhaqre@ttbkykphu32f>
- <33fe9716-ef3b-42f3-9806-4bd23fed6949@intel.com>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="RccJxv0B"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-42b3c965ca9so3832033f8f.1
+        for <linux-coco@lists.linux.dev>; Wed, 26 Nov 2025 06:45:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1764168353; x=1764773153; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=HYMfm5Up5H/6PEZCi1erkPAG8KCR2IZVJjL++PJAHPA=;
+        b=RccJxv0B7Ntgr4B5xKKtsyGDJ2UQT2VWH/R1HY+BcutV2/K2NGO+jAWYfIiii0DXm/
+         a6h1W9L3TTXM4LD9kSl3kqDmjdTZfLthnyctokr9IkfseSBDKqQcNspVSPu8JK25237c
+         BMh9jVHo/MSZGI5GiTO71iXtfyt8hfhytUdgOOEPOTWtqMzqM9pXvoYyjeJg7O1DTtSn
+         SHezCHbKY9I3oH27GS0Y2lsCjBfEMgBmYvVuk/6mwy5+shhSxCyPu4SrmhzyKgimnY4H
+         iIq8IrT7wuY/xztsOUrSGz7zzSAQlfGfuTKz0LNCNiHGL7RASPusnjga7c1VgyxEKsye
+         IN9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764168353; x=1764773153;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HYMfm5Up5H/6PEZCi1erkPAG8KCR2IZVJjL++PJAHPA=;
+        b=buULvXsiA8flsoVgBJ6kTN8xuMcxZeUkhzyn2T4rpzswxytQ4bC0MW+PCtIOtpyZ2B
+         N2HX735hO/E3yowJa/Ff3cPt1ir8qY8x0y3HLyq0CshN34aqUpMtGs2W6vRBDOtX7ydb
+         NBpjWqAJcWv9lyG+GsPzPbUEHFBGUXy+rhyZDEWJdfVoulaFQhbMKVXCtwOhQXEQKLxh
+         7vi+vKkuEphK8uReILo7eDYRcNIlOU2jqu/nKKcA0xVuCLUOSIM4cpaq+kVKkkHAkGht
+         BC0cI+Hw5O6d2fMvgVf02gEA74Bo+7UdI1vdfHArQw0KE5tMiEiGL9t8FT2XAj4o/zPP
+         5gxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXfRKnr3Re5iJAbnqVkjCF6k3fEGAB0zZd2U4d/RjBg1ljbFp9rhAcshCPxUAbiNFBOXOCf/fReOm/m@lists.linux.dev
+X-Gm-Message-State: AOJu0YznDhrffobPEnFyHsvHWFlabb+b0C/rSVTVitL/qFo/c0z8S+Tj
+	wGwU7DNQQ7zB2KZoUEM7qHt8IEogaKCmNjaG1s32ZPLn3Ey/yP2M1V+6K7C07Z6d2ns=
+X-Gm-Gg: ASbGncuihXQt3zQ2mZF2aBf92em5S71Xx/LVk1Vi1wG9HfSf72Q3JFYZqCzf2ysF6er
+	6LcM45c4jGyBMOZZPAZjPFT9CJKl2J1/IEJpfliAlw6hCe5qllOIsVaHFwy9mjb11cV4g4HtsLn
+	WNYosr0rqI3U5HhqG89mVE1x9bFA6kZcA2yi8fvSEJZiCy75OfBLPEYGQhl1Q1A7HUrIjPfG3l/
+	Y9MVjFirnKrIOHtYQZ6asxccgxmzcsXWXwambkkxRqzQ6+Y7GvG2KbdLqCrqGHLG6DEcrCaVb4Q
+	HMj6Dc+YKlKoumrMhuHDu7rZGlbFV3i0+DhNOhRtwmG3L7HrhCSpYa3B52ReRMXZB3fivriBYWS
+	sXEGtlk/XmaLpVbonK0Vc9jYx4HSfKsimvgIli1QHcelvDc2FFA/3rAoBS51qHdfEt/0J8VSiIU
+	wz1srXjj8TM40BbUf9kSmhSZwjYNSH68U/LiKAvakVjgewRZY=
+X-Google-Smtp-Source: AGHT+IHehaPc5bSUI7JQZn2ffEgvKhw++fnE5++PXHZr7UoCpIiEnabgyx6hzpj0sccGvSeii/e1JQ==
+X-Received: by 2002:a05:6000:40cc:b0:42b:3cd2:e9b3 with SMTP id ffacd0b85a97d-42cc1d2eee5mr22013812f8f.33.1764168352919;
+        Wed, 26 Nov 2025 06:45:52 -0800 (PST)
+Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [85.187.216.236])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7f2e432sm40151444f8f.9.2025.11.26.06.45.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Nov 2025 06:45:51 -0800 (PST)
+Message-ID: <b3b465e6-cfa0-44d0-bdef-6d37bb26e6e0@suse.com>
+Date: Wed, 26 Nov 2025 16:45:49 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <33fe9716-ef3b-42f3-9806-4bd23fed6949@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 06/16] x86/virt/tdx: Improve PAMT refcounts allocation
+ for sparse memory
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>, bp@alien8.de,
+ chao.gao@intel.com, dave.hansen@intel.com, isaku.yamahata@intel.com,
+ kai.huang@intel.com, kas@kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, mingo@redhat.com,
+ pbonzini@redhat.com, seanjc@google.com, tglx@linutronix.de,
+ vannapurve@google.com, x86@kernel.org, yan.y.zhao@intel.com,
+ xiaoyao.li@intel.com, binbin.wu@intel.com
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
+ <20251121005125.417831-7-rick.p.edgecombe@intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <20251121005125.417831-7-rick.p.edgecombe@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 26, 2025 at 08:17:18PM +0800, Xiaoyao Li wrote:
-> On 11/26/2025 7:25 PM, Kiryl Shutsemau wrote:
-> > On Wed, Nov 26, 2025 at 06:02:03PM +0800, Xiaoyao Li wrote:
-> > > When the host enables split lock detection feature, the split lock from
-> > > guests (normal or TDX) triggers #AC. The #AC caused by split lock access
-> > > within a normal guest triggers a VM Exit and is handled in the host.
-> > > The #AC caused by split lock access within a TDX guest does not trigger
-> > > a VM Exit and instead it's delivered to the guest self.
-> > > 
-> > > The default "warning" mode of handling split lock depends on being able
-> > > to temporarily disable detection to recover from the split lock event.
-> > > But the MSR that disables detection is not accessible to a guest.
-> > > 
-> > > This means that TDX guests today can not disable the feature or use
-> > > the "warning" mode (which is the default). But, they can use the "fatal"
-> > > mode.
-> > > 
-> > > Force TDX guests to use the "fatal" mode.
-> > > 
-> > > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> > > ---
-> > >   arch/x86/kernel/cpu/bus_lock.c | 17 ++++++++++++++++-
-> > >   1 file changed, 16 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/arch/x86/kernel/cpu/bus_lock.c b/arch/x86/kernel/cpu/bus_lock.c
-> > > index 981f8b1f0792..f278e4ea3dd4 100644
-> > > --- a/arch/x86/kernel/cpu/bus_lock.c
-> > > +++ b/arch/x86/kernel/cpu/bus_lock.c
-> > > @@ -315,9 +315,24 @@ void bus_lock_init(void)
-> > >   	wrmsrq(MSR_IA32_DEBUGCTLMSR, val);
-> > >   }
-> > > +static bool split_lock_fatal(void)
-> > > +{
-> > > +	if (sld_state == sld_fatal)
-> > > +		return true;
-> > > +
-> > > +	/*
-> > > +	 * TDX guests can not disable split lock detection.
-> > > +	 * Force them into the fatal behavior.
-> > > +	 */
-> > > +	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST))
-> > > +		return true;
-> > > +
-> > > +	return false;
-> > > +}
-> > > +
-> > >   bool handle_user_split_lock(struct pt_regs *regs, long error_code)
-> > >   {
-> > > -	if ((regs->flags & X86_EFLAGS_AC) || sld_state == sld_fatal)
-> > > +	if ((regs->flags & X86_EFLAGS_AC) || split_lock_fatal())
-> > >   		return false;
-> > 
-> > Maybe it would be cleaner to make it conditional on
-> > cpu_model_supports_sld instead of special-casing TDX guest?
-> > 
-> > #AC on any platfrom when we didn't asked for it suppose to be fatal, no?
+
+
+On 21.11.25 г. 2:51 ч., Rick Edgecombe wrote:
+> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 > 
-> But TDX is the only one has such special non-architectural behavior.
+> init_pamt_metadata() allocates PAMT refcounts for all physical memory up
+> to max_pfn. It might be suboptimal if the physical memory layout is
+> discontinuous and has large holes.
 > 
-> For example, for normal VMs under KVM, the behavior is x86 architectural.
-> MSR_TEST_CTRL is not accessible to normal VMs, and no split lock #AC will be
-> delivered to the normal VMs because it's handled by KVM.
+> The refcount allocation vmalloc allocation. This is necessary to support a
 
-How does it contradict what I suggested?
+nit: Something's odd with the first sentence, perhaps an "is a" before 
+is missing before "vmalloc"?
 
-For both normal VMs and TDX guest, cpu_model_supports_sld will not be
-set to true. So check for cpu_model_supports_sld here is going to be
-NOP, unless #AC actually delivered, like we have in TDX case. Handling
-it as fatal is sane behaviour in such case regardless if it TDX.
+> large allocation size. The virtually contiguous property also makes it
+> easy to find a specific 2MB range’s refcount since it can simply be
+> indexed.
+> 
+> Since vmalloc mappings support remapping during normal kernel runtime,
+> switch to an approach that only populates refcount pages for the vmalloc
+> mapping when there is actually memory for that range. This means any holes
+> in the physical address space won’t use actual physical memory.
+> 
+> The validity of this memory optimization is based on a couple assumptions:
+> 1. Physical holes in the ram layout are commonly large enough for it to be
+>     worth it.
+> 2. An alternative approach that looks the refcounts via some more layered
+>     data structure wouldn’t overly complicate the lookups. Or at least
+>     more than the complexity of managing the vmalloc mapping.
+> 
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> [Add feedback, update log]
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 
-And we don't need to make the check explicitly about TDX guest.
+<snip>
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> ---
+>   arch/x86/virt/vmx/tdx/tdx.c | 136 +++++++++++++++++++++++++++++++++---
+>   1 file changed, 125 insertions(+), 11 deletions(-)
+> 
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index c28d4d11736c..edf9182ed86d 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -194,30 +194,135 @@ int tdx_cpu_enable(void)
+>   }
+>   EXPORT_SYMBOL_GPL(tdx_cpu_enable);
+>   
+> -/*
+> - * Allocate PAMT reference counters for all physical memory.
+> - *
+> - * It consumes 2MiB for every 1TiB of physical memory.
+> - */
+> -static int init_pamt_metadata(void)
+> +/* Find PAMT refcount for a given physical address */
+> +static atomic_t *tdx_find_pamt_refcount(unsigned long pfn)
+>   {
+> -	size_t size = DIV_ROUND_UP(max_pfn, PTRS_PER_PTE) * sizeof(*pamt_refcounts);
+> +	/* Find which PMD a PFN is in. */
+> +	unsigned long index = pfn >> (PMD_SHIFT - PAGE_SHIFT);
+>   
+> -	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
+> -		return 0;
+> +	return &pamt_refcounts[index];
+> +}
+>   
+> -	pamt_refcounts = __vmalloc(size, GFP_KERNEL | __GFP_ZERO);
+> -	if (!pamt_refcounts)
+> +/* Map a page into the PAMT refcount vmalloc region */
+> +static int pamt_refcount_populate(pte_t *pte, unsigned long addr, void *data)
+> +{
+> +	struct page *page;
+> +	pte_t entry;
+> +
+> +	page = alloc_page(GFP_KERNEL | __GFP_ZERO);
+> +	if (!page)
+>   		return -ENOMEM;
+>   
+> +	entry = mk_pte(page, PAGE_KERNEL);
+> +
+> +	spin_lock(&init_mm.page_table_lock);
+> +	/*
+> +	 * PAMT refcount populations can overlap due to rounding of the
+> +	 * start/end pfn. Make sure the PAMT range is only populated once.
+> +	 */
+> +	if (pte_none(ptep_get(pte)))
+> +		set_pte_at(&init_mm, addr, pte, entry);
+> +	else
+> +		__free_page(page);
+> +	spin_unlock(&init_mm.page_table_lock);
+
+nit: Wouldn't it be better to perform the pte_none() check before doing 
+the allocation thus avoiding needless allocations? I.e do the 
+alloc/mk_pte only after we are 100% sure we are going to use this entry.
+
+> +
+>   	return 0;
+>   }
+
+    <snip>
