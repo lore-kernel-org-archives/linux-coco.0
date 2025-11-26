@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372E04C9D
-	for <linux-coco@lists.linux.dev>; Wed, 26 Nov 2025 05:21:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030B17D098
+	for <linux-coco@lists.linux.dev>; Wed, 26 Nov 2025 05:57:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764134504; cv=none; b=fmrfFaHXZ/CaFmsWMxOp4CEuC708A72T17y/g9d9TTCI/YpTnolSpDlmshxaITxCJ33BRHuZ2bgFJZG4GPzxUmH4ptj3WNruYgUScvnsb1ofN+69agk9yP2XrI+reFbxJpmymej+FX6OAyKZ9cf6EYLlaeE0gqjdqr4pkEB6srw=
+	t=1764136628; cv=none; b=u4aoywA4SzlezS72yUM63LpfoStVvBE9DqNneK3ntX2ekz6VfuFLpnV/0uP1XLxbgQX+oNJbRvPoS6yhrbzUz6LMTvW1c9vlCtQum3LcPF44Gs/ZINEKDTbZ2Pud7rGM2/Y6QbwTAAzJZLfQC9xPIL+mwBDmOvG5c5imCFE8mP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764134504; c=relaxed/simple;
-	bh=V34EkMlx5730oKCbGsZ8UnN8wqaCpact9cdZChfm4Ok=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Q9F+lMGCqiCNc2Wipo1pDKHQt0Jy9LerPWGACXIjXQMxO+mZ8WsUsiE/ZkJJP30Awa40AoT/R6VqOeiEcUN42vJEelSQNmWQGZGT0WRmOe4tY/LM/inACCdUOrdqALZgrFdgn987hjGtJ3l+5Uk3gatqpd0gpYpjcqbCF9elhUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SiJfwWbx; arc=none smtp.client-ip=192.198.163.9
+	s=arc-20240116; t=1764136628; c=relaxed/simple;
+	bh=OTho8qU9BnrmvKsPVD0CjGlxrwouddko8CkHyyFCX0E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SxGQ8Mi4cEY8kEt8NZySHmxpLYabBoEOgqzt7J0A7miU1aL0rzJkAu4KLBvORdgP5Z6g4mS8X//4EJaSslYyAwxQU7XBdtvq+RGFyjihO1r7Dt5rmHs7WH1GC/H1K0a9fgcVE3WIJXBC6DzpUt845bE/ga/BDsAwYBRhr5MWjZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=holDNDsO; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SiJfwWbx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="holDNDsO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764134503; x=1795670503;
-  h=message-id:date:mime-version:subject:from:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=V34EkMlx5730oKCbGsZ8UnN8wqaCpact9cdZChfm4Ok=;
-  b=SiJfwWbxgYj2xRsgHCO/nug3dZB983t82oBvf0QkRKkuPsrUPBA8KW8O
-   vTJxpLBA0wf9ZPSH8/jgplKGJRazJYw2i+bq8dePk6lTVsrjMnMWEiOry
-   YmkPASWLefe7BDvsww1+x56yfsZ1awECJ1dzkVFCd+H+aAmF5uys3Madx
-   XSkh/eXmOtAezOOGdefMTIDNTgYmH/feA9RTVqrOAiqcerHVYN0EitaPL
-   lfZRSIwUUL78Zh+l6NHWFEZCuaO3CP61kKZ7pd2P6KAr0uKJo2GS9MeAo
-   gJ93R+R1DZOIVe61tfP+rf3jlAPUSnNhhUdB+Sz9Q2hcZycrP8fFMx7I/
-   Q==;
-X-CSE-ConnectionGUID: QnY3E3zMSomxAbveVtUAlA==
-X-CSE-MsgGUID: 7Gx6VSc+TA6uYjg1qIdyKA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11624"; a="76844962"
+  t=1764136626; x=1795672626;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=OTho8qU9BnrmvKsPVD0CjGlxrwouddko8CkHyyFCX0E=;
+  b=holDNDsOrDjGx6L9xSBQjpJE45Sb7V+bHpAve4O2YU0kjpmuLSfa2rsH
+   3MBE0PGfB5kOp/ulu+D8p90miPMr0Wh0mDILvwt2+P4/srLN7w/jh/cIF
+   u5VGZMDnjocd2BAgTEXcedzOO62qE2MlyPal6B1jnGw5E6Bb/zN9U8aSB
+   5Jo6adsTrW5Jx2HQqbci2EDeFwuT8IpJIEAiRG2a5VoqzooYRt+s0ztKY
+   KIY8CHEqFDQ2ORY1ZoVcV5kCYnO7qVuHy3GvD5/nl2QQO7s66AXhcOpqm
+   j91MHsLlzYlq3r46y7qe7d6IXjLHZ0n8M91Fcb1a+3MYd4B2aJPX6Q5It
+   A==;
+X-CSE-ConnectionGUID: 6RXQrkAcQUSwQxatG7J4fw==
+X-CSE-MsgGUID: SaEPAuisRDmJ3bfhkoGVuw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11624"; a="77531154"
 X-IronPort-AV: E=Sophos;i="6.20,227,1758610800"; 
-   d="scan'208";a="76844962"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 21:21:42 -0800
-X-CSE-ConnectionGUID: IQJLDWK2TBmAYVm94bJPjg==
-X-CSE-MsgGUID: Zx0Kr9htSVOu9c/mICPSuQ==
+   d="scan'208";a="77531154"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 21:57:05 -0800
+X-CSE-ConnectionGUID: gOmtEBbFQkeeWX6QiWeAIw==
+X-CSE-MsgGUID: rsdwU4YdSpumb6k26X48/Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,227,1758610800"; 
-   d="scan'208";a="192631997"
+   d="scan'208";a="223550488"
 Received: from yinghaoj-desk.ccr.corp.intel.com (HELO [10.238.1.225]) ([10.238.1.225])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 21:21:37 -0800
-Message-ID: <e6ecd387-e57d-4bfa-b4f7-38662a39a50b@linux.intel.com>
-Date: Wed, 26 Nov 2025 13:21:35 +0800
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2025 21:57:00 -0800
+Message-ID: <8d5c0f57-bf91-4ea3-bd7e-5a02bcb5cc09@linux.intel.com>
+Date: Wed, 26 Nov 2025 13:56:57 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,9 +52,7 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 12/16] x86/virt/tdx: Add helpers to allow for
- pre-allocating pages
-From: Binbin Wu <binbin.wu@linux.intel.com>
+Subject: Re: [PATCH v4 13/16] KVM: TDX: Handle PAMT allocation in fault path
 To: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@intel.com,
  isaku.yamahata@intel.com, kai.huang@intel.com, kas@kernel.org,
@@ -64,31 +62,68 @@ Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@intel.com,
  x86@kernel.org, yan.y.zhao@intel.com, xiaoyao.li@intel.com,
  binbin.wu@intel.com
 References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
- <20251121005125.417831-13-rick.p.edgecombe@intel.com>
- <7a6f5b4e-ad7b-4ad0-95fd-e1698f9b4e06@linux.intel.com>
+ <20251121005125.417831-14-rick.p.edgecombe@intel.com>
 Content-Language: en-US
-In-Reply-To: <7a6f5b4e-ad7b-4ad0-95fd-e1698f9b4e06@linux.intel.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20251121005125.417831-14-rick.p.edgecombe@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
 
-On 11/26/2025 11:40 AM, Binbin Wu wrote:
->> index 260bb0e6eb44..61a058a8f159 100644
->> --- a/arch/x86/kvm/vmx/tdx.c
->> +++ b/arch/x86/kvm/vmx/tdx.c
->> @@ -1644,23 +1644,34 @@ static int tdx_mem_page_add(struct kvm *kvm, gfn_t gfn, enum pg_level level,
->>     static void *tdx_alloc_external_fault_cache(struct kvm_vcpu *vcpu)
->>   {
->> -    struct vcpu_tdx *tdx = to_tdx(vcpu);
->> +    struct page *page = get_tdx_prealloc_page(&to_tdx(vcpu)->prealloc);
->>   -    return kvm_mmu_memory_cache_alloc(&tdx->mmu_external_spt_cache);
->> +    if (WARN_ON_ONCE(!page))
->> +        return (void *)__get_free_page(GFP_ATOMIC | __GFP_ACCOUNT);
+On 11/21/2025 8:51 AM, Rick Edgecombe wrote:
+> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 >
-> kvm_mmu_memory_cache_alloc() calls BUG_ON() if the atomic allocation failed.
-> Do we want to follow?
+> Install PAMT pages for TDX call backs called during the fault path.
 >
+> There are two distinct cases when the kernel needs to allocate PAMT memory
+> in the fault path: for SEPT page tables in tdx_sept_link_private_spt() and
+> for leaf pages in tdx_sept_set_private_spte().
 >
-Please ignore this one.
+> These code paths run in atomic context. Previous changes have made the
+> fault path top up the per-VCPU pool for memory allocations. Use it to do
+> tdx_pamt_get/put() for the fault path operations.
+>
+> In the generic MMU these ops are inside functions that don’t always
+> operate from the vCPU contexts (for example zap paths), which means they
+> don’t have a struct kvm_vcpu handy. But for TDX they are always in a vCPU
+> context. Since the pool of pre-allocated pages is on the vCPU, use
+> kvm_get_running_vcpu() to get the vCPU. In case a new path appears where
+> this is not the  case, leave some KVM_BUG_ON()’s.
+>
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> [Add feedback, update log]
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> ---
+> v4:
+>   - Do prealloc.page_list initialization in tdx_td_vcpu_init() in case
+>     userspace doesn't call KVM_TDX_INIT_VCPU.
+>
+> v3:
+>   - Use new pre-allocation method
+>   - Updated log
+>   - Some extra safety around kvm_get_running_vcpu()
+> ---
+>   arch/x86/kvm/vmx/tdx.c | 44 ++++++++++++++++++++++++++++++++++++------
+>   1 file changed, 38 insertions(+), 6 deletions(-)
+>
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index 61a058a8f159..24322263ac27 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -683,6 +683,8 @@ int tdx_vcpu_create(struct kvm_vcpu *vcpu)
+>   	if (!irqchip_split(vcpu->kvm))
+>   		return -EINVAL;
+>   
+> +	INIT_LIST_HEAD(&tdx->prealloc.page_list);
+> +
 
+Should this change be moved to patch 12?
+Because the pre-alloc page list has started to be used in patch 12 for external
+page tables even without enabling dynamic PAMT.
+
+>   	fpstate_set_confidential(&vcpu->arch.guest_fpu);
+>   	vcpu->arch.apic->guest_apic_protected = true;
+>   	INIT_LIST_HEAD(&tdx->vt.pi_wakeup_list);
+>
+[...]
