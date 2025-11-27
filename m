@@ -1,179 +1,163 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC3C2C21F4;
-	Thu, 27 Nov 2025 16:16:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D94A277C8D
+	for <linux-coco@lists.linux.dev>; Thu, 27 Nov 2025 16:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764260169; cv=none; b=DZ5/94qkhEsS+xPIhgXbSbt3Cu6QWxkFj42rX3dj85QeK2SNX5xW5W176zquiYniZQF53cpZ1OxKqPobll8qBr3xhn3RxNPvkaNf6xby4VWlcKexGvlN4y0m6RBiRqk8zYDy9A2y3CDByE3a4uLpSziXHtXgQms9cmtHBWLl4Q4=
+	t=1764262532; cv=none; b=mGYLW+jO+JxN0kR/yfAAK7PUK/0wELEpeHcqI9Zseo8S1A/lSZkdGYOgOJhz3Ts/HiZ4g/bsLbz0IQRYvQLaxOyxpwTENo3ufUkRaRan5pEnkAw+64MF0w2Mp4nAYGPhRUHPsNFCqrXVZ/54cad0Pj48z4Ch4scsvYgbn1aCo8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764260169; c=relaxed/simple;
-	bh=DxyEO2achLy43ZF8FixNtv4NmW3wAN1qt36huPNhZ60=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vu8jGG97xhe06yZ1x54YwHRmER3MPcWsekt9a/082JO89K0L5+D60Vxb1EaBOeVTuiHQv8tk7VPo81lQ135ttw3WedD9HcTTDwDhe6pe7aeL+1WcidjjGGREIUUMOdLOtXrlqL2jL6HUapKjYmGqoExptNvI5Tie9p0JN7dLVEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rLJsO6W4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764262532; c=relaxed/simple;
+	bh=IeJtPHg77YUC6PRv69OZcOoEvbzlzVHFg4enDQEEKAw=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=I8PYZEAHpXBzmM1JqkKZwZnfoIC+xIqlQOa6thFhs8fU2mGfhxFuL5+Hu1dJwvcxTKVWtkcZvP7UsS9uSdq3LK/IsmIR07RT32TRMyNPT5AxgdrmYKtL+FKesgCEcW+8e5cTlqeJudif2ZPHZv2yjRx1v+VD8pxdGRkrNwZttM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com; spf=pass smtp.mailfrom=citrix.com; dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b=YZQb1psN; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=citrix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rLJsO6W4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83441C4AF09;
-	Thu, 27 Nov 2025 16:16:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764260168;
-	bh=DxyEO2achLy43ZF8FixNtv4NmW3wAN1qt36huPNhZ60=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rLJsO6W4codxoABkXpTrovOn3jiWhgTO1CkOcMqm/EhgSwtM/87EZ7oKU/mm59gMC
-	 o1oM0gxtkHdMHsvk4eRFL8WaFQVLOuhWf1byrstKXyNa0rFJ05XJJDb3+QIW4dWNKR
-	 fde1C88w994v10YAcsr86xp8UdhZQDzmRpGn366hLjrNCAe1e4mygF1Btu2IEnf3Cv
-	 hwrZpgNhpmuy6Um05UcGirK/VfyGKuhpg24JGXHSMouI+FbJtKseKufIg4oN3oG72Q
-	 LFtgpR+0UllpDNdc79NPOrcUXqHxh6x/036m1GqPmohx+YMJmrQBsIqSkl4uIy9G0D
-	 DqoPBvO6RFEQw==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id C8040F4008A;
-	Thu, 27 Nov 2025 11:16:07 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Thu, 27 Nov 2025 11:16:07 -0500
-X-ME-Sender: <xms:R3koaW68d8gZPWehZlW8HrtUJqjx0jwlNGPeVNMxZueI73C1niz0dw>
-    <xme:R3koaQDvtXXCj-Wvm78PFVpOHd-446CyChVyzhGxDQ0nXqmxS9eZ4Nqs6FDvoKKjq
-    1XDIIDb-McG8NLKdMkEP2ZNMzZvHCu9Fhm6nHqBssZ_2jmN5VgwNue8>
-X-ME-Received: <xmr:R3koaTQhB-IrFNtnXBreisM3Ru3yvWEU7qWVoooZqUhjGsho7V9GdZ4YLptTlA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvgeejieekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepheeikeeuveduheevtddvffekhfeufefhvedtudehheektdfhtdehjeevleeuffeg
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepvdekpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopeigihgrohihrghordhlihesihhnthgvlhdrtghomhdprhgtphhtthhopegurghvvg
-    drhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepthhglhig
-    sehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrd
-    gtohhmpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepgiekiees
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtohephhhprgesiiihthhorhdrtghomhdprhgtph
-    htthhopehrihgtkhdrphdrvggughgvtghomhgsvgesihhnthgvlhdrtghomhdprhgtphht
-    thhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:R3koaXYaw-woMvOP84AyHjRbpp9Yys0CZbkQTBRvh8JIBVv4475D4A>
-    <xmx:R3koaYX2uSumCs_f9Dpx61SJNW6fDtqZA1_Kxobf-7RxCD0aX5DRBQ>
-    <xmx:R3koaUVoy_n7mWx1VcOK9H7hMMlzm9xNeZt-0n6BWewEJOWOc9ssDg>
-    <xmx:R3koaa-JV_RWWHk_YFTWr-VyYQXbVF9hSbpnx7Gb9quNsaCcx-jB0g>
-    <xmx:R3koaRrb31cSy0mGi4vFB7QUIZSHf8kesXkaEyfLM8TB7XDZu45-JfMQ>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 27 Nov 2025 11:16:07 -0500 (EST)
-Date: Thu, 27 Nov 2025 16:16:06 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, Reinette Chatre <reinette.chatre@intel.com>, 
-	Chenyi Qiang <chenyi.qiang@intel.com>, chao.p.peng@intel.com
-Subject: Re: [PATCH 1/2] x86/split_lock: Don't try to handle user split lock
- in TDX guest
-Message-ID: <f2hkqt5xtmej7cfnuytigcfszr3qja4l6ywww4qrqxjbqmlko2@r75b6deae2hd>
-References: <20251126100205.1729391-1-xiaoyao.li@intel.com>
- <20251126100205.1729391-2-xiaoyao.li@intel.com>
- <lvobu4gpfsjg63syubgy2jwcja72folflrst7bu2eqv6rhaqre@ttbkykphu32f>
- <33fe9716-ef3b-42f3-9806-4bd23fed6949@intel.com>
- <qvsi3xht4kn3iwkx5xw2p7zsq4cvpg4xhq3ra52fe34xjpixfo@fsgchsobc343>
- <0f8983e9-0e23-4a05-8015-de6e2218d8a5@intel.com>
+	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="YZQb1psN"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4779adb38d3so7195535e9.2
+        for <linux-coco@lists.linux.dev>; Thu, 27 Nov 2025 08:55:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=citrix.com; s=google; t=1764262529; x=1764867329; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:subject:references:cc:to:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=IeJtPHg77YUC6PRv69OZcOoEvbzlzVHFg4enDQEEKAw=;
+        b=YZQb1psNprvYfKDbdCNJWDpq6WR4muH16V7pZWJXc6kgQzZ+UbByKH3CuvRdcCkou9
+         Iu5L830WzJwjkmpRinprlCcMOsKloIvydEbksVyhATxNz9Up7q9dDrjLqar1iYsZtKfK
+         HOi+NoAzXR0433URG9g/PYP0Q6xi163Nvr+Hw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764262529; x=1764867329;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:subject:references:cc:to:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IeJtPHg77YUC6PRv69OZcOoEvbzlzVHFg4enDQEEKAw=;
+        b=ptP7vCrfj4dNve48/gsEIAUxou7xUHjCHJ7lXx8zUXs6JnDvSeMEm2Jhlj2RTPiP8/
+         OalfB4TuVC4il1wmm8MCAlIljZMaQ4bC4uPtDkU7Wn+t6IpGO//q9y4AN0k2Dxi0v8rz
+         Q3wphW7RYFgCm+18uiIr2svrWCRqpRIebYxHqpz1D9ftTcJdH4P6OFD3oy/gAXYfxHFP
+         VHIPIAtAd/FDwNAKOm0oxnoBaNBwqn8JidSrTrlKIBjTmvBzpU4WTaTju5z8YGuh2cP2
+         /XBmro9j3wLATuJBYkYz1FM+135sYm9hP7ZAvitwpD7mSw2fDi2DJ1ODGZ1E4FTJtRSM
+         A5Kg==
+X-Forwarded-Encrypted: i=1; AJvYcCXPHajhXrW2baHCZCuLyEuLvBgK5+2D2fMOZJ9EQQt4EP4htGTP5SaWLKXFEG8aVJ0UeMr5ZNTEYUZx@lists.linux.dev
+X-Gm-Message-State: AOJu0YwO1bHnXLdUJzJu4v3PZ3R8PhOHkGzOcfc2yLg7YIqBRQjJNXqj
+	6Ssnlc0mmMf0grFmBnU9pVambCV9rjCtUUkpZCZbsY0I2Ufk3b4LalVNQx/3CasKR+E=
+X-Gm-Gg: ASbGncscxUv6RlNbKWnkZfW/La7EylF7BpYOoKZZ6XLOQbc9rQNAF7ZLwjDm2HP9Toz
+	+IjnOG30W/KShczeMvF8YHz94sH4cZUqTy5h7tiPOdrTsHe71FoXHTX8XmTyKabjMEkRA8zjZg8
+	C5kyxM87QUdWLECJtK436fNBUGopWRHSpFUcDtOlKuVAuWyFO0sHRWsNquKEt97FbRxVb+G/jrv
+	82Afxerns/vyIHaoYKFwkTK8SFN4D0WdcCpUqdrFYAh5jOAs0almql3asWCp1VhrD2SAnlLvOKJ
+	WYSXBs5aqGl+Jaif9w0fb7Vm5qCSTOJq44KfWn+IboEmAcKdePncUgkCFlBjzShSdKT0p+DeDif
+	HZ6aB9demjeKEhqKg1PsaSa5YZl0G/eiS4sxtCKJtF+xxfQ0fn37LvEzTZbMaYC2LXmIzUnUUwA
+	kem4qrnTjX0v9xMXI917XOypqidrYQ3mqP1DRUs/h2eJGuPND2W+43
+X-Google-Smtp-Source: AGHT+IFqLmk3E13nTcdaR5/YH8vHx+R6IrCKP0URG1h1SzYYVaO5JZAy86O9ETe+kCquQNS6YUPBjQ==
+X-Received: by 2002:a05:600c:4ed3:b0:477:b734:8c22 with SMTP id 5b1f17b1804b1-47904ad05bbmr111716425e9.8.1764262528611;
+        Thu, 27 Nov 2025 08:55:28 -0800 (PST)
+Received: from [192.168.1.37] (host-92-29-237-183.as13285.net. [92.29.237.183])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-479052def4bsm69390685e9.13.2025.11.27.08.55.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Nov 2025 08:55:28 -0800 (PST)
+Message-ID: <4676722f-98a3-4217-a357-068440dc6e14@citrix.com>
+Date: Thu, 27 Nov 2025 16:55:27 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0f8983e9-0e23-4a05-8015-de6e2218d8a5@intel.com>
+User-Agent: Mozilla Thunderbird
+To: kas@kernel.org
+Cc: bp@alien8.de, chao.p.peng@intel.com, chenyi.qiang@intel.com,
+ dave.hansen@linux.intel.com, hpa@zytor.com, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, mingo@redhat.com,
+ reinette.chatre@intel.com, rick.p.edgecombe@intel.com, tglx@linutronix.de,
+ x86@kernel.org, xiaoyao.li@intel.com,
+ Andrew Cooper <andrew.cooper3@citrix.com>
+References: <f2hkqt5xtmej7cfnuytigcfszr3qja4l6ywww4qrqxjbqmlko2@r75b6deae2hd>
+Subject: Re: [PATCH 1/2] x86/split_lock: Don't try to handle user split lock
+ in TDX guest
+Content-Language: en-GB
+From: Andrew Cooper <andrew.cooper3@citrix.com>
+Autocrypt: addr=andrew.cooper3@citrix.com; keydata=
+ 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
+ 6+ahAA==
+In-Reply-To: <f2hkqt5xtmej7cfnuytigcfszr3qja4l6ywww4qrqxjbqmlko2@r75b6deae2hd>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Nov 27, 2025 at 10:00:58AM +0800, Xiaoyao Li wrote:
-> On 11/26/2025 9:35 PM, Kiryl Shutsemau wrote:
-> > On Wed, Nov 26, 2025 at 08:17:18PM +0800, Xiaoyao Li wrote:
-> > > On 11/26/2025 7:25 PM, Kiryl Shutsemau wrote:
-> > > > On Wed, Nov 26, 2025 at 06:02:03PM +0800, Xiaoyao Li wrote:
-> > > > > When the host enables split lock detection feature, the split lock from
-> > > > > guests (normal or TDX) triggers #AC. The #AC caused by split lock access
-> > > > > within a normal guest triggers a VM Exit and is handled in the host.
-> > > > > The #AC caused by split lock access within a TDX guest does not trigger
-> > > > > a VM Exit and instead it's delivered to the guest self.
-> > > > > 
-> > > > > The default "warning" mode of handling split lock depends on being able
-> > > > > to temporarily disable detection to recover from the split lock event.
-> > > > > But the MSR that disables detection is not accessible to a guest.
-> > > > > 
-> > > > > This means that TDX guests today can not disable the feature or use
-> > > > > the "warning" mode (which is the default). But, they can use the "fatal"
-> > > > > mode.
-> > > > > 
-> > > > > Force TDX guests to use the "fatal" mode.
-> > > > > 
-> > > > > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> > > > > ---
-> > > > >    arch/x86/kernel/cpu/bus_lock.c | 17 ++++++++++++++++-
-> > > > >    1 file changed, 16 insertions(+), 1 deletion(-)
-> > > > > 
-> > > > > diff --git a/arch/x86/kernel/cpu/bus_lock.c b/arch/x86/kernel/cpu/bus_lock.c
-> > > > > index 981f8b1f0792..f278e4ea3dd4 100644
-> > > > > --- a/arch/x86/kernel/cpu/bus_lock.c
-> > > > > +++ b/arch/x86/kernel/cpu/bus_lock.c
-> > > > > @@ -315,9 +315,24 @@ void bus_lock_init(void)
-> > > > >    	wrmsrq(MSR_IA32_DEBUGCTLMSR, val);
-> > > > >    }
-> > > > > +static bool split_lock_fatal(void)
-> > > > > +{
-> > > > > +	if (sld_state == sld_fatal)
-> > > > > +		return true;
-> > > > > +
-> > > > > +	/*
-> > > > > +	 * TDX guests can not disable split lock detection.
-> > > > > +	 * Force them into the fatal behavior.
-> > > > > +	 */
-> > > > > +	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST))
-> > > > > +		return true;
-> > > > > +
-> > > > > +	return false;
-> > > > > +}
-> > > > > +
-> > > > >    bool handle_user_split_lock(struct pt_regs *regs, long error_code)
-> > > > >    {
-> > > > > -	if ((regs->flags & X86_EFLAGS_AC) || sld_state == sld_fatal)
-> > > > > +	if ((regs->flags & X86_EFLAGS_AC) || split_lock_fatal())
-> > > > >    		return false;
-> > > > 
-> > > > Maybe it would be cleaner to make it conditional on
-> > > > cpu_model_supports_sld instead of special-casing TDX guest?
-> > > > 
-> > > > #AC on any platfrom when we didn't asked for it suppose to be fatal, no?
-> > > 
-> > > But TDX is the only one has such special non-architectural behavior.
-> > > 
-> > > For example, for normal VMs under KVM, the behavior is x86 architectural.
-> > > MSR_TEST_CTRL is not accessible to normal VMs, and no split lock #AC will be
-> > > delivered to the normal VMs because it's handled by KVM.
-> > 
-> > How does it contradict what I suggested?
-> > 
-> > For both normal VMs and TDX guest, cpu_model_supports_sld will not be
-> > set to true. So check for cpu_model_supports_sld here is going to be
-> > NOP, unless #AC actually delivered, like we have in TDX case. Handling
-> > it as fatal is sane behaviour in such case regardless if it TDX.
-> > 
-> > And we don't need to make the check explicitly about TDX guest.
-> 
-> Well, it depends on how defensive we would like to be, and whether to
-> specialize or commonize the issue.
-> 
-> Either can work. If the preference and agreement are to commonize the issue,
-> I can do it in v2. And in this direction, what should we do with the patch
-> 2? just drop it since it's specialized for TDX ?
+> I am not sure. Leaving it as produces produces false messages which is
+> not good, but not critical.
+>
+> Maybe just clear X86_FEATURE_BUS_LOCK_DETECT and stop pretending we
+> control split-lock behaviour from the guest?
 
-I am not sure. Leaving it as produces produces false messages which is
-not good, but not critical.
+(Having just played with this mess for another task) you're talking
+about two different things.
 
-Maybe just clear X86_FEATURE_BUS_LOCK_DETECT and stop pretending we
-control split-lock behaviour from the guest?
+Sapphire Rapids has an architectural BUS_LOCK_DETECT (trap semantics,
+#DB or VMExit), and a model-specific BUS_LOCK_DISABLE.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+It's BUS_LOCK_DISABLE which generates #AC, with fault semantics,
+preventing forward progress.  It also means the Bus Lock didn't happen,
+and there's nothing to trigger the BUS_LOCK_DETECT (trap) behaviour.
+
+Given that TDX is enabling BUS_LOCK_DISABLE, it's probably also enabling
+UC_LOCK_DISABLE (causes #GP) too.
+
+Looking at the backtrace:
+
+  x86/split lock detection: #AC: split_lock/1176 took a split_lock trap at address: 0x5630b30921f9
+  unchecked MSR access error: WRMSR to 0x33 (tried to write 0x0000000000000000) at rIP: 0xffffffff812a061f (native_write_msr+0xf/0x30)
+
+
+First, "took a split_lock trap" is wrong.  It's a fault, not a trap.
+
+Second, because the attempt to disable BUS_LOCK_DISABLE was blocked,
+simply retrying the instruction will generate a new #AC and livelock. 
+Linux probably ought to raise SIGSEGV with userspace, for want of
+anything better to do.
+
+It looks like software in a TDX VM will simply have to accept that it
+cannot cause a bus lock.
+
+~Andrew
