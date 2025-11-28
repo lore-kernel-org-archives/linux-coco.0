@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89FD2773E4
-	for <linux-coco@lists.linux.dev>; Fri, 28 Nov 2025 02:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEA926FD9D
+	for <linux-coco@lists.linux.dev>; Fri, 28 Nov 2025 02:40:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764296918; cv=none; b=pSWxZbfksSsHWW0ODy7SbmzeA1/iuxjVCtMg1cVQy3yf9mvt4q5RdHcWBT2GugQcTVkWpnCaOstMT3EGLMUikQBhsV0jLbrQVf3+3Ei22er5XgyqEd4eTrVtA0OMVB6pYBAp/hviq29b7cuAXhBn0JNiTrz7FECdRoZv9UWCEIQ=
+	t=1764297623; cv=none; b=DKb8VmLMFO6GdormnJ5D+A+ELimsSUDhWf1tBP3YhOiDBpbVbTwyM5Oaf/9Y0MXUeUTZj+4kI9hHghj10/JkoZjQqtlPy4tWzG22+2LkW0c63iGlwOFvEObvT5UlDY174I5flWfF4gy+g2QXGr6N3/9TUg1LDSzqfsRLxkmoXsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764296918; c=relaxed/simple;
-	bh=/HjtqXfCqsAKCoCv0qEGUunf0cxzQvr9PqFXd/cNbk0=;
+	s=arc-20240116; t=1764297623; c=relaxed/simple;
+	bh=K95wxhobgGglZOYGcyFGoJ32RHrTOrROXG0t0U1dRY0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pe43x63P90j0sNULSU8oBup4/JukzZEsqLkIJEFSFw7oH9gYm3vfS6jHZn1rAMcTGTexMh8xhHRNb1gxR8kEYsxtvVPHmI4+zaTSoCEFWVFoRJRgNvI8bGGPO107NI8qGJNodldqQbKA+1QSF5qWetiHUcVv51JqbQh19syDB/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kQp2X6+B; arc=none smtp.client-ip=192.198.163.17
+	 In-Reply-To:Content-Type; b=nIs0ZSIKvXQl79eNbEXAXHkq8I4KtuoUDPLpcQIOmUzHny2fZjXKfDuxnQlM+ZHNfR9K/qyukHr43yDLOWxcycBaQOUXS84mARhaXMeTLATdreiwPLgLMhLgPaI05/GQN4gDUWC+XQzmaomaMurmbXZm4gXoXY9LkrhsiQjuEpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a+tYS2rk; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kQp2X6+B"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a+tYS2rk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764296916; x=1795832916;
+  t=1764297622; x=1795833622;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=/HjtqXfCqsAKCoCv0qEGUunf0cxzQvr9PqFXd/cNbk0=;
-  b=kQp2X6+B8msFaycgFbXmhztVJXtKIWGj4fzvUxN7bFpIcEwWBk2ZAt6C
-   bsBX4H6WJ3/NMbH2/FDloiIHl+VFkg6QezTPHLuAbPtYi30vokRxcsNu4
-   c6qZIeAqMr7mzokMDDgesPYTqmNglrxbqFLByzzh7XQE8RM3d7IE2c7Mx
-   GEkDYxC6HFwcyDidxA/OxcIGEaK0FaIDUPsgRryCYHeqzZUOZXRiYSGuX
-   KtdZwSPu9tE9RG63iSLH5cvrY8dU3UinMNIHGLzqA9hFl2HBehoZx4HEr
-   h+ZE7epujaZxYeeI2P1Uw2kzeJ3u6Kzp6s1S+ssmmUWR6c9mkfDHeKLRc
+  bh=K95wxhobgGglZOYGcyFGoJ32RHrTOrROXG0t0U1dRY0=;
+  b=a+tYS2rkHYY/bVCMYkrGzVCNLBBFi7wNvXqJZL6MbjOncyxc6fGOTzVi
+   nD2JSHfiJgS8LZzXF0GKwJMQHbxwZOkPTIDYbB6F/hbdogIt5dVpbfOjB
+   6ZueiwiLZDsRqY/JiJby8BY2QBiqfejKIWCNVBjvyDBTC04W81jjKn2W2
+   X2Ug3d3qAnQq3cCR8APrNjkJ0iwlaQIuvPMZMDhXF6lXE38n/eIBNnxfP
+   AaN8j/y06RWgibTSf43phXEbxoIwBX1LivO4qqwbRhxIHLiXHPBEoUXMp
+   toH0ad5uthyznbHUCfFE3strILy1bx12xuGe7lWYu9Rbt9buDHIEGTns4
    A==;
-X-CSE-ConnectionGUID: xxlrTJXLRBiqMjCGi4ahig==
-X-CSE-MsgGUID: CuDWhMF+TR+bTCW6tuZmFw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="66229579"
+X-CSE-ConnectionGUID: wUw5BUAmSp67y0SbuF0j5A==
+X-CSE-MsgGUID: cFD48HzjS2WHGym0fqEtSw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="65521549"
 X-IronPort-AV: E=Sophos;i="6.20,232,1758610800"; 
-   d="scan'208";a="66229579"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 18:28:35 -0800
-X-CSE-ConnectionGUID: 2mwpRCyfQ5ifeiejOB6g7A==
-X-CSE-MsgGUID: dJmRNK0tR3+2b7I4YZBuEA==
+   d="scan'208";a="65521549"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 18:40:21 -0800
+X-CSE-ConnectionGUID: DaWShDwySy6lXC8TH3WCSQ==
+X-CSE-MsgGUID: Rz9tTB3nTMqYD02/o7xlKA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,232,1758610800"; 
-   d="scan'208";a="193156307"
+   d="scan'208";a="224054390"
 Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.173]) ([10.124.240.173])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 18:28:30 -0800
-Message-ID: <2d50eba2-c308-45a2-90ec-e0c3bcbb4db0@intel.com>
-Date: Fri, 28 Nov 2025 10:28:26 +0800
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 18:40:17 -0800
+Message-ID: <6105befe-cb9c-45d3-8536-c0aab63e1b57@intel.com>
+Date: Fri, 28 Nov 2025 10:40:14 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -54,129 +54,79 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/2] x86/split_lock: Don't try to handle user split lock
  in TDX guest
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org,
- Reinette Chatre <reinette.chatre@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>, chao.p.peng@intel.com
-References: <20251126100205.1729391-1-xiaoyao.li@intel.com>
- <20251126100205.1729391-2-xiaoyao.li@intel.com>
- <lvobu4gpfsjg63syubgy2jwcja72folflrst7bu2eqv6rhaqre@ttbkykphu32f>
- <33fe9716-ef3b-42f3-9806-4bd23fed6949@intel.com>
- <qvsi3xht4kn3iwkx5xw2p7zsq4cvpg4xhq3ra52fe34xjpixfo@fsgchsobc343>
- <0f8983e9-0e23-4a05-8015-de6e2218d8a5@intel.com>
- <f2hkqt5xtmej7cfnuytigcfszr3qja4l6ywww4qrqxjbqmlko2@r75b6deae2hd>
+To: Andrew Cooper <andrew.cooper3@citrix.com>, kas@kernel.org
+Cc: bp@alien8.de, chao.p.peng@intel.com, chenyi.qiang@intel.com,
+ dave.hansen@linux.intel.com, hpa@zytor.com, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, mingo@redhat.com,
+ reinette.chatre@intel.com, rick.p.edgecombe@intel.com, tglx@linutronix.de,
+ x86@kernel.org
+References: <f2hkqt5xtmej7cfnuytigcfszr3qja4l6ywww4qrqxjbqmlko2@r75b6deae2hd>
+ <4676722f-98a3-4217-a357-068440dc6e14@citrix.com>
 Content-Language: en-US
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <f2hkqt5xtmej7cfnuytigcfszr3qja4l6ywww4qrqxjbqmlko2@r75b6deae2hd>
+In-Reply-To: <4676722f-98a3-4217-a357-068440dc6e14@citrix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/28/2025 12:16 AM, Kiryl Shutsemau wrote:
-> On Thu, Nov 27, 2025 at 10:00:58AM +0800, Xiaoyao Li wrote:
->> On 11/26/2025 9:35 PM, Kiryl Shutsemau wrote:
->>> On Wed, Nov 26, 2025 at 08:17:18PM +0800, Xiaoyao Li wrote:
->>>> On 11/26/2025 7:25 PM, Kiryl Shutsemau wrote:
->>>>> On Wed, Nov 26, 2025 at 06:02:03PM +0800, Xiaoyao Li wrote:
->>>>>> When the host enables split lock detection feature, the split lock from
->>>>>> guests (normal or TDX) triggers #AC. The #AC caused by split lock access
->>>>>> within a normal guest triggers a VM Exit and is handled in the host.
->>>>>> The #AC caused by split lock access within a TDX guest does not trigger
->>>>>> a VM Exit and instead it's delivered to the guest self.
->>>>>>
->>>>>> The default "warning" mode of handling split lock depends on being able
->>>>>> to temporarily disable detection to recover from the split lock event.
->>>>>> But the MSR that disables detection is not accessible to a guest.
->>>>>>
->>>>>> This means that TDX guests today can not disable the feature or use
->>>>>> the "warning" mode (which is the default). But, they can use the "fatal"
->>>>>> mode.
->>>>>>
->>>>>> Force TDX guests to use the "fatal" mode.
->>>>>>
->>>>>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
->>>>>> ---
->>>>>>     arch/x86/kernel/cpu/bus_lock.c | 17 ++++++++++++++++-
->>>>>>     1 file changed, 16 insertions(+), 1 deletion(-)
->>>>>>
->>>>>> diff --git a/arch/x86/kernel/cpu/bus_lock.c b/arch/x86/kernel/cpu/bus_lock.c
->>>>>> index 981f8b1f0792..f278e4ea3dd4 100644
->>>>>> --- a/arch/x86/kernel/cpu/bus_lock.c
->>>>>> +++ b/arch/x86/kernel/cpu/bus_lock.c
->>>>>> @@ -315,9 +315,24 @@ void bus_lock_init(void)
->>>>>>     	wrmsrq(MSR_IA32_DEBUGCTLMSR, val);
->>>>>>     }
->>>>>> +static bool split_lock_fatal(void)
->>>>>> +{
->>>>>> +	if (sld_state == sld_fatal)
->>>>>> +		return true;
->>>>>> +
->>>>>> +	/*
->>>>>> +	 * TDX guests can not disable split lock detection.
->>>>>> +	 * Force them into the fatal behavior.
->>>>>> +	 */
->>>>>> +	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST))
->>>>>> +		return true;
->>>>>> +
->>>>>> +	return false;
->>>>>> +}
->>>>>> +
->>>>>>     bool handle_user_split_lock(struct pt_regs *regs, long error_code)
->>>>>>     {
->>>>>> -	if ((regs->flags & X86_EFLAGS_AC) || sld_state == sld_fatal)
->>>>>> +	if ((regs->flags & X86_EFLAGS_AC) || split_lock_fatal())
->>>>>>     		return false;
->>>>>
->>>>> Maybe it would be cleaner to make it conditional on
->>>>> cpu_model_supports_sld instead of special-casing TDX guest?
->>>>>
->>>>> #AC on any platfrom when we didn't asked for it suppose to be fatal, no?
->>>>
->>>> But TDX is the only one has such special non-architectural behavior.
->>>>
->>>> For example, for normal VMs under KVM, the behavior is x86 architectural.
->>>> MSR_TEST_CTRL is not accessible to normal VMs, and no split lock #AC will be
->>>> delivered to the normal VMs because it's handled by KVM.
->>>
->>> How does it contradict what I suggested?
->>>
->>> For both normal VMs and TDX guest, cpu_model_supports_sld will not be
->>> set to true. So check for cpu_model_supports_sld here is going to be
->>> NOP, unless #AC actually delivered, like we have in TDX case. Handling
->>> it as fatal is sane behaviour in such case regardless if it TDX.
->>>
->>> And we don't need to make the check explicitly about TDX guest.
+Hi Andrew,
+
+On 11/28/2025 12:55 AM, Andrew Cooper wrote:
+>> I am not sure. Leaving it as produces produces false messages which is
+>> not good, but not critical.
 >>
->> Well, it depends on how defensive we would like to be, and whether to
->> specialize or commonize the issue.
->>
->> Either can work. If the preference and agreement are to commonize the issue,
->> I can do it in v2. And in this direction, what should we do with the patch
->> 2? just drop it since it's specialized for TDX ?
+>> Maybe just clear X86_FEATURE_BUS_LOCK_DETECT and stop pretending we
+>> control split-lock behaviour from the guest?
 > 
-> I am not sure. Leaving it as produces produces false messages which is
-> not good, but not critical.
+> (Having just played with this mess for another task) you're talking
+> about two different things.
 > 
-> Maybe just clear X86_FEATURE_BUS_LOCK_DETECT and stop pretending we
-> control split-lock behaviour from the guest?
+> Sapphire Rapids has an architectural BUS_LOCK_DETECT (trap semantics,
+> #DB or VMExit), and a model-specific BUS_LOCK_DISABLE.
+> 
+> It's BUS_LOCK_DISABLE which generates #AC, with fault semantics,
+> preventing forward progress.  It also means the Bus Lock didn't happen,
+> and there's nothing to trigger the BUS_LOCK_DETECT (trap) behaviour.
+> 
+> Given that TDX is enabling BUS_LOCK_DISABLE, it's probably also enabling
+> UC_LOCK_DISABLE (causes #GP) too.
 
-By clearing X86_FEATURE_BUS_LOCK_DETECT, the TDX guest log doens't print 
-anything about split lock detection. But the TDX guest is still possible 
-to get #AC on split locks, which seems no good as well.
+Well, more accurate, it's SPLIT_LOCK_DISABLE, not BUS_LOCK_DISABLE.(bus 
+lock have two types: split lock and uc lock)
 
-More, it's overkill to clear X86_FEATURE_BUS_LOCK_DETECT. Clearing it 
-means TDX guest cannot use X86_FEATURE_BUS_LOCK_DETECT to detect the bus 
-lock happens from the guest userspace, even when the host doesn't enable 
-split lock detection. For example, on cloud environment, if the 
-customers want to run their legacy workload that can generate split 
-locks, the CSP would have to disable slit lock detection in the host but 
-use bus lock VM exit to catch the bus lock in the TDX guest. In this 
-case, TDX guest is free to use X86_FEATURE_BUS_LOCK_DETECT and it works 
-as expected.
+No, it's not TDX who is enabling SPLIT_LOCK_DISABLE, but the host. The 
+default mode of Linux is "warn", so that by default the host Linux 
+enables SPLIT_LOCK_DISABLE. And TDX module doesn't context switch 
+MSR_TEST_CTRL when entering into the TDX vCPU because MSR_TEST_CTRL is 
+not virtualizable. Thus SPLIT_LOCK_DISABLE remains enabled when TDX vCPU 
+is running.
 
+Regarding UC_LOCK_DISABLE, Linux doesn't enable it. Not sure if BIOS 
+enables it or not (as far as I know, I don't see any bios enables it)
 
+> Looking at the backtrace:
+> 
+>    x86/split lock detection: #AC: split_lock/1176 took a split_lock trap at address: 0x5630b30921f9
+>    unchecked MSR access error: WRMSR to 0x33 (tried to write 0x0000000000000000) at rIP: 0xffffffff812a061f (native_write_msr+0xf/0x30)
+> 
+> 
+> First, "took a split_lock trap" is wrong.  It's a fault, not a trap.
+
+Hi x86 maintainers,
+
+Should we fix it?
+
+> Second, because the attempt to disable BUS_LOCK_DISABLE was blocked,
+> simply retrying the instruction will generate a new #AC and livelock.
+> Linux probably ought to raise SIGSEGV with userspace, for want of
+> anything better to do.
+
+This patch is just achieving this, while it raises the SIGBUS to userspace.
+
+> It looks like software in a TDX VM will simply have to accept that it
+> cannot cause a bus lock.
+
+If the host doesn't enable SPLIT_LOCK_DISABLE, then split lock might not 
+be fatal to TDX guests.
+
+> ~Andrew
 
