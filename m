@@ -1,50 +1,33 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEA926FD9D
-	for <linux-coco@lists.linux.dev>; Fri, 28 Nov 2025 02:40:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35762302CDC;
+	Fri, 28 Nov 2025 09:30:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764297623; cv=none; b=DKb8VmLMFO6GdormnJ5D+A+ELimsSUDhWf1tBP3YhOiDBpbVbTwyM5Oaf/9Y0MXUeUTZj+4kI9hHghj10/JkoZjQqtlPy4tWzG22+2LkW0c63iGlwOFvEObvT5UlDY174I5flWfF4gy+g2QXGr6N3/9TUg1LDSzqfsRLxkmoXsE=
+	t=1764322222; cv=none; b=SS5Yh+3VpU3BYDyDnj6saVW+EKlkVSo9o28RnWeFZWD9kBhbW/1gWpvV1m2J9oauQriLW1YqB+6nPlj2lPQH6BAtDLM4qGsrZ9CJ5I1PrZRpz1NuMPwbVmCyW2d5Ek7oy7dmDjz97EloVLITsfuF4dJKNJw3Qv19FwtMXK19Vk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764297623; c=relaxed/simple;
-	bh=K95wxhobgGglZOYGcyFGoJ32RHrTOrROXG0t0U1dRY0=;
+	s=arc-20240116; t=1764322222; c=relaxed/simple;
+	bh=c+ju217X/Iu2Eyrw3ITJ5fQi1c/hHwxKC7muOjOFeAM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nIs0ZSIKvXQl79eNbEXAXHkq8I4KtuoUDPLpcQIOmUzHny2fZjXKfDuxnQlM+ZHNfR9K/qyukHr43yDLOWxcycBaQOUXS84mARhaXMeTLATdreiwPLgLMhLgPaI05/GQN4gDUWC+XQzmaomaMurmbXZm4gXoXY9LkrhsiQjuEpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a+tYS2rk; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 In-Reply-To:Content-Type; b=RWjarYT8FAXTnuS1lqD1Vr2pUtDRCZdpSk43kR+8CcEYwUOCH9L2HdMQ/FQW07+wqLnHciKh833TjW5ZQRYR9wp7cZlv4CCML0Qzcf8rOWkxWAgnl7fYvORZz1bQPyeslfUuuu6CFn6QWHJQqtiYqSg8Ca5eG25LBKcSYZTNhkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qd2NiCXu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a+tYS2rk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764297622; x=1795833622;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=K95wxhobgGglZOYGcyFGoJ32RHrTOrROXG0t0U1dRY0=;
-  b=a+tYS2rkHYY/bVCMYkrGzVCNLBBFi7wNvXqJZL6MbjOncyxc6fGOTzVi
-   nD2JSHfiJgS8LZzXF0GKwJMQHbxwZOkPTIDYbB6F/hbdogIt5dVpbfOjB
-   6ZueiwiLZDsRqY/JiJby8BY2QBiqfejKIWCNVBjvyDBTC04W81jjKn2W2
-   X2Ug3d3qAnQq3cCR8APrNjkJ0iwlaQIuvPMZMDhXF6lXE38n/eIBNnxfP
-   AaN8j/y06RWgibTSf43phXEbxoIwBX1LivO4qqwbRhxIHLiXHPBEoUXMp
-   toH0ad5uthyznbHUCfFE3strILy1bx12xuGe7lWYu9Rbt9buDHIEGTns4
-   A==;
-X-CSE-ConnectionGUID: wUw5BUAmSp67y0SbuF0j5A==
-X-CSE-MsgGUID: cFD48HzjS2WHGym0fqEtSw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="65521549"
-X-IronPort-AV: E=Sophos;i="6.20,232,1758610800"; 
-   d="scan'208";a="65521549"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 18:40:21 -0800
-X-CSE-ConnectionGUID: DaWShDwySy6lXC8TH3WCSQ==
-X-CSE-MsgGUID: Rz9tTB3nTMqYD02/o7xlKA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,232,1758610800"; 
-   d="scan'208";a="224054390"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.173]) ([10.124.240.173])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 18:40:17 -0800
-Message-ID: <6105befe-cb9c-45d3-8536-c0aab63e1b57@intel.com>
-Date: Fri, 28 Nov 2025 10:40:14 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qd2NiCXu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19BA9C2BCB8;
+	Fri, 28 Nov 2025 09:30:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764322221;
+	bh=c+ju217X/Iu2Eyrw3ITJ5fQi1c/hHwxKC7muOjOFeAM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=qd2NiCXui9tsiwdCYok4UcUDQqTMMHZ6dOVLI2a8Xq54o7qj/gy6iWGAmfeyWL5FA
+	 AsOozZOa2wastuPtMQVwdg+nw8TUIggbbXDbFvAXxxuRXII5OylWbCEY0d0IK7wAWz
+	 YWD+EnnPEc5wBSsoeAdM35iCQM2bQmQXYCl83xolfiOZLxpllI6bTnSbqXqKeSPA6y
+	 JNgKKja898564OBPnGHhqQ5sySb/JvG6rdgJsmNB+YH5OWCZYPmzzCKCsmOfzJvWh4
+	 UO4uKNdhhtpsauOOAJQyf34Zczo24r/NZ29e9HNiu1foo4xfKEQQKStJKSQcPQGtua
+	 Yv3nsgTV78cFQ==
+Message-ID: <beec5651-5c23-4f5e-a0a3-d1cc01a8490a@kernel.org>
+Date: Fri, 28 Nov 2025 10:30:15 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,81 +35,54 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] x86/split_lock: Don't try to handle user split lock
- in TDX guest
-To: Andrew Cooper <andrew.cooper3@citrix.com>, kas@kernel.org
-Cc: bp@alien8.de, chao.p.peng@intel.com, chenyi.qiang@intel.com,
- dave.hansen@linux.intel.com, hpa@zytor.com, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, mingo@redhat.com,
- reinette.chatre@intel.com, rick.p.edgecombe@intel.com, tglx@linutronix.de,
- x86@kernel.org
-References: <f2hkqt5xtmej7cfnuytigcfszr3qja4l6ywww4qrqxjbqmlko2@r75b6deae2hd>
- <4676722f-98a3-4217-a357-068440dc6e14@citrix.com>
+Subject: Re: [RFC PATCH 2/4] mm: Add support for unaccepted memory hotplug
+To: Borislav Petkov <bp@alien8.de>, Kiryl Shutsemau <kas@kernel.org>
+Cc: "Pratik R. Sampat" <prsampat@amd.com>, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev, linux-efi@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+ dave.hansen@linux.intel.com, ardb@kernel.org, akpm@linux-foundation.org,
+ osalvador@suse.de, thomas.lendacky@amd.com, michael.roth@amd.com
+References: <20251125175753.1428857-1-prsampat@amd.com>
+ <20251125175753.1428857-3-prsampat@amd.com>
+ <66ylzwknm4ftd6utn3nqr63jmhl2ccvcdvyi5fechfnvmfxivu@37pckhjixayh>
+ <20251126223127.GIaSd_v7juUkaW4RTA@fat_crate.local>
+ <m3l6gcjmbabudtnqwv6w67t7iz2mpmbjyrpnmiq5k2iyargn5d@nyf2zzxx7yme>
+ <20251127181233.GBaSiUkaLzwANS_6WT@fat_crate.local>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <4676722f-98a3-4217-a357-068440dc6e14@citrix.com>
+In-Reply-To: <20251127181233.GBaSiUkaLzwANS_6WT@fat_crate.local>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Hi Andrew,
-
-On 11/28/2025 12:55 AM, Andrew Cooper wrote:
->> I am not sure. Leaving it as produces produces false messages which is
->> not good, but not critical.
+On 11/27/25 19:12, Borislav Petkov wrote:
+> On Thu, Nov 27, 2025 at 05:35:57PM +0000, Kiryl Shutsemau wrote:
+>>> ABI break for kexec? Is that a thing?
+>>>
+>>> Since when do we enforce ABI compatibility for kexec and where are we
+>>> documenting that?
+> 
+> I'll take that as a "no".
+> 
+>> The whole purpose of kexec() is to switch between kernel versions. This
+>> struct defines format we communicate information about unaccepted memory
+>> between kernels. The mismatch will lead to boot failure.
 >>
->> Maybe just clear X86_FEATURE_BUS_LOCK_DETECT and stop pretending we
->> control split-lock behaviour from the guest?
+>> The structure is versioned. Ideally, we should know the format of the
+>> structure the next kernel supports and act accordingly in the first
+>> kernel. Like, we can accept all memory before kexec on mismatch.
 > 
-> (Having just played with this mess for another task) you're talking
-> about two different things.
+> None of that matters if you kexec the same kernels.
 > 
-> Sapphire Rapids has an architectural BUS_LOCK_DETECT (trap semantics,
-> #DB or VMExit), and a model-specific BUS_LOCK_DISABLE.
-> 
-> It's BUS_LOCK_DISABLE which generates #AC, with fault semantics,
-> preventing forward progress.  It also means the Bus Lock didn't happen,
-> and there's nothing to trigger the BUS_LOCK_DETECT (trap) behaviour.
-> 
-> Given that TDX is enabling BUS_LOCK_DISABLE, it's probably also enabling
-> UC_LOCK_DISABLE (causes #GP) too.
+> IOW, for some reason you want to be able to kexec different kernels. The
+> question is why do we care?
 
-Well, more accurate, it's SPLIT_LOCK_DISABLE, not BUS_LOCK_DISABLE.(bus 
-lock have two types: split lock and uc lock)
+kexecing the same kernel is typically used for kdump purposes.
 
-No, it's not TDX who is enabling SPLIT_LOCK_DISABLE, but the host. The 
-default mode of Linux is "warn", so that by default the host Linux 
-enables SPLIT_LOCK_DISABLE. And TDX module doesn't context switch 
-MSR_TEST_CTRL when entering into the TDX vCPU because MSR_TEST_CTRL is 
-not virtualizable. Thus SPLIT_LOCK_DISABLE remains enabled when TDX vCPU 
-is running.
+kexecing different kernels is used for all sorts of things 
+(live-upgrade, grub-emu come to mind). It's quite common to kexec 
+different kernels, or maybe I misunderstood the question here?
 
-Regarding UC_LOCK_DISABLE, Linux doesn't enable it. Not sure if BIOS 
-enables it or not (as far as I know, I don't see any bios enables it)
+-- 
+Cheers
 
-> Looking at the backtrace:
-> 
->    x86/split lock detection: #AC: split_lock/1176 took a split_lock trap at address: 0x5630b30921f9
->    unchecked MSR access error: WRMSR to 0x33 (tried to write 0x0000000000000000) at rIP: 0xffffffff812a061f (native_write_msr+0xf/0x30)
-> 
-> 
-> First, "took a split_lock trap" is wrong.  It's a fault, not a trap.
-
-Hi x86 maintainers,
-
-Should we fix it?
-
-> Second, because the attempt to disable BUS_LOCK_DISABLE was blocked,
-> simply retrying the instruction will generate a new #AC and livelock.
-> Linux probably ought to raise SIGSEGV with userspace, for want of
-> anything better to do.
-
-This patch is just achieving this, while it raises the SIGBUS to userspace.
-
-> It looks like software in a TDX VM will simply have to accept that it
-> cannot cause a bus lock.
-
-If the host doesn't enable SPLIT_LOCK_DISABLE, then split lock might not 
-be fatal to TDX guests.
-
-> ~Andrew
-
+David
