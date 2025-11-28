@@ -1,97 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5137F20322;
-	Fri, 28 Nov 2025 09:34:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8092717BA6
+	for <linux-coco@lists.linux.dev>; Fri, 28 Nov 2025 11:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764322450; cv=none; b=vDS5CiE7QIlkouvIlnaN56fwapcJUAOwBuGrbZ5IWkBmaovYMz1Tq8mAAAMdXNa0DQwogN3cU8KVgSgIfoU/YFGlkyc7I1oTxiJR4YOW+C2aABQ9b9/telTfmfyL9wV3i5W6wsaUz79nmNFgAmBFR54Vo3uumxx1H7Z3Bf9XpRU=
+	t=1764329688; cv=none; b=aGRsXoSowy9ik9QKK2Vb1XiQdsvh+IoyZWQ1g0Xa437V4lGe9iFUrz46Fup+1kQg7rpdBGBIr8M3aqrAn1252KgGs1IUFsXTxHO+sD0IDlgzAHhmX4hiFn48HGAPNRKGiH4px2k2U4qnvUkRlQt+UXEA8SJ46M68c9OZZHSpX4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764322450; c=relaxed/simple;
-	bh=2RrLO3ub+tMhHBuf1v3HTs4UiaOhLMuJeLuTeN4cwys=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eE1JpM9qzbel28JgcVydCs2KtQKt2dvz/+8heX71qNOHls1FSHInMfP10lors5cW7KtAM9hF6Xq8+xVIgIFI5rQ7ZkTAzn7wUv4ZLsm6kqrSE8faKdKe0bz95RI3imXeH17skNvBpXx7R0HlzB98y+vwCnAovSuqy/gg1587zdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k1C76YP9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764329688; c=relaxed/simple;
+	bh=vjKsNJcNLGuEthGr4lKZCht1+ua97+nPHkIJI8VIhAw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BE4EsQts15TcthOhC1A/lbZnZW1xMnNvJ7uRJi4mniS04eIxS+taQ/rd8MKoQPk+qkxvzSgzytEcWhCfLGODD7c1E/eN3P/0uYVPP2Lzlo8p+NE41ogmE+9xnlf7G1G2x9iPMUCpWxNrmoSPMpqNeVvjeWuCKXFLG+WFJhJLicU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=jqPsd8CW; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k1C76YP9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5372EC4CEF1;
-	Fri, 28 Nov 2025 09:34:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764322449;
-	bh=2RrLO3ub+tMhHBuf1v3HTs4UiaOhLMuJeLuTeN4cwys=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=k1C76YP96Tnw9zH9fBMCNHqDt7gFjXZ+y23temsYDx5IlbUpf7vBgDt76debNr1yK
-	 5q9oe7b4kNjao6SQLx8bGZIo5F8yE91F6KJ2gLbqGQiwj8kqI6AxmXV/4Vas1tZeMl
-	 vvKxogRYPjvtdv0cdqSH8HwY9ZZhXFV1lix+MCHL/gwxxyA/pooPpJGUq97VbrkI/5
-	 kGTYoLED6iwWOuudkioRFpPmzeyxSsO9OyFsa8EUfuhxPwxEmqrHddFBKmru7D5viN
-	 fisVB5r/w3Nc1ujtvc/1ybre9to31rIDS3ts4fmSOB2Mvylq/aUV65Ooa8Mvc+NZgg
-	 d++WnJxycoxJw==
-Message-ID: <27c06cf2-7500-4875-bd22-f55571fb85f9@kernel.org>
-Date: Fri, 28 Nov 2025 10:34:04 +0100
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="jqPsd8CW"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 97AD440E00DE;
+	Fri, 28 Nov 2025 11:34:38 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id RUR8aTs9spya; Fri, 28 Nov 2025 11:34:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1764329674; bh=n03pb56uV/bng4zeqw0XDs9CYZXB2sMRKA0NowRt37o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jqPsd8CWkdP1sYlUop+5YOGjpjpKztitu/YqeuhptdC192Kr6sCl9pIdqWtUTTQ4d
+	 RlzFfkaEAwP2Jgux2YS/9xQK4tpEHyFmzGUD+QrBOWQxg+1XDNupu2hatR408pAgX6
+	 sYalciOLua+VUGjn9+zrJpYz73MCkaqISeJw6eBEYVZcVkAPpXeZY/F7HcoYvSInGp
+	 Zb5d6b04IdxdrBeoFmY7H6VWcL/y/vJZ9F1xjMf3ubISmokhwuSQ4Z/bHPxEweId+w
+	 xIrn4wDPIXpHxUgVw4U8MJNIf/ahF/3/V7LLjGQ2LAPE50hskEZnIJfAh1ylJwHuz/
+	 098vVCxSaP5i0oitGnzamsx88hO+M5sYkYOaS2W4nr5n9NAAUldloZGZc32ljKNCfA
+	 K6LgfpK0oLEpWWDVSBg/+VHbUlncNcO01dRD+ZZAEY2zuojrhGw94wqqAWQdyH0Jjm
+	 SFFZPPZVDzyFIZjXPezuOfYJN+9FbGr/j5tFVprbuOTmffG44hYCmlrgtFFjw8VPP3
+	 sNoHRlZsgOklHheNX5P27tvAb0fQBrFm2ViGYPGBw4o5wyTY7yplAJ9BZYyxjd4NMb
+	 ZlgRTFo4Ffw2ZlplE66i5QqEvPvxpu0JWa/Hzf19uoi8efmaZOOStL/8yiJGshFyIG
+	 e0rb7cPSvVzh/NQcSv0U0hGQ=
+Received: from zn.tnic (pd953063a.dip0.t-ipconnect.de [217.83.6.58])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id B1B2540E0217;
+	Fri, 28 Nov 2025 11:34:17 +0000 (UTC)
+Date: Fri, 28 Nov 2025 12:34:11 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Kiryl Shutsemau <kas@kernel.org>, "Pratik R. Sampat" <prsampat@amd.com>,
+	linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	linux-efi@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	dave.hansen@linux.intel.com, ardb@kernel.org,
+	akpm@linux-foundation.org, osalvador@suse.de,
+	thomas.lendacky@amd.com, michael.roth@amd.com
+Subject: Re: [RFC PATCH 2/4] mm: Add support for unaccepted memory hotplug
+Message-ID: <20251128113411.GAaSmIs0kSWGhCYkaA@fat_crate.local>
+References: <20251125175753.1428857-1-prsampat@amd.com>
+ <20251125175753.1428857-3-prsampat@amd.com>
+ <66ylzwknm4ftd6utn3nqr63jmhl2ccvcdvyi5fechfnvmfxivu@37pckhjixayh>
+ <20251126223127.GIaSd_v7juUkaW4RTA@fat_crate.local>
+ <m3l6gcjmbabudtnqwv6w67t7iz2mpmbjyrpnmiq5k2iyargn5d@nyf2zzxx7yme>
+ <20251127181233.GBaSiUkaLzwANS_6WT@fat_crate.local>
+ <beec5651-5c23-4f5e-a0a3-d1cc01a8490a@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/4] mm: Add support for unaccepted memory hotplug
-To: Kiryl Shutsemau <kas@kernel.org>, "Pratik R. Sampat" <prsampat@amd.com>
-Cc: linux-mm@kvack.org, linux-coco@lists.linux.dev,
- linux-efi@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, ardb@kernel.org, akpm@linux-foundation.org,
- osalvador@suse.de, thomas.lendacky@amd.com, michael.roth@amd.com
-References: <20251125175753.1428857-1-prsampat@amd.com>
- <20251125175753.1428857-3-prsampat@amd.com>
- <66ylzwknm4ftd6utn3nqr63jmhl2ccvcdvyi5fechfnvmfxivu@37pckhjixayh>
- <14df1d99-7df0-4982-8029-e66dfb140399@amd.com>
- <dy65eupwalp5wsljetlto27l6tjjvoygeotjd3n7mk7zjc4dma@jf4hzsy6rtcd>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <dy65eupwalp5wsljetlto27l6tjjvoygeotjd3n7mk7zjc4dma@jf4hzsy6rtcd>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <beec5651-5c23-4f5e-a0a3-d1cc01a8490a@kernel.org>
 
-On 11/27/25 18:40, Kiryl Shutsemau wrote:
-> On Wed, Nov 26, 2025 at 04:27:29PM -0600, Pratik R. Sampat wrote:
->>
->>
->> On 11/26/25 5:12 AM, Kiryl Shutsemau wrote:
->>> On Tue, Nov 25, 2025 at 11:57:51AM -0600, Pratik R. Sampat wrote:
->>>> The unaccepted memory structure currently only supports accepting memory
->>>> present at boot time. The unaccepted table uses a fixed-size bitmap
->>>> reserved in memblock based on the initial memory layout, preventing
->>>> dynamic addition of memory ranges after boot. This causes guest
->>>> termination when memory is hot-added in a secure virtual machine due to
->>>> accessing pages that have not transitioned to private before use.
->>>
->>> How does the hot-pluggable memory look in EFI memory map? I thought
->>> hot-pluggable ranges suppose to be declared thare. The cleanest solution
->>> would be to have hot-pluggable and unaccepted indicated in EFI memory,
->>> so we can size bitmap accordingly upfront.
->>>
->>
->> I'm not quite sure if I fully understand. Do you mean to refer to the
->> EFI_MEMORY_HOT_PLUGGABLE attribute that is used for cold plugged boot
->> memory? If so, wouldn't it still be desirable to increase the size of
->> the bitmap to what was marked as hotpluggable initially?
+On Fri, Nov 28, 2025 at 10:30:15AM +0100, David Hildenbrand (Red Hat) wrote:
+> kexecing the same kernel is typically used for kdump purposes.
 > 
-> I just don't understand how hotpluggable memory presented in EFI memory
-> map in presence of unaccepted memory. If not-yet-plugged memory marked
-> as unaccepted we can preallocate bitmap upfront and make unaccepted
-> memory transparent wrt hotplug.
-> 
-> BTW, isn't virtio-mem a more attractive target to support than HW-style
-> hotplug?
+> kexecing different kernels is used for all sorts of things (live-upgrade,
+> grub-emu come to mind). It's quite common to kexec different kernels, or
+> maybe I misunderstood the question here?
 
-I would have thought so as well, such that we can just let virtio-mem 
-take care of any acceptance before actually using hotplugged memory 
-(exposing it to the buddy).
+And my question is: since when do we enforce no-ABI-changes between kernels so
+that we can kexec any kernel into any kernel?
 
-Likely there is desire to support other hypervisors?
+By that logic I should be able to kexec 5.x into 6.x. I'll bet some money that
+it won't work.
+
+So unless it is written down somewhere, I think we should probably talk first
+what we want to support and why...
+
+Makes sense?
 
 -- 
-Cheers
+Regards/Gruss,
+    Boris.
 
-David
+https://people.kernel.org/tglx/notes-about-netiquette
