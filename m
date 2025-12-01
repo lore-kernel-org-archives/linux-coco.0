@@ -1,60 +1,60 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4AFB3AC15
-	for <linux-coco@lists.linux.dev>; Mon,  1 Dec 2025 01:44:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB762628D
+	for <linux-coco@lists.linux.dev>; Mon,  1 Dec 2025 01:47:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764553487; cv=none; b=Tykg7mTmhympko22lG5cYpcPfUZtEd/Bj8NKtsl1PjG3BtOVRDqjXPg7MRWdBVS2I+QmK80exhlhC6GOZxkgdz/x0a8gqqE/gWDBGZVD3PXLGVYNr6DHo+A0/DmmruAMNnyBgtOxmaltERsBDQAaDlgE7w/ui29ikL+fP/RVZu4=
+	t=1764553673; cv=none; b=Otwih8lSQMwGprwUCiG+BHa/zAltNwzMLrtBezibd5Vl0GtMmQ15w+brmLqivKhickUmxZ+ZRCCDjqCVZgGc5jdsGz08/4BGwQE8ifqpieOgD1El8J6ChF0CeMAhNbx3MMz8BfUs7HR8BW686btkuyGlD+m/M/dHd0lrsr7Dne0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764553487; c=relaxed/simple;
-	bh=XXjK9G/6yVP87R7EES41vVBqCFfsiZh7q+9DV7eI7Lg=;
+	s=arc-20240116; t=1764553673; c=relaxed/simple;
+	bh=WkMG6KInPajZw+SCHLY6xyyqfgd7/gSlU2Diz+y04ck=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UjHrvsLZfVpjQn+3FJhNiC38v4qbVxVNwXWNfSaq4biauuQzW33l8wDX91UFg7bmpCVAlnXJYgBaFj8Ca6bu72Hwum3oNulbXhRAwq+D3h0MuCjFL1+wVLY2BmzTh7zvn8K280yp7phdEq17P4/TCgk5YDskw+ikG08qwJVO9qQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zcMu8cCY; arc=none smtp.client-ip=209.85.214.171
+	 To:Cc:Content-Type; b=Qht9IK5rLG4TAai6J6bKqwLAZlqXJO0qFxkaK/xO7Jeq+f4awxhUgxZtnkkiKVZUyYSxtn8zGq2ciM+i5WIKZs3gfFq8Vq9DLB/XM80udfwtgJ2z6EPxup5hI8KlDCLjwBWexVJh6Fws63WjMnoSRHeJG10ELqur4Z2xadXn07g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XFvvhP/Z; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zcMu8cCY"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-297e13bf404so618395ad.0
-        for <linux-coco@lists.linux.dev>; Sun, 30 Nov 2025 17:44:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XFvvhP/Z"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-29852dafa7dso623785ad.1
+        for <linux-coco@lists.linux.dev>; Sun, 30 Nov 2025 17:47:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764553485; x=1765158285; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1764553671; x=1765158471; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XXjK9G/6yVP87R7EES41vVBqCFfsiZh7q+9DV7eI7Lg=;
-        b=zcMu8cCYH5e00Pb0jqZw/cU3nneG+nFEbJCs+So9s9aWoNfn5mIGASPm8NdxWiAhWt
-         DAK6vOOyb4Qb6/58MSTj1X0IMOCxCSTmm97ODtwBqXSduA4pUqIQsbq4oE+Y69RV43gB
-         FJrBpXyrH1IuYT8SdpGphAsd6DlufMLcSvUm/x2wbcGE4UZoF+0/rJITx6c5HU6zXUZJ
-         aezwL5S217TS0qtjD8fmYIsSA5LD03m37KU78mcdezQ83bMd1i9HbgdLquCX81kgGYyA
-         svElMI+oVz3pC8M7/YKMz768swSW359ZgCfRPeoq+WgM4abbcMw2g9O+/JeiOAI8z+eu
-         guKg==
+        bh=RubrtJY1nBr7co+TN5Cf36o/x/R4Bh4y+nkU3tUAkHg=;
+        b=XFvvhP/Zr4hKeWkEldk5KHtP7wlAmL2OLfEVM1U7FdoOpOfHoiRBnR0dMwPf8hnVFZ
+         hv2qT2JdJ14QQqCfE1WyVagcwIHGXPsIqizeKyLKUDAuxHadZuHoCP5m631G0O/qmQoG
+         7vmtn5hoZq7gkmqAKqTTow6SWdmgKOz0u5RcImOWUkM5hTkSq3eASfMRBXjCOoFVSNsN
+         b5r4f9ZI59whU9Cz/ioBbUl5ltOioXXYwFfbc+wtEWq9wdtb8EpmiOMRJSqxkpGIrymo
+         2Oo58/GvODokPKWNb9DtrUsXNjahKTo3BS6iUG5WsSg48uytc9gYAwta9IqOEea3u1Q5
+         J69A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764553485; x=1765158285;
+        d=1e100.net; s=20230601; t=1764553671; x=1765158471;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=XXjK9G/6yVP87R7EES41vVBqCFfsiZh7q+9DV7eI7Lg=;
-        b=IUvDwAf4NUWirzEPDVhg3tr4vsXAGMsJ5H3J8N86RpII7KRAKx4F/xsaa2QvTEVJ34
-         NFERaLHmtE/vpoBli+JZ/u8us4b+F5FcSpPsLP+of1GFcTb5TsbNFvuPjLcYB6bhqAo9
-         4WGhkOC4xMwMVtI9q4WRgo0fOd0Mz90ALws1eCwEmWf3IT3udPidNlP3f7F3wjbPfuoX
-         eUPO6oUMwStJCAlUrjBSrUvwLwwoaE5AoZhPpDKOQbV+AlkT13L0P1Y3UaJqJ1vutVAx
-         hizcx9q8HeLmzhgsAdDID3t68ULOI1DCHPFM4ipI9mvIAFQ1KthXp6tm4Fch9xhWghLn
-         j/6g==
-X-Forwarded-Encrypted: i=1; AJvYcCUE6HoOae3o3h1xhYKcpmHyEOAaU6cVfl7xXkcvrt2tFkiJmDk4O+CIlEsApHJDAnhpvziP4v1RKA/g@lists.linux.dev
-X-Gm-Message-State: AOJu0YzLrBYLoN4KxZl/4lziaGvrc/bozmGUbpSAAWhr2FZz83Jetg16
-	yzhXv7ZK16bjEUBF/Dw4udBd2jXqqW5rC0ZelspKxs/LoiHzfTqi4ZmfbF8vneGlJA4s2jg2GPi
-	sL29rMIc0dlTBAMVz9Cygm1RAgtEmgdMpqt+hsqX8
-X-Gm-Gg: ASbGnctbNz68PogB54KxSqXFGKDqZMqOqzk0kMm7i5t9v+dnZJefZ9wGem3HhTOkcxR
-	ZY49EXIm5LdGAAd0hf7OPmk1PfjIWZivCQZjhYF/Lydu6fNlQNuOPUKoI7+XLVSjggi1vYvXuUi
-	mGt84IZVFrI6FeKFaKFysSJICd6WGCPix0R1S0O5jfClPNj5phyPq/6POrcsGs/irxjTQsutX2n
-	p925S4xiXF3sSLJPS7ThEj62nTnwOGdmAUPzUUTwmsQ65Fn+M6YX+MXUKPPIVtfJYQI0V03vyM+
-	y4k+yCzz0m5/gB04Ot3f9OQOtiUT
-X-Google-Smtp-Source: AGHT+IGVdSi91XFWN15kFPtoKM7WWzNM62D2CelcHdnZr/ei9NXQxiXmZnu+94y9qAsgrliHk3AbI8g7Jygo19QMqI4=
-X-Received: by 2002:a05:7022:f902:10b0:119:e55a:808c with SMTP id
- a92af1059eb24-11dc9c5d1f3mr233294c88.9.1764553484484; Sun, 30 Nov 2025
- 17:44:44 -0800 (PST)
+        bh=RubrtJY1nBr7co+TN5Cf36o/x/R4Bh4y+nkU3tUAkHg=;
+        b=agWeN8JcoEv3xdS9BBcLatCwdQXjFhZCtUYpQhlqGY6jFyBcap6AsuUmmnwLBeft2l
+         Pr/KdyS0ygH9ELH0/8EOuftc9wv++SQ2WPOOTnYMu3xflNaXURNJ0K43MdXEhRas8oSb
+         d7p2voso3UbDUx1xWhfJntk5rkVBDnjXsAvOjE4dwgL6xVIhif8CP3lYM8QIRFzrl40S
+         DCCQHj0o55FrBuic4kbQIN2KYRFG9QAgDmIMgvFULUke8k6CixHgRI7hhH7Q+i/Cp/7H
+         YB7jFvgS3iOS0w4vuEIyBSISdCPTIz3Up3dtfoRkbrpDXe45KbFnt4WctFPVsa7NM1cV
+         ZZ5w==
+X-Forwarded-Encrypted: i=1; AJvYcCWEREcXc/cTsCM62kulgI1y09gxw4oXZyMIVcMI0/H7zdXTXiHmCzZ2d9QfRGqTD/znH9cga9d3nUEY@lists.linux.dev
+X-Gm-Message-State: AOJu0YxKBJuueE3w7ZbX4Pnny9CA10ZKAzlr9Cui4Bo23zFE1JRtbf/n
+	8Cfid3oIXzW9sTxd5aj4mkCaPr6tqkAblYzQF3EMFCzyK7MrDWvWgYFtbTbhotwSN0ooAEthPLF
+	HhjPagAwGD48IKnvhF4JGYoptq0tW8FJdDJwvUuOv
+X-Gm-Gg: ASbGncsyFjamM2vryG9hHhhYwU1lx7gwIM+Cg1gpuZWcL9GtVb56F1KOFTmT+1OUnxw
+	UXvRUgCCa03ATV6FkqijleuxgS2MwiEDhwm0NYpj9i6D5bCFfm9tafUq1du65I7NjS9sQeVpccj
+	7FK4jPj1LlOHiZdX8UhdxJgo/GUA/2rj942AYMo47yk32t1DwLCSMkgg9f5hnXrVQL0I9DxC4st
+	Vd08QNFrYkUdrioRE5m2aVlirSrba72xtXsAcXPzbUbs7JqSR7jHMnnsxj6wGbzLfQ1nKR0xSAn
+	4OgvWEw73oKnDlaNctWGdWggFvAa
+X-Google-Smtp-Source: AGHT+IGVKWbjRmm9tgU6uLDNVHu5xkhvGzmzSejdcqRBFvmWHeadfJ39slfnN2SFI/bj9haEVWPhElX75HTn7j06Rtw=
+X-Received: by 2002:a05:7022:4a:b0:11a:fcc8:c311 with SMTP id
+ a92af1059eb24-11dc9c5d1ffmr422435c88.5.1764553670544; Sun, 30 Nov 2025
+ 17:47:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -63,16 +63,16 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20251113230759.1562024-1-michael.roth@amd.com>
  <20251113230759.1562024-4-michael.roth@amd.com> <aR7bVKzM7rH/FSVh@yzhao56-desk.sh.intel.com>
- <20251121130144.u7eeaafonhcqf2bd@amd.com>
-In-Reply-To: <20251121130144.u7eeaafonhcqf2bd@amd.com>
+ <20251121130144.u7eeaafonhcqf2bd@amd.com> <aSQmAuxGK7+MUfRW@yzhao56-desk.sh.intel.com>
+In-Reply-To: <aSQmAuxGK7+MUfRW@yzhao56-desk.sh.intel.com>
 From: Vishal Annapurve <vannapurve@google.com>
-Date: Sun, 30 Nov 2025 17:44:31 -0800
-X-Gm-Features: AWmQ_bkAp7M4RY7KhmAYC2tjQ6Yi5K4jbimiP8co_ZGiovyYBjjsYMzWDYgBcYo
-Message-ID: <CAGtprH8gznGJ6VObk8aShBn_XnhwDoUzyzTkaDAe+MyiNsJ-NA@mail.gmail.com>
+Date: Sun, 30 Nov 2025 17:47:37 -0800
+X-Gm-Features: AWmQ_bndv783uhaZZ_oV6Xm0iV6cY4XqsD5JvxFNZOjPYdlSyliY7wOlOHpUWNk
+Message-ID: <CAGtprH9_yo4P+oTaGzhHkC3gSdFPTYkvwHkwN66gQhQXX9fhRQ@mail.gmail.com>
 Subject: Re: [PATCH 3/3] KVM: guest_memfd: GUP source pages prior to
  populating guest memory
-To: Michael Roth <michael.roth@amd.com>
-Cc: Yan Zhao <yan.y.zhao@intel.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, thomas.lendacky@amd.com, 
 	pbonzini@redhat.com, seanjc@google.com, vbabka@suse.cz, ashish.kalra@amd.com, 
 	liam.merwick@oracle.com, david@redhat.com, ackerleytng@google.com, 
@@ -80,39 +80,54 @@ Cc: Yan Zhao <yan.y.zhao@intel.com>, kvm@vger.kernel.org, linux-coco@lists.linux
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 21, 2025 at 5:02=E2=80=AFAM Michael Roth <michael.roth@amd.com>=
- wrote:
+On Mon, Nov 24, 2025 at 1:34=E2=80=AFAM Yan Zhao <yan.y.zhao@intel.com> wro=
+te:
 >
+> > > > +                 if (src_offset) {
+> > > > +                         src_vaddr =3D kmap_local_pfn(page_to_pfn(=
+src_pages[i + 1]));
+> > > > +
+> > > > +                         memcpy(dst_vaddr + PAGE_SIZE - src_offset=
+, src_vaddr, src_offset);
+> > > > +                         kunmap_local(src_vaddr);
+> > > IIUC, src_offset is the src's offset from the first page. e.g.,
+> > > src could be 0x7fea82684100, with src_offset=3D0x100, while npages co=
+uld be 512.
+> > >
+> > > Then it looks like the two memcpy() calls here only work when npages =
+=3D=3D 1 ?
 > >
-> > Increasing GMEM_GUP_NPAGES to (1UL << PUD_ORDER) is probabaly not a goo=
-d idea.
+> > src_offset ends up being the offset into the pair of src pages that we
+> > are using to fully populate a single dest page with each iteration. So
+> > if we start at src_offset, read a page worth of data, then we are now a=
+t
+> > src_offset in the next src page and the loop continues that way even if
+> > npages > 1.
 > >
-> > Given both TDX/SNP map at 4KB granularity, why not just invoke post_pop=
-ulate()
-> > per 4KB while removing the max_order from post_populate() parameters, a=
-s done
-> > in Sean's sketch patch [1]?
+> > If src_offset is 0 we never have to bother with straddling 2 src pages =
+so
+> > the 2nd memcpy is skipped on every iteration.
+> >
+> > That's the intent at least. Is there a flaw in the code/reasoning that =
+I
+> > missed?
+> Oh, I got you. SNP expects a single src_offset applies for each src page.
 >
-> That's an option too, but SNP can make use of 2MB pages in the
-> post-populate callback so I don't want to shut the door on that option
-> just yet if it's not too much of a pain to work in. Given the guest BIOS
-> lives primarily in 1 or 2 of these 2MB regions the benefits might be
-> worthwhile, and SNP doesn't have a post-post-populate promotion path
-> like TDX (at least, not one that would help much for guest boot times)
-
-Given the small initial payload size, do you really think optimizing
-for setting up huge page-aligned RMP entries is worthwhile?
-The code becomes somewhat complex when trying to get this scenario
-working and IIUC it depends on userspace-passed initial payload
-regions aligning to the huge page size. What happens if userspace
-tries to trigger snp_launch_update() for two unaligned regions within
-the same huge page?
-
-What Sean suggested earlier[1] seems relatively simpler to maintain.
-
-[1] https://lore.kernel.org/kvm/aHEwT4X0RcfZzHlt@google.com/
-
+> So if npages =3D 2, there're 4 memcpy() calls.
 >
-> Thanks,
+> src:  |---------|---------|---------|  (VA contiguous)
+>           ^         ^         ^
+>           |         |         |
+> dst:      |---------|---------|   (PA contiguous)
 >
-> Mike
+>
+> I previously incorrectly thought kvm_gmem_populate() should pass in src_o=
+ffset
+> as 0 for the 2nd src page.
+>
+> Would you consider checking if params.uaddr is PAGE_ALIGNED() in
+> snp_launch_update() to simplify the design?
+>
+
+IIUC, this ship has sailed, as asserting this would break existing
+userspace which can pass unaligned userspace buffers.
