@@ -1,151 +1,122 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD901140E5F
-	for <linux-coco@lists.linux.dev>; Tue,  2 Dec 2025 22:46:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797B43009FC;
+	Tue,  2 Dec 2025 23:44:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764715571; cv=none; b=LfpsdLX5BixBYeR74F3LzDFoLbriDSUlQnHgagcB5UH7icrmJji7nzvbO63JNM3mVhOeTLHWSs0pnSJC+xTGB1GMw8kUl2RzRmFPe2lAYOxhGmjddOfX4hw7L7GZSPqAzGcSfo5Rvqn/yF+vNQbLf/hY4GJ0lcKtXYr0qfvuuRw=
+	t=1764719079; cv=none; b=ELBWDMGViZEkUkbupTave+Zv2YlaED1H1TMeNfTBT6Vhb5dKWCejncLDbJf39BN+oM+gz4XIyI485O0FDE5VIUfL37CtWGb+KCgbO3KIWIyH6ZEAWqI1WIP1M315jKQG4KG9oAxE8C7FKxMii/dGwy0CltQ6bwimrZELluwLPRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764715571; c=relaxed/simple;
-	bh=o45xVyqlOmA0/w2Gl/xuj+2BlI3tWnbZkYR12fISyUQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bkKA90zG7AXvpoyAKSve6QWEGqngpgaAI475JpftFkwDAYpSjWTNBczIkGr8pAo0q8vkGfld8jquMiQkNuhVnpMmHOlP8tW+0pB8MFM7SkarWLid+SbcZ++BZaZIaT87hemdPbZ370AlY3HCk+20WB2Tq2GySGBVlmLlbqB/zK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ND6b+mPJ; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1764719079; c=relaxed/simple;
+	bh=RPPsGXG/goo2TScWBKowvKavIkqW/P5ObuG8brhUpa8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o9gLv/pjgsyeBEWhk+CFsWrtyyEGffU0jalnNKEjpJHS1+bHVvlnsNdpeCXnwYdIrsXr9baOoMqKEQpxO48TaT1bNOH4ftOwaX+q2J4Bx8UoD/g3S+l52qZ5dnGP076GZ3VIaEIxyev7IgFX/ksbVm1VqrR4w1jcJcgnZZ1Pxzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FrCPifiT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ND6b+mPJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764715570; x=1796251570;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=o45xVyqlOmA0/w2Gl/xuj+2BlI3tWnbZkYR12fISyUQ=;
-  b=ND6b+mPJ76NGmKasVBhEe5Z8iPqbsgp8wrzq7iSv6e5AYPw/1UvrdYcC
-   jRVdPpyCvVkilVQNSeyEY/qjK5ekrbh6bcf0SZ7tTezNglZ7uXpBnADOH
-   gSGxKUp/j7QPOWwZXaxSr1ZtP6jLvgjMe650YJdSNZEX6yJCN+CTyOpk8
-   hZ1mRPmi1iipSupU2TRYz5bf/woII7aGb/OWcmLw/DBCZ9m+4oLbeKQvm
-   b9Wpy9lvjL87BfdkcaRkZGCdRVPyrnDbR3Bjns3ybuBbhDzVGwJV2Zkzt
-   RED9tp2Gq24nWip1gncrMiiA/ioVnu8w11m6/6JnSLO7m59P83SJGcf7x
-   g==;
-X-CSE-ConnectionGUID: 76tUIfA6RMiWXcEzbOJltQ==
-X-CSE-MsgGUID: L4QgK9T2QrGq4j/Zz/Oa1A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="65704839"
-X-IronPort-AV: E=Sophos;i="6.20,244,1758610800"; 
-   d="scan'208";a="65704839"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 14:46:09 -0800
-X-CSE-ConnectionGUID: 3I4RZX2rQUax0iL2dZFBkA==
-X-CSE-MsgGUID: xMR4tiymTRqilQms1miP/g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,244,1758610800"; 
-   d="scan'208";a="194498579"
-Received: from msatwood-mobl.amr.corp.intel.com (HELO [10.125.111.238]) ([10.125.111.238])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 14:46:09 -0800
-Message-ID: <25044b05-7574-4b01-a8ea-3f7e7f32317b@intel.com>
-Date: Tue, 2 Dec 2025 14:46:08 -0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FrCPifiT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA6BDC4CEF1;
+	Tue,  2 Dec 2025 23:44:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764719079;
+	bh=RPPsGXG/goo2TScWBKowvKavIkqW/P5ObuG8brhUpa8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FrCPifiTxCVTM6AudIDNinw2f9F2ilywFu57kZaCe1EeWWFglTM1dG/nCw/0+UAEe
+	 3SKvgVryRs3K68WE9m4jqu5Umye2Kj5i9ngKIb+Cv7kLn9dEtR5QiDzDa4hVQqZUq4
+	 /nrndOUZ1O7aURCDgkdwTt6XuCkjs1avKOdrG1k8kkCwDTqVkQwd8OjqxlZkc/Oe7a
+	 5F6iUJFs/locvAjADygjmIqncgfTa8cLcPOLLhSx48hrPMxG/lJll7Q7H/QhaBspuG
+	 hWmERbMywbWBFpySJPHYuiPrxv58PmAHOBURqgD3HAQFXhgCsyxlWMm1kZJVH6m4PP
+	 HRp1yFyJ2XoYw==
+Date: Tue, 2 Dec 2025 16:44:35 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: linux-pci@vger.kernel.org, linux-coco@lists.linux.dev,
+	Jonathan.Cameron@huawei.com, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v2 1/8] drivers/virt: Drop VIRT_DRIVERS build dependency
+Message-ID: <20251202234435.GA1692217@ax162>
+References: <20251113021446.436830-1-dan.j.williams@intel.com>
+ <20251113021446.436830-2-dan.j.williams@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] virt: tdx-guest: Handle GetQuote request error code
-To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- "Kirill A . Shutemov" <kas@kernel.org>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Dan Williams <dan.j.williams@intel.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
-References: <20251202222257.986825-1-sathyanarayanan.kuppuswamy@linux.intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20251202222257.986825-1-sathyanarayanan.kuppuswamy@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251113021446.436830-2-dan.j.williams@intel.com>
 
-On 12/2/25 14:22, Kuppuswamy Sathyanarayanan wrote:
-> The tdx-guest driver sends Quote requests to the quoting enclave via a
-> hypercall to obtain attestation evidence for the current TD state.
-> Quote generation can fail in two ways: a hypercall failure, or a Quote
-> failure that occurs after the VMM processes the request. The driver
-> currently handles only hypercall failures and timeout errors during
-> Quote processing. Update it to also handle other Quote failures
-> reported by the VMM (for more details, refer to GHCI spec, v1.5,
-> March 2023, sec titled "TDG.VP.VMCALL<GetQuote>).
+Hi Dan,
 
-I think you're talking about the "GetQuote Status Code" here, right?
-That would have been nice to mention. It wasn't exactly trivial to find
-because instead of saying what the format of a TDREPORT_STRUCT is, the
-docs just call it "format of shared GPA".
+On Wed, Nov 12, 2025 at 06:14:39PM -0800, Dan Williams wrote:
+> All of the objects in drivers/virt/ have their own configuration symbols to
+> gate compilation. I.e. nothing gets added to the kernel with
+> CONFIG_VIRT_DRIVERS=y in isolation.
+> 
+> Unconditionally descend into drivers/virt/ so that consumers do not need to
+> add an additional CONFIG_VIRT_DRIVERS dependency.
+> 
+> Fix warnings of the form:
+> 
+>     Kconfig warnings: (for reference only)
+>        WARNING: unmet direct dependencies detected for TSM
+>        Depends on [n]: VIRT_DRIVERS [=n]
+>        Selected by [y]:
+>        - PCI_TSM [=y] && PCI [=y]
 
-> This change does not break the existing ABI behavior. When a Quote
-> failure occurs, the VMM sets the Quote length to zero. Userspace
-> already interprets a zero-length Quote as a Quote generation failure.
-> Returning an explicit error in such cases makes the behavior more
-> consistent and simplifies error handling in userspace.
-I'm also not seeing a clear problem statement here. What is the end user
-visible effect of this "fix"? Why *should* the kernel be parsing this
-buffer? Why not not just leave the error handling to userspace?
+I can still trigger this warning on next-20251202, which contains this
+change as commit 110c155e8a68 ("drivers/virt: Drop VIRT_DRIVERS build
+dependency").
 
-> Fixes: f4738f56d1dc ("virt: tdx-guest: Add Quote generation support using TSM_REPORTS")
-> Reported-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Closes: https://lore.kernel.org/linux-coco/6bdf569c-684a-4459-af7c-4430691804eb@linux.intel.com/T/#u
-> Closes: https://github.com/confidential-containers/guest-components/issues/823
-> Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Acked-by: Kai Huang <kai.huang@intel.com>
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-> Tested-by: Mikko Ylinen <mikko.ylinen@linux.intel.com>
-> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+  $ git merge-base --is-ancestor 110c155e8a684d8b2423a72cfde147903881f765 HEAD
+    echo $status
+  0
 
-Please take a look at:
+  $ make -skj"$(nproc)" ARCH=arm64 CROSS_COMPILE=aarch64-linux- clean defconfig
 
- https://docs.kernel.org/process/maintainer-tip.html#ordering-of-commit-tags
+  $ scripts/config -e PCI_TSM
 
+  $ make -skj"$(nproc)" ARCH=arm64 CROSS_COMPILE=aarch64-linux- olddefconfig
+  WARNING: unmet direct dependencies detected for TSM
+    Depends on [n]: VIRT_DRIVERS [=n]
+    Selected by [y]:
+    - PCI_TSM [=y] && PCI [=y]
 
+I would think you would need something like this avoid the problem but I
+am not sure if it would be acceptable, hence just the report.
+
+Cheers,
+Nathan
+
+diff --git a/drivers/virt/Kconfig b/drivers/virt/Kconfig
+index d8c848cf09a6..52eb7e4ba71f 100644
+--- a/drivers/virt/Kconfig
++++ b/drivers/virt/Kconfig
+@@ -47,6 +47,6 @@ source "drivers/virt/nitro_enclaves/Kconfig"
+ 
+ source "drivers/virt/acrn/Kconfig"
+ 
+-source "drivers/virt/coco/Kconfig"
+-
+ endif
++
++source "drivers/virt/coco/Kconfig"
+diff --git a/drivers/virt/coco/Kconfig b/drivers/virt/coco/Kconfig
+index bb0c6d6ddcc8..df1cfaf26c65 100644
+--- a/drivers/virt/coco/Kconfig
++++ b/drivers/virt/coco/Kconfig
+@@ -3,6 +3,7 @@
+ # Confidential computing related collateral
+ #
+ 
++if VIRT_DRIVERS
+ source "drivers/virt/coco/efi_secret/Kconfig"
+ 
+ source "drivers/virt/coco/pkvm-guest/Kconfig"
+@@ -14,6 +15,7 @@ source "drivers/virt/coco/tdx-guest/Kconfig"
+ source "drivers/virt/coco/arm-cca-guest/Kconfig"
+ 
+ source "drivers/virt/coco/guest/Kconfig"
++endif
+ 
+ config TSM
+ 	bool
