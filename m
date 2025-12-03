@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809C8224FA
-	for <linux-coco@lists.linux.dev>; Wed,  3 Dec 2025 00:01:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF935224FA
+	for <linux-coco@lists.linux.dev>; Wed,  3 Dec 2025 00:03:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764720074; cv=none; b=Gi/+2FyyjNgavkImHRiZW1AlNQkHVvGfLzY4y58ImgMH2mgoD3gSTS5g3ZUTTc6U8rWJmKDkOUjjP7fHLpN14IPRj9Vr0JonO3Mc9ZCSJo3290RKUtJMWU7PjSlWAL1KIWV5QxsvRfuXCtFEpXUfZauVA0qK5zDZkyloC/Tm6/g=
+	t=1764720229; cv=none; b=RKkEvqUHj5RDRrvCRWIFVnU7v5PISwBxKBkD11+JL4ymhSNNso3ICwaLTkLBjqh7S7HR0N4fbcP134auhSIHh2EOpe170da7siYGUODxMaLLuR0YZXufYcBh2mAtSGUrQeYVx4wLaFsiLGyiVTt9EE5ok9pdEwXgALZErkOgnL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764720074; c=relaxed/simple;
-	bh=VJEM/uFvAbd3QpW/AckGlKp8JGaEC5NJWswF78XETPo=;
+	s=arc-20240116; t=1764720229; c=relaxed/simple;
+	bh=IRaZg6EVP0a/JSBgzv81CR1fMD7b9n+Pshwil4kJ8+c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pxJ5hL7I0sAIFVcD0YcbaH9u3PiAR6iwYM/fiLuftkBt/YZAK/+LS9G9HwYcSVvZdNOcQLPTshiWIgaKYznmVV7Zo7rRJ6IItBCjpxA2UBgcEO9Ep3UA3heE/QK9GEt8WQR7TBEEzMFt2O+WKrcAQGV2r8Bke1l7c/SvF36WzBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B+k+TfM5; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 In-Reply-To:Content-Type; b=dYX42Y1A2OhYFFkKjCAG5CkMObPAj/1RdhPlI00YDJ2gaFTFAm04uvwvnc4ZBiN60VIYQ5YbSHjLvzJ9TUU28QcL89/b9sQ4rDFy/uswr1ER4CuAcy7T6xzPWnVZXVPZylA+RUiSZQuKwwWKusEEdOtW3ra/F7NYoKGcT1J8IcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ELWgfLyx; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B+k+TfM5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ELWgfLyx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764720072; x=1796256072;
+  t=1764720228; x=1796256228;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=VJEM/uFvAbd3QpW/AckGlKp8JGaEC5NJWswF78XETPo=;
-  b=B+k+TfM5XKcxOh50t1fzRF6G/S+7sEIorxNZif3bSf8yVS397v2pN8nV
-   OiSAtcsnecZ94cro5wZjRvTHNkbAOPz2v0tDUrEI7FPmrrjkcnJTwUvBy
-   92S1eOsbzffpKFaCKe8O0NfsMG50Bbb1s1b8uav24w6xeUlWGdoamJvtX
-   nbSjmhrTRE1IDSGv97xMi1eNyIpSiKkdCd+TcpB3sRVIHdzzFYXzwXPde
-   MxQnKyVkIDoCIKVrSpGzTUZBeHpf+sTymRwxX/550Mgwq9eek7lfAx4Ex
-   C+SArVZSYjvtTjVabVA8F3fZ3WM/1ruwF5tZZcc7CunwTPctC4IsRiV9D
-   g==;
-X-CSE-ConnectionGUID: 1XqsUmB0QTSNYorLaJqvhg==
-X-CSE-MsgGUID: M3oQ7qm2Ro+NFwGA7FK29A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="66592959"
+  bh=IRaZg6EVP0a/JSBgzv81CR1fMD7b9n+Pshwil4kJ8+c=;
+  b=ELWgfLyxpAEex65d/QZIqvpU0tBKArN6FuNA2ktZpmGlEKGKucr0TbJX
+   h8dstzd66IP4ak9xAZ8gzR1JhUkWprTjsa6hvQqkE1rJ1jqHgJpNjvies
+   NrpRQRsV0NB8eklZAueNaob8bJSLwvfqSuzwQwh2BUcCS4czGKv14PnP5
+   //9PKw2COpc+Dh/4dKYDtC1FmQfi7DXbvOb18kp72c+BVeye+bQNcQDBT
+   nTFpjLBe+yDgodQnBZMwOyJCRXWol6jZEoIiOelSIqSgeO0wavQfvo/RG
+   SfQomjDfb+ejsgbUApqXTysY6sVC+p9BCsQtBIhZ+qQyQ+jPjp/xKWrDO
+   A==;
+X-CSE-ConnectionGUID: j4lRkJiaRVyWjGAilHIPrQ==
+X-CSE-MsgGUID: nEwPqSY8TBSgU+rsy1lQKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="69298328"
 X-IronPort-AV: E=Sophos;i="6.20,244,1758610800"; 
-   d="scan'208";a="66592959"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 16:01:11 -0800
-X-CSE-ConnectionGUID: 9sCEs0kMQUuNp57kkx32+g==
-X-CSE-MsgGUID: uQWj6rtORj+kxPZhbmw8dQ==
+   d="scan'208";a="69298328"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 16:03:47 -0800
+X-CSE-ConnectionGUID: SWrDzHz/RX6QnE5woysATw==
+X-CSE-MsgGUID: Z8POMP3BQyyuGADTXQiGDg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,244,1758610800"; 
-   d="scan'208";a="225196882"
-Received: from soc-pf446t5c.clients.intel.com (HELO [10.24.81.126]) ([10.24.81.126])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 16:01:11 -0800
-Message-ID: <369b819c-5235-424d-a8c9-c7c45a9fd4db@linux.intel.com>
-Date: Tue, 2 Dec 2025 16:00:58 -0800
+   d="scan'208";a="194939903"
+Received: from msatwood-mobl.amr.corp.intel.com (HELO [10.125.111.238]) ([10.125.111.238])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 16:03:47 -0800
+Message-ID: <56c01575-c0e3-43f3-a6c6-bf62fcbe4f5d@intel.com>
+Date: Tue, 2 Dec 2025 16:03:45 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -53,100 +53,76 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v5] virt: tdx-guest: Handle GetQuote request error code
-To: Dave Hansen <dave.hansen@intel.com>, "Kirill A . Shutemov"
- <kas@kernel.org>
+To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ "Kirill A . Shutemov" <kas@kernel.org>
 Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>,
  Dave Hansen <dave.hansen@linux.intel.com>,
  Dan Williams <dan.j.williams@intel.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
 References: <20251202222257.986825-1-sathyanarayanan.kuppuswamy@linux.intel.com>
  <25044b05-7574-4b01-a8ea-3f7e7f32317b@intel.com>
+ <369b819c-5235-424d-a8c9-c7c45a9fd4db@linux.intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <25044b05-7574-4b01-a8ea-3f7e7f32317b@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <369b819c-5235-424d-a8c9-c7c45a9fd4db@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Hi Dave,
+On 12/2/25 16:00, Kuppuswamy Sathyanarayanan wrote:
+> The reason the kernel must parse the status field is that the failure
+> code is only available in the header portion of the shared GPA buffer
+> populated by the VMM. Userspace currently does not have access to this
+> header since we only expose the Quote payload itself. Because userspace
+> cannot directly interpret the VMM status codes, the kernel needs to parse
+> them and return appropriate generic error codes.
 
-Thanks for the review.
+That's kinda the key to this.
 
-On 12/2/2025 2:46 PM, Dave Hansen wrote:
-> On 12/2/25 14:22, Kuppuswamy Sathyanarayanan wrote:
->> The tdx-guest driver sends Quote requests to the quoting enclave via a
->> hypercall to obtain attestation evidence for the current TD state.
->> Quote generation can fail in two ways: a hypercall failure, or a Quote
->> failure that occurs after the VMM processes the request. The driver
->> currently handles only hypercall failures and timeout errors during
->> Quote processing. Update it to also handle other Quote failures
->> reported by the VMM (for more details, refer to GHCI spec, v1.5,
->> March 2023, sec titled "TDG.VP.VMCALL<GetQuote>).
-> 
-> I think you're talking about the "GetQuote Status Code" here, right?
-> That would have been nice to mention. It wasn't exactly trivial to find
-> because instead of saying what the format of a TDREPORT_STRUCT is, the
-> docs just call it "format of shared GPA".
+Users are poking at sysfs and expect (near) universal explicit errors.
+Are they even doing this from shell scripts most of the time?
 
-Yes, that's correct. I am referring to the GetQuote Status Code returned
-by TDG.VP.VMCALL<GetQuote>, specifically the error codes that were not
-previously checked (GET_QUOTE_ERROR and GET_QUOTE_SERVICE_UNAVAILABLE).
-
-For clarity, I will update the commit description to explicitly refer to
-status code table — Table 3-11: TDG.VP.VMCALL<GetQuote> – GetQuote Status
-Code.
-
-> 
->> This change does not break the existing ABI behavior. When a Quote
->> failure occurs, the VMM sets the Quote length to zero. Userspace
->> already interprets a zero-length Quote as a Quote generation failure.
->> Returning an explicit error in such cases makes the behavior more
->> consistent and simplifies error handling in userspace.
-> I'm also not seeing a clear problem statement here. What is the end user
-> visible effect of this "fix"? Why *should* the kernel be parsing this
-> buffer? Why not not just leave the error handling to userspace?
-
-
-The issue is that, prior to this patch, the kernel silently returned
-success for certain Quote failure cases such as when the Quote service
-is unavailable or when the VMM reports a processing error. In these
-cases, the Quote buffer ends up being empty and userspace is expected
-to infer failure indirectly by checking for a zero length Quote. This
-behavior is ambiguous and has caused confusion in practice, as reported
-in: https://github.com/confidential-containers/guest-components/issues/823
-
-With this patch, all VMM reported Quote failures are explicitly
-translated into kernel error returns. This makes failure detection
-uniform and simplifies userspace error handling.
-
-The reason the kernel must parse the status field is that the failure
-code is only available in the header portion of the shared GPA buffer
-populated by the VMM. Userspace currently does not have access to this
-header since we only expose the Quote payload itself. Because userspace
-cannot directly interpret the VMM status codes, the kernel needs to parse
-them and return appropriate generic error codes.
-
-> 
->> Fixes: f4738f56d1dc ("virt: tdx-guest: Add Quote generation support using TSM_REPORTS")
->> Reported-by: Xiaoyao Li <xiaoyao.li@intel.com>
->> Closes: https://lore.kernel.org/linux-coco/6bdf569c-684a-4459-af7c-4430691804eb@linux.intel.com/T/#u
->> Closes: https://github.com/confidential-containers/guest-components/issues/823
->> Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
->> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
->> Acked-by: Kai Huang <kai.huang@intel.com>
->> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
->> Tested-by: Mikko Ylinen <mikko.ylinen@linux.intel.com>
->> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> 
-> Please take a look at:
-> 
->  https://docs.kernel.org/process/maintainer-tip.html#ordering-of-commit-tags
-> 
-
-Thanks for pointing this out. I will reorder the commit tags in the next revision.
-
-> 
-
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
-
+Also, please don't just keep tacking gunk onto the changelog. Start
+cutting out the cruft, please.
