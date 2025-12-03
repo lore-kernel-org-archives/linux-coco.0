@@ -1,172 +1,121 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D4A1F4181
-	for <linux-coco@lists.linux.dev>; Wed,  3 Dec 2025 07:42:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05B72EFD9C;
+	Wed,  3 Dec 2025 13:46:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764747724; cv=none; b=AJK/a6FnhbhZGv00ijl2eEQZ8mbh4paBn1mHm4YVFxLvVIumtvVPvlrw3fIzT7WbT98NZ7QIltYtQaOQG2xZL2Ap79s5tGhpjKcy3UVlvznMWdFt2254qPpZPZWGxYTWNyu9V1//U21X9AjiWfSERSfSKoAjbxM2tdep+VvFQkE=
+	t=1764769567; cv=none; b=VBPTrugFIoWA8z47BWtXeuQalhVg9/rcFwso9GDLvgu9okuYjQkFNDLw+oBYj/RRSF+IUD65b9r7yEZzHUjrrT74Maesk6tbFF+kYrpVNAqjSll25nFRnEPaRdcVL0O5N4Ptk3rBJUgMa+9mKF6XaLNMZM/XPxqiFEfnx/OISzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764747724; c=relaxed/simple;
-	bh=fvJqRIBOhw+9vov61CR/z71P0uJTmK3WyyKuKM864qo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=vCb933rsRgvLDMlmmOsP70BbspmGwMmhsqwfiLx9sdCE4hJ1q+2gri5WTVc9KxSA6aYoz+gvNuVHSrnRryfHjsE8SVBUwd49HCRCWIzeHdjmZvacKrx0Xs6Z3FVg5MvZJgEQhToHj82ufIeJDDTN9ZVFOQON4dsj1bHmYDUtz+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iqG/51AI; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1764769567; c=relaxed/simple;
+	bh=HvaiGQ8VgJGUAelJrWy0UIgcjYpLDh9ds9yaPkV1opU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W3wm6lPkpDmgCwlN94XJeOVMtj25EooIRvZ8rt31WywRuiPY2ppsF+yakuPnDskkAYGGmgb9ks3o0wl1uGo3EyAczLh7KH2E6XDpI8OkQBTxCFzSwlFqJ6Xg4YYrHDrDNPAZPCB320N6w3vI9Se1NGmP7w1HWd09qZDPFIwuPSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hWO2lPxt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iqG/51AI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764747723; x=1796283723;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=fvJqRIBOhw+9vov61CR/z71P0uJTmK3WyyKuKM864qo=;
-  b=iqG/51AI1J2XNGtqgk4JXyXFSybU8QtdSwOnL6p7f9eWkxxw7YbzYj9l
-   GlIRtegNldcIBerX0XnXW7mowFwCLRl1CcpNnU8uJPxdgsPRrQS+kDdwT
-   GOkoo+800w0jzHglEmFrGGgAXklx+QOHhdgMYNqFsSzdEwqYAwIUlEAf4
-   YqDikx/Ig2oWNmWBkqpr/13ohyP55hmkLBC9PIVB7bbuiNrKI8k8e1Jgc
-   XHzMEvZ/GK3tAbWAb70bdcuIYJjQ4mVnZ4P6pGXdRZJtEkWBggpmnockz
-   FaIWX6xWnRX4Xifm8/NnXqFosns+2BHe/bnMWcKr14MIF8BAtxV9jlXtD
-   A==;
-X-CSE-ConnectionGUID: YEKZeko9R36yo4+KKiS7UA==
-X-CSE-MsgGUID: p93d1qyyT6+cOn/JIcjWiQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="77413647"
-X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; 
-   d="scan'208";a="77413647"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 23:42:02 -0800
-X-CSE-ConnectionGUID: sLeGP6jlSgGmsi31spqoVw==
-X-CSE-MsgGUID: WrTwhU3YTGGr1WoasUTPgQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; 
-   d="scan'208";a="217936779"
-Received: from unknown (HELO [10.238.3.0]) ([10.238.3.0])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 23:41:52 -0800
-Message-ID: <a648b7bc-11aa-41f0-bf42-ca9b66afe6dc@linux.intel.com>
-Date: Wed, 3 Dec 2025 15:41:50 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hWO2lPxt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8686C4AF0B;
+	Wed,  3 Dec 2025 13:46:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764769566;
+	bh=HvaiGQ8VgJGUAelJrWy0UIgcjYpLDh9ds9yaPkV1opU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hWO2lPxtqezARQRAtJM6tLQWySwAF92n4k+ZdPpos59y5B0+jq0pah+fUYMJ8XbWF
+	 Dmr1gaMxmzBkic2uF3cS7yJafUV78IEtWm1T5S0tHQyLOVuFJdV0hpE5J6E/2LBbdr
+	 8PGFnH30GJksxMnOiIHbuaNVDw8pN/ijrQ8+NMKD/OtAOUoieKjH5ZTXuzUfsJTfCa
+	 5GHgbJbLmucYq5zbcDo8qUVyt/MzZAigBzbhHkE/ww/l00CJwZ2gbytzkAa2KosC3E
+	 tCNSJOL726IaYBcJlpTeghePiIeeorOKCEQbdHK2NfJSIvdQEz7uwO3yCJBS80Nwjf
+	 D7UoaFlK6GEiA==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id BC686F40078;
+	Wed,  3 Dec 2025 08:46:04 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Wed, 03 Dec 2025 08:46:04 -0500
+X-ME-Sender: <xms:HD8waaaGv63GhIgE_YxDXs4qGeY9th8fLdWMhmaoww1MSHHVguN8jw>
+    <xme:HD8waaKi8sB9QDGpY-_0HbfGJYkNxKREI5_3ybYt0O47DZXuO-Ix7XueZWFLwo4fO
+    EmaNNxyFmAVVbGOpmu1qkhcBfXp9kBN1OJljnTUzDbfFfp2Tu-L1dm9>
+X-ME-Received: <xmr:HD8waUiV5la7tNfAKvOCM8_Em8gRUKeRu7whC5tGC7YCnS9zjOikZLC_uWLqsg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvleeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
+    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
+    epfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcuufhh
+    uhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvghrnh
+    epheeikeeuveduheevtddvffekhfeufefhvedtudehheektdfhtdehjeevleeuffegnecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilh
+    hlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheehqddv
+    keeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrdhnrg
+    hmvgdpnhgspghrtghpthhtohepfeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthho
+    pehrihgtkhdrphdrvggughgvtghomhgsvgesihhnthgvlhdrtghomhdprhgtphhtthhope
+    hkvhhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqtgho
+    tghosehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepkhgrihdrhhhurghngh
+    esihhnthgvlhdrtghomhdprhgtphhtthhopeigihgrohihrghordhlihesihhnthgvlhdr
+    tghomhdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehinhhtvghlrdgtohhmpdhrtg
+    hpthhtohephigrnhdrhidriihhrghosehinhhtvghlrdgtohhmpdhrtghpthhtohepsghi
+    nhgsihhnrdifuhesihhnthgvlhdrtghomhdprhgtphhtthhopehsvggrnhhjtgesghhooh
+    hglhgvrdgtohhm
+X-ME-Proxy: <xmx:HD8waVSaEAzBCG1A5ATH3HA5nOgRfEFOOTeuH0Mp4D6jCB1a5IYJ2g>
+    <xmx:HD8waZ6Qk7I8ZXJEHZOlPCp3YpCQLvp_TGFrOb_MTnQjq3UCCfS_yQ>
+    <xmx:HD8waaPLQ0fp0uNQPtw1JC0SqDBhaLijEIMc8ysnOBqrfkjEB-QICQ>
+    <xmx:HD8wacQUqEv8ppvIg6JDId3Ng50zrHqqgCVwKyMQq84IkiE2LTqYxA>
+    <xmx:HD8waVWZIGTR9T-xUlXfmXrQ30IAkx2r-LjFYBTcWQV2Kp3n02CTVGX8>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 3 Dec 2025 08:46:04 -0500 (EST)
+Date: Wed, 3 Dec 2025 13:46:03 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Huang, Kai" <kai.huang@intel.com>, 
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>, "Hansen, Dave" <dave.hansen@intel.com>, 
+	"Zhao, Yan Y" <yan.y.zhao@intel.com>, "Wu, Binbin" <binbin.wu@intel.com>, 
+	"seanjc@google.com" <seanjc@google.com>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
+	"Yamahata, Isaku" <isaku.yamahata@intel.com>, "nik.borisov@suse.com" <nik.borisov@suse.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Annapurve, Vishal" <vannapurve@google.com>, 
+	"Gao, Chao" <chao.gao@intel.com>, "bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v4 07/16] x86/virt/tdx: Add tdx_alloc/free_page() helpers
+Message-ID: <7xbqq2uplwkc36q6jyorxe6u3fboka3snwar6parado5ysz25o@qrstyzh3okgh>
+References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
+ <20251121005125.417831-8-rick.p.edgecombe@intel.com>
+ <dde56556-7611-4adf-9015-5bdf1a016786@suse.com>
+ <730de4be289ed7e3550d40170ea7d67e5d37458f.camel@intel.com>
+ <f080efe3-6bf4-4631-9018-2dbf546c25fb@suse.com>
+ <0274cee22d90cbfd2b26c52b864cde6dba04fc60.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 20/21] x86/virt/tdx: Update tdx_sysinfo and check
- features post-update
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org,
- reinette.chatre@intel.com, ira.weiny@intel.com, kai.huang@intel.com,
- dan.j.williams@intel.com, yilun.xu@linux.intel.com, sagis@google.com,
- vannapurve@google.com, paulmck@kernel.org, nik.borisov@suse.com,
- Farrah Chen <farrah.chen@intel.com>, "Kirill A. Shutemov" <kas@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
-References: <20251001025442.427697-1-chao.gao@intel.com>
- <20251001025442.427697-21-chao.gao@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20251001025442.427697-21-chao.gao@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0274cee22d90cbfd2b26c52b864cde6dba04fc60.camel@intel.com>
 
+On Tue, Dec 02, 2025 at 08:02:38PM +0000, Edgecombe, Rick P wrote:
+> On Tue, 2025-12-02 at 09:38 +0200, Nikolay Borisov wrote:
+> > > Yea, it could be simpler if it was always guaranteed to be 2 pages. But it
+> > > was
+> > > my understanding that it would not be a fixed size. Can you point to what
+> > > docs
+> > > makes you think that?
+> > 
+> > Looking at the PHYMEM.PAMT.ADD ABI spec the pages being added are always 
+> > put into pair in rdx/r8. So e.g. looking into tdh_phymem_pamt_add rcx is 
+> > set to a 2mb page, and subsequently we have the memcpy which simply sets 
+> > the rdx/r8 input argument registers, no ? Or am I misunderstanding the 
+> > code?
+> 
+> Hmm, you are totally right. The docs specify the size of the 4k entries, but
+> doesn't specify that Dynamic PAMT is supposed to provide larger sizes in the
+> other registers. A reasonable reading could assume 2 pages always, and the usage
+> of the other registers seems like an assumption.
+> 
+> Kirill, any history here?
 
+There was a plan to future prove DPAMT by allowing PAMT descriptor to
+grow in the future. The concrete approach was not settled last time I
+checked. This code was my attempt to accommodate it. I don't know if it
+fits the current plan.
 
-On 10/1/2025 10:53 AM, Chao Gao wrote:
-
-[...]
->  
-> +/*
-> + * Update tdx_sysinfo and check if any TDX module features changed after
-> + * updates
-> + */
-> +int tdx_module_post_update(struct tdx_sys_info *info)
-> +{
-> +	struct tdx_sys_info_version *cur, *new;
-> +	int ret;
-> +
-> +	/* Shouldn't fail as the update has succeeded */
-> +	ret = get_tdx_sys_info(info);
-> +	if (ret) {
-> +		WARN_ONCE(1, "version retrieval failed after update, replace TDX Module\n");
-
-Nit:
-Could be if (WARN_ONCE(ret, "..."))
-
-> +		return ret;
-> +	}
-> +
-> +	guard(mutex)(&tdx_module_lock);
-> +
-> +	cur = &tdx_sysinfo.version;
-
-Nit:
-After update, the current TDX module is the new TDX module already, may be
-better to use old instead of cur.
-
-> +	new = &info->version;
-> +	pr_info("version %u.%u.%02u -> %u.%u.%02u\n", cur->major_version,
-> +						      cur->minor_version,
-> +						      cur->update_version,
-> +						      new->major_version,
-> +						      new->minor_version,
-> +						      new->update_version);
-> +
-> +	/*
-> +	 * Blindly refreshing the entire tdx_sysinfo could disrupt running
-> +	 * software, as it may subtly rely on the previous state unless
-> +	 * proven otherwise.
-> +	 *
-> +	 * Only refresh version information (including handoff version)
-> +	 * that does not affect functionality, and ignore all other
-> +	 * changes.
-> +	 */
-> +	tdx_sysinfo.version	= info->version;
-> +	tdx_sysinfo.handoff	= info->handoff;
-> +
-> +	if (!memcmp(&tdx_sysinfo, info, sizeof(*info)))
-> +		return 0;
-> +
-> +	pr_info("TDX module features have changed after updates, but might not take effect.\n");
-> +	pr_info("Please consider a potential BIOS update.\n");
-
-
-BIOS update?
-I guess it's "TDX module update via BIOS"?
-
-Does it mean after a system reboot, the change done by TD preserving update will
-be gone? If we want the TDX module upgrade to be permanent, it needs to replace
-the TDX module binary the BIOS will load, right?
-
-So the scenario of TD preserving update seems to be limited to security fixes?
-(I guess the security fixes will take effect directly after TD preserving
-update?)
-
-
-> +	return 0;
-> +}
-> +
->  static bool is_pamt_page(unsigned long phys)
->  {
->  	struct tdmr_info_list *tdmr_list = &tdx_tdmr_list;
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-> index 983c01c6949a..ca76126880ee 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.h
-> +++ b/arch/x86/virt/vmx/tdx/tdx.h
-> @@ -3,6 +3,7 @@
->  #define _X86_VIRT_TDX_H
->  
->  #include <linux/bits.h>
-> +#include <asm/tdx_global_metadata.h>
->  
->  /*
->   * This file contains both macros and data structures defined by the TDX
-> @@ -124,5 +125,6 @@ int tdx_module_shutdown(void);
->  void tdx_module_set_error(void);
->  int tdx_cpu_enable(void);
->  int tdx_module_run_update(void);
-> +int tdx_module_post_update(struct tdx_sys_info *info);
->  
->  #endif
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
