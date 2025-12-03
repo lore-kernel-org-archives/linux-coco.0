@@ -1,140 +1,162 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E78326954
-	for <linux-coco@lists.linux.dev>; Wed,  3 Dec 2025 15:59:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F321E342524
+	for <linux-coco@lists.linux.dev>; Wed,  3 Dec 2025 17:32:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777571; cv=none; b=cLIM4lXbXqtaee7NRNOw70sKq7PwlTiLF5gISHcqMAvSBbYY8JWDfmcugn9Om3Xoa3lxSf70+tajqrav9TuKyqbJjwKG9P1MvHnrfiiKiGfeUmHSAw6RW1hqxKUXe5QyEPKYB6uKVLl+psQazaYYYhAGhdqS14fdXIiGC/pGF5E=
+	t=1764783140; cv=none; b=Qs28zUvMO8m2215sbkh8Cz35hpLWxOijuZsztb4yTPJOB7zCNPGvQB72+Rgo/c09x1WXC/6P4NK7ogHD4o7MgQdEw4lfKZsyoSme/8wyo0h0n9W68VdixPsYtioGSTz14AwlnELyVD7haIo2eNhVT8TbCP8VPrPg1leK0ITb8Y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777571; c=relaxed/simple;
-	bh=+dMlgfhc1y2JgHqa/1Ixp3iQdNQ6nOCRMLFaKiiDH7I=;
+	s=arc-20240116; t=1764783140; c=relaxed/simple;
+	bh=N7OKcRPraIwwOO+e5acnIG0+6lKUBkn3zohe7EwnngU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WZGJY5CN/0jU/yx9M3iXRA7Zy29EbdVd5i87jU14gwZpoktUI5xj8Y07UUFy/1VyQrKIEIHEFs7wGgmIeLzMG30179b5XN+PnWBGYXeRvxZeSyo06g/e3+WUaxtAhjkQn+bfIt//JvOT9kgS9HAr14q12AbmHDGKH9bwBlhLdqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=crSCjQ2S; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=mjgtX362i1q9QSnOis7s3sXDakIBM9ZySFNiTa4Ge0z1qDzGYHAXDu4rEBMSnnrL00TmHwmb6FvcPxCudtjUGYWYmokZZDX0s0E85bcgfu5Ql0oisq8GjOkt+aa7OBN6y4QM8epXkj1CB5HKeAhkhuIf9Qzd62ACcWTWE/AZM/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org; spf=pass smtp.mailfrom=cmpxchg.org; dkim=pass (2048-bit key) header.d=cmpxchg.org header.i=@cmpxchg.org header.b=TK0pGZui; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmpxchg.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="crSCjQ2S"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 22B0D40E01C5;
-	Wed,  3 Dec 2025 15:59:26 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id Jm55s75WWJiM; Wed,  3 Dec 2025 15:59:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1764777560; bh=5A837UYz/VXEyuk8nnXqBwp73570xZNtO/JfT35421A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=crSCjQ2S+J5/iynhJFk9UKihxfc38IfS+Fw+h6iRq/8LXSIwi0PZJv90R4g8/MXGW
-	 r1ElmDKHkg1pX+OL1QKumUlyGktBGz40dSSxRhkFBLj1hpWXkgd0tPY3EeSvi2Ffe9
-	 R3JRQPSIIRI0DANEw+Up2ZSazhClnbnkhEvRkFjwYJbUlH2gJfbG9kvBfPXjzaUoLK
-	 RhDCGgQilS7jERyuWw9D4yM7BMjgs23Ye5kGOeTnUa1EGDCxkXBvUXZtrfkAoBNubc
-	 N505u3BhpJqlSR0GY0AL4khjQaOyO5Ea4hjoOOOG7j8GH1+w8PUeQtbmg2Vr/IVVyp
-	 1/BXb8LWqonyqZuD7Esuq8mevHplKYNoKJT06Zx/p9Hb658j7QxfrHqYYLjeQ6SrMN
-	 6Z60gQPxB274MQBcIMxuX3BBMX0lhZo0oMKeFDOD1fyoWeGAnB7ROl7b3YQAdjF8sv
-	 +D10Y9nVLzwhtMg/imH01R63OYEUQ4ZsprkebseeDMOADdpNbVFA1J7zwSlE+Xgd98
-	 +eWs+zJITIYNjpKW7NPZJdc0PhBJ/sT4mzgw8BzGPs8d+b7yBPGvj9iMK7CW9eqcZy
-	 Zw66QQpJ0prNo05BiJ95trN9iDyyqRDq/ZSmJlY02J9oZ4zgA3tYkV14xYeUuZKFZv
-	 DPfpr37J1otrYUf6UajKmiXo=
-Received: from zn.tnic (pd953063a.dip0.t-ipconnect.de [217.83.6.58])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id C409040E0191;
-	Wed,  3 Dec 2025 15:59:02 +0000 (UTC)
-Date: Wed, 3 Dec 2025 16:58:55 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, ardb@kernel.org,
-	"Pratik R. Sampat" <prsampat@amd.com>, linux-mm@kvack.org,
-	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
-	x86@kernel.org, linux-kernel@vger.kernel.org, tglx@linutronix.de,
-	mingo@redhat.com, dave.hansen@linux.intel.com,
-	akpm@linux-foundation.org, osalvador@suse.de,
-	thomas.lendacky@amd.com, michael.roth@amd.com,
-	torvalds@linux-foundation.org
-Subject: Re: [RFC PATCH 2/4] mm: Add support for unaccepted memory hotplug
-Message-ID: <20251203155855.GCaTBeP8fQDLx3T0X8@fat_crate.local>
-References: <beec5651-5c23-4f5e-a0a3-d1cc01a8490a@kernel.org>
- <20251128113411.GAaSmIs0kSWGhCYkaA@fat_crate.local>
- <47927c25-a317-488a-823f-ac0588f4eee4@kernel.org>
- <20251201111201.GAaS14AX18qeHN20xf@fat_crate.local>
- <052d7f47-edb6-4978-bc9a-c7eae469720f@kernel.org>
- <20251201191036.GEaS3oLBY8PEuE91Ap@fat_crate.local>
- <dcccdc4b-b7d7-47c4-b1b1-a6c70edb20fa@kernel.org>
- <20251201202507.GFaS35o7WtLJOM0_jh@fat_crate.local>
- <420865fb-34cc-43a8-820c-b15b5f24a27c@kernel.org>
- <etd7r45wmnuoftpckrzkzithr443ru6akgwqjgzw2vgmzqi7cs@camfecdmef74>
+	dkim=pass (2048-bit key) header.d=cmpxchg.org header.i=@cmpxchg.org header.b="TK0pGZui"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4ee2014c228so172801cf.2
+        for <linux-coco@lists.linux.dev>; Wed, 03 Dec 2025 09:32:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1764783136; x=1765387936; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RXfrLUBUUNxWrlXQZfRVAlemBKM14MYadMSOQJLP4KM=;
+        b=TK0pGZui6DYhJGPl07IwPqD3qLwP2o/yOlIT4PooWAgfQ1oK/PsMHfq/zmKmofsCTa
+         bFNnO0AGelNpKF4W3SKHqAGrmkdvR7j9UyaWLXN2s6XK9ta3KYk5186EXkqRB6d01j1i
+         7Wsaz0pJPhyO0bAdW4+HddTidyIRkdCYueRcyThZv5jzeTwhor9aEXif8qQN5UkSRsAT
+         y19lDADYPuVtGaLflQg/KF9mbf+wS5/V0ThyRLKlnuFvx7utc9hNfu+K0Vz0/PKvked6
+         RlRA4dv6i0xCGVAYSpXMUj/A/DvDx3arbYusstJyrGPKyyU3MdZOe7y2bnRcsd0qQQFo
+         mENA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764783136; x=1765387936;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RXfrLUBUUNxWrlXQZfRVAlemBKM14MYadMSOQJLP4KM=;
+        b=EN85w/BntubjvyxhaP7q195qxsvvcNMO5R4cvQQpS2WfYVRaBHxaFstUaFQLwEClHt
+         rofun/dqVeo/yCRBZxtNnri+ejpWLgL4L0xIuC+XYDSVfhX2w8+ZtFoX2XPgNGPosB0u
+         +QcWImuV8fvPEElXKC8hVqjh5IeOUKztVbiyJbv5eJKOqHxvzMq55egidh4NYQLkotjq
+         5zYOTjwmDFfzNdz/BPpckVutQ87EBya4tc5szKgDD3xykeEDvie/cKjE+AQ5jCmZZYQ2
+         2AklgNWEGii8Lw/s8oFog5vRirk6gthM2K193yPnzE0jsceedPndmEbuDRqMhoB09WdO
+         KAmw==
+X-Forwarded-Encrypted: i=1; AJvYcCXJGflJ21RQlDKf0rKI0numcJjmXltluyXmMM32DiID4+YPUDlDo0bFFVmmE8f2xvzztg2Y0+oyJbGK@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz2qxigLrvBAKBngEZ8Udlf9EEq52LI3hUKDmwg1bCXAXCzX9Qw
+	7GO9jJriW2L3g4v9Km2GEDh7bb271GQYW68kgA61qC98/KXo5J2F5LfykQCREbBvPuc=
+X-Gm-Gg: ASbGnct+4/Uohx2rNcdNaUQFq/fC6mhbIm2BfFNtPfIXko2eRzAfyjHZddPrK5Jv19N
+	vs4kRB/s5SprSJ9Id6foDs4EHcRGFRLm88KUh9/2Vs/4A6u+xAhsbKjGWQBHE6XvAHIpOhGgk8S
+	q/gTbTSsm29cJb6cycD5wyZ3BvxRookU+/skBKhjXbq7OwW5WWKvo9Whrr3E/K4NSvIjb/SbSDU
+	tsvjRwdYqfBMI/YKYAQmeCM6II+KO5jfKHMOSXQ9t55OrTjHCWbdKRC1eOcgudebVS3tujjHv5w
+	zpgEO/kVFkUkI/P4K2bNvyb3t3hEhMAgLEZ9sfwjskvZ425R1dOYPUIPSlviXsaY+XUi9Xt+R1Y
+	TwS8PqpD4ar3IAWkh6fSBA+xKJLPi+YS/AkfZ/xjm2VhL5jSZ7ipHSTXlEWCSyF/1MHI8yTEtXf
+	foyxlKCFnXtw==
+X-Google-Smtp-Source: AGHT+IHjhRSsYojqPIH4nCotrtO7/FPORpmU3S+uq1yOdc4D+I4pkxVbp8jOs/i2z+ku8NQQIlusKQ==
+X-Received: by 2002:a05:622a:1489:b0:4ed:a744:adc with SMTP id d75a77b69052e-4f01757f2e8mr38710771cf.10.1764783135284;
+        Wed, 03 Dec 2025 09:32:15 -0800 (PST)
+Received: from localhost ([2603:7000:c01:2716:929a:4aff:fe16:c778])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4efd341f2f8sm115763391cf.22.2025.12.03.09.32.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Dec 2025 09:32:14 -0800 (PST)
+Date: Wed, 3 Dec 2025 12:32:09 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, kernel-team@meta.com, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+	mhocko@suse.com, jackmanb@google.com, ziy@nvidia.com,
+	kas@kernel.org, dave.hansen@linux.intel.com,
+	rick.p.edgecombe@intel.com, muchun.song@linux.dev,
+	osalvador@suse.de, david@redhat.com, x86@kernel.org,
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+	Wei Yang <richard.weiyang@gmail.com>,
+	David Rientjes <rientjes@google.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>
+Subject: Re: [PATCH v4] page_alloc: allow migration of smaller hugepages
+ during contig_alloc
+Message-ID: <20251203173209.GA478168@cmpxchg.org>
+References: <20251203063004.185182-1-gourry@gourry.net>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <etd7r45wmnuoftpckrzkzithr443ru6akgwqjgzw2vgmzqi7cs@camfecdmef74>
+In-Reply-To: <20251203063004.185182-1-gourry@gourry.net>
 
-On Wed, Dec 03, 2025 at 02:46:23PM +0000, Kiryl Shutsemau wrote:
-> There is also the #1 Kernel Rule: "we do not break users."
-
-Do I need to point you to that too:
-
-Documentation/process/stable-api-nonsense.rst
-
-?
-
-> Booting a different version of the kernel is a core functionality of
-> kexec. It is widely used to deploy new kernels or revert to older ones.
-> Breaking this functionality is a show-stopper for most, if not all,
-> hyperscalers.
+On Wed, Dec 03, 2025 at 01:30:04AM -0500, Gregory Price wrote:
+> We presently skip regions with hugepages entirely when trying to do
+> contiguous page allocation.  This will cause otherwise-movable
+> 2MB HugeTLB pages to be considered unmovable, and will make 1GB
+> hugepages more difficult to allocate on systems utilizing both.
 > 
-> This specific change may not be a show-stopper as CoCo deployment is not
-> widespread enough to be noticed yet.
+> Instead, if hugepage migration is enabled, consider regions with
+> hugepages smaller than the target contiguous allocation request
+> as valid targets for allocation.
 > 
-> The notion that nobody promised that you can kexec into a different kernel
-> is absurd. It is used everywhere.
-
-Dude, can you please stop handwaving and say what you really wanna say: you
-want different kernels to kexec. And it has worked so far but nothing
-guarantees that. And we should all agree on some strategy going forward and
-enforce it.
-
-I don't care if different kernels can kexec or not. If I need to kexec, then
-I simply build the same kernel.
-
-So I'd take a patch which breaks that and when the submitter gets stopped by
-you or someone else, I'll go tell him: "well, actually, I can't take your
-patch because Kiryl said so but that's his opinion."
-
-Do you see how absurd this is?!
-
-Geez, I'm tired of typing the same shit over and over again on this thread.
-
-Feel free to propose to make kexec'ing different kernels a rule and let's all
-discuss it but let's stop this nonsense of what worked and so on. The kernel
-gets complicated constantly, grows things here and there and without such
-a rule, are you going to sit around and guard that kexec works?
-
-Pfff.
-
-> I am not involved in the deployment of CoCo VMs, but I don't believe it
-> is specifically about CoCo or the kexec ABI. I think it is more about
-> the boot protocol. Kexec is one way to boot the kernel.
+> isolate_migrate_pages_block() has similar logic, and the hugetlb code
+> does a migratable check in folio_isolate_hugetlb() during isolation.
+> So the code servicing the subsequent allocaiton and migration already
+> supports this exact use case (it's just unreachable).
 > 
-> Should we consider the EFI configuration tables format as part of the
-> boot protocol?
+> To test, allocate a bunch of 2MB HugeTLB pages (in this case 48GB)
+> and then attempt to allocate some 1G HugeTLB pages (in this case 4GB)
+> (Scale to your machine's memory capacity).
+> 
+> echo 24576 > .../hugepages-2048kB/nr_hugepages
+> echo 4 > .../hugepages-1048576kB/nr_hugepages
+> 
+> Prior to this patch, the 1GB page allocation can fail if no contiguous
+> 1GB pages remain.  After this patch, the kernel will try to move 2MB
+> pages and successfully allocate the 1GB pages (assuming overall
+> sufficient memory is available).
+> 
+> folio_alloc_gigantic() is the primary user of alloc_contig_pages(),
+> other users are debug or init-time allocations and largely unaffected.
+> - ppc/memtrace is a debugfs interface
+> - x86/tdx memory allocation occurs once on module-init
+> - kfence/core happens once on module (late) init
+> - THP uses it in debug_vm_pgtable_alloc_huge_page at __init time
+> 
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Link: https://lore.kernel.org/linux-mm/6fe3562d-49b2-4975-aa86-e139c535ad00@redhat.com/
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+> Reviewed-by: Oscar Salvador <osalvador@suse.de>
+> Acked-by: David Rientjes <rientjes@google.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Tested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> ---
+>  mm/page_alloc.c | 23 +++++++++++++++++++++--
+>  1 file changed, 21 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 95d8b812efd0..8ca3273f734a 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -7069,8 +7069,27 @@ static bool pfn_range_valid_contig(struct zone *z, unsigned long start_pfn,
+>  		if (PageReserved(page))
+>  			return false;
+>  
+> -		if (PageHuge(page))
+> -			return false;
+> +		/*
+> +		 * Only consider ranges containing hugepages if those pages are
+> +		 * smaller than the requested contiguous region.  e.g.:
+> +		 *     Move 2MB pages to free up a 1GB range.
 
-You're basically proving my point: this needs to be discussed and agreed upon.
-It doesn't matter if it used to work implicitly in the past.
+This one makes sense to me.
 
-Thx.
+> +		 *     Don't move 1GB pages to free up a 2MB range.
 
--- 
-Regards/Gruss,
-    Boris.
+This one I might be missing something. We don't use cma for 2M pages,
+so I don't see how we can end up in this path for 2M allocations.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+The reason I'm bringing this up is because this function overall looks
+kind of unnecessary. Page isolation checks all of these conditions
+already, and arbitrates huge pages on hugepage_migration_supported() -
+which seems to be the semantics you also desire here.
+
+Would it make sense to just remove pfn_range_valid_contig()?
