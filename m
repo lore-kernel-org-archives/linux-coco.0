@@ -1,117 +1,144 @@
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833B33168F8;
-	Wed,  3 Dec 2025 15:00:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.67.55.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C126E30AD06
+	for <linux-coco@lists.linux.dev>; Wed,  3 Dec 2025 15:41:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764774057; cv=none; b=dxkVXqkNblWh/qmzWvBFjp0fgaqrHgPUw7xn2T5Wi+tQUcDtXYb6De2zmP27JHBHkkAJ999bvD1b/0wM3R996+zDLWaGHoGPe8Hvv/9XXGZuFEr+XTiDAgB5QZmMmtl90IqS1U+kU3McjxVSxKsAZ8P3au7Zf/i09pBlYZESJSM=
+	t=1764776475; cv=none; b=W91+ANVaZ87XwHzxswPJAEgzINrqGAAeU/3Ummtul+Nu64g1tl5+YEpeAeZTk1r1qlLnC1oU8U1Vj5dTOwn/bE8oGfApLUs0WJkLbBdJ/7mwVtwbotILcFD32xXLlbJ4PMqL3s5e2hk+JY394VYLiJ9XvO9pgc4WDY8o2O58J1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764774057; c=relaxed/simple;
-	bh=H/WIQWuL+F++EVegTtlfllwMXbPuGlR48JJCbbuyV6o=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gpR/joA7dy43SbJfHL+jnjKzdvAbCbLNqpyc3LoYbVAZchB+5H2VTHyeti1XRtizGSlxZ6yiTY1mQYjES+EB8R8onwOA9zBhQuPH8mJR+r65HfCnOLV7lR5UZdKGMOmYXZ0BH3c5c1bhQRkFd2TOEKqsuKTYS/+pC/g/9OKFXY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=surriel.com; spf=pass smtp.mailfrom=surriel.com; dkim=pass (2048-bit key) header.d=surriel.com header.i=@surriel.com header.b=JKUqRZvD; arc=none smtp.client-ip=96.67.55.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=surriel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=surriel.com
+	s=arc-20240116; t=1764776475; c=relaxed/simple;
+	bh=4AbhQVU/HNqTPQxRtJIYaYcanF2goOzHgnXrU/BqQK4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HjL6reARLBKNSBFQOlbigAAgMidV9LjM+iwbb0YqANsO+I5tePCDiLw30KfahZvldPLkjl69IHX0J/gPqp2pFucZb2feCgPP81pmTkNSxkxajhExDfGlJoWKkqiln9O9LIf6Eq1IfDrj66lcDngymcECEzGfg2ahDtUvBWf4yFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PKwpG9pV; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=surriel.com header.i=@surriel.com header.b="JKUqRZvD"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=H/WIQWuL+F++EVegTtlfllwMXbPuGlR48JJCbbuyV6o=; b=JKUqRZvDE6idiWZ6soqKKUQHqQ
-	LJw3VsdEKREWDGD61D7hk3h8S93N7sdvvotBzWUMHyuzigoeJ3wf5XgApT+YNNMbudBRPC+OgalNl
-	o3ZxcIsxZ8qLQBD4s/ptz/u6O3GbR4gsiLPIPl9+UC5wNs0Ipf97PIqP/izl6IlvbOBZAWal9rQJo
-	mkOd6dVI0rUfMmiiDc4Ss5aTFImUhHLqCZ9kkPpl/luCvoOlpSwaVLopvA4qJ6xlZCRZX0uR48thF
-	2dUVLlwkhhvz9kIYrjChlDwxIjUpZ0YGaBPBHZAkXc39JyqJ1C5g4l7O6qNaP826R4L2bVAWpzND0
-	vk1hT7Kw==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1vQoKo-000000006tS-0aPE;
-	Wed, 03 Dec 2025 10:00:03 -0500
-Message-ID: <ed2fd8ed5d3c64e0e57e0d38fe6e3d712f22d13f.camel@surriel.com>
-Subject: Re: [RFC PATCH 2/4] mm: Add support for unaccepted memory hotplug
-From: Rik van Riel <riel@surriel.com>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>, Borislav Petkov
-	 <bp@alien8.de>, Kiryl Shutsemau <kas@kernel.org>
-Cc: "Pratik R. Sampat" <prsampat@amd.com>, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, 
-	dave.hansen@linux.intel.com, ardb@kernel.org, akpm@linux-foundation.org, 
-	osalvador@suse.de, thomas.lendacky@amd.com, michael.roth@amd.com
-Date: Wed, 03 Dec 2025 10:00:03 -0500
-In-Reply-To: <beec5651-5c23-4f5e-a0a3-d1cc01a8490a@kernel.org>
-References: <20251125175753.1428857-1-prsampat@amd.com>
-	 <20251125175753.1428857-3-prsampat@amd.com>
-	 <66ylzwknm4ftd6utn3nqr63jmhl2ccvcdvyi5fechfnvmfxivu@37pckhjixayh>
-	 <20251126223127.GIaSd_v7juUkaW4RTA@fat_crate.local>
-	 <m3l6gcjmbabudtnqwv6w67t7iz2mpmbjyrpnmiq5k2iyargn5d@nyf2zzxx7yme>
-	 <20251127181233.GBaSiUkaLzwANS_6WT@fat_crate.local>
-	 <beec5651-5c23-4f5e-a0a3-d1cc01a8490a@kernel.org>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-2.fc41) 
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PKwpG9pV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764776474; x=1796312474;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=4AbhQVU/HNqTPQxRtJIYaYcanF2goOzHgnXrU/BqQK4=;
+  b=PKwpG9pVIlO1X4nN5+JU9uOIpNKAaa6BT6a/ve0OXqT7TmMS1wJlbLFh
+   Q3W99df3sKZ6KFL9pq25NYqGkiK4dTkoHHWwcQeGG6GSwMDBgYR7xK7xH
+   V9pi5ZfXKtM3mKpvNAW39vmX1IFWCPaQUwtMCvZIWj56WD3H9RxrUntZ7
+   pwkD3pdrjVAUrK3nh6JI3jRh17i47J9+9nGIfgy0PLIlB1DoFtSG0OWxP
+   2rzhdsIGoG2uWGMsLF+5Gy+x27N1gOYKYOgONrjRM1zoyJisKMbCIEF2r
+   BSdKyBkm/vGD+UqEmq+r7oinV7Uw8hzVjrHUO+vOX4KbtUu5q3mZ6Zr0r
+   A==;
+X-CSE-ConnectionGUID: mcgF3ebkQYiT2FgiwQRx/A==
+X-CSE-MsgGUID: oE0zBpacQx6FZ+dRD4eZcA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="78239662"
+X-IronPort-AV: E=Sophos;i="6.20,246,1758610800"; 
+   d="scan'208";a="78239662"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 07:41:13 -0800
+X-CSE-ConnectionGUID: 5zF7Ut8wRIalPCPtsyZOmA==
+X-CSE-MsgGUID: enW6+D+KSfuk5fopTeSGqQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,246,1758610800"; 
+   d="scan'208";a="199139117"
+Received: from tslove-mobl4.amr.corp.intel.com (HELO [10.125.108.18]) ([10.125.108.18])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 07:41:12 -0800
+Message-ID: <04c51f1d-b79b-4ff8-b141-5888407a318e@intel.com>
+Date: Wed, 3 Dec 2025 07:41:11 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 07/16] x86/virt/tdx: Add tdx_alloc/free_page() helpers
+To: Nikolay Borisov <nik.borisov@suse.com>, Kiryl Shutsemau <kas@kernel.org>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "Huang, Kai" <kai.huang@intel.com>, "Li, Xiaoyao" <xiaoyao.li@intel.com>,
+ "Zhao, Yan Y" <yan.y.zhao@intel.com>, "Wu, Binbin" <binbin.wu@intel.com>,
+ "seanjc@google.com" <seanjc@google.com>, "mingo@redhat.com"
+ <mingo@redhat.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "Yamahata, Isaku" <isaku.yamahata@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "Annapurve, Vishal" <vannapurve@google.com>, "Gao, Chao"
+ <chao.gao@intel.com>, "bp@alien8.de" <bp@alien8.de>,
+ "x86@kernel.org" <x86@kernel.org>
+References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
+ <20251121005125.417831-8-rick.p.edgecombe@intel.com>
+ <dde56556-7611-4adf-9015-5bdf1a016786@suse.com>
+ <730de4be289ed7e3550d40170ea7d67e5d37458f.camel@intel.com>
+ <f080efe3-6bf4-4631-9018-2dbf546c25fb@suse.com>
+ <0274cee22d90cbfd2b26c52b864cde6dba04fc60.camel@intel.com>
+ <7xbqq2uplwkc36q6jyorxe6u3fboka3snwar6parado5ysz25o@qrstyzh3okgh>
+ <89d5876f-625b-43a6-bcad-d8caa4cbda2b@suse.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <89d5876f-625b-43a6-bcad-d8caa4cbda2b@suse.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, 2025-11-28 at 10:30 +0100, David Hildenbrand (Red Hat) wrote:
-> On 11/27/25 19:12, Borislav Petkov wrote:
-> >=20
-> > None of that matters if you kexec the same kernels.
-> >=20
-> > IOW, for some reason you want to be able to kexec different
-> > kernels. The
-> > question is why do we care?
->=20
-> kexecing the same kernel is typically used for kdump purposes.
->=20
-> kexecing different kernels is used for all sorts of things=20
-> (live-upgrade, grub-emu come to mind). It's quite common to kexec=20
-> different kernels, or maybe I misunderstood the question here?
->=20
+On 12/3/25 05:48, Nikolay Borisov wrote:
+>> There was a plan to future prove DPAMT by allowing PAMT descriptor to
+>> grow in the future. The concrete approach was not settled last time I
+>> checked. This code was my attempt to accommodate it. I don't know if it
+>> fits the current plan.
+> 
+> Considering this, I'd opt for the simplest possible approach that works
+> _now_. If in the future there are changes to the ABI let's introduce
+> them incrementally when their time comes.
 
-Even for kdump it is not unusual to use a different
-kernel.
+It's fixed at a "page pair" in the ABI documentation, no?
 
-When working on kernel code, getting a proper crash
-dump can really help figure out where my code went
-wrong.
+If Intel wants anything else, it should have documented that as the ABI.
+So, as far as the code goes, it's a "page pair" now and forever. Linux
+does not need to go out of its way to make it inflexible, but there's no
+need to add complexity now for some future that may never come.
 
-It helps if the kdump kernel doesn't have the same
-broken code that my test kernel does :)
-
---=20
-All Rights Reversed.
+I agree with Nikolay: KISS.
