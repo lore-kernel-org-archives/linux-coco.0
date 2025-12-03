@@ -1,288 +1,119 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA5122DF9E
-	for <linux-coco@lists.linux.dev>; Wed,  3 Dec 2025 01:51:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.21
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764726722; cv=fail; b=O8U8ZECTm41wwSj7DUbprNVAgI0Jxx5IEiStadttP6uaTadJtT4lKaCJ9NybHj9TRQ3/ztcSU6+5MJOcLQKB1X1x7CADMAY3Rx6KXtlDXLNP6N45R3d6mLnBo0Bo0gWUBYU+YYIVue/weLOUGT3MpsQkh+/8cTmYjU80pAcT2gA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764726722; c=relaxed/simple;
-	bh=kJ5mHjhKKpcGmMxWRudKySXX4JkWAaFHiYmRTh8qz2Y=;
-	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
-	 Content-Type:MIME-Version; b=dAMxxE2KQl6pCkj82Vve8pbncP6CdWknTtr96BZEE4WLSRl+GaegFgkvOJcm9yHLn35hE2oeO4EaEBHNkmQn6njVmxXyzaAowJ7YSKO9UVandVR7pM5i2qvK6mCKH48geFqlsPch6DL2bCyBK234f0FU3Q9gaZmsqhBSFwACHRU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f5SoZqXy; arc=fail smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2210723ABBE
+	for <linux-coco@lists.linux.dev>; Wed,  3 Dec 2025 02:25:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764728718; cv=none; b=gr+lhYYUcrn8TKp9l9TTyIx/XqlaebSHKqd9gvEatwxwGkFgzT5YhomHXUWJk0A4tyNFK8J6VKUKx2kqk7v1RBvTj5MulwBF2Ub8BI4Y06Iw31QBYuVwiA+Qnidwxr1oaJE7dQiR5fmuZyKy8z/LEZTWs2OZ/enSXtMdBfW5R1E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764728718; c=relaxed/simple;
+	bh=fBBc+31NOMHxr0hwy484e2a8Y1do4QItcIdmOEG5TVA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hEETbks58kZOglL/y1Rs2puGChKVt0+lBb7u7LO1tKNr/rMrg3BO5Wj6l8BxrgVwcAc9yEQgdznH4E/FxPxJ5ylOEmnvEgUwxBuRj9qthDBhRufmoqySGTC7qTFwhR1lMBwxxmgBwZvyxzfcYEKdMOtx0g0r9EPIaGFBrGljc+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XQaJXfhM; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f5SoZqXy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XQaJXfhM"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764726720; x=1796262720;
-  h=from:date:to:cc:message-id:in-reply-to:references:
-   subject:content-transfer-encoding:mime-version;
-  bh=kJ5mHjhKKpcGmMxWRudKySXX4JkWAaFHiYmRTh8qz2Y=;
-  b=f5SoZqXyMvhCvGdc2y3V0WnkTz3SgA3G2/SNFWk3eBny1CJjpXa8qQRX
-   Bdw5OqLXho0FVzK95/ai/MGt/SAnDacTG9i6P+Xjhl9Alby92lK1QV+yu
-   4q3wrUoh8/z5Sj+JEjFoC3oyk9Cq6r+TMytlsoVQxTLfUNPBAyt1ZamE7
-   YIXTQiYQMq/EhUZs/mJYccg1oYtMn8CYDTZwEb8ZA8p+pm3vi4bQjoiHJ
-   FrvZALUrurMlGY/PLpjeMCI9AKBJ291I5d4Co1n+m+c5oLk9lh1VDkGn/
-   Yk/FTHUYnWvGv5xFieoBNMI6SUThUD9CnA79ixuh/9NGgz/7F1Lk++Zsc
-   Q==;
-X-CSE-ConnectionGUID: 93YdiKWYQcuTR8B197xJcg==
-X-CSE-MsgGUID: mmNn16dASwKYaOSD4z3DYA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="66654728"
+  t=1764728717; x=1796264717;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=fBBc+31NOMHxr0hwy484e2a8Y1do4QItcIdmOEG5TVA=;
+  b=XQaJXfhMsJWUI/jF2uQNGJlaPXguxGpKYcxnvI3WMVo5TDh68iHuBGBO
+   KHOyJafVcJnl72s464YNwCKafOwhHyUq0RncTrUDBhjFCCezoQD56mHtL
+   kVUfSy84Bfp4Le1GSldn15x7VW0jHF4caAAAQfcPBzUwmO0t4tziN5qoZ
+   S4nADbyA47gq1irZPVAgukUTEgWsD1eGT+PzTTAxnN7M2hRsTlN3xx7oV
+   32E5GRddOpui/YZCXGOM0BvZ2L3iHCBtpb6TtxCHob0tRTZ750uasugkr
+   pjX50CEWl3nZ5DHXpfW6sLDFi4R+pB2HvAjB03WeG1Atzo6yqr7F+MUYo
+   A==;
+X-CSE-ConnectionGUID: o2YJObIiSpuZJVutbDgZtA==
+X-CSE-MsgGUID: 7ESRmibaQPOTqG3AiGrLgQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="66748635"
 X-IronPort-AV: E=Sophos;i="6.20,244,1758610800"; 
-   d="scan'208";a="66654728"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 17:51:55 -0800
-X-CSE-ConnectionGUID: JHX9kYIIStqwh8oVFPCahw==
-X-CSE-MsgGUID: Ukc938kNR9SdUpojg9JZlw==
+   d="scan'208";a="66748635"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 18:25:17 -0800
+X-CSE-ConnectionGUID: FKEKvrAES+SiVcJ0EpEplQ==
+X-CSE-MsgGUID: H2IDR+0OS42VLF+b5N+L8Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.20,244,1758610800"; 
-   d="scan'208";a="194224292"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 17:51:55 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 2 Dec 2025 17:51:54 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Tue, 2 Dec 2025 17:51:54 -0800
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.2) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 2 Dec 2025 17:51:54 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VjEFybYuWEzFvpC5mC/JGIEmqWYFTmx3UJ/0dqkc+YtHosJ01U6g9YTEziYFEgEmJ5+1m1p0RNI3Dd8s3dN12/8MUZpq6+MkFsYA8DZdfJLY1A9cI+vvoQKgTwwALTgz1Wv8vz62QGSTiTc94CS5Qy6hV5eTWGxOIMte9GM/xwXrOrcvfqKoK5+oHgi/Oj9kTMvzAw28pimNVWqnsse8hVCKe5P2m+YH+Dy6rfkLJS5knxyf0ySRTc0yvpOdRO7NN/5fbMG2YkDpwiuolcvl0oToPgaLYMrz6UnHyYCp5BmcNkEzJcQyb8FcQvWPAszglU0vnXQ5V5d42n+C9Bxrdg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8fZh3quIN7Ad/CQyLc6RR9UPEiFN7GtQ5cWkMf7uk2U=;
- b=R7dCcB33bOgqdjP9iLLkCpRiBykdCyVk4e7iKnkt/sVTW1357uZKhzvm0U9wsiGC48aKQHjXAr03whZqT4Nee0PNDa0AiDdATUjiJy44QUXOaJy0ZdIF5Q80UdQe1sCqWPAOW5DL7eMHLBuHPiDNrKzuMqtEtttAH5zNLO3sHE3I4+pQ21cDW/IySa+zlGRkCRZFLXIPh4EmzQsZcz4W+SCUkiM293ppDSLrjD8sXrIMhiQDzM5fxDunJzvJ0mf2Ft4ymGrHgj4FNdOwNsl1itPi2mP386BkSHbBnYE4A3SIV2KPydPFXlVUAN6SvyORFK3DLcChunqzoweiteIqvg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by DS4PPF900531A26.namprd11.prod.outlook.com (2603:10b6:f:fc02::3b) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.9; Wed, 3 Dec
- 2025 01:51:52 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::1ff:1e09:994b:21ff]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::1ff:1e09:994b:21ff%4]) with mapi id 15.20.9366.012; Wed, 3 Dec 2025
- 01:51:51 +0000
-From: <dan.j.williams@intel.com>
-Date: Tue, 2 Dec 2025 17:51:49 -0800
-To: Nathan Chancellor <nathan@kernel.org>, Dan Williams
-	<dan.j.williams@intel.com>
-CC: <linux-pci@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<Jonathan.Cameron@huawei.com>, kernel test robot <lkp@intel.com>
-Message-ID: <692f97b5508f9_261c11005c@dwillia2-mobl4.notmuch>
-In-Reply-To: <20251202234435.GA1692217@ax162>
-References: <20251113021446.436830-1-dan.j.williams@intel.com>
- <20251113021446.436830-2-dan.j.williams@intel.com>
- <20251202234435.GA1692217@ax162>
-Subject: Re: [PATCH v2 1/8] drivers/virt: Drop VIRT_DRIVERS build dependency
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ2PR07CA0016.namprd07.prod.outlook.com
- (2603:10b6:a03:505::16) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+   d="scan'208";a="195336618"
+Received: from unknown (HELO [10.238.3.0]) ([10.238.3.0])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 18:25:00 -0800
+Message-ID: <daa72134-387b-467c-8eed-88591287c983@linux.intel.com>
+Date: Wed, 3 Dec 2025 10:24:58 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DS4PPF900531A26:EE_
-X-MS-Office365-Filtering-Correlation-Id: 26b857d1-0059-4fe7-6276-08de320e86ee
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?TDVxRnNiWHZaSU9FNjB4ZzhVclNoZFhJemNvZ1hnamNxZHJBVzRUQ0hsbFIw?=
- =?utf-8?B?LzYwRjZVZk80SmtKeVhtVmttakFHU1JDS3NLNkc5eE5OZnNJam5keitHYUZI?=
- =?utf-8?B?MmlRK05WdnFCN0s4aUdlQ1BzNy9mNXpKSlBLUllDb081ZmxZZ3h1MXZseXh5?=
- =?utf-8?B?V1ltVERpSDhjaXd2dmNpYXpYYjY4RGo2clN1ZWRwMUdOWHJVbzJUNUR0bVls?=
- =?utf-8?B?UXZhdy85ZU1xeU1NM25YV0EzTzFaN2hlazU1TkV1Y1dpQTFvN3pZQ3p4Uytm?=
- =?utf-8?B?UkdNSkRkeEJLbnZ2ZGN2MW94ekdEZ2MzQTJBcUwrTUNhMWtPV2ZhazltU2ZO?=
- =?utf-8?B?YWI3eGRVZEgvRm80MlFTbE9FWFlwQVdOT1dyd0llbFJZd0E0emNMTTZMK0V2?=
- =?utf-8?B?SjFNSm1iUWg2ajhLTG55Q2JkUllJa2hwSkUwS09PNFZoakJvVVA4UXJyaEc3?=
- =?utf-8?B?T1A4T241dEN2M1ZleXRtbDNEdVdBUzdOV3hwK2FrSU44SDZiakhVTzREZ2pp?=
- =?utf-8?B?ekNDK1RCWlFPajcwTi8vS2JVWnA2dHpTSkxpMlpLcUpCb1NDMkYwVnM4NXo0?=
- =?utf-8?B?VG1JK0VxNjVvYXMvcGEzdVBYWTdaZ3Z0VUF5NUtQT1VBai9Xb2xqUUJvekFu?=
- =?utf-8?B?ZWQ2eVlsa0d0RXZ5ZFFnVjlUd2V0bWVGU1N5dHhsNEdzekpnZWVaK2R4dHgv?=
- =?utf-8?B?N29lcXQvQWhMNEhsSkNPZHlZQm5EK3Y0b0NPWVUwcmIwZzBwcHpqcDNMS2xQ?=
- =?utf-8?B?cnpOVitIUTRycjhMeFBCcTgxWGRBaUNqUWFNc1ZQbDJhYUdYUU9pdU10Y1Bq?=
- =?utf-8?B?T3B2UmhNL2U3MjdTQWxqcUxaQmJkdE10UGR0enZCNG5adEc0ZC9iOWV2dUFZ?=
- =?utf-8?B?Rk1rOEZHbndkOEZDcVY2TytDbS82cXdFSVhRVXFXUlJBNmdROXg4aklOWk1j?=
- =?utf-8?B?enZXbGpMRkQ3ZUtINFVpNjRoNVl5eUFlZUI4a1VIbUx1WHhBTmJDVGg2bDk0?=
- =?utf-8?B?VnNBSlFGcE52RmN2dUJmd2M5Q0x5WkVWNURjRG5SdnlKRlBYWWV6MUxHRjND?=
- =?utf-8?B?VzdOb2t2U2NVckVOd1RzdnJ6T0QzcnFuQWJESGxiWXpNZUEzMmQ1d0hmOFZM?=
- =?utf-8?B?bkd5RmkwYnIxRVNGKzFtY3NQMmFNb2M4TGlPTG1CT3F0b3lGeVEwS1RlcUlX?=
- =?utf-8?B?bGptU0R4bHNZK2FLalh1YVk2WlJPTkt1TWxVaFQ2L0dONk5yMEUwZi9yQ0F0?=
- =?utf-8?B?Q2ZYcnVHNXZSZnFKeitKU0dRSjYzRzBwcWJYZW1LaDBWQjU4YkxNTEEwUWFI?=
- =?utf-8?B?UE1lem1maUxORUJIaGZtNTg1TFVYRW1iVWJtcGx1K3lrVjdUMFY3aC9LTk1G?=
- =?utf-8?B?L1FBTEVTeUZlaU9IdnBsUWhFUmhYNmZYcU1XTUxDeExkbjdFb1dWbmJZeGwy?=
- =?utf-8?B?V2doNzRjYjVIYStHYll5YUFVSDNDZXppbFNiUml0NmcvRXJUSXBkV3FTZE80?=
- =?utf-8?B?NEUxZ1FXdmEvM3h4bjJwdlNaYmFnQ3RiYlRPNEkvZC9FcFkzN09OdVpvczk4?=
- =?utf-8?B?UmQyNlIrQU5QL2EvNFV5cEZ2R1JMY21oeGJXUnRuMzk3UjJFNHc0aHcrNnNW?=
- =?utf-8?B?S05JeEJEbTdTeVRGNmQwcG4zQU8yLzFvdDU0a1BST2pFdUVsSHpCVEsvN2Mr?=
- =?utf-8?B?cmFLTEl6d2NyRWZYczhjYjFDSXJYa0w5QXRuNmQ5c2R3Y05EM3JyT2puZW5i?=
- =?utf-8?B?aHNFY1BLTzFUYWNPbVZPVjF4cmZHNVFqMkhuZUE2ZXZCYUdQczhwYkt5L1RR?=
- =?utf-8?B?d3Z6Zi9zUjZKMUR1enBUV2hRek5OaHUweDhmdmRhTFJiZHp2dXg4UmZxVS9I?=
- =?utf-8?B?T2E3NzdUeTUvMlFQblI1d1hNazhnbUxpSGVwU2x2dXk2WXVYcktjcEZDMStG?=
- =?utf-8?B?a293b1oxUU9LZWRGcnRJQzNZZ1NzYnRuOXc4Z3pSeUlZdC82YW5wSUlucVQ4?=
- =?utf-8?B?NTRPajQ5QTd3PT0=?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?T0NqeWdXdlR3akorKzJTMWFFb2RkWHRDQkhDdzdCdGdqWXdYTld3SmRQTGVR?=
- =?utf-8?B?c0trMFhjcDhZM2poZEJzcC84L1M3eDdsczVONnpOakpGS1RuK3hVVlpqMnNN?=
- =?utf-8?B?L0RyV1pNM1ErQ1c4VnE4aTBiOEpQYVdEcjlHeFkwaUlGYjdOQUFtUmZIWjhm?=
- =?utf-8?B?NTFkTlowUGs1OGNqVUplMndORk54VUh1Ym85TTl1UWJwbmVMd2ZsRGhYMmVR?=
- =?utf-8?B?aG9JTSs2cVFKaXJ3NVl4SEZldnJGREgyY3JnRHdIbk45S3Y1RDYwT25VZTJw?=
- =?utf-8?B?TEJLdmoyS3RudFVFUmh0dnhWRFhiZVl0SGR3ZW1vdmNjYkZIejBXSDZVUllJ?=
- =?utf-8?B?YjlUeEF5eWtBdDRVNTZjTnhtZ0pPSS9Vb0FEQWw0MEFFL25Ba2NZb01GYU16?=
- =?utf-8?B?aERFdE1xMkxuc2M1aEFONkJpRkorTlNxU0Y5WFFrTXNVQVpzanRPS0NUM0hl?=
- =?utf-8?B?VXBDMTVWbnFiMFl4L0VqYUZGdmFUZW5MMHgwZmJIdUdMVHNHemtUcGpHU3lD?=
- =?utf-8?B?aVFUYzNTdmgwSERWY2pNM3JpSGdtajc0OTRTMzNXWEZMV2JYT1FEc2JtQUF6?=
- =?utf-8?B?Z1N5UDJJcVNieHRHVWxQaWxoZlZoUmppY0tLZWZ0RTRCM0FwY29aUjhmRXho?=
- =?utf-8?B?UlcyZkJKUnpTR2daUzJUd3ZTN0VVWUVISDhJWFVwNDI5eWhsei95TVZJelU2?=
- =?utf-8?B?SVVMU3U5VmxnNlIvSkxJVmtmTUtSY1RxWXdOU04xaHFVSHArLzlFa1VRM2Q2?=
- =?utf-8?B?YTNyaHRwWTd1Tnk2OW5BR1diYSt3ekpGT09aZzhNTzl2WVI3M3VObFFSQ2xI?=
- =?utf-8?B?K1FRU0FHamRZTDZvVDBGanlGSmRhTVMrVVJudlRmYk5zcEhTT0hkdzhwY29T?=
- =?utf-8?B?cldQdjV0NUpBMkFzZ0RmQWlNUzB2SG1CU29OdTNIaGFhTjNGMi94SFlYd2Jm?=
- =?utf-8?B?M1BsK0tkTlB4a0dtaUFSQ1VBYjUzOWk2a1NodkFpc21nUmtzN0NzZm9GQkJ1?=
- =?utf-8?B?cFhoQWNtcVNIdUU2T2JaYUordXBOMEZxcm5weEczcVpuZjJFWnZaenlGcHIw?=
- =?utf-8?B?VXc2Z1RKaDBxSStiSytwbnR0TG5wRDhmVHk3em8yQm5FY2NWOFlhLzd5c2sv?=
- =?utf-8?B?ZHhoUDF2SGlLNmdVaU56Zm85S0xKb2c1eS8xa094c1VuU3VjVGpGQVo4YVpz?=
- =?utf-8?B?dlpCZmtxdmx1b2FaVkYwckxqclhSZCsya2pxMnhIOEhPUGlkZWw0NHRhTmxX?=
- =?utf-8?B?OTNySFpST0JnVmJBV2hEcUh2M2lGNGM4cXFLMUtRUnduWmg3M1pnYzEwZGRN?=
- =?utf-8?B?azF3NnRpci9EcGFYWHFRdEwzNjk1YUJ4bnk1TzFVbVB4ZU1IUHM2bFl1WEd3?=
- =?utf-8?B?cjlLUVAyM1FPOVYzZFR6NGFyUHBaNFRQYnNMbGZVcUNFSUU4MWZxTmNYemh0?=
- =?utf-8?B?bk9MZGt6em0rWkNrVUdPVEphbFlGQjVJNFBnNDhQU01nZVp2UmRraXJ1eVlk?=
- =?utf-8?B?eUpWWFJLQ2pFN2JKR2g4RnJHaUZTS0ZieG1SOVpGTjlpd3RqZ3p5MlQ1UjJs?=
- =?utf-8?B?bStSS0tsUFRQbWtEL0hVcHdLeDRHZkx4TldmaXlFc3pmUmdnMGFRckNLQzNo?=
- =?utf-8?B?VmpYTE9UOCtYYzQybnBmUkVkTHVYT0Y0L1lRWjBHTytqVSs0dDl1TjljWC8y?=
- =?utf-8?B?Nml5dnN3QkhzMVhpV2dTL1Eydm1jRi9TS3VFRnFSbnN6YU5icnE5aWd0SHlE?=
- =?utf-8?B?Mlp0cU1BU0ppRlgzRVlvL2h4aVdjQkdWeGtGQlpTWXU2blAyeWZUbFN4TW9l?=
- =?utf-8?B?ZVoxMkdCQzlzYzE1ZzY4VVMxbURudHBpT2FORTNTRnFlSW9NQlZlN1pKaTN3?=
- =?utf-8?B?YjhSN2ZZeUIxYTdSbnpJbHpwdC9vV1oxNmIyOTZScXFqYWtjVjducUVOR1Jw?=
- =?utf-8?B?OXAvUS9YQUtNanQ1R3M5NDFCa1IyTUlXc0dGQ0d1eVc2aHdRMUlvMllDejdi?=
- =?utf-8?B?QjdwZmdNMitKTEVkWU5YOEpKM2ViSjBZUi9kTThCeUszL2xZYlU0TVlDenZk?=
- =?utf-8?B?OW1YSWJtVGY0UDlHclJZbUFHQW9BQ3VkV0xVVDQvMVpqblJ2V0Nua2p6cXI4?=
- =?utf-8?B?dFRORk11QTViN0pzcnFjMFYwalBpWnFtbm0vekRuZ3hhUVlTQjNoQytiaUFB?=
- =?utf-8?B?dEE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 26b857d1-0059-4fe7-6276-08de320e86ee
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2025 01:51:51.0265
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UveT45hGgzszcubgh7flstz3ykPeEKFAPmqCxbep82jlJupBXe5epDsUOuVFy/zEKUUBOu/ZDz4Tgpn6fIBZuurfmQvQbxSMktEeU8x36CU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF900531A26
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 14/21] x86/virt/seamldr: Shut down the current TDX
+ module
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org,
+ reinette.chatre@intel.com, ira.weiny@intel.com, kai.huang@intel.com,
+ dan.j.williams@intel.com, yilun.xu@linux.intel.com, sagis@google.com,
+ vannapurve@google.com, paulmck@kernel.org, nik.borisov@suse.com,
+ Farrah Chen <farrah.chen@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ "Kirill A. Shutemov" <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+References: <20251001025442.427697-1-chao.gao@intel.com>
+ <20251001025442.427697-15-chao.gao@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20251001025442.427697-15-chao.gao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Nathan Chancellor wrote:
-> Hi Dan,
-> 
-> On Wed, Nov 12, 2025 at 06:14:39PM -0800, Dan Williams wrote:
-> > All of the objects in drivers/virt/ have their own configuration symbols to
-> > gate compilation. I.e. nothing gets added to the kernel with
-> > CONFIG_VIRT_DRIVERS=y in isolation.
-> > 
-> > Unconditionally descend into drivers/virt/ so that consumers do not need to
-> > add an additional CONFIG_VIRT_DRIVERS dependency.
-> > 
-> > Fix warnings of the form:
-> > 
-> >     Kconfig warnings: (for reference only)
-> >        WARNING: unmet direct dependencies detected for TSM
-> >        Depends on [n]: VIRT_DRIVERS [=n]
-> >        Selected by [y]:
-> >        - PCI_TSM [=y] && PCI [=y]
-> 
-> I can still trigger this warning on next-20251202, which contains this
-> change as commit 110c155e8a68 ("drivers/virt: Drop VIRT_DRIVERS build
-> dependency").
-> 
->   $ git merge-base --is-ancestor 110c155e8a684d8b2423a72cfde147903881f765 HEAD
->     echo $status
->   0
-> 
->   $ make -skj"$(nproc)" ARCH=arm64 CROSS_COMPILE=aarch64-linux- clean defconfig
-> 
->   $ scripts/config -e PCI_TSM
-> 
->   $ make -skj"$(nproc)" ARCH=arm64 CROSS_COMPILE=aarch64-linux- olddefconfig
->   WARNING: unmet direct dependencies detected for TSM
->     Depends on [n]: VIRT_DRIVERS [=n]
->     Selected by [y]:
->     - PCI_TSM [=y] && PCI [=y]
-> 
-> I would think you would need something like this avoid the problem but I
-> am not sure if it would be acceptable, hence just the report.
 
-Oh, yes, thanks for that. It turns out I fixed the compilation problem
-associated with this report [1].
 
-   ld: drivers/pci/ide.o: in function `pci_ide_stream_release':
-   ide.c:(.text+0xffb): undefined reference to `tsm_ide_stream_unregister'
-   ld: drivers/pci/tsm.o: in function `connect_store':
-   tsm.c:(.text+0x1d42): undefined reference to `find_tsm_dev'
-
-I missed that the report I ended up quoting [2] was only about the
-Kconfig problem not the build error.
-
-[1]: http://lore.kernel.org/202511140712.NubhamPy-lkp@intel.com
-[2]: http://lore.kernel.org/202511041832.ylcgIiqN-lkp@intel.com
-
-> Cheers,
-> Nathan
+On 10/1/2025 10:52 AM, Chao Gao wrote:
+> TDX Module updates request shutting down the existing TDX module.
+> During this shutdown, the module generates hand-off data, which captures
+> the module's states essential for preserving running TDs. The new TDX
+> Module can utilize this hand-off data to establish its states.
 > 
-> diff --git a/drivers/virt/Kconfig b/drivers/virt/Kconfig
-> index d8c848cf09a6..52eb7e4ba71f 100644
-> --- a/drivers/virt/Kconfig
-> +++ b/drivers/virt/Kconfig
-> @@ -47,6 +47,6 @@ source "drivers/virt/nitro_enclaves/Kconfig"
->  
->  source "drivers/virt/acrn/Kconfig"
->  
-> -source "drivers/virt/coco/Kconfig"
-> -
->  endif
-> +
-> +source "drivers/virt/coco/Kconfig"
-> diff --git a/drivers/virt/coco/Kconfig b/drivers/virt/coco/Kconfig
-> index bb0c6d6ddcc8..df1cfaf26c65 100644
-> --- a/drivers/virt/coco/Kconfig
-> +++ b/drivers/virt/coco/Kconfig
-> @@ -3,6 +3,7 @@
->  # Confidential computing related collateral
->  #
->  
-> +if VIRT_DRIVERS
->  source "drivers/virt/coco/efi_secret/Kconfig"
->  
->  source "drivers/virt/coco/pkvm-guest/Kconfig"
-> @@ -14,6 +15,7 @@ source "drivers/virt/coco/tdx-guest/Kconfig"
->  source "drivers/virt/coco/arm-cca-guest/Kconfig"
->  
->  source "drivers/virt/coco/guest/Kconfig"
-> +endif
->  
->  config TSM
->  	bool
+> Invoke the TDH_SYS_SHUTDOWN SEAMCALL on one CPU to perform the shutdown.
+> This SEAMCALL requires a hand-off module version. Use the module's own
+> hand-off version, as it is the highest version the module can produce and
+> is more likely to be compatible with new modules as new modules likely have
+> higher hand-off version.
 
-Yes, I think that looks right to me as core infrastructure pieces are
-not user selectable like the leaf drivers.
+According to the TDX module base spec (348549006), each TDX module is built with
+TDX Module Handoff Constants, including No-Downgrade Flag. If the current TDX
+module is built with NO_DOWNGRADE=1, the hand-off module version must be the
+current TDX module's HV.
 
-For now I will note the mixup in the pull request and would be happy to
-take an incremental patch fixing this up.
+This patch series doesn't seems to handle No-Downgrade Flag, IIUC it needs
+to use the current TDX module's HV to avoid failures.
+
+About "hand-off version" and "No-Downgrade Flag", I still have some questions.
+Is it possible that two TDX module versions have the same hand-off version?
+If the newer TDX module built with NO_DOWNGRADE=1, is it possible to downgrade
+to the older TDX module when they are using the same hand-off version?
+
+> 
+> Generate changes to tdx_global_metadata.{hc} by following the
+> instructions detailed in [1], after adding the following section to the
+> tdx.py script:
+> 
+>     "handoff": [
+>        "MODULE_HV",
+>     ],
+> 
+> Manually add a check in get_tdx_sys_info_handoff() to guard reading the
+> "module_hv" field with TDX Module update support as otherwise the field
+> doesn't exist.
+> 
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> Tested-by: Farrah Chen <farrah.chen@intel.com>
+> Link: https://lore.kernel.org/kvm/20250226181453.2311849-12-pbonzini@redhat.com/ # [1]
+
+[...]
