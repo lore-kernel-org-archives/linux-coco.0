@@ -1,62 +1,73 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FCE2329377;
-	Thu,  4 Dec 2025 08:43:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764837784; cv=none; b=gdofa1ZFOOeClHxVQmW7CoAO+tuvdUkyjgKsyE9Zq3pbeh837nk6PzlV71CqbTPE+NGuiJLus9TAAluR5WPAODwQ9CaS6nAMc45+AxLNkYkSkJjP23xvi+d8DMXA4lO/zAB8yoRbAkLEIADqJgxUyTI0rta0LIquX7G06lLUeIY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764837784; c=relaxed/simple;
-	bh=QlD6M2aw/n3mE8M9mDbO1n1UIfYGsMzLLX3pT23jvf4=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=A+PtIY3kdMONMCh/tPZ8NxEyUlOaFzX617NdvnJ84Ni3NJMN0t0jHFDS87a2qaK2x2JujLKMpZYLhox3TxiOP4P5GWAfUUWAZsobZUDA2gZUEhoRLGBKI0xg/+qUAhZbinM6ktoZXzvLnKXe0/0qIzblPoV4tRJOa+3Wc2aL2H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=7fuWXAl7; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="7fuWXAl7"
-Received: from 8bytes.org (pd9fe9b10.dip0.t-ipconnect.de [217.254.155.16])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 4EEC15CD41;
-	Thu,  4 Dec 2025 09:42:54 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1764837774;
-	bh=QlD6M2aw/n3mE8M9mDbO1n1UIfYGsMzLLX3pT23jvf4=;
-	h=Date:From:To:Subject:From;
-	b=7fuWXAl7GG6MWSBAUIsuYyQqSxkoe8DKAmuYTOy+ytkPUqtQU0+aPcVAwlafZgdg2
-	 b7CbRPASStyEcLSH0allTKCbgdqUx+k5rQnJl4pXWS9NJ9pulToSqO+L0jJrWvqSwi
-	 n6jR+KxSIeIkUTvPqB4TKfO3lds7NvP2XYBQjld0GNvIT4Ip2Id6nbQtk6PCQy1klW
-	 kNL0JdCVOAbOy9K+rCezrFjDncYnoUG9OQSae3WIZObIdbV2NqoCUm3fENyfpPbi8C
-	 wWs+iNcTtyEUx+S7Awpr78UGoBaEH/el3Oop3DnRwzBTpxQOA6okMFWXhOhHxhNjiN
-	 wGE984I3FLseQ==
-Date: Thu, 4 Dec 2025 09:42:53 +0100
-From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
-Subject: SVSM Development Call December 3rd, 2025
-Message-ID: <iictbx56hjjtndzjaaca7zortptodwgtxw3wojot3cbm577hsr@vrcdtdwilrku>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED992DEA87;
+	Thu,  4 Dec 2025 12:48:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764852494; cv=none; b=rnDP6HUQ6dkys44AHfyzUfsci0P0pUFOCDYSTh8ROajAHwBFF+HScB5uMHHYVOJS88zjJ10mr/deG7XRrqbPZgzymJ0DTqMGrbC1d79MBqsQcOJVUyE8Sqbs8JRqwfFK+sJqqI9vC/xPnkIVTWcLK58QKnfxMeB+SbJTU1SX36I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764852494; c=relaxed/simple;
+	bh=h0mDEHs1mZljtd5ix0ERgyzzSqiPJYv79zx77X7i/cM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=soOox8TgQdwk1b14lP7hwC+6dnojmlND3zAVT/HvukS2HXeLaWhjBgJ9gdKI76XRtGRAV/oggXgEUovgg1lrMmzSNKCHKuY06WGmtLSW5Cb3eBb1OQLXEPQnXa7PExAAoemAEHKncidAaFEEaNk+VW36QRWiIBr8duTWO7TVhec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kfOAiffO; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kfOAiffO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD7FC4CEFB;
+	Thu,  4 Dec 2025 12:48:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764852493;
+	bh=h0mDEHs1mZljtd5ix0ERgyzzSqiPJYv79zx77X7i/cM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=kfOAiffOB1p+4LUNUty5YfREJsoKOvEX7SAkBSfIigOuObZ9quz6G6cqnzrQtgaYz
+	 PQYwFnb48clF6glwv0eYs8HZ4RLJrP9O8kj51jOe0G93IatDvtyCoHuN7nF5rLC47r
+	 dTjvPqxL47Srkugb8NBBwww185DcH8Z0QVmQFyrAjOG0GRC2brFGLJEGPPTEY7APzi
+	 R/hvZ/E9/PrQM7ji9V2Xe/wyWpqbxoYiR3sWjJu8Vqlnv9SecIm/eC0iwgBFVkEhOm
+	 prsZuSxpsgi8EHJFO8JfR2uPvGJGGc4ztngAMYqAOUM9Y5D3BsZoTSpJBK9MxlYkNK
+	 njcIETniAsvPw==
+From: Borislav Petkov <bp@kernel.org>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: <linux-coco@lists.linux.dev>,
+	X86 ML <x86@kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 0/3] x86/sev: Carve out the SVSM support code
+Date: Thu,  4 Dec 2025 13:48:05 +0100
+Message-ID: <20251204124809.31783-1-bp@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
 Hi,
 
-I completely forgot to send out a notice for the SVSM call yesterday, sorry for
-that. I am all the more pleased about the numerous attendance despite my mistake.
+I've been meaning to do this for a while now but didn't have a good idea how
+to do it nicely. Using the internal header makes it almost trivial.
 
-Anyway, the meeting minutes from yesterdays call are now posted in this PR:
+Thx.
 
-	https://github.com/coconut-svsm/governance/pull/89
+Borislav Petkov (AMD) (3):
+  x86/sev: Move the internal header
+  x86/sev: Add internal header guards
+  x86/sev: Carve out the SVSM code into a separate compilation unit
 
-Please note that next week there will be no meeting due to a lot of people,
-including myself, being at LPC. This means that there is one more meeting this
-year on December 17th before we start into the holiday break.
+ arch/x86/boot/startup/sev-startup.c           |   3 +-
+ arch/x86/coco/sev/Makefile                    |   2 +-
+ arch/x86/coco/sev/core.c                      | 380 +-----------------
+ .../sev-internal.h => coco/sev/internal.h}    |  32 ++
+ arch/x86/coco/sev/noinstr.c                   |   3 +-
+ arch/x86/coco/sev/svsm.c                      | 362 +++++++++++++++++
+ arch/x86/coco/sev/vc-handle.c                 |   3 +-
+ 7 files changed, 403 insertions(+), 382 deletions(-)
+ rename arch/x86/{include/asm/sev-internal.h => coco/sev/internal.h} (75%)
+ create mode 100644 arch/x86/coco/sev/svsm.c
 
-Regards,
+-- 
+2.51.0
 
-	Joerg
