@@ -1,57 +1,57 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF94A25785D
-	for <linux-coco@lists.linux.dev>; Sat,  6 Dec 2025 01:11:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C3125FA0E
+	for <linux-coco@lists.linux.dev>; Sat,  6 Dec 2025 01:11:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764983477; cv=none; b=X0ivphm2tKcm7Xq69DyFOkRIuNRIxJw/BTwfGhc+/AombR93hTiSz2UCCD2cEAF1sTb4fGoQW2wd7yTn5CDGwsClL/eSFWQrj9rj7svbrmji4IEMbm9e3z9uMtqf1N84Vm4ZUarGFoJa8KzWKJgkuwStQ2rUjsTtjcAWSW9r/FE=
+	t=1764983478; cv=none; b=c4wJo/x9d8yhlUkrOvrih8LG4zqYUh8vs42PM8GjE/p/8WPXLVKxxYuFaKopUhZYOUT+xH3HKHYp63w8s5pmNVi9RXfSfcNbjQnhAIcHyGkrt+HgSwvMICy5KI8WxHLit4ITZRF/Noi9qs5rKU9yiTYxue4ITjfdArivvCvsZ5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764983477; c=relaxed/simple;
-	bh=l7luhA58Ogc/VIls8G8zjcbt0uhbWWok9pxvmMLiVs0=;
+	s=arc-20240116; t=1764983478; c=relaxed/simple;
+	bh=KQpJgpfMzgTc3IeJzO8g2QU2GWsQrVFHCetE2jQYut8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=YGwBN4KNyWLojaCneDmKceQ3yH4Ab199TTxpSwJg50JTsE4uSQun10ArtfEeEQkLAB3kIEgRDQwSUkakcSScH4uqRmoX6vEhUhXE8O4IMiQIhj8qB8T8+DWjozJ8tthK5A4OHI6NApJSlpaXCtpHWlptO5afR/6sQ1u2jyxbhf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B+CwgpeG; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=XQCIA2fdTmzvVoP0ivaiH8uw5CDVH93usEokyDfH9z6p7NRenIe1mVHvVLS9gzvsSuEGqsBM9rkokntnireuiO8RLto5nCoh9JOWVSnjHkR7ih7EJxujqFE4rsfzr2K4dtjHQfoy3PIE+AwrBTUnQJrAnAhqlDr+QZpOIXrunhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=geO8tMsC; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B+CwgpeG"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-297f587dc2eso3591365ad.2
-        for <linux-coco@lists.linux.dev>; Fri, 05 Dec 2025 17:11:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="geO8tMsC"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7ba92341f38so2753774b3a.0
+        for <linux-coco@lists.linux.dev>; Fri, 05 Dec 2025 17:11:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764983474; x=1765588274; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1764983476; x=1765588276; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=9IgG/EwS0rhU6/zESmY7/VVF5fzyu73j5FogJ2Eynxk=;
-        b=B+CwgpeGv1S6snvh77udapCONK3+nxd9/vhHw8l7pHoKTMb9IrItpNgqYNvdpwGl5O
-         GjGF2XZ3DYxBkD/gwznR+5gvoDnoyXoBGf9Brz/ocVgaCINSUgD1O8GXINsikG4yiBrZ
-         NOF/ljGC2HTDirV6PxUExJQqUZEj79y8lfMdHRHeyhQCedKuq+VM4ZpZuNAXmSrbp5SK
-         o2T2KgUCYfeiavDwZfKvbRllXL1/JR0i2pHbhcPBHPCzqfFteZWkCfGxGPi9ZPsOLXqA
-         4nkjXNDgRVQ1bfMxsVl6np0UrAYNEmjmGh0BeVa6i6N474XR7j8IfgMCif8M6GVozX32
-         YOXg==
+        bh=JojZY3uhd5k3hZOQJMhjmwW30PBC8/7wDoPAbDrCEls=;
+        b=geO8tMsCsFanpRpQxYDfxLF7SmVi13q6ZF/uS8RsgrOEnmMsPEKgmxieFu165UO/me
+         dfgYxVrwwNn7U87bBWDQr0RlGgu+i5zf0YkEQbjlwpx3yTiMy73p++Efz9b64QrBJjfc
+         mK2BabSHVBGHXU9bKIDzmc7bKomuvw+fKR5JHcBuiH3QrbR1ZLdp79rDnrrUd3RcYQc2
+         YN0Noe8b45/Gzoz2HXzzrZXW6VTJRy7h3QVZbTsSBWaEMT7kYC57KpsTCaHs9JaY6z72
+         6BGM8UxWez+KM/ZWi9vc/DY3ewKKSVT5IyWAnVoa4pne9eVcTqgfzKzdZxKo3h5U+sf9
+         OV1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764983474; x=1765588274;
+        d=1e100.net; s=20230601; t=1764983476; x=1765588276;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=9IgG/EwS0rhU6/zESmY7/VVF5fzyu73j5FogJ2Eynxk=;
-        b=rOL4Fuws0dpz8EqPbAFNb7c9BPGCKgXbwaNsgNdHOvr+R8VZN7ApaAyIxyNOyIb9Nw
-         jUe1Vke5+GP9QJT5VlN4gjIQoARYBUIUwaSccs0OE6UsFCimiZDGmiS7fUTszlR1YfC6
-         a6mi+YtQvi2YJ3/lxFbNxXeTBfU5YJsRKon6EEfwAvYDN/Z7yvADGidirx2qD+xf6mQC
-         kQ0yeKr/LbJPg5/g9e932xZDghOIOd9GyhruxwhgNHbqc4TeawzgZq9/9LNszdS5cM0G
-         KHTdeEN4k7ugtk50aJsLrGVZ6QLpwJTOaZecfN61kv160Bc+mWxNpslPq0kX/V7ifgYm
-         2c0A==
-X-Forwarded-Encrypted: i=1; AJvYcCV8dqUfqutHBs6ju1DPFhmG4pTyMqFHKcJXEd8b96es9qb5v47pSprriNfg7VRtAiJDBNltg3HL2ix4@lists.linux.dev
-X-Gm-Message-State: AOJu0YwK0XC9T9D6Edwff23/BI+tJgyv11NTCKIdX6aH2YEATjXrETub
-	ED4ju0bt6723OuwojFK7SQaegx+Gv1GIHZ66Teuy7191WtMk69pmxWVw3HkhWVl0FBdWG4it2wN
-	YHCmAFg==
-X-Google-Smtp-Source: AGHT+IGRS9sQuIP9/GMS0SenwgYnysTWUy3gYbpCBzzZG+YUTgplWaBrw+naN0TdcM0x09NFhWX66ud1UBI=
-X-Received: from plse4.prod.google.com ([2002:a17:902:b784:b0:298:3a03:dc2e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:240e:b0:298:5599:3ab0
- with SMTP id d9443c01a7336-29df59a867bmr7455415ad.16.1764983474152; Fri, 05
- Dec 2025 17:11:14 -0800 (PST)
+        bh=JojZY3uhd5k3hZOQJMhjmwW30PBC8/7wDoPAbDrCEls=;
+        b=LxWA/2ZfKUK6IgkuuQVuP8MFXzlgmttCAQ0Sa5UlCNLHTsOyVencq9v9fOi509kv/Y
+         MZS+yj8PHNFNQUuwltpo1lWBzddtrBNdJpULONd7A0vJsewU/VPiq1QDCYaIxu4cTQqy
+         taawOyz8EFQwbmgFpEKvOe5hGeF+V+WDd2Lkjk5TefyytpktizTAJXIDzHAP6g5iQZMv
+         5C+MPdCxHrD8mOYoiqlBvzpNSftvx1PrrYXx+YyZeGQAnSJxqIphv30bcSadt9kc1y9Y
+         4e19RWzrpdD+35OW323cbuPhthf9tzov2ZnEmmJIGeOkWIJf+wYIxzdMhMTufMze6JnJ
+         1+iQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVySN215bizBI+nAZABhFZo/JkKVFR6owInhbfnHpjISlmF3rLCMD4DSQnmAJpCiHWMdcZ38YX48tad@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx2hVA1GOvEoaGpg2e4amq+lsJT/mFc5aaVeqK8O+j8nNO8s2hk
+	YURuRgUzhCcYQ+CINHZJfwt3nmFL3iuVFi9yIE7D90IOxbzHwobj+gKT7laawwEkt2ARmacpn4f
+	QPqcPqQ==
+X-Google-Smtp-Source: AGHT+IEiragae11BDcwJ25pWhkPQUadOVyTO8WpDoz2naWj0OyOQpfwATE9mA9Trjd4vlWLzMj3ulCcvo0M=
+X-Received: from pfmm5.prod.google.com ([2002:a05:6a00:2485:b0:7cf:2dad:ff87])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:94f1:b0:7e8:43f5:bd54
+ with SMTP id d2e1a72fcca58-7e8c5048a31mr914583b3a.64.1764983476061; Fri, 05
+ Dec 2025 17:11:16 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri,  5 Dec 2025 17:10:51 -0800
+Date: Fri,  5 Dec 2025 17:10:52 -0800
 In-Reply-To: <20251206011054.494190-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -61,9 +61,8 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20251206011054.494190-1-seanjc@google.com>
 X-Mailer: git-send-email 2.52.0.223.gf5cc29aaa4-goog
-Message-ID: <20251206011054.494190-5-seanjc@google.com>
-Subject: [PATCH v2 4/7] x86/virt/tdx: Tag a pile of functions as __init, and
- globals as __ro_after_init
+Message-ID: <20251206011054.494190-6-seanjc@google.com>
+Subject: [PATCH v2 5/7] x86/virt/tdx: KVM: Consolidate TDX CPU hotplug handling
 From: Sean Christopherson <seanjc@google.com>
 To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
@@ -73,404 +72,232 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
 	Dan Williams <dan.j.williams@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Now that TDX-Module initialization is done during subsys init, tag all
-related functions as __init, and relevant data as __ro_after_init.
+From: Chao Gao <chao.gao@intel.com>
 
+The core kernel registers a CPU hotplug callback to do VMX and TDX init
+and deinit while KVM registers a separate CPU offline callback to block
+offlining the last online CPU in a socket.
+
+Splitting TDX-related CPU hotplug handling across two components is odd
+and adds unnecessary complexity.
+
+Consolidate TDX-related CPU hotplug handling by integrating KVM's
+tdx_offline_cpu() to the one in the core kernel.
+
+Also move nr_configured_hkid to the core kernel because tdx_offline_cpu()
+references it. Since HKID allocation and free are handled in the core
+kernel, it's more natural to track used HKIDs there.
+
+Signed-off-by: Chao Gao <chao.gao@intel.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/virt/vmx/tdx/tdx.c                 | 115 ++++++++++----------
- arch/x86/virt/vmx/tdx/tdx_global_metadata.c |  10 +-
- 2 files changed, 64 insertions(+), 61 deletions(-)
+ arch/x86/kvm/vmx/tdx.c      | 67 +------------------------------------
+ arch/x86/virt/vmx/tdx/tdx.c | 49 +++++++++++++++++++++++++--
+ 2 files changed, 47 insertions(+), 69 deletions(-)
 
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index d0161dc3d184..d9dd6070baa0 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -59,8 +59,6 @@ module_param_named(tdx, enable_tdx, bool, 0444);
+ #define TDX_SHARED_BIT_PWL_5 gpa_to_gfn(BIT_ULL(51))
+ #define TDX_SHARED_BIT_PWL_4 gpa_to_gfn(BIT_ULL(47))
+ 
+-static enum cpuhp_state tdx_cpuhp_state __ro_after_init;
+-
+ static const struct tdx_sys_info *tdx_sysinfo;
+ 
+ void tdh_vp_rd_failed(struct vcpu_tdx *tdx, char *uclass, u32 field, u64 err)
+@@ -219,8 +217,6 @@ static int init_kvm_tdx_caps(const struct tdx_sys_info_td_conf *td_conf,
+  */
+ static DEFINE_MUTEX(tdx_lock);
+ 
+-static atomic_t nr_configured_hkid;
+-
+ static bool tdx_operand_busy(u64 err)
+ {
+ 	return (err & TDX_SEAMCALL_STATUS_MASK) == TDX_OPERAND_BUSY;
+@@ -268,7 +264,6 @@ static inline void tdx_hkid_free(struct kvm_tdx *kvm_tdx)
+ {
+ 	tdx_guest_keyid_free(kvm_tdx->hkid);
+ 	kvm_tdx->hkid = -1;
+-	atomic_dec(&nr_configured_hkid);
+ 	misc_cg_uncharge(MISC_CG_RES_TDX, kvm_tdx->misc_cg, 1);
+ 	put_misc_cg(kvm_tdx->misc_cg);
+ 	kvm_tdx->misc_cg = NULL;
+@@ -2399,8 +2394,6 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
+ 
+ 	ret = -ENOMEM;
+ 
+-	atomic_inc(&nr_configured_hkid);
+-
+ 	tdr_page = alloc_page(GFP_KERNEL);
+ 	if (!tdr_page)
+ 		goto free_hkid;
+@@ -3302,51 +3295,10 @@ int tdx_gmem_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn, bool is_private)
+ 	return PG_LEVEL_4K;
+ }
+ 
+-static int tdx_online_cpu(unsigned int cpu)
+-{
+-	return 0;
+-}
+-
+-static int tdx_offline_cpu(unsigned int cpu)
+-{
+-	int i;
+-
+-	/* No TD is running.  Allow any cpu to be offline. */
+-	if (!atomic_read(&nr_configured_hkid))
+-		return 0;
+-
+-	/*
+-	 * In order to reclaim TDX HKID, (i.e. when deleting guest TD), need to
+-	 * call TDH.PHYMEM.PAGE.WBINVD on all packages to program all memory
+-	 * controller with pconfig.  If we have active TDX HKID, refuse to
+-	 * offline the last online cpu.
+-	 */
+-	for_each_online_cpu(i) {
+-		/*
+-		 * Found another online cpu on the same package.
+-		 * Allow to offline.
+-		 */
+-		if (i != cpu && topology_physical_package_id(i) ==
+-				topology_physical_package_id(cpu))
+-			return 0;
+-	}
+-
+-	/*
+-	 * This is the last cpu of this package.  Don't offline it.
+-	 *
+-	 * Because it's hard for human operator to understand the
+-	 * reason, warn it.
+-	 */
+-#define MSG_ALLPKG_ONLINE \
+-	"TDX requires all packages to have an online CPU. Delete all TDs in order to offline all CPUs of a package.\n"
+-	pr_warn_ratelimited(MSG_ALLPKG_ONLINE);
+-	return -EBUSY;
+-}
+-
+ static int __init __tdx_bringup(void)
+ {
+ 	const struct tdx_sys_info_td_conf *td_conf;
+-	int r, i;
++	int i;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(tdx_uret_msrs); i++) {
+ 		/*
+@@ -3414,23 +3366,7 @@ static int __init __tdx_bringup(void)
+ 	if (misc_cg_set_capacity(MISC_CG_RES_TDX, tdx_get_nr_guest_keyids()))
+ 		return -EINVAL;
+ 
+-	/*
+-	 * TDX-specific cpuhp callback to disallow offlining the last CPU in a
+-	 * packing while KVM is running one or more TDs.  Reclaiming HKIDs
+-	 * requires doing PAGE.WBINVD on every package, i.e. offlining all CPUs
+-	 * of a package would prevent reclaiming the HKID.
+-	 */
+-	r = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "kvm/cpu/tdx:online",
+-			      tdx_online_cpu, tdx_offline_cpu);
+-	if (r < 0)
+-		goto err_cpuhup;
+-
+-	tdx_cpuhp_state = r;
+ 	return 0;
+-
+-err_cpuhup:
+-	misc_cg_set_capacity(MISC_CG_RES_TDX, 0);
+-	return r;
+ }
+ 
+ int __init tdx_bringup(void)
+@@ -3486,7 +3422,6 @@ void tdx_cleanup(void)
+ 		return;
+ 
+ 	misc_cg_set_capacity(MISC_CG_RES_TDX, 0);
+-	cpuhp_remove_state(tdx_cpuhp_state);
+ }
+ 
+ void __init tdx_hardware_setup(void)
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 8282c9b1b48b..d49645797fe4 100644
+index d49645797fe4..5cf008bffa94 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -55,8 +55,8 @@ static struct tdmr_info_list tdx_tdmr_list;
- /* All TDX-usable memory regions.  Protected by mem_hotplug_lock. */
- static LIST_HEAD(tdx_memlist);
+@@ -58,6 +58,8 @@ static LIST_HEAD(tdx_memlist);
+ static struct tdx_sys_info tdx_sysinfo __ro_after_init;
+ static bool tdx_module_initialized __ro_after_init;
  
--static struct tdx_sys_info tdx_sysinfo;
--static bool tdx_module_initialized;
-+static struct tdx_sys_info tdx_sysinfo __ro_after_init;
-+static bool tdx_module_initialized __ro_after_init;
- 
++static atomic_t nr_configured_hkid;
++
  typedef void (*sc_err_func_t)(u64 fn, u64 err, struct tdx_module_args *args);
  
-@@ -226,8 +226,9 @@ static struct syscore_ops tdx_syscore_ops = {
-  * all memory regions are added in address ascending order and don't
-  * overlap.
-  */
--static int add_tdx_memblock(struct list_head *tmb_list, unsigned long start_pfn,
--			    unsigned long end_pfn, int nid)
-+static __init int add_tdx_memblock(struct list_head *tmb_list,
-+				   unsigned long start_pfn,
-+				   unsigned long end_pfn, int nid)
+ static inline void seamcall_err(u64 fn, u64 err, struct tdx_module_args *args)
+@@ -190,6 +192,40 @@ static int tdx_online_cpu(unsigned int cpu)
+ 
+ static int tdx_offline_cpu(unsigned int cpu)
  {
- 	struct tdx_memblock *tmb;
- 
-@@ -245,7 +246,7 @@ static int add_tdx_memblock(struct list_head *tmb_list, unsigned long start_pfn,
- 	return 0;
- }
- 
--static void free_tdx_memlist(struct list_head *tmb_list)
-+static __init void free_tdx_memlist(struct list_head *tmb_list)
- {
- 	/* @tmb_list is protected by mem_hotplug_lock */
- 	while (!list_empty(tmb_list)) {
-@@ -263,7 +264,7 @@ static void free_tdx_memlist(struct list_head *tmb_list)
-  * ranges off in a secondary structure because memblock is modified
-  * in memory hotplug while TDX memory regions are fixed.
-  */
--static int build_tdx_memlist(struct list_head *tmb_list)
-+static __init int build_tdx_memlist(struct list_head *tmb_list)
- {
- 	unsigned long start_pfn, end_pfn;
- 	int i, nid, ret;
-@@ -295,7 +296,7 @@ static int build_tdx_memlist(struct list_head *tmb_list)
- 	return ret;
- }
- 
--static int read_sys_metadata_field(u64 field_id, u64 *data)
-+static __init int read_sys_metadata_field(u64 field_id, u64 *data)
- {
- 	struct tdx_module_args args = {};
- 	int ret;
-@@ -317,7 +318,7 @@ static int read_sys_metadata_field(u64 field_id, u64 *data)
- 
- #include "tdx_global_metadata.c"
- 
--static int check_features(struct tdx_sys_info *sysinfo)
-+static __init int check_features(struct tdx_sys_info *sysinfo)
- {
- 	u64 tdx_features0 = sysinfo->features.tdx_features0;
- 
-@@ -330,7 +331,7 @@ static int check_features(struct tdx_sys_info *sysinfo)
- }
- 
- /* Calculate the actual TDMR size */
--static int tdmr_size_single(u16 max_reserved_per_tdmr)
-+static __init int tdmr_size_single(u16 max_reserved_per_tdmr)
- {
- 	int tdmr_sz;
- 
-@@ -344,8 +345,8 @@ static int tdmr_size_single(u16 max_reserved_per_tdmr)
- 	return ALIGN(tdmr_sz, TDMR_INFO_ALIGNMENT);
- }
- 
--static int alloc_tdmr_list(struct tdmr_info_list *tdmr_list,
--			   struct tdx_sys_info_tdmr *sysinfo_tdmr)
-+static __init int alloc_tdmr_list(struct tdmr_info_list *tdmr_list,
-+				  struct tdx_sys_info_tdmr *sysinfo_tdmr)
- {
- 	size_t tdmr_sz, tdmr_array_sz;
- 	void *tdmr_array;
-@@ -376,7 +377,7 @@ static int alloc_tdmr_list(struct tdmr_info_list *tdmr_list,
- 	return 0;
- }
- 
--static void free_tdmr_list(struct tdmr_info_list *tdmr_list)
-+static __init void free_tdmr_list(struct tdmr_info_list *tdmr_list)
- {
- 	free_pages_exact(tdmr_list->tdmrs,
- 			tdmr_list->max_tdmrs * tdmr_list->tdmr_sz);
-@@ -405,8 +406,8 @@ static inline u64 tdmr_end(struct tdmr_info *tdmr)
-  * preallocated @tdmr_list, following all the special alignment
-  * and size rules for TDMR.
-  */
--static int fill_out_tdmrs(struct list_head *tmb_list,
--			  struct tdmr_info_list *tdmr_list)
-+static __init int fill_out_tdmrs(struct list_head *tmb_list,
-+				 struct tdmr_info_list *tdmr_list)
- {
- 	struct tdx_memblock *tmb;
- 	int tdmr_idx = 0;
-@@ -482,8 +483,8 @@ static int fill_out_tdmrs(struct list_head *tmb_list,
-  * Calculate PAMT size given a TDMR and a page size.  The returned
-  * PAMT size is always aligned up to 4K page boundary.
-  */
--static unsigned long tdmr_get_pamt_sz(struct tdmr_info *tdmr, int pgsz,
--				      u16 pamt_entry_size)
-+static __init unsigned long tdmr_get_pamt_sz(struct tdmr_info *tdmr, int pgsz,
-+					     u16 pamt_entry_size)
- {
- 	unsigned long pamt_sz, nr_pamt_entries;
- 
-@@ -514,7 +515,7 @@ static unsigned long tdmr_get_pamt_sz(struct tdmr_info *tdmr, int pgsz,
-  * PAMT.  This node will have some memory covered by the TDMR.  The
-  * relative amount of memory covered is not considered.
-  */
--static int tdmr_get_nid(struct tdmr_info *tdmr, struct list_head *tmb_list)
-+static __init int tdmr_get_nid(struct tdmr_info *tdmr, struct list_head *tmb_list)
- {
- 	struct tdx_memblock *tmb;
- 
-@@ -543,9 +544,9 @@ static int tdmr_get_nid(struct tdmr_info *tdmr, struct list_head *tmb_list)
-  * Allocate PAMTs from the local NUMA node of some memory in @tmb_list
-  * within @tdmr, and set up PAMTs for @tdmr.
-  */
--static int tdmr_set_up_pamt(struct tdmr_info *tdmr,
--			    struct list_head *tmb_list,
--			    u16 pamt_entry_size[])
-+static __init int tdmr_set_up_pamt(struct tdmr_info *tdmr,
-+				   struct list_head *tmb_list,
-+				   u16 pamt_entry_size[])
- {
- 	unsigned long pamt_base[TDX_PS_NR];
- 	unsigned long pamt_size[TDX_PS_NR];
-@@ -615,7 +616,7 @@ static void tdmr_get_pamt(struct tdmr_info *tdmr, unsigned long *pamt_base,
- 	*pamt_size = pamt_sz;
- }
- 
--static void tdmr_do_pamt_func(struct tdmr_info *tdmr,
-+static __init void tdmr_do_pamt_func(struct tdmr_info *tdmr,
- 		void (*pamt_func)(unsigned long base, unsigned long size))
- {
- 	unsigned long pamt_base, pamt_size;
-@@ -632,17 +633,17 @@ static void tdmr_do_pamt_func(struct tdmr_info *tdmr,
- 	pamt_func(pamt_base, pamt_size);
- }
- 
--static void free_pamt(unsigned long pamt_base, unsigned long pamt_size)
-+static __init  void free_pamt(unsigned long pamt_base, unsigned long pamt_size)
- {
- 	free_contig_range(pamt_base >> PAGE_SHIFT, pamt_size >> PAGE_SHIFT);
- }
- 
--static void tdmr_free_pamt(struct tdmr_info *tdmr)
-+static __init void tdmr_free_pamt(struct tdmr_info *tdmr)
- {
- 	tdmr_do_pamt_func(tdmr, free_pamt);
- }
- 
--static void tdmrs_free_pamt_all(struct tdmr_info_list *tdmr_list)
-+static __init void tdmrs_free_pamt_all(struct tdmr_info_list *tdmr_list)
- {
- 	int i;
- 
-@@ -651,9 +652,9 @@ static void tdmrs_free_pamt_all(struct tdmr_info_list *tdmr_list)
- }
- 
- /* Allocate and set up PAMTs for all TDMRs */
--static int tdmrs_set_up_pamt_all(struct tdmr_info_list *tdmr_list,
--				 struct list_head *tmb_list,
--				 u16 pamt_entry_size[])
-+static __init int tdmrs_set_up_pamt_all(struct tdmr_info_list *tdmr_list,
-+					struct list_head *tmb_list,
-+					u16 pamt_entry_size[])
- {
- 	int i, ret = 0;
- 
-@@ -702,12 +703,13 @@ void tdx_quirk_reset_page(struct page *page)
- }
- EXPORT_SYMBOL_GPL(tdx_quirk_reset_page);
- 
--static void tdmr_quirk_reset_pamt(struct tdmr_info *tdmr)
-+static __init void tdmr_quirk_reset_pamt(struct tdmr_info *tdmr)
++	int i;
 +
- {
- 	tdmr_do_pamt_func(tdmr, tdx_quirk_reset_paddr);
- }
- 
--static void tdmrs_quirk_reset_pamt_all(struct tdmr_info_list *tdmr_list)
-+static __init void tdmrs_quirk_reset_pamt_all(struct tdmr_info_list *tdmr_list)
- {
- 	int i;
- 
-@@ -715,7 +717,7 @@ static void tdmrs_quirk_reset_pamt_all(struct tdmr_info_list *tdmr_list)
- 		tdmr_quirk_reset_pamt(tdmr_entry(tdmr_list, i));
- }
- 
--static unsigned long tdmrs_count_pamt_kb(struct tdmr_info_list *tdmr_list)
-+static __init unsigned long tdmrs_count_pamt_kb(struct tdmr_info_list *tdmr_list)
- {
- 	unsigned long pamt_size = 0;
- 	int i;
-@@ -730,8 +732,8 @@ static unsigned long tdmrs_count_pamt_kb(struct tdmr_info_list *tdmr_list)
- 	return pamt_size / 1024;
- }
- 
--static int tdmr_add_rsvd_area(struct tdmr_info *tdmr, int *p_idx, u64 addr,
--			      u64 size, u16 max_reserved_per_tdmr)
-+static __init int tdmr_add_rsvd_area(struct tdmr_info *tdmr, int *p_idx,
-+				     u64 addr, u64 size, u16 max_reserved_per_tdmr)
- {
- 	struct tdmr_reserved_area *rsvd_areas = tdmr->reserved_areas;
- 	int idx = *p_idx;
-@@ -764,10 +766,10 @@ static int tdmr_add_rsvd_area(struct tdmr_info *tdmr, int *p_idx, u64 addr,
-  * those holes fall within @tdmr, set up a TDMR reserved area to cover
-  * the hole.
-  */
--static int tdmr_populate_rsvd_holes(struct list_head *tmb_list,
--				    struct tdmr_info *tdmr,
--				    int *rsvd_idx,
--				    u16 max_reserved_per_tdmr)
-+static __init int tdmr_populate_rsvd_holes(struct list_head *tmb_list,
-+					   struct tdmr_info *tdmr,
-+					   int *rsvd_idx,
-+					   u16 max_reserved_per_tdmr)
- {
- 	struct tdx_memblock *tmb;
- 	u64 prev_end;
-@@ -828,10 +830,10 @@ static int tdmr_populate_rsvd_holes(struct list_head *tmb_list,
-  * overlaps with @tdmr, set up a TDMR reserved area to cover the
-  * overlapping part.
-  */
--static int tdmr_populate_rsvd_pamts(struct tdmr_info_list *tdmr_list,
--				    struct tdmr_info *tdmr,
--				    int *rsvd_idx,
--				    u16 max_reserved_per_tdmr)
-+static __init int tdmr_populate_rsvd_pamts(struct tdmr_info_list *tdmr_list,
-+					   struct tdmr_info *tdmr,
-+					   int *rsvd_idx,
-+					   u16 max_reserved_per_tdmr)
- {
- 	int i, ret;
- 
-@@ -866,7 +868,7 @@ static int tdmr_populate_rsvd_pamts(struct tdmr_info_list *tdmr_list,
- }
- 
- /* Compare function called by sort() for TDMR reserved areas */
--static int rsvd_area_cmp_func(const void *a, const void *b)
-+static __init int rsvd_area_cmp_func(const void *a, const void *b)
- {
- 	struct tdmr_reserved_area *r1 = (struct tdmr_reserved_area *)a;
- 	struct tdmr_reserved_area *r2 = (struct tdmr_reserved_area *)b;
-@@ -885,10 +887,10 @@ static int rsvd_area_cmp_func(const void *a, const void *b)
-  * Populate reserved areas for the given @tdmr, including memory holes
-  * (via @tmb_list) and PAMTs (via @tdmr_list).
-  */
--static int tdmr_populate_rsvd_areas(struct tdmr_info *tdmr,
--				    struct list_head *tmb_list,
--				    struct tdmr_info_list *tdmr_list,
--				    u16 max_reserved_per_tdmr)
-+static __init int tdmr_populate_rsvd_areas(struct tdmr_info *tdmr,
-+					   struct list_head *tmb_list,
-+					   struct tdmr_info_list *tdmr_list,
-+					   u16 max_reserved_per_tdmr)
- {
- 	int ret, rsvd_idx = 0;
- 
-@@ -913,9 +915,9 @@ static int tdmr_populate_rsvd_areas(struct tdmr_info *tdmr,
-  * Populate reserved areas for all TDMRs in @tdmr_list, including memory
-  * holes (via @tmb_list) and PAMTs.
-  */
--static int tdmrs_populate_rsvd_areas_all(struct tdmr_info_list *tdmr_list,
--					 struct list_head *tmb_list,
--					 u16 max_reserved_per_tdmr)
-+static __init int tdmrs_populate_rsvd_areas_all(struct tdmr_info_list *tdmr_list,
-+						struct list_head *tmb_list,
-+						u16 max_reserved_per_tdmr)
- {
- 	int i;
- 
-@@ -936,9 +938,9 @@ static int tdmrs_populate_rsvd_areas_all(struct tdmr_info_list *tdmr_list,
-  * to cover all TDX memory regions in @tmb_list based on the TDX module
-  * TDMR global information in @sysinfo_tdmr.
-  */
--static int construct_tdmrs(struct list_head *tmb_list,
--			   struct tdmr_info_list *tdmr_list,
--			   struct tdx_sys_info_tdmr *sysinfo_tdmr)
-+static __init int construct_tdmrs(struct list_head *tmb_list,
-+				  struct tdmr_info_list *tdmr_list,
-+				  struct tdx_sys_info_tdmr *sysinfo_tdmr)
- {
- 	u16 pamt_entry_size[TDX_PS_NR] = {
- 		sysinfo_tdmr->pamt_4k_entry_size,
-@@ -970,7 +972,8 @@ static int construct_tdmrs(struct list_head *tmb_list,
- 	return ret;
- }
- 
--static int config_tdx_module(struct tdmr_info_list *tdmr_list, u64 global_keyid)
-+static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
-+				    u64 global_keyid)
- {
- 	struct tdx_module_args args = {};
- 	u64 *tdmr_pa_array;
-@@ -1063,7 +1066,7 @@ static int config_global_keyid(void)
- 	return ret;
- }
- 
--static int init_tdmr(struct tdmr_info *tdmr)
-+static __init int init_tdmr(struct tdmr_info *tdmr)
- {
- 	u64 next;
- 
-@@ -1094,7 +1097,7 @@ static int init_tdmr(struct tdmr_info *tdmr)
++	/* No TD is running.  Allow any cpu to be offline. */
++	if (!atomic_read(&nr_configured_hkid))
++		goto done;
++
++	/*
++	 * In order to reclaim TDX HKID, (i.e. when deleting guest TD), need to
++	 * call TDH.PHYMEM.PAGE.WBINVD on all packages to program all memory
++	 * controller with pconfig.  If we have active TDX HKID, refuse to
++	 * offline the last online cpu.
++	 */
++	for_each_online_cpu(i) {
++		/*
++		 * Found another online cpu on the same package.
++		 * Allow to offline.
++		 */
++		if (i != cpu && topology_physical_package_id(i) ==
++				topology_physical_package_id(cpu))
++			goto done;
++	}
++
++	/*
++	 * This is the last cpu of this package.  Don't offline it.
++	 *
++	 * Because it's hard for human operator to understand the
++	 * reason, warn it.
++	 */
++#define MSG_ALLPKG_ONLINE \
++	"TDX requires all packages to have an online CPU. Delete all TDs in order to offline all CPUs of a package.\n"
++	pr_warn_ratelimited(MSG_ALLPKG_ONLINE);
++	return -EBUSY;
++
++done:
+ 	x86_virt_put_cpu(X86_FEATURE_VMX);
  	return 0;
  }
+@@ -1506,15 +1542,22 @@ EXPORT_SYMBOL_GPL(tdx_get_nr_guest_keyids);
  
--static int init_tdmrs(struct tdmr_info_list *tdmr_list)
-+static __init int init_tdmrs(struct tdmr_info_list *tdmr_list)
+ int tdx_guest_keyid_alloc(void)
  {
- 	int i;
- 
-@@ -1113,7 +1116,7 @@ static int init_tdmrs(struct tdmr_info_list *tdmr_list)
- 	return 0;
+-	return ida_alloc_range(&tdx_guest_keyid_pool, tdx_guest_keyid_start,
+-			       tdx_guest_keyid_start + tdx_nr_guest_keyids - 1,
+-			       GFP_KERNEL);
++	int ret;
++
++	ret = ida_alloc_range(&tdx_guest_keyid_pool, tdx_guest_keyid_start,
++			      tdx_guest_keyid_start + tdx_nr_guest_keyids - 1,
++			      GFP_KERNEL);
++	if (ret >= 0)
++		atomic_inc(&nr_configured_hkid);
++
++	return ret;
  }
+ EXPORT_SYMBOL_GPL(tdx_guest_keyid_alloc);
  
--static int init_tdx_module(void)
-+static __init int init_tdx_module(void)
+ void tdx_guest_keyid_free(unsigned int keyid)
  {
- 	int ret;
- 
-@@ -1194,7 +1197,7 @@ static int init_tdx_module(void)
- 	goto out_put_tdxmem;
+ 	ida_free(&tdx_guest_keyid_pool, keyid);
++	atomic_dec(&nr_configured_hkid);
  }
- 
--static int tdx_enable(void)
-+static __init int tdx_enable(void)
- {
- 	enum cpuhp_state state;
- 	int ret;
-diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-index 13ad2663488b..360963bc9328 100644
---- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-+++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-@@ -7,7 +7,7 @@
-  * Include this file to other C file instead.
-  */
- 
--static int get_tdx_sys_info_features(struct tdx_sys_info_features *sysinfo_features)
-+static __init int get_tdx_sys_info_features(struct tdx_sys_info_features *sysinfo_features)
- {
- 	int ret = 0;
- 	u64 val;
-@@ -18,7 +18,7 @@ static int get_tdx_sys_info_features(struct tdx_sys_info_features *sysinfo_featu
- 	return ret;
- }
- 
--static int get_tdx_sys_info_tdmr(struct tdx_sys_info_tdmr *sysinfo_tdmr)
-+static __init int get_tdx_sys_info_tdmr(struct tdx_sys_info_tdmr *sysinfo_tdmr)
- {
- 	int ret = 0;
- 	u64 val;
-@@ -37,7 +37,7 @@ static int get_tdx_sys_info_tdmr(struct tdx_sys_info_tdmr *sysinfo_tdmr)
- 	return ret;
- }
- 
--static int get_tdx_sys_info_td_ctrl(struct tdx_sys_info_td_ctrl *sysinfo_td_ctrl)
-+static __init int get_tdx_sys_info_td_ctrl(struct tdx_sys_info_td_ctrl *sysinfo_td_ctrl)
- {
- 	int ret = 0;
- 	u64 val;
-@@ -52,7 +52,7 @@ static int get_tdx_sys_info_td_ctrl(struct tdx_sys_info_td_ctrl *sysinfo_td_ctrl
- 	return ret;
- }
- 
--static int get_tdx_sys_info_td_conf(struct tdx_sys_info_td_conf *sysinfo_td_conf)
-+static __init int get_tdx_sys_info_td_conf(struct tdx_sys_info_td_conf *sysinfo_td_conf)
- {
- 	int ret = 0;
- 	u64 val;
-@@ -85,7 +85,7 @@ static int get_tdx_sys_info_td_conf(struct tdx_sys_info_td_conf *sysinfo_td_conf
- 	return ret;
- }
- 
--static int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
-+static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
- {
- 	int ret = 0;
+ EXPORT_SYMBOL_GPL(tdx_guest_keyid_free);
  
 -- 
 2.52.0.223.gf5cc29aaa4-goog
