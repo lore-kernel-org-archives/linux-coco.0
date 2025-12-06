@@ -1,57 +1,57 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03EF23B63E
-	for <linux-coco@lists.linux.dev>; Sat,  6 Dec 2025 01:11:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802302820A9
+	for <linux-coco@lists.linux.dev>; Sat,  6 Dec 2025 01:11:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764983481; cv=none; b=F5lMK6U5DWJioZDYLEDgeLjrwVxjl0MQVudwY8WZbS0NWuFRqk9g+MYfPhEwprYdNcg0lbye0B8r/F4WOSxsKa8yiHQAk8cgHjL3T859rgZsSVGAizh42XaQC+Nc77NEgDbwoTvVAHtGLhiAjN7DQQpJMH5Y5NRzk43eXgFtXd8=
+	t=1764983483; cv=none; b=Zsg6FDl7n2QMhr4lHpHEWRsTwtzs8p46tSpzVlRjXdtsaPn+gfYiOvARV8Pgxt0+snfYxY551cYCsV3axxTplwl2iP/TptS1L/ndSKCcAjGBZLj/B0mmVC7F18g0Y7ltALa2HGI9g9KVrR0gIq21jRnyZhzd03ntFPaIKUHMJ0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764983481; c=relaxed/simple;
-	bh=dD0zdMBxcirbZcOCLQPI4IDX7thvsilC04qKPz4Ct6Y=;
+	s=arc-20240116; t=1764983483; c=relaxed/simple;
+	bh=bkTcXhbD0K+GaH8lROgSlwAp7KEAKH17Wyu0+TXtIrs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=j/OcARz7YIeQYOwh345oBCmrokYUaU6QS7u6G1HsiYvXynl4mWbAwi0lo6SwEx99bkWpLljJhB3K9cU1T7gCFbbnoNDi+O3vIm9HP6+0C1kIy3OqtWuO3p0sLBB9u5g9CpVJR0BlmbS81GJhwJrKkRyI7Qu1VBl6QGC/bOBiIf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ym2Ihcnk; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=CauT94yT99TuYIgBeuVrrbuF3gqJ9jKCKnT9wuDwauzPAuDbSCgNUfjXp18ArwutRQ5VOzKL3fiWEc0BzA2yfmkPbzlo1t/qE0idwZ9prGcKmfqCWUq7u+rAqZ+BcHL+e1XDUZyd/1FpWcKoYtPA21j6SLKLKPeEYuNIX3l0b7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ymdlQSEh; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ym2Ihcnk"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3438744f12fso6721650a91.2
-        for <linux-coco@lists.linux.dev>; Fri, 05 Dec 2025 17:11:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ymdlQSEh"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-340ad9349b3so4848718a91.1
+        for <linux-coco@lists.linux.dev>; Fri, 05 Dec 2025 17:11:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764983479; x=1765588279; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1764983481; x=1765588281; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=rVtJBDhchDrLagfgGom7nKilzuyDMEWeeU45x47h0PI=;
-        b=Ym2IhcnkdwLFQfKDu/Q/Lq8xcbrmekj6EAOEQOKuG0mbtqWuf723MjQKFd90P3mmL4
-         XNi64Y4HKwGzXuQIKJDQAkoYgsy1kyJeBiOgSspQFWGQaUqAmmsRoQROvn9vjcatslp3
-         iTFmFKD4uGo3Y+n3SoUvAsmM37jeelu81Pf0blsrd3L1kBuwt7IcA1TBkt2P089HVMZs
-         d4emv15UPmCqjU5FzfNKddvYInoYVpKHzWl1V7jG+q9Mgmy1sOxK9FJzCULeMgW7p5vv
-         WZE/tmt0bV/WJTNh8f9IO+k6rJ09QIeQFY/FHnmiUQpkOIKmvqiUmQU7zgzKDCpBM6YL
-         nsDw==
+        bh=VkOwSpZnzzGFCGAjywqik6ZsByr3pLNa/lziUDNxQoA=;
+        b=ymdlQSEhok1sDTziS2U653DoeIy4NGZPym9UauM5Qxc9q2qPIOyBqSRO28SOh/3XFL
+         96zg33z1E4yXBmaOGLp04ROEbBprgRDZPgrrn0oziVerZpw8GqSdJuyXhqwKLFeqsxy0
+         rGPd0OIQ/3N4f7bbpu1LbPtgY6FziDbJKF6pPve3N9atPCAtZIGKcig6PPgzj53FnJpt
+         C4i1axVpOSpbpmgRGWigSyHzhQZebT1aamEIeEXYH+Ml6ngOUf85d/Kxz7WLssDzHfWS
+         cnlbyGP3/TbpTwj/Ntj5vtVn/RQxgr6F7UlOVljv8oWoHtjjkVdRccYvTtUw8v17ObMp
+         gHBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764983479; x=1765588279;
+        d=1e100.net; s=20230601; t=1764983481; x=1765588281;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=rVtJBDhchDrLagfgGom7nKilzuyDMEWeeU45x47h0PI=;
-        b=dUsfzYTjnrjr9DeHx/0hReraxwH3eGMuazGhFu/RuFyfkmVW0PKxEZfic91lkTK52d
-         VjpygJvqL0V+vHfT/6AOoqUTnhqpzD8HzbmfYwAVsBbC4mhb2qGKnPbft465yiDXJxQM
-         naKv8uxiUJrsqQeSFdL44PJLixsHE/Ep5RF7DB+InpYcJXbTi79VNvyIzHHcDIcrESvd
-         pXGnVYNAYi0EyducEVoie6fWAozIynAfuzGPoqD1vhv/Ck7lxQ5JKsrKBG8nRkPS4/QP
-         J2O+IhxcOOyfSY0fgHvepkYLkY1m/mJP7wABIc0SbeSAKn8bNGwQqcyEkWyLIJ6OcXBp
-         jfsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUdjP56zKowLyQ/r8SC1Z4T2e0jnbclQowfKSf60ul9SGqMkzlg7XcclP/TnkX+NgXhX3J78fPUgGxQ@lists.linux.dev
-X-Gm-Message-State: AOJu0YxUNK9POLUhViKj+7vFub/kDAoVVjtdl97XzL1L7HhrUl/ohR7p
-	6HY5LYg9ndBW5EK4kPPOhMw1EhtrTWdTIZG2GpqLspnni4J+DDt+M0XBFE55CHGZzjO3xtOT3Fr
-	j+eE+Kw==
-X-Google-Smtp-Source: AGHT+IERf67I/KSjwUV4VBGzOV5LWpvLTz4kgH2qJZnW3MJYfCI+Tp3EG4cQDFHBfXE9LirgMVmyzwQKLSk=
-X-Received: from pjbfz21.prod.google.com ([2002:a17:90b:255:b0:340:4910:738f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2f08:b0:339:ec9c:b275
- with SMTP id 98e67ed59e1d1-349a253dc8emr794762a91.6.1764983478902; Fri, 05
- Dec 2025 17:11:18 -0800 (PST)
+        bh=VkOwSpZnzzGFCGAjywqik6ZsByr3pLNa/lziUDNxQoA=;
+        b=sLB24J7qg+W1mSLNC1MHktVhjU8Z+uVZl8sP2Y+Cl1mBkWVostOGeGAlsBBQ3v3iCs
+         J+fHw+txmMJaAnpa4UCOwryoq3kirUKRUphmV4fvo8JZNRG8Zi71IMo/xsMyCKzktGFL
+         CkP0j4WF19qmWcS1kF/g3lU2acWhTT18cajEscmSjL4YHRU/cR9bSV9CACH/dG/VD6sI
+         ruN7KkbmYR3iEAYHAzpEKRM3WKUysNSp2GvMjIqNlQsxZ+ao4JNXvnrK48KH/kVLtzWm
+         RcVAtseiWgtgN7aXqLH046fdIc20Rkg2rwEPbN0aqR+eyFUcyYNXmuSqJdAE5E/11peJ
+         15Mw==
+X-Forwarded-Encrypted: i=1; AJvYcCV/WMyCns5A2UyU7/4rQBzzGpogvyxSUlApC+WN17BFd78kl4FHsF7yZHqE5Lg1jpkRl6VA6DE0UF1L@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw1T9ZM8RTAjourPxTvNRV4FzYp3YTFJIvuAVdFjSU9WEb1M0kd
+	BqNJn/voeGKN9TfY66mpmWcZpiY5DrKMjC981TUiUpwNNO3pMLo1ENCIaTuMKytNb/CTcQLfzVM
+	GizqkCw==
+X-Google-Smtp-Source: AGHT+IFWR4uQiL6EU4wkVoYXTg3vRHDDsenTnV3mWzHCmctEhaBhx5JH5zxDIa3kq4f+/zZVRo4jq1+s238=
+X-Received: from pjbin12.prod.google.com ([2002:a17:90b:438c:b0:33f:e888:4aad])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4ecd:b0:340:a1a8:eb87
+ with SMTP id 98e67ed59e1d1-349a260d6b8mr829195a91.35.1764983481038; Fri, 05
+ Dec 2025 17:11:21 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri,  5 Dec 2025 17:10:53 -0800
+Date: Fri,  5 Dec 2025 17:10:54 -0800
 In-Reply-To: <20251206011054.494190-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -61,9 +61,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20251206011054.494190-1-seanjc@google.com>
 X-Mailer: git-send-email 2.52.0.223.gf5cc29aaa4-goog
-Message-ID: <20251206011054.494190-7-seanjc@google.com>
-Subject: [PATCH v2 6/7] x86/virt/tdx: Use ida_is_empty() to detect if any TDs
- may be running
+Message-ID: <20251206011054.494190-8-seanjc@google.com>
+Subject: [PATCH v2 7/7] KVM: Bury kvm_{en,dis}able_virtualization() in
+ kvm_main.c once more
 From: Sean Christopherson <seanjc@google.com>
 To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
@@ -73,63 +73,91 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
 	Dan Williams <dan.j.williams@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Drop nr_configured_hkid and instead use ida_is_empty() to detect if any
-HKIDs have been allocated/configured.
+Now that TDX handles doing VMXON without KVM's involvement, bury the
+top-level APIs to enable and disable virtualization back in kvm_main.c.
 
-Suggested-by: Dan Williams <dan.j.williams@intel.com>
+No functional change intended.
+
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/virt/vmx/tdx/tdx.c | 17 ++++-------------
- 1 file changed, 4 insertions(+), 13 deletions(-)
+ include/linux/kvm_host.h |  8 --------
+ virt/kvm/kvm_main.c      | 17 +++++++++++++----
+ 2 files changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 5cf008bffa94..ef77135ec373 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -58,8 +58,6 @@ static LIST_HEAD(tdx_memlist);
- static struct tdx_sys_info tdx_sysinfo __ro_after_init;
- static bool tdx_module_initialized __ro_after_init;
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index a453fe6ce05a..ac9332104793 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -2596,12 +2596,4 @@ long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
+ 				    struct kvm_pre_fault_memory *range);
+ #endif
  
--static atomic_t nr_configured_hkid;
+-#ifdef CONFIG_KVM_GENERIC_HARDWARE_ENABLING
+-int kvm_enable_virtualization(void);
+-void kvm_disable_virtualization(void);
+-#else
+-static inline int kvm_enable_virtualization(void) { return 0; }
+-static inline void kvm_disable_virtualization(void) { }
+-#endif
 -
- typedef void (*sc_err_func_t)(u64 fn, u64 err, struct tdx_module_args *args);
- 
- static inline void seamcall_err(u64 fn, u64 err, struct tdx_module_args *args)
-@@ -195,7 +193,7 @@ static int tdx_offline_cpu(unsigned int cpu)
- 	int i;
- 
- 	/* No TD is running.  Allow any cpu to be offline. */
--	if (!atomic_read(&nr_configured_hkid))
-+	if (ida_is_empty(&tdx_guest_keyid_pool))
- 		goto done;
- 
- 	/*
-@@ -1542,22 +1540,15 @@ EXPORT_SYMBOL_GPL(tdx_get_nr_guest_keyids);
- 
- int tdx_guest_keyid_alloc(void)
- {
--	int ret;
--
--	ret = ida_alloc_range(&tdx_guest_keyid_pool, tdx_guest_keyid_start,
--			      tdx_guest_keyid_start + tdx_nr_guest_keyids - 1,
--			      GFP_KERNEL);
--	if (ret >= 0)
--		atomic_inc(&nr_configured_hkid);
--
--	return ret;
-+	return ida_alloc_range(&tdx_guest_keyid_pool, tdx_guest_keyid_start,
-+			       tdx_guest_keyid_start + tdx_nr_guest_keyids - 1,
-+			       GFP_KERNEL);
+ #endif
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 3278ee9381bd..ac2633e9cd80 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -1111,6 +1111,9 @@ static inline struct kvm_io_bus *kvm_get_bus_for_destruction(struct kvm *kvm,
+ 					 !refcount_read(&kvm->users_count));
  }
- EXPORT_SYMBOL_GPL(tdx_guest_keyid_alloc);
  
- void tdx_guest_keyid_free(unsigned int keyid)
++static int kvm_enable_virtualization(void);
++static void kvm_disable_virtualization(void);
++
+ static struct kvm *kvm_create_vm(unsigned long type, const char *fdname)
  {
- 	ida_free(&tdx_guest_keyid_pool, keyid);
--	atomic_dec(&nr_configured_hkid);
- }
- EXPORT_SYMBOL_GPL(tdx_guest_keyid_free);
+ 	struct kvm *kvm = kvm_arch_alloc_vm();
+@@ -5693,7 +5696,7 @@ static struct syscore_ops kvm_syscore_ops = {
+ 	.shutdown = kvm_shutdown,
+ };
  
+-int kvm_enable_virtualization(void)
++static int kvm_enable_virtualization(void)
+ {
+ 	int r;
+ 
+@@ -5738,9 +5741,8 @@ int kvm_enable_virtualization(void)
+ 	--kvm_usage_count;
+ 	return r;
+ }
+-EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_enable_virtualization);
+ 
+-void kvm_disable_virtualization(void)
++static void kvm_disable_virtualization(void)
+ {
+ 	guard(mutex)(&kvm_usage_lock);
+ 
+@@ -5751,7 +5753,6 @@ void kvm_disable_virtualization(void)
+ 	cpuhp_remove_state(CPUHP_AP_KVM_ONLINE);
+ 	kvm_arch_disable_virtualization();
+ }
+-EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_disable_virtualization);
+ 
+ static int kvm_init_virtualization(void)
+ {
+@@ -5767,6 +5768,14 @@ static void kvm_uninit_virtualization(void)
+ 		kvm_disable_virtualization();
+ }
+ #else /* CONFIG_KVM_GENERIC_HARDWARE_ENABLING */
++static int kvm_enable_virtualization(void)
++{
++	return 0;
++}
++static void kvm_disable_virtualization(void)
++{
++
++}
+ static int kvm_init_virtualization(void)
+ {
+ 	return 0;
 -- 
 2.52.0.223.gf5cc29aaa4-goog
 
