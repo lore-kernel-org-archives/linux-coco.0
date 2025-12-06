@@ -1,64 +1,68 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4EB1B6527
-	for <linux-coco@lists.linux.dev>; Sat,  6 Dec 2025 01:11:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757C522A7E4
+	for <linux-coco@lists.linux.dev>; Sat,  6 Dec 2025 01:11:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764983468; cv=none; b=fFHuGSlEYMyGxwlZDtAeuYn6gh7pu0YOyTim1Hhu+xo5GqCc5Ri7N+5O3hwak6ifNRuG4xV5Q5YjJ6oo+V3mMRFnMxcFWOpX6UR4og2x2YllsCJ57KQvmKsGH2c5a9xxOZR27PJYdspizC0BRHehtofSaljZ6tiXt2WmG0QnkHc=
+	t=1764983471; cv=none; b=dbIUkkxBT82brT5j2ITYt7DKcXQA/3rZYmts+9FCbLtKefhHH8MPiIv4/zGQ6ZamAvCw+4EKJ1YUvVEDMOkrtOW3ULRh+NCQx/c/bZrF9tRMTFtyzINMVDBvtMvcHi85KQIOee90kaasu0Y/3f57BIyDxC176srJQxKhk/q5wG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764983468; c=relaxed/simple;
-	bh=ahpjv/o9LrVp9tjCTCe6MlNPXkZFpq6fmTPCM0Tk8Bc=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=aDy4CezMc7JrtPKYcFEA5AZZU1KpYF8ALGPJhVtF4M17v6Fr6gjxqf3tCgj8pVGNZ/fDkbFUQEgL0hIZVfwVPtERwt4WuUCVX3omFHw5WP98QMaevp+vS81IyaYWLTc9jd05hT7/UBpub0u/9E0gvAZ/Z8BsS2i0g0PDNmdsSbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mkWxIRx+; arc=none smtp.client-ip=209.85.216.73
+	s=arc-20240116; t=1764983471; c=relaxed/simple;
+	bh=Xoj3VzQYzVhpJbx4kNzoLA3tCFxy7VEFT4XaIsLRops=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=EaHE9CPHq3EgH+E5azunwFbrGutZj9Rn0RGZx85gq6izfUe9cI3cQjZSWOyaCGthJsSMkEmybZRkGR2k0FJEO7QSwuN3eHdBtiwBOl4TayS3RH+EDUmejyoxETyBN5nxBCw/igG5/fnGrFkC/BoxhBbyOOziCt0Ma8MKraxajvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bMQhYVB2; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mkWxIRx+"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-342701608e2so2964712a91.1
-        for <linux-coco@lists.linux.dev>; Fri, 05 Dec 2025 17:11:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bMQhYVB2"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-295915934bfso37435325ad.0
+        for <linux-coco@lists.linux.dev>; Fri, 05 Dec 2025 17:11:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764983466; x=1765588266; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V7l6e5405bVH1DspNVosbrsco7TeBvKPRawRHDQ4cDw=;
-        b=mkWxIRx++l7FQGMpCl3ktlaeZOvFaMgDfav+fPMQDCNLusYy58cb8AtqS3Hs3qiZ2O
-         bq/vVvM7nr6CPuu4B+ShLoUcT2ydtNtPQwaFw8qXpzaDViZ18EifOmMQ27rtNl5+qMmb
-         /bBn2uscLC7HtF4mjFmeVMtyaI2G8gZJENvoiSycSKvdhwa2GzP/ooCE/7xtltng/psf
-         XfzF1WbfqQO52ZjVNllCiKtEihKuvYgmZXSrSjiDp0qp0J07stwBuuiS0Cu4Fg+VCg5C
-         dvGOJW6AYNGIHG/XbcJwCR2BfjokEFyeP3VoKszKgSnVJr88txUakCMP/A5Pemopd+DU
-         2UzA==
+        d=google.com; s=20230601; t=1764983469; x=1765588269; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=pC6DfslZcu3nvvZIIA0BpqpSQzylE5RCvOKLxGkj7nQ=;
+        b=bMQhYVB2iFsr3URnSzzths1yfYHpJN7iTtfaxvghcZsxct0PB3cbxIp4ecokC1Kvlr
+         Ne0NayghXTMJ9todzI0XvNzGaQaqHTOo2q8zbYZu9veT0mHplxd23OeagPlKpdALpLKb
+         2rS07+/52V4UgpcmKOJ5tQIkvKYn1NnJTdFdzxMgelsDBttseX1wLGOINfB9/z7lSha7
+         02YWOGIUCD74EulPnBn6ReumISbav7T/YBYfYCbO9D8ZPl8TxJR/MurlXDiX8bdgAtZ9
+         qU5PwUVAHqXNf710v/TEWCkZhi4oMv7Hdk2zgCA5bn40Isu7ZZ+RK6C2eD3ZqMZ2vwxg
+         Hnng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764983466; x=1765588266;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=V7l6e5405bVH1DspNVosbrsco7TeBvKPRawRHDQ4cDw=;
-        b=dgnEnbBD+2I1f+g34KKrNMg4oQSgkJ6VwSuKO12jC6XA60zaKXsJN5dSjBvijoZJps
-         yHCsVvRkDVZgl43xqqCCA0BXB0SqTjUsM3w4tbYvCQQzTQZ/s3q7F/gzrM6W+MUJQoy1
-         NlKAUDSzU8tmxmgwgRyzZ0ScTKoRerDFku2BYlKzWWqzwrT1qshs0gng85BZlCh7phtk
-         QExWFl0Dl5iGmq66kF26CdyqFko/mduNM7TKfG/KRsKGqvdOijH0l1dxuDr05G6NA5sR
-         9lkLzCCF7wutreA4u+OdFef+htn/s1zXkqb9GnOwmwpt2t1aBwD50Kqi+f6LuQffWmDl
-         X4Jg==
-X-Forwarded-Encrypted: i=1; AJvYcCUQLvWHlfj7cAv9y92YqpDhkBz53+OzTNs8Q42PohgBQjiZ6jgmpX2xVWKptcSHSz8k38GFeSLb5wjN@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw80iBnlW+sJsUNjfkWs4sVBss1jPmDi8eXO5OHyp0P1uRyhGCg
-	bJ7gJtbfvQWWwhFymSmsfVG8OmPOr+e95qfVOyiLJsN1uuGsfsztfs4TNkq9v53U+ELD63cwDH4
-	AKNUosQ==
-X-Google-Smtp-Source: AGHT+IFC7xAn4XWvDZa+DWts2bu6U/q9MiuD8NVhGGMYnj7mARmR4s5Pdj0x5XwVYr8qoFGThh9Rt5tHVUE=
-X-Received: from pjuw7.prod.google.com ([2002:a17:90a:d607:b0:32d:e4c6:7410])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:164d:b0:343:684c:f8ad
- with SMTP id 98e67ed59e1d1-349a24dd178mr797804a91.4.1764983466486; Fri, 05
- Dec 2025 17:11:06 -0800 (PST)
+        d=1e100.net; s=20230601; t=1764983469; x=1765588269;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pC6DfslZcu3nvvZIIA0BpqpSQzylE5RCvOKLxGkj7nQ=;
+        b=oo+ibqYDhoK5pQAPv78qIhKWJyR5+iqchfsNbIv6KBpeeK+Dt85IlcxsiwVq70OFi1
+         2dhcDwevl83szsMgK23xrVMTuAD+AWoVnhUTAZX5g8o0I/u/yxmO5n+mpfYXC9ltaFbc
+         A7+vsQEVzSd7HJPsyv6fEncJE32NvgDilBliHpLeBg69UDn+7y7ZzuVx35wGlbeb62wU
+         YpYUDqNjZ/844MSNNmxoCM99B+s5q32QTXHEzSbVSqTvVDY/aGk6zptfY0tHKPpC+TBO
+         trronwZbW2mepyTCme5VNLnOEL1Wt/TT6Ve7lAS96/uafruNVMzLNjieNaQoGjtjABXh
+         hgzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUda+mgW9qNrOjVCDpPH2IMEoCAAR5rkGArt4hMvS7qvnb6nYKwn4HaxcwVBN3pFnKLlg/39hbO/JAo@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy4fCHiCBHtNR4CD5S0Ow0hooJw4sXrO6vHH4q7WoKJ+IxnkYE/
+	k8hzI/4Q19VGKU4ppxpI6VVtzmMqVHBxjPrzWx3fS3O7h4XTkodxg1+kZFWLJgDCqc8sIkWETSX
+	kVOKflQ==
+X-Google-Smtp-Source: AGHT+IHqg7v/oM3O+Iza+gbHQ+Fut3uvvdzLynuyyGHbiI9eTt5zTPTdsfs0StG85k5cWuU3XEHxZlf+cm8=
+X-Received: from pldo13.prod.google.com ([2002:a17:903:8d:b0:27e:ed03:b5a5])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e805:b0:295:ac6f:c899
+ with SMTP id d9443c01a7336-29df5dd24f3mr8573855ad.47.1764983468487; Fri, 05
+ Dec 2025 17:11:08 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri,  5 Dec 2025 17:10:47 -0800
+Date: Fri,  5 Dec 2025 17:10:48 -0800
+In-Reply-To: <20251206011054.494190-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
+References: <20251206011054.494190-1-seanjc@google.com>
 X-Mailer: git-send-email 2.52.0.223.gf5cc29aaa4-goog
-Message-ID: <20251206011054.494190-1-seanjc@google.com>
-Subject: [PATCH v2 0/7] KVM: x86/tdx: Have TDX handle VMXON during bringup
+Message-ID: <20251206011054.494190-2-seanjc@google.com>
+Subject: [PATCH v2 1/7] KVM: x86: Move kvm_rebooting to x86
 From: Sean Christopherson <seanjc@google.com>
 To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
@@ -68,84 +72,125 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
 	Dan Williams <dan.j.williams@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-The idea here is to extract _only_ VMXON+VMXOFF and EFER.SVME toggling.  AFAIK
-there's no second user of SVM, i.e. no equivalent to TDX, but I wanted to keep
-things as symmetrical as possible.
+Move kvm_rebooting, which is only read by x86, to KVM x86 so that it can
+be moved again to core x86 code.  Add a "shutdown" arch hook to facilate
+setting the flag in KVM x86.
 
-TDX isn't a hypervisor, and isn't trying to be a hypervisor. Specifically, TDX
-should _never_ have it's own VMCSes (that are visible to the host; the
-TDX-Module has it's own VMCSes to do SEAMCALL/SEAMRET), and so there is simply
-no reason to move that functionality out of KVM.
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/x86.c       | 13 +++++++++++++
+ arch/x86/kvm/x86.h       |  1 +
+ include/linux/kvm_host.h |  2 +-
+ virt/kvm/kvm_main.c      | 14 +++++++-------
+ 4 files changed, 22 insertions(+), 8 deletions(-)
 
-With that out of the way, dealing with VMXON/VMXOFF and EFER.SVME is a fairly
-simple refcounting game.
-
-Decently tested, and it seems like the core idea is sound, so I dropped the
-RFC.  But the side of things definitely needs testing.
-
-Note, this is based on kvm-x86/next, which doesn't have
-EXPORT_SYMBOL_FOR_KVM(), and so the virt/hw.c exports need to be fixed up.
-I'm sending now instead of waiting for -rc1 because I'm assuming I'll need to
-spin at least v3 anyways :-)
-
-v2:
- - Initialize the TDX-Module via subsys initcall instead of during
-   tdx_init(). [Rick]
- - Isolate the __init and __ro_after_init changes. [Rick]
- - Use ida_is_empty() instead of manually tracking HKID usage. [Dan]
- - Don't do weird things with the refcounts when virt_rebooting is
-   true. [Chao]
- - Drop unnecessary setting of virt_rebooting in KVM code. [Chao]
- - Rework things to have less X86_FEATURE_FOO code. [Rick]
- - Consolidate the CPU hotplug callbacks. [Chao]
-
-v1 (RFC):
- - https://lore.kernel.org/all/20251010220403.987927-1-seanjc@google.com
-
-Chao Gao (1):
-  x86/virt/tdx: KVM: Consolidate TDX CPU hotplug handling
-
-Sean Christopherson (6):
-  KVM: x86: Move kvm_rebooting to x86
-  KVM: x86: Extract VMXON and EFER.SVME enablement to kernel
-  KVM: x86/tdx: Do VMXON and TDX-Module initialization during subsys
-    init
-  x86/virt/tdx: Tag a pile of functions as __init, and globals as
-    __ro_after_init
-  x86/virt/tdx: Use ida_is_empty() to detect if any TDs may be running
-  KVM: Bury kvm_{en,dis}able_virtualization() in kvm_main.c once more
-
- Documentation/arch/x86/tdx.rst              |  26 --
- arch/x86/events/intel/pt.c                  |   1 -
- arch/x86/include/asm/kvm_host.h             |   3 +-
- arch/x86/include/asm/reboot.h               |  11 -
- arch/x86/include/asm/tdx.h                  |   4 -
- arch/x86/include/asm/virt.h                 |  26 ++
- arch/x86/include/asm/vmx.h                  |  11 +
- arch/x86/kernel/cpu/common.c                |   2 +
- arch/x86/kernel/crash.c                     |   3 +-
- arch/x86/kernel/reboot.c                    |  63 +---
- arch/x86/kernel/smp.c                       |   5 +-
- arch/x86/kvm/svm/svm.c                      |  34 +-
- arch/x86/kvm/svm/vmenter.S                  |  10 +-
- arch/x86/kvm/vmx/tdx.c                      | 209 ++----------
- arch/x86/kvm/vmx/vmcs.h                     |  11 -
- arch/x86/kvm/vmx/vmenter.S                  |   2 +-
- arch/x86/kvm/vmx/vmx.c                      | 127 +-------
- arch/x86/kvm/x86.c                          |  20 +-
- arch/x86/virt/Makefile                      |   2 +
- arch/x86/virt/hw.c                          | 340 ++++++++++++++++++++
- arch/x86/virt/vmx/tdx/tdx.c                 | 315 ++++++++++--------
- arch/x86/virt/vmx/tdx/tdx.h                 |   8 -
- arch/x86/virt/vmx/tdx/tdx_global_metadata.c |  10 +-
- include/linux/kvm_host.h                    |  10 +-
- virt/kvm/kvm_main.c                         |  31 +-
- 25 files changed, 657 insertions(+), 627 deletions(-)
- create mode 100644 arch/x86/include/asm/virt.h
- create mode 100644 arch/x86/virt/hw.c
-
-
-base-commit: 5d3e2d9ba9ed68576c70c127e4f7446d896f2af2
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 0c6d899d53dd..80cb882f19e2 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -694,6 +694,9 @@ static void drop_user_return_notifiers(void)
+ 		kvm_on_user_return(&msrs->urn);
+ }
+ 
++__visible bool kvm_rebooting;
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_rebooting);
++
+ /*
+  * Handle a fault on a hardware virtualization (VMX or SVM) instruction.
+  *
+@@ -13100,6 +13103,16 @@ int kvm_arch_enable_virtualization_cpu(void)
+ 	return 0;
+ }
+ 
++void kvm_arch_shutdown(void)
++{
++	/*
++	 * Set kvm_rebooting to indicate that KVM has asynchronously disabled
++	 * hardware virtualization, i.e. that relevant errors and exceptions
++	 * aren't entirely unexpected.
++	 */
++	kvm_rebooting = true;
++}
++
+ void kvm_arch_disable_virtualization_cpu(void)
+ {
+ 	kvm_x86_call(disable_virtualization_cpu)();
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index fdab0ad49098..40993348a967 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -54,6 +54,7 @@ struct kvm_host_values {
+ 	u64 arch_capabilities;
+ };
+ 
++extern bool kvm_rebooting;
+ void kvm_spurious_fault(void);
+ 
+ #define SIZE_OF_MEMSLOTS_HASHTABLE \
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index d93f75b05ae2..a453fe6ce05a 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1621,6 +1621,7 @@ static inline void kvm_create_vcpu_debugfs(struct kvm_vcpu *vcpu) {}
+ #endif
+ 
+ #ifdef CONFIG_KVM_GENERIC_HARDWARE_ENABLING
++void kvm_arch_shutdown(void);
+ /*
+  * kvm_arch_{enable,disable}_virtualization() are called on one CPU, under
+  * kvm_usage_lock, immediately after/before 0=>1 and 1=>0 transitions of
+@@ -2302,7 +2303,6 @@ static inline bool kvm_check_request(int req, struct kvm_vcpu *vcpu)
+ 
+ #ifdef CONFIG_KVM_GENERIC_HARDWARE_ENABLING
+ extern bool enable_virt_at_load;
+-extern bool kvm_rebooting;
+ #endif
+ 
+ extern unsigned int halt_poll_ns;
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index f1f6a71b2b5f..3278ee9381bd 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -5586,13 +5586,15 @@ bool enable_virt_at_load = true;
+ module_param(enable_virt_at_load, bool, 0444);
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(enable_virt_at_load);
+ 
+-__visible bool kvm_rebooting;
+-EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_rebooting);
+-
+ static DEFINE_PER_CPU(bool, virtualization_enabled);
+ static DEFINE_MUTEX(kvm_usage_lock);
+ static int kvm_usage_count;
+ 
++__weak void kvm_arch_shutdown(void)
++{
++
++}
++
+ __weak void kvm_arch_enable_virtualization(void)
+ {
+ 
+@@ -5646,10 +5648,9 @@ static int kvm_offline_cpu(unsigned int cpu)
+ 
+ static void kvm_shutdown(void)
+ {
++	kvm_arch_shutdown();
++
+ 	/*
+-	 * Disable hardware virtualization and set kvm_rebooting to indicate
+-	 * that KVM has asynchronously disabled hardware virtualization, i.e.
+-	 * that relevant errors and exceptions aren't entirely unexpected.
+ 	 * Some flavors of hardware virtualization need to be disabled before
+ 	 * transferring control to firmware (to perform shutdown/reboot), e.g.
+ 	 * on x86, virtualization can block INIT interrupts, which are used by
+@@ -5658,7 +5659,6 @@ static void kvm_shutdown(void)
+ 	 * 100% comprehensive.
+ 	 */
+ 	pr_info("kvm: exiting hardware virtualization\n");
+-	kvm_rebooting = true;
+ 	on_each_cpu(kvm_disable_virtualization_cpu, NULL, 1);
+ }
+ 
 -- 
 2.52.0.223.gf5cc29aaa4-goog
 
