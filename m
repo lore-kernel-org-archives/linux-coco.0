@@ -1,61 +1,61 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011063.outbound.protection.outlook.com [40.107.208.63])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010016.outbound.protection.outlook.com [52.101.85.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD92F2EC55C
-	for <linux-coco@lists.linux.dev>; Mon,  8 Dec 2025 22:14:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.63
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611952E8DEB
+	for <linux-coco@lists.linux.dev>; Mon,  8 Dec 2025 22:14:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765232070; cv=fail; b=Z7ivcbnQwg8cru6JTHfm87k6JYexiEfW5lDMRhtlKCF/+a66JB0ElPJ7PBqMVt68Zx9RZw/6oqAXvUQmZ03Dq/7TJeYFraZStjP/u1v8MdP+WDej/uHGu8TrBnspb9+JWKibtyVP8GGwQw28xm32QRUg5Jk0253uos4nprDfYfc=
+	t=1765232077; cv=fail; b=LktsJtZ7QKZpu8s1ER5Dvnnb42Kotqk+KNglHVnfc4OBO79hd5kxYR9OK3SFb8SHeXFR1APnUKA9KkTYDx074yQO/f/p2KLGTPpk39QEG6Ki1W2KgUWuiupT0qTYR86YPpyrKk25Q8fEKpEnvqjPAZnmVXK0jjvTbKQxpgqITn4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765232070; c=relaxed/simple;
-	bh=nu1qwZLl+bw/0kkC8fMwcBMrxWgavaRa4g60Y7S1ZlA=;
+	s=arc-20240116; t=1765232077; c=relaxed/simple;
+	bh=+QnguX84NhdNKYuknbJSg6PAO//3InkZT0dcgHDhz/c=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X5hhKQGuD3GGTvky7Iuy+KSAoWcSSW6yI6usFHJP7pt5VlY+xKNzUqI3ZxFIumz9rysswA8/mOVkk9jtMmMn0WCx3hhFKSJJ6p89nczDEgm29N0BojiXIbIMMhD+F+xJjvq+cprGO//Kkn6kZ51VXn2D/bOPdAIJYSXmufUwR/Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=NTKSQM7H; arc=fail smtp.client-ip=40.107.208.63
+	 MIME-Version:Content-Type; b=Jry+npY/zJGfnz4kOw1zsKa7nD81CaaOBDcNKuaWqB7G0GMnWac+HSbid4WCY12+OJCp+Sv6o+9e18HBLKoThM3Vw6VhqPYPRfdulLZvjKkCjtVzCMIqdm3giFmBjQPXlCUed9AK1TDlLY5QewX0uyoj3zGRt+Ulzjvj8yYA7YA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PZFcZjUD; arc=fail smtp.client-ip=52.101.85.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="NTKSQM7H"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PZFcZjUD"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OpiCdk/u0E5TnEmrE+tePmtm39MRNwhWnjXNFJfbqXyhXxYOtowpIrOYPk1but3Ps/9I6OdgChVSkv2mA9lVGDN0oLu0ErSrLfH8eGqgki69+3zWb4rdpTVDuATnSlFUHDUXVN3zyS0uZN1OQ/yOIXyh8J93qBxqMmgFlbcjgv4X9CPzadJHn3SyU8F2z5CzSOEl7k/yrQUDKQS6CJMsn7QcBNdVClIA1o3phl8cZ7ggIrSKBht1W/QpKDboRIT4ffphMjrVr1jLFM2pbdxtr/KsSISMwxCMOrSXfxwqUthy9eBy+Wb1VsTRMtL86qaKDXEQESqpqN1ju6u3K/HUcw==
+ b=Ji0eyjlw8BEy5U3NgGtLAshRJ05MQbZtU48LdCyCg6Gu4MVPN7WR7wFfqUGDJ8jEOSQ4zDCAMZzzUGs3U8ixLc4gjbHyTsurn3pFhDHCF4wvcgWF1uIY7tW0xn52CHTZuSoQDnZFPPlF+TcEOU99fOgZZT2RjvN08lkWm5z20h3sOY9y0vs+UKNQPt49h6PApPQfuShxs8uzre6eB03vKV8UUClIaeQCbHvPbvA+V7vChLVjQtA8IcyjQkmvP3HcVV7/bIv7dgCZUhjz9i9hqsnNyagCWhZLkK14Vw8zUB75+T4luVVJX91eTORITgdgQ0MeAyIq2g0jx7LKW9RFDg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=It+M1e+ZKZqRz3i0LYB9UkqDMz0DAatokyU2zdXSiJM=;
- b=ws4zXTcEMuPeb452DOmD1mcb3q1hqckbwBdnNqpEjskMxj4lhdJTNGTRXmxQz6aIIAY2qtmAAShseNOGhLYmbz73Q/WaEwRxs2qfGGxc483eD7f9iWfYZhtCXD9aRRUnln6Ey9oEDrmuf04p/Xqa5UT9ThsWsmIxgAubF0fLBPXFBWdido+4h7OPfFMsUs9pJoTx/VDpSbDya2oalHBomTyTb6voDrOZfJHneOgaiUPVIZeMmSTvYYMtvFzWAPuSHViUeUlmp4Hh+9XnURW8+DoBEUa4jHxe4C5KrKvOBgxREwHGwP7Avc+A643YmMlifK9Ar50rpxxrvxzpc8r+DA==
+ bh=Op+0HtvBVztvsKx5CL+YZvkKE7djWqrMUILpOrH1gFQ=;
+ b=JcA0RutwHd/zgqWNIz/VLklUrERiLdGCOeH2GjbcBmlS3HxEMxakYweS6GyWBlJTLHHE+EYhBpaKrJ+k0uONuNMThdcWFH8uZhS2XSJjGqINUmWW3Zxm2W6AgAUb7ySoiseLHI2ciQNjUq0sZwPfbq90tNT/tQc2VF1Y5gic/1GEyQizPuu9/LyFpog+VIbvegpkEpwSbUuxWpqmu/G5S4isZrrDYFzewtjRLmMt+Dx0wLbUwylA8lxlK566MdIa/oX9AG/c83KL/M8EEe5bWyMCd6E+r0/ObqpyWS8xNdDBHiB4R98sCJdfK1gLSB2vZDRtS8xGDD53lltOdWTrAQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=arm.com smtp.mailfrom=nvidia.com;
+ 216.228.118.232) smtp.rcpttodomain=arm.com smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=It+M1e+ZKZqRz3i0LYB9UkqDMz0DAatokyU2zdXSiJM=;
- b=NTKSQM7HrObMhYNUYrVF46C1imVHnckQIiB1t89UYZYEaKihNPymHxfhPz6eI8KVpU+HYbFnwnDKmj/naDSUWNaL9GYdXbnbsFyFYIjeOS1MVRA53gmL44hRX3oVQsftBYFVLpSayVaoHLkaTB/xgr0j+vdsBZlaQijVS1Y61NOyWbTogtHIxIQ/265kmlQY/d6byxMF7mXK8LlTMNtdfmglvBLrWVWcvBL2/znldjikcQHo7mSYaP7jrG8rf5SRCGn8pq53RqhkDQOHVbElU0gZBoixcaBHFczQCJqgNAfTM9TDYfCfhQcl37KrhX1lbKlGzyV/I1ZbOfroQQcmwA==
-Received: from CH0PR03CA0320.namprd03.prod.outlook.com (2603:10b6:610:118::25)
- by DS4PR12MB9746.namprd12.prod.outlook.com (2603:10b6:8:2a4::20) with
+ bh=Op+0HtvBVztvsKx5CL+YZvkKE7djWqrMUILpOrH1gFQ=;
+ b=PZFcZjUDCnUFrGO/wqIyGikcDQj0/fhx2LarTv9LvKeHs2TtbeYnDJY+S/hJF739zVNgBkRIV79WTJO9sgKeDy2QsqIRkbSdf2++E0IIe3rQNTOhj3Pxkd6qfj6/MqSONrWk4shxIGtjeE3Km7eXfWBHkQ4pqj4HXuoz+vb2yuQjx8RBXnQmb+V3bxG707g7hjr04GKyELn8zUhTaM1iwryCkpmLl3A1sORSktruU06Fe8JQChJtrpYEHYPoA8ZJLBR5jrBJOgXzrxRz8OSczPek03d4m+959R3HNoDrdpYDPjQ8oiRwNzJtXse7/TogBznMGIF12jwZtYQ7EueUJA==
+Received: from SJ0PR13CA0104.namprd13.prod.outlook.com (2603:10b6:a03:2c5::19)
+ by PH7PR12MB8594.namprd12.prod.outlook.com (2603:10b6:510:1b3::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.14; Mon, 8 Dec
- 2025 22:14:24 +0000
-Received: from CH2PEPF00000142.namprd02.prod.outlook.com
- (2603:10b6:610:118:cafe::6f) by CH0PR03CA0320.outlook.office365.com
- (2603:10b6:610:118::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9388.14 via Frontend Transport; Mon,
- 8 Dec 2025 22:14:23 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ 2025 22:14:26 +0000
+Received: from CO1PEPF000044F5.namprd05.prod.outlook.com
+ (2603:10b6:a03:2c5:cafe::ec) by SJ0PR13CA0104.outlook.office365.com
+ (2603:10b6:a03:2c5::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9412.5 via Frontend Transport; Mon, 8
+ Dec 2025 22:14:26 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- CH2PEPF00000142.mail.protection.outlook.com (10.167.244.75) with Microsoft
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ CO1PEPF000044F5.mail.protection.outlook.com (10.167.241.75) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9412.4 via Frontend Transport; Mon, 8 Dec 2025 22:14:23 +0000
+ 15.20.9412.4 via Frontend Transport; Mon, 8 Dec 2025 22:14:26 +0000
 Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 8 Dec
- 2025 14:14:08 -0800
+ 2025 14:14:09 -0800
 Received: from drhqmail203.nvidia.com (10.126.190.182) by
  drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
@@ -71,9 +71,9 @@ CC: <ardb@kernel.org>, <chao.gao@intel.com>,
 	<linux-kernel@vger.kernel.org>, <sdonthineni@nvidia.com>,
 	<vsethi@nvidia.com>, <vwadekar@nvidia.com>, Vedashree Vidwans
 	<vvidwans@nvidia.com>
-Subject: [RFC PATCH 2/5] firmware: smccc: LFA: refactor
-Date: Mon, 8 Dec 2025 22:13:12 +0000
-Message-ID: <20251208221319.1524888-3-vvidwans@nvidia.com>
+Subject: [RFC PATCH 4/5] firmware: smccc: register as platform driver
+Date: Mon, 8 Dec 2025 22:13:14 +0000
+Message-ID: <20251208221319.1524888-5-vvidwans@nvidia.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251208221319.1524888-1-vvidwans@nvidia.com>
 References: <20251208221319.1524888-1-vvidwans@nvidia.com>
@@ -88,175 +88,288 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF00000142:EE_|DS4PR12MB9746:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0e7785c0-8256-4e77-0f16-08de36a724c5
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F5:EE_|PH7PR12MB8594:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9b9b6534-cf71-4779-9709-08de36a72659
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|36860700013|82310400026|1800799024|376014;
+	BCL:0;ARA:13230040|36860700013|82310400026|376014|7416014|1800799024|13003099007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?HV0uDhuVSK0gPGbB4eQ53ZVTfAOmnKrfjvoFlOtgX+1XZdKHdtB6Rgjrx0OP?=
- =?us-ascii?Q?NsZaZoPmPC2VHKTfgl7NhX6ONrLMXWqaDIeRa+wyq9g/JAMonWmDC0oRWwNN?=
- =?us-ascii?Q?yClUYvRYpDSJ4wvl629wN1TgOxXhVSqa1/CdzCAVG7PRvFoiA962JcYmlu0k?=
- =?us-ascii?Q?+gwNIuKvJntuTzuwYjz8OBN2BnpTREUUj5vIvbsB6BA1S1KMxxXf8S0F4IFB?=
- =?us-ascii?Q?hE93z1FKtzbS6EKublCvUSFQFjLAdrBR8t2AFmbaotP8ZnP8pLbDl0p/F+XB?=
- =?us-ascii?Q?rVRUdF0GnV0xB3LuCkONGANGfKsqycK+hWB28RWfhqZlQAejdCcVg7SsmqZ4?=
- =?us-ascii?Q?a+1tbvUO8zNBj4SoHX/bMlNqYHDPVf0IVZosDVdqlDRUBkr3KewhEpZUcgNu?=
- =?us-ascii?Q?tcZpQTbqTArFzEoMyW3AB4w6/aiOf+glJLI/3sYh1YnoHVVTktDW+8sEiW0o?=
- =?us-ascii?Q?6g/WhwiQXRBzlZ+uLQZSljQVHIdANnL6MoW2zvOKaoKk9h5BaX4XqeINtWAx?=
- =?us-ascii?Q?GhE/46jSiBnp34tIBGXXPzd3asqmXPKfMGGBhejWuz/GWaApB0pZASIi8JJa?=
- =?us-ascii?Q?eEoBcYmsQIIwjnz6YVjlINiU8d6qKjN8IQ5RBz5zrqXyBs7fCej8JGH+x+4K?=
- =?us-ascii?Q?Am7eNOay3p5UZ8S07pQoFU62MjyuLNKa9OVyAsCsv3GC0dpWq8aRKeF65Qbx?=
- =?us-ascii?Q?KfbAV4YXr9I93ofw0lPI2XNUV02H9qHivPpzThHNr7SpOgbUyDaUv70wILy9?=
- =?us-ascii?Q?D4ojjV1B+qAmLUPqQHQ+I42TvAEZBcLgGrL5uhPU+NgfLzKiXmV0rWLGUufJ?=
- =?us-ascii?Q?D8KevWJmj0sgI20CAaB36f2KSuFb/jhTMhOPEmEfqYfi93MmsXXHPiXp/W5W?=
- =?us-ascii?Q?cd8t9jJOvnHzB2MYyuoHzGRY8p2ZO+WtvbbFUiBRXOrpreq2b0TITe0ZHLFZ?=
- =?us-ascii?Q?IeZkgWKCp4kX1F7r+Sc6chD8/WX0w1aG4av6VlunIexHRH7xvCU+ertDXACX?=
- =?us-ascii?Q?C/7C2xPSalCmG1LStC0xs3uK7506poqRwD3YcDLUpLEeEuFyl9EgZuNejk/h?=
- =?us-ascii?Q?xEti/0nPzkN2uziM2BpBnf/75e0QBPv6BtYka14EQhF5hgK48NL3uuyLlCzs?=
- =?us-ascii?Q?7t4pHJjgzz6+HGLFIuSzUEWWxXioqXcsEzorsNptojtwXGJnQufPYJOJiEcf?=
- =?us-ascii?Q?/j8aw4dRTPFqaUUOSmjsp/4q3ICUhb6mwYE7U57C287pF5ofHkD094yHXrk5?=
- =?us-ascii?Q?+Wda/U7aQ8l911BfCbh80k0ZKuRyUNlyPya/fOqDokEfbp9m8gD2qtSmWjyV?=
- =?us-ascii?Q?F+yhTqdHj7WmjJOV8KpMwO3J1FfyuFs998hzun0X+c7CpdM8oGu9StJzNiTa?=
- =?us-ascii?Q?iGz/nQdHZVFOWx1nC/93zBjLkwWCKz0UpGW/yExmGdBAoPiuBy6wkGTmv3GU?=
- =?us-ascii?Q?ywbysMuef6tVtlcIAzTPUQTwag9axKj17liKddMk0ELzkePJoEX465xXOGPI?=
- =?us-ascii?Q?JmCxo5kxKmsjE+QuS4LWpeCLp+gOGAd9KRZAWxdedusCn1ex+0AulNrKfrKd?=
- =?us-ascii?Q?TnXPSoGs58aAW6yGSsw=3D?=
+	=?us-ascii?Q?UousEuVOSMLb/OTCUBZk/tBMYenbPghNTAuYmam9CJklmh1JX4c+DddnJOTL?=
+ =?us-ascii?Q?hDptxswGW2E+6sMSVCicvh8mlppFjCVRuiEGSKIQXYrXa56zR82jXlQ+MYdZ?=
+ =?us-ascii?Q?fYntPY40v7pHBakuxYnzplm4QCyWF3ajRQ4OtGsFxiCYOhgZ7VmevuTlBHwN?=
+ =?us-ascii?Q?7mZEf0ifNxs+2Etz+hc/ddbOyrGDRn6/QEkMCwckZp6Qm9nYa9XDGxTUu4ow?=
+ =?us-ascii?Q?9tnQW5YU7KwFXdZDZzPeF9UZgLCQuewkZLCmO65uUKAUiV6OyW69rqqCfIGL?=
+ =?us-ascii?Q?U5bz6SWzuqjHfzesZ4VcCqo4IvenHTKkE3IY14GyaIvDhSZJEA2BWhDdGuiF?=
+ =?us-ascii?Q?saKr+PzmCFoxIO72lBQcTXoR4IHQbfJ/nLMFNxRdPk9mS7BxAE5+VV0X+28T?=
+ =?us-ascii?Q?W1V5uUCGsXfAG47F3rxq/DIqu3EqF5l3MF4lQdxsVfmrizpi16mkWUxD6fCS?=
+ =?us-ascii?Q?jRl0xOj5MuC+RAMdq0wp9aLlDZz5zweS9nyQ8g9ZTJ0ojd1Z8WirXLjv/rMa?=
+ =?us-ascii?Q?974eNRzmk1bPHfDWtbSFH5gYvJpt0/1tMW+5r3cis55tLnxCvtwVHm8sQe5N?=
+ =?us-ascii?Q?oFTUmyunZQ+HEeKn/jtUsTmB1LVRDBxjo+TX4egwE7CYJJGgtkDJNHKPFjpk?=
+ =?us-ascii?Q?rYx0GmD1aPzXpit2oyCvKeQGWKq80vHkFbU0+2rXGJCUN3Jr9+IcSFOvScug?=
+ =?us-ascii?Q?j3s0ydMbVXJfQY3KhyqecyeocPVgPYWoZ0y+2M1ByBVZPfx0Hk36kUH5Ug4/?=
+ =?us-ascii?Q?yEf0iA4rdnqnAjQYZVu0U3fpp8pZFbJ5jFXBc6KdwFXC8oqRRKP1sC4iQXCH?=
+ =?us-ascii?Q?jJ9Itr+UX9bIm5dynLizpPaFswX7poIQvzXEM9TRojj+aQdsXd+FFnisyQw3?=
+ =?us-ascii?Q?bDuQkxbJrjnTneiXlxAMuaU5vQOmsq+T3zJHYAGZ/oN7ylqovhKlN5+pqb7E?=
+ =?us-ascii?Q?D3zinHfgJ4yAcPAr5NLifTS8cdAuu8Jb7fxisEgYzAakmUHpJT0tJSmuHr1R?=
+ =?us-ascii?Q?+lJ+FruaGIXnsLkMy8A/5UovtHCLkon9JzGE7zWr4AhkWr0rZxcM5E8/tTCQ?=
+ =?us-ascii?Q?Qg1WPJRgl2DlrVWhjs71gZ4ZTfo6mz6uv1Rk0+HUsHiAtkMuYosNofzLMEYI?=
+ =?us-ascii?Q?FpqF+f+GSlP7uJRoXybxMvRCyxLdFmuMyHWO58xkIblasSm4LJQJkEoxrnOg?=
+ =?us-ascii?Q?QSyevqveOyNb7cRVCYaTtKFim4z9GtxxjzFR2FlW2CU29PbVj/5n8MQTCpXS?=
+ =?us-ascii?Q?9SW7tEAki+lhtOmSUq1Fv8fBu5PLTM4I3vriW7CvAsn3hRVf4CnMw4/le3yv?=
+ =?us-ascii?Q?rOAyiYShgpoLWlvvAGAkHsf2EFFo5todbkb/ow/NQr9OdtOzrel+NQmogXNT?=
+ =?us-ascii?Q?rbqBSQjZxRhw7GxK2KZCwjrOBHA+M0yK0VkWPLAa/lYjQvnSvd25On07r56F?=
+ =?us-ascii?Q?js0VzZBkV5sAcLaecfWd1kfB6WaNHrZzY9S8pauUiMv9vyuezS6g/V0T6ANX?=
+ =?us-ascii?Q?Lbvl1WgkhqxxgmLmcizI/BkbSPOsh2Ui4UFCEwnebQgQLPsylqGOZm+v8cqF?=
+ =?us-ascii?Q?Ly+b5uYTPdL+0Jet4xY=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(36860700013)(82310400026)(1800799024)(376014);DIR:OUT;SFP:1101;
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(376014)(7416014)(1800799024)(13003099007);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Dec 2025 22:14:23.6127
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Dec 2025 22:14:26.3111
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0e7785c0-8256-4e77-0f16-08de36a724c5
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9b9b6534-cf71-4779-9709-08de36a72659
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF00000142.namprd02.prod.outlook.com
+	CO1PEPF000044F5.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9746
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8594
 
-- Refactor LFA CANCEL logic into independent lfa_cancel() function.
-- Use FW UUID as image_name for images not known by the driver.
-- Move may_reset_cpu check to activate_fw_image(). This keeps all the
-functionality within a function.
+- Update driver to be in-built kernel module. This will ensure driver is
+installed in kernel and would not require any user intervention.
+- Register the LFA driver as a platform driver corresponding to
+'armhf000' device. The driver will be invoked when the device is
+detected on a platform.
+- Add functionality to register LFA interrupt in the driver probe().
+This LFA IRQ number will be retrived from the LFA device node.
+- On IRQ, driver will query FW component details and trigger activation
+of capable and pending FW component. The driver will loop to update FW
+component details after every successful FW component activation.
+- Mutex synchronization is implemented to avoid concurrent LFA updates
+through interrupt and sysfs interfaces.
+
+Device node snippet from LFA spec[1]:
+fwu0 {
+    compatible = "arm,armhf000";
+    memory-region = <&fwu_payload>;
+    interrupt-parent = <&ic>;
+    interrupts = <0 100 1>; // SPI, Interrupt #100, Edge Rising
+};
+
+[1] https://developer.arm.com/documentation/den0147/latest/
 
 Signed-off-by: Vedashree Vidwans <vvidwans@nvidia.com>
 ---
- drivers/firmware/smccc/lfa_fw.c | 64 ++++++++++++++++++++-------------
- 1 file changed, 40 insertions(+), 24 deletions(-)
+ drivers/firmware/smccc/Kconfig  |   3 +-
+ drivers/firmware/smccc/lfa_fw.c | 124 +++++++++++++++++++++++++++++++-
+ 2 files changed, 125 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/firmware/smccc/Kconfig b/drivers/firmware/smccc/Kconfig
+index 48b98c14f770..c21be43fbfed 100644
+--- a/drivers/firmware/smccc/Kconfig
++++ b/drivers/firmware/smccc/Kconfig
+@@ -25,8 +25,9 @@ config ARM_SMCCC_SOC_ID
+ 	  platforms providing some sysfs information about the SoC variant.
+ 
+ config ARM_LFA
+-	tristate "Arm Live Firmware activation support"
++	bool "Arm Live Firmware activation support"
+ 	depends on HAVE_ARM_SMCCC_DISCOVERY
++	default y
+ 	help
+ 	  Include support for triggering Live Firmware Activation, which
+ 	  allows to upgrade certain firmware components without a reboot.
 diff --git a/drivers/firmware/smccc/lfa_fw.c b/drivers/firmware/smccc/lfa_fw.c
-index bdde14b66606..df8b65324413 100644
+index 0e420cefa260..24916fc53420 100644
 --- a/drivers/firmware/smccc/lfa_fw.c
 +++ b/drivers/firmware/smccc/lfa_fw.c
-@@ -129,6 +129,31 @@ static int get_nr_lfa_components(void)
- 	return reg.a1;
- }
+@@ -19,7 +19,12 @@
+ #include <linux/nmi.h>
+ #include <linux/ktime.h>
+ #include <linux/delay.h>
++#include <linux/platform_device.h>
++#include <linux/acpi.h>
++#include <linux/interrupt.h>
++#include <linux/mutex.h>
  
-+static int lfa_cancel(struct image_props *attrs)
-+{
-+	struct arm_smccc_1_2_regs reg = { 0 };
-+
-+	reg.a0 = LFA_1_0_FN_CANCEL;
-+	reg.a1 = attrs->fw_seq_id;
-+	arm_smccc_1_2_invoke(&reg, &reg);
-+
-+	/*
-+	 * When firmware activation is called with "skip_cpu_rendezvous=1",
-+	 * LFA_CANCEL can fail with LFA_BUSY if the activation could not be
-+	 * cancelled.
-+	 */
-+	if (reg.a0 == LFA_SUCCESS) {
-+		pr_info("Activation cancelled for image %s\n",
-+			attrs->image_name);
-+	} else {
-+		pr_err("Firmware activation could not be cancelled: %s\n",
-+		       lfa_error_strings[-reg.a0]);
-+		return -EINVAL;
-+	}
-+
-+	return reg.a0;
-+}
-+
- static int call_lfa_activate(void *data)
++#define DRIVER_NAME	"ARM_LFA"
+ #define LFA_ERROR_STRING(name) \
+ 	[name] = #name
+ #undef pr_fmt
+@@ -129,6 +134,7 @@ static const struct fw_image_uuid {
+ };
+ 
+ static struct kobject *lfa_dir;
++static DEFINE_MUTEX(lfa_lock);
+ 
+ static int get_nr_lfa_components(void)
  {
- 	struct image_props *attrs = data;
-@@ -160,6 +185,11 @@ static int activate_fw_image(struct image_props *attrs)
- 	struct arm_smccc_1_2_regs res = { 0 };
- 	int ret;
- 
-+	if (attrs->may_reset_cpu) {
-+		pr_err("CPU reset not supported by kernel driver\n");
-+		return -EINVAL;
-+	}
-+
- 	/*
- 	 * LFA_PRIME/ACTIVATE will return 1 in res.a1 if the firmware
- 	 * priming/activation is still in progress. In that case
-@@ -284,12 +314,6 @@ static ssize_t activate_store(struct kobject *kobj, struct kobj_attribute *attr,
+@@ -374,17 +380,23 @@ static ssize_t activate_store(struct kobject *kobj, struct kobj_attribute *attr,
  					 image_attrs[LFA_ATTR_ACTIVATE]);
  	int ret;
  
--	if (attrs->may_reset_cpu) {
--		pr_err("Firmware component requires unsupported CPU reset\n");
--
--		return -EINVAL;
--	}
--
++	if (!mutex_trylock(&lfa_lock)) {
++		pr_err("Mutex locked, try again");
++		return -EAGAIN;
++	}
++
  	ret = activate_fw_image(attrs);
  	if (ret) {
  		pr_err("Firmware activation failed: %s\n",
-@@ -309,25 +333,11 @@ static ssize_t cancel_store(struct kobject *kobj, struct kobj_attribute *attr,
- {
- 	struct image_props *attrs = container_of(attr, struct image_props,
- 						 image_attrs[LFA_ATTR_CANCEL]);
--	struct arm_smccc_1_2_regs reg = { 0 };
+ 			lfa_error_strings[-ret]);
 -
--	reg.a0 = LFA_1_0_FN_CANCEL;
--	reg.a1 = attrs->fw_seq_id;
--	arm_smccc_1_2_invoke(&reg, &reg);
-+	int ret;
- 
--	/*
--	 * When firmware activation is called with "skip_cpu_rendezvous=1",
--	 * LFA_CANCEL can fail with LFA_BUSY if the activation could not be
--	 * cancelled.
--	 */
--	if (reg.a0 == LFA_SUCCESS) {
--		pr_info("Activation cancelled for image %s\n",
--			attrs->image_name);
--	} else {
--		pr_err("Firmware activation could not be cancelled: %s\n",
--		       lfa_error_strings[-reg.a0]);
--		return -EINVAL;
--	}
-+	ret = lfa_cancel(attrs);
-+	if (ret != 0)
-+		return ret;
- 
- 	return count;
- }
-@@ -367,6 +377,8 @@ static int create_fw_inventory(char *fw_uuid, int seq_id, u32 image_flags)
- 	for (int i = 0; i < ARRAY_SIZE(fw_images_uuids); i++) {
- 		if (!strcmp(fw_images_uuids[i].uuid, fw_uuid))
- 			image_name = fw_images_uuids[i].name;
-+		else
-+			image_name = fw_uuid;
++		mutex_unlock(&lfa_lock);
+ 		return -ECANCELED;
  	}
  
- 	attrs->image_dir = kobject_create_and_add(fw_uuid, lfa_dir);
-@@ -414,6 +426,10 @@ static int create_fw_images_tree(void)
- 	int ret, num_of_components;
+ 	pr_info("Firmware activation succeeded\n");
  
- 	num_of_components = get_nr_lfa_components();
-+	if (num_of_components <= 0) {
-+		pr_err("Error getting number of LFA components");
-+		return -ENODEV;
+ 	/* TODO: refresh image flags here*/
++	mutex_unlock(&lfa_lock);
+ 	return count;
+ }
+ 
+@@ -510,6 +522,106 @@ static int create_fw_images_tree(void)
+ 	return 0;
+ }
+ 
++static irqreturn_t lfa_irq_thread(int irq, void *data)
++{
++	struct image_props *attrs = NULL;
++	int ret;
++	int num_of_components, curr_component;
++
++	mutex_lock(&lfa_lock);
++
++	/*
++	 * As per LFA spec, after activation of a component, the caller
++	 * is expected to re-enumerate the component states (using
++	 * LFA_GET_INFO then LFA_GET_INVENTORY).
++	 * Hence we need an unconditional loop.
++	 */
++
++	do {
++		/* TODO: refresh image flags here */
++		/* If refresh fails goto exit_unlock */
++
++		/* Initialize counters to track list traversal  */
++		num_of_components = get_nr_lfa_components();
++		curr_component = 0;
++
++		/* Execute PRIME and ACTIVATE for activable FW component */
++		list_for_each_entry(attrs, &lfa_fw_images, image_node) {
++			curr_component++;
++			if ((!attrs->activation_capable) || (!attrs->activation_pending)) {
++				/* LFA not applicable for this FW component */
++				continue;
++			}
++
++			ret = activate_fw_image(attrs);
++			if (ret) {
++				pr_err("Firmware %s activation failed: %s\n",
++					attrs->image_name, lfa_error_strings[-ret]);
++				goto exit_unlock;
++			}
++
++			pr_info("Firmware %s activation succeeded", attrs->image_name);
++			/* Refresh FW component details */
++			break;
++		}
++	} while (curr_component < num_of_components);
++
++	/* TODO: refresh image flags here */
++	/* If refresh fails goto exit_unlock */
++
++exit_unlock:
++	mutex_unlock(&lfa_lock);
++	return IRQ_HANDLED;
++}
++
++static int __init lfa_probe(struct platform_device *pdev)
++{
++	int err;
++	unsigned int irq;
++
++	err = platform_get_irq_byname_optional(pdev, "fw-store-updated-interrupt");
++	if (err < 0)
++		err = platform_get_irq(pdev, 0);
++	if (err < 0) {
++		pr_err("Interrupt not found, functionality will be unavailable.");
++
++		/* Bail out without failing the driver. */
++		return 0;
 +	}
++	irq = err;
++
++	err = request_threaded_irq(irq, NULL, lfa_irq_thread, IRQF_ONESHOT, DRIVER_NAME, NULL);
++	if (err != 0) {
++		pr_err("Interrupt setup failed, functionality will be unavailable.");
++
++		/* Bail out without failing the driver. */
++		return 0;
++	}
++
++	return 0;
++}
++
++static const struct of_device_id lfa_of_ids[] = {
++	{ .compatible = "arm,armhf000", },
++	{ },
++};
++MODULE_DEVICE_TABLE(of, lfa_of_ids);
++
++static const struct acpi_device_id lfa_acpi_ids[] = {
++	{"ARMHF000"},
++	{},
++};
++MODULE_DEVICE_TABLE(acpi, lfa_acpi_ids);
++
++static struct platform_driver lfa_driver = {
++	.probe = lfa_probe,
++	.driver = {
++		.name = DRIVER_NAME,
++		.of_match_table = lfa_of_ids,
++		.acpi_match_table = ACPI_PTR(lfa_acpi_ids),
++	},
++};
++
+ static int __init lfa_init(void)
+ {
+ 	struct arm_smccc_1_2_regs reg = { 0 };
+@@ -536,22 +648,32 @@ static int __init lfa_init(void)
+ 	pr_info("Arm Live Firmware Activation (LFA): detected v%ld.%ld\n",
+ 		reg.a0 >> 16, reg.a0 & 0xffff);
  
- 	for (int i = 0; i < num_of_components; i++) {
- 		reg.a0 = LFA_1_0_FN_GET_INVENTORY;
++	err = platform_driver_register(&lfa_driver);
++	if (err < 0)
++		pr_err("Platform driver register failed");
++
+ 	lfa_dir = kobject_create_and_add("lfa", firmware_kobj);
+ 	if (!lfa_dir)
+ 		return -ENOMEM;
+ 
++	mutex_lock(&lfa_lock);
+ 	err = create_fw_images_tree();
+ 	if (err != 0)
+ 		kobject_put(lfa_dir);
+ 
++	mutex_unlock(&lfa_lock);
+ 	return err;
+ }
+ module_init(lfa_init);
+ 
+ static void __exit lfa_exit(void)
+ {
++	mutex_lock(&lfa_lock);
+ 	clean_fw_images_tree();
++	mutex_unlock(&lfa_lock);
++
+ 	kobject_put(lfa_dir);
++	platform_driver_unregister(&lfa_driver);
+ }
+ module_exit(lfa_exit);
+ 
 -- 
 2.43.0
 
