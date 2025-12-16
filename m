@@ -1,95 +1,94 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D29B3B1B3
-	for <linux-coco@lists.linux.dev>; Tue, 16 Dec 2025 00:12:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184AA2B9BA
+	for <linux-coco@lists.linux.dev>; Tue, 16 Dec 2025 00:13:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.182
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765843937; cv=pass; b=a2tyNeGUcWWHkPVfqCxZB6vnCqXCarVqDLazrKsj+dM38ycip3cBL5CS+Ut75pNwUjrVkNWxbHieBkmvqvvPZvpdv7TW1RPP4uctc6rZu4C4+FXCBa6L79VxKcHCJhdtrl3owgJZspY6IZWp+tcn3DATgq1KYQdT9G9ySnNX2Pc=
+	t=1765844024; cv=pass; b=kgRIkpFqZZKeD3e++ikJXjeGD+AciERld/OcsVQb9uGg6jETSEt5wP1eB3/QBDID+Cs9wxnW+Xq41H6M6t4cfoRi5x1LkqZiyhv36ndYREBYXqW1JqCwxOmVxtnfI0+ftKKV6Zfv6wARxGbntU4nEDTQBHR5OXi63AMhVYA7dTE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765843937; c=relaxed/simple;
-	bh=0tv+UfE9Cjf3pcT92AawqgfgMaTHbGpjLAJBio+41P4=;
+	s=arc-20240116; t=1765844024; c=relaxed/simple;
+	bh=HRbRCmq0SM7DaTEQJ8+c85iPZjE4VDGJxFWUVma8wJ0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LTbre5ZoCzKKi7dy1JOdkF2ts2fJclEADZJ9GQESVuMqiSOf48orWLicRaAHO/BAsWnp7k5u3oKUMsFqP/SeBi2uF8bgj5u/RigaY6GnYCzYhFXxqUgWhslabu6cf8RgZFdUmKqps1AccJ0u7YrEnzOm/dcGYkMYPChr+K3viaA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Qro2DsQ/; arc=pass smtp.client-ip=209.85.214.180
+	 To:Cc:Content-Type; b=MLGBL3CO8qYX1F7uzuhB5BHyLIxIFBoiU7bZTWxg9PuYjaGM+NToqeQnf0Fw8qWo1aSakqR0hYFBgauBT6cscBS8YhzMuNO6hxA27tKM/GvY48dv7bQwG38kUglEidfBrvKSCB3GAZ+DIj1itcAS79zqQ+ZKXspeL5YMdyfNdyc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=02WjlP+F; arc=pass smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Qro2DsQ/"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-29e7ec26e3dso46315ad.0
-        for <linux-coco@lists.linux.dev>; Mon, 15 Dec 2025 16:12:15 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1765843935; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="02WjlP+F"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-29e7ec26e3dso46565ad.0
+        for <linux-coco@lists.linux.dev>; Mon, 15 Dec 2025 16:13:42 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1765844022; cv=none;
         d=google.com; s=arc-20240605;
-        b=SjtJTqFMKvDTanw5ywZAHuEUtJ+9d4OOlmd+1LLHUJas5euQw38zisChMcfpwk+PgL
-         rT4JUVyEUQc69m/1a8oYRTZ4rKCnHJyN3Fpo4HbC8CkSUxb9BJYqCL0aAOHaBEAk9gmU
-         aWlimzCxBho5iWI3TLMXjQWDDw2aWKRehfyBihRqpQj9bOo/GQz3LFwpCdQ8PpA5qjjF
-         g8XMgoZioeGNnYKwkXMWdJ5fozpiDIHvK3J3cbqG6/qWKhZARbCgJEhpqSrL0sIV1Ge4
-         sXmXubpPvdOiMeputLrFNnAzNqwKnLeUCdrt4S8oQj2I5u3+lizUF9nNSWaijOj8goYl
-         dPEw==
+        b=UlYUef5rASsa1zZHUCvuzpseNHEb2jz6sDayBJLa8FDVa3dm2iYwDyI6UqZkePidVu
+         m3GifT4gYc5rMvdNiaqKVGOLa47C0zn5FWVd3MrA2CIE5wMSqBW+xb5/37dzFW7kgpi1
+         1slMzib0Q6bMgFgHD7qv7SXxB9GCz5gPuV9DtvmpiivtRquSuhekp8cvLfMwTLTASod/
+         ZL42deVmSIs+YMHDowhY2iaWHZyVQ5mnE1DvrSujl25E3w6pO51TNoIeFM/m8X8gyS/s
+         wZgHtykfLA+h/1P0mf+7Ttyv4+LnknPKp7NFPds6ECpPggI1JLhco64pp/ibQHnv0OrS
+         2P1Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=27wQsfuOXjJhJo74CLfXwuW+WvRgdLz0XpQKIZiK7fE=;
-        fh=zbDnMBK1iEoiCysbfvuCdIJpYxyx9ejPQIkDzYCTWz0=;
-        b=UKANTO7itsqdTmhTyqI3ROcfFrkTtAxOtSaBivVXb1hK91L/Cy+xuwGwybAWsRGYSx
-         WsscLCwUtAASni9XJqsLm+sn4kLjhsgBlBTePSzrKt0Rprj2nogpnClQJdGjqJy0dbn6
-         tQQ8ppMJCHb4/xyrRSo+mUQabtpSfyLocOlXw8KAH7vOe1L9DYeLagWAUGVUViRv+LsS
-         MbBOvgsJ0d4hEnh+FyfSl7hbV3WFUSBNndM9LQuAA1BxhrahBs2DEc11C5qQjPNt/5BP
-         mn8dXUTLQZSasb0PnO2qSESa/5MVXznCiCWbiW5+qU5G+T6iqCKX1u8W/UJ9Pf7Nv/6d
-         xVfQ==;
+        bh=dBvvdjAGagUjLVl9YfrF0CaB+uVsXDQGkPun9qqTA8c=;
+        fh=4qymkvQ4hi7gMBvxFbUtyJiqAAHvskTF1DCOA0R6Wp4=;
+        b=McKA2LVRPrTW6SZbLmqp287yRazUZKmzDTxwd0PyIlYwK/DGAGBe2XGsSEHaG1GCZH
+         C0jfYnBsug0+XGFbSkng1AkOXg32ytt/KynNM/dJxnwCWJozErIcwh3OFhCECV/eC6gK
+         PcqplEDvUeFRHZVNkC2NwK5ecV+ugMgwWJ1XVEVKUsnzxuTC+4xgdbPcvUik27H8k3cB
+         7ZOx+GpbqKJd3QQNX296VY7LTTKTxCgNHEsVNkns8AURx8MeH3fK0OOxh9CpxavCkkhW
+         duL25FVcnKzl/bzcbv6zD7ORwBVxW5816C5BVTr+ORcmCTu6VKOxfA9e7C8Ct26ZJK8e
+         SSPw==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765843935; x=1766448735; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1765844022; x=1766448822; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=27wQsfuOXjJhJo74CLfXwuW+WvRgdLz0XpQKIZiK7fE=;
-        b=Qro2DsQ/6MlFQAkwZ2hMMug/Ci4BcQXgvwPIh9t5G2t7XT0DnC1YTB2+s9CNx3tWz2
-         0rNAXgnDi5sEN8yKV9WIC5mf5Lo782Z9A5fwhAhf/TFpp4nc7THYi7QZWONz40wTfM6m
-         aEYmKnI1B1tLPaUcf/KZimg0LxmCYx2nk1zkV6HiwTBpeBWuLwViET545lxhUsCI2SdO
-         2F/IMJLT4+mIRMH/5Ey3UyU9NUyrMLseWrV652oleajMoqMPlhKY7w0A3ahy2KR/0j8M
-         gfLRqmW/x0XPpWtA062D/fToUJELE18NTbSGW6CwgLZFWk4kLeOzeEG7W0fVAiWgGeRo
-         wQ5w==
+        bh=dBvvdjAGagUjLVl9YfrF0CaB+uVsXDQGkPun9qqTA8c=;
+        b=02WjlP+FhHKHIKeCUqLllcR9F+bIh5iuG6QPH+tufApvmoC/lWlNH+VVm6Mvbjgxol
+         FAWA0xhva53tcVgKe/laMYQVW86epaseqksfJppyQMCbRbYHlG5a4bOnAadiN3G5DkFY
+         0otyTBCmtkbU/DxfpeLPTfv4xzTjGeTx21St72cCCTd5xudcd/DmLU720HbJC6QSAnOx
+         uh1qpDq3XnW2lDjficevoEPxeWhTsf+z5ovviBj9E9YhiM65eqC3bEKPY9TQM3yiZMNm
+         LuqMxBVZfIdl36RGehoOP5mSgFZ7kGu96lxcQyqEHDsVk9csGJZWMdNQTq+jG1UlM1rU
+         E4vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765843935; x=1766448735;
+        d=1e100.net; s=20230601; t=1765844022; x=1766448822;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=27wQsfuOXjJhJo74CLfXwuW+WvRgdLz0XpQKIZiK7fE=;
-        b=ivToDPHKB2ec9CET/3tTVZbkPj55JV8PvPYZWl56sa75t2JtZTWJlNBpxEvRz0rq97
-         FnlMHFpMsw5nd8Hi7OIRCzmLgTf/6mVB3ADnXy976XBFr0a2sI7BM7hBVP2tnT2g+y3e
-         XZjbyhWa3rPRGkq5WIsafe5guVDhWBYuZB00WQ1xLY0wNDG51OcBNYCtPmc9hA9mPmSu
-         x+HwOpJ0qtv13emOk2j4eefXLgNxLm03FFnWVpeiKJGhhfSMWINx7kUKi+kPBeOQk8CD
-         r86ouISgngXVuiFj2dbzVVoAyo0X0xw1Y+GMjEqH5Ecq03do4ahGnTR58094Gb0O2pe2
-         tCXw==
-X-Forwarded-Encrypted: i=1; AJvYcCXHA95EM7Vtt/eBLZ4TUzjylA7528cNfMIu1tGHf9q2GbB0ZlclSD5a1Tz4M5Br954mkFez/iBmTnYT@lists.linux.dev
-X-Gm-Message-State: AOJu0YzJ6UCNi8IVuk/hnOv3YVehzHDPfPRR8j3souF2erc3CWKbB1Gp
-	I19t7pxZyMp+KTnc35z7UAXrhXv2JGaDndXorGlCOfkcGMDI1Um0faJCnqfMkcO1RleYhkod6x2
-	fcF1C8V7TD7aUiNnBLI0hAQkX0hWkd4ffzn2Y52Kh
-X-Gm-Gg: AY/fxX74/6T0C9atlKwZXSDk6uYiU1XpnxsgxJQO+NLMYbmT5QdUkyBxKKHeCnSk/vp
-	abB2A3aiawrXhY2PHdnCWtb2l2wfY5DHSiVQpF7Z9qrEeLDlEakymYg0JiFHWpS0PTmyyAqtCN2
-	SJ5XtRRcrQEwSVSHhorNBa3iozZ5mLT3Ay6Kk0FIfaKPqX3WQm3eh3+NajI55GwzpcPf0dFlqJm
-	REBsXtDXqu8sGFuPOA2uzT34d01wnAuk8XzxgPNpADUvRkODARgZyvOf7uUZN3IBU+zMPmgTez0
-	d+Wcz5ziFbyEKa2yGm+UNrlFhzRM
-X-Google-Smtp-Source: AGHT+IFYx2fqkqoq7nwgp8s1TBunZASqxOa+paDvYopFfRkFHpqotvWma1Omazh+JGGMYTXawA8rx1OS57mP9gGziPM=
-X-Received: by 2002:a05:7022:68a1:b0:120:5719:6249 with SMTP id
- a92af1059eb24-1205719637fmr3220c88.16.1765843934179; Mon, 15 Dec 2025
- 16:12:14 -0800 (PST)
+        bh=dBvvdjAGagUjLVl9YfrF0CaB+uVsXDQGkPun9qqTA8c=;
+        b=ph5zoGco6ifuk6zldQgLwWX5Z0zCwuYl8O+6UQnsaFQQfHYn2s5TN8ZD6zw+HKGYI9
+         RMSbDsITt68j5vqDwp2FzgHq8IETeGhEDZe8tu7bKwNzT8QwV99PmMumRDV5XQUSEiLs
+         K9TZoFme29ZWOy7D5mlpsdB+JIPbGUlAWeepN4FgpgB3C4Ne4ffYxn631y99cg2GeygG
+         MF58Xky0r7U8wcH+RRggNBMYF2H0JrFYkY9TaKI0TBDFLqfcTkvK+/Ki+E7DXfNEBgR8
+         LwIviQDo2bmTp1l7VbWlNpvwCUSYwGzg3E97mKB/whoYJcJukr7M+4ncBely+dwVtF02
+         m6mw==
+X-Forwarded-Encrypted: i=1; AJvYcCX83QGaavUvTnEw6+zajTeDyHdVaPhONCQNba5yT3QGxwN4y0GWzAdhbuF64r0Jjwk8aBhguS0btP9/@lists.linux.dev
+X-Gm-Message-State: AOJu0YzJlV8lcwtoW9iD9NImYjVdlr7kTUrd7KVYdFJ68Zz4mLRstSW8
+	++vzd2wenhHaA4Vk3Iwkv3EhOZoVFBz43FYm7QrNilkYl8pV1ZMQcOjFv1t6cuRmjP9+/KXmtMc
+	Iiq0RKg21xb3Q/OBPd5oCRdVxi/OZESe+VbrZy9O8
+X-Gm-Gg: AY/fxX7+De+J9ItW5snFewm2msngYbUFrXli3T3uBPz/hJfiB2hvKbzxYXDyDyLVzIy
+	0GgDePxJMGO0HaduJVdgbeLeeghQDrtG7s5nAYxE510eszO7pC7tuVFuAA+d0zyLuK48XB7zK4V
+	jxYzoWSVjjoRuddqSUysxCFXC6xpJjk0rCKPr3T2sB5hh33m9+k8slUxZBL5sahdIaocZz/XM3b
+	hKqo+jxuas+NmLANKod6VmVSjObRj85UUTFU/yT+lm80SYdaPeZKODSHr9q9+sTUxf52OW0G7Ks
+	+wLPDl+O+Ux6jqp/pXKmXWsXS1KO
+X-Google-Smtp-Source: AGHT+IFoirOvNMJpKn6tP51PRi96WA/WP8WHHlPJAFYlT/+WZt2BNZRZRHngFXZC5p9GdQCCqI5te5+CZ9A/FzrtBPg=
+X-Received: by 2002:a05:7022:ef14:b0:119:e56b:c1e3 with SMTP id
+ a92af1059eb24-12057217cb7mr94c88.14.1765844021847; Mon, 15 Dec 2025 16:13:41
+ -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251215153411.3613928-1-michael.roth@amd.com> <20251215153411.3613928-2-michael.roth@amd.com>
-In-Reply-To: <20251215153411.3613928-2-michael.roth@amd.com>
+References: <20251215153411.3613928-1-michael.roth@amd.com> <20251215153411.3613928-3-michael.roth@amd.com>
+In-Reply-To: <20251215153411.3613928-3-michael.roth@amd.com>
 From: Vishal Annapurve <vannapurve@google.com>
-Date: Mon, 15 Dec 2025 16:12:00 -0800
-X-Gm-Features: AQt7F2ra9396Gr4eNuUU-K7XtTwtvJ-rm6VSQCRwWNTFPqW7whDLIsPPpRjnSlU
-Message-ID: <CAGtprH95s5wL1=rSSpG7Cmj5HhJOftwJY7CP27WE-qmq7hr+XA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] KVM: guest_memfd: Remove partial hugepage handling
- from kvm_gmem_populate()
+Date: Mon, 15 Dec 2025 16:13:29 -0800
+X-Gm-Features: AQt7F2r7bucqAHi7gjHHb4xeDTJY1rA6zwbPyLTqR3xjOn4AhUq7dG2mlIrjznA
+Message-ID: <CAGtprH_4K9TAH1DoeAW-UHTpMY2sNr8UUehoCPX_SKSQBNoERQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/5] KVM: guest_memfd: Remove preparation tracking
 To: Michael Roth <michael.roth@amd.com>
 Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, thomas.lendacky@amd.com, pbonzini@redhat.com, 
@@ -102,56 +101,38 @@ Content-Transfer-Encoding: quoted-printable
 On Mon, Dec 15, 2025 at 7:35=E2=80=AFAM Michael Roth <michael.roth@amd.com>=
  wrote:
 >
-> kvm_gmem_populate(), and the associated post-populate callbacks, have
-> some limited support for dealing with guests backed by hugepages by
-> passing the order information along to each post-populate callback and
-> iterating through the pages passed to kvm_gmem_populate() in
-> hugepage-chunks.
+> guest_memfd currently uses the folio uptodate flag to track:
 >
-> However, guest_memfd doesn't yet support hugepages, and in most cases
-> additional changes in the kvm_gmem_populate() path would also be needed
-> to actually allow for this functionality.
+>   1) whether or not a page has been cleared before initial usage
+>   2) whether or not the architecture hooks have been issued to put the
+>      page in a private state as defined by the architecture
 >
-> This makes the existing code unecessarily complex, and makes changes
-> difficult to work through upstream due to theoretical impacts on
-> hugepage support that can't be considered properly without an actual
-> hugepage implementation to reference. So for now, remove what's there
-> so changes for things like in-place conversion can be
-> implemented/reviewed more efficiently.
+> In practice, 2) is only actually being tracked for SEV-SNP VMs, and
+> there do not seem to be any plans/reasons that would suggest this will
+> change in the future, so this additional tracking/complexity is not
+> really providing any general benefit to guest_memfd users. Future plans
+> around in-place conversion and hugepage support, where the per-folio
+> uptodate flag is planned to be used purely to track the initial clearing
+> of folios, whereas conversion operations could trigger multiple
+> transitions between 'prepared' and 'unprepared' and thus need separate
+> tracking, will make the burden of tracking this information within
+> guest_memfd even more complex, since preparation generally happens
+> during fault time, on the "read-side" of any global locks that might
+> protect state tracked by guest_memfd, and so may require more complex
+> locking schemes to allow for concurrent handling of page faults for
+> multiple vCPUs where the "preparedness" state tracked by guest_memfd
+> might need to be updated as part of handling the fault.
 >
-> Suggested-by: Vishal Annapurve <vannapurve@google.com>
-> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
-> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+> Instead of keeping this current/future complexity within guest_memfd for
+> what is essentially just SEV-SNP, just drop the tracking for 2) and have
+> the arch-specific preparation hooks get triggered unconditionally on
+> every fault so the arch-specific hooks can check the preparation state
+> directly and decide whether or not a folio still needs additional
+> preparation. In the case of SEV-SNP, the preparation state is already
+> checked again via the preparation hooks to avoid double-preparation, so
+> nothing extra needs to be done to update the handling of things there.
+>
 > Signed-off-by: Michael Roth <michael.roth@amd.com>
 
+Reviewed-By: Vishal Annapurve <vannapurve@google.com>
 Tested-By: Vishal Annapurve <vannapurve@google.com>
-
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index fdaea3422c30..9dafa44838fe 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -151,6 +151,15 @@ static struct folio *kvm_gmem_get_folio(struct inode=
- *inode, pgoff_t index)
->                                          mapping_gfp_mask(inode->i_mappin=
-g), policy);
->         mpol_cond_put(policy);
->
-> +       /*
-> +        * External interfaces like kvm_gmem_get_pfn() support dealing
-> +        * with hugepages to a degree, but internally, guest_memfd curren=
-tly
-> +        * assumes that all folios are order-0 and handling would need
-> +        * to be updated for anything otherwise (e.g. page-clearing
-> +        * operations).
-> +        */
-> +       WARN_ON_ONCE(folio_order(folio));
-
-I am not sure if this WARN_ON adds any value. i.e. The current code
-can't hit it. This note concerns future efforts to add hugepage
-support and could be omitted altogether from the current
-implementation.
-
-> +
->         return folio;
->  }
->
