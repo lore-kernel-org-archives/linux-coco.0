@@ -1,80 +1,80 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB0921D5B0
-	for <linux-coco@lists.linux.dev>; Tue, 16 Dec 2025 00:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6FF1FCFFC
+	for <linux-coco@lists.linux.dev>; Tue, 16 Dec 2025 00:20:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.170
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765844355; cv=pass; b=g6pxlBqURL+kIMrsWpUhhfeEyCo5heeyXHL8KmRFpTtvve3q5VRRkry8RRm+1MKhBD1XPxwnSxvmwhbP9Q2/BmsoTnuNcEIH7b9kqErf9b5QyXl+fgJWj2arJ0qZF4RkdzNpPFic4mbAdqG6V+E5bCk0SDUXJ/JRad+uRpIR29o=
+	t=1765844416; cv=pass; b=oeiGVNi/WOKZNl0wrp7DeGE6Q4zdLwguAiQOS5LSdHdTKrVvWZ/kIVsE+s4wwvOiorGhdfDafOd8C5R7a/Hbfdpyndj3Yl03k6PsJ239Z7pQak5Ew/bLIWFIpIEEnJtX5duhc5xmVPgV6Gpd5JoPHu5E1xgsdCTNsv7dl/yS5OA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765844355; c=relaxed/simple;
-	bh=y3+CB9jJkDY/RuF5+3mG73XjTAnHhCai2n7zifE/14E=;
+	s=arc-20240116; t=1765844416; c=relaxed/simple;
+	bh=klRRPxxRucOBsSf0NKoOGV1TNHKMWWUVg9IeOWd5Sg4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qLpb0Y0R4Tq5ycmTxm+uuf3g50lJAHWXy++SM/2fbbXFuVtgSNuNUZj4gVZtH76rqL869U81ADShzoqQIlToaYyJrYD/xXOLdIZxFhS/KMwn+5YLvduPjTrIe+sQ29okQykiSbpAx6tf4vJG6VhNpUp24rUCz1SdwCDWiCtUXmw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=k/tnEDGl; arc=pass smtp.client-ip=209.85.214.179
+	 To:Cc:Content-Type; b=JKiLfhJyV1gADLneGfBezfGSpxotNjNVpXwB+z0hoZr3gsuNoC/guRM2NkLeT1sr3oxEPmK43HDsa6k6H23oPpkIDbtevPIfRivvAnpox+GAhr9ZwDautK8fzBHrPrgBCAtvId3XAkWDZHixtAB+hS1KxDBSGfBusTuvQgTF3Jo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RJiS7jJc; arc=pass smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="k/tnEDGl"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-29e7ec26e3dso47095ad.0
-        for <linux-coco@lists.linux.dev>; Mon, 15 Dec 2025 16:19:11 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1765844351; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RJiS7jJc"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2a0d06cfa93so14115ad.1
+        for <linux-coco@lists.linux.dev>; Mon, 15 Dec 2025 16:20:13 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1765844412; cv=none;
         d=google.com; s=arc-20240605;
-        b=dEb4yINgCoUZAqnQ8YSutFeDXxDuCqtjVTUh54uiCe50fBPW84DbFDjn0evzfqQTv/
-         ONUXoYafHXTjDXYZHuB1AzDYcIQep5b8B2338ZgOZ7o2XNWqCRZpuCF31v4VYvcauPyY
-         9yeJQHCj1SkcRutyJGRObJKdJLMlMolXeVr2i0gqAbAFIL5HhW00UtUisEMuIXlKH7Xy
-         SVgXcWDRPDY4M2q8tNvST31zi16RMwssUI3AUFJ0yole74fQXCPzKGh+8WPhJakiUfrK
-         xRnDkaGmCCwvjrNqv+RvR/Wp5xfAjPVzn5lWRL5b5r7npICe2jPoT2NiHqUQ7pkrNrjR
-         qN5A==
+        b=dXj4Jeb0ePKQYlc3g4utLOTq7hhqVKg3D6R7eyFkX68G/54um+oiPTkezFJyNSbZML
+         txcHoe8d6PYhUKchqZjioVm5BspagqLRBOMALnE8MQ8Jfo7ES6D8TqEF8Im+789GWb2d
+         Mf4Tfnv3k8aKDAqBjNDA7YTwZbcefzTOgpKjJf5RrUG8K6KQ8EnhyWjUco0wI0LJFOZd
+         CJAdp4tINmqd53WDjLq1vFx9dIUyM7jInRSGD/GXyCmds84HM5tJ/940EMErnI3r9quW
+         MFpKkfpOR1ZkBK7M25cEgvPdfOLYhHzuyCocJmL5FshfrIsHRJv6n5Aa60slNAynQgU2
+         cWgg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=y3+CB9jJkDY/RuF5+3mG73XjTAnHhCai2n7zifE/14E=;
-        fh=X04fSC3Ekyir/sDy9gKSi78jXa35BvbnEv5Z/MHc+a8=;
-        b=e69Ixkl9qVvv4VAtzRi4JgOQidUXGdePhta6Ze0aSXpv6ldcL+4ElFSKamgy4pfD0O
-         cjKhYt7GIIduebG4/osjHilhJXU8DywFv6ebVi7HtevVrgrUGVdUIOLBQWBjEJejoRyW
-         8kgRBxH/tohNnM93qYruJp56J91vruPS7RA4nrqJykHQF5HaJrLiOXW7wryW2mvehLkr
-         LVurtdPtHVtUi9iJFRI4oKOnipWRPv0/LiwMQyTctsJAb7Sp+7AVNU2IfrwCL/i8wdog
-         vqLAYaFHeTREtta2H1NDaMwxEWmaIM3wlfX+Sb278Z+Pc+U/N/+UC/7AMvnaawThsCZg
-         ylHQ==;
+        bh=I/xSO2loElEQu4qJwQAmc4hWblw65frcVfwyqUV19Yo=;
+        fh=af22lKGBBdICRu5qb9MbrD3yTRMTD5nkF3Ilo51CuJU=;
+        b=YidiMjXPqt4pwRdJIDh0ObdBJvg88oVU4PteLZ7dzsrVSQZ2p2MogGZYN91t0s282k
+         ZoP7ghq2lDKfCUFD297qUz0iKw3JLV75E0vgcah7KG3/xqBsp7oIK9GuS3AYiTfqZUi5
+         od6bN+xg4LkpDCYx2HUU/eKmqcwm/+SMcoxgmSgDHqFVc/bl/VgTsFoPPyaFcFU1ayFe
+         1XfaQKp9XSqU2mNHkpiI6BJhXFCXlfVL869HnGZRsM10fEmRDDgGQAipvye74JvS86mA
+         pFud60aAtvsgz6WSp9/gtBfNX0dFi+rOOasR6ebLEs2CywOlOqv5fOl31OzMgIDBwU1O
+         cvgw==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765844351; x=1766449151; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1765844412; x=1766449212; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=y3+CB9jJkDY/RuF5+3mG73XjTAnHhCai2n7zifE/14E=;
-        b=k/tnEDGlRFEJpG7ypExqt5z5tBuqAuOFRV7oxRsmPFeKpgz1a6mWjDXPl0+NTkZjKR
-         9z3RVGGXTJdJFozyq60Kl5EmoyCsnqYH3EFh4I6GUlbV94xf2sF/ELmQYre+WxmEXHWk
-         rlLNcldEPP61+JL+amYIm25TJRlNzhOTFeUYrGgATwa33ImiJ2CgyA6D4aqLcqDS3cKl
-         4ZxQRV0T8Nwfj9NmkHtXD1e4Tbym66tycGmxWMM0mHXgsfRHLa7kcheWRpGfqDMLazlz
-         G1xkroXutQJHphu8E5c6Fb8jjaUhpM8yz4LCBSvFanzf3yd6cyfEWts72SEU2QT6IiDt
-         bOQg==
+        bh=I/xSO2loElEQu4qJwQAmc4hWblw65frcVfwyqUV19Yo=;
+        b=RJiS7jJcKYjbzdHs5doykztO/gWeRxZaqXBr1HcCLKRgTVd1au9zyoCbxTrTuR5lJ0
+         C8idcBPeuQRX9tuIsNNvg55VceDhC9Sbqlc4oWEFvkQ/KmCP0cczPrZ3EmDABobVSOt3
+         Pb7BYo/n+e3fox8LJQRUZ6C5E4KB7kyTZ7NjFfByFIz6KMCE/1gqao/sGXyxNzz0JIB0
+         RKhzphNoWJCgzGlK47wd2GMK5L9ou6az4c7J25E11bjuB5shephGBA7fIzMIX8UjA0gX
+         JWx62bqslo5DxpTyYnqDPSUW8j42U8Ci03xBqbG311hoVJA5LOXZfdKUNikFqiF5QMRa
+         j1Hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765844351; x=1766449151;
+        d=1e100.net; s=20230601; t=1765844412; x=1766449212;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=y3+CB9jJkDY/RuF5+3mG73XjTAnHhCai2n7zifE/14E=;
-        b=dwa0Ud20d+6B7LfLC1Pp03ulzWRpDQ6ffYaK7fQYJ/1ULjU562iMmcnah2XtAJwOO0
-         QFaAUk/RZ7l3UqMnR2JyCzdNTotog3mnSRE7Yr7zEHBYdVLYuot+1VYuFmZqN+N5oJmM
-         ZrspoDiaGEDzYhyR1eJlL54IDFELB09a4rhYGT8Lo0M6RvN24BxsG+auc/vQTtL/7GZr
-         aWPf/H+9FnbMeMSeWDlRhYP8CfOXw0Bf54Hd4I7gywRaoXmmSeq1vIUPlOASPAcSrRbC
-         ftcCZjC9cy4B4u6Cx1O6wPu5YKvSXvTXRm105GWY7vguqwFtjrTlhWBepsfLHX6ZlbQC
-         Ep9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWE3wjk5CV6qxbeSkZqA6l90v++4aixaqwkXJRccmQIgQKVDR5HSACJHikRDW62O6Wcybkl9YCP37ml@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx8BFj2sv6Ro9m+hhRaRnNY1JQuD9p8OcG90NVgsOLyPsFP/VVL
-	0ljQtpanV9037EsYAfZitK9nzUhxSYU+AtgOgnVaVe2Sh9JWNLLKYDvEAAez9ELtQ0UYXEVCacq
-	EAKCaXwA5q7PyrL5/BAYIWyLS91OC1DJyPPpWGLIE
-X-Gm-Gg: AY/fxX6FsrWuSJpm3gRhSxxHv6A8joEUvj9Nm33UP9zP3WEOKFtH/faW4j/pt7CwNwW
-	kybxDji8QKkFvP7wWHfy1WNZqEO4MEja70ufdk+t5mbynV+6R/qeeDPZWkMMi5FGRzQMFwLXNdr
-	NzoCVEM5NhdXpapzKSuwPlUoJHSsVpfm7ySJwrepW5iS71FUHXGxvgImjHbjq7kKCMXRKzK7IXD
-	RcfGlvUBCMyzP4MPiEwqkqIUblo3JIvn627z1jDCfm43gyxfe0UyxUbuhIP8xa4LavDBUxVwDZz
-	q4YDIIPKRzblLD2Vl14q7sE6c/GS
-X-Google-Smtp-Source: AGHT+IGBM7VWEq8LinkBSYV8x5ESzAOrR3yJML1qZ6fwh89ve8A15rNzyiEn6zhpcZCGpp2XSo8wGtGea9cBBpvSm0U=
-X-Received: by 2002:a05:7022:988:b0:119:e56b:c1de with SMTP id
- a92af1059eb24-1205724808fmr225c88.9.1765844350465; Mon, 15 Dec 2025 16:19:10
+        bh=I/xSO2loElEQu4qJwQAmc4hWblw65frcVfwyqUV19Yo=;
+        b=H/HD7FPAhF996h160Msan3Q6+LUZl5E5HCd/9uEpMqisCDp5jfYVBU/2IdzM4NmKuC
+         oRV8THprG+uh4pLMwcmeSFzzYy/Fr75unevGUe4jXev6C7HGJlNgyLiyiWh+kpTd7WHb
+         w1crmsXTBxQcKNQmQkSddJLAoOZbQxM6rtQq3nxSYBYadLJocRl+kVuCm0PzSs4F8efu
+         a0dJlxd/tD5v0HtQfhefKu/MQuraYSZkT5KOk+igQ7egFg+KSnpBDl6wMVBmdLMi7Vnk
+         AZM7COyaXLJN3JEGvzFgAGwqX+otukLUgBrQ1hDEHD9BbOh4qqgYOaaeyt+VQL6q48fE
+         kw3w==
+X-Forwarded-Encrypted: i=1; AJvYcCUybzRDXJZhH5kEyyLuimP+rlHLFMrMOaFWuEg/J6XwoOHX35f2N8Kxx5MuA1JVxuPvmqPFt8nZos4u@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw9ECFbhmZVMaHGE2l5OHxZlKqV2FfrMBzO+gUBLCxlD15h2unm
+	xERjjh8mCgQuHy4l25e5Ro77YTrh11dnKK5GYvZB9gf9fgHE4BAGvGs/C2GadnW+lNAfxZ+2qew
+	G1s+BT3iIFdujEH/Y9OZn/dkbECDE96JCmmka3IFT
+X-Gm-Gg: AY/fxX7ZldGumie+doG4bkYy6J0aAtk018R0BHANBBPy7BDtXyeNtk5F4qlYEOJTuoY
+	5zbdkqzDiA7Dh0m5FA6djxe8lmiBNBp06fVLrjVvHuAuMAqNX5CshA/rf/l4YZb46U8/8CPbzJj
+	86al+nMdOIAeouqS63zT7xMuS8uqwY/UGce9V+Y/EOzpNw0F1eHn/9re1q0Y6elyKrIGuIIDzYi
+	Ok0e0M5KUTTKqxK5EGD+3GN9Lkxh0HCM5QD81sSU6QEVILKzczKeMjfxAjK6MDHpu/Ln2H953OV
+	MD4qNekUC/1pcABBP86QmM2AnM50
+X-Google-Smtp-Source: AGHT+IExDYh7puOwTqAoucyAbhg/dhJj/UlPMmB4InOhmz+VivF2pgRZLSSnb0+pKynoL6YupSskmHHY1LN9azC6BtE=
+X-Received: by 2002:a05:7022:4406:b0:11b:3bc:9ea0 with SMTP id
+ a92af1059eb24-1205727676cmr408c88.6.1765844411980; Mon, 15 Dec 2025 16:20:11
  -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -82,14 +82,13 @@ List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251215153411.3613928-1-michael.roth@amd.com> <20251215153411.3613928-6-michael.roth@amd.com>
-In-Reply-To: <20251215153411.3613928-6-michael.roth@amd.com>
+References: <20251215153411.3613928-1-michael.roth@amd.com> <20251215153411.3613928-5-michael.roth@amd.com>
+In-Reply-To: <20251215153411.3613928-5-michael.roth@amd.com>
 From: Vishal Annapurve <vannapurve@google.com>
-Date: Mon, 15 Dec 2025 16:18:57 -0800
-X-Gm-Features: AQt7F2pmUo8h-ojZ6qUQhapMaawZOTdDVwOKAdoTYFJZ9Oc6NFfbzoMtVRYUIYE
-Message-ID: <CAGtprH983huiuu9w9JG8nL3cf5sa_FpJjEt2gOvVUKgGUxtdGg@mail.gmail.com>
-Subject: Re: [PATCH v2 5/5] KVM: guest_memfd: GUP source pages prior to
- populating guest memory
+Date: Mon, 15 Dec 2025 16:19:58 -0800
+X-Gm-Features: AQt7F2pam8UulXqTs359SLpQ8QESA_W2EL2-JVHHwFHsPgJIIvSeUBgNcYPP6kk
+Message-ID: <CAGtprH-te9xrmVgUteAaW17BLuxfZWfu32G4Q+AdP4=DDrm27g@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] KVM: TDX: Document alignment requirements for KVM_TDX_INIT_MEM_REGION
 To: Michael Roth <michael.roth@amd.com>
 Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, thomas.lendacky@amd.com, pbonzini@redhat.com, 
@@ -102,39 +101,27 @@ Content-Transfer-Encoding: quoted-printable
 On Mon, Dec 15, 2025 at 7:36=E2=80=AFAM Michael Roth <michael.roth@amd.com>=
  wrote:
 >
-> Currently the post-populate callbacks handle copying source pages into
-> private GPA ranges backed by guest_memfd, where kvm_gmem_populate()
-> acquires the filemap invalidate lock, then calls a post-populate
-> callback which may issue a get_user_pages() on the source pages prior to
-> copying them into the private GPA (e.g. TDX).
+> Since it was never possible to use a non-PAGE_SIZE-aligned @source_addr,
+> go ahead and document this as a requirement. This is in preparation for
+> enforcing page-aligned @source_addr for all architectures in
+> guest_memfd.
 >
-> This will not be compatible with in-place conversion, where the
-> userspace page fault path will attempt to acquire filemap invalidate
-> lock while holding the mm->mmap_lock, leading to a potential ABBA
-> deadlock[1].
->
-> Address this by hoisting the GUP above the filemap invalidate lock so
-> that these page faults path can be taken early, prior to acquiring the
-> filemap invalidate lock.
->
-> It's not currently clear whether this issue is reachable with the
-> current implementation of guest_memfd, which doesn't support in-place
-> conversion, however it does provide a consistent mechanism to provide
-> stable source/target PFNs to callbacks rather than punting to
-> vendor-specific code, which allows for more commonality across
-> architectures, which may be worthwhile even without in-place conversion.
->
-> As part of this change, also begin enforcing that the 'src' argument to
-> kvm_gmem_populate() must be page-aligned, as this greatly reduces the
-> complexity around how the post-populate callbacks are implemented, and
-> since no current in-tree users support using a non-page-aligned 'src'
-> argument.
->
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
-> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
 > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> ---
+>  Documentation/virt/kvm/x86/intel-tdx.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/Documentation/virt/kvm/x86/intel-tdx.rst b/Documentation/vir=
+t/kvm/x86/intel-tdx.rst
+> index 5efac62c92c7..6a222e9d0954 100644
+> --- a/Documentation/virt/kvm/x86/intel-tdx.rst
+> +++ b/Documentation/virt/kvm/x86/intel-tdx.rst
+> @@ -156,7 +156,7 @@ KVM_TDX_INIT_MEM_REGION
+>  :Returns: 0 on success, <0 on error
+>
+>  Initialize @nr_pages TDX guest private memory starting from @gpa with us=
+erspace
+> -provided data from @source_addr.
+> +provided data from @source_addr. @source_addr must be PAGE_SIZE-aligned.
 
-Tested-By: Vishal Annapurve <vannapurve@google.com>
+Reviewed-By: Vishal Annapurve <vannapurve@google.com>
