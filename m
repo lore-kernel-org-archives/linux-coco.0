@@ -1,92 +1,116 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F17A5376BC8;
-	Wed, 17 Dec 2025 15:28:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A3A10FD
+	for <linux-coco@lists.linux.dev>; Wed, 17 Dec 2025 19:02:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765985306; cv=none; b=JNfjW08zpfot82CklYwPDK54ZxJx75E1Gg+VzyhhjRBJ0PNkTut+5eMwOeauD5xFPtzA6rx+KdDqgAh1zh+wijLYdQmLWvSNv+Ts5BWfD2rNH4mpYMywo0it4P5HmC0W3epluReCL0fUaPOgB5s3xcN0XSd6rkthacJTbphpS+M=
+	t=1765998123; cv=none; b=f9m22Nm1x4OYZmmDpHl0cTebqVAtCxSnwM9lRd0lmQzKfB6UeAijvDyIqdCwwV73er+70YYgSjdIR2sRc2FVR9GFKE4Gekb1AWo/QyjWMVtn2a7fp8P8l8n1cCrChGicR+2k4wKatj3Y/dgx9l8JeNgkQmYzyKsmQXECh4sTvDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765985306; c=relaxed/simple;
-	bh=s1zN82HGerq5N6yweSpLpMZpgygbzXLoWTjwg+HDuMI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SkZXkUTTKoXNYZ2fInjoZSsZ25DDR9uo9k9qfv0oeLEhEu28aJLSm0/RzaY04Rg2MkkT4969FjyY1+usPH7gzw+3KwBDoDCpLLox4LJb/VbxbgOXgykt7H+xAYpNbBsyYbYve3FTZugUDvknZQiyraUxemEQyprutb/CH2/2fBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 100A1FEC;
-	Wed, 17 Dec 2025 07:28:17 -0800 (PST)
-Received: from [10.57.45.201] (unknown [10.57.45.201])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 475983F73F;
-	Wed, 17 Dec 2025 07:28:19 -0800 (PST)
-Message-ID: <505e2e14-7f02-4a6d-b0fa-d322cf0c8b29@arm.com>
-Date: Wed, 17 Dec 2025 15:28:16 +0000
+	s=arc-20240116; t=1765998123; c=relaxed/simple;
+	bh=m8dUE8g1LgHdwHNkk7BZCZqvG8Sc2oxSqpY7oOcjwS8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=SZAzHG0Xs86QZkRYdvAf5t+7DwIPWXLt+ON++JVjjEimk6rivNfYF9gV0m0TaSBralkQz5Q/3y7ViXXusnNAa0+v/B4EiAtr2bBGrzcDLf/3BUHmfqomT7eu03ckdgVieIHmWHCpnOU+jQR3ViOr064cTTLiU8Y40nWSM/i4+eE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OV3VIy0/; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OV3VIy0/"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-7dd05696910so8527122b3a.2
+        for <linux-coco@lists.linux.dev>; Wed, 17 Dec 2025 11:02:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765998121; x=1766602921; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=b196TMa7CXfRLkl43jhb5OXtBZInCMzwhdlHo087zrU=;
+        b=OV3VIy0/APUej/bR8N29yKvZUJsKiXHip/11ZHjIbbyQ/kQxz0hAmo2NJUBiCQ55Kw
+         +ZDgfSgOv6YszIR8JdINJTw6szkZVYG7jLLMhDBS1SAvZLg04CUFThM6GkXQLuyewc/m
+         Fddrw9//Lr8CnBIqzR48IR9OSG7gRjNKshqnHIRFd1A1AIUzrWSu9hEGVVYW/FbhGuHS
+         zKH1KsVOND5lH+uinShyUjvzrrAXZHYFXW88RAvOcAT63ShwzET/Zz4+0l806AVeIq0q
+         47SXDwYitR51axkNN4ReQ8zkzrwS2j53Vgo4O1zG87TlNyCjNKnRMtoCQoA1rckGawvm
+         T0ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765998121; x=1766602921;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=b196TMa7CXfRLkl43jhb5OXtBZInCMzwhdlHo087zrU=;
+        b=PlmB05YSl1xM5iTtLXKbB5S4gexinnnBjgWbni0xCYQaVGnmHp14JMEbKtZFZfHs/Z
+         +IM7RBOhheRq+eojZHOdwXWk4FnBb7HHl/HtkWWyFOS+cyQSCwuEfsRcgEjtamAe83be
+         ogw1UqTvo3hzUHnuoSfckRZfHVCRVL1/rgxuKKlxkZB3G2O7TTctYT/mry/dixal9ssN
+         nCiRmxt9GsMPI0tRPAp4yBq1373emQIkSn6TzsLMjhwp0UkmkycYSU2PiVIOeRRrsKc+
+         kbs1rZG2B08jsXUm+riGi7yMhLD4mUfsrinHeNd7Tq/U7n9mQkKJlUH4f6zMKGRHDXxt
+         SfgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXYevQPgozzEgvzyEIVjgxCV8PD7xLrDaqZoa3ld8s8R2rLhpVQntuXDrlRVA52E5ISdww/HgYR9n43@lists.linux.dev
+X-Gm-Message-State: AOJu0YxHnMZZCzR/u0NEaDFgtxpY8J7+G/VCJWrGXvADQAtvYZ0jdA6t
+	IIdCvu9URaLbqVaR8wBEXULomXGthrhIx5lZTKBjKyEQj9vsiEop8GrU5qV1xbMKjd6WtuBTcVq
+	900kXXw==
+X-Google-Smtp-Source: AGHT+IGD0zDEZTKQcWsJyRh7TATbcIzYyFxP7Izy5G+weXhOkr6e/I6dVMxD5z7EImnePu9h8mI6YEz7V1I=
+X-Received: from pffv13.prod.google.com ([2002:aa7:808d:0:b0:7f1:8c5b:2e3e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:8c11:b0:7e8:450c:61b7
+ with SMTP id d2e1a72fcca58-7f671474d70mr18440345b3a.39.1765998121154; Wed, 17
+ Dec 2025 11:02:01 -0800 (PST)
+Date: Wed, 17 Dec 2025 11:01:59 -0800
+In-Reply-To: <aUJUbcyz2DXmphtU@yilunxu-OptiPlex-7050>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 00/46] arm64: Support for Arm CCA in KVM
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>
-References: <20251217101125.91098-1-steven.price@arm.com>
- <86y0n1ma2q.wl-maz@kernel.org>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <86y0n1ma2q.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20251206011054.494190-1-seanjc@google.com> <20251206011054.494190-3-seanjc@google.com>
+ <aTe4QyE3h8LHOAMb@intel.com> <aUJUbcyz2DXmphtU@yilunxu-OptiPlex-7050>
+Message-ID: <aUL-J-MvdCrCtDp4@google.com>
+Subject: Re: [PATCH v2 2/7] KVM: x86: Extract VMXON and EFER.SVME enablement
+ to kernel
+From: Sean Christopherson <seanjc@google.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Chao Gao <chao.gao@intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	Dan Williams <dan.j.williams@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On 17/12/2025 14:55, Marc Zyngier wrote:
-> On Wed, 17 Dec 2025 10:10:37 +0000,
-> Steven Price <steven.price@arm.com> wrote:
->>
->> This series adds support for running protected VMs using KVM under the
->> Arm Confidential Compute Architecture (CCA). I've changed the uAPI
->> following feedback from Marc.
->>
->> The main change is that rather than providing a multiplex CAP and
->> expecting the VMM to drive the different stages of realm construction,
->> there's now just a minimal interface and KVM performs the necessary
->> operations when needed.
-> 
-> What are the relevant patches? I'd rather not look at the non-2.0
-> patches at all, given that they are pretty meaningless for KVM.
+On Wed, Dec 17, 2025, Xu Yilun wrote:
+> > >+#define x86_virt_call(fn)				\
+> > >+({							\
+> > >+	int __r;					\
+> > >+							\
+> > >+	if (IS_ENABLED(CONFIG_KVM_INTEL) &&		\
+> > >+	    cpu_feature_enabled(X86_FEATURE_VMX))	\
+> > >+		__r = x86_vmx_##fn();			\
+> > >+	else if (IS_ENABLED(CONFIG_KVM_AMD) &&		\
+> > >+		 cpu_feature_enabled(X86_FEATURE_SVM))	\
+> > >+		__r = x86_svm_##fn();			\
+> > >+	else						\
+> > >+		__r = -EOPNOTSUPP;			\
+> > >+							\
+> > >+	__r;						\
+> > >+})
+> > >+
+> > >+int x86_virt_get_cpu(int feat)
+> > >+{
+> > >+	int r;
+> > >+
+> > >+	if (!x86_virt_feature || x86_virt_feature != feat)
+> > >+		return -EOPNOTSUPP;
+> > >+
+> > >+	if (this_cpu_inc_return(virtualization_nr_users) > 1)
+> > >+		return 0;
+> > 
+> > Should we assert that preemption is disabled? Calling this API when preemption
+> > is enabled is wrong.
+> > 
+> > Maybe use __this_cpu_inc_return(), which already verifies preemption status.
 
-Sorry, I really should have included that in the cover letter.
+I always forget that the double-underscores have the checks.  
 
-Patch 6 defines the uAPI - so I'd welcome feedback on whether that is
-now the right shape.
+> Is it better we explicitly assert the preemption for x86_virt_get_cpu()
+> rather than embed the check in __this_cpu_inc_return()? We are not just
+> protecting the racing for the reference counter. We should ensure the
+> "counter increase + x86_virt_call(get_cpu)" can't be preempted.
 
-Patch 11 shows how the "first VCPU run" is handled with a hook in
-kvm_arch_vcpu_run_pid_change() (similar to pKVM).
-
-Patch 20 is implementation of the new populate ioctl.
-
-Patch 21 handles the INIT_RIPAS by assuming that any memslot with gmem
-is private and should be RIPAS_RAM.
-
-Patch 27 handles the PSCI requests which is the other ioctl. No real
-change from the previous posting, but it would be good to know if there
-are any issues with the uAPI here.
-
-I think other than those there's either very little change from the
-previous series, or it's likely to change with RMM v2.0.
-
-Thanks,
-Steve
-
+I don't have a strong preference.  Using __this_cpu_inc_return() without any
+nearby preemption_{enable,disable}() calls makes it quite clears that preemption
+is expected to be disabled by the caller.  But I'm also ok being explicit.
