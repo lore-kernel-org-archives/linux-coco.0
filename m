@@ -1,161 +1,196 @@
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012063.outbound.protection.outlook.com [52.101.48.63])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4403343D76
-	for <linux-coco@lists.linux.dev>; Thu, 18 Dec 2025 15:41:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766072498; cv=none; b=bmbC7hWQhypALyr/uugiv64W37XAyMLqG5IqCOY6Lo1ruUD8NpaBcbX4muEJ4jyz6byx7lCRr1dmxpWwOfPrNQNS0QR5mPpxPyuSYeMNXhyaVJtgnpgrUAHVUc1jJ6Lzv0ql/XK1myGpOyTHu9nI/XvBlmqdSwi9r5hdAZYNwYY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766072498; c=relaxed/simple;
-	bh=WYLcN2wl0LS5LgTp5AyMZfZDw4IIHPSyhnOh9jSB950=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ojkR8tTCp1EJ4jtWzVYRE5p/gaDeR8AzPCoBx2/X1TIY1CKboUCH8lM2xAYMve8j7tlLHFu9pusxAvC4pFYtnWIAJKmvkVZLDXvhXq4fusfdn64CgxwuXo31/zPHh5l1mviHOjUtTzWkftcxqkQwUjXR0DqOJuN7G8uwe2W2E48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=c8+iuF9w; arc=none smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2ACA332EB8
+	for <linux-coco@lists.linux.dev>; Thu, 18 Dec 2025 21:40:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766094066; cv=fail; b=Je+zFpiqxvUuyDBHdD2JAdZ+fApHGr5gzfWJgdwO0h4t4HvTYPmpWvJrefoJB3qJftK2eqQvNXam92Z036LMoDpzvUeIg3Mq0nd1chdCA/88btwlzoihh/b+pNb6xH2g/NhQTRK3olnFZWL/cRv3lnAXmFCQjNgHgRHHG56QxBA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766094066; c=relaxed/simple;
+	bh=dbkJUVZqCEHEQeCGowIIkFwvFXwNr10fxyHvv2oxOnw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=flNYJAvyJN4OKIXC3H+9Zzt+bMYI0bscSWoNoijjKXkl2DUq5V4dFhVrT3U02vkB9h/3jbxYlb2Zb9OBWL3jrBllnEAdnDCKg+UdCy9vkXi02g58PUH2CApuAj2m0kBX+ZlE+skc6eh5EEXrHZBrz8AxBw/pegGBUPOcUTBsqhw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=QaJswe7Z; arc=fail smtp.client-ip=52.101.48.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="c8+iuF9w"
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-88059c28da1so7088976d6.2
-        for <linux-coco@lists.linux.dev>; Thu, 18 Dec 2025 07:41:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1766072484; x=1766677284; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GQYFHEK9Tm8YWqymq5JN++Nt0lXCgB+FVI1O7lCYYs8=;
-        b=c8+iuF9wIlFAnQ7NZJJ3MnuJjojOEvCQj/AsLUPavUzRIkMlEnFbBhgzVSAPtTyDDO
-         OQz6lUBlaLI5K03Y0ux2nP4bhQZxPQraMnO1O9wfWFVjZXgjNwcATs/nVQevZJw6jU+0
-         ICVz6uQQ0TcaD8EcgF2zxIWOy6QG99/ZS5kQVafnMFjnTW4QTq6vtCwo/FYWP5xrFkpG
-         Fp2HwRQC2Ugoi6RtqMXpBkPgFCYqIHOsZJYCA/NGRJLYcaCx/s1b8JCdZgg6lTYUjyLO
-         HblUVw2O1mQol1aLivhY6wk5dAoSS9ac9c4g8qrGSxw/eZXlUNtg/XXvRY85mHw8IytM
-         5Xzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766072484; x=1766677284;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GQYFHEK9Tm8YWqymq5JN++Nt0lXCgB+FVI1O7lCYYs8=;
-        b=rskBb1/MEURgMakueYbn52ILt5x3F2ay635YvS9rVoXHoqzJU6ilWB9iFPzPeVZAHC
-         XUl6+AaLqNzP4en/+CS/1fU7nFcUHMEkKeY3N2Lf+57MSI80PYXnhi49k7HL0plnCHrH
-         u7n5aQalfZHSqyA5hiIML4OYlMgn9cC7gSmHS185pEdd6KABjEYrtoBYM1zlarzo4of7
-         RSOehAgmRxBuA1Kf8Hd5LvQLk3AbGVM2KCq1ZvPZ0Is02gdQ8N+vdnF/gDzo2jzWIGgY
-         ThyE0BcU44gRuyRmcp1OjkmTOFbTnAhE7k13Pmk4Z2w6ibhEqOyIRISfrdIEbUlIyGhw
-         sh6g==
-X-Forwarded-Encrypted: i=1; AJvYcCUw9SkXiYJ6l+4/7AnTL4rUcnfrQCjZpnyXbIfq8pgo96hzXxw3OQi9cVoW1PEuJpinPf1M8r7zpuFO@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx0tebB/eqDZA4sX6njEeRbYpnHsvdecaxQnbCNRvFW4DbPDbpo
-	4dofJT8Rq5Kfc9Gvy5z6obJXJdhgFfSYgWMgvy/kVWbqpU6MJLmzrE06veYX7Y//nM4=
-X-Gm-Gg: AY/fxX7jmEP8kphZuA5v9T+IvE4f05vJbaG5ub97UcsZoQvcR7Ro5STz4i3CoxafSIB
-	5+/yXrLp+BBanZnAD7zdS6KXiq6/01CO3usQ3gVmkbVQJdz2OgmKqi220RtMOvCoMNOCpKzl6+M
-	0lvCEwqXZth4fKdK5z5IxMu+buetBC/woJ03jKhIRW2jP0hdjTJIzFL/yXNkBC/w8WK+5DCPEGn
-	0Hle0ts4EoTJlu2SPAOXaQ1Y/ANXKjWm35cm4VHc4Vfpu/8e6sPnw+LZB3wywRwgn5VhIsKM9I/
-	QtfoVoOXQVo6sOL5ALzcacV37m9RQYlWGJgaLDmw2vxZ9ReisiNJ4UpzXWnKwVkbtK3lUZGTL26
-	bFvjVxuqQzmBx2RsHvTmHju+W6/aHAeIFvi2n6bWWhH9xPRBvnHUfGRxGZ9u8QEvctWRoSSN+3j
-	bsp3JavQS76IgJv3lcTI1+zweV0aInmfkfR2QqUAW4TDdlwVGlZNoQ6B51y3XL6IfE7ZYs2w==
-X-Google-Smtp-Source: AGHT+IEhf6FIJBZ7lZJmuG8C+UcVaOo2SfADiXXl3E8f8W7HlPmfbAUOtA3YMxUDzV/Kzt4JsHqtvA==
-X-Received: by 2002:a05:6214:c2e:b0:888:8047:e514 with SMTP id 6a1803df08f44-88d81278a7bmr1222226d6.5.1766072484119;
-        Thu, 18 Dec 2025 07:41:24 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88c6089a329sm20455596d6.33.2025.12.18.07.41.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Dec 2025 07:41:23 -0800 (PST)
-Date: Thu, 18 Dec 2025 10:40:46 -0500
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Frank van der Linden <fvdl@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org,
-	kernel-team@meta.com, linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
-	mhocko@suse.com, jackmanb@google.com, ziy@nvidia.com,
-	kas@kernel.org, dave.hansen@linux.intel.com,
-	rick.p.edgecombe@intel.com, muchun.song@linux.dev,
-	osalvador@suse.de, x86@kernel.org, linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org, Wei Yang <richard.weiyang@gmail.com>,
-	David Rientjes <rientjes@google.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Subject: Re: [PATCH v4] page_alloc: allow migration of smaller hugepages
- during contig_alloc
-Message-ID: <aUQgfgWPq4ppMw9r@gourry-fedora-PF4VCD3F>
-References: <20251203063004.185182-1-gourry@gourry.net>
- <20251203173209.GA478168@cmpxchg.org>
- <aTB5CJ0oFfPjavGx@gourry-fedora-PF4VCD3F>
- <CAPTztWar1KqLyUOknkf0XVnO9JOBbMxov6pHZjEm4Ou0wtSJTA@mail.gmail.com>
- <b5a925c5-523e-41e1-a3ce-0bb51ce0e995@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QaJswe7Z"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=L7xeH+Ub4EBDk3ETEGDas9VzqW5sYR66Z3Z1SJKPprHOM3Cswi4Nhx/NsXAKsE8BBABdq7/+KY7uBZMmpDdgUVuEqEGvmPrY4ivCzLJPb//bALQNI+2HkaX/h8zG4UNv3LBgDThT2jXWE/dQFsu3vc1TW70ZcOTHOZjTmntp7WAcA3PdtQXzLb7HlApXApiJOlscihS1aVDgO/yZBEJC4R11n7Q/hcNXLFF+pHYLrHHM0HywCcifmAiYlKaq0s3tX3i1WGwg5ZlGRSCkWWHCYZwQ/T5dBmnW7kbMx2LWnyA3bMy0e0mLQAyaQWuHlpUcHtqNSmf4bycNMpE1IQuQRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yJovfciqZC4fnw2SQQvEi1NZ/2X8DS/IiFuMhq1iwVk=;
+ b=DLGDPI3eBhu8/cmS+rm0tOyIiQZyYST6tMoT0o+vkj2tax6tITvv8ZJIc59RSkci1zAb9lO8Wd1gYtULK9bujQ3U8qyAsXwwvAJbNRsTezyDRZs4ysHsvwoT9FHwor7zTCttZ/gv47mo/WO8X6EPMQH3XBjQ341m9tmg1IzQwZpG4+0zySqdLeDrfD2f51m0NYJrsaOO0niyVQZlEGZx5cVr07IFp2GtgMUI5vkAOnjZduzIBAdrMtwllTX9IVMo6CgMFGjlu53sLNLH0jw0zNP/5HPy9Oo0z1UT8OdpEmSVbx8nmQka7+yt8lukwAWt8VfiRf+Wla+pRpI5bsxnwA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yJovfciqZC4fnw2SQQvEi1NZ/2X8DS/IiFuMhq1iwVk=;
+ b=QaJswe7ZlKt2g61PsNXuxLETWioq8OsW7lqO63qPPtfuVSrhmpVatcG/pn/YnzuMQzuJ3v4YnPJeahWwsPErSuraYwjY03TSowQqSakKBFtNuPCP9RLDjiUVWAKB6tUHVWpfXEtDQJ1/8mw7OHESDcVdWuh9yk6A4dP5P6rnWaB4ja8xxUGG41siQZ3QAbo2ZQfxTP1B4eUhk9AGfSBDki5c+QaIDjx0IEjkzlJ7AuBXqHsr14nR8rgFA39LdmnVITFmR+dHSp1RRYXR7nH1v6xJ6aaQSgW4dkoZHmLXxT6jj2KI6k52x2pS1GpxsF0k3iOHpeWbbeCBAQ8Hl4kmiA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS4PR12MB9660.namprd12.prod.outlook.com (2603:10b6:8:281::6) by
+ DM4PR12MB7504.namprd12.prod.outlook.com (2603:10b6:8:110::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9434.8; Thu, 18 Dec 2025 21:40:54 +0000
+Received: from DS4PR12MB9660.namprd12.prod.outlook.com
+ ([fe80::f962:80d7:e25:bf3f]) by DS4PR12MB9660.namprd12.prod.outlook.com
+ ([fe80::f962:80d7:e25:bf3f%3]) with mapi id 15.20.9434.001; Thu, 18 Dec 2025
+ 21:40:54 +0000
+Message-ID: <850dc718-0268-43e5-81cd-2d9d2ec77327@nvidia.com>
+Date: Thu, 18 Dec 2025 13:40:50 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 5/5] firmware: smccc: lfa: refresh fw details
+To: Matt Ochs <mochs@nvidia.com>
+Cc: "salman.nabi@arm.com" <salman.nabi@arm.com>,
+ "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
+ "andre.przywara@arm.com" <andre.przywara@arm.com>,
+ "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+ "mark.rutland@arm.com" <mark.rutland@arm.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Varun Wadekar <vwadekar@nvidia.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Vikram Sethi
+ <vsethi@nvidia.com>, "linux-coco@lists.linux.dev"
+ <linux-coco@lists.linux.dev>, "ardb@kernel.org" <ardb@kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "chao.gao@intel.com" <chao.gao@intel.com>
+References: <20251208221319.1524888-1-vvidwans@nvidia.com>
+ <20251208221319.1524888-6-vvidwans@nvidia.com>
+ <44635975-326C-4DD2-BCEC-EB04188E954A@nvidia.com>
+Content-Language: en-US
+From: Vedashree Vidwans <vvidwans@nvidia.com>
+In-Reply-To: <44635975-326C-4DD2-BCEC-EB04188E954A@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BL1PR13CA0077.namprd13.prod.outlook.com
+ (2603:10b6:208:2b8::22) To DS4PR12MB9660.namprd12.prod.outlook.com
+ (2603:10b6:8:281::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b5a925c5-523e-41e1-a3ce-0bb51ce0e995@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS4PR12MB9660:EE_|DM4PR12MB7504:EE_
+X-MS-Office365-Filtering-Correlation-Id: 754684ca-12b7-431b-4e48-08de3e7e1ecb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?YU9STG5YTUl4T2hGcVNFb2NtVlRybG8xS3FnVkxUZFQ4Z1dscXUwVWkxajRN?=
+ =?utf-8?B?MUlnOEVxeWN3RTNjL2VpMFpiZmxOdFF3R3hqcDBQNUZLbDJRVVJMRDlBSzZ4?=
+ =?utf-8?B?ZjBkc2QrZW16L015TVFGNS8rWUpQZ01GVUpsVDhUTE1tY2Q2cWtHOUtkT3pw?=
+ =?utf-8?B?VjY0UWZXeUl3NlhqTkEwaUJuNER0b3hPMW1pQlh3SW91R1R5bVVBV1c3WWgw?=
+ =?utf-8?B?WHFhU2p6MjVDKzY4bTBUTVh6V0lMVG81cW84QitsWWNZWTd5dHc3QzFhM3Zj?=
+ =?utf-8?B?OVpUdHdPZXVKZW1FYjM0TnM0TDVvL1NEajR6Y3pKRXJTMkxRWU04TTRtRzRD?=
+ =?utf-8?B?Q28yVGsvN0h6dDMzNTA2d0ZlajcxRVNtWFgzNnpqNE40Rm9PcnRQWVFaU2dv?=
+ =?utf-8?B?aHdJY2RPQmJzTXdHS1hsUEtDZ2t3bkhJSGZMbEk4Z2FPVlpzYlB6UHpwanJD?=
+ =?utf-8?B?bkxPOTJPM1ZXVHZ1SUE1T2FMYzhHVGlBV3B4QnJ2bUExdGpXQ25jTHFpNlY0?=
+ =?utf-8?B?TldFTzlsaG1pRHFyeTNuaUpFVzBxR2xpcW9reXlocnpiNDl2QmM4UHhabklE?=
+ =?utf-8?B?eG9jL0JSS3k4aGNkOVluMGJrd1lTYkx2NG8yODI4a2Z6OE95TjZCV3RqZkZI?=
+ =?utf-8?B?OFJXMnV6cGpwZFEzdG9pRHlJNmt4TmFFTUhPMkR0dEFIUE1TN0NVU0FLaU0z?=
+ =?utf-8?B?UTRQWFZZUXNmbHB4TnE4WXZJSWh2YVRabDcrM1FIbjNwcDF2SENKRzRaSTg0?=
+ =?utf-8?B?R1ZvdWtNQzBrWld4U2tIek5YN1lLcnphRytkRElJMUY1SlJiMzgzZTZsZnJn?=
+ =?utf-8?B?TTg0RmM3VkdtN0o5T1dxdDlTSG9tZEZka3FGajhYUGJIM2hFYVpFRWZIVVJS?=
+ =?utf-8?B?MVZ2b1RnYTJKQVdvOGtJenVTMU4wbjRGaExCQ05WcVQzaVZWMjBhV1czSHBK?=
+ =?utf-8?B?K01HZkFKSmZhR1k4c05HRjMxa0krVVRXZlNUVmhtMzVWYTN5ajhCWk9GLzRk?=
+ =?utf-8?B?UU1YZnJYSURwVElsUUs3WTQzZ1o1UkhhSlprL3V6R1hFRXhpTkFOanhQOWtI?=
+ =?utf-8?B?T3lLMG1udkpiN0pLZlkvY2k4NEFLOGU1NjU5d0x1REpoSCtSTHEva0xLZmFN?=
+ =?utf-8?B?My9XcUVZa25raXY2bmJoY2VQUzRMWkErVGQyUy9NclFXNklITnhiK2szcFIv?=
+ =?utf-8?B?UlZBUXJxbzBTMG1rMlhOd2JhbHdmaXpHNm50Y1djeWtLUUJINmw5R3orS0Z1?=
+ =?utf-8?B?Q3lPZDdNM1VVbWhKVHAvNUo5NStpTGR6YjBMTVUzVGNlcDFwNWxwbFN5NFZ0?=
+ =?utf-8?B?NlhMVDdBSW93VU1wSnFZdFpvRVA2SnNnV0h0dDUyN1BYR1VwaURmeDE1Y21l?=
+ =?utf-8?B?UnBTLzU0U0QwWGF0MlZLc0ZuOEZFa2txSXFPRHNJdE9qYlp4MDhXSjNNOWFW?=
+ =?utf-8?B?VXRwK2s4L2kxaGZRUzYxajBuOUhTSlBqTHA1NHFlNFFXVGZqaXJQeGxsZ2pR?=
+ =?utf-8?B?RERoYWlWc3RQMVA5WHMzcW5iYmd3V0tYbG5VRUMzQUpHK1NOaER4QzA0TWYy?=
+ =?utf-8?B?cVF5UWF0ZWQ1SUJwcjBQVzFjSkFGcnNUZkJ0KysyTDJHNUNTWjhXV2NpVU1W?=
+ =?utf-8?B?bkI2RTM3MHdydWl6YW9OZkxhaHVlTVRqVDB3a2hmMzR4eVNUOXY4Tm1Tb1VE?=
+ =?utf-8?B?Yk5PMHpaUVUrNUdOdldyNm43TklZbmkwSVYrOG8wemFKQStXWjhVUDVFck50?=
+ =?utf-8?B?aGxUSWhBeG9MaU1mYzYzUDhoeXJnUE4zSmxpT1JZb211MmkvVUp5bkJ5SmNs?=
+ =?utf-8?B?bThQcU05NzNmdDRIUGJEMW15d3h4VnNWQWp5OVFCZXhtbm9OTkc4SFd6LzNa?=
+ =?utf-8?B?Y0dUaDFvKzhNc010ZXpubUhsa0hybGhLUWpJbnhnemF6MmlrSzd2MDE4cCtG?=
+ =?utf-8?Q?3E7t5YCLZVALh4mTp2XW2Fjr21MsfUQx?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS4PR12MB9660.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WFRDSWNuVUxKQ3lvTjBHVDRDOG4wa0hsZkZqcDlsRTVqQUZockZhTUFMeHUy?=
+ =?utf-8?B?MFl0aTFHOGVoazZXczUzc0xwWEVOZWhWZ0gxdTRheVFGM1RCZG1ZcDgzbVFK?=
+ =?utf-8?B?TTlaQWI4KzUxVEorNHgyZTF1L3dIZkN6NW9oNnhHdTcyc3RCSHhJazBpM3ZC?=
+ =?utf-8?B?cHRWdjlxUTRSUkU3bkh6TzFKQ2YreW10SzZRNi9NNUFuNGJpd0tzMm05TDc0?=
+ =?utf-8?B?ODRQRndrTC9Lb0gvU3h5eERhSXVnQUZ6cFpVQ2d0Q0EzNDA0QVNoTkpGU3JD?=
+ =?utf-8?B?a1ZiYUM3VFdxTDZ5YXpOMzZSd0R0UkIybjhUQlN2cCthZHZSUWtqMnNPa1JE?=
+ =?utf-8?B?MXJJd3htQjBHWWUwUXJzbzVicEVyNTNFbGhFSnJYNnhWaFFsNHZWUnlnTFhK?=
+ =?utf-8?B?cEZxdDlKRFlsY2tvSWZta3V6V1BFYzVwNGwxUWJ2ZDVHOVRNL0xaSFFFdCta?=
+ =?utf-8?B?dzgxbXlFWFMyR1dRS3I2VEtEU0lXWW5YQWpqNm02ZWxxMjRoMzdpQzJsdll0?=
+ =?utf-8?B?ejNKRjVLMW9FelhXSnR3bFE0L1MwUEtZbWw4aGExMVl6UTJHZ05BKzZsS2pY?=
+ =?utf-8?B?QUdnVUZnaENzVkhSL0djdk1hWDBUSkl4WkRZTC9PYUNkamRzK1NPaFdTcmtP?=
+ =?utf-8?B?NnVwd1ppRFF6NEwyajVuZGNnL0xjbWxLTmxMZktoUlI4am1PSGxOTkFnY0hx?=
+ =?utf-8?B?b2xmQWVpTkU3ei9qWThJUGlrU1Y5ekdCajNqUW9ZbzZQM0p4STdZZllVeFNT?=
+ =?utf-8?B?bElQZnNnNUtWNjFoVDNwVHdQaExGR2s3YWZRa3FFL3E3S3YxUFRCVWw2NW1t?=
+ =?utf-8?B?ZzhZVGphTXY2bWlBeFlzTXlLT0JPZSt3WWRpVTFWR1YwSjVtTThXV1dldkRw?=
+ =?utf-8?B?SG9wTFoycCtuZUpWYWhzSjBzR01DRmh3WGlVdTMyRlRQd1JsdlRVTFlUMHhC?=
+ =?utf-8?B?L3pUTzVzdmkxNHN0WnB2YjBkaFA2ZEpDdk9HcTNTREhRakh0RGJBdWFFS1Ay?=
+ =?utf-8?B?ZHZTWStUbzZrVG1hZ3RvUkw2L1RXeGMyQitscW1GMGRmQlJXTlZ2dXk5YVdY?=
+ =?utf-8?B?YVplVWNVcFdNZXZOS3d6aURLT1BNeklabjVCOUlQTnY1N0oxeTZmaDhNT25U?=
+ =?utf-8?B?YWdjeGk4OXN4VE80dkIxdkpwais4cVhTV0Jnd2ZtYTcyV1JmSWZ1TTJRdmhD?=
+ =?utf-8?B?SlZXTGJjbThETGJWY0RUYzRrNEFUTUNweXExVVhIcit0RWJaZXBDV2dNRE1i?=
+ =?utf-8?B?N2RDaVFrb0hMQUNOcHdUbTJRSldXTlFyM2VGZUhhbDVuSDRjL25GYzZRZVdz?=
+ =?utf-8?B?aUExQnV5NXY0eEJ6YXN0Ujk0dG1CTldrRGJpdzNRV1F2U0VaaGJiT2xZQmtz?=
+ =?utf-8?B?ZTFkQWhrTmNDNjV0UkZwanB3VDFudzhxRmYrWVRrb2E2T0xuRFNxODNOTitn?=
+ =?utf-8?B?Q1FNQ3lKc2RDSGdoKzB5TnE2Zjg2akdsbmdPVkxYa2ppQzFJdmgvOUR4YXQ4?=
+ =?utf-8?B?QVI2Z0hOWitZVVpqTkUxZWkvWnVMLzhvb2prbHY4bWRaMENneEZIelVqbDRV?=
+ =?utf-8?B?SmJsRjR0a0xzc1dtVE5mdjk3RXdyZER0cjc1OE1OL0Ntc2xDa2NXVkFteFIy?=
+ =?utf-8?B?WVZjc2tpOVFqUjNrL1YzTFd6Z1hMeXQwQVJKYkZMV2xDZW1KNjAyMXFLSHhw?=
+ =?utf-8?B?Yk1FT2ttUzFiaFQ0UFZ3TTZwU2JSaGpYQXZTM0JNVTFSQkdBWW5zTTlTcXhz?=
+ =?utf-8?B?dEhRWEtROXRRTTEzNytIQ3p6ME94WHdNaEZrUGJTeEdmL1Q3ZDhvN3Z2VlA0?=
+ =?utf-8?B?OUVzZVVvUmJiZUE4WGJXTmduVDlGUzlmUS9nL3VueTVyUnRnUnZKZ1d0UVcx?=
+ =?utf-8?B?UU9qRGtiQlg4ckNXRnBSNTFZTkNTdlFYdWY0bHMxRXY2QnBud3p6dkNDM0Jj?=
+ =?utf-8?B?RDZqb0szeXJpM0lTbWdRblNJL0YwSzZVa2MwR1VRdW9jVmdMa2tCMTMzS2FQ?=
+ =?utf-8?B?UU5wTU1ZZWpuT3o3NUE2QzJsN2RSdkM2Y28zQllSbXRMR3JyWU5qVHptSHFO?=
+ =?utf-8?B?bjFZdDRVSTRxS1NwZ0pIVnlFV0NNWkN2NXdyQVBFTm5zTzlUYnNTRmZUNnFI?=
+ =?utf-8?Q?VbTUnCasqCr88fB4AeG5nPXAt?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 754684ca-12b7-431b-4e48-08de3e7e1ecb
+X-MS-Exchange-CrossTenant-AuthSource: DS4PR12MB9660.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2025 21:40:53.9873
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: q21IHNJR1zbYHx6KUMRRWvDG9X6akPGFaAXDTTDGae+LRb7fVg0yLL7EECN0Xd+66ep7he5IJUUzguHlwBkSIg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7504
 
-On Wed, Dec 03, 2025 at 08:43:29PM +0100, David Hildenbrand (Red Hat) wrote:
-> > Yeah, the function itself makes sense: "check if this is actually a
-> > contiguous range available within this zone, so no holes and/or
-> > reserved pages".
-> > 
-> > The PageHuge() check seems a bit out of place there, if you just
-> > removed it altogether you'd get the same results, right? The isolation
-> > code will deal with it. But sure, it does potentially avoid doing some
-> > unnecessary work.
 
-In separate discussion with Johannes, he also noted that this allocation
-code is the right place to do this check - as you might want to move a
-1GB page if you're trying to reserve a specific region of memory.
 
-So this much I'm confident in now.  But going back to Mel's comment:
-
+On 12/12/25 07:37, Matt Ochs wrote:
+>> On Dec 8, 2025, at 16:13, Vedashree Vidwans <vvidwans@nvidia.com> wrote:
+>>
+>> diff --git a/drivers/firmware/smccc/lfa_fw.c b/drivers/firmware/smccc/lfa_fw.c
+>> index 24916fc53420..334090708405 100644
+>> --- a/drivers/firmware/smccc/lfa_fw.c
+>> +++ b/drivers/firmware/smccc/lfa_fw.c
+> ...
+>> + /*
+>> + * Pass 2:
+>> + *    If current FW components number is more than previous list, add new component nodes.
+>> + */
+>> + for (node_idx; node_idx < num_of_components; node_idx++) {
 > 
-> commit 4d73ba5fa710fe7d432e0b271e6fecd252aef66e
-> Author: Mel Gorman <mgorman@techsingularity.net>
-> Date:   Fri Apr 14 15:14:29 2023 +0100
+> drivers/firmware/smccc/lfa_fw.c: In function ‘update_fw_images_tree’:
+> drivers/firmware/smccc/lfa_fw.c:554:9: warning: statement with no effect [-Wunused-value]
+>    554 |         for (node_idx; node_idx < num_of_components; node_idx++) {
+>        |         ^~~
 > 
->     mm: page_alloc: skip regions with hugetlbfs pages when allocating 1G pages
->     A bug was reported by Yuanxi Liu where allocating 1G pages at runtime is
->     taking an excessive amount of time for large amounts of memory.  Further
->     testing allocating huge pages that the cost is linear i.e.  if allocating
->     1G pages in batches of 10 then the time to allocate nr_hugepages from
->     10->20->30->etc increases linearly even though 10 pages are allocated at
->     each step.  Profiles indicated that much of the time is spent checking the
->     validity within already existing huge pages and then attempting a
->     migration that fails after isolating the range, draining pages and a whole
->     lot of other useless work.
->     Commit eb14d4eefdc4 ("mm,page_alloc: drop unnecessary checks from
->     pfn_range_valid_contig") removed two checks, one which ignored huge pages
->     for contiguous allocations as huge pages can sometimes migrate.  While
->     there may be value on migrating a 2M page to satisfy a 1G allocation, it's
->     potentially expensive if the 1G allocation fails and it's pointless to try
->     moving a 1G page for a new 1G allocation or scan the tail pages for valid
->     PFNs.
->     Reintroduce the PageHuge check and assume any contiguous region with
->     hugetlbfs pages is unsuitable for a new 1G allocation.
+> Please drop “node_idx” from the initializer statement.
 > 
+Thank you, I will include this change in next update.
 
-Mel is pointing out that allowing 2MB region scans can cause 1GB page
-allocation to take a very long time - specifically if no 2MB pages are
-available as migration targets.
-
-Joshua's test demonstrates at least that if the pages are reserved, the
-migration code will move those reservations around accordingly. Now that
-I look at it, it's unclear whether he tested if this still works when
-those pages are actually reserved AND allocated.
-
-I would presume we would end up in the position Mel describes (where
-migrations fail and allocation takes a long time).  That does seem
-problematic unless we can reserve a new 2MB page outside the current
-region and destroy the old one.
-
-This at least would not cause a recursive call into this code as only
-the gigantic page reservation interface hits this code.
-
-
-So I'm at a bit of an impasse. I understand the performance issue here,
-but being able to reliably allocate gigantic pages when a ton of 2MB
-pages are already being used is also really nice.
-
-Maybe we could do a first-pass / second-pass attempt where we filter on
-PageHuge() on the first go, and then filter on (PageHuge() < alloc_size)
-on the second go?
-
-~Gregory
+Veda
