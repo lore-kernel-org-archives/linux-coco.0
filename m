@@ -1,176 +1,130 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BEBE1D5CDE
-	for <linux-coco@lists.linux.dev>; Fri, 19 Dec 2025 15:40:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29345288C34
+	for <linux-coco@lists.linux.dev>; Fri, 19 Dec 2025 17:30:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766158814; cv=none; b=PtjabWZLeswHcz05Nm3Mm8hWByFXyu9JWtkTrtrvJsCOiliHiu9i2ghSSU6BxWJefH06q2uxp7ii+eBQ/xF5BGWggCaAT7rsHrwXeNbx8opNKMtHttfFn+KNaccKwPB4PzjyKFMT2TsV3fP62g3Azk7pWnNI422I3Bf43cEW7Hs=
+	t=1766165424; cv=none; b=paXrG3PDROOMZ3Ur80CIl9+yEamuZQEuNV/pIgcZuPkVGE5NBfS/mbaOBq1LbjyFgXZo2sCJLaEx6HCCZuqNL9EYW34S9a1NK/EbKv8HqWyA+tvxgp/JxYd0E0x5ZzQJcvMq7ryB0UsBEEHCfe5KX5ZiFgFlqNodK8PUy8HWefM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766158814; c=relaxed/simple;
-	bh=V2R/B0gbkwCbHmdCAP2SACbfVHm0/ziCWsigAtAnjaM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=J7rnx5rhQ73bLab1wZEWuGeBF/paKPd3qy2wlwVFh/HPtnMnRLPF7toPlVvdPPR/Al+QSrF2OjPZ4piAjEeTUV0KWA7urjfL3U7vWLdhfo1emBPDSJbI0s1AtunKHCUDiDtuEFDW3EDh61475btjaDv1uzAsuX/a/11MoiitplQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=beEfYWux; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1766165424; c=relaxed/simple;
+	bh=NnNED/KK7J6k/Jds6419ZvgA54yRJ4moREiGcwIjHQM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lVdH8Z9NxwsK8lmf3XYYP9Y2Z4C1lSWFzux6glqhMCjdILB4NGwZF6cHb43HtqTnXdrwoOm1CgY0aKLyB2GLVEe55Id+wixxwTxUKNyy7H5YHbs5xWPRm9WVdvNIj8CN2jPeQ9lIONT7lc8QBe+iInnaTKjyQN5UXRsMzburJuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EFtWrmKP; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="beEfYWux"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34e5a9f0d6aso1916936a91.0
-        for <linux-coco@lists.linux.dev>; Fri, 19 Dec 2025 07:40:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766158813; x=1766763613; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yxrrp2oMgVkK17s+eJEUzU1udWIn66K3HBKvgT0GfUc=;
-        b=beEfYWuxeBYT7WyaUzjx93NyaFYaE7p8L9fzRvS00Aa3UdHEToTiPgI1NzJm21hBTp
-         BvN545h7hKxJ7erzjrFXhRSrtnxA1nNQxoKT2c5YYabtVsoIjkeXVinv4zQWbNweJqEm
-         bIV3I+SwVlhOz4Q4xjtEEFJAjmOZfvmeUb/l8Y9PKgdhvbTZGK6N8M/zWFb5sKs/E6qF
-         sKxRfQkuNsTyW5ZAbalsDrIobdeKrsQfOhrr/kcN6D1VJCNhSQ3P/sVAeUDyBOnB8zDk
-         PJPFKgjThOZpC2U+zKk/2ljCepoqqTFLUjI970xQpu8cauzqGwO0B2i/9C8OpRPvw5UR
-         0k5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766158813; x=1766763613;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yxrrp2oMgVkK17s+eJEUzU1udWIn66K3HBKvgT0GfUc=;
-        b=KqEbxudI0RYmeIQ3UbN0f39d5lYqb0m4HplsNrLGN/2c/hTe/Ex8W00lAH2O+OSGk2
-         46HU0aFgWm1KgRbpXox25rby3G5FcbUfyDqcRvoy9j1Q2BcJk2XlxF7XO1oCkkAI4L7Q
-         uPnWnbAn7OSCFmd57+oclQ4qLKNRL6Ia1QLKKNd6miKqy1e2cCNl/32DSpKROmMUJ/Uk
-         QESZdVRkzNETiN6ttxjdqoxXQ+y+CnDmcy8upx9OM4yl2kWBaDyMGlslXTq3uP8bLVTk
-         vG53CqPnpMxlVcKhmTX47xHc7eZKaz5Ur97eGWRucKU0/mPAEpA5aR1yOHMGXU6bYMHp
-         UH3w==
-X-Forwarded-Encrypted: i=1; AJvYcCUPlHik2fqf1MOYSBvCR0Jom1i04AXmoOoAY2zYSLlf3hPMWa6w8mLiT9lpYgpKs7mY2AxKsifUK5B9@lists.linux.dev
-X-Gm-Message-State: AOJu0YypQhwv9nsaO+Qq+CuglGxV6eCwDSXCPnqwZEnMJBgnta4LBaHi
-	1x1aOT8ZDhjscctMZpgyrEF8SZlG4rNnr7Hvpc+zBXxUWx0NX/JQBiVarKM5PnigzFV8JzG+xld
-	ELGFJ7Q==
-X-Google-Smtp-Source: AGHT+IGtRE55TsKHeelPCRMsIlRwSp4fhqX1YpQo/KjGsELaRWS0xMViHMtopyhh3Du+2psPLE3aTf/OtFw=
-X-Received: from pjbhl13.prod.google.com ([2002:a17:90b:134d:b0:34c:5d1d:4e95])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:c106:b0:34c:2f40:c662
- with SMTP id 98e67ed59e1d1-34e71e2955bmr5999291a91.14.1766158812676; Fri, 19
- Dec 2025 07:40:12 -0800 (PST)
-Date: Fri, 19 Dec 2025 07:40:11 -0800
-In-Reply-To: <aUS06wE6IvFti8Le@yilunxu-OptiPlex-7050>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EFtWrmKP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766165423; x=1797701423;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=NnNED/KK7J6k/Jds6419ZvgA54yRJ4moREiGcwIjHQM=;
+  b=EFtWrmKPnODTlxBAVeZosgnHujTQ6GCtHCSY5m8ApV7NItoOqNMl9dQC
+   1r9Ter6s59eBrVKCPnFSRqSK0MoqUb9noE4k+M5SYONOoVd6fnxFiNF4K
+   JZvbQ3p0Bw8AlY2/XaXiRuc64LkTXE9qt5c9W0wr9VZRL82G824POddyi
+   UVQZPUqHtalHa0hY251icdsgetpacGXsLFzp/ppzi5mkjR1NZkox3sDUw
+   Va/Qg33j5r5ZSFc+HYfh6ABE23dNgp0hYZ2k8cIGEYzQ8H+S6VG7VYuem
+   WzBzy3o7zpPQYWiROSzo7KK+qF+uynn5l9XyckwurMdjWkWgnM7yBQc1X
+   Q==;
+X-CSE-ConnectionGUID: OgQbpIrcRaWMvy8ldUoiOw==
+X-CSE-MsgGUID: HR5h5fW/QQu9V8P9aLjvUg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11647"; a="71759876"
+X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; 
+   d="scan'208";a="71759876"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2025 09:30:23 -0800
+X-CSE-ConnectionGUID: fbHrmORNQQyj5SR2FBDohA==
+X-CSE-MsgGUID: MpRsZuLNTMGgDY4dfxuwOQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; 
+   d="scan'208";a="198171291"
+Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.111.100]) ([10.125.111.100])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2025 09:30:22 -0800
+Message-ID: <6a5dd3e0-672c-4be3-a1c7-26fe3db17d00@intel.com>
+Date: Fri, 19 Dec 2025 09:30:22 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20251206011054.494190-1-seanjc@google.com> <20251206011054.494190-3-seanjc@google.com>
- <aTe4QyE3h8LHOAMb@intel.com> <aUJUbcyz2DXmphtU@yilunxu-OptiPlex-7050>
- <aUL-J-MvdCrCtDp4@google.com> <aUS06wE6IvFti8Le@yilunxu-OptiPlex-7050>
-Message-ID: <aUVx20ZRjOzKgKqy@google.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 2/7] KVM: x86: Extract VMXON and EFER.SVME enablement
  to kernel
-From: Sean Christopherson <seanjc@google.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: Chao Gao <chao.gao@intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	Dan Williams <dan.j.williams@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+To: Sean Christopherson <seanjc@google.com>,
+ Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Chao Gao <chao.gao@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>
+References: <20251206011054.494190-1-seanjc@google.com>
+ <20251206011054.494190-3-seanjc@google.com> <aTe4QyE3h8LHOAMb@intel.com>
+ <aUJUbcyz2DXmphtU@yilunxu-OptiPlex-7050> <aUL-J-MvdCrCtDp4@google.com>
+ <aUS06wE6IvFti8Le@yilunxu-OptiPlex-7050> <aUVx20ZRjOzKgKqy@google.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <aUVx20ZRjOzKgKqy@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Dec 19, 2025, Xu Yilun wrote:
-> On Wed, Dec 17, 2025 at 11:01:59AM -0800, Sean Christopherson wrote:
-> > On Wed, Dec 17, 2025, Xu Yilun wrote:
-> > > Is it better we explicitly assert the preemption for x86_virt_get_cpu()
-> > > rather than embed the check in __this_cpu_inc_return()? We are not just
-> > > protecting the racing for the reference counter. We should ensure the
-> > > "counter increase + x86_virt_call(get_cpu)" can't be preempted.
-> > 
-> > I don't have a strong preference.  Using __this_cpu_inc_return() without any
-> > nearby preemption_{enable,disable}() calls makes it quite clears that preemption
-> > is expected to be disabled by the caller.  But I'm also ok being explicit.
-> 
-> Looking into __this_cpu_inc_return(), it finally calls
-> check_preemption_disabled() which doesn't strictly requires preemption.
-> It only ensures the context doesn't switch to another CPU. If the caller
-> is in cpuhp context, preemption is possible.
+On 12/19/25 07:40, Sean Christopherson wrote:
+> Is there any **need** for tdx_cpu_enable() and try_init_module_global() to run
+> with IRQs disabled?  AFAICT, the lockdep_assert_irqs_disabled() checks added by
+> commit 6162b310bc21 ("x86/virt/tdx: Add skeleton to enable TDX on demand") were
+> purely because, _when the code was written_, KVM enabled virtualization via IPI
+> function calls.
 
-Hmm, right, the cpuhp thread is is_percpu_thread(), and KVM's hooks aren't
-considered atomic and so run with IRQs enabled.  In practice, it's "fine", because
-TDX also exclusively does x86_virt_get_cpu() from cpuhp, i.e. the two users are
-mutually exclusive, but relying on that behavior is gross.
-
-> But in this x86_virt_get_cpu(), we need to ensure preemption disabled,
-> otherwise caller A increases counter but hasn't do actual VMXON yet and
-> get preempted. Caller B opts in and get the wrong info that VMX is
-> already on, and fails on following vmx operations.
-> 
-> On a second thought, maybe we disable preemption inside
-> x86_virt_get_cpu() to protect the counter-vmxon racing, this is pure
-> internal thing for this kAPI.
-
-Ya, that'd be my preference.
+Yeah, the intent was to prevent "rmmod kvm_intel" from running while TDX
+was being initialized. The way it ended up, though, I think TDX init
+would have been called in a KVM path _anyway_, which makes this double
+useless.
 
 
-Kai, question for you (or anyone else that might know):
-
-Is there any **need** for tdx_cpu_enable() and try_init_module_global() to run
-with IRQs disabled?  AFAICT, the lockdep_assert_irqs_disabled() checks added by
-commit 6162b310bc21 ("x86/virt/tdx: Add skeleton to enable TDX on demand") were
-purely because, _when the code was written_, KVM enabled virtualization via IPI
-function calls.
-
-But by the time the KVM code landed upstream in commit fcdbdf63431c ("KVM: VMX:
-Initialize TDX during KVM module load"), that was no longer true, thanks to
-commit 9a798b1337af ("KVM: Register cpuhp and syscore callbacks when enabling
-hardware") setting the stage for doing everything from task context.
-
-However, rather than update the kernel side, e.g. to drop the lockdep assertions
-and related comments, commit 9a798b1337af instead did this:
-
-	local_irq_save(flags);
-	r = tdx_cpu_enable();
-	local_irq_restore(flags);
-
-Somewhat frustratingly, I poked at this when the reworked code was first posted
-(https://lore.kernel.org/all/ZyJOiPQnBz31qLZ7@google.com), but it just got swept
-under the rug :-(
-
-  : > > +	/* tdx_cpu_enable() must be called with IRQ disabled */
-  : > 
-  : > I don't find this comment helpfu.  If it explained _why_ tdx_cpu_enable() requires
-  : > IRQs to be disabled, then I'd feel differently, but as is, IMO it doesn't add value.
-  : 
-  : I'll remove the comment.
-  : 
-  : > 
-  : > > +	local_irq_save(flags);
-  : > > +	r = tdx_cpu_enable();
-  : > > +	local_irq_restore(flags);
-
-Unless TDX _needs_ IRQs to be disabled, I would strongly prefer to drop that code
-in prep patches so that it doesn't become even harder to disentagle the history
-to figure out why tdx_online_cpu() disables IRQs:
-
-  static int tdx_online_cpu(unsigned int cpu)
-  {
-	int ret;
-
-	guard(irqsave)();  <=============== why is this here!?!?!
-
-	ret = x86_virt_get_cpu(X86_FEATURE_VMX);
-	if (ret)
-		return ret;
-
-	ret = tdx_cpu_enable();
-	if (ret)
-		x86_virt_put_cpu(X86_FEATURE_VMX);
-
-	return ret;
-  }
-
-Side topic, KVM's change in behavior also means this comment is stale (though I
-think it's worth keeping the assertion, but with a comment saying it's hardening
-and paranoia, not a strick requirement).
-
-	/*
-	 * IRQs must be disabled as virtualization is enabled in hardware via
-	 * function call IPIs, i.e. IRQs need to be disabled to guarantee
-	 * virtualization stays disabled.
-	 */
-	lockdep_assert_irqs_disabled();
