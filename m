@@ -1,51 +1,52 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012014.outbound.protection.outlook.com [40.107.209.14])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010011.outbound.protection.outlook.com [52.101.193.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A839288CA6
-	for <linux-coco@lists.linux.dev>; Fri, 19 Dec 2025 08:26:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894FD2DCBE3
+	for <linux-coco@lists.linux.dev>; Fri, 19 Dec 2025 08:39:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766132802; cv=fail; b=RA73y/XEw0Bpmq4j+mPx335uhHkTsBfeuK46wd6jLmHHiItmuTUYlg52iOYYVkO6XanqLbPbQHc+ygr3REp7BFB0XYWYYLEP0NQ6rBvaDH3opZSeN2N20l37ZNw+0vSqg1cNvj4RVPxq4xf0Kwn6kIeAKJZth7+R2Jsqc9Im6iU=
+	t=1766133557; cv=fail; b=Ir2WnLMu6uz2UfuWOBPfmoLgfRC8Og9Z6xG8LVqeZgd4LIcg3EJ7D9Gbt3c0B6dUWy0ZELCig5D166Q6Gn8gAGg2tHtPqsxBQu7gXGo07htraQJj5UYEDUHuq+wjeSv4022LuwQX1r2MvcHEs6wyICedZ2qFihhz5Nc119z441I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766132802; c=relaxed/simple;
-	bh=eX1Lola/WqAjN8qt25T5dA0dnJq30NewnLuXH0ppZ2Y=;
-	h=Message-ID:Date:From:Subject:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=UEt9kuBIAkx53bAy9iefYSGU0qBum46gfOOjVqr5lZGb/dyLLHjPoFrIlmbzgdK2+eXVlFZa+1nCKLMih0v5z7ON1kXLehLS6/DOjyZ0Dijml2NJwqzUQt6CSmC3iXyMwAbqiMnehoPXrCynd7LshFQFTaduWMx+cfDsJgb3j8s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=h0RbOvN6; arc=fail smtp.client-ip=40.107.209.14
+	s=arc-20240116; t=1766133557; c=relaxed/simple;
+	bh=aVgmcT7FIgB3WVy5Pp5TSbvejSRvSoLj9r6EWNirX58=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=EwGtCb97Z4szcEwRxf+XQes+2WQkMJpauWWAfZQ5/IJhtou+BEvKNminSqFeJ6lrgOEX4dqjvEd6I/326pZnYrK06l+epUL4PPXnrDu3BupSwEVtSwv2r4WtsZ7Dw/I2lm6DrI495MmaV69Pg9H6OHs/exiJW7g7KsgIZqLh9dw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=RQJPyzmy; arc=fail smtp.client-ip=52.101.193.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="h0RbOvN6"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="RQJPyzmy"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Tu7VJvLJGwyQd+0ZuBzWLGI2eWlUt9Z+Ix91Idd1SoJygAcUfQHT8KCvnjAL4CXMGRsMpNP2g/UUnzvL2oUS1Q0/aXo/pi1EucznnROcj3tDzMWEW1q5J2TeJE+5bXzQCPV56Kzue+WwRAr1ux8MeOScTXHtGxDMnI3rGCSLXwRUS0E1Xk2mZ5VO95ucd7Vqj9ZEmHT1eoQE8t2NWmIUmg5ygzMTAgWQCR0eicDVDdndnjJkQ4H7VvhTJQc3gx7u5XbTgKDLEEN9ThQsKRDFFFNdXEs+FiHNBKnnIVrHpLVtlHnL0+CNUVnT6O59voChGVr+kOHgnIfw9hAXfnH0Fw==
+ b=tBJry07qGkUMCrHMZbRiSFjV3t5EBwOiA6s8fkV7uLgymStWjsfogu6ofIBjhmTkSxXumpmnpA2q8zqoke/7tHIY5zq3oTMr1Z9+b74IVIdGCeUbosUCUbjbRb8suOhFuBKNwcrW/nfCY0pJ8STT/MnUtTBHOfLlCUvcS92c/x+eiyPjwRCClDzkpXHaC2UEfZZKAUUjVMNNLmj6eWR7vyt3cHp8q1Ngnvk4ZoOnVHEagYNRrfV5NbCQTqBs4EPBrtsoSV3yz+OfDFIquxYi8UyJ/sAkdQKewFr93VABXl5dwio652p66Xns37BYBDk90oLT4vPH2cT9dv3r8svsaA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JRdW48lemKZkMn/t6StDRmk4p4GE4a1YagyAsZaDMmY=;
- b=IrTSUTk7YMzlrqOduWNrKXbJWpnO02z6YauskZhfAfYKzoSoycE8NQTWLJKgKSiyq6RuqtRDCukh+qcdyPkuRV+cB2a+Vi8OXV2GUx5wfO4funRzsvmDLV1QstNiaurdlDnmh/acPLQltX/SylSZ7VLDGXrs0OwlGDUtW0dBao6ZURluw9MBTBM3QL58fbxdeHNxUD9BFZTMtm9zxw/Es+vwradoun6bd+3ze0W/AuAzvmtyUJGKJAUQ5r28l3yZpCH0m8cGiYTQKA3eg59BO2LQw4V/j0hQMmdVBkQzSJomNtU0qwMpxUvSX5JroWVzFfemuhXQDxlOqVzs7op6Ag==
+ bh=e71/CbbAEhKj20iKc35Ne1BoiJDI9vD/Ux68lbfh17c=;
+ b=Yt5JcrM/eD3DMN+XCz1l/lzFBLbC8XxoVSS0pSOMS1fHWWZ+CiUpEzsEmR7YtQypx8aCx8ptrP51qxGSnJTvAi8aAX4D21Kb9WMjxTLiTAxoyoDbc9ALIHfySWI8CboEODyCX4tcs7qqwcMXzVUylp1/vX0LrUAxLjCVaPNkTXrzZ8DduQ3hKYxZT5L90Tdf4e7pB3O3TgRFNhuGLZ5lnYAWKSAX5lAdlsfW07Mv9+rJg7/JWPPvC/jui7q9Zo+Q/KdUHCmRxdEqJVFsswsFK42lcTo9WPpfVxp5ZAC6rqFNevrm6fd1PqCKJjddQvZGsPjCcpWKrFQ7o7+b3XSQBg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JRdW48lemKZkMn/t6StDRmk4p4GE4a1YagyAsZaDMmY=;
- b=h0RbOvN6+cbroaVvp1NPs1oHLe5dwgohNyWTcwKBk0oWI4AfHFbX1pLyMKF65KMSBCqCkuNitc3YCv/2E9F8rPMAQ02UVvxBFOtB0pdQpXdWhJFvHisPOKm0r6x/IiwGieK49ChUMrv8QMMB50yHbBfMzAvItIiayFrGWtk+WPo0Xn37Qtl+3NdsrleE+692HJoQln4a8/RJzuqCTyqHfGab4Zy4FlzsPVLcmiBgSHPrJ0qz0J6B2uExdPGT5Ueu5ZWDOwteDNaTMhra3LoqsI3LNVSOXVjcOYxyIefeOzKF2dcH7uSA8WaKBHU1sWIbVYr65qYv4cv7gVU5MJqL7w==
+ bh=e71/CbbAEhKj20iKc35Ne1BoiJDI9vD/Ux68lbfh17c=;
+ b=RQJPyzmyS5IsM6l04AKh20z6O3rCu9EUjUfD8ehEPikVLKLC0MM7TcE9Dpz04txCqkow3gkgcvEgx87xpI6EBcJasgWDVgHVn45OiCIloG+x7r6QRy9Ba5hzunHeCL3zXLGyrMTbx2rYBKjTrdiHrFSwa3w9VJwU1MLBF05i+A5iCHChhj6RTriXnGhz7NMiEe4S4ltgP3RG8pzMNiO1f3dRUohEj1yLfb3tuYSGDfETvQyRlcyUUNSJj7irV39HnkHqNUQTcCzVmehIff7u9RGaHHOH1ZP0hZIkrnzZO0T2qhG+tdvMgD9G64PhcCfoNez9IxohofyYq56D2TUTNA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from DS4PR12MB9660.namprd12.prod.outlook.com (2603:10b6:8:281::6) by
- CYYPR12MB8749.namprd12.prod.outlook.com (2603:10b6:930:c6::12) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9434.9; Fri, 19 Dec 2025 08:26:36 +0000
+ SJ1PR12MB6219.namprd12.prod.outlook.com (2603:10b6:a03:456::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.7; Fri, 19 Dec
+ 2025 08:39:11 +0000
 Received: from DS4PR12MB9660.namprd12.prod.outlook.com
  ([fe80::f962:80d7:e25:bf3f]) by DS4PR12MB9660.namprd12.prod.outlook.com
  ([fe80::f962:80d7:e25:bf3f%3]) with mapi id 15.20.9434.001; Fri, 19 Dec 2025
- 08:26:36 +0000
-Message-ID: <29248f8c-b57d-4818-851c-7905dc9f8317@nvidia.com>
-Date: Fri, 19 Dec 2025 00:26:30 -0800
+ 08:39:11 +0000
+Message-ID: <8bca8c4b-52b8-4a1d-9f21-176c994a58bb@nvidia.com>
+Date: Fri, 19 Dec 2025 00:38:39 -0800
 User-Agent: Mozilla Thunderbird
-From: Vedashree Vidwans <vvidwans@nvidia.com>
-Subject: Re: [RFC PATCH 4/5] firmware: smccc: register as platform driver
+Subject: Re: [RFC PATCH 0/5] Arm LFA: Improvements and interrupt support
+Content-Language: en-US
 To: Sudeep Holla <sudeep.holla@arm.com>
 Cc: salman.nabi@arm.com, andre.przywara@arm.com, lpieralisi@kernel.org,
  mark.rutland@arm.com, ardb@kernel.org, chao.gao@intel.com,
@@ -53,14 +54,13 @@ Cc: salman.nabi@arm.com, andre.przywara@arm.com, lpieralisi@kernel.org,
  linux-kernel@vger.kernel.org, sdonthineni@nvidia.com, vsethi@nvidia.com,
  vwadekar@nvidia.com
 References: <20251208221319.1524888-1-vvidwans@nvidia.com>
- <20251208221319.1524888-5-vvidwans@nvidia.com>
- <20251209-hysterical-cobalt-viper-54433c@sudeepholla>
-Content-Language: en-US
-In-Reply-To: <20251209-hysterical-cobalt-viper-54433c@sudeepholla>
+ <20251209-miniature-curassow-of-energy-b6a303@sudeepholla>
+From: Vedashree Vidwans <vvidwans@nvidia.com>
+In-Reply-To: <20251209-miniature-curassow-of-energy-b6a303@sudeepholla>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR05CA0200.namprd05.prod.outlook.com
- (2603:10b6:a03:330::25) To DS4PR12MB9660.namprd12.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BYAPR11CA0106.namprd11.prod.outlook.com
+ (2603:10b6:a03:f4::47) To DS4PR12MB9660.namprd12.prod.outlook.com
  (2603:10b6:8:281::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -69,377 +69,166 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS4PR12MB9660:EE_|CYYPR12MB8749:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3404ee18-c9e2-41bc-039f-08de3ed85329
+X-MS-TrafficTypeDiagnostic: DS4PR12MB9660:EE_|SJ1PR12MB6219:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1582c347-2bac-431a-7c39-08de3eda14ed
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|366016|376014|13003099007;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?czdiZU13NUVxS1hBa2NKT0pqVUZDa0ZiRkNZbk5uUW5wbnF0bHRScTlncDhh?=
- =?utf-8?B?UUNBVCtlZjIxazRoaysxTHM5aFVWbG1idE9QMTJFTlpBQVp4eDlETTcyQUtZ?=
- =?utf-8?B?VkMxY0JvbWV4by83NFFLRC93ZWlUR3J1SWtvNWp1cG83OW04R1ViTThQYS91?=
- =?utf-8?B?azFpWEI2MFJHenJtZHI4WGNzQzlWMXgzaU5UcWZ6NEdsc2RFOEw0TTBWRmY5?=
- =?utf-8?B?WUVSNWx3dGJvQm1raTl0VkkxQkdSZVhXTW9zYnlBQVNpQjYwaUg4YStwT3dt?=
- =?utf-8?B?RkRqNnJKc25FcG9Gc0Q5STZDZk1yeURjYTFVVTdjcnRMcDNFWHE5WnVYVjZl?=
- =?utf-8?B?cFpBNVRHdDJVcFZPZmJVMjlqdnV1V3h4eVBhNHgvbUN4ZU9KRlVHbWhtZkhm?=
- =?utf-8?B?K0hiT0IreUovZ2Z5NjJXcEFzRUF5d3ViUDlPNDZWRWpvRWQwK1Q4NTFVZ0hZ?=
- =?utf-8?B?MG5nb2dqNkM4eDRINEJuQ3g2OGxtZnhKWVE1RTh0ZDJ1V3hEWmRFOTRCZ1Q3?=
- =?utf-8?B?NGhFWHdoZE5zY0tqV3UzNDdMTUtvTTMvZVEvV1FRUVRYajZIMUNhVjhIZnlr?=
- =?utf-8?B?SWxzRU9nUU8zNG8vVHlaQ1FPMDhhOHQwNGI1NDdMYzcxUVZ5UDRxUW45clAy?=
- =?utf-8?B?UWlwMmZKZ0tmUDljZll2Q3VNSjYxT2M2cExOWWxHbzBTb2JoaFV5aXZxQWI4?=
- =?utf-8?B?WlFaNXVhTFVvWmdoOGNNbVpKQVRuNTJYKzkzS0NxQjFFbUVGMUlLRjBCYU1o?=
- =?utf-8?B?UWRCSUZWajl6R3p3a0hialJzMmZuK2k3T1BQbVYzNWUrTlJ4Um1paWh5alhB?=
- =?utf-8?B?ek5tejNCbnRsbTZiODd2eEhqTGkzVGdLYmFZWHl6LzNHZU9ldzlxNVFocVRa?=
- =?utf-8?B?MEM2QjhVTzNDcFV5dlJsaDZTYzBlclB2RFBKMERpcXVPS29ma0VUTFIyV3lY?=
- =?utf-8?B?Y2I4MGVVc1dSZ0hKSnZiakdJQnoyQ09NRjdmaDFOSHY3UWRrbCtPczg5VEcw?=
- =?utf-8?B?eU5MSXdKOTBwTXk0REJIQjZZWFNHdWloOVQwNTVESHFYVEtJeHVzK0hXRm94?=
- =?utf-8?B?dlhpd1hWamhkNWtyOXY0SjYzWk5uaGVVczNMR25RM3h4eHBmUWVKbEc1N1Az?=
- =?utf-8?B?bFdzaWp4cVdXYTVzOGJDRWQxcXhXQ2p0NUhHSHNpcFFSNytXeXFGZEVhMyt2?=
- =?utf-8?B?L2NRU1V3aWh1UlVXNHRZUnpTUnhsMzFpOVBkVmpoZW94RVVEdFd5UnFjZ0kz?=
- =?utf-8?B?OVltbHVpUm1PTU1mb1B1K2orOXZPTHZyRisvZmNvb0FEVTlrUUpRdHh3SnZm?=
- =?utf-8?B?NG9tT0lIeFRDS01QY1d3UkIxd0RRTnJsQUl1eG9ZZXE5MmpKS0VzOUlSWkhz?=
- =?utf-8?B?VWhjWk5RUzJkMjJTbUN6clZqWVFyWFdUM3Z5YVd4NzdRSnJuaW00cXFwTS9S?=
- =?utf-8?B?SEFoR3JyeGNMRDcwejUxdERsaituMUtQbkxVc3R5MFdydFZxdy9UazEwOW1E?=
- =?utf-8?B?OXpQSHNlMG1mY2VOZUZpRU5JWFhickR0T0gwRVJEcGI2Yk5acjVCc0hocVIr?=
- =?utf-8?B?ZnkvS2paSVFwUXUybUVXcFJ6SFljck53ZTh5TWJSSUp1b0Y4YWM4cytuMDJI?=
- =?utf-8?B?MDlBQ2RNSVA0WXhEcW5wUnpFVERING1POWdLeTVwdE9RQ3d2STNzNDBJOWhz?=
- =?utf-8?B?QzErM0cyYWhQdkcxUWMrV08rOE5xaGZPQ3NrR3lvVEZobGxmQlhoRkNjL2Nl?=
- =?utf-8?B?WXdzVDErWWZQWVBhTWZubW5jRlBWWEp6L0JiVHNpTlJRNkFES0E3M0w4RWZU?=
- =?utf-8?B?Q1RjWUFiR1NRK29NcGZLOXhKeXVkVHFvM2UwL3VJdzNpc2ZUL2ZCRVNMcXdG?=
- =?utf-8?B?L3ZHaTc3Y3BxdmV6ZzF1T0doUFUzMmdoS0dKZWtDUkJ4QXUxQS8xbHVLYTFV?=
- =?utf-8?B?SHhZZFhwMi93UUdMeVBaQ3pnWDd4c1VEU2YyQlJHZHpBc2l5RlVhNy9kL2ZH?=
- =?utf-8?B?WnhldVZheWdBPT0=?=
+	=?utf-8?B?c293UTJpMjNJeHlIekFEaEtwNUR2VHU1TGN0SWllNWV4R3J0T2oyYk16dnFG?=
+ =?utf-8?B?Rk96NTl6WmttWVZ3U3BQZmxmS0VDN1U2OVM1Y1BwY2dLYis2dWJKNk94UHN0?=
+ =?utf-8?B?UTJnaHRHd2dMTzVkTnhWb3RGMDE3MGZEajFBMnlwK1Axd09CTUNQWWdaZzBw?=
+ =?utf-8?B?VmtaSzZiZ05aM0JnUXJzVmlrcWN1a2dncnNFTTVDMUxXZWgyK0puaFNaWENs?=
+ =?utf-8?B?RngyMjAwRU41dGx6Ylc5bDUxaFR5OHIxUjJucE5yZXBTSEJzcERLWlNCQVVl?=
+ =?utf-8?B?S0p3R2YxNFVvalNHTHF3WUx2dHVhUTNsY0pGVU5oQnFyMmtRdTRieVo0UzRv?=
+ =?utf-8?B?WU9Ldlo5NG1Vd21jZjFXN1ZOTTlZVDVDUDlGb0pNbjZBWGcrQU1lYURtR0dJ?=
+ =?utf-8?B?dmJPTUJGeDJDK0dkUkNTdjVJUC9aK296VktoM2UzRjJxOTFJckpHV2Z3eTFE?=
+ =?utf-8?B?ZFVTVW43TUhEYnF0b3NnK1FvWkQrVlpRYjArK2NnSlEyQ1dsZlEzODNMZkVW?=
+ =?utf-8?B?SGo0dWpBVVlXTXhackhHOTNrdHd0dFBxNlFkN083NHdSeDNQWk90c21MUmVw?=
+ =?utf-8?B?eUMvdExwY0FvMXN1WVM5UFdXaE1MalRDbVJRVTlQa1l1aUl0a3lrdk9pZUF2?=
+ =?utf-8?B?bnF0SThKOVNkZUhNRUpYdW1sd3J1SlZpeVRoaXFEeG0vQW84MVQzMEt3T0l3?=
+ =?utf-8?B?am10SnczbU9nQ1RsZmV1bjVRa0pZNms2aUt3TUJwazBKYlRTQzNyb25Qb0hZ?=
+ =?utf-8?B?NTNaUHl0YmtLZFh3UlBLSVl1RTg2dTVqZjJMSmFOTUl2N1JMMFhxQ2RmZUhm?=
+ =?utf-8?B?K0hEeS8wSXFDd0grREVOeTE2MGF3R0lPdmcyTTJobmR1N1NPbU9vdzJRcU5L?=
+ =?utf-8?B?MmFoNHN3cjZkUi9VUjBhNmlRQVowbjJWV3Y0WXBsZUJqc2kyQzFPN1MxYUV2?=
+ =?utf-8?B?ZVYxZFpZVXNTN3hqUllDRWUwanRMT1J3NlNpN2NOWTFBOUVZY2R3S3c5SHEr?=
+ =?utf-8?B?WjMvNUlpNFg0NFpwSlhTNzhqRDFPSDk4RnBvSEM5d2E0Z3hoRE83T1FLTGRL?=
+ =?utf-8?B?dzBOV1VEazJnanJ5U2p2bDRnRTdqRmNHR2Fid3lVa2Y2ZWFzbURVTERydGtz?=
+ =?utf-8?B?VTdIYWRnYWFMMndaUC9BV2sxMDFvYkpaNWpmWXZVT3ZCRUw5WDJhYzVEMWEy?=
+ =?utf-8?B?TFdLekRpaEtiZXRGRUI5b3o2ZEs5RlRSOFVpZ21ibGZjenpzR1VJVVYrRi9a?=
+ =?utf-8?B?T3NmUHhXNkJBNTZUNnp2a3VHa1NRSzdWa3dMbVg1Qmo1SUJYWjQzaS91SmlG?=
+ =?utf-8?B?T1drM01aVk5GQ2hRRmxBRmtxWXkwcWNZZ1YxejZYRTdWWktuZ1RVUDF1WEtD?=
+ =?utf-8?B?bkQrWEhHWUlZVzU2dStFMGprWnoxa3E4dEdlWUV5MXEyV0FyQTYzQ0RJSW83?=
+ =?utf-8?B?YWpsVWVFOFRPak1NTXgxOXRTeWdacTVoUVN0OWhNTFdLWkxsR3VQd0VHL1BY?=
+ =?utf-8?B?UW04YkFHeUVIZm9TbWpmMjdsUFcrL283VHpZS09TNWNQU01XV3pYb3I0VTMr?=
+ =?utf-8?B?SlNZYmtWcU5RWXFIeXZvejVHSmY2Z1pOU1hNb1NLZjJnNi9KVDdBbTBOYjFE?=
+ =?utf-8?B?c2tOeHJQeEhWeEorSnFpVHd4dWh2aU5KSjZ1NUMrY2FZK0tDbms3SVVVL242?=
+ =?utf-8?B?cEQzQ21mNGNjOXhhanRVdGNqb0lkNE9ndEU4L0tSZ0c3ZDZORVhFdGprUDhs?=
+ =?utf-8?B?NE9TN3hadkFKNjUyVkJmWFpTd0hZVTZER2lBMDVQd252blJjNmN1SEhkUVJl?=
+ =?utf-8?B?SnVFeUROenZzYUNicG04cDZ5a3lEL3dTVTUxdFE3YVZRQ2lYQVNSc2ViVTVK?=
+ =?utf-8?B?S3o2MnNiTlB4ZVNEM2xTeXRHRmRNbE5aSmFIMnlzUkhYY0E3UU44UXAyeGF3?=
+ =?utf-8?B?a1cxbjYxTG9WNjV3dXQwRHhEaUlhbTc4d1REeC9sQ0RSUC93MWZucnZWUVVo?=
+ =?utf-8?B?by9uSWlDRXFBPT0=?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS4PR12MB9660.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014)(13003099007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS4PR12MB9660.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OFpwZFh4dWVGSUs4NGdLVmpBL1dSNmRSTWcxWmJOd0UzaEtrQ0kxeDRIUDJD?=
- =?utf-8?B?ZWwySUMzNmZrblNjb2VWOUhGRkhXYUJyNUVnMnRHb0FpVmVPLzY0YjZwcjBt?=
- =?utf-8?B?dllyN3FIaEFKNHk4aDV0ZVBFTXVmQ2g0aVo4Yjh5UXNQaExEMlNQd05menJU?=
- =?utf-8?B?WG4rTE8rOXl5bTU1bGtiYXYwTUk0Mms4cTVDdExlUmgvc0EvRE9GcWFTMmpw?=
- =?utf-8?B?aU5lcnVzc2JhdHJsVThHS1pjNHJ6bnZ3Zk5TQWdsUDhHNERhQVRRaEpOSXJ0?=
- =?utf-8?B?L0tRUEZtdStZYU9DeGZpL2ZnVEFnY0xXWjBDQzNMSzB6WUF0UFNlYS9RNFlQ?=
- =?utf-8?B?d29MY3M2R3V5aXU5TEFoazNESmNUcDcvcHo5M2VTQlU5LzBDTm1zYUJsaEov?=
- =?utf-8?B?WUkvUm5keEtqVzg4TERJU0tMbnhDRFk5bzFLT3MxZ3dwYTkvYUkwQ3YydUZC?=
- =?utf-8?B?WFh1TGJWdFhSbDczekJaOFlKR3FCbGxPQ20yWlJMVmdPbEs1SUJ2L0VCZVN6?=
- =?utf-8?B?b1hLNHp5Q1dLOWFSSUlhL1l5YkE3bXozNFFMRXdYOEplczVSUTJOMzJEVVdL?=
- =?utf-8?B?bzFKcDlVZHMyQk1BSm5HQjBsWWsxU2NlbVpSWXErOGk5MHBBU1B0RGdMMk9O?=
- =?utf-8?B?NFdFaWl5TUpKUkY3QU5vdlU1Ump6RGRQOFdjaGtxUyszNWMwdlFSL1YrUTEx?=
- =?utf-8?B?T1VDZm5lNkdYalRkSmFqSmhSUzV4eTBQY2U5WEl1Y09uditNKzNoalFrSUQ3?=
- =?utf-8?B?ZmEzMWdocmxQU3RzSmNBelY5cjFuWDdjVFQ0VmJSVmVzenBxOHR3VzJ3UFdv?=
- =?utf-8?B?cTE4RXZHUDhtQzBzRnMwMzlzTnZTa1AzOWNOMVorTzQrYUNwOHJZcWYxR3FU?=
- =?utf-8?B?aHJWRnovcVFpY3R1RUlQL1ZRTXE2dm9URUJkTThCd3FsSnI3Skxwbit4NzRx?=
- =?utf-8?B?RHpyNlhrYlJ5dlljeE5ldFh4R0s3Q1pHeWljN3FHQmRyb0hYL0xtaEpjZzdB?=
- =?utf-8?B?S2tWTnJ0Yno0MVBoZGlGQTVpMExjTDl1SkRGeUhOWjdLdDBBZnB2OFdBYkkx?=
- =?utf-8?B?Z0NaSUVwSXl0c09yYXZXRXdqbUxobUZtc1lmdkhuRy83amMzcTk1bGxtekhY?=
- =?utf-8?B?ZmplMXR2SmgwYjNKN0ZXbDYvTjJUY1NzUnozeU9NeVQ1Z1VmVmFNTnRFZVp3?=
- =?utf-8?B?UXo5Z1lHbmVFRE1icWVrMzVDWloxWW5SYjZhcUFoS0M5UU5BbzZTalZsQ2Zs?=
- =?utf-8?B?N0NEb3doOThGZzVQT0NrUFRPQzdjdXRjVzlPTTN6TjdPTStPR2xZK0srNjAy?=
- =?utf-8?B?ZVNOaGQ5MjBaZkY5clRoaVZIbGZORm9sYkZ3SEV5Z0NQN05LTTR1REdPUUxJ?=
- =?utf-8?B?b1QrSk1QQmhldG1pSzFUZGI4ekt1WThrWHB6UUNwQWN0NlR4ZEJvK1JzOUpR?=
- =?utf-8?B?MndpYS9BSFRUdmtHYUw0MjFtek5obXFvdEQwamdKK1psOGw4TW5rMWFjUThH?=
- =?utf-8?B?dlhRMUZPemlqM3R6UWFDS3orT1JNS08zUWRHQzJ6dGV3b2Nya3ZYL2MvT1ZP?=
- =?utf-8?B?TW9EbHJDa1oyeWhKWk54QXBzL3dLaXRTa0s2U2Riam8zc08wWkdSWFNkQ2M3?=
- =?utf-8?B?am1EeTVzVExXa2lRUkM4VHd1QXM1K1NJYXNMd2hVdVdzcGxENnNQdmVoSFcx?=
- =?utf-8?B?UFNhTStuU3hjRWJVR2ZST0M5TWYwNHArb0JJU2ErL0Z4aWFJcDFOMVdndVlh?=
- =?utf-8?B?aEZWb2lDTFVFSmdNNU9tL01ZS2RmaitIRm9NRDVQOWU2Y1dETmpsbkRHWWFh?=
- =?utf-8?B?NTY0SVpYcHhPYlM3VXQwK2tTUytkQTlRNGVTcmFHUTlRYlBnbFNXU3VaNkNL?=
- =?utf-8?B?RlBudWd2WVpjekI4WjgzMklpUXJ4NStaRm5IdVNZaDFidkQwdTQrTDBpREVz?=
- =?utf-8?B?TWE5UHF2YXlqOTJyRmo4dnh5VHZoUWNuZFRTSksySUd0clBnUTlxNFk1Nllr?=
- =?utf-8?B?YytDSEMxak82a1MvcXdsSHBvdFdjWmNsUEdZL0IxSkpVZGJLNVV4bFpBZ1My?=
- =?utf-8?B?eTV1M3RzdjRaWEl0cUhvSE1qamREcE9nYnoyY29rSXBTY0s1ZXlidTQwbFU5?=
- =?utf-8?Q?m0DTleaFWESrAqyV8XE8LPfrp?=
+	=?utf-8?B?S1BlTlg3R1c0a2VlSFpmQmRkWnJiT1U1ejhtTWJ1dlVjRlIrVlJBaGY0TTFH?=
+ =?utf-8?B?UXBXZnFCdlpmeElCK0VvVmFLQ2dZSThaKzBxdnR2cnRFVUgwVHFOR1ljbHgz?=
+ =?utf-8?B?bm1PMkJDSXVTbThoaXlPUXYvUVJKME42VmZLd21McUQ4VVFzK0l0QUlod1Uz?=
+ =?utf-8?B?NGVUT2dkQ3FZbG1KbzVFQzZDWGxCbGZCVzRWRjJrRkN4RWRMZTMxVmhLSmFz?=
+ =?utf-8?B?alpOTzJwZmRBWmo5bExFTys3VFI4cHhwenZuaFh6MktGVjZvSkhGRlVWc3RX?=
+ =?utf-8?B?OVZ4UjJOTVJjQ25LNUFvYzZoRnlVM0dKallVMFJxVjdsRjRyUHNESnA2a1Yr?=
+ =?utf-8?B?SW1IcExxZFoyVUs2QmVlVWJFQTZQUHV2ODdVQzM3N1BLYk9vUnFyNG1sQTF4?=
+ =?utf-8?B?TmxTV0RMMzlheklwNVlmRUJjOWdDV0t3VjgzVHVUQ0hqUHgwUjZrMUM2OGhM?=
+ =?utf-8?B?aFAzNXJnZ2NlU3JTRFA0MGlDWlJlRWJ2cURneGNncE9LUHdwOFRuR1JLaEda?=
+ =?utf-8?B?aGNIUytTUHBvS2ZnaHFJSnlPdUxIbnRxNGdBYnl2aDZsb3h0Vnp3M1BUMUJi?=
+ =?utf-8?B?SENwczl2V1l2R0VtZzVLQW0wS1lJeVJDbHdHTGZQMlV1N01FZ3JCdElWaGJi?=
+ =?utf-8?B?V2ZqYXFvUXNSK2IvUlNFMWppY2o2WW1xQ0cwSk5rdFJIY09rOFl0TDgzdFZ0?=
+ =?utf-8?B?NGEwZWJHY1ZVYUgxS3ptb21iSUF3R3lHU2dJMkhPMWtRZWVCNEtQWmtzeXdn?=
+ =?utf-8?B?VklPL1RNbGI2clpEdXJsT3Q1ZGJncEVHZE45a0FNR1lFa2RJaU9VbnZVYk9i?=
+ =?utf-8?B?TnpNQWNZVGhiSDVqbVlLcFM4b0V0Q0lOc3h2dWh0RU5BK2JuQUc2a3ZpT0VZ?=
+ =?utf-8?B?Ynp5N0ZKUGQzbWVvUHh5eDJSZUpIVzNpUWF1MXVEdURBWTFoazFvTXR5cjVV?=
+ =?utf-8?B?bjYrbUJ0QjZNb3l0RlNUSGFHZlN0OTdIdnNPYUdFTFY1NWQzM0JUK1JDUmdS?=
+ =?utf-8?B?QU9NalptS1FzRTNHcWNxbnVkQmlYTWJ6amlvVmhyMUVPYnQ2SFNDZ1JKRW5T?=
+ =?utf-8?B?WFl4WnNQV2ZtVW5NRjhCRVJ2ZVh0cmFBYk1GWVVOSTlQOWJDVzdLbU5KSW44?=
+ =?utf-8?B?Nm5HWWlIbFEva2NmU292ZmJaQjJNRmV1dTczdTlpdkgzTFZrblNCVWtlVUF6?=
+ =?utf-8?B?Z3FtN1Z2M2ZCaExHY1g1SFR0T05hbjhIWlN4dFBUR29Qa1FNNU1ZK1NIMkJC?=
+ =?utf-8?B?ajl4MVJ2MllmOGlCaENPNXRWYVVTUTJjY1dXTEFxSUd2ZENCWE4rbHlxVERK?=
+ =?utf-8?B?c01uRDBjbHByYzlad2FEWGJiQ3d4RXltSE52MUNoN0NjeHlqcjFGblBCTXZx?=
+ =?utf-8?B?cFV3SE1NT01sanRTbGc4QW1sVDl1dTQ3QnFydFN1M3Nubi8vbHcyNDBKNThW?=
+ =?utf-8?B?c2JWNzhYTk5iekx2a3JaUjJrWUtPcjFReTNYMDg4K2pmT2ZFc0pzWlFabGcz?=
+ =?utf-8?B?YWRxR0J4YTdFV0d6Ujk0Z0FqUHB3bDVTT1poYkYvQnp2dVJFTlhZMWJyUlNn?=
+ =?utf-8?B?MGFRUFg2b1ZlK09jS0tZS2ZWRGVHV1J3L1NCT1FZb1pSUnRncWNMUzFrVjVi?=
+ =?utf-8?B?Y3RjaDRNcHkyQy9oaTFKc0tkdU0vYU5sdTBRSm9zbDAxdDR5ZUxDNDRMUUVq?=
+ =?utf-8?B?RFRkMjNXc2E2b1VsSnpxV1ZoSVNnUkRHb2poRS83RFgwUkQrZ3dzb1RiLy9F?=
+ =?utf-8?B?RlYyc2dmNloxQ2hQcitNeVo4T3hYTXp1RjJrbW8zTjN4MUVYdU9WNnFuL3N2?=
+ =?utf-8?B?ZzQ5Sm92NGw4VG1IVlJoc2kwbk5zZU9WWlBuWlA1OWxUVWRSWHV3ZkF0RzFL?=
+ =?utf-8?B?UG1NODdJaWhNRTFjLzVWQmJSb0hDRm55V3FWNXpwSUlPSHJkNm02SCtCOWpa?=
+ =?utf-8?B?Z29kM2EvVjBLM0w2M09VMUdsckF0QVBiQkNFcnZxV1YySEl0NXR0bDFRSVBx?=
+ =?utf-8?B?czcyd1NxZzBtc3JtNVZzb1RQeUxLbXNsc3h1UFJXUmxiNzlSK1praC9JeDNR?=
+ =?utf-8?B?ZDZESUJGTlhVTUdrbTJOT3IvUU51RnMrL2hIRjVqUEhFS0l0MzNRQVBFRkF4?=
+ =?utf-8?Q?1PKlZBnu8zZPUkhtHmAdQTHbe?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3404ee18-c9e2-41bc-039f-08de3ed85329
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1582c347-2bac-431a-7c39-08de3eda14ed
 X-MS-Exchange-CrossTenant-AuthSource: DS4PR12MB9660.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2025 08:26:36.3906
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2025 08:39:11.0062
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cKI1nP5RVfPF5vodIL0YvU+8anWx4H34ZRCsx7OJG+PQkOZeHmVv9K2ppnoCmsTT1vruhEuCX9lQzbehxX+ZyQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8749
+X-MS-Exchange-CrossTenant-UserPrincipalName: JC7Yae1T10mi4CeeuO5UAO6ZiXVlAC69O07r3nFQg09G/dGU2Fd9L2DgYdXdRemj2k8//5wNufngmeLzya0bIw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6219
 
 
 
-On 12/9/25 03:47, Sudeep Holla wrote:
-> On Mon, Dec 08, 2025 at 10:13:14PM +0000, Vedashree Vidwans wrote:
->> - Update driver to be in-built kernel module. This will ensure driver is
->> installed in kernel and would not require any user intervention.
->> - Register the LFA driver as a platform driver corresponding to
->> 'armhf000' device. The driver will be invoked when the device is
->> detected on a platform.
->> - Add functionality to register LFA interrupt in the driver probe().
->> This LFA IRQ number will be retrived from the LFA device node.
->> - On IRQ, driver will query FW component details and trigger activation
->> of capable and pending FW component. The driver will loop to update FW
->> component details after every successful FW component activation.
->> - Mutex synchronization is implemented to avoid concurrent LFA updates
->> through interrupt and sysfs interfaces.
+On 12/9/25 03:39, Sudeep Holla wrote:
+> On Mon, Dec 08, 2025 at 10:13:10PM +0000, Vedashree Vidwans wrote:
+>> Hello,
 >>
->> Device node snippet from LFA spec[1]:
->> fwu0 {
->>      compatible = "arm,armhf000";
->>      memory-region = <&fwu_payload>;
->>      interrupt-parent = <&ic>;
->>      interrupts = <0 100 1>; // SPI, Interrupt #100, Edge Rising
->> };
+>> The patches update the proposed Arm Live Firmware Activation (LFA)
+>> kernel driver [1] to incorporate review feedback [2] and refine the
+>> activation flow while remaining aligned with the LFA specification
+>> DEN0147 [3] and the SMCCC 1.2 calling convention. The series keeps
+>> the existing functionality but restructures and extends it to improve
+>> robustness, reviewability, and future extensibility.​
 >>
-> 
-> This will be gone in the latest beta of LFA, so please discuss and get
-> an agreement for the LFA device tree bindings.
-> 
-> We don't just use ACPI HID as devicetree compatibles. There are more
-> aligned with ACPI CID IIUC but I don't expect you to use ACPI CID just to
-> match DT compatible as ACPI HID will be defined for LFA.
-> 
-Thank you for your comment.
-Sorry I haven't completely understood the concern here. I am using the 
-ACPI HID and device node compatible string provided by the LFA spec.
-Please find below ACPI and device tree node from the spec for reference.
-In case the LFA spec is updated, I will revise the driver implementation.
-
-LFA spec: https://developer.arm.com/documentation/den0147/latest/
-
-ACPI node:
-DefinitionBlock ("", "SSDT", 2, "XXXXXX", "XXXXXXXX", 1) {
-     Scope (\_SB)
-     {
-         Device (FWU0) {
-             Name (_HID, "ARMHF000") // Arm HAFW DSDT table identifier.
-             Name (_CRS, ResourceTemplate () {
-
-                 // Payload buffer description.
-                 QWordMemory (,
-                     ,
-                     MinFixed,
-                     MaxFixed,
-                     NonCacheable,
-                     ReadWrite,
-                     0x0,
-                     0x2000, // base PA of payload buffer
-                     0x2FFF, // top PA of payload buffer
-                     0,
-                     0x1000, // payload buffer length
-                     ,
-                     ,
-                 )
-
-                 // Interrupt signaling the updated Live Activation Store.
-                 Interrupt(,
-                     Edge, // Interrupt type (or interrupt mode)
-                     ActiveHigh, // Interrupt level
-                     ,
-                     ,
-                     ,
-                 ) {100} // Note that this is an example interrupt.
-                     // The interrupt ID is defined per-platform.
-             })
-
-             // _DSD -- Holds map between field names and objects within 
-the _CRS
-             Name (_DSD, Package () {
-                 ToUUID ("daffd814-6eba-4d8c-8a91-bc9bbf4aa30") ,
-                 Package() {
-                     // Contains a set of packages of 2 entries each,
-                     // the second entry is an index into the _CRS.
-                     Package (2) {"payload-buffer", 1},
-                     Package (2) {"fw-store-updated-interrupt", 2},
-                 },
-             })
-         }
-     }
-}
-
-Device Tree node:
-/dts-v1/;
-/ {
-     #address-cells = <2>;
-     #size-cells = <2>;
-     ic: interrupt-controller@2f000000 {
-         compatible = "arm,gic-v3";
-         #interrupt-cells = <3>;
-         #address-cells = <2>;
-         #size-cells = <2>;
-         interrupt-controller;
-         reg = <0x0 0x2f000000 0x0 0x10000>,
-               <0x0 0x2f100000 0x0 0x200000>;
-     };
-
-     reserved-memory {
-         #address-cells = <2>;
-         #size-cells = <2>;
-         ranges;
-         fwu_payload: fwu_payload@2000 {
-             reg = <0x0 0x2000 0x0 0x1000>;
-             no-map;
-         };
-     };
-
-     soc {
-         #address-cells = <2>;
-         #size-cells = <2>;
-         ranges;
-         fwu0 {
-             compatible = "arm,armhf000";
-             memory-region = <&fwu_payload>;
-             interrupt-parent = <&ic>;
-             interrupts = <0 100 1>; // SPI, Interrupt #100, Edge Rising
-         };
-     };
-};
-
->> [1] https://developer.arm.com/documentation/den0147/latest/
+>> The SMCCC usage in the driver is updated to consistently use the
+>> SMCCC 1.2 register-based calling convention, consolidating arguments
+>> and results into a single struct to reduce stack usage and simplify
+>> the SMC interface. The patches also split the original changes into
+>> focused pieces and document the device node bindings in the commit
+>> messages, making it easier to follow and validate the implementation
+>> against the specification.​
 >>
->> Signed-off-by: Vedashree Vidwans <vvidwans@nvidia.com>
->> ---
+>> The kernel driver is registered as a platform driver in accordence to
+>> the LFA device defined by the specification [3]. The driver now extends
+>> interface for interrupt-based enablement of LFA. During LFA, the
+>> interrupt
+>> thread refreshes firmware component details after each activation step
+>> and iterates over all activable components until no further activation
+>> is pending, matching the spec’s allowance for component detail changes
+>> after activation. This ensures that sysfs exposure of LFA components
+>> remains consistent with the authoritative information provided by the
+>> secure firmware.​
+>>
+>> The handling of CPU rendezvous is adjusted so that the kernel now
+>> honors the rendezvous policy chosen by the firmware, instead of
+>> unconditionally forcing a rendezvous. This reflects experience with
+>> existing firmware deployments where mandatory rendezvous is not
+>> required, while still allowing the firmware to request it when
+>> needed.​
+>>
+>> Thank you,
+>> Veda
+>>
+>> [1] https://lore.kernel.org/lkml/20250926123145.268728-1-salman.nabi@arm.com/
+>> [2] https://lkml.org/lkml/2025/10/8/980
+>> [3] https://developer.arm.com/documentation/den0147/latest/
+>>
+>> Vedashree Vidwans (5):
+>>    firmware: smccc: LFA: use smcc 1.2
+>>    firmware: smccc: LFA: refactor
+>>    firmware: smccc: add timeout, touch wdt
+>>    firmware: smccc: register as platform driver
+>>    firmware: smccc: lfa: refresh fw details
+>>
 >>   drivers/firmware/smccc/Kconfig  |   3 +-
->>   drivers/firmware/smccc/lfa_fw.c | 124 +++++++++++++++++++++++++++++++-
->>   2 files changed, 125 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/firmware/smccc/Kconfig b/drivers/firmware/smccc/Kconfig
->> index 48b98c14f770..c21be43fbfed 100644
->> --- a/drivers/firmware/smccc/Kconfig
->> +++ b/drivers/firmware/smccc/Kconfig
->> @@ -25,8 +25,9 @@ config ARM_SMCCC_SOC_ID
->>   	  platforms providing some sysfs information about the SoC variant.
->>   
->>   config ARM_LFA
->> -	tristate "Arm Live Firmware activation support"
->> +	bool "Arm Live Firmware activation support"
->>   	depends on HAVE_ARM_SMCCC_DISCOVERY
->> +	default y
->>   	help
->>   	  Include support for triggering Live Firmware Activation, which
->>   	  allows to upgrade certain firmware components without a reboot.
->> diff --git a/drivers/firmware/smccc/lfa_fw.c b/drivers/firmware/smccc/lfa_fw.c
->> index 0e420cefa260..24916fc53420 100644
->> --- a/drivers/firmware/smccc/lfa_fw.c
->> +++ b/drivers/firmware/smccc/lfa_fw.c
->> @@ -19,7 +19,12 @@
->>   #include <linux/nmi.h>
->>   #include <linux/ktime.h>
->>   #include <linux/delay.h>
->> +#include <linux/platform_device.h>
->> +#include <linux/acpi.h>
->> +#include <linux/interrupt.h>
->> +#include <linux/mutex.h>
->>   
->> +#define DRIVER_NAME	"ARM_LFA"
->>   #define LFA_ERROR_STRING(name) \
->>   	[name] = #name
->>   #undef pr_fmt
->> @@ -129,6 +134,7 @@ static const struct fw_image_uuid {
->>   };
->>   
->>   static struct kobject *lfa_dir;
->> +static DEFINE_MUTEX(lfa_lock);
->>   
->>   static int get_nr_lfa_components(void)
->>   {
->> @@ -374,17 +380,23 @@ static ssize_t activate_store(struct kobject *kobj, struct kobj_attribute *attr,
->>   					 image_attrs[LFA_ATTR_ACTIVATE]);
->>   	int ret;
->>   
->> +	if (!mutex_trylock(&lfa_lock)) {
->> +		pr_err("Mutex locked, try again");
->> +		return -EAGAIN;
->> +	}
->> +
->>   	ret = activate_fw_image(attrs);
->>   	if (ret) {
->>   		pr_err("Firmware activation failed: %s\n",
->>   			lfa_error_strings[-ret]);
->> -
->> +		mutex_unlock(&lfa_lock);
->>   		return -ECANCELED;
->>   	}
->>   
->>   	pr_info("Firmware activation succeeded\n");
->>   
->>   	/* TODO: refresh image flags here*/
->> +	mutex_unlock(&lfa_lock);
->>   	return count;
->>   }
->>   
->> @@ -510,6 +522,106 @@ static int create_fw_images_tree(void)
->>   	return 0;
->>   }
->>   
->> +static irqreturn_t lfa_irq_thread(int irq, void *data)
->> +{
->> +	struct image_props *attrs = NULL;
->> +	int ret;
->> +	int num_of_components, curr_component;
->> +
->> +	mutex_lock(&lfa_lock);
->> +
->> +	/*
->> +	 * As per LFA spec, after activation of a component, the caller
->> +	 * is expected to re-enumerate the component states (using
->> +	 * LFA_GET_INFO then LFA_GET_INVENTORY).
->> +	 * Hence we need an unconditional loop.
->> +	 */
->> +
->> +	do {
->> +		/* TODO: refresh image flags here */
->> +		/* If refresh fails goto exit_unlock */
->> +
->> +		/* Initialize counters to track list traversal  */
->> +		num_of_components = get_nr_lfa_components();
->> +		curr_component = 0;
->> +
->> +		/* Execute PRIME and ACTIVATE for activable FW component */
->> +		list_for_each_entry(attrs, &lfa_fw_images, image_node) {
->> +			curr_component++;
->> +			if ((!attrs->activation_capable) || (!attrs->activation_pending)) {
->> +				/* LFA not applicable for this FW component */
->> +				continue;
->> +			}
->> +
->> +			ret = activate_fw_image(attrs);
->> +			if (ret) {
->> +				pr_err("Firmware %s activation failed: %s\n",
->> +					attrs->image_name, lfa_error_strings[-ret]);
->> +				goto exit_unlock;
->> +			}
->> +
->> +			pr_info("Firmware %s activation succeeded", attrs->image_name);
->> +			/* Refresh FW component details */
->> +			break;
->> +		}
->> +	} while (curr_component < num_of_components);
->> +
->> +	/* TODO: refresh image flags here */
->> +	/* If refresh fails goto exit_unlock */
->> +
->> +exit_unlock:
->> +	mutex_unlock(&lfa_lock);
->> +	return IRQ_HANDLED;
->> +}
->> +
->> +static int __init lfa_probe(struct platform_device *pdev)
->> +{
->> +	int err;
->> +	unsigned int irq;
->> +
->> +	err = platform_get_irq_byname_optional(pdev, "fw-store-updated-interrupt");
+>>   drivers/firmware/smccc/lfa_fw.c | 478 +++++++++++++++++++++++++-------
 > 
-> Nice, "fw-store-updated-interrupt" is not even mentioned in the example DT
-> node above, let alone proper DT bindings.
+> Same comment as before[1], looks like the feedback got ignored or missed.
 > 
-Thank you for pointing this out. The DT binding would have to be updated 
-to below or the driver will fall back to platform_get_irq().
+> -- 
+> Regards,
+> Sudeep
+> 
+> [1]https://lore.kernel.org/all/20251009-calculating-glorious-oriole- 
+> ceccf6@sudeepholla
 
-fwu0 {
-     compatible = "arm,armhf000";
-     memory-region = <&fwu_payload>;
-     interrupt-parent = <&ic>;
-     interrupts = <0 100 1>; // SPI, Interrupt #100, Edge Rising
-     interrupt-names = "fw-store-updated-interrupt";
-};
+Thank you for your comment.
+I did include DT binding in commit message of the patch. Please let me 
+know if there's anything else I can elaborate.
 
 Regards,
 Veda
