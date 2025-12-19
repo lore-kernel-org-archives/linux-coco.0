@@ -1,30 +1,30 @@
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE2C2FF161
-	for <linux-coco@lists.linux.dev>; Fri, 19 Dec 2025 11:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266012FF161
+	for <linux-coco@lists.linux.dev>; Fri, 19 Dec 2025 11:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766143188; cv=none; b=LuDS2BMaZ5lVw+aApG9YRkmm+475DcUi6KdW+0wLS6ReOTsARUNuQbA8npszaUmR5J5NCkFbcR4pn4eBc3jBdGQHzohPoF+FqN0383JQzGFaV3tITmPdC8dbIPdooRuli5Ecci4PRXPn8bPAnRKDvVxRYkrZTq/IudoZBD/D/Fk=
+	t=1766143345; cv=none; b=Ub5+vb5tuXBy1n4SJtKaF0UZgZPERsDeV4h+rq6EQYwG1giKYGNiLtqG5yJIqZbvR8jwj3/SZMsVEoZqSetlG/9npRlfgqSnIV6/nxnY91eY+mWyEngJAqsY6C2fJW+yhBIMIfbepjU+o9ZJeTJFr8mlKYTyl5QE+l1/qtiTXL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766143188; c=relaxed/simple;
-	bh=ruHRsdlqnlZ041j7NKcKTYoo1k6EESLmoqH/3W6LTbI=;
+	s=arc-20240116; t=1766143345; c=relaxed/simple;
+	bh=AJDW0TM3eQopIRfI635fLbpCORiDOUKeKS8FF9a7gDw=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NBfv0PDxrLishpSVZ8TNG/onQzhYvWA0Ox6N4dqLkGNHXBhtSROOPntf25J4B0d1AFIVSb1Nm4VxMos0sGOIBvgJwqadXgWhIzUUrr1FeNEY66bq5AoWbHKbujV+yBWI3zjy7d4zL7/MFc8Ls8J1EdeXlzINi3Re3KkAdYKsZJc=
+	 MIME-Version:Content-Type; b=BZUjdfsiL9MCNXDNTAFZudA4haEcvHtTigTPUV1+dYFjqd9Msh9QZWFvm6khkIud4cYGr49AebJr/8m4boSYOqJ5WdD9vXMxdgqP62kXN5ODeZhf9CM/MrxZTdsmyaN4r0uC3+om7y+CsSSofqyrFEJFWov8ZYD6Z8lRM/1cSCk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dXlRR02wczHnGgv;
-	Fri, 19 Dec 2025 19:19:15 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dXlVT0CTbzHnGgl;
+	Fri, 19 Dec 2025 19:21:53 +0800 (CST)
 Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 06C2A40570;
-	Fri, 19 Dec 2025 19:19:44 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 0E94B40086;
+	Fri, 19 Dec 2025 19:22:22 +0800 (CST)
 Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
  (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Fri, 19 Dec
- 2025 11:19:43 +0000
-Date: Fri, 19 Dec 2025 11:19:41 +0000
+ 2025 11:22:21 +0000
+Date: Fri, 19 Dec 2025 11:22:20 +0000
 From: Jonathan Cameron <jonathan.cameron@huawei.com>
 To: Xu Yilun <yilun.xu@linux.intel.com>
 CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>,
@@ -32,11 +32,11 @@ CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>,
 	<yilun.xu@intel.com>, <zhenzhong.duan@intel.com>, <kvm@vger.kernel.org>,
 	<rick.p.edgecombe@intel.com>, <dave.hansen@linux.intel.com>,
 	<dan.j.williams@intel.com>, <kas@kernel.org>, <x86@kernel.org>
-Subject: Re: [PATCH v1 01/26] coco/tdx-host: Introduce a "tdx_host" device
-Message-ID: <20251219111941.00005bd7@huawei.com>
-In-Reply-To: <20251117022311.2443900-2-yilun.xu@linux.intel.com>
+Subject: Re: [PATCH v1 05/26] mm: Add __free() support for __free_page()
+Message-ID: <20251219112220.00003adc@huawei.com>
+In-Reply-To: <20251117022311.2443900-6-yilun.xu@linux.intel.com>
 References: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
-	<20251117022311.2443900-2-yilun.xu@linux.intel.com>
+	<20251117022311.2443900-6-yilun.xu@linux.intel.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -49,48 +49,30 @@ Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
  dubpeml100005.china.huawei.com (7.214.146.113)
 
-On Mon, 17 Nov 2025 10:22:45 +0800
+On Mon, 17 Nov 2025 10:22:49 +0800
 Xu Yilun <yilun.xu@linux.intel.com> wrote:
 
-> From: Chao Gao <chao.gao@intel.com>
+> Allow for the declaration of struct page * variables that trigger
+> __free_page() when they go out of scope.
 > 
-> TDX depends on a platform firmware module that is invoked via instructions
-> similar to vmenter (i.e. enter into a new privileged "root-mode" context to
-> manage private memory and private device mechanisms). It is a software
-> construct that depends on the CPU vmxon state to enable invocation of
-> TDX-module ABIs. Unlike other Trusted Execution Environment (TEE) platform
-> implementations that employ a firmware module running on a PCI device with
-> an MMIO mailbox for communication, TDX has no hardware device to point to
-> as the TEE Secure Manager (TSM).
-> 
-> Create a virtual device not only to align with other implementations but
-> also to make it easier to
-> 
->  - expose metadata (e.g., TDX module version, seamldr version etc) to
->    the userspace as device attributes
-> 
->  - implement firmware uploader APIs which are tied to a device. This is
->    needed to support TDX module runtime updates
-> 
->  - enable TDX Connect which will share a common infrastructure with other
->    platform implementations. In the TDX Connect context, every
->    architecture has a TSM, represented by a PCIe or virtual device. The
->    new "tdx_host" device will serve the TSM role.
-> 
-> A faux device is used as for TDX because the TDX module is singular within
-> the system and lacks associated platform resources. Using a faux device
-> eliminates the need to create a stub bus.
-> 
-> The call to tdx_enable() makes the new module independent of kvm_intel.ko.
-> For example, TDX Connect may be used to established to PCIe link encryption
-> even if a TVM is never launched.  For now, just create the common loading
-> infrastructure.
-> 
-> [ Yilun: Remove unnecessary head files ]
-> Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
 > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-LGTM
+
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+
+> ---
+>  include/linux/gfp.h | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+> index 0ceb4e09306c..dc61fa63a3b9 100644
+> --- a/include/linux/gfp.h
+> +++ b/include/linux/gfp.h
+> @@ -383,6 +383,7 @@ extern void free_pages_nolock(struct page *page, unsigned int order);
+>  extern void free_pages(unsigned long addr, unsigned int order);
+>  
+>  #define __free_page(page) __free_pages((page), 0)
+> +DEFINE_FREE(__free_page, struct page *, if (_T) __free_page(_T))
+>  #define free_page(addr) free_pages((addr), 0)
+>  
+>  void page_alloc_init_cpuhp(void);
 
