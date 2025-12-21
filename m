@@ -1,99 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2727429D280;
-	Sun, 21 Dec 2025 16:10:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5938309EFA;
+	Sun, 21 Dec 2025 20:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766333418; cv=none; b=E/SqJ9IcXa5srpevKQP/67W4iinL765PO1RlnpfpMKqK5cpwesWiQsXhrVAPJgsOibDgAvUo1jkO1KX6VYLdJheM9/2RuR8mdPSO/1CT1ZFeBCxYM3NBtnqx32wvBaq7o4JNvnVqMZJ/SEbcT1BKeF/gD8fxf4hWXJSCz8MuYJc=
+	t=1766347866; cv=none; b=UHnpn5cABU6xFiHGG1O6XNf1vBtVaIE5YCazKpX+iDoSQeVCm24lusI3FVlNjh/8WEJ8i6kg8ofcojEiyjDI18VyWNHLzcpdomqATrVCGOjDld3l83l1Hi4FxkYWvBZ/rMY4GjXajmKrd/8g8DG5vr3GuDjtX1MAs/AbuZ2qpVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766333418; c=relaxed/simple;
-	bh=CB4aj8Ej1l+k6PqCI3aIeCMU554y9nDxVDxaN9tCZlM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qfW8F+TuoVOkUBBtb3hwfK/BElmWwl4OCxj/dv1mOlw144rrLRC9xC7tTAEV1f04moo/matkaEAQIpIJ4UW48sXJD95k/SyzMO7oQhDJg2bEjw+nbxJ1ID0Vv6UwiZhYrZw8yerbH8QV8Kr/2iEV1ii8cMehKXIh8SSf6JoJoe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l9GKC6cW; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9GKC6cW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2C3C4CEFB;
-	Sun, 21 Dec 2025 16:10:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766333418;
-	bh=CB4aj8Ej1l+k6PqCI3aIeCMU554y9nDxVDxaN9tCZlM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l9GKC6cWdBAuxYv0jS9qtJS5s4rmZOmXrDRVe/IC1DcCAtW4Laffq5NDs8qTFghRX
-	 nlO51AWU0C38a1U1DwI37OCes1SMMOkxdSFWro8jOQEahbesFZVaa+DP5uZXhgSbnV
-	 LJD332tIGD516kfT+ZpjgFASIQW3fDirjFC/uEc051IXfXqS8pso08vzzWjuFLXxry
-	 ar3wa8Ej9Tfxddewtbcw1UqVe+Y1YC8W4P1aztH0ZcCP0U/V7pyKUQu+DKylNM6QVs
-	 MaXkIsnZtJ2LlcojBN1wmUfxRXku+1r7aACL/r7+Euo3FOroI2g8t7Wg8q4lF1pjS8
-	 iBGbow9QixRMQ==
-From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev,
-	linux-coco@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	will@kernel.org,
-	maz@kernel.org,
-	tglx@linutronix.de,
-	robin.murphy@arm.com,
-	suzuki.poulose@arm.com,
-	akpm@linux-foundation.org,
-	jgg@ziepe.ca,
-	steven.price@arm.com,
-	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Subject: [PATCH v2 4/4] dma: direct: set decrypted flag for remapped dma allocations
-Date: Sun, 21 Dec 2025 21:39:20 +0530
-Message-ID: <20251221160920.297689-5-aneesh.kumar@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251221160920.297689-1-aneesh.kumar@kernel.org>
-References: <20251221160920.297689-1-aneesh.kumar@kernel.org>
+	s=arc-20240116; t=1766347866; c=relaxed/simple;
+	bh=fvEv76oGt8V3B+GeREgbFg1YQOpI+FtLtZj6QQ7/ZLk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DTW/39tq1lCdT1mP28xnS9lj6P4MdiSkDSUJ+Q1uvD+00Nm7uZgF6qSM8J1vAFr8am1LXbcrIwzGqfD4ntW+pXQk/womyH4o6znxadsr44wN0rg4HCccIDwDBeWuIw4E02OQrWyiwNElY2pHiQD6xXAVPdFQDBhPGVlHyV9RNlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E2F39FEC;
+	Sun, 21 Dec 2025 12:10:48 -0800 (PST)
+Received: from [10.57.79.145] (unknown [10.57.79.145])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CA7273F778;
+	Sun, 21 Dec 2025 12:10:53 -0800 (PST)
+Message-ID: <c40414b5-ade9-4d2f-bd73-2167e923b3d6@arm.com>
+Date: Sun, 21 Dec 2025 20:10:51 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/4] coco: host: arm64: Handle hostconf RHI calls in
+ kernel
+Content-Language: en-GB
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
+ linux-coco@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, will@kernel.org,
+ maz@kernel.org, tglx@linutronix.de, robin.murphy@arm.com,
+ akpm@linux-foundation.org, jgg@ziepe.ca, steven.price@arm.com
+References: <20251221160920.297689-1-aneesh.kumar@kernel.org>
+ <20251221160920.297689-4-aneesh.kumar@kernel.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20251221160920.297689-4-aneesh.kumar@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Devices that are DMA non-coherent and need a remap were skipping
-dma_set_decrypted(), leaving buffers encrypted even when the device
-requires unencrypted access. Move the call after the remap
-branch so both paths mark the allocation decrypted (or fail cleanly)
-before use.
+On 21/12/2025 16:09, Aneesh Kumar K.V (Arm) wrote:
+>   - Mark hostconf RHI SMC IDs as handled in the SMCCC filter.
+>   - Return version/features plus PAGE_SIZE alignment for guest queries.
+>   - Drop the 4K page-size guard in RMI init now that realm can query IPA
+>     change alignment size via the hostconf RHI
+> 
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> ---
+>   arch/arm64/kvm/hypercalls.c | 23 ++++++++++++++++++++++-
+>   arch/arm64/kvm/rmi.c        |  4 ----
+>   2 files changed, 22 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/hypercalls.c b/arch/arm64/kvm/hypercalls.c
+> index 70ac7971416c..2861ca9063dd 100644
+> --- a/arch/arm64/kvm/hypercalls.c
+> +++ b/arch/arm64/kvm/hypercalls.c
+> @@ -8,6 +8,7 @@
+>   
+>   #include <kvm/arm_hypercalls.h>
+>   #include <kvm/arm_psci.h>
+> +#include <asm/rhi.h>
+>   
+>   #define KVM_ARM_SMCCC_STD_FEATURES				\
+>   	GENMASK(KVM_REG_ARM_STD_BMAP_BIT_COUNT - 1, 0)
+> @@ -77,6 +78,9 @@ static bool kvm_smccc_default_allowed(u32 func_id)
+>   	 */
+>   	case ARM_SMCCC_VERSION_FUNC_ID:
+>   	case ARM_SMCCC_ARCH_FEATURES_FUNC_ID:
+> +	case RHI_HOSTCONF_VERSION:
+> +	case RHI_HOSTCONF_FEATURES:
+> +	case RHI_HOSTCONF_GET_IPA_CHANGE_ALIGNMENT:
+>   		return true;
+>   	default:
+>   		/* PSCI 0.2 and up is in the 0:0x1f range */
+> @@ -157,7 +161,15 @@ static int kvm_smccc_filter_insert_reserved(struct kvm *kvm)
+>   			       GFP_KERNEL_ACCOUNT);
+>   	if (r)
+>   		goto out_destroy;
+> -
+> +	/*
+> +	 * Don't forward RHI_HOST_CONF related RHI calls
+> +	 */
+> +	r = mtree_insert_range(&kvm->arch.smccc_filter,
+> +			       RHI_HOSTCONF_VERSION, RHI_HOSTCONF_GET_IPA_CHANGE_ALIGNMENT,
+> +			       xa_mk_value(KVM_SMCCC_FILTER_HANDLE),
+> +			       GFP_KERNEL_ACCOUNT);
 
-Fixes: f3c962226dbe ("dma-direct: clean up the remapping checks in dma_direct_alloc")
-Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
----
- kernel/dma/direct.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+minor nit: this is needed only for the Realms ?
 
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index 3448d877c7c6..a62dc25524cc 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -271,9 +271,6 @@ void *dma_direct_alloc(struct device *dev, size_t size,
- 	if (remap) {
- 		pgprot_t prot = dma_pgprot(dev, PAGE_KERNEL, attrs);
- 
--		if (force_dma_unencrypted(dev))
--			prot = pgprot_decrypted(prot);
--
- 		/* remove any dirty cache lines on the kernel alias */
- 		arch_dma_prep_coherent(page, size);
- 
-@@ -284,10 +281,11 @@ void *dma_direct_alloc(struct device *dev, size_t size,
- 			goto out_free_pages;
- 	} else {
- 		ret = page_address(page);
--		if (dma_set_decrypted(dev, ret, size))
--			goto out_leak_pages;
- 	}
- 
-+	if (dma_set_decrypted(dev, ret, size))
-+		goto out_leak_pages;
-+
- 	memset(ret, 0, size);
- 
- 	if (set_uncached) {
--- 
-2.43.0
+> +	if (r)
+> +		goto out_destroy;
+>   	return 0;
+>   out_destroy:
+>   	mtree_destroy(&kvm->arch.smccc_filter);
+> @@ -376,6 +388,15 @@ int kvm_smccc_call_handler(struct kvm_vcpu *vcpu)
+>   	case ARM_SMCCC_TRNG_RND32:
+>   	case ARM_SMCCC_TRNG_RND64:
+>   		return kvm_trng_call(vcpu);
+> +	case RHI_HOSTCONF_VERSION:
+> +		val[0] = RHI_HOSTCONF_VER_1_0;
+> +		break;
+> +	case RHI_HOSTCONF_FEATURES:
+> +		val[0] = __RHI_HOSTCONF_GET_IPA_CHANGE_ALIGNMENT;
+> +		break;
+> +	case RHI_HOSTCONF_GET_IPA_CHANGE_ALIGNMENT:
+> +		val[0] = PAGE_SIZE;
+> +		break;
+>   	default:
+>   		return kvm_psci_call(vcpu);
+>   	}
+> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+> index 9957a71d21b1..bd345e051a24 100644
+> --- a/arch/arm64/kvm/rmi.c
+> +++ b/arch/arm64/kvm/rmi.c
+> @@ -1935,10 +1935,6 @@ EXPORT_SYMBOL_GPL(kvm_has_da_feature);
+>   
+>   void kvm_init_rmi(void)
+>   {
+> -	/* Only 4k page size on the host is supported */
+> -	if (PAGE_SIZE != SZ_4K)
+> -		return;
+
+For the record, these patches doesn't necessarily solve the Host support
+fully. The KVM still needs to support splitting pages for RMM's 4K.
+
+That said, this can be ignored as we rebase the KVM to only support
+RMM v2.0, where the Host can set the RMM's Stage2 page size.
+
+Suzuki
+
+> -
+>   	/* Continue without realm support if we can't agree on a version */
+>   	if (rmi_check_version())
+>   		return;
 
