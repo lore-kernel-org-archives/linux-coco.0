@@ -1,47 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F632F5A23
-	for <linux-coco@lists.linux.dev>; Tue, 23 Dec 2025 09:57:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916B735FF7C
+	for <linux-coco@lists.linux.dev>; Tue, 23 Dec 2025 10:23:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766483879; cv=none; b=uAG2Ik4++qphY3LJSQ5Z7mkP2OQzDTv/vlxSBP4H1j8h6PD83KjPhrJ6ZANZVznLGyXypvATGDawi9KlqwyD59BowrdGJNjFnx1SN7EWGoIfZFA99GCKhr9p2EgY4zFmR+9lVdoF00mOPe9IfwKpAbkFfi+H8N6TLCBFEJ/s17w=
+	t=1766485432; cv=none; b=g/fVnlfoSKrYQDgs7Bu/caTdL/fjcMzwMe2eiLacy0PsBLm4BsAC9k4ITASOOZxt0RC4/k01bHZqhE1K+uHOCn9uxCo2KsnhPWHwOL06zy/ZxKe9xADr6kXceOO4w5i58j1hDpFy1vTr1Nd4b2A9qC9BzIIPlDsjfXpWp7wI2oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766483879; c=relaxed/simple;
-	bh=li38tDDKOJ3EltzV7moOMq1O3hO6ZqGEJWJpWr6SbvA=;
+	s=arc-20240116; t=1766485432; c=relaxed/simple;
+	bh=mL0nVJLKnBfsYHlK46W6g7hGNPIucD7MmzXoRL18dzk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f61JWWE99aRTkP0R+kZqvfqlAjjRbCWBpsAvcVZ+Ta1xj7qFfHR7eVi4T8/T4Q8Y9HO73BwmMEJWz1cvX0gXAkkm4p+ftwvWAzfsu09taIzUxJ3fZ3Ol4wrnQZlgN1usr7IfS+Fvgwy7OhglNIdF2HbYWX849YnlzOUvRnoGyNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LdRKGntj; arc=none smtp.client-ip=192.198.163.11
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ic0OcsrxhY+/5enFQOW9IhnWaBetzhBNGa6GgFKeS0KVIq1WE4XKbsFL+0RoXVVZKfMakd1zbw9ciGNu7QQIi4lm0Kgz0nacl92xMzBRUpWVKmhHdoN1k6rQs10XyQM/Db4VMZW+JUHQL3Xu3yH3dXMir5HrSdjk3TVe85q5Yu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L/99JRYW; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LdRKGntj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L/99JRYW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766483878; x=1798019878;
+  t=1766485429; x=1798021429;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=li38tDDKOJ3EltzV7moOMq1O3hO6ZqGEJWJpWr6SbvA=;
-  b=LdRKGntj12WI/8NuT5cFiXcne8V900KceQROLzMbnl7ohUqmU8xoh9h3
-   zvtXSbKG3mUo+iW/B/HfQFDqHthNWzNDvwWGlp6gWD0FM9/aYg/NDoDc6
-   HfaynOuOYRaTX+VAoJv4Ate914nFp5NeWsFbHaq4XFoYIHZx+0t0pJa9+
-   OzG4dhgtQjvnxOidnewA7U56WCY67XZ86vcR+RbpXwQ7eEEGS1d9M3ltL
-   PsF2ZqmIJ2LxAdAVZU8E6TjZn3gvflNhU9KB4pxDjqVowG8tm3YIUrpfI
-   a9bEgdzELtGKE6ifKPmztCaJN6sWMAvn94BFphN1DyAyI8CdhuVDvFGLV
-   A==;
-X-CSE-ConnectionGUID: Y23BmjVnTZaaPVpO17EziA==
-X-CSE-MsgGUID: Y0g/+LjTSUeRa4k/o37Etw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11650"; a="78965630"
+  bh=mL0nVJLKnBfsYHlK46W6g7hGNPIucD7MmzXoRL18dzk=;
+  b=L/99JRYWUFMACDJIvco0dQWpJOJYuXOgDRsufAsmebVnjD6OyL6X96oq
+   7FwxoaZw+K7D4QqnSzk+qmmGzixsZkh/IP0BpJG5y5EL6SBXc28R+qOTS
+   6uw/lalhXsGD4bFoAmC4NVfVyRoI/8paxp/IeJRGTZEw7c16mcadCnJuC
+   32X9QhIVk8voA9GNMzKg/Pet4asLdtwo4+n/qKwD0MBfhw/Jza2ryBP0a
+   vl4t2OFNkAf0b7GFIknqBA0Pm7zgPEfKqewUAa6JOfu+6accx+pauHCON
+   jJY4A+gh1kAAwx0+CU3KJrXpJg1Rry3AIXvSKIK4A0NXXqFW1sN44eZg6
+   w==;
+X-CSE-ConnectionGUID: ABpMjuy9Q6SSLODdqWvCnw==
+X-CSE-MsgGUID: s4Y32rBkQemKmudil6SxWA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11650"; a="79053834"
 X-IronPort-AV: E=Sophos;i="6.21,170,1763452800"; 
-   d="scan'208";a="78965630"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2025 01:57:57 -0800
-X-CSE-ConnectionGUID: v6HblnuRQ5ugKDdIOd1x2Q==
-X-CSE-MsgGUID: iiHTl//USQq0q/QbcQBwdg==
+   d="scan'208";a="79053834"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2025 02:23:48 -0800
+X-CSE-ConnectionGUID: eEs1RKnISjmBDiZGAIuFOA==
+X-CSE-MsgGUID: MH8z20DBQxuYEwa8lmz6hQ==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,170,1763452800"; 
+   d="scan'208";a="200053729"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa003.fm.intel.com with ESMTP; 23 Dec 2025 01:57:55 -0800
-Date: Tue, 23 Dec 2025 17:41:28 +0800
+  by fmviesa008.fm.intel.com with ESMTP; 23 Dec 2025 02:23:45 -0800
+Date: Tue, 23 Dec 2025 18:07:18 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: Jonathan Cameron <jonathan.cameron@huawei.com>
 Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
@@ -49,11 +51,12 @@ Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
 	yilun.xu@intel.com, zhenzhong.duan@intel.com, kvm@vger.kernel.org,
 	rick.p.edgecombe@intel.com, dave.hansen@linux.intel.com,
 	dan.j.williams@intel.com, kas@kernel.org, x86@kernel.org
-Subject: Re: [PATCH v1 05/26] mm: Add __free() support for __free_page()
-Message-ID: <aUpjyGA32vdWkWrh@yilunxu-OptiPlex-7050>
+Subject: Re: [PATCH v1 06/26] x86/virt/tdx: Add tdx_page_array helpers for
+ new TDX Module objects
+Message-ID: <aUpp1sQ0k24zfjcD@yilunxu-OptiPlex-7050>
 References: <20251117022311.2443900-1-yilun.xu@linux.intel.com>
- <20251117022311.2443900-6-yilun.xu@linux.intel.com>
- <20251219112220.00003adc@huawei.com>
+ <20251117022311.2443900-7-yilun.xu@linux.intel.com>
+ <20251219113249.000040b1@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -62,22 +65,78 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251219112220.00003adc@huawei.com>
+In-Reply-To: <20251219113249.000040b1@huawei.com>
 
-On Fri, Dec 19, 2025 at 11:22:20AM +0000, Jonathan Cameron wrote:
-> On Mon, 17 Nov 2025 10:22:49 +0800
-> Xu Yilun <yilun.xu@linux.intel.com> wrote:
+> > +static bool tdx_page_array_validate_release(struct tdx_page_array *array,
+> > +					    unsigned int offset,
+> > +					    unsigned int nr_released,
+> > +					    u64 released_hpa)
+> > +{
+> > +	unsigned int nents;
+> > +	u64 *entries;
+> > +	int i;
+> > +
+> > +	if (offset >= array->nr_pages)
+> > +		return false;
+> > +
+> > +	nents = umin(array->nr_pages - offset, TDX_PAGE_ARRAY_MAX_NENTS);
+> > +
+> > +	if (nents != nr_released) {
+> > +		pr_err("%s nr_released [%d] doesn't match page array nents [%d]\n",
+> > +		       __func__, nr_released, nents);
+> > +		return false;
+> > +	}
+> > +
+> > +	/*
+> > +	 * Unfortunately TDX has multiple page allocation protocols, check the
+> > +	 * "singleton" case required for HPA_ARRAY_T.
+> > +	 */
+> > +	if (page_to_phys(array->pages[0]) == released_hpa &&
+> > +	    array->nr_pages == 1)
+> > +		return true;
+> > +
+> > +	/* Then check the "non-singleton" case */
+> > +	if (page_to_phys(array->root) == released_hpa) {
+> > +		entries = (u64 *)page_address(array->root);
 > 
-> > Allow for the declaration of struct page * variables that trigger
-> > __free_page() when they go out of scope.
-> > 
-> > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> page_address() returns a void * so the cast here isn't needed and (to me
+> at least) doesn't add value from readability point of view.
+
+These casts disappear during the refactoring from alloc_page() to
+kzalloc(PAGE_SIZE, ...) for my v2.
+
 > 
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> I haven't checked later patches, but if this code doesn't change to use
+> entries outside this scope then,
+> 		u64 *entries = page_address(array->root);
+> would be nice to restrict the scope and make the type here immediately
+> visible.
 
-Sorry I will drop this patch on v2 cause I'll use
-
-  kzalloc(PAGE_SIZE, ...) for all single page allocation in this series.
+Yes. Also for int i.
 
 Thanks,
 Yilun
+
+> 
+> > +		for (i = 0; i < nents; i++) {
+> > +			struct page *page = array->pages[offset + i];
+> > +			u64 val = page_to_phys(page);
+> > +
+> > +			if (val != entries[i]) {
+> > +				pr_err("%s entry[%d] [0x%llx] doesn't match page hpa [0x%llx]\n",
+> > +				       __func__, i, entries[i], val);
+> > +				return false;
+> > +			}
+> > +		}
+> > +
+> > +		return true;
+> > +	}
+> > +
+> > +	pr_err("%s failed to validate, released_hpa [0x%llx], root page hpa [0x%llx], page0 hpa [%#llx], number pages %u\n",
+> > +	       __func__, released_hpa, page_to_phys(array->root),
+> > +	       page_to_phys(array->pages[0]), array->nr_pages);
+> > +
+> > +	return false;
+> > +}
+> 
+> 
