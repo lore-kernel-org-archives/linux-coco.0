@@ -1,60 +1,64 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298E31DED63
-	for <linux-coco@lists.linux.dev>; Wed, 24 Dec 2025 01:16:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44ACB32E737
+	for <linux-coco@lists.linux.dev>; Wed, 24 Dec 2025 09:26:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766539001; cv=none; b=uERTB9YUg0e8Z/T1TsY12jxONkhYM6RzeoBGN9X45v1kDaVCNfNzazZxHnRhtonIM+yTR4aEoDR4bAvLNi63cSixUQpOFKgV/bwxoRDPFL0B4q9JGBVZWOFq/mR+ynBKBkjCgW4caQKii+qD1MZLabnnj0EGVufT0MIjUkPGGrI=
+	t=1766568412; cv=none; b=Qayy4HOqCLJTltwZvejOLU45SclviP6pOvq+LTnbkAxyYZytOlOAZDEco6VC/ZLQo4EoNf6d28DuEv7N1/5Gn+dsXb16bHQH/a6cmNS3jrX+gzC4hfsUHg/92Dimr9CenSmWkVNHUeF/lXbGF42xe8Hg9ILR355VI1jkgiXcNgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766539001; c=relaxed/simple;
-	bh=YrVzfIAQJXK7JVD1UChEaUkj/f7EBFUWs/8zVxrjE8I=;
+	s=arc-20240116; t=1766568412; c=relaxed/simple;
+	bh=TRlVfYA4X4+m5hfXKcWKobnYHz0xkycISytSKfcbTCQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A/qbYF5+nnVjforVUTbzvxwu9DwTwzwGLZULB0InyshUitiF84c4bTiCUH/SFGFiiWVbk5MKkeLQ8acbvGouvAr6s0/2FPfZmvsPm3X/pAsJ7dmynQsE166ztU1Vosb7vwy4vdZ2IKwF1BPNANqFodfPHN4hDGCtFmZ6lPTVoCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dMqe4mI/; arc=none smtp.client-ip=192.198.163.9
+	 Content-Type:Content-Disposition:In-Reply-To; b=tqpUT2ZyGvqykUOaUgnVYVt0Qd3CzhXqFnTqs1XEAGJ71AC+599VEDpBvVXtK0v8PxBF+BNHu4qLfAVhMu+hnyDQZDpRtNoXks1g3oVt1xEMaGhV2GWbX9SXJHV2J8VcfXttjipM44R/epPiUCzEBrLpUBJQZpE98bCd6wnsbEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gxDWFbJ4; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dMqe4mI/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gxDWFbJ4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766538998; x=1798074998;
+  t=1766568410; x=1798104410;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=YrVzfIAQJXK7JVD1UChEaUkj/f7EBFUWs/8zVxrjE8I=;
-  b=dMqe4mI/1Y64+/TN6Gi8h3379yRuU4zQbYBH0esKmaSt8K4eHf/UQhlb
-   qzz/pKCpCNx0DXAHVKRKg7M1fkAJYrnrNPe0pKjoTN/X9U50ApGwo2Ukv
-   6ODMl/gkYkFeHfNmpJ+MJFCtgUBzbAmDbkDCKxvhBx+RBwNVG4h0gTlAN
-   fOyonhVUuxgSzXFqt023VJUvJ1r2lO/bTBvyFHfl0T8xdTB3JWvMY0C+C
-   EUfSIEgElBxJJiDpkxL8iTXHurZmTm5ckdHSQbdVah1/VabQpUnVwjqt2
-   mwvdizYFGTmw0jYZw5+sVHbPtN2XURL8OoJcZ3fe6ka8bQ8k5OD4j+LND
-   Q==;
-X-CSE-ConnectionGUID: pSO0lLHoT8+TUvLdMryEng==
-X-CSE-MsgGUID: egucXGFeQMSwqZn39xuHzw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11651"; a="79106876"
-X-IronPort-AV: E=Sophos;i="6.21,172,1763452800"; 
-   d="scan'208";a="79106876"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2025 17:16:37 -0800
-X-CSE-ConnectionGUID: LIDZ/DQaRfS0Q7tAhXcR2A==
-X-CSE-MsgGUID: I+si5+QxSBCaxd62vmIuKQ==
+  bh=TRlVfYA4X4+m5hfXKcWKobnYHz0xkycISytSKfcbTCQ=;
+  b=gxDWFbJ4YDYYMMvneD5KMeyYRVv+EbqdW9C6XvOsvILz5MRNsCJX3c3H
+   LNy5KTAE7MZgTbkuvMrwJziuMWCI1MhWxhTGzWzM7CrivDSKrGmNvE7iP
+   5Sw7XQZPakG9vGFdokB7B9tVviUy5BXpdnp9SpWOHslycAHqMhnzFbZPV
+   65kEQQ3TfgJLOZEoEzWtKj92iqus2g4B1jE+/kChSSJZs+LiueLsadRpN
+   eFUH5T1p3f+c3cfoA4K0bmYCrFbuq/2Oy6SKaDGY6z0rhLFgtBdnvAZMS
+   qvZ8JY6W7qtwjmeCYYXtJa5SJoBYzuEmnbogAx+e2jo5A8q74gtrK+SQg
+   g==;
+X-CSE-ConnectionGUID: LSICn3+fRJWQ9wRASJthqg==
+X-CSE-MsgGUID: Gz6zznDUQMKVIB6UefxZHw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11651"; a="67406350"
+X-IronPort-AV: E=Sophos;i="6.21,173,1763452800"; 
+   d="scan'208";a="67406350"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Dec 2025 01:26:49 -0800
+X-CSE-ConnectionGUID: IRYhiV5+SfemeYLvd3Ltkg==
+X-CSE-MsgGUID: yGfTIJg+SLiCIrS7TGzEVw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,172,1763452800"; 
-   d="scan'208";a="199046901"
+X-IronPort-AV: E=Sophos;i="6.21,173,1763452800"; 
+   d="scan'208";a="200883541"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa006.jf.intel.com with ESMTP; 23 Dec 2025 17:16:35 -0800
-Date: Wed, 24 Dec 2025 09:00:06 +0800
+  by fmviesa010.fm.intel.com with ESMTP; 24 Dec 2025 01:26:45 -0800
+Date: Wed, 24 Dec 2025 17:10:16 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
-	dan.j.williams@intel.com, yilun.xu@intel.com,
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
-	linux-kernel@vger.kernel.org, yi1.lai@intel.com
-Subject: Re: [PATCH] PCI/IDE: Fix duplicate stream symlink names for TSM
- class devices
-Message-ID: <aUs7FgdSQVUB1eux@yilunxu-OptiPlex-7050>
-References: <20251223085601.2607455-1-yilun.xu@linux.intel.com>
- <20251223173157.GA4025076@bhelgaas>
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@intel.com,
+	isaku.yamahata@intel.com, kai.huang@intel.com, kas@kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, mingo@redhat.com, pbonzini@redhat.com,
+	seanjc@google.com, tglx@linutronix.de, vannapurve@google.com,
+	x86@kernel.org, yan.y.zhao@intel.com, xiaoyao.li@intel.com,
+	binbin.wu@intel.com,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCH v4 04/16] x86/virt/tdx: Allocate page bitmap for Dynamic
+ PAMT
+Message-ID: <aUut+PYnX3jrSO0i@yilunxu-OptiPlex-7050>
+References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
+ <20251121005125.417831-5-rick.p.edgecombe@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -63,126 +67,39 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251223173157.GA4025076@bhelgaas>
+In-Reply-To: <20251121005125.417831-5-rick.p.edgecombe@intel.com>
 
-On Tue, Dec 23, 2025 at 11:31:57AM -0600, Bjorn Helgaas wrote:
-> On Tue, Dec 23, 2025 at 04:56:01PM +0800, Xu Yilun wrote:
-> > The symlink name streamH.R.E is unique within a specific host bridge but
-> > not across the system. Error occurs e.g. when creating the first stream
-> > on a second host bridge:
-> > 
-> > [ 1244.034755] sysfs: cannot create duplicate filename '/devices/faux/tdx_host/tsm/tsm0/stream0.0.0'
-> 
-> Drop timestamp because it's no relevant.  Indent quoted material two
-> spaces.
+> diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+> index 13ad2663488b..00ab0e550636 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+> @@ -33,6 +33,13 @@ static int get_tdx_sys_info_tdmr(struct tdx_sys_info_tdmr *sysinfo_tdmr)
+>  		sysinfo_tdmr->pamt_2m_entry_size = val;
+>  	if (!ret && !(ret = read_sys_metadata_field(0x9100000100000012, &val)))
+>  		sysinfo_tdmr->pamt_1g_entry_size = val;
+> +	/*
+> +	 * Don't fail here if tdx_supports_dynamic_pamt() isn't supported. The
+> +	 * TDX code can fallback to normal PAMT if it's not supported.
+> +	 */
+> +	if (!ret && tdx_supports_dynamic_pamt(&tdx_sysinfo) &&
+> +	    !(ret = read_sys_metadata_field(0x9100000100000013, &val)))
+> +		sysinfo_tdmr->pamt_page_bitmap_entry_bits = val;
 
-Yes.
+Is it better we seal the awkward pattern inside the if (dpamt supported)  block:
 
-> 
-> > Fix this by adding host bridge name into symlink name for TSM class
-> > devices. It should be OK to change the uAPI to
-> > /sys/class/tsm/tsmN/pciDDDD:BB:streamH.R.E since it's new and has few
-> > users.
-> 
-> Looks like this adds "pciDDDD:BB:" to one name, which is described
-> here and in the Documentation/ABI change.
-> 
-> > Internally in the IDE library, store the full name in struct pci_ide
-> > so TSM symlinks can use it directly, while PCI host bridge symlinks
-> > can skip the host bridge name to keep concise.
-> 
-> And shortens this name, but no example or doc update?  Or maybe the
-> shortening just strips the "pciDDDD:BB" to preserve the existing names
-> somewhere else?
+	if (tdx_support_dynamic_pamt(&tdx_sysinfo))
+		if (!ret && !(ret = read_sys_metadata_field(0x9100000100000013, &val)))
+			sysinfo_tdmr->pamt_page_bitmap_entry_bits = val;
 
-The later. The shortening is the internal code change, aims to preserve
-the existing name /sys/devices/pciDDDD:BB/streamH.R.E, which is
-described in:
-
-  Documentation/ABI/testing/sysfs-devices-pci-host-bridge
-
-  What:		pciDDDD:BB/streamH.R.E
-
-I don't want repeat the host bridge name in host bridge context.
-
-> 
-> I'm just confused about which symlinks are changing (adding
-> "pciDDDD:BB") and which are being kept concise (either by staying the
-> same or being shortened).
-
-I should have clearly listed the changed & preserved symlinks. Will
-improve in v2.
+so we don't have to get used to another variant of the awkward pattern :)
 
 Thanks,
 Yilun
 
+>  
+>  	return ret;
+>  }
+> -- 
+> 2.51.2
 > 
-> > Fixes: a4438f06b1db ("PCI/TSM: Report active IDE streams")
-> > Reported-by: Yi Lai <yi1.lai@intel.com>
-> > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> > ---
-> >  Documentation/ABI/testing/sysfs-class-tsm |  2 +-
-> >  drivers/pci/ide.c                         | 12 +++++++++---
-> >  2 files changed, 10 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/Documentation/ABI/testing/sysfs-class-tsm b/Documentation/ABI/testing/sysfs-class-tsm
-> > index 6fc1a5ac6da1..eff71e42c60e 100644
-> > --- a/Documentation/ABI/testing/sysfs-class-tsm
-> > +++ b/Documentation/ABI/testing/sysfs-class-tsm
-> > @@ -8,7 +8,7 @@ Description:
-> >  		link encryption and other device-security features coordinated
-> >  		through a platform tsm.
-> >  
-> > -What:		/sys/class/tsm/tsmN/streamH.R.E
-> > +What:		/sys/class/tsm/tsmN/pciDDDD:BB:streamH.R.E
-> >  Contact:	linux-pci@vger.kernel.org
-> >  Description:
-> >  		(RO) When a host bridge has established a secure connection via
-> > diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
-> > index f0ef474e1a0d..db1c7423bf39 100644
-> > --- a/drivers/pci/ide.c
-> > +++ b/drivers/pci/ide.c
-> > @@ -425,6 +425,7 @@ int pci_ide_stream_register(struct pci_ide *ide)
-> >  	struct pci_host_bridge *hb = pci_find_host_bridge(pdev->bus);
-> >  	struct pci_ide_stream_id __sid;
-> >  	u8 ep_stream, rp_stream;
-> > +	const char *short_name;
-> >  	int rc;
-> >  
-> >  	if (ide->stream_id < 0 || ide->stream_id > U8_MAX) {
-> > @@ -441,13 +442,16 @@ int pci_ide_stream_register(struct pci_ide *ide)
-> >  
-> >  	ep_stream = ide->partner[PCI_IDE_EP].stream_index;
-> >  	rp_stream = ide->partner[PCI_IDE_RP].stream_index;
-> > -	const char *name __free(kfree) = kasprintf(GFP_KERNEL, "stream%d.%d.%d",
-> > +	const char *name __free(kfree) = kasprintf(GFP_KERNEL, "%s:stream%d.%d.%d",
-> > +						   dev_name(&hb->dev),
-> >  						   ide->host_bridge_stream,
-> >  						   rp_stream, ep_stream);
-> >  	if (!name)
-> >  		return -ENOMEM;
-> >  
-> > -	rc = sysfs_create_link(&hb->dev.kobj, &pdev->dev.kobj, name);
-> > +	/* Skip host bridge name in the host bridge context */
-> > +	short_name = name + strlen(dev_name(&hb->dev)) + 1;
-> > +	rc = sysfs_create_link(&hb->dev.kobj, &pdev->dev.kobj, short_name);
-> >  	if (rc)
-> >  		return rc;
-> >  
-> > @@ -471,8 +475,10 @@ void pci_ide_stream_unregister(struct pci_ide *ide)
-> >  {
-> >  	struct pci_dev *pdev = ide->pdev;
-> >  	struct pci_host_bridge *hb = pci_find_host_bridge(pdev->bus);
-> > +	const char *short_name;
-> >  
-> > -	sysfs_remove_link(&hb->dev.kobj, ide->name);
-> > +	short_name = ide->name + strlen(dev_name(&hb->dev)) + 1;
-> > +	sysfs_remove_link(&hb->dev.kobj, short_name);
-> >  	kfree(ide->name);
-> >  	ida_free(&hb->ide_stream_ids_ida, ide->stream_id);
-> >  	ide->name = NULL;
-> > 
-> > base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-> > -- 
-> > 2.25.1
-> > 
+> 
