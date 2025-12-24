@@ -1,163 +1,188 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010069.outbound.protection.outlook.com [52.101.85.69])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C5C23EAB9
-	for <linux-coco@lists.linux.dev>; Tue, 23 Dec 2025 23:02:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766530940; cv=fail; b=KYrn37j8clF6YJUMFNU4OX7CJx5Nc3UaGttWK/AoQP104vU0/u5N841PhU6AZ3LM4pmdPZlRse1y0H5i9/8LpdDkTu1eGlPI6w5nUILBm3h7I/Ugrg7oQ1kpruu7nRz1FVpzkDHv0I+FBXpdXU0eC3/lSgR1qAczQXj8JozpyxE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766530940; c=relaxed/simple;
-	bh=YswWISh/KdGMDsoS/c9MD5SK7LW2piRQfmBsEDhIiKg=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sBQM1/kBfHcba8lQ1GRQK+VKQjQokHxMTjZDaaiWp/2kdLO3p3cjBriJ5zIDT5ShMaxk5Kj2DYpnVIvmrpMPZCzfwYZpDdGoFTvL3p9qrZq+26SQSIrmaIHfpsC19/AKC4phGpLgPEl+iX+RZLta2CeQD/47RrNR2xMZiEaiwfQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=FdQDS9GJ; arc=fail smtp.client-ip=52.101.85.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298E31DED63
+	for <linux-coco@lists.linux.dev>; Wed, 24 Dec 2025 01:16:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766539001; cv=none; b=uERTB9YUg0e8Z/T1TsY12jxONkhYM6RzeoBGN9X45v1kDaVCNfNzazZxHnRhtonIM+yTR4aEoDR4bAvLNi63cSixUQpOFKgV/bwxoRDPFL0B4q9JGBVZWOFq/mR+ynBKBkjCgW4caQKii+qD1MZLabnnj0EGVufT0MIjUkPGGrI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766539001; c=relaxed/simple;
+	bh=YrVzfIAQJXK7JVD1UChEaUkj/f7EBFUWs/8zVxrjE8I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A/qbYF5+nnVjforVUTbzvxwu9DwTwzwGLZULB0InyshUitiF84c4bTiCUH/SFGFiiWVbk5MKkeLQ8acbvGouvAr6s0/2FPfZmvsPm3X/pAsJ7dmynQsE166ztU1Vosb7vwy4vdZ2IKwF1BPNANqFodfPHN4hDGCtFmZ6lPTVoCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dMqe4mI/; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="FdQDS9GJ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PBzaiRG+xf+3pfZd0Fr2aTZMKEpbhkgqLDeCVLnFGgaTuXlub2BDLrmK+5vRqZKrJK5YeQPnjCwHOv7Yh/PRLo+I234V/L+19GrnBJ7f2KMid6Dm4v3ecOpx6tlxvF+pjFeN0zbY62SXPPri3B1ocMud+/s3ZPjrQGTEnVbjIjtnpnYwqkwzC1A71ML/o6X5TAZi+hA/eDBVh5zxe1g172Jd1zD4ma+ip0xkqYcYnCd4YieAssjzODZ4c4C+1+GD9nBGdiVX/THzcMDGkbyotfqvbDgS98MPQMZOnffcRpvUmFeiP4PmIeDF/ogFX+UWIkXexROVOCSnkEAlCcjFCg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YswWISh/KdGMDsoS/c9MD5SK7LW2piRQfmBsEDhIiKg=;
- b=L+0wSpBqo8PajqkYbEwzImYVmU2lCt0IPLWAvOlHlx3t7BiMV5fdJ3AL0bxI5jmEhsxCYfopACtR8WZHbKlO1IffMgpjn/Ru7a8XWsuZiCxfAwryglOebAUsG9D4KdVolrloNd+LSsXvQ4eOFZNOR5w59fA20eDvfrUnHqS38AxJ9ah3MJgXhh/cyqfPrPi3wcAs6AtzGQ5ACwvHaapEpqVlRjWB4bPHc31l5vF8JlyrjJBkF4ebRtH3wj3TV5iEWSxhdZpaRoXwK9kTQYaN0ncqi6mWfc+TSRYX/r3UXczm1GIzArY/MawI5c93BYYM1FeeJJBXFtq4xOAL2vgMBA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=arm.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YswWISh/KdGMDsoS/c9MD5SK7LW2piRQfmBsEDhIiKg=;
- b=FdQDS9GJ7CuhzaZZHrgoFLyjrzNeLc7L1DdGiFlhcdGbIA1I+FZ9zyKeoSYvFr8BBPbuZ1maxKpJ3Tpi8t4yt+M0dAj2GdMDXANNp3JJ9WV4Qop9dlVgr7+LPqhfXpfN2+XP9IOTjSzn6uYx/7DxnsjGlHhyuohfMsWKmCeweu9OBDe5f5Yf0VZl5+h0BaUf9CTfW7inQVsRGG4wGHwPT4PnXB91rxefHKtF0EL9GHMsrTJfcKt2lv++ZqQVKMIsOAWHAeOujG9+aMU/KzIjpnc2ZXFdgJQq3HQuDS4NNcjQ+2k1NIKCnBh5ATFNZNS3JqTGx0yMv4smXUq9IPp5TA==
-Received: from BY3PR05CA0047.namprd05.prod.outlook.com (2603:10b6:a03:39b::22)
- by DM6PR12MB4073.namprd12.prod.outlook.com (2603:10b6:5:217::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9456.11; Tue, 23 Dec
- 2025 23:02:11 +0000
-Received: from SJ1PEPF00002323.namprd03.prod.outlook.com
- (2603:10b6:a03:39b:cafe::2b) by BY3PR05CA0047.outlook.office365.com
- (2603:10b6:a03:39b::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9456.10 via Frontend Transport; Tue,
- 23 Dec 2025 23:02:11 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- SJ1PEPF00002323.mail.protection.outlook.com (10.167.242.85) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9456.9 via Frontend Transport; Tue, 23 Dec 2025 23:02:11 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 23 Dec
- 2025 15:02:02 -0800
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Tue, 23 Dec 2025 15:02:02 -0800
-Received: from build-vvidwans-noble-20250617.internal (10.127.8.10) by
- mail.nvidia.com (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.20
- via Frontend Transport; Tue, 23 Dec 2025 15:02:02 -0800
-From: Vedashree Vidwans <vvidwans@nvidia.com>
-To: <salman.nabi@arm.com>
-CC: <andre.przywara@arm.com>, <ardb@kernel.org>, <chao.gao@intel.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-coco@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <lpieralisi@kernel.org>,
-	<mark.rutland@arm.com>, <sdonthineni@nvidia.com>, <sudeep.holla@arm.com>,
-	<vsethi@nvidia.com>, <vwadekar@nvidia.com>, Vedashree Vidwans
-	<vvidwans@nvidia.com>
-Subject: Re: [RFC PATCH v2 0/1] firmware: smccc: Add support for Live Firmware Activation (LFA)
-Date: Tue, 23 Dec 2025 23:01:29 +0000
-Message-ID: <20251223230134.462535-1-vvidwans@nvidia.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250926123145.268728-1-salman.nabi@arm.com>
-References: <20250926123145.268728-1-salman.nabi@arm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dMqe4mI/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766538998; x=1798074998;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YrVzfIAQJXK7JVD1UChEaUkj/f7EBFUWs/8zVxrjE8I=;
+  b=dMqe4mI/1Y64+/TN6Gi8h3379yRuU4zQbYBH0esKmaSt8K4eHf/UQhlb
+   qzz/pKCpCNx0DXAHVKRKg7M1fkAJYrnrNPe0pKjoTN/X9U50ApGwo2Ukv
+   6ODMl/gkYkFeHfNmpJ+MJFCtgUBzbAmDbkDCKxvhBx+RBwNVG4h0gTlAN
+   fOyonhVUuxgSzXFqt023VJUvJ1r2lO/bTBvyFHfl0T8xdTB3JWvMY0C+C
+   EUfSIEgElBxJJiDpkxL8iTXHurZmTm5ckdHSQbdVah1/VabQpUnVwjqt2
+   mwvdizYFGTmw0jYZw5+sVHbPtN2XURL8OoJcZ3fe6ka8bQ8k5OD4j+LND
+   Q==;
+X-CSE-ConnectionGUID: pSO0lLHoT8+TUvLdMryEng==
+X-CSE-MsgGUID: egucXGFeQMSwqZn39xuHzw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11651"; a="79106876"
+X-IronPort-AV: E=Sophos;i="6.21,172,1763452800"; 
+   d="scan'208";a="79106876"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2025 17:16:37 -0800
+X-CSE-ConnectionGUID: LIDZ/DQaRfS0Q7tAhXcR2A==
+X-CSE-MsgGUID: I+si5+QxSBCaxd62vmIuKQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,172,1763452800"; 
+   d="scan'208";a="199046901"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa006.jf.intel.com with ESMTP; 23 Dec 2025 17:16:35 -0800
+Date: Wed, 24 Dec 2025 09:00:06 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org,
+	dan.j.williams@intel.com, yilun.xu@intel.com,
+	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	linux-kernel@vger.kernel.org, yi1.lai@intel.com
+Subject: Re: [PATCH] PCI/IDE: Fix duplicate stream symlink names for TSM
+ class devices
+Message-ID: <aUs7FgdSQVUB1eux@yilunxu-OptiPlex-7050>
+References: <20251223085601.2607455-1-yilun.xu@linux.intel.com>
+ <20251223173157.GA4025076@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002323:EE_|DM6PR12MB4073:EE_
-X-MS-Office365-Filtering-Correlation-Id: ac84ef3e-ac7b-4cfd-7540-08de42774e23
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|376014|7416014|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?VTb0Aq2+spWF8eczpRJMWLk4CcJJUMSQWQ1bsGUqLzciNbjaKRgQESCjN/4d?=
- =?us-ascii?Q?Idj0/Iu8VP3GGwAOYO+1xscfbFIfMD/a8d9eSHKGTFK90hsUl4ujdqBQfNVW?=
- =?us-ascii?Q?E6HB2dejWwNeI1Gf7lJlOMX3HIjS49Zvy2uNmmnDBj0ltdO9PkXjQPOG4Npc?=
- =?us-ascii?Q?jCR6TdSwwpcENmLMvJ9QHAKsEYzUz6vcsru3D9LHF4sF4jQsEKkNLWWbS65Y?=
- =?us-ascii?Q?D7cAjlm8jSItVVUl5nCRScTvk7FF7sJD/MMvjB7nS4JZzV1TetefweqtkP2s?=
- =?us-ascii?Q?Zh/A4I+peKLgoj2+kpF8P4agMFh1c2xXAVAsJaluqDYC3wiG7/4fkcaMmBIH?=
- =?us-ascii?Q?unjdXX8tbnhtIVHTZg+MGgP//RZfQ9jKjRcTo/ByyvldEXnWOMMJWPBRa5U0?=
- =?us-ascii?Q?A1QsMAKRyYbjjTY/rawANhQipfHxP4rMYpJII456yJhX95dnLHFXGl1YReq5?=
- =?us-ascii?Q?I+IvzG14e7F7bjUcMvdEuccpXoklQ5qwcUlptumTuXqDs/1289VJPAeNt/8x?=
- =?us-ascii?Q?iqxVcCYeQnuVLISaXlvkAAyA4xj6dXgzbGmeCmMKVo31Oh3EJntpe1EkJng5?=
- =?us-ascii?Q?ruubbzOGxLcUjLKfXOd4wLLk0ctnwEnZjQa14wVnOifoDZsRrzOQqO04utGs?=
- =?us-ascii?Q?H4e3E4sDjdRVR6rhcj5W4mf1MA3gEsPB1dbrb6cGQwqITUh7VXRlcmhIUjX9?=
- =?us-ascii?Q?JHsWG+MuglThcrqahzqecpzFyhxr7t+irSxmN0gh27VHxsCx3bOJ4HIHD1XF?=
- =?us-ascii?Q?1ShTDjZgx4tlDOX5PZGP2DNVtgpc9Ww8hvdTEt4jM87FtfeC1YAN9GFyEix6?=
- =?us-ascii?Q?rPntCmkZxO+RG/93YQVs83Dh16u8JA2fkiFLESxDcRu9tQS3mjdxurwxoaPj?=
- =?us-ascii?Q?Pp7H9kqK5bCTROWvfA1qyuB0CDf91GTiEwmP7SCSqufZ/yG0avuNJlgSLFtd?=
- =?us-ascii?Q?T7UpigAf+GQmzOVa76rm6IOOyCW3E+e0lPKzly6vgREGa1N5A05Tg5fYiaqh?=
- =?us-ascii?Q?wkCJl07kZFsRkD/Shbhlml2xyrTyuuNoevF1AEHXZMcwrf/uK/ZrbDfH191G?=
- =?us-ascii?Q?+M1fK56SgBY09BSgQ1cuQAEiDz+w5JPGzdDG1bMESJIwFqw9Aneqf8Gb2q10?=
- =?us-ascii?Q?MU2r/SsthJyBDpIG6jzqwbJUAvfisQ3VLNSRCm5ufY0UeOW1IiQS0EpOzyAe?=
- =?us-ascii?Q?pk2eVys1Yjw6JcZdQ872MAuo3ci/vHUS0XGXJcg1fQkNfEtUml7Lr6lzRSoz?=
- =?us-ascii?Q?pQMdPjatRvR5rNcKKi7mbsyJhjmecjsgCJ993GGANZ7YgIsoIQM0eGBAEBe5?=
- =?us-ascii?Q?rTqD87/VxqTnYyRoGMqhd28LW6WZzsbS0NHUfyX0k/xj1FJ9SBIeieWsFWPU?=
- =?us-ascii?Q?j9KZl6MIdJTHn1QPe6F1DYIvYpIrxN2+MjikmNoRCcQq89xU82SHRPgztfV6?=
- =?us-ascii?Q?JCkPGPqt0VlT7d9HB0INFrPUuvFmvu6F50e5QxMYScBqqyov/P/I+qGChO65?=
- =?us-ascii?Q?3TmTSboImyE8GKhPB2tAw4koeAknL1Ay33ZXFm3MmAIj/GvqNglwJwe4QSnI?=
- =?us-ascii?Q?txaTUfU0AAq1S/+c9sc=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014)(7416014)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Dec 2025 23:02:11.2538
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ac84ef3e-ac7b-4cfd-7540-08de42774e23
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00002323.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4073
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251223173157.GA4025076@bhelgaas>
 
-Hello Salman,
+On Tue, Dec 23, 2025 at 11:31:57AM -0600, Bjorn Helgaas wrote:
+> On Tue, Dec 23, 2025 at 04:56:01PM +0800, Xu Yilun wrote:
+> > The symlink name streamH.R.E is unique within a specific host bridge but
+> > not across the system. Error occurs e.g. when creating the first stream
+> > on a second host bridge:
+> > 
+> > [ 1244.034755] sysfs: cannot create duplicate filename '/devices/faux/tdx_host/tsm/tsm0/stream0.0.0'
+> 
+> Drop timestamp because it's no relevant.  Indent quoted material two
+> spaces.
 
-Thank you for the patch. As you might know, I am implementing the
-interrupt interface for LFA driver. The LFA usecase I am working
-with will validate both interrupt and sysfs interfaces of the LFA
-driver. Hence, I would like to extend the driver posted here with
-required changes. Please find the extended driver patches posted
-at [1].
-While working on this code, I realized that LFA driver should
-use SMCCC 1.2+ version as per the LFA specification. And I have
-included a patch to upgrade SMCCC version in the code.
-As the initial LFA driver in this thread isn't merged yet, I would
-like to request modification to this original patch based on
-a review comment on my patch series.
+Yes.
 
-Could we please come up with a strategy to incorporate the changes?
-We are aiming to merge LFA patches to Linux kernel as soon as
-possible. Since I am actively working on this driver, I will be
-happy to revise the initial patch(with authors intact) and post
-a fresh series for review.
+> 
+> > Fix this by adding host bridge name into symlink name for TSM class
+> > devices. It should be OK to change the uAPI to
+> > /sys/class/tsm/tsmN/pciDDDD:BB:streamH.R.E since it's new and has few
+> > users.
+> 
+> Looks like this adds "pciDDDD:BB:" to one name, which is described
+> here and in the Documentation/ABI change.
+> 
+> > Internally in the IDE library, store the full name in struct pci_ide
+> > so TSM symlinks can use it directly, while PCI host bridge symlinks
+> > can skip the host bridge name to keep concise.
+> 
+> And shortens this name, but no example or doc update?  Or maybe the
+> shortening just strips the "pciDDDD:BB" to preserve the existing names
+> somewhere else?
 
-Regards,
-Veda
+The later. The shortening is the internal code change, aims to preserve
+the existing name /sys/devices/pciDDDD:BB/streamH.R.E, which is
+described in:
 
-[1] https://lore.kernel.org/linux-arm-kernel/20251208221319.1524888-1-vvidwans@nvidia.com/
+  Documentation/ABI/testing/sysfs-devices-pci-host-bridge
+
+  What:		pciDDDD:BB/streamH.R.E
+
+I don't want repeat the host bridge name in host bridge context.
+
+> 
+> I'm just confused about which symlinks are changing (adding
+> "pciDDDD:BB") and which are being kept concise (either by staying the
+> same or being shortened).
+
+I should have clearly listed the changed & preserved symlinks. Will
+improve in v2.
+
+Thanks,
+Yilun
+
+> 
+> > Fixes: a4438f06b1db ("PCI/TSM: Report active IDE streams")
+> > Reported-by: Yi Lai <yi1.lai@intel.com>
+> > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> > ---
+> >  Documentation/ABI/testing/sysfs-class-tsm |  2 +-
+> >  drivers/pci/ide.c                         | 12 +++++++++---
+> >  2 files changed, 10 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/Documentation/ABI/testing/sysfs-class-tsm b/Documentation/ABI/testing/sysfs-class-tsm
+> > index 6fc1a5ac6da1..eff71e42c60e 100644
+> > --- a/Documentation/ABI/testing/sysfs-class-tsm
+> > +++ b/Documentation/ABI/testing/sysfs-class-tsm
+> > @@ -8,7 +8,7 @@ Description:
+> >  		link encryption and other device-security features coordinated
+> >  		through a platform tsm.
+> >  
+> > -What:		/sys/class/tsm/tsmN/streamH.R.E
+> > +What:		/sys/class/tsm/tsmN/pciDDDD:BB:streamH.R.E
+> >  Contact:	linux-pci@vger.kernel.org
+> >  Description:
+> >  		(RO) When a host bridge has established a secure connection via
+> > diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
+> > index f0ef474e1a0d..db1c7423bf39 100644
+> > --- a/drivers/pci/ide.c
+> > +++ b/drivers/pci/ide.c
+> > @@ -425,6 +425,7 @@ int pci_ide_stream_register(struct pci_ide *ide)
+> >  	struct pci_host_bridge *hb = pci_find_host_bridge(pdev->bus);
+> >  	struct pci_ide_stream_id __sid;
+> >  	u8 ep_stream, rp_stream;
+> > +	const char *short_name;
+> >  	int rc;
+> >  
+> >  	if (ide->stream_id < 0 || ide->stream_id > U8_MAX) {
+> > @@ -441,13 +442,16 @@ int pci_ide_stream_register(struct pci_ide *ide)
+> >  
+> >  	ep_stream = ide->partner[PCI_IDE_EP].stream_index;
+> >  	rp_stream = ide->partner[PCI_IDE_RP].stream_index;
+> > -	const char *name __free(kfree) = kasprintf(GFP_KERNEL, "stream%d.%d.%d",
+> > +	const char *name __free(kfree) = kasprintf(GFP_KERNEL, "%s:stream%d.%d.%d",
+> > +						   dev_name(&hb->dev),
+> >  						   ide->host_bridge_stream,
+> >  						   rp_stream, ep_stream);
+> >  	if (!name)
+> >  		return -ENOMEM;
+> >  
+> > -	rc = sysfs_create_link(&hb->dev.kobj, &pdev->dev.kobj, name);
+> > +	/* Skip host bridge name in the host bridge context */
+> > +	short_name = name + strlen(dev_name(&hb->dev)) + 1;
+> > +	rc = sysfs_create_link(&hb->dev.kobj, &pdev->dev.kobj, short_name);
+> >  	if (rc)
+> >  		return rc;
+> >  
+> > @@ -471,8 +475,10 @@ void pci_ide_stream_unregister(struct pci_ide *ide)
+> >  {
+> >  	struct pci_dev *pdev = ide->pdev;
+> >  	struct pci_host_bridge *hb = pci_find_host_bridge(pdev->bus);
+> > +	const char *short_name;
+> >  
+> > -	sysfs_remove_link(&hb->dev.kobj, ide->name);
+> > +	short_name = ide->name + strlen(dev_name(&hb->dev)) + 1;
+> > +	sysfs_remove_link(&hb->dev.kobj, short_name);
+> >  	kfree(ide->name);
+> >  	ida_free(&hb->ide_stream_ids_ida, ide->stream_id);
+> >  	ide->name = NULL;
+> > 
+> > base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> > -- 
+> > 2.25.1
+> > 
