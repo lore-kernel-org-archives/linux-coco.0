@@ -1,207 +1,342 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF85A301037
-	for <linux-coco@lists.linux.dev>; Wed, 24 Dec 2025 11:23:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766575423; cv=none; b=Sragj2ieWv03LcnuShZLPH2e0ks6gQ5zg50ieUhFYChcq3Zhru8Ct9L/tNbOwNskjCr4zdV9o8QyJsCeF+qJ+kKjmR721x/fP7e28drNgo7G1QGoMmUEhbeBawIBJ/xJU0ldaiUtj8fJddAytlUIMy6K9DEc5ZP1XiS2pVXfIsw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766575423; c=relaxed/simple;
-	bh=ElPfBnwFNKsK42q/al9tYmbunsR9seNZciRFUY9VIsE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O/TF4R2gQbilvnVmxFT1tlG1smNZ94qITEeyeamcKMPW1Q23dipBhvEI4mY1ywFu+wI1h9ARTiAVMCaayKAZt40NWk/TJc6fW/2uBQ3BRixB/ThF2N9aOSLBPgkdLGYFamrBbTiePaAe+QTIA4+uCirzvlpqdiS81FEzlWAvFzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iiqnucnl; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629809443
+	for <linux-coco@lists.linux.dev>; Fri, 26 Dec 2025 02:51:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766717464; cv=fail; b=qEoQLoA71XgiqsMqrzDSQ2t3O4pLXYSKVETMV5/wqdejLiXofwdpmQmZMX1pqVma3u+GBTFzN1c68NBylQVjBgpyQpmjmHu26aB03bBLPOw5KXooy8zyfhE80i/V3aAQVxgjATHk9JtDorGQnj+zVjMitaihm1oQW8hLTm3UhaU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766717464; c=relaxed/simple;
+	bh=Szbzv09GOFEA+1x2iRRKHb+EMchWdb5TySxif9c5BI0=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=JQk5IQlLQmFC0eKlLwyw21RBd0I4rlS07JauRzB2ZGO7G1FxuBTs5un6FAikBDNMGNngamgpKLTGtDtLXN71sdYvFqEd+cixwxykLxFIkd2ya/5/bupmqL0sqYIhGE4/gQuyR9S7cu5vz4O8Eea49MYKY9fjwO9R/4gjgmrpdtQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HraQJpT0; arc=fail smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iiqnucnl"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HraQJpT0"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766575420; x=1798111420;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ElPfBnwFNKsK42q/al9tYmbunsR9seNZciRFUY9VIsE=;
-  b=iiqnucnlcMOndja8g4SXFPkrKu8YXnNSyUr/Y2D822AzEWPWLxeEacmS
-   qOIcH7okOwbb1XSUagKOfEKBhIeAllhXvTeJ/6WryX72oaB/dXrNueQut
-   rldp2L0TOn6GlDpoK/5q/eFjhNrIAktTSI7zkAC+H4MK1epGd62mHyveZ
-   jB7ieAtvouAomUjcYePO7gXxVX29VdyHFSeIkO0/llJO1VACKZkWHQsix
-   qQbA/HXmK5Q2XX1EaxX2nCbMI8gT6QqZvocUlYuSo2ZyiK6AaHZ7mY7+2
-   qgY64s0ubbw1r2S2oJ8bx/8ArwYEC8CBfKcy0/vuNhB/tpnFUTUjW3wwS
-   g==;
-X-CSE-ConnectionGUID: vQ+5py9jQ4CTD2Ae4vgJIQ==
-X-CSE-MsgGUID: xPWIDdc0T8Kui+jdzSTC1w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11651"; a="79136574"
-X-IronPort-AV: E=Sophos;i="6.21,173,1763452800"; 
-   d="scan'208";a="79136574"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Dec 2025 03:23:39 -0800
-X-CSE-ConnectionGUID: CAQx4ui/SpC3DJZZQvDWuw==
-X-CSE-MsgGUID: 5hb2sBB4TPG4ejLeEInPIQ==
+  t=1766717462; x=1798253462;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   in-reply-to:mime-version;
+  bh=Szbzv09GOFEA+1x2iRRKHb+EMchWdb5TySxif9c5BI0=;
+  b=HraQJpT0FFQWn/ib2Ho6q2DZ5N4HJ4Z/J1ctIwj3gpBEsKWwfDJVlzRU
+   vu4WKuTkcIvOsrpXcmZbzH7d7LM3hlLe4UFiQIw7w8KW3ezpWOqkCbfm7
+   Yrg3/aWVH2UlBt/bf5LEkJXGSg/ZtEFmdr+ahw996fwts/XoVj9IoIOKM
+   tG1tfWfWrxfbQofkqyu3q6vIj62Cx58ekuAwylB36ETqhdA3LrJLcpkjd
+   Q8wXh+Cjj9OFiPr/i0Ja0K2DDaJVcm7DZHogR1k70YeB0VkTJegWcHnwi
+   qcI3sM2sj34NiZa1Ih84qfpZV8sItRy3DHZLaGQOaHJWhyuU0xq1PLZGo
+   Q==;
+X-CSE-ConnectionGUID: L7A3GhASQDGIuVLL1jjDMw==
+X-CSE-MsgGUID: 6z04qSLBQDmRQwaLbSIXxQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11652"; a="79855059"
+X-IronPort-AV: E=Sophos;i="6.21,177,1763452800"; 
+   d="scan'208";a="79855059"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Dec 2025 18:51:01 -0800
+X-CSE-ConnectionGUID: eJmkdJcZQNycmm40JMjYeA==
+X-CSE-MsgGUID: fl61pYP6Rruk3Jkl8x25AA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,173,1763452800"; 
-   d="scan'208";a="200495851"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa009.fm.intel.com with ESMTP; 24 Dec 2025 03:23:36 -0800
-Date: Wed, 24 Dec 2025 19:07:06 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: dan.j.williams@intel.com, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org,
-	Chao Gao <chao.gao@intel.com>
-Subject: Re: [PATCH v2 2/7] KVM: x86: Extract VMXON and EFER.SVME enablement
- to kernel
-Message-ID: <aUvJWmZP5wLpvhnw@yilunxu-OptiPlex-7050>
-References: <20251206011054.494190-1-seanjc@google.com>
- <20251206011054.494190-3-seanjc@google.com>
- <69352b2239a33_1b2e100d2@dwillia2-mobl4.notmuch>
- <aTiAKG4TlKcZnJnn@google.com>
- <6939242dcfff1_20cb5100c3@dwillia2-mobl4.notmuch>
- <aTmBobJJo_sFbre9@google.com>
+X-IronPort-AV: E=Sophos;i="6.21,177,1763452800"; 
+   d="scan'208";a="200611185"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Dec 2025 18:50:36 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 25 Dec 2025 18:50:35 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Thu, 25 Dec 2025 18:50:35 -0800
+Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.62) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 25 Dec 2025 18:50:35 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HSVotPJqvTgHOgLTwnCzThZcttfUuojLRMhHkzv1ZohtduGDCgm74qVdg+n0TY+xhDHSoV9bcsWwIWY7LQ1BEwDrwK6yxOPUcLTHnv1gq8bcKu4OVOE8YEHSSfYerwMca/kiKI8Vd4hPCnnOMaHVv7IUrv7gbBFm1wXnFaJrbg+gdT8z/66YHvDivb+4SjhoOOr9R0cm69Boiool01bg4NszxCEQYi947qqWMT/WDk/QNCFT5RG8wjioVPD0sjadjuFkQTWTvgDCRzml11rlIMGBopPQOUbh4XdM6rowOKNpD4yuc53n9dc/DWTDsZyGhonfyYzCm4bLn0S0vnbSZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VuBHmbHVDwlft0EZQprress5iwjNSKCUU//k/6UkZBk=;
+ b=GvAsoo/CC7uP612OrS5WBrqWBCjZ7L/qMUHhoJErcZdX/mJ7zhnXbbZsZG0/+4Q3J5n+/Ltum3FLKl4UAxpH1V5Xd88IL1T40QqFb33HLycnjbWt7B9vla5ds6yLoqMm5UzI04dfE1iPb5fIg/VFWzGx2Fvm9TB92dxu6x/4yvnagPrnZyZumuYNZbN1Hb64Q+Q5sbafilQgwzhSkFrfb0I7oXXH5npcT4+rewGz7XdiEWjbM/Au41WhHOFIhuBaWEou6gXzcQEtnmMkZiZVjqZVGZ/0wxm3m+/xKEVUnqRdEKPGMhQWYqKvdCMxaHzbSe9cmBxhCsQ2TPoQEmQVMg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6) by
+ MN2PR11MB4598.namprd11.prod.outlook.com (2603:10b6:208:26f::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9456.11; Fri, 26 Dec 2025 02:50:32 +0000
+Received: from DS7PR11MB5966.namprd11.prod.outlook.com
+ ([fe80::e971:d8f4:66c4:12ca]) by DS7PR11MB5966.namprd11.prod.outlook.com
+ ([fe80::e971:d8f4:66c4:12ca%6]) with mapi id 15.20.9456.008; Fri, 26 Dec 2025
+ 02:50:32 +0000
+Date: Fri, 26 Dec 2025 10:48:03 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: Michael Roth <michael.roth@amd.com>
+CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <thomas.lendacky@amd.com>,
+	<pbonzini@redhat.com>, <seanjc@google.com>, <vbabka@suse.cz>,
+	<ashish.kalra@amd.com>, <liam.merwick@oracle.com>, <david@redhat.com>,
+	<vannapurve@google.com>, <ackerleytng@google.com>, <aik@amd.com>,
+	<ira.weiny@intel.com>
+Subject: Re: [PATCH v2 5/5] KVM: guest_memfd: GUP source pages prior to
+ populating guest memory
+Message-ID: <aU33Y56qBXgrL5/3@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20251215153411.3613928-1-michael.roth@amd.com>
+ <20251215153411.3613928-6-michael.roth@amd.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20251215153411.3613928-6-michael.roth@amd.com>
+X-ClientProxiedBy: SG2PR02CA0009.apcprd02.prod.outlook.com
+ (2603:1096:3:17::21) To DS7PR11MB5966.namprd11.prod.outlook.com
+ (2603:10b6:8:71::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aTmBobJJo_sFbre9@google.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR11MB5966:EE_|MN2PR11MB4598:EE_
+X-MS-Office365-Filtering-Correlation-Id: 234e46d3-da8c-4849-7c20-08de4429894e
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?NwE2RWWkyos/IRz731u1QOkMzdTOZq68sa2Zp7e3YXzg6LbU99Wk3A4shPHP?=
+ =?us-ascii?Q?egnPHn59Kl7q/D8kumqwVp8LMd37h/NBWVnGLRcRisEt+1H2+89bSltY5UoB?=
+ =?us-ascii?Q?qu6WldHgt5lRhf9kr78VRfO/bc1BMH0x1nlWcDZlJP4kqdSLQP+os0Gr0GSs?=
+ =?us-ascii?Q?1XUyP+4MM0FfCYDLUUHb3J9HHxkCi87yxFNzjtseyYIAdv1GvXxaeyF0Zpra?=
+ =?us-ascii?Q?JP9KTBJVa3FpcOw/14tfEtrAtggf5ZAYqM3kP+2JmNWqYW5/vUptFmm6bOlN?=
+ =?us-ascii?Q?X8ln1bGZYISM6KDRTPJwr7YZRAfsy6qq3At9fZvrVReR1O/+B4M/s0PSPLnP?=
+ =?us-ascii?Q?gkWa2CkX/swfxH6E8jldMlNK2nj+Ym4S6XS3/mI7AOn360qbK7HJ/AATRuX2?=
+ =?us-ascii?Q?6SNDPIRsIYijWaWaTk2/jHh2xveDOj6rBONi1GKocDMKjJsIwN0cLWxSZhjE?=
+ =?us-ascii?Q?hxZBqD9Httma1SpDWvRNe7bT2znmovJVwB+i7vppEl8V7frwiis18L84lOq7?=
+ =?us-ascii?Q?zT5sLxUEe9PL719rgkyMeF5OCEYXi4kV8fJTXQw+SUCg/H1LteV6KxkZWlLU?=
+ =?us-ascii?Q?pYBOmUNe9EnMfm9/sqG9R4ZkH3nH+HUn613/5SX33vx80I7yETcLZBg3GB3m?=
+ =?us-ascii?Q?/TGlH70IjaqId1ciTtlx66s2zwDrHyA8uFLTGfRrP0bMGjEMmvue68NvmGGe?=
+ =?us-ascii?Q?8vVu4DrtQ5HskHtzEUwEA7pZeIPczXUGCrVRi/JFb5atokNmIbz5BgKXYgmh?=
+ =?us-ascii?Q?UGXiwqg5jyjNIEgy+G+m1fQGzt/PNJouAzs+4rzKQ0Nxj+1aQYo/CEX/0maI?=
+ =?us-ascii?Q?nc8XaG6K6cfmvt0jA0xr/7O6IRvL3tsEFbdWSokKYy8tgeRBSxA2aaNbG0Me?=
+ =?us-ascii?Q?sT8sQIGQnNVxcP0KhEWn4/04aQtES4zfohAyCWtLr6Gi6i/VmV5abxtNJnoQ?=
+ =?us-ascii?Q?9gBPAZ4TTBJOlqajWtY7YZcXiQ9rJpM1wo6kFHlZB/2jW4JMtVBlZksPydeg?=
+ =?us-ascii?Q?V0kKjyQfeC7OzQMCkEszuAdzO1eoc1kDW/gInG1gzc8P8ORAXWyOweqf88CF?=
+ =?us-ascii?Q?6agPKSP3BNoRYG2vQ/JOdcAQ7R+3cticBuUAW7xrDX6zU2bSQ2AAFnwoIrjs?=
+ =?us-ascii?Q?mSMTE2qoih0O73qMVrpUcmWNrLOHrjbV/70iNd8QHCYfjCTIwp/gLUS6ezU8?=
+ =?us-ascii?Q?fZWy6ickpntH7obMr+8FkHoazkZ5gK3YMN7c4T6VTO2j/MM/i9GqNwbhFarZ?=
+ =?us-ascii?Q?CqMNw4P10YRO6RT0xSxQyuPIRLiNAY7SmDD8yFd1vatfttEIKy8QoWFTNr7A?=
+ =?us-ascii?Q?2xYvh7z5CXW3sbmje65Jhih3HmUQ6bZmwJj291ATKj2W4l3+wzHBwmzys6aD?=
+ =?us-ascii?Q?kYe5S47JilmRk9J1nsu8qEK3CPZFDgtZf+IIbsbm1EoKk/m/dRZB5ie24aca?=
+ =?us-ascii?Q?s7dxI3C8raNn9ota56i/ceTt/6pjwbpC?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB5966.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?2Bv7qTPUKOXU3cN3RECBeCy/wuIgr8YL/F04gNiS682CrqZZwty4x6YUI2Mn?=
+ =?us-ascii?Q?dKbMYCvxJhLG9hlI59JerW/0AnTVDqus0jbKoMhyZ6EHjnB8m7s/g+PF79if?=
+ =?us-ascii?Q?Z5TLtPF71WFtXoXEEUqzLR2UMNXO4X9r8m3wGmEHD+zJKHJLamcjNXS9lS/R?=
+ =?us-ascii?Q?FUUmRQClNWpyZvxq7INcAMPlZtBlTOGaW6kJn8kJoK9/+xOZ7Wl1eeN0k8vb?=
+ =?us-ascii?Q?AFCmu8PCyF54g9KQJENr93WQiXE4QREaWfgkAyeHBSeuXmb7E0K0GP+egzDF?=
+ =?us-ascii?Q?271yOTdAzJlx76G0gAaw5d5UrWn1rzzfl5tvu3YZ7Tbz1UxXG7RC0lcT/HAE?=
+ =?us-ascii?Q?8CFv6DUjnXR181RgBqa3Tg1ngQos1G9HvbL+invIUPa8GnDC47JTBPbXiI/H?=
+ =?us-ascii?Q?GHdbSgVTl31CNHfwHmjfPJFmb1ysjHIUhcBiipuvGMsJHmGZ7uCJKiMJsUyA?=
+ =?us-ascii?Q?SqaVZB4X8r5vudivRuO592Q6kYApi5LGxxYDYA32+OAoPe0Aj82On347tbV6?=
+ =?us-ascii?Q?CimjbfDo9fkQifO319We4FWV68CfsQjjHifxd8oePnL1hNBk/sDKxiSWx45h?=
+ =?us-ascii?Q?tw/MT4mBTpLrsltUotGj22a7gW9uvoZ3ViF/nnAZqwkruWdfGqGYGDDQWYsA?=
+ =?us-ascii?Q?WEbbt9WIi62XdB7pjdl6dSj6q4B5yrepb5LizzQb71jjMzF09TP7axjZB8vn?=
+ =?us-ascii?Q?FQ1s8FjOlC/A/LCT/ovYJ1Sdvdx02HM83xbr7uEoqMuUKUiUuC3Srxc9e43v?=
+ =?us-ascii?Q?eWkkKgX6e24kHs7UQrChjObLgfDvSahcOifPg/JgGIwKDZlIMiN5xlOFvywT?=
+ =?us-ascii?Q?fiVolbYOht8F6+FbEneH2pQ29Ne/uU4VY77+xPVM86mstucy16nJKNHK1rOh?=
+ =?us-ascii?Q?ZB/PkbCkOc8Ani9mlp5NBtV6w6Z9pWXJVvV7gFFBA40WvD+AonN+nJzPZvTG?=
+ =?us-ascii?Q?opmzGwwMkvsKQ1Dw/9GSoZoLAQTRqRpJGsXmdHlQSjM242ks5aUvQmW9JpnM?=
+ =?us-ascii?Q?a+wi9IX/R42h0RfGUDyAICQ5LIEdrAfYT9WrvwBkhBTSnuzamZJ+/TYREaMZ?=
+ =?us-ascii?Q?o5tRuhTjjsFU6GL7EbgnVZ2d+kHsJ0ARh//vZ+pgGi41cuDtJAQ5MxlpO3oE?=
+ =?us-ascii?Q?UGygj5OJLPnqDKKut3seuj+5nBKF1PIARYUQrg88Tiy++twMZt7MzetjDPfb?=
+ =?us-ascii?Q?wtx6zWjv5v8VFI4nsZFnSO6ph5NAF+k8A0PFU7AlggHMvhFy573mxp3eG9Z8?=
+ =?us-ascii?Q?bC2ZPAF9a69LC/QMWfLrDbVLIHiiofZiDjf+52weNMF61NmRnzPYmbYHraBS?=
+ =?us-ascii?Q?xFzvKdNi+nY2mMT8SSNcStUjO6W7BrFV11plus005t30SBStu6g80kIZb1od?=
+ =?us-ascii?Q?qxhLIfGEkm4/CqdjFF5eevaHmWelbfJ3cA7gQA4/VB9PTin5gRldMULIAdur?=
+ =?us-ascii?Q?TqVRPloJ0fNTdp9yt8UxefKrRP9zRzOlxm49QMrbot68+RiChyooxOggJ9B/?=
+ =?us-ascii?Q?9r8LU6LX9R1Io9EswOycxDTH4yPbijHfz8M3L86wI5iAhkI/nA+vA4AyT4No?=
+ =?us-ascii?Q?kJ6UFJuyG4wuS0q7g6y5qlVku0hJUgf8+rbEM1RI6/qJmTF1w/RYdrHy5DH6?=
+ =?us-ascii?Q?lJ/tUWdoObBNbKLN5ROmpxhTAyB+czHOB57CSAHFnC+3CrjLHoThNzAc9vKJ?=
+ =?us-ascii?Q?C7ku7sRsXqopYNDSFSfcogT7v0r22wNjVSJN7bT1o4F+wvdK7JADZjiWbWTa?=
+ =?us-ascii?Q?03ROOMqIig=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 234e46d3-da8c-4849-7c20-08de4429894e
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB5966.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Dec 2025 02:50:32.3206
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XaoDJjkHS1+32lUoo+oCmnwQUHZlNn5QhqfXrpmL5WaeBJUh2M/Gc5/Yy999vvQ57OwMYes4+KWmDKpzYejDjg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB4598
+X-OriginatorOrg: intel.com
 
-On Wed, Dec 10, 2025 at 06:20:17AM -0800, Sean Christopherson wrote:
-> On Wed, Dec 10, 2025, dan.j.williams@intel.com wrote:
-> > Sean Christopherson wrote:
-> > > On Sat, Dec 06, 2025, dan.j.williams@intel.com wrote:
-> > > I don't think we need anything at this time.  INTEL_TDX_HOST depends on KVM_INTEL,
-> > > and so without a user that needs VMXON without KVM_INTEL, I think we're good as-is.
-> > > 
-> > >  config INTEL_TDX_HOST
-> > > 	bool "Intel Trust Domain Extensions (TDX) host support"
-> > > 	depends on CPU_SUP_INTEL
-> > > 	depends on X86_64
-> > > 	depends on KVM_INTEL
-> > 
-> > ...but INTEL_TDX_HOST, it turns out, does not have any functional
-> > dependencies on KVM_INTEL. At least, not since I last checked. Yes, it
-> > would be silly and result in dead code today to do a build with:
-> > 
-> > CONFIG_INTEL_TDX_HOST=y
-> > CONFIG_KVM_INTEL=n
-> > 
-> > However, when the TDX Connect support arrives you could have:
-> > 
-> > CONFIG_INTEL_TDX_HOST=y
-> > CONFIG_KVM_INTEL=n
-> > CONFIG_TDX_HOST_SERVICES=y
-> > 
-> > Where "TDX Host Services" is a driver for PCIe Link Encryption and TDX
-> > Module update. Whether such configuration freedom has any practical
-> > value is a separate question.
-> > 
-> > I am ok if the answer is, "wait until someone shows up who really wants
-> > PCIe Link Encryption without KVM".
-> 
-> Ya, that's my answer.  At the very least, wait until TDX_HOST_SERVICES comes
-> along.
+On Mon, Dec 15, 2025 at 09:34:11AM -0600, Michael Roth wrote:
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index 4fb042ce8ed1..3eb597c0e79f 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -3118,34 +3118,21 @@ struct tdx_gmem_post_populate_arg {
+>  };
+>  
+>  static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+> -				  void __user *src, void *_arg)
+> +				  struct page *src_page, void *_arg)
+>  {
+>  	struct tdx_gmem_post_populate_arg *arg = _arg;
+>  	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
+>  	u64 err, entry, level_state;
+>  	gpa_t gpa = gfn_to_gpa(gfn);
+> -	struct page *src_page;
+>  	int ret, i;
+>  
+>  	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
+>  		return -EIO;
+Check if src_page is NULL.
 
-I've tested the PCIe Link Encryption without KVM, with the kernel
-config:
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index f9dc59a39eb8..98ff84bc83f2 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -3190,6 +3190,9 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+        if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
+                return -EIO;
+ 
++       if (!src_page)
++               return -EOPNOTSUPP;
++
+        kvm_tdx->page_add_src = src_page;
+        ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
+        kvm_tdx->page_add_src = NULL;
 
-  CONFIG_INTEL_TDX_HOST=y
-  CONFIG_KVM_INTEL=n
-  CONFIG_TDX_HOST_SERVICES=y
+> -	/*
+> -	 * Get the source page if it has been faulted in. Return failure if the
+> -	 * source page has been swapped out or unmapped in primary memory.
+> -	 */
+> -	ret = get_user_pages_fast((unsigned long)src, 1, 0, &src_page);
+> -	if (ret < 0)
+> -		return ret;
+> -	if (ret != 1)
+> -		return -ENOMEM;
+> -
+>  	kvm_tdx->page_add_src = src_page;
+>  	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
+>  	kvm_tdx->page_add_src = NULL;
+>  
+> -	put_page(src_page);
+> -
+>  	if (ret || !(arg->flags & KVM_TDX_MEASURE_MEMORY_REGION))
+>  		return ret;
+>  
+...
+>  long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long npages,
+>  		       kvm_gmem_populate_cb post_populate, void *opaque)
+>  {
+>  	struct kvm_memory_slot *slot;
+> -	void __user *p;
+> -
+>  	int ret = 0;
+>  	long i;
+>  
+> @@ -834,6 +870,9 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+>  	if (WARN_ON_ONCE(npages <= 0))
+>  		return -EINVAL;
+>  
+> +	if (WARN_ON_ONCE(!PAGE_ALIGNED(src)))
+> +		return -EINVAL;
+> +
+>  	slot = gfn_to_memslot(kvm, start_gfn);
+>  	if (!kvm_slot_has_gmem(slot))
+>  		return -EINVAL;
+> @@ -842,47 +881,38 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+>  	if (!file)
+>  		return -EFAULT;
+>  
+> -	filemap_invalidate_lock(file->f_mapping);
+> -
+>  	npages = min_t(ulong, slot->npages - (start_gfn - slot->base_gfn), npages);
+>  	for (i = 0; i < npages; i++) {
+> -		struct folio *folio;
+> -		gfn_t gfn = start_gfn + i;
+> -		pgoff_t index = kvm_gmem_get_index(slot, gfn);
+> -		kvm_pfn_t pfn;
+> +		struct page *src_page = NULL;
+> +		void __user *p;
+>  
+>  		if (signal_pending(current)) {
+>  			ret = -EINTR;
+>  			break;
+>  		}
+>  
+> -		folio = __kvm_gmem_get_pfn(file, slot, index, &pfn, NULL);
+> -		if (IS_ERR(folio)) {
+> -			ret = PTR_ERR(folio);
+> -			break;
+> -		}
+> +		p = src ? src + i * PAGE_SIZE : NULL;
+>  
+> -		folio_unlock(folio);
+> +		if (p) {
+> +			ret = get_user_pages_fast((unsigned long)p, 1, 0, &src_page);
+> +			if (ret < 0)
+> +				break;
+> +			if (ret != 1) {
+Put pages in this case? e.g.,
 
-and
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -1645,6 +1645,9 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+                        if (ret < 0)
+                                break;
+                        if (ret != 1) {
++                               while (ret--)
++                                       put_page(src_page++);
++
+                                ret = -ENOMEM;
+                                break;
+                        }
 
---- /dev/null
-+++ b/drivers/virt/coco/tdx-host/Kconfig
-@@ -0,0 +1,10 @@
-+config TDX_HOST_SERVICES
-+       tristate "TDX Host Services Driver"
-+       depends on INTEL_TDX_HOST
-+       default m
 
-Finally I enabled the combination successfully with a patch below, do we
-need the change when TDX_HOST_SERVICES comes?
 
-------------8<----------------------
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 80527299f859..e3e90d1fcad3 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1898,7 +1898,6 @@ config INTEL_TDX_HOST
-        bool "Intel Trust Domain Extensions (TDX) host support"
-        depends on CPU_SUP_INTEL
-        depends on X86_64
--       depends on KVM_INTEL
-        depends on X86_X2APIC
-        select ARCH_KEEP_MEMBLOCK
-        depends on CONTIG_ALLOC
-diff --git a/arch/x86/include/asm/virt.h b/arch/x86/include/asm/virt.h
-index 77a366afd9f7..26bbf0f21575 100644
---- a/arch/x86/include/asm/virt.h
-+++ b/arch/x86/include/asm/virt.h
-@@ -6,7 +6,7 @@
-
- typedef void (cpu_emergency_virt_cb)(void);
-
--#if IS_ENABLED(CONFIG_KVM_X86)
-+#if IS_ENABLED(CONFIG_KVM_X86) || IS_ENABLED(CONFIG_INTEL_TDX_HOST)
- extern bool virt_rebooting;
-
- void __init x86_virt_init(void);
-diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index 278f08194ec8..28fe309093ed 100644
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -134,7 +134,7 @@ config X86_SGX_KVM
- config KVM_INTEL_TDX
-        bool "Intel Trust Domain Extensions (TDX) support"
-        default y
--       depends on INTEL_TDX_HOST
-+       depends on INTEL_TDX_HOST && KVM_INTEL
-        select KVM_GENERIC_MEMORY_ATTRIBUTES
-        select HAVE_KVM_ARCH_GMEM_POPULATE
-        help
-diff --git a/arch/x86/virt/Makefile b/arch/x86/virt/Makefile
-index 6e485751650c..85ed7a06ed88 100644
---- a/arch/x86/virt/Makefile
-+++ b/arch/x86/virt/Makefile
-@@ -1,4 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0-only
- obj-y  += svm/ vmx/
-
--obj-$(subst m,y,$(CONFIG_KVM_X86)) += hw.o
-\ No newline at end of file
-+obj-$(CONFIG_INTEL_TDX_HOST) += hw.o
-+obj-$(subst m,y,$(CONFIG_KVM_X86)) += hw.o
-diff --git a/arch/x86/virt/hw.c b/arch/x86/virt/hw.c
-index 986e780cf438..31ea89069a93 100644
---- a/arch/x86/virt/hw.c
-+++ b/arch/x86/virt/hw.c
-@@ -48,7 +48,7 @@ static void x86_virt_invoke_kvm_emergency_callback(void)
-                kvm_callback();
- }
-
--#if IS_ENABLED(CONFIG_KVM_INTEL)
-+#if IS_ENABLED(CONFIG_KVM_INTEL) || IS_ENABLED(CONFIG_INTEL_TDX_HOST)
- static DEFINE_PER_CPU(struct vmcs *, root_vmcs);
-
- static int x86_virt_cpu_vmxon(void)
-@@ -257,7 +257,8 @@ static __init int x86_svm_init(void) { return -EOPNOTSUPP; }
- ({                                                     \
-        int __r;                                        \
-                                                        \
--       if (IS_ENABLED(CONFIG_KVM_INTEL) &&             \
-+       if ((IS_ENABLED(CONFIG_KVM_INTEL) ||            \
-+            IS_ENABLED(CONFIG_INTEL_TDX_HOST)) &&      \
-            cpu_feature_enabled(X86_FEATURE_VMX))       \
-                __r = x86_vmx_##fn();                   \
-        else if (IS_ENABLED(CONFIG_KVM_AMD) &&          \
-
+> +				ret = -ENOMEM;
+> +				break;
+> +			}
+> +		}
+>  
+> -		ret = -EINVAL;
+> -		if (!kvm_range_has_memory_attributes(kvm, gfn, gfn + 1,
+> -						     KVM_MEMORY_ATTRIBUTE_PRIVATE,
+> -						     KVM_MEMORY_ATTRIBUTE_PRIVATE))
+> -			goto put_folio_and_exit;
+> +		ret = __kvm_gmem_populate(kvm, slot, file, start_gfn + i, src_page,
+> +					  post_populate, opaque);
+>  
+> -		p = src ? src + i * PAGE_SIZE : NULL;
+> -		ret = post_populate(kvm, gfn, pfn, p, opaque);
+> -		if (!ret)
+> -			folio_mark_uptodate(folio);
+> +		if (src_page)
+> +			put_page(src_page);
+>  
+> -put_folio_and_exit:
+> -		folio_put(folio);
+>  		if (ret)
+>  			break;
+>  	}
+>  
+> -	filemap_invalidate_unlock(file->f_mapping);
+> -
+>  	return ret && !i ? ret : i;
+>  }
+>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_populate);
+> -- 
+> 2.25.1
 > 
