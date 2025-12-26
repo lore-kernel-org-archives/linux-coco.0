@@ -1,271 +1,183 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820CD1EB5C2
-	for <linux-coco@lists.linux.dev>; Fri, 26 Dec 2025 03:11:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766718700; cv=fail; b=T2zRXDNQyeif4yVP1vVcBIDbVxNxpt0b5mDR33QAOFjJPQtHDMylwXFpdUtsRL/gMMRehIEW9QfroSnWGyiJrk/InNmCbvnUpT8pir5o2cEmfnVvnI7jX7aPUZwK758jnZSPQhffJHowSMNBJ1O58KrzjcHw7NwAa0FXrNcRJ68=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766718700; c=relaxed/simple;
-	bh=0cR/ploaPLskucCmp5vQ+BvGNIu+4de9qp3J3WCd98c=;
-	h=Date:From:To:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Bwb8tFnJeI+3miVZZbuzqdS5HoZ4PRnPcnXQjA7gB/LtoBsvfdUCUaQNeMdtGxlHvdNcRO/z1UdyX9Zp6yvdDrXV4L4POEzdYBhBrW8XSwGodxzRGGq5opj4gEhrZt/B9pyV5oSkj07RCDjJ8h2e72BJM+RXpDqXJFUR1IWeHBI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E73dp5mU; arc=fail smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67A77081E;
+	Fri, 26 Dec 2025 08:59:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766739572; cv=none; b=nnY6qRzENK93G/kr8jQi8UcDQNwPjfyGCG1IZHCbpTcS6UT4ZdVGzUrsFKVjzEtWxO/Js8I/iK2h0ibBXK26hSufSIPgLFJUQQ+aH+IumUPuxhZ576QpLVplJHS69Dt2CE83kRZgihEi/xcExKVzdFKHS1OUpVo+KGOASZ/sKJM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766739572; c=relaxed/simple;
+	bh=t17XSjNclcaVd2nsSo4MOjcBQS2nAgC3yiSvta1qyhQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=cP8QB0s63nUxOUS62OUcUx2lopgunxZUEVyfpHt017OOO4NvZSBqQUvTPKf+IpyzJnagJyJ+Pk9Vy8RTg0//leaT3gGYqFjL/BcwW6KoHT4Sd5qDs9heMPfITXAPCqAmkZGYhNc1wBmb2sxBmA1Sdklc10kBWnnY81Xk3O/h84w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KDI+FacG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E73dp5mU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766718698; x=1798254698;
-  h=date:from:to:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=0cR/ploaPLskucCmp5vQ+BvGNIu+4de9qp3J3WCd98c=;
-  b=E73dp5mUAuEKUTVK9zyFMh8r3JRYjBu1jytYsYy+WSOwjWz6VNxiImMU
-   TlTLlDZBeZrVypR62ysmq5Bw6xK/XPtso/0bUJ9C6dJGFtF9JQ0lOxk4c
-   IlP273CCgq47xKb01acsoOQYwYU+U68SbUIg9rf8WkNg5//9BhCufSYI/
-   ncQw9OMnLYp+30hdrTZwv2CQxMVbDdlojGi4nmna8mTuvuwaFmew8KlIw
-   kWrnEpRmjhoTQnrqvmZ78T6xLX1/+u2dDU3rTNd1/RjKYxmOU2HQ9f3xT
-   3c9w+5h+H0iqAYQe9LQ/WBbOgEgQG0hPeYgbBuq90CK94CplKZXqNXxTx
-   A==;
-X-CSE-ConnectionGUID: lmxiD+rdTBOzzywZ5t1k+w==
-X-CSE-MsgGUID: yLmf6pfeRWStUgSjIkzoQg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11652"; a="68375787"
-X-IronPort-AV: E=Sophos;i="6.21,177,1763452800"; 
-   d="scan'208";a="68375787"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Dec 2025 19:11:37 -0800
-X-CSE-ConnectionGUID: YmCFoY7LR1CTNLiHiQEN3w==
-X-CSE-MsgGUID: TYDP5ysMTU64Q2JOkA+hjg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,177,1763452800"; 
-   d="scan'208";a="199959332"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Dec 2025 19:11:37 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 25 Dec 2025 19:11:36 -0800
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Thu, 25 Dec 2025 19:11:36 -0800
-Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.53) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 25 Dec 2025 19:11:36 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=E+1pb7jpUH0N5Z8jIeSoej+I98g+adv1wF0dDCm3+8Q9OOmixaCXOF4MZg7LRCmjL3KW6vuI/clq0Xhm1ZHRbeSOde4ugVImEMs2cxi0bpCu1DaAS4s8Fvzv0xdBnYrbGh5YPUbmWmTdXv2wZpRU7zxPR7n1D9WpQTHRpvT9Ze35Qn+WxiMbPx/ONxMG3HAj2v4EiJlNWjEsON4JIYWLHBfYCF9FSpo7jwCNr42LkLIuWZXJc6OGxYwhkCLHqYzHa7U3vIqL0AklD0AINGw+3E6ls1WBV1jwWxlCf3vR/8u68NuiATEitPweIoiAWoz0tmar6kaTU7FaCsPR14Oj+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JNUGMD9XNZYfp+b8UiheLheAeeq/HiGHprl3iNnBTuI=;
- b=mKBN9jD3XAxPzLs8oT25vHWlzQz/FqwCK0DZg4UW2WCrlBk0ll9gp4Y651f0uzrA7fuYhk+7pZZHbcP5srYl6W+dLZ5ALYr/AW9Xw7On6YfOkmukmrMKWb2t/T3gyglTts6uj050d0zZda8ZbleBXcqo+S4M2gceth80VmzoFvNXXe303JcJU7sHnqjL9eQXULguvK76isoyehJfe0EdZqtLWi+HHwm6tho87y54X5orarztd3KVTTG/AJbfMIp5/I6YZzJ1iofH54y4qr7k2NURfs3jU8jNw1um4qtEXT8CduX4O6ll4MNvhrgwZ8TLjsrhfUHFz52lmm9Z3aTFUw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6) by
- DM4PR11MB6041.namprd11.prod.outlook.com (2603:10b6:8:60::22) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9434.10; Fri, 26 Dec 2025 03:11:34 +0000
-Received: from DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca]) by DS7PR11MB5966.namprd11.prod.outlook.com
- ([fe80::e971:d8f4:66c4:12ca%6]) with mapi id 15.20.9456.008; Fri, 26 Dec 2025
- 03:11:34 +0000
-Date: Fri, 26 Dec 2025 11:09:35 +0800
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: Michael Roth <michael.roth@amd.com>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <thomas.lendacky@amd.com>,
-	<pbonzini@redhat.com>, <seanjc@google.com>, <vbabka@suse.cz>,
-	<ashish.kalra@amd.com>, <liam.merwick@oracle.com>, <david@redhat.com>,
-	<vannapurve@google.com>, <ackerleytng@google.com>, <aik@amd.com>,
-	<ira.weiny@intel.com>
-Subject: Re: [PATCH v2 5/5] KVM: guest_memfd: GUP source pages prior to
- populating guest memory
-Message-ID: <aU38b/quNP/Y2J2P@yzhao56-desk.sh.intel.com>
-Reply-To: Yan Zhao <yan.y.zhao@intel.com>
-References: <20251215153411.3613928-1-michael.roth@amd.com>
- <20251215153411.3613928-6-michael.roth@amd.com>
- <aU33Y56qBXgrL5/3@yzhao56-desk.sh.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <aU33Y56qBXgrL5/3@yzhao56-desk.sh.intel.com>
-X-ClientProxiedBy: SI1PR02CA0045.apcprd02.prod.outlook.com
- (2603:1096:4:1f6::16) To DS7PR11MB5966.namprd11.prod.outlook.com
- (2603:10b6:8:71::6)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KDI+FacG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C64CFC4CEF7;
+	Fri, 26 Dec 2025 08:59:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766739572;
+	bh=t17XSjNclcaVd2nsSo4MOjcBQS2nAgC3yiSvta1qyhQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=KDI+FacGL3+U0zMS7RH1Ii7Xrc8GUcCrT1yaIahts6HkioTm/rSfw04vHX7oOfYcL
+	 tCTyelAtUn4eYh7qEGi8ZIFHY3fNyo9dX/LvXMz48XVf/BS/QODSFzBqhCL0OVOXHq
+	 IGeLVsz5D4k0Pfeya+CY75bU7kcDRSlq+C36fNGG941HKqsUHkCJOz0kyLKk2MqY0T
+	 C1mEaQ+LdBxN7RuwNAGqALk9bU7Q2FDqxYR9LsZrpe/sZF9uE3m2YlC6aWIB3+UrRS
+	 AziptPPtoQyE5auy7gxAMBZxcezC/M47TDGn+M6VKozkEQB7co9nurZFO9N3uZwApq
+	 CnL0XQJi4cu+w==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, linux-kernel@vger.kernel.org,
+	iommu@lists.linux.dev, linux-coco@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, will@kernel.org,
+	maz@kernel.org, tglx@linutronix.de, robin.murphy@arm.com,
+	akpm@linux-foundation.org, jgg@ziepe.ca, steven.price@arm.com
+Subject: Re: [PATCH v2 4/4] dma: direct: set decrypted flag for remapped dma
+ allocations
+In-Reply-To: <yq5ams39txvk.fsf@kernel.org>
+References: <20251221160920.297689-1-aneesh.kumar@kernel.org>
+ <20251221160920.297689-5-aneesh.kumar@kernel.org>
+ <5820e8f3-9cf8-423f-89df-0df7ca78a84b@arm.com>
+ <yq5ams39txvk.fsf@kernel.org>
+Date: Fri, 26 Dec 2025 14:29:24 +0530
+Message-ID: <yq5abjjl4o0j.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR11MB5966:EE_|DM4PR11MB6041:EE_
-X-MS-Office365-Filtering-Correlation-Id: ca2093d6-ac59-4dc1-fbd4-08de442c797d
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|366016|376014|921020;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?rOK7BOQMsOHV/amLaKtHPR/CQDqNLo2n3YOIa4Yp2/sZaib+/jTCfEVkurag?=
- =?us-ascii?Q?MzTd0syW4OdjlRF/ujQSIbfKwZnH0kOo8WkMvDbzXHEFnYFHdZtervuTtcwG?=
- =?us-ascii?Q?vHeTaSYzQPWp5z3vLEmbyDgzFjWSYHEzMqtah3N9DKm0NyhLZhSirQ3I+RDL?=
- =?us-ascii?Q?dSze2+Bg7pZQ2cYtGDEVJ6hFCilwsdgPhmg+eZw+B+JX8NiGlF1xVladcYWl?=
- =?us-ascii?Q?v8vklFmMzSkfu/auNA3YUyuAMsQLEuL0RErrX9x0JpNWaihTZVXF5IhmV2V4?=
- =?us-ascii?Q?WrvkNWXEGgOgF9CyL/Uiw4FSavFemDxx5wAyUDyxLgy6BdXmqQiW5N2tJhRR?=
- =?us-ascii?Q?skR/tZW0IClr5LFo0knVGumq4r1Rbfur9jeRR25umJOx7K8tZ6WwsufPJ9ns?=
- =?us-ascii?Q?942Drn4OrmibjKqVvBA44dc2H+Ybqisa1/tlCgjIuB/3+mOoTib8uej8/+Cn?=
- =?us-ascii?Q?lh6M/YrBp0qzKJRVdKYdZyPteZiMzGyNlIL0WO/JQv/piQwz9dIEP8mkNKB3?=
- =?us-ascii?Q?ygf4R6bFl9X5sJIbAAya7KcyL6VjdyLxT5ZOUxCIavYudUMQhhp/F2f00wSi?=
- =?us-ascii?Q?wo4CwL+DxkcFNxOmOb25cAAZYL8RbcPwg//Ys/HR7htGVO1mALS+8AjLC9T+?=
- =?us-ascii?Q?sLnayXxq0pMr7GacX+op8xMaECd7kQuoiF4wNk1aDxc43mFtrpvAPLGZromu?=
- =?us-ascii?Q?glprEDiplhK8MJLvm1QJQ2j0urAUDCWOXjlZkE6xHQ5tRpKZ9m1B1LGKAHJs?=
- =?us-ascii?Q?Nfr40YWXTuf/W1cVPUtvTD4brGt0xwrkkzGpJ5myYLHs1a72bmdcNNppQh/J?=
- =?us-ascii?Q?jCE4kzLH9q8fza3R1t8kMZfZwpAi4GiVDMr9LE6IFUtqXssXBVAgRe7G/PPu?=
- =?us-ascii?Q?hYd4zzewFW/g+rexTpJlOhPiR8xLK3K5rmSsa3pBLktC8xDLWPberJXZOFm0?=
- =?us-ascii?Q?k9Z6FUIZTBZDx8kRJizbvZsuA6kY2lIluuJLqJ5QLZTG5n7GXWuVP2akkRIO?=
- =?us-ascii?Q?FQBR4Mz/Qi94zGSdHhad+3mUPR9++1/CTZIR+FisDrpt+y27smfNL3VkOt2z?=
- =?us-ascii?Q?39SooO83j0yynKnxbrM9tMRCShjY41ay6fNDCYIAyJJibHCWiVbFr7bdsIAy?=
- =?us-ascii?Q?L/yy5qHyLrkHeY5iPYvgTW//Heyekk6uISMv1hTLAyJ2sjMkZ5i+Y4BKMs1x?=
- =?us-ascii?Q?zOCyAdHd7xqXi7//y9pp4ByJkRHgsJASMf9R3g8s63WDNzCzT8YQ8XJcQYCk?=
- =?us-ascii?Q?t5cQ1BaOX7Z6SzScb0auI8BvWjNwnwfBj5y889blz5YBMw6U1m7gYKS/KlzM?=
- =?us-ascii?Q?eZtTJBP0dvZ1upAxfstws6smFOMzMNl7Vk0G+YnubAs2A5uoRVhVUAq7mUL3?=
- =?us-ascii?Q?rY3907UQyoX55fxyanwszX59QFUB39h5fW72xoH7m+sIXP7Yy9fruRwaMsp/?=
- =?us-ascii?Q?1NGYAoDDO+VCFjiyzGG6tNs87J6jEZ/7bH1dTnwgVk3zkHudt8M7REnHBfft?=
- =?us-ascii?Q?hXi6Bn8NmO9VFp4=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB5966.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(376014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?QCnazATyU955PFg+YIAGe7tIVthAt5GppgnbsINKNHDORPaMrIX5qX9Ggdqx?=
- =?us-ascii?Q?dKsVlU4QHQrQG6GvT6AsRAPUCYi0QcL3Xo0w2NuaV9/jdXlBp9WaitOQ98qB?=
- =?us-ascii?Q?2h3gxb9YjNys6EDY3iyROvM3lu4+GCVAbMPzc6O1sIFtEKbz9xruEoYB1x1J?=
- =?us-ascii?Q?UGQ3K+fJQQBKWoz1Q5IIFWpIG1ffYYwW7aOaqIeNFpKpRucx/YH1ehMhFsfV?=
- =?us-ascii?Q?GX6vxqU95mRhHbpWEBSJJwIyHBPIdHAi0oVfYNyxCTNukwHGmylwUi8CxwIH?=
- =?us-ascii?Q?iJV4H3CnHbsGGbE/K42D3pUmPK2oxVyhqkROCUlFrb2UupaFxb9jj3Gm5OlD?=
- =?us-ascii?Q?uNJx3hg3yR/eQAukkqRPT0PEtHkWVEfw3JodxEfBPbTvMrWtKepp990BJXnt?=
- =?us-ascii?Q?qq1PKJ+n20TUR6Gssz1Blkk0mqSCjqB/yT6GWbGvXjhyxOnsjMS4LzxjqpWe?=
- =?us-ascii?Q?+tDG6ZQVadwLW3jnpG4oRMhIJ2PxjSIKJ6hSYTfeVeKM/4rvy7NclMlWEGbL?=
- =?us-ascii?Q?++UpO+zAuwz4HMjU2wBfRFRY0W8Dqb7y2acFMw63mBTo52ZMkxJKw+7YlAhk?=
- =?us-ascii?Q?33eEt8Wi95ypJJc6ox+IcUhjSIWdi92XgX6+453CjKFVolTjX3S1OCZ7B3Y7?=
- =?us-ascii?Q?eGZHZ1TN9KOemff6Q0j0QOa0NxCyqvAoEkgHanvwekT1tGhXIg+BWAncmJcQ?=
- =?us-ascii?Q?bdkmLjuNlpJV7cupD3N93nbDyTeIoGYAJLJBMLsgpJIeUSmb3+3tgvb3WXdy?=
- =?us-ascii?Q?kq9mbnNbMxY90MjwY4owr6PgIMMjpYtPINLGRXvGMCffxb8/FFhD+XF1sKCA?=
- =?us-ascii?Q?IsNCCm1qU+OqdBLrsb4ATtFo6h7G0lR4bGlabVUUdAQayjgj0K3x1JqZXXl8?=
- =?us-ascii?Q?F6R8xxli0A8s+z9fC/GK6Zh+byM85tqLg+hgSedXcaJGypvkRWD63clZUWos?=
- =?us-ascii?Q?jcwuflV9r8RgAVM//TTIhHrz2T5e8NC64QfSWggAdTygoNBqCbkvQjZMf+yw?=
- =?us-ascii?Q?QDSLKtg/grkACwRoNQHoRWMeucZXgNh0Gi2IurEUGtR+MmQDt5N4RxnW4tUI?=
- =?us-ascii?Q?4YOfD1Lq40fncH07ogY9QG7FogRK/0yFO8BUDQs9bA0LnnJZQO5UTNqF5gMs?=
- =?us-ascii?Q?O/0POsop1kNkH6Lh9IZm4lZLV46lqTC/E3Prze/89mGcWsmsaPFA4sbMerTE?=
- =?us-ascii?Q?H0Vd1RsHwq2vxg/WIdzbtBba1cUYqm+HpIw0trdw3aZS77hPobGJFvKRiDTj?=
- =?us-ascii?Q?5lOoRHf7pBEvQ7EuIpn3Fdcm23VpDxNofiW5FRQke6ZoIy+L7xrpf+emrhRW?=
- =?us-ascii?Q?MGWTC099i7+IOOpxq5BqrSrmZ2knAKinMynMjULyZ7ZRz0au4Z513Dd2EhCy?=
- =?us-ascii?Q?h2cDwDFYtf6d895sJIW/1TKLga9HI9XUkc37zT+Zne3QZ9Z62OC52S7Knnun?=
- =?us-ascii?Q?quywR/KXJdMhfhvuBwZd3wR5DqGGBSnI189VRwEzWd+8TXFrQMoxW+V+sbe7?=
- =?us-ascii?Q?/A+3X6ytRWBgjBNBYXMeUIVA7jxl8ubNTx2wOTHA162Wx5OL78Mb+5hgg9og?=
- =?us-ascii?Q?/qbboZVC4KC9OYz6SdlxgdA8e2fCUnpgfcfmgjLT7qOc/3DaRhskDjDJL1oZ?=
- =?us-ascii?Q?+94drVjh2wcMnYLfTBRUqVrzewPcLqGsiO8+pcR7JyeYYFrjfSN6zmlnrrJf?=
- =?us-ascii?Q?kxReFByx4T6kD6yRZjMEZYQSGWYLMuOo0U/ULaFlkwIY0rN2+TfCBOw7TMsH?=
- =?us-ascii?Q?IK3TYydW7w=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: ca2093d6-ac59-4dc1-fbd4-08de442c797d
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB5966.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Dec 2025 03:11:34.1641
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MkFWRJEkxi3ej6lIfXGJPTm1kRBw5JM7HXJ5WobAxhgrINuh4hOnwZsONaAo8ReuagdO0RbtlSIgKOdYEkUseA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6041
-X-OriginatorOrg: intel.com
+Content-Type: text/plain
 
-On Fri, Dec 26, 2025 at 10:48:03AM +0800, Yan Zhao wrote:
-> > @@ -842,47 +881,38 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
-> >  	if (!file)
-> >  		return -EFAULT;
-> >  
-> > -	filemap_invalidate_lock(file->f_mapping);
-> > -
-> >  	npages = min_t(ulong, slot->npages - (start_gfn - slot->base_gfn), npages);
-> >  	for (i = 0; i < npages; i++) {
-> > -		struct folio *folio;
-> > -		gfn_t gfn = start_gfn + i;
-> > -		pgoff_t index = kvm_gmem_get_index(slot, gfn);
-> > -		kvm_pfn_t pfn;
-> > +		struct page *src_page = NULL;
-> > +		void __user *p;
-> >  
-> >  		if (signal_pending(current)) {
-> >  			ret = -EINTR;
-> >  			break;
-> >  		}
-> >  
-> > -		folio = __kvm_gmem_get_pfn(file, slot, index, &pfn, NULL);
-> > -		if (IS_ERR(folio)) {
-> > -			ret = PTR_ERR(folio);
-> > -			break;
-> > -		}
-> > +		p = src ? src + i * PAGE_SIZE : NULL;
-> >  
-> > -		folio_unlock(folio);
-> > +		if (p) {
-> > +			ret = get_user_pages_fast((unsigned long)p, 1, 0, &src_page);
-> > +			if (ret < 0)
-> > +				break;
-> > +			if (ret != 1) {
-> Put pages in this case? e.g.,
-> 
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -1645,6 +1645,9 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
->                         if (ret < 0)
->                                 break;
->                         if (ret != 1) {
-> +                               while (ret--)
-Oops. Need to check if ret == 0, and looks put_page() is not required in this
-case given nr_pages == 1.
-So, please ignore this comment.
-> +                                       put_page(src_page++);
-> +
->                                 ret = -ENOMEM;
->                                 break;
->                         }
-> 
-> 
-> 
-> 
-> > +				ret = -ENOMEM;
-> > +				break;
-> > +			}
-> > +		}
-> >  
-> > -		ret = -EINVAL;
-> > -		if (!kvm_range_has_memory_attributes(kvm, gfn, gfn + 1,
-> > -						     KVM_MEMORY_ATTRIBUTE_PRIVATE,
-> > -						     KVM_MEMORY_ATTRIBUTE_PRIVATE))
-> > -			goto put_folio_and_exit;
-> > +		ret = __kvm_gmem_populate(kvm, slot, file, start_gfn + i, src_page,
-> > +					  post_populate, opaque);
-> >  
-> > -		p = src ? src + i * PAGE_SIZE : NULL;
-> > -		ret = post_populate(kvm, gfn, pfn, p, opaque);
-> > -		if (!ret)
-> > -			folio_mark_uptodate(folio);
-> > +		if (src_page)
-> > +			put_page(src_page);
-> >  
-> > -put_folio_and_exit:
-> > -		folio_put(folio);
-> >  		if (ret)
-> >  			break;
-> >  	}
-> >  
-> > -	filemap_invalidate_unlock(file->f_mapping);
-> > -
-> >  	return ret && !i ? ret : i;
-> >  }
-> >  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_populate);
-> > -- 
-> > 2.25.1
-> > 
+Aneesh Kumar K.V <aneesh.kumar@kernel.org> writes:
+
+> Suzuki K Poulose <suzuki.poulose@arm.com> writes:
+>
+>> On 21/12/2025 16:09, Aneesh Kumar K.V (Arm) wrote:
+>>> Devices that are DMA non-coherent and need a remap were skipping
+>>> dma_set_decrypted(), leaving buffers encrypted even when the device
+>>> requires unencrypted access. Move the call after the remap
+>>> branch so both paths mark the allocation decrypted (or fail cleanly)
+>>> before use.
+>>> 
+>>> Fixes: f3c962226dbe ("dma-direct: clean up the remapping checks in dma_direct_alloc")
+>>> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+>>> ---
+>>>   kernel/dma/direct.c | 8 +++-----
+>>>   1 file changed, 3 insertions(+), 5 deletions(-)
+>>> 
+>>> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+>>> index 3448d877c7c6..a62dc25524cc 100644
+>>> --- a/kernel/dma/direct.c
+>>> +++ b/kernel/dma/direct.c
+>>> @@ -271,9 +271,6 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+>>>   	if (remap) {
+>>>   		pgprot_t prot = dma_pgprot(dev, PAGE_KERNEL, attrs);
+>>>   
+>>> -		if (force_dma_unencrypted(dev))
+>>> -			prot = pgprot_decrypted(prot);
+>>
+>> This would be problematic, isn't it ? We don't support decrypted on a
+>> vmap area for arm64. If we move this down, we might actually use the
+>> vmapped area. Not sure if other archs are fine with "decrypting" a
+>> "vmap" address.
+>>
+>> If we map the "vmap" address with pgprot_decrypted, we could go ahead
+>> and further map the linear map (i.e., page_address(page)) decrypted
+>> and get everything working.
+>
+> We still have the problem w.r.t free
+>
+> dma_direct_free():
+>
+> 	if (is_vmalloc_addr(cpu_addr)) {
+> 		vunmap(cpu_addr);
+> 	} else {
+> 		if (dma_set_encrypted(dev, cpu_addr, size))
+> 			return;
+> 	}
+>
+
+How about the below change? 
+
+commit 8261c528961c6959b85de87c5659ce9081dc85b7
+Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+Date:   Fri Dec 19 14:46:20 2025 +0530
+
+    dma: direct: set decrypted flag for remapped DMA allocations
+    
+    Devices that are DMA non-coherent and require a remap were skipping
+    dma_set_decrypted(), leaving DMA buffers encrypted even when the device
+    requires unencrypted access. Move the call after the if (remap) branch
+    so that both direct and remapped allocation paths correctly mark the
+    allocation as decrypted (or fail cleanly) before use.
+    
+    If CMA allocations return highmem pages, treat this as an allocation
+    error so that dma_direct_alloc() falls back to the standard allocation
+    path. This is required because some architectures (e.g. arm64) cannot
+    mark vmap addresses as decrypted, and highmem pages necessarily require
+    a vmap remap. As a result, such allocations cannot be safely marked
+    unencrypted for DMA.
+    
+    Other architectures (e.g. x86) do not have this limitation, but instead
+    of making this architecture-specific, I have made the restriction apply
+    when the device requires unencrypted DMA access. This was done for
+    simplicity,
+    
+    Fixes: f3c962226dbe ("dma-direct: clean up the remapping checks in dma_direct_alloc")
+    Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+
+diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+index 7c0b55ca121f..811de37ad81c 100644
+--- a/kernel/dma/direct.c
++++ b/kernel/dma/direct.c
+@@ -264,6 +264,15 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+ 	 * remapped to return a kernel virtual address.
+ 	 */
+ 	if (PageHighMem(page)) {
++		/*
++		 * Unencrypted/shared DMA requires a linear-mapped buffer
++		 * address to look up the PFN and set architecture-required PFN
++		 * attributes. This is not possible with HighMem, so return
++		 * failure.
++		 */
++		if (force_dma_unencrypted(dev))
++			goto out_free_pages;
++
+ 		remap = true;
+ 		set_uncached = false;
+ 	}
+@@ -284,7 +293,13 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+ 			goto out_free_pages;
+ 	} else {
+ 		ret = page_address(page);
+-		if (dma_set_decrypted(dev, ret, size))
++	}
++
++	if (force_dma_unencrypted(dev)) {
++		void *lm_addr;
++
++		lm_addr = page_address(page);
++		if (set_memory_decrypted((unsigned long)lm_addr, PFN_UP(size)))
+ 			goto out_leak_pages;
+ 	}
+ 
+@@ -349,8 +364,16 @@ void dma_direct_free(struct device *dev, size_t size,
+ 	} else {
+ 		if (IS_ENABLED(CONFIG_ARCH_HAS_DMA_CLEAR_UNCACHED))
+ 			arch_dma_clear_uncached(cpu_addr, size);
+-		if (dma_set_encrypted(dev, cpu_addr, size))
++	}
++
++	if (force_dma_unencrypted(dev)) {
++		void *lm_addr;
++
++		lm_addr = phys_to_virt(dma_to_phys(dev, dma_addr));
++		if (set_memory_encrypted((unsigned long)lm_addr, PFN_UP(size))) {
++			pr_warn_ratelimited("leaking DMA memory that can't be re-encrypted\n");
+ 			return;
++		}
+ 	}
+ 
+ 	__dma_direct_free_pages(dev, dma_direct_to_page(dev, dma_addr), size);
