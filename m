@@ -1,183 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67A77081E;
-	Fri, 26 Dec 2025 08:59:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A091D2820AC
+	for <linux-coco@lists.linux.dev>; Tue, 30 Dec 2025 22:59:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766739572; cv=none; b=nnY6qRzENK93G/kr8jQi8UcDQNwPjfyGCG1IZHCbpTcS6UT4ZdVGzUrsFKVjzEtWxO/Js8I/iK2h0ibBXK26hSufSIPgLFJUQQ+aH+IumUPuxhZ576QpLVplJHS69Dt2CE83kRZgihEi/xcExKVzdFKHS1OUpVo+KGOASZ/sKJM=
+	t=1767135594; cv=none; b=uRQm8Lo1asG4/pCQHANjw2BXgxcr6TGss5uac3+yfT2DI2c1T9hEUHwaWPgtOLC0OvWve3+CBs5GXjvhLMcF+b5KbPbtjyi4SiiUJ5XY6x7QyoNIwpD/xeXSnQNxd1JIn3h26vDsZjN5PzgIPAUWtsOLJ9Jqtj4zcj3mF9kw9M0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766739572; c=relaxed/simple;
-	bh=t17XSjNclcaVd2nsSo4MOjcBQS2nAgC3yiSvta1qyhQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=cP8QB0s63nUxOUS62OUcUx2lopgunxZUEVyfpHt017OOO4NvZSBqQUvTPKf+IpyzJnagJyJ+Pk9Vy8RTg0//leaT3gGYqFjL/BcwW6KoHT4Sd5qDs9heMPfITXAPCqAmkZGYhNc1wBmb2sxBmA1Sdklc10kBWnnY81Xk3O/h84w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KDI+FacG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767135594; c=relaxed/simple;
+	bh=yojfISBOIFSpXcr5+NNlskwwpGIiPkNElaXPFYmcfyY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Mu49PU12+k+gPooKHGb33gpSoZasdN3lkCO/ll46zK1kLinOwaBp+lU6oLbmY9EqzAPCMX9wwLJmYkFTuXxmx54uJA5GsDz+nmtdTtx5G+htzvRnqrl6Y+3s2yspKA+76pGmbJAlHd4t+Fli6G3zih51KvNdpOAf+is6XIuUR7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WIbf5L+C; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KDI+FacG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C64CFC4CEF7;
-	Fri, 26 Dec 2025 08:59:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766739572;
-	bh=t17XSjNclcaVd2nsSo4MOjcBQS2nAgC3yiSvta1qyhQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=KDI+FacGL3+U0zMS7RH1Ii7Xrc8GUcCrT1yaIahts6HkioTm/rSfw04vHX7oOfYcL
-	 tCTyelAtUn4eYh7qEGi8ZIFHY3fNyo9dX/LvXMz48XVf/BS/QODSFzBqhCL0OVOXHq
-	 IGeLVsz5D4k0Pfeya+CY75bU7kcDRSlq+C36fNGG941HKqsUHkCJOz0kyLKk2MqY0T
-	 C1mEaQ+LdBxN7RuwNAGqALk9bU7Q2FDqxYR9LsZrpe/sZF9uE3m2YlC6aWIB3+UrRS
-	 AziptPPtoQyE5auy7gxAMBZxcezC/M47TDGn+M6VKozkEQB7co9nurZFO9N3uZwApq
-	 CnL0XQJi4cu+w==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, linux-coco@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, will@kernel.org,
-	maz@kernel.org, tglx@linutronix.de, robin.murphy@arm.com,
-	akpm@linux-foundation.org, jgg@ziepe.ca, steven.price@arm.com
-Subject: Re: [PATCH v2 4/4] dma: direct: set decrypted flag for remapped dma
- allocations
-In-Reply-To: <yq5ams39txvk.fsf@kernel.org>
-References: <20251221160920.297689-1-aneesh.kumar@kernel.org>
- <20251221160920.297689-5-aneesh.kumar@kernel.org>
- <5820e8f3-9cf8-423f-89df-0df7ca78a84b@arm.com>
- <yq5ams39txvk.fsf@kernel.org>
-Date: Fri, 26 Dec 2025 14:29:24 +0530
-Message-ID: <yq5abjjl4o0j.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WIbf5L+C"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2a0e9e0fd49so114536285ad.0
+        for <linux-coco@lists.linux.dev>; Tue, 30 Dec 2025 14:59:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767135592; x=1767740392; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fBDadXmXw1V+5U8Oi2GEcCZPNX2euffTMHG2vLf3Jyo=;
+        b=WIbf5L+CDKd1473qqnW7anOgDgyLPvJRID1Yp+/xC0PKcfyTXUIH6aUFzUWqaciwkC
+         vOB4UcIv7nXNXB3CgJCyu0QtP/BM5vVq4as7/5fvdktGjk5IZJv/7Vhpgzvm8YZwmJWI
+         ghzaKpBV/CLWD94kFHlini0OBQVExbGZpkK1lDZS769e7Wh4cRwcOcVMPu7/LqaS2MyT
+         gfqjvpNWc1fNzpOLzPDZFGjiyXTaPG/vZwRK3Ib+M4Jmahuu6fk559P4FGpmGs4JcI0V
+         fYhyiPK6je9UEmxMf0WNsg0ubAuqVhphZt8kkGUKAwBUczrT83I7ajI1jI2nRLYWoiqD
+         pdqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767135592; x=1767740392;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fBDadXmXw1V+5U8Oi2GEcCZPNX2euffTMHG2vLf3Jyo=;
+        b=VffihxHEhPEF9VtjOKcxT/RngPQI4E3NDY3iBFmhN6O2tQviijWYbyb1bxBlMqnRUU
+         ytjPjttymGTKWdvvt1BF70s0/XDIvBc45Oqt5La3dgEb3KY0MX0PKauUFkCEb40o+dso
+         AePSWJDtfu3cT7WfZm03Ou+AKJOgtI/WpOSW1wc6Gc6ShXuy2Y4HKCjD0WQKSGhxukpl
+         UcwQpQUmtkrKICCE7RRZRFsga+rk8GPlgihvQBZBCH4xlhAiBr7vbBvx2K1R+yEEhySw
+         ZaOvFFE4aw1dKTeMRCLhVRnEnK8FT46ziCSdMgAaFVmg8oQOyUBToTC4in5152qsIaPk
+         j/bg==
+X-Forwarded-Encrypted: i=1; AJvYcCU9rfDX6sDeYgEdRFxi/rzsR71i0ytvUdDX3ZcGgiDEjNHmipadmusG9DcZmdpGJZxy2wfF1kcPMAJA@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx1PbMZ87L+2xRKobuBuoMv5jawTRT3B/smFZX8i/A0aQACW+xD
+	dji2E1Q5dBQykSPfoaLK67QfQ2k8irYXaxQAqOnOk5VHEdjMohhKLN2GaUAN+7kNMkmYaDd+x1w
+	ihyJL9w==
+X-Google-Smtp-Source: AGHT+IFeD+h6n1YidrAbsE5HiAota6bVKAwW35UPDKlcY0mTqb6cSWAiLyOFKPv8tt+wNUg2L4+hFSIa5lY=
+X-Received: from pjzz4.prod.google.com ([2002:a17:90b:58e4:b0:34a:b8aa:69d8])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d48e:b0:29e:fc06:b8a5
+ with SMTP id d9443c01a7336-2a2cab16368mr405899135ad.18.1767135591960; Tue, 30
+ Dec 2025 14:59:51 -0800 (PST)
+Date: Tue, 30 Dec 2025 14:59:50 -0800
+In-Reply-To: <aUvJWmZP5wLpvhnw@yilunxu-OptiPlex-7050>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20251206011054.494190-1-seanjc@google.com> <20251206011054.494190-3-seanjc@google.com>
+ <69352b2239a33_1b2e100d2@dwillia2-mobl4.notmuch> <aTiAKG4TlKcZnJnn@google.com>
+ <6939242dcfff1_20cb5100c3@dwillia2-mobl4.notmuch> <aTmBobJJo_sFbre9@google.com>
+ <aUvJWmZP5wLpvhnw@yilunxu-OptiPlex-7050>
+Message-ID: <aVRZZkAgmdLfudJc@google.com>
+Subject: Re: [PATCH v2 2/7] KVM: x86: Extract VMXON and EFER.SVME enablement
+ to kernel
+From: Sean Christopherson <seanjc@google.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: dan.j.williams@intel.com, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	Chao Gao <chao.gao@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Aneesh Kumar K.V <aneesh.kumar@kernel.org> writes:
+On Wed, Dec 24, 2025, Xu Yilun wrote:
+> On Wed, Dec 10, 2025 at 06:20:17AM -0800, Sean Christopherson wrote:
+> > On Wed, Dec 10, 2025, dan.j.williams@intel.com wrote:
+> > > Sean Christopherson wrote:
+> > > > On Sat, Dec 06, 2025, dan.j.williams@intel.com wrote:
+> > > > I don't think we need anything at this time.  INTEL_TDX_HOST depends on KVM_INTEL,
+> > > > and so without a user that needs VMXON without KVM_INTEL, I think we're good as-is.
+> > > > 
+> > > >  config INTEL_TDX_HOST
+> > > > 	bool "Intel Trust Domain Extensions (TDX) host support"
+> > > > 	depends on CPU_SUP_INTEL
+> > > > 	depends on X86_64
+> > > > 	depends on KVM_INTEL
+> > > 
+> > > ...but INTEL_TDX_HOST, it turns out, does not have any functional
+> > > dependencies on KVM_INTEL. At least, not since I last checked. Yes, it
+> > > would be silly and result in dead code today to do a build with:
+> > > 
+> > > CONFIG_INTEL_TDX_HOST=y
+> > > CONFIG_KVM_INTEL=n
+> > > 
+> > > However, when the TDX Connect support arrives you could have:
+> > > 
+> > > CONFIG_INTEL_TDX_HOST=y
+> > > CONFIG_KVM_INTEL=n
+> > > CONFIG_TDX_HOST_SERVICES=y
+> > > 
+> > > Where "TDX Host Services" is a driver for PCIe Link Encryption and TDX
+> > > Module update. Whether such configuration freedom has any practical
+> > > value is a separate question.
+> > > 
+> > > I am ok if the answer is, "wait until someone shows up who really wants
+> > > PCIe Link Encryption without KVM".
+> > 
+> > Ya, that's my answer.  At the very least, wait until TDX_HOST_SERVICES comes
+> > along.
+> 
+> I've tested the PCIe Link Encryption without KVM, with the kernel
+> config:
+> 
+>   CONFIG_INTEL_TDX_HOST=y
+>   CONFIG_KVM_INTEL=n
+>   CONFIG_TDX_HOST_SERVICES=y
+> 
+> and
+> 
+> --- /dev/null
+> +++ b/drivers/virt/coco/tdx-host/Kconfig
+> @@ -0,0 +1,10 @@
+> +config TDX_HOST_SERVICES
+> +       tristate "TDX Host Services Driver"
+> +       depends on INTEL_TDX_HOST
+> +       default m
+> 
+> Finally I enabled the combination successfully with a patch below, do we
+> need the change when TDX_HOST_SERVICES comes?
 
-> Suzuki K Poulose <suzuki.poulose@arm.com> writes:
->
->> On 21/12/2025 16:09, Aneesh Kumar K.V (Arm) wrote:
->>> Devices that are DMA non-coherent and need a remap were skipping
->>> dma_set_decrypted(), leaving buffers encrypted even when the device
->>> requires unencrypted access. Move the call after the remap
->>> branch so both paths mark the allocation decrypted (or fail cleanly)
->>> before use.
->>> 
->>> Fixes: f3c962226dbe ("dma-direct: clean up the remapping checks in dma_direct_alloc")
->>> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
->>> ---
->>>   kernel/dma/direct.c | 8 +++-----
->>>   1 file changed, 3 insertions(+), 5 deletions(-)
->>> 
->>> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
->>> index 3448d877c7c6..a62dc25524cc 100644
->>> --- a/kernel/dma/direct.c
->>> +++ b/kernel/dma/direct.c
->>> @@ -271,9 +271,6 @@ void *dma_direct_alloc(struct device *dev, size_t size,
->>>   	if (remap) {
->>>   		pgprot_t prot = dma_pgprot(dev, PAGE_KERNEL, attrs);
->>>   
->>> -		if (force_dma_unencrypted(dev))
->>> -			prot = pgprot_decrypted(prot);
->>
->> This would be problematic, isn't it ? We don't support decrypted on a
->> vmap area for arm64. If we move this down, we might actually use the
->> vmapped area. Not sure if other archs are fine with "decrypting" a
->> "vmap" address.
->>
->> If we map the "vmap" address with pgprot_decrypted, we could go ahead
->> and further map the linear map (i.e., page_address(page)) decrypted
->> and get everything working.
->
-> We still have the problem w.r.t free
->
-> dma_direct_free():
->
-> 	if (is_vmalloc_addr(cpu_addr)) {
-> 		vunmap(cpu_addr);
-> 	} else {
-> 		if (dma_set_encrypted(dev, cpu_addr, size))
-> 			return;
-> 	}
->
-
-How about the below change? 
-
-commit 8261c528961c6959b85de87c5659ce9081dc85b7
-Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-Date:   Fri Dec 19 14:46:20 2025 +0530
-
-    dma: direct: set decrypted flag for remapped DMA allocations
-    
-    Devices that are DMA non-coherent and require a remap were skipping
-    dma_set_decrypted(), leaving DMA buffers encrypted even when the device
-    requires unencrypted access. Move the call after the if (remap) branch
-    so that both direct and remapped allocation paths correctly mark the
-    allocation as decrypted (or fail cleanly) before use.
-    
-    If CMA allocations return highmem pages, treat this as an allocation
-    error so that dma_direct_alloc() falls back to the standard allocation
-    path. This is required because some architectures (e.g. arm64) cannot
-    mark vmap addresses as decrypted, and highmem pages necessarily require
-    a vmap remap. As a result, such allocations cannot be safely marked
-    unencrypted for DMA.
-    
-    Other architectures (e.g. x86) do not have this limitation, but instead
-    of making this architecture-specific, I have made the restriction apply
-    when the device requires unencrypted DMA access. This was done for
-    simplicity,
-    
-    Fixes: f3c962226dbe ("dma-direct: clean up the remapping checks in dma_direct_alloc")
-    Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index 7c0b55ca121f..811de37ad81c 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -264,6 +264,15 @@ void *dma_direct_alloc(struct device *dev, size_t size,
- 	 * remapped to return a kernel virtual address.
- 	 */
- 	if (PageHighMem(page)) {
-+		/*
-+		 * Unencrypted/shared DMA requires a linear-mapped buffer
-+		 * address to look up the PFN and set architecture-required PFN
-+		 * attributes. This is not possible with HighMem, so return
-+		 * failure.
-+		 */
-+		if (force_dma_unencrypted(dev))
-+			goto out_free_pages;
-+
- 		remap = true;
- 		set_uncached = false;
- 	}
-@@ -284,7 +293,13 @@ void *dma_direct_alloc(struct device *dev, size_t size,
- 			goto out_free_pages;
- 	} else {
- 		ret = page_address(page);
--		if (dma_set_decrypted(dev, ret, size))
-+	}
-+
-+	if (force_dma_unencrypted(dev)) {
-+		void *lm_addr;
-+
-+		lm_addr = page_address(page);
-+		if (set_memory_decrypted((unsigned long)lm_addr, PFN_UP(size)))
- 			goto out_leak_pages;
- 	}
- 
-@@ -349,8 +364,16 @@ void dma_direct_free(struct device *dev, size_t size,
- 	} else {
- 		if (IS_ENABLED(CONFIG_ARCH_HAS_DMA_CLEAR_UNCACHED))
- 			arch_dma_clear_uncached(cpu_addr, size);
--		if (dma_set_encrypted(dev, cpu_addr, size))
-+	}
-+
-+	if (force_dma_unencrypted(dev)) {
-+		void *lm_addr;
-+
-+		lm_addr = phys_to_virt(dma_to_phys(dev, dma_addr));
-+		if (set_memory_encrypted((unsigned long)lm_addr, PFN_UP(size))) {
-+			pr_warn_ratelimited("leaking DMA memory that can't be re-encrypted\n");
- 			return;
-+		}
- 	}
- 
- 	__dma_direct_free_pages(dev, dma_direct_to_page(dev, dma_addr), size);
+Ya, we'll need something along those lines.  What exactly we want the Kconfig
+soup to look like is TBD though, e.g. it may or may not make sense to have a
+common config that says "I want virtualization!"?
