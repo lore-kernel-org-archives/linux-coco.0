@@ -1,160 +1,116 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181892F361F
-	for <linux-coco@lists.linux.dev>; Mon,  5 Jan 2026 10:13:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8365F314D05;
+	Mon,  5 Jan 2026 10:38:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767608005; cv=none; b=tmnq31I2RftTwCx+FJK7ehmPm0L7/FHvrBdp5z7aTdjUL2hwUAUIb6SEr9SdvtdidJORtQcwicG8eSF9/bsxG/rNoxpEIib0msDY+4TzpQaeg2zSHpJa0etSuBCQhIOswLSvDsCr7QFmgWbzoqUb8CjljMqITi8v5LA/qJUxrvg=
+	t=1767609503; cv=none; b=mS5rrhquYPYHl9vRvWJQryXmbqP8yQHUEUy/LdB4ZYOm2O2ttW9Pmxe283wTR8zFQ0gc9Hl79EVR1k5xOCenZ1O6gQVzHwie3ihOafeFWVau4yYHBQXMXmFGnTjXWQvsZc4lOFzLTthYTyBJ4oASlex2CCEeRSudXODasOl1XH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767608005; c=relaxed/simple;
-	bh=DpVElg2DVjnuKoiBnbrUHbsGdsN4hKvpNbtKIBRK/CU=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E52Ld+BMP0BxIOCNvxcVi9S219HmZftp24x8Qsg8678nB5+VGbpg4wGqbBdCNlz01s0xpjKNSdbrX8//0HtqXGHOcoJ6ZNXnJZ0FpdZibH868MBYdVBovzEDOQhY5hpqKMoI562RzFR86VwFjW8q3p1ljkt9aLhxkZM2FJLyLMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dl98M4jvWzJ46fX;
-	Mon,  5 Jan 2026 18:12:19 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id D45A640086;
-	Mon,  5 Jan 2026 18:13:19 +0800 (CST)
-Received: from localhost (10.48.146.88) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Mon, 5 Jan
- 2026 10:13:19 +0000
-Date: Mon, 5 Jan 2026 10:13:17 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-CC: <linux-coco@lists.linux.dev>, <linux-pci@vger.kernel.org>,
-	<dan.j.williams@intel.com>, <yilun.xu@intel.com>, <baolu.lu@linux.intel.com>,
-	<zhenzhong.duan@intel.com>, <linux-kernel@vger.kernel.org>,
-	<yi1.lai@intel.com>, <helgaas@kernel.org>
-Subject: Re: [PATCH v2] PCI/IDE: Fix duplicate stream symlink names for TSM
- class devices
-Message-ID: <20260105101317.00003ade@huawei.com>
-In-Reply-To: <20260105093516.2645397-1-yilun.xu@linux.intel.com>
-References: <20260105093516.2645397-1-yilun.xu@linux.intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1767609503; c=relaxed/simple;
+	bh=KHZ7NQkpRAHt8FC7knbT4JsGL/W9gz8FeFxY75EaJh8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s3t/vjASI+OYKHgy0knbgFhXZhgIEcalShghBxRhoNMf6yhIORm8uVSOoNtSVdO18v3PVXPT/e8iRKZ+elJc5gmN6qQUVKxjHEpp70aDDwHt0KWv5DV2bHKnjjUmzBWtaihqWjmevnq4aJNHQ3VViIA8S6ZW4dLqEcylAsSrAZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n+MADKkZ; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n+MADKkZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85505C4AF09;
+	Mon,  5 Jan 2026 10:38:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767609503;
+	bh=KHZ7NQkpRAHt8FC7knbT4JsGL/W9gz8FeFxY75EaJh8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=n+MADKkZEHODA7S4in+VnuQ3XiIzpNKJFa2bzbXbHU6cZxzdBZqWNLMrPgKlhV/lL
+	 +awkpFSe0zKoNc3qD7HPo8Jbf7utxV4HmBK6spKx5v/4bJXYXjOpZhbyP2gw+M721e
+	 D4fQaGWreiEKmLnO9gWM4yQh++TwwlKAjY7bRMgEG74d/BmCuVdQGRp6vkJI2rRRa0
+	 wSy0hMUeGdbobDsyJL1DXIv6XCVwyYqWH9wxAaowE21qgsxcoiQ620UF0cog6KFj92
+	 by4/gV8JFffoxXpIZHCMgfKzQKhZhYlT2gckzoWkx2/uixRr95HAIlbzDDJUbtXJ0n
+	 gAlRrvrYz9ecw==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id A8FB2F40069;
+	Mon,  5 Jan 2026 05:38:21 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Mon, 05 Jan 2026 05:38:21 -0500
+X-ME-Sender: <xms:nZRbaYwmHa7-9wIBrS62w5ESyTexyOCnB-7Xcsj04LTXafNn3rBsGA>
+    <xme:nZRbaZ7supFxh1LHc2n6_ziayZlplKyo2cnm_kRl8biOHpMKiB-faZZkwaSDOnGh1
+    h6iqmXhyyR73R3Lp_3VrMqlJE_qMwxOyMi1Qjz7gVkGIazAwEIWIDMp>
+X-ME-Received: <xmr:nZRbaRtFDfLjfknGyQtKllCe8fCAG36AF67gGHtTqKJRztTnqwn4Q5zT8KVZVQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeljedtkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
+    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
+    hnpeehieekueevudehvedtvdffkefhueefhfevtdduheehkedthfdtheejveelueffgeen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrih
+    hllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieehhedq
+    vdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnh
+    grmhgvpdhnsggprhgtphhtthhopeefvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
+    oheptghhrghordhgrghosehinhhtvghlrdgtohhmpdhrtghpthhtohepkhhvmhesvhhgvg
+    hrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgtohgtoheslhhishht
+    shdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvg
+    hrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehvihhshhgrlhdrlhdrvhgvrhhmrgesihhnthgvlhdrtghomhdprhgtph
+    htthhopehkrghirdhhuhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohepuggrnhdr
+    jhdrfihilhhlihgrmhhssehinhhtvghlrdgtohhmpdhrtghpthhtohephihilhhunhdrgi
+    husehlihhnuhigrdhinhhtvghlrdgtohhm
+X-ME-Proxy: <xmx:nZRbaet6yOwvgd-HUqpPcpSrCOrc-Nh0XjhpJDvtktvz5QKb3X0UDw>
+    <xmx:nZRbaRswVxQDD325pkMsnIMI0kvddF2LoUG7p8e9GOO2YKRt5nC1MA>
+    <xmx:nZRbaW4-y6QpwOwoLBYXbW5Hag7W94MPaPmqEl5ZDll2hNpNEnW4dA>
+    <xmx:nZRbacCz5sAY0czwANYL330mlFsFBqnZdbvZ_SZQNdXxj8q7Q2j1Qg>
+    <xmx:nZRbaeskDlrXO5WuaPpquK2Rggu3I20pViuSANqnY8SbtOUggljQKuFk>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 5 Jan 2026 05:38:21 -0500 (EST)
+Date: Mon, 5 Jan 2026 10:38:19 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Chao Gao <chao.gao@intel.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org, vishal.l.verma@intel.com, kai.huang@intel.com, 
+	dan.j.williams@intel.com, yilun.xu@linux.intel.com, vannapurve@google.com, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v2 0/3] Expose TDX Module version
+Message-ID: <dfb66mcbxqw2a6qjyg74jqp7aucmnkztl224rj3u6znrcr7ukw@yy65kqagdsoh>
+References: <20260105074350.98564-1-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260105074350.98564-1-chao.gao@intel.com>
 
-On Mon,  5 Jan 2026 17:35:16 +0800
-Xu Yilun <yilun.xu@linux.intel.com> wrote:
+On Sun, Jan 04, 2026 at 11:43:43PM -0800, Chao Gao wrote:
+> Hi reviewers,
+> 
+> This series is quite straightforward and I believe it's well-polished.
+> Please consider providing your ack tags. However, since it depends on
+> two other series (listed below), please review those dependencies first if
+> you haven't already.
+> 
+> Changes in v2:
+>  - Print TDX Module version in demsg (Vishal)
+>  - Remove all descriptions about autogeneration (Rick)
+>  - Fix typos (Kai)
+>  - Stick with TDH.SYS.RD (Dave/Yilun)
+>  - Rebase onto Sean's VMXON v2 series
+> 
+> === Problem & Solution === 
+> 
+> Currently, there is no user interface to get the TDX Module version.
+> However, in bug reporting or analysis scenarios, the first question
+> normally asked is which TDX Module version is on your system, to determine
+> if this is a known issue or a new regression.
+> 
+> To address this issue, this series exposes the TDX Module version as
+> sysfs attributes of the tdx_host device [*] and also prints it in dmesg
+> to keep a record.
 
-> The name streamH.R.E is used for 2 symlinks:
-> 
->   1. TSM class devices: /sys/class/tsm/tsmN/streamH.R.E
->   2. host bridge devices: /sys/devices/pciDDDD:BB/streamH.R.E
+The version information is also useful for the guest. Maybe we should
+provide consistent interface for both sides?
 
-For those who have managed to completely forget, it would be useful
-to just mention what H R and E are. Given the docs
-say H is the host bridge number I'm a little confused why it
-isn't unique. At least at first glance I'd expect to see
-stream0.0.0 and stream 1.0.0 your example.
-Maybe H isn't unique across segments / PCI Domains? (DDDD in the above)
-Maybe it should be?
-
-Jonathan.
-
-> 
-> The first usage is broken cause streamH.R.E is only unique within a
-> specific host bridge but not across the system. Error occurs e.g. when
-> creating the first stream on a second host bridge:
-> 
->   sysfs: cannot create duplicate filename '/devices/faux/tdx_host/tsm/tsm0/stream0.0.0'
-> 
-> Fix this by adding host bridge name into symlink name for TSM class
-> devices so they show up as:
-> 
->   /sys/class/tsm/tsmN/pciDDDD:BB:streamH.R.E
-> 
-> It should be OK to change the uAPI since it's new and has few users.
-> 
-> The symlink name for host bridge devices keeps unchanged. Keep concise
-> as it is already in host bridge context.
-> 
-> Internally in the IDE library, store the full name in struct pci_ide
-> so TSM symlinks can use it directly as before, while host bridge
-> symlinks use only the streamH.R.E portion to preserve the existing name.
-> 
-> Fixes: a4438f06b1db ("PCI/TSM: Report active IDE streams")
-> Reported-by: Yi Lai <yi1.lai@intel.com>
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> ---
-> v2: Changelog improvements
-> 
-> v1: https://lore.kernel.org/linux-coco/20251223085601.2607455-1-yilun.xu@linux.intel.com/
-> ---
->  Documentation/ABI/testing/sysfs-class-tsm |  2 +-
->  drivers/pci/ide.c                         | 12 +++++++++---
->  2 files changed, 10 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-class-tsm b/Documentation/ABI/testing/sysfs-class-tsm
-> index 6fc1a5ac6da1..eff71e42c60e 100644
-> --- a/Documentation/ABI/testing/sysfs-class-tsm
-> +++ b/Documentation/ABI/testing/sysfs-class-tsm
-> @@ -8,7 +8,7 @@ Description:
->  		link encryption and other device-security features coordinated
->  		through a platform tsm.
->  
-> -What:		/sys/class/tsm/tsmN/streamH.R.E
-> +What:		/sys/class/tsm/tsmN/pciDDDD:BB:streamH.R.E
->  Contact:	linux-pci@vger.kernel.org
->  Description:
->  		(RO) When a host bridge has established a secure connection via
-> diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
-> index f0ef474e1a0d..58fbe9cfd68c 100644
-> --- a/drivers/pci/ide.c
-> +++ b/drivers/pci/ide.c
-> @@ -425,6 +425,7 @@ int pci_ide_stream_register(struct pci_ide *ide)
->  	struct pci_host_bridge *hb = pci_find_host_bridge(pdev->bus);
->  	struct pci_ide_stream_id __sid;
->  	u8 ep_stream, rp_stream;
-> +	const char *short_name;
->  	int rc;
->  
->  	if (ide->stream_id < 0 || ide->stream_id > U8_MAX) {
-> @@ -441,13 +442,16 @@ int pci_ide_stream_register(struct pci_ide *ide)
->  
->  	ep_stream = ide->partner[PCI_IDE_EP].stream_index;
->  	rp_stream = ide->partner[PCI_IDE_RP].stream_index;
-> -	const char *name __free(kfree) = kasprintf(GFP_KERNEL, "stream%d.%d.%d",
-> +	const char *name __free(kfree) = kasprintf(GFP_KERNEL, "%s:stream%d.%d.%d",
-> +						   dev_name(&hb->dev),
->  						   ide->host_bridge_stream,
->  						   rp_stream, ep_stream);
->  	if (!name)
->  		return -ENOMEM;
->  
-> -	rc = sysfs_create_link(&hb->dev.kobj, &pdev->dev.kobj, name);
-> +	/* Strip host bridge name in the host bridge context */
-> +	short_name = name + strlen(dev_name(&hb->dev)) + 1;
-> +	rc = sysfs_create_link(&hb->dev.kobj, &pdev->dev.kobj, short_name);
->  	if (rc)
->  		return rc;
->  
-> @@ -471,8 +475,10 @@ void pci_ide_stream_unregister(struct pci_ide *ide)
->  {
->  	struct pci_dev *pdev = ide->pdev;
->  	struct pci_host_bridge *hb = pci_find_host_bridge(pdev->bus);
-> +	const char *short_name;
->  
-> -	sysfs_remove_link(&hb->dev.kobj, ide->name);
-> +	short_name = ide->name + strlen(dev_name(&hb->dev)) + 1;
-> +	sysfs_remove_link(&hb->dev.kobj, short_name);
->  	kfree(ide->name);
->  	ida_free(&hb->ide_stream_ids_ida, ide->stream_id);
->  	ide->name = NULL;
-> 
-> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
