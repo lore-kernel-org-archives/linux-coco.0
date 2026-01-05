@@ -1,65 +1,69 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FEFB2DA75F
-	for <linux-coco@lists.linux.dev>; Mon,  5 Jan 2026 07:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CA72D97BB
+	for <linux-coco@lists.linux.dev>; Mon,  5 Jan 2026 07:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767599036; cv=none; b=hgjIP/7yRQUjVe76FBlfcTETrMfyM4IiSwKkF++Cei5KAjPt5Vw5dp0/iOulZOX3ahDDOSpx76ev8EWRvvVDJU+keZGFFZc/oyN4P9x/9Gpy9714IHTI+yDGoElG59ocDiL72yRaxSW6hcJgF0ry/76+iHMmR2+H7fGV3xvZ0pk=
+	t=1767599038; cv=none; b=GQIeFCxumsOQioZJqyapimqJhz12bkKk07Q8NPH/rcPC9iOrBvvIwxU5Un/DGO6ejERYX+FPsKC6VgehZt5D2hgcbAKIdAlfURcKp1YvkKm599EpkNkO9fPO9vywb6f5cOuh/kUZmgHF0m4shjVLppA0YJIsN1lUrhhVrI2N2yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767599036; c=relaxed/simple;
-	bh=on1iStjClW+lJkJ3X9Vw4QkQuB8Ww7b1fEyqqUMdF30=;
+	s=arc-20240116; t=1767599038; c=relaxed/simple;
+	bh=HoyR3hR6cttRXSNo6m4arpXKD/s/WTvls/Hs5c6I9MQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xnv977FcAn+ua+yi2ft2flDcDOZCDuoGhOKRrvLmWVMjnep27Z/l2NFBeDL3KT0L5R62fzInuGB7VCqhAa/tMznz9/t1bTQK3M4rID3du2iayP0bf6m4V3vznHxDAIXSgUDcDS6PMiF2nbCuOYzjYCt+Xt+dvduLfK8oVGhyGEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aTH9EjyG; arc=none smtp.client-ip=198.175.65.18
+	 MIME-Version; b=gkQMwhXHs4dYaYYg3hZQQFegxsLpYwaZlYp0RCr6zPRg7pXxLbWHhYX8S8iSawfK/41oPyYhUTHzg60tWQOKKK9/v+tZmpQx2v7kkvefHyWGKb3bT5dAyP+yfEh+GQVjJs23BFkf6pgGrfjWkU8EG2ktkacvgi0R70v4sxfB+Ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nJIBJC6a; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aTH9EjyG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nJIBJC6a"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767599035; x=1799135035;
+  t=1767599037; x=1799135037;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=on1iStjClW+lJkJ3X9Vw4QkQuB8Ww7b1fEyqqUMdF30=;
-  b=aTH9EjyGRj2ek9Hln8I93r2e6G/mz8PVZAVAC1vW69KU72EY1lzqthCi
-   5v13T0Ku5dPIjl+UP7Z6AyeRC/NfSFi2ZMp7jN6ZYdWwFKp66sJA3dgWw
-   GKuphEvKXpUKWfUG6V0Wb1/8f4gMCwB3bivpaI+gZQ6M8ubuRSD07Dnv+
-   Kt/nKHKRwF0jSVgtaQaR4jewamb7sz4rsuV9Hh3n4xycQkuoJWbdOpBSE
-   PnMt8NEkC3i8j0In2uwrVFBZDGcsGUpU7Cp7sO83CnaevfWP/OtRFWqwL
-   V3hasnzOf8Mw46nqNneudWFm3PDv1n5sw3hCuaBbgZa7M/JOtcQoZTWCg
-   A==;
-X-CSE-ConnectionGUID: HG9naqqTQYCpv5qRReDMWA==
-X-CSE-MsgGUID: IEgadBOkRbSkOA31mteNLA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11661"; a="69012577"
+  bh=HoyR3hR6cttRXSNo6m4arpXKD/s/WTvls/Hs5c6I9MQ=;
+  b=nJIBJC6ap548NCy8eJEEKatpLkywrQ9FrzX3/GN8DQM5p9fMQ89jkm7J
+   i/QIa9gd0FHRTNLsjs0ks9B8dxJUHtvRJj0gPwPvD5LMtgH6C+980Pea8
+   VvrUmo/29v8Rs1xUTlsf2Jes/vkDjhRYZdaFk50ksWT8QDTdddjs52n3+
+   7zQiKRyBVb6uqvReBFZvOrSwaREXY8offrrNq5Acr9UBVsrgchZVSdXSn
+   OEnKV7UJkWbiSUhUgWWXpAbL43yo+tcI+cMqJUzyQDD9KV6zXTV8KuXVk
+   3JGVFRf6f29Nf7yv4NqGV1ziHY7NotnBPI1FUZB+WxaeMMHnf34edi/cB
+   w==;
+X-CSE-ConnectionGUID: TlaZhfLrTtiDl/EO/QL3Sw==
+X-CSE-MsgGUID: f1/kPdKsQEO/a/VdYKGQpw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11661"; a="69012579"
 X-IronPort-AV: E=Sophos;i="6.21,203,1763452800"; 
-   d="scan'208";a="69012577"
+   d="scan'208";a="69012579"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
   by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2026 23:43:54 -0800
-X-CSE-ConnectionGUID: wDjuU+LCTkCOvPM3R4TM4w==
-X-CSE-MsgGUID: zxeipqbtQMaifeicVrt9Kw==
+X-CSE-ConnectionGUID: jFI/YOfIQ4GgGgooTu+wAw==
+X-CSE-MsgGUID: q3Lh+Ks0ReOetW6Aq/o55A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,203,1763452800"; 
-   d="scan'208";a="239799059"
+   d="scan'208";a="239799067"
 Received: from 984fee019967.jf.intel.com ([10.165.54.94])
   by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2026 23:43:54 -0800
 From: Chao Gao <chao.gao@intel.com>
-To: x86@kernel.org,
+To: linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
+	kvm@vger.kernel.org
 Cc: vishal.l.verma@intel.com,
 	kai.huang@intel.com,
 	dan.j.williams@intel.com,
 	yilun.xu@linux.intel.com,
 	vannapurve@google.com,
 	Chao Gao <chao.gao@intel.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: [PATCH v2 2/3] coco/tdx-host: Expose TDX Module version
-Date: Sun,  4 Jan 2026 23:43:45 -0800
-Message-ID: <20260105074350.98564-3-chao.gao@intel.com>
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Kiryl Shutsemau <kas@kernel.org>
+Subject: [PATCH v2 3/3] x86/virt/tdx: Print TDX Module version during init
+Date: Sun,  4 Jan 2026 23:43:46 -0800
+Message-ID: <20260105074350.98564-4-chao.gao@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260105074350.98564-1-chao.gao@intel.com>
 References: <20260105074350.98564-1-chao.gao@intel.com>
@@ -71,85 +75,66 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently there is no way to know the TDX Module version from the
-userspace. Such information is always helpful for bug reporting or
-debugging.
+From: Vishal Verma <vishal.l.verma@intel.com>
 
-With the tdx-host device in place, expose the TDX Module version as
-a device attribute via sysfs.
+Alongside exposing the TDX Module version via sysfs, it is useful to
+have a record of it in dmesg logs. This allows for a quick spot check
+for whether the correct/expected TDX module is being loaded, and also
+creates a record for any future problems being investigated. This was
+also requested in [1].
 
+The log message will look like:
+
+  virt/tdx: TDX-Module version: 1.5.24
+
+Print this early in init_tdx_module(), right after the global metadata
+is read, which makes it available even if there are subsequent
+initialization failures.
+
+Based on a patch by Kai Huang <kai.huang@intel.com> [2]
+
+[ Chao: s/TDX module/TDX-Module in the log message
+        tag print_module_version() as __init ]
+Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 Signed-off-by: Chao Gao <chao.gao@intel.com>
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Kai Huang <kai.huang@intel.com>
+Link: https://lore.kernel.org/all/CAGtprH8eXwi-TcH2+-Fo5YdbEwGmgLBh9ggcDvd6N=bsKEJ_WQ@mail.gmail.com/ # [1]
+Link: https://lore.kernel.org/all/6b5553756f56a8e3222bfc36d0bdb3e5192137b7.1731318868.git.kai.huang@intel.com # [2]
 ---
-v2: 
- - No need to update MAINTAINERS to include sysfs-devices-faux-tdx-host
-   explicitly (Kirill)
+v2
+ - new
 
- .../ABI/testing/sysfs-devices-faux-tdx-host   |  6 +++++
- drivers/virt/coco/tdx-host/tdx-host.c         | 26 ++++++++++++++++++-
- 2 files changed, 31 insertions(+), 1 deletion(-)
- create mode 100644 Documentation/ABI/testing/sysfs-devices-faux-tdx-host
+ arch/x86/virt/vmx/tdx/tdx.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/Documentation/ABI/testing/sysfs-devices-faux-tdx-host b/Documentation/ABI/testing/sysfs-devices-faux-tdx-host
-new file mode 100644
-index 000000000000..35ef21f53c2e
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-devices-faux-tdx-host
-@@ -0,0 +1,6 @@
-+What:		/sys/devices/faux/tdx_host/version
-+Contact:	linux-coco@lists.linux.dev
-+Description:	(RO) Report the version of the loaded TDX Module. The TDX Module
-+		version is formatted as x.y.z, where "x" is the major version,
-+		"y" is the minor version and "z" is the update version. Versions
-+		are used for bug reporting, TD-Preserving updates and etc.
-diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
-index ced1c980dc6f..2883c6638faf 100644
---- a/drivers/virt/coco/tdx-host/tdx-host.c
-+++ b/drivers/virt/coco/tdx-host/tdx-host.c
-@@ -9,6 +9,7 @@
- #include <linux/mod_devicetable.h>
- #include <linux/device/faux.h>
- #include <asm/cpu_device_id.h>
-+#include <asm/tdx.h>
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index ef77135ec373..3282dce5003b 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -352,6 +352,13 @@ static __init int read_sys_metadata_field(u64 field_id, u64 *data)
  
- static const struct x86_cpu_id tdx_host_ids[] = {
- 	X86_MATCH_FEATURE(X86_FEATURE_TDX_HOST_PLATFORM, NULL),
-@@ -18,12 +19,35 @@ MODULE_DEVICE_TABLE(x86cpu, tdx_host_ids);
+ #include "tdx_global_metadata.c"
  
- static struct faux_device *fdev;
- 
-+static ssize_t version_show(struct device *dev, struct device_attribute *attr,
-+			    char *buf)
++static __init void print_module_version(struct tdx_sys_info_version *version)
 +{
-+	const struct tdx_sys_info *tdx_sysinfo = tdx_get_sysinfo();
-+	const struct tdx_sys_info_version *ver;
-+
-+	if (!tdx_sysinfo)
-+		return -ENXIO;
-+
-+	ver = &tdx_sysinfo->version;
-+
-+	return sysfs_emit(buf, "%u.%u.%02u\n", ver->major_version,
-+					       ver->minor_version,
-+					       ver->update_version);
++	pr_info("TDX-Module version: %u.%u.%02u\n",
++		version->major_version, version->minor_version,
++		version->update_version);
 +}
-+static DEVICE_ATTR_RO(version);
 +
-+static struct attribute *tdx_host_attrs[] = {
-+	&dev_attr_version.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(tdx_host);
-+
- static int __init tdx_host_init(void)
+ static __init int check_features(struct tdx_sys_info *sysinfo)
  {
- 	if (!x86_match_cpu(tdx_host_ids))
- 		return -ENODEV;
+ 	u64 tdx_features0 = sysinfo->features.tdx_features0;
+@@ -1158,6 +1165,8 @@ static __init int init_tdx_module(void)
+ 	if (ret)
+ 		return ret;
  
--	fdev = faux_device_create(KBUILD_MODNAME, NULL, NULL);
-+	fdev = faux_device_create_with_groups(KBUILD_MODNAME, NULL, NULL, tdx_host_groups);
- 	if (!fdev)
- 		return -ENODEV;
- 
++	print_module_version(&tdx_sysinfo.version);
++
+ 	/* Check whether the kernel can support this module */
+ 	ret = check_features(&tdx_sysinfo);
+ 	if (ret)
 -- 
 2.47.3
 
