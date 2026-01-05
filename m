@@ -1,116 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8365F314D05;
-	Mon,  5 Jan 2026 10:38:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3A12D6409
+	for <linux-coco@lists.linux.dev>; Mon,  5 Jan 2026 16:04:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767609503; cv=none; b=mS5rrhquYPYHl9vRvWJQryXmbqP8yQHUEUy/LdB4ZYOm2O2ttW9Pmxe283wTR8zFQ0gc9Hl79EVR1k5xOCenZ1O6gQVzHwie3ihOafeFWVau4yYHBQXMXmFGnTjXWQvsZc4lOFzLTthYTyBJ4oASlex2CCEeRSudXODasOl1XH0=
+	t=1767629065; cv=none; b=bvzW0MPilvtl0b91lJToA5/sqXE3ZSz7y5QAJ3k0QbL7y07bgLWe7xzseY820xXu4uTBk0p1mBbzxL9eVFXVLLRNzHVxgc9gmh7d+0Ywwr5VGeOMlknszSQrHWXc9+QF2EQnP7LVSN5nhV7nTbsr0NUufNlI6I/7P1K6BDuwDnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767609503; c=relaxed/simple;
-	bh=KHZ7NQkpRAHt8FC7knbT4JsGL/W9gz8FeFxY75EaJh8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s3t/vjASI+OYKHgy0knbgFhXZhgIEcalShghBxRhoNMf6yhIORm8uVSOoNtSVdO18v3PVXPT/e8iRKZ+elJc5gmN6qQUVKxjHEpp70aDDwHt0KWv5DV2bHKnjjUmzBWtaihqWjmevnq4aJNHQ3VViIA8S6ZW4dLqEcylAsSrAZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n+MADKkZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767629065; c=relaxed/simple;
+	bh=iY7eBrdjpKt6iDhe4qpuZUhWdA5JIJvxPNw5JJ556Cg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=A8dqZp9S5UuGf1n5dmFK8t9F5RJLqyF58tBq8kyZ4gfi9sRA5qGspEj9N4IUV1U0Tuol+KXvY/zBofkLKTx77Vm+DCy8hQn5kWF83O8nkDjzopUvrbxoomQSVjNs/4uJZvQds0cRgXZmqQfngIoIgXJwQRkIvYZlZGKxyunJss4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kNmFpa8f; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n+MADKkZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85505C4AF09;
-	Mon,  5 Jan 2026 10:38:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767609503;
-	bh=KHZ7NQkpRAHt8FC7knbT4JsGL/W9gz8FeFxY75EaJh8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=n+MADKkZEHODA7S4in+VnuQ3XiIzpNKJFa2bzbXbHU6cZxzdBZqWNLMrPgKlhV/lL
-	 +awkpFSe0zKoNc3qD7HPo8Jbf7utxV4HmBK6spKx5v/4bJXYXjOpZhbyP2gw+M721e
-	 D4fQaGWreiEKmLnO9gWM4yQh++TwwlKAjY7bRMgEG74d/BmCuVdQGRp6vkJI2rRRa0
-	 wSy0hMUeGdbobDsyJL1DXIv6XCVwyYqWH9wxAaowE21qgsxcoiQ620UF0cog6KFj92
-	 by4/gV8JFffoxXpIZHCMgfKzQKhZhYlT2gckzoWkx2/uixRr95HAIlbzDDJUbtXJ0n
-	 gAlRrvrYz9ecw==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id A8FB2F40069;
-	Mon,  5 Jan 2026 05:38:21 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Mon, 05 Jan 2026 05:38:21 -0500
-X-ME-Sender: <xms:nZRbaYwmHa7-9wIBrS62w5ESyTexyOCnB-7Xcsj04LTXafNn3rBsGA>
-    <xme:nZRbaZ7supFxh1LHc2n6_ziayZlplKyo2cnm_kRl8biOHpMKiB-faZZkwaSDOnGh1
-    h6iqmXhyyR73R3Lp_3VrMqlJE_qMwxOyMi1Qjz7gVkGIazAwEIWIDMp>
-X-ME-Received: <xmr:nZRbaRtFDfLjfknGyQtKllCe8fCAG36AF67gGHtTqKJRztTnqwn4Q5zT8KVZVQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeljedtkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdfstddttddvnecuhfhrohhmpefmihhrhihlucfu
-    hhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
-    hnpeehieekueevudehvedtvdffkefhueefhfevtdduheehkedthfdtheejveelueffgeen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrih
-    hllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieehhedq
-    vdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovhdrnh
-    grmhgvpdhnsggprhgtphhtthhopeefvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
-    oheptghhrghordhgrghosehinhhtvghlrdgtohhmpdhrtghpthhtohepkhhvmhesvhhgvg
-    hrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgtohgtoheslhhishht
-    shdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvg
-    hrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopehvihhshhgrlhdrlhdrvhgvrhhmrgesihhnthgvlhdrtghomhdprhgtph
-    htthhopehkrghirdhhuhgrnhhgsehinhhtvghlrdgtohhmpdhrtghpthhtohepuggrnhdr
-    jhdrfihilhhlihgrmhhssehinhhtvghlrdgtohhmpdhrtghpthhtohephihilhhunhdrgi
-    husehlihhnuhigrdhinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:nZRbaet6yOwvgd-HUqpPcpSrCOrc-Nh0XjhpJDvtktvz5QKb3X0UDw>
-    <xmx:nZRbaRswVxQDD325pkMsnIMI0kvddF2LoUG7p8e9GOO2YKRt5nC1MA>
-    <xmx:nZRbaW4-y6QpwOwoLBYXbW5Hag7W94MPaPmqEl5ZDll2hNpNEnW4dA>
-    <xmx:nZRbacCz5sAY0czwANYL330mlFsFBqnZdbvZ_SZQNdXxj8q7Q2j1Qg>
-    <xmx:nZRbaeskDlrXO5WuaPpquK2Rggu3I20pViuSANqnY8SbtOUggljQKuFk>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 5 Jan 2026 05:38:21 -0500 (EST)
-Date: Mon, 5 Jan 2026 10:38:19 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Chao Gao <chao.gao@intel.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, x86@kernel.org, vishal.l.verma@intel.com, kai.huang@intel.com, 
-	dan.j.williams@intel.com, yilun.xu@linux.intel.com, vannapurve@google.com, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v2 0/3] Expose TDX Module version
-Message-ID: <dfb66mcbxqw2a6qjyg74jqp7aucmnkztl224rj3u6znrcr7ukw@yy65kqagdsoh>
-References: <20260105074350.98564-1-chao.gao@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kNmFpa8f"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767629063; x=1799165063;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=iY7eBrdjpKt6iDhe4qpuZUhWdA5JIJvxPNw5JJ556Cg=;
+  b=kNmFpa8f+Df1uJbTdysHaI3Vxl0biS6jfnNN2IulUt21JEWkv54xlpJE
+   346H9cy6CMvobim4K85egUbZr3YWB/Yq2ZXYW6Rgngyo1tuViAMpvzF/t
+   1SL0/fizQgB4FjoJTFcvuIOplQRsMxLf1D2Ir95FuGhTe4MvCkQ2HwJIt
+   3NF9DEd9mIMOibSZj9ONWxrfUMvh4Onnu7T/8xqyrJqeDY2bgKpxxRwIN
+   fw6ppiFD9HLjrHS0ehpbsbicwTFLru+GEIOsOvU87Py4m5bAM5cKv8oYa
+   TuA7Lt084qFQfje7oa/nlycnXDStkqvDD731pD6QhsxhRN37aak9mlFcE
+   A==;
+X-CSE-ConnectionGUID: jKrLqbBfQPWKvXgeybA3yA==
+X-CSE-MsgGUID: BCo6AZukSLmMggmf2tIaHQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11662"; a="86413912"
+X-IronPort-AV: E=Sophos;i="6.21,203,1763452800"; 
+   d="scan'208";a="86413912"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2026 08:04:22 -0800
+X-CSE-ConnectionGUID: cyBssC4yRSy/VRGn4IP/pA==
+X-CSE-MsgGUID: LsGiFLM8Sbiv6knOXIY5DQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,203,1763452800"; 
+   d="scan'208";a="239906954"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.109.25]) ([10.125.109.25])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2026 08:04:22 -0800
+Message-ID: <d45cc504-509c-48a7-88e2-374e00068e79@intel.com>
+Date: Mon, 5 Jan 2026 08:04:21 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260105074350.98564-1-chao.gao@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] Expose TDX Module version
+To: Kiryl Shutsemau <kas@kernel.org>, Chao Gao <chao.gao@intel.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, x86@kernel.org, vishal.l.verma@intel.com,
+ kai.huang@intel.com, dan.j.williams@intel.com, yilun.xu@linux.intel.com,
+ vannapurve@google.com, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>
+References: <20260105074350.98564-1-chao.gao@intel.com>
+ <dfb66mcbxqw2a6qjyg74jqp7aucmnkztl224rj3u6znrcr7ukw@yy65kqagdsoh>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <dfb66mcbxqw2a6qjyg74jqp7aucmnkztl224rj3u6znrcr7ukw@yy65kqagdsoh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, Jan 04, 2026 at 11:43:43PM -0800, Chao Gao wrote:
-> Hi reviewers,
-> 
-> This series is quite straightforward and I believe it's well-polished.
-> Please consider providing your ack tags. However, since it depends on
-> two other series (listed below), please review those dependencies first if
-> you haven't already.
-> 
-> Changes in v2:
->  - Print TDX Module version in demsg (Vishal)
->  - Remove all descriptions about autogeneration (Rick)
->  - Fix typos (Kai)
->  - Stick with TDH.SYS.RD (Dave/Yilun)
->  - Rebase onto Sean's VMXON v2 series
-> 
-> === Problem & Solution === 
-> 
-> Currently, there is no user interface to get the TDX Module version.
-> However, in bug reporting or analysis scenarios, the first question
-> normally asked is which TDX Module version is on your system, to determine
-> if this is a known issue or a new regression.
-> 
-> To address this issue, this series exposes the TDX Module version as
-> sysfs attributes of the tdx_host device [*] and also prints it in dmesg
-> to keep a record.
+On 1/5/26 02:38, Kiryl Shutsemau wrote:
+>> To address this issue, this series exposes the TDX Module version as
+>> sysfs attributes of the tdx_host device [*] and also prints it in dmesg
+>> to keep a record.
+> The version information is also useful for the guest. Maybe we should
+> provide consistent interface for both sides?
 
-The version information is also useful for the guest. Maybe we should
-provide consistent interface for both sides?
+Could you elaborate a bit on what constitutes consistency here?
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Do you mean simply ensuring that the TDX module version _is_ exposed on
+both hosts and guests, like in:
+
+	/sys/devices/faux/tdx_host/version
+
+and (making this one up):
+
+	/sys/devices/faux/tdx_guest/version
+
+Note the "host" vs. "guest"   ^^^^^
+
+Or, that the TDX module version be exposed in the *same* ABI in both
+host and guest, like:
+
+	/sys/devices/faux/tdx/version
+
+Generally, I find myself really wanting to know how this fits into the
+larger picture. Using this "faux" device really seems novel and
+TDX-specific. Should it be?
+
+What are other CPU vendors doing for this? SEV? CCA? S390? How are their
+firmware versions exposed? What about other things in the Intel world
+like CPU microcode or the billion other chunks of firmware? How about
+hypervisors? Do they expose their versions to guests with an explicit
+ABI? Are those exposed to userspace?
+
+For instance, I hear a lot of talk about updating the TDX module. But is
+this interface consistent with doing updates? Long term, I was hoping
+that TDX firmware could get treated like any other blob of modern
+firmware and have fwupd manage it, so I asked:
+
+	https://chatgpt.com/share/695be06c-3d40-8012-97c9-2089fc33cbb3
+
+My read on your approach here is that our new LLM overlords might
+consider it the "last resort".
