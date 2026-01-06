@@ -1,69 +1,68 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AADD33987
-	for <linux-coco@lists.linux.dev>; Tue,  6 Jan 2026 01:11:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F5223185D
+	for <linux-coco@lists.linux.dev>; Tue,  6 Jan 2026 01:16:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767661907; cv=none; b=LvpgTfi9JDe+u9m7OSMUB1GwDFOPxNLZh4X05OmTxKNEbUTcm+pPUs2xw7hOcjcb24h8PjjKuiCfApbTVCzxIoCi8xQh81USabRtzeaQbuEDNDGX0xVpa40oG3CcWDKEB1r/zZWbug1nkmJ9fqQWgOhTtfZSsh2ikReRkULIZYY=
+	t=1767662200; cv=none; b=Myjg8G0zc63RS8nXw5bID2Jlg9TncHrkCWJvdz/VYC3LSZIJhvY0KyxDWxzGqd2anJn0KYviJ6TMQv0oJ2azbFI64O8PbqGGnv7GMilHWFS2ck0vu4i7cjhwstDladn4pkPcozI/4xdDFNgZ/JQGC4vpnwNIm1YvUOG4MpCRIoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767661907; c=relaxed/simple;
-	bh=7QxghaDm861CKYRDD8kHL8SgeDsapiSRzVIH2YrlMbI=;
+	s=arc-20240116; t=1767662200; c=relaxed/simple;
+	bh=7atvEQB/W0MrWZ5oi5VEvWdIg99MP03MI5kWg9yZPQY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SmmAPL4WP3cMUIYUpJOY+3gCw3KNOdtwseCvYhb/8Gg2NnJTCPwXH4tpnOA0poeYkBofSQmqqmxexaFrqt2WqIRPcwP2qN5qJMBfSPTrK13cITdfOYwy4Nv+L8P0K1hue18BlmvPdc5eRQopCcL62gGIHEfuR/NT7yodz6TX1yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=grWA8b60; arc=none smtp.client-ip=209.85.222.171
+	 Content-Type:Content-Disposition:In-Reply-To; b=psvw/3Pf8TblRjOrUWu09qKOfdH9zcy/vdOLnNlkdoV0/o+//xUPAP0bkR/9+rxbEvrkzR84IqrvtZ7ExK0at4DVK1PFJr0XGZitvEvkGcADJ25yBfWbRWKgKPo/WVjAwcY54ffiOIE561BCVSHX9a1WPSKMf1KTGSdv1/H1J5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=B6ZpUxMB; arc=none smtp.client-ip=209.85.219.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="grWA8b60"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8b2a4b6876fso61032385a.3
-        for <linux-coco@lists.linux.dev>; Mon, 05 Jan 2026 17:11:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="B6ZpUxMB"
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-88a2f2e5445so5289016d6.1
+        for <linux-coco@lists.linux.dev>; Mon, 05 Jan 2026 17:16:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1767661905; x=1768266705; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=0M6wACUwu7ZPlV5A2pQScdlqF/ktZzTx82xX4yJbmJQ=;
-        b=grWA8b60nOSm6T2Ip9v7bQYmYrsyDz25Aw0kBG+cWp5pTp/FKTzJgHKUTM50PPoD+8
-         wQny+iBPQj4aK57oYX8ecUGkDVhQ4r/Z45ViY/Ie1jitfut1oJciYqkkS/hF/sNmRsdH
-         nUsItyHoxqakhjqUY9nxDOQcMosS9H0yp/g2KoR7dftuLVooefudx0hRnWnV/ktBaUHr
-         QOmQs3vxbuG2gHM8rxTQFzrAcQnr4DuOF/cbQ2CUcEnjOJDWgnI4NGh3oK8avkfXTEKj
-         b9ST8Q8XJdMly+J4kLfdsHj2djx5ydp94abLE4BnYPnzI0XtXiyMKEjs6uyppcvQJLRM
-         jagA==
+        d=ziepe.ca; s=google; t=1767662198; x=1768266998; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zwYvEJe49Eyq1mhCz3eanRMP0U05DubkNVlbpgrK6QM=;
+        b=B6ZpUxMBEzYGcz3IkupYqEmNIAsPHTkLsdGdBQKvW7g1H+gA7QdBTV0r3RfjL+ggER
+         1v2DN6OPr+tcix2SrI9AEePt7kWlTO/jiq57pSVlTDN6QfyJlNMe1uyfzlKlprD+kCAt
+         ILTuM7IOYqlGRA2tzuUPrDfvg0Q2Q7yOHJrLE5tT87ABuPwQ8cym5ZK9RP6lXjaNvGa+
+         Bh5WPfhGJ2JTtXAs+wpX7cfMrqALXP70IN29onu9/DxxIx9qUpMZSe/g7tx0JghTbLBN
+         ie+vUpIKEH97LnOByiynjq0KQaix8esmTUGBgISSGqowh+cZctTVQgOrLqoO9eAQd+Ra
+         XXcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767661905; x=1768266705;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0M6wACUwu7ZPlV5A2pQScdlqF/ktZzTx82xX4yJbmJQ=;
-        b=j+6/5qnLCDfAYh0JFCH25OzjLq9kL2m3AVT5im5084XWFFSCpLvQkWvx47j2MqXkGl
-         arKoCp09fPY1pqJcsTVu7wWKNvMVPmBeHjbXjymGErfkKQDik6VlvrI9j+oa9gV7vQpf
-         SfDNKmESqlay8sk2kbiDmsr7rNDx7GW/o/+oIQNBQg57TE3SDdpUHLqCzVZTquoBXYAi
-         lJJCFhY0FMW9C0rRG0TEU1WMFXvdpvHie0Lt85ri/U6Wd3itWt7U5KgE/Gu7FVqsbNmV
-         Dg9rvyk4UQG4FYxxaC/Jb0UiDt4xYcZK1Vy0qLLxYt9wrdABSM0m5PKPyDzNYuf9+SMF
-         1mOA==
-X-Forwarded-Encrypted: i=1; AJvYcCWDga+QbEiSrV6zUP72qfOcRhhTQvCdTxQVdAMLt9DVfk8lFZa6Kw8bwJQmbPh2xGb+JM9K8Ob/NqQc@lists.linux.dev
-X-Gm-Message-State: AOJu0YyXEfN26a00KpkebHHkjAtsEl8NRjiPZpQL2kPAEbrSUk5HP6DP
-	tovnSNRhIfOEoB+STjGOSIwglTjg20Mha5KDVIrsnskFz6ejmzZc7yFY9TtFDQtvWno=
-X-Gm-Gg: AY/fxX5+Xm10Ygy9ObM9AvKF30if4MCPakugrhucI0ZrI1LN/uL/K3PINDHFnkHx0Vz
-	4kaRy7cJt9+PwfGI1s6vSQyFFW15yZTBxdoNRnVGfZZrw8AG/LyX4Ry7BBroxqjQsb1zkShd07p
-	o+leFB2SLtcdZ297tjr9qmHbYE/Tqo4Pn6erJPS9fS1x4NS1vRoV6jDRll/3r2KzeNW7tXr3yrC
-	zQfD6c4vG8mnc8vIqku+n5MkGjMl/kQiCKhpcuNm8aSRYeEMpSAzDARBJGcYhUqnRfEpFnx5sNI
-	1gJo+LTyvCZiTR34fqyXugCZJBAC8ETus64HIhhbwSXfpIRXHsbt0+q+Jp4S6liz0Acez1RfWfL
-	g0IRE/mdJdktoCSlGPmMscNQCxPmjvRDLN4nSzBkPl3AFDYoVZLK9FR8H/t+B5RaQjr0UNKavwR
-	iMiGUq4nPKw7W2lS2/BqAAyi3OLP599COQcjzxrd0FBbecUgqvDmlvrk2RTX3EjlBtkIU=
-X-Google-Smtp-Source: AGHT+IFxbvXmsKhVoiNfeU0gqUSCgEVUTzTPmXjaEEUemMygzC5mzPD60qjzhxEZyV6lPJlPXUhCBg==
-X-Received: by 2002:a05:620a:7105:b0:8be:e044:8cfa with SMTP id af79cd13be357-8c37eb8143fmr221733485a.40.1767661904885;
-        Mon, 05 Jan 2026 17:11:44 -0800 (PST)
+        d=1e100.net; s=20230601; t=1767662198; x=1768266998;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zwYvEJe49Eyq1mhCz3eanRMP0U05DubkNVlbpgrK6QM=;
+        b=Onzg9Q0uBcHEMNn6Zw+pgtExi8BihMBRz6CV9IedeVqNz87EiawM5kFY9IVipbb4EH
+         AerEw+4oSwoZbQCRm636fNAogNsLaa3NXx84hD4g1s6Ul85oYwHRTlU0thqHjyHe9mFK
+         1HrYqsDAUew1/0xEYtCziJltsT+x3Oi58NWE9neyoCL7IydB4AmZRQgOwJdiLBCLYDZL
+         0D/ksuoftnFyYCL7ENm4iYqEWdBP4z7aa1Kqt5e0TBC5J61t/Q98N6NNNXxD3t0RK0cI
+         CB2zvxe769pOKdoG57ANM4K5+Cs+hKYlAJ+EqPZIfZZsamQjUqb5EA+Kz2aYFl0wsXbz
+         bHZw==
+X-Forwarded-Encrypted: i=1; AJvYcCWNE2Od1INMYYcv1qcPUJU0KVWR0GxRyJJvNmM7iksuR6siLVZ1Lh1yxV7Exm0dhc7vheQG8G9E3Jib@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzj3sbw0VT8zajtdSkmM0Meah+TF0rHaknPzVC5kSm2c4UJLUxx
+	oa6BD3i7wOXbNoMogadnwqWoymFQ1wg6TOqCBxPXeYYojJWFNWuM91xi8Oucd0EAiH0=
+X-Gm-Gg: AY/fxX4bw1CCoGZWSPVnyW2+GSSynmGCQokgoLlCUt8oDytLbyw8zPvfAdxOk7vElaE
+	CuLdEHDqiLABGY40ErYAnNBOlJdpvP8nJCMOlUyJbaGy4wOx0fExxOqLvP1nfLXJe7ICbFayZSG
+	kqDHiXRKMMEgeRXCilHnrVjSYXyud1DIEp67kySP2Ugd7z9fghu4YxF2JvxsvDPPqDrFDrQg91X
+	XVxUAZSlB1+P3N3f1PB6MM0ZpJqbbjmqsA/fcocyTweBYdTwBhwE+qEzvsEZ+1bs1lQDDSPfE1n
+	HtzVx0myuOFzKKyKrR3kbd0TmIM96m3B+WsnR9Iz86N19bMd0n6c8nVwktg2KsqAFwmazw4WHFP
+	tJ0OPGESfJfCYhRCKu5/eV3mYa4u3j3ArWumkJhW03csEde/UCRlhO8VzixhAUiiJysadtK0nm3
+	JttjlPbbQ9srmTm0vT0y0ngzOsAwQgGCujQD4nYck0cclIOp69VTTf5jjdH3+DrbfePPo=
+X-Google-Smtp-Source: AGHT+IGU4EwnENoVLZcc3PNj6UtCmKbLL+4ENJNdat+CgzEfd6wR8SIRx+LQD5e3GkbAHGRB7KzypQ==
+X-Received: by 2002:ad4:5767:0:b0:882:4130:d108 with SMTP id 6a1803df08f44-89075ea5df8mr23575886d6.43.1767662197793;
+        Mon, 05 Jan 2026 17:16:37 -0800 (PST)
 Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f4c964csm67177785a.22.2026.01.05.17.11.44
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ffa8e6ce5asm3810611cf.33.2026.01.05.17.16.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 17:11:44 -0800 (PST)
+        Mon, 05 Jan 2026 17:16:37 -0800 (PST)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1vcvbr-00000001Ecf-3FnI;
-	Mon, 05 Jan 2026 21:11:43 -0400
-Date: Mon, 5 Jan 2026 21:11:43 -0400
+	id 1vcvga-00000001EfI-37dn;
+	Mon, 05 Jan 2026 21:16:36 -0400
+Date: Mon, 5 Jan 2026 21:16:36 -0400
 From: Jason Gunthorpe <jgg@ziepe.ca>
 To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 Cc: linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
@@ -72,56 +71,63 @@ Cc: linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
 	maz@kernel.org, tglx@linutronix.de, robin.murphy@arm.com,
 	suzuki.poulose@arm.com, akpm@linux-foundation.org,
 	steven.price@arm.com
-Subject: Re: [PATCH v2 0/4] Enforce host page-size alignment for shared
- buffers
-Message-ID: <20260106011143.GP125261@ziepe.ca>
+Subject: Re: [PATCH v2 1/4] swiotlb: dma: its: Enforce host page-size
+ alignment for shared buffers
+Message-ID: <20260106011636.GQ125261@ziepe.ca>
 References: <20251221160920.297689-1-aneesh.kumar@kernel.org>
+ <20251221160920.297689-2-aneesh.kumar@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251221160920.297689-1-aneesh.kumar@kernel.org>
+In-Reply-To: <20251221160920.297689-2-aneesh.kumar@kernel.org>
 
-On Sun, Dec 21, 2025 at 09:39:16PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> Hi all,
-> 
-> This patch series addresses alignment requirements for buffers shared between
-> private-memory guests and the host.
-> 
-> When running private-memory guests, the guest kernel must apply additional
-> constraints when allocating buffers that are shared with the hypervisor. These
-> shared buffers are also accessed by the host kernel and therefore must be
-> aligned to the host’s page size.
-> 
-> Architectures such as Arm can tolerate realm physical address space PFNs being
-> mapped as shared memory, as incorrect accesses are detected and reported as GPC
-> faults. However, relying on this mechanism alone is unsafe and can still lead to
-> kernel crashes.
-> 
-> This is particularly likely when guest_memfd allocations are mmapped and
-> accessed from userspace. Once exposed to userspace, it is not possible to
-> guarantee that applications will only access the intended 4K shared region
-> rather than the full 64K page mapped into their address space. Such userspace
-> addresses may also be passed back into the kernel and accessed via the linear
-> map, potentially resulting in a GPC fault and a kernel crash.
-> 
-> To address this, the series introduces a new helper, `mem_encrypt_align()`,
-> which allows callers to enforce the required alignment for shared buffers.
+On Sun, Dec 21, 2025 at 09:39:17PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> +#define mem_encrypt_align mem_encrypt_align
+> +static inline size_t mem_encrypt_align(size_t size)
+> +{
+> +	return size;
+> +}
+> +
 
-This explanation makes sense, but to maybe bottom line the requirement
-to something very simple..
+IMHO this is the wrong API.
 
- In ARM64 the guest shared/private granule size must be >= the
- hypervisor PAGE_SIZE, which may be larger than the VM's natural
- PAGE_SIZE.
+The issue here is not about alignment, it is about the permitted
+granule size for shared/private.
 
-Meaning we have to go through an change all the places doing
-shared/private stuff to work on a shared/private granual size. I think
-this is not just alignment, but allocation size as well?
+On X86 this will be PAGE_SIZE on ARM64 it is
+  max(hypervisor_page_size, PAGE_SIZE)
+
+So think the arch helper should simply be
+
+  __pure size_T mem_encrypt_granule_size(void);
+
+> +	if (WARN_ON(!IS_ALIGNED(addr, mem_encrypt_align(PAGE_SIZE))))
+> +		return 0;
+> +
+> +	if (WARN_ON(!IS_ALIGNED(numpages << PAGE_SHIFT, mem_encrypt_align(PAGE_SIZE))))
+> +		return 0;
+
+And then we don't end up with weiro reading stuff like this..
+
+if (WARN_ON(!IS_ALIGNED(addr, mem_encrypt_granule_size())) ||
+    WARN_ON(!IS_ALIGNED(numpages, mem_encrypt_granule_size() / PAGE_SIZE)))
+
+Is much more readable..
+> @@ -319,8 +319,8 @@ static void __init *swiotlb_memblock_alloc(unsigned long nslabs,
+>  		unsigned int flags,
+>  		int (*remap)(void *tlb, unsigned long nslabs))
+>  {
+> -	size_t bytes = PAGE_ALIGN(nslabs << IO_TLB_SHIFT);
+>  	void *tlb;
+> +	size_t bytes = mem_encrypt_align(nslabs << IO_TLB_SHIFT);
+
+The stuff like this is just ALING(nslabs << IO_TLB_SHIFT, mem_encrypt_granule_size())
+
+etc
 
 Jason
