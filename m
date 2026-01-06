@@ -1,133 +1,217 @@
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010014.outbound.protection.outlook.com [52.101.193.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F5223185D
-	for <linux-coco@lists.linux.dev>; Tue,  6 Jan 2026 01:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767662200; cv=none; b=Myjg8G0zc63RS8nXw5bID2Jlg9TncHrkCWJvdz/VYC3LSZIJhvY0KyxDWxzGqd2anJn0KYviJ6TMQv0oJ2azbFI64O8PbqGGnv7GMilHWFS2ck0vu4i7cjhwstDladn4pkPcozI/4xdDFNgZ/JQGC4vpnwNIm1YvUOG4MpCRIoY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767662200; c=relaxed/simple;
-	bh=7atvEQB/W0MrWZ5oi5VEvWdIg99MP03MI5kWg9yZPQY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=psvw/3Pf8TblRjOrUWu09qKOfdH9zcy/vdOLnNlkdoV0/o+//xUPAP0bkR/9+rxbEvrkzR84IqrvtZ7ExK0at4DVK1PFJr0XGZitvEvkGcADJ25yBfWbRWKgKPo/WVjAwcY54ffiOIE561BCVSHX9a1WPSKMf1KTGSdv1/H1J5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=B6ZpUxMB; arc=none smtp.client-ip=209.85.219.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6DE023BCFD
+	for <linux-coco@lists.linux.dev>; Tue,  6 Jan 2026 01:45:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767663910; cv=fail; b=BJvQA/jzTB1WsCeyc8xs8+fps2DfAqVgopdaLAv0vVQIcm0RQjyfro+awCx6MdGB+Ct6rvgy5hcowvQVZzX1oF9P0Un0RRsRmLNuI7YJtvqAisEdQ5/LYYRasmJVmdTir3DvNT8Q6LHgzplpmnpocU1HCCgg+CwO1Fl3wtwf9X8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767663910; c=relaxed/simple;
+	bh=rZjbNqEKnBQA7GLOoqYxeu9RsgYqW6huGQLzp3Cp7Tg=;
+	h=Message-ID:Date:Cc:Subject:To:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=XCljthxKYxkOxeshvfhUu3bP3fR2MqUDO+s4tNOZrEWaSoYHncKgzhZDgHIbVJflY0/yyzUGV9EL2S2XoZmnmsc+kuPn9+Ne2OqRy+WAxfqydmMTcMJ5gaKUha7vcuqDRotiVcNTTb/v99nE9kI32GLxFunBKaciNt7QrsLK9HY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com; spf=pass smtp.mailfrom=citrix.com; dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b=wX/U9CyI; arc=fail smtp.client-ip=52.101.193.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=citrix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="B6ZpUxMB"
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-88a2f2e5445so5289016d6.1
-        for <linux-coco@lists.linux.dev>; Mon, 05 Jan 2026 17:16:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1767662198; x=1768266998; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zwYvEJe49Eyq1mhCz3eanRMP0U05DubkNVlbpgrK6QM=;
-        b=B6ZpUxMBEzYGcz3IkupYqEmNIAsPHTkLsdGdBQKvW7g1H+gA7QdBTV0r3RfjL+ggER
-         1v2DN6OPr+tcix2SrI9AEePt7kWlTO/jiq57pSVlTDN6QfyJlNMe1uyfzlKlprD+kCAt
-         ILTuM7IOYqlGRA2tzuUPrDfvg0Q2Q7yOHJrLE5tT87ABuPwQ8cym5ZK9RP6lXjaNvGa+
-         Bh5WPfhGJ2JTtXAs+wpX7cfMrqALXP70IN29onu9/DxxIx9qUpMZSe/g7tx0JghTbLBN
-         ie+vUpIKEH97LnOByiynjq0KQaix8esmTUGBgISSGqowh+cZctTVQgOrLqoO9eAQd+Ra
-         XXcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767662198; x=1768266998;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zwYvEJe49Eyq1mhCz3eanRMP0U05DubkNVlbpgrK6QM=;
-        b=Onzg9Q0uBcHEMNn6Zw+pgtExi8BihMBRz6CV9IedeVqNz87EiawM5kFY9IVipbb4EH
-         AerEw+4oSwoZbQCRm636fNAogNsLaa3NXx84hD4g1s6Ul85oYwHRTlU0thqHjyHe9mFK
-         1HrYqsDAUew1/0xEYtCziJltsT+x3Oi58NWE9neyoCL7IydB4AmZRQgOwJdiLBCLYDZL
-         0D/ksuoftnFyYCL7ENm4iYqEWdBP4z7aa1Kqt5e0TBC5J61t/Q98N6NNNXxD3t0RK0cI
-         CB2zvxe769pOKdoG57ANM4K5+Cs+hKYlAJ+EqPZIfZZsamQjUqb5EA+Kz2aYFl0wsXbz
-         bHZw==
-X-Forwarded-Encrypted: i=1; AJvYcCWNE2Od1INMYYcv1qcPUJU0KVWR0GxRyJJvNmM7iksuR6siLVZ1Lh1yxV7Exm0dhc7vheQG8G9E3Jib@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzj3sbw0VT8zajtdSkmM0Meah+TF0rHaknPzVC5kSm2c4UJLUxx
-	oa6BD3i7wOXbNoMogadnwqWoymFQ1wg6TOqCBxPXeYYojJWFNWuM91xi8Oucd0EAiH0=
-X-Gm-Gg: AY/fxX4bw1CCoGZWSPVnyW2+GSSynmGCQokgoLlCUt8oDytLbyw8zPvfAdxOk7vElaE
-	CuLdEHDqiLABGY40ErYAnNBOlJdpvP8nJCMOlUyJbaGy4wOx0fExxOqLvP1nfLXJe7ICbFayZSG
-	kqDHiXRKMMEgeRXCilHnrVjSYXyud1DIEp67kySP2Ugd7z9fghu4YxF2JvxsvDPPqDrFDrQg91X
-	XVxUAZSlB1+P3N3f1PB6MM0ZpJqbbjmqsA/fcocyTweBYdTwBhwE+qEzvsEZ+1bs1lQDDSPfE1n
-	HtzVx0myuOFzKKyKrR3kbd0TmIM96m3B+WsnR9Iz86N19bMd0n6c8nVwktg2KsqAFwmazw4WHFP
-	tJ0OPGESfJfCYhRCKu5/eV3mYa4u3j3ArWumkJhW03csEde/UCRlhO8VzixhAUiiJysadtK0nm3
-	JttjlPbbQ9srmTm0vT0y0ngzOsAwQgGCujQD4nYck0cclIOp69VTTf5jjdH3+DrbfePPo=
-X-Google-Smtp-Source: AGHT+IGU4EwnENoVLZcc3PNj6UtCmKbLL+4ENJNdat+CgzEfd6wR8SIRx+LQD5e3GkbAHGRB7KzypQ==
-X-Received: by 2002:ad4:5767:0:b0:882:4130:d108 with SMTP id 6a1803df08f44-89075ea5df8mr23575886d6.43.1767662197793;
-        Mon, 05 Jan 2026 17:16:37 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ffa8e6ce5asm3810611cf.33.2026.01.05.17.16.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 17:16:37 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1vcvga-00000001EfI-37dn;
-	Mon, 05 Jan 2026 21:16:36 -0400
-Date: Mon, 5 Jan 2026 21:16:36 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-	linux-coco@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>, will@kernel.org,
-	maz@kernel.org, tglx@linutronix.de, robin.murphy@arm.com,
-	suzuki.poulose@arm.com, akpm@linux-foundation.org,
-	steven.price@arm.com
-Subject: Re: [PATCH v2 1/4] swiotlb: dma: its: Enforce host page-size
- alignment for shared buffers
-Message-ID: <20260106011636.GQ125261@ziepe.ca>
-References: <20251221160920.297689-1-aneesh.kumar@kernel.org>
- <20251221160920.297689-2-aneesh.kumar@kernel.org>
+	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="wX/U9CyI"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oTzAmStpk4ZJf29Fn+eySIVXL/jZlJiU7neWgEZPQx2JoxueVqNzTjmAEgqW7cd2zwFpe9+O5wtwIMbwxR5UzL3kZrLkJTlYAkVmzAdHRTm9MMsRyNSylPCEJfFzwsW9mLv1wiArejy1437u9fHjN189bSirVFdaVZIzZ4YXhBND0ViTWPeOF8UPti5OxUA1I3PPqz1nH2IN7dwUtz9BUyJIcbA9rOcVGF+rs3cfBQHF4fGsL1V8mjJ4n3kIeuywh38e+ekYUfwZjEiRekshJjd7hmJ0LzIf5kebYjQJbsxY5IPXY/0N38e4YAvIN8DHh5aPNqd/uhd20YxyGSmCSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rZjbNqEKnBQA7GLOoqYxeu9RsgYqW6huGQLzp3Cp7Tg=;
+ b=k04c2TU4pK0uqNO6hR7+yT523gLRzPXwtMreoDnWIR0b3L/+YgsnsP+HJsZi8qFSDwP0xPfH8+vGijZ35/yVS6HzvEtBz541gIQXWi6SmKdtb9JIkoXs7OQc0SwwHTw6I44/kBzW/hUsPYf+MaFpit2VsJ9JbLad59VzdNskoiN1pwtB/4kO/7xc+rSYBi2ax1SVNVmZpzkbnQWr3rvDOpA7G46msrJmodjJGn+R353Ne3k6LdCkGYxLpPr1A2WKo2GNrF7gMeclVKRvwyPt+DLldndsUeJZmJMPu1yUM1oIylF2eM3tunJ5v+779E7sgkXgevEkXBIxLGGBtQhhxQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=citrix.com; dmarc=pass action=none header.from=citrix.com;
+ dkim=pass header.d=citrix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=citrix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rZjbNqEKnBQA7GLOoqYxeu9RsgYqW6huGQLzp3Cp7Tg=;
+ b=wX/U9CyIs+RZgTjutEvIpd4dDqbBGWDlBqXa8boyrtNlC2aAr8eYgagdE/5Q3ozhYWAlpFzGTKrtu1frf92TnnckCGGKuabxokJf09VHdyWJedIEM3e1k4loVVoH2vAagJmz0ztPONTQgS80U7dsTYP8goEDWZLJ7vgQJ0HdUhw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=citrix.com;
+Received: from CH8PR03MB8275.namprd03.prod.outlook.com (2603:10b6:610:2b9::7)
+ by DM6PR03MB4954.namprd03.prod.outlook.com (2603:10b6:5:1e2::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.5; Tue, 6 Jan
+ 2026 01:45:03 +0000
+Received: from CH8PR03MB8275.namprd03.prod.outlook.com
+ ([fe80::a70d:dc32:bba8:ce37]) by CH8PR03MB8275.namprd03.prod.outlook.com
+ ([fe80::a70d:dc32:bba8:ce37%4]) with mapi id 15.20.9478.005; Tue, 6 Jan 2026
+ 01:45:03 +0000
+Message-ID: <4f3e1701-3ccd-4ee8-a45e-3872d71ef548@citrix.com>
+Date: Tue, 6 Jan 2026 01:44:59 +0000
+User-Agent: Mozilla Thunderbird
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>,
+ "Williams, Dan J" <dan.j.williams@intel.com>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, john.starks@microsoft.com,
+ Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ LKML <linux-kernel@vger.kernel.org>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Subject: Re: "Paravisor" Feature Enumeration
+To: Dave Hansen <dave.hansen@intel.com>, "Lange, Jon" <jlange@microsoft.com>
+References: <c4ef08a6-5600-4604-9e40-bd3263a0dcd3@intel.com>
+Content-Language: en-GB
+From: Andrew Cooper <andrew.cooper3@citrix.com>
+In-Reply-To: <c4ef08a6-5600-4604-9e40-bd3263a0dcd3@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: LO2P265CA0290.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:a5::14) To IA1PR03MB8288.namprd03.prod.outlook.com
+ (2603:10b6:208:59e::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251221160920.297689-2-aneesh.kumar@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH8PR03MB8275:EE_|DM6PR03MB4954:EE_
+X-MS-Office365-Filtering-Correlation-Id: a7e098ce-1b6a-47a1-0bd0-08de4cc535f1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?SmhSQmtveld6TE85bkxiRU44ZURUN3NiYW5jaS81TG5lSlVodUhhK0ZFbUpU?=
+ =?utf-8?B?ME5hUkV6RHJieWluT1F4QjBDdFVwZDgvVXVCZmdTQUh5Z21tc0FkcnMzT2U2?=
+ =?utf-8?B?VHF2V3JSRGNoZ2laZHN4bjJZRVJjTStWUWlGaGZBZGk0N1VTY0VUVGdPcXBQ?=
+ =?utf-8?B?M1o3cWFVQ3dYUTJCQUw1Vm5VRW9rT1VDRy9aNXIxUSsvbTcra1BsYjVYMVhj?=
+ =?utf-8?B?QjRkZkliOUZHandDSldsT0xGREJqeE9ZQkt5WTNHWElYenBheUx2WityaHkw?=
+ =?utf-8?B?TU5ZTlNBVW1ORXlHRTQ4U3VBUFVGTDdJUFB5WWxrcFM4NmMwaVlTa2UybHYx?=
+ =?utf-8?B?VGoya1gvQUIzTjQ4VGtxYTU0NXc5RVhjcjVvSjJSdXY0b0RWdlhRQWMrUnJI?=
+ =?utf-8?B?b0hMVy81aVpyUmo2WFFjSkt3RzlDUUloc2M4OU9KbGxDYXVkQ1ErTXdHQTh6?=
+ =?utf-8?B?U1BXYzQ0RG1DNUxHMW9tS1l6anNhakdPRkVqVEFMNkl3UWdNZ0FPUmtrNVVl?=
+ =?utf-8?B?K2RyZVY5ZEIyU3dMWHp5RUJKazNKOHo5bXRicVBZbjhMUktXMnJIbVllcHVJ?=
+ =?utf-8?B?V2UwekdZLzRwZWpnNlM3OWN1SzJrNVhXT3N3bmc5Y29PdGVQSmRUcEtQTW9F?=
+ =?utf-8?B?VzVqcys4Y3VXdnJEL2ZZdnNDN2ZESW1ZK1habCtYVmI2R3BGUUphSU9uZjg2?=
+ =?utf-8?B?clU0cGMxWmhOaXMvbEVDRm5FcjlVT0NUekl1VkY3OXYwdWZsTzRmYTZ2eWhV?=
+ =?utf-8?B?b3BuQU8rV0dYYjlCSmMrWUdYeWxMU25wbVRuUWthV1F5OE5WTGdRMnRnbXBp?=
+ =?utf-8?B?clZYWjUxdGNhRmFUQXc2UEdJclg3R2lXb2lyTUNIcktTa0Y2ZlVRbXRIbWhC?=
+ =?utf-8?B?dUw1MW5DbzZ3UGl1VnJ6dGU0RjJZYmExTkZHaXBBSmFTdldsMGNVeDBobEdG?=
+ =?utf-8?B?UjRDb3duL21SMWxmK2dFVHVwU3dsT2ZJSks3RFZvNk5vaEo1cG5GVU14R0hx?=
+ =?utf-8?B?WG51bW5RWk54UzByMENVcmkvRW1BUWZhQ3k3TjFOa04vQ1pJVHpsdnorbTli?=
+ =?utf-8?B?NkpSRzlFdmd4N2oweThVVENaRDhjY1lxZlFrZ0J6ajVtSnRtRXBJS0xRK0dG?=
+ =?utf-8?B?OHBqS1JSZmhzSmFqLzdRcVJGNjBEdmxCMDU1Z0V0RTNJMWRwRFNFVGRmYWNp?=
+ =?utf-8?B?MGZSUzhGZmRNZ2w5cGdDQnRkNnZERzVQUHdEZnRuS2ZZVDdic1N0Y2FhZ3pS?=
+ =?utf-8?B?UlpqWkZHR252WTA1WHpOYnRqeGFDNFN6VWx0NWt5TEYzMHF5V2tPTC9Yemx3?=
+ =?utf-8?B?ZEJKS0RBYzV1a2E4RERoM3lQSjBKRnVnb2lVTlJHbFdYdU03MnltR3VBa0Rt?=
+ =?utf-8?B?SGw0NEhHVDYwcnNhQ2xFWDRRaktIQnZCczJpTC9KczIvQTBQc0tiaHdQZXk3?=
+ =?utf-8?B?N2Nub0c0ZThYT0VMMXdqYmJzbC9iSFJ4SEUzejYxMDBPVUY4YjNUVmQwVmZL?=
+ =?utf-8?B?c0FTMzBiTU4yd0pvWUp1dDB3c2wrTXRBeTJySUFKN0ZzVktZcElwVU8wR3M4?=
+ =?utf-8?B?TVZVZWJkbGFFdmloaEV3OHVrTElQWkcyOGp2K2diSkg0OVgveHhpQkR0UFc3?=
+ =?utf-8?B?Qkdpc2ljK0k2ZGZUUU5nQi82dE5pcGZLaHRiRkxvbDRZazRQS1FPdUpwdVpF?=
+ =?utf-8?B?cTIyRjRFZ2tka1NrWFd1a09FNGs1T1l0ZEFiRUUvMVBLZEFGVGN1RkgvNGd5?=
+ =?utf-8?B?R2dpcWN4ejc4K0FSNDBqRDBHOGUvRzE0RGNXaVZESFNVWVB6ZXZFSHZJSTJK?=
+ =?utf-8?B?WkdOaDAzbTZQTG9zQmlKZHVUaktjY0U3dFpzVTQyQmJwZWhXVjFPVklUcXUz?=
+ =?utf-8?B?cnJ1ZVg0R0s5UEkvQWorQUVLclpaQ0RlVi83OVZMRzVnNGxpeUJYd2FwQ2d1?=
+ =?utf-8?B?SDZZQkdhcmZYc1ZHdU94MndoaFVEdHJ0YlRScjhVU3owaTg4cVAxT0xyVDdB?=
+ =?utf-8?B?UXNnMm1EWFRnPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH8PR03MB8275.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Sm12V0YwN2p5Wlk2RWZNemFla3c2R01WSU1VaHQ2b216RE9ycWM5ckR6VDgz?=
+ =?utf-8?B?L0V3ZDlQQThwbkpFREdmLzJjN0NoVFgwdTE4bkl0b2RzVVB1ZTJ3eE1maHRj?=
+ =?utf-8?B?YndnVE15WWR4QVQ5OG1ROVRlRURYbzZyeUo1V05TMzc0WGZBNUl4VEtLeTBa?=
+ =?utf-8?B?RXNJaWVLbUJYM2l1aTFEbnNFUGZ5QjFmSW9ubjIybjFvMmNlU2txYlpCYXdV?=
+ =?utf-8?B?V0VpU1Jnc2dDTVQwQkE4UzB5M29FekVhMVJ6azBvU0N5MHR5NHFpSFlZOThx?=
+ =?utf-8?B?c2ZoenkrYURTNHBKa2ZsS1ZwblFOL0hRVTBrKzJ2OGp0eW9TKy9MWVJIZkxH?=
+ =?utf-8?B?QUxGZ09PVFJwOENxQnpKQjQ5MUdJakxxTXNJL283aUt3eGxhanBoeGdqYUxl?=
+ =?utf-8?B?SHRaeEN3M2t3U1dhdERzMi9lZHllY01qOXNyQUpSbHdYYjN2MllMWWdoTGlJ?=
+ =?utf-8?B?OU5xSzQ4RVd2Y1VwZ3RTSndQOFhiamxlbXlOYXA3QzZHKzFCSmN1Mmkya3Zr?=
+ =?utf-8?B?enY4Z1JramJoMzhiVWliK3ZXY0F3U1lSZ0VIS290Ti94RWtZUkR1NERPNFky?=
+ =?utf-8?B?bDFDNENKUnJPQkVRZW1oRTh0d2d3TVJYU2FScStVT05JY2pVNzlXYjNEOFlr?=
+ =?utf-8?B?QTF0VzA0R2R5YlF3Qnc5Rnc4VTZHdG5QbzRsYVZ0eHJSdFI4Y3gzYTZmRTdM?=
+ =?utf-8?B?UDJXZjc3U0MrMVh1OGp2VkUvZ1VNN3dnaWJZai9HQ3VJVER2Zk5JUzJrU3pZ?=
+ =?utf-8?B?Rm5PTmJlZmtsUStqSXlDVzdwa1pjWXJrZ29DYURNdW54c3EzTnlWOXJNdFNY?=
+ =?utf-8?B?NGFQTnIvOHVGODVzWkhKRUU4em41c3RrVDFNUWlkNktNRW0rLzM3UmJtU2du?=
+ =?utf-8?B?bUxhMlpVb01ZR3MzZitYWi9rLzZLVC9FSndkYkZLQ3NRRmI5Y3JaYTlUTitl?=
+ =?utf-8?B?ckk1RUhCaXovNis2TW9pdytORjRTcXFDMk1IQ1I1U2lCTmRzK29yTTNkNDA1?=
+ =?utf-8?B?cHovbDFoMlBuc21QUHE4eWM5ODJpVXpoaVhKNWtVSWVyV2NNeFUxbFdwZHcr?=
+ =?utf-8?B?WTRsYWVvVndpSERvaVZtYkRnc2p5UGpQWEZ5dklYZ3R3ZDJwV01sMTlFRG4y?=
+ =?utf-8?B?djZ5ajg5NGtPelJhWUVuYTY5elVmQWtuV25JN09kN0NPODVIcisrQkwwNlBX?=
+ =?utf-8?B?YW5wN3l3L1MzbVlvVEs2dVAyREwwWVk2aTZ2emw4bEdHRzhBZTRodVlUd1Mr?=
+ =?utf-8?B?R2JVcmNlZVJ5d0tEVjRmYk5hSmR6dFV1VTJudXlMeVRPdmFaZFo4d3NnMHhY?=
+ =?utf-8?B?dFRsOEdycSt0SnZXQkt1cEdSYlNCWEpRWDkvMWVTTXNDRGh2dS84eElJQldF?=
+ =?utf-8?B?YldOckwxRk9xR3I0YW1EUkplb1RsOHZLNGs3aFVzTUJMTlhFbjU1UERtTlVp?=
+ =?utf-8?B?TG1QRkNpMEQ0dGlQanQraXBNZGVaYXlob0pWUmVHTTdZSkVXYlRoQTIvbENT?=
+ =?utf-8?B?bkVjOFpOa3B4QTlYazk2V1E1OWVTSlp5YWlvTVFuWHpXUkYyeDRlSE1XQTlO?=
+ =?utf-8?B?bVRYd2FNeUFkZkNtNmR5YUQ0Z1BiRHd6N2c5WW96c05Nb0xFTW5Va2g0S3FT?=
+ =?utf-8?B?SnJxc295TlhwSXdwbm5wRGRjWHNYUkJoMWpKZUNIcWpIUDFvekROSGw5aS8r?=
+ =?utf-8?B?L2FObDdrUjlzMVNiT1FYVjJRWUJ1SUNyUTV2c2hJMnpxYVA0bVhjYjVCTGRJ?=
+ =?utf-8?B?LzVmTHd2eGVaREN4ZWFJNXc2OGtUdCtjRmxGcEtlY2pKWGxQNThJTWpOdk41?=
+ =?utf-8?B?MXJVOUFENkZhVzBnTGpOcTFhVENyNmNTQUxOQXZYeHhkOEJmSFdUcjRWUjJY?=
+ =?utf-8?B?dllDZnFRQWVBdC8xMjZ3SG9BOGloK3ZCSU5jZHRPeEcvYWNnc05ObkJzVWVJ?=
+ =?utf-8?B?bDhYNmwzSFFwb0ExSm1mei85Y2I3LzVTT3pRV09rdmttdEJrdVVqZkIrVkl0?=
+ =?utf-8?B?aTZhNG5jMmF4VzRQTkFTSmVKeUhpSnQ0UkdDOUFrdm4zUWZ5b0o4VndMMGx0?=
+ =?utf-8?B?WXh2dlB3bW40Nkd3WWdKZ2ZjdE91T3FrZ3JZQjZsK3dROFlNNWxUZXM1RmNS?=
+ =?utf-8?B?TUlNU1V6Y3BDL0IrQy85WU84cDJiWHdGZTRRcUdzbVlhdTJ3VEYwNG1wb3l1?=
+ =?utf-8?B?MUFoMzhEOVZKYS8reHZWSmxrb1JLellvNmpVZ2JkSnBTNVpjekZ2enhtRFh4?=
+ =?utf-8?B?WFlQczNUZnVJalNtV2VRRHJCTEVZQkg1QTBlMXorUUNvMEFKTzFWRHBocElL?=
+ =?utf-8?B?am05TE1jZGgwREZISFRMUDlOSUlNUGNaeEJZaUdWR2M3KzhUK3h0TWxpVkxS?=
+ =?utf-8?Q?RZezYrPBADA21cl0=3D?=
+X-OriginatorOrg: citrix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a7e098ce-1b6a-47a1-0bd0-08de4cc535f1
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR03MB8288.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2026 01:45:03.4804
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 335836de-42ef-43a2-b145-348c2ee9ca5b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YfjAYdy72kjefLsXRahHvG9eTV/oQlwM4ElVeeh8jwlnRoGaSRfg4o0D/9YFohIqs0AWoy1Z8FyFNAY2Xd+JcVwhjMZZ0SdjzaHLI2Fw3v0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB4954
 
-On Sun, Dec 21, 2025 at 09:39:17PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> +#define mem_encrypt_align mem_encrypt_align
-> +static inline size_t mem_encrypt_align(size_t size)
-> +{
-> +	return size;
-> +}
-> +
+On 05/01/2026 9:42 pm, Dave Hansen wrote:
+> First,
+>
+> Jon and John gave a talk in Tokyo about feature enumeration under
+> paravisors:
+>
+>> https://lpc.events/event/19/contributions/2188/attachments/1896/4057/05-Paravisor-Integration-with-Confidential-Services.pdf
+> The tl;dr for me at least was that they'd like a common and consistent
+> means of enumerating these features in OSes, regardless of the
+> environment: TDX, SEV-SNP or even ARM CCA.
 
-IMHO this is the wrong API.
+I agree that it seems like "just" an enumeration problem, but despite
+attending the presentation and rereading the slides, I'm still not clear
+on the precise scope.
 
-The issue here is not about alignment, it is about the permitted
-granule size for shared/private.
+Are we saying that, inside an opaque blob that a customer provides to a
+CSP to run we might have:
 
-On X86 this will be PAGE_SIZE on ARM64 it is
-  max(hypervisor_page_size, PAGE_SIZE)
+* a paravisor and an unaware OS, or
+* svsm and a fully-aware OS, or
+* something in-between these two.
 
-So think the arch helper should simply be
+and we're looking a way to describe which piece of the interior stack
+owns which capability/service?
 
-  __pure size_T mem_encrypt_granule_size(void);
+If so, it can't come in from the outside; given that it's the capability
+enumeration, there's a chicken/egg problem with verifying the integrity.
 
-> +	if (WARN_ON(!IS_ALIGNED(addr, mem_encrypt_align(PAGE_SIZE))))
-> +		return 0;
-> +
-> +	if (WARN_ON(!IS_ALIGNED(numpages << PAGE_SHIFT, mem_encrypt_align(PAGE_SIZE))))
-> +		return 0;
+It seems like it needs to be produced by whatever the first code to run
+is, after gathering capabilities in a vendor-specific way, and deciding
+which services it wants to provide, and which to delegate.
 
-And then we don't end up with weiro reading stuff like this..
+And if so, then it definitely cannot be in CPUID because that needs to
+be fixed from prior to the guest starting to run, and doesn't express
+dynamic properties of the system[*]
 
-if (WARN_ON(!IS_ALIGNED(addr, mem_encrypt_granule_size())) ||
-    WARN_ON(!IS_ALIGNED(numpages, mem_encrypt_granule_size() / PAGE_SIZE)))
 
-Is much more readable..
-> @@ -319,8 +319,8 @@ static void __init *swiotlb_memblock_alloc(unsigned long nslabs,
->  		unsigned int flags,
->  		int (*remap)(void *tlb, unsigned long nslabs))
->  {
-> -	size_t bytes = PAGE_ALIGN(nslabs << IO_TLB_SHIFT);
->  	void *tlb;
-> +	size_t bytes = mem_encrypt_align(nslabs << IO_TLB_SHIFT);
+I think the discussion would benefit greatly from having a couple of
+concrete examples of data this wants to hold, and how it is to be used
+at different levels of the interior software stack.
 
-The stuff like this is just ALING(nslabs << IO_TLB_SHIFT, mem_encrypt_granule_size())
+Thanks,
 
-etc
+~Andrew
 
-Jason
+[*] Yes, I know CPUID does have some dynamic properties.  I think most
+people would agree that life would be better without them.
