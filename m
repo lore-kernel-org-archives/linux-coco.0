@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A092A1B0437
-	for <linux-coco@lists.linux.dev>; Tue,  6 Jan 2026 00:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D19613C8E8
+	for <linux-coco@lists.linux.dev>; Tue,  6 Jan 2026 00:46:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767659788; cv=none; b=cR3Qeq2feAYP8kAVYeL48d/2/GLiW7Vi18xXbs5G1PIqBATXY1Qm6gio67fVOud7cK4la8JCzwz8C70nMoZEPwUQ/6kx5uQ0bVXWoZNdxr5XcwWSvF3tWVwRshcH372rFE2ST46IQkyrXPYmzEzrJuNOOWJ0hSWxpeyxTuDjRPA=
+	t=1767660397; cv=none; b=tOBWrFz4FfuYxsj/agrLcXHri2BMQ7m5w9Z9l8k81PEgqJr4Qd8q6OJopnwp9koNEsiUoJFiq7GzLLOp6AmTANJcWKwJxRv95Nbrc50nbmPwsF64VFpw/8pJy/+0sGz71M81n46xk5zUqYKTbv5PyeRZVBpDsUuvO66geS70i5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767659788; c=relaxed/simple;
-	bh=gvFLPDmFvZGzA61QG3M10R2LbEQ+OiXCEzQPn+AGKpM=;
+	s=arc-20240116; t=1767660397; c=relaxed/simple;
+	bh=5hFj7GqvOyjRHYvwqA3PcPI8qz8tK4aweW/08yWjYto=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f+G58tlh5XNaddc9J/1o3JGjfDJouZ1YuoY8XdyMtC5sASBlW2ujjg3BSuc2IZ+yvkUq0ZeLHNcitpeb4D2JyMST8nxR7Gl21vKg8iKAql99YFgMVqk7kEw2F1N6LIeXjq4ffo3ZQcg8O4Gpjf2ssAoVQVF8tO8YUVYyzBJdNas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GRdgogsX; arc=none smtp.client-ip=192.198.163.15
+	 In-Reply-To:Content-Type; b=cDbVQOVQA76KOZYlHdXFGAchSvGkE8JccxguapgAPMhCrxexMsLLpGkwyly5zK1KsmtQ+W3kFRZWoWX1SZiZFj+/hDUu7mMpkFop0L7HW1V7jsvDkIV2v4Asy7R/loeMbhZ8G5TfOTAIszQRrwDAGmoudhsX52K7DylZh2oH1DM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VU4ezFdm; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GRdgogsX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VU4ezFdm"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767659786; x=1799195786;
+  t=1767660396; x=1799196396;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=gvFLPDmFvZGzA61QG3M10R2LbEQ+OiXCEzQPn+AGKpM=;
-  b=GRdgogsXZI/6aG2YzcE4N1E09rF2Nr6KndbJrrxQ7FrkFJmYRnzTnE8c
-   +ZrwyGWDVZ8hH308bxP33DWJwh0vjHwktG8w6vtreHX24FoYzu3ySaGS0
-   UDrYRpoz9kb8kk8nH5xAPxCMgOWF4R+wkC4ocrPjdkumTQEOoU0BJCAma
-   IlSkJB8XtELBrupMZlldBY9n9SHlhVxUnAQ3ezwKorZMMRck+xa9e4a3V
-   13bpt2VeTDUiyoQ24jkVwTa0Pkd22hQ3z9jpBXut2JgPbHBZ0rdtj6DdF
-   qNkBD+GnGSFq5yWeGbH/RI9EXprAn3iZp8UTycocuemGIuaa8F0iI2TlO
+  bh=5hFj7GqvOyjRHYvwqA3PcPI8qz8tK4aweW/08yWjYto=;
+  b=VU4ezFdmi8X74ktLzVzLjD29K36Ly7HW63+z7t6Dya3oLmNz5x6yaC7A
+   7HeFwK3GjdhMxySiGp+p5OKxEZ8aqAq/QeLFq2Kskp5B4cJk2W2tE7Oqj
+   ggN+lluilqcd6Nxg4xLIYZUfxPbHoWIrLOOIxu23Ji7tnflZKFWAJV3W6
+   efZVi5IgDwg2LYjBBF6k2aA2AgclE5JDOvLtYtVgDVkCPchVxKNEX8RCb
+   7CpYp5TOwklrtpd9mhVwJfcjQaB+bEk+PHQeuDfuygFVP9ii9GunjAuq5
+   vY6oKvdhsYoOWTmxMp+R8+FSn3XI282shmogUBECMeCQd9rdBR5BzaRR1
    A==;
-X-CSE-ConnectionGUID: P3/5hIQBTrKquOxfOdrWWw==
-X-CSE-MsgGUID: 8LuU/22DT5SKXz4D8LKX7w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11662"; a="69105298"
+X-CSE-ConnectionGUID: zyw/+rh4Q+KmVfap4K4UdQ==
+X-CSE-MsgGUID: gFuPj/VgT5+GS2goV11aAQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11662"; a="79334333"
 X-IronPort-AV: E=Sophos;i="6.21,204,1763452800"; 
-   d="scan'208";a="69105298"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2026 16:36:26 -0800
-X-CSE-ConnectionGUID: 9t0rILwORAC5QxUhXNeGgg==
-X-CSE-MsgGUID: 6vK2YXhxTs6y5qyAR69ACg==
+   d="scan'208";a="79334333"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2026 16:46:36 -0800
+X-CSE-ConnectionGUID: SeaYkonOS6+5r4Bw09oi+Q==
+X-CSE-MsgGUID: 4pGyv4gVTuOuzmBR9dhnkg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,204,1763452800"; 
-   d="scan'208";a="203493438"
+   d="scan'208";a="226075796"
 Received: from dwesterg-mobl1.amr.corp.intel.com (HELO [10.125.109.56]) ([10.125.109.56])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2026 16:36:25 -0800
-Message-ID: <71f42b9e-793b-4f8d-8159-a6ca7800f292@intel.com>
-Date: Mon, 5 Jan 2026 16:36:25 -0800
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2026 16:46:34 -0800
+Message-ID: <4c8524e5-b3e1-4113-a4e3-d3615465d9a8@intel.com>
+Date: Mon, 5 Jan 2026 16:46:34 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -53,10 +53,12 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: "Paravisor" Feature Enumeration
-To: dan.j.williams@intel.com, "Lange, Jon" <jlange@microsoft.com>
+To: Jon Lange <jlange@microsoft.com>,
+ "dan.j.williams@intel.com" <dan.j.williams@intel.com>
 Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, john.starks@microsoft.com,
- Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, John Starks
+ <John.Starks@microsoft.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
  "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
  LKML <linux-kernel@vger.kernel.org>,
  "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
@@ -64,6 +66,7 @@ Cc: Sean Christopherson <seanjc@google.com>,
  Andrew Cooper <andrew.cooper3@citrix.com>
 References: <c4ef08a6-5600-4604-9e40-bd3263a0dcd3@intel.com>
  <695c50eee68e3_4b7a100e8@dwillia2-mobl4.notmuch>
+ <CH8PR21MB52221DBBF4D87FC24013FACFCA87A@CH8PR21MB5222.namprd21.prod.outlook.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -109,45 +112,39 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <695c50eee68e3_4b7a100e8@dwillia2-mobl4.notmuch>
+In-Reply-To: <CH8PR21MB52221DBBF4D87FC24013FACFCA87A@CH8PR21MB5222.namprd21.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 1/5/26 16:01, dan.j.williams@intel.com wrote:
-> Dave Hansen wrote:
-...
->> 	X86_FEATURE_KVM_CLOCKSOURCE in arm,pvclock
->> or
->> 	X86_FEATURE_KVM_STEAL_TIME  in arm,kvm-steal-time
->>
->> As far as I can tell, these aliases are all done ad-hoc. This approach
->> could obviously be extended to paravisor features, but it would probably
->> be on the slow side to do it for each new feature.
-> 
-> "Slow" as in standardization time?
+On 1/5/26 16:10, Jon Lange wrote:
+> It's not clear to me what advantages are gained by reflecting ACPI
+> information into CPUID.  ACPI is already available and is usable
+> across architectures, unlike CPUID.  What advantage is gained by
+> replicating the information into CPUID?
 
-Yes.
+If there is an ACPI approach that is expressive and agile enough to
+convey the necessary information, then there's zero reason to replicate
+it anywhere, CPUID included.
 
-...
->> Is there anything stopping us from carving out a chunk of CPUID for
->> this purpose?
-> 
-> At what point does an ACPI property become a CPUID? In other words if
-> there is an ACPI / DeviceTree enumeration of CPU/platform capabilities
-> in firmware that can supsersede / extend native enumeration, does it
-> matter if x86 maps that to extended CPUID space and ARM maps it however
-> is convenient?
-> 
-> I have no problem with an extended CPUID concept, just trying to
-> understand more about the assumptions.
+Like I said in the mail to Dan, I _think_ the current state of the art
+for host=>guest enumeration involves ACPI wrapping DeviceTree properties
+on ARM which mirror x86 CPUID bits.
 
-The way it _seems_ to have worked until now is that KVM/x86 has led the
-way by defining a CPUID bit for things like KVM_CLOCK of KVM_STEAL_TIME.
-Then, the ARM folks came along and DeviceTree enumerations. Last, ACPI
-came along with a way to package up all the DeviceTree enumerations into
-a single table.
+> In the LPC session that Dave cites, Dan (I think it was Dan) threw
+> out another suggestion: have the hypervisor driver detect the
+> paravisor configuration using whatever is appropriate for that
+> hypervisor architecture.  I find this to be a very attractive
+> direction because it eliminates the need to define standards that
+> can be supported across hypervisors (and across virtual firmware
+> implementations), and reduces it just to a small set of concepts
+> that can be fed into the kernel.  This could keep the enumeration
+> out of the hands of ACPI altogether - thus no slow standards
+> development.  Are there downsides to this approach that make it
+> unattractive?
+I think you're saying that we'd have a fixed set of Linux-defined
+features. Hypervisor drivers would set the features up. Generic,
+architecture and vendor-neutral code would consume the feature enumeration.
 
-So, maybe that's a hack on a hack on a hack and we should just start
-with ACPI this time. That would certainly make this pretty straightforward.
-
-I'd love to hear a take from the x86/KVM folks, though.
+That sounds familiar and sane to me. It's generally what we have with
+the Linux-defined X86_FEATURE_* bits. Linux defines their behavior and
+consumes them in generic code. x86 vendor-specific code sets them.
