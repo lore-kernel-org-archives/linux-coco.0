@@ -1,104 +1,109 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7253B208D0
-	for <linux-coco@lists.linux.dev>; Tue,  6 Jan 2026 04:18:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B038238C33;
+	Tue,  6 Jan 2026 06:37:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767673125; cv=none; b=Um2AM8Np9OVc5HP+RoYU3ZJUSk0X41GOI4A24WRaFuJESEkL7iRw6Ze0LP+MrLUx64S8GSPjjv9oz6BjTf8t7vuaBx+BizWzY2HQ7MzV7OK/PMRLmt8qwQnh1crNkUo8/hjfWHs2+dpbYqFe1VISMO17Xk7dbKPmA+vQ6NR3C7M=
+	t=1767681475; cv=none; b=hVMJ9piBmOHXd3Zy4KMLUYbLShpECzYXJe9MOAMfLZ0bbTsnOjGgm9Nb4uWIurTQCAe43JWLEr71OjWZqMudvDI57EiBqQUnVchCwtZqtgElAS4uUK/e5RIGB/AZz1Uo/+AxT2694GDSrpzPcluVZNTGOxgZ+VcrE+MBO5i8FC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767673125; c=relaxed/simple;
-	bh=FJht4+x+AmNn8jLnsmkZ6PpTRb3wUqY3p+sCsXEcRpE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bHBNlleQQcOT2UNKsAsBmFLxM+tXDZPqEW/GDn4lkEcod8vw52zn8+XMP/ilrSQOLZJ9D8cpNkJ9q+VZmCY0AR/HktyWlz9IEAZWhnBIZ2Eekp4hMtH6ohbaxqvopCpxXjCQcxMQcml5n/Z0czYYWUTUBRxZLFffHLl+a53N75Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Uk9ihiEO; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1767681475; c=relaxed/simple;
+	bh=BTY3qbG6lw8MNKTh9vwaWJkOKG3i9gvUi5qIYXM9YIg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=k6bqqsu6v+qMWcH+wM5RFpR8m3jsYgl2F94s2EdWtSLvRw3zlTZ6u6yYiAb9Jz3FCD0bHhS0dXF9q7yYNZM5S3cbpCvYt++zRVSfhLjkp74BaJ2oiehP1RhBpg52bGT3D3WldT6nTTY+hwWcG/POIqCJ6DkWfpy84gYbhNjU0Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Djtf/fF7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Uk9ihiEO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767673123; x=1799209123;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=FJht4+x+AmNn8jLnsmkZ6PpTRb3wUqY3p+sCsXEcRpE=;
-  b=Uk9ihiEOFTCNnjp2cZFU5XAqU9+9dMM9IlgypyfYl/5L4Oi9D9YpdiZS
-   LtamanAf4u/iSOPmsM13OFJY6WmaXZtpPEr5SYnl+05vBe14XvaHmXuKL
-   g8s/855fK912gHVFgRKhvzFiJGFgsq/yv9654Nye17EHytEN3t2o77B/4
-   lmE5VlWZCAOberKWfg4FkGuY7DEfKvWO4d6Rsn5vfuwyKJ3GFQ8L9Vzu5
-   +eZAZoaz6pLevUUzRWrGF+U1s9XMNRIXUvicXs8e1XpNULCBV5R9MKqyz
-   rkRd+al0CP8wk/L5HriJ7hSId2GNBg7/FS8wS/TE08NqB1YiVkJW1OWBQ
-   w==;
-X-CSE-ConnectionGUID: 2f69b8ncScWpSz3BMe5uQQ==
-X-CSE-MsgGUID: sUsj7XOhRuWy3J/9m9et9g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11662"; a="72898786"
-X-IronPort-AV: E=Sophos;i="6.21,204,1763452800"; 
-   d="scan'208";a="72898786"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2026 20:18:42 -0800
-X-CSE-ConnectionGUID: XJbA1t1XSZC1O1Is0oSFKA==
-X-CSE-MsgGUID: DaICeh5XROmKtQGBrTqgBw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,204,1763452800"; 
-   d="scan'208";a="202176993"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa007.fm.intel.com with ESMTP; 05 Jan 2026 20:18:38 -0800
-Date: Tue, 6 Jan 2026 12:01:31 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"Huang, Kai" <kai.huang@intel.com>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
-	"Zhao, Yan Y" <yan.y.zhao@intel.com>,
-	"Wu, Binbin" <binbin.wu@intel.com>,
-	"kas@kernel.org" <kas@kernel.org>,
-	"seanjc@google.com" <seanjc@google.com>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"Yamahata, Isaku" <isaku.yamahata@intel.com>,
-	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
-	"tglx@linutronix.de" <tglx@linutronix.de>,
-	"Annapurve, Vishal" <vannapurve@google.com>,
-	"Gao, Chao" <chao.gao@intel.com>, "bp@alien8.de" <bp@alien8.de>,
-	"x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH v4 04/16] x86/virt/tdx: Allocate page bitmap for Dynamic
- PAMT
-Message-ID: <aVyJG+vh9r/ZMmOG@yilunxu-OptiPlex-7050>
-References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
- <20251121005125.417831-5-rick.p.edgecombe@intel.com>
- <aUut+PYnX3jrSO0i@yilunxu-OptiPlex-7050>
- <0734a6cc7da3d210f403fdf3e0461ffba6b0aea0.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Djtf/fF7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C5DC116C6;
+	Tue,  6 Jan 2026 06:37:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767681475;
+	bh=BTY3qbG6lw8MNKTh9vwaWJkOKG3i9gvUi5qIYXM9YIg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Djtf/fF77dkGoLZRmeYTtQMKDKuZXspyLiBRn8sLLSZN58LqZ4Hwy0AdqFJuB84OR
+	 t9EDKmBnh/Qfosrc+v/UxfkKeR6+lTJ1urj9DVQWN4uEYZxSti2KpGV6PiC4cd143J
+	 vP5EMfWvC9TOmUttC0bP1TGSrAcb2Lk5Uqc5y+/C+GfMkHQW2U08ge5KyYUDvmt6BD
+	 gtf1T1ds/IIn4FNLdTTZii7RR5y9aeZo3uG/xYBQzmMS1yLTDPGzUB3tusZIY0IdrC
+	 iNhheNm470/0lnEbDE8/8q3ac5ekQE5sXL1B7S+6ohY+2atF8tUTfpK4B9mOZ/wbuO
+	 5sGgbBv8bo5Wg==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
+	linux-coco@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>, will@kernel.org,
+	maz@kernel.org, tglx@linutronix.de, robin.murphy@arm.com,
+	suzuki.poulose@arm.com, akpm@linux-foundation.org,
+	steven.price@arm.com
+Subject: Re: [PATCH v2 1/4] swiotlb: dma: its: Enforce host page-size
+ alignment for shared buffers
+In-Reply-To: <20260106011636.GQ125261@ziepe.ca>
+References: <20251221160920.297689-1-aneesh.kumar@kernel.org>
+ <20251221160920.297689-2-aneesh.kumar@kernel.org>
+ <20260106011636.GQ125261@ziepe.ca>
+Date: Tue, 06 Jan 2026 12:07:48 +0530
+Message-ID: <yq5a7btvjlfn.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0734a6cc7da3d210f403fdf3e0461ffba6b0aea0.camel@intel.com>
+Content-Type: text/plain
 
-On Mon, Jan 05, 2026 at 10:06:31PM +0000, Edgecombe, Rick P wrote:
-> On Wed, 2025-12-24 at 17:10 +0800, Xu Yilun wrote:
-> > Is it better we seal the awkward pattern inside the if (dpamt supported)  block:
-> > 
-> > 	if (tdx_support_dynamic_pamt(&tdx_sysinfo))
-> > 		if (!ret && !(ret = read_sys_metadata_field(0x9100000100000013, &val)))
-> > 			sysinfo_tdmr->pamt_page_bitmap_entry_bits = val;
-> 
-> The extra indentation might be objectionable.
+Jason Gunthorpe <jgg@ziepe.ca> writes:
 
-Yes the extra indentation is unconventional, but everything here is, and
-we know we will eventually change them all. So I more prefer simple
-changes based on:
+> On Sun, Dec 21, 2025 at 09:39:17PM +0530, Aneesh Kumar K.V (Arm) wrote:
+>> +#define mem_encrypt_align mem_encrypt_align
+>> +static inline size_t mem_encrypt_align(size_t size)
+>> +{
+>> +	return size;
+>> +}
+>> +
+>
+> IMHO this is the wrong API.
+>
+> The issue here is not about alignment, it is about the permitted
+> granule size for shared/private.
+>
+> On X86 this will be PAGE_SIZE on ARM64 it is
+>   max(hypervisor_page_size, PAGE_SIZE)
+>
+> So think the arch helper should simply be
+>
+>   __pure size_T mem_encrypt_granule_size(void);
+>
+>> +	if (WARN_ON(!IS_ALIGNED(addr, mem_encrypt_align(PAGE_SIZE))))
+>> +		return 0;
+>> +
+>> +	if (WARN_ON(!IS_ALIGNED(numpages << PAGE_SHIFT, mem_encrypt_align(PAGE_SIZE))))
+>> +		return 0;
+>
+> And then we don't end up with weiro reading stuff like this..
+>
+> if (WARN_ON(!IS_ALIGNED(addr, mem_encrypt_granule_size())) ||
+>     WARN_ON(!IS_ALIGNED(numpages, mem_encrypt_granule_size() / PAGE_SIZE)))
+>
+> Is much more readable..
+>
 
-  if (!ret && !(ret = read_sys_metadata_field(0xABCDEF, &val)))
+I added this helper
 
-rather than neat but more LOC (when both are easy to read).
+>> @@ -319,8 +319,8 @@ static void __init *swiotlb_memblock_alloc(unsigned long nslabs,
+>>  		unsigned int flags,
+>>  		int (*remap)(void *tlb, unsigned long nslabs))
+>>  {
+>> -	size_t bytes = PAGE_ALIGN(nslabs << IO_TLB_SHIFT);
+>>  	void *tlb;
+>> +	size_t bytes = mem_encrypt_align(nslabs << IO_TLB_SHIFT);
+>
+> The stuff like this is just ALING(nslabs << IO_TLB_SHIFT, mem_encrypt_granule_size())
+>
 
-Anyway, this is trivial concern. I have more optional fields to add and
-will follow the final decision.
+I guess we can still keep mem_encrypt_align so that changes like below
+becomes simpler.
+
+-	int page_order = get_order(min_size);
++	int page_order = get_order(mem_encrypt_align(min_size));
+ 
+-aneesh
