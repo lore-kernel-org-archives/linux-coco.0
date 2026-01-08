@@ -1,115 +1,225 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C549343A20B
-	for <linux-coco@lists.linux.dev>; Thu,  8 Jan 2026 10:50:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0E42EC0A4;
+	Thu,  8 Jan 2026 11:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767869425; cv=none; b=mamBc7mLNwUmJ+ts+TzVvCq9tZEwHCrwKIwfupTfbU1p1hErjsj/kP2nJl2NDsh78G+Hyx03+xpzZ7oP1QZF+I9smq9hF8kOhe3lDtXw9ZmIlZz8nQd5v9Sw+2NQx2B9cMWdh+eigiUWd/p9NwnnIu5DHPPd95EwuNu4OX05C6E=
+	t=1767870109; cv=none; b=puCUPAZQPaJrZX5UCkmUfMQXL8IwnWahXN5ea4f4qETy6nghuICwD2yYTpNI+28caVPuwpD3SaAgRf8bY4khNjce9CiXTSG/t8ylqSSLsu5wZmpVffQkUWHZ2RcCtxfjrcbTAPPr0pQ+yE7oLzqz6ujWSlCK6fXm6c5SVkmN9q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767869425; c=relaxed/simple;
-	bh=Ggenv12d+ttz8VP++ueRzUs74PHjWjbnismLAU+Rr7s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NyyzwIYyVi5pvOwtf1MELinnthLy4mENk3PqY9KO8OzAvGdudE0Bd9SFxkD4sbI3r8fURxhHtvdtpmb/uCkhNkxNiFYtbiCk+JKWFzMeD4kC7qUBr7tveFBOFfa3uRh9WXYJSiFJFmBl40ONbkV2YxBg85/QHM6cGIXzHlqtkus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ULkfgm5C; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ULkfgm5C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5080DC4AF0B;
-	Thu,  8 Jan 2026 10:50:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767869423;
-	bh=Ggenv12d+ttz8VP++ueRzUs74PHjWjbnismLAU+Rr7s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ULkfgm5CvLeoK1QDvT0iaiWBBCqvShhWV0a+5JRaOWD/i4JW8KR6Kb06hB6lSKfpB
-	 wxknNyMQb+byQhT4BOiY3Pg+VfnGIQjMGAWF0A37smK49ln4rGpIJntEFNchBrp7eT
-	 ZhqtET5bUgIBmcQR6cwzRnZ/vPia3yXHpRR+6HmVMZ/nB/xarTOCHeAlYR4QOhAfkf
-	 5iVVtre1ThHlvYC/Odpqre8QJA2sbXLwH4DCmJ313/3WmMki4pLCZbPJ205xMoQiVo
-	 xm9W0OwSYxuk2eRbPE1fZnz2IP3lak/vf2CqrBns1o7d5F5Nc7bGJKqJaQtAzQLikq
-	 lHDglU5u3lHkg==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 8E324F40068;
-	Thu,  8 Jan 2026 05:50:22 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Thu, 08 Jan 2026 05:50:22 -0500
-X-ME-Sender: <xms:7otfaeVeddqMEgeLDRxlhLEnW6-vUI_Kq0rZFPaF6lc_8OMFTVSgUw>
-    <xme:7otfaasFX_aMhlR40X-ukADFpzeeKgI-vdZlqJS_LU2IoKKrBztuvvAdbPWe25cWY
-    KBG8M_Wprv0tgjUlMVF3z4luFPGikk5CDia1vi6K8AXbB6VN9nHyt4>
-X-ME-Received: <xmr:7otfaQNqB8Sn1qbLNLx5DHFUKdXa1H_RcFDY9FihYr72v5mCUSK-xxd7YK8Olw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddutdehjeehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepheeikeeuveduheevtddvffekhfeufefhvedtudehheektdfhtdehjeevleeuffeg
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepvdekpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehvihhshhgrlhdrlhdrvhgvrhhmrgesihhnthgvlhdrtghomhdprhgtphhtthhope
-    hlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthho
-    pehlihhnuhigqdgtohgtoheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhope
-    hkvhhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepgiekieeskhgvrhhn
-    vghlrdhorhhgpdhrtghpthhtoheptghhrghordhgrghosehinhhtvghlrdgtohhmpdhrtg
-    hpthhtohepuggrnhdrjhdrfihilhhlihgrmhhssehinhhtvghlrdgtohhmpdhrtghpthht
-    ohepkhgrihdrhhhurghnghesihhnthgvlhdrtghomhdprhgtphhtthhopehtghhlgieslh
-    hinhhuthhrohhnihigrdguvg
-X-ME-Proxy: <xmx:7otfaZkUIAm1WNhy-nIynLX7XFuyxFZWzLOvs8GWZOd4vT2CKfVWsw>
-    <xmx:7otfaWzpT7rO-J-OsfCMPHUi9brTiXata66x97y7DvFIvxFBs490Dg>
-    <xmx:7otfaaBe06aXNjmQgSCEekW7gYqRAn_VqV1dunDBd0vkzIafWUNUCA>
-    <xmx:7otfaW4w9c1kn1rrbsEuncB7ItZH6k1fPQin9dLGLvZX8py7x5Moig>
-    <xmx:7otfaW104_3jnfk7-mrWVjFzaF49aCDEonVM8wqSIoqYHtP2zvYLQFn1>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 8 Jan 2026 05:50:22 -0500 (EST)
-Date: Thu, 8 Jan 2026 10:50:21 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Vishal Verma <vishal.l.verma@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, x86@kernel.org, Chao Gao <chao.gao@intel.com>, 
-	Dan Williams <dan.j.williams@intel.com>, Kai Huang <kai.huang@intel.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: Re: [PATCH 2/2] x86/virt/tdx: Print TDX module version during init
-Message-ID: <orjok4cskwinwuuqkyovqu7tkfygdkiqlxc2sbdvi2jicpygi4@dgg76ojxkhak>
-References: <20260107-tdx_print_module_version-v1-0-822baa56762d@intel.com>
- <20260107-tdx_print_module_version-v1-2-822baa56762d@intel.com>
+	s=arc-20240116; t=1767870109; c=relaxed/simple;
+	bh=iqGgWYwwQzgaInEHEn8BAnt0AtA/nJ6WxWISOOM9qXg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mJjU/Cb1jqofBBV77XphQaCh5XsBYQIV3JQAMUH97MIdpfM4OTxCOOCNY8wCwpOhGEYrjeLAhtbIZ48PNK7ChTl7ilT+gJPfUzzH+A2FJbHqIKkhvkYNh3Ke+1+6VKHwZaC8bEDN0Whd6JrCXVv9mvQODFggqdQsjmn1p9Mzzz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 812BF497;
+	Thu,  8 Jan 2026 03:01:31 -0800 (PST)
+Received: from [10.57.47.193] (unknown [10.57.47.193])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2743B3F6A8;
+	Thu,  8 Jan 2026 03:01:37 -0800 (PST)
+Message-ID: <cddcaeff-9652-4685-ba6c-0fda79bd8680@arm.com>
+Date: Thu, 8 Jan 2026 11:01:35 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260107-tdx_print_module_version-v1-2-822baa56762d@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] dma-direct: swiotlb: Skip encryption toggles for swiotlb
+ allocations
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>, steven.price@arm.com,
+ Suzuki K Poulose <suzuki.poulose@arm.com>
+References: <20260102155448.2554240-1-aneesh.kumar@kernel.org>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260102155448.2554240-1-aneesh.kumar@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 07, 2026 at 05:31:29PM -0700, Vishal Verma wrote:
-> It is useful to print the TDX module version in dmesg logs. This allows
-> for a quick spot check for whether the correct/expected TDX module is
-> being loaded, and also creates a record for any future problems being
-> investigated. This was also requested in [1].
+On 2026-01-02 3:54 pm, Aneesh Kumar K.V (Arm) wrote:
+> Swiotlb backing pages are already mapped decrypted via
+> swiotlb_update_mem_attributes(), so dma-direct does not need to call
+> set_memory_decrypted() during allocation or re-encrypt the memory on
+> free.
 > 
-> Include the version in the log messages during init, e.g.:
+> Handle swiotlb-backed buffers explicitly: obtain the DMA address and
+> zero the linear mapping for lowmem pages, and bypass the decrypt/encrypt
+> transitions when allocating/freeing from the swiotlb pool (detected via
+> swiotlb_find_pool()).
+
+swiotlb_update_mem_attributes() only applies to the default SWIOTLB 
+buffer, while the dma_direct_alloc_swiotlb() path is only for private 
+restricted pools (because the whole point is that restricted DMA devices 
+cannot use the regular allocator/default pools). There is no redundancy 
+here AFAICS.
+
+Thanks,
+Robin.
+
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> ---
+>   kernel/dma/direct.c | 56 +++++++++++++++++++++++++++++++++++++--------
+>   1 file changed, 46 insertions(+), 10 deletions(-)
 > 
->   virt/tdx: TDX module version: 1.5.24
->   virt/tdx: 1034220 KB allocated for PAMT
->   virt/tdx: module initialized
-> 
-> ..followed by remaining TDX initialization messages (or errors).
-> 
-> Print the version early in init_tdx_module(), right after the global
-> metadata is read, which makes it available even if there are subsequent
-> initialization failures.
+> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+> index faf1e41afde8..c4ef4457bd74 100644
+> --- a/kernel/dma/direct.c
+> +++ b/kernel/dma/direct.c
+> @@ -104,15 +104,27 @@ static void __dma_direct_free_pages(struct device *dev, struct page *page,
+>   	dma_free_contiguous(dev, page, size);
+>   }
+>   
+> -static struct page *dma_direct_alloc_swiotlb(struct device *dev, size_t size)
+> +static struct page *dma_direct_alloc_swiotlb(struct device *dev, size_t size,
+> +					     dma_addr_t *dma_handle)
+>   {
+> -	struct page *page = swiotlb_alloc(dev, size);
+> +	void *lm_addr;
+> +	struct page *page;
+> +
+> +	page = swiotlb_alloc(dev, size);
+> +	if (!page)
+> +		return NULL;
+>   
+> -	if (page && !dma_coherent_ok(dev, page_to_phys(page), size)) {
+> +	if (!dma_coherent_ok(dev, page_to_phys(page), size)) {
+>   		swiotlb_free(dev, page, size);
+>   		return NULL;
+>   	}
+> +	/* If HighMem let caller take care of creating a mapping */
+> +	if (PageHighMem(page))
+> +		return page;
+>   
+> +	lm_addr = page_address(page);
+> +	memset(lm_addr, 0, size);
+> +	*dma_handle = phys_to_dma_direct(dev, page_to_phys(page));
+>   	return page;
+>   }
+>   
+> @@ -125,9 +137,6 @@ static struct page *__dma_direct_alloc_pages(struct device *dev, size_t size,
+>   
+>   	WARN_ON_ONCE(!PAGE_ALIGNED(size));
+>   
+> -	if (is_swiotlb_for_alloc(dev))
+> -		return dma_direct_alloc_swiotlb(dev, size);
+> -
+>   	gfp |= dma_direct_optimal_gfp_mask(dev, &phys_limit);
+>   	page = dma_alloc_contiguous(dev, size, gfp);
+>   	if (page) {
+> @@ -204,6 +213,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+>   		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
+>   {
+>   	bool remap = false, set_uncached = false;
+> +	bool mark_mem_decrypt = true;
+>   	bool allow_highmem = true;
+>   	struct page *page;
+>   	void *ret;
+> @@ -251,6 +261,14 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+>   	    dma_direct_use_pool(dev, gfp))
+>   		return dma_direct_alloc_from_pool(dev, size, dma_handle, gfp);
+>   
+> +	if (is_swiotlb_for_alloc(dev)) {
+> +		page = dma_direct_alloc_swiotlb(dev, size, dma_handle);
+> +		if (page) {
+> +			mark_mem_decrypt = false;
+> +			goto setup_page;
+> +		}
+> +		return NULL;
+> +	}
+>   
+>   	if (force_dma_unencrypted(dev))
+>   		/*
+> @@ -266,6 +284,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+>   	if (!page)
+>   		return NULL;
+>   
+> +setup_page:
+>   	/*
+>   	 * dma_alloc_contiguous can return highmem pages depending on a
+>   	 * combination the cma= arguments and per-arch setup.  These need to be
+> @@ -295,7 +314,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+>   		ret = page_address(page);
+>   	}
+>   
+> -	if (force_dma_unencrypted(dev)) {
+> +	if (mark_mem_decrypt && force_dma_unencrypted(dev)) {
+>   		void *lm_addr;
+>   
+>   		lm_addr = page_address(page);
+> @@ -316,7 +335,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+>   	return ret;
+>   
+>   out_encrypt_pages:
+> -	if (dma_set_encrypted(dev, page_address(page), size))
+> +	if (mark_mem_decrypt && dma_set_encrypted(dev, page_address(page), size))
+>   		return NULL;
+>   out_free_pages:
+>   	__dma_direct_free_pages(dev, page, size);
+> @@ -328,6 +347,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+>   void dma_direct_free(struct device *dev, size_t size,
+>   		void *cpu_addr, dma_addr_t dma_addr, unsigned long attrs)
+>   {
+> +	bool mark_mem_encrypted = true;
+>   	unsigned int page_order = get_order(size);
+>   
+>   	if ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) &&
+> @@ -356,6 +376,9 @@ void dma_direct_free(struct device *dev, size_t size,
+>   	    dma_free_from_pool(dev, cpu_addr, PAGE_ALIGN(size)))
+>   		return;
+>   
+> +	if (swiotlb_find_pool(dev, dma_to_phys(dev, dma_addr)))
+> +		mark_mem_encrypted = false;
+> +
+>   	if (is_vmalloc_addr(cpu_addr)) {
+>   		vunmap(cpu_addr);
+>   	} else {
+> @@ -363,7 +386,7 @@ void dma_direct_free(struct device *dev, size_t size,
+>   			arch_dma_clear_uncached(cpu_addr, size);
+>   	}
+>   
+> -	if (force_dma_unencrypted(dev)) {
+> +	if (mark_mem_encrypted && force_dma_unencrypted(dev)) {
+>   		void *lm_addr;
+>   
+>   		lm_addr = phys_to_virt(dma_to_phys(dev, dma_addr));
+> @@ -385,6 +408,15 @@ struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
+>   	if (force_dma_unencrypted(dev) && dma_direct_use_pool(dev, gfp))
+>   		return dma_direct_alloc_from_pool(dev, size, dma_handle, gfp);
+>   
+> +	if (is_swiotlb_for_alloc(dev)) {
+> +		page = dma_direct_alloc_swiotlb(dev, size, dma_handle);
+> +		if (page && PageHighMem(page)) {
+> +			swiotlb_free(dev, page, size);
+> +			return NULL;
+> +		}
+> +		return page;
+> +	}
+> +
+>   	page = __dma_direct_alloc_pages(dev, size, gfp, false);
+>   	if (!page)
+>   		return NULL;
+> @@ -404,13 +436,17 @@ void dma_direct_free_pages(struct device *dev, size_t size,
+>   		enum dma_data_direction dir)
+>   {
+>   	void *vaddr = page_address(page);
+> +	bool mark_mem_encrypted = true;
+>   
+>   	/* If cpu_addr is not from an atomic pool, dma_free_from_pool() fails */
+>   	if (IS_ENABLED(CONFIG_DMA_COHERENT_POOL) &&
+>   	    dma_free_from_pool(dev, vaddr, size))
+>   		return;
+>   
+> -	if (dma_set_encrypted(dev, vaddr, size))
+> +	if (swiotlb_find_pool(dev, page_to_phys(page)))
+> +		mark_mem_encrypted = false;
+> +
+> +	if (mark_mem_encrypted && dma_set_encrypted(dev, vaddr, size))
+>   		return;
+>   	__dma_direct_free_pages(dev, page, size);
+>   }
 
-One thing to note that if metadata read fails, we will not get there.
-
-The daisy chaining we use for metadata read makes it fragile. Some
-metadata fields are version/feature dependant, like you can see in DPAMT
-case.
-
-It can be useful to dump version information, even if get_tdx_sys_info()
-fails. Version info is likely to be valid on failure.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
