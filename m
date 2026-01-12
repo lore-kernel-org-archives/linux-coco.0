@@ -1,57 +1,57 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A4121B195
-	for <linux-coco@lists.linux.dev>; Mon, 12 Jan 2026 02:47:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B1C3074A1
+	for <linux-coco@lists.linux.dev>; Mon, 12 Jan 2026 03:11:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768186061; cv=none; b=F4GyjdHjsBqzYR5feLsL8X5fryDKf/7MqRkoKhK4oCvgRHniJKLJH0tdEGukG650uqqdYuKWERDxhv2oKtppm8Ci1nb7vNSPgmyO75uoVvXAkw7or3dp9DNfSgoQJyDUI0o2yoT2FhHEhYBqmzQ6X9jljyxTOSsZlM2t6CSUTIY=
+	t=1768187501; cv=none; b=cBmAkUZdYBREBcdQyheLlbf3hcPVft5c2vrPysDcuqFYwZt3L2a943wpvDil1ZLX+vDTcXAt1XGwqYaOYkX2mCxjUHT9dLAEeUl0p1b0zg/DnVlE4dKzr0ZFdB6fx5uvay+l9KHLCDHJy2C3MSDydIwiOtsFv5ppz78NTc9OV5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768186061; c=relaxed/simple;
-	bh=sKjiMSHw5tbfzA5zXUxgFdCcJgmQX3byUqOgara7lhI=;
+	s=arc-20240116; t=1768187501; c=relaxed/simple;
+	bh=DzY5oWWc+KGbphha6ii6scuU9mo7XBBJd6oc7NYhQCM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cf3QXXIk6hFn/40vXat/nTJs5W9E9tHv6iB8XVibYPrTWGw6bBjst8wON7eVPKHjlacMiBmI6MI97bk3hVHUd8VsZKodnM92v01p9d+lHBYpUuSMQsaPR2OuvaEunRVWHiZyW7IJxURxxIAGgFsBuCWk+fsRzMEKoFnZG9duHn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bGHSUOZI; arc=none smtp.client-ip=198.175.65.12
+	 Content-Type:Content-Disposition:In-Reply-To; b=s9HWF6QznaHRLGybz8A0H8zgCL83JvOM6XkhZSgNaiBu97sq6WULqu0CcHDsjlChiQiQE45KUjcv06/uOgqQBUA5l6wGFTzmTBtIVhpXO1St5Zace2l80TuhxdtUhIFjc+M9DfO/lXBoQTVJ7AxMFAgn7E+UqX0tqCJLdtWj0/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HzBVZGMe; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bGHSUOZI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HzBVZGMe"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768186060; x=1799722060;
+  t=1768187500; x=1799723500;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=sKjiMSHw5tbfzA5zXUxgFdCcJgmQX3byUqOgara7lhI=;
-  b=bGHSUOZIhNoNr3wVGMyuK+dKslMvr7AzLS/7VWv8Hdgy/rMbjqOfX/hE
-   O6zbx0oQlbsWNrEWyBZ7Tk3OmUD72HRieRV/2NGl+tGsd79R5qCgvdSdK
-   ML6KxzZKcyqBdKt/KCz26m6gHBdBvQZRKiEuv8lqXW4R37DXgCHwVMRqH
-   45qkM9lyv4/JfISbsUSe5xEkJ2/x7Ug/eb1OhdtToLNvSx+CvV21Rlv4i
-   6rC3rCqyxGMtR9Lq6cPGA1H4gKA4MIhATP+wGsFK/zmsmNd4+7ARY62RN
-   XuaA/z/gKADxove4a6c8Wk6OHb89/puXUeCULaM60Sys9mJ0Z7CwXt2wT
+  bh=DzY5oWWc+KGbphha6ii6scuU9mo7XBBJd6oc7NYhQCM=;
+  b=HzBVZGMeA2qs8vxQECNor6287zQHzgWeHARz7M92XQjXuMTjAQKuGAQJ
+   xfm2pXn5x21TF4EcofsE33G2qAOxQFg1umNvwb33brunOsTYFkPoyK/n0
+   HGOsqxxZCRb9zhJGBJjAHTz04ZxpMeRWDhGzo7PLDRzJHv6Hf9+gsoVVM
+   pJydTGTSenwFNtSfEi95cNIObgkO199lF/qtSadf72klGBwBNtt/bvpo7
+   sP/Nf5EQTDJGBK8e08n995N16zXPEeyuQd4n2Z0j/p0rt08Ace2J7qIJu
+   XM3VXd1K4EtevxgRdqAadoRKpI169VnKd0qgQLv5o4oAAly7GYs7XG7YU
    A==;
-X-CSE-ConnectionGUID: QpP0LhgMQk6Qttqmw6VXrQ==
-X-CSE-MsgGUID: ef7l0+v+SJinwvy8wh0TnA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="80913928"
+X-CSE-ConnectionGUID: Vh4m45EARcC65eDtbzRtFw==
+X-CSE-MsgGUID: fJZFmb7vTFqy3a0b2QPzTQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="69195460"
 X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="80913928"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 18:47:39 -0800
-X-CSE-ConnectionGUID: PCwSQgIETh+CL21WB6bnBQ==
-X-CSE-MsgGUID: C+1Vg8WARVGsumylIiEHvQ==
+   d="scan'208";a="69195460"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 19:11:39 -0800
+X-CSE-ConnectionGUID: JOhHEdLuRPCHT+EnmqOwkw==
+X-CSE-MsgGUID: 688HgPkvQlKgpoX4SWExWw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="204389050"
+   d="scan'208";a="204682058"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa009.fm.intel.com with ESMTP; 11 Jan 2026 18:47:37 -0800
-Date: Mon, 12 Jan 2026 10:30:14 +0800
+  by fmviesa010.fm.intel.com with ESMTP; 11 Jan 2026 19:11:37 -0800
+Date: Mon, 12 Jan 2026 10:54:14 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: Li Ming <ming.li@zohomail.com>
 Cc: dan.j.williams@intel.com, linux-pci@vger.kernel.org,
 	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] PCI/IDE: Fix using wrong VF ID for RID range
- calculation
-Message-ID: <aWRctnwjEXvUyayb@yilunxu-OptiPlex-7050>
-References: <20260111080631.506487-1-ming.li@zohomail.com>
+Subject: Re: [PATCH 1/1] PCI/IDE: Fix reading a wrong reg for unused sel
+ stream initialization
+Message-ID: <aWRiVuxVYDqSxo4I@yilunxu-OptiPlex-7050>
+References: <20260111073823.486665-1-ming.li@zohomail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -60,59 +60,29 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260111080631.506487-1-ming.li@zohomail.com>
+In-Reply-To: <20260111073823.486665-1-ming.li@zohomail.com>
 
-On Sun, Jan 11, 2026 at 04:06:31PM +0800, Li Ming wrote:
-> When allocate a new IDE stream for a pci device in SR-IOV case, the RID
-> range of the new IDE stream should cover all VFs of the device. VF id
-> range of a pci device is [0 - (num_VFs - 1)], so should use (num_VFs - )
-> as the last VF's ID.
+On Sun, Jan 11, 2026 at 03:38:23PM +0800, Li Ming wrote:
+> During pci_ide_init(), it will write PCI_ID_RESERVED_STREAM_ID into all
+> unused selective IDE stream blocks. In a selective IDE stream block, IDE
+> stream ID field is in selective IDE stream control register instead of
+> selective IDE stream capability register.
 > 
-> Fixes: 1e4d2ff3ae45 ("PCI/IDE: Add IDE establishment helpers")
+> Fixes: 079115370d00 ("PCI/IDE: Initialize an ID for all IDE streams")
 > Signed-off-by: Li Ming <ming.li@zohomail.com>
 > ---
->  drivers/pci/ide.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/pci/ide.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
-> index 26f7cc94ec31..9629f3ceb213 100644
+> index f0ef474e1a0d..26f7cc94ec31 100644
 > --- a/drivers/pci/ide.c
 > +++ b/drivers/pci/ide.c
-> @@ -283,8 +283,8 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
->  	/* for SR-IOV case, cover all VFs */
->  	num_vf = pci_num_vf(pdev);
->  	if (num_vf)
-> -		rid_end = PCI_DEVID(pci_iov_virtfn_bus(pdev, num_vf),
-> -				    pci_iov_virtfn_devfn(pdev, num_vf));
-> +		rid_end = PCI_DEVID(pci_iov_virtfn_bus(pdev, num_vf - 1),
-> +				    pci_iov_virtfn_devfn(pdev, num_vf - 1));
+> @@ -168,7 +168,7 @@ void pci_ide_init(struct pci_dev *pdev)
+>  	for (u16 i = 0; i < nr_streams; i++) {
+>  		int pos = __sel_ide_offset(ide_cap, nr_link_ide, i, nr_ide_mem);
+>  
+> -		pci_read_config_dword(pdev, pos + PCI_IDE_SEL_CAP, &val);
+> +		pci_read_config_dword(pdev, pos + PCI_IDE_SEL_CTL, &val);
 
-I don't have VF for test but I believe the change is correct.
-
-The calculated rid_end will be passed to IDE RID association register values,
-which is inclusive according to IDE SPEC.
-
-  void pci_ide_stream_to_regs(...)
-  {
-	...
-	regs->rid1 = FIELD_PREP(PCI_IDE_SEL_RID_1_LIMIT, settings->rid_end);
-	...
-  }
-
-Is it better we clarify the kernel-doc a little bit:
-
---------8<--------
-
-diff --git a/include/linux/pci-ide.h b/include/linux/pci-ide.h
-index 2521a2914294..f0c6975fd429 100644
---- a/include/linux/pci-ide.h
-+++ b/include/linux/pci-ide.h
-@@ -26,7 +26,7 @@ enum pci_ide_partner_select {
- /**
-  * struct pci_ide_partner - Per port pair Selective IDE Stream settings
-  * @rid_start: Partner Port Requester ID range start
-- * @rid_end: Partner Port Requester ID range end
-+ * @rid_end: Partner Port Requester ID range end (inclusive)
-  * @stream_index: Selective IDE Stream Register Block selection
-  * @mem_assoc: PCI bus memory address association for targeting peer partner
-  * @pref_assoc: PCI bus prefetchable memory address association for
+Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
