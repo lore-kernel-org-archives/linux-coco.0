@@ -1,124 +1,118 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9890747A6B
-	for <linux-coco@lists.linux.dev>; Mon, 12 Jan 2026 02:31:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A4121B195
+	for <linux-coco@lists.linux.dev>; Mon, 12 Jan 2026 02:47:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768185097; cv=none; b=mHcC2aZDe14kjZCpelyIvSBjcxmydtgsfPVQPaaEbxxYU/pcuY6LEMBywO7zQgd0/luZZNjNe23rL/Z5ymYyfSN3f7WtoF27eeof0Hph5ch3FRZqMTWL24BsGD9w/YKtVv2Zkc/i8vpgIndQcqGaVVgBjVzIDX4qwvES2vsHEQs=
+	t=1768186061; cv=none; b=F4GyjdHjsBqzYR5feLsL8X5fryDKf/7MqRkoKhK4oCvgRHniJKLJH0tdEGukG650uqqdYuKWERDxhv2oKtppm8Ci1nb7vNSPgmyO75uoVvXAkw7or3dp9DNfSgoQJyDUI0o2yoT2FhHEhYBqmzQ6X9jljyxTOSsZlM2t6CSUTIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768185097; c=relaxed/simple;
-	bh=bsKZnROZ3ZAmLrfMM/dNfinovFFuhABv7ylOUzRbge0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NeeusYth0S6NR41AuR2LR54vM8oUicrPUEld/GRG2CrD8XR5hoLVGXK1i+Ck8sePijAJKb9BYjpz41Nn7uMfZn3IqHzqtv/o8dKj63Pnu/DAH8LJZUCMzu/+pAjyZEABR18XMXW+RlrRIkUc/jPhiqg56ZgOEez0ZFJ4SpHOk24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EuQsjunq; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1768186061; c=relaxed/simple;
+	bh=sKjiMSHw5tbfzA5zXUxgFdCcJgmQX3byUqOgara7lhI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cf3QXXIk6hFn/40vXat/nTJs5W9E9tHv6iB8XVibYPrTWGw6bBjst8wON7eVPKHjlacMiBmI6MI97bk3hVHUd8VsZKodnM92v01p9d+lHBYpUuSMQsaPR2OuvaEunRVWHiZyW7IJxURxxIAGgFsBuCWk+fsRzMEKoFnZG9duHn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bGHSUOZI; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EuQsjunq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bGHSUOZI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768185096; x=1799721096;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=bsKZnROZ3ZAmLrfMM/dNfinovFFuhABv7ylOUzRbge0=;
-  b=EuQsjunqD1qCOpNwTHIZ27ALeDSa8Ah4/522He6jfUKvppmi8BNClVWQ
-   PTI1n0q8fhJar7M0h6evmC+/rPCyH25ahqRbDGMcfwN5kcTVp9kuZc3cO
-   EMUMWjxOHWiL9C/2Zhi7s+XyQbzO5OOID6wch/e1l41eoQ4Z06aHEe0Cd
-   Ke/JODu0C+rq9kSHDc2mX7g700wgRktYdVgdGfB7drYO4YqmrQWc70zF4
-   DFCUXyDrXoPCNmCKlrOPcDDrS8cILWTFWCfVGqg1RpQLOWVg56tTFvL9R
-   NidGiY5uU0CdheGIi7kGd21xWAzKPC6u8/irThhIfvx4QGr3dXasH60xM
+  t=1768186060; x=1799722060;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=sKjiMSHw5tbfzA5zXUxgFdCcJgmQX3byUqOgara7lhI=;
+  b=bGHSUOZIhNoNr3wVGMyuK+dKslMvr7AzLS/7VWv8Hdgy/rMbjqOfX/hE
+   O6zbx0oQlbsWNrEWyBZ7Tk3OmUD72HRieRV/2NGl+tGsd79R5qCgvdSdK
+   ML6KxzZKcyqBdKt/KCz26m6gHBdBvQZRKiEuv8lqXW4R37DXgCHwVMRqH
+   45qkM9lyv4/JfISbsUSe5xEkJ2/x7Ug/eb1OhdtToLNvSx+CvV21Rlv4i
+   6rC3rCqyxGMtR9Lq6cPGA1H4gKA4MIhATP+wGsFK/zmsmNd4+7ARY62RN
+   XuaA/z/gKADxove4a6c8Wk6OHb89/puXUeCULaM60Sys9mJ0Z7CwXt2wT
    A==;
-X-CSE-ConnectionGUID: VumQVnw5S26CrsHA4BHQLg==
-X-CSE-MsgGUID: Uapm5WkLRuC7IbX32xITlw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="68664922"
+X-CSE-ConnectionGUID: QpP0LhgMQk6Qttqmw6VXrQ==
+X-CSE-MsgGUID: ef7l0+v+SJinwvy8wh0TnA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="80913928"
 X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="68664922"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 18:31:35 -0800
-X-CSE-ConnectionGUID: eaTG7udHQb6QZjGJtZac9Q==
-X-CSE-MsgGUID: 6CK773nKTrS9trH1KFQ8LQ==
+   d="scan'208";a="80913928"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 18:47:39 -0800
+X-CSE-ConnectionGUID: PCwSQgIETh+CL21WB6bnBQ==
+X-CSE-MsgGUID: C+1Vg8WARVGsumylIiEHvQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="208464323"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.173]) ([10.124.240.173])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 18:31:31 -0800
-Message-ID: <41951d4b-43a4-4978-8e78-aa031e423601@intel.com>
-Date: Mon, 12 Jan 2026 10:31:29 +0800
+   d="scan'208";a="204389050"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa009.fm.intel.com with ESMTP; 11 Jan 2026 18:47:37 -0800
+Date: Mon, 12 Jan 2026 10:30:14 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Li Ming <ming.li@zohomail.com>
+Cc: dan.j.williams@intel.com, linux-pci@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] PCI/IDE: Fix using wrong VF ID for RID range
+ calculation
+Message-ID: <aWRctnwjEXvUyayb@yilunxu-OptiPlex-7050>
+References: <20260111080631.506487-1-ming.li@zohomail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] x86/virt/tdx: Print TDX module version during init
-To: Vishal Verma <vishal.l.verma@intel.com>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org
-Cc: x86@kernel.org, Chao Gao <chao.gao@intel.com>,
- Dan Williams <dan.j.williams@intel.com>, Kai Huang <kai.huang@intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-References: <20260109-tdx_print_module_version-v2-0-e10e4ca5b450@intel.com>
- <20260109-tdx_print_module_version-v2-2-e10e4ca5b450@intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260109-tdx_print_module_version-v2-2-e10e4ca5b450@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260111080631.506487-1-ming.li@zohomail.com>
 
-On 1/10/2026 3:14 AM, Vishal Verma wrote:
-> It is useful to print the TDX module version in dmesg logs. This is
-> currently the only way to determine the module version from the host. It
-> also creates a record for any future problems being investigated. This
-> was also requested in [1].
+On Sun, Jan 11, 2026 at 04:06:31PM +0800, Li Ming wrote:
+> When allocate a new IDE stream for a pci device in SR-IOV case, the RID
+> range of the new IDE stream should cover all VFs of the device. VF id
+> range of a pci device is [0 - (num_VFs - 1)], so should use (num_VFs - )
+> as the last VF's ID.
 > 
-> Include the version in the log messages during init, e.g.:
-> 
->    virt/tdx: TDX module version: 1.5.24
->    virt/tdx: 1034220 KB allocated for PAMT
->    virt/tdx: module initialized
-> 
-> Print the version in get_tdx_sys_info(), right after the version
-> metadata is read, which makes it available even if there are subsequent
-> initialization failures.
-> 
-> Based on a patch by Kai Huang <kai.huang@intel.com> [2]
-> 
-> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-> Reviewed-by: Chao Gao <chao.gao@intel.com>
-
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-
-> Cc: Chao Gao <chao.gao@intel.com>
-> Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Cc: Kai Huang <kai.huang@intel.com>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Link: https://lore.kernel.org/all/CAGtprH8eXwi-TcH2+-Fo5YdbEwGmgLBh9ggcDvd6N=bsKEJ_WQ@mail.gmail.com/ # [1]
-> Link: https://lore.kernel.org/all/6b5553756f56a8e3222bfc36d0bdb3e5192137b7.1731318868.git.kai.huang@intel.com # [2]
+> Fixes: 1e4d2ff3ae45 ("PCI/IDE: Add IDE establishment helpers")
+> Signed-off-by: Li Ming <ming.li@zohomail.com>
 > ---
->   arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 6 ++++++
->   1 file changed, 6 insertions(+)
+>  drivers/pci/ide.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-> index 0454124803f3..4c9917a9c2c3 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-> @@ -105,6 +105,12 @@ static int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
->   	int ret = 0;
->   
->   	ret = ret ?: get_tdx_sys_info_version(&sysinfo->version);
-> +
-> +	pr_info("Module version: %u.%u.%02u\n",
-> +		sysinfo->version.major_version,
-> +		sysinfo->version.minor_version,
-> +		sysinfo->version.update_version);
-> +
->   	ret = ret ?: get_tdx_sys_info_features(&sysinfo->features);
->   	ret = ret ?: get_tdx_sys_info_tdmr(&sysinfo->tdmr);
->   	ret = ret ?: get_tdx_sys_info_td_ctrl(&sysinfo->td_ctrl);
-> 
+> diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
+> index 26f7cc94ec31..9629f3ceb213 100644
+> --- a/drivers/pci/ide.c
+> +++ b/drivers/pci/ide.c
+> @@ -283,8 +283,8 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
+>  	/* for SR-IOV case, cover all VFs */
+>  	num_vf = pci_num_vf(pdev);
+>  	if (num_vf)
+> -		rid_end = PCI_DEVID(pci_iov_virtfn_bus(pdev, num_vf),
+> -				    pci_iov_virtfn_devfn(pdev, num_vf));
+> +		rid_end = PCI_DEVID(pci_iov_virtfn_bus(pdev, num_vf - 1),
+> +				    pci_iov_virtfn_devfn(pdev, num_vf - 1));
 
+I don't have VF for test but I believe the change is correct.
+
+The calculated rid_end will be passed to IDE RID association register values,
+which is inclusive according to IDE SPEC.
+
+  void pci_ide_stream_to_regs(...)
+  {
+	...
+	regs->rid1 = FIELD_PREP(PCI_IDE_SEL_RID_1_LIMIT, settings->rid_end);
+	...
+  }
+
+Is it better we clarify the kernel-doc a little bit:
+
+--------8<--------
+
+diff --git a/include/linux/pci-ide.h b/include/linux/pci-ide.h
+index 2521a2914294..f0c6975fd429 100644
+--- a/include/linux/pci-ide.h
++++ b/include/linux/pci-ide.h
+@@ -26,7 +26,7 @@ enum pci_ide_partner_select {
+ /**
+  * struct pci_ide_partner - Per port pair Selective IDE Stream settings
+  * @rid_start: Partner Port Requester ID range start
+- * @rid_end: Partner Port Requester ID range end
++ * @rid_end: Partner Port Requester ID range end (inclusive)
+  * @stream_index: Selective IDE Stream Register Block selection
+  * @mem_assoc: PCI bus memory address association for targeting peer partner
+  * @pref_assoc: PCI bus prefetchable memory address association for
