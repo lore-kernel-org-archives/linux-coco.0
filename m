@@ -1,103 +1,146 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06BE196C7C
-	for <linux-coco@lists.linux.dev>; Mon, 12 Jan 2026 00:41:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89A9302151
+	for <linux-coco@lists.linux.dev>; Mon, 12 Jan 2026 02:25:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768178499; cv=none; b=pS95D5h5FBzlw6xzYFZpUVfr1rahzMzAnXdV7SysEcjSuKQliM4P4W8z3W7uf0yyDUoEW3cu3x8e6Q6GRnedeCqnRgNs+ux4wU6Tp0CvpI7PF8dRB10QVJR9dP2an3SxArxgaokwtho+wbACjZjTuNuQc2+7d26ECmJHFFHOggA=
+	t=1768184711; cv=none; b=gRT0ut2Xjd4+P6zk5Em4giIqOQXjVC7pKtz6czHxaVVD//aKQSnR5a5dM1kwikK1WLxV2RV+FZd2EdudwKkW39Oa9KKsj6TqY0B+NVafoSVaV4hZq7+DGIOgA8etl5ei/xtI2Z+YltNyH8irGp+OV5+5ebunXLGV1CP+LpdU464=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768178499; c=relaxed/simple;
-	bh=f29n6SEDgdX326rQS0iXN+uixIdO75WX44yumqkLtLU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LlOtMbMQaP/wrFAAhC06JFP+q0spuiclFzlO2xD3YDwi8HGF0ge1vR81YJy75qi9gKIOgTllyPSR8eBOkwt8P2hKCklUOoy4TqXD9HhJhWyIYmaWYX0ZepujeA38h2aFWugZQFtY85zdUglKaKC9ylwn2FfaY0mdK0/ll2oxgds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TVSv0zNH; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1768184711; c=relaxed/simple;
+	bh=S2//1+T5+gjJeTzNkP1ELxZapZmay2uZ/RXAx2zZFzs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l3qdurmnjJX3WUrZiaftCpRYcgsn45PVTcjJG22jYjgvkUtsE2GMZssIMdSJsfyvPor4QWEkxDssm28xmhAQZV0/uQNZLyscsiHLFleCGW7fQ+uBt2WRMkcpdTARllwoWqoJFJbBbwQptrxCDtC+d95cppxpTBNSiZRibEvjUYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cr0ZYans; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TVSv0zNH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cr0ZYans"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768178498; x=1799714498;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=f29n6SEDgdX326rQS0iXN+uixIdO75WX44yumqkLtLU=;
-  b=TVSv0zNHr4jWBhnXSBMh25b7/U5t3CRLxZTM249hoHB52FtIdDgr/Xm3
-   lNvSHjPj6/+HD+ndN3vtK0h0AP9zUNmr2DvdPh7WP/wD7bXS5kdabNNRD
-   FyBI2eeHutqqdfqwXVQa7yGRtBvRpGMuQky1rWx4cQfW2BurVXEuxhl5/
-   zfMH3eGo4sDRmMgchURBrU5usaCkdrAPdet4BnDP8mySqRQFVG000HWnn
-   Ab7QA9JQ1NH83lGZ9ioWsHx7W5bhA0jBmpr6G8Y2WyVPFN0Fz9z8uz5OW
-   U+/QbtiWFUwMsh7QBdtFYKjY5OAjvrGWsoWmdLrwSDhBmlOPdRjt64rBj
-   g==;
-X-CSE-ConnectionGUID: DpsSIM30SmGzXKaASD6Kzg==
-X-CSE-MsgGUID: /i3zJgpoT0igwlcMANjHEg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="94931268"
+  t=1768184710; x=1799720710;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=S2//1+T5+gjJeTzNkP1ELxZapZmay2uZ/RXAx2zZFzs=;
+  b=cr0ZYansrQkvwe77krcOaOzlKgiSVcsQj0PrHX9fisToUHVmdE96TIoe
+   pzVZoy6uzcgKpLvz/viWAVFgojshFzDv86zICqYpEqYlDr6u2cMRqRQ/m
+   KdqQBtrjZSajYJHsGpv2GbOgMj2PO0OjsoIHq+uVcRnXxwUcWsx5lQ+N0
+   cySdoWSOyDL+OwiaApn0tERGFfhVofytVbW9AahwFhgv18wKI/uETDGat
+   wSomrLyRyc2yimwHWccpE1Vt8QZEMjXXhsZsSN4JfImI2JUwQNh7KmudV
+   RafmdjlgCKZqsSZSMjuLhTGA95qXdIXhaRqx3vYXv631NAdXaJHSU/NJw
+   A==;
+X-CSE-ConnectionGUID: WGgTJLR1QhiBT8clSI6ERA==
+X-CSE-MsgGUID: Qn1WPgYdSBW2/2KiuyULVA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="68664488"
 X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="94931268"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 16:41:38 -0800
-X-CSE-ConnectionGUID: fojhc3eKRNWNN2sX2qoO4w==
-X-CSE-MsgGUID: 7pab6++EQASEiuiXUqrFjA==
+   d="scan'208";a="68664488"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 18:25:09 -0800
+X-CSE-ConnectionGUID: dgiTkd5dTr+2DMGUAEuMqQ==
+X-CSE-MsgGUID: /B5D7/DFTVKffiGkzU79zA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; 
-   d="scan'208";a="203107411"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa006.jf.intel.com with ESMTP; 11 Jan 2026 16:41:33 -0800
-Date: Mon, 12 Jan 2026 08:24:09 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"Huang, Kai" <kai.huang@intel.com>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
-	"Zhao, Yan Y" <yan.y.zhao@intel.com>,
-	"Wu, Binbin" <binbin.wu@intel.com>,
-	"kas@kernel.org" <kas@kernel.org>,
-	"seanjc@google.com" <seanjc@google.com>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"tglx@linutronix.de" <tglx@linutronix.de>,
-	"Yamahata, Isaku" <isaku.yamahata@intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
-	"Annapurve, Vishal" <vannapurve@google.com>,
-	"Gao, Chao" <chao.gao@intel.com>, "bp@alien8.de" <bp@alien8.de>,
-	"x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH v4 04/16] x86/virt/tdx: Allocate page bitmap for Dynamic
- PAMT
-Message-ID: <aWQ/KSgH49t0MIZO@yilunxu-OptiPlex-7050>
-References: <aUut+PYnX3jrSO0i@yilunxu-OptiPlex-7050>
- <0734a6cc7da3d210f403fdf3e0461ffba6b0aea0.camel@intel.com>
- <aVyJG+vh9r/ZMmOG@yilunxu-OptiPlex-7050>
- <94b619208022ee29812d871eeacab4f979e51d85.camel@intel.com>
- <aV32uDSqEDOgYp6L@yilunxu-OptiPlex-7050>
- <44fb20f8cfaa732eb34c3f5d3a3ff0c22c713939.camel@intel.com>
- <aV+o1VOTxt8hU4ou@yilunxu-OptiPlex-7050>
- <b4af0f9795d69fdc1f6599032335a2103c2fe29a.camel@intel.com>
- <aWBlcCUvybAYWed8@yilunxu-OptiPlex-7050>
- <4b75ddb133d35d133725ba270a9dfcb9acda38b4.camel@intel.com>
+   d="scan'208";a="208463063"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.173]) ([10.124.240.173])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 18:25:05 -0800
+Message-ID: <93ab41bc-91bf-405a-84c4-6355a556596d@intel.com>
+Date: Mon, 12 Jan 2026 10:25:02 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4b75ddb133d35d133725ba270a9dfcb9acda38b4.camel@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] x86/virt/tdx: Retrieve TDX module version
+To: Vishal Verma <vishal.l.verma@intel.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org
+Cc: x86@kernel.org, Chao Gao <chao.gao@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>, Kai Huang <kai.huang@intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+References: <20260109-tdx_print_module_version-v2-0-e10e4ca5b450@intel.com>
+ <20260109-tdx_print_module_version-v2-1-e10e4ca5b450@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260109-tdx_print_module_version-v2-1-e10e4ca5b450@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jan 09, 2026 at 04:05:30PM +0000, Edgecombe, Rick P wrote:
-> On Fri, 2026-01-09 at 10:18 +0800, Xu Yilun wrote:
-> > On the other hand, the cost of a newly designed firmware interface
-> > for an already online functionality is not low, especially when you
-> > want backward compatibility to old TDX Module. The worst case is we
-> > keep both sets of the code...
+On 1/10/2026 3:14 AM, Vishal Verma wrote:
+> From: Chao Gao <chao.gao@intel.com>
 > 
-> I think TDX module changes are something to consider long term. We
-> already discussed not overhauling the metadata reading again ahead of
-> the current work, so I don't think there is anything else to discuss
-> here.
+> Each TDX module has several bits of metadata about which specific TDX
+> module it is. The primary bit of info is the version, which has an x.y.z
+> format. These represent the major version, minor version, and update
+> version respectively. Knowing the running TDX Module version is valuable
+> for bug reporting and debugging. Note that the module does expose other
+> pieces of version-related metadata, such as build number and date. Those
+> aren't retrieved for now, that can be added if needed in the future.
+> 
+> Retrieve the TDX Module version using the existing metadata reading
+> interface. Later changes will expose this information. The metadata
+> reading interfaces have existed for quite some time, so this will work
+> with older versions of the TDX module as well - i.e. this isn't a new
+> interface.
+> 
+> As a side note, the global metadata reading code was originally set up
+> to be auto-generated from a JSON definition [1]. However, later [2] this
+> was found to be unsustainable, and the autogeneration approach was
+> dropped in favor of just manually adding fields as needed (e.g. as in
+> this patch).
+> 
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> Link: https://lore.kernel.org/kvm/CABgObfYXUxqQV_FoxKjC8U3t5DnyM45nz5DpTxYZv2x_uFK_Kw@mail.gmail.com/ # [1]
+> Link: https://lore.kernel.org/all/1e7bcbad-eb26-44b7-97ca-88ab53467212@intel.com/ # [2]
+> Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Cc: Kai Huang <kai.huang@intel.com>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
+> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 
-I agree. We don't have to introduce new interfaces for optional feature
-checking. That's another topic.
+Though one nit below,
+
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+
+> ---
+>   arch/x86/include/asm/tdx_global_metadata.h  |  7 +++++++
+>   arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 16 ++++++++++++++++
+>   2 files changed, 23 insertions(+)
+> 
+> diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
+> index 060a2ad744bff..40689c8dc67eb 100644
+> --- a/arch/x86/include/asm/tdx_global_metadata.h
+> +++ b/arch/x86/include/asm/tdx_global_metadata.h
+> @@ -5,6 +5,12 @@
+>   
+>   #include <linux/types.h>
+>   
+> +struct tdx_sys_info_version {
+> +	u16 minor_version;
+> +	u16 major_version;
+
+Nit, not sure if better to move major_version before minor_version.
+
+and ...
+
+> +static int get_tdx_sys_info_version(struct tdx_sys_info_version *sysinfo_version)
+> +{
+> +	int ret = 0;
+> +	u64 val;
+> +
+> +	if (!ret && !(ret = read_sys_metadata_field(0x0800000100000003, &val)))
+> +		sysinfo_version->minor_version = val;
+> +	if (!ret && !(ret = read_sys_metadata_field(0x0800000100000004, &val)))
+> +		sysinfo_version->major_version = val;
+> +	if (!ret && !(ret = read_sys_metadata_field(0x0800000100000005, &val)))
+> +		sysinfo_version->update_version = val;
+
+... I know it's because minor_version has the least field ID among the 
+three. But the order of the field IDs doesn't stand for the order of the 
+reading. Reading the middle part y of x.y.z as first step looks a bit odd.
+
