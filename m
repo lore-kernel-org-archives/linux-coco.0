@@ -1,25 +1,50 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CBEB28506A;
-	Mon, 12 Jan 2026 13:25:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30D6274FC2
+	for <linux-coco@lists.linux.dev>; Mon, 12 Jan 2026 14:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768224337; cv=none; b=cj+hHC/jIuFbUt6bHpuEEJWtK2uzCc0IYTNrkm7QAuR/G4YfclIMk4TfFXo/HCm3ykm6f15x6ZSN4wMn1L7MYNQ6IA/zELMOqGOoi7Rv1cYEjPX3/M39LaoszGo0joCOQH5NHwexW6CpaoABFTjHaN/3SY+IXhWfg3WFPrge4vI=
+	t=1768229822; cv=none; b=SG8Dl0WOuiki8v3d3FYtbm3FNqrLIBzJiAsIJLE4TtneecPynp2eNSgeTcWBBKSav5GhBGelI2LQGM/736/ovUDGf/LBRMuq90snhknGzNZ+8jUJjrrnZL/ybS2+SffJC51ovh/qG7V4AzuL3OHapEfg/YWWcl1neUuFxViwQl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768224337; c=relaxed/simple;
-	bh=Ob20nRWVYCw2kHmjDIHZz04i4j313QulmE2WbE6tgWE=;
+	s=arc-20240116; t=1768229822; c=relaxed/simple;
+	bh=WD54qJ16hTHbBSmfZ5Ss1r9X1pGqM23RBaEwZKutcQI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fSHJTWe+Zp6uxsGUvEOcF3pNtW8+aP8ROrCtNlrZ0oA2bs3z1GfnGcmEpimCk3Bx3n7QF2r0o6l/ArKLHxWJAE9f5Dq51nOV7O/gWUWe6svgPJ+J9egJzAqzUCewwt9iYRvEqhxDZCJUPXdICDb7yFt6sUgC8qp8oiubcdG/23Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 303B9497;
-	Mon, 12 Jan 2026 05:25:27 -0800 (PST)
-Received: from [10.57.48.115] (unknown [10.57.48.115])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D5A223F694;
-	Mon, 12 Jan 2026 05:25:32 -0800 (PST)
-Message-ID: <1290fd7e-bfaf-47ce-b12f-cca0b938b293@arm.com>
-Date: Mon, 12 Jan 2026 13:25:30 +0000
+	 In-Reply-To:Content-Type; b=Z1LCyYHmdz5sRGVqY6J3ZfMpIgB+W8IHJ49D5ftHj7qeNwIwNYtnffLfEm/f4rPIR7dnmzUKPSpst6/La3QZHTgndf7RNlEkFV5hXenFinNxkZ9hWzTNplao+6sQzEeKGiRRqAeNC/NV/RUxQMGXz4lcSu5kXp2ZVkuGo8dkEv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dpQxthbB; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dpQxthbB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768229820; x=1799765820;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=WD54qJ16hTHbBSmfZ5Ss1r9X1pGqM23RBaEwZKutcQI=;
+  b=dpQxthbBXpdDnwyuhM8ohHgK+uMB2vuos4fef7usFR5R4F2/4vIo4frE
+   qu5jlZ8mbSMP68zVoW7KfJ3EbISvLLDt/+Rq9SR88VJ3L4McF4ctFfS0B
+   xgJohbeffiNwvZQEnNHl+Qq/qk3k4FeatvYgDte4S4NNsoTHURjU1qQFh
+   le54gXpIenrn3jiXw7FuTqGP2ACe0Y8xJAyeS/eIixQhj/et2hNeNwkev
+   n0n1edpeOMPXD9fYd7ouq5sL4r0VAd64RxVsuWRiB0zWyU42S4fCLJCzl
+   OjHWFHz80LgA7BBVhX9xNF1LRgedFv1YA2fzacm1sVMw2mnFqDC8meXg0
+   Q==;
+X-CSE-ConnectionGUID: rjJ6rC8dT3a4p9dK5oWNxw==
+X-CSE-MsgGUID: ZBP5aVATQ86c9Wm25P+FAA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11669"; a="72081448"
+X-IronPort-AV: E=Sophos;i="6.21,221,1763452800"; 
+   d="scan'208";a="72081448"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 06:57:00 -0800
+X-CSE-ConnectionGUID: 0fyUfJw0S/igRNcawuLDxw==
+X-CSE-MsgGUID: /KL+0o1zSj+4NIEnURgDwA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,221,1763452800"; 
+   d="scan'208";a="235344703"
+Received: from vverma7-desk1.amr.corp.intel.com (HELO [10.125.110.123]) ([10.125.110.123])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 06:56:59 -0800
+Message-ID: <f0cc6afe-0f58-4314-9a77-34c5b005b677@intel.com>
+Date: Mon, 12 Jan 2026 06:56:58 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -27,233 +52,72 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dma-direct: swiotlb: Skip encryption toggles for swiotlb
- allocations
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>, steven.price@arm.com,
- Suzuki K Poulose <suzuki.poulose@arm.com>
-References: <20260102155448.2554240-1-aneesh.kumar@kernel.org>
- <cddcaeff-9652-4685-ba6c-0fda79bd8680@arm.com> <yq5a7btr5wii.fsf@kernel.org>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <yq5a7btr5wii.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v2 1/2] x86/virt/tdx: Retrieve TDX module version
+To: Xiaoyao Li <xiaoyao.li@intel.com>, Vishal Verma
+ <vishal.l.verma@intel.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org
+Cc: x86@kernel.org, Chao Gao <chao.gao@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>, Kai Huang <kai.huang@intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+References: <20260109-tdx_print_module_version-v2-0-e10e4ca5b450@intel.com>
+ <20260109-tdx_print_module_version-v2-1-e10e4ca5b450@intel.com>
+ <93ab41bc-91bf-405a-84c4-6355a556596d@intel.com>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <93ab41bc-91bf-405a-84c4-6355a556596d@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 2026-01-09 2:51 am, Aneesh Kumar K.V wrote:
-> Robin Murphy <robin.murphy@arm.com> writes:
-> 
->> On 2026-01-02 3:54 pm, Aneesh Kumar K.V (Arm) wrote:
->>> Swiotlb backing pages are already mapped decrypted via
->>> swiotlb_update_mem_attributes(), so dma-direct does not need to call
->>> set_memory_decrypted() during allocation or re-encrypt the memory on
->>> free.
->>>
->>> Handle swiotlb-backed buffers explicitly: obtain the DMA address and
->>> zero the linear mapping for lowmem pages, and bypass the decrypt/encrypt
->>> transitions when allocating/freeing from the swiotlb pool (detected via
->>> swiotlb_find_pool()).
->>
->> swiotlb_update_mem_attributes() only applies to the default SWIOTLB
->> buffer, while the dma_direct_alloc_swiotlb() path is only for private
->> restricted pools (because the whole point is that restricted DMA devices
->> cannot use the regular allocator/default pools). There is no redundancy
->> here AFAICS.
->>
-> 
-> But rmem_swiotlb_device_init() is also marking the entire pool decrypted
-> 
-> 	set_memory_decrypted((unsigned long)phys_to_virt(rmem->base),
-> 			     rmem->size >> PAGE_SHIFT);
+On 1/11/26 18:25, Xiaoyao Li wrote:
+> ... I know it's because minor_version has the least field ID among the
+> three. But the order of the field IDs doesn't stand for the order of the
+> reading. Reading the middle part y of x.y.z as first step looks a bit odd.
 
-OK, so why doesn't the commit message mention that instead of saying 
-something which fails to justify the patch at all? ;)
-
-Furthermore, how much does this actually matter? The "real" restricted 
-DMA use-case is on systems where dma_set_decrypted() is a no-op anyway. 
-I know we used restricted DMA as a hack in the early days of CCA 
-prototyping, but is it intended to actually deploy that as a supported 
-and recommended mechanism now?
-
-Note also that the swiotlb_alloc path is essentially an emergency 
-fallback, which doesn't work for all situations anyway - any restricted 
-device that actually needs to make significant coherent allocations (or 
-rather, that firmware cannot assume won't want to do so) should really 
-have a proper coherent pool alongside its restricted one. The expected 
-use-case here is for something like a wifi driver that only needs to 
-allocate one or two small coherent buffers once at startup, then do 
-everything else with streaming DMA.
-
-Thanks,
-Robin.
-
-> 
-> -aneesh
-> 
->>
->> Thanks,
->> Robin.
->>
->>> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
->>> ---
->>>    kernel/dma/direct.c | 56 +++++++++++++++++++++++++++++++++++++--------
->>>    1 file changed, 46 insertions(+), 10 deletions(-)
->>>
->>> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
->>> index faf1e41afde8..c4ef4457bd74 100644
->>> --- a/kernel/dma/direct.c
->>> +++ b/kernel/dma/direct.c
->>> @@ -104,15 +104,27 @@ static void __dma_direct_free_pages(struct device *dev, struct page *page,
->>>    	dma_free_contiguous(dev, page, size);
->>>    }
->>>    
->>> -static struct page *dma_direct_alloc_swiotlb(struct device *dev, size_t size)
->>> +static struct page *dma_direct_alloc_swiotlb(struct device *dev, size_t size,
->>> +					     dma_addr_t *dma_handle)
->>>    {
->>> -	struct page *page = swiotlb_alloc(dev, size);
->>> +	void *lm_addr;
->>> +	struct page *page;
->>> +
->>> +	page = swiotlb_alloc(dev, size);
->>> +	if (!page)
->>> +		return NULL;
->>>    
->>> -	if (page && !dma_coherent_ok(dev, page_to_phys(page), size)) {
->>> +	if (!dma_coherent_ok(dev, page_to_phys(page), size)) {
->>>    		swiotlb_free(dev, page, size);
->>>    		return NULL;
->>>    	}
->>> +	/* If HighMem let caller take care of creating a mapping */
->>> +	if (PageHighMem(page))
->>> +		return page;
->>>    
->>> +	lm_addr = page_address(page);
->>> +	memset(lm_addr, 0, size);
->>> +	*dma_handle = phys_to_dma_direct(dev, page_to_phys(page));
->>>    	return page;
->>>    }
->>>    
->>> @@ -125,9 +137,6 @@ static struct page *__dma_direct_alloc_pages(struct device *dev, size_t size,
->>>    
->>>    	WARN_ON_ONCE(!PAGE_ALIGNED(size));
->>>    
->>> -	if (is_swiotlb_for_alloc(dev))
->>> -		return dma_direct_alloc_swiotlb(dev, size);
->>> -
->>>    	gfp |= dma_direct_optimal_gfp_mask(dev, &phys_limit);
->>>    	page = dma_alloc_contiguous(dev, size, gfp);
->>>    	if (page) {
->>> @@ -204,6 +213,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
->>>    		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
->>>    {
->>>    	bool remap = false, set_uncached = false;
->>> +	bool mark_mem_decrypt = true;
->>>    	bool allow_highmem = true;
->>>    	struct page *page;
->>>    	void *ret;
->>> @@ -251,6 +261,14 @@ void *dma_direct_alloc(struct device *dev, size_t size,
->>>    	    dma_direct_use_pool(dev, gfp))
->>>    		return dma_direct_alloc_from_pool(dev, size, dma_handle, gfp);
->>>    
->>> +	if (is_swiotlb_for_alloc(dev)) {
->>> +		page = dma_direct_alloc_swiotlb(dev, size, dma_handle);
->>> +		if (page) {
->>> +			mark_mem_decrypt = false;
->>> +			goto setup_page;
->>> +		}
->>> +		return NULL;
->>> +	}
->>>    
->>>    	if (force_dma_unencrypted(dev))
->>>    		/*
->>> @@ -266,6 +284,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
->>>    	if (!page)
->>>    		return NULL;
->>>    
->>> +setup_page:
->>>    	/*
->>>    	 * dma_alloc_contiguous can return highmem pages depending on a
->>>    	 * combination the cma= arguments and per-arch setup.  These need to be
->>> @@ -295,7 +314,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
->>>    		ret = page_address(page);
->>>    	}
->>>    
->>> -	if (force_dma_unencrypted(dev)) {
->>> +	if (mark_mem_decrypt && force_dma_unencrypted(dev)) {
->>>    		void *lm_addr;
->>>    
->>>    		lm_addr = page_address(page);
->>> @@ -316,7 +335,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
->>>    	return ret;
->>>    
->>>    out_encrypt_pages:
->>> -	if (dma_set_encrypted(dev, page_address(page), size))
->>> +	if (mark_mem_decrypt && dma_set_encrypted(dev, page_address(page), size))
->>>    		return NULL;
->>>    out_free_pages:
->>>    	__dma_direct_free_pages(dev, page, size);
->>> @@ -328,6 +347,7 @@ void *dma_direct_alloc(struct device *dev, size_t size,
->>>    void dma_direct_free(struct device *dev, size_t size,
->>>    		void *cpu_addr, dma_addr_t dma_addr, unsigned long attrs)
->>>    {
->>> +	bool mark_mem_encrypted = true;
->>>    	unsigned int page_order = get_order(size);
->>>    
->>>    	if ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) &&
->>> @@ -356,6 +376,9 @@ void dma_direct_free(struct device *dev, size_t size,
->>>    	    dma_free_from_pool(dev, cpu_addr, PAGE_ALIGN(size)))
->>>    		return;
->>>    
->>> +	if (swiotlb_find_pool(dev, dma_to_phys(dev, dma_addr)))
->>> +		mark_mem_encrypted = false;
->>> +
->>>    	if (is_vmalloc_addr(cpu_addr)) {
->>>    		vunmap(cpu_addr);
->>>    	} else {
->>> @@ -363,7 +386,7 @@ void dma_direct_free(struct device *dev, size_t size,
->>>    			arch_dma_clear_uncached(cpu_addr, size);
->>>    	}
->>>    
->>> -	if (force_dma_unencrypted(dev)) {
->>> +	if (mark_mem_encrypted && force_dma_unencrypted(dev)) {
->>>    		void *lm_addr;
->>>    
->>>    		lm_addr = phys_to_virt(dma_to_phys(dev, dma_addr));
->>> @@ -385,6 +408,15 @@ struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
->>>    	if (force_dma_unencrypted(dev) && dma_direct_use_pool(dev, gfp))
->>>    		return dma_direct_alloc_from_pool(dev, size, dma_handle, gfp);
->>>    
->>> +	if (is_swiotlb_for_alloc(dev)) {
->>> +		page = dma_direct_alloc_swiotlb(dev, size, dma_handle);
->>> +		if (page && PageHighMem(page)) {
->>> +			swiotlb_free(dev, page, size);
->>> +			return NULL;
->>> +		}
->>> +		return page;
->>> +	}
->>> +
->>>    	page = __dma_direct_alloc_pages(dev, size, gfp, false);
->>>    	if (!page)
->>>    		return NULL;
->>> @@ -404,13 +436,17 @@ void dma_direct_free_pages(struct device *dev, size_t size,
->>>    		enum dma_data_direction dir)
->>>    {
->>>    	void *vaddr = page_address(page);
->>> +	bool mark_mem_encrypted = true;
->>>    
->>>    	/* If cpu_addr is not from an atomic pool, dma_free_from_pool() fails */
->>>    	if (IS_ENABLED(CONFIG_DMA_COHERENT_POOL) &&
->>>    	    dma_free_from_pool(dev, vaddr, size))
->>>    		return;
->>>    
->>> -	if (dma_set_encrypted(dev, vaddr, size))
->>> +	if (swiotlb_find_pool(dev, page_to_phys(page)))
->>> +		mark_mem_encrypted = false;
->>> +
->>> +	if (mark_mem_encrypted && dma_set_encrypted(dev, vaddr, size))
->>>    		return;
->>>    	__dma_direct_free_pages(dev, page, size);
->>>    }
-
+I wouldn't sweat it either way. Reading 4, 3, 5 would also look odd. I'm
+fine with it as-is in the patch.
