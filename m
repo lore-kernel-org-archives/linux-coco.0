@@ -1,130 +1,135 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B4D5246BBA
-	for <linux-coco@lists.linux.dev>; Tue, 13 Jan 2026 17:30:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343472512C8;
+	Tue, 13 Jan 2026 17:53:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768325425; cv=none; b=I5U6l38q1CSkkA1E5P2g7uMMkiyYebBpdc99l028KMjzZJD6/0SU+nUmqlFKE1WaS8gW/LIiXygwa59gPCjG35BRlGumzOcvx1aDzRPRq0C04vm837oHXX6PKE6qECN3DVzKVeVd2abHD6ia0HAIEC2Kf+emrrURG8fbGFqhjHM=
+	t=1768326824; cv=none; b=KUeGS1RC3+oo5D6PqXMrmVZOVM35nEtydA0ZuI46lKwFBJpGtQZ5dnNPUHRf/Ud/5D4r1XqCD6jgzQUw3QkyL+4D2S39JuMkDdZJH/ZxkbUE9foMB1D78fRHR3XDrRnGetcq4CPkcvDGAYgKgWQ+uGlzZPwcnz6HjVwj48HkUpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768325425; c=relaxed/simple;
-	bh=eX9tcX0CNgPq6x74CmQHfZltVdpYbhq3ar753+WOMNw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=krtFyDUbJ9MkqMWILMrMSFkXE/gnTdi4NSP4RGW/mOeGvM7DCyuF64FoyB/9g+sy25SLWWAuYNeiyL/cD8mlZbFpoERPtaPmdbSrXVB4Cl6lrP09I/MJgBXnPQMon7Bip4Y/HwIsA/uIgtZmsyfdMk/9Fx5/Z8A6R14zXlfI1pM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AC8C9497;
-	Tue, 13 Jan 2026 09:30:16 -0800 (PST)
-Received: from [192.168.178.30] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8E8553F632;
-	Tue, 13 Jan 2026 09:30:20 -0800 (PST)
-Message-ID: <c4ff0ea7-db2f-4a1a-a095-c3f8249d294a@arm.com>
-Date: Tue, 13 Jan 2026 17:30:10 +0000
+	s=arc-20240116; t=1768326824; c=relaxed/simple;
+	bh=TZLi4ME24WYwqZOOdhzNI1VhxAjc2a4f/YofFPJkMlU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZeQ0otGmtTw7hR/oXKKwQ9oxUYbW3ZudvDWCNlukmmkL6NxQgZZD+eFnoMMQ7vWQ8Fk9jjuFALpGvYrHPNPj8NYdbV52SMF34BmQQbGIGETnXrPjHoe8uAC1OrEQKjkCuf/H8DqhUIMQ9hC3cw02VI7YDoXBqmzMD4PbmAazJ00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kGolsI8a; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kGolsI8a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DFF7C19424;
+	Tue, 13 Jan 2026 17:53:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768326823;
+	bh=TZLi4ME24WYwqZOOdhzNI1VhxAjc2a4f/YofFPJkMlU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kGolsI8aU1zq1ShpfCjLTWdGuLpt1HxmoVBIKfRAxxB2YLWJpSfxxE2ZBN0+vDv9U
+	 j7YFFXPvYsloOyCFZ9hXXQpSTlBn+hlkNJUB+hqbXwvMv+EQLBm/FtfHOaL0V6AvB5
+	 05Pgaq83FyGmVF5tdQFOr02MdH92hNjKaDWSw9gBp0F307EYWyKOFdpSZWAXqGfONg
+	 7RqYgo7vsnqSytUvR+rODXKr4ETiQCDDzh8v6kkdxMt6jN5nfips+3D1PphAWxdOoF
+	 QBuRfa2/uP0hQ9f6eZhEHzoK3SYyJoZp7iU21/H0JFy9OWR4TZJr4d5WRCSYKOmD2I
+	 3nJYH60QNuxwg==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 9B5F7F4006B;
+	Tue, 13 Jan 2026 12:53:42 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Tue, 13 Jan 2026 12:53:42 -0500
+X-ME-Sender: <xms:poZmadtyFWLt0MZUPIvzVRlgczQ8z1IuOjmQJJ9DjgbmuvQWoggZbw>
+    <xme:poZmaXOyqRXhm9-TP_9AyGsoVTtCxiE7fU0hpuhS7gEWARlJynEo0TtpMkqvUNbSO
+    59lqmXUVjhCs8X1h8HtCMDrkrhytWWbXt3tEiN1izOB1nrFFCr1_Q>
+X-ME-Received: <xmr:poZmaZp8XRmADqNhsj3LlVtbio9seb7-WBw2Mw7qNODLgWgef1dI0ExsqiZZSQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduvddtleejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepfedtpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehprhhsrghmphgrthesrghmugdrtghomhdprhgtphhtthhopehlihhnuhigqdhmmh
+    eskhhvrggtkhdrohhrghdprhgtphhtthhopehlihhnuhigqdgtohgtoheslhhishhtshdr
+    lhhinhhugidruggvvhdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtph
+    htthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhopehmihhngh
+    hosehrvgguhhgrthdrtghomhdprhgtphhtthhopegsphesrghlihgvnhekrdguvgdprhgt
+    phhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgtohhm
+X-ME-Proxy: <xmx:poZmacH_Vno9g_4DneJbjrrhcY7wmFrveme8nP0QYnu3oeBNC5txrA>
+    <xmx:poZmadGNkD-Sa_E0mQp72F1Atg_UTVTfOLKPSKr26qonBY--6XPpVA>
+    <xmx:poZmabKXtUEXMWeS1wQcjM4fvOhNaDdV5yGyCRpyaHQ8Yu6l-DlcMg>
+    <xmx:poZmaWE9iFZfvP78fmKUwg4x36GSOUmPMhtrWD4uWvUkIPetpgSiQA>
+    <xmx:poZmacp9Br2Ifd3R7tHXQae5hqWuqQoQySbOo-stogIZ2vOGVxhlvd4s>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 13 Jan 2026 12:53:40 -0500 (EST)
+Date: Tue, 13 Jan 2026 17:53:35 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "Pratik R. Sampat" <prsampat@amd.com>
+Cc: linux-mm@kvack.org, linux-coco@lists.linux.dev, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, ardb@kernel.org, akpm@linux-foundation.org, david@kernel.org, 
+	osalvador@suse.de, thomas.lendacky@amd.com, michael.roth@amd.com
+Subject: Re: [PATCH v2 2/2] mm/memory_hotplug: Add support to unaccept memory
+ after hot-remove
+Message-ID: <aWaGBandNCLT93Tm@thinkstation>
+References: <20260112202300.43546-1-prsampat@amd.com>
+ <20260112202300.43546-3-prsampat@amd.com>
+ <aWYctexPTf-w7QT8@thinkstation>
+ <af3bf2ef-0231-4e75-9a80-c2bd3a7e1bf1@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/5] Arm LFA: Improvements and interrupt support
-To: Vedashree Vidwans <vvidwans@nvidia.com>, salman.nabi@arm.com,
- sudeep.holla@arm.com, lpieralisi@kernel.org, mark.rutland@arm.com
-Cc: ardb@kernel.org, chao.gao@intel.com,
- linux-arm-kernel@lists.infradead.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, sdonthineni@nvidia.com, vsethi@nvidia.com,
- vwadekar@nvidia.com
-References: <20251208221319.1524888-1-vvidwans@nvidia.com>
-Content-Language: en-US
-From: Andre Przywara <andre.przywara@arm.com>
-In-Reply-To: <20251208221319.1524888-1-vvidwans@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <af3bf2ef-0231-4e75-9a80-c2bd3a7e1bf1@amd.com>
 
-Hi Vedashree,
-
-thanks for your efforts on this, and sorry for the delay on our side. We 
-were hold up by a combination of spec changes and non-overlapping holidays.
-
-On 08/12/2025 22:13, Vedashree Vidwans wrote:
-> Hello,
+On Tue, Jan 13, 2026 at 11:10:21AM -0600, Pratik R. Sampat wrote:
 > 
-> The patches update the proposed Arm Live Firmware Activation (LFA)
-> kernel driver [1] to incorporate review feedback [2] and refine the
-> activation flow while remaining aligned with the LFA specification
-> DEN0147 [3] and the SMCCC 1.2 calling convention. The series keeps
-> the existing functionality but restructures and extends it to improve
-> robustness, reviewability, and future extensibility.​
-
-I would propose we change that approach a bit. We have updated and 
-improved the driver internally, but were waiting for the new version of 
-the spec (BET1) to be released, which happened some weeks ago. Salman 
-will send out a new version of the driver in the next few days. Anything 
-that is a bug (like the omission of the SMCCC v1.2 interface) will be 
-addressed there, as there is no point to merge with a known buggy base 
-patch. Also we will incorporate the changes we made so far, including 
-adjustments for the new spec version.
-
-Anything that can be added as independent patches should be done so, I 
-think for instance the interrupt support is such a candidate. Ideally 
-you can rebase your series on the changed base patch once this has been 
-posted.
-For other things like the platform driver introduction we can use your 
-series here as a discussion base, as it allows us to reason and discuss 
-this easier than by looking at a from-scratch patch.
-
-Does this make sense?
-
-Also please note that the DT and ACPI part has changed in the latest 
-version of the spec. I will send a DT binding patch ASAP, to get this 
-part out of the way.
-
-Cheers,
-Andre
-
-
- > > The SMCCC usage in the driver is updated to consistently use the
-> SMCCC 1.2 register-based calling convention, consolidating arguments
-> and results into a single struct to reduce stack usage and simplify
-> the SMC interface. The patches also split the original changes into
-> focused pieces and document the device node bindings in the commit
-> messages, making it easier to follow and validate the implementation
-> against the specification.​
 > 
-> The kernel driver is registered as a platform driver in accordence to
-> the LFA device defined by the specification [3]. The driver now extends
-> interface for interrupt-based enablement of LFA. During LFA, the
-> interrupt
-> thread refreshes firmware component details after each activation step
-> and iterates over all activable components until no further activation
-> is pending, matching the spec’s allowance for component detail changes
-> after activation. This ensures that sysfs exposure of LFA components
-> remains consistent with the authoritative information provided by the
-> secure firmware.​
+> On 1/13/2026 4:28 AM, Kiryl Shutsemau wrote:
+> > On Mon, Jan 12, 2026 at 02:23:00PM -0600, Pratik R. Sampat wrote:
+> > > Transition memory to the shared state during a hot-remove operation so
+> > > that it can be re-used by the hypervisor. This also applies when memory
+> > > is intended to be hotplugged back in later, as those pages will need to
+> > > be re-accepted after crossing the trust boundary.
+> > 
+> > Hm. What happens when we hot-remove memory that was there at the boot
+> > and there's bitmap space for it?
+> > 
 > 
-> The handling of CPU rendezvous is adjusted so that the kernel now
-> honors the rendezvous policy chosen by the firmware, instead of
-> unconditionally forcing a rendezvous. This reflects experience with
-> existing firmware deployments where mandatory rendezvous is not
-> required, while still allowing the firmware to request it when
-> needed.​
+> While hotplug ranges gotten from SRAT don't seem to overlap with the
+> conventional ranges in the unaccepted table, EFI_MEMORY_HOT_PLUGGABLE
+> attribute could indicate boot time memory that could be hot-removed. I
+> could potentially unset the bitmap first, if the bit exists and then
+> unaccept.
 > 
-> Thank you,
-> Veda
+> Similarly, I could also check if the bitmap is large enough to set the
+> bit before I call arch_accept_memory() (This may not really be needed
+> though).
 > 
-> [1] https://lore.kernel.org/lkml/20250926123145.268728-1-salman.nabi@arm.com/
-> [2] https://lkml.org/lkml/2025/10/8/980
-> [3] https://developer.arm.com/documentation/den0147/latest/
+> > Also, I'm not sure why it is needed. At least in TDX case, VMM can pull
+> > the memory from under guest at any time without a warning. Coverting
+> > memory to shared shouldn't make a difference as along as re-adding the
+> > same GPA range triggers accept.
+> > 
 > 
-> Vedashree Vidwans (5):
->    firmware: smccc: LFA: use smcc 1.2
->    firmware: smccc: LFA: refactor
->    firmware: smccc: add timeout, touch wdt
->    firmware: smccc: register as platform driver
->    firmware: smccc: lfa: refresh fw details
+> That makes sense. The only scenario where we could run into trouble on
+> SNP platforms is when we redo a qemu device_add after a device_del
+> without first removing the memory object entirely since same-state
+> transitions result in guest termination.
 > 
->   drivers/firmware/smccc/Kconfig  |   3 +-
->   drivers/firmware/smccc/lfa_fw.c | 478 +++++++++++++++++++++++++-------
->   2 files changed, 380 insertions(+), 101 deletions(-)
-> 
+> This means we must always follow a device_del with an object_del on
+> removal. Otherwise, the onus would then be on the VMM to transition
+> the memory back to shared before re-adding it to the guest.
 
+This seems to be one-of-many possible ways of VMM to get guest terminated.
+DoS is not in something confidential computing aims to prevent.
+
+> However, if this flow is not a concern to begin with then I could
+> probably just drop this patch?
+
+Yes, please.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
