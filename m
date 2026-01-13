@@ -1,207 +1,130 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010051.outbound.protection.outlook.com [52.101.85.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFBC25A2DE
-	for <linux-coco@lists.linux.dev>; Tue, 13 Jan 2026 17:10:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768324231; cv=fail; b=sTZ9K0MRjcntabxI0w+YGvAKPgu+fDMSC3O6AKhlMEX+kLPS1r8mWUrFuMLx8CNkm4RD3oD6AYImcd3S0+esyKiqmh0NDpgqwlTPniBgZZxXon4Wacm1SlCXi/Bx1aMocT3hf29dKiNtpRUS992eqHty7Y9Y1SushTjJ+VtoNgA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768324231; c=relaxed/simple;
-	bh=YBX5V7CPaJNRqUiB72Ygz+vAhuH5fLQz93xtC6hDEL8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=rS6ikFXEV/nSFjzmsfVrJHeY01N9EmlosCWc34S8GQkMaqLSEz5MxMNyjFzkB78RJI+Or6BRPdUZBeZHTq2thmghJ8fwU7jYX1O63rNGgoo9egEsez1mjJrszhC5f3Q28xVOOPWYAea0p/8JL3GNpDodQqY8g9+7N+nfUaLxmOw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=jt5g6cIR; arc=fail smtp.client-ip=52.101.85.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="jt5g6cIR"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aB7aVggR4KghPkJ4c7/4labPC+ruCpmeLEDBrhrCrDnMRzBj6GkiT7g27WQE2mZt8KsKyTQUGIa1HPncXmNYdfE2b5V7k2G9LZWFC9qngm0DSL9HEqVVvbLdt7s2JYYfXfJGv3sG/pWbz0IxBsvk9QZorlPoiZEZyWjCJqI2jIj/NSdRW8AnCOhlZQcaQa4fFOuCuZwZHuvabYal1kw6T0mIDd3Fw4DOsWB3DpBNibnieS9DvxDmVAp+U8NAPgWqQ6EUcnOsFHXaxdZYEO136CIKHOSROnNiXATG0CnB/nBK6BidbKOMZynl9QDGBaEUjlHRaUKKrZL6qLNQvEB5Bw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CpCq1/N5wJAdTSrXzI3rzm37O4bxo1F0yq6rHFtsdQM=;
- b=fmMqFQB3wKzksRLbRvlnQK/2QxcH1autQm4mLFsvkWbWqGgEBnn/yd6dMoTV2ze9B+SPjEwgy6NI7TJlLhbZyaISH/0J6AZOfp9wDl71vCt/al1Q8xzLemYIkNRwT7QuSckGAjnEJ96WW+22FWRr/3tRJLd2v0Ord5U1Ujv3/HKjPPZwQZtVCqtubD3V/0xtZ/vxbxGhp80yTMPWo0+PeREZPp+94e+bA7oOjq0OXYpS0MeWv42M2l9E96YOrm6LpSjuRjQSc+ARIp/GnHpDRUGS1GAmBOGwSCHhhb+oXeYmez58JEu31xivUwbthIAUWdvDthjMQIdhjll5Xpy/hA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CpCq1/N5wJAdTSrXzI3rzm37O4bxo1F0yq6rHFtsdQM=;
- b=jt5g6cIRaRNF3ZJxqLBccN6576mGs+5gFankEd680FC3Hx7PaAQgTr2wKtJbHTSI8tSLYYXRLRRIimMtATcXUub7APgEEJd/heQ9yLCcRc3YGHxFq89xpZOF/7BimVU8PQNnlfGvbtdM6LqHq+WXF1YXs0zWHPT0QphkCkE+oJ4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SA1PR12MB8643.namprd12.prod.outlook.com (2603:10b6:806:387::7)
- by DS7PR12MB5814.namprd12.prod.outlook.com (2603:10b6:8:76::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9499.2; Tue, 13 Jan 2026 17:10:25 +0000
-Received: from SA1PR12MB8643.namprd12.prod.outlook.com
- ([fe80::f168:a4d1:aef0:3ed6]) by SA1PR12MB8643.namprd12.prod.outlook.com
- ([fe80::f168:a4d1:aef0:3ed6%4]) with mapi id 15.20.9520.003; Tue, 13 Jan 2026
- 17:10:23 +0000
-Message-ID: <af3bf2ef-0231-4e75-9a80-c2bd3a7e1bf1@amd.com>
-Date: Tue, 13 Jan 2026 11:10:21 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] mm/memory_hotplug: Add support to unaccept memory
- after hot-remove
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: linux-mm@kvack.org, linux-coco@lists.linux.dev, x86@kernel.org,
- linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, ardb@kernel.org,
- akpm@linux-foundation.org, david@kernel.org, osalvador@suse.de,
- thomas.lendacky@amd.com, michael.roth@amd.com
-References: <20260112202300.43546-1-prsampat@amd.com>
- <20260112202300.43546-3-prsampat@amd.com> <aWYctexPTf-w7QT8@thinkstation>
-Content-Language: en-US
-From: "Pratik R. Sampat" <prsampat@amd.com>
-In-Reply-To: <aWYctexPTf-w7QT8@thinkstation>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN1PR12CA0112.namprd12.prod.outlook.com
- (2603:10b6:802:21::47) To SA1PR12MB8643.namprd12.prod.outlook.com
- (2603:10b6:806:387::7)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B4D5246BBA
+	for <linux-coco@lists.linux.dev>; Tue, 13 Jan 2026 17:30:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768325425; cv=none; b=I5U6l38q1CSkkA1E5P2g7uMMkiyYebBpdc99l028KMjzZJD6/0SU+nUmqlFKE1WaS8gW/LIiXygwa59gPCjG35BRlGumzOcvx1aDzRPRq0C04vm837oHXX6PKE6qECN3DVzKVeVd2abHD6ia0HAIEC2Kf+emrrURG8fbGFqhjHM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768325425; c=relaxed/simple;
+	bh=eX9tcX0CNgPq6x74CmQHfZltVdpYbhq3ar753+WOMNw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=krtFyDUbJ9MkqMWILMrMSFkXE/gnTdi4NSP4RGW/mOeGvM7DCyuF64FoyB/9g+sy25SLWWAuYNeiyL/cD8mlZbFpoERPtaPmdbSrXVB4Cl6lrP09I/MJgBXnPQMon7Bip4Y/HwIsA/uIgtZmsyfdMk/9Fx5/Z8A6R14zXlfI1pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AC8C9497;
+	Tue, 13 Jan 2026 09:30:16 -0800 (PST)
+Received: from [192.168.178.30] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8E8553F632;
+	Tue, 13 Jan 2026 09:30:20 -0800 (PST)
+Message-ID: <c4ff0ea7-db2f-4a1a-a095-c3f8249d294a@arm.com>
+Date: Tue, 13 Jan 2026 17:30:10 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR12MB8643:EE_|DS7PR12MB5814:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2931dcc0-15d8-45ab-5b70-08de52c6a38c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?c0hQYkJBbFNOVTZ2b1kxU29QUE1Oc21DY09uNjRSV2h6cUdPa1NyTzZqL01E?=
- =?utf-8?B?S3ZVMDZneFFNWXZNWkQwa01XOXlvU3ZRY2l1OWNCbTZyL2k4WkZTbjZuZTJw?=
- =?utf-8?B?UUlKNDJZWGllbHc4aWF0YzI3YkozZ1VBWURLSzRVNi9TQy9qbDFvdDBEWHVX?=
- =?utf-8?B?b1R4eHJrOFcwdVVqbHc5TUZ5NU5rUC92V2xjbjBZQTJpbUtpalN3YVJWUVpO?=
- =?utf-8?B?czZHMHczUFFxaTNHUkR3eWROWVFHTENmNGFWQjJUY0JKcmlzNnU1K1ptQWFX?=
- =?utf-8?B?N2c4L1ZwaEZKdlVnMlJUMDFnRjZLSzkzVFdURXNaVDdTMGxuSWorRm9GMEVz?=
- =?utf-8?B?cG1lNkp2ZkQwa0l0dFBoVm0wQ0hiOUVxT1NjRUhIdUlheEZ4SjFLNVZzOTVS?=
- =?utf-8?B?dVg2eFJPVzl6NUFnZklUTXhCa2w1VnNybmVJcE5sQ0NOR1BkYndoZkk2ZkFP?=
- =?utf-8?B?MXhaNmdMendHYmhaN29remNxSTZQelVUa01pR2xULy85elBYd2VCTFBXMVZt?=
- =?utf-8?B?enR1aWtVbDNOcEJ2YXlPcldjZjd0aVZneXYrNXlQcEt3dEJIMG9hTmRyUmRy?=
- =?utf-8?B?bW5yWFhKQ1ROb0VMUTZLZ0pqSkhaUUpVWGNmamVDejV6V2c4VWJWbWcyN3Ay?=
- =?utf-8?B?VkhxYVNJL1lMK3RjNVl0RG9Yays3UVRiQTZXaytuYTNFVWsrZjRmVVplWDZm?=
- =?utf-8?B?Nm5nS3dsd0lQMllIRUFnc01SaGMvd2plTksvMjkzNWE2a01OTXpkaDRzRWV6?=
- =?utf-8?B?QUJLWnMvYWVFVWJxa3VLU2d0SUl1aDIzeDQ3N2NIRjNkVVlkK2JWc3RjZmVQ?=
- =?utf-8?B?WkJIVDBEbG5UYW9yOWNtMzJJVFBYTlU4N2RydUNiSFdaRVFyRG1qczNKaTZw?=
- =?utf-8?B?VTlrUGR6VFdVTlFNOVF6UFVIOHJwR1ZoWWVpVCtCay91Y2g5WTE4T3F5R2FT?=
- =?utf-8?B?RDY5RkVncHFlcERvQmRsb0dhdW5PWWJPYnJLS1FmNUVpYzYxemJ0N0dtWUFI?=
- =?utf-8?B?WUVBSkxlSE9ubDhRcWN3L0s4bUFucFAxc0o2MmFHbHE4Q1o1UGlvWHZKdklr?=
- =?utf-8?B?czY4Uk03bU5ERE9IVnhCTGg2WFp0QzA2b3FLY1hqdytCQUlPNXErSHZ1UXhy?=
- =?utf-8?B?cFdINUtxVzVXWGtTODhBUm4wbzdJcEtuQThTNmsybytSbXN6dWRnNUo0T0dy?=
- =?utf-8?B?WWlhc1I3N2RVdnNnRXpKUFMxblltcjRKV3VGZlF1NCs2aTZwRHowbUgyNUt5?=
- =?utf-8?B?RGhWZ3FOZzRTWFY5WjdQMm9DRTdKaHVVL00yaXdMZ21ySm5pSU9uYS9XMGRY?=
- =?utf-8?B?emFzRCt0eUxCeHZpT3NLQzJEdEM0ckJ6TmJlSU1QbGVIbEZaeVpCbS9xWnFM?=
- =?utf-8?B?eUdNZWF6MHhNY2lrYXRnOWt2VWhqbkg5MXFkWUlQUlRnaTlwTzM2Vy91N0Z4?=
- =?utf-8?B?aHV0d2hyUFpmSC8ybXAyYXBmQVNwMzl0QXAxRkh3YXJzQ1dEVllzczM0NDVE?=
- =?utf-8?B?VFhiNW9vbHFGRDF6MG4zZHpjSEVzTlgrNE1WWE5kRGwxSlJEN1Rmcll6c3RJ?=
- =?utf-8?B?ZWg3Vm9jc2ZTNk5YVDR4aWlCeTBHZjNINjNkb01VVXBPWTJxTlRidkl2bEp3?=
- =?utf-8?B?eG9pUHF3MGtyOG5nUG04ZGxrU3BMWDJ5elBqcndWcXNKak9oeUVBTW5XUCtV?=
- =?utf-8?B?ejNoc0V5b2VOdWdJaEVPUjBiMTFwVWRzT2E4d1VZZzBEYk1jTHRLanQwSldX?=
- =?utf-8?B?M1I5VTF2UXU1aWpqVmg1cG1PQmVMR3hxTWwxc0hyOS83VTdlMWJRMGRIdm5N?=
- =?utf-8?B?c1VaRzZNU0h3Z1RaNHp3VzEyZldDV2NNVjYxVW1NeE1oSG5pbXdKRmFEbytz?=
- =?utf-8?B?YjFEaThrNHB6UWJlUHZhZlNHd0hETUlwcHRRdGVUaFpsQXlpZTI0RTVVQVpk?=
- =?utf-8?Q?uF94/wdwvSVNEsAPiXxQBwXF4s5iZvkl?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB8643.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eGdBNmZvUUhPa3ZxZy9DMXo1dnhTN2VNWlJFYTJWbVlOZ1Q5N3ZHMDdvcEZC?=
- =?utf-8?B?ZXlNTlpMUXFmd28yNTduUllCWmtjUWUxUmp6K0xwUFlaMVdYTkdDWWpUN3lS?=
- =?utf-8?B?T0lLbjYvelZ1RmhqamFpRnpKdDdzdjYxWFRGajFqVHp4ekRPaDJjelVrK1lY?=
- =?utf-8?B?N1dTakVLb3NweU9MdXM2dFIzNDBjbDR2cStiVkhqMnViUkRxU3N2TE96K3V3?=
- =?utf-8?B?Uld1cUdtUmx5YitpUmRMWlhyUmZJNDBuNlRoZzNxNmlSSmpVc0FqWmhnK1Ez?=
- =?utf-8?B?YmxBQ09IQittemx0VFpiV2lMc3hneksvcnY4YzIxbFlwa0dGMWtWcnpjSTJx?=
- =?utf-8?B?RllIZW1maDlQd1EzN05qdk01SXIrQ1dLSVJaZTF6N05YNk9RYUFOOWNzR1F5?=
- =?utf-8?B?NmcxSmRNUWVuNDNuTWQ0KytncGtHVnFjbURiVkhNTDRmM0UrMWNOMjFMNERz?=
- =?utf-8?B?YTIzQVhzNTdRQWg0ZHkybzdNdkpHRldRbmlPdVNUN1pZZVRDTFFKb0taTnVz?=
- =?utf-8?B?WXhNOG0yUm5xU1ZhSkxWRDR2SGFyekZncUZkTENJdVBFaFpwUmNhTHBFSTNi?=
- =?utf-8?B?MEp2RVFhbk9kVEV4SGF0blhNbmRQb2xUTElOZFNWQUZmVTM5VzRhOGpVRlFw?=
- =?utf-8?B?emFDTnFGeFZ0SXRuUjNZQmVKYVFUaXBVWWhsekpaNHFSaysvbDlhNXZraGJC?=
- =?utf-8?B?bncxMitva2ZNU1JiampWSXJudFNQYjQ2WGRpQmVuWGZMWFdtZXhpY3E5N1F1?=
- =?utf-8?B?aDNwQ1ZIY09ZekJlSnU5d3IyK3c1SlFPV0ZNdFRWd04yZ3c4aGZ0V3JKOTR5?=
- =?utf-8?B?SFhRUTcxMXpyOTN5WjFoOGptQVdaSzBZOGtsbmhjVzVDS050QWlDaTNzMVBw?=
- =?utf-8?B?L2puSEh1WElkMGUyK1NjcWpOMnY0RnlINk1HNnVuVzFKNGtGOW5NUktzWC9M?=
- =?utf-8?B?WllPbE05NFVOOWRScTVjVHpONjEvcDJmNWt0M0trT25BL0xnbHN6UnNPcUZZ?=
- =?utf-8?B?eXo0cllFT2ovOHZPaFNsR1JLalV5SlMrZERmRU5HZmNXYlZtY2J2eHZCc3Jt?=
- =?utf-8?B?cm9id282RVVsdkNtWkticDUxK0Q1UlFlQnM3dHY5VDB2WDhhejVQZVdhREw5?=
- =?utf-8?B?eWtiZURFZ3VSKzAydllwQjFnNVV4OEVrcHFYMHFSSVZMdUU3bGY5WlJTTlhG?=
- =?utf-8?B?dmZFNExBbUpScGwrWEh2SHJjTmswU3FFTnI4SUNkQXR4Vk9tdjdFdkJQcnhE?=
- =?utf-8?B?WDB0WXgyZWh3VjJUWkVseVdwVEk2MytQZVNaazZOTDBkRmtSell5Yzg4SXhM?=
- =?utf-8?B?NC9BRkhFMXNSdUYyZnh0UmZyTnhMS3F3blNkK0R5d3JVMEV2M3JzS2gzSFN6?=
- =?utf-8?B?OVFQbTVxRk9GMGp5c3BRa05yVEQ0RWFDcUc5VnpjbFdGUHh2QkN2Wm9NTXpo?=
- =?utf-8?B?TllxM0dQb3JhSEFSTkxyWDFsSmk1YjgrMC9HZEtJdXAvYjh2WVBQdnREcUVi?=
- =?utf-8?B?dThsUFJrUXdJUHl5U2JXTENzKy9EVTVVU2RWRDAvTk5pbm54aVBWL2pxbFdl?=
- =?utf-8?B?cXVrODB0TlM1NmZBRFN1ZWFjdDlrdUpsaFlXMnhDQytqTExOQTRmM0hsU2k1?=
- =?utf-8?B?cFN3NHhqZkVDWERWNW5ObWZDVlk2Smh0d2dRR203dHlEUjVERFFUdi92TkFr?=
- =?utf-8?B?cUlRMmJmOUV6VUlIQ091RUtZTVIvODhRZmZtdm1ub3pYZXFBQmlrT2d6R24z?=
- =?utf-8?B?cGM1Mjd4dS9neHA5NktqZTEwRnVIa0dHV2hzMlQreE9PcHdzcGk4MjBGcDQy?=
- =?utf-8?B?MDVuV1ArUzczT0tqbXhvMUcyZjF4bXg3VWo4VXFKNTNVNDV2WEZOVjZxQlFJ?=
- =?utf-8?B?b3N1Rm9SdDFVVVlFVWJwTGJiODRudHdlNFFJMmdyVXB1R2tVeVpuYmV1cGVC?=
- =?utf-8?B?WGVtbURpU3RRSjZBNFl6VnZOeVdIVFFvR2R4a1BaYzUxTG5SY28xV2p0MjNj?=
- =?utf-8?B?NHkyQmg2SnhpdjNSYlVPWU4rVENMWVdHa09YZnFML29EYUgydVlkSEFFa041?=
- =?utf-8?B?UTZ2aUYzWTMxY3FuSmhla0Y2ZVJtOTI0eE9BbmZydlQ4NG1QOVVCN3NwNjVZ?=
- =?utf-8?B?OXVTdEFZVkZOMG4zQ3FCMjVZZkdycG1aVExZOUliTml6ZndxQU0rdVdHN3U2?=
- =?utf-8?B?cTIyMm53dW8xMjZKOGFzb0RmQ3dXb20wTDBRNk8wa0dWcTR5bWlRbXBjUEl6?=
- =?utf-8?B?YWlPL2hiWXltbzErQkhQdVcyY0R2bGhSWGpnS2g0U2ROUWU5aXg1eFBBdzZr?=
- =?utf-8?Q?PhzoJyfLU8Em6FhPFq?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2931dcc0-15d8-45ab-5b70-08de52c6a38c
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB8643.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 17:10:23.7334
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yYaS3hud+K/oemDarXimfzt8BmDARD36DBFr82jS+KeYuDT0PR/UaV2QMTeg3D4873MkiS3iwid072CYhO9BAQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5814
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/5] Arm LFA: Improvements and interrupt support
+To: Vedashree Vidwans <vvidwans@nvidia.com>, salman.nabi@arm.com,
+ sudeep.holla@arm.com, lpieralisi@kernel.org, mark.rutland@arm.com
+Cc: ardb@kernel.org, chao.gao@intel.com,
+ linux-arm-kernel@lists.infradead.org, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, sdonthineni@nvidia.com, vsethi@nvidia.com,
+ vwadekar@nvidia.com
+References: <20251208221319.1524888-1-vvidwans@nvidia.com>
+Content-Language: en-US
+From: Andre Przywara <andre.przywara@arm.com>
+In-Reply-To: <20251208221319.1524888-1-vvidwans@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
+Hi Vedashree,
 
+thanks for your efforts on this, and sorry for the delay on our side. We 
+were hold up by a combination of spec changes and non-overlapping holidays.
 
-On 1/13/2026 4:28 AM, Kiryl Shutsemau wrote:
-> On Mon, Jan 12, 2026 at 02:23:00PM -0600, Pratik R. Sampat wrote:
->> Transition memory to the shared state during a hot-remove operation so
->> that it can be re-used by the hypervisor. This also applies when memory
->> is intended to be hotplugged back in later, as those pages will need to
->> be re-accepted after crossing the trust boundary.
+On 08/12/2025 22:13, Vedashree Vidwans wrote:
+> Hello,
 > 
-> Hm. What happens when we hot-remove memory that was there at the boot
-> and there's bitmap space for it?
+> The patches update the proposed Arm Live Firmware Activation (LFA)
+> kernel driver [1] to incorporate review feedback [2] and refine the
+> activation flow while remaining aligned with the LFA specification
+> DEN0147 [3] and the SMCCC 1.2 calling convention. The series keeps
+> the existing functionality but restructures and extends it to improve
+> robustness, reviewability, and future extensibility.​
+
+I would propose we change that approach a bit. We have updated and 
+improved the driver internally, but were waiting for the new version of 
+the spec (BET1) to be released, which happened some weeks ago. Salman 
+will send out a new version of the driver in the next few days. Anything 
+that is a bug (like the omission of the SMCCC v1.2 interface) will be 
+addressed there, as there is no point to merge with a known buggy base 
+patch. Also we will incorporate the changes we made so far, including 
+adjustments for the new spec version.
+
+Anything that can be added as independent patches should be done so, I 
+think for instance the interrupt support is such a candidate. Ideally 
+you can rebase your series on the changed base patch once this has been 
+posted.
+For other things like the platform driver introduction we can use your 
+series here as a discussion base, as it allows us to reason and discuss 
+this easier than by looking at a from-scratch patch.
+
+Does this make sense?
+
+Also please note that the DT and ACPI part has changed in the latest 
+version of the spec. I will send a DT binding patch ASAP, to get this 
+part out of the way.
+
+Cheers,
+Andre
+
+
+ > > The SMCCC usage in the driver is updated to consistently use the
+> SMCCC 1.2 register-based calling convention, consolidating arguments
+> and results into a single struct to reduce stack usage and simplify
+> the SMC interface. The patches also split the original changes into
+> focused pieces and document the device node bindings in the commit
+> messages, making it easier to follow and validate the implementation
+> against the specification.​
 > 
-
-While hotplug ranges gotten from SRAT don't seem to overlap with the
-conventional ranges in the unaccepted table, EFI_MEMORY_HOT_PLUGGABLE
-attribute could indicate boot time memory that could be hot-removed. I
-could potentially unset the bitmap first, if the bit exists and then
-unaccept.
-
-Similarly, I could also check if the bitmap is large enough to set the
-bit before I call arch_accept_memory() (This may not really be needed 
-though).
-
-> Also, I'm not sure why it is needed. At least in TDX case, VMM can pull
-> the memory from under guest at any time without a warning. Coverting
-> memory to shared shouldn't make a difference as along as re-adding the
-> same GPA range triggers accept.
+> The kernel driver is registered as a platform driver in accordence to
+> the LFA device defined by the specification [3]. The driver now extends
+> interface for interrupt-based enablement of LFA. During LFA, the
+> interrupt
+> thread refreshes firmware component details after each activation step
+> and iterates over all activable components until no further activation
+> is pending, matching the spec’s allowance for component detail changes
+> after activation. This ensures that sysfs exposure of LFA components
+> remains consistent with the authoritative information provided by the
+> secure firmware.​
 > 
-
-That makes sense. The only scenario where we could run into trouble on
-SNP platforms is when we redo a qemu device_add after a device_del
-without first removing the memory object entirely since same-state
-transitions result in guest termination.
-
-This means we must always follow a device_del with an object_del on
-removal. Otherwise, the onus would then be on the VMM to transition
-the memory back to shared before re-adding it to the guest.
-
-However, if this flow is not a concern to begin with then I could
-probably just drop this patch?
-
---Pratik
+> The handling of CPU rendezvous is adjusted so that the kernel now
+> honors the rendezvous policy chosen by the firmware, instead of
+> unconditionally forcing a rendezvous. This reflects experience with
+> existing firmware deployments where mandatory rendezvous is not
+> required, while still allowing the firmware to request it when
+> needed.​
+> 
+> Thank you,
+> Veda
+> 
+> [1] https://lore.kernel.org/lkml/20250926123145.268728-1-salman.nabi@arm.com/
+> [2] https://lkml.org/lkml/2025/10/8/980
+> [3] https://developer.arm.com/documentation/den0147/latest/
+> 
+> Vedashree Vidwans (5):
+>    firmware: smccc: LFA: use smcc 1.2
+>    firmware: smccc: LFA: refactor
+>    firmware: smccc: add timeout, touch wdt
+>    firmware: smccc: register as platform driver
+>    firmware: smccc: lfa: refresh fw details
+> 
+>   drivers/firmware/smccc/Kconfig  |   3 +-
+>   drivers/firmware/smccc/lfa_fw.c | 478 +++++++++++++++++++++++++-------
+>   2 files changed, 380 insertions(+), 101 deletions(-)
+> 
 
