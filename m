@@ -1,122 +1,207 @@
-Received: from sender4-pp-o90.zoho.com (sender4-pp-o90.zoho.com [136.143.188.90])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010051.outbound.protection.outlook.com [52.101.85.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599283921DA
-	for <linux-coco@lists.linux.dev>; Tue, 13 Jan 2026 13:44:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFBC25A2DE
+	for <linux-coco@lists.linux.dev>; Tue, 13 Jan 2026 17:10:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768311890; cv=pass; b=OpMArZlicXkE7yrY01b/hygGBWfywDXeaJVpjw63Ml3Wmc4U1KOEgOx+/FIOpxyqCawZE1Ky3/jXX70wN4WQsWe2v8E1h2SpX4JZn6M4tF3KlBfqUYIsBHSyvIF0kn3pf4aB+WAJGbWSOWexH+VhfX7bkdkIBdi+CMC85dWy4Xk=
+	t=1768324231; cv=fail; b=sTZ9K0MRjcntabxI0w+YGvAKPgu+fDMSC3O6AKhlMEX+kLPS1r8mWUrFuMLx8CNkm4RD3oD6AYImcd3S0+esyKiqmh0NDpgqwlTPniBgZZxXon4Wacm1SlCXi/Bx1aMocT3hf29dKiNtpRUS992eqHty7Y9Y1SushTjJ+VtoNgA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768311890; c=relaxed/simple;
-	bh=4Gt/84Q+V5euNC7bgqpKx6HdoPNXpstkSBpwu9PaaZQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lpmYCvXK5ZlBYcSXrYduEZn69+9zRxJ7stHJ3Jsw4pEFDuRIV0cgqGySBDvWIogX85XDhL04CgiCTrE9sVis7ECtVdLeLa92IDCSZHfE1PXNXtouAFUPtUBQ38OWgF2DfW1zWpYkOm5JHmpZaa6rJzMBJBBuY3FkzTWLv4zLmbI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com; spf=pass smtp.mailfrom=zohomail.com; dkim=pass (1024-bit key) header.d=zohomail.com header.i=ming.li@zohomail.com header.b=XVeS78f+; arc=pass smtp.client-ip=136.143.188.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.com
+	s=arc-20240116; t=1768324231; c=relaxed/simple;
+	bh=YBX5V7CPaJNRqUiB72Ygz+vAhuH5fLQz93xtC6hDEL8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=rS6ikFXEV/nSFjzmsfVrJHeY01N9EmlosCWc34S8GQkMaqLSEz5MxMNyjFzkB78RJI+Or6BRPdUZBeZHTq2thmghJ8fwU7jYX1O63rNGgoo9egEsez1mjJrszhC5f3Q28xVOOPWYAea0p/8JL3GNpDodQqY8g9+7N+nfUaLxmOw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=jt5g6cIR; arc=fail smtp.client-ip=52.101.85.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zohomail.com header.i=ming.li@zohomail.com header.b="XVeS78f+"
-ARC-Seal: i=1; a=rsa-sha256; t=1768311883; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=i1WLLgWF506AlbMBXiCAv/2t9VEffnz1Hz2110h0ISMTbdS3KluoTs0eahQoL2mBFiNHVDoOY0IJEf/VNq3vV9k6QKGqEq5OVE/HjO+5ax0RIyqfIYRtqyqROAeScu6OMvexcU8hWmakTJByzoX1MwpMp0cHmhCds0/4ZU+VZik=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1768311883; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=IOYFfwbNhRu26SipoEbEjskn3DVZyhOKMh76jzWEV2A=; 
-	b=Dx5JnK3rRM0WbfmxmnJlzqiyGHcDb8NER0tRMPpzsYXvPBB0LKk7gJ7Yd5p4SZE/Cr5ZNRJHqsUQKZ3oYqyl8se3dTBkgQZ9O/tHcZrZzVc7Anyjzy7hRZAJZrB28PBA2dgrEcCojuPsEVSdJ+Cr3W1EBu6VFjwGOITUha7hfh0=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=zohomail.com;
-	spf=pass  smtp.mailfrom=ming.li@zohomail.com;
-	dmarc=pass header.from=<ming.li@zohomail.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768311883;
-	s=zm2022; d=zohomail.com; i=ming.li@zohomail.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Feedback-ID:Message-Id:Reply-To;
-	bh=IOYFfwbNhRu26SipoEbEjskn3DVZyhOKMh76jzWEV2A=;
-	b=XVeS78f+o8y1Ka26k8E2/iB4slfQsjc60BJP+pS0ZIgmeh87ezXCT66r9Wfrxmba
-	/NSFDQEsKvnaL58Zy2i0tTaGemOsiB0dpnySgiu64ARWYpfF1VBgOLlzDdeLamumt+M
-	Nh1uPrR4eyHWrABEJ4xzJvaZyOR2Wb4JVf561pHs=
-Received: by mx.zohomail.com with SMTPS id 1768311882285304.78439700796616;
-	Tue, 13 Jan 2026 05:44:42 -0800 (PST)
-Message-ID: <b5a2d815-7389-4bf1-9750-a2243cc1ffd2@zohomail.com>
-Date: Tue, 13 Jan 2026 21:44:38 +0800
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="jt5g6cIR"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aB7aVggR4KghPkJ4c7/4labPC+ruCpmeLEDBrhrCrDnMRzBj6GkiT7g27WQE2mZt8KsKyTQUGIa1HPncXmNYdfE2b5V7k2G9LZWFC9qngm0DSL9HEqVVvbLdt7s2JYYfXfJGv3sG/pWbz0IxBsvk9QZorlPoiZEZyWjCJqI2jIj/NSdRW8AnCOhlZQcaQa4fFOuCuZwZHuvabYal1kw6T0mIDd3Fw4DOsWB3DpBNibnieS9DvxDmVAp+U8NAPgWqQ6EUcnOsFHXaxdZYEO136CIKHOSROnNiXATG0CnB/nBK6BidbKOMZynl9QDGBaEUjlHRaUKKrZL6qLNQvEB5Bw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CpCq1/N5wJAdTSrXzI3rzm37O4bxo1F0yq6rHFtsdQM=;
+ b=fmMqFQB3wKzksRLbRvlnQK/2QxcH1autQm4mLFsvkWbWqGgEBnn/yd6dMoTV2ze9B+SPjEwgy6NI7TJlLhbZyaISH/0J6AZOfp9wDl71vCt/al1Q8xzLemYIkNRwT7QuSckGAjnEJ96WW+22FWRr/3tRJLd2v0Ord5U1Ujv3/HKjPPZwQZtVCqtubD3V/0xtZ/vxbxGhp80yTMPWo0+PeREZPp+94e+bA7oOjq0OXYpS0MeWv42M2l9E96YOrm6LpSjuRjQSc+ARIp/GnHpDRUGS1GAmBOGwSCHhhb+oXeYmez58JEu31xivUwbthIAUWdvDthjMQIdhjll5Xpy/hA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CpCq1/N5wJAdTSrXzI3rzm37O4bxo1F0yq6rHFtsdQM=;
+ b=jt5g6cIRaRNF3ZJxqLBccN6576mGs+5gFankEd680FC3Hx7PaAQgTr2wKtJbHTSI8tSLYYXRLRRIimMtATcXUub7APgEEJd/heQ9yLCcRc3YGHxFq89xpZOF/7BimVU8PQNnlfGvbtdM6LqHq+WXF1YXs0zWHPT0QphkCkE+oJ4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SA1PR12MB8643.namprd12.prod.outlook.com (2603:10b6:806:387::7)
+ by DS7PR12MB5814.namprd12.prod.outlook.com (2603:10b6:8:76::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9499.2; Tue, 13 Jan 2026 17:10:25 +0000
+Received: from SA1PR12MB8643.namprd12.prod.outlook.com
+ ([fe80::f168:a4d1:aef0:3ed6]) by SA1PR12MB8643.namprd12.prod.outlook.com
+ ([fe80::f168:a4d1:aef0:3ed6%4]) with mapi id 15.20.9520.003; Tue, 13 Jan 2026
+ 17:10:23 +0000
+Message-ID: <af3bf2ef-0231-4e75-9a80-c2bd3a7e1bf1@amd.com>
+Date: Tue, 13 Jan 2026 11:10:21 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] mm/memory_hotplug: Add support to unaccept memory
+ after hot-remove
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: linux-mm@kvack.org, linux-coco@lists.linux.dev, x86@kernel.org,
+ linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, ardb@kernel.org,
+ akpm@linux-foundation.org, david@kernel.org, osalvador@suse.de,
+ thomas.lendacky@amd.com, michael.roth@amd.com
+References: <20260112202300.43546-1-prsampat@amd.com>
+ <20260112202300.43546-3-prsampat@amd.com> <aWYctexPTf-w7QT8@thinkstation>
+Content-Language: en-US
+From: "Pratik R. Sampat" <prsampat@amd.com>
+In-Reply-To: <aWYctexPTf-w7QT8@thinkstation>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN1PR12CA0112.namprd12.prod.outlook.com
+ (2603:10b6:802:21::47) To SA1PR12MB8643.namprd12.prod.outlook.com
+ (2603:10b6:806:387::7)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] PCI/IDE: Fix using wrong VF ID for RID range
- calculation
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: dan.j.williams@intel.com, linux-pci@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20260111080631.506487-1-ming.li@zohomail.com>
- <aWRctnwjEXvUyayb@yilunxu-OptiPlex-7050>
-From: Li Ming <ming.li@zohomail.com>
-In-Reply-To: <aWRctnwjEXvUyayb@yilunxu-OptiPlex-7050>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Feedback-ID: rr080112270578d1b8937d401e7e418a1f0000f11a1ad9d7fbd0ecdb4ef5799db54b0609d60c9a21441c95cf:zu08011227ae3811fbab9d3b660a75aa5a000071c90fc83e6eb4bd1589b5450004d2b0c66f0b549d75ef3727:rf080112326d311bc55c967f7ebcf7e82c000009d3c1dc8d59f3b4651200410d89272560c088c21c2ae178bed880c29303cc17de607440:ZohoMail
-X-ZohoMailClient: External
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR12MB8643:EE_|DS7PR12MB5814:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2931dcc0-15d8-45ab-5b70-08de52c6a38c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?c0hQYkJBbFNOVTZ2b1kxU29QUE1Oc21DY09uNjRSV2h6cUdPa1NyTzZqL01E?=
+ =?utf-8?B?S3ZVMDZneFFNWXZNWkQwa01XOXlvU3ZRY2l1OWNCbTZyL2k4WkZTbjZuZTJw?=
+ =?utf-8?B?UUlKNDJZWGllbHc4aWF0YzI3YkozZ1VBWURLSzRVNi9TQy9qbDFvdDBEWHVX?=
+ =?utf-8?B?b1R4eHJrOFcwdVVqbHc5TUZ5NU5rUC92V2xjbjBZQTJpbUtpalN3YVJWUVpO?=
+ =?utf-8?B?czZHMHczUFFxaTNHUkR3eWROWVFHTENmNGFWQjJUY0JKcmlzNnU1K1ptQWFX?=
+ =?utf-8?B?N2c4L1ZwaEZKdlVnMlJUMDFnRjZLSzkzVFdURXNaVDdTMGxuSWorRm9GMEVz?=
+ =?utf-8?B?cG1lNkp2ZkQwa0l0dFBoVm0wQ0hiOUVxT1NjRUhIdUlheEZ4SjFLNVZzOTVS?=
+ =?utf-8?B?dVg2eFJPVzl6NUFnZklUTXhCa2w1VnNybmVJcE5sQ0NOR1BkYndoZkk2ZkFP?=
+ =?utf-8?B?MXhaNmdMendHYmhaN29remNxSTZQelVUa01pR2xULy85elBYd2VCTFBXMVZt?=
+ =?utf-8?B?enR1aWtVbDNOcEJ2YXlPcldjZjd0aVZneXYrNXlQcEt3dEJIMG9hTmRyUmRy?=
+ =?utf-8?B?bW5yWFhKQ1ROb0VMUTZLZ0pqSkhaUUpVWGNmamVDejV6V2c4VWJWbWcyN3Ay?=
+ =?utf-8?B?VkhxYVNJL1lMK3RjNVl0RG9Yays3UVRiQTZXaytuYTNFVWsrZjRmVVplWDZm?=
+ =?utf-8?B?Nm5nS3dsd0lQMllIRUFnc01SaGMvd2plTksvMjkzNWE2a01OTXpkaDRzRWV6?=
+ =?utf-8?B?QUJLWnMvYWVFVWJxa3VLU2d0SUl1aDIzeDQ3N2NIRjNkVVlkK2JWc3RjZmVQ?=
+ =?utf-8?B?WkJIVDBEbG5UYW9yOWNtMzJJVFBYTlU4N2RydUNiSFdaRVFyRG1qczNKaTZw?=
+ =?utf-8?B?VTlrUGR6VFdVTlFNOVF6UFVIOHJwR1ZoWWVpVCtCay91Y2g5WTE4T3F5R2FT?=
+ =?utf-8?B?RDY5RkVncHFlcERvQmRsb0dhdW5PWWJPYnJLS1FmNUVpYzYxemJ0N0dtWUFI?=
+ =?utf-8?B?WUVBSkxlSE9ubDhRcWN3L0s4bUFucFAxc0o2MmFHbHE4Q1o1UGlvWHZKdklr?=
+ =?utf-8?B?czY4Uk03bU5ERE9IVnhCTGg2WFp0QzA2b3FLY1hqdytCQUlPNXErSHZ1UXhy?=
+ =?utf-8?B?cFdINUtxVzVXWGtTODhBUm4wbzdJcEtuQThTNmsybytSbXN6dWRnNUo0T0dy?=
+ =?utf-8?B?WWlhc1I3N2RVdnNnRXpKUFMxblltcjRKV3VGZlF1NCs2aTZwRHowbUgyNUt5?=
+ =?utf-8?B?RGhWZ3FOZzRTWFY5WjdQMm9DRTdKaHVVL00yaXdMZ21ySm5pSU9uYS9XMGRY?=
+ =?utf-8?B?emFzRCt0eUxCeHZpT3NLQzJEdEM0ckJ6TmJlSU1QbGVIbEZaeVpCbS9xWnFM?=
+ =?utf-8?B?eUdNZWF6MHhNY2lrYXRnOWt2VWhqbkg5MXFkWUlQUlRnaTlwTzM2Vy91N0Z4?=
+ =?utf-8?B?aHV0d2hyUFpmSC8ybXAyYXBmQVNwMzl0QXAxRkh3YXJzQ1dEVllzczM0NDVE?=
+ =?utf-8?B?VFhiNW9vbHFGRDF6MG4zZHpjSEVzTlgrNE1WWE5kRGwxSlJEN1Rmcll6c3RJ?=
+ =?utf-8?B?ZWg3Vm9jc2ZTNk5YVDR4aWlCeTBHZjNINjNkb01VVXBPWTJxTlRidkl2bEp3?=
+ =?utf-8?B?eG9pUHF3MGtyOG5nUG04ZGxrU3BMWDJ5elBqcndWcXNKak9oeUVBTW5XUCtV?=
+ =?utf-8?B?ejNoc0V5b2VOdWdJaEVPUjBiMTFwVWRzT2E4d1VZZzBEYk1jTHRLanQwSldX?=
+ =?utf-8?B?M1I5VTF2UXU1aWpqVmg1cG1PQmVMR3hxTWwxc0hyOS83VTdlMWJRMGRIdm5N?=
+ =?utf-8?B?c1VaRzZNU0h3Z1RaNHp3VzEyZldDV2NNVjYxVW1NeE1oSG5pbXdKRmFEbytz?=
+ =?utf-8?B?YjFEaThrNHB6UWJlUHZhZlNHd0hETUlwcHRRdGVUaFpsQXlpZTI0RTVVQVpk?=
+ =?utf-8?Q?uF94/wdwvSVNEsAPiXxQBwXF4s5iZvkl?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB8643.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eGdBNmZvUUhPa3ZxZy9DMXo1dnhTN2VNWlJFYTJWbVlOZ1Q5N3ZHMDdvcEZC?=
+ =?utf-8?B?ZXlNTlpMUXFmd28yNTduUllCWmtjUWUxUmp6K0xwUFlaMVdYTkdDWWpUN3lS?=
+ =?utf-8?B?T0lLbjYvelZ1RmhqamFpRnpKdDdzdjYxWFRGajFqVHp4ekRPaDJjelVrK1lY?=
+ =?utf-8?B?N1dTakVLb3NweU9MdXM2dFIzNDBjbDR2cStiVkhqMnViUkRxU3N2TE96K3V3?=
+ =?utf-8?B?Uld1cUdtUmx5YitpUmRMWlhyUmZJNDBuNlRoZzNxNmlSSmpVc0FqWmhnK1Ez?=
+ =?utf-8?B?YmxBQ09IQittemx0VFpiV2lMc3hneksvcnY4YzIxbFlwa0dGMWtWcnpjSTJx?=
+ =?utf-8?B?RllIZW1maDlQd1EzN05qdk01SXIrQ1dLSVJaZTF6N05YNk9RYUFOOWNzR1F5?=
+ =?utf-8?B?NmcxSmRNUWVuNDNuTWQ0KytncGtHVnFjbURiVkhNTDRmM0UrMWNOMjFMNERz?=
+ =?utf-8?B?YTIzQVhzNTdRQWg0ZHkybzdNdkpHRldRbmlPdVNUN1pZZVRDTFFKb0taTnVz?=
+ =?utf-8?B?WXhNOG0yUm5xU1ZhSkxWRDR2SGFyekZncUZkTENJdVBFaFpwUmNhTHBFSTNi?=
+ =?utf-8?B?MEp2RVFhbk9kVEV4SGF0blhNbmRQb2xUTElOZFNWQUZmVTM5VzRhOGpVRlFw?=
+ =?utf-8?B?emFDTnFGeFZ0SXRuUjNZQmVKYVFUaXBVWWhsekpaNHFSaysvbDlhNXZraGJC?=
+ =?utf-8?B?bncxMitva2ZNU1JiampWSXJudFNQYjQ2WGRpQmVuWGZMWFdtZXhpY3E5N1F1?=
+ =?utf-8?B?aDNwQ1ZIY09ZekJlSnU5d3IyK3c1SlFPV0ZNdFRWd04yZ3c4aGZ0V3JKOTR5?=
+ =?utf-8?B?SFhRUTcxMXpyOTN5WjFoOGptQVdaSzBZOGtsbmhjVzVDS050QWlDaTNzMVBw?=
+ =?utf-8?B?L2puSEh1WElkMGUyK1NjcWpOMnY0RnlINk1HNnVuVzFKNGtGOW5NUktzWC9M?=
+ =?utf-8?B?WllPbE05NFVOOWRScTVjVHpONjEvcDJmNWt0M0trT25BL0xnbHN6UnNPcUZZ?=
+ =?utf-8?B?eXo0cllFT2ovOHZPaFNsR1JLalV5SlMrZERmRU5HZmNXYlZtY2J2eHZCc3Jt?=
+ =?utf-8?B?cm9id282RVVsdkNtWkticDUxK0Q1UlFlQnM3dHY5VDB2WDhhejVQZVdhREw5?=
+ =?utf-8?B?eWtiZURFZ3VSKzAydllwQjFnNVV4OEVrcHFYMHFSSVZMdUU3bGY5WlJTTlhG?=
+ =?utf-8?B?dmZFNExBbUpScGwrWEh2SHJjTmswU3FFTnI4SUNkQXR4Vk9tdjdFdkJQcnhE?=
+ =?utf-8?B?WDB0WXgyZWh3VjJUWkVseVdwVEk2MytQZVNaazZOTDBkRmtSell5Yzg4SXhM?=
+ =?utf-8?B?NC9BRkhFMXNSdUYyZnh0UmZyTnhMS3F3blNkK0R5d3JVMEV2M3JzS2gzSFN6?=
+ =?utf-8?B?OVFQbTVxRk9GMGp5c3BRa05yVEQ0RWFDcUc5VnpjbFdGUHh2QkN2Wm9NTXpo?=
+ =?utf-8?B?TllxM0dQb3JhSEFSTkxyWDFsSmk1YjgrMC9HZEtJdXAvYjh2WVBQdnREcUVi?=
+ =?utf-8?B?dThsUFJrUXdJUHl5U2JXTENzKy9EVTVVU2RWRDAvTk5pbm54aVBWL2pxbFdl?=
+ =?utf-8?B?cXVrODB0TlM1NmZBRFN1ZWFjdDlrdUpsaFlXMnhDQytqTExOQTRmM0hsU2k1?=
+ =?utf-8?B?cFN3NHhqZkVDWERWNW5ObWZDVlk2Smh0d2dRR203dHlEUjVERFFUdi92TkFr?=
+ =?utf-8?B?cUlRMmJmOUV6VUlIQ091RUtZTVIvODhRZmZtdm1ub3pYZXFBQmlrT2d6R24z?=
+ =?utf-8?B?cGM1Mjd4dS9neHA5NktqZTEwRnVIa0dHV2hzMlQreE9PcHdzcGk4MjBGcDQy?=
+ =?utf-8?B?MDVuV1ArUzczT0tqbXhvMUcyZjF4bXg3VWo4VXFKNTNVNDV2WEZOVjZxQlFJ?=
+ =?utf-8?B?b3N1Rm9SdDFVVVlFVWJwTGJiODRudHdlNFFJMmdyVXB1R2tVeVpuYmV1cGVC?=
+ =?utf-8?B?WGVtbURpU3RRSjZBNFl6VnZOeVdIVFFvR2R4a1BaYzUxTG5SY28xV2p0MjNj?=
+ =?utf-8?B?NHkyQmg2SnhpdjNSYlVPWU4rVENMWVdHa09YZnFML29EYUgydVlkSEFFa041?=
+ =?utf-8?B?UTZ2aUYzWTMxY3FuSmhla0Y2ZVJtOTI0eE9BbmZydlQ4NG1QOVVCN3NwNjVZ?=
+ =?utf-8?B?OXVTdEFZVkZOMG4zQ3FCMjVZZkdycG1aVExZOUliTml6ZndxQU0rdVdHN3U2?=
+ =?utf-8?B?cTIyMm53dW8xMjZKOGFzb0RmQ3dXb20wTDBRNk8wa0dWcTR5bWlRbXBjUEl6?=
+ =?utf-8?B?YWlPL2hiWXltbzErQkhQdVcyY0R2bGhSWGpnS2g0U2ROUWU5aXg1eFBBdzZr?=
+ =?utf-8?Q?PhzoJyfLU8Em6FhPFq?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2931dcc0-15d8-45ab-5b70-08de52c6a38c
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB8643.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 17:10:23.7334
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yYaS3hud+K/oemDarXimfzt8BmDARD36DBFr82jS+KeYuDT0PR/UaV2QMTeg3D4873MkiS3iwid072CYhO9BAQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5814
 
 
-在 2026/1/12 10:30, Xu Yilun 写道:
-> On Sun, Jan 11, 2026 at 04:06:31PM +0800, Li Ming wrote:
->> When allocate a new IDE stream for a pci device in SR-IOV case, the RID
->> range of the new IDE stream should cover all VFs of the device. VF id
->> range of a pci device is [0 - (num_VFs - 1)], so should use (num_VFs - )
->> as the last VF's ID.
->>
->> Fixes: 1e4d2ff3ae45 ("PCI/IDE: Add IDE establishment helpers")
->> Signed-off-by: Li Ming <ming.li@zohomail.com>
->> ---
->>   drivers/pci/ide.c | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
->> index 26f7cc94ec31..9629f3ceb213 100644
->> --- a/drivers/pci/ide.c
->> +++ b/drivers/pci/ide.c
->> @@ -283,8 +283,8 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
->>   	/* for SR-IOV case, cover all VFs */
->>   	num_vf = pci_num_vf(pdev);
->>   	if (num_vf)
->> -		rid_end = PCI_DEVID(pci_iov_virtfn_bus(pdev, num_vf),
->> -				    pci_iov_virtfn_devfn(pdev, num_vf));
->> +		rid_end = PCI_DEVID(pci_iov_virtfn_bus(pdev, num_vf - 1),
->> +				    pci_iov_virtfn_devfn(pdev, num_vf - 1));
-> I don't have VF for test but I believe the change is correct.
->
-> The calculated rid_end will be passed to IDE RID association register values,
-> which is inclusive according to IDE SPEC.
->
->    void pci_ide_stream_to_regs(...)
->    {
-> 	...
-> 	regs->rid1 = FIELD_PREP(PCI_IDE_SEL_RID_1_LIMIT, settings->rid_end);
-> 	...
->    }
->
-> Is it better we clarify the kernel-doc a little bit:
->
-> --------8<--------
->
-> diff --git a/include/linux/pci-ide.h b/include/linux/pci-ide.h
-> index 2521a2914294..f0c6975fd429 100644
-> --- a/include/linux/pci-ide.h
-> +++ b/include/linux/pci-ide.h
-> @@ -26,7 +26,7 @@ enum pci_ide_partner_select {
->   /**
->    * struct pci_ide_partner - Per port pair Selective IDE Stream settings
->    * @rid_start: Partner Port Requester ID range start
-> - * @rid_end: Partner Port Requester ID range end
-> + * @rid_end: Partner Port Requester ID range end (inclusive)
->    * @stream_index: Selective IDE Stream Register Block selection
->    * @mem_assoc: PCI bus memory address association for targeting peer partner
->    * @pref_assoc: PCI bus prefetchable memory address association for
 
-Sure, will do that in V2, thanks for review.
+On 1/13/2026 4:28 AM, Kiryl Shutsemau wrote:
+> On Mon, Jan 12, 2026 at 02:23:00PM -0600, Pratik R. Sampat wrote:
+>> Transition memory to the shared state during a hot-remove operation so
+>> that it can be re-used by the hypervisor. This also applies when memory
+>> is intended to be hotplugged back in later, as those pages will need to
+>> be re-accepted after crossing the trust boundary.
+> 
+> Hm. What happens when we hot-remove memory that was there at the boot
+> and there's bitmap space for it?
+> 
 
+While hotplug ranges gotten from SRAT don't seem to overlap with the
+conventional ranges in the unaccepted table, EFI_MEMORY_HOT_PLUGGABLE
+attribute could indicate boot time memory that could be hot-removed. I
+could potentially unset the bitmap first, if the bit exists and then
+unaccept.
 
-Ming
+Similarly, I could also check if the bitmap is large enough to set the
+bit before I call arch_accept_memory() (This may not really be needed 
+though).
+
+> Also, I'm not sure why it is needed. At least in TDX case, VMM can pull
+> the memory from under guest at any time without a warning. Coverting
+> memory to shared shouldn't make a difference as along as re-adding the
+> same GPA range triggers accept.
+> 
+
+That makes sense. The only scenario where we could run into trouble on
+SNP platforms is when we redo a qemu device_add after a device_del
+without first removing the memory object entirely since same-state
+transitions result in guest termination.
+
+This means we must always follow a device_del with an object_del on
+removal. Otherwise, the onus would then be on the VMM to transition
+the memory back to shared before re-adding it to the guest.
+
+However, if this flow is not a concern to begin with then I could
+probably just drop this patch?
+
+--Pratik
 
