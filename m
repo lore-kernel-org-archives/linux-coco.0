@@ -1,125 +1,130 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F80A285CAD
-	for <linux-coco@lists.linux.dev>; Wed, 14 Jan 2026 17:23:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E43137E310
+	for <linux-coco@lists.linux.dev>; Wed, 14 Jan 2026 21:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768411427; cv=none; b=Tm9CJlWQXoQbL4OHOWSBdyWrz8mk9JR55HZ35dGMck2H4BmXhKnvGbNxMqmg+8avZ01Xwqt/8ryjk9cmFfaizwLeczoZnMoKVHdX29142jDyKLNsfwOKTHisLn+4cKfhIhxhqUI4d5y4x596N0P8qaGgo6pO2yhUBnAWzN+Rqbw=
+	t=1768427309; cv=none; b=ErCGHRmKtNjHM3nnwHN3l1crLOBkbyv0Xzj+dK5I9p9ptN95DGDthuQVdgz9vbljcVCfMKY1zlI6mNwY8YQJkGYIpBeuqZSus6I6+zmTIRDYaLryk36Cfou/mJLFtznHZLTNnV7KI1rcVaQopM7yVIPLFMxzaWnZHTS/lvzEV/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768411427; c=relaxed/simple;
-	bh=60/pCMec5sbW4vCXTi6czqr8fDOa6GUGG4jkRyNpklk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dapBeRiz9OiNnbY3lW4Orzf3rubWbBtVjIox0PkcE8Pfwrw5AYQPtxJ7EWZKRbGe1pqUCi8H7FFxULvosbYmK4Zi7iE9W60Ktr9XaBHIi0TQb+zLmuvWYwtty2HS8mBUTwmwTyf4cZsnbH0vs6WsK0wSopejScMYvns3uD/Syo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D2VxoQf+; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1768427309; c=relaxed/simple;
+	bh=sYapoanqDNVjmowm3U98DjxSpn0xFT5o0faGgzukwF4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=jf/msk3/4AUQne9y9bdPyMKmCWXJpiUxVP4cOaYruDOC2nd5U4XIoaIHdbUJLEQp8ymNisxavyizdMrEHErjk+WDOPN1AtiukptX2h6B7RnwXtD7PKFZe2C/RpJkwT2DL4M71C1P2d28Kc3/CrRk3PdqDUHYjTxRfbQR7peMcis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xzQG4uA9; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D2VxoQf+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1768411425;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nMtXDHWeunBz5/gEAqWBNjnjMLZuqV4POcsc21pJOGw=;
-	b=D2VxoQf+PITypWWJi9YtcR0AtEmAG5+uG26C79Hh8vmEljFb3WAtOXUUnoIXTsha5kgw9h
-	NVHyan0gpT2stloemf/3z9JJnUKD+vfCjPd9WMGOFYbOd7NIdgyLg2kvqMS/RUfsJpwccL
-	BRlVVhMnuCfJtmV6SbbSbytpeYUf+PI=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-681-eaP8-bvHMj6nn1VQjXpYXg-1; Wed, 14 Jan 2026 12:23:44 -0500
-X-MC-Unique: eaP8-bvHMj6nn1VQjXpYXg-1
-X-Mimecast-MFC-AGG-ID: eaP8-bvHMj6nn1VQjXpYXg_1768411423
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-34eb6589ed2so9137095a91.2
-        for <linux-coco@lists.linux.dev>; Wed, 14 Jan 2026 09:23:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xzQG4uA9"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-34c3501d784so134474a91.1
+        for <linux-coco@lists.linux.dev>; Wed, 14 Jan 2026 13:48:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768427287; x=1769032087; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Folo1QSQIeNygTDacssAH4wR+caKLjy6AQ6SgfkeFFU=;
+        b=xzQG4uA9ciYsnWxOFZkNaIAB8AomZ7bIeBwjM23no17fGsPJqbH9FfPO/RuFWQLZg5
+         UFaWysDDauz7UVMtNkCOm891NAOywmSSmpvUDZf+h1cXjt0Yad8K2kcp2nZH7j0s9CUy
+         JtpW+80UlhPux22XnOX5Ox5tTgo/lUa8/8MI6R13zwmwR2A9QgsQKIIR482cxecyQfsa
+         jx259Ql/80l3sQucJSyhKdIc39V2U6vX49UYkjsa+uxhkES1ohkFNEnhY33EGIK8oYDJ
+         2yWjqy2T5vhyjciIIfHI9732WZKCuEy4xF2t/z77d/5p8Z6PzTgpK4QY2QhUK6WcqxTY
+         0wQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768411423; x=1769016223;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=nMtXDHWeunBz5/gEAqWBNjnjMLZuqV4POcsc21pJOGw=;
-        b=Y5WxwAxfMUqeSFnk5mEwskdyAcJ/iyFYsEzcXi0ZCE4Nd2l74nfkz169GXXBMRDX+i
-         XZX1CLgC34O2F7FLrfTGnQ1ubEHgT4DQlgLLPpo0t441drvkTt9ftr8GLv7Pbd0RU937
-         SAbkKK7a0T9Ehx3ecWIUYOcnKOfqENiHn2M/mABBowGU0Al5g/tXd/LITYh+UIbFyPtq
-         X1q6DtHxs7otQcgo2W2IrddG/6rZMcFfYkAuz6xcOsZUMYOfZf0KEMdgxcNMKrRyUZbm
-         5+LqI5tJOCYdCVOINKEAieFCLVkBKKQAU5ULm77ia83/Bi+oC6u9txZ6gLWy/P1wjHPm
-         /isw==
-X-Forwarded-Encrypted: i=1; AJvYcCU72n5oItTzqjmO4ntamGNrnAFAefkUqXXARPnX7aHcNRIJ8ubb7mKD56nkNJe88uojy6jUxeeoOIoX@lists.linux.dev
-X-Gm-Message-State: AOJu0YywHIrMxoOyBrxB5wIQpRZaQ/Z86Q8cygJc6nQ9TqUTK2RI5IsU
-	UHexhi5jC1rqvYlYRel3O7oO/NHdGuWGxlYPMk/VW/vIV7UtN4wtiFrgpCGqiSMTEqw0fJvE45a
-	Ep6dsHcuRj+16fBlDGQV2bG3zJqo4Wb4A56WknKINXr4POyz6/UHHx574WVr8yllBm6Ad9MZr6d
-	5J0wKU+LhjefxRKyPj7SYl/NFBfd7EmHbvIoVdlw==
-X-Gm-Gg: AY/fxX7SEDvgA7iV4IrvlRE9p+nrQhvMvRsx8W1DvyUWYRsWYrTmSzjqZQPc6B7MKFI
-	+juo0/7tq0wrfrQyot8wSvZIUE4Yp2WqWSuUqcxEOYngLTw1/zRS/rBFbkOm62ufEs7Bl+otOkx
-	RxDOkKTfeCI5Ek1RiaFR28KbbWKKuEttMm3qt+jo91CWP3tFZvAF3AINl+XssnVV4i
-X-Received: by 2002:a17:90b:54cd:b0:340:f05a:3ec2 with SMTP id 98e67ed59e1d1-3510915b86bmr3251589a91.17.1768411423332;
-        Wed, 14 Jan 2026 09:23:43 -0800 (PST)
-X-Received: by 2002:a17:90b:54cd:b0:340:f05a:3ec2 with SMTP id
- 98e67ed59e1d1-3510915b86bmr3251564a91.17.1768411422892; Wed, 14 Jan 2026
- 09:23:42 -0800 (PST)
+        d=1e100.net; s=20230601; t=1768427287; x=1769032087;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Folo1QSQIeNygTDacssAH4wR+caKLjy6AQ6SgfkeFFU=;
+        b=AoQXKVjlA6kpjfn593ur2Zk02IYkd/kfixqPQf0eFc54r+ptfOnrz4ZNUA6yL9j/NY
+         YAZwrFQY26SbolLbqfawf3FaYiBuvwXZneTI3nkELst++e/qPvB+kxiovduMLS8gUpUl
+         O45PxArPvoLZ+JmQg2tPOwDNDrjKXmWGvNFFj2515Nk1aqF7e9zMecDwpCHoMfrox7Bx
+         oIRjni3mMZcE8bNushK1HzjX0kH0f53487LXEDeZQHcfwR9FVdlJDh8ugN+dKZPMJyly
+         v31G4IE9ScEKMRLQanJkyyYMb8J0N+bysYC4xJ15Snxu+yt/YcJunBnGJ+8CE+aain5C
+         RxKA==
+X-Forwarded-Encrypted: i=1; AJvYcCXnmKRC9FDN6A+MxqC7uBzA7ORd/0PK6iOhzyzBpXcpY/JnunnDfPcYYkz9M72zmBpAWGZhv+zstpw1@lists.linux.dev
+X-Gm-Message-State: AOJu0YxnExkZmhuKqammIiClb2xDxhsJWOOoAP+AmLeg5mbIZfC5xARw
+	ybKWbA6/AHrBjIVbWe86RAdSb4ZjoWi+VVXpKxVjFuQhjKzyye21zxXUduXy4hjp8vFqq1NklSw
+	uBETVqw==
+X-Received: from pjso10.prod.google.com ([2002:a17:90a:c08a:b0:349:3867:ccc1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:57ed:b0:340:c060:4d44
+ with SMTP id 98e67ed59e1d1-351090b100fmr3848862a91.14.1768427286993; Wed, 14
+ Jan 2026 13:48:06 -0800 (PST)
+Date: Wed, 14 Jan 2026 13:48:05 -0800
+In-Reply-To: <aWe8zESCJ0ZeAOT3@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <tlhepq4dp47rbq3vpzm4qtf65t62fqe26tk736sd3ulcbwcefy@btzt3fsapu5e>
-In-Reply-To: <tlhepq4dp47rbq3vpzm4qtf65t62fqe26tk736sd3ulcbwcefy@btzt3fsapu5e>
-From: Stefano Garzarella <sgarzare@redhat.com>
-Date: Wed, 14 Jan 2026 18:23:31 +0100
-X-Gm-Features: AZwV_Qh_viSj5DvQpQuH2QF-Ny9GEAUvVoMMAgbCU7LqdsD76dwJ16psjJIM_TU
-Message-ID: <CAGxU2F7Q1Kxr5OPKpKO84cVvsm=2YU1tABJM3YxMPwX0Rfh_uQ@mail.gmail.com>
-Subject: Re: SVSM Development Call January 14, 2026
-To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
-Cc: =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: s5YI3rfARKH5oTYlEULqka0XKppZBQmyBKI8ODmD4qQ_1768411423
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260114003015.1386066-1-sagis@google.com> <43a0558a-4cca-4d9c-97dc-ffd085186fd9@intel.com>
+ <aWe8zESCJ0ZeAOT3@google.com>
+Message-ID: <aWgPFQOQRr3xcMjh@google.com>
+Subject: Re: [PATCH] KVM: TDX: Allow userspace to return errors to guest for MAPGPA
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Sagi Shahar <sagis@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Vishal Annapurve <vannapurve@google.com>, Michael Roth <michael.roth@amd.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, 13 Jan 2026 at 19:36, J=C3=B6rg R=C3=B6del <joro@8bytes.org> wrote:
->
-> Hi,
->
-> Here is the call for agenda items for this weeks SVSM development call.  =
-Please
-> send any agenda items you have in mind as a reply to this email or raise =
-them
-> in the meeting.
->
-> Stefano will run the meeting tomorrow (Thanks again!) as I can not attend=
- due
-> to travel.
->
-> We will use the LF Zoom instance. Details of the meeting  can be found in=
- our
-> governance repository at:
->
->         https://github.com/coconut-svsm/governance
->
-> The link to the COCONUT-SVSM calendar is:
->
->         https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-sv=
-sm?view=3Dweek
->
-> The meeting will be recorded and the recording eventually published.
++Mike
 
-As I mentioned in the call, QEMU community is open to host some
-COCONUT SVSM projects for GSoC 2026.
-You can find more details at
-https://lore.kernel.org/qemu-devel/CAJSP0QVXXX7GV5W4nj7kP35x_4gbF2nG1G1jdh9=
-Q=3DXgSx=3DnX3A@mail.gmail.com/
-Also, you can find proposals from the past years here:
-https://wiki.qemu.org/Category:GSoC
+On Wed, Jan 14, 2026, Sean Christopherson wrote:
+> On Wed, Jan 14, 2026, Xiaoyao Li wrote:
+> > On 1/14/2026 8:30 AM, Sagi Shahar wrote:
+> > So it needs to be
+> > 
+> > 	if (vcpu->run->hypercall.ret == -EBUSY)
+> > 		tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_RETRY);
+> > 	else
+> > 		tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_INVALID_OPERAND);
+> 
+> No, because assuming everything except -EBUSY translates to
+> TDVMCALL_STATUS_INVALID_OPERAND paints KVM back into the same corner its already
+> in.  What I care most about is eliminating KVM's assumption that a non-zero
+> hypercall.ret means TDVMCALL_STATUS_INVALID_OPERAND.
+> 
+> For the new ABI, I see two options:
+> 
+>  1. Translate -errno as done in this patch.
+>  2. Propagate hypercall.ret directly to the TDVMCALL return code, i.e. let
+>     userspace set any return code it wants.
+> 
+> #1 has the downside of needing KVM changes and new uAPI every time a new return
+> code is supported.
+> 
+> #2 has the downside of preventing KVM from establishing its own ABI around the
+> return code, and making the return code vendor specific.  E.g. if KVM ever wanted
+> to do something in response to -EBUSY beyond propagating the error to the guest,
+> then we can't reasonably do that with #2.
+> 
+> Whatever we do, I want to change snp_complete_psc_msr() and snp_complete_one_psc()
+> in the same patch, so that whatever ABI we establish is common to TDX and SNP.
+> 
+> See also https://lore.kernel.org/all/Zn8YM-s0TRUk-6T-@google.com.
 
-Our goal is to come up with a couple of projects related to COCONUT
-SVSM by next week, since the deadline to post them to QEMU is Jan 30.
+Aha!  Finally.  I *knew* we had discussed this more recently.  The SNP series to
+add KVM_EXIT_SNP_REQ_CERTS uses a similar pattern.  Note its intentional use of
+positive values, because that's what userspace sees in errno.  This code should
+do the same.  Oh, and we need to choose between EAGAIN and EBUSY...
 
-If you have any idea in mind, please share with us :-)
+	switch (READ_ONCE(vcpu->run->snp_req_certs.ret)) {
+	case 0:
+		return snp_handle_guest_req(svm, control->exit_info_1,
+					    control->exit_info_2);
+	case ENOSPC:
+		vcpu->arch.regs[VCPU_REGS_RBX] = vcpu->run->snp_req_certs.npages;
+		return snp_req_certs_err(svm, SNP_GUEST_VMM_ERR_INVALID_LEN);
+	case EAGAIN:
+		return snp_req_certs_err(svm, SNP_GUEST_VMM_ERR_BUSY);
+	case EIO:
+		return snp_req_certs_err(svm, SNP_GUEST_VMM_ERR_GENERIC);
+	default:
+		break;
+	}
 
-Thanks,
-Stefano
 
+https://lore.kernel.org/all/20260109231732.1160759-2-michael.roth@amd.com
