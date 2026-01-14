@@ -1,135 +1,105 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from sender4-pp-o90.zoho.com (sender4-pp-o90.zoho.com [136.143.188.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65DFC39526A
-	for <linux-coco@lists.linux.dev>; Wed, 14 Jan 2026 10:58:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768388350; cv=none; b=TZ97VGkQYO/efcUhWmIqbaWfZiq5jXS71+VOp8jRGRyhZFScEWJY/IlQdebTubp4Dp7DCYSu6W3HsiJqaJULUNpvvTkdl/DQlGDO26YybGz4oRsYZHN6XLH7o3MwD1Ig078p6YW/eb3ZsdlgVKXjQ9FDdmq4kFX6QBCnGBEiz/o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768388350; c=relaxed/simple;
-	bh=yl5OIkDe6G2ULgAVWjcxT/qaKqmvsIxh93J+qisWnCg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rmRf61jnNpDvvgTCKWT9/uwebNNgqAjmANPGAuiSQpBT0g2Ax8adY8kXPtwsgZioNQ84LwjRY6Dr64A5PgxgMDOj6n4yNrPRuNo0foQQ220OvHpy44EGOluYRWpAbvwxwrKOJtI6N1/dMdLUjtd4+br97f8rLK9CXNNkWG7F16k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c06QmZMa; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55EFF357732
+	for <linux-coco@lists.linux.dev>; Wed, 14 Jan 2026 11:15:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.90
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768389311; cv=pass; b=B9nq1gYnMgNaO4aIQboygwwBUbYVcjIUYJ1k5AOENGMmjraDp/MxCP5GmO5u1hXV7VOaQDUzUaXitbCmsjqSB+3IZUd1LBflljW/QTQQojfBEC3QwdVg2UYsj6XCrDPlztJRKn60HRdDNQjrFUEvbLkfC8EA0DeGYMKlthIRPyk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768389311; c=relaxed/simple;
+	bh=LPPwlz73/+z1pYfVWh2PWZw0b4qUercK70vLtoi4SxI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ANUDJNa6wJLaATtFKAR/ArH0IZkxyKSMXBAEY5RawSvFNQsSL4udsbYahRHc4gK03ILLapS7wmYQMUu8dlv++Y98AkapoVVU5WOkTfhuFkwp12CpAsDHsHOPPtxAAOPnbc/NjIyIcAf8cHSGw4xCZKsLJgAhwFoj6OfGf2y45hM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com; spf=pass smtp.mailfrom=zohomail.com; dkim=pass (1024-bit key) header.d=zohomail.com header.i=ming.li@zohomail.com header.b=bN5fGUsE; arc=pass smtp.client-ip=136.143.188.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c06QmZMa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768388281; x=1799924281;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=yl5OIkDe6G2ULgAVWjcxT/qaKqmvsIxh93J+qisWnCg=;
-  b=c06QmZMaXpvFO78T2Ap2N6Li4WciXRwretgldXZ3n0qXKkZ7DqyjhrUr
-   ez88WJex0yTs7Ga9tZd04Hh003SDPTbWd7b5jYXk16qqCLIukiNZxlUm7
-   XKbmExq/D5qA+xdCtlNLDljXIlqSoIPaGzjV8PeKxtpUKq/dTygu/1Qnd
-   PncIbahyaVHSiHL8LrWWsy9QndsftDoFfhHGiYLVWNzqHMdiqDOz4ZyYE
-   e7PxFgd+zPS299DiCtZUW7OOz5HSqVLlZ4/FB1mXFViBegeiRUFwqdEcN
-   6JiDkA8xTvyYIETUy6Hy5a5Ck33HGOmKilm/cBtKIbmH/E+0jf9npizNY
-   A==;
-X-CSE-ConnectionGUID: DGGZLSBOSnuH3BOJVBB6Hw==
-X-CSE-MsgGUID: B7vQD4SmTKe/VNvLVMI8Ew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="79980414"
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
-   d="scan'208";a="79980414"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 02:58:01 -0800
-X-CSE-ConnectionGUID: or9SFu30RuO78ojd3MGGWA==
-X-CSE-MsgGUID: GF64hqTzSyqwnBi+6lqSPA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
-   d="scan'208";a="209108727"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa005.fm.intel.com with ESMTP; 14 Jan 2026 02:57:56 -0800
-Date: Wed, 14 Jan 2026 18:40:26 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	x86@kernel.org, reinette.chatre@intel.com, ira.weiny@intel.com,
-	kai.huang@intel.com, dan.j.williams@intel.com, sagis@google.com,
-	vannapurve@google.com, paulmck@kernel.org, nik.borisov@suse.com,
-	Farrah Chen <farrah.chen@intel.com>,
-	"Kirill A. Shutemov" <kas@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v2 13/21] x86/virt/seamldr: Abort updates if errors
- occurred midway
-Message-ID: <aWdymkCJrSG+zMfz@yilunxu-OptiPlex-7050>
-References: <20251001025442.427697-1-chao.gao@intel.com>
- <20251001025442.427697-14-chao.gao@intel.com>
+	dkim=pass (1024-bit key) header.d=zohomail.com header.i=ming.li@zohomail.com header.b="bN5fGUsE"
+ARC-Seal: i=1; a=rsa-sha256; t=1768389306; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=idklMtmzgU37Dkyalbk5S5B1UIgaBY2ETvAC64g6exYiSrRvteqQq5ibdzrXuPRd7Ja+HJi/T5pqT4ATnP1gQ1HLm8DSLl0tyPFjlX2USVackjXEgBKqRZu4ctSN6D8E3qsLtKWGti8jBXhYWOMYO6Q6s7IKJFahzQuoxuCL9Vs=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1768389306; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=WpqHerWN0fLAd3RNCX750NkC+k/KfFL2Rd0iq1NMVcU=; 
+	b=dvMTWFc67LBiSiqPnfsmUJ6UhYim/434KtJ7xeWSbupQjLU9kR0KQlPjL0BjF1TZrT+6dmySROWl7eshJhIKpbTYHVNldXoqNeITWgvMxSwAp7L8NWoWVIJ97cJddy216J+rsySsiAePWlUomVPqHEvrt4ki1/7vhL3yCyXuoHA=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=zohomail.com;
+	spf=pass  smtp.mailfrom=ming.li@zohomail.com;
+	dmarc=pass header.from=<ming.li@zohomail.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768389305;
+	s=zm2022; d=zohomail.com; i=ming.li@zohomail.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Feedback-ID:Reply-To;
+	bh=WpqHerWN0fLAd3RNCX750NkC+k/KfFL2Rd0iq1NMVcU=;
+	b=bN5fGUsExfiFZnuYKtmmKCeS3XZxesPPCG3ufhHVWiepTWSZRW+IwwXlvimaQ246
+	ZgQAbPVL/orfKaD6+3e/23onnssdgTrfIWQWUhxKkwKgceMQG2S28Gqh+t9BDDHtGYk
+	MZjOoh4WDzklvNpN4vA/mHM6tiMMiaS8a4sBFeP0=
+Received: by mx.zohomail.com with SMTPS id 1768389304430316.02879079140484;
+	Wed, 14 Jan 2026 03:15:04 -0800 (PST)
+From: Li Ming <ming.li@zohomail.com>
+To: helgaas@kernel.org,
+	dan.j.williams@intel.com
+Cc: linux-pci@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Li Ming <ming.li@zohomail.com>
+Subject: [PATCH v2 1/1] PCI/IDE: Fix using wrong VF ID for RID range calculation
+Date: Wed, 14 Jan 2026 19:14:55 +0800
+Message-Id: <20260114111455.550984-1-ming.li@zohomail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251001025442.427697-14-chao.gao@intel.com>
+Content-Transfer-Encoding: 8bit
+Feedback-ID: rr08011227a92b0bd26dc0d18c2cb4ee6100009939737c2a05c73e881e4eabad6d678cf128bba41e5c5bbf36:zu080112276a528f98b94ac2614bc54b8900008630618b6d75801446ed451df3328650fef14921229bcdab82:rf0801123291d012e50f005ca760478e2c00003f1e1f360a860f994587022782d57be69d26cdf0145faabb8ceba99a0bd3f04a492bd35d:ZohoMail
+X-ZohoMailClient: External
 
-On Tue, Sep 30, 2025 at 07:52:57PM -0700, Chao Gao wrote:
-> The TDX Module update process has multiple stages, each of which may
-> encounter failures.
-> 
-> The current state machine of updates proceeds to the next stage
-> regardless of errors. But continuing updates when errors occur midway
-> is pointless.
-> 
-> Add support of transitioning directly to the final stage on errors,
-> effectively aborting the update and skipping all remaining stages.
-> 
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Tested-by: Farrah Chen <farrah.chen@intel.com>
-> ---
->  arch/x86/virt/vmx/tdx/seamldr.c | 17 +++++++++++++++--
->  1 file changed, 15 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-> index b074630d42e3..fca558b90f72 100644
-> --- a/arch/x86/virt/vmx/tdx/seamldr.c
-> +++ b/arch/x86/virt/vmx/tdx/seamldr.c
-> @@ -235,6 +235,7 @@ enum tdp_state {
->  static struct {
->  	enum tdp_state state;
->  	atomic_t thread_ack;
-> +	atomic_t failed;
->  } tdp_data;
->  
->  static void set_target_state(enum tdp_state state)
-> @@ -249,8 +250,16 @@ static void set_target_state(enum tdp_state state)
->  /* Last one to ack a state moves to the next state. */
->  static void ack_state(void)
->  {
-> -	if (atomic_dec_and_test(&tdp_data.thread_ack))
-> -		set_target_state(tdp_data.state + 1);
-> +	if (atomic_dec_and_test(&tdp_data.thread_ack)) {
-> +		/*
-> +		 * If an error occurred, abort the update by skipping to
-> +		 * the final state
-> +		 */
-> +		if (atomic_read(&tdp_data.failed))
-> +			set_target_state(TDP_DONE);
+When allocate a new IDE stream for a PCI device in SR-IOV case, the RID
+range of the new IDE stream should cover all VFs of the device. VF ID
+range of a PCI device is [0, num_VFs - 1], so should use (num_VFs - 1)
+as the last VF's ID.
 
-Could we immediately move to TDP_DONE once the error happens, i.e. no
-need to get all ack for current state?
+Fixes: 1e4d2ff3ae45 ("PCI/IDE: Add IDE establishment helpers")
+Signed-off-by: Li Ming <ming.li@zohomail.com>
+---
+v2:
+ * Make kernel-doc more detailed. (Yilun)
+ * Fix typos in commit log. (Bjorn)
+---
+ drivers/pci/ide.c       | 4 ++--
+ include/linux/pci-ide.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-> +		else
-> +			set_target_state(tdp_data.state + 1);
-> +	}
->  }
+diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
+index f0ef474e1a0d..799caa94ab94 100644
+--- a/drivers/pci/ide.c
++++ b/drivers/pci/ide.c
+@@ -283,8 +283,8 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
+ 	/* for SR-IOV case, cover all VFs */
+ 	num_vf = pci_num_vf(pdev);
+ 	if (num_vf)
+-		rid_end = PCI_DEVID(pci_iov_virtfn_bus(pdev, num_vf),
+-				    pci_iov_virtfn_devfn(pdev, num_vf));
++		rid_end = PCI_DEVID(pci_iov_virtfn_bus(pdev, num_vf - 1),
++				    pci_iov_virtfn_devfn(pdev, num_vf - 1));
+ 	else
+ 		rid_end = pci_dev_id(pdev);
+ 
+diff --git a/include/linux/pci-ide.h b/include/linux/pci-ide.h
+index 37a1ad9501b0..381a1bf22a95 100644
+--- a/include/linux/pci-ide.h
++++ b/include/linux/pci-ide.h
+@@ -26,7 +26,7 @@ enum pci_ide_partner_select {
+ /**
+  * struct pci_ide_partner - Per port pair Selective IDE Stream settings
+  * @rid_start: Partner Port Requester ID range start
+- * @rid_end: Partner Port Requester ID range end
++ * @rid_end: Partner Port Requester ID range end (inclusive)
+  * @stream_index: Selective IDE Stream Register Block selection
+  * @mem_assoc: PCI bus memory address association for targeting peer partner
+  * @pref_assoc: PCI bus prefetchable memory address association for
+-- 
+2.34.1
 
-----8<-----
-  static void ack_state(void)
-  {
-        if (atomic_read(&tdp_data.failed)) {
-                set_target_state(TDP_DONE);
-		return;
-	}
-
-        if (atomic_dec_and_test(&tdp_data.thread_ack))
-                 set_target_state(tdp_data.state + 1);
-  }
