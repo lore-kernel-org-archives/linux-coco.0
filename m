@@ -1,168 +1,144 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E841E5B7A;
-	Wed, 14 Jan 2026 09:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE04A35580A;
+	Wed, 14 Jan 2026 10:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768384178; cv=none; b=D1nnPjdA49Nj4GjV9FLFb/hz4vGrePlLv2AJPgLRkUn/Vu4FuAgQYxT6me+3AET4EIh0n1ejT1M9LrWloYKW4EibKHc7uuiGZfCtr7MC7zm6z2509B+egmfe7Cr7nvY5BOcbVfxWPTvvmJcDnLcLSd3UOhD9YZwOh7Dr77OqwdA=
+	t=1768386619; cv=none; b=pjI39sCC+fZQu/E6efagozeUUaWROVTK9xFh/CHpkPFy0ps628iKEI56lQh1BH3TeuV5ZtzhoYdpBwp2sTPk19BEIKRodEEAbUrBShymlHGc5UHJMwWPBWWbmxuwk9nzy3kv28McM8q9hHXbdnImov5g9qKSw1T/pQT3aF/JmJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768384178; c=relaxed/simple;
-	bh=u55y8FLLXt3PA7k6Z//td6lIvEIDtfft8qfles6S5/Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Kt1FcVL0VRKlYydELo7a7QDO0AEx8veyNPFjtKKtl7w9HSPyeNad92nZBWx+LvCWX9a0QIsxn/zTSFDGTwlDMXTyqFF5NUF+30/dcEY3nZDsTOgl/2urKLr64rWcnutHcRKIvtdYmL2jRR6yemQRACtl473qbEQRVbQZzibsdS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qC5SYAwZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768386619; c=relaxed/simple;
+	bh=77eN+I93e/xYMMtzRTv9G1YoYjUEH5vEbzp1mfa2DjI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g4zB1X7OU4yWh6BwDiGnTxdAm+QY8zutFAcYgmsh1mySJ9rWtlOrpgW0b8CO+MI+LqvOuPg2Zs6I8P7sbpV8IEnt6jGydIUdfWSVHZGgV/7xmf30kGw/XpHMYrTmKY0s0Ijkn7Mms/ru+VgvZVz+JGwpLOMEFkJJvzM8F+EnN04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DYfpyomb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qC5SYAwZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FFCBC4CEF7;
-	Wed, 14 Jan 2026 09:49:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DYfpyomb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE35C4CEF7;
+	Wed, 14 Jan 2026 10:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768384177;
-	bh=u55y8FLLXt3PA7k6Z//td6lIvEIDtfft8qfles6S5/Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=qC5SYAwZeHK7TCOQ8roMntT+rill4iXmTCvtjvcsq/Gc54jPMYvMkixOtG8V3e/i4
-	 Y/VBpdeV22wy+2zkqul5FtxJRU8QCuuK2l/qt7b1jlhpcB1zy7oIU60aIKWXrxR+F5
-	 n0EWf+mfiSqZ4blXp7MaqImCnHb7RJ2Pe9max5JoKZAc77Iu6ohrU5m5bVfdiudiJN
-	 VzUfUKnKE1Ncevzatsoqkk9ZASvZdj/AjK6ZmdWWW0YZ0GdKgSUC0WC/rG5qSM0bKf
-	 q4ycrB1quZFUb24RLAijUk2TfauNbcfxHp4orpvicNn3rGXYK7hwUl5S3bT0A4jOqR
-	 SmvhbXAoyxokQ==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>, steven.price@arm.com,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Claire Chang <tientzu@chromium.org>
-Subject: Re: [PATCH] dma-direct: swiotlb: Skip encryption toggles for
- swiotlb allocations
-In-Reply-To: <yq5acy3eet1b.fsf@kernel.org>
-References: <20260102155448.2554240-1-aneesh.kumar@kernel.org>
- <cddcaeff-9652-4685-ba6c-0fda79bd8680@arm.com>
- <yq5a7btr5wii.fsf@kernel.org>
- <1290fd7e-bfaf-47ce-b12f-cca0b938b293@arm.com>
- <yq5acy3eet1b.fsf@kernel.org>
-Date: Wed, 14 Jan 2026 15:19:31 +0530
-Message-ID: <yq5aldi0cyms.fsf@kernel.org>
+	s=k20201202; t=1768386619;
+	bh=77eN+I93e/xYMMtzRTv9G1YoYjUEH5vEbzp1mfa2DjI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DYfpyomb3EQk2nMVNlKn6qt/87F2u+pToxXfZxzOlMqt1ACFTaOF/IEsA0RV0VY6t
+	 ydoOkZBhkOW3zLWlGWxOVPy/IOJTlZoHr7CinQuPrYOnYWMrTBHFOR8S89l/G3zIZ0
+	 XY9OkKqDpulpiqClfXz+HqUL6yu2/XzKZ+eE1Sd2KOcC0bhjUrEBkSfdL6T51u4DcO
+	 StZZxajFX0AiS0SO5spKL5MrJr2NIh91ihPGoqPTYxYafroL6lpa9FgG3gl1wfBB9B
+	 6lxpMS1HMBojP8SJ9OUykFnKqRU3axu9Och9r34zxi+gub1WSbtF4Clv5X3QVMyleb
+	 tE5OZ0SRjjB2A==
+Message-ID: <4f2c6106-9cc1-4196-8b20-83b297ae7195@kernel.org>
+Date: Wed, 14 Jan 2026 11:30:13 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] mm/memory_hotplug: Add support to accept memory
+ during hot-add
+To: "Pratik R. Sampat" <prsampat@amd.com>, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev, x86@kernel.org, linux-kernel@vger.kernel.org
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, kas@kernel.org, ardb@kernel.org,
+ akpm@linux-foundation.org, osalvador@suse.de, thomas.lendacky@amd.com,
+ michael.roth@amd.com
+References: <20260112202300.43546-1-prsampat@amd.com>
+ <20260112202300.43546-2-prsampat@amd.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <20260112202300.43546-2-prsampat@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Aneesh Kumar K.V <aneesh.kumar@kernel.org> writes:
+On 1/12/26 21:22, Pratik R. Sampat wrote:
+> Confidential computing guests require memory to be accepted before use.
+> The unaccepted memory bitmap maintained by firmware does not track
+> hotplugged memory ranges.
+> 
+> Call arch_accept_memory() during the hot-add path to explicitly validate
+> and transition the newly added memory to a private state, making it
+> usable by the guest.
+> 
+> Signed-off-by: Pratik R. Sampat <prsampat@amd.com>
+> ---
+>   mm/memory_hotplug.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index a63ec679d861..8cfbf0541430 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -38,6 +38,7 @@
+>   #include <linux/node.h>
+>   
+>   #include <asm/tlbflush.h>
+> +#include <asm/unaccepted_memory.h>
+>   
+>   #include "internal.h"
+>   #include "shuffle.h"
+> @@ -1567,6 +1568,9 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+>   	if (!strcmp(res->name, "System RAM"))
+>   		firmware_map_add_hotplug(start, start + size, "System RAM");
+>   
+> +	if (IS_ENABLED(CONFIG_UNACCEPTED_MEMORY))
+> +		arch_accept_memory(start, start + size);
+> +
+>   	/* device_online() will take the lock when calling online_pages() */
+>   	mem_hotplug_done();
+>   
 
-> Robin Murphy <robin.murphy@arm.com> writes:
->
->> On 2026-01-09 2:51 am, Aneesh Kumar K.V wrote:
->>> Robin Murphy <robin.murphy@arm.com> writes:
->>>=20
->>>> On 2026-01-02 3:54 pm, Aneesh Kumar K.V (Arm) wrote:
->>>>> Swiotlb backing pages are already mapped decrypted via
->>>>> swiotlb_update_mem_attributes(), so dma-direct does not need to call
->>>>> set_memory_decrypted() during allocation or re-encrypt the memory on
->>>>> free.
->>>>>
->>>>> Handle swiotlb-backed buffers explicitly: obtain the DMA address and
->>>>> zero the linear mapping for lowmem pages, and bypass the decrypt/encr=
-ypt
->>>>> transitions when allocating/freeing from the swiotlb pool (detected v=
-ia
->>>>> swiotlb_find_pool()).
->>>>
->>>> swiotlb_update_mem_attributes() only applies to the default SWIOTLB
->>>> buffer, while the dma_direct_alloc_swiotlb() path is only for private
->>>> restricted pools (because the whole point is that restricted DMA devic=
-es
->>>> cannot use the regular allocator/default pools). There is no redundancy
->>>> here AFAICS.
->>>>
->>>=20
->>> But rmem_swiotlb_device_init() is also marking the entire pool decrypted
->>>=20
->>> 	set_memory_decrypted((unsigned long)phys_to_virt(rmem->base),
->>> 			     rmem->size >> PAGE_SHIFT);
->>
->> OK, so why doesn't the commit message mention that instead of saying=20
->> something which fails to justify the patch at all? ;)
->>
->> Furthermore, how much does this actually matter? The "real" restricted=20
->> DMA use-case is on systems where dma_set_decrypted() is a no-op anyway.=
-=20
->> I know we used restricted DMA as a hack in the early days of CCA=20
->> prototyping, but is it intended to actually deploy that as a supported=20
->> and recommended mechanism now?
->>
->> Note also that the swiotlb_alloc path is essentially an emergency=20
->> fallback, which doesn't work for all situations anyway - any restricted=
-=20
->> device that actually needs to make significant coherent allocations (or=
-=20
->> rather, that firmware cannot assume won't want to do so) should really=20
->> have a proper coherent pool alongside its restricted one. The expected=20
->> use-case here is for something like a wifi driver that only needs to=20
->> allocate one or two small coherent buffers once at startup, then do=20
->> everything else with streaming DMA.
->>
->
->
-> I was aiming to bring more consistency in how swiotlb buffers are
-> handled, specifically by treating all swiotlb memory as decrypted
-> buffers, which is also how the current code behaves.
->
-> If we are concluding that restricted DMA is not used in conjunction with
-> memory encryption, then we could, in fact, remove the
-> set_memory_decrypted() call from rmem_swiotlb_device_init() and
-> instead add failure conditions for force_dma_unencrypted(dev) in
-> is_swiotlb_for_alloc(). However, it=E2=80=99s worth noting that the initi=
-al
-> commit did take the memory encryption feature into account
-> (0b84e4f8b793eb4045fd64f6f514165a7974cd16).
->
-> Please let me know if you think this needs to be fixed.
->
+As discussed, for things like virtio-mem or the HV-balloon this might be 
+the wrong thing to do, but I don't expect these mechanisms to be used in 
+CoCo environments just yet (and doing so would require enabling work for 
+them).
 
-Something like.
+So I'm fine with this for now.
 
-dma-direct: restricted-dma: Do not mark the restricted DMA pool unencrypted
+-- 
+Cheers
 
-As per commit f4111e39a52a ("swiotlb: Add restricted DMA alloc/free
-support"), the restricted-dma-pool is used in conjunction with the
-shared-dma-pool. Since allocations from the shared-dma-pool are not
-marked unencrypted, skip marking the restricted-dma-pool as unencrypted
-as well. We do not expect systems using the restricted-dma-pool to have
-memory encryption or to run with confidential computing features enabled.
-
-If a device requires unencrypted access (force_dma_unencrypted(dev)),
-the dma-direct allocator will mark the restricted-dma-pool allocation as
-unencrypted.
-
-The only disadvantage is that, when running on a CC guest with a
-different hypervisor page size, restricted-dma-pool allocation sizes
-must now be aligned to the hypervisor page size. This alignment would
-not be required if the entire pool were marked unencrypted. However, the
-new code enables the use of the restricted-dma-pool for trusted devices.
-Previously, because the entire pool was marked unencrypted, trusted
-devices were unable to allocate from it.
-
-There is still an open question regarding allocations from the
-shared-dma-pool. Currently, they are not marked unencrypted.
-
-Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-
-1 file changed, 2 deletions(-)
-kernel/dma/swiotlb.c | 2 --
-
-modified   kernel/dma/swiotlb.c
-@@ -1835,8 +1835,6 @@ static int rmem_swiotlb_device_init(struct reserved_m=
-em *rmem,
- 			return -ENOMEM;
- 		}
-=20
--		set_memory_decrypted((unsigned long)phys_to_virt(rmem->base),
--				     rmem->size >> PAGE_SHIFT);
- 		swiotlb_init_io_tlb_pool(pool, rmem->base, nslabs,
- 					 false, nareas);
- 		mem->force_bounce =3D true;
+David
