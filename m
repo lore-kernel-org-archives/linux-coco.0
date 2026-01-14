@@ -1,105 +1,173 @@
-Received: from sender4-pp-o90.zoho.com (sender4-pp-o90.zoho.com [136.143.188.90])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55EFF357732
-	for <linux-coco@lists.linux.dev>; Wed, 14 Jan 2026 11:15:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.90
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768389311; cv=pass; b=B9nq1gYnMgNaO4aIQboygwwBUbYVcjIUYJ1k5AOENGMmjraDp/MxCP5GmO5u1hXV7VOaQDUzUaXitbCmsjqSB+3IZUd1LBflljW/QTQQojfBEC3QwdVg2UYsj6XCrDPlztJRKn60HRdDNQjrFUEvbLkfC8EA0DeGYMKlthIRPyk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768389311; c=relaxed/simple;
-	bh=LPPwlz73/+z1pYfVWh2PWZw0b4qUercK70vLtoi4SxI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ANUDJNa6wJLaATtFKAR/ArH0IZkxyKSMXBAEY5RawSvFNQsSL4udsbYahRHc4gK03ILLapS7wmYQMUu8dlv++Y98AkapoVVU5WOkTfhuFkwp12CpAsDHsHOPPtxAAOPnbc/NjIyIcAf8cHSGw4xCZKsLJgAhwFoj6OfGf2y45hM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com; spf=pass smtp.mailfrom=zohomail.com; dkim=pass (1024-bit key) header.d=zohomail.com header.i=ming.li@zohomail.com header.b=bN5fGUsE; arc=pass smtp.client-ip=136.143.188.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB123A0B16
+	for <linux-coco@lists.linux.dev>; Wed, 14 Jan 2026 15:57:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768406224; cv=none; b=oiFDVRxJwrm3zzolPONIAQTzUWyaoQDoezLBo2h4bz2G7Prdq23LaOd55PLWzkfYVwWmF5W/JwqfeXLWFAilJKF9qZYGnJNE0PvFxa7tQ8w8R/KEPMy0gf29LTsucr5gmFwPJNTKfQj9d2rLZVRAVr403hEo9lviqtYyVwhgCW0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768406224; c=relaxed/simple;
+	bh=plmJrM4Se7rFmiaOzKgP6Sb4M38+0ruz3YVru8xcG7U=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=aK8l0HycoMqqLtUNbGMPcJs8BEpQ4cJYFyrGQmHJ7kJK3S2cDZcQFv8IwBe5oMDG3ogMpDx+tYWcNRElL45jM9pTRTP+5ryoKsCKwQfq9yY0lnO9NmjpB0Dl8d5zoaLnsEvZPKONBNfqUrrEwSghXMl1Ikg6Si1Eb8k/3UIPn14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mt6Hy1d9; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zohomail.com header.i=ming.li@zohomail.com header.b="bN5fGUsE"
-ARC-Seal: i=1; a=rsa-sha256; t=1768389306; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=idklMtmzgU37Dkyalbk5S5B1UIgaBY2ETvAC64g6exYiSrRvteqQq5ibdzrXuPRd7Ja+HJi/T5pqT4ATnP1gQ1HLm8DSLl0tyPFjlX2USVackjXEgBKqRZu4ctSN6D8E3qsLtKWGti8jBXhYWOMYO6Q6s7IKJFahzQuoxuCL9Vs=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1768389306; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=WpqHerWN0fLAd3RNCX750NkC+k/KfFL2Rd0iq1NMVcU=; 
-	b=dvMTWFc67LBiSiqPnfsmUJ6UhYim/434KtJ7xeWSbupQjLU9kR0KQlPjL0BjF1TZrT+6dmySROWl7eshJhIKpbTYHVNldXoqNeITWgvMxSwAp7L8NWoWVIJ97cJddy216J+rsySsiAePWlUomVPqHEvrt4ki1/7vhL3yCyXuoHA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=zohomail.com;
-	spf=pass  smtp.mailfrom=ming.li@zohomail.com;
-	dmarc=pass header.from=<ming.li@zohomail.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768389305;
-	s=zm2022; d=zohomail.com; i=ming.li@zohomail.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Feedback-ID:Reply-To;
-	bh=WpqHerWN0fLAd3RNCX750NkC+k/KfFL2Rd0iq1NMVcU=;
-	b=bN5fGUsExfiFZnuYKtmmKCeS3XZxesPPCG3ufhHVWiepTWSZRW+IwwXlvimaQ246
-	ZgQAbPVL/orfKaD6+3e/23onnssdgTrfIWQWUhxKkwKgceMQG2S28Gqh+t9BDDHtGYk
-	MZjOoh4WDzklvNpN4vA/mHM6tiMMiaS8a4sBFeP0=
-Received: by mx.zohomail.com with SMTPS id 1768389304430316.02879079140484;
-	Wed, 14 Jan 2026 03:15:04 -0800 (PST)
-From: Li Ming <ming.li@zohomail.com>
-To: helgaas@kernel.org,
-	dan.j.williams@intel.com
-Cc: linux-pci@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Li Ming <ming.li@zohomail.com>
-Subject: [PATCH v2 1/1] PCI/IDE: Fix using wrong VF ID for RID range calculation
-Date: Wed, 14 Jan 2026 19:14:55 +0800
-Message-Id: <20260114111455.550984-1-ming.li@zohomail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mt6Hy1d9"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34abd303b4aso17692853a91.1
+        for <linux-coco@lists.linux.dev>; Wed, 14 Jan 2026 07:57:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768406222; x=1769011022; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TESbXwe5btdTHXLnikBmh+4rP2d4ldUek6p375d2gQE=;
+        b=mt6Hy1d9xRlKHznJlUkTOjRkt1ZXj60zgzO83a+50y99KF35n0Q35Xqaw/HChaXOtY
+         U5xOXfIanr87mGub3Bifs/pV/W6h+rjoAEmNDmNOab4k1a9hL0caxgCMS1ACWIYPX1hg
+         8q6+WZiAt8nvhu+Ec0ahCZ/RViz6TRrgpomjeOYiVHLEnmFyos/nH/XoWh5zoZ9Osm+I
+         HSl8O+nToEJquRZ9INI+XJoqAKKIbcNT8FPRadn7BZLCIqlIVjTanyN/HyX1J+MqorBP
+         G+YRIOPI4rv50n6fg16HYNVQysVb1rnrlmiRmiDc0D9zgZiCcNgGB3bvY7YwsNlJNM/d
+         1ElQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768406222; x=1769011022;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TESbXwe5btdTHXLnikBmh+4rP2d4ldUek6p375d2gQE=;
+        b=LNpoOG03efq6OJb8RQV49uTFtBHwWHicmWqEcYOBOreY/hqkWKEZOg7qcr8GyyExjb
+         DQppk6MgPN5I/i8x6rLK+BTfmZRGzW7wLxK2MzafiKxm+CXp8vadFu+TEPnBL6sR/WO9
+         1HE5zESIXMCtYFy54E1VfCadunwT9u/hg0qjVy2rdJsj5nh1Yyc3UZBpXKgg8IDBun6h
+         c3371ja8SCqrps9oo5E3nwcKUj3FCoMyXt7gQANJ9ihsLRdy5f/rrefZtNoQhxZ2/mUK
+         +xO4DKXNfRSKY4b1EV2qVYsPoQtKdmhBMTr39M3tpPtAWDHDtbefoMSajnkrMustgL7G
+         ajHg==
+X-Forwarded-Encrypted: i=1; AJvYcCV+ayrIHYA0z67KYXqUw1XAwTPWXV5I8bte9nR88bftQSAZgMr2KnO//TlP0ep/HaNoElSS4RQ4opo/@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywu/hxJ2oaoegZhRA7sosZeG24YSQtKSbicucktKqQeBk/bIB5n
+	pW0Nh3Fo4abfBw2tZ+kG4lx9gaDKgddJYEDJmNxVbpqU9apJGQBDyMf3K2T4pIS3ECAIOHC3zt6
+	6qxvyqA==
+X-Received: from pjbev23.prod.google.com ([2002:a17:90a:ead7:b0:34c:1d76:2fe9])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:564d:b0:32b:65e6:ec48
+ with SMTP id 98e67ed59e1d1-3510909c20amr3201357a91.8.1768406222394; Wed, 14
+ Jan 2026 07:57:02 -0800 (PST)
+Date: Wed, 14 Jan 2026 07:57:00 -0800
+In-Reply-To: <43a0558a-4cca-4d9c-97dc-ffd085186fd9@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Feedback-ID: rr08011227a92b0bd26dc0d18c2cb4ee6100009939737c2a05c73e881e4eabad6d678cf128bba41e5c5bbf36:zu080112276a528f98b94ac2614bc54b8900008630618b6d75801446ed451df3328650fef14921229bcdab82:rf0801123291d012e50f005ca760478e2c00003f1e1f360a860f994587022782d57be69d26cdf0145faabb8ceba99a0bd3f04a492bd35d:ZohoMail
-X-ZohoMailClient: External
+Mime-Version: 1.0
+References: <20260114003015.1386066-1-sagis@google.com> <43a0558a-4cca-4d9c-97dc-ffd085186fd9@intel.com>
+Message-ID: <aWe8zESCJ0ZeAOT3@google.com>
+Subject: Re: [PATCH] KVM: TDX: Allow userspace to return errors to guest for MAPGPA
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Sagi Shahar <sagis@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Vishal Annapurve <vannapurve@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-When allocate a new IDE stream for a PCI device in SR-IOV case, the RID
-range of the new IDE stream should cover all VFs of the device. VF ID
-range of a PCI device is [0, num_VFs - 1], so should use (num_VFs - 1)
-as the last VF's ID.
+On Wed, Jan 14, 2026, Xiaoyao Li wrote:
+> On 1/14/2026 8:30 AM, Sagi Shahar wrote:
+> > From: Vishal Annapurve <vannapurve@google.com>
+> > 
+> > MAPGPA request from TDX VMs gets split into chunks by KVM using a loop
+> > of userspace exits until the complete range is handled.
+> > 
+> > In some cases userspace VMM might decide to break the MAPGPA operation
+> > and continue it later. For example: in the case of intrahost migration
+> > userspace might decide to continue the MAPGPA operation after the
+> > migrration is completed
 
-Fixes: 1e4d2ff3ae45 ("PCI/IDE: Add IDE establishment helpers")
-Signed-off-by: Li Ming <ming.li@zohomail.com>
----
-v2:
- * Make kernel-doc more detailed. (Yilun)
- * Fix typos in commit log. (Bjorn)
----
- drivers/pci/ide.c       | 4 ++--
- include/linux/pci-ide.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+migration
 
-diff --git a/drivers/pci/ide.c b/drivers/pci/ide.c
-index f0ef474e1a0d..799caa94ab94 100644
---- a/drivers/pci/ide.c
-+++ b/drivers/pci/ide.c
-@@ -283,8 +283,8 @@ struct pci_ide *pci_ide_stream_alloc(struct pci_dev *pdev)
- 	/* for SR-IOV case, cover all VFs */
- 	num_vf = pci_num_vf(pdev);
- 	if (num_vf)
--		rid_end = PCI_DEVID(pci_iov_virtfn_bus(pdev, num_vf),
--				    pci_iov_virtfn_devfn(pdev, num_vf));
-+		rid_end = PCI_DEVID(pci_iov_virtfn_bus(pdev, num_vf - 1),
-+				    pci_iov_virtfn_devfn(pdev, num_vf - 1));
- 	else
- 		rid_end = pci_dev_id(pdev);
- 
-diff --git a/include/linux/pci-ide.h b/include/linux/pci-ide.h
-index 37a1ad9501b0..381a1bf22a95 100644
---- a/include/linux/pci-ide.h
-+++ b/include/linux/pci-ide.h
-@@ -26,7 +26,7 @@ enum pci_ide_partner_select {
- /**
-  * struct pci_ide_partner - Per port pair Selective IDE Stream settings
-  * @rid_start: Partner Port Requester ID range start
-- * @rid_end: Partner Port Requester ID range end
-+ * @rid_end: Partner Port Requester ID range end (inclusive)
-  * @stream_index: Selective IDE Stream Register Block selection
-  * @mem_assoc: PCI bus memory address association for targeting peer partner
-  * @pref_assoc: PCI bus prefetchable memory address association for
--- 
-2.34.1
+> > Allow userspace to signal to TDX guests that the MAPGPA operation should
+> > be retried the next time the guest is scheduled.
 
+To Xiaoyao's point, changes like this either need new uAPI, or a detailed
+explanation in the changelog of why such uAPI isn't deemed necessary.
+
+> > Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+> > Co-developed-by: Sagi Shahar <sagis@google.com>
+> > Signed-off-by: Sagi Shahar <sagis@google.com>
+> > ---
+> >   arch/x86/kvm/vmx/tdx.c | 8 +++++++-
+> >   1 file changed, 7 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> > index 2d7a4d52ccfb..3244064b1a04 100644
+> > --- a/arch/x86/kvm/vmx/tdx.c
+> > +++ b/arch/x86/kvm/vmx/tdx.c
+> > @@ -1189,7 +1189,13 @@ static int tdx_complete_vmcall_map_gpa(struct kvm_vcpu *vcpu)
+> >   	struct vcpu_tdx *tdx = to_tdx(vcpu);
+> >   	if (vcpu->run->hypercall.ret) {
+> > -		tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_INVALID_OPERAND);
+> > +		if (vcpu->run->hypercall.ret == -EBUSY)
+> > +			tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_RETRY);
+> > +		else if (vcpu->run->hypercall.ret == -EINVAL)
+> > +			tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_INVALID_OPERAND);
+> > +		else
+> > +			return -EINVAL;
+> 
+> It's incorrect to return -EINVAL here. 
+
+It's not incorrect, just potentially a breaking change.
+
+> The -EINVAL will eventually be
+> returned to userspace for the VCPU_RUN ioctl. It certainly breaks userspace.
+
+It _might_ break userspace.  It certainly changes KVM's ABI, but if no userspace
+actually utilizes the existing ABI, then userspace hasn't been broken.
+
+And unless I'm missing something, QEMU _still_ doesn't set hypercall.ret.  E.g.
+see this code in __tdx_map_gpa().
+
+	/*
+	 * In principle this should have been -KVM_ENOSYS, but userspace (QEMU <=9.2)
+	 * assumed that vcpu->run->hypercall.ret is never changed by KVM and thus that
+	 * it was always zero on KVM_EXIT_HYPERCALL.  Since KVM is now overwriting
+	 * vcpu->run->hypercall.ret, ensuring that it is zero to not break QEMU.
+	 */
+	tdx->vcpu.run->hypercall.ret = 0;
+
+AFAICT, QEMU kills the VM if anything goes wrong.
+
+So while I initially had the exact same reaction of "this is a breaking change
+and needs to be opt-in", we might actually be able to get away with just making
+the change (assuming no other VMMs care, or are willing to change themselves).
+
+> So it needs to be
+> 
+> 	if (vcpu->run->hypercall.ret == -EBUSY)
+> 		tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_RETRY);
+> 	else
+> 		tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_INVALID_OPERAND);
+
+No, because assuming everything except -EBUSY translates to
+TDVMCALL_STATUS_INVALID_OPERAND paints KVM back into the same corner its already
+in.  What I care most about is eliminating KVM's assumption that a non-zero
+hypercall.ret means TDVMCALL_STATUS_INVALID_OPERAND.
+
+For the new ABI, I see two options:
+
+ 1. Translate -errno as done in this patch.
+ 2. Propagate hypercall.ret directly to the TDVMCALL return code, i.e. let
+    userspace set any return code it wants.
+
+#1 has the downside of needing KVM changes and new uAPI every time a new return
+code is supported.
+
+#2 has the downside of preventing KVM from establishing its own ABI around the
+return code, and making the return code vendor specific.  E.g. if KVM ever wanted
+to do something in response to -EBUSY beyond propagating the error to the guest,
+then we can't reasonably do that with #2.
+
+Whatever we do, I want to change snp_complete_psc_msr() and snp_complete_one_psc()
+in the same patch, so that whatever ABI we establish is common to TDX and SNP.
+
+See also https://lore.kernel.org/all/Zn8YM-s0TRUk-6T-@google.com.
+
+> But I'm not sure if such change breaks the userspace ABI that if needs to be
+> opted-in.
