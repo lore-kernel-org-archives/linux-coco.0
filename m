@@ -1,144 +1,164 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE04A35580A;
-	Wed, 14 Jan 2026 10:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F84E39446D;
+	Wed, 14 Jan 2026 10:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768386619; cv=none; b=pjI39sCC+fZQu/E6efagozeUUaWROVTK9xFh/CHpkPFy0ps628iKEI56lQh1BH3TeuV5ZtzhoYdpBwp2sTPk19BEIKRodEEAbUrBShymlHGc5UHJMwWPBWWbmxuwk9nzy3kv28McM8q9hHXbdnImov5g9qKSw1T/pQT3aF/JmJI=
+	t=1768387649; cv=none; b=C4t9sZDkX8RrnlcGErrgdwDFU+4dKpJniW+ETuZjk0z+El1w5s/TA4NpGBhGy0Cvp8yeAwgDhaXnYSgiBK5Q8HYpfZn37i0PTwyh1O1mEMVSNOGkyFNe1JBXYdSUWFVGEk8pSXtdwz7gIUhczKPCoJNijzdtjc2aS7CEbCDOliU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768386619; c=relaxed/simple;
-	bh=77eN+I93e/xYMMtzRTv9G1YoYjUEH5vEbzp1mfa2DjI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g4zB1X7OU4yWh6BwDiGnTxdAm+QY8zutFAcYgmsh1mySJ9rWtlOrpgW0b8CO+MI+LqvOuPg2Zs6I8P7sbpV8IEnt6jGydIUdfWSVHZGgV/7xmf30kGw/XpHMYrTmKY0s0Ijkn7Mms/ru+VgvZVz+JGwpLOMEFkJJvzM8F+EnN04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DYfpyomb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768387649; c=relaxed/simple;
+	bh=/pFm9EHouOniP7p5BFrqarS7UC8OMmNdqTIArQonxJA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bE066akA5L7X6QINTc/i+XZ3kdCXchSInZEAp70rznzMEZDvP1HsEdUAEeLDwHVKpP3y5NnvsdzZ/v1KO9jgduqs0UIhU464ElJu/J3Zo2g4hO4/4uLKM6fzDRDGc2V50dQ9vJefxl+Qgcr6/MEC/MCgUmC63lGoTWQn67D4NiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vEd9Pv9Q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DYfpyomb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE35C4CEF7;
-	Wed, 14 Jan 2026 10:30:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vEd9Pv9Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4C5C16AAE;
+	Wed, 14 Jan 2026 10:47:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768386619;
-	bh=77eN+I93e/xYMMtzRTv9G1YoYjUEH5vEbzp1mfa2DjI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DYfpyomb3EQk2nMVNlKn6qt/87F2u+pToxXfZxzOlMqt1ACFTaOF/IEsA0RV0VY6t
-	 ydoOkZBhkOW3zLWlGWxOVPy/IOJTlZoHr7CinQuPrYOnYWMrTBHFOR8S89l/G3zIZ0
-	 XY9OkKqDpulpiqClfXz+HqUL6yu2/XzKZ+eE1Sd2KOcC0bhjUrEBkSfdL6T51u4DcO
-	 StZZxajFX0AiS0SO5spKL5MrJr2NIh91ihPGoqPTYxYafroL6lpa9FgG3gl1wfBB9B
-	 6lxpMS1HMBojP8SJ9OUykFnKqRU3axu9Och9r34zxi+gub1WSbtF4Clv5X3QVMyleb
-	 tE5OZ0SRjjB2A==
-Message-ID: <4f2c6106-9cc1-4196-8b20-83b297ae7195@kernel.org>
-Date: Wed, 14 Jan 2026 11:30:13 +0100
+	s=k20201202; t=1768387647;
+	bh=/pFm9EHouOniP7p5BFrqarS7UC8OMmNdqTIArQonxJA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vEd9Pv9Qam7Yp+Q9FfI8Kmb71PM/4QnwQgzKAkkSvq20j4Kw424Hx0GcGs6oFLlbG
+	 N6vAwxHV76qN7K2++Fds/RK5+fDDZtZ9OKc9VFajjy2PcyK+plQs80CPtQoXPDMWT1
+	 0cWbl4faZm5giwD9cl6t46nV5nRSZ3QpWI+VreXYAhk9aPP5MFWkyoqTtd04QSz9kD
+	 CZIAaBuKAIbPFTKEVkxOnxpiBHLd9Hd1olUz1MD1ywxbWTDJ03nKU87uWsata9vfKV
+	 CRD6DxjMRpPCI5phuACZjYNSTyD03W8IbLjm2ppCnZkzTQ+iMxcO8Cta5f0VUzrbyh
+	 T8037c4Mr5r6Q==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 8FED8F40068;
+	Wed, 14 Jan 2026 05:47:25 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Wed, 14 Jan 2026 05:47:25 -0500
+X-ME-Sender: <xms:PXRnaV8QlCUoaNsDjsb_x1rhhPNUl3qjWjhGS4-ebEN7BNtBWvh6eQ>
+    <xme:PXRnaadbx8H6fGsbzyKAf-V7JszsqF5BJHBP3r7Fp_q99Mzs3ZYPrw5Qm6C-sbPg9
+    s-fPQoQtZh2OhRnUk1z6dThhJptk6Zco36ZuI-isDKimlef0iurEA>
+X-ME-Received: <xmr:PXRnab4_8xsnnnZCK-0FE3DQPOzYcmyqcPE1lCWMrZQ97xy-DzM80N9heXy7kw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduvddvleejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepfedtpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehprhhsrghmphgrthesrghmugdrtghomhdprhgtphhtthhopehlihhnuhigqdhmmh
+    eskhhvrggtkhdrohhrghdprhgtphhtthhopehlihhnuhigqdgtohgtoheslhhishhtshdr
+    lhhinhhugidruggvvhdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtph
+    htthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhopehmihhngh
+    hosehrvgguhhgrthdrtghomhdprhgtphhtthhopegsphesrghlihgvnhekrdguvgdprhgt
+    phhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgtohhm
+X-ME-Proxy: <xmx:PXRnaRVunT5ucghZofY3xU31yQ4VjFZJ6ZUvGhW6HC9TWZsha-uq_g>
+    <xmx:PXRnaZX_HKb0pbzTkZENrbXKzptOEvu052-pH9DkvrDwY3GsxkApUg>
+    <xmx:PXRnaSYgaPIjvMj4fopNQstyKYVZVxJF4P2AXg-mdNHKm4_sb9O7xg>
+    <xmx:PXRnacWOFFwmA5_GsOt_RkY6Aq87_aw-UKdHGHqmjuSVBlSK_UGMjg>
+    <xmx:PXRnaV79FOu7p6OvSn7UA1GPw5oujqVPU1UQnMd0poCd4czUIQf987ln>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 14 Jan 2026 05:47:25 -0500 (EST)
+Date: Wed, 14 Jan 2026 10:47:23 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "Pratik R. Sampat" <prsampat@amd.com>
+Cc: linux-mm@kvack.org, linux-coco@lists.linux.dev, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, ardb@kernel.org, akpm@linux-foundation.org, david@kernel.org, 
+	osalvador@suse.de, thomas.lendacky@amd.com, michael.roth@amd.com
+Subject: Re: [PATCH v2 2/2] mm/memory_hotplug: Add support to unaccept memory
+ after hot-remove
+Message-ID: <aWdwIvzPDqY21cbS@thinkstation>
+References: <20260112202300.43546-1-prsampat@amd.com>
+ <20260112202300.43546-3-prsampat@amd.com>
+ <aWYctexPTf-w7QT8@thinkstation>
+ <af3bf2ef-0231-4e75-9a80-c2bd3a7e1bf1@amd.com>
+ <aWaGBandNCLT93Tm@thinkstation>
+ <7283516a-ee5b-4226-ba32-1d9325eb6748@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] mm/memory_hotplug: Add support to accept memory
- during hot-add
-To: "Pratik R. Sampat" <prsampat@amd.com>, linux-mm@kvack.org,
- linux-coco@lists.linux.dev, x86@kernel.org, linux-kernel@vger.kernel.org
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, kas@kernel.org, ardb@kernel.org,
- akpm@linux-foundation.org, osalvador@suse.de, thomas.lendacky@amd.com,
- michael.roth@amd.com
-References: <20260112202300.43546-1-prsampat@amd.com>
- <20260112202300.43546-2-prsampat@amd.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <20260112202300.43546-2-prsampat@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7283516a-ee5b-4226-ba32-1d9325eb6748@amd.com>
 
-On 1/12/26 21:22, Pratik R. Sampat wrote:
-> Confidential computing guests require memory to be accepted before use.
-> The unaccepted memory bitmap maintained by firmware does not track
-> hotplugged memory ranges.
+On Tue, Jan 13, 2026 at 12:22:33PM -0600, Pratik R. Sampat wrote:
 > 
-> Call arch_accept_memory() during the hot-add path to explicitly validate
-> and transition the newly added memory to a private state, making it
-> usable by the guest.
 > 
-> Signed-off-by: Pratik R. Sampat <prsampat@amd.com>
-> ---
->   mm/memory_hotplug.c | 4 ++++
->   1 file changed, 4 insertions(+)
+> On 1/13/26 11:53 AM, Kiryl Shutsemau wrote:
+> > On Tue, Jan 13, 2026 at 11:10:21AM -0600, Pratik R. Sampat wrote:
+> >>
+> >>
+> >> On 1/13/2026 4:28 AM, Kiryl Shutsemau wrote:
+> >>> On Mon, Jan 12, 2026 at 02:23:00PM -0600, Pratik R. Sampat wrote:
+> >>>> Transition memory to the shared state during a hot-remove operation so
+> >>>> that it can be re-used by the hypervisor. This also applies when memory
+> >>>> is intended to be hotplugged back in later, as those pages will need to
+> >>>> be re-accepted after crossing the trust boundary.
+> >>>
+> >>> Hm. What happens when we hot-remove memory that was there at the boot
+> >>> and there's bitmap space for it?
+> >>>
+> >>
+> >> While hotplug ranges gotten from SRAT don't seem to overlap with the
+> >> conventional ranges in the unaccepted table, EFI_MEMORY_HOT_PLUGGABLE
+> >> attribute could indicate boot time memory that could be hot-removed. I
+> >> could potentially unset the bitmap first, if the bit exists and then
+> >> unaccept.
+> >>
+> >> Similarly, I could also check if the bitmap is large enough to set the
+> >> bit before I call arch_accept_memory() (This may not really be needed
+> >> though).
+> >>
+> >>> Also, I'm not sure why it is needed. At least in TDX case, VMM can pull
+> >>> the memory from under guest at any time without a warning. Coverting
+> >>> memory to shared shouldn't make a difference as along as re-adding the
+> >>> same GPA range triggers accept.
+> >>>
+> >>
+> >> That makes sense. The only scenario where we could run into trouble on
+> >> SNP platforms is when we redo a qemu device_add after a device_del
+> >> without first removing the memory object entirely since same-state
+> >> transitions result in guest termination.
+> >>
+> >> This means we must always follow a device_del with an object_del on
+> >> removal. Otherwise, the onus would then be on the VMM to transition
+> >> the memory back to shared before re-adding it to the guest.
+> > 
+> > This seems to be one-of-many possible ways of VMM to get guest terminated.
+> > DoS is not in something confidential computing aims to prevent.
+> > 
+> >> However, if this flow is not a concern to begin with then I could
+> >> probably just drop this patch?
+> > 
+> > Yes, please.
 > 
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index a63ec679d861..8cfbf0541430 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -38,6 +38,7 @@
->   #include <linux/node.h>
->   
->   #include <asm/tlbflush.h>
-> +#include <asm/unaccepted_memory.h>
->   
->   #include "internal.h"
->   #include "shuffle.h"
-> @@ -1567,6 +1568,9 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
->   	if (!strcmp(res->name, "System RAM"))
->   		firmware_map_add_hotplug(start, start + size, "System RAM");
->   
-> +	if (IS_ENABLED(CONFIG_UNACCEPTED_MEMORY))
-> +		arch_accept_memory(start, start + size);
-> +
->   	/* device_online() will take the lock when calling online_pages() */
->   	mem_hotplug_done();
->   
+> Putting more thought into it, memory unacceptance on remove may be required
+> after all at least for SNP platforms.
+> 
+> Consider a scenario:
+> * Guest accepts a GPA say G1, mapped to a host physical address H1.
+> * We attempt to hot-remove the memory. If the guest does not unaccept the memory
+>   now then G1 to H1 mapping within the RMP will still exist.
+> * Then if the hypervisor later hot-adds the memory to G1, it will be now mapped
+>   to H3 and this new mapping will be accepted.
+> 
+> This will essentially mean that we have 2 RMP entries: One for H1 and another
+> for H3 mapped for G1 which are both validated / accepted which can then be
+> swapped at will and compromise integrity.
 
-As discussed, for things like virtio-mem or the HV-balloon this might be 
-the wrong thing to do, but I don't expect these mechanisms to be used in 
-CoCo environments just yet (and doing so would require enabling work for 
-them).
+I don't know much about SEV, but I assume RMP is similar to PAMT in TDX
+where TDX module maintains metadata for host physical memory.
 
-So I'm fine with this for now.
+What side problems do you for guest here?
+
+I probably miss something, but it seems to be VMM problem, no? I mean if
+VMM doesn't update RMP on replacing one HPA to another for the GPA, it
+is bug in VMM housekeeping. Guest is not responsible for this.
 
 -- 
-Cheers
-
-David
+  Kiryl Shutsemau / Kirill A. Shutemov
