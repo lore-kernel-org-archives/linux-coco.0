@@ -1,110 +1,182 @@
-Received: from mail-ot1-f74.google.com (mail-ot1-f74.google.com [209.85.210.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FAA1A0BF1
-	for <linux-coco@lists.linux.dev>; Wed, 14 Jan 2026 00:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD312E11A6
+	for <linux-coco@lists.linux.dev>; Wed, 14 Jan 2026 02:08:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768350622; cv=none; b=D2kKA4dm9QpJzHVeSCLGPzdHkUomA+lHocvJkgcQw37h5kSPP1p3E7z64EtIoIxiXn1d8OLO1FeYeI/l5HHrfB95xfT2FoAKGFRuP97SE9cmHTiz5euaIWiwt0JIfb1rtpih8Cb8bq52SKEstefJGjBUz8Qwm8+6g7ek/bAtQW4=
+	t=1768356487; cv=none; b=dp/exz7L+Lfz6BFJcP/3KODEwcFGnR1gDe4vGgbvDnlTvXeBbSZY7zsDvfrJpyD31YmxFykjGzHisr7sUgUTX1xWcifhzEUXz6T9EbylDbpP8HvE8kg+tXSrVbg4YoGju1ZNq3eKOf6x9tiI8Rr/JU1DFqBbM+fgVtD3l5DDqzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768350622; c=relaxed/simple;
-	bh=Sww1KhC26DhzRX8vj6+jeZjMA0ohksUqS7ewJwBUchw=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=SvDLNdaqcZie+0664K1D+BFjrL947UFgN//W6DocAAKzVnA23YLCMldUf0MAh+jsQsylG8KHnouRFBhKSbThGXlr4RDh0oe17zHsRU8ZJ8eRanL50ByqA3zl5fQYX3VZzanLxMav3RL80EHMEfj1P6d1JMzK6qR1m+KFAU2ezbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--sagis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=x90jna5w; arc=none smtp.client-ip=209.85.210.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--sagis.bounces.google.com
+	s=arc-20240116; t=1768356487; c=relaxed/simple;
+	bh=Hpqi5Vl+v5DEWPwu4o1nxlcyigd/ZJ7W8Qxg2+iqdDc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BRvEu6ekx0pTz4F7b/59hOhVsUrBCte5K1jeg8GbKCook6GvQmYRbf8jETYvfJsDCn7fMJRvQpPpzAOsdf1iwj6l2dcw3Gy1r7RCuLp3MBMSxRIq59OaXT2SDalzZJ0xk2K4nPjmkywIlW8/V85Z9cF8/2zWhxLbCu45yCwYWlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lt+uQKxU; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="x90jna5w"
-Received: by mail-ot1-f74.google.com with SMTP id 46e09a7af769-7c7046514a2so13541023a34.0
-        for <linux-coco@lists.linux.dev>; Tue, 13 Jan 2026 16:30:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768350619; x=1768955419; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=mDqQzZpBqG5DC4HlLuHkP1lRxnE+ttALMGnQiFNcgcU=;
-        b=x90jna5wX0K5X++LLCofVsc7C3iK8u2kyd4ICAN70m95Ymlze8cobAoPROssAnegWw
-         TGMMG4ndnevPN+vYfDYl8mry7949KN6TN5pj+ep56tDCHZiysgefhKbFg+UX3lud7Nga
-         TEWXRxyVzHmFoNwcEyX6jo+H+6dUNW2y/cTdKEGN3QiCVIEKJTwVuzc9MuO1xGCMap1c
-         a0+HquiULn1cIyeoVOrU/xTMM+VQUa6jWfIh71H7O7mqjqMhRHr6bny/y+ubtY/GJ+Xu
-         WSK4tiWZpLrTovBOCS7jveASBYC2CLsOu/0IKjdlg84QRh/rTGgFVZdrHYKfD08hQ2Nq
-         +2UQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768350619; x=1768955419;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mDqQzZpBqG5DC4HlLuHkP1lRxnE+ttALMGnQiFNcgcU=;
-        b=L28JhRWDeuY/soQIKynLan8NV8umIFdWfTZAwbunTWTN06GhkG6ZwIoibhduLIYsI9
-         2W4eRNcYm9fYvxtzwRWtoNnc2Rc3IT1KCgosviOKtriF+2kll7an31m1K8iT2RGq3WYt
-         rypBd7G7TuFWn2eB+nqYGZOLJ2lN/7BXraaIC8oFOMXdP1zfAn4xmSf6KS/hQPdmvR2p
-         Z2ZVem+wjTr4sFGoSt2c/aslIEzr1hQfgbavHoFWwAL6Qxcft8JgB2L3X+mQW3CEMrdh
-         cjBleAXzVVA0jIMqIBMOU4ma1p1d0rEsFwHavCNWGkpqCJXO/HCBvrelxR2qv3Z2yoGw
-         flAg==
-X-Forwarded-Encrypted: i=1; AJvYcCXjUSEmsr9Xno+ae9vmtbEY40Od++VgF3+eGfVrCdACPuJ+0eLOQdLS6TQje7hxaipwhTUKGUQmhzkZ@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx9Bzto9X3ScezpACr91gfWtTQZwm/DXaO7GjqwYZjCAUU9GZzo
-	IJvowZnbfIJaOwEM1kxj8c7WMIk5DFtbUfQNAp3Ubn5qUwHI88huSjAP6qTaubwLl+mKW9TvmEu
-	KXQ==
-X-Received: from jajn1.prod.google.com ([2002:a05:6638:2101:b0:5ca:5a1e:2501])
- (user=sagis job=prod-delivery.src-stubby-dispatcher) by 2002:a4a:d858:0:b0:65f:cda0:ed8f
- with SMTP id 006d021491bc7-6610064cecbmr551777eaf.35.1768350619122; Tue, 13
- Jan 2026 16:30:19 -0800 (PST)
-Date: Wed, 14 Jan 2026 00:30:15 +0000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lt+uQKxU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768356486; x=1799892486;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Hpqi5Vl+v5DEWPwu4o1nxlcyigd/ZJ7W8Qxg2+iqdDc=;
+  b=lt+uQKxUzpS6urt/t1kLOOk5aZzYdYcI1vpOnmFSPcVwNszxsFk02EvT
+   CILxD105ekrWuCsicfRdGQEkdOlA0AGnv5MnT+tTRM2VuP8TXa3FcCgME
+   ksCNYgx4/3kHk6/b9YMYRi1tAJa4THw1rlSolw3yRKjnBg3tKcnmyBZ/h
+   SRFWBIB9NtDiszb/cJJt4wvF7q8dIEYzUgGdSzQ17Y+xjhlyGh8T3R1bB
+   aqlfqh2JvZnsiBccCqG/cGTO4c8w3eteCvrxQgsWVaFXeYHzMwN6Jj+1J
+   M57MAL4Drt4LQzW+io5vUoLdc/8ZfNpzK50MIfankUmEtrTzG1DV6OGE2
+   g==;
+X-CSE-ConnectionGUID: gRaJujDHS26p9w8v1JKL2A==
+X-CSE-MsgGUID: YM9IpD7SRv2Wkrac+asVMw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="80300659"
+X-IronPort-AV: E=Sophos;i="6.21,224,1763452800"; 
+   d="scan'208";a="80300659"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 18:08:05 -0800
+X-CSE-ConnectionGUID: +XXfHjuHQJS+xpmV7UOjug==
+X-CSE-MsgGUID: 0ZZtXq26RtKTFsOJefirWg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,224,1763452800"; 
+   d="scan'208";a="204182688"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa007.fm.intel.com with ESMTP; 13 Jan 2026 18:08:02 -0800
+Date: Wed, 14 Jan 2026 09:50:33 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	x86@kernel.org, reinette.chatre@intel.com, ira.weiny@intel.com,
+	kai.huang@intel.com, dan.j.williams@intel.com, sagis@google.com,
+	vannapurve@google.com, paulmck@kernel.org, nik.borisov@suse.com,
+	Farrah Chen <farrah.chen@intel.com>,
+	"Kirill A. Shutemov" <kas@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [PATCH v2 07/21] coco/tdx-host: Expose P-SEAMLDR information via
+ sysfs
+Message-ID: <aWb2aW063ADCxUyd@yilunxu-OptiPlex-7050>
+References: <20251001025442.427697-1-chao.gao@intel.com>
+ <20251001025442.427697-8-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260114003015.1386066-1-sagis@google.com>
-Subject: [PATCH] KVM: TDX: Allow userspace to return errors to guest for MAPGPA
-From: Sagi Shahar <sagis@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	Vishal Annapurve <vannapurve@google.com>, Sagi Shahar <sagis@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251001025442.427697-8-chao.gao@intel.com>
 
-From: Vishal Annapurve <vannapurve@google.com>
+On Tue, Sep 30, 2025 at 07:52:51PM -0700, Chao Gao wrote:
+> TDX Module updates require userspace to select the appropriate module
+> to load. Expose necessary information to facilitate this decision. Two
+> values are needed:
+> 
+> - P-SEAMLDR version: for compatibility checks between TDX Module and
+> 		     P-SEAMLDR
+> - num_remaining_updates: indicates how many updates can be performed
+> 
+> Expose them as tdx-host device attributes.
+> 
+> Note that P-SEAMLDR sysfs nodes are hidden when INTEL_TDX_MODULE_UPDATE
+> isn't enabled or when P-SEAMLDR isn't loaded by BIOS, both of which
 
-MAPGPA request from TDX VMs gets split into chunks by KVM using a loop
-of userspace exits until the complete range is handled.
+I don't think we need to worry about whether P-SEAMLDR is loaded or not.
+The tdx-host device exists only if TDX Module is loaded, and in turn
+P-SEAMLDR is loaded.
 
-In some cases userspace VMM might decide to break the MAPGPA operation
-and continue it later. For example: in the case of intrahost migration
-userspace might decide to continue the MAPGPA operation after the
-migrration is completed.
+> cause seamldr_get_info() to return NULL.
+> 
 
-Allow userspace to signal to TDX guests that the MAPGPA operation should
-be retried the next time the guest is scheduled.
+[...]
 
-Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-Co-developed-by: Sagi Shahar <sagis@google.com>
-Signed-off-by: Sagi Shahar <sagis@google.com>
----
- arch/x86/kvm/vmx/tdx.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+> +static ssize_t seamldr_version_show(struct device *dev, struct device_attribute *attr,
+> +				    char *buf)
+> +{
+> +	const struct seamldr_info *info = seamldr_get_info();
+> +
+> +	if (!info)
+> +		return -ENXIO;
+> +
+> +	return sysfs_emit(buf, "%u.%u.%u\n", info->major_version,
+> +					     info->minor_version,
+> +					     info->update_version);
+> +}
+> +
+> +static ssize_t num_remaining_updates_show(struct device *dev,
+> +					  struct device_attribute *attr,
+> +					  char *buf)
+> +{
+> +	const struct seamldr_info *info = seamldr_get_info();
+> +
+> +	if (!info)
+> +		return -ENXIO;
+> +
+> +	return sysfs_emit(buf, "%u\n", info->num_remaining_updates);
+> +}
+> +
+> +/*
+> + * Open-code DEVICE_ATTR_RO to specify a different 'show' function for
+> + * P-SEAMLDR version as version_show() is used for the TDX Module version.
+> + */
+> +static struct device_attribute dev_attr_seamldr_version =
+> +	__ATTR(version, 0444, seamldr_version_show, NULL);
+> +static DEVICE_ATTR_RO(num_remaining_updates);
+> +
+> +static struct attribute *seamldr_attrs[] = {
+> +	&dev_attr_seamldr_version.attr,
+> +	&dev_attr_num_remaining_updates.attr,
+> +	NULL,
+> +};
+> +
+> +static umode_t seamldr_group_is_visible(struct kobject *kobj,
+> +					struct attribute *attr, int n)
+> +{
+> +	return seamldr_get_info() ? attr->mode : 0;
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 2d7a4d52ccfb..3244064b1a04 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1189,7 +1189,13 @@ static int tdx_complete_vmcall_map_gpa(struct kvm_vcpu *vcpu)
- 	struct vcpu_tdx *tdx = to_tdx(vcpu);
- 
- 	if (vcpu->run->hypercall.ret) {
--		tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_INVALID_OPERAND);
-+		if (vcpu->run->hypercall.ret == -EBUSY)
-+			tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_RETRY);
-+		else if (vcpu->run->hypercall.ret == -EINVAL)
-+			tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_INVALID_OPERAND);
-+		else
-+			return -EINVAL;
-+
- 		tdx->vp_enter_args.r11 = tdx->map_gpa_next;
- 		return 1;
- 	}
--- 
-2.52.0.457.g6b5491de43-goog
+I feel it is a little wierd here, need some explaination why use
+seamldr_get_info() for visibility. At first glance, I get the impression
+that we don't expose the attributes on 1st seamldr_get_info() failure,
+and if 1st read success we expose the attributes, then we return read
+failure on 2nd seamldr_get_info() failure. That's the motivation I'm
+trying to make the logic simpler.
 
+As you said, the purpose of using seamldr_get_info() here is for the 2
+checks:
+
+  1. If INTEL_TDX_MODULE_UPDATE is selected.
+  2. If P-SEAMLOAD exists.
+
+But P-SEAMLOAD must exist in tdx-host device context. The chain of
+dependency is P-SEAMLOAD->TDX Module->tdx host device.
+
+So the logic could be simplified as "if INTEL_TDX_MODULE_UPDATE
+selected, expose seamldr sysfs". A common practice maybe:
+
+
+#ifdef INTEL_TDX_MODULE_UPDATE
+> +static struct attribute_group seamldr_group = {
+> +	.name = "seamldr",
+> +	.attrs = seamldr_attrs,
+> +	.is_visible = seamldr_group_is_visible,
+
+drop is_visible()
+
+> +};
+#endif
+> +
+> +static const struct attribute_group *tdx_host_groups[] = {
+> +	&tdx_host_group,
+
+#ifdef INTEL_TDX_MODULE_UPDATE
+> +	&seamldr_group,
+#endif
+
+The #ifdef should be added for several places, which seems annoying but
+may be fine for the first optional feature. Later, could solve this by
+splitting the file into tdx-host/main.c tdx-host/update.c
+tdx-host/connect.c ...
+
+> +	NULL,
+> +};
