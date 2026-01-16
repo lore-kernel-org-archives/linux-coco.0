@@ -1,55 +1,142 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5EF53081B8;
-	Fri, 16 Jan 2026 08:41:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768552867; cv=none; b=hOt440/Slg3qTsEssahu+AREixO3/25cwlNnXszX6jgavWjRH60EIsaE8JBaj9DMnoCOlZtP0d5nxjL128PoadJqOu5EoDG4hmSKbBDyHtA25Px+YDCYLJOzwYS5qBI+kkmdyGgqA8A82HXDBuAb/WGxJxSJNgcP1Ba+o6FAX14=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768552867; c=relaxed/simple;
-	bh=nWZTkBYM68SOgGcEca11stuolnqhyvj9tLGwOcCHfJI=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G7mD3ULeZ/9HJ1z6LLd66Z0ogAHRLa7IZOdVQopvyt2ZYBVFqEgysRBM+pXn7HPIK+YjoGQiMPbsF5OuFDLRHxA0nfABg+ekcdHm+7KVnDduEFx5Le4sg54Pj0PmqGjM4wnvxMz+nsCj4roXOwtHef7i4HyXJ3LrmXWqkvU5mHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=tZTgnAWh; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="tZTgnAWh"
-Received: from 8bytes.org (p200300f6af1d96002b8cfb52e3e08e58.dip0.t-ipconnect.de [IPv6:2003:f6:af1d:9600:2b8c:fb52:e3e0:8e58])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 4ABCA5F9A0;
-	Fri, 16 Jan 2026 09:40:58 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1768552858;
-	bh=nWZTkBYM68SOgGcEca11stuolnqhyvj9tLGwOcCHfJI=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=tZTgnAWhkWqzbtycRRJCWWqROe8KMUA0knc3cTsOy5D/XxgiLqtUXEIHLGxAMWojH
-	 Cc0hW8g5MCBkBp+JvvdCK8MroizAEjon0Cky69zKLTxZ11gAq1SxQVXFpUdNpqUE/j
-	 NC2yILRNvIFAAIxIR1EP7RU1+dnziC8qiz2ggts7Q+2CiIuYnJQyrHBFNLIqJCYNF9
-	 bz7ThVnuLWmmbJsuegMLQtiA3U2CYMYD+0dG4Y1cQDRvo3Oh67SDDLOWN6Ka8yBez1
-	 9ttLQ3UmmuN3X4lxEFylZPOEfRs9+q2Texe0HL+NvtK8rSIlREyZmoD9iU9G8MTDeP
-	 jvZQP/qp1E32A==
-Date: Fri, 16 Jan 2026 09:40:57 +0100
-From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
-Subject: Re: SVSM Development Call January 14, 2026
-Message-ID: <gu2ryt77xjubhnaubqzmrzt2gsfvff5knjmxixkkcgmh6psktd@p44h3njnnwhs>
-References: <tlhepq4dp47rbq3vpzm4qtf65t62fqe26tk736sd3ulcbwcefy@btzt3fsapu5e>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1AD72F6179
+	for <linux-coco@lists.linux.dev>; Fri, 16 Jan 2026 23:03:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768604601; cv=none; b=B0AsSo4pconzLoN9L058PKNU/iBJ0cUZ/cSb5FKverJy0pRK84Iju4coBirUXopdt+9+lFyksRUvgDMFsUIdUKwyir509yLtl+zxrWUquQdBI7NHWaypJxldyQmE17hZN6uzBpTHcByyS8ogwyUpuSDC/1w8XQVv8Od0hmTYp80=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768604601; c=relaxed/simple;
+	bh=lIacmZHCpJUFaWj+a3HC1itpZAGCPeTr7lNOkuwjTF4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tapGJFxF2YZWFlcqLfzsJql4oeSs3JKR/jjjNZ3hUP8mKXhmYMlNCe11RWMfdj3b0ETYXWX6OTwxpfFKPKv30Z796yxZARYHRT45rO5v8oZl387zB+5JMCHVuMnYCcjguqWpWRpC54SSXN+3jgM+rsDdynHP7ZlrD4MBBwhDBgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ix7XF9f1; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ix7XF9f1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768604598; x=1800140598;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=lIacmZHCpJUFaWj+a3HC1itpZAGCPeTr7lNOkuwjTF4=;
+  b=ix7XF9f1o+7fSSAbfKvGEVSGHsh8rCQ4DrO9LX3eTdFuWsNm6gnBxcXN
+   UyqE3koUIT26leac4cJV7SYZBi1ZU4Mpf+IzIggi6u07bExY1uLZUNc6M
+   npxkd8GDEYu/z73MCbNosqdrcRZMDRAuhmRnjtu/Ucn7DbCasTzALXLqM
+   ZQCbETRPDofMnDd/fj+ykWu93EedXOpU6/emzo6ZAc6u2jstFYHjuC1vL
+   qgm1g/PG94FSmxEqaKj9qxDhDJbgtow6XtgZj0tP0vH3zKkEWvTstuo1F
+   xX2vczxNNhZ7sgATz/nIggSIJg6Qa2ispT7c27twsFwmN9LC5f5KbjXsn
+   Q==;
+X-CSE-ConnectionGUID: +HE9z0AkSnG8ta0mC9HVUg==
+X-CSE-MsgGUID: KI7zFDz1Sz69KIxelCq8Fg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11673"; a="73553488"
+X-IronPort-AV: E=Sophos;i="6.21,232,1763452800"; 
+   d="scan'208";a="73553488"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 15:03:18 -0800
+X-CSE-ConnectionGUID: 8sC1BIWsQzmjFE9qGoUc1w==
+X-CSE-MsgGUID: S7ddWYiBRGeYvKv7PXQkTg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,232,1763452800"; 
+   d="scan'208";a="209857324"
+Received: from skuppusw-desk2.jf.intel.com ([10.165.154.101])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 15:03:18 -0800
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+To: "Kirill A . Shutemov" <kas@kernel.org>,
+	x86@kernel.org
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev
+Subject: [PATCH v6] virt: tdx-guest: Return error for GetQuote failures
+Date: Fri, 16 Jan 2026 15:03:15 -0800
+Message-ID: <20260116230315.4023504-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tlhepq4dp47rbq3vpzm4qtf65t62fqe26tk736sd3ulcbwcefy@btzt3fsapu5e>
+Content-Transfer-Encoding: 8bit
 
-Meeting minutes are here:
+Currently, the GetQuote request handler returns explicit errors for
+hypercall-level failures and timeouts, but it ignores some VMM
+failures (e.g., GET_QUOTE_SERVICE_UNAVAILABLE), for which it returns
+success with a zero-length Quote. This makes error handling in
+userspace more complex.
 
-	https://github.com/coconut-svsm/governance/pull/92
+The VMM reports failures via the status field in the shared GPA header,
+which is inaccessible to userspace because only the Quote payload is
+exposed to userspace. Parse the status field in the kernel and return
+an error for Quote failures.
 
-Have fun!
+This preserves existing ABI behavior as userspace already treats a
+zero-length Quote as a failure.
 
--Joerg
+Refer to GHCI specification [1], section "TDG.VP.VMCALL <GetQuote>",
+Table 3-10 and Table 3-11 for details on the GPA header and
+GetQuote status codes.
+
+Fixes: f4738f56d1dc ("virt: tdx-guest: Add Quote generation support using TSM_REPORTS")
+Reported-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Closes: https://lore.kernel.org/linux-coco/6bdf569c-684a-4459-af7c-4430691804eb@linux.intel.com/T/#u
+Closes: https://github.com/confidential-containers/guest-components/issues/823
+Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Tested-by: Mikko Ylinen <mikko.ylinen@linux.intel.com>
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Acked-by: Kai Huang <kai.huang@intel.com>
+Link: https://cdrdv2.intel.com/v1/dl/getContent/858626 # [1]
+---
+
+Changes since v5:
+ * Simplified the commit message to focus on the constraint of
+   GPA header inaccessibility (Dave).
+ * Reordered commit tags as per kernel process (Dave).
+ * Refined the commit title to reflect the fix.
+ * Replaced pr_err() with pr_debug() for error log to avoid dmesg spam.
+ * Added Link to GHCI spec.
+
+Changes since v4:
+ * Rebased on top of v6.18-rc1
+ * Added Tested-by tag from Mikko.
+ * Added more details in commit log to clarify no user impact and also
+   link to a related github issue.
+ * Added error message for the failed case.
+
+Changes since v3:
+ * Rebased on top of v6.9-rc1
+ * Added Dan's Reviewed-by tag.
+
+Changes since v2:
+ * Updated the commit log (Dan)
+ * Removed pr_err message.
+
+Changes since v1:
+ * Updated the commit log (Kirill)
+ drivers/virt/coco/tdx-guest/tdx-guest.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+index 4e239ec960c9..a3c8f5c19bae 100644
+--- a/drivers/virt/coco/tdx-guest/tdx-guest.c
++++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+@@ -304,6 +304,11 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
+ 		return ret;
+ 	}
+ 
++	if (quote_buf->status != GET_QUOTE_SUCCESS) {
++		pr_debug("GetQuote request failed, status:%llx\n", quote_buf->status);
++		return -EIO;
++	}
++
+ 	buf = kvmemdup(quote_buf->data, quote_buf->out_len, GFP_KERNEL);
+ 	if (!buf)
+ 		return -ENOMEM;
+-- 
+2.43.0
+
