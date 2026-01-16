@@ -1,142 +1,111 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1AD72F6179
-	for <linux-coco@lists.linux.dev>; Fri, 16 Jan 2026 23:03:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF4A2741DF
+	for <linux-coco@lists.linux.dev>; Fri, 16 Jan 2026 23:17:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768604601; cv=none; b=B0AsSo4pconzLoN9L058PKNU/iBJ0cUZ/cSb5FKverJy0pRK84Iju4coBirUXopdt+9+lFyksRUvgDMFsUIdUKwyir509yLtl+zxrWUquQdBI7NHWaypJxldyQmE17hZN6uzBpTHcByyS8ogwyUpuSDC/1w8XQVv8Od0hmTYp80=
+	t=1768605445; cv=none; b=Q6aM646B8PKVHY9GLwCcrsrQY0cMkhO9FKMAPrlFCpbmpvO0AAe/8l6aqUS+GxXHFuPq73NgQwABsa3khbBffXb9jblYMrQLokfO3/gNigasJTfhyggRFtdM+G0uTohmqDjzHTVJpgXNoUMmUK8hP9XENbh0eOLurEEkruQSO5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768604601; c=relaxed/simple;
-	bh=lIacmZHCpJUFaWj+a3HC1itpZAGCPeTr7lNOkuwjTF4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tapGJFxF2YZWFlcqLfzsJql4oeSs3JKR/jjjNZ3hUP8mKXhmYMlNCe11RWMfdj3b0ETYXWX6OTwxpfFKPKv30Z796yxZARYHRT45rO5v8oZl387zB+5JMCHVuMnYCcjguqWpWRpC54SSXN+3jgM+rsDdynHP7ZlrD4MBBwhDBgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ix7XF9f1; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1768605445; c=relaxed/simple;
+	bh=0qBlSbA0ChMdm/HuzI/7dU5XuaBntDrkKil/SdBVDFY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=qgMYoW16VIMidQAJM7PNUvvN69qbTZwSvsERqQrCc4coj5h0NBVa02Uufe/yDjK/OYz8osnMemYBHHeRqWGBzWdFZFmgnkuxcM9JAYRRpXs8Qy9QMeanXK1TlZbBpmqDqe8ID2HTz0XsDRhJepDhSKztZwC8RhxLsLAF/JRygxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MUMYEmTy; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ix7XF9f1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768604598; x=1800140598;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=lIacmZHCpJUFaWj+a3HC1itpZAGCPeTr7lNOkuwjTF4=;
-  b=ix7XF9f1o+7fSSAbfKvGEVSGHsh8rCQ4DrO9LX3eTdFuWsNm6gnBxcXN
-   UyqE3koUIT26leac4cJV7SYZBi1ZU4Mpf+IzIggi6u07bExY1uLZUNc6M
-   npxkd8GDEYu/z73MCbNosqdrcRZMDRAuhmRnjtu/Ucn7DbCasTzALXLqM
-   ZQCbETRPDofMnDd/fj+ykWu93EedXOpU6/emzo6ZAc6u2jstFYHjuC1vL
-   qgm1g/PG94FSmxEqaKj9qxDhDJbgtow6XtgZj0tP0vH3zKkEWvTstuo1F
-   xX2vczxNNhZ7sgATz/nIggSIJg6Qa2ispT7c27twsFwmN9LC5f5KbjXsn
-   Q==;
-X-CSE-ConnectionGUID: +HE9z0AkSnG8ta0mC9HVUg==
-X-CSE-MsgGUID: KI7zFDz1Sz69KIxelCq8Fg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11673"; a="73553488"
-X-IronPort-AV: E=Sophos;i="6.21,232,1763452800"; 
-   d="scan'208";a="73553488"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 15:03:18 -0800
-X-CSE-ConnectionGUID: 8sC1BIWsQzmjFE9qGoUc1w==
-X-CSE-MsgGUID: S7ddWYiBRGeYvKv7PXQkTg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,232,1763452800"; 
-   d="scan'208";a="209857324"
-Received: from skuppusw-desk2.jf.intel.com ([10.165.154.101])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 15:03:18 -0800
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-To: "Kirill A . Shutemov" <kas@kernel.org>,
-	x86@kernel.org
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Subject: [PATCH v6] virt: tdx-guest: Return error for GetQuote failures
-Date: Fri, 16 Jan 2026 15:03:15 -0800
-Message-ID: <20260116230315.4023504-1-sathyanarayanan.kuppuswamy@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MUMYEmTy"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34e5a9de94bso4444505a91.0
+        for <linux-coco@lists.linux.dev>; Fri, 16 Jan 2026 15:17:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768605443; x=1769210243; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+UrL0diRZnQcyuy4C6t9WTvNDG8qIGeRluOfajJMlJk=;
+        b=MUMYEmTyNaYJk7JT4TQPho8IOSRLwc26mFR2xFGtJhF225waXMiMm5dIYbgQE7zG2r
+         Mku5OvOxnceLvD1IEsXtukH9JK6SayKJ3FkY068EAzvKNRcoS8p8ksj9utByMe4vbVDs
+         dBtX5IAMYg3NyROPSsw/C8ccJSQS3RKZC2JAhoGEZQpp+EKnk6IlLch5l80o77qqo/ux
+         npzqoYqEcsdKLK4CXsNi6bOCu9svEGKIOj7vSI8WFA3oq2kK/bfBFObOjTl0FsDiFXAF
+         qlQUTWrVNKVd8mtoEVyzBh9NS8swem5jqb0FaQwoaXy655+psG8LMcPPurmmQR8daU4+
+         5HrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768605443; x=1769210243;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+UrL0diRZnQcyuy4C6t9WTvNDG8qIGeRluOfajJMlJk=;
+        b=cpRgP/b/hnUGqMgiohz8DPEahrOXYL/HI7THAx3mFhJLtlhgs3ZOx90o1YEikww1/8
+         wuauedKuXSoVyssEOSpilSCxw+3PY8PZwdu9pY/trqMBoX26fyhapb7XQ+rw5B5euCNA
+         oFX8uRBjM9Zsypk/+xO1TP94FlRkH7qH4Ww3iq2f5wNXhakfA6waPzZbK5rlszYcpbGl
+         WkT5A8orxr0q83KvndX8Wzjr5Xn4Dwk5SeC2QatVuUpP4CXs8ghvzqXCn0ZgD0FSNMi+
+         RLg4+Obatm7Ayd2mcZ7vTb5HrCNVpkD/B14dDR0Zdu3dH+cmInttCSqfjiHcLGpdaS/o
+         Jnaw==
+X-Forwarded-Encrypted: i=1; AJvYcCVXQQhqHGTLCbLxVLFHI1wI3uWCAqQEO4HxBBBBn+QGlOhB0KX3woozl9aXWdvq6lCQ4JAPEvxls5oe@lists.linux.dev
+X-Gm-Message-State: AOJu0YxjRqfXWh7X5uwmSWnLQv6qGdERgEc6lq/y3hRzaycsO8NRxNEH
+	oY70Xwa2sTGf+swkmzskyD9YAt//cEe9VdbGy3cWaYITewsVoBUjxO5llF4Cr2LPJvBTLHfhm0a
+	jqsMMMg==
+X-Received: from pjqt4.prod.google.com ([2002:a17:90a:ae04:b0:34c:a015:9cb3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:dfcc:b0:340:ca7d:936a
+ with SMTP id 98e67ed59e1d1-352732547e9mr3833971a91.18.1768605443403; Fri, 16
+ Jan 2026 15:17:23 -0800 (PST)
+Date: Fri, 16 Jan 2026 15:17:21 -0800
+In-Reply-To: <20251121005125.417831-8-rick.p.edgecombe@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20251121005125.417831-1-rick.p.edgecombe@intel.com> <20251121005125.417831-8-rick.p.edgecombe@intel.com>
+Message-ID: <aWrHAeMcjDpVnTBp@google.com>
+Subject: Re: [PATCH v4 07/16] x86/virt/tdx: Add tdx_alloc/free_page() helpers
+From: Sean Christopherson <seanjc@google.com>
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@intel.com, 
+	isaku.yamahata@intel.com, kai.huang@intel.com, kas@kernel.org, 
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	mingo@redhat.com, pbonzini@redhat.com, tglx@linutronix.de, 
+	vannapurve@google.com, x86@kernel.org, yan.y.zhao@intel.com, 
+	xiaoyao.li@intel.com, binbin.wu@intel.com, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Currently, the GetQuote request handler returns explicit errors for
-hypercall-level failures and timeouts, but it ignores some VMM
-failures (e.g., GET_QUOTE_SERVICE_UNAVAILABLE), for which it returns
-success with a zero-length Quote. This makes error handling in
-userspace more complex.
+On Thu, Nov 20, 2025, Rick Edgecombe wrote:
+> +/*
+> + * Return a page that can be used as TDX private memory
+> + * and obtain TDX protections.
 
-The VMM reports failures via the status field in the shared GPA header,
-which is inaccessible to userspace because only the Quote payload is
-exposed to userspace. Parse the status field in the kernel and return
-an error for Quote failures.
+Wrap at ~80.
 
-This preserves existing ABI behavior as userspace already treats a
-zero-length Quote as a failure.
+This comment is also misleading, arguably wrong.  Because from KVM's perspective,
+these APIs are _never_ used to back TDX private memory.  They are used only for
+control pages, which yeah, I suppose might be encrypted with the guest's private
+key, but most readers will interpret "used as TDX private memory" to mean that
+these are _the_ source of pages for guest private memory.
 
-Refer to GHCI specification [1], section "TDG.VP.VMCALL <GetQuote>",
-Table 3-10 and Table 3-11 for details on the GPA header and
-GetQuote status codes.
+> + */
+> +struct page *tdx_alloc_page(void)
 
-Fixes: f4738f56d1dc ("virt: tdx-guest: Add Quote generation support using TSM_REPORTS")
-Reported-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Closes: https://lore.kernel.org/linux-coco/6bdf569c-684a-4459-af7c-4430691804eb@linux.intel.com/T/#u
-Closes: https://github.com/confidential-containers/guest-components/issues/823
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Tested-by: Mikko Ylinen <mikko.ylinen@linux.intel.com>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Acked-by: Kai Huang <kai.huang@intel.com>
-Link: https://cdrdv2.intel.com/v1/dl/getContent/858626 # [1]
----
+And in a similar vein, given terminology in other places, maybe call these
+tdx_{alloc,free}_control_page()?
 
-Changes since v5:
- * Simplified the commit message to focus on the constraint of
-   GPA header inaccessibility (Dave).
- * Reordered commit tags as per kernel process (Dave).
- * Refined the commit title to reflect the fix.
- * Replaced pr_err() with pr_debug() for error log to avoid dmesg spam.
- * Added Link to GHCI spec.
+> +{
+> +	struct page *page;
+> +
+> +	page = alloc_page(GFP_KERNEL);
 
-Changes since v4:
- * Rebased on top of v6.18-rc1
- * Added Tested-by tag from Mikko.
- * Added more details in commit log to clarify no user impact and also
-   link to a related github issue.
- * Added error message for the failed case.
+GFP_KERNEL_ACCOUNT, all of these allocations are tied to a VM.
 
-Changes since v3:
- * Rebased on top of v6.9-rc1
- * Added Dan's Reviewed-by tag.
+> +	if (!page)
+> +		return NULL;
+> +
+> +	if (tdx_pamt_get(page)) {
+> +		__free_page(page);
+> +		return NULL;
+> +	}
+> +
+> +	return page;
+> +}
+> +EXPORT_SYMBOL_GPL(tdx_alloc_page);
 
-Changes since v2:
- * Updated the commit log (Dan)
- * Removed pr_err message.
-
-Changes since v1:
- * Updated the commit log (Kirill)
- drivers/virt/coco/tdx-guest/tdx-guest.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
-index 4e239ec960c9..a3c8f5c19bae 100644
---- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-+++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-@@ -304,6 +304,11 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
- 		return ret;
- 	}
- 
-+	if (quote_buf->status != GET_QUOTE_SUCCESS) {
-+		pr_debug("GetQuote request failed, status:%llx\n", quote_buf->status);
-+		return -EIO;
-+	}
-+
- 	buf = kvmemdup(quote_buf->data, quote_buf->out_len, GFP_KERNEL);
- 	if (!buf)
- 		return -ENOMEM;
--- 
-2.43.0
-
+Note, these can all now be EXPORT_SYMBOL_FOR_KVM.
