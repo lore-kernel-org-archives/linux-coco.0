@@ -1,123 +1,188 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256673002D8
-	for <linux-coco@lists.linux.dev>; Fri, 16 Jan 2026 23:40:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146EF2C86D
+	for <linux-coco@lists.linux.dev>; Sat, 17 Jan 2026 00:53:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768606857; cv=none; b=a3wapCsgT8tRF6sJosR3XMfk2Xrxhm6azd/9SAHp0EP70ArxfC7UJbec2m4eBpg6SmWlTm5XRje7HH/vd/dmLgIEtVt+uDpmG/lLtHPwvgXo7x+0zs6AoHMsG8THM8nV2V63zB+vsfakn+3S7tgIvvtqCPYCFXErdEexolJxyOw=
+	t=1768611240; cv=none; b=arlByXvY31OWYiaD+nHtHP4X1WB7a1o2i4IN6KdshcqHOa8703ZwqwrMKMD2lyh0KdgIo5+49j5WzZEh3OKJ7j1uVYAgebY1kqzGulTcSgN0onvHn0ybFQ7GO9AjSmVhjRgG6RVPl7UUqzO/LsVUChXIwYtiidlGIec44fJ3Jio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768606857; c=relaxed/simple;
-	bh=IefmyBXaf2nLDli8wfmcCJ3KjaT5+/JKFzx72i9L/hc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Xn99jUydd9ZrknK7wLmko6nzQAjeqALA9BO0RX3pdaUcbSfQFOJtJIVYBc2NhwxNNcFuPJnWX/xzS+fS0DGEbTyvoe/u0DdZCfCfpUnjOItWkRWTopBEE0G9ORQzKXuql8IsLlZY5suz7vpVtttyDGVXmJ0Hc9ArypnZZ/hwQt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YKPARkkf; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1768611240; c=relaxed/simple;
+	bh=KtQbBtkkDfMz+T6TV6Z43Sh0FYs4DtN2nG5zD6O9acc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=OjlHCsL41BwG+ANBPcOlLAJUJka5FES9Z8gMCcP7S61fwPLqTw2YmAAi3nllb6u294HBPN46eCE98nyKgH5RfVAkPi1Z0QR+uWKCmi8EMVBmtW5THacoKMDAC/zvQk6SJB/G1Ga6cT7+b7DZopsMa2Qa1LmAmcepbrGQ1LZIHZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yW2bn0kD; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YKPARkkf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768606856; x=1800142856;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=IefmyBXaf2nLDli8wfmcCJ3KjaT5+/JKFzx72i9L/hc=;
-  b=YKPARkkfmYBNKVUz89cKRaas2vx3TU+0aJx3L/AlOdTF57OhMPGI8BPr
-   rditWSIVgDoqDGoHz4wKki+ytkMa+NAsdoIUK1NngkVw97HKLqMLy/9OQ
-   NUy7zfWlUwibDFFpCTsmL5xozajCiVsxBcKhhRYNEjHJulcZ4TVJs9pBz
-   Sylte1fCOJMqFojhjpD3SDXq6+snqt4vCs4/D7pZLx1MH7hNQ7VFp3ZkA
-   q8T+uUi8CS20xtugcOtXArp1q96cm1OVgnwpFGm17NFO+TVUTGowVncmi
-   +ThDeFxcYj6myH/1DqIM3I8AuHZlk6ALc9npS2FwElnPVpM52Ja97BiRF
-   w==;
-X-CSE-ConnectionGUID: J6nBPnDYSpOX/eycAFB2EA==
-X-CSE-MsgGUID: V2tWPfQDR9ujzm6vtC4g6g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11673"; a="80563509"
-X-IronPort-AV: E=Sophos;i="6.21,232,1763452800"; 
-   d="scan'208";a="80563509"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 15:40:55 -0800
-X-CSE-ConnectionGUID: yUp4xJGwR+eAZnpuCEKAJg==
-X-CSE-MsgGUID: XTjZuvCkSl+cX3ZNaMdPxg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,232,1763452800"; 
-   d="scan'208";a="204518966"
-Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.111.136]) ([10.125.111.136])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2026 15:40:55 -0800
-Message-ID: <16b57ac0-8370-4583-8413-086039773972@intel.com>
-Date: Fri, 16 Jan 2026 15:40:54 -0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yW2bn0kD"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34abd303b4aso4931043a91.1
+        for <linux-coco@lists.linux.dev>; Fri, 16 Jan 2026 16:53:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768611238; x=1769216038; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hbXKaJ28UXi7TW5JydnHYQgt5Nu+JSM6PpzNbxX5B/o=;
+        b=yW2bn0kDtaZ3xZDHDwjMwDor4cda/n6IXaMvE1qlWWOz3su98hyHyDH4XplAOncCte
+         p3mjm337ZA+sFo9pWn+/tkrWzYQUHw9lnPBKtqFlRWcY2UPVcJUB7ZJxUvko1kK0IHwT
+         wvLCJH9/Uv2MMtvpi/F8zZ83N6LtegklK4529cgU/DXZYy+Zb//+wWy1cMk3npzmTdKk
+         pvcGQP3JNU5kYifmOHxSEgLu3PMo/ehuFFSdVJ423yreqfuGjxD7TfCmmYtdYhzy8oKx
+         FaB5iA5CoEyUTfImB7FUxei7lfHsxUBv/YzH+AYjirRiCBmicDU6KtH77AMud+bd2aUO
+         abkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768611238; x=1769216038;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=hbXKaJ28UXi7TW5JydnHYQgt5Nu+JSM6PpzNbxX5B/o=;
+        b=X402xy1IoPF+D6w+ltWXoJTPnr/fW7XSaHKC4j8oqW/63Lu6ddo2XHhUr/Ck9zB5AT
+         3o/bMyIn8WwujB5A1vN750KIujPul87sNJmBzlO4qv0Zc6v4g6xqdEOFqBQUlIzm1VtA
+         OCjD9sL8Xu+cM585isKjd2J+HCdQ7WxgJSrhSFdxreYgpagNgK41DPOD5ou/004j16Lx
+         YTui5U8tFq3uKhmZEhFuc32JDNoqNCSDGeSIz2jn5jstoEeXVk/Hi08Yu/aAFkojXUar
+         ZBCQOKNF3+nB/5nIawHn+EcThsVijasWaj/UHGVhAodxAAQ3ykRaSlXL4NqXspfBre3l
+         +z2w==
+X-Forwarded-Encrypted: i=1; AJvYcCXRsUSGIsixMzTmDwAGo2yJg2uYIIF+6Ue2e85arPawD/YRus9QeOp9aBg6AnjUHGE+8QA5/oTuypB9@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzzl6NbJWK93vt8CTv/TjfSfw26EcopMDDCkDCDe3olWJEqgLKu
+	V5iMnDHMiChk6+qx/XNob+H3pWPxJk4pB1aBX84IvuMYjcIhc6UfDDqi9nHezBRwsVjJRUhCuPi
+	qxI5sHQ==
+X-Received: from pjsi5.prod.google.com ([2002:a17:90a:65c5:b0:34f:6b95:ea39])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d647:b0:34c:2db6:57d5
+ with SMTP id 98e67ed59e1d1-35272d76fafmr3909741a91.0.1768611238388; Fri, 16
+ Jan 2026 16:53:58 -0800 (PST)
+Date: Fri, 16 Jan 2026 16:53:57 -0800
+In-Reply-To: <20251121005125.417831-12-rick.p.edgecombe@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/16] x86/virt/tdx: Add tdx_alloc/free_page() helpers
-To: Sean Christopherson <seanjc@google.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: bp@alien8.de, chao.gao@intel.com, isaku.yamahata@intel.com,
- kai.huang@intel.com, kas@kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, mingo@redhat.com,
- pbonzini@redhat.com, tglx@linutronix.de, vannapurve@google.com,
- x86@kernel.org, yan.y.zhao@intel.com, xiaoyao.li@intel.com,
- binbin.wu@intel.com, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
- <20251121005125.417831-8-rick.p.edgecombe@intel.com>
- <aWrHAeMcjDpVnTBp@google.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <aWrHAeMcjDpVnTBp@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20251121005125.417831-1-rick.p.edgecombe@intel.com> <20251121005125.417831-12-rick.p.edgecombe@intel.com>
+Message-ID: <aWrdpZCCDDAffZRM@google.com>
+Subject: Re: [PATCH v4 11/16] KVM: TDX: Add x86 ops for external spt cache
+From: Sean Christopherson <seanjc@google.com>
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@intel.com, 
+	isaku.yamahata@intel.com, kai.huang@intel.com, kas@kernel.org, 
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	mingo@redhat.com, pbonzini@redhat.com, tglx@linutronix.de, 
+	vannapurve@google.com, x86@kernel.org, yan.y.zhao@intel.com, 
+	xiaoyao.li@intel.com, binbin.wu@intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 1/16/26 15:17, Sean Christopherson wrote:
->> +struct page *tdx_alloc_page(void)
-> And in a similar vein, given terminology in other places, maybe call these
-> tdx_{alloc,free}_control_page()?
+On Thu, Nov 20, 2025, Rick Edgecombe wrote:
+> Move mmu_external_spt_cache behind x86 ops.
+>=20
+> In the mirror/external MMU concept, the KVM MMU manages a non-active EPT
+> tree for private memory (the mirror). The actual active EPT tree the
+> private memory is protected inside the TDX module. Whenever the mirror EP=
+T
+> is changed, it needs to call out into one of a set of x86 opts that
+> implement various update operation with TDX specific SEAMCALLs and other
+> tricks. These implementations operate on the TDX S-EPT (the external).
+>=20
+> In reality these external operations are designed narrowly with respect t=
+o
+> TDX particulars. On the surface, what TDX specific things are happening t=
+o
+> fulfill these update operations are mostly hidden from the MMU, but there
+> is one particular area of interest where some details leak through.
+>=20
+> The S-EPT needs pages to use for the S-EPT page tables. These page tables
+> need to be allocated before taking the mmu lock, like all the rest. So th=
+e
+> KVM MMU pre-allocates pages for TDX to use for the S-EPT in the same plac=
+e
+> where it pre-allocates the other page tables. It=E2=80=99s not too bad an=
+d fits
+> nicely with the others.
+>=20
+> However, Dynamic PAMT will need even more pages for the same operations.
+> Further, these pages will need to be handed to the arch/x86 side which us=
+ed
+> them for DPAMT updates, which is hard for the existing KVM based cache.
+> The details living in core MMU code start to add up.
+>=20
+> So in preparation to make it more complicated, move the external page
+> table cache into TDX code by putting it behind some x86 ops. Have one for
+> topping up and one for allocation. Don=E2=80=99t go so far to try to hide=
+ the
+> existence of external page tables completely from the generic MMU, as the=
+y
+> are currently stored in their mirror struct kvm_mmu_page and it=E2=80=99s=
+ quite
+> handy.
+>=20
+> To plumb the memory cache operations through tdx.c, export some of
+> the functions temporarily. This will be removed in future changes.
+>=20
+> Acked-by: Kiryl Shutsemau <kas@kernel.org>
+> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> ---
 
-Ack on the naming, especially if they're never used as normal guest
-memory and are *only* for TDX module metadata that the guest never
-actually sees.
+NAK.  I kinda sorta get why you did this?  But the pages KVM uses for page =
+tables
+are KVM's, not to be mixed with PAMT pages.
+
+Eww.  Definitely a hard "no".  In tdp_mmu_alloc_sp_for_split(), the allocat=
+ion
+comes from KVM:
+
+	if (mirror) {
+		sp->external_spt =3D (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
+		if (!sp->external_spt) {
+			free_page((unsigned long)sp->spt);
+			kmem_cache_free(mmu_page_header_cache, sp);
+			return NULL;
+		}
+	}
+
+But then in kvm_tdp_mmu_map(), via kvm_mmu_alloc_external_spt(), the alloca=
+tion
+comes from get_tdx_prealloc_page()
+
+  static void *tdx_alloc_external_fault_cache(struct kvm_vcpu *vcpu)
+  {
+	struct page *page =3D get_tdx_prealloc_page(&to_tdx(vcpu)->prealloc);
+
+	if (WARN_ON_ONCE(!page))
+		return (void *)__get_free_page(GFP_ATOMIC | __GFP_ACCOUNT);
+
+	return page_address(page);
+  }
+
+But then regardles of where the page came from, KVM frees it.  Seriously.
+
+  static void tdp_mmu_free_sp(struct kvm_mmu_page *sp)
+  {
+	free_page((unsigned long)sp->external_spt);  <=3D=3D=3D=3D=3D
+	free_page((unsigned long)sp->spt);
+	kmem_cache_free(mmu_page_header_cache, sp);
+  }
+
+Oh, and the hugepage series also fumbles its topup (why there's yet another
+topup API, I have no idea).
+
+  static int tdx_topup_vm_split_cache(struct kvm *kvm, enum pg_level level)
+  {
+	struct kvm_tdx *kvm_tdx =3D to_kvm_tdx(kvm);
+	struct tdx_prealloc *prealloc =3D &kvm_tdx->prealloc_split_cache;
+	int cnt =3D tdx_min_split_cache_sz(kvm, level);
+
+	while (READ_ONCE(prealloc->cnt) < cnt) {
+		struct page *page =3D alloc_page(GFP_KERNEL);  <=3D=3D=3D=3D GFP_KERNEL_A=
+CCOUNT
+
+		if (!page)
+			return -ENOMEM;
+
+		spin_lock(&kvm_tdx->prealloc_split_cache_lock);
+		list_add(&page->lru, &prealloc->page_list);
+		prealloc->cnt++;
+		spin_unlock(&kvm_tdx->prealloc_split_cache_lock);
+	}
+
+	return 0;
+  }
