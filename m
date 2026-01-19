@@ -1,136 +1,222 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05622ED87C
-	for <linux-coco@lists.linux.dev>; Mon, 19 Jan 2026 16:24:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F533A9DAB;
+	Mon, 19 Jan 2026 16:30:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768839860; cv=none; b=lS9LvkHbTOcJlkF8tIqcVNEnxHUjVoCH/iAtyQgxz4ElXrzdY+l/zUW60Z9XYq/6EZ74mI4TG0B8RcoWMuEHx/InRzFUz+FDpnZTigfsEIqOim2Kmk2ibWC1+H2MD0/UgHEDMMefDQe+GWXsZNqudpcrJJlUf/vPVzxXcf0SWUY=
+	t=1768840203; cv=none; b=C62jMtuthjOlOw1gXfhHjqELbIcCW37i0OUsZmDDu1L0bn2XseAWrlMzF1BPHJVRf9mlxIhMzUh/V6iJlEhB9BwkUSanUcy+qCHmY4rVHpiLzQul45LPt85Jd8f0SXJv4Dx8fYHffgulTUWnALHA8G/pMf+nssBt+TfZkGSbgPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768839860; c=relaxed/simple;
-	bh=1u//sqTiwH5W8EyHJtX3qvAjx/ZIg6IvL8u6sQgIb4A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=I0bgSFC2pJ48jMa2tUWHtHI6xkv+8n/yp3ccfwkxkc54lA9BocvUmSliR9C5k1N34vlvl+yzpXXGLzgEZEkmGUTP1YLhWs9IG8jbK+5A/Ewk3gigqdXZ1+QJygCGR2P578ilVLdvY7cR+xDs3vdtJjokFiTtvzNTMoQbH+btjRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VlFVfecB; arc=none smtp.client-ip=198.175.65.16
+	s=arc-20240116; t=1768840203; c=relaxed/simple;
+	bh=PQgX3xK9PxUWzI8W+Ln2fHiKBKt9LrU58IY+O/+5QZc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aZTA/SjTF+Mfr1RRWORpcXVdtRt9uvDTu2fsWByKa5HirQE9Gtm3iKG9sxds6ZD46a4/0+2fC19GY8ImsPasfmGEGIqlpWgb1pMP6biPt96/sLdlvXr4js0OuS5O1TMWecmLPCsKGtrhVz/KEX/NaMdSOG73NWFqNiYx8uMWEk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Dnf56+Y1; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VlFVfecB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Dnf56+Y1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768839848; x=1800375848;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=1u//sqTiwH5W8EyHJtX3qvAjx/ZIg6IvL8u6sQgIb4A=;
-  b=VlFVfecBxBGb65X0J2/SCpFo2a5st4W2HUvhdpZBWawmNdZEFhznVc+N
-   FDH2nWFwhD/PEXl7eOsNx4RepyMgIEQWPE99/Dp/U1pE+WJ4UNY5T8oOL
-   xMOwNmX95XZMjZyT29o2LhBppG6DSjHIja0m2qNkp1LXit+epr1UZMgNC
-   hIQXMdEeNPvi6Y62cXI46mKjEYA4UrHoRR6zvVyMZsL4mrgIk8j/QuqXf
-   vtOhc6EDsJM5jH5K10gkKvW1yp22sDKH1nFn7VU/EQI4mPst1fLpOBYC3
-   jJb5pyYHCeSrTRZk94Mr6Ey2v1htOVlHyw19yDdyxtBFrjwVFm9DlAyaj
-   g==;
-X-CSE-ConnectionGUID: iFcG082TQw+Okzw7nQ2vPQ==
-X-CSE-MsgGUID: dFqzpx62S1ClXUBRkuekVA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="70214308"
+  t=1768840202; x=1800376202;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=PQgX3xK9PxUWzI8W+Ln2fHiKBKt9LrU58IY+O/+5QZc=;
+  b=Dnf56+Y1lSMVjnb48z1z7Gbg5W5WvXCt+i4eYb7MFR/HoZuVmOo0VZfk
+   VqCcCTUnSEwXVzqhKttx7xrD5wEfV55vAlQKFFIR6PR9wkmcXhllJ1Z0N
+   SWCaaeS8hM5ZDb3P9r5wX4XVGjvXpkZEu1srd3sOkH7kAq/ZoNrMJFXGk
+   UYUlWTpmAAHhQAFnOxAe+u9O6yJomHkiTb43d7W4iYsEOXFV9q5P8i2Gw
+   Q8ji6LWSDXVjEg+maxbLCnLjGGSR928mY+qoT55rQd+Q9KTpAzCGlO6Ib
+   wsCZXTJKbAKHZUxsbA/5I80DpTYjMR3qvRH2SLHsPd7cMI6fg9nIgeElk
+   Q==;
+X-CSE-ConnectionGUID: lMF19DyLS9mqRxbWpFUllA==
+X-CSE-MsgGUID: rx/PE+KMQYu0znv14bY0WA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="70026123"
 X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; 
-   d="scan'208";a="70214308"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 08:24:06 -0800
-X-CSE-ConnectionGUID: bEodFxQvSDefeQxw8b56Ig==
-X-CSE-MsgGUID: /RY/1PDWQJCyTOMJ6L6g0g==
+   d="scan'208";a="70026123"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 08:30:00 -0800
+X-CSE-ConnectionGUID: DbpoI6/wS8Oar4gvnCOpvA==
+X-CSE-MsgGUID: 0K+PNzA7TxGXhkJBCuaHkg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; 
-   d="scan'208";a="243484491"
-Received: from cjhill-mobl.amr.corp.intel.com (HELO [10.125.111.233]) ([10.125.111.233])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 08:24:06 -0800
-Message-ID: <a84cf78f-dd30-4847-a503-e10f547862ad@intel.com>
-Date: Mon, 19 Jan 2026 08:24:05 -0800
+   d="scan'208";a="205809043"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 19 Jan 2026 08:29:56 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vhs8X-00000000O2b-2jWL;
+	Mon, 19 Jan 2026 16:29:53 +0000
+Date: Tue, 20 Jan 2026 00:29:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Salman Nabi <salman.nabi@arm.com>, vvidwans@nvidia.com,
+	andre.przywara@arm.com, sudeep.holla@arm.com, mark.rutland@arm.com,
+	lpieralisi@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, ardb@kernel.org, chao.gao@intel.com,
+	linux-arm-kernel@lists.infradead.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, sdonthineni@nvidia.com,
+	vsethi@nvidia.com, vwadekar@nvidia.com
+Subject: Re: [PATCH 1/1] firmware: smccc: add support for Live Firmware
+ Activation (LFA)
+Message-ID: <202601200007.GVZIjoCx-lkp@intel.com>
+References: <20260119122729.287522-2-salman.nabi@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 16/21] x86/virt/seamldr: Handle TDX Module update
- failures
-To: Chao Gao <chao.gao@intel.com>, "H. Peter Anvin" <hpa@zytor.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, x86@kernel.org, reinette.chatre@intel.com,
- ira.weiny@intel.com, kai.huang@intel.com, dan.j.williams@intel.com,
- sagis@google.com, vannapurve@google.com, paulmck@kernel.org,
- nik.borisov@suse.com, Farrah Chen <farrah.chen@intel.com>,
- "Kirill A. Shutemov" <kas@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>
-References: <20251001025442.427697-1-chao.gao@intel.com>
- <20251001025442.427697-17-chao.gao@intel.com>
- <aWiIFlbrGqBjpyvX@yilunxu-OptiPlex-7050>
- <CB733CD0-C5B5-464C-AD75-DD5475BCF194@zytor.com> <aW3Ce05mZKCYYoKo@intel.com>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <aW3Ce05mZKCYYoKo@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260119122729.287522-2-salman.nabi@arm.com>
 
-On 1/18/26 21:34, Chao Gao wrote:
-> On Sun, Jan 18, 2026 at 08:55:22PM -0800, H. Peter Anvin wrote:
->> On January 14, 2026 10:24:22 PM PST, Xu Yilun <yilun.xu@linux.intel.com> wrote:
->>> On Tue, Sep 30, 2025 at 07:53:00PM -0700, Chao Gao wrote:
->>>> Failures encountered after a successful module shutdown are unrecoverable,
->>>> e.g., there is no way to restore the old TDX Module.
->>> "e.g." is obscure. To me, the following sentence is explaining the
->>> reason why the failure is not recoverable. Maybe "i.e." or "because"?
->> "e.g." (for example) means the following list is non-exhaustive.
-> Yes, 'i.e.' or 'because' would be more appropriate since the next sentence
-> explains 'unrecoverable'.
+Hi Salman,
 
-FWIW, I very much prefer plain words. "i.e." and "e.g." are really only
-useful if you and all your readers know how they work.
+kernel test robot noticed the following build warnings:
 
-I don't feel the need to be draconian about it, but I frankly *wish*
-folks would just remove them from their written vocabulary.
+[auto build test WARNING on soc/for-next]
+[also build test WARNING on linus/master v6.19-rc6 next-20260116]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Salman-Nabi/firmware-smccc-add-support-for-Live-Firmware-Activation-LFA/20260119-203221
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/soc/soc.git for-next
+patch link:    https://lore.kernel.org/r/20260119122729.287522-2-salman.nabi%40arm.com
+patch subject: [PATCH 1/1] firmware: smccc: add support for Live Firmware Activation (LFA)
+config: arm-sp7021_defconfig (https://download.01.org/0day-ci/archive/20260120/202601200007.GVZIjoCx-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260120/202601200007.GVZIjoCx-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601200007.GVZIjoCx-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/firmware/smccc/lfa_fw.c: In function 'get_nr_lfa_components':
+   drivers/firmware/smccc/lfa_fw.c:179:16: error: variable 'reg' has initializer but incomplete type
+     179 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                ^~~~~~~~~~~~~~~~~~
+>> drivers/firmware/smccc/lfa_fw.c:179:43: warning: excess elements in struct initializer
+     179 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                                           ^
+   drivers/firmware/smccc/lfa_fw.c:179:43: note: (near initialization for 'reg')
+   drivers/firmware/smccc/lfa_fw.c:179:35: error: storage size of 'reg' isn't known
+     179 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                                   ^~~
+   drivers/firmware/smccc/lfa_fw.c:184:9: error: implicit declaration of function 'arm_smccc_1_2_invoke'; did you mean 'arm_smccc_1_1_invoke'? [-Wimplicit-function-declaration]
+     184 |         arm_smccc_1_2_invoke(&reg, &reg);
+         |         ^~~~~~~~~~~~~~~~~~~~
+         |         arm_smccc_1_1_invoke
+>> drivers/firmware/smccc/lfa_fw.c:179:35: warning: unused variable 'reg' [-Wunused-variable]
+     179 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                                   ^~~
+   drivers/firmware/smccc/lfa_fw.c: In function 'lfa_cancel':
+   drivers/firmware/smccc/lfa_fw.c:194:16: error: variable 'reg' has initializer but incomplete type
+     194 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                ^~~~~~~~~~~~~~~~~~
+   drivers/firmware/smccc/lfa_fw.c:194:43: warning: excess elements in struct initializer
+     194 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                                           ^
+   drivers/firmware/smccc/lfa_fw.c:194:43: note: (near initialization for 'reg')
+   drivers/firmware/smccc/lfa_fw.c:194:35: error: storage size of 'reg' isn't known
+     194 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                                   ^~~
+   drivers/firmware/smccc/lfa_fw.c:194:35: warning: unused variable 'reg' [-Wunused-variable]
+   drivers/firmware/smccc/lfa_fw.c: In function 'call_lfa_activate':
+   drivers/firmware/smccc/lfa_fw.c:220:16: error: variable 'reg' has initializer but incomplete type
+     220 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                ^~~~~~~~~~~~~~~~~~
+   drivers/firmware/smccc/lfa_fw.c:220:43: warning: excess elements in struct initializer
+     220 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                                           ^
+   drivers/firmware/smccc/lfa_fw.c:220:43: note: (near initialization for 'reg')
+   drivers/firmware/smccc/lfa_fw.c:220:35: error: storage size of 'reg' isn't known
+     220 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                                   ^~~
+   drivers/firmware/smccc/lfa_fw.c:220:35: warning: unused variable 'reg' [-Wunused-variable]
+   drivers/firmware/smccc/lfa_fw.c: In function 'prime_fw_image':
+   drivers/firmware/smccc/lfa_fw.c:290:16: error: variable 'reg' has initializer but incomplete type
+     290 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                ^~~~~~~~~~~~~~~~~~
+   drivers/firmware/smccc/lfa_fw.c:290:43: warning: excess elements in struct initializer
+     290 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                                           ^
+   drivers/firmware/smccc/lfa_fw.c:290:43: note: (near initialization for 'reg')
+   drivers/firmware/smccc/lfa_fw.c:290:35: error: storage size of 'reg' isn't known
+     290 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                                   ^~~
+   drivers/firmware/smccc/lfa_fw.c:290:35: warning: unused variable 'reg' [-Wunused-variable]
+   drivers/firmware/smccc/lfa_fw.c: In function 'activation_pending_show':
+   drivers/firmware/smccc/lfa_fw.c:360:16: error: variable 'reg' has initializer but incomplete type
+     360 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                ^~~~~~~~~~~~~~~~~~
+   drivers/firmware/smccc/lfa_fw.c:360:43: warning: excess elements in struct initializer
+     360 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                                           ^
+   drivers/firmware/smccc/lfa_fw.c:360:43: note: (near initialization for 'reg')
+   drivers/firmware/smccc/lfa_fw.c:360:35: error: storage size of 'reg' isn't known
+     360 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                                   ^~~
+   drivers/firmware/smccc/lfa_fw.c:360:35: warning: unused variable 'reg' [-Wunused-variable]
+   drivers/firmware/smccc/lfa_fw.c: In function 'pending_version_show':
+   drivers/firmware/smccc/lfa_fw.c:434:16: error: variable 'reg' has initializer but incomplete type
+     434 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                ^~~~~~~~~~~~~~~~~~
+   drivers/firmware/smccc/lfa_fw.c:434:43: warning: excess elements in struct initializer
+     434 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                                           ^
+   drivers/firmware/smccc/lfa_fw.c:434:43: note: (near initialization for 'reg')
+   drivers/firmware/smccc/lfa_fw.c:434:35: error: storage size of 'reg' isn't known
+     434 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                                   ^~~
+   drivers/firmware/smccc/lfa_fw.c:434:35: warning: unused variable 'reg' [-Wunused-variable]
+   drivers/firmware/smccc/lfa_fw.c: In function 'update_fw_images_tree':
+   drivers/firmware/smccc/lfa_fw.c:586:16: error: variable 'reg' has initializer but incomplete type
+     586 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                ^~~~~~~~~~~~~~~~~~
+   drivers/firmware/smccc/lfa_fw.c:586:43: warning: excess elements in struct initializer
+     586 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                                           ^
+   drivers/firmware/smccc/lfa_fw.c:586:43: note: (near initialization for 'reg')
+   drivers/firmware/smccc/lfa_fw.c:586:35: error: storage size of 'reg' isn't known
+     586 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                                   ^~~
+   drivers/firmware/smccc/lfa_fw.c:586:35: warning: unused variable 'reg' [-Wunused-variable]
+   drivers/firmware/smccc/lfa_fw.c: In function 'lfa_init':
+   drivers/firmware/smccc/lfa_fw.c:619:16: error: variable 'reg' has initializer but incomplete type
+     619 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                ^~~~~~~~~~~~~~~~~~
+   drivers/firmware/smccc/lfa_fw.c:619:43: warning: excess elements in struct initializer
+     619 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                                           ^
+   drivers/firmware/smccc/lfa_fw.c:619:43: note: (near initialization for 'reg')
+   drivers/firmware/smccc/lfa_fw.c:619:35: error: storage size of 'reg' isn't known
+     619 |         struct arm_smccc_1_2_regs reg = { 0 };
+         |                                   ^~~
+   drivers/firmware/smccc/lfa_fw.c:619:35: warning: unused variable 'reg' [-Wunused-variable]
+
+
+vim +179 drivers/firmware/smccc/lfa_fw.c
+
+   176	
+   177	static unsigned long get_nr_lfa_components(void)
+   178	{
+ > 179		struct arm_smccc_1_2_regs reg = { 0 };
+   180	
+   181		reg.a0 = LFA_1_0_FN_GET_INFO;
+   182		reg.a1 = 0; /* lfa_info_selector = 0 */
+   183	
+   184		arm_smccc_1_2_invoke(&reg, &reg);
+   185		if (reg.a0 != LFA_SUCCESS)
+   186			return reg.a0;
+   187	
+   188		return reg.a1;
+   189	}
+   190	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
