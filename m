@@ -1,25 +1,25 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3D232938A;
-	Mon, 19 Jan 2026 16:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29F6D394496;
+	Mon, 19 Jan 2026 16:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768840630; cv=none; b=h8dXASxP7RgayJYtn//HXo4f6M3GXWADncqVuC3k3Nu4K+zu3G812X7eAFQoemNbBYvoxfg5d//m2fCXwXMiW1YOW5baiMJovkfXQ/CoQYK/ZJMO/CBrjZ+hArFzQn0Ae8VPY06F7sPAmjRJjlwaESciWG8KRhkNMhP2cDNL72k=
+	t=1768840896; cv=none; b=iNNruLv+VukSqxRi48L2I5Iuut2TO6Fp140iz3G7XBda7xhlSwiTXx2oTmgycZkwgRaStkItMp5DHJu1Pb+TRIn8rJ7K0ZBkcwXTUuYsS40209fbZIOyxuiQJNjAaWfetsKWJbRMfkdgJjWLWXAcl8RkMB2P64iCk4YEH14DNSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768840630; c=relaxed/simple;
-	bh=ub+qAJDLLb1fhmiDbV2qAjHDOewnGOLItmEQMfTdU2k=;
+	s=arc-20240116; t=1768840896; c=relaxed/simple;
+	bh=U9Zf5iRxcWlEhJNllVETedoflM2+yscJ7heSjFo20pg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iXT92x5SJLLRLrb5Y/W6dw2fTKT8p2ERBRWGaOcR6jGq5u1VNf9VO8PthNTFWAfJ5fthIb5h4UrGHKF3Yt+L5XlFOJDhMwG9PWsXlX7vUwi5BYxwMJqDgAN5qSTDXmFJAwufAZ23StLWfjt2LfOzScN/rSZsKXKcA3pmIEyVEEM=
+	 In-Reply-To:Content-Type; b=Y8vp+ziqBF7tNEOczlmNMdaKFbnK583zlYNrWK9YzlYhSV7Ln/9luwkgzTLIjBPk40DCsCuvyWsnSG2E5MeNJQz+7lHFWY+cs7d8vuAvpX+iUjrWY174SXZkHEvqwSkYydtuOgiHctNCoy/WzW2UoHLz9by3MBUBOxdQarRRGSI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6C7FB497;
-	Mon, 19 Jan 2026 08:37:01 -0800 (PST)
-Received: from [10.1.196.85] (e121345-lin.cambridge.arm.com [10.1.196.85])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B6F683F632;
-	Mon, 19 Jan 2026 08:37:06 -0800 (PST)
-Message-ID: <4f42d3b1-9eef-417b-9937-36578f5db6de@arm.com>
-Date: Mon, 19 Jan 2026 16:37:05 +0000
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 09C97497;
+	Mon, 19 Jan 2026 08:41:26 -0800 (PST)
+Received: from [10.57.8.47] (unknown [10.57.8.47])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 65C323F632;
+	Mon, 19 Jan 2026 08:41:29 -0800 (PST)
+Message-ID: <7cb5b5a7-90aa-4b78-aff3-f88073e72b60@arm.com>
+Date: Mon, 19 Jan 2026 16:41:27 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -27,186 +27,182 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dma-direct: swiotlb: Skip encryption toggles for swiotlb
- allocations
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
-Cc: steven.price@arm.com, Suzuki K Poulose <suzuki.poulose@arm.com>,
- Claire Chang <tientzu@chromium.org>
-References: <20260102155448.2554240-1-aneesh.kumar@kernel.org>
- <cddcaeff-9652-4685-ba6c-0fda79bd8680@arm.com> <yq5a7btr5wii.fsf@kernel.org>
- <1290fd7e-bfaf-47ce-b12f-cca0b938b293@arm.com> <yq5acy3eet1b.fsf@kernel.org>
- <CGME20260114094941eucas1p2b2985accee8c2eb5ccd48f94463adffa@eucas1p2.samsung.com>
- <yq5aldi0cyms.fsf@kernel.org>
- <0ad7a059-8c51-4d26-9d7e-055abb702b66@samsung.com>
- <3110c452-22d7-453f-bc60-7578b2458089@arm.com> <yq5a8qdtlht8.fsf@kernel.org>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <yq5a8qdtlht8.fsf@kernel.org>
+Subject: Re: [PATCH 1/1] firmware: smccc: add support for Live Firmware
+ Activation (LFA)
+To: kernel test robot <lkp@intel.com>, Salman Nabi <salman.nabi@arm.com>,
+ vvidwans@nvidia.com, sudeep.holla@arm.com, mark.rutland@arm.com,
+ lpieralisi@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, ardb@kernel.org, chao.gao@intel.com,
+ linux-arm-kernel@lists.infradead.org, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, sdonthineni@nvidia.com, vsethi@nvidia.com,
+ vwadekar@nvidia.com
+References: <20260119122729.287522-2-salman.nabi@arm.com>
+ <202601200007.GVZIjoCx-lkp@intel.com>
+Content-Language: en-US
+From: Andre Przywara <andre.przywara@arm.com>
+In-Reply-To: <202601200007.GVZIjoCx-lkp@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 19/01/2026 3:53 pm, Aneesh Kumar K.V wrote:
-> Robin Murphy <robin.murphy@arm.com> writes:
+Hi,
+
+On 19/01/2026 16:29, kernel test robot wrote:
+> Hi Salman,
 > 
->> On 19/01/2026 9:52 am, Marek Szyprowski wrote:
->>> On 14.01.2026 10:49, Aneesh Kumar K.V wrote:
->>>> Aneesh Kumar K.V <aneesh.kumar@kernel.org> writes:
->>>>> Robin Murphy <robin.murphy@arm.com> writes:
->>>>>> On 2026-01-09 2:51 am, Aneesh Kumar K.V wrote:
->>>>>>> Robin Murphy <robin.murphy@arm.com> writes:
->>>>>>>> On 2026-01-02 3:54 pm, Aneesh Kumar K.V (Arm) wrote:
->>>>>>>>> Swiotlb backing pages are already mapped decrypted via
->>>>>>>>> swiotlb_update_mem_attributes(), so dma-direct does not need to call
->>>>>>>>> set_memory_decrypted() during allocation or re-encrypt the memory on
->>>>>>>>> free.
->>>>>>>>>
->>>>>>>>> Handle swiotlb-backed buffers explicitly: obtain the DMA address and
->>>>>>>>> zero the linear mapping for lowmem pages, and bypass the decrypt/encrypt
->>>>>>>>> transitions when allocating/freeing from the swiotlb pool (detected via
->>>>>>>>> swiotlb_find_pool()).
->>>>>>>> swiotlb_update_mem_attributes() only applies to the default SWIOTLB
->>>>>>>> buffer, while the dma_direct_alloc_swiotlb() path is only for private
->>>>>>>> restricted pools (because the whole point is that restricted DMA devices
->>>>>>>> cannot use the regular allocator/default pools). There is no redundancy
->>>>>>>> here AFAICS.
->>>>>>>>
->>>>>>> But rmem_swiotlb_device_init() is also marking the entire pool decrypted
->>>>>>>
->>>>>>> 	set_memory_decrypted((unsigned long)phys_to_virt(rmem->base),
->>>>>>> 			     rmem->size >> PAGE_SHIFT);
->>>>>> OK, so why doesn't the commit message mention that instead of saying
->>>>>> something which fails to justify the patch at all? ;)
->>>>>>
->>>>>> Furthermore, how much does this actually matter? The "real" restricted
->>>>>> DMA use-case is on systems where dma_set_decrypted() is a no-op anyway.
->>>>>> I know we used restricted DMA as a hack in the early days of CCA
->>>>>> prototyping, but is it intended to actually deploy that as a supported
->>>>>> and recommended mechanism now?
->>>>>>
->>>>>> Note also that the swiotlb_alloc path is essentially an emergency
->>>>>> fallback, which doesn't work for all situations anyway - any restricted
->>>>>> device that actually needs to make significant coherent allocations (or
->>>>>> rather, that firmware cannot assume won't want to do so) should really
->>>>>> have a proper coherent pool alongside its restricted one. The expected
->>>>>> use-case here is for something like a wifi driver that only needs to
->>>>>> allocate one or two small coherent buffers once at startup, then do
->>>>>> everything else with streaming DMA.
->>>>> I was aiming to bring more consistency in how swiotlb buffers are
->>>>> handled, specifically by treating all swiotlb memory as decrypted
->>>>> buffers, which is also how the current code behaves.
->>>>>
->>>>> If we are concluding that restricted DMA is not used in conjunction with
->>>>> memory encryption, then we could, in fact, remove the
->>>>> set_memory_decrypted() call from rmem_swiotlb_device_init() and
->>>>> instead add failure conditions for force_dma_unencrypted(dev) in
->>>>> is_swiotlb_for_alloc(). However, it’s worth noting that the initial
->>>>> commit did take the memory encryption feature into account
->>>>> (0b84e4f8b793eb4045fd64f6f514165a7974cd16).
->>>>>
->>>>> Please let me know if you think this needs to be fixed.
->>>> Something like.
->>>>
->>>> dma-direct: restricted-dma: Do not mark the restricted DMA pool unencrypted
->>>>
->>>> As per commit f4111e39a52a ("swiotlb: Add restricted DMA alloc/free
->>>> support"), the restricted-dma-pool is used in conjunction with the
->>>> shared-dma-pool. Since allocations from the shared-dma-pool are not
->>>> marked unencrypted, skip marking the restricted-dma-pool as unencrypted
->>>> as well. We do not expect systems using the restricted-dma-pool to have
->>>> memory encryption or to run with confidential computing features enabled.
->>>>
->>>> If a device requires unencrypted access (force_dma_unencrypted(dev)),
->>>> the dma-direct allocator will mark the restricted-dma-pool allocation as
->>>> unencrypted.
->>>>
->>>> The only disadvantage is that, when running on a CC guest with a
->>>> different hypervisor page size, restricted-dma-pool allocation sizes
->>>> must now be aligned to the hypervisor page size. This alignment would
->>>> not be required if the entire pool were marked unencrypted. However, the
->>>> new code enables the use of the restricted-dma-pool for trusted devices.
->>>> Previously, because the entire pool was marked unencrypted, trusted
->>>> devices were unable to allocate from it.
->>>>
->>>> There is still an open question regarding allocations from the
->>>> shared-dma-pool. Currently, they are not marked unencrypted.
->>>>
->>>> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
->>>>
->>>> 1 file changed, 2 deletions(-)
->>>> kernel/dma/swiotlb.c | 2 --
->>>>
->>>> modified   kernel/dma/swiotlb.c
->>>> @@ -1835,8 +1835,6 @@ static int rmem_swiotlb_device_init(struct reserved_mem *rmem,
->>>>     			return -ENOMEM;
->>>>     		}
->>>>     
->>>> -		set_memory_decrypted((unsigned long)phys_to_virt(rmem->base),
->>>> -				     rmem->size >> PAGE_SHIFT);
->>>>     		swiotlb_init_io_tlb_pool(pool, rmem->base, nslabs,
->>>>     					 false, nareas);
->>>>     		mem->force_bounce = true;
->>>
->>> Robin, could You review this? Is it ready for applying?
->>
->> But wouldn't this break the actual intended use of restricted pools for
->> streaming DMA bouncing, which does depend on the buffer being
->> pre-decrypted/shared? (Since streaming DMA mappings definitely need to
->> be supported in nowait contexts)
->>
+> kernel test robot noticed the following build warnings:
 > 
-> Only if we are using a restricted pool with encrypted memory.
+> [auto build test WARNING on soc/for-next]
+> [also build test WARNING on linus/master v6.19-rc6 next-20260116]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
 > 
-> If we assume that swiotlb bounce buffers are always decrypted, then
-> allocations from that pool can safely skip the decrypt/encrypt
-> transitions. However, we still need to address coherent allocations via
-> the shared-dma-pool, which are explicitly marked as unencrypted.
+> url:    https://github.com/intel-lab-lkp/linux/commits/Salman-Nabi/firmware-smccc-add-support-for-Live-Firmware-Activation-LFA/20260119-203221
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/soc/soc.git for-next
+> patch link:    https://lore.kernel.org/r/20260119122729.287522-2-salman.nabi%40arm.com
+> patch subject: [PATCH 1/1] firmware: smccc: add support for Live Firmware Activation (LFA)
+> config: arm-sp7021_defconfig (https://download.01.org/0day-ci/archive/20260120/202601200007.GVZIjoCx-lkp@intel.com/config)
+> compiler: arm-linux-gnueabi-gcc (GCC) 15.2.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260120/202601200007.GVZIjoCx-lkp@intel.com/reproduce)
 > 
-> Given this, I’m wondering whether the best approach is to revisit the
-> original patch I posted, which moved swiotlb allocations out of
-> __dma_direct_alloc_pages(). With that separation in place, we could then
-> fix up dma_alloc_from_dev_coherent() accordingly.
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202601200007.GVZIjoCx-lkp@intel.com/
 > 
-> If the conclusion is that systems with encrypted memory will, in
-> practice, never use restricted-dma-pool or shared-dma-pool, then we can
-> take this patch?
+> All warnings (new ones prefixed by >>):
+> 
+>     drivers/firmware/smccc/lfa_fw.c: In function 'get_nr_lfa_components':
+>     drivers/firmware/smccc/lfa_fw.c:179:16: error: variable 'reg' has initializer but incomplete type
+>       179 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                ^~~~~~~~~~~~~~~~~~
+>>> drivers/firmware/smccc/lfa_fw.c:179:43: warning: excess elements in struct initializer
 
-But if the conclusion is that it doesn't matter then that can only mean
-we don't need this patch either.
+Ah, yes, arm_smccc_1_2_regs is only defined for arm64. We rely on v1.2, 
+and the LFA spec actually means that this means AArch64 only right at 
+the beginning (chapter 2).
+So we need an additional dependency on ARM64 in the Kconfig entry.
 
-We've identified that the combination of restricted DMA and a
-"meaningful" memory encryption API is theoretically slightly broken and
-can't ever have worked properly, so how do we benefit from churning it
-to just be theoretically more broken in a different way? That makes even
-less sense than invasive churn to "fix" the theoretical problem that
-hasn't been an issue in practice.
+Cheers,
+Andre
 
-> If you can suggest the approach you would like to see taken with
-> restricted-dma-pool/shared-dma-pool, I can work on the final change.
 
-TBH my first choice is "do nothing"; second would be something like the
-below, then wait and see if any future CoCo development does justify
-changing our expectations.
 
-Thanks,
-Robin.
-
------>8-----
-
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index a547c7693135..3786a81eac40 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -1784,6 +1784,10 @@ bool swiotlb_free(struct device *dev, struct page *page, size_t size)
-  
-  	swiotlb_release_slots(dev, tlb_addr, pool);
-  
-+	/* We really don't expect this combination, and making it work is a pain */
-+	dev_WARN_ONCE(dev, cc_platform_has(CC_ATTR_MEM_ENCRYPT)),
-+		      "Freeing coherent allocation potentially corrupts restricted DMA pool\n");
-+
-  	return true;
-  }
-  
+>       179 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                                           ^
+>     drivers/firmware/smccc/lfa_fw.c:179:43: note: (near initialization for 'reg')
+>     drivers/firmware/smccc/lfa_fw.c:179:35: error: storage size of 'reg' isn't known
+>       179 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                                   ^~~
+>     drivers/firmware/smccc/lfa_fw.c:184:9: error: implicit declaration of function 'arm_smccc_1_2_invoke'; did you mean 'arm_smccc_1_1_invoke'? [-Wimplicit-function-declaration]
+>       184 |         arm_smccc_1_2_invoke(&reg, &reg);
+>           |         ^~~~~~~~~~~~~~~~~~~~
+>           |         arm_smccc_1_1_invoke
+>>> drivers/firmware/smccc/lfa_fw.c:179:35: warning: unused variable 'reg' [-Wunused-variable]
+>       179 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                                   ^~~
+>     drivers/firmware/smccc/lfa_fw.c: In function 'lfa_cancel':
+>     drivers/firmware/smccc/lfa_fw.c:194:16: error: variable 'reg' has initializer but incomplete type
+>       194 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                ^~~~~~~~~~~~~~~~~~
+>     drivers/firmware/smccc/lfa_fw.c:194:43: warning: excess elements in struct initializer
+>       194 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                                           ^
+>     drivers/firmware/smccc/lfa_fw.c:194:43: note: (near initialization for 'reg')
+>     drivers/firmware/smccc/lfa_fw.c:194:35: error: storage size of 'reg' isn't known
+>       194 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                                   ^~~
+>     drivers/firmware/smccc/lfa_fw.c:194:35: warning: unused variable 'reg' [-Wunused-variable]
+>     drivers/firmware/smccc/lfa_fw.c: In function 'call_lfa_activate':
+>     drivers/firmware/smccc/lfa_fw.c:220:16: error: variable 'reg' has initializer but incomplete type
+>       220 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                ^~~~~~~~~~~~~~~~~~
+>     drivers/firmware/smccc/lfa_fw.c:220:43: warning: excess elements in struct initializer
+>       220 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                                           ^
+>     drivers/firmware/smccc/lfa_fw.c:220:43: note: (near initialization for 'reg')
+>     drivers/firmware/smccc/lfa_fw.c:220:35: error: storage size of 'reg' isn't known
+>       220 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                                   ^~~
+>     drivers/firmware/smccc/lfa_fw.c:220:35: warning: unused variable 'reg' [-Wunused-variable]
+>     drivers/firmware/smccc/lfa_fw.c: In function 'prime_fw_image':
+>     drivers/firmware/smccc/lfa_fw.c:290:16: error: variable 'reg' has initializer but incomplete type
+>       290 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                ^~~~~~~~~~~~~~~~~~
+>     drivers/firmware/smccc/lfa_fw.c:290:43: warning: excess elements in struct initializer
+>       290 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                                           ^
+>     drivers/firmware/smccc/lfa_fw.c:290:43: note: (near initialization for 'reg')
+>     drivers/firmware/smccc/lfa_fw.c:290:35: error: storage size of 'reg' isn't known
+>       290 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                                   ^~~
+>     drivers/firmware/smccc/lfa_fw.c:290:35: warning: unused variable 'reg' [-Wunused-variable]
+>     drivers/firmware/smccc/lfa_fw.c: In function 'activation_pending_show':
+>     drivers/firmware/smccc/lfa_fw.c:360:16: error: variable 'reg' has initializer but incomplete type
+>       360 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                ^~~~~~~~~~~~~~~~~~
+>     drivers/firmware/smccc/lfa_fw.c:360:43: warning: excess elements in struct initializer
+>       360 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                                           ^
+>     drivers/firmware/smccc/lfa_fw.c:360:43: note: (near initialization for 'reg')
+>     drivers/firmware/smccc/lfa_fw.c:360:35: error: storage size of 'reg' isn't known
+>       360 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                                   ^~~
+>     drivers/firmware/smccc/lfa_fw.c:360:35: warning: unused variable 'reg' [-Wunused-variable]
+>     drivers/firmware/smccc/lfa_fw.c: In function 'pending_version_show':
+>     drivers/firmware/smccc/lfa_fw.c:434:16: error: variable 'reg' has initializer but incomplete type
+>       434 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                ^~~~~~~~~~~~~~~~~~
+>     drivers/firmware/smccc/lfa_fw.c:434:43: warning: excess elements in struct initializer
+>       434 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                                           ^
+>     drivers/firmware/smccc/lfa_fw.c:434:43: note: (near initialization for 'reg')
+>     drivers/firmware/smccc/lfa_fw.c:434:35: error: storage size of 'reg' isn't known
+>       434 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                                   ^~~
+>     drivers/firmware/smccc/lfa_fw.c:434:35: warning: unused variable 'reg' [-Wunused-variable]
+>     drivers/firmware/smccc/lfa_fw.c: In function 'update_fw_images_tree':
+>     drivers/firmware/smccc/lfa_fw.c:586:16: error: variable 'reg' has initializer but incomplete type
+>       586 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                ^~~~~~~~~~~~~~~~~~
+>     drivers/firmware/smccc/lfa_fw.c:586:43: warning: excess elements in struct initializer
+>       586 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                                           ^
+>     drivers/firmware/smccc/lfa_fw.c:586:43: note: (near initialization for 'reg')
+>     drivers/firmware/smccc/lfa_fw.c:586:35: error: storage size of 'reg' isn't known
+>       586 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                                   ^~~
+>     drivers/firmware/smccc/lfa_fw.c:586:35: warning: unused variable 'reg' [-Wunused-variable]
+>     drivers/firmware/smccc/lfa_fw.c: In function 'lfa_init':
+>     drivers/firmware/smccc/lfa_fw.c:619:16: error: variable 'reg' has initializer but incomplete type
+>       619 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                ^~~~~~~~~~~~~~~~~~
+>     drivers/firmware/smccc/lfa_fw.c:619:43: warning: excess elements in struct initializer
+>       619 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                                           ^
+>     drivers/firmware/smccc/lfa_fw.c:619:43: note: (near initialization for 'reg')
+>     drivers/firmware/smccc/lfa_fw.c:619:35: error: storage size of 'reg' isn't known
+>       619 |         struct arm_smccc_1_2_regs reg = { 0 };
+>           |                                   ^~~
+>     drivers/firmware/smccc/lfa_fw.c:619:35: warning: unused variable 'reg' [-Wunused-variable]
+> 
+> 
+> vim +179 drivers/firmware/smccc/lfa_fw.c
+> 
+>     176	
+>     177	static unsigned long get_nr_lfa_components(void)
+>     178	{
+>   > 179		struct arm_smccc_1_2_regs reg = { 0 };
+>     180	
+>     181		reg.a0 = LFA_1_0_FN_GET_INFO;
+>     182		reg.a1 = 0; /* lfa_info_selector = 0 */
+>     183	
+>     184		arm_smccc_1_2_invoke(&reg, &reg);
+>     185		if (reg.a0 != LFA_SUCCESS)
+>     186			return reg.a0;
+>     187	
+>     188		return reg.a1;
+>     189	}
+>     190	
+> 
 
