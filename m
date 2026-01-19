@@ -1,74 +1,74 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4069D246774
-	for <linux-coco@lists.linux.dev>; Mon, 19 Jan 2026 02:39:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E051A275
+	for <linux-coco@lists.linux.dev>; Mon, 19 Jan 2026 04:56:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768790348; cv=none; b=e4zVwPN2pYOv46/CP31ABkyt9MmDeaoJC/JvMir3/R8raIgiF0Jl/XEIlvToDu4eG3AvXsKqr34fMfFPPUGl245iADe+mblGE8thBVayYCf/HEQsEkJyMs7WPLl9pBLSOT7RK2xmi4z/U21UIgcJC4rRnM20ad5As+B+lFSAXpY=
+	t=1768798587; cv=none; b=uVEWZfonxwBSH53wqFcvtVkzXsVpI0K+kGcjUmeXRG2yF6QOu1F7MUM/v96XVvljCmbBKTaibea5+RcXTYR+wkWee0hse/gdKiv9FhXzM15UhPRC4hdVFlCLXMRlJKIwX4uTgwETkPnddglmlt5qC67vfXxg28e7VqE8k/EkC84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768790348; c=relaxed/simple;
-	bh=sdMleTLpQANshSTk1fuirSrLsZLtb8pFq+98lNyNt9E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qgPMVNSxjb7GoJqEwGSY47VpNia6xfGnYCq54qhedQkArMt2Cs2YVQUgdVoCG8MDda4LzLCaCwJNArhxF4sHsTTpHLEtTwuml4dckHlYuV0HKYlXZ0GajvS5cb7TnpaYN6hPtad7l6Nxwvld3PYjAPWAxaXi/G/ZT7LKf5ttk8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R/oIuiWc; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1768798587; c=relaxed/simple;
+	bh=D9FWyj+k61WIbtwhhEs6+Q0lJ+rOUecHUxqQH9k8xSs=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=mYhOJy3M200iWhLX+lKb7oRv6hDhkJz9cHqzqGsShvqrUJLnRfJLg0apgQu/CeB1BiuAqURXYSBtx6ffBG7AfipFRJfa9BjgOnu7bOjjUzbQWIC162F8O1RC6zzCPVa6FiM9l9GoioG7Rwq+laQgS7ovzaUz7f1iL2FyERhBAVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=geOF6zEh; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R/oIuiWc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768790346; x=1800326346;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=sdMleTLpQANshSTk1fuirSrLsZLtb8pFq+98lNyNt9E=;
-  b=R/oIuiWcLJLYMDdwJflQTPwq47LhusoRzvtT4yCD2184NRNH2Z7FyBH3
-   YpZs+WgpDtqFYVMMSZTTdTfoMYwmqsJhgVGtuU+rUZ9pJRdXyI0jJkOQn
-   JHRpQ1+7W4tDUDlwUIs68kgeEufsnvtfUL+36Q14C2PbUM/tAyQfHsJi4
-   iEHJmubzfPjGtKyfQCPyict2DPoPtscEtlrG9gbdf+tXFxB/UMJy5WaqQ
-   7biyfdQ4e5w7W1WFwX3iSbmMU4MzNn4iOyTRnln0HH93QTtbQArFI+B5U
-   VpFYOp+Bqbvjk4S/YKa8TGYMjirrPjSaLyp4FzasR9CG01tbGjy0iyddX
-   g==;
-X-CSE-ConnectionGUID: b2BtijxZSGKpp6SjJEOlyQ==
-X-CSE-MsgGUID: /IrwAT0tRa6AmX7P7zIGyg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="81113490"
-X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; 
-   d="scan'208";a="81113490"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2026 18:39:05 -0800
-X-CSE-ConnectionGUID: FzvMluOgSpWMu33VAV1bZA==
-X-CSE-MsgGUID: kTS9VI7pTZutZAQUx/FyBw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; 
-   d="scan'208";a="236437867"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa002.jf.intel.com with ESMTP; 18 Jan 2026 18:39:02 -0800
-Date: Mon, 19 Jan 2026 10:21:19 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Li Ming <ming.li@zohomail.com>
-Cc: helgaas@kernel.org, dan.j.williams@intel.com, linux-pci@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] PCI/IDE: Fix using wrong VF ID for RID range
- calculation
-Message-ID: <aW2VH/CJQY7384jw@yilunxu-OptiPlex-7050>
-References: <20260114111455.550984-1-ming.li@zohomail.com>
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="geOF6zEh"
+Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 60J4tSZK2714157
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Sun, 18 Jan 2026 20:55:29 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 60J4tSZK2714157
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025122301; t=1768798530;
+	bh=D9FWyj+k61WIbtwhhEs6+Q0lJ+rOUecHUxqQH9k8xSs=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=geOF6zEh4xIcUImGEAKa9y2unjdXgoqnI0qZziGI0PFlOcSF/Mllvh+AAFmZeATkm
+	 17HisQ7ZXNYyMKGIOg/49irBKZ9mpmi19PF7VBbqSR2GgDZk7zyH6jViqZbekGJrOa
+	 3aYWqXhg508dqhNpz+ZilEdlMdL2k2AfSZk3yKB7qQTXNU/Dg7Yojo3lJMRWXOP9ME
+	 v5r2qH4AsYMpllMfCQK8YslbgtBzSS7udum+EGeTqRQM2ZpOvjZY0AY/uos6PtDkAz
+	 lV7BKMNaAWf2l/VaCirumzmVnY5GHwBq33NUQTsjGegZ1mmv0r1cYFgUqv8hVNYVMN
+	 Bvzq74ZQoLKjQ==
+Date: Sun, 18 Jan 2026 20:55:22 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>, Chao Gao <chao.gao@intel.com>
+CC: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org,
+        reinette.chatre@intel.com, ira.weiny@intel.com, kai.huang@intel.com,
+        dan.j.williams@intel.com, sagis@google.com, vannapurve@google.com,
+        paulmck@kernel.org, nik.borisov@suse.com,
+        Farrah Chen <farrah.chen@intel.com>,
+        "Kirill A. Shutemov" <kas@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_16/21=5D_x86/virt/seamld?=
+ =?US-ASCII?Q?r=3A_Handle_TDX_Module_update_failures?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <aWiIFlbrGqBjpyvX@yilunxu-OptiPlex-7050>
+References: <20251001025442.427697-1-chao.gao@intel.com> <20251001025442.427697-17-chao.gao@intel.com> <aWiIFlbrGqBjpyvX@yilunxu-OptiPlex-7050>
+Message-ID: <CB733CD0-C5B5-464C-AD75-DD5475BCF194@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260114111455.550984-1-ming.li@zohomail.com>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 14, 2026 at 07:14:55PM +0800, Li Ming wrote:
-> When allocate a new IDE stream for a PCI device in SR-IOV case, the RID
-> range of the new IDE stream should cover all VFs of the device. VF ID
-> range of a PCI device is [0, num_VFs - 1], so should use (num_VFs - 1)
-> as the last VF's ID.
-> 
-> Fixes: 1e4d2ff3ae45 ("PCI/IDE: Add IDE establishment helpers")
-> Signed-off-by: Li Ming <ming.li@zohomail.com>
+On January 14, 2026 10:24:22 PM PST, Xu Yilun <yilun=2Exu@linux=2Eintel=2Ec=
+om> wrote:
+>On Tue, Sep 30, 2025 at 07:53:00PM -0700, Chao Gao wrote:
+>> Failures encountered after a successful module shutdown are unrecoverab=
+le,
+>> e=2Eg=2E, there is no way to restore the old TDX Module=2E
+>
+>"e=2Eg=2E" is obscure=2E To me, the following sentence is explaining the
+>reason why the failure is not recoverable=2E Maybe "i=2Ee=2E" or "because=
+"?
 
-Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+"e=2Eg=2E" (for example) means the following list is non-exhaustive=2E
