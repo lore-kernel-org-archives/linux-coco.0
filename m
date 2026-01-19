@@ -1,22 +1,23 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E3E325708
-	for <linux-coco@lists.linux.dev>; Mon, 19 Jan 2026 12:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A5B1FF1AE
+	for <linux-coco@lists.linux.dev>; Mon, 19 Jan 2026 12:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768825665; cv=none; b=uR66ZxkeGM5kx+9HdHEIOikdId4clnf6xA/r3/QsROqmhLHm8/SRzb1dLir1pxDnouwTDFU1BcYHWZq8LwPGGoZBc7DgYPEYvuJ/kthNPsyQXp96qVgklB1hJdcI5Uy7JWfkcgQb5XSffKEGiRPY+N2SruRaArQD8nFBhIPbkYk=
+	t=1768825668; cv=none; b=h99yk66Gn6H+x9MS8RwBZEm0uPTu+3fIO/rdFbi9YxD7fZB9F2t/Zo6rp4GydKjhCYVYjDF+kqFQLrhv41IcqmVKKRUpndQn7o3d8m/KtjHFEEZBxNufFm+CJiGsHQrauPQlMn3yx8yt+hAQDtx3z6t0xwxgMw3D8SenRnIS1x8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768825665; c=relaxed/simple;
-	bh=2Wxi4TP3C5tPSkl4NALuAcIyAH/QIJnDHI+xARhgZ18=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=izM3C3RqwkYRrYWf4hY2vplQBeqhK89BytJed0oqcuMqJFHH36+UWLwj/Kmu/IIJnu3Y91i5jQ2TIRu0ZRDb2fcUO0Q8M0zoBNkSQINdgLlzbMWYjpXEXhtIH7T1xS/cdIWUit/dexnjO2/URdGhsvOUhvEArSeWzWUWZioIfNQ=
+	s=arc-20240116; t=1768825668; c=relaxed/simple;
+	bh=yGHR3ksMtJLgpHf3QtB/DBnk4kmP73EjmutTT+oCkD0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=pQ1DMxjdwKqbgXjbY/9CrohL1d+PT7QMLL53O9o+69a5V/Q/YeHxl3KsK1GCYf9IVJT/MPKbWkj1slE8JKhTPFrg99yXfrdnNhm3czEKMJTJrRjOWmsIcWzIovDXz38TpkwVsUQN2/4E8H3AxDZsTA6xkAAslLVft3wHBgo6MtQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 939EA339;
-	Mon, 19 Jan 2026 04:27:34 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 887381517;
+	Mon, 19 Jan 2026 04:27:37 -0800 (PST)
 Received: from oss-apollo7005.oss.cambridge.arm.com (oss-apollo7005.oss.lab.cambridge.arm.com [10.7.15.171])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E3B5B3F632;
-	Mon, 19 Jan 2026 04:27:38 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8F8C13F632;
+	Mon, 19 Jan 2026 04:27:41 -0800 (PST)
 From: Salman Nabi <salman.nabi@arm.com>
 To: vvidwans@nvidia.com,
 	andre.przywara@arm.com,
@@ -31,98 +32,778 @@ Cc: ardb@kernel.org,
 	sdonthineni@nvidia.com,
 	vsethi@nvidia.com,
 	vwadekar@nvidia.com
-Subject: [PATCH 0/1] Arm Live Firmware Activation (LFA) support
-Date: Mon, 19 Jan 2026 12:27:28 +0000
-Message-Id: <20260119122729.287522-1-salman.nabi@arm.com>
+Subject: [PATCH 1/1] firmware: smccc: add support for Live Firmware Activation (LFA)
+Date: Mon, 19 Jan 2026 12:27:29 +0000
+Message-Id: <20260119122729.287522-2-salman.nabi@arm.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260119122729.287522-1-salman.nabi@arm.com>
+References: <20260119122729.287522-1-salman.nabi@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi reviewers,
+The Arm Live Firmware Activation (LFA) is a specification [1] to describe
+activating firmware components without a reboot. Those components
+(like TF-A's BL31, EDK-II, TF-RMM, secure paylods) would be updated the
+usual way: via fwupd, FF-A or other secure storage methods, or via some
+IMPDEF Out-Of-Bound method. The user can then activate this new firmware,
+at system runtime, without requiring a reboot.
+The specification covers the SMCCC interface to list and query available
+components and eventually trigger the activation.
 
-(This is a follow-up to the Live Firmware Activation work that was
-submitted for RFC [1]).
+Add a new directory under /sys/firmware to present firmware components
+capable of live activation. Each of them is a directory under lfa/,
+and is identified via its GUID. The activation will be triggered by echoing
+"1" into the "activate" file:
+==========================================
+/sys/firmware/lfa # ls -l . 6c*
+.:
+total 0
+drwxr-xr-x    2 0 0         0 Jan 19 11:33 47d4086d-4cfe-9846-9b95-2950cbbd5a00
+drwxr-xr-x    2 0 0         0 Jan 19 11:33 6c0762a6-12f2-4b56-92cb-ba8f633606d9
+drwxr-xr-x    2 0 0         0 Jan 19 11:33 d6d0eea7-fcea-d54b-9782-9934f234b6e4
 
-This patch introduces a Linux kernel driver implementing the Arm Live
-Firmware Activation (LFA) specification [2]. LFA enables the activation
-of updated firmware components without requiring a system reboot,
-reducing downtime in environments such as data centers and hyperscale
-systems.
+6c0762a6-12f2-4b56-92cb-ba8f633606d9:
+total 0
+--w-------    1 0        0             4096 Jan 19 11:33 activate
+-r--r--r--    1 0        0             4096 Jan 19 11:33 activation_capable
+-r--r--r--    1 0        0             4096 Jan 19 11:33 activation_pending
+--w-------    1 0        0             4096 Jan 19 11:33 cancel
+-r--r--r--    1 0        0             4096 Jan 19 11:33 cpu_rendezvous
+-r--r--r--    1 0        0             4096 Jan 19 11:33 current_version
+-rw-r--r--    1 0        0             4096 Jan 19 11:33 force_cpu_rendezvous
+-r--r--r--    1 0        0             4096 Jan 19 11:33 may_reset_cpu
+-r--r--r--    1 0        0             4096 Jan 19 11:33 name
+-r--r--r--    1 0        0             4096 Jan 19 11:33 pending_version
+/sys/firmware/lfa/6c0762a6-12f2-4b56-92cb-ba8f633606d9 # grep . *
+grep: activate: Permission denied
+activation_capable:1
+activation_pending:1
+grep: cancel: Permission denied
+cpu_rendezvous:1
+current_version:0.0
+force_cpu_rendezvous:1
+may_reset_cpu:0
+name:TF-RMM
+pending_version:0.0
+/sys/firmware/lfa/6c0762a6-12f2-4b56-92cb-ba8f633606d9 # echo 1 > activate
+[ 2825.797871] Arm LFA: firmware activation succeeded.
+/sys/firmware/lfa/6c0762a6-12f2-4b56-92cb-ba8f633606d9 #
+==========================================
 
-Unlike firmware update process (which may use tools like fwupd), LFA
-focuses solely on the activation of an already updated firmware
-component, that is pending activation, without a system reboot. This
-capability helps maintain service availability and minimize operational
-disruption.
+[1] https://developer.arm.com/documentation/den0147/latest/
 
-Key features of the driver:
-* Detects LFA support in system firmware (EL3).
-* Lists all firmware components that support live activation.
-* Exposes component attributes (e.g., activation capability, and
-  activation pending) via sysfs under /sys/firmware/lfa/.
-* Provides interfaces to:
-  - Trigger activation of an updated firmware component.
-  - Cancel an ongoing activation if required.
-
-This work is conceptually similar to Intel’s Platform Firmware Runtime
-Update and telemetry (PFRUT) [3] and TDX module updates [4], but
-targets Arm platforms. The driver has been used to successfully activate
-a Realm Management Monitor (RMM) firmware image in a controlled test
-environment. RMM is analogous to Intel’s TDX module.
-
-There is effort on similar work from the OCP [5]. Future work may
-include integration with utilities like fwupd to automatically select
-the appropriate driver, based on platform architecture, for Live/Runtime
-firmware updates.
-
-Note: The ACPI tables are described in the spec. The Device Tree
-bindings are currently work-in-progress, and a follow up patch will soon
-be submitted that will add the DT bindings to the driver.
-
-Summary of changes since rfc:
-- Updated SMCCC version 1.1 to 1.2 per the LFA specification requirement.
-- Changed "image_props" array to a linked list to support the dynamic
-  removal and addition of firmware images.
-- Added code to refresh firmware images following a successful activation.
-- Added a work_queue to handle the removal of firmware image attribute
-  from it's respective kobject "_store" handle.
-- Refactored prime and activate into separate functions.
-- Kernel config for LFA now defaults to "y" i.e. included by default.
-- Added individual kernel attribute files removal when removing the
-  respective kobjects using kobject_put().
-- mutex_lock added to activate_fw_image() and prime_fw_image() calls.
-- Renamed create_fw_inventory to update_fw_image_node.
-- Renamed create_fw_images_tree to update_fw_images_tree.
-- Added two more attributes due to specs update from bet0 to bet1:
-  current_version: For retrieval of the current firmware's version info.
-  pending_version: For retrieval of the pending firmware's version info.
-- Minor changes such as, improved firmware image names, and code comments.
-- do...while loops refactored to for(;;) loops.
-
-Best regards,
-Salman Nabi
-
-[1] https://lore.kernel.org/all/20250625142722.1911172-2-andre.przywara@arm.com/
-[2] https://developer.arm.com/documentation/den0147/latest/
-[3] https://lore.kernel.org/all/cover.1631025237.git.yu.c.chen@intel.com/
-[4] https://lore.kernel.org/all/20250523095322.88774-1-chao.gao@intel.com/
-[5] https://www.opencompute.org/documents/hyperscale-cpu-impactless-firmware-updates-requirements-specification-v0-7-9-29-2025-pdf
-
-Salman Nabi (1):
-  firmware: smccc: add support for Live Firmware Activation (LFA)
-
+Signed-off-by: Salman Nabi <salman.nabi@arm.com>
+---
  drivers/firmware/smccc/Kconfig  |   8 +
  drivers/firmware/smccc/Makefile |   1 +
  drivers/firmware/smccc/lfa_fw.c | 668 ++++++++++++++++++++++++++++++++
  3 files changed, 677 insertions(+)
  create mode 100644 drivers/firmware/smccc/lfa_fw.c
 
+diff --git a/drivers/firmware/smccc/Kconfig b/drivers/firmware/smccc/Kconfig
+index 15e7466179a6..ff7ca49486b0 100644
+--- a/drivers/firmware/smccc/Kconfig
++++ b/drivers/firmware/smccc/Kconfig
+@@ -23,3 +23,11 @@ config ARM_SMCCC_SOC_ID
+ 	help
+ 	  Include support for the SoC bus on the ARM SMCCC firmware based
+ 	  platforms providing some sysfs information about the SoC variant.
++
++config ARM_LFA
++	tristate "Arm Live Firmware activation support"
++	depends on HAVE_ARM_SMCCC_DISCOVERY
++	default y
++	help
++	  Include support for triggering Live Firmware Activation, which
++	  allows to upgrade certain firmware components without a reboot.
+diff --git a/drivers/firmware/smccc/Makefile b/drivers/firmware/smccc/Makefile
+index 40d19144a860..a6dd01558a94 100644
+--- a/drivers/firmware/smccc/Makefile
++++ b/drivers/firmware/smccc/Makefile
+@@ -2,3 +2,4 @@
+ #
+ obj-$(CONFIG_HAVE_ARM_SMCCC_DISCOVERY)	+= smccc.o kvm_guest.o
+ obj-$(CONFIG_ARM_SMCCC_SOC_ID)	+= soc_id.o
++obj-$(CONFIG_ARM_LFA) += lfa_fw.o
+diff --git a/drivers/firmware/smccc/lfa_fw.c b/drivers/firmware/smccc/lfa_fw.c
+new file mode 100644
+index 000000000000..ce54049b7190
+--- /dev/null
++++ b/drivers/firmware/smccc/lfa_fw.c
+@@ -0,0 +1,668 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2025 Arm Limited
++ */
++
++#include <linux/fs.h>
++#include <linux/init.h>
++#include <linux/kobject.h>
++#include <linux/module.h>
++#include <linux/stop_machine.h>
++#include <linux/string.h>
++#include <linux/sysfs.h>
++#include <linux/arm-smccc.h>
++#include <linux/psci.h>
++#include <uapi/linux/psci.h>
++#include <linux/uuid.h>
++#include <linux/array_size.h>
++#include <linux/list.h>
++#include <linux/mutex.h>
++
++#undef pr_fmt
++#define pr_fmt(fmt) "Arm LFA: " fmt
++
++/* LFA v1.0b0 specification */
++#define LFA_1_0_FN_BASE			0xc40002e0
++#define LFA_1_0_FN(n)			(LFA_1_0_FN_BASE + (n))
++
++#define LFA_1_0_FN_GET_VERSION		LFA_1_0_FN(0)
++#define LFA_1_0_FN_CHECK_FEATURE	LFA_1_0_FN(1)
++#define LFA_1_0_FN_GET_INFO		LFA_1_0_FN(2)
++#define LFA_1_0_FN_GET_INVENTORY	LFA_1_0_FN(3)
++#define LFA_1_0_FN_PRIME		LFA_1_0_FN(4)
++#define LFA_1_0_FN_ACTIVATE		LFA_1_0_FN(5)
++#define LFA_1_0_FN_CANCEL		LFA_1_0_FN(6)
++
++/* CALL_AGAIN flags (returned by SMC) */
++#define LFA_PRIME_CALL_AGAIN		BIT(0)
++#define LFA_ACTIVATE_CALL_AGAIN		BIT(0)
++
++/* LFA return values */
++#define LFA_SUCCESS			0
++#define LFA_NOT_SUPPORTED		1
++#define LFA_BUSY			2
++#define LFA_AUTH_ERROR			3
++#define LFA_NO_MEMORY			4
++#define LFA_CRITICAL_ERROR		5
++#define LFA_DEVICE_ERROR		6
++#define LFA_WRONG_STATE			7
++#define LFA_INVALID_PARAMETERS		8
++#define LFA_COMPONENT_WRONG_STATE	9
++#define LFA_INVALID_ADDRESS		10
++#define LFA_ACTIVATION_FAILED		11
++
++#define LFA_ERROR_STRING(name) \
++	[name] = #name
++
++static const char * const lfa_error_strings[] = {
++	LFA_ERROR_STRING(LFA_SUCCESS),
++	LFA_ERROR_STRING(LFA_NOT_SUPPORTED),
++	LFA_ERROR_STRING(LFA_BUSY),
++	LFA_ERROR_STRING(LFA_AUTH_ERROR),
++	LFA_ERROR_STRING(LFA_NO_MEMORY),
++	LFA_ERROR_STRING(LFA_CRITICAL_ERROR),
++	LFA_ERROR_STRING(LFA_DEVICE_ERROR),
++	LFA_ERROR_STRING(LFA_WRONG_STATE),
++	LFA_ERROR_STRING(LFA_INVALID_PARAMETERS),
++	LFA_ERROR_STRING(LFA_COMPONENT_WRONG_STATE),
++	LFA_ERROR_STRING(LFA_INVALID_ADDRESS),
++	LFA_ERROR_STRING(LFA_ACTIVATION_FAILED)
++};
++
++enum image_attr_names {
++	LFA_ATTR_NAME,
++	LFA_ATTR_CURRENT_VERSION,
++	LFA_ATTR_PENDING_VERSION,
++	LFA_ATTR_ACT_CAPABLE,
++	LFA_ATTR_ACT_PENDING,
++	LFA_ATTR_MAY_RESET_CPU,
++	LFA_ATTR_CPU_RENDEZVOUS,
++	LFA_ATTR_FORCE_CPU_RENDEZVOUS,
++	LFA_ATTR_ACTIVATE,
++	LFA_ATTR_CANCEL,
++	LFA_ATTR_NR_IMAGES
++};
++
++struct image_props {
++	struct list_head image_node;
++	const char *image_name;
++	int fw_seq_id;
++	u64 current_version;
++	u64 pending_version;
++	bool activation_capable;
++	bool activation_pending;
++	bool may_reset_cpu;
++	bool cpu_rendezvous;
++	bool cpu_rendezvous_forced;
++	struct kobject *image_dir;
++	struct kobj_attribute image_attrs[LFA_ATTR_NR_IMAGES];
++};
++static LIST_HEAD(lfa_fw_images);
++
++/* A UUID split over two 64-bit registers */
++struct uuid_regs {
++	u64 uuid_lo;
++	u64 uuid_hi;
++};
++
++static const struct fw_image_uuid {
++	const char *name;
++	const char *uuid;
++} fw_images_uuids[] = {
++	{
++		.name = "TF-A BL31 runtime",
++		.uuid = "47d4086d-4cfe-9846-9b95-2950cbbd5a00",
++	},
++	{
++		.name = "BL33 non-secure payload",
++		.uuid = "d6d0eea7-fcea-d54b-9782-9934f234b6e4",
++	},
++	{
++		.name = "TF-RMM",
++		.uuid = "6c0762a6-12f2-4b56-92cb-ba8f633606d9",
++	},
++};
++
++static struct kobject *lfa_dir;
++static DEFINE_MUTEX(lfa_lock);
++static struct workqueue_struct *fw_images_update_wq;
++static struct work_struct fw_images_update_work;
++
++static int update_fw_images_tree(void);
++
++static void delete_fw_image_node(struct image_props *attrs)
++{
++	int i;
++
++	for (i = 0; i < LFA_ATTR_NR_IMAGES; i++)
++		sysfs_remove_file(attrs->image_dir, &attrs->image_attrs[i].attr);
++
++	kobject_put(attrs->image_dir);
++	list_del(&attrs->image_node);
++	kfree(attrs);
++}
++
++static void remove_invalid_fw_images(struct work_struct *work)
++{
++	struct image_props *attrs, *tmp;
++
++	mutex_lock(&lfa_lock);
++
++	/*
++	 * Remove firmware images including directories that are no longer
++	 * present in the LFA agent after updating the existing ones.
++	 */
++	list_for_each_entry_safe(attrs, tmp, &lfa_fw_images, image_node) {
++		if (attrs->fw_seq_id == -1)
++			delete_fw_image_node(attrs);
++	}
++
++	mutex_unlock(&lfa_lock);
++}
++
++static void set_image_flags(struct image_props *attrs, int seq_id,
++			    u32 image_flags, u64 reg_current_ver,
++			    u64 reg_pending_ver)
++{
++	attrs->fw_seq_id = seq_id;
++	attrs->current_version = reg_current_ver;
++	attrs->pending_version = reg_pending_ver;
++	attrs->activation_capable = !!(image_flags & BIT(0));
++	attrs->activation_pending = !!(image_flags & BIT(1));
++	attrs->may_reset_cpu = !!(image_flags & BIT(2));
++	/* cpu_rendezvous_optional bit has inverse logic in the spec */
++	attrs->cpu_rendezvous = !(image_flags & BIT(3));
++}
++
++static unsigned long get_nr_lfa_components(void)
++{
++	struct arm_smccc_1_2_regs reg = { 0 };
++
++	reg.a0 = LFA_1_0_FN_GET_INFO;
++	reg.a1 = 0; /* lfa_info_selector = 0 */
++
++	arm_smccc_1_2_invoke(&reg, &reg);
++	if (reg.a0 != LFA_SUCCESS)
++		return reg.a0;
++
++	return reg.a1;
++}
++
++static int lfa_cancel(void *data)
++{
++	struct image_props *attrs = data;
++	struct arm_smccc_1_2_regs reg = { 0 };
++
++	reg.a0 = LFA_1_0_FN_CANCEL;
++	reg.a1 = attrs->fw_seq_id;
++	arm_smccc_1_2_invoke(&reg, &reg);
++
++	/*
++	 * When firmware activation is called with "skip_cpu_rendezvous=1",
++	 * LFA_CANCEL can fail with LFA_BUSY if the activation could not be
++	 * cancelled.
++	 */
++	if (reg.a0 == LFA_SUCCESS) {
++		pr_info("Activation cancelled for image %s\n",
++			attrs->image_name);
++	} else {
++		pr_err("Firmware activation could not be cancelled: %s\n",
++		       lfa_error_strings[-reg.a0]);
++		return -EINVAL;
++	}
++
++	return reg.a0;
++}
++
++static int call_lfa_activate(void *data)
++{
++	struct image_props *attrs = data;
++	struct arm_smccc_1_2_regs reg = { 0 };
++
++	reg.a0 = LFA_1_0_FN_ACTIVATE;
++	reg.a1 = attrs->fw_seq_id; /* fw_seq_id under consideration */
++	/*
++	 * As we do not support updates requiring a CPU reset (yet),
++	 * we pass 0 in reg.a3 and reg.a4, holding the entry point and context
++	 * ID respectively.
++	 * cpu_rendezvous_forced is set by the administrator, via sysfs,
++	 * cpu_rendezvous is dictated by each firmware component.
++	 */
++	reg.a2 = !(attrs->cpu_rendezvous_forced || attrs->cpu_rendezvous);
++
++	for (;;) {
++		arm_smccc_1_2_invoke(&reg, &reg);
++
++		if ((long)reg.a0 < 0) {
++			pr_err("ACTIVATE for image %s failed: %s\n",
++				attrs->image_name, lfa_error_strings[-reg.a0]);
++			return reg.a0;
++		}
++		if (!(reg.a1 & LFA_ACTIVATE_CALL_AGAIN))
++			break; /* ACTIVATE successful */
++	}
++
++	return reg.a0;
++}
++
++static int activate_fw_image(struct image_props *attrs)
++{
++	int ret;
++
++	mutex_lock(&lfa_lock);
++	if (attrs->cpu_rendezvous_forced || attrs->cpu_rendezvous)
++		ret = stop_machine(call_lfa_activate, attrs, cpu_online_mask);
++	else
++		ret = call_lfa_activate(attrs);
++
++	if (ret != 0) {
++		mutex_unlock(&lfa_lock);
++		return lfa_cancel(attrs);
++	}
++
++	/*
++	 * Invalidate fw_seq_ids (-1) for all images as the seq_ids and the
++	 * number of firmware images in the LFA agent may change after a
++	 * successful activation attempt. Negate all image flags as well.
++	 */
++	attrs = NULL;
++	list_for_each_entry(attrs, &lfa_fw_images, image_node) {
++		set_image_flags(attrs, -1, 0b1000, 0, 0);
++	}
++
++	update_fw_images_tree();
++
++	/*
++	 * Removing non-valid image directories at the end of an activation.
++	 * We can't remove the sysfs attributes while in the respective
++	 * _store() handler, so have to postpone the list removal to a
++	 * workqueue.
++	 */
++	INIT_WORK(&fw_images_update_work, remove_invalid_fw_images);
++	queue_work(fw_images_update_wq, &fw_images_update_work);
++	mutex_unlock(&lfa_lock);
++
++	return ret;
++}
++
++static int prime_fw_image(struct image_props *attrs)
++{
++	struct arm_smccc_1_2_regs reg = { 0 };
++	int ret;
++
++	mutex_lock(&lfa_lock);
++	/* Avoid SMC calls on invalid firmware images */
++	if (attrs->fw_seq_id == -1) {
++		pr_err("Arm LFA: Invalid firmware sequence id\n");
++		mutex_unlock(&lfa_lock);
++
++		return -ENODEV;
++	}
++
++	if (attrs->may_reset_cpu) {
++		pr_err("CPU reset not supported by kernel driver\n");
++		mutex_unlock(&lfa_lock);
++
++		return -EINVAL;
++	}
++
++	/*
++	 * LFA_PRIME/ACTIVATE will return 1 in reg.a1 if the firmware
++	 * priming/activation is still in progress. In that case
++	 * LFA_PRIME/ACTIVATE will need to be called again.
++	 * reg.a1 will become 0 once the prime/activate process completes.
++	 */
++	reg.a0 = LFA_1_0_FN_PRIME;
++	reg.a1 = attrs->fw_seq_id; /* fw_seq_id under consideration */
++	for (;;) {
++		arm_smccc_1_2_invoke(&reg, &reg);
++
++		if ((long)reg.a0 < 0) {
++			pr_err("LFA_PRIME for image %s failed: %s\n",
++				attrs->image_name, lfa_error_strings[-reg.a0]);
++			mutex_unlock(&lfa_lock);
++
++			return reg.a0;
++		}
++		if (!(reg.a1 & LFA_PRIME_CALL_AGAIN)) {
++			ret = 0;
++			break; /* PRIME successful */
++		}
++	}
++
++	mutex_unlock(&lfa_lock);
++	return ret;
++}
++
++static ssize_t name_show(struct kobject *kobj, struct kobj_attribute *attr,
++			 char *buf)
++{
++	struct image_props *attrs = container_of(attr, struct image_props,
++						 image_attrs[LFA_ATTR_NAME]);
++
++	return sysfs_emit(buf, "%s\n", attrs->image_name);
++}
++
++static ssize_t activation_capable_show(struct kobject *kobj,
++				       struct kobj_attribute *attr, char *buf)
++{
++	struct image_props *attrs = container_of(attr, struct image_props,
++					 image_attrs[LFA_ATTR_ACT_CAPABLE]);
++
++	return sysfs_emit(buf, "%d\n", attrs->activation_capable);
++}
++
++static ssize_t activation_pending_show(struct kobject *kobj,
++				       struct kobj_attribute *attr, char *buf)
++{
++	struct image_props *attrs = container_of(attr, struct image_props,
++					 image_attrs[LFA_ATTR_ACT_PENDING]);
++	struct arm_smccc_1_2_regs reg = { 0 };
++
++	/*
++	 * Activation pending status can change anytime thus we need to update
++	 * and return its current value
++	 */
++	reg.a0 = LFA_1_0_FN_GET_INVENTORY;
++	reg.a1 = attrs->fw_seq_id;
++	arm_smccc_1_2_invoke(&reg, &reg);
++	if (reg.a0 == LFA_SUCCESS)
++		attrs->activation_pending = !!(reg.a3 & BIT(1));
++
++	return sysfs_emit(buf, "%d\n", attrs->activation_pending);
++}
++
++static ssize_t may_reset_cpu_show(struct kobject *kobj,
++				  struct kobj_attribute *attr, char *buf)
++{
++	struct image_props *attrs = container_of(attr, struct image_props,
++					 image_attrs[LFA_ATTR_MAY_RESET_CPU]);
++
++	return sysfs_emit(buf, "%d\n", attrs->may_reset_cpu);
++}
++
++static ssize_t cpu_rendezvous_show(struct kobject *kobj,
++				   struct kobj_attribute *attr, char *buf)
++{
++	struct image_props *attrs = container_of(attr, struct image_props,
++					 image_attrs[LFA_ATTR_CPU_RENDEZVOUS]);
++
++	return sysfs_emit(buf, "%d\n", attrs->cpu_rendezvous);
++}
++
++static ssize_t force_cpu_rendezvous_store(struct kobject *kobj,
++					  struct kobj_attribute *attr,
++					  const char *buf, size_t count)
++{
++	struct image_props *attrs = container_of(attr, struct image_props,
++				image_attrs[LFA_ATTR_FORCE_CPU_RENDEZVOUS]);
++	int ret;
++
++	ret = kstrtobool(buf, &attrs->cpu_rendezvous_forced);
++	if (ret)
++		return ret;
++
++	return count;
++}
++
++static ssize_t force_cpu_rendezvous_show(struct kobject *kobj,
++					 struct kobj_attribute *attr, char *buf)
++{
++	struct image_props *attrs = container_of(attr, struct image_props,
++				image_attrs[LFA_ATTR_FORCE_CPU_RENDEZVOUS]);
++
++	return sysfs_emit(buf, "%d\n", attrs->cpu_rendezvous_forced);
++}
++
++static ssize_t current_version_show(struct kobject *kobj,
++				    struct kobj_attribute *attr, char *buf)
++{
++	struct image_props *attrs = container_of(attr, struct image_props,
++				image_attrs[LFA_ATTR_CURRENT_VERSION]);
++	u32 maj, min;
++
++	maj = attrs->current_version >> 32;
++	min = attrs->current_version & 0xffffffff;
++	return sysfs_emit(buf, "%u.%u\n", maj, min);
++}
++
++static ssize_t pending_version_show(struct kobject *kobj,
++				    struct kobj_attribute *attr, char *buf)
++{
++	struct image_props *attrs = container_of(attr, struct image_props,
++					 image_attrs[LFA_ATTR_ACT_PENDING]);
++	struct arm_smccc_1_2_regs reg = { 0 };
++	u32 maj, min;
++
++	/*
++	 * Similar to activation pending, this value can change following an
++	 * update, we need to retrieve fresh info instead of stale information.
++	 */
++	reg.a0 = LFA_1_0_FN_GET_INVENTORY;
++	reg.a1 = attrs->fw_seq_id;
++	arm_smccc_1_2_invoke(&reg, &reg);
++	if (reg.a0 == LFA_SUCCESS) {
++		if (reg.a5 != 0 && attrs->activation_pending)
++		{
++			attrs->pending_version = reg.a5;
++			maj = reg.a5 >> 32;
++			min = reg.a5 & 0xffffffff;
++		}
++	}
++
++	return sysfs_emit(buf, "%u.%u\n", maj, min);
++}
++
++static ssize_t activate_store(struct kobject *kobj, struct kobj_attribute *attr,
++			      const char *buf, size_t count)
++{
++	struct image_props *attrs = container_of(attr, struct image_props,
++					 image_attrs[LFA_ATTR_ACTIVATE]);
++	int ret;
++
++	ret = prime_fw_image(attrs);
++	if (ret) {
++		pr_err("Firmware prime failed: %s\n",
++			lfa_error_strings[-ret]);
++		return -ECANCELED;
++	}
++
++	ret = activate_fw_image(attrs);
++	if (ret) {
++		pr_err("Firmware activation failed: %s\n",
++			lfa_error_strings[-ret]);
++		return -ECANCELED;
++	}
++
++	pr_info("Firmware activation succeeded\n");
++
++	return count;
++}
++
++static ssize_t cancel_store(struct kobject *kobj, struct kobj_attribute *attr,
++			    const char *buf, size_t count)
++{
++	struct image_props *attrs = container_of(attr, struct image_props,
++						 image_attrs[LFA_ATTR_CANCEL]);
++	int ret;
++
++	ret = lfa_cancel(attrs);
++	if (ret != 0)
++		return ret;
++
++	return count;
++}
++
++static struct kobj_attribute image_attrs_group[LFA_ATTR_NR_IMAGES] = {
++	[LFA_ATTR_NAME]			= __ATTR_RO(name),
++	[LFA_ATTR_CURRENT_VERSION]	= __ATTR_RO(current_version),
++	[LFA_ATTR_PENDING_VERSION]	= __ATTR_RO(pending_version),
++	[LFA_ATTR_ACT_CAPABLE]		= __ATTR_RO(activation_capable),
++	[LFA_ATTR_ACT_PENDING]		= __ATTR_RO(activation_pending),
++	[LFA_ATTR_MAY_RESET_CPU]	= __ATTR_RO(may_reset_cpu),
++	[LFA_ATTR_CPU_RENDEZVOUS]	= __ATTR_RO(cpu_rendezvous),
++	[LFA_ATTR_FORCE_CPU_RENDEZVOUS]	= __ATTR_RW(force_cpu_rendezvous),
++	[LFA_ATTR_ACTIVATE]		= __ATTR_WO(activate),
++	[LFA_ATTR_CANCEL]		= __ATTR_WO(cancel)
++};
++
++static void clean_fw_images_tree(void)
++{
++	struct image_props *attrs, *tmp;
++
++	list_for_each_entry_safe(attrs, tmp, &lfa_fw_images, image_node)
++		delete_fw_image_node(attrs);
++}
++
++static int update_fw_image_node(char *fw_uuid, int seq_id,
++					  u32 image_flags, u64 reg_current_ver,
++					  u64 reg_pending_ver)
++{
++	const char *image_name = "(unknown)";
++	struct image_props *attrs;
++	int ret;
++
++	/*
++	 * If a fw_image is already in the images list then we just update
++	 * its flags and seq_id instead of trying to recreate it.
++	 */
++	list_for_each_entry(attrs, &lfa_fw_images, image_node) {
++		if (!strcmp(attrs->image_dir->name, fw_uuid)) {
++			set_image_flags(attrs, seq_id, image_flags,
++					reg_current_ver, reg_pending_ver);
++			return 0;
++		}
++	}
++
++	attrs = kzalloc(sizeof(*attrs), GFP_KERNEL);
++	if (!attrs)
++		return -ENOMEM;
++
++	for (int i = 0; i < ARRAY_SIZE(fw_images_uuids); i++) {
++		if (!strcmp(fw_images_uuids[i].uuid, fw_uuid))
++			image_name = fw_images_uuids[i].name;
++	}
++
++	attrs->image_dir = kobject_create_and_add(fw_uuid, lfa_dir);
++	if (!attrs->image_dir)
++		return -ENOMEM;
++
++	INIT_LIST_HEAD(&attrs->image_node);
++	attrs->image_name = image_name;
++	attrs->cpu_rendezvous_forced = 1;
++	set_image_flags(attrs, seq_id, image_flags, reg_current_ver,
++			reg_pending_ver);
++
++	/*
++	 * The attributes for each sysfs file are constant (handler functions,
++	 * name and permissions are the same within each directory), but we
++	 * need a per-directory copy regardless, to get a unique handle
++	 * for each directory, so that container_of can do its magic.
++	 * Also this requires an explicit sysfs_attr_init(), since it's a new
++	 * copy, to make LOCKDEP happy.
++	 */
++	memcpy(attrs->image_attrs, image_attrs_group,
++	       sizeof(attrs->image_attrs));
++	for (int i = 0; i < LFA_ATTR_NR_IMAGES; i++) {
++		struct attribute *attr = &attrs->image_attrs[i].attr;
++
++		sysfs_attr_init(attr);
++		ret = sysfs_create_file(attrs->image_dir, attr);
++		if (ret) {
++			pr_err("creating sysfs file for uuid %s: %d\n",
++			       fw_uuid, ret);
++			clean_fw_images_tree();
++
++			return ret;
++		}
++	}
++	list_add(&attrs->image_node, &lfa_fw_images);
++
++	return ret;
++}
++
++static int update_fw_images_tree(void)
++{
++	struct arm_smccc_1_2_regs reg = { 0 };
++	struct uuid_regs image_uuid;
++	char image_id_str[40];
++	int ret, num_of_components;
++
++	num_of_components = get_nr_lfa_components();
++	if (num_of_components <= 0) {
++		pr_err("Error getting number of LFA components\n");
++		return -ENODEV;
++	}
++
++	for (int i = 0; i < num_of_components; i++) {
++		reg.a0 = LFA_1_0_FN_GET_INVENTORY;
++		reg.a1 = i; /* fw_seq_id under consideration */
++		arm_smccc_1_2_invoke(&reg, &reg);
++		if (reg.a0 == LFA_SUCCESS) {
++			image_uuid.uuid_lo = reg.a1;
++			image_uuid.uuid_hi = reg.a2;
++
++			snprintf(image_id_str, sizeof(image_id_str), "%pUb",
++				 &image_uuid);
++			ret = update_fw_image_node(image_id_str, i,
++							reg.a3, reg.a4, reg.a5);
++			if (ret)
++				return ret;
++		}
++	}
++
++	return 0;
++}
++
++static int __init lfa_init(void)
++{
++	struct arm_smccc_1_2_regs reg = { 0 };
++	int err;
++
++	reg.a0 = LFA_1_0_FN_GET_VERSION;
++	arm_smccc_1_2_invoke(&reg, &reg);
++	if (reg.a0 == -LFA_NOT_SUPPORTED) {
++		pr_info("Live Firmware activation: no firmware agent found\n");
++		return -ENODEV;
++	}
++
++	fw_images_update_wq = alloc_workqueue("fw_images_update_wq",
++					     WQ_UNBOUND | WQ_MEM_RECLAIM, 1);
++	if (!fw_images_update_wq) {
++		pr_err("Live Firmware Activation: Failed to allocate workqueue.\n");
++
++		return -ENOMEM;
++	}
++
++	pr_info("Live Firmware Activation: detected v%ld.%ld\n",
++		reg.a0 >> 16, reg.a0 & 0xffff);
++
++	lfa_dir = kobject_create_and_add("lfa", firmware_kobj);
++	if (!lfa_dir)
++		return -ENOMEM;
++
++	mutex_lock(&lfa_lock);
++	err = update_fw_images_tree();
++	if (err != 0)
++		kobject_put(lfa_dir);
++
++	mutex_unlock(&lfa_lock);
++	return err;
++}
++module_init(lfa_init);
++
++static void __exit lfa_exit(void)
++{
++	flush_workqueue(fw_images_update_wq);
++	destroy_workqueue(fw_images_update_wq);
++
++	mutex_lock(&lfa_lock);
++	clean_fw_images_tree();
++	mutex_unlock(&lfa_lock);
++
++	kobject_put(lfa_dir);
++}
++module_exit(lfa_exit);
++
++MODULE_DESCRIPTION("ARM Live Firmware Activation (LFA)");
++MODULE_LICENSE("GPL");
 -- 
 2.25.1
 
