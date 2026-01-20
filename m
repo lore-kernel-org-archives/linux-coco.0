@@ -1,37 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7217C428472
-	for <linux-coco@lists.linux.dev>; Tue, 20 Jan 2026 19:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16AD644D6B1
+	for <linux-coco@lists.linux.dev>; Tue, 20 Jan 2026 19:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768938902; cv=none; b=K5lnHWkhcOocWG5FT3Qc7yKSDJApqHi2rBGGmhUEZRg+fQE1dIqId/6TojBxSa7Rl5WL+Hd2CNDGLNClD0vjEAlaiAb/FSemNZOayXhqogqV54sybIYdm/jUdVLjabM3KTYhGn+aDsQSHCEDlwswJfqBgk24E+PTWAW8PowxPcE=
+	t=1768938906; cv=none; b=k0XBbLmmaYNyTRlo/GBgcfSiRcSwXKIBjGLIXTBfRTLoWG9FpIzzOkr4qvou6iztOh0gGh+/Sbcfj0w+zzzAvK96T90yF9tgL5OrrQjn8dyAGNt9y4CPWecklvkMBbZcckO2Mv7UAz9teZPexXSxnkb9hoNRFlRNejky86JxLZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768938902; c=relaxed/simple;
-	bh=y0qBWJ2JzcE5Wdd6HcJhZkb5zCY7uBDmMo7XTlbmdWI=;
+	s=arc-20240116; t=1768938906; c=relaxed/simple;
+	bh=LVjb51BubXtjCXFlaIflrd6zYn+Fs3tYXyrpiykRI2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mvuTRIE/BA32uCb7Y0avb5Cd+FDfr8afP722GPBdJCdN5tnHp28znMz2w1aUh5AXvx1+fGnO7QoxZrffjm3qv4heqzysxhzPEMda6B+Ej7vJwbb64crjMbln84nrfrzLhtkXVj37ZFJt4UvAiGwYiLk6qiq+E3dhTEyRRtTzpcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=hmM+wTzY; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version; b=bbSQsUbcg3aOcv+uRD2LF40CEMqihho//B0pGAh9gIcRtSumboyFFh2GrLa393STX6gnumFnmmwS/0RrMJunYOZiHw0atHX11k904TNiijTfYytz3eFbGaCvLP8Oac2ei4nzpJ2SISXAbaYiTs1G79QhoBMcLzmNQMdJnmON6j8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=GoCgxtX6; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="hmM+wTzY"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="GoCgxtX6"
 Received: from mail.zytor.com ([IPv6:2601:646:8081:9483:12c5:bc8e:d949:3497])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 60KJsD3J3899199
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 60KJsD3L3899199
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Tue, 20 Jan 2026 11:54:33 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 60KJsD3J3899199
+	Tue, 20 Jan 2026 11:54:35 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 60KJsD3L3899199
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025122301; t=1768938873;
-	bh=7CsscAQMogMbkdY3DhSP7qlBg7m319oAvuqW2F5PRns=;
+	s=2025122301; t=1768938877;
+	bh=Y67Y9z1Bfloc55qymo/CX4LxL/c7ZFllEVhyJRIxejU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hmM+wTzY3VFoB8ydJxnWfOVY48DqRD+WkOiY/yyqC/uK9TGdGlZcx8ZYfMWW1a1wm
-	 +h/sy8GTZ/HN+J1H6GZ5wZmtfxdF2ZwXOLJRRCbZA5+tWU3tjxZAG0uy7uW/7uiRbi
-	 JwbQbm9SuOnwykzbwtNS7w7zUT/EcX1YR+7fdu8Nrizt3laq4hHHA80wnV8fFpBBFT
-	 xr7qMLKSrd7G2hwlUGzxkzlEFhpobSw+KK9S27qVv9pOZjCtH5fZGNxxYqZsuFieC/
-	 HhYSZmQrEPbMVY/32Tnxil1u3DzlX/vXmOq7S29u2AY1d2Z10zfcLjZGzQsdIrGcD0
-	 1CSfbEr7KAqww==
+	b=GoCgxtX6+1Yyzn6zMwaCrDps0qUr+H98ddGIRlV05URMYuXhGrjq8lKpv5fFWQukg
+	 ruIvydbBYtfyM1TipOHNtf+MKUjwugJ5VJECsmhkA8VbS1x/B3siefFt6gMqhAwopW
+	 nNFhnD19NoB4uJVg0bYgST5zYOCjHkms/Eyuf896wPej2fIU5hT0X4nM33VN/Z4TEY
+	 xormATv11e4hYhT5H2ZHGdssl/4URmgdjGpjDXAic1VYOapE6+9WnlQUF7sORaDaUl
+	 thIID8VKl0hqX8jq6MkYjzDsbtoOj8BGOhzXdjvDJUhGs5kghGW5wWhT4bhYR6i9CJ
+	 9WcTAB4vF0SMw==
 From: "H. Peter Anvin" <hpa@zytor.com>
 To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
         Borislav Petkov <bp@alien8.de>,
@@ -43,10 +43,12 @@ To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
         Kiryl Shutsemau <kas@kernel.org>,
         Rick Edgecombe <rick.p.edgecombe@intel.com>
 Cc: "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
-        linux-coco@lists.linux.dev, x86@kernel.org
-Subject: [PATCH v1 12/14] x86/boot: tweak a20.c for better code generation
-Date: Tue, 20 Jan 2026 11:54:04 -0800
-Message-ID: <20260120195407.1163051-13-hpa@zytor.com>
+        linux-coco@lists.linux.dev, x86@kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH v1 14/14] compiler-gcc: Remove obsolete RELOC_HIDE() macro
+Date: Tue, 20 Jan 2026 11:54:06 -0800
+Message-ID: <20260120195407.1163051-15-hpa@zytor.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260120195407.1163051-1-hpa@zytor.com>
 References: <20260119192923.651588-1-hpa@zytor.com>
@@ -59,125 +61,95 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Do some minor tweaks to arch/x86/boot/a20.c for better code
-generation, made possible by the __seg_fs/__seg_gs changes.
+From: Uros Bizjak <ubizjak@gmail.com>
 
-Move the die() call to a20.c itself; there is no reason to push an
-error code upwards just to die() there.
+Remove the RELOC_HIDE() macro from include/linux/compiler-gcc.h.
 
-Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+The GCC specific macro was historically used to workaround very old
+compiler bugs (including pre-4.1 ppc64 GCC). These compilers are long
+obsolete.
+
+The generic RELOC_HIDE() macro should be used instead.
+
+The removal of the GCC specific macro results in the
+following code size reduction:
+
+     text    data     bss     dec     hex filename
+  28526453        4823511  737108 34087072        20820a0 vmlinux-old.o
+  28520945        4823463  737108 34081516        2080aec vmlinux-new.o
+
+  ./bloat-o-meter vmlinux-old.o vmlinux-new.o
+  add/remove: 4/14 grow/shrink: 189/674 up/down: 4433/-7865 (-3432)
+  ...
+  Total: Before=24103512, After=24100080, chg -0.01%
+
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
 ---
- arch/x86/boot/a20.c  | 24 +++++++++++-------------
- arch/x86/boot/boot.h |  2 +-
- arch/x86/boot/pm.c   |  3 +--
- 3 files changed, 13 insertions(+), 16 deletions(-)
+ include/linux/compiler-gcc.h | 25 -------------------------
+ include/linux/compiler.h     |  8 ++++++++
+ 2 files changed, 8 insertions(+), 25 deletions(-)
 
-diff --git a/arch/x86/boot/a20.c b/arch/x86/boot/a20.c
-index 52c3fccdcb70..38a1cad8a553 100644
---- a/arch/x86/boot/a20.c
-+++ b/arch/x86/boot/a20.c
-@@ -53,24 +53,22 @@ static int empty_8042(void)
+diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
+index 5de824a0b3d7..081e658754b9 100644
+--- a/include/linux/compiler-gcc.h
++++ b/include/linux/compiler-gcc.h
+@@ -10,31 +10,6 @@
+ 		     + __GNUC_MINOR__ * 100	\
+ 		     + __GNUC_PATCHLEVEL__)
  
- static int a20_test(int loops)
- {
--	int ok = 0;
- 	int saved, ctr;
+-/*
+- * This macro obfuscates arithmetic on a variable address so that gcc
+- * shouldn't recognize the original var, and make assumptions about it.
+- *
+- * This is needed because the C standard makes it undefined to do
+- * pointer arithmetic on "objects" outside their boundaries and the
+- * gcc optimizers assume this is the case. In particular they
+- * assume such arithmetic does not wrap.
+- *
+- * A miscompilation has been observed because of this on PPC.
+- * To work around it we hide the relationship of the pointer and the object
+- * using this macro.
+- *
+- * Versions of the ppc64 compiler before 4.1 had a bug where use of
+- * RELOC_HIDE could trash r30. The bug can be worked around by changing
+- * the inline assembly constraint from =g to =r, in this particular
+- * case either is valid.
+- */
+-#define RELOC_HIDE(ptr, off)						\
+-({									\
+-	unsigned long __ptr;						\
+-	__asm__ ("" : "=r"(__ptr) : "0"(ptr));				\
+-	(typeof(ptr)) (__ptr + (off));					\
+-})
+-
+ #if defined(LATENT_ENTROPY_PLUGIN) && !defined(__CHECKER__)
+ #define __latent_entropy __attribute__((latent_entropy))
+ #endif
+diff --git a/include/linux/compiler.h b/include/linux/compiler.h
+index 04487c9bd751..6affb7b44be7 100644
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -148,6 +148,14 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
+ 	= (unsigned long)&sym;
+ #endif
  
- 	set_fs(0xffff);
- 
- 	saved = ctr = rdgs32(A20_TEST_ADDR);
- 
--	while (loops--) {
-+	do {
- 		wrgs32(++ctr, A20_TEST_ADDR);
- 		io_delay();	/* Serialize and make delay constant */
- 		barrier();	/* Compiler won't know about fs/gs overlap */
--		ok = rdfs32(A20_TEST_ADDR+0x10) ^ ctr;
--		if (ok)
-+		if (rdfs32(A20_TEST_ADDR+0x10) != ctr)
- 			break;
--	}
-+	} while (--loops);
- 
- 	wrgs32(saved, A20_TEST_ADDR);
--	return ok;
-+	return loops;
- }
- 
- /* Quick test to see if A20 is already enabled */
-@@ -125,7 +123,7 @@ static void enable_a20_fast(void)
- 
- #define A20_ENABLE_LOOPS 255	/* Number of times to try */
- 
--int enable_a20(void)
-+void enable_a20(void)
- {
-        int loops = A20_ENABLE_LOOPS;
-        int kbc_err;
-@@ -134,30 +132,30 @@ int enable_a20(void)
- 	       /* First, check to see if A20 is already enabled
- 		  (legacy free, etc.) */
- 	       if (a20_test_short())
--		       return 0;
-+		       return;
- 
- 	       /* Next, try the BIOS (INT 0x15, AX=0x2401) */
- 	       enable_a20_bios();
- 	       if (a20_test_short())
--		       return 0;
-+		       return;
- 
- 	       /* Try enabling A20 through the keyboard controller */
- 	       kbc_err = empty_8042();
- 
- 	       if (a20_test_short())
--		       return 0; /* BIOS worked, but with delayed reaction */
-+		       return; /* BIOS worked, but with delayed reaction */
- 
- 	       if (!kbc_err) {
- 		       enable_a20_kbc();
- 		       if (a20_test_long())
--			       return 0;
-+			      return;
- 	       }
- 
- 	       /* Finally, try enabling the "fast A20 gate" */
- 	       enable_a20_fast();
- 	       if (a20_test_long())
--		       return 0;
-+		       return;
-        }
- 
--       return -1;
-+       die("A20 gate not responding, unable to boot...\n");
- }
-diff --git a/arch/x86/boot/boot.h b/arch/x86/boot/boot.h
-index 4d3549ed7987..584c89d0738b 100644
---- a/arch/x86/boot/boot.h
-+++ b/arch/x86/boot/boot.h
-@@ -167,7 +167,7 @@ void copy_to_fs(addr_t dst, void *src, size_t len);
- void *copy_from_fs(void *dst, addr_t src, size_t len);
- 
- /* a20.c */
--int enable_a20(void);
-+void enable_a20(void);
- 
- /* apm.c */
- int query_apm_bios(void);
-diff --git a/arch/x86/boot/pm.c b/arch/x86/boot/pm.c
-index 3be89ba4b1b3..e39689ed65ea 100644
---- a/arch/x86/boot/pm.c
-+++ b/arch/x86/boot/pm.c
-@@ -106,8 +106,7 @@ void go_to_protected_mode(void)
- 	realmode_switch_hook();
- 
- 	/* Enable the A20 gate */
--	if (enable_a20())
--		die("A20 gate not responding, unable to boot...\n");
-+	enable_a20();
- 
- 	/* Reset coprocessor (IGNNE#) */
- 	reset_coprocessor();
++/*
++ * This macro obfuscates arithmetic on a variable address so that the compiler
++ * shouldn't recognize the original var, and make assumptions about it.
++ *
++ * This is needed because the C standard makes it undefined to do pointer
++ * arithmetic on "objects" outside their boundaries and compilers assume
++ * this is the case. In particular they assume such arithmetic does not wrap.
++ */
+ #ifndef RELOC_HIDE
+ # define RELOC_HIDE(ptr, off)					\
+   ({ unsigned long __ptr;					\
 -- 
 2.52.0
 
