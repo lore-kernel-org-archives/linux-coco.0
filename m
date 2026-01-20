@@ -1,25 +1,25 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A6031A568;
-	Tue, 20 Jan 2026 18:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7AE147886F;
+	Tue, 20 Jan 2026 19:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768934829; cv=none; b=H+4TnLrSpFYaGvODnieHC5R5GrMRgUYZpzRbhnevMlb1HHbWu9ytp29HCCMnEPUEBbccegk1xzk6qgH7fwSSceRnvbnvaApe5RUArmWhL+XFm8td8lUBptoghepxpj6TZn7iVbiHxeZYFYXimEjVMNutRO6o7R7sRXnPLg6xGds=
+	t=1768936928; cv=none; b=ORAB7IoWvcy3TJPL3p9FOPl4DIu03jVC6WVGrRyg0wr5Nc7N6rNOJkF8yY8Vlwca7XBJQQ89UKQYmRzt29un5yP/7/WH1bUchznb6gg1+HiVbXifIS04Ynn+DCO2Uq1j0k0S1LjCuPh7PwAfmrO+o9hi/0DiZ63xN7xClPWHJac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768934829; c=relaxed/simple;
-	bh=3jhjAuQGwodWtrq6trhTeLdHhRWLU9tMBsnlpPoSGOs=;
+	s=arc-20240116; t=1768936928; c=relaxed/simple;
+	bh=fHz2YOLDMN3k9zSXfasCjgbpvcHgmmzt+EZjwtKQk28=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M671Da1Z89CV91UqW0Krb0c9/nwuh5bAQ19PsQxoH1TRAZMLoCohbmDRo8a/onNJFG3kTXkhZ8uLLM2P6JPJFYQ1Y0WH/t97aeYZ57XqVAN+mVEmC4DOqz/trASRkM4Gn3OClqdmEBi5Jt0+gmtSOh40DddzT/VPHoBQ8JVUdmE=
+	 In-Reply-To:Content-Type; b=UtmytsaKxeWyG4uEAPv1arfyLfUq4NVoNerPqra3qtg/qFpeLzUyxrGQW2KRTkP38KvVuhMNdOLXmF9Z0xG5cfm5DkmrLF2DD5O/+bm4zHHGrrSOA5YbvPiBcir+XZ+frh3iRm2+ZXkN3MPwJUV/tUujyphNHbFnjWrHiGvD8As=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 569641517;
-	Tue, 20 Jan 2026 10:46:59 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 55A0F1517;
+	Tue, 20 Jan 2026 11:21:58 -0800 (PST)
 Received: from [10.57.49.114] (unknown [10.57.49.114])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 807533F694;
-	Tue, 20 Jan 2026 10:47:04 -0800 (PST)
-Message-ID: <2c04d4a7-559a-42d1-bc99-66e60d9f78c4@arm.com>
-Date: Tue, 20 Jan 2026 18:47:02 +0000
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 813923F632;
+	Tue, 20 Jan 2026 11:22:03 -0800 (PST)
+Message-ID: <b662e137-5d2a-4ee7-b1f7-b4545388d4fe@arm.com>
+Date: Tue, 20 Jan 2026 19:22:01 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -29,123 +29,103 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/2] dma-direct: Validate DMA mask against canonical DMA
  addresses
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, linux-kernel@vger.kernel.org,
- iommu@lists.linux.dev, linux-coco@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, will@kernel.org,
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, linux-kernel@vger.kernel.org,
+ iommu@lists.linux.dev, linux-coco@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, will@kernel.org, jgg@ziepe.ca,
  steven.price@arm.com, Marek Szyprowski <m.szyprowski@samsung.com>
 References: <20260120064255.179425-1-aneesh.kumar@kernel.org>
- <2a0b6d1b-875a-4075-8fc9-a8534afc9168@arm.com> <yq5atswgjrkp.fsf@kernel.org>
- <0da8b73c-5bec-44c3-9902-221a11142c34@arm.com>
- <20260120151127.GP961572@ziepe.ca>
- <a89e8fcc-29f0-4a6a-85f8-ca8ca41c53ce@arm.com>
- <20260120175454.GA1325733@ziepe.ca>
+ <2a0b6d1b-875a-4075-8fc9-a8534afc9168@arm.com>
+ <893a6503-d33f-41d8-8966-19b9f251d9da@arm.com> <yq5aqzrkjr9e.fsf@kernel.org>
 From: Robin Murphy <robin.murphy@arm.com>
 Content-Language: en-GB
-In-Reply-To: <20260120175454.GA1325733@ziepe.ca>
+In-Reply-To: <yq5aqzrkjr9e.fsf@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 2026-01-20 5:54 pm, Jason Gunthorpe wrote:
-> On Tue, Jan 20, 2026 at 05:11:27PM +0000, Robin Murphy wrote:
->>> But you could make an argument that a trusted device won't DMA to
->>> shared memory, ie it would SWIOTLB to private memory if that is
->>> required.
+On 2026-01-20 2:25 pm, Aneesh Kumar K.V wrote:
+> Robin Murphy <robin.murphy@arm.com> writes:
+> 
+>> On 2026-01-20 9:59 am, Suzuki K Poulose wrote:
+>>> On 20/01/2026 06:42, Aneesh Kumar K.V (Arm) wrote:
+>>>> On systems that apply an address encryption tag or mask to DMA addresses,
+>>>> DMA mask validation must be performed against the canonical DMA address.
+>>>> Using a non-canonical (e.g. encrypted or unencrypted) DMA address
+>>>> can incorrectly fail capability checks, since architecture-specific
+>>>> encryption bits are not part of the device’s actual DMA addressing
+>>>> capability. For example, arm64 adds PROT_NS_SHARED to unencrypted DMA
+>>>> addresses.
+>>>>
+>>>> Fix this by validating device DMA masks against __phys_to_dma(), ensuring
+>>>> that the architecture encryption mask does not influence the check.
+>>>>
+>>>> Fixes: b66e2ee7b6c8 ("dma: Introduce generic dma_addr_*crypted helpers")
+>>>
+>>>
+>>>> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+>>>> ---
+>>>>    kernel/dma/direct.c | 4 ++--
+>>>>    1 file changed, 2 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+>>>> index 8e04f72baaa3..a5639e9415f5 100644
+>>>> --- a/kernel/dma/direct.c
+>>>> +++ b/kernel/dma/direct.c
+>>>> @@ -580,12 +580,12 @@ int dma_direct_supported(struct device *dev, u64
+>>>> mask)
+>>>>        /*
+>>>>         * This check needs to be against the actual bit mask value, so use
+>>>> -     * phys_to_dma_unencrypted() here so that the SME encryption mask
+>>>> isn't
+>>>> +     * __phys_to_dma() here so that the arch specific encryption mask
+>>>> isn't
+>>>>         * part of the check.
+>>>>         */
+>>>>        if (IS_ENABLED(CONFIG_ZONE_DMA))
+>>>>            min_mask = min_t(u64, min_mask, zone_dma_limit);
+>>>> -    return mask >= phys_to_dma_unencrypted(dev, min_mask);
+>>>> +    return mask >= __phys_to_dma(dev, min_mask);
+>>>
+>>> This is wrong, isn't it ? For e.g., for CCA, even though the "Flag" is
+>>> added to the PA, it is really part of the actual "PA" and thus must be
+>>> checked against the full PA ?
 >>
->> I don't think we can assume that any arbitrary trusted device is *never*
->> going to want to access shared memory in the Realm IPA space,
-> 
-> Well, I can say it isn't supported with the DMA API we have today, so
-> that's not *never* but at least for the present moment assuming that
-> only private addresses are used with DMA would be consistent with the
-> overall kernel capability.
-> 
-> Certainly I think we have use cases for mixing traffic, and someone
-> here is looking at what it would take to extend things to actually
-> make it possible to reach into arbitrary shared memory with the DMA
-> API..
-> 
->>   and while it might technically be possible for a private SWIOTLB
->> buffer to handle that, we currently only have infrastructure that
->> assumes the opposite (i.e. that SWIOTLB buffers are shared for
->> bouncing untrusted DMA to/from private memory).
-> 
-> We also don't support T=1 devices with the current kernel either, and
-> the required behavior is exactly what a normal non-CC kernel does
-> today. Basically, SWIOTLB should not be allocating or using shared
-> memory with a T=1 device at all, and I think that is a important thing
-> to have in the code for security.
-> 
-> Anyhow, I'm just saying either you keep the limit as we have now or if
-> the limit is relaxed for T=1 then it would make sense to fixup SWIOTLB
-> to do traditional bouncing to avoid high (shared) addresses.
-
-Indeed those are essentially all the same points I was making too - even 
-a T=1 device must support the full IPA range today, because if any 
-generated DMA address led to trying to use SWIOTLB via the current code 
-that would go horrifically wrong in ways likely to leak private data, or 
-at best fault at S2 and/or corrupt Realm memory (and at worst, all 3).
-
->> Thus for now, saying we can only promise to support DMA if the
->> device can access the whole IPA space itself is accurate.
-> 
-> Right, that is where things are right now, and I don't think we should
-> move away from those code limitations unless there are mitigations
-> like bouncing..
-> 
->>> Otherwise these two limitations will exclude huge numbers of real
->>> devices from working with ARM CCA at all.
+>> Yes, it's much the same as for AMD SEV (albeit the other way round) -
+>> the encryption/decryption bit is part of the DMA address because it
+>> needs to be driven by the device, so it is crucial that the device's DMA
+>> mask is capable of expressing that.
 >>
->> Pretty sure the dependency on TDISP wins in that regard ;)
 > 
-> You can use existing T=0 devices without TDISP
-> 
-> And bolting a TDISP capable PCI IP onto a device with an addressing
-> limit probably isn't going to fix the addressing limit. :(
-> 
->> However, assuming that Realms and RMMs might eventually come up with their
->> own attestation mechanisms for on-chip non-PCIe devices (and such devices
->> continue to have crippled DMA capabilities)
-> 
-> The fabric isn't the only issue here, and even "PCIe" appearing
-> devices don't necessarily run over real-PCIe and may have limited
-> fabrics.
-> 
-> There are enough important devices out there that have internal
-> limitations, like registers and data structures that just cannot store
-> the full 64 bit address space. HW folks have a big $$ incentive
-> to take shortcuts like this..
+> Commit c92a54cfa0257e8ffd66b2a17d49e9c0bd4b769f explains these details.
 
-Fair enough, guess I shall temper my optimism...
+See x86's force_dma_unencrypted() implementation - the reason dma-direct 
+doesn't need to be so strict for that is because things are the right 
+way round that it can always fall back to shared/untrusted DMA as the 
+general case, and a device can only access an encrypted page directly if 
+it *can* drive the SME bit in the input address to trigger the inline 
+encryption engine.
 
->> then the fact is still that DA requires an SMMU for S2, so at worst
->> there should always be the possibility for an RMM to offer S1 SMMU
->> support to the Realm, we're just not there yet.
-> 
-> Having a S1 would help a T=1 device, but it doesn't do anything for
-> the T=0 devices.
+For CCA we have rather the opposite, where dma-direct requires a device 
+to be able to address any IPA directly to be sure of working at all, but 
+if we do happen to have a stage 1 IOMMU then we could rely on that to 
+map smaller IOVAs to the upper IPA space.
 
-If we have an SMMU we have an SMMU - S1 for T=0 devices is just regular 
-VFIO/IOMMUFD in Non-Secure VA/IPA space, for which the VMM doesn't need 
-the RMM's help. I've long been taking it for granted that that one's a 
-non-issue ;)
+> I was wondering whether the DMA-enable operation should live outside the
+> set_mask operation. Conceptually, set_mask should be derived purely from
+> max_pfn, while the DMA enablement path could additionally verify whether
+> the device requires access to an alias address, depending on whether it
+> is operating in trusted or untrusted mode?
 
-The only thing we can't easily handle (and would rather avoid) is S1 
-translation for T=0 traffic from T=1 devices, since that would require 
-the Realm OS to comprehend the notion of a single device attached to two 
-different vSMMUs at once. Rather, to be workable I think we'd need to 
-keep the T=0 and T=1 states described as distinct devices - which 
-*could* then each be associated with "shared" (VMM-provided) and 
-"private" (RMM-provided) vSMMU instances respectively - and leave it as 
-the Realm driver's problem if it wants to coordinate enabling and using 
-both at the same time, kinda like the link aggregation model.
+No, the point of the set_mask check is "is this mask big enough to 
+accommodate any *DMA address* we might need to give the device?" - that 
+includes offsets, magic bits, magic bits encoded as fake offsets (yes 
+you, Raspberry Pi...) and whatever else might comprise an actual DMA 
+address as handed off to the hardware. It is *not* directly a "can this 
+device DMA to all RAM we know about?" check - that is in the assumption 
+that if necessary the SWIOTLB buffer will be reachable at a <=32-bit DMA 
+address, and thus we should not *need* to give >32-bit addresses to 
+devices. It is only that assumption which fundamentally falls apart for 
+CCA (with more than 2GB of IPA space, at least).
 
 Thanks,
 Robin.
-
-> The other answer is to expect the VMM to limit the IPA size so that
-> the IO devices can reach the full address space.
-> 
-> Jason
-
