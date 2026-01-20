@@ -1,37 +1,37 @@
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22603D3300
-	for <linux-coco@lists.linux.dev>; Tue, 20 Jan 2026 19:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E813A0EA8
+	for <linux-coco@lists.linux.dev>; Tue, 20 Jan 2026 19:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768938891; cv=none; b=E7/2We3bK62mybt+a7N8RSEzxeydshixGOE1zKmqbPkX+mOhRkHEBVVUxbzn6IK6HzwO5PzWsjf0E6vvJ3na3EOiLpOFN+05vQYmf9jR6yZ98iCIgQ/kNyYCnaMghrgbWv47Qz9CqS514e+tlLIPm8eLmqUp081NDSUA1LxzgR4=
+	t=1768938894; cv=none; b=pvFn2FIJTqrL3C5NUy/TFjxRYO5YBeLeahA4mnGfv0i242Kz0yE2x4sbeIsRmajwgWDyRQ309FKVnMpPVMnrAEKOxKj3sDmExtLCLByrYRhjNWmAfHSNFCM1ISmMeX9S+BTb+o9CudE3SlsDjv9KER+f3OXFvNgK6C+Tj6TIHXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768938891; c=relaxed/simple;
-	bh=pd088RQOhQt9hIGjmfzn4CJYQCYna96Bqw2lP4UCTWk=;
+	s=arc-20240116; t=1768938894; c=relaxed/simple;
+	bh=MveQi5l0YQ7OLkSuW8oRirePVaw/kJlAsYs/pcnpNm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=smBStxw16LxCYKmP5gZxeTvFPpWLua8a/nCvdSSzsR2jlUEY4ZSMEywfYjFI0Q5JoBfDiSOqrIukpdhsobT1X2SPLzjd678/FFzol4z4Ewn2aArq/IIvX0udjhqGzWHs9eXNyJi9j1oou/Xx6uYkhHJn0RyZujnU3lsX4RU5yjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=K7G06s8s; arc=none smtp.client-ip=198.137.202.136
+	 MIME-Version; b=uWWo9sVU9/a68vGbGFgDkua2UIiTQyjo7DiLAus0D7b/kB5Lmfj9z+4JKpnsCKdUN2IhlEUKswZV7H+QssJdO6JfmHe2tX9I7YGk+fl+Fd36IU6kCvV/Sd1Hv2hfzq0qtvFuPo0YsSt+dB0bqoxnY+E4Q5JOw2UR3F4+ke/XvyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=DcVcbmQ+; arc=none smtp.client-ip=198.137.202.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="K7G06s8s"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="DcVcbmQ+"
 Received: from mail.zytor.com ([IPv6:2601:646:8081:9483:12c5:bc8e:d949:3497])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 60KJsD3E3899199
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 60KJsD3B3899199
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Tue, 20 Jan 2026 11:54:25 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 60KJsD3E3899199
+	Tue, 20 Jan 2026 11:54:22 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 60KJsD3B3899199
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025122301; t=1768938866;
-	bh=0eZFuAsmIpe2g12/pjAj+iubg2rFoCHRAqhKjy60vdk=;
+	s=2025122301; t=1768938863;
+	bh=JqbF6ot1ZgQZZaR0bZSta5QNoXS+I8M4O8vH2t5f5pE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K7G06s8s2eRuBZcImpUM9Z2KaHM88Uk5qTFtu2hghh/cgoZ/xjp2PoShXAeaVkh0i
-	 2y+Xm2VLX/l2SvjNCAPnLKpjVbXTw0p9ZFUUsiDVj9noX9hkWhxaXMP3Kn7pbp81rC
-	 Wfh2ssaYa1fyQ4ySQGNmG3SElmXH72Pqtt7bsy6aklVXRAypgKNAop0J30RI8v4ooF
-	 1+dbDHIsfr4Oa0QeMoC8VAo3dzAoKxbZ7bf2k6AmoY2vK42IaUnJzqCgMfSyVrqWu2
-	 hu6XcphwVC1s4MTolkTlW1+Hge96buuI6YaMWlCfnHTR3HeFN97b+sKbyEwxI2Lo95
-	 c6UqRuwZk7OGQ==
+	b=DcVcbmQ+A9Ddrx2QIL0KnMREyFL66kVXtTojdTPj1XFieFitAjAsjTbHq2NNlVJ63
+	 9cCjmbEfeuH3ndeVu5kZNxKdIvoM+sBs+avloJSM2CBjcgrAXYlOiQIOrNxoSzjE5x
+	 hsXkyRtK4NLZjD1oknYtg8DwWYktmcGUXc2+MVK6NuUCdUY3H+0bW7R/SirPkDhK4x
+	 6YemCXS3e5JyCzhmEc0fplzRM3/GFA6TGv3/OPZk308I/FcmESMyQfUSLi9PBOoLbk
+	 En5q+KtnIE7qPyJhs29Fnd4dEWCJSB7Ht3EElLJ7H9wb4AGtx9PF1o9HTY4JCwFn3X
+	 erwRQCaJ1UfOQ==
 From: "H. Peter Anvin" <hpa@zytor.com>
 To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
         Borislav Petkov <bp@alien8.de>,
@@ -44,9 +44,9 @@ To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
         Rick Edgecombe <rick.p.edgecombe@intel.com>
 Cc: "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
         linux-coco@lists.linux.dev, x86@kernel.org
-Subject: [PATCH v1 07/14] x86/boot: factor out the 16-bit startup code from header.S
-Date: Tue, 20 Jan 2026 11:53:59 -0800
-Message-ID: <20260120195407.1163051-8-hpa@zytor.com>
+Subject: [PATCH v1 04/14] x86/boot: modernize the segment structure for the header and setup
+Date: Tue, 20 Jan 2026 11:53:56 -0800
+Message-ID: <20260120195407.1163051-5-hpa@zytor.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260120195407.1163051-1-hpa@zytor.com>
 References: <20260119192923.651588-1-hpa@zytor.com>
@@ -59,276 +59,166 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Move the 16-bit startup code to its own assembly file, instead of
-mixing it into header.S. header.S is now a pure data file.
+Modernize the segment structure for the EFI and bzImage headers and
+the 16-bit setup.
 
-This also means the .code16 directive is no longer needed for this
-file.
+1. The ".bstext" section (EFI header) has not had code in it for a
+   while now. Merge it into the .header section.
+2. Move the contents of the .signature section to assembly rather than
+   the linker script. As a side benefit, the magic number is now
+   private to header.S.
+3. Add additional asserts to the linker script.
+4. Fill gaps in code sections with int3 instead of nop.
 
 Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 ---
- arch/x86/boot/Makefile  |   4 +-
- arch/x86/boot/header.S  |  91 +--------------------------------
- arch/x86/boot/start16.S | 108 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 112 insertions(+), 91 deletions(-)
- create mode 100644 arch/x86/boot/start16.S
+ arch/x86/boot/header.S | 27 +++++++++++++++++++--------
+ arch/x86/boot/setup.ld | 26 ++++++++++++--------------
+ 2 files changed, 31 insertions(+), 22 deletions(-)
 
-diff --git a/arch/x86/boot/Makefile b/arch/x86/boot/Makefile
-index 3f9fb3698d66..d7944bf196b9 100644
---- a/arch/x86/boot/Makefile
-+++ b/arch/x86/boot/Makefile
-@@ -22,8 +22,8 @@ subdir-		:= compressed
- 
- setup-y		+= a20.o bioscall.o cmdline.o copy.o cpu.o cpuflags.o cpucheck.o
- setup-y		+= early_serial_console.o edd.o header.o main.o memory.o
--setup-y		+= pm.o pmjump.o printf.o regs.o string.o tty.o video.o
--setup-y		+= video-mode.o version.o
-+setup-y		+= pm.o pmjump.o printf.o regs.o start16.o string.o tty.o
-+setup-y		+= video.o video-mode.o version.o
- setup-$(CONFIG_X86_APM_BOOT) += apm.o
- 
- # The link order of the video-*.o modules can matter.  In particular,
 diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
-index d74db02928e6..10b2971320f3 100644
+index bda20395658f..85a21d576f5b 100644
 --- a/arch/x86/boot/header.S
 +++ b/arch/x86/boot/header.S
-@@ -25,7 +25,6 @@
- #include "voffset.h"
- #include "zoffset.h"
- 
--BOOTSEG		= 0x07C0		/* original address of boot-sector */
- SYSSEG		= 0x1000		/* historical load address >> 4 */
- 
- #ifndef SVGA_MODE
-@@ -39,8 +38,6 @@ SYSSEG		= 0x1000		/* historical load address >> 4 */
- 	.set	salign, 0x1000
+@@ -40,7 +40,7 @@ SYSSEG		= 0x1000		/* historical load address >> 4 */
  	.set	falign, 0x200
  
--	.code16
--
- # EFI PECOFF header ##########################################################
+ 	.code16
+-	.section ".bstext", "ax"
++	.section ".header", "a"
+ #ifdef CONFIG_EFI_STUB
+ 	# "MZ", MS-DOS header
+ 	.word	IMAGE_DOS_SIGNATURE
+@@ -221,15 +221,16 @@ pecompat_fstart:
+ 		IMAGE_SCN_MEM_WRITE		# Characteristics
  
- 	.section ".header", "a"
-@@ -277,6 +274,7 @@ type_of_loader:	.byte	0		# 0 means ancient bootloader, newer
- 					# assigned ids
- 
- # flags, unused bits must be zero (RFU) bit within loadflags
-+		.globl	loadflags
- loadflags:
- 		.byte	LOADED_HIGH	# The kernel is to be loaded high
- 
-@@ -301,6 +299,7 @@ ramdisk_size:	.long	0		# its size in bytes
- bootsect_kludge:
- 		.long	0		# obsolete
- 
-+		.globl	heap_end_ptr
- heap_end_ptr:	.word	_end+STACK_SIZE-512
- 					# (Header version 0x0201 or later)
- 					# space from here (exclusive) down to
-@@ -551,89 +550,3 @@ kernel_info_offset:	.long ZO_kernel_info
- end_of_bzheader:
- 
- # End of bzImage header ######################################################
--
--	.section ".entrytext", "ax"
--	.globl start_of_setup
--start_of_setup:
--# Force %es = %ds
--	movw	%ds, %ax
--	movw	%ax, %es
--	cld
--
--# Apparently some ancient versions of LILO invoked the kernel with %ss != %ds,
--# which happened to work by accident for the old code.  Recalculate the stack
--# pointer if %ss is invalid.  Otherwise leave it alone, LOADLIN sets up the
--# stack behind its own code, so we can't blindly put it directly past the heap.
--
--	movw	%ss, %dx
--	cmpw	%ax, %dx	# %ds == %ss?
--	movw	%sp, %dx
--	je	2f		# -> assume %sp is reasonably set
--
--	# Invalid %ss, make up a new stack
--	movw	$_end, %dx
--	testb	$CAN_USE_HEAP, loadflags
--	jz	1f
--	movw	heap_end_ptr, %dx
--1:	addw	$STACK_SIZE, %dx
--	jnc	2f
--	xorw	%dx, %dx	# Prevent wraparound
--
--2:	# Now %dx should point to the end of our stack space
--	andw	$~3, %dx	# dword align (might as well...)
--	jnz	3f
--	movw	$0xfffc, %dx	# Make sure we're not zero
--3:	movw	%ax, %ss
--	movzwl	%dx, %esp	# Clear upper half of %esp
--	sti			# Now we should have a working stack
--
--# We will have entered with %cs = %ds+0x20, normalize %cs so
--# it is on par with the other segments.
--	pushw	%ds
--	pushw	$6f
--	lretw
--6:
--
--# Check signature at end of setup
--SETUP_SIGNATURE = 0x5a5aaa55
--	cmpl	$SETUP_SIGNATURE, setup_sig
--	jne	setup_bad
--
--# Zero the bss
--	movw	$__bss_start, %di
--	movw	$_end+3, %cx
--	xorl	%eax, %eax
--	subw	%di, %cx
--	shrw	$2, %cx
--	rep stosl
--
--# The C code uses %gs == 0 as invariant
--	movw	%ax, %gs
--
--# Jump to C code (should not return)
--	calll	main
--
--# Setup corrupt somehow...
--setup_bad:
--	movl	$setup_corrupt, %eax
--	# Fall through...
--
--	.globl	die
--	.type	die, @function
--die:
--	calll	puts
--1:
--	hlt
--	jmp	1b
--
--	.size	die, .-die
--
--	.section ".initdata", "a"
--setup_corrupt:
--	.byte	7
--	.string	"No setup signature found...\n"
--
--	.section ".signature", "a"
--	.balign 4
--setup_sig:
--	.long SETUP_SIGNATURE
-diff --git a/arch/x86/boot/start16.S b/arch/x86/boot/start16.S
-new file mode 100644
-index 000000000000..3381dc0f4065
---- /dev/null
-+++ b/arch/x86/boot/start16.S
-@@ -0,0 +1,108 @@
-+/*
-+ * start16.S
-+ *
-+ *	Copyright (C) 1991, 1992 Linus Torvalds
-+ *
-+ *	Based on bootsect.S and setup.S
-+ *	modified by more people than can be counted
-+ *
-+ *	Rewritten as a common file by H. Peter Anvin (Apr 2007)
-+ *
-+ * BIG FAT NOTE: We're in real mode using 64k segments.  Therefore segment
-+ * addresses must be multiplied by 16 to obtain their respective linear
-+ * addresses. To avoid confusion, linear addresses are written using leading
-+ * hex while segment addresses are written as segment:offset.
-+ *
-+ * This code must *immediately* follow the bzImage header, so DO NOT
-+ * add alignment directives anywhere in the .entrytext section!
-+ */
+ 	.set	section_count, (. - section_table) / 40
 +
-+#include <asm/bootparam.h>
-+#include "boot.h"
+ #endif /* CONFIG_EFI_STUB */
+ 
+-	# Kernel attributes; used by setup.  This is part 1 of the
+-	# header, from the old boot sector.
++	# hdr should be at address 0x1f1; -2 for the sentinel
++	.org	0x1f1-2, 0xff			# Fill with 0xff
+ 
+-	.section ".header", "a"
+ 	.globl	sentinel
+ sentinel:	.byte 0xff, 0xff        /* Used to detect broken loaders */
+ 
++	# The bzImage struct setup_header
+ 	.globl	hdr
+ hdr:
+ 		.byte setup_sects - 1
+@@ -240,15 +241,15 @@ vid_mode:	.word SVGA_MODE
+ root_dev:	.word 0			/* Default to major/minor 0/0 */
+ boot_flag:	.word 0xAA55
+ 
+-	# offset 512, entry point
++	# offset 512, entry point AND struct setup_header length marker
+ 
+ 	.globl	_start
+ _start:
+ 		# Explicitly enter this as bytes, or the assembler
+-		# tries to generate a 3-byte jump here, which causes
++		# might try to generate a 3-byte jump here, which causes
+ 		# everything else to push off to the wrong offset.
+ 		.byte	0xeb		# short (2-byte) jump
+-		.byte	start_of_setup-1f
++		.byte	end_of_bzheader-1f
+ 1:
+ 
+ 	# Part 2 of the header, from the old setup.S
+@@ -541,9 +542,13 @@ init_size:		.long INIT_SIZE		# kernel initialization size
+ handover_offset:	__handover_offset
+ kernel_info_offset:	.long ZO_kernel_info
+ 
++	.globl end_of_bzheader
++end_of_bzheader:
 +
-+	.code16
-+	.section ".entrytext", "ax"
+ # End of setup header #####################################################
+ 
+ 	.section ".entrytext", "ax"
 +	.globl start_of_setup
-+start_of_setup:
-+# Force %es = %ds
-+	movw	%ds, %ax
-+	movw	%ax, %es
-+	cld
-+
-+# Apparently some ancient versions of LILO invoked the kernel with %ss != %ds,
-+# which happened to work by accident for the old code.  Recalculate the stack
-+# pointer if %ss is invalid.  Otherwise leave it alone, LOADLIN sets up the
-+# stack behind its own code, so we can't blindly put it directly past the heap.
-+
-+	movw	%ss, %dx
-+	cmpw	%ax, %dx	# %ds == %ss?
-+	movw	%sp, %dx
-+	je	2f		# -> assume %sp is reasonably set
-+
-+	# Invalid %ss, make up a new stack
-+	movw	$_end, %dx
-+	testb	$CAN_USE_HEAP, loadflags
-+	jz	1f
-+	movw	heap_end_ptr, %dx
-+1:	addw	$STACK_SIZE, %dx
-+	jnc	2f
-+	xorw	%dx, %dx	# Prevent wraparound
-+
-+2:	# Now %dx should point to the end of our stack space
-+	andw	$~3, %dx	# dword align (might as well...)
-+	jnz	3f
-+	movw	$0xfffc, %dx	# Make sure we're not zero
-+3:	movw	%ax, %ss
-+	movzwl	%dx, %esp	# Clear upper half of %esp
-+	sti			# Now we should have a working stack
-+
-+# We will have entered with %cs = %ds+0x20, normalize %cs so
-+# it is on par with the other segments.
-+	pushw	%ds
-+	pushw	$6f
-+	lretw
-+6:
-+
-+# Check signature at end of setup
+ start_of_setup:
+ # Force %es = %ds
+ 	movw	%ds, %ax
+@@ -585,7 +590,8 @@ start_of_setup:
+ 6:
+ 
+ # Check signature at end of setup
+-	cmpl	$0x5a5aaa55, setup_sig
 +SETUP_SIGNATURE = 0x5a5aaa55
 +	cmpl	$SETUP_SIGNATURE, setup_sig
-+	jne	setup_bad
-+
-+# Zero the bss
-+	movw	$__bss_start, %di
-+	movw	$_end+3, %cx
-+	xorl	%eax, %eax
-+	subw	%di, %cx
-+	shrw	$2, %cx
-+	rep stosl
-+
-+# The C code uses %gs == 0 as invariant
-+	movw	%ax, %gs
-+
-+# Jump to C code (should not return)
-+	calll	main
-+
-+# Setup corrupt somehow...
-+setup_bad:
-+	movl	$setup_corrupt, %eax
-+	# Fall through...
-+
-+	.globl	die
-+	.type	die, @function
-+die:
-+	calll	puts
-+1:
-+	hlt
-+	jmp	1b
-+
-+	.size	die, .-die
-+
-+	.section ".initdata", "a"
-+setup_corrupt:
-+	.byte	7
-+	.string	"No setup signature found...\n"
+ 	jne	setup_bad
+ 
+ # Zero the bss
+@@ -620,3 +626,8 @@ die:
+ setup_corrupt:
+ 	.byte	7
+ 	.string	"No setup signature found...\n"
 +
 +	.section ".signature", "a"
 +	.balign 4
 +setup_sig:
 +	.long SETUP_SIGNATURE
+diff --git a/arch/x86/boot/setup.ld b/arch/x86/boot/setup.ld
+index e1d594a60204..7515ab011783 100644
+--- a/arch/x86/boot/setup.ld
++++ b/arch/x86/boot/setup.ld
+@@ -10,19 +10,14 @@ ENTRY(_start)
+ SECTIONS
+ {
+ 	. = 0;
+-	.bstext	: {
+-		*(.bstext)
+-		. = 495;
+-	} =0xffffffff
+-
+ 	.header		: { *(.header) }
+-	.entrytext	: { *(.entrytext) }
+-	.inittext	: { *(.inittext) }
++	.entrytext	: { *(.entrytext) }	= 0xcccccccc
++	.inittext	: { *(.inittext) }	= 0xcccccccc
+ 	.initdata	: { *(.initdata) }
+ 	__end_init = .;
+ 
+-	.text		: { *(.text .text.*) }
+-	.text32		: { *(.text32) }
++	.text		: { *(.text .text.*) }	= 0xcccccccc
++	.text32		: { *(.text32) }	= 0xcccccccc
+ 
+ 	.pecompat	: { *(.pecompat) }
+ 	PROVIDE(pecompat_fsize = setup_size - pecompat_fstart);
+@@ -40,9 +35,7 @@ SECTIONS
+ 	.data		: { *(.data*) }
+ 
+ 	.signature	: {
+-		setup_sig = .;
+-		LONG(0x5a5aaa55)
+-
++		*(.signature)
+ 		setup_size = ALIGN(ABSOLUTE(.), 4096);
+ 		setup_sects = ABSOLUTE(setup_size / 512);
+ 		ASSERT(setup_sects >= 5, "The setup must be at least 5 sectors in size");
+@@ -64,11 +57,16 @@ SECTIONS
+ 	}
+ 
+ 	/*
+-	 * The ASSERT() sink to . is intentional, for binutils 2.14 compatibility:
++	 * The ASSERT() sink to . is intentional. A bare ASSERT()
++	 * outside of an output section is believed to have been broken
++	 * in some binutils versions, although it is supposed to have
++	 * been supported since binutils 2.15. Either way, it doesn't hurt,
++	 * so there is no reason to drop it.
+ 	 */
+ 	. = ASSERT(_end <= 0x8000, "Setup too big!");
+ 	. = ASSERT(hdr == 0x1f1, "The setup header has the wrong offset!");
++	. = ASSERT(end_of_bzheader <= 512+2+127, "bzImage header overflow!");
++	. = ASSERT(end_of_bzheader == start_of_setup, "padding bytes between .bzheader and .entrytext!");
+ 	/* Necessary for the very-old-loader check to work... */
+ 	. = ASSERT(__end_init <= 5*512, "init sections too big!");
+-
+ }
 -- 
 2.52.0
 
