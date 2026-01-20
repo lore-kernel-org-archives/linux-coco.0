@@ -1,278 +1,213 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21873659EF
-	for <linux-coco@lists.linux.dev>; Tue, 20 Jan 2026 20:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31A13D3329
+	for <linux-coco@lists.linux.dev>; Tue, 20 Jan 2026 21:47:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768941583; cv=none; b=d08M35R4jQwxZ2kyBrY+oh3EHoEIA58anu6F5fHNqAuIdscCOain00XH7zSka9tWYtWd+jWVikAO4ad3KYeLi66IVDLBxauYgaatLK9stATKGn0xQGQf9cfvbSWxKPMK5py26Syy5lIKInmAZFeHRj15lc0SgHX1mYAJxISLO5A=
+	t=1768945683; cv=none; b=r/WzVHslaIkvs35w76B4/r5ELXuchKrptVuJv3MsUJNtzMbu5mh45OQFKrvPNLaC2yVFTPUO/ckP984GSvxRJ9uc2eh8VqvVaRrbLQWHtb6O3R/lnG+UQye+/BMfiAzGCNxkDtZZV+2GVZ06/9tWBeMi9l74FLlQqAOFNjlqxLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768941583; c=relaxed/simple;
-	bh=BBNSLLdSFYFyUpLlez2P7xtkF8fzZ+LkUQxuzekxzqo=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=TFr+QObrWgaDzJ8PrLbFdlg4mT3qn9+ooQVM1VIRAzagnIMnF55KXTqhBjuM332FyrCFFIoFwHB7uosGzNoyAIHxQ1G1Nr0aqdCWP9A7lShVCn5i7gp3571e8HYtp7K1Kk2Sr8F7UaDo8mV1ljDojf58syuDXfoLjpZR48GC1cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xH0LuctX; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1768945683; c=relaxed/simple;
+	bh=yQP2Bhh0JVZYQHukZ5sYv7vdxCRank8Svaw9GvOPEYs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=e50iV/pi5qrSL41GqJAwJO+q48v8fAsosw+krKRUWsJ4+ad5XM6y9WkkQAeyNvzvJe6cMscl1EElhBcUNHI55ef4dNboPKw7m4GYyveADgtw6kRp2NFUqvKCC5+LyayfhEURkDk4tv2dAzFoAr+gGmS9i2mMHavjeh8RkX/pKfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B36R1ohU; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xH0LuctX"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-81e81fbbb8cso5565377b3a.3
-        for <linux-coco@lists.linux.dev>; Tue, 20 Jan 2026 12:39:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B36R1ohU"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-42fb4eeb482so3247719f8f.0
+        for <linux-coco@lists.linux.dev>; Tue, 20 Jan 2026 13:47:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768941580; x=1769546380; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fOlo8lJmeTgpVgWUOKyhN8UdU1E2up/RYKncWnWwFxk=;
-        b=xH0LuctXHp8KwLfZN7QrjL0S5TuDoQP1+DIFJPbtfA64rHO9yx2D7VSIJFErTDtp+j
-         fj68NdFl2OhZ6cqNt4QqX32xy72gkkDbwEUHJZgAX51FMeSOBw/2bCA9jSArVamxhfhj
-         UvyzvxGLAq64kZOzvUyK9gpFdutzjD/XNxBkdjcSiNGmJUOWEvKa734I/z1JhlcQIz5R
-         0GRilxm252sfQ1eYuZyFeI0Wppv8xFps25X/FZ313TOsoVRoejpefqPlwWCK0AE+iwbY
-         uCKMkeZztuUbCUx9+dLkvPclnkxHNNXayVsUi1Jw7kFVxUZQfWjfVIpamZh0cEoe643s
-         xXOg==
+        d=gmail.com; s=20230601; t=1768945677; x=1769550477; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nxAJit3cy3zQxDPIGkNvzfMvCiBbKehPhneoVBS7hA4=;
+        b=B36R1ohUiggxFMGfZavfCps88xAq3+75/ebfbpuAQgxj91syg9XSWJ3d8hdobTYS40
+         2UgRcbpx8pK0M+AqZNTLwE5GXaaXNYZhxcUfCdcRWeq20iPyhhYnZdSPW3maMG3C1VG+
+         1IW4l/wHWwMmtzEib2DICVP6m7Tb16ompoOxdfMiEVUWJ2JfF6b2/rAkw6uc1RaejPLi
+         RgTctlMIzIMuoSlcg0dEM3fYurWQXdhHGzxTAuw8uaduPSRzYm/NfeN34KqTdFNP1KbS
+         z/gC+zV3nqW+07R/lbhkXqgAN3yWqhkm7tpmKTulYocRRCs5e2lHuIEXEVLPdLf48EM4
+         AygA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768941580; x=1769546380;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fOlo8lJmeTgpVgWUOKyhN8UdU1E2up/RYKncWnWwFxk=;
-        b=VIeOwt0ILMjclpza201gQuhuZ663x+BALHWY7G5gNkGO7/XQPB3/D7nr5HoqCJFzvO
-         dxBpmrKIAKT7swaifDyw/gxITaql5QbRdygPEAaKplegCkB0Bc5DEGePDDMW48dH0PAu
-         XuPXRr0Rj0NTQtpEct2ji4cgjs+yyO6EXanLzw1fG9DqU0mvv6rjTSfKcGsZ4REZeb+D
-         NKX0+BeTgnEOKvIZB1CA4SDAWsZuRyCTsHWE4xTmwhRFHcjrqQW6bL9IQ802GPwF3N1G
-         RZ0KxRLiZHgARHP1ljcqQUYekdHWHiNSnOoewQO1aQIlDResvVLM4pDSsac95yqFwqsL
-         hI+A==
-X-Forwarded-Encrypted: i=1; AJvYcCU3G9qIshhTxn0wHMuzWYE8V0hbLhnlYBt+HObj37eq47Z5goFA85i1Se0oQVObjLuH9hfSUY0VPXdS@lists.linux.dev
-X-Gm-Message-State: AOJu0YxEyEMmbRPyjEjMbn866VJ4g4sZurP4vA6bAK2/p3o1pRYmQuF4
-	z/O6zbCq7AAmT+udSe8GRb3ETqoFCx1jbWNDLoU22yUDWQL4DGa0tWGCaqJP4qMLmcLEwekQ9HE
-	rArTTtg==
-X-Received: from pleg3.prod.google.com ([2002:a17:902:e383:b0:2a7:5f0f:c120])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:4606:b0:366:14af:9bbf
- with SMTP id adf61e73a8af0-38dfe7c9f65mr14217718637.73.1768941579841; Tue, 20
- Jan 2026 12:39:39 -0800 (PST)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 20 Jan 2026 12:39:37 -0800
+        d=1e100.net; s=20230601; t=1768945677; x=1769550477;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=nxAJit3cy3zQxDPIGkNvzfMvCiBbKehPhneoVBS7hA4=;
+        b=s3/6d/97Shw8rXrJZQCttIPFyckiOccbakZhUoZVijKXNbylsAa5JoIiUP+N/Pcefu
+         YiSn8xLh4aDKhCiigfxFnjFq1MueG0KtEdQ8l5ObXFKr8Sy06IKT2/JvDzLoreLIF/5n
+         D4Lw/d4DVjG3W3nBvGWBGYC8RfX+zqwakXs/LimoKKKPFzMxq9jbkiJjdOiAIC0v8dIR
+         daTRUR8AT69IozHhUUyeTfDMcyp322fdKEV0VuP7LM98V9jbPC0/eWDhuhPjGMSaV9L0
+         p9P0b/HVjiLlox8QNvkUw4WY5cgyYuMqDoZ+j/YRrbfriT50DO5eMELr42igDeQ2IT9i
+         6owg==
+X-Forwarded-Encrypted: i=1; AJvYcCVBfx1UdgPYvTMGv2pRpNWNDhtA34CpwjJJZmLZDFkzCTdB3SIUtWACc51tqGMNtDwkoPkWz3dnEZyK@lists.linux.dev
+X-Gm-Message-State: AOJu0YxvnKBoFORHQTGMm1EcYaX3vIMOamBRQfgfY4T2wNbFmOPHaq1s
+	7K4SkPIBDYn2Z9ws2lq+OGw2VyhiYizrbVcCxV8p38vqlcgRBDz56IfF
+X-Gm-Gg: AZuq6aILdra6HNVnjHJxx25Eq1JpfGCLbYVD/XZHmHVdOr8MBmzIdI4AEpCabN91mjY
+	YPsMK+3nNAm3lc/Q3O4JEkZpqXrbZvDnPNxVZ58xsy8xmJSLcG+iE7NTPrdT6Kewhb3WM7hxVry
+	4ecfeKiXnpzfKKJA8sQZG3luzR/lLHzBnP30QLND6YKIWYamuKXDzcQ7shflNWAPdP9V0DSE6qG
+	Jb+IsnEECuLlw+HpBq3MAD/Jr73Sup+Jap17ATYeGD3ivmzwSCdMjBQKhnSXqze0ux1TPIEOOcv
+	sH5c65DEE622SHw0ag4WcYK/GlPz+7Oip9f+/cLNrKtSYE81/wqlpxX04vpUmXBF6GeBrpI1+fZ
+	lUAjGN6Aju4mxhJlwIJxYtszGMqKGUWXpKBVeaSg8WpeDjtUcn9IhzbupxsMQaJ5b55UCm40VBy
+	wWSVBNMBHOR8tcI9UDSbxqVqi7mXS0YJobe8dKx0yfiHX1cQO4Yln1
+X-Received: by 2002:a5d:64c5:0:b0:430:f449:5f18 with SMTP id ffacd0b85a97d-4356a061401mr21577182f8f.46.1768945676741;
+        Tue, 20 Jan 2026 13:47:56 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4359333b924sm4594022f8f.13.2026.01.20.13.47.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jan 2026 13:47:56 -0800 (PST)
+Date: Tue, 20 Jan 2026 21:47:54 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Uros Bizjak <ubizjak@gmail.com>, Petr Mladek <pmladek@suse.com>, Andrew
+ Morton <akpm@linux-foundation.org>, Kees Cook <kees@kernel.org>, "Peter
+ Zijlstra (Intel)" <peterz@infradead.org>, Nathan Chancellor
+ <nathan@kernel.org>, Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, x86@kernel.org
+Subject: Re: [PATCH v1 01/14] x86/realmode: remove I/O port
+ paravirtualization
+Message-ID: <20260120214754.1f309010@pumpkin>
+In-Reply-To: <20260120195407.1163051-2-hpa@zytor.com>
+References: <20260119192923.651588-1-hpa@zytor.com>
+	<20260120195407.1163051-1-hpa@zytor.com>
+	<20260120195407.1163051-2-hpa@zytor.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260120203937.1447592-1-seanjc@google.com>
-Subject: [PATCH] x86/tdx: Use pg_level in TDX APIs, not the TDX-Module's
- 0-based level
-From: Sean Christopherson <seanjc@google.com>
-To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, Kai Huang <kai.huang@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Yan Zhao <yan.y.zhao@intel.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Ackerley Tng <ackerleytng@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Rework the TDX APIs to take the kernel's 1-based pg_level enum, not the
-TDX-Module's 0-based level.  The APIs are _kernel_ APIs, not TDX-Module
-APIs, and the kernel (and KVM) uses "enum pg_level" literally everywhere.
+On Tue, 20 Jan 2026 11:53:53 -0800
+"H. Peter Anvin" <hpa@zytor.com> wrote:
 
-Using "enum pg_level" eliminates ambiguity when looking at the APIs (it's
-NOT clear that "int level" refers to the TDX-Module's level), and will
-allow for using existing helpers like page_level_size() when support for
-hugepages is added to the S-EPT APIs.
+> In commit:
+> 
+> eb4ea1ae8f45 x86/boot: Port I/O: Allow to hook up alternative helpers
+> 
+> ... paravirtualization hooks were added to (some!) of the port I/O
+> functions. However, they were only ever used in the 32/64-bit
+> "compressed" directory, and never made any sense in the real-mode
+> code, which is notoriously size sensitive.
+> 
+> Without these hooks, <asm/shared/io.h> is usable directly, so mode
+                                                                  v
 
-No functional change intended.
+	David
 
-Cc: Kai Huang <kai.huang@intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Vishal Annapurve <vannapurve@google.com>
-Cc: Ackerley Tng <ackerleytng@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
-
-Compile-tested only.  Came across this when looking at the S-EPT hugepage
-series, specifically this code:
-  
-   unsigned long npages = 1 << (level * PTE_SHIFT);
-
-which I was _sure_ was broken, until I realized @level wasn't what I thought
-it was.
- 
- arch/x86/include/asm/tdx.h  | 14 ++++----------
- arch/x86/kvm/vmx/tdx.c      | 11 ++++-------
- arch/x86/virt/vmx/tdx/tdx.c | 26 ++++++++++++++++++--------
- 3 files changed, 26 insertions(+), 25 deletions(-)
-
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 6b338d7f01b7..bc0d03e70fd6 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -189,19 +189,13 @@ static inline u64 mk_keyed_paddr(u16 hkid, struct page *page)
- 	return ret;
- }
- 
--static inline int pg_level_to_tdx_sept_level(enum pg_level level)
--{
--        WARN_ON_ONCE(level == PG_LEVEL_NONE);
--        return level - 1;
--}
--
- u64 tdh_vp_enter(struct tdx_vp *vp, struct tdx_module_args *args);
- u64 tdh_mng_addcx(struct tdx_td *td, struct page *tdcs_page);
- u64 tdh_mem_page_add(struct tdx_td *td, u64 gpa, struct page *page, struct page *source, u64 *ext_err1, u64 *ext_err2);
--u64 tdh_mem_sept_add(struct tdx_td *td, u64 gpa, int level, struct page *page, u64 *ext_err1, u64 *ext_err2);
-+u64 tdh_mem_sept_add(struct tdx_td *td, u64 gpa, enum pg_level level, struct page *page, u64 *ext_err1, u64 *ext_err2);
- u64 tdh_vp_addcx(struct tdx_vp *vp, struct page *tdcx_page);
--u64 tdh_mem_page_aug(struct tdx_td *td, u64 gpa, int level, struct page *page, u64 *ext_err1, u64 *ext_err2);
--u64 tdh_mem_range_block(struct tdx_td *td, u64 gpa, int level, u64 *ext_err1, u64 *ext_err2);
-+u64 tdh_mem_page_aug(struct tdx_td *td, u64 gpa, enum pg_level level, struct page *page, u64 *ext_err1, u64 *ext_err2);
-+u64 tdh_mem_range_block(struct tdx_td *td, u64 gpa, enum pg_level level, u64 *ext_err1, u64 *ext_err2);
- u64 tdh_mng_key_config(struct tdx_td *td);
- u64 tdh_mng_create(struct tdx_td *td, u16 hkid);
- u64 tdh_vp_create(struct tdx_td *td, struct tdx_vp *vp);
-@@ -217,7 +211,7 @@ u64 tdh_vp_rd(struct tdx_vp *vp, u64 field, u64 *data);
- u64 tdh_vp_wr(struct tdx_vp *vp, u64 field, u64 data, u64 mask);
- u64 tdh_phymem_page_reclaim(struct page *page, u64 *tdx_pt, u64 *tdx_owner, u64 *tdx_size);
- u64 tdh_mem_track(struct tdx_td *tdr);
--u64 tdh_mem_page_remove(struct tdx_td *td, u64 gpa, u64 level, u64 *ext_err1, u64 *ext_err2);
-+u64 tdh_mem_page_remove(struct tdx_td *td, u64 gpa, enum pg_level level, u64 *ext_err1, u64 *ext_err2);
- u64 tdh_phymem_cache_wb(bool resume);
- u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *td);
- u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, struct page *page);
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 2d7a4d52ccfb..c47f4de2f19c 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1648,14 +1648,13 @@ static int tdx_mem_page_add(struct kvm *kvm, gfn_t gfn, enum pg_level level,
- static int tdx_mem_page_aug(struct kvm *kvm, gfn_t gfn,
- 			    enum pg_level level, kvm_pfn_t pfn)
- {
--	int tdx_level = pg_level_to_tdx_sept_level(level);
- 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
- 	struct page *page = pfn_to_page(pfn);
- 	gpa_t gpa = gfn_to_gpa(gfn);
- 	u64 entry, level_state;
- 	u64 err;
- 
--	err = tdh_mem_page_aug(&kvm_tdx->td, gpa, tdx_level, page, &entry, &level_state);
-+	err = tdh_mem_page_aug(&kvm_tdx->td, gpa, level, page, &entry, &level_state);
- 	if (unlikely(tdx_operand_busy(err)))
- 		return -EBUSY;
- 
-@@ -1699,12 +1698,11 @@ static int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn,
- static int tdx_sept_link_private_spt(struct kvm *kvm, gfn_t gfn,
- 				     enum pg_level level, void *private_spt)
- {
--	int tdx_level = pg_level_to_tdx_sept_level(level);
- 	gpa_t gpa = gfn_to_gpa(gfn);
- 	struct page *page = virt_to_page(private_spt);
- 	u64 err, entry, level_state;
- 
--	err = tdh_mem_sept_add(&to_kvm_tdx(kvm)->td, gpa, tdx_level, page, &entry,
-+	err = tdh_mem_sept_add(&to_kvm_tdx(kvm)->td, gpa, level, page, &entry,
- 			       &level_state);
- 	if (unlikely(tdx_operand_busy(err)))
- 		return -EBUSY;
-@@ -1788,7 +1786,6 @@ static void tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
- 					 enum pg_level level, u64 mirror_spte)
- {
- 	struct page *page = pfn_to_page(spte_to_pfn(mirror_spte));
--	int tdx_level = pg_level_to_tdx_sept_level(level);
- 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
- 	gpa_t gpa = gfn_to_gpa(gfn);
- 	u64 err, entry, level_state;
-@@ -1808,7 +1805,7 @@ static void tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
- 		return;
- 
- 	err = tdh_do_no_vcpus(tdh_mem_range_block, kvm, &kvm_tdx->td, gpa,
--			      tdx_level, &entry, &level_state);
-+			      level, &entry, &level_state);
- 	if (TDX_BUG_ON_2(err, TDH_MEM_RANGE_BLOCK, entry, level_state, kvm))
- 		return;
- 
-@@ -1824,7 +1821,7 @@ static void tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
- 	 * Race with TDH.VP.ENTER due to (0-step mitigation) and Guest TDCALLs.
- 	 */
- 	err = tdh_do_no_vcpus(tdh_mem_page_remove, kvm, &kvm_tdx->td, gpa,
--			      tdx_level, &entry, &level_state);
-+			      level, &entry, &level_state);
- 	if (TDX_BUG_ON_2(err, TDH_MEM_PAGE_REMOVE, entry, level_state, kvm))
- 		return;
- 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 5ce4ebe99774..22c0f832cb37 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1516,6 +1516,12 @@ static void tdx_clflush_page(struct page *page)
- 	clflush_cache_range(page_to_virt(page), PAGE_SIZE);
- }
- 
-+static int pg_level_to_tdx_sept_level(enum pg_level level)
-+{
-+	WARN_ON_ONCE(level == PG_LEVEL_NONE);
-+	return level - 1;
-+}
-+
- noinstr u64 tdh_vp_enter(struct tdx_vp *td, struct tdx_module_args *args)
- {
- 	args->rcx = td->tdvpr_pa;
-@@ -1556,10 +1562,11 @@ u64 tdh_mem_page_add(struct tdx_td *td, u64 gpa, struct page *page, struct page
- }
- EXPORT_SYMBOL_FOR_KVM(tdh_mem_page_add);
- 
--u64 tdh_mem_sept_add(struct tdx_td *td, u64 gpa, int level, struct page *page, u64 *ext_err1, u64 *ext_err2)
-+u64 tdh_mem_sept_add(struct tdx_td *td, u64 gpa, enum pg_level level,
-+		     struct page *page, u64 *ext_err1, u64 *ext_err2)
- {
- 	struct tdx_module_args args = {
--		.rcx = gpa | level,
-+		.rcx = gpa | pg_level_to_tdx_sept_level(level),
- 		.rdx = tdx_tdr_pa(td),
- 		.r8 = page_to_phys(page),
- 	};
-@@ -1587,10 +1594,11 @@ u64 tdh_vp_addcx(struct tdx_vp *vp, struct page *tdcx_page)
- }
- EXPORT_SYMBOL_FOR_KVM(tdh_vp_addcx);
- 
--u64 tdh_mem_page_aug(struct tdx_td *td, u64 gpa, int level, struct page *page, u64 *ext_err1, u64 *ext_err2)
-+u64 tdh_mem_page_aug(struct tdx_td *td, u64 gpa, enum pg_level level,
-+		     struct page *page, u64 *ext_err1, u64 *ext_err2)
- {
- 	struct tdx_module_args args = {
--		.rcx = gpa | level,
-+		.rcx = gpa | pg_level_to_tdx_sept_level(level),
- 		.rdx = tdx_tdr_pa(td),
- 		.r8 = page_to_phys(page),
- 	};
-@@ -1606,10 +1614,11 @@ u64 tdh_mem_page_aug(struct tdx_td *td, u64 gpa, int level, struct page *page, u
- }
- EXPORT_SYMBOL_FOR_KVM(tdh_mem_page_aug);
- 
--u64 tdh_mem_range_block(struct tdx_td *td, u64 gpa, int level, u64 *ext_err1, u64 *ext_err2)
-+u64 tdh_mem_range_block(struct tdx_td *td, u64 gpa, enum pg_level level,
-+			u64 *ext_err1, u64 *ext_err2)
- {
- 	struct tdx_module_args args = {
--		.rcx = gpa | level,
-+		.rcx = gpa | pg_level_to_tdx_sept_level(level),
- 		.rdx = tdx_tdr_pa(td),
- 	};
- 	u64 ret;
-@@ -1822,10 +1831,11 @@ u64 tdh_mem_track(struct tdx_td *td)
- }
- EXPORT_SYMBOL_FOR_KVM(tdh_mem_track);
- 
--u64 tdh_mem_page_remove(struct tdx_td *td, u64 gpa, u64 level, u64 *ext_err1, u64 *ext_err2)
-+u64 tdh_mem_page_remove(struct tdx_td *td, u64 gpa, enum pg_level level,
-+			u64 *ext_err1, u64 *ext_err2)
- {
- 	struct tdx_module_args args = {
--		.rcx = gpa | level,
-+		.rcx = gpa | pg_level_to_tdx_sept_level(level),
- 		.rdx = tdx_tdr_pa(td),
- 	};
- 	u64 ret;
-
-base-commit: 24d479d26b25bce5faea3ddd9fa8f3a6c3129ea7
--- 
-2.52.0.457.g6b5491de43-goog
+> io.h into the compressed/ directory and replace "io.h" with
+> <asm/shared/io.h> for the actual real-mode code.
+> 
+> Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+> ---
+>  arch/x86/boot/boot.h                | 2 +-
+>  arch/x86/boot/{ => compressed}/io.h | 0
+>  arch/x86/boot/compressed/misc.h     | 2 +-
+>  arch/x86/boot/compressed/tdx.c      | 2 +-
+>  arch/x86/boot/main.c                | 5 +----
+>  arch/x86/realmode/rm/wakemain.c     | 4 ----
+>  6 files changed, 4 insertions(+), 11 deletions(-)
+>  rename arch/x86/boot/{ => compressed}/io.h (100%)
+> 
+> diff --git a/arch/x86/boot/boot.h b/arch/x86/boot/boot.h
+> index 8e3eab34dff4..f185931283cb 100644
+> --- a/arch/x86/boot/boot.h
+> +++ b/arch/x86/boot/boot.h
+> @@ -18,6 +18,7 @@
+>  
+>  #ifndef __ASSEMBLER__
+>  
+> +#include <asm/shared/io.h>
+>  #include <linux/stdarg.h>
+>  #include <linux/types.h>
+>  #include <linux/edd.h>
+> @@ -26,7 +27,6 @@
+>  #include "bitops.h"
+>  #include "ctype.h"
+>  #include "cpuflags.h"
+> -#include "io.h"
+>  
+>  /* Useful macros */
+>  #define ARRAY_SIZE(x) (sizeof(x) / sizeof(*(x)))
+> diff --git a/arch/x86/boot/io.h b/arch/x86/boot/compressed/io.h
+> similarity index 100%
+> rename from arch/x86/boot/io.h
+> rename to arch/x86/boot/compressed/io.h
+> diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+> index fd855e32c9b9..68957e7698ad 100644
+> --- a/arch/x86/boot/compressed/misc.h
+> +++ b/arch/x86/boot/compressed/misc.h
+> @@ -43,8 +43,8 @@
+>  
+>  #define BOOT_BOOT_H
+>  #include "../ctype.h"
+> -#include "../io.h"
+>  
+> +#include "io.h"
+>  #include "efi.h"
+>  
+>  #ifdef CONFIG_X86_64
+> diff --git a/arch/x86/boot/compressed/tdx.c b/arch/x86/boot/compressed/tdx.c
+> index 8451d6a1030c..00359dbe1f8c 100644
+> --- a/arch/x86/boot/compressed/tdx.c
+> +++ b/arch/x86/boot/compressed/tdx.c
+> @@ -2,7 +2,7 @@
+>  
+>  #include "../cpuflags.h"
+>  #include "../string.h"
+> -#include "../io.h"
+> +#include "io.h"
+>  #include "error.h"
+>  
+>  #include <vdso/limits.h>
+> diff --git a/arch/x86/boot/main.c b/arch/x86/boot/main.c
+> index 9d0fea18d3c8..da01ade4959e 100644
+> --- a/arch/x86/boot/main.c
+> +++ b/arch/x86/boot/main.c
+> @@ -15,10 +15,9 @@
+>  #include "boot.h"
+>  #include "string.h"
+>  
+> +/* Buffer for building the full "zero page" struct boot_params */
+>  struct boot_params boot_params __attribute__((aligned(16)));
+>  
+> -struct port_io_ops pio_ops;
+> -
+>  char *HEAP = _end;
+>  char *heap_end = _end;		/* Default end of heap = no heap */
+>  
+> @@ -132,8 +131,6 @@ static void init_heap(void)
+>  
+>  void main(void)
+>  {
+> -	init_default_io_ops();
+> -
+>  	/* First, copy the boot header into the "zeropage" */
+>  	copy_boot_params();
+>  
+> diff --git a/arch/x86/realmode/rm/wakemain.c b/arch/x86/realmode/rm/wakemain.c
+> index a6f4d8388ad8..1d6437e6d2ba 100644
+> --- a/arch/x86/realmode/rm/wakemain.c
+> +++ b/arch/x86/realmode/rm/wakemain.c
+> @@ -62,12 +62,8 @@ static void send_morse(const char *pattern)
+>  	}
+>  }
+>  
+> -struct port_io_ops pio_ops;
+> -
+>  void main(void)
+>  {
+> -	init_default_io_ops();
+> -
+>  	/* Kill machine if structures are wrong */
+>  	if (wakeup_header.real_magic != 0x12345678)
+>  		while (1)
 
