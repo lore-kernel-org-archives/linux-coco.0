@@ -1,193 +1,91 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632432F9D98;
-	Mon, 19 Jan 2026 21:36:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6F036CDE5;
+	Tue, 20 Jan 2026 06:43:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768858583; cv=none; b=kpNZhs7NRBOopsaKn92+a7P8k70OHmQS/kPzzz3Iq0y3z7c9WcsDavj3djcLAUYulAf4amBUujQAYckABbaglGIDyReMt1sgZuTUre2e0B+fbzTnMgKDG3JP1F85OQEBlPOVnDz0PLXeJowbsb/yNTEUJNUeBBkUi/g1qR6jXOs=
+	t=1768891404; cv=none; b=q06xO7XEBX1rFI8cCS1CC0a35CoTAQw8yFZS+8hfR/Au1/f6XlZRuYuSXAMqPWVkv0R3YHeG61n4JIXke1dGNVorFM35zi7mq02KzIE0d+ix/Jdy8lkgzxfE5GahQn/k7sLqsl67oOb1y2cWEoYSKLkf4/LwLcoCuKCjs6hpg+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768858583; c=relaxed/simple;
-	bh=S69053zsak1P+OIMtzj+DlKHfixButumiqXBgHvfCPc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VgZWDpj+K/UYiXby+3fJitKDcKF6Opxqh3m/NGqcL+8w6fMVTKKoaRan91iWBVS3OVQkRoPYQ/UW9paPPaSG5g8QPIyd7t2eGrwV4JYnRd8qY2PZFiVXAI1m474bPWJcQzfKATs15pilg8pZsmFyuTjUkrZLRRADxXyEW6ttyp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Oux4s4eI; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1768891404; c=relaxed/simple;
+	bh=fXqBeANeANyqIBfh9xTfBVpuJiDNRuy2sOT6ZNznJXM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Lf/fxREjSgVQwFFeHoY/sP9z4z5JLKgt5WpQ1aRYrcOkVwlHuwHV3HeBSBwUReJGQKBWJV/y9qZYNLQUBzzJQGcW8B6MaKXW+gKNk2mFi1wA12tdBr30z6OCbrPxprYGM6kJB9Z4lWmO43ZRsXm0I2/T2m+B4O+Ky9oBp9XYLBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FkTbO84t; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Oux4s4eI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768858582; x=1800394582;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=S69053zsak1P+OIMtzj+DlKHfixButumiqXBgHvfCPc=;
-  b=Oux4s4eI6qZNscBEoPTVQh03CLhRHVFsuALosQNPV2l0u5Tpzxwo3AEE
-   w0PN/SzTWRymjfIcn0ttQQx1y3oZEupsu7kMYMJ3pgH/eZlrfEM/mb/Xz
-   YZ3dLfKl8yvi7vtv4q3NcEjpND/b2J/8hXbefjmaQhXyEVQ6HKyKHNar4
-   S4fbGNqX/fAvRDbc3y+ku1ajt21LB27Zvacu1lRrd2SUa31d5ifXnRrL+
-   NTvk1xvf22w8zEpow9/N36rbfC/gL0cFJxKNIVXuxKVSUxFJH2nLQPreY
-   a7D3W6SvFNeF3MOjs9jSb6opk4U/mneb5Ysa75lv2OjbYaY/DQGWMimJX
-   w==;
-X-CSE-ConnectionGUID: jMklXvi+Rqydp7MEUQnAsQ==
-X-CSE-MsgGUID: CDsAptEJRiK2O5xZ0gfWwg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="73925431"
-X-IronPort-AV: E=Sophos;i="6.21,239,1763452800"; 
-   d="scan'208";a="73925431"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 13:36:21 -0800
-X-CSE-ConnectionGUID: VUY++yKKRLK+o5q5BOsoQQ==
-X-CSE-MsgGUID: TN9LgT8zTzewUbXVCru1mg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,239,1763452800"; 
-   d="scan'208";a="228885257"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 19 Jan 2026 13:36:17 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vhwv1-00000000OK5-04mS;
-	Mon, 19 Jan 2026 21:36:15 +0000
-Date: Tue, 20 Jan 2026 05:35:57 +0800
-From: kernel test robot <lkp@intel.com>
-To: Salman Nabi <salman.nabi@arm.com>, vvidwans@nvidia.com,
-	andre.przywara@arm.com, sudeep.holla@arm.com, mark.rutland@arm.com,
-	lpieralisi@kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, ardb@kernel.org,
-	chao.gao@intel.com, linux-arm-kernel@lists.infradead.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	sdonthineni@nvidia.com, vsethi@nvidia.com, vwadekar@nvidia.com
-Subject: Re: [PATCH 1/1] firmware: smccc: add support for Live Firmware
- Activation (LFA)
-Message-ID: <202601200543.EKFOBfnW-lkp@intel.com>
-References: <20260119122729.287522-2-salman.nabi@arm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FkTbO84t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 785F2C19423;
+	Tue, 20 Jan 2026 06:43:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768891402;
+	bh=fXqBeANeANyqIBfh9xTfBVpuJiDNRuy2sOT6ZNznJXM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FkTbO84t0lXCTbD7BtoBVc8kXF2FKQeYZ1mi/kiCVmD3srEYrU20sJhBaKQwpAtlV
+	 YpZRi1kTDaTRs89YScExX2/IG5PxqWhAt2+lHqaD6nHywVGqSAYGZ4rFg73CebDRI1
+	 OtuMvvcx+Eq14397ETWDPkRjdSraznOrWAAcC67UmQM0+3o9A27CuDY1+NL241HBu7
+	 beDatetyw0G+gbH1FgIygbnJDnxPl7yqpxLZJqdpaKstDLsPUKnToy0RTwQn5yQxLC
+	 gR5B3vqCXD5ClWNDjExVt4kekPwUqssjn3CTgzy6zkXZdpVzUYbGcUL99aoJ4dhh+6
+	 h2At01Kg5/Pvg==
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	iommu@lists.linux.dev,
+	linux-coco@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	will@kernel.org,
+	robin.murphy@arm.com,
+	suzuki.poulose@arm.com,
+	jgg@ziepe.ca,
+	steven.price@arm.com,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+Subject: [PATCH 1/2] dma-direct: Validate DMA mask against canonical DMA addresses
+Date: Tue, 20 Jan 2026 12:12:54 +0530
+Message-ID: <20260120064255.179425-1-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260119122729.287522-2-salman.nabi@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Salman,
+On systems that apply an address encryption tag or mask to DMA addresses,
+DMA mask validation must be performed against the canonical DMA address.
+Using a non-canonical (e.g. encrypted or unencrypted) DMA address
+can incorrectly fail capability checks, since architecture-specific
+encryption bits are not part of the device’s actual DMA addressing
+capability. For example, arm64 adds PROT_NS_SHARED to unencrypted DMA
+addresses.
 
-kernel test robot noticed the following build errors:
+Fix this by validating device DMA masks against __phys_to_dma(), ensuring
+that the architecture encryption mask does not influence the check.
 
-[auto build test ERROR on soc/for-next]
-[also build test ERROR on linus/master v6.19-rc6 next-20260116]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Fixes: b66e2ee7b6c8 ("dma: Introduce generic dma_addr_*crypted helpers")
+Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+---
+ kernel/dma/direct.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Salman-Nabi/firmware-smccc-add-support-for-Live-Firmware-Activation-LFA/20260119-203221
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/soc/soc.git for-next
-patch link:    https://lore.kernel.org/r/20260119122729.287522-2-salman.nabi%40arm.com
-patch subject: [PATCH 1/1] firmware: smccc: add support for Live Firmware Activation (LFA)
-config: arm-defconfig (https://download.01.org/0day-ci/archive/20260120/202601200543.EKFOBfnW-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260120/202601200543.EKFOBfnW-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601200543.EKFOBfnW-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/firmware/smccc/lfa_fw.c:179:28: error: variable has incomplete type 'struct arm_smccc_1_2_regs'
-     179 |         struct arm_smccc_1_2_regs reg = { 0 };
-         |                                   ^
-   drivers/firmware/smccc/lfa_fw.c:179:9: note: forward declaration of 'struct arm_smccc_1_2_regs'
-     179 |         struct arm_smccc_1_2_regs reg = { 0 };
-         |                ^
->> drivers/firmware/smccc/lfa_fw.c:184:2: error: call to undeclared function 'arm_smccc_1_2_invoke'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     184 |         arm_smccc_1_2_invoke(&reg, &reg);
-         |         ^
-   drivers/firmware/smccc/lfa_fw.c:194:28: error: variable has incomplete type 'struct arm_smccc_1_2_regs'
-     194 |         struct arm_smccc_1_2_regs reg = { 0 };
-         |                                   ^
-   drivers/firmware/smccc/lfa_fw.c:194:9: note: forward declaration of 'struct arm_smccc_1_2_regs'
-     194 |         struct arm_smccc_1_2_regs reg = { 0 };
-         |                ^
-   drivers/firmware/smccc/lfa_fw.c:198:2: error: call to undeclared function 'arm_smccc_1_2_invoke'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     198 |         arm_smccc_1_2_invoke(&reg, &reg);
-         |         ^
-   drivers/firmware/smccc/lfa_fw.c:220:28: error: variable has incomplete type 'struct arm_smccc_1_2_regs'
-     220 |         struct arm_smccc_1_2_regs reg = { 0 };
-         |                                   ^
-   drivers/firmware/smccc/lfa_fw.c:220:9: note: forward declaration of 'struct arm_smccc_1_2_regs'
-     220 |         struct arm_smccc_1_2_regs reg = { 0 };
-         |                ^
-   drivers/firmware/smccc/lfa_fw.c:234:3: error: call to undeclared function 'arm_smccc_1_2_invoke'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     234 |                 arm_smccc_1_2_invoke(&reg, &reg);
-         |                 ^
-   drivers/firmware/smccc/lfa_fw.c:290:28: error: variable has incomplete type 'struct arm_smccc_1_2_regs'
-     290 |         struct arm_smccc_1_2_regs reg = { 0 };
-         |                                   ^
-   drivers/firmware/smccc/lfa_fw.c:290:9: note: forward declaration of 'struct arm_smccc_1_2_regs'
-     290 |         struct arm_smccc_1_2_regs reg = { 0 };
-         |                ^
-   drivers/firmware/smccc/lfa_fw.c:318:3: error: call to undeclared function 'arm_smccc_1_2_invoke'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     318 |                 arm_smccc_1_2_invoke(&reg, &reg);
-         |                 ^
-   drivers/firmware/smccc/lfa_fw.c:360:28: error: variable has incomplete type 'struct arm_smccc_1_2_regs'
-     360 |         struct arm_smccc_1_2_regs reg = { 0 };
-         |                                   ^
-   drivers/firmware/smccc/lfa_fw.c:360:9: note: forward declaration of 'struct arm_smccc_1_2_regs'
-     360 |         struct arm_smccc_1_2_regs reg = { 0 };
-         |                ^
-   drivers/firmware/smccc/lfa_fw.c:368:2: error: call to undeclared function 'arm_smccc_1_2_invoke'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     368 |         arm_smccc_1_2_invoke(&reg, &reg);
-         |         ^
-   drivers/firmware/smccc/lfa_fw.c:434:28: error: variable has incomplete type 'struct arm_smccc_1_2_regs'
-     434 |         struct arm_smccc_1_2_regs reg = { 0 };
-         |                                   ^
-   drivers/firmware/smccc/lfa_fw.c:434:9: note: forward declaration of 'struct arm_smccc_1_2_regs'
-     434 |         struct arm_smccc_1_2_regs reg = { 0 };
-         |                ^
-   drivers/firmware/smccc/lfa_fw.c:443:2: error: call to undeclared function 'arm_smccc_1_2_invoke'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     443 |         arm_smccc_1_2_invoke(&reg, &reg);
-         |         ^
-   drivers/firmware/smccc/lfa_fw.c:586:28: error: variable has incomplete type 'struct arm_smccc_1_2_regs'
-     586 |         struct arm_smccc_1_2_regs reg = { 0 };
-         |                                   ^
-   drivers/firmware/smccc/lfa_fw.c:586:9: note: forward declaration of 'struct arm_smccc_1_2_regs'
-     586 |         struct arm_smccc_1_2_regs reg = { 0 };
-         |                ^
-   drivers/firmware/smccc/lfa_fw.c:600:3: error: call to undeclared function 'arm_smccc_1_2_invoke'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     600 |                 arm_smccc_1_2_invoke(&reg, &reg);
-         |                 ^
-   drivers/firmware/smccc/lfa_fw.c:619:28: error: variable has incomplete type 'struct arm_smccc_1_2_regs'
-     619 |         struct arm_smccc_1_2_regs reg = { 0 };
-         |                                   ^
-   drivers/firmware/smccc/lfa_fw.c:619:9: note: forward declaration of 'struct arm_smccc_1_2_regs'
-     619 |         struct arm_smccc_1_2_regs reg = { 0 };
-         |                ^
-   drivers/firmware/smccc/lfa_fw.c:623:2: error: call to undeclared function 'arm_smccc_1_2_invoke'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     623 |         arm_smccc_1_2_invoke(&reg, &reg);
-         |         ^
-   16 errors generated.
-
-
-vim +179 drivers/firmware/smccc/lfa_fw.c
-
-   176	
-   177	static unsigned long get_nr_lfa_components(void)
-   178	{
- > 179		struct arm_smccc_1_2_regs reg = { 0 };
-   180	
-   181		reg.a0 = LFA_1_0_FN_GET_INFO;
-   182		reg.a1 = 0; /* lfa_info_selector = 0 */
-   183	
- > 184		arm_smccc_1_2_invoke(&reg, &reg);
-   185		if (reg.a0 != LFA_SUCCESS)
-   186			return reg.a0;
-   187	
-   188		return reg.a1;
-   189	}
-   190	
-
+diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+index 8e04f72baaa3..a5639e9415f5 100644
+--- a/kernel/dma/direct.c
++++ b/kernel/dma/direct.c
+@@ -580,12 +580,12 @@ int dma_direct_supported(struct device *dev, u64 mask)
+ 
+ 	/*
+ 	 * This check needs to be against the actual bit mask value, so use
+-	 * phys_to_dma_unencrypted() here so that the SME encryption mask isn't
++	 * __phys_to_dma() here so that the arch specific encryption mask isn't
+ 	 * part of the check.
+ 	 */
+ 	if (IS_ENABLED(CONFIG_ZONE_DMA))
+ 		min_mask = min_t(u64, min_mask, zone_dma_limit);
+-	return mask >= phys_to_dma_unencrypted(dev, min_mask);
++	return mask >= __phys_to_dma(dev, min_mask);
+ }
+ 
+ static const struct bus_dma_region *dma_find_range(struct device *dev,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
