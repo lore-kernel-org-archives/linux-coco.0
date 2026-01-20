@@ -1,161 +1,67 @@
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5723A299920
-	for <linux-coco@lists.linux.dev>; Tue, 20 Jan 2026 15:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F2134F27D;
+	Tue, 20 Jan 2026 17:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768923813; cv=none; b=YGfb5/OGBbvNsNFzimRRqgdbaYo2IV85ni78RfN06to0aM3MUABfe5ZJRnfmFK/DzMTcKCdx/uRbkFRPqEKmd0edY8XQZC4Ezb0eZnhmO+IZJp9fpWD0I16Wvw3m9eNFVw2p9QJ5WeRUq/5sceLmBWcmKLJXsPpECD/fb7YLe5w=
+	t=1768929006; cv=none; b=ijyGAJ0/fe61mOryHTx1HCXrL4Y4XJNhffuwXC/SA8co4O1R0PbO3M4X2mG4kLbQMgPFR1BvMEA8IDjGWdnDeU2jzyJNAKtUeT23ejIWt60BwfpQjk71RyFt7QklsxGoGnYyYQw2s/SyqPFrzPerOoIXDiaQdjrcm26mGZKkKmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768923813; c=relaxed/simple;
-	bh=AEk4f4OIqZky6anPZNNVQrU2C24WolRBC945N1z2OPs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YxgzhGaklOHqinL0zINmcycipWKd7A+pNaH/e72aiFY+Fg+R+88LWL688pqV4t2C9flMUKlmVyzluCiqCo3pW1kP9LNxBXiqSY+Y9Se2iRNUBomQiPtt2j+p4klav4tmzy9zfhmygc3bE04GLgS94RipokU6LTTlyheli3thNCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=ehAvu3hO; arc=none smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1768929006; c=relaxed/simple;
+	bh=aTy8W7SgWTy9MJdjHu3wk/HtiWHlpjo1ZfaA7EhmecI=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=buPmJqIeqT0/qU4eSCN/+sF4zEU7n0yyMDAIXxgclzXxnwpxv3e/qzW+qZ272qM5NJ73Y2EjZVR029MUFs0lbgSvQAbanLqfGxJPeNOMewp9CoZN/Ij0fIbnkNmwFP3kwsWkNy3MxQ/dbs697d0X2qC1UzWsK0PnFdOtkW2873c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=0h0GTlGR; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="ehAvu3hO"
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-8c6c922850cso132361885a.2
-        for <linux-coco@lists.linux.dev>; Tue, 20 Jan 2026 07:43:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1768923810; x=1769528610; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KkQRFRlJWlhxPTDnYLiUDFN/tlogfKFoNh9WT8HEULI=;
-        b=ehAvu3hOqBsKsoJ5qG8kGADQoff1pnMW+58xpCJT+XAufbLz2o8SjRcuJRtDQHrRue
-         Ru0HtsXVokTnQzSv4u+aeP4ST+C4IeLIxxXMwL0VrYiaIfpF8Ey+aKWb8BGAA4mogDQU
-         W0lKVp+V0vqkkMuo0PlPQCM2KBVrREelLyi2stvu4CrazsmtwdtXKpbT2hB53K9sArMT
-         Tf3qmAQAhap2h9cdsWNbA0f/3Oo+PCgC7LOvGM307tcpdZaJjxYUEJyC5tF8q3PIBc6i
-         Hc1QnkYPqTSWGgnobbc1sMOMR3L3nHP7XcQ7YzzGebkrUVgwKczG3xnLPC0by751zFA2
-         oolg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768923810; x=1769528610;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KkQRFRlJWlhxPTDnYLiUDFN/tlogfKFoNh9WT8HEULI=;
-        b=q7kWGhkhFediW/OWW2ZCSRghr8ebZAlaRHUpiddWHf7XnC6QM0ytme/+oMYJ6G/PNS
-         6njYsqetwCd0DCSvAPagkkpJeU208DKr5JGCGptsMpa32lm8aeKBUkDTpsOBBySW+A3N
-         aFtv6jeU/FH3qbgyPaMvWQdgULWaHYU7q2hUyQDH3aLcDInPJBdQyl4foFEIL6BAT/1Z
-         z/yxQEBLs9gy5MsknzZbX3Nka9qQUTxca0cgaUIIpKNuhai+IJ1ZsVR9SW9xH6hrYG3X
-         bJ5iU1xl6AKsseF9d3O3Nl/ezaNBzC6AqC1r1DZVRtpurpdLMccKFeE+XpbHZzHIk0IJ
-         c1uw==
-X-Forwarded-Encrypted: i=1; AJvYcCXYwOvYozWtAzcJk7DFZfsSh1IN1myc9WtFaHTa4c4exx2inL/ZjEDNJdGQxFIIukfVH/DLfgGEfg+4@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy/BQ4abWsAcSbPT3u1puN4QmJgYC82+iCaRp0NFKzEGTLD2y7u
-	HPOaMS3iV00n/KXkkWMJ4IVuaT/+YNDFr+yvEOIjkwY5+symVbZMFw6/FXYDZPXSqRg=
-X-Gm-Gg: AY/fxX45OhPlUhtj2EZFOEMlZ/Vapmcaa7JZZxnveXhvP7CoZBqGitjHDYPv9iIEwM5
-	eEfbK3gvUsHAZWqYQout5JfNfHZ/sf6nG/tQeYlbTMG1LwGum7sZOq3+znE6tZpWYyWS0cRPLsQ
-	OwNxhiAk1Ry1KgNnnQuOtxLmgHCUXxFTOMHrkzz0a69u6ybxZXZLpGaAsds/22C1YmXvPcch0SN
-	EueIassgIkbSzEhcGDwO/F85drH5AnINacHGijuzmrIAHe9TJyBON/bYI7aUHB7PZY7GVVYP0n2
-	T2mu5MwrFb9mjkrbjirSzZ5OBMECd0BNUvxQ891Pf2tyth8ubsyGs3UcyxIAyUCCOc0sZhiOg13
-	w57EBkm3Sv8UFP+UAZwRt61Xpc7IjUznOnnrn3CpK4nNscLln5imGr5HP4FUNTAJId2Ssp5/wZ+
-	JZsWCZq0D2o3V0udnytaaEwEQzMaTlrH6KfVALomZ7dDMjbisfBx7+JjYkCfzW4lyQUik=
-X-Received: by 2002:a05:620a:19a9:b0:8c6:770c:40d8 with SMTP id af79cd13be357-8c6a670cd8fmr1985028785a.40.1768923810068;
-        Tue, 20 Jan 2026 07:43:30 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c6a724ec87sm1101806185a.30.2026.01.20.07.43.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jan 2026 07:43:29 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1viDtB-00000005Y4O-0KLT;
-	Tue, 20 Jan 2026 11:43:29 -0400
-Date: Tue, 20 Jan 2026 11:43:29 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-	linux-coco@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>, will@kernel.org,
-	robin.murphy@arm.com, suzuki.poulose@arm.com, steven.price@arm.com,
-	Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: Re: [PATCH 1/2] dma-direct: Validate DMA mask against canonical DMA
- addresses
-Message-ID: <20260120154329.GQ961572@ziepe.ca>
-References: <20260120064255.179425-1-aneesh.kumar@kernel.org>
- <20260120132657.GO961572@ziepe.ca>
- <yq5ams28jog8.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="0h0GTlGR"
+Received: from 8bytes.org (p4ffe051a.dip0.t-ipconnect.de [79.254.5.26])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 8D99D5CD91;
+	Tue, 20 Jan 2026 18:09:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1768928995;
+	bh=aTy8W7SgWTy9MJdjHu3wk/HtiWHlpjo1ZfaA7EhmecI=;
+	h=Date:From:To:Subject:From;
+	b=0h0GTlGRNU/2iy64WR0Dpsngg0oQ6skOhMya1OrV38L3F9EbcgGAVxfTj3A9vAukQ
+	 Zj9rl/DlY//JRdDWJLoa3e5UEreAj0MJsQv5+ZEOixRt0xMoHGxHdZmaHWJIOcKP+p
+	 yIv+xhhgnD+XnJLGBmH8jp9D9U4hRpVWEYAFyE8FiwKkSUv3oehuJW/u9RLpQmqNEZ
+	 +9K2W+UP+NyrdtsgT9yGEinSQpu5g27qCr3Ob8U4AXEmuHUjaNBVu0EFLA6tKza3oO
+	 cNs+ROuQJjxr8kD3PlkjTUBxePOCmDE33QnwsjDwSxTKwPz7S81VM7VIYdfDzqvUJJ
+	 91WRYeMemZAVg==
+Date: Tue, 20 Jan 2026 18:09:54 +0100
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+Subject: SVSM Development Call January 21, 2026
+Message-ID: <4uhsm4wvzsoto4e6koyccvsdqcg2pber4s4oexclhywps7pz5l@tpkfglmsge45>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <yq5ams28jog8.fsf@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 20, 2026 at 08:55:43PM +0530, Aneesh Kumar K.V wrote:
-> > The check in dma_direct_supported() is checking if the device's HW
-> > capability can contain the range of dma_addr_t's the DMA API will
-> > generate. Since it above is generating dma_addr_t's with the
-> > PROT_NS_SHARED set, it is correct to check it against the mask.
-> >
-> > If the IOVA does not contain PROT_NS_SHARED then I would expect all of
-> > the above to be removed too?
-> >
-> > Can you please explain what the probem is better?
-> 
-> There is no specific problem identified. The motivation for this change
-> is to ensure that the trusted device mask check is accurate.
+Hi,
 
-Well, don't break untrusted in the process, and please explain
-motivation in commit messages in future. Why things are being changed
-is very important information.
+Here is the call for agenda items for this weeks SVSM development call.  Please
+send any agenda items you have in mind as a reply to this email or raise them
+in the meeting.
 
-> > I just had a long talk with our internal people about this very
-> > subject and they were adament that the ARM design had the T=0 SMMU S2
-> > configured so that the IOVA starts at PROT_NS_SHARED, not 0. I am
-> > against this, I think it is a bad choice, and this patch is showing
-> > exactly why :)
-> >
-> > IMHO you should map the T=0 S2 so that the IOVA starts at 0 and we
-> > don't add PROT_NS_SHARED to the IOVA anyhwere.
->
-> But how will we support a trusted device access to both shared and
-> private memory? Commit  7d953a06241624ee2efb172d037a4168978f4147 goes
-> into some details w.r.t why PROT_NS_SHARED was added to dma_addr_t.
+We will use the LF Zoom instance. Details of the meeting  can be found in our
+governance repository at:
 
-The IO translation path used by trusted and untrusted devices are
-completely different. You don't need a T=0 device to have the same S2
-as a T=1 device. The commit doesn't explain anything, it is just
-documenting the poor S2 conventions that CCA already adopted.
+	https://github.com/coconut-svsm/governance
 
-What should be done is that the T=0 untrusted translation path, which
-can *never* access private memory anyhow, simply puts what the CPU
-sees as the PROT_NS_SHARED region starting at IOVA 0. This path is
-setup by the host VMM (ie qemu) and HW can support whatever
-translation you want. There is no use case to ever not set
-PROT_NS_SHARED for T=1 DMA so why break so many real devices by
-requiring this useless bit?
+The link to the COCONUT-SVSM calendar is:
 
-The T=1 trusted translation path should have the RMM setup the S2 so
-it mirrors the CPU S2 with the private memory at 0 and the shared
-starting at PROT_NS_SHARED. An address width limited device would then
-be unable to access shared memory without bouncing through private
-memory with SWIOTLB, but it can probably access all the private
-memory. The existing SWIOTLB address limit bouncing machinery is
-designed to mitigate exactly this condition so it can be used to
-bounce buffer from private memory to shared if that use case ever
-comes up.
+	https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?view=week
 
-Given this little mistake has already happened I'd suggest that the
-VMM/qemu be changed to double map the same T=0 space to both 0 and
-PROT_NS_SHARED, and have a discovery bit in the guest that it is
-allowed to use 0 based IOVA for T=0 DMA.
+The meeting will be recorded and the recording eventually published.
 
-Then you can fixuup the DMA API calls so that:
- 1) If an old VMM continue to use PROT_NS_SHARED for T=0 and continue
-    to check it against the DMA limit, de-supporting address width
-    limited HW
- 2) If a new VMM drop PROT_NS_SHARED for T=0 and check it. Since
-    everything must use SWIOTLB ensure that SWIOTLB allocated addresses
-    within the device support range, as it already is able to do.
- 3) For a T=1 device assume it will not DMA to shared memory, we don't
-    have any way to describe that in the DMA API right now. Check the
-    native physical address against the limit and SWIOTLB bounce to
-    private memory for outside the limit.
+Regards,
 
-This way CCA would work on alot more actual HW :\
-
-Jason
+	Jörg
