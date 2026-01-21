@@ -1,124 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDBB41B373;
-	Wed, 21 Jan 2026 20:52:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E755642848A
+	for <linux-coco@lists.linux.dev>; Wed, 21 Jan 2026 22:12:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769028734; cv=none; b=qj4Mtb4HDlDl2MxalrNEB1+HgUuo0kBqq3NyMUy3D7EjNUVhJIFAKVd9MuyaE8SV42gmpo6VAASG2jk8d10HXJLUEDGQajfYpSK5HtdUVEZXW9/fSoAEi4Y/REA0n9LNpbCZpJqEVFmNFNB51SNlss2l+wxjlUYoKioGHllj25o=
+	t=1769033534; cv=none; b=E5X+n2Cc6PsdGZK4DvdBfgYD4OLAyU2bmKDsTQyFeqmlzh4qGeA53ojDoG3w9wobjnUgxtolhSy5Y/ZjA+BlkxpMzM70fAkAkEnfboEOelk5X0Jq+m0kFZfNsDRilqfhgkHmgv4IYQwyqphgZI7h9jT/RDokEnK5qhL16RPscjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769028734; c=relaxed/simple;
-	bh=d2/tKtQx55UX8z2+BjLacfm1KeTOulTJbuRiPCHSaZ8=;
-	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=Il7K2DtTiBY//O4bTmYntIH0nF/pgRVp7RhimwptZEIALVlxMhMmenXFHYZlUicL19qZZzS97Lob5YW34BWdZMWi1nReb/qLZa4CD//YhYwxYFBcJ8pRuICXkB3EBYheffVjpXZBs9zmNMCwltBJlXFflk6I46g24YZZIeE+RQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VIiaPRzN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769033534; c=relaxed/simple;
+	bh=tWIojze7Uj2EM7vNRu2AjQDw+wemuXBR7n+CBdw4tjY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=k+X4qLZy4nxAmtCHtZQMa9iUZlPKC1fnJtwaqRt83zQ7Ob3+sVKRt3Sv10KPCVjh8ltjUHSy7Oebfj03y/S4SOMMBeYtJHR8pgN5GEs9AFnEuciqd8Q7lr0qekwnHS0BNjjnd47TGWZJBP+s3abmG+RT0LZQVrWqyCw/Io2tjk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=N8mrnUWG; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VIiaPRzN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17DCC16AAE;
-	Wed, 21 Jan 2026 20:52:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769028733;
-	bh=d2/tKtQx55UX8z2+BjLacfm1KeTOulTJbuRiPCHSaZ8=;
-	h=Date:From:To:Subject:From;
-	b=VIiaPRzNKJGAVo5YF3Ba2qUPkY5M47na9R5789st4b8baSxnunvXFNRkb8hREL3kX
-	 +PpdBkfr9/4iRitvDWbsp9xOMu6zluRq4bJxaGkj75uCl6DhOy0/JzAkl7kkhrc+cC
-	 inyHn+VqsmZDx1Jm5mW4yv//PLSaKxUKqB58BkYQAYRdemz9QhJurRkz3Nd+m/4laO
-	 mIZDha93pA6VYgzwz/I1ReW0GbInSWmGTCFCDLFPswDLAVTqL9wTjm05P0ZhMxpuvu
-	 fUYn/dJ8p1A9xNeR4Li5O88PyjfVVZjby09lqkAKepotWLGhh4oEKtiTc5OLOPFH8r
-	 gNAuo/PknXqmA==
-Message-ID: <5aaaec3b-f1a8-49b8-b639-4edc10700172@kernel.org>
-Date: Wed, 21 Jan 2026 21:52:02 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="N8mrnUWG"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-29f29ae883bso1924555ad.3
+        for <linux-coco@lists.linux.dev>; Wed, 21 Jan 2026 14:12:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769033527; x=1769638327; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=C6X4IkRQuNjfo8L0KHGq4+kOsjjdeSYBGnFI9g0tePg=;
+        b=N8mrnUWGzRt+cV0+vLPfU7CzzAtEysL1nqp0M2k3zqkm58JZoih9VSwCzda15DEoVp
+         4IMrN8fOBf4ltTBkarX+u0bK/gIUnWhuI6f+2NjDpla3eZliBhnhyaEB5vi6Y49o8/eo
+         BVhgDkWVQPBUKvH+f6n+CZ9qsKj4z1J0BaGKkGn8k0UtxYjEFkxWPXW8l8NpihdZrUqX
+         9beICS0/fmabABzfUAHqoLj6VRcKMRV2NxSkzJPMnKmlLqy+IEF+ztHp3a8GDUlRFzp8
+         yCixRoQO0vs3J2EyfaamG+sOjVxywI0emDSIHtjCyTKPC5tG65qXhdOwAaQMifi8nOoE
+         C4ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769033527; x=1769638327;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=C6X4IkRQuNjfo8L0KHGq4+kOsjjdeSYBGnFI9g0tePg=;
+        b=spw6SxUp4eYdALAZCBhUvzP83LGjJAY5x/vDvh45s7NDigmQCdwnMP+seXzWA/cTlh
+         iHFKmaLTRt+nxC/vVxg2mr0r/xkMLgZMXEsiILXsA+wCgQCRf6sneXYplqQiHWmCxQIz
+         bFG1ZQ5343wvGYfejSTzw/vI539KPLzyJjMy9Vi1BQMdisRKGdepMHIsEiDyohPjXRsL
+         pl1D2/KxwMqg5TkJnAURGDX5a1CbpcU+qStn8lKF4xzn6neQZBfKCB6b1i6ZqxIFXSIs
+         jR6xuO/cQ8PvjmgUKKhp2S942l6YDcpzXoCd0Sxf3agMc8d3rg/qf8bndJyD19Z/K/ty
+         RaSg==
+X-Forwarded-Encrypted: i=1; AJvYcCWF84DBjhirteFjUd9fZHlYrELfo+LzFzMP1qyUhENhuYSJk5LSoecjGh0kHms6LGftVSzyXOU+6roj@lists.linux.dev
+X-Gm-Message-State: AOJu0YyECMNEWMwrnhznuUZ57YE33tjy3p7Zx9ftk6dDBlMXMpLFKNET
+	s5754aurVjW2P9YfsYpBNNhVDE7zFE/KOHSm4S3uJPvH5w6qMme+ep2E+b9J9kCHTBbdOOO54gL
+	WtqNYzw==
+X-Received: from plch11.prod.google.com ([2002:a17:902:f2cb:b0:2a7:61b8:be8d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:9ce:b0:295:fc0:5a32
+ with SMTP id d9443c01a7336-2a717518e27mr198109225ad.3.1769033526812; Wed, 21
+ Jan 2026 14:12:06 -0800 (PST)
+Date: Wed, 21 Jan 2026 14:12:05 -0800
+In-Reply-To: <24665176b1e6b169441c9f6db9b5d02d073377a4.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
-Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-01-22
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
+ <20251121005125.417831-12-rick.p.edgecombe@intel.com> <aWrdpZCCDDAffZRM@google.com>
+ <24665176b1e6b169441c9f6db9b5d02d073377a4.camel@intel.com>
+Message-ID: <aXFPNbCvKURxby1q@google.com>
+Subject: Re: [PATCH v4 11/16] KVM: TDX: Add x86 ops for external spt cache
+From: Sean Christopherson <seanjc@google.com>
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Kai Huang <kai.huang@intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Dave Hansen <dave.hansen@intel.com>, 
+	Yan Y Zhao <yan.y.zhao@intel.com>, Binbin Wu <binbin.wu@intel.com>, 
+	"kas@kernel.org" <kas@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Vishal Annapurve <vannapurve@google.com>, 
+	Chao Gao <chao.gao@intel.com>, "bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Tue, Jan 20, 2026, Rick P Edgecombe wrote:
+> Sean, really appreciate you taking a look despite being overbooked.
+>=20
+> On Fri, 2026-01-16 at 16:53 -0800, Sean Christopherson wrote:
+> > NAK.=C2=A0 I kinda sorta get why you did this?=C2=A0 But the pages KVM =
+uses for page tables
+> > are KVM's, not to be mixed with PAMT pages.
+> >=20
+> > Eww.=C2=A0 Definitely a hard "no".=C2=A0 In tdp_mmu_alloc_sp_for_split(=
+), the allocation
+> > comes from KVM:
+> >=20
+> > 	if (mirror) {
+> > 		sp->external_spt =3D (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
+> > 		if (!sp->external_spt) {
+> > 			free_page((unsigned long)sp->spt);
+> > 			kmem_cache_free(mmu_page_header_cache, sp);
+> > 			return NULL;
+> > 		}
+> > 	}
+>=20
+> Ah, this is from the TDX huge pages series. There is a bit of fallout fro=
+m TDX=20
+> /coco's eternal nemesis: stacks of code all being co-designed at once.
+>=20
+> Dave has been directing us recently to focus on only the needs of the cur=
+rent
+> series. Now that we can test at each incremental step we don't have the s=
+ame
+> problems as before. But of course there is still desire for updated TDX h=
+uge
+> pages, etc to help with development of all the other WIP stuff.
+>=20
+> For this design aspect of how the topup caches work for DPAMT, he asked
+> specifically for the DPAMT patches to *not* consider how TDX huge pages w=
+ill use
+> them.
+>=20
+> Now the TDX huge pages coverletter asked you to look at some aspects of t=
+hat,
+> and traditionally KVM side has preferred to=C2=A0look at how the code is =
+all going to
+> work together. The presentation of this was a bit rushed and confused, bu=
+t
+> looking forward, how do you want to do this?
+>=20
+> After the 130 patches ordeal, I'm a bit amenable to Dave's view. What do =
+you
+> think?
 
-Our next guest_memfd upstream call is scheduled for Thursday,
-2026-01-22 at 8:00 - 9:00am (GMT-08:00) Pacific Time - Vancouver.
+IMO, it's largely irrelevant for this discussion.  Bluntly, the code propos=
+ed
+here is simply bad.  S-EPT hugepage support just makes it worse.
 
-Ackerley will lead this meeting as I am still on PTO. I might still 
-join, though.
+The core issue is that the ownership of the pre-allocation cache is split a=
+cross
+KVM and the TDX subsystem (and within KVM, between tdx.c and the MMU), whic=
+h makes
+it extremely difficult to understand who is responsible for what, which in =
+turn
+leads to brittle code, and sets the hugepage series up to fail, e.g. by unn=
+ecessarily
+mixing S-EPT page allocation with PAMT maintenance.q
 
-We'll be using the following Google meet:
-http://meet.google.com/wxp-wtju-jzw
-
-The meeting notes can be found at [1], where we also link recordings and
-collect current guest_memfd upstream proposals. If you want an google
-calendar invitation that also covers all future meetings, just write me
-or Ackerley a mail.
-
-In this meeting, we'll discuss:
-
-(1) Next steps for direct-map removal support
-(2) guest_memfd THP timeline.
-
-To put something to discuss onto the agenda, reply to this mail or add
-them to the "Topics/questions for next meeting(s)" section in the
-meeting notes as a comment.
-
-
-[1]
-https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
-
--- 
-Cheers
-
-David
-
-
-
-
+That aside, I generally agree with Dave.  The only caveat I'll throw in is =
+that
+I do think we need to _at least_ consider how things will likely play out w=
+hen
+all is said and done, otherwise we'll probably paint ourselves into a corne=
+r.
+E.g. we don't need to know exactly how S-EPT hugepage support will interact=
+ with
+DPAMT, but IMO we do need to be aware that KVM will need to demote pages ou=
+tside
+of vCPU context, and thus will need to pre-allocate pages for PAMT without =
+having
+a loaded/running vCPU.  That knowledge doesn't require active support in th=
+e
+DPAMT series, but it most definitely influences design decisions.
