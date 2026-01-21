@@ -1,86 +1,88 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4BF25A334
-	for <linux-coco@lists.linux.dev>; Wed, 21 Jan 2026 00:48:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22E9296BCB
+	for <linux-coco@lists.linux.dev>; Wed, 21 Jan 2026 00:52:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768956496; cv=none; b=jPb44bCtz6q0cdELY1KOsvA1y0w/2TjRhRfzDM6hpjhUYqumL3hry0Z2lvwJShEnIpwZqLZbW4J2XHc5hnrxcTRGvYQp5GviPY6hinYb1istc7eQ5FrG+3ZyNINA3IbJS8ZJdLuJHoPM1xc3HqOrpYCsPzZE6ZM5WXD9WZYOznI=
+	t=1768956727; cv=none; b=WEeu0JUXugbDhAe8QmIq/2hCLty8wQD7SEswlbRYK5VQhWRS/QBXOsGSoEXJ6lewKp4Pdt6FxfqO04ZmgDF/oeSLVGrHtk+i3xHwMDFdf943SDMd9hCfFv48WdrUqmS/D6LX+ZQomgsd7BLMGTsnRZ/l2c2o3CWipXr+vsSBUTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768956496; c=relaxed/simple;
-	bh=A2DZn708F8sWtrvHdpVnrqmr5TaKxs/ftDh4T1qmt2g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C4GIiBXe6+iUtAMy/zQwt1mlr4DKs9oPl5OEy1QmjAJMhzWf5FhDqnFa195oSfoGQ+JlnPH9rSVVBO/+4w32hx9PqrzvkN0mCsbUDQjNGgKeAWvM7zhhGcSMM0SJqCzugdUkdCyy/FP7Vap3rnS61p+DJRIN0wgkqGXBWZeUcZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=HK+7gAwF; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1768956727; c=relaxed/simple;
+	bh=EkVcNVO1CNLIf3T/s28sXrF08YLCrCvJ5AM2yKBw9Zg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Dg6q5qqVXe7syIcDCcJP+ZUmQiUlkYZLXlfTXkOAihG1s6rrpRunYm1jmTxGZQpXv0GpTmMRNV0TsTrhZWlteSM+pa3tb271vTJkZ+RzIhQJPIn7FM/EANZ0CTUjV5Yo59dH+3ReraR/SOuUf5RUSYI94/rULaHlC3RWKVerelI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MAp+lM0U; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="HK+7gAwF"
-Received: from [IPV6:2601:646:8081:9483:12c5:bc8e:d949:3497] ([IPv6:2601:646:8081:9483:12c5:bc8e:d949:3497])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 60L0lXU7239364
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Tue, 20 Jan 2026 16:47:45 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 60L0lXU7239364
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025122301; t=1768956466;
-	bh=PLqul68T6c3hK9aZKHKPNbSxtyK6Onpf5TAGFX6dfrE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HK+7gAwFNpV1meW2l2g2qOWRjJeuUe0uzUSBUcC3MRTIUxo5tJQPXNdMy9Sd8mBiF
-	 T6LSA6SvrpdXlDesdB7gdFFjAY5w7j4ElSIpnNmjca8RI0p/n/7gCBSS4lyOwfveMo
-	 yEoCnzzgejoDMI0y+yh9+TdujsMamwKGIwnuqjVz89mdT1fQM/k3EEu8NI4/XTSG4G
-	 8lNRNH/w64x0ciIv04lmbR2xAcqQSlwnZF5FJUto3bJep49564cHravWrQLlDgh2v/
-	 IPsASNHjuym6Q2zV5QZcFo4A56Fxl1i2GmWjBSLKktCzMUYIHLdh6ZHSzYt8eqXvQd
-	 qvk/JCV1907wg==
-Message-ID: <589429e0-e8c8-4949-972b-42d5bbfd83a3@zytor.com>
-Date: Tue, 20 Jan 2026 16:47:28 -0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MAp+lM0U"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a089575ab3so54109855ad.0
+        for <linux-coco@lists.linux.dev>; Tue, 20 Jan 2026 16:52:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768956725; x=1769561525; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+MdgG0Ul2crpYgoSbV/KPCK+3WNDc/xDp+a+HIFVTx8=;
+        b=MAp+lM0UDSGTilkuruunvwUsx1ZHoWOwXV+ZYYbw65rKGAfvUsCf+ojCif4NVp7yIN
+         wW5PM2KXdV27vO3PiNm4mx386aFeOCsDEVZvJ7tX0SU9dtvYEo9WEZB9RD8lFU9UblzT
+         KcIZFMfOHn0mlMMPl7+oAjvSIdzZDxDyTfLtsM4mAfxxOZPXVZiml5sL98osjlYJDhzQ
+         op3N7NLhZK+e3NDN0zkWyKKsHicORFlaP3S2NDD+xABGA+52G4HADaIUYBMxDUDK5CnP
+         sISJ2vMkfeRrN6AIi0bQma5hh1+ANJFJCWV7UDkmOGa1gQmQ7gaSfOil4IQMOwdi5IOY
+         9Z2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768956725; x=1769561525;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+MdgG0Ul2crpYgoSbV/KPCK+3WNDc/xDp+a+HIFVTx8=;
+        b=u6TnlHprrB6nLeTQUv0nimGb9tqJOnLZXH0vmBWgmF8s8JhI2L1y0YksMDWdw/zthI
+         6DYhcMzJ7GmFAnZZf5Bj2WX70BQKjxH49Y/m/aBqlzWMkTBGU1LOm2XyUc8OWZg6aiVI
+         rHARUmw6uzepicsqH2loIjcQnVmvy/PHn7R3SFRBgOLkOl73XXs30RWONKE2611We0ab
+         6z4Z48JtRvcY7LjDCI4yeKjkmp00mIee1GGLBbAFdBHeSTP2Ge52RfYUDeX0KCCItcm8
+         ugDsqXbECZ3Ytzm6vkDsywdWkREzrNQyitJbCApU4aFz3OCkwZV0pVQc7wtlk4VTsqIx
+         Le6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUKrcioOEg2f0OnJec21oCO+NEdgD3foUpuYtiZWKHX3yprNzyZbWHGGrOAPNQqBpT2x4rR23do4WQV@lists.linux.dev
+X-Gm-Message-State: AOJu0YxAzjkm/JLLpyQNnkGkeaB6XC32gQWyknapjPYMFNB/XEEPhXO5
+	2NKAsKGHOTqt64/Mn0RfgZ8BC0wvCLX1WjX8/8biPCAcug4b5Z0E+09QkqrL0HQW/wRrm4rAN0L
+	ibLIwjQ==
+X-Received: from plbmt16.prod.google.com ([2002:a17:903:b10:b0:2a0:c208:8799])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:db04:b0:2a0:bb05:df55
+ with SMTP id d9443c01a7336-2a76951f3a7mr29795775ad.21.1768956725049; Tue, 20
+ Jan 2026 16:52:05 -0800 (PST)
+Date: Tue, 20 Jan 2026 16:52:03 -0800
+In-Reply-To: <20251121005125.417831-13-rick.p.edgecombe@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 02/14] x86/realmode: make %gs == 0 an invariant
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Uros Bizjak <ubizjak@gmail.com>, Petr Mladek <pmladek@suse.com>,
-        Andrew Morton <akpm@linux-foundation.org>, Kees Cook <kees@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Kiryl Shutsemau <kas@kernel.org>,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-        x86@kernel.org
-References: <20260119192923.651588-1-hpa@zytor.com>
- <20260120195407.1163051-1-hpa@zytor.com>
- <20260120195407.1163051-3-hpa@zytor.com> <20260120224014.29e7f326@pumpkin>
-Content-Language: en-US, sv-SE
-From: "H. Peter Anvin" <hpa@zytor.com>
-In-Reply-To: <20260120224014.29e7f326@pumpkin>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20251121005125.417831-1-rick.p.edgecombe@intel.com> <20251121005125.417831-13-rick.p.edgecombe@intel.com>
+Message-ID: <aXAjMxbeMO0pioNF@google.com>
+Subject: Re: [PATCH v4 12/16] x86/virt/tdx: Add helpers to allow for
+ pre-allocating pages
+From: Sean Christopherson <seanjc@google.com>
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: bp@alien8.de, chao.gao@intel.com, dave.hansen@intel.com, 
+	isaku.yamahata@intel.com, kai.huang@intel.com, kas@kernel.org, 
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	mingo@redhat.com, pbonzini@redhat.com, tglx@linutronix.de, 
+	vannapurve@google.com, x86@kernel.org, yan.y.zhao@intel.com, 
+	xiaoyao.li@intel.com, binbin.wu@intel.com
+Content-Type: text/plain; charset="us-ascii"
 
-On 2026-01-20 14:40, David Laight wrote:
-> 
-> Would it be better to wrap that as (say) read_abs_32() since the
-> objective is to read an absolute address (using the relevant zero segment
-> register) rather than to read though either fs or gs.
-> 
-> Is this code all running in 32bit linear mode with non-zero cs/ss/ds
-> segment registers and 'suitable' entries in the GDT?
-> That mode makes my brain hurt :-)
-> Or is there a fudge to get 16bit asm from the C.
-> 
+On Thu, Nov 20, 2025, Rick Edgecombe wrote:
+>  static int tdx_topup_external_fault_cache(struct kvm_vcpu *vcpu, unsigned int cnt)
+>  {
+> -	struct vcpu_tdx *tdx = to_tdx(vcpu);
+> +	struct tdx_prealloc *prealloc = &to_tdx(vcpu)->prealloc;
+> +	int min_fault_cache_size;
+>  
+> -	return kvm_mmu_topup_memory_cache(&tdx->mmu_external_spt_cache, cnt);
+> +	/* External page tables */
+> +	min_fault_cache_size = cnt;
+> +	/* Dynamic PAMT pages (if enabled) */
+> +	min_fault_cache_size += tdx_dpamt_entry_pages() * PT64_ROOT_MAX_LEVEL;
 
-To address your specific question, no I don't think that is a good idea, since
-it would imply that you can reach an arbitrary linear address, which is
-definitely not the case.
-
-At least this way the user has to look at what they are doing, which I think
-is a good thing for this specific code.
-
-	-hpa
-
+The caller passed in number of pages to be added as @cnt, don't hardcode what
+could be conflicting information.  If the caller wants to add 50 pages, then this
+code damn well needs to prepare for adding 50 pages, not 5.
