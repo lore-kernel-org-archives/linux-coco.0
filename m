@@ -1,221 +1,205 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2962DEA78
-	for <linux-coco@lists.linux.dev>; Wed, 21 Jan 2026 00:58:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768957128; cv=fail; b=FoeQqWW9OjSnmlzXc4HmGbZXX8Ga6Uoo00VuInv/moGPztZjmn+q71HsLofzOwT6CBbSGeL+rjVRQbO1Pp9KIdmWx9F7bBCGc1i/fquNAV5UwN4qOOGqb86JAwjxaHPXZk9HhljnbFmPBZbtb7/PPvjKeEwZ4vG5y1DrZkUl+Ho=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768957128; c=relaxed/simple;
-	bh=6Lp14HV8b05JLCLSdzpQ9motfq5j4JtIE8j5THcnTMI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=tYzPhXE2kNyvlv6eyXthmdARidgb0v62Jvn4lu4puy7Iep5vMNwGAYVVd1M+gVLlBJQA4enWg1+wuJ5aEaUm+LEAiahFynDeEE0D8/yzLKSzfQd96I9Q/E6if94vCJ9mREcoGp8nnbOLqCgCK60eYxato9NjW++F/jBSAiz0RFk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H4VqKrNy; arc=fail smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19075346AC0;
+	Wed, 21 Jan 2026 04:51:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768971061; cv=none; b=IkHOqb9ysXC1LPnoV8S2yvYOjWBPOW8vAx98O1CmkaLskwWWzmz3eFxvdIwb+eJYDdhHAAAb5xTsvPNI7hZAgDNu3NJjjs8QlOoq66JFgdRu/cFDU0bu0XtXsJhZ1v5KIOg7L4e9tUMNyqtY7+2S3YVotq65XJrCheqQpOtoae0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768971061; c=relaxed/simple;
+	bh=F8Tc/zNV5Kph5qSSBVjvztstQbGY8i+UW4ESNWCwSQ8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=eHpbdd+KKh2wt+RfG7iyHG2Oo4yHnRosF0lxSJUIO7aP8etO8dy2PODAnjCQhIC+zKhnk6b1j34nSxL3JyR2nkxQTQTV3mXe0pVwpSExMq6B/ekcWiGbLPLQ4kSo9sBsJC6kV9M/15Eor0A6BNlkSivYVo62Prr4D7DLOslpIak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=erewZ10v; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H4VqKrNy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768957127; x=1800493127;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=6Lp14HV8b05JLCLSdzpQ9motfq5j4JtIE8j5THcnTMI=;
-  b=H4VqKrNy0feNHpZAwiljVS6ZamLZvycU0IJTGT4a0+VA7hyZsy63MIu9
-   zTjpxLxYoP+ATmCkp1Y7igMYfSYpadksVymm4ZKuLNGhd3Vo7HptRbx6h
-   L6qpIp2/AAyfZDbCmAeDTtA6SclscxvS0LfHI4f7892kCJDG++fjLtjMw
-   t6Lss0nbjQ2M/FNB+ADqS8MoLjS54+z6fzO11Xtt2NdBcqfsa3VISC62G
-   yHCFjAN040mTkUafwvfgF6vVqc43ESkrcj4i6cMASvEZa5xsWGwuDB4rb
-   MNoj5m94gSElaNZJSTWo0PWgvLxzXTFPvsrg3C3ekhL1bVZ4+HQ774evB
-   w==;
-X-CSE-ConnectionGUID: hrHXNdT6QteYf4sEug6Apw==
-X-CSE-MsgGUID: g0HMF1ZGSSCO8ehsbVAeDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="81622982"
-X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; 
-   d="scan'208";a="81622982"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 16:58:47 -0800
-X-CSE-ConnectionGUID: 8CPb+6NiQaGoGFMDLGfozQ==
-X-CSE-MsgGUID: LCnxCIsZQtOTf8YTfBgTOA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; 
-   d="scan'208";a="210430102"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 16:58:46 -0800
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 20 Jan 2026 16:58:44 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Tue, 20 Jan 2026 16:58:44 -0800
-Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.32) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 20 Jan 2026 16:58:44 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xIIfWAQk1Xd8vN6nCmb0nVE80f/oDB6r6wNcXdtvkq2te9XqnJoiO1hnz0a7OmG0y9IV15bc0CsqxpkFC4c66WF0wIgC9bl2X3oUM0lKfoR7FQUgpQjCOJUcUtPMMGxV5YtNBmjK7Aw+AHeVLMof7Jy8irUl6p6CHfiIGOW11HVQznNNdJSgChxRR0G2yOOE6Q3XjVYjlmqjKeuRGhLEpcTa+pP62cy9tA330U1ryTrpvjTgPGjnO/d0+aon7u1AhvTjixYgGysv0fqUSiLHxHmUJr6TYCQv3nqnlOGzudmJ2kyr5PziuYBF+AEu2nNVe/4LKV6LC/ang6G1KT1vPg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6Lp14HV8b05JLCLSdzpQ9motfq5j4JtIE8j5THcnTMI=;
- b=CeVbXQmshMFkOP/DNORRCbrMeVT6W9gTytUmQ668uBJr5jvEhI5U05aOipBEIusObnoLQ1VbOsHhIuK+Wx2LYp2VZISe3XdOhxbHpsk+nnRVtFmbJvbYQyelRJlLC10Y6kG2VBA2ZcxV+CNWZfpxEuAoDqx2YNO6+hIIDLRQI8OBYaMGhXspLMlS32WMN9ztmhZM/5J0XfJUypVzuVD+1shQu2sOTgss86u2npGtwgQ85vzmf1QgOhIwcWoisUFLFkuQIupEKbUTzyHNoXodPrQzCvYJnqvCT5BrEbIkagGciFZ17SA6QMcVS/FUBE6rm1I52+md3XRtEfP2ckRW1w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MN0PR11MB5963.namprd11.prod.outlook.com (2603:10b6:208:372::10)
- by MN0PR11MB6134.namprd11.prod.outlook.com (2603:10b6:208:3ca::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.9; Wed, 21 Jan
- 2026 00:58:41 +0000
-Received: from MN0PR11MB5963.namprd11.prod.outlook.com
- ([fe80::3ad:5845:3ab9:5b65]) by MN0PR11MB5963.namprd11.prod.outlook.com
- ([fe80::3ad:5845:3ab9:5b65%6]) with mapi id 15.20.9520.011; Wed, 21 Jan 2026
- 00:58:41 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "seanjc@google.com" <seanjc@google.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "Huang, Kai" <kai.huang@intel.com>, "Li,
- Xiaoyao" <xiaoyao.li@intel.com>, "Hansen, Dave" <dave.hansen@intel.com>,
-	"Zhao, Yan Y" <yan.y.zhao@intel.com>, "Wu, Binbin" <binbin.wu@intel.com>,
-	"kas@kernel.org" <kas@kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "tglx@linutronix.de"
-	<tglx@linutronix.de>, "Yamahata, Isaku" <isaku.yamahata@intel.com>,
-	"Annapurve, Vishal" <vannapurve@google.com>, "Gao, Chao"
-	<chao.gao@intel.com>, "bp@alien8.de" <bp@alien8.de>, "x86@kernel.org"
-	<x86@kernel.org>
-Subject: Re: [PATCH v4 12/16] x86/virt/tdx: Add helpers to allow for
- pre-allocating pages
-Thread-Topic: [PATCH v4 12/16] x86/virt/tdx: Add helpers to allow for
- pre-allocating pages
-Thread-Index: AQHcWoELLxf19qpVqUu0bWQO50RjlbVcK06AgAAB2QA=
-Date: Wed, 21 Jan 2026 00:58:41 +0000
-Message-ID: <6dca5e5e87971622d8c8dcbe7fad9c506b62af68.camel@intel.com>
-References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
-	 <20251121005125.417831-13-rick.p.edgecombe@intel.com>
-	 <aXAjMxbeMO0pioNF@google.com>
-In-Reply-To: <aXAjMxbeMO0pioNF@google.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.44.4-0ubuntu2.1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MN0PR11MB5963:EE_|MN0PR11MB6134:EE_
-x-ms-office365-filtering-correlation-id: 63fc12cb-778a-4bf5-8c64-08de5888384b
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|38070700021;
-x-microsoft-antispam-message-info: =?utf-8?B?Qkphc2k3MnV6SURPbG1WbldSdTNqNXFSMUY2eE56c3p4MVpZSmVOWVBuV1lv?=
- =?utf-8?B?TUVZc3BPSXpGbTlvVXk2VE1yNlBYN2d2dmFQazU4OVNiSG9UMVVlcXl2cHlO?=
- =?utf-8?B?WFNVbFJxdE11U3UrcTF1bWsyeTJ4YXJYOW1aYnVaWFpSUG1pcVZKTXg3aC9P?=
- =?utf-8?B?YUpUbHZVcHZGNTA1cExEVXh4S1U4ZjZmclBZbERMMnFwbDVNdXFrbURWWC9x?=
- =?utf-8?B?Q0tZcUFMZkg4WUt1bldXa2w2UlVvbXR1MmFtZnV2bWxRY2ZkUVRzL0ZFa0hn?=
- =?utf-8?B?WExMdDQ5VVhEN28wSjM3R3M0T2RWQ0s0OHVOK3JXY1JtWFU4d0ZjMDF0eDYw?=
- =?utf-8?B?Q2d3U1hQcVlCc0hxZ0NuVFJJSW5SbG1tRVVSRDRDbTh0ZUtnLzJGK2xxaXMx?=
- =?utf-8?B?YzFwQkpBVDdaWVR2NVBpWktESWt2RUg5a2tCSVc4STlCcldXQ3lpczdSdC9m?=
- =?utf-8?B?cXQ0dE85Qm9XREk4Q0ZlSnNvRklyRURMamdIUXFOc0FLK3l2NEN2M2g3T1FT?=
- =?utf-8?B?a1hpQWtpMmpRYWthemNFZC9HNkhMUkNSMWprSE1wYkpueHNvd2FmQjVjaEtl?=
- =?utf-8?B?ejZFckJCUzhRczRYa2ZZTFhRTWRtajJGSllZeFRCeVZ6bTR6VFpiMmRYOWha?=
- =?utf-8?B?MHl0cTZYMUZRQkN2dExnSC9WajJjVU5wWnAzdkZmdkVoTTl6Mi8zWHJXbEky?=
- =?utf-8?B?RkV6ODZVVHlCa29pMFhZM2NUYzljUk4xUjB6VXdySXlEMGpQWERqbmdQZlFj?=
- =?utf-8?B?VDZub1N5VjFpMWRTajVRd2pHMDJMRUFENVo1TWt1WGVRdisrbDkrckZ5RllW?=
- =?utf-8?B?SDhkMlZpMzR2V2lndDZ5OHdtRGZMY1lUK3hqNmdDamcrK0h3WjhMRjN5TjB2?=
- =?utf-8?B?eVJRNmdDeVNIa0hvbVRSN25HVXB2UzB0M1FPY0tKbHV0MkQ3d0dYa0F0enNT?=
- =?utf-8?B?cFpMYmVLWStGb3ExWXdFM29ZSXNIeUZjVXozN1djSFIzVGl2MXV3YktzajBm?=
- =?utf-8?B?bFBsQmY1MmNBb1ZqVjczTFVlWTVYRW5mWVRBN3pMdFJ5SjRXd3B3c1MvR1FQ?=
- =?utf-8?B?SVU3MFBieW1hM2N3QUN6Y1JnbEJReDNKbTlRaFB1T01ua2JLLzVNTUU0QjR6?=
- =?utf-8?B?QVpqMjZ3K2ZwUGl6WllYdTYwMVZWNndlN29SV1R5ekh3dUNWd2dMUndSLzhO?=
- =?utf-8?B?NEg4bXhYWmlVLzdSdFZzbFQ0T3hhNlRtZFlUM2k2TnVISUpHWGF1ODhjdXlG?=
- =?utf-8?B?ODcyOTdHMjQ3WDdsVEY0T3RaNHYyV1JjTTFJTXpsdUUycDNMMGk0Yncrc2VK?=
- =?utf-8?B?TldCVTN5UmZsMG1sdGl6YTZpU1NwaGk2QmI4L0pXb2ZCK2xXODdrYnZJSFhm?=
- =?utf-8?B?VmNQaDJnQVB3eEZoT2Z6azJOQnNWZWhxTGx0Y1VoaEpiakpaZ1dOL1AraVBW?=
- =?utf-8?B?bzR2K2ZFRElHREN5QXZldmdFL3F3MDJ4L0JwQ0J0eFlPUWw1MCsvZCs1U2RU?=
- =?utf-8?B?NURxNVoxcU9RbFJ6SDFlNVdMaWRaOUJDSU1RV1JVUDVMdzM4bEpEUitBdWtL?=
- =?utf-8?B?eklWSERhSnBxaWxVcjM0NXVKZ0VMR0tDV0tFaTFCcTlpRVdFYStxS3dUQlBP?=
- =?utf-8?B?N2VqQUdCZjRqcXZVQTRpdkRiRko1NjhUR1VjNWJkclpIbXdac1ZoQlRldHd1?=
- =?utf-8?B?Nm85dW9yT2k4YzlFdEI4Y1I1bGFxanV5MWpJVEpSTE1MWkhLZWhvK2VwOXM2?=
- =?utf-8?B?TzFTN011NCt6TmM2SWhTdGt4UkZhQ1QrN2dDNnhMdzBxY3dmRG5RaTU2TWVu?=
- =?utf-8?B?RGp1Q3BxUURZcWt2b3FDQTFEc2NwZ0tSWDRiUjBPdTRoNHJyVzZJOWhnemZ0?=
- =?utf-8?B?NWo1c0s0S2tyeUh1ZDh6UTZUcm9rcUlJZUtyVTF6cExVN1F1SDEycHlWWmkv?=
- =?utf-8?B?d25RZkJEUTVpek50THh5VFJPamErUEFZMmVOUk5GNzZUUGZYQ2NkUGRhcDZG?=
- =?utf-8?B?OFhxWUhnamFxMUFCZGNxS1NXOFhTZkJYL0grbFU3QS9lVlNPMlhQbVp2RnFp?=
- =?utf-8?B?bjFJQXZXK0sxRUtpaFplSVMzeStwdTRnOU5SNm54V3JVRE1GSkJBYm4zMkhz?=
- =?utf-8?B?RHYxcThJT1M5RnVYdS9vLzdrK3YrQzRMSk54K083Vi9BQWtCeHpkRTV3UDY5?=
- =?utf-8?Q?Tx7efzi8mqWZCLiz6bfJnVI=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5963.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Q0E4Wmp5M08vTjZPRHlFdEQvT2VLUDR3VjEzcWNSNjVpT0prbldSUHRWeW5q?=
- =?utf-8?B?TTZHbjdvV1ZkazMxUW5jQThWeGxXUEswaER6c3BiTHpBSjVlNFVzaHFLK1Jy?=
- =?utf-8?B?K0V4SmtPemh4ZWVMZDNjcE9QZU03ZXBkaWl4QlVrUUh4WVkwdmpDQjAxNFBO?=
- =?utf-8?B?ZmszUWh4c0xra0ZUc2NGU2s5OUx5R0tEQjBQZm81clpVRkxRVjR4RERtZk8r?=
- =?utf-8?B?WTQyU2d6QjFDSWpKOWNTUmpLZzRZZmRQNnFNTVNYbzJEWDRXeXBQOTFIa0tt?=
- =?utf-8?B?M3VHUnMzZXV6WDIwdXhiRkFOQTMzYzhjSE1yNmR3TW00aUI4YzcyZ1NlaGtW?=
- =?utf-8?B?M0pVcUtKZXNVY3laWXdNQVdIWmVGVUd3SHhXK1ZHM2tiMDY4M2c2OWZYbHlR?=
- =?utf-8?B?T3BBV2RVSXVqSDJSelZCUVdjR3pud0Y0L0xJRGFOWktuVHkxUHZ3SDNQSHRt?=
- =?utf-8?B?UGVuSDJ5M0EvUDZUM0ZhRkprZDB5aExXMm9BOFNBc1pENlYyQWhvTkpzQW42?=
- =?utf-8?B?cUxLREM1eUNwT29SbWY5M0NHN3gwZFhjYkNYQ29BZ0N0T3BQZkV5b3huT1Vn?=
- =?utf-8?B?WEYrQ0xJdWF3WEZZVlhtTVBkbzFlOXkyNFhwdTN0SVVock1wNGxqbTdPWncz?=
- =?utf-8?B?L0pmZTAvUFRwWWdDZGNaTCtMeDRYalJDWm5MVDNJaTcwRUpoVGNvZ2grUXpQ?=
- =?utf-8?B?eGk1MHdSdXB5aGlKbjhnOWZ4a2Vta1B3dFYyQ0FMOUxmQjc5RFhRSlpTUmcx?=
- =?utf-8?B?Q1k0NWJ4VkcySXU3c0cweE8vcVlEQklQTXRabngrQ2ZlWHpDOGtGRWkyN1FW?=
- =?utf-8?B?QWxEbC95VGkwYTJVaUp3czNrUTN3UE1UK3hYelkwLzlNall3VHhNc29RWGdl?=
- =?utf-8?B?R3RPbkxNeHdaaGgvOHBhYVVNWXMvcVRSbTRTSU9ZWnp1TkViNEZIdEVQbEtz?=
- =?utf-8?B?RllqKzlDb0g0bW5ERE4wUEg3M25oUUd4akRzaDhRSHJ6Q0RUMVdCWHhaa0Nq?=
- =?utf-8?B?ZlVzZyt2akpHVFlMN0VyMGlsS3dtR3FxOHVHUW5HYmR5cU1QakYzRlo5ZDQw?=
- =?utf-8?B?RkJCbEVrNW5JaWZQdm9ZOXJXN3BoZ1BmQ3loM3ZJc2xXUTJDTGRvdzl4cERX?=
- =?utf-8?B?VElGdXdXbWh3TDI3eWRBR3d0RURhL0ZBcDlYS2p6T0FzS2V1TVBTTXExL2xV?=
- =?utf-8?B?bXgzTS9nUmFyTHE5Zm9HaVZLR1JYM1JRVW5tOFRHY1dwclhLVHNtMmRGemYy?=
- =?utf-8?B?SlZDZkFXV0V6dWxQWGQyLytCaUlYNXZybXBWVEVmTVVOdGhiUmNtbFZ5cVk2?=
- =?utf-8?B?Z3IzQ1hLQnppZ3cyNWZEWnlUc0xTcS9mVVBUMkJiYzNLVXBBdXZYSXNDNFVW?=
- =?utf-8?B?cnAwYWxoK1lzdHpibHJZMjFaK0lZMENNakRzT1YxanZINmlSQXd0b1BVeHUy?=
- =?utf-8?B?STlHR0ZHWU1qMmpGVXJzU1NobEl1bnpSVGNDQU5xU2NlSU1pZXBGcTh1SXlS?=
- =?utf-8?B?R0dPaVhOdHRBWm5EaHFESVRCcjBkWHdHNmRPTm9nSi96MWU1UjVYZmxsaEFN?=
- =?utf-8?B?aWpFUGk1REc4MnhoSGtwYXR2T1NpMVFTUEZSWTlxQzBLVVRham1kSHFxRnNS?=
- =?utf-8?B?SXN3akhVVWhPUzlIZHB1V2xmL1RpU25oeS9NSnU0REtDbUFYVmhLTHpGZit2?=
- =?utf-8?B?SHM4QjV1ZFIxaUtRMHVvc3pCN1ozenovQ2t0QVdZOXZzclkzdnpsUHI5ckVF?=
- =?utf-8?B?Q0QyU1Z0SGpraVFvcUg1OTFGZk1aZ3QxQUJhWlJyT2FKT3cyVVlDT3A3Y2tq?=
- =?utf-8?B?T1FVUi9iR1daQkFXR2M5d0RkWDJLZDRNU2RYcS9FOTVoTDVtb1BCS25xSm43?=
- =?utf-8?B?VENPcm1memtMRTZIeC95eFUxeFZKQmVpRzd1WnVFbENwbVpJTDRSOUtXZ202?=
- =?utf-8?B?T25hUTlBOThrUlp2THI5OFpRMmxvZkJmRVZPSXRGY3FWYXNEdDRVVGtIZ2Nl?=
- =?utf-8?B?SXJJMEZGZ0dKNG9KQ2I2R2k1aE1kV2h0YVdpR2hkWm1GTTlvUDRSWDJNeEta?=
- =?utf-8?B?aDdQTDVEV3pZSWNQSktLZ1QvYzdHRHA1VVMzd0hFckFxQ1ZUVXB4K21sZjhB?=
- =?utf-8?B?Lytnd2t4blE2QklFMlFYZTI1QXZaVUo4aGRHTnJnT0lDbHJjNGpWN1JMWEk0?=
- =?utf-8?B?N2NRZGhNSEpTSUd2WjJTaUgydUd6UXFzWm85QzVjRFFpMFlpM1NORVBRdWV0?=
- =?utf-8?B?RHhJazNSUEViVVp1OFpIYUhqakRWSXIvZGc2RkdpMFFNT2RncEhPbDhVUzhr?=
- =?utf-8?B?WnVtT3pMNi92elV4VUhPUHNsNXpYVS9yNFl3UzNpTzNGZndDaVB1NGhIQmdx?=
- =?utf-8?Q?nk6HN5uPXaP4QvnE=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <1CA475B1F815E44BB5467290D51FD7DE@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="erewZ10v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07FEC116D0;
+	Wed, 21 Jan 2026 04:50:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768971060;
+	bh=F8Tc/zNV5Kph5qSSBVjvztstQbGY8i+UW4ESNWCwSQ8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=erewZ10v7o9RK0gdYrvm0xOx4XfsHALdC13Iu5akdfQy7QK5hwf5K9KKQHj2xRVTL
+	 0s1VxlouTLnp/sNF9Kdp3fJH6CXfMdoPTeKUsFH8S2kvUX3kua6HGiHELfO9ml2zg1
+	 boJW9jFIPe8VQH4ILQBxxyPVEK5Q8esaBKBrMCrkzJa9erHKvmaevu0W/zTm/r2ToV
+	 bc19cKO1uikBhBqJf/NWjJFODwELhe/DRwpOnLSNZWxK+Ga691Reufy+N5eo5wtj9J
+	 0EdijE27as602Dm0V8baGICJ4pFg1bQJ1u91Tfq9WJ7aO05J4SApttywDa/Pe+DVe2
+	 MU7m5h5s3rZpw==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Robin Murphy <robin.murphy@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
+	linux-coco@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, will@kernel.org,
+	jgg@ziepe.ca, steven.price@arm.com,
+	Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: Re: [PATCH 1/2] dma-direct: Validate DMA mask against canonical DMA
+ addresses
+In-Reply-To: <b662e137-5d2a-4ee7-b1f7-b4545388d4fe@arm.com>
+References: <20260120064255.179425-1-aneesh.kumar@kernel.org>
+ <2a0b6d1b-875a-4075-8fc9-a8534afc9168@arm.com>
+ <893a6503-d33f-41d8-8966-19b9f251d9da@arm.com>
+ <yq5aqzrkjr9e.fsf@kernel.org>
+ <b662e137-5d2a-4ee7-b1f7-b4545388d4fe@arm.com>
+Date: Wed, 21 Jan 2026 10:20:48 +0530
+Message-ID: <yq5ajyxbk1qv.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5963.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 63fc12cb-778a-4bf5-8c64-08de5888384b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Jan 2026 00:58:41.5305
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: P3M6w/hsXH5i588td+yoXBy9uZPpjgmYh+pdrIvVjhP4//umvDZcr9f2PmgDJPYQUzop+szt52M/5T31xq5TS+sDAY7JicTfb3hO6U8KvI4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB6134
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-T24gVHVlLCAyMDI2LTAxLTIwIGF0IDE2OjUyIC0wODAwLCBTZWFuIENocmlzdG9waGVyc29uIHdy
-b3RlOg0KPiBUaGUgY2FsbGVyIHBhc3NlZCBpbiBudW1iZXIgb2YgcGFnZXMgdG8gYmUgYWRkZWQg
-YXMgQGNudCwgZG9uJ3QgaGFyZGNvZGUgd2hhdA0KPiBjb3VsZCBiZSBjb25mbGljdGluZyBpbmZv
-cm1hdGlvbi7CoCBJZiB0aGUgY2FsbGVyIHdhbnRzIHRvIGFkZCA1MCBwYWdlcywgdGhlbiB0aGlz
-DQo+IGNvZGUgZGFtbiB3ZWxsIG5lZWRzIHRvIHByZXBhcmUgZm9yIGFkZGluZyA1MCBwYWdlcywg
-bm90IDUuDQoNCkRvaCwgeWVzIHRvdGFsbHkuDQo=
+Robin Murphy <robin.murphy@arm.com> writes:
+
+> On 2026-01-20 2:25 pm, Aneesh Kumar K.V wrote:
+>> Robin Murphy <robin.murphy@arm.com> writes:
+>>=20
+>>> On 2026-01-20 9:59 am, Suzuki K Poulose wrote:
+>>>> On 20/01/2026 06:42, Aneesh Kumar K.V (Arm) wrote:
+>>>>> On systems that apply an address encryption tag or mask to DMA addres=
+ses,
+>>>>> DMA mask validation must be performed against the canonical DMA addre=
+ss.
+>>>>> Using a non-canonical (e.g. encrypted or unencrypted) DMA address
+>>>>> can incorrectly fail capability checks, since architecture-specific
+>>>>> encryption bits are not part of the device=E2=80=99s actual DMA addre=
+ssing
+>>>>> capability. For example, arm64 adds PROT_NS_SHARED to unencrypted DMA
+>>>>> addresses.
+>>>>>
+>>>>> Fix this by validating device DMA masks against __phys_to_dma(), ensu=
+ring
+>>>>> that the architecture encryption mask does not influence the check.
+>>>>>
+>>>>> Fixes: b66e2ee7b6c8 ("dma: Introduce generic dma_addr_*crypted helper=
+s")
+>>>>
+>>>>
+>>>>> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+>>>>> ---
+>>>>>  =C2=A0 kernel/dma/direct.c | 4 ++--
+>>>>>  =C2=A0 1 file changed, 2 insertions(+), 2 deletions(-)
+>>>>>
+>>>>> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+>>>>> index 8e04f72baaa3..a5639e9415f5 100644
+>>>>> --- a/kernel/dma/direct.c
+>>>>> +++ b/kernel/dma/direct.c
+>>>>> @@ -580,12 +580,12 @@ int dma_direct_supported(struct device *dev, u64
+>>>>> mask)
+>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
+>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * This check needs to be agains=
+t the actual bit mask value, so use
+>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0 * phys_to_dma_unencrypted() here so that th=
+e SME encryption mask
+>>>>> isn't
+>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0 * __phys_to_dma() here so that the arch spe=
+cific encryption mask
+>>>>> isn't
+>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * part of the check.
+>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (IS_ENABLED(CONFIG_ZONE_DMA))
+>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 min_mask =3D =
+min_t(u64, min_mask, zone_dma_limit);
+>>>>> -=C2=A0=C2=A0=C2=A0 return mask >=3D phys_to_dma_unencrypted(dev, min=
+_mask);
+>>>>> +=C2=A0=C2=A0=C2=A0 return mask >=3D __phys_to_dma(dev, min_mask);
+>>>>
+>>>> This is wrong, isn't it ? For e.g., for CCA, even though the "Flag" is
+>>>> added to the PA, it is really part of the actual "PA" and thus must be
+>>>> checked against the full PA ?
+>>>
+>>> Yes, it's much the same as for AMD SEV (albeit the other way round) -
+>>> the encryption/decryption bit is part of the DMA address because it
+>>> needs to be driven by the device, so it is crucial that the device's DMA
+>>> mask is capable of expressing that.
+>>>
+>>=20
+>> Commit c92a54cfa0257e8ffd66b2a17d49e9c0bd4b769f explains these details.
+>
+> See x86's force_dma_unencrypted() implementation - the reason dma-direct=
+=20
+> doesn't need to be so strict for that is because things are the right=20
+> way round that it can always fall back to shared/untrusted DMA as the=20
+> general case, and a device can only access an encrypted page directly if=
+=20
+> it *can* drive the SME bit in the input address to trigger the inline=20
+> encryption engine.
+>
+> For CCA we have rather the opposite, where dma-direct requires a device=20
+> to be able to address any IPA directly to be sure of working at all, but=
+=20
+> if we do happen to have a stage 1 IOMMU then we could rely on that to=20
+> map smaller IOVAs to the upper IPA space.
+>
+>> I was wondering whether the DMA-enable operation should live outside the
+>> set_mask operation. Conceptually, set_mask should be derived purely from
+>> max_pfn, while the DMA enablement path could additionally verify whether
+>> the device requires access to an alias address, depending on whether it
+>> is operating in trusted or untrusted mode?
+>
+> No, the point of the set_mask check is "is this mask big enough to=20
+> accommodate any *DMA address* we might need to give the device?" - that=20
+> includes offsets, magic bits, magic bits encoded as fake offsets (yes=20
+> you, Raspberry Pi...) and whatever else might comprise an actual DMA=20
+> address as handed off to the hardware. It is *not* directly a "can this=20
+> device DMA to all RAM we know about?" check - that is in the assumption=20
+> that if necessary the SWIOTLB buffer will be reachable at a <=3D32-bit DM=
+A=20
+> address, and thus we should not *need* to give >32-bit addresses to=20
+> devices. It is only that assumption which fundamentally falls apart for=20
+> CCA (with more than 2GB of IPA space, at least).
+>
+
+We need the below change then? commit 91ef26f914171cf753330f13724fd9142b5b1=
+640
+discuss some hardware that is broken with the usage of phys_to_dma conversi=
+on.=20
+
+modified   kernel/dma/direct.c
+@@ -14,6 +14,7 @@
+ #include <linux/set_memory.h>
+ #include <linux/slab.h>
+ #include <linux/pci-p2pdma.h>
++#include <linux/cc_platform.h>
+ #include "direct.h"
+=20
+ /*
+@@ -579,17 +580,23 @@ int dma_direct_mmap(struct device *dev, struct vm_are=
+a_struct *vma,
+=20
+ int dma_direct_supported(struct device *dev, u64 mask)
+ {
+-	u64 min_mask =3D (max_pfn - 1) << PAGE_SHIFT;
++	u64 min_mask =3D DMA_BIT_MASK(32);
+=20
+ 	/*
+-	 * Because 32-bit DMA masks are so common we expect every architecture
+-	 * to be able to satisfy them - either by not supporting more physical
+-	 * memory, or by providing a ZONE_DMA32.  If neither is the case, the
+-	 * architecture needs to use an IOMMU instead of the direct mapping.
++	 * Only do the conversion for CC platform, to be compatible
++	 * commit 91ef26f914171cf753330f13724fd9142b5b1640
+ 	 */
+-	if (mask >=3D DMA_BIT_MASK(32))
++	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT))
++		min_mask =3D phys_to_dma_unencrypted(dev, min_mask);
++
++	/*
++	 * if we support ZONE_DMA32 and device mask can cover the DMA32 range,
++	 * then we can support direct dma for any max_pfn value using swiotlb.
++	 */
++	if (IS_ENABLED(CONFIG_ZONE_DMA32) && mask >=3D min_mask)
+ 		return 1;
+=20
++	min_mask =3D (max_pfn - 1) << PAGE_SHIFT;
+ 	/*
+ 	 * This check needs to be against the actual bit mask value, so use
+ 	 * __phys_to_dma() here so that the arch specific encryption mask isn't
+
+
+-aneesh
