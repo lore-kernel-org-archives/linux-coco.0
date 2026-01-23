@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8362C3358D9
-	for <linux-coco@lists.linux.dev>; Fri, 23 Jan 2026 15:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B3B330D26
+	for <linux-coco@lists.linux.dev>; Fri, 23 Jan 2026 15:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769180422; cv=none; b=Xm8LqhVoaTsl/oZQDAh0pLV8Aed4ltXJWfC2t83bQu1/DX4+WRZsSOBVind+fvNnG53iCmZ1naPjmK104GgCjxglkkf9CKK/82E4twjkovYnoCi2yMe7Z4xjVxRkM93qt6kHM0vjT2H+jGZ/VgSDk4tI5+4CgkcKwlL+1SchYZE=
+	t=1769180425; cv=none; b=PNWIsaToIJs15higLp7+TcWL9Hyc3bIe/1TbO3kKfy3ynAdWeOqIb+xVOdPKI3ZtQqD+ff1LtJE9gsO5VaL7lRGnPPp2Sj/5D1t5mqzF6uqLHKoAWOwXYTmo/ryoRxgMhUb1VgLaVdhwj5svH2P/x/I1nwlwXLzZY4N+WMJPZTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769180422; c=relaxed/simple;
-	bh=EUdvM04qz2HU4Z4hCMb6uYQfEZu2qW0yXwhkH90a0KQ=;
+	s=arc-20240116; t=1769180425; c=relaxed/simple;
+	bh=l6gRODA9DOWaUAZIpnN8DaS/2uBMMYa5BOi5JNoTwvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CtVZcgzvnSEz91OYWbg2lPC1xTxa+nnJqvsl+FM9pCDae6PgJGxA+7h5MJ1bZ06n8NoDpCNYK/U+N9qAgf+Yxlu4iEh+JCCOT+8qcKdrgiYFW3TXeM+gl3nN1V0I8R+tFbE4yaAhRP82AeQ+OvZvltOfNGNW0slftXuU8dbD1Do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OPRxGL2S; arc=none smtp.client-ip=192.198.163.17
+	 MIME-Version:Content-Type; b=bRdzQx1nyCLpnCvRtd9HQ3Fr+0DHFPVw+SjNoD3rokfrORCLpspAhccObEG9ZjJik7gdNFZFnf8vRLuTjFRLzMNrn8+Y331o0ArJ8UnnQGy0M9T8CmzZtIgKCrrRBNrUBe/JBXlK031XNZkHfK/l1LrO5119/ker87vDDEca1aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ASNKEs4x; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OPRxGL2S"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ASNKEs4x"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769180418; x=1800716418;
+  t=1769180420; x=1800716420;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=EUdvM04qz2HU4Z4hCMb6uYQfEZu2qW0yXwhkH90a0KQ=;
-  b=OPRxGL2SD4rjrd9v3jCz9qG9estkNDJOERlGqwPRmLIupeI3TXCwbuta
-   xPNNYv+vz+/tbwv5f1AtWbO6DD/S578Lb5x+S8aPVGe4IUQL+h0wSAL5u
-   UVF8BGio1VGHiWLJTZdevjn2x503xePWxt67lihBGWEX/OIB/wrtYSZNz
-   URUZUGd1ATrjGQ0o+RW0v63ZLDSgrg+I1iJvw3yCH/n4kIMcasSbPawRk
-   43g/5rby8p/r4CZYCYLk5UcDnVl+LoYzM8eQI5zd5Qco+Uaou/qwvW/zk
-   bvli1t3I34kLhr0DTdA21HaCSbTuG9aO6Jl/CePE4MojjhFPZJM/64IgC
-   w==;
-X-CSE-ConnectionGUID: urV86Lo8SR+tUbEFBZ3RVw==
-X-CSE-MsgGUID: /kUW+cQDQuuleV1la0/4dA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11680"; a="70334370"
+  bh=l6gRODA9DOWaUAZIpnN8DaS/2uBMMYa5BOi5JNoTwvw=;
+  b=ASNKEs4x63BEYaQp7cp/eq6Etunk5xsnJGY7iAqdG1wf87jr9ItlMeHT
+   Naqvsjb2pKmaG9tR3QlweBJP7YP/uq1JQ7YJhOAmxrfrwC7BaVOfpAbyX
+   0ktkkRB1/eGAJzW0HU7XQ6zPEEgA+IUNRAe+lWngFDRy05Su9qr6aY+st
+   s3pzXkd27QiALWxQeABT9Z+YI9HjUFNDdvQ6yFqVKPDjglxbY8kbrtnMz
+   FU1P1zpXjM7xdeb25L7eRggYnyxyoo6vF/NWYx5Aeod5d81oU+/soJc8H
+   CY7AnafxZkXP9eqqVtS9kgHCUUJidKeE25ZRxRmysy5GC3mmI6vMqwz0A
+   A==;
+X-CSE-ConnectionGUID: /zpbxCR/T/WUc+wz7LJSBw==
+X-CSE-MsgGUID: htPEttlrSi2XHg0pU2/XVA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11680"; a="70334379"
 X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; 
-   d="scan'208";a="70334370"
+   d="scan'208";a="70334379"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2026 07:00:11 -0800
-X-CSE-ConnectionGUID: Vg43tIqvR7qE5IldtlceBQ==
-X-CSE-MsgGUID: hVIuuNeVSl+O5J88qChV7g==
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2026 07:00:12 -0800
+X-CSE-ConnectionGUID: M96KETEJQAW17m2phGDAbg==
+X-CSE-MsgGUID: dlx+zI7kT9udG9MJaOYtEw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; 
-   d="scan'208";a="237697090"
+   d="scan'208";a="237697099"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
   by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2026 07:00:11 -0800
 From: Chao Gao <chao.gao@intel.com>
@@ -69,9 +69,9 @@ Cc: reinette.chatre@intel.com,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v3 06/26] x86/virt/tdx: Prepare to support P-SEAMLDR SEAMCALLs
-Date: Fri, 23 Jan 2026 06:55:14 -0800
-Message-ID: <20260123145645.90444-7-chao.gao@intel.com>
+Subject: [PATCH v3 07/26] x86/virt/seamldr: Introduce a wrapper for P-SEAMLDR SEAMCALLs
+Date: Fri, 23 Jan 2026 06:55:15 -0800
+Message-ID: <20260123145645.90444-8-chao.gao@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260123145645.90444-1-chao.gao@intel.com>
 References: <20260123145645.90444-1-chao.gao@intel.com>
@@ -81,104 +81,139 @@ List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-P-SEAMLDR is another component alongside the TDX module within the
-protected SEAM range. P-SEAMLDR can update the TDX module at runtime.
-Software can talk with P-SEAMLDR via SEAMCALLs with the bit 63 of RAX
-(leaf number) set to 1 (a.k.a P-SEAMLDR SEAMCALLs).
+Software needs to talk with P-SEAMLDR via P-SEAMLDR SEAMCALLs. So, add a
+wrapper for P-SEAMLDR SEAMCALLs.
 
-P-SEAMLDR SEAMCALLs differ from SEAMCALLs of the TDX module in terms of
-error codes and the handling of the current VMCS.
+Save and restore the current VMCS using VMPTRST and VMPTRLD instructions
+to avoid breaking KVM. Doing so is because P-SEAMLDR SEAMCALLs would
+invalidate the current VMCS as documented in Intel® Trust Domain CPU
+Architectural Extensions (May 2021 edition) Chapter 2.3 [1]:
 
-In preparation for adding support for P-SEAMLDR SEAMCALLs, do the two
-following changes to SEAMCALL low-level helpers:
+  SEAMRET from the P-SEAMLDR clears the current VMCS structure pointed
+  to by the current-VMCS pointer. A VMM that invokes the P-SEAMLDR using
+  SEAMCALL must reload the current-VMCS, if required, using the VMPTRLD
+  instruction.
 
-1) Tweak sc_retry() to retry on "lack of entropy" errors reported by
-   P-SEAMLDR because it uses a different error code.
+Disable interrupts to prevent KVM code from interfering with P-SEAMLDR
+SEAMCALLs. For example, if a vCPU is scheduled before the current VMCS is
+restored, it may encounter an invalid current VMCS, causing its VMX
+instruction to fail. Additionally, if KVM sends IPIs to invalidate a
+current VMCS and the invalidation occurs right after the current VMCS is
+saved, that VMCS will be reloaded after P-SEAMLDR SEAMCALLs, leading to
+unexpected behavior.
 
-2) Add seamldr_err() to log error messages on P-SEAMLDR SEAMCALL failures.
+NMIs are not a problem, as the only scenario where instructions relying on
+the current-VMCS are used is during guest PMI handling in KVM. This occurs
+immediately after VM exits with IRQ and NMI disabled, ensuring no
+interference with P-SEAMLDR SEAMCALLs.
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
 Tested-by: Farrah Chen <farrah.chen@intel.com>
+Link: https://cdrdv2.intel.com/v1/dl/getContent/733582 # [1]
 ---
-Add seamldr_prerr() as a macro to be consistent with existing code. If
-maintainers would like to switch these to static inline functions then I
-would be happy to add a new patch to convert existing macros to static
-inline functions and build on that.
-
-v3:
- - print P-SEAMLDR leaf numbers in hex
- - use %# to print error code [Binbin]
- - mark the is_seamldr_call() call as unlikely [Binbin]
- - remove the function to get the error code for retry from leaf numbers
-   [Yilun]
 v2:
- - use a macro rather than an inline function for seamldr_err() for
-   consistency.
+ - don't create a new, inferior framework to save/restore VMCS
+ - use human-friendly language, just "current VMCS" rather than
+   SDM term "current-VMCS pointer"
+ - don't mix guard() with goto
 ---
- arch/x86/virt/vmx/tdx/seamcall.h | 28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
+ arch/x86/virt/vmx/tdx/Makefile     |  1 +
+ arch/x86/virt/vmx/tdx/seamldr.c    | 56 ++++++++++++++++++++++++++++++
+ drivers/virt/coco/tdx-host/Kconfig | 10 ++++++
+ 3 files changed, 67 insertions(+)
+ create mode 100644 arch/x86/virt/vmx/tdx/seamldr.c
 
-diff --git a/arch/x86/virt/vmx/tdx/seamcall.h b/arch/x86/virt/vmx/tdx/seamcall.h
-index 0912e03fabfe..256f71d6ca70 100644
---- a/arch/x86/virt/vmx/tdx/seamcall.h
-+++ b/arch/x86/virt/vmx/tdx/seamcall.h
-@@ -34,15 +34,28 @@ static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
- 	return func(fn, args);
- }
- 
-+#define SEAMLDR_RND_NO_ENTROPY	0x8000000000030001ULL
+diff --git a/arch/x86/virt/vmx/tdx/Makefile b/arch/x86/virt/vmx/tdx/Makefile
+index 90da47eb85ee..26aea3531c36 100644
+--- a/arch/x86/virt/vmx/tdx/Makefile
++++ b/arch/x86/virt/vmx/tdx/Makefile
+@@ -1,2 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ obj-y += seamcall.o tdx.o
++obj-$(CONFIG_INTEL_TDX_MODULE_UPDATE) += seamldr.o
+diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
+new file mode 100644
+index 000000000000..b99d73f7bb08
+--- /dev/null
++++ b/arch/x86/virt/vmx/tdx/seamldr.c
+@@ -0,0 +1,56 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright(c) 2025 Intel Corporation.
++ *
++ * Intel TDX module runtime update
++ */
++#define pr_fmt(fmt)	"seamldr: " fmt
 +
-+#define SEAMLDR_SEAMCALL_MASK	_BITUL(63)
++#include <linux/irqflags.h>
++#include <linux/types.h>
 +
-+static inline bool is_seamldr_call(u64 fn)
++#include "seamcall.h"
++
++static __maybe_unused int seamldr_call(u64 fn, struct tdx_module_args *args)
 +{
-+	return fn & SEAMLDR_SEAMCALL_MASK;
-+}
++	unsigned long flags;
++	u64 vmcs;
++	int ret;
 +
- static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
- 			   struct tdx_module_args *args)
- {
-+	u64 retry_code = TDX_RND_NO_ENTROPY;
- 	int retry = RDRAND_RETRY_LOOPS;
- 	u64 ret;
- 
-+	if (unlikely(is_seamldr_call(fn)))
-+		retry_code = SEAMLDR_RND_NO_ENTROPY;
++	if (!is_seamldr_call(fn))
++		return -EINVAL;
 +
- 	do {
- 		ret = func(fn, args);
--	} while (ret == TDX_RND_NO_ENTROPY && --retry);
-+	} while (ret == retry_code && --retry);
- 
- 	return ret;
- }
-@@ -68,6 +81,16 @@ static inline void seamcall_err_ret(u64 fn, u64 err,
- 			args->r9, args->r10, args->r11);
- }
- 
-+static inline void seamldr_err(u64 fn, u64 err, struct tdx_module_args *args)
-+{
 +	/*
-+	 * Note: P-SEAMLDR leaf numbers are printed in hex as they have
-+	 * bit 63 set, making them hard to read and understand if printed
-+	 * in decimal
++	 * SEAMRET from P-SEAMLDR invalidates the current VMCS.  Save/restore
++	 * the VMCS across P-SEAMLDR SEAMCALLs to avoid clobbering KVM state.
++	 * Disable interrupts as KVM is allowed to do VMREAD/VMWRITE in IRQ
++	 * context (but not NMI context).
 +	 */
-+	pr_err("P-SEAMLDR (%llx) failed: %#016llx\n", fn, err);
++	local_irq_save(flags);
++
++	asm goto("1: vmptrst %0\n\t"
++		 _ASM_EXTABLE(1b, %l[error])
++		 : "=m" (vmcs) : : "cc" : error);
++
++	ret = seamldr_prerr(fn, args);
++
++	/*
++	 * Restore the current VMCS pointer.  VMPTSTR "returns" all ones if the
++	 * current VMCS is invalid.
++	 */
++	if (vmcs != -1ULL) {
++		asm goto("1: vmptrld %0\n\t"
++			 "jna %l[error]\n\t"
++			 _ASM_EXTABLE(1b, %l[error])
++			 : : "m" (vmcs) : "cc" : error);
++	}
++
++	local_irq_restore(flags);
++	return ret;
++
++error:
++	local_irq_restore(flags);
++
++	WARN_ONCE(1, "Failed to save/restore the current VMCS");
++	return -EIO;
 +}
-+
- static __always_inline int sc_retry_prerr(sc_func_t func,
- 					  sc_err_func_t err_func,
- 					  u64 fn, struct tdx_module_args *args)
-@@ -96,4 +119,7 @@ static __always_inline int sc_retry_prerr(sc_func_t func,
- #define seamcall_prerr_ret(__fn, __args)					\
- 	sc_retry_prerr(__seamcall_ret, seamcall_err_ret, (__fn), (__args))
+diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
+index e58bad148a35..6a9199e6c2c6 100644
+--- a/drivers/virt/coco/tdx-host/Kconfig
++++ b/drivers/virt/coco/tdx-host/Kconfig
+@@ -8,3 +8,13 @@ config TDX_HOST_SERVICES
  
-+#define seamldr_prerr(__fn, __args)						\
-+	sc_retry_prerr(__seamcall, seamldr_err, (__fn), (__args))
+ 	  Say y or m if enabling support for confidential virtual machine
+ 	  support (CONFIG_INTEL_TDX_HOST). The module is called tdx_host.ko
 +
- #endif
++config INTEL_TDX_MODULE_UPDATE
++	bool "Intel TDX module runtime update"
++	depends on TDX_HOST_SERVICES
++	help
++	  This enables the kernel to support TDX module runtime update. This
++	  allows the admin to update the TDX module to another compatible
++	  version without the need to terminate running TDX guests.
++
++	  If unsure, say N.
 -- 
 2.47.3
 
