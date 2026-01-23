@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFFC2E8B75
-	for <linux-coco@lists.linux.dev>; Fri, 23 Jan 2026 15:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6513D3321A5
+	for <linux-coco@lists.linux.dev>; Fri, 23 Jan 2026 15:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769180416; cv=none; b=jPteD+HedUDcPW9YaS1dpWwso90zzpdkmzXujm9k9/bm7VpOiXCZUAWBlxQIBg87P/EzRtC0CoXUFzhoaIyQGD+0gqrVvCNv89x8glH/zLFAMq5TsoDZdI2waKTADSdLe3/d9FFFB0HhnNwi6OuhKE5jEN5f1PyVWQiglnpYNj8=
+	t=1769180420; cv=none; b=UMZYH0C0Dbi59KjlR0HAUncXAjSKtM55Jb0dVl/iroUz+eG5UBSE/f8ZtNUidBxTw6hCPgcgY8Pk6BayU5CceQ1+j/ooqSu6Gkw9z9H1IVrjbnvnlcoj2Y7lpOy3q42vlk0uP3vzRjbu7Xrhx0P8Bf3uKXRQAMv3yUEoggP+3Xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769180416; c=relaxed/simple;
-	bh=HaMEyLc+oaG7OmponVaIw/lEk5QQtY46m2sTc9gb1PY=;
+	s=arc-20240116; t=1769180420; c=relaxed/simple;
+	bh=xnX+zze05KP0ZC9spil2KJ6751Wn7UXOI7ZpdQ6pvGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A5cIx09EJ8fh5QFOzg/5hfFj1PzawUkieAMrPGEcwXatQr4nPcjgKwQZL/Wm3dtbLvAhwUCisYFu5Zg7Af2ENLeA/FAZ2y3+v5RZaVTmJaWPRTBbHTQlknVenC49P7J8bSdSzZ03YGUDcKYDXkaG5S6NtpKvKDtLlT2q22d95ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X0L/Ypiz; arc=none smtp.client-ip=192.198.163.17
+	 MIME-Version; b=au9crox9KznDvKMGspk80pJFztKn+Db6C3dTZfjhjF70HlpoQvozTJFCzM95spyax0RlatvTF+09OHZI7tCIYLsl+NNs9Q6xJLhc2MnndPOGFSYOd5dorMACVam0NXxK+gKMzBbr3Oof7EpSp9kLtFbanYeZWMB6Plq++ncbAso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hXdRgF89; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X0L/Ypiz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hXdRgF89"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769180414; x=1800716414;
+  t=1769180416; x=1800716416;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=HaMEyLc+oaG7OmponVaIw/lEk5QQtY46m2sTc9gb1PY=;
-  b=X0L/Ypiz7r+YW5B9pQRW4BI6SyAUI+MJxx1Hdk3ivr74OblG2tJjfNNn
-   6lLgk5D6Fgr7xtynXPvDNE43yVCN02EPJ/EH2WsaOMkyBa23rxHq2TMLb
-   ZAc5C9OCg2DIYTXFpvKFqsp6WaCryr8Dk7r5aYSf/qKKgN5yzQmzKh8Gs
-   7ibI+4s8eoSiFdVG82GtGa21l1DjsVVkJ8fOe5XN8VbcRmDUAN6/gzvkN
-   NKlOiYG4fM19IWHDIKwWRdF2+G9/lsr7fnbgOuFcWbi0mE3D1QFWoLDsZ
-   rZLjoGRJ/DPKoC4FVj4NTd5yY3Gdl6/3M6afdB1mr3EVAErvIfFZ0l/FY
-   Q==;
-X-CSE-ConnectionGUID: C9grKr16RoCv9W6Ip4xLkw==
-X-CSE-MsgGUID: R0MR5HrUS7SijHzbweGnlg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11680"; a="70334335"
+  bh=xnX+zze05KP0ZC9spil2KJ6751Wn7UXOI7ZpdQ6pvGI=;
+  b=hXdRgF89csTwUdPHyuzlziSQ4IEPmcvqUX/0N6EAhjmjdjEiyOd6aBXA
+   59ietwJwtN6OEJorBgPCDXxbNQJQtZ2vPYpJmfxnuGMCyXqRAXa8bGumX
+   HT2ErQDJ0UhHh8lbfOq+LZBAa/BzYKaN5KaI86Vg4B6/bSQvL/+y0nJEf
+   qj274HFGMqe+ctmojq7CNehioG+hb4SkydbkuetubvdyGjBIOWw2HmvIV
+   oSia+Xo0kD1PPLXlz0AkzvLC+Wbl0+VdkIk0n9qPLx6UVUKWlXz7fwnMy
+   nZixyB9Y+HqtaMeuXk44pgBgXGOV29bxjaFjv3/o0rUbveJgjDEDTI5Fi
+   g==;
+X-CSE-ConnectionGUID: KB1BiV/zQk2/k5RaGcQlgQ==
+X-CSE-MsgGUID: UeF7bOFdQ46B5amRCT7pCA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11680"; a="70334354"
 X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; 
-   d="scan'208";a="70334335"
+   d="scan'208";a="70334354"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2026 07:00:08 -0800
-X-CSE-ConnectionGUID: EguImU4ATgyVTKaFDCrj2g==
-X-CSE-MsgGUID: YPlqmC//QSWU0MFpB0KfEw==
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2026 07:00:10 -0800
+X-CSE-ConnectionGUID: lfwQx8BUQOSrKrQYLGCj/g==
+X-CSE-MsgGUID: bwnZhz1aSw+6g1vwXlOwrA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; 
-   d="scan'208";a="237697028"
+   d="scan'208";a="237697059"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2026 07:00:08 -0800
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2026 07:00:10 -0800
 From: Chao Gao <chao.gao@intel.com>
 To: linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
@@ -64,13 +64,14 @@ Cc: reinette.chatre@intel.com,
 	dave.hansen@linux.intel.com,
 	vishal.l.verma@intel.com,
 	Chao Gao <chao.gao@intel.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v3 02/26] x86/virt/tdx: Use %# prefix for hex values in SEAMCALL error messages
-Date: Fri, 23 Jan 2026 06:55:10 -0800
-Message-ID: <20260123145645.90444-3-chao.gao@intel.com>
+Subject: [PATCH v3 04/26] coco/tdx-host: Introduce a "tdx_host" device
+Date: Fri, 23 Jan 2026 06:55:12 -0800
+Message-ID: <20260123145645.90444-5-chao.gao@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260123145645.90444-1-chao.gao@intel.com>
 References: <20260123145645.90444-1-chao.gao@intel.com>
@@ -82,48 +83,172 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-"%#" format specifier automatically adds the "0x" prefix and has one less
-character than "0x%".
+TDX depends on a platform firmware module that is invoked via instructions
+similar to vmenter (i.e. enter into a new privileged "root-mode" context to
+manage private memory and private device mechanisms). It is a software
+construct that depends on the CPU vmxon state to enable invocation of
+TDX-module ABIs. Unlike other Trusted Execution Environment (TEE) platform
+implementations that employ a firmware module running on a PCI device with
+an MMIO mailbox for communication, TDX has no hardware device to point to
+as the TEE Secure Manager (TSM).
 
-For conciseness, replace "0x%" with "%#" when printing hexadecimal values
-in SEAMCALL error messages.
+Create a virtual device not only to align with other implementations but
+also to make it easier to
 
-Suggested-by: Dan Williams <dan.j.williams@intel.com>
+ - expose metadata (e.g., TDX module version, seamldr version etc) to
+   the userspace as device attributes
+
+ - implement firmware uploader APIs which are tied to a device. This is
+   needed to support TDX module runtime updates
+
+ - enable TDX Connect which will share a common infrastructure with other
+   platform implementations. In the TDX Connect context, every
+   architecture has a TSM, represented by a PCIe or virtual device. The
+   new "tdx_host" device will serve the TSM role.
+
+A faux device is used as for TDX because the TDX module is singular within
+the system and lacks associated platform resources. Using a faux device
+eliminates the need to create a stub bus.
+
+The call to tdx_get_sysinfo() ensures that the TDX Module is ready to
+provide services.
+
+Note that AMD has a PCI device for the PSP for SEV and ARM CCA will
+likely have a faux device [1].
+
+Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Chao Gao <chao.gao@intel.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Link: https://lore.kernel.org/all/2025073035-bulginess-rematch-b92e@gregkh/ # [1]
 ---
-"0x%" is also used to print TDMR ranges. I didn't convert them to reduce
-code churn, but if they should be converted for consistency, I'm happy
-to do that.
-
-v2: new
+v3:
+ - add Jonathan's reviewed-by
+ - add tdx_get_sysinfo() in module_init() to ensure the TDX Module is up
+   and running.
+ - note in the changelog that both AMD and ARM have devices for coco
 ---
- arch/x86/virt/vmx/tdx/tdx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/virt/vmx/tdx/tdx.c           |  2 +-
+ drivers/virt/coco/Kconfig             |  2 ++
+ drivers/virt/coco/Makefile            |  1 +
+ drivers/virt/coco/tdx-host/Kconfig    | 10 +++++++
+ drivers/virt/coco/tdx-host/Makefile   |  1 +
+ drivers/virt/coco/tdx-host/tdx-host.c | 43 +++++++++++++++++++++++++++
+ 6 files changed, 58 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/virt/coco/tdx-host/Kconfig
+ create mode 100644 drivers/virt/coco/tdx-host/Makefile
+ create mode 100644 drivers/virt/coco/tdx-host/tdx-host.c
 
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index dbc7cb08ca53..2218bb42af40 100644
+index b44723ef4a14..a0990c5dd78d 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -63,16 +63,16 @@ typedef void (*sc_err_func_t)(u64 fn, u64 err, struct tdx_module_args *args);
+@@ -1434,7 +1434,7 @@ const struct tdx_sys_info *tdx_get_sysinfo(void)
  
- static inline void seamcall_err(u64 fn, u64 err, struct tdx_module_args *args)
- {
--	pr_err("SEAMCALL (%llu) failed: 0x%016llx\n", fn, err);
-+	pr_err("SEAMCALL (%llu) failed: %#016llx\n", fn, err);
+ 	return p;
  }
+-EXPORT_SYMBOL_FOR_KVM(tdx_get_sysinfo);
++EXPORT_SYMBOL_FOR_MODULES(tdx_get_sysinfo, "kvm-intel,tdx-host");
  
- static inline void seamcall_err_ret(u64 fn, u64 err,
- 				    struct tdx_module_args *args)
+ u32 tdx_get_nr_guest_keyids(void)
  {
- 	seamcall_err(fn, err, args);
--	pr_err("RCX 0x%016llx RDX 0x%016llx R08 0x%016llx\n",
-+	pr_err("RCX %#016llx RDX %#016llx R08 %#016llx\n",
- 			args->rcx, args->rdx, args->r8);
--	pr_err("R09 0x%016llx R10 0x%016llx R11 0x%016llx\n",
-+	pr_err("R09 %#016llx R10 %#016llx R11 %#016llx\n",
- 			args->r9, args->r10, args->r11);
- }
+diff --git a/drivers/virt/coco/Kconfig b/drivers/virt/coco/Kconfig
+index df1cfaf26c65..f7691f64fbe3 100644
+--- a/drivers/virt/coco/Kconfig
++++ b/drivers/virt/coco/Kconfig
+@@ -17,5 +17,7 @@ source "drivers/virt/coco/arm-cca-guest/Kconfig"
+ source "drivers/virt/coco/guest/Kconfig"
+ endif
  
++source "drivers/virt/coco/tdx-host/Kconfig"
++
+ config TSM
+ 	bool
+diff --git a/drivers/virt/coco/Makefile b/drivers/virt/coco/Makefile
+index cb52021912b3..b323b0ae4f82 100644
+--- a/drivers/virt/coco/Makefile
++++ b/drivers/virt/coco/Makefile
+@@ -6,6 +6,7 @@ obj-$(CONFIG_EFI_SECRET)	+= efi_secret/
+ obj-$(CONFIG_ARM_PKVM_GUEST)	+= pkvm-guest/
+ obj-$(CONFIG_SEV_GUEST)		+= sev-guest/
+ obj-$(CONFIG_INTEL_TDX_GUEST)	+= tdx-guest/
++obj-$(CONFIG_INTEL_TDX_HOST)	+= tdx-host/
+ obj-$(CONFIG_ARM_CCA_GUEST)	+= arm-cca-guest/
+ obj-$(CONFIG_TSM) 		+= tsm-core.o
+ obj-$(CONFIG_TSM_GUEST)		+= guest/
+diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
+new file mode 100644
+index 000000000000..e58bad148a35
+--- /dev/null
++++ b/drivers/virt/coco/tdx-host/Kconfig
+@@ -0,0 +1,10 @@
++config TDX_HOST_SERVICES
++	tristate "TDX Host Services Driver"
++	depends on INTEL_TDX_HOST
++	default m
++	help
++	  Enable access to TDX host services like module update and
++	  extensions (e.g. TDX Connect).
++
++	  Say y or m if enabling support for confidential virtual machine
++	  support (CONFIG_INTEL_TDX_HOST). The module is called tdx_host.ko
+diff --git a/drivers/virt/coco/tdx-host/Makefile b/drivers/virt/coco/tdx-host/Makefile
+new file mode 100644
+index 000000000000..e61e749a8dff
+--- /dev/null
++++ b/drivers/virt/coco/tdx-host/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_TDX_HOST_SERVICES) += tdx-host.o
+diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
+new file mode 100644
+index 000000000000..c77885392b09
+--- /dev/null
++++ b/drivers/virt/coco/tdx-host/tdx-host.c
+@@ -0,0 +1,43 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * TDX host user interface driver
++ *
++ * Copyright (C) 2025 Intel Corporation
++ */
++
++#include <linux/device/faux.h>
++#include <linux/module.h>
++#include <linux/mod_devicetable.h>
++
++#include <asm/cpu_device_id.h>
++#include <asm/tdx.h>
++
++static const struct x86_cpu_id tdx_host_ids[] = {
++	X86_MATCH_FEATURE(X86_FEATURE_TDX_HOST_PLATFORM, NULL),
++	{}
++};
++MODULE_DEVICE_TABLE(x86cpu, tdx_host_ids);
++
++static struct faux_device *fdev;
++
++static int __init tdx_host_init(void)
++{
++	if (!x86_match_cpu(tdx_host_ids) || !tdx_get_sysinfo())
++		return -ENODEV;
++
++	fdev = faux_device_create(KBUILD_MODNAME, NULL, NULL);
++	if (!fdev)
++		return -ENODEV;
++
++	return 0;
++}
++module_init(tdx_host_init);
++
++static void __exit tdx_host_exit(void)
++{
++	faux_device_destroy(fdev);
++}
++module_exit(tdx_host_exit);
++
++MODULE_DESCRIPTION("TDX Host Services");
++MODULE_LICENSE("GPL");
 -- 
 2.47.3
 
