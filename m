@@ -1,139 +1,198 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011048.outbound.protection.outlook.com [40.107.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656DB1A275
-	for <linux-coco@lists.linux.dev>; Sat, 24 Jan 2026 23:50:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769298634; cv=none; b=Ay5S7hUux85MC369BMQjRncCb94oQp2gFuLvF+8vWGak1Ez084yI3JSdRbolBCzy3VC7HXWzxvlM523o35Wzquibc6+FabGwj8gU9Lkj3j6IVLVcINQPbsM/AEJ9HVAWQ3s/qotMGa5FYcVv2V3NgQ6FR9jkmUmTWPQZhNFId/A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769298634; c=relaxed/simple;
-	bh=jQJ+DmEwZIHiVdra1XscjqRFeO07sVVWfZRod1d2OgA=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=ceNqZ+0l+SQw5l0cfzO8cA/vCyob345kN/0s1clm0y1JDTuzhsyC+ryYMpeLnFiqqheDcrpgNNHWDIaUwrStf8lG6WrqIGUALZDDyCuk3+5Sf1ynqGlECJAJ/IqGBi1GOeUDeh9ojDU10wc0UE4Z1hAp+xkTqSE7nV+oGd1RQyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=g/Ecj1sN; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CEA616A956
+	for <linux-coco@lists.linux.dev>; Mon, 26 Jan 2026 00:44:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769388301; cv=fail; b=UDv6IRbWkD/7JSC3LMs9qwY5I2IH/tCo5cbSYmZdUkm2G8fy9fhKTFSAGPYsK6zDCKhf0qGSBaYLhUD9DgO+GkHNLfFEYOCXG6eIdudxBcL77YQDww6+f4YPGAhXgd8UWHGhBAhbAGndxL0YwwYgX9ybvyI+ysIKd4pnU527xGE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769388301; c=relaxed/simple;
+	bh=kSsY+tv+1QRI/NTPaiz2huHoDUa8ZVfrdEauLA55q6Y=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=GsRetK/y5HUPrzRjPTI6IW0SW8wxp3Qn24KO0LToYw0jmNSEp7QE0p0go41ltzhUKnR+Czy3zlCpDk9M+5SyUIL59e6/hHo7t0gZvO9T0UJkhnc3cCbkKrUiwa3d9ZrBJcGQGIdy/DYA2Ig/DEJ7g36mGB8vFtZSJlVgh7IpEiM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=gE9gJyb0; arc=fail smtp.client-ip=40.107.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="g/Ecj1sN"
-Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 60ONeosd2203461
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Sat, 24 Jan 2026 15:40:51 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 60ONeosd2203461
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026012301; t=1769298053;
-	bh=J5lSX7Gl219//MFEq3UIC0LRkA9Gw/LIxa+cv4x6pis=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=g/Ecj1sNdpSlJP2png+1PyWAYxnJeUsut7L7SNWQU5cA/nVi6nkUhwouKtnsClu6a
-	 zM/Q29pmJHrGolAbfVbUCAVq/vVY5XieCde4vmgWlr/YKaB3xYTbiNaHhGIetpObHq
-	 3/ITQHAVlegM50QqZPwuvEnqMkUg1m0COpFmBxxqxKrKeKZAkeGLd9316ib2AXO6Mq
-	 Mt3+5nwhC5kbMYUJ3aseHbe+rAGwUCQ0lYdW4NUkAwFahhghOsHUrerfAKftvC+XbD
-	 HNFm0Uxh8lGzJ7pLemANYTGbTEjx1LT2zRyx4r0CRPAtJFbdIgLhMhv9qrsUVE7bTH
-	 TFPVkzITJXTYQ==
-Date: Sat, 24 Jan 2026 15:40:44 -0800
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: David Laight <david.laight.linux@gmail.com>
-CC: "Maciej W. Rozycki" <macro@orcam.me.uk>, Thomas Gleixner <tglx@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Uros Bizjak <ubizjak@gmail.com>, Petr Mladek <pmladek@suse.com>,
-        Andrew Morton <akpm@linux-foundation.org>, Kees Cook <kees@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Kiryl Shutsemau <kas@kernel.org>,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-        x86@kernel.org
-Subject: Re: [PATCH v1 12/14] x86/boot: tweak a20.c for better code generation
-User-Agent: K-9 Mail for Android
-In-Reply-To: <48826D19-02E6-49D9-941C-C5C374CD1524@zytor.com>
-References: <20260119192923.651588-1-hpa@zytor.com> <20260120195407.1163051-1-hpa@zytor.com> <20260120195407.1163051-13-hpa@zytor.com> <20260121114911.6adc2838@pumpkin> <alpine.DEB.2.21.2601240244460.6421@angie.orcam.me.uk> <981124b5-040e-400b-9912-15a65fdfdfdd@zytor.com> <20260124230741.2b94b14c@pumpkin> <48826D19-02E6-49D9-941C-C5C374CD1524@zytor.com>
-Message-ID: <60A7475A-6C11-4070-9044-C6A64CCB4337@zytor.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="gE9gJyb0"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lqh8dk9hTME6qyqPEUghuQD/IvcyNZuFOVRmhWoSzWxaE8GBdqSDdxioTIX8zXw0NYGqMgVeaVscysnvq5FGPQN7TviPOkuUB2MsnlbQpMhfPuBWD06ZrF3EzqiA6MAShjpOer4psBX9JAK8PEZAPiDlnzUZTPcC906lBfGpbEcLA71xnRhAtezzx44Udpk6uPuU0KTAZuG4lSHe7SJ4owtSm6UD4YzzCfcuOqq+7Tb2rf2f2mPnDguJLJis56R005ZZLkY+UZCg2D2UwHPa+ZK0pZIn9cVOpuKtRpblipmg6kkQPtXN151LrZbdtavb2L9X/+E6ybcgH8BVBZokRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aGRaprNqOvGa+ZA7GLhJyQzm5/YvIPQ96iOtWda2Igw=;
+ b=g+sw9Ag/gFy75UYmAAvFnTzmAaBh4ZouwPC1gXg4yc8GmMK23eRuaL7FIrtGctbgkkDIPnmNiSSCmMkHMYA4mgQFQzBpEwxoWgSG3DMBzXq5mcpBz88yHCgQb7WIarg5XpZa6Z1pL+ZrOHneNkTpb3L96MhAXb/NI2W9JIjdX7QYoquaqRKQNhzv/0GH6oSRktQQ+ckkF4Mh9HtshdmAP8D8NFfFiE3E/cl9B0OjSPGr3YRI6Nw9BlJFyTD5hjCvKojtor/qrCjQkdnOvCwzmeInE8gg/rgn49tvLUYm3IRljFdBOayWRSvLtglUthdcE7hkLCP+KRoXlHVx6/2sdQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aGRaprNqOvGa+ZA7GLhJyQzm5/YvIPQ96iOtWda2Igw=;
+ b=gE9gJyb0CvVzYbX3wICYEBN9wdfhk8wOem60MrflK0HPqLRdiz2/u8KulC1VexJ5mlVdfqzXA6NyezLc1s7Q6UP0SasInrSTl3gjmIf1faLoGW4mGUOAb2p1F1yxcAvmhA4R1FNBwo0x/nKYrfrlTKonDpPDtZFgnp7ImZfxYwI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
+ by MW4PR12MB6707.namprd12.prod.outlook.com (2603:10b6:303:1ee::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.15; Mon, 26 Jan
+ 2026 00:44:56 +0000
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::1e6b:ca8b:7715:6fee]) by CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::1e6b:ca8b:7715:6fee%4]) with mapi id 15.20.9542.010; Mon, 26 Jan 2026
+ 00:44:56 +0000
+Message-ID: <196ef0d2-93ac-4872-831b-e803e02b5d95@amd.com>
+Date: Mon, 26 Jan 2026 11:44:45 +1100
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH kernel 2/2] crypto/ccp: Allow multiple streams on the same
+ root bridge
+To: dan.j.williams@intel.com, linux-crypto@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Ashish Kalra <ashish.kalra@amd.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, John Allen <john.allen@amd.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>, x86@kernel.org,
+ linux-coco@lists.linux.dev, "Pratik R . Sampat" <prsampat@amd.com>
+References: <20260123053057.1350569-1-aik@amd.com>
+ <20260123053057.1350569-3-aik@amd.com>
+ <6973fd402a74a_309510049@dwillia2-mobl4.notmuch>
+From: Alexey Kardashevskiy <aik@amd.com>
+Content-Language: en-US
+In-Reply-To: <6973fd402a74a_309510049@dwillia2-mobl4.notmuch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SY5PR01CA0117.ausprd01.prod.outlook.com
+ (2603:10c6:10:246::28) To CH3PR12MB9194.namprd12.prod.outlook.com
+ (2603:10b6:610:19f::7)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|MW4PR12MB6707:EE_
+X-MS-Office365-Filtering-Correlation-Id: 472405b1-c9ed-483f-d87a-08de5c741fef
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?M2tya0MwQlQrNkw0YlQwNkpUdTliTG5wRkR4NTNoZkI3OStHY0NlT014TzBn?=
+ =?utf-8?B?MWNDdC9XSzB3d1dhQzFOTUdmSTlTQnIxRjlaamlKYjFwVitNYlRXdEhtK1Y1?=
+ =?utf-8?B?SU1iUmk1VWdDZVZsVlQ5Y1NEMlBzM1pqNFlHRFRIWnNHSEpsdjJReURvOE8v?=
+ =?utf-8?B?cXdsdUtCVVFoK3h0a0pXaFZhK2ptYjZac25aczQ3MnNGTWtjSjdTWWdqKyt0?=
+ =?utf-8?B?ZC9LMUd3Nis0S3MxWHp5R0g5bkQ2Y3VMS2xlaXBhR1hWSGlpVzBvU3hxazd1?=
+ =?utf-8?B?NnFucFdlSWRIbmE2SERGTG1OU0NjWmJVdExOU0xBVERRWU44Y2VmL3BDaXVE?=
+ =?utf-8?B?TmhIclBvUTd6SU1ZbUdkNWtPZXE2RGl0SWU3MEtEdHVUcGlKc2RxZ2F6MkMx?=
+ =?utf-8?B?ZXdGZTNQeVZyeFJJZ1hYaVFwSDQ5dGc5SnNoQ0pKcXlHeGFzZnN0eXBPanNV?=
+ =?utf-8?B?b081WFNaaWQzd0NzbTJScGF6aG11OGpTNGJ4RVZ1Y1BrNGg5eVdCckU1dFJQ?=
+ =?utf-8?B?SkExZk5hSzFWQ1Z2RllRQVFQRXJmQ3MwTWlqU1R0Z0hpZklDelJleHpEWWtI?=
+ =?utf-8?B?LzBkc2N1bUwyZDVBNmxPZHV2b21qanY5Ync3YXMycjdXS21jMGR0T2VjUDda?=
+ =?utf-8?B?dTZOdTRrczBmamlpUlM2bFRJZGpOYUVKSTJGYVJPTVNLYXpxQWQ0NjJKWmRN?=
+ =?utf-8?B?RUY4RlpFRWNvSXZQNjNCN0NaOEFscG9GekZMalpza3NVMGRTNWlXNVFudHY3?=
+ =?utf-8?B?OWVjWmhhRkYrOUFRU3lBOEd2ZFNmZURRTVhtT01MQitOZUtaK2VFWFFtU2U5?=
+ =?utf-8?B?dGxSV1RUNnJHbmJGZnFsbG52V0pqWngxbFYxaDNmbFRsdUUvQk0wVk0vZlBN?=
+ =?utf-8?B?K1R1Z3dUR1U1TjR6SjBjN05ZY3FhZ2VCUnJ6WS9reUNIdC9xYXpRTmdOQzY5?=
+ =?utf-8?B?eS9obFNtR3RjRnd3VUl5eUtRbllCTG02QitXRjZic3dzenlKQ3F1b1RqVTI2?=
+ =?utf-8?B?ZXhXOVZ1Yk9nYkpIZll5Y1RjdjlTdVlTM2h1N3AxT2wyZXI1MTFVa2o4L0F4?=
+ =?utf-8?B?SUw2SG03U2pOVzRzNFhWNnVjNGhIeEl1VFpCNG1vK3JhVloybjdHK1FJZ1Fa?=
+ =?utf-8?B?MUl4Y09XdnREMFpiTXRnVzA5K3VZc2lIc1o1ZHpuMk4rckFWWm1temxDUE04?=
+ =?utf-8?B?L3k3OUltZDk5T1hEZEZtb3pOeU1oK3J3UzhlbjFzVFl5MnNSR2w3ZUxBd01r?=
+ =?utf-8?B?ZjkwalhXUDQyRTZ5K0Z6NjRjVUVzVERnL0pDMlN5OHg4RlB6SVgwZDNGM3NX?=
+ =?utf-8?B?UGRsWnM4ekk5eExtSnRKc0I0bmdmVkp1YjRpeDBKOUZZVzlhTkw4NUdXaVQ0?=
+ =?utf-8?B?eFhLNWwwaGFvWVV5ZDlvZkdJL3llN0tBYitPOTVJcmFZVTAwOTVhd3RBZG4z?=
+ =?utf-8?B?d0pYNnpLVkVHS0NOcTNXWW5LRi9PNWtHZ0tiQnZWdWNKdmtaRUY1MUwyMVRL?=
+ =?utf-8?B?QzVLaEpkaVUzZDA5UTJwc2poeW9UUHJYd0tSTFdIcUl1WUtkRjIrZjZWcVlC?=
+ =?utf-8?B?UlRBQmgrUzJvQThlZWJibmNEM0lRTlpHbXZsejY2bXlUUTVRVjZnQ0xvWVk1?=
+ =?utf-8?B?NTNyclV1ZWcyd0toZExVMlVWSkdndmxBazNYazV1WXBVUldUVmtyVWxTK1U1?=
+ =?utf-8?B?UEc3OUNlNmRveTFIWG9CRnZiVkxzS1NyVGZiaHh6R2d0NmR1Nkg4WncxUWZK?=
+ =?utf-8?B?NXFnRDliSjJUMVRaSTVzdS9CWGRiSE1WQkdHTU9acnpHdUx3R0lxSjZObVJM?=
+ =?utf-8?B?Z2lBcHhSV1d3Wm1yRUljamhBbVJGNFNHTUtobjNnemJxRm90cTBjYWgrRWF6?=
+ =?utf-8?B?MVFWNEhIMjVLRE1FcHQ0WVM1WGJtak9VRXFlOG55WjRGZVR0UXVwUWVEOWlG?=
+ =?utf-8?B?LzY5bnlUTFk2Yk4yNEdWUTNwZFIwdzZGTCtaaHNoVDg0aXB1SkRJTFZFVVpJ?=
+ =?utf-8?B?RUlhTm4vZzY3MW1qeC9PbUQ3ZUFwZHlvOTBHUW1DaFE3bzR1VE5WUU5LSHJZ?=
+ =?utf-8?B?Wk5XbDN0cU9FcHBuNStvdEZMa3JqOWNyaTZtTmU0UU5CTkVjRXlpUnRpMHFn?=
+ =?utf-8?Q?qZPM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?S3JlbkZMcXRIZzJiL3p5eFNNQzBxb0tSckhmT1dMdzc3WmpkdUY2a3BHWWFa?=
+ =?utf-8?B?bXlIRGllREk5dkkza21XSXBKWWVucWdjZ0hickhPczJLQm1yWkRWTTZ1ZGJJ?=
+ =?utf-8?B?WmVRWk5SdVlHUFRXREgwN01HeFg4Q2FvTTJZYklzVTdicFN2QWxzUVBpNDhY?=
+ =?utf-8?B?TWRoUUVVcWZqNlg5cUlGSVlzMXROSk9NUEE4Zyt6b0p3OGoySmtZYnNzMGEv?=
+ =?utf-8?B?UlAvTGpjYVd0OEpwWmJ0ekJicDdyalV6TTlEaEJoY1liUUl6eVIyMlZ5WSs0?=
+ =?utf-8?B?OXhIUXhXb1pKWkhocUhnaFJrZEVIeXFzRnNqdVdlMEVVMnlWaFJGRjFjTVFy?=
+ =?utf-8?B?MlNjRTA2OUJmbTVyRnVNYlVadUdUZGczdDdmT2oyYThrTlNqRmNRUzg3ZTRq?=
+ =?utf-8?B?QmNwYWt0amNwT3VNYWZKdHg5YnZsYndhS2hxTGZWeVZXZ2xRNUR0S3FuUG1v?=
+ =?utf-8?B?SzZ1WE0ySll5ZHBiOG8vdVBYY2tnc1pXSEk3V0YzcWNtaDhhM2FJVko5NGlC?=
+ =?utf-8?B?NFNVRXZBK3NiLzllZllXMERNV0JPbmxuZENkdHVKb1ErNk5PdVNWeVdWUFRL?=
+ =?utf-8?B?N0hSN1k5RU5Dd0hIYmwxZWR1bnJKbHpXV3lGNWxDU052MU5OdFJOalVGUHZw?=
+ =?utf-8?B?WU5SUWo5RnNqY1ZpYjhoUVppbkphMzV3bGZIRWtxOGMyY1gzVGIxSVB4TElr?=
+ =?utf-8?B?VGNKa1lnN2R2NVU4QzUxeUdPS2VtaWNOSUZVMU5TMWFBdlhrTGxVUkhRME0z?=
+ =?utf-8?B?VTZLMTJBM016VnRTUmJDZUh6LzYwSlJRRlB6YXVIS01VbGJQL0Q2YzNmZnVM?=
+ =?utf-8?B?SnB5emo4bElJOU5udkFkek4xWm05UzFtKzhua05jdmprVjVGeUhaWXpRcFdV?=
+ =?utf-8?B?N0RSQmE5aXNzRlp1b3hQTllVNU55a3FIV1YvWktYcDlPSGFpSFowZWdNUEdT?=
+ =?utf-8?B?TThIZUJ1OWtDQUFGQUU0TEQ4RlJUTUt0MG9Cem1KV2p6OWM5ZHNnNXd4SnhI?=
+ =?utf-8?B?UUpEOTF6d1RGMHZkaHJIZWxIQ3c1NE80VXhETklXKzZnejg2L0hSMjUvVGF1?=
+ =?utf-8?B?cVBXUU1DNmU1MEt6dmloeDEwWURtR0RqNFd5ODNJSHptT0grUElvKzJlTk5X?=
+ =?utf-8?B?cU9oQWdvTDdZeml3MmdSZE8xUjJaeGZlZ3piZW5kdFlRcmdsUEtVZ09FK1JU?=
+ =?utf-8?B?Um1GVEJHMm9obkxZeW9QMmRrNnhhZFozcE1iZkxXVi9aTDR4eVpjemo4THVj?=
+ =?utf-8?B?NXR0SG5FcjRHaUhGYVVUZlpWQ3prRHlHUDh1NWFhRGpNTXVSZ2IycGg5bzl3?=
+ =?utf-8?B?ZmVBTFRpdk5VdCtYeDdSVU5PUGZ0TFBaSVcxQzMzd1p6NGNxb1grN0NFSzVz?=
+ =?utf-8?B?M3VLaFJwSWNYbDA1TkN1Z05zTndOa1pGRWp5YmpJeWRzUGZBcGF4MEtxbzZC?=
+ =?utf-8?B?aW93cCtUaThRRStDSDJSd0gvNmVoT3pkRXNudmUrT2s3cmg0bUN0SHpkTU5j?=
+ =?utf-8?B?Uzd5dmJXSHZqQXBqcHd2Ykthc1Fhc1Mrby9LR3ordHkwei9UOGM2Nit1aER3?=
+ =?utf-8?B?dWdxZjZibms0TmFWZWYzVVJXMmRxMlJtQ2VpRU85V1h0WnYvdFloczBjZG1Q?=
+ =?utf-8?B?eitNOTR1U05Sb0pJc3dPSlI4ZWltNy9XV0xMSnQ3T1NmRTlnVXhQQy9ER1M4?=
+ =?utf-8?B?MGVwZ2JFNHFJUnFaY3hZWGdWek9BK255eFk4Y0l3OVhsd3dyZFZvdVpXclg4?=
+ =?utf-8?B?a2JyRkx0cU8vSncyMzlOVnR5L0tneEo5Z2NPVGJSbE9jWHY3S21obDFTUjg3?=
+ =?utf-8?B?d1JKWCtuZTJxN2RJZFJVVm1sZ2liSDlXSTY1U0pqTkkyNWhYOFltMStxb1pu?=
+ =?utf-8?B?eW5PZERTTzBKVytPUmZHNHR6Rmg1eEVxaG9lZlQvVFUzY1VKZlpid1g4aVQx?=
+ =?utf-8?B?R0ZCV2t0MkNHSHlVZkIrc1F3UElPNW4zZVN4TlIzNFFITjN0MzllS2tOSDcz?=
+ =?utf-8?B?ZDJqNkdSSEJSbUdwWXcxRDEvN2lHR2U3MGlqM2NRMzRaSnh6eVo1cWVCQnpR?=
+ =?utf-8?B?bWNkQjBkbjB5T3Vuek4zenk2UU14dk5WcE1kamltVUw3ZzU5MTRwOEJMNU85?=
+ =?utf-8?B?bjQ1OFFOYXRRTnJiT3BLR3FkTVdKcG1Fc0JmOHRKZnhmblRvd1pGWDc5ZDRx?=
+ =?utf-8?B?VU1zdHpTMTRxRkhwc1JIUkNURXY3NFJmV2doM1JqS3VEUkVTQ0NGSGQ5TWp1?=
+ =?utf-8?B?QzBoZnN6YlNKSkU4c1lCZHJieVlDUG1HUkp1cHpPQWFqeE9HYzN6aXRSdlJR?=
+ =?utf-8?Q?+glZMR/n2g3MC6K/K6?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 472405b1-c9ed-483f-d87a-08de5c741fef
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jan 2026 00:44:56.0408
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wDajzXKMbe+eQ0eahl+0QdQdyT0MtUlZLVRZ+S6G3YacskTIS6vTwqryEJy1VzSZJda5YgDhcv2pzr1yszfdUQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6707
 
-On January 24, 2026 3:16:18 PM PST, "H=2E Peter Anvin" <hpa@zytor=2Ecom> wr=
-ote:
->On January 24, 2026 3:07:41 PM PST, David Laight <david=2Elaight=2Elinux@=
-gmail=2Ecom> wrote:
->>On Fri, 23 Jan 2026 20:24:55 -0800
->>"H=2E Peter Anvin" <hpa@zytor=2Ecom> wrote:
->>
->>> On 2026-01-23 19:00, Maciej W=2E Rozycki wrote:
->>> > On Wed, 21 Jan 2026, David Laight wrote:
->>> >  =20
->>> >> No loops needed=2E =20
->>> >=20
->>> >  A loop is needed because there can be a considerable delay from iss=
-uing=20
->>> > the I/O request to flip the A20 gate till the circuitry responding=
-=2E  This=20
->>> > is particularly true with the command issued to the 8042 device, whi=
-ch is=20
->>> > a microcontroller running its own firmware that needs it time to pro=
-cess=20
->>> > an incoming request to drive one of the microcontroller's GPIOs=2E  =
-There=20
->>> > was a reason for port 0x92 circuitry later added to the PC architect=
-ure=20
->>> > with the IBM PS/2 being called the "fast A20 gate"=2E
->>> >  =20
->>>=20
->>> Indeed=2E I thought I had responded to this already but I hadn't, appa=
-rently=2E
->>>=20
->>> Note that the "long" delay is 2^21 loops! That number wasn't taken out=
- of the
->>> air, either; we found machines that actually needed that many iteratio=
-ns=2E
->>
->>Ok, so you need a loop because it might take ages for the value read fro=
-m
->>0x1000200 to change=2E
->>But there is no need to keep changing the value=2E
->>The comments in the code don't really stress that=2E
->>
->>> In the case where A20 is enabled already, the loop terminates on eithe=
-r the
->>> first or second iteration (the second iteration is when the value at 0=
-x1000200
->>> is exactly 1 higher than the value at 0x200=2E
->>>=20
->>> Modern machines (Nehalem+) already have A20 enabled, and most machines=
- of the
->>> i686+ generation implement int 0x15 function 0x2401=2E
->>
->>I know some of the history=2E
->>And just read some more of the gory details=2E=2E=2E
->>
->>A20 being disabled is there to make a 286 compatible with the older 8086=
- PCs
->>and any software that relied on address wrapping (rather than using it t=
-o get
->>an extra ~64kB in real mode)=2E
->>That would be for dos and win 3=2E11=2E=2E=2E
->>
->>The only 8088 and 286 cpu I used were on IO cards=2E
->>
->>>=20
->>> 	-hpa
->>>=20
->>
->
->No, there is a reason to keep changing the value: you have no idea what i=
-s currently stored in that memory, *and you have no way of knowing*=2E
->
->Whatever value you write might purely accidentally be the value that alre=
-ady is stored at that memory location=2E
-The other thing about this code is that performance is irrelevant =E2=80=
-=93 it is a busy wait loop! =E2=80=93 but consistency (hence the io_delay) =
-and code size matter=2E
+
+
+On 24/1/26 09:59, dan.j.williams@intel.com wrote:
+> Alexey Kardashevskiy wrote:
+>> IDE stream IDs are responsibility of a platform and in some cases TSM
+>> allocates the numbers. AMD SEV TIO though leaves it to the host OS.
+>> Mistakenly stream ID is hard coded to be the same as a traffic class.
+> 
+> I scratched my head at this comment, but now realize that you are saying
+> the existing code used the local @tc, not that the hardware stream ID is
+> in any way related to traffic class, right?
+
+When I did that in the first place, I also wanted to try different traffic classes so I just took a shortcut here.
+
+> It would help to detail what the end user visible effects of this bug
+> are. The TSM framework does not allow for multiple streams per PF, so I
+> wonder what scenario is being fixed?
+
+There is no way in the current upstream code to specify this TC so the only visible effect is that 2 devices under the same bridge can work now, previously the second device would fail to allocate a stream.
+
+> Lastly, are you expecting tsm.git#fixes to pick this up? I am assuming
+> that this goes through crypto.git and tsm.git can just stay focused on
+> core fixes.
+
+I was kinda hoping that Tom acks these (as he did) and you could take them. Thanks,
+
+-- 
+Alexey
+
