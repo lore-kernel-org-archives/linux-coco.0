@@ -1,208 +1,133 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010071.outbound.protection.outlook.com [52.101.46.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23A130AAC9
-	for <linux-coco@lists.linux.dev>; Mon, 26 Jan 2026 22:42:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9B227FD74
+	for <linux-coco@lists.linux.dev>; Tue, 27 Jan 2026 01:44:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769467376; cv=fail; b=ON361VHLwhqcLpkRQ83OOdV078VvvfJZ8joqp8p1Nozkqv1kmP1iZqA7/PWVef/RG616nKCxrYiiWzhqWXkbLt4rMWtq2IIFG5RJydmSQgSc0RAU66sTzhyMqjpujH9jyK9FqwqOrL9brLj6J/CzZ7eM40hiVT/HOopK35rYT0A=
+	t=1769478286; cv=pass; b=kZN3hVuBJY0G7Guq6WeuQxqkvvbKkLtH4z8r1en8ksgGgBRbkbXDCAmuYAwGDpGuwW0aI+pI5vvTjWRoxu/ergiSGGWoM2E8fepIkRNhbV6N+D0YdH4tABHSJwlkr/J2LbQxoCh22OlZjkNpxlZ6mcEYTRpd8FBgUEObES8zBco=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769467376; c=relaxed/simple;
-	bh=lEEHEy5NXYmlrENjx/M/aNd89k2WrZuELFhoI6w8kTo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Wwa47CacYgT8wvQ+PedhP68H83hbMLM5rDxVC62bWX46dzTMt0AbkUFSu9xVUHI2yWT1q6AM+qM8Htk/F5aMDv6Iu9n9Z/OvsZZvKgupK9/lrKrtZWdmp2bINPRNVMo5R+kzSApf3wliRQKF/0AMGDw7edItxyLydM1ypItUs5k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Xr7yQeIL; arc=fail smtp.client-ip=52.101.46.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1769478286; c=relaxed/simple;
+	bh=kIT+5wixmIcRm22vKd5JKkjcJAmwQNb792gk0GwMjsY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ldfeKvA6d4IcHKrABZqbDEKg+0mW/yVhLWRN8uM0dbLYGPrWFNAqZjwxDl3/bsUsjJ0SnrGH9lk0M5ugd5ILQ82KkoK/YWHHWg/sXipTc6kCW59X7OSSAhW0rlqkorl0NCSLgLU7q2jem1ZxMvb+K2jVMlxh/2ZfE4TMhrWwaPk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=MvBcDtxU; arc=pass smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Xr7yQeIL"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cI2qIpUwf5T5LIgcZE7C+RHcDW2Nqw0fjSQPBdko0ZAuuiiyAdjyB0m1x2R8aSsXolh38wYSanL79dFgm2PtvdwjMpdDIQzjOds6NR8y5SqF5nOUNuDwsZclnXLu76EfJdK2RWqLJzHbXmCqoKxYnk9eg+WTRep+AY5rJTqmAYXDWUGNAVDJXt82rHUjszamLzOaW+GS/09BTY8R6+K9MiYt/aH+ZGOE5CFQ0vvUW1CxXZK6zSeSKzD1FQ61FvICYJhgq7mT9M0PS6nXxJDITHKpkgvsVB6M+jHjRyO53Gto18uIw2nhOLugpOAmFQLFwfRMeKrO5inkr/Ir0jOypg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nOzN7rP5+RmHojoItY3+Vqsy1ZZvtjHzpiv9ydQ71DE=;
- b=GRslPX9Vy8Uo7PzE1yVIqxyjE6NHJtMEYXd1HEN4EEKDSINILjIhUWy2FHMin8f0mp5OgP5RitcctVuqGMxojRNH45WgkfPM/onXhnIWI9MSH9Ug/t9api4UjevlYo2S/VY1TAy6CUa0oO3xSXFOaRvgaGIgrzi7jf7sFNQUdESS9JVx0XrKRRAowykpCVnFDXJ+W744m5nGqCKyRovAFMWjprnx/VNFEHGQly0cvhUE6zcq7Z20YLpcKQZSILHJmyEJvoldj6rs4NeMEx/X3hOt2SKe8HXI3G0lnCIQdfe9U9ae0d+svLnWB3k87dfQ9aHdaqC9HFk4EipnROdn1A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nOzN7rP5+RmHojoItY3+Vqsy1ZZvtjHzpiv9ydQ71DE=;
- b=Xr7yQeILVhYi42TLPDrICX3DhgxYgx1iqNbEXvcb8Pw0nDsDHjgIk+6NlNHGy2ysOvCCaMpzcLGdcnfW3vt1UlwEEYnw6qoiU55tgLC4X+GEQ70QBppoAaNlfjAhg+Cs/nFMnUvmEQSvMkOVgs+6IRvVWVrKCOgktbVUd3bUSAY=
-Received: from BL6PEPF00013E02.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:22e:400:0:1001:0:18) by DM4PR12MB6206.namprd12.prod.outlook.com
- (2603:10b6:8:a7::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.16; Mon, 26 Jan
- 2026 22:42:48 +0000
-Received: from BN2PEPF00004FBF.namprd04.prod.outlook.com
- (2a01:111:f403:c803::7) by BL6PEPF00013E02.outlook.office365.com
- (2603:1036:903:4::4) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9542.16 via Frontend Transport; Mon,
- 26 Jan 2026 22:42:48 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN2PEPF00004FBF.mail.protection.outlook.com (10.167.243.185) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9564.3 via Frontend Transport; Mon, 26 Jan 2026 22:42:47 +0000
-Received: from gaul.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 26 Jan
- 2026 16:42:45 -0600
-From: Kim Phillips <kim.phillips@amd.com>
-To: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <x86@kernel.org>
-CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, "Nikunj A
- Dadhania" <nikunj@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, "Michael
- Roth" <michael.roth@amd.com>, Borislav Petkov <borislav.petkov@amd.com>,
-	Borislav Petkov <bp@alien8.de>, Naveen Rao <naveen.rao@amd.com>, David Kaplan
-	<david.kaplan@amd.com>, Kim Phillips <kim.phillips@amd.com>
-Subject: [PATCH 2/2] KVM: SEV: Add support for IBPB-on-Entry
-Date: Mon, 26 Jan 2026 16:42:05 -0600
-Message-ID: <20260126224205.1442196-3-kim.phillips@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260126224205.1442196-1-kim.phillips@amd.com>
-References: <20260126224205.1442196-1-kim.phillips@amd.com>
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="MvBcDtxU"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b8863db032dso587689666b.0
+        for <linux-coco@lists.linux.dev>; Mon, 26 Jan 2026 17:44:44 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769478283; cv=none;
+        d=google.com; s=arc-20240605;
+        b=iq5LC9BUwhWCfhJBoODGysDkg4OuCuGLS2XJO9Nm5+hLBEXiaECnsO7GeW/At8oujO
+         FEnDwdOpRb3ih9eSfym0M/uK7/KtnqwBt+VPX3t0mpzAOnC5MTJYT0T9rf7rjPlPdiWS
+         TxBH/5BT6KJI34RdWLjrA0bGte/Gq7tXFYPd+Ig3lOUpqo66RlgMe7XUKtnV6Tt1Jra+
+         9EQ9LX7zlH6V/p/oDjNKM4QfkOZy2ALGUqQvRUVtE84xarz1mYoFVG/tbSunNGD/Q99S
+         dOKtLRJ2S4lxRMDwXYI9Vs0Pq8yIrEwfGwGtjfw0cajC3qgW9tz9XbbMfC8qMWi938em
+         GcdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=kIT+5wixmIcRm22vKd5JKkjcJAmwQNb792gk0GwMjsY=;
+        fh=tTOq3/7qX8LXVg0ZcouRhZJKCV+VeSVmE29RyzvtGWA=;
+        b=CBPixlJ9cQPGaT9cr5yPLLOnHpMXGYH374M449eL/VXjAh4k9e7UoCgKp179zwDfPv
+         m5+9tVENWNANmSERe3uZELyoIezokRrV0XGXFtOKhL/KXq67Rv5uTqULUPPM2gV2L3Eq
+         0o0InVcYYYl9j7Ppa1NFAB+UOn/BAbKoJuSCFW5w1B9sm8/cIeRp7G4ngKt9OWoLC8Vr
+         BBVpObbmGxNN8W4+C9ozb0kNX84yd7gQ4q1WALU+DD/gKxN9ePnmIBf2N4/s/6EbvZ58
+         KEWwWsCWNZw7vrWnMMAwPZFyFzvMEdG25fJCICJVtQHqJgBRh+1rtzc3p1unVUx9y0WX
+         c5nQ==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1769478283; x=1770083083; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=kIT+5wixmIcRm22vKd5JKkjcJAmwQNb792gk0GwMjsY=;
+        b=MvBcDtxU3CXpTp+nYF1pHzJCMZc/6+9+B9fsjHixukq4hjXYzKaUFa+P3D6fqz9ca3
+         2Wk45YX+9BLT1tmai3VKe9avyIx7sTWwHwEo0vtc/EGKbiEzfqVcta5YqaYsB7yU7Zk6
+         fYyiZTDt5IhpkNYKq7mCu8RPB/h0oKzMaaGAA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769478283; x=1770083083;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kIT+5wixmIcRm22vKd5JKkjcJAmwQNb792gk0GwMjsY=;
+        b=SFM5sIK90CDAJjQuIwzF0p+2zbPxUCGUmEw3Cr0RWGzKiIgZR/+N0KUU3zcWH6NOlG
+         G0LRLmkM2F1/DVm/FUbcA0M0+gBr8sSWwGRwGVWe0nkqMz7ICJCKhgPR53KMpaMIS8vd
+         LumpWRbF9OAkhbTyHPUqagalGbwX590kWt/ZN+YdDjtb1XXX3ZG5n6MASfgUIcE04Qym
+         qdpnEh90GBEwaSDaLUg8WgRBWqwayADQMlGt3ciQF6FzrXeDTQUR+qW5bLrmdTyFcdcI
+         yl6fKlrhDuB8Gbq8v9owFkgM1RxNsik3BNRdxElCwC9S0k/3Tgt3Rvvgv1N4tKvGvxNV
+         lNtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVTjRHHthzDpdq+4Meac0xMRAvhRSrDd99lCNfsnUh/g8MLMbesbm15xduPHB6qH/+LUJYVFJByc2rY@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxawx3XORLPS0lwhsFS+J6LQucJXWaEpvvEoCSNmk3uXWBC8Tmi
+	K/Sv693vPo5cWBM5fL3FMaqfWH2KA4GiG9mG9AneR2PXNomy/tThuApye5BE/eLied5cnwEt2C2
+	JF1vSX8P58QVxuJ13CxiyA72eBzB2fs0j9g0uvibTKc6uh5IGd9KLGA==
+X-Gm-Gg: AZuq6aL4LE0HVjgG1Cwt4vQLR1EOxIkZkL/ShJjPi1h6EmwogUvvD/bp7A9wGReEREd
+	uKArbxBxHeozLpS1Y0uDGLZild2bxmy/QL9tVvpWgv1eM16JQKLL7/BBbPuAiQX+ke3POAhUUf8
+	ZfRtP3lfNwd4sfk1hZL80IZLWY7L6+0GE3x6ZZJloZtX2TSe/H0VfSwBDQLpH1soitSVCKvdD3c
+	5TIMTAJRw5nZVO0y+aok8CSPlqqO0MAp9JaoLxvsxDEoqM6cVjJg8BB6SzvjE8+MaBrRKNK
+X-Received: by 2002:a17:907:7287:b0:b88:5b35:914b with SMTP id
+ a640c23a62f3a-b8dab3d056bmr13999166b.59.1769478283139; Mon, 26 Jan 2026
+ 17:44:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF00004FBF:EE_|DM4PR12MB6206:EE_
-X-MS-Office365-Filtering-Correlation-Id: 56da80d3-1738-4f8a-69c1-08de5d2c3ad1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700013|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?FnebeY9EbsqhVw3FZq0/uGHrW6t7UKfZx+58eGKRaoPjPIQ3q7mAecthO2IY?=
- =?us-ascii?Q?XJEh0+zWHgJB9BrLVdesXRFzPBUVlleyvnYQP/Nhpr9cbyIU7dyaWMK92scd?=
- =?us-ascii?Q?ahBzBr/44QVRfQ5B+kV5l6Ui6W67Q5Qt02k08e8Ej9APR+mFt74/iC9o3KXb?=
- =?us-ascii?Q?8Uo/EL7cBuWL1Ie0XY3qppDB7k/Wx3pCB25ibkorjjgJ0eG7WGNnF9UvJIlQ?=
- =?us-ascii?Q?5nu8cII/SSLrOZp8km+ZsZYOGVquE9aX+DyvlpHEggceQ0sP+RBVTFsv1v7q?=
- =?us-ascii?Q?Rho2E7KVHmXNTEsU39Jaonfq8UluZGmDC3ssylSWKXtoKEA28ItL8SHyOk8f?=
- =?us-ascii?Q?HjNq8fFF+HZjz2Z9CCjVVyA2GgvUNakeLsiNOnzWJRT6yMJbM+avJQt/Xs4g?=
- =?us-ascii?Q?vp93c8jVJPn2si7QG7Vfrx5ssi3tvLrkcbSFDv8h5W7VcoLSl2ZsSFNofsZi?=
- =?us-ascii?Q?N4AR87JAQEJ7HCXWECpOIvYgXXrkxeZde3C62s4lbNCxqOpbjexOfCq9qrkZ?=
- =?us-ascii?Q?hadeTu4sSizBJFB3pyecP2St1NTHWT6jhHgTW3dq8E6M+B9+ENwXi52xrhon?=
- =?us-ascii?Q?imsSkLZcNcsAd8kc4cw9nmyXsGX53oh2vphtxA6d/39nN/+REI8Qry50v0Cp?=
- =?us-ascii?Q?FdwF6hM6a1pNOu0jpLtOgVgPbqPNi2jCYKFXl1SiIqW0tawIB6wDOPQlyFxt?=
- =?us-ascii?Q?ojndV/5eoHpZ/FZLRFh2BGGaJLfeAviCPg0xxM/rndXKNifm6m9PdLhjlgXr?=
- =?us-ascii?Q?HXuFzVidBclE06HcXVaYAPsxU7k93+ePP/5EPHwsorYKDH+8Pqx7RSxSR/rs?=
- =?us-ascii?Q?HbaIgeCnA5DHgco8uQY27B3nidDpnZq/wE0uBa7QyKRF3gnUEZl56+cPvrlj?=
- =?us-ascii?Q?JpT9Y48FFsCdfQ6j+LMEDPS1Z4Rj0EHo++lsfjbFuZO4GuO7Wh7X0u1XNS1i?=
- =?us-ascii?Q?ICSARkoRd/qTZTvi0830aSTF3IpqGbqCmudClByvrRI/QtEuXA83r863vxdr?=
- =?us-ascii?Q?vNSXiYvB7t/O0uGtiBux+MIsJUW+hu8jZrxq3RBj6nRbmqCBzM8CUomAAGoV?=
- =?us-ascii?Q?1ImCgUdRb8poi7aiV57mO3UuEvjql6uS9h8rl5j/Q/2gjNHaq9Xws/1Nr5yh?=
- =?us-ascii?Q?bILQpP5g5U7O9HXE1q8oFXSqzwOOL7edDaZNHXcLGfSKhnFrPoXnVAgjuYNo?=
- =?us-ascii?Q?+qlUjpT5cqOdqpGd4QvJCk6sVJGoJey0xSkLSdiujloh8A3NX5vy+014RdfF?=
- =?us-ascii?Q?Q8nzKPit9Yl+P3rXoNt7EENdO14GJM10l+h+IbLA0nvavVwspNfzPLmnvpcL?=
- =?us-ascii?Q?7RcHDlLGegOQ7ZrPBGO9aMkJp6/uP+U12WNzds/TPAfCvrD+jDbMpBVhpWpO?=
- =?us-ascii?Q?fTOr+o57LIi0GivWud+B4W/pFc5+gcO7nP+7pZc/IbdxpttDkC/Fy0lpHRkc?=
- =?us-ascii?Q?fbnhIzPO0dkw6dUeWPyVvrG+qAWgwUOFnA4F0BtbQdcmbb01F25o8RlDrDzt?=
- =?us-ascii?Q?hz3cXa+6lP3EJcvpp4kUkSCbQSFGeX3D3wiljBaG6tHCW0X9o07VZyV47UTR?=
- =?us-ascii?Q?7EaPs9ysWmvGfLK+y2ErQiFrVlaFlJAbKxoNiJ4DxJQMctTaHOQSkzRec1yW?=
- =?us-ascii?Q?3jJLzWXKwAhIQ2UvOkKsOOiETtqfSzQHwkeD3bR2wzWETUL3HYXM2C3OBPmI?=
- =?us-ascii?Q?/YR9Rw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jan 2026 22:42:47.9511
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 56da80d3-1738-4f8a-69c1-08de5d2c3ad1
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF00004FBF.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6206
+References: <CAFULd4bV6jKqHb-vC47skjNvbctit3VccXpF02oYt0icaq1r-Q@mail.gmail.com>
+ <20260122185740.50298-1-sjg@chromium.org> <90DAAB54-CBF0-47BD-981A-FEDD26CDA0FD@zytor.com>
+ <CAFLszTi+N7Yj0yYHKroypmBoFSx+9m5er8pgULsKbPuooFYj-A@mail.gmail.com> <643bfc24-8cc1-4f70-85e2-f6829c8e03db@zytor.com>
+In-Reply-To: <643bfc24-8cc1-4f70-85e2-f6829c8e03db@zytor.com>
+From: Simon Glass <sjg@chromium.org>
+Date: Tue, 27 Jan 2026 14:44:43 +1300
+X-Gm-Features: AZwV_Qi1U2CQ2Mp1BJFd56Wa1poDStxY5LbrrPglXbP_K0sU6fNMOPVaZzZydIM
+Message-ID: <CAFLszTjhJkfBrG-QiF6cEz-K1ODHPziJDsTthBUsqoZ=hDxsjA@mail.gmail.com>
+Subject: Re: [PATCH v1 08/14] x86: make CONFIG_EFI_STUB unconditional
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: ubizjak@gmail.com, linux-kernel@vger.kernel.org, akpm@linux-foundation.org, 
+	bp@alien8.de, dave.hansen@linux.intel.com, kas@kernel.org, kees@kernel.org, 
+	linux-coco@lists.linux.dev, mingo@redhat.com, nathan@kernel.org, 
+	peterz@infradead.org, pmladek@suse.com, rick.p.edgecombe@intel.com, 
+	tglx@kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-AMD EPYC 5th generation and above processors support IBPB-on-Entry
-for SNP guests.  By invoking an Indirect Branch Prediction Barrier
-(IBPB) on VMRUN, old indirect branch predictions are prevented
-from influencing indirect branches within the guest.
+Hi Peter,
 
-SNP guests may choose to enable IBPB-on-Entry by setting
-SEV_FEATURES bit 21 (IbpbOnEntry).
+On Tue, 27 Jan 2026 at 11:21, H. Peter Anvin <hpa@zytor.com> wrote:
+>
+> On 2026-01-26 13:19, Simon Glass wrote:
+> >>
+> >> Including the EFI stub doesn't mean using EFI to boot is required.
+> >
+> > Yes, understood, but it adds bloat. More importantly it will lead to
+> > people assuming that the stub is always used and thus unwittingly blur
+> > the boundary between the stub and the kernel itself.
+> >
+> > What is the actual need for this?
+> >
+>
+> I would argue that the opposite is more likely: someone inadvertently builds a
+> kernel without the stub, the bootloader goes down a legacy support path and
+> things seems to work... except for some platform subtleties.
+>
+> The bloat is there, but it is small and is only in the on-disk kernel image;
+> it is zero at runtime.
+>
+> As such, I don't think this option is a particularly good idea anymore. If
+> necessary, it could be hidden behind an EXPERT option, but I first wanted to
+> see who if anyone actually cares in a meaningful way to maintain this option.
+> Every option, after all, adds maintenance burden.
+>
+> Note that the BIOS stub is unconditionally compiled and included, and that has
+> not been an issue.
 
-Host support for IBPB on Entry is indicated by CPUID
-Fn8000_001F[IbpbOnEntry], bit 31.
+What is the maintenance burden here? I could potentially take that on,
+but I would first want to understand what is involved.
 
-If supported, indicate support for IBPB on Entry in
-sev_supported_vmsa_features bit 23 (IbpbOnEntry).
+The use of the word 'legacy' worries me too. Is this patch a step
+towards removing the non-EFI path?
 
-For more info, refer to page 615, Section 15.36.17 "Side-Channel
-Protection", AMD64 Architecture Programmer's Manual Volume 2: System
-Programming Part 2, Pub. 24593 Rev. 3.42 - March 2024 (see Link).
-
-Link: https://bugzilla.kernel.org/attachment.cgi?id=306250
-Signed-off-by: Kim Phillips <kim.phillips@amd.com>
----
- arch/x86/include/asm/cpufeatures.h | 1 +
- arch/x86/include/asm/svm.h         | 1 +
- arch/x86/kvm/svm/sev.c             | 9 ++++++++-
- 3 files changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index c01fdde465de..3ce5dff36f78 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -459,6 +459,7 @@
- #define X86_FEATURE_ALLOWED_SEV_FEATURES (19*32+27) /* Allowed SEV Features */
- #define X86_FEATURE_SVSM		(19*32+28) /* "svsm" SVSM present */
- #define X86_FEATURE_HV_INUSE_WR_ALLOWED	(19*32+30) /* Allow Write to in-use hypervisor-owned pages */
-+#define X86_FEATURE_IBPB_ON_ENTRY	(19*32+31) /* SEV-SNP IBPB on VM Entry */
- 
- /* AMD-defined Extended Feature 2 EAX, CPUID level 0x80000021 (EAX), word 20 */
- #define X86_FEATURE_NO_NESTED_DATA_BP	(20*32+ 0) /* No Nested Data Breakpoints */
-diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-index edde36097ddc..eebc65ec948f 100644
---- a/arch/x86/include/asm/svm.h
-+++ b/arch/x86/include/asm/svm.h
-@@ -306,6 +306,7 @@ static_assert((X2AVIC_4K_MAX_PHYSICAL_ID & AVIC_PHYSICAL_MAX_INDEX_MASK) == X2AV
- #define SVM_SEV_FEAT_ALTERNATE_INJECTION		BIT(4)
- #define SVM_SEV_FEAT_DEBUG_SWAP				BIT(5)
- #define SVM_SEV_FEAT_SECURE_TSC				BIT(9)
-+#define SVM_SEV_FEAT_IBPB_ON_ENTRY			BIT(21)
- 
- #define VMCB_ALLOWED_SEV_FEATURES_VALID			BIT_ULL(63)
- 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index ea515cf41168..8a6d25db0c00 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -3165,8 +3165,15 @@ void __init sev_hardware_setup(void)
- 	    cpu_feature_enabled(X86_FEATURE_NO_NESTED_DATA_BP))
- 		sev_supported_vmsa_features |= SVM_SEV_FEAT_DEBUG_SWAP;
- 
--	if (sev_snp_enabled && tsc_khz && cpu_feature_enabled(X86_FEATURE_SNP_SECURE_TSC))
-+	if (!sev_snp_enabled)
-+		return;
-+	/* the following feature bit checks are SNP specific */
-+
-+	if (tsc_khz && cpu_feature_enabled(X86_FEATURE_SNP_SECURE_TSC))
- 		sev_supported_vmsa_features |= SVM_SEV_FEAT_SECURE_TSC;
-+
-+	if (cpu_feature_enabled(X86_FEATURE_IBPB_ON_ENTRY))
-+		sev_supported_vmsa_features |= SVM_SEV_FEAT_IBPB_ON_ENTRY;
- }
- 
- void sev_hardware_unsetup(void)
--- 
-2.43.0
-
+Regards,
+Simon
