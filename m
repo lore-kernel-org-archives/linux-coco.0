@@ -1,105 +1,114 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8D72FF675
-	for <linux-coco@lists.linux.dev>; Tue, 27 Jan 2026 02:46:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9614D139D
+	for <linux-coco@lists.linux.dev>; Tue, 27 Jan 2026 02:55:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769482006; cv=none; b=ePZ0CdvkaFOhgPz2Lgyi6nBAENGmD8G/rLMQRocvpuQeUvZmjYh/ciCRE6LLnNBmYQI4+B4eMT7bwikNH7U07UPLTSNY7Ev9+rsIUeTc6iToi6mYFkd0g8gizliuMhYBC0UtSxDXANt4/TnZfNG4rqQgl90VfrfTsWE/yxNEKm0=
+	t=1769482532; cv=none; b=qKJwzdgM3C+mDl3CwAFpwApqjWc6ScPL82QiEugIFcYtnjPLyan7gsVZUa21wVMFl4p+z7QC5HBMBSr+8hrwYn0GHX3p9DPvIxhGdu89JIcr+YYwRmnXC3ZppXfoXLjEBY42PwwkW385fs9EjEyi1ACgjIpmmCJ2BJUtPUbr+8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769482006; c=relaxed/simple;
-	bh=Xzpbra9837QmDLbGjaczE5iqzi40M73MulfuqbJXidU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a1tE+DLblbk52RemVIzWUzdOHVscAb9+VLxAxa9mRSBEC1jW/xUz1LaOQ9rLdc6FvABgzLWt5cc8rej5npZhHi4o+Nxq5+/2klIh6Bd8M7BgheRxtOwqRJYyGGNZtWk3m/9+fpfz1cGkKOFiuKDxAXrQLWrFEZDPhGFZYbnyr2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O6k41cIy; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1769482532; c=relaxed/simple;
+	bh=XhAYbyTeq0S5YxS64diYkyBhY3z+urlrv1bsyExoqsQ=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=EHZf2iSE8R0VckBkWKFSFkqizYVXNc5bEzNQ2iqJDTs8MP+nYYz5is5R/IusmcZs5lqI69bsAUCPB2GbMo3I5N1vkiHljySQGnKBpnAI64igeaY/BxSen38mApzZPD4crajjou65hoIkO4nwBd8c6wmZtIgr5i4az0tOUe5i/io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=tuHbWpLj; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O6k41cIy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769482005; x=1801018005;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Xzpbra9837QmDLbGjaczE5iqzi40M73MulfuqbJXidU=;
-  b=O6k41cIyntRL3SCNroVKSdRyRQj7Zvdqoi5VVwkiTVikAC/z9nLp3ZTE
-   EDe7wBBqAoZfGoVanSWSIP0M1cntDD8EkLdAm3pfILeVT5bjobSZuy+F6
-   dU2Z/snr2mbuR5QajD/lfwdDdzG6FVeGyRPywtRH0a/hLoIzz1j94xfWa
-   l2b0bROQnIzZ13ZRwnU8uXyIpYoy4jL5fKrwlr/9KXJM9/grwRkUGHxR5
-   HbD+TJprj39oz78OeVhH/3kdKo9LUM4dm7YO3YgCMw2QCHoSPw3ytQ3xv
-   Feg0cxDIxdPm9kQk85y+TBeypTQCqmHMYRUIN4ZkzjY0wd6oiN7AQRKJC
-   g==;
-X-CSE-ConnectionGUID: ihyZ+46iQia4oCfap1uqiQ==
-X-CSE-MsgGUID: Z29phj0xTtOOVIKVCf5RTA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11683"; a="70561980"
-X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; 
-   d="scan'208";a="70561980"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2026 18:46:36 -0800
-X-CSE-ConnectionGUID: Hwd3ZEaTQOCwNLoyhHOMBg==
-X-CSE-MsgGUID: e69oU3gfRuGV/1sCtYyR7A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; 
-   d="scan'208";a="212393572"
-Received: from unknown (HELO [10.238.1.231]) ([10.238.1.231])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2026 18:46:33 -0800
-Message-ID: <e3905a0a-8582-4902-9ca7-03b6e3ce412c@linux.intel.com>
-Date: Tue, 27 Jan 2026 10:46:30 +0800
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="tuHbWpLj"
+Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 60R2t4YX3390143
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Mon, 26 Jan 2026 18:55:05 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 60R2t4YX3390143
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026012301; t=1769482506;
+	bh=XhAYbyTeq0S5YxS64diYkyBhY3z+urlrv1bsyExoqsQ=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=tuHbWpLjKz+CwofmS6u7yjySJgbbtuI/3bP4YMzPTlhf7ucrvyAwHwGae+GBxO0Oi
+	 iByAmBiMSQJx7hq3fjMOOJui7+jGv/VL7nlBm6cns+vGYOzmu8jGR/ZoH9tocITG1j
+	 vIxovjA9DsTisj4PBhpfGtixm4knQmcp3B7vB4nu3n58B/2CW0sc7BIZLIpWU66RHh
+	 Ev9kygRzhXzTBoHf5UVt8ULUilA/1P5uNwyf/LB090UwOr3wzEUDjEKXVk54aV1H+E
+	 EH+PhRk7ELpsENDQWUsQYtaapjN/eqBCgI6LRSSyVB/K5ztB+gXh89SG3q0p68SuAW
+	 oZFBSl+MpqWOA==
+Date: Mon, 26 Jan 2026 18:54:58 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Simon Glass <sjg@chromium.org>
+CC: ubizjak@gmail.com, linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+        bp@alien8.de, dave.hansen@linux.intel.com, kas@kernel.org,
+        kees@kernel.org, linux-coco@lists.linux.dev, mingo@redhat.com,
+        nathan@kernel.org, peterz@infradead.org, pmladek@suse.com,
+        rick.p.edgecombe@intel.com, tglx@kernel.org, x86@kernel.org
+Subject: Re: [PATCH v1 08/14] x86: make CONFIG_EFI_STUB unconditional
+User-Agent: K-9 Mail for Android
+In-Reply-To: <CAFLszTjhJkfBrG-QiF6cEz-K1ODHPziJDsTthBUsqoZ=hDxsjA@mail.gmail.com>
+References: <CAFULd4bV6jKqHb-vC47skjNvbctit3VccXpF02oYt0icaq1r-Q@mail.gmail.com> <20260122185740.50298-1-sjg@chromium.org> <90DAAB54-CBF0-47BD-981A-FEDD26CDA0FD@zytor.com> <CAFLszTi+N7Yj0yYHKroypmBoFSx+9m5er8pgULsKbPuooFYj-A@mail.gmail.com> <643bfc24-8cc1-4f70-85e2-f6829c8e03db@zytor.com> <CAFLszTjhJkfBrG-QiF6cEz-K1ODHPziJDsTthBUsqoZ=hDxsjA@mail.gmail.com>
+Message-ID: <E15F74BD-E33C-4184-B694-C152696C4895@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/7] KVM: x86: Extract VMXON and EFER.SVME enablement
- to kernel
-To: Sean Christopherson <seanjc@google.com>,
- Xu Yilun <yilun.xu@linux.intel.com>
-Cc: Chao Gao <chao.gao@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>
-References: <20251206011054.494190-1-seanjc@google.com>
- <20251206011054.494190-3-seanjc@google.com> <aTe4QyE3h8LHOAMb@intel.com>
- <aUJUbcyz2DXmphtU@yilunxu-OptiPlex-7050> <aUL-J-MvdCrCtDp4@google.com>
- <aUS06wE6IvFti8Le@yilunxu-OptiPlex-7050> <aUVx20ZRjOzKgKqy@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <aUVx20ZRjOzKgKqy@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-
-
-On 12/19/2025 11:40 PM, Sean Christopherson wrote:
-> On Fri, Dec 19, 2025, Xu Yilun wrote:
->> On Wed, Dec 17, 2025 at 11:01:59AM -0800, Sean Christopherson wrote:
->>> On Wed, Dec 17, 2025, Xu Yilun wrote:
->>>> Is it better we explicitly assert the preemption for x86_virt_get_cpu()
->>>> rather than embed the check in __this_cpu_inc_return()? We are not just
->>>> protecting the racing for the reference counter. We should ensure the
->>>> "counter increase + x86_virt_call(get_cpu)" can't be preempted.
->>>
->>> I don't have a strong preference.  Using __this_cpu_inc_return() without any
->>> nearby preemption_{enable,disable}() calls makes it quite clears that preemption
->>> is expected to be disabled by the caller.  But I'm also ok being explicit.
+On January 26, 2026 5:44:43 PM PST, Simon Glass <sjg@chromium=2Eorg> wrote:
+>Hi Peter,
+>
+>On Tue, 27 Jan 2026 at 11:21, H=2E Peter Anvin <hpa@zytor=2Ecom> wrote:
 >>
->> Looking into __this_cpu_inc_return(), it finally calls
->> check_preemption_disabled() which doesn't strictly requires preemption.
->> It only ensures the context doesn't switch to another CPU. If the caller
->> is in cpuhp context, preemption is possible.
-> 
-> Hmm, right, the cpuhp thread is is_percpu_thread(), and KVM's hooks aren't
-> considered atomic and so run with IRQs enabled.  In practice, it's "fine", because
-> TDX also exclusively does x86_virt_get_cpu() from cpuhp, i.e. the two users are
-> mutually exclusive, but relying on that behavior is gross.
-> 
+>> On 2026-01-26 13:19, Simon Glass wrote:
+>> >>
+>> >> Including the EFI stub doesn't mean using EFI to boot is required=2E
+>> >
+>> > Yes, understood, but it adds bloat=2E More importantly it will lead t=
+o
+>> > people assuming that the stub is always used and thus unwittingly blu=
+r
+>> > the boundary between the stub and the kernel itself=2E
+>> >
+>> > What is the actual need for this?
+>> >
+>>
+>> I would argue that the opposite is more likely: someone inadvertently b=
+uilds a
+>> kernel without the stub, the bootloader goes down a legacy support path=
+ and
+>> things seems to work=2E=2E=2E except for some platform subtleties=2E
+>>
+>> The bloat is there, but it is small and is only in the on-disk kernel i=
+mage;
+>> it is zero at runtime=2E
+>>
+>> As such, I don't think this option is a particularly good idea anymore=
+=2E If
+>> necessary, it could be hidden behind an EXPERT option, but I first want=
+ed to
+>> see who if anyone actually cares in a meaningful way to maintain this o=
+ption=2E
+>> Every option, after all, adds maintenance burden=2E
+>>
+>> Note that the BIOS stub is unconditionally compiled and included, and t=
+hat has
+>> not been an issue=2E
+>
+>What is the maintenance burden here? I could potentially take that on,
+>but I would first want to understand what is involved=2E
+>
+>The use of the word 'legacy' worries me too=2E Is this patch a step
+>towards removing the non-EFI path?
+>
+>Regards,
+>Simon
 
-Side topic:
-Isn't the name of check_preemption_disabled() confusing and arguably misleading?
+I just realized you are the U-boot maintainer, so I'm assuming you are thi=
+nking of the case where there is no UEFI or BIOS firmware=2E In that case, =
+just like as for kexec, the current entry point will continue to work, of c=
+ourse=2E=20
 
-
-
+What we don't want is having to suffer being on a BIOS or EFI system but n=
+ot being able to leverage it for the benefit of the kernel=2E The kernel im=
+age is much easier to upgrade=2E
