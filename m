@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C272BEFE5
-	for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 23:04:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C732BE03D
+	for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 23:36:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769641498; cv=none; b=DaI1HxSBmT8rl8rKXm9eaPjn6NdgZV7KYXrCvFqaYdf91VttgOR+4E7FaXmhFJjKuLt89xawGlAYdwoyvgtcU9VclSjfkXoKATLEGsseP5e8+EaDay86VncWlPfeG2laELzPlEIqEozc594ununV8K3D+gTFwra5GwlBO65Iqpw=
+	t=1769643412; cv=none; b=Bze3HqNyaNMytQiQ+YuYZZCbvD9nmfmUqIzhCMPT79OKJiTeg0hoXjcVsfzIHhU9DjCLc+9gM8owtoAvtnRRL2JNM1GYzNp5ahZoYMyiv7XZ9XYuSp0TqUAMO8AyecJjCMt3Cuf3QN7HzyoeegZ8KiZ6lBMWMbHDqkMoQ0We4vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769641498; c=relaxed/simple;
-	bh=YXIladQXtmk2BOPFwfiVc3EQ+NvAHvM8j4ho7oTtXD4=;
+	s=arc-20240116; t=1769643412; c=relaxed/simple;
+	bh=pY7pQJEOHa6B148FkxDEx/S3AddhuNgnzB//YrudAAU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=apl9byUnPorndlVN6rYMxTd/EKJPT8pl36RlgZj0sAqYV6E2cDarC/3hO53aMfTDjQymsNR2jxV1ev1jnWwMoljG3VO34CuTDcEZj0IUKSNb/N2S3HiB94cslLuHJGaSDEtA1QvnV8/8wbH/IUPGPAeCtD3/UeBm+v2LQ8oE93Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FGHF5vfi; arc=none smtp.client-ip=192.198.163.11
+	 In-Reply-To:Content-Type; b=gtv8qsaFRWF227IIbZRiBuHTQ/DsyixCd2HvLlsf0KowQoeJcpQQFw0sH68zTiVAGc42QL/dKarhOZofuNoS7zHFj/nfbeB81T7FBtOC1tNBRzCrkWkHIS69OVE+YUqrN+V9IisMQC/9elYGe4Wc8xZdhuJYYDc1HUP3lYuiB+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QV9+uh43; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FGHF5vfi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QV9+uh43"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769641498; x=1801177498;
+  t=1769643410; x=1801179410;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=YXIladQXtmk2BOPFwfiVc3EQ+NvAHvM8j4ho7oTtXD4=;
-  b=FGHF5vfismGzxO+iGHgj7R+UqQ3uIV55wmWjHCCrmMcanLQTXO2hf5j5
-   N0uxzwNThr9C9iOBdJ2oMxVK2m4hjgtX3wYwQWFWM8DABv+2pPr0BzlNp
-   438bBFoQ6uWZzW1joFpKTBkfGSPjmOy3w3s9031Y0EwjFvWNuDtbiIGXP
-   D+H/1rXw0z0nwHrXkUwf/kUdCB7G6AwXatK/hQ6fDLCsydWAq5xzaMr7Q
-   jEO4c2Fe4hSOGoBSSIFYSYNQ6YCAY5sbeBngT4pnOnKrQxqKVwfahRaSo
-   wRw40UP4+reEyoYL90WD42/cEjuFoWqDbnoM83JTs59Yo9pNRciCVEie4
-   A==;
-X-CSE-ConnectionGUID: Lv3cRVYYRnixcDfQ8MoM9A==
-X-CSE-MsgGUID: mm4DARtjQTapwC8rX+phHQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="81504736"
+  bh=pY7pQJEOHa6B148FkxDEx/S3AddhuNgnzB//YrudAAU=;
+  b=QV9+uh43wsiX4YZuxxcjWu3zUWJRUtfW+PMFZJD2vNT5cL9/6+deDxu/
+   NX7YBtbhyUG6UjgtlcLNlzcQaTgufh+TNTLWMgdjRbOnO7vcNQsrsNrYe
+   bQboezth11hHM5WQ5nEhL2L6c1twXDCaLIfpT6ovNOWO6h3t45BDSAOQO
+   maLGyT0tB+iLQIuW+YayxbgJYbW1zVKCzOM81V6Fn2aDnSf2FCC8xcvn2
+   zHZB7WfcHNKs3FCd+41ItoBgCSYIAeTzuoJHQ4i1PPeXyuWGe//I2Mo5o
+   Vvbx2Dzwk0894jYNdBKLZ+k48PjOz7so+9psU1wlCMN82247OTFHVy0Gk
+   g==;
+X-CSE-ConnectionGUID: FpzL2SQiQ9m14sJ78AfLQw==
+X-CSE-MsgGUID: Wf9g5Is8QHKfWHmVFcw6tA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="69885835"
 X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="81504736"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 15:04:57 -0800
-X-CSE-ConnectionGUID: XgcEeVAARnCQUTjBFEzo3Q==
-X-CSE-MsgGUID: VcuLdTFjTGClJ8yQyj8x4A==
+   d="scan'208";a="69885835"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 15:36:50 -0800
+X-CSE-ConnectionGUID: bdIAQWIBQo6uLK9IaPzH0w==
+X-CSE-MsgGUID: 16c0GeNwRfOZszGx9ogCUg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="231335323"
+   d="scan'208";a="208424267"
 Received: from kcaccard-desk.amr.corp.intel.com (HELO [10.125.109.190]) ([10.125.109.190])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 15:04:56 -0800
-Message-ID: <04f9a748-fe61-439c-af80-59c498970580@intel.com>
-Date: Wed, 28 Jan 2026 15:04:55 -0800
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 15:36:49 -0800
+Message-ID: <301f8156-bafe-440a-8628-3bf8fae74464@intel.com>
+Date: Wed, 28 Jan 2026 15:36:49 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -116,14 +116,95 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 1/23/26 06:55, Chao Gao wrote:
-> SEAMRET from the P-SEAMLDR clears the current VMCS structure pointed 
-> to by the current-VMCS pointer. A VMM that invokes the P-SEAMLDR
-> using SEAMCALL must reload the current-VMCS, if required, using the
-> VMPTRLD instruction.
+...
+> +static __maybe_unused int seamldr_call(u64 fn, struct tdx_module_args *args)
+> +{
+> +	unsigned long flags;
+> +	u64 vmcs;
+> +	int ret;
+> +
+> +	if (!is_seamldr_call(fn))
+> +		return -EINVAL;
 
-That seems pretty mean.
+Why is this here? We shouldn't be silently papering over kernel bugs.
+This is a WARN_ON() at *best*, but it also begs the question of how a
+non-SEAMLDR call even got here.
 
-This is going to need a lot more justification for why this is an
-absolutely necessary requirement.
+> +	/*
+> +	 * SEAMRET from P-SEAMLDR invalidates the current VMCS.  Save/restore
+> +	 * the VMCS across P-SEAMLDR SEAMCALLs to avoid clobbering KVM state.
+> +	 * Disable interrupts as KVM is allowed to do VMREAD/VMWRITE in IRQ
+> +	 * context (but not NMI context).
+> +	 */
 
-KVM folks, are you OK with this?
+I think you mean:
+
+	WARN_ON(in_nmi());
+
+> +	local_irq_save(flags);
+> +
+> +	asm goto("1: vmptrst %0\n\t"
+> +		 _ASM_EXTABLE(1b, %l[error])
+> +		 : "=m" (vmcs) : : "cc" : error);
+
+I'd much rather this be wrapped up in a helper function. We shouldn't
+have to look at the horrors of inline assembly like this.
+
+But this *REALLY* wants the KVM folks to look at it. One argument is
+that with the inline assembly this is nice and self-contained. The other
+argument is that this completely ignores all existing KVM infrastructure
+and is parallel VMCS management.
+
+I'd be shocked if this is the one and only place in the whole kernel
+that can unceremoniously zap VMX state.
+
+I'd *bet* that you don't really need to do the vmptrld and that KVM can
+figure it out because it can vmptrld on demand anyway. Something along
+the lines of:
+
+	local_irq_disable();
+	list_for_each(handwaving...)
+		vmcs_clear();
+	ret = seamldr_prerr(fn, args);
+	local_irq_enable();	
+
+Basically, zap this CPU's vmcs state and then make KVM reload it at some
+later time.
+
+I'm sure Sean and Paolo will tell me if I'm crazy.
+
+> diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
+> index e58bad148a35..6a9199e6c2c6 100644
+> --- a/drivers/virt/coco/tdx-host/Kconfig
+> +++ b/drivers/virt/coco/tdx-host/Kconfig
+> @@ -8,3 +8,13 @@ config TDX_HOST_SERVICES
+>  
+>  	  Say y or m if enabling support for confidential virtual machine
+>  	  support (CONFIG_INTEL_TDX_HOST). The module is called tdx_host.ko
+> +
+> +config INTEL_TDX_MODULE_UPDATE
+> +	bool "Intel TDX module runtime update"
+> +	depends on TDX_HOST_SERVICES
+> +	help
+> +	  This enables the kernel to support TDX module runtime update. This
+> +	  allows the admin to update the TDX module to another compatible
+> +	  version without the need to terminate running TDX guests.
+
+... as opposed to the method that the kernel has to update the module
+without terminating guests? ;)
+
+> +	  If unsure, say N.
+
+Let's call this:
+
+ config
+INTEL_TDX_ONLY_DISABLE_THIS_IF_YOU_HATE_SECURITY_AND_IF_YOU_DO_WHY_ARE_YOU_RUNNING_TDX?
+
+Can we have question marks in config symbol names? ;)
+
+But, seriously, what the heck? Who would disable security updates for
+their confidential computing infrastructure? Is this some kind of
+intelligence test for our users so that if someone disables it we can
+just laugh at them?
+
+
