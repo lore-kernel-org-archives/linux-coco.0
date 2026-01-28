@@ -1,128 +1,290 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013006.outbound.protection.outlook.com [40.93.196.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53EB1DE3A4
-	for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 21:15:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769634910; cv=none; b=PRHfBORBODECtw1UfCnyCcvwPQEoXaxPXkHY7+GGdqbE6bLFnS4vccwu4paxoQCSNZtFRP9osMCCiC5Wws3R4B3gY4V4l2Yka88L/hRM2tnLQLJFi6fzeki5Qq1QDFlCUEPqe4+HYHUMsTkkC6CkQz5BjeH4zHQdRphJ78KsNKA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769634910; c=relaxed/simple;
-	bh=kYnNMET+0XVroY/Dhwum7UNruwrnQ+q9SltsegGPXqY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K/OXbNPydvuXt8kXcW47tKJL5VFwaBwtC+YC3ha6pLSFi07xrx8JXb+LpgFbFN7zUT3j0iqZYCBgZ5NnSzoO46HUiBzwnrolpkxTRknTTA1m4h3QyzS5+MBwfFJXx8Fc53ezwvzde1dc7VDBua9VXTIRioj1L5pojF0bZ0AFjik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OilXT9Om; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A4B342537
+	for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 22:25:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.6
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769639143; cv=fail; b=bGM86R4Anqx8IHPfbsd1Cw+7tN5YDiqL1P0tq/JMb1zSx4JXRBoU0w5Wr8AWum1ZZ7XaeAB4JmgzGXIFgdJw4RGlsnqL4EAa0LySUttb3ay3mYPRlwdSU1E041rIL3FdU9hzSxNz7mYqQwpT1tZk7p98+JpKKF5861PJV+XPAAQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769639143; c=relaxed/simple;
+	bh=lItBm95A9jP86fd7eQhlFeYSLZpywLZwoowhykQoMvA=;
+	h=Message-ID:Date:From:Subject:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=SJY4aeqDKOHlid8jFARUSVRlzyUb1v3JmWxVNdaTAdljJplHl4NO4qEUUu8UTDOoAXbuLxkXwllERfrpUZ/KANlLhlqlNsqgNdBdkMVti78JYKwg36pQ0hNxLalczKgTi2C0hDR2cCTGH3E4cRh2Zr/KmKiSOv9o5dig9bTJ3Yk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=yLUbUF5U; arc=fail smtp.client-ip=40.93.196.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OilXT9Om"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769634909; x=1801170909;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=kYnNMET+0XVroY/Dhwum7UNruwrnQ+q9SltsegGPXqY=;
-  b=OilXT9OmcOGEaKXREzKYd91hesOXm88f29lgmToRidXJl8u3g4YCR5F+
-   gi/RUNJtr8bvQ6JSggTdxjBJ1zzFHOagpi+poiODSSXf46Lac806CVh6g
-   X75noRR2phEQX+6Bd6L0Zfn/c4lHzitW/OTNmqe3+tK4/Dxbi1+yhWK7A
-   8Ocy7sYYpkKuXARshaS5RD4jNLqIi0JNZgZHHozDPo98PS2wyJnCDuDYu
-   UlgFR6zsnK1qwcvDWwDdEblX9L3CnL973ZTli/kvSPDM5vprEcrmOZ54G
-   hHl3WMRK8PfxIK4r0O/vNTR9yh24Q2Gt5HepuX6yudMGTMbgxyDjmX+1Z
-   w==;
-X-CSE-ConnectionGUID: /e24xl1vTk+DifoMAtBnLg==
-X-CSE-MsgGUID: FI0usN75RjeW0kEm8r0/nA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="96323485"
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="96323485"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 13:15:08 -0800
-X-CSE-ConnectionGUID: 7ekzL47tRwyyuMokzGRHCQ==
-X-CSE-MsgGUID: 324L8ylVQ1qUgOvxGpki4A==
-X-ExtLoop1: 1
-Received: from kcaccard-desk.amr.corp.intel.com (HELO [10.125.109.190]) ([10.125.109.190])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 13:15:07 -0800
-Message-ID: <16aa84a9-83ce-4748-bc73-ccf5cb6ce376@intel.com>
-Date: Wed, 28 Jan 2026 13:15:06 -0800
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="yLUbUF5U"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rpKJdE+pwzeogzzzCIwYvaPQjugFDbTAuQEOz5nSsQ4qboLifojOygRA/E5xb8e+heWeq3JY8eUQG0wAne+c8MqB2BCRJUzbrp+R6XTl8ul2+p0xK8pQN0e7s2vFerj6GTYsUbea8Io6RFuhkKmLvZtgMOsJAgUOR5KoJu6LAw3IapZqvHbG0VZwSfQYEcFIQVuu+Zf9Csu1osMEDvmLyQ+Kgr0z5wS6C+sAme6hwA7Qn6TRIOo9OBVbLe81mn9xlV7zj644UN5/PZkQARmoS2TOF/3FmkU+kkjI+1O6li5o52xAunBp0bq7XIxSbCM9XrU1XBecRwmGOJHLiucJgQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vnIal0IsWXx+NQl+1mOsZcc3kQDbvRefIg+Y2z+hcdQ=;
+ b=ULz/5ULSipVokBltqRf7CF+JAWyYsVKg6RZBs6qV4yaIGxBrby6pdNvZSnKrQO6fUp12GXOeJujKYJC7dORJQrWjaes2ExlXezhr/JqBW0E39i6RsL3zjyjSXc2ATMFwFnGF9yDu2NJd/+DofMIN5/ROzDMzp/Q40jih95Crc+RDXClGZlUzlZ137M6tBZkVDsoNXe6i2wnTFYSnRi8/qef3I0Q1RnyWcKbNvImWRsOwIv7fxZ5qFFF1UUUjUYbruMKkJnY4ddlOESdqEDx66L1+pm//cplxoPCxXYa7tXSEsjfh9ZiBH1luI5v+0ouAOIVfKfB2GCw7OJHFhB00qQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vnIal0IsWXx+NQl+1mOsZcc3kQDbvRefIg+Y2z+hcdQ=;
+ b=yLUbUF5U2KcUFb7O7oGvaowvMBlzDqXQ1cfscAoOVP5KmXeOKqZ+lvqnzKOi9CGu+ZbK1elUNEUnq6sa0ibXOW3fvMXhRtAbp1JyP6u4Xlr/QC+nWAafQeihqScI676vQVTXXhKkHOnRtxT1qdepAbOh0fmxPdSjFDRSsIRz3TM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB8660.namprd12.prod.outlook.com (2603:10b6:610:177::5)
+ by IA1PR12MB6628.namprd12.prod.outlook.com (2603:10b6:208:3a0::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Wed, 28 Jan
+ 2026 22:25:32 +0000
+Received: from CH3PR12MB8660.namprd12.prod.outlook.com
+ ([fe80::222c:662:e585:3404]) by CH3PR12MB8660.namprd12.prod.outlook.com
+ ([fe80::222c:662:e585:3404%4]) with mapi id 15.20.9542.015; Wed, 28 Jan 2026
+ 22:25:32 +0000
+Message-ID: <eaae739c-223f-43aa-9f08-fe0e7c2ec290@amd.com>
+Date: Wed, 28 Jan 2026 16:25:29 -0600
+User-Agent: Mozilla Thunderbird
+From: "Pratik R. Sampat" <prsampat@amd.com>
+Subject: Re: [PATCH v3 2/2] x86/sev: Add support to unaccept memory after
+ hot-remove
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-coco@lists.linux.dev, x86@kernel.org,
+ linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, kas@kernel.org, ardb@kernel.org,
+ david@kernel.org, osalvador@suse.de, thomas.lendacky@amd.com,
+ michael.roth@amd.com
+References: <20260128204105.508855-1-prsampat@amd.com>
+ <20260128204105.508855-3-prsampat@amd.com>
+ <20260128130800.40adb423627ff6d8ffce7ccd@linux-foundation.org>
+Content-Language: en-US
+In-Reply-To: <20260128130800.40adb423627ff6d8ffce7ccd@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN7P220CA0024.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:806:123::29) To CH3PR12MB8660.namprd12.prod.outlook.com
+ (2603:10b6:610:177::5)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] x86/sev: Add support to unaccept memory after
- hot-remove
-To: "Pratik R. Sampat" <prsampat@amd.com>, linux-mm@kvack.org,
- linux-coco@lists.linux.dev, x86@kernel.org, linux-kernel@vger.kernel.org
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, kas@kernel.org, ardb@kernel.org,
- akpm@linux-foundation.org, david@kernel.org, osalvador@suse.de,
- thomas.lendacky@amd.com, michael.roth@amd.com
-References: <20260128204105.508855-1-prsampat@amd.com>
- <20260128204105.508855-3-prsampat@amd.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260128204105.508855-3-prsampat@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8660:EE_|IA1PR12MB6628:EE_
+X-MS-Office365-Filtering-Correlation-Id: ed9303a3-a6ec-44d4-ba8d-08de5ebc2618
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?VVVjUDM5QzZWWE1CeEd2alh1UkVMYXVWR2NJQXJENU5SZXMrUGdwR0crRWor?=
+ =?utf-8?B?NFdoTUxKaWdNYTlGdzRjeGIrRm8rQWJEVEkyQm1aMVQ4YmhPaWdyWnVPYVhp?=
+ =?utf-8?B?RWUxbXcrcUVwVk44SmJVTTJJb2R1enRBMzhIb3BWSHY4SXhCdHJkOWxtN0Rn?=
+ =?utf-8?B?L1dWaUJpcjF0V05YNG4zVC9VbWtDczBDSU1icGE2K3RFQ1FGZk04Umd2WmV3?=
+ =?utf-8?B?VS85T01sTTU1WDFWSktqblZUZXp6Ri9sNFBSR0MxOVk1TjZNK3NnVHgrOGFS?=
+ =?utf-8?B?R0dkRFdmRmtnVUVhRVpCbVBDTjNxQ2FCblNQMFVDTkRmVERIbWRSRGVUeUM5?=
+ =?utf-8?B?eDN2RktaM0JjVThOOUJGNGdqQmhNcEFxd1Fja1RyMjY4eEdGQURNR1VSSFcv?=
+ =?utf-8?B?dXZFRkN0bUNPRDZEMm5RZ2dINnNrWU4vSTBkcE5BeXlHbjFaeStLL0Y5c0w4?=
+ =?utf-8?B?TVU4ZU5SRnlUSUtiZnc0bWNTZzk3L2JZL3hGMnN3T3JhR0ZHK2pBZ2RkV0k0?=
+ =?utf-8?B?am02QWUyWW94SVBHeWVpbzJjZEFib213bDBTeDJFSUthVDVwY3FzRVozQ04y?=
+ =?utf-8?B?U0hObnRlVCs2TjlQV05Ld1JraEZQV05ldGdOd3hybkdueHBUU284U0llSTE3?=
+ =?utf-8?B?OFhPRGZHeEdPb0NTdVJLWW5nZVRUUDMyUk0xbGVzSFc2TERjK0pYZ3h1Nm5m?=
+ =?utf-8?B?ZXI5SzF2RWNvbGkvZW1DU1lkRmpHZEZQOEFUNm9MeHQwcFI3V21QelZoZXVO?=
+ =?utf-8?B?TUdkZ0RjYkNVeUNDa2hYaTFEcklDRnZDNkpJRVR1QUQxc1NYVTYrNHNNbzJZ?=
+ =?utf-8?B?bjJrWkhTdDk0UE1RTSthaFp1RGpSVGlxaW5tWEdYMlp0cXFEeTM3MnJTY1FF?=
+ =?utf-8?B?Mm1vclhzMm1VY0o5QVFVQlVZYUs4MTd5OXE4bmUwcUtBUlFkZXMxTUU1NENL?=
+ =?utf-8?B?VCsva0pydkY1MGdQeVdtVTRoWi9SUlNha0hOZEhtdHJzS0J1am9MQy9IYUk3?=
+ =?utf-8?B?aGZ5STNSNERxSE45TWlKTEpncm0rK3lQNFBuNkMxbDFqNVdUTzJtTzZPaGVm?=
+ =?utf-8?B?QXBHZmJ1M3pXYmJ1bUVubHh6RlVIazY0OWlwL3luNDMwcW1FOExSMkhEMDRp?=
+ =?utf-8?B?K2hHYXBBSzNhZDlBYk43Z2QrUEVRdnhabVhjY0I4cFRYRDlnejYwSnZwOHFJ?=
+ =?utf-8?B?OG14SjdBRm1BblhXSmFDVTRPVnBjTzNjbE9hbHpNYldLNVFmKzdNQVE0TU4r?=
+ =?utf-8?B?a1g2TDREYUVjV3FiWktoNzFNTXkvTUJaQnZVNU8yeXRqOE1ybktoVDUzNmE1?=
+ =?utf-8?B?YXR3WUhIOE0vSmI0aHB5eUM4M05mUHN1czZFcnF2d1pLSVZYZTA1MGJMK2tj?=
+ =?utf-8?B?SlFwTTlVNGtPNVNWR3BMdVgxbkp2SHZURGgzMWpWOUFQN1Q1RVNCNDVQY0l1?=
+ =?utf-8?B?WWR4anRWR0ZGVStIK01rRlFRdDc3WEh4MDE2TnFQM3RCY2w3ZnpWWW1jNzl4?=
+ =?utf-8?B?Zm93SzFkOWF6MW52RmZsT09iM0lJRHZ2M2puRFFIN0VoVlFrUkduUFRCcUN0?=
+ =?utf-8?B?UEx0aTFobytQcGxlWWszeXFjQVNoRmQvWDBWTEppbytTamFHbHR5TUpxeEFh?=
+ =?utf-8?B?ek5Mc3NndElmL3NSQkYvNUx6Z2lhd1ZZdm05b0RNOTl1V25kVVJJbDJza2dm?=
+ =?utf-8?B?dHljQ2pZcW52aWU1Y2tzMVBjQUFnNmNneDJENnVJZ05vU0RqSWNrYUg0eE9r?=
+ =?utf-8?B?OE1QbDJTcW9HdGVoQm5GMEJneThsMzdVcStSY0NXZmp1V0tZQkFocHcwL2ZT?=
+ =?utf-8?B?akxvanlzU1pEYkJnd0xIbFZFdmJWSnpKK0FkL0Q4UG1qdEgrbXY4enk1U0FQ?=
+ =?utf-8?B?dVRwOHVPRGFQZTQ2WEoxUnJFRHhzNHVXbXBPeWNoZWx6UnRBTUZ6aGlzZ0FB?=
+ =?utf-8?B?bDNvMXcvT2VINEZnZ1pranBlby8zby82TnEzdDJMZ2IvTUpZaXVMdjdNak1N?=
+ =?utf-8?B?QUQ2NEIyanRGcDFJVnBmb0xrbVduWGRQK0ErRnR5QjFLKzA5UGxaTDF6dStR?=
+ =?utf-8?B?bGhMVDhLTGZ5UFhqdGYzanRWeE01ZUY3YXhQUE5OdmswNU4wUTQ1Kzd5bWVX?=
+ =?utf-8?Q?1ZBM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8660.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WHB3SHg1cjA2K1p1ZGZEdUhCZmNzcnl5L0g4c3VUbEVTaVZqdXFVWW0vMkhW?=
+ =?utf-8?B?M0NyenVjMDdJWVdaejJQL3dGK2NuaHpRUTlWT3l0LzhNTnR1R0pwTUxJSjlL?=
+ =?utf-8?B?UEduUE5LNUZ3VkFuY0Q3ZStMUitha09NUFZaY25IamxEc1oyMXBsVXpmV3VM?=
+ =?utf-8?B?MTFONG5KQnBYQTR0Z3hwZ1RkZFB4Mk00YTJQOGpDVVNxMUNFYTNzOWdEZmVl?=
+ =?utf-8?B?SGRuejJ1d3h3QWpraEV0cWdnamJ3L1pFMkF5a05SMk1PeHI0bEJnUW56Wlpo?=
+ =?utf-8?B?TVZ3S291Ym1xa3BvVkl0eXpYeGdWbHVoL0Zkdnh5bGZ4VWRTQkhabk4xaitT?=
+ =?utf-8?B?S3hiaWl2VVVDMXRrNzhJaytiM0UzeDJDU2RwcHJpOG5TanZHVEtxaDdWd1F0?=
+ =?utf-8?B?WGJzbEQ3eTJ5ajFWeDRuM0h1RlF3STRDdXRDYUtLRno1NG5mS01aaXhlTDFN?=
+ =?utf-8?B?VXdCZ1lrazRQNXlNUFRXM1A1N2pNb2lGcGZPSk54V1ZhcEFwZ24rZjVLZjZt?=
+ =?utf-8?B?QkpRbGlGcmZLQ1hEOHlWZkorRzgzclNubS82WkMzemtPWVF1LzQxbjdTb3do?=
+ =?utf-8?B?cVR5eHZaZTF1THk3TjdTSGlUSU0ybVRzek9ZUmFydWU4NElvYkVTVFJuaVp0?=
+ =?utf-8?B?UzNOMkw1UU9PczJNd3diaWlDZEJwNVhucTBXRlh4aE1CQS9yOUZnT05YUHJ1?=
+ =?utf-8?B?M2ljNUt5MnUwWFNQNFdpaEw0L3JKSTNxc2tlaEt5UzFTWXFKODNXTXhmU3dY?=
+ =?utf-8?B?SjVhU3diN2Q5VC8zZHJUWHBRajdUUWJJb2VmdXU0VjUwYnhKUWJLRERXekxn?=
+ =?utf-8?B?d0VGVW5JOVBVemlQU2Ftc3dwQnlLNXBuZTFSREZtSHJQeStrVnQ1blBHdnJZ?=
+ =?utf-8?B?T2kzOWhNbEVKS3V6M1NuV2pYenMrekVZRFAvdVlYTUZHZDB1d1ZJKyt0QVV3?=
+ =?utf-8?B?MmtWMGdnUE9LWFh4OVgrMXRtOFBBK3J3eEpqUzI4OXpjQnpKSnRQbi9WVkRC?=
+ =?utf-8?B?OThGa2tvSG04QzRlbVJZUnZlOERkeSsxMVRVc2xZWFUvbDJOU2pFa2k0blJz?=
+ =?utf-8?B?Qkw4ckJsS1R5QlBiWlJ2RlQzTWtkeU11ckJveGcwMkRQRGl5YTlaVjhqNVBR?=
+ =?utf-8?B?bUpGZ0QvQUV4UmJaOW9EUWVXeDMrcFVTTGlua3NKN1FsT3pUdkhWZVdncURF?=
+ =?utf-8?B?SEk2TFZnZCtQRHpndTNPSU84VHRaY3hDbVlRMW1FeUZ3UTVvREZTQXM5b3Np?=
+ =?utf-8?B?VkhXS3h6aWF0RmtURXgrSUt4TUM4QUFhOXZtbVhJa2pEZGh4ZEwwQWNaamRZ?=
+ =?utf-8?B?aFIwYWFqSHEzUWxYWnFWN3BIMFdySW1MUldDbHFrbkNTQ1JHWHRhRFdvU1c1?=
+ =?utf-8?B?QnRObW56T3h5N0JtMGszdXpDSjFhanR2VGFFOU5MRDNQalpCK1JvN3VtNjhH?=
+ =?utf-8?B?SHBJbHJNMDEwSnJFcWFHckVtY0tpdEYzUFRSMmJjbW92WFZMQTJTTjB1Z0VR?=
+ =?utf-8?B?L3V3WnUwQVRKbndBakZDbTVqOFNaazlUVkFhZ2tTNUZGc29MbU1lT1JNTnVW?=
+ =?utf-8?B?OS9hVWJmZ0JTbDBpQ0VwUVNhR1c2OXZkVXpxMEx4L3pHbFN6Yk9JcUF2NUNO?=
+ =?utf-8?B?OURFaW5yeDJBWm93WGdpRS96KzhFeC9UKzVvaXNLSjJQcHBOaE5LeUlJU1FT?=
+ =?utf-8?B?NVM5R0pSa2lMSm40UDNMSUtRTTRLNHRZekJlSWJzaFg3bFpiQ05aaVVHQ1Mw?=
+ =?utf-8?B?Qnc2TW1Samp5bWlZQ0JqeGlwNnRuMDV4R0ZhSThCOTlib1R6TStjbmtFYW1h?=
+ =?utf-8?B?ZiswZXJsKzdKTEFHVmVRMmY4Ty9qMmlUUzBMcmg3TjQxY2NGcFgrSTVvSjND?=
+ =?utf-8?B?RGVFVEJQWm1uVnVXUmNZb09kUVdHa1VWSFBYZmNNSDloV25QSW1XTVBMbGYz?=
+ =?utf-8?B?SzkrcW5zS3R2QTJ4THBhUi9WVGI5WU5JQnYvNWxTZFl5QnVSZWhhT3l1THhV?=
+ =?utf-8?B?MUxJODRabDVvZ3JEOU1MR1ZmUG1Na1pSTHNiUUpWcEhvTCtwQ3FVUFM1N0hE?=
+ =?utf-8?B?SE83UFN6dlFYcW92aTFacFg3V0VwTmd0VXp4VU8xL1hxZVg1MDdpL01VNWRV?=
+ =?utf-8?B?d0ZyVHBENGk4UE0yWm9nODBOL0JGVGlyRi92cDNCU29NK0EvVXhYeWg1ZDUy?=
+ =?utf-8?B?VG1KOGRteWFiei80N2tGbFNCQVI2MXlJeTh4L01nclhyYWVtVlVobHZxZkZp?=
+ =?utf-8?B?dlg3cUU5aUw5eHAzRElLc2srZFk2R2NTTzJKUTdhcENZZ3VvTU54YjRyQUpw?=
+ =?utf-8?Q?WXdbNNni/l9xSFL+Qx?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ed9303a3-a6ec-44d4-ba8d-08de5ebc2618
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8660.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jan 2026 22:25:32.0566
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LP4qgKVak7I7eByhc6HOcOReDbC/0mXRI3GAPFJZCKShQNADjZTO84emuQJ05PVdhtwDWC9sL3WMnEQdzQcAGQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6628
 
-On 1/28/26 12:41, Pratik R. Sampat wrote:
-> +static inline void arch_unaccept_memory(phys_addr_t start, phys_addr_t end)
-> +{
-> +	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP)) {
-> +		snp_unaccept_memory(start, end);
-> +	} else {
-> +		panic("Cannot unaccept memory: unknown platform\n");
-> +	}
-> +}
+Hi Dave, Andrew
 
-This panic() is pretty nasty.
+On 1/28/26 3:08 PM, Andrew Morton wrote:
+> On Wed, 28 Jan 2026 14:41:05 -0600 "Pratik R. Sampat" <prsampat@amd.com> wrote:
+> 
+>> Transition memory to the shared state during a hot-remove operation so
+>> that it can be re-used by the hypervisor. This also applies when memory
+>> is intended to be hotplugged back in later, as those pages will need to
+>> be re-accepted after crossing the trust boundary.
+>>
+>> ...
+>>
+>> @@ -623,6 +624,7 @@ static inline int snp_issue_svsm_attest_req(u64 call_id, struct svsm_call *call,
+>>  	return -ENOTTY;
+>>  }
+>>  static inline void snp_accept_memory(phys_addr_t start, phys_addr_t end) { }
+>> +static inline void snp_unaccept_memory(phys_addr_t start, phys_addr_t end) { }
+>>  static inline u64 snp_get_unsupported_features(u64 status) { return 0; }
+>>  static inline u64 sev_get_status(void) { return 0; }
+>>  static inline void sev_show_status(void) { }
+>> diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
+>> index f5937e9866ac..8715be843e65 100644
+>> --- a/arch/x86/include/asm/unaccepted_memory.h
+>> +++ b/arch/x86/include/asm/unaccepted_memory.h
+>> @@ -18,6 +18,15 @@ static inline void arch_accept_memory(phys_addr_t start, phys_addr_t end)
+>>  	}
+>>  }
+>>  
+>> +static inline void arch_unaccept_memory(phys_addr_t start, phys_addr_t end)
+>> +{
+>> +	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP)) {
+>> +		snp_unaccept_memory(start, end);
+>> +	} else {
+>> +		panic("Cannot unaccept memory: unknown platform\n");
+> 
+> Seems severe.  Dropping a WARN() and continuing would be preferred.
+> 
+> What exactly happened here?  Am I correct in thinking that the check in
+> snp_unaccept_memory() makes this a cant-happen?
+> 
 
-Can't we just disable memory hotplug up front if it's:
+You're right, a WARN() is probably more appropriate here.
 
-	!cc_platform_has(CC_ATTR_GUEST_SEV_SNP)
+Based on my rudimentary understanding of TDX from Kiryl, TDX module is
+what maintains this metadata for the HPA.
 
-?
+So, maybe the WARN could just be:
+"Cannot unaccept memory: VMM responsible for unaccepting memory" for
+TDX? Or, we could let it fall-through for TDX (if and when there is
+support for that)
+
+>> --- a/drivers/firmware/efi/unaccepted_memory.c
+>> +++ b/drivers/firmware/efi/unaccepted_memory.c
+>> @@ -157,6 +157,52 @@ void accept_memory(phys_addr_t start, unsigned long size)
+>>  	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
+>>  }
+>>  
+>> +void unaccept_memory(phys_addr_t start, unsigned long size)
+>> +{
+>> +	unsigned long range_start, range_end, bitrange_end;
+>> +	struct efi_unaccepted_memory *unaccepted;
+>> +	phys_addr_t end = start + size;
+>> +	u64 unit_size, phys_base;
+>> +	unsigned long flags;
+>> +
+>> +	unaccepted = efi_get_unaccepted_table();
+>> +	if (!unaccepted)
+>> +		return;
+>> +
+>> +	phys_base = unaccepted->phys_base;
+>> +	unit_size = unaccepted->unit_size;
+>> +
+>> +	if (start < unaccepted->phys_base)
+>> +		start = unaccepted->phys_base;
+> 
+> max()?
+> 
+>> +	if (end < unaccepted->phys_base)
+>> +		return;
+>> +
+>> +	start -= phys_base;
+>> +	end -= phys_base;
+>> +
+>> +	/* Make sure not to overrun the bitmap */
+>> +	if (end > unaccepted->size * unit_size * BITS_PER_BYTE)
+>> +		end = unaccepted->size * unit_size * BITS_PER_BYTE;
+> 
+> min()?
+> 
+> If you like min() and max().  Sometimes I find them annoying - need to mentally
+> expand them to figure out what's going on.
+
+Same! :-)
+That is why I just aped the implementation from its counterpart
+accept_memory() but can definitely do it this way and shave off a couple 
+of lines.
+
+Thanks,
+--Pratik
+
+> 
+>> +	range_start = start / unit_size;
+>> +	bitrange_end = DIV_ROUND_UP(end, unit_size);
+>> +
+>> +	/* Only unaccept memory that was previously accepted in the range */
+>> +	spin_lock_irqsave(&unaccepted_memory_lock, flags);
+>> +	for_each_clear_bitrange_from(range_start, range_end, unaccepted->bitmap,
+>> +				     bitrange_end) {
+>> +		unsigned long phys_start, phys_end;
+>> +		unsigned long len = range_end - range_start;
+>> +
+>> +		phys_start = range_start * unit_size + phys_base;
+>> +		phys_end = range_end * unit_size + phys_base;
+>> +
+>> +		arch_unaccept_memory(phys_start, phys_end);
+>> +		bitmap_set(unaccepted->bitmap, range_start, len);
+>> +	}
+>> +	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
+>> +}
+> 
+
