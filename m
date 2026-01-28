@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1382C10A1E
-	for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 01:34:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6551991CB
+	for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 01:37:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769564053; cv=none; b=qRJ52ZuB1OKjqcRd409f3ZLlBDrD3u4rNETd4Tadr2/gVwdiifBkzaeCAjQ0CKVkdSHha6ETKRdXw0es+x6OEaHf5QOCickbbFCg+EPsteUqyf/OPZGrJVv2EYUdX6gL1IHHGio96+Gnp+l985pEae/Cgl44qsFT7W+5wt8jB78=
+	t=1769564236; cv=none; b=d4eFsJoKhE5nlpA8BiscT12h+tBlsh1k4Mz5kMKpiV0OC+8/opvX6+SfC5/5iUKtZ+fRQc86BmFvSYuL7RPcIw55wmNiXV3ZrEUIN9DC6qxK8QUTpKDhJptYsbuMKUbWn7Q+ShO0c9+Ai8vPd/Piqu+pfoA7Dd1pFGWmTcaI7IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769564053; c=relaxed/simple;
-	bh=aAYPh5TPK/vfiT78Squ9pWrx3KTzRn+qCmkivAFewNA=;
+	s=arc-20240116; t=1769564236; c=relaxed/simple;
+	bh=34AuD5O+F3LEo8IGEMwHcslN7PGaxteSKoxStzdmegc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KZRJnJNqQLd5W575f6oHP1JuCZ8TGMXsnaAFOemydYsAk/Apq5BBIIJmCYw30dCYDxpyMEAH3FlXSF8FEJxOQOzC4E/eDcM+WcH2AsmPjyNylVfxdgMTetnP/h7IpVejBS4mcHBeRgC3cmUPao7zT3vvGEg/H/o6frMOKew2FXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J0/voP2e; arc=none smtp.client-ip=192.198.163.14
+	 In-Reply-To:Content-Type; b=F/0gCPixAqn5MBh4wpDmpcClfDmxnUu25EToke1OAwMUm5S38mf9Lzz0NNZdz3VlHyLkn7BNU3DK8eSbGPXaHw8OBOFNQ8ECxI2W/QYanjWG5qqj6fsVbcRqmxfv8hyZ4atHFVbiN38hVu/eK/ouHxQ0HTezsSjt1f5RcYcKQPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PCa3kHWe; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J0/voP2e"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PCa3kHWe"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769564052; x=1801100052;
+  t=1769564234; x=1801100234;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=aAYPh5TPK/vfiT78Squ9pWrx3KTzRn+qCmkivAFewNA=;
-  b=J0/voP2egxwUOGHaczsVUmXdZKHtErw2hqHaRnsbuxzJvJlhxB6yjZ1M
-   QdfN01DJXghdKnUDohklLQTaZkXq7L0KlggrBuS/nYAE7JVBbcd2XEqsl
-   9N9+jenTjwCdZpyu0wANfr0V0WuUO434HohUBHjBClJxToMul8Of5ou53
-   i5AUuYE0f5Z7oRASQnZA7C0f4BQMGf7Xeth4+32hwfNedtIHLJlvn1OXF
-   Qb/xbs3ZmX8VzWMRF1pjINaygWEorcBKqxHT6O7fBtPK0SZnTaRYD0ASr
-   NJ6iVd9e/DSOU2nmv9h3LAPrebOM+QQR7jTiFUuzPWtK6AJVbVt9X4N70
-   Q==;
-X-CSE-ConnectionGUID: Kvb/A0wmSOGj5SEt9z8nkg==
-X-CSE-MsgGUID: oZbuvHSaR2mkVaqTbdio7A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="70826647"
+  bh=34AuD5O+F3LEo8IGEMwHcslN7PGaxteSKoxStzdmegc=;
+  b=PCa3kHWels0jPVkUh7/dvJKj7Go1RgEVle0ZHlON4QNPHYPNshUqYiak
+   xJEifObFDFHkUF2JS8s6OVSopQOqTgmmzeVu2mqpmGlyoeS+6/+hI2u7O
+   B9wycm67oFyFm8QUSUwlb8jwTPqwG7OL2TxO/VM/33U9KQT8I49vNQmib
+   JvsQEzvXzs/OveOw+FVvLjzwjkAAAl5dDY6zfx+4J7O43354nGoQfSw6t
+   dj2Q4Xac84xQXNtB+2dNYwzJ4ifz1Ss+nrNS/+qVXjpdarTsjMS8FEcZ8
+   b2ZMAIawbpz7GMUtAkA6cLop/Xd+6Jibulgc4AblXHH9Z0gw/D4jtJfP8
+   w==;
+X-CSE-ConnectionGUID: /W5yoQxsSweHf3e8iof2Sw==
+X-CSE-MsgGUID: pgvAGinpSfWTTmewoNadrg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="70675387"
 X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; 
-   d="scan'208";a="70826647"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 17:34:10 -0800
-X-CSE-ConnectionGUID: EkU0K+txS1q0+J8xpptafw==
-X-CSE-MsgGUID: 71fFB8RpRjWU3AbpcnA3og==
+   d="scan'208";a="70675387"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 17:37:14 -0800
+X-CSE-ConnectionGUID: fv5QIVY8StOqNz7iaIaDAw==
+X-CSE-MsgGUID: UBxGB4noTP6YUifB4Jrq9g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; 
-   d="scan'208";a="208024708"
+   d="scan'208";a="212677022"
 Received: from unknown (HELO [10.238.1.231]) ([10.238.1.231])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 17:34:05 -0800
-Message-ID: <35fa8047-7506-4a78-b493-732160c3d25c@linux.intel.com>
-Date: Wed, 28 Jan 2026 09:34:03 +0800
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 17:37:07 -0800
+Message-ID: <f8329aaf-7074-4bcc-b05b-b50a639cc970@linux.intel.com>
+Date: Wed, 28 Jan 2026 09:37:05 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/26] x86/virt/tdx: Use %# prefix for hex values in
- SEAMCALL error messages
+Subject: Re: [PATCH v3 03/26] x86/virt/tdx: Move low level SEAMCALL helpers
+ out of <asm/tdx.h>
 To: Chao Gao <chao.gao@intel.com>
 Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
  kvm@vger.kernel.org, x86@kernel.org, reinette.chatre@intel.com,
@@ -65,64 +65,56 @@ Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
  Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
  Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
 References: <20260123145645.90444-1-chao.gao@intel.com>
- <20260123145645.90444-3-chao.gao@intel.com>
+ <20260123145645.90444-4-chao.gao@intel.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260123145645.90444-3-chao.gao@intel.com>
+In-Reply-To: <20260123145645.90444-4-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
 On 1/23/2026 10:55 PM, Chao Gao wrote:
-> "%#" format specifier automatically adds the "0x" prefix and has one less
-> character than "0x%".
+> From: Kai Huang <kai.huang@intel.com>
 > 
-> For conciseness, replace "0x%" with "%#" when printing hexadecimal values
-> in SEAMCALL error messages.
+> TDX host core code implements three seamcall*() helpers to make SEAMCALL
+> to the TDX module.  Currently, they are implemented in <asm/tdx.h> and
+> are exposed to other kernel code which includes <asm/tdx.h>.
 > 
-> Suggested-by: Dan Williams <dan.j.williams@intel.com>
+> However, other than the TDX host core, seamcall*() are not expected to
+> be used by other kernel code directly.  For instance, for all SEAMCALLs
+> that are used by KVM, the TDX host core exports a wrapper function for
+> each of them.
+> 
+> Move seamcall*() and related code out of <asm/tdx.h> and make them only
+> visible to TDX host core.
+> 
+> Since TDX host core tdx.c is already very heavy, don't put low level
+> seamcall*() code there but to a new dedicated "seamcall.h".  Also,
+> currently tdx.c has seamcall_prerr*() helpers which additionally print
+> error message when calling seamcall*() fails.  Move them to "seamcall.h"
+> as well.  In such way all low level SEAMCALL helpers are in a dedicated
+> place, which is much more readable.
+> 
+> Signed-off-by: Kai Huang <kai.huang@intel.com>
 > Signed-off-by: Chao Gao <chao.gao@intel.com>
+> Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
-> ---
-> "0x%" is also used to print TDMR ranges. I didn't convert them to reduce
-> code churn, but if they should be converted for consistency, I'm happy
-> to do that.
+One question below.
 
-Generally, is there any preference for coding in Linux kernel about
-"0x%" VS. "%#"? Or developers just make their own choices?
+[...]
 
+> diff --git a/arch/x86/virt/vmx/tdx/seamcall.h b/arch/x86/virt/vmx/tdx/seamcall.h
+> new file mode 100644
+> index 000000000000..0912e03fabfe
+> --- /dev/null
+> +++ b/arch/x86/virt/vmx/tdx/seamcall.h
+> @@ -0,0 +1,99 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/* Copyright (C) 2025 Intel Corporation */
 
-> 
-> v2: new
-> ---
->  arch/x86/virt/vmx/tdx/tdx.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index dbc7cb08ca53..2218bb42af40 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> @@ -63,16 +63,16 @@ typedef void (*sc_err_func_t)(u64 fn, u64 err, struct tdx_module_args *args);
->  
->  static inline void seamcall_err(u64 fn, u64 err, struct tdx_module_args *args)
->  {
-> -	pr_err("SEAMCALL (%llu) failed: 0x%016llx\n", fn, err);
-> +	pr_err("SEAMCALL (%llu) failed: %#016llx\n", fn, err);
->  }
->  
->  static inline void seamcall_err_ret(u64 fn, u64 err,
->  				    struct tdx_module_args *args)
->  {
->  	seamcall_err(fn, err, args);
-> -	pr_err("RCX 0x%016llx RDX 0x%016llx R08 0x%016llx\n",
-> +	pr_err("RCX %#016llx RDX %#016llx R08 %#016llx\n",
->  			args->rcx, args->rdx, args->r8);
-> -	pr_err("R09 0x%016llx R10 0x%016llx R11 0x%016llx\n",
-> +	pr_err("R09 %#016llx R10 %#016llx R11 %#016llx\n",
->  			args->r9, args->r10, args->r11);
->  }
->  
+Should this be updated to 2026?
+
 
