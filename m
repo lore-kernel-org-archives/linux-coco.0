@@ -1,350 +1,286 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012004.outbound.protection.outlook.com [52.101.53.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67CF36F421
-	for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 17:53:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33288371068
+	for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 19:03:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.4
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769622792; cv=pass; b=pV3g300+9tvlLMgpc8D+OLkSSkmKttSzJ86NIpcDIllFP5yoCO8/Lb20AQCK0tMPTXGWUXWytQTQLZVD491yyYNrR0bJHvRcQJWPxIH2jJACDVHGZCYcgs20vPn8+lRvMhiShMQjuO7bhjMt6I4S/QON66eTCqqZgU3f24rQrh0=
+	t=1769627008; cv=fail; b=CiHBQG5G4UkPgB/l+8AblWTIOYgY39XwUnFXnoHUURlEdB6T1CMuBYEh5YokoLITNbtrs6PqofM73H+4JCfWT7OghiuitOviqEnpLxETCH2it3DKD1AIJvcrnupiHHSv0bR1y2EpuDHoQ2mR7aeLE6FBRpfYqhWlGRQap72+wMQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769622792; c=relaxed/simple;
-	bh=0JNyYRfD4pK3Gn5sKXp0ZdkKSMwLlaan3pWRhsoE9hQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uAP76dqdBYCAC38RA4Upjl8+iCJRRe2uJBy1nPPjapliuYkwCqFsR27lOM+2d7e19SW/qU9joyuzUmkubwlhzIhZnZ4v5f6StnUKh/QUvaT33zQgUJxEAjviKJ6BdipBEtANcN+c2AYFgclRv75216K5Or4+ZGUXogA5zPR5CVM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WJV+Rd0U; arc=pass smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1769627008; c=relaxed/simple;
+	bh=QptluopCN2KzCE4H9rD8moecyt7xvUjyHwnQaVuOwMg=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=S9ouoxxcus4ZWfnhUu5RBZ1lSMEBWOG5lmoXD9+xSAPAS/YAW7YNDNMC2Ubqf3dyUrgJz+rcqYh0aiW6rxfOQKpz1Uaxpg8LHv4kHxkVhKjQXKQ2Szj2h2uIQHhqwhhiGe8ebBF8ie8JuSd4HonEPez1Sy22BWZ3CoJtYkgeODE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=NavsWGUF; arc=fail smtp.client-ip=52.101.53.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WJV+Rd0U"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-50299648ae9so5451cf.1
-        for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 09:53:10 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769622790; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ZXrY/N4d9w3ohbjNOvU9RCWx1fVHDohCXo3rRwUYKQheK45dcaoaJnL9bxwTrvnvlm
-         EkXJWOyjPk+/YXVuPbH0irGXZTibxtFqBvuNxwpY1SgIX7iGedXUPwySn7j/PeZPIKgr
-         5LkkmRw8N6bI+QJMijSIMnPKcjJVMSNGofIFw6SlQiEbFZ1XXgx14853Vxo99du3RKF6
-         rraAKSfIS6Z5wN2vVOhj8HVT4qMmmBp/Tp2YCQDC4cDxOxuN4PUI5/eq+3+h+L2z9te7
-         xuaCS7IqIii6ONeEVFjd1ASc7HHqDBOCl6QDtCuvvBzeUs3a9X7iN7XKNEicweDgRXqF
-         yZ/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=OWg7kuA2s1ZghD76X/T/DMqAQsZITYOyFuy/en9KwNw=;
-        fh=No4dOkIqDR6ZQe3FGbNEMeFH+jWAF9PhsDcXTSOdHQQ=;
-        b=iq++9HAF1KqJViSxbofRB0EHJqlgTuHEInF+vg7jKENYVWRgJM/ukCtQhJLxwxHvAb
-         WCxbocqqBVLGq+6PoFN+OrHxSMCyzn4KpB9ioMXpn3sE8QUelN3qj/5bW03MceXzpkIW
-         mLnkzR+PBVAGPX2LTbacW/Y1NyQVPJSgcE5V6k8ZEk7qoh24RTrUqqsl/qj+cqRHcj5i
-         09/22CfJBOXauDITccefnMv7j8NEMuq1Uz79X4pSUj+cGwU+1F+1FAvfIotQc+H5Y2Mj
-         yKVvgLyaH+dboh6zXpBsp9lzgYZZO0CXq2pWV3i54ksYXaX6Oyc3A3f8/0xwaAROhyVT
-         H1Sw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769622790; x=1770227590; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OWg7kuA2s1ZghD76X/T/DMqAQsZITYOyFuy/en9KwNw=;
-        b=WJV+Rd0UCOat0dpNSdBiWQHCS4AnaLFJLWn7Tjb8Tav8HKFFz3XeixryoO48IlnwGI
-         YaumQpUGYpRGwISSnTuUJpNxqWIE4J/VH8S3BH7c4PZeiwqSnphjdkUhwlqUPNKweaB6
-         P7LMlinUPtb3PbSz/3F5faFEEmhSesOXB6/2fHrsc8mjUVF3VXMAD8D2Va+xn/b0mABP
-         GCqTUxG8u2u4vy2xgiDbzU78cp4tAb08b3kNVyDcb+MG5kIt7mIYEIardZjmMKBO50YL
-         YSEt6N0k1HOwgibQxABRTxIrjIjqX3FMN+fz+Dndmw6jMSI9jZcHutLDwOLxuojIiJqw
-         xtpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769622790; x=1770227590;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OWg7kuA2s1ZghD76X/T/DMqAQsZITYOyFuy/en9KwNw=;
-        b=lIKgNTtAKJ7eoKP2tellHZV1EAwQaSa6lujuSCaB4LcFcutWHKwaIkuStunEMxqJ1a
-         ESQBhfdP7m3BxrnElS+dUCVfQvXw7Sqek52En0uzlg/b3B6B3FiMimqNWMSMsv0KU0W7
-         XUDUhPGabSzzHGbC8oPpP4M/vfGjXdAyp1Mej+mN40wcy21vM9Mp1nU+wJ4QNKKJvgta
-         BPAqA359RWPQ9CInl3w5RAJNhEKWUT3gUyW692Xz8NMhpj2QaUQUiW38dRVyTAFtxbum
-         3NYVV/BiVzYc0kOIWrX9SW04H16plifGzLtSQQN2irrSBP8yXTaF4tNvVuMgrwO8VkD5
-         wyNw==
-X-Gm-Message-State: AOJu0Yw8qA6+U/INtogAoSgciC+LQ5icKpESU8qk4kYvmFEQnQgMWFho
-	N7L+3Cr1YtCEGkQPQCJk2JwMXeSJKM3BpxBrUbIhHtTZTuIuaAnkTRDicv0E94nfjwuVAb7PKIZ
-	e2Rwg1HUiWVrVlMI+Rn7Pj4vEg/A5rLkIQj9CeLTX
-X-Gm-Gg: AZuq6aLqOfI79M8vhm84epqcpxcNic1zyzA4M+jhl5sOAJ2nvqSs8xN8xBa3reksGoU
-	VvVcS471PQ0qcad/6s80KjhQNrVV65hI9wLcJ7/dBskPR3z+4X4szYcndqINnin6/bWFTh9Jzxk
-	zJs2dA2U3TtPv+dWjF9WwSbtOA9JwlFOI7mc7nY9K1ib2SJUyl3GuM1xwJyjP/X+V07hzZlYxB8
-	O80z23PiOwUWj3kF+XJtrVEGdkFY1UP9DIKIRcApVvO6IIKY3lzSZg4dfRiQ1FiIS6vlsheN2r/
-	xeqh1SL8thyF8JIcKbongEs921Ak
-X-Received: by 2002:a05:622a:207:b0:4f3:54eb:f26e with SMTP id
- d75a77b69052e-5032f44b381mr25111221cf.1.1769622789108; Wed, 28 Jan 2026
- 09:53:09 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="NavsWGUF"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=r5RSdI4TAZcBqGe+ROi7cJF+QdqwThT/vxzOGiYCIsxA+VXpTk7SQK5w3AvcDt0aBqTX7+7r0J5R2MISgZYbQKyDlii2c7G+5L+9Msr0IHjDRxG3nx4MZ9A36LoWHetlQVsVh9/IyeZGHk+/U82reCN/+wm+9LRbmgubZ4CE3J39oz3VnUTiPuZyEL/Cs8nbbJNmZJ9Jt/ucv+9W2/oPzLxI2yF0NLfG0VnpR46hGvF5aM/h5CcXwtFuSUE2+06txpBES+OrsefyXWmHGCCe0Bp/vEyyHynKdYCLR4XzEKLpNh+0vz/aiJ9nx/x+c+nIWfHQ7waPVeqvd8jwAV/tug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zmoDrOWdmCm9X1jpiZaLiyFdRwPFq4R64VPuePWGXgE=;
+ b=ZwQZGi4cheUxT1BbagBWsObPdOxH2JzBmh1TYQyvWgeFk9waY3DX4UugFTyQdwHJnA+pziEsorP03jmjnMDufoe5ZDOlf475ng14YP8JAuUGlJO2y8vkTdm70L2ij7tmSyrOn1AOWm5C1DnN/jCAZckyEgxpX0LEKMbnRkrbSN3TErb6iQLJaRUTSPCvZntsG7semkAVIMqKQy9lkp3tVVxDVT28RpOTLyNJBScLZOa31BK6rkdmBtk7VizOFHezJArkMWfnaYNTxaFeZOS5wXq9NbNm82GojFOKsgt+XJXGNcQYrfwXUoP2K7tj+22r7sVL75QYwXbM9E7Svhucyg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zmoDrOWdmCm9X1jpiZaLiyFdRwPFq4R64VPuePWGXgE=;
+ b=NavsWGUFG3pmcmDkigzM2CXX10jq1a01IxRRjqEE7dtw4gVOqd7po7ui6Ra1OMYhtpAyVCXbwEcd5Yq9huZW+80zQEEe/zwKFw8EON6jkfshTUn0YxhtyvnUCOnB64GucW+uxZOlblTb3TtIlDGUOBVryXW6x2qvu6LLMK2uUus=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
+ by IA1PR12MB6650.namprd12.prod.outlook.com (2603:10b6:208:3a1::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Wed, 28 Jan
+ 2026 19:03:17 +0000
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e%5]) with mapi id 15.20.9542.015; Wed, 28 Jan 2026
+ 19:03:14 +0000
+Message-ID: <72838e83-bfb3-4ecb-bf3b-9f37c3116f29@amd.com>
+Date: Wed, 28 Jan 2026 13:02:37 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] KVM: SEV: IBPB-on-Entry guest support
+To: Kim Phillips <kim.phillips@amd.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, linux-coco@lists.linux.dev, x86@kernel.org
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, K Prateek Nayak
+ <kprateek.nayak@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
+ Michael Roth <michael.roth@amd.com>,
+ Borislav Petkov <borislav.petkov@amd.com>, Borislav Petkov <bp@alien8.de>,
+ Naveen Rao <naveen.rao@amd.com>, David Kaplan <david.kaplan@amd.com>,
+ stable@kernel.org
+References: <20260126224205.1442196-1-kim.phillips@amd.com>
+ <20260126224205.1442196-2-kim.phillips@amd.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
+Content-Language: en-US
+Autocrypt: addr=thomas.lendacky@amd.com; keydata=
+ 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
+ WiyqywZI5g==
+In-Reply-To: <20260126224205.1442196-2-kim.phillips@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DS7P222CA0021.NAMP222.PROD.OUTLOOK.COM (2603:10b6:8:2e::20)
+ To DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260123145645.90444-1-chao.gao@intel.com>
-In-Reply-To: <20260123145645.90444-1-chao.gao@intel.com>
-From: Sagi Shahar <sagis@google.com>
-Date: Wed, 28 Jan 2026 11:52:57 -0600
-X-Gm-Features: AZwV_QjcsrND87lEXRg4pv4cTGfcU_Ck3XA1UdyCiBp-d69y5I0sJ7mdSftPq8M
-Message-ID: <CAAhR5DG7EOpmKYV4WmiyNYr14rKMNuTcqgvoaeZt5-==kSPmuw@mail.gmail.com>
-Subject: Re: [PATCH v3 00/26] Runtime TDX Module update support
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, x86@kernel.org, reinette.chatre@intel.com, 
-	ira.weiny@intel.com, kai.huang@intel.com, dan.j.williams@intel.com, 
-	yilun.xu@linux.intel.com, vannapurve@google.com, paulmck@kernel.org, 
-	nik.borisov@suse.com, zhenzhong.duan@intel.com, seanjc@google.com, 
-	rick.p.edgecombe@intel.com, kas@kernel.org, dave.hansen@linux.intel.com, 
-	vishal.l.verma@intel.com, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Ingo Molnar <mingo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|IA1PR12MB6650:EE_
+X-MS-Office365-Filtering-Correlation-Id: aa0ee703-dfe1-4162-6b74-08de5e9fe336
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WUJoRmY3MWkwVkdxSGdKUktkZFV3cnJnMGNhczlYSVVYSG90S2NpZ1ova0dK?=
+ =?utf-8?B?dlFZS3R2dGI5Ry8wVHlHSHl1Si9ZRytpcWNSRnMwanUycGNsVjBCSVFoUDQr?=
+ =?utf-8?B?YXlKMldSajNlWDIydXFrenYrSGk3Z3ZoeGM3amdyUTlBb1pzbmdkcGVvUnZS?=
+ =?utf-8?B?Yi9wdm9WMldPVnBNeEVILzNwc0g0QWlJMTVYVU9RWmhRUEd5NnJSbWJtSzJ5?=
+ =?utf-8?B?RVZ5WkVzcHlJNjlseUtPc3I4SVdJbUE3YjEvalhaOXRDbm55ZGc0MEFQc21m?=
+ =?utf-8?B?QkJQekF0MXdmM2VjVEh6UHdVWnNnYzIwVGpRWFZwa1pJQ284Ny95UWNpallE?=
+ =?utf-8?B?WXZvbDFIcjlLRWZnT1M2VW5GS3p4eFZhL3hSbW5xYm93STBoUWx5L1FVT012?=
+ =?utf-8?B?SEJrT1lRWHhjeGk1eWN1ZVBLdXI1RldiOU5GOU52UTh3eXVYdXhnSVF5dk1J?=
+ =?utf-8?B?eE50SGUweWs3dkxaYXRuSml1bnRGWEFPRXJtSzc5VHBtK2tOVzlsRmRoZ21q?=
+ =?utf-8?B?Ti9xWmxqbFNkT2VDUDBCZ3lIK3VId2pId2xZTnVWZ2tLZlNVR1U5blJBWTcx?=
+ =?utf-8?B?NGNVNm02bXY3TjRQekJSMnV5Qm84Wkdrcm5OMlBHZWtQK2lxeXhlR3U4QjBB?=
+ =?utf-8?B?VHo4V3hFM2dVaGUrWGhhbVArL2tFbThOQ0RhUERscU91V3RELzhqUk1NVkN0?=
+ =?utf-8?B?bHh1Q2t0K3U2bm4wdXBXMmpNNHFiemx1U3pNY3hRTnJ2VlEvcllXcm5xR0Rp?=
+ =?utf-8?B?S0NRZmJPYlJYNHQvZWFVa3Nja3p6UUJ5TVg4Y3A0ajQvcVliUnZpWWR4UXlG?=
+ =?utf-8?B?UUdQaHlvOHhGZVowR3VFd1V3cE9QY09mM2NBdUw5ZjFqTWY5Wks4M0t1Z2Fq?=
+ =?utf-8?B?L0k1N1Ivc1hTUkpJWU96NjBKY3prSW1BaFR6SWlLbW9xTkZBcm9GMUVMbmts?=
+ =?utf-8?B?MW1oVnRnUVdFMDF3NkJlK1FDZEtpODA1eW1OM2FJWXFlOFFWTmVzb2lRajBC?=
+ =?utf-8?B?dTNmSEh4dVF3OW1FV1R2ZUJxbXlHV2oya3JmbjNzaXhoYmxKTXFJWUl0RFJZ?=
+ =?utf-8?B?eUtrTEY0QXoxVy9wRFpsK1k0YnpMcng2bE9pQitiRFJxbEs4LzdJM1VMV0FI?=
+ =?utf-8?B?c2tNd2t6WFVpMU11dnA0b1pHTjRnZU9Wa1pNQzliV2JTZ2lFc0NGc200QUh6?=
+ =?utf-8?B?V2djU003VkNOd001K2Y1V3NlUnVLekNqSUR2VUwxSmlXcjl0Zm1qMkVKNFZK?=
+ =?utf-8?B?Q1RzZXFnUDRpdFZsYjh4V2VLUnJQSW9RdjBNR2p0cm5XVGRyd1QvOVJlQm92?=
+ =?utf-8?B?LzE5VGdYeUVRak4xQ0dQUkFWZnVtSlJOTi8ycytMUCtjKzJ4MWJvQTV5Snls?=
+ =?utf-8?B?TGk2OXQyZ0dpSjVCdTgzWDZTVFE4STNRSURhQkl2RWJzRmM0TEp6RFpmcFI5?=
+ =?utf-8?B?T3dpbkE4WTcwbUJMdHQvNFYvWlVFV3lWbEpyQ1o2T3ZhVkdsZzVMOVY5YUFw?=
+ =?utf-8?B?NFFRUXpmRjlZVElyZ0dhSlBEaWc4MGlFeTFjUlNONS9YT0RpUjRHMHRremIx?=
+ =?utf-8?B?UGorTVdzSjdOOTBIQlY1V2dtSDcxcmFUNG10WTZiN0c5WTFyTjFNQ1BoR01Q?=
+ =?utf-8?B?ek9ua0k3Y2J4cjdVVXVxMHR1blpNV0ZMQ1dlVlNZajRWZlBhTk9mYm9kNjVh?=
+ =?utf-8?B?RUxYdldkV2VXc2NScjQvMUEwL3NwdXpnT3V4UU9keFBJQ01EejhPYkhuRFhi?=
+ =?utf-8?B?Zzc0TjJtaE44R3pRRFZXbUZEV1ZuZE54dU1zZjY3c0dBT05Kb1NhRGEwTFZx?=
+ =?utf-8?B?Rlg3c094TUF0QzdONDNvcVZKaXFzdHZpSEdjaStFcEFmNnhxQmdJOFIzTkQx?=
+ =?utf-8?B?REVzVnJkd1BDNHpFblRIM0tFWFhIVHk1SEt1akhya25DeHpwV25xS3pGR1FF?=
+ =?utf-8?B?RWo5eDBENUQ4VlAvc1FQQlRSb1ZBd3V1R2ZmQ083cGJSODBnbjVOR0Nsc01L?=
+ =?utf-8?B?dHh5dEFZWE5KSHRUdW5xdDdUNDRYclpBUEp3OHQ3YzF4a3JZbCtYTjBVMzVG?=
+ =?utf-8?B?WDBTOVVFWWoyYkg2Yms1Q0YxUkVZZTJRTWdqajVIRnF2cVArdFkvUklQWEZy?=
+ =?utf-8?Q?QDZY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?c29hNlhOL1VEQTFvOGQvL2JrcEhEaWtEbEhqVFhMZGN2WElUYXZEWkJpakVu?=
+ =?utf-8?B?ZEw5N2k2RFBqWkZrVDA0ZVhvNkovaTNkSUU3NFQ4UDNwb21PVVRncUpwNkZC?=
+ =?utf-8?B?Wm1Va3lVZ2ZET1Y2YVRJL2R3YnVFMzBBUnVHZ3hONDZVeHovWVdydE5XQ29O?=
+ =?utf-8?B?WnpxVHVJMlplbEs1dUpmVVNKOFFJejFEQ2pNSDVqR3hHWml2Q0xZSldWcmhK?=
+ =?utf-8?B?c1hzQW9qZmM1UVQxNElreDV6eTBsUnpLdlZpaFU1YWp3V2JLMG5aYjhpY2Z2?=
+ =?utf-8?B?citOcTJTWXBHSW5EL0RmK1ZLUVRYVENldHZXcy9nUWRHQzg0eFJZT3JWUmt2?=
+ =?utf-8?B?a24vR002UnpLTkJDSnRvVGV6RTJGS08wWkM0WG85NVROSktGZ25IT2ZNMzVv?=
+ =?utf-8?B?Sms3OWpheEo3TzlDYk9IcS9rRDBrSjdYUTFnVlE5eUNIMGIrdXNaZmhYUVg2?=
+ =?utf-8?B?SUxjL0NaYlZCYnlRVmRONHNFZ2thQ3FMcWVUeml1ZDJyM3pDNUtNSklldWZs?=
+ =?utf-8?B?YVFGQnJ4VEJUQ1N3WGxYYStSVDVKSzV5M1JVbFI1dWFlVlU4aWZqSmxxOGJa?=
+ =?utf-8?B?M2ZtWFNDREdsQlZYTGNZdWxtTklUeGpBeXJDZ0V6cDZ2T0FzaDF5ZDRqSmFt?=
+ =?utf-8?B?UjNaTC96czVXNzFkTUx1NTlDL3BUb0dxV21jR1h0QjYwZzNKa0pvRnl3eldD?=
+ =?utf-8?B?eEczUnFBNVlTN0Y1STAwK0R4NnpkS3RGOEk5TW9tLytuV3FKcDFkR2pNeFVq?=
+ =?utf-8?B?eDQxVU0rK1VxRVRob2xIQVVpazErSUk3bm8zb0t4aURFeit6V0lEUDEyQVgr?=
+ =?utf-8?B?WStsWTNKY25NdFhLbE01L3VhWjE0bDBGUjJMUDM4cmFMMzlaZDBqb05IMlU5?=
+ =?utf-8?B?NndCckZjazE2dnBvM1Q2Y005M2R4MnMyZWdGd1VrTW91RlZYVkNLb2daeEk3?=
+ =?utf-8?B?cnZHSGlYMm1RUDNNSCtBb1JodzRWTWx3NER4S1lUeVBEQzF6L2pKdEpKb2dh?=
+ =?utf-8?B?VnV0NFIyK0I0dUM4eUJHTWU4VWwvbGhHVmNyVWdwcklOYkxHZG16bi9wU2Fy?=
+ =?utf-8?B?QUlQVUwyTUthU2huMDAySUtRcDkvQzlHRnVFYldKVGUxMk53QXBHcU9xd3Vs?=
+ =?utf-8?B?RU1RWGE2Nm5pR1VnMzRtRVhyM0VjVG5OS293enZETy9FTGVHVGhDSzN2TEcw?=
+ =?utf-8?B?VklmNk1jWDk2UXpKSGR0S0tkQnpTMkVCdkhTYkZCY280M3RtR0IvSG1oU1lh?=
+ =?utf-8?B?dlA0ZlFON1ZMdHJrKzk0eHUybklmNlFZMzd3UVhwMWROa3N0UUszZXVmZ2oz?=
+ =?utf-8?B?TlZRaUUvVENOY3dIdTJkaE1RdGF0SldvVHAxZENtRzkxSW1ZSFhOQzErNVpQ?=
+ =?utf-8?B?YUdiTGprTGVHVVMydWlualVPLzVNRk9NUENWaTVYcUFLbU5iSlZYNDRpQnd5?=
+ =?utf-8?B?Sm56N2RxK2JBY2t6VlNyKzJLZEx4QXdPdmRXakhMMS9wT0JXVFFoekVSWUJB?=
+ =?utf-8?B?SCtoUmFMK2VPVTcxc2JzY0VZNk1RdVBFdXNldUdwZ2ZadDg0RUszUGcveTFL?=
+ =?utf-8?B?WmUvMXpZYnJ1cWVVYkZFMDJiY0JKd1c4cloyKzR6b0NmNnZNVjFZc1phdVFY?=
+ =?utf-8?B?U2g1SzcxYU9SN05udGFEZHY1QTdMcnIrUnBtaXp1TTlwN1V5SEtKMHozdGhz?=
+ =?utf-8?B?YjVPTUJVOEhLdGdHd3RNbGFMYmdEVjRwNTFDTjl5YW96UFRrQXdDYU1YdVll?=
+ =?utf-8?B?UUFqUHFjczhNWXVWcXdPN0NvYmNZSnhIUmRRR0VlR2JHWW9WMTFINmY5eENj?=
+ =?utf-8?B?SE02R3dyYnQzNTRXc2VRSE1UR3lrMXlmR3BCOTk1T2VCaTZkbkxKVTlFdFJq?=
+ =?utf-8?B?RkIwSUJyTGJWN3k3Vzl4bTZ0YTVWQ1RpeEhJQ0tJOHFXN296aTFXckdpbDhN?=
+ =?utf-8?B?Qll3ZUc3SkF4eDdUZi9STXRvZEZrZkxKMWFpRXVsNnVhVkFrSW9mdnRXbGUz?=
+ =?utf-8?B?N0h3clRrRmRpK2wrVXdUejYxMVJrSmdObno2eExBaXAwTk1DbG03NlFDWG5Y?=
+ =?utf-8?B?bkt4bTRNYk9kYTlETnFhcHFtMnB2ekNYdGVMZmtxUThDZEt2QTZnRUxvNGNL?=
+ =?utf-8?B?TFRIY3pEcW1lOU0raDlDU2dsY00ySGt1SVdCR1h0R0t4NDJYZXFsSHIrVTAw?=
+ =?utf-8?B?RXNRdkE2OXhtcnVjc3J0Y3RIQy9wd0ZBcWIyZmpqQU5kTGVQNmVOKzk3Nldj?=
+ =?utf-8?B?OTBnaDNPajBtUDhrbXVrUkJXVXA2emwxbnVEVlArdkhzNnZKTWtaNUZlNGFt?=
+ =?utf-8?Q?LJZY3MebtOgmSLZSwu?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: aa0ee703-dfe1-4162-6b74-08de5e9fe336
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jan 2026 19:03:14.2206
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1yYInt5vJk5qUzDshvse094zVBIOCw1JmA3f+j6Okl002hY+ynScqReXFqMcGms7yJlvGWSsFH2/KBtioc3//Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6650
 
-On Fri, Jan 23, 2026 at 9:00=E2=80=AFAM Chao Gao <chao.gao@intel.com> wrote=
-:
->
-> Hi Reviewers,
->
-> With this posting, I'm hoping to collect more Reviewed-by or Acked-by tag=
-s.
-> Dave, since this version is still light on acks, it might not be ready fo=
-r
-> your review.
->
-> Changelog:
-> v2->v3:
->  - Make this series self-contained and independently runnable, testable a=
-nd
->    reviewable by
->
->    * Including dependent patches such as TDX Module version exposure and =
-TDX
->      faux device creation
+On 1/26/26 16:42, Kim Phillips wrote:
+> The SEV-SNP IBPB-on-Entry feature does not require a guest-side
+> implementation. The feature was added in Zen5 h/w, after the first
+> SNP Zen implementation, and thus was not accounted for when the
+> initial set of SNP features were added to the kernel.
+> 
+> In its abundant precaution, commit 8c29f0165405 ("x86/sev: Add SEV-SNP
+> guest feature negotiation support") included SEV_STATUS' IBPB-on-Entry
+> bit as a reserved bit, thereby masking guests from using the feature.
+> 
+> Unmask the bit, to allow guests to take advantage of the feature on
+> hypervisor kernel versions that support it: Amend the SEV_STATUS MSR
+> SNP_RESERVED_MASK to exclude bit 23 (IbpbOnEntry).
+> 
+> Fixes: 8c29f0165405 ("x86/sev: Add SEV-SNP guest feature negotiation support")
+> Cc: Nikunj A Dadhania <nikunj@amd.com>
+> Cc: Tom Lendacky <thomas.lendacky@amd.com>
+> CC: Borislav Petkov (AMD) <bp@alien8.de>
+> CC: Michael Roth <michael.roth@amd.com>
+> Cc: stable@kernel.org
+> Signed-off-by: Kim Phillips <kim.phillips@amd.com>
 
-I see "x86/virt/tdx: Retrieve TDX module version" and "x86/virt/tdx:
-Print TDX module version during init" in the github link but I don't
-see them as part of this series. Were they posted/accepted as part of
-a different series?
+With the change to the subject line...
 
-Trying to build this series without them fails since
-tdx_sysinfo.version is undefined.
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
 
->
->    * Removing dependency on Sean's VMXON cleanups for now, the tdx-host d=
-evice
->      simply checks that the TDX module is initialized, regardless of when=
- or
->      who performed the initialization.
->
->      Note: If the KVM module is unloaded, all services exposed by the tdx=
--host
->      device will fail. This shouldn't be a big issue since proper errors =
-will
->      be returned to userspace, similar to other failure cases.
->
->  - Handle updates during update-sensitive times and documented expectatio=
-ns for
->    TDX Module updates
->  - Rework how updates are aborted when errors occur midway
->  - Map Linux error codes to firmware upload error codes
->  - Preserve bit 63 in P-SEAMLDR SEAMCALL leaf numbers and display them in=
- hex
->  - Do not fail the entire tdx-host device when update features encounter =
-errors
->  - Drop superfluous is_visible() function for P-SEAMLDR sysfs nodes
->  - Add support for sigstruct sizes up to 16KB
->  - Move CONFIG_INTEL_TDX_MODULE_UPDATE kconfig entry under TDX_HOST_SERVI=
-CES
->  - Various cleanups and changelog improvements for clarity and consistenc=
-y
->  - Collect review tags from ZhenZhong and Jonathan
->  - v2: https://lore.kernel.org/linux-coco/20251001025442.427697-1-chao.ga=
-o@intel.com/
->
-> This series adds support for runtime TDX Module updates that preserve
-> running TDX guests. It is also available at:
->
->   https://github.com/gaochaointel/linux-dev/commits/tdx-module-updates-v3=
-/
->
-> =3D=3D Background =3D=3D
->
-> Intel TDX isolates Trusted Domains (TDs), or confidential guests, from th=
-e
-> host. A key component of Intel TDX is the TDX Module, which enforces
-> security policies to protect the memory and CPU states of TDs from the
-> host. However, the TDX Module is software that require updates.
->
-> =3D=3D Problems =3D=3D
->
-> Currently, the TDX Module is loaded by the BIOS at boot time, and the onl=
-y
-> way to update it is through a reboot, which results in significant system
-> downtime. Users expect the TDX Module to be updatable at runtime without
-> disrupting TDX guests.
->
-> =3D=3D Solution =3D=3D
->
-> On TDX platforms, P-SEAMLDR[1] is a component within the protected SEAM
-> range. It is loaded by the BIOS and provides the host with functions to
-> install a TDX Module at runtime.
->
-> Implement a TDX Module update facility via the fw_upload mechanism. Given
-> that there is variability in which module update to load based on feature=
-s,
-> fix levels, and potentially reloading the same version for error recovery
-> scenarios, the explicit userspace chosen payload flexibility of fw_upload
-> is attractive.
->
-> This design allows the kernel to accept a bitstream instead of loading a
-> named file from the filesystem, as the module selection and policy
-> enforcement for TDX Modules are quite complex (see more in patch 8). By
-> doing so, much of this complexity is shifted out of the kernel. The kerne=
-l
-> need to expose information, such as the TDX Module version, to userspace.
-> Userspace must understand the TDX Module versioning scheme and update
-> policy to select the appropriate TDX Module (see "TDX Module Versioning"
-> below).
->
-> In the unlikely event the update fails, for example userspace picks an
-> incompatible update image, or the image is otherwise corrupted, all TDs
-> will experience SEAMCALL failures and be killed. The recovery of TD
-> operation from that event requires a reboot.
->
-> Given there is no mechanism to quiesce SEAMCALLs, the TDs themselves must
-> pause execution over an update. The most straightforward way to meet the
-> 'pause TDs while update executes' constraint is to run the update in
-> stop_machine() context. All other evaluated solutions export more
-> complexity to KVM, or exports more fragility to userspace.
->
-> =3D=3D How to test this series =3D=3D
->
-> First, load kvm-intel.ko and tdx-host.ko if they haven't been loaded:
->
->  # modprobe -r kvm_intel
->  # modprobe kvm_intel tdx=3D1
->  # modprobe tdx-host
->
-> Then, use the userspace tool below to select the appropriate TDX module a=
-nd
-> install it via the interfaces exposed by this series:
->
->  # git clone https://github.com/intel/tdx-module-binaries
->  # cd tdx-module-binaries
->  # python version_select_and_load.py --update
->
-> =3D=3D Other information relevant to Runtime TDX Module updates =3D=3D
->
-> =3D=3D=3D TDX Module versioning =3D=3D=3D
->
-> Each TDX Module is assigned a version number x.y.z, where x represents th=
-e
-> "major" version, y the "minor" version, and z the "update" version.
->
-> Runtime TDX Module updates are restricted to Z-stream releases.
->
-> Note that Z-stream releases do not necessarily guarantee compatibility. A
-> new release may not be compatible with all previous versions. To address =
-this,
-> Intel provides a separate file containing compatibility information, whic=
-h
-> specifies the minimum module version required for a particular update. Th=
-is
-> information is referenced by the tool to determine if two modules are
-> compatible.
->
-> =3D=3D=3D TCB Stability =3D=3D=3D
->
-> Updates change the TCB as viewed by attestation reports. In TDX there is
-> a distinction between launch-time version and current version where
-> runtime TDX Module updates cause that latter version number to change,
-> subject to Z-stream constraints.
->
-> The concern that a malicious host may attack confidential VMs by loading
-> insecure updates was addressed by Alex in [3]. Similarly, the scenario
-> where some "theoretical paranoid tenant" in the cloud wants to audit
-> updates and stop trusting the host after updates until audit completion
-> was also addressed in [4]. Users not in the cloud control the host machin=
-e
-> and can manage updates themselves, so they don't have these concerns.
->
-> See more about the implications of current TCB version changes in
-> attestation as summarized by Dave in [5].
->
-> =3D=3D=3D TDX Module Distribution Model =3D=3D=3D
->
-> At a high level, Intel publishes all TDX Modules on the github [2], along
-> with a mapping_file.json which documents the compatibility information
-> about each TDX Module and a userspace tool to install the TDX Module. OS
-> vendors can package these modules and distribute them. Administrators
-> install the package and use the tool to select the appropriate TDX Module
-> and install it via the interfaces exposed by this series.
->
-> [1]: https://cdrdv2.intel.com/v1/dl/getContent/733584
-> [2]: https://github.com/intel/tdx-module-binaries
-> [3]: https://lore.kernel.org/all/665c5ae0-4b7c-4852-8995-255adf7b3a2f@ama=
-zon.com/
-> [4]: https://lore.kernel.org/all/5d1da767-491b-4077-b472-2cc3d73246d6@ama=
-zon.com/
-> [5]: https://lore.kernel.org/all/94d6047e-3b7c-4bc1-819c-85c16ff85abf@int=
-el.com/
->
-> Chao Gao (25):
->   x86/virt/tdx: Print SEAMCALL leaf numbers in decimal
->   x86/virt/tdx: Use %# prefix for hex values in SEAMCALL error messages
->   coco/tdx-host: Introduce a "tdx_host" device
->   coco/tdx-host: Expose TDX Module version
->   x86/virt/tdx: Prepare to support P-SEAMLDR SEAMCALLs
->   x86/virt/seamldr: Introduce a wrapper for P-SEAMLDR SEAMCALLs
->   x86/virt/seamldr: Retrieve P-SEAMLDR information
->   coco/tdx-host: Expose P-SEAMLDR information via sysfs
->   coco/tdx-host: Implement FW_UPLOAD sysfs ABI for TDX Module updates
->   x86/virt/seamldr: Block TDX Module updates if any CPU is offline
->   x86/virt/seamldr: Verify availability of slots for TDX Module updates
->   x86/virt/seamldr: Allocate and populate a module update request
->   x86/virt/seamldr: Introduce skeleton for TDX Module updates
->   x86/virt/seamldr: Abort updates if errors occurred midway
->   x86/virt/seamldr: Shut down the current TDX module
->   x86/virt/tdx: Reset software states after TDX module shutdown
->   x86/virt/seamldr: Log TDX Module update failures
->   x86/virt/seamldr: Install a new TDX Module
->   x86/virt/seamldr: Do TDX per-CPU initialization after updates
->   x86/virt/tdx: Establish contexts for the new TDX Module
->   x86/virt/tdx: Update tdx_sysinfo and check features post-update
->   x86/virt/tdx: Enable TDX Module runtime updates
->   x86/virt/seamldr: Extend sigstruct to 16KB
->   x86/virt/tdx: Avoid updates during update-sensitive operations
->   coco/tdx-host: Set and document TDX Module update expectations
->
-> Kai Huang (1):
->   x86/virt/tdx: Move low level SEAMCALL helpers out of <asm/tdx.h>
->
->  .../ABI/testing/sysfs-devices-faux-tdx-host   |  76 ++++
->  arch/x86/include/asm/seamldr.h                |  29 ++
->  arch/x86/include/asm/tdx.h                    |  66 +--
->  arch/x86/include/asm/tdx_global_metadata.h    |   5 +
->  arch/x86/kvm/vmx/tdx_errno.h                  |   2 -
->  arch/x86/virt/vmx/tdx/Makefile                |   1 +
->  arch/x86/virt/vmx/tdx/seamcall.h              | 125 ++++++
->  arch/x86/virt/vmx/tdx/seamldr.c               | 398 ++++++++++++++++++
->  arch/x86/virt/vmx/tdx/tdx.c                   | 153 ++++---
->  arch/x86/virt/vmx/tdx/tdx.h                   |  11 +-
->  arch/x86/virt/vmx/tdx/tdx_global_metadata.c   |  13 +
->  drivers/virt/coco/Kconfig                     |   2 +
->  drivers/virt/coco/Makefile                    |   1 +
->  drivers/virt/coco/tdx-host/Kconfig            |  22 +
->  drivers/virt/coco/tdx-host/Makefile           |   1 +
->  drivers/virt/coco/tdx-host/tdx-host.c         | 260 ++++++++++++
->  16 files changed, 1064 insertions(+), 101 deletions(-)
->  create mode 100644 Documentation/ABI/testing/sysfs-devices-faux-tdx-host
->  create mode 100644 arch/x86/include/asm/seamldr.h
->  create mode 100644 arch/x86/virt/vmx/tdx/seamcall.h
->  create mode 100644 arch/x86/virt/vmx/tdx/seamldr.c
->  create mode 100644 drivers/virt/coco/tdx-host/Kconfig
->  create mode 100644 drivers/virt/coco/tdx-host/Makefile
->  create mode 100644 drivers/virt/coco/tdx-host/tdx-host.c
->
-> --
-> 2.47.3
->
->
+> ---
+>  arch/x86/boot/compressed/sev.c   | 1 +
+>  arch/x86/coco/sev/core.c         | 1 +
+>  arch/x86/include/asm/msr-index.h | 5 ++++-
+>  3 files changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+> index c8c1464b3a56..2b639703b8dd 100644
+> --- a/arch/x86/boot/compressed/sev.c
+> +++ b/arch/x86/boot/compressed/sev.c
+> @@ -188,6 +188,7 @@ bool sev_es_check_ghcb_fault(unsigned long address)
+>  				 MSR_AMD64_SNP_RESERVED_BIT13 |		\
+>  				 MSR_AMD64_SNP_RESERVED_BIT15 |		\
+>  				 MSR_AMD64_SNP_SECURE_AVIC |		\
+> +				 MSR_AMD64_SNP_RESERVED_BITS19_22 |	\
+>  				 MSR_AMD64_SNP_RESERVED_MASK)
+>  
+>  #ifdef CONFIG_AMD_SECURE_AVIC
+> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+> index 9ae3b11754e6..13f608117411 100644
+> --- a/arch/x86/coco/sev/core.c
+> +++ b/arch/x86/coco/sev/core.c
+> @@ -122,6 +122,7 @@ static const char * const sev_status_feat_names[] = {
+>  	[MSR_AMD64_SNP_VMSA_REG_PROT_BIT]	= "VMSARegProt",
+>  	[MSR_AMD64_SNP_SMT_PROT_BIT]		= "SMTProt",
+>  	[MSR_AMD64_SNP_SECURE_AVIC_BIT]		= "SecureAVIC",
+> +	[MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT]	= "IBPBOnEntry",
+>  };
+>  
+>  /*
+> diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+> index 4d3566bb1a93..9016a6b00bc7 100644
+> --- a/arch/x86/include/asm/msr-index.h
+> +++ b/arch/x86/include/asm/msr-index.h
+> @@ -735,7 +735,10 @@
+>  #define MSR_AMD64_SNP_SMT_PROT		BIT_ULL(MSR_AMD64_SNP_SMT_PROT_BIT)
+>  #define MSR_AMD64_SNP_SECURE_AVIC_BIT	18
+>  #define MSR_AMD64_SNP_SECURE_AVIC	BIT_ULL(MSR_AMD64_SNP_SECURE_AVIC_BIT)
+> -#define MSR_AMD64_SNP_RESV_BIT		19
+> +#define MSR_AMD64_SNP_RESERVED_BITS19_22 GENMASK_ULL(22, 19)
+> +#define MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT	23
+> +#define MSR_AMD64_SNP_IBPB_ON_ENTRY	BIT_ULL(MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT)
+> +#define MSR_AMD64_SNP_RESV_BIT		24
+>  #define MSR_AMD64_SNP_RESERVED_MASK	GENMASK_ULL(63, MSR_AMD64_SNP_RESV_BIT)
+>  #define MSR_AMD64_SAVIC_CONTROL		0xc0010138
+>  #define MSR_AMD64_SAVIC_EN_BIT		0
+
