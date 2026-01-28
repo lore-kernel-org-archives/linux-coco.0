@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF6F364EBD
-	for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 15:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8BA30FC06
+	for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 16:26:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769613534; cv=none; b=hSBvtJu/INEGiUpuXXLnkKSEm8q5ffBrFVdw7b4yUxsbpThHAdeATfjDl9SIzVJxhK4/V8/vXsdkHxmubTp1ISdLuWMMT1lAXYAVn8tKD/cYKyHbGHetRDl5kv6BCnjBMY51LzOQUtdF3/OoWgydeIbnORReABQJ+0fm4Nyl2wQ=
+	t=1769617607; cv=none; b=E3XKEUjE14Sd520+8wyy85+qavWuvK4/6zQ2XcfjNZ1kVeYn7fXvr6PG8jrhc/QHg50G0HHIVSCJAJivQbSBcQZfD/4bE8nHj3QAt+wNrw1Ku8Yh5lbf4R2tlTxgGwB/iE2jTSEHon3jWtNQcP8Pk+OgOeLAnLyUD0zki6OclJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769613534; c=relaxed/simple;
-	bh=zxZPz/sy0zELEXsKO2aWyW3Fr3C0kqW1KmhOykm+Piw=;
+	s=arc-20240116; t=1769617607; c=relaxed/simple;
+	bh=rF4Blg2yCoQtXrIuR8S7HCmEC2MGmeLD5F2nDJRG5r8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cB08K6OfOdKN7JFodDTAYr0WKe+n+W2Q/BBlBqp+8TGbx+6/uNXJqIu/lPDB44jy1U8I8yEqY7D+K9ZOGFsvZoDuroJsVQodaEK26SbLYV6Vtk2VC122jhfvxoiYfq2a46ssNHOIRHkW0njvPyJzD6pV/9yZ06vyGT5tWneHAco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N++xEvJz; arc=none smtp.client-ip=198.175.65.21
+	 In-Reply-To:Content-Type; b=Bga+IDh8D8kFj7849EyGk+oNmCwUP1cCANj7FsunprTI4p754ienQdLhpptGPA0XYLfigU2TPrlMDLF5WSlcMC4Ml6DZo2lkPZ9Xu7n24QN9kPrUTb9GaYi817RiO8dGV36zzbbv+i+ejfQyKQ92FoNj+fgRAorqg+lcVAZb5M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T9NoRWb5; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N++xEvJz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T9NoRWb5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769613532; x=1801149532;
+  t=1769617606; x=1801153606;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=zxZPz/sy0zELEXsKO2aWyW3Fr3C0kqW1KmhOykm+Piw=;
-  b=N++xEvJzxqaZJXQhu5VNfEnjjKzSEYVnJBWcaA/3PbtZ94gP5q+XkuGV
-   2dK2yaI2mxm5BNaxh3/gJd50bpiDPvt+p7mfUBuvB24zNTSBQX+A0vTjf
-   +WZLUL1CPFMQbRRHlSZZBYc1XowZ9PP5kpU1uWu/WQaOE1umoq1INY1JG
-   Q4SaCr13QQIKxwUiPZa062GBFNkd1XCoCDDu9HnfbvvV/ZGF1plMV+3eA
-   3Z8pK+ArW8edVbt2w/Nu45PLtQWw4DFGccDQWqo9K7WX9V2Wsbm1c9KjG
-   7ARDvfe2iTKI18HB6UfTUjKVyB6w/CE6jXdd6tKM0TbIkOwGZldwP37fu
-   Q==;
-X-CSE-ConnectionGUID: iSPdBlrvT5y403ZmpiJqqw==
-X-CSE-MsgGUID: VtqRwJJQTY2sht8EkRMUzg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="70733260"
+  bh=rF4Blg2yCoQtXrIuR8S7HCmEC2MGmeLD5F2nDJRG5r8=;
+  b=T9NoRWb5Y2+WhmATEcY9Mc17OMZEr8NoaCu5Nry+0didqMvG52b3tvNN
+   UVgz3hLs609PoQwYOKqRTJjaSsk57/d8OdjEEUqHUdSj+CGb6OYGG6b2O
+   stpfaf2vqnIt095EJDQELP7lTtJEug27tDLZ5Bv5rdwCoNocU1vFRuADm
+   nkyR4XW1G9p1g+18i2m57XmP8D9/ZC+M/yqIEsz19lR9sV0jkz+9fwTJw
+   L1ozu0mfHAv4+CW5btHPoykhifijQOP2m3Bgggy7hLIZUHbqL+SNVxOdG
+   cN/q7TyqW6klFfMKilj7SCozpzZkMw2whyvBQUUrZUsJtBGNwA9k4ZxIt
+   w==;
+X-CSE-ConnectionGUID: 7n+WdLSyQOKmdq6PqFBkQA==
+X-CSE-MsgGUID: XISkcWd1QQeFuw2gNqYVsA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="71001965"
 X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="70733260"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 07:18:52 -0800
-X-CSE-ConnectionGUID: V2+3V0EnTz6ZSwjdd2vTJA==
-X-CSE-MsgGUID: 01Qr2nHXSsGXHdQMVrS6MA==
+   d="scan'208";a="71001965"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 08:26:45 -0800
+X-CSE-ConnectionGUID: uZ+5kWnpTdGsOsYVMHl0bw==
+X-CSE-MsgGUID: unZw5F7HSeGUIQM86PQN4w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="212401867"
+   d="scan'208";a="208216919"
 Received: from kcaccard-desk.amr.corp.intel.com (HELO [10.125.109.190]) ([10.125.109.190])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 07:18:52 -0800
-Message-ID: <ff93696c-c99b-47ef-85d1-e43d97178240@intel.com>
-Date: Wed, 28 Jan 2026 07:18:51 -0800
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 08:26:43 -0800
+Message-ID: <fafd9381-b8be-40eb-a68f-da4c81e2653c@intel.com>
+Date: Wed, 28 Jan 2026 08:26:43 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/26] x86/virt/tdx: Use %# prefix for hex values in
- SEAMCALL error messages
+Subject: Re: [PATCH v3 01/26] x86/virt/tdx: Print SEAMCALL leaf numbers in
+ decimal
 To: Chao Gao <chao.gao@intel.com>, linux-coco@lists.linux.dev,
  linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org
 Cc: reinette.chatre@intel.com, ira.weiny@intel.com, kai.huang@intel.com,
@@ -61,10 +61,12 @@ Cc: reinette.chatre@intel.com, ira.weiny@intel.com, kai.huang@intel.com,
  vannapurve@google.com, paulmck@kernel.org, nik.borisov@suse.com,
  zhenzhong.duan@intel.com, seanjc@google.com, rick.p.edgecombe@intel.com,
  kas@kernel.org, dave.hansen@linux.intel.com, vishal.l.verma@intel.com,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Farrah Chen <farrah.chen@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>
 References: <20260123145645.90444-1-chao.gao@intel.com>
- <20260123145645.90444-3-chao.gao@intel.com>
+ <20260123145645.90444-2-chao.gao@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -110,16 +112,13 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260123145645.90444-3-chao.gao@intel.com>
+In-Reply-To: <20260123145645.90444-2-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 1/23/26 06:55, Chao Gao wrote:
-> "%#" format specifier automatically adds the "0x" prefix and has one less
-> character than "0x%".
+> Both TDX spec and kernel defines SEAMCALL leaf numbers as decimal. Printing
+> them in hex makes no sense. Correct it.
 
-IMNHO, this is needless bikeshedding about existing code. It's only
-function is going to be to distract reviewers from the parts of the set
-that actually need review.
-
-If this matters (it doesn't), send it as a separate patch, please.
+This patch has zero to do with "Runtime TDX Module update support". Why
+is it in this series?
