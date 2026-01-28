@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C732BE03D
-	for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 23:36:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537842D6E75
+	for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 23:54:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769643412; cv=none; b=Bze3HqNyaNMytQiQ+YuYZZCbvD9nmfmUqIzhCMPT79OKJiTeg0hoXjcVsfzIHhU9DjCLc+9gM8owtoAvtnRRL2JNM1GYzNp5ahZoYMyiv7XZ9XYuSp0TqUAMO8AyecJjCMt3Cuf3QN7HzyoeegZ8KiZ6lBMWMbHDqkMoQ0We4vY=
+	t=1769644482; cv=none; b=PQf9XNnNwmqPdLK01HthJ3Jag4JeUao351yEBUbcR2LwliZZm5U1MhQsKEDpxsEDUoQZdLdl0C+nOCq3o34oi4pjg5jlSmsUN0t35/vZiAS/ux58NVy0oxy9lVnMhBg5haAOeGEyBrbtoYmuk1M4tWwR15gbrPqTHmulHRM1O1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769643412; c=relaxed/simple;
-	bh=pY7pQJEOHa6B148FkxDEx/S3AddhuNgnzB//YrudAAU=;
+	s=arc-20240116; t=1769644482; c=relaxed/simple;
+	bh=0Cps4VFJ+P+DErVNWpvKHm3iAAy6qEtS67CdVWyN6oI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gtv8qsaFRWF227IIbZRiBuHTQ/DsyixCd2HvLlsf0KowQoeJcpQQFw0sH68zTiVAGc42QL/dKarhOZofuNoS7zHFj/nfbeB81T7FBtOC1tNBRzCrkWkHIS69OVE+YUqrN+V9IisMQC/9elYGe4Wc8xZdhuJYYDc1HUP3lYuiB+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QV9+uh43; arc=none smtp.client-ip=192.198.163.19
+	 In-Reply-To:Content-Type; b=J/Eppx6cEb/cO/YtK+3fpqrgm1LR30vnXcRUssjV0/D3uCYsqH4Pg75n+SsTrHnMBAi06lY5to2Chqcsg3zFUPzfaS2dwMb7bB57h4KoNGQMfMpM0g/qEbp+kHwDomqQ8rG5ukpECk6pKEBchhC/uwkpV3L9ZqpdSO5qnzWvjK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Lrr1nAbR; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QV9+uh43"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Lrr1nAbR"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769643410; x=1801179410;
+  t=1769644481; x=1801180481;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=pY7pQJEOHa6B148FkxDEx/S3AddhuNgnzB//YrudAAU=;
-  b=QV9+uh43wsiX4YZuxxcjWu3zUWJRUtfW+PMFZJD2vNT5cL9/6+deDxu/
-   NX7YBtbhyUG6UjgtlcLNlzcQaTgufh+TNTLWMgdjRbOnO7vcNQsrsNrYe
-   bQboezth11hHM5WQ5nEhL2L6c1twXDCaLIfpT6ovNOWO6h3t45BDSAOQO
-   maLGyT0tB+iLQIuW+YayxbgJYbW1zVKCzOM81V6Fn2aDnSf2FCC8xcvn2
-   zHZB7WfcHNKs3FCd+41ItoBgCSYIAeTzuoJHQ4i1PPeXyuWGe//I2Mo5o
-   Vvbx2Dzwk0894jYNdBKLZ+k48PjOz7so+9psU1wlCMN82247OTFHVy0Gk
-   g==;
-X-CSE-ConnectionGUID: FpzL2SQiQ9m14sJ78AfLQw==
-X-CSE-MsgGUID: Wf9g5Is8QHKfWHmVFcw6tA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="69885835"
+  bh=0Cps4VFJ+P+DErVNWpvKHm3iAAy6qEtS67CdVWyN6oI=;
+  b=Lrr1nAbR6v2XDulcdGsxkER0z1vUoJZ8NMugAN9F1NzZs1A7hdOY//Yu
+   4rbfw6Dsv/TyQCee7Pc2cVASnXvkzHQm9nuQJ3abbyUQ/nP2lz1ZVgrOd
+   QCTKaSHrQVgsXYjxw66kw05PzlkkBBp+NRwxoTu9yina0LyKoMMbqJJFO
+   eIz0Pv147g+aXI6HgUUMYeFoKcCMpn8b2a0VCUfIw7ln/w3N5cj1uavBc
+   k2w+i78BOS+0spg49oOSglh7VYSYZN1cITcqYsBWG+zi/h1iUWMxlmfGm
+   xN31W4nG3A2iF+hREUZixnMqZcAzuRO06SqpMeqbMOqNkiWr+oZZNIQLb
+   A==;
+X-CSE-ConnectionGUID: UyuDVHAxT/ermmeK7Ygi4Q==
+X-CSE-MsgGUID: RxZh94BIRGarTXMGERZrXg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="70774996"
 X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="69885835"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 15:36:50 -0800
-X-CSE-ConnectionGUID: bdIAQWIBQo6uLK9IaPzH0w==
-X-CSE-MsgGUID: 16c0GeNwRfOZszGx9ogCUg==
+   d="scan'208";a="70774996"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 15:54:40 -0800
+X-CSE-ConnectionGUID: sG4t/9zyQ9SSLWRMcMXrIw==
+X-CSE-MsgGUID: MSApCQ3MSUmS7ixGrnbxNQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="208424267"
+   d="scan'208";a="212951292"
 Received: from kcaccard-desk.amr.corp.intel.com (HELO [10.125.109.190]) ([10.125.109.190])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 15:36:49 -0800
-Message-ID: <301f8156-bafe-440a-8628-3bf8fae74464@intel.com>
-Date: Wed, 28 Jan 2026 15:36:49 -0800
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 15:54:39 -0800
+Message-ID: <b2e2fd5e-8aff-4eda-a648-9ae9f8234d25@intel.com>
+Date: Wed, 28 Jan 2026 15:54:38 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,8 +52,7 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/26] x86/virt/seamldr: Introduce a wrapper for
- P-SEAMLDR SEAMCALLs
+Subject: Re: [PATCH v3 08/26] x86/virt/seamldr: Retrieve P-SEAMLDR information
 To: Chao Gao <chao.gao@intel.com>, linux-coco@lists.linux.dev,
  linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org
 Cc: reinette.chatre@intel.com, ira.weiny@intel.com, kai.huang@intel.com,
@@ -65,7 +64,7 @@ Cc: reinette.chatre@intel.com, ira.weiny@intel.com, kai.huang@intel.com,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
  "H. Peter Anvin" <hpa@zytor.com>
 References: <20260123145645.90444-1-chao.gao@intel.com>
- <20260123145645.90444-8-chao.gao@intel.com>
+ <20260123145645.90444-9-chao.gao@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -111,100 +110,127 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260123145645.90444-8-chao.gao@intel.com>
+In-Reply-To: <20260123145645.90444-9-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 1/23/26 06:55, Chao Gao wrote:
-...
-> +static __maybe_unused int seamldr_call(u64 fn, struct tdx_module_args *args)
-> +{
-> +	unsigned long flags;
-> +	u64 vmcs;
-> +	int ret;
+> P-SEAMLDR returns its information e.g., version and supported features, in
+> response to the SEAMLDR.INFO SEAMCALL.
+> 
+> This information is useful for userspace. For example, the admin can decide
+> which TDX module versions are compatible with the P-SEAMLDR according to
+> the P-SEAMLDR version.
+> 
+> Add and export seamldr_get_info() which retrieves P-SEAMLDR information by
+
+I don't need to know what the function name is. That's in the code.
+
+> invoking SEAMLDR.INFO SEAMCALL in preparation for exposing P-SEAMLDR
+> version and other necessary information to userspace.
+
+I also want to know what spec you are getting this out of.
+
+I think it's also worth calling out that there are SEAMLDR calls for both:
+
+	SEAMLDR_INFO
+and
+	SEAMLDR_SEAMINFO
+
+Which is astonishingly confusing. Please have mercy on folks that are
+looking through the docs for the first time and explain this.
+
+> diff --git a/arch/x86/include/asm/seamldr.h b/arch/x86/include/asm/seamldr.h
+> new file mode 100644
+> index 000000000000..d1e9f6e16e8d
+> --- /dev/null
+> +++ b/arch/x86/include/asm/seamldr.h
+> @@ -0,0 +1,27 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _ASM_X86_SEAMLDR_H
+> +#define _ASM_X86_SEAMLDR_H
 > +
-> +	if (!is_seamldr_call(fn))
-> +		return -EINVAL;
-
-Why is this here? We shouldn't be silently papering over kernel bugs.
-This is a WARN_ON() at *best*, but it also begs the question of how a
-non-SEAMLDR call even got here.
-
-> +	/*
-> +	 * SEAMRET from P-SEAMLDR invalidates the current VMCS.  Save/restore
-> +	 * the VMCS across P-SEAMLDR SEAMCALLs to avoid clobbering KVM state.
-> +	 * Disable interrupts as KVM is allowed to do VMREAD/VMWRITE in IRQ
-> +	 * context (but not NMI context).
-> +	 */
-
-I think you mean:
-
-	WARN_ON(in_nmi());
-
-> +	local_irq_save(flags);
+> +#include <linux/types.h>
 > +
-> +	asm goto("1: vmptrst %0\n\t"
-> +		 _ASM_EXTABLE(1b, %l[error])
-> +		 : "=m" (vmcs) : : "cc" : error);
+> +struct seamldr_info {
 
-I'd much rather this be wrapped up in a helper function. We shouldn't
-have to look at the horrors of inline assembly like this.
+/*
+ * This called the "SEAMLDR_INFO" data structure and is defined
+ * in "SEAM Loader (SEAMLDR) Interface Specification".
+ */
 
-But this *REALLY* wants the KVM folks to look at it. One argument is
-that with the inline assembly this is nice and self-contained. The other
-argument is that this completely ignores all existing KVM infrastructure
-and is parallel VMCS management.
 
-I'd be shocked if this is the one and only place in the whole kernel
-that can unceremoniously zap VMX state.
+> +	u32	version;
+> +	u32	attributes;
+> +	u32	vendor_id;
+> +	u32	build_date;
+> +	u16	build_num;
+> +	u16	minor_version;
+> +	u16	major_version;
+> +	u16	update_version;
+> +	u8	reserved0[4];
 
-I'd *bet* that you don't really need to do the vmptrld and that KVM can
-figure it out because it can vmptrld on demand anyway. Something along
-the lines of:
+Why not label this:
 
-	local_irq_disable();
-	list_for_each(handwaving...)
-		vmcs_clear();
-	ret = seamldr_prerr(fn, args);
-	local_irq_enable();	
+	u32	acm_x2apicid: /* unused by kernel */
 
-Basically, zap this CPU's vmcs state and then make KVM reload it at some
-later time.
+?
 
-I'm sure Sean and Paolo will tell me if I'm crazy.
-
-> diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
-> index e58bad148a35..6a9199e6c2c6 100644
-> --- a/drivers/virt/coco/tdx-host/Kconfig
-> +++ b/drivers/virt/coco/tdx-host/Kconfig
-> @@ -8,3 +8,13 @@ config TDX_HOST_SERVICES
+> +	u32	num_remaining_updates;
+> +	u8	reserved1[224];
+> +} __packed;
+> +
+> +#ifdef CONFIG_INTEL_TDX_MODULE_UPDATE
+> +const struct seamldr_info *seamldr_get_info(void);
+> +#else
+> +static inline const struct seamldr_info *seamldr_get_info(void) { return NULL; }
+> +#endif
+> +
+> +#endif
+> diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
+> index b99d73f7bb08..6a83ae405fac 100644
+> --- a/arch/x86/virt/vmx/tdx/seamldr.c
+> +++ b/arch/x86/virt/vmx/tdx/seamldr.c
+> @@ -9,9 +9,16 @@
+>  #include <linux/irqflags.h>
+>  #include <linux/types.h>
 >  
->  	  Say y or m if enabling support for confidential virtual machine
->  	  support (CONFIG_INTEL_TDX_HOST). The module is called tdx_host.ko
+> +#include <asm/seamldr.h>
 > +
-> +config INTEL_TDX_MODULE_UPDATE
-> +	bool "Intel TDX module runtime update"
-> +	depends on TDX_HOST_SERVICES
-> +	help
-> +	  This enables the kernel to support TDX module runtime update. This
-> +	  allows the admin to update the TDX module to another compatible
-> +	  version without the need to terminate running TDX guests.
-
-... as opposed to the method that the kernel has to update the module
-without terminating guests? ;)
-
-> +	  If unsure, say N.
-
-Let's call this:
-
- config
-INTEL_TDX_ONLY_DISABLE_THIS_IF_YOU_HATE_SECURITY_AND_IF_YOU_DO_WHY_ARE_YOU_RUNNING_TDX?
-
-Can we have question marks in config symbol names? ;)
-
-But, seriously, what the heck? Who would disable security updates for
-their confidential computing infrastructure? Is this some kind of
-intelligence test for our users so that if someone disables it we can
-just laugh at them?
+>  #include "seamcall.h"
+>  
+> -static __maybe_unused int seamldr_call(u64 fn, struct tdx_module_args *args)
+> +/* P-SEAMLDR SEAMCALL leaf function */
+> +#define P_SEAMLDR_INFO			0x8000000000000000
 
 
+/*
+ * The SEAMLDR.INFO documentation requires
+ * this to be aligned to a 256-byte boundary.
+ */
+> +static struct seamldr_info seamldr_info __aligned(256);
+> +
+> +static inline int seamldr_call(u64 fn, struct tdx_module_args *args)
+>  {
+>  	unsigned long flags;
+>  	u64 vmcs;
+> @@ -54,3 +61,11 @@ static __maybe_unused int seamldr_call(u64 fn, struct tdx_module_args *args)
+>  	WARN_ONCE(1, "Failed to save/restore the current VMCS");
+>  	return -EIO;
+>  }
+> +
+> +const struct seamldr_info *seamldr_get_info(void)
+> +{
+> +	struct tdx_module_args args = { .rcx = __pa(&seamldr_info) };
+> +
+> +	return seamldr_call(P_SEAMLDR_INFO, &args) ? NULL : &seamldr_info;
+> +}
+> +EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
+
+I'd also prefer a
+
+	BUILD_BUG_ON(sizeof(struct seamldr_info) != 2048);
+
+just as a sanity check. It doesn't cost anything and it makes sure that
+as you muck around with reserved fields and padding that there's at
+least one check making sure it's OK.
