@@ -1,131 +1,210 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010068.outbound.protection.outlook.com [40.93.198.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457AA1D5CC9
-	for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 19:23:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769628223; cv=none; b=TYsm1l34RnSVjsCEy42o4pPkerCyyPzUrQwF4DORDFrqt7WCCRmZokUPlvIXxoJD6poy74I9hh7vka1c77YuN4rWTNOgpwR7sbai3XQUzYPdZ8ACf984DnU//7UZH+hRu3kSniigUQkPtT+zUO7kuymIXjFQKtpXHNMtMBGhxUI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769628223; c=relaxed/simple;
-	bh=f918SBpHxU0kmiz8ei8dlKq+2sgT9qBkWx+ZUPqWEK0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OgQcQcpPBVj82tY/JlusN1+4hJvDYKCHNI1ZU4+WwhThYHDp22SiQ2YUQcnbC2ZxazY1hv+1BHwA2czQJ2rsLVAkrFRaPO5OHZH4LZLUkUBHinYSgqnP7QGu+NxUfe0YIWhuIhlOpdbMoD0rFeu24WoFhmyHxgCyiIAXVXrbM0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=TxXOY99i; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0087A374181
+	for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 20:41:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769632879; cv=fail; b=nZmwL4Pknla1zkUTiyafCZcZsWwoZz16o855M8kMW7jyoNdYyNy8s1LaV6uZHe8BLhjEfqN5b/51FLNjeZelXb7MuiPL0X9uDlK69tnZKwqY3ucEGwP3WKa50DkdEoMit91aemIkwCfzop2KtP6cbV1FHge/RT6SEQkVaWtXqU8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769632879; c=relaxed/simple;
+	bh=MVsmL4MVz31D10bB1cut4zTSU4/qEZWldLAMdPcO7u4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oJe23BQVUFFq/Y9ywUBTcZffKWp7WQ7+rzQvEvNemUE/9GUdqpUxp2aTCl9z3IJelCEpgKpYpED2xJScmQghyq26QSDm9BvKY5UAciN98IPIihY/ZH+wdsG+f/VaiJ1IbvKCH9Sj5XaPM/0s8ijnz0feBw3tPq2u3Xeu9uxPrds=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=VtkdDX1q; arc=fail smtp.client-ip=40.93.198.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="TxXOY99i"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D54AE40E02E5;
-	Wed, 28 Jan 2026 19:23:38 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id Q5R-tb0sNnLl; Wed, 28 Jan 2026 19:23:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1769628213; bh=0iXIJf5ui59avapL1UdeVJxi1X7KHJ85L7Vgo8qNZD4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TxXOY99i/2wGSEz/aFja6eTQWhDAv2bEgEQiA9LDQJHkLLxEu5cD+xxNr6hOFW+Z4
-	 b52qBEcNt07Mbov1ecCsy2+HmNMzp4ZGM4xoDubsg1/TK4x6pat6nZaKP0tTTIeqRz
-	 tqMQxEp6fyxUgZheF93MUq59dr5lUMXFqhyW0LwDoJ0M321FlZu6LTM9tx1J/bNG/C
-	 bAVd422SUez+IUWc/ivhajf/yRALQ3D1xbqU0BYErerpX7Z2hU2wZUEemu70J5YmCU
-	 64PUVK+eQmOWkBEVKsx2RTObqF+PInUnWJOKZxmxSjPPG5CFscqt9H/7zWFiyShIyO
-	 83YmktlOZ7TRzJx8X5zIdm+zgucVMns9xx3KFe6h+AsFIsPHhCSaQV5tu1YTCQAR9n
-	 Q0VjtSkjXlrLBmluvycVJlDI510qbP8eLOcusv+I6iq+FA6Y4131X8yBHZMgxZ56mM
-	 Vi4mo08d3ZwZtH/VIbdQlhBxeqIuMVCHlJpfuU90C0i7b+uf7nljOEFQK18hldP0+Z
-	 NEm1loTor9rHKRvSKa+hQRYyhqLeLK4T0htkab7BgOeunw9Zt/IbIrEb5Ts61amd/h
-	 jSVJowpFtUpgZ+V6ZLlHs5H28W9zft3sBQWL1FWnsD9S1iNy13QLlj2vvuwYbNG0KO
-	 T9TCF6nComS2aAG4PLpyT314=
-Received: from zn.tnic (pd953023b.dip0.t-ipconnect.de [217.83.2.59])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 8889D40E00DA;
-	Wed, 28 Jan 2026 19:23:19 +0000 (UTC)
-Date: Wed, 28 Jan 2026 20:23:12 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Kim Phillips <kim.phillips@amd.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, x86@kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Naveen Rao <naveen.rao@amd.com>,
-	David Kaplan <david.kaplan@amd.com>, stable@kernel.org
-Subject: Re: [PATCH 1/2] KVM: SEV: IBPB-on-Entry guest support
-Message-ID: <20260128192312.GQaXpiIL4YFmQB2LKL@fat_crate.local>
-References: <20260126224205.1442196-1-kim.phillips@amd.com>
- <20260126224205.1442196-2-kim.phillips@amd.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="VtkdDX1q"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KtwCyQ5cTk1XIgUNzolkoGdnHbl+hJLTe/hvw/aeZ2CvjmkEuwnBkSit0xo5UVbOfo9P5eG8OlKSLugLuZ+Y7SBdtpcOPA4Db+nLW2eUnHJ6wnxQPJkEvgcgQMbl4rQGHvBvJDLJHeP7S6ZNt4n1ktCGzYsNRblg+V1ja2qnnCD+gQ6m0f4Hf3ijneXo72aJn29RfC1DAecgWLrXRq6T6vFMumUX2mPun99EO84U9JD6xOPkhDwFBGKZFsEOHgb6fhBw/cw0WPtv4HdW26V5MU6Y1ynZBBVfWRW+Juu/9PlOfUIO64o7tzLe7p4dd/6wuMEz20MpThKe12VO1YQ98Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fQG+QZUWSH/EiGQEfpl/PhoLrtB8cI/3kvHyv4/lCsI=;
+ b=VL4HQn4z3d8qjXZovpkK7Khq/mzGSVjwyV7/Leley8do4jY27fVp5rebVoZaGhEI8PKwQD/a3Z2xN4hyBQfdtTZboJ6tiewoK3gOQby/Zx1dNH0iPbnhgtSl86PztPoaDvY8/xemRGIBLE3HV/+oG6E1EZ7qYs7UwPIztUKMYvstyjvLdO4ArhMtGKEi2y+2s5jnjOqHJfeZmBQPcXGzv4NUfLQnsnFoFjUBxluKCHe1EUzWL+rabzq8AF+zHz1Ev4AAsVfUB+dGCv0wOqJtUv5a+ip69fvxq3y9glAc4rAVmDkz50mX//ASJ70TXUjzEmKAnB+lpgHKh0KzgSEbPg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kvack.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fQG+QZUWSH/EiGQEfpl/PhoLrtB8cI/3kvHyv4/lCsI=;
+ b=VtkdDX1qEsat9YQFM1PNmHymASc2C/5aOMRClu2FxT2BckwGnV/sYNmfuhO5ELklMFNZeRp7ejpFA8ioMKXKBsEq16KO5EIcaqahjhPZLka7dAtld3wKZ896UYoOVXPe3D5n8l1o9G1bqlOfdqfXE1Pvh/7IT2AdCGMtJ6KiBiU=
+Received: from BYAPR03CA0023.namprd03.prod.outlook.com (2603:10b6:a02:a8::36)
+ by CH3PR12MB8879.namprd12.prod.outlook.com (2603:10b6:610:171::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Wed, 28 Jan
+ 2026 20:41:13 +0000
+Received: from BY1PEPF0001AE18.namprd04.prod.outlook.com
+ (2603:10b6:a02:a8:cafe::7f) by BYAPR03CA0023.outlook.office365.com
+ (2603:10b6:a02:a8::36) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9564.8 via Frontend Transport; Wed,
+ 28 Jan 2026 20:41:13 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BY1PEPF0001AE18.mail.protection.outlook.com (10.167.242.100) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9564.3 via Frontend Transport; Wed, 28 Jan 2026 20:41:12 +0000
+Received: from ellora.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 28 Jan
+ 2026 14:41:11 -0600
+From: "Pratik R. Sampat" <prsampat@amd.com>
+To: <linux-mm@kvack.org>, <linux-coco@lists.linux.dev>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <kas@kernel.org>, <ardb@kernel.org>,
+	<akpm@linux-foundation.org>, <david@kernel.org>, <osalvador@suse.de>,
+	<thomas.lendacky@amd.com>, <michael.roth@amd.com>, <prsampat@amd.com>
+Subject: [PATCH v3 0/2] SEV-SNP Unaccepted Memory Hotplug
+Date: Wed, 28 Jan 2026 14:41:03 -0600
+Message-ID: <20260128204105.508855-1-prsampat@amd.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260126224205.1442196-2-kim.phillips@amd.com>
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE18:EE_|CH3PR12MB8879:EE_
+X-MS-Office365-Filtering-Correlation-Id: b744149e-6333-47e0-b708-08de5ead931f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014|7416014|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?KRIINUCTPCkYeZPo27WNidzQ6FvjZ2nlOl0AMTfXKNT6hlBtDV+jRhTcJzpZ?=
+ =?us-ascii?Q?Mf0GgkjDlXZoVUabmHZbKyoRJAJH4FdD928wSVdSVWnu1vO2+Jgn172512lo?=
+ =?us-ascii?Q?rZLu51iIlZ9T78vqwzzeb6rz/UU0VhjkJYGJg2gcvJ1lh8ar20fzhWdygiVZ?=
+ =?us-ascii?Q?Jk802Eh1hDFwiX7WmILi9/RGV90T3iR37yMsRvwBihkff+6GjpUzZasntinh?=
+ =?us-ascii?Q?kxUZfuxSpnXrsya7Bl00/MLFWfmmd8oAx38R/B9UHOmsLlAfjFpl0KI80fvJ?=
+ =?us-ascii?Q?hbHV6jxnfnao1qnIktZIwo0Q2jfDrXXqunKWqpGbiJmoGKg0fcJ+fzfybRf4?=
+ =?us-ascii?Q?Cn3wM9jG39T/UBaylg1Vuy0oCT1+yESPh02bpckakGAm8reflLwMvPzhj7SP?=
+ =?us-ascii?Q?zth3eVjEtSNZ+sz2QgabrLjQ9eJ5+FIunQuewqZ2FnH8PXpN98pz9C+nFMLf?=
+ =?us-ascii?Q?xch8dbS5ScF0nQz4PzCxkocjjj+jyQbIrUfJ6WQaCCAkAl/bNnXr77UHK0pt?=
+ =?us-ascii?Q?k+My6tK5y+Ulqujya65UNPEGE1rOVB7dX3e5qytyEqw5rIPdiwJGbW+2AxD/?=
+ =?us-ascii?Q?1/CG8bKpeEUAtFyyd/uXKxzkHCTuO8PoGmVN6F2XcaVU7MvZsZa4tToHuJgg?=
+ =?us-ascii?Q?YJXdkiN7qYWDvn7MwP7FbyX8/FOeFFvAX1PlIeiD2tGMfJaGdGYD7HYLeCVq?=
+ =?us-ascii?Q?jjyrF5ix3sMC1rO0JNpH+Wxo+ishwbC1UZ79hdUx9Jcmfduzd/o16ebYIfzu?=
+ =?us-ascii?Q?MHBfRyDH5pN4aSHrI1BJcbOWowZzXc0i/8z2deHkI4byEPGq0EVCNZcxeGQ6?=
+ =?us-ascii?Q?40VGxNTKm8c7tVkrCgxSzCGENRXoMEGwVzjx3aZeLlSVhdFc9f3HBXIz/dKH?=
+ =?us-ascii?Q?NuVLhKNYbl7hEXfsYTzxdAyCKgHp/lmm2Ppc1Ag8/rDBwzR32JtH/dndecCg?=
+ =?us-ascii?Q?u22RDEm3GmyjW4R6olFpnC7sK8j202au55jR8+iZoJ8j8Y3r+TDq6S8bgK6L?=
+ =?us-ascii?Q?voXETv64Yr4BZsfKYWsZcDBYhIiqkMeu3x9e0qFEBUd7Qxsf7tjFEtQ9uz7z?=
+ =?us-ascii?Q?eXtdJndYDhddgf8W97jLAPoGGh0KuXNodJZ7OUfN5U7q+Kh795ikbgXLEV4q?=
+ =?us-ascii?Q?e5ac7HYwec74hi22nBUQ0U2Nsr3FI0nBTZC618r4QIBxe/gnt68UVWkRb4oF?=
+ =?us-ascii?Q?zhZG4/GB+KfVobhc7eEgG4Mj9Lbp03Pp15eSdXuPhOSEQR6xkNaAWupo256j?=
+ =?us-ascii?Q?3gDfjVdWJbz0AqDkUqEtQZv8Dq9RGE+JgA1MahbbseAwfGx6ZKRoi/YtoSMJ?=
+ =?us-ascii?Q?FR2oXcxxOxUhp79GbAu3RSqqLG3xcXcISS4w6ZtfvvvPvsMBiuobs+8v6VeC?=
+ =?us-ascii?Q?+e+Rrqq/raavlgDYX0pB29Yt2zy8Bm4PKUBZN0Q7OvyKW1PTwBYKrYB5Oa+u?=
+ =?us-ascii?Q?K2e0A1vyu1Bel8MBppepJ8wc0LZfu1YBf5YvRSVaXoRBL8A9cH8pWqvypdwX?=
+ =?us-ascii?Q?rybTm53ftGnhXRk2fmF5yieT9aHCPHYTN1jmerhT0N70m80w0BruKjG2j8sC?=
+ =?us-ascii?Q?bkKBq4kAbTmnc0rf7ULbiM4eS+kp2VdR7ztXyQgGk5tO0PKsA18krvYsMU85?=
+ =?us-ascii?Q?iNnnUmWg3e+H+eMVsYikCa0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014)(7416014)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jan 2026 20:41:12.2536
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b744149e-6333-47e0-b708-08de5ead931f
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BY1PEPF0001AE18.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8879
 
-On Mon, Jan 26, 2026 at 04:42:04PM -0600, Kim Phillips wrote:
-> The SEV-SNP IBPB-on-Entry feature does not require a guest-side
-> implementation. The feature was added in Zen5 h/w, after the first
-> SNP Zen implementation, and thus was not accounted for when the
-> initial set of SNP features were added to the kernel.
-> 
-> In its abundant precaution, commit 8c29f0165405 ("x86/sev: Add SEV-SNP
-> guest feature negotiation support") included SEV_STATUS' IBPB-on-Entry
-> bit as a reserved bit, thereby masking guests from using the feature.
-> 
-> Unmask the bit, to allow guests to take advantage of the feature on
-> hypervisor kernel versions that support it: Amend the SEV_STATUS MSR
-> SNP_RESERVED_MASK to exclude bit 23 (IbpbOnEntry).
+Guest memory hot-plug/remove via the QEMU monitor is used by virtual
+machines to dynamically scale the memory capacity of a system with
+virtually zero downtime to the guest. For confidential VMs, memory has
+to be first accepted before it can be used. Add support to accept
+memory that has been hot-added and revert back it's state for
+hypervisors to be able to use the pages during hot-remove.
 
-Do not explain what the patch does.
+Usage (for SNP guests)
+----------------------
+Step1: Spawn a QEMU SNP guest with the additional parameter of slots and
+maximum possible memory, along with the initial memory as below:
+"-m X,slots=Y,maxmem=Z".
 
-> Fixes: 8c29f0165405 ("x86/sev: Add SEV-SNP guest feature negotiation support")
-> Cc: Nikunj A Dadhania <nikunj@amd.com>
-> Cc: Tom Lendacky <thomas.lendacky@amd.com>
-> CC: Borislav Petkov (AMD) <bp@alien8.de>
-> CC: Michael Roth <michael.roth@amd.com>
-> Cc: stable@kernel.org
+Step2: Once the guest is booted, launch the qemu monitor and hotplug
+the memory as follows:
+(qemu) object_add memory-backend-memfd,id=mem1,size=1G
+(qemu) device_add pc-dimm,id=dimm1,memdev=mem1
 
-I guess...
+Memory is accepted up-front when added to the guest.
 
-> diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-> index 4d3566bb1a93..9016a6b00bc7 100644
-> --- a/arch/x86/include/asm/msr-index.h
-> +++ b/arch/x86/include/asm/msr-index.h
-> @@ -735,7 +735,10 @@
->  #define MSR_AMD64_SNP_SMT_PROT		BIT_ULL(MSR_AMD64_SNP_SMT_PROT_BIT)
->  #define MSR_AMD64_SNP_SECURE_AVIC_BIT	18
->  #define MSR_AMD64_SNP_SECURE_AVIC	BIT_ULL(MSR_AMD64_SNP_SECURE_AVIC_BIT)
-> -#define MSR_AMD64_SNP_RESV_BIT		19
-> +#define MSR_AMD64_SNP_RESERVED_BITS19_22 GENMASK_ULL(22, 19)
-> +#define MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT	23
-> +#define MSR_AMD64_SNP_IBPB_ON_ENTRY	BIT_ULL(MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT)
+If using auto-onlining by either:
+    a) echo online > /sys/devices/system/memory/auto_online_blocks, OR
+    b) enable CONFIG_MHP_DEFAULT_ONLINE_TYPE_* while compiling kernel
+Memory should show up automatically.
 
-Why isn't this part of SNP_FEATURES_PRESENT?
+Otherwise, memory can also be onlined by echoing 1 to the newly added
+blocks in: /sys/devices/system/memory/memoryXX/online
 
-If this feature doesn't require guest-side support, then it is trivially
-present, no?
+Step3: memory can be hot-removed using the qemu monitor using:
+(qemu) device_remove dimm1
+(qemu) object_remove mem1
 
-> +#define MSR_AMD64_SNP_RESV_BIT		24
->  #define MSR_AMD64_SNP_RESERVED_MASK	GENMASK_ULL(63, MSR_AMD64_SNP_RESV_BIT)
->  #define MSR_AMD64_SAVIC_CONTROL		0xc0010138
->  #define MSR_AMD64_SAVIC_EN_BIT		0
-> -- 
+Tip: Enable the kvm_convert_memory event in QEMU to observe memory
+conversions between private and shared during hotplug/remove.
 
-I guess this is a fix of sorts and I could take it in now once all review
-comments have been addressed...
+The series is based on
+        git.kernel.org/pub/scm/virt/kvm/kvm.git next
+
+Comments and feedback appreciated!
+
+Changelog Patch v2..v3:
+-----------------------
+https://lore.kernel.org/all/20260112202300.43546-1-prsampat@amd.com/
+1. Account for cold-plugged memory at boot and introduce proper handling
+   of the unaccepted bitmap during both hotplug and remove. (Kiryl)
+2. #include<asm/unaccepted_memory.h> within memory_hotplug caused build
+   failures on non-x86 archs (Andrew). Instead of introducing
+   #if-deffery to have arch agnostic fall throughs, create hotplug
+   specific helper functions since we now also need to take care of
+   managing the bitmaps due to 1. as well.
+
+Changelog RFC..Patch v2:
+------------------------
+https://lore.kernel.org/all/20251125175753.1428857-1-prsampat@amd.com/
+Based on feedback from the RFC, reworked the series to accept memory
+upfront on hotplug. This is done for two reasons:
+1. Avoids modifying the unaccepted bitmap. Extending the bitmap would
+   require either:
+   * Dynamically allocating the bitmap, which would need changes to EFI
+     struct definitions, or
+   * Pre-allocating a larger bitmap to accommodate hotpluggable memory.
+     This poses challenges since e820 is parsed before SRAT, which
+     contains the actual memory ranges information.
+2. There are currently no known use-cases that would benefit from lazy
+   acceptance of hotplugged ranges which warrants this additional
+   complexity.
+
+Pratik R. Sampat (2):
+  mm/memory_hotplug: Add support to accept memory during hot-add
+  x86/sev: Add support to unaccept memory after hot-remove
+
+ arch/x86/coco/sev/core.c                 | 13 +++++
+ arch/x86/include/asm/sev.h               |  2 +
+ arch/x86/include/asm/unaccepted_memory.h |  9 +++
+ drivers/firmware/efi/unaccepted_memory.c | 74 ++++++++++++++++++++++++
+ include/linux/mm.h                       | 14 +++++
+ mm/memory_hotplug.c                      |  4 ++
+ 6 files changed, 116 insertions(+)
 
 -- 
-Regards/Gruss,
-    Boris.
+2.52.0
 
-https://people.kernel.org/tglx/notes-about-netiquette
