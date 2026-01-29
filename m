@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C8B2EA15C
-	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 17:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD3934F48A
+	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 17:39:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769708252; cv=none; b=L9fZu+sa/Ge2MR6SVsyT3cIa6aK738GEa3H8QrgS59DsrQissdjPkOS8itbz3/kjiK52X8SHohZ3eB8Zab4k3YoIAmgWD0Hzwe6JvvpXWHmV4XLjpSekm4AKBi8wI9Dmuu2Eh5v/V0Dpj4cDI9RFIxYRajNHMt8A+W0zioZ2Mic=
+	t=1769708399; cv=none; b=uaHYFeWahkQ1Bokolmalmjfhscu4qZHMS+UEtwDMhz0sDUt/HsbdU8O0gr1nddN2vhMUQNq2sezqzzTXwQVAdppQ1QDQQPD7HypgQaNZeHZt4e5SJErRGsHxMShNESV6RxzXV9ZdXs4c8y2WpuW3CbJI6AAWhqwIJGBYGlcCbPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769708252; c=relaxed/simple;
-	bh=ZeWvRrjDzveNb3wlHGMgEfqdQNPEtj5QZe5rnzSoMI0=;
+	s=arc-20240116; t=1769708399; c=relaxed/simple;
+	bh=9/EHeULcqZbnKkCfvS7FIf8N1dbPW5VY16eMrhzC/k0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Q5Xog2R7B2tdaHeTQ2HJC02wl6IDLoOZpyq/AIYRVoTPMauNC5t/klRO0bA06kex5s0S3KmAoAUPcT1QMh9ZtSjByx+c5nW5irsePxwHjxP782z+YQGj8PBBjSicHiQzpNkXPdJPLnPY9LEHl5Siay1UBHI0f+ckKBpwrs2A7O8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I30w8Hpj; arc=none smtp.client-ip=198.175.65.12
+	 In-Reply-To:Content-Type; b=lDWqjEt3F7xni65u/hi5IzkRfLkpJotqHBk3AyUbmDHaJNdQwwOetiXd7V/7mKomOQuZFwNpfSy+zpq3hetbLHLcxgQDTUWcajIoyC81a+jiTY6btZeugi/yuZmwoV7TPfpVa1x+5s/OGggzzVp4Vd8GnaVJox1c8txOIrjBcbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c87GBSyX; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I30w8Hpj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c87GBSyX"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769708252; x=1801244252;
+  t=1769708398; x=1801244398;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=ZeWvRrjDzveNb3wlHGMgEfqdQNPEtj5QZe5rnzSoMI0=;
-  b=I30w8Hpjbhr7RNjENWew0VEugY1a4KJ3t8M6HWGStaXBONDNWGVdRwBk
-   btdCt0FYIZ43WLFQzEZ2SjN0xUggYkSMcNhepI3rjnIBAIkbK0zOsYFrF
-   hTDS6pxCyo4j69Srh9kY6Y+ISSYrNn6c6cEsaWgkDMVs5o6DKoEOkSwPy
-   Ok2LzwT8CfraPzlksETO1lpQWKiYVBu0ml/8ADGRyFrVLNK46tlBiAe9+
-   xayUvidXR61fkbMH289RwS4x+mTSa2tqJP9WvX5+ePy/0Gr/8ZQQiempL
-   wXVUcakIY7x+1Dp0GwewSJSCntrh80k7sZFoVFo5hJHa9pBjPVk5HujWy
+  bh=9/EHeULcqZbnKkCfvS7FIf8N1dbPW5VY16eMrhzC/k0=;
+  b=c87GBSyXyr6zGdno3CdDl8vGzIhz+Jout9+0+RPZhnG6zriFMZClKbx4
+   N0p5HSfgWX70BFNwWbA/SoOs/xU+RHFEJzsZFCjdNw0gZ10IOWQfJ4rF4
+   qKkkae/uQllsGf2Hl6RVzc2PNsDtNhzkxw4o9zQe0D2VxeEcTWQ2fFGr0
+   pS5v7RU85VwQhOzv+mNJYl6FBbmZQuFfQ3FxlPCmAsHET39MkXz3nouNR
+   cOUXwQQZw7nuJijvW5mMQkhFg8+eOhZuwm8MMFHUs/ogaGg6m6XPvp5XD
+   iBvelq4HJA8fRhEFV1YxjGrY6cBFHc4jQENOrEaELwj65YDo/G7xB9NAe
    Q==;
-X-CSE-ConnectionGUID: Xa0M+4lbTQuUeXtI6/00dg==
-X-CSE-MsgGUID: qaiN25wbQC2Bgw2d7bPg7g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="82382659"
+X-CSE-ConnectionGUID: E+dsnYKTQX2ZsEsXxdIs9A==
+X-CSE-MsgGUID: f4pqt5L2RL6pfqprCNslLQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="70928866"
 X-IronPort-AV: E=Sophos;i="6.21,261,1763452800"; 
-   d="scan'208";a="82382659"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 09:37:31 -0800
-X-CSE-ConnectionGUID: gmy2pDDtTLKCdFFxtFkvgA==
-X-CSE-MsgGUID: 7AjCUA7UTLGfHA7uhBeVgA==
+   d="scan'208";a="70928866"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 09:39:57 -0800
+X-CSE-ConnectionGUID: m1QRk3fZTkyWcEM9VM/MFw==
+X-CSE-MsgGUID: DGQPX5d/SC26JL5PZLjNmg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,261,1763452800"; 
-   d="scan'208";a="207877473"
+   d="scan'208";a="239364563"
 Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.110.19]) ([10.125.110.19])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 09:37:31 -0800
-Message-ID: <0ef98eb2-984f-4e62-a9c4-0756238ff807@intel.com>
-Date: Thu, 29 Jan 2026 09:37:30 -0800
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 09:39:56 -0800
+Message-ID: <b7cbc2f4-6fef-44c2-a0f4-2d6895c0fd74@intel.com>
+Date: Thu, 29 Jan 2026 09:39:55 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,24 +52,21 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v5 01/45] x86/tdx: Use pg_level in TDX APIs, not the
- TDX-Module's 0-based level
-To: Sean Christopherson <seanjc@google.com>, Thomas Gleixner
- <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Kiryl Shutsemau <kas@kernel.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, Kai Huang <kai.huang@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, Yan Zhao
- <yan.y.zhao@intel.com>, Vishal Annapurve <vannapurve@google.com>,
- Ackerley Tng <ackerleytng@google.com>, Sagi Shahar <sagis@google.com>,
- Binbin Wu <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>
-References: <20260129011517.3545883-1-seanjc@google.com>
- <20260129011517.3545883-2-seanjc@google.com>
-Content-Language: en-US
+Subject: Re: [PATCH v3 2/2] x86/sev: Add support to unaccept memory after
+ hot-remove
+To: "Pratik R. Sampat" <prsampat@amd.com>, Kiryl Shutsemau <kas@kernel.org>
+Cc: linux-mm@kvack.org, linux-coco@lists.linux.dev, x86@kernel.org,
+ linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, ardb@kernel.org,
+ akpm@linux-foundation.org, david@kernel.org, osalvador@suse.de,
+ thomas.lendacky@amd.com, michael.roth@amd.com
+References: <20260128204105.508855-1-prsampat@amd.com>
+ <20260128204105.508855-3-prsampat@amd.com>
+ <16aa84a9-83ce-4748-bc73-ccf5cb6ce376@intel.com>
+ <aXs4DTXCbI_c0JPO@thinkstation>
+ <097a4980-9d10-40d2-9667-d07bf19e7b86@amd.com>
 From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
  oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
@@ -113,23 +110,15 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260129011517.3545883-2-seanjc@google.com>
+In-Reply-To: <097a4980-9d10-40d2-9667-d07bf19e7b86@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 1/28/26 17:14, Sean Christopherson wrote:
-> Rework the TDX APIs to take the kernel's 1-based pg_level enum, not the
-> TDX-Module's 0-based level.  The APIs are _kernel_ APIs, not TDX-Module
-> APIs, and the kernel (and KVM) uses "enum pg_level" literally everywhere.
-> 
-> Using "enum pg_level" eliminates ambiguity when looking at the APIs (it's
-> NOT clear that "int level" refers to the TDX-Module's level), and will
-> allow for using existing helpers like page_level_size() when support for
-> hugepages is added to the S-EPT APIs.
+On 1/29/26 09:32, Pratik R. Sampat wrote:
+> In that case a fall through for TDX (with a comment explaining why) and
+> panic for rest may be the way to go?
 
-Yup, totally the right thing to do: push the TDX-isms as deep in the
-code as possible. pg_level_to_tdx_sept_level() is a bit wordy, but I can
-live with it:
+No. panic() is an absolute last resort. It's almost never the way to go.
 
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-
+What else can we do to ensure we never reach this code if the platform
+doesn't support memory un-acceptance?
