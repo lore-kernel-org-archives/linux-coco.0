@@ -1,184 +1,134 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B5630AACA
-	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 22:23:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0710436AB4F
+	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 22:23:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769725398; cv=none; b=rlIHCfWcop2n6XcEl+WNMlSl6uTZediIF0lRQ9igOjmryLxOGIQnE9MmQ9tJfhBjCzd8JfiigpgH15e0i50xmFLnhAW3xsSOJ+FMVzN3tvvBVlUQRCUDYLpeo3cN9YdCMlT6yOsCuTFjihblAxwz5sBxutCzXLV42WjG96F1WYw=
+	t=1769725406; cv=none; b=rG2U3RTXiniOtqZL+299cGRxeOetWZar1l8EwxILb0pD5RlVs0FG9c8EO+I3ODobDEvXqv8nqM6H7vGOu77WTHOIeJ51xMS+v6BnhQjr2z+zPcfncN4FXxQSa0R1j7NsnMBmh+qeJiE/YtK8i/D7ItmaHx/YE4phT85BcClHdC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769725398; c=relaxed/simple;
-	bh=yeWhxgwOI39wZMUnPaFTkodP2OG2gFfuznHamNcp55U=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=Y3jMjEjCUSZVcEUUtJxx8aADtNtdQ75x/xctRfosSTZpLbJP/M5e4GuVM6LsUjCMnIG7dc6VaKzcXdgfIFcFEnTnuhzNfQHdxnq1EwA+T9cJ1B3buyEcrbz5AVd0O3U8QjUOJTctC8gXoX4GlkBKVvbrdu9gBKAekugBQpoj5QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=jvBMLFj6; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1769725406; c=relaxed/simple;
+	bh=XId/psBz2B6CRgPkYn1/L0PMl47eroAR8b7KTrFAN38=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=sGzLaz9g6u6R9w4tzsSWgFrIQjGW/WHqJXd5TPU8Ez1oKwPIrj81aYdWxK52cjhUkqQJWVY4iWUqbL+gk+96cXsz6FNumMMC6Znjcl3t87dkTuhzn9U5dU+Fnl3wo936iv0GkMdi8PIHjlv6VEvbaGC5vRD1Ydt6tLlwHrEOYAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d9jvMwMN; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="jvBMLFj6"
-Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 60TMMhTI880091
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Thu, 29 Jan 2026 14:22:43 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 60TMMhTI880091
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026012301; t=1769725364;
-	bh=yeWhxgwOI39wZMUnPaFTkodP2OG2gFfuznHamNcp55U=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=jvBMLFj67SnZc62nuR3Vq84bnR2Fw1vBLP9t7JRjdfwMHcxEgRuRasvk58bFEIXDz
-	 4FP3OsrIbs3oadSvNRCe50i5MarW6Q7LLsgX8/tcOTLrFqwZCENKYfqCXPV9h3L39o
-	 3A9vGPicUXZlL+rxjHXs5j4wp+ev2x3pA1ckjnLW4EYgW72XoDj08xQH6Sjm/HXTQg
-	 377EK9oIsImtaQ2WQuWrAZS7m429MhY2Zz+5Foc3Vouyz3raOjxvoj20WX3X4LZzAS
-	 mFnRUmNFB1Q4uR8VkBfl5l+Nqwv6lj/zoUyTJvQ3DgXaW696BOV1SEaW7h6QB7/pbB
-	 0u8l/CzU3wp0w==
-Date: Thu, 29 Jan 2026 14:22:37 -0800
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Simon Glass <sjg@chromium.org>
-CC: ubizjak@gmail.com, linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        bp@alien8.de, dave.hansen@linux.intel.com, kas@kernel.org,
-        kees@kernel.org, linux-coco@lists.linux.dev, mingo@redhat.com,
-        nathan@kernel.org, peterz@infradead.org, pmladek@suse.com,
-        rick.p.edgecombe@intel.com, tglx@kernel.org, x86@kernel.org
-Subject: Re: [PATCH v1 08/14] x86: make CONFIG_EFI_STUB unconditional
-User-Agent: K-9 Mail for Android
-In-Reply-To: <CAFLszTiQ_BAMGJPJfAV4TXiELvZn12+wX2txBuzMcQ_nw2kzOg@mail.gmail.com>
-References: <CAFULd4bV6jKqHb-vC47skjNvbctit3VccXpF02oYt0icaq1r-Q@mail.gmail.com> <20260122185740.50298-1-sjg@chromium.org> <90DAAB54-CBF0-47BD-981A-FEDD26CDA0FD@zytor.com> <CAFLszTi+N7Yj0yYHKroypmBoFSx+9m5er8pgULsKbPuooFYj-A@mail.gmail.com> <643bfc24-8cc1-4f70-85e2-f6829c8e03db@zytor.com> <CAFLszTjhJkfBrG-QiF6cEz-K1ODHPziJDsTthBUsqoZ=hDxsjA@mail.gmail.com> <E15F74BD-E33C-4184-B694-C152696C4895@zytor.com> <CAFLszTgHvFvB=Be=MwctUfR4ngA=rxxHHP1A1M-XvXbT8yN9JA@mail.gmail.com> <36C4A641-A124-4082-884D-90AE22B10275@zytor.com> <CAFLszTiQ_BAMGJPJfAV4TXiELvZn12+wX2txBuzMcQ_nw2kzOg@mail.gmail.com>
-Message-ID: <F5FE8FBD-1CE9-4009-AF91-E517271A9999@zytor.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d9jvMwMN"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34c6e05af6fso1170451a91.1
+        for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 14:23:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769725404; x=1770330204; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CjpoE/7MkU533iWOJXX/9jSCPi0JjIxUjWp+cR10TGk=;
+        b=d9jvMwMNaAgBIsg2WXzKzmg7jgNtrhNbfhzHEsY8dKpUMObsGynu5ett7U4+MraD45
+         4OYi9KXcFACLNMY7L3xDme89A+eQLMWsidRgkfaptFAB4LxW5Vn8byz1+SvbkkJQ5Gq4
+         dm87BCaDvNErapwUamhBePvv075rwrKNCaIeUiTJW5jN2eSEGkG8uDVFoQUmk46zcGV0
+         7niJjvpzGCZtFiMrdvhoJdCqJiEdwAcWULBHlooSFi15saHSwZCOpCSQovr+7gd3KwxN
+         G4OZ4XKJd5NM7fkmrVPzTuaJdVGIYt3d+ba5cGRkzKGcfGqcunXgWZ+UYdJuwVg5l9Gx
+         AGIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769725404; x=1770330204;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=CjpoE/7MkU533iWOJXX/9jSCPi0JjIxUjWp+cR10TGk=;
+        b=SsBUT4Ci6Yj36ngfioECRDdl0K5+Bq2mQ5/6YoayrFV63NVZBMBxxXVsR8lwWX/RkR
+         t5pMkjxY0+KPELU+h8ntBv21e72Ac/39jIHPyBZgp7WjTn1madyhIVSxPeWYODdwQ8Iu
+         Qn5/PmNJiEV+dzHqXAKiXyXDXzUWPGDWW+SoTyu1rYLta4Dobu8ppjxKEnx1mebLnkVE
+         m9uzrWnhzuOpchs7Fpq+/1w++0TlhtTB8yM8Z6PdbuxJNgkQetCKiXQEAj9RIDYIu9FJ
+         Y4AkMe1aHJiJk7iEJGc7Y61nPpmWZZzPS3eejnCZw3gzDakNuOVb/HvWvzMHDmPe/pFt
+         h5bA==
+X-Forwarded-Encrypted: i=1; AJvYcCWotzzQV8b2Rvoi69QfPADhAY1xXX5HrWNmcWQAnKwzg4L2EQBYGpD5ZDmcg4mF5c2sy8zLKgeI6Thz@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx5/RIsuPlBFardGyuXOuP8KPa59ItcYQKDLXMN4JoRlJfqeNal
+	McsI+QRbJZqttJV36fnXH8CzmaDMEd53jXD3ZgJ7IFgnK0ATFL2mzS8ISvCedyB2tOkKT45UP56
+	JCCT0qQ==
+X-Received: from pjd11.prod.google.com ([2002:a17:90b:54cb:b0:353:28b4:c297])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d445:b0:340:e8e9:cc76
+ with SMTP id 98e67ed59e1d1-3543b309885mr823538a91.11.1769725404404; Thu, 29
+ Jan 2026 14:23:24 -0800 (PST)
+Date: Thu, 29 Jan 2026 14:23:23 -0800
+In-Reply-To: <fbaeb0d2f4658efd4c7bb61ac0ba2919c8226a36.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+Mime-Version: 1.0
+References: <20260129011517.3545883-1-seanjc@google.com> <20260129011517.3545883-3-seanjc@google.com>
+ <fbaeb0d2f4658efd4c7bb61ac0ba2919c8226a36.camel@intel.com>
+Message-ID: <aXvd2z8HmLFd50io@google.com>
+Subject: Re: [RFC PATCH v5 02/45] KVM: x86/mmu: Update iter->old_spte if
+ cmpxchg64 on mirror SPTE "fails"
+From: Sean Christopherson <seanjc@google.com>
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: "x86@kernel.org" <x86@kernel.org>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"bp@alien8.de" <bp@alien8.de>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "tglx@kernel.org" <tglx@kernel.org>, Kai Huang <kai.huang@intel.com>, 
+	"ackerleytng@google.com" <ackerleytng@google.com>, "sagis@google.com" <sagis@google.com>, 
+	Vishal Annapurve <vannapurve@google.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Yan Y Zhao <yan.y.zhao@intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On January 29, 2026 2:13:13 PM PST, Simon Glass <sjg@chromium=2Eorg> wrote:
->Hi Peter,
->
->On Tue, 27 Jan 2026 at 16:22, H=2E Peter Anvin <hpa@zytor=2Ecom> wrote:
->>
->> On January 26, 2026 7:14:27 PM PST, Simon Glass <sjg@chromium=2Eorg> wr=
-ote:
->> >Hi Peter,
->> >
->> >On Tue, 27 Jan 2026 at 15:55, H=2E Peter Anvin <hpa@zytor=2Ecom> wrote=
-:
->> >>
->> >> On January 26, 2026 5:44:43 PM PST, Simon Glass <sjg@chromium=2Eorg>=
- wrote:
->> >> >Hi Peter,
->> >> >
->> >> >On Tue, 27 Jan 2026 at 11:21, H=2E Peter Anvin <hpa@zytor=2Ecom> wr=
-ote:
->> >> >>
->> >> >> On 2026-01-26 13:19, Simon Glass wrote:
->> >> >> >>
->> >> >> >> Including the EFI stub doesn't mean using EFI to boot is requi=
-red=2E
->> >> >> >
->> >> >> > Yes, understood, but it adds bloat=2E More importantly it will =
-lead to
->> >> >> > people assuming that the stub is always used and thus unwitting=
-ly blur
->> >> >> > the boundary between the stub and the kernel itself=2E
->> >> >> >
->> >> >> > What is the actual need for this?
->> >> >> >
->> >> >>
->> >> >> I would argue that the opposite is more likely: someone inadverte=
-ntly builds a
->> >> >> kernel without the stub, the bootloader goes down a legacy suppor=
-t path and
->> >> >> things seems to work=2E=2E=2E except for some platform subtleties=
-=2E
->> >> >>
->> >> >> The bloat is there, but it is small and is only in the on-disk ke=
-rnel image;
->> >> >> it is zero at runtime=2E
->> >> >>
->> >> >> As such, I don't think this option is a particularly good idea an=
-ymore=2E If
->> >> >> necessary, it could be hidden behind an EXPERT option, but I firs=
-t wanted to
->> >> >> see who if anyone actually cares in a meaningful way to maintain =
-this option=2E
->> >> >> Every option, after all, adds maintenance burden=2E
->> >> >>
->> >> >> Note that the BIOS stub is unconditionally compiled and included,=
- and that has
->> >> >> not been an issue=2E
->> >> >
->> >> >What is the maintenance burden here? I could potentially take that =
-on,
->> >> >but I would first want to understand what is involved=2E
->> >> >
->> >> >The use of the word 'legacy' worries me too=2E Is this patch a step
->> >> >towards removing the non-EFI path?
->> >> >
->> >> >Regards,
->> >> >Simon
->> >
->> >(joining the threads)
->> >
->> >> Bypassing the firmware stub (BIOS or EFI) is really only appropriate=
- for special user cases, like kexec, because it removes the ability for the=
- kernel to deal with system issues at an early point=2E
->> >
->> >Does this dealing happen in the EFI stub, or later? Are you referring
->> >to ACPI fix-ups or something else?
->> >
->> >>
->> >> However, kexec needs it, and it's not going to go away=2E However, t=
-hat doesn't mean we should encourage this in cases which doesn't need it (n=
-o matter what the Grub maintainers tell you=2E)
->> >>
->> >> Now, if you are using KVM without EFI you are probably doing BIOS bo=
-ot (regardless of if you know it or not), entering via the BIOS firmware st=
-ub=2E
->> >
->> >I am thinking of the 64-bit entry point to the kernel=2E everything
->> >being laid out in memory ready to go=2E
->> >
->> >>
->> >> I just realized you are the U-boot maintainer, so I'm assuming you a=
-re thinking of the case where there is no UEFI or BIOS firmware=2E In that =
-case, just like as for kexec, the current entry point will continue to work=
-, of course=2E
->> >>
->> >> What we don't want is having to suffer being on a BIOS or EFI system=
- but not being able to leverage it for the benefit of the kernel=2E The ker=
-nel image is much easier to upgrade=2E
->> >
->> >More generally I am thinking about a simple and clean API for the
->> >kernel that doesn't involve having to provide 30K lines of firmware
->> >code just to boot=2E The BIOS entry point (if that is what it is calle=
-d)
->> >is quite close to this ideal, even though I know it has shortcomings=
-=2E
->> >
->> >Regards,
->> >Simon
->>
->> Yes, I understand=2E
->>
->> The 32/64-bit entrypoints aren't going away; it would be impossible to =
-do so=2E
->>
->
->OK, so 'depend on EXPORT' seems good to me=2E
->
->> The general rule is: do things as late in the boot process as possible,=
- but no later=2E
->>
->
->Just on this point, I wonder how we should define 'late', in the
->context of EFI=2E For example, if the kernel stub reads a file, meaning
->it calls back into Tianocore, it is using both early and late code=2E
->
->Regards,
->Simon
+On Thu, Jan 29, 2026, Rick P Edgecombe wrote:
+> On Wed, 2026-01-28 at 17:14 -0800, Sean Christopherson wrote:
+> > Pass a pointer to iter->old_spte, not simply its value, when setting an
+> > external SPTE in __tdp_mmu_set_spte_atomic(), so that the iterator's va=
+lue
+> > will be updated if the cmpxchg64 to freeze the mirror SPTE fails.
+> >=20
+>=20
+> Might be being dense here, but is the bug that if cmpxchg64 *succeeds* an=
+d
+> set_external_spte() fails? Then old_spte is not updated and the local ret=
+ry will
+> expect the wrong old_spte.
 
-"Early" in this context is before ExitBootServices()=2E
+No, the bug is if the cmpxchg64 fails.  On failure, the current mismatching=
+ value
+is stored in the "old" param.  KVM relies on the iter->old_spte holding the
+current value when restarting an operation without re-reading the SPTE from=
+ memory.
+
+E.g. in __tdp_mmu_zap_root(), if tdp_mmu_set_spte_atomic() fails, iter->old=
+_spte
+*must* hold the current in-memroy value, otherwise the loop will hang becau=
+se it
+will re-attempt cmpxchg64 using the stale iter->old_spte.
+
+static void __tdp_mmu_zap_root(struct kvm *kvm, struct kvm_mmu_page *root,
+			       bool shared, int zap_level)
+{
+	struct tdp_iter iter;
+
+	for_each_tdp_pte_min_level_all(iter, root, zap_level) {
+retry:
+		if (tdp_mmu_iter_cond_resched(kvm, &iter, false, shared))
+			continue;
+
+		if (!is_shadow_present_pte(iter.old_spte))
+			continue;
+
+		if (iter.level > zap_level)
+			continue;
+
+		if (!shared)
+			tdp_mmu_iter_set_spte(kvm, &iter, SHADOW_NONPRESENT_VALUE);
+		else if (tdp_mmu_set_spte_atomic(kvm, &iter, SHADOW_NONPRESENT_VALUE))
+			goto retry;
+	}
+}
+
+> > =C2=A0 The bug
+> > is currently benign as TDX is mutualy exclusive with all paths that do
+> > "local" retry", e.g. clear_dirty_gfn_range() and wrprot_gfn_range().
+>=20
+>=20
