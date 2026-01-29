@@ -1,207 +1,179 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD623806CC;
-	Thu, 29 Jan 2026 10:12:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769681554; cv=none; b=nTKGW3+Z3croGGvMhedJzUs3gVMKoJaSfeFDRN/FAY59gsZTYdk6h92esQTk1cfGrXO0MIlGPUC99iSA4P0Wv2ivarjPG/yN3EWvH+K5cbazQtmfWzR0w+axvsWeNs0meYzQvINKC9+Ch2UwOiNArsPEdpCmTZuNJhcd17228eQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769681554; c=relaxed/simple;
-	bh=zkCo6wgSKwdCDWlS3BVqBUXV673+ivkigLq2q+D3N0M=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=P6aeOQc+uBsbelgaQgl/n+0HBt6pZIeRTFEyBvpB5pwn3/hcdsiZk3q8Ym4osLcQ99+1krFH1AVsFjKt+RKLqcwi1XVlXvzvRJm+ZNwT8TGsP4J6z6jd9Ep9R7mNT3GhuUSe0LXaW0SY5A3kH19irUOVvQacPgruUP0/0lg5YKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=ry8VXefi; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="ry8VXefi"
-Received: from 8bytes.org (p4ffe051a.dip0.t-ipconnect.de [79.254.5.26])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 0E6DC1C09F5;
-	Thu, 29 Jan 2026 11:12:31 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1769681551;
-	bh=zkCo6wgSKwdCDWlS3BVqBUXV673+ivkigLq2q+D3N0M=;
-	h=Date:From:To:Subject:From;
-	b=ry8VXefiMHz2LXiMaZOr2skZC4YMC4oVXFw9PZxr/KB8ZOvzt9gQKvLHf9V0L5I9b
-	 NV9MatDKD4gKyXqPD56euhymqNDeuqg2LcGgxTXQoIqkfCw9+Aip9T01LWkSn0X+3B
-	 51/EV0JKS23UCIFPkAxqnOwHkRfLfE5vVqJ9OpTjtM1geRnJIFk+g0IsXJga7XRWA2
-	 IFmZSrURF+xHdqPR9PeAqAu+TCLhKAttSD6SJ0CNm5SfuAd76G/41/V09tnXb9Nzpu
-	 uBvj0MQFomBfWL2zN4z7xxP5MUnBLKRaBDEPXdHG6NM6G3Z+rdbXpRsGyLfKOFgTQP
-	 BsWjes048UgSA==
-Date: Thu, 29 Jan 2026 11:12:29 +0100
-From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
-Subject: COCONUT-SVSM Development Release v2026.01-devel
-Message-ID: <hydnyq6jvecrxarddrrfnvhydjk2tm4f25i3zoyuwd7kyffu7i@my454wlxhkb4>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F079F381704;
+	Thu, 29 Jan 2026 10:35:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769682929; cv=none; b=swBs+yuzyJmCmTdKBHwDCTZ1bNgPo4vHzViO8FR9rzzSKd76yyrvC6PO3BwCWWcwXG62frf0F8PoQNronaG43J+nOHNsWheNP4WNfSdDsoKPsKZGXQbWBnOII/y/jQDrk2j4tE2WYnMSBsTe+zdb7B6mUO4wEs0bujOg+xTT62M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769682929; c=relaxed/simple;
+	bh=B7t+HX7cNhdeA2zHoB8ThQ6BCCEjOkvXW+5RQmoXcqY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jiNKPuNAjVxLxmSwmHN2KvYYmb67rtixVRXw9rHvYfwFeRqInl34dxYaULGB7OyJ6Vzg4GFnvepOpqr8N3rpvp27kPoAD25qnr2yn1rS6eF/dhaZMKSjYGC7sIVI7lYfn+NaDlNQnX19n3R3VWAlQsOs1nLZQBFDL9bIyLHrJI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eGm+Pe5L; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eGm+Pe5L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F97C16AAE;
+	Thu, 29 Jan 2026 10:35:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769682928;
+	bh=B7t+HX7cNhdeA2zHoB8ThQ6BCCEjOkvXW+5RQmoXcqY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eGm+Pe5LVrS1PH26EJ06OJbvCkYSjmCQAQZi9v2MpV1ld6e2sLKst4M+MqyMvgIYS
+	 qFURRvzfYva0IqejrqLqhVJTphOz4DaiFLYx2fy72WrvQ2ZjTG8ZgsWMWM7d5TMQVV
+	 I8rlMzuAZwxNvXEQ5bUa4GN8gnMz7cLiHiHPW3gtfFt8cmh0Ra38xu8+wkAz+ygmgE
+	 kBkNV5yh7ldmTIORTrOEQewRueaVs602d0Kk0ckQTJWci7nUoMkANoZkGvPgZSZ1BY
+	 TCq+5o4DDG5mviyrWmTa7Qw34U2Dh9IRoznrCiW0pLY39o01poMq7PpSzH2jfAvcWm
+	 wY0H2bRr49elw==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 4B707F40075;
+	Thu, 29 Jan 2026 05:35:27 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Thu, 29 Jan 2026 05:35:27 -0500
+X-ME-Sender: <xms:7zd7aWQJIlX8xOpb0kie4rT16Qk1y3GzYJWoOJaYFH279eSUu-yz2w>
+    <xme:7zd7acjgkHUISUSxBOAYvg0ACK-12IlSUtj5HajaTpOj9PTe-YLEyRSwsTQItoRyo
+    e4OFTcM4M_87wkApNTragA0rp6a_I21i5qVR8Rks5J_B2IdngLHzBI>
+X-ME-Received: <xmr:7zd7acuUyA6shq1QXasNuesRZEluwD8lmK27JJ5o-ojX2trXs2zMiR40DGWtog>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduieehleejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepfedtpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehprhhsrghmphgrthesrghmugdrtghomhdprhgtphhtthhopehlihhnuhigqdhmmh
+    eskhhvrggtkhdrohhrghdprhgtphhtthhopehlihhnuhigqdgtohgtoheslhhishhtshdr
+    lhhinhhugidruggvvhdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtph
+    htthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhopehmihhngh
+    hosehrvgguhhgrthdrtghomhdprhgtphhtthhopegsphesrghlihgvnhekrdguvgdprhgt
+    phhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgtohhm
+X-ME-Proxy: <xmx:7zd7aZ5S2PtK8kE94JZRSTnBS8HuW9UF_Qt30LmF8-RuV0Vw5LhZfg>
+    <xmx:7zd7aepjz50WxJBcHBoKzoi-w8Hrs4p9jcbqVkSnGBYYX5RRcNi6MA>
+    <xmx:7zd7aVc23eMBzgziJueSlmU9gfPoeexdkR8_7cHNmUckjb512LujWw>
+    <xmx:7zd7aaIHC1DIYHwFrhQrOFkcu9-raY4Qqo0-_nV7V_heWN1NR1sUzw>
+    <xmx:7zd7aXcBWU0tMq_Su0hEacRzXc6HpK27MXmIWeJSsHwsR9oWHj2EeWa_>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 29 Jan 2026 05:35:25 -0500 (EST)
+Date: Thu, 29 Jan 2026 10:35:20 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "Pratik R. Sampat" <prsampat@amd.com>
+Cc: linux-mm@kvack.org, linux-coco@lists.linux.dev, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, ardb@kernel.org, akpm@linux-foundation.org, david@kernel.org, 
+	osalvador@suse.de, thomas.lendacky@amd.com, michael.roth@amd.com
+Subject: Re: [PATCH v3 1/2] mm/memory_hotplug: Add support to accept memory
+ during hot-add
+Message-ID: <aXs09b7Q8wmHMFNQ@thinkstation>
+References: <20260128204105.508855-1-prsampat@amd.com>
+ <20260128204105.508855-2-prsampat@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260128204105.508855-2-prsampat@amd.com>
 
-Hi,
+On Wed, Jan 28, 2026 at 02:41:04PM -0600, Pratik R. Sampat wrote:
+> Confidential computing guests require memory to be accepted before use.
+> The unaccepted memory bitmap maintained by firmware does not track
+> most hotplugged memory ranges apart from system memory annotated to be
+> cold plugged at boot.
+> 
+> Explicitly validate and transition the newly added memory to a private
+> state, making it usable by the guest.
+> 
+> Signed-off-by: Pratik R. Sampat <prsampat@amd.com>
+> ---
+>  drivers/firmware/efi/unaccepted_memory.c | 18 ++++++++++++++++++
+>  include/linux/mm.h                       |  5 +++++
+>  mm/memory_hotplug.c                      |  2 ++
+>  3 files changed, 25 insertions(+)
+> 
+> diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
+> index c2c067eff634..5a4c8b0f56c8 100644
+> --- a/drivers/firmware/efi/unaccepted_memory.c
+> +++ b/drivers/firmware/efi/unaccepted_memory.c
+> @@ -209,6 +209,24 @@ bool range_contains_unaccepted_memory(phys_addr_t start, unsigned long size)
+>  	return ret;
+>  }
+>  
+> +/*
+> + * Unaccepted memory bitmap only covers initial boot memory and not the
+> + * hotpluggable range that is part of SRAT parsing. However, some initial memory
+> + * with the attribute EFI_MEMORY_HOT_PLUGGABLE can indicate boot time memory
+> + * that can be hot-removed. Hence, handle acceptance in accordance with the
+> + * unaccepted bitmap. Otherwise, perform the state change for the memory range
+> + * up-front.
+> + */
+> +void accept_hotplug_memory(phys_addr_t start, unsigned long size)
+> +{
+> +	if (range_contains_unaccepted_memory(start, size)) {
+> +		accept_memory(start, size);
+> +		return;
+> +	}
 
-The first development release of COCONUT-SVSM in 2026 it tagged and ready for
-wider testing and use. This release includes 96 non-merge commits which bring
-really nice improvements to the project.
+No. This is buggy. The memory has to be accepted regardless of state in
+the bitmap. If the memory is ever unplugged the bitmap state is not
+relevant.
 
-The highlights include:
+So, accept it unconditionally and mark the memory accepted in the
+bitmap.
 
-	- Move to the Rust 2024 edition. This includes updates to adapt the
-	  code-base to changes in Rust language semantics and quite a number of
-	  updates for cargo-fmt compliance.
+> +
+> +	arch_accept_memory(start, start + size);
+> +}
+> +
+>  #ifdef CONFIG_PROC_VMCORE
+>  static bool unaccepted_memory_vmcore_pfn_is_ram(struct vmcore_cb *cb,
+>  						unsigned long pfn)
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 15076261d0c2..2d3c1ea40606 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -4504,6 +4504,7 @@ int set_anon_vma_name(unsigned long addr, unsigned long size,
+>  
+>  bool range_contains_unaccepted_memory(phys_addr_t start, unsigned long size);
+>  void accept_memory(phys_addr_t start, unsigned long size);
+> +void accept_hotplug_memory(phys_addr_t start, unsigned long size);
+>  
+>  #else
+>  
+> @@ -4517,6 +4518,10 @@ static inline void accept_memory(phys_addr_t start, unsigned long size)
+>  {
+>  }
+>  
+> +static inline void accept_hotplug_memory(phys_addr_t start, unsigned long size)
+> +{
+> +}
+> +
+>  #endif
+>  
+>  static inline bool pfn_is_unaccepted_memory(unsigned long pfn)
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index a63ec679d861..549ccfd190ee 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -1567,6 +1567,8 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+>  	if (!strcmp(res->name, "System RAM"))
+>  		firmware_map_add_hotplug(start, start + size, "System RAM");
+>  
+> +	accept_hotplug_memory(start, size);
+> +
+>  	/* device_online() will take the lock when calling online_pages() */
+>  	mem_hotplug_done();
+>  
+> -- 
+> 2.52.0
+> 
 
-	- Symbolized stack traces for easier debugging. When COCONUT-SVSM
-	  prints a kernel stack trace it will now include the symbols in debug
-	  builds.
-
-	- Boot flow improvements. The stage2 loader can now allocate directly
-	  from the kernel heap and build the initial page-tables for
-	  COCONUT-SVSM. Once the kernel boots it does not need to re-build its
-	  page-tables.
-
-	- A critical bug has been fixed which caused boot failures using
-	  upstream EDK2 firmware.
-
-Besides these highlights there have been numerous other changes to improve the
-code-base and fix smaller issues. A big THANKS again to the COCONUT-SVSM
-community for all the efforts and contributions. The attached shortlog has all
-the details.
-
-Quite a few members of our community will attend FOSDEM in Brussels this
-weekend. If you are interested come by and say Hi, we will coordinate us in our
-project Matrix chat:
-
-	https://matrix.to/#/#coconut-svsm:matrix.org
-
-I will hang out mostly in the Virtualization, Confidential Computing, and
-Kernel Devrooms. Hope to see many of you there.
-
-Regards,
-
-	Joerg
-
-Shortlog:
-
-Carlos López (52):
-      xbuild: add shorthand method to get component features
-      xbuild/features: simply return feature list to caller
-      xbuild: use features in make-based build
-      mm/alloc: constify allocate_slab_page()
-      mm/alloc: check slab size at compile time
-      mm/alloc: convert slab const generics to usize
-      address: implement NonNull to VirtAddr conversion
-      mm/alloc: type slab allocations as NonNull
-      mm/alloc: type SlabPage::next_page as NonNull
-      mm/alloc: ensure that SlabPage data pages are freed once
-      mm/alloc: introduce SlabCommon::allocate_page_slot()
-      mm/alloc: consolidate SlabPage initialization/destruction
-      mm/guestmem: implement NonNull to GuestPtr conversion
-      cpu/percpu: represent CAA as NonNull instead of VirtAddr
-      Makefile: build test kernels via xbuild
-      github/workflows: call xbuild on JSON recipes only
-      repo: move verification crates into verification/
-      platform: mark all page validation operations as unsafe
-      debug/stacktrace: cleanup argument usage
-      debug/stacktrace: do not allocate when printing a stacktrace
-      sev/secrets_page: remove SecretsPageRef
-      virtio-drivers: remove unused Cargo.toml file
-      cpuarch: update to Rust 2024 edition (no changes)
-      libtcgtpm: update to Rust 2024 edition (no changes)
-      release: update to Rust 2024 edition (no changes)
-      stage1: update to Rust 2024 edition (no changes)
-      test: update to Rust 2024 edition (no changes)
-      bootlib: update to Rust 2024 edition (format changes)
-      elf: update to Rust 2024 edition (format changes)
-      fuzz: update to Rust 2024 edition (format changes)
-      libaproxy: update to Rust 2024 edition (format changes)
-      syscall: update to Rust 2024 edition (format changes)
-      tools/aproxy: update to Rust 2024 edition (format changes)
-      tools/igvmmeasure: update to Rust 2024 edition (format changes)
-      verification: update to Rust 2024 edition (format changes)
-      virtio-drivers: update to Rust 2024 edition (format changes)
-      xbuild: update to Rust 2024 edition (format changes)
-      user: update to Rust 2024 edition (misc. changes)
-      tools/igvmbuilder: update to Rust 2024 edition (several changes)
-      kernel: update to Rust 2024 edition (several changes)
-      repo: use single workspace edition
-      scripts/pre-commit: pick up Rust edition from rustfmt.toml
-      elf/file: introduce ElfFile::read_verified_phdr()
-      elf/file: introduce ElfFile::read_verified_shdr()
-      build: keep ELF symbol information in debug builds
-      elf/file: parse .symtab section
-      elf/file: parse .strtab section
-      bootlib: add kernel symbol definitions
-      stage2: decouple ELF reading and loading
-      stage2: parse ELF symbol information
-      SVSM: introduce symbol resolution infrastructure
-      debug/stacktrace: resolve symbol addresses
-
-Jon Lange (17):
-      igvmmeasure: remove SEV features check
-      sev: require the debug register virtualization feature
-      vc: remove DR7 ghcb test
-      stage2: allocate kernel launch info from kernel heap
-      svsm: eliminate static `LAUNCH_INFO`
-      kernel: remove valid page bitmap from stage2
-      stage2: remove heap alignment requirement
-      kernel: allocate initial kernel stack from kernel heap
-      kernel: free BSP init stack when it is no longer needed
-      kernel: alllocate CPUID page from kernel heap
-      kernel: alllocate secrets page from kernel heap
-      cpu/idt: don't panic on unhandled user-mode exceptions
-      cpu/idt: remove unused handlers
-      vpu/vc: panic on a page not validated #VC
-      tools/igvmbuilder: fix highest VTL for native builds
-      tdp: start APs without going through stage2
-      virtio: suppress virtio detection when no fw_cfg is present
-
-Nicola Ramacciotti (7):
-      kernel/mm/alloc: Remove unnecessary any()
-      kernel/mm/alloc: Remove dead code allowance
-      kernel,stage1: Remove the explicit rust-version number
-      kernel: Apply clippy suggestion
-      repo: Update rust version to 1.87.0
-      kernel/mm/address_space: Fix conditional compilation in test module
-      kernel/lib: Use compact cfg_attr syntax for test inside svsm
-
-Luigi Leonardi (5):
-      virtio: put block code behind the new `block` feature
-      verification: add missing SPDX header
-      virtio: introduce MMIOSlots structure
-      block: introduce BLOCK_DEVICE variable
-      virtio: integrate MmioSlot infrastructure with block device subsystem
-
-Peter Fang (5):
-      kernel/igvm_params: Allow unaligned guest memory map
-      igvmbuilder/ovmf: Use (start, size) for regions instead of (start, end)
-      igvmbuilder/ovmf: Sanity check pre-validated regions
-      igvmbuilder: Sanity check firmware regions
-      kernel/config: Remove check_ovmf_regions()
-
-Joerg Roedel (3):
-      kernel: Fix nightly warnings
-      kernel/vc: Fix nightly warnings
-      COCONUT-SVSM Release 2026.01-devel
-
-Stefano Garzarella (2):
-      kernel: fix unused `slots` variable
-      virtio/mmio: move fw_cfg check into probe_mmio_slots()
-
-Vaishali Thakkar (2):
-      sev/utils: Use iterator combinators for pvalidate and RMP revoke paths
-      sev/utils: Improve error handling for pvalidate callers
-
-Ziqiao Zhou (2):
-      Upgrade verus lib to 2025-12-07-0054
-      verify_external: Remove spec for From, Into, and Integer in verify_external
-
-Geoffrey Ndu (1):
-      kernel/protocol/attest: Add extended attestation support
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
