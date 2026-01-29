@@ -1,185 +1,234 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C428C342526
-	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 01:16:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E58B13959D
+	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 01:19:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769649415; cv=none; b=a6lrJik0udVdFoG8/3h7RxgIYg7Bwlyx7v59bGl8aftuhXKLsrvkM/cFGWTOju5cQd1psAGSlXP+rrA0trvrBNvIoc+gmCS6ZwuFEvt62LcMblsDyDiHu2O98mDKtk7iuZNEA8fFLI7UMwQ+x5gwZcisEwKDWucMHi+uaTE8q/g=
+	t=1769649579; cv=none; b=shj/kuo1nkbEmcH2TP2f6k0AmA9RnEL6JCh38JCNvP5kIuwc5PaCYB2viGwtgEUqmphp2cD+VEWxOu0CSQpvruFrUgDEFP2QU/QCRnhF+QtCaZ1sGOfOa6pEdOy3//Q4CevkqZn399UVvsLrkhrbpqX9SwblB3BPW/pTsQcfTkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769649415; c=relaxed/simple;
-	bh=JnLQOFtJ/wcAZWGRwiicTI8EBue9TzM7THLWcXx2/5w=;
+	s=arc-20240116; t=1769649579; c=relaxed/simple;
+	bh=N+QyvnWxDVedfV60nIPXz2BLfDkafQEWajomelBvAfc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Uj/z5o4Hu4OLBWHlUK3NhKVd1Mnh8erO4AvnSbcf2ir8iPJao2Q5mtyjrkImc045TFDlZf+cjszfhgV1IYM1iCLsAXHAaQohKOiP45JA+3RO5jw1ZYOwJDJrGd2+GaenDt3WxqhHnsAfwOQKn8GHQ5RvudcAXquMicsU9Zsscsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lbMkD3L2; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=MEsuELKgwFUxM/QgjGlYLJ311fgLzPG36tZ/yfIZa+9s/GAZsX1wKQXbxMRPKobwXK+qFJQnzkkVn4+Zn0LbZ73QT8xN+aohW/r31pAODJND3p44yHO0hjLZP5yPu62ixsCuYClvZCIMuRiDH/IqCl/jki2xZ1tLpA7caSJHQVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ske/9JwZ; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lbMkD3L2"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b6097ca315bso921433a12.3
-        for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 17:16:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ske/9JwZ"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2a863be8508so4652325ad.2
+        for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 17:19:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769649412; x=1770254212; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1769649577; x=1770254377; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=MGU/mVdsXAmMeHXzQ8R+PnC312tm74tZ14i8PtfNv9E=;
-        b=lbMkD3L26lKB9DVjTBAd4Zdd7taSJVBubZDuR8ufQ3vIWrV/OrpH7/f6DYhJKoa4SP
-         V3htWQ4M/fGn316+0vGNC36d17PnnJXd+T1CC0Nv+rGHG3Y8zNf7ti89xJqoy/5mthWf
-         G/UG1frWx9CdYqXI6bBg5JCLFqimYs9J0/++0dv/az/AUW3+E9P+E1COqYVTvsGf97XB
-         v0NleVOjE9xTHldGyweuVCBwgKtszipcLxrkcZE6A6aLG+10mDMMa3cEmHQmuLaDyIkP
-         TapNQFF2YKZ381YrHMYmG65kWuDQU6ZNoaclGH81Y9l9b1D4TqODveYkov/hrDndDAxZ
-         Of9A==
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KUWpkf61OLZzwLN40a0cMfTvRxuTXwySwnIOe/Ktyd4=;
+        b=Ske/9JwZnr10E48OlxNMl83OFmFbc9KZyOEI6ylkJPJN4d0epLTuDOkIYnNc5KcRkr
+         YMZrjCXbS9cFHTaik0AfAt07nvJPTHl5bHgjhzyE5W5UiHE/EGvj0AC7tIQrV5u0azID
+         +cfx6wP7DMTQNhONdlMhV/5GAg1UTFTGhKA2dgL02yndgHD4aGQ9x27UQWxmUKkMe344
+         PSmBNPF/SOuY7fNaZXkyuo76Cvlxk/VCHnVr2cRIDpdD58e2A4vDB/YLfxEn0dhUbIGO
+         ky1KrFFAqIZxHs/GvYrNZqhEA71iDBCNI8PVMYNNQ35n4Nn4Pen3ciBsiK43mxEYmXd1
+         JN7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769649412; x=1770254212;
+        d=1e100.net; s=20230601; t=1769649578; x=1770254378;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MGU/mVdsXAmMeHXzQ8R+PnC312tm74tZ14i8PtfNv9E=;
-        b=sEPfztaLz9+mYiQsuCM7JkAVNO6ROAO96tVDEZWCAVDzNPoNjTQusevwGdRQIo5eMd
-         Ek3r0jInnbP886HVr+/IUYqJg+hQWpgd3f+obs1fjAwMz/eLCpsTKqppKruka5H/Hpp2
-         5Y6wCuGTNXB5lkW7G2txIvauFPbdvvAtx16+3Dsgh26HYQZPPKS4zGpsLZL63IZZFUC4
-         w4+GTPr6hmMteuqSecvlxtPBozY45ssNYVDeArtGlmaaDuoWAJ0snXMOm+sdv0QcFVO5
-         6Ao4kbJ2xT6E01NzdZ1oISgqO3bqIU8CzOgPMSa0KoZ2MYqTkAPHEK1S4G2FhyJux42b
-         10jw==
-X-Forwarded-Encrypted: i=1; AJvYcCX0MCCAxbGqkWSP7F5N+45xemiYuN3uSQpciODssdpguyE0oxPcMoyJRqMI0/WLm/Pk6X9T3PEd8UV5@lists.linux.dev
-X-Gm-Message-State: AOJu0YyPLOR6Uep6JBwVZQWDQQ8f1hM7Ai4y5d7DF2znuEfGKpZUuh1W
-	4Fj/k7rJMyZp7SYRq7QaIpiatXDd1/oYsEADiZdUjPHnpJJ5IkmBuxUymr+G0MzKX7qK9lODJ/D
-	WER5ApQ==
-X-Received: from pjbkb4.prod.google.com ([2002:a17:90a:e7c4:b0:352:c130:fba7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:258e:b0:35d:d477:a7fa
- with SMTP id adf61e73a8af0-38ec63390f2mr6964703637.23.1769649411949; Wed, 28
- Jan 2026 17:16:51 -0800 (PST)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 28 Jan 2026 17:15:17 -0800
-In-Reply-To: <20260129011517.3545883-1-seanjc@google.com>
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KUWpkf61OLZzwLN40a0cMfTvRxuTXwySwnIOe/Ktyd4=;
+        b=RQcTvDWOW5vfabo47uTIlARZ7RtYhUju4sbNCpLpmYQ1rLz2KhU3zzjwAah5RhA2CR
+         J/01UhFpO8Rx0DFJDDBd+Sm19DWEIywuPFc4G/L4JVRpqaATJqORqNatW9gl7P0PzcUr
+         OZOBwvB4s7bgtDwkbJRWwzc2ci6RIEzkZaVfjhI00HbwarMi0Ln9YZOP889pR3G4Qmhm
+         SrZEzN8OWo10uj+j4MecUtwa1ITLidGXRqyDXXgFV6FDWOAmZthhDzamON4TRfGjoWug
+         DZjANKbRwY35vFOvMuiF+7EwQjCAst6KNYdwtZAEUNXRPCqCOciH9b5E4ShfqOeNS5S4
+         A+Ug==
+X-Forwarded-Encrypted: i=1; AJvYcCWkFwc+7AutyZbudosdRwUGf/NNUdBGsZPyA10UlqEZphseH7+oVBsP4q8ZXp1OmilZAiAxsM1XPkSw@lists.linux.dev
+X-Gm-Message-State: AOJu0YyeJjXW+U0Yq2KxzwHGxCfvp23Ay3iN80I9/qCZTf1QJHXRp4Kf
+	jSo9SItnAVwIsITysyRqjYUonqYVghY7UqnMP6yMYiiY6xLM4PL/YTPA5ZN509Xms41n61KsTpQ
+	xRx1RTA==
+X-Received: from pjboj17.prod.google.com ([2002:a17:90b:4d91:b0:34c:2f52:23aa])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3286:b0:347:6c59:c728
+ with SMTP id adf61e73a8af0-38ec624806dmr6538143637.8.1769649577604; Wed, 28
+ Jan 2026 17:19:37 -0800 (PST)
+Date: Wed, 28 Jan 2026 17:19:36 -0800
+In-Reply-To: <67d55b24ef1a80af615c3672e8436e0ac32e8efa.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260129011517.3545883-1-seanjc@google.com>
-X-Mailer: git-send-email 2.53.0.rc1.217.geba53bf80e-goog
-Message-ID: <20260129011517.3545883-46-seanjc@google.com>
-Subject: [RFC PATCH v5 45/45] KVM: TDX: Turn on PG_LEVEL_2M
+References: <20251121005125.417831-1-rick.p.edgecombe@intel.com>
+ <20251121005125.417831-8-rick.p.edgecombe@intel.com> <12144256-b71a-4331-8309-2e805dc120d1@linux.intel.com>
+ <67d55b24ef1a80af615c3672e8436e0ac32e8efa.camel@intel.com>
+Message-ID: <aXq1qPYTR8vpJfc9@google.com>
+Subject: Re: [PATCH v4 07/16] x86/virt/tdx: Add tdx_alloc/free_page() helpers
 From: Sean Christopherson <seanjc@google.com>
-To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, Kai Huang <kai.huang@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Yan Zhao <yan.y.zhao@intel.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Sagi Shahar <sagis@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Kai Huang <kai.huang@intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Dave Hansen <dave.hansen@intel.com>, 
+	Yan Y Zhao <yan.y.zhao@intel.com>, Binbin Wu <binbin.wu@intel.com>, 
+	"kas@kernel.org" <kas@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
+	Vishal Annapurve <vannapurve@google.com>, Chao Gao <chao.gao@intel.com>, 
+	"bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-From: Yan Zhao <yan.y.zhao@intel.com>
+Gah, forgot to hit "send" on this.
 
-Turn on PG_LEVEL_2M in tdx_gmem_private_max_mapping_level() when TDX huge
-page is enabled and TD is RUNNABLE.
+On Wed, Nov 26, 2025, Rick P Edgecombe wrote:
+> On Tue, 2025-11-25 at 16:09 +0800, Binbin Wu wrote:
+> > On 11/21/2025 8:51 AM, Rick Edgecombe wrote:
+> > > +/*
+> > > + * The TDX spec treats the registers like an array, as they are ordered
+> > > + * in the struct. The array size is limited by the number or registers,
+> > > + * so define the max size it could be for worst case allocations and sanity
+> > > + * checking.
+> > > + */
+> > > +#define MAX_TDX_ARG_SIZE(reg) (sizeof(struct tdx_module_args) - \
+> > > +			       offsetof(struct tdx_module_args, reg))
+> > 
+> > This should be the maximum number of registers could be used to pass the
+> > addresses of the pages (or other information), it needs to be divided by sizeof(u64).
+> 
+> Oops, right.
+> 
+> > 
+> > Also, "SIZE" in the name could be confusing.
+> 
+> Yes LENGTH is probably better.
+> 
+> > 
+> > > +#define TDX_ARG_INDEX(reg) (offsetof(struct tdx_module_args, reg) / \
+> > > +			    sizeof(u64))
 
-Introduce a module parameter named "tdx_huge_page" for kvm-intel.ko to
-enable/disable TDX huge page. Turn TDX huge page off if the TDX module does
-not support TDX_FEATURES0.ENHANCED_DEMOTE_INTERRUPTIBILITY.
+Honestly, the entire scheme is a mess.  Four days of staring at this and I finally
+undertand what the code is doing.  The whole "struct tdx_module_array_args" union
+is completely unnecessary, the resulting args.args crud is ugly, having a pile of
+duplicate accessors is brittle, the code obfuscates a simple concept, and the end
+result doesn't provide any actual protection since the kernel will happily overflow
+the buffer after the WARN.
 
-Force page size to 4KB during TD build time to simplify code design, since
-- tdh_mem_page_add() only adds private pages at 4KB.
-- The amount of initial memory pages is usually limited (e.g. ~4MB in a
-  typical linux TD).
+It's also relying on the developer to correctly copy+paste the same register in
+multiple locations: ~5 depending on how you want to count.
 
-Update the warnings and KVM_BUG_ON() info to match the conditions when 2MB
-mappings are permitted.
+  static u64 *dpamt_args_array_ptr_r12(struct tdx_module_array_args *args)
+                                   #1
+  {
+	WARN_ON_ONCE(tdx_dpamt_entry_pages() > MAX_TDX_ARGS(r12));
+                                                            #2
 
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/vmx/tdx.c | 37 ++++++++++++++++++++++++++++++-------
- 1 file changed, 30 insertions(+), 7 deletions(-)
+	return &args->args_array[TDX_ARG_INDEX(r12)];
+                                               #3
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 774d395e5c73..8f9b4ad9871f 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -55,6 +55,8 @@
- 
- bool enable_tdx __ro_after_init;
- module_param_named(tdx, enable_tdx, bool, 0444);
-+static bool __read_mostly enable_tdx_huge_page = true;
-+module_param_named(tdx_huge_page, enable_tdx_huge_page, bool, 0444);
- 
- #define TDX_SHARED_BIT_PWL_5 gpa_to_gfn(BIT_ULL(51))
- #define TDX_SHARED_BIT_PWL_4 gpa_to_gfn(BIT_ULL(47))
-@@ -1703,8 +1705,9 @@ static int tdx_sept_map_leaf_spte(struct kvm *kvm, gfn_t gfn, u64 new_spte,
- 	kvm_pfn_t pfn = spte_to_pfn(new_spte);
- 	int ret;
- 
--	/* TODO: handle large pages. */
--	if (KVM_BUG_ON(level != PG_LEVEL_4K, kvm))
-+	/* TODO: Support hugepages when building the initial TD image. */
-+	if (KVM_BUG_ON(level != PG_LEVEL_4K &&
-+		       to_kvm_tdx(kvm)->state != TD_STATE_RUNNABLE, kvm))
- 		return -EIO;
- 
- 	if (KVM_BUG_ON(!vcpu, kvm))
-@@ -1885,10 +1888,6 @@ static int tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
- 	if (KVM_BUG_ON(!is_hkid_assigned(to_kvm_tdx(kvm)), kvm))
- 		return -EIO;
- 
--	/* TODO: handle large pages. */
--	if (KVM_BUG_ON(level != PG_LEVEL_4K, kvm))
--		return -EIO;
--
- 	err = tdh_do_no_vcpus(tdh_mem_range_block, kvm, &kvm_tdx->td, gpa,
- 			      level, &entry, &level_state);
- 	if (TDX_BUG_ON_2(err, TDH_MEM_RANGE_BLOCK, entry, level_state, kvm))
-@@ -3474,12 +3473,34 @@ int tdx_vcpu_ioctl(struct kvm_vcpu *vcpu, void __user *argp)
- 	return ret;
- }
- 
-+/*
-+ * For private pages:
-+ *
-+ * Force KVM to map at 4KB level when !enable_tdx_huge_page (e.g., due to
-+ * incompatible TDX module) or before TD state is RUNNABLE.
-+ *
-+ * Always allow KVM to map at 2MB level in other cases, though KVM may still map
-+ * the page at 4KB (i.e., passing in PG_LEVEL_4K to AUG) due to
-+ * (1) the backend folio is 4KB,
-+ * (2) disallow_lpage restrictions:
-+ *     - mixed private/shared pages in the 2MB range
-+ *     - level misalignment due to slot base_gfn, slot size, and ugfn
-+ *     - guest_inhibit bit set due to guest's 4KB accept level
-+ * (3) page merging is disallowed (e.g., when part of a 2MB range has been
-+ *     mapped at 4KB level during TD build time).
-+ */
- int tdx_gmem_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn, bool is_private)
- {
- 	if (!is_private)
- 		return 0;
- 
--	return PG_LEVEL_4K;
-+	if (!enable_tdx_huge_page)
-+		return PG_LEVEL_4K;
-+
-+	if (unlikely(to_kvm_tdx(kvm)->state != TD_STATE_RUNNABLE))
-+		return PG_LEVEL_4K;
-+
-+	return PG_LEVEL_2M;
- }
- 
- static int tdx_online_cpu(unsigned int cpu)
-@@ -3665,6 +3686,8 @@ static int __init __tdx_bringup(void)
- 	if (misc_cg_set_capacity(MISC_CG_RES_TDX, tdx_get_nr_guest_keyids()))
- 		goto get_sysinfo_err;
- 
-+	if (enable_tdx_huge_page && !tdx_supports_demote_nointerrupt(tdx_sysinfo))
-+		enable_tdx_huge_page = false;
- 	/*
- 	 * Leave hardware virtualization enabled after TDX is enabled
- 	 * successfully.  TDX CPU hotplug depends on this.
--- 
-2.53.0.rc1.217.geba53bf80e-goog
 
+	u64 guest_memory_pamt_page[MAX_TDX_ARGS(r12)];
+                                                #4
+
+
+	u64 *args_array = dpamt_args_array_ptr_r12(&args);
+                                                   #5
+
+After all of that boilerplate, the caller _still_ has to do the actual memcpy(),
+and for me at least, all of the above makes it _harder_ to understand what the code
+is doing.
+
+Drop the struct+union overlay and just provide a helper with wrappers to copy
+to/from a tdx_module_args structure.  It's far from bulletproof, but it at least
+avoids an immediate buffer overflow, and defers to the kernel owner with respect
+to handling uninitialized stack data.
+
+/*
+ * For SEAMCALLs that pass a bundle of pages, the TDX spec treats the registers
+ * like an array, as they are ordered in the struct.  The effective array size
+ * is (obviously) limited by the number or registers, relative to the starting
+ * register.  Fill the register array at a given starting register, with sanity
+ * checks to avoid overflowing the args structure.
+ */
+static void dpamt_copy_regs_array(struct tdx_module_args *args, void *reg,
+				  u64 *pamt_pa_array, bool copy_to_regs)
+{
+	int size = tdx_dpamt_entry_pages() * sizeof(*pamt_pa_array);
+
+	if (WARN_ON_ONCE(reg + size > (void *)args) + sizeof(*args))
+		return;
+
+	/* Copy PAMT page PA's to/from the struct per the TDX ABI. */
+	if (copy_to_regs)
+		memcpy(reg, pamt_pa_array, size);
+	else
+		memcpy(pamt_pa_array, reg, size);
+}
+
+#define dpamt_copy_from_regs(dst, args, reg)	\
+	dpamt_copy_regs_array(args, &(args)->reg, dst, false)
+
+#define dpamt_copy_to_regs(args, reg, src)	\
+	dpamt_copy_regs_array(args, &(args)->reg, src, true)
+
+As far as the on-stack allocations go, why bother being precise?  Except for
+paranoid setups which explicitly initialize the stack, "allocating" ~48 unused
+bytes is literally free.  Not to mention the cost relative to the latency of a
+SEAMCALL is in the noise.
+
+/*
+ * When declaring PAMT arrays on the stack, use the maximum theoretical number
+ * of entries that can be squeezed into a SEAMCALL, as stack allocations are
+ * practically free, i.e. any wasted space is a non-issue.
+ */
+#define MAX_NR_DPAMT_ARGS (sizeof(struct tdx_module_args) / sizeof(u64))
+
+
+With that, callers don't have to regurgitate the same register multiple times,
+and we don't need a new wrapper for every variation of SEAMCALL.  E.g.
+
+
+	u64 pamt_pa_array[MAX_NR_DPAMT_ARGS];
+
+	...
+
+	bool dpamt = tdx_supports_dynamic_pamt(&tdx_sysinfo) && level == PG_LEVEL_2M;
+	u64 pamt_pa_array[MAX_NR_DPAMT_ARGS];
+	struct tdx_module_args args = {
+		.rcx = gpa | pg_level_to_tdx_sept_level(level),
+		.rdx = tdx_tdr_pa(td),
+		.r8 = page_to_phys(new_sp),
+	};
+	u64 ret;
+
+	if (!tdx_supports_demote_nointerrupt(&tdx_sysinfo))
+		return TDX_SW_ERROR;
+
+	if (dpamt) {
+		if (alloc_pamt_array(pamt_pa_array, pamt_cache))
+			return TDX_SW_ERROR;
+
+		dpamt_copy_to_regs(&args, r12, pamt_pa_array);
+	}
+
+Which to me is easier to read and much more intuitive than:
+
+
+	u64 guest_memory_pamt_page[MAX_TDX_ARGS(r12)];
+	struct tdx_module_array_args args = {
+		.args.rcx = gpa | pg_level_to_tdx_sept_level(level),
+		.args.rdx = tdx_tdr_pa(td),
+		.args.r8 = PFN_PHYS(page_to_pfn(new_sp)),
+	};
+	struct tdx_module_array_args retry_args;
+	int i = 0;
+	u64 ret;
+
+	if (dpamt) {
+		u64 *args_array = dpamt_args_array_ptr_r12(&args);
+
+		if (alloc_pamt_array(guest_memory_pamt_page, pamt_cache))
+			return TDX_SW_ERROR;
+
+		/*
+		 * Copy PAMT page PAs of the guest memory into the struct per the
+		 * TDX ABI
+		 */
+		memcpy(args_array, guest_memory_pamt_page,
+		       tdx_dpamt_entry_pages() * sizeof(*args_array));
+	}
