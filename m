@@ -1,41 +1,68 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED392F4A05;
-	Thu, 29 Jan 2026 09:41:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769679671; cv=none; b=R1lftpaR2mPem2y13l2PHeXlBwdNQ4QN/eIJUZMW4Zp6S6/GHgUkV0DQ6Zk2wa38Zzenvt1zi6rQqxRCf5+U4K9KZH8YFH32qIP1vxsInAOV4mBq1/8cR7p7T9dYIlFyADWfHl8DWSp1m9nyXxXymtSj1Mr0PXnXH4j2V39NSZY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769679671; c=relaxed/simple;
-	bh=0Y3cj/HWhJLzWqu8VUyjnYKi2ChOk3uNA3mLQP+R9LE=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jJgshAl36fTotw9KwiX+cXMtUCPjJ1rcwqf0pCdhmUfYbaOfqvdCWHMn3O4EwsTj71Zz6NvCBpTmbzrxT/rOUbHRc/pfVF9s0T+Sd3N/XOBrZ7q4S7NxDj4B1czVty7PDtVxEiRu5Frxiwj+0ao39vU2Zr8FqqyiQobYUw738ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=3Q92Nx+V; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="3Q92Nx+V"
-Received: from 8bytes.org (p4ffe051a.dip0.t-ipconnect.de [79.254.5.26])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id B182F5E660;
-	Thu, 29 Jan 2026 10:41:01 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1769679661;
-	bh=0Y3cj/HWhJLzWqu8VUyjnYKi2ChOk3uNA3mLQP+R9LE=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=3Q92Nx+VGCqTRfhaYQwRrJkQK4pNCIhn9hlYUqB+iQK9idNafeqXsdj0XOn3GUEbj
-	 LfVDWQxm1dcep0Bpf4vE9TSI68itgJT5xiv3QQMsgjM9Cz+VA03+dByrr6EzHH90RM
-	 ZGU9ybOEpQv5zPaTS8pTbgqqvgh2FQeY5VM4Aja3GEJFQGwyaLIKa1s6kcAgcQ876m
-	 zR0JFFuj7SkYPEBztRQFFhZ/6AsSm3R0fV8dmcLsz7gytIBNlQXLDAC2zfbLBqdeyy
-	 XeezzMhRhhv9dWMHyd1x5XEeTkfqEHoBLS7wzGu7Z3zsqXGzvX2l/YRZB8Lny/4hT8
-	 vdY4u06nyH5Fw==
-Date: Thu, 29 Jan 2026 10:40:59 +0100
-From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
-Subject: Re: SVSM Development Call January 28, 2026
-Message-ID: <henxdjvkflk7ezcoyvayusypsviiiviavo6f4gc7f3jnu6tf7j@nc7sznqc4fdo>
-References: <ihxnjxdpnguz4ajm44jgkldpg4oddyd6drrtqloawbuyo5ee65@c5dvv3s2g5fi>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A339737475A
+	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 10:05:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769681102; cv=none; b=DtFeswGMFe1itt0l9tu88K+DLWQwf65x2eghxlHPFpQU6JJhrxvlxZ2IyZAVvPScCbYv+zNti/vz4noTbr1vO0i25kZPzz1oy7uqFJsoJnVkcu0KCCorzMsnr8kn3l40FsuyQsc6SzDxS9xU3/fH5tUrO+rqLH3a3r3b0/9z354=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769681102; c=relaxed/simple;
+	bh=pYCQVA/12d4uhxT7aRwlkFoYf2mKBsD++2vXc6f0iJA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CIr5vJo8bSbUATksddKvAD9SBASj1dBiDK1e8ZceJGi2qZ5bR/8P1tMjwS6ior3Ks/Hz40vFY4AWx3kk/gfRdVkXXbYwndAfqZ0t6oopHCe7tW6udYh4pwXEvpDrX125NDzRDVNAADaUdJv9w+Azye4wj8HDmqWLwKOjHDb/Ig4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mQfCqmwO; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mQfCqmwO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769681102; x=1801217102;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=pYCQVA/12d4uhxT7aRwlkFoYf2mKBsD++2vXc6f0iJA=;
+  b=mQfCqmwO5dts/Rpi+hG1jfWIvZCghXNk6/qPf2M+loHfe5SWuIXlyiap
+   fHJgcNsG6Lguksmb1zkocAXiD0ev016PuPnApyYvRIAS5QL5VSeRWCERV
+   tvFnuqnYg5NS+dFIZnlygixiupabzo24twyc3Sbor0IQJOwl+I/ewmKWh
+   JVaWp7+jZMGKt2M6zlI5nSGX2Lhc/vkQU+w0MyPbqp+wJOi3zoxekJP7R
+   Fou5AM4y0q1dBLsj4Oqs6Yag0Jwk5K+v9h31zk1E+IQ5nnkdDVBop0h53
+   9EoXtSSm28z+V/TersBrsbgIiViYbd9GV3oKzaSMtJRTfymwd81cm3ds4
+   Q==;
+X-CSE-ConnectionGUID: cgJIYx7aSuaYXINcpanUWw==
+X-CSE-MsgGUID: Uaj+54W5Ss6zKEg33DySHw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="82282575"
+X-IronPort-AV: E=Sophos;i="6.21,260,1763452800"; 
+   d="scan'208";a="82282575"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 02:05:01 -0800
+X-CSE-ConnectionGUID: A24kz5kLRGaKNMcs7f3zdg==
+X-CSE-MsgGUID: 5x7Dk9HqT/+JgUAG2DpWwA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,260,1763452800"; 
+   d="scan'208";a="208637324"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa007.jf.intel.com with ESMTP; 29 Jan 2026 02:04:54 -0800
+Date: Thu, 29 Jan 2026 17:46:40 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Chao Gao <chao.gao@intel.com>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org,
+	reinette.chatre@intel.com, ira.weiny@intel.com, kai.huang@intel.com,
+	dan.j.williams@intel.com, sagis@google.com, vannapurve@google.com,
+	paulmck@kernel.org, nik.borisov@suse.com, zhenzhong.duan@intel.com,
+	seanjc@google.com, rick.p.edgecombe@intel.com, kas@kernel.org,
+	dave.hansen@linux.intel.com, vishal.l.verma@intel.com,
+	Farrah Chen <farrah.chen@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH v3 06/26] x86/virt/tdx: Prepare to support P-SEAMLDR
+ SEAMCALLs
+Message-ID: <aXssgOZJteoaJUOz@yilunxu-OptiPlex-7050>
+References: <20260123145645.90444-1-chao.gao@intel.com>
+ <20260123145645.90444-7-chao.gao@intel.com>
+ <e2245231-ee39-40aa-bfdc-e43419fa30f4@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -44,10 +71,43 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ihxnjxdpnguz4ajm44jgkldpg4oddyd6drrtqloawbuyo5ee65@c5dvv3s2g5fi>
+In-Reply-To: <e2245231-ee39-40aa-bfdc-e43419fa30f4@intel.com>
 
-Meeting minutes are in this PR:
+> >  static __always_inline int sc_retry_prerr(sc_func_t func,
+> >  					  sc_err_func_t err_func,
+> >  					  u64 fn, struct tdx_module_args *args)
+> > @@ -96,4 +119,7 @@ static __always_inline int sc_retry_prerr(sc_func_t func,
+> >  #define seamcall_prerr_ret(__fn, __args)					\
+> >  	sc_retry_prerr(__seamcall_ret, seamcall_err_ret, (__fn), (__args))
+> >  
+> > +#define seamldr_prerr(__fn, __args)						\
+> > +	sc_retry_prerr(__seamcall, seamldr_err, (__fn), (__args))
+> > +
+> >  #endif
+> 
+> So, honestly, for me, it's a NAK for this whole patch.
+> 
+> Go change the P-SEAMLDR to use the same error code as the TDX module,
+> and fix the documentation. No kernel changes, please.
 
-	https://github.com/coconut-svsm/governance/pull/94
+I'm thinking of ways to avoid a new pseamldr version.
 
--Joerg
+Could we just ask for a unified error code space for both SEAMCALL &
+SEAMLDR CALL, eliminating overlaps. There is no overlap now, so this is
+just another documentation fix.
+
+Then with all the doc fixes, we only need minor code change:
+
+
+@@ -127,7 +127,8 @@ static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
+                preempt_disable();
+                ret = __seamcall_dirty_cache(func, fn, args);
+                preempt_enable();
+-       } while (ret == TDX_RND_NO_ENTROPY && --retry);
++       } while ((ret == TDX_RND_NO_ENTROPY ||
++                 ret == SEAMLDR_RND_NO_ENTROPY) && --retry);
+
+
+I think this is a balance. The existing error code philosophy for SEAM
+is as informative as possible, e.g. all kinds of xxx_INVALID,
+SEAMLDR_RND_NO_ENTROPY is not that evil among 200+ other error codes.
