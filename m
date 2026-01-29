@@ -1,56 +1,56 @@
 Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911713783A9
-	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 01:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D743783CE
+	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 01:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769649405; cv=none; b=irw8xS5TBpriyMoOLb+6FB/BMS5pFD/ENIDwzl8JY4KzAxwfxgTHzM6m8LQ9Pb+rA45GsRE5dyh6QXBZ9jKEq/gfPWmH/aSL4VUEA6C99klYgTI0MmTjtOzXqc5xPafiEzpkfYmxClba/xUSx7bCYXwIo4dTGdGF3ost3Gz7ykk=
+	t=1769649407; cv=none; b=GdeE69I5KmgLJmrOe+AiZMH5hsOuUWuXXGD0uaHIev1UFmJwMOtPJAzNMjZBLRscQ9TbMYhkfXj8pU/PjYRdbE/SumDzri3nCEHsXYRDHTtggVmPiJQDd95JsviF6nqWbzqugjiEuE3jE3S8MfVFJ4yRUH46WnVVurSNN1MsNv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769649405; c=relaxed/simple;
-	bh=MaC+fCO7g1By3J/qOTxfjL/79GFuNBOpVwOO27+9vUE=;
+	s=arc-20240116; t=1769649407; c=relaxed/simple;
+	bh=eGA1sGsrL5gQvVxX2B8XhLkR/dJNKRXiCDxyhvAgE7U=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=aCsIDCjq39uobUoMrhalHk/yZ+kMicr88vCR0XalMWecPnym24Q5xWn2LmMTYLtaD6uav1k/L1sKYiy7+15TvgRCXqJp9ip3Ii8/Wf6uS8fQJG3CurglkE9m2iyoUmSM1o5p+R9wQhqJv989fifqna/sqGER3jxlPmHf+zCsZxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ctsONBXU; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=Cfn82+G6zTIHTJBDvrldkpW9KIcjQkluowke13bQJj2nBQB4Qrjc5SznGtg+Q4pdCJQc52WDZhA1IqV+wriVqrOke8XTarJZfgMpkya0YSOKVa4QY4qk1Wf7MZI0MfJsk8u19ehRdzUp0U485CQTVIdga1Is+84jRKU0l8mzJTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V6bVr982; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ctsONBXU"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-353c9d644b0so266802a91.2
-        for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 17:16:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V6bVr982"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-34e5a9de94bso949911a91.0
+        for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 17:16:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769649403; x=1770254203; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1769649405; x=1770254205; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=cCcD265cxmmVZ0UcKWxh2iCOGhqGhkNB0SavdcofzbU=;
-        b=ctsONBXUi+IFbbyP9nmzCzmCrXmPvieD2niwyToHB+3jZFbT6v0prRAXptYbr5P1be
-         4ioX8AvkIA3hwQZCF8jcTBmgty2ZDEq8qZiH8F1O9QFcFxKXgmea1YKRZFpUfgzllpEJ
-         nEVb+fonNDz+BsiN/E226Z7zgdm5zEk8EEw1BtpChrHWgXCMkFwrScXOabvZYOOYCp/M
-         Bdx7xNRgYGRgm+KqrPo6iPE253vdenAE/hrdJ3/c/daxqN+M12pEhLZP+4Zu0tmLuvHP
-         n+024FeuXsFkj1LxEmGMfmqNnLqh8tO9iXWrfczDQCVm9huIqmPe0ThZYg7hyJGiW8Qf
-         Cfpw==
+        bh=V7Fouq+dvqn1XG8w3rkoPxCMRgeF52r64rWaA84oL2w=;
+        b=V6bVr982pdInRrJXnxVBEHUg7HNzl8XreMjHG9vkP4O7oEUO/XaHPoxuYK3xnWEfDZ
+         N0Ek/gTiMRdixcGAWKk21K7lA3QRl89BjWnQw+LQCUOP8sPI7UQ1YtAnZ4YEvGDqAxN7
+         QvOs67LmHq6OoQnG+hfNbve0RJDMA2Tmybzvm7ZxLmL9M/PejLIfUnD2INY0oc81iE8i
+         i/6mFCGXA/Xlvk6zO6ms6x3eanupf2S/D0LqLjt0GDc0aJqg90GPwTMqcFFL0DjIycOV
+         v5h2G8td/7qCc8n+tSkK4KjAwnHKHXnhaqp37rao4yHgFIrJoawElBbHQC1k13nrL1y6
+         M04w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769649403; x=1770254203;
+        d=1e100.net; s=20230601; t=1769649405; x=1770254205;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=cCcD265cxmmVZ0UcKWxh2iCOGhqGhkNB0SavdcofzbU=;
-        b=nU1wvfEmqd6+w2Osi1hCzcAClP85HozAH9Gpxpc/LZe0Ludrc0MP762YHfNrgu8cMy
-         g7hy8IHRqT4Ps99xEwi4gG6LxJlHxw5SnWI2cm1tYaAOfMTVcP5xR5zr/uw6GP1jBqEb
-         9bUPZ3aD4VxkGsQFPCjRgsFyZ2eqNDGPol4UrOdQQlX2gZRxoZt4AOTxHYDvizXYqAWh
-         UjCNr4mfnSUq0PauacBR7skI3o/Q/d1dTzlCktCG5MZqO/vEZi7lf8Nx6RyG+oY78v0n
-         rVE+zwjHrZJsMRQfhOESL7VU4emfGW+KPj2iUvuvBIE2329RWXhxpF7L2HqHku/ElKnq
-         tkcw==
-X-Forwarded-Encrypted: i=1; AJvYcCU6FGC+u3wadUaaS5jHZTUDXGgkl3yxfmQMPbYSJG5KyzI2NRf1WvA+u8blIe2zSP8QKHCVLQDQOrFc@lists.linux.dev
-X-Gm-Message-State: AOJu0YyWeVHCCi56uCx9Mfqf8S4ZP6U9PAQiV3tVdekdDOoZKS6bAxOL
-	iwsJllSxeR5jPs6tiQaeNykgSBuzKlpiNuh6cWdCrJuvbw6HZ95miEI1iy6lQR+lI27YHED4ZO4
-	Y1GshhQ==
-X-Received: from pjbbf7.prod.google.com ([2002:a17:90b:b07:b0:34a:b3a0:78b9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d008:b0:32d:e780:e9d5
- with SMTP id 98e67ed59e1d1-353fed6ebffmr5150167a91.22.1769649403000; Wed, 28
- Jan 2026 17:16:43 -0800 (PST)
+        bh=V7Fouq+dvqn1XG8w3rkoPxCMRgeF52r64rWaA84oL2w=;
+        b=Q0BxdpZi2gWBFu/OLwCKnddZWxPXcYaHtZqwlzVy/xhf52KlvyO9zUdDd1YH5Mv7E1
+         nf9P9wbigvQUduS/4nAgDgz5quKBAVuWY3ynlNHiMIRvQVhBmv18tMpR+xo+tzxtfTwS
+         nfy2tOwenhkTAr1W7xC+Gq5Z2eRj7u7mClo/b7Kr40E+x5dyjfPYFM4gRhoKk/cbXI2K
+         GKDiPTpQzST9hkzhjEjcyv2vqqHOpNnSuZsxh7YgifkERbc7CdqJTfVLkOiHtbTsQJpo
+         eCcm+OcHZgnsWygKBgwkQxgcwk9F33/GjOuf8akkCt2ChKVY6V1KK+mLSN+jXWXwAo2/
+         e80g==
+X-Forwarded-Encrypted: i=1; AJvYcCUJYc44TMtkohfSaNKtxhK38/c50ij4SBKl8DfoWpmJVctazSOD83I06mQeiMN/6qirqbbqXvaSVKbN@lists.linux.dev
+X-Gm-Message-State: AOJu0YzaFg37O6dv64iD6XYeIhA3zXZQl5ZiBOyOyxh7X0PwxIiCq8HX
+	mM6c7YKcqWS/tBzesdXZxwmeR9qMHk5O7BEK92/YKYjGor64v3tP+PnnmE/4GP8hlst5fbMN21E
+	UpBKqoA==
+X-Received: from pjwo16.prod.google.com ([2002:a17:90a:d250:b0:34c:84ee:67c4])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3d02:b0:340:d569:d295
+ with SMTP id 98e67ed59e1d1-353fed5cad0mr6510840a91.24.1769649404957; Wed, 28
+ Jan 2026 17:16:44 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 28 Jan 2026 17:15:12 -0800
+Date: Wed, 28 Jan 2026 17:15:13 -0800
 In-Reply-To: <20260129011517.3545883-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260129011517.3545883-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.rc1.217.geba53bf80e-goog
-Message-ID: <20260129011517.3545883-41-seanjc@google.com>
-Subject: [RFC PATCH v5 40/45] KVM: x86: Introduce hugepage_set_guest_inhibit()
+Message-ID: <20260129011517.3545883-42-seanjc@google.com>
+Subject: [RFC PATCH v5 41/45] KVM: TDX: Honor the guest's accept level
+ contained in an EPT violation
 From: Sean Christopherson <seanjc@google.com>
 To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
@@ -79,104 +80,220 @@ From: Yan Zhao <yan.y.zhao@intel.com>
 TDX requires guests to accept S-EPT mappings created by the host KVM. Due
 to the current implementation of the TDX module, if a guest accepts a GFN
 at a lower level after KVM maps it at a higher level, the TDX module will
-emulate an EPT violation VMExit to KVM instead of returning a size mismatch
-error to the guest. If KVM fails to perform page splitting in the VMExit
-handler, the guest's accept operation will be triggered again upon
-re-entering the guest, causing a repeated EPT violation VMExit.
+synthesize an EPT Violation VM-Exit to KVM instead of returning a size
+mismatch error to the guest. If KVM fails to perform page splitting in the
+EPT Violation handler, the guest's ACCEPT operation will be triggered
+again upon re-entering the guest, causing a repeated EPT Violation VM-Exit.
 
-To facilitate passing the guest's accept level information to the KVM MMU
-core and to prevent the repeated mapping of a GFN at different levels due
-to different accept levels specified by different vCPUs, introduce the
-interface hugepage_set_guest_inhibit(). This interface specifies across
-vCPUs that mapping at a certain level is inhibited from the guest.
+To ensure forward progress, honor the guest's accept level if an EPT
+Violation VMExit contains guest accept level (the TDX-Module provides the
+level when synthesizing a VM-Exit in response to a failed guest ACCEPT).
 
-Intentionally don't provide an API to clear KVM_LPAGE_GUEST_INHIBIT_FLAG
-for the time being, as detecting that it's ok to (re)install a hugepage is
-tricky (and costly if KVM wants to be 100% accurate), and KVM doesn't
-currently support hugepage promotion (only direct installation of
-hugepages) for S-EPT.
+(1) Set the guest inhibit bit in the lpage info to prevent KVM's MMU
+    from mapping at a higher level than the guest's accept level.
 
-As a result, the only scenario where clearing the flag would likely allow
-KVM to install a hugepage is when an entire 2MiB / 1GiB range is converted
-to shared or private.  But if the guest is accepting at 4KiB granulairty,
-odds are good the guest is using the memory for something "special" and
-will never convert the entire range to shared (and/or back to private).
-Punt that optimization to the future, if it's ever needed.
+(2) Split any existing mapping higher than the guest's accept level.
 
-Link: https://lore.kernel.org/all/a6ffe23fb97e64109f512fa43e9f6405236ed40a.camel@intel.com [1]
+For now, take mmu_lock for write across the entire operation to keep things
+simple.  This can/will be revisited when the TDX-Module adds support for
+NON-BLOCKING-RESIZE, at which point KVM can split the hugepage without
+needing to handle UNBLOCK failure if the DEMOTE fails.
+
+To avoid unnecessarily contending mmu_lock, check if the inhibit flag is
+already set before acquiring mmu_lock, e.g. so that a vCPUs doing ACCEPT
+on a region of memory aren't completely serialized.  Note, this relies on
+(a) setting the inhibit after performing the split, and (b) never clearing
+the flag, e.g. to avoid false positives and potentially triggering the
+zero-step mitigation.
+
+Note: EPT Violation VM-Exits without the guest's accept level are *never*
+caused by the guest's ACCEPT operation, but are instead occur if the guest
+accesses of memory before said memory is accepted.  Since KVM can't obtain
+the guest accept level info from such EPT Violations (the ACCEPT operation
+hasn't occurred yet), KVM may still map at a higher level than the later
+guest's ACCEPT level.
+
+So, the typical guest/KVM interaction flow is:
+- If guest accesses private memory without first accepting it,
+  (like non-Linux guests):
+  1. Guest accesses a private memory.
+  2. KVM finds it can map the GFN at 2MB. So, AUG at 2MB.
+  3. Guest accepts the GFN at 4KB.
+  4. KVM receives an EPT violation with eeq_type of ACCEPT + 4KB level.
+  5. KVM splits the 2MB mapping.
+  6. Guest accepts successfully and accesses the page.
+
+- If guest first accepts private memory before accessing it,
+  (like Linux guests):
+  1. Guest accepts a private memory at 4KB.
+  2. KVM receives an EPT violation with eeq_type of ACCEPT + 4KB level.
+  3. KVM AUG at 4KB.
+  4. Guest accepts successfully and accesses the page.
+
+Link: https://lore.kernel.org/all/a6ffe23fb97e64109f512fa43e9f6405236ed40a.camel@intel.com
 Suggested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
-[sean: explain *why* the flag is never cleared]
+Co-developed-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/mmu.h     |  4 ++++
- arch/x86/kvm/mmu/mmu.c | 21 ++++++++++++++++++---
- 2 files changed, 22 insertions(+), 3 deletions(-)
+ arch/x86/kvm/mmu/tdp_mmu.c  | 11 ++++++
+ arch/x86/kvm/mmu/tdp_mmu.h  |  2 +
+ arch/x86/kvm/vmx/tdx.c      | 76 +++++++++++++++++++++++++++++++++++++
+ arch/x86/kvm/vmx/tdx_arch.h |  3 ++
+ 4 files changed, 92 insertions(+)
 
-diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-index 830f46145692..fa6a8daf4b05 100644
---- a/arch/x86/kvm/mmu.h
-+++ b/arch/x86/kvm/mmu.h
-@@ -322,4 +322,8 @@ static inline bool kvm_is_gfn_alias(struct kvm *kvm, gfn_t gfn)
- {
- 	return gfn & kvm_gfn_direct_bits(kvm);
- }
-+
-+void hugepage_set_guest_inhibit(struct kvm_memory_slot *slot, gfn_t gfn, int level);
-+bool hugepage_test_guest_inhibit(struct kvm_memory_slot *slot, gfn_t gfn, int level);
-+
- #endif
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 45650f70eeab..c2765bfc8492 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -718,12 +718,14 @@ static struct kvm_lpage_info *lpage_info_slot(gfn_t gfn,
- }
- 
- /*
-- * The most significant bit in disallow_lpage tracks whether or not memory
-- * attributes are mixed, i.e. not identical for all gfns at the current level.
-+ * The most 2 significant bits in disallow_lpage tracks whether or not memory
-+ * attributes are mixed, i.e. not identical for all gfns at the current level,
-+ * or whether or not guest inhibits the current level of hugepage at the gfn.
-  * The lower order bits are used to refcount other cases where a hugepage is
-  * disallowed, e.g. if KVM has shadow a page table at the gfn.
-  */
- #define KVM_LPAGE_MIXED_FLAG	BIT(31)
-+#define KVM_LPAGE_GUEST_INHIBIT_FLAG   BIT(30)
- 
- static void update_gfn_disallow_lpage_count(const struct kvm_memory_slot *slot,
- 					    gfn_t gfn, int count)
-@@ -736,7 +738,8 @@ static void update_gfn_disallow_lpage_count(const struct kvm_memory_slot *slot,
- 
- 		old = linfo->disallow_lpage;
- 		linfo->disallow_lpage += count;
--		WARN_ON_ONCE((old ^ linfo->disallow_lpage) & KVM_LPAGE_MIXED_FLAG);
-+		WARN_ON_ONCE((old ^ linfo->disallow_lpage) &
-+			     (KVM_LPAGE_MIXED_FLAG | KVM_LPAGE_GUEST_INHIBIT_FLAG));
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+index e32034bfca5a..0cdc6782e508 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -1619,6 +1619,17 @@ void kvm_tdp_mmu_try_split_huge_pages(struct kvm *kvm,
  	}
  }
  
-@@ -1648,6 +1651,18 @@ static bool __kvm_rmap_zap_gfn_range(struct kvm *kvm,
- 				 start, end - 1, can_yield, true, flush);
++/* Split huge pages for the current root. */
++int kvm_tdp_mmu_split_huge_pages(struct kvm_vcpu *vcpu, gfn_t start, gfn_t end,
++				 int target_level)
++{
++	struct kvm_mmu_page *root = root_to_sp(vcpu->arch.mmu->root.hpa);
++
++	return tdp_mmu_split_huge_pages_root(vcpu->kvm, root, start, end,
++					     target_level, false);
++}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_tdp_mmu_split_huge_pages);
++
+ static bool tdp_mmu_need_write_protect(struct kvm *kvm, struct kvm_mmu_page *sp)
+ {
+ 	/*
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.h b/arch/x86/kvm/mmu/tdp_mmu.h
+index bd62977c9199..cdb0b4ecaa37 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.h
++++ b/arch/x86/kvm/mmu/tdp_mmu.h
+@@ -97,6 +97,8 @@ void kvm_tdp_mmu_try_split_huge_pages(struct kvm *kvm,
+ 				      const struct kvm_memory_slot *slot,
+ 				      gfn_t start, gfn_t end,
+ 				      int target_level, bool shared);
++int kvm_tdp_mmu_split_huge_pages(struct kvm_vcpu *vcpu, gfn_t start, gfn_t end,
++				 int target_level);
+ 
+ static inline void kvm_tdp_mmu_walk_lockless_begin(void)
+ {
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index af63364c8713..098954f5e07c 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -13,6 +13,7 @@
+ #include "tdx.h"
+ #include "vmx.h"
+ #include "mmu/spte.h"
++#include "mmu/tdp_mmu.h"
+ #include "common.h"
+ #include "posted_intr.h"
+ #include "irq.h"
+@@ -1958,6 +1959,77 @@ static inline bool tdx_is_sept_violation_unexpected_pending(struct kvm_vcpu *vcp
+ 	return !(eq & EPT_VIOLATION_PROT_MASK) && !(eq & EPT_VIOLATION_EXEC_FOR_RING3_LIN);
  }
  
-+bool hugepage_test_guest_inhibit(struct kvm_memory_slot *slot, gfn_t gfn, int level)
++static bool tdx_is_mismatched_accepted(struct kvm_vcpu *vcpu)
 +{
-+	return lpage_info_slot(gfn, slot, level)->disallow_lpage & KVM_LPAGE_GUEST_INHIBIT_FLAG;
++	return (to_tdx(vcpu)->ext_exit_qualification & TDX_EXT_EXIT_QUAL_TYPE_MASK) ==
++	       TDX_EXT_EXIT_QUAL_TYPE_ACCEPT;
 +}
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(hugepage_test_guest_inhibit);
 +
-+void hugepage_set_guest_inhibit(struct kvm_memory_slot *slot, gfn_t gfn, int level)
++static int tdx_get_ept_violation_level(struct kvm_vcpu *vcpu)
 +{
-+	lpage_info_slot(gfn, slot, level)->disallow_lpage |= KVM_LPAGE_GUEST_INHIBIT_FLAG;
-+}
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(hugepage_set_guest_inhibit);
++	u64 ext_exit_qual = to_tdx(vcpu)->ext_exit_qualification;
 +
- bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
++	return (((ext_exit_qual & TDX_EXT_EXIT_QUAL_INFO_MASK) >>
++		 TDX_EXT_EXIT_QUAL_INFO_SHIFT) & GENMASK(2, 0)) + 1;
++}
++
++/*
++ * An EPT violation can be either due to the guest's ACCEPT operation or
++ * due to the guest's access of memory before the guest accepts the
++ * memory.
++ *
++ * Type TDX_EXT_EXIT_QUAL_TYPE_ACCEPT in the extended exit qualification
++ * identifies the former case, which must also contain a valid guest
++ * accept level.
++ *
++ * For the former case, honor guest's accept level by setting guest inhibit bit
++ * on levels above the guest accept level and split the existing mapping for the
++ * faulting GFN if it's with a higher level than the guest accept level.
++ *
++ * Do nothing if the EPT violation is due to the latter case. KVM will map the
++ * GFN without considering the guest's accept level (unless the guest inhibit
++ * bit is already set).
++ */
++static int tdx_handle_mismatched_accept(struct kvm_vcpu *vcpu, gfn_t gfn)
++{
++	struct kvm_memory_slot *slot = kvm_vcpu_gfn_to_memslot(vcpu, gfn);
++	struct kvm *kvm = vcpu->kvm;
++	gfn_t start, end;
++	int level, r;
++
++	if (!slot || !tdx_is_mismatched_accepted(vcpu))
++		return 0;
++
++	if (WARN_ON_ONCE(!VALID_PAGE(vcpu->arch.mmu->root.hpa)))
++		return 0;
++
++	level = tdx_get_ept_violation_level(vcpu);
++	if (level > PG_LEVEL_2M)
++		return 0;
++
++	if (hugepage_test_guest_inhibit(slot, gfn, level + 1))
++		return 0;
++
++	guard(write_lock)(&kvm->mmu_lock);
++
++	start = gfn_round_for_level(gfn, level);
++	end = start + KVM_PAGES_PER_HPAGE(level);
++
++	r = kvm_tdp_mmu_split_huge_pages(vcpu, start, end, level);
++	if (r)
++		return r;
++
++	/*
++	 * No TLB flush is required, as the "BLOCK + TRACK + kick off vCPUs"
++	 * sequence required by the TDX-Module includes a TLB flush.
++	 */
++	hugepage_set_guest_inhibit(slot, gfn, level + 1);
++	if (level == PG_LEVEL_4K)
++		hugepage_set_guest_inhibit(slot, gfn, level + 2);
++
++	return 0;
++}
++
+ static int tdx_handle_ept_violation(struct kvm_vcpu *vcpu)
  {
- 	bool flush = false;
+ 	unsigned long exit_qual;
+@@ -1983,6 +2055,10 @@ static int tdx_handle_ept_violation(struct kvm_vcpu *vcpu)
+ 		 */
+ 		exit_qual = EPT_VIOLATION_ACC_WRITE;
+ 
++		ret = tdx_handle_mismatched_accept(vcpu, gpa_to_gfn(gpa));
++		if (ret)
++			return ret;
++
+ 		/* Only private GPA triggers zero-step mitigation */
+ 		local_retry = true;
+ 	} else {
+diff --git a/arch/x86/kvm/vmx/tdx_arch.h b/arch/x86/kvm/vmx/tdx_arch.h
+index a30e880849e3..af006a73ee05 100644
+--- a/arch/x86/kvm/vmx/tdx_arch.h
++++ b/arch/x86/kvm/vmx/tdx_arch.h
+@@ -82,7 +82,10 @@ struct tdx_cpuid_value {
+ #define TDX_TD_ATTR_PERFMON		BIT_ULL(63)
+ 
+ #define TDX_EXT_EXIT_QUAL_TYPE_MASK	GENMASK(3, 0)
++#define TDX_EXT_EXIT_QUAL_TYPE_ACCEPT  1
+ #define TDX_EXT_EXIT_QUAL_TYPE_PENDING_EPT_VIOLATION  6
++#define TDX_EXT_EXIT_QUAL_INFO_MASK	GENMASK(63, 32)
++#define TDX_EXT_EXIT_QUAL_INFO_SHIFT	32
+ /*
+  * TD_PARAMS is provided as an input to TDH_MNG_INIT, the size of which is 1024B.
+  */
 -- 
 2.53.0.rc1.217.geba53bf80e-goog
 
