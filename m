@@ -1,56 +1,56 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E396374755
-	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 01:16:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AE9376BF9
+	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 01:16:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769649401; cv=none; b=d7mASMW7Kq5h3PSdlQZdGrg/eK7ZROaAXgqN81lvr+rE/qOL9wbd4h0ZfQljgXNVvDOLitjGOMm3q/RVWQEyUjoFVFCkHZvlZlq8tDAAVPUyGEXbdFuClYgtRqQkvYhd48M6R/s9so3b2ZOeVzZ8CGVpJiib+Ob5tLDGXBkemkA=
+	t=1769649403; cv=none; b=YFw+FiDSYMQCvNpSk98QJjmFkcUSwJur8fJQp3znPkyKnvme1ksTYaZ+KnnZ2ySXX71Hpe53KbU0vbvDaMXg9QU+Rmz0K7KGIWOScjLBIK4x9Zm5EwiKxh5BKCGfmEob8FuMz3EDNehNnq1n0FDq7Ysp209+pE9zNZZTJtZAb8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769649401; c=relaxed/simple;
-	bh=E81ZhmT2t0PJD5dbqVBjf6xweJIj6b/NPrrZPd0lj4k=;
+	s=arc-20240116; t=1769649403; c=relaxed/simple;
+	bh=748IjIIuUafEiIM83Ku56LzDm+kATSx23KWSqCyn9i4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sSiv2w2MQuYR6MOcUWXwRLyV15HCGA5lXGKZ9HRPz4edgsumFn5+eFjL67gWQJJTGLHXVq51tRTp1orNqAIUrj2xQHjB5sDIs45duro97Y/BMq0W5jroIitgYWsRULHtmNvAVifiIJ6+5Qot8/6innNTensoFAUo5CpYacNN9Rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Za/VyZuE; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=kgCUFLXQ0ckCqXHEd8uob87aOUehv1+x5N8C7UZpdniAhzE9q3Uq6BU+WAHRUsvcZcZAcyVMXbvwjd+8X2h63moShPwyIoyVtnqtWWOOeUKiMVRceX8vbMjkxbTtUQzPgV7t/LkAL70TNp53RzsVC/jYriWadBGTqO7V17T467E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RwsYhckA; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Za/VyZuE"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-81c68fef4d4so1145349b3a.2
-        for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 17:16:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RwsYhckA"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a08cbeb87eso4639155ad.3
+        for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 17:16:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769649400; x=1770254200; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1769649401; x=1770254201; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=4KWczVW3BK+JCRmXurxu5hKVHytxWOCNoKeowZmDwwM=;
-        b=Za/VyZuET9CtJZ0cpTJZzD+hUCTV5abDZSMniEC21hdbc1tzRgaxZCZ8nI+uCg7osl
-         +rPZT5b7W2c3XR4ScrprBKBok5Esm4WXjErNJaNK2OqyloWH0wX5ck0WsEtNpoBIruyx
-         GBzQ0EvHMz8BGDwW1dAdM58ejXWMPJw0Qb5JrrEOykT3ejQkNStRz9lttkMD4jQ4xxzL
-         wNtTFRqumEWBL9nYOQLWSOkx7RifH53usH8SNxIJJ+8QePUDxkgmYZu1MIIImordWfQU
-         ++OLi7cvzkE/vOEErLaSgCWw8ZPBSbeb3bhtAFVVq1PPrH987B6E8RZWz4cTO3oxNHUH
-         SD1g==
+        bh=QSAxn7KWvy+xJKU0DNDq3fpgZfT3mJRUWulB6u+627E=;
+        b=RwsYhckAA+4WAHdLkGgHSSGlkCSLt3MNIUDrQfZ8iFXBV7lrzh3ZXKBa+Bre5hVyRh
+         Aq2HLnIM3kv7bWaO6TaHeemZCMQyAoElxfAL+ud+lJX7xZ6Tfy9PdqlGu+0AYA4Cyn1c
+         bGUGVeQMG23Z00I40PL5lR+qiKG2sa5zDAIKlerR6TItlsTCEjTtZGziv2OmYjSST8ox
+         xLTuqOiaQoB6+OHYAzcPTQ2sqwBTGEE5tY2urtcbmZ9F1ByuLG7hjf8pm3ibbgdCiv++
+         CWOANmX4aSgRSo1p596pQeHP22V/iwdik4TrHoUaYyqDZftZNB7OSYzM/+mtBoZus1j9
+         teNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769649400; x=1770254200;
+        d=1e100.net; s=20230601; t=1769649401; x=1770254201;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=4KWczVW3BK+JCRmXurxu5hKVHytxWOCNoKeowZmDwwM=;
-        b=Hw6Wpk1lAdfFK0DfCTYjopTXKExeiWVM9mPv/iq8yXYs8sODl40VHtidhO5cS0kCbQ
-         sz1aWgtYFMkLz6UAXNy+S18taK4kB3BPgRRypwj9VG/qO0oDrMYYKNbXk+uDOwZr0NJP
-         8NqVW/KK7C+cod3vKjtl3Gi1i6cQC0JGHr7OHw+cKhUzzmZzooNvnhUNQ9/SCVZs6lEu
-         PTx6A6UZfaCFg/WewJKwwyo7XXDWoMOxXrrFshjRNCY05rvE3DJvVIpZtuXXSwGRSdTe
-         34vtvpTT+fRcCWyNkj8OtB8vsgpYFlYVRLKQJpZa5SfyXAPryLwoq1ckF5kzBgyF2T3s
-         SDkg==
-X-Forwarded-Encrypted: i=1; AJvYcCX1/putEEkaYXlJj+6MwCNnlcbGQqSq+drwB0Rvq3+jG7g3ieDTqy+49zIOjKWGsqeK6cNg3yVYR1Px@lists.linux.dev
-X-Gm-Message-State: AOJu0YyZl+sWYhPhECkKhHOCmxpS5uIzuw7lT7WnuNVhb+3QFQcbnpJa
-	WhGfp9K9dvdrG2zIjHmn8IrOXRtwO+maneWLXCfyHpLayVYzHmLwOy1Jlq1YFRTzXxlGCr0IamP
-	dxV+xNg==
-X-Received: from pfcy16.prod.google.com ([2002:a05:6a00:93d0:b0:823:747:7567])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3d14:b0:81b:1a87:9eb9
- with SMTP id d2e1a72fcca58-823691866damr6265136b3a.25.1769649399557; Wed, 28
- Jan 2026 17:16:39 -0800 (PST)
+        bh=QSAxn7KWvy+xJKU0DNDq3fpgZfT3mJRUWulB6u+627E=;
+        b=Wd2/eVGPwp/hv5M/EnL+ItF4TvYLshmF1lnOHrbYTDSBYZg3DO42P4Nq3s0LF4ebuN
+         BF5e8NP62HK/7xLQWQG+CvOQ2nXAjw/a1uY4xK2D/o9X8l9zJ9fOAhum7+C9iUiqyxSX
+         X+LLntDTpB6eZeR0CglarandO+CQV2WVxl5YRq+aOhFgCMsek9u5MmNYZdIRv9e1EESi
+         yIBtblJ3QU9FWWl+3eJfyYhz1hYeOOU5646vDqvM8X2t1+okRMaOB3TKr7hh/stNsHIW
+         UWlatg2EZ/JOLQXjUyHpASwoUFfpKy086dy57YCH8BkwzjzKrYPGCqfJr1cEHB5i4226
+         yeTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUVAkZis6EX9jo7k3VzLIAB3wUaILMgXEZaNLKQGNZgDwVbyXaQqapT/H7m3P3GAZhLqE3VMtnRDPcM@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyz35whhjtkclRVaiFfpoz1UYRLxfuJWHhOXMXEwCh+XeeIiOWN
+	ahZDaBNqVGmy2lpmg5tl7OEtRLW3SsEZl1p0cAMOJdDSY5bQb96j3xiTCSiecdB1H4lFz4ERUC+
+	bw1+WjA==
+X-Received: from pght14.prod.google.com ([2002:a63:eb0e:0:b0:c1d:1cf6:2897])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:568e:b0:38d:fc34:c887
+ with SMTP id adf61e73a8af0-38ec654856dmr6765109637.65.1769649401195; Wed, 28
+ Jan 2026 17:16:41 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 28 Jan 2026 17:15:10 -0800
+Date: Wed, 28 Jan 2026 17:15:11 -0800
 In-Reply-To: <20260129011517.3545883-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260129011517.3545883-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.rc1.217.geba53bf80e-goog
-Message-ID: <20260129011517.3545883-39-seanjc@google.com>
-Subject: [RFC PATCH v5 38/45] KVM: x86/mmu: Add Dynamic PAMT support in TDP
- MMU for vCPU-induced page split
+Message-ID: <20260129011517.3545883-40-seanjc@google.com>
+Subject: [RFC PATCH v5 39/45] KVM: TDX: Add core support for
+ splitting/demoting 2MiB S-EPT to 4KiB
 From: Sean Christopherson <seanjc@google.com>
 To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
@@ -75,75 +75,100 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
 	Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Extend the TDP MMU to support vCPU-induced hugepage splits in mirror roots
-when Dynamic PAMT is enabled.  I.e. top-up the PAMT cache when allocating
-a new child page table, so that if the split is successful, there will be
-a PAMT paging waiting to associated with the new less/non-huge mapping.
+From: Yan Zhao <yan.y.zhao@intel.com>
 
-Note, the allocation is for the guest memory, not the S-EPT page, as PAMT
-pages are accounted up front by .alloc_external_sp().
+Add support for splitting, a.k.a. demoting, a 2MiB S-EPT hugepage to its
+512 constituent 4KiB pages.  As per the TDX-Module rules, first invoke
+MEM.RANGE.BLOCK to put the huge S-EPTE entry into a splittable state, then
+do MEM.TRACK and kick all vCPUs outside of guest mode to flush TLBs, and
+finally do MEM.PAGE.DEMOTE to demote/split the huge S-EPT entry.
 
+Assert the mmu_lock is held for write, as the BLOCK => TRACK => DEMOTE
+sequence needs to be "atomic" to guarantee success (and because mmu_lock
+must be held for write to use tdh_do_no_vcpus()).
+
+Note, even with kvm->mmu_lock held for write, tdh_mem_page_demote() may
+contend with tdh_vp_enter() and potentially with the guest's S-EPT entry
+operations.  Therefore, wrap the call with tdh_do_no_vcpus() to kick other
+vCPUs out of the guest and prevent tdh_vp_enter() to ensure success.
+
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+[sean: wire up via tdx_sept_link_private_spt(), massage changelog]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/mmu/tdp_mmu.c | 25 ++++++++++++++++---------
- arch/x86/kvm/vmx/tdx.c     |  3 +++
- 2 files changed, 19 insertions(+), 9 deletions(-)
+ arch/x86/kvm/vmx/tdx.c | 51 +++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 48 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-index 4f5b80f0ca03..e32034bfca5a 100644
---- a/arch/x86/kvm/mmu/tdp_mmu.c
-+++ b/arch/x86/kvm/mmu/tdp_mmu.c
-@@ -1456,21 +1456,28 @@ static struct kvm_mmu_page *tdp_mmu_alloc_sp_for_split(struct tdp_iter *iter)
- 		return NULL;
- 
- 	sp->spt = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
--	if (!sp->spt) {
--		kmem_cache_free(mmu_page_header_cache, sp);
--		return NULL;
--	}
-+	if (!sp->spt)
-+		goto err_spt;
- 
- 	if (is_mirror_sptep(iter->sptep)) {
- 		sp->external_spt = (void *)kvm_x86_call(alloc_external_sp)(GFP_KERNEL_ACCOUNT);
--		if (!sp->external_spt) {
--			free_page((unsigned long)sp->spt);
--			kmem_cache_free(mmu_page_header_cache, sp);
--			return NULL;
--		}
-+		if (!sp->external_spt)
-+			goto err_external_spt;
-+
-+		if (kvm_x86_call(topup_external_cache)(kvm_get_running_vcpu(), 1))
-+			goto err_external_split;
- 	}
- 
- 	return sp;
-+
-+err_external_split:
-+	kvm_x86_call(free_external_sp)((unsigned long)sp->external_spt);
-+err_external_spt:
-+	free_page((unsigned long)sp->spt);
-+err_spt:
-+	kmem_cache_free(mmu_page_header_cache, sp);
-+	return NULL;
-+
- }
- 
- /* Note, the caller is responsible for initializing @sp. */
 diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 59b7ba36d3d9..e90610540a0b 100644
+index e90610540a0b..af63364c8713 100644
 --- a/arch/x86/kvm/vmx/tdx.c
 +++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1625,6 +1625,9 @@ static int tdx_topup_external_pamt_cache(struct kvm_vcpu *vcpu, int min)
- 	if (!tdx_supports_dynamic_pamt(tdx_sysinfo))
- 		return 0;
+@@ -1776,6 +1776,52 @@ static struct page *tdx_spte_to_external_spt(struct kvm *kvm, gfn_t gfn,
+ 	return virt_to_page(sp->external_spt);
+ }
  
-+	if (WARN_ON_ONCE(!vcpu))
++/*
++ * Split a huge mapping into the target level.  Currently only supports 2MiB
++ * mappings (KVM doesn't yet support 1GiB mappings for TDX guests).
++ *
++ * Invoke "BLOCK + TRACK + kick off vCPUs (inside tdx_track())" since DEMOTE
++ * now does not support yet the NON-BLOCKING-RESIZE feature. No UNBLOCK is
++ * needed after a successful DEMOTE.
++ *
++ * Under write mmu_lock, kick off all vCPUs (inside tdh_do_no_vcpus()) to ensure
++ * DEMOTE will succeed on the second invocation if the first invocation returns
++ * BUSY.
++ */
++static int tdx_sept_split_private_spte(struct kvm *kvm, gfn_t gfn, u64 old_spte,
++				       u64 new_spte, enum pg_level level)
++{
++	struct kvm_vcpu *vcpu = kvm_get_running_vcpu();
++	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
++	gpa_t gpa = gfn_to_gpa(gfn);
++	u64 err, entry, level_state;
++	struct page *external_spt;
++
++	lockdep_assert_held_write(&kvm->mmu_lock);
++
++	external_spt = tdx_spte_to_external_spt(kvm, gfn, new_spte, level);
++	if (!external_spt)
 +		return -EIO;
 +
- 	return tdx_topup_pamt_cache(&to_tdx(vcpu)->pamt_cache, min);
- }
++	if (KVM_BUG_ON(!vcpu || vcpu->kvm != kvm, kvm))
++		return -EIO;
++
++	err = tdh_do_no_vcpus(tdh_mem_range_block, kvm, &kvm_tdx->td, gpa,
++			      level, &entry, &level_state);
++	if (TDX_BUG_ON_2(err, TDH_MEM_RANGE_BLOCK, entry, level_state, kvm))
++		return -EIO;
++
++	tdx_track(kvm);
++
++	err = tdh_do_no_vcpus(tdh_mem_page_demote, kvm, &kvm_tdx->td, gpa,
++			      level, spte_to_pfn(old_spte), external_spt,
++			      &to_tdx(vcpu)->pamt_cache, &entry, &level_state);
++	if (TDX_BUG_ON_2(err, TDH_MEM_PAGE_DEMOTE, entry, level_state, kvm))
++		return -EIO;
++
++	return 0;
++}
++
+ static int tdx_sept_link_private_spt(struct kvm *kvm, gfn_t gfn, u64 new_spte,
+ 				     enum pg_level level)
+ {
+@@ -1853,9 +1899,8 @@ static int tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
+ static int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn, u64 old_spte,
+ 				     u64 new_spte, enum pg_level level)
+ {
+-	/* TODO: Support replacing huge SPTE with non-leaf SPTE. (a.k.a. demotion). */
+-	if (KVM_BUG_ON(is_shadow_present_pte(old_spte) && is_shadow_present_pte(new_spte), kvm))
+-		return -EIO;
++	if (is_shadow_present_pte(old_spte) && is_shadow_present_pte(new_spte))
++		return tdx_sept_split_private_spte(kvm, gfn, old_spte, new_spte, level);
+ 	else if (is_shadow_present_pte(old_spte))
+ 		return tdx_sept_remove_private_spte(kvm, gfn, old_spte, level);
  
 -- 
 2.53.0.rc1.217.geba53bf80e-goog
