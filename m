@@ -1,56 +1,56 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F379919755B
-	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 01:15:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F91326D53
+	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 01:15:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769649335; cv=none; b=QRnJA7gm+P9K6HoXt/jhaoHrHGwSdtrUSnWj9C68tKk1ooRyoUxuIJL79VKd9682x2I5FUd5Bm8QEBKnNMVIF+g6Njs7PCJkDMoWSTWTtDGDhhueJK9FZXY8xdikRO7BKcWinEY4JXqVaLncvaqxBqGCpviBRC59DKR9f3d2gl0=
+	t=1769649338; cv=none; b=pppKqztTXOArHPuAOaZt1A9oP2D5XZo8bAMo9nresSDUSlhVrT/9UUtJ4vke/T4bkZFF15tvZmVU4IbE2n2WctNjR5KxGO7/CoSL7Arag3VIu7Qew2uiDAAvbzRjHg4ksAuooXo850Rxkim2TABc7AJjv+oqQvod0pEmU3RdguY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769649335; c=relaxed/simple;
-	bh=rawa+GdPzt/mn/jjYKeF7IrFPzAWvGBv/cL7AH4QpdE=;
+	s=arc-20240116; t=1769649338; c=relaxed/simple;
+	bh=i+BaQipwcwIk83xd9q3EaqDNGVAGV/ShuF7c8g62crA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pgSUfu9N1kY822Ym9H052msMnOz4kNUeHG1LTNW0CsAs5VxcIjsHScIQvWRb3JxXKgNxiuyAqapqxD3LG3uVSCGSwy+QNUlCmVeg8f+vMyz5mL0aI7KNbcelPR94kKWGDEKvVQUoJUaxdPmQsyriBpbn6EKP2OoLBVMmSJO2zTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=texM+EN9; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=T0O3v58HydlIYegvYNk4oxYsDehLl/qMoORoS1u5qrrDvyvLvGd7ImkZ0j3w814QpygONPOCNHaUkxvJkxwom7D4nTfvGgt4MT7f+PCD+QbW8tP0OkvL8MUh735Wequ86LVXff9lV39s1EYBMSRKUsSCbw+tvkpfWjG4fq0DgVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zE+UyZp1; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="texM+EN9"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a76f2d7744so3323205ad.3
-        for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 17:15:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zE+UyZp1"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c6136af8e06so220673a12.1
+        for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 17:15:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769649333; x=1770254133; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1769649335; x=1770254135; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=QDz31TgUHSC/pAT7NKm7s9BECEFc0xut5G3SF9CrPBg=;
-        b=texM+EN930gysi1t0e9spAK6SVsO4FwNkXqLm4ZSTh2uBbso9iOKF+Ry9EzcCfjFu1
-         /JD1EVqwUyBlzSdeAp/BWCB8VUBaxLPQgYK1EeIgr+xZHRTNpHnDZQLGmi5Zs/9x0jXu
-         JVsa4DMiG85+wMcMCoabE0zie9bmisf+HgUkiEvqCWStcDommxwv8coVbYaI7MXzvHKy
-         P4lqIWu7do0sa7wbS9TZWwaPIKZG0qtY5U8uOUs/h9P+tNIv197yXUPnJosOKh3eDhG/
-         mAsyMB3URryHvVL2SVHnKJ9IvHRAqP82BQtgjP0ac6OGRr79SXNaGSIDux9pOveZhNr+
-         Bnpw==
+        bh=7CglUg76d+5MQRtd6QcMDKkRS3BGZoZjOLZ6NJir0yk=;
+        b=zE+UyZp1pLaM+iSrR2NRcC6aoz7ql0T1TBbp2RguAAvpJT0qwIxG1LFjdKiepJykE/
+         vvEILQkYSSRaONZs2Dbpw9lJW5NZv964AbZMMh69vYbPJCfhMcqW4Hn8yMnFiZ40lhlk
+         ugLd12xbsh68atYewmF0z1HxDmj4Tq9XphaR+7tJblRcyUkp8iEyGkkxJH76bJO5oZZ8
+         dqnWIziZ+ydKcb/NRCHHPXL5N5kSlSNx5XcqstD6rVM6tclwBFy1o3VPoJHYgYu/DJ65
+         Bf6kB3HrOWKDQUXtlLcyMgfwD126Kr66d0Z88ekvY7ZKShX2aEyt+SoEC6kXFhrORZfc
+         IjDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769649333; x=1770254133;
+        d=1e100.net; s=20230601; t=1769649335; x=1770254135;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=QDz31TgUHSC/pAT7NKm7s9BECEFc0xut5G3SF9CrPBg=;
-        b=BZS6Y8E4uttAu1Gk4PAnlE+r7XV3UYnR1Nm3Tpxob0BGsSb9RumQoaBQMor5qtdT1h
-         JigklGSUV13qSp+K8kQ05IqH9QVoSAD1wAefpfj4LSbnbfUINkRuPuieWcrA96C71SYT
-         wr5m0/C7qjuUfI7He7QrgzyuTmxyc63nYKPitDLB2uvGpSD4eNqxFzFD9VmmfgLo7Kq6
-         NC081XWXMv78oDZ5B1J5T62FX19qQUApNHZkvvCe4PYLWN60Ja5MthQoWhZorWbge+0f
-         dtA0AsXgqtPHWSz0jGhYFnDx5wKDRdIrhFmo4CYFOt+MSWL7tZ0T0sDFxa1AFdmQoh/i
-         tUYA==
-X-Forwarded-Encrypted: i=1; AJvYcCUCKI6pxIiWO0+JTZf5OnmuZv0j4trnMWPnYRpsgBuydYjRQHprKnvuZNs/plcTzjuEX6fywUSTZXk3@lists.linux.dev
-X-Gm-Message-State: AOJu0YwsbxTDr2+NZUOGZpTrASf/OaxYuml/ZRBp59Qv3CbtWSsabDa/
-	Q/Dzvr6W89M3gpIH5wDJ8C6yiR36msxWnZF/RsFM7q6EtZEXxB66O8xtNurfIjmGCm4L6Y91AFQ
-	0ZFZqjA==
-X-Received: from pjbnh9.prod.google.com ([2002:a17:90b:3649:b0:352:ff8b:ef26])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:50c8:b0:32b:9774:d340
- with SMTP id 98e67ed59e1d1-353fedb93fbmr6374509a91.33.1769649333379; Wed, 28
- Jan 2026 17:15:33 -0800 (PST)
+        bh=7CglUg76d+5MQRtd6QcMDKkRS3BGZoZjOLZ6NJir0yk=;
+        b=Iqxm+klBSntrwYMsuM7byuUZLyIZwreofLO0bNgwEttCq6IRAIex+tw9vqe8/xAjhU
+         uuVrJYEGvo6sC2bM+PV+3Jf5U8Wrjj2w3HpfOMCoI86dmZDFXl+/HakcJBhrt2Md/fu4
+         2rwYxRdvmhY1s/vd5Biz2y5ooPXVMLzw9mnh50SkEdxI4S4Gvnxjdq0Y/OxNRCbkMmVA
+         lzoqmzC2420943ey2jkuWZ9lnEnUgZLpnoL2jz0DxF2pFK68WC7dFpfY1liBvCmjrbZm
+         zupKDRrNuxi0QUyB21R7qwJirgJ948xQDsuKqEBj+Zg1rMjnZiyDic5hjoOKdC8D9HcT
+         N+Uw==
+X-Forwarded-Encrypted: i=1; AJvYcCWgF5kFeHfdB+xnb6bc1AwWPfBAgbNotMYmCa8kdS6Bua+fvxWJc8vO5RqZCIfeyMwWZry6JpC7191n@lists.linux.dev
+X-Gm-Message-State: AOJu0YxWM3uRagU5Y5OyJG9bctjzqk+wyXVw4YFvc+ekawNQhMxBgc+r
+	pgpvL0uDPEwRyX1H9D3vja8HWT6doPVfpRCyf5JTZx/vZ6f2G2IMuOnYRf3WiOoL3pxU7CP43yc
+	ea2z7ZQ==
+X-Received: from pjbft8.prod.google.com ([2002:a17:90b:f88:b0:352:bd7e:99e7])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:314d:b0:340:ecad:414
+ with SMTP id 98e67ed59e1d1-353fed8797emr5977548a91.27.1769649335221; Wed, 28
+ Jan 2026 17:15:35 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 28 Jan 2026 17:14:35 -0800
+Date: Wed, 28 Jan 2026 17:14:36 -0800
 In-Reply-To: <20260129011517.3545883-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260129011517.3545883-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.rc1.217.geba53bf80e-goog
-Message-ID: <20260129011517.3545883-4-seanjc@google.com>
-Subject: [RFC PATCH v5 03/45] KVM: TDX: Account all non-transient page
- allocations for per-TD structures
+Message-ID: <20260129011517.3545883-5-seanjc@google.com>
+Subject: [RFC PATCH v5 04/45] KVM: x86: Make "external SPTE" ops that can fail
+ RET0 static calls
 From: Sean Christopherson <seanjc@google.com>
 To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
@@ -75,75 +75,34 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
 	Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Account all non-transient allocations associated with a single TD (or its
-vCPUs), as KVM's ABI is that allocations that are active for the lifetime
-of a VM are accounted.  Leave temporary allocations, i.e. allocations that
-are freed within a single function/ioctl, unaccounted, to again align with
-KVM's existing behavior, e.g. see commit dd103407ca31 ("KVM: X86: Remove
-unnecessary GFP_KERNEL_ACCOUNT for temporary variables").
+Define kvm_x86_ops .link_external_spt(), .set_external_spte(), and
+.free_external_spt() as RET0 static calls so that an unexpected call to a
+a default operation doesn't consume garbage.
 
-Fixes: 8d032b683c29 ("KVM: TDX: create/destroy VM structure")
-Fixes: a50f673f25e0 ("KVM: TDX: Do TDX specific vcpu initialization")
-Cc: stable@vger.kernel.org
+Fixes: 77ac7079e66d ("KVM: x86/tdp_mmu: Propagate building mirror page tables")
+Fixes: 94faba8999b9 ("KVM: x86/tdp_mmu: Propagate tearing down mirror page tables")
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/vmx/tdx.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/kvm-x86-ops.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 561461c9d131..5688c77616e3 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -2397,7 +2397,7 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
- 
- 	atomic_inc(&nr_configured_hkid);
- 
--	tdr_page = alloc_page(GFP_KERNEL);
-+	tdr_page = alloc_page(GFP_KERNEL_ACCOUNT);
- 	if (!tdr_page)
- 		goto free_hkid;
- 
-@@ -2405,12 +2405,12 @@ static int __tdx_td_init(struct kvm *kvm, struct td_params *td_params,
- 	/* TDVPS = TDVPR(4K page) + TDCX(multiple 4K pages), -1 for TDVPR. */
- 	kvm_tdx->td.tdcx_nr_pages = tdx_sysinfo->td_ctrl.tdvps_base_size / PAGE_SIZE - 1;
- 	tdcs_pages = kcalloc(kvm_tdx->td.tdcs_nr_pages, sizeof(*kvm_tdx->td.tdcs_pages),
--			     GFP_KERNEL);
-+			     GFP_KERNEL_ACCOUNT);
- 	if (!tdcs_pages)
- 		goto free_tdr;
- 
- 	for (i = 0; i < kvm_tdx->td.tdcs_nr_pages; i++) {
--		tdcs_pages[i] = alloc_page(GFP_KERNEL);
-+		tdcs_pages[i] = alloc_page(GFP_KERNEL_ACCOUNT);
- 		if (!tdcs_pages[i])
- 			goto free_tdcs;
- 	}
-@@ -2885,7 +2885,7 @@ static int tdx_td_vcpu_init(struct kvm_vcpu *vcpu, u64 vcpu_rcx)
- 	int ret, i;
- 	u64 err;
- 
--	page = alloc_page(GFP_KERNEL);
-+	page = alloc_page(GFP_KERNEL_ACCOUNT);
- 	if (!page)
- 		return -ENOMEM;
- 	tdx->vp.tdvpr_page = page;
-@@ -2898,14 +2898,14 @@ static int tdx_td_vcpu_init(struct kvm_vcpu *vcpu, u64 vcpu_rcx)
- 	tdx->vp.tdvpr_pa = page_to_phys(tdx->vp.tdvpr_page);
- 
- 	tdx->vp.tdcx_pages = kcalloc(kvm_tdx->td.tdcx_nr_pages, sizeof(*tdx->vp.tdcx_pages),
--			       	     GFP_KERNEL);
-+				     GFP_KERNEL_ACCOUNT);
- 	if (!tdx->vp.tdcx_pages) {
- 		ret = -ENOMEM;
- 		goto free_tdvpr;
- 	}
- 
- 	for (i = 0; i < kvm_tdx->td.tdcx_nr_pages; i++) {
--		page = alloc_page(GFP_KERNEL);
-+		page = alloc_page(GFP_KERNEL_ACCOUNT);
- 		if (!page) {
- 			ret = -ENOMEM;
- 			goto free_tdcx;
+diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+index de709fb5bd76..c18a033bee7e 100644
+--- a/arch/x86/include/asm/kvm-x86-ops.h
++++ b/arch/x86/include/asm/kvm-x86-ops.h
+@@ -94,9 +94,9 @@ KVM_X86_OP_OPTIONAL_RET0(set_tss_addr)
+ KVM_X86_OP_OPTIONAL_RET0(set_identity_map_addr)
+ KVM_X86_OP_OPTIONAL_RET0(get_mt_mask)
+ KVM_X86_OP(load_mmu_pgd)
+-KVM_X86_OP_OPTIONAL(link_external_spt)
+-KVM_X86_OP_OPTIONAL(set_external_spte)
+-KVM_X86_OP_OPTIONAL(free_external_spt)
++KVM_X86_OP_OPTIONAL_RET0(link_external_spt)
++KVM_X86_OP_OPTIONAL_RET0(set_external_spte)
++KVM_X86_OP_OPTIONAL_RET0(free_external_spt)
+ KVM_X86_OP_OPTIONAL(remove_external_spte)
+ KVM_X86_OP(has_wbinvd_exit)
+ KVM_X86_OP(get_l2_tsc_offset)
 -- 
 2.53.0.rc1.217.geba53bf80e-goog
 
