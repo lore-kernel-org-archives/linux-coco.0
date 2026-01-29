@@ -1,217 +1,224 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012049.outbound.protection.outlook.com [40.107.209.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994DD223708
-	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 00:38:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769647116; cv=fail; b=h+xDqthl3iKDUICw/hwZWS5SLyVgiHB56cWYqrhhbVTNDX5obAR9IbzgSWFp1DL7cl9IPI5YRSS3UXW2VcBkW/dgA7DW0ruBvUsYEjMlz2gAg6ZEdqpN+2oQCAhU1HGULVejhSodXRgD94XE+DN8x1floqT9SigqL2uJkHtI7Z0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769647116; c=relaxed/simple;
-	bh=LJkgNDtEPuNSgZx4yg9XxGYZLTRCJBWDLZ1cx5WEsOg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=dYsJ6ad6EE8cn7uJATAM7veUTDoB9riqIO8YbTss7EqIf/xVdO+jsKNvW7xZjkJBGgf5yrggZrw2ZpmVRjx53TmOtkpLxlnwns8T3dA2HfzkZhaN8imf9PcemP1zBA8B+3WJryxbpHDXjyVLWceR0MeijrMZuvpk+zjodLtg+jE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=bt7LIBkS; arc=fail smtp.client-ip=40.107.209.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4842FE566
+	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 01:15:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769649330; cv=none; b=gFNqY1+v/OfW3a9MRtaxPGtyrI2kZJjirEP3MHnrXCX8U9Mc+hnCoLdjFazKjajk10le809OmoCl+BS8FU6XvgugZA0u7EpfX8C8N/GQF5Qt5MPudUMRKCoxDD/I0ng9E3qEZBSKJGU+K9HOJkg7ciuVUSpbj38ReSNnUzx4Gfw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769649330; c=relaxed/simple;
+	bh=77MNUmXLsSVzn3BT77shrDIB5ujNFeevJfDJ8rWmJzk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Y2/beMUpjDZp8Znq0nTG5K8uewNs+jwX+NYJlhP0PFxtPZxA2EEbLIoohj9BeuePbfPoqtBdNF8mJ62FKZAUPM9mcI75dfTLnWAeUoFfb7DCG9CWYLs1OwMTOUEnwGmaD/lbi7ttOTETncIwSzygM85MI54hV4NdcVqjAQ7QqBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jS2Aau3Q; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="bt7LIBkS"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Mi5BqwxwwcyxxTNvuLsilXEAvY6q6UZUUCgeh+oqgN9fdgJ+VJJvxOiEB38i1PMHIHFaLbZjS/Lm/DphN+zQuEc7W7CZVnD2nq7FbkcbX/RwxTt822dwLF1UXr4N8jnD/txRo2dvg66+9jK/nCo1kXICjRSLAQqL6ScG2stYHyyN3YpA/Xtrz7rOYae1zu9Kd86mWLtg/2guggc5xomvc8zeQ5SYiXuEqwCtiBT1V+1Mw8gLPOyDr3L+ksfXIWMtHsmGnSF90pBQwRKDXXCX6o2LElPRQhFhz+TOAvTguN2Qb4zInJ65QvYBXk4NPCqiTB/M6VJXDjT0U3RS5xvicw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+XlPEoeuKTVL3gUvX/JR4PAk0/STEHstYaZoxBTRBt0=;
- b=BjTxtQ5Ffg8ENYw/EIF45xe1fe53FtJIKR1N1EPCyxl8k6MsV0+G1jwDGwp6HXauzDqc3QIeMoUHHlicRc4ru0Wn0Cu4/DBrQVs9Y4WNKL3C8DRwpi+0GbOplcvrZBKFbY71hlYr+UTl8UfouOj9XAB2tZ30pazwH3eGmovOKawKhPJR+W71lvAAFe/fUzFIyXljvxHwKr4et/pBlaFASKZP1gCllm6xS91V5kGA6fz1Fyh6NUf1/gt52U1XYNjtyuG3SxlnhuAZMgmKg/Qo2llbNeDfgipqYuYQ2qHsC5orW+3F5TfC1x7v3SaTTq9mRtoVoj4H2jj3QeyREsTufg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+XlPEoeuKTVL3gUvX/JR4PAk0/STEHstYaZoxBTRBt0=;
- b=bt7LIBkSi1BCE2vMMwUxSbBjLwuV0lbLKwfpdffz2Cs2vPKnOKqVWrgD2KC3USRchtcX2z+KQK25yFzedqUDDhjq55zO9p2UzrFMrgGuSlgLzgyULnOOurmQF5Or62I+HVAlEVoW9AMZRFUdjzoQjKzqTJd8dL1YRKifYSOLT1k=
-Received: from BY5PR16CA0027.namprd16.prod.outlook.com (2603:10b6:a03:1a0::40)
- by MW3PR12MB4460.namprd12.prod.outlook.com (2603:10b6:303:2f::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Thu, 29 Jan
- 2026 00:38:31 +0000
-Received: from SJ1PEPF00002319.namprd03.prod.outlook.com
- (2603:10b6:a03:1a0:cafe::97) by BY5PR16CA0027.outlook.office365.com
- (2603:10b6:a03:1a0::40) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9564.8 via Frontend Transport; Thu,
- 29 Jan 2026 00:38:32 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF00002319.mail.protection.outlook.com (10.167.242.229) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9564.3 via Frontend Transport; Thu, 29 Jan 2026 00:38:30 +0000
-Received: from [10.236.30.53] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 28 Jan
- 2026 18:38:29 -0600
-Message-ID: <e7acf7ed-103b-46aa-a1f6-35bb6292d30f@amd.com>
-Date: Wed, 28 Jan 2026 18:38:29 -0600
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jS2Aau3Q"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-34e5a9de94bso947767a91.0
+        for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 17:15:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769649328; x=1770254128; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dICzvWEdfBrtCh6Zy3BTwzQLU0rts7VP3KdYtqIFj2w=;
+        b=jS2Aau3QL0dqjZ5C5+ATs2j6+oKD7fa0G28WvtVkSNDvnE7X4EDVGQPNc8DB8W0u2a
+         HOQxtQosusCzN4gIwGZYWSjfzEg1RB731e0XgBudjFFOKevY5oCcAwnLsmXvhRdR9UZn
+         K5Ds0lJ/kZiwoeDhEIeELSl5S4jAxkFSKsk9JdxEZvrytF3dH6MZignTOFbmr6KyAw1y
+         ia4AuFzUeUqJP5WwP0eEExYd2tELemKKOygy4lGiiEbQWiEJHZf7BSHZBXwfuoEhtD/f
+         2L1mReo8lieG3wk8Hm+BvK9gJhzQJOLFlPcbnVZXDEpRfcg8BjnohN5qzx2fY+4kMs1Q
+         T1sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769649328; x=1770254128;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dICzvWEdfBrtCh6Zy3BTwzQLU0rts7VP3KdYtqIFj2w=;
+        b=DPixepAj3BRkwKFFoEwqdPHnyLHDd1boGzgzP501obsPsYACIj5JG7Th84V2pIm2tp
+         h/35xyKgWVlYoES7I3YcYxTUK1NtLnmGKF1+/0C7wrz83fQIXYvd66ddGBbrr07g/Rm4
+         YukzMF46mxUZUJGQaF2/8SOBpDrZyWYU09xRqfLeKcZ3v+QGVcKeOC0YMCdFILEkt6T4
+         F1mz08xKEciGG8OHMcDUOSgK6poRCaQBc4yp84lXhoMKMpXyQlpMTvL3OEvJLbQh+AGc
+         Qw/eG3ZKRzfj9CM1k17wF7gV+XcktVWqymeNNsLCADB7zJc2npVdZQpkHEtcctRdY1JM
+         dLiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXGERM5xFYwRHUF+epSiyPYdKcqC/z9wDYeC/foZyKZUbrGZN+EsF6su5Jh3gIaIeo16hK6tHDE8pLs@lists.linux.dev
+X-Gm-Message-State: AOJu0YzcJKR98ZOVzII14vsNxGTDhcPIif+Mz47nV+u7J+I/Vuq1mNjv
+	/5d4LmHSolin5hE6X9bZDl4zF3GnI3J5rGKjzCQOMQKz0FGoS+2gFxHG7UkDxPVi97ILMA2gyMZ
+	uRGDqAg==
+X-Received: from pjee4.prod.google.com ([2002:a17:90b:5784:b0:353:3177:9547])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:dfc4:b0:352:d168:fc4
+ with SMTP id 98e67ed59e1d1-353fed88b65mr5574963a91.32.1769649327950; Wed, 28
+ Jan 2026 17:15:27 -0800 (PST)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Wed, 28 Jan 2026 17:14:32 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] KVM: SEV: IBPB-on-Entry guest support
-To: Borislav Petkov <bp@alien8.de>
-CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <x86@kernel.org>, Sean Christopherson
-	<seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, K Prateek Nayak
-	<kprateek.nayak@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky
-	<thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, Naveen Rao
-	<naveen.rao@amd.com>, David Kaplan <david.kaplan@amd.com>,
-	<stable@kernel.org>
-References: <20260126224205.1442196-1-kim.phillips@amd.com>
- <20260126224205.1442196-2-kim.phillips@amd.com>
- <20260128192312.GQaXpiIL4YFmQB2LKL@fat_crate.local>
-From: Kim Phillips <kim.phillips@amd.com>
-Content-Language: en-US
-In-Reply-To: <20260128192312.GQaXpiIL4YFmQB2LKL@fat_crate.local>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002319:EE_|MW3PR12MB4460:EE_
-X-MS-Office365-Filtering-Correlation-Id: bbc3c3af-dfd0-4031-7f91-08de5eceb9fa
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|82310400026|36860700013|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Q0hrdGZESGk2QXBnbHlRaXIrMzRlRDlqSGlUemE0ME5aNjg1UU9rRURYOXBI?=
- =?utf-8?B?N1Jjb2xqTDFuaEU0NnpXVk8wd0tHVWZOK1dKcmpuSWxMUnAxV0dFd2dWQTda?=
- =?utf-8?B?d1FwLzJhS1BwbDBJU1duS2VuZWJvZ1V0Qm8vUnJHdU5mcjRDQ0lrdmNFMHNn?=
- =?utf-8?B?WjNIVk5KMkR1T3FDSUFCb201UEYvVEE1MXJDckJwS0JTUDVFSjd2dTZSaW9q?=
- =?utf-8?B?ejhOTGd0MzQ5RmNyeHhFcHBCbXhMbk1VUGhpOVRoanlMbGFNNXY2cWFvQ2cr?=
- =?utf-8?B?Z3V4dVJ0Tm9pNGVxZGNsN0Z2Y0h3MHI5dGhDL0ZOL0F0dXdXOXRmZ2lKVkky?=
- =?utf-8?B?SG8yTmNyQjBER2h5V3BoMCtiaGZBeHplSDB2anlUNVBpNGFqZXpmSVZmZGE1?=
- =?utf-8?B?YnNkRFdOT1JHemtCNnFpaUkrK0g1cHhTVjlSNll4RzVDQWI1enlLK2xOVmNT?=
- =?utf-8?B?dERMSXBzS3JUMDBjT0xSamZKUDB1K1RmU2lST0MrczJjNkQzaXRJMzI1Y2FC?=
- =?utf-8?B?aFREam1TMWpvUFRsMTBabGRLWHRRcFpxSmNrdGtpUC9qdjhQUFhTUnpSTEJt?=
- =?utf-8?B?VVdLVUNsNmRLMUpOWUFRSFBnVUlSU1JtVEk2aUlBSUdjaTluVjBKOVpKb1h1?=
- =?utf-8?B?TGo0T2F5Nlphd1l2NTlxUjBxWmkvU1h2UUljUjNqeUpKRC9henZIM0xTTktW?=
- =?utf-8?B?RE01VnNrMUFaK3RSVm9RZ09NVDRraTVWZnJpbVh0TmcwdGN6amRyNUxCN3hN?=
- =?utf-8?B?K2VGeFBvSis2a2VNa1dKQnNGaEZGNy9FZGhpMlg1cDU3bFVaa1pTbWgvTk81?=
- =?utf-8?B?Q1Z0bVZiZHhoVTRZcHhqVFgvMXUwNWVoNEJRanVzZG5uWjR1TkxETVcvTWJS?=
- =?utf-8?B?enp0SWFmWW1RdTZXSlVFL1lrRFc3OVI0RWE5RFZKNHdHQmpqVjJsUWpHL2I4?=
- =?utf-8?B?QTh0WDU0TjNJbEdybkQ1RE9Nc3V4SkJqT2F3dXBnNThYT01KTnkxdE40VWFM?=
- =?utf-8?B?YWpSTVNxeXZ4Z0JjWW9RTlJuTWk0cUdvdnV0SnkyT0ZLME5PVkR4YWpvam9y?=
- =?utf-8?B?ZHBQYWlBeGI1b0piVUE1YnRrU0ZralU3Nzl6VFhpbXp6RTdZTDVzNnZHTm9m?=
- =?utf-8?B?YmJuTmhER1ZkVnh3YmMzQkF6K0MyOUJmNm1UR3F6NXBFODNDaUdHbDcwSUgy?=
- =?utf-8?B?bXJzUzI0QkxMOUdKTHJ1TWE0WnpweU9wMGtFNVFuL3BHU0ExU0hWbFZVTDMv?=
- =?utf-8?B?bTBtMXZoSXBFR2FBZFlJdDRoREFkMkJEOVJxaEhZblg1TTEwQk9FVmNqdTlk?=
- =?utf-8?B?NlFLa0ptckcxVm1Ha1B6aGNGSmZrY2Rtak84RjllT3F4dzl2QmhjamQ2UEt3?=
- =?utf-8?B?d3pXUS9XM0FrZ1gxbWdzcEFDRkptcCt5RjIvcWM4TVlHOHNmKytzYmh6OEJN?=
- =?utf-8?B?YThWdjlLd3lmdDNSRVYrRkdIeGpIWUpQWjcrQ0pBaEdoR0hTeWFVSjRpY294?=
- =?utf-8?B?dUxTanFHeDFmRS9sNjZxTUw0UGN0VUpmZ3JCdHJEZXlpaGpCcHcyTWFua1Vy?=
- =?utf-8?B?d25ta2YycjJnY0NVS05yYTdvdWxZZlFoQVEwb1djNDBJL3I2VlpZakZQSzh6?=
- =?utf-8?B?N1J3VFBaNTlMUnlkQXlXbnpDKzNrZ2YrZ0FaZkRCS0JleXFQMjdEYnpScDVs?=
- =?utf-8?B?bXppZkRXYTVaRUVmQkltazJMQVBWaEtoNnNUaDltVExZSzY0QUY3dWFKR3dX?=
- =?utf-8?B?Mm5ZNTVQSWFHUFlIN29ydklyYTFjT3JzUDBJdGFHTTJOZW9DQmljNjNxRHEw?=
- =?utf-8?B?SXJXY3M4a05FeE5taGJQaTNRaHVaYnhUcXZ5Z1RjMDUxVXhuSFBiaGZNalpU?=
- =?utf-8?B?a0lpc01abllrOThSY05uS1dVZVQvM2lzTnhnOEt3SUhIWU1qWVBEeUZBZSt0?=
- =?utf-8?B?QVVNTEE1Z3lOVlhvTFh0ai9ENW5FKzV5YWZFbHR5MFp0ZkcxRzd6TEdDUG1j?=
- =?utf-8?B?bDFhTkhRYm5iMFZmcm1DQzRvbmVQWjdTUFlnUGtBMlh0c2dKclBydDdBTzdy?=
- =?utf-8?B?U3ZsamtyeEpjL1o4QjBOWlYyM01wU3NRSmxZUTRZU0VoR1Jsb05aZVMxT2s0?=
- =?utf-8?B?UHEvZnZHaXV1K2NHNVRlRS9YakJrajNRdWxiN2JiN3E5aDhmZXR5TGp1Z3Iv?=
- =?utf-8?B?THdpUjlMOTRBQXpvYzg4Z05PZmI5bFdFT2dtKzlNZzhRMzJoTVJSWVFJb0ti?=
- =?utf-8?B?MVc2a2ltd0VSLzBubU51RWN6TjZBPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(82310400026)(36860700013)(7053199007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2026 00:38:30.8320
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: bbc3c3af-dfd0-4031-7f91-08de5eceb9fa
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00002319.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4460
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.rc1.217.geba53bf80e-goog
+Message-ID: <20260129011517.3545883-1-seanjc@google.com>
+Subject: [RFC PATCH v5 00/45] TDX: Dynamic PAMT + S-EPT Hugepage
+From: Sean Christopherson <seanjc@google.com>
+To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Kiryl Shutsemau <kas@kernel.org>, Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org, Kai Huang <kai.huang@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Yan Zhao <yan.y.zhao@intel.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Sagi Shahar <sagis@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Boris,
+This is a combined series of Dynamic PAMT (from Rick), and S-EPT hugepage
+support (from Yan).  Except for some last minute tweaks to the DPAMT array
+args stuff, a version of this based on a Google-internal kernel has been
+moderately well tested (thanks Vishal!).  But overall it's still firmly RFC
+as I have deliberately NOT addressed others feedback from v4 of DPAMT and v3
+of S-EPT hugepage (mostly lack of cycles), and there's at least one patch in
+here that shouldn't be merged as-is (the quick-and-dirty switch from struct
+page to raw pfns).
 
-On 1/28/26 1:23 PM, Borislav Petkov wrote:
-> On Mon, Jan 26, 2026 at 04:42:04PM -0600, Kim Phillips wrote:
->> The SEV-SNP IBPB-on-Entry feature does not require a guest-side
->> implementation. The feature was added in Zen5 h/w, after the first
->> SNP Zen implementation, and thus was not accounted for when the
->> initial set of SNP features were added to the kernel.
->>
->> In its abundant precaution, commit 8c29f0165405 ("x86/sev: Add SEV-SNP
->> guest feature negotiation support") included SEV_STATUS' IBPB-on-Entry
->> bit as a reserved bit, thereby masking guests from using the feature.
->>
->> Unmask the bit, to allow guests to take advantage of the feature on
->> hypervisor kernel versions that support it: Amend the SEV_STATUS MSR
->> SNP_RESERVED_MASK to exclude bit 23 (IbpbOnEntry).
-> Do not explain what the patch does.
+My immediate goal is to solidify the designs for DPAMT and S-EPT hugepage.
+Given the substantial design changes I am proposing, posting an end-to-end
+RFC seemed like a much better method than trying to communicate my thoughts
+piecemeal.
 
-For that last paragraph, how about:
+As for landing these series, I think the fastest overall approach would be
+to land patches 1-4 asap (tangentially related cleanups and fixes), agree
+on a design (hopefully), and then hand control back to Rick and Yan to polish
+their respective series for merge.
 
-"Allow guests to make use of IBPB-on-Entry when supported by the
-hypervisor, as the bit is now architecturally defined and safe to
-expose."
+I also want to land the VMXON series[*] before DPAMT, because there's a nasty
+wart where KVM wires up a DPAMT-specific hook even if DPAMT is disabled,
+because KVM's ordering needs to set the vendor hooks before tdx_sysinfo is
+ready.  Decoupling VMXON from KVM solves that problem, because it lets the
+TDX subsystem parse sysinfo before TDX is loaded.
 
-?
+Beyond that dependency, I am comfortable landing both DPAMT and S-EPT hugepage
+support without any other prereqs, i.e. without an in-tree way to light up
+the S-EPT hugepage code due to lack of hugepage support in guest_memfd.
+Outside of the guest_memfd arch hook for in-place conversion, S-EPT hugepage
+support doesn't have any direction dependencies/conflicts with guest_memfd
+hugepage or in-place conversion support (which is great, because it means we
+didn't totally botch the design!).  E.g. Vishal's been able to test this code
+precisely because it applies relatively cleanly on an internal branch with a
+whole pile of guest_memfd changes.
 
->> Fixes: 8c29f0165405 ("x86/sev: Add SEV-SNP guest feature negotiation support")
->> Cc: Nikunj A Dadhania <nikunj@amd.com>
->> Cc: Tom Lendacky <thomas.lendacky@amd.com>
->> CC: Borislav Petkov (AMD) <bp@alien8.de>
->> CC: Michael Roth <michael.roth@amd.com>
->> Cc: stable@kernel.org
-> I guess...
+Applies on kvm-x86 next (specifically kvm-x86-next-2026.01.23).
 
-Hopefully a bitfield will be carved out for these
-no-explicit-guest-implementation-required bits by hardware such that we
-won't need to do this again.
+[*] https://lore.kernel.org/all/20251206011054.494190-1-seanjc@google.com
 
->> diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
->> index 4d3566bb1a93..9016a6b00bc7 100644
->> --- a/arch/x86/include/asm/msr-index.h
->> +++ b/arch/x86/include/asm/msr-index.h
->> @@ -735,7 +735,10 @@
->>   #define MSR_AMD64_SNP_SMT_PROT		BIT_ULL(MSR_AMD64_SNP_SMT_PROT_BIT)
->>   #define MSR_AMD64_SNP_SECURE_AVIC_BIT	18
->>   #define MSR_AMD64_SNP_SECURE_AVIC	BIT_ULL(MSR_AMD64_SNP_SECURE_AVIC_BIT)
->> -#define MSR_AMD64_SNP_RESV_BIT		19
->> +#define MSR_AMD64_SNP_RESERVED_BITS19_22 GENMASK_ULL(22, 19)
->> +#define MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT	23
->> +#define MSR_AMD64_SNP_IBPB_ON_ENTRY	BIT_ULL(MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT)
-> Why isn't this part of SNP_FEATURES_PRESENT?
->
-> If this feature doesn't require guest-side support, then it is trivially
-> present, no?
+P.S. I apologize if I clobbered any of the Author attribution or SoBs.  I
+     was moving patches around and synchronizing between an internal tree
+     and this upstream version, so things may have gotten a bit wonky.
 
-SNP_FEATURES_PRESENT is for the non-trivial variety: Its bits get set as
-part of the patchseries that add the explicit guest support *code*.
+Isaku Yamahata (1):
+  KVM: x86/tdp_mmu: Alloc external_spt page for mirror page table
+    splitting
 
-I believe 'features' like PREVENT_HOST_IBS are similar in this regard.
+Kiryl Shutsemau (12):
+  x86/tdx: Move all TDX error defines into <asm/shared/tdx_errno.h>
+  x86/tdx: Add helpers to check return status codes
+  x86/virt/tdx: Allocate page bitmap for Dynamic PAMT
+  x86/virt/tdx: Allocate reference counters for PAMT memory
+  x86/virt/tdx: Improve PAMT refcounts allocation for sparse memory
+  x86/virt/tdx: Add tdx_alloc/free_control_page() helpers
+  x86/virt/tdx: Optimize tdx_alloc/free_control_page() helpers
+  KVM: TDX: Allocate PAMT memory for TD and vCPU control structures
+  KVM: TDX: Get/put PAMT pages when (un)mapping private memory
+  x86/virt/tdx: Enable Dynamic PAMT
+  Documentation/x86: Add documentation for TDX's Dynamic PAMT
+  x86/virt/tdx: Get/Put DPAMT page pair if and only if mapping size is
+    4KB
 
->> +#define MSR_AMD64_SNP_RESV_BIT		24
->>   #define MSR_AMD64_SNP_RESERVED_MASK	GENMASK_ULL(63, MSR_AMD64_SNP_RESV_BIT)
->>   #define MSR_AMD64_SAVIC_CONTROL		0xc0010138
->>   #define MSR_AMD64_SAVIC_EN_BIT		0
->> -- 
-> I guess this is a fix of sorts and I could take it in now once all review
-> comments have been addressed...
+Rick Edgecombe (3):
+  x86/virt/tdx: Simplify tdmr_get_pamt_sz()
+  x86/tdx: Add APIs to support get/put of DPAMT entries from KVM, under
+    spinlock
+  KVM: x86/mmu: Prevent hugepage promotion for mirror roots in fault
+    path
 
-Cool, thanks.
+Sean Christopherson (22):
+  x86/tdx: Use pg_level in TDX APIs, not the TDX-Module's 0-based level
+  KVM: x86/mmu: Update iter->old_spte if cmpxchg64 on mirror SPTE
+    "fails"
+  KVM: TDX: Account all non-transient page allocations for per-TD
+    structures
+  KVM: x86: Make "external SPTE" ops that can fail RET0 static calls
+  KVM: TDX: Drop kvm_x86_ops.link_external_spt(), use
+    .set_external_spte() for all
+  KVM: x86/mmu: Fold set_external_spte_present() into its sole caller
+  KVM: x86/mmu: Plumb the SPTE _pointer_ into the TDP MMU's
+    handle_changed_spte()
+  KVM: x86/mmu: Propagate mirror SPTE removal to S-EPT in
+    handle_changed_spte()
+  KVM: x86: Rework .free_external_spt() into .reclaim_external_sp()
+  KVM: Allow owner of kvm_mmu_memory_cache to provide a custom page
+    allocator
+  KVM: x86/mmu: Allocate/free S-EPT pages using
+    tdx_{alloc,free}_control_page()
+  *** DO NOT MERGE *** x86/virt/tdx: Don't assume guest memory is backed
+    by struct page
+  x86/virt/tdx: Extend "reset page" quirk to support huge pages
+  KVM: x86/mmu: Plumb the old_spte into kvm_x86_ops.set_external_spte()
+  KVM: TDX: Hoist tdx_sept_remove_private_spte() above
+    set_private_spte()
+  KVM: TDX: Handle removal of leaf SPTEs in .set_private_spte()
+  KVM: TDX: Add helper to handle mapping leaf SPTE into S-EPT
+  KVM: TDX: Move S-EPT page demotion TODO to tdx_sept_set_private_spte()
+  KVM: x86/mmu: Add Dynamic PAMT support in TDP MMU for vCPU-induced
+    page split
+  KVM: guest_memfd: Add helpers to get start/end gfns give
+    gmem+slot+pgoff
+  *** DO NOT MERGE *** KVM: guest_memfd: Add pre-zap arch hook for
+    shared<=>private conversion
+  KVM: x86/mmu: Add support for splitting S-EPT hugepages on conversion
 
-Kim
+Xiaoyao Li (1):
+  x86/virt/tdx: Add API to demote a 2MB mapping to 512 4KB mappings
+
+Yan Zhao (6):
+  x86/virt/tdx: Enhance tdh_mem_page_aug() to support huge pages
+  x86/virt/tdx: Enhance tdh_phymem_page_wbinvd_hkid() to invalidate huge
+    pages
+  KVM: TDX: Add core support for splitting/demoting 2MiB S-EPT to 4KiB
+  KVM: x86: Introduce hugepage_set_guest_inhibit()
+  KVM: TDX: Honor the guest's accept level contained in an EPT violation
+  KVM: TDX: Turn on PG_LEVEL_2M
+
+ Documentation/arch/x86/tdx.rst              |  21 +
+ arch/x86/coco/tdx/tdx.c                     |  10 +-
+ arch/x86/include/asm/kvm-x86-ops.h          |   9 +-
+ arch/x86/include/asm/kvm_host.h             |  36 +-
+ arch/x86/include/asm/shared/tdx.h           |   1 +
+ arch/x86/include/asm/shared/tdx_errno.h     | 104 +++
+ arch/x86/include/asm/tdx.h                  | 127 ++--
+ arch/x86/include/asm/tdx_global_metadata.h  |   1 +
+ arch/x86/kvm/Kconfig                        |   1 +
+ arch/x86/kvm/mmu.h                          |   4 +
+ arch/x86/kvm/mmu/mmu.c                      |  34 +-
+ arch/x86/kvm/mmu/mmu_internal.h             |  11 -
+ arch/x86/kvm/mmu/tdp_mmu.c                  | 315 ++++----
+ arch/x86/kvm/mmu/tdp_mmu.h                  |   2 +
+ arch/x86/kvm/vmx/tdx.c                      | 468 +++++++++---
+ arch/x86/kvm/vmx/tdx.h                      |   5 +-
+ arch/x86/kvm/vmx/tdx_arch.h                 |   3 +
+ arch/x86/kvm/vmx/tdx_errno.h                |  40 -
+ arch/x86/virt/vmx/tdx/tdx.c                 | 762 +++++++++++++++++---
+ arch/x86/virt/vmx/tdx/tdx.h                 |   6 +-
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c |   7 +
+ include/linux/kvm_host.h                    |   5 +
+ include/linux/kvm_types.h                   |   2 +
+ virt/kvm/Kconfig                            |   4 +
+ virt/kvm/guest_memfd.c                      |  71 +-
+ virt/kvm/kvm_main.c                         |   7 +-
+ 26 files changed, 1576 insertions(+), 480 deletions(-)
+ create mode 100644 arch/x86/include/asm/shared/tdx_errno.h
+ delete mode 100644 arch/x86/kvm/vmx/tdx_errno.h
+
+
+base-commit: e81f7c908e1664233974b9f20beead78cde6343a
+-- 
+2.53.0.rc1.217.geba53bf80e-goog
+
