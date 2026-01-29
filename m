@@ -1,56 +1,56 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E6B33554C
-	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 01:15:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D967F33A9E5
+	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 01:15:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769649347; cv=none; b=sGnhrrHZvu7EIK+orVG7ISvz/iwX3UITiN0RRYiKUyRoFvJ5n8+OHkW8mUYBc6XW3PTaYbSAIh1250gM/J3AC0gSexBq+huppV35uOLUuok5PIYRbfRWt45z+eROH6OLVK1TXXD81izAclEr1+Eugll4Dmltkmq1SrwPRDjJPVo=
+	t=1769649349; cv=none; b=GhhuJxVL6sbTQ6Qud4tn1QPJVpOk/C6B67jQZTy1363YrRX9+hJO+OHEpKCFoSjpmakB2sdeDs6uIXEo5g7DGklqCmQVWzHU/L47i1iAKkAiXSffQ6uHymO8iuTOsmP7omFff0tYaLnQw5lNhmGVus0VatNOQsrlEJIo1LFCxLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769649347; c=relaxed/simple;
-	bh=yVpImpTFQZriVyFQbj/bWHkCHJ5SUUu9kYYN2lYkaKM=;
+	s=arc-20240116; t=1769649349; c=relaxed/simple;
+	bh=5dRzb+o6Q/AhnBEPjaTaRMPq1GGOTIzm7nn66WFegm8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=E0TxWadF4xwqbsVHGZnEZEJZwxC9NJ1Dm/2DLiwb9NNUlTukcS1zO0SdKtgSg5mG1HOqMK9I6GCOsKUnY8fIL05Ph0gM0f9fMk4H0Sd79aRaTtBHkpAucoBi9YRHqPwNGpFBNgkZSSAekv7XdpWArbRZKSa5f1qXqm0pJ06nKpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UwVDCt9s; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=IvqYOvKsL022A+1ynNqfOHX+AoO1NqTcLHhlJEO+bZHvNro++Gt1lXCSoBtabYHbimn95NoRPL5BQAWow66JLhQ6YPPFIVlgLy+wkSTeV+vUDSGlfM5qL9ds5gOg7LTgTAGOIp+6QTTjdoY1v+OhYjcseY/OJ2g4ChQ2Q82NlzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LLRUMp5L; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UwVDCt9s"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34ab459c051so738075a91.0
-        for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 17:15:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LLRUMp5L"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b6ce1b57b9cso226097a12.1
+        for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 17:15:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769649344; x=1770254144; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1769649346; x=1770254146; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=p4DxLrcS3WgLaR+fYgPLmC8YCbLvAUFJ1rM8P1CFw/Y=;
-        b=UwVDCt9ssWdJMuNPoRmGY3X0AIawqNheEUHdMi6I7Em14ndNZ/XU/71+akWUYtqvfp
-         rykgJ/aOFFoqQRD3buNwXpOemjYMMYvKfRaRRKasD4zEaF0ayLNs6vl0gdgAZNi3Qhtv
-         ilc2Qgoln0fxTVXAwn4AHV264vLsd0ZAn1upN4pifM6KzjFAF1Yg0KznGr7WU2yX24hL
-         i0t/cgCoK3hqAhF8UueDRuOrh7/qVYhWu1Elj0ge16i/j5mppO1aR2f+sb2nEWnVg8aX
-         uk1/CSGEqquEAy2RihrVosonQEpl2PAyf9fXnj91plkRuQEGF0z9I7wliQARoj1AfyjP
-         DXFw==
+        bh=jeaBadeNJ+DHIVupn+BMEpRTAzqBIwMv2T9SYcpdIj4=;
+        b=LLRUMp5Ld2+khhkUlBwNjkvVXHDz8xPVC8ld4e1DVjSukmnsQhNIn/4qIiAzXaZnLt
+         qqwKQcfLxr+S2u/qo8+MBNIwfl/Yk3upjMlHpbuMBqCOBwuJkfqYmeFk11YO2CEC1KJx
+         0mWi5ekOr9dqA901LQgfVRSQTJ+rO4LRpS+33G+A9uFY6dU0FQLwR4k20/GF5RP/obVC
+         MaaDk50N7fYsf0pJX4FHIR01UC8sZjUhc/Yf9fqoW09Z9htJl+92+bwwUz/ysNkChuhW
+         YYn/Y+wnZrOeLJfyLZlfldnXhQElvIg4t7HrHosEujWfbqBOwL+Xh1MFM/6Apvj2e4cG
+         z8gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769649344; x=1770254144;
+        d=1e100.net; s=20230601; t=1769649346; x=1770254146;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=p4DxLrcS3WgLaR+fYgPLmC8YCbLvAUFJ1rM8P1CFw/Y=;
-        b=BsrlhacCmBXAcInPFGOoTHKK57APCN2ZnijWxWd3NH598YNm2zsp86FNSUDcUR4hj5
-         4hQCoIZ398fE+nnZjiwv0rHKZ57X3qS5qMTgDL3/fspdm2KEps+pd9tD6/oVtrOG2XqY
-         sJRcqIDoGl7aE+58Pyje33Z63UZyXM19xQ256/c5AsncNZ27kn4dtRaKHp9znKf0Q4B8
-         LeGIkkkFdHQ14F4BQsVnQKd0OQEfRVa/yy8KX3N/X6MyFMolwiCksiJWFNBH2six0VxG
-         Ujo9nllWgQqSqY5ss4+7A7o5DP5C2JwTY6Hjz0pO+7r456mUkgZBFLecHhJrwFwPtrw3
-         AWHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWPK4cSIdijAYqDUTX9DGdrm+nYLsGOZ4PixFl4D5wtWhvc+DgP6PxXIUb/z2LbGlDRzHhO8R9JwrmQ@lists.linux.dev
-X-Gm-Message-State: AOJu0YzgaMLhyQA3o3pUphU1Z2RbotkJ0VSMj2WebJ3OThc8Khe8md46
-	fsdaMlminofSoP22mX8YXa+uqFRZPdRUN80ZvXJpfg+8ZfrOx2mO/aHLBGyUUG2IP51+yc4kR9w
-	w6xEAWQ==
-X-Received: from pjbbh4.prod.google.com ([2002:a17:90b:484:b0:34c:dd6d:b10e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2705:b0:34c:2db6:57d6
- with SMTP id 98e67ed59e1d1-353fed866a5mr6317423a91.19.1769649344156; Wed, 28
- Jan 2026 17:15:44 -0800 (PST)
+        bh=jeaBadeNJ+DHIVupn+BMEpRTAzqBIwMv2T9SYcpdIj4=;
+        b=oPqs+sKmPlvShkQjN9TT3C5B7msLrwytLVXmk7SxlxJFSDy5ICekisjpDBnn805Ss2
+         ZlYgmTrj4i6UC3H4FGzDqz2mWXiP6PC38xuyutfEFR3AoQBFggzn+YnIGrg5j2k2P86G
+         3ZfHvDtmlUqJuLL5AT+2wjm1iQXZKJyDUUj8GTV7UHYT6i8+eh7sqSq2geFMac1Z4DRO
+         XA2eOCI9dBBwN3HEQzYClgx1AMWw2Rjojmu6EKCm1Ix2SwSsBf8lJSm1RKYiXWELvdL/
+         6AJItwwa0LHKmFQzPqiaZVZ+wICF6Icwb8lqLi9MvpB1MsEHE27a0vNCL63z8r3qQ/dB
+         YlsA==
+X-Forwarded-Encrypted: i=1; AJvYcCUXQnBKWh89zHXSru3ATkMePus55naUHcV6rUjLtWZakbaAmgYKP9x4hcjgSlPZwD0InwmIh9+j4MPC@lists.linux.dev
+X-Gm-Message-State: AOJu0YyNZ7BSWe+W+cuF58B+W0GJk0Z2tvEHA4GTCPgW/UHCCYScGTxk
+	CIbPr09PMnU+ibCrOJgj0/uqIR7u0/pe5ics+i3Bh8YMFEUWYv0zq/BPrctGl9jxtty2uJJwU9J
+	e0K4Ovw==
+X-Received: from pga3.prod.google.com ([2002:a05:6a02:4f83:b0:b6b:90a5:d43])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:62c4:b0:361:3bda:7155
+ with SMTP id adf61e73a8af0-38ec627b6b5mr6091565637.7.1769649345722; Wed, 28
+ Jan 2026 17:15:45 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 28 Jan 2026 17:14:41 -0800
+Date: Wed, 28 Jan 2026 17:14:42 -0800
 In-Reply-To: <20260129011517.3545883-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,8 +60,8 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260129011517.3545883-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.rc1.217.geba53bf80e-goog
-Message-ID: <20260129011517.3545883-10-seanjc@google.com>
-Subject: [RFC PATCH v5 09/45] KVM: x86: Rework .free_external_spt() into .reclaim_external_sp()
+Message-ID: <20260129011517.3545883-11-seanjc@google.com>
+Subject: [RFC PATCH v5 10/45] x86/tdx: Move all TDX error defines into <asm/shared/tdx_errno.h>
 From: Sean Christopherson <seanjc@google.com>
 To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
@@ -74,129 +74,160 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
 	Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Massage .free_external_spt() into .reclaim_external_sp() to free up (pun
-intended) "free" for actually freeing memory, and to allow TDX to do more
-than just "free" the S-EPT entry.  Specifically, nullify external_spt to
-leak the S-EPT page if reclaiming the page fails, as that detail and
-implementation choice has no business living in the TDP MMU.
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-Use "sp" instead of "spt" even though "spt" is arguably more accurate, as
-"spte" and "spt" are dangerously close in name, and because the key
-parameter is a kvm_mmu_page, not a pointer to an S-EPT page table.
+Today there are two separate locations where TDX error codes are defined:
+         arch/x86/include/asm/tdx.h
+         arch/x86/kvm/vmx/tdx_errno.h
 
+They have some overlap that is already defined similarly. Reduce the
+duplication and prepare to introduce some helpers for these error codes in
+the central place by unifying them. Join them at:
+        asm/shared/tdx_errno.h
+...and update the headers that contained the duplicated definitions to
+include the new unified header.
+
+"asm/shared" is used for sharing TDX code between the early compressed
+code and the normal kernel code. While the compressed code for the guest
+doesn't use these error code header definitions today, it does make the
+types of calls that return the values they define. So place the defines in
+"shared" location so that it can, but leave such cleanups for future
+changes.
+
+Opportunistically massage some comments. Also, adjust
+_BITUL()->_BITULL() to address 32 bit build errors after the move.
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+[enhance log]
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Tested-by: Sagi Shahar <sagis@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/kvm-x86-ops.h |  2 +-
- arch/x86/include/asm/kvm_host.h    |  4 ++--
- arch/x86/kvm/mmu/tdp_mmu.c         | 13 ++-----------
- arch/x86/kvm/vmx/tdx.c             | 27 ++++++++++++---------------
- 4 files changed, 17 insertions(+), 29 deletions(-)
+ arch/x86/include/asm/shared/tdx.h             |  1 +
+ .../vmx => include/asm/shared}/tdx_errno.h    | 27 +++++++++++++++----
+ arch/x86/include/asm/tdx.h                    | 20 --------------
+ arch/x86/kvm/vmx/tdx.h                        |  1 -
+ 4 files changed, 23 insertions(+), 26 deletions(-)
+ rename arch/x86/{kvm/vmx => include/asm/shared}/tdx_errno.h (65%)
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index 57eb1f4832ae..c17cedc485c9 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -95,8 +95,8 @@ KVM_X86_OP_OPTIONAL_RET0(set_identity_map_addr)
- KVM_X86_OP_OPTIONAL_RET0(get_mt_mask)
- KVM_X86_OP(load_mmu_pgd)
- KVM_X86_OP_OPTIONAL_RET0(set_external_spte)
--KVM_X86_OP_OPTIONAL_RET0(free_external_spt)
- KVM_X86_OP_OPTIONAL(remove_external_spte)
-+KVM_X86_OP_OPTIONAL(reclaim_external_sp)
- KVM_X86_OP(has_wbinvd_exit)
- KVM_X86_OP(get_l2_tsc_offset)
- KVM_X86_OP(get_l2_tsc_multiplier)
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index d12ca0f8a348..b35a07ed11fb 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1858,8 +1858,8 @@ struct kvm_x86_ops {
- 				 u64 mirror_spte);
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index 8bc074c8d7c6..6a1646fc2b2f 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -4,6 +4,7 @@
  
- 	/* Update external page tables for page table about to be freed. */
--	int (*free_external_spt)(struct kvm *kvm, gfn_t gfn, enum pg_level level,
--				 void *external_spt);
-+	void (*reclaim_external_sp)(struct kvm *kvm, gfn_t gfn,
-+				    struct kvm_mmu_page *sp);
+ #include <linux/bits.h>
+ #include <linux/types.h>
++#include <asm/shared/tdx_errno.h>
  
- 	/* Update external page table from spte getting removed, and flush TLB. */
- 	void (*remove_external_spte)(struct kvm *kvm, gfn_t gfn, enum pg_level level,
-diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-index 27ac520f2a89..18764dbc97ea 100644
---- a/arch/x86/kvm/mmu/tdp_mmu.c
-+++ b/arch/x86/kvm/mmu/tdp_mmu.c
-@@ -456,17 +456,8 @@ static void handle_removed_pt(struct kvm *kvm, tdp_ptep_t pt, bool shared)
- 				    old_spte, FROZEN_SPTE, level, shared);
- 	}
+ #define TDX_HYPERCALL_STANDARD  0
  
--	if (is_mirror_sp(sp) &&
--	    WARN_ON(kvm_x86_call(free_external_spt)(kvm, base_gfn, sp->role.level,
--						    sp->external_spt))) {
--		/*
--		 * Failed to free page table page in mirror page table and
--		 * there is nothing to do further.
--		 * Intentionally leak the page to prevent the kernel from
--		 * accessing the encrypted page.
--		 */
--		sp->external_spt = NULL;
--	}
-+	if (is_mirror_sp(sp))
-+		kvm_x86_call(reclaim_external_sp)(kvm, base_gfn, sp);
+diff --git a/arch/x86/kvm/vmx/tdx_errno.h b/arch/x86/include/asm/shared/tdx_errno.h
+similarity index 65%
+rename from arch/x86/kvm/vmx/tdx_errno.h
+rename to arch/x86/include/asm/shared/tdx_errno.h
+index 6ff4672c4181..3aa74f6a6119 100644
+--- a/arch/x86/kvm/vmx/tdx_errno.h
++++ b/arch/x86/include/asm/shared/tdx_errno.h
+@@ -1,14 +1,16 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+-/* architectural status code for SEAMCALL */
++#ifndef _X86_SHARED_TDX_ERRNO_H
++#define _X86_SHARED_TDX_ERRNO_H
  
- 	call_rcu(&sp->rcu_head, tdp_mmu_free_sp_rcu_callback);
- }
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 30494f9ceb31..66bc3ceb5e17 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1783,27 +1783,24 @@ static void tdx_track(struct kvm *kvm)
- 	kvm_make_all_cpus_request(kvm, KVM_REQ_OUTSIDE_GUEST_MODE);
- }
+-#ifndef __KVM_X86_TDX_ERRNO_H
+-#define __KVM_X86_TDX_ERRNO_H
++#include <asm/trapnr.h>
  
--static int tdx_sept_free_private_spt(struct kvm *kvm, gfn_t gfn,
--				     enum pg_level level, void *private_spt)
-+static void tdx_sept_reclaim_private_sp(struct kvm *kvm, gfn_t gfn,
-+					struct kvm_mmu_page *sp)
- {
--	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
++/* Upper 32 bit of the TDX error code encodes the status */
+ #define TDX_SEAMCALL_STATUS_MASK		0xFFFFFFFF00000000ULL
+ 
+ /*
+- * TDX SEAMCALL Status Codes (returned in RAX)
++ * TDX SEAMCALL Status Codes
+  */
++#define TDX_SUCCESS				0ULL
+ #define TDX_NON_RECOVERABLE_VCPU		0x4000000100000000ULL
+ #define TDX_NON_RECOVERABLE_TD			0x4000000200000000ULL
+ #define TDX_NON_RECOVERABLE_TD_NON_ACCESSIBLE	0x6000000500000000ULL
+@@ -17,6 +19,7 @@
+ #define TDX_OPERAND_INVALID			0xC000010000000000ULL
+ #define TDX_OPERAND_BUSY			0x8000020000000000ULL
+ #define TDX_PREVIOUS_TLB_EPOCH_BUSY		0x8000020100000000ULL
++#define TDX_RND_NO_ENTROPY			0x8000020300000000ULL
+ #define TDX_PAGE_METADATA_INCORRECT		0xC000030000000000ULL
+ #define TDX_VCPU_NOT_ASSOCIATED			0x8000070200000000ULL
+ #define TDX_KEY_GENERATION_FAILED		0x8000080000000000ULL
+@@ -28,6 +31,20 @@
+ #define TDX_EPT_ENTRY_STATE_INCORRECT		0xC0000B0D00000000ULL
+ #define TDX_METADATA_FIELD_NOT_READABLE		0xC0000C0200000000ULL
+ 
++/*
++ * SW-defined error codes.
++ *
++ * Bits 47:40 == 0xFF indicate Reserved status code class that never used by
++ * TDX module.
++ */
++#define TDX_ERROR			_BITULL(63)
++#define TDX_NON_RECOVERABLE		_BITULL(62)
++#define TDX_SW_ERROR			(TDX_ERROR | GENMASK_ULL(47, 40))
++#define TDX_SEAMCALL_VMFAILINVALID	(TDX_SW_ERROR | _ULL(0xFFFF0000))
++
++#define TDX_SEAMCALL_GP			(TDX_SW_ERROR | X86_TRAP_GP)
++#define TDX_SEAMCALL_UD			(TDX_SW_ERROR | X86_TRAP_UD)
++
+ /*
+  * TDX module operand ID, appears in 31:0 part of error code as
+  * detail information
+@@ -37,4 +54,4 @@
+ #define TDX_OPERAND_ID_SEPT			0x92
+ #define TDX_OPERAND_ID_TD_EPOCH			0xa9
+ 
+-#endif /* __KVM_X86_TDX_ERRNO_H */
++#endif /* _X86_SHARED_TDX_ERRNO_H */
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index bc0d03e70fd6..c3c574511094 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -12,26 +12,6 @@
+ #include <asm/trapnr.h>
+ #include <asm/shared/tdx.h>
+ 
+-/*
+- * SW-defined error codes.
+- *
+- * Bits 47:40 == 0xFF indicate Reserved status code class that never used by
+- * TDX module.
+- */
+-#define TDX_ERROR			_BITUL(63)
+-#define TDX_NON_RECOVERABLE		_BITUL(62)
+-#define TDX_SW_ERROR			(TDX_ERROR | GENMASK_ULL(47, 40))
+-#define TDX_SEAMCALL_VMFAILINVALID	(TDX_SW_ERROR | _UL(0xFFFF0000))
 -
- 	/*
--	 * free_external_spt() is only called after hkid is freed when TD is
--	 * tearing down.
- 	 * KVM doesn't (yet) zap page table pages in mirror page table while
- 	 * TD is active, though guest pages mapped in mirror page table could be
- 	 * zapped during TD is active, e.g. for shared <-> private conversion
- 	 * and slot move/deletion.
-+	 *
-+	 * In other words, KVM should only free mirror page tables after the
-+	 * TD's hkid is freed, when the TD is being torn down.
-+	 *
-+	 * If the S-EPT PTE can't be removed for any reason, intentionally leak
-+	 * the page to prevent the kernel from accessing the encrypted page.
- 	 */
--	if (KVM_BUG_ON(is_hkid_assigned(kvm_tdx), kvm))
--		return -EIO;
+-#define TDX_SEAMCALL_GP			(TDX_SW_ERROR | X86_TRAP_GP)
+-#define TDX_SEAMCALL_UD			(TDX_SW_ERROR | X86_TRAP_UD)
 -
--	/*
--	 * The HKID assigned to this TD was already freed and cache was
--	 * already flushed. We don't have to flush again.
--	 */
--	return tdx_reclaim_page(virt_to_page(private_spt));
-+	if (KVM_BUG_ON(is_hkid_assigned(to_kvm_tdx(kvm)), kvm) ||
-+	    tdx_reclaim_page(virt_to_page(sp->external_spt)))
-+		sp->external_spt = NULL;
- }
+-/*
+- * TDX module SEAMCALL leaf function error codes
+- */
+-#define TDX_SUCCESS		0ULL
+-#define TDX_RND_NO_ENTROPY	0x8000020300000000ULL
+-
+ #ifndef __ASSEMBLER__
  
- static void tdx_sept_remove_private_spte(struct kvm *kvm, gfn_t gfn,
-@@ -3617,7 +3614,7 @@ void __init tdx_hardware_setup(void)
- 	vt_x86_ops.vm_size = max_t(unsigned int, vt_x86_ops.vm_size, sizeof(struct kvm_tdx));
+ #include <uapi/asm/mce.h>
+diff --git a/arch/x86/kvm/vmx/tdx.h b/arch/x86/kvm/vmx/tdx.h
+index 45b5183ccb36..ce2720a028ad 100644
+--- a/arch/x86/kvm/vmx/tdx.h
++++ b/arch/x86/kvm/vmx/tdx.h
+@@ -3,7 +3,6 @@
+ #define __KVM_X86_VMX_TDX_H
  
- 	vt_x86_ops.set_external_spte = tdx_sept_set_private_spte;
--	vt_x86_ops.free_external_spt = tdx_sept_free_private_spt;
-+	vt_x86_ops.reclaim_external_sp = tdx_sept_reclaim_private_sp;
- 	vt_x86_ops.remove_external_spte = tdx_sept_remove_private_spte;
- 	vt_x86_ops.protected_apic_has_interrupt = tdx_protected_apic_has_interrupt;
- }
+ #include "tdx_arch.h"
+-#include "tdx_errno.h"
+ 
+ #ifdef CONFIG_KVM_INTEL_TDX
+ #include "common.h"
 -- 
 2.53.0.rc1.217.geba53bf80e-goog
 
