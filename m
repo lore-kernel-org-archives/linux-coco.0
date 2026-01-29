@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD3934F48A
-	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 17:39:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6A319F40B
+	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 18:13:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769708399; cv=none; b=uaHYFeWahkQ1Bokolmalmjfhscu4qZHMS+UEtwDMhz0sDUt/HsbdU8O0gr1nddN2vhMUQNq2sezqzzTXwQVAdppQ1QDQQPD7HypgQaNZeHZt4e5SJErRGsHxMShNESV6RxzXV9ZdXs4c8y2WpuW3CbJI6AAWhqwIJGBYGlcCbPE=
+	t=1769710427; cv=none; b=K/9COP4nSTDMsZpIxl7M0fu2iWetzsHpG89WfmZdVbDNBSApcoZekHQy6qp2s55tbslY4Z/fXO5zRj0f0XhDDozH0vBltYI7+SUK7oVYEVUrJ+EetDkzTsvHeVkUXPyF1/7F8HCj2n5d2LAvgksDqLbwCMGthSm/ZGG43HfTDuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769708399; c=relaxed/simple;
-	bh=9/EHeULcqZbnKkCfvS7FIf8N1dbPW5VY16eMrhzC/k0=;
+	s=arc-20240116; t=1769710427; c=relaxed/simple;
+	bh=0LcW1Untbqus5N37ga2L8qu5Gbdo+b2JflsPLMk6GVM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lDWqjEt3F7xni65u/hi5IzkRfLkpJotqHBk3AyUbmDHaJNdQwwOetiXd7V/7mKomOQuZFwNpfSy+zpq3hetbLHLcxgQDTUWcajIoyC81a+jiTY6btZeugi/yuZmwoV7TPfpVa1x+5s/OGggzzVp4Vd8GnaVJox1c8txOIrjBcbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c87GBSyX; arc=none smtp.client-ip=198.175.65.17
+	 In-Reply-To:Content-Type; b=Dmg5oVoP4Vuxj6oz6SU/kohgF7zdISmRRAKVfJmz3IFoPtyJ1Kx+ovSfa3HCU1DOu8Md1jloo5lGrs94hL6q0aFzCqajM7B3eHE5sOk2Xum16Ke9x2ttbL2sF7KP85V+P0VWBGUOheHqmuNp08lByDSlAdirbdUiK01Tuv9ziQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WWDAVBea; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c87GBSyX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WWDAVBea"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769708398; x=1801244398;
+  t=1769710425; x=1801246425;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=9/EHeULcqZbnKkCfvS7FIf8N1dbPW5VY16eMrhzC/k0=;
-  b=c87GBSyXyr6zGdno3CdDl8vGzIhz+Jout9+0+RPZhnG6zriFMZClKbx4
-   N0p5HSfgWX70BFNwWbA/SoOs/xU+RHFEJzsZFCjdNw0gZ10IOWQfJ4rF4
-   qKkkae/uQllsGf2Hl6RVzc2PNsDtNhzkxw4o9zQe0D2VxeEcTWQ2fFGr0
-   pS5v7RU85VwQhOzv+mNJYl6FBbmZQuFfQ3FxlPCmAsHET39MkXz3nouNR
-   cOUXwQQZw7nuJijvW5mMQkhFg8+eOhZuwm8MMFHUs/ogaGg6m6XPvp5XD
-   iBvelq4HJA8fRhEFV1YxjGrY6cBFHc4jQENOrEaELwj65YDo/G7xB9NAe
+  bh=0LcW1Untbqus5N37ga2L8qu5Gbdo+b2JflsPLMk6GVM=;
+  b=WWDAVBeasU2o/+/6sU0CJcf9F+1EQ5ioaaSPQhj0QyFK7icLs2MqKkrg
+   dIAS2gpseGlnUwH2c9ZMvBCflyu9tz3dg6sv6GkDppVrDt3871tGp22h6
+   p+mVDU3St+G85qXhm8NxYoBq8NPs0vtmazB2b0Jov4V/9DXTq746iaTbO
+   X0N38/JMao11bVQGTXUbJxV+zTQr0dQgNS1ad/nEG2UrtIYQJCeDx0iqF
+   WksJdCrMH4xz2H0ZHgvfp4fLhWcdqoR7iTn2td9GxemzMB7ETXzl64i7l
+   HUooh+iYUAU5Pu/AVgdmIGRnKMBxJdMb/sNRv2iVAQPXGVcgZGaw7RkxE
    Q==;
-X-CSE-ConnectionGUID: E+dsnYKTQX2ZsEsXxdIs9A==
-X-CSE-MsgGUID: f4pqt5L2RL6pfqprCNslLQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="70928866"
+X-CSE-ConnectionGUID: fcdEajoFTveHoRHGSMkMSw==
+X-CSE-MsgGUID: 7Z4bq2qhQSWNs+6FwgNmfA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="74822758"
 X-IronPort-AV: E=Sophos;i="6.21,261,1763452800"; 
-   d="scan'208";a="70928866"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 09:39:57 -0800
-X-CSE-ConnectionGUID: m1QRk3fZTkyWcEM9VM/MFw==
-X-CSE-MsgGUID: DGQPX5d/SC26JL5PZLjNmg==
+   d="scan'208";a="74822758"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 10:13:44 -0800
+X-CSE-ConnectionGUID: xCaTxwdmRzqsiE/2nskrpg==
+X-CSE-MsgGUID: G3bFdV/ESe2iP+PQDRe31A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,261,1763452800"; 
-   d="scan'208";a="239364563"
+   d="scan'208";a="208885809"
 Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.110.19]) ([10.125.110.19])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 09:39:56 -0800
-Message-ID: <b7cbc2f4-6fef-44c2-a0f4-2d6895c0fd74@intel.com>
-Date: Thu, 29 Jan 2026 09:39:55 -0800
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 10:13:43 -0800
+Message-ID: <4d16c259-b1f1-4e5e-adf9-115b8d1431f4@intel.com>
+Date: Thu, 29 Jan 2026 10:13:42 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,19 +52,22 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] x86/sev: Add support to unaccept memory after
- hot-remove
-To: "Pratik R. Sampat" <prsampat@amd.com>, Kiryl Shutsemau <kas@kernel.org>
-Cc: linux-mm@kvack.org, linux-coco@lists.linux.dev, x86@kernel.org,
- linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, ardb@kernel.org,
- akpm@linux-foundation.org, david@kernel.org, osalvador@suse.de,
- thomas.lendacky@amd.com, michael.roth@amd.com
-References: <20260128204105.508855-1-prsampat@amd.com>
- <20260128204105.508855-3-prsampat@amd.com>
- <16aa84a9-83ce-4748-bc73-ccf5cb6ce376@intel.com>
- <aXs4DTXCbI_c0JPO@thinkstation>
- <097a4980-9d10-40d2-9667-d07bf19e7b86@amd.com>
+Subject: Re: [RFC PATCH v5 10/45] x86/tdx: Move all TDX error defines into
+ <asm/shared/tdx_errno.h>
+To: Sean Christopherson <seanjc@google.com>, Thomas Gleixner
+ <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Kiryl Shutsemau <kas@kernel.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, Kai Huang <kai.huang@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, Yan Zhao
+ <yan.y.zhao@intel.com>, Vishal Annapurve <vannapurve@google.com>,
+ Ackerley Tng <ackerleytng@google.com>, Sagi Shahar <sagis@google.com>,
+ Binbin Wu <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Isaku Yamahata <isaku.yamahata@intel.com>
+References: <20260129011517.3545883-1-seanjc@google.com>
+ <20260129011517.3545883-11-seanjc@google.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -110,15 +113,23 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <097a4980-9d10-40d2-9667-d07bf19e7b86@amd.com>
+In-Reply-To: <20260129011517.3545883-11-seanjc@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 1/29/26 09:32, Pratik R. Sampat wrote:
-> In that case a fall through for TDX (with a comment explaining why) and
-> panic for rest may be the way to go?
+On 1/28/26 17:14, Sean Christopherson wrote:
+...
+> "asm/shared" is used for sharing TDX code between the early compressed
+> code and the normal kernel code. While the compressed code for the guest
+> doesn't use these error code header definitions today, it does make the
+> types of calls that return the values they define. So place the defines in
+> "shared" location so that it can, but leave such cleanups for future
+> changes.
 
-No. panic() is an absolute last resort. It's almost never the way to go.
+This is beating around the bush a bit. Should this read:
 
-What else can we do to ensure we never reach this code if the platform
-doesn't support memory un-acceptance?
+	Place the new header is in "asm/shared". It doesn't need to be
+	there, but Google's kernel fork has early compressed use of
+	these things and mainline will too soon.
+
+or what? Can we be more direct, please?
