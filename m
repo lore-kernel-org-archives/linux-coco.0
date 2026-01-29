@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61940337BAB
-	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 16:08:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8105296BC1
+	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 16:59:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769702933; cv=none; b=fk4XXGBg31KckOvMu/XjTRf2o5k0nJtGPWkbOo4Qni2XAGGjSMtEV6c0qC+1+y7P7YOPrDvDekCwVpeiIFFpE3/GZvfH8fnIyw5BtMIHYqL4L8EMGTfv3nIvmfcqWHnidgvgtEETRbcVNCmkYWJJJsGPGpgZrUefegRHgCgHRyM=
+	t=1769705983; cv=none; b=Fmi6Ir/zLb5sT/2+D/E7srZ1gHIJCcHMnllmioFzEe20HK4dZKg9kplUp8N5+KjWldXnRgXDlsIuluNT9Idq0Fwb/VJvlGCJ5OQE5ViS5EDYCCF+M5bedAH9COW0eQkjuNErB2bE7yipCvPc1ElRXvDrEsIBtwzlJbDT9dmjNpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769702933; c=relaxed/simple;
-	bh=BfaDfv3muhaxtZEAMSg7+b3pUJnwOUnqVLvKC2BOybM=;
+	s=arc-20240116; t=1769705983; c=relaxed/simple;
+	bh=0dIcviYJ2gXblPSTLhA8NoRVcDEaYcGPNfZwUngwERA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=om20DTDzqeMNdh7qucrpSNC1trBG3De26jIBTMejUOmzId7NUp/3LhmD3/ils8VRqp4hvNML6AEJhvXq7Z6E7v1isdhBNuoYsz+MDO1V6LUfZ1rphbx+t0E20tW2lmnSgx1MaBpau+EG+wbP/KUZJTnwJa0iMIPCa2weGJA6rcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R2/91I6k; arc=none smtp.client-ip=198.175.65.9
+	 In-Reply-To:Content-Type; b=jWxzPO2oQw7Mmj1Bjv/W2JG4sSTFLDtEuIbYO8vRdDbIQ/i6NTotqlhpNFki723iZWDObsIVkwy/dVv4q4PyBOXqj/kHD2zt/ca+BruUtntHRaXB72kufgN/F2BLWWloqD6AsuoY0YkHfAOkxfgi1NWXde4cQscogRt9ETPjsyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nJn5Cg8s; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R2/91I6k"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nJn5Cg8s"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769702932; x=1801238932;
+  t=1769705982; x=1801241982;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=BfaDfv3muhaxtZEAMSg7+b3pUJnwOUnqVLvKC2BOybM=;
-  b=R2/91I6k8y/JmRgZ0NYj+H2+a3mjx74xqFjFBdyCRLrM+aXbFLYaU4Aw
-   03ktmhv6riC9ERVBiGCDnXBiir9VmnrPBekjI+FnQWV8+suJZ3cQyPpbN
-   CwMqsovwImjOO3SSTvApIcC3OUl1fmmw7d7+xO34Rs0g3T6WtosmlJECf
-   T5PcIh3EUbmbktklTd5NXTl8mVjAL3RQ27cfTybZp8SmqedIJKlv6ri4H
-   zoG0LdRF+SvqyVF/y15Ne3k6tO/WglatmOeXNo5aKXf5PMxaM+TNie635
-   P3yMGNAdnyVQ0jA26jnE9/VamIe1N96l9zYJLTGNZcrY6ZN00HN6Zywo2
-   g==;
-X-CSE-ConnectionGUID: 21MCylHARZWux03r7QVFxw==
-X-CSE-MsgGUID: PgLdzunfRKSc9EsT5Bcztw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="93603150"
+  bh=0dIcviYJ2gXblPSTLhA8NoRVcDEaYcGPNfZwUngwERA=;
+  b=nJn5Cg8skKfYThBfMjXXs6vkmQg31Aw8TH3dhNNZEv6H2KL2Xu6c++1R
+   84jfaFsv1IEWyIth/GDFpo8tsYzPFtE1jUen/rAv9EU5fUiiPC/X0LZqe
+   Ow85OPp+C9sblNNvdiJg6aGN8PeT2Y++63wCPaDx+KLA542rr/sRdLSmQ
+   KPyOu5kuMiOqw0EdmBAHDsLWXRdBXbB3rXDQfJtlQjE9bzx5/toI5yvLN
+   vbKFkMH2DNhu7fs0J7Hvcqc00CpYH/RUTOQ54ULwaQN3roy81IJYc51sI
+   55ZTTktgkEVTtUm2X1wlJZY3CtdKRmXvMpBJsdULhjD3v+V9d/ynqFmpN
+   Q==;
+X-CSE-ConnectionGUID: YXpkJH8YQUyh1aqBy18WIQ==
+X-CSE-MsgGUID: 9PSI0lMLTtmPBktz1P6NTw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="73546563"
 X-IronPort-AV: E=Sophos;i="6.21,261,1763452800"; 
-   d="scan'208";a="93603150"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 08:08:52 -0800
-X-CSE-ConnectionGUID: TBO04ly1RsmWJJV48DzNew==
-X-CSE-MsgGUID: RzKD7JycRsaJXXZF93C2Pw==
+   d="scan'208";a="73546563"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 08:59:16 -0800
+X-CSE-ConnectionGUID: JxhRMEbMQGKyepJHRqMnRg==
+X-CSE-MsgGUID: TsvCFEs+T6+qfmmz19/0ig==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,261,1763452800"; 
-   d="scan'208";a="212700075"
-Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.109.237]) ([10.125.109.237])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 08:08:51 -0800
-Message-ID: <ec744e5a-3bf6-4ed0-9309-0d1d1b834c68@intel.com>
-Date: Thu, 29 Jan 2026 08:08:50 -0800
+   d="scan'208";a="213121435"
+Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.110.19]) ([10.125.110.19])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 08:59:15 -0800
+Message-ID: <8aa96131-c719-411b-92c2-1c3b121d89e6@intel.com>
+Date: Thu, 29 Jan 2026 08:59:14 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -54,11 +54,11 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 06/26] x86/virt/tdx: Prepare to support P-SEAMLDR
  SEAMCALLs
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: Chao Gao <chao.gao@intel.com>, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org,
- reinette.chatre@intel.com, ira.weiny@intel.com, kai.huang@intel.com,
- dan.j.williams@intel.com, sagis@google.com, vannapurve@google.com,
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, x86@kernel.org, reinette.chatre@intel.com,
+ ira.weiny@intel.com, kai.huang@intel.com, dan.j.williams@intel.com,
+ yilun.xu@linux.intel.com, sagis@google.com, vannapurve@google.com,
  paulmck@kernel.org, nik.borisov@suse.com, zhenzhong.duan@intel.com,
  seanjc@google.com, rick.p.edgecombe@intel.com, kas@kernel.org,
  dave.hansen@linux.intel.com, vishal.l.verma@intel.com,
@@ -67,8 +67,7 @@ Cc: Chao Gao <chao.gao@intel.com>, linux-coco@lists.linux.dev,
  "H. Peter Anvin" <hpa@zytor.com>
 References: <20260123145645.90444-1-chao.gao@intel.com>
  <20260123145645.90444-7-chao.gao@intel.com>
- <e2245231-ee39-40aa-bfdc-e43419fa30f4@intel.com>
- <aXssgOZJteoaJUOz@yilunxu-OptiPlex-7050>
+ <e2245231-ee39-40aa-bfdc-e43419fa30f4@intel.com> <aXt0+lRvpvf5knKP@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -114,35 +113,68 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <aXssgOZJteoaJUOz@yilunxu-OptiPlex-7050>
+In-Reply-To: <aXt0+lRvpvf5knKP@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 1/29/26 01:46, Xu Yilun wrote:
+On 1/29/26 06:55, Chao Gao wrote:
+> On Wed, Jan 28, 2026 at 03:03:14PM -0800, Dave Hansen wrote:
 ...
-> Then with all the doc fixes, we only need minor code change:
+> Thanks. This is much clearer than my version.
 > 
-> @@ -127,7 +127,8 @@ static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
->                 preempt_disable();
->                 ret = __seamcall_dirty_cache(func, fn, args);
->                 preempt_enable();
-> -       } while (ret == TDX_RND_NO_ENTROPY && --retry);
-> +       } while ((ret == TDX_RND_NO_ENTROPY ||
-> +                 ret == SEAMLDR_RND_NO_ENTROPY) && --retry);
+> One tiny nit: NP-SEAMLDR isn't SEAM mode software. It is an authenticated code
+> module (ACM).
 
-That's better than what was there in the past, but I do think even this
-is pretty silly.
+Ahhh, thanks for the correction!
 
-I mean, we (Intel) control all the components. These errors are for the
-same dang thing. The people who wrote both components probably sit next
-to each other. :)
+>> Then do this part:
+>>
+>>> P-SEAMLDR SEAMCALLs differ from SEAMCALLs of the TDX module in terms of
+>>> error codes and the handling of the current VMCS.
+>> Except I don't even know how the TDX module handles the current VMCS.
+>> That probably needs to be in there. Or, it should be brought up in the
+>> patch itself that implements this. Or, uplifted to the cover letter.
+> 
+> My logic was:
+> 
+> 1. The kernel communicates with P-SEAMLDR via SEAMCALL, just like with the TDX
+>    Module.
+> 2. But P-SEAMLDR SEAMCALLs and TDX Module SEAMCALLs are slightly different.
+> 
+> So we need some tweaks to the low-level helpers to add separate wrappers for
+> P-SEAMLDR SEAMCALLs.
+> 
+> To me, without mentioning #2, these tweaks in this patch (for separate wrappers
+> in the next patch) aren't justified.
 
-I think I'd be a bit less grumpy if there was _anything_ else that
-demanded a retry. So, let's try to extract the guarantee that the error
-spaces are at least unified, in that a TDX module will never return
-SEAMLDR_RND_NO_ENTROPY to mean something else and a SEAMLDR will never
-return TDX_RND_NO_ENTROPY. Then, maybe talk them into doing a unified
-thing from here on out.
+My objection is that you talk about the VMCS handling in here but
+there's no actual VMCS handling. This is the changelog for patch 06/26,
+not 07/26.
 
-But, for now, drop this patch. We'll just assume the P-SEAMLDR doesn't
-have "no entropy" errors until this is sorted.
+Don't talk about the VMCS handling here. When you do, make sure you give
+enough background.
+
+>>>  static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
+>>>  			   struct tdx_module_args *args)
+>>>  {
+>>> +	u64 retry_code = TDX_RND_NO_ENTROPY;
+>>>  	int retry = RDRAND_RETRY_LOOPS;
+>>>  	u64 ret;
+>>>  
+>>> +	if (unlikely(is_seamldr_call(fn)))
+>>> +		retry_code = SEAMLDR_RND_NO_ENTROPY;
+>>
+>> (un)likey() has two uses:
+>>
+>> 1. It's in performance critical code and compilers have been
+>>   demonstrated to be generating bad code.
+>> 2. It's in code where it's not obvious what the fast path is
+>>   and (un)likey() makes the code more readable.
+>>
+>> Which one is this?
+> 
+> I think #2 although I am happy to drop "unlikely".
+
+But why does it *MATTER*? Is it important to understand that SEAMLDR
+calls are rarer than TDX module calls?
+
