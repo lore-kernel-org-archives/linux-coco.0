@@ -1,607 +1,282 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B6B34575F
-	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 17:26:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769707610; cv=none; b=HmarWDq1BwyjGMODjKxbxEPkqqwBz0mKwD47xFiSNma3a0qA/7nOtG+hKa5kipKglfsKlaEn/bHG5uLkhwSECLqTeAU1rUej5rItRImGal653HajYngGJyooUDFvl2pw/+rH/S9M0DuH66AU9qDKa+lDm5Btn5UugV75d4MWad4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769707610; c=relaxed/simple;
-	bh=EVt2LX6oELu+f2sI7s303vdlIEFbRt6P45Lra1nU3HY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f0OFqMod3r1Ru1UkkAhgkUT75eKlPi7RVLGzWpTFhQ76TEwmrT0T4H5xekXFCGyTNciBVbUUBJt2z7ZnoEotureyxAeerK6gLLo5K84/B3pHlDlzSGgJiG0b2Eoi+g/EsOxphQIO8E0vaMONQQhJj7x5CKIOdqlZgbMAS+rzj9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 52449153B;
-	Thu, 29 Jan 2026 09:26:39 -0800 (PST)
-Received: from [10.33.50.63] (e142021.arm.com [10.33.50.63])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EF6903F73F;
-	Thu, 29 Jan 2026 09:26:42 -0800 (PST)
-Message-ID: <8e4b3940-bea0-4c75-80ec-8c5a87cd24a5@arm.com>
-Date: Thu, 29 Jan 2026 18:26:40 +0100
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012005.outbound.protection.outlook.com [52.101.43.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37C3346FA2
+	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 17:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.5
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769707956; cv=fail; b=J5iEEfzWCJmK+cxfGA+O9/kMwkKHslpP4Az4W9J34mzpE0vmHiLJb+57K9M9+28cEYrm4fxX+dRjJ7tzSSSSKHWxsE1D3lEc47axKWdy2n1C5Z2ZTpeBk1njdrNRwhdw0bn2g10G+7v4RwGA6sFI+2ERgFTlO8Vad5wctWjFeo4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769707956; c=relaxed/simple;
+	bh=pnCtbSByJ1CBYGA4Zt2jKuxIVyWIsQbLb3VrRk0f6qE=;
+	h=Message-ID:Date:From:Subject:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Mg37Dw9SVgr4hc+eLVfa+oXEu1cD+riceJlZSRmoIbp8dehZuaB006yQV3aKfxra7RyMQqTthVwdv/ypbkJgKaqOGlmNAIh3Cqb8oP/mKJmW7y+yNXAudNe9ItXAA0ZIQjt5W7okEBsKypRZcRuk+NN3gXqRKDuRLGi4tqGB3Ts=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=CZhi0E+k; arc=fail smtp.client-ip=52.101.43.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="CZhi0E+k"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CcHrIVC1mFaHeg5XGPjLQxiITlfEf13grC7ipZ839DS0QOhP3cMKqfAdBKPwJ9PNWUnTh/q9RhAnu09yXjQrC72lGOqQWlSTohj6AmQZH/AnRwaxrXQeDeia1O8vNAYy1uKuK2MF5sQ43BDh71hVWv++AXvCWzeV3II2gvCYw6OgqLWlajMURQw1WIlJ3Ohwg16DxiIpJqzoekWtURcskQs1PqVELYuZdWmqkrXdKVYB5pjmJhH6xU91mDnwkYwtYmNZ59GrdouNaA0EuzA3YIg61UKlE+bcwwqoY0Tv0n0zJTUnL6a1z5B9eAODbDPMYDktnJmWVo2rKod1KExCjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FhZOkT3+mg8JxR3lXaAE42kujW1OYwPsVuMZMe8O3rg=;
+ b=LlgVOPtFQc3ndk0j5EAoZ8HtDnc82QTM0+nbXUYIDC072MgWipiuHNpjqILXf5QiMdSCXfgc89fATxSz5ntlOWje9F0naCYkNuPvtsDJx3igD8zCYID58hQ7OsZ47zrcchvd5Jt/73xdj9CEIWRP1g0Du3t/ODrwI0g4UAgx/L7CTfrFNk2p6ew2rhiVXINsqM/4g6qt2RF8+JyytvX7siPR539qzZrBNftUd2Kc+tlO76D1oP+ij9/cs4f1GaeTZkVXc39lfwz9j75ML1C+dpKGx932hGplbU+82ynOgR4ZE2/4ZKxmo2a22AmcCSaX/96vH3obK2Ob4BBveNtCwQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FhZOkT3+mg8JxR3lXaAE42kujW1OYwPsVuMZMe8O3rg=;
+ b=CZhi0E+kHzk/ed8A67+bEF1+6WlI2P9zF9pIbIAVQ23CN3RmwbiVrw0GypQaq80jotd3GP3hDVNrhrQynZ6nhFu7XsBU0n9XuCcQga0KyuMQqYEDktFsE2EL/SPFY5D4DWTgdbkahG5to1U7IbnUgVTdsGaPiAbUZCRdi+JFWCM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB8660.namprd12.prod.outlook.com (2603:10b6:610:177::5)
+ by PH7PR12MB6585.namprd12.prod.outlook.com (2603:10b6:510:213::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.10; Thu, 29 Jan
+ 2026 17:32:28 +0000
+Received: from CH3PR12MB8660.namprd12.prod.outlook.com
+ ([fe80::87aa:52e5:4b72:d5f3]) by CH3PR12MB8660.namprd12.prod.outlook.com
+ ([fe80::87aa:52e5:4b72:d5f3%6]) with mapi id 15.20.9564.010; Thu, 29 Jan 2026
+ 17:32:28 +0000
+Message-ID: <1f588ff8-e3f5-488a-836d-5e33cfd37a51@amd.com>
+Date: Thu, 29 Jan 2026 11:32:02 -0600
+User-Agent: Mozilla Thunderbird
+From: "Pratik R. Sampat" <prsampat@amd.com>
+Subject: Re: [PATCH v3 1/2] mm/memory_hotplug: Add support to accept memory
+ during hot-add
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: linux-mm@kvack.org, linux-coco@lists.linux.dev, x86@kernel.org,
+ linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, ardb@kernel.org,
+ akpm@linux-foundation.org, david@kernel.org, osalvador@suse.de,
+ thomas.lendacky@amd.com, michael.roth@amd.com
+References: <20260128204105.508855-1-prsampat@amd.com>
+ <20260128204105.508855-2-prsampat@amd.com> <aXs09b7Q8wmHMFNQ@thinkstation>
+Content-Language: en-US
+In-Reply-To: <aXs09b7Q8wmHMFNQ@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN6PR05CA0003.namprd05.prod.outlook.com
+ (2603:10b6:805:de::16) To CH3PR12MB8660.namprd12.prod.outlook.com
+ (2603:10b6:610:177::5)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] firmware: smccc: add support for Live Firmware
- Activation (LFA)
-To: Vedashree Vidwans <vvidwans@nvidia.com>, Salman Nabi
- <salman.nabi@arm.com>, sudeep.holla@arm.com, mark.rutland@arm.com,
- lpieralisi@kernel.org
-Cc: ardb@kernel.org, chao.gao@intel.com,
- linux-arm-kernel@lists.infradead.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, sdonthineni@nvidia.com, vsethi@nvidia.com,
- vwadekar@nvidia.com
-References: <20260119122729.287522-1-salman.nabi@arm.com>
- <20260119122729.287522-2-salman.nabi@arm.com>
- <bf1addf9-5e28-46c6-8943-6a359630e533@nvidia.com>
-Content-Language: en-US
-From: Andre Przywara <andre.przywara@arm.com>
-In-Reply-To: <bf1addf9-5e28-46c6-8943-6a359630e533@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8660:EE_|PH7PR12MB6585:EE_
+X-MS-Office365-Filtering-Correlation-Id: 45ba96f5-6a69-43e2-fd48-08de5f5c5fdd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Z09INVY3aHlwcU5nWEhMeXhraWVPZHFEeTNWOUN1STliN3VaTC9MdzFzWmlL?=
+ =?utf-8?B?c2xBWUtXMlg2Q3VhTnJzUnEwUVlNZUhOTlYycmdEZmlPMURVN0VRYnpjcTd1?=
+ =?utf-8?B?N2R1VThYU2kreS9yYVJJUzlXdlltaHJjaURrbEdtWHNkZjVDdi9TWVloUm9Q?=
+ =?utf-8?B?Sk5aRHJlaXpxMnZYb0JxY1U4N3FhUjg5bFl4Q3pRMkxQTmxCdDdQcktXendM?=
+ =?utf-8?B?T05NSUZaRnpCc0RjRjh3TFB1Y0JVY0Z4K3dYYjZodUpJTzdmcmNYcTdCam1M?=
+ =?utf-8?B?OGFyVGgxVy91YXBMMHRrWm00aUFUMWNCU1BWWmhHUmNaekE5aHJXbHYrT09N?=
+ =?utf-8?B?ZW91QXdWd1RmUFFKb082L1duOHcycVgyeXNuU0ppQS96TUgzUUkzQ0R3Rlph?=
+ =?utf-8?B?eGRlMjJGSnhJWnFJRzRucHphMmEvWjRkKzBjcFJ2c2xPU25PQW93YlZPSTdJ?=
+ =?utf-8?B?eHNlY2h3VXkyN05DZkxxaXUzY3ZKdWlYNE1nVXQremNTa09QYzdvUjE4ME9J?=
+ =?utf-8?B?SUZ2NWxqMTg2V1IzNXA3VDRvbjdycWk1OWpNaWpXZFZPNFhsTzYyUkhkcExp?=
+ =?utf-8?B?M0FZL0FwcGZBNkZtT2RnZzZwU2tuVFN2N3hpZDI4NXFkYjNrNTRnZEsrektz?=
+ =?utf-8?B?a1hlWGZCbW9lZEFJSkZ3ekVWSVpyUXFPbEJMQXdWOGhhRG4vV091VHc1WGJK?=
+ =?utf-8?B?cDB4NjhSTWhsUmJXaEZCYnBLdUhQdTBBRWZyTUVrTFpPc1ZocWpDRDlwZFZG?=
+ =?utf-8?B?TVdmSmtYZHdGSGlmSjQrbEUrMDFpN3A5OXRxelEzelpOUWZ2b3hVTG9YSW81?=
+ =?utf-8?B?djFoWjJEZmxtRHgvalVJZDNtY0lSQWwxY1FoTzNxR3pCN25LYWZrbGZQM1lG?=
+ =?utf-8?B?ZTBtc3BvV0R5VGg3MmdRRWlwTzBKZmk0RzdoUUcrbno3WmF2VWxNRUdVaCtR?=
+ =?utf-8?B?dmtXamRpMFNRWEN4TjFvM0Ewa2YxTHRvRm91S2JWSU9ONVVZQjB4NVdsdlM5?=
+ =?utf-8?B?WFVGOHUrVDl4aENZb1FROVU2b1N4emVaemh4ZWVXb003UFNlZ2lHTkMxSzFH?=
+ =?utf-8?B?Vm8xc0NaMThUYllKS1Y3cHp0VVVuajYyVVFjd0hFQ01jems3QjlHb1lHYnhV?=
+ =?utf-8?B?TUw1TTNZeVBrWlg4WFM5eE40REpxWGc4SUloaGc5ZGZqdms4TGJyNk5MSkU5?=
+ =?utf-8?B?cTNURGNIdjgyNTdlUnhVNEM2OUVaV1JqcHFGZys3N0dpR0M3bndXajRNWm15?=
+ =?utf-8?B?N00wTTRIOWhxM215L2V3eXZ5ZFVlVEVHRFJ6dlUwWUVoaFJUYitLMENWWW9x?=
+ =?utf-8?B?RE5sb0xDVE1aM3BiZnloVFcwcnFRbjNRNTlXdjBiVlA0WTh6ZGkxNy9JZ1gr?=
+ =?utf-8?B?TnU4NWl6eGpXek0wbUhPQTJRMS9WRHR6cmF3VXV5NU9Db2VWL0tacXRuRWEr?=
+ =?utf-8?B?S3NLdXhoTUhLK0MvdDhCQnNRT0wvajVaNk1YRlR0VldWYnByK3EwM1RqNERu?=
+ =?utf-8?B?Q1Yra3AzaG9YMGNGY29Oa0ZUdXpMUy83aHpwQWpiS1c0MDMralJpT0duVmZK?=
+ =?utf-8?B?aVJDQUxuL3hmT1VRckJHaUVjcndaV1ZtRG5lVktIbmE1dDJyY0JOWWdXRGxi?=
+ =?utf-8?B?MFowTVZLbWdOalhoanpEdXlZbnJiT2lkUTlDWm16Qzh5REYxcUNMc1A4aTNy?=
+ =?utf-8?B?UHd1cGg2YWRWbnErVVZEa2QxSGdCWXpDemtKaGx1Vi9GNC92VGthaDR2dWpr?=
+ =?utf-8?B?NG5aZGV1b2xIT0ZjODJKbnFrZVRzVGlUcFk4ZDZZNXdZY1kzYzk2eDBEc1VT?=
+ =?utf-8?B?K1BoQTZ5MndWTENtWkFQcHhuNGRhSysvMnhPZFdsZlJzd2xxUXRXK0ZEc1FE?=
+ =?utf-8?B?blVkZTdaVGJYMjNlM0JPMTJDeVZTb3NTcThpWnlNWXh4WTZrVWp1c3ZaOTll?=
+ =?utf-8?B?VGxsYnRzaHVqL0pGbFJESnVGUG1raFZ2d2ZEekkvYWlWanRyRU8xOVpaVDEw?=
+ =?utf-8?B?YUNmREgramhTTEQ2eHR4L2h1eXQ4ZWt0QWVram1ibmNRODAwRW45ejBzdk9V?=
+ =?utf-8?B?RklWV0hSeXVsamRVSXpNM09tK2NiNk1HV3BFYVhDRjExbUhHalgrcmo3Q0FR?=
+ =?utf-8?Q?Jcqw=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8660.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UmlTMmEzS3hYSG5ZRFE2TVBobko2NVdwZW43MHJpMS84WVhFYjFzYnVNeWZz?=
+ =?utf-8?B?T3N4U0F5blQvRFUvNmVhWWdqU0I3eVZEaW5MWFlPeGRYajc4Z2dnOVRJUW5I?=
+ =?utf-8?B?OU1HLzVBS3UrVFRYcVRaMXcxNXdBY2paMFE4WmE2RzZ2RHZZWTJKRVptNmRY?=
+ =?utf-8?B?MnQyRnd0ZWxmOEtyMmpFZ2tzbjlqWXRzZzg2bXZBWVJCTEt4cU5XMUhYNVE5?=
+ =?utf-8?B?RjdvTys4YXJ3bG9HbTE2VisvRGt6cC9HQW5VY3BDeVRtNjVmakFHaG85NjhM?=
+ =?utf-8?B?RzNselhmb0Z4NC9OeFBMTldPd3RYTlMzYnVyUnBIcHRXZm83UVdCZUIyYXJP?=
+ =?utf-8?B?TS9nUDNRNmVJZ3JqYnprdXNTTzlKWmpNWVlGLzdmYmlUaEk5LzlMWlZhWVZ1?=
+ =?utf-8?B?a2NabmtyK2U2NmxXZmdGQzZCNFE2MkhJMSt0Tk1paHZXc2hpb1plbDVUOUtX?=
+ =?utf-8?B?Vm5DTUhEQXZaSGpaYlY4UDZJVmNWb0pPbzQyVFhrWHVmM3kzeHIvaGVXL2p2?=
+ =?utf-8?B?dmxNeUhZd3hOc0p3a3Q1aUFEOWhuRVYwZmhOditac01UTjV1K3QzeUJJSWla?=
+ =?utf-8?B?ZlZ0ZUd1WXNhcHZsQ3I0TmgvbFZhbDRpTTIzbTRNek9Fdm9vS3JHa1pGeHpq?=
+ =?utf-8?B?bi9RRUtVb05GaGt0V1g5bkdsOGpQK1BnenpnRHZnU3VZaTl2elEraW0rOVhZ?=
+ =?utf-8?B?bnRPaStxRTV1UDR5RWQ0U2RDWFNESDVINTkzNld4RmYwUncvR3BzWEUzYU04?=
+ =?utf-8?B?NXFEcG9lNWJySXA2K2J6NjZQT0xkZUxHbGEzLy9LOGdsdHRCZHh3TGU4MG9B?=
+ =?utf-8?B?b2ZNdC9UY2V3UFQ5a2NUbkhWdW01bHpHWG9nUjNJZnRJcEJPOXJhOHd2azVw?=
+ =?utf-8?B?Vzk1Vm5QanFLd2hRMzgwWGJiZzJLRVRNbVVzeTNNa0N6TWZ5QnJINEp3Ukdo?=
+ =?utf-8?B?YXVkS3BPM1pST0k4MDR1dEJwWVZsc1d3RUFzcCtrN2t3TGJSQzdHT1VWTGtK?=
+ =?utf-8?B?WHFtYXlSY01Ob09JdGhkUGxmdEJYVlo4SkFmdk9nSENFWkxjakNwY2tpZ3ov?=
+ =?utf-8?B?WGtlMWkvd21yUW5FdWhIQzJHQnNVbUlMd0MwSW44R3dqZVc0V0JTMDVJTTc5?=
+ =?utf-8?B?M2IwZDVhWVh3bEppNFFqcmR2ZktIQ1JyS2lWWW1TZjl6V3F5WTJGM1ZGVWhW?=
+ =?utf-8?B?V0JSQ1hpSm41MFFHM1c2czQwSzlFWExxZW5WTHN6OGROc3hOeVBOMS9WUGpJ?=
+ =?utf-8?B?a09jZDFSNTVOa29RQXFqWkxDQzJTUmhXU1VBZkorNE4wSVNVNVAxMHRKclVi?=
+ =?utf-8?B?N1o2RlFlbXY3bVljcldxZ0sxUTJINHVYbEtraHNlNlFmS3NheERQY1VsTS8v?=
+ =?utf-8?B?TjNxU0xuM3VCRHBnbC9PZ09KTWo5VCt5SWd6RkM4UWJqRFpvSzl3a05ZNVd3?=
+ =?utf-8?B?WWJ1QmJBQnhGZzdxMHRNVGZralJlSjB0bFFMVlBhQTlWVFZzbmJNcytDRCtt?=
+ =?utf-8?B?Y2FsU3V3dEhzYUVLUVhPM0xMNFFhL2puQ3ZHbVl1YXB5UGlWY3F4Zzg4SzFp?=
+ =?utf-8?B?R1VISnFBTEp4alV2c2o3Z2FJcVBaUTlZeVZBZ3V6ODNLWVhpTXRwWmJSQWZ1?=
+ =?utf-8?B?Q1hibXVPa2ZYWXBSRkhCUjRVQ3JOUThaa0YySGVNRWtwM0dMUUdHTW5CUlMz?=
+ =?utf-8?B?RFdNeGlNTEJoT3d4elU1V0lxUnp0TEhLUDU1K3lTSEYreVhOSDgwTnVOUHo5?=
+ =?utf-8?B?TFg0RW8zaVo0NjUyN3NyU21sRFFaSThpTUdxRExVVzRweDhuLzZkREtQbmdx?=
+ =?utf-8?B?WmR3a2JvaGp4SXdEVW40OHM4WEQ3ZWZRdUR3dG5sdG9yczhsdjM1eW9rU1NR?=
+ =?utf-8?B?NjZLeHZSanhOS0V4Vk1LaVdMbVg3SWZpZjRUTUV4aFFSeWFJaThZM05oOHhH?=
+ =?utf-8?B?ditFS1NVVVpNTFVhYm5kUzRqckE1WXF2TE9CQW9CV3Y1bTJlcFVLaXQ5TzYy?=
+ =?utf-8?B?eXZ4VHFqTlRmVDQzOWpMdElGVnNuZTI4WFQ5bG80aThWM1piUDRvYjExL2xl?=
+ =?utf-8?B?OGYzUWdUWHlXTG91a1RvTTd2OWFQczNaUG5uQlBwZUZwem1LN0ZRbGorMzJ6?=
+ =?utf-8?B?WTlmVUtlUDFrbk01VmRVM2JMWnMzNGRXNXFZRXpZYXdHQXdSeElOMWhYTEZl?=
+ =?utf-8?B?ZlI0QTd5S2twdlF1YnZJMDBobytRRHBGbko5TFlncUFqOGlzZERoMkRNNlNl?=
+ =?utf-8?B?S0RKRVZ0TmJFTldJdUFSWUJ1UW0ybWNFRkdTengxUk1CVUdRMW9xbXV1c2o5?=
+ =?utf-8?Q?o/jHOjQenl5h5WG3/D?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 45ba96f5-6a69-43e2-fd48-08de5f5c5fdd
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8660.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2026 17:32:28.5696
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rKN8obeSl2KbYOd+utUlVRkNsQxCSkJztvTxSbLNrutOvi7t72FmUktjVSGVNV7b9i/IOTEhXk+URvBN3cEB+A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6585
 
-Hi Vedashree,
+Hi Kiryl,
 
-many thanks for having a look!
-
-On 1/28/26 00:01, Vedashree Vidwans wrote:
-> Hello,
-> 
-> On 1/19/26 04:27, Salman Nabi wrote:
->> The Arm Live Firmware Activation (LFA) is a specification [1] to describe
->> activating firmware components without a reboot. Those components
->> (like TF-A's BL31, EDK-II, TF-RMM, secure paylods) would be updated the
->> usual way: via fwupd, FF-A or other secure storage methods, or via some
-
-[ ... ]
-
->>   drivers/firmware/smccc/Kconfig  |   8 +
->>   drivers/firmware/smccc/Makefile |   1 +
->>   drivers/firmware/smccc/lfa_fw.c | 668 ++++++++++++++++++++++++++++++++
->>   3 files changed, 677 insertions(+)
->>   create mode 100644 drivers/firmware/smccc/lfa_fw.c
+On 1/29/26 4:35 AM, Kiryl Shutsemau wrote:
+> On Wed, Jan 28, 2026 at 02:41:04PM -0600, Pratik R. Sampat wrote:
+>> Confidential computing guests require memory to be accepted before use.
+>> The unaccepted memory bitmap maintained by firmware does not track
+>> most hotplugged memory ranges apart from system memory annotated to be
+>> cold plugged at boot.
 >>
-[ ... ]
->> diff --git a/drivers/firmware/smccc/lfa_fw.c b/drivers/firmware/smccc/ 
->> lfa_fw.c
->> new file mode 100644
->> index 000000000000..ce54049b7190
->> --- /dev/null
->> +++ b/drivers/firmware/smccc/lfa_fw.c
->> @@ -0,0 +1,668 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
+>> Explicitly validate and transition the newly added memory to a private
+>> state, making it usable by the guest.
+>>
+>> Signed-off-by: Pratik R. Sampat <prsampat@amd.com>
+>> ---
+>>  drivers/firmware/efi/unaccepted_memory.c | 18 ++++++++++++++++++
+>>  include/linux/mm.h                       |  5 +++++
+>>  mm/memory_hotplug.c                      |  2 ++
+>>  3 files changed, 25 insertions(+)
+>>
+>> diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
+>> index c2c067eff634..5a4c8b0f56c8 100644
+>> --- a/drivers/firmware/efi/unaccepted_memory.c
+>> +++ b/drivers/firmware/efi/unaccepted_memory.c
+>> @@ -209,6 +209,24 @@ bool range_contains_unaccepted_memory(phys_addr_t start, unsigned long size)
+>>  	return ret;
+>>  }
+>>  
 >> +/*
->> + * Copyright (C) 2025 Arm Limited
+>> + * Unaccepted memory bitmap only covers initial boot memory and not the
+>> + * hotpluggable range that is part of SRAT parsing. However, some initial memory
+>> + * with the attribute EFI_MEMORY_HOT_PLUGGABLE can indicate boot time memory
+>> + * that can be hot-removed. Hence, handle acceptance in accordance with the
+>> + * unaccepted bitmap. Otherwise, perform the state change for the memory range
+>> + * up-front.
 >> + */
+>> +void accept_hotplug_memory(phys_addr_t start, unsigned long size)
+>> +{
+>> +	if (range_contains_unaccepted_memory(start, size)) {
+>> +		accept_memory(start, size);
+>> +		return;
+>> +	}
+> 
+> No. This is buggy. The memory has to be accepted regardless of state in
+> the bitmap. If the memory is ever unplugged the bitmap state is not
+> relevant.
+> 
+> So, accept it unconditionally and mark the memory accepted in the
+> bitmap.
 
-[ ... ]
+I see. This makes sense for acceptance since device_del would always fully
+unplug it.
 
->> +
->> +static int call_lfa_activate(void *data)
->> +{
->> +    struct image_props *attrs = data;
->> +    struct arm_smccc_1_2_regs reg = { 0 };
->> +
->> +    reg.a0 = LFA_1_0_FN_ACTIVATE;
->> +    reg.a1 = attrs->fw_seq_id; /* fw_seq_id under consideration */
->> +    /*
->> +     * As we do not support updates requiring a CPU reset (yet),
->> +     * we pass 0 in reg.a3 and reg.a4, holding the entry point and 
->> context
->> +     * ID respectively.
->> +     * cpu_rendezvous_forced is set by the administrator, via sysfs,
->> +     * cpu_rendezvous is dictated by each firmware component.
->> +     */
->> +    reg.a2 = !(attrs->cpu_rendezvous_forced || attrs->cpu_rendezvous);
->> +
->> +    for (;;) {
->> +        arm_smccc_1_2_invoke(&reg, &reg);
->> +
->> +        if ((long)reg.a0 < 0) {
->> +            pr_err("ACTIVATE for image %s failed: %s\n",
->> +                attrs->image_name, lfa_error_strings[-reg.a0]);
->> +            return reg.a0;
->> +        }
->> +        if (!(reg.a1 & LFA_ACTIVATE_CALL_AGAIN))
->> +            break; /* ACTIVATE successful */
->> +    }
-> The implementation uses same 'struct arm_smccc_1_2_regs reg' as
-> input and output for arm_smccc_1_2_invoke(). Here, reg.a0 (function ID), 
-> reg.a1 (fw_seq_id) and reg.a2 (cpu rendezvous) are initialized once 
-> before the loop and arm_smccc_1_2_invoke() overwrites the whole register 
-> set on every iteration. That means inputs (a0, a1, a2) can be clobbered 
-> between loop iterations unless reassigned each time.
-> Suggestion: Re-initialize input members of reg on each loop iteration or 
-> use a separate 'struct arm_smccc_1_2_regs' for output to avoid input 
-> corruption.
+I still might need to keep a version of bitmap handling in unaccept considering
+the case where partially accepted (lazy) memory is removed.
+For SNP, pvalidate is not an idempotent operation and we must only rescind
+the state for the bits that were previously accepted.
 
-Ah, that's a good point and indeed a bug, thanks for spotting this! Will 
-fix it.
+Also, now that I stare at the unaccept_hotplug_memory implementation, I realize
+calling range_contains_unaccepted_memory() is plain wrong. I should rather be
+looking at the ranges and handling the bitmap + unacceptance.
+I'll be sure to clean that up in the next iteration as well.
 
->> +
->> +    return reg.a0;
->> +}
->> +
->> +static int activate_fw_image(struct image_props *attrs)
->> +{
->> +    int ret;
->> +
->> +    mutex_lock(&lfa_lock);
->> +    if (attrs->cpu_rendezvous_forced || attrs->cpu_rendezvous)
->> +        ret = stop_machine(call_lfa_activate, attrs, cpu_online_mask);
->> +    else
->> +        ret = call_lfa_activate(attrs);
->> +
->> +    if (ret != 0) {
->> +        mutex_unlock(&lfa_lock);
->> +        return lfa_cancel(attrs);
->> +    }
->> +
->> +    /*
->> +     * Invalidate fw_seq_ids (-1) for all images as the seq_ids and the
->> +     * number of firmware images in the LFA agent may change after a
->> +     * successful activation attempt. Negate all image flags as well.
->> +     */
->> +    attrs = NULL;
->> +    list_for_each_entry(attrs, &lfa_fw_images, image_node) {
->> +        set_image_flags(attrs, -1, 0b1000, 0, 0);
->> +    }
->> +
->> +    update_fw_images_tree();
->> +
->> +    /*
->> +     * Removing non-valid image directories at the end of an activation.
->> +     * We can't remove the sysfs attributes while in the respective
->> +     * _store() handler, so have to postpone the list removal to a
->> +     * workqueue.
->> +     */
->> +    INIT_WORK(&fw_images_update_work, remove_invalid_fw_images);
->> +    queue_work(fw_images_update_wq, &fw_images_update_work);
->> +    mutex_unlock(&lfa_lock);
->> +
->> +    return ret;
->> +}
->> +
->> +static int prime_fw_image(struct image_props *attrs)
->> +{
->> +    struct arm_smccc_1_2_regs reg = { 0 };
->> +    int ret;
->> +
->> +    mutex_lock(&lfa_lock);
->> +    /* Avoid SMC calls on invalid firmware images */
->> +    if (attrs->fw_seq_id == -1) {
->> +        pr_err("Arm LFA: Invalid firmware sequence id\n");
->> +        mutex_unlock(&lfa_lock);
->> +
->> +        return -ENODEV;
->> +    }
->> +
->> +    if (attrs->may_reset_cpu) {
->> +        pr_err("CPU reset not supported by kernel driver\n");
->> +        mutex_unlock(&lfa_lock);
->> +
->> +        return -EINVAL;
->> +    }
->> +
->> +    /*
->> +     * LFA_PRIME/ACTIVATE will return 1 in reg.a1 if the firmware
->> +     * priming/activation is still in progress. In that case
->> +     * LFA_PRIME/ACTIVATE will need to be called again.
->> +     * reg.a1 will become 0 once the prime/activate process completes.
->> +     */
->> +    reg.a0 = LFA_1_0_FN_PRIME;
->> +    reg.a1 = attrs->fw_seq_id; /* fw_seq_id under consideration */
->> +    for (;;) {
->> +        arm_smccc_1_2_invoke(&reg, &reg);
->> +
->> +        if ((long)reg.a0 < 0) {
->> +            pr_err("LFA_PRIME for image %s failed: %s\n",
->> +                attrs->image_name, lfa_error_strings[-reg.a0]);
->> +            mutex_unlock(&lfa_lock);
->> +
->> +            return reg.a0;
->> +        }
->> +        if (!(reg.a1 & LFA_PRIME_CALL_AGAIN)) {
->> +            ret = 0;
->> +            break; /* PRIME successful */
->> +        }
->> +    }
-> Similar comment to call_lfa_activate(). Suggestion to either re-assign 
-> 'struct arm_smccc_1_2_regs' input values on each loop iteration or use a 
-> separate 'struct arm_smccc_1_2_regs' for output to avoid input 
-> corruption between loop iterations. This matches the intended 
-> 'CALL_AGAIN' protocal while keeping the inputs stable across retries.
+Thanks,
+--Pratik
 
-Indeed, good catch.
-
+> 
 >> +
->> +    mutex_unlock(&lfa_lock);
->> +    return ret;
-> The introduction of separate 'ret' cariable does not appear necessary 
-> for functional correctness. The SMCCC status is conveyed via reg.a0 on 
-> each iteration, so returning reg.a0 should preserve existing behavior.
-> If 'ret' must be kept, consider initializing it to 0 at declaration 
-> time. That avoids setting ret = 0 inside 'PRIME successful' path and 
-> leads to simpler control flow.
-
-Right, looks like a leftover from a previous version, it's indeed not 
-needed.
-
+>> +	arch_accept_memory(start, start + size);
 >> +}
 >> +
->> +static ssize_t name_show(struct kobject *kobj, struct kobj_attribute 
->> *attr,
->> +             char *buf)
+>>  #ifdef CONFIG_PROC_VMCORE
+>>  static bool unaccepted_memory_vmcore_pfn_is_ram(struct vmcore_cb *cb,
+>>  						unsigned long pfn)
+>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>> index 15076261d0c2..2d3c1ea40606 100644
+>> --- a/include/linux/mm.h
+>> +++ b/include/linux/mm.h
+>> @@ -4504,6 +4504,7 @@ int set_anon_vma_name(unsigned long addr, unsigned long size,
+>>  
+>>  bool range_contains_unaccepted_memory(phys_addr_t start, unsigned long size);
+>>  void accept_memory(phys_addr_t start, unsigned long size);
+>> +void accept_hotplug_memory(phys_addr_t start, unsigned long size);
+>>  
+>>  #else
+>>  
+>> @@ -4517,6 +4518,10 @@ static inline void accept_memory(phys_addr_t start, unsigned long size)
+>>  {
+>>  }
+>>  
+>> +static inline void accept_hotplug_memory(phys_addr_t start, unsigned long size)
 >> +{
->> +    struct image_props *attrs = container_of(attr, struct image_props,
->> +                         image_attrs[LFA_ATTR_NAME]);
->> +
->> +    return sysfs_emit(buf, "%s\n", attrs->image_name);
 >> +}
 >> +
->> +static ssize_t activation_capable_show(struct kobject *kobj,
->> +                       struct kobj_attribute *attr, char *buf)
->> +{
->> +    struct image_props *attrs = container_of(attr, struct image_props,
->> +                     image_attrs[LFA_ATTR_ACT_CAPABLE]);
+>>  #endif
+>>  
+>>  static inline bool pfn_is_unaccepted_memory(unsigned long pfn)
+>> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+>> index a63ec679d861..549ccfd190ee 100644
+>> --- a/mm/memory_hotplug.c
+>> +++ b/mm/memory_hotplug.c
+>> @@ -1567,6 +1567,8 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+>>  	if (!strcmp(res->name, "System RAM"))
+>>  		firmware_map_add_hotplug(start, start + size, "System RAM");
+>>  
+>> +	accept_hotplug_memory(start, size);
 >> +
->> +    return sysfs_emit(buf, "%d\n", attrs->activation_capable);
->> +}
->> +
->> +static ssize_t activation_pending_show(struct kobject *kobj,
->> +                       struct kobj_attribute *attr, char *buf)
->> +{
->> +    struct image_props *attrs = container_of(attr, struct image_props,
->> +                     image_attrs[LFA_ATTR_ACT_PENDING]);
->> +    struct arm_smccc_1_2_regs reg = { 0 };
->> +
->> +    /*
->> +     * Activation pending status can change anytime thus we need to 
->> update
->> +     * and return its current value
->> +     */
->> +    reg.a0 = LFA_1_0_FN_GET_INVENTORY;
->> +    reg.a1 = attrs->fw_seq_id;
->> +    arm_smccc_1_2_invoke(&reg, &reg);
->> +    if (reg.a0 == LFA_SUCCESS)
->> +        attrs->activation_pending = !!(reg.a3 & BIT(1));
->> +
->> +    return sysfs_emit(buf, "%d\n", attrs->activation_pending);
->> +}
->> +
->> +static ssize_t may_reset_cpu_show(struct kobject *kobj,
->> +                  struct kobj_attribute *attr, char *buf)
->> +{
->> +    struct image_props *attrs = container_of(attr, struct image_props,
->> +                     image_attrs[LFA_ATTR_MAY_RESET_CPU]);
->> +
->> +    return sysfs_emit(buf, "%d\n", attrs->may_reset_cpu);
->> +}
->> +
->> +static ssize_t cpu_rendezvous_show(struct kobject *kobj,
->> +                   struct kobj_attribute *attr, char *buf)
->> +{
->> +    struct image_props *attrs = container_of(attr, struct image_props,
->> +                     image_attrs[LFA_ATTR_CPU_RENDEZVOUS]);
->> +
->> +    return sysfs_emit(buf, "%d\n", attrs->cpu_rendezvous);
->> +}
->> +
->> +static ssize_t force_cpu_rendezvous_store(struct kobject *kobj,
->> +                      struct kobj_attribute *attr,
->> +                      const char *buf, size_t count)
->> +{
->> +    struct image_props *attrs = container_of(attr, struct image_props,
->> +                image_attrs[LFA_ATTR_FORCE_CPU_RENDEZVOUS]);
->> +    int ret;
->> +
->> +    ret = kstrtobool(buf, &attrs->cpu_rendezvous_forced);
->> +    if (ret)
->> +        return ret;
->> +
->> +    return count;
->> +}
->> +
->> +static ssize_t force_cpu_rendezvous_show(struct kobject *kobj,
->> +                     struct kobj_attribute *attr, char *buf)
->> +{
->> +    struct image_props *attrs = container_of(attr, struct image_props,
->> +                image_attrs[LFA_ATTR_FORCE_CPU_RENDEZVOUS]);
->> +
->> +    return sysfs_emit(buf, "%d\n", attrs->cpu_rendezvous_forced);
->> +}
->> +
->> +static ssize_t current_version_show(struct kobject *kobj,
->> +                    struct kobj_attribute *attr, char *buf)
->> +{
->> +    struct image_props *attrs = container_of(attr, struct image_props,
->> +                image_attrs[LFA_ATTR_CURRENT_VERSION]);
->> +    u32 maj, min;
->> +
->> +    maj = attrs->current_version >> 32;
->> +    min = attrs->current_version & 0xffffffff;
->> +    return sysfs_emit(buf, "%u.%u\n", maj, min);
->> +}
->> +
->> +static ssize_t pending_version_show(struct kobject *kobj,
->> +                    struct kobj_attribute *attr, char *buf)
->> +{
->> +    struct image_props *attrs = container_of(attr, struct image_props,
->> +                     image_attrs[LFA_ATTR_ACT_PENDING]);
->> +    struct arm_smccc_1_2_regs reg = { 0 };
->> +    u32 maj, min;
->> +
->> +    /*
->> +     * Similar to activation pending, this value can change following an
->> +     * update, we need to retrieve fresh info instead of stale 
->> information.
->> +     */
->> +    reg.a0 = LFA_1_0_FN_GET_INVENTORY;
->> +    reg.a1 = attrs->fw_seq_id;
->> +    arm_smccc_1_2_invoke(&reg, &reg);
->> +    if (reg.a0 == LFA_SUCCESS) {
->> +        if (reg.a5 != 0 && attrs->activation_pending)
->> +        {
->> +            attrs->pending_version = reg.a5;
->> +            maj = reg.a5 >> 32;
->> +            min = reg.a5 & 0xffffffff;
->> +        }
->> +    }
->> +
->> +    return sysfs_emit(buf, "%u.%u\n", maj, min);
->> +}
->> +
->> +static ssize_t activate_store(struct kobject *kobj, struct 
->> kobj_attribute *attr,
->> +                  const char *buf, size_t count)
->> +{
->> +    struct image_props *attrs = container_of(attr, struct image_props,
->> +                     image_attrs[LFA_ATTR_ACTIVATE]);
->> +    int ret;
->> +
->> +    ret = prime_fw_image(attrs);
->> +    if (ret) {
->> +        pr_err("Firmware prime failed: %s\n",
->> +            lfa_error_strings[-ret]);
->> +        return -ECANCELED;
->> +    }
->> +
->> +    ret = activate_fw_image(attrs);
->> +    if (ret) {
->> +        pr_err("Firmware activation failed: %s\n",
->> +            lfa_error_strings[-ret]);
->> +        return -ECANCELED;
->> +    }
->> +
->> +    pr_info("Firmware activation succeeded\n");
->> +
->> +    return count;
->> +}
->> +
->> +static ssize_t cancel_store(struct kobject *kobj, struct 
->> kobj_attribute *attr,
->> +                const char *buf, size_t count)
->> +{
->> +    struct image_props *attrs = container_of(attr, struct image_props,
->> +                         image_attrs[LFA_ATTR_CANCEL]);
->> +    int ret;
->> +
->> +    ret = lfa_cancel(attrs);
->> +    if (ret != 0)
->> +        return ret;
->> +
->> +    return count;
->> +}
->> +
->> +static struct kobj_attribute image_attrs_group[LFA_ATTR_NR_IMAGES] = {
->> +    [LFA_ATTR_NAME]            = __ATTR_RO(name),
->> +    [LFA_ATTR_CURRENT_VERSION]    = __ATTR_RO(current_version),
->> +    [LFA_ATTR_PENDING_VERSION]    = __ATTR_RO(pending_version),
->> +    [LFA_ATTR_ACT_CAPABLE]        = __ATTR_RO(activation_capable),
->> +    [LFA_ATTR_ACT_PENDING]        = __ATTR_RO(activation_pending),
->> +    [LFA_ATTR_MAY_RESET_CPU]    = __ATTR_RO(may_reset_cpu),
->> +    [LFA_ATTR_CPU_RENDEZVOUS]    = __ATTR_RO(cpu_rendezvous),
->> +    [LFA_ATTR_FORCE_CPU_RENDEZVOUS]    = 
->> __ATTR_RW(force_cpu_rendezvous),
->> +    [LFA_ATTR_ACTIVATE]        = __ATTR_WO(activate),
->> +    [LFA_ATTR_CANCEL]        = __ATTR_WO(cancel)
->> +};
->> +
->> +static void clean_fw_images_tree(void)
->> +{
->> +    struct image_props *attrs, *tmp;
->> +
->> +    list_for_each_entry_safe(attrs, tmp, &lfa_fw_images, image_node)
->> +        delete_fw_image_node(attrs);
->> +}
->> +
->> +static int update_fw_image_node(char *fw_uuid, int seq_id,
->> +                      u32 image_flags, u64 reg_current_ver,
->> +                      u64 reg_pending_ver)
->> +{
->> +    const char *image_name = "(unknown)";
->> +    struct image_props *attrs;
->> +    int ret;
->> +
->> +    /*
->> +     * If a fw_image is already in the images list then we just update
->> +     * its flags and seq_id instead of trying to recreate it.
->> +     */
->> +    list_for_each_entry(attrs, &lfa_fw_images, image_node) {
->> +        if (!strcmp(attrs->image_dir->name, fw_uuid)) {
->> +            set_image_flags(attrs, seq_id, image_flags,
->> +                    reg_current_ver, reg_pending_ver);
->> +            return 0;
->> +        }
->> +    }
->> +
->> +    attrs = kzalloc(sizeof(*attrs), GFP_KERNEL);
->> +    if (!attrs)
->> +        return -ENOMEM;
->> +
->> +    for (int i = 0; i < ARRAY_SIZE(fw_images_uuids); i++) {
->> +        if (!strcmp(fw_images_uuids[i].uuid, fw_uuid))
->> +            image_name = fw_images_uuids[i].name;
->> +    }
-> I would recommend using fw_uuid as the image_name when UUID is not
-> found in fw_images_uuids[], currently the driver assigns 'unknown'
-> in such case.
-> There is a valid possibility that platform-specific FW images, not
-> listed in fw_images_uuids[], are used by LFA agent for live FW
-> activation. In such scenarios, falling back to 'unknown' would lose
-> important information especially when errors surface in
-> call_lfa_activate(). Using UUID directly would indicate which
-> image failed or behaved unexpectedly.
-
-Well, I think if you want to identify an image clearly, you always have 
-to use the UUID, as shown by the directory name. The "name" sysfs file 
-is there just for convenience, to make this easier for *users* when 
-dealing with well-known firmware image. As you rightly said, we can 
-never guarantee that the kernel knows a certain UUID, and it wouldn't be 
-necessary for proper operation at all.
-So I was expecting this name to be only used by reporting scripts or 
-such. But indeed some "unknown" string is a bit fragile as a placeholder 
-name, I was wondering if we should just provide an empty string in this 
-case? This would allow scripts to detect this special case reliably and 
-provide their own rendering then.
-Does this make sense?
-
-Cheers,
-Andre
-
-> Thank you,
-> Veda
->> +
->> +    attrs->image_dir = kobject_create_and_add(fw_uuid, lfa_dir);
->> +    if (!attrs->image_dir)
->> +        return -ENOMEM;
->> +
->> +    INIT_LIST_HEAD(&attrs->image_node);
->> +    attrs->image_name = image_name;
->> +    attrs->cpu_rendezvous_forced = 1;
->> +    set_image_flags(attrs, seq_id, image_flags, reg_current_ver,
->> +            reg_pending_ver);
->> +
->> +    /*
->> +     * The attributes for each sysfs file are constant (handler 
->> functions,
->> +     * name and permissions are the same within each directory), but we
->> +     * need a per-directory copy regardless, to get a unique handle
->> +     * for each directory, so that container_of can do its magic.
->> +     * Also this requires an explicit sysfs_attr_init(), since it's a 
->> new
->> +     * copy, to make LOCKDEP happy.
->> +     */
->> +    memcpy(attrs->image_attrs, image_attrs_group,
->> +           sizeof(attrs->image_attrs));
->> +    for (int i = 0; i < LFA_ATTR_NR_IMAGES; i++) {
->> +        struct attribute *attr = &attrs->image_attrs[i].attr;
->> +
->> +        sysfs_attr_init(attr);
->> +        ret = sysfs_create_file(attrs->image_dir, attr);
->> +        if (ret) {
->> +            pr_err("creating sysfs file for uuid %s: %d\n",
->> +                   fw_uuid, ret);
->> +            clean_fw_images_tree();
->> +
->> +            return ret;
->> +        }
->> +    }
->> +    list_add(&attrs->image_node, &lfa_fw_images);
->> +
->> +    return ret;
->> +}
->> +
->> +static int update_fw_images_tree(void)
->> +{
->> +    struct arm_smccc_1_2_regs reg = { 0 };
->> +    struct uuid_regs image_uuid;
->> +    char image_id_str[40];
->> +    int ret, num_of_components;
->> +
->> +    num_of_components = get_nr_lfa_components();
->> +    if (num_of_components <= 0) {
->> +        pr_err("Error getting number of LFA components\n");
->> +        return -ENODEV;
->> +    }
->> +
->> +    for (int i = 0; i < num_of_components; i++) {
->> +        reg.a0 = LFA_1_0_FN_GET_INVENTORY;
->> +        reg.a1 = i; /* fw_seq_id under consideration */
->> +        arm_smccc_1_2_invoke(&reg, &reg);
->> +        if (reg.a0 == LFA_SUCCESS) {
->> +            image_uuid.uuid_lo = reg.a1;
->> +            image_uuid.uuid_hi = reg.a2;
->> +
->> +            snprintf(image_id_str, sizeof(image_id_str), "%pUb",
->> +                 &image_uuid);
->> +            ret = update_fw_image_node(image_id_str, i,
->> +                            reg.a3, reg.a4, reg.a5);
->> +            if (ret)
->> +                return ret;
->> +        }
->> +    }
->> +
->> +    return 0;
->> +}
->> +
->> +static int __init lfa_init(void)
->> +{
->> +    struct arm_smccc_1_2_regs reg = { 0 };
->> +    int err;
->> +
->> +    reg.a0 = LFA_1_0_FN_GET_VERSION;
->> +    arm_smccc_1_2_invoke(&reg, &reg);
->> +    if (reg.a0 == -LFA_NOT_SUPPORTED) {
->> +        pr_info("Live Firmware activation: no firmware agent found\n");
->> +        return -ENODEV;
->> +    }
->> +
->> +    fw_images_update_wq = alloc_workqueue("fw_images_update_wq",
->> +                         WQ_UNBOUND | WQ_MEM_RECLAIM, 1);
->> +    if (!fw_images_update_wq) {
->> +        pr_err("Live Firmware Activation: Failed to allocate 
->> workqueue.\n");
->> +
->> +        return -ENOMEM;
->> +    }
->> +
->> +    pr_info("Live Firmware Activation: detected v%ld.%ld\n",
->> +        reg.a0 >> 16, reg.a0 & 0xffff);
->> +
->> +    lfa_dir = kobject_create_and_add("lfa", firmware_kobj);
->> +    if (!lfa_dir)
->> +        return -ENOMEM;
->> +
->> +    mutex_lock(&lfa_lock);
->> +    err = update_fw_images_tree();
->> +    if (err != 0)
->> +        kobject_put(lfa_dir);
->> +
->> +    mutex_unlock(&lfa_lock);
->> +    return err;
->> +}
->> +module_init(lfa_init);
->> +
->> +static void __exit lfa_exit(void)
->> +{
->> +    flush_workqueue(fw_images_update_wq);
->> +    destroy_workqueue(fw_images_update_wq);
->> +
->> +    mutex_lock(&lfa_lock);
->> +    clean_fw_images_tree();
->> +    mutex_unlock(&lfa_lock);
->> +
->> +    kobject_put(lfa_dir);
->> +}
->> +module_exit(lfa_exit);
->> +
->> +MODULE_DESCRIPTION("ARM Live Firmware Activation (LFA)");
->> +MODULE_LICENSE("GPL");
+>>  	/* device_online() will take the lock when calling online_pages() */
+>>  	mem_hotplug_done();
+>>  
+>> -- 
+>> 2.52.0
+>>
 > 
 
