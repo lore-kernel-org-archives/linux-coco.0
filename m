@@ -1,56 +1,56 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1216F378D6A
-	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 01:16:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDED34214A
+	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 01:16:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769649410; cv=none; b=NOq6yyMcezxk+Al30czHVwKLcbKTVgKlnRYCyEkfGoPYO+LM9J0Y9uLeAkHTqP4h3RFEA0HpRSQI8DYBSqRkRDe+V588EOva4+jFrJriVxEalEPJmwMircWJp0SNKZ1ohlpbntY9/JGEMprcuEQtgmq29QrcerP2gnF+xZVCbHU=
+	t=1769649413; cv=none; b=tKY3uaTne7dcHeY5a0dzlnMWt5Kh/atbp+QaFLbDZWreA4rZV491iSJxpLObFaUyHwtJC/4p84e/O3QaXjtiHiLuXsTl7XvbL2CedtZ0Hb739Z3GeGeXeRkgLWjiNcQz96X11PwunfgeKVkyaet/zLP+vwTiBCj+GhIq0Xwl7Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769649410; c=relaxed/simple;
-	bh=NFixUjF3MwoYkH+QN/YHmqd9LbNtFdN+U0RPFkdel4M=;
+	s=arc-20240116; t=1769649413; c=relaxed/simple;
+	bh=0iJukulF0iDMEL1IfL1RkxcCyzPuMdALrMtRBvNIXvg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UsoNQAXTpoKyPBjFFOwRD/924OMpwnLQ3E/2/wEj8M2xQbJXetezuJqTo+s3wRW32jAWTCrlFiRCMlkzncwHE9y/NusLswaqd0YXCdtxLqZvA+BD40w40Eu0A36MmfjohT8IDAknvoba9GFepZ/fw2FF9vjYCafIqEo/sgrBabg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0ib6/vCp; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=S8mZG9a5W54TrfX/yGnhxCBRwU2Z/qXxYtTCpKxcs7fTG8Nzwuq5YWGmnTKYuyP7p6AKzwqxdrl1ZYbLa6VOvYPj6b9kNplPt7fi1YlRGlYPcwT54mwcoQep6kG6Tlc1ZfduYgoEDA6i9gzmE/+NbwyyM4tQjkHMXP659LcwNHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cAPC4mK3; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0ib6/vCp"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c634b862fcfso265416a12.2
-        for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 17:16:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cAPC4mK3"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2a784b2234dso11241395ad.1
+        for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 17:16:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769649408; x=1770254208; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1769649410; x=1770254210; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=UsNtWhNO0vhkCUAU93bPMBDIA0a/SH6YuHE+/bCD4zo=;
-        b=0ib6/vCp/V4cxFk5CSHWQODycT76mpABUZNSVlgrdmYziNVnM4yCO5VYxzyBnEdyUX
-         iN6aevFw1zaJ3GHdO+BibQ0yJIeEC01QjMNGWdc00ksPuFClcxcKi/mzkQT6Wm6DSkcE
-         cenXJd438NIZZXIHbovTCyOaucKdzyyr9WOfHQlKe1rLRIbAZm5fDbMq7tYtBGMctPuM
-         E6hBdeYfrXfYooVJiZ5WXDsY27PmV3wLruWdg8u/AMaAjLVW08LE2REa5r47SMW5oVSJ
-         6AQLmKjVqUsD7Wcn9QxaMgoE4XQHWW4L4q7BxQTg82PINQubxy7aialH0GOrg31KCW4K
-         fV7w==
+        bh=h+1tpJHrAZljj9M61rOSFv1VCgBL5A8paE4Q/bTQIJs=;
+        b=cAPC4mK3kmrelFkYvQfwoUElnEWGDWXnvNqsHsBLLZj4A3dsRLDzvPew/8+Ez4roTD
+         p4W8wttrcmWJzJRmSeHrbIOERT7+OwMCLzP/ZH4h5f44Gon/Yff9EgK40P0BcM+ev7Y8
+         KNcCvoP1MQanL9Ts8Mm5mpAA2MYOxvookwZrG6xy3dRq2QHPXQyvsa6zFo+L9aBx26es
+         GTuNEXsxXz/RKv412QciqKCBDhLdgtKt1CDPn7QG3sWLIVfdTHWNj+Ij6lAobhERGdfZ
+         sZGctDYkoxrs4zI2iO40zg781vhBbYy3R2ywfXCHaQUpdRHCPDh3IZdYwpMfg3PBjSvc
+         8iNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769649408; x=1770254208;
+        d=1e100.net; s=20230601; t=1769649410; x=1770254210;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=UsNtWhNO0vhkCUAU93bPMBDIA0a/SH6YuHE+/bCD4zo=;
-        b=GU6YsyAX9kiUnbfvxuS197YJYaj7kVrd8XI9FSVawRF426y34UIoHEy4cyU8Qx1ftP
-         q8IUI+Ozcx6UPijNzHxlfBXoTHNrEpGI2ZqHqDXw3gK3msWqhYgQgKldjA1BjxZWJsK4
-         Pa+eO6mcVLh1maGiley5QGcZAAcP8nNbFU0K9716ZxITi1+kNIi2uibE0ofaY98py5f3
-         vrjAQUZLJ2MED+mv9YZCvAOMw7GzX01rS5thzZS6hm2fvidWn9ZerirOaiqHY4fw0bPp
-         ddK6vwq3Kbm3xUbxhOjAh7RkrzZ6XmtfDf6Mw5OXxZ805gWhVhJhRx59GVbCW+4Txk/T
-         vDMw==
-X-Forwarded-Encrypted: i=1; AJvYcCX8iA2CNQlfSHVMsRH/ergQY2XZ/ZDmoQaP5RSiMuDA7CncK39nzJvuBJyYX1VuPjm2jf5jJFG/dgmS@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywh1A64FXBiwckzrhUHR/4OonCLRlpqyJ59UgR76shrCjr81GlZ
-	Lt4gcn7Tx3rCC9nhV65zie/WjbWvGuopE9oFwnq5F6WEwJlCfyQhlTkIESwPpxdG0yR2YJN4RwL
-	bCGLXHw==
-X-Received: from pjbga13.prod.google.com ([2002:a17:90b:38d:b0:349:3867:ccc1])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3d19:b0:366:14ac:e20f
- with SMTP id adf61e73a8af0-38ec6581747mr6919458637.77.1769649408354; Wed, 28
- Jan 2026 17:16:48 -0800 (PST)
+        bh=h+1tpJHrAZljj9M61rOSFv1VCgBL5A8paE4Q/bTQIJs=;
+        b=LtVEkLx5+w1KyAcV+i/Aqa5P1RWo1+GKMtFS1l6R1bL0BCrQ8lvK8rkM+nAGJBfwNU
+         Ka0TOYjbG4h9207tV3OdTcMoPS3t9+8yUZtRrO0gnpyTGC8ibLL6iVYr7F2KBIg8KVEi
+         4iTYg4qLyjHH9+ODaSlSPibbdCqt5ATnspysQkGe3quecdKDNU8jqcLmhoSdE9I++gZG
+         AeHbK1pkFC1gZsPISwDWcv/QF8bg9Xi0CYTiRtnPXWOhn+VBmujkNLV8nxBlTrQEwX8c
+         h1oeEKhnrZooT6CvS97AwsP4BNK6gxC1z1qkZgnVlJ09EAIyQvR7mqOHGKcjF8bbMB5g
+         3CDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU/T/AyfsckfL6D6cHkJROALemxSdFVAHN0EZVFH4YzV/0o4dykjH+vwEz0Q9r/jIo4LMQ75nH9ocWY@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywvu1OZvh2Q/rMHFCSwVpKlRJvhgjK/LjB3EIPU8oqipWEY80c6
+	V0R4qEMCxnhR/kPZL4JfEqrVmamBya/CWy5qzoBJjFD7nYLwQj21WhzrS1osx8Y832MuAjGcZCu
+	aQWI54w==
+X-Received: from pgbcu5.prod.google.com ([2002:a05:6a02:2185:b0:c0e:da74:78ee])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:918f:b0:34f:1623:2354
+ with SMTP id adf61e73a8af0-38ec6421854mr6633861637.42.1769649410126; Wed, 28
+ Jan 2026 17:16:50 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 28 Jan 2026 17:15:15 -0800
+Date: Wed, 28 Jan 2026 17:15:16 -0800
 In-Reply-To: <20260129011517.3545883-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260129011517.3545883-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.rc1.217.geba53bf80e-goog
-Message-ID: <20260129011517.3545883-44-seanjc@google.com>
-Subject: [RFC PATCH v5 43/45] *** DO NOT MERGE *** KVM: guest_memfd: Add
- pre-zap arch hook for shared<=>private conversion
+Message-ID: <20260129011517.3545883-45-seanjc@google.com>
+Subject: [RFC PATCH v5 44/45] KVM: x86/mmu: Add support for splitting S-EPT
+ hugepages on conversion
 From: Sean Christopherson <seanjc@google.com>
 To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
@@ -75,167 +75,278 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
 	Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Add a gmem "pre-zap" hook to allow arch code to take action before a
-shared<=>private conversion, and just as importantly, to let arch code
-reject/fail a conversion, e.g. if the conversion requires new page tables
-and KVM hits in OOM situation.
+Add support for splitting S-EPT hugepages in preparation for converting a
+subset of a hugepage to be shared, as KVM must precisely zap/remove S-EPT
+entries to avoid clobbering guest memory (the lifetime of guest private
+memory is tied to the S-EPT).  I.e. KVM needs to first split a hugepage so
+that only the to-be-converted small pages can be zapped.
 
-The new hook will be used by TDX to split hugepages as necessary to avoid
-overzapping PTEs, which for all intents and purposes corrupts guest data
-for TDX VMs (memory is wiped when private PTEs are removed).
+To avoid unnecessary work, e.g. if only the tail/end page of massive region
+isn't aligned to the conversion, explicitly detect unaligned head and tail
+pages relative to the max page size support by KVM, i.e. head/tail pages
+that will undergo partial conversion.
 
-TODO: Wire this up the convert path, not the PUNCH_HOLE path, once in-place
-      conversion is supported.
+To support splitting an S-EPT hugepage without a vCPU, add a per-VM PAMT
+cache, along with a mutex to guard the cache.  Using a mutex, e.g. versus
+a spinlock, is important at it allows KVM to allocate memory *without*
+dropping the lock, i.e. so that the PAMT cache can be topped-up as needed
+without needed to juggle arch.tdp_mmu_external_cache_lock.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/Kconfig       |  1 +
- arch/x86/kvm/mmu/tdp_mmu.c |  8 ++++++
- include/linux/kvm_host.h   |  5 ++++
- virt/kvm/Kconfig           |  4 +++
- virt/kvm/guest_memfd.c     | 50 ++++++++++++++++++++++++++++++++++++--
- 5 files changed, 66 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  8 +++-
+ arch/x86/kvm/mmu/mmu.c          |  2 +-
+ arch/x86/kvm/mmu/tdp_mmu.c      | 72 +++++++++++++++++++++++++++++++--
+ arch/x86/kvm/vmx/tdx.c          | 34 +++++++++++++---
+ arch/x86/kvm/vmx/tdx.h          |  2 +
+ 5 files changed, 107 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index d916bd766c94..5f8d8daf4289 100644
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -138,6 +138,7 @@ config KVM_INTEL_TDX
- 	depends on INTEL_TDX_HOST
- 	select KVM_GENERIC_MEMORY_ATTRIBUTES
- 	select HAVE_KVM_ARCH_GMEM_POPULATE
-+	select HAVE_KVM_ARCH_GMEM_CONVERT
- 	help
- 	  Provides support for launching Intel Trust Domain Extensions (TDX)
- 	  confidential VMs on Intel processors.
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 385f1cf32d70..54dea90a53dc 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1563,6 +1563,12 @@ struct kvm_arch {
+ 	 * the code to do so.
+ 	 */
+ 	spinlock_t tdp_mmu_pages_lock;
++
++	/*
++	 * Protect the per-VM cache of pre-allocate pages used to populate the
++	 * Dynamic PAMT when splitting S-EPT huge pages without a vCPU.
++	 */
++	struct mutex tdp_mmu_external_cache_lock;
+ #endif /* CONFIG_X86_64 */
+ 
+ 	/*
+@@ -1861,7 +1867,7 @@ struct kvm_x86_ops {
+ 				 u64 new_spte, enum pg_level level);
+ 	void (*reclaim_external_sp)(struct kvm *kvm, gfn_t gfn,
+ 				    struct kvm_mmu_page *sp);
+-	int (*topup_external_cache)(struct kvm_vcpu *vcpu, int min);
++	int (*topup_external_cache)(struct kvm *kvm, struct kvm_vcpu *vcpu, int min);
+ 
+ 
+ 	bool (*has_wbinvd_exit)(void);
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index c2765bfc8492..62bf6bec2df2 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -606,7 +606,7 @@ static int mmu_topup_memory_caches(struct kvm_vcpu *vcpu, bool maybe_indirect)
+ 		if (r)
+ 			return r;
+ 
+-		r = kvm_x86_call(topup_external_cache)(vcpu, PT64_ROOT_MAX_LEVEL);
++		r = kvm_x86_call(topup_external_cache)(vcpu->kvm, vcpu, PT64_ROOT_MAX_LEVEL);
+ 		if (r)
+ 			return r;
+ 	}
 diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-index 0cdc6782e508..c46ebdacdb50 100644
+index c46ebdacdb50..3181406c5e0b 100644
 --- a/arch/x86/kvm/mmu/tdp_mmu.c
 +++ b/arch/x86/kvm/mmu/tdp_mmu.c
-@@ -1630,6 +1630,14 @@ int kvm_tdp_mmu_split_huge_pages(struct kvm_vcpu *vcpu, gfn_t start, gfn_t end,
+@@ -1447,7 +1447,8 @@ bool kvm_tdp_mmu_wrprot_slot(struct kvm *kvm,
+ 	return spte_set;
  }
+ 
+-static struct kvm_mmu_page *tdp_mmu_alloc_sp_for_split(struct tdp_iter *iter)
++static struct kvm_mmu_page *tdp_mmu_alloc_sp_for_split(struct kvm *kvm,
++						       struct tdp_iter *iter)
+ {
+ 	struct kvm_mmu_page *sp;
+ 
+@@ -1464,7 +1465,7 @@ static struct kvm_mmu_page *tdp_mmu_alloc_sp_for_split(struct tdp_iter *iter)
+ 		if (!sp->external_spt)
+ 			goto err_external_spt;
+ 
+-		if (kvm_x86_call(topup_external_cache)(kvm_get_running_vcpu(), 1))
++		if (kvm_x86_call(topup_external_cache)(kvm, kvm_get_running_vcpu(), 1))
+ 			goto err_external_split;
+ 	}
+ 
+@@ -1556,7 +1557,7 @@ static int tdp_mmu_split_huge_pages_root(struct kvm *kvm,
+ 			else
+ 				write_unlock(&kvm->mmu_lock);
+ 
+-			sp = tdp_mmu_alloc_sp_for_split(&iter);
++			sp = tdp_mmu_alloc_sp_for_split(kvm, &iter);
+ 
+ 			if (shared)
+ 				read_lock(&kvm->mmu_lock);
+@@ -1631,9 +1632,74 @@ int kvm_tdp_mmu_split_huge_pages(struct kvm_vcpu *vcpu, gfn_t start, gfn_t end,
  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_tdp_mmu_split_huge_pages);
  
-+#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-+int kvm_arch_gmem_convert(struct kvm *kvm, gfn_t start, gfn_t end,
-+			  bool to_private)
+ #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
++static int __tdp_mmu_split_mirror_huge_pages(struct kvm *kvm,
++					     struct kvm_mmu_page *root,
++					     gfn_t gfn, int target_level)
 +{
-+	return 0;
++	gfn_t end = gfn + KVM_PAGES_PER_HPAGE(target_level + 1);
++
++	return tdp_mmu_split_huge_pages_root(kvm, root, gfn, end, target_level, false);
 +}
-+#endif /* CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT */
 +
- static bool tdp_mmu_need_write_protect(struct kvm *kvm, struct kvm_mmu_page *sp)
- {
- 	/*
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 782f4d670793..c0bafff274b6 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2588,6 +2588,11 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t gfn, void __user *src, long npages
- 		       kvm_gmem_populate_cb post_populate, void *opaque);
- #endif
- 
-+#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-+int kvm_arch_gmem_convert(struct kvm *kvm, gfn_t start, gfn_t end,
-+			  bool to_private);
-+#endif
-+
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
- void kvm_arch_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end);
- #endif
-diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-index 267c7369c765..05d69eaa50ae 100644
---- a/virt/kvm/Kconfig
-+++ b/virt/kvm/Kconfig
-@@ -125,3 +125,7 @@ config HAVE_KVM_ARCH_GMEM_INVALIDATE
- config HAVE_KVM_ARCH_GMEM_POPULATE
-        bool
-        depends on KVM_GUEST_MEMFD
-+
-+config HAVE_KVM_ARCH_GMEM_CONVERT
-+       bool
-+       depends on KVM_GUEST_MEMFD
-\ No newline at end of file
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 51dbb309188f..b01f333a5e95 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -164,6 +164,46 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
- 	return folio;
- }
- 
-+#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-+static int __kvm_gmem_convert(struct gmem_file *f, pgoff_t start, pgoff_t end,
-+			      bool to_private)
++static int tdp_mmu_split_mirror_huge_pages(struct kvm *kvm,
++					    struct kvm_mmu_page *root,
++					    gfn_t start, gfn_t end, int level)
 +{
-+	struct kvm_memory_slot *slot;
-+	unsigned long index;
++
++	gfn_t head = gfn_round_for_level(start, level + 1);
++	gfn_t tail = gfn_round_for_level(end, level + 1);
 +	int r;
 +
-+	xa_for_each_range(&f->bindings, index, slot, start, end - 1) {
-+		r = kvm_arch_gmem_convert(f->kvm,
-+					  kvm_gmem_get_start_gfn(slot, start),
-+					  kvm_gmem_get_end_gfn(slot, end),
-+					  to_private);
++	if (head != start) {
++		r = __tdp_mmu_split_mirror_huge_pages(kvm, root, head, level);
 +		if (r)
 +			return r;
 +	}
-+	return 0;
-+}
 +
-+static int kvm_gmem_convert(struct inode *inode, pgoff_t start, pgoff_t end,
-+			    bool to_private)
-+{
-+	struct gmem_file *f;
-+	int r;
-+
-+	kvm_gmem_for_each_file(f, inode->i_mapping) {
-+		r = __kvm_gmem_convert(f, start, end, to_private);
++	if (tail != end && (head != tail || head == start)) {
++		r = __tdp_mmu_split_mirror_huge_pages(kvm, root, tail, level);
 +		if (r)
 +			return r;
 +	}
-+	return 0;
-+}
-+#else
-+static int kvm_gmem_convert(struct inode *inode, pgoff_t start, pgoff_t end,
-+			    bool to_private)
-+{
-+	return 0;
-+}
-+#endif
 +
- static enum kvm_gfn_range_filter kvm_gmem_get_invalidate_filter(struct inode *inode)
++	return 0;
++}
++
+ int kvm_arch_gmem_convert(struct kvm *kvm, gfn_t start, gfn_t end,
+ 			  bool to_private)
  {
- 	if (GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED)
-@@ -244,6 +284,7 @@ static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
- {
- 	pgoff_t start = offset >> PAGE_SHIFT;
- 	pgoff_t end = (offset + len) >> PAGE_SHIFT;
++	struct kvm_mmu_page *root;
 +	int r;
- 
- 	/*
- 	 * Bindings must be stable across invalidation to ensure the start+end
-@@ -253,13 +294,18 @@ static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
- 
- 	kvm_gmem_invalidate_begin(inode, start, end);
- 
--	truncate_inode_pages_range(inode->i_mapping, offset, offset + len - 1);
++
 +	/*
-+	 * For demonstration purposes, pretend this is a private=>shared conversion.
++	 * When converting from private=>shared, KVM must first split potential
++	 * hugepages, as KVM mustn't overzap private mappings for TDX guests,
++	 * i.e. must zap _exactly_ [start, end).  Split potential hugepages at
++	 * the head and tail of the to-be-converted (and thus zapped) range so
++	 * that KVM doesn't overzap due to dropping a hugepage that doesn't
++	 * fall wholly inside the range.
 +	 */
-+	r = kvm_gmem_convert(inode, start, end, false);
-+	if (!r)
-+		truncate_inode_pages_range(inode->i_mapping, offset, offset + len - 1);
++	if (to_private || !kvm_has_mirrored_tdp(kvm))
++		return 0;
++
++	/*
++	 * Acquire the external cache lock, a.k.a. the Dynamic PAMT lock, to
++	 * protect the per-VM cache of pre-allocate pages used to populate the
++	 * Dynamic PAMT when splitting S-EPT huge pages.
++	 */
++	guard(mutex)(&kvm->arch.tdp_mmu_external_cache_lock);
++
++	guard(write_lock)(&kvm->mmu_lock);
++
++	/*
++	 * TODO: Also split from PG_LEVEL_1G => PG_LEVEL_2M when KVM supports
++	 *       1GiB S-EPT pages.
++	 */
++	__for_each_tdp_mmu_root_yield_safe(kvm, root, 0, KVM_MIRROR_ROOTS) {
++		r = tdp_mmu_split_mirror_huge_pages(kvm, root, start, end, PG_LEVEL_4K);
++		if (r)
++			return r;
++	}
+ 	return 0;
+ }
+ #endif /* CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT */
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 098954f5e07c..774d395e5c73 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -607,6 +607,8 @@ void tdx_vm_destroy(struct kvm *kvm)
+ {
+ 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
  
- 	kvm_gmem_invalidate_end(inode, start, end);
++	tdx_free_pamt_cache(&kvm_tdx->pamt_cache);
++
+ 	tdx_reclaim_td_control_pages(kvm);
  
- 	filemap_invalidate_unlock(inode->i_mapping);
+ 	kvm_tdx->state = TD_STATE_UNINITIALIZED;
+@@ -629,6 +631,8 @@ int tdx_vm_init(struct kvm *kvm)
+ {
+ 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
  
--	return 0;
-+	return r;
++	tdx_init_pamt_cache(&kvm_tdx->pamt_cache);
++
+ 	kvm->arch.has_protected_state = true;
+ 	/*
+ 	 * TDX Module doesn't allow the hypervisor to modify the EOI-bitmap,
+@@ -1621,15 +1625,32 @@ void tdx_load_mmu_pgd(struct kvm_vcpu *vcpu, hpa_t root_hpa, int pgd_level)
+ 	td_vmcs_write64(to_tdx(vcpu), SHARED_EPT_POINTER, root_hpa);
  }
  
- static long kvm_gmem_allocate(struct inode *inode, loff_t offset, loff_t len)
+-static int tdx_topup_external_pamt_cache(struct kvm_vcpu *vcpu, int min)
++static struct tdx_pamt_cache *tdx_get_pamt_cache(struct kvm *kvm,
++						 struct kvm_vcpu *vcpu)
+ {
++	if (KVM_BUG_ON(vcpu && vcpu->kvm != kvm, kvm))
++		return NULL;
++
++	if (vcpu)
++		return &to_tdx(vcpu)->pamt_cache;
++
++	lockdep_assert_held(&kvm->arch.tdp_mmu_external_cache_lock);
++	return &to_kvm_tdx(kvm)->pamt_cache;
++}
++
++static int tdx_topup_external_pamt_cache(struct kvm *kvm,
++					 struct kvm_vcpu *vcpu, int min)
++{
++	struct tdx_pamt_cache *pamt_cache;
++
+ 	if (!tdx_supports_dynamic_pamt(tdx_sysinfo))
+ 		return 0;
+ 
+-	if (WARN_ON_ONCE(!vcpu))
++	pamt_cache = tdx_get_pamt_cache(kvm, vcpu);
++	if (!pamt_cache)
+ 		return -EIO;
+ 
+-	return tdx_topup_pamt_cache(&to_tdx(vcpu)->pamt_cache, min);
++	return tdx_topup_pamt_cache(pamt_cache, min);
+ }
+ 
+ static int tdx_mem_page_add(struct kvm *kvm, gfn_t gfn, enum pg_level level,
+@@ -1792,8 +1813,8 @@ static struct page *tdx_spte_to_external_spt(struct kvm *kvm, gfn_t gfn,
+ static int tdx_sept_split_private_spte(struct kvm *kvm, gfn_t gfn, u64 old_spte,
+ 				       u64 new_spte, enum pg_level level)
+ {
+-	struct kvm_vcpu *vcpu = kvm_get_running_vcpu();
+ 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
++	struct tdx_pamt_cache *pamt_cache;
+ 	gpa_t gpa = gfn_to_gpa(gfn);
+ 	u64 err, entry, level_state;
+ 	struct page *external_spt;
+@@ -1804,7 +1825,8 @@ static int tdx_sept_split_private_spte(struct kvm *kvm, gfn_t gfn, u64 old_spte,
+ 	if (!external_spt)
+ 		return -EIO;
+ 
+-	if (KVM_BUG_ON(!vcpu || vcpu->kvm != kvm, kvm))
++	pamt_cache = tdx_get_pamt_cache(kvm, kvm_get_running_vcpu());
++	if (!pamt_cache)
+ 		return -EIO;
+ 
+ 	err = tdh_do_no_vcpus(tdh_mem_range_block, kvm, &kvm_tdx->td, gpa,
+@@ -1816,7 +1838,7 @@ static int tdx_sept_split_private_spte(struct kvm *kvm, gfn_t gfn, u64 old_spte,
+ 
+ 	err = tdh_do_no_vcpus(tdh_mem_page_demote, kvm, &kvm_tdx->td, gpa,
+ 			      level, spte_to_pfn(old_spte), external_spt,
+-			      &to_tdx(vcpu)->pamt_cache, &entry, &level_state);
++			      pamt_cache, &entry, &level_state);
+ 	if (TDX_BUG_ON_2(err, TDH_MEM_PAGE_DEMOTE, entry, level_state, kvm))
+ 		return -EIO;
+ 
+diff --git a/arch/x86/kvm/vmx/tdx.h b/arch/x86/kvm/vmx/tdx.h
+index f444fc84d93b..57d7e70ffe7d 100644
+--- a/arch/x86/kvm/vmx/tdx.h
++++ b/arch/x86/kvm/vmx/tdx.h
+@@ -48,6 +48,8 @@ struct kvm_tdx {
+ 	 * Set/unset is protected with kvm->mmu_lock.
+ 	 */
+ 	bool wait_for_sept_zap;
++
++	struct tdx_pamt_cache pamt_cache;
+ };
+ 
+ /* TDX module vCPU states */
 -- 
 2.53.0.rc1.217.geba53bf80e-goog
 
