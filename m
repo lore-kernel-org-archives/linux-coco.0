@@ -1,56 +1,56 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F91326D53
-	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 01:15:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824EB32A3E7
+	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 01:15:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769649338; cv=none; b=pppKqztTXOArHPuAOaZt1A9oP2D5XZo8bAMo9nresSDUSlhVrT/9UUtJ4vke/T4bkZFF15tvZmVU4IbE2n2WctNjR5KxGO7/CoSL7Arag3VIu7Qew2uiDAAvbzRjHg4ksAuooXo850Rxkim2TABc7AJjv+oqQvod0pEmU3RdguY=
+	t=1769649340; cv=none; b=ZqvgG09v6o3kAjDSMGEHANaBEm12vSAw/Nq+A3nfzKVMUEidT//9pe4qr3ByNZ/yDDc6WEZ0bEQxZqKz8NXa0Wojb8ezSIPNym+/Rp4n87Z23LoDGTvK67pR1wHGW55G0nqIQtysbcY7QFAYhMScYkpYG33Uk94g0cloxrrVpGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769649338; c=relaxed/simple;
-	bh=i+BaQipwcwIk83xd9q3EaqDNGVAGV/ShuF7c8g62crA=;
+	s=arc-20240116; t=1769649340; c=relaxed/simple;
+	bh=P8qsQaiuZL+h7L+tAAdynSCmTDEjnF5aicywFGbF+f4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=T0O3v58HydlIYegvYNk4oxYsDehLl/qMoORoS1u5qrrDvyvLvGd7ImkZ0j3w814QpygONPOCNHaUkxvJkxwom7D4nTfvGgt4MT7f+PCD+QbW8tP0OkvL8MUh735Wequ86LVXff9lV39s1EYBMSRKUsSCbw+tvkpfWjG4fq0DgVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zE+UyZp1; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=DyaieWMBG7lLW2x49s3dGtO0gga1fuYBaD5QSC5P1+ETtQz8AP5u0fq2SrvKDyQPgii12pmoGrQqFQR3vxO8d3AtJvzcjQDfld1acLyVX2+fVfG/A+aovcuIqnjzfLfLr3BXwBttomV5p7pMt2rbzv3KKr+fK0DmHBa36rRfsq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ebk1a5CY; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zE+UyZp1"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c6136af8e06so220673a12.1
-        for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 17:15:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ebk1a5CY"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a13be531b2so3454115ad.2
+        for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 17:15:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769649335; x=1770254135; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1769649337; x=1770254137; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=7CglUg76d+5MQRtd6QcMDKkRS3BGZoZjOLZ6NJir0yk=;
-        b=zE+UyZp1pLaM+iSrR2NRcC6aoz7ql0T1TBbp2RguAAvpJT0qwIxG1LFjdKiepJykE/
-         vvEILQkYSSRaONZs2Dbpw9lJW5NZv964AbZMMh69vYbPJCfhMcqW4Hn8yMnFiZ40lhlk
-         ugLd12xbsh68atYewmF0z1HxDmj4Tq9XphaR+7tJblRcyUkp8iEyGkkxJH76bJO5oZZ8
-         dqnWIziZ+ydKcb/NRCHHPXL5N5kSlSNx5XcqstD6rVM6tclwBFy1o3VPoJHYgYu/DJ65
-         Bf6kB3HrOWKDQUXtlLcyMgfwD126Kr66d0Z88ekvY7ZKShX2aEyt+SoEC6kXFhrORZfc
-         IjDQ==
+        bh=pQCejTr0vCZl81GKWwdB4BKHKeMCfpmuFrgxzwPsDWQ=;
+        b=ebk1a5CYmvG/nAZqPmJ8HMAYsZ5ZK3Z3BQWRrZGyonGA+VESsUU3JY1P1Fw7N8GUK4
+         HFXCxcxNXl/xA2WjMxi2XqWlX8y/QJm/WCq1lSlzQU2QFsnFNbhHjmqKNwZ9ygP3ITRF
+         YOI5h0gbWs1EUZBih7NfRiU4Hl9yxLiT4Xd0DAbLeF6dwPw1g6Xsju0D8jE/SPuy9po5
+         pyp5ToAe2hKN5mem1mLb/rU2fiFZIopyLgMCn3syvEUQVxZa9WsZ3iTA9LkQkFX18jit
+         N5zYDANOIoSnUUBi7xrTW9PGlmdfOYfHGlOM/flN2dBSMzdjgSCISXZBrhXmxF85qHeB
+         JCKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769649335; x=1770254135;
+        d=1e100.net; s=20230601; t=1769649337; x=1770254137;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=7CglUg76d+5MQRtd6QcMDKkRS3BGZoZjOLZ6NJir0yk=;
-        b=Iqxm+klBSntrwYMsuM7byuUZLyIZwreofLO0bNgwEttCq6IRAIex+tw9vqe8/xAjhU
-         uuVrJYEGvo6sC2bM+PV+3Jf5U8Wrjj2w3HpfOMCoI86dmZDFXl+/HakcJBhrt2Md/fu4
-         2rwYxRdvmhY1s/vd5Biz2y5ooPXVMLzw9mnh50SkEdxI4S4Gvnxjdq0Y/OxNRCbkMmVA
-         lzoqmzC2420943ey2jkuWZ9lnEnUgZLpnoL2jz0DxF2pFK68WC7dFpfY1liBvCmjrbZm
-         zupKDRrNuxi0QUyB21R7qwJirgJ948xQDsuKqEBj+Zg1rMjnZiyDic5hjoOKdC8D9HcT
-         N+Uw==
-X-Forwarded-Encrypted: i=1; AJvYcCWgF5kFeHfdB+xnb6bc1AwWPfBAgbNotMYmCa8kdS6Bua+fvxWJc8vO5RqZCIfeyMwWZry6JpC7191n@lists.linux.dev
-X-Gm-Message-State: AOJu0YxWM3uRagU5Y5OyJG9bctjzqk+wyXVw4YFvc+ekawNQhMxBgc+r
-	pgpvL0uDPEwRyX1H9D3vja8HWT6doPVfpRCyf5JTZx/vZ6f2G2IMuOnYRf3WiOoL3pxU7CP43yc
-	ea2z7ZQ==
-X-Received: from pjbft8.prod.google.com ([2002:a17:90b:f88:b0:352:bd7e:99e7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:314d:b0:340:ecad:414
- with SMTP id 98e67ed59e1d1-353fed8797emr5977548a91.27.1769649335221; Wed, 28
- Jan 2026 17:15:35 -0800 (PST)
+        bh=pQCejTr0vCZl81GKWwdB4BKHKeMCfpmuFrgxzwPsDWQ=;
+        b=PwuCvBAhC/AiokfIeQdSVrMjkGeV0guKvtKWKJi6sCTck0wQbkeqTKcvS61cq/7UJR
+         Nu3nDUQOIU1UVpUq1Q+0JxJ0bHFIHi9XeP+rAHVjwXA5y2xMegnLPxmyjYXlw5D0Sq1t
+         mKy7REqbHPQDRKiVPjuCCbVIhmCqlhzR7wqsRbILKfgubgI1PFS7a20MFqW9XAmy/wGO
+         tzisKKsewU+OrtZPL4vKJxH/7XE9x1LG3IL9I1ZLlfR6HV2d29IuVf40LghtoxxrlQxx
+         umsI4N+LIqPaKSuv7r3sNLtPtbLSmAH+HxfrSgeoR3Ud5NWvDgEDhkMvP20vYlQV2ukC
+         LoIw==
+X-Forwarded-Encrypted: i=1; AJvYcCXQlOusEwVoj4N4Ed6/AyMILKA2T9cSulYco9fA9sSizs0vCvtgImC99m/1PgTaIKRXTZ3NgsLEAWwy@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz/tewJ7dAdeQg4UwumuG1n3VIFQ5VwOHIoSdp0cjXThnjaNESp
+	AbfIaJduxAG0P47PVtW0ZXA2lr0ol1D4Wcdn5ZbhnWuE5kwOfrP6TM/RlQVuoI/zLZFVYVC+/yJ
+	6/v16Og==
+X-Received: from pgg11.prod.google.com ([2002:a05:6a02:4d8b:b0:c65:b239:37ed])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:a106:b0:35d:d477:a7f3
+ with SMTP id adf61e73a8af0-38ec62ddca8mr6620267637.20.1769649336815; Wed, 28
+ Jan 2026 17:15:36 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 28 Jan 2026 17:14:36 -0800
+Date: Wed, 28 Jan 2026 17:14:37 -0800
 In-Reply-To: <20260129011517.3545883-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260129011517.3545883-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.rc1.217.geba53bf80e-goog
-Message-ID: <20260129011517.3545883-5-seanjc@google.com>
-Subject: [RFC PATCH v5 04/45] KVM: x86: Make "external SPTE" ops that can fail
- RET0 static calls
+Message-ID: <20260129011517.3545883-6-seanjc@google.com>
+Subject: [RFC PATCH v5 05/45] KVM: TDX: Drop kvm_x86_ops.link_external_spt(),
+ use .set_external_spte() for all
 From: Sean Christopherson <seanjc@google.com>
 To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
@@ -75,34 +75,219 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
 	Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Define kvm_x86_ops .link_external_spt(), .set_external_spte(), and
-.free_external_spt() as RET0 static calls so that an unexpected call to a
-a default operation doesn't consume garbage.
+Drop the dedicated .link_external_spt() for linking non-leaf S-EPT pages,
+and instead funnel everything through .set_external_spte().  Using separate
+hooks doesn't help prevent TDP MMU details from bleeding into TDX, and vice
+versa; to the contrary, dedicated callbacks will result in _more_ pollution
+when hugepage support is added, e.g. will require the TDP MMU to know
+details about the splitting rules for TDX that aren't all that relevant to
+the TDP MMU.
 
-Fixes: 77ac7079e66d ("KVM: x86/tdp_mmu: Propagate building mirror page tables")
-Fixes: 94faba8999b9 ("KVM: x86/tdp_mmu: Propagate tearing down mirror page tables")
+Ideally, KVM would provide a single pair of hooks to set S-EPT entries,
+one hook for setting SPTEs under write-lock and another for settings SPTEs
+under read-lock (e.g. to ensure the entire operation is "atomic", to allow
+for failure, etc.).  Sadly, TDX's requirement that all child S-EPT entries
+are removed before the parent makes that impractical: the TDP MMU
+deliberately prunes non-leaf SPTEs and _then_ processes its children, thus
+making it quite important for the TDP MMU to differentiate between zapping
+leaf and non-leaf S-EPT entries.
+
+However, that's the _only_ case that's truly special, and even that case
+could be shoehorned into a single hook; it's just wouldn't be a net
+positive.
+
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/kvm-x86-ops.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/kvm-x86-ops.h |  1 -
+ arch/x86/include/asm/kvm_host.h    |  3 --
+ arch/x86/kvm/mmu/tdp_mmu.c         | 37 +++---------------
+ arch/x86/kvm/vmx/tdx.c             | 61 ++++++++++++++++++++----------
+ 4 files changed, 48 insertions(+), 54 deletions(-)
 
 diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index de709fb5bd76..c18a033bee7e 100644
+index c18a033bee7e..57eb1f4832ae 100644
 --- a/arch/x86/include/asm/kvm-x86-ops.h
 +++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -94,9 +94,9 @@ KVM_X86_OP_OPTIONAL_RET0(set_tss_addr)
+@@ -94,7 +94,6 @@ KVM_X86_OP_OPTIONAL_RET0(set_tss_addr)
  KVM_X86_OP_OPTIONAL_RET0(set_identity_map_addr)
  KVM_X86_OP_OPTIONAL_RET0(get_mt_mask)
  KVM_X86_OP(load_mmu_pgd)
--KVM_X86_OP_OPTIONAL(link_external_spt)
--KVM_X86_OP_OPTIONAL(set_external_spte)
--KVM_X86_OP_OPTIONAL(free_external_spt)
-+KVM_X86_OP_OPTIONAL_RET0(link_external_spt)
-+KVM_X86_OP_OPTIONAL_RET0(set_external_spte)
-+KVM_X86_OP_OPTIONAL_RET0(free_external_spt)
+-KVM_X86_OP_OPTIONAL_RET0(link_external_spt)
+ KVM_X86_OP_OPTIONAL_RET0(set_external_spte)
+ KVM_X86_OP_OPTIONAL_RET0(free_external_spt)
  KVM_X86_OP_OPTIONAL(remove_external_spte)
- KVM_X86_OP(has_wbinvd_exit)
- KVM_X86_OP(get_l2_tsc_offset)
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index e441f270f354..d12ca0f8a348 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1853,9 +1853,6 @@ struct kvm_x86_ops {
+ 	void (*load_mmu_pgd)(struct kvm_vcpu *vcpu, hpa_t root_hpa,
+ 			     int root_level);
+ 
+-	/* Update external mapping with page table link. */
+-	int (*link_external_spt)(struct kvm *kvm, gfn_t gfn, enum pg_level level,
+-				void *external_spt);
+ 	/* Update the external page table from spte getting set. */
+ 	int (*set_external_spte)(struct kvm *kvm, gfn_t gfn, enum pg_level level,
+ 				 u64 mirror_spte);
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+index 0feda295859a..56ad056e6042 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -495,31 +495,17 @@ static void handle_removed_pt(struct kvm *kvm, tdp_ptep_t pt, bool shared)
+ 	call_rcu(&sp->rcu_head, tdp_mmu_free_sp_rcu_callback);
+ }
+ 
+-static void *get_external_spt(gfn_t gfn, u64 new_spte, int level)
+-{
+-	if (is_shadow_present_pte(new_spte) && !is_last_spte(new_spte, level)) {
+-		struct kvm_mmu_page *sp = spte_to_child_sp(new_spte);
+-
+-		WARN_ON_ONCE(sp->role.level + 1 != level);
+-		WARN_ON_ONCE(sp->gfn != gfn);
+-		return sp->external_spt;
+-	}
+-
+-	return NULL;
+-}
+-
+ static int __must_check set_external_spte_present(struct kvm *kvm, tdp_ptep_t sptep,
+ 						 gfn_t gfn, u64 *old_spte,
+ 						 u64 new_spte, int level)
+ {
+-	bool was_present = is_shadow_present_pte(*old_spte);
+-	bool is_present = is_shadow_present_pte(new_spte);
+-	bool is_leaf = is_present && is_last_spte(new_spte, level);
+-	int ret = 0;
+-
+-	KVM_BUG_ON(was_present, kvm);
++	int ret;
+ 
+ 	lockdep_assert_held(&kvm->mmu_lock);
++
++	if (KVM_BUG_ON(is_shadow_present_pte(*old_spte), kvm))
++		return -EIO;
++
+ 	/*
+ 	 * We need to lock out other updates to the SPTE until the external
+ 	 * page table has been modified. Use FROZEN_SPTE similar to
+@@ -528,18 +514,7 @@ static int __must_check set_external_spte_present(struct kvm *kvm, tdp_ptep_t sp
+ 	if (!try_cmpxchg64(rcu_dereference(sptep), old_spte, FROZEN_SPTE))
+ 		return -EBUSY;
+ 
+-	/*
+-	 * Use different call to either set up middle level
+-	 * external page table, or leaf.
+-	 */
+-	if (is_leaf) {
+-		ret = kvm_x86_call(set_external_spte)(kvm, gfn, level, new_spte);
+-	} else {
+-		void *external_spt = get_external_spt(gfn, new_spte, level);
+-
+-		KVM_BUG_ON(!external_spt, kvm);
+-		ret = kvm_x86_call(link_external_spt)(kvm, gfn, level, external_spt);
+-	}
++	ret = kvm_x86_call(set_external_spte)(kvm, gfn, level, new_spte);
+ 	if (ret)
+ 		__kvm_tdp_mmu_write_spte(sptep, *old_spte);
+ 	else
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 5688c77616e3..30494f9ceb31 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -1664,18 +1664,58 @@ static int tdx_mem_page_aug(struct kvm *kvm, gfn_t gfn,
+ 	return 0;
+ }
+ 
++static struct page *tdx_spte_to_external_spt(struct kvm *kvm, gfn_t gfn,
++					     u64 new_spte, enum pg_level level)
++{
++	struct kvm_mmu_page *sp = spte_to_child_sp(new_spte);
++
++	if (KVM_BUG_ON(!sp->external_spt, kvm) ||
++	    KVM_BUG_ON(sp->role.level + 1 != level, kvm) ||
++	    KVM_BUG_ON(sp->gfn != gfn, kvm))
++		return NULL;
++
++	return virt_to_page(sp->external_spt);
++}
++
++static int tdx_sept_link_private_spt(struct kvm *kvm, gfn_t gfn,
++				     enum pg_level level, u64 mirror_spte)
++{
++	gpa_t gpa = gfn_to_gpa(gfn);
++	u64 err, entry, level_state;
++	struct page *external_spt;
++
++	external_spt = tdx_spte_to_external_spt(kvm, gfn, mirror_spte, level);
++	if (!external_spt)
++		return -EIO;
++
++	err = tdh_mem_sept_add(&to_kvm_tdx(kvm)->td, gpa, level, external_spt,
++			       &entry, &level_state);
++	if (unlikely(tdx_operand_busy(err)))
++		return -EBUSY;
++
++	if (TDX_BUG_ON_2(err, TDH_MEM_SEPT_ADD, entry, level_state, kvm))
++		return -EIO;
++
++	return 0;
++}
++
+ static int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn,
+ 				     enum pg_level level, u64 mirror_spte)
+ {
+ 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
+ 	kvm_pfn_t pfn = spte_to_pfn(mirror_spte);
+ 
++	if (KVM_BUG_ON(!is_shadow_present_pte(mirror_spte), kvm))
++		return -EIO;
++
++	if (!is_last_spte(mirror_spte, level))
++		return tdx_sept_link_private_spt(kvm, gfn, level, mirror_spte);
++
+ 	/* TODO: handle large pages. */
+ 	if (KVM_BUG_ON(level != PG_LEVEL_4K, kvm))
+ 		return -EIO;
+ 
+-	WARN_ON_ONCE(!is_shadow_present_pte(mirror_spte) ||
+-		     (mirror_spte & VMX_EPT_RWX_MASK) != VMX_EPT_RWX_MASK);
++	WARN_ON_ONCE((mirror_spte & VMX_EPT_RWX_MASK) != VMX_EPT_RWX_MASK);
+ 
+ 	/*
+ 	 * Ensure pre_fault_allowed is read by kvm_arch_vcpu_pre_fault_memory()
+@@ -1695,23 +1735,7 @@ static int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn,
+ 	return tdx_mem_page_aug(kvm, gfn, level, pfn);
+ }
+ 
+-static int tdx_sept_link_private_spt(struct kvm *kvm, gfn_t gfn,
+-				     enum pg_level level, void *private_spt)
+-{
+-	gpa_t gpa = gfn_to_gpa(gfn);
+-	struct page *page = virt_to_page(private_spt);
+-	u64 err, entry, level_state;
+ 
+-	err = tdh_mem_sept_add(&to_kvm_tdx(kvm)->td, gpa, level, page, &entry,
+-			       &level_state);
+-	if (unlikely(tdx_operand_busy(err)))
+-		return -EBUSY;
+-
+-	if (TDX_BUG_ON_2(err, TDH_MEM_SEPT_ADD, entry, level_state, kvm))
+-		return -EIO;
+-
+-	return 0;
+-}
+ 
+ /*
+  * Ensure shared and private EPTs to be flushed on all vCPUs.
+@@ -3592,7 +3616,6 @@ void __init tdx_hardware_setup(void)
+ 	 */
+ 	vt_x86_ops.vm_size = max_t(unsigned int, vt_x86_ops.vm_size, sizeof(struct kvm_tdx));
+ 
+-	vt_x86_ops.link_external_spt = tdx_sept_link_private_spt;
+ 	vt_x86_ops.set_external_spte = tdx_sept_set_private_spte;
+ 	vt_x86_ops.free_external_spt = tdx_sept_free_private_spt;
+ 	vt_x86_ops.remove_external_spte = tdx_sept_remove_private_spte;
 -- 
 2.53.0.rc1.217.geba53bf80e-goog
 
