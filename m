@@ -1,56 +1,56 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF81320CB1
-	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 01:15:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C189A22A1E1
+	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 01:15:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769649342; cv=none; b=ZTy9wZf80FsZtV+UZyo/6LDLbUStE6fNjgX3bjzqIQYucP7y6bhKbANcvrQ+3ADOvypFrMtxs4YDAFAfAdGpYYS1eihjfKPVMUMZjh0+VmifvaPRLszfyjIsB9kxfdxql9MdH5VG0NygxfnYw63cygvsFKtmKoykzZkUu1pMWEY=
+	t=1769649345; cv=none; b=UNf4w7VPNWmb2eumV2VFkGRDDfIj1CaxrmQQfRy7K1qnJEK9hakMjO3pd5p02znYV5g4EcTz/o3A0GVoEkZuTSYtVSRK5Fvtc26T0EfApz3JAPMSjW86dGi8jhq9BEmiF0OuS/2jxUwJzszSieir+KHqz9ujAUbz9xeb3CPvRC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769649342; c=relaxed/simple;
-	bh=52WHRYcBaF84cq4d9eTCRiZcdWMBb91+paCcx/t1GiQ=;
+	s=arc-20240116; t=1769649345; c=relaxed/simple;
+	bh=u2c/NHbwd0lYBbUDVthgSs2By7odK2wgvzMf1mYm8nw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=SP/oWnGAy8sOQDVUoAH9WcvgNVB81K2+VMRqQlMfjg4mcCpN+Nb4yLszpaab5xaTKAmLp6s31MuK+wQc9F1pyQWp3ttCSMfQPvgt+RbOaIsWR5YfDPNsX5c2mJspTE0MdnNDM4U2zZ1w+iG42KUpuDwMMAl3y5RR2Ta3BwhIngc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=327GmDe4; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=oKvTVBZu1VtI0UDLuBLxcSGJUIAW1NrAOerFw2dK/U7I43jcM8aEScOcCYmsVGBvHPC98uD5uBm6QJhJpY/a5TLS/PTHa3PG7prrJ/R5XRi/Ew6pHTEr1mLfvU6zyfIz5tkrWuXlNNybJvjU7oPWN7WHLi+DXjatLHW2s2G2ENQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iHl22MXZ; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="327GmDe4"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-29f1f69eec6so5189935ad.1
-        for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 17:15:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iHl22MXZ"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c6187bdadcdso216023a12.0
+        for <linux-coco@lists.linux.dev>; Wed, 28 Jan 2026 17:15:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769649339; x=1770254139; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1769649341; x=1770254141; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=34WkAZh0eO1zmQ97gxROYaaRFi2k1TsiQe3th+qNzkY=;
-        b=327GmDe4PNCaNwAbDzRWXJgqIFZ2Kv81KnR4TazSS+ZKy5KGkH0yzo92EQlqq5Dpgq
-         ADJRIx6M2RFCd+dMy6OGHl9lCIcmcZeruU8EXeC8Ch2CVQslEz01sJvfQFyAJmx0YxPE
-         PD2CspFSnFzyJ4D/6sY//BOcNpzTy6lbrYIr9CYcOUpLVB9/Uxn7TfcGOty8eQhhZyIo
-         B1e3NfjR9VWGEJSXi+H/CkyuG2zOd2JLP+pSbC06TPqGixH3i4rawczgZY/MkHt3/hSD
-         i2rPgnmBWbdHYexmhJa18oyzvZRz08Z3/5hqXhgQk7BqDYkPkFPcJ3mMW/kLgkrRfBu/
-         sw4A==
+        bh=yG0aJZj9vYemOuZH1z1kqzk7rC62lJqsq0W3///tL/M=;
+        b=iHl22MXZN/mrkvbHEzbyqzjIGhBHLlnr5N6bjaonWLaDCPhvCqou4lkqUw1JhBYTTm
+         uekKsPmW44sAfKeDyv4/+ij6qUZ9wIAwKSkdze1Ix+CTokWOJZVghcZNQDTRC4m366EM
+         L622WpKGJx6EhJJWU6w95maEZtlgJNPwOweZ2HBbIZAe4PfoA/JYm8YClDDsSLobKJAr
+         hr4J5EkIyIVjPtBZhiluZ8hTBIL27ryOiocMc+E+r5rF2dBjb2FuVHLJqHK9YvSqNCTj
+         ol/AXMDMQBAp8Kzeh2KjT7iNrwnR7piE8p2+VTwC6Vy1Knji30xizpm7wnVYFxlYoiha
+         olsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769649339; x=1770254139;
+        d=1e100.net; s=20230601; t=1769649341; x=1770254141;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=34WkAZh0eO1zmQ97gxROYaaRFi2k1TsiQe3th+qNzkY=;
-        b=KHFjMt6PP9+mWf/+IhkaqlUg6l6Zf6f139KOxvASFFreAvP2KBKBNe0hVgwkHuiuUx
-         gYoQ8b/kOl4g/inivjD9mMToUEd7j8hv3yP0omfwiNQL/Eo+l0pLCd4YaVd8Ao8rPOtx
-         ZPTY7p312XUHav3APTqQX1eJYQiIrWbyOREn4rqMnqDoJggKEFYXOKYz0Ml2zuq8ke/4
-         1U1SHE2Re/LxYXdEVcQ89gUJoMj1oNo74e2R4KyHjQI/OEjo1IUvD8Ba/fuqjz6i5PMr
-         yp3//5WIJqA04g7WsB9q0lmF+aHB66d8WiGkJ869kA/NAXH/dcJ3acPLUdtCm1jQRaSF
-         SSkA==
-X-Forwarded-Encrypted: i=1; AJvYcCUE0IOu8GcSZWwEBUQkj7JKMuYqkUgv6NJpGZfTdba/ua5GE+IJMC+i9Km0S4/SaCVqSP9BqdfNC03z@lists.linux.dev
-X-Gm-Message-State: AOJu0YxD4uPhixLgEvxrnEviR47D5+EQh7HAX5kg2Yqkg6PluRV7UBBn
-	LPLZi3THwrbzyp2Jxi4J+PNiHNisryvKRXPmIWK2bmsm7x/gSmZMMg0qj78qQCnktJ2050UbXXA
-	BK/IW8w==
-X-Received: from plnx1.prod.google.com ([2002:a17:902:8201:b0:2a0:f5f5:419d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:dac4:b0:2a0:c5b8:24b0
- with SMTP id d9443c01a7336-2a870dd56edmr73393065ad.46.1769649338679; Wed, 28
- Jan 2026 17:15:38 -0800 (PST)
+        bh=yG0aJZj9vYemOuZH1z1kqzk7rC62lJqsq0W3///tL/M=;
+        b=EQsi9LAJafZBFZkDpZm0p3faLvCosEGI1P7t8Z4RwxJwS8cOPeduSzgtrPfQXyCZ3v
+         QWiQqXjMSJ0Y5wkoDUgBWFfp+IYZnZyKZQ4Z1UnoX0zlaXAks+ScobyMMbEnkCRWY6fT
+         +Dp8xJnomfr4koOpc2QISGS0fRrjcGxSoL8ygftUMSIOAaDiN878++fS+j27/bBey4z3
+         WIG1TIukDrI9r3C+dhHokqlQgGRx0pu0DgR5FiAsasVzdmwV7scwzFtTINM1Z6IUGt/8
+         LZm1qKqD60SjgryJfJj4Np7bb06OjsHI5ICZBoqG0R6ZzAayzHvAkoL7fO+dDeDFgBQ8
+         14OQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX7aO7x/RUtbppE6WmyR3Y4qIWawe82CjIQtEoJcdlGeI4fghdLVZCwHQ2Aw4pynYdSC/g+aFpAL8Te@lists.linux.dev
+X-Gm-Message-State: AOJu0YzRHIJNg4mD030EU6xgjKB+MaDsA/2+Tb8okmzeiWAanK4Iu7EC
+	UtJNCsi6hqEWyNZ6emIloRagTOzsttjtpsbZ3kM7+eKiikD3mcryQRgVW+jGjPmEc57Xu6EZRR4
+	XSSp7tg==
+X-Received: from pgbcq1.prod.google.com ([2002:a05:6a02:4081:b0:bc3:ac3:8769])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:a41:b0:389:94e1:25c1
+ with SMTP id adf61e73a8af0-38ec658ba91mr6736564637.70.1769649340957; Wed, 28
+ Jan 2026 17:15:40 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 28 Jan 2026 17:14:38 -0800
+Date: Wed, 28 Jan 2026 17:14:39 -0800
 In-Reply-To: <20260129011517.3545883-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260129011517.3545883-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.rc1.217.geba53bf80e-goog
-Message-ID: <20260129011517.3545883-7-seanjc@google.com>
-Subject: [RFC PATCH v5 06/45] KVM: x86/mmu: Fold set_external_spte_present()
- into its sole caller
+Message-ID: <20260129011517.3545883-8-seanjc@google.com>
+Subject: [RFC PATCH v5 07/45] KVM: x86/mmu: Plumb the SPTE _pointer_ into the
+ TDP MMU's handle_changed_spte()
 From: Sean Christopherson <seanjc@google.com>
 To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
@@ -75,130 +75,85 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
 	Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Fold set_external_spte_present() into __tdp_mmu_set_spte_atomic() in
-anticipation of supporting hugepage splitting, at which point other paths
-will also set shadow-present external SPTEs.
-
-No functional change intended.
+Plumb the SPTE pointer into handle_changed_spte() so that remove leaf
+mirror entries can be forwarded to TDX in handle_changed_spte(), instead
+of effectively requiring callers to manually do so.  Relying on each
+caller to invoke .remove_external_spte() is confusing and brittle, e.g.
+subtly relies tdp_mmu_set_spte_atomic() never removing SPTEs.  This will
+also allow consolidating all S-EPT updates into a single kvm_x86_ops hook.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/mmu/tdp_mmu.c | 82 +++++++++++++++++---------------------
- 1 file changed, 36 insertions(+), 46 deletions(-)
+ arch/x86/kvm/mmu/tdp_mmu.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
 diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-index 56ad056e6042..6fb48b217f5b 100644
+index 6fb48b217f5b..8743cd020d12 100644
 --- a/arch/x86/kvm/mmu/tdp_mmu.c
 +++ b/arch/x86/kvm/mmu/tdp_mmu.c
-@@ -495,33 +495,6 @@ static void handle_removed_pt(struct kvm *kvm, tdp_ptep_t pt, bool shared)
- 	call_rcu(&sp->rcu_head, tdp_mmu_free_sp_rcu_callback);
+@@ -320,9 +320,9 @@ void kvm_tdp_mmu_alloc_root(struct kvm_vcpu *vcpu, bool mirror)
+ 	}
  }
  
--static int __must_check set_external_spte_present(struct kvm *kvm, tdp_ptep_t sptep,
--						 gfn_t gfn, u64 *old_spte,
--						 u64 new_spte, int level)
--{
--	int ret;
--
--	lockdep_assert_held(&kvm->mmu_lock);
--
--	if (KVM_BUG_ON(is_shadow_present_pte(*old_spte), kvm))
--		return -EIO;
--
--	/*
--	 * We need to lock out other updates to the SPTE until the external
--	 * page table has been modified. Use FROZEN_SPTE similar to
--	 * the zapping case.
--	 */
--	if (!try_cmpxchg64(rcu_dereference(sptep), old_spte, FROZEN_SPTE))
--		return -EBUSY;
--
--	ret = kvm_x86_call(set_external_spte)(kvm, gfn, level, new_spte);
--	if (ret)
--		__kvm_tdp_mmu_write_spte(sptep, *old_spte);
--	else
--		__kvm_tdp_mmu_write_spte(sptep, new_spte);
--	return ret;
--}
--
- /**
+-static void handle_changed_spte(struct kvm *kvm, int as_id, gfn_t gfn,
+-				u64 old_spte, u64 new_spte, int level,
+-				bool shared);
++static void handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
++				gfn_t gfn, u64 old_spte, u64 new_spte,
++				int level, bool shared);
+ 
+ static void tdp_account_mmu_page(struct kvm *kvm, struct kvm_mmu_page *sp)
+ {
+@@ -471,7 +471,7 @@ static void handle_removed_pt(struct kvm *kvm, tdp_ptep_t pt, bool shared)
+ 			old_spte = kvm_tdp_mmu_write_spte(sptep, old_spte,
+ 							  FROZEN_SPTE, level);
+ 		}
+-		handle_changed_spte(kvm, kvm_mmu_page_as_id(sp), gfn,
++		handle_changed_spte(kvm, kvm_mmu_page_as_id(sp), sptep, gfn,
+ 				    old_spte, FROZEN_SPTE, level, shared);
+ 
+ 		if (is_mirror_sp(sp)) {
+@@ -499,6 +499,7 @@ static void handle_removed_pt(struct kvm *kvm, tdp_ptep_t pt, bool shared)
   * handle_changed_spte - handle bookkeeping associated with an SPTE change
   * @kvm: kvm instance
-@@ -626,6 +599,8 @@ static inline int __must_check __tdp_mmu_set_spte_atomic(struct kvm *kvm,
- 							 struct tdp_iter *iter,
- 							 u64 new_spte)
+  * @as_id: the address space of the paging structure the SPTE was a part of
++ * @sptep: pointer to the SPTE
+  * @gfn: the base GFN that was mapped by the SPTE
+  * @old_spte: The value of the SPTE before the change
+  * @new_spte: The value of the SPTE after the change
+@@ -511,9 +512,9 @@ static void handle_removed_pt(struct kvm *kvm, tdp_ptep_t pt, bool shared)
+  * dirty logging updates are handled in common code, not here (see make_spte()
+  * and fast_pf_fix_direct_spte()).
+  */
+-static void handle_changed_spte(struct kvm *kvm, int as_id, gfn_t gfn,
+-				u64 old_spte, u64 new_spte, int level,
+-				bool shared)
++static void handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
++				gfn_t gfn, u64 old_spte, u64 new_spte,
++				int level, bool shared)
  {
-+	u64 *raw_sptep = rcu_dereference(iter->sptep);
-+
- 	/*
- 	 * The caller is responsible for ensuring the old SPTE is not a FROZEN
- 	 * SPTE.  KVM should never attempt to zap or manipulate a FROZEN SPTE,
-@@ -638,31 +613,46 @@ static inline int __must_check __tdp_mmu_set_spte_atomic(struct kvm *kvm,
- 		int ret;
+ 	bool was_present = is_shadow_present_pte(old_spte);
+ 	bool is_present = is_shadow_present_pte(new_spte);
+@@ -685,8 +686,8 @@ static inline int __must_check tdp_mmu_set_spte_atomic(struct kvm *kvm,
+ 	if (ret)
+ 		return ret;
  
- 		/*
--		 * Users of atomic zapping don't operate on mirror roots,
--		 * so don't handle it and bug the VM if it's seen.
-+		 * KVM doesn't currently support zapping or splitting mirror
-+		 * SPTEs while holding mmu_lock for read.
- 		 */
--		if (KVM_BUG_ON(!is_shadow_present_pte(new_spte), kvm))
-+		if (KVM_BUG_ON(is_shadow_present_pte(iter->old_spte), kvm) ||
-+		    KVM_BUG_ON(!is_shadow_present_pte(new_spte), kvm))
- 			return -EBUSY;
+-	handle_changed_spte(kvm, iter->as_id, iter->gfn, iter->old_spte,
+-			    new_spte, iter->level, true);
++	handle_changed_spte(kvm, iter->as_id, iter->sptep, iter->gfn,
++			    iter->old_spte, new_spte, iter->level, true);
  
--		ret = set_external_spte_present(kvm, iter->sptep, iter->gfn,
--						&iter->old_spte, new_spte, iter->level);
-+		/*
-+		 * Temporarily freeze the SPTE until the external PTE operation
-+		 * has completed, e.g. so that concurrent faults don't attempt
-+		 * to install a child PTE in the external page table before the
-+		 * parent PTE has been written.
-+		 */
-+		if (!try_cmpxchg64(raw_sptep, &iter->old_spte, FROZEN_SPTE))
-+			return -EBUSY;
-+
-+		/*
-+		 * Update the external PTE.  On success, set the mirror SPTE to
-+		 * the desired value.  On failure, restore the old SPTE so that
-+		 * the SPTE isn't frozen in perpetuity.
-+		 */
-+		ret = kvm_x86_call(set_external_spte)(kvm, iter->gfn,
-+						      iter->level, new_spte);
- 		if (ret)
--			return ret;
--	} else {
--		u64 *sptep = rcu_dereference(iter->sptep);
--
--		/*
--		 * Note, fast_pf_fix_direct_spte() can also modify TDP MMU SPTEs
--		 * and does not hold the mmu_lock.  On failure, i.e. if a
--		 * different logical CPU modified the SPTE, try_cmpxchg64()
--		 * updates iter->old_spte with the current value, so the caller
--		 * operates on fresh data, e.g. if it retries
--		 * tdp_mmu_set_spte_atomic()
--		 */
--		if (!try_cmpxchg64(sptep, &iter->old_spte, new_spte))
--			return -EBUSY;
-+			__kvm_tdp_mmu_write_spte(iter->sptep, iter->old_spte);
-+		else
-+			__kvm_tdp_mmu_write_spte(iter->sptep, new_spte);
-+		return ret;
- 	}
- 
-+	/*
-+	 * Note, fast_pf_fix_direct_spte() can also modify TDP MMU SPTEs and
-+	 * does not hold the mmu_lock.  On failure, i.e. if a different logical
-+	 * CPU modified the SPTE, try_cmpxchg64() updates iter->old_spte with
-+	 * the current value, so the caller operates on fresh data, e.g. if it
-+	 * retries tdp_mmu_set_spte_atomic()
-+	 */
-+	if (!try_cmpxchg64(raw_sptep, &iter->old_spte, new_spte))
-+		return -EBUSY;
-+
  	return 0;
  }
+@@ -720,7 +721,7 @@ static u64 tdp_mmu_set_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
  
+ 	old_spte = kvm_tdp_mmu_write_spte(sptep, old_spte, new_spte, level);
+ 
+-	handle_changed_spte(kvm, as_id, gfn, old_spte, new_spte, level, false);
++	handle_changed_spte(kvm, as_id, sptep, gfn, old_spte, new_spte, level, false);
+ 
+ 	/*
+ 	 * Users that do non-atomic setting of PTEs don't operate on mirror
 -- 
 2.53.0.rc1.217.geba53bf80e-goog
 
