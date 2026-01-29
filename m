@@ -1,50 +1,62 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012049.outbound.protection.outlook.com [40.107.209.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871AD3EBF04
-	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 00:08:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769645342; cv=none; b=TSTexhytcuWocbbV4NoxEtiOFc0xdgWNTDdSAgq3jaC8QUUrxD0ezMiUaO3xg3VZ4qxH/H5oQ79SocjlkuNbxcK/58QO4UEbcdJIR5AFrlbI4OAiYCVAzPerIdzaQ6Q9s5EP4JH2GbYlCg+WEAHnjuflhN5MpcO0+bYHPFiFbxE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769645342; c=relaxed/simple;
-	bh=9LYr8Fxu212VdsYBhWkSdj37mqiggQ5RrjlkUbQdIxU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OtJXo4+aW/6ZNZZcRZJ3EYInw3kIBEIKigL3hSt8TsY+8JaZIluemR5w0da0U1MqDRHru2sk7EvU01xnmD4H+eV/lDZdWhrzk50isSH8onfvkd0j9l0boPlDpiic8TScB7/E2BHI1PczInAdDXHNclR0m3KFHaRF8jPBQrONDWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N6KAbIop; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994DD223708
+	for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 00:38:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769647116; cv=fail; b=h+xDqthl3iKDUICw/hwZWS5SLyVgiHB56cWYqrhhbVTNDX5obAR9IbzgSWFp1DL7cl9IPI5YRSS3UXW2VcBkW/dgA7DW0ruBvUsYEjMlz2gAg6ZEdqpN+2oQCAhU1HGULVejhSodXRgD94XE+DN8x1floqT9SigqL2uJkHtI7Z0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769647116; c=relaxed/simple;
+	bh=LJkgNDtEPuNSgZx4yg9XxGYZLTRCJBWDLZ1cx5WEsOg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=dYsJ6ad6EE8cn7uJATAM7veUTDoB9riqIO8YbTss7EqIf/xVdO+jsKNvW7xZjkJBGgf5yrggZrw2ZpmVRjx53TmOtkpLxlnwns8T3dA2HfzkZhaN8imf9PcemP1zBA8B+3WJryxbpHDXjyVLWceR0MeijrMZuvpk+zjodLtg+jE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=bt7LIBkS; arc=fail smtp.client-ip=40.107.209.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N6KAbIop"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769645339; x=1801181339;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=9LYr8Fxu212VdsYBhWkSdj37mqiggQ5RrjlkUbQdIxU=;
-  b=N6KAbIop3OIm/k/1ktGVUOwNREsED9527zUUAOy9Bkzuu0O2zJsXmTfE
-   PDssyMccHpJJuZ+xN0r5IlJmTeHOQQiQL1THMM8GF9+5RfITTbtlmpjRz
-   O9TJW7b7vNp3I4KnvQxYGyvVK9brubMVBPlLzmmjY87KvVk0SOSX2Fn6H
-   047JlSKKnN8P8i7ZOqcFRORmYVXko6oHEZonB1PbuFlNk8//KrdezS5Fz
-   7bVsiAzT+sxTFarjyPXop+Uya/mEEuuN0UjjLZiGx7lmSk0qhC3o/U2ay
-   0CLmkjLNCyuK1jk6Q8qlr7LSiqDqy7x82kqwqiGPLlakYYpNX4iRq3ifh
-   g==;
-X-CSE-ConnectionGUID: EE9/tHWUSjGXAEzeq8X/pA==
-X-CSE-MsgGUID: R1sYjAHoRnmpWMJvfR4YAg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="70846506"
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="70846506"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 16:08:58 -0800
-X-CSE-ConnectionGUID: zbavyxq5QbGi7CH5NYz7pg==
-X-CSE-MsgGUID: VsJfNMmzS+6Euqw96iQTyg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="208008127"
-Received: from kcaccard-desk.amr.corp.intel.com (HELO [10.125.109.190]) ([10.125.109.190])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 16:08:57 -0800
-Message-ID: <9fb1bbf3-0623-447e-86d7-d48ef20fb42c@intel.com>
-Date: Wed, 28 Jan 2026 16:08:56 -0800
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="bt7LIBkS"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Mi5BqwxwwcyxxTNvuLsilXEAvY6q6UZUUCgeh+oqgN9fdgJ+VJJvxOiEB38i1PMHIHFaLbZjS/Lm/DphN+zQuEc7W7CZVnD2nq7FbkcbX/RwxTt822dwLF1UXr4N8jnD/txRo2dvg66+9jK/nCo1kXICjRSLAQqL6ScG2stYHyyN3YpA/Xtrz7rOYae1zu9Kd86mWLtg/2guggc5xomvc8zeQ5SYiXuEqwCtiBT1V+1Mw8gLPOyDr3L+ksfXIWMtHsmGnSF90pBQwRKDXXCX6o2LElPRQhFhz+TOAvTguN2Qb4zInJ65QvYBXk4NPCqiTB/M6VJXDjT0U3RS5xvicw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+XlPEoeuKTVL3gUvX/JR4PAk0/STEHstYaZoxBTRBt0=;
+ b=BjTxtQ5Ffg8ENYw/EIF45xe1fe53FtJIKR1N1EPCyxl8k6MsV0+G1jwDGwp6HXauzDqc3QIeMoUHHlicRc4ru0Wn0Cu4/DBrQVs9Y4WNKL3C8DRwpi+0GbOplcvrZBKFbY71hlYr+UTl8UfouOj9XAB2tZ30pazwH3eGmovOKawKhPJR+W71lvAAFe/fUzFIyXljvxHwKr4et/pBlaFASKZP1gCllm6xS91V5kGA6fz1Fyh6NUf1/gt52U1XYNjtyuG3SxlnhuAZMgmKg/Qo2llbNeDfgipqYuYQ2qHsC5orW+3F5TfC1x7v3SaTTq9mRtoVoj4H2jj3QeyREsTufg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+XlPEoeuKTVL3gUvX/JR4PAk0/STEHstYaZoxBTRBt0=;
+ b=bt7LIBkSi1BCE2vMMwUxSbBjLwuV0lbLKwfpdffz2Cs2vPKnOKqVWrgD2KC3USRchtcX2z+KQK25yFzedqUDDhjq55zO9p2UzrFMrgGuSlgLzgyULnOOurmQF5Or62I+HVAlEVoW9AMZRFUdjzoQjKzqTJd8dL1YRKifYSOLT1k=
+Received: from BY5PR16CA0027.namprd16.prod.outlook.com (2603:10b6:a03:1a0::40)
+ by MW3PR12MB4460.namprd12.prod.outlook.com (2603:10b6:303:2f::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Thu, 29 Jan
+ 2026 00:38:31 +0000
+Received: from SJ1PEPF00002319.namprd03.prod.outlook.com
+ (2603:10b6:a03:1a0:cafe::97) by BY5PR16CA0027.outlook.office365.com
+ (2603:10b6:a03:1a0::40) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9564.8 via Frontend Transport; Thu,
+ 29 Jan 2026 00:38:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ1PEPF00002319.mail.protection.outlook.com (10.167.242.229) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9564.3 via Frontend Transport; Thu, 29 Jan 2026 00:38:30 +0000
+Received: from [10.236.30.53] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 28 Jan
+ 2026 18:38:29 -0600
+Message-ID: <e7acf7ed-103b-46aa-a1f6-35bb6292d30f@amd.com>
+Date: Wed, 28 Jan 2026 18:38:29 -0600
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,153 +64,154 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/26] coco/tdx-host: Expose P-SEAMLDR information via
- sysfs
-To: Chao Gao <chao.gao@intel.com>, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org
-Cc: reinette.chatre@intel.com, ira.weiny@intel.com, kai.huang@intel.com,
- dan.j.williams@intel.com, yilun.xu@linux.intel.com, sagis@google.com,
- vannapurve@google.com, paulmck@kernel.org, nik.borisov@suse.com,
- zhenzhong.duan@intel.com, seanjc@google.com, rick.p.edgecombe@intel.com,
- kas@kernel.org, dave.hansen@linux.intel.com, vishal.l.verma@intel.com,
- Farrah Chen <farrah.chen@intel.com>
-References: <20260123145645.90444-1-chao.gao@intel.com>
- <20260123145645.90444-10-chao.gao@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
+Subject: Re: [PATCH 1/2] KVM: SEV: IBPB-on-Entry guest support
+To: Borislav Petkov <bp@alien8.de>
+CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <x86@kernel.org>, Sean Christopherson
+	<seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, K Prateek Nayak
+	<kprateek.nayak@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky
+	<thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>, Naveen Rao
+	<naveen.rao@amd.com>, David Kaplan <david.kaplan@amd.com>,
+	<stable@kernel.org>
+References: <20260126224205.1442196-1-kim.phillips@amd.com>
+ <20260126224205.1442196-2-kim.phillips@amd.com>
+ <20260128192312.GQaXpiIL4YFmQB2LKL@fat_crate.local>
+From: Kim Phillips <kim.phillips@amd.com>
 Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260123145645.90444-10-chao.gao@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260128192312.GQaXpiIL4YFmQB2LKL@fat_crate.local>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002319:EE_|MW3PR12MB4460:EE_
+X-MS-Office365-Filtering-Correlation-Id: bbc3c3af-dfd0-4031-7f91-08de5eceb9fa
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|82310400026|36860700013|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Q0hrdGZESGk2QXBnbHlRaXIrMzRlRDlqSGlUemE0ME5aNjg1UU9rRURYOXBI?=
+ =?utf-8?B?N1Jjb2xqTDFuaEU0NnpXVk8wd0tHVWZOK1dKcmpuSWxMUnAxV0dFd2dWQTda?=
+ =?utf-8?B?d1FwLzJhS1BwbDBJU1duS2VuZWJvZ1V0Qm8vUnJHdU5mcjRDQ0lrdmNFMHNn?=
+ =?utf-8?B?WjNIVk5KMkR1T3FDSUFCb201UEYvVEE1MXJDckJwS0JTUDVFSjd2dTZSaW9q?=
+ =?utf-8?B?ejhOTGd0MzQ5RmNyeHhFcHBCbXhMbk1VUGhpOVRoanlMbGFNNXY2cWFvQ2cr?=
+ =?utf-8?B?Z3V4dVJ0Tm9pNGVxZGNsN0Z2Y0h3MHI5dGhDL0ZOL0F0dXdXOXRmZ2lKVkky?=
+ =?utf-8?B?SG8yTmNyQjBER2h5V3BoMCtiaGZBeHplSDB2anlUNVBpNGFqZXpmSVZmZGE1?=
+ =?utf-8?B?YnNkRFdOT1JHemtCNnFpaUkrK0g1cHhTVjlSNll4RzVDQWI1enlLK2xOVmNT?=
+ =?utf-8?B?dERMSXBzS3JUMDBjT0xSamZKUDB1K1RmU2lST0MrczJjNkQzaXRJMzI1Y2FC?=
+ =?utf-8?B?aFREam1TMWpvUFRsMTBabGRLWHRRcFpxSmNrdGtpUC9qdjhQUFhTUnpSTEJt?=
+ =?utf-8?B?VVdLVUNsNmRLMUpOWUFRSFBnVUlSU1JtVEk2aUlBSUdjaTluVjBKOVpKb1h1?=
+ =?utf-8?B?TGo0T2F5Nlphd1l2NTlxUjBxWmkvU1h2UUljUjNqeUpKRC9henZIM0xTTktW?=
+ =?utf-8?B?RE01VnNrMUFaK3RSVm9RZ09NVDRraTVWZnJpbVh0TmcwdGN6amRyNUxCN3hN?=
+ =?utf-8?B?K2VGeFBvSis2a2VNa1dKQnNGaEZGNy9FZGhpMlg1cDU3bFVaa1pTbWgvTk81?=
+ =?utf-8?B?Q1Z0bVZiZHhoVTRZcHhqVFgvMXUwNWVoNEJRanVzZG5uWjR1TkxETVcvTWJS?=
+ =?utf-8?B?enp0SWFmWW1RdTZXSlVFL1lrRFc3OVI0RWE5RFZKNHdHQmpqVjJsUWpHL2I4?=
+ =?utf-8?B?QTh0WDU0TjNJbEdybkQ1RE9Nc3V4SkJqT2F3dXBnNThYT01KTnkxdE40VWFM?=
+ =?utf-8?B?YWpSTVNxeXZ4Z0JjWW9RTlJuTWk0cUdvdnV0SnkyT0ZLME5PVkR4YWpvam9y?=
+ =?utf-8?B?ZHBQYWlBeGI1b0piVUE1YnRrU0ZralU3Nzl6VFhpbXp6RTdZTDVzNnZHTm9m?=
+ =?utf-8?B?YmJuTmhER1ZkVnh3YmMzQkF6K0MyOUJmNm1UR3F6NXBFODNDaUdHbDcwSUgy?=
+ =?utf-8?B?bXJzUzI0QkxMOUdKTHJ1TWE0WnpweU9wMGtFNVFuL3BHU0ExU0hWbFZVTDMv?=
+ =?utf-8?B?bTBtMXZoSXBFR2FBZFlJdDRoREFkMkJEOVJxaEhZblg1TTEwQk9FVmNqdTlk?=
+ =?utf-8?B?NlFLa0ptckcxVm1Ha1B6aGNGSmZrY2Rtak84RjllT3F4dzl2QmhjamQ2UEt3?=
+ =?utf-8?B?d3pXUS9XM0FrZ1gxbWdzcEFDRkptcCt5RjIvcWM4TVlHOHNmKytzYmh6OEJN?=
+ =?utf-8?B?YThWdjlLd3lmdDNSRVYrRkdIeGpIWUpQWjcrQ0pBaEdoR0hTeWFVSjRpY294?=
+ =?utf-8?B?dUxTanFHeDFmRS9sNjZxTUw0UGN0VUpmZ3JCdHJEZXlpaGpCcHcyTWFua1Vy?=
+ =?utf-8?B?d25ta2YycjJnY0NVS05yYTdvdWxZZlFoQVEwb1djNDBJL3I2VlpZakZQSzh6?=
+ =?utf-8?B?N1J3VFBaNTlMUnlkQXlXbnpDKzNrZ2YrZ0FaZkRCS0JleXFQMjdEYnpScDVs?=
+ =?utf-8?B?bXppZkRXYTVaRUVmQkltazJMQVBWaEtoNnNUaDltVExZSzY0QUY3dWFKR3dX?=
+ =?utf-8?B?Mm5ZNTVQSWFHUFlIN29ydklyYTFjT3JzUDBJdGFHTTJOZW9DQmljNjNxRHEw?=
+ =?utf-8?B?SXJXY3M4a05FeE5taGJQaTNRaHVaYnhUcXZ5Z1RjMDUxVXhuSFBiaGZNalpU?=
+ =?utf-8?B?a0lpc01abllrOThSY05uS1dVZVQvM2lzTnhnOEt3SUhIWU1qWVBEeUZBZSt0?=
+ =?utf-8?B?QVVNTEE1Z3lOVlhvTFh0ai9ENW5FKzV5YWZFbHR5MFp0ZkcxRzd6TEdDUG1j?=
+ =?utf-8?B?bDFhTkhRYm5iMFZmcm1DQzRvbmVQWjdTUFlnUGtBMlh0c2dKclBydDdBTzdy?=
+ =?utf-8?B?U3ZsamtyeEpjL1o4QjBOWlYyM01wU3NRSmxZUTRZU0VoR1Jsb05aZVMxT2s0?=
+ =?utf-8?B?UHEvZnZHaXV1K2NHNVRlRS9YakJrajNRdWxiN2JiN3E5aDhmZXR5TGp1Z3Iv?=
+ =?utf-8?B?THdpUjlMOTRBQXpvYzg4Z05PZmI5bFdFT2dtKzlNZzhRMzJoTVJSWVFJb0ti?=
+ =?utf-8?B?MVc2a2ltd0VSLzBubU51RWN6TjZBPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(82310400026)(36860700013)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2026 00:38:30.8320
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: bbc3c3af-dfd0-4031-7f91-08de5eceb9fa
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00002319.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4460
 
-On 1/23/26 06:55, Chao Gao wrote:
-...
-> diff --git a/Documentation/ABI/testing/sysfs-devices-faux-tdx-host b/Documentation/ABI/testing/sysfs-devices-faux-tdx-host
-> index 901abbae2e61..a3f155977016 100644
-> --- a/Documentation/ABI/testing/sysfs-devices-faux-tdx-host
-> +++ b/Documentation/ABI/testing/sysfs-devices-faux-tdx-host
-> @@ -4,3 +4,28 @@ Description:	(RO) Report the version of the loaded TDX Module. The TDX Module
->  		version is formatted as x.y.z, where "x" is the major version,
->  		"y" is the minor version and "z" is the update version. Versions
->  		are used for bug reporting, TDX Module updates and etc.
-> +
-> +What:		/sys/devices/faux/tdx_host/seamldr/version
-> +Contact:	linux-coco@lists.linux.dev
-> +Description:	(RO) Report the version of the loaded SEAM loader. The SEAM
-> +		loader version is formatted as x.y.z, where "x" is the major
-> +		version, "y" is the minor version and "z" is the update version.
-> +		Versions are used for bug reporting and compatibility check.
+Hi Boris,
 
-								checks ^
+On 1/28/26 1:23 PM, Borislav Petkov wrote:
+> On Mon, Jan 26, 2026 at 04:42:04PM -0600, Kim Phillips wrote:
+>> The SEV-SNP IBPB-on-Entry feature does not require a guest-side
+>> implementation. The feature was added in Zen5 h/w, after the first
+>> SNP Zen implementation, and thus was not accounted for when the
+>> initial set of SNP features were added to the kernel.
+>>
+>> In its abundant precaution, commit 8c29f0165405 ("x86/sev: Add SEV-SNP
+>> guest feature negotiation support") included SEV_STATUS' IBPB-on-Entry
+>> bit as a reserved bit, thereby masking guests from using the feature.
+>>
+>> Unmask the bit, to allow guests to take advantage of the feature on
+>> hypervisor kernel versions that support it: Amend the SEV_STATUS MSR
+>> SNP_RESERVED_MASK to exclude bit 23 (IbpbOnEntry).
+> Do not explain what the patch does.
 
-> +What:		/sys/devices/faux/tdx_host/seamldr/num_remaining_updates
-> +Contact:	linux-coco@lists.linux.dev
-> +Description:	(RO) Report the number of remaining updates that can be performed.
-> +		The CPU keeps track of TCB versions for each TDX Module that
-> +		has been loaded. Since this tracking database has finite
-> +		capacity, there's a maximum number of Module updates that can
-> +		be performed.
+For that last paragraph, how about:
 
-Is it really the CPU? Or some SEAM software construct?
+"Allow guests to make use of IBPB-on-Entry when supported by the
+hypervisor, as the bit is now architecturally defined and safe to
+expose."
 
-> +		After each successful update, the number reduces by one. Once it
-> +		reaches zero, further updates will fail until next reboot. The
-> +		number is always zero if P-SEAMLDR doesn't support updates.
-> +
-> +		See Intel® Trust Domain Extensions - SEAM Loader (SEAMLDR)
-> +		Interface Specification Chapter 3.3 "SEAMLDR_INFO" and Chapter
-> +		4.2 "SEAMLDR.INSTALL" for more information. The documentation is
-> +		available at:
-> +		https://cdrdv2-public.intel.com/739045/intel-tdx-seamldr-interface-specification.pdf
+?
 
-Zap the URL. It's just going bit rot. Keep the document name. That's
-googleable.
+>> Fixes: 8c29f0165405 ("x86/sev: Add SEV-SNP guest feature negotiation support")
+>> Cc: Nikunj A Dadhania <nikunj@amd.com>
+>> Cc: Tom Lendacky <thomas.lendacky@amd.com>
+>> CC: Borislav Petkov (AMD) <bp@alien8.de>
+>> CC: Michael Roth <michael.roth@amd.com>
+>> Cc: stable@kernel.org
+> I guess...
 
-> diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
-> index 0424933b2560..f4ce89522806 100644
-> --- a/drivers/virt/coco/tdx-host/tdx-host.c
-> +++ b/drivers/virt/coco/tdx-host/tdx-host.c
-> @@ -11,6 +11,7 @@
->  #include <linux/sysfs.h>
->  
->  #include <asm/cpu_device_id.h>
-> +#include <asm/seamldr.h>
->  #include <asm/tdx.h>
->  
->  static const struct x86_cpu_id tdx_host_ids[] = {
-> @@ -40,7 +41,64 @@ static struct attribute *tdx_host_attrs[] = {
->  	&dev_attr_version.attr,
->  	NULL,
->  };
-> -ATTRIBUTE_GROUPS(tdx_host);
-> +
-> +struct attribute_group tdx_host_group = {
-> +	.attrs = tdx_host_attrs,
-> +};
-> +
-> +#ifdef CONFIG_INTEL_TDX_MODULE_UPDATE
-> +static ssize_t seamldr_version_show(struct device *dev, struct device_attribute *attr,
-> +				    char *buf)
-> +{
-> +	const struct seamldr_info *info = seamldr_get_info();
+Hopefully a bitfield will be carved out for these
+no-explicit-guest-implementation-required bits by hardware such that we
+won't need to do this again.
 
-Uhh... seamldr_get_info() calls down into the SEAMLDR. It happily zaps
-the VMCS and this is surely a slow thing. This also has 0444 permissions
-which means *ANYONE* can call this. Constantly. As fast as they can make
-a few syscalls.
+>> diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+>> index 4d3566bb1a93..9016a6b00bc7 100644
+>> --- a/arch/x86/include/asm/msr-index.h
+>> +++ b/arch/x86/include/asm/msr-index.h
+>> @@ -735,7 +735,10 @@
+>>   #define MSR_AMD64_SNP_SMT_PROT		BIT_ULL(MSR_AMD64_SNP_SMT_PROT_BIT)
+>>   #define MSR_AMD64_SNP_SECURE_AVIC_BIT	18
+>>   #define MSR_AMD64_SNP_SECURE_AVIC	BIT_ULL(MSR_AMD64_SNP_SECURE_AVIC_BIT)
+>> -#define MSR_AMD64_SNP_RESV_BIT		19
+>> +#define MSR_AMD64_SNP_RESERVED_BITS19_22 GENMASK_ULL(22, 19)
+>> +#define MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT	23
+>> +#define MSR_AMD64_SNP_IBPB_ON_ENTRY	BIT_ULL(MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT)
+> Why isn't this part of SNP_FEATURES_PRESENT?
+>
+> If this feature doesn't require guest-side support, then it is trivially
+> present, no?
 
-Right?
+SNP_FEATURES_PRESENT is for the non-trivial variety: Its bits get set as
+part of the patchseries that add the explicit guest support *code*.
 
-Are there any concerns about making SEAMLDR calls? Are there any
-system-wide performance implications? How long of an interrupt-blocking
-blip is there for this?
+I believe 'features' like PREVENT_HOST_IBS are similar in this regard.
 
-Also, what's the locking around seamldr_get_info()? It writes into a
-global, shared structure. I guess you disabled interrupts so it's
-preempt safe at least. <sigh>
+>> +#define MSR_AMD64_SNP_RESV_BIT		24
+>>   #define MSR_AMD64_SNP_RESERVED_MASK	GENMASK_ULL(63, MSR_AMD64_SNP_RESV_BIT)
+>>   #define MSR_AMD64_SAVIC_CONTROL		0xc0010138
+>>   #define MSR_AMD64_SAVIC_EN_BIT		0
+>> -- 
+> I guess this is a fix of sorts and I could take it in now once all review
+> comments have been addressed...
 
-I guess it won't change *that* much. But, sheesh, it seems like an
-awfully bad idea to have lots of CPUs writing into a common data
-structure all at the same time.
+Cool, thanks.
+
+Kim
