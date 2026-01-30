@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF08634D3B2
-	for <linux-coco@lists.linux.dev>; Fri, 30 Jan 2026 16:23:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B43532BF41
+	for <linux-coco@lists.linux.dev>; Fri, 30 Jan 2026 16:35:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769790237; cv=none; b=MCf80kelR5pfm1W/1uu+1gFt7LxMjvZlJkOI9PRrJLcGFnTDT2N5EFbM+WHy7TCjKzLm4om4YscgZdznxQrylG7PLmSJE4hfZuo1Hd2nAtcDAoCi6UtBe8183ftfiDaAxT2ryYjK5KLcHJz6lfxqfDr8+5vPDQWBJES4KpRLQj8=
+	t=1769790915; cv=none; b=E6Vi8C00mhZfcaXa3EZKrpUcPFTL3bg4HR5z3r5bQmokcJeTUTG1S7cydOVzMAXXPt/ZZ7AdSaxVfqj+MRrV708MCHLNi5+dgXAlne1l2ADppT/jVoH9m4R9M/IQotYeCVmqobNeYvWxvYjJC+avkvqnwRi4Z6O8w7n0dXghQd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769790237; c=relaxed/simple;
-	bh=VZYq48p4VD/9cXYz+K2LIYUtQbYbmUT5fn1etEXkxMI=;
+	s=arc-20240116; t=1769790915; c=relaxed/simple;
+	bh=mrAJptSB9JCiQxBe1yemLalZlD1MxMTQO0epbrNexOg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j9xFlqZu7d6lYSLgrtc2Tbs8keG8sBp5t5sAfn55gyl6TLKs9dRQtIlZN8m5n0hVUH4171vhvD4W8ezWoGXxiJFCv0BVrbumwlidY02s0KZ/o/f14sk+zqEfL18UODEAbirfV+bpic3xrINDdBQ9a0p0vwzz69xjVvaGCc0GB9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PDE/6sRa; arc=none smtp.client-ip=198.175.65.21
+	 In-Reply-To:Content-Type; b=dkT7zGILO+VgHR2CGnWClhh0FuA8nnvr1Uv28olvOePKGWnINAKznlSeuO4qmHcbVjSVMhBXhyWejJEQbM+U6oqfCPG0v79NSf9j6qQ6P7JurpaZuXIW5On84a9UcdR3AJFJ24bDQLlGQttqaa885csEEMGGXpgITOxR2LE70jQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B065fluc; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PDE/6sRa"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B065fluc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769790236; x=1801326236;
+  t=1769790913; x=1801326913;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=VZYq48p4VD/9cXYz+K2LIYUtQbYbmUT5fn1etEXkxMI=;
-  b=PDE/6sRaLED27vfuaOkkiohkVCQoDd19ywd45AnuizXWR9xPi1Hyu8w9
-   kQiyRTT839+XFjUdgtWlbIaHmm0akRE7HF7nyzSJtBWCM7s5TTVDW1FHk
-   3QaStTN+CLprUhcoEkJaefH5rUycwKLdnY7cgs+07ehGL/17/LC9ZcTTF
-   f8tOnGx3NeU8lIa59uEM/5h2Y8NwG8mgpaq1YFx3u4G87uC8rkw2EFXC7
-   D6av2OGFehlA83m+5ubxAIolMSHR/w33p2c1GmRsRcEdOFaAVUsmh0TFj
-   A9T+oO0B2k1VHgsKWYbwlm5ZWSntfIl9+8Cl1Xdy5LrtxlNkAw3hYp838
-   w==;
-X-CSE-ConnectionGUID: 1etu7py1RLCbljqCVX3SXw==
-X-CSE-MsgGUID: To2wSFpQRFWknNu0WYiEKA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11687"; a="70951871"
+  bh=mrAJptSB9JCiQxBe1yemLalZlD1MxMTQO0epbrNexOg=;
+  b=B065fluc6aUKfmZwwpWh0EcRhwfI1CG6ihWn6aW4Z7jFL1ETCO7/Ica1
+   ihmg42gG+iRbAxVeaKfuGQFgYm3w0JI+bh9m/0m8zWd+sYfkqTWNVAl45
+   0DWD5qNbsEGoVYA6hm6CMiMVVdfPUwA19vSd3/5NmDq2UHRkGB1T12tve
+   P3fpO5iYCiprtOCcun6y0wIj58Wp3GVUtiOgfmcPPMU4gc+hPwXPCOyIG
+   R75b+WqPBeQ89WP59P5jFYsZdchxisoH9/HuPFfpvMjBuinSs9U3tazbK
+   7M38E/4pdvLjuF4Y/N8fbdTIhCBRX4uOklt10cfQfZaMFitw3xU+Xv7Sn
+   g==;
+X-CSE-ConnectionGUID: 7z/hE7f0RIGq5H2Ca5v+5w==
+X-CSE-MsgGUID: bGgfUkXpQrOWlmwS+DxmSA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11687"; a="74666685"
 X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; 
-   d="scan'208";a="70951871"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 08:23:47 -0800
-X-CSE-ConnectionGUID: 4gWs5LWaSQqMdVan/GnPYA==
-X-CSE-MsgGUID: uZC3MlcSRcSxF4G9KP5wsQ==
+   d="scan'208";a="74666685"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 08:35:13 -0800
+X-CSE-ConnectionGUID: ISFOB53aSryXiS3FBmmp2w==
+X-CSE-MsgGUID: aoXY/OmoQbeovt7xPcttNw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; 
-   d="scan'208";a="208882313"
+   d="scan'208";a="213790102"
 Received: from cjhill-mobl.amr.corp.intel.com (HELO [10.125.110.58]) ([10.125.110.58])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 08:23:48 -0800
-Message-ID: <9b814880-242b-4401-90e1-6704cbdd0751@intel.com>
-Date: Fri, 30 Jan 2026 08:23:46 -0800
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 08:35:11 -0800
+Message-ID: <1b1a2fe7-d225-414c-9055-8ad06938a0bf@intel.com>
+Date: Fri, 30 Jan 2026 08:35:09 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,13 +52,12 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/26] x86/virt/seamldr: Introduce a wrapper for
- P-SEAMLDR SEAMCALLs
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, x86@kernel.org, reinette.chatre@intel.com,
- ira.weiny@intel.com, kai.huang@intel.com, dan.j.williams@intel.com,
- yilun.xu@linux.intel.com, sagis@google.com, vannapurve@google.com,
+Subject: Re: [PATCH v3 08/26] x86/virt/seamldr: Retrieve P-SEAMLDR information
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Chao Gao <chao.gao@intel.com>, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org,
+ reinette.chatre@intel.com, ira.weiny@intel.com, kai.huang@intel.com,
+ dan.j.williams@intel.com, sagis@google.com, vannapurve@google.com,
  paulmck@kernel.org, nik.borisov@suse.com, zhenzhong.duan@intel.com,
  seanjc@google.com, rick.p.edgecombe@intel.com, kas@kernel.org,
  dave.hansen@linux.intel.com, vishal.l.verma@intel.com,
@@ -66,8 +65,9 @@ Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
  "H. Peter Anvin" <hpa@zytor.com>
 References: <20260123145645.90444-1-chao.gao@intel.com>
- <20260123145645.90444-8-chao.gao@intel.com>
- <04f9a748-fe61-439c-af80-59c498970580@intel.com> <aXxm+ezJvwUQ4sfD@intel.com>
+ <20260123145645.90444-9-chao.gao@intel.com>
+ <b2e2fd5e-8aff-4eda-a648-9ae9f8234d25@intel.com>
+ <aXwtILdwb/KMX9uH@yilunxu-OptiPlex-7050>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -113,29 +113,59 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <aXxm+ezJvwUQ4sfD@intel.com>
+In-Reply-To: <aXwtILdwb/KMX9uH@yilunxu-OptiPlex-7050>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 1/30/26 00:08, Chao Gao wrote:
-> On Wed, Jan 28, 2026 at 03:04:55PM -0800, Dave Hansen wrote:
->> On 1/23/26 06:55, Chao Gao wrote:
->>> SEAMRET from the P-SEAMLDR clears the current VMCS structure pointed 
->>> to by the current-VMCS pointer. A VMM that invokes the P-SEAMLDR
->>> using SEAMCALL must reload the current-VMCS, if required, using the
->>> VMPTRLD instruction.
+On 1/29/26 20:01, Xu Yilun wrote:
+>> I'd also prefer a
 >>
->> That seems pretty mean.
->>
->> This is going to need a lot more justification for why this is an
->> absolutely necessary requirement.
+>> 	BUILD_BUG_ON(sizeof(struct seamldr_info) != 2048);
+>                                                     ^
+> BUILD_BUG_ON(sizeof(struct seamldr_info) != 256);   is it?
+Whatever the documentation says. I might have been looking at the
+seamldr_seaminfo.
+
+>> just as a sanity check. It doesn't cost anything and it makes sure that
+>> as you muck around with reserved fields and padding that there's at
+>> least one check making sure it's OK.
 > 
-> AFAIK, this is a CPU implementation issue. The actual requirement is to
-> evict (flush and invalidate) all VMCSs __cached in SEAM mode__, but big
-> cores implement this by evicting the __entire__ VMCS cache. So, the
-> current VMCS is invalidated and cleared.
+> And I recently received a comments that "never __packed for naturally
+> aligned structures cause it leads to bad generated code and hurts
+> performance", but I really want to highlight nearby it is for a
+> formatted binary blob, so:
+> 
+>   struct seamldr_info {
+> 	u32     version;
+> 	u32     attributes;
+> 	u32     vendor_id;
+> 	u32     build_date;
+> 	u16     build_num;
+> 	u16     minor_version;
+> 	u16     major_version;
+> 	u16     update_version;
+> 	u8      reserved0[4];
+> 	u32     num_remaining_updates;
+> 	u8      reserved1[224];
+>   };   //delete __packed here
+> 
+>  static_assert(sizeof(struct seamldr_info) == 256);
+> 
+> Is it better?
 
-But why is this a P-SEAMLDR thing and not a TDX module thing?
+I'm pretty sure __packed is used all over the place.
 
-It seems like a bug, or at least a P-SEAMLDR implementation issue the
-needs to get fixed.
+I'd be shocked if access to a __packed structure generated different
+code than a non-packed one for the same layout. But it wouldn't be the
+first time I was shocked by a compiler.
+
+I think you might be confusing the fact that access to unaligned data
+can really stink on some architectures. The code generation for *that*
+can be garbage. But not on x86 really and not for data that's already
+naturally aligned.
+
+Plus, *this* data structure is far, far from being performance sensitive
+anyway. So it doubly or triply doesn't matter here.
+
+If nothing else, __packed is a good indicator that WYSIWYG for structure
+layout because it's an ABI. I honestly don't see a lot of downsides.
