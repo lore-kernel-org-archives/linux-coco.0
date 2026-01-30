@@ -1,95 +1,107 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E328A2A1BF
-	for <linux-coco@lists.linux.dev>; Fri, 30 Jan 2026 01:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B82C23D291
+	for <linux-coco@lists.linux.dev>; Fri, 30 Jan 2026 04:19:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769736622; cv=none; b=iQKRtvFA3wgd6USoY2wtqJBwS8Y3FXTJX3n0a6e1GnhM39JWJTlQ+Q0epW+P14yXkh7uV7GhfMUQ6Ybx5+oGjze9iLWPk6DdFDalNbyles75jcPmPMndqfe1Wan03gK6e0t4b1FXudBV7wyBxNhRtPFSFWhz+Jpj/mXjSthsJjs=
+	t=1769746798; cv=none; b=tWDVSmkih5XFJWHsgNM+BybXC8QTUC0kXuzJSpiFet9lCbSONLdey/AYHURUgTw1J90TeVy3XPP+j/mZxy9r7nAzTfqLopjLRzvHdS4XtLMedUWTfFvomw4EDshnxVgc2UgMnS228avzSj3VwN2LA38DiiIFueuNMlUeDDOGfac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769736622; c=relaxed/simple;
-	bh=OWbo5+AC/7MNSmt+smFsiU1JrGaXjjA5PVj06qv+38c=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Content-Type; b=IIECvAIpnThB3VoCiVn9WzTQoPGTcnIJ8a0XVAt1n00iFkM+PfNytMHOy8n78PGd/rXbO39IaJ9cuJN0m5X9htGchGwrD6s49O4yRwSnviL5hsy4bSFpyydPLFEFLMrGWyBEyKPqrSOJKh4FqLETxY06X9G+ho/ftP2MzsW7Vi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J+1Fl7u+; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1769746798; c=relaxed/simple;
+	bh=ox/deh2PiJbxGr7yh4KNQDHHU3XJkCnzWZSOESwWuUE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GnnXNlXQsVHDItVndSwjltIWw2GX2rypJeu1nd8Z7tZxNpxZkITrj4LnHZyrljCL5NenLaDOE4YrA8yER97j/DZZOFHZHLlzhYe62axl41GjNmDW7uP1Pp0P1T9EhRtK0xzFzugnfiwwgZkVeyTaxY9td8X1vLkuZoJmHgKraYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OsrepXs3; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J+1Fl7u+"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34c5d6193daso3677369a91.1
-        for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 17:30:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769736620; x=1770341420; darn=lists.linux.dev;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VQBtu95IXBz7ZXJTgTL37RQFlBFs8n039CcrQPqipBA=;
-        b=J+1Fl7u+5ShlV5eRapJ706Lp+Ra52uSVAcz7ckXfj8/UcCZChTw2lE7D+vqNlYyJpS
-         WZ2GGAovmKdlrlNRV6ZG8/NMHQ/0cLm97LYqq6+7LNwgV0poFnPDUJfKSLpan7O8B7q+
-         wHkwvRTinXJZk+xAhXgQlwqQgJZlpYNF0NueqybST4vu7A5LjaGGIvvk4Ppz8tUhDSUp
-         7bgA7cD/a9xDhCrEPgCINYXIiecVeJ2wJ+33sWoAC++bVVRC2snxD1tCNymgfq6v0Qx+
-         gq+zxXtsZhqMmGjO8lzge4Oa9vgqYjl+DiM7ShWurEtzmrKkUIyk8/qs69UPOsT6lK2W
-         0fqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769736620; x=1770341420;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VQBtu95IXBz7ZXJTgTL37RQFlBFs8n039CcrQPqipBA=;
-        b=FLe1d9sEChtK/zAiNAFwAKVW06nKAUJY8mIFLpuOssO1oSWGagha3fxQyGALCucLVI
-         k1T+6aYEl85+enanE28Uo9Ica6tkRAVtAiQHJNbJ/brEaV8rt4yPllA2VQdUx5/AkNso
-         qKD5jsagVYqoQmmJMV3eg3VxXUI03DSqM2C5+EdtodNUrbD8YoCX9v9zcS8OT67p0dOP
-         6WtDTX6Td0HQbYLmP4u2oIOsY0xu1VWq1Jm0618V+dpXeyR6ud1Eo7DHs3dYmchN57rI
-         O8APtw6j8KRARgUX+D5gtX6Y93RTzkfp6kOMo50Iq6HpUFKWrfxIoMvyRvZ3ap3riU10
-         0xsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU6fYQgH5c9f4WkAeCdjJ3zBqeExgPsGaNqHhOT6/6CxTG9EV1WEtaA2rJ/27mAZf+hjl+cJIumC4Pm@lists.linux.dev
-X-Gm-Message-State: AOJu0YxaMLxVdXwAP9KYeLXLSeWVwzGr1AmCRDvkCAMafulyHS8kn/hj
-	pOKuw+H7R3c77N3nw3OMu08MTJeRXkQm9sqK16alT3Mtep61oWVDCpI1NVNNjtpmSlxMbIoOpFw
-	3iIzFTg==
-X-Received: from pjbcu19.prod.google.com ([2002:a17:90a:fa93:b0:352:d166:32ab])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3d4f:b0:341:88c9:6eb2
- with SMTP id 98e67ed59e1d1-3543b2dedf9mr1401283a91.1.1769736620318; Thu, 29
- Jan 2026 17:30:20 -0800 (PST)
-Date: Thu, 29 Jan 2026 17:30:18 -0800
-In-Reply-To: <20260129011517.3545883-17-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OsrepXs3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769746797; x=1801282797;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ox/deh2PiJbxGr7yh4KNQDHHU3XJkCnzWZSOESwWuUE=;
+  b=OsrepXs3KwxzzRzyPIHX3/wSPMA7Zai6w7lXMtlo5Y97+9vlLq2WUB8C
+   fBnDrFxqJfataTL+z/Fwbymu3uY2ep/gUegDvMqP2aSXhqktKwfxkDt7x
+   hwlsUm+gNYFS9m2SfeypWwo/GBb5Tt2PqrSfSViVcgXZOc3nXISmRHCRs
+   WlSGKp+0P19U5VStkRIlXmvwq7d0d8/OMKLTONtk6i/MsLoU8YO9CezUT
+   rjNHASH3jPVwPYnVDsXzUTjI8OJP+QItuigl8eKmmbN7mOHMXFo7kpNPa
+   sdKTA02DbqqV6scBVzkYkw9bvuN4Qi16wyJfZNa3O7IHqkjwrA/AZ7Jrg
+   Q==;
+X-CSE-ConnectionGUID: TkQBEIw2QJqqkJna53GYJA==
+X-CSE-MsgGUID: 2te3Vx+TSo6HdDkSehmw9g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="70014359"
+X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; 
+   d="scan'208";a="70014359"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 20:19:56 -0800
+X-CSE-ConnectionGUID: OSkzCLsHQIyvYwVTXpq2jg==
+X-CSE-MsgGUID: bGKzNJ2JRbiQswS8AGjCIg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; 
+   d="scan'208";a="208670775"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa006.fm.intel.com with ESMTP; 29 Jan 2026 20:19:51 -0800
+Date: Fri, 30 Jan 2026 12:01:36 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Chao Gao <chao.gao@intel.com>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org,
+	reinette.chatre@intel.com, ira.weiny@intel.com, kai.huang@intel.com,
+	dan.j.williams@intel.com, sagis@google.com, vannapurve@google.com,
+	paulmck@kernel.org, nik.borisov@suse.com, zhenzhong.duan@intel.com,
+	seanjc@google.com, rick.p.edgecombe@intel.com, kas@kernel.org,
+	dave.hansen@linux.intel.com, vishal.l.verma@intel.com,
+	Farrah Chen <farrah.chen@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH v3 08/26] x86/virt/seamldr: Retrieve P-SEAMLDR information
+Message-ID: <aXwtILdwb/KMX9uH@yilunxu-OptiPlex-7050>
+References: <20260123145645.90444-1-chao.gao@intel.com>
+ <20260123145645.90444-9-chao.gao@intel.com>
+ <b2e2fd5e-8aff-4eda-a648-9ae9f8234d25@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260129011517.3545883-1-seanjc@google.com> <20260129011517.3545883-17-seanjc@google.com>
-Message-ID: <aXwJqkVErsY3CBuX@google.com>
-Subject: Re: [RFC PATCH v5 16/45] x86/virt/tdx: Add tdx_alloc/free_control_page()
- helpers
-From: Sean Christopherson <seanjc@google.com>
-To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	Kai Huang <kai.huang@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Yan Zhao <yan.y.zhao@intel.com>, Vishal Annapurve <vannapurve@google.com>, 
-	Ackerley Tng <ackerleytng@google.com>, Sagi Shahar <sagis@google.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b2e2fd5e-8aff-4eda-a648-9ae9f8234d25@intel.com>
 
-On Wed, Jan 28, 2026, Sean Christopherson wrote:
-> +/*
-> + * For SEAMCALLs that pass a bundle of pages, the TDX spec treats the registers
-> + * like an array, as they are ordered in the struct.  The effective array size
-> + * is (obviously) limited by the number or registers, relative to the starting
-> + * register.  Fill the register array at a given starting register, with sanity
-> + * checks to avoid overflowing the args structure.
-> + */
-> +static void dpamt_copy_regs_array(struct tdx_module_args *args, void *reg,
-> +				  u64 *pamt_pa_array, bool copy_to_regs)
-> +{
-> +	int size = tdx_dpamt_entry_pages() * sizeof(*pamt_pa_array);
-> +
-> +	if (WARN_ON_ONCE(reg + size > (void *)args) + sizeof(*args))
+> I'd also prefer a
+> 
+> 	BUILD_BUG_ON(sizeof(struct seamldr_info) != 2048);
+                                                    ^
+BUILD_BUG_ON(sizeof(struct seamldr_info) != 256);   is it?
 
-The above closing ')' after args is misplaced, this should be 
+> 
+> just as a sanity check. It doesn't cost anything and it makes sure that
+> as you muck around with reserved fields and padding that there's at
+> least one check making sure it's OK.
 
-	if (WARN_ON_ONCE(reg + size > (void *)args + sizeof(*args)))
+And I recently received a comments that "never __packed for naturally
+aligned structures cause it leads to bad generated code and hurts
+performance", but I really want to highlight nearby it is for a
+formatted binary blob, so:
 
-I'm still in disbelief that I managed to end up with such a horrid bug that
-compiled without any warnings.  *sigh*
+  struct seamldr_info {
+	u32     version;
+	u32     attributes;
+	u32     vendor_id;
+	u32     build_date;
+	u16     build_num;
+	u16     minor_version;
+	u16     major_version;
+	u16     update_version;
+	u8      reserved0[4];
+	u32     num_remaining_updates;
+	u8      reserved1[224];
+  };   //delete __packed here
+
+ static_assert(sizeof(struct seamldr_info) == 256);
+
+Is it better?
