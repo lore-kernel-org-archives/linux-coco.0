@@ -1,183 +1,95 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A35311952
-	for <linux-coco@lists.linux.dev>; Fri, 30 Jan 2026 01:28:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E328A2A1BF
+	for <linux-coco@lists.linux.dev>; Fri, 30 Jan 2026 01:30:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769736486; cv=none; b=gnvUUYoHTCJZUZBt6hPuRGvTF7yEyg5bpkhVNr1U7bCAb0A98wxqAjmngdM8BwtcW0fU+ry9IbLNox+AiVwYlXdbvKZKJQ3aVptZnYdATphBTGfZzmrOyiUD5KlwEP1jBJbfvvVGHz4ny7nEqWZRn2y96xlXcDIsPtRI5W3dIt4=
+	t=1769736622; cv=none; b=iQKRtvFA3wgd6USoY2wtqJBwS8Y3FXTJX3n0a6e1GnhM39JWJTlQ+Q0epW+P14yXkh7uV7GhfMUQ6Ybx5+oGjze9iLWPk6DdFDalNbyles75jcPmPMndqfe1Wan03gK6e0t4b1FXudBV7wyBxNhRtPFSFWhz+Jpj/mXjSthsJjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769736486; c=relaxed/simple;
-	bh=3taJYbZdCbrpWbXI7XIdYXHLYZ3hNlpBVda8BMbduFE=;
+	s=arc-20240116; t=1769736622; c=relaxed/simple;
+	bh=OWbo5+AC/7MNSmt+smFsiU1JrGaXjjA5PVj06qv+38c=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FCsgRK131IHjetXKpOY0RDI2cyPKfqWlxGzbuTSoXYrcCffRxmsn3vNCg7lhhgOVKihZBtlmboRCreXS7CJJyVGqw039Ltz6kh8xN3dDBr54VXmPBNXP1dy2soD97pa1SmljnHkGbauW6lBWF6jI9IMcur5fzICFi7fiJKQATWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EKPwrU0c; arc=none smtp.client-ip=209.85.210.202
+	 To:Content-Type; b=IIECvAIpnThB3VoCiVn9WzTQoPGTcnIJ8a0XVAt1n00iFkM+PfNytMHOy8n78PGd/rXbO39IaJ9cuJN0m5X9htGchGwrD6s49O4yRwSnviL5hsy4bSFpyydPLFEFLMrGWyBEyKPqrSOJKh4FqLETxY06X9G+ho/ftP2MzsW7Vi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J+1Fl7u+; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EKPwrU0c"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-81f53036ac9so1429713b3a.3
-        for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 17:28:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J+1Fl7u+"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34c5d6193daso3677369a91.1
+        for <linux-coco@lists.linux.dev>; Thu, 29 Jan 2026 17:30:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769736484; x=1770341284; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Go9/SPH+2Gh6etMrbpw5IFO/ov1QdlQoCkDEqINUYds=;
-        b=EKPwrU0cl97IB4ICzo7nTpVWT7y8kQ8rH4ah9Cy875asF/mc0jaGNVZFbHoGIggCBr
-         W8B1jfOiZ3ohW7aT7CkFRsUYdPGYCx1l8pLyT4yD9MO+9dHqPFp0mMef+y7SBeHSGZ3X
-         70gbHQX3nqTdwhvshuHbhAmkRAd3Lzm22QLMVYcOt0KMgSsiIaHzsjZqQ91oTtCZOKQV
-         lH6uQgf/+R7XkYCe60Wl/XLHYz7Xx/Nd7BvqGUuKYqVRIvwX7+qqv564Vk6un0W2w6YT
-         OIECFFVU2OEau7juYddlBZrr93wUhSaiV57q8p5sm7zwhmPqgwJuYYNrrbbo3X+ntKYp
-         0G9g==
+        d=google.com; s=20230601; t=1769736620; x=1770341420; darn=lists.linux.dev;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VQBtu95IXBz7ZXJTgTL37RQFlBFs8n039CcrQPqipBA=;
+        b=J+1Fl7u+5ShlV5eRapJ706Lp+Ra52uSVAcz7ckXfj8/UcCZChTw2lE7D+vqNlYyJpS
+         WZ2GGAovmKdlrlNRV6ZG8/NMHQ/0cLm97LYqq6+7LNwgV0poFnPDUJfKSLpan7O8B7q+
+         wHkwvRTinXJZk+xAhXgQlwqQgJZlpYNF0NueqybST4vu7A5LjaGGIvvk4Ppz8tUhDSUp
+         7bgA7cD/a9xDhCrEPgCINYXIiecVeJ2wJ+33sWoAC++bVVRC2snxD1tCNymgfq6v0Qx+
+         gq+zxXtsZhqMmGjO8lzge4Oa9vgqYjl+DiM7ShWurEtzmrKkUIyk8/qs69UPOsT6lK2W
+         0fqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769736484; x=1770341284;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Go9/SPH+2Gh6etMrbpw5IFO/ov1QdlQoCkDEqINUYds=;
-        b=C0olHdXu0FH4eqdwBMJ3u7oCSByKLWPUz5PArUaOnJd5cXRA3ka2TQFgPxzAmKzc/j
-         p21SKNiEHrnZRmzkY/5e3+Flom1Bp6o2c3/6zTxE98t7eIpiW+ft8v8Ata/x8ZAB3bS7
-         Jb5SDXL15E/J6jgrWH4Vtj74Ab4xXCLfm6vN48bdSQO5C7ttDIw1UqqKXjxDC1DACNmj
-         2rA6W6/lKe470VFjtGCd7MiuHYmOZR3kp4Sbi2bd/c6zHs8BpRhyR85qRFPYuX6k8u6K
-         ropbG23HtQncXuh8jsK2bpdSW68rmB/3enPLdJ9nGENm7ssjMPltsqtpsZVtny01bKNX
-         nWfw==
-X-Forwarded-Encrypted: i=1; AJvYcCVU97IOCWKn+Fh7txvHKhRBNagYvCH8PlxLLX/m5DS9DopxfYCIkC6Pkac8DF2BDR9ej76ukJcESBgE@lists.linux.dev
-X-Gm-Message-State: AOJu0YxgANKh3maNN/v1VaRVXq5IIUxEu59vLji+0xLbBrlEMKNTuxKW
-	urG8yBnIrb1vDj//MhIwFvXTVxBfLjZUikBVzIB6w6LmjE/AbBczZ8tjEiNg8yXGqx64tjXC2w1
-	6JjCiew==
-X-Received: from pfbgi12.prod.google.com ([2002:a05:6a00:63cc:b0:7dd:8bba:6393])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:aa89:b0:821:8569:7f19
- with SMTP id d2e1a72fcca58-823ab9853fdmr1132825b3a.59.1769736484397; Thu, 29
- Jan 2026 17:28:04 -0800 (PST)
-Date: Thu, 29 Jan 2026 17:28:02 -0800
-In-Reply-To: <f9f65b0fad57db12e21d2168d02bac036615fb7f.camel@intel.com>
+        d=1e100.net; s=20230601; t=1769736620; x=1770341420;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VQBtu95IXBz7ZXJTgTL37RQFlBFs8n039CcrQPqipBA=;
+        b=FLe1d9sEChtK/zAiNAFwAKVW06nKAUJY8mIFLpuOssO1oSWGagha3fxQyGALCucLVI
+         k1T+6aYEl85+enanE28Uo9Ica6tkRAVtAiQHJNbJ/brEaV8rt4yPllA2VQdUx5/AkNso
+         qKD5jsagVYqoQmmJMV3eg3VxXUI03DSqM2C5+EdtodNUrbD8YoCX9v9zcS8OT67p0dOP
+         6WtDTX6Td0HQbYLmP4u2oIOsY0xu1VWq1Jm0618V+dpXeyR6ud1Eo7DHs3dYmchN57rI
+         O8APtw6j8KRARgUX+D5gtX6Y93RTzkfp6kOMo50Iq6HpUFKWrfxIoMvyRvZ3ap3riU10
+         0xsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU6fYQgH5c9f4WkAeCdjJ3zBqeExgPsGaNqHhOT6/6CxTG9EV1WEtaA2rJ/27mAZf+hjl+cJIumC4Pm@lists.linux.dev
+X-Gm-Message-State: AOJu0YxaMLxVdXwAP9KYeLXLSeWVwzGr1AmCRDvkCAMafulyHS8kn/hj
+	pOKuw+H7R3c77N3nw3OMu08MTJeRXkQm9sqK16alT3Mtep61oWVDCpI1NVNNjtpmSlxMbIoOpFw
+	3iIzFTg==
+X-Received: from pjbcu19.prod.google.com ([2002:a17:90a:fa93:b0:352:d166:32ab])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3d4f:b0:341:88c9:6eb2
+ with SMTP id 98e67ed59e1d1-3543b2dedf9mr1401283a91.1.1769736620318; Thu, 29
+ Jan 2026 17:30:20 -0800 (PST)
+Date: Thu, 29 Jan 2026 17:30:18 -0800
+In-Reply-To: <20260129011517.3545883-17-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260129011517.3545883-1-seanjc@google.com> <20260129011517.3545883-5-seanjc@google.com>
- <f9f65b0fad57db12e21d2168d02bac036615fb7f.camel@intel.com>
-Message-ID: <aXwJIkFJw_4mRl70@google.com>
-Subject: Re: [RFC PATCH v5 04/45] KVM: x86: Make "external SPTE" ops that can
- fail RET0 static calls
+References: <20260129011517.3545883-1-seanjc@google.com> <20260129011517.3545883-17-seanjc@google.com>
+Message-ID: <aXwJqkVErsY3CBuX@google.com>
+Subject: Re: [RFC PATCH v5 16/45] x86/virt/tdx: Add tdx_alloc/free_control_page()
+ helpers
 From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "x86@kernel.org" <x86@kernel.org>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"bp@alien8.de" <bp@alien8.de>, "mingo@redhat.com" <mingo@redhat.com>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "tglx@kernel.org" <tglx@kernel.org>, Kai Huang <kai.huang@intel.com>, 
-	"ackerleytng@google.com" <ackerleytng@google.com>, "sagis@google.com" <sagis@google.com>, 
-	Vishal Annapurve <vannapurve@google.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Yan Y Zhao <yan.y.zhao@intel.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Isaku Yamahata <isaku.yamahata@intel.com>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>
+To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	Kai Huang <kai.huang@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Yan Zhao <yan.y.zhao@intel.com>, Vishal Annapurve <vannapurve@google.com>, 
+	Ackerley Tng <ackerleytng@google.com>, Sagi Shahar <sagis@google.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Jan 29, 2026, Rick P Edgecombe wrote:
-> On Wed, 2026-01-28 at 17:14 -0800, Sean Christopherson wrote:
-> > Define kvm_x86_ops .link_external_spt(), .set_external_spte(), and
-> > .free_external_spt() as RET0 static calls so that an unexpected call to a
-> > a default operation doesn't consume garbage.
-> > 
-> > Fixes: 77ac7079e66d ("KVM: x86/tdp_mmu: Propagate building mirror page tables")
-> > Fixes: 94faba8999b9 ("KVM: x86/tdp_mmu: Propagate tearing down mirror page tables")
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> 
-> We don't want to crash unnecessarily, but do we want to get some sort of notice?
+On Wed, Jan 28, 2026, Sean Christopherson wrote:
+> +/*
+> + * For SEAMCALLs that pass a bundle of pages, the TDX spec treats the registers
+> + * like an array, as they are ordered in the struct.  The effective array size
+> + * is (obviously) limited by the number or registers, relative to the starting
+> + * register.  Fill the register array at a given starting register, with sanity
+> + * checks to avoid overflowing the args structure.
+> + */
+> +static void dpamt_copy_regs_array(struct tdx_module_args *args, void *reg,
+> +				  u64 *pamt_pa_array, bool copy_to_regs)
+> +{
+> +	int size = tdx_dpamt_entry_pages() * sizeof(*pamt_pa_array);
+> +
+> +	if (WARN_ON_ONCE(reg + size > (void *)args) + sizeof(*args))
 
-Hmm, that's probably doable, but definitely in a separate patch.  E.g. something
-like:
+The above closing ')' after args is misplaced, this should be 
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index 6083fb07cd3b..270149f84bb4 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -3,6 +3,13 @@
- BUILD_BUG_ON(1)
- #endif
- 
-+#ifndef KVM_X86_OP_OPTIONAL
-+#define KVM_X86_OP_OPTIONAL KVM_X86_OP
-+#define KVM_X86_OP_OPTIONAL_RET0 KVM_X86_OP
-+#define KVM_X86_OP_OPTIONAL_WARN KVM_X86_OP
-+#define KVM_X86_OP_OPTIONAL_RET0_WARN KVM_X86_OP
-+#endif
-+
- /*
-  * KVM_X86_OP() and KVM_X86_OP_OPTIONAL() are used to help generate
-  * both DECLARE/DEFINE_STATIC_CALL() invocations and
-@@ -94,11 +101,11 @@ KVM_X86_OP_OPTIONAL_RET0(set_tss_addr)
- KVM_X86_OP_OPTIONAL_RET0(set_identity_map_addr)
- KVM_X86_OP_OPTIONAL_RET0(get_mt_mask)
- KVM_X86_OP(load_mmu_pgd)
--KVM_X86_OP_OPTIONAL(alloc_external_sp)
--KVM_X86_OP_OPTIONAL(free_external_sp)
--KVM_X86_OP_OPTIONAL_RET0(set_external_spte)
--KVM_X86_OP_OPTIONAL(reclaim_external_sp)
--KVM_X86_OP_OPTIONAL_RET0(topup_external_cache)
-+KVM_X86_OP_OPTIONAL_WARN(alloc_external_sp)
-+KVM_X86_OP_OPTIONAL_WARN(free_external_sp)
-+KVM_X86_OP_OPTIONAL_RET0_WARN(set_external_spte)
-+KVM_X86_OP_OPTIONAL_WARN(reclaim_external_sp)
-+KVM_X86_OP_OPTIONAL_RET0_WARN(topup_external_cache)
- KVM_X86_OP(has_wbinvd_exit)
- KVM_X86_OP(get_l2_tsc_offset)
- KVM_X86_OP(get_l2_tsc_multiplier)
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index cd3e7dc6ab9b..663c9943c0dd 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -2004,8 +2004,6 @@ extern struct kvm_x86_ops kvm_x86_ops;
- 
- #define KVM_X86_OP(func) \
-        DECLARE_STATIC_CALL(kvm_x86_##func, *(((struct kvm_x86_ops *)0)->func));
--#define KVM_X86_OP_OPTIONAL KVM_X86_OP
--#define KVM_X86_OP_OPTIONAL_RET0 KVM_X86_OP
- #include <asm/kvm-x86-ops.h>
- 
- int kvm_x86_vendor_init(struct kvm_x86_init_ops *ops);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index c3d71ba9a1dc..1748f44c81c0 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -143,8 +143,6 @@ struct kvm_x86_ops kvm_x86_ops __read_mostly;
- #define KVM_X86_OP(func)                                            \
-        DEFINE_STATIC_CALL_NULL(kvm_x86_##func,                      \
-                                *(((struct kvm_x86_ops *)0)->func));
--#define KVM_X86_OP_OPTIONAL KVM_X86_OP
--#define KVM_X86_OP_OPTIONAL_RET0 KVM_X86_OP
- #include <asm/kvm-x86-ops.h>
- EXPORT_STATIC_CALL_GPL(kvm_x86_get_cs_db_l_bits);
- EXPORT_STATIC_CALL_GPL(kvm_x86_cache_reg);
-@@ -9965,6 +9963,17 @@ static struct notifier_block pvclock_gtod_notifier = {
- };
- #endif
- 
-+static void kvm_static_call_warn(void)
-+{
-+       WARN_ON_ONCE(1);
-+}
-+
-+static long kvm_static_call_warn_return0(void)
-+{
-+       WARN_ON_ONCE(1);
-+       return 0;
-+}
-+
- static inline void kvm_ops_update(struct kvm_x86_init_ops *ops)
- {
-        memcpy(&kvm_x86_ops, ops->runtime_ops, sizeof(kvm_x86_ops));
-@@ -9977,6 +9986,12 @@ static inline void kvm_ops_update(struct kvm_x86_init_ops *ops)
- #define KVM_X86_OP_OPTIONAL_RET0(func) \
-        static_call_update(kvm_x86_##func, (void *)kvm_x86_ops.func ? : \
-                                           (void *)__static_call_return0);
-+#define KVM_X86_OP_OPTIONAL_WARN(func) \
-+       static_call_update(kvm_x86_##func, (void *)kvm_x86_ops.func ? : \
-+                                          (void *)kvm_static_call_warn);
-+#define KVM_X86_OP_OPTIONAL_RET0_WARN(func) \
-+       static_call_update(kvm_x86_##func, (void *)kvm_x86_ops.func ? : \
-+                                          (void *)kvm_static_call_warn_return0);
- #include <asm/kvm-x86-ops.h>
- #undef __KVM_X86_OP
+	if (WARN_ON_ONCE(reg + size > (void *)args + sizeof(*args)))
+
+I'm still in disbelief that I managed to end up with such a horrid bug that
+compiled without any warnings.  *sigh*
