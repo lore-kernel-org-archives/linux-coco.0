@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF04944F
-	for <linux-coco@lists.linux.dev>; Mon,  2 Feb 2026 07:30:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E73F2BE7DC
+	for <linux-coco@lists.linux.dev>; Mon,  2 Feb 2026 07:51:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770017426; cv=none; b=TFlGU70ECZQrKEgQMs3EQaq9jReEpASUiu3METdQW05rdJ+ofctJn/z3SM7UnMKwtfZKEpL9Q27d19hTOfL5YZ37VJyj/SIZK2/ylYRb0eCgUUVeYiFierU7ML6b0PZ5/j89p0mlfa57MNCSFaAgd2R6R/DKgmbo3p+nYZOJ4+M=
+	t=1770018671; cv=none; b=JmPCZiIZB6yAzgJW2S4szmvohAQVEWbYIx0HRdoXgToh2KkwwbL8hTtUh7t44aD6a4aBTqSSotvfTCtT3SCbeS/vWfHqDIrEDUT05h9nMusS58LdUpF5oJMxlS0lwJvgwb9ejhgGUOQp1IVZeRLI7v/3B6FNs5n/acWTlq6VD/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770017426; c=relaxed/simple;
-	bh=7BCjcgwThACpqKINVEDrGd72svHvdvaoqjhRgec9HSQ=;
+	s=arc-20240116; t=1770018671; c=relaxed/simple;
+	bh=O0+prLIDP9EOVtAq7fhPLEt/qSodZ9oGj9fgL+MyYO4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MEDmMxPLzDGP6qtySG6c+Lw3FzOKoE1c0PrFaBYf01pAn9N+qE1wxDEpPlPXNsEktWPObE3jcEpLi+t6nQKAxcSDM7iouTt2yUL0W33rYg6S4nqIrtYA0Oat25/+KUu5LU/ERyft1WpzxVdkssAKVInxbD2lSeKlryB5x07I0JA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P7wSDfi2; arc=none smtp.client-ip=192.198.163.19
+	 Content-Type:Content-Disposition:In-Reply-To; b=tpyG5i7Jo2U1nI4YLzWFttB8TOSU4q0M7FIDDgOYFeVZKn3iIgzvXE6GN5c/8u8KQn7167ME0/Tdpbm4W402zxB5nyCL08NxXNYWf2vwKmVjI0hvTr5NYJApke+V9O4DkJa0TKv6I3uAB1ngnY8HfkaCBaesvRX2zYd5FHfbXas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I3q8CHIw; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P7wSDfi2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I3q8CHIw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770017424; x=1801553424;
+  t=1770018669; x=1801554669;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=7BCjcgwThACpqKINVEDrGd72svHvdvaoqjhRgec9HSQ=;
-  b=P7wSDfi2py80Sa64Rt6oYYXGJAYYoHOdmlbii5Byjkf31xt7NcACG3zW
-   A75KiY5vV0Il+yBRc5prO24R5BoQ0yfe3pjvR2V2EcyJ8GfHL23MJR/dc
-   LKYiu4UIk5FxXzni2yxF/wrr7Ww81YBdMFDI18OiqDXQ2yKrYqJIslDfT
-   VsR34xMtdZSf5s28C3VbaPrp0ve16kWpP9ZSglxEiV0R/ANXdWgZzxPlp
-   Cie8nzvI/ksBDWp5FtoShP+BWYS/mwB4jpVXpAKtmxLimaO+fU5Zq0PR+
-   Oi613fNuRK5OKF8Z3kLC44VBm+HcAbJcN9j9110djxJA7iRFYGTt+abK8
-   g==;
-X-CSE-ConnectionGUID: aR2nUMCPRRu3UYYOH0rlMg==
-X-CSE-MsgGUID: ak+wCa2vREavjq8ppwMcCA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11689"; a="70188880"
+  bh=O0+prLIDP9EOVtAq7fhPLEt/qSodZ9oGj9fgL+MyYO4=;
+  b=I3q8CHIwbjl2MuCY5OmgcrrGbyk/tfHmEiI2TsTXJCJIClbUW72tg7l/
+   c+8G3JqauslFSmTvr+FSFfJtkVa0ugwGKr0B+avP390NQuzqMCt++QTTF
+   uYuL/CgV8TMRltujvwVkjDN5cJTVEVDrXJ8HvqSzrDXU4ObTgEnsOz2tC
+   eScmVWLB91pmG5ou+0GDyOgRgjrYp4iE/dlHgO7JLuNhVdvDSQrh905kf
+   p3mCfaOUqtO4GANFTDCDcS9o2bI/vCWEHLQ8Kov0zF6mzz6juCdCdQrnf
+   VhmXCRIhj6STXlCisrbyalbqU2N51f+0LUYlJivTRUu0zndwevreu2xlt
+   A==;
+X-CSE-ConnectionGUID: grCDQ6ohQJ2wa0w0tOv87A==
+X-CSE-MsgGUID: RSeO373uT/OCzlOnJQtwiQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11689"; a="81909850"
 X-IronPort-AV: E=Sophos;i="6.21,268,1763452800"; 
-   d="scan'208";a="70188880"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2026 23:30:23 -0800
-X-CSE-ConnectionGUID: Uw5Z8H+rSOmQG1IMkRDQ4w==
-X-CSE-MsgGUID: dAuO3KFYSnadE7L3YUfpwA==
+   d="scan'208";a="81909850"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2026 23:50:48 -0800
+X-CSE-ConnectionGUID: 0uhux7NhTw+tr/xgY1kJtQ==
+X-CSE-MsgGUID: 7YPpESU2TTGCuSu4En8U4w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,268,1763452800"; 
-   d="scan'208";a="209624610"
+   d="scan'208";a="209523773"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa008.fm.intel.com with ESMTP; 01 Feb 2026 23:30:17 -0800
-Date: Mon, 2 Feb 2026 15:11:53 +0800
+  by orviesa007.jf.intel.com with ESMTP; 01 Feb 2026 23:50:42 -0800
+Date: Mon, 2 Feb 2026 15:32:17 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: Chao Gao <chao.gao@intel.com>
 Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
@@ -57,10 +57,11 @@ Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v3 18/26] x86/virt/seamldr: Log TDX Module update failures
-Message-ID: <aYBOOS1VfirL07RZ@yilunxu-OptiPlex-7050>
+Subject: Re: [PATCH v3 20/26] x86/virt/seamldr: Do TDX per-CPU initialization
+ after updates
+Message-ID: <aYBTAadWNyb8h06B@yilunxu-OptiPlex-7050>
 References: <20260123145645.90444-1-chao.gao@intel.com>
- <20260123145645.90444-19-chao.gao@intel.com>
+ <20260123145645.90444-21-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -69,38 +70,14 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260123145645.90444-19-chao.gao@intel.com>
+In-Reply-To: <20260123145645.90444-21-chao.gao@intel.com>
 
-> +static void print_update_failure_message(void)
-> +{
-> +	static atomic_t printed = ATOMIC_INIT(0);
-> +
-> +	if (atomic_inc_return(&printed) == 1)
-> +		pr_err("update failed, SEAMCALLs will report failure until TDs killed\n");
-> +}
-
-Not sure why it can't be just pr_err_once()?
-
-> +
->  /*
->   * See multi_cpu_stop() from where this multi-cpu state-machine was
->   * adopted, and the rationale for touch_nmi_watchdog()
-> @@ -289,10 +297,13 @@ static int do_seamldr_install_module(void *params)
->  				break;
->  			}
->  
-> -			if (ret)
-> +			if (ret) {
->  				atomic_inc(&tdp_data.failed);
-> -			else
-> +				if (curstate > TDP_SHUTDOWN)
-> +					print_update_failure_message();
-> +			} else {
->  				ack_state();
-> +			}
->  		} else {
->  			touch_nmi_watchdog();
->  			rcu_momentary_eqs();
-> -- 
-> 2.47.3
+On Fri, Jan 23, 2026 at 06:55:28AM -0800, Chao Gao wrote:
+> After installing the new TDX module, each CPU should be initialized
+> again to make the CPU ready to run any other SEAMCALLs. So, call
+> tdx_cpu_enable() on all CPUs.
 > 
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> Tested-by: Farrah Chen <farrah.chen@intel.com>
+
+Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
