@@ -1,49 +1,47 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D64F2B2D7
-	for <linux-coco@lists.linux.dev>; Mon,  2 Feb 2026 00:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98FD238C3A
+	for <linux-coco@lists.linux.dev>; Mon,  2 Feb 2026 03:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769993371; cv=none; b=hYogpQXnqa3+r00c7Fg1eHzksKz3qf4UDrDHit6Dj0GrKyJJtjUMkQXgDPoGfF01mz0VNgWcfRyANsHgmMKzaAvaCk/43oGO3PJdvEgRciAq7n6+CCqGP+YWvUt70rx1645Qesh+O1hr9jxMT+LBdLznKb8N/ivTWDwqkJsHKxg=
+	t=1770002793; cv=none; b=PIUyFMbhGh6KH26I8XcMC9JLnjKzdPyReigBwxlmZw3N8iOdqfHe+O4VWA9fYrPIN8NegEgJw+6RLIMpJQQBgDfaHuQRq3NTfstfBwlGGv+VBGVIUgpQRNHQyZ/S+4JcFwsACNUeMpk1LyEN7yYle7Dovq0OrVZbn9RE9UMc/vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769993371; c=relaxed/simple;
-	bh=JhC6LNziwCFg66YLFP/4Ogb08Rc5d3eEth2dQQMxPjI=;
+	s=arc-20240116; t=1770002793; c=relaxed/simple;
+	bh=LFhG+m37SaXl/4/Xbwsrthhg5xqeUvM+vlX7PPObbLA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WKosy1983YAxSzIXDuep8WvzNsvoasORuoYb61GAsPgfq6RY5lRjuvEHikXAnbGcxj8kiVc3EZ9f7rVCEbMUOeeZc3tMXoqv9sRWQw8Jcga2cUpP4EziWJ9nyxC3SU/ZVBjO5ahcdRzgEcfK1AXRkVrupQI9GooXLXLz5v8OkY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GiAotrbG; arc=none smtp.client-ip=198.175.65.11
+	 Content-Type:Content-Disposition:In-Reply-To; b=dr1V0yF5dJpbVLdsJw+kq3CZR/rnX7TRQuuYqeAeSSpWQ2ooxvWVCXKwTK+9EPIbQiN7ikmaJ047aBNFnBwcPUbV3HoSZeBCljhFwH/WAYWXvcdlu5TtXJzBO99QrmFWowXlW5W4lf3Ijq0scaFhg0AG8ABD8frWMbD5bcEfdg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VCqaFVxZ; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GiAotrbG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VCqaFVxZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769993370; x=1801529370;
+  t=1770002792; x=1801538792;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=JhC6LNziwCFg66YLFP/4Ogb08Rc5d3eEth2dQQMxPjI=;
-  b=GiAotrbGjkEQlEnObDfUiR7SlEN5dw+QJQtHnDel97HF0i9b1h4fyoON
-   E4rIFVrASOw++vsgbFKY213mxE4bMhemuOclPFTqCBQLG4MWCv5F3yzi4
-   Emo3JAhox4omR67DpmERGRlvVv97Glc91VWIqfWvxU/Ti6PV2qoU7Ce70
-   sdLCpF298EVJ2zOye+WxSsVZk8hOCMptjn+eFKw/nGYauICPQJiJQ6xqh
-   LIt8NRBqSCwJDI94NyRfjMlUNH3ej0COTKjZOGIRzzeOrZs+Wm+nqMqP3
-   Un9OmVqlDzVj2/R99wv4RzRfeVcfFld7c6q3E+Nhj5gsGRJmiShAttvwZ
-   w==;
-X-CSE-ConnectionGUID: 9R4EtBftRu67x/wcQTKXcA==
-X-CSE-MsgGUID: v7bhwUV6RY++cDllDl9B6w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11689"; a="81468212"
+  bh=LFhG+m37SaXl/4/Xbwsrthhg5xqeUvM+vlX7PPObbLA=;
+  b=VCqaFVxZ4yAHJ97YL4OgCTRGMRxqn5/1fXfxqpIOfapWXKpilTnGfqht
+   WUs/OO3ukNvY9wNGAAVlIYx9WlJJqaPPDZUJx96mSdrmKJ5vETykYwyoD
+   qrhf0maIsCf1JaFftfeY1kfzx231jOSj87Ol1dRH5q+UGiYfAlmwD9Aoy
+   zledPdZrCi/qznb6YuBKy/HNPAhLFhClvIVVMbD0LIDN5kIOdMU+MsBTj
+   CgV++UjggdC/jyc8W+nUgSm32VM8QWtyygOZPIU+314sYvUlrWeHGssm9
+   v7Lmq0ZKo0w3NYAx23mUmn87pnMF00nEhHHseu8bn8clpJ9yCDcI7+kXA
+   Q==;
+X-CSE-ConnectionGUID: yuN/YCvEStGVfuZUKFdXnQ==
+X-CSE-MsgGUID: dPruGfIGQdyy+lulQqRDAg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11689"; a="81473026"
 X-IronPort-AV: E=Sophos;i="6.21,267,1763452800"; 
-   d="scan'208";a="81468212"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2026 16:49:30 -0800
-X-CSE-ConnectionGUID: W8r68uMDTxC0oT70NcUwQg==
-X-CSE-MsgGUID: uz/TrB9qSOmgShff/13+YQ==
+   d="scan'208";a="81473026"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2026 19:26:32 -0800
+X-CSE-ConnectionGUID: Z02yaL8gSIijW/zJYy+rUw==
+X-CSE-MsgGUID: 5yetVW55QKuqhBbxYbNZOg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,267,1763452800"; 
-   d="scan'208";a="246982169"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa001.jf.intel.com with ESMTP; 01 Feb 2026 16:49:25 -0800
-Date: Mon, 2 Feb 2026 08:31:01 +0800
+  by fmviesa003.fm.intel.com with ESMTP; 01 Feb 2026 19:26:26 -0800
+Date: Mon, 2 Feb 2026 11:08:02 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: Chao Gao <chao.gao@intel.com>
 Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
@@ -53,14 +51,15 @@ Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
 	nik.borisov@suse.com, zhenzhong.duan@intel.com, seanjc@google.com,
 	rick.p.edgecombe@intel.com, kas@kernel.org,
 	dave.hansen@linux.intel.com, vishal.l.verma@intel.com,
+	Farrah Chen <farrah.chen@intel.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v3 11/26] x86/virt/seamldr: Block TDX Module updates if
- any CPU is offline
-Message-ID: <aX/wRfzxTNj8Au/V@yilunxu-OptiPlex-7050>
+Subject: Re: [PATCH v3 13/26] x86/virt/seamldr: Allocate and populate a
+ module update request
+Message-ID: <aYAVEmKRNfLboxeU@yilunxu-OptiPlex-7050>
 References: <20260123145645.90444-1-chao.gao@intel.com>
- <20260123145645.90444-12-chao.gao@intel.com>
+ <20260123145645.90444-14-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -69,16 +68,16 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260123145645.90444-12-chao.gao@intel.com>
+In-Reply-To: <20260123145645.90444-14-chao.gao@intel.com>
 
-On Fri, Jan 23, 2026 at 06:55:19AM -0800, Chao Gao wrote:
-> P-SEAMLDR requires every CPU to call the SEAMLDR.INSTALL SEAMCALL during
-> updates.  So, every CPU should be online.
-> 
-> Check if all CPUs are online and abort the update if any CPU is offline at
-> the very beginning. Without this check, P-SEAMLDR will report failure at a
-> later phase where the old TDX module is gone and TDs have to be killed.
-> 
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> +static struct seamldr_params *init_seamldr_params(const u8 *data, u32 size)
+> +{
+> +	const struct tdx_blob *blob = (const void *)data;
+> +	int module_size, sig_size;
+> +	const void *sig, *module;
 
-Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+You need to firstly check if size is big enough for the header before
+offset into it.
+
+	if (size < sizeof(struct tdx_blob))
+		return XXX;
