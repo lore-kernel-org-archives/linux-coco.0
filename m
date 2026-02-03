@@ -1,248 +1,132 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBC33AE707
-	for <linux-coco@lists.linux.dev>; Tue,  3 Feb 2026 15:41:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036913D1CB0
+	for <linux-coco@lists.linux.dev>; Tue,  3 Feb 2026 16:12:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770133274; cv=none; b=CcTt2pPOPlBFz57k4SKX8QsSpksAAvUrgOtCi4VSJTw4bHIknBFGTZYegwpJc0Pg+COz+fqAhGMUn4SXmv7V1I9Oum/iPg4psiPzWxe54OPia9AutvipxI12ZgRORi0pWeGzjiwuJDQSpHraoXIXMgrq+Sv02bC0Beadk+y7eGU=
+	t=1770135158; cv=none; b=El80DQAIRpHYS4YtyQBEbF6pFWTC7pD0YdQt11Bxsu1wWJQ9w0UkhJ6SZnJxHVk+y9BrfZKEvFz00LismO6H5d25/d6b+f2SGygpJnO70qNYvNDBthkzHzsOMTUfCT+B6i6cEex02KstGNc0hPYTK1gd7c5HeRtCd3ZpwTiP7R4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770133274; c=relaxed/simple;
-	bh=XQ27+R+QYeCRopvq+/032ZUkzbH3fabnjh5Y36ub2sY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VMvB62sPb4FmiR+ZmeEDIIx4+PFruWeO6RwbRrZbYX+3G1nwuSXw2b8xa/QOef85Z4q0ZvWGNVWiYVvrF3FMSnOZa7s5pw+JSwcr15SIUSuIrmgpG+pE6+9MJsNIo/tIMtyk+1s7VFudTfGMcXkhlZdk96Oac4RQ2d520BXNmTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rYBESa7E; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1770135158; c=relaxed/simple;
+	bh=PESUGAS9v6814fsoKw+MXPBUAXlC3LZzqH9DjEuhYhI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WETwv1LGWyV8kWDsnolVFPomKaT3GFcXYy9isHCUybJoEMjDRjCouiO2LxniHIj380IJpTjjGNOPh+oFMA9iteMXUmnh+5ENRd6qVqHn8yIS7DYSZQkWnXPPpicvzgy10CjUTPW4FFHST9n+oaSUydEjuhSGeN8YsfzyKkRzics=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CfZCfJhb; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rYBESa7E"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c5291b89733so3575013a12.0
-        for <linux-coco@lists.linux.dev>; Tue, 03 Feb 2026 07:41:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770133272; x=1770738072; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XWJ660ihJM0hSjFDBVQ0+kuafEpX+U2YAW70nt2lVVE=;
-        b=rYBESa7E5U2GoztIhLJiIE1xNS3/tP8ebWcjon2xlz7oJnBM0WRz+8/rfH6+5QS1PP
-         FUMHnH57GqBJI6g3bGWPdh71LUwdMulMWbobEOcKBcQWpf+x6MvMXXFiEuW9P5s66wce
-         Ee30VFiOUINwkWFgaw960Psi/Q6sYMYA/i2AHR93AsG5RP1DgQ9Bap6ReR6ZOJEmt8qc
-         bXJxNH6KVrDDmj4LFU7HfzYzKWpFhK0BCfHV/0wKwLPCrL6X/qmHAYY/VB2kSRsAH4UP
-         d9VbjwG4/z4MKjgVc6qsUkODVVkWMRENlBLRBJGqj/0O2LDx64XATYMFJ88mMXtj5YAM
-         bApw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770133272; x=1770738072;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=XWJ660ihJM0hSjFDBVQ0+kuafEpX+U2YAW70nt2lVVE=;
-        b=YRzn+uuuV+qiPM5NyTWc7vOv7i4xRwdYkoNK1tylES+6+19oYDktUfZDMKwEKkSlD2
-         /36/jvguvOOo+rBxjJJxHSShPCKovLM3NAWAB5HGjqu2AY92/rzwYXOuoEaEwCwsx9Ng
-         wgtmk3RpaPHkLRH/V9Rx6puno7OZVUwiYLxd7SmI/9S+RNOOt57P2bLyevq5nASBGfm8
-         hMqCsY/c/RQn8Ub/+M0Vqn+bGCNFpBfeLiVnhhUpc8xFsQqejlEIkzCc7b2wo1puYEPO
-         /jY0t0Ekl7KR9X4D+hhipPHFuycwIqh06BBN5LtnmAvTrjJMnF0r+DVO+/0yJvi26169
-         etJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVtyzt2vcxJTQ/PrjdGsnW5WexV0+IX+FWimB6/JQTAl43rnuH4bn+can0luAK+ygsASgS6bYRf+/hv@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz4+1nzbpdT4bOG+NFyGlHrF5EGlXXnBIiHDyaquLzGssiq5TWr
-	2v6DHlLfDJqcfGeCAOPcPRSwg4mDJ6HibClY1YVxX0gobDShXqG9ZInrqgMCkGtAtnFTplqe5jE
-	qDLAHjQ==
-X-Received: from pglf30.prod.google.com ([2002:a63:101e:0:b0:c66:9115:3b4d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:e390:b0:38e:9220:ebbe
- with SMTP id adf61e73a8af0-392e003d35emr15312558637.23.1770133271757; Tue, 03
- Feb 2026 07:41:11 -0800 (PST)
-Date: Tue, 3 Feb 2026 07:41:10 -0800
-In-Reply-To: <aYHmUCLRYL+JX1ga@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CfZCfJhb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770135157; x=1801671157;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=PESUGAS9v6814fsoKw+MXPBUAXlC3LZzqH9DjEuhYhI=;
+  b=CfZCfJhbxpLy1eifgt/G+K0K/SKp8D9m98fVOJRFkYn8wa/mTZabbPMj
+   6wy0L8768dQCzqqsiLawzSaBopIdKnJqv8qmzgrwcrY+RrONHUYC9y9Oc
+   ku+dWhN6fa5O3vGJcDcvjr1GQLzzM/YyOAyMlsJEFuMIABbLau+/eVWUI
+   stff/clMvs8o3ijXBTtQevRMAdN64fyjDhDioNhJTg+qNZRKLW5ugfFYE
+   EyB8mWfyulBtykkf+CpZ8xuMN7X01vFQaEP3LOdBVArJQ7brA41mURtR7
+   yF8DnjdvUjMMaaVuAi8RGw49bjl4Dl+heCw9WoMjkgzleZxZSMesghqY8
+   Q==;
+X-CSE-ConnectionGUID: Me8C78ycRqeteioerKPIDg==
+X-CSE-MsgGUID: A9Qx5xAxTnK07YiGobMtAQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="73908429"
+X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
+   d="scan'208";a="73908429"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 08:12:35 -0800
+X-CSE-ConnectionGUID: 1MP+e9lgTtaOqsYrYG6c6g==
+X-CSE-MsgGUID: 6aTzzOC7R0ynwNuNYaqdWQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
+   d="scan'208";a="208985013"
+Received: from dwoodwor-mobl2.amr.corp.intel.com (HELO [10.125.110.207]) ([10.125.110.207])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 08:12:34 -0800
+Message-ID: <ab71da7b-3bc5-41ed-b9cc-cbf125dbb5da@intel.com>
+Date: Tue, 3 Feb 2026 08:12:33 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260123145645.90444-1-chao.gao@intel.com> <20260123145645.90444-8-chao.gao@intel.com>
- <301f8156-bafe-440a-8628-3bf8fae74464@intel.com> <aXywVcqbXodADg4a@intel.com>
- <fedb3192-e68c-423c-93b2-a4dc2f964148@intel.com> <aYHmUCLRYL+JX1ga@intel.com>
-Message-ID: <aYIXFmT-676oN6j0@google.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 07/26] x86/virt/seamldr: Introduce a wrapper for
  P-SEAMLDR SEAMCALLs
-From: Sean Christopherson <seanjc@google.com>
-To: Chao Gao <chao.gao@intel.com>
-Cc: Dave Hansen <dave.hansen@intel.com>, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org, 
-	reinette.chatre@intel.com, ira.weiny@intel.com, kai.huang@intel.com, 
-	dan.j.williams@intel.com, yilun.xu@linux.intel.com, sagis@google.com, 
-	vannapurve@google.com, paulmck@kernel.org, nik.borisov@suse.com, 
-	zhenzhong.duan@intel.com, rick.p.edgecombe@intel.com, kas@kernel.org, 
-	dave.hansen@linux.intel.com, vishal.l.verma@intel.com, 
-	Farrah Chen <farrah.chen@intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Sean Christopherson <seanjc@google.com>, Chao Gao <chao.gao@intel.com>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, x86@kernel.org, reinette.chatre@intel.com,
+ ira.weiny@intel.com, kai.huang@intel.com, dan.j.williams@intel.com,
+ yilun.xu@linux.intel.com, sagis@google.com, vannapurve@google.com,
+ paulmck@kernel.org, nik.borisov@suse.com, zhenzhong.duan@intel.com,
+ rick.p.edgecombe@intel.com, kas@kernel.org, dave.hansen@linux.intel.com,
+ vishal.l.verma@intel.com, Farrah Chen <farrah.chen@intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
+References: <20260123145645.90444-1-chao.gao@intel.com>
+ <20260123145645.90444-8-chao.gao@intel.com>
+ <301f8156-bafe-440a-8628-3bf8fae74464@intel.com> <aXywVcqbXodADg4a@intel.com>
+ <fedb3192-e68c-423c-93b2-a4dc2f964148@intel.com> <aYHmUCLRYL+JX1ga@intel.com>
+ <aYIXFmT-676oN6j0@google.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <aYIXFmT-676oN6j0@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Feb 03, 2026, Chao Gao wrote:
-> >>> I'd be shocked if this is the one and only place in the whole kernel
-> >>> that can unceremoniously zap VMX state.
-> >>>
-> >>> I'd *bet* that you don't really need to do the vmptrld and that KVM c=
-an
-> >>> figure it out because it can vmptrld on demand anyway. Something alon=
-g
-> >>> the lines of:
-> >>>
-> >>> 	local_irq_disable();
-> >>> 	list_for_each(handwaving...)
-> >>> 		vmcs_clear();
-> >>> 	ret =3D seamldr_prerr(fn, args);
-> >>> 	local_irq_enable();=09
-> >>>
-> >>> Basically, zap this CPU's vmcs state and then make KVM reload it at s=
-ome
-> >>> later time.
-> >>=20
-> >> The idea is feasible. But just calling vmcs_clear() won't work. We nee=
-d to
-> >> reset all the tracking state associated with each VMCS. We should call
-> >> vmclear_local_loaded_vmcss() instead, similar to what's done before VM=
-XOFF.
-> >>=20
-> >>>
-> >>> I'm sure Sean and Paolo will tell me if I'm crazy.
-> >>=20
-> >> To me, this approach needs more work since we need to either move=20
-> >> vmclear_local_loaded_vmcss() to the kernel or allow KVM to register a =
-callback.
-> >>=20
-> >> I don't think it's as straightforward as just doing the save/restore.
-> >
-> >Could you please just do me a favor and spend 20 minutes to see what
-> >this looks like in practice and if the KVM folks hate it?
+On 2/3/26 07:41, Sean Christopherson wrote:
+>> It seems like a bug, or at least a P-SEAMLDR implementation issue the
+>> needs to get fixed.
+> Yeah, 'tis odd behavior.  IMO, that's all the more reason the TDX subsystem should
+> hide the quirk from the rest of the kernel.
+> 
+> [*] https://lore.kernel.org/all/20251010220403.987927-1-seanjc@google.com
 
-I hate it :-)
+For now, I say treat it as a bug. Don't deal with it in the series.
 
-> Sure. KVM tracks the current VMCS and only executes vmptrld for a new VMC=
-S if
-> it differs from the current one. See arch/x86/kvm/vmx/vmx.c::vmx_vcpu_loa=
-d_vmcs()
->=20
-> 	prev =3D per_cpu(current_vmcs, cpu);
-> 	if (prev !=3D vmx->loaded_vmcs->vmcs) {
-> 		per_cpu(current_vmcs, cpu) =3D vmx->loaded_vmcs->vmcs;
-> 		vmcs_load(vmx->loaded_vmcs->vmcs);
-> 	}
->=20
-> By resetting current_vmcs to NULL during P-SEAMLDR calls, KVM is forced t=
-o do a
-> vmptrld on the next VMCS load. So, we can implement seamldr_call() as:
->=20
-> static int seamldr_call(u64 fn, struct tdx_module_args *args)
-> {
-> 	int ret;
->=20
-> 	WARN_ON_ONCE(!is_seamldr_call(fn));
->=20
-> 	/*
-> 	 * Serialize P-SEAMLDR calls since only a single CPU is allowed to
-> 	 * interact with P-SEAMLDR at a time.
-> 	 *
-> 	 * P-SEAMLDR calls invalidate the current VMCS. Exclude KVM access to
-> 	 * the VMCS by disabling interrupts. This is not safe against VMCS use
-> 	 * in NMIs, but there are none of those today.
-> 	 *
-> 	 * Set the per-CPU current_vmcs cache to NULL to force KVM to reload
-> 	 * the VMCS.
-> 	 */
-> 	guard(raw_spinlock_irqsave)(&seamldr_lock);
-> 	ret =3D seamcall_prerr(fn, args);
-> 	this_cpu_write(current_vmcs, NULL);
->=20
-> 	return ret;
-> }
->=20
-> This requires moving the per-CPU current_vmcs from KVM to the kernel, whi=
-ch
-> should be trivial with Sean's VMXON series.
-
-Trivial in code, but I am very strongly opposed to moving current_vmcs out =
-of KVM.
-As stated in the cover letter of the initial VMXON RFC[*]:
-
- : Emphasis on "only", because leaving VMCS tracking and clearing in KVM is
- : another key difference from Xin's series.  The "light bulb" moment on th=
-at
- : front is that TDX isn't a hypervisor, and isn't trying to be a hyperviso=
-r.
- : Specifically, TDX should _never_ have it's own VMCSes (that are visible =
-to the
- : host; the TDX-Module has it's own VMCSes to do SEAMCALL/SEAMRET), and so=
- there
- : is simply no reason to move that functionality out of KVM.
-
-TDX's "use" of a VMCS should be completely transparent to KVM, because othe=
-rwise
-we are stepping over that line that says the TDX subsystem isn't a hypervis=
-or.
-I also really, really don't want to add a super special case rule to KVM's =
-VMCS
-tracking logic.
-
-After reading through the rest of this discussion, I'm doubling down on tha=
-t
-stance, because I agree that this is decidely odd behavior.
-
-Pulling in two other threads from this discussion:
-
-On Wed, Jan 28, 2026 at 3:05=E2=80=AFPM Dave Hansen <dave.hansen@intel.com>=
- wrote:
->
-> On 1/23/26 06:55, Chao Gao wrote:
-> > SEAMRET from the P-SEAMLDR clears the current VMCS structure pointed
-> > to by the current-VMCS pointer. A VMM that invokes the P-SEAMLDR
-> > using SEAMCALL must reload the current-VMCS, if required, using the
-> > VMPTRLD instruction.
->
-> That seems pretty mean.
->
-> This is going to need a lot more justification for why this is an
-> absolutely necessary requirement.
->
-> KVM folks, are you OK with this?
-
-As above, I'm definitely not ok with the current VMCS being zapped out from
-underneath KVM.  As to whether or not I'm ok with the P-SEAMLDR behavior, I=
- would
-say that's more of a question for you, as it will fall on the TDX subsytem =
-to
-workaround the bug/quirk.
-
-On Fri, Jan 30, 2026 at 8:23=E2=80=AFAM Dave Hansen <dave.hansen@intel.com>=
- wrote:
-> On 1/30/26 00:08, Chao Gao wrote:
-> > AFAIK, this is a CPU implementation issue. The actual requirement is to
-> > evict (flush and invalidate) all VMCSs __cached in SEAM mode__, but big
-> > cores implement this by evicting the __entire__ VMCS cache. So, the
-> > current VMCS is invalidated and cleared.
->
-> But why is this a P-SEAMLDR thing and not a TDX module thing?
-
-My guess is that it's because the P-SEAMLDR code loads and prepares the new=
- TDX-
-Module by constructing the VMCS used for SEAMCALL using direct writes to me=
-mory
-(unless that TDX behavior has changed in the last few years).  And so it ne=
-eds
-to ensure that in-memory representation is synchronized with the VMCS cache=
-.
-
-Hmm, but that doesn't make sense _if_ it really truly is SEAMRET that does =
-the VMCS
-cache invalidation, because flushing the VMCS cache would ovewrite the in-m=
-emory
-state.
-
-> It seems like a bug, or at least a P-SEAMLDR implementation issue the
-> needs to get fixed.
-
-Yeah, 'tis odd behavior.  IMO, that's all the more reason the TDX subsystem=
- should
-hide the quirk from the rest of the kernel.
-
-[*] https://lore.kernel.org/all/20251010220403.987927-1-seanjc@google.com
+If it truly is unfixable P-SEAMLDR behavior, then Intel can issue and
+erratum for it and we can add (ugly) code to follow Sean's suggestion.
