@@ -1,328 +1,158 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013021.outbound.protection.outlook.com [40.93.196.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526B23168F6
-	for <linux-coco@lists.linux.dev>; Tue,  3 Feb 2026 17:50:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.21
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770141026; cv=fail; b=KFC3wF+kvjf0JtvEdoe3vxrLFB1adZ0l1nqsr/ql6yHp5XGtcGUSHsDE041STkyDcJkxPv7ONmzajKFtFXHOOODdzPQwx/rY5ZijmuReGcwc8gOLHbspvaN6AQOZQGMeV67k9WIK2Ue5N2VMGV8ecchXqcoIw7Fo1UK9DdtfAG0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770141026; c=relaxed/simple;
-	bh=mgVWLpnYbRJl0tRYAJ7VL9hzD1nvnNI9Ie9KspfF1bY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n2nEr2fzlAy+JCri5IWmj+OFJyZ9XaFf3drR6BPSQj8vV1cABTeOWP5L6nxHP791Eoe+vwsQHF3Vc0SN2GmX3TUoWkZba3jFXTk5bmmI8tWRkJa21IfuMVUGQCDtrQdIbpfxNVTKSq870EtF/ul18w7RZLekOGFF+tQ3jvJoYJ4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=JBEhEOmj; arc=fail smtp.client-ip=40.93.196.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDDA31AF36
+	for <linux-coco@lists.linux.dev>; Tue,  3 Feb 2026 20:05:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770149108; cv=none; b=BpntOkCEuq903MWQyQaVnGLCDoYnxfuCIsJ6Q1RZcDucUg77YqZlFWx2hi5aPUkf9t9U0DvtZxB1s3E7HOKP4qwdy88R40TFYBC8H6VUeVf7Dpy9EygL3dETY/X/GCgLPFqLGoZBe68BC3bD8UEmFOaHUVBDBsITc8lQYHqpf14=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770149108; c=relaxed/simple;
+	bh=27o1wKuHEcNlANVMdC7x0Trddiu/F8hRGySQRl5se5c=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=bJUIhvre7MWDUOcJXg/KdkYJyhdpC6OU/jv3SJE8ANhdd6r3ly/SH3C6zAPL0uIUxD8YTdhnb8G6c4/05LaI3NdfzrP3k4KBI3SOa4zYkqfYazbvPG8rB2KwWkTxcxqjn+Q4cIjypgWNc/VoarFDSckrCLV0hVOB9MbBTofnol4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VUlv8DCn; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="JBEhEOmj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KZSVQJaim+YPWDpkOcFbTcQrzRj2bt9rz1PEYdUt1aQZBUB7h1UxNHDGdrO2ccwCVW/ib/g3SMzFTJhSth7w+uS46ztecg9YlnKJJJOlWdR1a3+Am10uPL9lxlPcC+bnCNeXNTc38XWDhmfiS/EwX8XRiVPnGpkAx4MkuMICUH85ZRQksNUvoUQiTvz9hU0sTM+XzsK17KSYgxYG6uAIQ85E3LKdl5sDmCUkG/NCFaskXy+LdG5lwVOi4nV9FQ90whZZYIrofKAHzoNnOTPNazOKrQ7vBzs2tHRkPaBgZ9+N22lwGMe2Sps03YdVd87D7QKYZEqo/qx5ZPV8UppaMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=S5niGBnGgpdeJrbspiwEbnfx27x0RTQBe+lLIh+HrMA=;
- b=UTt65kc3Yg2O2pdsxA5U8BTnStvgPhvLec9gpV5WU4VgqO0ccoMWWbms1cFRhdFDxqzx0XcTr14fEiYC23H/9zT2DgROk3gzSirhEAUU1Z59nSdn3a7CpoWjL50VRdN/FM8G7Roxu4lgYu6+vMDwshv7ThYeUj9VPLG3LDJBHF/egNDPDfBTx2TMWqBCwxmIoIY5pN3OGbj817mwBYG3Gc9gOW/jrkummPTuE4IaY67uTkCpVvcA2JxwpHXPSW1QkaxGjPej1/oLwY7IcMbCJe/LsvUVqHMPOZHXIbswsydR34zXDMbm/mWwfchD8lUNYUUnFkd71LqI0Izb/tTP1g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kvack.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S5niGBnGgpdeJrbspiwEbnfx27x0RTQBe+lLIh+HrMA=;
- b=JBEhEOmj5Fv7lbcGt6sUAHZy0mqyYBrFwhsQ3v6fc6D2eeROLrVMDo4BRBvPQXOUemNor/HXKuqfS0/grSCG/07W9ZKnILyjDv+PcwZN91tSvuSYNN6ONWZolZvmDYD8v770l0EByCN5TfKudzdYBOTXzf77ewvwXzJI45hidN8=
-Received: from SJ0PR03CA0183.namprd03.prod.outlook.com (2603:10b6:a03:2ef::8)
- by PH8PR12MB7325.namprd12.prod.outlook.com (2603:10b6:510:217::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Tue, 3 Feb
- 2026 17:50:17 +0000
-Received: from SJ1PEPF000023DA.namprd21.prod.outlook.com
- (2603:10b6:a03:2ef:cafe::e1) by SJ0PR03CA0183.outlook.office365.com
- (2603:10b6:a03:2ef::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9587.12 via Frontend Transport; Tue,
- 3 Feb 2026 17:50:18 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF000023DA.mail.protection.outlook.com (10.167.244.75) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9587.0 via Frontend Transport; Tue, 3 Feb 2026 17:50:17 +0000
-Received: from ellora.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 3 Feb
- 2026 11:50:16 -0600
-From: "Pratik R. Sampat" <prsampat@amd.com>
-To: <linux-mm@kvack.org>, <linux-coco@lists.linux.dev>, <x86@kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <kas@kernel.org>, <ardb@kernel.org>,
-	<akpm@linux-foundation.org>, <david@kernel.org>, <osalvador@suse.de>,
-	<thomas.lendacky@amd.com>, <michael.roth@amd.com>, <prsampat@amd.com>
-Subject: [PATCH v4 2/2] x86/sev: Add support to unaccept memory after hot-remove
-Date: Tue, 3 Feb 2026 11:49:46 -0600
-Message-ID: <20260203174946.1198053-3-prsampat@amd.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260203174946.1198053-1-prsampat@amd.com>
-References: <20260203174946.1198053-1-prsampat@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VUlv8DCn"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34c5d6193daso13998792a91.1
+        for <linux-coco@lists.linux.dev>; Tue, 03 Feb 2026 12:05:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770149106; x=1770753906; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=MTkxDSMkaltlyd44nQIL0k0Ugq+OLZ5pVW5UzVf+elM=;
+        b=VUlv8DCn7LZAxkARlOd+GqwqdHVJna4cHQB+6Wach68dM2iME7XZUyS7+eYIxkayRQ
+         Y4jRrIp3X6jWgC9SvwmfWRExAIDQgWJwWAFXv76GJ3KwQtllmVUqm7DZeGV+4XHSnexj
+         uR3Ewjiw2EbANKGrJycBPN1H45QTd+CPtwZ4hikD5M1ofjAaCUfsTG2QaqsHHwZFPuOJ
+         grZ3TKetA/u8J9T7R7TuA4McLr7kuNXqHvxdCzcpLrBqMDaJG6MpuxL8mN9f0tUHDh18
+         epSHLRfebMoHXb65qVdCAl5qQEieMl155bynrEfvz8CB9aUjy9EHuOApydhLN1HGbnEo
+         KyvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770149106; x=1770753906;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MTkxDSMkaltlyd44nQIL0k0Ugq+OLZ5pVW5UzVf+elM=;
+        b=SvOH1TgqljFqTxzQM8DzjBypwBb/C9xBBUzZNYnkGyiiB9Om9I+6dOSwXN01OUBfAv
+         MLW36HK4Y5GUPpw3PI2STjCyxuj31aE0Q4cjqUYbBfr9RgRYks3y92PqDuFdRC2lMeBP
+         z219Nejj4tAmxt2NBzdR7PO1u6wGbVJ8Pon2gekBaU9jdB0kKYNaSZWIVotT+hkx23n/
+         gCD5SbZNmXwp+rhzPNER5J2/8PF3Qd7zuVpk2Zu0C0BoFT3IEyTw5LZbj7+nkOcY+r3E
+         IWw8/JkxZPsOd/HT3P1841CpJUraWffz+AhIUDQqC35OPT41wVsX5YwSFShMNKH0M6bb
+         fT7w==
+X-Forwarded-Encrypted: i=1; AJvYcCUkVwJKO1FgKJSyojMzYg8vlgIDWFYHKX3EAyMZtzTDQwREKk7cg3iHTvs3/l/VJXOI0ZL/TKG1CBZP@lists.linux.dev
+X-Gm-Message-State: AOJu0YxTNvKkdNhhtQkrW+sbtdyzn7w+5IQhmS2jhzPzQcEpcQ5uDbiW
+	lAQMNjb0a5hfiZ0az00+rWdQWGKwstbduKhLwYM2t1owDqFrY2jX57fhaSWHUeDB29n1cu72u07
+	CiQpVmQ==
+X-Received: from pjsg5.prod.google.com ([2002:a17:90a:7145:b0:352:d19a:6739])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2242:b0:338:3d07:5174
+ with SMTP id 98e67ed59e1d1-354870aad4dmr367163a91.5.1770149106374; Tue, 03
+ Feb 2026 12:05:06 -0800 (PST)
+Date: Tue, 3 Feb 2026 20:05:05 +0000
+In-Reply-To: <aYHLlTPeo2fzh02y@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000023DA:EE_|PH8PR12MB7325:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4e684234-07e3-42a9-36c0-08de634cb135
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|7416014|82310400026|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?YiJJhcwPPTAct/P4tit4PoN1CLeAwb6fZLjbNGfYsXE/MP84T0s5xiTKQaw0?=
- =?us-ascii?Q?aRYq/7OwwtiET78GbNeqkbVld/8FxqBxMC0BspjBJ9nsOsld1RRdEL6zdaFd?=
- =?us-ascii?Q?rQo6KODVWYcX7ITb4Be3VvLUtQGyoYUvm0b/I/z3AhbVslN0xoX94z/Mc2NR?=
- =?us-ascii?Q?Qgmw5pVqhBE+T9BglieFKD0z2gX6rhW3uD1joE1LhofaFzX4fbGCke0qOHnn?=
- =?us-ascii?Q?oLbeSV2iuzwqfDNPXGqya9yhycRac4TETw0HzdGfBXM1tKjMxzyDAxhiIDfG?=
- =?us-ascii?Q?JMZYcr85305irpTKbw7fQzXLO06g8T4T3oFBo1B5RzFNZijR15WUdF/j8AzY?=
- =?us-ascii?Q?vYNyuhArj+TeYGxwIbv7tBjeQ2c3P/hy8SKOaPqVCKJIyM6u1/b5h1b05JGp?=
- =?us-ascii?Q?N1tVZ8cYlIywmNoVFTgmok2Ah3bBaSqD1wz3iTlNKnbPEqKRM4NJPPXyXDK2?=
- =?us-ascii?Q?HzYRnOFhJIrP78UZ2wrNYig/JSEJpb/N1hL+OMNIjteR2taBb1Qd7Lkjftmo?=
- =?us-ascii?Q?2+2fQBWoCvY/jeGy9JdeeHqdU43cEVsgq6JUGJtGn/qycHMii38zBhU7WNLZ?=
- =?us-ascii?Q?PPSgvlETnS/8DaBiQiSrYtYT0q5KaoCHoGcNnPFvKxY6VU60KrYx19k/s0s0?=
- =?us-ascii?Q?RwbnwR68bqkPL0DR6iiPHLJvMNoCAKz3idEJyoBlyDRG2AuYPNpeqNekOWqA?=
- =?us-ascii?Q?6xohFRzqNtT2wpx8inwOeYYRygCgMomAQ0803mz4x/gyNPRiWsvy0SI9QFUu?=
- =?us-ascii?Q?PV7drJ+Mr8nOAIk0GMRqDEMqL5nVZ6gQumq6MkNjkSkR02i0aCS/hNqDteUi?=
- =?us-ascii?Q?5CUe8gNiG3WqyDGjz5LBLvxvesji1w44Bo7wnadApmjb7GejZJJQTWz/MVZQ?=
- =?us-ascii?Q?aRubnJXcGrbwgQuzrPSHDiN8UDHuEs+ZOpS71zU+gBPa0yzQ4Fhc9h3ghSHQ?=
- =?us-ascii?Q?VEIz/cSdEQiKEq9A5tkRt5zjm5WTc7aoPc6ubhmsEvFnnKyXXojCOT5J7eiO?=
- =?us-ascii?Q?9e0Z4r4UBoM0VLM0i9UH3JRwHNqKIvmeq6LsSZfi02NZNtYrp1LlPNPVf6F+?=
- =?us-ascii?Q?w3yS10YdGuPcqFMM+sYnmEhlyZXHUi5vuXuUeKmZt7gTsYVrX9sUkzW8S9Ry?=
- =?us-ascii?Q?3zrnO417g6qFUpB+3D7W5jrdjuuDjC4JDHmmVm7yJmAkhkphgAMXvx8NmdOt?=
- =?us-ascii?Q?aZx/B1D01JoSihFDzp1nkN/tYCQF2XdBo7oQSI1dcZQuzbZO2ppYQUN5q+TD?=
- =?us-ascii?Q?4UgsMHGjW/2Km6a5pknygVJX29HFLqlm5kJqrn3NnWW0nYGwUQievtkuJyl3?=
- =?us-ascii?Q?pGraMNwtqNSDykO+OINwxVArk6f4tz7wa4KV2wSt0MWGawev1iPxmkfwHN/Z?=
- =?us-ascii?Q?VJv7SVNBD/jFLZ63Cj33dCu/SOOCRDH41zePyMGQLWwp6j9Zd16KuFMzU/cq?=
- =?us-ascii?Q?dzbrhIjgtoxT7l6vQrJxhbPcE8XWsuChOt0AZ5EvxHfg3O1MIAzz7qJi2YX+?=
- =?us-ascii?Q?wa2ZntrwHCJI8ThOqxXwUDBJrmp8CzUsNrNLan1385TOlFilYO7iisqaL2il?=
- =?us-ascii?Q?N++giM9sVDxMD40T947JUMMA4KwodEDvOZ/6BU0UixQTgfLkmN9EqNBCnNhA?=
- =?us-ascii?Q?r0OfZIThXwXSMxmV7x3axK5flAn/rSNxdb+hvkLI1vCgXX3YLO2IOeYPAzk5?=
- =?us-ascii?Q?GZCOSw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(376014)(7416014)(82310400026)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	sC/Nv6R9yotm69sBx0WzQkok+MYIlcLRsmkFL7ek3jS0H7zTZ5rxYI0thKdTUrTzL4saLkD6mb1KqzYEzjLKFRG4RJPbvCCFvN+OZMW2rWUHuK3fRt1CpI3+mnLK/FDBang85EQ4/JHNVBtJ4oRpHx58/wllAImR/lozGmoWs7r04Gqm/268fqPUDc0JXRynT1Eljb4fuqtQJnYDt8qyyURb8zuvVp06Pd3bjYTJUQhmXiYlmgUiY19/ot1g2qF2LNsL5HDWRMH+JfydWLHkECil7maSudnPMK2jZ5aFrHfS10zR0ZDWgFCaerphLLdT221qQ/hHghaBFcX1kibKJKHIOWJzN1VqrRSzqj+JLbHdENs4bRL+PdDPuJxdUEi4H/zGSTRqvfJ7WqaJnfomar4AxGrNRmEm9tR630bZ9quhKdyXvSTe3a4iwwk747ga
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2026 17:50:17.3569
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e684234-07e3-42a9-36c0-08de634cb135
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF000023DA.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7325
+Mime-Version: 1.0
+References: <20260129011517.3545883-1-seanjc@google.com> <20260129011517.3545883-6-seanjc@google.com>
+ <aYHLlTPeo2fzh02y@yzhao56-desk.sh.intel.com>
+Message-ID: <aYJU8Som706YkIEO@google.com>
+Subject: Re: [RFC PATCH v5 05/45] KVM: TDX: Drop kvm_x86_ops.link_external_spt(),
+ use .set_external_spte() for all
+From: Sean Christopherson <seanjc@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	Kai Huang <kai.huang@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Sagi Shahar <sagis@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Transition memory to the shared state during a hot-remove operation so
-that it can be re-used by the hypervisor. This also applies when memory
-is intended to be hotplugged back in later, as those pages will need to
-be re-accepted after crossing the trust boundary.
+On Tue, Feb 03, 2026, Yan Zhao wrote:
+> On Wed, Jan 28, 2026 at 05:14:37PM -0800, Sean Christopherson wrote:
+> >  static int __must_check set_external_spte_present(struct kvm *kvm, tdp_ptep_t sptep,
+> >  						 gfn_t gfn, u64 *old_spte,
+> >  						 u64 new_spte, int level)
+> >  {
+> > -	bool was_present = is_shadow_present_pte(*old_spte);
+> > -	bool is_present = is_shadow_present_pte(new_spte);
+> > -	bool is_leaf = is_present && is_last_spte(new_spte, level);
+> > -	int ret = 0;
+> > -
+> > -	KVM_BUG_ON(was_present, kvm);
+> > +	int ret;
+> >  
+> >  	lockdep_assert_held(&kvm->mmu_lock);
+> > +
+> > +	if (KVM_BUG_ON(is_shadow_present_pte(*old_spte), kvm))
+> > +		return -EIO;
+> Why not move this check of is_shadow_present_pte() to tdx_sept_set_private_spte()
+> as well? 
 
-Signed-off-by: Pratik R. Sampat <prsampat@amd.com>
----
- arch/x86/coco/sev/core.c                 | 13 ++++++
- arch/x86/include/asm/sev.h               |  2 +
- arch/x86/include/asm/unaccepted_memory.h | 15 ++++++
- drivers/firmware/efi/unaccepted_memory.c | 59 ++++++++++++++++++++++++
- include/linux/mm.h                       |  4 ++
- mm/memory_hotplug.c                      |  2 +
- 6 files changed, 95 insertions(+)
+The series gets there eventually, but as of this commit, @old_spte isn't plumbed
+into tdx_sept_set_private_spte().
 
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index 9ae3b11754e6..63d8f44b76eb 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -703,6 +703,19 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
- 	set_pages_state(vaddr, npages, SNP_PAGE_STATE_PRIVATE);
- }
- 
-+void snp_unaccept_memory(phys_addr_t start, phys_addr_t end)
-+{
-+	unsigned long vaddr, npages;
-+
-+	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
-+		return;
-+
-+	vaddr = (unsigned long)__va(start);
-+	npages = (end - start) >> PAGE_SHIFT;
-+
-+	set_pages_state(vaddr, npages, SNP_PAGE_STATE_SHARED);
-+}
-+
- static int vmgexit_ap_control(u64 event, struct sev_es_save_area *vmsa, u32 apic_id)
- {
- 	bool create = event != SVM_VMGEXIT_AP_DESTROY;
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index 0e6c0940100f..3327de663793 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -514,6 +514,7 @@ bool snp_init(struct boot_params *bp);
- void snp_dmi_setup(void);
- int snp_issue_svsm_attest_req(u64 call_id, struct svsm_call *call, struct svsm_attest_call *input);
- void snp_accept_memory(phys_addr_t start, phys_addr_t end);
-+void snp_unaccept_memory(phys_addr_t start, phys_addr_t end);
- u64 snp_get_unsupported_features(u64 status);
- u64 sev_get_status(void);
- void sev_show_status(void);
-@@ -623,6 +624,7 @@ static inline int snp_issue_svsm_attest_req(u64 call_id, struct svsm_call *call,
- 	return -ENOTTY;
- }
- static inline void snp_accept_memory(phys_addr_t start, phys_addr_t end) { }
-+static inline void snp_unaccept_memory(phys_addr_t start, phys_addr_t end) { }
- static inline u64 snp_get_unsupported_features(u64 status) { return 0; }
- static inline u64 sev_get_status(void) { return 0; }
- static inline void sev_show_status(void) { }
-diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
-index f5937e9866ac..91f01ad0ee03 100644
---- a/arch/x86/include/asm/unaccepted_memory.h
-+++ b/arch/x86/include/asm/unaccepted_memory.h
-@@ -18,6 +18,21 @@ static inline void arch_accept_memory(phys_addr_t start, phys_addr_t end)
- 	}
- }
- 
-+static inline void arch_unaccept_memory(phys_addr_t start, phys_addr_t end)
-+{
-+	/*
-+	 * TDX platforms do not require the guest to transition pages on remove
-+	 * rather expect the VMM to remove the unplugged memory from SEPT
-+	 */
-+	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
-+		return;
-+	} else if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP)) {
-+		snp_unaccept_memory(start, end);
-+	} else {
-+		panic("Cannot unaccept memory: unknown platform\n");
-+	}
-+}
-+
- static inline struct efi_unaccepted_memory *efi_get_unaccepted_table(void)
- {
- 	if (efi.unaccepted == EFI_INVALID_TABLE_ADDR)
-diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
-index 359779133cb4..d11e7836200a 100644
---- a/drivers/firmware/efi/unaccepted_memory.c
-+++ b/drivers/firmware/efi/unaccepted_memory.c
-@@ -256,6 +256,65 @@ void accept_hotplug_memory(phys_addr_t start, unsigned long size)
- 	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
- }
- 
-+/*
-+ * Cold-plugged memory used with lazy acceptance may partially set pages to
-+ * private. On removal, iterate through the bitmap to unaccept those ranges.
-+ * For hotplug ranges beyond the bitmap, unaccept unconditionally.
-+ */
-+void unaccept_hotplug_memory(phys_addr_t start, unsigned long size)
-+{
-+	unsigned long range_start, range_end, bitrange_end;
-+	phys_addr_t bitmap_end, end = start + size;
-+	struct efi_unaccepted_memory *unaccepted;
-+	u64 phys_base, unit_size;
-+	unsigned long flags;
-+
-+	unaccepted = efi_get_unaccepted_table();
-+	if (!unaccepted)
-+		return;
-+
-+	phys_base = unaccepted->phys_base;
-+	unit_size = unaccepted->unit_size;
-+	bitmap_end = phys_base + unaccepted->size * unit_size * BITS_PER_BYTE;
-+
-+	/* Unaccept the entire hotplug range beyond the bitmap immediately */
-+	if (start >= bitmap_end) {
-+		arch_unaccept_memory(start, end);
-+		return;
-+	}
-+
-+	start = max(start, phys_base);
-+	if (end < phys_base)
-+		return;
-+
-+	/* Unaccept ranges when start is within the bitmap but end is beyond */
-+	if (end > bitmap_end) {
-+		arch_unaccept_memory(bitmap_end, end);
-+		end = bitmap_end;
-+	}
-+
-+	start -= phys_base;
-+	end -= phys_base;
-+
-+	range_start = start / unit_size;
-+	bitrange_end = DIV_ROUND_UP(end, unit_size);
-+
-+	/* Only unaccept memory that was previously accepted in the bitmap */
-+	spin_lock_irqsave(&unaccepted_memory_lock, flags);
-+	for_each_clear_bitrange_from(range_start, range_end, unaccepted->bitmap,
-+				     bitrange_end) {
-+		unsigned long phys_start, phys_end;
-+		unsigned long len = range_end - range_start;
-+
-+		phys_start = range_start * unit_size + phys_base;
-+		phys_end = range_end * unit_size + phys_base;
-+
-+		arch_unaccept_memory(phys_start, phys_end);
-+		bitmap_set(unaccepted->bitmap, range_start, len);
-+	}
-+	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
-+}
-+
- #ifdef CONFIG_PROC_VMCORE
- static bool unaccepted_memory_vmcore_pfn_is_ram(struct vmcore_cb *cb,
- 						unsigned long pfn)
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 2d3c1ea40606..49b194cddda7 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4505,6 +4505,7 @@ int set_anon_vma_name(unsigned long addr, unsigned long size,
- bool range_contains_unaccepted_memory(phys_addr_t start, unsigned long size);
- void accept_memory(phys_addr_t start, unsigned long size);
- void accept_hotplug_memory(phys_addr_t start, unsigned long size);
-+void unaccept_hotplug_memory(phys_addr_t start, unsigned long size);
- 
- #else
- 
-@@ -4522,6 +4523,9 @@ static inline void accept_hotplug_memory(phys_addr_t start, unsigned long size)
- {
- }
- 
-+static inline void unaccept_hotplug_memory(phys_addr_t start, unsigned long size)
-+{
-+}
- #endif
- 
- static inline bool pfn_is_unaccepted_memory(unsigned long pfn)
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 549ccfd190ee..21b87f2af930 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -2240,6 +2240,8 @@ static int try_remove_memory(u64 start, u64 size)
- 
- 	mem_hotplug_begin();
- 
-+	unaccept_hotplug_memory(start, size);
-+
- 	rc = memory_blocks_have_altmaps(start, size);
- 	if (rc < 0) {
- 		mem_hotplug_done();
--- 
-2.52.0
+> Or also check !is_shadow_present_pte(new_spte) in TDP MMU?
 
+Not sure I understand this suggestion.
+   	
+> > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> > index 5688c77616e3..30494f9ceb31 100644
+> > --- a/arch/x86/kvm/vmx/tdx.c
+> > +++ b/arch/x86/kvm/vmx/tdx.c
+> > @@ -1664,18 +1664,58 @@ static int tdx_mem_page_aug(struct kvm *kvm, gfn_t gfn,
+> >  	return 0;
+> >  }
+> >  
+> > +static struct page *tdx_spte_to_external_spt(struct kvm *kvm, gfn_t gfn,
+> > +					     u64 new_spte, enum pg_level level)
+> > +{
+> > +	struct kvm_mmu_page *sp = spte_to_child_sp(new_spte);
+> > +
+> > +	if (KVM_BUG_ON(!sp->external_spt, kvm) ||
+> > +	    KVM_BUG_ON(sp->role.level + 1 != level, kvm) ||
+> > +	    KVM_BUG_ON(sp->gfn != gfn, kvm))
+> > +		return NULL;
+> Could we remove the KVM_BUG_ON()s, and ...
+> 
+> > +	return virt_to_page(sp->external_spt);
+> > +}
+> > +
+> > +static int tdx_sept_link_private_spt(struct kvm *kvm, gfn_t gfn,
+> > +				     enum pg_level level, u64 mirror_spte)
+> > +{
+> > +	gpa_t gpa = gfn_to_gpa(gfn);
+> > +	u64 err, entry, level_state;
+> > +	struct page *external_spt;
+> > +
+> > +	external_spt = tdx_spte_to_external_spt(kvm, gfn, mirror_spte, level);
+> > +	if (!external_spt)
+> add a KVM_BUG_ON() here?
+> It could save KVM_BUG_ON()s and have KVM_BUG_ON() match -EIO :)
+
+We could, but I don't want to, because if we're going to bother with sanity checks,
+I want the resulting WARNs to be precise.  I.e. I want the WARN to capture *why*
+tdx_spte_to_external_spt() failed, to make debug/triage easier.
+
+> And as Rick also mentioned, better to remove external in external_spt, e.g.
+> something like pt_page.
+
+Yeah, maybe sept_spt?
+
+> And mirror_spte --> new_spte?
+
+Hmm, ya, I made that change later, but it can probably be shifted here.
+
+> > -	WARN_ON_ONCE(!is_shadow_present_pte(mirror_spte) ||
+> > -		     (mirror_spte & VMX_EPT_RWX_MASK) != VMX_EPT_RWX_MASK);
+> > +	WARN_ON_ONCE((mirror_spte & VMX_EPT_RWX_MASK) != VMX_EPT_RWX_MASK);
+> Also check this for tdx_sept_link_private_spt()?
+
+Eh, we could, but I don't think it's necessary.  make_nonleaf_spte() is hardcoded
+to set full permissions (and I don't see that changing any time soon), whereas
+leaf SPTE protections are much more dynamic.
