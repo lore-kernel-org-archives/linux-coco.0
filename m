@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE252236F2;
-	Wed,  4 Feb 2026 19:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1F0280CC1;
+	Wed,  4 Feb 2026 20:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770235151; cv=none; b=Kep2oiMwlqZxGtCVLZlkpGFvTTKufkw4XUgBLx2Vya14UhDobu1KWhZrkHoMSTGOiQ3NB45BET9HFtlAEaKAWSqBOqhM5TFcUJ8aNn0B0X0JdjSli2bb6hLXmHfWDldjGL5jlIqux+WcB72wFLB46zEFqT/dAfdGGCZqiDx5sdA=
+	t=1770235243; cv=none; b=DVlg9tjDtbO0LpVXWxqC6ZGhZ+e/O0rllUSMfA2MdBKd5tLvEvmLRj6yQwgErvaxjqfSEo/w9LrYEIvewyakFE/waqi8MbFjN8hsE0WH6jyS2OA68MQAt1V1oz3l04V7JxrgEj5JVSFKEuSN8TDX3moG/Cofoa7monCoIomiehc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770235151; c=relaxed/simple;
-	bh=nPN9Wvy1E775/lgZvMVwn3Lvoht3KjaZQK/EfFGaIds=;
+	s=arc-20240116; t=1770235243; c=relaxed/simple;
+	bh=tHNm7+iDyHbPJd/eg2zZb8QElfqohJCKbz7sI/dd45I=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k5Gf2eG+o6sT6fp1q/NDSEAx7UBwtJFyqtrcUbappvnFEMSHaHG2OH7OZ8ejOvxCekiSb7nGUGgaObQ+UMHFgrooZkiaoOsXIg7zn0B2ER01hVGPvHNjDOc8nJBaFVvbZhTEMk973JATtAxKRvoFJa3AAD5iw0subwzZwejplr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ldpXkUS1; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=UoCRcxZcg7RyRxP28FM7cGweuaWFtUK0B6O+SGGX0uc2HL5nm/aChAudemTKJnxBELn0V5IsUn0ju/MPDdPKnae0afqNZEisE/GnSzJ9IOa0YmfBxlB3qGEKEod0h0ldWo+qXMe79gAk9Sv75+X5TWZ4byuY2Jj/coiL5wkLyGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V77fOIPp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ldpXkUS1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D2CC4CEF7;
-	Wed,  4 Feb 2026 19:59:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V77fOIPp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F50C19425;
+	Wed,  4 Feb 2026 20:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770235151;
-	bh=nPN9Wvy1E775/lgZvMVwn3Lvoht3KjaZQK/EfFGaIds=;
+	s=k20201202; t=1770235242;
+	bh=tHNm7+iDyHbPJd/eg2zZb8QElfqohJCKbz7sI/dd45I=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ldpXkUS1iICiHnYGoD5ql4tiISVVvP7um/WsyvXhQetlA4SBh0uL20QqUpODVTf7c
-	 KjT7GB5T9VWYAizuAPw5wNsrI6wFlO0LFJMbBJXXL+u4KWdweqQxVly1s+9SXCY+5B
-	 jf/38/LdUF4/YMlMeAmMZpleptWpilEyvLLLHcfaOmChTLhcaol2jxqvlnDjLB/Hni
-	 qgxgQcqqjyDiWhEA2YfdFYFanDds8DxJmBr8s7Xm6a//vukHQeCkqrA8AvORLliOdn
-	 zpiwFE0Zbsa6no4r4vBx2Hx/kQjd5LY4lBYdT6DPq/7y/fdm/0ZfPPEd6onbsHVcc+
-	 K3sJUI6W08TNg==
-Message-ID: <29b4dc97-bb01-42fd-8ccd-f4cb2886ccd3@kernel.org>
-Date: Wed, 4 Feb 2026 20:59:05 +0100
+	b=V77fOIPptAyQ15AIB6hddQUX35UU6lB+X9NmVYhTfGqbST5e98ns0VfCWf3teSk2s
+	 sCPl+WWN7yZM2PNVFqrKoLKEX7gKsJayNqxVfTL9PG6pQDbMrqXTj03zwaNKVxrw/I
+	 LA/CyDJX37UEq28N0fgczFbxyBYJuAuEQPEQ8loyDALzU/ee6xKdqFtSx4O1k8mUoS
+	 9CHGXDF/eSYEAx6C3sjPLncGTKA+wdGAcOLDVZ20aqHV8VUkU+6S8jSMD6SAMYLiWt
+	 KxXMge7ysaT5dPMaTMlGGCt4NbL4wUgq8bp/76g0pTyfvKCvLhaMk5QlKn0U6GJ81w
+	 fRVYH4psjhuhQ==
+Message-ID: <d07cbb96-ba30-4dcf-ad14-0479d6a989f2@kernel.org>
+Date: Wed, 4 Feb 2026 21:00:36 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -37,14 +37,14 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v4 1/2] mm/memory_hotplug: Add support to accept memory
  during hot-add
-To: Kiryl Shutsemau <kas@kernel.org>, "Pratik R. Sampat" <prsampat@amd.com>
-Cc: linux-mm@kvack.org, linux-coco@lists.linux.dev, x86@kernel.org,
- linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, ardb@kernel.org,
+To: "Pratik R. Sampat" <prsampat@amd.com>, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev, x86@kernel.org, linux-kernel@vger.kernel.org
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, kas@kernel.org, ardb@kernel.org,
  akpm@linux-foundation.org, osalvador@suse.de, thomas.lendacky@amd.com,
  michael.roth@amd.com
 References: <20260203174946.1198053-1-prsampat@amd.com>
- <20260203174946.1198053-2-prsampat@amd.com> <aYMjjyVVax5cml9B@thinkstation>
+ <20260203174946.1198053-2-prsampat@amd.com>
 From: "David Hildenbrand (arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -91,72 +91,32 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aYMjjyVVax5cml9B@thinkstation>
+In-Reply-To: <20260203174946.1198053-2-prsampat@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 2/4/26 12:22, Kiryl Shutsemau wrote:
-> On Tue, Feb 03, 2026 at 11:49:45AM -0600, Pratik R. Sampat wrote:
->> Confidential computing guests require memory to be accepted before use.
->> The unaccepted memory bitmap maintained by firmware does not track
->> most hotplugged memory ranges apart from system memory annotated to be
->> cold plugged at boot.
->>
->> Explicitly validate and transition the newly added memory to a private
->> state, making it usable by the guest.
->>
->> Signed-off-by: Pratik R. Sampat <prsampat@amd.com>
->> ---
->>   drivers/firmware/efi/unaccepted_memory.c | 47 ++++++++++++++++++++++++
->>   include/linux/mm.h                       |  5 +++
->>   mm/memory_hotplug.c                      |  2 +
->>   3 files changed, 54 insertions(+)
->>
->> diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
->> index c2c067eff634..359779133cb4 100644
->> --- a/drivers/firmware/efi/unaccepted_memory.c
->> +++ b/drivers/firmware/efi/unaccepted_memory.c
->> @@ -209,6 +209,53 @@ bool range_contains_unaccepted_memory(phys_addr_t start, unsigned long size)
->>   	return ret;
->>   }
->>   
->> +/*
->> + * Unaccepted memory bitmap only covers initial boot memory and not the
->> + * hotpluggable range that is part of SRAT parsing. However, some initial memory
->> + * with the attribute EFI_MEMORY_HOT_PLUGGABLE can indicate boot time memory
->> + * that can be hot-removed. Hence post acceptance, only for that range update
->> + * the unaccepted bitmap to reflect this change.
->> + */
->> +void accept_hotplug_memory(phys_addr_t start, unsigned long size)
->> +{
->> +	struct efi_unaccepted_memory *unaccepted;
->> +	unsigned long range_start, range_len;
->> +	phys_addr_t end = start + size;
->> +	u64 phys_base, unit_size;
->> +	unsigned long flags;
->> +
->> +	unaccepted = efi_get_unaccepted_table();
->> +	if (!unaccepted)
->> +		return;
-> 
-> This can be tricky.
-> 
-> If we boot a VM with <4GiB of memory and all of it is pre-accepted by
-> BIOS, the table will not be allocated.
-> 
-> But it doesn't mean that hotplugged memory above should not be accepted.
-> 
-> I don't think there is a way to detect such cases.
-> 
-> Your check is probably the best we can do, but it means VMs are going to
-> crash if memory accept is required by no table.
-> 
-> This is ugly situation.
+>   #endif
+>   
+>   static inline bool pfn_is_unaccepted_memory(unsigned long pfn)
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index a63ec679d861..549ccfd190ee 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -1567,6 +1567,8 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+>   	if (!strcmp(res->name, "System RAM"))
+>   		firmware_map_add_hotplug(start, start + size, "System RAM");
+>   
+> +	accept_hotplug_memory(start, size);
+> +
+>   	/* device_online() will take the lock when calling online_pages() */
+>   	mem_hotplug_done();
+>   
 
-It's all starting to feel .... very hacky, sorry to say.
+I really hate that accepting (and un-accepting) hotplugged memory is 
+different to accepting ordinary boot memory.
 
-This should all be easier. If we expect memory hotplug (SRAT), why can't 
-we just allocate the bitmap properly?
+Is there really no way we can get a reasonable implementation where we 
+just call a generic accept_memory() and it will know what to do?
 
 -- 
 Cheers,
