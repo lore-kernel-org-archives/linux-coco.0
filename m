@@ -1,50 +1,33 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C412DE702
-	for <linux-coco@lists.linux.dev>; Thu,  5 Feb 2026 16:37:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0737428469;
+	Thu,  5 Feb 2026 17:29:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770309477; cv=none; b=VWSRSGMqGXM9fKBTwBwA0etj+UOqpgQdp4NQBpzvmGuRQI5FZXBP3b164lTRm1T15xQnfjO8e3Dgp9A8Bur21HYTtVkOX/ecMHAQuRo8Ldfe5OWHtbZUtC0NN47cyFfdeRQBd/ppYPiZtXPPo8Y7/h8MhfNE9KBB7yj4S3b6Zyk=
+	t=1770312554; cv=none; b=dqE4uHttPbRVvxEz5YX7IhVc3WDndphSAd2Fw3KAe14bd9ZlbXSBEvhfSEjYyuTPxAqSUKeEoIZXO1VphTTrYYH7LjzE56ZErOorhPPHBXz8sQAbUsIIUJV6xCcGmGFdBuM4q54nbAmHn8qd4swDrZWPVKcpTBLElYxQxDuNgjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770309477; c=relaxed/simple;
-	bh=1GdzYKuwvL32RBgFC3nFDC1mGn6Frf7pi1eenGkA/mE=;
+	s=arc-20240116; t=1770312554; c=relaxed/simple;
+	bh=0h6aXl3odpNK6UOPrFIUbCWh+xiPmUDlXpbqQDhrshE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V0tpNtVSVpsUIj7QDgvWxqb/Xhz8JdVb9em7mL5NmrXdDc4NDBGI/SaSOEtfvwvTydCkXW8VWlLpzjB2Hok9AaizZcPm6r5eQg+lVVnzQGUMbdUxLI0Wk4+y+v14wBYkdRyEi3+XyLbUAhZTMNXkdxDZekmKyObCauTIFcW9jgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=REG169Q+; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 In-Reply-To:Content-Type; b=CBhlk8kGYZ4frfG6f77SEyi62Grv0uAfFGb7ZLLcJ5/YUtRq6FdcdI+AersatkJvypPHBHk/jROtSTUt59cCzp+F2OEknArqe3v3kFMIyRp18CVz89x/z4ifHpICPCiikDixzmyy9jjP8hSfddCu8dAhnkRwcPtEvQb199d9jTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gxWACkGJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="REG169Q+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770309477; x=1801845477;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=1GdzYKuwvL32RBgFC3nFDC1mGn6Frf7pi1eenGkA/mE=;
-  b=REG169Q+QgPuU6nqVtg/yGgcg+MI5rFkvVULGkMuYK7QpQYIs0oNPfRS
-   K3C6HmP9o+hRNtQ5JvyuVfX/GrJD6xTgVVDntPi2Jl4GOEPHJLQbYaqFi
-   YgZQRwJxri0dy7xOjsn4qm0zOXoVFI74r16v/k2KHAQcKe4Se7w5++n8T
-   h84UeJDC81A45ZVp6xFBFt+2vmdZUBEXsFp/nZAWwxCs2GAo1oDfNa3SB
-   4alqwoYtmRfFeUfnryFoepRLO1tXPSppJuGbmjOvyy3UO9kSx4zX/vUFi
-   q7sJ1p+eLSK9XnlR7Y1t0BCp+ac9kNSO1x1IUgLEPWcmWAENhus5rBy2c
-   Q==;
-X-CSE-ConnectionGUID: CUrIs6RbTIK60Xl+gZp7WQ==
-X-CSE-MsgGUID: dCrceQpXTeON5x0Qe+L45A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="71611005"
-X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
-   d="scan'208";a="71611005"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 08:37:53 -0800
-X-CSE-ConnectionGUID: PSlboNBVQR6gCcAhcumN9Q==
-X-CSE-MsgGUID: 6kRbF+MYRgipHkoNlOhcfw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
-   d="scan'208";a="241258620"
-Received: from tfalcon-desk.amr.corp.intel.com (HELO [10.125.111.86]) ([10.125.111.86])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 08:37:52 -0800
-Message-ID: <75bdc4cd-c3c4-465f-8c53-da7cdb2fb633@intel.com>
-Date: Thu, 5 Feb 2026 08:37:51 -0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gxWACkGJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898D0C19421;
+	Thu,  5 Feb 2026 17:29:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770312554;
+	bh=0h6aXl3odpNK6UOPrFIUbCWh+xiPmUDlXpbqQDhrshE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gxWACkGJV7DkZqdSO+Yr0POPlWnhgxybc9tAg6dxFEhlVjQlQtKtTIljdTT0hzq1+
+	 h8KjD/VSTs3PLX2jFPkpp7je/j4DVJ107VFASmwRWRQu9HifVKwjMEwB89Ys0I7AXN
+	 c4e7RWEYNhNIONgGGL8jGEk5AyQRP93D3O+W7h6musIYXU+WV2OZEHgFg2TUlEH7hU
+	 Zv5T98JKbPMN2oOy8HhGH/F4Tc46+No1HTfVOyElgCAKIQP2E2ietHeFJ6qYJT7nvF
+	 xt16dahFoksybify+15Y+KDDncnYDnt16EK3DBG4Nz74Q1TpRdXr60fH5nZ4fBsbxd
+	 8uR5SZdgstrkw==
+Message-ID: <fc60cc71-80eb-4058-8d0a-dbd19a5c10ef@kernel.org>
+Date: Thu, 5 Feb 2026 18:29:08 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,99 +35,113 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/26] x86/virt/seamldr: Introduce a wrapper for
- P-SEAMLDR SEAMCALLs
-To: Sean Christopherson <seanjc@google.com>, Chao Gao <chao.gao@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, x86@kernel.org, reinette.chatre@intel.com,
- ira.weiny@intel.com, kai.huang@intel.com, dan.j.williams@intel.com,
- yilun.xu@linux.intel.com, sagis@google.com, vannapurve@google.com,
- paulmck@kernel.org, nik.borisov@suse.com, zhenzhong.duan@intel.com,
- rick.p.edgecombe@intel.com, kas@kernel.org, dave.hansen@linux.intel.com,
- vishal.l.verma@intel.com, Farrah Chen <farrah.chen@intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
-References: <20260123145645.90444-1-chao.gao@intel.com>
- <20260123145645.90444-8-chao.gao@intel.com>
- <301f8156-bafe-440a-8628-3bf8fae74464@intel.com> <aXywVcqbXodADg4a@intel.com>
- <fedb3192-e68c-423c-93b2-a4dc2f964148@intel.com> <aYHmUCLRYL+JX1ga@intel.com>
- <aYIXFmT-676oN6j0@google.com> <aYKKnf7K3lRdUcxl@intel.com>
- <aYTFZv9Mf_FqWM_k@google.com>
-From: Dave Hansen <dave.hansen@intel.com>
+Subject: Re: [PATCH v4 1/2] mm/memory_hotplug: Add support to accept memory
+ during hot-add
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: "Pratik R. Sampat" <prsampat@amd.com>, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev, x86@kernel.org, linux-kernel@vger.kernel.org,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, ardb@kernel.org, akpm@linux-foundation.org,
+ osalvador@suse.de, thomas.lendacky@amd.com, michael.roth@amd.com
+References: <20260203174946.1198053-1-prsampat@amd.com>
+ <20260203174946.1198053-2-prsampat@amd.com>
+ <d07cbb96-ba30-4dcf-ad14-0479d6a989f2@kernel.org>
+ <70be936e-e49d-4485-8d1e-416fdf8f40a4@amd.com>
+ <aYR0vqwyFPo3EKAi@thinkstation>
+ <ce4334f8-5e54-4dbf-9be0-059279ef1962@kernel.org>
+ <aYS8O0phOE41IuEF@thinkstation>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <aYTFZv9Mf_FqWM_k@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aYS8O0phOE41IuEF@thinkstation>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 2/5/26 08:29, Sean Christopherson wrote:
-> No, this isn't the explanation.  I found the explanation in the pseudocode for
-> SEAMRET.  The "successful VM-Entry" path says this:
+On 2/5/26 17:08, Kiryl Shutsemau wrote:
+> On Thu, Feb 05, 2026 at 04:48:13PM +0100, David Hildenbrand (Arm) wrote:
+>> On 2/5/26 11:48, Kiryl Shutsemau wrote:
+>>>
+>>> You are calling arch_accept_memory() on every memory allocation if the
+>>> memory is not represented in the bitmap. Hard NAK.
+>>
+>> In which scenarios would we not have memory represented in the bitmap?
+>> Guests with <4 GiB? (how does kexec work?) Anything else?
 > 
->   current-VMCS = current-VMCS.VMCS-link-pointer
->   IF inP_SEAMLDR == 1; THEN
->     If current-VMCS != FFFFFFFF_FFFFFFFFH; THEN
->       Ensure data for VMCS referenced by current-VMC is in memory
->       Initialize implementation-specific data in all VMCS referenced by current-VMCS
->       Set launch state of VMCS referenced by current-VMCS to “clear”
->       current-VMCS = FFFFFFFF_FFFFFFFFH
->     FI;
->     inP_SEAMLDR = 0
->   FI;
+> We create the bitmap that covers all unaccepted memory.
 
-Yes, in version 002 of the spec. It wasn't there in 001.
+Good! :)
 
-The basic problem is that the SEAM VMCSes need to get flushed when the
-TDX module is being loaded. The TDX module never loads itself, thus the
-"inP_SEAMLDR == 1" check. It sounds like there was already an existing
-thing in microcode to just flush VMCSes and invalidate "current-VMCS".
+> 
+> What memory is unaccepted is up to BIOS. Current implementation of edk2
+> accepts the memory in the first 4G range of physical address space. It
+> means we won't have bitmap for this range (unaccepted->phys_base >= 4G).
 
-It was much easier for microcode to just jump over to that existing
-thing than to surgically target the SEAM VMCSes, or somehow avoid
-zapping "current-VMCS". It makes total sense for the microcoders to have
-gone this route.
+Ah, okay, this comes from the BIOS.
 
-I'm seeing if it can get changed back to the 001 version so we just
-don't even have to deal with this whole mess.
+> 
+> If the whole VM is smaller than 4G we won't have the bitmap at all.
+> 
+> We can allocate bitmap for all possible memory. Maybe upto max_possible_pfn?
+> But we might not know the value in EFI stub. It costs 4k per 64GiB of
+> physical address space.
+
+That's what I would do. 4k per 64GiB sounds reasonable.
+
+> 
+> Ideally, we want to know on boot:
+> 
+>   - what memory ranges are unaccepted - we have it;
+>   - what memory range can be removed or added after boot - we don't have it
+
+The SRAT describes memory ranges where we can see hotplug memory. Is 
+that too late? We calculate max_possible_pfn based on that.
+
+(don't ask me about special CXL windows and how they are advertised :) )
+
+-- 
+Cheers,
+
+David
