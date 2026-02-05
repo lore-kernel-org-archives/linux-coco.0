@@ -1,127 +1,167 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CE742EED3
-	for <linux-coco@lists.linux.dev>; Thu,  5 Feb 2026 16:01:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68CD423A6D
+	for <linux-coco@lists.linux.dev>; Thu,  5 Feb 2026 16:08:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770307272; cv=none; b=TLi/mLp8bL6jZc5xLFFayVVEAtgleK9eawDsOwQ2MlPFZP/CKVPGe7iPN5MAduSowx2UrDqnieEgHlpg8Zxcrl+RS3bvzTCpTOH6IqxcmyGvMOba6Gm4jT79gnMkRuflAXKoalxi88xZRFqXsB0ik/QamnK58cN+T+rq2tfMiIA=
+	t=1770307700; cv=none; b=MZ0OXzP8J+yGfOJ7rGKtgw56Of4L2yUZX7iW9eRjeKW/N6nW6riwe4dS5PrR7J/VuUueWGcHtFVnuumcAag9thzc2PPhP8zLRqmyHHcScU905LTforUFZ3KfL1stkKtlc3m5l0Y8bZ+K+7xrio06Gu3TqJzppu2GfyFD8/+/V5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770307272; c=relaxed/simple;
-	bh=qz+3cehkgOjxXFCo62f/+p5mv+1H938wSgTdCYi+IUo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O59kuPV7jHeuIZXFPjFS26vLQdNshWjzMZNfkPJ8d8g35HcvUhcrXnnyqPUhFiInA4cxhLHCxh2AYKh2EUSUJP2/HWFzdH4zpevrEZvKjt8u5tZBR1vppONaQK8Z1pMEJmtZwkflFCaa3kELH2kjF5IZE538y0JKuAf+rI1NadI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RttX/3Mk; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1770307700; c=relaxed/simple;
+	bh=k2UXN2RrYY0M0lsve0wmEhAd/SPspaOnsUkAsfKm9fE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RPiz97HwRxp4KT5+IWHn+zkDaxREK1tT91h25LhUfVbiifFxFy4dB7Mq5fRGhbdM2zYFcyslrNBpZ9BFUqY4lkJ3vsmEWZ2YP+e4aCd5MtudbKpVEs8+doIY34Xv8e3gyPZ2TQnrJBFbH/2ZZd3WCoBAGGlMBn0Jk6YZDN47sws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H9ZwUTyV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RttX/3Mk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770307272; x=1801843272;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=qz+3cehkgOjxXFCo62f/+p5mv+1H938wSgTdCYi+IUo=;
-  b=RttX/3MkLu4EaYo5bdqZNYHX+o90/3xL+MhG0Dmvoepjpbf/6BfvfN78
-   7Wdevgsgeck4LS/G2/8jOeEVMJeIp4G65xQcUb82WMJ8150smDYyQTsE2
-   Ws1XrsjYAnDh66BTcr5P+u9fR+4+1sJtFh28KforE9Mbef8hk/ULXZuAr
-   c/IMRsoO7/UYSpSWxwRJOUxXEANiy00z6A8e4slOPsU7KL55mgohbRcF+
-   EUxjLTHCCutN+qm+S9dKr4Yxp+OUq405u17Z3hTKB2CpcPdcBKjrgng8/
-   NYbttZAp6tqLZyWvefM39Lr27h8DKIVpPIwB9Sftz9UZh9kOwvh/XMWH8
-   A==;
-X-CSE-ConnectionGUID: qWAQIJoUR4WmdMsUPhxEEA==
-X-CSE-MsgGUID: yVqsmwfTTXK0LTbOijZuGA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="71237620"
-X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
-   d="scan'208";a="71237620"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 08:01:11 -0800
-X-CSE-ConnectionGUID: zz4C4dKFSVOzqXZnfJBhQw==
-X-CSE-MsgGUID: XbiRlqb8R1iFGtpWdnoz5Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
-   d="scan'208";a="248170547"
-Received: from tfalcon-desk.amr.corp.intel.com (HELO [10.125.111.86]) ([10.125.111.86])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 08:01:10 -0800
-Message-ID: <dabf57c8-88c9-4bc0-bed6-c4d451a4ec42@intel.com>
-Date: Thu, 5 Feb 2026 08:01:08 -0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H9ZwUTyV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47BB7C4CEF7;
+	Thu,  5 Feb 2026 16:08:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770307699;
+	bh=k2UXN2RrYY0M0lsve0wmEhAd/SPspaOnsUkAsfKm9fE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=H9ZwUTyVTCDY0G0TF6Wt+T8gJD7LImn6yuQ845l73PyCsGn7VzV+4kihkuvHDRVuw
+	 Sy9Xzu0hm/hSbDYn/2pyF12BpzoxQ9YK9BRoWINfY2LUfO0pdLSDeTV7pGrDxgUveL
+	 8omb2zSVCf3D0+JaSbMhggRjKDEJIJds6zfjzvyWcj2ijt8Nw68vtVC4xZoiGZwwcO
+	 LLnNl+9cJf3qjP+JI3c1sk5kuS07GfXwwRcMNT/wLKHW3lIRFgwZ3zRsORbEfUHK7i
+	 xGhQ5YOOJbSCiIsNHZ3lezTX9DIdDtOWVvjEvQM7QoWM1sxbDU24D/lsbfqa0jPoax
+	 TP1vJSYxNNJIA==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id E571CF4006A;
+	Thu,  5 Feb 2026 11:08:17 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Thu, 05 Feb 2026 11:08:18 -0500
+X-ME-Sender: <xms:ccCEabF_qd9ukejDFLfNozPclDMKLpA7sFv9wzadFwQipqQMbE8fDA>
+    <xme:ccCEaZFtg_qprAhdJxHHZDu0IoaXaJoUo8PBb0LugnNpzaG1HArwxujTHAzpC0FKY
+    fGQZcyav180y_ilRjd2gHRTem8SwMLoNkrAbSkxz9lpx9HQvehMB8Jo>
+X-ME-Received: <xmr:ccCEaWAc16sfzu2lsCIMsy71YmvzaE7oziiNDf6LYY19A4czyMLf0m3-JMKQAw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddukeehjeegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepfedtpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprhhsrghmphgrth
+    esrghmugdrtghomhdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdp
+    rhgtphhtthhopehlihhnuhigqdgtohgtoheslhhishhtshdrlhhinhhugidruggvvhdprh
+    gtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhk
+    vghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtghhlgieslh
+    hinhhuthhrohhnihigrdguvgdprhgtphhtthhopehmihhnghhosehrvgguhhgrthdrtgho
+    mhdprhgtphhtthhopegsphesrghlihgvnhekrdguvg
+X-ME-Proxy: <xmx:ccCEaQ_rMxxNl2QFdvUiqulUPnCA2QIQ2R9xO8rkFiNGdY-Gc6Wj0A>
+    <xmx:ccCEaQfS8DW8Dz8sqv4GlNq8k8FYByKlVDO_RkJ9axW45-t3MeYDiw>
+    <xmx:ccCEabAmw1v1JbyZB6OdUoAM8SrmFQ8yoRNaFPiOX5aLFZG5ymMGpg>
+    <xmx:ccCEaYdT7rK8cTriOGLumYg8cm90Bcb9Xkdk2HCYWO0dx_ocGSmKaA>
+    <xmx:ccCEafgPbCu2F_1n3aMOzVKaCDDe9ybq3HSvUahnwzh2RMWOk2v6z47z>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 5 Feb 2026 11:08:15 -0500 (EST)
+Date: Thu, 5 Feb 2026 16:08:09 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Pratik R. Sampat" <prsampat@amd.com>, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev, x86@kernel.org, linux-kernel@vger.kernel.org, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, ardb@kernel.org, 
+	akpm@linux-foundation.org, osalvador@suse.de, thomas.lendacky@amd.com, michael.roth@amd.com
+Subject: Re: [PATCH v4 1/2] mm/memory_hotplug: Add support to accept memory
+ during hot-add
+Message-ID: <aYS8O0phOE41IuEF@thinkstation>
+References: <20260203174946.1198053-1-prsampat@amd.com>
+ <20260203174946.1198053-2-prsampat@amd.com>
+ <d07cbb96-ba30-4dcf-ad14-0479d6a989f2@kernel.org>
+ <70be936e-e49d-4485-8d1e-416fdf8f40a4@amd.com>
+ <aYR0vqwyFPo3EKAi@thinkstation>
+ <ce4334f8-5e54-4dbf-9be0-059279ef1962@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v5 00/45] TDX: Dynamic PAMT + S-EPT Hugepage
-To: Sean Christopherson <seanjc@google.com>
-Cc: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Kiryl Shutsemau <kas@kernel.org>,
- Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org,
- Kai Huang <kai.huang@intel.com>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>, Yan Zhao <yan.y.zhao@intel.com>,
- Vishal Annapurve <vannapurve@google.com>,
- Ackerley Tng <ackerleytng@google.com>, Sagi Shahar <sagis@google.com>,
- Binbin Wu <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>
-References: <20260129011517.3545883-1-seanjc@google.com>
- <aXuVR0kq_K1TYwlR@char.us.oracle.com> <aYNaA7Td23xKHoHK@google.com>
- <e60e0929-f3b0-463d-8c82-dc9170e401eb@intel.com>
- <aYS85EsXu_xuQXSI@google.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <aYS85EsXu_xuQXSI@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ce4334f8-5e54-4dbf-9be0-059279ef1962@kernel.org>
 
-On 2/5/26 07:53, Sean Christopherson wrote:
-> I'm a-ok starting with a topic branch.  If maintaining that branch becomes too
-> costly, then we can always revisit things.  And that would probably be good
-> motiviation to beat guest_memfd hugepage into shape 🙂
+On Thu, Feb 05, 2026 at 04:48:13PM +0100, David Hildenbrand (Arm) wrote:
+> On 2/5/26 11:48, Kiryl Shutsemau wrote:
+> > On Wed, Feb 04, 2026 at 09:50:09PM -0600, Pratik R. Sampat wrote:
+> > > 
+> > > 
+> > > On 2/4/26 2:00 PM, David Hildenbrand (arm) wrote:
+> > > > 
+> > > > I really hate that accepting (and un-accepting) hotplugged memory is different to accepting ordinary boot memory.
+> > > > 
+> > > > Is there really no way we can get a reasonable implementation where we just call a generic accept_memory() and it will know what to do?
+> > > > 
+> > > 
+> > > Sure, that shouldn't be impossible.
+> > > 
+> > > The only reason I initially kept them separate is because we accept and update
+> > > the bitmap unconditionally. This mainly applies to cold-plugged memory since
+> > > their bitmap state after remove shouldn't matter. However, as we are now
+> > > correctly setting the bits in the hot-remove path we should be fine accepting
+> > > from the for_each_set_bitrange_from() logic within accept_memory(), I think.
+> > > 
+> > > Something like so?
+> > > 
+> > > diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
+> > > index d11e7836200a..e56adfd382f8 100644
+> > > --- a/drivers/firmware/efi/unaccepted_memory.c
+> > > +++ b/drivers/firmware/efi/unaccepted_memory.c
+> > > @@ -36,6 +36,7 @@ void accept_memory(phys_addr_t start, unsigned long size)
+> > >          unsigned long range_start, range_end;
+> > >          struct accept_range range, *entry;
+> > >          phys_addr_t end = start + size;
+> > > +       phys_addr_t bitmap_end;
+> > >          unsigned long flags;
+> > >          u64 unit_size;
+> > > 
+> > > @@ -44,6 +45,21 @@ void accept_memory(phys_addr_t start, unsigned long size)
+> > >                  return;
+> > > 
+> > >          unit_size = unaccepted->unit_size;
+> > > +       bitmap_end = unaccepted->phys_base + unaccepted->size * unit_size * BITS_PER_BYTE;
+> > > +
+> > > +       /* Memory completely beyond bitmap: hotplug memory, accept unconditionally */
+> > > +       if (start >= bitmap_end) {
+> > > +               arch_accept_memory(start, end);
+> > > +               return;
+> > > +       }
+> > > +
+> > > +       /* Memory partially beyond bitmap */
+> > > +       if (end > bitmap_end) {
+> > > +               arch_accept_memory(bitmap_end, end);
+> > > +               end = bitmap_end;
+> > > +       }
+> > 
+> > You are calling arch_accept_memory() on every memory allocation if the
+> > memory is not represented in the bitmap. Hard NAK.
+> 
+> In which scenarios would we not have memory represented in the bitmap?
+> Guests with <4 GiB? (how does kexec work?) Anything else?
 
-Sounds like a plan.
+We create the bitmap that covers all unaccepted memory.
+
+What memory is unaccepted is up to BIOS. Current implementation of edk2
+accepts the memory in the first 4G range of physical address space. It
+means we won't have bitmap for this range (unaccepted->phys_base >= 4G).
+
+If the whole VM is smaller than 4G we won't have the bitmap at all.
+
+We can allocate bitmap for all possible memory. Maybe upto max_possible_pfn?
+But we might not know the value in EFI stub. It costs 4k per 64GiB of
+physical address space.
+
+Ideally, we want to know on boot:
+
+ - what memory ranges are unaccepted - we have it;
+ - what memory range can be removed or added after boot - we don't have it
+
+Then we can allocate bitmap that covers all this memory.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
