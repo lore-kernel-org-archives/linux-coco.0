@@ -1,66 +1,66 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA12933A031
-	for <linux-coco@lists.linux.dev>; Thu,  5 Feb 2026 22:33:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1444E3382F1
+	for <linux-coco@lists.linux.dev>; Thu,  5 Feb 2026 22:35:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770330799; cv=none; b=D04OOOSLr9lJadFXbnWQ5Y4V9jUu0b8B00lfUXGgUUdszs5M2kXIz3CwlO/89PkFlM0QWVUqNMND3oMgZw9ybFYxKJ4yYhV2WMCibPuvEt3IAKzKb8J8PR4vMQ1mhvzgO8mGZKRF6faM0H1cxxVmmWyfVlFHuStRaJ8eEAb5cts=
+	t=1770330928; cv=none; b=o1cmgfrpnfBY3X6SxqgN4iqtUOS5lnsPdkxEApgyLgkN/XvOoxQfHAccpW/AdRW310m6l9GA/59hjJkwGpFp1IBcFGTBdObQBSJcKFSs/+V1qTG9+FYrxv6p5M/s7WnVk139YYhTIJK+9jjvzp98EdsQHNxC7iWWszhsh/HFi+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770330799; c=relaxed/simple;
-	bh=jFBGPxbgt7yvrPxyF3IcZirzv/eOTdVuE3Whhc0MLj8=;
+	s=arc-20240116; t=1770330928; c=relaxed/simple;
+	bh=DTZoxUBHwlPOflFRXBTJQv1wRjt+JpIiExBlV0YHN2Y=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=q773E1eFBDYhsp/XSFDorRbMnz4al1f5rIkUwvWUE70ALX/l0gnNrV58KrpZ6QCmxuVYN8S4ps6SgD9LDPI+w5bz5imHqvIMR3Luc0Mqz4VYrBSbeX2ehngvJR0Wa4zF8tzB1uqwReOoT8KXd9t+RwodY3zmYP1KZpMzc4Bnb+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=atLGAyNe; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=ZazGSYwJiozFtcvfVYnYWYNpMMLEdkkIFd+zod8shGCbSuvrFy7pxqn+4qREZuhPHfqiStzQzTi1/2jU75dTouK5R4ILU4l04lvRq8bpVanZl+LcaQZ1M7bCiuqL81EgQYmZ6jvq/Jg1DVvZaPAkVX49YgbiXx+sfKlq9ll6l7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LT4p3sQ2; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="atLGAyNe"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3545b891dd1so3289419a91.1
-        for <linux-coco@lists.linux.dev>; Thu, 05 Feb 2026 14:33:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LT4p3sQ2"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c68b97c0adeso912248a12.1
+        for <linux-coco@lists.linux.dev>; Thu, 05 Feb 2026 14:35:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770330798; x=1770935598; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1770330927; x=1770935727; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jf0tV+3Au/5ctTTszs4A1kRtXNYfBj14UQ6nvW/dMCc=;
-        b=atLGAyNeMOFmlwPcuCawoD+rNynKz8IkG+BS1g7Jw+KLCeH+qbZBB9UeSv7JIZ8nLa
-         bk04LUR7VOade//4vHYrl4O1RjfrXhG5rTD2LHTrK9mkNkGEhxu7gFFIeQAgUeo/znY5
-         +wTQR7pWp1TFQSR/LDm4APM4CDQJkGqeV/uy70uNHjy9vFEnCaW6hV9AHseGx9DVAukW
-         zAIAnrp3SnE880Utry+yUPZphTMnkD2UNC2A9yix22F36ooGPgjXtM0tqVtInQtsLqRM
-         LQaUqQbsWkXxq5oJzHEPwtBA71Odn6r9nywSK25teMrFi0HtyS1LnJW1zaCAvXthI7Fi
-         GxsA==
+        bh=AToWCMx6AQDZQKwYN/F1QOoyLmm2g7aKLDy9Pva2rRY=;
+        b=LT4p3sQ23sFHoxbhOijMUIg5TdEs5mUcpnnH1CjBoXa+R/MGxTmZRfL67qI7svuG46
+         k0BHqdc14EORFY7Z2dP/S/keO5g24JpZwnbtKtAWqPyrTBQG6gellUt97SP5nrIo97Kt
+         rWt+pb7hChG+S14ynHxRguSdJ5vBBxlSQuRJdGsiWuJbP54bjpp6xZv6kvmbV9jXByRg
+         kEKvowSwfy72o9hakCOaw9kyZ0FSMxNfC+pf0rjJqGZBiYw+TQpwpYbM/SHBZq7dzG24
+         Sr9ITJ+ISvCP7nuYKvULwCAHT31hlKPH2zX0LV1k1v5YJD5i9ENK2SlTQuKNlITgv+uC
+         PMiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770330798; x=1770935598;
+        d=1e100.net; s=20230601; t=1770330927; x=1770935727;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jf0tV+3Au/5ctTTszs4A1kRtXNYfBj14UQ6nvW/dMCc=;
-        b=AABCLU5S2dm2/6lzmi/Dsm70wgmhMvt9AB/G8+WFS29Nm5qHryJgc1YIJUWU95ox3d
-         R4fEyilrivvVrR5kJTJvvpuZeq++ddTnsjib1++ydXSmfpRwthoP90M6T7aRIqWHcAyf
-         WfsvVIdC3XJ5FqTzI7TjZAJRxln2we28S3lFm63qYUQvUJryP8K3CrRZCECpOlN9lVbj
-         AFYSmjHlLxSehUguRc99P5DQo7vCpEvtxOWowt91uyxJVglwFl1sAkNhqBMV5n4OjM5n
-         fqE3LXEF+oSXg9FHvMc8fxatVSpw9p/evSmNa8ve912n52oRZlz+aJyhluFIImGgo6K8
-         vMtA==
-X-Forwarded-Encrypted: i=1; AJvYcCUSd++ev1ZoZZDimt3IBvjrt4Qv9PpaT9M5XIJOfXcd7roxO8gQhOTUWmrbwg2SQwN4KAUXnW1KxGGd@lists.linux.dev
-X-Gm-Message-State: AOJu0YyxA5RSOAI0tXrrdO3bTUfW8xdp8TjgllzHm+O1JwbP74D37E+v
-	qOwYR2ZK1xTjvQqCmliXOsrFni5w1qh8gkX7hN3vauu5xtInfvbIdsxXnQUN/LDpTW7tTgkQgXI
-	nymYy8A==
-X-Received: from pjbcp2.prod.google.com ([2002:a17:90a:fb82:b0:34c:5d4f:65e9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4a04:b0:340:ad5e:cb
- with SMTP id 98e67ed59e1d1-354b3b7d75amr421917a91.8.1770330798266; Thu, 05
- Feb 2026 14:33:18 -0800 (PST)
-Date: Thu, 5 Feb 2026 14:33:16 -0800
-In-Reply-To: <aYQtIK/Lq5T3ad6V@yzhao56-desk.sh.intel.com>
+        bh=AToWCMx6AQDZQKwYN/F1QOoyLmm2g7aKLDy9Pva2rRY=;
+        b=IWYmbl6Tw31i5m0yBZzzavDwwhwVjVrQxgCGq2aQJXp7fSvCEGrjAPeSswf41905WZ
+         X16Wo8PWbxUPmx0otyF7/WLjezZIjE7i28meXq3gvoY7w+4kxcVctaSbf/AHJz9+daVL
+         IXyvwYiMgMzbSmGrpGiVlgE4CKJS6i7ZA7STqIcQYxFES5l28Efwej/xXX7/gkdtDGNj
+         QwPmXEJ1wulcXa7DSW0oJn4QFA3+v+Ox8ycNExLWBcudd6xQZzFRHVD43zx1E/PpQpJs
+         ICFCyOtdGh8OpH4xUWhuFiE9QFKZ2MpIZJHrj42BO6qSGOn3SMqbw+0s9oO+ltNXlske
+         o4Tg==
+X-Forwarded-Encrypted: i=1; AJvYcCUpFqHRen7dGYALTGr18a7nlD2fNxYsdG94RbsUha2yxLiU6E5PVpYCmQ99wH7zSIWP/secM54Ta3R7@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyp7wC3STd6W+90GfeMX/LOYcRdOBmnEZouC1VP23IxTjtME/UE
+	UeUeCvKghnyhzQClejsiDDjIKfLqxzN2PBdjVZ/h/2JYOCY56zUheifGF6H1HK13do5Spu+My8B
+	+GiYvPg==
+X-Received: from pgjm1.prod.google.com ([2002:a63:fd41:0:b0:c65:e57d:fb55])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:c88d:b0:366:14b0:4b00
+ with SMTP id adf61e73a8af0-3938fd02abbmr3806163637.39.1770330927334; Thu, 05
+ Feb 2026 14:35:27 -0800 (PST)
+Date: Thu, 5 Feb 2026 14:35:25 -0800
+In-Reply-To: <aYQ0l+C42gssMHHV@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260129011517.3545883-1-seanjc@google.com> <20260129011517.3545883-9-seanjc@google.com>
- <aYMMHVvwDjZ7Lz9l@yzhao56-desk.sh.intel.com> <aYP_Ko3FGRriGXWR@google.com> <aYQtIK/Lq5T3ad6V@yzhao56-desk.sh.intel.com>
-Message-ID: <aYUarHf3KEwHGuJe@google.com>
-Subject: Re: [RFC PATCH v5 08/45] KVM: x86/mmu: Propagate mirror SPTE removal
- to S-EPT in handle_changed_spte()
+References: <20260129011517.3545883-1-seanjc@google.com> <20260129011517.3545883-17-seanjc@google.com>
+ <aYQ0l+C42gssMHHV@yzhao56-desk.sh.intel.com>
+Message-ID: <aYUbLVrxwDDZ2qh-@google.com>
+Subject: Re: [RFC PATCH v5 16/45] x86/virt/tdx: Add tdx_alloc/free_control_page()
+ helpers
 From: Sean Christopherson <seanjc@google.com>
 To: Yan Zhao <yan.y.zhao@intel.com>
 Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
@@ -74,100 +74,26 @@ Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav 
 Content-Type: text/plain; charset="us-ascii"
 
 On Thu, Feb 05, 2026, Yan Zhao wrote:
-> On Wed, Feb 04, 2026 at 06:23:38PM -0800, Sean Christopherson wrote:
-> > On Wed, Feb 04, 2026, Yan Zhao wrote:
-> > > On Wed, Jan 28, 2026 at 05:14:40PM -0800, Sean Christopherson wrote:
-> > > > @@ -590,10 +566,21 @@ static void handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
-> > > >  	 * the paging structure.  Note the WARN on the PFN changing without the
-> > > >  	 * SPTE being converted to a hugepage (leaf) or being zapped.  Shadow
-> > > >  	 * pages are kernel allocations and should never be migrated.
-> > > > +	 *
-> > > > +	 * When removing leaf entries from a mirror, immediately propagate the
-> > > > +	 * changes to the external page tables.  Note, non-leaf mirror entries
-> > > > +	 * are handled by handle_removed_pt(), as TDX requires that all leaf
-> > > > +	 * entries are removed before the owning page table.  Note #2, writes
-> > > > +	 * to make mirror PTEs shadow-present are propagated to external page
-> > > > +	 * tables by __tdp_mmu_set_spte_atomic(), as KVM needs to ensure the
-> > > > +	 * external page table was successfully updated before marking the
-> > > > +	 * mirror SPTE present.
-> > > >  	 */
-> > > >  	if (was_present && !was_leaf &&
-> > > >  	    (is_leaf || !is_present || WARN_ON_ONCE(pfn_changed)))
-> > > >  		handle_removed_pt(kvm, spte_to_child_pt(old_spte, level), shared);
-> > > > +	else if (was_leaf && is_mirror_sptep(sptep) && !is_leaf)
-> > > Should we check !is_present instead of !is_leaf?
-> > > e.g. a transition from a present leaf entry to a present non-leaf entry could
-> > > also trigger this if case.
-> > 
-> > No, the !is_leaf check is very intentional.  At this point in the series, S-EPT
-> > doesn't support hugepages.  If KVM manages to install a leaf SPTE and replaces
-> > that SPTE with a non-leaf SPTE, then we absolutely want the KVM_BUG_ON() in
-> > tdx_sept_remove_private_spte() to fire:
-> > 
-> > 	/* TODO: handle large pages. */
-> > 	if (KVM_BUG_ON(level != PG_LEVEL_4K, kvm))
-> > 		return -EIO;
-> But the op is named remove_external_spte().
-> And the check of "level != PG_LEVEL_4K" is for removing large leaf entries.
+> > diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> > index f6e80aba5895..682c8a228b53 100644
+> > --- a/arch/x86/virt/vmx/tdx/tdx.c
+> > +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> > @@ -1824,6 +1824,50 @@ u64 tdh_mng_rd(struct tdx_td *td, u64 field, u64 *data)
+> >  }
+> >  EXPORT_SYMBOL_FOR_KVM(tdh_mng_rd);
+> >  
+> > +/* Number PAMT pages to be provided to TDX module per 2M region of PA */
+> > +static int tdx_dpamt_entry_pages(void)
+> > +{
+> > +	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
+> > +		return 0;
+> > +
+> This function is not invoked when !tdx_supports_dynamic_pamt().
+> So, probably we can just return the count below?
 
-I agree that the naming at this point in the series is unfortunate, but I don't
-see it as outright wrong.  That the TDP MMU could theoretically replace the leaf
-SPTE with a non-leaf SPTE doesn't change the fact that the old leaf SPTE *is*
-being removed.
+Or maybe WARN_ON_ONCE() and return 0?  I have no strong preference.
 
-> Relying on this check is tricky and confusing.
-
-If it's still confusing at the end of the series, then I'm happy to discuss how
-we can make it less confusion.  But as of this point in the series, I unfortunately
-don't see a better way to achieve my end goals (reducing the number of kvm_x86_ops
-hooks, and reducing how many TDX specific details bleed into common MMU code).
-
-There are "different" ways to incrementally move from where were at today, to where
-I want KVM to be, but I don't see them as "better".  I.e. AFAICT, there's no way
-to move incrementally with reviewable patches while also maintaining perfect/ideal
-naming and flow.
-
-> > And then later on, when S-EPT gains support for hugepages, "KVM: TDX: Add core
-> > support for splitting/demoting 2MiB S-EPT to 4KiB" doesn't need to touch code
-> > outside of arch/x86/kvm/vmx/tdx.c, because everything has already been plumbed
-> > in.
-> I haven't looked at the later patches for huge pages,
-
-Please do.  As above, I don't think it's realistic to completely avoid some amount
-of "eww" in the intermediate stages.
-
-> but plumbing here directly for splitting does not look right when it's
-> invoked under shared mmu_lock.
-> See the comment below.
+> > +	return tdx_sysinfo.tdmr.pamt_4k_entry_size * PTRS_PER_PTE / PAGE_SIZE;
+> > +}
+> > +
 >  
-> > > Besides, need "KVM_BUG_ON(shared, kvm)" in this case.
-> > 
-> > Eh, we have lockdep_assert_held_write() in the S-EPT paths that require mmu_lock
-> > to be held for write.  I don't think a KVM_BUG_ON() here would add meaningful
-> > value.
-> Hmm, I think KVM_BUG_ON(shared, kvm) is still useful.
-> If KVM invokes remove_external_spte() under shared mmu_lock, it needs to freeze
-> the entry first, similar to the sequence in __tdp_mmu_set_spte_atomic().
-> 
-> i.e., invoking external x86 ops in handle_changed_spte() for mirror roots should
-> be !shared only.
-
-Sure, but...
-
-> Relying on the TDX code's lockdep_assert_held_write() for warning seems less
-> clear than having an explicit check here.
-
-...that's TDX's responsibility to enforce, and I don't see any justification for
-something more than a lockdep assertion.  As I've said elsewhere, several times,
-at some point we have to commit to getting the code right.  Adding KVM_BUG_ON() in
-Every. Single. Call. does not yield more maintainable code.  There are myriad
-things KVM can screw up, many of which have far, far more harmful impact than
-calling an S-EPT hook with mmu_lock held for read instead of write.
-
-The bar for adding a KVM_BUG_ON() is not simply "this shouldn't happen".  It's,
-this shouldn't happen *and* at least one of (not a complete list):
-
-  - we've either screwed this up badly more than once
-  - it's really hard to get right
-  - we might not notice if we do screw it up
-  - KVM might corrupt data if we continue on
