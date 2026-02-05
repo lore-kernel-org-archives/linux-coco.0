@@ -1,99 +1,127 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D177F427A1D
-	for <linux-coco@lists.linux.dev>; Thu,  5 Feb 2026 15:53:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CE742EED3
+	for <linux-coco@lists.linux.dev>; Thu,  5 Feb 2026 16:01:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770306790; cv=none; b=URoU+q07iM/nq6ajx4bNPQn+Dgpwz4RFXENIIHPUkR9cIPHKB6SaGWhqFzOD0OwIyF6iKHCA1YIdp1CToWV1kBGPm8PC3+v5Gi2LqjkZqJu7lj8lem20bL5WgbOllBWoE0u2jpRFOU6mNgtsLtpmAHghacafVYlOIdrqGkRft1A=
+	t=1770307272; cv=none; b=TLi/mLp8bL6jZc5xLFFayVVEAtgleK9eawDsOwQ2MlPFZP/CKVPGe7iPN5MAduSowx2UrDqnieEgHlpg8Zxcrl+RS3bvzTCpTOH6IqxcmyGvMOba6Gm4jT79gnMkRuflAXKoalxi88xZRFqXsB0ik/QamnK58cN+T+rq2tfMiIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770306790; c=relaxed/simple;
-	bh=YqRD+cKBfYWmS+ctu1ucUed79XYvh05hyJ19wxjDW/s=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mhShub7VhLrKm6KMlYJDfPUZKgQTN7lkzmGu5JnZ2p2hrxcC5AKVfXL3gHMrR+CM5gFNb4qm1zZ06OvfuNshvuTW+4woLaQeEbZXxf52d/crw2I8+MYRVYeBM09fzNZSK47CeaymAZRGk/CQDuk8cVEe44VrRdM/M4MQlS7JYIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oLTZX95K; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1770307272; c=relaxed/simple;
+	bh=qz+3cehkgOjxXFCo62f/+p5mv+1H938wSgTdCYi+IUo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=O59kuPV7jHeuIZXFPjFS26vLQdNshWjzMZNfkPJ8d8g35HcvUhcrXnnyqPUhFiInA4cxhLHCxh2AYKh2EUSUJP2/HWFzdH4zpevrEZvKjt8u5tZBR1vppONaQK8Z1pMEJmtZwkflFCaa3kELH2kjF5IZE538y0JKuAf+rI1NadI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RttX/3Mk; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oLTZX95K"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a943e214daso23723975ad.3
-        for <linux-coco@lists.linux.dev>; Thu, 05 Feb 2026 07:53:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770306790; x=1770911590; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xcx7wlzL60d1Aa7ekaPBgmgQ/lwDEM/p/AnSieBZ0xQ=;
-        b=oLTZX95KzC2aoxNQe5Q5m9mFEIAD2+UXNz4YkPJ7XBhfC3t/A6y+/N/vXoDO1oxXyy
-         y7Z/9a4Y/Ygze26Kseh38+ez6i2lB1rRSvWSZdk622feO64wky9pgrCYTRpbOSz3a3Bk
-         WdbF88xoJxBQpxvY37uMr/8+uvgweUGoSQ3ugArK1RxIOCwVvT38Bc7cKksMFKbKJYKV
-         NCSiJB8wYF3YqGmMLakkngEeTvqFxKsW5AAQgXQ4nwj2GhzSbj8AWYdolIxW40scUiId
-         ILkPG1Q7rAhJl/9i/OOATx1hj4IXXulrGx9mamrEoomHnoF568IWLN6kbhVVw4sK+TcE
-         XmpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770306790; x=1770911590;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xcx7wlzL60d1Aa7ekaPBgmgQ/lwDEM/p/AnSieBZ0xQ=;
-        b=h52ar4i5CpNFsX1kou1X2/IgWUXpTP9mr7yKHwT4V8en2eMVJLVCsyM6D9f0BUfUWf
-         NOsyka2HM+/KMw8YFFBbglBsY0PKvBqVpf5tdJFSL3X2GIXzQ5BD3HH3cK07M5dYAA5j
-         ElhaMWmAkDG7GPDJu7KfxhYCtzdT7GiuJ0KGcxO5Hj/aPUM/ZhrhWS5nEewSAv3VrtmM
-         31CiCjE46IFYZVoVND8+srns2VXYozXSIviao/5uj4G1L1ZtHgTBlT36bO8cWgiV4Jkv
-         hmcmR6w+iYkZQ6gDHPje4awEi3xmceGJQbON4iphkJzuSjdLvsJ8141tOLa8oc/+x55W
-         FAzA==
-X-Forwarded-Encrypted: i=1; AJvYcCU/nnwDyEblnDRmYTb3wjaHY6CY4FCqJjHTJ27yx6o6u2JCWqWuCaWX7Euvnl+yyFDX24+zzpRHwMa2@lists.linux.dev
-X-Gm-Message-State: AOJu0YwXMA9F2NuW+IziRbDf0I3Qn6VkhJ327p4ra2OrQxPYz3oHdM8V
-	3PP7n2WtslZ5M5MJXzE9FXuIvq06wwqJDJwCQz4M1LtXcREmMkyZfUqvdH0i7A7PQ8T4P46FL6k
-	IzgT0Tg==
-X-Received: from pgi124.prod.google.com ([2002:a63:882:0:b0:bc0:d9a9:8a8e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7fa8:b0:358:dc7d:a2cc
- with SMTP id adf61e73a8af0-393720d9943mr8123776637.17.1770306790120; Thu, 05
- Feb 2026 07:53:10 -0800 (PST)
-Date: Thu, 5 Feb 2026 07:53:08 -0800
-In-Reply-To: <e60e0929-f3b0-463d-8c82-dc9170e401eb@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RttX/3Mk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770307272; x=1801843272;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=qz+3cehkgOjxXFCo62f/+p5mv+1H938wSgTdCYi+IUo=;
+  b=RttX/3MkLu4EaYo5bdqZNYHX+o90/3xL+MhG0Dmvoepjpbf/6BfvfN78
+   7Wdevgsgeck4LS/G2/8jOeEVMJeIp4G65xQcUb82WMJ8150smDYyQTsE2
+   Ws1XrsjYAnDh66BTcr5P+u9fR+4+1sJtFh28KforE9Mbef8hk/ULXZuAr
+   c/IMRsoO7/UYSpSWxwRJOUxXEANiy00z6A8e4slOPsU7KL55mgohbRcF+
+   EUxjLTHCCutN+qm+S9dKr4Yxp+OUq405u17Z3hTKB2CpcPdcBKjrgng8/
+   NYbttZAp6tqLZyWvefM39Lr27h8DKIVpPIwB9Sftz9UZh9kOwvh/XMWH8
+   A==;
+X-CSE-ConnectionGUID: qWAQIJoUR4WmdMsUPhxEEA==
+X-CSE-MsgGUID: yVqsmwfTTXK0LTbOijZuGA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="71237620"
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
+   d="scan'208";a="71237620"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 08:01:11 -0800
+X-CSE-ConnectionGUID: zz4C4dKFSVOzqXZnfJBhQw==
+X-CSE-MsgGUID: XbiRlqb8R1iFGtpWdnoz5Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
+   d="scan'208";a="248170547"
+Received: from tfalcon-desk.amr.corp.intel.com (HELO [10.125.111.86]) ([10.125.111.86])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 08:01:10 -0800
+Message-ID: <dabf57c8-88c9-4bc0-bed6-c4d451a4ec42@intel.com>
+Date: Thu, 5 Feb 2026 08:01:08 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260129011517.3545883-1-seanjc@google.com> <aXuVR0kq_K1TYwlR@char.us.oracle.com>
- <aYNaA7Td23xKHoHK@google.com> <e60e0929-f3b0-463d-8c82-dc9170e401eb@intel.com>
-Message-ID: <aYS85EsXu_xuQXSI@google.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC PATCH v5 00/45] TDX: Dynamic PAMT + S-EPT Hugepage
-From: Sean Christopherson <seanjc@google.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	Kai Huang <kai.huang@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Yan Zhao <yan.y.zhao@intel.com>, Vishal Annapurve <vannapurve@google.com>, 
-	Ackerley Tng <ackerleytng@google.com>, Sagi Shahar <sagis@google.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+To: Sean Christopherson <seanjc@google.com>
+Cc: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Kiryl Shutsemau <kas@kernel.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ Kai Huang <kai.huang@intel.com>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, Yan Zhao <yan.y.zhao@intel.com>,
+ Vishal Annapurve <vannapurve@google.com>,
+ Ackerley Tng <ackerleytng@google.com>, Sagi Shahar <sagis@google.com>,
+ Binbin Wu <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Isaku Yamahata <isaku.yamahata@intel.com>
+References: <20260129011517.3545883-1-seanjc@google.com>
+ <aXuVR0kq_K1TYwlR@char.us.oracle.com> <aYNaA7Td23xKHoHK@google.com>
+ <e60e0929-f3b0-463d-8c82-dc9170e401eb@intel.com>
+ <aYS85EsXu_xuQXSI@google.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
+ oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
+ 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
+ ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
+ VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
+ iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
+ c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
+ pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
+ ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
+ QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
+ c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
+ LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
+ lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
+ MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
+ IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
+ aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
+ I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
+ E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
+ F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
+ CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
+ P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
+ 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
+ GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
+ MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
+ Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
+ lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
+ 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
+ qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
+ BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
+ 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
+ vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
+ FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
+ l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
+ yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
+ +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
+ asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
+ WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
+ sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
+ KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
+ MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
+ hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
+ vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
+In-Reply-To: <aYS85EsXu_xuQXSI@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 04, 2026, Dave Hansen wrote:
-> On 2/4/26 06:38, Sean Christopherson wrote:
-> ...
-> > We can and do have tests and VMM support, but it's all out-of-tree (for now).
-> > All I'm saying here is that I'm ok landing the S-EPT hugepage code in advance of
-> > guest_memfd hugepage support, e.g. so that we don't end up in a stalemate due to
-> > cyclical dependecies, or one big megaseries.
-> 
-> Does "landing" mean having it sit in some topic branch, or pushing to Linus?
+On 2/5/26 07:53, Sean Christopherson wrote:
+> I'm a-ok starting with a topic branch.  If maintaining that branch becomes too
+> costly, then we can always revisit things.  And that would probably be good
+> motiviation to beat guest_memfd hugepage into shape 🙂
 
-I was thinking pushing to Linus' tree, but a topic branch could likely provide
-almost as much value?
-
-> I'm all for getting these hellish dependency chains out of the way, but
-> we usually try pretty hard to avoid having dead/unreachable code in
-> mainline.
-> 
-> If it is something you want to do in mainline, we should probably do a
-> bit of cross-x86/kvm brainstorming to make sure there's no other option.
-
-I'm a-ok starting with a topic branch.  If maintaining that branch becomes too
-costly, then we can always revisit things.  And that would probably be good
-motiviation to beat guest_memfd hugepage into shape :-)
+Sounds like a plan.
