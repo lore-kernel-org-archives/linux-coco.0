@@ -1,131 +1,113 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D472701D9
-	for <linux-coco@lists.linux.dev>; Fri,  6 Feb 2026 15:10:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0232E2DD2
+	for <linux-coco@lists.linux.dev>; Fri,  6 Feb 2026 16:04:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770390660; cv=none; b=M9ws8S5PXdXpWd911G9FNHrTBQrD2Ilzk7jY5LEQ/us3gAsYBllp9WYFC4XYaCe0lMb2iz0IDdODK6zYxL/UP7ZbI4c1mArLLK/4wZF0WGdSrLLo/ny4r8rLWQLHrCZuv9TrBdR/GhkyNxt9d/Rz4x9Kj72CMMyxrGyh4sFyq8I=
+	t=1770393840; cv=none; b=tKxTaFjfodcJ6ckIpGkSnV0y6Qxw4x/aJLeUvARwurvTGzac3N+lA2a/IDVoI42dpGSOWaJurRbvN86AFQ9Kbz3svOsN4XfDZZAUo3FAKxNGBa0QUu57FzGKrYCQAAnPN0Plv17gRekic9Dh2m6xghZE94Kw4RkGK/BGfDmeLDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770390660; c=relaxed/simple;
-	bh=XAoq79H1MpAZdOj3SZC/rfB84Y7kWIRd3+yPM6Jh5p4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZHL7iMIUqXjsQpQwuvdPSUfL00V5Yr/mYqR8BIDrE77nbfzFjO7UArNRnklGF1EmLG3j0qhJ9tyqLEQB5X3uW36ExaLA6ft4YvLze0+lZQultU+V5hhHQXjt/eAO1Xojv6qQdXvL+xYj8BiHxrC7yVTvNNOxZw/VK70CEc808pE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W78qkBsh; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1770393840; c=relaxed/simple;
+	bh=3raR9XQBcm6pX1dp9l802LPULeByXkutMSrcWOv542Q=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=RroaUwuK+mpbAxAnD8DzYibhvJR1rhJWC8qAhkz8eLSJBYlt7BJcJee0REbPFatNrRNne/biVOGw9TKKTCWaHVUelmx7vUUX7RK0avcvqdhMBhXSdMyTdie+yqr+p8MRWJ2qvw+W02HxJurhOzxfreurUN4KlJpiU2sx54LWa7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MqLepiDT; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W78qkBsh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770390660; x=1801926660;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=XAoq79H1MpAZdOj3SZC/rfB84Y7kWIRd3+yPM6Jh5p4=;
-  b=W78qkBshdRnK6CZnXPbwNFjWCj4rw8uYifq26OdjmekJEx59U8kdfyEc
-   47Hl1BBks6swqv/WTOu2X7jveimN8E5wrTbj1bjqe5akR0IwS+H1DXSY8
-   WvDMZIRScCWAaAoUI33+5dloB2JlnvZj7hoT1diKp8flzFUP5IKyuEsrS
-   RoSo6wm0sgn0A+soZYQvb12lmLF6ET1mHnqfbUKM2yObmg3tBBGIz6lCK
-   imtWi4E2ZTZ0gZhEEY0wBPtCF7lvxNBxQa+ZPSWSrWbYEfsuvvWsBhekP
-   jbKMblbwmPf1SofzCAEUW9LlDRcwGaTW4UpCEoDS7YPLbdYQGhF7s83Dd
-   Q==;
-X-CSE-ConnectionGUID: VGQGYbYrTJ+wswl3wXWAew==
-X-CSE-MsgGUID: TSmn7t0+S4WBu5BVfwR+AA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11693"; a="71498238"
-X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; 
-   d="scan'208";a="71498238"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 07:11:00 -0800
-X-CSE-ConnectionGUID: CVXzc3+IQNacx57ayz8dkw==
-X-CSE-MsgGUID: CE6zfk0JT0eOJkiT52NT0g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; 
-   d="scan'208";a="210697093"
-Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.111.129]) ([10.125.111.129])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 07:10:59 -0800
-Message-ID: <2235a1cf-7ccf-4134-80b5-8056537c6d33@intel.com>
-Date: Fri, 6 Feb 2026 07:10:58 -0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MqLepiDT"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b5edecdf94eso5638502a12.2
+        for <linux-coco@lists.linux.dev>; Fri, 06 Feb 2026 08:04:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770393840; x=1770998640; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6W5ywYYSvCRSPwqFTbeco0aLvB9nOdCSyf5b4W1ZEGc=;
+        b=MqLepiDT1e7oqNsYDigLUozfJzi2t+62GiOTTAaOiR3uVti8laaNAu1YS0lJmJASBU
+         rSUedSJ4Nx3meLDTxc6P7YxHW/vgTTPZBJrQ40H/AjA7jWv+QH28DCJZOyNWNZ3XDLAR
+         FGz+ubp3X5TxBtwJGH3Cw4Fk/K/N11CR+yuAi4LVfjv9HmCqYcVMj+u9ulJfY5FYOvfS
+         03PytnX0VmGfn+y5nkejmMKLTMYjR4AoNw9QAxz2LJTulOLJgzXazenCQNUR6Mcu23Pm
+         jo9HpR2tPvQYBzeFzc66dKDmvisnNXhbAXE9NnNNtq47h6gK0/lrn8GjoiTNM2Wxn1BQ
+         Gy2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770393840; x=1770998640;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6W5ywYYSvCRSPwqFTbeco0aLvB9nOdCSyf5b4W1ZEGc=;
+        b=sL5saoVksII3UX99M/ntNEZzNQu6TraDrNiEoohol5h427rZEgvpVdqkC485hvzyxG
+         Tudb18VoGLpzwFDky8H4ncHfSEA7ONWuFK7hc5Ke2THMkL2WuX11jEXVdpJ/K6Elps8W
+         sL1CBR1c6rEcQZDp+JOpPmTQL+oI9Sskt8hgkkJmmXxCdUceDLZ0PFZTQ2NisC+W3Ez4
+         ZMYj6miUHXDcC+vA6GnAmxFwDXMxxLGXa7OR86gWWvxmV05KLfCiHyARJv9q8B3x84FS
+         Nfl7qy2LLf5WqU3eMGAYgvxEBqmgbFo1+Shub8zNzRpcsdFfNF6aJi0Jd/JFb78peHMO
+         ytlg==
+X-Forwarded-Encrypted: i=1; AJvYcCVmW0K6YF2azuTExIbMY2FOe2YCc08JDhJLBNOfb9pbZ0fbLnMg99uKBW6AKxyJu5cHxqU2ZWb9s53u@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz7O5qE1TwKv8Kt6Ep1FpeJyp5iO83iN16iZcz/C1a9EwGXmgyz
+	EWTUotx06NOkowWK8RWkCZAI41ApdzZLDQy+RPKRktTpYrGsSL1vvljZW6hpZfto8j95FWjCHnD
+	ZeCUz8A==
+X-Received: from pjbss7.prod.google.com ([2002:a17:90b:2ec7:b0:34c:37db:8f1b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3290:b0:393:8afb:3559
+ with SMTP id adf61e73a8af0-393ad0265a9mr3268415637.32.1770393839552; Fri, 06
+ Feb 2026 08:03:59 -0800 (PST)
+Date: Fri, 6 Feb 2026 08:03:57 -0800
+In-Reply-To: <aYXAdJV8rvWn4EQf@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] x86/virt/tdx: Print TDX module version to dmesg
-To: Kiryl Shutsemau <kas@kernel.org>,
- "Verma, Vishal L" <vishal.l.verma@intel.com>, dave.hansen@linux.intel.com
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "Gao, Chao" <chao.gao@intel.com>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "Huang, Kai" <kai.huang@intel.com>, "bp@alien8.de" <bp@alien8.de>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "Williams, Dan J" <dan.j.williams@intel.com>,
- "tglx@linutronix.de" <tglx@linutronix.de>, "hpa@zytor.com" <hpa@zytor.com>,
- "x86@kernel.org" <x86@kernel.org>
-References: <20260109-tdx_print_module_version-v2-0-e10e4ca5b450@intel.com>
- <6d8d37740459963e6fd7f16a890a837b34ebdf17.camel@intel.com>
- <aYXSd8B00OtKZcAU@thinkstation>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <aYXSd8B00OtKZcAU@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260129011517.3545883-1-seanjc@google.com> <20260129011517.3545883-23-seanjc@google.com>
+ <aYXAdJV8rvWn4EQf@yzhao56-desk.sh.intel.com>
+Message-ID: <aYYQ7Vx95ZrsqwCv@google.com>
+Subject: Re: [RFC PATCH v5 22/45] KVM: TDX: Get/put PAMT pages when
+ (un)mapping private memory
+From: Sean Christopherson <seanjc@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	Kai Huang <kai.huang@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Sagi Shahar <sagis@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On 2/6/26 03:39, Kiryl Shutsemau wrote:
->> Hi Kiryl, just wanted to check on the plan for this, I didn't see it
->> merged in tip.git x86/tdx (or any other tip branch). Were you planning
->> to take it through x86/tdx? Can I help with anything to move it along?
-> I guess it has to wait after the merge window at this point.
-> 
-> Dave, could you queue this after -rc1 is tagged?
+On Fri, Feb 06, 2026, Yan Zhao wrote:
+> On Wed, Jan 28, 2026 at 05:14:54PM -0800, Sean Christopherson wrote:
+> > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> > index 6e84dbc89e79..a6e4ab76b1b2 100644
+> > --- a/arch/x86/include/asm/kvm_host.h
+> > +++ b/arch/x86/include/asm/kvm_host.h
+> > @@ -1863,6 +1863,7 @@ struct kvm_x86_ops {
+> >  				    struct kvm_mmu_page *sp);
+> >  	void (*remove_external_spte)(struct kvm *kvm, gfn_t gfn, enum pg_level level,
+> >  				     u64 mirror_spte);
+> > +	int (*topup_external_cache)(struct kvm_vcpu *vcpu, int min);
+> >  
+> >  
+> >  	bool (*has_wbinvd_exit)(void);
+> > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> > index 9b5a6861e2a4..4ecbf216d96f 100644
+> > --- a/arch/x86/kvm/mmu/mmu.c
+> > +++ b/arch/x86/kvm/mmu/mmu.c
+> > @@ -605,6 +605,10 @@ static int mmu_topup_memory_caches(struct kvm_vcpu *vcpu, bool maybe_indirect)
+> >  					       PT64_ROOT_MAX_LEVEL);
+> >  		if (r)
+> >  			return r;
+> > +
+> > +		r = kvm_x86_call(topup_external_cache)(vcpu, PT64_ROOT_MAX_LEVEL);
+> If this external cache is for PAMT pages allocation for guest pages only, here
+> the min count should be 1 instead of PT64_ROOT_MAX_LEVEL?
 
-Sure.
+Oh!  Right.  Hmm, with that in mind, it seems like topup_external_cache() isn't
+quite the right interace.  It's not at all clear that, unlike the other caches,
+the DPAMT cache isn't tied to the page tables, it's tied to the physical memory
+being mapped into the guest.
 
-Is there any other TDX stuff that needs to get picked up at the same
-time that's been languishing?
+At the very least, it seems like we should drop the @min parameter?
+
+	int (*topup_external_cache)(struct kvm *kvm, struct kvm_vcpu *vcpu);
+
+Though if someone has a name that better captures what the cache is used for,
+without bleeding too many details into common x86...
