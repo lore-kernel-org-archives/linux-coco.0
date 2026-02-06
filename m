@@ -1,172 +1,324 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB8930C616
-	for <linux-coco@lists.linux.dev>; Fri,  6 Feb 2026 06:37:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770359850; cv=none; b=oBiblaIB4lpQ2MOWobQcKGLhko5vSdwXrb8nXqUabagpSGU9eu93sjxko21tRvHyX7VpoQ9eWcB/1Ktqup3bwVsA8N9S2w1PwVtQy4DrEmDSLsCcCDmmjPcMNfBWQVsxcvcecy+n2JHG30DLEk2zlz6DMyUa6ebv3ePHSv0xmVA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770359850; c=relaxed/simple;
-	bh=hCSuUhyDepKovVFfLIXEK7iiZgvW4TMXo63DsbeUx+s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l2vQDIo/R6LOJXrKSRclo2B9tep1cRgT6qnXhLLbwlLOqGEJn0yXi5uMHfOvAva80h9PSMbuAUuBsVhnJpaGwdMM6T6S3VgDyUyM/voV+mexWLnlM7yBckrcCU8atLcp+hDX8eTHDKhcPIGu+lQ7ZCKIbuMJ2P4e6u6KPRnzPH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PMdB0Eyg; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=fNHP4BZy; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C032FE044
+	for <linux-coco@lists.linux.dev>; Fri,  6 Feb 2026 09:51:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770371515; cv=fail; b=gWVwgI32nbUSJLp9MEdBcEiyWeAa48kPevUvPJI78Mk5bxbZJmW/H/2GtxxZvwPTwvvrdY3ox7Ow2YlkAP7VwfH14O/+O65Cruno+/KInGPxTHksKyjyjt0bb1HOgQDmQmamfsb97OXgfW3lqMPKYgZXZpAIi4OucR+kVPcexOI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770371515; c=relaxed/simple;
+	bh=6/ED0duojVUFS+A+T+v0YR2+GnBCyJ5yNRBKwLP6uy4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=QkCl40zWdDdbs49PQrD6bFyCS+0H7Zbih/t+goAK6bkBxRzW/ck/ChM4c2GvL8KcuXzB3LKuExcLQ5cD3rgZMYP2blCkPj51G2ydLugsyr/f1au5fcT9Mgxvavwtqy5OLEwBBgoBypWUmzvxIhFBfIZNDQzovqSK3jMq7yxkZ20=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VNdDF3Kp; arc=fail smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PMdB0Eyg";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="fNHP4BZy"
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6160xeYs3187427
-	for <linux-coco@lists.linux.dev>; Fri, 6 Feb 2026 06:37:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	YQ77QTJWVPIZC+3oQok+biilGV/ElhSJIADxlZKOIi4=; b=PMdB0EygjMwZ2v4s
-	8JWvxgJZt8aBWH/dFEJ92zCZnJ2gL7g2Kb+jSOCvCR8XuCgViI3hNnrL6u6mZtqq
-	I5ASHxMsmh/SFTukk3uadZXbBeeES5mkB7HGuDNpdXvMYGuho8j8ea3t5yLW0jus
-	AFWPKzh4WOFrte/Vvw0vCwGPKBLrktHLRiesGy2fPzFP34JpMt6Q6xeecvOrzuss
-	ZwODlJHN/7GOi2d30ezxTx7cGwU6rD3R0aFYGPVkrBnrY6d0Mw8Jx2uB6M/AY13I
-	24j5+7od4inTon7ffDGJeEZO7r4LQWuYxsOwmj1jGXFYZ0+kEWdHVsmNV0SwDSTW
-	o4maEw==
-Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4c4prxc79e-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-coco@lists.linux.dev>; Fri, 06 Feb 2026 06:37:29 +0000 (GMT)
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-2b7ef896edcso13482432eec.0
-        for <linux-coco@lists.linux.dev>; Thu, 05 Feb 2026 22:37:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1770359849; x=1770964649; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YQ77QTJWVPIZC+3oQok+biilGV/ElhSJIADxlZKOIi4=;
-        b=fNHP4BZyadfJW2nFeTUKPxP5p9eOrvkrLLc8p3bFYEK6/jLe0UHd6sB6S3sTg2kXBM
-         45zC2TF0EggXzip+NYhNKV0WOsi+6Rp/NHuN3KUCnnDmv1SDxjszWllr0FPZr0x2w1Au
-         xb+vmOIUpuEoFobU4t8ueQz8ZMb4AozA4EpVLDzcqMmtn6St5bCItNLAfvz0phjziPXq
-         UuVcN425EFzimgquNeonfE8NFuv9l2miaNEFYFj//JPHVMG+fbKIga3Xq2BtgX7foMh2
-         Ah30v+BkSnGgLG8b6RRvdS1QPpdBs7kNctmqy7QOTma+QTQMhDSP5+GEPqecimwqq0QX
-         K6aA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770359849; x=1770964649;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YQ77QTJWVPIZC+3oQok+biilGV/ElhSJIADxlZKOIi4=;
-        b=oKJR3ohcL4mSxHZr7OgebGYFjDkHXRce9Fp9hFjWKouncYJhcqrKCu7H9ESD12NuJc
-         mK+uI7xPn1hlhS3ocih0RodExpfBebvhADjRXIl6iyeRQC2XOiZztIKFc8ZWRjeIt49w
-         CT1qFlrdoI/TewoBVGLTfbKgNi9dQG59DTQNcspwsz8QscfDFHqw/jIQXRMGmLUdrYWQ
-         Cy+w+CZb2VThPCeY9WNtHLEm5CoM2Pv2uUsejBJVJBv6kqb+mGJZZ8rwZ0ykwE8MgC10
-         fhs6dsxfaHm27J+8Z22NPhT9FxNjGZQO04YDtIz5DihfrKr31Dim7gJW8ZBcuzPTQQR1
-         vpVA==
-X-Forwarded-Encrypted: i=1; AJvYcCVHY5U/leODKHm5wlykscBdtG4FDte7JSTpsrJVDcM0WJhwUvgZU6mKpnK72/Rsr0irVGbHMX2DXV1w@lists.linux.dev
-X-Gm-Message-State: AOJu0YzuDXlxqSCQ+ya/hmKD5Vbbpw1R+uJqaJWTS7LMZHrLQfUR3Kiz
-	Tk56Sug07yfUQsS+hnIOrBye/SKvr91P90xNVdNyDiKSr4yTZ4G+2/Abla0yr4/1iXDimvV+G3l
-	svm+Lq9GLRbGrAhANdpWBE3+lg5PbJNoOaacJ7v9F+ks6nHcE08K1aqJP7P0qeFeI
-X-Gm-Gg: AZuq6aJNECD72IiVjSOpA7ftjZRImB9DSLzTxZa2Sdi/oSNoqeUU4F7A2yfhP1Fhwpd
-	KOd47mMLzzIgoNejUbXuQEKRiG0cI5bGSyMCioHc/bJVn60H5qT9/S37yo29UHSagLWw0+qduXt
-	8vv3iwf0lddXZQyrC0rCaTGqvxvxej3A0jeq17/sn1QvMESXJaAHaWnj47TtZkRoezeEpFSKJb0
-	iE617L4VcRZgZiRFuirJu3ZVkTuz7TI7U7VP1OmyPTqmuARmX2t43JXBkB0iEfXjhfDr+iWaaej
-	aM21/1CiqGDPaCM/iw6GJIjHbFU7vysVKzXb5h+NgdgUAJJSME6bsxJP805e52w3mE3iFb6tHOa
-	NWV+sBZCxMaSvxs7a8H5cdMXEpZjcwaKOFdqRpyYOR0c=
-X-Received: by 2002:a05:7300:fb97:b0:2ae:5ffa:8daa with SMTP id 5a478bee46e88-2b8563d94dbmr847092eec.5.1770359849126;
-        Thu, 05 Feb 2026 22:37:29 -0800 (PST)
-X-Received: by 2002:a05:7300:fb97:b0:2ae:5ffa:8daa with SMTP id 5a478bee46e88-2b8563d94dbmr847072eec.5.1770359848561;
-        Thu, 05 Feb 2026 22:37:28 -0800 (PST)
-Received: from [192.168.86.165] ([76.176.48.107])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b855af7806sm1181131eec.10.2026.02.05.22.37.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Feb 2026 22:37:28 -0800 (PST)
-Message-ID: <8ff96355-4a53-4790-9d2c-ea7d63be77c4@oss.qualcomm.com>
-Date: Thu, 5 Feb 2026 22:37:26 -0800
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VNdDF3Kp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770371515; x=1801907515;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   in-reply-to:mime-version;
+  bh=6/ED0duojVUFS+A+T+v0YR2+GnBCyJ5yNRBKwLP6uy4=;
+  b=VNdDF3KpAIu04gwmuu0X/xsHk7eumMM3mcrPQ7katRFBWvM3cHb40bLA
+   6VPiYLPe7UeYiVNvDQZ9e4jCF1rgkBU8XYArWJRvKvY2Oe8O3s1+4ZMnW
+   AYJJnqwEDAvBKxCyBJUcJXcocf4RDIFieFXF/DWzH92cQLDxvYi6yeQPw
+   cY4Wlv/vyF2BB7LNBSl6kRismugP5sxE0EIxE/VTYOP/Dy+XoEuTeSRuZ
+   oP9ZGN0JRfIIS19SJWzDa8CKKckfdyALj5C/PfQqVUiBWocj2jRcVUv3N
+   F39SUtlDej8DKSljDFd+NCwIYgREMeaKZlGpk4vryk3Hr9naETIZjlOZF
+   A==;
+X-CSE-ConnectionGUID: BVfFlB2jTYu5fefqY+mTPw==
+X-CSE-MsgGUID: eoF+ZUMrQJmag3DUOnmXxw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="83019059"
+X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; 
+   d="scan'208";a="83019059"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 01:51:54 -0800
+X-CSE-ConnectionGUID: 6oYX9PKxRzys3I1G55+8qg==
+X-CSE-MsgGUID: YwPGnGN8Sve+1FybPSKCmg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; 
+   d="scan'208";a="233770321"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 01:51:54 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Fri, 6 Feb 2026 01:51:53 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Fri, 6 Feb 2026 01:51:53 -0800
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.20) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Fri, 6 Feb 2026 01:51:53 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FI6jd1cYLGP//b8sNr+WEtKcjYhEyFz5fU12jG8F8DQrD3YL5RY1w+VTJMCVHejQtdISLUzMDljha6iw+Lv6MZz6DYNl7c2/GPqVxOI77onzo0xiDa+SOLDh+PheEzkTeY3grqcDq92OCTClB/yMNuHhUuWkmtcETAcyskfYBnJUstKRKW4Yfd5lVRwvOOrMH0qwq+1zN+uxCsJQ56f1JpryUmPVZ89+v8b+p/gLomklGeMj5OenFxGV41FHlCj+J4I42MZPU36IEiZUpLCSQotF9rcNRsoovIT+1Tqgl4vaMKM6Zpal5zWqv/0fpaQSo2r0EGPLGJLZS9u/ajTSIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=A+D809ZUmKXkUwtGweJfk65o2Yb2C4cWj/665IO3hs8=;
+ b=h8I8PWoEXWtgyuYs/ZepLdHf1QHAaN/q+WWsuipN9Y7mABUiC0lfdTx7N9I2z62dUQ1XN9dyLjtEncP393CYgaZgVuAsUJLJEnaYDAODGmBQPb9gOTE2xtvAnzqL2E2x4Cejzpo8T23zry6O+zZjYiK9dQEg1ZUZ0G1jbKzWuSo74DedzgBK1cJqcv8AX83cJOpPlBGJnakbz0Oeo2ihnX6QvU2YbUpxmG5H3o1vtJ/M8GJQozlDMzlGETgLXgDkV2OIbOb4yvcTEaf3D4+HoZox04Vd7cRWZ5VJh4eAUfywlxLfpCdEFWobnpueyckTqF1PDaWP7Xxqv/cb9wFgdg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6) by
+ IA0PR11MB7882.namprd11.prod.outlook.com (2603:10b6:208:40f::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.13; Fri, 6 Feb
+ 2026 09:51:51 +0000
+Received: from DS7PR11MB5966.namprd11.prod.outlook.com
+ ([fe80::413f:aab:68fa:b1b2]) by DS7PR11MB5966.namprd11.prod.outlook.com
+ ([fe80::413f:aab:68fa:b1b2%4]) with mapi id 15.20.9587.010; Fri, 6 Feb 2026
+ 09:51:51 +0000
+Date: Fri, 6 Feb 2026 17:48:57 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: Sean Christopherson <seanjc@google.com>
+CC: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini
+	<pbonzini@redhat.com>, <linux-kernel@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>, Kai Huang
+	<kai.huang@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, "Vishal
+ Annapurve" <vannapurve@google.com>, Ackerley Tng <ackerleytng@google.com>,
+	Sagi Shahar <sagis@google.com>, Binbin Wu <binbin.wu@linux.intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>
+Subject: Re: [RFC PATCH v5 20/45] KVM: x86/mmu: Allocate/free S-EPT pages
+ using tdx_{alloc,free}_control_page()
+Message-ID: <aYW5CbUvZrLogsWF@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20260129011517.3545883-1-seanjc@google.com>
+ <20260129011517.3545883-21-seanjc@google.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260129011517.3545883-21-seanjc@google.com>
+X-ClientProxiedBy: KU3P306CA0001.MYSP306.PROD.OUTLOOK.COM
+ (2603:1096:d10:15::7) To DS7PR11MB5966.namprd11.prod.outlook.com
+ (2603:10b6:8:71::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] firmware: smccc: add support for Live Firmware
- Activation (LFA)
-To: Salman Nabi <salman.nabi@arm.com>, vvidwans@nvidia.com,
-        andre.przywara@arm.com, sudeep.holla@arm.com, mark.rutland@arm.com,
-        lpieralisi@kernel.org
-Cc: ardb@kernel.org, chao.gao@intel.com, linux-arm-kernel@lists.infradead.org,
-        linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-        sdonthineni@nvidia.com, vsethi@nvidia.com, vwadekar@nvidia.com
-References: <20260119122729.287522-1-salman.nabi@arm.com>
- <20260119122729.287522-2-salman.nabi@arm.com>
- <b5fd72fa-fcde-4f7a-bfad-17465d7e3841@oss.qualcomm.com>
- <c29f4a15-1753-42ca-a4a4-ca429053163f@arm.com>
-Content-Language: en-US
-From: Trilok Soni <trilokkumar.soni@oss.qualcomm.com>
-In-Reply-To: <c29f4a15-1753-42ca-a4a4-ca429053163f@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: hTwlTIUKEmSGb1lmg93R-5-mXAIx7L9A
-X-Proofpoint-ORIG-GUID: hTwlTIUKEmSGb1lmg93R-5-mXAIx7L9A
-X-Authority-Analysis: v=2.4 cv=eLkeTXp1 c=1 sm=1 tr=0 ts=69858c29 cx=c_pps
- a=Uww141gWH0fZj/3QKPojxA==:117 a=lsoD3MMNObdLvy1227ExmA==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22
- a=6HHVuAIMxnVHkOBFbdoA:9 a=QEXdDO2ut3YA:10 a=PxkB5W3o20Ba91AHUih5:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA2MDAzNiBTYWx0ZWRfX5c4C4IiWeb0j
- Gw74/S+QjXyVBxqGraBRjFX2IZcLVGThs8p4OH7v1j0M7ub8oNgmt2ZYVtSSO14UnMDOaijx7n/
- F8HSxD4pQ/8KEWD8I12jUCw7FmzViHB6vQRW5E3mFFGE2hLxmnm5TODYsKnCSHDsonqy2NlyaBe
- o2WCIOWHYu5WmiUYK/nmjWolx0xhF2I3mv4mamYozp1JErtF8MqUNNv4mS62hKFJrN++gpgajSZ
- KWBhjRRyM6lKRPz1ppxkay7BStR1sZ9h8qSMNXxcNnWBVYds86tyg+sgyKs17E/jzCBUHFRPCW/
- /30/hZiY8Io2fEs/mv19RABp/QEBzb3BgtpDvRrJXLLPBso2rJasMrTVKfAp2hdXx6Q9+bCSsE0
- 5yRdg8icKdLFyJJEeqo3ITraNI+W6hhnRe9dsiUcO/minwcMdJsihHMQu16ZWJo8A+T1ntPJEbv
- /OIS8W7kdejj8EMI+1Q==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-06_01,2026-02-05_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 clxscore=1015 bulkscore=0 suspectscore=0 adultscore=0
- priorityscore=1501 spamscore=0 malwarescore=0 phishscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602060036
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR11MB5966:EE_|IA0PR11MB7882:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3600b28f-bdc7-4730-f05d-08de656559ec
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?QW04Ra937MgbBTrW6z95o2evODIHGViLvhZ+3wskG/A6w6HFMxOUayuUajAm?=
+ =?us-ascii?Q?oboAVkHib87iTMWJ9OFnpV0W8Nwt2RFDNWDYlh5vfKZYE7lflRu8dl78vyjV?=
+ =?us-ascii?Q?Kf/87LcBAYa9/q4J2vP9JYZPhjfVyoOTFcI+Ynb//LCHkkYvVCqrChufZl4T?=
+ =?us-ascii?Q?xXDVmT7jJ2cO0Za9Fyqgk7WtmryKbwNvcGKUpnL4VOTlh+F8h37WA9kmxO4j?=
+ =?us-ascii?Q?15gHuqHfyc40BFCOMIU2W4pj0jdmpUIJCVQiYZ+ihfv40dtZEGOlyowUjMdZ?=
+ =?us-ascii?Q?x3PXvwJvuN0YN24tnbedvX16jmVaMPgWZbLsReExhqWHMTJWkdjHtLgUJcVg?=
+ =?us-ascii?Q?VNejYVVFsU9HN3ApcZmkf3KXG1CEfEwPSy1XEYXZtOW/uoB/lsLDapVMeOSH?=
+ =?us-ascii?Q?Q8cf3Iua51FsAj5v/rEtYutQwpcVanB3J5UGNboleuY8/JeLG5dQdwpjh6MD?=
+ =?us-ascii?Q?G5MpVYS9ti+IIwhdSSSlgVX2AjwXPkExTnN3+HkmKyM77hQ7xqu5AaqYgo/t?=
+ =?us-ascii?Q?vAp4TvZlr7HvYlg2TiBNnx/8dnB0VS1iFmtEb0ftDhLOhJscxTc/SoWmfqRW?=
+ =?us-ascii?Q?1TaPsG4M6bm1cRDe5D17/CcO08Z6tqygfKn6scV5ulXIgN/ADiDqG78zeXhk?=
+ =?us-ascii?Q?D5mQoT5r3OqKzY3OAu94iYUMSkjdpvKEaATcXVebx6/alnCrIfLYi0boBrkG?=
+ =?us-ascii?Q?JDuAdDC14k09we8ggl1dGE9d8CwqPjVth2ZorKQ2Pu0xdhJEIQwpLFPk1G/g?=
+ =?us-ascii?Q?0ydHsoCRxbuRK+SIo4uF/JukbLqkcB+VForegmIsRk/0HJqfdjJXS2LM/xnT?=
+ =?us-ascii?Q?hcPR4dxTTu8LA0PgLjtFquV4OzHBmfVHSRw8ciMuE9Bq499dPur3PUpKzGtI?=
+ =?us-ascii?Q?we3v/0b0LsxlUd1ieRIptv8DRUvg0xo0B9sqF3ay+heuKhOxedv5qjxkGdSZ?=
+ =?us-ascii?Q?qnALWsqFLCNJDrPuyPe8OaS6M72Lvlr6DqUp6qt/jYoBIQ29GXLHBTJnMq1Y?=
+ =?us-ascii?Q?dYHOsRU2XsY/Y1JeiX5EM9GThYJ40vPCwQ/FXzXWKTR7Mlo2Hr9BwCEbu/mQ?=
+ =?us-ascii?Q?fQetS4u+N9mcdCnY7UWESNMNaIpuhKK6tHDBqfZhxgj75FGwXYuUtoyd2JaS?=
+ =?us-ascii?Q?rINIRCxlmMq40BxRkPC/k6ILuK3IL+ql4TAYuN7xUbCbKWNSVDTIHqyNxA2a?=
+ =?us-ascii?Q?ofzMfXWbjx0xTQ5CrLHVd/eGV7iyE91qMH2SjR+FZBhRuIzOk34OPQBYOnZh?=
+ =?us-ascii?Q?OOkZ3owmmhgxzz4DZyP7CdmpWjNeTo/agSaSlBRGZNiiezz7R0iLlXJ3vrub?=
+ =?us-ascii?Q?WKWy1F9OsPRrl/ZRAs/rm9jQI7+BdodPKLxWRpYGuiTTdF0jHrxJDR6OsikY?=
+ =?us-ascii?Q?eRwQmnh5Ja0JKUOdOyNaGNHNkCp3glJA0xUOu36iQAOEBOh8FQhvO0hRukOF?=
+ =?us-ascii?Q?+xBLTeyHG0HbFyRpeHCWXhxpau7J/8GCeZeTidc+0Qa2dZXaIg4jEWahuJds?=
+ =?us-ascii?Q?1u5zjobibaD3jItP+R8b2LQ09qSEA9tdixArnlG0GxCF9lOOCCnO1rNurEzW?=
+ =?us-ascii?Q?7ZQ3hRf5XWvroJnEc1M=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB5966.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Vy2XZrMF3OuAbOSvv54mCAGGr4+GN4msT34oLdx3COMZSrhHwdHey4yW483x?=
+ =?us-ascii?Q?boCRAliNI6LFf9+E3gvDePH+IQ/42X7lw5XKmHTBEvAdo8ALa8HdRZguFL+/?=
+ =?us-ascii?Q?sxzUKqL7ndE4UYrFi5kzb2+4YzKWua8jVCzBTNAa/Lf/tJdzQgl7gFODhzHA?=
+ =?us-ascii?Q?30ohcYcyvLw6oKBmoTHP/NtJ3utA9n5jhSCoHT+4pXIYIE5mrmsmfnwhoSKU?=
+ =?us-ascii?Q?7ukuvRrS3Yujy5NLJgQN24QyLjiYEDZZddlyUk8doVcpmfE6u7XJn9yglI8Z?=
+ =?us-ascii?Q?hiThnqFU75ugFTaGHido7WTgwBHvAAQNuUmpbNccRjmDAOn7s/UekEHT4TJs?=
+ =?us-ascii?Q?/x/W5vNiCM0DWn4rph8gNKJCu8afXHGeBQ52IgrA6GVfeUjgQO682VUXtUm6?=
+ =?us-ascii?Q?dQtqXHsXicf+R8RhayZa8gPk2myd1vGVEB0lYg9KCWm08oG2Lz2QRDhiaHNf?=
+ =?us-ascii?Q?asgWWFDgY6+qYeMqWtgSGNN6EnzKgWTeF0IoAXZJr8S6lfIVYsz2YbM0Dy/G?=
+ =?us-ascii?Q?Ki/KlMOpK+DhkTEgI+n9iGXixLp4gfVN3PABoutuYe1IR4uA1H/TRzuwfLqv?=
+ =?us-ascii?Q?FwT4CRIaWSSF6R6vF9muFGQ2j9mfAneQSRZJVx3YE40ty6WDZCBN7ZgEfoma?=
+ =?us-ascii?Q?0SMOf+5+wtY5WT3rw8jQk6FQDZ8aXqQC+R/TDtH5iC5hYkxXqyaUb5Rccb5o?=
+ =?us-ascii?Q?/F3BV/PMTzwA4xlGmL55j2xzBN4lKwgeoe5y1IVl111f22aRDhx7Jb/QdVkt?=
+ =?us-ascii?Q?clXKwIiOFEvplx/EDki2KkBeYzyUQPrnTO84tBjgKNqTYFw1yAWZTdPFG6La?=
+ =?us-ascii?Q?4LhfsHDHTp4irMJmDccSVw+fRbqT4Tj1JYbF3xsdPWJJdr58EH9k0oiqukVk?=
+ =?us-ascii?Q?lE5pDu2v1FBkSGfwVtnoRTBvCxGBHevIc7TaN5hyQYnFAzNpNI4HONbj6GNk?=
+ =?us-ascii?Q?bK4H33Rjx2ZaL/pzHWn+N/AeauTd4BRSNbXuxrcwDAVEL9LDCzD4MDm+KC2F?=
+ =?us-ascii?Q?2MfvXSVOQyHxibborXnTuWDsiCR6Hq14B1C0eO4BR8guJwSGXlZMB1dfgFlU?=
+ =?us-ascii?Q?J4BJuJU1q4zl4iS7yOnikO4KyuFXmszad97XRKHW1xCR+JOJyfnaEAuzGKjJ?=
+ =?us-ascii?Q?w+sFjcKHejyvi38TGJvTx9KnRQV3CbBIQyicjyHLkjNJCfIbz9/dnz09QefM?=
+ =?us-ascii?Q?mMjQ38/JswS5E6kJxCpFe6Tb8eFErl1VOmFIR13/iP026OXEopGUKCERg7Oc?=
+ =?us-ascii?Q?sW/L8atI1mAX5BmqJyTIpYRUuggLWMBZivCjfPVTi/0ohlLmBsYDYUXgom3I?=
+ =?us-ascii?Q?iaN7qGxVOVikXGO5M7Sph1i2pe05eqOiaGh+UsDLh7f4i4IPImnlrt2ofmkX?=
+ =?us-ascii?Q?ftjlra2u5k+zQ0lA+BBuaEvTP/REWmulPXjALFbPIQCVQohINOvUxjfn5Z5L?=
+ =?us-ascii?Q?uTIP8ed3RA39u590Y7HGSQIyCu41UD12aDfmawAKWKXNbeALGJw/EyamTLQG?=
+ =?us-ascii?Q?6i4EScGNMYXuIPIxq5ky+MHO0SonySSRkZgEJ74WhGZNFlgrDo6+M0+K+A06?=
+ =?us-ascii?Q?BFpLfjIjonkrA8RIc0ARZQ2c2HUi8+UjoFOQv4zftxX8IFR6gJC21XGvDDb4?=
+ =?us-ascii?Q?39IRS1Xk/tnHM3EW7sD+zRuDlMM6NxeMnZEP3yTX5VCCpTeZiHfayaOPkluT?=
+ =?us-ascii?Q?/7RcP9xrT46n6wWc+zD5KB6vKSAOGj2Mno5zS43B+S6NAor6gw9/z8XTrkrb?=
+ =?us-ascii?Q?l8/7aMttcQ=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3600b28f-bdc7-4730-f05d-08de656559ec
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB5966.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2026 09:51:50.9911
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: m7prztX52iUAqXkYcfF7myBLmYYW+xF4fBqLrUmeXTeK8QBWHq0DWLrCZir+CmGEDUtlW0bxL84E1s2tkJqRcA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7882
+X-OriginatorOrg: intel.com
 
-On 2/2/2026 7:52 AM, Salman Nabi wrote:
-> Hi Trilok,
-> 
-> On 1/31/26 01:35, Trilok Soni wrote:
->> On 1/19/2026 4:27 AM, Salman Nabi wrote:
->>> The Arm Live Firmware Activation (LFA) is a specification [1] to describe
->>> activating firmware components without a reboot. Those components
->>> (like TF-A's BL31, EDK-II, TF-RMM, secure paylods) would be updated the
+> diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+> index 18764dbc97ea..01e3e4f4baa5 100644
+> --- a/arch/x86/kvm/mmu/tdp_mmu.c
+> +++ b/arch/x86/kvm/mmu/tdp_mmu.c
+> @@ -55,7 +55,8 @@ void kvm_mmu_uninit_tdp_mmu(struct kvm *kvm)
+>  
+>  static void tdp_mmu_free_sp(struct kvm_mmu_page *sp)
+>  {
+> -	free_page((unsigned long)sp->external_spt);
+> +	if (sp->external_spt)
+> +		kvm_x86_call(free_external_sp)((unsigned long)sp->external_spt);
+>  	free_page((unsigned long)sp->spt);
+>  	kmem_cache_free(mmu_page_header_cache, sp);
+>  }
+Strictly speaking, external_spt is not a control page. Its alloc/free are
+different from normal control pages managed by TDX's code.
 
-s/paylods/payloads
+(1) alloc
+tdx_alloc_control_page
+  __tdx_alloc_control_page
+    __tdx_pamt_get 
+      spin_lock(&pamt_lock)   ==> under process context
+      spin_unlock(&pamt_lock)
 
->>> usual way: via fwupd, FF-A or other secure storage methods, or via some
->>> IMPDEF Out-Of-Bound method. The user can then activate this new firmware,
->>> at system runtime, without requiring a reboot.
->>> The specification covers the SMCCC interface to list and query available
->>> components and eventually trigger the activation.
->>>
->>> Add a new directory under /sys/firmware to present firmware components
->>> capable of live activation. Each of them is a directory under lfa/,
->>> and is identified via its GUID. The activation will be triggered by echoing
->>> "1" into the "activate" file:
->>> ==========================================
->>> /sys/firmware/lfa # ls -l . 6c*
->>> .:
->>> total 0
->>> drwxr-xr-x    2 0 0         0 Jan 19 11:33 47d4086d-4cfe-9846-9b95-2950cbbd5a00
->>> drwxr-xr-x    2 0 0         0 Jan 19 11:33 6c0762a6-12f2-4b56-92cb-ba8f633606d9
->>> drwxr-xr-x    2 0 0         0 Jan 19 11:33 d6d0eea7-fcea-d54b-9782-9934f234b6e4
->> Can you please explain or add a note on why we don't have name of the firmware
->> as the directory name and why you have selected GUID as top-level
->> directory name? 
-> 
-> 
-> We obtain the GUIDs of firmware components from the LFA agent in TF-A, which does not provide their names. For convenience, we have added a C structure in the driver to associate each firmware GUID with its corresponding name. Because new firmware components may be supported in the LFA agent before their GUID-to-name mapping is added to the driver, we avoid using the firmware name as the directory (kobject) name.
-> 
-> Additionally, sysfs requires directory names to be unique among siblings. Since GUIDs are inherently unique, they provide a convenient, collision-free choice for directory names.
+(2) free
+tdp_mmu_free_sp_rcu_callback
+  tdp_mmu_free_sp
+    kvm_x86_call(free_external_sp)
+     tdx_free_control_page
+        __tdx_free_control_page
+          __tdx_pamt_put
+            spin_lock(&pamt_lock)   ==> under softirq context
+            spin_unlock(&pamt_lock)
 
+So, invoking __tdx_pamt_put() in the RCU callback triggers deadlock warning
+(see the bottom for details).
 
-Thank you for the explanation. Please add these details in the commit text. 
+> +	/*
+> +	 * TDX uses the external_spt cache to allocate S-EPT page table pages,
+> +	 * which (a) don't need to be initialized by KVM as the TDX-Module will
+> +	 * initialize the page (using the guest's encryption key), and (b) need
+> +	 * to use a custom allocator to be compatible with Dynamic PAMT.
+> +	 */
+> +	vt_x86_ops.alloc_external_sp = tdx_alloc_control_page;
+> +	vt_x86_ops.free_external_sp = tdx_free_control_page;
+> +
+>  	vt_x86_ops.set_external_spte = tdx_sept_set_private_spte;
+>  	vt_x86_ops.reclaim_external_sp = tdx_sept_reclaim_private_sp;
+>  	vt_x86_ops.remove_external_spte = tdx_sept_remove_private_spte;
 
----Trilok Soni
+ ================================
+ WARNING: inconsistent lock state
+ 6.19.0-rc6-upstream+ #1078 Tainted: G S   U
+ --------------------------------
+ inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
+ swapper/7/0 [HC0[0]:SC1[1]:HE1:SE0] takes:
+ ffffffff9067b6f8 (pamt_lock){+.?.}-{3:3}, at: __tdx_pamt_put+0x80/0xf0
+ {SOFTIRQ-ON-W} state was registered at:
+   __lock_acquire+0x405/0xc10
+   lock_acquire.part.0+0x9c/0x210
+   lock_acquire+0x5e/0x100
+   _raw_spin_lock+0x37/0x80
+   __tdx_pamt_get+0xb8/0x150
+   __tdx_alloc_control_page+0x2e/0x60
+   __tdx_td_init+0x65/0x740 [kvm_intel]
+   tdx_td_init+0x147/0x240 [kvm_intel]
+   tdx_vm_ioctl+0x125/0x260 [kvm_intel]
+   vt_mem_enc_ioctl+0x17/0x30 [kvm_intel]
+   kvm_arch_vm_ioctl+0x4e0/0xb40 [kvm]
+   kvm_vm_ioctl+0x4f4/0xaf0 [kvm]
+   __x64_sys_ioctl+0x9d/0xf0
+   x64_sys_call+0xf38/0x1da0
+   do_syscall_64+0xc5/0xfc0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ irq event stamp: 252814
+ hardirqs last  enabled at (252814): [<ffffffff8fa6f41a>] _raw_spin_unlock_irqrestore+0x5a/0x80
+ hardirqs last disabled at (252813): [<ffffffff8fa6f096>] _raw_spin_lock_irqsave+0x76/0x90
+ softirqs last  enabled at (252798): [<ffffffff8e60f139>] handle_softirqs+0x309/0x460
+ softirqs last disabled at (252805): [<ffffffff8e60f401>] __irq_exit_rcu+0xe1/0x160
+
+ other info that might help us debug this:
+  Possible unsafe locking scenario:
+
+        CPU0
+        ----
+   lock(pamt_lock);
+   <Interrupt>
+     lock(pamt_lock);
+
+  *** DEADLOCK ***
+
+ 1 lock held by swapper/7/0:
+  #0: ffffffff9077d660 (rcu_callback){....}-{0:0}, at: rcu_do_batch+0x153/0x620
+
+ stack backtrace:
+ CPU: 7 UID: 0 PID: 0 Comm: swapper/7 Tainted: G S   U              6.19.0-rc6-upstream+ #1078 PREEMPT(voluntary)  b8f4b38003dc2ca73352cf9d3d544aa826c4f5a9
+ Tainted: [S]=CPU_OUT_OF_SPEC, [U]=USER
+ Hardware name: Intel Corporation ArcherCity/ArcherCity, BIOS EGSDCRB1.SYS.0101.D29.2303301937 03/30/2023
+ Call Trace:
+  <IRQ>
+  show_stack+0x49/0x60
+  dump_stack_lvl+0x6f/0xb0
+  dump_stack+0x10/0x16
+  print_usage_bug.part.0+0x264/0x350
+  mark_lock_irq+0x4d6/0x9e0
+  ? stack_trace_save+0x4a/0x70
+  ? save_trace+0x66/0x2b0
+  mark_lock+0x1cf/0x6a0
+  mark_usage+0x4c/0x130
+  __lock_acquire+0x405/0xc10
+  ? __this_cpu_preempt_check+0x13/0x20
+  lock_acquire.part.0+0x9c/0x210
+  ? __tdx_pamt_put+0x80/0xf0
+  lock_acquire+0x5e/0x100
+  ? __tdx_pamt_put+0x80/0xf0
+  _raw_spin_lock+0x37/0x80
+  ? __tdx_pamt_put+0x80/0xf0
+  __tdx_pamt_put+0x80/0xf0
+  ? __this_cpu_preempt_check+0x13/0x20
+  ? sched_clock_noinstr+0x9/0x10
+  __tdx_free_control_page+0x22/0x40
+  tdx_free_control_page+0x38/0x50 [kvm_intel c135d3571385e160f086f9f6195fc72e4b6aa2b1]
+  tdp_mmu_free_sp_rcu_callback+0x24/0x50 [kvm 3932b137c28c130169e7e3615041bcec6cefc090]
+  ? rcu_do_batch+0x1dc/0x620
+  rcu_do_batch+0x1e1/0x620
+  ? rcu_do_batch+0x153/0x620
+  rcu_core+0x37d/0x4d0
+  rcu_core_si+0xe/0x20
+  handle_softirqs+0xdc/0x460
+  ? hrtimer_interrupt+0x154/0x290
+  __irq_exit_rcu+0xe1/0x160
+  irq_exit_rcu+0xe/0x30
+  sysvec_apic_timer_interrupt+0xc0/0xf0
+  </IRQ>
+  <TASK>
+  asm_sysvec_apic_timer_interrupt+0x1b/0x20
+ RIP: 0010:cpuidle_enter_state+0x122/0x7a0
+
