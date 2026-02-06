@@ -1,420 +1,221 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E4D41C2EE
-	for <linux-coco@lists.linux.dev>; Fri,  6 Feb 2026 17:41:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770399701; cv=none; b=kEmxXHn2cKYC/jAUOFZfAOEZsutPr4IbKinm/MpJxd6ixVQymQbf/g57Cyp3QwbCVxPM2okU/VFMU/D9UbCNyvhQKfFrHZqsgkJT7P/wZuF/gjsnQSG/Walz+Nkr7ktimRP6aHDgCN+OMgmhIRA325WyQXqpgEzzw3pLiGIRPEs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770399701; c=relaxed/simple;
-	bh=V8stX1MTslQ30U3kv1nbGCF1AkgXmGyyiE3ofC/i2rg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mWHLntu03pwIchqkZSvWDz8mGWTxEGC0Pn7Ktx2TSIgL23yxWV72N0T4cqaCykMP5kAo7YtD3AFq3MOj8WNaGFr0rS/HC8bUXlLTEPr/6wa3DkXhunX1cqTIbUL/GSnq2oG40XQTqzpduPNSdYPs1OTX84d1Maa99jGl73OaCiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z5JnC/yX; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BD440FDB8
+	for <linux-coco@lists.linux.dev>; Fri,  6 Feb 2026 18:36:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770402966; cv=fail; b=HdmrtzOAXbqM90fleawBtniFujx8WYrXFD9xCKo/e35WSPdPiF/3obzgMRrwfdzzpwNIvab7oZYjFsPK8WeS0NWaZXuwiHsUaooTESq8GNrti2iR+34QdUl65xSgIQdkhCk0rg+x/cMrE4MQ2n8dAvx5LMrI7NUuaUbpw1iE5Hg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770402966; c=relaxed/simple;
+	bh=ZEX8oIkAamzEU65eF2ZbA6u2iMoKIIOulwZno9hCCtk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=SQPjonKZOvQGvwqSqY3O2xWpqAhHK4neBj0Qv04VihB+dXU7oEmFShqqLyd7/zfli8ZtocPiaRB3akLbw5qZM7N542JWHhAJXmQzWzfqa/DXpZwlR+yfB3XzMmucYlHIRsu+MOEl58b8ngDgnieXoJ5V4dUGVlEY4VTXI+QdMlg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MZiSakju; arc=fail smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z5JnC/yX"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34c38781efcso2233860a91.2
-        for <linux-coco@lists.linux.dev>; Fri, 06 Feb 2026 09:41:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770399700; x=1771004500; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NCUERx4Dj8SS7uxNo+P7/vk/wOPCa19vPc6SRYaH8Ps=;
-        b=Z5JnC/yX7CZMfem8cYICmTI5odswIMQD95hgpLQeJCYYibw7Ai93ochl1LTKP+Bcdu
-         aCvWtHk12rFgcYoO8d4fzchPLHTCODP9tp4o4gGmPmGiY5byEZJByaE9oY8rUV2bhaLZ
-         uLA4f5i0V2I5pL5FTjzO4pI1v1oDH1lF896HDK0BsMgbBQHqMza7x1bRNBY7DRJaYSSt
-         PWpV3lk8WOzArHmkDGsNV5EBKA22iKCGB3JKJzRnxwdIwXebNITc1mrImd/e2UssJDby
-         uYJ2MlHG+1sOWuu9LZighJXaQ85LHm20Pjo/VsazL9fY9Pmiar6RUQrxpfQQEKHd60aK
-         QP9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770399700; x=1771004500;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NCUERx4Dj8SS7uxNo+P7/vk/wOPCa19vPc6SRYaH8Ps=;
-        b=IEPayWilZ2MijfP0Rh8HRyVtPtW0YMQqc6FgXmvpBPnCg6Cl51aE9mUEJyXPzS3lnq
-         2pmBr5J8hyRN959R6UoiOwambvYpV+i9xNbNHI0qQLcfd0Y3VYx1AHmT68zo6Ys/Mih7
-         DTmudzdCRTblYYCmUqqjXYn70q1l9gThvct1HH6HG9idCJSYolDGhAhP++aM/gOhclhm
-         LgkkjCCxBS2dnSI8TAxDfpwKiMUScqwmpdPxdPdWGciOt76PvQ6Mhr0wIBhnsLgJH4/h
-         3fVm9PvMOeXmnooBihHEq6NDFn1R5LCcYK8bTW+gfaneCNDfKO4TmDMgsnZAmk9yQtP1
-         Nr3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWIdHIVuE84uAIrMwl2+vbHgGKKx1ln7//Q12oFTfkrJd8Zz2uqt/R/seoHHnYwlkpZ7qbe2d1oa5Mv@lists.linux.dev
-X-Gm-Message-State: AOJu0YzrXu6sWaeZIGVdZ57r5YJcxyEJd6+Npu/E6BSos2vG74PG0Kf9
-	JCV1tPrJdJXGD19PFKTQbtk5LtAn1bJjPOyLigC5jAqv+5YhRhUFc3m0LZUBXHupfPNWY9QtHpc
-	YBYDghw==
-X-Received: from pjbmu14.prod.google.com ([2002:a17:90b:388e:b0:34c:2f52:23aa])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1802:b0:34c:6d33:7d34
- with SMTP id 98e67ed59e1d1-354b3be3325mr2946494a91.16.1770399700342; Fri, 06
- Feb 2026 09:41:40 -0800 (PST)
-Date: Fri, 6 Feb 2026 09:41:38 -0800
-In-Reply-To: <aYVPN5M7QQwu/r/n@yzhao56-desk.sh.intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MZiSakju"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770402966; x=1801938966;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=ZEX8oIkAamzEU65eF2ZbA6u2iMoKIIOulwZno9hCCtk=;
+  b=MZiSakjuXoANU2gEQIk49ZLMg89aPFdOyKoXk47D7x2wby9ogb1ibotP
+   ZuDY0RagJevwo4QwGoid6tch0PgbKhNCa251/ZhnB+pmkPzWR0FwZyGhG
+   fa3M02Q5doS81fWahCUAuZBAFYlpeq53+AjOZVEQaeB5eoh8gkNlPim2d
+   fIpG7GhjX7KUEGJ0drcatKrYHwP8uZ7i/KmgZAMOdbAYdR67l7SeXLYqw
+   ofg806uMeuRsEkMcTk00X7MPnGRzKQQPRleh68I+rptQcHDNcaWYQppbv
+   FQiQ7lY7Oki+xDLTlZoNvl0zuLdreSC3lvyEuVlyLTdpJzFJIsrThHW3y
+   w==;
+X-CSE-ConnectionGUID: lnJrPdTpQ7aAluKrqM2NRQ==
+X-CSE-MsgGUID: kv1m0aKgRGu699unL9YvfA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11693"; a="75236486"
+X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; 
+   d="scan'208";a="75236486"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 10:35:58 -0800
+X-CSE-ConnectionGUID: A12KI28+S3eND1mPAhBeoA==
+X-CSE-MsgGUID: zxvFEzZtQOmFrflLhazgNA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; 
+   d="scan'208";a="210729176"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 10:35:57 -0800
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Fri, 6 Feb 2026 10:35:56 -0800
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Fri, 6 Feb 2026 10:35:56 -0800
+Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.54) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Fri, 6 Feb 2026 10:35:56 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pIw21njfFQ2+6/l++LC2I/S4+tjKtS5T0O6C1IGsmUy+F92nG0aocpqjG/tkvMhBhPU9BWEPwWNi45wKsJg/QFqS1Q2iaqYikKlZrEn+skI8IQ1Eo7L3gL+Mi80JxXrCy5bAIgnV2i0G7RNTcaNanDxAMNOmvw9z9kYbfyXYVPZLYKDbqlURX8TPuds3JNQa4I0oQiR5iZtsV6AKeOJuhoCBLQ4560m4hV8t174ShU+kUlmRkfpxZ/VcscxX+4Kw96gTdBxDQLA4zVjoj8jVz3uaBBaeAMOHOpO249DTxE995ai9A9p3NnLPJdnoytlruDbKYu0FXca5er9U02iKbA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZEX8oIkAamzEU65eF2ZbA6u2iMoKIIOulwZno9hCCtk=;
+ b=yjCFYF5SNzf2TnGcBRvum+ZJIwZbUjyilwF4/FTOGDS8wiMavwXSnfSTY9uW/86dG0d9Ce5R+Cog3L/DqTtyaA7kv7tQJ+vCAnbbdaRZApZPBVH9BP7zuhXH1MLYJIASTd4nLco7bFqxbmGG0m0t/wCQO2XnWWMY/YUtqt7pmYmpoU0NXJSxyIAexn8SOmj/a1czpMHNY+e6Pged0ymf45AAIjkwnHL4orBJQLRrnZV7ibPdounTAQrAGFcUVwegcFTTg9XXhyjvBZRahfgdQWX8kkOMO8px0zuDZEwLS3OoaeNap7HkRkPi/hrG3/m0XopvMEyZ88P1sJPZ9MfS5Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com (2603:10b6:208:372::10)
+ by MN6PR11MB8147.namprd11.prod.outlook.com (2603:10b6:208:46f::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.15; Fri, 6 Feb
+ 2026 18:35:51 +0000
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::3ad:5845:3ab9:5b65]) by MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::3ad:5845:3ab9:5b65%6]) with mapi id 15.20.9587.013; Fri, 6 Feb 2026
+ 18:35:51 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "Li, Xiaoyao" <xiaoyao.li@intel.com>, "Hansen, Dave"
+	<dave.hansen@intel.com>, "kas@kernel.org" <kas@kernel.org>, "Verma, Vishal L"
+	<vishal.l.verma@intel.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>
+CC: "Gao, Chao" <chao.gao@intel.com>, "x86@kernel.org" <x86@kernel.org>,
+	"bp@alien8.de" <bp@alien8.de>, "Huang, Kai" <kai.huang@intel.com>,
+	"hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>,
+	"Williams, Dan J" <dan.j.williams@intel.com>, "tglx@linutronix.de"
+	<tglx@linutronix.de>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 0/2] x86/virt/tdx: Print TDX module version to dmesg
+Thread-Topic: [PATCH v2 0/2] x86/virt/tdx: Print TDX module version to dmesg
+Thread-Index: AQHcgZw99irMrzSa1E+mlK8nBdVLrLV0oZyAgAEVl4CAADssAIAAOT0A
+Date: Fri, 6 Feb 2026 18:35:51 +0000
+Message-ID: <6f9653dca9fee3e8dc804c005c0a87ebe13160c1.camel@intel.com>
+References: <20260109-tdx_print_module_version-v2-0-e10e4ca5b450@intel.com>
+	 <6d8d37740459963e6fd7f16a890a837b34ebdf17.camel@intel.com>
+	 <aYXSd8B00OtKZcAU@thinkstation>
+	 <2235a1cf-7ccf-4134-80b5-8056537c6d33@intel.com>
+In-Reply-To: <2235a1cf-7ccf-4134-80b5-8056537c6d33@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.44.4-0ubuntu2.1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN0PR11MB5963:EE_|MN6PR11MB8147:EE_
+x-ms-office365-filtering-correlation-id: c929998a-b752-4324-a72e-08de65ae8dfc
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016|38070700021;
+x-microsoft-antispam-message-info: =?utf-8?B?NXFlK3hRNmNrMmRRM0JwZDFxQWc3Qk9jczY4V3MrTURBdm9PQXZxQVhCdTZj?=
+ =?utf-8?B?Z1RMSVlTcW1pdEVPOXVzLzkzK1gyVjRlMlBscmpGdFlBMXJ3OXhyV3lISVlu?=
+ =?utf-8?B?WDdGYTh2Nnd1NjFFZTdOdWNiV1RVemZVNEJPb2dhRWtiNEJuR2R6d3Y4eUhu?=
+ =?utf-8?B?bUoxaW5KcEtPV1BGRlRyRkM4cE5Yak5ZS1ZwUVNMWnlEZjk3RXhrZ0ZrYVc3?=
+ =?utf-8?B?K3RZVlg1aVBpMVRzV0M5NHNnbnF5bWdkM0tmZVJMZlUrYThzc0pvMmlhTFBC?=
+ =?utf-8?B?MUIvNzJoRmlHaXZBK3ZWTThvUUtjeko5ZWdmQjQ1RTFTVW9Qa1ovaVA4QVRE?=
+ =?utf-8?B?bGdIOFUrRXZCNFRtcDZQS0lBdmNTWUh6aFdQZ2tMMFBZYVU5TmlLMUw2Y2RJ?=
+ =?utf-8?B?bk1ZWkFudFNEbnhoMk1DVW1vL2hkbjZOQ2FzZmxIbmJ5T0Z6bVhWcVlLTURh?=
+ =?utf-8?B?MXh5Y3lWaFdXRmJzTjdGVDFrWW54eWpodFMyN2JTTGl1SldLSmhOaXpsdU9V?=
+ =?utf-8?B?aU5kaS9sbW9ZS2J6M21ZWEJVN1Z0ZWhZeG5GMUtCcjBGOU9IYytJRHVzcndr?=
+ =?utf-8?B?Q3J2bWZnUUIvZ053a1ByUThpcVJhZEMrdU1LWkM3NUQxR1VPWVRqQXY4dHZl?=
+ =?utf-8?B?RTRJMUJ2RVhISHQycXk0QlFycDA2akxpZmcyOVVpanlCcmxQVlNXdm81RFgv?=
+ =?utf-8?B?RkxJbWJ2MkhVVjdFMW16ME5XdmFkMU5VWmF2N3VWMnUvMi9nZzhzVld3SEpR?=
+ =?utf-8?B?R3prSlZVR2ZYQ3lLS29UYmwyRlJVNnNHcEMrVnRydGdtdXkxazBldGlWeEN6?=
+ =?utf-8?B?R1hFdXF6a1F1OE9ieHdpU2x2bWtaNG5aS21sa1BSd3pGQlJwOXloemhmQUJj?=
+ =?utf-8?B?OWxxV2wzTC9xY2RRb05nVEZ1b0RsY0dNM3NqRU44SjNvRUo5MnREWkVKc1Yv?=
+ =?utf-8?B?MFFtd3VGbERZbWk0dXRYdHhlbEJCUWhhaGxIRnFGOTVoOXpTWlE0RktLejdH?=
+ =?utf-8?B?bHlZL2NzMytLRzNqNHB1TjZPOEpuc1ZBRlNqK1NlYWxOa2hDR1hjVVhIMGhS?=
+ =?utf-8?B?NWdITUZ1SlV6OXNlOXNnVmNWSnAvZkRoYWdQdnBaMEx6Q0pMVSt3REVTSnB1?=
+ =?utf-8?B?WmNMU2ppZ3poMm5PYlJZOTJJSVd2L2RGNC85ZDEweFkrMllwTmxHWGNmMStq?=
+ =?utf-8?B?YTJVSmt6ei8zeG9HM0E2VkdhWVZWVjArRVNIbDV5aHlvczEwTTF4Z05XYXo4?=
+ =?utf-8?B?YkFSb3BTYzFPWGJtQWxaaTNXLzUzRFlRNXI0eDJobU1GOFpHaUFxbHljYWV4?=
+ =?utf-8?B?OTdacmRjVmxhMmRJRnlrWnRtVmYvUTg4ZVl6d0R1ZHdGMHhiQVNscHN5S0xV?=
+ =?utf-8?B?bVlNSVhZam9IOGdiMUZ2bDJFenRZRllVVE93WkVyMUZKZGRvWFFOZ0JwdzN6?=
+ =?utf-8?B?c09vSG5HcGt1NVN6cUtjK3NHQ0NOQTNzcTJtVXJ5bTVrd0lGWDRXNDlGRnY4?=
+ =?utf-8?B?UG9RTjNXYndmTUdNUnhFWXh4QUh6aXRFcVhPNE9vdWFtMC96V1JTak13bUtB?=
+ =?utf-8?B?djBFditqR1VDOEIwanptWC9NMExnTDF1VWF6ZXFvZWlJUXl6QVh0NkdsZnE5?=
+ =?utf-8?B?NnhXSHpiYkJzM0JzemNyS210RVlmYWhVV01kUzlHbms0UTR1V0tSaGIwR20r?=
+ =?utf-8?B?QytrcUtBemVwYTZWaGxVSVlHSENENXNyZng0bWlEeW92MkVadDhVZFc3UHBB?=
+ =?utf-8?B?dDhjQmtxdzUrNWxxZ0ltdzdrU2hlS3Y2WjB6U0VFMnVsY0RpQWxLeDM2cUR6?=
+ =?utf-8?B?ZWxMc1U3cVc2R2doNlNydVNVUXgwSGx5N3Eyd054b1dFcE9jdy9Ha0N2SXNL?=
+ =?utf-8?B?WW56YXJNVHJqYTEzQzhnTmtQK0N5aWxZS0pCVTFmbU1JcWpxdUpNaXZFV0xC?=
+ =?utf-8?B?akJDK0o4SEF3ZzFhTDBMZXVndUlLRTVpd2E4OGNiU0hTbHRWZlNIMzlWMHU5?=
+ =?utf-8?B?bTZLdnlkYWlFSjBJa0Vuc3hTYXZsR3F3bU9NUkxsNG5pT1VzSnEvOWdqdVdp?=
+ =?utf-8?B?ZWdkaFJIRytna2JmZE9tMFFrS09tZmVkc0VkMVBWZXJHLzBsVzVvSDlEVmt1?=
+ =?utf-8?B?dy92NnhLZlJNR1VzcDI2WnlCbHVwMXVYMTgvMHptSVhlQjg0YUNUSDg2T2RL?=
+ =?utf-8?Q?3T6N9sinX6bwzgdvxfMhuYQ=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5963.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZVMrWE9MZXZDQlhiU0pneHJRSXY0MEJ5ZURFNTlHWFBIWFEwNFlOUUVhaW1M?=
+ =?utf-8?B?azkxYUQ4RUIzcFdxaERJRjhUNmh6WDB6L1R0TStKM1VwbWt1YlU5bWowcGdv?=
+ =?utf-8?B?TWRyLzA3ekszelpNK0xJK3RmNFkyeUZUa21TWmQ2UWdQSzRoVWlKT1I5QzZ4?=
+ =?utf-8?B?R2lMUHhQZDY3UEJtcXpxek9Fck8vSHBQcytUaVFOU1VUYzFGRWg4RHA2S3Bi?=
+ =?utf-8?B?dzBYTXZuUElNNTl3dG9UN3FoMStZWnBVQjJkWkduZERoUHBnc2tidWJOZWx1?=
+ =?utf-8?B?WHB2NkJQUTFHSFVoREV5L3NIVlJ5Zi9kTWd5MENxckQvMUQ3dmFPdHhKNTlD?=
+ =?utf-8?B?a201MnZocDU0K05tMFIxaTN2ZEJZRkM0THNNcDlSajVxMS9xdm1aQy90YTBS?=
+ =?utf-8?B?RmpwY1g3MExjWkM5djVPUlpQVlJrNmo2SHhmMS93UFZEcXVGcWtxUjVyb3Vx?=
+ =?utf-8?B?OElISHA3R1JRV3BpVFdDemlWZXlhbGY4VERmUDRRWjdLSndxZ0NlbEtQRXFz?=
+ =?utf-8?B?RE1wY2ZvWjVrQUtWaFdSTWtPYlhwZHlGelN0dW5pMHh2R3ZHWG5OaGx1dE41?=
+ =?utf-8?B?WVRmZUFUemptUjY1VVlia1RnTk14TTF4K3dOSllRZ0VzTzdMUm1Wbk9kRDRU?=
+ =?utf-8?B?QTdiUWplcmFoNHVHZ0tXcDJIak9aMk9WSTlpR0VDR1R5N1RweFpSRXdhYmNL?=
+ =?utf-8?B?ci9FVmNMVzQvOXpGYVIvRU80cUROMS9welVXU29LMFdSQ0NlMEwrbTE0Tk1j?=
+ =?utf-8?B?TW5kSk1FVkNqVnhla3pTbEVKSEZuL240ZzVKOHRYQWRrbkl5UHlFcFlldG1p?=
+ =?utf-8?B?b2tsZ05qbXE5ZkptOTgzM0J6dzZJdmxXWE9PTUJ0bjhOdWtyS2UvMXo4Q1o0?=
+ =?utf-8?B?MEUzdHdMWG1YVzBwUy9aSHlFV3BMTGxtWVFRKzZZdU91U0ZXVEZNakRCdlpm?=
+ =?utf-8?B?bnMwT0Eza3VDeUc5YnhUNi9VTG1OaWxSNWZhcTBaSzh6OE9PSE5PVVFsQ1FU?=
+ =?utf-8?B?eEpZaVlmTG95WFg5RGNHSVhqVEpuRFZPdnFvZTJYQ051MUJFWDVNZEdtaEdT?=
+ =?utf-8?B?cEN0T3JXZHZHcW4rOXVPWXA3VG1VQWN5WXUrcVp6d0xMeUR3YnpWM3IxMXp0?=
+ =?utf-8?B?d0NPbHg3bDgrUExwaERZbmNvM2Vmalc2RlFBUS9FR2syc05ERXY2U3h3bTEr?=
+ =?utf-8?B?WWt1VmxZTUhESmduaEpvSFE4Y0h5UjlaUlhBYlM1VTBvTDhDNk5pVjRQYzZR?=
+ =?utf-8?B?T0ppWk5wNkE1Z0h6WXZzTG5XaGJhWEZRWVZHVCtreEJ0cUExTUpyUC81emd2?=
+ =?utf-8?B?eGh0emtnUTFyY1lLNXMwOFpFODJ0NXdOa0wycTI4SzJLL2c3eXJkb0l6ai9x?=
+ =?utf-8?B?KzhLZDBZa2ZoZjdxVjVycHdqWXlkVmg3OGJ0RjlQQWtBNERZNGl3ODh2RTI3?=
+ =?utf-8?B?VklnQjZTcC94emc5TzM1U3RMVlZud05FMU1kMXFGMVlWdW0xeGNHRzNCL2o1?=
+ =?utf-8?B?RmNzQTFvdHBObWJvSU9aRDJTYnN3VEUvdDBRdXc5Z0djY0lCUXZtNkVoNlBQ?=
+ =?utf-8?B?VWZUZlg3eGFLMDRMazQrVnd0ZjNlcVI3aXlKdm9mc2VZRkNKREpiTXBPMm9Q?=
+ =?utf-8?B?c2E4dHRmYlQ4WGdpZG1UZklCc2tCZDRGaUdTMUxYcTBGRUNSaVhLUnNqckg4?=
+ =?utf-8?B?ZVZ2ZU94TWkyVW10bkJmWXhjeWZtUEdJMFVzM1FxejBiTWlhWm5MUUozaU1t?=
+ =?utf-8?B?eHNOTnhKSzRsZ3dmVkxUdjhMNmFlU2FBSVFUV3BLZmdFUFpLUFRCTFFIRjg0?=
+ =?utf-8?B?SDJSWXUzSEEvU2JRbExsVkJKZVBqNzA4MXUvZ0JCWHFqUGNYc05Ub2sxbkVD?=
+ =?utf-8?B?WktQaFdNdVd2anlOMlJmWGdxQjJPdW5GdW9hNGNzVWdRUHFqVXQySXppd3hl?=
+ =?utf-8?B?TDAyR0I0NU9jVzdmOUhKRlpQejhVaCtLeVJTZ0dXU3pZQUtVU0ZidTBDZDg0?=
+ =?utf-8?B?cElqQlVlWTlyeUhXeDNqcXdkbUZyRHFuZ0FZS1A4Zy96T2VqaUxqbzQvS3RR?=
+ =?utf-8?B?cTIxeWMwMFVFdllzcHFZV0l3VEQ3Myt0UUFkOUJYcnJQWmQ5VnBYdE9FWlNC?=
+ =?utf-8?B?RGU4TEltS0xSNXEzbFAzMTl2OWhGNU53NXA1VDB2WHRBdHZIRzdPNDFzMVFC?=
+ =?utf-8?B?M0RySFRGMjB6dTY1OFdnV1V3ek5sWG9Zd0MyMkp1ZFh5eE1MZklWbkkzSldO?=
+ =?utf-8?B?bkFQWGNpY2FYcDZQOFBOeTdTQkZIOEZuTTlGbGdjWW9PRXkxdVN6MkhqWXdw?=
+ =?utf-8?B?ZHdpeWwxaDhpRUxoYm9mQjhrUjVNekw2eUNTanhFdHp3cHA1OEtWaVp3Y1lZ?=
+ =?utf-8?Q?QzWavI1gJZgR4HQY=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <700265E7E25D9F4796356983AE066BD9@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260129011517.3545883-1-seanjc@google.com> <20260129011517.3545883-9-seanjc@google.com>
- <aYMMHVvwDjZ7Lz9l@yzhao56-desk.sh.intel.com> <aYP_Ko3FGRriGXWR@google.com>
- <aYQtIK/Lq5T3ad6V@yzhao56-desk.sh.intel.com> <aYUarHf3KEwHGuJe@google.com> <aYVPN5M7QQwu/r/n@yzhao56-desk.sh.intel.com>
-Message-ID: <aYYn0nf2cayYu8e7@google.com>
-Subject: Re: [RFC PATCH v5 08/45] KVM: x86/mmu: Propagate mirror SPTE removal
- to S-EPT in handle_changed_spte()
-From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	Kai Huang <kai.huang@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Sagi Shahar <sagis@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5963.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c929998a-b752-4324-a72e-08de65ae8dfc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Feb 2026 18:35:51.3798
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: CwnXRfZA+T+J5w3SueeB1ndEmDWgBx5pJJNw6HHq1WDz6gv9MYU0AnPogLmbSIaY5mdf+uENlltSKA/gxTdouVDHRlUue/pja3LtSIfwh9M=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR11MB8147
+X-OriginatorOrg: intel.com
 
-On Fri, Feb 06, 2026, Yan Zhao wrote:
-> On Thu, Feb 05, 2026 at 02:33:16PM -0800, Sean Christopherson wrote:
-> > On Thu, Feb 05, 2026, Yan Zhao wrote:
-> > > > > >  	if (was_present && !was_leaf &&
-> > > > > >  	    (is_leaf || !is_present || WARN_ON_ONCE(pfn_changed)))
-> > > > > >  		handle_removed_pt(kvm, spte_to_child_pt(old_spte, level), shared);
-> > > > > > +	else if (was_leaf && is_mirror_sptep(sptep) && !is_leaf)
-> > > > > Should we check !is_present instead of !is_leaf?
-> > > > > e.g. a transition from a present leaf entry to a present non-leaf entry could
-> > > > > also trigger this if case.
-> > > > 
-> > > > No, the !is_leaf check is very intentional.  At this point in the series, S-EPT
-> > > > doesn't support hugepages.  If KVM manages to install a leaf SPTE and replaces
-> > > > that SPTE with a non-leaf SPTE, then we absolutely want the KVM_BUG_ON() in
-> > > > tdx_sept_remove_private_spte() to fire:
-> > > > 
-> > > > 	/* TODO: handle large pages. */
-> > > > 	if (KVM_BUG_ON(level != PG_LEVEL_4K, kvm))
-> > > > 		return -EIO;
-> > > But the op is named remove_external_spte().
-> > > And the check of "level != PG_LEVEL_4K" is for removing large leaf entries.
-> > 
-> > I agree that the naming at this point in the series is unfortunate, but I don't
-> > see it as outright wrong.  That the TDP MMU could theoretically replace the leaf
-> > SPTE with a non-leaf SPTE doesn't change the fact that the old leaf SPTE *is*
-> > being removed.
-> Hmm, I can't agree with that. But I won't insist if you think it's ok :)
-
-If the code is read through a TDX lens, then I agree, it's seems wrong.  Because
-then you *know* that TDX doesn't support back-to-back remove()=>add() operations
-to handle a page split.
-
-But from a TDP MMU perspective, this is entirely logical (ignoring that
-link_external_spt() is gone at this point in the series).
-
-	else if (was_leaf && is_mirror_sptep(sptep) && !is_leaf) {
-		kvm_x86_call(remove_external_spte)(kvm, gfn, level, old_spte);
-
-		/*
-		 * Link the new page table if a hugepage is being split, i.e.
-		 * if a leaf SPTE is being replaced with a non-leaf SPTE.
-		 */
-		if (is_present)
-			kvm_x86_call(link_external_spt)(kvm, gfn, level, ...);
-	}
-
-And that is *exactly* why I want to get rid of the hyper-specific kvm_x86_ops
-hooks.  They bleed all kinds of implementation details all over the TDP MMU, which
-makes it difficult to read and understand the relevant TDP MMU code if you don't
-already know the TDX rules.  And I absolutely do not want to effectively require
-others to understand TDX's rules to be able to make changes to the TDP MMU.
-
-> > > Relying on the TDX code's lockdep_assert_held_write() for warning seems less
-> > > clear than having an explicit check here.
-> > 
-> > ...that's TDX's responsibility to enforce, and I don't see any justification for
-> > something more than a lockdep assertion.  As I've said elsewhere, several times,
-> My concern is that handle_changed_spte() can be invoked by callers other than
-> tdp_mmu_set_spte(). e.g.,
-> 
-> tdp_mmu_set_spte_atomic
->   | __tdp_mmu_set_spte_atomic
->   |     | kvm_x86_call(set_external_spte)
->   | handle_changed_spte
->         | kvm_x86_call(set_external_spte)
-> 
-> When !is_frozen_spte(new_spte) and was_leaf, set_external_spte() may be invoked
-> twice for splitting under shared mmu_lock.
-
-But we don't support that yet.  I was going to punt dealing with that to the future,
-but now that I've looked at it, I honestly think the problem is that I didn't go
-far enough with the cleanup.  I shouldn't have hedged.
-
-What I said in "KVM: TDX: Drop kvm_x86_ops.link_external_spt(), use .set_external_spte()
-for all":
-
- : Ideally, KVM would provide a single pair of hooks to set S-EPT entries,
- : one hook for setting SPTEs under write-lock and another for settings SPTEs
- : under read-lock (e.g. to ensure the entire operation is "atomic", to allow
- : for failure, etc.).  Sadly, TDX's requirement that all child S-EPT entries
- : are removed before the parent makes that impractical: the TDP MMU
- : deliberately prunes non-leaf SPTEs and _then_ processes its children, thus
- : making it quite important for the TDP MMU to differentiate between zapping
- : leaf and non-leaf S-EPT entries.
-
-isn't quite right.  Ideally, KVM would provide *one* hook to set S-EPT entries.
-Because the API to actually *set* the external SPTE shouldn't be any different
-for read-lock vs. write-lost.  I.e. the child S-EPT case remains the sole
-exception.  More below.
-
-> Therefore, I think it would be better to check for !shared and only invoke
-> set_external_spte() when !shared.
-
-No.  I am dead set against conditionally invoking set_external_spte() based on
-shared vs. exclusive.  The rules for how SPTE updates are forwarded to TDX, and
-how TDX reacts to those updates, need to be defined purely on state transitions,
-i.e. on old_spte vs. new_spte.
-
-Actually, even that isn't a strong enough statement.  *All* updates need to be
-forwarded to TDX, and then TDX can react as appropriate.
-
-> BTW: in the patch log, you mentioned that
-> 
-> : Invoke .remove_external_spte() in handle_changed_spte() as appropriate
-> : instead of relying on callers to do the right thing.  Relying on callers
-> : to invoke .remove_external_spte() is confusing and brittle, e.g. subtly
-> : relies tdp_mmu_set_spte_atomic() never removing SPTEs, and removing an
-> : S-EPT entry in tdp_mmu_set_spte() is bizarre (yeah, the VM is bugged so
-> : it doesn't matter in practice, but it's still weird).
-> 
-> However, when tdp_mmu_set_spte_atomic() removes SPTEs in the future, it will
-> still need to follow the sequence in __tdp_mmu_set_spte_atomic() :
-> 1. freeze, 2. set_external_spte(). 3. set the new_spte 4. handle_changed_spte().
-> 
-> So, do you think we should leave set_external_spte() in tdp_mmu_set_spte() for
-> exclusive mmu_lock scenarios instead of moving it to handle_changed_spte()?
-
-Nope, as above, 100% the opposite.  Over ~3 patches, e.g.
-
- 1. Drop the KVM_BUG_ON()s or move them to TDX
- 2. Morph the !is_frozen_spte() check into a KVM_MMU_WARN_ON()
- 3. Rework the code to rely on __handle_changed_spte() to propagate writes to S-EPT
-
-That way, the _only_ path that updates external SPTEs is this:
-
-	if (was_present && !was_leaf &&
-	    (is_leaf || !is_present || WARN_ON_ONCE(pfn_changed)))
-		handle_removed_pt(kvm, spte_to_child_pt(old_spte, level), shared);
-	else if (is_mirror_sptep(sptep))
-		return kvm_x86_call(set_external_spte)(kvm, gfn, old_spte,
-						       new_spte, level);
-
-which is fully aligned with handle_changed_spte()'s role for !mirror roots: it
-exists to react to changes (the sole exception to that being aging SPTEs, which
-is a special case).
-
-Compile-tested only.
-
----
- arch/x86/kvm/mmu/tdp_mmu.c | 118 ++++++++++++++++++-------------------
- 1 file changed, 59 insertions(+), 59 deletions(-)
-
-diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-index 847f2fcb6740..33a321aedac0 100644
---- a/arch/x86/kvm/mmu/tdp_mmu.c
-+++ b/arch/x86/kvm/mmu/tdp_mmu.c
-@@ -464,7 +464,7 @@ static void handle_removed_pt(struct kvm *kvm, tdp_ptep_t pt, bool shared)
- }
- 
- /**
-- * handle_changed_spte - handle bookkeeping associated with an SPTE change
-+ * __handle_changed_spte - handle bookkeeping associated with an SPTE change
-  * @kvm: kvm instance
-  * @as_id: the address space of the paging structure the SPTE was a part of
-  * @sptep: pointer to the SPTE
-@@ -480,9 +480,9 @@ static void handle_removed_pt(struct kvm *kvm, tdp_ptep_t pt, bool shared)
-  * dirty logging updates are handled in common code, not here (see make_spte()
-  * and fast_pf_fix_direct_spte()).
-  */
--static void handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
--				gfn_t gfn, u64 old_spte, u64 new_spte,
--				int level, bool shared)
-+static int __handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
-+				 gfn_t gfn, u64 old_spte, u64 new_spte,
-+				 int level, bool shared)
- {
- 	bool was_present = is_shadow_present_pte(old_spte);
- 	bool is_present = is_shadow_present_pte(new_spte);
-@@ -518,7 +518,7 @@ static void handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
- 	}
- 
- 	if (old_spte == new_spte)
--		return;
-+		return 0;
- 
- 	trace_kvm_tdp_mmu_spte_changed(as_id, gfn, level, old_spte, new_spte);
- 
-@@ -547,7 +547,7 @@ static void handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
- 			       "a temporary frozen SPTE.\n"
- 			       "as_id: %d gfn: %llx old_spte: %llx new_spte: %llx level: %d",
- 			       as_id, gfn, old_spte, new_spte, level);
--		return;
-+		return 0;
- 	}
- 
- 	if (is_leaf != was_leaf)
-@@ -559,30 +559,31 @@ static void handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
- 	 * SPTE being converted to a hugepage (leaf) or being zapped.  Shadow
- 	 * pages are kernel allocations and should never be migrated.
- 	 *
--	 * When modifying leaf entries in mirrored page tables, propagate the
--	 * changes to the external SPTE.  Bug the VM on failure, as callers
--	 * aren't prepared to handle errors, e.g. due to lock contention in the
--	 * TDX-Module.  Note, changes to non-leaf mirror SPTEs are handled by
--	 * handle_removed_pt() (the TDX-Module requires that child entries are
--	 * removed before the parent SPTE), and changes to non-present mirror
--	 * SPTEs are handled by __tdp_mmu_set_spte_atomic() (KVM needs to set
--	 * the external SPTE while the mirror SPTE is frozen so that installing
--	 * a new SPTE is effectively an atomic operation).
-+	 * When modifying leaf entries in mirrored page tables, propagate all
-+	 * changes to the external SPTE.
- 	 */
- 	if (was_present && !was_leaf &&
- 	    (is_leaf || !is_present || WARN_ON_ONCE(pfn_changed)))
- 		handle_removed_pt(kvm, spte_to_child_pt(old_spte, level), shared);
--	else if (was_leaf && is_mirror_sptep(sptep))
--		KVM_BUG_ON(kvm_x86_call(set_external_spte)(kvm, gfn, old_spte,
--							   new_spte, level), kvm);
-+	else if (is_mirror_sptep(sptep))
-+		return kvm_x86_call(set_external_spte)(kvm, gfn, old_spte,
-+						       new_spte, level);
-+
-+	return 0;
-+}
-+
-+static void handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
-+				gfn_t gfn, u64 old_spte, u64 new_spte,
-+				int level, bool shared)
-+{
-+	KVM_BUG_ON(__handle_changed_spte(kvm, as_id, sptep, gfn, old_spte,
-+					 new_spte, level, shared), kvm);
- }
- 
- static inline int __must_check __tdp_mmu_set_spte_atomic(struct kvm *kvm,
- 							 struct tdp_iter *iter,
- 							 u64 new_spte)
- {
--	u64 *raw_sptep = rcu_dereference(iter->sptep);
--
- 	/*
- 	 * The caller is responsible for ensuring the old SPTE is not a FROZEN
- 	 * SPTE.  KVM should never attempt to zap or manipulate a FROZEN SPTE,
-@@ -591,40 +592,6 @@ static inline int __must_check __tdp_mmu_set_spte_atomic(struct kvm *kvm,
- 	 */
- 	WARN_ON_ONCE(iter->yielded || is_frozen_spte(iter->old_spte));
- 
--	if (is_mirror_sptep(iter->sptep) && !is_frozen_spte(new_spte)) {
--		int ret;
--
--		/*
--		 * KVM doesn't currently support zapping or splitting mirror
--		 * SPTEs while holding mmu_lock for read.
--		 */
--		if (KVM_BUG_ON(is_shadow_present_pte(iter->old_spte), kvm) ||
--		    KVM_BUG_ON(!is_shadow_present_pte(new_spte), kvm))
--			return -EBUSY;
--
--		/*
--		 * Temporarily freeze the SPTE until the external PTE operation
--		 * has completed, e.g. so that concurrent faults don't attempt
--		 * to install a child PTE in the external page table before the
--		 * parent PTE has been written.
--		 */
--		if (!try_cmpxchg64(raw_sptep, &iter->old_spte, FROZEN_SPTE))
--			return -EBUSY;
--
--		/*
--		 * Update the external PTE.  On success, set the mirror SPTE to
--		 * the desired value.  On failure, restore the old SPTE so that
--		 * the SPTE isn't frozen in perpetuity.
--		 */
--		ret = kvm_x86_call(set_external_spte)(kvm, iter->gfn, iter->old_spte,
--						      new_spte, iter->level);
--		if (ret)
--			__kvm_tdp_mmu_write_spte(iter->sptep, iter->old_spte);
--		else
--			__kvm_tdp_mmu_write_spte(iter->sptep, new_spte);
--		return ret;
--	}
--
- 	/*
- 	 * Note, fast_pf_fix_direct_spte() can also modify TDP MMU SPTEs and
- 	 * does not hold the mmu_lock.  On failure, i.e. if a different logical
-@@ -632,7 +599,7 @@ static inline int __must_check __tdp_mmu_set_spte_atomic(struct kvm *kvm,
- 	 * the current value, so the caller operates on fresh data, e.g. if it
- 	 * retries tdp_mmu_set_spte_atomic()
- 	 */
--	if (!try_cmpxchg64(raw_sptep, &iter->old_spte, new_spte))
-+	if (!try_cmpxchg64(rcu_dereference(iter->sptep), &iter->old_spte, new_spte))
- 		return -EBUSY;
- 
- 	return 0;
-@@ -663,14 +630,44 @@ static inline int __must_check tdp_mmu_set_spte_atomic(struct kvm *kvm,
- 
- 	lockdep_assert_held_read(&kvm->mmu_lock);
- 
--	ret = __tdp_mmu_set_spte_atomic(kvm, iter, new_spte);
-+	/* KVM should never freeze SPTEs using higher level APIs. */
-+	KVM_MMU_WARN_ON(is_frozen_spte(new_spte));
-+
-+	/*
-+	  * Temporarily freeze the SPTE until the external PTE operation has
-+	  * completed (unless the new SPTE itself will be frozen), e.g. so that
-+	  * concurrent faults don't attempt to install a child PTE in the
-+	  * external page table before the parent PTE has been written, or try
-+	  * to re-install a page table before the old one was removed.
-+	  */
-+	if (is_mirror_sptep(iter->sptep))
-+		ret = __tdp_mmu_set_spte_atomic(kvm, iter, FROZEN_SPTE);
-+	else
-+		ret = __tdp_mmu_set_spte_atomic(kvm, iter, new_spte);
- 	if (ret)
- 		return ret;
- 
--	handle_changed_spte(kvm, iter->as_id, iter->sptep, iter->gfn,
--			    iter->old_spte, new_spte, iter->level, true);
-+	ret = __handle_changed_spte(kvm, iter->as_id, iter->sptep, iter->gfn,
-+				    iter->old_spte, new_spte, iter->level, true);
- 
--	return 0;
-+	/*
-+	 * Unfreeze the mirror SPTE.  If updating the external SPTE failed,
-+	 * restore the old SPTE so that the SPTE isn't frozen in perpetuity,
-+	 * otherwise set the mirror SPTE to the new desired value.
-+	 */
-+	if (is_mirror_sptep(iter->sptep)) {
-+		if (ret)
-+			__kvm_tdp_mmu_write_spte(iter->sptep, iter->old_spte);
-+		else
-+			__kvm_tdp_mmu_write_spte(iter->sptep, new_spte);
-+	} else {
-+		/*
-+		 * Bug the VM if handling the change failed, as failure is only
-+		 * allowed if KVM couldn't update the external SPTE.
-+		 */
-+		KVM_BUG_ON(ret, kvm);
-+	}
-+	return ret;
- }
- 
- /*
-@@ -1325,6 +1322,9 @@ static void kvm_tdp_mmu_age_spte(struct kvm *kvm, struct tdp_iter *iter)
- {
- 	u64 new_spte;
- 
-+	if (WARN_ON_ONCE(is_mirror_sptep(iter->sptep)))
-+		return;
-+
- 	if (spte_ad_enabled(iter->old_spte)) {
- 		iter->old_spte = tdp_mmu_clear_spte_bits_atomic(iter->sptep,
- 								shadow_accessed_mask);
-
-base-commit: c86be62d601ede14cbad1d0fb5af9b67d4172342
---
+T24gRnJpLCAyMDI2LTAyLTA2IGF0IDA3OjEwIC0wODAwLCBEYXZlIEhhbnNlbiB3cm90ZToNCj4g
+SXMgdGhlcmUgYW55IG90aGVyIFREWCBzdHVmZiB0aGF0IG5lZWRzIHRvIGdldCBwaWNrZWQgdXAg
+YXQgdGhlIHNhbWUNCj4gdGltZSB0aGF0J3MgYmVlbiBsYW5ndWlzaGluZz8NCg0KWGlhb3lhbyBp
+cyBnb2luZyB0byBzZW5kIGEgcmViYXNlIG9mIHRoaXMgYWZ0ZXIgUkMxOg0KaHR0cHM6Ly9sb3Jl
+Lmtlcm5lbC5vcmcva3ZtLzIwMjUwNzE1MDkxMzEyLjU2Mzc3My0xLXhpYW95YW8ubGlAaW50ZWwu
+Y29tLw0KDQpJdCBoYXMgcHJldHR5IHdpZGUgYWdyZWVtZW50LCBhbmQgYWNrJ3MgZnJvbSB0aGUg
+S1ZNIHNpZGUuIEFsc28sIHdlIGhhdmUNCmludGVybmFsIGJyYW5jaGVzIHRoYXQgYXJlIGNhcnJ5
+aW5nIGZvcm1zIG9mIGl0LiBTbyBpZiB3ZSBtZXJnZSBpdCBub3cgd2UgY2FuDQpoYXZlIGxlc3Mg
+ZGVwZW5kZW5jaWVzIGxhdGVyLg0KDQoNCg0K
