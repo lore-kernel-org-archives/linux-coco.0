@@ -1,183 +1,131 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF1724A06D
-	for <linux-coco@lists.linux.dev>; Fri,  6 Feb 2026 15:01:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D472701D9
+	for <linux-coco@lists.linux.dev>; Fri,  6 Feb 2026 15:10:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770390077; cv=none; b=O6UyQ0CkDiCmF284qgFtjFzClewmJptgh6Q2kqV8XFK/rt/rxIyibFm7KxHBs615WDw3yh8yYihO1tKNMW3uAleNyr6NcQhuyRSy9MMEgov3Opjj2v79rSh0EF2a2bu1+GVszKq5PcQ6fRmkuiQ15EFiy0TAldmvXaMmlSci1ls=
+	t=1770390660; cv=none; b=M9ws8S5PXdXpWd911G9FNHrTBQrD2Ilzk7jY5LEQ/us3gAsYBllp9WYFC4XYaCe0lMb2iz0IDdODK6zYxL/UP7ZbI4c1mArLLK/4wZF0WGdSrLLo/ny4r8rLWQLHrCZuv9TrBdR/GhkyNxt9d/Rz4x9Kj72CMMyxrGyh4sFyq8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770390077; c=relaxed/simple;
-	bh=+0p5/2cxZHOIH3gdTEZejCJJDcduW40PMOoDLbWCWGs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CU49oOTNMykoer/zE8ndkUnppTTJJhtaAIaUUZlH3U14bs/sjPAbMp2JGIJ8hdybLLb51barUDtO/Yt59sNiWsA83EA4a+3e3vT2Nd1RwEWBvPw7xUSXJ2v9ZThypPZtvUIp1S6/QVjF7lUYmkoFTY+A82wCt4Li2dnzLrCr2FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V4eh03NR; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1770390660; c=relaxed/simple;
+	bh=XAoq79H1MpAZdOj3SZC/rfB84Y7kWIRd3+yPM6Jh5p4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZHL7iMIUqXjsQpQwuvdPSUfL00V5Yr/mYqR8BIDrE77nbfzFjO7UArNRnklGF1EmLG3j0qhJ9tyqLEQB5X3uW36ExaLA6ft4YvLze0+lZQultU+V5hhHQXjt/eAO1Xojv6qQdXvL+xYj8BiHxrC7yVTvNNOxZw/VK70CEc808pE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W78qkBsh; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V4eh03NR"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3545b891dd1so4801720a91.1
-        for <linux-coco@lists.linux.dev>; Fri, 06 Feb 2026 07:01:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770390077; x=1770994877; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BKp8ZbACqKocuJ3VqCzgsghWr3tFDD71E/QKe7BVqwM=;
-        b=V4eh03NRCIqj/F1jF6quVZ8WFUMjzojIU3U7YqD2Xj+Df5L4ILt6LfTyHqsy2/8sa3
-         OOamMC8FxVtYmiUVnD2DSulM8O6qCMJc5P/3qokW52JK367/s94fiR0ZaEaNBaZufYJk
-         /MgUVxG+2UlaoMov/56WwQ5kflOPKBhYJltgJqFhlWOgHUj5OqQZFnvB0QXvTinr7nOH
-         2az8EsQTrEncW1HuQGqKBI08Qg7u14Gd3FF2n0szWjEwi2rV0IqLMYQraHdCgy03ashk
-         HjDphbA+W9Qbou9bFx1tJaO+afeoMu3aQn/Vk+vmujURfMdeEB3XlG3Me/+gUOho+mqR
-         oqZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770390077; x=1770994877;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BKp8ZbACqKocuJ3VqCzgsghWr3tFDD71E/QKe7BVqwM=;
-        b=CNoavopvZ60h1eBy3Nzb9cxKHZktwcB4/wBpwB9onI0zYIiJvwUWaHxYajbvUmaXAn
-         13n53utkeXeiYelQxWpVZKQJh03kYgESkBZeaOqJXoc1V25NR5C2ugpgKH080P2dWTcR
-         KbROcnBiXM7Ptg+cjGY+pLX42ewWJq5d2sc2qrhBLJ61AXyaCtErZLJbhjjn4qM+ZK8S
-         i+63SIkFxOjn3eLDg+FVymLbC/ZpxDWgfv1v+hsNBrhiGS4W8scVx7mTh51ilIePTz/P
-         W3czZKzSKiolE2pkDkgmM1+9GpFPQ6MQbnSHMtr16ygdnxcap0J42yX7sYVstguhlFcI
-         ipGA==
-X-Forwarded-Encrypted: i=1; AJvYcCUtGf67AQR5xwFC0GQmQvyGqhPtTf5ZP8p3a4Oiw9Nr7YBkWfU+LCuN+b/GO0XJSD5W4LHecMVyqaYq@lists.linux.dev
-X-Gm-Message-State: AOJu0YyK/v53mxSuCqa2IZR9MheGOSUdl2wnNuEKZN3mY39y7OxijWMC
-	mZOJQrf6O0B4Uz7jnLNZnO2IEFBX6p6wNgff5NoKjGMaiDB/X88Zy1of0p55R3MUp9Ul8RxA1ee
-	99daa4g==
-X-Received: from pjvc4.prod.google.com ([2002:a17:90a:d904:b0:340:c0e9:24b6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2e4e:b0:341:b5a2:3e7b
- with SMTP id 98e67ed59e1d1-354b3b7d70bmr2708644a91.4.1770390076562; Fri, 06
- Feb 2026 07:01:16 -0800 (PST)
-Date: Fri, 6 Feb 2026 07:01:14 -0800
-In-Reply-To: <aYW5CbUvZrLogsWF@yzhao56-desk.sh.intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W78qkBsh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770390660; x=1801926660;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=XAoq79H1MpAZdOj3SZC/rfB84Y7kWIRd3+yPM6Jh5p4=;
+  b=W78qkBshdRnK6CZnXPbwNFjWCj4rw8uYifq26OdjmekJEx59U8kdfyEc
+   47Hl1BBks6swqv/WTOu2X7jveimN8E5wrTbj1bjqe5akR0IwS+H1DXSY8
+   WvDMZIRScCWAaAoUI33+5dloB2JlnvZj7hoT1diKp8flzFUP5IKyuEsrS
+   RoSo6wm0sgn0A+soZYQvb12lmLF6ET1mHnqfbUKM2yObmg3tBBGIz6lCK
+   imtWi4E2ZTZ0gZhEEY0wBPtCF7lvxNBxQa+ZPSWSrWbYEfsuvvWsBhekP
+   jbKMblbwmPf1SofzCAEUW9LlDRcwGaTW4UpCEoDS7YPLbdYQGhF7s83Dd
+   Q==;
+X-CSE-ConnectionGUID: VGQGYbYrTJ+wswl3wXWAew==
+X-CSE-MsgGUID: TSmn7t0+S4WBu5BVfwR+AA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11693"; a="71498238"
+X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; 
+   d="scan'208";a="71498238"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 07:11:00 -0800
+X-CSE-ConnectionGUID: CVXzc3+IQNacx57ayz8dkw==
+X-CSE-MsgGUID: CE6zfk0JT0eOJkiT52NT0g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; 
+   d="scan'208";a="210697093"
+Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.111.129]) ([10.125.111.129])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 07:10:59 -0800
+Message-ID: <2235a1cf-7ccf-4134-80b5-8056537c6d33@intel.com>
+Date: Fri, 6 Feb 2026 07:10:58 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260129011517.3545883-1-seanjc@google.com> <20260129011517.3545883-21-seanjc@google.com>
- <aYW5CbUvZrLogsWF@yzhao56-desk.sh.intel.com>
-Message-ID: <aYYCOiMvWfSJR1AL@google.com>
-Subject: Re: [RFC PATCH v5 20/45] KVM: x86/mmu: Allocate/free S-EPT pages
- using tdx_{alloc,free}_control_page()
-From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	Kai Huang <kai.huang@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Sagi Shahar <sagis@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] x86/virt/tdx: Print TDX module version to dmesg
+To: Kiryl Shutsemau <kas@kernel.org>,
+ "Verma, Vishal L" <vishal.l.verma@intel.com>, dave.hansen@linux.intel.com
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "Gao, Chao" <chao.gao@intel.com>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "Huang, Kai" <kai.huang@intel.com>, "bp@alien8.de" <bp@alien8.de>,
+ "mingo@redhat.com" <mingo@redhat.com>,
+ "Williams, Dan J" <dan.j.williams@intel.com>,
+ "tglx@linutronix.de" <tglx@linutronix.de>, "hpa@zytor.com" <hpa@zytor.com>,
+ "x86@kernel.org" <x86@kernel.org>
+References: <20260109-tdx_print_module_version-v2-0-e10e4ca5b450@intel.com>
+ <6d8d37740459963e6fd7f16a890a837b34ebdf17.camel@intel.com>
+ <aYXSd8B00OtKZcAU@thinkstation>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <aYXSd8B00OtKZcAU@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Feb 06, 2026, Yan Zhao wrote:
-> > diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-> > index 18764dbc97ea..01e3e4f4baa5 100644
-> > --- a/arch/x86/kvm/mmu/tdp_mmu.c
-> > +++ b/arch/x86/kvm/mmu/tdp_mmu.c
-> > @@ -55,7 +55,8 @@ void kvm_mmu_uninit_tdp_mmu(struct kvm *kvm)
-> >  
-> >  static void tdp_mmu_free_sp(struct kvm_mmu_page *sp)
-> >  {
-> > -	free_page((unsigned long)sp->external_spt);
-> > +	if (sp->external_spt)
-> > +		kvm_x86_call(free_external_sp)((unsigned long)sp->external_spt);
-> >  	free_page((unsigned long)sp->spt);
-> >  	kmem_cache_free(mmu_page_header_cache, sp);
-> >  }
-> Strictly speaking, external_spt is not a control page. Its alloc/free are
-> different from normal control pages managed by TDX's code.
-
-Yeah, I called that out in the changelog.  I'm definitley not wedded to
-tdx_{alloc,free}_control_page(), but I am very much against tdx_{alloc,free}_page().
-
-  (arguably S-EPT pages aren't "control" pages, but they're not guest pages either)
-
-> (1) alloc
-> tdx_alloc_control_page
->   __tdx_alloc_control_page
->     __tdx_pamt_get 
->       spin_lock(&pamt_lock)   ==> under process context
->       spin_unlock(&pamt_lock)
+On 2/6/26 03:39, Kiryl Shutsemau wrote:
+>> Hi Kiryl, just wanted to check on the plan for this, I didn't see it
+>> merged in tip.git x86/tdx (or any other tip branch). Were you planning
+>> to take it through x86/tdx? Can I help with anything to move it along?
+> I guess it has to wait after the merge window at this point.
 > 
-> (2) free
-> tdp_mmu_free_sp_rcu_callback
->   tdp_mmu_free_sp
->     kvm_x86_call(free_external_sp)
->      tdx_free_control_page
->         __tdx_free_control_page
->           __tdx_pamt_put
->             spin_lock(&pamt_lock)   ==> under softirq context
->             spin_unlock(&pamt_lock)
-> 
-> So, invoking __tdx_pamt_put() in the RCU callback triggers deadlock warning
-> (see the bottom for details).
+> Dave, could you queue this after -rc1 is tagged?
 
-Hrm.  I can think of two options.  Option #1 would be to use a raw spinlock and
-disable IRQs:
+Sure.
 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 823ec092b4e4..6348085d7dcb 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -2246,7 +2246,7 @@ static u64 tdh_phymem_pamt_remove(u64 pfn, u64 *pamt_pa_array)
- }
- 
- /* Serializes adding/removing PAMT memory */
--static DEFINE_SPINLOCK(pamt_lock);
-+static DEFINE_RAW_SPINLOCK(pamt_lock);
- 
- /* Bump PAMT refcount for the given page and allocate PAMT memory if needed */
- int __tdx_pamt_get(u64 pfn, struct tdx_pamt_cache *cache)
-@@ -2272,7 +2272,7 @@ int __tdx_pamt_get(u64 pfn, struct tdx_pamt_cache *cache)
-        if (ret)
-                goto out_free;
- 
--       scoped_guard(spinlock, &pamt_lock) {
-+       scoped_guard(raw_spinlock_irqsave, &pamt_lock) {
-                /*
-                 * Lost race to other tdx_pamt_add(). Other task has already allocated
-                 * PAMT memory for the HPA.
-@@ -2348,7 +2348,7 @@ void __tdx_pamt_put(u64 pfn)
-        if (!atomic_dec_and_test(pamt_refcount))
-                return;
- 
--       scoped_guard(spinlock, &pamt_lock) {
-+       scoped_guard(raw_spinlock_irqsave, &pamt_lock) {
-                /* Lost race with tdx_pamt_get(). */
-                if (atomic_read(pamt_refcount))
-                        return;
-
---
-
-Option #2 would be to immediately free the page in tdx_sept_reclaim_private_sp(),
-so that pages that freed via handle_removed_pt() don't defer freeing the S-EPT
-page table (which, IIUC, is safe since the TDX-Module forces TLB flushes and exits).
-
-I really, really don't like this option (if it even works).
-
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index ae7b9beb3249..4726011ad624 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -2014,7 +2014,15 @@ static void tdx_sept_reclaim_private_sp(struct kvm *kvm, gfn_t gfn,
-         */
-        if (KVM_BUG_ON(is_hkid_assigned(to_kvm_tdx(kvm)), kvm) ||
-            tdx_reclaim_page(virt_to_page(sp->external_spt)))
--               sp->external_spt = NULL;
-+               goto out;
-+
-+       /*
-+        * Immediately free the control page, as the TDX subsystem doesn't
-+        * support freeing pages from RCU callbacks.
-+        */
-+       tdx_free_control_page((unsigned long)sp->external_spt);
-+out:
-+       sp->external_spt = NULL;
- }
- 
- void tdx_deliver_interrupt(struct kvm_lapic *apic, int delivery_mode,
---
+Is there any other TDX stuff that needs to get picked up at the same
+time that's been languishing?
