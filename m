@@ -1,406 +1,232 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A363803CC
-	for <linux-coco@lists.linux.dev>; Mon,  9 Feb 2026 15:38:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770651498; cv=none; b=IoVqfoK7uTTimU4f9X67/UPRzx6brEMKdPV1q1o+DhiPb8wk8ZPPJ8/ngBUNCCjXPDRvHxHstxbhux2EBZhq09Ea1bvMlLj7U4hrJg7kmn9vqjQxpxhxzhJMYe7Xxih7kQAxxVgVkfw8CdNEDdFQnpybg/R0KL3SgK36V5hYmNk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770651498; c=relaxed/simple;
-	bh=iGVSUlByZ9R+Hf3KbnSMbzHFW1HHMLu5Fivqmkrt5c8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ffB7f0gdS2u1B0lHP9E2skQ0t0aFa2jlFlQG/3c0XShZ1DM/DYeACJqnRUmTM0BSQpdN7TsdbYpBpT0SHi8hNw3JpGZ/9/JOfyF0tAQra2StynrM6PUcyWMm4p6LpJY8N02WMlxtnplN83kfAoA0zFBdFo45aEluM+f4Q1vJFb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=nx5yOjR5; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B353337A496
+	for <linux-coco@lists.linux.dev>; Mon,  9 Feb 2026 17:09:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770656953; cv=fail; b=T1bjOqg4e9+MTYR7nE+0Yc4xWU8OwPhEaEvIdJXAbhKuY48GfWc4/z2Ks47M5u0kuu68wljCZcpVPnH1YNdI/YMnwAvZy0FCgpYP3MI2xOPetrG/gMtzYHDr4vOVrD61W/mfZVF1dIbFpfQq/eBkQkm2/TBmlOuINBqIwm8C6Nk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770656953; c=relaxed/simple;
+	bh=X1VKfVPIdjkBZiZ3FCh7ru/t3yGlPmzSLHbU6ZsYOT0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=foeN9mxoAZBZyW/cbSw0i9eYcR2/MwoVAMk+LDIkFqG+WUxRxA/gRkZ06OUWEWUmvyt3noam94Vq/lDja2reKsX8sEdCmdd529QznfOKybiT92XbhkJCubI384RPV9bWxhWGt4djsKkGy0MVRzzczmDjBp4FJTsynrkIbZGKSjM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HQetiyyd; arc=fail smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="nx5yOjR5"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-4358fb60802so3143082f8f.1
-        for <linux-coco@lists.linux.dev>; Mon, 09 Feb 2026 07:38:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1770651496; x=1771256296; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/ee6Qt6P3kb+iUDKJmukIBp9eLArciL7f3fEMhhpVWQ=;
-        b=nx5yOjR58AQ/x+v2LBEgqvkgO3xHOryDsr4S3nQKb4UmiDqs9BZmpuAKxY8Rrkauwf
-         ZrZaJMTipNvUuM/U3+Oebd3/DWIrTPAxUAJ+RiGhCrY6O6Rvnxvzlk68UwCcgXwBXO1N
-         eLSoGllYuQfRx+lkqVRo73CXcNhMF65dLKpDXkkIGQ6RiEHB+yD1zs+vrXQsiNDiUQAi
-         q/7a2FLEPjF/D/rcDzrgIplmCY6n7UaSQfC/tpGPIrH740PACR9BFtCu5zPUJ292M5Gx
-         pcKbMsRKc/gw4yN9VFs0sW0AHn0sZIVJPgxUvsHpnBPmVHsfyYauN8nYTHEBhSdG3ivU
-         zLVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770651496; x=1771256296;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/ee6Qt6P3kb+iUDKJmukIBp9eLArciL7f3fEMhhpVWQ=;
-        b=fOcAgmaZtHiOUkbRGk72KGXtivlWKAHYMut2K+c7gzhpB7O9OI9F19nB5yw14+R/2r
-         RqZ5rZJ4wEtXXoW9WPgxRj2G1MU27WdKNJfK1j5GcL9zu1FMSBmp+6a8KW4tlQN5dFg+
-         NnmtvVFx+iUGVSthCokjUM+lvMVcXG6cOlMG4iFNDzJbcsxC+LlySsyRX3+YFlvTmvwp
-         rTBZBkMrJR8QULqQFE+dr4OJxGKh8/wNY5QE/2OAq4e70OvBZPfC154xX5gmqYL6Y6sU
-         VYPdpkAIjaovNETWQcATLA6rO6ChVB3T/V8PcW47tqbiMEO9it0NgkxQZopxbVlwslQs
-         Ayrg==
-X-Forwarded-Encrypted: i=1; AJvYcCUYKHCfK9hz8jVs6+eFN4AriPLJyEFtDLKWWDgq+FdjeEbudMzABlJjO9Vonj8OA90zL0en/GwGEGkv@lists.linux.dev
-X-Gm-Message-State: AOJu0YzBrLWfEpGLFMnurquindWFDOSLvdu1Z+7OlQis2287KzWe35i1
-	vtUYwlQgDxO65O9QIdxyJdb5wA/5NsWVkcea++PzFIVvXnww8NI0U3OzhtD3xN7dXSE=
-X-Gm-Gg: AZuq6aI8tG3Qus1qst66+KIQgtaEFNObp4dKbePY639UBkUki89+ae/h182KASbRT7P
-	+x7U5bWwbTgbVf336i0YCGFvLP3Ov1dKD+lZuNHlz/sVP0tyzZO5oGua6eMfnWazpRwobJJ3FtJ
-	MJhqMHDZVPn3QTAhUnwbbiARgTodZ/l/hoCoLQztC+EDlN8bZHILuWGcCC5RIxRhff6Zw8GW4W9
-	DTtKVA6XyHnaMSIHSg8hbTHTL0gaxWsvDANelr1O5A1xaL6Y5wXnYzRvi8oeBp7NB0Mb5qDtVvv
-	jcXd3mCPOr/jdMC8GFIIUN16qVYXeki+w96Ly5uQKh6ilOVjdlNBZzMJmL4KwwVidB0ZGF5wo25
-	QFg0x2Xls3df8FxiRNdeWXspROUBYTOvWphPgADO0MgdB4kv45SI9fJBiExzLkoeNGBrKDwM2hG
-	uVA/nDfH2wPr8P
-X-Received: by 2002:a05:6000:2c09:b0:436:42fb:153c with SMTP id ffacd0b85a97d-43642fb1705mr11442711f8f.30.1770651496419;
-        Mon, 09 Feb 2026 07:38:16 -0800 (PST)
-Received: from localhost ([85.163.81.98])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4362972fa4csm26172323f8f.26.2026.02.09.07.38.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Feb 2026 07:38:15 -0800 (PST)
-From: Jiri Pirko <jiri@resnulli.us>
-To: dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org,
-	iommu@lists.linux.dev,
-	linux-media@vger.kernel.org
-Cc: sumit.semwal@linaro.org,
-	benjamin.gaignard@collabora.com,
-	Brian.Starkey@arm.com,
-	jstultz@google.com,
-	tjmercier@google.com,
-	christian.koenig@amd.com,
-	m.szyprowski@samsung.com,
-	robin.murphy@arm.com,
-	jgg@ziepe.ca,
-	leon@kernel.org,
-	sean.anderson@linux.dev,
-	ptesarik@suse.com,
-	catalin.marinas@arm.com,
-	aneesh.kumar@kernel.org,
-	suzuki.poulose@arm.com,
-	steven.price@arm.com,
-	thomas.lendacky@amd.com,
-	john.allen@amd.com,
-	ashish.kalra@amd.com,
-	suravee.suthikulpanit@amd.com,
-	linux-coco@lists.linux.dev
-Subject: [PATCH 5/5] dma-buf: heaps: system: add an option to allocate explicitly decrypted memory
-Date: Mon,  9 Feb 2026 16:38:09 +0100
-Message-ID: <20260209153809.250835-6-jiri@resnulli.us>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20260209153809.250835-1-jiri@resnulli.us>
-References: <20260209153809.250835-1-jiri@resnulli.us>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HQetiyyd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770656953; x=1802192953;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=X1VKfVPIdjkBZiZ3FCh7ru/t3yGlPmzSLHbU6ZsYOT0=;
+  b=HQetiyydFB3TaQNwM8kEtCUvs/bjX0wZ25G/fSPgT3OkDmhPzK70FxyD
+   vNqxL6fPZJYJ9oa24+km3EetJO2vac5350y/yUm0bnKQKYkrqMxBwFjhC
+   XgCSLm1d9AJ7o3k7kDhbp18qZYzYM2fj2f3qgGjvrYfci8IKuViV25aTA
+   MyQWtgpe0+qe00tpFjxdnsO5DPiQpIBXzTFaZwmX62UGGIj5Ax6fqooIt
+   z0PMLV6pgFBJY2YrucJvN9GtsAMbw19zMaHCp8H+6vf60y6p00Z1v+16b
+   ARtMxiUI2XaneSyz8cIv61THlaPFmEs2sduY3FljtyZXUNjqj/aR0qNhZ
+   Q==;
+X-CSE-ConnectionGUID: K2qOXfyJRyGEpaeTqaiYIQ==
+X-CSE-MsgGUID: SoZYREWIQFGXeDv7aTNV+Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="71670353"
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; 
+   d="scan'208";a="71670353"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 09:08:55 -0800
+X-CSE-ConnectionGUID: +BgfDyboSbiAGQRZOM8FKA==
+X-CSE-MsgGUID: lvszl4kFTR2+EH4Ethotuw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; 
+   d="scan'208";a="216032969"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 09:08:53 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Mon, 9 Feb 2026 09:08:52 -0800
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Mon, 9 Feb 2026 09:08:52 -0800
+Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.38) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Mon, 9 Feb 2026 09:08:52 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Lh/MsTcFajTZTsbtZNYpVZBjen+VAwiIlwuukfHMyev21SteOKdwvf/LX7x/uaeAWzmkDWOAC79LKVTq+EcTabdsdTWlc+Xf8zU7iPRO1LtsXkHheRkmzZQFlUJK0u4W3WkgAHIb5I8oGj5MuXu4xPvZXerHbht11n1NizZcOOA3Keo3IY/gtwtC/ZXNuFUDagrz07cQroeT1hdDvXD96YvHygiensW1nKHIRb8Y2dhrFdGTNCwHfeZAh8VGKrGVi//CGHFU6NvQjA3aMThQARjKybu1jHuwDuiUXs7j6sq9+V5KFgnBQ80XaffhgnoK6F7/sbqbuEvj3xbwEReqWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=X1VKfVPIdjkBZiZ3FCh7ru/t3yGlPmzSLHbU6ZsYOT0=;
+ b=EUxeX5UDSAZXgN9E/2WtdhTca9WNXTQOPHmxVgiboHCIg0uWxUA3deGOYACLSX1KjLgxY1AwRuYNRx5JWIchIN/KyZU8Iw7GFmKfPJJnVebSPkxznxTdeh0aT+TMly8CuQfElZBy7Gh5ktF3Lfi8X9F7bIDzodHY1TuOSpYRugRQBLb3vMsPi8yEC1wq3S276HbX8bzXcPkLrl1xV0G9c9ka2whuzTtrsXT8m/82Z9L52rfPkHr7DLeWkTNMOgC0Ao9v37wOpGU6Xz/Fo/EW3cP4x/hU0YKCd7WNsX/F8dcfgoom4CdvY7xQsIn+kn8Z2eu7o+EL0ihY2LzkLmLxFw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com (2603:10b6:208:372::10)
+ by SA1PR11MB8393.namprd11.prod.outlook.com (2603:10b6:806:373::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.19; Mon, 9 Feb
+ 2026 17:08:47 +0000
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::3ad:5845:3ab9:5b65]) by MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::3ad:5845:3ab9:5b65%6]) with mapi id 15.20.9587.013; Mon, 9 Feb 2026
+ 17:08:47 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "seanjc@google.com" <seanjc@google.com>, "Huang, Kai"
+	<kai.huang@intel.com>
+CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "Li, Xiaoyao"
+	<xiaoyao.li@intel.com>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "Zhao, Yan Y" <yan.y.zhao@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org"
+	<kas@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "Yamahata, Isaku"
+	<isaku.yamahata@intel.com>, "ackerleytng@google.com"
+	<ackerleytng@google.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "tglx@kernel.org" <tglx@kernel.org>,
+	"sagis@google.com" <sagis@google.com>, "bp@alien8.de" <bp@alien8.de>,
+	"Annapurve, Vishal" <vannapurve@google.com>, "x86@kernel.org"
+	<x86@kernel.org>
+Subject: Re: [RFC PATCH v5 22/45] KVM: TDX: Get/put PAMT pages when
+ (un)mapping private memory
+Thread-Topic: [RFC PATCH v5 22/45] KVM: TDX: Get/put PAMT pages when
+ (un)mapping private memory
+Thread-Index: AQHckLzwCgvmuzjovk6gFrXf+s6dG7V1gv0AgABf7oCAADjnAIAAQGCAgAPhToCAAG7igA==
+Date: Mon, 9 Feb 2026 17:08:47 +0000
+Message-ID: <ddf6c17664044bf66e7a9a0a58f2b6c1104dfbc4.camel@intel.com>
+References: <20260129011517.3545883-1-seanjc@google.com>
+	 <20260129011517.3545883-23-seanjc@google.com>
+	 <aYXAdJV8rvWn4EQf@yzhao56-desk.sh.intel.com> <aYYQ7Vx95ZrsqwCv@google.com>
+	 <b3ad6d9cce83681f548b35881ebad0c5bb4fed23.camel@intel.com>
+	 <aYZ2qft-akOYwkOk@google.com>
+	 <94f041b3aa32169fa2e1125edab7bd8fed3a6e59.camel@intel.com>
+In-Reply-To: <94f041b3aa32169fa2e1125edab7bd8fed3a6e59.camel@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.52.3-0ubuntu1.1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN0PR11MB5963:EE_|SA1PR11MB8393:EE_
+x-ms-office365-filtering-correlation-id: afaead26-5b10-45dd-5fa6-08de67fde399
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016|38070700021;
+x-microsoft-antispam-message-info: =?utf-8?B?VURBUHk3UHV1b0I2TTdoZGRaRUxZeG5VbWZiS1VWNi80NXYydmRwb2RBY3NW?=
+ =?utf-8?B?c2pNWGRMQk9UWlVjVEs0N3hQSTVPN1U0cHhaTGFCNmZJYVVWYXhZTWk2dVB1?=
+ =?utf-8?B?SjQ1d2MyVVk2T1NuOTdCdnU3R1RKWnI2TFlFUUhrbUtQYzhKbXBOQ0QrRkND?=
+ =?utf-8?B?TUtHdEJRNDlNaFE2aCt2em9TOGtlcHNZZHRFRXZJSnpJS3c0NExmVGdlZ0FW?=
+ =?utf-8?B?Mzl2Y1hXT0lseDIrMDdSbVVuS29CSUJvdFpySGFVSStNdXl6cTdNWGxGQ3k0?=
+ =?utf-8?B?RC8yL1VSeTIzTUE3end5MmgvTlRqMWJvQmlabUx3QlpHWG4wTCtDMWJRNWE2?=
+ =?utf-8?B?M1kzMHprN2E2M1d4WHNoRlpMdDh0bTRWZHJsR1VSMW0yNFZyRUV4dkRhWHBP?=
+ =?utf-8?B?QmdGb2ZLUUhvL0xkQzhMS3V2NjlTSUtKT3diSEhYYm5aY1NGTzdOeUYyQml6?=
+ =?utf-8?B?OVI2OTA5OW9XYUlWb0FWRXlSNFJMenlzNGZxbGJmaTVQbGszMERNQkY2bGc0?=
+ =?utf-8?B?bFBiR3hXMXdpakFZdmdGUThUMzVseUtlRjhvOXROYkREc0lvanNZM2N1S2I3?=
+ =?utf-8?B?S1E4aTBnOVN0NTdqMWpKNzB4NVk1dWlrSUFTcmIvUktJRWRZK0g3Q1RGdWhh?=
+ =?utf-8?B?NUd2RlpDZnNpbkFXbWJ0Rm4yVVArL25yYUR3N2FqN25qMFZST2taZGMvbHJX?=
+ =?utf-8?B?bkxGWXJua2Z4ZHpCaXAzNzBRNG5DMWNyWnRIQ2pjbzBnUmo4MWM0QkhjVnpY?=
+ =?utf-8?B?ZWtYUFM4OUhuQ3Ntc0s5ajEvckM1SlA1ZDk0VktyNHZpaTRTYUxURTc5bUk3?=
+ =?utf-8?B?TzhuWWxKOVFqYWZrMTMzL2V0Q0U1VGJsd1NQUEoxM2hjS0JMakhKc290VHIy?=
+ =?utf-8?B?Ymt3Q3lNa0p5NE1sVjFFMHZOaURtTHJNMTJ6eHlEenU0TFNHL2VDRStIWDlN?=
+ =?utf-8?B?RmJuWUZZN3lJRGEycXFnRDhtUVlPZEpsUXI5cmJmZ1lSMkp0emd2SHVuU0dm?=
+ =?utf-8?B?ODJmSHJFZ0tXNWpsUnR5cm1qS3ZtTGRiNWthN2dPVGYvTVFKcXZIN3pyQlhZ?=
+ =?utf-8?B?ZUpndzhmMS9aWVpsMDh5UWlnTjRxZmVYdDZ1UG9pQjdFMUIyVXNuK3dOSkdy?=
+ =?utf-8?B?MXRKR0tWeDVSNjU1aFlpOTh1UFd6RDZNQ1VEL3doSlcrOE9vS21PamNEWkk2?=
+ =?utf-8?B?VWFmNnF3MDNoTWx4dFlHSVhJUXJqSzI5WUVXUzU0T0V5SG5mWkpPV0tYZUs2?=
+ =?utf-8?B?MThnZnUxQ1JJLzZSVnd6OVJiZmlrdFc3UWxEYWlJS282QUJzMEFQYlhDZ2N5?=
+ =?utf-8?B?WG5lSmhPTHJVM01sYkNGVExjM29GdWJodjIzTkdkVDBLWG8rcm1FVHFuOS9m?=
+ =?utf-8?B?Ym1aaHhTTWhsS205REdFeFA4b0Q2ZE40ZDUyOE9yQzFTNzFNeDdrUlRkZm14?=
+ =?utf-8?B?RlhnbHo1cUdaS0gwQzRjcy9uOGtrdkw0cGxRMHI3eHhkWVFGY3lsT21RMmhq?=
+ =?utf-8?B?bjVWajdwcDJQK1I5K25ZS1A3dWUyeDROVkZxMExBVldhWEpmbEJ4ZUFLS1Fz?=
+ =?utf-8?B?aENWZEplLzdNcTZBN1dTRi83eEhSYmJUSW5hdllTNDIyVzVWRTZXWGxNZG05?=
+ =?utf-8?B?SU5VUnFla0ZTbGFVSGZjb21JcXB1NFc3M0Q1bmdIekF2OThuSENqRTJpSWcw?=
+ =?utf-8?B?alBWRGxLVUZCUGw2MU9SUmx0WTVJTTZZdEZoWURxbURLdGh2aEVZUE1IeGVm?=
+ =?utf-8?B?UlRRMjAxN2FCK1l6bUd5THB6cXZlQTQwb1hLaVZvQ2phcUVJM2IzVy96eTcx?=
+ =?utf-8?B?NlFLSjE3Y24ybVZxVUFvdWZzRjloMS9QUC9tODhNN0lJNERpY3k5ZmRTcyth?=
+ =?utf-8?B?YlBpdUlDNHhEdG1CZkUyMUl2MjRuRStaazh1dkRBeit2NzJzUGJNOTU5dDZH?=
+ =?utf-8?B?TzZVQWZTSjl1aWhUMnhxZ2hKVlQ0T0JwUWJGemJENlNuTUlUQmRLcWx6Q0VH?=
+ =?utf-8?B?RDc4cEgrdjhFUERidEpFQlBzNVM2eCs3Vk5qWXB1djFkNjdBazNxR2d1WWd0?=
+ =?utf-8?B?ejd2U1A0SFRad09FL3ZIbDIyT1ZuaHJTdnVuaGFkenUvcERUMHc5QmlmdzA3?=
+ =?utf-8?B?YWlCN3BaTGpvYnVNT3FQMlRLMSsyL1lwbXFFUXlWaWM0Lzc3d2FUQm5UQjF5?=
+ =?utf-8?Q?ca9G8tIJO5SXRgWiaTXw8tE=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5963.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WnQ4T3ZYWjJDbU1xekZJVk5RcEFuVTdPQXlZUDI2RjZwWHd4UlpWN2RvYVhG?=
+ =?utf-8?B?OG5hK3hKWjA0UlRGMkpZc0lxL3BGb1NrK1dEcmhhSThJZmhTVm9CejRDc0ND?=
+ =?utf-8?B?cUFtYVdjczg1RTlWZXNWTFJBd0FueEpYaGtIWlN1d2VBK3lVcHE3Tnc1czJW?=
+ =?utf-8?B?NzR2dnhyVGNLVDJpTHV3aHEyanZpRmt5WXJpWkRJMlMxRGMvalJYWTJMN0I2?=
+ =?utf-8?B?djNxOE5wMVM1Qk1hMmVLMWJXZVB2bzd1OHJCMGUwckx2UCtFK3hTRUh3b3o5?=
+ =?utf-8?B?UDlJdHZTVUlsMHJxdlFoay9uS0lSd3d4ZGhEenZQYzVUdktUdVlOa3dTR2RJ?=
+ =?utf-8?B?Q3N1Y1NYbHNJVVhEMiswK29YUU1wZ0lFb25zZzdnUDFqcVZjWVppVzcrdzRE?=
+ =?utf-8?B?SHJ4ZlV4TFl6Z3dvREx1VHJLTDRCV1lQeitEdFlNR1NzMUxwc2k0ODE3Ry9X?=
+ =?utf-8?B?WjgxSDRUaTZGVkNPSC9DMGViekp5YVBjSlFLNklFeXdXU09rRWdYTnFrQkZB?=
+ =?utf-8?B?YnQ2TE04TEJaNEcxd1graU5SUkk2NG1lakVRNGNsSGJOSWlkZnB5anNJdUxB?=
+ =?utf-8?B?djhKS3ZXMjdxUjNBa3M1V0QyR3pjRkl3bEI3NGl4RERxcSs2VXlXOEROaWVE?=
+ =?utf-8?B?MlAxajlKY21Rak5TRnNSczZqQk1yQVduL3ZMd3NINGJTa3VxaUFNUmpFejB5?=
+ =?utf-8?B?SjR2MWY2OXk1Y0pXV1Vud0tCdW5QZ3dydjFMcG1qQ1BOVXJKZ2hQdkYrdFRU?=
+ =?utf-8?B?UnJqZEVGRkFkdW1CR1dKNndTKzUzVEFFUXNreDYvemF0TFBjVnpIN1VsQ3gr?=
+ =?utf-8?B?bFZXMnEvTVU4ZGpQdHhxYWtJSEZnTnhrYUJGSXBnZDNhSnp4TkVZR0VJTWNY?=
+ =?utf-8?B?OGViRFI5VWF3RWlySUg5UzBQMGliaDVFeGtPTkVjZTZlNXhhZTlWRWFUMkhM?=
+ =?utf-8?B?d1VGWDlhZldaUFhNYTNpNE4vUkV1cnNhRnFsY2s4alN3VlBCemFCaGgyR0hG?=
+ =?utf-8?B?OXY0S2gydlRnYlArNDkxbW9CSlUrNzUxbWpOMmhHS01FR0lnL0MzSkd4S1Mx?=
+ =?utf-8?B?cEdrRUFhQnltalVtMkY3ZnhELzJ4SHFRcU5pMFBOYTRyVHRielltVXo1K2pi?=
+ =?utf-8?B?YXJkdDdIYWxHWk1tMDZENjBpMVQ5MUVCNGxqS1Q0OHd1K3dxNkF4a0Q4WE1J?=
+ =?utf-8?B?S20xSFVkY1d2cnVNRkpZbmFTQXFicS9OaWYrdjZISWlIQUJPSldpL09HMWhY?=
+ =?utf-8?B?QURydGcvbnd6dkJFV0tDd3pOY3NWVHlYVis0VXlqZzNzaWgyVDZEQXdnZmZ6?=
+ =?utf-8?B?Q1Z4bFFYOFZqdzREYit2TlhDSDhvcXhyRkppU1VnYXExNmsrWTF6cC93a0Fh?=
+ =?utf-8?B?OFQxK285cDRINmF3bFQyazFvVWxqZTd4ZVFWckt0bWtiaVNHWXg0OWJCanJh?=
+ =?utf-8?B?Yk9jL0NFN29Ec3EycEVBb29ncEFiSU5jcmczRWFaK3lERkhYbS9rL0dkY0Nh?=
+ =?utf-8?B?bzJpQmJ2d2VzZjNpbGJUMWg0eEg5a1RSc2xYcXcvZVV3TER6dzY3L3lTUDJH?=
+ =?utf-8?B?dE9qSXltS1lHenQrWGpIU0hiRE9uZzVTK3hRU0hRYjdiVDQ2c1JrZkVSMmtG?=
+ =?utf-8?B?UkdGbUptZ0ZpRFVlOXpKbjB4RFVlKzNkcVJMaURDTXh2VUZpWUdwbzl0NnB6?=
+ =?utf-8?B?Y0h3SDduV1ZBMWJ5eXJEbDFzWnRaUnVhT1Bkd3hVL0c5c2hmOGg1LzRmeDhx?=
+ =?utf-8?B?NzVrZy95dzhBVjI1M1dJUldTRDJDSm05a0pod0dPRHI3KzFvcS8rMmxGc1Y0?=
+ =?utf-8?B?ZlNhYzNtOHI0MTQ1ang5bVZvUS9GMkxMa2pEUnhObVdnVlMwVWwzVGJoOFdV?=
+ =?utf-8?B?OWxwSThvd2piK2c2RGFUSUNtRG8yV2dOYkV4WHRIZ0UveldhZ3dtV2xhRU5Q?=
+ =?utf-8?B?WGRsQUNPUDI0eVRBV3g3dW03cG9wT1Zlb1hrcjJXOUtPVklNNXZ0bEpWaWcy?=
+ =?utf-8?B?OFBEQXZ3eGpJU3d5dXBndm1WUTdJUXNBd3pBVlFvUXB1VDBPczh5dHo5S3pu?=
+ =?utf-8?B?R3BReCtSU1kzN0ZjRFVkd3puKytNV1pFNUVaMVJXUHljRjk1azRjUGxqMVo3?=
+ =?utf-8?B?SXhCNEVJMzRiQkU2d3NjWFdRZGx2SHhFNzJhTnV0YzN1MzM1MkdVV3k0N3Bj?=
+ =?utf-8?B?QUVkd2dxZWY1MXVPeXo3TlhPTUFGZzk2RlZ3emU1TTMyUWl6UloxcUN5cklj?=
+ =?utf-8?B?VVNIQjFjVVFZQXd4RVQ2YkpWa056ME1VY3E0aWo5Mml5T043a09IcVRHUGNL?=
+ =?utf-8?B?bkt1R3VnNk5TZWZ2SzJ1Vkk2dmwxbHBzb2dHR0JSSmVybVNOOWJYMXBHNnFk?=
+ =?utf-8?Q?7y2K+gHo/vcFG5AM=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <BA4F17E65C1A3148AB87B3307B4227D5@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5963.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: afaead26-5b10-45dd-5fa6-08de67fde399
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Feb 2026 17:08:47.5648
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: RhW0Cl/1O5ZFyPcAVxO7OBf8XOFF2Q0JDQZcdnptdblYMigLBmMTLFZND1nThFMPm+WZv5pPJxS/i4jaaFf62+E1qjT+cOX3cZwT9fFN96U=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8393
+X-OriginatorOrg: intel.com
 
-From: Jiri Pirko <jiri@nvidia.com>
-
-Add a new DMA_HEAP_FLAG_DECRYPTED heap flag to allow userspace to
-allocate decrypted (shared) memory from the dma-buf system heap for
-confidential computing (CoCo) VMs.
-
-On CoCo VMs, guest memory is encrypted by default. The hardware uses an
-encryption bit in page table entries (C-bit on AMD SEV, "shared" bit on
-Intel TDX) to control whether a given memory access is encrypted or
-decrypted. The kernel's direct map is set up with encryption enabled,
-so pages returned by alloc_pages() are encrypted in the direct map
-by default. To make this memory usable for devices that do not support
-DMA to encrypted memory (no TDISP support), it has to be explicitly
-decrypted. A couple of things are needed to properly handle
-decrypted memory for the dma-buf use case:
-
-- set_memory_decrypted() on the direct map after allocation:
-  Besides clearing the encryption bit in the direct map PTEs, this
-  also notifies the hypervisor about the page state change. On free,
-  the inverse set_memory_encrypted() must be called before returning
-  pages to the allocator. If re-encryption fails, pages
-  are intentionally leaked to prevent decrypted memory from being
-  reused as private.
-
-- pgprot_decrypted() for userspace and kernel virtual mappings:
-  Any new mapping of the decrypted pages, be it to userspace via
-  mmap or to kernel vmalloc space via vmap, creates PTEs independent
-  of the direct map. These must also have the encryption bit cleared,
-  otherwise accesses through them would see encrypted (garbage) data.
-
-- DMA_ATTR_CC_DECRYPTED for DMA mapping:
-  Since the pages are already decrypted, the DMA API needs to be
-  informed via DMA_ATTR_CC_DECRYPTED so it can map them correctly
-  as unencrypted for device access.
-
-On non-CoCo VMs the flag is rejected with -EOPNOTSUPP to prevent
-misuse by userspace that does not understand the security implications
-of explicitly decrypted memory.
-
-Signed-off-by: Jiri Pirko <jiri@nvidia.com>
----
- drivers/dma-buf/heaps/system_heap.c | 87 +++++++++++++++++++++++++++--
- include/linux/dma-heap.h            |  1 +
- include/uapi/linux/dma-heap.h       | 12 +++-
- 3 files changed, 94 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/dma-buf/heaps/system_heap.c b/drivers/dma-buf/heaps/system_heap.c
-index 124dca56e4d8..0f80ecb660ec 100644
---- a/drivers/dma-buf/heaps/system_heap.c
-+++ b/drivers/dma-buf/heaps/system_heap.c
-@@ -10,6 +10,7 @@
-  *	Andrew F. Davis <afd@ti.com>
-  */
- 
-+#include <linux/cc_platform.h>
- #include <linux/dma-buf.h>
- #include <linux/dma-mapping.h>
- #include <linux/dma-heap.h>
-@@ -17,7 +18,9 @@
- #include <linux/highmem.h>
- #include <linux/mm.h>
- #include <linux/module.h>
-+#include <linux/pgtable.h>
- #include <linux/scatterlist.h>
-+#include <linux/set_memory.h>
- #include <linux/slab.h>
- #include <linux/vmalloc.h>
- 
-@@ -29,6 +32,7 @@ struct system_heap_buffer {
- 	struct sg_table sg_table;
- 	int vmap_cnt;
- 	void *vaddr;
-+	bool decrypted;
- };
- 
- struct dma_heap_attachment {
-@@ -36,6 +40,7 @@ struct dma_heap_attachment {
- 	struct sg_table table;
- 	struct list_head list;
- 	bool mapped;
-+	bool decrypted;
- };
- 
- #define LOW_ORDER_GFP (GFP_HIGHUSER | __GFP_ZERO)
-@@ -52,6 +57,34 @@ static gfp_t order_flags[] = {HIGH_ORDER_GFP, HIGH_ORDER_GFP, LOW_ORDER_GFP};
- static const unsigned int orders[] = {8, 4, 0};
- #define NUM_ORDERS ARRAY_SIZE(orders)
- 
-+static int system_heap_set_page_decrypted(struct page *page)
-+{
-+	unsigned long addr = (unsigned long)page_address(page);
-+	unsigned int nr_pages = 1 << compound_order(page);
-+	int ret;
-+
-+	ret = set_memory_decrypted(addr, nr_pages);
-+	if (ret)
-+		pr_warn_ratelimited("dma-buf system heap: failed to decrypt page at %p\n",
-+				    page_address(page));
-+
-+	return ret;
-+}
-+
-+static int system_heap_set_page_encrypted(struct page *page)
-+{
-+	unsigned long addr = (unsigned long)page_address(page);
-+	unsigned int nr_pages = 1 << compound_order(page);
-+	int ret;
-+
-+	ret = set_memory_encrypted(addr, nr_pages);
-+	if (ret)
-+		pr_warn_ratelimited("dma-buf system heap: failed to re-encrypt page at %p, leaking memory\n",
-+				    page_address(page));
-+
-+	return ret;
-+}
-+
- static int dup_sg_table(struct sg_table *from, struct sg_table *to)
- {
- 	struct scatterlist *sg, *new_sg;
-@@ -90,6 +123,7 @@ static int system_heap_attach(struct dma_buf *dmabuf,
- 	a->dev = attachment->dev;
- 	INIT_LIST_HEAD(&a->list);
- 	a->mapped = false;
-+	a->decrypted = buffer->decrypted;
- 
- 	attachment->priv = a;
- 
-@@ -119,9 +153,11 @@ static struct sg_table *system_heap_map_dma_buf(struct dma_buf_attachment *attac
- {
- 	struct dma_heap_attachment *a = attachment->priv;
- 	struct sg_table *table = &a->table;
-+	unsigned long attrs;
- 	int ret;
- 
--	ret = dma_map_sgtable(attachment->dev, table, direction, 0);
-+	attrs = a->decrypted ? DMA_ATTR_CC_DECRYPTED : 0;
-+	ret = dma_map_sgtable(attachment->dev, table, direction, attrs);
- 	if (ret)
- 		return ERR_PTR(ret);
- 
-@@ -188,8 +224,13 @@ static int system_heap_mmap(struct dma_buf *dmabuf, struct vm_area_struct *vma)
- 	unsigned long addr = vma->vm_start;
- 	unsigned long pgoff = vma->vm_pgoff;
- 	struct scatterlist *sg;
-+	pgprot_t prot;
- 	int i, ret;
- 
-+	prot = vma->vm_page_prot;
-+	if (buffer->decrypted)
-+		prot = pgprot_decrypted(prot);
-+
- 	for_each_sgtable_sg(table, sg, i) {
- 		unsigned long n = sg->length >> PAGE_SHIFT;
- 
-@@ -206,8 +247,7 @@ static int system_heap_mmap(struct dma_buf *dmabuf, struct vm_area_struct *vma)
- 		if (addr + size > vma->vm_end)
- 			size = vma->vm_end - addr;
- 
--		ret = remap_pfn_range(vma, addr, page_to_pfn(page),
--				size, vma->vm_page_prot);
-+		ret = remap_pfn_range(vma, addr, page_to_pfn(page), size, prot);
- 		if (ret)
- 			return ret;
- 
-@@ -225,6 +265,7 @@ static void *system_heap_do_vmap(struct system_heap_buffer *buffer)
- 	struct page **pages = vmalloc(sizeof(struct page *) * npages);
- 	struct page **tmp = pages;
- 	struct sg_page_iter piter;
-+	pgprot_t prot;
- 	void *vaddr;
- 
- 	if (!pages)
-@@ -235,7 +276,10 @@ static void *system_heap_do_vmap(struct system_heap_buffer *buffer)
- 		*tmp++ = sg_page_iter_page(&piter);
- 	}
- 
--	vaddr = vmap(pages, npages, VM_MAP, PAGE_KERNEL);
-+	prot = PAGE_KERNEL;
-+	if (buffer->decrypted)
-+		prot = pgprot_decrypted(prot);
-+	vaddr = vmap(pages, npages, VM_MAP, prot);
- 	vfree(pages);
- 
- 	if (!vaddr)
-@@ -296,6 +340,14 @@ static void system_heap_dma_buf_release(struct dma_buf *dmabuf)
- 	for_each_sgtable_sg(table, sg, i) {
- 		struct page *page = sg_page(sg);
- 
-+		/*
-+		 * Intentionally leak pages that cannot be re-encrypted
-+		 * to prevent decrypted memory from being reused.
-+		 */
-+		if (buffer->decrypted &&
-+		    system_heap_set_page_encrypted(page))
-+			continue;
-+
- 		__free_pages(page, compound_order(page));
- 	}
- 	sg_free_table(table);
-@@ -344,6 +396,7 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
- 	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
- 	unsigned long size_remaining = len;
- 	unsigned int max_order = orders[0];
-+	bool decrypted = heap_flags & DMA_HEAP_FLAG_DECRYPTED;
- 	struct dma_buf *dmabuf;
- 	struct sg_table *table;
- 	struct scatterlist *sg;
-@@ -351,6 +404,15 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
- 	struct page *page, *tmp_page;
- 	int i, ret = -ENOMEM;
- 
-+	if (decrypted) {
-+		if (!cc_platform_has(CC_ATTR_MEM_ENCRYPT))
-+			return ERR_PTR(-EOPNOTSUPP);
-+#ifdef CONFIG_HIGHMEM
-+		/* Sanity check, should not happen. */
-+		return ERR_PTR(-EINVAL);
-+#endif
-+	}
-+
- 	buffer = kzalloc(sizeof(*buffer), GFP_KERNEL);
- 	if (!buffer)
- 		return ERR_PTR(-ENOMEM);
-@@ -359,6 +421,7 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
- 	mutex_init(&buffer->lock);
- 	buffer->heap = heap;
- 	buffer->len = len;
-+	buffer->decrypted = decrypted;
- 
- 	INIT_LIST_HEAD(&pages);
- 	i = 0;
-@@ -393,6 +456,14 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
- 		list_del(&page->lru);
- 	}
- 
-+	if (decrypted) {
-+		for_each_sgtable_sg(table, sg, i) {
-+			ret = system_heap_set_page_decrypted(sg_page(sg));
-+			if (ret)
-+				goto free_pages;
-+		}
-+	}
-+
- 	/* create the dmabuf */
- 	exp_info.exp_name = dma_heap_get_name(heap);
- 	exp_info.ops = &system_heap_buf_ops;
-@@ -410,6 +481,13 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
- 	for_each_sgtable_sg(table, sg, i) {
- 		struct page *p = sg_page(sg);
- 
-+		/*
-+		 * Intentionally leak pages that cannot be re-encrypted
-+		 * to prevent decrypted memory from being reused.
-+		 */
-+		if (buffer->decrypted &&
-+		    system_heap_set_page_encrypted(p))
-+			continue;
- 		__free_pages(p, compound_order(p));
- 	}
- 	sg_free_table(table);
-@@ -430,6 +508,7 @@ static int __init system_heap_create(void)
- 	struct dma_heap_export_info exp_info = {
- 		.name = "system",
- 		.ops = &system_heap_ops,
-+		.valid_heap_flags = DMA_HEAP_FLAG_DECRYPTED,
- 	};
- 	struct dma_heap *sys_heap;
- 
-diff --git a/include/linux/dma-heap.h b/include/linux/dma-heap.h
-index 7cfb531a9281..295a7eaa19ca 100644
---- a/include/linux/dma-heap.h
-+++ b/include/linux/dma-heap.h
-@@ -10,6 +10,7 @@
- #define _DMA_HEAPS_H
- 
- #include <linux/types.h>
-+#include <uapi/linux/dma-heap.h>
- 
- struct dma_heap;
- 
-diff --git a/include/uapi/linux/dma-heap.h b/include/uapi/linux/dma-heap.h
-index a4cf716a49fa..6552c88e52f6 100644
---- a/include/uapi/linux/dma-heap.h
-+++ b/include/uapi/linux/dma-heap.h
-@@ -18,8 +18,16 @@
- /* Valid FD_FLAGS are O_CLOEXEC, O_RDONLY, O_WRONLY, O_RDWR */
- #define DMA_HEAP_VALID_FD_FLAGS (O_CLOEXEC | O_ACCMODE)
- 
--/* Currently no heap flags */
--#define DMA_HEAP_VALID_HEAP_FLAGS (0ULL)
-+/**
-+ * DMA_HEAP_FLAG_DECRYPTED - Allocate decrypted (shared) memory
-+ *
-+ * For confidential computing guests (AMD SEV, Intel TDX), this flag
-+ * requests that the allocated memory be marked as decrypted (shared
-+ * with the host).
-+ */
-+#define DMA_HEAP_FLAG_DECRYPTED		(1ULL << 0)
-+
-+#define DMA_HEAP_VALID_HEAP_FLAGS (DMA_HEAP_FLAG_DECRYPTED)
- 
- /**
-  * struct dma_heap_allocation_data - metadata passed from userspace for
--- 
-2.51.1
-
+T24gTW9uLCAyMDI2LTAyLTA5IGF0IDEwOjMzICswMDAwLCBIdWFuZywgS2FpIHdyb3RlOg0KPiBJ
+biB0aGUgZmF1bHQgcGF0aCwgd2UgYWxyZWFkeSBrbm93IHRoZSBQRk4gYWZ0ZXINCj4ga3ZtX21t
+dV9mYXVsdGluX3BmbigpLCB3aGljaCBpcyBvdXRzaWRlIG9mIE1NVSBsb2NrLg0KPiANCj4gV2hh
+dCB3ZSBzdGlsbCBkb24ndCBrbm93IGlzIHRoZSBhY3R1YWwgbWFwcGluZyBsZXZlbCwgd2hpY2gg
+aXMNCj4gY3VycmVudGx5IGRvbmUgaW4ga3ZtX3RkcF9tbXVfbWFwKCkgdmlhIGt2bV9tbXVfaHVn
+ZXBhZ2VfYWRqdXN0KCkuDQo+IA0KPiBIb3dldmVyIEkgZG9uJ3Qgc2VlIHdoeSB3ZSBjYW5ub3Qg
+bW92ZSBrdm1fbW11X2h1Z2VwYWdlX2FkanVzdCgpIG91dA0KPiBvZiBpdCB0bywgZS5nLiwgcmln
+aHQgYWZ0ZXIga3ZtX21tdV9mYXVsdGluX3BmbigpPw0KPiANCj4gSWYgd2UgY2FuIGRvIHRoaXMs
+IHRoZW4gQUZBSUNUIHdlIGNhbiBqdXN0IGRvOg0KPiANCj4gwqAgciA9IGt2bV94ODZfY2FsbChw
+cmVwYXJlX3BmbikodmNwdSwgZmF1bHQsIHBmbik7DQoNCldoYXQgYWJvdXQgdGhlIGFkanVzdG1l
+bnRzIGluIGRpc2FsbG93ZWRfaHVnZXBhZ2VfYWRqdXN0KCk/DQo=
