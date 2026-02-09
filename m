@@ -1,108 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF1D2F28E3
-	for <linux-coco@lists.linux.dev>; Mon,  9 Feb 2026 10:46:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A49E37F8BF
+	for <linux-coco@lists.linux.dev>; Mon,  9 Feb 2026 15:32:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770633994; cv=none; b=f2BJ6PGsJ2HRHNG8czCmh0V/d/fPhl+2kMTGIWfa/f/jVmMvLFSvuAaPPDdfn2YmD6O+zISkFUt9gtqhcp8CLj5YqrOW8pRmAohvJS6T3SdcElI1ekdaeZYX6fZUfVzfrzK5Nrbr62uXaWXj3zgTvZKMb1zJMoJi0f2NZp4DQbc=
+	t=1770651172; cv=none; b=I/5qas6I5uDsQVbKg6DsaT1QW51gD9ej3NVIBEi28aPIb8ndfJlNGm9AStH8qjhGrs+mgFYKogOsArA8Da2dDdn19C52FqGffXvv6ffxX0izOUd6dfkYddqL0taQUrbYcAlF0zO9IeIBOBNu/X1DQI3VILnJy6I8VybAgqKmAsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770633994; c=relaxed/simple;
-	bh=oIt396BW0G8JKjB3ihTbTUGQExj5VHd026WpVIYdpus=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GmE6HWAmH1/YwH+ZHSC3p/93yME5gTW+38Pii7/DkkZx/OFMmKGyN56u6bb9SDAxw812f7RwS/ho8RE4tPUTIOaleFYFG43J/w5Of9rX2iqYHSqZhHvmNykr+XdJlawfOg/BKcm2dm1Tk/7faKIAKqt+r22occH53QR1LvtQQjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cQ9LIGJ7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770651172; c=relaxed/simple;
+	bh=2jzCKfkuATuKM2SWEkQKEYWWewW9IGVdQS9kCe5rsxs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MnoM9bRsWNYvFU+aZfUe2WX1wLWG/UWum7DqIv+5dA1fVh2DV//RoF6bdS1dirmJ+/uDqEZatSV1CMbu3q7Z2xbc0/wLTRHWDWtBoIZmdwAKxg884PinxQ+dLeIqbPcQLZPxVBX9sDrxLZ9uqetnpXMT/UbAFQtQrcdAIYMHLMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=eEyAXYFZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=XyUXDYo1; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=eEyAXYFZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=XyUXDYo1; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cQ9LIGJ7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57F52C16AAE;
-	Mon,  9 Feb 2026 10:46:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770633993;
-	bh=oIt396BW0G8JKjB3ihTbTUGQExj5VHd026WpVIYdpus=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cQ9LIGJ7HQOg9wFwx7aTtpZw/xQw1ZLaXlhZsPc3tpd26A8p8ODANm7Ow7TLm4N/I
-	 lp79Ho5tmDM9Iatx5V5pIXXZCIYkcJBZ0shgiSTRkEylBqgG5uI2zYWe4/Qa26fa23
-	 OWaISnYsdibG5DXsqbOmSAV7TP/fowYYtMBX1SskNXRJE703ZLjuGMHwMJOKjVhSqt
-	 f79Mul4IApL79s2RWWslBbYdT516iTOEW4QnhdwZw0aiC7QuZhlm6UBL8O+pbD7sp6
-	 nU7eoT8QDZNsWtPmb13hmrfVvK3APvM7nE8k7Xf3cG9eyxAvP0XwrxEn8ObD/xquCR
-	 0FRihjmXbKb3g==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 492D1F40069;
-	Mon,  9 Feb 2026 05:46:32 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Mon, 09 Feb 2026 05:46:32 -0500
-X-ME-Sender: <xms:CLuJaXXxQKKU56KpHtA4N-brlRRO3TdzHB1BQAMjTLLlbBAIguQlng>
-    <xme:CLuJaYZchdMiYkeNYZ_Om82s8QFx_5KHYBNl3X_pvMGAhFymx5pxQmk971Ny3Q2JD
-    oOPTYR-98Da44Bijk5Wv5MzPBlvXqIE2plVuKjPhlYnoMBAN4hbuAQ>
-X-ME-Received: <xmr:CLuJaaWDRWKn_Ub_E6S2hVnJDFN35M3O19damgHYMxnjgoYr4Cmogv9TBMkxNw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduleeiiedtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepfedtpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegurghvvgdrhhgrnhhsvghnsehinhhtvghlrdgtohhmpdhrtghpthhtohepvhhish
-    hhrghlrdhlrdhvvghrmhgrsehinhhtvghlrdgtohhmpdhrtghpthhtohepuggrvhgvrdhh
-    rghnshgvnheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehkvhhmsehvgh
-    gvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqtghotghosehlihhs
-    thhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvgh
-    gvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptghhrghordhgrghosehinhhtvghl
-    rdgtohhmpdhrtghpthhtoheprhhitghkrdhprdgvughgvggtohhmsggvsehinhhtvghlrd
-    gtohhmpdhrtghpthhtohepkhgrihdrhhhurghnghesihhnthgvlhdrtghomh
-X-ME-Proxy: <xmx:CLuJab6AboiZ9JrcFOA7I44Omgg_Q9zC6j0XH56thRmXe_3cFkqaIQ>
-    <xmx:CLuJaad8rS6BeJ8LPABmMD0TqLGLwZxxx7H6wG4vRefbrO363mwt6A>
-    <xmx:CLuJad7_XFePpMqe_jPykn70JicMwJTlAdHchLMmK_yX4GGBfZJL3A>
-    <xmx:CLuJaa2mgySh0A79OA0GfWgDEG38qzD2EtBqtTrsS-J2qLRoTubkTQ>
-    <xmx:CLuJaQCESpHTIEyecjPO1R-qi7BK661LY8odbtzHiuJiU3gyLkG2O7eY>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 9 Feb 2026 05:46:31 -0500 (EST)
-Date: Mon, 9 Feb 2026 10:46:30 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: "Verma, Vishal L" <vishal.l.verma@intel.com>, 
-	dave.hansen@linux.intel.com, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"Gao, Chao" <chao.gao@intel.com>, "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
-	"Huang, Kai" <kai.huang@intel.com>, "bp@alien8.de" <bp@alien8.de>, 
-	"mingo@redhat.com" <mingo@redhat.com>, "Williams, Dan J" <dan.j.williams@intel.com>, 
-	"tglx@linutronix.de" <tglx@linutronix.de>, "hpa@zytor.com" <hpa@zytor.com>, 
-	"x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH v2 0/2] x86/virt/tdx: Print TDX module version to dmesg
-Message-ID: <aYm6-SMojt9uqi0G@thinkstation>
-References: <20260109-tdx_print_module_version-v2-0-e10e4ca5b450@intel.com>
- <6d8d37740459963e6fd7f16a890a837b34ebdf17.camel@intel.com>
- <aYXSd8B00OtKZcAU@thinkstation>
- <2235a1cf-7ccf-4134-80b5-8056537c6d33@intel.com>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="eEyAXYFZ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="XyUXDYo1";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="eEyAXYFZ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="XyUXDYo1"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A76DB5BD2F;
+	Mon,  9 Feb 2026 15:32:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1770651170; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ogoGOvVFOpaxr4AtnTZjL8fQolKqHO93LqTA3g1vGXg=;
+	b=eEyAXYFZyz1VkNawoWhvObrlZ1bjC2/cTkYeG/Nfpf+r5bBlvBl7D4MMnNbw6CYiNDzZLP
+	GLareVVeQV/ZcySJuQMwB0MTLQvCVNt4eQC14lXzG7mM2iyouRBtI50VDjzoge+FFkQl6k
+	wYvau7cp4LiuAcnBTD2TgMWfWgH65dk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1770651170;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ogoGOvVFOpaxr4AtnTZjL8fQolKqHO93LqTA3g1vGXg=;
+	b=XyUXDYo1ZtK2Pe4KpWTdRrvc4lW0ZaaFvWNYKm3999Kf2d50LMOK2DD4rMxY/EdmM7asC/
+	MZbmn40mlVtIh6Bg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eEyAXYFZ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XyUXDYo1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1770651170; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ogoGOvVFOpaxr4AtnTZjL8fQolKqHO93LqTA3g1vGXg=;
+	b=eEyAXYFZyz1VkNawoWhvObrlZ1bjC2/cTkYeG/Nfpf+r5bBlvBl7D4MMnNbw6CYiNDzZLP
+	GLareVVeQV/ZcySJuQMwB0MTLQvCVNt4eQC14lXzG7mM2iyouRBtI50VDjzoge+FFkQl6k
+	wYvau7cp4LiuAcnBTD2TgMWfWgH65dk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1770651170;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ogoGOvVFOpaxr4AtnTZjL8fQolKqHO93LqTA3g1vGXg=;
+	b=XyUXDYo1ZtK2Pe4KpWTdRrvc4lW0ZaaFvWNYKm3999Kf2d50LMOK2DD4rMxY/EdmM7asC/
+	MZbmn40mlVtIh6Bg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D846A3EA63;
+	Mon,  9 Feb 2026 15:32:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id JFLeMSH+iWkrKwAAD6G6ig
+	(envelope-from <clopez@suse.de>); Mon, 09 Feb 2026 15:32:49 +0000
+From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
+To: seanjc@google.com,
+	bp@alien8.de,
+	kvm@vger.kernel.org
+Cc: linux-coco@lists.linux.dev,
+	jmattson@google.com,
+	binbin.wu@linux.intel.com,
+	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+	"H. Peter Anvin" <hpa@zytor.com>,
+	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT))
+Subject: [PATCH v2] KVM: x86: synthesize CPUID bits only if CPU capability is set
+Date: Mon,  9 Feb 2026 16:31:09 +0100
+Message-ID: <20260209153108.70667-2-clopez@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2235a1cf-7ccf-4134-80b5-8056537c6d33@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -3.51
+X-Spamd-Result: default: False [-3.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:mid,suse.de:email];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: A76DB5BD2F
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
 
-On Fri, Feb 06, 2026 at 07:10:58AM -0800, Dave Hansen wrote:
-> On 2/6/26 03:39, Kiryl Shutsemau wrote:
-> >> Hi Kiryl, just wanted to check on the plan for this, I didn't see it
-> >> merged in tip.git x86/tdx (or any other tip branch). Were you planning
-> >> to take it through x86/tdx? Can I help with anything to move it along?
-> > I guess it has to wait after the merge window at this point.
-> > 
-> > Dave, could you queue this after -rc1 is tagged?
-> 
-> Sure.
-> 
-> Is there any other TDX stuff that needs to get picked up at the same
-> time that's been languishing?
+KVM incorrectly synthesizes CPUID bits for KVM-only leaves, as the
+following branch in kvm_cpu_cap_init() is never taken:
 
-Nothing on my side.
+    if (leaf < NCAPINTS)
+        kvm_cpu_caps[leaf] &= kernel_cpu_caps[leaf];
 
+This means that bits set via SYNTHESIZED_F() for KVM-only leaves are
+unconditionally set. This for example can cause issues for SEV-SNP
+guests running on Family 19h CPUs, as TSA_SQ_NO and TSA_L1_NO are
+always enabled by KVM in 80000021[ECX]. When userspace issues a
+SNP_LAUNCH_UPDATE command to update the CPUID page for the guest, SNP
+firmware will explicitly reject the command if the page sets sets these
+bits on vulnerable CPUs.
+
+To fix this, check in SYNTHESIZED_F() that the corresponding X86
+capability is set before adding it to to kvm_cpu_cap_features.
+
+Fixes: 31272abd5974 ("KVM: SVM: Advertise TSA CPUID bits to guests")
+Link: https://lore.kernel.org/all/20260208164233.30405-1-clopez@suse.de/
+Signed-off-by: Carlos López <clopez@suse.de>
+---
+v2: fix SYNTHESIZED_F() instead of using SCATTERED_F() for TSA bits
+ arch/x86/kvm/cpuid.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+index 88a5426674a1..5f41924987c7 100644
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -770,7 +770,10 @@ do {									\
+ #define SYNTHESIZED_F(name)					\
+ ({								\
+ 	kvm_cpu_cap_synthesized |= feature_bit(name);		\
+-	F(name);						\
++								\
++	BUILD_BUG_ON(X86_FEATURE_##name >= MAX_CPU_FEATURES);	\
++	if (boot_cpu_has(X86_FEATURE_##name))			\
++		F(name);					\
+ })
+ 
+ /*
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.51.0
+
