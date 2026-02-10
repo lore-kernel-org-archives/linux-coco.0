@@ -1,146 +1,400 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01BFA319850;
-	Tue, 10 Feb 2026 18:03:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBC717BB21
+	for <linux-coco@lists.linux.dev>; Tue, 10 Feb 2026 19:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770746640; cv=none; b=fP31hBezpuq+WyrbAHOp86peHvN3u1AJgOUkIDI9+ggTzRIbDLyjbFMwGJHjrxJ2Q+oqvvIa2BhTGSCnVRY188RFQp2k7lzRtgTQLY+SrkA2j93FbkpEVz9WpSsuKHV+/oO+MUPagQxxgltm5qewHqZaPW/PmaHIYKtmfxmVfJA=
+	t=1770753134; cv=none; b=EzAS/Q36X/JfhTZG48ernDuN/kpRbqUkL7WAKFEqHaisrcs7HdiXkl6ipcgRg36MZCKWpczaqSWOnEyjG2itHdN3nqoc4+/AaaC4TGSgf2fzQgCLBVcy2XwJM0hqj5dVTKptLRGMCzA0qhaMwDaEKxGBXKzv7Vgx0EKzeN37PD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770746640; c=relaxed/simple;
-	bh=RCF0n7XHDUGKM+cjf33SZOFc4i4PkHY0jF5mOX8LCFE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CKpoqNPILaKezeS3jKPCiolCWU7z1TRAil3FAk/2SOcU4JJ/J0a3Md68u3F67xyq3Oe+16USu9mPJR/TGvJfyzvw72S52W/Qxx+c9g9X+I3AeqUBeoWTYcVK+ZLZUVIATt/hqVdMvh98wlgh8vbszPp1nXQB4MstGdpk8y2rqxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hMXifKy9; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1770753134; c=relaxed/simple;
+	bh=FPz3aTALDGXoAJyRaVcPtp+DUvxzedskxbFzllDm7TE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=QIvKzwzywcW8AkrW8X6UEqHFaWHA16kOG1VL5x4hToQVz5O3oSQ4brPp1w+4FlcCijoIWPgfALd6O/rupL7gvrvwdnOA+CUBNYlKlXpYSLTDrU/+sc2MbqUfjDTv37dCApp/4qeU7l4iOeT6hkONVQKGTkaBUmOHuRLYLV7Z2Zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=orw5tuHo; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hMXifKy9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770746638; x=1802282638;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=RCF0n7XHDUGKM+cjf33SZOFc4i4PkHY0jF5mOX8LCFE=;
-  b=hMXifKy9/4SQOzymUlvohR5vdNAbCI4mOmkNl22JoiYWqiyw+T3vhcxF
-   Mzgq1N01Bz4+fVYVJ+ScXLy5GvYbtnahf9iUEw3ORuWQ2rq8bPsZbRsuV
-   IDrr189WtjNnypWhg7trcHpHEjoV3256hwPI67TyPRGLlSixQrijd2Y7e
-   3DFS0Dj5pSTZ8v2aADSErNFLBoEOZ3FvcHtIcQJVk9SBm7UmydZT2HX9L
-   Sczy+nd0Z6WD0mtHWcGYLQxo3X24rbUZM6ZDNN4FLNqkLtv+x3jCzHaXi
-   Cdog2lfydHkspxIs6XcsP6ps56MGZX+GElbm2UEnWYXTRg8GqrGpUlNMA
-   w==;
-X-CSE-ConnectionGUID: meOjuHjkQaK5At1B/tlgyw==
-X-CSE-MsgGUID: CnrNALMjT4yJ42H7uw7VYw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="75728596"
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="75728596"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 10:03:57 -0800
-X-CSE-ConnectionGUID: zOeotsxLRKmN8lqHs702VQ==
-X-CSE-MsgGUID: 7I9nDF1BShClWzSGAashTg==
-X-ExtLoop1: 1
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 10 Feb 2026 10:03:51 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vps5V-00000000pHk-2Bfq;
-	Tue, 10 Feb 2026 18:03:49 +0000
-Date: Wed, 11 Feb 2026 02:03:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jiri Pirko <jiri@resnulli.us>, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org, iommu@lists.linux.dev,
-	linux-media@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, sumit.semwal@linaro.org,
-	benjamin.gaignard@collabora.com, Brian.Starkey@arm.com,
-	jstultz@google.com, tjmercier@google.com, christian.koenig@amd.com,
-	m.szyprowski@samsung.com, robin.murphy@arm.com, jgg@ziepe.ca,
-	leon@kernel.org, sean.anderson@linux.dev, ptesarik@suse.com,
-	catalin.marinas@arm.com, aneesh.kumar@kernel.org,
-	suzuki.poulose@arm.com, steven.price@arm.com,
-	thomas.lendacky@amd.com, john.allen@amd.com, ashish.kalra@amd.com,
-	suravee.suthikulpanit@amd.com, linux-coco@lists.linux.dev
-Subject: Re: [PATCH 5/5] dma-buf: heaps: system: add an option to allocate
- explicitly decrypted memory
-Message-ID: <202602110149.tBUPP0bh-lkp@intel.com>
-References: <20260209153809.250835-6-jiri@resnulli.us>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="orw5tuHo"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c6dded42ec4so2496310a12.2
+        for <linux-coco@lists.linux.dev>; Tue, 10 Feb 2026 11:52:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770753131; x=1771357931; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FStoHjs1wWIxzpnOrpHPM0LO80v2etJ2i+SwwLplyV4=;
+        b=orw5tuHoLmSoJigwezaHsr/ZsGbjw0oOgL/kqHl0JSscZ/i81rISBJwSMR2eJp3Ygt
+         sRvOD+VWrQio03dOsZdcjh08g5jz3/sJVYDKew+EvCzZyTo8XqO0+KP8lxe3pxGwgeA+
+         d+1fMqbQJKK+ip5zS9kkt9r2HRbJPic2weAzFn+tFUrVutr1Ew0pRdMtNtd6ycE5vWSF
+         o1bIl2MDK/vN9Y3l+67xx6job2dVMIkF+uRmSxB27TrXicKxSfWpr3hI6oidbZkv8k8J
+         oJYYYGOVmlQ20U0naNq8RLjySk/c986U5uprDRDQJdvQaJGlsyEbojCdmbzYRQH1PYzb
+         8JqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770753131; x=1771357931;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FStoHjs1wWIxzpnOrpHPM0LO80v2etJ2i+SwwLplyV4=;
+        b=dkmA/Qf00LxT2lHNGGJJWdRDrkw0xv9hlAeKSaSFaGhojgNbSrk7h3d0lgISyzjyYc
+         8D2nWPoJIr0xeRThKYMJDeW/8ZRP6wUQqgfADpMbR4TGnWc0Vh0WUegmpKbyuvTNHmrD
+         kxj/rOdCulZ2fCQFCe5PEJBYW+QldsZ4RwnnHaktxAjCPALhdL7OvxSIdTzNYZ7BLOKF
+         dSJYc1YiGiusRJbojNPYREyx/Gtd1TQNIb9Tu/5Uxkl2rDt9JhGs3V+SojV+6bjhK+Vi
+         zU4AOnuRovops98hJzxKXKwhSE7EYU7ryjjBk2NouewoQjsploAwDNFsLvXZd0jMOOPJ
+         byJA==
+X-Forwarded-Encrypted: i=1; AJvYcCWTOedcLGaksPoyybJCs8i4F2+0TMTXuO1pLJNlHwrctUHfEyt0Sf/Y2v6zchYIt9L2CBVjx6suoTMa@lists.linux.dev
+X-Gm-Message-State: AOJu0YzeJTdF6u8BnR3ZMaMD16HwenWRIs1JCSkM9X5lcWjcUVNvDOiH
+	y1q4qUzJuASquJVIqhHoBzsK5cp4pR8AFPGcqK3qzGZaAnJY3otuteGX1fpv0iJ1Y2xf0XVN2jz
+	mXvDd9A==
+X-Received: from pjbsb14.prod.google.com ([2002:a17:90b:50ce:b0:352:de3b:3a0f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:730a:b0:364:33f7:7338
+ with SMTP id adf61e73a8af0-39417853391mr3287700637.8.1770753131366; Tue, 10
+ Feb 2026 11:52:11 -0800 (PST)
+Date: Tue, 10 Feb 2026 11:52:09 -0800
+In-Reply-To: <aYsOV7Q5FTWo+6/x@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260209153809.250835-6-jiri@resnulli.us>
+Mime-Version: 1.0
+References: <20260129011517.3545883-1-seanjc@google.com> <20260129011517.3545883-9-seanjc@google.com>
+ <aYMMHVvwDjZ7Lz9l@yzhao56-desk.sh.intel.com> <aYP_Ko3FGRriGXWR@google.com>
+ <aYQtIK/Lq5T3ad6V@yzhao56-desk.sh.intel.com> <aYUarHf3KEwHGuJe@google.com>
+ <aYVPN5M7QQwu/r/n@yzhao56-desk.sh.intel.com> <aYYn0nf2cayYu8e7@google.com> <aYsOV7Q5FTWo+6/x@yzhao56-desk.sh.intel.com>
+Message-ID: <aYuMaRbVQyUfYJTP@google.com>
+Subject: Re: [RFC PATCH v5 08/45] KVM: x86/mmu: Propagate mirror SPTE removal
+ to S-EPT in handle_changed_spte()
+From: Sean Christopherson <seanjc@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	Kai Huang <kai.huang@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Sagi Shahar <sagis@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Hi Jiri,
+On Tue, Feb 10, 2026, Yan Zhao wrote:
+> On Fri, Feb 06, 2026 at 09:41:38AM -0800, Sean Christopherson wrote:
+> > On Fri, Feb 06, 2026, Yan Zhao wrote:
+> > @@ -559,30 +559,31 @@ static void handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
+> >  	 * SPTE being converted to a hugepage (leaf) or being zapped.  Shadow
+> >  	 * pages are kernel allocations and should never be migrated.
+> >  	 *
+> > -	 * When modifying leaf entries in mirrored page tables, propagate the
+> > -	 * changes to the external SPTE.  Bug the VM on failure, as callers
+> > -	 * aren't prepared to handle errors, e.g. due to lock contention in the
+> > -	 * TDX-Module.  Note, changes to non-leaf mirror SPTEs are handled by
+> > -	 * handle_removed_pt() (the TDX-Module requires that child entries are
+> > -	 * removed before the parent SPTE), and changes to non-present mirror
+> > -	 * SPTEs are handled by __tdp_mmu_set_spte_atomic() (KVM needs to set
+> > -	 * the external SPTE while the mirror SPTE is frozen so that installing
+> > -	 * a new SPTE is effectively an atomic operation).
+> > +	 * When modifying leaf entries in mirrored page tables, propagate all
+> > +	 * changes to the external SPTE.
+> >  	 */
+> >  	if (was_present && !was_leaf &&
+> >  	    (is_leaf || !is_present || WARN_ON_ONCE(pfn_changed)))
+> >  		handle_removed_pt(kvm, spte_to_child_pt(old_spte, level), shared);
+> > -	else if (was_leaf && is_mirror_sptep(sptep))
+> > -		KVM_BUG_ON(kvm_x86_call(set_external_spte)(kvm, gfn, old_spte,
+> > -							   new_spte, level), kvm);
+> > +	else if (is_mirror_sptep(sptep))
+> > +		return kvm_x86_call(set_external_spte)(kvm, gfn, old_spte,
+> > +						       new_spte, level);
+> For TDX's future implementation of set_external_spte() for split splitting,
+> could we add a new param "bool shared" to op set_external_spte() in the
+> future? i.e.,
+> - when tdx_sept_split_private_spte() is invoked under write mmu_lock, it calls
+>   tdh_do_no_vcpus() to retry BUSY error, and TDX_BUG_ON_2() then.
+> - when tdx_sept_split_private_spte() is invoked under read mmu_lock
+>   (in the future when calling tdh_mem_range_block() in unnecessary), it could
+>   directly return BUSY to TDP MMU on contention.
 
-kernel test robot noticed the following build errors:
+Yeah, I have no objection to using @shared for things like that.
 
-[auto build test ERROR on drm-misc/drm-misc-next]
-[also build test ERROR on drm-tip/drm-tip trace/for-next linus/master v6.19]
-[cannot apply to next-20260209]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> > +	return 0;
+> > +}
+> > +
+> > +static void handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
+> > +				gfn_t gfn, u64 old_spte, u64 new_spte,
+> > +				int level, bool shared)
+> > +{
+> Do we need "WARN_ON_ONCE(is_mirror_sptep(sptep) && shared)" here ? 
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jiri-Pirko/dma-mapping-avoid-random-addr-value-print-out-on-error-path/20260209-234013
-base:   https://gitlab.freedesktop.org/drm/misc/kernel.git drm-misc-next
-patch link:    https://lore.kernel.org/r/20260209153809.250835-6-jiri%40resnulli.us
-patch subject: [PATCH 5/5] dma-buf: heaps: system: add an option to allocate explicitly decrypted memory
-config: s390-allyesconfig (https://download.01.org/0day-ci/archive/20260211/202602110149.tBUPP0bh-lkp@intel.com/config)
-compiler: s390-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260211/202602110149.tBUPP0bh-lkp@intel.com/reproduce)
+No, because I want to call this code for all paths, including the fault path.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602110149.tBUPP0bh-lkp@intel.com/
+> > +	KVM_BUG_ON(__handle_changed_spte(kvm, as_id, sptep, gfn, old_spte,
+> > +					 new_spte, level, shared), kvm);
+> >  }
+> 
+> 
+> 
+> >  
+> >  static inline int __must_check __tdp_mmu_set_spte_atomic(struct kvm *kvm,
+> >  							 struct tdp_iter *iter,
+> >  							 u64 new_spte)
+> >  {
+> > -	u64 *raw_sptep = rcu_dereference(iter->sptep);
+> > -
+> >  	/*
+> >  	 * The caller is responsible for ensuring the old SPTE is not a FROZEN
+> >  	 * SPTE.  KVM should never attempt to zap or manipulate a FROZEN SPTE,
+> > @@ -591,40 +592,6 @@ static inline int __must_check __tdp_mmu_set_spte_atomic(struct kvm *kvm,
+> >  	 */
+> >  	WARN_ON_ONCE(iter->yielded || is_frozen_spte(iter->old_spte));
+> >  
+> > -	if (is_mirror_sptep(iter->sptep) && !is_frozen_spte(new_spte)) {
+> > -		int ret;
+> > -
+> > -		/*
+> > -		 * KVM doesn't currently support zapping or splitting mirror
+> > -		 * SPTEs while holding mmu_lock for read.
+> > -		 */
+> > -		if (KVM_BUG_ON(is_shadow_present_pte(iter->old_spte), kvm) ||
+> > -		    KVM_BUG_ON(!is_shadow_present_pte(new_spte), kvm))
+> > -			return -EBUSY;
+> > -
+> > -		/*
+> > -		 * Temporarily freeze the SPTE until the external PTE operation
+> > -		 * has completed, e.g. so that concurrent faults don't attempt
+> > -		 * to install a child PTE in the external page table before the
+> > -		 * parent PTE has been written.
+> > -		 */
+> > -		if (!try_cmpxchg64(raw_sptep, &iter->old_spte, FROZEN_SPTE))
+> > -			return -EBUSY;
+> > -
+> > -		/*
+> > -		 * Update the external PTE.  On success, set the mirror SPTE to
+> > -		 * the desired value.  On failure, restore the old SPTE so that
+> > -		 * the SPTE isn't frozen in perpetuity.
+> > -		 */
+> > -		ret = kvm_x86_call(set_external_spte)(kvm, iter->gfn, iter->old_spte,
+> > -						      new_spte, iter->level);
+> > -		if (ret)
+> > -			__kvm_tdp_mmu_write_spte(iter->sptep, iter->old_spte);
+> > -		else
+> > -			__kvm_tdp_mmu_write_spte(iter->sptep, new_spte);
+> > -		return ret;
+> > -	}
+> > -
+> >  	/*
+> >  	 * Note, fast_pf_fix_direct_spte() can also modify TDP MMU SPTEs and
+> >  	 * does not hold the mmu_lock.  On failure, i.e. if a different logical
+> > @@ -632,7 +599,7 @@ static inline int __must_check __tdp_mmu_set_spte_atomic(struct kvm *kvm,
+> >  	 * the current value, so the caller operates on fresh data, e.g. if it
+> >  	 * retries tdp_mmu_set_spte_atomic()
+> >  	 */
+> > -	if (!try_cmpxchg64(raw_sptep, &iter->old_spte, new_spte))
+> > +	if (!try_cmpxchg64(rcu_dereference(iter->sptep), &iter->old_spte, new_spte))
+> >  		return -EBUSY;
+> >  
+> >  	return 0;
+> > @@ -663,14 +630,44 @@ static inline int __must_check tdp_mmu_set_spte_atomic(struct kvm *kvm,
+> >  
+> >  	lockdep_assert_held_read(&kvm->mmu_lock);
+> >  
+> > -	ret = __tdp_mmu_set_spte_atomic(kvm, iter, new_spte);
+> >
+> > +	/* KVM should never freeze SPTEs using higher level APIs. */
+> > +	KVM_MMU_WARN_ON(is_frozen_spte(new_spte));
+> What about
+> 	KVM_MMU_WARN_ON(is_frozen_spte(new_spte) ||
+> 			is_frozen_spte(iter->old_spte) || iter->yielded);
+> 
+> > +	/*
+> > +	  * Temporarily freeze the SPTE until the external PTE operation has
+> > +	  * completed (unless the new SPTE itself will be frozen), e.g. so that
+> > +	  * concurrent faults don't attempt to install a child PTE in the
+> > +	  * external page table before the parent PTE has been written, or try
+> > +	  * to re-install a page table before the old one was removed.
+> > +	  */
+> > +	if (is_mirror_sptep(iter->sptep))
+> > +		ret = __tdp_mmu_set_spte_atomic(kvm, iter, FROZEN_SPTE);
+> > +	else
+> > +		ret = __tdp_mmu_set_spte_atomic(kvm, iter, new_spte);
+> and invoking open code try_cmpxchg64() directly?
 
-All errors (new ones prefixed by >>):
+No, because __tdp_mmu_set_spte_atomic() is still used by kvm_tdp_mmu_age_spte(),
+and the yielded/frozen rules apply there as well.
 
-   drivers/dma-buf/heaps/system_heap.c: In function 'system_heap_set_page_decrypted':
->> drivers/dma-buf/heaps/system_heap.c:66:15: error: implicit declaration of function 'set_memory_decrypted' [-Wimplicit-function-declaration]
-      66 |         ret = set_memory_decrypted(addr, nr_pages);
-         |               ^~~~~~~~~~~~~~~~~~~~
-   drivers/dma-buf/heaps/system_heap.c: In function 'system_heap_set_page_encrypted':
->> drivers/dma-buf/heaps/system_heap.c:80:15: error: implicit declaration of function 'set_memory_encrypted' [-Wimplicit-function-declaration]
-      80 |         ret = set_memory_encrypted(addr, nr_pages);
-         |               ^~~~~~~~~~~~~~~~~~~~
+> > +	/*
+> > +	 * Unfreeze the mirror SPTE.  If updating the external SPTE failed,
+> > +	 * restore the old SPTE so that the SPTE isn't frozen in perpetuity,
+> > +	 * otherwise set the mirror SPTE to the new desired value.
+> > +	 */
+> > +	if (is_mirror_sptep(iter->sptep)) {
+> > +		if (ret)
+> > +			__kvm_tdp_mmu_write_spte(iter->sptep, iter->old_spte);
+> > +		else
+> > +			__kvm_tdp_mmu_write_spte(iter->sptep, new_spte);
+> > +	} else {
+> > +		/*
+> > +		 * Bug the VM if handling the change failed, as failure is only
+> > +		 * allowed if KVM couldn't update the external SPTE.
+> > +		 */
+> > +		KVM_BUG_ON(ret, kvm);
+> > +	}
+> > +	return ret;
+> >  }
+> One concern for tdp_mmu_set_spte_atomic() to handle mirror SPTEs:
+> - Previously
+>   1. set *iter->sptep to FROZEN_SPTE.
+>   2. kvm_x86_call(set_external_spte)(old_spte, new_spte)
+>   3. set *iter->sptep to new_spte
+> 
+> - Now with this diff
+>   1. set *iter->sptep to FROZEN_SPTE.
+>   2. __handle_changed_spte()
+>      --> kvm_x86_call(set_external_spte)(iter->sptep, old_spte, new_spte)
 
+Note, iter->sptep isn't passed to set_external_spte(), the invocation for that is:
 
-vim +/set_memory_decrypted +66 drivers/dma-buf/heaps/system_heap.c
+		return kvm_x86_call(set_external_spte)(kvm, gfn, old_spte,
+						       new_spte, level);
 
-    59	
-    60	static int system_heap_set_page_decrypted(struct page *page)
-    61	{
-    62		unsigned long addr = (unsigned long)page_address(page);
-    63		unsigned int nr_pages = 1 << compound_order(page);
-    64		int ret;
-    65	
-  > 66		ret = set_memory_decrypted(addr, nr_pages);
-    67		if (ret)
-    68			pr_warn_ratelimited("dma-buf system heap: failed to decrypt page at %p\n",
-    69					    page_address(page));
-    70	
-    71		return ret;
-    72	}
-    73	
-    74	static int system_heap_set_page_encrypted(struct page *page)
-    75	{
-    76		unsigned long addr = (unsigned long)page_address(page);
-    77		unsigned int nr_pages = 1 << compound_order(page);
-    78		int ret;
-    79	
-  > 80		ret = set_memory_encrypted(addr, nr_pages);
-    81		if (ret)
-    82			pr_warn_ratelimited("dma-buf system heap: failed to re-encrypt page at %p, leaking memory\n",
-    83					    page_address(page));
-    84	
-    85		return ret;
-    86	}
-    87	
+>   3. set *iter->sptep to new_spte 
+> 
+>   what if __handle_changed_spte() reads *iter->sptep in step 2?
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+For the most part, "don't do that".  There are an infinite number of "what ifs".
+I agree that re-reading iter->sptep is slightly more likely than other "what ifs",
+but then if we convert to a boolean it creates the "what if we swap the order of
+@as_id and @is_mirror_sp"?  Given that @old_spte is provided, IMO re-reading the
+SPTE from memory will stand out.
+
+That said, I think we can have the best of both worlds.  Rather than pass @as_id
+and @sptep, pass the @sp, i.e. the owning kvm_mmu_page.  That would address your
+concern about re-reading the sptep, without needing another boolean.
+
+E.g. slotted in as a cleanup somewhere earlier:
+
+---
+ arch/x86/kvm/mmu/tdp_mmu.c | 29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
+
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+index 732548a678d8..d395da35d5e4 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -326,7 +326,7 @@ void kvm_tdp_mmu_alloc_root(struct kvm_vcpu *vcpu, bool mirror)
+ 	}
+ }
+ 
+-static void handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
++static void handle_changed_spte(struct kvm *kvm, struct kvm_mmu_page *sp,
+ 				gfn_t gfn, u64 old_spte, u64 new_spte,
+ 				int level, bool shared);
+ 
+@@ -458,8 +458,7 @@ static void handle_removed_pt(struct kvm *kvm, tdp_ptep_t pt, bool shared)
+ 			old_spte = kvm_tdp_mmu_write_spte(sptep, old_spte,
+ 							  FROZEN_SPTE, level);
+ 		}
+-		handle_changed_spte(kvm, kvm_mmu_page_as_id(sp), sptep, gfn,
+-				    old_spte, FROZEN_SPTE, level, shared);
++		handle_changed_spte(kvm, sp, gfn, old_spte, FROZEN_SPTE, level, shared);
+ 	}
+ 
+ 	if (is_mirror_sp(sp))
+@@ -471,8 +470,7 @@ static void handle_removed_pt(struct kvm *kvm, tdp_ptep_t pt, bool shared)
+ /**
+  * __handle_changed_spte - handle bookkeeping associated with an SPTE change
+  * @kvm: kvm instance
+- * @as_id: the address space of the paging structure the SPTE was a part of
+- * @sptep: pointer to the SPTE
++ * @sp: the page table in which the SPTE resides
+  * @gfn: the base GFN that was mapped by the SPTE
+  * @old_spte: The value of the SPTE before the change
+  * @new_spte: The value of the SPTE after the change
+@@ -485,7 +483,7 @@ static void handle_removed_pt(struct kvm *kvm, tdp_ptep_t pt, bool shared)
+  * dirty logging updates are handled in common code, not here (see make_spte()
+  * and fast_pf_fix_direct_spte()).
+  */
+-static int __handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
++static int __handle_changed_spte(struct kvm *kvm, struct kvm_mmu_page *sp,
+ 				 gfn_t gfn, u64 old_spte, u64 new_spte,
+ 				 int level, bool shared)
+ {
+@@ -494,6 +492,7 @@ static int __handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
+ 	bool was_leaf = was_present && is_last_spte(old_spte, level);
+ 	bool is_leaf = is_present && is_last_spte(new_spte, level);
+ 	bool pfn_changed = spte_to_pfn(old_spte) != spte_to_pfn(new_spte);
++	int as_id = kvm_mmu_page_as_id(sp);
+ 
+ 	WARN_ON_ONCE(level > PT64_ROOT_MAX_LEVEL);
+ 	WARN_ON_ONCE(level < PG_LEVEL_4K);
+@@ -570,19 +569,19 @@ static int __handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
+ 	if (was_present && !was_leaf &&
+ 	    (is_leaf || !is_present || WARN_ON_ONCE(pfn_changed)))
+ 		handle_removed_pt(kvm, spte_to_child_pt(old_spte, level), shared);
+-	else if (is_mirror_sptep(sptep))
++	else if (is_mirror_sp(sp))
+ 		return kvm_x86_call(set_external_spte)(kvm, gfn, old_spte,
+ 						       new_spte, level);
+ 
+ 	return 0;
+ }
+ 
+-static void handle_changed_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
++static void handle_changed_spte(struct kvm *kvm, struct kvm_mmu_page *sp,
+ 				gfn_t gfn, u64 old_spte, u64 new_spte,
+ 				int level, bool shared)
+ {
+-	KVM_BUG_ON(__handle_changed_spte(kvm, as_id, sptep, gfn, old_spte,
+-					 new_spte, level, shared), kvm);
++	KVM_BUG_ON(__handle_changed_spte(kvm, sp, gfn, old_spte, new_spte,
++					 level, shared), kvm);
+ }
+ 
+ static inline int __must_check __tdp_mmu_set_spte_atomic(struct kvm *kvm,
+@@ -631,6 +630,7 @@ static inline int __must_check tdp_mmu_set_spte_atomic(struct kvm *kvm,
+ 						       struct tdp_iter *iter,
+ 						       u64 new_spte)
+ {
++	struct kvm_mmu_page *sp = sptep_to_sp(rcu_dereference(iter->sptep));
+ 	int ret;
+ 
+ 	lockdep_assert_held_read(&kvm->mmu_lock);
+@@ -652,8 +652,8 @@ static inline int __must_check tdp_mmu_set_spte_atomic(struct kvm *kvm,
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = __handle_changed_spte(kvm, iter->as_id, iter->sptep, iter->gfn,
+-				    iter->old_spte, new_spte, iter->level, true);
++	ret = __handle_changed_spte(kvm, sp, iter->gfn, iter->old_spte,
++				    new_spte, iter->level, true);
+ 
+ 	/*
+ 	 * Unfreeze the mirror SPTE.  If updating the external SPTE failed,
+@@ -678,7 +678,6 @@ static inline int __must_check tdp_mmu_set_spte_atomic(struct kvm *kvm,
+ /*
+  * tdp_mmu_set_spte - Set a TDP MMU SPTE and handle the associated bookkeeping
+  * @kvm:	      KVM instance
+- * @as_id:	      Address space ID, i.e. regular vs. SMM
+  * @sptep:	      Pointer to the SPTE
+  * @old_spte:	      The current value of the SPTE
+  * @new_spte:	      The new value that will be set for the SPTE
+@@ -691,6 +690,8 @@ static inline int __must_check tdp_mmu_set_spte_atomic(struct kvm *kvm,
+ static u64 tdp_mmu_set_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
+ 			    u64 old_spte, u64 new_spte, gfn_t gfn, int level)
+ {
++	struct kvm_mmu_page *sp = sptep_to_sp(rcu_dereference(sptep));
++
+ 	lockdep_assert_held_write(&kvm->mmu_lock);
+ 
+ 	/*
+@@ -704,7 +705,7 @@ static u64 tdp_mmu_set_spte(struct kvm *kvm, int as_id, tdp_ptep_t sptep,
+ 
+ 	old_spte = kvm_tdp_mmu_write_spte(sptep, old_spte, new_spte, level);
+ 
+-	handle_changed_spte(kvm, as_id, sptep, gfn, old_spte, new_spte, level, false);
++	handle_changed_spte(kvm, sp, gfn, old_spte, new_spte, level, false);
+ 
+ 	return old_spte;
+ }
+
+base-commit: f9d48449fbf9aff6cdced4703cdfdfc1d2e49efe
+--
+
+>   Passing in "bool is_mirror_sp" to __handle_changed_spte() instead?
