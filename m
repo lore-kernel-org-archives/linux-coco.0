@@ -1,137 +1,173 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B62B3D6F
-	for <linux-coco@lists.linux.dev>; Tue, 10 Feb 2026 00:07:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDC322A4CC
+	for <linux-coco@lists.linux.dev>; Tue, 10 Feb 2026 00:29:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770682032; cv=none; b=fMmVtWFEfry1Klt+oaX3beppsCaHnRcxYZMl0OIR9yUIIOmJofdcaUyA2XcSzYM/a0M9iaBEg/mEIxSTVsuTG+UpQU7xIFF2vUVArpvs77pitQwDxoA1slx6k/cOHCSWG3CswJ8bx2xrWnl4zorFnE5VT5cKZ06XydWgGWSOlss=
+	t=1770683371; cv=none; b=seX8yTC+/WPyC+VbV8XUZJ6F1vjz2zTTPVPAkR+cMmXxvdEnGNNMzVWgx/9gVbGuc9mstms+TT2PkGPiJ2UuPdgTlbrgdrBZu/FVtAEyaY6huNDzug5f7/aFzkNYT/Jj+KZ9NO8sgn6/OuPwgzSv3c1kmZkTXVT8bpTfwAQic6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770682032; c=relaxed/simple;
-	bh=dDAFOFQxbhz/OxjlKMVBm7cbXjUo3oBHSTE/fvrWQgA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CG/LMA4Bdyg//of3v7Dwr6D8vepjTJn/6IpHGku4VlE1WWGAk8Ov9K3j5rm8WKDk1OaGJ8T5dfCc3QB2bJ9ynK0mKAN/Twe09GGRjWB25dlLiyNfvtOF7IpUh2TmgTGHlO9x2TU4Ayyo3el41+kRiULMCDmxa80FOy8MhwP3MVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c6wFuUS0; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1770683371; c=relaxed/simple;
+	bh=QkYEXlLgFiLfYsdbBUxkHnpm64IBcci0n3arrJTjZQA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jBiPB9gr/prDw41XyuzAVL0cKm85Zmy2xhXjSst+UMZi+V5JS3cwatF2eTJWwMxIQh8doG6/ekyiaJ2pCONhlFUn4wK0LJV3OjwgucKibQW2BvNSNy6RXhSmqDijnth00XfJ5nl7TVI2Swb/zx48bumMGxiU15pZAHHX9W8jlUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=HG5UFVJN; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c6wFuUS0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770682030; x=1802218030;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=dDAFOFQxbhz/OxjlKMVBm7cbXjUo3oBHSTE/fvrWQgA=;
-  b=c6wFuUS0Rb0bzRr1LAvwWIcLp/xaz9g8AKy1Wdt9uxjnWjfGgrzEbIUV
-   m7XsWu3TmscDuVl4X0rBBlnj9/EEACctvZGfWdN4E5biyVm68oOPyI5jQ
-   BA2SEHbQ0e3EvFU5kW38kz0O7eix6iSrKNYD+CSIim+aS3r3f67l4whyH
-   geWxiq723REUlRIB3ZmhT6tCaGpdH0V6VPcBsOEhl6U+SNbc93qk0s0gk
-   evDjTcXLkcAc7BAX/cNGunxfnRx9SKoTWuMheYiSDzmoxt/OTN80J7emV
-   GtGjouJJ/bFXhcpN0rAVRMOpU0n6wsQ+ZfLkmrodN0Y0XRSuqtV9ABQLf
-   g==;
-X-CSE-ConnectionGUID: kxgDF3mXSaabcT7ez4eKDw==
-X-CSE-MsgGUID: 5KC4BTcbQuayxlW4N1KFSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="89218074"
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="89218074"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 16:07:10 -0800
-X-CSE-ConnectionGUID: jQQ4Vb9gSV63iSvx8+mwbw==
-X-CSE-MsgGUID: YWf6RlagQR2dfBQH7Pj2QA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="211760353"
-Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.108.24]) ([10.125.108.24])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 16:07:09 -0800
-Message-ID: <6a5e3e9f-69b2-4416-9465-92a859034391@intel.com>
-Date: Mon, 9 Feb 2026 16:07:08 -0800
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="HG5UFVJN"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-503347e8715so43366781cf.2
+        for <linux-coco@lists.linux.dev>; Mon, 09 Feb 2026 16:29:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1770683369; x=1771288169; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=x6h4j6WhKvTbDaZfOUKYNWWIjZl7N5IPl8TkLFVZwN4=;
+        b=HG5UFVJNyZkOgPKs4cGrSKdhUpCkkbRySsBGXFDnXD3LKXFVEREpyecnvcLGBtyQEb
+         aWYn3AwhRjVF5c/iUsE9OV3vvojfivNg+5FLeTVYvou8jFIaSK2CUsetHAMiKYzw6yTI
+         vINpdOvDkAWr4I9B79AOZHAJGWU77sxoc7YfhcSF1wGbXBpb4cZfbOMTzrTqtRkR50T+
+         heA6Dg7YR/tumSlWCaumk1mtV3J7/dJnC/pk/j7ju2rxAy44MOxa3IjsSSxul0TOiVoJ
+         B4jE9R3MkRM46ceWu3PcuwBkznUHtZ3+zl7tksU/ewb8TIUcTIBHr4rVnwRB4Bw9TMwo
+         ySJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770683369; x=1771288169;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=x6h4j6WhKvTbDaZfOUKYNWWIjZl7N5IPl8TkLFVZwN4=;
+        b=VyotNLm3fW0BdhPupGy1z1Kuy8LeFeBPYWYmNlQiVJSlctkhXohAIgOMGKIluOT7Di
+         4DnmSiByzZvGOvsAW4CfeLHOeLfB1H3nMCFl5YEomAJ/cCV5+kyNDKJn6i5/SNhB2ptl
+         qZdUGqMUVQCLRZCDstaycBmmt67gBa3PC4hqH28ytEzy1m50pjTPALdiRkKCzg8vbVeo
+         L1ONLj4T1NK8IuOARBKEYLy8v/lGawPO3PMAGhYYiVZ5H79cFHdyqJ8aYOnmtXdFta8Y
+         G9/11wsJODetpzni89keBOe+SYsdoHqhrVn1++BnFmP8XjGUprsp86va/SeIBStE0++y
+         0q4A==
+X-Forwarded-Encrypted: i=1; AJvYcCUuEkja8JL7Q5aL4CN/vJgo4AQ42QC3hP2tlIqj6uXbg7KZ9+r4wMn5TyaseY2fTnF0T17XLcw8R2lf@lists.linux.dev
+X-Gm-Message-State: AOJu0YxH74vInTJ3UQHVSgMh760/IXlSVfsYPW7D0vV1S3ArJt8CW7QY
+	UQn1vmo3dPqcjWHQAHrHf3ywqWRfvIkaI86WRJ4H0nmxcm6KMkuISvSraqGHlf5oMbQ=
+X-Gm-Gg: AZuq6aJtckC9jcbuk3jXM0JxPMUOKc6CIYALDudVBAse7UkzCO+ComKbnBo6OhBzob+
+	ZTeuWdZsDmcXX+f8ns8MwyabAn2FPfVxjQomY1MqhMNzzEDnJ2hDCo4jUqbIv3DSwqBX36gQ6ab
+	qc3PC6tjTJtLMurBQpxMNlyzYkzDurdCWVcytZibfU1P2L9TneYo/eBRb11+HWnnTK5BMRs95ke
+	Z31c6WVgsl9F7ieP2D+83qGQNYV5p+W8AZuo2P8NLixt6k2zU5B/q2/RW2E7Xp9F4kLwWocb7YY
+	BMemGR8ftb0dQqejsCqLi8XibJ0AXcPzF3bhTWw2JH+15KpPhhbnjFNNEcOtbVw0GiU9AyLwKuC
+	A0VSxGRx/8jpcCLquK4OYxa7+Jcp7Nb0NceH1Z/fw04eYxppgWlNaTh6ceef0iG6Z3+1pEG0Xos
+	5gSqzl5KhsLvM7pxsY6Io0ZS+B9jW57L6laceEzOrPHc4vYeqTs3rK7o9gLtR52rk/nOo8mkvV/
+	y56jFI=
+X-Received: by 2002:a05:622a:54:b0:4f3:438c:71 with SMTP id d75a77b69052e-50639889de0mr182445181cf.24.1770683368674;
+        Mon, 09 Feb 2026 16:29:28 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8caf9a157ddsm979856985a.28.2026.02.09.16.29.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Feb 2026 16:29:28 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vpbd9-0000000GngP-1JAF;
+	Mon, 09 Feb 2026 20:29:27 -0400
+Date: Mon, 9 Feb 2026 20:29:27 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: John Stultz <jstultz@google.com>
+Cc: Jiri Pirko <jiri@resnulli.us>, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, iommu@lists.linux.dev,
+	linux-media@vger.kernel.org, sumit.semwal@linaro.org,
+	benjamin.gaignard@collabora.com, Brian.Starkey@arm.com,
+	tjmercier@google.com, christian.koenig@amd.com,
+	m.szyprowski@samsung.com, robin.murphy@arm.com, leon@kernel.org,
+	sean.anderson@linux.dev, ptesarik@suse.com, catalin.marinas@arm.com,
+	aneesh.kumar@kernel.org, suzuki.poulose@arm.com,
+	steven.price@arm.com, thomas.lendacky@amd.com, john.allen@amd.com,
+	ashish.kalra@amd.com, suravee.suthikulpanit@amd.com,
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH 4/5] dma-buf: heaps: allow heap to specify valid heap
+ flags
+Message-ID: <20260210002927.GC943673@ziepe.ca>
+References: <20260209153809.250835-1-jiri@resnulli.us>
+ <20260209153809.250835-5-jiri@resnulli.us>
+ <CANDhNCoHEZsNRmU+3z5AbeAy05H7PTtUdTq1apNd5k0f9hWW8A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v5 20/45] KVM: x86/mmu: Allocate/free S-EPT pages
- using tdx_{alloc,free}_control_page()
-To: Yan Zhao <yan.y.zhao@intel.com>, Sean Christopherson <seanjc@google.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Kiryl Shutsemau <kas@kernel.org>,
- Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org,
- Kai Huang <kai.huang@intel.com>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>, Vishal Annapurve <vannapurve@google.com>,
- Ackerley Tng <ackerleytng@google.com>, Sagi Shahar <sagis@google.com>,
- Binbin Wu <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>
-References: <20260129011517.3545883-1-seanjc@google.com>
- <20260129011517.3545883-21-seanjc@google.com>
- <aYW5CbUvZrLogsWF@yzhao56-desk.sh.intel.com> <aYYCOiMvWfSJR1AL@google.com>
- <aYmoIaFwgR6+hnGp@yzhao56-desk.sh.intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <aYmoIaFwgR6+hnGp@yzhao56-desk.sh.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANDhNCoHEZsNRmU+3z5AbeAy05H7PTtUdTq1apNd5k0f9hWW8A@mail.gmail.com>
 
-On 2/9/26 01:25, Yan Zhao wrote:
-> However, given the pamt_lock is a global lock, which may be acquired
-> even in the softirq context, not sure if this irq disabled version
-> is good.
+On Mon, Feb 09, 2026 at 12:08:03PM -0800, John Stultz wrote:
+> On Mon, Feb 9, 2026 at 7:38 AM Jiri Pirko <jiri@resnulli.us> wrote:
+> >
+> > From: Jiri Pirko <jiri@nvidia.com>
+> >
+> > Currently the flags, which are unused, are validated for all heaps.
+> > Since the follow-up patch introduces a flag valid for only one of the
+> > heaps, allow to specify the valid flags per-heap.
+> 
+> I'm not really in this space anymore, so take my feedback with a grain of salt.
+> 
+> While the heap allocate flags argument is unused, it was intended to
+> be used for generic allocation flags that would apply to all or at
+> least a wide majority of heaps.
+> 
+> It was definitely not added to allow for per-heap or heap specific
+> flags (as this patch tries to utilize it). That was the mess we had
+> with ION driver that we were trying to avoid.
 
-Generally, we try to avoid crap that's not scalable because it's hard to
-retrofit. But in this case, I'm just not sure how much of a bottleneck
-this lock is going to be in the real world.
+I don't know alot about DMA heaps..
 
-Let's be honest: starting and shutting down VMs in a loop doesn't mint
-money for cloud providers like running VMs does, so it's not exactly a
-real-world thing.
+On a CC VM system the shared/private property is universal and applies
+to every physical address. Not every address can dynamically change
+between shared and private, but every address does have a
+shared/private state.
 
-That said, if this global lock _actually_ ever starts to bite anyone for
-real, it's not going to be rocket science to turn the single lock into 5
-or 10 or NR_CPUs, or whatever. So I think we can just keep it as-is and
-avert our eyes for the time being.
+By default userspace process generally run exclusively in private
+memory and there are very few ways for userspace to even access shared
+memory.
+
+From a heaps perspective the API would be very strange, and perhaps
+even security dangerous, if it is returning shared memory to userspace
+without userspace knowing this is happening.
+
+I'd advocate that the right design is for userspace to positively
+signal via this flag that it wants/accepts shared memory and without
+the flag shared memory should never be returned.
+
+Even if the underyling heap only has shared memory in it (eg it is
+mmio or something).
+
+Otherwise making it implicit, perhaps based on heap name, sounds very
+tricky for userspace to actually use fully securely.
+
+Again, I don't know alot about heaps, but perhaps the missing part
+here is that on a CC system all existing heaps, other than the one
+using normal system pages, should be disabled for now. They can come
+back once they are audited as to their shared/private state and
+respect the new flag.
+
+Another view is to ignore this affirmative handshake and just make it
+implicit on something like the heap name and hope userspace lucks into
+something that works for it, and doesn't accidently place, or become
+tricked into placing, sensitive information into shared heap memory.
+
+Again I know nothing about heaps, but this is a fuller picture of the
+security sensitivity and what to think about with heaps and CC VM
+systems.
+
+> Now, there has been many discussions around "protected buffers" (which
+> doesn't seem to map exactly to this confidental computing primitive,
+> but sounds like it might be related) 
+
+I'm not sure what protected buffers are, but this CC VM shared/private
+(or encrypted/decrypted) is a core kernel property that applies to
+every physical address in the CC VM.
+
+I assume protected buffers are something more platform specific and
+hidden?
+
+> But, it seems like the use case here is still far too narrow for a top
+> level allocation flag.
+
+CC certainly is a narrow use case, but within CC I don't think it is
+narrow at all..
+
+Jason
