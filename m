@@ -1,220 +1,146 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1779B13D638
-	for <linux-coco@lists.linux.dev>; Tue, 10 Feb 2026 17:44:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01BFA319850;
+	Tue, 10 Feb 2026 18:03:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770745462; cv=none; b=pRCHNsBrVx6scTB7Ij8lpQNDMwET6L56qEh6+oRTmw8v+4wqt+obHiiQ9UVyrc6MpJrwTu13RzJtxHfRpJw5slx8fgW3jw6Du1J0AzCcU4vdBS9mSneqawY2tCfAPIemyNebnFnBum8LsMghl4ayEsow9IpY+nWJBB7qriMqCB0=
+	t=1770746640; cv=none; b=fP31hBezpuq+WyrbAHOp86peHvN3u1AJgOUkIDI9+ggTzRIbDLyjbFMwGJHjrxJ2Q+oqvvIa2BhTGSCnVRY188RFQp2k7lzRtgTQLY+SrkA2j93FbkpEVz9WpSsuKHV+/oO+MUPagQxxgltm5qewHqZaPW/PmaHIYKtmfxmVfJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770745462; c=relaxed/simple;
-	bh=GBfp7VAcsGihaIW8bLJChMlUnw0f/xZsxn42XWl3Brg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d1U60lahi9m5wYBpq7UUS3SLQNWxQr++bAdAH11672VLdRDFV1PGhyrn/M63kf7fpyUOFfReH4pf3qoZNoDpaWhmhhA26S18AGCoO5F6w/OFTQyzRzHhTfFdBRTLwIlVtFD9T6yjb2RxvpMSzKBbCAbAES5S5tdoW+feT+9RoDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GJp0oHk4; arc=none smtp.client-ip=198.175.65.11
+	s=arc-20240116; t=1770746640; c=relaxed/simple;
+	bh=RCF0n7XHDUGKM+cjf33SZOFc4i4PkHY0jF5mOX8LCFE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CKpoqNPILaKezeS3jKPCiolCWU7z1TRAil3FAk/2SOcU4JJ/J0a3Md68u3F67xyq3Oe+16USu9mPJR/TGvJfyzvw72S52W/Qxx+c9g9X+I3AeqUBeoWTYcVK+ZLZUVIATt/hqVdMvh98wlgh8vbszPp1nXQB4MstGdpk8y2rqxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hMXifKy9; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GJp0oHk4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hMXifKy9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770745461; x=1802281461;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=GBfp7VAcsGihaIW8bLJChMlUnw0f/xZsxn42XWl3Brg=;
-  b=GJp0oHk4mWhCByrE5nmd2piN6xH9r5W7/COOJ69U+varwtR5FjxKrEmR
-   mom1kNOzhfcrm2wLDtree2JrgnqEgr/SqEWWGWNLseal2AGxzO8gdip2L
-   HIf7z9g4qvNwNQ/rjDT43HEKFhaMS6oGg2JEtafgPw8eJl63I18kikjlB
-   Rit5LlkKXO7bfkqnVBpzNMJfrbiapTb99BS6qFLfg7ZacpYdHSBgHjc7w
-   MEbG9YPF4tEgDUoiKXTLOS3GnFrNaKl9B4UmFQoOimBGRh7I8dhMm6MeQ
-   OHYJKRFICGqLwH1Gf5Cr1sAE2ZENj94Db0SA/7DAuuVkkeJAFFFOeaXX7
-   g==;
-X-CSE-ConnectionGUID: Q5Yx2Z13R3ScYUGUjgaIOg==
-X-CSE-MsgGUID: gEx0JZVaQjOSvW6wispuNw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="82203614"
+  t=1770746638; x=1802282638;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=RCF0n7XHDUGKM+cjf33SZOFc4i4PkHY0jF5mOX8LCFE=;
+  b=hMXifKy9/4SQOzymUlvohR5vdNAbCI4mOmkNl22JoiYWqiyw+T3vhcxF
+   Mzgq1N01Bz4+fVYVJ+ScXLy5GvYbtnahf9iUEw3ORuWQ2rq8bPsZbRsuV
+   IDrr189WtjNnypWhg7trcHpHEjoV3256hwPI67TyPRGLlSixQrijd2Y7e
+   3DFS0Dj5pSTZ8v2aADSErNFLBoEOZ3FvcHtIcQJVk9SBm7UmydZT2HX9L
+   Sczy+nd0Z6WD0mtHWcGYLQxo3X24rbUZM6ZDNN4FLNqkLtv+x3jCzHaXi
+   Cdog2lfydHkspxIs6XcsP6ps56MGZX+GElbm2UEnWYXTRg8GqrGpUlNMA
+   w==;
+X-CSE-ConnectionGUID: meOjuHjkQaK5At1B/tlgyw==
+X-CSE-MsgGUID: CnrNALMjT4yJ42H7uw7VYw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="75728596"
 X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="82203614"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 09:44:20 -0800
-X-CSE-ConnectionGUID: CNwJLfqhQmSfL/wFmjKzww==
-X-CSE-MsgGUID: xqCxx7TZQY6wgvCnr3+w1Q==
+   d="scan'208";a="75728596"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 10:03:57 -0800
+X-CSE-ConnectionGUID: zOeotsxLRKmN8lqHs702VQ==
+X-CSE-MsgGUID: 7I9nDF1BShClWzSGAashTg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="249628945"
-Received: from cjhill-mobl.amr.corp.intel.com (HELO [10.125.108.43]) ([10.125.108.43])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 09:44:19 -0800
-Message-ID: <655724f8-0098-40ee-a097-ce4c0249933d@intel.com>
-Date: Tue, 10 Feb 2026 09:44:16 -0800
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa003.fm.intel.com with ESMTP; 10 Feb 2026 10:03:51 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vps5V-00000000pHk-2Bfq;
+	Tue, 10 Feb 2026 18:03:49 +0000
+Date: Wed, 11 Feb 2026 02:03:06 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jiri Pirko <jiri@resnulli.us>, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, iommu@lists.linux.dev,
+	linux-media@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, sumit.semwal@linaro.org,
+	benjamin.gaignard@collabora.com, Brian.Starkey@arm.com,
+	jstultz@google.com, tjmercier@google.com, christian.koenig@amd.com,
+	m.szyprowski@samsung.com, robin.murphy@arm.com, jgg@ziepe.ca,
+	leon@kernel.org, sean.anderson@linux.dev, ptesarik@suse.com,
+	catalin.marinas@arm.com, aneesh.kumar@kernel.org,
+	suzuki.poulose@arm.com, steven.price@arm.com,
+	thomas.lendacky@amd.com, john.allen@amd.com, ashish.kalra@amd.com,
+	suravee.suthikulpanit@amd.com, linux-coco@lists.linux.dev
+Subject: Re: [PATCH 5/5] dma-buf: heaps: system: add an option to allocate
+ explicitly decrypted memory
+Message-ID: <202602110149.tBUPP0bh-lkp@intel.com>
+References: <20260209153809.250835-6-jiri@resnulli.us>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v5 16/45] x86/virt/tdx: Add
- tdx_alloc/free_control_page() helpers
-To: Sean Christopherson <seanjc@google.com>, Thomas Gleixner
- <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Kiryl Shutsemau <kas@kernel.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, Kai Huang <kai.huang@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, Yan Zhao
- <yan.y.zhao@intel.com>, Vishal Annapurve <vannapurve@google.com>,
- Ackerley Tng <ackerleytng@google.com>, Sagi Shahar <sagis@google.com>,
- Binbin Wu <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>
-References: <20260129011517.3545883-1-seanjc@google.com>
- <20260129011517.3545883-17-seanjc@google.com>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260129011517.3545883-17-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260209153809.250835-6-jiri@resnulli.us>
 
-On 1/28/26 17:14, Sean Christopherson wrote:
-> +static void tdx_pamt_put(struct page *page)
-> +{
-> +	u64 pamt_pa_array[MAX_NR_DPAMT_ARGS];
-> +	atomic_t *pamt_refcount;
-> +	u64 tdx_status;
-> +
-> +	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
-> +		return;
-> +
-> +	pamt_refcount = tdx_find_pamt_refcount(page_to_pfn(page));
-> +
-> +	scoped_guard(spinlock, &pamt_lock) {
-> +		/*
-> +		 * If the there are more than 1 references on the pamt page,
-> +		 * don't remove it yet. Just decrement the refcount.
-> +		 */
-> +		if (atomic_read(pamt_refcount) > 1) {
-> +			atomic_dec(pamt_refcount);
-> +			return;
-> +		}
-> +
-> +		/* Try to remove the pamt page and take the refcount 1->0. */
-> +		tdx_status = tdh_phymem_pamt_remove(page, pamt_pa_array);
-> +
-> +		/*
-> +		 * Don't free pamt_pa_array as it could hold garbage when
-> +		 * tdh_phymem_pamt_remove() fails.  Don't panic/BUG_ON(), as
-> +		 * there is no risk of data corruption, but do yell loudly as
-> +		 * failure indicates a kernel bug, memory is being leaked, and
-> +		 * the dangling PAMT entry may cause future operations to fail.
-> +		 */
-> +		if (WARN_ON_ONCE(!IS_TDX_SUCCESS(tdx_status)))
-> +			return;
-> +
-> +		atomic_dec(pamt_refcount);
-> +	}
-> +
-> +	/*
-> +	 * pamt_pa_array is populated up to tdx_dpamt_entry_pages() by the TDX
-> +	 * module with pages, or remains zero inited. free_pamt_array() can
-> +	 * handle either case. Just pass it unconditionally.
-> +	 */
-> +	free_pamt_array(pamt_pa_array);
-> +}
+Hi Jiri,
 
-This looks funky.
+kernel test robot noticed the following build errors:
 
-Right now, this is:
+[auto build test ERROR on drm-misc/drm-misc-next]
+[also build test ERROR on drm-tip/drm-tip trace/for-next linus/master v6.19]
+[cannot apply to next-20260209]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-	spin_lock(pamt_lock)
-	atomic_inc/dec(fine-grained-refcount)
-	tdcall_blah_blah()
-	spin_unlock(pamt_lock)
+url:    https://github.com/intel-lab-lkp/linux/commits/Jiri-Pirko/dma-mapping-avoid-random-addr-value-print-out-on-error-path/20260209-234013
+base:   https://gitlab.freedesktop.org/drm/misc/kernel.git drm-misc-next
+patch link:    https://lore.kernel.org/r/20260209153809.250835-6-jiri%40resnulli.us
+patch subject: [PATCH 5/5] dma-buf: heaps: system: add an option to allocate explicitly decrypted memory
+config: s390-allyesconfig (https://download.01.org/0day-ci/archive/20260211/202602110149.tBUPP0bh-lkp@intel.com/config)
+compiler: s390-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260211/202602110149.tBUPP0bh-lkp@intel.com/reproduce)
 
-Where it *always* acquires the global lock when DPAMT is supported.
-Couldn't we optimize it so that it only acquires it when it has to keep
-the refcount stable at zero?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602110149.tBUPP0bh-lkp@intel.com/
 
-Roughly:
+All errors (new ones prefixed by >>):
 
-	slow_path = atomic_dec_and_lock(fine-grained-refcount,
-					pamt_lock)
-	if (!slow_path)
-		goto out;
+   drivers/dma-buf/heaps/system_heap.c: In function 'system_heap_set_page_decrypted':
+>> drivers/dma-buf/heaps/system_heap.c:66:15: error: implicit declaration of function 'set_memory_decrypted' [-Wimplicit-function-declaration]
+      66 |         ret = set_memory_decrypted(addr, nr_pages);
+         |               ^~~~~~~~~~~~~~~~~~~~
+   drivers/dma-buf/heaps/system_heap.c: In function 'system_heap_set_page_encrypted':
+>> drivers/dma-buf/heaps/system_heap.c:80:15: error: implicit declaration of function 'set_memory_encrypted' [-Wimplicit-function-declaration]
+      80 |         ret = set_memory_encrypted(addr, nr_pages);
+         |               ^~~~~~~~~~~~~~~~~~~~
 
-	// fine-grained-refcount==0 and must stay that way with
-	// pamt_lock held. Remove the DPAMT pages:
-	tdh_phymem_pamt_remove(page, pamt_pa_array)
-out:	
-	spin_unlock(pamt_lock)
 
-On the acquire side, you do:
+vim +/set_memory_decrypted +66 drivers/dma-buf/heaps/system_heap.c
 
-	fast_path = atomic_inc_not_zero(fine-grained-refcount)
-	if (fast_path)
-		return;
+    59	
+    60	static int system_heap_set_page_decrypted(struct page *page)
+    61	{
+    62		unsigned long addr = (unsigned long)page_address(page);
+    63		unsigned int nr_pages = 1 << compound_order(page);
+    64		int ret;
+    65	
+  > 66		ret = set_memory_decrypted(addr, nr_pages);
+    67		if (ret)
+    68			pr_warn_ratelimited("dma-buf system heap: failed to decrypt page at %p\n",
+    69					    page_address(page));
+    70	
+    71		return ret;
+    72	}
+    73	
+    74	static int system_heap_set_page_encrypted(struct page *page)
+    75	{
+    76		unsigned long addr = (unsigned long)page_address(page);
+    77		unsigned int nr_pages = 1 << compound_order(page);
+    78		int ret;
+    79	
+  > 80		ret = set_memory_encrypted(addr, nr_pages);
+    81		if (ret)
+    82			pr_warn_ratelimited("dma-buf system heap: failed to re-encrypt page at %p, leaking memory\n",
+    83					    page_address(page));
+    84	
+    85		return ret;
+    86	}
+    87	
 
-	// slow path:
-	spin_lock(pamt_lock)
-
-	// Was the race lost with another 0=>1 increment?
-	if (atomic_read(fine-grained-refcount) > 0)
-		goto out_inc
-
-	tdh_phymem_pamt_add(page, pamt_pa_array)
-	// Inc after the TDCALL so another thread won't race ahead of us
-	// and try to use a non-existent PAMT entry
-out_inc:
-	atomic_inc(fine-grained-refcount)
-	spin_unlock(pamt_lock)
-
-Then, at least only the 0=>1 and 1=>0 transitions need the global lock.
-The fast paths only touch the refcount which isn't shared nearly as much
-as the global lock.
-
-BTW, this probably still needs to be spin_lock_irq(), not what I wrote
-above, but that's not a big deal to add.
-
-I've stared at this for a bit and don't see any holes. Does anyone else
-see any?
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
