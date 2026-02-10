@@ -1,80 +1,81 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E0933E372
-	for <linux-coco@lists.linux.dev>; Tue, 10 Feb 2026 09:05:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD626335547
+	for <linux-coco@lists.linux.dev>; Tue, 10 Feb 2026 09:14:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770714320; cv=none; b=basC0r3JXzhyl1Cz3ddUA29WItqRpkhrSK8N/4j3es3sogvWH8VFu6Aqg0tevJ8PklVgT3xCauV0FZXL+Lavadks6vJxwPEmM7dvXtQIhuGlFbH4GF6qBwIxO9f4rDBjrxGbSSQ8fQ71IUsTgrj+kGaxraO3mxAzTaxH6YRqE7A=
+	t=1770714854; cv=none; b=Aki4eLAe5e/Ss1xBkMoRZ71OoiHx06ZRtznAscWRuapBSSBY3vovFHO8HelTSoFf10C3T9MsDM8GXD1CvHcvvI1RfWAubcs/C7KlRjVP56K8p5/NxmCnHT8KJ3252Lc7s70WLmhpP+fCRFJsdKhqF62xPU9LwwjB2HQvzz71PCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770714320; c=relaxed/simple;
-	bh=QhkVDbBvh+igrt5Rbw45wDL4NFt0q7ZuczXEzataWDA=;
+	s=arc-20240116; t=1770714854; c=relaxed/simple;
+	bh=Im/jU7RCioSZNbpD02PdmSL3wnBPuIkU8iFeJeFE1d4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sVgYAau6M0KfDKDBjr8wOMC9vyC2ozNd0UIt3SyzCjwikh/uF1YdpsR+Y2sMisHnfxvzJJUa5etEQmv1LNGpgRs8FXKJ2IaXsfUK8cT+x8oPd2sv6zhGkvzQDUHm/ruIKtuny5hjZ7/HSAMGyggIKCl1O/NscHsiHgtQhRQ3ywI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=dkDtX4uX; arc=none smtp.client-ip=209.85.128.49
+	 Content-Type:Content-Disposition:In-Reply-To; b=n2H+JVD2VMUVhEYJQoH2BLCvjnnITI75YVCeLiJjoiKhFAVpQTp5ZL0iFb+aTYv34rmcgLPfa5GjBQhKT0HMXvlIwdZyuzfEIMHEIDCOruzkrRzFDKtMtGrx8pw7nrWscotqpgfEthL0X4fD3gBc/t8RF+gU+biBWzRUvzeRfV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=hCdQ/F4M; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="dkDtX4uX"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-482f2599980so6659795e9.0
-        for <linux-coco@lists.linux.dev>; Tue, 10 Feb 2026 01:05:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="hCdQ/F4M"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4801c2fae63so44503805e9.2
+        for <linux-coco@lists.linux.dev>; Tue, 10 Feb 2026 01:14:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1770714317; x=1771319117; darn=lists.linux.dev;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1770714851; x=1771319651; darn=lists.linux.dev;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=OP3VbNx68VcllvOx/t4H1bQXdiTg3vSueeogLKpAveY=;
-        b=dkDtX4uXrTSFoFT9G/upkUzlAAnbPUWWTbhjr7AxGZ58t4ToK5NGY0aR2NMHB3eQUv
-         umsHJ8jOMuYEmhHMoBCFFLgLR8qqPC/yFG/e3bKNc2zReWfZdH13RgC9/iOTVHbOxU00
-         xwPNVGegO7rU4bTWGI7NXhWEPWjyY+pTbG3bU/6Rz5zFBGLKbqrAxf5zmfcxvNrhAu9S
-         7hoCOJJ6JDA9kZgVbOyOPdeZwD4S54XrHdgXELhZzWUCDeuoPGs9h8W5OV+B8rGEgcHs
-         sa/S8RXvxvBfWQryIWf30LDQT3/JWNKUneQGOjUwNJENG04VOJ8Eo1X87ZCsWvX1biJI
-         4Sig==
+        bh=1n+Dri69ZtsJrD5f7LTNPULLrK+Vi4bS2T/sVYZliNI=;
+        b=hCdQ/F4MkvtS50cLaKMetjmG9oba5eyQ7ndxhuVdOSN2Boz3zEV737dJcl/pZo50Bp
+         epCCjXprrzX/zppR4Z3BReI2n7L3LwF5LprBAJ3GoppbyisOonC+OIPW07iiZVTi4He/
+         aH9lT+Ml0kKxYOTKPSKLaXa9w0zqIhrZBI9+xyetAGNZ+FsrgtNMtRDPakZbR4DYxUyD
+         6HHQCDdnMMX1oPD2IfPlOXKDQFxI1Pny2QroPsYFVGidcXnC2XIevzNrBzIVTkseUw9a
+         ZHqFt4+gTd6+ZAsqOQNAqaJuNtl0mBnGMz8E5ob9SLKb4/Uc4DPS+jenrni8dwnSHcBO
+         aztQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770714317; x=1771319117;
+        d=1e100.net; s=20230601; t=1770714851; x=1771319651;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OP3VbNx68VcllvOx/t4H1bQXdiTg3vSueeogLKpAveY=;
-        b=ek2GWvD5xOxPVC7z7BuG2cX/2cZx52sdFrJKJrxxKtt1e0eusmeV7E1McPJaR9e9jz
-         adMTfH5+kc75J4URRPIl/3TU1Losefk2mw0Wn82KkNQecdFRfbjl4IK6c6ve86LdB6Al
-         3z8HIIuznpDHbv+rZLVR+9N6Bx5Redn8ZY1W+5C5nps67IRjaAIeWwgk8KpKzG7IeurF
-         PwVtNvCj0VMPNtyIVCk4PUBmex1gf5Eh1m9/eN0BOk5Gxr7Wxrf5QPLn86EprTJkBj0Q
-         romRXIL6FqVsKNdBGXFuBCu0BWakgX9FBf6+MdecKixG81SkA9Fz9xQZ00ahh5rkt6+m
-         FETA==
-X-Forwarded-Encrypted: i=1; AJvYcCVkNVJZwOqGofaCOOD2LwtSIissGf2uzi7FojBrCn4/xrWGjBMsk/pdEus/t/6lzrx4GVyT2mV0Yg/8@lists.linux.dev
-X-Gm-Message-State: AOJu0YyG6iuvVERZyiePBWzC5JzS9UucqDsXHzBFIwZisVXotVRcM0Po
-	GbWb9/vtQEbasQY0xLbuHo087fO+yoKhnoR0XPnDntt7wNIr9vx6BlO5BMSL7MHxcOU=
-X-Gm-Gg: AZuq6aJ2yuWzcp17caXBmf91hg7otrVuZpbi6i/HLo5NuhE7H9s8M5R9ZIclXk/smKF
-	Sbk10Q0hTuN8duJjAV4LI7pEOIseFZTqLNTpUKgL9WSWgmdD9UJ3JWMy64G1UXlotdrHvUNLRAu
-	mLxKMNRlEBi9b+uYrfdCCMinss5PaKF1XFmoREftvQpxI6XB7CGU+6ofih1TV4O5BpRNU+k07h5
-	YG7IjfRscuEZa0JUSuYO8Mjx/HDX03LXTqDiAwOBFf4vLawNOxZM9trJZY9DDHmVlBGYD+mf/c/
-	VtY1OCFVGmBC9flGkheZt5OmG+rCiaQhcWAtdLyFPuODX/ReehfoC0DiKDmkr47h86FOLgFdP89
-	1thEzWpVNXSU7POFbEz6Z8CaK0KizYsGv0n8WZSSEN4GONsKUeyEmSAkoNGQM4L4pyVn4Pqf5mb
-	mepiaZxVot6ohrAIyOVaywcI6MNOIRzyRrnEU=
-X-Received: by 2002:a05:600c:674f:b0:471:13dd:bae7 with SMTP id 5b1f17b1804b1-4832022aee5mr181770665e9.30.1770714317119;
-        Tue, 10 Feb 2026 01:05:17 -0800 (PST)
+        bh=1n+Dri69ZtsJrD5f7LTNPULLrK+Vi4bS2T/sVYZliNI=;
+        b=kZyhIFATwGoHjZaBBKmj9htTyxepJUfd4baebDZYVUO0iRg6hnsx0yiMiwAwSB7J6+
+         hh1rK1Zl+DtCnXrJ0R09fmLS2+xyO0Ra32yLZy+5II+mWJlkUj8Ft1ZqKwCimIl0aUb1
+         ZCNdaJmGqQh3rhjji6+fQeXfn8rTszPpTIsBN+JvOFTqn6EVaivN2ZYDANZdx2ndzmco
+         PZkusVsBT8G9Wr9gLRRwo26PS3QNHUD8lSfq6xhckkrfjmnajgHv5xqQikBj0kIMXS49
+         mimK7oD8Op6C4zzxFHjIleVRb0zHZGFwJ8lS9sMif67DxkF2YEc7laJaWTbZovSMfTGQ
+         /vXw==
+X-Forwarded-Encrypted: i=1; AJvYcCUpVCeRBWgbxI2XAwP3bVIVZgC0QUnHEH1Ig9vk4mA2VOqnpbsrne7QGmFgeKIV+I/ySFYx559Tvs79@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywus9kndaQlET94YdEQ2eZ8Fg75ozv5UPB1to27YtjjyghtUSP6
+	QFZGFp3n2HDCoaNaBEGcodI8kYhjM1EYPF5XFMVi2K6kIShlE3Bf0XvFvpYPRbY0PWQ=
+X-Gm-Gg: AZuq6aJ2gavnFFWwnBr3TxaIxFbawh0D56y4i6NQjaSZRNyoBG3ZgFnvKPELMyh6RqU
+	TcjONVIXlV56RMP6fwXYH4OCKhyhZhr5OD6oIL44qIToyyLH3DsdhLNMK944qo/UVCvkcRIY4pT
+	d4Qvg3jIE9sfT2z/NYCJgCXtHJ8lzp7xaeZc3eRqns8G27fGF/RMpJdbHepZj2krhOj5O6dJa+d
+	hRKvhGC+WSctSC9QJeWDeL4OtFjz61kZnOMWTBIXUPwM+/WbuMdw/goGHcLo/Q6T+D7wept2gTT
+	M4BAkOupmti4d5YvgB/ISKfJ7xsCLIIGM6QOd9IG0YkHGz91lTtjfKmIDd4q0qPC1CJnlL+tfUz
+	Dli/zoY+klEjSkvwSiJX6zSoJOatIfoosfz1Ats4e6cGBCmamTblPIMQtF1007xQEBa6L03vY1X
+	M0DLlbDzGzh+5fB9ddo2CNXl1roMwcEpwj8mU=
+X-Received: by 2002:a05:600c:1daa:b0:475:da1a:53f9 with SMTP id 5b1f17b1804b1-483507f08c6mr21095375e9.14.1770714851014;
+        Tue, 10 Feb 2026 01:14:11 -0800 (PST)
 Received: from FV6GYCPJ69 ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-436296bd4desm32761634f8f.18.2026.02.10.01.05.15
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4834d7f1e4fsm61726245e9.15.2026.02.10.01.14.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 01:05:16 -0800 (PST)
-Date: Tue, 10 Feb 2026 10:05:14 +0100
+        Tue, 10 Feb 2026 01:14:10 -0800 (PST)
+Date: Tue, 10 Feb 2026 10:14:08 +0100
 From: Jiri Pirko <jiri@resnulli.us>
-To: John Stultz <jstultz@google.com>
-Cc: dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
-	iommu@lists.linux.dev, linux-media@vger.kernel.org, sumit.semwal@linaro.org, 
-	benjamin.gaignard@collabora.com, Brian.Starkey@arm.com, tjmercier@google.com, 
-	christian.koenig@amd.com, m.szyprowski@samsung.com, robin.murphy@arm.com, jgg@ziepe.ca, 
-	leon@kernel.org, sean.anderson@linux.dev, ptesarik@suse.com, 
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: John Stultz <jstultz@google.com>, dri-devel@lists.freedesktop.org, 
+	linaro-mm-sig@lists.linaro.org, iommu@lists.linux.dev, linux-media@vger.kernel.org, 
+	sumit.semwal@linaro.org, benjamin.gaignard@collabora.com, Brian.Starkey@arm.com, 
+	tjmercier@google.com, christian.koenig@amd.com, m.szyprowski@samsung.com, 
+	robin.murphy@arm.com, leon@kernel.org, sean.anderson@linux.dev, ptesarik@suse.com, 
 	catalin.marinas@arm.com, aneesh.kumar@kernel.org, suzuki.poulose@arm.com, 
 	steven.price@arm.com, thomas.lendacky@amd.com, john.allen@amd.com, 
 	ashish.kalra@amd.com, suravee.suthikulpanit@amd.com, linux-coco@lists.linux.dev
 Subject: Re: [PATCH 4/5] dma-buf: heaps: allow heap to specify valid heap
  flags
-Message-ID: <hwdezwktndbm6hoko3rz5lffgfljodegcygzf6rbdf2ferokj6@ftk2uk3rqfdq>
+Message-ID: <tgvdjszwxggr53digbmddcbxvupzl4xcoprofkgrs2kgf6rknx@44ebljjpghjm>
 References: <20260209153809.250835-1-jiri@resnulli.us>
  <20260209153809.250835-5-jiri@resnulli.us>
  <CANDhNCoHEZsNRmU+3z5AbeAy05H7PTtUdTq1apNd5k0f9hWW8A@mail.gmail.com>
+ <20260210002927.GC943673@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -84,43 +85,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANDhNCoHEZsNRmU+3z5AbeAy05H7PTtUdTq1apNd5k0f9hWW8A@mail.gmail.com>
+In-Reply-To: <20260210002927.GC943673@ziepe.ca>
 
-Mon, Feb 09, 2026 at 09:08:03PM +0100, jstultz@google.com wrote:
->On Mon, Feb 9, 2026 at 7:38 AM Jiri Pirko <jiri@resnulli.us> wrote:
->>
->> From: Jiri Pirko <jiri@nvidia.com>
->>
->> Currently the flags, which are unused, are validated for all heaps.
->> Since the follow-up patch introduces a flag valid for only one of the
->> heaps, allow to specify the valid flags per-heap.
+Tue, Feb 10, 2026 at 01:29:27AM +0100, jgg@ziepe.ca wrote:
+>On Mon, Feb 09, 2026 at 12:08:03PM -0800, John Stultz wrote:
+>> On Mon, Feb 9, 2026 at 7:38 AM Jiri Pirko <jiri@resnulli.us> wrote:
+>> >
+>> > From: Jiri Pirko <jiri@nvidia.com>
+>> >
+>> > Currently the flags, which are unused, are validated for all heaps.
+>> > Since the follow-up patch introduces a flag valid for only one of the
+>> > heaps, allow to specify the valid flags per-heap.
+>> 
+>> I'm not really in this space anymore, so take my feedback with a grain of salt.
+>> 
+>> While the heap allocate flags argument is unused, it was intended to
+>> be used for generic allocation flags that would apply to all or at
+>> least a wide majority of heaps.
+>> 
+>> It was definitely not added to allow for per-heap or heap specific
+>> flags (as this patch tries to utilize it). That was the mess we had
+>> with ION driver that we were trying to avoid.
 >
->I'm not really in this space anymore, so take my feedback with a grain of salt.
+>I don't know alot about DMA heaps..
 >
->While the heap allocate flags argument is unused, it was intended to
->be used for generic allocation flags that would apply to all or at
->least a wide majority of heaps.
+>On a CC VM system the shared/private property is universal and applies
+>to every physical address. Not every address can dynamically change
+>between shared and private, but every address does have a
+>shared/private state.
 >
->It was definitely not added to allow for per-heap or heap specific
->flags (as this patch tries to utilize it). That was the mess we had
->with ION driver that we were trying to avoid.
+>By default userspace process generally run exclusively in private
+>memory and there are very few ways for userspace to even access shared
+>memory.
 >
->The intent of dma-buf heaps is to try to abstract all the different
->device memory constraints so there only needs to be a [usage] ->
->[heap] mapping, and otherwise userland can be generalized so that it
->doesn't need to be re-written to work with different devices/memory
->types.  Adding heap-specific allocation flags prevents that
->generalization.
+>From a heaps perspective the API would be very strange, and perhaps
+>even security dangerous, if it is returning shared memory to userspace
+>without userspace knowing this is happening.
 >
->So instead of adding heap specific flags, the general advice has been
->to add a separate heap name for the flag property.
+>I'd advocate that the right design is for userspace to positively
+>signal via this flag that it wants/accepts shared memory and without
+>the flag shared memory should never be returned.
 
-Right, my original idea was to add a separate heap. Then I spotted the
-flags and seemed like a great fit. Was not aware or the history or
-original intention. Would be probably good to document it for
-future generations.
+We can have the same behaviour with the separate heap, can't we?
+Userpace positively signals it wants/accepts the shared memory by
+choosing "system_cc_decrypted" heap name.
 
-So instead of flag, I will add heap named something
-like "system_cc_decrypted" to implement this.
-
-Thanks!
+[...]
