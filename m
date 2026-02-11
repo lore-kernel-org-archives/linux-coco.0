@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E803D3446A9
-	for <linux-coco@lists.linux.dev>; Wed, 11 Feb 2026 16:40:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497543FEF
+	for <linux-coco@lists.linux.dev>; Wed, 11 Feb 2026 18:40:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770828048; cv=none; b=sh4aNJMABJ0NxW3nVlYDF6lSRtF1VpXH307rvWhXtYp0QZalpLzuVkEAWZ8odphRtCzuM2dRoMOl8bm0mebD3inHUNpwUS22Qu14g4ENng0e7alF74Ri7rTKzcvp2yL3G5LLgE9+PoQ/DnQzJ6xmSZQCNkypQoNH2tWbMO9Xtys=
+	t=1770835223; cv=none; b=MZNC1Zz45U/Etzhnxw9sKQu78e+3f77H/iiALpl5mqOV6gToyCU8xjrPC1K6atk+w1/8sVdsTO25MlifO7Y3xdSbYAwzW0WCA7tKFqVghD0dfiOfaKzl4yfHtp1WAZLYNB1IOuIJpUZm25uEHiGFgKNE4109Fee6keciw0HtiLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770828048; c=relaxed/simple;
-	bh=sfbHZBMxQmyB0nITpm3osghpDwzqSEZRCALukjDtJTc=;
+	s=arc-20240116; t=1770835223; c=relaxed/simple;
+	bh=2KqNk5fb5WdvivpMpRb34ti2GIZXJGD9niTakU3oqDg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Mzk1h7g/ZukFU6SVlY3SivlG3bLkkv1VS9YTaBAYtJT5V0xGsQwP5LdsvzfrYm9ooUj5Zjr1w7vcKPnr1LijdwdDGFPSbn6eEC9cne41WcijfR8MsQdfKD1qMk5U88bxNnQgFkZ+iySXALbJdjwvQ14glN7KUz6hUFqeqfnkV94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bcNsvwnT; arc=none smtp.client-ip=192.198.163.13
+	 In-Reply-To:Content-Type; b=P/Fyii6otFxCtvFXnaLx7vcRFkzPqWzDqkDtSHi2BcnVqIx4t3mFbgVvIKpEtV8LBiHo+OCWyWD2IG/3c5tTwTOhg4U7eSc9OSI4+uYxNqEBp9I8/Agoi0JlbkeDTQ6mGN8fhdYgjS3CX7unE5miga3B7XgWrHCbZgn8Qyks9v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=is25PC8z; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bcNsvwnT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="is25PC8z"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770828047; x=1802364047;
+  t=1770835222; x=1802371222;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=sfbHZBMxQmyB0nITpm3osghpDwzqSEZRCALukjDtJTc=;
-  b=bcNsvwnTzDBEp0NuN69re+CMVJ/OsC3lYOZShR0aZt+HyufEV/PBrYT5
-   WNqHdYWnIwwCTpOFqbXPHR1PZ7BcDmBEUPqMvvGK37ZFWq/yuz1SIyfh0
-   LBtnnC7SwMk9kuaPNP0PiOy6jQ03EVG7nTB8BIw/pfF7tewDqxC/Xby3G
-   Uj5OHQhyLjIL78Y7FF21K3cQJlL5lm0vDDUINSFsY7kIRH3EconP1D/9f
-   jaMBiXsV62Z9tJiCN/YBhTftsmBEX6zaopZzpnB8gI1Lx8308RCwNQwkN
-   wRv3Ck53nw24cRqYcgvRNmf9aXz/PI3vglkg9FeXZi/I7a3XVXmOJ3uMX
-   A==;
-X-CSE-ConnectionGUID: Ry1MOvV0SgGi1BkXcLG5Ig==
-X-CSE-MsgGUID: wKfoClLIRZy66G/HEj67IA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="74578836"
+  bh=2KqNk5fb5WdvivpMpRb34ti2GIZXJGD9niTakU3oqDg=;
+  b=is25PC8ze4NghmMxE1EAfA5hkKcl3Ucb6ychUxabah3fjSfwGHd6HnDF
+   9HDMUktmdkU9zLWLE4o9GTpQ3bEw0VjDdSEPqO8xjlNQ1Ly/3nJBB6UX1
+   6zOUGdAOXjB5/6US2EuoNoal2D2UXt2hV5UcJUIaiOd3Vyl7kg4Ak/FMQ
+   MkSj8k55bjdPalEdmojQ34RVX1+udpS3hRpyvn1RGv7BfxTW47yHCjdo7
+   +TuPbazbtWKwLHnTJKquXKyJUP33jqK+B3vbJOgxZTyBEQpjD2lAKB1dt
+   Eh2wozL2G8iPhD2aANyxNzvoLupMhJCNMi1lTa4iyUSBAycHkXKRlif3Q
+   w==;
+X-CSE-ConnectionGUID: X0kJGyX/RVqCURMfCY1HAA==
+X-CSE-MsgGUID: OUI1xcYZTQOuDtnmLqxbzg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="97449993"
 X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; 
-   d="scan'208";a="74578836"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 08:40:46 -0800
-X-CSE-ConnectionGUID: JYivVb5TQAyMc2q2MCAVCA==
-X-CSE-MsgGUID: ppXPTcAuR62H/dSOTTDrfw==
+   d="scan'208";a="97449993"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 10:40:22 -0800
+X-CSE-ConnectionGUID: 9Rhihe9sQUOcnWyOKnDGXg==
+X-CSE-MsgGUID: Hc0cDyUYQ2mAH8tTM94XWA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; 
-   d="scan'208";a="211599372"
+   d="scan'208";a="212152401"
 Received: from soc-pf446t5c.clients.intel.com (HELO [10.24.81.126]) ([10.24.81.126])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 08:40:47 -0800
-Message-ID: <163b74e8-eede-4872-9319-047db25c0050@linux.intel.com>
-Date: Wed, 11 Feb 2026 08:40:46 -0800
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 10:40:21 -0800
+Message-ID: <6983882c-2c00-42f4-924b-5fb3619840be@linux.intel.com>
+Date: Wed, 11 Feb 2026 10:40:21 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,46 +52,57 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/3] virt: tsm: Document size limits for outblob
- attributes
-To: dan.j.williams@intel.com, "Kirill A . Shutemov" <kas@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+Subject: Re: [PATCH v1 3/3] virt: tdx-guest: Increase Quote buffer size to
+ 128KB
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Dan Williams <dan.j.williams@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
 References: <20260211001712.1531955-1-sathyanarayanan.kuppuswamy@linux.intel.com>
- <20260211001712.1531955-2-sathyanarayanan.kuppuswamy@linux.intel.com>
- <698be62f7802_8c32100e2@dwillia2-mobl4.notmuch>
+ <20260211001712.1531955-4-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <aYxjhdES2MOI7rj9@thinkstation>
 Content-Language: en-US
 From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <698be62f7802_8c32100e2@dwillia2-mobl4.notmuch>
+In-Reply-To: <aYxjhdES2MOI7rj9@thinkstation>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Dan,
+Hi Kiryl,
 
-On 2/10/2026 6:15 PM, dan.j.williams@intel.com wrote:
-> Kuppuswamy Sathyanarayanan wrote:
->> The configfs-tsm-report interface can fail with -EFBIG when the
->> attestation report generated by a TSM provider exceeds internal
->> maximums (TSM_REPORT_OUTBLOB_MAX). However, this error condition and
->> its handling are not currently documented in the ABI.
+Thanks for the review!
+
+On 2/11/2026 3:17 AM, Kiryl Shutsemau wrote:
+> On Tue, Feb 10, 2026 at 04:17:12PM -0800, Kuppuswamy Sathyanarayanan wrote:
+>> Intel platforms are transitioning from traditional SGX-based
+>> attestation toward DICE-based attestation as part of a broader move
+>> toward open and standardized attestation models. DICE enables layered
+>> and extensible attestation, where evidence is accumulated across
+>> multiple boot stages.
 >>
->> Userspace tools need to understand how to interpret various error
->> conditions when reading attestation reports.
+>> With SGX-based attestation, Quote sizes are typically under 8KB, as the
+>> payload consists primarily of Quote data and a small certificate bundle.
+>> Existing TDX guest code sizes the Quote buffer accordingly.
 >>
->> Document that reads fail with -EFBIG when reports exceed size limits,
->> with guidance on how to resolve them.
+>> DICE-based attestation produces significantly larger Quotes due to the
+>> inclusion of evidence (certificate chains) from multiple boot layers.
+>> The cumulative Quote size can reach approximately 100KB.
 >>
->> Reviewed-by: Fang Peter <peter.fang@intel.com>
->> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+>> Increase GET_QUOTE_BUF_SIZE to 128KB to ensure sufficient buffer
+>> capacity for DICE-based Quote payloads.
 > 
-> Looks good, I will change the subject to:
+> It worth noting that it requires guest physically-contiguous memory.
 > 
-> "configfs-tsm-report: Document size limits for outblob attributes"
+> Single order-5 allocation is not that bad as long as the driver
+> initialized during the boot.
 
+Good point! We can add following to the commit log:
 
-Thanks for the review! Are you planning to apply this with the updated
-subject line, or would you like me to send a v2 with the change?
+The Quote buffer requires guest physically-contiguous memory and is
+allocated once during driver initialization at boot time, where an
+order-5 allocation (128KB) is expected to succeed reliably.
+
+> 
 
 -- 
 Sathyanarayanan Kuppuswamy
