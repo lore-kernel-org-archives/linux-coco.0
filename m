@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2E71C549F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7644714A60C
 	for <linux-coco@lists.linux.dev>; Wed, 11 Feb 2026 00:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770769054; cv=none; b=KQ2dZ3Yxc5Mc5ET62NDdOHYT5cXXnvXaihN3vQDRT0Te7Lx/myN4datlWgt++pDJiuZfxOtmOV9Kn/a8b/BbO4vC1ka24cFY1nnXAf0ft0t+z7zkvRVEoWRj6bdLLUAIjdobk/Z/1l/5mbe0Ln4z9AYm71KiKZmjHAlKVAMs6lc=
+	t=1770769054; cv=none; b=Ihhho70drTHzSctb+nRYtV61U4ZwF4DvCczsFDp/vJekQarFmMRDgKpZCpFZMKosfKkIAVna5XYL6d0QuaJ9O5XsuzdvB+o+PjV0+MbUcwIQdDVVQBkzfP+PJrSGoImYl7UDN6jLbDOXkEDof8Z+F0FZcg0l3wSMY9A334NZOqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1770769054; c=relaxed/simple;
-	bh=GWbPa0IQdLEfy+oY9pM1KUhEV2z9oXrVQSeSsl3oXCA=;
+	bh=ZXKgLjfjUMF5Zlz2aryYjTREBzkzCvURKUYVMjQVPYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E1wevlGCCNgFVOK/+6EbP7ek5WNS91ZXOegBAv7RbjMVq2MQl7bedA4XfVABROm4mIdB6Yca2euvkV0Wc0OnPWzab6FsVT24r+IBL+LQnfoVFxUrqZSTSD3gk1ZJqDNbfyS2A718jFXd8hqPDmsGlF64PTORSsK9krghQOtRRVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ngsFYcpL; arc=none smtp.client-ip=192.198.163.10
+	 MIME-Version; b=R7UM8nI+pFvaqiEHWnHO1LD57WDfdhanzbM0szm//Fzn5qfJc6CGne+7dyYhYLm3cqToc/pBu8JYh+nxn0tke89/ksKNakl1ngF4tcxH5vbep8gaJ2HG4XgFTLo2RHFqDMoQuOWExuAHhF7qeXzGnlCM6XzgInWxjVsg6Q8mvHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lZpU0CJk; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ngsFYcpL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lZpU0CJk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770769053; x=1802305053;
+  t=1770769054; x=1802305054;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=GWbPa0IQdLEfy+oY9pM1KUhEV2z9oXrVQSeSsl3oXCA=;
-  b=ngsFYcpLuT98tGSIcU7mqKFPuRdRQZyHqK7rTZJn3bKCRgWeKDHOBghQ
-   5HD2WXMe4yXulIfmUBpBBK1I4AeHOyH4Ry2J/XXq/zCa8+B98mPO2hVHK
-   xnWDhGkqzIiq2RrGOqJxNoKJxpEKokblZ0Zg4RHg6S68neqKexWNsOVj0
-   ZsVovyHkBA5Sm5DmAknwEau5LKLLPq0zPSkdbQ7ZjO32Cs2v21FPp+qeQ
-   lqyLmR/LCXLJotTWdYrT16CPiWnFygGKcpfHgS6JMB/pThJUUIGSqUvWt
-   DBDffPrrhdt484Zf/mme0cFeFOVVTsjC6LMXDElfmFQTlgyVT1Vo7Unh3
+  bh=ZXKgLjfjUMF5Zlz2aryYjTREBzkzCvURKUYVMjQVPYo=;
+  b=lZpU0CJk8mFpk/+nW+0cUPffOoHni05J1IIzgDlII4u7OPwgRgn1NGmM
+   5zWMMSDWLxscy6WiCl1S+KLi1LWVsqU4ikEra7PT5YJ02Bkb3vCU6o7xn
+   AeQFHtbZzRwAaBBNvf5yLPHGGuztTsVM8sWstcNBSmNhB9jaf873Kf2AA
+   B2kqE8WsQFcc8OwF4WJMT7mccMWL7lik/13eAAVjJnYVbWTaFdX9XEJ/z
+   zNFO5wB7n/5ecWUDRNVHH7onhHVYq8Mni+bS6RgWo0onITTnPPkj2xeKj
+   3oDKeEgKYHR3F58jrAXX+ccbP5zJXFpQYwNIcFsTTGgGAmXtxaZ6CH80y
    g==;
-X-CSE-ConnectionGUID: SPPffdU4SVGvpA1u4auB4g==
-X-CSE-MsgGUID: 2kSIrhcdTPamKjhmL3h2pg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="83279904"
+X-CSE-ConnectionGUID: tDtbngI4QPiavlEPeWNvAw==
+X-CSE-MsgGUID: UEUbv2RqTf+T/jCOLR3qfw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="83279907"
 X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="83279904"
+   d="scan'208";a="83279907"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
   by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 16:17:31 -0800
-X-CSE-ConnectionGUID: bK7XIxJzSDaGYQN8eM5SAA==
-X-CSE-MsgGUID: 80sUtp13SU2jptDOUWO1ow==
+X-CSE-ConnectionGUID: EK55xVOhSfmhaG8fYIV/7g==
+X-CSE-MsgGUID: B5KCxlnoRuW/g3YGiK9VfQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="216242052"
+   d="scan'208";a="216242055"
 Received: from skuppusw-desk2.jf.intel.com ([10.165.154.101])
   by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 16:17:31 -0800
 From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
@@ -51,9 +51,9 @@ Cc: Dave Hansen <dave.hansen@linux.intel.com>,
 	x86@kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev
-Subject: [PATCH v1 1/3] virt: tsm: Document size limits for outblob attributes
-Date: Tue, 10 Feb 2026 16:17:10 -0800
-Message-ID: <20260211001712.1531955-2-sathyanarayanan.kuppuswamy@linux.intel.com>
+Subject: [PATCH v1 2/3] virt: tsm: Increase TSM_REPORT_OUTBLOB_MAX to 16MB
+Date: Tue, 10 Feb 2026 16:17:11 -0800
+Message-ID: <20260211001712.1531955-3-sathyanarayanan.kuppuswamy@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260211001712.1531955-1-sathyanarayanan.kuppuswamy@linux.intel.com>
 References: <20260211001712.1531955-1-sathyanarayanan.kuppuswamy@linux.intel.com>
@@ -65,60 +65,48 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The configfs-tsm-report interface can fail with -EFBIG when the
-attestation report generated by a TSM provider exceeds internal
-maximums (TSM_REPORT_OUTBLOB_MAX). However, this error condition and
-its handling are not currently documented in the ABI.
+Confidential Computing (CoCo) attestation is evolving toward
+standardized models such as DICE (Device Identifier Composition Engine)
+and Post-Quantum Cryptography (PQC), which rely on layered certificate
+chains and larger cryptographic signatures.
 
-Userspace tools need to understand how to interpret various error
-conditions when reading attestation reports.
+A typical PQC certificate can range from 5KB to 15KB, and DICE-based
+architectures accumulate these certificates across multiple boot
+stages. In such configurations, the total attestation evidence can
+reach several megabytes, exceeding the current 32KB limit.
 
-Document that reads fail with -EFBIG when reports exceed size limits,
-with guidance on how to resolve them.
+Increase TSM_REPORT_OUTBLOB_MAX to 16MB to accommodate these larger
+certificate chains. This provides sufficient headroom to handle
+evolving requirements without requiring frequent updates to the limit.
+
+TSM_REPORT_OUTBLOB_MAX is used by the configfs read interface to cap
+the maximum allowed binary blob size for outblob, auxblob and
+manifestblob attributes. Hence, the per-open-file worst case memory
+allocation increases from 32KB to 16MB. Multiple concurrent readers
+multiply this cost (e.g., N readers of an M-byte blob incur NxM bytes
+of vmalloc-backed memory). However, allocations are performed on demand
+and remain proportional to the actual blob length, not the configured
+maximum.
 
 Reviewed-by: Fang Peter <peter.fang@intel.com>
 Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 ---
- Documentation/ABI/testing/configfs-tsm-report | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ include/linux/tsm.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/ABI/testing/configfs-tsm-report b/Documentation/ABI/testing/configfs-tsm-report
-index 534408bc1408..ca3352cfd2f1 100644
---- a/Documentation/ABI/testing/configfs-tsm-report
-+++ b/Documentation/ABI/testing/configfs-tsm-report
-@@ -17,6 +17,12 @@ Description:
- 		where the implementation is conveyed via the @provider
- 		attribute.
+diff --git a/include/linux/tsm.h b/include/linux/tsm.h
+index a3b7ab668eff..7f72a154b6b2 100644
+--- a/include/linux/tsm.h
++++ b/include/linux/tsm.h
+@@ -8,7 +8,7 @@
+ #include <linux/device.h>
  
-+		This interface fails reads and sets errno to EFBIG when the
-+		report generated by @provider exceeds the configfs-tsm-report
-+		internal maximums. Contact the platform provider for the
-+		compatible security module, driver, and attestation library
-+		combination.
-+
- What:		/sys/kernel/config/tsm/report/$name/auxblob
- Date:		October, 2023
- KernelVersion:	v6.7
-@@ -31,6 +37,9 @@ Description:
- 		Standardization v2.03 Section 4.1.8.1 MSG_REPORT_REQ.
- 		https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/56421.pdf
+ #define TSM_REPORT_INBLOB_MAX 64
+-#define TSM_REPORT_OUTBLOB_MAX SZ_32K
++#define TSM_REPORT_OUTBLOB_MAX SZ_16M
  
-+		See "EFBIG" comment in the @outblob description for potential
-+		error conditions.
-+
- What:		/sys/kernel/config/tsm/report/$name/manifestblob
- Date:		January, 2024
- KernelVersion:	v6.10
-@@ -43,6 +52,9 @@ Description:
- 		See 'service_provider' for information on the format of the
- 		manifest blob.
- 
-+		See "EFBIG" comment in the @outblob description for potential
-+		error conditions.
-+
- What:		/sys/kernel/config/tsm/report/$name/provider
- Date:		September, 2023
- KernelVersion:	v6.7
+ /*
+  * Privilege level is a nested permission concept to allow confidential
 -- 
 2.43.0
 
