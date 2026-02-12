@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6802364EA2
-	for <linux-coco@lists.linux.dev>; Thu, 12 Feb 2026 14:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCADD364E81
+	for <linux-coco@lists.linux.dev>; Thu, 12 Feb 2026 14:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770906995; cv=none; b=Zspvd39LDYvk02DVPtAuCpHUWWXBeaHKeWZNXErW9GK0BDMf/21ZLCUXX8Oqfyss9x3lHsjnQR8roXm5e/rrfqgxASXqrwkBqQBw1DsQBppNP47fmUr5mnygdendEEV3tIAAFTWRpKjJFU8JDl8T+2XLpFrOSAPzgIjcnNBh/38=
+	t=1770907000; cv=none; b=SJMB3cWqfECT6AsrHDPBhQhz1p0SGkvfwFIFf28fseGcd/xg8IOgh/6kJ89k+idprEANe217Ls0yNcUQryGILU2Hy/9L/73N4N3vEF1HjgRu1by6va8g9L6zr61gOy2AiMe29U5d7q9KXL47YUeBBICvRmSs5cvm9txKKtxVR/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770906995; c=relaxed/simple;
-	bh=U741iM/p2Txpdybf3Xz1G0vtdfwN3sCq59uW6LiqzVg=;
+	s=arc-20240116; t=1770907000; c=relaxed/simple;
+	bh=/dAN6pjPYkAlspD1dSRRcEHHqjm+lR6Zi8ZYkj93Ua8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lP1stvPJh9fskFgOWEavFgdOFSuRBmRHdxn9JQE9shifWe9GvvEmkxibKRDmjMzsq02iWae5yk7nsaE20olCHv9HyCKvihlmJuHrJwVC3rV/DPYbqBRgbB9J/R/d+KYUJGwsScXNCl009SEvZI6BiPK5OchDp80FyTKexHVCnjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oBpzrgiU; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=jsf8oA+ln7gmPblqpKVaOMNTLDWABH4Ix9x9FVYXfBUy6C9ra3TIY39Xjmr1cPhwQHOLEjlImn3yc0INifEiha3u7c/MfRVpoWVvQabXOYLOb5qWuZlbbPApnSD6tIh/pbjQQ6sHOG+VIjS9/eiFsNj/WGIxaDWuk/9NZy8NrD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FwPPGRxz; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oBpzrgiU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FwPPGRxz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770906994; x=1802442994;
+  t=1770906993; x=1802442993;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=U741iM/p2Txpdybf3Xz1G0vtdfwN3sCq59uW6LiqzVg=;
-  b=oBpzrgiU7KLLA+uhpNHrym/glZ31QMmiUlUiVvUfZff8dy4cnf7Qj9zJ
-   Scluxxa5zHRACGT/NPnCsJHOd823ptwjdy+Y0sK5OqB6CPBJ52Wap/8v4
-   9/Ese0bSuwgrEEinsJ0PejsGYBr9d3wOu+uwKftirW7iQVMjVBkZZis+K
-   Njnl1wsuysEXbModbfFmQ9Ya2gb5Zfm4NyhALa2IcKA6YKgpfol5jlzpP
-   m9/8NMXKNljeFwbD8TbrfCzbJyk+MO4BYPY4cmhL8NwT3lm7NYemaLdZV
-   PRfZ7hsYLbrZiMOUP2Nl5VWB2J5xa5lFQnUq4dzI6VSLjCHU76PWgZV67
+  bh=/dAN6pjPYkAlspD1dSRRcEHHqjm+lR6Zi8ZYkj93Ua8=;
+  b=FwPPGRxzTuR4FWUI24qqW0fbOB3bej8HdjAHJV8sznCCBv7wHa0cVke4
+   7rxJloRvBM4Xj5zVBYYoLH8AJYpEO8aQPHkkQN7Oqq2NHqmfYpYn67mfu
+   uYuVyB92BSXvwxU5dilg8ucsJxRndaQov6SDK0HOV/bl0/6NlCyiZhV+o
+   7uzuS9H16EFikBU8jCWNvXC7j8vRXSd85SOKfwRw1b4tcSzh3MB+kR/iu
+   it6rG1nMdLjQcykWglNxXAjV4MWpGGSohVOUgjG5H2Eal8AwAyoGBB/tm
+   87mW0JG+4i8AY4M+d7LfW1ykmhu3wb/TWLBFxaHtN/t+SED9SNZ5yPeL0
    g==;
-X-CSE-ConnectionGUID: +48DN1EgQqW+OmKdjjG5lw==
-X-CSE-MsgGUID: eUFAtgcUTS2vAj5xXTN0nw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11699"; a="89662939"
+X-CSE-ConnectionGUID: mZASCuBJQS+65byTlXCmlw==
+X-CSE-MsgGUID: 8ot/VJ7TTN6rIcuHenxXLQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11699"; a="89662925"
 X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
-   d="scan'208";a="89662939"
+   d="scan'208";a="89662925"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 06:36:33 -0800
-X-CSE-ConnectionGUID: A/29T/a1SU+x16f7OzQgrw==
-X-CSE-MsgGUID: n4isDzdzS2SzNckGiMyvFA==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 06:36:31 -0800
+X-CSE-ConnectionGUID: VJxnIGBZRBaT+DKh5UJYAw==
+X-CSE-MsgGUID: 9QdBvV5XR6uJ44/RjkvytQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
-   d="scan'208";a="211428318"
+   d="scan'208";a="211428308"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 06:36:32 -0800
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 06:36:31 -0800
 From: Chao Gao <chao.gao@intel.com>
 To: linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
@@ -65,14 +65,10 @@ Cc: reinette.chatre@intel.com,
 	vishal.l.verma@intel.com,
 	binbin.wu@linux.intel.com,
 	tony.lindgren@linux.intel.com,
-	Chao Gao <chao.gao@intel.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v4 24/24] [NOT-FOR-REVIEW] x86/virt/seamldr: Save and restore current VMCS
-Date: Thu, 12 Feb 2026 06:35:27 -0800
-Message-ID: <20260212143606.534586-25-chao.gao@intel.com>
+	Chao Gao <chao.gao@intel.com>
+Subject: [PATCH v4 22/24] coco/tdx-host: Document TDX Module update expectations
+Date: Thu, 12 Feb 2026 06:35:25 -0800
+Message-ID: <20260212143606.534586-23-chao.gao@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260212143606.534586-1-chao.gao@intel.com>
 References: <20260212143606.534586-1-chao.gao@intel.com>
@@ -82,103 +78,85 @@ List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-P-SEAMLDR calls clobber the current VMCS as documented in Intel® Trust
-Domain CPU Architectural Extensions (May 2021 edition) Chapter 2.3 [1]:
+The TDX Module update protocol facilitates compatible runtime updates.
 
-  SEAMRET from the P-SEAMLDR clears the current VMCS structure pointed
-  to by the current-VMCS pointer. A VMM that invokes the P-SEAMLDR using
-  SEAMCALL must reload the current-VMCS, if required, using the VMPTRLD
-  instruction.
-
-Save and restore the current VMCS using VMPTRST and VMPTRLD instructions
-to avoid breaking KVM.
+Document the compatibility criteria and indicators of various update
+failures, including violations of the compatibility criteria.
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 ---
-This patch is needed for testing until microcode is updated to preserve
-the current VMCS across P-SEAMLDR calls. Otherwise, if some normal VMs
-are running before TDX Module updates, vmread/vmwrite errors may occur
-immediately after updates.
+v4
+ - Drop "compat_capable" kernel ABI [Dan]
+ - Document Linux compatibility expectations and results of violating
+   them [Dan]
 ---
- arch/x86/include/asm/special_insns.h | 22 ++++++++++++++++++++++
- arch/x86/virt/vmx/tdx/seamldr.c      | 16 +++++++++++++++-
- 2 files changed, 37 insertions(+), 1 deletion(-)
+ .../ABI/testing/sysfs-devices-faux-tdx-host   | 53 +++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
-diff --git a/arch/x86/include/asm/special_insns.h b/arch/x86/include/asm/special_insns.h
-index 46aa2c9c1bda..a3e9a139b669 100644
---- a/arch/x86/include/asm/special_insns.h
-+++ b/arch/x86/include/asm/special_insns.h
-@@ -303,6 +303,28 @@ static __always_inline void tile_release(void)
- 	asm volatile(".byte 0xc4, 0xe2, 0x78, 0x49, 0xc0");
- }
- 
-+static inline int vmptrst(u64 *vmcs_pa)
-+{
-+	asm goto("1: vmptrst %0\n\t"
-+		 _ASM_EXTABLE(1b, %l[error])
-+		 : "=m" (*vmcs_pa) : : "cc" : error);
+diff --git a/Documentation/ABI/testing/sysfs-devices-faux-tdx-host b/Documentation/ABI/testing/sysfs-devices-faux-tdx-host
+index 88a9c0b2bdfe..fefe762998db 100644
+--- a/Documentation/ABI/testing/sysfs-devices-faux-tdx-host
++++ b/Documentation/ABI/testing/sysfs-devices-faux-tdx-host
+@@ -27,3 +27,56 @@ Description:	(RO) Report the number of remaining updates. TDX maintains a
+ 		Interface Specification, Revision 343755-003, Chapter 3.3
+ 		"SEAMLDR_INFO" and Chapter 4.2 "SEAMLDR.INSTALL" for more
+ 		information.
 +
-+	return 0;
-+error:
-+	return -EIO;
-+}
++What:		/sys/devices/faux/tdx_host/firmware/tdx_module
++Contact:	linux-coco@lists.linux.dev
++Description:	(Directory) The tdx_module directory implements the fw_upload
++		sysfs ABI, see Documentation/ABI/testing/sysfs-class-firmware
++		for the general description of the attributes @data, @cancel,
++		@error, @loading, @remaining_size, and @status. This ABI
++		facilitates "Compatible TDX Module Updates". A compatible update
++		is one that meets the following criteria:
 +
-+static inline int vmptrld(u64 vmcs_pa)
-+{
-+	asm goto("1: vmptrld %0\n\t"
-+		 "jna %l[error]\n\t"
-+		 _ASM_EXTABLE(1b, %l[error])
-+		 : : "m" (vmcs_pa) : "cc" : error);
-+	return 0;
-+error:
-+	return -EIO;
-+}
++		   Does not interrupt or interfere with any current TDX
++		   operation or TD VM.
 +
- #endif /* __KERNEL__ */
- 
- #endif /* _ASM_X86_SPECIAL_INSNS_H */
-diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-index 3f37cc6c68ff..02695307b8a0 100644
---- a/arch/x86/virt/vmx/tdx/seamldr.c
-+++ b/arch/x86/virt/vmx/tdx/seamldr.c
-@@ -16,6 +16,7 @@
- #include <linux/stop_machine.h>
- 
- #include <asm/seamldr.h>
-+#include <asm/special_insns.h>
- 
- #include "seamcall_internal.h"
- #include "tdx.h"
-@@ -59,12 +60,25 @@ static DEFINE_RAW_SPINLOCK(seamldr_lock);
- 
- static int seamldr_call(u64 fn, struct tdx_module_args *args)
- {
-+	u64 current_vmcs = -1ULL;
-+	int ret;
++		   Does not invalidate any previously consumed Module metadata
++		   values outside of the TEE_TCB_SVN_2 field (updated Security
++		   Version Number) in TD Quotes.
 +
- 	/*
- 	 * Serialize P-SEAMLDR calls and disable interrupts as the calls
- 	 * can be made from IRQ context.
- 	 */
- 	guard(raw_spinlock_irqsave)(&seamldr_lock);
--	return seamcall_prerr(fn, args);
++		   Does not require validation of new Module metadata fields. By
++		   implication, new Module features and capabilities are only
++		   available by installing the Module at reboot (BIOS or EFI
++		   helper loaded).
 +
-+	/*
-+	 * P-SEAMLDR calls clobber the current VMCS. Save and restore it.
-+	 * -1 indicates invalid VMCS and no restoration is needed.
-+	 */
-+	WARN_ON_ONCE(vmptrst(&current_vmcs));
-+	ret = seamcall_prerr(fn, args);
-+	if (current_vmcs != -1ULL)
-+		WARN_ON_ONCE(vmptrld(current_vmcs));
++		See tdx_host/firmware/tdx_module/error for information on
++		compatibility check failures and how to prevent them.
 +
-+	return ret;
- }
- 
- int seamldr_get_info(struct seamldr_info *seamldr_info)
++What:		/sys/devices/faux/tdx_host/firmware/tdx_module/error
++Contact:	linux-coco@lists.linux.dev
++Description:	(RO) See Documentation/ABI/testing/sysfs-class-firmware for
++		baseline expectations for this file. The <ERROR> part in the
++		<STATUS>:<ERROR> format can be:
++
++		   "device-busy": Compatibility checks failed or not all CPUs
++		                  are online
++
++		   "flash-wearout": The number of updates reached the limit.
++
++		   "read-write-error": Memory allocation failed.
++
++		   "hw-error": Cannot communicate with P-SEAMLDR or TDX Module.
++
++		   "firmware-invalid": The provided TDX Module update is invalid
++		                       or other unexpected errors occurred.
++
++		"hw-error" or "firmware-invalid" may be fatal, causing all TDs
++		and the TDX Module to be lost and preventing further TDX
++		operations. This occurs when reading
++		/sys/devices/faux/tdx_host/version returns -ENXIO. For other
++		errors, TDs and the (previous) TDX Module stay running.
++
++		See tdxctl [1] documentation for how to detect compatible
++		updates and whether the current platform components catch errors
++		or let them leak and cause potential TD attestation failures.
++		[1]: <TBD - tdxctl link>
 -- 
 2.47.3
 
