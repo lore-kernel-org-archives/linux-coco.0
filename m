@@ -1,56 +1,56 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1DA2C030E
-	for <linux-coco@lists.linux.dev>; Sat, 14 Feb 2026 01:27:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7023528D83E
+	for <linux-coco@lists.linux.dev>; Sat, 14 Feb 2026 01:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771032449; cv=none; b=Oufpzrx50B3tSgjbZRl/1TlXLCwkhJch5yicUMHSQCZVyN5PbhUj6AI8WoY+qJsEkgA/mqVoE0/rV9rYZjXGLSmkVG3vacR2gXWdLlKlH6GPppcaQ3CTLojvOp11/Cu7aIioazqqg3HTufnRkgTSMCOun3VtFzQkZgDzX+O8WmI=
+	t=1771032449; cv=none; b=HZ6GObUdU7HEfjTaO73aGaTTYWesxUAf07zQYJeA5eZGCzcGWYgOliHEMdjnA84pFScbUVCFFbRV/ujpgXD0v9rsdX2GF3qZPptqy5ER3jGK3dUX9r38/xWpJn0YHHxdVG2OqvV1+X1R0mzMJUMLNPC2J0/FX8azd/pbfalGUCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1771032449; c=relaxed/simple;
-	bh=veezVVvkHI8EJ5vDQW8W/d9IuIsrwRrbe2kmw/QFdRo=;
+	bh=hftPp1cgH316yfhw8k/dPrCnpI6uxskVDDg5/T2D/XQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Dt3/6Qf1hi/rc7QrycyDARj3Rkc6LSXBvGitaHvZgUoV+2Bnp3q7PF/Y9Wd6arjOdcxTn+MPrKkg3Q103DUQkvDjOUKV0xGQNnSrSo4qY1nTk3FR8TYSfU7YBXhXZa3s+NwUQ5sb5pB2C2vNGmr1ck0zjGNTHHJmyZXL+HYG3Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J4N+pW8i; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=d2w/L7QMxu2HSYRcXCxX7zHRmFS6gidl+s1Ob0QKUJABR3MfaWnskUj+Czv+YsR6uML0UpDme6bGupNNoR6AHLFwmeQHoxNBFhlKVHUMoZZZBcWLAk8/8kI7OSyIH2AEjP7PcWyHdhpmtJNKkxQu+D33Wv90VjUh+rbBkQuqzuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gNqdhUDU; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J4N+pW8i"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2aaf2ce5d81so18241995ad.1
-        for <linux-coco@lists.linux.dev>; Fri, 13 Feb 2026 17:27:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gNqdhUDU"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3561f5bd22eso1474591a91.2
+        for <linux-coco@lists.linux.dev>; Fri, 13 Feb 2026 17:27:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771032445; x=1771637245; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1771032444; x=1771637244; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=RoaSnnMV3Xy+vejoQwjN3YFWS5VqZgJOGJUK0ulpbmA=;
-        b=J4N+pW8ieFOrUuVtHK9HpkBfH1nNaIGSZBiCniN8WYYEcW3/1GeT4CyFlcM8EtoIVw
-         zMcNSVNLf9L/eZ5pxQqkk2VDJZMLLABqQiRwzsXnSYMuupQHb5TEav0Hn5bP74jCRHIm
-         Vu2BresTTBGj5aKpEfMSyaMYhS6v+mkdqJ2mGUAcCTbA/qs2BGu2A3o+pZ+zu0HiSwrQ
-         NBGMs+5JepgqNCPfbfh5igrXqPtvpRVhXZkeRN5p7LrFXnx6udXAicPhCLEFlCV1cCZz
-         aMLdfRks2/T30Hap+f+ofBILRAk6NvgpE9posrDPkHXnRQnqOWYGXV/hOYlFaogImsli
-         ZavQ==
+        bh=H80q9SD+282s080Ud0tbsBB2WQnuDfalKG9TFAGQvtU=;
+        b=gNqdhUDUhCaMqFoCttB57OihSr1sW/YozUck1qYN1PnKDsPPKh6buqCcVRPfkG7nKJ
+         VqQsZfTgYqS77DE0vWExN1j/OXNOg6f09IDyKJqgz1WRsl3Q7k6P80lWJJyyMBW8u2cR
+         Qx+/D6lm4Z0r71znjRlBZ0ieJ0Vp272e0D0AdfQcZ3mGW6YL5cJWahu4HZ+flVkjxZyn
+         JZhp5HY2amwWdVV7WhAvpRaJ5qNA87sIlV+SgZEb9m/cg8PnONp0d6TaXqrQ0+wLc0Wr
+         Uso7+R2JqIClM7iA17fKWiakBAkG6IpnIemvAgALhjZvJjY7+Q7tPmzy9xqhPP41XVHA
+         cc3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771032445; x=1771637245;
+        d=1e100.net; s=20230601; t=1771032444; x=1771637244;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=RoaSnnMV3Xy+vejoQwjN3YFWS5VqZgJOGJUK0ulpbmA=;
-        b=EnUFU7+6TnjTALXUWRppFBrUsuvTMuN95IFa+/ep4HDPqlbAjSZllqnb9LZKf1UvUl
-         NLiQ+jo9iYBAUrjS5PSMV3VabQmwgbzN3oMkyxJr+rbdYR/Jz7uuNCU3bAsYBTXZYIVn
-         UEf90pbpLuQ5OW6RfdRFtk3KBzMRiUeSxQy2UZrus+5eVf1VEt435RXEqo5AFr3HkjFz
-         QgzFa5iXOS8YqG9Rwt7fSuo94ARsoZNey60lXgvJqF6IzYIb0/laBbfs+sjlmBNzIMZq
-         aR2Rzxt0MChaulreMqc48GELMLH92HnwGzvk62V6NCS7B7bqHbTb9Mzw/TXKvyNW2u7D
-         ZdFw==
-X-Forwarded-Encrypted: i=1; AJvYcCUhNBcF7VnjqY/cB2zFKrPjGvATIQoQVfHHseuXIBcaOAP3kzV7p8Rs9t2u82pyZBiT/V/npBDx9HZs@lists.linux.dev
-X-Gm-Message-State: AOJu0YwcDv/Ap4o6ZYE3TBvrEKZW03VX7tlJ5Oq5WcL6wY2LdDXMKwHj
-	1oB6fpgItCa0QPF6mqnYfbV8M14Hqd0MJ9deHmOsdlanYSE8vk5XOVcviK4PC6FFnFg2vhRK09q
-	3+L3LEw==
-X-Received: from plhd16.prod.google.com ([2002:a17:903:2310:b0:2aa:d61d:b14c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:46ce:b0:2a8:fc56:a3e6
- with SMTP id d9443c01a7336-2ad174a09camr11139595ad.24.1771032445181; Fri, 13
- Feb 2026 17:27:25 -0800 (PST)
+        bh=H80q9SD+282s080Ud0tbsBB2WQnuDfalKG9TFAGQvtU=;
+        b=Vt+xozKEr0THRxEufgbQSPkTc+a0j8a0uR2lg4ZsnQQy84Mi70CSCNCMHGgfpBSr9x
+         2/H5FeexdCNt19GsAp+lap4gVo+O75Viu/tabbpG07tHv9PVOf368xqDb6Uamnz2IJo3
+         iZweEDd4OtkbRhicheXPbK6sox9s1p35AiP8xw+jZ91kTaBERBhJU/bxgJ62eEit8HSU
+         Q/2dNtbE3+P+mdzgcX78iNQBYjkuQWUVcbSax4ie4b0P7x1ioqGfv3N8SaNpOxMBreBP
+         qF+713t6QWSfCCrxESQCMowcYkVJbAhtI/ytUWZr2KB6Y3W0ikuTmUOQgh9xMP3eWDhZ
+         Xf+w==
+X-Forwarded-Encrypted: i=1; AJvYcCVcPwR28UFRBr7thQ2KaBtt10dM0TTI0JqZR+0/ks6v7y4luvvl0218rbC1TbNAEDoCpdvK8wTEmHBo@lists.linux.dev
+X-Gm-Message-State: AOJu0Yymue0ggyiFxcbY0844VbezS9J4JYFrfCn7eWueL9p1NzieRtR1
+	Xc8/ZPYjIouvZXZeYqOUn/+Q0m3xpk+yoSBQavXxo59r49m35/oMruC1XiMjDh15bSqK75E1zpR
+	etHSQCw==
+X-Received: from pgvt5.prod.google.com ([2002:a65:64c5:0:b0:c65:e24e:cef1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:43a5:b0:38e:9cc5:218c
+ with SMTP id adf61e73a8af0-3946c8be39amr3465099637.54.1771032443485; Fri, 13
+ Feb 2026 17:27:23 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 13 Feb 2026 17:26:57 -0800
+Date: Fri, 13 Feb 2026 17:26:56 -0800
 In-Reply-To: <20260214012702.2368778-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260214012702.2368778-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.310.g728cabbaf7-goog
-Message-ID: <20260214012702.2368778-12-seanjc@google.com>
-Subject: [PATCH v3 11/16] KVM: x86/tdx: Do VMXON and TDX-Module initialization
- during subsys init
+Message-ID: <20260214012702.2368778-11-seanjc@google.com>
+Subject: [PATCH v3 10/16] x86/virt/tdx: Drop the outdated requirement that TDX
+ be enabled in IRQ context
 From: Sean Christopherson <seanjc@google.com>
 To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
@@ -75,600 +75,72 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
 	Dan Williams <dan.j.williams@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Now that VMXON can be done without bouncing through KVM, do TDX-Module
-initialization during subsys init (specifically before module_init() so
-that it runs before KVM when both are built-in).  Aside from the obvious
-benefits of separating core TDX code from KVM, this will allow tagging a
-pile of TDX functions and globals as being __init and __ro_after_init.
+Remove TDX's outdated requirement that per-CPU enabling be done via IPI
+function call, which was a stale artifact leftover from early versions of
+the TDX enablement series.  The requirement that IRQs be disabled should
+have been dropped as part of the revamped series that relied on a the KVM
+rework to enable VMX at module load.
 
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+In other words, the kernel's "requirement" was never a requirement at all,
+but instead a reflection of how KVM enabled VMX (via IPI callback) when
+the TDX subsystem code was merged.
+
+Note, accessing per-CPU information is safe even without disabling IRQs,
+as tdx_online_cpu() is invoked via a cpuhp callback, i.e. from a per-CPU
+thread.
+
+Link: https://lore.kernel.org/all/ZyJOiPQnBz31qLZ7@google.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- Documentation/arch/x86/tdx.rst |  36 +------
- arch/x86/include/asm/tdx.h     |   4 -
- arch/x86/kvm/vmx/tdx.c         | 148 ++++++-----------------------
- arch/x86/virt/vmx/tdx/tdx.c    | 168 +++++++++++++++++++--------------
- arch/x86/virt/vmx/tdx/tdx.h    |   8 --
- 5 files changed, 130 insertions(+), 234 deletions(-)
+ arch/x86/kvm/vmx/tdx.c      | 9 +--------
+ arch/x86/virt/vmx/tdx/tdx.c | 4 ----
+ 2 files changed, 1 insertion(+), 12 deletions(-)
 
-diff --git a/Documentation/arch/x86/tdx.rst b/Documentation/arch/x86/tdx.rst
-index 61670e7df2f7..ff6b110291bc 100644
---- a/Documentation/arch/x86/tdx.rst
-+++ b/Documentation/arch/x86/tdx.rst
-@@ -60,44 +60,18 @@ Besides initializing the TDX module, a per-cpu initialization SEAMCALL
- must be done on one cpu before any other SEAMCALLs can be made on that
- cpu.
- 
--The kernel provides two functions, tdx_enable() and tdx_cpu_enable() to
--allow the user of TDX to enable the TDX module and enable TDX on local
--cpu respectively.
--
--Making SEAMCALL requires VMXON has been done on that CPU.  Currently only
--KVM implements VMXON.  For now both tdx_enable() and tdx_cpu_enable()
--don't do VMXON internally (not trivial), but depends on the caller to
--guarantee that.
--
--To enable TDX, the caller of TDX should: 1) temporarily disable CPU
--hotplug; 2) do VMXON and tdx_enable_cpu() on all online cpus; 3) call
--tdx_enable().  For example::
--
--        cpus_read_lock();
--        on_each_cpu(vmxon_and_tdx_cpu_enable());
--        ret = tdx_enable();
--        cpus_read_unlock();
--        if (ret)
--                goto no_tdx;
--        // TDX is ready to use
--
--And the caller of TDX must guarantee the tdx_cpu_enable() has been
--successfully done on any cpu before it wants to run any other SEAMCALL.
--A typical usage is do both VMXON and tdx_cpu_enable() in CPU hotplug
--online callback, and refuse to online if tdx_cpu_enable() fails.
--
- User can consult dmesg to see whether the TDX module has been initialized.
- 
- If the TDX module is initialized successfully, dmesg shows something
- like below::
- 
-   [..] virt/tdx: 262668 KBs allocated for PAMT
--  [..] virt/tdx: module initialized
-+  [..] virt/tdx: TDX-Module initialized
- 
- If the TDX module failed to initialize, dmesg also shows it failed to
- initialize::
- 
--  [..] virt/tdx: module initialization failed ...
-+  [..] virt/tdx: TDX-Module initialization failed ...
- 
- TDX Interaction to Other Kernel Components
- ------------------------------------------
-@@ -129,9 +103,9 @@ CPU Hotplug
- ~~~~~~~~~~~
- 
- TDX module requires the per-cpu initialization SEAMCALL must be done on
--one cpu before any other SEAMCALLs can be made on that cpu.  The kernel
--provides tdx_cpu_enable() to let the user of TDX to do it when the user
--wants to use a new cpu for TDX task.
-+one cpu before any other SEAMCALLs can be made on that cpu.  The kernel,
-+via the CPU hotplug framework, performs the necessary initialization when
-+a CPU is first brought online.
- 
- TDX doesn't support physical (ACPI) CPU hotplug.  During machine boot,
- TDX verifies all boot-time present logical CPUs are TDX compatible before
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 6b338d7f01b7..a149740b24e8 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -145,8 +145,6 @@ static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
- #define seamcall(_fn, _args)		sc_retry(__seamcall, (_fn), (_args))
- #define seamcall_ret(_fn, _args)	sc_retry(__seamcall_ret, (_fn), (_args))
- #define seamcall_saved_ret(_fn, _args)	sc_retry(__seamcall_saved_ret, (_fn), (_args))
--int tdx_cpu_enable(void);
--int tdx_enable(void);
- const char *tdx_dump_mce_info(struct mce *m);
- const struct tdx_sys_info *tdx_get_sysinfo(void);
- 
-@@ -223,8 +221,6 @@ u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *td);
- u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, struct page *page);
- #else
- static inline void tdx_init(void) { }
--static inline int tdx_cpu_enable(void) { return -ENODEV; }
--static inline int tdx_enable(void)  { return -ENODEV; }
- static inline u32 tdx_get_nr_guest_keyids(void) { return 0; }
- static inline const char *tdx_dump_mce_info(struct mce *m) { return NULL; }
- static inline const struct tdx_sys_info *tdx_get_sysinfo(void) { return NULL; }
 diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 582469118b79..0ac01c119336 100644
+index 0c790eb0bfa6..582469118b79 100644
 --- a/arch/x86/kvm/vmx/tdx.c
 +++ b/arch/x86/kvm/vmx/tdx.c
-@@ -59,7 +59,7 @@ module_param_named(tdx, enable_tdx, bool, 0444);
- #define TDX_SHARED_BIT_PWL_5 gpa_to_gfn(BIT_ULL(51))
- #define TDX_SHARED_BIT_PWL_4 gpa_to_gfn(BIT_ULL(47))
- 
--static enum cpuhp_state tdx_cpuhp_state;
-+static enum cpuhp_state tdx_cpuhp_state __ro_after_init;
- 
- static const struct tdx_sys_info *tdx_sysinfo;
- 
-@@ -3294,10 +3294,7 @@ int tdx_gmem_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn, bool is_private)
+@@ -3294,17 +3294,10 @@ int tdx_gmem_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn, bool is_private)
  
  static int tdx_online_cpu(unsigned int cpu)
  {
--	/* Sanity check CPU is already in post-VMXON */
--	WARN_ON_ONCE(!(cr4_read_shadow() & X86_CR4_VMXE));
+-	unsigned long flags;
+-	int r;
 -
--	return tdx_cpu_enable();
-+	return 0;
+ 	/* Sanity check CPU is already in post-VMXON */
+ 	WARN_ON_ONCE(!(cr4_read_shadow() & X86_CR4_VMXE));
+ 
+-	local_irq_save(flags);
+-	r = tdx_cpu_enable();
+-	local_irq_restore(flags);
+-
+-	return r;
++	return tdx_cpu_enable();
  }
  
  static int tdx_offline_cpu(unsigned int cpu)
-@@ -3336,51 +3333,6 @@ static int tdx_offline_cpu(unsigned int cpu)
- 	return -EBUSY;
- }
- 
--static void __do_tdx_cleanup(void)
--{
--	/*
--	 * Once TDX module is initialized, it cannot be disabled and
--	 * re-initialized again w/o runtime update (which isn't
--	 * supported by kernel).  Only need to remove the cpuhp here.
--	 * The TDX host core code tracks TDX status and can handle
--	 * 'multiple enabling' scenario.
--	 */
--	WARN_ON_ONCE(!tdx_cpuhp_state);
--	cpuhp_remove_state_nocalls_cpuslocked(tdx_cpuhp_state);
--	tdx_cpuhp_state = 0;
--}
--
--static void __tdx_cleanup(void)
--{
--	cpus_read_lock();
--	__do_tdx_cleanup();
--	cpus_read_unlock();
--}
--
--static int __init __do_tdx_bringup(void)
--{
--	int r;
--
--	/*
--	 * TDX-specific cpuhp callback to call tdx_cpu_enable() on all
--	 * online CPUs before calling tdx_enable(), and on any new
--	 * going-online CPU to make sure it is ready for TDX guest.
--	 */
--	r = cpuhp_setup_state_cpuslocked(CPUHP_AP_ONLINE_DYN,
--					 "kvm/cpu/tdx:online",
--					 tdx_online_cpu, tdx_offline_cpu);
--	if (r < 0)
--		return r;
--
--	tdx_cpuhp_state = r;
--
--	r = tdx_enable();
--	if (r)
--		__do_tdx_cleanup();
--
--	return r;
--}
--
- static int __init __tdx_bringup(void)
- {
- 	const struct tdx_sys_info_td_conf *td_conf;
-@@ -3400,34 +3352,18 @@ static int __init __tdx_bringup(void)
- 		}
- 	}
- 
--	/*
--	 * Enabling TDX requires enabling hardware virtualization first,
--	 * as making SEAMCALLs requires CPU being in post-VMXON state.
--	 */
--	r = kvm_enable_virtualization();
--	if (r)
--		return r;
--
--	cpus_read_lock();
--	r = __do_tdx_bringup();
--	cpus_read_unlock();
--
--	if (r)
--		goto tdx_bringup_err;
--
--	r = -EINVAL;
- 	/* Get TDX global information for later use */
- 	tdx_sysinfo = tdx_get_sysinfo();
--	if (WARN_ON_ONCE(!tdx_sysinfo))
--		goto get_sysinfo_err;
-+	if (!tdx_sysinfo)
-+		return -ENODEV;
- 
- 	/* Check TDX module and KVM capabilities */
- 	if (!tdx_get_supported_attrs(&tdx_sysinfo->td_conf) ||
- 	    !tdx_get_supported_xfam(&tdx_sysinfo->td_conf))
--		goto get_sysinfo_err;
-+		return -EINVAL;
- 
- 	if (!(tdx_sysinfo->features.tdx_features0 & MD_FIELD_ID_FEATURES0_TOPOLOGY_ENUM))
--		goto get_sysinfo_err;
-+		return -EINVAL;
- 
- 	/*
- 	 * TDX has its own limit of maximum vCPUs it can support for all
-@@ -3462,34 +3398,31 @@ static int __init __tdx_bringup(void)
- 	if (td_conf->max_vcpus_per_td < num_present_cpus()) {
- 		pr_err("Disable TDX: MAX_VCPU_PER_TD (%u) smaller than number of logical CPUs (%u).\n",
- 				td_conf->max_vcpus_per_td, num_present_cpus());
--		goto get_sysinfo_err;
-+		return -EINVAL;
- 	}
- 
- 	if (misc_cg_set_capacity(MISC_CG_RES_TDX, tdx_get_nr_guest_keyids()))
--		goto get_sysinfo_err;
-+		return -EINVAL;
- 
- 	/*
--	 * Leave hardware virtualization enabled after TDX is enabled
--	 * successfully.  TDX CPU hotplug depends on this.
-+	 * TDX-specific cpuhp callback to disallow offlining the last CPU in a
-+	 * packing while KVM is running one or more TDs.  Reclaiming HKIDs
-+	 * requires doing PAGE.WBINVD on every package, i.e. offlining all CPUs
-+	 * of a package would prevent reclaiming the HKID.
- 	 */
-+	r = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "kvm/cpu/tdx:online",
-+			      tdx_online_cpu, tdx_offline_cpu);
-+	if (r < 0)
-+		goto err_cpuhup;
-+
-+	tdx_cpuhp_state = r;
- 	return 0;
- 
--get_sysinfo_err:
--	__tdx_cleanup();
--tdx_bringup_err:
--	kvm_disable_virtualization();
-+err_cpuhup:
-+	misc_cg_set_capacity(MISC_CG_RES_TDX, 0);
- 	return r;
- }
- 
--void tdx_cleanup(void)
--{
--	if (enable_tdx) {
--		misc_cg_set_capacity(MISC_CG_RES_TDX, 0);
--		__tdx_cleanup();
--		kvm_disable_virtualization();
--	}
--}
--
- int __init tdx_bringup(void)
- {
- 	int r, i;
-@@ -3521,39 +3454,11 @@ int __init tdx_bringup(void)
- 		goto success_disable_tdx;
- 	}
- 
--	if (!cpu_feature_enabled(X86_FEATURE_MOVDIR64B)) {
--		pr_err("tdx: MOVDIR64B is required for TDX\n");
--		goto success_disable_tdx;
--	}
--
--	if (!cpu_feature_enabled(X86_FEATURE_SELFSNOOP)) {
--		pr_err("Self-snoop is required for TDX\n");
--		goto success_disable_tdx;
--	}
--
- 	if (!cpu_feature_enabled(X86_FEATURE_TDX_HOST_PLATFORM)) {
--		pr_err("tdx: no TDX private KeyIDs available\n");
-+		pr_err("TDX not supported by the host platform\n");
- 		goto success_disable_tdx;
- 	}
- 
--	if (!enable_virt_at_load) {
--		pr_err("tdx: tdx requires kvm.enable_virt_at_load=1\n");
--		goto success_disable_tdx;
--	}
--
--	/*
--	 * Ideally KVM should probe whether TDX module has been loaded
--	 * first and then try to bring it up.  But TDX needs to use SEAMCALL
--	 * to probe whether the module is loaded (there is no CPUID or MSR
--	 * for that), and making SEAMCALL requires enabling virtualization
--	 * first, just like the rest steps of bringing up TDX module.
--	 *
--	 * So, for simplicity do everything in __tdx_bringup(); the first
--	 * SEAMCALL will return -ENODEV when the module is not loaded.  The
--	 * only complication is having to make sure that initialization
--	 * SEAMCALLs don't return TDX_SEAMCALL_VMFAILINVALID in other
--	 * cases.
--	 */
- 	r = __tdx_bringup();
- 	if (r) {
- 		/*
-@@ -3568,8 +3473,6 @@ int __init tdx_bringup(void)
- 		 */
- 		if (r == -ENODEV)
- 			goto success_disable_tdx;
--
--		enable_tdx = 0;
- 	}
- 
- 	return r;
-@@ -3579,6 +3482,15 @@ int __init tdx_bringup(void)
- 	return 0;
- }
- 
-+void tdx_cleanup(void)
-+{
-+	if (!enable_tdx)
-+		return;
-+
-+	misc_cg_set_capacity(MISC_CG_RES_TDX, 0);
-+	cpuhp_remove_state(tdx_cpuhp_state);
-+}
-+
- void __init tdx_hardware_setup(void)
- {
- 	KVM_SANITY_CHECK_VM_STRUCT_SIZE(kvm_tdx);
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index dfd82fac0498..feea8dd6920d 100644
+index 5ce4ebe99774..dfd82fac0498 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -28,6 +28,7 @@
- #include <linux/log2.h>
- #include <linux/acpi.h>
- #include <linux/suspend.h>
-+#include <linux/syscore_ops.h>
- #include <linux/idr.h>
- #include <linux/kvm_types.h>
- #include <asm/page.h>
-@@ -39,6 +40,7 @@
- #include <asm/cpu_device_id.h>
- #include <asm/processor.h>
- #include <asm/mce.h>
-+#include <asm/virt.h>
- #include "tdx.h"
- 
- static u32 tdx_global_keyid __ro_after_init;
-@@ -51,13 +53,11 @@ static DEFINE_PER_CPU(bool, tdx_lp_initialized);
- 
- static struct tdmr_info_list tdx_tdmr_list;
- 
--static enum tdx_module_status_t tdx_module_status;
--static DEFINE_MUTEX(tdx_module_lock);
--
- /* All TDX-usable memory regions.  Protected by mem_hotplug_lock. */
- static LIST_HEAD(tdx_memlist);
- 
- static struct tdx_sys_info tdx_sysinfo;
-+static bool tdx_module_initialized;
- 
- typedef void (*sc_err_func_t)(u64 fn, u64 err, struct tdx_module_args *args);
- 
-@@ -142,22 +142,15 @@ static int try_init_module_global(void)
- }
- 
- /**
-- * tdx_cpu_enable - Enable TDX on local cpu
+@@ -148,8 +148,6 @@ static int try_init_module_global(void)
+  * global initialization SEAMCALL if not done) on local cpu to make this
+  * cpu be ready to run any other SEAMCALLs.
+  *
+- * Always call this function via IPI function calls.
 - *
-- * Do one-time TDX module per-cpu initialization SEAMCALL (and TDX module
-- * global initialization SEAMCALL if not done) on local cpu to make this
-- * cpu be ready to run any other SEAMCALLs.
-- *
-- * Return 0 on success, otherwise errors.
-+ * Enable VMXON and then do one-time TDX module per-cpu initialization SEAMCALL
-+ * (and TDX module global initialization SEAMCALL if not done) on local cpu to
-+ * make this cpu be ready to run any other SEAMCALLs.
+  * Return 0 on success, otherwise errors.
   */
--int tdx_cpu_enable(void)
-+static int tdx_cpu_enable(void)
- {
- 	struct tdx_module_args args = {};
- 	int ret;
+ int tdx_cpu_enable(void)
+@@ -160,8 +158,6 @@ int tdx_cpu_enable(void)
+ 	if (!boot_cpu_has(X86_FEATURE_TDX_HOST_PLATFORM))
+ 		return -ENODEV;
  
--	if (!boot_cpu_has(X86_FEATURE_TDX_HOST_PLATFORM))
--		return -ENODEV;
+-	lockdep_assert_irqs_disabled();
 -
  	if (__this_cpu_read(tdx_lp_initialized))
  		return 0;
  
-@@ -178,7 +171,58 @@ int tdx_cpu_enable(void)
- 
- 	return 0;
- }
--EXPORT_SYMBOL_FOR_KVM(tdx_cpu_enable);
-+
-+static int tdx_online_cpu(unsigned int cpu)
-+{
-+	int ret;
-+
-+	ret = x86_virt_get_ref(X86_FEATURE_VMX);
-+	if (ret)
-+		return ret;
-+
-+	ret = tdx_cpu_enable();
-+	if (ret)
-+		x86_virt_put_ref(X86_FEATURE_VMX);
-+
-+	return ret;
-+}
-+
-+static int tdx_offline_cpu(unsigned int cpu)
-+{
-+	x86_virt_put_ref(X86_FEATURE_VMX);
-+	return 0;
-+}
-+
-+static void tdx_shutdown_cpu(void *ign)
-+{
-+	x86_virt_put_ref(X86_FEATURE_VMX);
-+}
-+
-+static void tdx_shutdown(void *ign)
-+{
-+	on_each_cpu(tdx_shutdown_cpu, NULL, 1);
-+}
-+
-+static int tdx_suspend(void *ign)
-+{
-+	x86_virt_put_ref(X86_FEATURE_VMX);
-+	return 0;
-+}
-+
-+static void tdx_resume(void *ign)
-+{
-+	WARN_ON_ONCE(x86_virt_get_ref(X86_FEATURE_VMX));
-+}
-+
-+static const struct syscore_ops tdx_syscore_ops = {
-+	.suspend = tdx_suspend,
-+	.resume = tdx_resume,
-+	.shutdown = tdx_shutdown,
-+};
-+
-+static struct syscore tdx_syscore = {
-+	.ops = &tdx_syscore_ops,
-+};
- 
- /*
-  * Add a memory region as a TDX memory block.  The caller must make sure
-@@ -1153,67 +1197,50 @@ static int init_tdx_module(void)
- 	goto out_put_tdxmem;
- }
- 
--static int __tdx_enable(void)
-+static int tdx_enable(void)
- {
-+	enum cpuhp_state state;
- 	int ret;
- 
-+	if (!cpu_feature_enabled(X86_FEATURE_TDX_HOST_PLATFORM)) {
-+		pr_err("TDX not supported by the host platform\n");
-+		return -ENODEV;
-+	}
-+
-+	if (!cpu_feature_enabled(X86_FEATURE_XSAVE)) {
-+		pr_err("XSAVE is required for TDX\n");
-+		return -EINVAL;
-+	}
-+
-+	if (!cpu_feature_enabled(X86_FEATURE_MOVDIR64B)) {
-+		pr_err("MOVDIR64B is required for TDX\n");
-+		return -EINVAL;
-+	}
-+
-+	if (!cpu_feature_enabled(X86_FEATURE_SELFSNOOP)) {
-+		pr_err("Self-snoop is required for TDX\n");
-+		return -ENODEV;
-+	}
-+
-+	state = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "virt/tdx:online",
-+				  tdx_online_cpu, tdx_offline_cpu);
-+	if (state < 0)
-+		return state;
-+
- 	ret = init_tdx_module();
- 	if (ret) {
--		pr_err("module initialization failed (%d)\n", ret);
--		tdx_module_status = TDX_MODULE_ERROR;
-+		pr_err("TDX-Module initialization failed (%d)\n", ret);
-+		cpuhp_remove_state(state);
- 		return ret;
- 	}
- 
--	pr_info("module initialized\n");
--	tdx_module_status = TDX_MODULE_INITIALIZED;
-+	register_syscore(&tdx_syscore);
- 
-+	tdx_module_initialized = true;
-+	pr_info("TDX-Module initialized\n");
- 	return 0;
- }
--
--/**
-- * tdx_enable - Enable TDX module to make it ready to run TDX guests
-- *
-- * This function assumes the caller has: 1) held read lock of CPU hotplug
-- * lock to prevent any new cpu from becoming online; 2) done both VMXON
-- * and tdx_cpu_enable() on all online cpus.
-- *
-- * This function requires there's at least one online cpu for each CPU
-- * package to succeed.
-- *
-- * This function can be called in parallel by multiple callers.
-- *
-- * Return 0 if TDX is enabled successfully, otherwise error.
-- */
--int tdx_enable(void)
--{
--	int ret;
--
--	if (!boot_cpu_has(X86_FEATURE_TDX_HOST_PLATFORM))
--		return -ENODEV;
--
--	lockdep_assert_cpus_held();
--
--	mutex_lock(&tdx_module_lock);
--
--	switch (tdx_module_status) {
--	case TDX_MODULE_UNINITIALIZED:
--		ret = __tdx_enable();
--		break;
--	case TDX_MODULE_INITIALIZED:
--		/* Already initialized, great, tell the caller. */
--		ret = 0;
--		break;
--	default:
--		/* Failed to initialize in the previous attempts */
--		ret = -EINVAL;
--		break;
--	}
--
--	mutex_unlock(&tdx_module_lock);
--
--	return ret;
--}
--EXPORT_SYMBOL_FOR_KVM(tdx_enable);
-+subsys_initcall(tdx_enable);
- 
- static bool is_pamt_page(unsigned long phys)
- {
-@@ -1464,15 +1491,10 @@ void __init tdx_init(void)
- 
- const struct tdx_sys_info *tdx_get_sysinfo(void)
- {
--	const struct tdx_sys_info *p = NULL;
-+	if (!tdx_module_initialized)
-+		return NULL;
- 
--	/* Make sure all fields in @tdx_sysinfo have been populated */
--	mutex_lock(&tdx_module_lock);
--	if (tdx_module_status == TDX_MODULE_INITIALIZED)
--		p = (const struct tdx_sys_info *)&tdx_sysinfo;
--	mutex_unlock(&tdx_module_lock);
--
--	return p;
-+	return (const struct tdx_sys_info *)&tdx_sysinfo;
- }
- EXPORT_SYMBOL_FOR_KVM(tdx_get_sysinfo);
- 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index 82bb82be8567..dde219c823b4 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -91,14 +91,6 @@ struct tdmr_info {
-  * Do not put any hardware-defined TDX structure representations below
-  * this comment!
-  */
--
--/* Kernel defined TDX module status during module initialization. */
--enum tdx_module_status_t {
--	TDX_MODULE_UNINITIALIZED,
--	TDX_MODULE_INITIALIZED,
--	TDX_MODULE_ERROR
--};
--
- struct tdx_memblock {
- 	struct list_head list;
- 	unsigned long start_pfn;
 -- 
 2.53.0.310.g728cabbaf7-goog
 
