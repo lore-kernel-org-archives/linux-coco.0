@@ -1,148 +1,110 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27C7281370
-	for <linux-coco@lists.linux.dev>; Tue, 17 Feb 2026 15:25:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2964414F112
+	for <linux-coco@lists.linux.dev>; Tue, 17 Feb 2026 16:31:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771341910; cv=none; b=XbvvehCDIEqYTwQ5zo4/q4jGfDLBvTH5z/Wumtyw+QtuTBoK0rPhiAmjNq9lQPyYHNUOMiAFwdntpMdQV0s9SdjSOCr2k8Fl5g+E6nvwCIR5KltLBuY8JkbdYPN1Di5Jk5PTU9wp3cS/NAiPnZ8zWC13dOU64CferbLGzSYlCxM=
+	t=1771345904; cv=none; b=TGGmuEbXYvWJ+fgV0EqSKLpHp4RkRxtwE00KD/ecm4ywd5yRHPBsnu4zURTHmEsq3YwVV6Mx9K7HnpmL2fg63j0Ow6pjU7XMqeaJyKZNTxYXep7qjWVM1zNfgE5hbohyAjJauwe7KtOmIxPqoWltZkYrXvVEqxkvxo+h92E66Ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771341910; c=relaxed/simple;
-	bh=hZGLZbsUH8EmvpSV7H/wOq9sFZLgXoLqGx+9AUKwexA=;
+	s=arc-20240116; t=1771345904; c=relaxed/simple;
+	bh=SGREBuuKhZojW/qxb3YvvKLZ4Emj2RxLhOOQtbx0/ag=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=l3rRERDPHufERV9FbYZdhNr/js7COgdh4HOuqj/XTBilLiEixfm6LRf3BVrlIB/z0oigZfS1J973YCEIk65XLnOy/dwHNUTPVoZfocTsxreRBN2ACfyfEsFXN1zWGTMsRYA7gMQhOBIuA9xjKvj4IeGq0B1cGGRsVuxvLeYsSz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WeBgmsWn; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=GNdwW4FkgmPM6LoBXwERsjPi8OUJkUuvqAtKsJAfhWC39WIVctMYkW6qpc/Tj8S7+Ug2lziYgquF3SwTnawiltu6bcJiapkRawVuW0EjJRaIKbayVcsR8GzqM9bPzPfGF7No3RqMD/AQRD4wC0gEDoXWGnQlXB92bPr90rCY+lM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3dq/f+4a; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WeBgmsWn"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c6e18ade2c2so3062726a12.1
-        for <linux-coco@lists.linux.dev>; Tue, 17 Feb 2026 07:25:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3dq/f+4a"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a77040ede0so47821745ad.2
+        for <linux-coco@lists.linux.dev>; Tue, 17 Feb 2026 08:31:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771341908; x=1771946708; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1771345902; x=1771950702; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2a2DsZQIpKH+b2cksg0NQajbqrk+yeWf7k9R9erIIoo=;
-        b=WeBgmsWnreISuVZusNxk5PJg7ImdwOaZkNZBAf5rAok4hMEyngqVoo4nDeV6QZXSZD
-         mGzolvasPimUDvKhQI4ebkCnWesRzilxXkYAqeA+v+z+SjCpwDTIPlI+AbvAWdzFe7kP
-         8uUx+EzapLX3526mPhZGk1U4oKam5CrgN7NZXgbL4tHrkdFTk+BnlFlzjZXKAL9LOyw4
-         oNBdPy48eoYDS4yKB+fCq+4xXvfI76OCoas6J8ABUAeTFKcqIEN8u+fuegbARETcV0TO
-         a9s46AkXc67yFJKY/ADOWXYNnzp/mNkQ6vVyxSXhLaSIfq+glAZd9ymxI4p+h1Vb2G0z
-         mZNQ==
+        bh=3VZfOz+HSVZa7yIGW57B4e3fv7GIVEIIOWdcsv8P8bE=;
+        b=3dq/f+4a53c2lIqh9ew77LqQILHjJ22c8EygfD8nZT8Y8/URWbA1fDTXRoNkhDv91k
+         SDnX5RwjZQOp6FxdqYQ7vQXG1ZOQRW8Yx4EFioaFWxrCchOLV1SIIkZb0yBYQnDHXMuy
+         2NwDsUXHC82qnpUXL7obdfusFdyegcXy2feNTR69tY5hmgEj4a89vt5uYGOGlJ+IibiK
+         zfvOGgG6KQCBnLa9u056lF/rlaIur3B/BL8X0Mpio+LgUKFBY6iWy9ycCXvz5lP7FlY2
+         g9HTG5h6GOGNO2is3DWle5op01QFzUsgMkntUHoS5Hg8vQPvHyodRzmkCUOTiFtJluP6
+         ob0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771341908; x=1771946708;
+        d=1e100.net; s=20230601; t=1771345902; x=1771950702;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2a2DsZQIpKH+b2cksg0NQajbqrk+yeWf7k9R9erIIoo=;
-        b=Nazpc5USoPTgLsCx0gDBlJ4EVbrvGM7XVuXiSB+QvpSzozYhvIeYHHUE6UguTjlfUm
-         uwdmUgKyqdFJieRhfN68GLARz0YSpPV1miyJBrF8kdWtk39HQJLQkXUkRbaAL5HXuziR
-         f7aINewMmBGLqroSYXBjhGMaZl0HZB32dn41j/uKqnvHfYEjs8Cqlm9XwZAdpzG4XWBQ
-         U+jTm2JtdHqGs+MC4q2zBuFB+qClCKiAdJgdDAmCnC4CVMloj/jDKY1dXRtV4PuyMRm6
-         7jwUWcBK4BYGqqJ0MrOB51nwORshlp6u2SDhtiFaDxqn2ESA5HwmmXbYP3CyBGsO5TTD
-         m9ag==
-X-Forwarded-Encrypted: i=1; AJvYcCXA1rLjq6jOns8gOYMjYdkfSGY9gweENCeXuxhbHzpGaLCbVZmQc2B0NXVLSbMUnOhmSv6btKcito8/@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzbx4Mw2Esndz9s+Ld0tFGih/7uORi6De/B/v576XJbr4//N3ub
-	L+HH9+R1wBPe9aiCHKncSTDTWrco4Jig60SgnTPY3vtee4TZVkT5YClC69tSBfq+YQGsk7UqnbV
-	F/1scDg==
-X-Received: from pgvh6.prod.google.com ([2002:a65:6386:0:b0:c52:a841:c79d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:2f98:b0:366:14af:9bd2
- with SMTP id adf61e73a8af0-3946c8f9745mr14478361637.72.1771341907789; Tue, 17
- Feb 2026 07:25:07 -0800 (PST)
-Date: Tue, 17 Feb 2026 07:25:04 -0800
-In-Reply-To: <4317ad31f4ef883daee264f72f032974c044c0cc.camel@intel.com>
+        bh=3VZfOz+HSVZa7yIGW57B4e3fv7GIVEIIOWdcsv8P8bE=;
+        b=BPcSgwN8VjAgbJra3O55qRY+O+ID2kjMZukgzV0GNlVJQiG9B/+N9tcobS80wdACUH
+         14z+09mZYYW5HranQStdSg8ipuNcRGCR1dFV7sXN5VKBh0UShIKSNtboQR/U8GShLeE9
+         HD2Cw/XCLtSBQxOIfh9xlCXXnx8A8pJ8naeyOycx9rHZXodTj7cbvTLoSn4dr9za/p3F
+         HUgrrA6N/sZ6EWgYferuXtVlv+On42FmiJVyR6pRalhdN62ZIajOsaLh1SI/6+DV/5G1
+         TN/O2m2S1TlqdNAdPcQbsgl7+ExqJqKLR3PnCLwz0kdyfncGuBQV38nAute1FdUSCyK0
+         r7OA==
+X-Forwarded-Encrypted: i=1; AJvYcCUnTJxNbl5qay6XUs88HGvirHonRzSp9xMcM+lB7SfNfNQpogeUf29azANiHrsDik3X7JsLfBsoKJkb@lists.linux.dev
+X-Gm-Message-State: AOJu0YwruuPSI32BLLTWkqKJBBAd0VE6NDrwwkOff0A86IC9qOq92lcl
+	/ptGjujPlgWCQ/NLf9FgahYQtu1u49RTS5C9KO/0rm/KTjQmVsQaPfW2/Tr0zQjwybWqP60HOL6
+	ZnQrbLw==
+X-Received: from plbmi8.prod.google.com ([2002:a17:902:fcc8:b0:29f:1bbb:de14])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3843:b0:2aa:d671:e613
+ with SMTP id d9443c01a7336-2ab50586724mr116397175ad.38.1771345902214; Tue, 17
+ Feb 2026 08:31:42 -0800 (PST)
+Date: Tue, 17 Feb 2026 08:31:40 -0800
+In-Reply-To: <699383e5939ed_2f4a1006f@dwillia2-mobl4.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260214012702.2368778-1-seanjc@google.com> <20260214012702.2368778-11-seanjc@google.com>
- <4317ad31f4ef883daee264f72f032974c044c0cc.camel@intel.com>
-Message-ID: <aZSIUJ_NXAMLVWJM@google.com>
-Subject: Re: [PATCH v3 10/16] x86/virt/tdx: Drop the outdated requirement that
- TDX be enabled in IRQ context
+References: <20260214012702.2368778-1-seanjc@google.com> <20260214012702.2368778-6-seanjc@google.com>
+ <699383e5939ed_2f4a1006f@dwillia2-mobl4.notmuch>
+Message-ID: <aZSX7OU58Gj0fQSy@google.com>
+Subject: Re: [PATCH v3 05/16] x86/virt: Force-clear X86_FEATURE_VMX if
+ configuring root VMCS fails
 From: Sean Christopherson <seanjc@google.com>
-To: Kai Huang <kai.huang@intel.com>
-Cc: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"peterz@infradead.org" <peterz@infradead.org>, "x86@kernel.org" <x86@kernel.org>, 
-	"mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, "tglx@kernel.org" <tglx@kernel.org>, 
-	"namhyung@kernel.org" <namhyung@kernel.org>, "acme@kernel.org" <acme@kernel.org>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Dan J Williams <dan.j.williams@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>, Chao Gao <chao.gao@intel.com>
+To: dan.j.williams@intel.com
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Kiryl Shutsemau <kas@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, Chao Gao <chao.gao@intel.com>, 
+	Xu Yilun <yilun.xu@linux.intel.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Feb 17, 2026, Kai Huang wrote:
-> On Fri, 2026-02-13 at 17:26 -0800, Sean Christopherson wrote:
-> > Remove TDX's outdated requirement that per-CPU enabling be done via IPI
-> > function call, which was a stale artifact leftover from early versions of
-> > the TDX enablement series.  The requirement that IRQs be disabled should
-> > have been dropped as part of the revamped series that relied on a the KVM
-> > rework to enable VMX at module load.
+On Mon, Feb 16, 2026, dan.j.williams@intel.com wrote:
+> Sean Christopherson wrote:
+> > If allocating and configuring a root VMCS fails, clear X86_FEATURE_VMX in
+> > all CPUs so that KVM doesn't need to manually check root_vmcs.  As added
+> > bonuses, clearing VMX will reflect that VMX is unusable in /proc/cpuinfo,
+> > and will avoid a futile auto-probe of kvm-intel.ko.
 > > 
-> > In other words, the kernel's "requirement" was never a requirement at all,
-> > but instead a reflection of how KVM enabled VMX (via IPI callback) when
-> > the TDX subsystem code was merged.
+> > WARN if allocating a root VMCS page fails, e.g. to help users figure out
+> > why VMX is broken in the unlikely scenario something goes sideways during
+> > boot (and because the allocation should succeed unless there's a kernel
+> > bug).  Tweak KVM's error message to suggest checking kernel logs if VMX is
+> > unsupported (in addition to checking BIOS).
 > > 
-> > Note, accessing per-CPU information is safe even without disabling IRQs,
-> > as tdx_online_cpu() is invoked via a cpuhp callback, i.e. from a per-CPU
-> > thread.
-> > 
-> > Link: https://lore.kernel.org/all/ZyJOiPQnBz31qLZ7@google.com
 > > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > 
+> [..]
+> > diff --git a/arch/x86/virt/hw.c b/arch/x86/virt/hw.c
+> > index 56972f594d90..40495872fdfb 100644
+> > --- a/arch/x86/virt/hw.c
+> > +++ b/arch/x86/virt/hw.c
+> [..]
+> > @@ -56,7 +56,7 @@ static __init int x86_vmx_init(void)
+> >  		struct vmcs *vmcs;
+> >  
+> >  		page = __alloc_pages_node(node, GFP_KERNEL | __GFP_ZERO, 0);
+> > -		if (!page) {
+> > +		if (WARN_ON_ONCE(!page)) {
 > 
-> Hi Sean,
-> 
-> The first call of tdx_cpu_enable() will also call into
-> try_init_module_global() (in order to do TDH_SYS_INIT), which also has a
-> lockdep_assert_irqs_disabled() + a raw spinlock to make sure TDH_SYS_INIT is
-> only called once when tdx_cpu_enable() are called from IRQ disabled context.
-> 
-> This patch only changes tdx_cpu_enable() but doesn't change
-> try_init_module_global(), thus the first call of tdx_cpu_enable() will still
-> trigger the lockdep_assert_irqs_disabled() failure warning.
-> 
-> I've tried this series on my local and I did see such WARNING during
-> boot[*].  We need to fix that too.
-> 
-> But hmm, Chao's "Runtime TDX module update" series actually needs to call
-> tdx_cpu_enable() when IRQ disabled, IIUC, since it is called via
-> stop_machine_cpuslocked():
-> 
-> https://lore.kernel.org/kvm/20260212143606.534586-18-chao.gao@intel.com/
-> 
-> Maybe we can just keep tdx_cpu_enabled() as-is?
+> Is the warn_alloc() deep in this path not sufficient? Either way, this
+> patch looks good to me.
 
-Can't we simply delete the lockdep assert there as well?  It should be totally
-fine to have a function that can be called from task or IRQ context, so long as
-the function is prepared for that possibility.  I.e. just because it _can_ be
-called from IRQ context doesn't mean it _must_ be called from IRQ context.
-
-E.g. as a fixup
-
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index bdee937b84d4..f8f5e046159b 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -106,8 +106,7 @@ static __always_inline int sc_retry_prerr(sc_func_t func,
- 
- /*
-  * Do the module global initialization once and return its result.
-- * It can be done on any cpu.  It's always called with interrupts
-- * disabled.
-+ * It can be done on any cpu, and from task or IRQ context.
-  */
- static int try_init_module_global(void)
- {
-@@ -116,8 +115,6 @@ static int try_init_module_global(void)
-        static bool sysinit_done;
-        static int sysinit_ret;
- 
--       lockdep_assert_irqs_disabled();
--
-        raw_spin_lock(&sysinit_lock);
- 
-        if (sysinit_done)
+Not sure, I don't have much experience with warn_alloc() in practice.  Reading
+the code, my initial reaction is that I don't want to rely on warn_alloc() since
+it's ratelimited.  Multiple allocation failures during boot seems unlikely, but
+at the same time, the cost of the WARN_ON_ONCE() here is really just the handful
+of bytes for the bug_table entry.
