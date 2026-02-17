@@ -1,312 +1,181 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010052.outbound.protection.outlook.com [52.101.201.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871DC23ABBE
-	for <linux-coco@lists.linux.dev>; Tue, 17 Feb 2026 19:17:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771355833; cv=fail; b=s1SHAgF5QTsVrFbWumGn+TjojWQ48mM8psPDo7hXSflN97j+cbO0gKZ01jLZsdbyDvSu4eDyjlRi1pPFAAlFioIw4+b4EK07BoWfZWEg9MrG3oLxsPMN5/BFjP6GF3S0CynE8AcKgVk/ztloq9c2Wa9BabWcpM6wsmsvJNpcBXk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771355833; c=relaxed/simple;
-	bh=DNsJrWcFPuSP+Rn/T8T2lR/GNThS2c//7AwXq/sPJ/Q=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UjIHQSFwFkFdaWtawUYq+DKoBHIQ5HnAAgE8dwzR9w8ghSijzGEIi1hM9SIvRrdxmEKgGELjH0A8a3ADb3kM419jsBoQzhQdI/R8QHLSwRzCQsN/dyEIPlJP2LAA7134pQ7rWid3TiHGrEhAsbliQl4Mw2WrvDSjUCME4qQMF6Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=FN8kv95B; arc=fail smtp.client-ip=52.101.201.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B282749EA
+	for <linux-coco@lists.linux.dev>; Tue, 17 Feb 2026 19:20:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771356027; cv=none; b=IDzIUvzuiX1PD0yX1KVXWEMPh0uv1Sr1UDGGcPNsEuYsmrhGMoYWmMinAvHainAEq8MsF2+Jn9v+aCe8jtoVtixJV2awQEQB3rYQ7ZSb/UfdOmQ4a6MJ9+Ag1fdv4cJDYs+JSI8qFTPGU9e+pXJVrly7BD+n8goT9NYHK1MIw2M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771356027; c=relaxed/simple;
+	bh=Vv3QMpSIcWnjWa0xaJUaOqm9MHPLlXF/eFco6dBpQTQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=nEzVIvTf+Lw2RVL1Ml5UvQKyDl27ygEG+hLNS5fAKGryzrQ+MNAt+p7YphmjGR2UIp5UklXghsDz6urynDCBZwTzN8wniB0A0PU9G4O47obUS1YzeyEI/EdWE0dxN0RfBgotrmf0vusNQmUbtbdFtkpSwH65leObVzgyduOK6zA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NePHDkHC; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="FN8kv95B"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZmgsQaUU189Tt3yxZSclY5Csy5q81EPOh+T3GnAp+K/PNPMn8geE9CD1HOq3bfw2psK8kQ5IRT7/gJ+KypruWxSwdQGhyHeLGO1rZD53z6Ych/hZGD4l5fzJirbxPLUOZL3QBmXafb+KVqB8ntaF57Hqt+DtIqkEnVbgI+0tA+DSmZN+XMI78Kx3btzr7pEFr0SE6lmthEXD/uIM00MmA2i4O0G8mh/xLCA8fonYfZXGohfl27Ab9u8Av/pr05b3D35vX71GOcJ12xQuPWk+ArASp/ofHzFIyU/RsdWv5J1gONOGF6WUBpT68Ee5e3JAi1TyFmVjtwZSqGyFwKDgTA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zB2Hcdt2ZVTxFuj1sgkFccdhImmLzpAAihAZs4MmqFs=;
- b=uiL00GFVJ25vTv5luft6TTMLRqggZuFFXtsYuE1/POwphM0nQXFfASbBYwqWqKn0b97gh4kAYYCphHr1nG5aF5kw3o7200pgyrQnMG0CBxoVm+O6acMuLjMRPfuYw/lHo78ZSpwEKTMujGmKCizqj4d1W6cxtO1ENjBOEwSoAbPlKXyYuBhc1In5q6arh37gtcTVUCmNT1qRc2uLt3GEMrnuoNk7nlTwY7pgAXQbqCNw6MZwhEElf1RH0RgKlo/u01+DvvL7lsLaLr41o3CrbwMZWVqzAnYVUf7bggcoOSb72nV3JSuAC/v6HDH7nDq2WxAvF19rsiginuQ2tydKnA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zB2Hcdt2ZVTxFuj1sgkFccdhImmLzpAAihAZs4MmqFs=;
- b=FN8kv95BilC0r+Xf3Q3gGtmGbHTdrfyQkrqM5llrU+w3NWpu/9PtbGy2z1Pj7AdddKZOdXJGQTEOptbm72HZHXeOtlYJwE2YT0BCVMPjlZGX6f2T/H0Z1WYHyLcZMBaT99GhwzjikYH0/X00K5iynHmd3uFVJh8PVkr0gvJvPRA=
-Received: from PH8PR07CA0014.namprd07.prod.outlook.com (2603:10b6:510:2cd::25)
- by IA1PR12MB8262.namprd12.prod.outlook.com (2603:10b6:208:3f6::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.19; Tue, 17 Feb
- 2026 19:16:58 +0000
-Received: from SN1PEPF000252A1.namprd05.prod.outlook.com
- (2603:10b6:510:2cd:cafe::2b) by PH8PR07CA0014.outlook.office365.com
- (2603:10b6:510:2cd::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.13 via Frontend Transport; Tue,
- 17 Feb 2026 19:16:57 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SN1PEPF000252A1.mail.protection.outlook.com (10.167.242.8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9632.12 via Frontend Transport; Tue, 17 Feb 2026 19:16:56 +0000
-Received: from localhost (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 17 Feb
- 2026 13:16:56 -0600
-Date: Tue, 17 Feb 2026 13:16:35 -0600
-From: Michael Roth <michael.roth@amd.com>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-CC: Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Dave Hansen
-	<dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>, "Rick
- Edgecombe" <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@kernel.org>,
-	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
-	<x86@kernel.org>, <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, Vishal Annapurve <vannapurve@google.com>
-Subject: Re: [PATCH v3 1/2] KVM: TDX: Allow userspace to return errors to
- guest for MAPGPA
-Message-ID: <20260217191635.swit2awsmwrj57th@amd.com>
-References: <20260206222829.3758171-1-sagis@google.com>
- <20260206222829.3758171-2-sagis@google.com>
- <20260217180511.rvgsx7y45xfmrxvz@amd.com>
- <037084a1-2019-4bd2-b1ed-7f34f9128e37@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NePHDkHC"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2aad5fec176so54080625ad.2
+        for <linux-coco@lists.linux.dev>; Tue, 17 Feb 2026 11:20:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771356026; x=1771960826; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1eH/mwAkqLmfyEh1EvqsNY2VkqyRMUhzopmOJ1U3e7Q=;
+        b=NePHDkHCSZ4XF+CGUWFZOkn2qsDhzGDf076K3+BnVAZ9WqEzBNvZTaCQ2M1J5bPNDe
+         ZYKdnzWpczi48ro+L1MijRHe2bxDB2ltb0acEWy/sTG2aqFuwMGSoGJxgURNauEyqxl3
+         usQkC8U/NIEAyKc1MxEyQcxuHQ+zZRZAr69HbxjfflzYhHN0h4YszpRSfpvMO4mRyRhd
+         rs8TbemsJcOlSRfMH73ByBu5h3fImM+rkpBZWdb9rrynAO74MA8icBJAjIVTQaMnMHQb
+         CXtTFt/m7bU79pldJL5Ac+v9iUZXECej9ct2/Ng4M6M4+P5APUXygtaCF10TScYJp6tV
+         /iXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771356026; x=1771960826;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1eH/mwAkqLmfyEh1EvqsNY2VkqyRMUhzopmOJ1U3e7Q=;
+        b=XcZ3eJE6P0bMC0XTQynPguZoot+pjwPp9zbCQ+W+SB/ZT5nMJ3jcTSBcRjtJGEER8N
+         qCwGMvSCze/OObf3g9EKNb9cMzrTsjcJNfuQ0AQjHTNpBhHyvJ0t9SxPjBPxyAzFyIcr
+         nLm5z5fl50V7d/qyVkZjR4r1RSy1bPi8E/SUiHxOYclhzxohXJHcFhuc835D3lYefQ3a
+         Qpuc5SEjsekvH5qJFKM3v8bkYU/ZPsWz23kvzBpm6Y0HAfyjyJHkivwGFUTtmkFMOgMf
+         ohuUA6aZ1VGC0Elz66oiXhXBFQWMJgR497/BIJxOi4WgpRZeerZN5xY6E1UhtOPElS6X
+         gjIw==
+X-Forwarded-Encrypted: i=1; AJvYcCX1Wlyum2+8L8OHOiPzCXUogA1KeJXV162wj14ccprt+x7e4jJZxZ+/aY3LHCFoZeGSlzs2ca6D/E0Z@lists.linux.dev
+X-Gm-Message-State: AOJu0YxMnD9m1hBKMDcwg8Ss+IfiwPIlPZShqYqTWnfcoTvbPRrtoTv6
+	WpKGxfBBKhh4Ydw57atxeeBwfVt0FIqqvqpHQomLMXylCOHIpIopwh7FhFYPW1ag1iqIPHdmKAS
+	fVXdZWA==
+X-Received: from pjbmd6.prod.google.com ([2002:a17:90b:23c6:b0:352:f162:7d9f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4c8a:b0:34a:9d9a:3f67
+ with SMTP id 98e67ed59e1d1-356aad7eacemr12756476a91.33.1771356025579; Tue, 17
+ Feb 2026 11:20:25 -0800 (PST)
+Date: Tue, 17 Feb 2026 19:20:24 +0000
+In-Reply-To: <20260217191635.swit2awsmwrj57th@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20260206222829.3758171-1-sagis@google.com> <20260206222829.3758171-2-sagis@google.com>
+ <20260217180511.rvgsx7y45xfmrxvz@amd.com> <037084a1-2019-4bd2-b1ed-7f34f9128e37@amd.com>
+ <20260217191635.swit2awsmwrj57th@amd.com>
+Message-ID: <aZS_ePUyLcTyZ4Am@google.com>
+Subject: Re: [PATCH v3 1/2] KVM: TDX: Allow userspace to return errors to
+ guest for MAPGPA
+From: Sean Christopherson <seanjc@google.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, Sagi Shahar <sagis@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Vishal Annapurve <vannapurve@google.com>
 Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <037084a1-2019-4bd2-b1ed-7f34f9128e37@amd.com>
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF000252A1:EE_|IA1PR12MB8262:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0ef5b63e-8582-42de-f747-08de6e591e23
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|82310400026|1800799024|36860700013|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?DQatKQyBSXz+0DIu0U9k4zI5iKjiZ/s4UpXeSTcZQ+tJKioOHRPGoYKtAob0?=
- =?us-ascii?Q?zw7h5HIhMDjVjfwmVOEY7/gPZYBZWbsY9cWbPfUebbSouw1IUfSYZF4uhIa2?=
- =?us-ascii?Q?uLzYPyMyMw33wvsetQBUH2TJkaaf5C5j7g/wC64wag4b/u2+4vGMPMEClvV1?=
- =?us-ascii?Q?E/la5vKIRJdy8Dn2xrVPyYMDTbEYofSHX2JzUVZhmGU27H+4SgEgIj93n7yi?=
- =?us-ascii?Q?O0a5TtuAUcwn8pw4CyPFX8FTtCQSlogRxZqS/uAqvWHV0GrkoqDkHfQtu1as?=
- =?us-ascii?Q?Wp2sOlUgTKAl9nYs+sBhRTgMYqGR5+kEUcI6s9A6h0LQZU0Tr4IN2ruQETB1?=
- =?us-ascii?Q?WtsxyU1t0gWfor06n7Tcie/V167pwu8IrXqGTsnlFF1IgOGMz7cpNfcmeEqw?=
- =?us-ascii?Q?dzW/Pqqij24I63pLJ/9PUWK1zM3iHkK43u9+H8B0l88IHVL27BL9mn53/KU0?=
- =?us-ascii?Q?MSnvGH/Zbc3aqUPKesuwmWiWfnDQQrFXPlO06KBsoBxkYQbrKe2q5fgBTHbN?=
- =?us-ascii?Q?gSd1eLdaiiW+wemD6JWQXiH5zhQBKpBNU1K9RnYckrXrTORzMCgOTXM3z0vW?=
- =?us-ascii?Q?Wdb8dvG6rXaHpP+JG1FZ/5H+bf7LlW0jpHS/+WCgPFQZdDP93c4aTko43d7l?=
- =?us-ascii?Q?joR7SAba3go3Ab9o3LXevISotUIcsMQCq5XJlUBGNJoolDp4SA7w6zcLq0rz?=
- =?us-ascii?Q?MTDoqH5GvFvYhGps9UAXGE5uQoUPHN15ABpU4WgQwsPXBiiJmLteTBFQmlVG?=
- =?us-ascii?Q?ZPznfYm8n4EE+OxUxQMr+WDG4NS8exDZftXtHGPJLDP4glKicwrY1IPAQhfr?=
- =?us-ascii?Q?n95QotuoPd3fDz61Zw80ZLaaUdeCNRTkxxjl6MV5wCKh9BaCCtnbnB3Pgzcl?=
- =?us-ascii?Q?HfZn4qtRjXFkefRXczu4AEnXrlh8nZ6ic4fN/f2NZ1cscJIXQqkltJGZDMjW?=
- =?us-ascii?Q?yYNVfG5caHqLPH4HGlSm2k1QjN1BcehCqNOSCoOV1WyNo3OfXTg8A8OfDwkI?=
- =?us-ascii?Q?iET2Y/yytu295+GLgzSm2fnlxngmfgTaDAy0nTnUDPIhjIJuuMbZpK4SR+l4?=
- =?us-ascii?Q?aEQxWFqsMVcFlMtbZpHAdXUi9o9kzRxNfEwoDQlVSl3jqJ7FFja11BVgbIVC?=
- =?us-ascii?Q?yNTjkm7tZcZUu5VqHJbZrKeL9+AReJdNLN9zWg34g6ljplPqAZ7CzCYvhyZa?=
- =?us-ascii?Q?Nv2Lyh3ZJhUhRd4LLPDJYoAt/+Zsgx/+GEieQnd0F1EjdkT+G07GF6J/ieg8?=
- =?us-ascii?Q?4bTOUtNSgHAgkSjmnj+PYg+cs4NhiguLN5+ttElSqyBsCUn6miYd/jfOxP0R?=
- =?us-ascii?Q?6D4A96uGFMj34m1b2PsVSWGU+pcd0P1w6FFyvognihC2Nbi9zbl3nt6AR1NF?=
- =?us-ascii?Q?0JnFONuEGD4dZxKcLobOkN5JLDCjnJO0ifCdiOXIVdU31ei80xS1zGYy44p8?=
- =?us-ascii?Q?zkOgOECQRApo6Z+LbrW4xgNGpDPHVnD6wUd7SGUGeTjyanTMTVivTlS7nKhz?=
- =?us-ascii?Q?SxIPHmH1MkNNwH4OAORJlebWPwS03yAOozAY7X3UySL6whV0MdIzZvLtHTiQ?=
- =?us-ascii?Q?vy/JQk1p60/ComdWloF07HlvHRTBnejyAxXYlxaUXstaN0rxs7ogIuVik4vy?=
- =?us-ascii?Q?+g5L6wCPkgqdP/pZKZ1vyFUQSWZaVgyQa8TH8pr4nzLI?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(1800799024)(36860700013)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	9aYx0CBehGOALO6ZZh+AdcKfVB0t0nB4Wwx767iwqlNcw7lvGJEZ97ZDFrpSfkCc9ah52L4+9rDekdG1oDwqyk7XmBiib6vxUh0MCRFL1SopEgGUCZoDthuxQi22Jcy347NOQlMeYO7UcfjhzOOzLXIiMNGe+eRB0k7xInTWvY8bNHtsYed63s7ayMs1dA7PHClR4wP+Z9YHM05J4anxzGhw5JSYxfOAb38RwMEi6HNLxMMpY33I4idEz7nT+X4JciF2HjInagNN4bS6NX4EUprvVz9rocszUMa8VAt1LPjpzBKk/eJTPbIa1SVOQmMRFGUmtLNoNhmxwAPGL2d6qGGnf6cBxpF8Zgvc2stzFj6y7iM7kNtEalmz30WOQB9vuqDSAO7ZTxEnDm35J0Ccm4PWBGV1uCjkEIhpXAbIvA+HZVMc7GwvVarelUTNmGGb
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Feb 2026 19:16:56.9343
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0ef5b63e-8582-42de-f747-08de6e591e23
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF000252A1.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8262
 
-On Tue, Feb 17, 2026 at 12:45:52PM -0600, Tom Lendacky wrote:
-> On 2/17/26 12:05, Michael Roth wrote:
-> > On Fri, Feb 06, 2026 at 10:28:28PM +0000, Sagi Shahar wrote:
-> >> From: Vishal Annapurve <vannapurve@google.com>
-> >>
-> >> MAPGPA request from TDX VMs gets split into chunks by KVM using a loop
-> >> of userspace exits until the complete range is handled.
-> >>
-> >> In some cases userspace VMM might decide to break the MAPGPA operation
-> >> and continue it later. For example: in the case of intrahost migration
-> >> userspace might decide to continue the MAPGPA operation after the
-> >> migration is completed.
-> >>
-> >> Allow userspace to signal to TDX guests that the MAPGPA operation should
-> >> be retried the next time the guest is scheduled.
-> >>
-> >> This is potentially a breaking change since if userspace sets
-> >> hypercall.ret to a value other than EBUSY or EINVAL an EINVAL error code
-> >> will be returned to userspace. As of now QEMU never sets hypercall.ret
-> >> to a non-zero value after handling KVM_EXIT_HYPERCALL so this change
-> >> should be safe.
-> >>
-> >> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-> >> Co-developed-by: Sagi Shahar <sagis@google.com>
-> >> Signed-off-by: Sagi Shahar <sagis@google.com>
-> >> ---
-> >>  Documentation/virt/kvm/api.rst |  3 +++
-> >>  arch/x86/kvm/vmx/tdx.c         | 15 +++++++++++++--
-> >>  arch/x86/kvm/x86.h             |  6 ++++++
-> >>  3 files changed, 22 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> >> index 01a3abef8abb..9978cd9d897e 100644
-> >> --- a/Documentation/virt/kvm/api.rst
-> >> +++ b/Documentation/virt/kvm/api.rst
-> >> @@ -8679,6 +8679,9 @@ block sizes is exposed in KVM_CAP_ARM_SUPPORTED_BLOCK_SIZES as a
-> >>  
-> >>  This capability, if enabled, will cause KVM to exit to userspace
-> >>  with KVM_EXIT_HYPERCALL exit reason to process some hypercalls.
-> >> +Userspace may fail the hypercall by setting hypercall.ret to EINVAL
-> >> +or may request the hypercall to be retried the next time the guest run
-> >> +by setting hypercall.ret to EAGAIN.
-> >>  
-> >>  Calling KVM_CHECK_EXTENSION for this capability will return a bitmask
-> >>  of hypercalls that can be configured to exit to userspace.
-> >> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> >> index 2d7a4d52ccfb..056a44b9d78b 100644
-> >> --- a/arch/x86/kvm/vmx/tdx.c
-> >> +++ b/arch/x86/kvm/vmx/tdx.c
-> >> @@ -1186,10 +1186,21 @@ static void __tdx_map_gpa(struct vcpu_tdx *tdx);
-> >>  
-> >>  static int tdx_complete_vmcall_map_gpa(struct kvm_vcpu *vcpu)
-> >>  {
-> >> +	u64 hypercall_ret = READ_ONCE(vcpu->run->hypercall.ret);
-> >>  	struct vcpu_tdx *tdx = to_tdx(vcpu);
-> >>  
-> >> -	if (vcpu->run->hypercall.ret) {
-> >> -		tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_INVALID_OPERAND);
-> >> +	if (hypercall_ret) {
-> >> +		if (hypercall_ret == EAGAIN) {
-> >> +			tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_RETRY);
-> >> +		} else if (vcpu->run->hypercall.ret == EINVAL) {
-> >> +			tdvmcall_set_return_code(
-> >> +				vcpu, TDVMCALL_STATUS_INVALID_OPERAND);
-> >> +		} else {
-> >> +			WARN_ON_ONCE(
-> >> +				kvm_is_valid_map_gpa_range_ret(hypercall_ret));
-> >> +			return -EINVAL;
-> >> +		}
-> >> +
-> >>  		tdx->vp_enter_args.r11 = tdx->map_gpa_next;
-> >>  		return 1;
-> >>  	}
+On Tue, Feb 17, 2026, Michael Roth wrote:
+> On Tue, Feb 17, 2026 at 12:45:52PM -0600, Tom Lendacky wrote:
+> > On 2/17/26 12:05, Michael Roth wrote:
+> > >> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> > >> index 2d7a4d52ccfb..056a44b9d78b 100644
+> > >> --- a/arch/x86/kvm/vmx/tdx.c
+> > >> +++ b/arch/x86/kvm/vmx/tdx.c
+> > >> @@ -1186,10 +1186,21 @@ static void __tdx_map_gpa(struct vcpu_tdx *tdx);
+> > >>  
+> > >>  static int tdx_complete_vmcall_map_gpa(struct kvm_vcpu *vcpu)
+> > >>  {
+> > >> +	u64 hypercall_ret = READ_ONCE(vcpu->run->hypercall.ret);
+> > >>  	struct vcpu_tdx *tdx = to_tdx(vcpu);
+> > >>  
+> > >> -	if (vcpu->run->hypercall.ret) {
+> > >> -		tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_INVALID_OPERAND);
+> > >> +	if (hypercall_ret) {
+> > >> +		if (hypercall_ret == EAGAIN) {
+> > >> +			tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_RETRY);
+> > >> +		} else if (vcpu->run->hypercall.ret == EINVAL) {
+> > >> +			tdvmcall_set_return_code(
+> > >> +				vcpu, TDVMCALL_STATUS_INVALID_OPERAND);
+> > >> +		} else {
+> > >> +			WARN_ON_ONCE(
+> > >> +				kvm_is_valid_map_gpa_range_ret(hypercall_ret));
+> > >> +			return -EINVAL;
+> > >> +		}
+> > >> +
+> > >>  		tdx->vp_enter_args.r11 = tdx->map_gpa_next;
+> > >>  		return 1;
+> > >>  	}
+> > > 
+> > > Maybe slightly more readable?
+> > > 
+> > >     switch (hypercall_ret) {
+> > >     case EAGAIN:
+> > >         tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_RETRY);
+> > >         /* fallthrough */
 > > 
-> > Maybe slightly more readable?
-> > 
-> >     switch (hypercall_ret) {
-> >     case EAGAIN:
-> >         tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_RETRY);
-> >         /* fallthrough */
+> > I think you want a break here, not a fallthrough, so that you don't set
+> > the return code twice with the last one not being correct for EAGAIN.
 > 
-> I think you want a break here, not a fallthrough, so that you don't set
-> the return code twice with the last one not being correct for EAGAIN.
+> Doh, thanks for the catch. I guess a break for the EINVAL case as well would
+> be more consistent then.
+> 
+>     switch (hypercall_ret) {
+>     case EAGAIN:
+>         tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_RETRY);
+>         break;
+>     case EINVAL:
+>         tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_INVALID_OPERAND);
+>         break;
+>     case 0:
+>         break;
+>     case default:
+>         WARN_ON_ONCE(kvm_is_valid_map_gpa_range_ret(hypercall_ret));
+>         return -EINVAL;
+>     }
+>   
+>     tdx->vp_enter_args.r11 = tdx->map_gpa_next;
+>     return 1;
 
-Doh, thanks for the catch. I guess a break for the EINVAL case as well would
-be more consistent then.
+Heh, except then KVM will fail to handle the next chunk on success.  I like the
+idea of a switch statement, so what if we add that and dedup the error handling?
 
-    switch (hypercall_ret) {
-    case EAGAIN:
-        tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_RETRY);
-        break;
-    case EINVAL:
-        tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_INVALID_OPERAND);
-        break;
-    case 0:
-        break;
-    case default:
-        WARN_ON_ONCE(kvm_is_valid_map_gpa_range_ret(hypercall_ret));
-        return -EINVAL;
-    }
-  
-    tdx->vp_enter_args.r11 = tdx->map_gpa_next;
-    return 1;
+static int tdx_complete_vmcall_map_gpa(struct kvm_vcpu *vcpu)
+{
+	u64 hypercall_ret = READ_ONCE(vcpu->run->hypercall.ret);
+	struct vcpu_tdx *tdx = to_tdx(vcpu);
+	long rc;
 
-Thanks,
+	switch (hypercall_ret) {
+	case 0:
+		break;
+	case EAGAIN:
+		rc = TDVMCALL_STATUS_RETRY;
+		goto propagate_error;
+	case EINVAL:
+		rc = TDVMCALL_STATUS_INVALID_OPERAND;
+		goto propagate_error;
+	default:
+		WARN_ON_ONCE(kvm_is_valid_map_gpa_range_ret(hypercall_ret));
+		return -EINVAL;
+	}
 
-Mike
+	tdx->map_gpa_next += TDX_MAP_GPA_MAX_LEN;
+	if (tdx->map_gpa_next >= tdx->map_gpa_end)
+		return 1;
 
-> >     switch (hypercall_ret) {
-> >     case EAGAIN:
-> >         tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_RETRY);
-> >         /* fallthrough */
-> 
-> I think you want a break here, not a fallthrough, so that you don't set
-> the return code twice with the last one not being correct for EAGAIN.
-> 
-> Thanks,
-> Tom
-> 
-> >     case EINVAL:
-> >         tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_INVALID_OPERAND);
-> >         /* fallthrough */
-> >     case 0:
-> >         break;
-> >     case default:
-> >         WARN_ON_ONCE(kvm_is_valid_map_gpa_range_ret(hypercall_ret));
-> >         return -EINVAL;
-> >     }
-> > 
-> >     tdx->vp_enter_args.r11 = tdx->map_gpa_next;
-> >     return 1;
-> 
-> Thanks,
-> Tom
-> 
-> >     case EINVAL:
-> >         tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_INVALID_OPERAND);
-> >         /* fallthrough */
-> >     case 0:
-> >         break;
-> >     case default:
-> >         WARN_ON_ONCE(kvm_is_valid_map_gpa_range_ret(hypercall_ret));
-> >         return -EINVAL;
-> >     }
-> > 
-> >     tdx->vp_enter_args.r11 = tdx->map_gpa_next;
-> >     return 1;
-> > 
-> > Either way:
-> > 
-> > Reviewed-by: Michael Roth <michael.roth@amd.com>
-> > 
-> >> diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-> >> index fdab0ad49098..3d464d12423a 100644
-> >> --- a/arch/x86/kvm/x86.h
-> >> +++ b/arch/x86/kvm/x86.h
-> >> @@ -706,6 +706,12 @@ int kvm_sev_es_string_io(struct kvm_vcpu *vcpu, unsigned int size,
-> >>  			 unsigned int port, void *data,  unsigned int count,
-> >>  			 int in);
-> >>  
-> >> +static inline bool kvm_is_valid_map_gpa_range_ret(u64 hypercall_ret)
-> >> +{
-> >> +	return !hypercall_ret || hypercall_ret == EINVAL ||
-> >> +	       hypercall_ret == EAGAIN;
-> >> +}
-> >> +
-> >>  static inline bool user_exit_on_hypercall(struct kvm *kvm, unsigned long hc_nr)
-> >>  {
-> >>  	return kvm->arch.hypercall_exit_enabled & BIT(hc_nr);
-> >> -- 
-> >> 2.53.0.rc2.204.g2597b5adb4-goog
-> >>
-> 
+	/*
+	 * Stop processing the remaining part if there is a pending interrupt,
+	 * which could be qualified to deliver.  Skip checking pending RVI for
+	 * TDVMCALL_MAP_GPA, see comments in tdx_protected_apic_has_interrupt().
+	 */
+	if (kvm_vcpu_has_events(vcpu)) {
+		rc = TDVMCALL_STATUS_RETRY;
+		goto propagate_error;
+	}
+
+	__tdx_map_gpa(tdx);
+	return 0;
+
+propagate_error:
+	tdvmcall_set_return_code(vcpu, rc);
+	tdx->vp_enter_args.r11 = tdx->map_gpa_next;
+	return 1;
+}
