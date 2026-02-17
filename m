@@ -1,258 +1,348 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7D6378D64
-	for <linux-coco@lists.linux.dev>; Tue, 17 Feb 2026 20:30:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771360244; cv=fail; b=JO8Ly0tyhzKdLeCvl5g7Xf/HKgQ/nZKI20PEoNN6Yocder/nzMaSEyiclP6yjNbrbWmaStdmCNr4RZinsLV/rCxnCpiCTjvBIWfIbCL4m8nPatOKgPNSny0eu+h70A66oIjk5VYpX/FbSvT4IvBnG+We2J0wHo3AQ7Xcctkllt8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771360244; c=relaxed/simple;
-	bh=igNzbk7XxBZyxMPHUqpPZ5E6OWWvKeeRuT0an1TnEIA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=SpWl0gGgIt8ipLo6cXCAkIV8D1bRCH5HTTsRwKa9Cpm8ODKVrzFJPbf8xhFZuOWTMMeWTmM82qs/umqM0tkRNG9VNvy5U0gNLyx59k1mGH1OfBOm9XLR92sL/clE1JD5AtXGQIkscYqNvAYF+2u0ODkDV8jT2xTlo/SIzsRYXDk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lOvljdsd; arc=fail smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C21313276
+	for <linux-coco@lists.linux.dev>; Tue, 17 Feb 2026 22:06:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771366015; cv=none; b=FgsKxCcNRU7P1J4rEqzS9i1NYbcrPinScxl7mPtL5Ut8mWto3EJgMJxgcmWeGuVv3rnpmbFlXgUsQUkDLx3Xs83T2xKG1ZJ7wfliPzcH37k1N4ZG2d4M4y/8eP7wb5nyBlKh39ErT4Rw+2XicajeHYAmMeQB5QAzNOJot0zv99c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771366015; c=relaxed/simple;
+	bh=BPmbyvwBEsI4sxobiBe6zuZ0lUDUnmgeTgA9zi+Fypw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C+EAFz5BSya0rPPB8dRMEoqur3Y2pb3S5J4+mSHXbJo5lW+KxfLw6krDEyZGXinDX5XOMmr99+nsXG58ZPqbaoVgLSddyPULuvGQZwT59BnrUp0LJzdYMaeDbyZZNAuRs3fYe65EX56u3OqFgfYiHpK+OBP2DVuMrn4l4y/GdW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=acVR9QC3; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lOvljdsd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="acVR9QC3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771360240; x=1802896240;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=igNzbk7XxBZyxMPHUqpPZ5E6OWWvKeeRuT0an1TnEIA=;
-  b=lOvljdsdCdnbs4QgRolyHGPfeuPRkvFEWAsEnQvewRGBDtSS7ryRLyzm
-   MMW/hEEE8vmxaxpcP4YE4XoDg6V7CwSXhMUQAy+OBjRJ9z5SSubu9Y6Mz
-   0AAha9FTS0NofNIaDmHa12nS+5HksbONMteiDg6+pFj1rJn2I/TlkKgq4
-   uOnQ0osC7GD7Im080StYCQ+dg3ef5MCGBjQBd7iN9mRv2XNtezD1TV9Rz
-   yw1PeefNPykZfZ3srArSlCIbDv8rRj/wjbpTQ2hBhYCaOWkLjjyvH8zAJ
-   ysMFTXXqYDr1Q3tML2p8xgXFGBPRi5ZbzJJL9LZKjjzzPtkMJmT+JTG+s
+  t=1771366014; x=1802902014;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=BPmbyvwBEsI4sxobiBe6zuZ0lUDUnmgeTgA9zi+Fypw=;
+  b=acVR9QC32vPdaeDFjGETJC5967dRZvRx2y8KCkbPDp52o5C2cRnyWocx
+   x9yvGLUVxo9k2LSb7QMKVy5HvnqGIOfn9QLt4B5fobTqwY1c2YYtfI0kP
+   YhHRHPnYiUC2PyGs9hLHwvP6+Lw1MOxjdGqJOaSxzPyCPhi9087Ne7hJJ
+   76MmZhz6nr9lCr81iGYPKzUuoKRegMZr8wc6fMTqDIiFVhekmhYEiG4h8
+   Xi/nYRFXHJkg3TdyGIWrtfwxrF9FPQEK36Na4zkTKi8i5HdxQqgjVZqE6
+   XIA2AR4IERjSTBYXHzLXW6+jEolbooem7U29uEgPOCkp+Uf0U8fgk+Auy
    Q==;
-X-CSE-ConnectionGUID: fhhh4uIhRimyu9vTWQpksg==
-X-CSE-MsgGUID: RvqUwiymSZuHIPpteNX14A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11704"; a="72506316"
-X-IronPort-AV: E=Sophos;i="6.21,296,1763452800"; 
-   d="scan'208";a="72506316"
+X-CSE-ConnectionGUID: KamxfU/oQl6h93IGLg4YOg==
+X-CSE-MsgGUID: IjzKxe73Q46BpI2KjO3/vg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11704"; a="82773763"
+X-IronPort-AV: E=Sophos;i="6.21,297,1763452800"; 
+   d="scan'208";a="82773763"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2026 12:30:39 -0800
-X-CSE-ConnectionGUID: nojbsuwGSh6R5+1gh2PcKw==
-X-CSE-MsgGUID: 9u9NjHOvT3+9fXkIxp8Eow==
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2026 14:06:53 -0800
+X-CSE-ConnectionGUID: O/zHxrATTEW3SyeLtbCxsw==
+X-CSE-MsgGUID: yvdq/h1hQ6iWlnGT99Ectg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,296,1763452800"; 
-   d="scan'208";a="244582343"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2026 12:30:40 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 17 Feb 2026 12:30:38 -0800
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Tue, 17 Feb 2026 12:30:38 -0800
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.37) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 17 Feb 2026 12:30:38 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BazWChL0jr2YSFI4oDENfKDMYlwc5Irk9RYbMPwKkUk4JQids3QF3QnR3huDRJ78tLME5/gT4OqVm+4c9b89A5Tn5VcyDtK0HcwsUI+04PqFkK+KfgEyaLwUCHMwaQvxl7CipLaVJe/7wkBQjNjMCx+elHv7fFlQMAuIecryRb486C2kJcHc3An9NSefBWcuEXWpQ5GmcVNZqKF9u+BJcBnFebaIcFJ+aM/DcaBEKBMf5M5sj+Ot12Dx4nyRB0LL+PIoDz+rcCbpuNJ2K98y8dVG30IRAkxsghVECaWHqi9nBgo6S9Mk7SpTv04YFwvrUUjE+cqwGhlKUDC+58gNPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=igNzbk7XxBZyxMPHUqpPZ5E6OWWvKeeRuT0an1TnEIA=;
- b=e8W7QpsPNrBOqvn3Rdj0czlKbX+coAnMagJX43nlyCe2Pesi7+srkZp0mqlOy4wPGGnNet2a7EqcBoUqQ89z6byEtdaJgWiRKn6UznyfIrwdg5jSESLr8BQi5Agps64Hr3rLUiCYiAo9cHYv2Pf2zE6EKxeMGwqobr9fueU6pVfFlhYvFuAYlt351habA9PH8vVN/mMP3QBvNFQqPOhqAjW4y08K5ewaC+MEoZ534aYA/gLWapax5vM/da/TfAROIccOpeXUSUrHGGjA04Pg3kItN3waJNXT/OJkHewBJxFemob9TpL2WIt2hQ+tpZqLftL3LY1GflJrkKFW1W3gvA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BN7PR11MB2673.namprd11.prod.outlook.com (2603:10b6:406:b7::13)
- by IA0PR11MB7936.namprd11.prod.outlook.com (2603:10b6:208:3dd::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.19; Tue, 17 Feb
- 2026 20:30:36 +0000
-Received: from BN7PR11MB2673.namprd11.prod.outlook.com
- ([fe80::9543:510b:f117:24d7]) by BN7PR11MB2673.namprd11.prod.outlook.com
- ([fe80::9543:510b:f117:24d7%4]) with mapi id 15.20.9632.010; Tue, 17 Feb 2026
- 20:30:36 +0000
-From: "Huang, Kai" <kai.huang@intel.com>
-To: "seanjc@google.com" <seanjc@google.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "namhyung@kernel.org" <namhyung@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kas@kernel.org" <kas@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
-	"tglx@kernel.org" <tglx@kernel.org>, "peterz@infradead.org"
-	<peterz@infradead.org>, "bp@alien8.de" <bp@alien8.de>, "acme@kernel.org"
-	<acme@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
-	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, "x86@kernel.org"
-	<x86@kernel.org>, "Williams, Dan J" <dan.j.williams@intel.com>
-Subject: Re: [PATCH v3 10/16] x86/virt/tdx: Drop the outdated requirement that
- TDX be enabled in IRQ context
-Thread-Topic: [PATCH v3 10/16] x86/virt/tdx: Drop the outdated requirement
- that TDX be enabled in IRQ context
-Thread-Index: AQHcnVFb9iqZyCLtM0iMN9IRRY2SGrWGxqIAgABB6QCAAFVZgA==
-Date: Tue, 17 Feb 2026 20:30:35 +0000
-Message-ID: <95bab89e7be9837cfed4ace1a5af4bdcb7682ebb.camel@intel.com>
-References: <20260214012702.2368778-1-seanjc@google.com>
-	 <20260214012702.2368778-11-seanjc@google.com>
-	 <4317ad31f4ef883daee264f72f032974c044c0cc.camel@intel.com>
-	 <aZSIUJ_NXAMLVWJM@google.com>
-In-Reply-To: <aZSIUJ_NXAMLVWJM@google.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.56.2 (3.56.2-2.fc42) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BN7PR11MB2673:EE_|IA0PR11MB7936:EE_
-x-ms-office365-filtering-correlation-id: f0cb110f-7a3b-44ca-0034-08de6e63681a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|38070700021;
-x-microsoft-antispam-message-info: =?utf-8?B?cG4rSlNXSnRLSlBOdUdpejBOUSs5VmVzeTY4bzBNellydDlrZUh6RURtd3BP?=
- =?utf-8?B?Mk9YQXVFMVUrL0ZIS3pRclVTWERabGkyTkgxTWdRNXlqU0ZMMkowaVhEeGVr?=
- =?utf-8?B?VittM3FjMzZJRng1cmp5M1FrUmRGOXk3eHlsbFREUm1iZzI5RnJUY2tMOSto?=
- =?utf-8?B?MnJCSXBJRnNJcG5Xb1RKTTRDZVpnaW81SlY3ZmpKM21tOGhVZFBFR3Q4U2d6?=
- =?utf-8?B?ZW5yS0NHZVFFMUVmL3BaL0hCSUZ6Wm84K1pickw0alpacUp1SXBHZjArV0RU?=
- =?utf-8?B?bjB5dENrU0ZNbXBjMzU3eFdTRG8vNE1VY3ZTT1g0MEU5eUd1VXk4cjg0UkZQ?=
- =?utf-8?B?bVdzVUFXdUsrK3RJUTM1dE1kT0tvQ0Yvdmwya3dLQWx6NnBOQTlwU3BVL2dp?=
- =?utf-8?B?Y1NUb2F0YUhkNkRnOWcxczh2S0k1b3luc2laRTdCeUlsRHgrcE9wQ2daUWda?=
- =?utf-8?B?R2dOTjlTQ2Y1ZXlGYWlpOTVpU1VxZ28xSFBUZ29aSkVyVi8wRnZTS2ZydHh6?=
- =?utf-8?B?OTcycGl3U29CMkl4bVptaFRnNHNpNllrUGZkaFlacWdhNnBDZTBvMENFWENC?=
- =?utf-8?B?SXpWVHZtSGp0QXVWV2FhVUtiRU80MVBFcnd0TFF4ZTlla0N2RmZZMVBWK2VM?=
- =?utf-8?B?NllFaVUwKytxUjVPTGE0aTdaNjdSTzI5SncrZk1WOENLT1cvTC9zcTdNT3dr?=
- =?utf-8?B?bFJmWG1WRUZYbGhZZ3lQVTVCUG9NN0cxVWdKK2ExL2ljRjFza3BuM2gxeXpr?=
- =?utf-8?B?QkN1QW51TFFoNUJCN1hQNVpTelVZWFM5NFhvYms0bTZtOUMzbUNoV09iU0w3?=
- =?utf-8?B?NTBZeTk2MG5wN0lZQ2lSZFViWFZ1aWtLYjlNNzZDRHQvajd1VkNqNEd3aXFS?=
- =?utf-8?B?TE5oOG92d3g1d1BXM0RLY041UEtjN0Y2dkJpOGE5T1lkcVNaN3h2VUZueVoz?=
- =?utf-8?B?V2FiR0h0M2hRdUQyTUZHWmdXM3JkQVhZRkpvU29uZEk4YldEdHZpZWVjeXJs?=
- =?utf-8?B?dzRFbVFXTFRvZTZlNFV6OVIzN1VDTE4rRmpHSEkxRkRza1c4ZUd5aThTaXc4?=
- =?utf-8?B?c3k3SUFLQ1RNN3BjaThuU1dicDI1Y1JHQmtJM3B4cUxoWENheXRMYU1qYVAw?=
- =?utf-8?B?eVF3dWM2SGtEYVpaeDRUUFkwbUlkTk96WmxpaDdpUkQ3U2J0cmZURVVkanpS?=
- =?utf-8?B?clZ1UEY5VzZLN1B3RFdoSmNITEhQRU9Od1NWT2U0UVRZWFNNSWRrTWlXVXpX?=
- =?utf-8?B?SVZJMGppMDBZVVVOajd4dTZZN3VVbHJnU1ZMRzN3MXZxdkNsbmZXRXIvRnJ2?=
- =?utf-8?B?L3YzVWdERkxJWTdleDNUclBQazduTzg1RFIzSHQ4ZHQxa05od3BHUlBZOS9B?=
- =?utf-8?B?RFJJcGYzdzc1NFNwWThVSzdVS25jMmZCUGdoK1phSURkbm9raHVzSlNlWkZM?=
- =?utf-8?B?L2ZudjlJbXpBK1B3RnIzeHRaUUJaSEVqYnYrdFo0bDJ3U3dQbFpzYkthaUJu?=
- =?utf-8?B?RVoySGtXOFJpQ3phSjVVWnVoTFBBZDQwcmZqaDVBMEMwUW9nZ3d5MkdIR0hQ?=
- =?utf-8?B?VXZSNWQ2THpsOVdIaU1SN1d4cmtFZ0FwMjA5Q1d5N0NaaCtxNnpmS3J0RHQy?=
- =?utf-8?B?em5PQjZaeWs0VHdIaUJyOXR0bTVWdldMa1BhazEzRTFkMFBuZmhub3VGUjhM?=
- =?utf-8?B?dFR3a2RmK1JHTWNva2MrMnFqQ1JQcCtiNXo2eU5pc3JjZHNrdnVtVXNxWUFk?=
- =?utf-8?B?OWVWRmsranVralljR1hSTU9iYmYvcmZvUGlpdnVIbUFkUi9EVTJEanppNmNr?=
- =?utf-8?B?QTIvQlpxU1lsN3hjaGxtck01TWNNTW8za3JjMThPSVpXMWg1eEFmNm1DbzZY?=
- =?utf-8?B?d0xDbFRkNUVuTzd3a1JtZHFXWENGdzBHOCtRSzJyMGVjcVJQcVdMa2ZNb3RX?=
- =?utf-8?B?Nk82T0NKZWIvTEtNZjZTZnFsMlJFMThCNmt2OElVNDlMWVpCMG50UUkxRXc3?=
- =?utf-8?B?d0RQSVFJOU55emJrRE9IUFkrY0hKLzJNY2FMdDlET1N5RW8ydG81VTZKd2l6?=
- =?utf-8?B?N3FNcUVEVmhXWmMyR2NmcEtLcWx2NXF5TDR0anFPUVlHYi9FSEFQR2VmbnR3?=
- =?utf-8?B?U3ppbmhVMXhCblo2SkxxWmoraXdWdE94V0s4WklCQkVWTG1zQ3JGOUIxUzlo?=
- =?utf-8?Q?4WrbXo/PvA4TejQ4wbJuKCIImlzEJJpagWyUFfYCxrwV?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN7PR11MB2673.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Z0kvWnpCV2xzRlNGU0FPaHZQd1FDZVR6cFk0aE9ReTQ0Mk5VQ0k5Mm1TdTFz?=
- =?utf-8?B?b01YRUJicVh1NmRsQktEc1dXcHZuSWM0TWFyVFpZVndKS0NmbWFYaXNqMkpa?=
- =?utf-8?B?NEFPc0o2RGx1UXZBYTFJV0NuWnV6ejdxd1JXakFrdGVTSWRKMHMvdWcyUEl0?=
- =?utf-8?B?ejg3T2ZyK3dhaFdvQXZVUnJwb292VmkvemRRRDRZTkNheStiMkkyMnJzelpX?=
- =?utf-8?B?S2FLdStCeTJTVGpoNk8rYVQ3TGYvTnhtMDZBS1BBNkV2WnpnVk1oVDJMeVBV?=
- =?utf-8?B?SmRUeGxiRWxsTG9HYzh6QThaeFFXbVNLdEhJTDVpOWxvY1VBODd4WnczVU1q?=
- =?utf-8?B?Q0hXUElhSDYyOGdKbEJMUldFN2NRVUxlRGxkaWtrdlBsNloxeWpkVXAySU84?=
- =?utf-8?B?NXZ2cG1UZXdjajFBN0t3UHRoaElXTTB4dWlHTzQySWZ1VGV5UGR4RjdJdWlE?=
- =?utf-8?B?TUM3UGxqTy9YY0NTMytCZWhIMVIwWm80REx4TmxKcTI3SVd5dmx1ckh1SEsv?=
- =?utf-8?B?Rk00ZlRsQURacFNWc05lc2NWT3JHY25iNWN5Tmo5d3p2Q1hSU2pBT01VeVlV?=
- =?utf-8?B?eUtJNGJDaVFJSW5Qd0lvc2tPcVJUdmxtNmZmRitGQUY3eXNRTWVMREttRUNL?=
- =?utf-8?B?elFHMU1sa0JicEhERnFxSERMaHNIYVJMUTBsOHdKU3h2TG8yZ2RCa2ZUVkFJ?=
- =?utf-8?B?TFIrcHNodlAxTi95MmNxZmpwZUJzUkV3RnFXM1o2bE9kWnArS1RwL1B2TFpx?=
- =?utf-8?B?eHg2cy9ic3RwckRrK1NGZTJWb2drU3BNZVBrMEV2TWNvSzZJajg5VStyTjA1?=
- =?utf-8?B?UFdpVlFuQURzVkNVc1RKZjlGamJ6azhwMTFXc0lHczJHTm9mMjRWbllacVNi?=
- =?utf-8?B?MzlKYVA0ZzFlQzNGdEs5eCtFckF6SktuYXVNVmdkeGJUOFVRN3ZlaDVFejJz?=
- =?utf-8?B?dUZNelJtS2Vka2duMXc0dnA5a0lSMzZnSTFnSEZzV2k5K09LUHdDS25tSXJ5?=
- =?utf-8?B?dlcrOGNEbjVuNXNWRjlYUVczeTBXVXl3TVF1blV4SGpkU0dLZzkwcmdhbnpE?=
- =?utf-8?B?NmU2bFVIYjliZ1BOcFRtMDlHdFhNNUFvVitZM3M5SnFWNlVXVFdZS3ZzUU1t?=
- =?utf-8?B?ZEZ1aDNwSFBRVjk4emMvcnhWRFVXaWpyUlBKY1ZMZHp5cHhjNFpFZWpqRWRz?=
- =?utf-8?B?dW9uUjVNN1ozUHRoL0pFS3pHNHVkNm1JRytmYXErTHdFT0FjaWkrdWF2R3pS?=
- =?utf-8?B?QzV1bzNZTVRITjMwVnJOVDE2cVRaU3BRSUxManNBMEpjSXZPOGI5SldTdHNR?=
- =?utf-8?B?T3ZmUmFrblpqQUtGMkpMS215VG5TUVY3RGpaaXpyNWhRbytRajQ5TXk5bzNT?=
- =?utf-8?B?VlJqRmxqNFpTQjdZVGViR0tEQmhJN0JVRlgzd3RrWk9SZUErd1F0ZXRucEFS?=
- =?utf-8?B?ZXVVMnROblN5YVlzNmVLVEVKV0pVc01FSkJ4WmhQZ2tpaTRPZGY5Q2FaT2pT?=
- =?utf-8?B?NWhFTXJGN0ZURXJuQko4QWFKVzF2VTg3VkpxYXJCTm9DZ2hrdXFOeFgyS0Nh?=
- =?utf-8?B?RTJHdmFqR1VhY1didnBZZTQ0a0tlQ0NIT2ZYMmJpS0QvV2w5c2V2UG44U0l1?=
- =?utf-8?B?d1grOEhSWmxoZFBIYW00L3ovVFVPR2xjckJ4R0hlWDBqWld3TGhZU000akk5?=
- =?utf-8?B?bWlRbVpFdW02ZnNHVXZUcjh3WXE2bjBTUnE0MlpTaEIwaG1SOFZpZHBrdjUz?=
- =?utf-8?B?YWdDZ1pHbUJFNTByb3RYTHh6ejR2LzEwWFI5cFJOZnlSQi9xRnhFYnVONHAy?=
- =?utf-8?B?RnlIanFjYU1vYjYzV1kyWVNDSlQ1RHpqaFZNSSsrR3RPUExhSHdhTkRWNEV0?=
- =?utf-8?B?eHA2M2lncStjbU1RVVNrbFplZjZGWDRKcW9DK3AzdmtMSCszZDVhbE5CVkdH?=
- =?utf-8?B?aFVaSWhHblc4VGdyYzZrc0JoVlVlSGh1M2N6RnhoRUNxVWFEcE81M05xWmdW?=
- =?utf-8?B?UXpyMmI0RHloVkxwQVE5aDFPU0g4VFNRNWJheC9XY0h0T1BmdEhSTUgzOEto?=
- =?utf-8?B?ZFdNc1dQT1NMSnNXaDBFcFNETmd2VlVtYTVxK1BvdnEveXJQSEdteW5pSU9Q?=
- =?utf-8?B?M1Y4bWNBdWtKZWdBbE5LTXhrelJOL05kNk41d0RjRVFZWGZjTm1wTXhqNTVn?=
- =?utf-8?B?MEF5dWwvTFoxUlpLTmd3T0xYZUFsb0tXUXM3OFBDeWYvckJTY1M4c2UzMmtz?=
- =?utf-8?B?dWtEYzgzVVNMbWg0Qno2REJrM0tBSm9XOFYwc0ppbi9NRlpLOEtSQWFjMkx6?=
- =?utf-8?B?OG51SlplajFPem9aamNvZHQ1MC9RRjVOb3owSW9EM3pnUnV1OHVmdz09?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <2679D6DD3B31374C96BE939C3E718FEA@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+X-IronPort-AV: E=Sophos;i="6.21,297,1763452800"; 
+   d="scan'208";a="244604341"
+Received: from spandruv-mobl5.amr.corp.intel.com (HELO [10.125.109.135]) ([10.125.109.135])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2026 14:06:53 -0800
+Message-ID: <10baddd3-add6-4771-a1ce-f759d3ec69d2@intel.com>
+Date: Tue, 17 Feb 2026 14:06:52 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BN7PR11MB2673.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f0cb110f-7a3b-44ca-0034-08de6e63681a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Feb 2026 20:30:36.0365
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: blNUWzw+7z2gI/9+4aGijJgCMceZlsEm3LAFATR47cfuMBSb8seIGXmHNfMi/FrgvxRw6ZA0cRXI1CmOWVeJcg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7936
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/6] x86/sev: add support for enabling RMPOPT
+To: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@kernel.org, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ seanjc@google.com, peterz@infradead.org, thomas.lendacky@amd.com,
+ herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org
+Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+ KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
+ jackyli@google.com, pgonda@google.com, rientjes@google.com,
+ jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+ babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com,
+ darwi@linutronix.de, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1771321114.git.ashish.kalra@amd.com>
+ <7df872903e16ccee9fce73b34280ede8dfc37063.1771321114.git.ashish.kalra@amd.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <7df872903e16ccee9fce73b34280ede8dfc37063.1771321114.git.ashish.kalra@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-T24gVHVlLCAyMDI2LTAyLTE3IGF0IDA3OjI1IC0wODAwLCBTZWFuIENocmlzdG9waGVyc29uIHdy
-b3RlOg0KPiBPbiBUdWUsIEZlYiAxNywgMjAyNiwgS2FpIEh1YW5nIHdyb3RlOg0KPiA+IE9uIEZy
-aSwgMjAyNi0wMi0xMyBhdCAxNzoyNiAtMDgwMCwgU2VhbiBDaHJpc3RvcGhlcnNvbiB3cm90ZToN
-Cj4gPiA+IFJlbW92ZSBURFgncyBvdXRkYXRlZCByZXF1aXJlbWVudCB0aGF0IHBlci1DUFUgZW5h
-YmxpbmcgYmUgZG9uZSB2aWEgSVBJDQo+ID4gPiBmdW5jdGlvbiBjYWxsLCB3aGljaCB3YXMgYSBz
-dGFsZSBhcnRpZmFjdCBsZWZ0b3ZlciBmcm9tIGVhcmx5IHZlcnNpb25zIG9mDQo+ID4gPiB0aGUg
-VERYIGVuYWJsZW1lbnQgc2VyaWVzLiAgVGhlIHJlcXVpcmVtZW50IHRoYXQgSVJRcyBiZSBkaXNh
-YmxlZCBzaG91bGQNCj4gPiA+IGhhdmUgYmVlbiBkcm9wcGVkIGFzIHBhcnQgb2YgdGhlIHJldmFt
-cGVkIHNlcmllcyB0aGF0IHJlbGllZCBvbiBhIHRoZSBLVk0NCj4gPiA+IHJld29yayB0byBlbmFi
-bGUgVk1YIGF0IG1vZHVsZSBsb2FkLg0KPiA+ID4gDQo+ID4gPiBJbiBvdGhlciB3b3JkcywgdGhl
-IGtlcm5lbCdzICJyZXF1aXJlbWVudCIgd2FzIG5ldmVyIGEgcmVxdWlyZW1lbnQgYXQgYWxsLA0K
-PiA+ID4gYnV0IGluc3RlYWQgYSByZWZsZWN0aW9uIG9mIGhvdyBLVk0gZW5hYmxlZCBWTVggKHZp
-YSBJUEkgY2FsbGJhY2spIHdoZW4NCj4gPiA+IHRoZSBURFggc3Vic3lzdGVtIGNvZGUgd2FzIG1l
-cmdlZC4NCj4gPiA+IA0KPiA+ID4gTm90ZSwgYWNjZXNzaW5nIHBlci1DUFUgaW5mb3JtYXRpb24g
-aXMgc2FmZSBldmVuIHdpdGhvdXQgZGlzYWJsaW5nIElSUXMsDQo+ID4gPiBhcyB0ZHhfb25saW5l
-X2NwdSgpIGlzIGludm9rZWQgdmlhIGEgY3B1aHAgY2FsbGJhY2ssIGkuZS4gZnJvbSBhIHBlci1D
-UFUNCj4gPiA+IHRocmVhZC4NCj4gPiA+IA0KPiA+ID4gTGluazogaHR0cHM6Ly9sb3JlLmtlcm5l
-bC5vcmcvYWxsL1p5Sk9pUFFuQnozMXFMWjdAZ29vZ2xlLmNvbQ0KPiA+ID4gU2lnbmVkLW9mZi1i
-eTogU2VhbiBDaHJpc3RvcGhlcnNvbiA8c2VhbmpjQGdvb2dsZS5jb20+DQo+ID4gPiANCj4gPiAN
-Cj4gPiBIaSBTZWFuLA0KPiA+IA0KPiA+IFRoZSBmaXJzdCBjYWxsIG9mIHRkeF9jcHVfZW5hYmxl
-KCkgd2lsbCBhbHNvIGNhbGwgaW50bw0KPiA+IHRyeV9pbml0X21vZHVsZV9nbG9iYWwoKSAoaW4g
-b3JkZXIgdG8gZG8gVERIX1NZU19JTklUKSwgd2hpY2ggYWxzbyBoYXMgYQ0KPiA+IGxvY2tkZXBf
-YXNzZXJ0X2lycXNfZGlzYWJsZWQoKSArIGEgcmF3IHNwaW5sb2NrIHRvIG1ha2Ugc3VyZSBUREhf
-U1lTX0lOSVQgaXMNCj4gPiBvbmx5IGNhbGxlZCBvbmNlIHdoZW4gdGR4X2NwdV9lbmFibGUoKSBh
-cmUgY2FsbGVkIGZyb20gSVJRIGRpc2FibGVkIGNvbnRleHQuDQo+ID4gDQo+ID4gVGhpcyBwYXRj
-aCBvbmx5IGNoYW5nZXMgdGR4X2NwdV9lbmFibGUoKSBidXQgZG9lc24ndCBjaGFuZ2UNCj4gPiB0
-cnlfaW5pdF9tb2R1bGVfZ2xvYmFsKCksIHRodXMgdGhlIGZpcnN0IGNhbGwgb2YgdGR4X2NwdV9l
-bmFibGUoKSB3aWxsIHN0aWxsDQo+ID4gdHJpZ2dlciB0aGUgbG9ja2RlcF9hc3NlcnRfaXJxc19k
-aXNhYmxlZCgpIGZhaWx1cmUgd2FybmluZy4NCj4gPiANCj4gPiBJJ3ZlIHRyaWVkIHRoaXMgc2Vy
-aWVzIG9uIG15IGxvY2FsIGFuZCBJIGRpZCBzZWUgc3VjaCBXQVJOSU5HIGR1cmluZw0KPiA+IGJv
-b3RbKl0uICBXZSBuZWVkIHRvIGZpeCB0aGF0IHRvby4NCj4gPiANCj4gPiBCdXQgaG1tLCBDaGFv
-J3MgIlJ1bnRpbWUgVERYIG1vZHVsZSB1cGRhdGUiIHNlcmllcyBhY3R1YWxseSBuZWVkcyB0byBj
-YWxsDQo+ID4gdGR4X2NwdV9lbmFibGUoKSB3aGVuIElSUSBkaXNhYmxlZCwgSUlVQywgc2luY2Ug
-aXQgaXMgY2FsbGVkIHZpYQ0KPiA+IHN0b3BfbWFjaGluZV9jcHVzbG9ja2VkKCk6DQo+ID4gDQo+
-ID4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcva3ZtLzIwMjYwMjEyMTQzNjA2LjUzNDU4Ni0xOC1j
-aGFvLmdhb0BpbnRlbC5jb20vDQo+ID4gDQo+ID4gTWF5YmUgd2UgY2FuIGp1c3Qga2VlcCB0ZHhf
-Y3B1X2VuYWJsZWQoKSBhcy1pcz8NCj4gDQo+IENhbid0IHdlIHNpbXBseSBkZWxldGUgdGhlIGxv
-Y2tkZXAgYXNzZXJ0IHRoZXJlIGFzIHdlbGw/ICBJdCBzaG91bGQgYmUgdG90YWxseQ0KPiBmaW5l
-IHRvIGhhdmUgYSBmdW5jdGlvbiB0aGF0IGNhbiBiZSBjYWxsZWQgZnJvbSB0YXNrIG9yIElSUSBj
-b250ZXh0LCBzbyBsb25nIGFzDQo+IHRoZSBmdW5jdGlvbiBpcyBwcmVwYXJlZCBmb3IgdGhhdCBw
-b3NzaWJpbGl0eS4gIEkuZS4ganVzdCBiZWNhdXNlIGl0IF9jYW5fIGJlDQo+IGNhbGxlZCBmcm9t
-IElSUSBjb250ZXh0IGRvZXNuJ3QgbWVhbiBpdCBfbXVzdF8gYmUgY2FsbGVkIGZyb20gSVJRIGNv
-bnRleHQuDQo+IA0KPiBFLmcuIGFzIGEgZml4dXANCg0KWWVhaCB3ZSBjYW4uICBMR1RNLg0K
+> +#define RMPOPT_TABLE_MAX_LIMIT_IN_TB	2
+> +#define NUM_TB(pfn_min, pfn_max)	\
+> +	(((pfn_max) - (pfn_min)) / (1 << (40 - PAGE_SHIFT)))
+
+IMNHO, you should just keep these in bytes. No reason to keep them in TB.
+
+> +struct rmpopt_socket_config {
+> +	unsigned long start_pfn, end_pfn;
+> +	cpumask_var_t cpulist;
+> +	int *node_id;
+> +	int current_node_idx;
+> +};
+
+This looks like optimization complexity before the groundwork is in
+place. Also, don't we *have* CPU lists for NUMA nodes? This seems rather
+redundant.
+
+> +/*
+> + * Build a cpumask of online primary threads, accounting for primary threads
+> + * that have been offlined while their secondary threads are still online.
+> + */
+> +static void get_cpumask_of_primary_threads(cpumask_var_t cpulist)
+> +{
+> +	cpumask_t cpus;
+> +	int cpu;
+> +
+> +	cpumask_copy(&cpus, cpu_online_mask);
+> +	for_each_cpu(cpu, &cpus) {
+> +		cpumask_set_cpu(cpu, cpulist);
+> +		cpumask_andnot(&cpus, &cpus, cpu_smt_mask(cpu));
+> +	}
+> +}
+
+Don't we have a primary thread mask already? I thought we did.
+
+> +static void __configure_rmpopt(void *val)
+> +{
+> +	u64 rmpopt_base = ((u64)val & PUD_MASK) | MSR_AMD64_RMPOPT_ENABLE;
+> +
+> +	wrmsrq(MSR_AMD64_RMPOPT_BASE, rmpopt_base);
+> +}
+
+I'd honestly just make the callers align the address..
+
+> +static void configure_rmpopt_non_numa(cpumask_var_t primary_threads_cpulist)
+> +{
+> +	on_each_cpu_mask(primary_threads_cpulist, __configure_rmpopt, (void *)0, true);
+> +}
+> +
+> +static void free_rmpopt_socket_config(struct rmpopt_socket_config *socket)
+> +{
+> +	int i;
+> +
+> +	if (!socket)
+> +		return;
+> +
+> +	for (i = 0; i < topology_max_packages(); i++) {
+> +		free_cpumask_var(socket[i].cpulist);
+> +		kfree(socket[i].node_id);
+> +	}
+> +
+> +	kfree(socket);
+> +}
+> +DEFINE_FREE(free_rmpopt_socket_config, struct rmpopt_socket_config *, free_rmpopt_socket_config(_T))
+
+Looking at all this, I really think you need a more organized series.
+
+Make something that's _functional_ and works for all <2TB configs. Then,
+go add all this NUMA complexity in a follow-on patch or patches. There's
+too much going on here.
+
+> +static void configure_rmpopt_large_physmem(cpumask_var_t primary_threads_cpulist)
+> +{
+> +	struct rmpopt_socket_config *socket __free(free_rmpopt_socket_config) = NULL;
+> +	int max_packages = topology_max_packages();
+> +	struct rmpopt_socket_config *sc;
+> +	int cpu, i;
+> +
+> +	socket = kcalloc(max_packages, sizeof(struct rmpopt_socket_config), GFP_KERNEL);
+> +	if (!socket)
+> +		return;
+> +
+> +	for (i = 0; i < max_packages; i++) {
+> +		sc = &socket[i];
+> +		if (!zalloc_cpumask_var(&sc->cpulist, GFP_KERNEL))
+> +			return;
+> +		sc->node_id = kcalloc(nr_node_ids, sizeof(int), GFP_KERNEL);
+> +		if (!sc->node_id)
+> +			return;
+> +		sc->current_node_idx = -1;
+> +	}
+> +
+> +	/*
+> +	 * Handle case of virtualized NUMA software domains, such as AMD Nodes Per Socket(NPS)
+> +	 * configurations. The kernel does not have an abstraction for physical sockets,
+> +	 * therefore, enumerate the physical sockets and Nodes Per Socket(NPS) information by
+> +	 * walking the online CPU list.
+> +	 */
+
+By this point, I've forgotten why sockets are important here.
+
+Why are they important?
+
+> +	for_each_cpu(cpu, primary_threads_cpulist) {
+> +		int socket_id, nid;
+> +
+> +		socket_id = topology_logical_package_id(cpu);
+> +		nid = cpu_to_node(cpu);
+> +		sc = &socket[socket_id];
+> +
+> +		/*
+> +		 * For each socket, determine the corresponding nodes and the socket's start
+> +		 * and end PFNs.
+> +		 * Record the node and the start and end PFNs of the first node found on the
+> +		 * socket, then record each subsequent node and update the end PFN for that
+> +		 * socket as additional nodes are found.
+> +		 */
+> +		if (sc->current_node_idx == -1) {
+> +			sc->current_node_idx = 0;
+> +			sc->node_id[sc->current_node_idx] = nid;
+> +			sc->start_pfn = node_start_pfn(nid);
+> +			sc->end_pfn = node_end_pfn(nid);
+> +		} else if (sc->node_id[sc->current_node_idx] != nid) {
+> +			sc->current_node_idx++;
+> +			sc->node_id[sc->current_node_idx] = nid;
+> +			sc->end_pfn = node_end_pfn(nid);
+> +		}
+> +
+> +		cpumask_set_cpu(cpu, sc->cpulist);
+> +	}
+> +
+> +	/*
+> +	 * If the "physical" socket has up to 2TB of memory, the per-CPU RMPOPT tables are
+> +	 * configured to the starting physical address of the socket, otherwise the tables
+> +	 * are configured per-node.
+> +	 */
+> +	for (i = 0; i < max_packages; i++) {
+> +		int num_tb_socket;
+> +		phys_addr_t pa;
+> +		int j;
+> +
+> +		sc = &socket[i];
+> +		num_tb_socket = NUM_TB(sc->start_pfn, sc->end_pfn) + 1;
+> +
+> +		pr_debug("socket start_pfn 0x%lx, end_pfn 0x%lx, socket cpu mask %*pbl\n",
+> +			 sc->start_pfn, sc->end_pfn, cpumask_pr_args(sc->cpulist));
+> +
+> +		if (num_tb_socket <= RMPOPT_TABLE_MAX_LIMIT_IN_TB) {
+> +			pa = PFN_PHYS(sc->start_pfn);
+> +			on_each_cpu_mask(sc->cpulist, __configure_rmpopt, (void *)pa, true);
+> +			continue;
+> +		}
+> +
+> +		for (j = 0; j <= sc->current_node_idx; j++) {
+> +			int nid = sc->node_id[j];
+> +			struct cpumask node_mask;
+> +
+> +			cpumask_and(&node_mask, cpumask_of_node(nid), sc->cpulist);
+> +			pa = PFN_PHYS(node_start_pfn(nid));
+> +
+> +			pr_debug("RMPOPT_BASE MSR on nodeid %d cpu mask %*pbl set to 0x%llx\n",
+> +				 nid, cpumask_pr_args(&node_mask), pa);
+> +			on_each_cpu_mask(&node_mask, __configure_rmpopt, (void *)pa, true);
+> +		}
+> +	}
+> +}
+
+Ahh, so you're not optimizing by NUMA itself: you're assuming that there
+are groups of NUMA nodes in a socket and then optimizing for those groups.
+
+It would have been nice to say that. It would make great material for
+the changelog for your broken out patches.
+
+I have the feeling that the structure here could be one of these in a patch:
+
+ 1. Support systems with <2TB of memory
+ 2. Support a RMPOPT range per NUMA node
+ 3. Group NUMA nodes at socket boundaries and have them share a common
+    RMPOPT config.
+
+Right?
+
+> +static __init void configure_and_enable_rmpopt(void)
+> +{
+> +	cpumask_var_t primary_threads_cpulist;
+> +	int num_tb;
+> +
+> +	if (!cpu_feature_enabled(X86_FEATURE_RMPOPT)) {
+> +		pr_debug("RMPOPT not supported on this platform\n");
+> +		return;
+> +	}
+> +
+> +	if (!cc_platform_has(CC_ATTR_HOST_SEV_SNP)) {
+> +		pr_debug("RMPOPT optimizations not enabled as SNP support is not enabled\n");
+> +		return;
+> +	}
+> +
+> +	if (!(rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED)) {
+> +		pr_info("RMPOPT optimizations not enabled, segmented RMP required\n");
+> +		return;
+> +	}
+> +
+> +	if (!zalloc_cpumask_var(&primary_threads_cpulist, GFP_KERNEL))
+> +		return;
+> +
+> +	num_tb = NUM_TB(min_low_pfn, max_pfn) + 1;
+> +	pr_debug("NUM_TB pages in system %d\n", num_tb);
+
+This looks wrong. Earlier, you program 0 as the base RMPOPT address into
+the MSR. But this uses 'min_low_pfn'. Why not 0?
+
+> +	/* Only one thread per core needs to set RMPOPT_BASE MSR as it is per-core */
+> +	get_cpumask_of_primary_threads(primary_threads_cpulist);
+> +
+> +	/*
+> +	 * Per-CPU RMPOPT tables support at most 2 TB of addressable memory for RMP optimizations.
+> +	 *
+> +	 * Fastpath RMPOPT configuration and setup:
+> +	 * For systems with <= 2 TB of RAM, configure each per-core RMPOPT base to 0,
+> +	 * ensuring all system RAM is RMP-optimized on all CPUs.
+> +	 */
+> +	if (num_tb <= RMPOPT_TABLE_MAX_LIMIT_IN_TB)
+> +		configure_rmpopt_non_numa(primary_threads_cpulist);
+
+this part:
+
+> +	else
+> +		configure_rmpopt_large_physmem(primary_threads_cpulist);
+
+^^ needs to be broken out into a separate optimization patch.
+
