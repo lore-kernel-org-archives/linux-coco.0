@@ -1,101 +1,148 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C83A36CE1B
-	for <linux-coco@lists.linux.dev>; Tue, 17 Feb 2026 15:13:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27C7281370
+	for <linux-coco@lists.linux.dev>; Tue, 17 Feb 2026 15:25:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771341198; cv=none; b=br6tzFOiPHIA5D7tZmopHT5OoVP4vE2XGwjhAijkE0zP6JJCQbv+eV0jZ+qVWDJofhhCcscipsVNcfDyWgeEDVNrmYPdtwhT4iMoxiV2Yn4sZZMg5zEXj8zx+Fi16DmDiN0/eCImOQ+FS5nLLMf1H9dXOUng3ncA7z0a79JsHdg=
+	t=1771341910; cv=none; b=XbvvehCDIEqYTwQ5zo4/q4jGfDLBvTH5z/Wumtyw+QtuTBoK0rPhiAmjNq9lQPyYHNUOMiAFwdntpMdQV0s9SdjSOCr2k8Fl5g+E6nvwCIR5KltLBuY8JkbdYPN1Di5Jk5PTU9wp3cS/NAiPnZ8zWC13dOU64CferbLGzSYlCxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771341198; c=relaxed/simple;
-	bh=x7Jhsu7riKN4ta1ryX5N4I7XT9zPxImuZI9ZDeN9mTw=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=quUrOOeDDcA3KI5U6GX3TBqquI0Sg0jKkf9/TZVscOOvsdRqHA/Dc1tsV0wbymhRneC96KvUfY+GjP9KIR3QzOP35hOvueCx6EdrKUCBpXECjr/wFnaDma1XTLT0Lerz5S4FNxZFcDh+sCv2OlTc/IKgOU7n0pEU4UlbVr9blv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gjyqwkas; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1771341910; c=relaxed/simple;
+	bh=hZGLZbsUH8EmvpSV7H/wOq9sFZLgXoLqGx+9AUKwexA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=l3rRERDPHufERV9FbYZdhNr/js7COgdh4HOuqj/XTBilLiEixfm6LRf3BVrlIB/z0oigZfS1J973YCEIk65XLnOy/dwHNUTPVoZfocTsxreRBN2ACfyfEsFXN1zWGTMsRYA7gMQhOBIuA9xjKvj4IeGq0B1cGGRsVuxvLeYsSz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WeBgmsWn; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gjyqwkas"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1771341195;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type;
-	bh=y/WbQo1ubRSbNIyu57pwb3Zf13D/n/SuzWSZhnLxsFY=;
-	b=gjyqwkas2zu9M4E1Ucy6RtTMZ313kk52LOrzvPzqmpWVxp606o5xByLjG3f1ZLl6dyNaeG
-	k5JTl/FcQEtgfCg63n6LSKWYkKmmlRwaYqasOjDEs9QYwos4jsoe/N+XF+wIZ1F+LTBXn9
-	zNRU1C0eTOtBss8r/4XEdPqYRfIAGJE=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-685-J_UDO0P5M9CRZsVpt-tinQ-1; Tue, 17 Feb 2026 10:13:13 -0500
-X-MC-Unique: J_UDO0P5M9CRZsVpt-tinQ-1
-X-Mimecast-MFC-AGG-ID: J_UDO0P5M9CRZsVpt-tinQ_1771341192
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4837b7903f3so36744015e9.2
-        for <linux-coco@lists.linux.dev>; Tue, 17 Feb 2026 07:13:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WeBgmsWn"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c6e18ade2c2so3062726a12.1
+        for <linux-coco@lists.linux.dev>; Tue, 17 Feb 2026 07:25:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771341908; x=1771946708; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2a2DsZQIpKH+b2cksg0NQajbqrk+yeWf7k9R9erIIoo=;
+        b=WeBgmsWnreISuVZusNxk5PJg7ImdwOaZkNZBAf5rAok4hMEyngqVoo4nDeV6QZXSZD
+         mGzolvasPimUDvKhQI4ebkCnWesRzilxXkYAqeA+v+z+SjCpwDTIPlI+AbvAWdzFe7kP
+         8uUx+EzapLX3526mPhZGk1U4oKam5CrgN7NZXgbL4tHrkdFTk+BnlFlzjZXKAL9LOyw4
+         oNBdPy48eoYDS4yKB+fCq+4xXvfI76OCoas6J8ABUAeTFKcqIEN8u+fuegbARETcV0TO
+         a9s46AkXc67yFJKY/ADOWXYNnzp/mNkQ6vVyxSXhLaSIfq+glAZd9ymxI4p+h1Vb2G0z
+         mZNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771341192; x=1771945992;
-        h=content-disposition:mime-version:message-id:subject:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=y/WbQo1ubRSbNIyu57pwb3Zf13D/n/SuzWSZhnLxsFY=;
-        b=foap3s8vRvWIGh8exZIboOXfgYtdbdyq2GqUfNqAJdXB5T/jL9uIYYBNx/+SYBeCe5
-         070hSVCJS0o21xgnEE+Nks3a0IyYJTpZRKy1vd+43y6P9ij9x2NbDmP9M2W6RNWNWHbj
-         ke8TFDRaUeBzCXA7hYKcz+HatT0GnslIejDRtLA87VIBGs7/PkT32Akh41qYrRcxQWBH
-         uUX5Ff8LIkpxTrYdkXO9o0PrTLCW2aeNsfmZD0PMhKtDcOxyiKHi6WyiOPL42dlniKSh
-         BS5Tq6OLXtzCV1+AHIgeBVzubDUoOaweot3vRj6QzzQlvnNv5F5W+82PYptz69tTqqlk
-         jdIw==
-X-Forwarded-Encrypted: i=1; AJvYcCUVwWLLvFZN3eeGip2zacOvqGcZOOkgfTOTU0zS0Rz7cttHag9xG26Y80Fn1c2MYAEYq72dzkECByVc@lists.linux.dev
-X-Gm-Message-State: AOJu0YwiIqQrSCbdc3wpkGROhRfEK354YiyP/tQJA+Lx1x1n/pWe99bL
-	qV6Odr60bzOTurp+Q4GAozBJX6xVjHjcmmtK/xPaV7Rjn/7tAxlH1h7zvHx5ZxDYfVc16E5PQN8
-	LHLyA0mN3ZgTNGmwgglbcAD4zn1iqNy1ilrVhfDwmr6cG7FMm863KdC/bWuWJcCE=
-X-Gm-Gg: AZuq6aIus8XIJw3nCThsviV5blgPBynPFWbTs2pA6KdZkwzCjIZKfbkyO6C9J4TT+rx
-	uXHUJZc/+ohcS7R+Q+/mZwMdE2MSEX8nXXaXi+pTxnNKstb4YMpzr6++F+GaZcHDJJfavrOPITU
-	0Ho8gqHBmKPlQ4+qZpRgGgV4xZmaiOpJM54xnviwy/GFPZUyDE8tTyvY05yGU23NkhnjRZnRJHy
-	SJ5XURJRsX2OGXm4ni9KhLkadMZXqNUcYDZrwGyNZp4uw9jsuBaR710yHOVBiFeiQlQr8fj9Uc5
-	dwgW7QRR/K0NkmgY8wtykvUUpnQbxFjRp7ELOylJllY2RzGFfSxcwzac2HvZE2zS7s5/vmp2Yae
-	wZKfhaIQerj8TXlmaeimTY8wfxg0AV4JVYueI5Pg3HAGdGGy6HZdWtHbCvGCo2MB9BqLr8Xw=
-X-Received: by 2002:a05:600c:1c22:b0:47d:18b0:bb9a with SMTP id 5b1f17b1804b1-48373a786f3mr262279565e9.33.1771341192309;
-        Tue, 17 Feb 2026 07:13:12 -0800 (PST)
-X-Received: by 2002:a05:600c:1c22:b0:47d:18b0:bb9a with SMTP id 5b1f17b1804b1-48373a786f3mr262278965e9.33.1771341191676;
-        Tue, 17 Feb 2026 07:13:11 -0800 (PST)
-Received: from sgarzare-redhat (host-82-53-134-58.retail.telecomitalia.it. [82.53.134.58])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43796acf5b9sm32899940f8f.34.2026.02.17.07.13.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Feb 2026 07:13:11 -0800 (PST)
-Date: Tue, 17 Feb 2026 16:13:04 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
-Subject: SVSM Development Call February 18, 2026
-Message-ID: <aZSE8XXPM5NK91rd@sgarzare-redhat>
+        d=1e100.net; s=20230601; t=1771341908; x=1771946708;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2a2DsZQIpKH+b2cksg0NQajbqrk+yeWf7k9R9erIIoo=;
+        b=Nazpc5USoPTgLsCx0gDBlJ4EVbrvGM7XVuXiSB+QvpSzozYhvIeYHHUE6UguTjlfUm
+         uwdmUgKyqdFJieRhfN68GLARz0YSpPV1miyJBrF8kdWtk39HQJLQkXUkRbaAL5HXuziR
+         f7aINewMmBGLqroSYXBjhGMaZl0HZB32dn41j/uKqnvHfYEjs8Cqlm9XwZAdpzG4XWBQ
+         U+jTm2JtdHqGs+MC4q2zBuFB+qClCKiAdJgdDAmCnC4CVMloj/jDKY1dXRtV4PuyMRm6
+         7jwUWcBK4BYGqqJ0MrOB51nwORshlp6u2SDhtiFaDxqn2ESA5HwmmXbYP3CyBGsO5TTD
+         m9ag==
+X-Forwarded-Encrypted: i=1; AJvYcCXA1rLjq6jOns8gOYMjYdkfSGY9gweENCeXuxhbHzpGaLCbVZmQc2B0NXVLSbMUnOhmSv6btKcito8/@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzbx4Mw2Esndz9s+Ld0tFGih/7uORi6De/B/v576XJbr4//N3ub
+	L+HH9+R1wBPe9aiCHKncSTDTWrco4Jig60SgnTPY3vtee4TZVkT5YClC69tSBfq+YQGsk7UqnbV
+	F/1scDg==
+X-Received: from pgvh6.prod.google.com ([2002:a65:6386:0:b0:c52:a841:c79d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:2f98:b0:366:14af:9bd2
+ with SMTP id adf61e73a8af0-3946c8f9745mr14478361637.72.1771341907789; Tue, 17
+ Feb 2026 07:25:07 -0800 (PST)
+Date: Tue, 17 Feb 2026 07:25:04 -0800
+In-Reply-To: <4317ad31f4ef883daee264f72f032974c044c0cc.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: J5fu7uTUnNl6KbIWqpeuXOLV_0_u8IN__HPVtGrZ1No_1771341192
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
+Mime-Version: 1.0
+References: <20260214012702.2368778-1-seanjc@google.com> <20260214012702.2368778-11-seanjc@google.com>
+ <4317ad31f4ef883daee264f72f032974c044c0cc.camel@intel.com>
+Message-ID: <aZSIUJ_NXAMLVWJM@google.com>
+Subject: Re: [PATCH v3 10/16] x86/virt/tdx: Drop the outdated requirement that
+ TDX be enabled in IRQ context
+From: Sean Christopherson <seanjc@google.com>
+To: Kai Huang <kai.huang@intel.com>
+Cc: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"peterz@infradead.org" <peterz@infradead.org>, "x86@kernel.org" <x86@kernel.org>, 
+	"mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, "tglx@kernel.org" <tglx@kernel.org>, 
+	"namhyung@kernel.org" <namhyung@kernel.org>, "acme@kernel.org" <acme@kernel.org>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Dan J Williams <dan.j.williams@intel.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>, Chao Gao <chao.gao@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Hi,
+On Tue, Feb 17, 2026, Kai Huang wrote:
+> On Fri, 2026-02-13 at 17:26 -0800, Sean Christopherson wrote:
+> > Remove TDX's outdated requirement that per-CPU enabling be done via IPI
+> > function call, which was a stale artifact leftover from early versions of
+> > the TDX enablement series.  The requirement that IRQs be disabled should
+> > have been dropped as part of the revamped series that relied on a the KVM
+> > rework to enable VMX at module load.
+> > 
+> > In other words, the kernel's "requirement" was never a requirement at all,
+> > but instead a reflection of how KVM enabled VMX (via IPI callback) when
+> > the TDX subsystem code was merged.
+> > 
+> > Note, accessing per-CPU information is safe even without disabling IRQs,
+> > as tdx_online_cpu() is invoked via a cpuhp callback, i.e. from a per-CPU
+> > thread.
+> > 
+> > Link: https://lore.kernel.org/all/ZyJOiPQnBz31qLZ7@google.com
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > 
+> 
+> Hi Sean,
+> 
+> The first call of tdx_cpu_enable() will also call into
+> try_init_module_global() (in order to do TDH_SYS_INIT), which also has a
+> lockdep_assert_irqs_disabled() + a raw spinlock to make sure TDH_SYS_INIT is
+> only called once when tdx_cpu_enable() are called from IRQ disabled context.
+> 
+> This patch only changes tdx_cpu_enable() but doesn't change
+> try_init_module_global(), thus the first call of tdx_cpu_enable() will still
+> trigger the lockdep_assert_irqs_disabled() failure warning.
+> 
+> I've tried this series on my local and I did see such WARNING during
+> boot[*].  We need to fix that too.
+> 
+> But hmm, Chao's "Runtime TDX module update" series actually needs to call
+> tdx_cpu_enable() when IRQ disabled, IIUC, since it is called via
+> stop_machine_cpuslocked():
+> 
+> https://lore.kernel.org/kvm/20260212143606.534586-18-chao.gao@intel.com/
+> 
+> Maybe we can just keep tdx_cpu_enabled() as-is?
 
-Here is the call for agenda items for this week SVSM development call.
-Please send any agenda items you have in mind as a reply to this email 
-or raise them in the meeting.
+Can't we simply delete the lockdep assert there as well?  It should be totally
+fine to have a function that can be called from task or IRQ context, so long as
+the function is prepared for that possibility.  I.e. just because it _can_ be
+called from IRQ context doesn't mean it _must_ be called from IRQ context.
 
-We will use the LF Zoom instance. Details of the meeting can be found in 
-our governance repository at:
+E.g. as a fixup
 
-     https://github.com/coconut-svsm/governance
-
-The link to the COCONUT-SVSM calendar is:
-
-     https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?view=week
-
-The meeting will be recorded and the recording eventually published.
-
-Ciao,
-Stefano
-
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index bdee937b84d4..f8f5e046159b 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -106,8 +106,7 @@ static __always_inline int sc_retry_prerr(sc_func_t func,
+ 
+ /*
+  * Do the module global initialization once and return its result.
+- * It can be done on any cpu.  It's always called with interrupts
+- * disabled.
++ * It can be done on any cpu, and from task or IRQ context.
+  */
+ static int try_init_module_global(void)
+ {
+@@ -116,8 +115,6 @@ static int try_init_module_global(void)
+        static bool sysinit_done;
+        static int sysinit_ret;
+ 
+-       lockdep_assert_irqs_disabled();
+-
+        raw_spin_lock(&sysinit_lock);
+ 
+        if (sysinit_done)
