@@ -1,242 +1,241 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011035.outbound.protection.outlook.com [40.93.194.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF792EBB99
-	for <linux-coco@lists.linux.dev>; Wed, 18 Feb 2026 04:39:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.35
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771389592; cv=fail; b=RJfcL/u3RkWLxIKrhssQhF4RLZM995TJIeWN+9n670eFvs4Paq+XSziDQJ3Gi6p3D6Rt7nxcL5oXBzyRjb51/052/a8MB3JDNkPwoWmwI+9f9Kv2I2QSoGl7w52jQGMRQaNyF1ZwPyqNqw5l5J+TI3MEE9+QWcCLCIrW/28PXtY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771389592; c=relaxed/simple;
-	bh=hlH6ej/gfCXKumv7LKWSLew37QoMyou/uSik6rg7QCM=;
-	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=h3VOQ/f+Rh1ZZH9XszrtlZ1IsdLhInfW944B8spWnqw66sc5OqCEtEd19vR2QaapZj4Vi4/tpdHN2caTWHGQeCVI/dO5VcnPXWEaUr7rAFFyxmO3HanGsi5bMeK5vkCZZVUfDg0Nl34ifZ6rzIPvj5knGGu/Q5ja4NP5QZdiAnY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=K7eabFZv; arc=fail smtp.client-ip=40.93.194.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDBC30F813
+	for <linux-coco@lists.linux.dev>; Wed, 18 Feb 2026 08:21:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771402899; cv=none; b=G6gajfRUCZRtrZCYaaNknbKUpy8/fjCEAJ4vfFfwRfliBsJ0Hg/F3iKnlA4abzEx2zB/7SkQlYqB8KCj2S3Qqf41+js9Vpz3dJSBglshNssTknjU+OlRO+ESjDtxgrLrV7zuBrvxH4brtqgElPV85ftSdhUdEi9CfwpCVC8rRyE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771402899; c=relaxed/simple;
+	bh=7UHy5f1T56MQ+JimHqC6iTJ7VajkraClBQb0A4F7qpk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jNi9xYqXBZ1RGwmpBLEyJ73V6vdTKVg/KqMNPAvGlCLMYpTse++V7ecf1jyjXXMXKlXkw0ZsCJLGmEXRxYGpFfzOXZet//ogyWbPmQtty6pubWSkmyYd4k5fP/Xv9t0JAxhHzeSWs+Fven2eg9X5j2F7jqTeab/b5Iyk3WMiLfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=mumQ2dSr; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=mumQ2dSr; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="K7eabFZv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sZxyPta1J5/bUZJUgMfrrVAjTesaXxQCCYe2vTfxwUfNPpEz7Foz1uDA3DsNs6w6u49lQCurX/NI/T+WV0kyTfCG96JC5SZUQpRedgCOvwISt3GzrKZ7gYIu+s3x86epZxlylxdlvYN+r96qSHQeRvB5y3ccuxxkourBD1Jocdec9eKpJ7yYoeMEjwLt9efPqJv+y3UqogqHyz0vm1JdUq/vZfJ3UJBJnkYwVHld6LRtI2QNGT4mv2ZPlfrBLFqCpfcDG+oQ5Zd4YHyJ0C30yaeitM18NUJtQwfTsVIK7MHwgOepM9ciPBpAZZg7fhOQHRpgCSurcrlmFpMm/9BIIg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gWPqpDj67DecnsCIvyXU/f3/MhtEM4sPFuU+QhhKEb8=;
- b=ShxyZn8NCbe6hFYzk0arSA18Uf7J3hzsunLd1CH6QjON84tzuY3yczpZVNDlGXAblZJD+wCyscPC4dhpg1BLKooFGImjtpSSuh8izFBZ0kNLgFvfiBvLbIi6ZwKhqBzgTF0hOZ9k3BLFQ6wcEhwnwtw8Cdmy7ZUEWBSp5FsmlS5Sn+RD02NB5q0LWW9yD+/vYyD3h9jTY12T0gbLutrWT+LvC0uODnPAKxW2VWeZm01BzT8Kr2Q1no9HoMZbzIPyZVuGV8prsAbzHxJWMxZ9cRuczIYFYHPR6QYZn8DB67wHzfHbEkHqbHcez+c9nxSm4Mp6PQK/SqzxrHCdyy1tGw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gWPqpDj67DecnsCIvyXU/f3/MhtEM4sPFuU+QhhKEb8=;
- b=K7eabFZvT4bA+3SmlvxM9Z/fPC3d7ZaYLjOSGEEQlaLPtpepKnTUJ782BrUJ+fNDFGijEMdevs30qnh4E0h26s0NRmRlI2EnE3N0sXKwILa91MC9BzTEe9Fq5+lLSUt97L1Ziopc/v8YQSe6eCKfkVWxHjBj/26xK69JHpiOOF4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
- by BL4PR12MB9723.namprd12.prod.outlook.com (2603:10b6:208:4ed::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.13; Wed, 18 Feb
- 2026 04:39:47 +0000
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad%5]) with mapi id 15.20.9632.010; Wed, 18 Feb 2026
- 04:39:47 +0000
-Message-ID: <84c08e66-c0dc-4e2a-834a-67190b89bded@amd.com>
-Date: Tue, 17 Feb 2026 22:39:42 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/6] x86/sev: Use configfs to re-enable RMP optimizations.
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-To: Dave Hansen <dave.hansen@intel.com>, tglx@kernel.org, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- seanjc@google.com, peterz@infradead.org, thomas.lendacky@amd.com,
- herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org
-Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
- KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
- jackyli@google.com, pgonda@google.com, rientjes@google.com,
- jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
- babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com,
- darwi@linutronix.de, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
-References: <cover.1771321114.git.ashish.kalra@amd.com>
- <88ddc178dcab3d27d6296e471218f13a4826f4a8.1771321114.git.ashish.kalra@amd.com>
- <21250a3e-536c-4348-bf4c-a7356a13939b@intel.com>
- <e72165ed-c65d-4d21-bff6-9981b46311cf@amd.com>
-Content-Language: en-US
-In-Reply-To: <e72165ed-c65d-4d21-bff6-9981b46311cf@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH0PR03CA0397.namprd03.prod.outlook.com
- (2603:10b6:610:11b::30) To BL3PR12MB9049.namprd12.prod.outlook.com
- (2603:10b6:208:3b8::21)
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="mumQ2dSr";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="mumQ2dSr"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 5925B3E6D0;
+	Wed, 18 Feb 2026 08:21:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1771402896; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=OYoDmUH9lbkTBURMFRYZYYI6iouhuBtpfCapQgEqDZ8=;
+	b=mumQ2dSroxqx6zt+Ap8HTM0DwIHDjYg5G2rkTfGqr0XF50J9oS7P1iax3mkDWYDGIX05mq
+	VX/pMUcA0pFYr7ZTj5XfgBOOOEBabHE1Wg4S0+rOQYd/osFxFh8Tnl1dVhywbfaL5k3mSq
+	YTambJKAYcAGVGpkGonRfwPP/SogtlM=
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1771402896; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=OYoDmUH9lbkTBURMFRYZYYI6iouhuBtpfCapQgEqDZ8=;
+	b=mumQ2dSroxqx6zt+Ap8HTM0DwIHDjYg5G2rkTfGqr0XF50J9oS7P1iax3mkDWYDGIX05mq
+	VX/pMUcA0pFYr7ZTj5XfgBOOOEBabHE1Wg4S0+rOQYd/osFxFh8Tnl1dVhywbfaL5k3mSq
+	YTambJKAYcAGVGpkGonRfwPP/SogtlM=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 893403EA65;
+	Wed, 18 Feb 2026 08:21:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id HcFZII92lWkvHQAAD6G6ig
+	(envelope-from <jgross@suse.com>); Wed, 18 Feb 2026 08:21:35 +0000
+From: Juergen Gross <jgross@suse.com>
+To: linux-kernel@vger.kernel.org,
+	x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	llvm@lists.linux.dev
+Cc: Juergen Gross <jgross@suse.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	xen-devel@lists.xenproject.org,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Xin Li <xin@zytor.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: [PATCH v3 00/16] x86/msr: Inline rdmsr/wrmsr instructions
+Date: Wed, 18 Feb 2026 09:21:17 +0100
+Message-ID: <20260218082133.400602-1-jgross@suse.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|BL4PR12MB9723:EE_
-X-MS-Office365-Filtering-Correlation-Id: a06b4428-1760-4bb4-af51-08de6ea7be5e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?N1lqMWJnY2FkU0V3R2l1eG03OW85b3IyL1JxOVNmaFYxbCtTd1dyOHhXS1VE?=
- =?utf-8?B?VXRiVjcySFVXSjI1TGw5YVBBUXdCbWJpYjMvTzllbVkxcGJjdUFRZHRDNnk1?=
- =?utf-8?B?N2o4L1RlV1lxRmJtWmRuN282ZWVJREtrZW9zdG9PdGlyakhpMm5CeFltU2J5?=
- =?utf-8?B?MGJGUE5zc2U3MGpXakxRUldUaFZ6TGg4K0lIMy95Y2VIcHN6a1Zyc0dpMXBo?=
- =?utf-8?B?Umphb2pwTmZFODZ3M0xmcmt5c0tmeExaWnozRlhZSHpZaUhQOWM2aDJiY3lF?=
- =?utf-8?B?Qi8wK1NYNEUxZUIzKytiT1UxNVQxZjNYclgrdHdKYlRJbURjL2ZOdGR2eVJF?=
- =?utf-8?B?MTdVcVllaGZ4QW9oK3k3d3R1ZWVPenF3a3BlOWtGTTc0dXpBdHg3MFVuTHVu?=
- =?utf-8?B?T0VsZTFtL2pHNU5zdFRhem1rTzVZNERob01FWEhDQkRNZWR5MUVvVkoxemRp?=
- =?utf-8?B?ZDkrN0tkWFRPU0doa3UrZ0l3d09MVWdUck11Z1VzN3ZqcU1wZ3FqNkNRTG9L?=
- =?utf-8?B?Z3I5ZzgzYzV3VXE4VVRQbGJrQUhsTXB6MzcvRGVWSGdPeExWdTFqWWFzRi9E?=
- =?utf-8?B?dXdPVHNpUkVnWFZvMU1Va3BvUTlrTThoV0xmeW55OEthek9rVGw4QS9JY2F5?=
- =?utf-8?B?QWpuNG5vSUV6R1NBb3dHRlUvMXdoK1czM0lweXMxUmVQdE5VYjJsRkhzbHN6?=
- =?utf-8?B?ZkRLZ3NuY1BoZkdYN0dxdlNZWStZY1NkaWlHUDRqMkNJR3NOaWdtV3Ixd2dr?=
- =?utf-8?B?c2IvZVU4Y2YyTkJiVXdDSFgyTFBoNzhvZFZqOU1IVHpQL21Ib1lZbmVlRlUv?=
- =?utf-8?B?dGY4RnY4aWkyVlEwQnhNMk5HamJVVzZCMmxHYitPTzZFY3pXYzV1ZTgyZDdZ?=
- =?utf-8?B?OUlqM01wMHN2Vjd5R1F3UUgvT3B4SkhDQ0tpTEhMdStvYWZjWHg0aUQvenB4?=
- =?utf-8?B?RzZFbVA0ZWx1YjFYK0FvTVVDUXJwclpCcVR6SlpqbVIwYXJJRWN3b2VhNU9F?=
- =?utf-8?B?cngwWFhNVWZnT2Mzb1UrRG5yZlJOYWRtVEpaUHlZbXp6Nlh4YitzOE1NcWg5?=
- =?utf-8?B?dTIxOFEwa3ZpUk5lTkNSbFFzSzhudW5BaElhcXk2SFl2Y3FrV1AyWVdNcEl0?=
- =?utf-8?B?aVRTbmVEdlIyRDdmbnpxWW9iTytaSUhOc1NMQmRGRUU0ck5GZmZwVHdJUmtS?=
- =?utf-8?B?MmI1SE1DaGsycWRuMWxSeEZXSzQ4djdPV3ZQb1dBMDdXZWlGeE9aaVRWK2pM?=
- =?utf-8?B?bm5aOVg2OFlpeTBYQ3V6anhFSXhzOXJ0aFJ2Rnd4azJTTWdLZXViZVhZN0hM?=
- =?utf-8?B?RWxzVHg0NGQzVFdqMVlqRDMwbVZlZnovU2k2bUVvdTlTQlQzT3czZjlXSzVJ?=
- =?utf-8?B?MUwxYWFhdW5HeDk5Uk1UOHYyTVF5ZHlpQjlJcmkwOFIxbVg4NVBRS004Ujlk?=
- =?utf-8?B?d1pmZS81SVBVN3JhN0ZCSlhKZDdSeGY1dmdSaS85bm9veWJ0VXpqRmkrMlZP?=
- =?utf-8?B?b0wxK2RhaEFNZk14MExUUVJDYXNTSnZaaUtINFlNK3p5bmhCQzdQQldmK2pY?=
- =?utf-8?B?M2lENlUvUzY2VXFDQlVTeFNnNWZsS1k5OWpEUExFR3J6UXVmMkhzNkFyOU5N?=
- =?utf-8?B?NzRseXJCR3RvNWJoUU1yYm1jaElvUnRHc0EvM0VRdEN5Q1VKdGcxbEFIb0s1?=
- =?utf-8?B?WnBEYWdYRG5XOHBSdU5sbXF3NmJRTTJFdUw2Y3dHT2lCbkVobEx0bzB4ZWZN?=
- =?utf-8?B?aTBrVzJjNi9PaWhKKzhvWWpMWk9icDRMOVNhNW1DckJmektBYVdCZldpbkNI?=
- =?utf-8?B?M0pMbnkrcmF2bHArTUJEeVNvVVRob0hIOHdkZ2hYanJZV0NSWUF4c3FjQnNG?=
- =?utf-8?B?bHBtVkg5T1pzU3BXVTRQZGdCM29PUHAyZE1XTU0xNDZYWDYvZXkvYWRvYVpX?=
- =?utf-8?B?bWdqU01jaGJCMmIrdHNjMEx0UVd5UkxIbUpLcUo4VWg0NWJia3JPUUEvV2Z6?=
- =?utf-8?B?VTRBc0RtT09EYldJMnVyOC9XMzZNTUd1RlNUYlpyaEErY1FrNC9vU251UkVq?=
- =?utf-8?B?dytwSGZBU0JzL0Z0ZzA1TU0rb0I0WGM5MENqQmdnVTlQd2dBUWxhN3lCaWpY?=
- =?utf-8?B?UmFsN0pOS3MvdjhjdzhsNkF3amtUZHNFT0hCVE9ybW1LWlFhMjkxNkgxUVFx?=
- =?utf-8?B?dkE9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VVZ2enAvcS85ZGNjWGlBYzdhNE1EZmx0VVRmQWRBWUtteHdNRzdCbXJQZXpv?=
- =?utf-8?B?V09kRXVZaFBKWDM2RWlZTHRuTVhhbGJIM0p2OXNSd3hDSEYrM0tEdEp0dTgr?=
- =?utf-8?B?Tmsvd3hYNW0vZkJxSlI2OVpJMXVodUVGRkpDRXpLcnhxa3E4QWZVT0lWbSsz?=
- =?utf-8?B?QWRxTlZQcXJ3Ryt2S3FMYU5ZSnZVZm9wTzJSZk5GWEZhSFRFdkpIY1ZiYjhV?=
- =?utf-8?B?TDF0OUdmTTAzcnpVNTV1L0l6Z2NkMmlXNTZMVGEwRE4yYWl6WlFtVUtLSXIw?=
- =?utf-8?B?bThLTEJmdTBPcjNVL3BXdm5FOVF4UUdzNGNVTHM2Qi84OGJFMERyS1ZzQVFl?=
- =?utf-8?B?aGc0c0F4UjJSRUs2UmlJdDZ0MTBCQ2lwN1I3Y05lMytxaWNhNGViRDhKNmNt?=
- =?utf-8?B?anJla3pXT2dOZXJKRWxHTmdsN09Qa3RGbFRxeHQxZGxHRldDU3VWYTRsZ1Rp?=
- =?utf-8?B?b1lHelc1MlZ6NXhMMWQyRmFDajhVckhhdGM0RlFBSzZ2L3N6bFdIaUVQRjVl?=
- =?utf-8?B?aWthczRJRzRZeldqNGdzTWtkZFhDNGlGTFZtYk56N0YydkU2QzZDVFhvaFE1?=
- =?utf-8?B?eFVBTUZTekZFYWRKeWdxZXVrSWswZmdyU2VpSXBQWFo0ajZYV0tEQ2FTbTAz?=
- =?utf-8?B?a2I4US96bU1HUVBuTE9MRzZxVGM3Q3ZEQnY1NXRXVDlHbFAxSE5ITWthN3kx?=
- =?utf-8?B?dXZuMXdIOEEydGVPWXRNN0hVeFg1M1lVeUphblJlQnN3OUdYZHRjaDB0bmJt?=
- =?utf-8?B?Ulo0aEFBdFhuLzFabUpkTEpWSG9nTW9tSk9MVW42YnpGK0dZODliYThDTmRi?=
- =?utf-8?B?d1JlSDBJbm5PVlI3dmRkUUZzcXRnQzVrN2tHRThpQ1dWdVZna3pIM2NoZy80?=
- =?utf-8?B?UzBOYWt6bXBxWmJOeTFubjNyVGJ6blh6aVlzTExnRXNOSWxMZE5IUVZCSEw0?=
- =?utf-8?B?QTFHS2hEQ0tYQjk2L2tIcEMvV3dYRWtZY1FtMWxGTUxNTXlTUDh2QzUzRHRD?=
- =?utf-8?B?ZExqVFRrRndkS25admFINkcxL1FSL2p3T0trWlpRb2plaVYvdHFDQzFSQk8w?=
- =?utf-8?B?R2hUVEdjK0kxSXR4Q1c1UUtlSDlNdUc3bEZMQXJ5aWlhS1JTZDllM0hWKzA2?=
- =?utf-8?B?UXBmOHJnR2w2ckN2M3ZzdDZjUEs1MnZHTFdzakJ2Vk84NVVKMHpCWVJReWsx?=
- =?utf-8?B?a0N3NzV2dGpoSTNFcndTeDFjUTN5Z2RCei8rMXVGTzFETTlxNkRqV1FTMG9G?=
- =?utf-8?B?UTU2UUM1bXpPZGErV0tBNDRybmlIeEJSMzJkeDExWU5aWFkyQTlXRCtOOWZE?=
- =?utf-8?B?VUF3bVdwUDZBUnVqVU5jSEcwL1dqQTJtc093UVVPcTAzTkFTdmRzRDgrVURp?=
- =?utf-8?B?ZmVzRjZZci9aQnBkRGNKUkQ5a3lyZ3BtRVNWWFJKRGN0QnpnQWg2emc5VEpt?=
- =?utf-8?B?VnlTYU84QWdEUTZRV2Q4ODRKWG9abis2NWdZTytUOWlVR3FQTENJb0tjSlIz?=
- =?utf-8?B?ekhUMnJYenUycjdvOWkrbDhNcW96cjdjcm5mUGI0MmdNMTUwbjVKMHAwZ0c2?=
- =?utf-8?B?N28yRDBoTlRKSmxtNDMwYWkzdVlPbTVrNkVCdjh1NlNpYXNYbDZWUXpwejZo?=
- =?utf-8?B?RjdJSFdKSDFSM3RpVTF5UUdnN0FHTW1nNS9OQUloRTRwSlU2UnVVMkRtdU93?=
- =?utf-8?B?bGIweUdqNFZjVENod1JjdVVCZFZSdlgrL1FpTHlZSmJPVzVsVmFiOTN5SlUy?=
- =?utf-8?B?VzhCcGR1RldXbTRCVXpCRktPeGpNOHRFcFZjVE85eWFWbWdldGxZbk5VMFBI?=
- =?utf-8?B?UzZBQ2FGRWVhZGhKdE00QWZDemlJdUdiRVpjOGdUdW1pUWNzN1dZZUo2aWdp?=
- =?utf-8?B?a3QwRldKdUNRQ2NnakFiV3NUY0EyaGxIaEN6QUpXVTFZZHFjQUJqS2ZFOFJo?=
- =?utf-8?B?WG8vak80cG9TUWJBdzA1dTNDY3B2c0JETVdMZXpramZYY0swYkMwaFZXRDB3?=
- =?utf-8?B?VGJhRnhTTFFsVDBCZ09wM3VodXpxbVZ6eDA0OWlLd28xS0h0N3JMcFdYTmxa?=
- =?utf-8?B?bTB3M0tQWHJPWGRaNDZNbzAwRUVuNWtSTnFVeFVxWXlqaFo4SllqSUdmT3Vi?=
- =?utf-8?B?V1RLZmhQcUJiQnloNnBNQUZ5UkJteTE2c1ZCTS9SSzhpbWVGZ0t4Z2cvMDVj?=
- =?utf-8?B?TFhOT2dvR0J6TDRMSmdUVTh0OTNnbG9qNlY2L0h0U3ZldmZQOWVSangxWTJH?=
- =?utf-8?B?UHFTMTR4WmxuUkxleGpIKzFBUDF1WEtZamJ1cXpXTmNwTHJ0cEVCZzVhT1lQ?=
- =?utf-8?B?NVJJUjZaQTBITjFPNVJYSXQxRXQxRHIySVJRYVJLSWFGNHJnclZKdz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a06b4428-1760-4bb4-af51-08de6ea7be5e
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Feb 2026 04:39:46.8643
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cfPdgc6OSZhQbLTkoA0J51OH/KHR9MbpZFEVJMFhN1/Peb/DxAITYdi8148oU9EZ60+VIuiL97jxuQfS2d5vGQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL4PR12MB9723
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	RCPT_COUNT_TWELVE(0.00)[36];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:mid];
+	ARC_NA(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[suse.com,kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,intel.com,google.com,microsoft.com,oracle.com,lists.xenproject.org,broadcom.com,infradead.org,gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,imap1.dmz-prg2.suse.org:helo];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[lkml];
+	R_RATELIMIT(0.00)[to_ip_from(RLfdszjqhz8kzzb9uwpzdm8png)];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+X-Spam-Flag: NO
+X-Spam-Score: -1.30
+X-Spam-Level: 
 
+When building a kernel with CONFIG_PARAVIRT_XXL the paravirt
+infrastructure will always use functions for reading or writing MSRs,
+even when running on bare metal.
 
+Switch to inline RDMSR/WRMSR instructions in this case, reducing the
+paravirt overhead.
 
-On 2/17/2026 9:34 PM, Kalra, Ashish wrote:
-> Hello Dave, 
-> 
-> On 2/17/2026 4:19 PM, Dave Hansen wrote:
->> On 2/17/26 12:11, Ashish Kalra wrote:
->>> From: Ashish Kalra <ashish.kalra@amd.com>
->>>
->>> Use configfs as an interface to re-enable RMP optimizations at runtime
->>>
->>> When SNP guests are launched, RMPUPDATE disables the corresponding
->>> RMPOPT optimizations. Therefore, an interface is required to manually
->>> re-enable RMP optimizations, as no mechanism currently exists to do so
->>> during SNP guest cleanup.
->>
->> Is this like a proof-of-concept to poke the hardware and show it works?
->> Or, is this intended to be the way that folks actually interact with
->> SEV-SNP optimization in real production scenarios?
->>
->> Shouldn't freeing SEV-SNP memory back to the system do this
->> automatically? Worst case, keep a 1-bit-per-GB bitmap of memory that's
->> been freed and schedule_work() to run in 1 or 10 or 100 seconds. That
->> should batch things up nicely enough. No?
+The first patch is a prerequisite fix for alternative patching. Its
+is needed due to the initial indirect call needs to be padded with
+NOPs in some cases with the following patches.
 
-And there is a cost associated with re-enabling the optimizations for all 
-system RAM (even though it runs as a background kernel thread executing RMPOPT
-on different 1GB regions in parallel and with inline cond_resched()'s), 
-we don't want to run this periodically. 
+In order to make this less intrusive, some further reorganization of
+the MSR access helpers is done in the patches 1-6.
 
-In case of running SNP guests, this scheduled/periodic run will conflict with
-RMPUPDATE(s) being executed for assigning the guest pages and marking them as private.
-Even though the hardware takes care of handling such race conditions where 
-one CPU is doing RMPOPT on it while another is changing one of the pages in that
-region to be assigned via RMPUPDATE.  In this case, the hardware ensures that after
-the RMPUPDATE completes, the CPU that did RMPOPT will see the region as un-optimized.
+The next 4 patches are converting the non-paravirt case to use direct
+inlining of the MSR access instructions, including the WRMSRNS
+instruction and the immediate variants of RDMSR and WRMSR if possible.
 
-Once 1GB hugetlb support (for guest_memfd) has been merged, however it will be
-straightforward to plumb it into the 1GB hugetlb cleanup path.
+Patches 11-13 are some further preparations for making the real switch
+to directly patch in the native MSR instructions easier.
 
-Thanks,
-Ashish
+Patch 14 is switching the paravirt MSR function interface from normal
+call ABI to one more similar to the native MSR instructions.
 
-> 
-> Actually, the RMPOPT implementation is going to be a multi-phased development.
-> 
-> In the first phase (which is this patch-series) we enable RMPOPT globally, and let RMPUPDATE(s)
-> slowly switch it off over time as SNP guest spin up, and then in phase#2 once 1GB hugetlb is in place,
-> we enable re-issuing of RMPOPT during 1GB page cleanup.
-> 
-> So automatic re-issuing of RMPOPT will be done when SNP guests are shutdown and as part of 
-> SNP guest cleanup once 1GB hugetlb support (for guest_memfd) has been merged. 
-> 
-> As currently, i.e, as part of this patch series, there is no mechanism to re-issue RMPOPT
-> automatically as part of SNP guest cleanup, therefore this support exists to doing it
-> manually at runtime via configfs.
-> 
-> I will describe this multi-phased RMPOPT implementation plan in the cover letter for 
-> next revision of this patch series.
-> 
-> 
->>
->> I can't fathom that users don't want this to be done automatically for them.
->>
->> Is the optimization scan really expensive or something? 1GB of memory
->> should have a small number of megabytes of metadata to scan.
+Patch 15 is a little cleanup patch.
+
+Patch 16 is the final step for patching in the native MSR instructions
+when not running as a Xen PV guest.
+
+This series has been tested to work with Xen PV and on bare metal.
+
+Note that there is more room for improvement. This series is sent out
+to get a first impression how the code will basically look like.
+
+Right now the same problem is solved differently for the paravirt and
+the non-paravirt cases. In case this is not desired, there are two
+possibilities to merge the two implementations. Both solutions have
+the common idea to have rather similar code for paravirt and
+non-paravirt variants, but just use a different main macro for
+generating the respective code. For making the code of both possible
+scenarios more similar, the following variants are possible:
+
+1. Remove the micro-optimizations of the non-paravirt case, making
+   it similar to the paravirt code in my series. This has the
+   advantage of being more simple, but might have a very small
+   negative performance impact (probably not really detectable).
+
+2. Add the same micro-optimizations to the paravirt case, requiring
+   to enhance paravirt patching to support a to be patched indirect
+   call in the middle of the initial code snipplet.
+
+In both cases the native MSR function variants would no longer be
+usable in the paravirt case, but this would mostly affect Xen, as it
+would need to open code the WRMSR/RDMSR instructions to be used
+instead the native_*msr*() functions.
+
+Changes since V2:
+- switch back to the paravirt approach
+
+Changes since V1:
+- Use Xin Li's approach for inlining
+- Several new patches
+
+Juergen Gross (16):
+  x86/alternative: Support alt_replace_call() with instructions after
+    call
+  coco/tdx: Rename MSR access helpers
+  x86/sev: Replace call of native_wrmsr() with native_wrmsrq()
+  KVM: x86: Remove the KVM private read_msr() function
+  x86/msr: Minimize usage of native_*() msr access functions
+  x86/msr: Move MSR trace calls one function level up
+  x86/opcode: Add immediate form MSR instructions
+  x86/extable: Add support for immediate form MSR instructions
+  x86/msr: Use the alternatives mechanism for WRMSR
+  x86/msr: Use the alternatives mechanism for RDMSR
+  x86/alternatives: Add ALTERNATIVE_4()
+  x86/paravirt: Split off MSR related hooks into new header
+  x86/paravirt: Prepare support of MSR instruction interfaces
+  x86/paravirt: Switch MSR access pv_ops functions to instruction
+    interfaces
+  x86/msr: Reduce number of low level MSR access helpers
+  x86/paravirt: Use alternatives for MSR access with paravirt
+
+ arch/x86/coco/sev/internal.h              |   7 +-
+ arch/x86/coco/tdx/tdx.c                   |   8 +-
+ arch/x86/hyperv/ivm.c                     |   2 +-
+ arch/x86/include/asm/alternative.h        |   6 +
+ arch/x86/include/asm/fred.h               |   2 +-
+ arch/x86/include/asm/kvm_host.h           |  10 -
+ arch/x86/include/asm/msr.h                | 345 ++++++++++++++++------
+ arch/x86/include/asm/paravirt-msr.h       | 148 ++++++++++
+ arch/x86/include/asm/paravirt.h           |  67 -----
+ arch/x86/include/asm/paravirt_types.h     |  57 ++--
+ arch/x86/include/asm/qspinlock_paravirt.h |   4 +-
+ arch/x86/kernel/alternative.c             |   5 +-
+ arch/x86/kernel/cpu/mshyperv.c            |   7 +-
+ arch/x86/kernel/kvmclock.c                |   2 +-
+ arch/x86/kernel/paravirt.c                |  42 ++-
+ arch/x86/kvm/svm/svm.c                    |  16 +-
+ arch/x86/kvm/vmx/tdx.c                    |   2 +-
+ arch/x86/kvm/vmx/vmx.c                    |   8 +-
+ arch/x86/lib/x86-opcode-map.txt           |   5 +-
+ arch/x86/mm/extable.c                     |  35 ++-
+ arch/x86/xen/enlighten_pv.c               |  52 +++-
+ arch/x86/xen/pmu.c                        |   4 +-
+ tools/arch/x86/lib/x86-opcode-map.txt     |   5 +-
+ tools/objtool/check.c                     |   1 +
+ 24 files changed, 576 insertions(+), 264 deletions(-)
+ create mode 100644 arch/x86/include/asm/paravirt-msr.h
+
+-- 
+2.53.0
+
