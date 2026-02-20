@@ -1,851 +1,148 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1807C31B81C
-	for <linux-coco@lists.linux.dev>; Fri, 20 Feb 2026 17:39:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE539365A1A
+	for <linux-coco@lists.linux.dev>; Fri, 20 Feb 2026 18:45:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771609181; cv=none; b=JcU5qwNh1U65NV7x0dmKP++9YO61PrD9dHi/uZrOtUC+rZYlyuxMjiZkXRSNJST00t7nX4MawQqXY0NVJv6cxiV/3TFW2sUvya66hrH/1vSaR8WmL952rTZXpPCDseusmijLONTT3OzGezpfRKYhIT3MeHvQYmFYYHdUM7t9gCA=
+	t=1771613118; cv=none; b=F0fO0BqAxHAzo2itmg3B1VMBuVCZRZsJ9K3/CFH3umIszyyr9QF9dMApvSyZoLaF5Ff8kgtsWC8AkOyl73RJbCGHycNYmie4dqaE5X1PKBavm1SFZ+k0CfvLRw1mqKR3+r24j91dJvZmYaf6og9W6SWlNKIRX7hk5RrPyxY47Ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771609181; c=relaxed/simple;
-	bh=HG75lSzo6XDBA0NSlmq1H7u4/pqw8NBpW5U5WWgkxBo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XbYP/OxPqOOKXuDKqWakWrLJe/SwgxeGbr6Ke/1ihjdvRmwbWjb9BW4cjRnHq7WomKoLWM60VLrXGiNvMeHt1rrt5aEJz8XApufBcBwv6/uZ2jxXRyeOBxwcskERzs6KCBo2UJiJ9fSSb09b5SdpdHMCpRXTdBzMqY01KZmi4WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3C920339;
-	Fri, 20 Feb 2026 09:39:32 -0800 (PST)
-Received: from orionap.fritz.box (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5FF783F7D8;
-	Fri, 20 Feb 2026 09:39:36 -0800 (PST)
-Date: Fri, 20 Feb 2026 17:39:29 +0000
-From: Andre Przywara <andre.przywara@arm.com>
-To: Salman Nabi <salman.nabi@arm.com>
-Cc: vvidwans@nvidia.com, sudeep.holla@arm.com, mark.rutland@arm.com,
- lpieralisi@kernel.org, ardb@kernel.org, chao.gao@intel.com,
- linux-arm-kernel@lists.infradead.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, sdonthineni@nvidia.com, vsethi@nvidia.com,
- vwadekar@nvidia.com
-Subject: Re: [PATCH 1/1] firmware: smccc: add support for Live Firmware
- Activation (LFA)
-Message-ID: <20260220173929.02bc2cf2@orionap.fritz.box>
-In-Reply-To: <20260119122729.287522-2-salman.nabi@arm.com>
-References: <20260119122729.287522-1-salman.nabi@arm.com>
-	<20260119122729.287522-2-salman.nabi@arm.com>
-Organization: ARM
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; aarch64-unknown-linux-gnu)
+	s=arc-20240116; t=1771613118; c=relaxed/simple;
+	bh=QQGm/efUewdd0uPaGsutyunhLIVLi9ZwuiNqcgKVR7g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LQylzdXSHKFbaw2Jio+aZBD6ywR8n+sutVxckeyk8es8o8oK3u37B32R9MdXB/fP6nazUoetC7l+Lh3cyjkLtCwNJaagTPK1os/3p3Lp4d8y9sxYZCBzMTuy9BkQUvbWzrV8KCSCA7bFYjFpDMsPzE1j8/DjbEE1plkTExMtomA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a09tt5cP; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a09tt5cP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1771613115; x=1803149115;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=QQGm/efUewdd0uPaGsutyunhLIVLi9ZwuiNqcgKVR7g=;
+  b=a09tt5cPoQEzHDRTxWl999e+CRENkHpVn9l+AO5uIB21fdCTmkuNMP8/
+   p0P2G+EiPsPYhNWj+b0RjjZZHohb3Auditjd4ChtFIo/WLx5AG6exkeG+
+   xHptxxzvUk6GRVwQcrK7K0KIYAInUZ9C6yBWqXkxJZz75TxO668yOeHKE
+   psdzzvIDlVbYnIldRd9QrEbBzDR2IYRwEj5HmgyaVcFo70APFVpdA3r0e
+   haI+ulS3VSJ+CyF14uyIHYjSyJmIZSfxl3OxcSyc1vmfOua6ZgXgVOkEv
+   PzxH10XFdQ55E/gRvjIoXd9Y4A2UvIN4q2isuz6O+CUvkLJ+3KjXnwftl
+   g==;
+X-CSE-ConnectionGUID: 00nYYniIRDGZ7ST+wakxGA==
+X-CSE-MsgGUID: M+b6SUnDQEe6MDY2DaekIA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11707"; a="84070847"
+X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; 
+   d="scan'208";a="84070847"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2026 10:45:15 -0800
+X-CSE-ConnectionGUID: T3bLLtQ5QC+LL9aBphtnew==
+X-CSE-MsgGUID: KODdNr/SSPmw0R9tzPcyHw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; 
+   d="scan'208";a="212666612"
+Received: from soc-pf446t5c.clients.intel.com (HELO [10.24.81.126]) ([10.24.81.126])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2026 10:45:15 -0800
+Message-ID: <1cc137df-0940-4eb4-b7c3-2e5e8948d9f5@linux.intel.com>
+Date: Fri, 20 Feb 2026 10:45:14 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] virt: tdx-guest: Optimize the get-quote polling
+ interval time
+To: Jun Miao <jun.miao@intel.com>, kas@kernel.org,
+ dave.hansen@linux.intel.com, rick.p.edgecombe@intel.com
+Cc: linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260211085801.4036464-1-jun.miao@intel.com>
+ <20260211085801.4036464-2-jun.miao@intel.com>
+Content-Language: en-US
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20260211085801.4036464-2-jun.miao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, 19 Jan 2026 12:27:29 +0000
-Salman Nabi <salman.nabi@arm.com> wrote:
+Hi Miao,
 
-Hey,
+On 2/11/2026 12:58 AM, Jun Miao wrote:
+> The TD guest sends TDREPORT to the TD Quoting Enclave via a vsock or
+> a tdvmcall. In general, vsock is indeed much faster than tdvmcall,
+> and Quote requests usually take a few millisecond to complete rather
+> than seconds based on actual measurements.
+> 
+> The following get quote time via tdvmcall were obtained on the GNR:
+> 
+> | msleep_interruptible(time)     | 1s       | 5ms      | 1ms        |
+> | ------------------------------ | -------- | -------- | ---------- |
+> | Duration                       | 1.004 s  | 1.005 s  | 1.036 s    |
+> | Total(Get Quote)               | 167      | 142      | 167        |
+> | Success:                       | 167      | 142      | 167        |
+> | Failure:                       | 0        | 0        | 0          |
+> | Avg total / 1s                 | 0.97     | 141.31   | 166.35     |
+> | Avg success / 1s               | 0.97     | 141.31   | 166.35     |
+> | Avg total / 1s / thread        | 0.97     | 141.31   | 166.35     |
+> | Avg success / 1s / thread      | 0.97     | 141.31   | 166.35     |
+> | Min elapsed_time               | 1025.95ms| 6.85 ms  | 2.99 ms    |
+> | Max elapsed_time               | 1025.95ms| 10.93 ms | 10.76 ms   |
+> 
 
-for the records: while working on improving the patch and during internal
-review, we found some bugs and issues in there. I will mark them below for
-the benefit of others. I will send a v2 after -rc1, with those things
-fixed and some improvements, and will include Vedashree's patches, so
-that we have everything in one series.
+Thanks for sharing the data!
 
-> The Arm Live Firmware Activation (LFA) is a specification [1] to describe
-> activating firmware components without a reboot. Those components
-> (like TF-A's BL31, EDK-II, TF-RMM, secure paylods) would be updated the
-> usual way: via fwupd, FF-A or other secure storage methods, or via some
-> IMPDEF Out-Of-Bound method. The user can then activate this new firmware,
-> at system runtime, without requiring a reboot.
-> The specification covers the SMCCC interface to list and query available
-> components and eventually trigger the activation.
+> According to trace analysis, the typical execution tdvmcall get the
+> quote time is 4 ms. Therefore, 5 ms is a reasonable balance between
+> performance efficiency and CPU overhead.
+
+Since the average is 4 ms, why choose 5ms?
+
 > 
-> Add a new directory under /sys/firmware to present firmware components
-> capable of live activation. Each of them is a directory under lfa/,
-> and is identified via its GUID. The activation will be triggered by echoing
-> "1" into the "activate" file:
-> ==========================================
-> /sys/firmware/lfa # ls -l . 6c*
-> .:
-> total 0
-> drwxr-xr-x    2 0 0         0 Jan 19 11:33 47d4086d-4cfe-9846-9b95-2950cbbd5a00
-> drwxr-xr-x    2 0 0         0 Jan 19 11:33 6c0762a6-12f2-4b56-92cb-ba8f633606d9
-> drwxr-xr-x    2 0 0         0 Jan 19 11:33 d6d0eea7-fcea-d54b-9782-9934f234b6e4
+> And compared to the previous throughput of one request per second,
+> the current 5ms can get 142 requests per second delivers a
+> 142× performance improvement, which is critical for high-frequency
+> use cases without vsock.
+
+Is this addressing a real customer issue or a theoretical improvement? 
+If this is solving a real problem, could you share more details about
+the use case and Quoting Service implementation you're testing against?
+
+I ask because the Quote completion time depends heavily on the Quoting
+Service implementation, which varies by deployment. Since we're optimizing
+for performance, I'm wondering if we should consider an interrupt-based
+approach using the SetupEventNotifyInterrupt TDVMCALL instead of polling.
+
 > 
-> 6c0762a6-12f2-4b56-92cb-ba8f633606d9:
-> total 0
-> --w-------    1 0        0             4096 Jan 19 11:33 activate
-> -r--r--r--    1 0        0             4096 Jan 19 11:33 activation_capable
-> -r--r--r--    1 0        0             4096 Jan 19 11:33 activation_pending
-> --w-------    1 0        0             4096 Jan 19 11:33 cancel
-> -r--r--r--    1 0        0             4096 Jan 19 11:33 cpu_rendezvous
-> -r--r--r--    1 0        0             4096 Jan 19 11:33 current_version
-> -rw-r--r--    1 0        0             4096 Jan 19 11:33 force_cpu_rendezvous
-> -r--r--r--    1 0        0             4096 Jan 19 11:33 may_reset_cpu
-> -r--r--r--    1 0        0             4096 Jan 19 11:33 name
-> -r--r--r--    1 0        0             4096 Jan 19 11:33 pending_version
-> /sys/firmware/lfa/6c0762a6-12f2-4b56-92cb-ba8f633606d9 # grep . *
-> grep: activate: Permission denied
-> activation_capable:1
-> activation_pending:1
-> grep: cancel: Permission denied
-> cpu_rendezvous:1
-> current_version:0.0
-> force_cpu_rendezvous:1
-> may_reset_cpu:0
-> name:TF-RMM
-> pending_version:0.0
-> /sys/firmware/lfa/6c0762a6-12f2-4b56-92cb-ba8f633606d9 # echo 1 > activate
-> [ 2825.797871] Arm LFA: firmware activation succeeded.
-> /sys/firmware/lfa/6c0762a6-12f2-4b56-92cb-ba8f633606d9 #
-> ==========================================
+> So, change the 1s (MSEC_PER_SEC) -> 5ms (MSEC_PER_SEC / 200)
 > 
-> [1] https://developer.arm.com/documentation/den0147/latest/
-> 
-> Signed-off-by: Salman Nabi <salman.nabi@arm.com>
+> Signed-off-by: Jun Miao <jun.miao@intel.com>
 > ---
->  drivers/firmware/smccc/Kconfig  |   8 +
->  drivers/firmware/smccc/Makefile |   1 +
->  drivers/firmware/smccc/lfa_fw.c | 668 ++++++++++++++++++++++++++++++++
->  3 files changed, 677 insertions(+)
->  create mode 100644 drivers/firmware/smccc/lfa_fw.c
+>  drivers/virt/coco/tdx-guest/tdx-guest.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/firmware/smccc/Kconfig b/drivers/firmware/smccc/Kconfig
-> index 15e7466179a6..ff7ca49486b0 100644
-> --- a/drivers/firmware/smccc/Kconfig
-> +++ b/drivers/firmware/smccc/Kconfig
-> @@ -23,3 +23,11 @@ config ARM_SMCCC_SOC_ID
->  	help
->  	  Include support for the SoC bus on the ARM SMCCC firmware based
->  	  platforms providing some sysfs information about the SoC variant.
-> +
-> +config ARM_LFA
-> +	tristate "Arm Live Firmware activation support"
-> +	depends on HAVE_ARM_SMCCC_DISCOVERY
+> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> index 4e239ec960c9..71d2d7304b1a 100644
+> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
+> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> @@ -251,11 +251,11 @@ static int wait_for_quote_completion(struct tdx_quote_buf *quote_buf, u32 timeou
+>  	int i = 0;
+>  
+>  	/*
+> -	 * Quote requests usually take a few seconds to complete, so waking up
+> -	 * once per second to recheck the status is fine for this use case.
+> +	 * Quote requests usually take a few milliseconds to complete, so waking up
+> +	 * once per 5 milliseconds to recheck the status is fine for this use case.
+>  	 */
+> -	while (quote_buf->status == GET_QUOTE_IN_FLIGHT && i++ < timeout) {
+> -		if (msleep_interruptible(MSEC_PER_SEC))
+> +	while (quote_buf->status == GET_QUOTE_IN_FLIGHT && i++ < 200 * timeout) {
+> +		if (msleep_interruptible(MSEC_PER_SEC / 200))
+>  			return -EINTR;
+>  	}
+>  
 
-As the kernel test robot correctly pointed out, this only works on ARM64.
-SMCCC v1.2 is only defined for AArch64, and the LFA spec documents
-actually explicitly mentions AArch64-only at the beginning.
-
-> +	default y
-> +	help
-> +	  Include support for triggering Live Firmware Activation, which
-> +	  allows to upgrade certain firmware components without a reboot.
-> diff --git a/drivers/firmware/smccc/Makefile b/drivers/firmware/smccc/Makefile
-> index 40d19144a860..a6dd01558a94 100644
-> --- a/drivers/firmware/smccc/Makefile
-> +++ b/drivers/firmware/smccc/Makefile
-> @@ -2,3 +2,4 @@
->  #
->  obj-$(CONFIG_HAVE_ARM_SMCCC_DISCOVERY)	+= smccc.o kvm_guest.o
->  obj-$(CONFIG_ARM_SMCCC_SOC_ID)	+= soc_id.o
-> +obj-$(CONFIG_ARM_LFA) += lfa_fw.o
-> diff --git a/drivers/firmware/smccc/lfa_fw.c b/drivers/firmware/smccc/lfa_fw.c
-> new file mode 100644
-> index 000000000000..ce54049b7190
-> --- /dev/null
-> +++ b/drivers/firmware/smccc/lfa_fw.c
-> @@ -0,0 +1,668 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (C) 2025 Arm Limited
-> + */
-> +
-> +#include <linux/fs.h>
-> +#include <linux/init.h>
-> +#include <linux/kobject.h>
-> +#include <linux/module.h>
-> +#include <linux/stop_machine.h>
-> +#include <linux/string.h>
-> +#include <linux/sysfs.h>
-> +#include <linux/arm-smccc.h>
-> +#include <linux/psci.h>
-> +#include <uapi/linux/psci.h>
-> +#include <linux/uuid.h>
-> +#include <linux/array_size.h>
-> +#include <linux/list.h>
-> +#include <linux/mutex.h>
-
-This misses <linux/workqueue.h>. We get it via other includes, but better
-list it here explicitly.
-
-> +
-> +#undef pr_fmt
-> +#define pr_fmt(fmt) "Arm LFA: " fmt
-> +
-> +/* LFA v1.0b0 specification */
-> +#define LFA_1_0_FN_BASE			0xc40002e0
-> +#define LFA_1_0_FN(n)			(LFA_1_0_FN_BASE + (n))
-> +
-> +#define LFA_1_0_FN_GET_VERSION		LFA_1_0_FN(0)
-> +#define LFA_1_0_FN_CHECK_FEATURE	LFA_1_0_FN(1)
-> +#define LFA_1_0_FN_GET_INFO		LFA_1_0_FN(2)
-> +#define LFA_1_0_FN_GET_INVENTORY	LFA_1_0_FN(3)
-> +#define LFA_1_0_FN_PRIME		LFA_1_0_FN(4)
-> +#define LFA_1_0_FN_ACTIVATE		LFA_1_0_FN(5)
-> +#define LFA_1_0_FN_CANCEL		LFA_1_0_FN(6)
-> +
-> +/* CALL_AGAIN flags (returned by SMC) */
-> +#define LFA_PRIME_CALL_AGAIN		BIT(0)
-> +#define LFA_ACTIVATE_CALL_AGAIN		BIT(0)
-> +
-> +/* LFA return values */
-> +#define LFA_SUCCESS			0
-> +#define LFA_NOT_SUPPORTED		1
-> +#define LFA_BUSY			2
-> +#define LFA_AUTH_ERROR			3
-> +#define LFA_NO_MEMORY			4
-> +#define LFA_CRITICAL_ERROR		5
-> +#define LFA_DEVICE_ERROR		6
-> +#define LFA_WRONG_STATE			7
-> +#define LFA_INVALID_PARAMETERS		8
-> +#define LFA_COMPONENT_WRONG_STATE	9
-> +#define LFA_INVALID_ADDRESS		10
-> +#define LFA_ACTIVATION_FAILED		11
-> +
-> +#define LFA_ERROR_STRING(name) \
-> +	[name] = #name
-> +
-> +static const char * const lfa_error_strings[] = {
-> +	LFA_ERROR_STRING(LFA_SUCCESS),
-> +	LFA_ERROR_STRING(LFA_NOT_SUPPORTED),
-> +	LFA_ERROR_STRING(LFA_BUSY),
-> +	LFA_ERROR_STRING(LFA_AUTH_ERROR),
-> +	LFA_ERROR_STRING(LFA_NO_MEMORY),
-> +	LFA_ERROR_STRING(LFA_CRITICAL_ERROR),
-> +	LFA_ERROR_STRING(LFA_DEVICE_ERROR),
-> +	LFA_ERROR_STRING(LFA_WRONG_STATE),
-> +	LFA_ERROR_STRING(LFA_INVALID_PARAMETERS),
-> +	LFA_ERROR_STRING(LFA_COMPONENT_WRONG_STATE),
-> +	LFA_ERROR_STRING(LFA_INVALID_ADDRESS),
-> +	LFA_ERROR_STRING(LFA_ACTIVATION_FAILED)
-> +};
-> +
-> +enum image_attr_names {
-> +	LFA_ATTR_NAME,
-> +	LFA_ATTR_CURRENT_VERSION,
-> +	LFA_ATTR_PENDING_VERSION,
-> +	LFA_ATTR_ACT_CAPABLE,
-> +	LFA_ATTR_ACT_PENDING,
-> +	LFA_ATTR_MAY_RESET_CPU,
-> +	LFA_ATTR_CPU_RENDEZVOUS,
-> +	LFA_ATTR_FORCE_CPU_RENDEZVOUS,
-> +	LFA_ATTR_ACTIVATE,
-> +	LFA_ATTR_CANCEL,
-> +	LFA_ATTR_NR_IMAGES
-> +};
-> +
-> +struct image_props {
-> +	struct list_head image_node;
-> +	const char *image_name;
-> +	int fw_seq_id;
-> +	u64 current_version;
-> +	u64 pending_version;
-> +	bool activation_capable;
-> +	bool activation_pending;
-> +	bool may_reset_cpu;
-> +	bool cpu_rendezvous;
-> +	bool cpu_rendezvous_forced;
-> +	struct kobject *image_dir;
-> +	struct kobj_attribute image_attrs[LFA_ATTR_NR_IMAGES];
-> +};
-> +static LIST_HEAD(lfa_fw_images);
-> +
-> +/* A UUID split over two 64-bit registers */
-> +struct uuid_regs {
-> +	u64 uuid_lo;
-> +	u64 uuid_hi;
-> +};
-> +
-> +static const struct fw_image_uuid {
-> +	const char *name;
-> +	const char *uuid;
-> +} fw_images_uuids[] = {
-> +	{
-> +		.name = "TF-A BL31 runtime",
-> +		.uuid = "47d4086d-4cfe-9846-9b95-2950cbbd5a00",
-> +	},
-> +	{
-> +		.name = "BL33 non-secure payload",
-> +		.uuid = "d6d0eea7-fcea-d54b-9782-9934f234b6e4",
-> +	},
-> +	{
-> +		.name = "TF-RMM",
-> +		.uuid = "6c0762a6-12f2-4b56-92cb-ba8f633606d9",
-> +	},
-> +};
-> +
-> +static struct kobject *lfa_dir;
-> +static DEFINE_MUTEX(lfa_lock);
-> +static struct workqueue_struct *fw_images_update_wq;
-> +static struct work_struct fw_images_update_work;
-> +
-> +static int update_fw_images_tree(void);
-> +
-> +static void delete_fw_image_node(struct image_props *attrs)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < LFA_ATTR_NR_IMAGES; i++)
-> +		sysfs_remove_file(attrs->image_dir, &attrs->image_attrs[i].attr);
-> +
-> +	kobject_put(attrs->image_dir);
-> +	list_del(&attrs->image_node);
-> +	kfree(attrs);
-> +}
-> +
-> +static void remove_invalid_fw_images(struct work_struct *work)
-> +{
-> +	struct image_props *attrs, *tmp;
-> +
-> +	mutex_lock(&lfa_lock);
-> +
-> +	/*
-> +	 * Remove firmware images including directories that are no longer
-> +	 * present in the LFA agent after updating the existing ones.
-> +	 */
-> +	list_for_each_entry_safe(attrs, tmp, &lfa_fw_images, image_node) {
-> +		if (attrs->fw_seq_id == -1)
-> +			delete_fw_image_node(attrs);
-> +	}
-> +
-> +	mutex_unlock(&lfa_lock);
-> +}
-> +
-> +static void set_image_flags(struct image_props *attrs, int seq_id,
-> +			    u32 image_flags, u64 reg_current_ver,
-> +			    u64 reg_pending_ver)
-> +{
-> +	attrs->fw_seq_id = seq_id;
-> +	attrs->current_version = reg_current_ver;
-> +	attrs->pending_version = reg_pending_ver;
-> +	attrs->activation_capable = !!(image_flags & BIT(0));
-> +	attrs->activation_pending = !!(image_flags & BIT(1));
-> +	attrs->may_reset_cpu = !!(image_flags & BIT(2));
-> +	/* cpu_rendezvous_optional bit has inverse logic in the spec */
-> +	attrs->cpu_rendezvous = !(image_flags & BIT(3));
-> +}
-> +
-> +static unsigned long get_nr_lfa_components(void)
-> +{
-> +	struct arm_smccc_1_2_regs reg = { 0 };
-> +
-> +	reg.a0 = LFA_1_0_FN_GET_INFO;
-> +	reg.a1 = 0; /* lfa_info_selector = 0 */
-> +
-> +	arm_smccc_1_2_invoke(&reg, &reg);
-> +	if (reg.a0 != LFA_SUCCESS)
-> +		return reg.a0;
-> +
-> +	return reg.a1;
-> +}
-> +
-> +static int lfa_cancel(void *data)
-> +{
-> +	struct image_props *attrs = data;
-> +	struct arm_smccc_1_2_regs reg = { 0 };
-> +
-> +	reg.a0 = LFA_1_0_FN_CANCEL;
-> +	reg.a1 = attrs->fw_seq_id;
-> +	arm_smccc_1_2_invoke(&reg, &reg);
-> +
-> +	/*
-> +	 * When firmware activation is called with "skip_cpu_rendezvous=1",
-> +	 * LFA_CANCEL can fail with LFA_BUSY if the activation could not be
-> +	 * cancelled.
-> +	 */
-> +	if (reg.a0 == LFA_SUCCESS) {
-> +		pr_info("Activation cancelled for image %s\n",
-> +			attrs->image_name);
-> +	} else {
-> +		pr_err("Firmware activation could not be cancelled: %s\n",
-> +		       lfa_error_strings[-reg.a0]);
-> +		return -EINVAL;
-> +	}
-> +
-> +	return reg.a0;
-> +}
-> +
-> +static int call_lfa_activate(void *data)
-> +{
-> +	struct image_props *attrs = data;
-> +	struct arm_smccc_1_2_regs reg = { 0 };
-> +
-> +	reg.a0 = LFA_1_0_FN_ACTIVATE;
-> +	reg.a1 = attrs->fw_seq_id; /* fw_seq_id under consideration */
-> +	/*
-> +	 * As we do not support updates requiring a CPU reset (yet),
-> +	 * we pass 0 in reg.a3 and reg.a4, holding the entry point and context
-> +	 * ID respectively.
-> +	 * cpu_rendezvous_forced is set by the administrator, via sysfs,
-> +	 * cpu_rendezvous is dictated by each firmware component.
-> +	 */
-> +	reg.a2 = !(attrs->cpu_rendezvous_forced || attrs->cpu_rendezvous);
-> +
-> +	for (;;) {
-> +		arm_smccc_1_2_invoke(&reg, &reg);
-> +
-> +		if ((long)reg.a0 < 0) {
-> +			pr_err("ACTIVATE for image %s failed: %s\n",
-> +				attrs->image_name, lfa_error_strings[-reg.a0]);
-
-We should not let an externally provided value (the return value in a0) to
-index an array. Future (or rogue?) versions of an LFA agent could use
-higher error numbers, so the value must be checked before being used as an
-index.
-
-> +			return reg.a0;
-> +		}
-> +		if (!(reg.a1 & LFA_ACTIVATE_CALL_AGAIN))
-> +			break; /* ACTIVATE successful */
-> +	}
-> +
-> +	return reg.a0;
-> +}
-> +
-> +static int activate_fw_image(struct image_props *attrs)
-> +{
-> +	int ret;
-> +
-> +	mutex_lock(&lfa_lock);
-> +	if (attrs->cpu_rendezvous_forced || attrs->cpu_rendezvous)
-> +		ret = stop_machine(call_lfa_activate, attrs, cpu_online_mask);
-> +	else
-> +		ret = call_lfa_activate(attrs);
-> +
-> +	if (ret != 0) {
-> +		mutex_unlock(&lfa_lock);
-> +		return lfa_cancel(attrs);
-> +	}
-> +
-> +	/*
-> +	 * Invalidate fw_seq_ids (-1) for all images as the seq_ids and the
-> +	 * number of firmware images in the LFA agent may change after a
-> +	 * successful activation attempt. Negate all image flags as well.
-> +	 */
-> +	attrs = NULL;
-> +	list_for_each_entry(attrs, &lfa_fw_images, image_node) {
-> +		set_image_flags(attrs, -1, 0b1000, 0, 0);
-> +	}
-> +
-> +	update_fw_images_tree();
-> +
-> +	/*
-> +	 * Removing non-valid image directories at the end of an activation.
-> +	 * We can't remove the sysfs attributes while in the respective
-> +	 * _store() handler, so have to postpone the list removal to a
-> +	 * workqueue.
-> +	 */
-> +	INIT_WORK(&fw_images_update_work, remove_invalid_fw_images);
-> +	queue_work(fw_images_update_wq, &fw_images_update_work);
-> +	mutex_unlock(&lfa_lock);
-> +
-> +	return ret;
-> +}
-> +
-> +static int prime_fw_image(struct image_props *attrs)
-> +{
-> +	struct arm_smccc_1_2_regs reg = { 0 };
-> +	int ret;
-> +
-> +	mutex_lock(&lfa_lock);
-> +	/* Avoid SMC calls on invalid firmware images */
-> +	if (attrs->fw_seq_id == -1) {
-> +		pr_err("Arm LFA: Invalid firmware sequence id\n");
-> +		mutex_unlock(&lfa_lock);
-> +
-> +		return -ENODEV;
-> +	}
-> +
-> +	if (attrs->may_reset_cpu) {
-> +		pr_err("CPU reset not supported by kernel driver\n");
-> +		mutex_unlock(&lfa_lock);
-> +
-> +		return -EINVAL;
-> +	}
-> +
-> +	/*
-> +	 * LFA_PRIME/ACTIVATE will return 1 in reg.a1 if the firmware
-> +	 * priming/activation is still in progress. In that case
-> +	 * LFA_PRIME/ACTIVATE will need to be called again.
-> +	 * reg.a1 will become 0 once the prime/activate process completes.
-> +	 */
-> +	reg.a0 = LFA_1_0_FN_PRIME;
-> +	reg.a1 = attrs->fw_seq_id; /* fw_seq_id under consideration */
-> +	for (;;) {
-> +		arm_smccc_1_2_invoke(&reg, &reg);
-> +
-> +		if ((long)reg.a0 < 0) {
-> +			pr_err("LFA_PRIME for image %s failed: %s\n",
-> +				attrs->image_name, lfa_error_strings[-reg.a0]);
-> +			mutex_unlock(&lfa_lock);
-> +
-> +			return reg.a0;
-> +		}
-> +		if (!(reg.a1 & LFA_PRIME_CALL_AGAIN)) {
-> +			ret = 0;
-> +			break; /* PRIME successful */
-> +		}
-> +	}
-> +
-> +	mutex_unlock(&lfa_lock);
-> +	return ret;
-> +}
-> +
-> +static ssize_t name_show(struct kobject *kobj, struct kobj_attribute *attr,
-> +			 char *buf)
-> +{
-> +	struct image_props *attrs = container_of(attr, struct image_props,
-> +						 image_attrs[LFA_ATTR_NAME]);
-> +
-> +	return sysfs_emit(buf, "%s\n", attrs->image_name);
-> +}
-> +
-> +static ssize_t activation_capable_show(struct kobject *kobj,
-> +				       struct kobj_attribute *attr, char *buf)
-> +{
-> +	struct image_props *attrs = container_of(attr, struct image_props,
-> +					 image_attrs[LFA_ATTR_ACT_CAPABLE]);
-> +
-> +	return sysfs_emit(buf, "%d\n", attrs->activation_capable);
-> +}
-> +
-> +static ssize_t activation_pending_show(struct kobject *kobj,
-> +				       struct kobj_attribute *attr, char *buf)
-> +{
-> +	struct image_props *attrs = container_of(attr, struct image_props,
-> +					 image_attrs[LFA_ATTR_ACT_PENDING]);
-> +	struct arm_smccc_1_2_regs reg = { 0 };
-> +
-> +	/*
-> +	 * Activation pending status can change anytime thus we need to update
-> +	 * and return its current value
-> +	 */
-> +	reg.a0 = LFA_1_0_FN_GET_INVENTORY;
-> +	reg.a1 = attrs->fw_seq_id;
-> +	arm_smccc_1_2_invoke(&reg, &reg);
-> +	if (reg.a0 == LFA_SUCCESS)
-> +		attrs->activation_pending = !!(reg.a3 & BIT(1));
-> +
-> +	return sysfs_emit(buf, "%d\n", attrs->activation_pending);
-> +}
-> +
-> +static ssize_t may_reset_cpu_show(struct kobject *kobj,
-> +				  struct kobj_attribute *attr, char *buf)
-> +{
-> +	struct image_props *attrs = container_of(attr, struct image_props,
-> +					 image_attrs[LFA_ATTR_MAY_RESET_CPU]);
-> +
-> +	return sysfs_emit(buf, "%d\n", attrs->may_reset_cpu);
-> +}
-> +
-> +static ssize_t cpu_rendezvous_show(struct kobject *kobj,
-> +				   struct kobj_attribute *attr, char *buf)
-> +{
-> +	struct image_props *attrs = container_of(attr, struct image_props,
-> +					 image_attrs[LFA_ATTR_CPU_RENDEZVOUS]);
-> +
-> +	return sysfs_emit(buf, "%d\n", attrs->cpu_rendezvous);
-> +}
-> +
-> +static ssize_t force_cpu_rendezvous_store(struct kobject *kobj,
-> +					  struct kobj_attribute *attr,
-> +					  const char *buf, size_t count)
-> +{
-> +	struct image_props *attrs = container_of(attr, struct image_props,
-> +				image_attrs[LFA_ATTR_FORCE_CPU_RENDEZVOUS]);
-> +	int ret;
-> +
-> +	ret = kstrtobool(buf, &attrs->cpu_rendezvous_forced);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return count;
-> +}
-> +
-> +static ssize_t force_cpu_rendezvous_show(struct kobject *kobj,
-> +					 struct kobj_attribute *attr, char *buf)
-> +{
-> +	struct image_props *attrs = container_of(attr, struct image_props,
-> +				image_attrs[LFA_ATTR_FORCE_CPU_RENDEZVOUS]);
-> +
-> +	return sysfs_emit(buf, "%d\n", attrs->cpu_rendezvous_forced);
-> +}
-> +
-> +static ssize_t current_version_show(struct kobject *kobj,
-> +				    struct kobj_attribute *attr, char *buf)
-> +{
-> +	struct image_props *attrs = container_of(attr, struct image_props,
-> +				image_attrs[LFA_ATTR_CURRENT_VERSION]);
-> +	u32 maj, min;
-> +
-> +	maj = attrs->current_version >> 32;
-> +	min = attrs->current_version & 0xffffffff;
-> +	return sysfs_emit(buf, "%u.%u\n", maj, min);
-> +}
-> +
-> +static ssize_t pending_version_show(struct kobject *kobj,
-> +				    struct kobj_attribute *attr, char *buf)
-> +{
-> +	struct image_props *attrs = container_of(attr, struct image_props,
-> +					 image_attrs[LFA_ATTR_ACT_PENDING]);
-
-This should be LFA_ATTR_PENDING_VERSION as the index.
-
-> +	struct arm_smccc_1_2_regs reg = { 0 };
-> +	u32 maj, min;
-> +
-> +	/*
-> +	 * Similar to activation pending, this value can change following an
-> +	 * update, we need to retrieve fresh info instead of stale information.
-> +	 */
-> +	reg.a0 = LFA_1_0_FN_GET_INVENTORY;
-> +	reg.a1 = attrs->fw_seq_id;
-> +	arm_smccc_1_2_invoke(&reg, &reg);
-> +	if (reg.a0 == LFA_SUCCESS) {
-> +		if (reg.a5 != 0 && attrs->activation_pending)
-> +		{
-> +			attrs->pending_version = reg.a5;
-> +			maj = reg.a5 >> 32;
-> +			min = reg.a5 & 0xffffffff;
-> +		}
-> +	}
-
-This leaves maj and min uninitialised, if either the call failed or the
-image is not pending or doesn't provide a new version.
-Could be fixed by calling sysfs_emit() in the "if" clause, then returning,
-and outputting some fallback version number otherwise.
-
-> +
-> +	return sysfs_emit(buf, "%u.%u\n", maj, min);
-> +}
-> +
-> +static ssize_t activate_store(struct kobject *kobj, struct kobj_attribute *attr,
-> +			      const char *buf, size_t count)
-> +{
-> +	struct image_props *attrs = container_of(attr, struct image_props,
-> +					 image_attrs[LFA_ATTR_ACTIVATE]);
-> +	int ret;
-> +
-> +	ret = prime_fw_image(attrs);
-> +	if (ret) {
-> +		pr_err("Firmware prime failed: %s\n",
-> +			lfa_error_strings[-ret]);
-> +		return -ECANCELED;
-> +	}
-> +
-> +	ret = activate_fw_image(attrs);
-> +	if (ret) {
-> +		pr_err("Firmware activation failed: %s\n",
-> +			lfa_error_strings[-ret]);
-> +		return -ECANCELED;
-> +	}
-> +
-> +	pr_info("Firmware activation succeeded\n");
-> +
-> +	return count;
-> +}
-> +
-> +static ssize_t cancel_store(struct kobject *kobj, struct kobj_attribute *attr,
-> +			    const char *buf, size_t count)
-> +{
-> +	struct image_props *attrs = container_of(attr, struct image_props,
-> +						 image_attrs[LFA_ATTR_CANCEL]);
-> +	int ret;
-> +
-> +	ret = lfa_cancel(attrs);
-> +	if (ret != 0)
-> +		return ret;
-> +
-> +	return count;
-> +}
-> +
-> +static struct kobj_attribute image_attrs_group[LFA_ATTR_NR_IMAGES] = {
-> +	[LFA_ATTR_NAME]			= __ATTR_RO(name),
-> +	[LFA_ATTR_CURRENT_VERSION]	= __ATTR_RO(current_version),
-> +	[LFA_ATTR_PENDING_VERSION]	= __ATTR_RO(pending_version),
-> +	[LFA_ATTR_ACT_CAPABLE]		= __ATTR_RO(activation_capable),
-> +	[LFA_ATTR_ACT_PENDING]		= __ATTR_RO(activation_pending),
-> +	[LFA_ATTR_MAY_RESET_CPU]	= __ATTR_RO(may_reset_cpu),
-> +	[LFA_ATTR_CPU_RENDEZVOUS]	= __ATTR_RO(cpu_rendezvous),
-> +	[LFA_ATTR_FORCE_CPU_RENDEZVOUS]	= __ATTR_RW(force_cpu_rendezvous),
-> +	[LFA_ATTR_ACTIVATE]		= __ATTR_WO(activate),
-> +	[LFA_ATTR_CANCEL]		= __ATTR_WO(cancel)
-> +};
-> +
-> +static void clean_fw_images_tree(void)
-> +{
-> +	struct image_props *attrs, *tmp;
-> +
-> +	list_for_each_entry_safe(attrs, tmp, &lfa_fw_images, image_node)
-> +		delete_fw_image_node(attrs);
-> +}
-> +
-> +static int update_fw_image_node(char *fw_uuid, int seq_id,
-> +					  u32 image_flags, u64 reg_current_ver,
-> +					  u64 reg_pending_ver)
-> +{
-> +	const char *image_name = "(unknown)";
-> +	struct image_props *attrs;
-> +	int ret;
-> +
-> +	/*
-> +	 * If a fw_image is already in the images list then we just update
-> +	 * its flags and seq_id instead of trying to recreate it.
-> +	 */
-> +	list_for_each_entry(attrs, &lfa_fw_images, image_node) {
-> +		if (!strcmp(attrs->image_dir->name, fw_uuid)) {
-> +			set_image_flags(attrs, seq_id, image_flags,
-> +					reg_current_ver, reg_pending_ver);
-> +			return 0;
-> +		}
-> +	}
-> +
-> +	attrs = kzalloc(sizeof(*attrs), GFP_KERNEL);
-> +	if (!attrs)
-> +		return -ENOMEM;
-> +
-> +	for (int i = 0; i < ARRAY_SIZE(fw_images_uuids); i++) {
-> +		if (!strcmp(fw_images_uuids[i].uuid, fw_uuid))
-> +			image_name = fw_images_uuids[i].name;
-> +	}
-> +
-> +	attrs->image_dir = kobject_create_and_add(fw_uuid, lfa_dir);
-> +	if (!attrs->image_dir)
-> +		return -ENOMEM;
-
-that leaks attrs, allocated above
-
-> +
-> +	INIT_LIST_HEAD(&attrs->image_node);
-> +	attrs->image_name = image_name;
-> +	attrs->cpu_rendezvous_forced = 1;
-> +	set_image_flags(attrs, seq_id, image_flags, reg_current_ver,
-> +			reg_pending_ver);
-> +
-> +	/*
-> +	 * The attributes for each sysfs file are constant (handler functions,
-> +	 * name and permissions are the same within each directory), but we
-> +	 * need a per-directory copy regardless, to get a unique handle
-> +	 * for each directory, so that container_of can do its magic.
-> +	 * Also this requires an explicit sysfs_attr_init(), since it's a new
-> +	 * copy, to make LOCKDEP happy.
-> +	 */
-> +	memcpy(attrs->image_attrs, image_attrs_group,
-> +	       sizeof(attrs->image_attrs));
-> +	for (int i = 0; i < LFA_ATTR_NR_IMAGES; i++) {
-> +		struct attribute *attr = &attrs->image_attrs[i].attr;
-> +
-> +		sysfs_attr_init(attr);
-> +		ret = sysfs_create_file(attrs->image_dir, attr);
-> +		if (ret) {
-> +			pr_err("creating sysfs file for uuid %s: %d\n",
-> +			       fw_uuid, ret);
-> +			clean_fw_images_tree();
-> +
-> +			return ret;
-> +		}
-> +	}
-> +	list_add(&attrs->image_node, &lfa_fw_images);
-> +
-> +	return ret;
-> +}
-> +
-> +static int update_fw_images_tree(void)
-> +{
-> +	struct arm_smccc_1_2_regs reg = { 0 };
-> +	struct uuid_regs image_uuid;
-> +	char image_id_str[40];
-> +	int ret, num_of_components;
-> +
-> +	num_of_components = get_nr_lfa_components();
-> +	if (num_of_components <= 0) {
-> +		pr_err("Error getting number of LFA components\n");
-> +		return -ENODEV;
-> +	}
-> +
-> +	for (int i = 0; i < num_of_components; i++) {
-> +		reg.a0 = LFA_1_0_FN_GET_INVENTORY;
-> +		reg.a1 = i; /* fw_seq_id under consideration */
-> +		arm_smccc_1_2_invoke(&reg, &reg);
-> +		if (reg.a0 == LFA_SUCCESS) {
-> +			image_uuid.uuid_lo = reg.a1;
-> +			image_uuid.uuid_hi = reg.a2;
-> +
-> +			snprintf(image_id_str, sizeof(image_id_str), "%pUb",
-> +				 &image_uuid);
-> +			ret = update_fw_image_node(image_id_str, i,
-> +							reg.a3, reg.a4, reg.a5);
-> +			if (ret)
-> +				return ret;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int __init lfa_init(void)
-> +{
-> +	struct arm_smccc_1_2_regs reg = { 0 };
-> +	int err;
-> +
-> +	reg.a0 = LFA_1_0_FN_GET_VERSION;
-> +	arm_smccc_1_2_invoke(&reg, &reg);
-> +	if (reg.a0 == -LFA_NOT_SUPPORTED) {
-> +		pr_info("Live Firmware activation: no firmware agent found\n");
-> +		return -ENODEV;
-> +	}
-> +
-> +	fw_images_update_wq = alloc_workqueue("fw_images_update_wq",
-> +					     WQ_UNBOUND | WQ_MEM_RECLAIM, 1);
-> +	if (!fw_images_update_wq) {
-> +		pr_err("Live Firmware Activation: Failed to allocate workqueue.\n");
-> +
-> +		return -ENOMEM;
-> +	}
-> +
-> +	pr_info("Live Firmware Activation: detected v%ld.%ld\n",
-> +		reg.a0 >> 16, reg.a0 & 0xffff);
-> +
-> +	lfa_dir = kobject_create_and_add("lfa", firmware_kobj);
-> +	if (!lfa_dir)
-> +		return -ENOMEM;
-
-That leaks the workqueue created above.
-
-> +
-> +	mutex_lock(&lfa_lock);
-> +	err = update_fw_images_tree();
-> +	if (err != 0)
-> +		kobject_put(lfa_dir);
-
-... and also here.
-
-Cheers,
-Andre
-
-> +
-> +	mutex_unlock(&lfa_lock);
-> +	return err;
-> +}
-> +module_init(lfa_init);
-> +
-> +static void __exit lfa_exit(void)
-> +{
-> +	flush_workqueue(fw_images_update_wq);
-> +	destroy_workqueue(fw_images_update_wq);
-> +
-> +	mutex_lock(&lfa_lock);
-> +	clean_fw_images_tree();
-> +	mutex_unlock(&lfa_lock);
-> +
-> +	kobject_put(lfa_dir);
-> +}
-> +module_exit(lfa_exit);
-> +
-> +MODULE_DESCRIPTION("ARM Live Firmware Activation (LFA)");
-> +MODULE_LICENSE("GPL");
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
 
