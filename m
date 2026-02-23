@@ -1,207 +1,109 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-dl1-f73.google.com (mail-dl1-f73.google.com [74.125.82.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E4A366DB0
-	for <linux-coco@lists.linux.dev>; Mon, 23 Feb 2026 18:33:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771871604; cv=pass; b=fh/ZoELltEklejBzrksyFdezPdGgrkcvl2z/JlXFAd4KnkGjkWxC32hx6ce5COirKVRiWoxIabV9pefacewCSGLhIg50xO+3tsI8Q6HGny0wjUXw39SsaDYfbF6S3Ilhtj1zLyFvMluMh2gtoQrKUjDPvTuyA8Vio+OReGxsuN4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771871604; c=relaxed/simple;
-	bh=OlksQpzsFEkRVJRE9g419OdwGDh3+i8ICDHTevP//cg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JI3UTxYXDMDodZMMm6P4FY6m5aDyzluIuglyWN+66cK+vffSM/lGW/FzRpwIal2H+h7jy3YIkAzOwxPem58ezEPPT2My6BLtiXXUQKiemQ+kmnKrFjcswYJ4i6Dfvx+eldMRzkVKxr+sSPCEy5RrS6mAlLbztmN20BDx7HrSyV0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hQDRt/B+; arc=pass smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693B03793BB
+	for <linux-coco@lists.linux.dev>; Mon, 23 Feb 2026 21:43:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771883031; cv=none; b=fRxAQzNvihgC2lz+gsS+vk6X+Z1LkwQcOw96qgZ/yMzL7MbhzwvfWXcLAQ34BySgQPGlM2nZOeQ0so2jHDkjkPZOpzi8yNG29eIut9jOgsaiOK0HB/aaqo0dyaAfsyj+NdUTfGPyqd0MVsmjorDRoDUpbPrm/DABBN0fUPYvyfs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771883031; c=relaxed/simple;
+	bh=kxeW6DG1v1HKEQ+pz2m5v66qJI6E72ZH+f+bezuzOfc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=rFogLW+kBdm0QYkmFlHSBC3givOJkjH6HImpc0mRFeS8BQwDwwASBuncTzzdnKo3eySR3eAe30O6sljrNcZYSqnobjslF8CSnQAwhMy2C3mfqBy8rO5oWPkdmGOF5EFR0ChaybiH7iVciRm0ix+o+BqOAQjpSlllEs0bx79F100=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--changyuanl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JRAKI1V8; arc=none smtp.client-ip=74.125.82.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--changyuanl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hQDRt/B+"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-65bfe9c585cso7552900a12.0
-        for <linux-coco@lists.linux.dev>; Mon, 23 Feb 2026 10:33:21 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771871600; cv=none;
-        d=google.com; s=arc-20240605;
-        b=NR8MbEECZcLiHc93So2qHCM2TbJaSMvkmY0gjffZrn3BKLnaxvqrhQIikcpBnKvq+M
-         k+94o2zFt5X6F3GuYvIkCpwbOGab4B37A9YbBtHPtKSjy0J1rkUCJjrOZWjPZUvvl/bZ
-         yxIJtZaq4bWNSkj0BQlxFuVHSIDJSi2oS/wUxYcLmdT16UPNoAsSnNVQbmOhgEnzrdRO
-         l1VlgUfM1v24ivF2UqJJPfBe+JBGjgN0Pcef6C4eOaT9uthaRDUpmDDPDfCdfqQFiwKf
-         meJ3IpVBKbyYiMWq2HnWkj+QpTWE+jcFdxcKT+Rmzpq8msSmLgWVLGhLsit7HiXo2iGo
-         /DUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=SdXTYyc+CZiWHvNxIlGUblHb7sAtxXqArT15DTb3rus=;
-        fh=jdfM2/4HAShs1doNk17W6ZlNu/labiyYPJ14DWTnBF0=;
-        b=fwJnAVL8TUCmeNBkLcdPLrewZytiDFYCdTmrpUXuc4RjphdGudD+lm71M7bYM4C8FP
-         PIc4b11gdwB3llUZTlWEAtKIjveiYD7H1x9bRmqnh5BJ7axUY7XvdhtgxgFxT1KAcuTQ
-         WLUpD9SljyPeQFWVuSUhbK2RhmGIgMKlbJ+X3yxs4p6U5zdNrjV4DF9oCvQ7xSIHC/Mz
-         lBqUNFEepHYbpRPTmnCoTjaL21Ia5AmSjmMfCclLFadQAgobiRP4fRP1dtLb88LOoJoR
-         G5Fph93lt6X2IFrcnI5oZqdA+KM+FT3r2MY5zrIBoWnh9DN4rccnR4nEJZZhJfwyH96G
-         aM6A==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JRAKI1V8"
+Received: by mail-dl1-f73.google.com with SMTP id a92af1059eb24-12737f276a2so8041309c88.1
+        for <linux-coco@lists.linux.dev>; Mon, 23 Feb 2026 13:43:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771871600; x=1772476400; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SdXTYyc+CZiWHvNxIlGUblHb7sAtxXqArT15DTb3rus=;
-        b=hQDRt/B+dQ31ny/sIXT4S89GG+PrcXT0rXeb/DH7a0Y2CC5qTDac0aNAQ6bGnClceU
-         lSZM0PV0OdjzFLCPvNgppeAAUc6oWB7EmQPNFe0IHYFDeVkemS1DMOZN2KU2FdrGXRi0
-         e1JCpopEVRqt2c1EWHFAUPtH86V4ketNuA+8zA5KA6ZprgGTyTq+HOOvW443ZsINuDV6
-         8ctwFk4J7CTQs4g6Kb2Iqf2rA7essZpbYiDVoRLIdLWN65b2XnkEnYfJQOopVNiTiXWh
-         3iuDDijmh9iTnAfFGyCrdEpTWGmYaMPOmv+yScfBGACiOQeAUMQWDDJh8BynppOxS2JY
-         vANQ==
+        d=google.com; s=20230601; t=1771883029; x=1772487829; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pQoX++6jRv8xueXbzG+0cc+xPst310WvznBVds3LE6o=;
+        b=JRAKI1V8Fweppg2wMFIEILuj4wLq4gwuNiVL15A3pkp/egocgATwiE45IOqnnVYvlr
+         mF0zj2IZISBUAVHNcQkd7Uk6MtDuaWsTGelNt2uxkqjmrtIkSK3ReFNp/TJEzzrOghxj
+         gN3QcTJKOAI0ZRHzmVtG0tlC5RWkpKbtxgb4PnY8xy5p2989TXJJRAUc2wWcrBteXNkb
+         CCnFFMUoV9FyjM9fUBRUHxeCv9mQ2V1P0r/CKwmhi6+ur0ic0ROqf1lHZuq3aVlj5W81
+         ONH0SpyY5GSXP82n7pOYIhyLAhATxf+pltLK+yxtHZZeQ+uMT/eQdQ5X/rOV8Qd9aPve
+         POXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771871600; x=1772476400;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SdXTYyc+CZiWHvNxIlGUblHb7sAtxXqArT15DTb3rus=;
-        b=TJXzkudF85alYSI9DJAj5RxNSAJlQQxOOYD+ie0O3TsSjpL1TeiaUWGCwpWERhhgJa
-         rBWkBBASw7wo4dx10SpTzh0ieuqAmlWsOxMp3Nk885B0J7WYebpQn3jrKZvTpTIYvp9b
-         mjIB3ntqMcKgA6LTQc0azavLt5Yatq4TJfzSXENa9Ld6qVoDMRJXEg80XKujsOx8ayCr
-         od8cxqvM0PtpXoZLEeqpFEmagmLR1Nhv43js4B4kZgTh7vMcD8AGTv0fxMI3iODTExuC
-         fAzOkGdksYaznYs4UCPO67jSObOObA4mF/KiVZfhy2IYt0vGuEh5jgG8a4bdjH+EcDKZ
-         keIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVOczU7uRjatXaeCyEyoWIEFg8odN6Rvfcvk2T0P+geITvf7zdHcQpYCR/rE8DNLhJGrUF9avu36Ugx@lists.linux.dev
-X-Gm-Message-State: AOJu0YyrXigazXc5dAP5yxQ6s4la1Te31PouwTbyJ2AyzPFS+CZN9sX0
-	MDMYdLA4p3BUHjhSoLbidhamjw1hpDprLulNPvh6AQ6BwMf+z3hE8ZC2iYIjwCz9/djjkcgg5vQ
-	qH/uDk+XoeIsNHBObdGslrqhJLF0U7dq4gfVXQ0o=
-X-Gm-Gg: AZuq6aJBfpMOyFSNQ1ltQB1gMsJVRs57mRxOMlx8BIK1MPHG8UWOLhqgpIKDAoYgoD9
-	MWWkdcoIzLlHK8QDiK8Q5MlDZuQ4rY66/PAd3rpdcKBgnUoTKRGi0jTbtx2pqVi4z5kGsC6iAkP
-	Cgx2cn6gHQfWYszyQDdPTj0yYwf8bOY5ZiUYEenf5TihYbuYpHH989EUtkx6TDUjXxQywHjOvJZ
-	f8C1E+5FkrVG/Oof4spZEVq+Wv+sBOX+OeT6/D1nlCPaxfyW7lAxuyB+Z9aRmozeeAK1IaOtQsy
-	G/4MXIQoKyGxxyWkxYgamiCWEBiXFaQv9nFK
-X-Received: by 2002:a17:907:9452:b0:b88:713e:78a5 with SMTP id
- a640c23a62f3a-b9081aeedf7mr579641266b.28.1771871599312; Mon, 23 Feb 2026
- 10:33:19 -0800 (PST)
+        d=1e100.net; s=20230601; t=1771883029; x=1772487829;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pQoX++6jRv8xueXbzG+0cc+xPst310WvznBVds3LE6o=;
+        b=sF7cft6hIGDFbA0uWdTkT/0McwQO+X4ONawEdjzl9b1IaNI+WB8ItpozSKoautveR1
+         KqW2Spelvfvo26s015Ox7sRHOVZeTnrRPoTKxw2uT829Q8guRGJerM4zX5iySVtR9uiW
+         cXpShMVXCMrsEuN168uQJ7eHl98E4UYrCbEULJu0Lm5NZppxQcmH8BwRzh4PmytS3y3F
+         zz0SE/ZvFzAEYM3U8ftaCsblKOa3f/cv1uKeSa/47W5lW3x8cH4bqqEflSkkfeuzjjfM
+         y+sfkUpSatODG63Ni54bS1MJDdlPh6FtqsXfN25Uw9JCeDeRKHoW8lYl0YWvqyaY8yT6
+         0/VQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVNkohSbAGzErJXj5Y9CiB76KU4tUDc77KquhRJqR1ef1ojTm4AETBkjwhd2RhwcFQtTg9PQVE0szwh@lists.linux.dev
+X-Gm-Message-State: AOJu0YzIeSSU355RGV8P/f4vbLTx8MaBYnDC9/FCiMV4Q4fnpQa1OVUU
+	TCUb4x4WGU4ZAg3Pn4f1+rUVUkAuIn0669NOFzGHx8NBo19ImNd9IRXsS1yJn9ZwWz2KGRc1VGx
+	TetzkIc8KEJmEdgfg34Kuew==
+X-Received: from dlbur22-n1.prod.google.com ([2002:a05:7022:ea56:10b0:121:7afb:490])
+ (user=changyuanl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7022:4593:b0:11d:c22e:a131 with SMTP id a92af1059eb24-1276acda401mr4301273c88.3.1771883028380;
+ Mon, 23 Feb 2026 13:43:48 -0800 (PST)
+Date: Mon, 23 Feb 2026 13:43:36 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20260223095136.225277-1-jiri@resnulli.us> <20260223095136.225277-3-jiri@resnulli.us>
-In-Reply-To: <20260223095136.225277-3-jiri@resnulli.us>
-From: John Stultz <jstultz@google.com>
-Date: Mon, 23 Feb 2026 10:33:07 -0800
-X-Gm-Features: AaiRm51mY0mKY0_1_wq03WmYtA7Qg-aNpUveVzAZTLNHpqLqVMbVU7X_E2imwkI
-Message-ID: <CANDhNCp94KG06P_7ivMTNA27qEM9g8ox-h3b_tZ=v6e-25xJ3g@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] dma-buf: heaps: system: add system_cc_decrypted
- heap for explicitly decrypted memory
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
-	iommu@lists.linux.dev, linux-media@vger.kernel.org, sumit.semwal@linaro.org, 
-	benjamin.gaignard@collabora.com, Brian.Starkey@arm.com, tjmercier@google.com, 
-	christian.koenig@amd.com, m.szyprowski@samsung.com, robin.murphy@arm.com, 
-	jgg@ziepe.ca, leon@kernel.org, sean.anderson@linux.dev, ptesarik@suse.com, 
-	catalin.marinas@arm.com, aneesh.kumar@kernel.org, suzuki.poulose@arm.com, 
-	steven.price@arm.com, thomas.lendacky@amd.com, john.allen@amd.com, 
-	ashish.kalra@amd.com, suravee.suthikulpanit@amd.com, 
-	linux-coco@lists.linux.dev
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.371.g1d285c8824-goog
+Message-ID: <20260223214336.722463-1-changyuanl@google.com>
+Subject: [PATCH] KVM: TDX: Set SIGNIFCANT_INDEX flag for supported CPUIDs
+From: Changyuan Lyu <changyuanl@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Changyuan Lyu <changyuanl@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 23, 2026 at 1:51=E2=80=AFAM Jiri Pirko <jiri@resnulli.us> wrote=
-:
->
-> From: Jiri Pirko <jiri@nvidia.com>
->
-> Add a new "system_cc_decrypted" dma-buf heap to allow userspace to
-> allocate decrypted (shared) memory for confidential computing (CoCo)
-> VMs.
->
-> On CoCo VMs, guest memory is encrypted by default. The hardware uses an
-> encryption bit in page table entries (C-bit on AMD SEV, "shared" bit on
-> Intel TDX) to control whether a given memory access is encrypted or
-> decrypted. The kernel's direct map is set up with encryption enabled,
-> so pages returned by alloc_pages() are encrypted in the direct map
-> by default. To make this memory usable for devices that do not support
-> DMA to encrypted memory (no TDISP support), it has to be explicitly
-> decrypted. A couple of things are needed to properly handle
-> decrypted memory for the dma-buf use case:
->
-> - set_memory_decrypted() on the direct map after allocation:
->   Besides clearing the encryption bit in the direct map PTEs, this
->   also notifies the hypervisor about the page state change. On free,
->   the inverse set_memory_encrypted() must be called before returning
->   pages to the allocator. If re-encryption fails, pages
->   are intentionally leaked to prevent decrypted memory from being
->   reused as private.
->
-> - pgprot_decrypted() for userspace and kernel virtual mappings:
->   Any new mapping of the decrypted pages, be it to userspace via
->   mmap or to kernel vmalloc space via vmap, creates PTEs independent
->   of the direct map. These must also have the encryption bit cleared,
->   otherwise accesses through them would see encrypted (garbage) data.
->
-> - DMA_ATTR_CC_DECRYPTED for DMA mapping:
->   Since the pages are already decrypted, the DMA API needs to be
->   informed via DMA_ATTR_CC_DECRYPTED so it can map them correctly
->   as unencrypted for device access.
->
-> On non-CoCo VMs, the system_cc_decrypted heap is not registered
-> to prevent misuse by userspace that does not understand
-> the security implications of explicitly decrypted memory.
->
-> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+Set the KVM_CPUID_FLAG_SIGNIFCANT_INDEX flag in the kvm_cpuid_entry2
+structures returned by KVM_TDX_CAPABILITIES if the CPUID is indexed.
+This ensures consistency with the CPUID entries returned by
+KVM_GET_SUPPORTED_CPUID.
 
-Thanks for reworking this! I've not reviewed it super closely, but I
-believe it resolves my objection on your first version.
+Additionally, add a WARN_ON_ONCE() to verify that the TDX module's
+reported entries align with KVM's expectations regarding indexed
+CPUID functions.
 
-Few nits/questions below.
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Changyuan Lyu <changyuanl@google.com>
+---
+ arch/x86/kvm/vmx/tdx.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-> @@ -296,6 +345,14 @@ static void system_heap_dma_buf_release(struct dma_b=
-uf *dmabuf)
->         for_each_sgtable_sg(table, sg, i) {
->                 struct page *page =3D sg_page(sg);
->
-> +               /*
-> +                * Intentionally leak pages that cannot be re-encrypted
-> +                * to prevent decrypted memory from being reused.
-> +                */
-> +               if (buffer->decrypted &&
-> +                   system_heap_set_page_encrypted(page))
-> +                       continue;
-> +
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 2d7a4d52ccfb4..0c524f9a94a6c 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -172,9 +172,15 @@ static void td_init_cpuid_entry2(struct kvm_cpuid_entry2 *entry, unsigned char i
+ 	entry->ecx = (u32)td_conf->cpuid_config_values[idx][1];
+ 	entry->edx = td_conf->cpuid_config_values[idx][1] >> 32;
+ 
+-	if (entry->index == KVM_TDX_CPUID_NO_SUBLEAF)
++	if (entry->index == KVM_TDX_CPUID_NO_SUBLEAF) {
+ 		entry->index = 0;
++		entry->flags &= ~KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
++	} else {
++		entry->flags |= KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
++	}
+ 
++	WARN_ON_ONCE(cpuid_function_is_indexed(entry->function) !=
++		     !!(entry->flags & KVM_CPUID_FLAG_SIGNIFCANT_INDEX));
+ 	/*
+ 	 * The TDX module doesn't allow configuring the guest phys addr bits
+ 	 * (EAX[23:16]).  However, KVM uses it as an interface to the userspace
+-- 
+2.53.0.371.g1d285c8824-goog
 
-What are the conditions where this would fail? How much of an edge
-case is this? I fret this opens a DoS vector if one is able to
-allocate from this heap and then stress the system when doing the
-free.
-
-Should there be some global list of leaked decrypted pages such that
-the mm subsystem could try again later to recover these?
-
-> diff --git a/include/linux/dma-heap.h b/include/linux/dma-heap.h
-> index 648328a64b27..d97b668413c1 100644
-> --- a/include/linux/dma-heap.h
-> +++ b/include/linux/dma-heap.h
-> @@ -10,6 +10,7 @@
->  #define _DMA_HEAPS_H
->
->  #include <linux/types.h>
-> +#include <uapi/linux/dma-heap.h>
->
->  struct dma_heap;
->
-> diff --git a/include/uapi/linux/dma-heap.h b/include/uapi/linux/dma-heap.=
-h
-> index a4cf716a49fa..ab95bb355ed5 100644
-> --- a/include/uapi/linux/dma-heap.h
-> +++ b/include/uapi/linux/dma-heap.h
-> @@ -18,8 +18,7 @@
->  /* Valid FD_FLAGS are O_CLOEXEC, O_RDONLY, O_WRONLY, O_RDWR */
->  #define DMA_HEAP_VALID_FD_FLAGS (O_CLOEXEC | O_ACCMODE)
->
-> -/* Currently no heap flags */
-> -#define DMA_HEAP_VALID_HEAP_FLAGS (0ULL)
-> +#define DMA_HEAP_VALID_HEAP_FLAGS (0)
->
->  /**
->   * struct dma_heap_allocation_data - metadata passed from userspace for
-
-Are these header changes still necessary?
-
-thanks
--john
