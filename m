@@ -1,61 +1,63 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8D1269D18
-	for <linux-coco@lists.linux.dev>; Mon, 23 Feb 2026 09:51:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3252A34EF0D
+	for <linux-coco@lists.linux.dev>; Mon, 23 Feb 2026 09:51:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771840303; cv=none; b=DBlrlK2YNesG2VmhTwW43WE9iLVkwDQPiF8hSHAnR47siE2DvjaIbctz16Qv3rgipadwCzBPio2ZfO/0/xmDXdBSZpSgqG531PFfEeO8wNzVbNgnWuaWGB9OC1q+WZsXXDR0D7AVsRZvvA8lIbuvWmb41iIEscYHo1/0HQCaCks=
+	t=1771840305; cv=none; b=Buc54+/xzziCg8uF7WTfb6p+IPceAN+hKdnBhzHSj/BIKcw/rd8WxYaDFicJh6z0hBAGeQSSoAmrPG67EU1RCyiBHxA66k+ckKW4l1F2NRAXqt28bGq2XFLJAfSQ445myt4PB8VjNwfYP8t61I30A5PfQuv7Z2yIQjDe5ES69GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771840303; c=relaxed/simple;
-	bh=KfFRfouRKPdjO8QdYp354wLUw4VwaWEdMEKo3LWxlW0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PKyzQ+RgCpvAa2rOnbFz4y8MVt8468qkv5bWw4MtqN/F9pqjAVaq+xpc6za4KRcWczX+6FAK5/pBxbsuvNzPWWtpPqAfoPcJ3rKHPq3rfVVoq2TtVZnoCYIoNpygK4oKIY+LnYfa0ZA7kBlSSMW4eTaaaqFgaFN1EgsQGFzcClo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=KhMQ+SVd; arc=none smtp.client-ip=209.85.128.52
+	s=arc-20240116; t=1771840305; c=relaxed/simple;
+	bh=ZyM23UfEgVGntB1/zJ/cKUDJiF+dqS6IUYHE9p7QMok=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mUo9CoF2jlgbcMk6mUVXlCFj/dVdQ51dYuTnVx1+pyv+Mo5rNSUFbJq4fs/0EzJBzdStEP7m8xzdCPC/Unk9I7ptZCVMRhzSX6q+N3MXJCfUOczfyKGhml243TE05FDQaNXR212zdSOvROFzMugjBqvWw7yI9cTB3G0+owhrzeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=NMB7J/Qx; arc=none smtp.client-ip=209.85.128.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="KhMQ+SVd"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-483703e4b08so32467705e9.1
-        for <linux-coco@lists.linux.dev>; Mon, 23 Feb 2026 01:51:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="NMB7J/Qx"
+Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-4807068eacbso32417785e9.2
+        for <linux-coco@lists.linux.dev>; Mon, 23 Feb 2026 01:51:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1771840298; x=1772445098; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=J9P/hiUK/l/iV+NBMdNBP19LQ/+lioTm29Bruktj9zQ=;
-        b=KhMQ+SVdeY1LQC8J0BF84xDkvkdNdFCLKSN1fRl8on3dQdL5OdA9+wmi+ffsbXDi6U
-         vrtWJGqoUc66n1LVR0FsnEEE0uCN32LjWekil9RBBNpdF4SrumPcO3uHc+vaLmdgl1HG
-         ceEwfG0goL8GS6Rsq9R4rcF0npa3PQ2xZUpNS9aWUZzET7yaS5J3luur4acuAMmG9KPH
-         CN46C7sgemMFC9bX0Gdd0TPjVeWyue//DaiZWhxn1ZoewmPoPEyzSmbuQhjYPVAMqnKG
-         DXH7oEKEh04MTuA9DGyoEj4QdQOevTCpzJoVR9GF8mNW/m6sAbH19kFQxb5u4AZkNDB/
-         YXZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771840298; x=1772445098;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1771840301; x=1772445101; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=J9P/hiUK/l/iV+NBMdNBP19LQ/+lioTm29Bruktj9zQ=;
-        b=iMFxZMcYTkPLgbmPT3Iou7iIS0W2hpF5vb1xllkUOI1HJH9Q7jmDUU3OsYPV1kddlM
-         y3oIt3ZmOGkQZCF9izG90qBJkWoe06XzSYbgaalGpwXlMM3qQPtpSBLPn388yrKkYcV7
-         fF7cl0WcMegh9ZiXN5l1MIRZlsc5FTBqOTH49yWI8cGBGzbBtsR5/07T9n6GFhQiM+Ql
-         yJS7MEsL3zH8UEb1T85zZx+nJAwo/5rDKx1Pv2RB7N4Jx1QCbBqNFHo9xMNowt4Ed9Fi
-         8PQliXaZjSw0ck1zj4Ki9nBDcsGiAE+DshyN2+QPcGpxRM3+xGHB/Ce1/urFT5qdedOP
-         ygIg==
-X-Forwarded-Encrypted: i=1; AJvYcCVWtbDtPQE/2suvcLZIungTa/g0OhLHWHMdM6d3jMI9lKiu+kdRyw2dl1kNs1ChcYFQe4sBjDZsxfnK@lists.linux.dev
-X-Gm-Message-State: AOJu0YzXNzefSBGwnf7K4kdD2RYn9ceWTXjvIGzz1pKFLRaSlHqeA0Yn
-	5RoJ9AY3Xm83FU9VrYxJFh2FawtzlxNRub41tON6nelMuB0wbaDHn4syaucpqHlCFMM=
-X-Gm-Gg: AZuq6aJ4A4SNeD6f6drjZts19X0Vt59UEkCNCqnP8vz+gUzgsCcKYRjSEus0jO+LSbv
-	9J8n3Q0dMOHFPglGmV+foLGQsc2TMpnUbo3sZOZUFxV/zVRykEhxe7/uH1DhhVu1CgtqlK9da7n
-	w2KH6fJa/BJV9GJvXXGibvOWvMPQzw0aXI0tAnYPUUji9rqUCWmJQ5gLB8YWqRwlG3012l2ZCP2
-	eUOH/1nTdj82pOFaJ7mQ7X3S8VJUmU6oLgRTkrPaa3wUMGmZmXzNyu4ZI2zAbjj0IOR+C0Bz4SH
-	Ni0kYjHZqgtdUJD8AVCFm0a2iLtz4WTUrYl1ylqsgWi19nSHvP2WtVwQD7T4zrWXo6/3iiILNfP
-	OCTp0OcB/0u4MDomJqY7f33AxynV+ETrfYLP+VHC7u0babN7VrXWcg1cqYC9vFRMhYeWq+XWJr2
-	GCXLRqoscKJYJ+Tw==
-X-Received: by 2002:a05:600c:8b5b:b0:483:a352:b4e4 with SMTP id 5b1f17b1804b1-483a949e600mr141861245e9.6.1771840297668;
-        Mon, 23 Feb 2026 01:51:37 -0800 (PST)
+        bh=mF8Zav5NAo2mpAKEgaciFJ2LFKzg7+sHGDJbJ7B58Uk=;
+        b=NMB7J/QxpFg1sNcpwSorHV/ch1dgnLLShIgV66FwRJGMmBIbwrdtkXj5+h773nFyCr
+         6xDfovgWZ7x/rOWOtn6heX3L3uG8Tm9HKCXiH7DaklG+litqAPuB2uySuh6BD1428bg8
+         rS7BrzbB/L1TjEq39CQLDx9vYXgH4QlSrJP1wlpSsflbBsgBqyIgc5WTG07bGpDkeMW5
+         fX2Ou5o7g3XE1O6hvdjTUv4kMS9brVcBT6ciWia8WwGVaw+9/4TDmwZ5AsVuPLYvge7c
+         tHcJTTf1w4fsB6WfUryGHfSxzP7vWwgHjhP/Xis50WfMYWjwUNtyUiw1JiHa6d6JXCim
+         hD1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771840301; x=1772445101;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mF8Zav5NAo2mpAKEgaciFJ2LFKzg7+sHGDJbJ7B58Uk=;
+        b=pNpNdo2bYExjqt4eNMWq3x0P/mvQ6WIU1ygU03z5xNjKBdD+jAWXF+WdoOda4D2zKT
+         c7il8ioqnrxrxUgnLQe1bNjevYI3j/R7wT+BD9ZK102geLzLk6Su+9nrKbz1TC/keNIz
+         qAvrNf4mfndKWYI9V40aEJt90dbGYmKnzzxzdoYCST5PtrwZfqiVF2gpVE6u+FDPiLKK
+         iG62FX+/5x9apYe7JqF3Tmr+AeVYWu2mtGNrJeLnVbzy/Hyfa8l9yU7yas40F+bUm6rv
+         tCDBRmxESPFefetuKCtvQbDdeGmhBcULTm5/iFHzCP/TvG1Q3eyB0w1VyNZLfSbzN1lM
+         VhdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUG1X7yOLuQmWQ6Yr0zyn4jF6OtaYbuoUKCqD6G/vqqJUWmxADMNEjmk4yIAMgO/ZsgnCbd2TMA687w@lists.linux.dev
+X-Gm-Message-State: AOJu0YxXlDnLhhE+KMPRnrhV8PzdINHxxt+MqCjcWNOVS1AwnE6iByZ3
+	hWwWND/1dlxrvYPEzMOg37Wh3u54aPnmysG1xY+CNXqWCeIXMHWrtcEo/1ZwfEETalE=
+X-Gm-Gg: AZuq6aLw5kcHw2/z/wxZInE+lzM2nSDOyLScpqmiu37NLZHmHa8eCc7vipHsSd1JBL7
+	lP6TC/jKhU53fvwBFQt2toxdlLKlu0ptk2havBxQLAwibps/Us93TWQ+0aFEtNG2g2Sc5pR9JOU
+	wgmctRZiDCELh0XkGQiMP5P4IAT7QhI0QMNcWRencET5DZmPgxR0eBaOn1bRYf5IGScyBYCJPvQ
+	uOMPH9vJJk0/PBIiQBGjmDPvheMp3mV11smB5qmq97VKYkAwjxs0ufmHM0PAkzo9czXyMM1Apt1
+	2nkwXp6In8N+b/kFc0y40AwvlLtifr7lpjXVktQNe3i8Ge6z1JH8It3poxs4QkH2YFcbbXK1y1J
+	dpJDQp9d7gw/bVES5uAKyqO777HNNcNS05xkNDLQkBlQGAga6wY4xyIP3RHLLVvew3ksHLRWHR3
+	wJw8XegQR/ztc0uQ==
+X-Received: by 2002:a05:600c:c4a5:b0:483:7783:5382 with SMTP id 5b1f17b1804b1-483a95e6b64mr115865615e9.27.1771840300410;
+        Mon, 23 Feb 2026 01:51:40 -0800 (PST)
 Received: from localhost ([85.163.81.98])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483a9caadedsm152601835e9.10.2026.02.23.01.51.36
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483a9caadedsm152604565e9.10.2026.02.23.01.51.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 01:51:37 -0800 (PST)
+        Mon, 23 Feb 2026 01:51:40 -0800 (PST)
 From: Jiri Pirko <jiri@resnulli.us>
 To: dri-devel@lists.freedesktop.org,
 	linaro-mm-sig@lists.linaro.org,
@@ -82,10 +84,12 @@ Cc: sumit.semwal@linaro.org,
 	ashish.kalra@amd.com,
 	suravee.suthikulpanit@amd.com,
 	linux-coco@lists.linux.dev
-Subject: [PATCH v2 0/2] dma-buf: heaps: system: add an option to allocate explicitly decrypted memory
-Date: Mon, 23 Feb 2026 10:51:34 +0100
-Message-ID: <20260223095136.225277-1-jiri@resnulli.us>
+Subject: [PATCH v2 2/2] dma-buf: heaps: system: add system_cc_decrypted heap for explicitly decrypted memory
+Date: Mon, 23 Feb 2026 10:51:36 +0100
+Message-ID: <20260223095136.225277-3-jiri@resnulli.us>
 X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20260223095136.225277-1-jiri@resnulli.us>
+References: <20260223095136.225277-1-jiri@resnulli.us>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -96,51 +100,322 @@ Content-Transfer-Encoding: 8bit
 
 From: Jiri Pirko <jiri@nvidia.com>
 
-Confidential computing (CoCo) VMs/guests, such as AMD SEV and Intel TDX,
-run with encrypted/protected memory which creates a challenge
-for devices that do not support DMA to it (no TDISP support).
+Add a new "system_cc_decrypted" dma-buf heap to allow userspace to
+allocate decrypted (shared) memory for confidential computing (CoCo)
+VMs.
 
-For kernel-only DMA operations, swiotlb bounce buffering provides a
-transparent solution by copying data through decrypted memory.
-However, the only way to get this memory into userspace is via the DMA
-API's dma_alloc_pages()/dma_mmap_pages() type interfaces which limits
-the use of the memory to a single DMA device, and is incompatible with
-pin_user_pages().
+On CoCo VMs, guest memory is encrypted by default. The hardware uses an
+encryption bit in page table entries (C-bit on AMD SEV, "shared" bit on
+Intel TDX) to control whether a given memory access is encrypted or
+decrypted. The kernel's direct map is set up with encryption enabled,
+so pages returned by alloc_pages() are encrypted in the direct map
+by default. To make this memory usable for devices that do not support
+DMA to encrypted memory (no TDISP support), it has to be explicitly
+decrypted. A couple of things are needed to properly handle
+decrypted memory for the dma-buf use case:
 
-These limitations are particularly problematic for the RDMA subsystem
-which makes heavy use of pin_user_pages() and expects flexible memory
-usage between many different DMA devices.
+- set_memory_decrypted() on the direct map after allocation:
+  Besides clearing the encryption bit in the direct map PTEs, this
+  also notifies the hypervisor about the page state change. On free,
+  the inverse set_memory_encrypted() must be called before returning
+  pages to the allocator. If re-encryption fails, pages
+  are intentionally leaked to prevent decrypted memory from being
+  reused as private.
 
-This patch series enables userspace to explicitly request decrypted
-(shared) memory allocations from the dma-buf system heap.
-Userspace can mmap this memory and pass the dma-buf fd to other
-existing importers such as RDMA or DRM devices to access the
-memory. The DMA API is improved to allow the dma heap exporter to DMA
-map the shared memory to each importing device.
+- pgprot_decrypted() for userspace and kernel virtual mappings:
+  Any new mapping of the decrypted pages, be it to userspace via
+  mmap or to kernel vmalloc space via vmap, creates PTEs independent
+  of the direct map. These must also have the encryption bit cleared,
+  otherwise accesses through them would see encrypted (garbage) data.
 
+- DMA_ATTR_CC_DECRYPTED for DMA mapping:
+  Since the pages are already decrypted, the DMA API needs to be
+  informed via DMA_ATTR_CC_DECRYPTED so it can map them correctly
+  as unencrypted for device access.
+
+On non-CoCo VMs, the system_cc_decrypted heap is not registered
+to prevent misuse by userspace that does not understand
+the security implications of explicitly decrypted memory.
+
+Signed-off-by: Jiri Pirko <jiri@nvidia.com>
 ---
 v1->v2:
- patch1:
-  - rebased on top of recent dma-mapping-fixes
- patch2:
-  - fixed build errors on s390 by including mem_encrypt.h
-  - converted system heap flag implementation to a separate heap
-
-Based on dma-mapping-fixes HEAD d5b5e8149af0f5efed58653cbebf1cb3258ce49a
-
-Jiri Pirko (2):
-  dma-mapping: introduce DMA_ATTR_CC_DECRYPTED for pre-decrypted memory
-  dma-buf: heaps: system: add system_cc_decrypted heap for explicitly
-    decrypted memory
-
+- fixed build errors on s390 by including mem_encrypt.h
+- converted system heap flag implementation to a separate heap
+---
  drivers/dma-buf/heaps/system_heap.c | 103 ++++++++++++++++++++++++++--
  include/linux/dma-heap.h            |   1 +
- include/linux/dma-mapping.h         |   6 ++
- include/trace/events/dma.h          |   3 +-
  include/uapi/linux/dma-heap.h       |   3 +-
- kernel/dma/direct.h                 |  14 +++-
- 6 files changed, 119 insertions(+), 11 deletions(-)
+ 3 files changed, 100 insertions(+), 7 deletions(-)
 
+diff --git a/drivers/dma-buf/heaps/system_heap.c b/drivers/dma-buf/heaps/system_heap.c
+index b3650d8fd651..a525e9aaaffa 100644
+--- a/drivers/dma-buf/heaps/system_heap.c
++++ b/drivers/dma-buf/heaps/system_heap.c
+@@ -10,17 +10,25 @@
+  *	Andrew F. Davis <afd@ti.com>
+  */
+ 
++#include <linux/cc_platform.h>
+ #include <linux/dma-buf.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/dma-heap.h>
+ #include <linux/err.h>
+ #include <linux/highmem.h>
++#include <linux/mem_encrypt.h>
+ #include <linux/mm.h>
++#include <linux/set_memory.h>
+ #include <linux/module.h>
++#include <linux/pgtable.h>
+ #include <linux/scatterlist.h>
+ #include <linux/slab.h>
+ #include <linux/vmalloc.h>
+ 
++struct system_heap_priv {
++	bool decrypted;
++};
++
+ struct system_heap_buffer {
+ 	struct dma_heap *heap;
+ 	struct list_head attachments;
+@@ -29,6 +37,7 @@ struct system_heap_buffer {
+ 	struct sg_table sg_table;
+ 	int vmap_cnt;
+ 	void *vaddr;
++	bool decrypted;
+ };
+ 
+ struct dma_heap_attachment {
+@@ -36,6 +45,7 @@ struct dma_heap_attachment {
+ 	struct sg_table table;
+ 	struct list_head list;
+ 	bool mapped;
++	bool decrypted;
+ };
+ 
+ #define LOW_ORDER_GFP (GFP_HIGHUSER | __GFP_ZERO)
+@@ -52,6 +62,34 @@ static gfp_t order_flags[] = {HIGH_ORDER_GFP, HIGH_ORDER_GFP, LOW_ORDER_GFP};
+ static const unsigned int orders[] = {8, 4, 0};
+ #define NUM_ORDERS ARRAY_SIZE(orders)
+ 
++static int system_heap_set_page_decrypted(struct page *page)
++{
++	unsigned long addr = (unsigned long)page_address(page);
++	unsigned int nr_pages = 1 << compound_order(page);
++	int ret;
++
++	ret = set_memory_decrypted(addr, nr_pages);
++	if (ret)
++		pr_warn_ratelimited("dma-buf system heap: failed to decrypt page at %p\n",
++				    page_address(page));
++
++	return ret;
++}
++
++static int system_heap_set_page_encrypted(struct page *page)
++{
++	unsigned long addr = (unsigned long)page_address(page);
++	unsigned int nr_pages = 1 << compound_order(page);
++	int ret;
++
++	ret = set_memory_encrypted(addr, nr_pages);
++	if (ret)
++		pr_warn_ratelimited("dma-buf system heap: failed to re-encrypt page at %p, leaking memory\n",
++				    page_address(page));
++
++	return ret;
++}
++
+ static int dup_sg_table(struct sg_table *from, struct sg_table *to)
+ {
+ 	struct scatterlist *sg, *new_sg;
+@@ -90,6 +128,7 @@ static int system_heap_attach(struct dma_buf *dmabuf,
+ 	a->dev = attachment->dev;
+ 	INIT_LIST_HEAD(&a->list);
+ 	a->mapped = false;
++	a->decrypted = buffer->decrypted;
+ 
+ 	attachment->priv = a;
+ 
+@@ -119,9 +158,11 @@ static struct sg_table *system_heap_map_dma_buf(struct dma_buf_attachment *attac
+ {
+ 	struct dma_heap_attachment *a = attachment->priv;
+ 	struct sg_table *table = &a->table;
++	unsigned long attrs;
+ 	int ret;
+ 
+-	ret = dma_map_sgtable(attachment->dev, table, direction, 0);
++	attrs = a->decrypted ? DMA_ATTR_CC_DECRYPTED : 0;
++	ret = dma_map_sgtable(attachment->dev, table, direction, attrs);
+ 	if (ret)
+ 		return ERR_PTR(ret);
+ 
+@@ -188,8 +229,13 @@ static int system_heap_mmap(struct dma_buf *dmabuf, struct vm_area_struct *vma)
+ 	unsigned long addr = vma->vm_start;
+ 	unsigned long pgoff = vma->vm_pgoff;
+ 	struct scatterlist *sg;
++	pgprot_t prot;
+ 	int i, ret;
+ 
++	prot = vma->vm_page_prot;
++	if (buffer->decrypted)
++		prot = pgprot_decrypted(prot);
++
+ 	for_each_sgtable_sg(table, sg, i) {
+ 		unsigned long n = sg->length >> PAGE_SHIFT;
+ 
+@@ -206,8 +252,7 @@ static int system_heap_mmap(struct dma_buf *dmabuf, struct vm_area_struct *vma)
+ 		if (addr + size > vma->vm_end)
+ 			size = vma->vm_end - addr;
+ 
+-		ret = remap_pfn_range(vma, addr, page_to_pfn(page),
+-				size, vma->vm_page_prot);
++		ret = remap_pfn_range(vma, addr, page_to_pfn(page), size, prot);
+ 		if (ret)
+ 			return ret;
+ 
+@@ -225,6 +270,7 @@ static void *system_heap_do_vmap(struct system_heap_buffer *buffer)
+ 	struct page **pages = vmalloc(sizeof(struct page *) * npages);
+ 	struct page **tmp = pages;
+ 	struct sg_page_iter piter;
++	pgprot_t prot;
+ 	void *vaddr;
+ 
+ 	if (!pages)
+@@ -235,7 +281,10 @@ static void *system_heap_do_vmap(struct system_heap_buffer *buffer)
+ 		*tmp++ = sg_page_iter_page(&piter);
+ 	}
+ 
+-	vaddr = vmap(pages, npages, VM_MAP, PAGE_KERNEL);
++	prot = PAGE_KERNEL;
++	if (buffer->decrypted)
++		prot = pgprot_decrypted(prot);
++	vaddr = vmap(pages, npages, VM_MAP, prot);
+ 	vfree(pages);
+ 
+ 	if (!vaddr)
+@@ -296,6 +345,14 @@ static void system_heap_dma_buf_release(struct dma_buf *dmabuf)
+ 	for_each_sgtable_sg(table, sg, i) {
+ 		struct page *page = sg_page(sg);
+ 
++		/*
++		 * Intentionally leak pages that cannot be re-encrypted
++		 * to prevent decrypted memory from being reused.
++		 */
++		if (buffer->decrypted &&
++		    system_heap_set_page_encrypted(page))
++			continue;
++
+ 		__free_pages(page, compound_order(page));
+ 	}
+ 	sg_free_table(table);
+@@ -347,6 +404,8 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
+ 	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
+ 	unsigned long size_remaining = len;
+ 	unsigned int max_order = orders[0];
++	struct system_heap_priv *priv = dma_heap_get_drvdata(heap);
++	bool decrypted = priv->decrypted;
+ 	struct dma_buf *dmabuf;
+ 	struct sg_table *table;
+ 	struct scatterlist *sg;
+@@ -362,6 +421,7 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
+ 	mutex_init(&buffer->lock);
+ 	buffer->heap = heap;
+ 	buffer->len = len;
++	buffer->decrypted = decrypted;
+ 
+ 	INIT_LIST_HEAD(&pages);
+ 	i = 0;
+@@ -396,6 +456,14 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
+ 		list_del(&page->lru);
+ 	}
+ 
++	if (decrypted) {
++		for_each_sgtable_sg(table, sg, i) {
++			ret = system_heap_set_page_decrypted(sg_page(sg));
++			if (ret)
++				goto free_pages;
++		}
++	}
++
+ 	/* create the dmabuf */
+ 	exp_info.exp_name = dma_heap_get_name(heap);
+ 	exp_info.ops = &system_heap_buf_ops;
+@@ -413,6 +481,13 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
+ 	for_each_sgtable_sg(table, sg, i) {
+ 		struct page *p = sg_page(sg);
+ 
++		/*
++		 * Intentionally leak pages that cannot be re-encrypted
++		 * to prevent decrypted memory from being reused.
++		 */
++		if (buffer->decrypted &&
++		    system_heap_set_page_encrypted(p))
++			continue;
+ 		__free_pages(p, compound_order(p));
+ 	}
+ 	sg_free_table(table);
+@@ -428,6 +503,14 @@ static const struct dma_heap_ops system_heap_ops = {
+ 	.allocate = system_heap_allocate,
+ };
+ 
++static struct system_heap_priv system_heap_priv = {
++	.decrypted = false,
++};
++
++static struct system_heap_priv system_heap_cc_decrypted_priv = {
++	.decrypted = true,
++};
++
+ static int __init system_heap_create(void)
+ {
+ 	struct dma_heap_export_info exp_info;
+@@ -435,8 +518,18 @@ static int __init system_heap_create(void)
+ 
+ 	exp_info.name = "system";
+ 	exp_info.ops = &system_heap_ops;
+-	exp_info.priv = NULL;
++	exp_info.priv = &system_heap_priv;
++
++	sys_heap = dma_heap_add(&exp_info);
++	if (IS_ERR(sys_heap))
++		return PTR_ERR(sys_heap);
++
++	if (IS_ENABLED(CONFIG_HIGHMEM) ||
++	    !cc_platform_has(CC_ATTR_MEM_ENCRYPT))
++		return 0;
+ 
++	exp_info.name = "system_cc_decrypted";
++	exp_info.priv = &system_heap_cc_decrypted_priv;
+ 	sys_heap = dma_heap_add(&exp_info);
+ 	if (IS_ERR(sys_heap))
+ 		return PTR_ERR(sys_heap);
+diff --git a/include/linux/dma-heap.h b/include/linux/dma-heap.h
+index 648328a64b27..d97b668413c1 100644
+--- a/include/linux/dma-heap.h
++++ b/include/linux/dma-heap.h
+@@ -10,6 +10,7 @@
+ #define _DMA_HEAPS_H
+ 
+ #include <linux/types.h>
++#include <uapi/linux/dma-heap.h>
+ 
+ struct dma_heap;
+ 
+diff --git a/include/uapi/linux/dma-heap.h b/include/uapi/linux/dma-heap.h
+index a4cf716a49fa..ab95bb355ed5 100644
+--- a/include/uapi/linux/dma-heap.h
++++ b/include/uapi/linux/dma-heap.h
+@@ -18,8 +18,7 @@
+ /* Valid FD_FLAGS are O_CLOEXEC, O_RDONLY, O_WRONLY, O_RDWR */
+ #define DMA_HEAP_VALID_FD_FLAGS (O_CLOEXEC | O_ACCMODE)
+ 
+-/* Currently no heap flags */
+-#define DMA_HEAP_VALID_HEAP_FLAGS (0ULL)
++#define DMA_HEAP_VALID_HEAP_FLAGS (0)
+ 
+ /**
+  * struct dma_heap_allocation_data - metadata passed from userspace for
 -- 
 2.51.1
 
