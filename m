@@ -1,114 +1,138 @@
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C352DB798
-	for <linux-coco@lists.linux.dev>; Tue, 24 Feb 2026 19:04:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786D133A9FC
+	for <linux-coco@lists.linux.dev>; Tue, 24 Feb 2026 20:42:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771959889; cv=none; b=bB0Oa3bh6L0GDqk/5s/lwGqXhGtObsw3e69AoD3i8mwA6Z7ug+BTK/FM4I2aIOuL1b/VZ4RUyxkeoUhdWbIWHTy1J69yy17QpYB5J+1EFDyZwsVT48n+uSTN2+QjFug5yjuqQWh5mFOPAsp4RUuKNtUAcfTOVzR4Sf90hvu5LZ4=
+	t=1771965780; cv=none; b=oRCPd9TIOjMgdhK7T52s90VtY8a87aLOzJb/0doknzXPPRbURczt4BBhnjln6PNQh8VisUMf2D0jz50jElgVJplrZ4HdLSea99itXEw6oTtU/cTjtgUiTWdP9OrGCzc9GRtH4XLMqmzYIdMJTbOSuusYq7W8pdUqF0Gpbs+By78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771959889; c=relaxed/simple;
-	bh=qB84I5PLMqppF3pGBBFSGnCXPwBNXGSe+RrAN3wymw4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YAv5BEpMmrByEnnDb4/eeD2EG430yPHoQP6YlRgwEZ08/l1VnPtsnH/BmcX8mZZWq6LQGf/o4f1nRN1VGUF+f07mWuc8M1gLYjWEt2DDMbLGj/h19VVrhBabMBRXPTRi0IuEZ7+j9bFwXD+HKJ2OlnVRZv1TUW11+qwlF+q+atM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Xp/P3IcP; arc=none smtp.client-ip=209.85.219.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1771965780; c=relaxed/simple;
+	bh=FFSIws9UZGCXCXlSxRzmXwLBnorm0MrWfAEBYQi/VmE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ojlzb7sI5UaOSRsmY3h6sb0qAH30T1aYgnfE4wyJWYUlTWi4ZLG2rpV8k/0S1IRdGpSV1ReObTIfDxPdaDoGLH2Lo3IYdrIoIk9CjAQJ31xkMzcnZyXvhMSEDbP0DigQ6IV54BdJCDuDISlvFz5wxnkUEZTid7hJ0Q8w0lq3PJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xii92ofh; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Xp/P3IcP"
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-89545bd3324so73293716d6.1
-        for <linux-coco@lists.linux.dev>; Tue, 24 Feb 2026 11:04:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xii92ofh"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b62da7602a0so3912693a12.2
+        for <linux-coco@lists.linux.dev>; Tue, 24 Feb 2026 12:42:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1771959887; x=1772564687; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FrFsN3h74aSMBKIOJ1HcZrCNEQY8luWcshhq585BEE4=;
-        b=Xp/P3IcP80JnehU6lVnK0AaSjLvOiZzrLYiX7wIqatIOkIIbY+oBQCJnp4kDsGC2a0
-         OV211dOBvX8MV+g2/yo1jXeDjIlhEwsZiACylgXzGT6jaYQ4UHFHGA+By8a6ku7tavBq
-         sw0JLUfUxWsTFj6tMALy0skpmUTvB5eNfWZaVmSTJj0RP+eVSLB7imUVn5iLGRtenprc
-         BukPW/LVcjHCFYPFZiCL5f6LK/nPRqElV85kCFiN7QYhzA/n0b3i6cCM+dHxwt9cvamX
-         fvkrYlv1xO31rocV4j8XThj9rW8smOETjEvI0jKQcXUPAGtbngO41TXrX2N062JAoYjE
-         JB8A==
+        d=google.com; s=20230601; t=1771965779; x=1772570579; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HQvkurqnzRl0s4Cu5TERD53tESfJg6za9bkF8vg/CkM=;
+        b=xii92ofhozRrgCa+46RsKx+VNw/amnH1KaoRsQeQkhfVQEhr/RJEdVT3S0XL3yGtBn
+         OKAYZia317GMBXckvSIeSbPeFWmDhLTxv4Ema01hB7KxOxo1RU5CQQkBrLsh77IzZ1sL
+         e72QbJVHsdRdFxF69XqMWJWMQi20ddrCyViEHLD6SNIG/hMqS/RKoen66DSyqIB02n5/
+         qsnQeDCmgx8UC/K+bI7QBLo24JtvPnWTy595O+aSHEK0/lJVAyRq1qmxrr1wquadeaUS
+         HtSaQIZJR9DRg+N+cr8nRoC+jEpueBpkAzlKiQd0jVSipm+zlmAlYjn5d98g6099732b
+         yKMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771959887; x=1772564687;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FrFsN3h74aSMBKIOJ1HcZrCNEQY8luWcshhq585BEE4=;
-        b=QZdEz5yda48IgC8fQsXwKKR2/0IndG5hMeJyJFGSM61gypbGtjYSelC3rM4mAqQngA
-         OQ4tbj825LDQUz7vEvVjTIT28WWdR0RnPShxrgRztkhiIcOsW8/BLFCrsP96Q0Lp94Ly
-         29NJin0MW/R+2hrbiUeyP1/EVoeZkBoWZpjvJieCMr/TQRglzbLEifUgktII40exxEbo
-         KmquH6r/NzWwGOhyrvSxK/hZ5qnSOCl7SDNwJ3X2XlLPbbI/vFCBvqS2TIAxgXCyuMxQ
-         pq/2sh/x7AbdAzcSn/8eQLeiMp0F6L4dJV1ypHUgNLtVxxzYS97/68cjd4SXUa9bABQA
-         4Kzg==
-X-Forwarded-Encrypted: i=1; AJvYcCUtmc/8F6R+DoV1lmheDvXrmLf87pWaVAiT3CfgfixPW5Z7svLgudJbKoBuGW3iaM1SBPhn/bYb0MHB@lists.linux.dev
-X-Gm-Message-State: AOJu0YwISs9v28lrwMl9aQpiuRCU8sk3xLhSWrhf0zi9Pdb/tPg2ceXV
-	X+i7w3ludbD5AnLNjzUU9+eeO5S9Z1o7YALY/bpjLqvBI9GmqdPOclSWrrpe+mYNRbY=
-X-Gm-Gg: ATEYQzy/xLgc/+5dKj+RPmaN7eARPl2FcZSAlgZ19RiXFdHdHUiwyT3zFOGixttv7j9
-	tMTTCiIwzlMOcX+hGpeuhmaidXfzZXnebVZfyr+ZC9rZMvqvm7jGR9EPEMCnywhW/Mu3x/QqGND
-	sRRqTVOupRbxO1Hbc9jcrBR/hP9DpKqvARZQaEH60TCgfApq9a5WHhh5hUtxjC5o/FyiMXk1OdD
-	7371iBcH5o4hrrmTqfEBP7egjVuWUVUmAii0zJX6DDABFqIVIgET/F1Omk+zFxxZkcdewQ7J3RU
-	rhAShWujmGuwav4cGSy2VcSN2Gn67QlVPq+ijKEzfzLjdpkAFwdX5yLcKx/8GSKGMGg/AyHJZVs
-	QgCgfqspMdbvvlbVC+QlG7JIgQkYBXGFCW5m8OTklWwi4pgR1OUWPOMP9zYQ2wbi28buUt8qfkD
-	I=
-X-Received: by 2002:ad4:5cea:0:b0:895:46e:e8a3 with SMTP id 6a1803df08f44-89979c3c12cmr199567356d6.4.1771959886898;
-        Tue, 24 Feb 2026 11:04:46 -0800 (PST)
-Received: from ziepe.ca ([173.231.112.170])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cb8d103084sm1292269385a.33.2026.02.24.11.04.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Feb 2026 11:04:46 -0800 (PST)
-Received: from jgg by jggl with local (Exim 4.95)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1vuxi9-0009D4-Vg;
-	Tue, 24 Feb 2026 15:04:45 -0400
-Date: Tue, 24 Feb 2026 15:04:45 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: John Stultz <jstultz@google.com>, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org, iommu@lists.linux.dev,
-	linux-media@vger.kernel.org, sumit.semwal@linaro.org,
-	benjamin.gaignard@collabora.com, Brian.Starkey@arm.com,
-	tjmercier@google.com, christian.koenig@amd.com,
-	m.szyprowski@samsung.com, robin.murphy@arm.com, leon@kernel.org,
-	sean.anderson@linux.dev, ptesarik@suse.com, catalin.marinas@arm.com,
-	aneesh.kumar@kernel.org, suzuki.poulose@arm.com,
-	steven.price@arm.com, thomas.lendacky@amd.com, john.allen@amd.com,
-	ashish.kalra@amd.com, suravee.suthikulpanit@amd.com,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v2 2/2] dma-buf: heaps: system: add system_cc_decrypted
- heap for explicitly decrypted memory
-Message-ID: <aZ32TUEy9CB6rs2d@ziepe.ca>
-References: <20260223095136.225277-1-jiri@resnulli.us>
- <20260223095136.225277-3-jiri@resnulli.us>
- <CANDhNCp94KG06P_7ivMTNA27qEM9g8ox-h3b_tZ=v6e-25xJ3g@mail.gmail.com>
- <5z6d2etfr24oscoxhk3samf2bbhtcz6hymf65cow76omagsplf@6gdaev2perkk>
+        d=1e100.net; s=20230601; t=1771965779; x=1772570579;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=HQvkurqnzRl0s4Cu5TERD53tESfJg6za9bkF8vg/CkM=;
+        b=n/K8SLpL1SULdyl4MlyTkIIO1GDGwdoOOVeVekmU0vbRlicSpLIz//zF2qabktUJjE
+         cHmqyGvL+rtCyeyFhJMyDwj33l5YTE0EK15sKf26CnXhhAaeeCBNWvGkcohiwGDE9qO5
+         V+K6WhMZ60taGrSVbMSQml+VT+gKmp+TWgH1mQTgghtiuXIfDjOhQngnay7pj+zxuuA9
+         5nkIIAuPV2M3e7Chyc/xcDAxNFlb7Cx5d3p0A3WtrPOjocX7mzXmFSHz/mz+vQDYifzV
+         0fLiOYrBvCXLqm6Ng4xaETO5JMUMgth8wkJoMPDAAM51+touDaEOXXA3oZl4Z2Au99YH
+         LrZg==
+X-Forwarded-Encrypted: i=1; AJvYcCWmXoNoj91TescjiDclQvg18yRUyKkAraxqYIppO2jd2Ka7G+U3iecyv7OOrx+qbGX8EyXXXVVz+FNL@lists.linux.dev
+X-Gm-Message-State: AOJu0YxLmxk6ryPxiye5/TfqUYLDKWhcMW3Hda7czkMLk51x4VporK2n
+	fPJzaRjXdHpkIjJBCdckXHBwgaYA4mesg4DOsVbYCoiDyIZLV3COyEnKJdtkbvx++O9vEtqcoD/
+	Rtb1bGg==
+X-Received: from pgeh26.prod.google.com ([2002:a05:6a02:53da:b0:c6e:1954:345])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3c89:b0:364:be7:6fe9
+ with SMTP id adf61e73a8af0-3959f2f33b9mr96391637.32.1771965778642; Tue, 24
+ Feb 2026 12:42:58 -0800 (PST)
+Date: Tue, 24 Feb 2026 12:42:57 -0800
+In-Reply-To: <d6820308325d5f8fee7918996ef98ab3f7b6ce6d.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5z6d2etfr24oscoxhk3samf2bbhtcz6hymf65cow76omagsplf@6gdaev2perkk>
+Mime-Version: 1.0
+References: <20260223214336.722463-1-changyuanl@google.com>
+ <213d614fe73e183a230c8f4e0c8fa1cc3d45df39.camel@intel.com>
+ <fd3b58fd-a450-471a-89a3-541c3f88c874@linux.intel.com> <aZ3LxD5XMepnU8jh@google.com>
+ <d6820308325d5f8fee7918996ef98ab3f7b6ce6d.camel@intel.com>
+Message-ID: <aZ4NUZdbH6PPUr5K@google.com>
+Subject: Re: [PATCH] KVM: TDX: Set SIGNIFCANT_INDEX flag for supported CPUIDs
+From: Sean Christopherson <seanjc@google.com>
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"changyuanl@google.com" <changyuanl@google.com>, Binbin Wu <binbin.wu@intel.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	"hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "tglx@kernel.org" <tglx@kernel.org>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 24, 2026 at 09:32:01AM +0100, Jiri Pirko wrote:
+On Tue, Feb 24, 2026, Rick P Edgecombe wrote:
+> On Tue, 2026-02-24 at 08:03 -0800, Sean Christopherson wrote:
+> > > But adding the consistency check here would cause compatibility issue=
+.
+> > > Generally, if a new CPUID indexed function is added for some new CPU =
+and
+> > > the TDX module reports it, KVM versions without the CPUID function in
+> > > the list will trigger the warning.
+> >=20
+> > IMO, that's a good thing and working as intended.=C2=A0 WARNs aren't in=
+herently
+> > evil. While the goal is to be WARN-free, in this case triggering the WA=
+RN if
+> > the TDX Module is updated (or new silicon arrives) is desirable, becaus=
+e it
+> > alerts us to that new behavior, so that we can go update KVM.
+> >=20
+> > But we should "fix" 0x23 and 0x24 before landing this patch.
+>=20
+> Would we backport those changes then? I would usually think that if the T=
+DX
+> module updates in such a way that triggers a warning in the kernel then i=
+t's a
+> TDX module bug.
 
-> >Should there be some global list of leaked decrypted pages such that
-> >the mm subsystem could try again later to recover these?
-> 
-> swiotlb does the same non-recovery leakage. I belive is it not worth
-> implementing this at this time,
+To stable@?  No, I don't think see any reason to do that.
 
-Yeah, I agree
+> I'm still not clear on the impact of this one, but assuming it's not too
+> serious, could we discuss the WIP CPUID bit TDX arch stuff in PUCK before=
+ doing
+> the change?
 
-Looking at the callers the purpose of the return code is to trigger
-the memory leak because there is no way to recover from this. We have
-no idea when in future the hypervisor might permit the operation and
-we have no way to keep track of the memory until it does.
+Sure, I don't see a rush on the patch.
 
-It is not a great API design at all, it only makes sense from the
-hypervisor perspective where it can run out of memory trying to do
-these changes..
+> We were initially focusing on the problem of CPUID bits that affect host =
+state,
+> but then recently were discussing how many other categories of potential
+> problems we should worry about at this point. So it would be good to unde=
+rstand
+> the impact here.
+>=20
+> If this warn is a trend towards doubling back on the initial decision to =
+expose
+> the CPUID interface to userspace,
 
-Jason
+Maybe I'm missing something, but I think you're reading into the WARN waaaa=
+y too
+much.  I suggested it purely as a paranoid guard against the TDX Module doi=
+ng
+something bizarre and/or the kernel fat-fingering a CPUID function.  I.e. t=
+here's
+no ulterior motive here, unless maybe Changyuan is planning world dominatio=
+n or
+something. :-D
+
+> which I think is still doable and worth considering as an alternative, th=
+en
+> this also affects how we would want the TDX module changes to work.
