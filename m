@@ -1,251 +1,206 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175FD275B05
-	for <linux-coco@lists.linux.dev>; Tue, 24 Feb 2026 06:02:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.21
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771912956; cv=fail; b=N6d5dKqEGWieK0a66l2cqZhw35cflaTYhRCVMZUEC5I9haVMWV5STho1L8zbmFQfuI7B3B32Hg44GQVEOvZ2EkRuiQa9gFBCLpeCCnyfohQ05bqiVzRTXZKnnvyRb/408gUmnWwBiCk22H4PLG+3kzUdjUzMvwU8rmOPFK3d4vw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771912956; c=relaxed/simple;
-	bh=Ql5dzOq6D2orsBw15+iyqaPz2EYCUtsihUUXKQlGmdE=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Osp5gkyuwQmC3t9S3FtWVcYkzzStmzqI8uwu3/B6ut1SJnWhWUrXTN/5/6JU4Yt7rKP1QBKHH6iuj8VEoOHt16WzbaoIpUw27KIxWEQ5xS+1DJ5txfKe4rEWhlAMKSUWWADikKc72I3ETqlUcJf+MUhjntJjnC83JddlO5XTgyQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iWYUElh6; arc=fail smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DF9313543
+	for <linux-coco@lists.linux.dev>; Tue, 24 Feb 2026 08:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771921931; cv=none; b=hix68lWOPCDkxuV5frEqc/ijPI64t362F7LQCsIHqTOBkj1UN3P2Yf2xWTYnkG/aRJk6ViJOwmorbVz1moMUO1QD4S4ruAUIm144WCosLPoqSsTNow8QBgVWNVyFBqbFPtYdTWGm3F8qmHGJ/jZuJlkCVUvBp/Qk2IFYePJ7k3s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771921931; c=relaxed/simple;
+	bh=avykNOyv/u+V3QY9hr2O0Q36L/u7PrqaV597fmOI+CI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nsXWJsrT1cz76tXHLBSBRTeoy28Pg14aKhFW75bNMljX833CXJU/2lbkL4RivCxrpBmoUW5qjXQqjz7QSPungIALL2cDdBNOcaQM/QsC8rm2kxx2iTMuJm8Sz+80rwc0lTzSW5NNO+3cRSWkfyQ3NZUFet2IPXkL0PJuh3sOpT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=iAylcrkX; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iWYUElh6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771912956; x=1803448956;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=Ql5dzOq6D2orsBw15+iyqaPz2EYCUtsihUUXKQlGmdE=;
-  b=iWYUElh6F1eInEnYCupvVsu8PXWnD36UNfaJqm44JTqSYEZVxXG/TcM7
-   yI7iWfLavhDzVR51ehJgzn5QSKDnFwU6K0QhHAzroM57gFAluEkcCPqVv
-   HYmLGgXCwJ4zAGlhLbIFSZGuf5B/BJaAr9zL68429FX30CiRUQkvq4a0/
-   VHKw9LCRjK3B4s6scASyNr++P/OpiSaABaUPB3NHfhwWHAbAz2IkXb7FD
-   rgS3FutqT8H1UqGr0pmKxb0sfAGf0t0Yfrq3sbZ/3Vk5luOTbN4d/w7rr
-   kmAmcsXCIA91sNae1GMLpQ1Vru0Mye2HYhy1glRJNuil/7GREF3cPMPyp
-   A==;
-X-CSE-ConnectionGUID: OTg98jP/QlWuVMiShDDHCw==
-X-CSE-MsgGUID: 4n/O9HzrQiqQOLguw9UR7g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="72796787"
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; 
-   d="scan'208";a="72796787"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 22:02:35 -0800
-X-CSE-ConnectionGUID: zl2XNFnASBiObghaJvIesA==
-X-CSE-MsgGUID: /Gy4gETmSECIXmnoodxjaA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; 
-   d="scan'208";a="220323154"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 22:02:35 -0800
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Mon, 23 Feb 2026 22:02:34 -0800
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Mon, 23 Feb 2026 22:02:34 -0800
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.7) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Mon, 23 Feb 2026 22:02:33 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jozlq535OYEgQLzRurf7Dk/rlm2/CCG5tQPagKAtoMtCoy/OqQZS+aPD86zIwlOwHvMXOlgrcKhwNmymf1KlXR9mWVqCa0yZgZGVukPtnQVUl9JDA48w8TYjWcpHPoLGadJyHymaJXwCKvad6T3aGYAFZg5c+Vt0XbYjeZtTmmAtQLP/BdigkC/rMB0lFekLDXsgqog8zeB1U+jHicSD55HI/AeauMVPYlJ07WZca7X/4FZ3pv+DkXPCvDLvs3Ki6EPvHm7LAG6BDsrnIH8M8lM8XbxHDN61palgGPfB12Ejk04lQCtN0ckNudpZZRlo5FCw/DdptmIOEj7tA1/BhQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kHwmX4rqX6qqMEnAr13TOc827io8dOrCqCV4KlzXz9s=;
- b=iD0sr9kbZuRVSrkyCZikhGfMwuZaxN+e146qrcHJQNxS/RddZLZYqKDZWKPoDSMXR2OPkiFXU1HbUob4/a2JOt/vdis7uKeKX3uSqoU+5sfwOUQqUxexaxHrS6vDTs8UbEsa7aSkkN9oIKB0FVQD9ER7J/oRwlYOEaqW6mgm8GfdrZMHgAnw4buWI3oP6clXjuAfvwv2xlo922+DIYQqn9WsyL3zGGMpXvmcuc1/L0zCMEuGIMez06lDJFb5Iku1Oj5tXuTUg4cCvSWDA37gVToPjI7efRbg7zCGtY/5bnXClFbxgY3kzjcpbowcQf6DIFq7RYTuoYpxAtbeORWg3g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
- by LV3PR11MB8578.namprd11.prod.outlook.com (2603:10b6:408:1b3::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.19; Tue, 24 Feb
- 2026 06:02:29 +0000
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf%6]) with mapi id 15.20.9632.017; Tue, 24 Feb 2026
- 06:02:29 +0000
-Date: Tue, 24 Feb 2026 14:02:16 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: "Huang, Kai" <kai.huang@intel.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "seanjc@google.com"
-	<seanjc@google.com>, "kas@kernel.org" <kas@kernel.org>, "Chatre, Reinette"
-	<reinette.chatre@intel.com>, "Verma, Vishal L" <vishal.l.verma@intel.com>,
-	"nik.borisov@suse.com" <nik.borisov@suse.com>, "mingo@redhat.com"
-	<mingo@redhat.com>, "Weiny, Ira" <ira.weiny@intel.com>, "hpa@zytor.com"
-	<hpa@zytor.com>, "Annapurve, Vishal" <vannapurve@google.com>,
-	"sagis@google.com" <sagis@google.com>, "Duan, Zhenzhong"
-	<zhenzhong.duan@intel.com>, "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	"paulmck@kernel.org" <paulmck@kernel.org>, "tglx@kernel.org"
-	<tglx@kernel.org>, "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
-	"Williams, Dan J" <dan.j.williams@intel.com>, "bp@alien8.de" <bp@alien8.de>
-Subject: Re: [PATCH v4 20/24] x86/virt/tdx: Enable TDX Module runtime updates
-Message-ID: <aZ0+6OE970TWTToV@intel.com>
-References: <20260212143606.534586-1-chao.gao@intel.com>
- <20260212143606.534586-21-chao.gao@intel.com>
- <5bd8500eba9a8e83491c02ae84f81b55ac09dacb.camel@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <5bd8500eba9a8e83491c02ae84f81b55ac09dacb.camel@intel.com>
-X-ClientProxiedBy: SI1PR02CA0054.apcprd02.prod.outlook.com
- (2603:1096:4:1f5::13) To CH3PR11MB8660.namprd11.prod.outlook.com
- (2603:10b6:610:1ce::13)
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="iAylcrkX"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-483a2338616so33279235e9.0
+        for <linux-coco@lists.linux.dev>; Tue, 24 Feb 2026 00:32:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1771921926; x=1772526726; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/EquV0ZhBp1KMAQWMVyF7t2k8W3NQOG5g8XyiQs2v3s=;
+        b=iAylcrkXPxA7YgwbCsKeZI6kmf65+SVKlX2+yWBto41Qqrw0Pz9ofz4irIaHQhaqEk
+         1gYNsOcunQij6eGOrcSAesP2GcxPj1UP3sbEZneAKC5rAYt2v6n3kkYORbmY0sHds6C4
+         wOHXHcpWdZS6bOLP0iiYIJLnjPdv5NzaNrZ4kVqO/G52x8kkiVwkGI9Ukwm4S0ibcrvC
+         tXFTbQbBushaGGPqMTinSZPCtpLCbjt4PoMkDE0DKgGeXdlIpWm6ylZQQeRQz+AZDMa7
+         ials1t00sf9xTfBJgUAq+hKVq1A3QIVR+vl3Z1tdiOHaBHIgSvxbZKrk+eogTdUUsgki
+         Y8xQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771921926; x=1772526726;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/EquV0ZhBp1KMAQWMVyF7t2k8W3NQOG5g8XyiQs2v3s=;
+        b=p7SQJ1phn3VraksYSXcYzPNcB5o2D50QmuMqB7OzQZprqPLO7bn75//+7T/uoiBQ66
+         5B5okKrRUD88w4XpeMWfAiSC7FidqXLPCz0P3JV+EZTjgk4O08AHVMeV4ZlmugzEQEFa
+         vKbGMsp+ZZwbMZRBByHttf2fF29diHoJnCILdCjPMttAu1GY9sdSThwiLavlXnXJer9J
+         wUcgLlXTVH2eUDDzHoYfPh1d28OBI5tFpKr/x7GeZXwtLPzkXs2uJQigu7XyMSEjWDJY
+         mmqzo9G3V9yUpcNbRyUKDvc6BjP7YQ/3NyzQ2N41VMmOUXwZsj8vn4dmkQ9GwoSC9d7z
+         /OfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWBSm2hGEmkmllgr81I+3EYZkSLqvFVNuMNjpaQ/s75W2vRV90QSLwbmQiezB7ZamRPIvNccqidWgAE@lists.linux.dev
+X-Gm-Message-State: AOJu0YxOUwqnfKUrFUpAd04mzz7J8qtefU57MC3nGnE4hyBdkSzVRof5
+	MPjsInrYCbIx/80s0vkRfMYik9dreEuyx7XSZuy9wnpynPVizgCciE8lamLF7FabdFE=
+X-Gm-Gg: AZuq6aLvzEWhozUSgLBKvQwNdNSVlN4h308GmEb477XyvZ7eW3treaIkLxPKmUOkRT8
+	84XpzHHAJdoiSZiqokNu9dXigy4v44lZ4SztgTmj7UEz8lcwG4Kh3+SezTSaRKxkt1NqkosHLeM
+	W4mr7ODh403jPWlDvqXZNMSZYAlBjZtE4hZKmN6AOCMAk2C4TtmM8WTfLytjiZUb9i21nRTrzBH
+	wKqPln1lUJHRfI9HawOIzrJ+W0eYvxrxCdxknpnMmbw8rgg2rIVcI/21Y0CZiM9MhW5n+U18fhp
+	c830h96cnFU0hRoLl2Y5U56i1KDShMokeBbK7s7+nrPz5vXEW2DocfQxif04FeNu3ym/+5b1Vpg
+	Gxnt18GcMOMu6j7F8N7nRfTYEjpjg1RnwyK9IoA5wGVKu5UnJ0N+0jtsqjbatvO0kwAJSlY9xkM
+	Rwa7TXqyDo5uZ6iMxw5ktvPoFpTVhpe+4=
+X-Received: by 2002:a05:600c:1386:b0:483:887:59b0 with SMTP id 5b1f17b1804b1-483a960c879mr236583495e9.35.1771921925134;
+        Tue, 24 Feb 2026 00:32:05 -0800 (PST)
+Received: from FV6GYCPJ69 ([85.163.81.98])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483b820f718sm14689075e9.5.2026.02.24.00.32.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Feb 2026 00:32:04 -0800 (PST)
+Date: Tue, 24 Feb 2026 09:32:01 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: John Stultz <jstultz@google.com>
+Cc: dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	iommu@lists.linux.dev, linux-media@vger.kernel.org, sumit.semwal@linaro.org, 
+	benjamin.gaignard@collabora.com, Brian.Starkey@arm.com, tjmercier@google.com, 
+	christian.koenig@amd.com, m.szyprowski@samsung.com, robin.murphy@arm.com, jgg@ziepe.ca, 
+	leon@kernel.org, sean.anderson@linux.dev, ptesarik@suse.com, 
+	catalin.marinas@arm.com, aneesh.kumar@kernel.org, suzuki.poulose@arm.com, 
+	steven.price@arm.com, thomas.lendacky@amd.com, john.allen@amd.com, 
+	ashish.kalra@amd.com, suravee.suthikulpanit@amd.com, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v2 2/2] dma-buf: heaps: system: add system_cc_decrypted
+ heap for explicitly decrypted memory
+Message-ID: <5z6d2etfr24oscoxhk3samf2bbhtcz6hymf65cow76omagsplf@6gdaev2perkk>
+References: <20260223095136.225277-1-jiri@resnulli.us>
+ <20260223095136.225277-3-jiri@resnulli.us>
+ <CANDhNCp94KG06P_7ivMTNA27qEM9g8ox-h3b_tZ=v6e-25xJ3g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|LV3PR11MB8578:EE_
-X-MS-Office365-Filtering-Correlation-Id: a413e073-0b9d-4ff0-744d-08de736a4b04
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?MpnyndT0l9ag7N27UW3xlD1vQ5F/HaqyxcDAMjiOnJUrwEtSYjOM6pbEElpr?=
- =?us-ascii?Q?iPOJ+Vfu6I7v/ZCg8zfZTudVSEhh2IPHPxSKAhAyvgmp6QS+98liv9lFQk2r?=
- =?us-ascii?Q?PQM5g6lJGhTn7haNPYjwsiwxnKvmvH6eoZsB08DvXn2BZ5qwdVH1jHW2F+lq?=
- =?us-ascii?Q?gewyzZ0NedM9JiHeeYbZ6MU0zSSxOYDQ84qx0d370QnGcu58BZ/62axoEUdR?=
- =?us-ascii?Q?7omADwspZOyCf/k3TYJm4hQTZ9LqEV1m1BAP8d3mcAiIrlVr5y/s++WnPRYJ?=
- =?us-ascii?Q?8Si8yK+9hl1ro7Zd78BzJ6xgzgFy0hN9Qu/JWeiAFQJ9naDEfKhh98yjrWrI?=
- =?us-ascii?Q?OL7lCeLbr2/GOvnqd5YGM6bF64GfE92RNSLxziqCZ1pPIjhFpqi50I5kaFiY?=
- =?us-ascii?Q?m12pnDtKHwJGDnlZU1zCOXLRwl+OJmm4cYAVUYxCaaZy6yodBc9P/MI5I/e0?=
- =?us-ascii?Q?10fEJkxCKv83erCVt8bHq8je4UcfjNT4MUCrKFzi6uezIO8mECEjk+mhnxZ2?=
- =?us-ascii?Q?rDcU/TObKOC6dBsuJlEDvLO2a9jhnzhBSGdRUtwTslqQ1QDrWoI/RfVijxtN?=
- =?us-ascii?Q?h58somta8bJq4oO18nXjZCkVb6adn45fdlPbOW821joM9SP1ktCKgMhDRVRS?=
- =?us-ascii?Q?HydiPwJtqGBydfnoeU1dPSfMLCa1vzEolXKVVFODmpyP+cK/nIGGX1i3OZ1H?=
- =?us-ascii?Q?4gFDlPgZE5mRXcPVsX3mrFzlW0DWgQ6RG72s1vdnt9gJMG5xM5m2b63MGqxX?=
- =?us-ascii?Q?fXZSi8e1puD7RKrY6VS8UpzAUAIC6PnrDdddszX40NmrYTz3g1M5H2wK5XBL?=
- =?us-ascii?Q?k+YBR9LaMued+bTQ5zwMh5cOOuHGSZhlOOSDsklSCrgBLBUz6N1gj7ylshgA?=
- =?us-ascii?Q?ZNvIcGWF3QZKmMyv6Gx62c4cyxd0NNuzysr4XWA5kM5DP1U4XhWpXJJ5mmkD?=
- =?us-ascii?Q?+gNr9xI/p5KZ5IMNg8BH7Etm0qbZL1gjq7b4pAdiVzXCInPZLfyqtfbCPleD?=
- =?us-ascii?Q?zX7ZMdjn00lPFKsCnaLBGIw7+Kknk4U0XZ0R1NBXAaKmYNclGKv0M7Os5SmZ?=
- =?us-ascii?Q?AJW82EnaJb+TARCkrQBXg7Zx4PraosJoFZmLu2iBHn2K0yICtG15d0oSQp4C?=
- =?us-ascii?Q?MorX75Md8IjVPXoJencfLs5MY0kboZf5vqYZs+DOBkdlygPiPoN3tOnE9WtZ?=
- =?us-ascii?Q?oPCJHo4kH0XQ/mn3AQ9Io+KIahWml7ttjM7lnIYs8ZIizpe6sHf0G+g0zbm8?=
- =?us-ascii?Q?2Jd9EKNEq0kxQdwLnedwUQiNq9nLGBhSvbfMM5Sk+d59Fom6RZ5UWcLutcXE?=
- =?us-ascii?Q?nfU7lfPoMJePar7ZPXeePhPaSiyrhzdCiDlsST/TiLy61WCYnUS4JJs/Fge2?=
- =?us-ascii?Q?Px5SIgfmPyrRdrMzHrdo9cE9Va4iIAm03RU+bFFZurqFi9FinHYnOuCEgG2W?=
- =?us-ascii?Q?F1zw5lmxGgx8DhGID4gEy7wnX5DMPHsCZ18IvSUGH8p4gPXV+M5v+BmTYmaP?=
- =?us-ascii?Q?pCw77V991v+mdUNi9n6I5EpKOhcUC5um5ui3LdaYdf4IoA44+4TOUg7Joo0L?=
- =?us-ascii?Q?1jUobV58DtCyyqKSTAo=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?SPnaDUL+VxsX+OunACSsKhgMA1S3jg9BP/qO4IoVq6JCKryifpsD3xka7Uwg?=
- =?us-ascii?Q?biWodrv76chrkL4Z0XyWAZdUBqf4C2K/asOaWFdm0Hy1k6KiIxrrwlpPLneW?=
- =?us-ascii?Q?fy78sQdsVkRW1BvxA0UZHv3LJ1gh/SEY7CwZj9v4NrezclpK1upAGN59iewL?=
- =?us-ascii?Q?w4NYcDsyWlpxJdLHyCYkHJBZaiqNUohdkzlJ8ybX8OSLABSvi2DSYBO3hypv?=
- =?us-ascii?Q?lO2r5PN+EAF4LjdE5UP75NbZ/IU/BdafINvt9OFR0D2R10EKUe8dlwIjCNTn?=
- =?us-ascii?Q?Z7Qd02L47ZSAB1rZaNPVmdtga6vR8v+ZdSTqkcWH4qwfnw76SmHnsl5eZ/2C?=
- =?us-ascii?Q?EZ3p186gMNne+n6fn0pLxKY5jVsmduNqE0eT/h+0LVnKkg2VrcIxEYNCAngb?=
- =?us-ascii?Q?WJmgVpFLXeRXOA23jLltjEt601mSeDIum4M3xOcMYCmARlwJBrlCfERwhibC?=
- =?us-ascii?Q?xmWaPJy1v5GuUVsUMAdRlxq5r0p5Vws98A8rldhLzsnYijopIT1VyLUbKDci?=
- =?us-ascii?Q?1qpOXEEL0Jg6OSflxCjWzkVJfQsEcMklB8zjX6+/ldzjmWjoZcrVbD0KDolP?=
- =?us-ascii?Q?gODjW/+Sh4JZtVCBngcTrzkIx8V13p0qG+NDsymk/H3fgaNfxi3peumxglMX?=
- =?us-ascii?Q?UQegfBShRm31+r/jDpe2m0o2A9fozQ/g08+kj7v5mhXAeRvAxWgSRjZYKGSE?=
- =?us-ascii?Q?nmYKca3sfSoGM0YsbWc01EKxlhIU9ZxWnFffPaIqx6DErPTGXqbZC47bintg?=
- =?us-ascii?Q?N4pcOFvFoSv+BerhcAHacU3milua/ldvG/kWHbKbGXaCp0dI6KeeSyFYz3YR?=
- =?us-ascii?Q?8SR47b/vHTtS+momAQIRuVsfMzZBm4Nlws4Rl8dqTn1f2Fj4wWpSLtbAxUZm?=
- =?us-ascii?Q?cE593D7wxsqtcZG10X6DUmUpXHWAZAAiYe78ub7RGfJBXsvfLz0DHAta4p/g?=
- =?us-ascii?Q?2Q224Yet6I/LzI+JkuSEEMsJPLkP8jeYIgtNnopWXWuaAvfm1gQVVJbCwaWK?=
- =?us-ascii?Q?1RuvPZIi+LS+uga6W777ylrDmnyhQlTP0ID+Oy4QELpPKMfyz+qxOnQW/+3F?=
- =?us-ascii?Q?LGEm/0buiauQnwbupSvLIEBp/4FcVnCSIeaPFMGQ78KuFulLfKDt5olz1pqS?=
- =?us-ascii?Q?RU/2FGLSSQchiUlQPbtFEtKvCbN9h0kzYNTY9r/PS5kpPNUYWfLq6sidZc5b?=
- =?us-ascii?Q?MpsoQOz+NfJWvxZkPvDPSFUaUJK/LbR99UgL1Dikwz6eo6BZm77RDibbJ6gy?=
- =?us-ascii?Q?VjTLyp+v14Z2pnxsWc7qG3d0iFkRd9v+lNLpi8UlhJChxIN8BiKCag1PZiw3?=
- =?us-ascii?Q?5rcy51paMwWuRFkIEI9/IMWvArJSoR+gBftPM0pDT0dIsBVqetXa8zy6cdI1?=
- =?us-ascii?Q?NJ2XUdNQiFdKNmd9/xx2b7aXz4E0j4wpZJtZ6bGSN+3gPe9kIvf7KB/5xxJA?=
- =?us-ascii?Q?rRxBOVmBwUY0JvqTYjyVSvgSWbFLG0AjN8hbjq9YVcq9hm3KeT/IBGdmbFlt?=
- =?us-ascii?Q?eggktWy/77ppc2do4OBcWRHAqQS9bMjjgbxHeHQQRjW0Y0i4PLjTUakzUd/j?=
- =?us-ascii?Q?11O9xrB6NzHL9N1cL/2P5tN7p/8bbzP9roU6INVXHqdIOwxE8IppC2kCLB0Y?=
- =?us-ascii?Q?pnGeEEC+TQKvoU4VFp74DoEEx50L3HTHgDLhn88muCzeYXnINFPurCM6PwOc?=
- =?us-ascii?Q?6/OQa2J2iyOc2ktQrK7sHpnPIp8RSHXM3SfjcgOwtXLGYs4ZprvQ8GmTnAe+?=
- =?us-ascii?Q?0eElVDVAjA=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: a413e073-0b9d-4ff0-744d-08de736a4b04
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 06:02:29.7160
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cpvkvQUA5HQePlMvajR7LbzJt63QwjOL270olCFztCGmcOq5jFxSE+wrMfwcXPkPXnOdqm1QLvWg535YnRZrSw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR11MB8578
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANDhNCp94KG06P_7ivMTNA27qEM9g8ox-h3b_tZ=v6e-25xJ3g@mail.gmail.com>
 
-On Mon, Feb 23, 2026 at 01:09:10PM +0800, Huang, Kai wrote:
->On Thu, 2026-02-12 at 06:35 -0800, Chao Gao wrote:
->> All pieces of TDX Module runtime updates are in place. Enable it if it
->> is supported.
->> 
->> Signed-off-by: Chao Gao <chao.gao@intel.com>
->> Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
->> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
->> ---
->> v4:
->>  - s/BIT/BIT_ULL [Tony]
->> ---
->>  arch/x86/include/asm/tdx.h  | 5 ++++-
->>  arch/x86/virt/vmx/tdx/tdx.h | 3 ---
->>  2 files changed, 4 insertions(+), 4 deletions(-)
->> 
->> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
->> index ffadbf64d0c1..ad62a7be0443 100644
->> --- a/arch/x86/include/asm/tdx.h
->> +++ b/arch/x86/include/asm/tdx.h
->> @@ -32,6 +32,9 @@
->>  #define TDX_SUCCESS		0ULL
->>  #define TDX_RND_NO_ENTROPY	0x8000020300000000ULL
->>  
->> +/* Bit definitions of TDX_FEATURES0 metadata field */
->> +#define TDX_FEATURES0_TD_PRESERVING	BIT_ULL(1)
->> +#define TDX_FEATURES0_NO_RBP_MOD	BIT_ULL(18)
->>  #ifndef __ASSEMBLER__
->>  
->>  #include <uapi/asm/mce.h>
->> @@ -105,7 +108,7 @@ const struct tdx_sys_info *tdx_get_sysinfo(void);
->>  
->>  static inline bool tdx_supports_runtime_update(const struct tdx_sys_info *sysinfo)
->>  {
->> -	return false; /* To be enabled when kernel is ready */
->> +	return sysinfo->features.tdx_features0 & TDX_FEATURES0_TD_PRESERVING;
->>  }
->>  
->>  int tdx_guest_keyid_alloc(void);
->> diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
->> index d1807a476d3b..749f4d74cb2c 100644
->> --- a/arch/x86/virt/vmx/tdx/tdx.h
->> +++ b/arch/x86/virt/vmx/tdx/tdx.h
->> @@ -88,9 +88,6 @@ struct tdmr_info {
->>  	DECLARE_FLEX_ARRAY(struct tdmr_reserved_area, reserved_areas);
->>  } __packed __aligned(TDMR_INFO_ALIGNMENT);
->>  
->> -/* Bit definitions of TDX_FEATURES0 metadata field */
->> -#define TDX_FEATURES0_NO_RBP_MOD	BIT(18)
->> -
->> 
+Mon, Feb 23, 2026 at 07:33:07PM +0100, jstultz@google.com wrote:
+>On Mon, Feb 23, 2026 at 1:51 AM Jiri Pirko <jiri@resnulli.us> wrote:
+>>
+>> From: Jiri Pirko <jiri@nvidia.com>
+>>
+>> Add a new "system_cc_decrypted" dma-buf heap to allow userspace to
+>> allocate decrypted (shared) memory for confidential computing (CoCo)
+>> VMs.
+>>
+>> On CoCo VMs, guest memory is encrypted by default. The hardware uses an
+>> encryption bit in page table entries (C-bit on AMD SEV, "shared" bit on
+>> Intel TDX) to control whether a given memory access is encrypted or
+>> decrypted. The kernel's direct map is set up with encryption enabled,
+>> so pages returned by alloc_pages() are encrypted in the direct map
+>> by default. To make this memory usable for devices that do not support
+>> DMA to encrypted memory (no TDISP support), it has to be explicitly
+>> decrypted. A couple of things are needed to properly handle
+>> decrypted memory for the dma-buf use case:
+>>
+>> - set_memory_decrypted() on the direct map after allocation:
+>>   Besides clearing the encryption bit in the direct map PTEs, this
+>>   also notifies the hypervisor about the page state change. On free,
+>>   the inverse set_memory_encrypted() must be called before returning
+>>   pages to the allocator. If re-encryption fails, pages
+>>   are intentionally leaked to prevent decrypted memory from being
+>>   reused as private.
+>>
+>> - pgprot_decrypted() for userspace and kernel virtual mappings:
+>>   Any new mapping of the decrypted pages, be it to userspace via
+>>   mmap or to kernel vmalloc space via vmap, creates PTEs independent
+>>   of the direct map. These must also have the encryption bit cleared,
+>>   otherwise accesses through them would see encrypted (garbage) data.
+>>
+>> - DMA_ATTR_CC_DECRYPTED for DMA mapping:
+>>   Since the pages are already decrypted, the DMA API needs to be
+>>   informed via DMA_ATTR_CC_DECRYPTED so it can map them correctly
+>>   as unencrypted for device access.
+>>
+>> On non-CoCo VMs, the system_cc_decrypted heap is not registered
+>> to prevent misuse by userspace that does not understand
+>> the security implications of explicitly decrypted memory.
+>>
+>> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
 >
->Nit:
+>Thanks for reworking this! I've not reviewed it super closely, but I
+>believe it resolves my objection on your first version.
 >
->Strictly speaking, moving this "NO_RBP_MOD" isn't required to "enable TDX
->module runtime updates".  So I think it's better to call out in changelog
->that this is trying to centralize the bit definitions.
+>Few nits/questions below.
+>
+>> @@ -296,6 +345,14 @@ static void system_heap_dma_buf_release(struct dma_buf *dmabuf)
+>>         for_each_sgtable_sg(table, sg, i) {
+>>                 struct page *page = sg_page(sg);
+>>
+>> +               /*
+>> +                * Intentionally leak pages that cannot be re-encrypted
+>> +                * to prevent decrypted memory from being reused.
+>> +                */
+>> +               if (buffer->decrypted &&
+>> +                   system_heap_set_page_encrypted(page))
+>> +                       continue;
+>> +
+>
+>What are the conditions where this would fail? How much of an edge
+>case is this? I fret this opens a DoS vector if one is able to
+>allocate from this heap and then stress the system when doing the
+>free.
 
-Sure. Will do.
+From what I can see, the failure of set_memory_encrypted() is quite
+rare. Don't see any real DoS scenario for this. All the failures seems
+to be either theoretical (sanity checks, malicious VMM) or concurrent
+kexec execution in case of x86/pat.
+
+
+>
+>Should there be some global list of leaked decrypted pages such that
+>the mm subsystem could try again later to recover these?
+
+swiotlb does the same non-recovery leakage. I belive is it not worth
+implementing this at this time,
+
+
+>
+>> diff --git a/include/linux/dma-heap.h b/include/linux/dma-heap.h
+>> index 648328a64b27..d97b668413c1 100644
+>> --- a/include/linux/dma-heap.h
+>> +++ b/include/linux/dma-heap.h
+>> @@ -10,6 +10,7 @@
+>>  #define _DMA_HEAPS_H
+>>
+>>  #include <linux/types.h>
+>> +#include <uapi/linux/dma-heap.h>
+>>
+>>  struct dma_heap;
+>>
+>> diff --git a/include/uapi/linux/dma-heap.h b/include/uapi/linux/dma-heap.h
+>> index a4cf716a49fa..ab95bb355ed5 100644
+>> --- a/include/uapi/linux/dma-heap.h
+>> +++ b/include/uapi/linux/dma-heap.h
+>> @@ -18,8 +18,7 @@
+>>  /* Valid FD_FLAGS are O_CLOEXEC, O_RDONLY, O_WRONLY, O_RDWR */
+>>  #define DMA_HEAP_VALID_FD_FLAGS (O_CLOEXEC | O_ACCMODE)
+>>
+>> -/* Currently no heap flags */
+>> -#define DMA_HEAP_VALID_HEAP_FLAGS (0ULL)
+>> +#define DMA_HEAP_VALID_HEAP_FLAGS (0)
+>>
+>>  /**
+>>   * struct dma_heap_allocation_data - metadata passed from userspace for
+>
+>Are these header changes still necessary?
+
+Oops, leftovers. Will remove.
+
+Thanks!
+
+>
+>thanks
+>-john
