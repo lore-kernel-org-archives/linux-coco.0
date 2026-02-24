@@ -1,190 +1,118 @@
-Received: from mail-dy1-f202.google.com (mail-dy1-f202.google.com [74.125.82.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAB02D47F4
-	for <linux-coco@lists.linux.dev>; Tue, 24 Feb 2026 21:30:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13DF33B6F5
+	for <linux-coco@lists.linux.dev>; Tue, 24 Feb 2026 21:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771968630; cv=none; b=CuP5MomyIsO367xVnLp8a1urkBFyrpBSruADtUF7R3t46SJFgTymRhGUHUkumdGupL8YJVksD3MihyPQCDsmsfl97tZhqIp0Bpxeq5GJeCaZdDp+g47qBgjEPaqmmTq2+fNmfk68mohtMGHFG2t4irsmZUHYlk+dG/vCIoH6x4E=
+	t=1771969265; cv=none; b=PbWkDemTLCRbgYCQ3EU0GLYwhAwL7wXYE67SCd5kpaez7ejr6uGjeQQAXN5wTc/wUowXD3moTHo9Yd7Wji1asPv7ksW27tJp12HnLd3fosOQi5nvm+9tdjk2aaYTc+6idW5M3bBrJN3pJPSBPZxYFB98+UOXWnwtq3oO9+VuwrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771968630; c=relaxed/simple;
-	bh=FXKeSoSMfzizdfAiGbgrzg+JYZn/1M0RS192UpKNA8o=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RPPlwu+P+wBBcHPMJ6Is1PKZVlTZNosA+6XOx58/+z7S3NMmrqxXjocAA1KwryyV4C9Fdz+laKANeyl7/qUiO4lrM66HZRH+0E1j53S5d9Ok12uFwZF7/eY1mThG18ekG436C1w+M6gP7mgzpthVDcQXNTMvOdc23yD3J6WUFDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--changyuanl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EVFlhfyL; arc=none smtp.client-ip=74.125.82.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--changyuanl.bounces.google.com
+	s=arc-20240116; t=1771969265; c=relaxed/simple;
+	bh=+HSICUHFLvHnBFAoTDKXR2zMyLREOjt65Qz6kpcM9Gw=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=Iogv/qGaC6ZL180tdLbhl2pq6fDIXuqRo9Q47jYY0SlHafH74sXLPMbemMJAe7LdM7L2VgKJ62rAk66z0f9626d64ItC1ntHNy427PJKsaqudlUCXa9Um9qQrLEa6WSEI9TqD5964rZkIWeyQiqEf2G5061yHRAblR+Z+jO17jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=NMSMY7jD; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EVFlhfyL"
-Received: by mail-dy1-f202.google.com with SMTP id 5a478bee46e88-2b81ff82e3cso134640eec.0
-        for <linux-coco@lists.linux.dev>; Tue, 24 Feb 2026 13:30:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771968626; x=1772573426; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fp3gQv/wLfwDQnfgoRQPjUqkZeQgl8EZgadP4mI+PPw=;
-        b=EVFlhfyLa3R1of8DIHKUFphpYC/OSVxj9i2DzFu62dugt6gQnJCw0UUupgeeYSB8fs
-         tsUmzRI32fHPcerwzO0V5vvznOIujRPMUIuL32FtcmW3R8PeNN9M4jbczOpP8H4k0vx9
-         3i9KEvT1ltxcpv8whm8RnbqLAuJpAzzJp2o3aIzhbR540WlbhOHkotOx/f9K4TOIVXpX
-         l0pK35D3qUFrD3cGWviStXhwlPwBodlLkNgKOsk2qA1TL/kgLn/9MC50kPwARlwwH8QO
-         KexkWcJGqhtFMzICzJSdQ8X9RkxQH7ZNXKqWuT77QJ4W38UCHDq7QdHD6jbV0lOxd5Yt
-         Zyfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771968626; x=1772573426;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fp3gQv/wLfwDQnfgoRQPjUqkZeQgl8EZgadP4mI+PPw=;
-        b=R3NmtCHUk1mgtCG+8nw60gooqh9AAzMDdHhg2ePIjUKz+H2a6q40QS5t621jUIO1AV
-         tc04NstKFpXgU99rEPNIKpZJR4fwm5xW9gqo4g7HKvT9+8+jZNBLhJJqqcbGyPPlvjTM
-         rgOAcYABe51WvCsi61E7TgHBDIm5lwth79VZC1BR2ON3f2r7KtMmqwjyJM0ZdJrAk2wd
-         jonGugcMxf+jH4zwHmccMEFQCvM3Ik2lR5ulafr3M9Iyhb9WtDBqpRU+MMLZi9evLqOQ
-         Y9d3bsYgm2SLjgZNTAfHSMCdZsNU6tSvcW7Bw3/VdDbYASRYhoqv5wDXGaW1KwBTtYm1
-         beAg==
-X-Forwarded-Encrypted: i=1; AJvYcCW1E+cxUqr34QOK9shrfIXkqtH0lu05oYMcCnfcQxTmxVlfgSiu8Jpe9BX3BM2+FbPG7tI1hKLLMqbq@lists.linux.dev
-X-Gm-Message-State: AOJu0YwX/9hcN/m1VwnUiAx7DtNBeDSdJbLK+FwOce5eRIPdEWdpE7gZ
-	AtO+2j+5IS3tGw5E077I9b/ey70RUYvnoFLlct8AVYoEd7w4i5oILv8QDSXlCK1IeMxGriwzS5k
-	cNRxwlY/d3lw+l0QPlzvBpA==
-X-Received: from dlnn36.prod.google.com ([2002:a05:7022:61a4:b0:127:16bc:8eaa])
- (user=changyuanl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:209:b0:119:e569:f874 with SMTP id a92af1059eb24-1277f547694mr557374c88.17.1771968625917;
- Tue, 24 Feb 2026 13:30:25 -0800 (PST)
-Date: Tue, 24 Feb 2026 13:29:39 -0800
-In-Reply-To: <213d614fe73e183a230c8f4e0c8fa1cc3d45df39.camel@intel.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="NMSMY7jD"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id BB14440E00DA;
+	Tue, 24 Feb 2026 21:41:00 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id q5CoELQlXxnA; Tue, 24 Feb 2026 21:40:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1771969256; bh=vAU0bo7eUhVFomxVI2D4gQZiONaHqP7dsPgBM4WoGxo=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=NMSMY7jD1XSyL7pLlfZG7kEEhDhh5n2EEn+L/YjeIBE/HcKuaDlpOL1ikrAWCUjgC
+	 HpI3pPJQuGsTVdJcRf1x2KhsKVfr1FDRUFRR1yUsVaTjWfCsDRhaTX8xwsxoOtLn2N
+	 /kd3QWl7/UelTw57+W71uTdxvXBOoi3HwT2qx1Tc7apUGL3Q3O0f73JuRhwL04daj8
+	 Z8nBHaAuRr6zkogA84MO3kSFSpnpIbp27SKIl0X0Fi3NPB8/XMCwSK5LcqPKV8MlYo
+	 lOQH629eJPlrHRj2Rq34SVul/t12ws9ymxgvTb3AgwMxEh2i+mGtihq8T4fWYBCijt
+	 bBs4l0lP3VQ2VRt6hzTY3KSjY35FfloUQw5TS8d+svENIFTRhMUPGZsyozlnIZqGsq
+	 W/WQksxnn02zJViDpGCfs55TDGBhNVKQSXtLiXImnSC+lIOhk400CgoN9xUE0ijZsV
+	 x+9vgpyBVk7RTLUEj6L+y8ausT5xlvNCSNJM6RF8LA3LeAJjyNbEGc/ME/Cpuj7AMR
+	 XjotVpctIsrVKr78B7NejSj/NsVXIDD/yN+YPVR0WrEQnX4qfPeREon0XcIsYKwwuQ
+	 hzQ+sHGWzG/Kgdq550joQaM2F9Iz2niOY+cutPgZ252uU0B/a0dqqH9oecSVABaiuB
+	 rXAN/KnimdEKObkEryIROyXI=
+Received: from ehlo.thunderbird.net (unknown [IPv6:2a02:3035:662:6ae7:d92b:d96d:181a:344f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7A4F740E00DE;
+	Tue, 24 Feb 2026 21:40:38 +0000 (UTC)
+Date: Tue, 24 Feb 2026 21:40:28 +0000
+From: Borislav Petkov <bp@alien8.de>
+To: Dave Hansen <dave.hansen@intel.com>, Kim Phillips <kim.phillips@amd.com>,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, x86@kernel.org
+CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ K Prateek Nayak <kprateek.nayak@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Michael Roth <michael.roth@amd.com>,
+ Borislav Petkov <borislav.petkov@amd.com>, Naveen Rao <naveen.rao@amd.com>,
+ David Kaplan <david.kaplan@amd.com>,
+ Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, stable@kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_1/3=5D_cpu/bugs=3A_Fix_selectin?=
+ =?US-ASCII?Q?g_Automatic_IBRS_using_spectre=5Fv2=3Deibrs?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <6b3b0c86-99eb-406d-b88d-3d71613bef9e@intel.com>
+References: <20260224180157.725159-1-kim.phillips@amd.com> <20260224180157.725159-2-kim.phillips@amd.com> <6b3b0c86-99eb-406d-b88d-3d71613bef9e@intel.com>
+Message-ID: <E9013CF4-D30E-4366-A8C4-8C249ECF395C@alien8.de>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <213d614fe73e183a230c8f4e0c8fa1cc3d45df39.camel@intel.com>
-X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
-Message-ID: <20260224212939.2081828-1-changyuanl@google.com>
-Subject: Re: [PATCH] KVM: TDX: Set SIGNIFCANT_INDEX flag for supported CPUIDs
-From: Changyuan Lyu <changyuanl@google.com>
-To: rick.p.edgecombe@intel.com
-Cc: binbin.wu@intel.com, bp@alien8.de, changyuanl@google.com, 
-	dave.hansen@linux.intel.com, hpa@zytor.com, isaku.yamahata@intel.com, 
-	kas@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, mingo@redhat.com, pbonzini@redhat.com, 
-	seanjc@google.com, tglx@kernel.org, x86@kernel.org, xiaoyao.li@intel.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Rick!
-
-On Tue, 24 Feb 2026 01:57:46 +0000, Edgecombe, Rick P wrote:
-> On Mon, 2026-02-23 at 13:43 -0800, Changyuan Lyu wrote:
-> > [...]
-> > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> > index 2d7a4d52ccfb4..0c524f9a94a6c 100644
-> > --- a/arch/x86/kvm/vmx/tdx.c
-> > +++ b/arch/x86/kvm/vmx/tdx.c
-> > @@ -172,9 +172,15 @@ static void td_init_cpuid_entry2(struct
-> > kvm_cpuid_entry2 *entry, unsigned char i
-> >  	entry->ecx = (u32)td_conf->cpuid_config_values[idx][1];
-> >  	entry->edx = td_conf->cpuid_config_values[idx][1] >> 32;
-> >
-> > -	if (entry->index == KVM_TDX_CPUID_NO_SUBLEAF)
-> > +	if (entry->index == KVM_TDX_CPUID_NO_SUBLEAF) {
-> >  		entry->index = 0;
-> > +		entry->flags &= ~KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
+On February 24, 2026 6:22:36 PM UTC, Dave Hansen <dave=2Ehansen@intel=2Ecom=
+> wrote:
+>On 2/24/26 10:01, Kim Phillips wrote:
+>> @@ -2136,7 +2136,8 @@ static void __init spectre_v2_select_mitigation(v=
+oid)
+>>  	if ((spectre_v2_cmd =3D=3D SPECTRE_V2_CMD_EIBRS ||
+>>  	     spectre_v2_cmd =3D=3D SPECTRE_V2_CMD_EIBRS_LFENCE ||
+>>  	     spectre_v2_cmd =3D=3D SPECTRE_V2_CMD_EIBRS_RETPOLINE) &&
+>> -	    !boot_cpu_has(X86_FEATURE_IBRS_ENHANCED)) {
+>> +	    !(boot_cpu_has(X86_FEATURE_IBRS_ENHANCED) ||
+>> +	      boot_cpu_has(X86_FEATURE_AUTOIBRS))) {
+>>  		pr_err("EIBRS selected but CPU doesn't have Enhanced or Automatic IB=
+RS=2E Switching to AUTO select\n");
+>>  		spectre_v2_cmd =3D SPECTRE_V2_CMD_AUTO;
+>>  	}
 >
-> There are two callers of this. One is already zeroed, and the other has
-> stack garbage in flags. But that second caller doesn't look at the
-> flags so it is harmless. Maybe it would be simpler and clearer to just
-> zero init the entry struct in that caller. Then you don't need to clear
-> it here. Or alternatively set flags to zero above, and then add
-> KVM_CPUID_FLAG_SIGNIFCANT_INDEX if needed. Rather than manipulating a
-> single bit in a field of garbage, which seems weird.
-
-Thanks for the suggestion. I agree that initializing entry->flags to 0 at
-the start of td_init_cpuid_entry2() is much cleaner.
-
-> > +	} else {
-> > +		entry->flags |= KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
-> > +	}
-> >
-> > +	WARN_ON_ONCE(cpuid_function_is_indexed(entry->function) !=
-> > +		     !!(entry->flags &
-> > KVM_CPUID_FLAG_SIGNIFCANT_INDEX));
+>Didn't we agree to just use the "Intel feature" name? See this existing
+>code:
 >
-> It warns on leaf 0x23 for me. Is it intentional?
-
-Leaf 0x23 is not in the list of cpuid_function_is_indexed.
-Thanks Binbin for the explanation!
-
-> This warning kind of begs the question of how how much consistency
-> there should be between KVM_TDX_CAPABILITIES and
-> KVM_GET_SUPPORTED_CPUID. There was quite a bit of debate on this and in
-> the end we moved forward with a solution that did the bare minimum
-> consistency checking.
+>>         /*
+>>          * AMD's AutoIBRS is equivalent to Intel's eIBRS - use the Inte=
+l feature
+>>          * flag and protect from vendor-specific bugs via the whitelist=
+=2E
+>>          *
+>>          * Don't use AutoIBRS when SNP is enabled because it degrades h=
+ost
+>>          * userspace indirect branch performance=2E
+>>          */
+>>         if ((x86_arch_cap_msr & ARCH_CAP_IBRS_ALL) ||
+>>             (cpu_has(c, X86_FEATURE_AUTOIBRS) &&
+>>              !cpu_feature_enabled(X86_FEATURE_SEV_SNP))) {
+>>                 setup_force_cpu_cap(X86_FEATURE_IBRS_ENHANCED);
+>>                 if (!cpu_matches(cpu_vuln_whitelist, NO_EIBRS_PBRSB) &&
+>>                     !(x86_arch_cap_msr & ARCH_CAP_PBRSB_NO))
+>>                         setup_force_cpu_bug(X86_BUG_EIBRS_PBRSB);
+>>         }
 >
-> We actually have been looking at some potential TDX module changes to
-> fix the deficiencies from not enforcing the consistency. But didn't
-> consider this pattern. Can you explain more about the failure mode?
+>You're probably not seeing X86_FEATURE_IBRS_ENHANCED because it doesn't
+>get forced under SNP=2E
 
-The main purpose of this patch was to make the KVM_TDX_GET_CPUID API
-more intuitive from userspace VMM's perspective.
-Since both KVM_TDX_CAPABILITIES and KVM_GET_SUPPORTED_CPUID return
-struct kvm_cpuid_entry2, I expected the semantic of the flag in both APIs
-to be the same, as I didn't find any special notes to the contrary in the
-TDX documentation Documentation/virt/kvm/x86/intel-tdx.rst .
-
-> >  	/*
-> >  	 * The TDX module doesn't allow configuring the guest phys
-> > addr bits
-> >  	 * (EAX[23:16]).  However, KVM uses it as an interface to
-> > the userspace
-> > --
-
-Regarding the WARN_ON_ONCE, I understand it touches on the larger
-consistency and compatibility questions that require more discussion
-as you and Sean mentioned. Since I am new to TDX and lack the full context
-on those prior debates, I removed the WARN_ON_ONCE check and focus only on
-the KVM_CPUID_FLAG_SIGNIFCANT_INDEX consistency fix, which was the core of
-this patch.
-
-Best,
-Changyuan
-
------------------------
-
-From 18b967b718911c09872c3717d8ab083fa59c4a70 Mon Sep 17 00:00:00 2001
-From: Changyuan Lyu <changyuanl@google.com>
-Date: Fri, 20 Feb 2026 09:55:28 -0800
-Subject: [PATCH] KVM: TDX: Set SIGNIFCANT_INDEX flag for supported CPUIDs
-
-Set the KVM_CPUID_FLAG_SIGNIFCANT_INDEX flag in the kvm_cpuid_entry2
-structures returned by KVM_TDX_CAPABILITIES if the CPUID is indexed.
-This ensures consistency with the CPUID entries returned by
-KVM_GET_SUPPORTED_CPUID.
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Changyuan Lyu <changyuanl@google.com>
----
- arch/x86/kvm/vmx/tdx.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 2d7a4d52ccfb4..1c039eab2f3d8 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -167,6 +167,7 @@ static void td_init_cpuid_entry2(struct kvm_cpuid_entry2 *entry, unsigned char i
-
- 	entry->function = (u32)td_conf->cpuid_config_leaves[idx];
- 	entry->index = td_conf->cpuid_config_leaves[idx] >> 32;
-+	entry->flags = 0;
- 	entry->eax = (u32)td_conf->cpuid_config_values[idx][0];
- 	entry->ebx = td_conf->cpuid_config_values[idx][0] >> 32;
- 	entry->ecx = (u32)td_conf->cpuid_config_values[idx][1];
-@@ -174,6 +175,9 @@ static void td_init_cpuid_entry2(struct kvm_cpuid_entry2 *entry, unsigned char i
-
- 	if (entry->index == KVM_TDX_CPUID_NO_SUBLEAF)
- 		entry->index = 0;
-+	else
-+		entry->flags |= KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
-+
-
- 	/*
- 	 * The TDX module doesn't allow configuring the guest phys addr bits
---
-2.53.0.414.gf7e9f6c205-goog
+Set the Intel flag somewhere in the SNP init path=2E=2E=2E?
+--=20
+Small device=2E Typos and formatting crap
