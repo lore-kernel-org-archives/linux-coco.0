@@ -1,149 +1,269 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010052.outbound.protection.outlook.com [52.101.61.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FBA2AE68
-	for <linux-coco@lists.linux.dev>; Wed, 25 Feb 2026 03:23:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771989805; cv=none; b=ngGwiDw1AeEe1AwQGtqb/B/c4H6su+9/WhgnFfBSIuDCbGnVmPmkJg5etv57UxdX3p5s8hZh8VTLgO3UkZ/Zdjqvv74JH0MeM97nFS4DAfEsT2+oK/UUbS9ZU0Er79TVYJAOyjBKPw6Op0QZQcFcyRrMjRSZtYwY6JWpCfjlMxA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771989805; c=relaxed/simple;
-	bh=fdPpGFsfhcNkYYJovguqzV2NDnvxyAskr7Q6U0zrLa8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JVSLPPaAlM7EVJIpuekjXE8ob0J6XjmUY8O5OUVhdoftrpWuyaBb9AsGQSkAj3Y0nGLBrWpMjD5QNfKretx2yPl8t2Ms7ODf4xSoj02id86y5jI+6aXhKKGZMAFf2/P4LEEdWNGc4ai5+tZBLXTFDeY4YTJgoAGHb4MM1aBhp8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J0YqMpnY; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A33262FC0;
+	Wed, 25 Feb 2026 05:38:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771997928; cv=fail; b=Ye2vU6wOKGUsDoCSd9rrAAdApdbJiuLJ4nIgJZ6qyWt638kHZkwlLJcToV8/VvjbDo8tXaCDZEI5AN0r4bZyJ633vTu1OR+o+YRhbVdDBZ1HeyQgCxDUKepVXADJfsqXisXpnQhSXqUjthDnurXj7n7l+UMVvrq8F/fjPquafAI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771997928; c=relaxed/simple;
+	bh=IvZ3tfPjx6m9VEPH+TTLEY1g2ZzCXODxwnkRYVNGa7M=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=usDN7TceuAaJdTFTCi47LURg2mKh2XTTyKs4dwE2HDASYg/liEW9Oh3Yd8aL8DUu2NW+Sid0Wuy7aClGYLFGEzV1qrU7+OYjulTUC/I3tlObljjNKlQWS1634+1ZBHm89oANGmY3kUugA1T/1Nfu8kretjtYs3X5KquMrqZ40YY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Wsys2JUQ; arc=fail smtp.client-ip=52.101.61.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J0YqMpnY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771989805; x=1803525805;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=fdPpGFsfhcNkYYJovguqzV2NDnvxyAskr7Q6U0zrLa8=;
-  b=J0YqMpnYNLEgPd6BwsuAn20qSBGqMbj1VAKJ4EALM6ycynmJhMzVm3CZ
-   3wWXR9t7M1jKk4pB+YyO+eULilH+HmBD9BTeP0purdD2JD8SiZGSdFkaB
-   V2FzmWGjwDvVwdyGM6zoXw4UcWWFFLaW5fC41Yv11cYYVPyaVmsOdoT9I
-   b3CKzjz57Z/rPd3e+WCizySV4U9JGpVIEJQiEDREElhn0dQSYwhNT4B/D
-   MmQZoaWNq+Qp1CclHaq11qLUCAPFBzTrpH3UfTZedjX+bQDU32N1eHCsI
-   SCQ9EjU1ZSkF2RbRddDndgMPOdyuWg/gXWHyzIZOS8i/x42ioPi+b9JN+
-   w==;
-X-CSE-ConnectionGUID: s++2a1+MQgalPXurmVOryA==
-X-CSE-MsgGUID: 8JJbKvQ2QlGm9/jK4GC4pA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11711"; a="73065562"
-X-IronPort-AV: E=Sophos;i="6.21,309,1763452800"; 
-   d="scan'208";a="73065562"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2026 19:23:25 -0800
-X-CSE-ConnectionGUID: G1BEvh1TRlGwfDlwnpSI8w==
-X-CSE-MsgGUID: glHZXKZqRsyIuzSYpSo4Nw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,309,1763452800"; 
-   d="scan'208";a="220218433"
-Received: from unknown (HELO [10.238.1.83]) ([10.238.1.83])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2026 19:23:21 -0800
-Message-ID: <66336533-8bee-4219-9936-3163c7ce06bb@linux.intel.com>
-Date: Wed, 25 Feb 2026 11:23:17 +0800
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Wsys2JUQ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UxSBN54FDr0BFf8VcGWglS3sn7ikpud3f2yTVH6sLQTLyyLnSV0Zrno+kVRS1kHLYXtJMIHCB+sZ6Fr0nRsTstlr1OLT8SZ5d+etGG4TBHKiE58+LT02RBOfTKtFrFjDQD7Xxub+wtAbftzpzdq07HH9JEK0xtarFXpn/lhgP9OxVuq0cFFdIf78yiEkhSTUooP9PMx5FqRFpofgFtI46X0yHro5MxFWTzLCmnDWAPROdmdcUJHsSi8P4TKnBSEWC2pIf8v04FWgjC3CECtidOREHEQNjnYOOq8JyDIy6IZxZUuz9y40qpQd/cTP9+uiIUx3MkurMoEYkhT85PGTPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gEcXqix1FcxZDGvHB5O42Rf1EVfLADdGkL0kx2L9UwA=;
+ b=C0t+guV2aL6nU83dKgOb9OKjROrajTAIG70mpZVOl7PF5bcpgj+pLowbLt4NocNtzmCFSnP/NhxKwbpARBkkzrRf4aWsDGCdEizW5A3tPm1rd2JYMCPhNh40/SkxuVT6G3KP20+fUgtJhk8IviVerMP/MypDn3ST2IShbYT6g8iTitCpNyUZQ+xbp/9yar01xI6iGc6NPCBUEFpxMY2ooQcxUilzbiHzKpjrZlMXa1Ce4oH+T4QKMedbFBNT/vvVobepo52b7oiOskhzp2gW0/o2tUnxFu9NCfadT/i4gY/9C4/byK1sx1bCrhErmMSueVvIn2j3ZXXcE8wWmqzr0g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gEcXqix1FcxZDGvHB5O42Rf1EVfLADdGkL0kx2L9UwA=;
+ b=Wsys2JUQQd6TgdkHtPaU7F1Itv0EXKBMQGaNxI/9QSYJoWflWvTNMmpDkuNh/6DlTOM6Xsc00vUSAS45ugyZOco9S3omwtHsmiriefuTDDMc7/Ln0oPaORuuIJ1c6+DE07ZpTk7qzjC5omdO/vzar+0kqudxnMhq6ObE8WJdt+o=
+Received: from BN0PR04CA0011.namprd04.prod.outlook.com (2603:10b6:408:ee::16)
+ by LV9PR12MB9808.namprd12.prod.outlook.com (2603:10b6:408:2e7::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.22; Wed, 25 Feb
+ 2026 05:38:42 +0000
+Received: from BN3PEPF0000B06E.namprd21.prod.outlook.com
+ (2603:10b6:408:ee:cafe::bc) by BN0PR04CA0011.outlook.office365.com
+ (2603:10b6:408:ee::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.22 via Frontend Transport; Wed,
+ 25 Feb 2026 05:38:22 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN3PEPF0000B06E.mail.protection.outlook.com (10.167.243.73) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9654.0 via Frontend Transport; Wed, 25 Feb 2026 05:38:41 +0000
+Received: from aiemdee.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 24 Feb
+ 2026 23:38:22 -0600
+From: Alexey Kardashevskiy <aik@amd.com>
+To: <x86@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, "Ingo
+ Molnar" <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, "Sean
+ Christopherson" <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
+	"Andy Lutomirski" <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+	"Bjorn Helgaas" <bhelgaas@google.com>, Dan Williams
+	<dan.j.williams@intel.com>, "Marek Szyprowski" <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Catalin Marinas <catalin.marinas@arm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>, "Mike Rapoport" <rppt@kernel.org>, Tom
+ Lendacky <thomas.lendacky@amd.com>, "Ard Biesheuvel" <ardb@kernel.org>,
+	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>, Ashish Kalra
+	<ashish.kalra@amd.com>, Stefano Garzarella <sgarzare@redhat.com>, Melody Wang
+	<huibo.wang@amd.com>, Seongman Lee <augustus92@kaist.ac.kr>, Joerg Roedel
+	<joerg.roedel@amd.com>, "Nikunj A Dadhania" <nikunj@amd.com>, Michael Roth
+	<michael.roth@amd.com>, "Suravee Suthikulpanit"
+	<suravee.suthikulpanit@amd.com>, Andi Kleen <ak@linux.intel.com>, Kuppuswamy
+ Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Tony Luck
+	<tony.luck@intel.com>, David Woodhouse <dwmw@amazon.co.uk>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, Denis Efremov
+	<efremov@linux.com>, Geliang Tang <geliang@kernel.org>, Piotr Gregor
+	<piotrgregor@rsyncme.org>, "Michael S. Tsirkin" <mst@redhat.com>, "Alex
+ Williamson" <alex@shazbot.org>, Arnd Bergmann <arnd@arndb.de>, Jesse Barnes
+	<jbarnes@virtuousgeek.org>, Jacob Pan <jacob.jun.pan@linux.intel.com>,
+	Yinghai Lu <yinghai@kernel.org>, Kevin Brodsky <kevin.brodsky@arm.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>, "Aneesh Kumar K.V (Arm)"
+	<aneesh.kumar@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>, Herbert Xu
+	<herbert@gondor.apana.org.au>, Kim Phillips <kim.phillips@amd.com>, "Konrad
+ Rzeszutek Wilk" <konrad.wilk@oracle.com>, Stefano Stabellini
+	<sstabellini@kernel.org>, Claire Chang <tientzu@chromium.org>,
+	<linux-coco@lists.linux.dev>, <iommu@lists.linux.dev>, Alexey Kardashevskiy
+	<aik@amd.com>
+Subject: [PATCH kernel 0/9] PCI/TSM: coco/sev-guest: Implement SEV-TIO PCIe TDISP (phase2)
+Date: Wed, 25 Feb 2026 16:37:43 +1100
+Message-ID: <20260225053806.3311234-1-aik@amd.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: TDX: Set SIGNIFCANT_INDEX flag for supported CPUIDs
-To: Sean Christopherson <seanjc@google.com>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>,
- "changyuanl@google.com" <changyuanl@google.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>, Binbin Wu
- <binbin.wu@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>,
- "bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
- "kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "tglx@kernel.org" <tglx@kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-References: <20260223214336.722463-1-changyuanl@google.com>
- <213d614fe73e183a230c8f4e0c8fa1cc3d45df39.camel@intel.com>
- <fd3b58fd-a450-471a-89a3-541c3f88c874@linux.intel.com>
- <aZ3LxD5XMepnU8jh@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <aZ3LxD5XMepnU8jh@google.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B06E:EE_|LV9PR12MB9808:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6145cbdb-a345-4bd7-5ca1-08de74302291
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|36860700013|1800799024|82310400026|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?0aoAF81zS/ka8d5MMMD1yI0+0wyN18DRhds4LB4v9ouGH3iHrtCrU2KoOfK6?=
+ =?us-ascii?Q?wO212tOiwIoKZk9PLRS3Ki20+kZcanBPWsz5hE1zNBcYlBLLRvbvMRpyVlR+?=
+ =?us-ascii?Q?lFmsXukBxU9Mt99MiVHLyfOZsEupESCwEwQmTVgNvqukvVIHcaS5+t+u04Ct?=
+ =?us-ascii?Q?1f716l9MZmtzSVED8PwJyCPCYBQkYRJ+vf036BVf8B0UE4m11tzC0YA8333p?=
+ =?us-ascii?Q?kXHOYiSpwNQId7XETZIGZxXJ1Nfjvfb+zeB+CBEBskIHe0TXtY4UBC6VuHAo?=
+ =?us-ascii?Q?5vNADBdvLQw/dWJ1LhxQbjVXHHPRv2unEi2N8F6OMAQq+Sd7qzTGSzyOESQc?=
+ =?us-ascii?Q?BPZY/XoStWxxRa89xqucy2iitw9CLv+srKw7nxUk9e26Jff6IHTBl4j7WfWC?=
+ =?us-ascii?Q?nX+3MiWNEFpiuTY2pSyjqgNYOKrlMCKZgfuGPn0fvKKT1i1fZOQkrJDKKWBd?=
+ =?us-ascii?Q?UxiHBLryfAjaQbjUjBpCeIJhJViSyanJDWpY5E33NG0r+Ui96PA4iBmNgUha?=
+ =?us-ascii?Q?zruu0wpcOQttQLXS1c9SY9xkYdYg8QX1M8lmu2A43CuZnu9EQURTCdIrjdyx?=
+ =?us-ascii?Q?YvUsduhbkgPjL3KrK6S9Rdu2J8A8eukpcsN9iYm/P3aFrPKiRQPEbH4kRII7?=
+ =?us-ascii?Q?XHb9CxaZZ1KxWBQKUj0oX/2f9QzWn1I/8nYRlOac4KW8+FgyZfVF/DkvIK/M?=
+ =?us-ascii?Q?ty6KbhGyWvsB6gZoeO5vk2otFatqlg3TmT0dm5NxHbwBgaHVkLLlMHh5UIyp?=
+ =?us-ascii?Q?w47YtppWQ7Kk8qKSkriW9xn2MKTsZIzGPkw+mqwrDrA7mtlowOTKqYVRf/vX?=
+ =?us-ascii?Q?B9ZvsK8564PIHFQCAhJXra1BAPy2+wWCEsciBuUIpqVBGCG2ni4XMYVdiCaK?=
+ =?us-ascii?Q?3aLnSJdV+cdFpjUfYNap/doPQrwkali/CUq/ahdPDgs02tn8fDjyU+Q4jtkU?=
+ =?us-ascii?Q?hRDKAF06sdeuIgpVP0xOVjCXHOkcZ5RBGv1esxiS94HYq0xSXqAvD5+K6/jN?=
+ =?us-ascii?Q?GweWDddR42Mijul7T3TYpoBfRlbmviAs4q3BBZNnjuSNfKqyWa0A0blpy9b0?=
+ =?us-ascii?Q?xQVCCr8uTxkKS7fDmMjvx6b76PJSvlml/Mc6AXkjfOwSiBIWZP/PJ08Rlimc?=
+ =?us-ascii?Q?H4BLzZcYd8N8y20Fgbpgr3ZRKrpXThyGihtqszbO9A/1p7MUQdYB/8/8Zd1G?=
+ =?us-ascii?Q?r33Bf4Mz5JEXx3FIWReZ0J+mnOcYh52xMeGKVxncdbU+oFHlianQ6obLIyL5?=
+ =?us-ascii?Q?3gZxClNTnuPu4H6l1IM5MMn5LjiFMi61LBYrvvJiS4Y+wRGNLUdOGRRvR8Yn?=
+ =?us-ascii?Q?6nhCMwj7NL7nJ7t5lBR1ZS9n5l3zgFgbKb93aU3vGuGBBWf1JE1HWdZBFhGf?=
+ =?us-ascii?Q?Io6Y/crDOkOo+M1ZqjnlfolbA1Fzk5+ggQ3OfnP8XhnnYsAoYDReev4Q+PWp?=
+ =?us-ascii?Q?MUeNrxl8lD5R0urA19QdZQB2vhP8N6qaZq2rv5nPNI/uTnGeulvAuPV1nmmd?=
+ =?us-ascii?Q?boR/KOe+2JfCOkcRvIJtLEzLgbV7AcbDr0fZcA+4rBRWjEWsVuQXEMi8JLUD?=
+ =?us-ascii?Q?Q+Z9sw7fyTSJrqKlRWWcyC9AqdjfN2Oxynp8sUC2ue0aH1JJvX5aYQvLRp4y?=
+ =?us-ascii?Q?83o2wF8/HRzvFCX91hgqabXs143UkMEwbFzYE9f/TGyN35PS7tIG5IR6lTFX?=
+ =?us-ascii?Q?86CADA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700013)(1800799024)(82310400026)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	L6ZrePEp+ap4jMJBKre66wMakyBaTFjY7V/Gnc165oGMq91ot9iCfgmZMI/hNsDiT3adaHf/BmIv+KkgKznpr3K0nnGTOP8MVsuyWvybI6CB42MH2AM8SXq02TDOeLtwnC/d4RFT+dKK4WdXUUqEf2MsDYvM3IXTJ1Ojir0CckGOmVluXnYzhxOZ/EXwGHpIxV5twQPyK7HwwgDtqAkVSH8uH+txUTK/OH2lANQSNVH5MvIdS16WDckXD8q8RKUGr2XVg8AOQ/t8kqSknfIrmrvq2lbyHAuFxy0UZ9tutb55PwNNOp74oUyUOrfd+dxjR/q2x4WNp83VX0rHz1//NPaDEiJvoKRpN0RRPv13WTlit6s67ZfZXni6+cLxQKdZ7qomfnt79iuh4ENd6GcSgOpN5kJPX3oNzfpcydSwgs+dFu1ilCd2elyfETv/UxVF
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2026 05:38:41.9947
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6145cbdb-a345-4bd7-5ca1-08de74302291
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF0000B06E.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV9PR12MB9808
+
+Here are some patches to continue enabling SEV-TIO on AMD.
+
+SEV-TIO allows guests to establish trust in a device that supports TEE
+Device Interface Security Protocol (TDISP, defined in PCIe r6.0+) and
+then interact with the device via private memory.
+
+In order to streamline upstreaming process, a common TSM infrastructure
+is being developed in collaboration with Intel+ARM+RiscV. There is
+Documentation/driver-api/pci/tsm.rst with proposed phases:
+1. IDE: encrypt PCI, host only
+2. TDISP: lock + accept flow, host and guest, interface report
+3. Enable secure MMIO + DMA: IOMMUFD, KVM changes
+4. Device attestation: certificates, measurements
+
+This is phase2 == basic guest support allowing TDISP CONFIG_LOCKED and RUN states, and unlocking as well.
+
+Acronyms:
+TEE - Trusted Execution Environments, a concept of managing trust between the host and devices
+TSM - TEE Security Manager (TSM), an entity which ensures security on the host
+PSP - AMD platform secure processor (also "ASP", "AMD-SP"), acts as TSM on AMD.
+SEV TIO - the TIO protocol implemented by the PSP and used by the host, extension to SEV-SNP
+GHCB - guest/host communication block - a protocol for guest-to-host communication via a shared page
+TDISP - TEE Device Interface Security Protocol (PCIe).
 
 
 
-On 2/25/2026 12:03 AM, Sean Christopherson wrote:
-> On Tue, Feb 24, 2026, Binbin Wu wrote:
->> On 2/24/2026 9:57 AM, Edgecombe, Rick P wrote:
->>>> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
->>>> index 2d7a4d52ccfb4..0c524f9a94a6c 100644
->>>> --- a/arch/x86/kvm/vmx/tdx.c
->>>> +++ b/arch/x86/kvm/vmx/tdx.c
->>>> @@ -172,9 +172,15 @@ static void td_init_cpuid_entry2(struct
->>>> kvm_cpuid_entry2 *entry, unsigned char i
->>>>  	entry->ecx = (u32)td_conf->cpuid_config_values[idx][1];
->>>>  	entry->edx = td_conf->cpuid_config_values[idx][1] >> 32;
->>>>  
->>>> -	if (entry->index == KVM_TDX_CPUID_NO_SUBLEAF)
->>>> +	if (entry->index == KVM_TDX_CPUID_NO_SUBLEAF) {
->>>>  		entry->index = 0;
->>>> +		entry->flags &= ~KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
->>>
->>> There are two callers of this. One is already zeroed, and the other has
->>> stack garbage in flags. But that second caller doesn't look at the
->>> flags so it is harmless. Maybe it would be simpler and clearer to just
->>> zero init the entry struct in that caller. Then you don't need to clear
->>> it here. Or alternatively set flags to zero above, and then add
->>> KVM_CPUID_FLAG_SIGNIFCANT_INDEX if needed. Rather than manipulating a
->>> single bit in a field of garbage, which seems weird.
-> 
-> +1, td_init_cpuid_entry2() should initialize flags to '0' and then set
-> KVM_CPUID_FLAG_SIGNIFCANT_INDEX as appropriate.
-> 
->>>> +	} else {
->>>> +		entry->flags |= KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
->>>> +	}
->>>>  
->>>> +	WARN_ON_ONCE(cpuid_function_is_indexed(entry->function) !=
->>>> +		     !!(entry->flags &
->>>> KVM_CPUID_FLAG_SIGNIFCANT_INDEX));
->>>
->>> It warns on leaf 0x23 for me. Is it intentional?
->>
->> I guess because the list in cpuid_function_is_indexed() is hard-coded
->> and 0x23 is not added into the list yet.
-> 
-> Yeah, I was anticipating that we'd run afoul of leaves that aren't known to
-> the kernel.  FWIW, it looks like 0x24 is also indexed.
-> 
->> It's fine for existing KVM code because cpuid_function_is_indexed() is
->> only used to check that if a CPUID entry is queried without index, it
->> shouldn't be included in the indexed list.
->>
->> But adding the consistency check here would cause compatibility issue.
->> Generally, if a new CPUID indexed function is added for some new CPU and
->> the TDX module reports it, KVM versions without the CPUID function in
->> the list will trigger the warning.
-> 
-> IMO, that's a good thing and working as intended.  WARNs aren't inherently evil.
-> While the goal is to be WARN-free, in this case triggering the WARN if the TDX
-> Module is updated (or new silicon arrives) is desirable, because it alerts us to
-> that new behavior, so that we can go update KVM.
+Flow:
+- Boot guest OS, load sev-guest.ko which registers itself as a TSM
+- PCI TSM creates sysfs nodes under "tsm" subdirectory in for all
+  TDISP-capable devices
+  - lock the device via:
+  	echo tsm0 > "/sys/bus/pci/devices/0000:01:00.0/tsm/lock"
+  - accept the device via:
+  	echo 1 > "/sys/bus/pci/devices/0000:01:00.0/tsm/accept"
+  - load the device driver:
+  	- DMA to encrypted memory should work right away
+	- MMIO regions reported in TDISP interface report will be mapped as encrypted
 
-So it effectively leverages the TDX module's interface to retrieve the hardware
-information to validate the hard-coded list.
 
-Do we need to consider the panic_on_warn case? I guess the option will not be
-enabled in a production environment?
+Since one of my test devices does not use private MMIO for the main function,
+there is 9/9 which allows https://github.com/billfarrow/pcimem.git mapping MMIO as private.
 
-> 
-> But we should "fix" 0x23 and 0x24 before landing this patch.
-> 
+
+The previous conversation is here:
+https://lore.kernel.org/r/20250218111017.491719-1-aik@amd.com 
+
+This is based on sha1
+4fe8662d1a9c Dan Williams PCI/TSM: Documentation: Add Maturity Map
+from
+https://git.kernel.org/pub/scm/linux/kernel/git/devsec/tsm.git/log/?h=staging
+and 3 cherrypicks on top, please find the exact tree at:
+https://github.com/AMDESE/linux-kvm/commits/tsm-staging
+
+The host support is pushed here:
+https://github.com/AMDESE/linux-kvm/commits/tsm
+
+The SEV TIO spec:
+https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/58271.pdf
+
+Individual patches have extra "---" comments (could have been "RFC"?)
+
+Please comment. Thanks.
+
+ps: quite a cc list from get_maintainers.pl.
+
+
+
+Alexey Kardashevskiy (9):
+  pci/tsm: Add TDISP report blob and helpers to parse it
+  pci/tsm: Add tsm_tdi_status
+  coco/sev-guest: Allow multiple source files in the driver
+  dma/swiotlb: Stop forcing SWIOTLB for TDISP devices
+  x86/mm: Stop forcing decrypted page state for TDISP devices
+  x86/dma-direct: Stop changing encrypted page state for TDISP devices
+  coco/sev-guest: Implement the guest support for SEV TIO (phase2)
+  RFC: PCI: Avoid needless touching of Command register
+  pci: Allow encrypted MMIO mapping via sysfs
+
+ arch/x86/Kconfig                        |   1 +
+ drivers/virt/coco/sev-guest/Kconfig     |   1 +
+ drivers/virt/coco/sev-guest/Makefile    |   6 +-
+ arch/x86/include/asm/dma-direct.h       |  39 ++
+ arch/x86/include/asm/sev-common.h       |   1 +
+ arch/x86/include/asm/sev.h              |  13 +
+ arch/x86/include/uapi/asm/svm.h         |  13 +
+ drivers/virt/coco/sev-guest/sev-guest.h |  20 +
+ include/linux/pci-tsm.h                 | 110 +++
+ include/linux/pci.h                     |   2 +-
+ include/linux/psp-sev.h                 |  31 +
+ include/linux/swiotlb.h                 |   9 +
+ include/uapi/linux/sev-guest.h          |  43 ++
+ arch/x86/coco/sev/core.c                |  53 ++
+ arch/x86/mm/mem_encrypt.c               |   5 +-
+ drivers/pci/mmap.c                      |  11 +-
+ drivers/pci/pci-sysfs.c                 |  27 +-
+ drivers/pci/probe.c                     |   5 +
+ drivers/pci/proc.c                      |   2 +-
+ drivers/pci/quirks.c                    |   9 +
+ drivers/virt/coco/sev-guest/sev-guest.c |  23 +-
+ drivers/virt/coco/sev-guest/tio.c       | 707 ++++++++++++++++++++
+ drivers/virt/coco/tsm-core.c            |  19 +
+ 23 files changed, 1129 insertions(+), 21 deletions(-)
+ create mode 100644 arch/x86/include/asm/dma-direct.h
+ create mode 100644 drivers/virt/coco/sev-guest/sev-guest.h
+ create mode 100644 drivers/virt/coco/sev-guest/tio.c
+
+-- 
+2.52.0
 
