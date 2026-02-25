@@ -1,374 +1,218 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012018.outbound.protection.outlook.com [52.101.43.18])
+Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01AB2FF669;
-	Wed, 25 Feb 2026 07:52:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772005958; cv=fail; b=fE5Pj4pGZARzFw4O76C/pRzS1fdeERZe10n25Rjn7nPquXz54D7YXOi3nQcB8KxNMFNTh9OMSnecBRKZEX5iHHNbTz55UHkAZvoQG+g0Daiq7GggsWf42xVAY8zEY3ULBM6dACOAtkvQ4hioIzlJleLd2wAjC+2+zEk7tttigFY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772005958; c=relaxed/simple;
-	bh=iNPWfAbvNi0sSWa3slLyqgZmhtP9fIJo2CWwKvarGC4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BfN2HcQvpiX4fJZFItU9a+MQBvEUkhA5CFFK7QuBbAtY9AvbyatyGPgUdmyYoqW2SuH90bVaHltPLIxVQ2xEBvov7UgmY+/03yHwOToEcmVlmXGjIDffjg5u5KlV5Snhv/Jk7aXo1i1UXXHMIdG4DZin5wSpLI+6CBodEGNVp5Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=h45s57/C; arc=fail smtp.client-ip=52.101.43.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DA43921EC;
+	Wed, 25 Feb 2026 10:11:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.142
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772014279; cv=none; b=nuiZF/mn3izYy50r6y/qC6Kc8wO20947er06naXW6UZGxO++vwIEwMDP1Zky/RBUIA2GBscvYl3w4woN4+Q3gOvYJrDajZVEIT70TJP4g7PTptWlzY263qtEqXj0x2GEv1RZrq5s9qAMrETtIIXG5QXZASLAotTDYgl5EdK3VTE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772014279; c=relaxed/simple;
+	bh=eSZii8dv7Xz5UWGE+/ISFeZ7qD7AF9CYPLIPb7rv3xU=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=vFf5eQadsKz2UGjVwiMOl43R69ZXqnBD3Wn7FE1II9Tis7UM8a2CQPCW4R+h/W0gq1GoC1j9n3tNyUw4RBD9nfC1x13VURU4TiKfMpGr06GxvQMi/7iaNxeBSI0HO5LwNhtdT3gJI6L0rhhZy8lZiisx8XVkRx7yWFJL+KPCLXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=XCmu9iSy; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=YBNPsb1O; arc=none smtp.client-ip=202.12.124.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="h45s57/C"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=S4+9O9iKrW6xB4kYsIP64D1wDNcDcIFKd3KbBt+hJtXq8Uandv3vLg9gT9nMsCENx1FYmACYrH6klbEoBoHSU77U5PZn84n/pDvS7NtSk4Ih/x//xYMKDEge/oLWjaW1nCX3FQXqxvW+vAWB54Asx/bYOASYfYFEQ5tLR/mqYv5bVBvhC5/oYETLIT2hack0a6QjlLXsC6R2K08Gy0Jby5r1dm2wCbLSLPuH4cgcx4+u9lRIX42JuRWA9OOH4sYkW3xZjCyj6jh6WCReXJX6t4pLaNDHkHic2FGPt03iOE5XWN9271Cyqc6y4RFwlxHs5cyvvn3m0/84338lo9WTrg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W8uOaPMyzcf4fHALNlJb5qM9uxuSYoRNOmYbQ0BL2x0=;
- b=M4toLzySierkFHzrdLVL7Dl4CuyEEH74fNx0Ybxin2wfrYypdjaS+A1uF5s2lnl5/1UYFgcP2D02ZhMCNFCaNIuSxzhdO26wmPlWvHQg+62dWObUiSu8dQU3VtcKrnha8nCUPPmDX9le1vLKWYC6JYICMW4Q8qs3ZnAbMx4PJiAnantWjwZGVRhW/sk4gNqZLt45fw19CksskmPFMwddA5NoM7Iy2xxvod1pZ3i3qVYR7ozbOeG/h4KYZJKI1WIS4qvWxa//2IujyEA30IiodbDVtGeIeoollqaeDIlUUR705/56LJKKgTCO+nLCZiAo7p8K5fqi+5Uzsruq8gocaA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W8uOaPMyzcf4fHALNlJb5qM9uxuSYoRNOmYbQ0BL2x0=;
- b=h45s57/Cg8/+1k5x44FBuGl6FTaREzsdBnLCDZ0vlnUkeBhdjTtqi5LpctrLMy/RpIRpGrjPFsGo7ov+vjzxVIA3y4etZKvaHvS5T9cAFreSBxpNwr/PyLohmeh8O8UQuVE/Bc9JwU6vqGkqbTQDBdPwSh+t1Ip4YF33tk8kz5M=
-Received: from BL0PR1501CA0013.namprd15.prod.outlook.com
- (2603:10b6:207:17::26) by DS7PR12MB6166.namprd12.prod.outlook.com
- (2603:10b6:8:99::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.22; Wed, 25 Feb
- 2026 07:52:32 +0000
-Received: from BL02EPF0001A106.namprd05.prod.outlook.com
- (2603:10b6:207:17:cafe::c6) by BL0PR1501CA0013.outlook.office365.com
- (2603:10b6:207:17::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.22 via Frontend Transport; Wed,
- 25 Feb 2026 07:52:38 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL02EPF0001A106.mail.protection.outlook.com (10.167.241.139) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9632.12 via Frontend Transport; Wed, 25 Feb 2026 07:52:31 +0000
-Received: from aiemdee.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 25 Feb
- 2026 01:52:23 -0600
-From: Alexey Kardashevskiy <aik@amd.com>
-To: <linux-kernel@vger.kernel.org>
-CC: <kvm@vger.kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian
-	<kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon
-	<will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, Steve Sistare <steven.sistare@oracle.com>, "Nicolin
- Chen" <nicolinc@nvidia.com>, <iommu@lists.linux.dev>, Alexey Kardashevskiy
-	<aik@amd.com>, <linux-coco@lists.linux.dev>, Dan Williams
-	<dan.j.williams@intel.com>, Santosh Shukla <santosh.shukla@amd.com>, "Pratik
- R . Sampat" <prsampat@amd.com>, Ackerley Tng <ackerleytng@google.com>, "Sean
- Christopherson" <seanjc@google.com>, Fuad Tabba <tabba@google.com>, Xu Yilun
-	<yilun.xu@linux.intel.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-Subject: [RFC PATCH kernel] iommufd: Allow mapping from KVM's guest_memfd
-Date: Wed, 25 Feb 2026 18:52:11 +1100
-Message-ID: <20260225075211.3353194-1-aik@amd.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="XCmu9iSy";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="YBNPsb1O"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.stl.internal (Postfix) with ESMTP id E45A31301181;
+	Wed, 25 Feb 2026 05:11:12 -0500 (EST)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-04.internal (MEProxy); Wed, 25 Feb 2026 05:11:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1772014272;
+	 x=1772021472; bh=Ncaaat0snY7jJs/mEFoT42GaKoP2o+ezuKrxHb8TFHY=; b=
+	XCmu9iSy7wkh3TiAjblgc++aqpfh8bzBaX5xtwiu5P63hNy0HGOSBhcpngyRaEmn
+	MNkeDuD7SJ8ctVIAXmhu02SGHcLnH8+QmeN4PepDqzAsfYs1qF0BswldVdA/X3AL
+	JtBOvKWkiBERce7lXxj+rghQCqlCMx3R9xIIpIvcQJKWtHCKs7darlbEye6J7qkV
+	dhiSSh56NKiqvOvHjUd0G+5iS2TfAkQjYD45aO2Y3vB7omo1ZRHak5XZ2q8HOakG
+	vXR01R47hS4zcA5M6gANX6GDwxMjWwDncn16TLyMRiMyRQjg6ThsJIrmAJgv4PI8
+	HO8+vi2gbrUiYaORt71ayQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1772014272; x=
+	1772021472; bh=Ncaaat0snY7jJs/mEFoT42GaKoP2o+ezuKrxHb8TFHY=; b=Y
+	BNPsb1OKogLePj4irrYimnHu5ngaEM8EQE83ueew8eNEQhlXs6S2Uj4nk3+9lmxh
+	HHp4+rK+IDYP+IPwUrkaDQWD0qCdoo1q2e2ldc48Q0pZZTLPBUVHXt+CRStIhXqe
+	GVR/aScYSW+lnyIfS3Ipf5e8q0ryzWoU1Utv0WJE6Ps+oLVr2InX25qgnvyJxx+0
+	0SDXQtX7WWae56GZbgtq/2IneS1aNfG8Elrs7ZpFcHcEbqPWg0U5RGcxki4914e8
+	fe1ndx2tkoSq63G2w9EG5urIeoO3cQ544fcyk13uqEcC3U503N8YgAQSsS8BxhX3
+	VMFqXVWhm3E1UA6+ANWZQ==
+X-ME-Sender: <xms:vcqeaSewtj2rvXaz7ThqOHJu4ZceQ2iicjaxs70AHm2TET73grTGVQ>
+    <xme:vcqeaXDejnrl0Bc5Xk_M5u-kvnP24I5_FlH9SDXNaYnswVxAyib3kqVH-cEfmYzzH
+    AYRbhhIh-k3Z9yIBLBd1h7DCFbPBclCx4XpKx8Y_EQdUvaF9pyk06Mj>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvgedvkeefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
+    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
+    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
+    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohephedtpdhmohguvgepshhmthhpohhu
+    thdprhgtphhtthhopegsphesrghlihgvnhekrdguvgdprhgtphhtthhopegufihmfiesrg
+    hmrgiiohhnrdgtohdruhhkpdhrtghpthhtohepnhgvvghrrghjrdhuphgrughhhigrhies
+    rghmugdrtghomhdprhgtphhtthhopegrihhksegrmhgurdgtohhmpdhrtghpthhtoheprg
+    hshhhishhhrdhkrghlrhgrsegrmhgurdgtohhmpdhrtghpthhtohephhhuihgsohdrfigr
+    nhhgsegrmhgurdgtohhmpdhrtghpthhtohepjhhovghrghdrrhhovgguvghlsegrmhgurd
+    gtohhmpdhrtghpthhtohepkhhimhdrphhhihhllhhiphhssegrmhgurdgtohhmpdhrtghp
+    thhtohepmhhitghhrggvlhdrrhhothhhsegrmhgurdgtohhm
+X-ME-Proxy: <xmx:vcqeaX6CjSXy0y3XoYaG0ZfAotWgcL_dZk9waDyWbq0Co3_wK5c2Cg>
+    <xmx:vcqeaQqJBpTMBTZKw4itiiJlNfvIUzAD0GaBUgV4CbQT031P3jBELw>
+    <xmx:vcqeaXVhZ8zRZi8ex_-yahKSruF9mo1F_ZOXk-dVmP_UDL5D6GbbUA>
+    <xmx:vcqeaQQEZ2YUrNtfuoYWX0PFHPmUJoxl8nBUNVCUc-smNZzYmuizOA>
+    <xmx:wMqeaYwYFEtQBeR5qALe60J2vOFcWhSiDbmzBu_rT8v7T30_D2ckmYNG>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id A9E0D700069; Wed, 25 Feb 2026 05:11:09 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-ThreadId: APJbg_pXKWbw
+Date: Wed, 25 Feb 2026 11:10:49 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Dan Williams" <dan.j.williams@intel.com>,
+ "Alexey Kardashevskiy" <aik@amd.com>, x86@kernel.org
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-pci@vger.kernel.org, "Thomas Gleixner" <tglx@linutronix.de>,
+ "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ "Sean Christopherson" <seanjc@google.com>,
+ "Paolo Bonzini" <pbonzini@redhat.com>,
+ "Andy Lutomirski" <luto@kernel.org>,
+ "Peter Zijlstra" <peterz@infradead.org>,
+ "Bjorn Helgaas" <bhelgaas@google.com>,
+ "Marek Szyprowski" <m.szyprowski@samsung.com>,
+ "Robin Murphy" <robin.murphy@arm.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Catalin Marinas" <catalin.marinas@arm.com>,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Mike Rapoport" <rppt@kernel.org>,
+ "Tom Lendacky" <thomas.lendacky@amd.com>,
+ "Ard Biesheuvel" <ardb@kernel.org>,
+ "Neeraj Upadhyay" <Neeraj.Upadhyay@amd.com>,
+ "Ashish Kalra" <ashish.kalra@amd.com>,
+ "Stefano Garzarella" <sgarzare@redhat.com>,
+ "Melody Wang" <huibo.wang@amd.com>,
+ "Seongman Lee" <augustus92@kaist.ac.kr>,
+ "Joerg Roedel" <joerg.roedel@amd.com>,
+ "Nikunj A Dadhania" <nikunj@amd.com>,
+ "Michael Roth" <michael.roth@amd.com>,
+ "Suravee Suthikulpanit" <suravee.suthikulpanit@amd.com>,
+ "Andi Kleen" <ak@linux.intel.com>,
+ "Kuppuswamy Sathyanarayanan"
+ <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ "Tony Luck" <tony.luck@intel.com>, "David Woodhouse" <dwmw@amazon.co.uk>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Denis Efremov" <efremov@linux.com>, "Geliang Tang" <geliang@kernel.org>,
+ "Piotr Gregor" <piotrgregor@rsyncme.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ "Alex Williamson" <alex@shazbot.org>,
+ "Jesse Barnes" <jbarnes@virtuousgeek.org>,
+ "Jacob Pan" <jacob.jun.pan@linux.intel.com>,
+ "Yinghai Lu" <yinghai@kernel.org>,
+ "Kevin Brodsky" <kevin.brodsky@arm.com>,
+ "Jonathan Cameron" <jonathan.cameron@huawei.com>,
+ "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ "Xu Yilun" <yilun.xu@linux.intel.com>,
+ "Herbert Xu" <herbert@gondor.apana.org.au>,
+ "Kim Phillips" <kim.phillips@amd.com>,
+ "Konrad Rzeszutek Wilk" <konrad.wilk@oracle.com>,
+ "Stefano Stabellini" <sstabellini@kernel.org>,
+ "Claire Chang" <tientzu@chromium.org>, linux-coco@lists.linux.dev,
+ iommu@lists.linux.dev
+Message-Id: <61d6cd68-cd51-4c6c-92fc-5aa6d01fccaa@app.fastmail.com>
+In-Reply-To: <699e93db9ad47_1cc510090@dwillia2-mobl4.notmuch>
+References: <20260225053806.3311234-1-aik@amd.com>
+ <20260225053806.3311234-2-aik@amd.com>
+ <699e93db9ad47_1cc510090@dwillia2-mobl4.notmuch>
+Subject: Re: [PATCH kernel 1/9] pci/tsm: Add TDISP report blob and helpers to parse it
 Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A106:EE_|DS7PR12MB6166:EE_
-X-MS-Office365-Filtering-Correlation-Id: 75a7f91a-71da-4a43-1515-08de7442d4c8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|376014|7416014|1800799024|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?JLPaNDMZYkzRYIGA0FeqorLKsDrRVoDCPbZcQ3FTovZVpUc/pV0ERfN9gBLX?=
- =?us-ascii?Q?xo5EOnGPciPBBC9hWV0QNiN8LvQxUVz810j3bBYE00y2X2BchHR+ArnDJd4W?=
- =?us-ascii?Q?P3TLSu5v2ZG8BNiudxq+F8+Qcc/53TixzTy2/EMt6kOgZZrMkVv15T4UG2GN?=
- =?us-ascii?Q?MZWJsZg62cWvXy1ZpcMeT++lbVWs3VAQhnd00cQrAQe1Zf2TPJai0VxJxHBr?=
- =?us-ascii?Q?LWCkPV6dvTcDeo02UvgYknM/sFD1+ykNc2ME8RQwE08irBy+03PKy/+X5xLw?=
- =?us-ascii?Q?nXDKx9lG/JQ+EVtA1XyjwJrJi2adibVSF+FK39+6XEW3wNvq/71Y+upoToQV?=
- =?us-ascii?Q?EchX8/knbzRIwQWmbAJB4bHsTOi2FSFLnFhI4yozAdRYK2cuyws3O0JpxJ4F?=
- =?us-ascii?Q?/LN8dqKZPJWvlj5ltyXH82+/JcBtSRK/g1SYSooSG7eQFdAPTNT66qhD3uEP?=
- =?us-ascii?Q?A/fqr/5kTB02hIPuh6PNGwjkqu/7go49b1MKxCmqKsH1d2P1zGPEOecg8jCC?=
- =?us-ascii?Q?+gF/gSqozwEPX8g9ENeRSePJzEUCJcWBCQUfnjw+8hYhpDFFHEcgTVbkiPnT?=
- =?us-ascii?Q?/cG7tW7meyPAumFlFqZ1qr9U+Qhf0kLbxr4L1pNOJLDPS/raakoHILsZAZMQ?=
- =?us-ascii?Q?OS4nmFxmOxJJAJIqg8Zb4+tvGJd06UXBvj/gCI6F4rlFbyKz6toS1+vAJlLR?=
- =?us-ascii?Q?SiL5OCS+OF/Fo6uCg/3BmXENjEdpXVnNrgJRwZFWZ0BIzy+KCWH2iKBZxXbc?=
- =?us-ascii?Q?0N1P0ZU591WWQ8cCysd9Q+1qDr1mFO5GYsxL0SNBg8VC5rh6cRzNyPnsYCFY?=
- =?us-ascii?Q?WcDRJdpW6g4wXF3Sz9jtJFg2tSnIgtJgv7e0ydMGiZENjZ+Ymx1sHqAV8TCl?=
- =?us-ascii?Q?DzGFUU+J5KIbVEdaER4KmQaQk25JYOPx9OQAB9sjC9j/fAEcz8ybU4x2P3lk?=
- =?us-ascii?Q?vSR97Bti0yukqkjrCu3F0ZZyni59nhGgfUABFm2WkaDk4i8ODwzxoQN66ZvF?=
- =?us-ascii?Q?7qUhh1z9YFwol/woRJUIaict4XGcLQJpWgknUQRU0vgk5tWmzBNk00pfAMF3?=
- =?us-ascii?Q?ZdJse20QmO4wOxIgSVrnKWClfTVr0q54hOetUIqVS3Fi6I1FalIhLziCkbHp?=
- =?us-ascii?Q?EA38DZykthjgxn/eKLTdm355YthxEIn26gau0sCq7fdK+O2hiHhJ08Dd6iq9?=
- =?us-ascii?Q?A32B1Cvfv3ev+wT6pQybgcH7Onb7zNJjdVOa32sInwh1fW6n7n/bQgkJHXzf?=
- =?us-ascii?Q?iFcnVaT/rBQbwOsp73hvwX/wnqQQKYdH2U/rJS+fLjE/IGlkNUXm/NRfTCqn?=
- =?us-ascii?Q?/fxAj36yJJeNoCY2dk5Jprs8aMEn7PuKya+pgLVuYntTzeq6xGbqgpEl3wna?=
- =?us-ascii?Q?hf4/mdFaGduUEO00j32ZFolym8c63wGd4poP8xJtMGq2IMb1NVrkD16/6dqs?=
- =?us-ascii?Q?idy2OUZjkskvj7Bt3n49SfVdhT31ifjC2W8I79BZ5XTKlkLhPD6k+gsjua/8?=
- =?us-ascii?Q?dPxGG1hk2pE5B+OiOWXQz8V4pdDU8e0S+b9PTd/j6a9P+k4kNVZAvAOE+xGG?=
- =?us-ascii?Q?wUK3PMaeBzqgpmmou0WCCW7nudtSTpS0gM/Osx3KzGXjqgoNzAouDVKnWD8Z?=
- =?us-ascii?Q?RiwaFz0wmOqKR/InqZxD9YhpA06mp58jLXmGp6SbUuHdJQOtylA8bv1ycCMz?=
- =?us-ascii?Q?W+tHoA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(376014)(7416014)(1800799024)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	rCEYdvds6LZ3vctCvc1fjPi7ZBKiMSqhOdmHRyJ/bmHZcJexnQ6ONIu5/Z/8Tv0xNrJxSp993k/a6vPK2kDRt7alMPMZSIf2NZ5axUCF+LpU28/n0XEHNi05QXjaOFl4f9W6mXvUpRpaakqFRviQzjUf7lzcpZpiZyhWvjdMuw/NarQSc36EqCF1s6Ms9HfL5xz8Yh4lbRxm/H3LLZcyfkNmmGHSLyjGLJtOlvwo9HU6g8b/O2qw/rVQJ4OyolFJ/XghQGBLbNgLSegMVXVhMUwAoGyPeteLr2SxJXz+/mnXwHmzq1IDiVis887MK18MITJAFdJHwYHWgz3nT9oaGiAOl6hH47p348GrRA46/z4g1XXrmzdfoAq5siYdTogyAd+HovzuKXCZcJaftCi98IJE6GNx28IBXjzOtt6oZXjOIa0dyxLhbZoc1VUBuAoz
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2026 07:52:31.9362
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 75a7f91a-71da-4a43-1515-08de7442d4c8
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A106.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6166
+Content-Transfer-Encoding: 7bit
 
-CoCo VMs get their private memory allocated from guest_memfd
-("gmemfd") which is a KVM facility similar to memfd.
-The gmemfds does not allow mapping private memory to the userspace
-so the IOMMU_IOAS_MAP ioctl does not work.
+On Wed, Feb 25, 2026, at 07:16, dan.j.williams@intel.com wrote:
+> Alexey Kardashevskiy wrote:
+> [..]
+>> +struct tdi_report_header {
+>> +	__u16 interface_info; /* TSM_TDI_REPORT_xxx */
+>> +	__u16 reserved2;
+>> +	__u16 msi_x_message_control;
+>> +	__u16 lnr_control;
+>> +	__u32 tph_control;
+>> +	__u32 mmio_range_count;
+>> +} __packed;
+>> +
+>> +/*
+>> + * Each MMIO Range of the TDI is reported with the MMIO reporting offset added.
+>> + * Base and size in units of 4K pages
+>> + */
+>> +#define TSM_TDI_REPORT_MMIO_MSIX_TABLE		BIT(0)
+>> +#define TSM_TDI_REPORT_MMIO_PBA			BIT(1)
+>> +#define TSM_TDI_REPORT_MMIO_IS_NON_TEE		BIT(2)
+>> +#define TSM_TDI_REPORT_MMIO_IS_UPDATABLE	BIT(3)
+>> +#define TSM_TDI_REPORT_MMIO_RESERVED		GENMASK(15, 4)
+>> +#define TSM_TDI_REPORT_MMIO_RANGE_ID		GENMASK(31, 16)
+>> +
+>> +struct tdi_report_mmio_range {
+>> +	__u64 first_page;		/* First 4K page with offset added */
+>> +	__u32 num;			/* Number of 4K pages in this range */
+>> +	__u32 range_attributes;		/* TSM_TDI_REPORT_MMIO_xxx */
+>
+> Those should be __le64 and le32, right? But see below for another
+> option...
 
-Use the existing IOMMU_IOAS_MAP_FILE ioctl to allow mapping from
-fd + offset. Detect the gmemfd case in pfn_reader_user_pin().
+If these come from DMA transfers from a device, yes.
 
-For the new guest_memfd type, no additional reference is taken as
-pinning is guaranteed by the KVM guest_memfd library.
+>> +} __packed;
 
-There is no KVM-GMEMFD->IOMMUFD direct notification mechanism as
-the assumption is that:
-1) page stage change events will be handled by VMM which is going
-to call IOMMUFD to remap pages;
-2) shrinking GMEMFD equals to VM memory unplug and VMM is going to
-handle it.
+The structure appears to be allocated with kzalloc, so it is always
+aligned to __alignof__(u64) or higher, and it's better to drop the
+__packed annotation.
 
-Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
----
+>
+> /*
+>  * PCIe ECN TEE Device Interface Security Protocol (TDISP)
+>  *
+>  * Device Interface Report data object layout as defined by PCIe r7.0 
+> section
+>  * 11.3.11
+>  */
+> #define PCI_TSM_DEVIF_REPORT_INFO 0
+> #define PCI_TSM_DEVIF_REPORT_MSIX 4
+> #define PCI_TSM_DEVIF_REPORT_LNR 6
+> #define PCI_TSM_DEVIF_REPORT_TPH 8
+> #define PCI_TSM_DEVIF_REPORT_MMIO_COUNT 12
+> #define  PCI_TSM_DEVIF_REPORT_MMIO_PFN 0 /* An interface report 'pfn' 
+> is 4K in size */
+> #define  PCI_TSM_DEVIF_REPORT_MMIO_NR_PFNS 8
+> #define  PCI_TSM_DEVIF_REPORT_MMIO_ATTR 12
+> #define  PCI_TSM_DEVIF_REPORT_MMIO_ATTR_MSIX_TABLE BIT(0)
+> #define  PCI_TSM_DEVIF_REPORT_MMIO_ATTR_MSIX_PBA BIT(1)
+> #define  PCI_TSM_DEVIF_REPORT_MMIO_ATTR_IS_NON_TEE BIT(2)
+> #define  PCI_TSM_DEVIF_REPORT_MMIO_ATTR_IS_UPDATABLE BIT(3)
+> #define  PCI_TSM_DEVIF_REPORT_MMIO_ATTR_RANGE_ID GENMASK(31, 16)
+> #define  PCI_TSM_DEVIF_REPORT_MMIO_SIZE (16)
+> #define PCI_TSM_DEVIF_REPORT_BASE_SIZE(nr_mmio) (16 + nr_mmio * 
+> PCI_TSM_DEVIF_REPORT_MMIO_SIZE)
+>
+> Any strong feelings one way or the other? I have a mild preference for
+> this offset+bitfields approach.
 
-This is for Trusted IO == TEE-IO == PCIe TDISP, etc.
+I assume by bitfield you mean the macros above, not the C structure
+syntax with ':', right? The macros seem fine to me, while C bitfields
+again would make the code nonportable due to architecture specific
+bitfield positioning.
 
-Previously posted here:
-https://lore.kernel.org/r/20250218111017.491719-13-aik@amd.com
-The main comment was "what is the lifetime of those folios()" and
-GMEMFD + QEMU should take care of it.
-
-And horrendous stuff like this is not really useful:
-https://github.com/AMDESE/linux-kvm/commit/7d73fd2cccb8489b1
-
----
- include/linux/kvm_host.h      |  4 +
- drivers/iommu/iommufd/pages.c | 80 ++++++++++++++++++--
- virt/kvm/guest_memfd.c        | 36 +++++++++
- 3 files changed, 113 insertions(+), 7 deletions(-)
-
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 995db7a7ba57..9369cf22b24e 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2673,4 +2673,8 @@ unsigned long kvm_get_vm_memory_attributes(struct kvm *kvm, gfn_t gfn);
- int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
- 					   struct kvm_memory_attributes2 *attrs);
- 
-+bool kvm_is_gmemfd(struct file *file);
-+struct folio *kvm_gmemfd_get_pfn(struct file *file, unsigned long index,
-+				 unsigned long *pfn, int *max_order);
-+
- #endif
-diff --git a/drivers/iommu/iommufd/pages.c b/drivers/iommu/iommufd/pages.c
-index dbe51ecb9a20..4c07e39e17d0 100644
---- a/drivers/iommu/iommufd/pages.c
-+++ b/drivers/iommu/iommufd/pages.c
-@@ -56,6 +56,9 @@
- #include <linux/slab.h>
- #include <linux/sched/mm.h>
- #include <linux/vfio_pci_core.h>
-+#include <linux/pagemap.h>
-+#include <linux/memcontrol.h>
-+#include <linux/kvm_host.h>
- 
- #include "double_span.h"
- #include "io_pagetable.h"
-@@ -660,7 +663,8 @@ static void batch_from_pages(struct pfn_batch *batch, struct page **pages,
- }
- 
- static int batch_from_folios(struct pfn_batch *batch, struct folio ***folios_p,
--			     unsigned long *offset_p, unsigned long npages)
-+			     unsigned long *offset_p, unsigned long npages,
-+			     bool do_pin)
- {
- 	int rc = 0;
- 	struct folio **folios = *folios_p;
-@@ -676,7 +680,7 @@ static int batch_from_folios(struct pfn_batch *batch, struct folio ***folios_p,
- 
- 		if (!batch_add_pfn_num(batch, pfn, nr, BATCH_CPU_MEMORY))
- 			break;
--		if (nr > 1) {
-+		if (nr > 1 && do_pin) {
- 			rc = folio_add_pins(folio, nr - 1);
- 			if (rc) {
- 				batch_remove_pfn_num(batch, nr);
-@@ -697,6 +701,7 @@ static int batch_from_folios(struct pfn_batch *batch, struct folio ***folios_p,
- static void batch_unpin(struct pfn_batch *batch, struct iopt_pages *pages,
- 			unsigned int first_page_off, size_t npages)
- {
-+	bool do_unpin = !kvm_is_gmemfd(pages->file);
- 	unsigned int cur = 0;
- 
- 	while (first_page_off) {
-@@ -710,9 +715,12 @@ static void batch_unpin(struct pfn_batch *batch, struct iopt_pages *pages,
- 		size_t to_unpin = min_t(size_t, npages,
- 					batch->npfns[cur] - first_page_off);
- 
--		unpin_user_page_range_dirty_lock(
--			pfn_to_page(batch->pfns[cur] + first_page_off),
--			to_unpin, pages->writable);
-+		/* Do nothing for guest_memfd */
-+		if (do_unpin)
-+			unpin_user_page_range_dirty_lock(
-+				pfn_to_page(batch->pfns[cur] + first_page_off),
-+				to_unpin, pages->writable);
-+
- 		iopt_pages_sub_npinned(pages, to_unpin);
- 		cur++;
- 		first_page_off = 0;
-@@ -872,6 +880,57 @@ static long pin_memfd_pages(struct pfn_reader_user *user, unsigned long start,
- 	return npages_out;
- }
- 
-+static long pin_guest_memfd_pages(struct pfn_reader_user *user, loff_t start, unsigned long npages)
-+{
-+	struct page **upages = user->upages;
-+	unsigned long offset = 0;
-+	loff_t uptr = start;
-+	long rc = 0;
-+
-+	for (unsigned long i = 0; (uptr - start) < (npages << PAGE_SHIFT); ++i) {
-+		unsigned long gfn = 0, pfn = 0;
-+		int max_order = 0;
-+		struct folio *folio;
-+
-+		folio = kvm_gmemfd_get_pfn(user->file, uptr >> PAGE_SHIFT, &pfn, &max_order);
-+		if (IS_ERR(folio))
-+			rc = PTR_ERR(folio);
-+
-+		if (rc == -EINVAL && i == 0) {
-+			pr_err_once("Must be vfio mmio at gfn=%lx pfn=%lx, skipping\n", gfn, pfn);
-+			return rc;
-+		}
-+
-+		if (rc) {
-+			pr_err("%s: %ld %ld %lx -> %lx\n", __func__,
-+			       rc, i, (unsigned long) uptr, (unsigned long) pfn);
-+			break;
-+		}
-+
-+		if (i == 0)
-+			offset = offset_in_folio(folio, start) >> PAGE_SHIFT;
-+
-+		user->ufolios[i] = folio;
-+
-+		if (upages) {
-+			unsigned long np = (1UL << (max_order + PAGE_SHIFT)) - offset_in_folio(folio, uptr);
-+
-+			for (unsigned long j = 0; j < np; ++j)
-+				*upages++ = folio_page(folio, offset + j);
-+		}
-+
-+		uptr += (1UL << (max_order + PAGE_SHIFT)) - offset_in_folio(folio, uptr);
-+	}
-+
-+	if (!rc) {
-+		rc = npages;
-+		user->ufolios_next = user->ufolios;
-+		user->ufolios_offset = offset;
-+	}
-+
-+	return rc;
-+}
-+
- static int pfn_reader_user_pin(struct pfn_reader_user *user,
- 			       struct iopt_pages *pages,
- 			       unsigned long start_index,
-@@ -925,7 +984,13 @@ static int pfn_reader_user_pin(struct pfn_reader_user *user,
- 
- 	if (user->file) {
- 		start = pages->start + (start_index * PAGE_SIZE);
--		rc = pin_memfd_pages(user, start, npages);
-+		if (kvm_is_gmemfd(pages->file)) {
-+			rc = pin_guest_memfd_pages(user, start, npages);
-+		} else {
-+			pr_err("UNEXP PINFD start=%lx sz=%lx file=%lx",
-+				start, npages << PAGE_SHIFT, (ulong) pages->file);
-+			rc = pin_memfd_pages(user, start, npages);
-+		}
- 	} else if (!remote_mm) {
- 		uptr = (uintptr_t)(pages->uptr + start_index * PAGE_SIZE);
- 		rc = pin_user_pages_fast(uptr, npages, user->gup_flags,
-@@ -1221,7 +1286,8 @@ static int pfn_reader_fill_span(struct pfn_reader *pfns)
- 				 npages);
- 	else
- 		rc = batch_from_folios(&pfns->batch, &user->ufolios_next,
--				       &user->ufolios_offset, npages);
-+				       &user->ufolios_offset, npages,
-+				       !kvm_is_gmemfd(pfns->pages->file));
- 	return rc;
- }
- 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index e4e21068cf2a..2a313888c21b 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -1794,3 +1794,39 @@ void kvm_gmem_exit(void)
- 	rcu_barrier();
- 	kmem_cache_destroy(kvm_gmem_inode_cachep);
- }
-+
-+bool kvm_is_gmemfd(struct file *file)
-+{
-+	if (!file)
-+		return false;
-+
-+	if (file->f_op != &kvm_gmem_fops)
-+		return false;
-+
-+	return true;
-+}
-+EXPORT_SYMBOL_GPL(kvm_is_gmemfd);
-+
-+struct folio *kvm_gmemfd_get_pfn(struct file *file, unsigned long index,
-+				 unsigned long *pfn, int *max_order)
-+{
-+	struct inode *inode = file_inode(file);
-+	struct folio *folio;
-+
-+	if (!inode || !kvm_is_gmemfd(file))
-+		return NULL;
-+
-+	folio = kvm_gmem_get_folio(inode, index);
-+	if (!folio)
-+		return NULL;
-+
-+
-+	*pfn = folio_pfn(folio) + (index & (folio_nr_pages(folio) - 1));
-+	*max_order = folio_order(folio);
-+
-+	folio_put(folio);
-+	folio_unlock(folio);
-+
-+	return folio;
-+}
-+EXPORT_SYMBOL_GPL(kvm_gmemfd_get_pfn);
--- 
-2.52.0
-
+       Arnd
