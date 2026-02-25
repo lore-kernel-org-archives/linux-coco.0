@@ -1,102 +1,112 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBF51EFFB7
-	for <linux-coco@lists.linux.dev>; Wed, 25 Feb 2026 00:18:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329E420C012
+	for <linux-coco@lists.linux.dev>; Wed, 25 Feb 2026 01:20:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771978691; cv=none; b=K+9Qr3+k1a9m5qlf0EdwvPIZHErQNGBa4m+cHYI7f+FrpOV26QqtYRav6MI5T2iskVzRuwYlNDMJTaE761zOf+l3Y93creCgVVhu7KL/TooP2MO/w4OsxiHUGC1PiV/T3PxmyZcIV1U6wVBAAgBHN8JLwJYar/c7PkBaYCWUNGI=
+	t=1771982453; cv=none; b=CcibFD5fE1whbZdv2xq5vUX6zQ4YRh7jJHEOhcqvj+M2qIFJASU34iq7suWdRz4L0YN5MJMDj9uNyDimHSeCTqWYUYJQHBN5vNDP9opoHxWgmr/oKH3cY/5zrScRttpGWmWqDzzyxGnMMJW6s4VpiglOY9LhwIOf5u8trGu5R2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771978691; c=relaxed/simple;
-	bh=bYVVLZqdIImz6W8bPziDXDDa2N8sm/FTjvgZPVHPdbs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F6BYdODVQP/p7W41qwHHDZ/U2VpJzbOgYx7FFHsGK6vRWDMkNodoWZbBsfpnhND4E9v0g1v9y8uZsIBiLGWXXEGuduKXDOvngYH24lxPHuEzBS8YXuUJdN21uSNLPpIh01HXdrgiDPlhU6VWNhfzxfumDJeap3JBXkux8XKBEfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O8FDCuhz; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1771982453; c=relaxed/simple;
+	bh=rIfQEdmFShSU/hfE1nBXkImYGxL0rG4etafqHLncUjo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=XGLigyesw4QGyYPDUbLQiE2MAo6+OsB4gS8I8AyqH2xhG8goqKgEyl+o8r/ZwrU4JaLNgWLxtAfHl7iYOdyFypirGmwmTp67AbAfkd5m6SaqC0101+iSq5C+MNuv7YGHj4xnlQxqk3doh7/zCy6te7I01Q/qIdN3UMb7vjE2nqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m/EU3UET; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O8FDCuhz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771978690; x=1803514690;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=bYVVLZqdIImz6W8bPziDXDDa2N8sm/FTjvgZPVHPdbs=;
-  b=O8FDCuhzX56zLlrha6qgAZn8PBGB7xiVFbAN0m0m8FcBUxYxi9cc706L
-   xVdpjHZdi7hy49BEbHaIiiNSgv30hlJakDgu6rtRDZ5Rv2nMJaJBa0pvl
-   rgHw7Bwp+I3rBlOvclwSvFxdHnB/QHBN+ncQn7PTqColSl38F6X7cJLib
-   rL0gqRlvtyw9zghUmb1P34WqHifDt47pt5itAs/azviUEv51oUg08NJ24
-   y1WnAXI9/SWXUg/pT1FclNoRI9Ngh0YO3b/d5A5GGSn9fPTtYb1Bua6NP
-   o/jlvJEgIr0AjZFiuTZg20dpnv41OFe3rpKiWQfJMY1QM9u9weF4jCbv2
-   Q==;
-X-CSE-ConnectionGUID: TXnkwtetS1aEZk0kPeAcNA==
-X-CSE-MsgGUID: x6HebuAdRBe2/D8dhIaEDQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11711"; a="76844698"
-X-IronPort-AV: E=Sophos;i="6.21,309,1763452800"; 
-   d="scan'208";a="76844698"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2026 16:18:10 -0800
-X-CSE-ConnectionGUID: Vs0tWiL+TOaZPAyEHQ+eUQ==
-X-CSE-MsgGUID: w38Ep/VeTBuLbg/Sq5cOtQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,309,1763452800"; 
-   d="scan'208";a="216075387"
-Received: from louislu-mobl2.ccr.corp.intel.com (HELO [10.124.240.233]) ([10.124.240.233])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2026 16:18:07 -0800
-Message-ID: <f4b9ef8c-4cb8-4af6-93ff-49a206ae564a@linux.intel.com>
-Date: Wed, 25 Feb 2026 08:18:07 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m/EU3UET"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2adba04421eso37824435ad.3
+        for <linux-coco@lists.linux.dev>; Tue, 24 Feb 2026 17:20:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771982452; x=1772587252; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NOLZOHpBY9NF13p+U0yWvHRv6RzqdAH2//7LWxAyLYY=;
+        b=m/EU3UET73nwlFNzVf4eBf5m6Nxbl812qSevQ4WK5spezHFr6A16AoX0N/m2DkZP9P
+         K8BCYnFyH3xGtkyE6UgOVGJu9uryAv+93hgmIDJGknytm9BO/ccgAsx9aY1+HoXawm/s
+         LceZ72JY/VcVMAdBOnuQiphxnV6qaT2BpCK8zUsvupjZtFlegbt2TnWL6EAkPsYxTGUR
+         Bum70GdyHMt43B91aNuoPYR+uQEX9qKitgN9HdfDgDvKE0eK3SZDGgiNY/LajrKlT539
+         mO187P67NW8NNXg9SPZ0sBgJdkEc7H3uh5U8ceW+wpfTBvDvqyyP4k+m1Rjq49udAf4g
+         +CSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771982452; x=1772587252;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NOLZOHpBY9NF13p+U0yWvHRv6RzqdAH2//7LWxAyLYY=;
+        b=qvz6yeufitTuTG+BNl+tggtu9Rh62i0OohdVbU+JfepZNNaPskfXcrT66R3ZdyiuO3
+         NayOz3s6+MSBP8K3h/W9o5EcH/UjpU0CNk/yrJ5hKbW+WJJwoPUxOJsbJvmnUAdpN2zZ
+         s4ULmFeUp+SORIMX9OfGEhZ90FHejUGoEzPfc0jT/2li1xzJz2Obf9yXGdnITDlVzIKV
+         D3DYLbWQcnN4uAl3Q4S+RGpqCymu0WvJdfU/dLyPMosbk/l/D8LuOmJEZGrsOtYJZ/8R
+         gKM8Fx3YDcrlUQu8D3JnDIURjmUZbDEB8j5ehIFjLOpJK1vajPrmLhUFdIRA5oJI2ZiB
+         GXow==
+X-Forwarded-Encrypted: i=1; AJvYcCWuD65RiqPsvqSbDAAYTptKb/GCVhjPFGl6+PBAVCvtjCXFnqhUx1W98XmTj0upLHdORmjQp20MhtRO@lists.linux.dev
+X-Gm-Message-State: AOJu0YwnIVlLAfpdjpXtqs9cqUN7tWBRYI/aXP0ZyfJafoTKXom3R6au
+	y1w3nlDFwBtUvThHSPKCh1bntAgtzbJPwLZOa+xP0lY7g3Sb/vMgTGsK5z5Sof/DiP8R4YoErsq
+	kINmf1w==
+X-Received: from plct10.prod.google.com ([2002:a17:902:d28a:b0:2a9:8200:498b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2c7:b0:2a9:47d0:12cf
+ with SMTP id d9443c01a7336-2ad743fbdf1mr128338145ad.4.1771982451342; Tue, 24
+ Feb 2026 17:20:51 -0800 (PST)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Tue, 24 Feb 2026 17:20:35 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: TDX: Set SIGNIFCANT_INDEX flag for supported CPUIDs
-To: Sean Christopherson <seanjc@google.com>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>,
- "changyuanl@google.com" <changyuanl@google.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>, Binbin Wu
- <binbin.wu@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>,
- "bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
- "kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "tglx@kernel.org" <tglx@kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-References: <20260223214336.722463-1-changyuanl@google.com>
- <213d614fe73e183a230c8f4e0c8fa1cc3d45df39.camel@intel.com>
- <fd3b58fd-a450-471a-89a3-541c3f88c874@linux.intel.com>
- <aZ3LxD5XMepnU8jh@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <aZ3LxD5XMepnU8jh@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
+Message-ID: <20260225012049.920665-1-seanjc@google.com>
+Subject: [PATCH 00/14] KVM: x86: Emulator MMIO fix and cleanups
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Kiryl Shutsemau <kas@kernel.org>
+Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Yashu Zhang <zhangjiaji1@huawei.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Michael Roth <michael.roth@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+
+Fix a UAF stack bug where KVM references a stack pointer around an exit to
+userspace, and then clean up the related code to try to make it easier to
+maintain (not necessarily "easy", but "easier").
+
+The SEV-ES and TDX changes are compile-tested only.
+
+Sean Christopherson (14):
+  KVM: x86: Use scratch field in MMIO fragment to hold small write
+    values
+  KVM: x86: Open code handling of completed MMIO reads in
+    emulator_read_write()
+  KVM: x86: Trace unsatisfied MMIO reads on a per-page basis
+  KVM: x86: Use local MMIO fragment variable to clean up
+    emulator_read_write()
+  KVM: x86: Open code read vs. write userspace MMIO exits in
+    emulator_read_write()
+  KVM: x86: Move MMIO write tracing into vcpu_mmio_write()
+  KVM: x86: Harden SEV-ES MMIO against on-stack use-after-free
+  KVM: x86: Dedup kvm_sev_es_mmio_{read,write}()
+  KVM: x86: Consolidate SEV-ES MMIO emulation into a single public API
+  KVM: x86: Bury emulator read/write ops in
+    emulator_{read,write}_emulated()
+  KVM: x86: Fold emulator_write_phys() into write_emulate()
+  KVM: x86: Rename .read_write_emulate() to .read_write_guest()
+  KVM: x86: Don't panic the kernel if completing userspace I/O / MMIO
+    goes sideways
+  KVM: x86: Add helpers to prepare kvm_run for userspace MMIO exit
+
+ arch/x86/include/asm/kvm_host.h |   3 -
+ arch/x86/kvm/emulate.c          |  13 ++
+ arch/x86/kvm/svm/sev.c          |  20 +--
+ arch/x86/kvm/vmx/tdx.c          |  14 +-
+ arch/x86/kvm/x86.c              | 287 ++++++++++++++------------------
+ arch/x86/kvm/x86.h              |  30 +++-
+ include/linux/kvm_host.h        |   3 +-
+ 7 files changed, 178 insertions(+), 192 deletions(-)
 
 
-
-On 2/25/2026 12:03 AM, Sean Christopherson wrote:
-> 
->>>> +	} else {
->>>> +		entry->flags |= KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
->>>> +	}
->>>>  
->>>> +	WARN_ON_ONCE(cpuid_function_is_indexed(entry->function) !=
->>>> +		     !!(entry->flags &
->>>> KVM_CPUID_FLAG_SIGNIFCANT_INDEX));
->>>
->>> It warns on leaf 0x23 for me. Is it intentional?
->>
->> I guess because the list in cpuid_function_is_indexed() is hard-coded
->> and 0x23 is not added into the list yet.
-> 
-> Yeah, I was anticipating that we'd run afoul of leaves that aren't known to
-> the kernel.  FWIW, it looks like 0x24 is also indexed.
-
-0x24 is there already.
-
+base-commit: 183bb0ce8c77b0fd1fb25874112bc8751a461e49
+-- 
+2.53.0.414.gf7e9f6c205-goog
 
