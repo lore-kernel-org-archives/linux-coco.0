@@ -1,86 +1,94 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0257738F232
-	for <linux-coco@lists.linux.dev>; Wed, 25 Feb 2026 13:55:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0AA33AEF51
+	for <linux-coco@lists.linux.dev>; Wed, 25 Feb 2026 13:59:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772027726; cv=none; b=ZNM/RyDKlqsrfyeSFxAvMnjiGWd7UtlCe/y5aXUcynLAyIrDLzp3r02J0r7foFjZh4O/K8TLukNIQzz0/4wcjM+gyNy9d21ij9H3EpKJ57luYGkiNZkTt3VaM9S8rhOb7bqrr6VmCFTaWeQYKYPB/p+VDoKERajRY6zjpc5Vwh0=
+	t=1772027949; cv=none; b=GO4BjqyhTl/wsLIOsmAL61tpzLbCkEmnjlQ7wHuXH+84zlsWCaAlGYYbeSqMdwa6qJKBb5Yb0aoQHeZlWnVRejmhYc7wgNfH8/ter8k1k4nyIWbqpZvFFoYDwtfriJpMLctiXaN4ZdkxE9JXq2UE4k+LcnLFYK8fm7ycrtCPXec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772027726; c=relaxed/simple;
-	bh=j8QD+YOKTudOlbEWjrHGAEdh2xgoRTUdHV6Nf6Pmn5U=;
+	s=arc-20240116; t=1772027949; c=relaxed/simple;
+	bh=kUnsSf6fs3cOu9pmGJrE9E1cjS39vhoQ4IC7090/cMA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=asDpk21VIl/VaO4dF4wy+HmyzkCMl3ftiU6wJsDIWijRJ/sz206EpCWgMP+pK5UL6feNiAh+Y4Wn+eaOSBYTt5ruGsZ+q/OUigjSy6oHCg8rVXaQ4IM8dUKkgAeW/sNo1aWzlOMvb0ruUfFCnnDKaYGVqTW6mMQLCqbCWHTIbWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DS2dKdsU; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=HRyGSGi0K9fJ7WLLN9qnFgwEvMCZ8GKQLt3XtL09TFSTGlOh3lHulYhc2va5L/GAkbZ7M2pEZlfAE8PQYbB0Pd5+Azq+Ma+sDt2KgjFLaT671RfYS9546t0zK9CrcQf9aUWAu+GXprFB2tQgVM3uUAt2JGsWER9poOsxa7wHylE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YVRpx3Iu; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DS2dKdsU"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3545b891dd1so38131024a91.1
-        for <linux-coco@lists.linux.dev>; Wed, 25 Feb 2026 05:55:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YVRpx3Iu"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2a944e6336eso415585505ad.0
+        for <linux-coco@lists.linux.dev>; Wed, 25 Feb 2026 05:59:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772027724; x=1772632524; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1772027948; x=1772632748; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hj5kWs8x13Nc52H5YwkoGAX7bER0Qj5o5LwtSPL8HY8=;
-        b=DS2dKdsUjm0MVmeD9nNNxBtflBOUj7LZklLJbyMgyZnTpKnA9CTYDgJJ7F2lMtxL7/
-         RtuvAvfY5XRQ/I5PySPbWGyF9GAV+LsgQxsQHLEzC2g0mqbyUr2y8fJMSxPhutai5rYM
-         +TXv2Sz8NUWXPJGQx3xAVJAEkpogaQ43twP0dTMqelUTp2p9k4p0rsNxklKxW01UmVVe
-         9TOIk5RPGEq/ud+yfUkSEvC1LWUnBQQPeedyt21iM9SMlqNpPsYKcjGzw2H5LLQqwnUW
-         6Dd3bfTkttv7wj96pARQxrCiA/HP71jOTRSHeXTeK6dNKxOY8N/IOqwnVnNrWhGZ4LWv
-         SnNA==
+        bh=nDEZNV3YXPdpDxBVV0b0e6H2LhU4cBUkmu8+IMpXwGY=;
+        b=YVRpx3IuF5XlGI2ye5qJgpsHATO6eutM/CTPTfTUE8kTdelbUN8HxW1i89K1i3Lixg
+         dJoNxgTcKzmgpSjgFMRbGpN9Mbl62Ce4QXmKjFk7HBcbOMsriPneM9bClyQ5no3pfYkS
+         TXqzbp7WAUEbOCa6UE803RDivhU0vMuYT9mEqsiRbr1QOzjtFjiUOWlSMdefDF1/Aqpb
+         ILJfHCsWSi/9/qx10LrY00aNIGewE2E1vfJymyZmckIYGhuuM7cj3EWz0aTQ2CaG6k46
+         t1jOVmS6AX2cR70kFKzVBgml4sYYwelDF6GzMtdOd/T/Td7wAiew3MDC0bDadA0NXpbw
+         o4Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772027724; x=1772632524;
+        d=1e100.net; s=20230601; t=1772027948; x=1772632748;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hj5kWs8x13Nc52H5YwkoGAX7bER0Qj5o5LwtSPL8HY8=;
-        b=fZZWJJyNBBPhtuN7XbR+zcI8j108INXuqOwFz1neDAYoMKotD79w+B5kuzXJlEIFXr
-         wbMOXj5VnwyLQCy9sMiU8ckdL7ktlMWou5mO51hLdHMpxBeBijF30tarfvScACRfCEyz
-         MblnMFPY0mS8uk3zp6IHrBJjZ0+xnJQFIzGhTOxyxT0LulbImi5awD7y8azOThgQFI3v
-         D5YZkoODkCelgXoTcxQfERMVxpG3AyhdhVpVQQbn7bWFs8eGQgJ0ywwZLU6Ra+W0/chX
-         +EjPH+94BwIe+msMb/UIcS45fiibstaYeq6+b496Mg0+1WIrgepx+HLpVxZRa1S9J+tQ
-         GhsA==
-X-Forwarded-Encrypted: i=1; AJvYcCX+2ffpeV+4WknEsjTzzm1DCOBgLTJSE0v/EkjdMTfPnpp15jOyONTOLb2kJ93sedzStktoUMH2NKQ6@lists.linux.dev
-X-Gm-Message-State: AOJu0YyA6iPwgLh9QquQwhaLCSwxc6mCb//TtqPGf7irPgTnEshlsjqp
-	CTMsGb3Z97VePloCh20sumkvCX4jk/a7LcN19qIHeIa7W18DEMP0bXtlallmisWjLyfTQSqdoDZ
-	lXxlHhQ==
-X-Received: from pjbee5.prod.google.com ([2002:a17:90a:fc45:b0:34f:96fa:45e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3147:b0:354:a065:ec3b
- with SMTP id 98e67ed59e1d1-358ae8d5edbmr14072256a91.27.1772027724097; Wed, 25
- Feb 2026 05:55:24 -0800 (PST)
-Date: Wed, 25 Feb 2026 05:55:22 -0800
-In-Reply-To: <20260225075211.3353194-1-aik@amd.com>
+        bh=nDEZNV3YXPdpDxBVV0b0e6H2LhU4cBUkmu8+IMpXwGY=;
+        b=mR1h2UihE7VJBt8AWKUl7LUfppTHuKr7b5+p+phqAY7Nt06ZVIRfQ7dZL6+3hvuCnN
+         2qWXV7aLPoR7yLkd85ZG0+WGW03CeQs0RSHuuOjxZ0YuEs5DZmeX/nXNjzaa7EcFumSL
+         9c8Sh9oaDmcoH2qVqO2+68SKLec+SaQ/R6RMG/pvRRDystRSHgMVYxgrfMAKxYxhh2ra
+         GHSr+/7bTgjfo+2KzzwClHrcCiGzzj1FYdqmG/iaBGT1BnQZIaA+j4HsH3EwpiH0jL3O
+         gWqr//GhRjztTTE7wJozRl1iUW5AlRBmfMnYnPusb1NtHejseZRYsC8STVL+RZXQG/sF
+         IU7A==
+X-Forwarded-Encrypted: i=1; AJvYcCUu3mzXK0roaNseJjuALGnN8Df9okJtZ2cU1UAfeAL+arMozia1G5n5HhmtM23BEFADa+E/mYU679Oi@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy/mzLMV/yXzgaGu1tt1o7pcngJzdQf0bDAJh0sIv0MtNWMUMeE
+	P/Z6NzY7VJspFVA8eoG7hWmJIw0XQCHkjl8cAP1N6iu1wBGe1JszZ1Il+yg8Sp9TXISouQndWWb
+	hgPcwTA==
+X-Received: from plgz12.prod.google.com ([2002:a17:903:18c:b0:2ad:ae4d:4a00])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ec8d:b0:2a9:48ce:b5f5
+ with SMTP id d9443c01a7336-2ad7455eceamr134638165ad.51.1772027947782; Wed, 25
+ Feb 2026 05:59:07 -0800 (PST)
+Date: Wed, 25 Feb 2026 05:59:05 -0800
+In-Reply-To: <66336533-8bee-4219-9936-3163c7ce06bb@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260225075211.3353194-1-aik@amd.com>
-Message-ID: <aZ7-tTpobKiCFT5L@google.com>
-Subject: Re: [RFC PATCH kernel] iommufd: Allow mapping from KVM's guest_memfd
+References: <20260223214336.722463-1-changyuanl@google.com>
+ <213d614fe73e183a230c8f4e0c8fa1cc3d45df39.camel@intel.com>
+ <fd3b58fd-a450-471a-89a3-541c3f88c874@linux.intel.com> <aZ3LxD5XMepnU8jh@google.com>
+ <66336533-8bee-4219-9936-3163c7ce06bb@linux.intel.com>
+Message-ID: <aZ8AKZQ4L5n7wVMT@google.com>
+Subject: Re: [PATCH] KVM: TDX: Set SIGNIFCANT_INDEX flag for supported CPUIDs
 From: Sean Christopherson <seanjc@google.com>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Steve Sistare <steven.sistare@oracle.com>, 
-	Nicolin Chen <nicolinc@nvidia.com>, iommu@lists.linux.dev, linux-coco@lists.linux.dev, 
-	Dan Williams <dan.j.williams@intel.com>, Santosh Shukla <santosh.shukla@amd.com>, 
-	"Pratik R . Sampat" <prsampat@amd.com>, Ackerley Tng <ackerleytng@google.com>, Fuad Tabba <tabba@google.com>, 
-	Xu Yilun <yilun.xu@linux.intel.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	"changyuanl@google.com" <changyuanl@google.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	Binbin Wu <binbin.wu@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	"bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, 
+	"hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "tglx@kernel.org" <tglx@kernel.org>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
 Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Feb 25, 2026, Alexey Kardashevskiy wrote:
-> For the new guest_memfd type, no additional reference is taken as
-> pinning is guaranteed by the KVM guest_memfd library.
-> 
-> There is no KVM-GMEMFD->IOMMUFD direct notification mechanism as
-> the assumption is that:
-> 1) page stage change events will be handled by VMM which is going
-> to call IOMMUFD to remap pages;
-> 2) shrinking GMEMFD equals to VM memory unplug and VMM is going to
-> handle it.
+On Wed, Feb 25, 2026, Binbin Wu wrote:
+> Do we need to consider the panic_on_warn case? I guess the option will not be
+> enabled in a production environment?
 
-The VMM is outside of the kernel's effective TCB.  Assuming the VMM will always
-do the right thing is a non-starter.
+Nope.  That's even explicitly called out in Documentation/process/coding-style.rst:
+
+  Do not worry about panic_on_warn users
+  **************************************
+  
+  A few more words about panic_on_warn: Remember that ``panic_on_warn`` is an
+  available kernel option, and that many users set this option. This is why
+  there is a "Do not WARN lightly" writeup, above. However, the existence of
+  panic_on_warn users is not a valid reason to avoid the judicious use
+  WARN*(). That is because, whoever enables panic_on_warn has explicitly
+  asked the kernel to crash if a WARN*() fires, and such users must be
+  prepared to deal with the consequences of a system that is somewhat more
+  likely to crash.
