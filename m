@@ -1,56 +1,56 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5BAB26FD97
-	for <linux-coco@lists.linux.dev>; Wed, 25 Feb 2026 01:21:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCA525A655
+	for <linux-coco@lists.linux.dev>; Wed, 25 Feb 2026 01:21:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982462; cv=none; b=k3hnzgXCaXeEaGu78KXkDP3VJ1oXifzMubcQxeTBuqGZd54/1VRJN25yRz0Q35nqNe9AmKWHnDyNPly0zu88WVut5hQx5dgAZTxVxX8JpSrLtvQykTAQK8dPmIwvaF4Wc38krjRIH3nc1FnzzVbAQmumTmVvWFI87zIn0Lk1HmI=
+	t=1771982465; cv=none; b=jk1VLQG/Xac68G/o7oWWva+vUZhbrMxXt4hOu+TQVsyBhPxPwIEdEkh3K6g7Om+Qv25/n0HdHuYsJsvW+D0GuwBL6zGoPTAJfeO1682kemdP+EmH1nF8TMPX84TyolX4KJhs/kUglmehefxCSNL1u4Lh2Q4B8F7hKFnbZmYCSXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982462; c=relaxed/simple;
-	bh=5WioRAn/exL/M/dDLMs+BGBP7zMGvVlgJ+hWWegWOB8=;
+	s=arc-20240116; t=1771982465; c=relaxed/simple;
+	bh=7lRp2eCkoo+DRHWUNEDaUBTQXTHdWU47sEkYGqsesug=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=lbFD4jW5mSd1XJZmeiSEZguUlCXf2z5//4wtUC5fOJuG71ZwkJElsVBxVEjpZ6FgxW+7xlxZBZYaZnVCuGR1KMDMmcIheXvGoRUy82MsLlugsbij26TzxOTb3AcN01JB0CRI/xIwHXDL0ZY3kdmhT/74wQIf2VufDQxbBkxJ/pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mzYNWS+j; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=SDKqANXTz8xg/2mzNr3YMxxGw4uN3Ev4bwvOpDcaCBqQlHsddH/Xn9GWpR2WIAFyjvhp0xGpIj05P/pX2DzGUNwKKvC0TuySrRMk0Qmfe9PaHRWYPSmy23CSrNMW0atRAVFAekubim90bWSg1WDnbiyq72rKNzOFR/IoW3cG2ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DwZ1eeua; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mzYNWS+j"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b630753cc38so34290007a12.1
-        for <linux-coco@lists.linux.dev>; Tue, 24 Feb 2026 17:21:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DwZ1eeua"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-358f8b01604so2567641a91.3
+        for <linux-coco@lists.linux.dev>; Tue, 24 Feb 2026 17:21:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771982460; x=1772587260; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1771982464; x=1772587264; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=dv3TZbd1nBU/AEQJbeAhZb6gpTw6vQIp0AVXQNpKYls=;
-        b=mzYNWS+jcXwQmqt3JbhMEy7z9knBh2EYY7hiJqOtmuzD/NW0dCz850sIo9QSeIQXNN
-         pTVEtEDKarigLfC7izM+yXDm1bauUgM79LhYu1LT8ap6AWPBJ1b1oyvY/HH1l2Ti0dVe
-         BK4x7x1w1OqIWpLr9QmaOrHJP6Z4NXYplKVlTWPk90mEXCmJDpsWNtNIPQhsD199c7OO
-         e7Crz5Q9m6X6khB+juRa6VQP5GZSWLwkB80c/sxZ5lJLEFJz7cgXM8XnvN863Gz9i3D0
-         iO+YKbFoNINuyO1EumRmu+9e8EoGkYf6aixYa2ekb8QzqqT8W4q+PDTTS/2l7gd7FnWP
-         26+g==
+        bh=gV7BZ60qmf3JAsxc6wDH0RQvnfJYSY1NcM7wseiHg1Y=;
+        b=DwZ1eeuaZ+wgj8X6XkQKxBUKpuXwfWhNhgI9kXsURu8qkJeU8Jh5xqeZ75GRvbkwBw
+         hN4VAZzJvpAC+i6VluUog3Sypv5intiFhSunFM3rwBuAeK7dJe7AfDdjp82fv0HxfwYy
+         URB+gw+2C0faQtKC2hKsNeRS7zrwBT2crEpOFhjCZZFqGpaUYyY1kpqVWa1ys99RweNI
+         CIM6yjLOOYL3j/ptkguT2BI4/VNGFDq+OlZB35O8vhDuaomf8d+2SKXorvP+7BXPj9FK
+         9dM0Tdn2LFRA5OFtWnAygRBoYooQSr38Ydm3jcHvBI2fEuAbuFmRq+xn3f4UmAxL2bVp
+         JmwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771982460; x=1772587260;
+        d=1e100.net; s=20230601; t=1771982464; x=1772587264;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=dv3TZbd1nBU/AEQJbeAhZb6gpTw6vQIp0AVXQNpKYls=;
-        b=ubKkdMIPfoonOOd7E7k8BV+Gaj5HwNYgewZ5Maci7SxrqDfA/OZqdGygGAmBH11Dfx
-         ARXX2Rjdt7PgEdE4bbEhupuejs1S3CctGcr+N22BAc0PK4P2vSnnjbEFlXmJJ0QugU28
-         sd3mRxrK95P9ve6Kvkv07NgoBG4UnuFYOxAaHScM4z4w0j+hJfILJENcQTRneg37P0TX
-         bi5DbVF+53GyFiNuJaL1c5/UTozacqsHNIzm5jXW55lAwPu256WLsqD0NRFjMwZmMasP
-         BDl1aCYUMN11xVib3InGhiJhdm2nOewv7mDHtNJQ5bLei4zR445iS4uH3QFMtwIktqtO
-         q/6g==
-X-Forwarded-Encrypted: i=1; AJvYcCUCc+oRWSjS3nnuszW6tdoGFGK9icWzh9dvFcAlLLg6dhw7EZFgkbQLliTqMQiBmq391b8yWdf4Fqw9@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxzug3jL8jWxUqEut9MSFIz62cK+13CAfAw/aOKBKagJppGvp0y
-	vs1S+2Xz0dfdPEdKjjfPkdCd9+M60InZ4vUTp+DedNomO1H5TTQrelloZTbsJ0Fb6ylQgeoXfig
-	ZLYODZw==
-X-Received: from pgbbq17.prod.google.com ([2002:a05:6a02:451:b0:c6e:288a:3ab9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:496:b0:394:f4fd:b751
- with SMTP id adf61e73a8af0-39545fc60c5mr11022872637.51.1771982460005; Tue, 24
- Feb 2026 17:21:00 -0800 (PST)
+        bh=gV7BZ60qmf3JAsxc6wDH0RQvnfJYSY1NcM7wseiHg1Y=;
+        b=EYgNvhjE3s7gpSsh2HggvLKaBQAX8KnTOdB3N0gQ3pIpModt/WS5RPBDlcfDHxN2K/
+         zx+yJOOa4G/V8ik18YcygxLhytYRsYXEClR5A4XCT0A2eA4GPghNgVjzXrdMoQ/iiLWn
+         gUznop/DUcw1r+mK3F1EOk27XAZX2QXBKbi+YoFBoK9s97UmJ5iq4T4sn2XL08vqRzJh
+         UqWcvTRoapb0WQsxroLgnRn9MeEqsTHc5eIlQYpC2DBBj/CkZadUwqEVz2opcuoLBm1F
+         pfAaHd8KwlBTGAk9NSQCKZmNb8uBYi/x/rsrPCJ4c0oMiGowrTrVBsLHyRC6EJsDpen5
+         SW2A==
+X-Forwarded-Encrypted: i=1; AJvYcCWrgt+U0t5uUICd0mNVV1YH+uCfvvERzwMyFo6Qf7KSKEqMlAwOJu52hrmQ9slwB+iIBK8wQqFhRDS2@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzv91nwmD9xM4ijVai9v4ZcmgBIE/fx5dyTEa1ctzfazj7NinV6
+	X8dRqZEDP5b+SWd3bAN4YpQW3GTm2dVZpuF8bPLJRIhjg4BI+iCyo0FtKY0KxeQvg2CFV4HZ2As
+	LJAbR7A==
+X-Received: from pjal2.prod.google.com ([2002:a17:90a:1502:b0:34a:bebf:c162])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5285:b0:354:c629:efaf
+ with SMTP id 98e67ed59e1d1-3590f26515dmr508907a91.35.1771982463612; Tue, 24
+ Feb 2026 17:21:03 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 24 Feb 2026 17:20:39 -0800
+Date: Tue, 24 Feb 2026 17:20:41 -0800
 In-Reply-To: <20260225012049.920665-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,8 +60,8 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260225012049.920665-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
-Message-ID: <20260225012049.920665-5-seanjc@google.com>
-Subject: [PATCH 04/14] KVM: x86: Use local MMIO fragment variable to clean up emulator_read_write()
+Message-ID: <20260225012049.920665-7-seanjc@google.com>
+Subject: [PATCH 06/14] KVM: x86: Move MMIO write tracing into vcpu_mmio_write()
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Kiryl Shutsemau <kas@kernel.org>
@@ -72,51 +72,59 @@ Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
 	Michael Roth <michael.roth@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Grab the MMIO fragment used by emulator_read_write() to initiate an exit
-to userspace in a local variable to make the code easier to read.
+Move the invocation of MMIO write tracepoint into vcpu_mmio_write() and
+drop its largely-useless wrapper to cull pointless code and to make the
+code symmetrical with respect to vcpu_mmio_read().
 
 No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ arch/x86/kvm/x86.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index a74ae3a81076..7cbd6f7d8578 100644
+index 5fde5bb010e7..7abd6f93c386 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -8231,7 +8231,7 @@ static int emulator_read_write(struct x86_emulate_ctxt *ctxt,
- 			const struct read_write_emulator_ops *ops)
- {
- 	struct kvm_vcpu *vcpu = emul_to_vcpu(ctxt);
--	gpa_t gpa;
-+	struct kvm_mmio_fragment *frag;
- 	int rc;
- 
- 	if (WARN_ON_ONCE((bytes > 8u || !ops->write) && object_is_on_stack(val)))
-@@ -8287,17 +8287,16 @@ static int emulator_read_write(struct x86_emulate_ctxt *ctxt,
- 	if (!vcpu->mmio_nr_fragments)
- 		return X86EMUL_CONTINUE;
- 
--	gpa = vcpu->mmio_fragments[0].gpa;
--
- 	vcpu->mmio_needed = 1;
- 	vcpu->mmio_cur_fragment = 0;
- 
--	vcpu->run->mmio.len = min(8u, vcpu->mmio_fragments[0].len);
-+	frag = &vcpu->mmio_fragments[0];
-+	vcpu->run->mmio.len = min(8u, frag->len);
- 	vcpu->run->mmio.is_write = vcpu->mmio_is_write = ops->write;
- 	vcpu->run->exit_reason = KVM_EXIT_MMIO;
--	vcpu->run->mmio.phys_addr = gpa;
-+	vcpu->run->mmio.phys_addr = frag->gpa;
- 
--	return ops->read_write_exit_mmio(vcpu, gpa, val, bytes);
-+	return ops->read_write_exit_mmio(vcpu, frag->gpa, val, bytes);
+@@ -7769,11 +7769,14 @@ static void kvm_init_msr_lists(void)
  }
  
- static int emulator_read_emulated(struct x86_emulate_ctxt *ctxt,
+ static int vcpu_mmio_write(struct kvm_vcpu *vcpu, gpa_t addr, int len,
+-			   const void *v)
++			   void *__v)
+ {
++	const void *v = __v;
+ 	int handled = 0;
+ 	int n;
+ 
++	trace_kvm_mmio(KVM_TRACE_MMIO_WRITE, len, addr, __v);
++
+ 	do {
+ 		n = min(len, 8);
+ 		if (!(lapic_in_kernel(vcpu) &&
+@@ -8131,12 +8134,6 @@ static int write_emulate(struct kvm_vcpu *vcpu, gpa_t gpa,
+ 	return emulator_write_phys(vcpu, gpa, val, bytes);
+ }
+ 
+-static int write_mmio(struct kvm_vcpu *vcpu, gpa_t gpa, int bytes, void *val)
+-{
+-	trace_kvm_mmio(KVM_TRACE_MMIO_WRITE, bytes, gpa, val);
+-	return vcpu_mmio_write(vcpu, gpa, bytes, val);
+-}
+-
+ static const struct read_write_emulator_ops read_emultor = {
+ 	.read_write_emulate = read_emulate,
+ 	.read_write_mmio = vcpu_mmio_read,
+@@ -8144,7 +8141,7 @@ static const struct read_write_emulator_ops read_emultor = {
+ 
+ static const struct read_write_emulator_ops write_emultor = {
+ 	.read_write_emulate = write_emulate,
+-	.read_write_mmio = write_mmio,
++	.read_write_mmio = vcpu_mmio_write,
+ 	.write = true,
+ };
+ 
 -- 
 2.53.0.414.gf7e9f6c205-goog
 
