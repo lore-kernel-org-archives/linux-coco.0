@@ -1,56 +1,56 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74B925A655
-	for <linux-coco@lists.linux.dev>; Wed, 25 Feb 2026 01:21:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8291D2797AC
+	for <linux-coco@lists.linux.dev>; Wed, 25 Feb 2026 01:21:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982471; cv=none; b=OC14nYJkQ/4Td0rgRqnCHfktJ4qBFpwwAO5ohjUO4JgPVK/Jl/2e6PQ/SQ+/msG2j911m8pfk5hX4WOkqbopovi+czgqtSsREM8BXOK/PIBJjy1HcavgeIOkSh2vzmge+/0QqrHeUqlRF5npRB6XllXEcVcR9t0rvvzVoSHfkEE=
+	t=1771982471; cv=none; b=TJzy3inZyZt8sUj+QU7S7trMQv1mNqslc993WP7+9GfAUpmnTZhtxdJfebwm05Ht27uaJzDW2BRUduEbtELT/rG47UHy1VJpC+5p2gNQi2TRSDY0AymUt/G9tpLOdqzRynadyPlmwX9B258MgOKeHFhb5Zm4YCibUQiiHJLNFJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1771982471; c=relaxed/simple;
-	bh=YugX2YLyYIqesMyLVhe1vuRLpba0vyw2iEWUNwc9aeU=;
+	bh=jhFdYJ/k2G4ufjPQSuQbjjN1qZ0Psh4hxK61qelisac=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mIUVa1gvB6Hy9EFa85oCJW8JRfo08zrN1eQ6jadUX5YXlzVeLqCoz5/MMgtj4fpg06TKwd06//xmjKp5REm1vGMiXRNAVIJdkSZ4SQxF58djrnvipHjeE3mDTuYGHMZZo4WVfLdhN/s/H8P7vY2dl9bNsypmaxU9viA4hA9fEUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yRWWKMNT; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=Timk2gvTfrpDG1wRlsxNDwrJD6YhlhPdWUX49i4KP92ZfV+tnWAiEEhtmStb5+hVItX5UVJmNl1wPo7ls1fXYneI6spMaBgUlJwXmuocvYx8vAGDgC4WyVejCZuvN1XTKbiVY2nyb5O+TkcRsKWOJRG69R1n/CWBDFA16rC22Ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Es9NssSu; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yRWWKMNT"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3561f5bd22eso5144330a91.2
-        for <linux-coco@lists.linux.dev>; Tue, 24 Feb 2026 17:21:06 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Es9NssSu"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3568090851aso39449269a91.1
+        for <linux-coco@lists.linux.dev>; Tue, 24 Feb 2026 17:21:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771982466; x=1772587266; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1771982470; x=1772587270; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=U5hmNv02IBvGPnO8Neh+XMn/il3YSxAkvHfsbK9B4L0=;
-        b=yRWWKMNTdGb687L6fwdb4EBuFlrZKzt2E/CSJTuZzKL1Je380FiF3FbkIqun7tvNji
-         eSse7KGPjGAzJt/5BJLmRBbYh9/e4iJp0PzwzQGDJx29JfrUuX5nqW0LepWHc6mpYxwV
-         C4fbhSfkj0m3o3EYQf45zlu0K/UVlUfN08lBm7/Gf14IASu1P5no73l+oJGxeWrgLZP3
-         CmTyyEQbkkZZavJsMewnPtlO9xMeyesK6zDDJQAXYbAv+18f71TxHyslXhn9clDbqCtG
-         4TcxGSXoJl6WYMYzA2P+iVnB9lv713S4ZHWmojp5d1iK+VKxdmrRLWraNc4/S4fw7jPR
-         xfHA==
+        bh=sb25WqFS5MOa5y8whWmlEi7jKLk6DH13/xEv6hI9zy0=;
+        b=Es9NssSulKCL4N1xham2dIUS7RMJtLauL5nuC7iquxPA+SgKYAzYKuBwJ/CLcjT+fM
+         t715+fdv6DBU5WfsXGTtC6OAV7cMX6Gd4fhOpSvAR6XSoOwjln4f0JqKfsJNx6CpAXX6
+         6NOvO7g9hmI9wf86QG45Ut1TgGIK3Tgk5IVp8IZVm0EyJ0hNxiH333LT64O7u1hOJmM5
+         J0OD+04WLiSl7RcCTxZeC2eZjdxBCrI70Z5ZkX3bvcKW8t74APIT6WYvt1xFOTWhtyJx
+         pC4Py4Cm7SkXcDvjKhKNYI+F/KGbXHCK5UPfMsF+R8hfzgMEqxXrVXHfV6u9nhvYD07U
+         IOUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771982466; x=1772587266;
+        d=1e100.net; s=20230601; t=1771982470; x=1772587270;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=U5hmNv02IBvGPnO8Neh+XMn/il3YSxAkvHfsbK9B4L0=;
-        b=nqg083sf6+EalYosRaYSWlsXSvcBK+XQ+/ybfV48hrCyjQFZOC9ypT6S9zl9xEXF0g
-         NUGfj6pOfeYOPGXsI0LRdLYHN3k5CMVkyNiYZUrcBtnAmQJVb6Uw6fLhbFyC7ltpOeU5
-         NWx8JlJsrBZEcM/AXPkRLyInbil6T8EveJr8SGuk5UjyhaVrFf8jHt872u+QZh8PEnCc
-         FGvnHJ/rVIjMYQm6cUzHNSerTbrnxUSyAJvj7QA6YHkuZD56hbMxZjcfsCUQ5iqVxbgO
-         XjnlWsLtKSjp7Ym5VGL2YTsmRcN4iJ2YZj5WoedKMWy9hMPZtgxx67Izh9ZGtG9Qgr9y
-         RfiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXbn4noWv3UpesTAsR8jpKEdE9rTwVQPOy+1uHL2T76DFGH9tDhByKgucr9wj7EEXFueVWKtGwh5cU2@lists.linux.dev
-X-Gm-Message-State: AOJu0YxgWWiA08n0orNvBHCKIxgIzzt8hniI9RZ4u1nzUQAmxx3hA6Eb
-	OM2NV6Tfsr77k+frxlhGoGNqpMlIDSeTQVN7eDXXxnLuSaNJn+AbeLb+vbCv0QLYYFQ+7Wawck1
-	6MFM5Pg==
-X-Received: from pjee13.prod.google.com ([2002:a17:90b:578d:b0:358:f01f:25f3])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:248f:b0:359:79e:39bb
- with SMTP id 98e67ed59e1d1-359079e3faemr996889a91.24.1771982465502; Tue, 24
- Feb 2026 17:21:05 -0800 (PST)
+        bh=sb25WqFS5MOa5y8whWmlEi7jKLk6DH13/xEv6hI9zy0=;
+        b=IezVOlZqLGK4g8mwPLopC6+6WNtovoW28NZHRkdOTkFmfm8SbjG7OIR44CMighPFae
+         hNEUT4KA6AMgFQYuWHrhRB4K5GtsS/B/h9VMAbesEXsBED467xT3oo1ThQcxxoyOfEkQ
+         VS9fu0UKMpGSP8nLqUg6rVeUOA4l+uRohYWX0MPEBvCBRhwuFxEdd5ULsJxRz9mF6A9k
+         15sohWDoXjp3rudI3vNNlyDv0KyoGrEeCeVSrAAzHpn0VOleaSM88LG1ShDKhFESLkpt
+         usyPgtqoixJTltTYzF36KM8Z3kUKsIfETMQgyZ839P8B3FaM7CdvW+o/TaDIl/MwHbW6
+         R6Pg==
+X-Forwarded-Encrypted: i=1; AJvYcCXlmc19nMBpHZzbmlATg+cS/rjrIwIiT+EIlHGtpUOSrSbf69vhGvs4KqAGiGJE4OI8uhTYAaLJybTx@lists.linux.dev
+X-Gm-Message-State: AOJu0YwzkstsiRwNBrUyNOSyhdmEeLjep6IlbfxS5Jyh1RbB/JUzxnDY
+	DbKdXt94kMjG/L+RlsTxkMBUI1PqsUEO5TIxwZmV57aHcKrPKuHY2riSGOj0D2h7+kJd4k7ns/y
+	mMJWBnA==
+X-Received: from pjz13.prod.google.com ([2002:a17:90b:56cd:b0:354:c1db:b113])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1f8e:b0:356:2c7b:c013
+ with SMTP id 98e67ed59e1d1-3590f205431mr539675a91.29.1771982469774; Tue, 24
+ Feb 2026 17:21:09 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 24 Feb 2026 17:20:42 -0800
+Date: Tue, 24 Feb 2026 17:20:44 -0800
 In-Reply-To: <20260225012049.920665-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260225012049.920665-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
-Message-ID: <20260225012049.920665-8-seanjc@google.com>
-Subject: [PATCH 07/14] KVM: x86: Harden SEV-ES MMIO against on-stack use-after-free
+Message-ID: <20260225012049.920665-10-seanjc@google.com>
+Subject: [PATCH 09/14] KVM: x86: Consolidate SEV-ES MMIO emulation into a
+ single public API
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Kiryl Shutsemau <kas@kernel.org>
@@ -72,55 +73,134 @@ Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
 	Michael Roth <michael.roth@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Add a sanity check to ensure KVM doesn't use an on-stack variable when
-handling an MMIO request for an SEV-ES guest.  The source/destination
-for SEV-ES MMIO should _always_ be the #VMGEXIT scratch area.
+Dedup kvm_sev_es_mmio_{read,write}() into a single API, as the "cost" of
+plumbing in a boolean is largely negligible since KVM pulls out a boolean
+for ops->write anyways, and consolidating the APIs will allow for
+additional cleanups.
 
-Opportunistically update the comment in the completion side of things
-to clarify that frag->data doesn't need to be copied anywhere, and the
-VMEGEXIT is trap-like (the current comment doesn't clarify *how* RIP is
-advanced).
+No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/x86/kvm/svm/sev.c | 20 ++++++--------------
+ arch/x86/kvm/x86.c     | 29 +++++++++--------------------
+ arch/x86/kvm/x86.h     |  6 ++----
+ 3 files changed, 17 insertions(+), 38 deletions(-)
 
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index ea515cf41168..723f4452302a 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -4434,25 +4434,17 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+ 
+ 	switch (control->exit_code) {
+ 	case SVM_VMGEXIT_MMIO_READ:
+-		ret = setup_vmgexit_scratch(svm, true, control->exit_info_2);
+-		if (ret)
+-			break;
++	case SVM_VMGEXIT_MMIO_WRITE: {
++		bool is_write = control->exit_code == SVM_VMGEXIT_MMIO_WRITE;
+ 
+-		ret = kvm_sev_es_mmio_read(vcpu,
+-					   control->exit_info_1,
+-					   control->exit_info_2,
+-					   svm->sev_es.ghcb_sa);
+-		break;
+-	case SVM_VMGEXIT_MMIO_WRITE:
+-		ret = setup_vmgexit_scratch(svm, false, control->exit_info_2);
++		ret = setup_vmgexit_scratch(svm, !is_write, control->exit_info_2);
+ 		if (ret)
+ 			break;
+ 
+-		ret = kvm_sev_es_mmio_write(vcpu,
+-					    control->exit_info_1,
+-					    control->exit_info_2,
+-					    svm->sev_es.ghcb_sa);
++		ret = kvm_sev_es_mmio(vcpu, is_write, control->exit_info_1,
++				      control->exit_info_2, svm->sev_es.ghcb_sa);
+ 		break;
++	}
+ 	case SVM_VMGEXIT_NMI_COMPLETE:
+ 		++vcpu->stat.nmi_window_exits;
+ 		svm->nmi_masked = false;
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 7abd6f93c386..2db0bf738d2d 100644
+index f93f0f8961af..022e953906f7 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -14273,8 +14273,10 @@ static int complete_sev_es_emulated_mmio(struct kvm_vcpu *vcpu)
- 	if (vcpu->mmio_cur_fragment >= vcpu->mmio_nr_fragments) {
- 		vcpu->mmio_needed = 0;
+@@ -14293,9 +14293,8 @@ static int complete_sev_es_emulated_mmio(struct kvm_vcpu *vcpu)
+ 	return 0;
+ }
  
--		// VMG change, at this point, we're always done
--		// RIP has already been advanced
-+		/*
-+		 * All done, as frag->data always points at the GHCB scratch
-+		 * area and VMGEXIT is trap-like (RIP is advanced by hardware).
-+		 */
+-static int kvm_sev_es_do_mmio(struct kvm_vcpu *vcpu, gpa_t gpa,
+-			      unsigned int bytes, void *data,
+-			      const struct read_write_emulator_ops *ops)
++int kvm_sev_es_mmio(struct kvm_vcpu *vcpu, bool is_write, gpa_t gpa,
++		    unsigned int bytes, void *data)
+ {
+ 	struct kvm_mmio_fragment *frag;
+ 	int handled;
+@@ -14303,7 +14302,10 @@ static int kvm_sev_es_do_mmio(struct kvm_vcpu *vcpu, gpa_t gpa,
+ 	if (!data || WARN_ON_ONCE(object_is_on_stack(data)))
+ 		return -EINVAL;
+ 
+-	handled = ops->read_write_mmio(vcpu, gpa, bytes, data);
++	if (is_write)
++		handled = vcpu_mmio_write(vcpu, gpa, bytes, data);
++	else
++		handled = vcpu_mmio_read(vcpu, gpa, bytes, data);
+ 	if (handled == bytes)
  		return 1;
- 	}
  
-@@ -14297,7 +14299,7 @@ int kvm_sev_es_mmio_write(struct kvm_vcpu *vcpu, gpa_t gpa, unsigned int bytes,
- 	int handled;
- 	struct kvm_mmio_fragment *frag;
+@@ -14326,8 +14328,8 @@ static int kvm_sev_es_do_mmio(struct kvm_vcpu *vcpu, gpa_t gpa,
  
--	if (!data)
-+	if (!data || WARN_ON_ONCE(object_is_on_stack(data)))
- 		return -EINVAL;
+ 	vcpu->run->mmio.phys_addr = gpa;
+ 	vcpu->run->mmio.len = min(8u, frag->len);
+-	vcpu->run->mmio.is_write = ops->write;
+-	if (ops->write)
++	vcpu->run->mmio.is_write = is_write;
++	if (is_write)
+ 		memcpy(vcpu->run->mmio.data, frag->data, min(8u, frag->len));
+ 	vcpu->run->exit_reason = KVM_EXIT_MMIO;
  
- 	handled = write_emultor.read_write_mmio(vcpu, gpa, bytes, data);
-@@ -14336,7 +14338,7 @@ int kvm_sev_es_mmio_read(struct kvm_vcpu *vcpu, gpa_t gpa, unsigned int bytes,
- 	int handled;
- 	struct kvm_mmio_fragment *frag;
+@@ -14335,20 +14337,7 @@ static int kvm_sev_es_do_mmio(struct kvm_vcpu *vcpu, gpa_t gpa,
  
--	if (!data)
-+	if (!data || WARN_ON_ONCE(object_is_on_stack(data)))
- 		return -EINVAL;
+ 	return 0;
+ }
+-
+-int kvm_sev_es_mmio_write(struct kvm_vcpu *vcpu, gpa_t gpa, unsigned int bytes,
+-			  void *data)
+-{
+-	return kvm_sev_es_do_mmio(vcpu, gpa, bytes, data, &write_emultor);
+-}
+-EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_sev_es_mmio_write);
+-
+-int kvm_sev_es_mmio_read(struct kvm_vcpu *vcpu, gpa_t gpa, unsigned int bytes,
+-			 void *data)
+-{
+-	return kvm_sev_es_do_mmio(vcpu, gpa, bytes, data, &read_emultor);
+-}
+-EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_sev_es_mmio_read);
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_sev_es_mmio);
  
- 	handled = read_emultor.read_write_mmio(vcpu, gpa, bytes, data);
+ static void advance_sev_es_emulated_pio(struct kvm_vcpu *vcpu, unsigned count, int size)
+ {
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index 94d4f07aaaa0..1d0f0edd31b3 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -712,10 +712,8 @@ static inline bool __kvm_is_valid_cr4(struct kvm_vcpu *vcpu, unsigned long cr4)
+ 	__reserved_bits;                                \
+ })
+ 
+-int kvm_sev_es_mmio_write(struct kvm_vcpu *vcpu, gpa_t src, unsigned int bytes,
+-			  void *dst);
+-int kvm_sev_es_mmio_read(struct kvm_vcpu *vcpu, gpa_t src, unsigned int bytes,
+-			 void *dst);
++int kvm_sev_es_mmio(struct kvm_vcpu *vcpu, bool is_write, gpa_t gpa,
++		    unsigned int bytes, void *data);
+ int kvm_sev_es_string_io(struct kvm_vcpu *vcpu, unsigned int size,
+ 			 unsigned int port, void *data,  unsigned int count,
+ 			 int in);
 -- 
 2.53.0.414.gf7e9f6c205-goog
 
