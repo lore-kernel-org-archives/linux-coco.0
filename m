@@ -1,56 +1,56 @@
 Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15AB9251793
-	for <linux-coco@lists.linux.dev>; Wed, 25 Feb 2026 01:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE9A263C7F
+	for <linux-coco@lists.linux.dev>; Wed, 25 Feb 2026 01:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771982455; cv=none; b=NGeaCLj55RAmtzmNx4nDOYe/qTputchP/gpSoyPI29nqx9uqVJJfEf9Gr2t2qBXc8KhpiIDYHlWj+EQamA0rGKkg5tJnK3lUHj+wmjc+Vd6owL/rKfWuQaWmUmge2GJYorbn2atpMrunhmpINNGIW6KfOdoLdrWKd0LAwuY2hFE=
+	t=1771982458; cv=none; b=YlEYNcQzyeJ5+pzI+9S5xGBFYtD0jbsYQy4oNJFz4IyrvEuH+1DqBkKDYWOmnZI+xVbJyKMH0fnf/Eu9XDwerA/YCuYNjVdqnbF3Rvbbou9X9GjIddWMbPuP6tE6ia+T4HvqoAccWQJaq6Kg18asWIXdPO7Wr4uM/RVJ7MY3GUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771982455; c=relaxed/simple;
-	bh=JQvjxr/hWlUh39Ucu5ME+KW8AVQFVGTcKHfOZ9vH9Vs=;
+	s=arc-20240116; t=1771982458; c=relaxed/simple;
+	bh=ueMQ7lNZG1mNPcnmXsV6s6mz7PApwRZnhIghYU/HyV0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UN0uEVaD2vShglRusw9U0aJD2J3QHY9sRAONSNtKu5iovbsUKeXMKiM4WrTOUt/8S2ijc/XQgAvwGQhldO4YL1XgAtWAnGNoix2IKqfFie2cLd+833tzu3XC/TIvoTOE9XSFnm19xhFL2c0auyLOA5AY5ULHKU4rTgNZXeyh7lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iOMShZR/; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=jCHY5dlzk5lC5++4dfWWV3jiAUPaNpZKgPnrz/ud9R1ryxN3mfi8LfMUwBflxkFGWMDQG+hSjFZI+8TJ2wnUBGCcmVAaOMxuRm9+O+NaVhIp+ZiWjindokrRNLrSu03xmZ3qn3NdsyoAMCgct+zHlbQKvbVtARUvtFgQCdegLKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=w0AcMZ9J; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iOMShZR/"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3562bdba6f7so37013178a91.2
-        for <linux-coco@lists.linux.dev>; Tue, 24 Feb 2026 17:20:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="w0AcMZ9J"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-358e425c261so1340445a91.3
+        for <linux-coco@lists.linux.dev>; Tue, 24 Feb 2026 17:20:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771982453; x=1772587253; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1771982455; x=1772587255; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=AbvWdZpYsKEAzpHKAosx3SnBmphxJwW/5cCaeIJUZho=;
-        b=iOMShZR/ba6cUnJj1VxavRiaZF4rLn1pyQJCyUgu1elTjLlLswekHU/NaA1no8GhlS
-         zqkxaH5CLtrDb2mvL/k9c5tWh9ZEtgbGq7d5Ny+3M2U0OScJJFS1j3+6T+U1FeDCt8En
-         L6woPJ3cB3+dKfHYLqtDoVh2rdj9BaPUpLKmIPOhNqW8WxJHsoa/xKdPoWBtJ9bxX8sn
-         a67DWua1s9+sAQFI3pxlMsBn3o6Sujjfnbx/hzo526HmUSjy+7BGO2bV7IzD/tUmw1sM
-         D8FZRWNB0Od2StGAPBYsXDJ1TvfX/RbmkgULB4k7lfNnidYg/rePrIeKeDooouX4qt4c
-         3O4A==
+        bh=ufrjZKfuPvWxhnZ9cZ27jbL/GsnZnbCcINCZtRWeedI=;
+        b=w0AcMZ9Jdmb3VU+FFsMQzwBdYzyTllNfaRMZ2qs4pPFaHSz/kVnKYLFKNVr0t0Y+uy
+         byKeC/fzEQJCR1Y5mOMu9y3TSUhHpF6fAUDrrdyTC6lZularKk9bw3swzkRx8WC3amP6
+         2J6rEPYkB1N4FKeQVEekHPDQKjjJZ2a6CpUfwRNDC6PIvuhc0wiC8vX3cZBMYLDlxpfV
+         tmLH9wsdo/4mF+3KF4RD8KvTUskOXtNvy/dBu3EcSJAATirbw3PANm2tM5n0itGK8NNP
+         1AEofdLiF5QcPQ698xWIb/xi1omaglAkBH8V71n2b1H2TGEuVNtnrs1mNcWj/3PVaoLL
+         e59g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771982453; x=1772587253;
+        d=1e100.net; s=20230601; t=1771982455; x=1772587255;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=AbvWdZpYsKEAzpHKAosx3SnBmphxJwW/5cCaeIJUZho=;
-        b=URldavaavvz3hTpUlGkYlMoQDKOYf+qVwa071kB+TtTfuRRZ3qzY3V4iXV0cgknLuh
-         JL3vyH6SkDRXxKxG833K6JUMiM1vLmHgvrBdjALklcYOVZQPhHwmlp4J+xqf5zJz9s5c
-         SA0n50sHqtxw7YKKjDJVYrrvtLo7IQXgilfPlizn8er7iRoMV4pFcJ/xP3E0d/FFrxz8
-         xqXxS/CHSqeR/LyCqZb6cCTAFaf6aChoO9bm7hTKwsqjXTlYg7O5/MvzytZSvc7uzGGj
-         Htz9+XBpNmKGn693rkSwlyEkGE/7UQ/VPYwJnl5rQ1zOmOL5PwwBNtssll0+OE7yR94q
-         xXHw==
-X-Forwarded-Encrypted: i=1; AJvYcCUeDPkfTD4vNOcsHMOI1yPFDGcqIT0YOVqo8J8pJ2dg6JHat1VBS5ifObBUX6dXDnBuJi6pb8H7Uwrl@lists.linux.dev
-X-Gm-Message-State: AOJu0YzXwKQRXK1tTjX6ZSrQo8VyItdeK/QK97xMiI5yyBuuhBoLNunq
-	NruSfuuHUJlfrYD1QIIbkpemb8F1AEWU+4wnTJvwLUeRj2d5wPEy80yh/3FYxzsuUUEC8RiWXO6
-	qtuWLcw==
-X-Received: from pjzl20.prod.google.com ([2002:a17:90b:794:b0:356:1f53:fad5])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3941:b0:356:282e:7eb7
- with SMTP id 98e67ed59e1d1-358ae810f45mr11868323a91.12.1771982453280; Tue, 24
- Feb 2026 17:20:53 -0800 (PST)
+        bh=ufrjZKfuPvWxhnZ9cZ27jbL/GsnZnbCcINCZtRWeedI=;
+        b=FR4iOMezybmU2Wp/j+tpMUDH0VrCFgWYve4LyK/J0FC8ha3KN7NnUlxP0hmZzO2WJ+
+         w9rySfVLPKYPHeW5kwkf2SxHM+76XSUzRCnikZziquT2LXgtH2pD3Jdr6x91I0d3fLTP
+         sNVPyQ8LhVJWUbB3PtYW3+JJoihnTkehWPvizKF6qUTnUMr93DQC+RcvsP9z/QyafN5o
+         ShGJ8Y+KHmRg2KSFkcn08068Dv6fYLt1PaYYlWZCTHt9JC57Nzk0JrJ6Vavb7wDxyfND
+         f99OHKivOFTJdTFEeSSjIQxLfF8LZ20IWXusU1C/ABXeG3Odwvw8anvjWwVLdhJsWfPj
+         jEiA==
+X-Forwarded-Encrypted: i=1; AJvYcCVMK1jn6uSLC4zwZmNhw2j9mnmpCguY7bQJmddINjP4AsiVHvb1uYEoYfw8mWTuKWdPIDd9YGEAcaDj@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw7VoXpFs0cCYaxXmhs9gElhqHbMx7eB9F9j+9Vx5v1bsbXZXqI
+	xwMUsbjZiEo/o3fNG5N3ZpjhnG2de15MV8OYbYj++/KyHzp4GKSmFW9F5KhI8s70knmiuMfmr0G
+	NMr61iw==
+X-Received: from pjyr11.prod.google.com ([2002:a17:90a:e18b:b0:355:76b7:bf7])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d887:b0:359:120f:d3aa
+ with SMTP id 98e67ed59e1d1-359120fd628mr174902a91.14.1771982455286; Tue, 24
+ Feb 2026 17:20:55 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 24 Feb 2026 17:20:36 -0800
+Date: Tue, 24 Feb 2026 17:20:37 -0800
 In-Reply-To: <20260225012049.920665-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -60,9 +60,8 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <20260225012049.920665-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
-Message-ID: <20260225012049.920665-2-seanjc@google.com>
-Subject: [PATCH 01/14] KVM: x86: Use scratch field in MMIO fragment to hold
- small write values
+Message-ID: <20260225012049.920665-3-seanjc@google.com>
+Subject: [PATCH 02/14] KVM: x86: Open code handling of completed MMIO reads in emulator_read_write()
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Kiryl Shutsemau <kas@kernel.org>
@@ -73,154 +72,120 @@ Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
 	Michael Roth <michael.roth@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 
-When exiting to userspace to service an emulated MMIO write, copy the
-to-be-written value to a scratch field in the MMIO fragment if the size
-of the data payload is 8 bytes or less, i.e. can fit in a single chunk,
-instead of pointing the fragment directly at the source value.
+Open code the handling of completed MMIO reads instead of using an ops
+hook, as burying the logic behind a (likely RETPOLINE'd) indirect call,
+and with an unintuitive name, makes relatively straightforward code hard
+to comprehend.
 
-This fixes a class of use-after-free bugs that occur when the emulator
-initiates a write using an on-stack, local variable as the source, the
-write splits a page boundary, *and* both pages are MMIO pages.  Because
-KVM's ABI only allows for physically contiguous MMIO requests, accesses
-that split MMIO pages are separated into two fragments, and are sent to
-userspace one at a time.  When KVM attempts to complete userspace MMIO in
-response to KVM_RUN after the first fragment, KVM will detect the second
-fragment and generate a second userspace exit, and reference the on-stack
-variable.
+Opportunistically add comments to explain the dependencies between the
+emulator's mem_read cache and the MMIO read completion logic, as it's very
+easy to overlook the cache's role in getting the read data into the
+correct destination.
 
-The issue is most visible if the second KVM_RUN is performed by a separate
-task, in which case the stack of the initiating task can show up as truly
-freed data.
+No functional change intended.
 
-  ==================================================================
-  BUG: KASAN: use-after-free in complete_emulated_mmio+0x305/0x420
-  Read of size 1 at addr ffff888009c378d1 by task syz-executor417/984
-
-  CPU: 1 PID: 984 Comm: syz-executor417 Not tainted 5.10.0-182.0.0.95.h2627.eulerosv2r13.x86_64 #3
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.15.0-0-g2dd4b9b3f840-prebuilt.qemu.org 04/01/2014 Call Trace:
-  dump_stack+0xbe/0xfd
-  print_address_description.constprop.0+0x19/0x170
-  __kasan_report.cold+0x6c/0x84
-  kasan_report+0x3a/0x50
-  check_memory_region+0xfd/0x1f0
-  memcpy+0x20/0x60
-  complete_emulated_mmio+0x305/0x420
-  kvm_arch_vcpu_ioctl_run+0x63f/0x6d0
-  kvm_vcpu_ioctl+0x413/0xb20
-  __se_sys_ioctl+0x111/0x160
-  do_syscall_64+0x30/0x40
-  entry_SYSCALL_64_after_hwframe+0x67/0xd1
-  RIP: 0033:0x42477d
-  Code: <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-  RSP: 002b:00007faa8e6890e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-  RAX: ffffffffffffffda RBX: 00000000004d7338 RCX: 000000000042477d
-  RDX: 0000000000000000 RSI: 000000000000ae80 RDI: 0000000000000005
-  RBP: 00000000004d7330 R08: 00007fff28d546df R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000246 R12: 00000000004d733c
-  R13: 0000000000000000 R14: 000000000040a200 R15: 00007fff28d54720
-
-  The buggy address belongs to the page:
-  page:0000000029f6a428 refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x9c37
-  flags: 0xfffffc0000000(node=0|zone=1|lastcpupid=0x1fffff)
-  raw: 000fffffc0000000 0000000000000000 ffffea0000270dc8 0000000000000000
-  raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000 page dumped because: kasan: bad access detected
-
-  Memory state around the buggy address:
-  ffff888009c37780: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  ffff888009c37800: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  >ffff888009c37880: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-                                                   ^
-  ffff888009c37900: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  ffff888009c37980: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  ==================================================================
-
-The bug can also be reproduced with a targeted KVM-Unit-Test by hacking
-KVM to fill a large on-stack variable in complete_emulated_mmio(), i.e. by
-overwrite the data value with garbage.
-
-Limit the use of the scratch fields to 8-byte or smaller accesses, and to
-just writes, as larger accesses and reads are not affected thanks to
-implementation details in the emulator, but add a sanity check to ensure
-those details don't change in the future.  Specifically, KVM never uses
-on-stack variables for accesses larger that 8 bytes, e.g. uses an operand
-in the emulator context, and *all* reads are buffered through the mem_read
-cache.
-
-Note!  Using the scratch field for reads is not only unnecessary, it's
-also extremely difficult to handle correctly.  As above, KVM buffers all
-reads through the mem_read cache, and heavily relies on that behavior when
-re-emulating the instruction after a userspace MMIO read exit.  If a read
-splits a page, the first page is NOT an MMIO page, and the second page IS
-an MMIO page, then the MMIO fragment needs to point at _just_ the second
-chunk of the destination, i.e. its position in the mem_read cache.  Taking
-the "obvious" approach of copying the fragment value into the destination
-when re-emulating the instruction would clobber the first chunk of the
-destination, i.e. would clobber the data that was read from guest memory.
-
-Fixes: f78146b0f923 ("KVM: Fix page-crossing MMIO")
-Suggested-by: Yashu Zhang <zhangjiaji1@huawei.com>
-Reported-by: Yashu Zhang <zhangjiaji1@huawei.com>
-Closes: https://lore.kernel.org/all/369eaaa2b3c1425c85e8477066391bc7@huawei.com
-Cc: stable@vger.kernel.org
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c       | 14 +++++++++++++-
- include/linux/kvm_host.h |  3 ++-
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ arch/x86/kvm/emulate.c | 13 +++++++++++++
+ arch/x86/kvm/x86.c     | 33 ++++++++++++++++-----------------
+ 2 files changed, 29 insertions(+), 17 deletions(-)
 
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index c8e292e9a24d..70850e591350 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -1297,12 +1297,25 @@ static int read_emulated(struct x86_emulate_ctxt *ctxt,
+ 	int rc;
+ 	struct read_cache *mc = &ctxt->mem_read;
+ 
++	/*
++	 * If the read gets a cache hit, simply copy the value from the cache.
++	 * A "hit" here means that there is unused data in the cache, i.e. when
++	 * re-emulating an instruction to complete a userspace exit, KVM relies
++	 * on "no decode" to ensure the instruction is re-emulated in the same
++	 * sequence, so that multiple reads are fulfilled in the correct order.
++	 */
+ 	if (mc->pos < mc->end)
+ 		goto read_cached;
+ 
+ 	if (KVM_EMULATOR_BUG_ON((mc->end + size) >= sizeof(mc->data), ctxt))
+ 		return X86EMUL_UNHANDLEABLE;
+ 
++	/*
++	 * Route all reads to the cache.  This allows @dest to be an on-stack
++	 * variable without triggering use-after-free if KVM needs to exit to
++	 * userspace to handle an MMIO read (the MMIO fragment will point at
++	 * the current location in the cache).
++	 */
+ 	rc = ctxt->ops->read_emulated(ctxt, addr, mc->data + mc->end, size,
+ 				      &ctxt->exception);
+ 	if (rc != X86EMUL_CONTINUE)
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index db3f393192d9..ff3a6f86973f 100644
+index ff3a6f86973f..8b1f02cc8196 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -8226,7 +8226,13 @@ static int emulator_read_write_onepage(unsigned long addr, void *val,
- 	WARN_ON(vcpu->mmio_nr_fragments >= KVM_MAX_MMIO_FRAGMENTS);
- 	frag = &vcpu->mmio_fragments[vcpu->mmio_nr_fragments++];
- 	frag->gpa = gpa;
--	frag->data = val;
-+	if (write && bytes <= 8u) {
-+		frag->val = 0;
-+		frag->data = &frag->val;
-+		memcpy(&frag->val, val, bytes);
-+	} else {
-+		frag->data = val;
-+	}
- 	frag->len = bytes;
- 	return X86EMUL_CONTINUE;
+@@ -8109,8 +8109,6 @@ int emulator_write_phys(struct kvm_vcpu *vcpu, gpa_t gpa,
  }
-@@ -8241,6 +8247,9 @@ static int emulator_read_write(struct x86_emulate_ctxt *ctxt,
- 	gpa_t gpa;
- 	int rc;
  
-+	if (WARN_ON_ONCE((bytes > 8u || !ops->write) && object_is_on_stack(val)))
-+		return X86EMUL_UNHANDLEABLE;
-+
- 	if (ops->read_write_prepare &&
- 		  ops->read_write_prepare(vcpu, val, bytes))
- 		return X86EMUL_CONTINUE;
-@@ -11847,6 +11856,9 @@ static int complete_emulated_mmio(struct kvm_vcpu *vcpu)
- 		frag++;
- 		vcpu->mmio_cur_fragment++;
- 	} else {
-+		if (WARN_ON_ONCE(frag->data == &frag->val))
-+			return -EIO;
-+
- 		/* Go forward to the next mmio piece. */
- 		frag->data += len;
- 		frag->gpa += len;
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 2c7d76262898..0bb2a34fb93d 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -320,7 +320,8 @@ static inline bool kvm_vcpu_can_poll(ktime_t cur, ktime_t stop)
- struct kvm_mmio_fragment {
- 	gpa_t gpa;
- 	void *data;
--	unsigned len;
-+	u64 val;
-+	unsigned int len;
+ struct read_write_emulator_ops {
+-	int (*read_write_prepare)(struct kvm_vcpu *vcpu, void *val,
+-				  int bytes);
+ 	int (*read_write_emulate)(struct kvm_vcpu *vcpu, gpa_t gpa,
+ 				  void *val, int bytes);
+ 	int (*read_write_mmio)(struct kvm_vcpu *vcpu, gpa_t gpa,
+@@ -8120,18 +8118,6 @@ struct read_write_emulator_ops {
+ 	bool write;
  };
  
- struct kvm_vcpu {
+-static int read_prepare(struct kvm_vcpu *vcpu, void *val, int bytes)
+-{
+-	if (vcpu->mmio_read_completed) {
+-		trace_kvm_mmio(KVM_TRACE_MMIO_READ, bytes,
+-			       vcpu->mmio_fragments[0].gpa, val);
+-		vcpu->mmio_read_completed = 0;
+-		return 1;
+-	}
+-
+-	return 0;
+-}
+-
+ static int read_emulate(struct kvm_vcpu *vcpu, gpa_t gpa,
+ 			void *val, int bytes)
+ {
+@@ -8167,7 +8153,6 @@ static int write_exit_mmio(struct kvm_vcpu *vcpu, gpa_t gpa,
+ }
+ 
+ static const struct read_write_emulator_ops read_emultor = {
+-	.read_write_prepare = read_prepare,
+ 	.read_write_emulate = read_emulate,
+ 	.read_write_mmio = vcpu_mmio_read,
+ 	.read_write_exit_mmio = read_exit_mmio,
+@@ -8250,9 +8235,23 @@ static int emulator_read_write(struct x86_emulate_ctxt *ctxt,
+ 	if (WARN_ON_ONCE((bytes > 8u || !ops->write) && object_is_on_stack(val)))
+ 		return X86EMUL_UNHANDLEABLE;
+ 
+-	if (ops->read_write_prepare &&
+-		  ops->read_write_prepare(vcpu, val, bytes))
++	/*
++	 * If the read was already completed via a userspace MMIO exit, there's
++	 * nothing left to do except trace the MMIO read.  When completing MMIO
++	 * reads, KVM re-emulates the instruction to propagate the value into
++	 * the correct destination, e.g. into the correct register, but the
++	 * value itself has already been copied to the read cache.
++	 *
++	 * Note!  This is *tightly* coupled to read_emulated() satisfying reads
++	 * from the emulator's mem_read cache, so that the MMIO fragment data
++	 * is copied to the correct chunk of the correct operand.
++	 */
++	if (!ops->write && vcpu->mmio_read_completed) {
++		trace_kvm_mmio(KVM_TRACE_MMIO_READ, bytes,
++			       vcpu->mmio_fragments[0].gpa, val);
++		vcpu->mmio_read_completed = 0;
+ 		return X86EMUL_CONTINUE;
++	}
+ 
+ 	vcpu->mmio_nr_fragments = 0;
+ 
 -- 
 2.53.0.414.gf7e9f6c205-goog
 
