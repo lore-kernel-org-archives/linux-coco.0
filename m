@@ -1,179 +1,179 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED9B3E8C56;
-	Wed, 25 Feb 2026 17:08:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772039333; cv=none; b=CNkIh+sk76mwMKF4pZBeccdRgdCNzF61L7C+Ag9phGqXWWTr1virtIjunGnSrbJ5kbCtzcHl+8KKl+lS2P8DdtL0Bvy0oZdlpCfiMoOAwjwXGbIkJSaTqky0FioYEVFfUmEaqEpmAUxEMHv2Dl1eNJucm4RKoNbrHaiawH7oWYs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772039333; c=relaxed/simple;
-	bh=e86dy79TKlUxU3xf80Vcy6z1TEZmqr9y+GYyp3xRW3I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dmfw4U9RzJcpqxJrb9afpb1VNCrd7chjWM46KD0ByJkMMBsNE46nxDsNWA2Xhlhmm40Q3M3ja57jG3Ac9wiw6VLvQahCViqHjYwd1q8+1A0Bcf8IYtd0exsFzTh0bAfvO/0+Rfbk5npjZN5YV5DBL9qn+PPFd8tMCRVqUmTGEQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 162C515A1;
-	Wed, 25 Feb 2026 09:08:43 -0800 (PST)
-Received: from [10.57.58.107] (unknown [10.57.58.107])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3A8BC3F62B;
-	Wed, 25 Feb 2026 09:08:40 -0800 (PST)
-Message-ID: <d8102507-e537-4e7c-8137-082a43fd270d@arm.com>
-Date: Wed, 25 Feb 2026 17:08:37 +0000
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C606224503F
+	for <linux-coco@lists.linux.dev>; Wed, 25 Feb 2026 17:32:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772040759; cv=fail; b=AEhmoNy1X+Ws70F5LVdTPuVxP2GuoEhVHWTmDIV8Ewtbksr2L+707Z/Jy/4ieEwTsIOFUVem7KcxXxQiDSDHbMtY0ezFwFNihvglZJblVoBWh/DdOBez4rmJQkGYv55LJOVFCvn6WL8PQHSltyc7/zi46G98Wo7C3ZtHosHfiB4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772040759; c=relaxed/simple;
+	bh=W4RsjitUsObvyT4lsy7HzkopeSfOIcd8C/0ZiLlovZk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=PtMPgML15txru9eaWJ2O0RO+39nZ/jGqveRjNTH5/+A5OGxxRgauVwuyuuSoo2OZ3tbjFvg2hqLPl+y43a8fqKu4msNVWTf8DbmME4KWZ6jmSGcbDcagM1iydAfp2RNyg+4RO/ZbIPiFsF5S/N6nqjTxNjrlXXawy0E6bIP0rZ8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l4cR7Ftz; arc=fail smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l4cR7Ftz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772040759; x=1803576759;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=W4RsjitUsObvyT4lsy7HzkopeSfOIcd8C/0ZiLlovZk=;
+  b=l4cR7Ftzv71Kmtfhi31wxmkayx36soVjAaZMI4QigyyGdk4wimnKyv+l
+   FqWkZywjYSM3+W3D0cf6br5YZGCxgpTqm68Oi9CapMGp/JoyfSd5nrO4n
+   Lpatbar6qCcavrNbQgIWfvbPjrmkjOzZXGeVXpKwzQKCG3Cj/1yh3EwPW
+   LEWQJWo1EGHDZ2ysaG04rIq0vQpbrtOWuRjcF/aXno83cux2heirlsB/9
+   AmBFh4rbwYJqwUOZDW2Rn4BC72zrO649QEymCyA14poOvcuC7Hojl9E37
+   sTiO358dzlex4coQ/4+kdqB4mFNkQiNgnH1FA9P60TUOR/DrAWfBOw9LE
+   w==;
+X-CSE-ConnectionGUID: 3+/0I49fT1eArtjoPypBvA==
+X-CSE-MsgGUID: OOEYrDGUT1SKq4H5JR7C+g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="90500445"
+X-IronPort-AV: E=Sophos;i="6.21,310,1763452800"; 
+   d="scan'208";a="90500445"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 09:32:39 -0800
+X-CSE-ConnectionGUID: 7+/toTrfTaC5WV677ZlIww==
+X-CSE-MsgGUID: g5bFiLYvThKIUWUwWWdtOw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,310,1763452800"; 
+   d="scan'208";a="215524969"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 09:32:39 -0800
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Wed, 25 Feb 2026 09:32:37 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Wed, 25 Feb 2026 09:32:37 -0800
+Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.14) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Wed, 25 Feb 2026 09:32:37 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nXYzQq348BqFtFvgcBUqFrTLf+4AOXdkCwofsqrT55vsXo8AGbGAwkNS8QaBBiMVkuxYwal0qyoQOJhO6f96hi8i6iWdjussomddoF/6Ll3ONQAV/M0R2ILmn0boVdutNUDRJNNztwvsF6O/9A8hgwGQgJHiZR5hErMm7c5Zjv+eUGIR6KJzPd2JBl4QK0h6HBOyrWVZ2N5QCehMeMFfeqQKb+6nGUq3A25fRkCTCRGJSi/RgTKPcItqQaz2mSGuEXpToyzXffv8zpnhXNbFHEibyA7bduqn0aZieQ/7RHVtJ4fN9G3pEaxhTC8mIp67A1E0wgBR7etMbzpskP9jwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=W4RsjitUsObvyT4lsy7HzkopeSfOIcd8C/0ZiLlovZk=;
+ b=mlvtPatXwJbPVmZBZwhJJqfh161tDlkH0T22kmCd64XWn7eakXuXU6y1XPVuT9BrjP1/IULF2HOlbfQVBYpeJeTMOz4Eso0ZMgpcGSGpCiDggPy1kfgsOnjGd43MWlD6NZcLXLsi3p72VvW7kZOnqPs4OanzP4mO9GQtWiN/ts0EyLsA9PLp79Gk3idHuRYN8zdgUmDDn+fybkpPKv4BsZNjj7wpWAmiHOklbkmSn6tRk3J64DDPUJK3npxyjMRmUFXppY91OfJjc/oCtqL/Mg+HvX4RTQIp7V9WBjMBnGhIEQOjh8gI7oVLg1NNUx6CJRogHAd5+gUZ/BGxU8s2hw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from LV2PR11MB5976.namprd11.prod.outlook.com (2603:10b6:408:17c::13)
+ by IA3PR11MB9374.namprd11.prod.outlook.com (2603:10b6:208:581::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.22; Wed, 25 Feb
+ 2026 17:32:31 +0000
+Received: from LV2PR11MB5976.namprd11.prod.outlook.com
+ ([fe80::893d:78de:7a85:7c8c]) by LV2PR11MB5976.namprd11.prod.outlook.com
+ ([fe80::893d:78de:7a85:7c8c%4]) with mapi id 15.20.9632.010; Wed, 25 Feb 2026
+ 17:32:30 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "pbonzini@redhat.com" <pbonzini@redhat.com>, "kas@kernel.org"
+	<kas@kernel.org>, "seanjc@google.com" <seanjc@google.com>
+CC: "x86@kernel.org" <x86@kernel.org>, "zhangjiaji1@huawei.com"
+	<zhangjiaji1@huawei.com>, "binbin.wu@linux.intel.com"
+	<binbin.wu@linux.intel.com>, "Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "kvm@vger.kernel.org"
+	<kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "michael.roth@amd.com" <michael.roth@amd.com>
+Subject: Re: [PATCH 00/14] KVM: x86: Emulator MMIO fix and cleanups
+Thread-Topic: [PATCH 00/14] KVM: x86: Emulator MMIO fix and cleanups
+Thread-Index: AQHcpfUGc3v1KRHdhkGJDe4TPYfE/rWTrYOA
+Date: Wed, 25 Feb 2026 17:32:30 +0000
+Message-ID: <1993dd78bb601516e5e096b205b1137ecb80426e.camel@intel.com>
+References: <20260225012049.920665-1-seanjc@google.com>
+In-Reply-To: <20260225012049.920665-1-seanjc@google.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.44.4-0ubuntu2.1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: LV2PR11MB5976:EE_|IA3PR11MB9374:EE_
+x-ms-office365-filtering-correlation-id: a9427b9a-88fa-46be-2950-08de7493da29
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024|38070700021;
+x-microsoft-antispam-message-info: n0bwNfV5Fe8FDYxSESifM7UO2jfdup/a6An3KwOOw/gJTkTQvO8aoZ6xCPZjtqs0JkHKBfR5061CO3YqwwCiQSm9hVc0EOb7J7Zu74iu4YWjPdbu8TFG5nbn0+V4nVMqx4o79Kp0R4c74erRRzOTwIg9XIyLjOKn0mTz+Lv9qMCaFFKzb9zE/Bdnp6EOZJVI22KMEZJXq9wcB+WczaKyW6B01Dj1Zrn19N99PkDNXdqKwE8ryH0/fmLEhnlnL7Bu211qfx7vHLYkTvCa/ogW3jrn2Ypu6oJ/StLAQu9OUm/EWteJE9PpInQO7IysxPeygrIKVIoiXiRvt8qQUR+htezO0dkqN3YEkXcWcqDZfpTc4w11BvGZ8p4REYrRUlrWfmG+GLnK5dOcH5emjMT1Vo07XmBVO2dL3rMbLjpePlb7nXhuZx8/vCt8OA3eDcTAp7KNmgZmPqwZQurkCw+Z25cstN9kSmlv+hOLo+nzzbdc4tpiZc0209Os+LW7acZtoMKYQAEoQDdJFYMWfgI3hgUPWxY7NsWUhnWUPoraIJXi5a99LiZiuiavNUIKhGb9OMtugCrmC40602Jy+KZWDDbJEGWtO4f6JXPIcpcBTu15QX7OTBMQFzQ3CP2kskfQzUf9MmvOzygEc0D88PUz56Q5ns4Frb3zpmLaItfH0Ai3aRaL/nKgc+fg4klnYYDIkYzYMNdxDXmGEbL2X1sYHK1JhJaiIGDL0ipJIcPbv/3LFTVfKAXq/xStlpuj1eAJCFNa1mPmvqu6R8AcZGrv44M7RNVvPJPoxzmZvees17Y=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR11MB5976.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dlg4TDNyUXRsZStVaWFiVnFUUDdCSjFQWk0xVWZBM09jTERFdWpqL0o2dndC?=
+ =?utf-8?B?UmFIS0t4b0JKaGk2WGZVVlFpa2xDbUtCYVBxV01CV2gwRTIvMmJKcHVURXcr?=
+ =?utf-8?B?RFo4aUpxVURqSW9sTjUxUnBYV2ZSY0s0NDg3dG8wSHc2ZjlLZjc1dnB3NTBF?=
+ =?utf-8?B?bWcxY2dIWnVtSGlEK01oMy9QMUJrSjFrK3JKQVFzWms4aEN5SEUvb3hkSnFJ?=
+ =?utf-8?B?bFg2OHIzazE4UCtQMUhWRUNRRjlIdlZNL1NCbkZ4NjdZb0UyNmtydHB6cC84?=
+ =?utf-8?B?dy9KQTVmeldRc0QxUEZGTEQ4N3lTSEFaN3h6blhqOUlZSm1XRWErMVB1b2xW?=
+ =?utf-8?B?WnhQSm9lRkdoWWh1Z3dBall2d1NUUXZlWk92SkRQbGFINDJ6QmV1Qit5QldQ?=
+ =?utf-8?B?NnBYQ0djZnVEdGhMcHNXR25LWWxJOG9nMVFGMjFZR1FCUTVOVkx2Yzg4bFBv?=
+ =?utf-8?B?VEYwVGlGalh1UHBISFhNdHFMUG9DNU9RVkIzRDJHZkpRVTBFR0JvSmJNTEdC?=
+ =?utf-8?B?VHBZR3N4YVRlYkY0TTJkZDdZOFhCcTMvRUxubWtmSzhoOHBPTnZBOThrR0tS?=
+ =?utf-8?B?UEN5Q1dudWhwNTZvSkc2eHRxTGNnRTRkS3pIbWcvbzk2b1JYQlFPdXN6THRP?=
+ =?utf-8?B?SHpadXZSaERyUUlyV2tDZS9HSUhaMTN0TE9MdmpoVnRiR25CZzIwVU4xajRv?=
+ =?utf-8?B?UytacHllMW1ZbXJWRHV4Y0NuWG94OWRIK1NaVWlzanBTRnp3bUlOa0ZWZlVI?=
+ =?utf-8?B?WDVlZUxSVWQwZTNHZUIxU25YTklqVUJhS3J2VWtzRDgvdXhraHcrZy93dFp0?=
+ =?utf-8?B?K3VEcng2aEVTQVFjN0d5WXdEV0dQcU15Und2NXhidVZiUHNEKzBGR3lGdTNB?=
+ =?utf-8?B?Q2NIVUFUbTlUVXMrRmc5eTc3a1M3SjBWNktyRlY5VmNiWHZ6TFA3dDU2cWtZ?=
+ =?utf-8?B?eHFyY0lDY3NDZmdmVTAyU2kwdGdjcmpYT2IyTGdWWEFGZzYzS3AxVnZkdGxR?=
+ =?utf-8?B?QjF2WTRVb3ZISHQzVXA2aWlRNUVhd3EvWlJQdTF4dVpFemhFU1N4K3FPRk9P?=
+ =?utf-8?B?WGdFaWlLVGlXNjNwY1hOYWhxSlFTTEF4QnNWZzJrWmsyYmFad1AvRlV0Ykgv?=
+ =?utf-8?B?elBwb3BadmVUOHJYNUdnOEsvM2p4RGR3QzlqMWhJRWFRZUMya05ZMU1ncURU?=
+ =?utf-8?B?Q2UrS3NVbml3T1BaNXlmRXNtclU5UGY1ODNYZWZDYm9aT2FUTTZlUVdTV3I5?=
+ =?utf-8?B?RmNIMkJ2dW9mMDdvUHhjVnhNTEp2L3o3ZFAzQWloZXNmZXRWRDgyN25KMzBU?=
+ =?utf-8?B?SDZVSzJwRHBUck5hSVZKV2FCWmdmdEN3N2JnREVWTDZoSnU3eXdXbUNBYUdh?=
+ =?utf-8?B?SWJzd3hKZDJGclRCMStvME9wQjgwa28yV1BveEMwTWw3NFloK0k5VXJNSDhZ?=
+ =?utf-8?B?T09MYStoVmNhYUpCbEVDdngrSXRuOUxHUmhXVFFTRzYyUkE4OXBvTVhmcEha?=
+ =?utf-8?B?NGQyUGtCTm54VjJYdERXcVpNSHJYeTVacHRvbEFpeVNZbWZNUXJOaXBLU3ls?=
+ =?utf-8?B?WkpwRGZ2UGdsT3RQa0U2b0NKTmtVTmxWK21oSFE2b1BVQVg2R1U1eVZjeVFU?=
+ =?utf-8?B?Q0RWdW45bEIydXNsM1FzeTN1NlJUc3BWUFJkbC95MzNyRnNEMDA5MHhZZGdj?=
+ =?utf-8?B?L2JuRUJ6d0FIMC85NTJnRUpUcW85OVN3SFJ2K1VicEYrSDlzK3l5YitpcGFV?=
+ =?utf-8?B?VlpXV1NWbHVvYTh4R3l4UEpsRk13RnA0TnNjaitIMmlQRmlSRmZzNnJtVWVa?=
+ =?utf-8?B?VXZHNFMzYWh2a2lkc0N3eWRYc0tTby9ZZUVjQmZnWHJDMnFodmhhN3cyZXl5?=
+ =?utf-8?B?MjZIcDFPYUx0Mk4vem5uR2tIenBuc1pGMWQrRkhUa3BHR0dCRkNVaXFlK2s1?=
+ =?utf-8?B?UmcxWnFSaTlxMk5rTlhtemN3QU11WW9BYm93SEoyaU9UcEpmSlc2S24vcXoy?=
+ =?utf-8?B?ZWQ3aUI5RmlsUjRrUzJVZis1OVFLcE9wOWM3bWVONU9nZCs4d2VkN25hUDFI?=
+ =?utf-8?B?bUwvdlVsbEFPdGI1OEJSRmZzNVJBNERjMnJjY3hzK1RnNzlQVDN0TCtON3lY?=
+ =?utf-8?B?dTlNVUZnWHVuQ0lDRG54R2tZbXNRMSt1eDhWZmp2ZVBGdDZBMS9TWU1IUFhh?=
+ =?utf-8?B?bWRkWlh2WTZpalc1Y0wrN1NRSmpIUlpZR3htMWhOMVZZcExpU3dRTERDS0FR?=
+ =?utf-8?B?V1VFMHB0R3U1ZUdJd0dQa21SWG5iS2xvbldhUzFKQ1dIWjlBcUowa0RDekEz?=
+ =?utf-8?B?dTNQc3pkMG40QXAvV3p3SDJ0VVpSdHVnbHR2S2VTWTFmR0h5T2J2UHJHeFV3?=
+ =?utf-8?Q?kyrcgQ7+yrNiHg/w=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <7C043495A78C9D4D83103861C5F8CF78@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH kernel 6/9] x86/dma-direct: Stop changing encrypted page
- state for TDISP devices
-To: Alexey Kardashevskiy <aik@amd.com>, x86@kernel.org
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-pci@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Mike Rapoport <rppt@kernel.org>,
- Tom Lendacky <thomas.lendacky@amd.com>, Ard Biesheuvel <ardb@kernel.org>,
- Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
- Ashish Kalra <ashish.kalra@amd.com>, Stefano Garzarella
- <sgarzare@redhat.com>, Melody Wang <huibo.wang@amd.com>,
- Seongman Lee <augustus92@kaist.ac.kr>, Joerg Roedel <joerg.roedel@amd.com>,
- Nikunj A Dadhania <nikunj@amd.com>, Michael Roth <michael.roth@amd.com>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Andi Kleen <ak@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Tony Luck <tony.luck@intel.com>, David Woodhouse <dwmw@amazon.co.uk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Denis Efremov <efremov@linux.com>, Geliang Tang <geliang@kernel.org>,
- Piotr Gregor <piotrgregor@rsyncme.org>, "Michael S. Tsirkin"
- <mst@redhat.com>, Alex Williamson <alex@shazbot.org>,
- Arnd Bergmann <arnd@arndb.de>, Jesse Barnes <jbarnes@virtuousgeek.org>,
- Jacob Pan <jacob.jun.pan@linux.intel.com>, Yinghai Lu <yinghai@kernel.org>,
- Kevin Brodsky <kevin.brodsky@arm.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
- Xu Yilun <yilun.xu@linux.intel.com>, Herbert Xu
- <herbert@gondor.apana.org.au>, Kim Phillips <kim.phillips@amd.com>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Claire Chang <tientzu@chromium.org>, linux-coco@lists.linux.dev,
- iommu@lists.linux.dev
-References: <20260225053806.3311234-1-aik@amd.com>
- <20260225053806.3311234-7-aik@amd.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260225053806.3311234-7-aik@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR11MB5976.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a9427b9a-88fa-46be-2950-08de7493da29
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Feb 2026 17:32:30.1582
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: jufXT42D6P45PCgap/6/+pvgrJFkjWJhk0E28tqYaDi/8kDq1iOzisZObTImS6DSARK9cn+96fkRXBKeLPzWZr0C3fGc87iVX8j2uu+Wzs8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB9374
+X-OriginatorOrg: intel.com
 
-On 2026-02-25 5:37 am, Alexey Kardashevskiy wrote:
-> TDISP devices operate in CoCo VMs only and capable of accessing
-> encrypted guest memory.
-> 
-> Currently when SME is on, the DMA subsystem forces the SME mask in
-> DMA handles in phys_to_dma() which assumes IOMMU pass through
-> which is never the case with CoCoVM running with a TDISP device.
-> 
-> Define X86's version of phys_to_dma() to skip leaking SME mask to
-> the device.
-> 
-> Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
-> ---
-> 
-> Doing this in the generic version breaks ARM which uses
-> the SME mask in DMA handles, hence ARCH_HAS_PHYS_TO_DMA.
-
-That smells a bit off... In CCA we should be in the same boat, wherein a 
-trusted device can access memory at a DMA address based on its "normal" 
-(private) GPA, rather than having to be redirected to the shared alias 
-(it's really not an "SME mask" in that sense at all).
-
-I guess this comes back to the point I just raised on the previous patch 
-- the current assumption is that devices cannot access private memory at 
-all, and thus phys_to_dma() is implicitly only dealing with the 
-mechanics of how the given device accesses shared memory. Once that no 
-longer holds, I don't see how we can find the right answer without also 
-consulting the relevant state of paddr itself, and that really *should* 
-be able to be commonly abstracted across CoCo environments. And if in 
-the process of that we could untangle the "implicit vs. explicit SME 
-mask for shared memory or non-CoCo SME" case from common code and punt 
-*that* into an x86-specific special case, all the better :)
-
-Thanks,
-Robin.
-
-> pci_device_add() enforces the FFFF_FFFF coherent DMA mask so
-> dma_alloc_coherent() fails when SME=on, this is how I ended up fixing
-> phys_to_dma() and not quite sure it is the right fix.
-> ---
->   arch/x86/Kconfig                  |  1 +
->   arch/x86/include/asm/dma-direct.h | 39 ++++++++++++++++++++
->   2 files changed, 40 insertions(+)
-> 
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index fa3b616af03a..c46283064518 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -112,6 +112,7 @@ config X86
->   	select ARCH_HAS_UBSAN
->   	select ARCH_HAS_DEBUG_WX
->   	select ARCH_HAS_ZONE_DMA_SET if EXPERT
-> +	select ARCH_HAS_PHYS_TO_DMA
->   	select ARCH_HAVE_NMI_SAFE_CMPXCHG
->   	select ARCH_HAVE_EXTRA_ELF_NOTES
->   	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
-> diff --git a/arch/x86/include/asm/dma-direct.h b/arch/x86/include/asm/dma-direct.h
-> new file mode 100644
-> index 000000000000..f50e03d643c1
-> --- /dev/null
-> +++ b/arch/x86/include/asm/dma-direct.h
-> @@ -0,0 +1,39 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef ASM_X86_DMA_DIRECT_H
-> +#define ASM_X86_DMA_DIRECT_H 1
-> +
-> +static inline dma_addr_t __phys_to_dma(struct device *dev, phys_addr_t paddr)
-> +{
-> +	if (dev->dma_range_map)
-> +		return translate_phys_to_dma(dev, paddr);
-> +	return paddr;
-> +}
-> +
-> +static inline dma_addr_t phys_to_dma(struct device *dev, phys_addr_t paddr)
-> +{
-> +	/*
-> +	 * TDISP devices only work in CoCoVMs and rely on IOMMU to
-> +	 * decide on the memory encryption.
-> +	 * Stop leaking the SME mask in DMA handles and return
-> +	 * the real address.
-> +	 */
-> +	if (device_cc_accepted(dev))
-> +		return dma_addr_unencrypted(__phys_to_dma(dev, paddr));
-> +
-> +	return dma_addr_encrypted(__phys_to_dma(dev, paddr));
-> +}
-> +
-> +static inline phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr)
-> +{
-> +	return daddr;
-> +}
-> +
-> +static inline dma_addr_t phys_to_dma_unencrypted(struct device *dev,
-> +						 phys_addr_t paddr)
-> +{
-> +	return dma_addr_unencrypted(__phys_to_dma(dev, paddr));
-> +}
-> +
-> +#define phys_to_dma_unencrypted phys_to_dma_unencrypted
-> +
-> +#endif /* ASM_X86_DMA_DIRECT_H */
-
+T24gVHVlLCAyMDI2LTAyLTI0IGF0IDE3OjIwIC0wODAwLCBTZWFuIENocmlzdG9waGVyc29uIHdy
+b3RlOg0KPiBGaXggYSBVQUYgc3RhY2sgYnVnIHdoZXJlIEtWTSByZWZlcmVuY2VzIGEgc3RhY2sg
+cG9pbnRlciBhcm91bmQgYW4gZXhpdCB0bw0KPiB1c2Vyc3BhY2UsIGFuZCB0aGVuIGNsZWFuIHVw
+IHRoZSByZWxhdGVkIGNvZGUgdG8gdHJ5IHRvIG1ha2UgaXQgZWFzaWVyIHRvDQo+IG1haW50YWlu
+IChub3QgbmVjZXNzYXJpbHkgImVhc3kiLCBidXQgImVhc2llciIpLg0KPiANCj4gVGhlIFNFVi1F
+UyBhbmQgVERYIGNoYW5nZXMgYXJlIGNvbXBpbGUtdGVzdGVkIG9ubHkuDQoNCkkgcmFuIGl0IHRo
+cm91Z2ggb3VyIFREWCBDSS4NCg0KVGVzdGVkLWJ5OiBSaWNrIEVkZ2Vjb21iZSA8cmljay5wLmVk
+Z2Vjb21iZUBpbnRlbC5jb20+DQo=
