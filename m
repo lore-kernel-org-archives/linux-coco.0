@@ -1,105 +1,177 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11023111.outbound.protection.outlook.com [40.93.201.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB262D249E
-	for <linux-coco@lists.linux.dev>; Wed, 25 Feb 2026 20:21:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772050871; cv=none; b=Z1zbmoJ2FU8xNY90IFsB5mVjwO34IiVHTlPBJfl9uT0n4jP/Ayx1xia1ercKakODj7nlhOpZ5FzUG0D15iTM4WivOgIWnNbsTTaOVIvwZJ3RVLxAD9fYayBubptvIzyK58GhRpKv5MxMoaCgiFxsxrJXuBXXKKe1DetWm1Gl0z0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772050871; c=relaxed/simple;
-	bh=CjFbqOLn5WP5KXf0R1Hc9sBVWXyOe7id4YswrRUGc7w=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=osVefgdwY7xI/pvmzc08IEiyxqsh4CESfx6eQtcaEMU+k76eaklG6R7Zr8Fvc7ovvKIURX6Hs6188Jc+IvI3snt9MVXJ4JRioB4+ZutfvYdNJ9WUlXhlSNlm8dgvk+MgHSvLx8XoHttcBUOuC7YCVQl4mtubQ8yjZBt2qreBLdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WPmakBSb; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95AE030EF7C
+	for <linux-coco@lists.linux.dev>; Wed, 25 Feb 2026 20:30:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.111
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772051435; cv=fail; b=QnUDK0CFoTn/q8mT2pX5/XzR86HgaO0QB6TD0afwdyI7gj2Y5qTJu+QSK0AqZuAM/pImZIKBR9IDIGvh0jAzuDDEPDKRV1Ueo7d2/ZXWlS5cC+bttkcP5AVduSkD3JhNMY2w0x78HRabpYKglnr0yTDpDB89qVSnIs5Xy64kO/E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772051435; c=relaxed/simple;
+	bh=6+bcrAR3Sy85VgyEN3AvEHsIB1wlghG0N3YGhOYfmXU=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=lRTa8SMwIIb9pRqalat6mPHcI87yZmp+Dd/u4Wy9i7CeVXuzmQHU22ct5sP8FqdifRfSGMk7wcvy7Ioy6v48HzrciXdQhpgf8dtz23DrAc8sCeZ05EbRZ3AyuG2YkhScVCUOifJU4g+rtNsfFNWbf6kp8yab03j/vbXCo1MOcd0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fortanix.com; spf=pass smtp.mailfrom=fortanix.com; dkim=pass (1024-bit key) header.d=fortanix.com header.i=@fortanix.com header.b=QCuU5+Xg; arc=fail smtp.client-ip=40.93.201.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fortanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fortanix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WPmakBSb"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3561f5bd22eso5894248a91.2
-        for <linux-coco@lists.linux.dev>; Wed, 25 Feb 2026 12:21:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772050869; x=1772655669; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ldmr9oU0MSeitk+1OIgY+rdK40ygdsN3dEDub2L4tpc=;
-        b=WPmakBSbtEJKDMAvJj3T+3bY3CI+60iIo6vQTzU2bUI82H0Kbk3iuvYxmpY9G/QCu3
-         TWVIss2p38oRkJY/gfQFl3y37cvQT88OFmzqOEn4wyDomvKAGTsQVc7mbqCBj9mn7OWW
-         XGQP1xosO5hVmjcg81WImC4jz5Nlpx31ADEwbBTvsoMkBqyDX3JqeYorgUq2hGfZflMc
-         BLNJfv3UEvsVB7jyV60uJnex0OEc9j/d+KmFLrfuiYwCZRsjVK9mzA5gxyVzYTgKWLov
-         iUQ7MKLTQvocieFS8y90VlNzGsxSr/WFMwRp0z4AWnVysGB4k61SMzHkCsMeGWsI9+x0
-         xfag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772050869; x=1772655669;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ldmr9oU0MSeitk+1OIgY+rdK40ygdsN3dEDub2L4tpc=;
-        b=Kh5DtKLG+Pk8pCYLbVGzj1C1jvc2bFPQXN38S58QT+vPRF7E8xBdP/c2+CdwBl3J2k
-         RbDPqKrm/azas2FNl3mz6BR96XB8jJsiIAOx59tM4wT2Lap26LWzrGKbThSe6EooD/HR
-         0v+jXCHKoZVXhIfYeA9C1tfm7ZBtAqiOwQZuS08cGd9D+y+vKx75FRQ1VMl/qnvFTu5g
-         8XMSTOsB7sqRWkhmOXJrhqb/XATwSfch97Pvzb6PX4m7iELreD396vchywJ3GQs58mrU
-         XYKxU7iZWPz5bxuZeSdf8tWH5F5GFWQH1a3Twtf4StnAejMa/z4/2sv6Yr9NlNdt7RZk
-         MM/A==
-X-Forwarded-Encrypted: i=1; AJvYcCWGkRFMT1jcV0VbPhtBAHBJTRapk31sM+zvlBEMJDWsef3uus+wWBtW0zSWHdj6aU6XZBEICOub7fnK@lists.linux.dev
-X-Gm-Message-State: AOJu0YykrsJf5gkGnzOcmKaHwazRYiTqB0l8Yjmsw3k5RyqYrPBBkwAO
-	kZalY5+D8mrS5uZDX9oznOnaiGF1uHpCs3tZEp+SEOA2EO9WLfPem1XbsqGhJHJ3efUoMviaxv0
-	mG2dI+A==
-X-Received: from pjbsl11.prod.google.com ([2002:a17:90b:2e0b:b0:34e:90d2:55c0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2812:b0:354:a9f3:68bc
- with SMTP id 98e67ed59e1d1-358ae8e8390mr13614658a91.30.1772050869370; Wed, 25
- Feb 2026 12:21:09 -0800 (PST)
-Date: Wed, 25 Feb 2026 12:21:07 -0800
-In-Reply-To: <928a31e1-bb6f-44d4-b1de-654d6968fd55@fortanix.com>
+	dkim=pass (1024-bit key) header.d=fortanix.com header.i=@fortanix.com header.b="QCuU5+Xg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XuoPFfLyreigcCW29XrEItBpKts/Abxf8/KRll4R77fCw5VjgL5YCqkx02e+FkqRTzjqybb8X6qPDw8PIrS4N/wjMDINvEQobDDRc3A+kNZJeO2rCyscWbXAMh1+7tlXlC8s3AnDQl1gPlawvbJHC3e6E7YhrLQSx1ny64EiVXlgtQixtIqUQuV1HbeaEhtElmVbVpxOkhHE7hmViiyAEjzcd/3+JCHyTpbfkJK994D8XvmzNPSoiruz3xhfqTPRIhafxv/Oyybnywtgb6bAUe8lJEcyJ9Mn+39JrLzx35nfS57ZtSMHL1cyrvHPFsu7HWGOJN1nTV6/S8w54Bns2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NHDUses87qTmRwH+6re4KoxMWuVFjF4rqFuqWb9z0nc=;
+ b=us5ekFnDwSlhKTCy6Nv4mJBUpHAQtKBFLiSOF0DbjnAXH9LcVdK3Z1THFmeIWPHDbFSeXTM26SKHeArKVbn8nVWmfS6RVrEjOKVcKVxQqss3mPniP4Kduoec418Vf2x+jD4LX0g2Iw21n7FmStfq/eLXB1kWo+MSRFOtO7GqcKKeRDvEkKDIUdrpGO9+bnTTh0hxQPQ2/89YkZkvMcmfTHiYU6EtNYin4RKV8jMtY2CnjDp/7ca+WdLXbrjFVqpX3pYlpYMYWjrDp11IstGjncpNPptDAXbmJ3AkKJEXQh0/J3jU0VfIwVZiQjL35/a6IrQ7HwaAp4Zs8GhEmV9ntg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=fortanix.com; dmarc=pass action=none header.from=fortanix.com;
+ dkim=pass header.d=fortanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fortanix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NHDUses87qTmRwH+6re4KoxMWuVFjF4rqFuqWb9z0nc=;
+ b=QCuU5+XgnXaAx02lba90epUS5Y99b0/GE739AI1/aB/+LF1kxl+PAtven0o8nqzccTg0q3k92QoyKsVyJUVrHXgkA65aWZbY6e+AJYR5R9MnXEewgBL+paxHFHF6I3pPYksulpOM6AmLcGV/4Q4bT4xc/BqaXdz63AeKFqrKFgI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=fortanix.com;
+Received: from PH0PR11MB5626.namprd11.prod.outlook.com (2603:10b6:510:ee::15)
+ by CY8PR11MB7172.namprd11.prod.outlook.com (2603:10b6:930:93::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.23; Wed, 25 Feb
+ 2026 20:30:28 +0000
+Received: from PH0PR11MB5626.namprd11.prod.outlook.com
+ ([fe80::64f2:5af6:ec99:cb80]) by PH0PR11MB5626.namprd11.prod.outlook.com
+ ([fe80::64f2:5af6:ec99:cb80%4]) with mapi id 15.20.9654.007; Wed, 25 Feb 2026
+ 20:30:28 +0000
+Message-ID: <64a01647-2f99-44a8-a183-702d6eb6fd81@fortanix.com>
+Date: Wed, 25 Feb 2026 12:30:55 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: SEV: Track SNP launch state and disallow invalid
+ userspace interactions
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
+References: <d98692e2-d96b-4c36-8089-4bc1e5cc3d57@fortanix.com>
+ <aZ9V_O5SGGKa-Vdn@google.com>
+ <928a31e1-bb6f-44d4-b1de-654d6968fd55@fortanix.com>
+ <aZ9Zs0laC2p5W-OL@google.com>
+Content-Language: en-US
+From: Jethro Beekman <jethro@fortanix.com>
+In-Reply-To: <aZ9Zs0laC2p5W-OL@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR13CA0109.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c5::24) To PH0PR11MB5626.namprd11.prod.outlook.com
+ (2603:10b6:510:ee::15)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <d98692e2-d96b-4c36-8089-4bc1e5cc3d57@fortanix.com>
- <aZ9V_O5SGGKa-Vdn@google.com> <928a31e1-bb6f-44d4-b1de-654d6968fd55@fortanix.com>
-Message-ID: <aZ9Zs0laC2p5W-OL@google.com>
-Subject: Re: [PATCH] KVM: SEV: Track SNP launch state and disallow invalid
- userspace interactions
-From: Sean Christopherson <seanjc@google.com>
-To: Jethro Beekman <jethro@fortanix.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR11MB5626:EE_|CY8PR11MB7172:EE_
+X-MS-Office365-Filtering-Correlation-Id: 69a427af-2579-458b-95e4-08de74acb6ed
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	vgCWVpNwaBJPT3JLQe1Zfxq1i+6nVgFRJ2ubXajM1JkNLs07otrkdVVCNW5hn1yD2UHPEG78KUhv/r5F66nIdTWPEPpvboWvlsp3LAGdc3JxfmKeR3CwcVeCpnTnsexEmmePivbmu/jl1vPfD5cSMQOYoyK/9N/x2GeUC9O1LnTlor16ciFUx6r21pjuhtfTD1xXcwHI3bEYcspyo5KMiXU9+wWmF1bRpft567/x15OsTM/v3EQ/DIKPXj2Gz/CJPPpa84FfPOL7YXTQ7zt802zld0FJkRroMNGBUnVN05wpLM7BDzusamYybMu9qhZ7cKYv/I8cd5Yai6VcTYbFvLinH5csNZxoFInAipbz4pU0JiVQHJF+1EEZ3MGaFu9OFBZNglRDXJQovrMP822wESAnA6gx25wAKQ3X9H/C9YujQVTHQvbiZQytX05XYVf+ZkscDQ+PnIng7aun/+7/Fqwxty+3uxDVR7oRd78mpHDxMLh2NDdCSdLoYAkEq1+J5U8V8H3/YrGyUYgyM9MI7/F2X5F1Qn6d+HnovhZ1qceEnn1d0kRPzeRjf05KnO8xgJC8Qmb9xXn95Sjwe2AoKbamnvIuA/bXq2HEWq+poNYQ3OHKjyRccjhuuLoEVMjbviA46WU2R3zbFpCxF67idx8PzM/u66I9SXHM7igUNmf0WiEsdhnUR9Hw//Ch4zeCh2knAzsyidwERyVlmzG+g6G/WpWmruqNV5+0xytHjCw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5626.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VlJXb1B0VERhc0lMV3h0MFc4T2g1b2FkSytMckE1bDhmTlZFQmdHL2JUdStu?=
+ =?utf-8?B?Y1FoYm91b1pSd0V2UU4yS0xDVUVFamFEeW54ZUlLbFcxeTMyamNTL1dVaVRG?=
+ =?utf-8?B?a3hKN3Iyc0MyNmhaMkFtT3h6NUFONXNvSXVSRDRrNUIyMTV1YVpEcDZ2S3Q5?=
+ =?utf-8?B?WGpjU0ZRNTQ3VEpTYUJBMit4TE81bG1yMnFRMVRWdHRsNEVGa3EybVc0OUYy?=
+ =?utf-8?B?TWZySlVnM1hKUFpvaWVXL1JQK3pKVHNZdmkvRG5ibWJWUTM0NytRaUVEYzd2?=
+ =?utf-8?B?bTlTYXAwZ09BMVQvSXJzZnE0SllWUTBjQXlTL0VqN25nVmx4QTg1UkJyRDJK?=
+ =?utf-8?B?cm1uQkhjRHJWK1dyaXBvY01EZmszblpjVkxLNXZQTEVGNmlJSXFZbGthNFpE?=
+ =?utf-8?B?RWpyMHZYNmdXOWZ4bXFGNkQ4ZXFieDRNeTl0YWZDUlJvNEo2NnFlcGVKZXRB?=
+ =?utf-8?B?K2x2dmtMZlVla1FOUlFOTE5uS0JBd0ROLzlodnhTcVQ3dmVDNm9oTGY3M05i?=
+ =?utf-8?B?SmFtQmxobFpOZW1pVkVKTFRVSFgxT29lZnhSTkdvanFaTHh2b3pQRzM2WE0y?=
+ =?utf-8?B?VjVNelNrQ25xTXBhKyt4bEJvS3NEam1KYnBUVDQxZmVuNGp2d1BkMGdtekZD?=
+ =?utf-8?B?ZVFFVUpGOWpFTHFPWmtVTVpsd0hPYUVMMGtiWDc4amh5RmR3RVZZY2JST1Fl?=
+ =?utf-8?B?blhnVGJ6TUp1Q1kwWlNlQlZhc0dLTWhsMytUbmcvK045ZlVkWXcwRGFjVzZ0?=
+ =?utf-8?B?OEtjRFJObk5uSVZyam82QnNTVkRWbGkzMllONUM3QVlSbjBaNnY1R3NIRWZl?=
+ =?utf-8?B?M21LRGNKMExUcTBIRjdsQXlQTU1peTBZaDE4Y3kzcWVIRVEyNm5Eck5BbGo0?=
+ =?utf-8?B?a2w5U2M3Q1M3YlhZcndzM3pwWks2Q09DN2J1MUpXbXFrZTdsYUpkaGhTRDJk?=
+ =?utf-8?B?UGhnUGUrUlV6cWpZRkF2YWZML3B6eGdBRSswQTBieWF2WU42OG9iYm9Fa00v?=
+ =?utf-8?B?RGEvc0c2NnpHUWVHMGNoL3F3SU9jNjI4QldFcVk0QzNyYmxsdDMxTHZ5TDdq?=
+ =?utf-8?B?VTVzbjZTTk5aMVBTdFBsOVVzTGU1U0VPd042L3Vtd3FFa1o3end0K1pnMExG?=
+ =?utf-8?B?UDZWbU1UTGhtMUlrZytzT0tGVzRWR3NSNElDbmdBYXZrNkg3b2MweDVmNFBw?=
+ =?utf-8?B?ZjljWHlvb0tMR0h6R0t4c0NvMGo2VENpR3g1R2NVWktFTDAyM0tPeHhVOHU2?=
+ =?utf-8?B?WmZDLzJ2MklLN0RzdWg3d0JlMXBQR3JTTmpvQUpsaS81bEQzL3IwYXR2NzJR?=
+ =?utf-8?B?UUp3ODQwc3Bjd3RZR1ZwVlNFWXNZRjRiM05Cdm0xS2tLV1NWbGVTcm5CMUVF?=
+ =?utf-8?B?K0VXcFVYdmJOOWM2NzVSSElhZHFtRDZ5aERYUEV2Mi9pb2dzd1dLUlp6d0l0?=
+ =?utf-8?B?U3ZUVUVhZVN3dTZ1SnNsYmphNElDbHF5eHVvMXZIWEJvZ2tEZENCbWdwbGdF?=
+ =?utf-8?B?ZGdSTGFLaDQxclpRQUQwdkUxUG1EOTJiZWt3ZjhZcUlRbUZlUWZoMDFrZmtl?=
+ =?utf-8?B?UTVKcGJwTUwxSXE2MWVuRm9lbVEyVGNRSHVScHR4cHdUMVRNNjR0bDl2ZGxH?=
+ =?utf-8?B?c3ZoL3kraVFIOTBCZjh5L0NteFgzV1RsanowQUFiVkJOaEJxMWtSVXVmS3J2?=
+ =?utf-8?B?R2drQnVnQU1Lb3hJNjRQM0tQZ3JkRE82MncrVHlTRHByelpvcitTTUdEbGtG?=
+ =?utf-8?B?VWNsYlpiVVhYMXNDR2tlazRFc2d5U0NWaWYvOCt6VkNrVlhCNWFTaTAwbXB2?=
+ =?utf-8?B?RFdabGNZcSs1Wml4QkR1dEhCMkRsOWNCUGVCWnp1SnF3M3p6K2ZQTHowSTNG?=
+ =?utf-8?B?a3luT05ZMzkwMUJWRnUxeXRMbnJoS0s0YTF5VEI1bkZsQzZXRVB0enI0RWl1?=
+ =?utf-8?B?UHo1MzlvVHR2K1lJOTJrbStraHBTUGpOTGUzTFhWSUhwTlByaUMzKzg5bTB0?=
+ =?utf-8?B?eEJTbEJya3JXZ3pZY1FFczkyYnc0a29mWU5lZXhybVJyLzVWb2pKWXM1c3hw?=
+ =?utf-8?B?YW4rbkRCS0xJSlZJY3grcm11bzNjZmF6YXpDcGd0WHVmNkY0K2ZVbm9iSm1P?=
+ =?utf-8?B?WXNIMFdPaldXdGMxdEFMeVNweUxwYjFQaFBsYmRTSi9Xc1FLTlVybGNwSnhj?=
+ =?utf-8?B?c3RoMWxiaFNiUHlNeWlJL1djckNCT3ZpSUljaHNrYk9qamZiREdma2crZm10?=
+ =?utf-8?B?TzNVSlFhRjY4ZEhFbFhLRmNHcEVSMkJmSFN6ODd3MjIweHExa2NyYTZwL2Nv?=
+ =?utf-8?B?a1gwb09Pd1NRNUdDZTBmMlNPbndlcUZ0V1lBakg2eTVQL2NTeGRMRVA4WVRO?=
+ =?utf-8?Q?0FVCfrVzRz9AY0es=3D?=
+X-OriginatorOrg: fortanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 69a427af-2579-458b-95e4-08de74acb6ed
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5626.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2026 20:30:28.6655
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: de7becae-4883-43e8-82c7-7dbdbb988ae6
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MloYzs1u5Nw+1cyo9we4fvm81DHOmqop6Aulzv+SrB2WskLjraKwm//dCzlDCcKo4ugsDIwBJoXV9zb2Al/jXg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7172
 
-On Wed, Feb 25, 2026, Jethro Beekman wrote:
-> On 2026-02-25 12:05, Sean Christopherson wrote:
-> > On Mon, Jan 19, 2026, Jethro Beekman wrote:
-> >> Calling any of the SNP_LAUNCH_ ioctls after SNP_LAUNCH_FINISH results in a
-> >> kernel page fault due to RMP violation. Track SNP launch state and exit early.
-> > 
-> > What exactly trips the RMP #PF?  A backtrace would be especially helpful for
-> > posterity.
+On 2026-02-25 12:21, Sean Christopherson wrote:
+> On Wed, Feb 25, 2026, Jethro Beekman wrote:
+>> On 2026-02-25 12:05, Sean Christopherson wrote:
+>>> On Mon, Jan 19, 2026, Jethro Beekman wrote:
+>>>> Calling any of the SNP_LAUNCH_ ioctls after SNP_LAUNCH_FINISH results in a
+>>>> kernel page fault due to RMP violation. Track SNP launch state and exit early.
+>>>
+>>> What exactly trips the RMP #PF?  A backtrace would be especially helpful for
+>>> posterity.
+>>
+>> Here's a backtrace for calling ioctl(KVM_SEV_SNP_LAUNCH_FINISH) twice. Note this is with a modified version of QEMU.
 > 
-> Here's a backtrace for calling ioctl(KVM_SEV_SNP_LAUNCH_FINISH) twice. Note this is with a modified version of QEMU.
+>> RIP: 0010:sev_es_sync_vmsa+0x54/0x4c0 [kvm_amd]
+>>  snp_launch_update_vmsa+0x19d/0x290 [kvm_amd]
+>>  snp_launch_finish+0xb6/0x380 [kvm_amd]
+>>  sev_mem_enc_ioctl+0x14e/0x720 [kvm_amd]
+>>  kvm_arch_vm_ioctl+0x837/0xcf0 [kvm]
+> 
+> Ah, it's the VMSA that's being accessed.  Can't we just do?
+> 
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 723f4452302a..1e40ae592c93 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -882,6 +882,9 @@ static int sev_es_sync_vmsa(struct vcpu_svm *svm)
+>         u8 *d;
+>         int i;
+>  
+> +       if (vcpu->arch.guest_state_protected)
+> +               return -EINVAL;
+> +
+>         /* Check some debug related fields before encrypting the VMSA */
+>         if (svm->vcpu.guest_debug || (svm->vmcb->save.dr7 & ~DR7_FIXED_1))
+>                 return -EINVAL;
 
-> RIP: 0010:sev_es_sync_vmsa+0x54/0x4c0 [kvm_amd]
->  snp_launch_update_vmsa+0x19d/0x290 [kvm_amd]
->  snp_launch_finish+0xb6/0x380 [kvm_amd]
->  sev_mem_enc_ioctl+0x14e/0x720 [kvm_amd]
->  kvm_arch_vm_ioctl+0x837/0xcf0 [kvm]
+I tried relying on guest_state_protected instead of creating new state but I don't think it's sufficient. In particular, your proposal may fix snp_launch_finish() but I don't believe this addresses the issues in snp_launch_update() and sev_vcpu_create().
 
-Ah, it's the VMSA that's being accessed.  Can't we just do?
-
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 723f4452302a..1e40ae592c93 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -882,6 +882,9 @@ static int sev_es_sync_vmsa(struct vcpu_svm *svm)
-        u8 *d;
-        int i;
- 
-+       if (vcpu->arch.guest_state_protected)
-+               return -EINVAL;
-+
-        /* Check some debug related fields before encrypting the VMSA */
-        if (svm->vcpu.guest_debug || (svm->vmcb->save.dr7 & ~DR7_FIXED_1))
-                return -EINVAL;
+-- 
+Jethro Beekman | CTO | Fortanix
