@@ -1,135 +1,128 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F4F3A1D0C
-	for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 22:35:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D0A3803CD
+	for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 22:40:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772145316; cv=none; b=kEFZMjJ41VveaXk1jFBaAALtWh4HxdOppaYTWCgLa7npXWB7eRbwu275ZBWyWQlJDBlP/RxEe1+7LzagdovLpVPKOKjACxSlOPApCf85GQAJ+AeIUbjswjzWzNWLxWCnda+u6NeSLYbgs0Y8tmi1acBCbiE5vXhsPJbDEAb+64k=
+	t=1772145653; cv=none; b=R51z1YydCdYkYtV6XvtAgIftpLcVvlemtFVhGsyVaOx04UvQQjxWDhhwqqb60AiB7asZt37CCjc+8nb4agNW/4+LdYb/YlQvk9kpOIo44DCs9rp4SXHW2ObL6lzZwpRw6V4EH5AOxtYam//fJ+o1YlzwIN+CGysUFTKjF1tIf0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772145316; c=relaxed/simple;
-	bh=qrWeAGEW4qbpWnBtaPSvnkdtL2EAQJwXeLl4oSGuJN0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mZONu5En0v063cXpNn9r7JrPdiIlhbEGfO35jfjqQzTS8kgA+0D0Tpfymet2ZR5RgAn4Svec9W8dfuV+nj2/z63Ewk4dLmukwMovvSPBUjf+DdcmLmqbyhJCrZpZZBBm3Ep+nCeB/vI3njHZgGZkcAFCZBqvj2u9AiVxDKpHxPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eKqDX6Nh; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1772145653; c=relaxed/simple;
+	bh=YJoNV5ibtXK7Fjn1qXoDZbyy5ckBfovJdK/fD1zKydE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=F8RgpYac82EH0Ljj0ds+WFB0RzWK1ARROT40lhCCspX5jXiR6Vwcd4A8/208nbHRfS6QRT48XY6Y7UrcO+bk1lpbttGkn6Mq1fyhjnInleAqq3b1xobIzKmubz/Pr+0uCEX4ao2UB9wIFaemXsry4YyCljr9KyDbTnWmwxuDQSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BCsgppri; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eKqDX6Nh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772145314; x=1803681314;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=qrWeAGEW4qbpWnBtaPSvnkdtL2EAQJwXeLl4oSGuJN0=;
-  b=eKqDX6NhOiaI0+a6egB0ZawYvb+IWJ9EJKDpXRbSoQTVh/gFA9u6Oyio
-   WKk1T5m73Sj506l/Eb802gdYcyWEevz8vrpbM2AU8KxLX4iuNB39NETZf
-   ZH9Uo5/FJtOlpLdcYddhuF2JBVG5fq/qhhlw1xSQxBdhVbMx6tNp8LS4+
-   cSybBeCRnbbS5Sf+Hww155qQ9RKXJejOJQ95CYsQSFQnHOajDNUPxKqPW
-   rLNre3qkIlrSHuymbQsiLobYHq+oFiacCmS+EKt7Yxux2P0Km74w8FT2A
-   0rtEH5Di31FQyj+RZJpdWbdg5+IjylVY4NChOgP9QMXd8yxI+sVc7F79b
-   Q==;
-X-CSE-ConnectionGUID: mfystpu6TA+JieiT5t006w==
-X-CSE-MsgGUID: rRseR1R9SoW2+hMsfzF7iA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="90803762"
-X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; 
-   d="scan'208";a="90803762"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 14:35:13 -0800
-X-CSE-ConnectionGUID: jQqJeN9bT2CklCDAQ+iI3w==
-X-CSE-MsgGUID: 4RvKsxWpSYCo5rfGT6p9KQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; 
-   d="scan'208";a="247230516"
-Received: from spandruv-mobl4.amr.corp.intel.com (HELO [10.125.111.172]) ([10.125.111.172])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 14:35:13 -0800
-Message-ID: <95c59a64-450c-4b63-b303-9c61c83cf468@intel.com>
-Date: Thu, 26 Feb 2026 14:35:13 -0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BCsgppri"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2addb9ba334so13303555ad.2
+        for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 14:40:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772145651; x=1772750451; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NlR4d3dvmkzYuGlfHJDWO2utwy3AGmj/mSIZB1EeTfU=;
+        b=BCsgppriPSsbNyRs33gq/PdIjmqQNROBgpSORTeiY8nprR6hukwXhPYX2psJE/7Su/
+         /H5kS4gPB4zQtStBgBIcG0Pm4PPC02mDeDM8LLXHzozmOgZLLAMC2dntIEZsuL+JfDLq
+         NfBygpIDgBhkWOlpK8xEFVIT+8pk1jLNQlbe1XAxGXUXcIDT9XxqA2Klx92yh9256BFM
+         YaO7Gk4ySJVZdo5mQ/n+DmsqYSFaWikoSsomvS/+BKqQWn0OfJCApTY0fiIm6KiVnHir
+         c8flp8TYXjKSGZh35xttrUtRTbZQewqN0pgnalgCga8QvWqD0snGhHiE5f9AbZkUw2qQ
+         mE9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772145651; x=1772750451;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NlR4d3dvmkzYuGlfHJDWO2utwy3AGmj/mSIZB1EeTfU=;
+        b=P0Ep0OmRw6x5NslmjDyNlD+/wGwOnCDCy+3j83S3ZCALXMf33tKFRcE2SWvg37RWCq
+         ePFz5LLdgfiy57xePDHV4/dBKJ+t22BJ/y/BN3Ic//qC0k6U39XrTDxItrKGfkklJIWl
+         4ZmkFl0HGWJoLifUnqsiVyH4qHUgT4Px0Zgc2AfVjzH4RY3WR2H+8ewOX7W2M06b8EtT
+         YCdpd0kaEuK+5g6vGZCobmPN1wmz3udFek6O5039tTbXeC4IGKerIiGaPaUm8UY0QoSt
+         SlPjkFl78K56dYcweoEGcA86QQKqbjrvFDnhCJONjI/efq3LGP2pccWjvaxk65kGMnyM
+         pC9g==
+X-Forwarded-Encrypted: i=1; AJvYcCWhou/eStf6Q7rw5Q0W/JsWcRG77K6tzaFQhoubV58Fz4okJmiUf63BYVgc0pBFSJ/OmxnLEEeDGVJ7@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw2i8Gqb2MMONnMwpF1RV2CEQErRgGS4rgLc8EoOSGyVEablYPI
+	wH/J3lronk0Tg65CCNumOmBwAzvsnLvVD3j8+LoPRpxRMSW+S5ax0TUrGORtTt8ijNaYKJmxpaD
+	5EX2LWw==
+X-Received: from plfp5.prod.google.com ([2002:a17:902:e745:b0:2a9:62df:189d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2450:b0:2ad:e535:36ca
+ with SMTP id d9443c01a7336-2ae2e3e3c85mr5360285ad.12.1772145651270; Thu, 26
+ Feb 2026 14:40:51 -0800 (PST)
+Date: Thu, 26 Feb 2026 14:40:50 -0800
+In-Reply-To: <20260226190757.GA44359@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 11/16] KVM: x86/tdx: Do VMXON and TDX-Module
- initialization during subsys init
-To: Sean Christopherson <seanjc@google.com>, Thomas Gleixner
- <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Kiryl Shutsemau <kas@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, linux-perf-users@vger.kernel.org,
- Chao Gao <chao.gao@intel.com>, Xu Yilun <yilun.xu@linux.intel.com>,
- Dan Williams <dan.j.williams@intel.com>
-References: <20260214012702.2368778-1-seanjc@google.com>
- <20260214012702.2368778-12-seanjc@google.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260214012702.2368778-12-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260225075211.3353194-1-aik@amd.com> <aZ7-tTpobKiCFT5L@google.com>
+ <CAEvNRgEiod74cRoVQVC5LUbWDZf6Wwz1ssjQN0fveN=RBAjsTw@mail.gmail.com> <20260226190757.GA44359@ziepe.ca>
+Message-ID: <aaDL8tYrVCWlQg79@google.com>
+Subject: Re: [RFC PATCH kernel] iommufd: Allow mapping from KVM's guest_memfd
+From: Sean Christopherson <seanjc@google.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Ackerley Tng <ackerleytng@google.com>, Alexey Kardashevskiy <aik@amd.com>, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Kevin Tian <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Steve Sistare <steven.sistare@oracle.com>, 
+	Nicolin Chen <nicolinc@nvidia.com>, iommu@lists.linux.dev, linux-coco@lists.linux.dev, 
+	Dan Williams <dan.j.williams@intel.com>, Santosh Shukla <santosh.shukla@amd.com>, 
+	"Pratik R . Sampat" <prsampat@amd.com>, Fuad Tabba <tabba@google.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, michael.roth@amd.com, vannapurve@google.com
+Content-Type: text/plain; charset="us-ascii"
 
-On 2/13/26 17:26, Sean Christopherson wrote:
-> Now that VMXON can be done without bouncing through KVM, do TDX-Module
-> initialization during subsys init (specifically before module_init() so
-> that it runs before KVM when both are built-in).  Aside from the obvious
-> benefits of separating core TDX code from KVM, this will allow tagging a
-> pile of TDX functions and globals as being __init and __ro_after_init.
-...
->  Documentation/arch/x86/tdx.rst |  36 +------
->  arch/x86/include/asm/tdx.h     |   4 -
->  arch/x86/kvm/vmx/tdx.c         | 148 ++++++-----------------------
->  arch/x86/virt/vmx/tdx/tdx.c    | 168 +++++++++++++++++++--------------
->  arch/x86/virt/vmx/tdx/tdx.h    |   8 --
->  5 files changed, 130 insertions(+), 234 deletions(-)
+On Thu, Feb 26, 2026, Jason Gunthorpe wrote:
+> On Thu, Feb 26, 2026 at 12:19:52AM -0800, Ackerley Tng wrote:
+> > Sean Christopherson <seanjc@google.com> writes:
+> > 
+> > > On Wed, Feb 25, 2026, Alexey Kardashevskiy wrote:
+> > >> For the new guest_memfd type, no additional reference is taken as
+> > >> pinning is guaranteed by the KVM guest_memfd library.
+> > >>
+> > >> There is no KVM-GMEMFD->IOMMUFD direct notification mechanism as
+> > >> the assumption is that:
+> > >> 1) page stage change events will be handled by VMM which is going
+> > >> to call IOMMUFD to remap pages;
+> > >> 2) shrinking GMEMFD equals to VM memory unplug and VMM is going to
+> > >> handle it.
+> > >
+> > > The VMM is outside of the kernel's effective TCB.  Assuming the VMM will always
+> > > do the right thing is a non-starter.
+> > 
+> > I think looking up the guest_memfd file from the userspace address
+> > (uptr) is a good start
+> 
+> Please no, if we need complicated things like notifiers then it is
+> better to start directly with the struct file interface and get
+> immediately into some guestmemfd API instead of trying to get their
+> from a VMA. A VMA doesn't help in any way and just complicates things.
 
-It's hard to argue with a diffstat like that.
++1000.  Anything that _requires_ a VMA to do something with guest_memfd is broken
+by design.
 
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+> > I didn't think of this before LPC but forcing unmapping during
+> > truncation (aka shrinking guest_memfd) is probably necessary for overall
+> > system stability and correctness, so notifying and having guest_memfd
+> > track where its pages were mapped in the IOMMU is necessary. Whether or
+> > not to unmap during conversions could be a arch-specific thing, but all
+> > architectures would want the memory unmapped if the memory is removed
+> > from guest_memfd ownership.
+> 
+> Things like truncate are a bit easier to handle, you do need a
+> protective notifier, but if it detects truncate while an iommufd area
+> still covers the truncated region it can just revoke the whole
+> area. Userspace made a mistake and gets burned but the kernel is
+> safe. We don't need something complicated kernel side to automatically
+> handle removing just the slice of truncated guestmemfd, for example.
+
+Yeah, as long as the behavior is well-documented from time zero, we can probably
+get away with fairly draconian behavior.
+
+> If guestmemfd is fully pinned and cannot free memory outside of
+> truncate that may be good enough (though somehow I think that is not
+> the case)
+
+With in-place conversion, PUNCH_HOLE and private=>shared conversions are the only
+two ways to partial "remove" memory from guest_memfd, so it may really be that
+simple.
