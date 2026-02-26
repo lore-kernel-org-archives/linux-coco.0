@@ -1,128 +1,135 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D0A3803CD
-	for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 22:40:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAC933342C
+	for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 23:43:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772145653; cv=none; b=R51z1YydCdYkYtV6XvtAgIftpLcVvlemtFVhGsyVaOx04UvQQjxWDhhwqqb60AiB7asZt37CCjc+8nb4agNW/4+LdYb/YlQvk9kpOIo44DCs9rp4SXHW2ObL6lzZwpRw6V4EH5AOxtYam//fJ+o1YlzwIN+CGysUFTKjF1tIf0o=
+	t=1772149389; cv=none; b=GKXyEutNGN1YzlsvqbKIE/IYeAtSh1d23UznzllOn4CerZd6TdiyIveElbYPBfYqYhhIKAsxjGlAdNrOmKEIRbmBKBoXsoqxicHD6FuH51BQYIZ0TJq9JNELDvFWw0L5JX/diwsyxn7KMoGfhZogwtXWZ1HWxet6jkr9ouEWQhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772145653; c=relaxed/simple;
-	bh=YJoNV5ibtXK7Fjn1qXoDZbyy5ckBfovJdK/fD1zKydE=;
+	s=arc-20240116; t=1772149389; c=relaxed/simple;
+	bh=nYT1y/hhQW/86aS4ZN4OJ957tRCJesbnqHhi2ZZK9B8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=F8RgpYac82EH0Ljj0ds+WFB0RzWK1ARROT40lhCCspX5jXiR6Vwcd4A8/208nbHRfS6QRT48XY6Y7UrcO+bk1lpbttGkn6Mq1fyhjnInleAqq3b1xobIzKmubz/Pr+0uCEX4ao2UB9wIFaemXsry4YyCljr9KyDbTnWmwxuDQSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BCsgppri; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=pPXqMd7i7bnVn4hfFx+aiDw+qYB9gExXP/BvDaoujqe8QbSoj5Z+jjggMQTfuIGlLUS31lEASeWUKt24Qluo40tRCPcnucRSOrhi1Re696cOhGDeeKBWM8jeoRamWgN81XUXAb7f3MJpx9ASZpw3TH42b/Av8/lqgznQ9+oqQ6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=l1VpYjun; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BCsgppri"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2addb9ba334so13303555ad.2
-        for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 14:40:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="l1VpYjun"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-358e5e33ddcso1443519a91.1
+        for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 15:43:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772145651; x=1772750451; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1772149385; x=1772754185; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NlR4d3dvmkzYuGlfHJDWO2utwy3AGmj/mSIZB1EeTfU=;
-        b=BCsgppriPSsbNyRs33gq/PdIjmqQNROBgpSORTeiY8nprR6hukwXhPYX2psJE/7Su/
-         /H5kS4gPB4zQtStBgBIcG0Pm4PPC02mDeDM8LLXHzozmOgZLLAMC2dntIEZsuL+JfDLq
-         NfBygpIDgBhkWOlpK8xEFVIT+8pk1jLNQlbe1XAxGXUXcIDT9XxqA2Klx92yh9256BFM
-         YaO7Gk4ySJVZdo5mQ/n+DmsqYSFaWikoSsomvS/+BKqQWn0OfJCApTY0fiIm6KiVnHir
-         c8flp8TYXjKSGZh35xttrUtRTbZQewqN0pgnalgCga8QvWqD0snGhHiE5f9AbZkUw2qQ
-         mE9w==
+        bh=5xV9Fp9Mp3wKt/HL2xKn2gAO+TqSS/NXayrdSUMZqB8=;
+        b=l1VpYjunNOMIG8VRkck4ngrOi45pjGIoT22v3i8MVtKxhKHSbl3lb8oAMLs/gUUmV5
+         kHILD7aVMdd9aju+WblWf4TgQ1NMJC9ufXkLLRJGmFKBm6AJ67lyMRZmZJzjdzG0C5p9
+         5Q1oOOOIcc5Bl9Dv8oKDjzPWBJK2KqGE5R9e3suyXktv4b6eYYSmBebAXwFz3iIR+4TZ
+         sY6opvU8CxBzeDrgRazDjoSJpIqiQNqSixFDFsoPMmBQ/aj9quEunT25CU4fmUhMeRvP
+         kCrXkMSgDc+Wh4MeSr6ltHzbifGe9XHgQ4Z19G3Z48wDCWHyN+cOgoemZC0GThP7GzPX
+         glxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772145651; x=1772750451;
+        d=1e100.net; s=20230601; t=1772149385; x=1772754185;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NlR4d3dvmkzYuGlfHJDWO2utwy3AGmj/mSIZB1EeTfU=;
-        b=P0Ep0OmRw6x5NslmjDyNlD+/wGwOnCDCy+3j83S3ZCALXMf33tKFRcE2SWvg37RWCq
-         ePFz5LLdgfiy57xePDHV4/dBKJ+t22BJ/y/BN3Ic//qC0k6U39XrTDxItrKGfkklJIWl
-         4ZmkFl0HGWJoLifUnqsiVyH4qHUgT4Px0Zgc2AfVjzH4RY3WR2H+8ewOX7W2M06b8EtT
-         YCdpd0kaEuK+5g6vGZCobmPN1wmz3udFek6O5039tTbXeC4IGKerIiGaPaUm8UY0QoSt
-         SlPjkFl78K56dYcweoEGcA86QQKqbjrvFDnhCJONjI/efq3LGP2pccWjvaxk65kGMnyM
-         pC9g==
-X-Forwarded-Encrypted: i=1; AJvYcCWhou/eStf6Q7rw5Q0W/JsWcRG77K6tzaFQhoubV58Fz4okJmiUf63BYVgc0pBFSJ/OmxnLEEeDGVJ7@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw2i8Gqb2MMONnMwpF1RV2CEQErRgGS4rgLc8EoOSGyVEablYPI
-	wH/J3lronk0Tg65CCNumOmBwAzvsnLvVD3j8+LoPRpxRMSW+S5ax0TUrGORtTt8ijNaYKJmxpaD
-	5EX2LWw==
-X-Received: from plfp5.prod.google.com ([2002:a17:902:e745:b0:2a9:62df:189d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2450:b0:2ad:e535:36ca
- with SMTP id d9443c01a7336-2ae2e3e3c85mr5360285ad.12.1772145651270; Thu, 26
- Feb 2026 14:40:51 -0800 (PST)
-Date: Thu, 26 Feb 2026 14:40:50 -0800
-In-Reply-To: <20260226190757.GA44359@ziepe.ca>
+        bh=5xV9Fp9Mp3wKt/HL2xKn2gAO+TqSS/NXayrdSUMZqB8=;
+        b=tKMLA8yN8Lf/O0qz4BItOMF9ogqecdqey/1KntdOfT8/+OnyS4m8fjI3hT96o5XM3B
+         nIuZLBf6YWqVN/jmpX0p4w3U77j9aduLJOXzx+6L8aVpsc/o9bacG0b/Cet5Q5LcvXzc
+         fY0bzk4Gvyo0gn/0Ye23V7r9eMNL3Sq8zwZWXOdF84kV2VQXrzTKE31aTgQPFGeG58qn
+         ZY1nEurtqL0ZMXK250iVY5i7wdB6leFsalRmUOMO+zX/oKrLXDnf1qpba22UMh+ho8YH
+         pHpwbjEnYDfWWs79hLKbhVZPLBn65nTt6o9PlLobXm8GVRZxMJMudOHN84tqXkFjdQdn
+         8lXw==
+X-Forwarded-Encrypted: i=1; AJvYcCWRS5T5GHqOfDIpolrIAhadQmbfGf5JhlL3PTeeK7sM3sPo/l7oJmAM8fp8d+mxt7CddjkqjxfSWbSC@lists.linux.dev
+X-Gm-Message-State: AOJu0YzIe+hsC2MNqFWs27CGTkxzbZsVd8QXSelqpy4cmwEvC5DTBKLE
+	uKe/1pIp8ogZSOo0dqJK/aFBcZWAMsTBxOwLXN6f/xG/hHU7tL6QbVHi61bekW2vhfblVsHdyNe
+	dL6+W3w==
+X-Received: from pjwo21.prod.google.com ([2002:a17:90a:d255:b0:356:213e:d56e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5710:b0:356:23be:7ecb
+ with SMTP id 98e67ed59e1d1-35965c34bc7mr627146a91.12.1772149384979; Thu, 26
+ Feb 2026 15:43:04 -0800 (PST)
+Date: Thu, 26 Feb 2026 15:43:03 -0800
+In-Reply-To: <aZ/5CDmCa8O5vrFZ@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260225075211.3353194-1-aik@amd.com> <aZ7-tTpobKiCFT5L@google.com>
- <CAEvNRgEiod74cRoVQVC5LUbWDZf6Wwz1ssjQN0fveN=RBAjsTw@mail.gmail.com> <20260226190757.GA44359@ziepe.ca>
-Message-ID: <aaDL8tYrVCWlQg79@google.com>
-Subject: Re: [RFC PATCH kernel] iommufd: Allow mapping from KVM's guest_memfd
+References: <20260214012702.2368778-1-seanjc@google.com> <20260214012702.2368778-8-seanjc@google.com>
+ <aZ/5CDmCa8O5vrFZ@intel.com>
+Message-ID: <aaDah8QSFqWpNvqY@google.com>
+Subject: Re: [PATCH v3 07/16] KVM: SVM: Move core EFER.SVME enablement to kernel
 From: Sean Christopherson <seanjc@google.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Ackerley Tng <ackerleytng@google.com>, Alexey Kardashevskiy <aik@amd.com>, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, Kevin Tian <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Steve Sistare <steven.sistare@oracle.com>, 
-	Nicolin Chen <nicolinc@nvidia.com>, iommu@lists.linux.dev, linux-coco@lists.linux.dev, 
-	Dan Williams <dan.j.williams@intel.com>, Santosh Shukla <santosh.shukla@amd.com>, 
-	"Pratik R . Sampat" <prsampat@amd.com>, Fuad Tabba <tabba@google.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, michael.roth@amd.com, vannapurve@google.com
+To: Chao Gao <chao.gao@intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Kiryl Shutsemau <kas@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, Xu Yilun <yilun.xu@linux.intel.com>, 
+	Dan Williams <dan.j.williams@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Feb 26, 2026, Jason Gunthorpe wrote:
-> On Thu, Feb 26, 2026 at 12:19:52AM -0800, Ackerley Tng wrote:
-> > Sean Christopherson <seanjc@google.com> writes:
+On Thu, Feb 26, 2026, Chao Gao wrote:
+> >-static inline void kvm_cpu_svm_disable(void)
+> >-{
+> >-	uint64_t efer;
+> >-
+> >-	wrmsrq(MSR_VM_HSAVE_PA, 0);
+> >-	rdmsrq(MSR_EFER, efer);
+> >-	if (efer & EFER_SVME) {
+> >-		/*
+> >-		 * Force GIF=1 prior to disabling SVM, e.g. to ensure INIT and
+> >-		 * NMI aren't blocked.
+> >-		 */
+> >-		stgi();
+> >-		wrmsrq(MSR_EFER, efer & ~EFER_SVME);
+> >-	}
+> >-}
+> >-
+> > static void svm_emergency_disable_virtualization_cpu(void)
+> > {
+> >-	virt_rebooting = true;
+> >-
+> >-	kvm_cpu_svm_disable();
+> >+	wrmsrq(MSR_VM_HSAVE_PA, 0);
+> > }
 > > 
-> > > On Wed, Feb 25, 2026, Alexey Kardashevskiy wrote:
-> > >> For the new guest_memfd type, no additional reference is taken as
-> > >> pinning is guaranteed by the KVM guest_memfd library.
-> > >>
-> > >> There is no KVM-GMEMFD->IOMMUFD direct notification mechanism as
-> > >> the assumption is that:
-> > >> 1) page stage change events will be handled by VMM which is going
-> > >> to call IOMMUFD to remap pages;
-> > >> 2) shrinking GMEMFD equals to VM memory unplug and VMM is going to
-> > >> handle it.
-> > >
-> > > The VMM is outside of the kernel's effective TCB.  Assuming the VMM will always
-> > > do the right thing is a non-starter.
+> > static void svm_disable_virtualization_cpu(void)
+> >@@ -507,7 +489,7 @@ static void svm_disable_virtualization_cpu(void)
+> > 	if (tsc_scaling)
+> > 		__svm_write_tsc_multiplier(SVM_TSC_RATIO_DEFAULT);
 > > 
-> > I think looking up the guest_memfd file from the userspace address
-> > (uptr) is a good start
+> >-	kvm_cpu_svm_disable();
+> >+	x86_svm_disable_virtualization_cpu();
 > 
-> Please no, if we need complicated things like notifiers then it is
-> better to start directly with the struct file interface and get
-> immediately into some guestmemfd API instead of trying to get their
-> from a VMA. A VMA doesn't help in any way and just complicates things.
+> There's a functional change here. The new x86_svm_disable_virtualization_cpu()
+> doesn't reset MSR_VM_HSAVE_PA, but the old kvm_cpu_svm_disable() does.
 
-+1000.  Anything that _requires_ a VMA to do something with guest_memfd is broken
-by design.
+Doh.  I'll squash this as fixup, assuming there are no other goofs:
 
-> > I didn't think of this before LPC but forcing unmapping during
-> > truncation (aka shrinking guest_memfd) is probably necessary for overall
-> > system stability and correctness, so notifying and having guest_memfd
-> > track where its pages were mapped in the IOMMU is necessary. Whether or
-> > not to unmap during conversions could be a arch-specific thing, but all
-> > architectures would want the memory unmapped if the memory is removed
-> > from guest_memfd ownership.
-> 
-> Things like truncate are a bit easier to handle, you do need a
-> protective notifier, but if it detects truncate while an iommufd area
-> still covers the truncated region it can just revoke the whole
-> area. Userspace made a mistake and gets burned but the kernel is
-> safe. We don't need something complicated kernel side to automatically
-> handle removing just the slice of truncated guestmemfd, for example.
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 5f033bf3ba83..fc08450cb4b7 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -490,6 +490,7 @@ static void svm_disable_virtualization_cpu(void)
+                __svm_write_tsc_multiplier(SVM_TSC_RATIO_DEFAULT);
+ 
+        x86_svm_disable_virtualization_cpu();
++       wrmsrq(MSR_VM_HSAVE_PA, 0);
+ 
+        amd_pmu_disable_virt();
+ }
 
-Yeah, as long as the behavior is well-documented from time zero, we can probably
-get away with fairly draconian behavior.
+Very nice catch!
 
-> If guestmemfd is fully pinned and cannot free memory outside of
-> truncate that may be good enough (though somehow I think that is not
-> the case)
+P.S. This reminded me that there's a lurking wart with __sev_snp_init_locked()
+where it forces MSR_VM_HSAVE_PA to '0' on all CPUs.  That's firmly a "hypervisor"
+thing so it doesn't really fit here (and code wise it's also kludgy), just thought
+I'd mention it in case someone has a brilliant idea and/or runs into problems with
+it.  IIRC, we ran into a problem where __sev_snp_init_locked() clobbered KVM's
+value, but I think the underlying problem was effectively fixed by commit
+6f1d5a3513c2 ("KVM: SVM: Add support to initialize SEV/SNP functionality in KVM").
 
-With in-place conversion, PUNCH_HOLE and private=>shared conversions are the only
-two ways to partial "remove" memory from guest_memfd, so it may really be that
-simple.
