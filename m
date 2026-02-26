@@ -1,249 +1,142 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D093F0762
-	for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 15:32:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772119946; cv=fail; b=dAitskn2mIDvfEswVQF+IlzWBxeDasbKeKv6mSgc6GIpHxhMG8HjeadGsTN3bchXfWjamqLDiWgDztbF0HMuL/KM6WE+ySVDZ5D8zr262BeLTQ+Fl8W7IqojdaY5GDySg4OnNKvOpM8znvxPbrw4Bhb0YXZTECZ4DaTowaUCtpo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772119946; c=relaxed/simple;
-	bh=tHsGz4M/FVTC6ohE1J8Wy5ho64icFgjStfvKXjfFz2w=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=eFeRJW14NKRktPK6pMKherD/QLMhP1BbTm0KHtlwt2Ms6DBGUWDMCGu6jLoK+SmwWl2sVSTP6i6t698+rfyhqvODzu4eipq3QhleY4gEwfYoQFldNXSBklV7wSnf3KZQftLjbv3JbYZf6U034iEWvpusc8ID1SBUMN0BNDX7ALE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lilITf6r; arc=fail smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C88B265298
+	for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 19:08:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772132884; cv=none; b=TjgGTTZCe4rt/CmfpK9LmL2oU4bpPhJXJMyJB/TYUTH1CM4Dc4Bk/2fU2y9tiLmgZdZjSTjaykyv1uEXe4ury1Fp15oe+EEGDXedFLaRLOKHTsEU0/HkvWgOoQAehlq3KzgPNCrKiR4cGyDUvFqmkWk1aqLtJSscQlavv9bwaQ4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772132884; c=relaxed/simple;
+	bh=TCV8SHxQHsXrYuGIcmh++Ac4sy1d4lzsmHPaj831Y4g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n9A01USbUrPv8AetXC+WpwyT396JpReAvSX/83+n3ICxEG+GX+WQrL7S35cAclGZzyrwZu7ChbdTxcjevTRcG01+B/dBri5pBQr3l3JKr5Qcyqk8vzmQVwCHQP+rDUcpKgoNbXkN0iyaXUeKpf2jVdTfw/N9OhAOhfh6f9P5Z7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=GH9CTRxg; arc=none smtp.client-ip=209.85.219.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lilITf6r"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772119944; x=1803655944;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=tHsGz4M/FVTC6ohE1J8Wy5ho64icFgjStfvKXjfFz2w=;
-  b=lilITf6reQ3RE+3ToTrZGNS0LVw/O9Qe10k9KuIe5JUlVGgAnEZI4sQg
-   y9MWVhyDs+WxkBsLnjVX44RcRhlErh3aeGuj0BEAMLocZxpDKmTXRBVJ7
-   HrvuG6vv+FXb+19ElzyDZU8xWOZ4vOTR8aMA8TUmET5YtPH+GOSxDworI
-   HAe/K17aImmRNk3dFh7cl8JQuJBHowif8D0rv/ZgsF5ByBIkKJP28w2Ha
-   jIJsfKCI7boIgDFNbWriID8+/vd9xCJrSiNaLUFjBQRatNVfg6gEbJsXG
-   7+PBfG2GPG6d8wuTqXqWTF6mG/w4ays3uPp/1dQJ2tR3QpU54oHsf/QDP
-   w==;
-X-CSE-ConnectionGUID: xHneixlBTiSJMo46JO6MaA==
-X-CSE-MsgGUID: s3oVi9CeTw6+c+MO08C1/Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="75785171"
-X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; 
-   d="scan'208";a="75785171"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 07:32:24 -0800
-X-CSE-ConnectionGUID: xX1fGGoaRvCqsdEbTL8SIw==
-X-CSE-MsgGUID: /Dyc33PbTvS+FEZwDMZaNw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; 
-   d="scan'208";a="244154231"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 07:32:24 -0800
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 26 Feb 2026 07:32:23 -0800
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 26 Feb 2026 07:32:23 -0800
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.25) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 26 Feb 2026 07:32:22 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=e30RuZiMY5jVvbHvZkV47GPi04uM8Cm4z1qD5ff4m07GX1nvzLdYl4nk1UZU7pcwpXza5+5xhGoGLAO1uvKifTFD1nDiL30Q5oZhSNHxC7MIHQRCsD5RO/NyznUomGcjFy/w0aJPxIiqizMw7cO2gKGkUczSsQiR8Ns0ec68+Ugpmw/X/1lWhrEJpBvi8KH/ykK0WXap6Sq1O8pI6+tilxGxvcpuPn0psH6X+ebU917/KgFHVLfngsigKQaIGgLPP7LMimTVgd2QPKLIvifzp2VoDiZa/Lhs4GJlRsFDreSq4n5+FGIGiVI21yT6Gv1f4Ujf73zla8V/LC3TXSceNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=abwAM/0NUaF/knnS66nINdxbATrssUabv/Gx9ROD6eI=;
- b=DMo8X5FPfIGNjgTPo4Kf1SG9YZFEIx2t/acSl5CjbTLn1Q25BIljvEjoRypws1FvRnxmw4u+oKNhrsPNdR8Y+hYkNnEpExAZv04rT0kJcM6V2PLBzxZGOO/YL1ietXcfzBYs46kdAmLCW/y5z0oiG7AwOZotZ9mweFGc1/PeAEbs9CKS5JVd6MjlszlkHf52DCd0WajYtXTY6hLao7SOhTNnCpdVQ7guXAYw7htag7d6KofdyCLWB0PrR1colzInv5O2wpvbSAtmcmbM83UbZgYnzQpaQ1IkS271nAu3ItdAdmaKvQT/3PINmcT5q760HV8qA+0qGmcUxHMaMqC95Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
- by SN7PR11MB7440.namprd11.prod.outlook.com (2603:10b6:806:340::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.22; Thu, 26 Feb
- 2026 15:32:19 +0000
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf%6]) with mapi id 15.20.9654.007; Thu, 26 Feb 2026
- 15:32:19 +0000
-Date: Thu, 26 Feb 2026 23:32:06 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: <dan.j.williams@intel.com>
-CC: "Huang, Kai" <kai.huang@intel.com>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "seanjc@google.com"
-	<seanjc@google.com>, "kas@kernel.org" <kas@kernel.org>, "Chatre, Reinette"
-	<reinette.chatre@intel.com>, "Verma, Vishal L" <vishal.l.verma@intel.com>,
-	"nik.borisov@suse.com" <nik.borisov@suse.com>, "mingo@redhat.com"
-	<mingo@redhat.com>, "Weiny, Ira" <ira.weiny@intel.com>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>, "hpa@zytor.com" <hpa@zytor.com>, "Annapurve, Vishal"
-	<vannapurve@google.com>, "sagis@google.com" <sagis@google.com>, "Duan,
- Zhenzhong" <zhenzhong.duan@intel.com>, "Edgecombe, Rick P"
-	<rick.p.edgecombe@intel.com>, "paulmck@kernel.org" <paulmck@kernel.org>,
-	"tglx@kernel.org" <tglx@kernel.org>, "yilun.xu@linux.intel.com"
-	<yilun.xu@linux.intel.com>, "bp@alien8.de" <bp@alien8.de>
-Subject: Re: [PATCH v4 21/24] x86/virt/tdx: Avoid updates during
- update-sensitive operations
-Message-ID: <aaBndinjh51R2wQU@intel.com>
-References: <20260212143606.534586-1-chao.gao@intel.com>
- <20260212143606.534586-22-chao.gao@intel.com>
- <a0a5301140be5a3d944b1c91914b93017af026fb.camel@intel.com>
- <aZ+31DJr0cI7v8C9@intel.com>
- <699fe97dc212f_2f4a100b@dwillia2-mobl4.notmuch>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <699fe97dc212f_2f4a100b@dwillia2-mobl4.notmuch>
-X-ClientProxiedBy: TPYP295CA0058.TWNP295.PROD.OUTLOOK.COM (2603:1096:7d0:8::9)
- To CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="GH9CTRxg"
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-896f4627dffso19286156d6.0
+        for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 11:08:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1772132879; x=1772737679; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2JiPECMiS4IcPtH3bhy01xeh4Gb/Awq8dGQAxIHV6Bg=;
+        b=GH9CTRxgIwmYqnerb0KDlNDlTmdon5CzHRom8a8l5Uj4TVmObakhWEOnVLusTVunTj
+         VzS2BVIlObW3fAWcdpNFgQMeuoBYuf/kaH0nqdaA4rcz5nAvLSDAtrN0xKVDVVFG3XMu
+         5WjqHdmq1FShQDqytxsC4Q55sNjj+C3uKLN/66KSZ3M8B3GxbHLeUhPpkdhklZw72yut
+         XLs+tuGWxjrkQuS+cC9B23BMEOUlZ8i+NFtf6QeeZUb9r4LBgrYm/aTn9xTDBzBIc6DO
+         iYwrp0YImsLphuPVLlXEvkBD6I+BWTQ0Jg6S0AO+a8XfxVtt8wGiYAPJSX8KBABb9dTn
+         NPEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772132879; x=1772737679;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2JiPECMiS4IcPtH3bhy01xeh4Gb/Awq8dGQAxIHV6Bg=;
+        b=ta5U0HRs/CV+8/AHh5W7TmN1ALCHCFbNZW8CBegr/OpJrUFitxsfBaobZGtPLO1Pq6
+         F81puI58bHg/RdlDw37PYjUxbRR5N+KctiNB4d/CYQ1FgffeNHObeJQRqgvFTfkZpe+/
+         59lnqbabNJ71iVCm1QXb4tY0c3SRjyA/4TEoT5zY0/B2ly0ID16wVSOVWcAMvCCKw8Bm
+         rb0qLXNGAbHvIdoOWPLeIhFVOmz8egNv4IU1FukmC7nSPBCCW1jVCrTL6gV+mshg0mKV
+         fYDvTue7j/NGssRdXQ0WkEOJ3yAlZZMFtNsCYdOBcpMMY3bj8H64If3iJfoRzkodsPfo
+         9xUg==
+X-Forwarded-Encrypted: i=1; AJvYcCV4tfF2YNvEWgDfKJcZjeEWFZCl4dPk4oDBZqp5MAmlemSB/ZrMDO1VYc7O4KfAK/D1dtEmeMPXpyQU@lists.linux.dev
+X-Gm-Message-State: AOJu0YxxieMGgNtqo71aLJGOJ6cubBTr/aP1SV20UHb2Ui+JU82rsP6z
+	gtaMbLwNLLu8Df7+BfktxlBsSCMesN8CJGb/nvWlkIsGEb2tY6p/tjHT6vY0l8Ea3X0=
+X-Gm-Gg: ATEYQzxMUqlw+4Hlps20cHk6dFwhfBf0b6Kxe39kKfhB8Re6CLbfQhGzydYOYBpDIQt
+	/i3cYjyERAmlzvt8j8SuGjv81MnUsbKUtqVTluZz8d3gtBGONjEzN+xkJUmhsHP2g2T7M0HRVbW
+	W+UTJ9EAQtP+YRLwsBr3is4LvKHxaXFzFfcS3yDKonem6Q5IfpQSyvm6lc9MvccqdJTrfKBvNC+
+	++gZha4J3+GSBzmGHLQ5hCTyPclfsrN1ev4kizs0mFhFEeQSUoOPbru9tux8Hs2IVE4RNLzGadp
+	UkUnr1OgF3fJiX+mc7TAvZG7Mhzs4oyn00LxkBdKEeLvtv3IIp44WERcKGy+EN/QOWXb1w71jDR
+	fCtpnLUv4OrGfv9So9jy5v5A2l89EBdcxqHl9DPAsP/xv+mP7DL81cDPD/v4zfQxV1zC5cy5FbY
+	cjMNvXVxS9mNpHJxgEUD4rbuq6lFc9so/iAZxGBKn1gPfdcBPMDGXxuL6hQhV9/TW9KX6r5L8Mi
+	iQBEYFB
+X-Received: by 2002:a05:6214:252f:b0:882:3781:e29d with SMTP id 6a1803df08f44-899d1d7250dmr3034716d6.10.1772132878800;
+        Thu, 26 Feb 2026 11:07:58 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-899c7376847sm24657116d6.28.2026.02.26.11.07.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Feb 2026 11:07:58 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vvgiL-00000000O8A-1yT1;
+	Thu, 26 Feb 2026 15:07:57 -0400
+Date: Thu, 26 Feb 2026 15:07:57 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+	Alexey Kardashevskiy <aik@amd.com>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Kevin Tian <kevin.tian@intel.com>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Steve Sistare <steven.sistare@oracle.com>,
+	Nicolin Chen <nicolinc@nvidia.com>, iommu@lists.linux.dev,
+	linux-coco@lists.linux.dev, Dan Williams <dan.j.williams@intel.com>,
+	Santosh Shukla <santosh.shukla@amd.com>,
+	"Pratik R . Sampat" <prsampat@amd.com>,
+	Fuad Tabba <tabba@google.com>, Xu Yilun <yilun.xu@linux.intel.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	michael.roth@amd.com, vannapurve@google.com
+Subject: Re: [RFC PATCH kernel] iommufd: Allow mapping from KVM's guest_memfd
+Message-ID: <20260226190757.GA44359@ziepe.ca>
+References: <20260225075211.3353194-1-aik@amd.com>
+ <aZ7-tTpobKiCFT5L@google.com>
+ <CAEvNRgEiod74cRoVQVC5LUbWDZf6Wwz1ssjQN0fveN=RBAjsTw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|SN7PR11MB7440:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf77a031-8492-4c4a-43df-08de754c3a1f
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info: TvfETNzGTyuzk5/LZXjnxu4k7WA5gj6Hkk7RT10/h+7kG5mpDc5qWq6H+n5naWwUxNKbLKsco4qa3Ok41wiOX0efi6qHZSRyZVh0cYOGBx1zLbWV7gWTIfc2CFcJ4F3ZXY7EAmqjqb4SxyFMF3SlsrRjZpWFZi6b/LUuGadFnmKMGcUe0AepQO/Ec2pXRo13kpZCeSHNtFEFPQOstDdoF4hyU2GavpLM1kfuezJc5bnbFJFKyoNFcF/raxg1CZhTOLSdqUv7TiJuJdADT2wHB2WowmoXmLqFmX18qjbKsbrEhG6Wi8Yf5h16cKmeE+xMtI1A+77yidpJeAbrYsMmivPtP5fMV9R+7JyS+LqtHWYxEDYAAl8SBF7BT77os0vkUFuCCxWRAL1WrbT2CK3P3B/N6wbpU8yG1Zo2e5Tr8y66xcoP2EEzCUGc13/DDAV0yBUbLXmBhQ+3668H6kLFAG3tFJVlBnM3suoqGE9P7K4hj2oOyqAi/FkcUViPhmhESVSqrZi2/xOeChK2cRQKN93dZ46U7qI2/6kIcEpkUAHDfZIM2EqEZB/Ke4bn4tEHZlyZH2CZDTSOBMCO7LgJz7NaNTVOfOvb1P+LvLbFuZup2yCjCrfgVLAd2MJ50B7SFHXbjzdUpieHiGXr50icDrd0hsRhft0Y1XPdEbkRza455heQcuw1insh/B/NXNVVcF/WZ2Ekvf/ksM1b9+lNhp4m4p9x0z42jySNYNbuQ1w=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?rz14zv1WXzSVBOFXRCVKGaV1OR0jbttIH4fMTbO0fnd6rmCxeJVjiW2CJOD4?=
- =?us-ascii?Q?7zjBwWxlWa+z8KlQN1X8VQNampumUVcGJpYPhtgOr5utvOzakdAfatXoguLv?=
- =?us-ascii?Q?61mJROIZAQRAxRhd0zO1JexWCKr0cuzb26R8QegiMZYjvHyF7Bs46IIzo2vQ?=
- =?us-ascii?Q?5gLI5zTKpDbYGyywaJ0qoHsiCJwABt4dZ6Ij9hOczgZoFJQGaToNXon47bOv?=
- =?us-ascii?Q?cdZPSRUjdqZG4wzUhmefRungBSsM6E1VfXzfjX02bUlU/SS02WMNMM+y06rt?=
- =?us-ascii?Q?krJtwiPopB9u8txGw4zD9w+8XQkqU0YCR2oTeme/BM9dYl5usMMAofil/7Fa?=
- =?us-ascii?Q?L3a80fBzio+0UqTqtF9h4slijQ/8bFJfMV56D2FYBqnJFMlWJ7e8uUANyU5+?=
- =?us-ascii?Q?iLR5aCu13euhx17CijNeC03JW/PglpOhax+wxvgMypKJwnzALAEr0fyaoq8Y?=
- =?us-ascii?Q?yg6O0L2Lb72mSY5w3Nm4qIp4JkWyfaqBUzVYFnlRR3Dh1YG8w3lDnX/+vEdq?=
- =?us-ascii?Q?cIf46aNYMygg+eVxr6RT+z8tmPrgDj+p1zszUFhdHX4p0LxL5MUeLluquPqU?=
- =?us-ascii?Q?qNMriNqv043MBNs0QNGw1235/OliKBZP0f1Uz+scvR1z9/iFi5ZmqzcK5hrt?=
- =?us-ascii?Q?RrHolm8onJa1dId2LomAl7aeDouHhAV8omtT1eDehuSsSU/NfiVilg5uJxqR?=
- =?us-ascii?Q?yk9Gfivm25J0ULeCG41867YQiRCZS1v/mESKpQ1rKnOoOjAvxgPfpjywtA55?=
- =?us-ascii?Q?ztgtoF1T0g2Ya3OzC6MUQ7JITvBg8kz4LTmVZk6W8Ig8lDa4To0yyS9RLPN7?=
- =?us-ascii?Q?Uy3daWycSWk7lC50V98C9MmZseZqdcFtfiTh13G0vQh3BQp8OrhCe5IgUZ1R?=
- =?us-ascii?Q?5PYzI6w22fka1GvX91nOrsQkeluyeeqjWdnCwmut5PchMxhAY854v/n5g2V3?=
- =?us-ascii?Q?TCVzfHZr/b++7yM+6IyjEqIgmNZEMZeFHOa1VWoprsACN/MAoC5ugrbhaboD?=
- =?us-ascii?Q?Y62lnyG8g7siFdOI6SgUVcO2YULWY85T4kQejIsb4PaU7zr2UX75CuQX8ry0?=
- =?us-ascii?Q?5qTn7COpIj/uu8/RFvqScm8p21E0es9RYM8KhGSN2uQrxkOSQU1PVn3FoR3K?=
- =?us-ascii?Q?Qxk7BcTLSBreldeXwEeJ3RMIyqecsDHbhiMkC84RbKeVGcVPaNNcYlcv5q9q?=
- =?us-ascii?Q?xVGexG/CJoYl8JPyWvKAIHIpgTp1eYvX8Ty0ccLjqZlIofd8nsO9/g8wie9h?=
- =?us-ascii?Q?1O6D9ME427eyS0N50tw8tNmoqBbeKnvKTHCJ1M+U+mca0vaasqiiKKc06CT6?=
- =?us-ascii?Q?coQIxjnGKGMTLrZysaG8uV281Pio1Wz3FxnEQ0BO9KAPzuhAEfaHo662xeCR?=
- =?us-ascii?Q?YP2s+PGmDbCGSvJB5Zbsntv3AdAlgnhozq3qQDBDQdh8wfjz0yuTLiMbhxRI?=
- =?us-ascii?Q?Qdc8hSAqT+AMcN5VjSpRRhxjHli7PogQvi5pTaujEYgldxuTz+vZVc/m3EqO?=
- =?us-ascii?Q?QZPymnaXKVkWQIX8NPlUROrrdqDFHNxuJf7Jb5lsIdoNm3blu7tw+r4TwFm/?=
- =?us-ascii?Q?WbmbdmhRFYZIWjMAZNOejojM6RuW0KJzOQrX8eQXJ2tdr1Egvr5SmTd1pISz?=
- =?us-ascii?Q?9pnANZfSY7jmmAW3PyWBDfrMRxrQ5Qi6uwyYTQdSPcLi17TpnUtbOhoLrhWX?=
- =?us-ascii?Q?Ly1NAQbm5L3GTun9dRVGmN37rrCwm7tpgainfDs7Uv5/kPtwLtYQaXRcxN8M?=
- =?us-ascii?Q?v9AY2lNNrw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf77a031-8492-4c4a-43df-08de754c3a1f
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 15:32:18.8375
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KogXIxho3dgONrSX3fZcNenE2aFVZ0w15nSw49hk5s6A9dlfXOFzmgKZpia97Wwa0RDFMI+2+NVaz4p6h2papw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7440
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAEvNRgEiod74cRoVQVC5LUbWDZf6Wwz1ssjQN0fveN=RBAjsTw@mail.gmail.com>
 
->> >The changelog says "doing nothing" isn't an option, and we need to depend on
->> >TDH.SYS.SHUTDOWN to catch such incompatibilities.
->
->Doing nothing in the kernel is fine. This is a tooling problem.
->
->> >To me this means we cannot support module update if TDH.SYS.SHUTDOWN doesn't
->> >support this "AVOID_COMPAT_SENSITIVE" feature, because w/o it we cannot tell
->> >whether the update is happening during any sensitive operation.
->> >
->> 
->> Good point.
->> 
->> I'm fine with disabling updates in this case. The only concern is that it would
->> block even perfectly compatible updates, but this only impacts a few older
->> modules, so it shouldn't be a big problem. And the value of supporting old
->> modules will also diminish over time.
->> 
->> But IMO, the kernel's incompatibility check is intentionally best effort, not a
->> guarantee. For example, the kernel doesn't verify if the module update is
->> compatible with the CPU or P-SEAMLDR. So non-compatible updates may slip through
->> anyway, and the expectation for users is "run non-compatible updates at their
->> own risk". Given this, allowing updates when one incompatibility check is
->> not supported (i.e., AVOID_COMPAT_SENSITIVE) is also acceptable. At minimum,
->> users can choose not to perform updates if the module lacks
->> AVOID_COMPAT_SENSITIVE support.
->> 
->> I'm fine with either approach, but slightly prefer disabling updates in
->> this case. Let's see if anyone has strong opinions on this.
->
->Do not make Linux carry short lived one-off complexity. Make userspace
->do a "if $module_version < $min_module_version_for_compat_detect" and
->tell the user to update at their own risk if that minimum version is not
->met. Linux should be encouraging the module to be better, not
->accommodate every early generation miss like this with permanent hacks.
+On Thu, Feb 26, 2026 at 12:19:52AM -0800, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> 
+> > On Wed, Feb 25, 2026, Alexey Kardashevskiy wrote:
+> >> For the new guest_memfd type, no additional reference is taken as
+> >> pinning is guaranteed by the KVM guest_memfd library.
+> >>
+> >> There is no KVM-GMEMFD->IOMMUFD direct notification mechanism as
+> >> the assumption is that:
+> >> 1) page stage change events will be handled by VMM which is going
+> >> to call IOMMUFD to remap pages;
+> >> 2) shrinking GMEMFD equals to VM memory unplug and VMM is going to
+> >> handle it.
+> >
+> > The VMM is outside of the kernel's effective TCB.  Assuming the VMM will always
+> > do the right thing is a non-starter.
+> 
+> I think looking up the guest_memfd file from the userspace address
+> (uptr) is a good start
 
-I realize there's a potential issue with this update sequence:
+Please no, if we need complicated things like notifiers then it is
+better to start directly with the struct file interface and get
+immediately into some guestmemfd API instead of trying to get their
+from a VMA. A VMA doesn't help in any way and just complicates things.
 
-old module (no compat detection) -> newer module (has compat detection) -> latest module
+> I didn't think of this before LPC but forcing unmapping during
+> truncation (aka shrinking guest_memfd) is probably necessary for overall
+> system stability and correctness, so notifying and having guest_memfd
+> track where its pages were mapped in the IOMMU is necessary. Whether or
+> not to unmap during conversions could be a arch-specific thing, but all
+> architectures would want the memory unmapped if the memory is removed
+> from guest_memfd ownership.
 
-The problem arises during the second update. Userspace checks the currently
-loaded module version and sees it supports compatibility detection, so it
-expects the kernel to perform these checks. However, the kernel still thinks
-the module lacks this capability because it never refreshes the module's
-features after the first update.
+Things like truncate are a bit easier to handle, you do need a
+protective notifier, but if it detects truncate while an iommufd area
+still covers the truncated region it can just revoke the whole
+area. Userspace made a mistake and gets burned but the kernel is
+safe. We don't need something complicated kernel side to automatically
+handle removing just the slice of truncated guestmemfd, for example.
 
-Regarding disabling updates, I was thinking of an approach like the one below.
-Do you think this is a workaround/hack?
+If guestmemfd is fully pinned and cannot free memory outside of
+truncate that may be good enough (though somehow I think that is not
+the case) - and I don't understand what issues Intel has with iommu
+access.
 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 2cf3a01d0b9c..50fe6373984d 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1192,9 +1192,7 @@ int tdx_module_shutdown(void)
-	 * modules as new modules likely have higher handoff version.
-	 */
-	args.rcx = tdx_sysinfo.handoff.module_hv;
--
--	if (tdx_supports_update_compatibility(&tdx_sysinfo))
--		args.rcx |= TDX_SYS_SHUTDOWN_AVOID_COMPAT_SENSITIVE;
-+	args.rcx |= TDX_SYS_SHUTDOWN_AVOID_COMPAT_SENSITIVE;
- 
-	ret = seamcall(TDH_SYS_SHUTDOWN, &args);
- 
-diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
-index 9ade3028a5bd..c7f0853e8ce5 100644
---- a/drivers/virt/coco/tdx-host/tdx-host.c
-+++ b/drivers/virt/coco/tdx-host/tdx-host.c
-@@ -181,6 +181,11 @@ static void seamldr_init(struct device *dev)
-		return;
-	}
- 
-+	if (!tdx_supports_update_compatibility(tdx_sysinfo)) {
-+		pr_info("Current TDX Module does not support update compatibility\n");
-+		return;
-+	}
-+
-	tdx_fwl = firmware_upload_register(THIS_MODULE, dev, "tdx_module",
-					   &tdx_fw_ops, NULL);
-	ret = PTR_ERR_OR_ZERO(tdx_fwl);
-
+Jason
