@@ -1,50 +1,51 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012049.outbound.protection.outlook.com [52.101.48.49])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010041.outbound.protection.outlook.com [52.101.85.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83294366839;
-	Wed, 25 Feb 2026 23:43:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794B918C2C;
+	Thu, 26 Feb 2026 00:09:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772062984; cv=fail; b=WkKt5q25wN5PviBAbv8sJb9AgqwdxZaeUp05XwRDeI/Qe5dxGLuhTzn3xE9a2ebDXCRDKPynkJnVfPzoB6RmpQVmsNkWYKJtozK+ESsxfQQUJRsj3vZNCKz6xk1tVuTPE2uY3VmHrqy7As+8Wi0Y6sLlw7GCpawsKZKgOOpxwAc=
+	t=1772064583; cv=fail; b=Ixz4nTRvTd/mUQyKkc4+F4Gx0f7RuFTEgHlllP7f693nitZVQsOyDF3d6n7hZajMvAEwtcC2ObBFmBKSXcAqaROx3R61h4O2vTwVvb3dfdYamQXlkjVgLtcpmzyGRpabv9jVLuG55htWU3o4N6HLlOLp9VUvPmp0FHnhz9eLDE8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772062984; c=relaxed/simple;
-	bh=1kxKxf5negGjsP/kZRwSTytQhXDD+XeNBnLFAuMhYh8=;
+	s=arc-20240116; t=1772064583; c=relaxed/simple;
+	bh=g8MPRqsc+Yu2M26EoixHnFh9MdBdZSiuI8ismCNQRuc=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=IXxzzQ0vMspJm4rfyHfDaZUxKqpRtUQzXV1sbVeRs/XjCJrzfLKyR1y7gfzT7Fhp1HFWjQEXz50nkfdsyeX/XEf1QMKGbr2LjfT3hZMdVUQrm3Nn/mdkx3s6+UKDgXAIG/VUrSUi7KhTS0zF+TI53QWcuNrmdRINsySauojexPE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=JsIbYTEg; arc=fail smtp.client-ip=52.101.48.49
+	 Content-Type:MIME-Version; b=dxdEkga3Wcci7UmT/1jCMrhS/5p+6s/a1UmRa/K09TJV1ntmxgBxEbcsUAkb9/7GUI0B+LGROyao8i5a92bheNG4UBN66edrhvjSaUtUoKlOxY4o0joBpsNSS38Tcy+E+oQOvtr7RAnFoKiVpvKphZMsorIjYlisfnEcZOlPIS0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Y9wqBRkp; arc=fail smtp.client-ip=52.101.85.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="JsIbYTEg"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Y9wqBRkp"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=blPKEq2IJb+bg3Lx408ExKOnG+I8au4lUXAyCmx/DK9OQteO48wRDg8mBBufvr2h8g2icUUVhYHpPXUSffD7U9CbkKR4CnhhUGOwVUU+njONBaZtJKBtSE3AJgIVssoOIdUBrnHJGDRKTuvIC0SVfVcpIPhktc1ek3slns2AFfLcVk3XjtujfdsjoXeLWJBC5zIf3gSrQSApUnZCcmY/Ts1HSSRq3FVsRNg81zE1bsvVHss7iSZe6yws99X/r0nirh6GnS/1pbQP9MIpr27WMbXIx6lR/T8qwW+dB6dvtYP4gfYJRV8RigI/kPANQrmt2+3eu0jlkdw4vNnbmhCVWg==
+ b=rYClGokGUB1q/W6zjMbkOGKNCJyzAHOOp3uB0+DpQO4lVkmnmHQ6XR4h0EqSmii2rpemzXcPo9yZo+u7qFmjIF1Ei3j8OFsCHVUt2arM9n/kUfTs9LwwTB2TLMpX4Dtujy/+xooLGAFKmjF44QqjAy3NzZbMF7KUI/b4+0oVyoyK26FsehPL9JcBxoz88tA86LJw+uWg+dyJmgZ6Rjl8liacI4oFvUyqoLqxvayJB27eD7NNG/VKs0VynnGT32JcHoKCgpoLxkpyhz+DtYQ9U4l8q6GJ+U0wA5MRJePRuh9zg6QSiYgHj6IaaXxevL3HCR3cwKiH0x5iS3ps8EiJxQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=i421onDldOFho69s1WRwV1o6OldqUDI25mpKGMr2+IQ=;
- b=esqbwyppJxsp2iujwNgzYmPDqPmO8dIFFSgZV35M5/bvzJFvtZ+AZ8Nfb8ic7oyO+gm5BPEYFj/8OIiice4ghfP2CLMqJeogCmy3cITg8qf8k+eEA6GMwg9lRrcoWqtySkvSHPEizVtJxNxMvj25ZLXHJMSMR2D2NDR3IdIN/EzTIP7XR8KTSssbmK9wQxfxCd4ncVcJ6CYa07MLk6tKxqXX1NAkpecMD1ITmciNVOcIFX2PLwIqKH7hLKwg1efgXoWxBOR4mtcv9GZySzyyv92gBMYpWlr6t2+XRaYd962b9Hy+ds3HV2JZYgLYvsU/L5z+FyHgnLYjT15I5SuNKg==
+ bh=jes4leqCxTCiCFuzCU++gW72f0gEYBeaZWmcpoOHG/c=;
+ b=Q4KKdR3Xj6UETzClKgeFtRc61l7oth4QxLuwwyQkrxvEIu43VvLY67gJ/CcQR4MMjDP0c+CSBXN4YkN1Cbatq0Qah2ZRsDcKYfJVlPpiFeNJQKvzC2A4JQcYutVtjCTaF0eeH41HbOn6DMFUbJ9fzpnU7Ar0WM4VDHowmvU9oiEOoebVtMvKFNL85mPPjI7GVxr35QZitQlJ8rugSqE95TdFoIWAEnL9kPXPe+1fleUMWLiGMkAlNxgck2EJ1K4AgV9NvH7xzYONif98pUihKozfGJrsqVzLt7gWSV1gpx9254qbDQTSYBjzHTdPRlp7HBMhLyjD78+YKbpYaMxOzA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i421onDldOFho69s1WRwV1o6OldqUDI25mpKGMr2+IQ=;
- b=JsIbYTEg6ubO0WrvC9r2c6htm8hZiqlXzHu8vqc8TJAawFtQiLdDuicOc6A1anobttWIaYdICvunOqNy16BgsJS6atT8K0TjNsfuEVwoX0d+DwwhqG9hlTfSWBrvza1JFhJWJ/qjXqzDkopZ783D0/KvCRWVZ+nzMhJF2CdINE0=
+ bh=jes4leqCxTCiCFuzCU++gW72f0gEYBeaZWmcpoOHG/c=;
+ b=Y9wqBRkpnwBVsClt2pCU26iPS63BWla+LSuzPzlXNJ1gRns5af2WsdVC3GFtVyFpRwL/uxKP3NmthN7ooRhMOHeA78/1Cq9SsgVd9qdegO/tPzFJVHFELjU4PUFPE3IZREzw550MExoZu9vbaLmYlPKksF6bWvXRAjCRaWFKuDk=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by SJ2PR12MB8649.namprd12.prod.outlook.com (2603:10b6:a03:53c::10) with
+ by SA1PR12MB7222.namprd12.prod.outlook.com (2603:10b6:806:2bf::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.11; Wed, 25 Feb
- 2026 23:42:59 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.22; Thu, 26 Feb
+ 2026 00:09:32 +0000
 Received: from CH3PR12MB9194.namprd12.prod.outlook.com
  ([fe80::1e6b:ca8b:7715:6fee]) by CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::1e6b:ca8b:7715:6fee%4]) with mapi id 15.20.9654.007; Wed, 25 Feb 2026
- 23:42:58 +0000
-Message-ID: <4ce3cd1b-dede-434e-b55e-feca647f1e0a@amd.com>
-Date: Thu, 26 Feb 2026 10:42:40 +1100
+ ([fe80::1e6b:ca8b:7715:6fee%4]) with mapi id 15.20.9654.007; Thu, 26 Feb 2026
+ 00:09:32 +0000
+Message-ID: <d8fd6e0e-a814-4883-9e58-f1aa501e0d8c@amd.com>
+Date: Thu, 26 Feb 2026 11:09:11 +1100
 User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH kernel 2/9] pci/tsm: Add tsm_tdi_status
+Subject: Re: [PATCH kernel 1/9] pci/tsm: Add TDISP report blob and helpers to
+ parse it
 To: dan.j.williams@intel.com, x86@kernel.org
 Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
  linux-pci@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
@@ -84,15 +85,15 @@ Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
  Claire Chang <tientzu@chromium.org>, linux-coco@lists.linux.dev,
  iommu@lists.linux.dev
 References: <20260225053806.3311234-1-aik@amd.com>
- <20260225053806.3311234-3-aik@amd.com>
- <699e97d6e8be7_1cc51003c@dwillia2-mobl4.notmuch>
+ <20260225053806.3311234-2-aik@amd.com>
+ <699e93db9ad47_1cc510090@dwillia2-mobl4.notmuch>
 From: Alexey Kardashevskiy <aik@amd.com>
 Content-Language: en-US
-In-Reply-To: <699e97d6e8be7_1cc51003c@dwillia2-mobl4.notmuch>
+In-Reply-To: <699e93db9ad47_1cc510090@dwillia2-mobl4.notmuch>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SY6PR01CA0121.ausprd01.prod.outlook.com
- (2603:10c6:10:1b8::10) To CH3PR12MB9194.namprd12.prod.outlook.com
+X-ClientProxiedBy: SY5P282CA0056.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:20a::18) To CH3PR12MB9194.namprd12.prod.outlook.com
  (2603:10b6:610:19f::7)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -101,102 +102,182 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|SJ2PR12MB8649:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8750517e-8c79-4a7b-a895-08de74c79b3e
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|SA1PR12MB7222:EE_
+X-MS-Office365-Filtering-Correlation-Id: 62eb64fa-c046-4b11-9163-08de74cb5157
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	TXCeBTfmHneuPoXzuT1+/5Om67FbtOigOQaiSecW/ucxQbiE4bT6uYrHkvQZI/Ks3C/D+vP3dphi5UHeGDCHpTH31qD3H8wixydbIxk9vLMpB2Pd/7D6IaZKgiJIY3lwvXihwcUHovZHQ4FUxrdhRCUPycaiEqdEVQAERv4jj5jxDJLwQ3WnMQ6ntjFQFDNVttp1wnNG7aP2M1rbZs+yiw9E+CRYb3mwjF86NfyR6bqpH++gN4UZCu9d0lOMYQ6FIZuNjm1SLsiQ8Gr0R42eSIs4Tea/Jmzu1TkCRQZ/UEvMjfGS9JLfWdWoKSgTlJ+crZeGCTbXx6cxXPw68KKK9bMnVbgCsDBDaP0Dn7sljopa8wRpSJoSdHvo11rdHEo7PGUtoc0Y0/C2OQe3Ydh+7swxtMzysGTrfvZSqBcM+QX2Plk6R4SYsenG7Ne8PtQg4db0iDrADN2sXnKo02n3cDM9NBNvyXU5KDHmWTj1HvZn9fic6XZR2D37vEsaORSQrm+yNoJyTdiIBOWG2kQBb1NCOq+MKWH5VoOxRTjgziTKZR9eWBQveCYqjdpETm5m6IJIzjW4aVbSCvI7jTJCU13ZlD8GGWqLAfKnBwvRHYyfj3bKwcU3B4Kd01F9wkBmG/q/2gklAQUriHwUk7pajJtLbKl3OS/G/Mb7XFP0MQZQZ6WaUO7xTzlvDmxmfymlScSV+M0VXfuH8wPD83RIffCePrgQ2hY47AcEotvNUh4=
+	Aqz3hshTMvYw/u+Mxbk17RA4N5CtL9hEBhq407+AMiobkmPQZ96DhQ0eSJQ6alr7JXFO1A7ZZdvFnTLP06YW9/epO0+gViMxKgDEjESSMHaKzFiS3ulrmUj/cqsyjBaZfQQBaJ7cd5n1zZanY1ojXntDK2cAyZLTrsad7AJFo7hUh9ymiCW+8aw7t5hm+xweJ/BIoUNkx0mgmes9ffkUujKLLtL7IcqstV64c6oXPxdbLzkAi+AhZgbO2xQZN+onaDt2LeseXL2+LuQz6sb0Gz3WV+M/cR5BQnKYceIeaJiaizU14iuylzFON6A4gXUIi3YEA0VlepB81bBnr9oewmc1QPwUaxpjYYseaWjzwemkHL45wCmZqrBIGaS62NntE5q30qpYWE8FImDV0fRnfFdFDkAgK66wD+fGrwbMAf+LscQI7iii8hq4NnqyVAbvaNvY3u2w9f7ifvib1xmAr3IZsC8I68bjto2eu/TCz2m7aKSgDasLDe6uejrQhHbKsqViIPz1+w51VU5Tkw8F4SYhaZMryF1JoVlTQoKWLATQ2PK6ZtCpn2pzrp/L80NGFEKb3bJzfbzWP7oIuDPefkb8CqI6mjFHXkDkhpNOFXf+ewma0kBxMd85EuoSNIEhPfAiUnHUR4RLpsUCsJvJyUMrVopdOn2jpPtS9AnbUTMFB314YX0k0OiLtq9+rMgPJadxdpgUa+wMLOqGhMoRrP/q+cYabL8SYRkKCDwbwyQ=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aUkwd25FQXp4LzMxdzhwakdqVFh6di9MMTR0dFpnbXBIcnl2UjRzZ3ZYc3RT?=
- =?utf-8?B?dGJ6Q01mOGVjQkc1dmp3bkY2M3ZuSmRyOExqNW9xMlF0MkIvUUlLRFBsZW92?=
- =?utf-8?B?OEQrYnUwdS9HeXAvTXZVbGJaSm9jRFJBcmlDWE4wQTZTNmU0THdna3QzQ1Jp?=
- =?utf-8?B?SzBjZmtDbXZvSFNRZWlhQjZZN1hJRnJtY2dMNjVXSGthY2pxdG5mNERPOE9o?=
- =?utf-8?B?Q3BMeS83YzVkc0ppN1J5a0k3VTJ3WDQ0S3RrK0hTdE00dlpIL05sVVFGQjBL?=
- =?utf-8?B?aWFKUG9LMFdCenh5czFiOU9GaVpyUEpHY3hiOHdldk9JWno0NEpDeHk3cXBh?=
- =?utf-8?B?b09tV2J6am9CeUhIM08yUEFXQzE1RmtJRktUMXhFUCtZTWErMHBPcS9RZ1M3?=
- =?utf-8?B?K09IZzJ0cVZYL1VOWk5aNGkvYnV2WEM3WVJnZmwvdHB0Tk9zUXM5ZU5YOFZG?=
- =?utf-8?B?cHZzcDhLcXdwNnlpT2Q2WnpEeE9IKytML3VmalNjeldmZzdGK0JIMWprT3pX?=
- =?utf-8?B?ZG9OOFR4VjJOWGVNS2htQkxqZzVKUnIyancyTVIvWmFsV0R3bHFRbUh4MU1B?=
- =?utf-8?B?dzVXRlpVc0Zwd3AzRHdDMzdXYWpuVDJycExJemhldXhaYS80TlBaSXJ5THM2?=
- =?utf-8?B?aTVlSmZPeDZDNFlJUm9VR0J2aHFiUDQ4czJlTCtyM0hSNE9RWlJmMER4MU81?=
- =?utf-8?B?WlZJOStEMGtQT1MvVVBMcEY4Q2ljWC9POVhHN3ZaSjBEaDJtODNIWUYrcDJD?=
- =?utf-8?B?MjBmbTQ1QUpaNThITzRHKy9qVmdsbm4wVmdBUWUxVTIzQThrdXhjc1R5ZUdL?=
- =?utf-8?B?NmZkbUQzeGVCOGk0ZGdBcWgxQ0QyNjBXU3hPdGtLRHQ1akVadFZLd2lWNG5y?=
- =?utf-8?B?cEdhN2lOVHd2NWpiNzB0eW9CeUJpOEJwcjdaVVVVbVhaQVI4S3l5MjZ6cXl0?=
- =?utf-8?B?Q2dzaHQ1a1lKWUdiUVJHN1k0WWlvK200aXRoN05UZ2xHaXZ2eDFOR0RiMmpO?=
- =?utf-8?B?ZVZpbVRtaytSODJVdkk5MG9xWlR0NDNNVXFieG1jejFtMnBXbnNSd2kwMFRJ?=
- =?utf-8?B?bTFNS2FGVFlQcmJQaDVUOWZpd2d4RFhURHdESTFTcWowMWZGR0RhS21zU00x?=
- =?utf-8?B?ZGZ3aXZCK3dYODQ5QWZDY0ttVzkycllvR1lkUFpacVNENyt1RWtSZGRiRlhq?=
- =?utf-8?B?eTVySFIzTGdPMnpXOTVCQ2I2SXRERzRubnQxUlFVRDF6OHpBQU1nMllaSUNX?=
- =?utf-8?B?b05MTWk2SEtXanc3RlNKREtOZENlNmxmYTVnUDM3Z0VGRE45QkxJTlN5ckp1?=
- =?utf-8?B?SnFlODVCeEJ1cEpiYnNYY2dGbVNMZ3pldU5SVkk3ZzcrMEROYU5aNWVmZXV3?=
- =?utf-8?B?RDRYejM2RUUzZ0tOcXF0WXNDSzV6c1E0RHNFNlJxU1I5YnJwY01GUWdqKzJa?=
- =?utf-8?B?UFJPOG1FdWNjRWYvYkprTkQ0UnhRWVFPV01nL09xdGRRTmUyMDdxOElzQzIy?=
- =?utf-8?B?amNaeEZIdVJTaUl1czVXUFNENkNabVlBbFpoNkdFYkxlZkdhOXFIRUQ4S0No?=
- =?utf-8?B?ZEpiaFZpVGNFWnNLRlVFclp2cTRyM0VvSXpRV1JGNGpwai81RGdlMHRZRDI5?=
- =?utf-8?B?Qm1yUzRDN1Z6NXE5Zk5DWUlYQkdWcnBQQkZDZG9uSmQ4bmFSK3NZc3R6L2Yw?=
- =?utf-8?B?a2tBTUx6QVJlOHFGNlRBckNKU3AzTDMra0czOHdTL1BtaWNDUHpTQi9uSWFH?=
- =?utf-8?B?cythemdQQ2FzcVNDVDBDdDFlQnE2L3F0bjRuUXA5ZDVROUlGb3VJSDFkeWRR?=
- =?utf-8?B?UnhQc3dMUDJ5czBETXlCTmplRVorb3h6UFJKOUNCR1RTSDhoenhHQUFzQTNq?=
- =?utf-8?B?YkFIQjJOZUR6SDJtN29FNHdMTzEwamJVeitEaE5ZM0k3ME5ISnhWaUdLQnNP?=
- =?utf-8?B?N09FRVlreXoxbVlydDBjQlJEMzd2dGV4bksrREU4T1JENGFuTFVIZUtzRWM0?=
- =?utf-8?B?dk5YbU5QMWdWMXM4c1RjZFUwYkZ6dTg1ZEdoTCtVeGQxNVlQdEFzOHNub1RU?=
- =?utf-8?B?MWVQQkRJeXIraXcxRzh2S3VCY1lrdHM5TisvR1o2SE1ESE9WQjZmeFJMZ09V?=
- =?utf-8?B?a1RTRnNwVnhuSHJ1TjUzM3BGWTV2dDJHQjdVSUIrU0tBc0I5ZjhDNFMvQmtD?=
- =?utf-8?B?anZQeldubVVvbk1SS3pNMDNITmliY1hya2pDMmg3YWNHNGtpdTVYV1Q1RjMr?=
- =?utf-8?B?bGtYU2JWL0hUUzJUTHBlelBQcUVkWGd4NVpoN2c1R3FmRUVpTzVScGRRYWpR?=
- =?utf-8?B?NkJwdTZKQ1FpM0ozN0wwbisvTlR5Qk0xTEFJOTNBeWY2OXBvbUNRQT09?=
+	=?utf-8?B?U0N0NE9Cd0I4R1NxMU1uWnFxdE5zRi95OGVuKzYwcEpQTkRFQmNKdlVWVjgx?=
+ =?utf-8?B?eGNFTkthdmE2RVZkM040VUhONzZkRUVyS2w3di8vUmpsU2I5cSthUUU0UUdQ?=
+ =?utf-8?B?M0c4elc5dFltR0RSVTRUblVsUk9QWTNWbzZqaDV5Z05JcFVsQ2oreW1OM3hr?=
+ =?utf-8?B?MU5yOHhVNjlEdEp3TnN5U3o4Vk9QTGhvT3grZzZaZ0lWR1drRDByS05jU0Y0?=
+ =?utf-8?B?ZFFDM05xMURpaG5zcHBTWjluMG1YTUZ5VFFoN3ExbUdtR1dYVm83MlJqVXVL?=
+ =?utf-8?B?Zm5odGNJdXRxWEE4UCtGc0MyaXdmMFF5ZXZOblNsakI1TGo2czFaK0RHSFdO?=
+ =?utf-8?B?Y2cyZ0k3TFU0OVlzNDJ2Zk1ndzVzQW9yc09tL2VNY3c5WTNiangwNmY0VGll?=
+ =?utf-8?B?M2tXS1l0Y2lyRmlSakN5cDI2WFdXcWRFY1NBZmgzcHRwbzB5YS95NmhjTzgr?=
+ =?utf-8?B?NWsxYzVUbmtYVEszbGFnSkR4SGFIQU8zdVpXN2V5ZEpaMFdUVWJNS2dTVXdE?=
+ =?utf-8?B?SGx0RTVLVGhlNi9PQ1BwS1pYb3d4emt6ZGUycWtXdXFYOUVDL2xvK2tuQ2RW?=
+ =?utf-8?B?MHMvRFF4eEJ6emxGdEtQb1krZ1RKaGJPbWFja1MxVzJRMlZLV1c4M1lqV3ZS?=
+ =?utf-8?B?QnBCTTgxZkFodDRJazh2YnVrSnArSExhRnRiblloeUYxbTg1Tm9YdW9ndDh3?=
+ =?utf-8?B?UGpkQmYxRVFDbkg1TFYvNzZlNkF5czlxZlNSK0UzeU5XaEpXNHMwYzdnR3RZ?=
+ =?utf-8?B?QTdRcHNnb0FHVTlPUmJxdVN6UktTak5sMHl1L0JsR2VINHBNelJFRitGdDBl?=
+ =?utf-8?B?UGQyVHEwYUo2K2JuTzNDYmRDcWltUi9wbGZUU2h2Q205SHFnV2hGM2tvZ3U5?=
+ =?utf-8?B?WUs0T1oyZTVFTTUyc3J1cExyWkRnRVBKNDR6eEVDVjJ4VEkzVkREdU9tM1FG?=
+ =?utf-8?B?Sk5QUDdTNmd4M2pjZEZFMlhqb1VsOWFhajAyREhQcUpRVWxQQ0I3VmtLeFBS?=
+ =?utf-8?B?NDRESm1nblB2OUN0bk55anZIeFZTVWJnY25TQUlSbEFmWk9VTHRTYWg0SVpX?=
+ =?utf-8?B?WFJ4VGtvVHdlZnVPdWwzMS8yMGVpbitQa1liRzg0bHRSTzczYVlxaXN5OEhi?=
+ =?utf-8?B?bFFFQ1dWUXhYUjBUWkpyUE4vZUV0Y0dmKytIWnlpSFV4enl2ODlxSHdmZGpZ?=
+ =?utf-8?B?REhIOGtwV3pZUHZtYW5yY3ZhNHN6NkV2R3pDRmZQWlhpYmc2czBaYm9icjhN?=
+ =?utf-8?B?dWRhRGxnSmVBUWxFN0lKZktIa2gvZHgrbURwSlBrVFgvNlRPQ0dZekZtUkZX?=
+ =?utf-8?B?anM5Sll4d0p3NEE1aDJMU2dnNVBzTlo1NnMySzhSREp6TUh6ZU5XQk5aYmEv?=
+ =?utf-8?B?OUtrRFJqenFvbUxTZGNvWmNoL2Q2OXBZOWcxUkpTUUttT3llRXoxYjdwS0p0?=
+ =?utf-8?B?N2tpVWdubHdtaVljRzVPQ2gzZVUzMXdZckFiTlUveGNZWkxjZ0NYam1hd1ha?=
+ =?utf-8?B?ckY0emEzODRzNGloeHovRHBHMDBveEtCZ3Vhdk5NbFgxNGd1OCtUZVdqL0Nr?=
+ =?utf-8?B?SXY2Uno1VlNtOWtia3Iza05TOGxiNHhEQmtTWWtmUnh0TjJrT1U4YVY4Q1Nr?=
+ =?utf-8?B?eXphR2dTbXZxREtDNTU2amJ0UU54Z1l5ZGNLRlpmZ01UV2VyREp5eEpUaTEw?=
+ =?utf-8?B?eXRPZnZMYXJiR3MwcWNZWEJGYlVYRFFjZmpiYUIwbEthdGhkdGRXbE9uL3or?=
+ =?utf-8?B?ZmpFYUJEa0UvWXBpbWtuWEg3cHJLRmFnaHE5Q2pyZnhiTGl5blVQUitua1o5?=
+ =?utf-8?B?aG1PcU1jOUNkZiszclA5UDhzWEhXSk8xUWwxWFBmSW1SdkJuaDBZNjdSOURj?=
+ =?utf-8?B?TkZqU1pVUE1LTVZGZ0srUmdIc3RUL21ESTVPOE95UmV5cW00V3RxY1I1dzA1?=
+ =?utf-8?B?am55SXpkU0JEL0M0dU5ua3NvOFNSNzYzTE44OWYxSTNQYUw5a1p1NWFQLzgx?=
+ =?utf-8?B?dXE4V0FZdzFOa0R2MjV6QThSeU5rQnU5R09RaW1neHBWSC9nOGJwN2wwQ2w5?=
+ =?utf-8?B?QU9BNy9MSnltQjVsb04zSWhqY0J4UU0vcGFCaUZPaStuV3M0M3psV2tybFhL?=
+ =?utf-8?B?bStIRll2QW1KZE9xeHZIaElhcFdSVExWa0orQmtnRm54RkVDT2gzSFZiK1lw?=
+ =?utf-8?B?NkF1TUZiM2h4YmhHbEhPNVNoTjFrd3lPUHZ1Mmt2cENXeG1Ka0JEK0F6VUN5?=
+ =?utf-8?B?WXBmMDR6R3ZwaWRqc1dCYzZGOHBxTk05c3Zod0ZwYWkrNTdSL01ERXVaTnll?=
+ =?utf-8?B?aDh4OENjbUhhV2FWT290Sk44aHRxVUtzemFIOHAvTC8yQ3ZlMHBZdz09?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8750517e-8c79-4a7b-a895-08de74c79b3e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 62eb64fa-c046-4b11-9163-08de74cb5157
 X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2026 23:42:58.7717
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 00:09:32.7138
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: L7saH6Cg1aBB7MP4IKO6tB/+e/XZUOd1OxVOjbzFtN8EggaUy2LRKX1lkqtPplmwtgn+XJTjR50YGgl+fKf1qg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8649
+X-MS-Exchange-CrossTenant-UserPrincipalName: G6CzmJZDfrhrM1SYImLTvR9B+51336lXAA4lkgxxRpe4pg/UB9kz9Cz6YcP9sRMackSuWz/igyrR96SAIgapKA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7222
 
 
 
-On 25/2/26 17:33, dan.j.williams@intel.com wrote:
+On 25/2/26 17:16, dan.j.williams@intel.com wrote:
 > Alexey Kardashevskiy wrote:
->> Define a structure with all info about a TDI such as TDISP status,
->> bind state, used START_INTERFACE options and the report digest.
+>> The TDI interface report is defined in PCIe r7.0,
+>> chapter "11.3.11 DEVICE_INTERFACE_REPORT". The report enumerates
+>> MMIO resources and their properties which will take effect upon
+>> transitioning to the RUN state.
 >>
->> This will be extended and shared to the userspace.
+>> Store the report in pci_tsm.
+>>
+>> Define macros and helpers to parse the binary blob.
 >>
 >> Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
 >> ---
 >>
->> Make it uapi? We might want a sysfs node per a field so probably not.
->> For now its only user is AMD SEV TIO with a plan to expose this struct
->> as a whole via sysfs.
+>> Probably pci_tsm::report could be struct tdi_report_header*?
+> [..]
+>> +struct tdi_report_header {
+>> +	__u16 interface_info; /* TSM_TDI_REPORT_xxx */
+>> +	__u16 reserved2;
+>> +	__u16 msi_x_message_control;
+>> +	__u16 lnr_control;
+>> +	__u32 tph_control;
+>> +	__u32 mmio_range_count;
+>> +} __packed;
+>> +
+>> +/*
+>> + * Each MMIO Range of the TDI is reported with the MMIO reporting offset added.
+>> + * Base and size in units of 4K pages
+>> + */
+>> +#define TSM_TDI_REPORT_MMIO_MSIX_TABLE		BIT(0)
+>> +#define TSM_TDI_REPORT_MMIO_PBA			BIT(1)
+>> +#define TSM_TDI_REPORT_MMIO_IS_NON_TEE		BIT(2)
+>> +#define TSM_TDI_REPORT_MMIO_IS_UPDATABLE	BIT(3)
+>> +#define TSM_TDI_REPORT_MMIO_RESERVED		GENMASK(15, 4)
+>> +#define TSM_TDI_REPORT_MMIO_RANGE_ID		GENMASK(31, 16)
+>> +
+>> +struct tdi_report_mmio_range {
+>> +	__u64 first_page;		/* First 4K page with offset added */
+>> +	__u32 num;			/* Number of 4K pages in this range */
+>> +	__u32 range_attributes;		/* TSM_TDI_REPORT_MMIO_xxx */
 > 
-> Say more about what this uapi when sysfs already has lock+accept
-> indications?
+> Those should be __le64 and le32, right? 
+
+Oh yes.
+
+> But see below for another
+> option...
 > 
-> Or are you just talking about exporting the TDISP report as a binary
-> blob?
+>> +} __packed;
+>> +
+>> +struct tdi_report_footer {
+>> +	__u32 device_specific_info_len;
+>> +	__u8 device_specific_info[];
+>> +} __packed;
+>> +
+>> +#define TDI_REPORT_HDR(rep)		((struct tdi_report_header *) ((rep)->data))
+>> +#define TDI_REPORT_MR_NUM(rep)		(TDI_REPORT_HDR(rep)->mmio_range_count)
+>> +#define TDI_REPORT_MR_OFF(rep)		((struct tdi_report_mmio_range *) (TDI_REPORT_HDR(rep) + 1))
+>> +#define TDI_REPORT_MR(rep, rangeid)	TDI_REPORT_MR_OFF(rep)[rangeid]
+>> +#define TDI_REPORT_FTR(rep)		((struct tdi_report_footer *) &TDI_REPORT_MR((rep), \
+>> +					TDI_REPORT_MR_NUM(rep)))
+>> +
+> 
+> So we all have a version of a patch like this and the general style
+> suggestion I have is to just parse this layout with typical
+> offsets+bitfield definitions.
+> 
+> This follows the precedent, admittedly tiny, of the DOE definitions in
+> pci_regs.h. See:
+> 
+> 	/* DOE Data Object - note not actually registers */
+> 
+> I have a patch that parses the TDISP report with these defines:
+> 
+> /*
+>   * PCIe ECN TEE Device Interface Security Protocol (TDISP)
+>   *
+>   * Device Interface Report data object layout as defined by PCIe r7.0 section
+>   * 11.3.11
+>   */
+> #define PCI_TSM_DEVIF_REPORT_INFO 0
+> #define PCI_TSM_DEVIF_REPORT_MSIX 4
+> #define PCI_TSM_DEVIF_REPORT_LNR 6
+> #define PCI_TSM_DEVIF_REPORT_TPH 8
+> #define PCI_TSM_DEVIF_REPORT_MMIO_COUNT 12
+> #define  PCI_TSM_DEVIF_REPORT_MMIO_PFN 0 /* An interface report 'pfn' is 4K in size */
+> #define  PCI_TSM_DEVIF_REPORT_MMIO_NR_PFNS 8
+> #define  PCI_TSM_DEVIF_REPORT_MMIO_ATTR 12
 
-I mean that between lock and accept the guest userspace wants to read certs/measurements/report to do the attestation. And it will want to know these blobs digests. And probably the TDI state. Although successful write to lock() is an indication of CONFIG_LOCKED, and accept == RUN.
 
-We do not do real attestation in phase2 but the report is required anyway to enable private MMIO so I started shuffling with this structure.
+I cannot easily see from these what the sizes are. And how many of each.
 
-> I think the kernel probably wants a generic abstraction for asserting
-> that the tsm layer believes the report remains valid between fetch and
-> run. In other words I am not sure arch features like intf_report_counter
-> ever show up anywhere in uapi outside of debugfs.
+> #define  PCI_TSM_DEVIF_REPORT_MMIO_ATTR_MSIX_TABLE BIT(0)
+> #define  PCI_TSM_DEVIF_REPORT_MMIO_ATTR_MSIX_PBA BIT(1)
+> #define  PCI_TSM_DEVIF_REPORT_MMIO_ATTR_IS_NON_TEE BIT(2)
+> #define  PCI_TSM_DEVIF_REPORT_MMIO_ATTR_IS_UPDATABLE BIT(3)
+> #define  PCI_TSM_DEVIF_REPORT_MMIO_ATTR_RANGE_ID GENMASK(31, 16)
+> #define  PCI_TSM_DEVIF_REPORT_MMIO_SIZE (16)
+> #define PCI_TSM_DEVIF_REPORT_BASE_SIZE(nr_mmio) (16 + nr_mmio * PCI_TSM_DEVIF_REPORT_MMIO_SIZE)
+> 
+> Any strong feelings one way or the other? I have a mild preference for
+> this offset+bitfields approach.
 
-True, this is a shorter (not shorter enough :) ) version of SEV-TIO's TDI_INFO. Thanks,
 
+My variant is just like this (may be need to put it in the comment):
+
+tdi_report_header
+tdi_report_mmio_range[]
+tdi_report_footer
+
+imho easier on eyes. I can live with either if the majority votes for it. Thanks.
 
 -- 
 Alexey
