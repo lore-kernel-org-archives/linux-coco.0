@@ -1,142 +1,204 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842FA44CAF2
-	for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 19:27:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909DC313293
+	for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 19:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772134028; cv=none; b=h4ou4Mf+c5MTJ5i4tNmVTyRcmFM+ZZukX7k9ma/DcAWCnvb6Fart49qNJdl9ANmuBdMxngzQfnjZel8yrfhwfuhtRS9nZ0QtNegQ1u8uYUhC1pE1Z+x7aK/qOnR0ZoCLSdAFU14bGO+5CiRGlFyGrk0kZjhlbChqoiZXYCssVNo=
+	t=1772134268; cv=none; b=iwpMyoBB/L8yKwXeHXRb/TE6uCI9pfkU8Nfb109RoJcdOgciBiBipSoB2mmJ8ch1tNx8RzkVEyQiCe98sPjvlQv3UKNmVX67wyUI9rOwQnuxlXKzMviu8QjH/0LYAedQxC41kWIZRYnGTqxhQHdNxssSLHNk5jsK9sPkQxabZpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772134028; c=relaxed/simple;
-	bh=pTOdXcn8havDpB/nGx2tDUoWLjBch4ocjJIaSDJa3XQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fVLM9wa5vDC+w3wPL6uTFk57Vuay7zdQ8+3txtd/BPfyFHPG9wEx2KOIKHFzCH/Yn3TErJ8z2d73LWZCDo5Sbgs60HkjgNhTsoKD7o9FWpelch+o+b9vQd2MqQlQDblImMdB94zywv18a5xa0ZNrHBbql90Z2gmo/a+o7nurNHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=D5y6HnJf; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1772134268; c=relaxed/simple;
+	bh=7npd9tyd1xyz0W3kxuTvPbP2Ku0X4fbvz4wieBxiuu4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=TlQIrJBAk1GVQxizSE8u89a4o7jXCgYwmuudR97lb8nUuzoo0J7U4n9eqLHuwhoAQSeRJa+2eVhIs35DC99KbNJWe007LMPddGzdTEyMkdg/FND42X9/hG8n55JeYLUMkFvuFFR53tWeoTl08vjmk+354g85fWqJ9ulTBhpEQv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iU2o9lzW; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="D5y6HnJf"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-506a747448dso10595351cf.0
-        for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 11:27:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iU2o9lzW"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c70f2120583so709262a12.3
+        for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 11:31:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1772134022; x=1772738822; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ihQ/rPzUFVaXq5y8xpMnCIhxlDxECF6mdQTm7Xamdb4=;
-        b=D5y6HnJfst8IsN2I1aXn7hvLi1N7+AwQDcrTqg8aZ+Xc+JIwx4WUx6qi+fR7es+4OZ
-         qS80llV9bT8O8/nt0KklPv4lz3u40Zx4bCjqEu0Wip6x3Hgw6xbj8OwfVqSJn5VKhwGB
-         vXzz5Gefe+ueOVyaFWHeKH4xSZL4UAq2sUfkR7GAN2SVio/DnX1wc4WH3av0qKV4vP1b
-         4/qldA9p8jlp3WAcOpj9UB4hyw3bP3+/UL6SemWQpoCEtc2Sc+p23kj19iCSGN5T9v9p
-         vLb4cOINgq++C9MKjM/XUX9KsEvdS0HSs8eZveEHXx8H7J8Qs31zm+lIa4ttEvuac7GQ
-         8oEw==
+        d=google.com; s=20230601; t=1772134262; x=1772739062; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ce8oFKsmBFWAiBnyfUlbpaUHm9SVUDVrI9bHqHsCJH0=;
+        b=iU2o9lzW3LWrr6kPCPGXNcoZNybFRA/6xOSR0ZMAT5sRC1krR+zx/VwkGXwI5RnH7u
+         A8/jBNTuPQzV13clrkzdXFpoDsDw8/D1XRqAP6oa3abWGjXBUftq56vaj4zmtjJIwYnI
+         jbw7XofcYWS8/G5o1Fy6yXh2KjEd8HFtwfvBHPXPR28vxqYg3YARHA0UW/ZYguJM0p/r
+         HxrRgVCD/Rn5CesPx4oplOGSD1+s59LFGZ0kazvo3ksUHY5DxBXUu4d2pny3hNfudvAE
+         FFdEwE9DN9wuCn8cWx8mGT+ThD1wJr89DnENYjK7QKU6zco9IuN9OaDdx7aFA+Y9TgLU
+         VX3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772134022; x=1772738822;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ihQ/rPzUFVaXq5y8xpMnCIhxlDxECF6mdQTm7Xamdb4=;
-        b=NvYpau+xghEk8/YdnPUDg71//RhmDISAE4+yQNTmLygYPNQZHl8vHo7SLOhmTBefro
-         eQjNfG9IgfsTuLVIqbB9X99cCYe4IRSSjUxFb02Atg8Xa1lrnHRdrgJd7Kx2HUr82I0s
-         Qz0SVCfMbeXvtPaU6yU0d5toDlx54uB4e8HrA0Y/GUTXvjL08/ZbHwrrmq1Z1ovTwdX2
-         bVis9MTsNGioo6ttqEreNLj7nGFFEaVTEdVAbMkRNrwWA4yhmhvRQLK6UOgkC966kfx3
-         P3etxYXC5cLyb52nNZcejHes+q0XBEJoQ6OhY8bFZYO7f2Nv1J5pViv9bXqaTpiPu/gU
-         i3Nw==
-X-Forwarded-Encrypted: i=1; AJvYcCUb67tgP2q9xsVIGhdEVFyU09E12Z/i5k9NNeKrOTPBNfDHfnSdXoXCKLy3FxqgBudGaKVcnZ92XWrO@lists.linux.dev
-X-Gm-Message-State: AOJu0YwKOoqDFsGm+QIGzUXbtzHdHZ3MmCmXcCba7ZkGIfXPS+BCbMZP
-	11yeIk4EXYTHZIg73Qba02bgpX/514nQ01v18TH96nxLK6PoeS3Yvxwwt/xiy886vzE=
-X-Gm-Gg: ATEYQzzvxxCUJ6Aply/2oJlnDHbfeLwJx0JCDT1ZYSVsLEfPGKyByD3NnRbLiotix6J
-	/h+QlyrNBBGMgsRi21WjN8kpWZ3eQxBA4xcE/xlp+72fQO/8BhhrPV/amrikYQxSqQVyXpxp9Z0
-	ZfLee1X8n37mUFf83HwwUwep9G1wuX1/WsRewselvg2Z5JYYzB405GTMR/UomGeIQsSddfq4ChF
-	rgIXLeeVbbVzlym5Arc5KkdLuCrwItsVGWd/+1dgkdLYESb5BqqkSypurwSruv38+A8iMz4XvEI
-	b0mfU1YO5WVdX4ecr3j6kxu5zUjzraljlf0qUvFRNwKRky//C2iV1wVd9U3uxt3FL6cs11slBfp
-	1+PGwzZWXVF7wvRxTDwtYloKX2E7v0PVFC2ZY+vMWCOy97VxMxwfaRLDlJOcwxjragbR40GyuaS
-	lFD48tdIbvKZj8xGrLH/vYH1/hOh5GhWgiAFE395o1gQwpt7hZTJIoY804I0Am31R0+RyM7hXBQ
-	mzbdXeB
-X-Received: by 2002:ac8:7d90:0:b0:501:17a1:4ccf with SMTP id d75a77b69052e-50752714463mr1505241cf.3.1772134022105;
-        Thu, 26 Feb 2026 11:27:02 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-899c73a25e4sm23606076d6.50.2026.02.26.11.27.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 11:27:01 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1vvh0m-00000000ODe-3htA;
-	Thu, 26 Feb 2026 15:27:00 -0400
-Date: Thu, 26 Feb 2026 15:27:00 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Kevin Tian <kevin.tian@intel.com>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Steve Sistare <steven.sistare@oracle.com>,
-	Nicolin Chen <nicolinc@nvidia.com>, iommu@lists.linux.dev,
-	linux-coco@lists.linux.dev, Dan Williams <dan.j.williams@intel.com>,
-	Santosh Shukla <santosh.shukla@amd.com>,
-	"Pratik R . Sampat" <prsampat@amd.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Fuad Tabba <tabba@google.com>, Xu Yilun <yilun.xu@linux.intel.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-Subject: Re: [RFC PATCH kernel] iommufd: Allow mapping from KVM's guest_memfd
-Message-ID: <20260226192700.GB44359@ziepe.ca>
-References: <20260225075211.3353194-1-aik@amd.com>
- <aZ7-tTpobKiCFT5L@google.com>
- <fb10affb-40d5-4558-b64b-0ab22659ccf2@amd.com>
+        d=1e100.net; s=20230601; t=1772134262; x=1772739062;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Ce8oFKsmBFWAiBnyfUlbpaUHm9SVUDVrI9bHqHsCJH0=;
+        b=IQe99aMIpLHcKiqqHfzBLVrXQjIWT8OnyB8k8WFPSp3Z3LcLTUN1pM8qFxL+u1wEBc
+         dMnrMO1iFXBWmXHehr0haxJCoxO7T95mMYKTr4YOf0/AhOF5HLl21Ik6ljd/qFuPc719
+         ZjF0Az8EjhYoPhXbB8tNDJl2WqY9Kwiqbs+xBxWYhS7ZP4INNDHEgsi8ihw1NE+7e1v5
+         03N8jplCsC6UnbBJ/4SiutPo4kA7/4aWBucrTbTGdjT17Q6kdn0i74X1qW7Biad2U8Yn
+         nZXdfJlcau78iRkv9DpFrQpXxX8zWz30786v0/bXuhZ7ywe+VeRgy9TL3/xc3a6uyDW+
+         AHPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVk72+0Umta9RLrm9J32bJ6q2Lf0w5Ym+PVX1qi1IeeVrly4aIZOWC7o5otlr6fIxvzW/EqgAWi/h2e@lists.linux.dev
+X-Gm-Message-State: AOJu0YyFab1PXVIgBUlBuK1uRUUNUYEmCX2/HBxvT/tsIiWLgk35Sr+0
+	YbD2sCbMTVYP7KL6GX4aYefCsoITYIAqhQWZf9Mar+4NbruzpCm62g+SW+bPYUUo/dh0VWMMPd6
+	tgKk6ZQ==
+X-Received: from pgbdk13.prod.google.com ([2002:a05:6a02:c8d:b0:c6e:7278:d9e1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:e40a:b0:32d:a91a:7713
+ with SMTP id adf61e73a8af0-395c3af1f03mr327981637.40.1772134261378; Thu, 26
+ Feb 2026 11:31:01 -0800 (PST)
+Date: Thu, 26 Feb 2026 11:30:59 -0800
+In-Reply-To: <64a01647-2f99-44a8-a183-702d6eb6fd81@fortanix.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fb10affb-40d5-4558-b64b-0ab22659ccf2@amd.com>
+Mime-Version: 1.0
+References: <d98692e2-d96b-4c36-8089-4bc1e5cc3d57@fortanix.com>
+ <aZ9V_O5SGGKa-Vdn@google.com> <928a31e1-bb6f-44d4-b1de-654d6968fd55@fortanix.com>
+ <aZ9Zs0laC2p5W-OL@google.com> <64a01647-2f99-44a8-a183-702d6eb6fd81@fortanix.com>
+Message-ID: <aaCfcwdA1E4V5qgE@google.com>
+Subject: Re: [PATCH] KVM: SEV: Track SNP launch state and disallow invalid
+ userspace interactions
+From: Sean Christopherson <seanjc@google.com>
+To: Jethro Beekman <jethro@fortanix.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 26, 2026 at 05:47:50PM +1100, Alexey Kardashevskiy wrote:
-> 
-> 
-> On 26/2/26 00:55, Sean Christopherson wrote:
-> > On Wed, Feb 25, 2026, Alexey Kardashevskiy wrote:
-> > > For the new guest_memfd type, no additional reference is taken as
-> > > pinning is guaranteed by the KVM guest_memfd library.
-> > > 
-> > > There is no KVM-GMEMFD->IOMMUFD direct notification mechanism as
-> > > the assumption is that:
-> > > 1) page stage change events will be handled by VMM which is going
-> > > to call IOMMUFD to remap pages;
-> > > 2) shrinking GMEMFD equals to VM memory unplug and VMM is going to
-> > > handle it.
-> > 
-> > The VMM is outside of the kernel's effective TCB.  Assuming the VMM will always
-> > do the right thing is a non-starter.
-> 
-> Right.
-> 
-> But, say, for 1), VMM does not the right thing and skips on PSC -
-> the AMD host will observe IOMMU fault events - noisy but harmless. I
-> wonder if it is different for others though.
+On Wed, Feb 25, 2026, Jethro Beekman wrote:
+> On 2026-02-25 12:21, Sean Christopherson wrote:
+> > On Wed, Feb 25, 2026, Jethro Beekman wrote:
+> >> On 2026-02-25 12:05, Sean Christopherson wrote:
+> >>> On Mon, Jan 19, 2026, Jethro Beekman wrote:
+> >>>> Calling any of the SNP_LAUNCH_ ioctls after SNP_LAUNCH_FINISH result=
+s in a
+> >>>> kernel page fault due to RMP violation. Track SNP launch state and e=
+xit early.
+> >>>
+> >>> What exactly trips the RMP #PF?  A backtrace would be especially help=
+ful for
+> >>> posterity.
+> >>
+> >> Here's a backtrace for calling ioctl(KVM_SEV_SNP_LAUNCH_FINISH) twice.=
+ Note this is with a modified version of QEMU.
+> >=20
+> >> RIP: 0010:sev_es_sync_vmsa+0x54/0x4c0 [kvm_amd]
+> >>  snp_launch_update_vmsa+0x19d/0x290 [kvm_amd]
+> >>  snp_launch_finish+0xb6/0x380 [kvm_amd]
+> >>  sev_mem_enc_ioctl+0x14e/0x720 [kvm_amd]
+> >>  kvm_arch_vm_ioctl+0x837/0xcf0 [kvm]
+> >=20
+> > Ah, it's the VMSA that's being accessed.  Can't we just do?
+> >=20
+> > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> > index 723f4452302a..1e40ae592c93 100644
+> > --- a/arch/x86/kvm/svm/sev.c
+> > +++ b/arch/x86/kvm/svm/sev.c
+> > @@ -882,6 +882,9 @@ static int sev_es_sync_vmsa(struct vcpu_svm *svm)
+> >         u8 *d;
+> >         int i;
+> > =20
+> > +       if (vcpu->arch.guest_state_protected)
+> > +               return -EINVAL;
+> > +
+> >         /* Check some debug related fields before encrypting the VMSA *=
+/
+> >         if (svm->vcpu.guest_debug || (svm->vmcb->save.dr7 & ~DR7_FIXED_=
+1))
+> >                 return -EINVAL;
+>=20
+> I tried relying on guest_state_protected instead of creating new state bu=
+t I
+> don't think it's sufficient. In particular, your proposal may fix
+> snp_launch_finish()=20
 
-ARM is also supposed to be safe as GPT faults are contained, IIRC.
+But it does fix that case, correct?  I don't want to complicate one fix jus=
+t
+because there are other bugs that are similar but yet distinct.
 
-However, it is not like AMD in many important ways here. Critically ARM
-has a split guest physical space where the low addresses are all
-private and the upper addresses are all shared.
+> but I don't believe this addresses the issues in snp_launch_update() and
 
-Thus on Linux the iommu should be programed with the shared pages
-mapped into the shared address range. It would be wasteful to program
-it with large amounts of IOPTEs that are already know to be private.
+Do you mean snp_launch_update_vmsa() here?  Or am I missing an interaction =
+with
+vCPUs in snp_launch_update()?
 
-I think if you are fully doing in-place conversion then you could
-program the entire shared address range to point to the memory pool
-(eg with 1G huge pages) and rely entirely on the GPT to arbitrate
-access. I don't think that is implemented in Linux though?
+> sev_vcpu_create().
 
-While on AMD, IIRC, the iommu should be programed with both the shared
-and private pages in the respective GPA locations, but due to the RMP
-matching insanity you have to keep restructuring the IOPTEs to exactly
-match the RMP layout.
+There are a pile of SEV lifecycle and locking issues, i.e. this is just one=
+ of
+several flaws.  Fixing the locking has been on my todo list for a few month=
+s (we
+found some "fun" bugs with an internal run of syzkaller), and I'm finally g=
+etting
+to it.  Hopefully I'll post a series early next week.
 
-I have no idea what Intel needs.
+Somewhat off the cuff, but I think the easiest way to close the race betwee=
+n
+KVM_CREATE_VCPU and KVM_SEV_SNP_LAUNCH_FINISH is to reject KVM_SEV_SNP_LAUN=
+CH_FINISH
+if a vCPU is being created.  Or did I misunderstand the race you're pointin=
+g out?
 
-Jason
+Though unless there's a strong reason not to, I'd prefer to get greedy and =
+block
+all of sev_mem_enc_ioctl(), e.g.
+
+11:23:23 =E2=9C=94 ~/go/src/kernel.org/linux $ gdd
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index ea515cf41168..2b1033c0ec54 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -2047,8 +2047,8 @@ static int sev_check_source_vcpus(struct kvm *dst, st=
+ruct kvm *src)
+        struct kvm_vcpu *src_vcpu;
+        unsigned long i;
+=20
+-       if (src->created_vcpus !=3D atomic_read(&src->online_vcpus) ||
+-           dst->created_vcpus !=3D atomic_read(&dst->online_vcpus))
++       if (kvm_is_vcpu_creation_in_progress(src) ||
++           kvm_is_vcpu_creation_in_progress(dst))
+                return -EBUSY;
+=20
+        if (!sev_es_guest(src))
+@@ -2596,6 +2596,11 @@ int sev_mem_enc_ioctl(struct kvm *kvm, void __user *=
+argp)
+                goto out;
+        }
+=20
++       if (kvm_is_vcpu_creation_in_progress(kvm)) {
++               r =3D -EBUSY;
++               goto out;
++       }
++
+        /*
+         * Once KVM_SEV_INIT2 initializes a KVM instance as an SNP guest, o=
+nly
+         * allow the use of SNP-specific commands.
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 2c7d76262898..60ca5222e1e5 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1032,6 +1032,13 @@ static inline struct kvm_vcpu *kvm_get_vcpu_by_id(st=
+ruct kvm *kvm, int id)
+        return NULL;
+ }
+=20
++static inline bool kvm_is_vcpu_creation_in_progress(struct kvm *kvm)
++{
++       lockdep_assert_held(&kvm->lock);
++
++       return kvm->created_vcpus !=3D atomic_read(&kvm->online_vcpus);
++}
++
+ void kvm_destroy_vcpus(struct kvm *kvm);
+=20
+ int kvm_trylock_all_vcpus(struct kvm *kvm);
