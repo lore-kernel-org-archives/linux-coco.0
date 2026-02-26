@@ -1,213 +1,132 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F81F368955
-	for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 22:06:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772143583; cv=fail; b=AsTlyAElQRt/s3fBFRMb54a2kYhpNZZ7BbHgJXHIpTlUTDy83XgJETWOsUzbKmXQBmcfiN7hz34UxAFtzWU3Lwx6/uj8+N68zDt/I9wyVD+GNXHO5yLCxDA1dINbuC/Q9f37yN+5ON/ww1fe+RkERpNL/X1jF0jPVA5dwxF4Bl0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772143583; c=relaxed/simple;
-	bh=gMXWJUaw4VjQCCVVx2PIKmaSuGrzVjGe1owS/SVcfNQ=;
-	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
-	 Content-Type:MIME-Version; b=QAmC+0X3Tkz8H77bG0Zied/QkGcjNczPQoKJanSEyLSaokl3BM0sm2cIv3gUCKQwp55do1oImfk+pqAO44zVqXKJgb/ljTdBhO06XHFuMPwervQu1PmwtkK4ZP1HPWC40WZ4MUdcSKvpUQ7QYRis2TR76X3hjKJA41JcsnGWKu8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J0LLDLGX; arc=fail smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D6737B40B
+	for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 22:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772145180; cv=none; b=h4Ij9h+Z02GFm0GrghpFTL1aDZsigy+/C8nzYN0qNxDYnL/gIpzoee4ConAEgwpbMyl/0qQCJZIYw9ET90V0tzV0P2HgNJBO1ybFIh9s5/KW3RKiVf3sYrKLv+F+s6Oej2Qc3bDDrecCvaNX+e2X1S911DojUr6aWcAAsEcGFok=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772145180; c=relaxed/simple;
+	bh=VzUGlCjSlt+1d0n+/DBJM8ZgcYnftHMK4SkGJqosuT4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mav6dtOB1c0A6MkuTVcXQKy6PrKvWqA2QXdIy5yyGt4al3PWbl3IEc4cxwI4pgZNVsOMP0h0HNzCSWFkudWvNXb6LshB/pt8AFHPfvCwDgiVKai+VOVcJg/+KU7WTZ1eY7KgtwoDINlOH1D1m3HR0yrTAUzSd3mOXfBbrTZIxYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B6mDArCV; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J0LLDLGX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B6mDArCV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772143583; x=1803679583;
-  h=from:date:to:cc:message-id:in-reply-to:references:
-   subject:content-transfer-encoding:mime-version;
-  bh=gMXWJUaw4VjQCCVVx2PIKmaSuGrzVjGe1owS/SVcfNQ=;
-  b=J0LLDLGXkzaLh5fZkst+30C712ufDTH0DPQskTlt7fuEnUQQUK9hw8MR
-   x+uNssW5qqhXUTpBK1Toj5uMMWW7CRAwPviRIxEstLFcHqLXFYEj6YSLv
-   hXnwdstUfu4slWOgSOW79mzF2LB5pcxklw7uCFTnE5J0Vr33utbBA0lzW
-   ejj4ypR86cGZ2ayqar0Xk761aqA4fIp05guppfD6kGye9OOIdbmDKDzXY
-   q5WwLR104Y19ly4exHitfESUhnh4OhBz/PnkLYRTB0p9vdWPPL/9PQygk
-   gMFN/LY3IODaX2o13lsPQHgPZbDRehoeyCEyd+6Y5/3o8FFvj4PnHadmE
+  t=1772145179; x=1803681179;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=VzUGlCjSlt+1d0n+/DBJM8ZgcYnftHMK4SkGJqosuT4=;
+  b=B6mDArCVJ80XCdRRVD0J87lhNbRv5XeKOLK4qevaGrKxliI5gNL7SAZu
+   4I/kL+Wv+zXVuzgkQveZuBQWvfVPDyNS8Y8L4+Z8dZifaxzT3JAHRivC2
+   07yCO7q14aa47OjIAoxf5XV75vL1Tz4jWc/yeNw4Qv3FFWiC0nHxkGVJj
+   NjBMrzAvG9OQNCVo44CspM6CdpUEk5LQbfI5EXfF52sEdb5f+UXVdSs6G
+   EERII+HAwL19lszCRvIM4YFKp9HAaWVgHRKN0LOT+PSAYkgyBjxxzqsDv
+   PyGHCX6WZxrfPNvo5k/RSJt7R3cneFUuP8tocsZ5qRlVvLOdSjCk2/dMx
    w==;
-X-CSE-ConnectionGUID: JHQCBkUsQji2bNt8QZG+6Q==
-X-CSE-MsgGUID: LK3QyfEeR+uLrG9tLlsE/w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="73130070"
-X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; 
-   d="scan'208";a="73130070"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 14:06:16 -0800
-X-CSE-ConnectionGUID: 2v6L+cz8R9+H6hS9OgBeyA==
-X-CSE-MsgGUID: ZF6OkZioTEKxyYcXIDTkgQ==
+X-CSE-ConnectionGUID: lUfWm8bYR6eGuao9SvH41w==
+X-CSE-MsgGUID: 8JVvvuCnTk6eLP9BcrbqYA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="73289988"
+X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; 
+   d="scan'208";a="73289988"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 14:32:58 -0800
+X-CSE-ConnectionGUID: osf04zZEQGCElXhHFq89nw==
+X-CSE-MsgGUID: gBRrumz4T42qLuwSBXwHVw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; 
-   d="scan'208";a="216611205"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 14:06:15 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 26 Feb 2026 14:06:14 -0800
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 26 Feb 2026 14:06:14 -0800
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.19) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 26 Feb 2026 14:06:13 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pBouHDopX5zoFNx+JN9v/h1licmMDukluCAM8+Z1gnmc2VH5NUL/v3BAGYsQpgKk69O+yYodoDXHnJ2ZK9rF6ozX2jSVY6+XC7hE1uZHPwbZwB+LLAXoAAduDooJF7MFOd4tg/5HaRqvARWXt2yXUayQq1qp8ooI3f3a2QZoj7g9Z5Hc4773PXRozIsjWpZcs33UYNTR56TSPF5914ff41Xokq0GriSfXHqef2YKLcP2QLwrtrkI2WEf6VUK5nzIXmzDAJhjEAMHywggz3XITL/x4ECT8qcu95Egljw2f2cEpeUBviOOrlVjrOHGqYctKJAobZ9tik4YwKijW9PZew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FhZ0XYtPJWxdDLcdrX/PonlcZkOz9pK5XQ1KxL1nrQI=;
- b=kydBdeLFWtt59GVoPqY2ZVB8yeCFMmLXT35xYXoAWYf0PTHXo+dB45y20cOOcEZqRxmG+O/Gy3OlYUWYLYQXUiSyu8bs0N0Ap6YwXSHnQGpEcMPG9J9CZr0uq37D7jAk4rEfmVs4pAvNKfvgWU54xv7xbBL9Uj57TCQK0XgZmWFq3oWTDXvPs8UjoKA93jCIPrUK7mYwZ28Dbx8j4k7JvqBobag60UYSPXzV7AID6yEz1065gU2uGySZTEnAZmih17gqSSH18yCtOEs/BRu5+8Z25kfObdBJHxXP3YCjgczUn08NCoX7NUh9pfUeKtDPEDy/7ppfUktvFXFxC+orTg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by SJ5PPFC35D45AFD.namprd11.prod.outlook.com (2603:10b6:a0f:fc02::853) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.17; Thu, 26 Feb
- 2026 22:06:11 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::1ff:1e09:994b:21ff]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::1ff:1e09:994b:21ff%5]) with mapi id 15.20.9654.014; Thu, 26 Feb 2026
- 22:06:11 +0000
-From: <dan.j.williams@intel.com>
-Date: Thu, 26 Feb 2026 14:06:10 -0800
-To: Chao Gao <chao.gao@intel.com>, <dan.j.williams@intel.com>
-CC: "Huang, Kai" <kai.huang@intel.com>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "seanjc@google.com"
-	<seanjc@google.com>, "kas@kernel.org" <kas@kernel.org>, "Chatre, Reinette"
-	<reinette.chatre@intel.com>, "Verma, Vishal L" <vishal.l.verma@intel.com>,
-	"nik.borisov@suse.com" <nik.borisov@suse.com>, "mingo@redhat.com"
-	<mingo@redhat.com>, "Weiny, Ira" <ira.weiny@intel.com>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>, "hpa@zytor.com" <hpa@zytor.com>, "Annapurve, Vishal"
-	<vannapurve@google.com>, "sagis@google.com" <sagis@google.com>, "Duan,
- Zhenzhong" <zhenzhong.duan@intel.com>, "Edgecombe, Rick P"
-	<rick.p.edgecombe@intel.com>, "paulmck@kernel.org" <paulmck@kernel.org>,
-	"tglx@kernel.org" <tglx@kernel.org>, "yilun.xu@linux.intel.com"
-	<yilun.xu@linux.intel.com>, "bp@alien8.de" <bp@alien8.de>
-Message-ID: <69a0c3d24310_1cc5100d1@dwillia2-mobl4.notmuch>
-In-Reply-To: <aaBndinjh51R2wQU@intel.com>
-References: <20260212143606.534586-1-chao.gao@intel.com>
- <20260212143606.534586-22-chao.gao@intel.com>
- <a0a5301140be5a3d944b1c91914b93017af026fb.camel@intel.com>
- <aZ+31DJr0cI7v8C9@intel.com>
- <699fe97dc212f_2f4a100b@dwillia2-mobl4.notmuch>
- <aaBndinjh51R2wQU@intel.com>
-Subject: Re: [PATCH v4 21/24] x86/virt/tdx: Avoid updates during
- update-sensitive operations
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY1P220CA0022.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:5c3::14) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; 
+   d="scan'208";a="215839101"
+Received: from spandruv-mobl4.amr.corp.intel.com (HELO [10.125.111.172]) ([10.125.111.172])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 14:32:58 -0800
+Message-ID: <f81dc9d3-8ce8-408b-915c-35253d245b93@intel.com>
+Date: Thu, 26 Feb 2026 14:32:58 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SJ5PPFC35D45AFD:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4e33f7c0-1e93-44d1-a25a-08de75834028
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: Iw3TwMBXiWCsuWyZjVqpiGdx52NVk4UGzFV2Cd9cTxLPDtOk5viJcreRbSqt/PeE08SXSZW/UU1Zpw4tlRQbkrWnVXERvBNii9mAvxXbqoc8ybqr2DR1eQxlc29Z+SfqEfpccdehe7Gpc8Xe2Hg4uK6ezpghYXlguEWiiUsGoUarLrcD6JyL+uZpz3FjDjlSCrCjyNusIMfYXEz8N3wTuLx9NrNvPGJpuhFxAL+Q2tNbr7KEJba+Z1KXh97XTxYj0r28BGXg0ivpvRluSuFD2xqwOn9qRhw43owC/YCq5XbLD/ruDZW1W/v0BPxOq5/ITLwgIprC3bSDE5CzaIs5ajJNVNW+8egGcHeSBF9xeva7vCyEoS4RJ7CFvpFbSu19xrRyMaCQz3z03ilgvIVXopIiBaG53vWOGuV1JFs3qU1UO7B03J9LSmJSeqcElIM9tY7FtlUQrBvrJzeF/QuSWvt/DLqxhjJhyoWzBHFoSxmjlvyVVDMc/Kg9P3zJ+kv23HGpLOBjFm0aokyDmMtX/yGBNzwdFsdKYw9b4v1L0vhla6Fo5K4ro5Unhnbm40FcZfyh4n/jUKaUfkYBXSNbTGut/fhYMyjFKzZKHrkwmcZx/IyndX9t+crrfEeyS77E8w6SG6KB7LD1VABta9nWF2zPmnlfFLD8lJgISzC5tgdtTEdH5CMJa2C3g+Y7DPgTLkR7VQnFp9+oFXMgC21PTabVlJ+VP94NjJdLvf2sulw=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d2lRVGdKVGUxelowK3M1TmZOOHBvVU8zam9SMmhYRDErVUU5RHFzcFF2RzhX?=
- =?utf-8?B?MDhvZTFzNHAzNEVsNjBZYVRIYzg1b1NMQ0REenJTZmN5Wk5ZcmFRSVREQ1Zm?=
- =?utf-8?B?TUkrSEo5MG4wT0NGK2k2RnFqRGlqS3ZFMlNCbG9pZ0xtU0kxYS84aVpTdE1k?=
- =?utf-8?B?Ylo2VmllSUw0enBNbmNFbjRjQ1ZubmNOaHYwa0hDMjhMa1FuMkVGT3V4YThI?=
- =?utf-8?B?dEJvQVlKaG1UTjhXa2MvS3RqSXY1ZzVSaDdVWTRpc0RtR3cxdnJEU1pabXNn?=
- =?utf-8?B?VWZyUCtGNEZJakROQXgxN0VOODc1TVZSczhzWVRqK1JuVjhQU2JMUmsyaTNj?=
- =?utf-8?B?T0lheXIzZG44aHcwQ0E0V0djcFM5dk01VnB3OHAzdm50NkE5WGx4UUx5blRl?=
- =?utf-8?B?czcwOWc1Sm1KY0dZUE42Vlk3cXlJVitmdGFlaUpKc1VUUzNWZGRjUkoyWGtP?=
- =?utf-8?B?bnk3VVUrMndsUzBaNkhFTUYyeUtJeFhtU09DVy96QnFLZlhBbk52UHc5MU8y?=
- =?utf-8?B?SzNWNVhjaklXUnc2TkZ4dkJGMWZnSEVVSlJ1aEd1R2JYRVJFSzJVRXF1emdU?=
- =?utf-8?B?TGxtaTBkaC9hTGF3eTd5YkZKNmpNMGkzTVkxYmRwUGc5V3FjVHBydTMwbUxh?=
- =?utf-8?B?aEdYd0VNeDVROGdoNVZzZFpOd0tnM3RhZFJPanNjTzhDZ3ROdUdNT2dnRllx?=
- =?utf-8?B?cS9XMjZpNXNRdEtKbnNydlExQkRIMVcvWHFlSUJJNlRTU2I4UHc4Vi9DcVRH?=
- =?utf-8?B?Sm5MT2dLenY5ZlhYei8yUERRdVRwTmN6NlpQSXdIWG53am44eDlqUllrTkFQ?=
- =?utf-8?B?UlV6QURMT0FVZjBTVHk1VUVObTJaNlc3ajRKSVY0bWlLQlR1VDQwcURFMlU1?=
- =?utf-8?B?NmU0V3p4dXVkb0J2Vk4xa0d5U045ekc2elNMZUxZV3FDQVhUYi9TNjRRUnpr?=
- =?utf-8?B?WVAwNXpZMU9XdEVqZk4wTjVZZXA3SURqZjBFMzRuOTJOT01MeFc3RkozZU1O?=
- =?utf-8?B?UkJWdkpSL2dOOFQ4YnpVeWpxd2xXQjFWbmtqcTZYZzY2VkVzZUZ2SHhUU2VF?=
- =?utf-8?B?ZVlUQ2ZjV2dNVUgyZmdiek1PL2x1eTlUK0RLOXQ0YjRFWnNPaEowdFByT0pI?=
- =?utf-8?B?YjNWbTZGN0hzR1BsRUs2N2dOY1FHRU9tZGpVMFJSeHBSM095NVVKc2l3V01R?=
- =?utf-8?B?UDhWemk4Z2pySE9SaHo5M25WaUNFekR2SU11dGtzUnpwbXA4TnJoS296bmpm?=
- =?utf-8?B?TFNKelpkeGhhRW02UjFUKzJsakFHa2ZzTEp4elhzNzM0YjJJRFZOL0VoZGxO?=
- =?utf-8?B?TlI0V1ROVytXZkFRSU1SeEFNWFBrRlpjRXhscWlGNlkzS0lhOG9kZUlnWlI0?=
- =?utf-8?B?bmpMRDIrdTJpcVAraFpkVzFMazRaOVNTN3YrOUoyY1Vpc1Vib0JsQWl6SnlP?=
- =?utf-8?B?YlIwd1d1eXZBeUFYckN3MHZHWk4wcS83dVUwMmFWMk82RjdqMTJ2STFGNFF6?=
- =?utf-8?B?djVLdmF2SGpZWkRPNjhKUUlDZ1N0WFJuY1VGbjl0SWhFNVJDbkNlQXVxalVj?=
- =?utf-8?B?MndtQ0tVem1NbFFMMVMyWkFhN3VYbGsxN3UvNEFNWk84QmZXWG5hTW15NnRL?=
- =?utf-8?B?Z2J1WXA0N2k2S1hXWGxrK2E5M1Yra291UmZTb2lKRkFXeTBzakVnRWxXZUty?=
- =?utf-8?B?UjkwN1lraHBybVpQMms0Q2plelpWbEFHaGdyMVZiSXBuYkt3Kzg2NTV1M2tl?=
- =?utf-8?B?cTFQMURXbGY1c0crNmZsUENycmxSMXJsdGZRc0xVM2hTdzNuRUlsdUd3WU45?=
- =?utf-8?B?UFB5SWJHcHBuMVNJcE43M2RYalhIZ2h1bzhrU2RmcVFPMmlGT3o0clR2SE4x?=
- =?utf-8?B?cktnQURYemRlRUI5S2tuRm1uZHQveTRvQmtocnRHSjRyeExadTdrUGgwK3Rv?=
- =?utf-8?B?amhxV3dkUm1VNmRjRDlUd0FRampQVG41Zm5aMnlyb2FxeFc1elpuNFhVZXpi?=
- =?utf-8?B?ODBudWNGU1RPWkptMUU1YnRRU01OODlmVm5uN1RVVXhwRFgySXhvTjQ0cktW?=
- =?utf-8?B?WUNTK0hYUkhSbTlxaGsxd0Iyb3JuNDRIZTZMVExpclJKZndoWDNGbHZLUUND?=
- =?utf-8?B?TGk3NE5EbXJtWFd3R29ZdkxBQnkxT1hKZCtJZ1JpRHhGUzlsZjhYZjlpWldS?=
- =?utf-8?B?Y1hyS2VQck9tYjZwNzBNek01UEdjQzdWNi9TaWhENDBQVEszZm54VThxMkhk?=
- =?utf-8?B?a1RROWZjNkVOUTNtRVh2WGhJV1A2K1B1Qy9TVng2NS9CL0xsL1RXQlhEdGRS?=
- =?utf-8?B?c29JM2RZbFJCNEF0ZE9STUx2eDJxdzBPVkFoc3dvVnorL2g4YVJPUU1jVlRF?=
- =?utf-8?Q?JqJhRUxwDYKeNnwE=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e33f7c0-1e93-44d1-a25a-08de75834028
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 22:06:11.2574
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: p+IXidtWr0oHYlj48ZiwPclIOfy/gVNv8gbXLNvuysw1SPcOWjetKBsrieXn0S9z3mklhr4THnUjymW/33hhXWJ7FgoUxBAKGZ4oZqLP0q4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFC35D45AFD
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 06/16] KVM: VMX: Move core VMXON enablement to kernel
+To: Sean Christopherson <seanjc@google.com>, Thomas Gleixner
+ <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Kiryl Shutsemau <kas@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ Chao Gao <chao.gao@intel.com>, Xu Yilun <yilun.xu@linux.intel.com>,
+ Dan Williams <dan.j.williams@intel.com>
+References: <20260214012702.2368778-1-seanjc@google.com>
+ <20260214012702.2368778-7-seanjc@google.com>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260214012702.2368778-7-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Chao Gao wrote:
-[..]
-> >Do not make Linux carry short lived one-off complexity. Make userspace
-> >do a "if $module_version < $min_module_version_for_compat_detect" and
-> >tell the user to update at their own risk if that minimum version is not
-> >met. Linux should be encouraging the module to be better, not
-> >accommodate every early generation miss like this with permanent hacks.
+On 2/13/26 17:26, Sean Christopherson wrote:
+> Move the innermost VMXON+VMXOFF logic out of KVM and into to core x86 so
+> that TDX can (eventually) force VMXON without having to rely on KVM being
+> loaded, e.g. to do SEAMCALLs during initialization.
 > 
-> I realize there's a potential issue with this update sequence:
-> 
-> old module (no compat detection) -> newer module (has compat detection) -> latest module
-> 
-> The problem arises during the second update. Userspace checks the currently
-> loaded module version and sees it supports compatibility detection, so it
-> expects the kernel to perform these checks. However, the kernel still thinks
-> the module lacks this capability because it never refreshes the module's
-> features after the first update.
-> 
-> Regarding disabling updates, I was thinking of an approach like the one below.
-> Do you think this is a workaround/hack?
+> Opportunistically update the comment regarding emergency disabling via NMI
+> to clarify that virt_rebooting will be set by _another_ emergency callback,
+> i.e. that virt_rebooting doesn't need to be set before VMCLEAR, only
+> before _this_ invocation does VMXOFF.
 
-Do not include logic to disable updates, document the expectation in the
-tool. The general Linux expectation is administrator does not need to be
-protected from themselves. The tool documentation can communicate best
-practices that "time begins with module version X, only loading a
-version X+ module from boot enables the safety protocol, runtime update
-to X is insufficient". Administrator always has the option to proceed
-and does not need the kernel to do extra hand holding.
+For the x86 side:
 
-Presumably this gap in the ecosystem is short lived and the deployment
-of module versions < X drops precipitously and kernel does not need to
-carry "disable updates" logic in perpetuity.
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+
+I'm also very much OK with this going through the KVM tree.
