@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D6737B40B
-	for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 22:32:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F4F3A1D0C
+	for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 22:35:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772145180; cv=none; b=h4Ij9h+Z02GFm0GrghpFTL1aDZsigy+/C8nzYN0qNxDYnL/gIpzoee4ConAEgwpbMyl/0qQCJZIYw9ET90V0tzV0P2HgNJBO1ybFIh9s5/KW3RKiVf3sYrKLv+F+s6Oej2Qc3bDDrecCvaNX+e2X1S911DojUr6aWcAAsEcGFok=
+	t=1772145316; cv=none; b=kEFZMjJ41VveaXk1jFBaAALtWh4HxdOppaYTWCgLa7npXWB7eRbwu275ZBWyWQlJDBlP/RxEe1+7LzagdovLpVPKOKjACxSlOPApCf85GQAJ+AeIUbjswjzWzNWLxWCnda+u6NeSLYbgs0Y8tmi1acBCbiE5vXhsPJbDEAb+64k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772145180; c=relaxed/simple;
-	bh=VzUGlCjSlt+1d0n+/DBJM8ZgcYnftHMK4SkGJqosuT4=;
+	s=arc-20240116; t=1772145316; c=relaxed/simple;
+	bh=qrWeAGEW4qbpWnBtaPSvnkdtL2EAQJwXeLl4oSGuJN0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mav6dtOB1c0A6MkuTVcXQKy6PrKvWqA2QXdIy5yyGt4al3PWbl3IEc4cxwI4pgZNVsOMP0h0HNzCSWFkudWvNXb6LshB/pt8AFHPfvCwDgiVKai+VOVcJg/+KU7WTZ1eY7KgtwoDINlOH1D1m3HR0yrTAUzSd3mOXfBbrTZIxYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B6mDArCV; arc=none smtp.client-ip=192.198.163.14
+	 In-Reply-To:Content-Type; b=mZONu5En0v063cXpNn9r7JrPdiIlhbEGfO35jfjqQzTS8kgA+0D0Tpfymet2ZR5RgAn4Svec9W8dfuV+nj2/z63Ewk4dLmukwMovvSPBUjf+DdcmLmqbyhJCrZpZZBBm3Ep+nCeB/vI3njHZgGZkcAFCZBqvj2u9AiVxDKpHxPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eKqDX6Nh; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B6mDArCV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eKqDX6Nh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772145179; x=1803681179;
+  t=1772145314; x=1803681314;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=VzUGlCjSlt+1d0n+/DBJM8ZgcYnftHMK4SkGJqosuT4=;
-  b=B6mDArCVJ80XCdRRVD0J87lhNbRv5XeKOLK4qevaGrKxliI5gNL7SAZu
-   4I/kL+Wv+zXVuzgkQveZuBQWvfVPDyNS8Y8L4+Z8dZifaxzT3JAHRivC2
-   07yCO7q14aa47OjIAoxf5XV75vL1Tz4jWc/yeNw4Qv3FFWiC0nHxkGVJj
-   NjBMrzAvG9OQNCVo44CspM6CdpUEk5LQbfI5EXfF52sEdb5f+UXVdSs6G
-   EERII+HAwL19lszCRvIM4YFKp9HAaWVgHRKN0LOT+PSAYkgyBjxxzqsDv
-   PyGHCX6WZxrfPNvo5k/RSJt7R3cneFUuP8tocsZ5qRlVvLOdSjCk2/dMx
-   w==;
-X-CSE-ConnectionGUID: lUfWm8bYR6eGuao9SvH41w==
-X-CSE-MsgGUID: 8JVvvuCnTk6eLP9BcrbqYA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="73289988"
+  bh=qrWeAGEW4qbpWnBtaPSvnkdtL2EAQJwXeLl4oSGuJN0=;
+  b=eKqDX6NhOiaI0+a6egB0ZawYvb+IWJ9EJKDpXRbSoQTVh/gFA9u6Oyio
+   WKk1T5m73Sj506l/Eb802gdYcyWEevz8vrpbM2AU8KxLX4iuNB39NETZf
+   ZH9Uo5/FJtOlpLdcYddhuF2JBVG5fq/qhhlw1xSQxBdhVbMx6tNp8LS4+
+   cSybBeCRnbbS5Sf+Hww155qQ9RKXJejOJQ95CYsQSFQnHOajDNUPxKqPW
+   rLNre3qkIlrSHuymbQsiLobYHq+oFiacCmS+EKt7Yxux2P0Km74w8FT2A
+   0rtEH5Di31FQyj+RZJpdWbdg5+IjylVY4NChOgP9QMXd8yxI+sVc7F79b
+   Q==;
+X-CSE-ConnectionGUID: mfystpu6TA+JieiT5t006w==
+X-CSE-MsgGUID: rRseR1R9SoW2+hMsfzF7iA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="90803762"
 X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; 
-   d="scan'208";a="73289988"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 14:32:58 -0800
-X-CSE-ConnectionGUID: osf04zZEQGCElXhHFq89nw==
-X-CSE-MsgGUID: gBRrumz4T42qLuwSBXwHVw==
+   d="scan'208";a="90803762"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 14:35:13 -0800
+X-CSE-ConnectionGUID: jQqJeN9bT2CklCDAQ+iI3w==
+X-CSE-MsgGUID: 4RvKsxWpSYCo5rfGT6p9KQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; 
-   d="scan'208";a="215839101"
+   d="scan'208";a="247230516"
 Received: from spandruv-mobl4.amr.corp.intel.com (HELO [10.125.111.172]) ([10.125.111.172])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 14:32:58 -0800
-Message-ID: <f81dc9d3-8ce8-408b-915c-35253d245b93@intel.com>
-Date: Thu, 26 Feb 2026 14:32:58 -0800
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 14:35:13 -0800
+Message-ID: <95c59a64-450c-4b63-b303-9c61c83cf468@intel.com>
+Date: Thu, 26 Feb 2026 14:35:13 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,7 +52,8 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/16] KVM: VMX: Move core VMXON enablement to kernel
+Subject: Re: [PATCH v3 11/16] KVM: x86/tdx: Do VMXON and TDX-Module
+ initialization during subsys init
 To: Sean Christopherson <seanjc@google.com>, Thomas Gleixner
  <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
  Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
@@ -65,9 +66,9 @@ Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
  Chao Gao <chao.gao@intel.com>, Xu Yilun <yilun.xu@linux.intel.com>,
  Dan Williams <dan.j.williams@intel.com>
 References: <20260214012702.2368778-1-seanjc@google.com>
- <20260214012702.2368778-7-seanjc@google.com>
-Content-Language: en-US
+ <20260214012702.2368778-12-seanjc@google.com>
 From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
  oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
@@ -111,22 +112,24 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260214012702.2368778-7-seanjc@google.com>
+In-Reply-To: <20260214012702.2368778-12-seanjc@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 2/13/26 17:26, Sean Christopherson wrote:
-> Move the innermost VMXON+VMXOFF logic out of KVM and into to core x86 so
-> that TDX can (eventually) force VMXON without having to rely on KVM being
-> loaded, e.g. to do SEAMCALLs during initialization.
-> 
-> Opportunistically update the comment regarding emergency disabling via NMI
-> to clarify that virt_rebooting will be set by _another_ emergency callback,
-> i.e. that virt_rebooting doesn't need to be set before VMCLEAR, only
-> before _this_ invocation does VMXOFF.
+> Now that VMXON can be done without bouncing through KVM, do TDX-Module
+> initialization during subsys init (specifically before module_init() so
+> that it runs before KVM when both are built-in).  Aside from the obvious
+> benefits of separating core TDX code from KVM, this will allow tagging a
+> pile of TDX functions and globals as being __init and __ro_after_init.
+...
+>  Documentation/arch/x86/tdx.rst |  36 +------
+>  arch/x86/include/asm/tdx.h     |   4 -
+>  arch/x86/kvm/vmx/tdx.c         | 148 ++++++-----------------------
+>  arch/x86/virt/vmx/tdx/tdx.c    | 168 +++++++++++++++++++--------------
+>  arch/x86/virt/vmx/tdx/tdx.h    |   8 --
+>  5 files changed, 130 insertions(+), 234 deletions(-)
 
-For the x86 side:
+It's hard to argue with a diffstat like that.
 
 Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-
-I'm also very much OK with this going through the KVM tree.
