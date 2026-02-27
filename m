@@ -1,118 +1,188 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CDC73358DB
-	for <linux-coco@lists.linux.dev>; Fri, 27 Feb 2026 04:56:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B076F28CF6F;
+	Fri, 27 Feb 2026 08:31:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772168184; cv=none; b=tXBSRbfXFHhHNrQKTQha1DNW6IjGdA/QXmYnlGyfyVIiRsnw8JSPsg5Tj3OPhqfGeh4OZ8c0x2vJ9ci5DI9JkcbwVsHWn0TNsRmEiuuIAk+4Ldoszu9ike1ZaWaR3n2x8xfR2scuCZah/Ubfbc4D33VdmLuCNx32vOBs4Ru09vo=
+	t=1772181085; cv=none; b=AsqkD+2pekVDSOj9O4nznBCMCJG4EVOKOa+780UJrB95f6rW+NdOOaCs9yHx5K8J81SJyOrqSAvSyTlnVpiaHf8NGojWTjaFH3FsywYf9Cv7fn/sOr6QmSlJCp1rSlnoQ08i6zcyPb8LGMripk8m8Rw7wOVTOg5wFwAYoyJ4Yo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772168184; c=relaxed/simple;
-	bh=nDeaw38rPshT03jjkT3uQl/RqQdQkYbrxWEtJ1hFdCg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gMAlsO8OGQGpr5qoa2LcUccz6bp7CuvQLgOYCQYeng9FuFCRDfFLqBWBaIOe2f+0FNn6iiu3Rw0uPjN3zFNQ+MCmw6ixSBjtPRFWMaPscWAtM8MCGuVeZmd5w7g3HczYE+ofocyq+r6zGGcegS1iQRjxaJjp0WLV0Me3chzdwGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gQHObmNa; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1772181085; c=relaxed/simple;
+	bh=y60GJ3GgfJqgyqpNchRmAVuTPY3cKMIRRXtEG2z3++8=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=bl6oimcN0f6wdxryuwdamvIWe4zYvsZjyLLYvyPyqdLbdvvVAD/CUG58ZwE9ALNP+XtyCGK3A5+DcL6bTI6UoogVitRXYTItOCO+3Hql2um6jFt8+bRAZEOxPNDaqSLpIwo5g46jOvV5XwCAHvzcL8ioKFDHCugBzFY3RpVa19Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=n6oOL3f1; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gQHObmNa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772168183; x=1803704183;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=nDeaw38rPshT03jjkT3uQl/RqQdQkYbrxWEtJ1hFdCg=;
-  b=gQHObmNaTm4UKp8OgCxJLQpIP2+xh01he6xdaYiosHDpLh+lu3QzUvVc
-   hCy7fsERDYwPSP9EUNDkdNdY9zaM5SQQtGBLXNmabXkQcN5aB2ydFGyxB
-   GdVHkwsAPmryu02dN1zQGLtevHyaAgpfLsv6F4qSdmz5Xvgw5f5Ceo62Q
-   TGjpT0+/ky+CaBbfhkSyNL1x+Y02o0n98AVty2EZkVVB+P0Sc08EBdOzE
-   r99lJStrUTUfaUoNU3XO1xti34u9ge80WmuC7PGpyEBSxmVyXIrDeE9NV
-   8AYpWTBJFQ6lq36PjJxM8YHxIRDVMfoyObfhCNFccYEXTC+PKSp9yT1g7
-   w==;
-X-CSE-ConnectionGUID: zMKGszCNQvmdsmXEG6pnHA==
-X-CSE-MsgGUID: agxNiXR1S7qCWrKG32tPEg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="73352077"
-X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; 
-   d="scan'208";a="73352077"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 20:56:23 -0800
-X-CSE-ConnectionGUID: tcggdKxdQ7K4+emj77fcQQ==
-X-CSE-MsgGUID: xhtfEnvlR4+ufl+nCKapxg==
-X-ExtLoop1: 1
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa003.fm.intel.com with ESMTP; 26 Feb 2026 20:56:17 -0800
-Date: Fri, 27 Feb 2026 12:36:41 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, x86@kernel.org, reinette.chatre@intel.com,
-	ira.weiny@intel.com, kai.huang@intel.com, dan.j.williams@intel.com,
-	sagis@google.com, vannapurve@google.com, paulmck@kernel.org,
-	nik.borisov@suse.com, zhenzhong.duan@intel.com, seanjc@google.com,
-	rick.p.edgecombe@intel.com, kas@kernel.org,
-	dave.hansen@linux.intel.com, vishal.l.verma@intel.com,
-	binbin.wu@linux.intel.com, tony.lindgren@linux.intel.com,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v4 07/24] coco/tdx-host: Implement firmware upload sysfs
- ABI for TDX Module updates
-Message-ID: <aaEfWZ8cO+NvNAOI@yilunxu-OptiPlex-7050>
-References: <20260212143606.534586-1-chao.gao@intel.com>
- <20260212143606.534586-8-chao.gao@intel.com>
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="n6oOL3f1"
+Received: from 8bytes.org (p200300f6af1d9600f58ad75c816d38de.dip0.t-ipconnect.de [IPv6:2003:f6:af1d:9600:f58a:d75c:816d:38de])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id F0E2A2001A3;
+	Fri, 27 Feb 2026 09:31:21 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1772181082;
+	bh=y60GJ3GgfJqgyqpNchRmAVuTPY3cKMIRRXtEG2z3++8=;
+	h=Date:From:To:Subject:From;
+	b=n6oOL3f1LojHIHKKW+vMaeLHv/JyuZlYgsJgxQZXBlI8ihdjNRSDG0HNjt2CDeTMo
+	 1T3QxhyZ9rnWeSKGtsfFDY2pj/FMXvLL+2nBnmgOaSvMAGRihxFqJL+JrSNYpIXN3Z
+	 gFiw/NPLX87J7q6YtkctspXyIT9X7FsXlrs7TBDTJHsK32Z8lw3nr1NijaXm1DtTgu
+	 Pu3mURsCXluwUIyZL63hrtFXNzxBw7iyAStnZfEfQ7sKrbn6W+Aotdw7cQmEZ3Xrp4
+	 PUxc8G61AZo/EMQLfBuxTsr9A3pD9ceR8UuWgOkUXPCOAsTCGFnf8MhSz3FzgDxmxD
+	 q3ZuDdX57Cn/g==
+Date: Fri, 27 Feb 2026 09:31:20 +0100
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
+Subject: COCONUT-SVSM Development Release v2026.02-devel
+Message-ID: <wuqjzhu7l5tdsys764jvmpp5bwdqzmkrmxluhlx7vbgxnqaqap@v2yuhews2hlo>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260212143606.534586-8-chao.gao@intel.com>
+Content-Transfer-Encoding: 8bit
 
-> +static void seamldr_init(struct device *dev)
-> +{
-> +	const struct tdx_sys_info *tdx_sysinfo = tdx_get_sysinfo();
-> +	int ret;
-> +
-> +	if (WARN_ON_ONCE(!tdx_sysinfo))
-> +		return;
-> +
-> +	if (!tdx_supports_runtime_update(tdx_sysinfo)) {
-> +		pr_info("Current TDX Module cannot be updated. Consider BIOS updates\n");
-> +		return;
-> +	}
-> +
-> +	tdx_fwl = firmware_upload_register(THIS_MODULE, dev, "tdx_module",
-> +					   &tdx_fw_ops, NULL);
-> +	ret = PTR_ERR_OR_ZERO(tdx_fwl);
-> +	if (ret)
-> +		pr_err("failed to register module uploader %d\n", ret);
-> +}
-> +
-> +static void seamldr_deinit(void)
-> +{
-> +	if (tdx_fwl)
-> +		firmware_upload_unregister(tdx_fwl);
-> +}
+Hi,
 
-You could use devm_add_action_or_reset() in seamldr_init():
+The COCONUT-SVSM development release for February is tagged and ready for
+testing and wider use. The release includes 65 non-merge commits which bring
+several improvements to COCONUT-SVSM.
 
- 1. to delete tdx_host_remove().
- 2. to delete the global tdx_fwl;
+There are no new features this time, but a lot of improvements around CI and
+the core infrastructure. Highlights are:
 
-> +
-> +static int tdx_host_probe(struct faux_device *fdev)
-> +{
-> +	/*
-> +	 * P-SEAMLDR capabilities are optional. Don't fail the entire
-> +	 * device probe if initialization fails.
-> +	 */
-> +	seamldr_init(&fdev->dev);
-> +
-> +	return 0;
-> +}
-> +
-> +static void tdx_host_remove(struct faux_device *fdev)
-> +{
-> +	seamldr_deinit();
-> +}
+	- CI improvements. GitHub CI is now able to optionally run formal
+	  verification on PRs.
+
+	- Fix of unsound behavior in the per-cpu code.
+
+	- Update to OpenSSL 3.5.5 for the TPM.
+
+	- Switch to Rust 1.88 as the minimal version to build COCONUT-SVSM.
+
+	- A lot of rework and improvements in the boot flow, an important step
+	  towards a minimal stage2 loader.
+
+Again a big THANKs to the COCONUT-SVSM community for all the contributions. The
+first two releases of 2026 mark a strong start into the year for COCONUT-SVSM.
+For all the nitty details of what changes the shortlog is attached.
+
+Happy testing and hacking.
+
+Regards,
+
+	Joerg
+
+Full shortlog:
+
+Carlos López (16):
+      mm/guestmem: fix GuestPtr trait bounds
+      mm/guestmem: introduce GuestPtr::try_read()
+      mm/guestmem: introduce UserPtr::try_read()
+      cpu/percpu: do not expose raw runqueue
+      cpu/percpu: do not expose vranges directly
+      cpu/percpu: fully harden against reentrancy
+      mm/page_visibility: add Sync for SharedBox
+      cpu/apic: require Sync as part of ApicAccess
+      cpu/irq_state: make IrqState Sync
+      cpu/percpu: ensure PerCpu is reentrancy-safe at compile time
+      repo: update packit to latest commit
+      insn_decode: make InsnMachineMem generic over T
+      insn_decode: remove dynamic dispatch from InsnMachineCtx
+      kernel/insn_decode: tests: fix Miri errors
+      kernel/mm/guestmem: tests: ignore invalid bit pattern test under Miri
+      fuzz: insn: provide valid pointer in TestCtx
+
+Joerg Roedel (3):
+      kernel/sev: Check physical address of VMSA for 2MiB alignemnt
+      kernel/platform: Use PageSize conditionally
+      COCONUT-SVSM Release 2026.02-devel
+
+Jon Lange (22):
+      stage2: allocate kernel page tables from kernel heap
+      svsm: remove duplicate construction of kernel page tables
+      kernel: simplify stage2 layout
+      svsm: create transition page tables for AP startup
+      kernel: limit low memory page tables to AP startup code
+      Merge pull request #928 from msft-jlange/page_tables
+      igvmbuilder: require tdx-stage1 for TDP
+      Merge pull request #881 from MelodyHuibo/reinject_irq_clear_busy
+      kernel: defer page validation out of stage2
+      kernel: allocate CPUID/secrets pages on all platforms
+      kernel_launch: remove platform type from launch struct
+      kernel: reclaim VMSA heap space when unused
+      kernel: remove `SvsmConfig`
+      igvm_params: rename `igvm_params`
+      boot: move boot definition crate
+      bootimg: implement boot image loader library
+      stage2: consume boot image library
+      svsm: move kernel initialization arguments onto the stack
+      Merge pull request #968 from stefano-garzarella/rust-1.88.0
+      Cargo.toml: add `cpudefs` to `members`
+      sev/ghcb: calculate page state chage page size directly
+      global_asm: ensure code is marked as `.text`
+
+Jörg Rödel (14):
+      Merge pull request #920 from 00xc/cpu/percpu/sync-v2
+      Merge pull request #954 from joergroedel/boot-fix
+      Merge pull request #922 from 00xc/mm/guestmem/bounds
+      Merge pull request #952 from 00xc/repo/update-packit
+      Merge pull request #955 from stefano-garzarella/update-cargo-lock-zerocopy
+      Merge pull request #974 from 00xc/tests/miri
+      Merge pull request #973 from msft-jlange/ghcb_psc
+      Merge pull request #969 from luigix25/cleanup_launch_guest
+      Merge pull request #972 from msft-jlange/cargo_members
+      Merge pull request #959 from stefano-garzarella/cargo-hack
+      Merge pull request #964 from stefano-garzarella/ci-fix-cargo-v-check
+      Merge pull request #965 from stefano-garzarella/verification-label
+      Merge pull request #977 from 00xc/tests/miri
+      Merge pull request #978 from msft-jlange/gloabl_asm
+
+Luigi Leonardi (2):
+      block: remove unnecessary Box wrapper
+      scripts/launch_guest: require QEMU 10.1 as minimum version
+
+Melody Wang (1):
+      cpu: Make sure interrupts do not disappear
+
+Oliver Steffen (4):
+      libtcgtpm/libcrt: Add stub for strpbrk()
+      libtcgtpm: Update OpenSSL to 3.5.5
+      libtcgtpm: Disable more unused algorithms for OpenSSL
+      libtcgtpm: Remove deprecated OpenSSL build option
+
+Peter Fang (2):
+      Merge pull request #957 from msft-jlange/igvm_stage1
+      Merge pull request #953 from msft-jlange/bootlib
+
+Stefano Garzarella (26):
+      Cargo.lock: refresh after packit zerocopy update
+      Merge pull request #958 from 00xc/mm/guestmem/bounds
+      verification: add NonNull<T> specification for Verus
+      github/manual-verify: check cargo-v output for errors
+      Add `test` crate in the workspace
+      verification/verus_stub: fix unresolved import
+      virtio-drivers: use std crates in FakeHal
+      virtio-drivers: fix unused variable
+      kernel/block: make BLOCK_DEVICE publicly visible
+      Makefile: add CARGO_HACK env variable to run clippy with cargo-hack
+      Documentation: add `Linting` section in CONTRIBUTING.md
+      libtcgtpm: update TPM reference implementation to fix the license
+      Merge pull request #960 from luigix25/cleanup_blk
+      Merge pull request #961 from osteffenrh/openssl-3.5.5
+      Merge pull request #962 from stefano-garzarella/fix-verification
+      Merge pull request #966 from stefano-garzarella/update-tcg-tpm-license
+      kernel/gdt: fix UB in GDT::drop()
+      Fix `uninlined_format_args` lint for Rust 1.88.0
+      kernel: fix `borrow_as_ptr` lint for Rust 1.88.0
+      kernel/vtpm: fix `manual_dangling_ptr` lint for Rust 1.88.0
+      Cargo.toml: remove deprecated `clippy::match_on_vec_items` lint
+      Update Rust toolchain to 1.88.0
+      Update bytes to 1.11.1
+      Update time to 0.3.47
+      Merge pull request #956 from stefano-garzarella/fix-cargo-audit-bytes
+      github/manual-verify: trigger on verification label
+
