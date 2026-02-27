@@ -1,93 +1,66 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C444261B8D
-	for <linux-coco@lists.linux.dev>; Fri, 27 Feb 2026 01:09:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEC23385A6
+	for <linux-coco@lists.linux.dev>; Fri, 27 Feb 2026 03:50:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772154545; cv=none; b=K4+XIEAUuAZARsMg24jM02oK6m5DcdYyjB3dABLHhEIJUfN/SE7Y5fv2Uw1lufTbKU7gx4gvMWEZ1519EhLonT/fa8SCabCw9PVCTRW5jq0Tlfg6K2xLDSfopj0N1OtqeHu01D5c+z8/pmgzS8zwfDDH1Q9gyEsSXC9+Z/r5q/E=
+	t=1772164239; cv=none; b=E/I9WLNpiArAoz/K6UPZCX3jNZyqPbuDOMGK0nkLITioJAOL2mbR/9U3T7ipVXbu2qE7eQyR88ShmdHqJ4xAjES2twjp48wvtzs49wWYu8uWbeEp8j7j3PHcRvtL0U4QYp6w+lb7z6raqvLOGQ3AGbVy43PtW+soZqVgMvHh6/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772154545; c=relaxed/simple;
-	bh=Vsm+/jCgY2aB74QyLRYBdy8B+Rgt8iW3O8facH4/8UY=;
+	s=arc-20240116; t=1772164239; c=relaxed/simple;
+	bh=Fp3Af9sC3U/2ejHXeORnJoS925f6JSqgvZ0AyURYhck=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WOKwo0p7BN+wB8YDxkAgM78liJ0MaEeyzIJ/rdd53h642eoSlHKCpwI14d/a07TiEXb2qL4tL2f7odZkDSHlbNhg0l5WH/O19y1QlRtSfaxgmT1AQ9MEUe3wiC3F1gCVNfWWHUfaZEr7//cz7Q6EIWQdQZcDHT+BNEVgJ81OdaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=FD4bx4lN; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=fwkXcSfsRLeMeeMqrHygXi+QbnW+L3P3z6TmS8Dde8S2PoIqx/qJpv1Soff/kU4R9fGkMWPiQShoCB6mVXlYWaCq/xqaHKUC8g3SN+YcyIq+J1sObsabmgPfXYnekJmlTTkY4InrcsmzOV2fxQeU8ZcWGXOQeQH8tgQgJ4tjJPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b5cMLeKB; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="FD4bx4lN"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-505e2e4c35fso16737741cf.3
-        for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 17:09:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1772154543; x=1772759343; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fIbZ6hyyMHAKB2BJD8/8kNRLCv959jzKvxcpPvl74ls=;
-        b=FD4bx4lNbiqBfnrZy67MErETlt4Ooky2fRjy22qpX0HRrvY+YUbE2T9TjlEdocTjS8
-         FW+d3E2MZ+RbLV/YGXahlLq76Zn/wvg+M9NkFcfM8xp1LCeEpj9S+zc0Pam5EezDqzzW
-         xgXpSn4uLBR9n6Y+fl2RdJPEt0U1HIGUdy0P6LrEjX7HEr9IAz4CLFZcyMhg1RdaofqM
-         0icaa1WaWIRMmh4GgdKUfPALUY8LJ9DRMiB3aVvMzWUQR2S7rpvTLyGYF5p6ouocSs8V
-         AlqU0nzWxDl5PvkabvmE10FxThU2QFLXSrOup3GbC4bxL5AbOFdh4NuO4rP5B+Un3iy4
-         GSIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772154543; x=1772759343;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fIbZ6hyyMHAKB2BJD8/8kNRLCv959jzKvxcpPvl74ls=;
-        b=va8JnRgoxNumooccletYmTBdCMylGlV43y86NDoJuO72zDWFqbbehTjZHOr7qJk8vg
-         YVqiZ0uTH6aW53/PrL/YepHtwSvvnY7q+hydOGpICfIByuSY+JndEayw5TUUraEg797s
-         DphA0dVX5yNmxK+bO7WyhkmIK2FSdnNZig5EpnNu4DHBKzCMSDGV1w9rzmSj4b/gHX4S
-         24jRu8ZAMuW+epNDku2nkBJn3al3DBor3iEg7+GUcRBQ2hceS3xszvuVOzaBb7NGANLy
-         SM9GnsQ0PfzE5NYLifJLIrDNf8ueBtSxL3HfmGI7CMrDkE7sxaOYusf9GBDzzSaeVK/d
-         bdlA==
-X-Forwarded-Encrypted: i=1; AJvYcCUuN/YylCZzvA8DC6HdoTU/ODQQJcET3PDAI4sdw9AVPtFZOemvikXA8bBbX7k2havHgxfkKK+rJe6I@lists.linux.dev
-X-Gm-Message-State: AOJu0YwT9WZO3KAdfTNpq4tNfciig6VMHJhGeulKI9+TRcaT5e+gUY/4
-	skGSKIGzEKz4nGlSJ5nSoaXP45Edenbb5RXqPaGlQnd/BGU/MLEDUyvTPH4HgJZpY8s=
-X-Gm-Gg: ATEYQzy/q03hByQ95GnlQ7KF8b4f9Wl0TNIQsXJxDf3ZAMqVHgKyqBzxwAkhxkp9VeB
-	lZPnyIqETyici097ws8XH4Hwy/pKdc+BkHUPDXAoafuykeRIcDE+/7NpKojFZeu10Kw9JnUC46a
-	S8pLgGC0jaHaYH2yZYeXQImDcotKE2tzlPVKqmhouDFXeEhVPFfUKYz8pTVd6aVxUoWtqmQ3OBK
-	EDXHFHwjE1SS9H2hQpJvkuZFCr6ZK09jvhK3NA2GUdr/bbHV739DEYBYfDEE6e3RcBy7BJZZEEM
-	QPce8GESge2YGmhcNj+j05CeuH9kEr6hZsTGgy/OcxZwSFjMppRWPvDB43dZb8DfkuL3P5Yo0zI
-	Qms6IwGF/NZTOwUGV3R5MVMPMQMCdyd4E2CXBjGDhzhbFAQB7T2wHadYXb0Srw0LZF50IIz0RJm
-	o2yiqlfV4U7BxM3ABIk9NoSJY+VT9AWZsfj5IwQT+hKcDF4G3v3JbgJyiOaz0w2SMO5LmsdPNcB
-	2QGoF1AyxtI2HGdcdQ=
-X-Received: by 2002:a05:622a:1907:b0:506:bde3:1dea with SMTP id d75a77b69052e-5075299954emr12486431cf.36.1772154543378;
-        Thu, 26 Feb 2026 17:09:03 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-899c716ccf5sm39101476d6.17.2026.02.26.17.09.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 17:09:02 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1vvmLm-00000000sEc-0kRO;
-	Thu, 26 Feb 2026 21:09:02 -0400
-Date: Thu, 26 Feb 2026 21:09:02 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Ackerley Tng <ackerleytng@google.com>,
-	Alexey Kardashevskiy <aik@amd.com>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Kevin Tian <kevin.tian@intel.com>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Steve Sistare <steven.sistare@oracle.com>,
-	Nicolin Chen <nicolinc@nvidia.com>, iommu@lists.linux.dev,
-	linux-coco@lists.linux.dev, Dan Williams <dan.j.williams@intel.com>,
-	Santosh Shukla <santosh.shukla@amd.com>,
-	"Pratik R . Sampat" <prsampat@amd.com>,
-	Fuad Tabba <tabba@google.com>, Xu Yilun <yilun.xu@linux.intel.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	michael.roth@amd.com, vannapurve@google.com
-Subject: Re: [RFC PATCH kernel] iommufd: Allow mapping from KVM's guest_memfd
-Message-ID: <20260227010902.GE44359@ziepe.ca>
-References: <20260225075211.3353194-1-aik@amd.com>
- <aZ7-tTpobKiCFT5L@google.com>
- <CAEvNRgEiod74cRoVQVC5LUbWDZf6Wwz1ssjQN0fveN=RBAjsTw@mail.gmail.com>
- <20260226190757.GA44359@ziepe.ca>
- <aaDL8tYrVCWlQg79@google.com>
- <20260227002105.GC44359@ziepe.ca>
- <aaDlRdnhIqRXEbPZ@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b5cMLeKB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772164238; x=1803700238;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Fp3Af9sC3U/2ejHXeORnJoS925f6JSqgvZ0AyURYhck=;
+  b=b5cMLeKBrudLrClH7pt/LkhQIMk5Aw4DSpJX4D3tFiyAPmSCwu28HIcS
+   O3l7vF0N+xKEqbG/pDS/CtPePAW5lZTHKA88qnibHHXNCfGnkO5j/u+lE
+   PrpNBW0doYYARSMOZukVdyK+5Txe2B9EXxYjDPz/Ck6aBeUUzlCWwLhEW
+   wWDpWYVtvhTqAL3N+1uMABWdg7C879Sbxbl/AGGWZtM4pdaGGDxW3tmos
+   JpaKQyWYHEJIMs1pdaYrRo2NMUWbx+wOAbML+vMvpqZyle1Ea3c3lcVNv
+   QecXm1nRJdF71faurcduuKy0fVf7zSbEVBBZvmlK0bTtHn4zvxrE/uGT3
+   A==;
+X-CSE-ConnectionGUID: IxnZat+vRYGEuI0LYcIzMg==
+X-CSE-MsgGUID: lcvFm/qIT0qwtqDdueC/sw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="83574402"
+X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; 
+   d="scan'208";a="83574402"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 19:50:37 -0800
+X-CSE-ConnectionGUID: BhfJntGqTVmGurXBbTRGEQ==
+X-CSE-MsgGUID: 6NkLl7A1SauITZsPHxHccQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; 
+   d="scan'208";a="214671628"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa010.fm.intel.com with ESMTP; 26 Feb 2026 19:50:32 -0800
+Date: Fri, 27 Feb 2026 11:30:56 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, x86@kernel.org, reinette.chatre@intel.com,
+	ira.weiny@intel.com, kai.huang@intel.com, dan.j.williams@intel.com,
+	sagis@google.com, vannapurve@google.com, paulmck@kernel.org,
+	nik.borisov@suse.com, zhenzhong.duan@intel.com, seanjc@google.com,
+	rick.p.edgecombe@intel.com, kas@kernel.org,
+	dave.hansen@linux.intel.com, vishal.l.verma@intel.com,
+	binbin.wu@linux.intel.com, tony.lindgren@linux.intel.com,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH v4 07/24] coco/tdx-host: Implement firmware upload sysfs
+ ABI for TDX Module updates
+Message-ID: <aaEP8CbLCc69U45Z@yilunxu-OptiPlex-7050>
+References: <20260212143606.534586-1-chao.gao@intel.com>
+ <20260212143606.534586-8-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -96,33 +69,68 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aaDlRdnhIqRXEbPZ@google.com>
+In-Reply-To: <20260212143606.534586-8-chao.gao@intel.com>
 
-On Thu, Feb 26, 2026 at 04:28:53PM -0800, Sean Christopherson wrote:
-> > I'm confused though - I thought in-place conversion ment that
-> > private<->shared re-used the existing memory allocation? Why does it
-> > "remove" memory?
-> > 
-> > Or perhaps more broadly, where is the shared memory kept/accessed in
-> > these guest memfd systems?
-> 
-> Oh, the physical memory doesn't change, but the IOMMU might care that memory is
-> being converted from private<=>shared.  AMD IOMMU probably doesn't?  But unless
-> Intel IOMMU reuses S-EPT from the VM itself, the IOMMU page tables will need to
-> be updated.
+> v3:
+>  - clear "cancel_request" in the "prepare" phase [Binbin]
+>  - Don't fail the whole tdx-host device if seamldr_init() met an error
+>  [Yilun]
 
-Okay, so then it is probably OK for AMD and ARM to just let
-shared/private happen and whatever userspace does or doesn't do is not
-important. The IOPTE will point at guaranteed allocated memory and any
-faults caused by imporerly putting private in a shared slot will be
-contained.
+Sorry I didn't continue the discussion in that thread, but I meant to
+just skip -EOPNOTSUPP, but not hide real problems.
 
-I have no idea what happens to Intel if the shared IOMMU points to a
-private page? The machine catches fire and daemons spawn from a
-fissure?
+Not sure if it makes sense to other people, if yes, some changes below:
 
-Or maybe we are lucky and it generates a nice contained fault like the
-other two so we don't need to build something elaborate and special to
-make up for horrible hardware? Pretty please?
+...
 
-Jason
+> +static void seamldr_init(struct device *dev)
+> +{
+> +	const struct tdx_sys_info *tdx_sysinfo = tdx_get_sysinfo();
+> +	int ret;
+> +
+> +	if (WARN_ON_ONCE(!tdx_sysinfo))
+> +		return;
+                return -ENXIO;
+
+> +
+> +	if (!tdx_supports_runtime_update(tdx_sysinfo)) {
+> +		pr_info("Current TDX Module cannot be updated. Consider BIOS updates\n");
+> +		return;
+                return -EOPNOTSUPP;
+
+> +	}
+> +
+> +	tdx_fwl = firmware_upload_register(THIS_MODULE, dev, "tdx_module",
+> +					   &tdx_fw_ops, NULL);
+> +	ret = PTR_ERR_OR_ZERO(tdx_fwl);
+> +	if (ret)
+> +		pr_err("failed to register module uploader %d\n", ret);
+
+        return ret;
+> +}
+
+...
+
+> +
+> +static int tdx_host_probe(struct faux_device *fdev)
+> +{
+> +	/*
+> +	 * P-SEAMLDR capabilities are optional. Don't fail the entire
+> +	 * device probe if initialization fails.
+
+I think no need the comments, all features are optional unless
+explicitly required. So only exceptions need comments. Instead the code
+may explain better.
+
+> +	 */
+> +	seamldr_init(&fdev->dev);
+
+	ret = seamldr_init(&fdev->dev);
+	if (ret && ret != -EOPNOTSUPP)
+		return ret;
+
+I imagine TDX Connect could follow the same pattern right below.
+
+> +
+> +	return 0;
+> +}
