@@ -1,135 +1,118 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAC933342C
-	for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 23:43:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0651D86DC
+	for <linux-coco@lists.linux.dev>; Fri, 27 Feb 2026 00:21:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772149389; cv=none; b=GKXyEutNGN1YzlsvqbKIE/IYeAtSh1d23UznzllOn4CerZd6TdiyIveElbYPBfYqYhhIKAsxjGlAdNrOmKEIRbmBKBoXsoqxicHD6FuH51BQYIZ0TJq9JNELDvFWw0L5JX/diwsyxn7KMoGfhZogwtXWZ1HWxet6jkr9ouEWQhU=
+	t=1772151669; cv=none; b=llUTYGfDSrVQ/mJX4psgl7f2xMTxKIwT34TV11UQ9P/rjY/pFHrjOdfYpB3VL+lqAZ4xev5oRDBFCbRHksgg5+AAIjkZcHiHZt/nYJUAwHq8CzPtam3W6n0FCDhidGKFRPQSDIKsgKm0D/PpCaqfS9qb6ktKYLvDxIl3PQP6ANU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772149389; c=relaxed/simple;
-	bh=nYT1y/hhQW/86aS4ZN4OJ957tRCJesbnqHhi2ZZK9B8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pPXqMd7i7bnVn4hfFx+aiDw+qYB9gExXP/BvDaoujqe8QbSoj5Z+jjggMQTfuIGlLUS31lEASeWUKt24Qluo40tRCPcnucRSOrhi1Re696cOhGDeeKBWM8jeoRamWgN81XUXAb7f3MJpx9ASZpw3TH42b/Av8/lqgznQ9+oqQ6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=l1VpYjun; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1772151669; c=relaxed/simple;
+	bh=1H1E6m/3SBzjbZermb/QgS4pChpnCVDklOtdppC5Ybw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Muq4FgDWORP6iu4mWOj/FdzIyGwSYoEqXV92gX7Xc03AFPeJ5cpjiTDZ3Nr22ohW9IgR3vPq5Jc/J+6UPZXhtkX5n1PTAbtHaqpzPboVIJZsc3spJneIerT53Z0VHTASkj3YACrF9+OE4Syio2ZL/JlIEq9gMg3oWEhJS1gvVvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=MmDlufTW; arc=none smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="l1VpYjun"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-358e5e33ddcso1443519a91.1
-        for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 15:43:06 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="MmDlufTW"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5069df1de6fso12732451cf.3
+        for <linux-coco@lists.linux.dev>; Thu, 26 Feb 2026 16:21:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772149385; x=1772754185; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5xV9Fp9Mp3wKt/HL2xKn2gAO+TqSS/NXayrdSUMZqB8=;
-        b=l1VpYjunNOMIG8VRkck4ngrOi45pjGIoT22v3i8MVtKxhKHSbl3lb8oAMLs/gUUmV5
-         kHILD7aVMdd9aju+WblWf4TgQ1NMJC9ufXkLLRJGmFKBm6AJ67lyMRZmZJzjdzG0C5p9
-         5Q1oOOOIcc5Bl9Dv8oKDjzPWBJK2KqGE5R9e3suyXktv4b6eYYSmBebAXwFz3iIR+4TZ
-         sY6opvU8CxBzeDrgRazDjoSJpIqiQNqSixFDFsoPMmBQ/aj9quEunT25CU4fmUhMeRvP
-         kCrXkMSgDc+Wh4MeSr6ltHzbifGe9XHgQ4Z19G3Z48wDCWHyN+cOgoemZC0GThP7GzPX
-         glxQ==
+        d=ziepe.ca; s=google; t=1772151667; x=1772756467; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LZJ67b0vcINlAFMObCVMgz4IqYLAlWLPJaI4jITHQUI=;
+        b=MmDlufTWi2F20ECvgWugI7kMiF1wNcaIKDvVb44MyEd5ErTm6Cy3YifXl8bMhERdaY
+         85LQ3GcjZp8f06ZsG0wU5kaR+vOKVcMKfDu23C8RBpOBdSklqTxLi3TuERWnWlWC8EEK
+         bbDdP5Y2DYo/g4nmQl0IoZlj28B7d/l7+6KOYPjE3ejXjkTKZsE/n2XdyM1YhNSpvwJ/
+         vyjchWUR9sfVAWbyxnHBRijHjVLQ3ZPqo+rQ+UL2yqOuRoNGJwIUvsX9Nfs2qYWjfr1L
+         Eb7giT8rzTjQ9TToKyqbnbR96kcEmLSZ9I0vxUpFOnqn3iIH4IWA3LeLwztgHrSZ76Fb
+         HVbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772149385; x=1772754185;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5xV9Fp9Mp3wKt/HL2xKn2gAO+TqSS/NXayrdSUMZqB8=;
-        b=tKMLA8yN8Lf/O0qz4BItOMF9ogqecdqey/1KntdOfT8/+OnyS4m8fjI3hT96o5XM3B
-         nIuZLBf6YWqVN/jmpX0p4w3U77j9aduLJOXzx+6L8aVpsc/o9bacG0b/Cet5Q5LcvXzc
-         fY0bzk4Gvyo0gn/0Ye23V7r9eMNL3Sq8zwZWXOdF84kV2VQXrzTKE31aTgQPFGeG58qn
-         ZY1nEurtqL0ZMXK250iVY5i7wdB6leFsalRmUOMO+zX/oKrLXDnf1qpba22UMh+ho8YH
-         pHpwbjEnYDfWWs79hLKbhVZPLBn65nTt6o9PlLobXm8GVRZxMJMudOHN84tqXkFjdQdn
-         8lXw==
-X-Forwarded-Encrypted: i=1; AJvYcCWRS5T5GHqOfDIpolrIAhadQmbfGf5JhlL3PTeeK7sM3sPo/l7oJmAM8fp8d+mxt7CddjkqjxfSWbSC@lists.linux.dev
-X-Gm-Message-State: AOJu0YzIe+hsC2MNqFWs27CGTkxzbZsVd8QXSelqpy4cmwEvC5DTBKLE
-	uKe/1pIp8ogZSOo0dqJK/aFBcZWAMsTBxOwLXN6f/xG/hHU7tL6QbVHi61bekW2vhfblVsHdyNe
-	dL6+W3w==
-X-Received: from pjwo21.prod.google.com ([2002:a17:90a:d255:b0:356:213e:d56e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5710:b0:356:23be:7ecb
- with SMTP id 98e67ed59e1d1-35965c34bc7mr627146a91.12.1772149384979; Thu, 26
- Feb 2026 15:43:04 -0800 (PST)
-Date: Thu, 26 Feb 2026 15:43:03 -0800
-In-Reply-To: <aZ/5CDmCa8O5vrFZ@intel.com>
+        d=1e100.net; s=20230601; t=1772151667; x=1772756467;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LZJ67b0vcINlAFMObCVMgz4IqYLAlWLPJaI4jITHQUI=;
+        b=oWIt/pFTDoKFCFYzPT1T9zPcR+L2/a+IBcubZF94fnAX4BZ3RqDbKX+wdg04QS+kwj
+         72gIz9mWKhid5cHy11Al3saO3X/cY/ec+/JipqMEL9DX/YCkRpSgkFZt+4efYUapqXFW
+         wj/aWV/BeLn/zPdVagbyc6xsxlh+cFQjsGCPqXWuHJdAB4RyytGKqvmrWSt1gYFVJXLi
+         BFcnJ8vDB1FCK4hv2ueptOEkmyVCkKEDvxVy72zRMYnO8IkGJJxltn0E11ilCp7htdvt
+         oDrwydrkCcsgGGHz3LwW8Li9/YUKajCVfWJZGmZ/7Jrjf98moXa7bZKhiMckrk+owzl7
+         aM3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWuJYB7HG51OKWZ1V0ayR0j2coepvvD4L8fLqEXAqF1czpgJxAwMHQWp9ovmumppDUttYiNYSH11+it@lists.linux.dev
+X-Gm-Message-State: AOJu0YyA198+xZ9zv9BascZ2GEUPhwiZchrGZMUVnMMTR6EvxBSBT8C1
+	lR2febhFU2VO5R0R+BNYqXz5jObW1cgHKRcmgIc1dI5NiSNJhqAvZlOxEYqVM4HSZys=
+X-Gm-Gg: ATEYQzzuiSsNHd0yPCT7kgWBN19tBtmwJUt9Tr6Y3bpiuwfQm/tlnWQgAJ7nPbwkUw8
+	lGP6gkPnmh3mAJR+T4jRdbdUSPCqBExxZVtR3xwdpgncnfaZxqMRaOYn0VhrCKQpALUakmfFHNK
+	0C8w98SOevD30tNLaNEfbFv6oZdXzIKyqTCL5BeLj/cAw045kT13PR9S8MQWuF6AV1UJyI2gFAo
+	+YNR4A89Dp4+SkQBZnAk3dtmXn0bCEN24awWUPH9G068upqZgPWFlm3QFvCA3tnbVqHzsee6MWY
+	+JGDu7wsCv3Jqv2tMzKZ1sowzTUlNRX/9F0rPzf0CPvWFHaRrGTCsshL8JRmEowGNQ244G0Oxhe
+	0+m3FKiTyDTPnDzRyRmSFkDmwk6Ge4OkQ1UoEnhRkXE0Un2/hxQA+GJjaThjPg/stU8tYf2XbWs
+	qQnWneiwJAk9UeazOjME6b24CW10NDC1OwznS84hPBG6PyM4jKkJvBPHW70xR4qBySEfnT0BF0l
+	ksL7Cr3
+X-Received: by 2002:a05:622a:3cb:b0:502:f07e:8569 with SMTP id d75a77b69052e-5075282779dmr12593871cf.35.1772151667151;
+        Thu, 26 Feb 2026 16:21:07 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50744963095sm36791911cf.3.2026.02.26.16.21.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Feb 2026 16:21:06 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vvlbN-00000000pwc-2290;
+	Thu, 26 Feb 2026 20:21:05 -0400
+Date: Thu, 26 Feb 2026 20:21:05 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Ackerley Tng <ackerleytng@google.com>,
+	Alexey Kardashevskiy <aik@amd.com>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Kevin Tian <kevin.tian@intel.com>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Steve Sistare <steven.sistare@oracle.com>,
+	Nicolin Chen <nicolinc@nvidia.com>, iommu@lists.linux.dev,
+	linux-coco@lists.linux.dev, Dan Williams <dan.j.williams@intel.com>,
+	Santosh Shukla <santosh.shukla@amd.com>,
+	"Pratik R . Sampat" <prsampat@amd.com>,
+	Fuad Tabba <tabba@google.com>, Xu Yilun <yilun.xu@linux.intel.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	michael.roth@amd.com, vannapurve@google.com
+Subject: Re: [RFC PATCH kernel] iommufd: Allow mapping from KVM's guest_memfd
+Message-ID: <20260227002105.GC44359@ziepe.ca>
+References: <20260225075211.3353194-1-aik@amd.com>
+ <aZ7-tTpobKiCFT5L@google.com>
+ <CAEvNRgEiod74cRoVQVC5LUbWDZf6Wwz1ssjQN0fveN=RBAjsTw@mail.gmail.com>
+ <20260226190757.GA44359@ziepe.ca>
+ <aaDL8tYrVCWlQg79@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260214012702.2368778-1-seanjc@google.com> <20260214012702.2368778-8-seanjc@google.com>
- <aZ/5CDmCa8O5vrFZ@intel.com>
-Message-ID: <aaDah8QSFqWpNvqY@google.com>
-Subject: Re: [PATCH v3 07/16] KVM: SVM: Move core EFER.SVME enablement to kernel
-From: Sean Christopherson <seanjc@google.com>
-To: Chao Gao <chao.gao@intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, Xu Yilun <yilun.xu@linux.intel.com>, 
-	Dan Williams <dan.j.williams@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aaDL8tYrVCWlQg79@google.com>
 
-On Thu, Feb 26, 2026, Chao Gao wrote:
-> >-static inline void kvm_cpu_svm_disable(void)
-> >-{
-> >-	uint64_t efer;
-> >-
-> >-	wrmsrq(MSR_VM_HSAVE_PA, 0);
-> >-	rdmsrq(MSR_EFER, efer);
-> >-	if (efer & EFER_SVME) {
-> >-		/*
-> >-		 * Force GIF=1 prior to disabling SVM, e.g. to ensure INIT and
-> >-		 * NMI aren't blocked.
-> >-		 */
-> >-		stgi();
-> >-		wrmsrq(MSR_EFER, efer & ~EFER_SVME);
-> >-	}
-> >-}
-> >-
-> > static void svm_emergency_disable_virtualization_cpu(void)
-> > {
-> >-	virt_rebooting = true;
-> >-
-> >-	kvm_cpu_svm_disable();
-> >+	wrmsrq(MSR_VM_HSAVE_PA, 0);
-> > }
-> > 
-> > static void svm_disable_virtualization_cpu(void)
-> >@@ -507,7 +489,7 @@ static void svm_disable_virtualization_cpu(void)
-> > 	if (tsc_scaling)
-> > 		__svm_write_tsc_multiplier(SVM_TSC_RATIO_DEFAULT);
-> > 
-> >-	kvm_cpu_svm_disable();
-> >+	x86_svm_disable_virtualization_cpu();
+On Thu, Feb 26, 2026 at 02:40:50PM -0800, Sean Christopherson wrote:
+
+> > If guestmemfd is fully pinned and cannot free memory outside of
+> > truncate that may be good enough (though somehow I think that is not
+> > the case)
 > 
-> There's a functional change here. The new x86_svm_disable_virtualization_cpu()
-> doesn't reset MSR_VM_HSAVE_PA, but the old kvm_cpu_svm_disable() does.
+> With in-place conversion, PUNCH_HOLE and private=>shared conversions are the only
+> two ways to partial "remove" memory from guest_memfd, so it may really be that
+> simple.
 
-Doh.  I'll squash this as fixup, assuming there are no other goofs:
+PUNCH_HOLE can be treated like truncate right?
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 5f033bf3ba83..fc08450cb4b7 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -490,6 +490,7 @@ static void svm_disable_virtualization_cpu(void)
-                __svm_write_tsc_multiplier(SVM_TSC_RATIO_DEFAULT);
- 
-        x86_svm_disable_virtualization_cpu();
-+       wrmsrq(MSR_VM_HSAVE_PA, 0);
- 
-        amd_pmu_disable_virt();
- }
+I'm confused though - I thought in-place conversion ment that
+private<->shared re-used the existing memory allocation? Why does it
+"remove" memory?
 
-Very nice catch!
+Or perhaps more broadly, where is the shared memory kept/accessed in
+these guest memfd systems?
 
-P.S. This reminded me that there's a lurking wart with __sev_snp_init_locked()
-where it forces MSR_VM_HSAVE_PA to '0' on all CPUs.  That's firmly a "hypervisor"
-thing so it doesn't really fit here (and code wise it's also kludgy), just thought
-I'd mention it in case someone has a brilliant idea and/or runs into problems with
-it.  IIRC, we ran into a problem where __sev_snp_init_locked() clobbered KVM's
-value, but I think the underlying problem was effectively fixed by commit
-6f1d5a3513c2 ("KVM: SVM: Add support to initialize SEV/SNP functionality in KVM").
-
+Jason
