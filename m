@@ -1,73 +1,160 @@
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CF71E5B70;
-	Sat, 28 Feb 2026 08:43:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251FD2D8762
+	for <linux-coco@lists.linux.dev>; Sat, 28 Feb 2026 16:55:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772268196; cv=none; b=UcWb6AHit1J16WcU0Vp4hMx+FlyCIdSkbmCYvL+YlzUFwATe4QC8f3qjCTYG0t4F7y8KQjotfD1oY3oWA9IGxjcH1RqpKMh3HvGT5yflPCkNB+lmfGPP8c3lg8vz/G2uy6H1gQ1pdV3bTYWwb8YgFB8ouyhvL6GHa6ix6FAPt/M=
+	t=1772297745; cv=none; b=atyY5+AyiciXxqJhQ9ZbfJ5zNmkdmvI+0jomH6pjlgq0Nt6aF/fh753HF1jwwiLhsTYol+8zqK/uLINufHVByDDvIqSEqI92qHTrnwyj6BHgBJSPmv98fa/1gsgnZIFkKg7eB8uBCpP7GyuW9NVEi0d99tgdVjpD8RPEYVdVIFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772268196; c=relaxed/simple;
-	bh=WhNj3d9b8p3iRFs6mmyBRM3+NhSClNesEiMzh305YQk=;
+	s=arc-20240116; t=1772297745; c=relaxed/simple;
+	bh=pJWgYLvx/o28zleZ5wc8tQ2bKZ3nRyj8rgBcxupaMPg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ATVUyr0zRP8y+K9Kta1s5ElHK5eBKJ/RnZA+fAnIuefJbycfMF7aZHd7tBxaVnUDVtLpON3k0Rtl5ApLPvh7GBi2dm2ntvOHINiFFpBBQZfQ61Bh2de8B3GivSO7IjLbAZwVf0/IR0SLPn1WtXhTJnQ6fpcqJkcYtyyi5GLgTz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=JtjU+eUq; arc=none smtp.client-ip=180.181.231.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+	 Content-Type:Content-Disposition:In-Reply-To; b=a3GN3xuTeP5VW8XIjoJ5L8DjeTX55PsmtVisxuFTOKC8b+yt2zzADUCaHZaqLS5WSPiEQuEpDwdeFr9KnAqhwY9UKAoR8f0DTcx01Oj0HIxZ1XEkyxMl3peY38xrbPil4mnhre8yp5dLsYvrm60Bex4Ajjb8nzVh8GlPj9WBicg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=c3qlUlfS; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="JtjU+eUq"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=ELbmbK4zSlHi0tRWJI/XywJ3523nUmYnAJAExAQAfLc=; 
-	b=JtjU+eUq7kyofdYhN+SM2AAxE9AOEatkYUfDaEgXINpneeJdYPgD4qe+hdW5M94GcN0Rpc53PfH
-	NkUTPZZTn+P68iOq5DveEuYyB9U0hptdkXMJPwpIcQKkKpFIfztQAVuxxojZd4hFh5g3LctI9jH70
-	93FT+Fm5qp6Gi+GIijasE8cp6fxkDePVEy/oUS0aMYRBKaGrKZDCAB4enDkHsTjNL+8+Y++0gTfuG
-	2RDh92hop1AmdhD+KY4R3NBkWxQj/GelqaJxHn98Xoj1b7wIQPFl3gq+1f7NaUzVA8+3BnR6YlRwc
-	GAgeJrlYwU1HQZ4FPvXzncI9FkrWyHvNLJWw==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1vwFuk-00ADmE-1s;
-	Sat, 28 Feb 2026 16:43:07 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 28 Feb 2026 17:43:06 +0900
-Date: Sat, 28 Feb 2026 17:43:06 +0900
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: thomas.lendacky@amd.com, john.allen@amd.com, davem@davemloft.net,
-	bp@alien8.de, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH] crypto: ccp - allow callers to use HV-Fixed page API
- when SEV is disabled
-Message-ID: <aaKqmsiXprF3nLGi@gondor.apana.org.au>
-References: <20260206212645.125485-1-Ashish.Kalra@amd.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="c3qlUlfS"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5029240E0140;
+	Sat, 28 Feb 2026 16:55:33 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id aYl68t990iRQ; Sat, 28 Feb 2026 16:55:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1772297728; bh=LgzTOolTZA+TA6G3THdvY3XWd7GGtR72T44606Tonfo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=c3qlUlfS40Ds+Zh17b7flDIdQ9irw2eVV8GBVAlQsk2n0C+2H+rSMPGpYPm9vlw9E
+	 Fw+gTxXC/r1S8Y1t/zTQLmP5NoeS0q94TEOK0Bu2ti7AKAcCqpUlWZiJPjwY+JQj/9
+	 t9Mro/wvlCXn+r7FSqXzpJlgaCNZCKfQ3f99A39uH3cRuhhQj3rFr+cuGPU9Xytm/P
+	 zpVTtxWPQcpEvoZrw7P1kF4WrNWMrSEnzYwHSopf9r/RNryhCce+89OcsDJi7vJ0rM
+	 LyPIYoZPHhKvJJS6ChuwG3fmetqPxh5zizeGUCPvq3FNTcpfZp3uZVEWKhToYOjSL6
+	 CeYijPAG3hbb8cV2kneqk6k0CJcAbI0bfqNij7KA00DPhsscZFGUJk633+h6qs2K6a
+	 Iktg4VwXYx09XGvCl0HSu+Mr7cT/4oawRx9EZGdTQguF7kpj7PawdwH4IUOIVXksdI
+	 oo/OpkSsIWFbR8+n4bF4kWngste8yYU2hnphrM3MlhKxhjxW/S/ludzh/3wXb42tQU
+	 smfeJTGh89+1HXiZd88Dygh7SLQh5NC7Q4EWAOEOiGKKUlFFbWLW3USrFZ4ysrmuH8
+	 ASVXPjUmtf/10OZ+fmK1QhZyXZnFFlbQn1KLWPZg8XMM1eU/eNHmUAa6iUvR2x3vig
+	 dYAyehqK3tsCkHeptp+f/2dE=
+Received: from zn.tnic (pd9530d5e.dip0.t-ipconnect.de [217.83.13.94])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 8D6C140E00DA;
+	Sat, 28 Feb 2026 16:55:15 +0000 (UTC)
+Date: Sat, 28 Feb 2026 17:55:06 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Kim Phillips <kim.phillips@amd.com>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev, x86@kernel.org,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Naveen Rao <naveen.rao@amd.com>,
+	David Kaplan <david.kaplan@amd.com>
+Subject: Re: [PATCH v2 2/3] KVM: SEV: Add support for IBPB-on-Entry
+Message-ID: <20260228165506.GAaaMd6nQ56E7i5Cqg@fat_crate.local>
+References: <20260203222405.4065706-1-kim.phillips@amd.com>
+ <20260203222405.4065706-3-kim.phillips@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260206212645.125485-1-Ashish.Kalra@amd.com>
+In-Reply-To: <20260203222405.4065706-3-kim.phillips@amd.com>
 
-On Fri, Feb 06, 2026 at 09:26:45PM +0000, Ashish Kalra wrote:
-> From: Ashish Kalra <ashish.kalra@amd.com>
+Sean, ack for the KVM bits and me taking them thru tip?
+
+On Tue, Feb 03, 2026 at 04:24:04PM -0600, Kim Phillips wrote:
+> AMD EPYC 5th generation and above processors support IBPB-on-Entry
+> for SNP guests.  By invoking an Indirect Branch Prediction Barrier
+> (IBPB) on VMRUN, old indirect branch predictions are prevented
+> from influencing indirect branches within the guest.
 > 
-> When SEV is disabled, the HV-Fixed page allocation call fails, which in
-> turn causes SFS initialization to fail.
+> SNP guests may choose to enable IBPB-on-Entry by setting
+> SEV_FEATURES bit 21 (IbpbOnEntry).
 > 
-> Fix the HV-Fixed API so callers (for example, SFS) can use it even when
-> SEV is disabled by performing normal page allocation and freeing.
+> Host support for IBPB on Entry is indicated by CPUID
+> Fn8000_001F[IbpbOnEntry], bit 31.
 > 
-> Fixes: e09701dcdd9c ("crypto: ccp - Add new HV-Fixed page allocation/free API")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> If supported, indicate support for IBPB on Entry in
+> sev_supported_vmsa_features bit 23 (IbpbOnEntry).
+> 
+> For more info, refer to page 615, Section 15.36.17 "Side-Channel
+> Protection", AMD64 Architecture Programmer's Manual Volume 2: System
+> Programming Part 2, Pub. 24593 Rev. 3.42 - March 2024 (see Link).
+> 
+> Link: https://bugzilla.kernel.org/attachment.cgi?id=306250
+> Signed-off-by: Kim Phillips <kim.phillips@amd.com>
+> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
 > ---
->  drivers/crypto/ccp/sev-dev.c | 10 ++++------
->  1 file changed, 4 insertions(+), 6 deletions(-)
+> v2: Added Tom's Reviewed-by.
+> v1: https://lore.kernel.org/kvm/20260126224205.1442196-3-kim.phillips@amd.com/
+> 
+>  arch/x86/include/asm/cpufeatures.h | 1 +
+>  arch/x86/include/asm/svm.h         | 1 +
+>  arch/x86/kvm/svm/sev.c             | 9 ++++++++-
+>  3 files changed, 10 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+> index c01fdde465de..3ce5dff36f78 100644
+> --- a/arch/x86/include/asm/cpufeatures.h
+> +++ b/arch/x86/include/asm/cpufeatures.h
+> @@ -459,6 +459,7 @@
+>  #define X86_FEATURE_ALLOWED_SEV_FEATURES (19*32+27) /* Allowed SEV Features */
+>  #define X86_FEATURE_SVSM		(19*32+28) /* "svsm" SVSM present */
+>  #define X86_FEATURE_HV_INUSE_WR_ALLOWED	(19*32+30) /* Allow Write to in-use hypervisor-owned pages */
+> +#define X86_FEATURE_IBPB_ON_ENTRY	(19*32+31) /* SEV-SNP IBPB on VM Entry */
+>  
+>  /* AMD-defined Extended Feature 2 EAX, CPUID level 0x80000021 (EAX), word 20 */
+>  #define X86_FEATURE_NO_NESTED_DATA_BP	(20*32+ 0) /* No Nested Data Breakpoints */
+> diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
+> index edde36097ddc..eebc65ec948f 100644
+> --- a/arch/x86/include/asm/svm.h
+> +++ b/arch/x86/include/asm/svm.h
+> @@ -306,6 +306,7 @@ static_assert((X2AVIC_4K_MAX_PHYSICAL_ID & AVIC_PHYSICAL_MAX_INDEX_MASK) == X2AV
+>  #define SVM_SEV_FEAT_ALTERNATE_INJECTION		BIT(4)
+>  #define SVM_SEV_FEAT_DEBUG_SWAP				BIT(5)
+>  #define SVM_SEV_FEAT_SECURE_TSC				BIT(9)
+> +#define SVM_SEV_FEAT_IBPB_ON_ENTRY			BIT(21)
+>  
+>  #define VMCB_ALLOWED_SEV_FEATURES_VALID			BIT_ULL(63)
+>  
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index ea515cf41168..8a6d25db0c00 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -3165,8 +3165,15 @@ void __init sev_hardware_setup(void)
+>  	    cpu_feature_enabled(X86_FEATURE_NO_NESTED_DATA_BP))
+>  		sev_supported_vmsa_features |= SVM_SEV_FEAT_DEBUG_SWAP;
+>  
+> -	if (sev_snp_enabled && tsc_khz && cpu_feature_enabled(X86_FEATURE_SNP_SECURE_TSC))
+> +	if (!sev_snp_enabled)
+> +		return;
+> +	/* the following feature bit checks are SNP specific */
+> +
+> +	if (tsc_khz && cpu_feature_enabled(X86_FEATURE_SNP_SECURE_TSC))
+>  		sev_supported_vmsa_features |= SVM_SEV_FEAT_SECURE_TSC;
+> +
+> +	if (cpu_feature_enabled(X86_FEATURE_IBPB_ON_ENTRY))
+> +		sev_supported_vmsa_features |= SVM_SEV_FEAT_IBPB_ON_ENTRY;
+>  }
+>  
+>  void sev_hardware_unsetup(void)
+> -- 
+> 2.43.0
+> 
 
-Patch applied.  Thanks.
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
