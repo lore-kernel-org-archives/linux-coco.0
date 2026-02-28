@@ -1,160 +1,142 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251FD2D8762
-	for <linux-coco@lists.linux.dev>; Sat, 28 Feb 2026 16:55:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C8B3B232A
+	for <linux-coco@lists.linux.dev>; Sat, 28 Feb 2026 18:29:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772297745; cv=none; b=atyY5+AyiciXxqJhQ9ZbfJ5zNmkdmvI+0jomH6pjlgq0Nt6aF/fh753HF1jwwiLhsTYol+8zqK/uLINufHVByDDvIqSEqI92qHTrnwyj6BHgBJSPmv98fa/1gsgnZIFkKg7eB8uBCpP7GyuW9NVEi0d99tgdVjpD8RPEYVdVIFI=
+	t=1772303348; cv=none; b=G3e9HiPSeEZ+ZLIS1QtaGXq/jm8oZR8w801qqjvtxAsSuRSBd+tXyQKFpRjtodILTpxHcb4HU5wxR7OYeg/W6fso8RdAnGxh0opgDYdemOimHLTNWRKDNbCVDMiwlUaxxXZtidE/0ATC40n2VVVsX8IXhyUZd9s9+5C1fEi/r+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772297745; c=relaxed/simple;
-	bh=pJWgYLvx/o28zleZ5wc8tQ2bKZ3nRyj8rgBcxupaMPg=;
+	s=arc-20240116; t=1772303348; c=relaxed/simple;
+	bh=rkzmltbCB7oYdQAHuLM1PEc4LQu8jhDMt38DwB5M/W8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a3GN3xuTeP5VW8XIjoJ5L8DjeTX55PsmtVisxuFTOKC8b+yt2zzADUCaHZaqLS5WSPiEQuEpDwdeFr9KnAqhwY9UKAoR8f0DTcx01Oj0HIxZ1XEkyxMl3peY38xrbPil4mnhre8yp5dLsYvrm60Bex4Ajjb8nzVh8GlPj9WBicg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=c3qlUlfS; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rgu+z5OMp8WSQC387CfYbrwyJ3uLXoYkWY6watTJiLF++8oVxn9oaReDD2U2i5H4XloZG7IkwK6/bVo9lPS5MpORVIoHASYixGa1sgPZRHN4VqiRxo1xo42IgOPiol946eV2SVP5fOtVlxk85U3aTXPzfRDrYW9uDXIvD1g4zkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=WVPUnm+m; arc=none smtp.client-ip=209.85.219.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="c3qlUlfS"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5029240E0140;
-	Sat, 28 Feb 2026 16:55:33 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id aYl68t990iRQ; Sat, 28 Feb 2026 16:55:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1772297728; bh=LgzTOolTZA+TA6G3THdvY3XWd7GGtR72T44606Tonfo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c3qlUlfS40Ds+Zh17b7flDIdQ9irw2eVV8GBVAlQsk2n0C+2H+rSMPGpYPm9vlw9E
-	 Fw+gTxXC/r1S8Y1t/zTQLmP5NoeS0q94TEOK0Bu2ti7AKAcCqpUlWZiJPjwY+JQj/9
-	 t9Mro/wvlCXn+r7FSqXzpJlgaCNZCKfQ3f99A39uH3cRuhhQj3rFr+cuGPU9Xytm/P
-	 zpVTtxWPQcpEvoZrw7P1kF4WrNWMrSEnzYwHSopf9r/RNryhCce+89OcsDJi7vJ0rM
-	 LyPIYoZPHhKvJJS6ChuwG3fmetqPxh5zizeGUCPvq3FNTcpfZp3uZVEWKhToYOjSL6
-	 CeYijPAG3hbb8cV2kneqk6k0CJcAbI0bfqNij7KA00DPhsscZFGUJk633+h6qs2K6a
-	 Iktg4VwXYx09XGvCl0HSu+Mr7cT/4oawRx9EZGdTQguF7kpj7PawdwH4IUOIVXksdI
-	 oo/OpkSsIWFbR8+n4bF4kWngste8yYU2hnphrM3MlhKxhjxW/S/ludzh/3wXb42tQU
-	 smfeJTGh89+1HXiZd88Dygh7SLQh5NC7Q4EWAOEOiGKKUlFFbWLW3USrFZ4ysrmuH8
-	 ASVXPjUmtf/10OZ+fmK1QhZyXZnFFlbQn1KLWPZg8XMM1eU/eNHmUAa6iUvR2x3vig
-	 dYAyehqK3tsCkHeptp+f/2dE=
-Received: from zn.tnic (pd9530d5e.dip0.t-ipconnect.de [217.83.13.94])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 8D6C140E00DA;
-	Sat, 28 Feb 2026 16:55:15 +0000 (UTC)
-Date: Sat, 28 Feb 2026 17:55:06 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Kim Phillips <kim.phillips@amd.com>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev, x86@kernel.org,
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="WVPUnm+m"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-896f9397ecdso37663866d6.3
+        for <linux-coco@lists.linux.dev>; Sat, 28 Feb 2026 10:29:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1772303346; x=1772908146; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=htHav7RfCL20FBhzRA0W1wS3HhKQenwSmiA0/DmxMnY=;
+        b=WVPUnm+m1agX39uFZ6UZe4/7wZmebjJKqZt4htUqKvmu7D3/nNQlTVblpskiZ/4e/Y
+         6a7PaukP5+SdbxLKWedUbk73V9nur7HOz/fg1prm51Oj5DGZzv2WMpAogwN3SXWK3esN
+         EfGFzZKVdTYQfLVh6/RjA0W/GC+0shU169goTvOhcHa4SNGA01k4so9vKijP0Bc41b0i
+         gWaCXSllThg0yixgbzmlEuEAGjdEhxzkyzA62titoOlZxm1FdyjD/5O64Geo4vy04EJX
+         9tB5Fs5bPzZp29o6JxpSWC/2Bc2BpoDN9qmgM1pVuFyLiJHInqU7XSAcdMTYX7cVRyxn
+         hAOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772303346; x=1772908146;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=htHav7RfCL20FBhzRA0W1wS3HhKQenwSmiA0/DmxMnY=;
+        b=giFIH/5GE4AUfDJqAHUiXCAvVm37rYs0ILc0+/X4bvMrDWcFrpTERDRCeZLgfboMVC
+         givSI9iGgj2duL34euCbV+F/czIZOfM/rpHMr8buxOdedzTH505OVcODAnmxcqfM12B8
+         xGXB4grKNIf6WUQfEYMjCOfdHlzOMxMol5q/lLxMqsdz+Hibr8nh1UV7It79NgBfrvD6
+         rXBHzVYIBwiLT+TDDqypyEYcg+At6FwFy8ipZhWxL0sGB2BmDyyk2DhUTfEhgAv9pIVJ
+         tBV8LD6XfUDoxjEAO/OxidpVOCI6qRrFtdzjVeb543N/I64k4EJenj2T1Y8lZgGCeLFL
+         4Y4g==
+X-Forwarded-Encrypted: i=1; AJvYcCXhbl/KkvyDuH9AzzfU+WN7VJ7xQnZlvp4gJ/JWTpE9trRG2ZgC0vKAodXjkGTPkNkHgO9AQFXErnS9@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz3OCv8iHNZnN01xPIHNWYIx8EYyXELdYlGp8Oyu8JX2FlzjJtK
+	5vLfo+mccvcnHHRae7PcEmIwU6YeKv1h1OukG1fjsp6GWG8PJjVenwSdMhqjiqiaKEY=
+X-Gm-Gg: ATEYQzyAI/Uu+GPrIhkcqJn3/ehKZ1diObu9Mhf+EQchEwa8vrh01eqVSQ63HvdL8Qp
+	zt+FdxTy2B0hj8rVV/yg0aJjbNcsAl6NbLsWZfpnDhswtxYh8AOnCwRlxkaj3K0vy1QN7XpzLDR
+	tYflYR1bEVeTxSNyoapi/Cyh+QIa3pRooATdA4FHCDBJTB11oWJreBCsdUzKj048EZq2i7pEcv1
+	+Vb7H2XZksu7WBHlI0r10rMCM3vOVFL9/FLqi/oh1SEDPNZG/wlvBEppI9cPJBl1kZGNW8yDpjm
+	5oEkYxi6ekYVobTX93XZzkUXXqUAFujgBt7qRZCq7/dz2RDXETtKZ7MEGFf+CLl6hwM7OcPhAS/
+	XFqyz5EpXQ+cJFy8WWUr/Udqt7F7cJR4gj9FvaoQbRoOUtXcP/jrO2VThF8FAxRY9GVVZOTG/06
+	QRKBbCJzn6b/4X8wvkL4EtrJGgx9/ri8HaDT8r2mQQhOCV2OcVtLvq/9agO4iH9y38fQHPzUOhM
+	Pca0Wrv
+X-Received: by 2002:a05:6214:1943:b0:896:fe42:e8a0 with SMTP id 6a1803df08f44-899d1e8b1camr101368936d6.63.1772303346029;
+        Sat, 28 Feb 2026 10:29:06 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-899c7376847sm71654726d6.28.2026.02.28.10.29.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Feb 2026 10:29:05 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vwP3o-0000000250x-2vIE;
+	Sat, 28 Feb 2026 14:29:04 -0400
+Date: Sat, 28 Feb 2026 14:29:04 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Alexey Kardashevskiy <aik@amd.com>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Kevin Tian <kevin.tian@intel.com>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Naveen Rao <naveen.rao@amd.com>,
-	David Kaplan <david.kaplan@amd.com>
-Subject: Re: [PATCH v2 2/3] KVM: SEV: Add support for IBPB-on-Entry
-Message-ID: <20260228165506.GAaaMd6nQ56E7i5Cqg@fat_crate.local>
-References: <20260203222405.4065706-1-kim.phillips@amd.com>
- <20260203222405.4065706-3-kim.phillips@amd.com>
+	Steve Sistare <steven.sistare@oracle.com>,
+	Nicolin Chen <nicolinc@nvidia.com>, iommu@lists.linux.dev,
+	linux-coco@lists.linux.dev, Dan Williams <dan.j.williams@intel.com>,
+	Santosh Shukla <santosh.shukla@amd.com>,
+	"Pratik R . Sampat" <prsampat@amd.com>,
+	Fuad Tabba <tabba@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	michael.roth@amd.com, vannapurve@google.com
+Subject: Re: [RFC PATCH kernel] iommufd: Allow mapping from KVM's guest_memfd
+Message-ID: <20260228182904.GR44359@ziepe.ca>
+References: <aZ7-tTpobKiCFT5L@google.com>
+ <CAEvNRgEiod74cRoVQVC5LUbWDZf6Wwz1ssjQN0fveN=RBAjsTw@mail.gmail.com>
+ <20260226190757.GA44359@ziepe.ca>
+ <aaDL8tYrVCWlQg79@google.com>
+ <20260227002105.GC44359@ziepe.ca>
+ <aaDlRdnhIqRXEbPZ@google.com>
+ <20260227010902.GE44359@ziepe.ca>
+ <aaFzgGTpZI0eZWdD@yilunxu-OptiPlex-7050>
+ <20260227131815.GG44359@ziepe.ca>
+ <aaJroUzTZXZfbRAl@yilunxu-OptiPlex-7050>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260203222405.4065706-3-kim.phillips@amd.com>
+In-Reply-To: <aaJroUzTZXZfbRAl@yilunxu-OptiPlex-7050>
 
-Sean, ack for the KVM bits and me taking them thru tip?
+On Sat, Feb 28, 2026 at 12:14:25PM +0800, Xu Yilun wrote:
+> On Fri, Feb 27, 2026 at 09:18:15AM -0400, Jason Gunthorpe wrote:
+> > On Fri, Feb 27, 2026 at 06:35:44PM +0800, Xu Yilun wrote:
+> > 
+> > > Will cause host machine check and host restart, same as host CPU
+> > > accessing encrypted memory. Intel TDX has no lower level privilege
+> > > protection table so the wrong accessing will actually impact the
+> > > memory encryption engine.
+> > 
+> > Blah, of course it does.
+> > 
+> > So Intel needs a two step synchronization to wipe the IOPTEs before
+> > any shared private conversions and restore the right ones after.
+> 
+> Mainly about shared IOPTE (for both T=0 table & T=1 table): "unmap
+> before conversion to private" & "map after conversion to shared"
+> 
+> I see there are already some consideration in QEMU to support in-place
+> conversion + shared passthrough [*], using uptr, but seems that's
+> exactly what you are objecting to
 
-On Tue, Feb 03, 2026 at 04:24:04PM -0600, Kim Phillips wrote:
-> AMD EPYC 5th generation and above processors support IBPB-on-Entry
-> for SNP guests.  By invoking an Indirect Branch Prediction Barrier
-> (IBPB) on VMRUN, old indirect branch predictions are prevented
-> from influencing indirect branches within the guest.
-> 
-> SNP guests may choose to enable IBPB-on-Entry by setting
-> SEV_FEATURES bit 21 (IbpbOnEntry).
-> 
-> Host support for IBPB on Entry is indicated by CPUID
-> Fn8000_001F[IbpbOnEntry], bit 31.
-> 
-> If supported, indicate support for IBPB on Entry in
-> sev_supported_vmsa_features bit 23 (IbpbOnEntry).
-> 
-> For more info, refer to page 615, Section 15.36.17 "Side-Channel
-> Protection", AMD64 Architecture Programmer's Manual Volume 2: System
-> Programming Part 2, Pub. 24593 Rev. 3.42 - March 2024 (see Link).
-> 
-> Link: https://bugzilla.kernel.org/attachment.cgi?id=306250
-> Signed-off-by: Kim Phillips <kim.phillips@amd.com>
-> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-> ---
-> v2: Added Tom's Reviewed-by.
-> v1: https://lore.kernel.org/kvm/20260126224205.1442196-3-kim.phillips@amd.com/
-> 
->  arch/x86/include/asm/cpufeatures.h | 1 +
->  arch/x86/include/asm/svm.h         | 1 +
->  arch/x86/kvm/svm/sev.c             | 9 ++++++++-
->  3 files changed, 10 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-> index c01fdde465de..3ce5dff36f78 100644
-> --- a/arch/x86/include/asm/cpufeatures.h
-> +++ b/arch/x86/include/asm/cpufeatures.h
-> @@ -459,6 +459,7 @@
->  #define X86_FEATURE_ALLOWED_SEV_FEATURES (19*32+27) /* Allowed SEV Features */
->  #define X86_FEATURE_SVSM		(19*32+28) /* "svsm" SVSM present */
->  #define X86_FEATURE_HV_INUSE_WR_ALLOWED	(19*32+30) /* Allow Write to in-use hypervisor-owned pages */
-> +#define X86_FEATURE_IBPB_ON_ENTRY	(19*32+31) /* SEV-SNP IBPB on VM Entry */
->  
->  /* AMD-defined Extended Feature 2 EAX, CPUID level 0x80000021 (EAX), word 20 */
->  #define X86_FEATURE_NO_NESTED_DATA_BP	(20*32+ 0) /* No Nested Data Breakpoints */
-> diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-> index edde36097ddc..eebc65ec948f 100644
-> --- a/arch/x86/include/asm/svm.h
-> +++ b/arch/x86/include/asm/svm.h
-> @@ -306,6 +306,7 @@ static_assert((X2AVIC_4K_MAX_PHYSICAL_ID & AVIC_PHYSICAL_MAX_INDEX_MASK) == X2AV
->  #define SVM_SEV_FEAT_ALTERNATE_INJECTION		BIT(4)
->  #define SVM_SEV_FEAT_DEBUG_SWAP				BIT(5)
->  #define SVM_SEV_FEAT_SECURE_TSC				BIT(9)
-> +#define SVM_SEV_FEAT_IBPB_ON_ENTRY			BIT(21)
->  
->  #define VMCB_ALLOWED_SEV_FEATURES_VALID			BIT_ULL(63)
->  
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index ea515cf41168..8a6d25db0c00 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -3165,8 +3165,15 @@ void __init sev_hardware_setup(void)
->  	    cpu_feature_enabled(X86_FEATURE_NO_NESTED_DATA_BP))
->  		sev_supported_vmsa_features |= SVM_SEV_FEAT_DEBUG_SWAP;
->  
-> -	if (sev_snp_enabled && tsc_khz && cpu_feature_enabled(X86_FEATURE_SNP_SECURE_TSC))
-> +	if (!sev_snp_enabled)
-> +		return;
-> +	/* the following feature bit checks are SNP specific */
-> +
-> +	if (tsc_khz && cpu_feature_enabled(X86_FEATURE_SNP_SECURE_TSC))
->  		sev_supported_vmsa_features |= SVM_SEV_FEAT_SECURE_TSC;
-> +
-> +	if (cpu_feature_enabled(X86_FEATURE_IBPB_ON_ENTRY))
-> +		sev_supported_vmsa_features |= SVM_SEV_FEAT_IBPB_ON_ENTRY;
->  }
->  
->  void sev_hardware_unsetup(void)
-> -- 
-> 2.43.0
-> 
+There is some ugly stuff in qemu trying to make this work with VFIO..
 
--- 
-Regards/Gruss,
-    Boris.
+> Further more, I think "unmap shared IOPTE before conversion to private"
+> may be the only concern to ensure kernel safety, other steps could be
+> fully left to userspace. Hope the downgrading from "remap" to
+> "invalidate" simplifies the notification.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Maybe, but there is still the large issue of how to deal with
+fragmenting the mapping and breaking/re-consolidating huge pages,
+which is not trivial..
+
+To really make this work well we may need iommufd to actively mirror
+the guestmemfd into IOPTEs and dynamically track changes.
+
+I will think about it..
+
+Jason
