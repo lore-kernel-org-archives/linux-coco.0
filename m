@@ -1,208 +1,196 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE6836C9E0
-	for <linux-coco@lists.linux.dev>; Mon,  2 Mar 2026 12:25:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772454318; cv=fail; b=uU0tl7DYsXJW77uSQQ2Q2uKU6c6w5ME/cKaR+hxGfrk01IMf3FLsXzdFdRXx0gBKgTderOavp1m4YhkTkPqwvi2MIg9YgRy5jts7L+WUHTJvJBR67vRrUfHHn8vlHxQQiIIIPwEeerioZ/Ai+xFBIoNTAOunljiFWP/wJs8uhKA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772454318; c=relaxed/simple;
-	bh=85Ah1MRj4jO1nNJoakwdW82JD4qpNlj+vxPBYq1vMJY=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=CZbyK/DjWHxh/EQj+qYV9jC6dj+3zzyExb3GKKw/Zc2anB8uMtUSPw7Hr19dLMMp+trsrCP5rYpUml6jtprRVcDUfwIJ6FUQGfjIOSk6KvYXKQIQgcZ3NKlNNTmKpaHMvug+b2hnWtvIYitAzZTEEpQtfmArxp1Ois39drJaWNc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PF487MB9; arc=fail smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143AB375ACB
+	for <linux-coco@lists.linux.dev>; Mon,  2 Mar 2026 13:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772458531; cv=none; b=SXvwHceccWKlcF5uB2QnAe3XnDCYfGRV2n7soPMqahyFkO3q9nDDeSxo8uQsfUd3Az6Zaz13oviqV1/XWCViXjinaTrXYlqNN4QGI7RBA6pHmwQ1ctcV/NVmA8RkPafw6mV/XPS72pmc1OX3KrC0qHpWeK9YCrJcQD1e06SYBw0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772458531; c=relaxed/simple;
+	bh=FbvCdNY37UamTN31SSyauOm8sq3E53gqKRjT2KA5HYc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gQRkVqR29Df6FPd76/Pb4n3hCWYJj5h6/yLJAy9j/hBdmPt0D053wSJAcWz0dAMSIJN6geD4inG2vwsthx5StyipDB3YJbASbMGpClJcAh9lESldNNkGC/1M5tsNTwbLaCb06k6og/f58T/GWjheevmaDsdApxdlKiTzU/YDsKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=U4bw/Upu; arc=none smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PF487MB9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772454315; x=1803990315;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=85Ah1MRj4jO1nNJoakwdW82JD4qpNlj+vxPBYq1vMJY=;
-  b=PF487MB90SbAESa27CTHhenA4xRdJxszoN/fc6HWD8cXB+ZylQGG6u1I
-   CNWM1RN7x6vlMTp413QdJOm8+lf8P8KjQpQEaX3G8ejablLnKA8Cyf0lO
-   WB3CJ7M3GF5h9pbJDdYDna1jMUg4aJBPD1GIoPbqGOFt2L71KiYNdKqjd
-   MN9wQ/bazEroaYgaZNQnplOeRWxtS78JlOoAmifN2GpMtWzjH4o2/brBW
-   kK2J/U6yMiFWlyalp2BZBGg4+a8GDKv5RzGW3g9yysQ3ZTE6GW4e1pfAH
-   Lef+G0Mh02rA0+OhYk8cPIUx2tYk0hP3oxNsdgC2pLJixZP5cr+Ho375f
-   w==;
-X-CSE-ConnectionGUID: kK/wrULbTFyzbZitDguOig==
-X-CSE-MsgGUID: WTx5eoP+TNyY2gPlYhlmzw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11716"; a="77071494"
-X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
-   d="scan'208";a="77071494"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 04:25:15 -0800
-X-CSE-ConnectionGUID: srPpvAiOQzG9jx4VDFfkPA==
-X-CSE-MsgGUID: i3FLuSXTT/Gs5i7djQWSSw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
-   d="scan'208";a="216861405"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 04:25:15 -0800
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 2 Mar 2026 04:25:14 -0800
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 2 Mar 2026 04:25:14 -0800
-Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.43) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 2 Mar 2026 04:25:14 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xQCTNFPPqjt+ybvLyG4RvLdECmE5+IOuTx5Ln3w8nTYyv8n7gpnuZ+dRF0vCd8HqvaBNMZABJ/HagsAYmWfWFyb+ixjOhCargfrEMFc4N3uaPVUNydy3kEjK83ymhLQ/9bS9QGFl+2hACRzHloA1Mb9i5TIEh+vksA4tMchpN6/4Z7UZ5gGt/4xDfI9rye4b+u6BmIjhj702DEXZwz6vTji8xyYJbKJOB7/hw05mJkEb4x/y2nMKHuO36DpIcLcZQA8sdpSMrxTPg7n/y8w3zowrJCB0w22LU8vc6AlpW42EoeVO0Ji8Wil2WwMKlXK28ZU7ZVJQoVRqrmwkMfkDjQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=d/10TWMD3jWVEr5yGo1wv/W00zaiPqRLuWaDGALjGZ0=;
- b=v/w/wMWYDPevnURZA6rj1eQuYMl/pZc8ptuLCSEI0np2UGHFY2/cExtlbjSUKRMxgQtq0jH9loPdyVyjoxRJuCHNTtQy2/3toEBa5ZK6wL+NQE1laxnNZ0INl80YA0UCGSkg2t7EiUfsvq1cQ7ShTL1YnMFyyknCW1oMMD9JlULR+HJRsBvVwjovnd4ButJ0f8A2RzjgURKQqT8an+zJADL6DZfWmTUaDvofEgOMahHWhrfQg+spJtldDAOePn9pXRz0Ko1xm6s/BCp4me87phcHDltsxnJCjFsabzwclZwJuqVMaCIrromO6tqzaStLJ6Mir4uRWLz/rcwzhpLT6w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
- by SJ5PPFE5BD61D44.namprd11.prod.outlook.com (2603:10b6:a0f:fc02::85a) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.14; Mon, 2 Mar
- 2026 12:25:08 +0000
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf%6]) with mapi id 15.20.9654.020; Mon, 2 Mar 2026
- 12:25:08 +0000
-Date: Mon, 2 Mar 2026 20:24:53 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: <linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<kvm@vger.kernel.org>, <x86@kernel.org>
-CC: <reinette.chatre@intel.com>, <ira.weiny@intel.com>, <kai.huang@intel.com>,
-	<dan.j.williams@intel.com>, <yilun.xu@linux.intel.com>, <sagis@google.com>,
-	<vannapurve@google.com>, <paulmck@kernel.org>, <nik.borisov@suse.com>,
-	<zhenzhong.duan@intel.com>, <seanjc@google.com>,
-	<rick.p.edgecombe@intel.com>, <kas@kernel.org>,
-	<dave.hansen@linux.intel.com>, <vishal.l.verma@intel.com>,
-	<binbin.wu@linux.intel.com>, <tony.lindgren@linux.intel.com>, Thomas Gleixner
-	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
-	<bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v4 01/24] x86/virt/tdx: Move low level SEAMCALL helpers
- out of <asm/tdx.h>
-Message-ID: <aaWBlUPLMYAODVtd@intel.com>
-References: <20260212143606.534586-1-chao.gao@intel.com>
- <20260212143606.534586-2-chao.gao@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260212143606.534586-2-chao.gao@intel.com>
-X-ClientProxiedBy: KU0P306CA0088.MYSP306.PROD.OUTLOOK.COM
- (2603:1096:d10:22::17) To CH3PR11MB8660.namprd11.prod.outlook.com
- (2603:10b6:610:1ce::13)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="U4bw/Upu"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-899e43ae2e1so14097306d6.2
+        for <linux-coco@lists.linux.dev>; Mon, 02 Mar 2026 05:35:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1772458529; x=1773063329; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=o+HFg2ochnrDtRr4Pe6iIPk9bCWPHCXlKNRCptQLo7I=;
+        b=U4bw/Upu7yVBgtP5AWDqggoOxhGd3M24rlRpMvzzXy08y7dawgC9irW/q266yizPCS
+         Vt3ATdOZuBXqGHDyxo7TWWeD375/UvKwKggGE+bIXT5Xv4KobFjU26UFdwpbg1FwEu2M
+         4tpijnL7yYu15KLe1MQQa3kwMu8LosROPllyEjGffRZA4C3K8sDxXUhgTWZxMZawg0l+
+         rwbj0OIpOFWYd/2Q9kqTK5m5u0pmG4vtf2aQrHqIrnUo4ASbQrcyHpv8koMD+Li+OmQX
+         Hm5ispgO51yiSab3urqjFSl007b/Sk0CPDj7epgKmmOGfMi0I6TpyqZMCx0SEXEZSRV7
+         ylBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772458529; x=1773063329;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=o+HFg2ochnrDtRr4Pe6iIPk9bCWPHCXlKNRCptQLo7I=;
+        b=kWFmG54bfl+hhmIufPWSYFZARyy3zsa3X1WqWtz0xM3RMBlf7DPKi2hw+lj5+5fOz8
+         9ZG0LKV/q8AglpU4ILbo+uNXrW7kChc3ZrcT6uW2aKsuK9Mf72DVFkTDw7wm4HBF19zV
+         h7++BcFU3ueaCpvZvLioCb8wULRu8wgbJVjlCqLZ/Lxie8zZ4r/NHtDJwRxjuvnHjW6D
+         qNJ1DQ2iKRqEjKIi7AzsnyWqcOTfuzwv8TpQl5LePZh3P0ucMgROn5nnU5ANtFBabnLl
+         Oxrhw0FTQJ3gjWkX4XeMcycI8aj/dQynn/JHxJUVNiQjITbqa7DR4XQjDHjtFGpfb7O8
+         M01w==
+X-Forwarded-Encrypted: i=1; AJvYcCUBvY6daDigt6vvgJ/JlvmYhqsiX6QQJ3Ip/SmMuxE6hZcfEKv3b/AKt6o5ofKOGLagQkW9dzd1dOUx@lists.linux.dev
+X-Gm-Message-State: AOJu0YwQ0xHnYsOKCxAVNEUK4jLsZ813wn1wQeoXgTdpcx5BACbNEufO
+	LsqaG/ILgCDVvXFC3H+jVX7UWGT2zWsP53YUZai0CqO0cp31mA/MIpfxUH5wqU+hYxI=
+X-Gm-Gg: ATEYQzwjF1pi/YYGXiMtpztNHzspW5xm281T5BYtAkeTBgOOqsvqrEkKd4JbzDMg0p+
+	wJulbXUS6NsBajb84MHgXwzyw4Di5QqsFgbH6YiFKUSGf9LldKPmvEk5GQtanfRhHhHuZfC73+v
+	92jq/AFI6pMCXPPkybSgZ2qdGlClNOafyhwLH4nOtm7RkqMKgoLkk9E09bHa3Uy/IRRCqJ6UrXv
+	ib/Dbcwa38UB0PAkIx04BGFrySRTcmc70YY4gek8g1rcoQ+tbwFncFcZbkOycxkZvbTZX2xwOQb
+	Zneo97OolIVEe9jCDFfsb7EgZ3pd6h9PQOMNgMjb9Ia+8AcM9YHqUXVkfOKRrV1YORIFnaBpkbR
+	OuOw6NS1ugraEaDeJVUrxm2CBhGMWRcqlYp3T99i350LERrM3JKL1RxHiyiTpKlZ/S/nwULO/Vz
+	dCz2twdq134T93mgd0N6BHHXFY0son9uIfHxWOLuK3uYY1/e2yp/A20CnukEe5+BQfdXrY+dULv
+	Bq3XRIj
+X-Received: by 2002:a05:6214:21e1:b0:895:4b4f:133a with SMTP id 6a1803df08f44-899d1d8459dmr178895326d6.5.1772458528769;
+        Mon, 02 Mar 2026 05:35:28 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-899f4fb208dsm35628906d6.28.2026.03.02.05.35.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Mar 2026 05:35:28 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vx3Ql-00000003fNz-1MAa;
+	Mon, 02 Mar 2026 09:35:27 -0400
+Date: Mon, 2 Mar 2026 09:35:27 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: Robin Murphy <robin.murphy@arm.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-pci@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Mike Rapoport <rppt@kernel.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Melody Wang <huibo.wang@amd.com>,
+	Seongman Lee <augustus92@kaist.ac.kr>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Denis Efremov <efremov@linux.com>,
+	Geliang Tang <geliang@kernel.org>,
+	Piotr Gregor <piotrgregor@rsyncme.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Alex Williamson <alex@shazbot.org>, Arnd Bergmann <arnd@arndb.de>,
+	Jesse Barnes <jbarnes@virtuousgeek.org>,
+	Jacob Pan <jacob.jun.pan@linux.intel.com>,
+	Yinghai Lu <yinghai@kernel.org>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Kim Phillips <kim.phillips@amd.com>,
+	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Claire Chang <tientzu@chromium.org>, linux-coco@lists.linux.dev,
+	iommu@lists.linux.dev, Jiri Pirko <jiri@resnulli.us>
+Subject: Re: [PATCH kernel 6/9] x86/dma-direct: Stop changing encrypted page
+ state for TDISP devices
+Message-ID: <20260302133527.GV44359@ziepe.ca>
+References: <20260225053806.3311234-1-aik@amd.com>
+ <20260225053806.3311234-7-aik@amd.com>
+ <d8102507-e537-4e7c-8137-082a43fd270d@arm.com>
+ <20260228000630.GN44359@ziepe.ca>
+ <2a5b2d8c-7359-42bd-9e8e-2c3efacee747@amd.com>
+ <20260302003535.GU44359@ziepe.ca>
+ <500e3174-9aa1-464a-b933-f0bcc2ddde68@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|SJ5PPFE5BD61D44:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8b978dd4-dfc7-40a5-8b62-08de7856be01
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: zx0lR5D4pnZEZmNMLibWUu0nk28JC4p2isFSTXJfoLuXzjXR6j0oAtCS/MQxOb61yEZBHxoTaU0gQYlolykdRKng2LSluskHNRNltHgli/3O6AZYGl/FqvERwjSYAOI9YZIkzSn45XVduKsFhd3acbOWJhP5SD8i0E69w2qbBVJ/yAwdW7OgjlgT2DwGwPPAz4UpeJnzX7Q68BCpzXblGUBMIsIX3LT60GUE19SttspqDSr1v0DIXhpgRGsDJRPLSEUQrAUtLEnBJRrnaz5svaYqf43ucRQcazaHd/mnFpGy+lw+aUmNrziqjFdHrVy1w0ZsDNFAQ+NG+GgCVW7MbriS/HUpSdxyo9roIIpeEmPWYITCIgXdUvph3DE1puMHuvtXYrQBfGMc2uUELRDUFBFt0FQl2rSjJJc1A3MSSpNI7tcTwyt31TYWr2KqyFY43j/WmxzC64RLDrfW+VCLjHGe7lYKlfwhaQNVeKUY22b/HnCqzjll68aloVHXwluRwj66yt4ZG3kjxjjpD5XdNvaS6HOohXrtFuvdexUISaVs4hkJHPgH0LnBtsChmu46auuRcL8OmcSTkwFgVQqary14ZgKmu9tJtTlFZJ4qpxeZ4lloDmb3d8cMC8cWlDakZcUpU16LRfFQPtm93GWsBuiMMsi+oaFkL+LMhWwoIeGhZTt3iSs7xCYY1JTuYHL2ZY334Dzr2pWnUFOmluWJcDtY8he0/D7eqGnMjgModsQ=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?N1s73h44mmxJh/0PJnAT+LjWn8ZcpSdcTQO3Lmuy8EeGiGcViMdGP3AjcnTk?=
- =?us-ascii?Q?L4XqpbzlE1r3vJ00xPdWHYEcXrVT4a61IukkLCCbvoFvV618krNqpLwip2cu?=
- =?us-ascii?Q?NEUdE9zsPdLZ+G7m7tWketo+dWN7x040BToWxPGu2vZ5BI7C+dA2zST/HBSX?=
- =?us-ascii?Q?8CDg9ytScXLDn2t63naJhNCEfjBRo/TTJUQszpqW3OBpf0HmRlTy93ON8d1D?=
- =?us-ascii?Q?84M1bjXItp93s3dQlxitlrn/YcKf+28S1m/CbR87ywIi1rOF5iWDf2cTXfs6?=
- =?us-ascii?Q?DWeQBNXlE2cmnvRLeFaCzHpGpYHLJRoepTG01mwwcbzgbcnsGpP3APl+CWpm?=
- =?us-ascii?Q?Pmu5W97U03RyyN7xlrPxr1q4egBqyTJgf9C0rtUxiYqA+4jb8j0tWe1Z8CKu?=
- =?us-ascii?Q?GXCnT3R6+fcixqn8pPOIdb93gofQKU74YO+SfS6ybZYWNrV+BqPfLS1c7Nsi?=
- =?us-ascii?Q?HxEfDY/AeUvy2sFd60MM08lLm6pAldt3wbfEFHLarVcNGv4Q2yH6LfLfpXE8?=
- =?us-ascii?Q?ljqF5+amX4rqBDplQQvMusNvlAsqQqA22kxkjwdTNwrp0VOX2YD63Fsg942k?=
- =?us-ascii?Q?i8nBiw4DqVBhtJ0GsKRZkLrGXRCR0hacgBFq7EsGyxyWh2EPGQVkAA+NtL40?=
- =?us-ascii?Q?YqQyj2HcpugowJZkPuhsg2AHr+S91lDQ2jXHgp8tv3zvtoeVNqwmIOrtFP/g?=
- =?us-ascii?Q?eDIyjjpWVKYqOF2F0jkeO7tijCM1qLRNwgeCT8nJ1gA1ALs9HVWHAPv0dFjL?=
- =?us-ascii?Q?gA0wnQHaMoL1JR1rtatV85U8BlguMIteHC80maUnz9wv/Wjk+C83scqdU9Y8?=
- =?us-ascii?Q?b958TOU6kiyVQZnjT21a3bhK+1rxrD+6+WiAlaU3hdp82WnGi9vhP0/BNLKI?=
- =?us-ascii?Q?KZle4I12ps6MatD6xFmLZ7awt5kEKpgpRdmGaIqM+uD0YPArUS9nHSvCjJcm?=
- =?us-ascii?Q?v8iNUIGxFm0yo7QccvRnfCVnw05KEMgUJifTeg5CydFkZaHvU8akb7VURfFK?=
- =?us-ascii?Q?WMpM6bJIuZvXcckz+kGNcFK1CmeP/d3G5D9T4y43IomSJzZPNo9z0GT6/ChZ?=
- =?us-ascii?Q?ffHE8rTlU6V/s2aV7JjpqrcSOSdSd09+fqWZOzhRDXkPsfVVro5NFKrDVNUh?=
- =?us-ascii?Q?7BH9lMB6afO07+e7ohXuV+ozuVFxkinaVRYPPuMvw4bCnCHwqi3gO+wxM4s0?=
- =?us-ascii?Q?CyjADUTZCDivXBVFigA5JH9m86PEFgxzWv9ENdC9O0IqofjosQE9mxijg9jP?=
- =?us-ascii?Q?ZLDuakn1ZsKOJGkUv0DIXJIL1BAKbmnErcbIybIW6yNSujFly3GGjl8w2B0x?=
- =?us-ascii?Q?+GClR6fW9jeRFtsKjU0cOnFLKuMNtCs5QFnfjyRlZ/XNCiUxnTqYnfgH7PVC?=
- =?us-ascii?Q?QIn7APt7oKz7fHXx3BoAMsn10NjYePlGSPP7nnW4m+cEPRv7ZGu+zRvmPdwK?=
- =?us-ascii?Q?Us+R2EJ1HMo8MBFBtIGPP92+Hne2QCm+M7XGmen7I1IBH0fWu/DrxquHdGea?=
- =?us-ascii?Q?ButyHlUsm1xfsQ5JxFJUwQUVkbODz9fm2j30Pn/6d4Ep09DgdVV6Wpqzkk8i?=
- =?us-ascii?Q?HkcryvcqqKvg5EOXna2Hs4yqfu0gJg0MbzoaJTqgsCVm06/zOdwSKujhUb2i?=
- =?us-ascii?Q?9q9DifXoL1JR/tRbdLuWZh4gNu+x+AipmpllBUS7VwBeSdULty2okIIP/uCG?=
- =?us-ascii?Q?oidJ6tCslhRUmrGK46SM6/km370719+up6ZLMfYmxLrZNcyp2RwVQhGLa/Eq?=
- =?us-ascii?Q?SqIU1zCt/g=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8b978dd4-dfc7-40a5-8b62-08de7856be01
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 12:25:08.6955
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KKezsik9pSfwjESAj5PBB4I2tRxhKM94utdgL+hNFtF14EjhsGL03ohu5OA2PNddt56eevLfruvMCc25Vl4Kcg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFE5BD61D44
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <500e3174-9aa1-464a-b933-f0bcc2ddde68@amd.com>
 
->-static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
->-			   struct tdx_module_args *args)
->-{
->-	int retry = RDRAND_RETRY_LOOPS;
->-	u64 ret;
->-
->-	do {
->-		preempt_disable();
->-		ret = __seamcall_dirty_cache(func, fn, args);
->-		preempt_enable();
+On Mon, Mar 02, 2026 at 04:26:58PM +1100, Alexey Kardashevskiy wrote:
 
-...
+> > > Without secure vIOMMU, no Cbit in the S2 table (==host) for any
+> > > VM. SDTE (==IOMMU) decides on shared/private for the device,
+> > > i.e. (device_cc_accepted()?private:shared).
+> > 
+> > Is this "Cbit" part of the CPU S2 page table address space or is it
+> > actually some PTE bit that says it is "encrypted" ?
+> > 
+> > It is confusing when you say it would start working with a vIOMMU.
+> 
+> When I mention vIOMMU, I mean the S1 table which is guest owned and
+> which has Cbit in PTEs.
 
->-	} while (ret == TDX_RND_NO_ENTROPY && --retry);
->-
->-	return ret;
->-}
->-
+Yes, I understand this.
 
-<snip>
+It seems from your email that the CPU S2 has the Cbit as part of the
+address and the S1 feeds it through to the S2, so it is genuinely has
+two addres spaces?
 
->+
->+static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
->+			   struct tdx_module_args *args)
->+{
->+	int retry = RDRAND_RETRY_LOOPS;
->+	u64 ret;
->+
->+	do {
->+		ret = func(fn, args);
+While the IOMMU S1 does not and instead needs a PTE bit which is
+emphatically not an address bit because it does not feed through the
+S2?
 
-Here should be:
+> > If 1<<51 is a valid IOPTE, and it is an actually address, then it
+> > should be mapped into the IOMMU S2, shouldn't it? If it is in the
+> > IOMMU S2 then shouldn't it work as a dma_addr_t?
+> 
+> It should (and checked with the HW folks), I just have not tried it  as, like, whyyy.
 
-		preempt_disable();
-		ret = __seamcall_dirty_cache(func, fn, args);
-		preempt_enable();
+Well, I think things work more sensibly if you don't have to mangle
+the address..
 
-This looks like a bug I introduced when resolving conflicts with
+> > But in this case I would expect the vIOMMU to also use the same GPA
+> > space starting from 0 and also remove the C bit, as the S2 shouldn't
+> > have mappings starting at 1<<51.
+> 
+> How would then IOMMU know if DMA targets private or shared memory?
+> The Cbit does not participate in the S2 translation as an address
+> bit but IOMMU still knows what it is.
 
-  commit 10df8607bf1a ("x86/virt/tdx: Mark memory cache state incoherent when making SEAMCALL")
+Same way it knows if there is no S1? Why does the S1 change anything?
 
-Sorry for this issue. I will fix it in the next version.
+> > > There is vTOM in SDTE which is "every phys_addr_t above vTOM is no
+> > > Cbit, below - with Cbit" (and there is the same thing for the CPU
+> > > side in SEV) but this not it, right?
+> > 
+> > That seems like the IOMMU HW is specially handling the address bits in
+> > some way?
+> 
+> Yeah there is this capability. Except everything below vTOM is
+> private and every above is shared so SME mask for it would be
+> reverse than the CPU SME mask :) Not using this thing though (not
+> sure why we have it). Thanks,
 
+Weird!!
 
->+	} while (ret == TDX_RND_NO_ENTROPY && --retry);
->+
->+	return ret;
->+}
+Jason
