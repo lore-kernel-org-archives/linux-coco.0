@@ -1,192 +1,195 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A7F4014A6
-	for <linux-coco@lists.linux.dev>; Mon,  2 Mar 2026 15:11:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D3022157B;
+	Mon,  2 Mar 2026 15:23:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772464262; cv=none; b=FRUeS4bB0ix2drg3F35fHomyEyJ4J02awXhs6oMLpoxfOISCZaEVQ1gjDr/7op4cYLCIBaS8lBSKzyIt/+sbfWsWBLR6lE6RDus0U6yie0P9qa2WP/6R09NcjIi+yRPm6wa0lC2PH8j/+uxxjBiHNs8KPpUrtg48NQ7N4z66g6E=
+	t=1772465034; cv=none; b=qN2+JaUeHB4FlpVWZirPNBlakfvse7w4VLAgU+6OtpHLoBnBuBDeTugOwJlUE6i6nL/qQolGGnEYRIUOkOhjVjmuTgAl7aHZNS61FWT6P4dcAt+T3OApVQ0kjjJdGLCl3OB0IPyFZyTSkb67mQTjYRyWvtRBuJtaFsgsqsPUzVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772464262; c=relaxed/simple;
-	bh=Yve/BpFkzyt3lOXcoTJY/52szTrD/U3uOL7+WrHNHHs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=cDmA8MW8J+T4AxHXEHil9wNebVp4hjVTIn7Eao9i4Z+8SbWOPv7/biYsVNlbHA+DEoRdjFijcJNKNQEHQTJ/wQ16faLuyy9td6erzAbJL5UZi+35P7V0FSLp8HtRsy71nUADuSC/FB7mFilKlB3ml7N6eSEA/dsKtaToKnAUcmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q/734H4a; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q/734H4a"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2adfb6df9d6so280084385ad.1
-        for <linux-coco@lists.linux.dev>; Mon, 02 Mar 2026 07:11:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772464261; x=1773069061; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fAXHam1k+WHPTbPZyih3X1AbQHxa90npC7npw0uHXbc=;
-        b=Q/734H4a8kypcj/U6xStZ/k7TzweK+5aqem5JkG6dIKBGOM0iS16b2agPFvwUfhtv6
-         uMNCzPbi3KBdeAlDRIOrmO7lA5Ll3r9JhJSjp2d+KfELDXx7ca1kWbpprKDVycuaa7zT
-         K694L+TzGy4iT7TdlhNmgQxMoNf0FHmLSAvevB9PCV2taW/0kL3bJNrRqR9t89RVYJ5O
-         lEBfjdx5b02/n6lseZaAMWEIARCTzj0VFbd8OmYjBqtACl34OF9nHN4cFBj1sonCa40l
-         RT7MHf0hYTZkfi9mS7OY+8LPzoKCN/zhAZt/TgxLEZUo1hFy4gUJ91EIMFxNUwiRolff
-         5Pvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772464261; x=1773069061;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fAXHam1k+WHPTbPZyih3X1AbQHxa90npC7npw0uHXbc=;
-        b=vf9GTz/5PfawneVOsuy3GMuDhft2h0meVlfiyHeUfhYLozjsF5TeScLlHOnZTd2twQ
-         zbXhNJexPRKE33IJ8GQxEahBxScUv2j53BDNXVTeTK79gH59NLwytW+nJlYLRnhLUB3P
-         PVb8HY8IB3pimMzJoB7LR1fwsWSEGdKahk2jJASSQV1FdyzAWCOtgtMzHZIbH4OGcDcR
-         2Kz0olDn8A6SS9G/iYbzHdHOwydAAUyvJSd4VxV/b93enAz9K1/9iUc7IQqWTmBHud2x
-         MTUazZMYSTFqOJG+I3Rv4oS5w5myIIMn3RhQxbsM/pQWvfCJ878xqTP2WyisR5t9CXRa
-         5fvg==
-X-Forwarded-Encrypted: i=1; AJvYcCXgtJqM6E9VOyjNL+KF6Qz7z18OQdbGKGjVB2otzXvO/8O2slpvi6fApxPX+TID7tbRZM9xMDcsoHq1@lists.linux.dev
-X-Gm-Message-State: AOJu0YwdhN+vGIx+qpnyY2A7O6EvI/AackX4yQsd1lCBWOSOzMHdyksl
-	ENtYwAYmBRKpvFQL94KGOQb9uG3Vsic/kWEFDfop5PDf9pe69Whd++hdg8uhJNhS2VOBze+Dryv
-	mOUAJmw==
-X-Received: from plan2.prod.google.com ([2002:a17:903:4042:b0:2ae:499b:f9c0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:228b:b0:2aa:fad8:7474
- with SMTP id d9443c01a7336-2ae2e4a6621mr147425615ad.33.1772464260610; Mon, 02
- Mar 2026 07:11:00 -0800 (PST)
-Date: Mon, 2 Mar 2026 07:10:59 -0800
-In-Reply-To: <20260228165506.GAaaMd6nQ56E7i5Cqg@fat_crate.local>
+	s=arc-20240116; t=1772465034; c=relaxed/simple;
+	bh=tLCuqa+/nT1cfOuo1J57XX9pR1rNtyqiOT6GDPiNeCM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Lae8gMm7ELOTOuF50f2GI8HlZb6CNDL8mFjqQXjjdnFjt6G6HjSTvDzalq0fRbM4061pE8B3FOhgLz3ZVwO5Q7845Pg+G3LYpFI9f4UsM6+OfzY+mlzBdDwU9MKWk8sncPY5gK832QExWZNGTzrbp5wPuhiH7p048uRf3fuH8fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 00BD11477;
+	Mon,  2 Mar 2026 07:23:46 -0800 (PST)
+Received: from [10.57.55.216] (unknown [10.57.55.216])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D6E7F3F73B;
+	Mon,  2 Mar 2026 07:23:46 -0800 (PST)
+Message-ID: <33053e22-6cc6-4d55-bc7f-01f873a15d28@arm.com>
+Date: Mon, 2 Mar 2026 15:23:44 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260203222405.4065706-1-kim.phillips@amd.com>
- <20260203222405.4065706-3-kim.phillips@amd.com> <20260228165506.GAaaMd6nQ56E7i5Cqg@fat_crate.local>
-Message-ID: <aaWog_UjW-M3412C@google.com>
-Subject: Re: [PATCH v2 2/3] KVM: SEV: Add support for IBPB-on-Entry
-From: Sean Christopherson <seanjc@google.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Kim Phillips <kim.phillips@amd.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, x86@kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
-	Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Michael Roth <michael.roth@amd.com>, Naveen Rao <naveen.rao@amd.com>, 
-	David Kaplan <david.kaplan@amd.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 06/46] arm64: RMI: Define the user ABI
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>
+References: <20251217101125.91098-1-steven.price@arm.com>
+ <20251217101125.91098-7-steven.price@arm.com> <86tsuy8g0u.wl-maz@kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <86tsuy8g0u.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Feb 28, 2026, Borislav Petkov wrote:
-> Sean, ack for the KVM bits and me taking them thru tip?
+Hi Marc,
 
-Ya, should be fine for this to go through tip.
+On 02/03/2026 14:25, Marc Zyngier wrote:
+> On Wed, 17 Dec 2025 10:10:43 +0000,
+> Steven Price <steven.price@arm.com> wrote:
+>>
+>> There is one CAP which identified the presence of CCA, and two ioctls.
+>> One ioctl is used to populate memory and the other is used when user
+>> space is providing the PSCI implementation to identify the target of the
+>> operation.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>> Changes since v11:
+>>  * Completely reworked to be more implicit. Rather than having explicit
+>>    CAP operations to progress the realm construction these operations
+>>    are done when needed (on populating and on first vCPU run).
+>>  * Populate and PSCI complete are promoted to proper ioctls.
+>> Changes since v10:
+>>  * Rename symbols from RME to RMI.
+>> Changes since v9:
+>>  * Improvements to documentation.
+>>  * Bump the magic number for KVM_CAP_ARM_RME to avoid conflicts.
+>> Changes since v8:
+>>  * Minor improvements to documentation following review.
+>>  * Bump the magic numbers to avoid conflicts.
+>> Changes since v7:
+>>  * Add documentation of new ioctls
+>>  * Bump the magic numbers to avoid conflicts
+>> Changes since v6:
+>>  * Rename some of the symbols to make their usage clearer and avoid
+>>    repetition.
+>> Changes from v5:
+>>  * Actually expose the new VCPU capability (KVM_ARM_VCPU_REC) by bumping
+>>    KVM_VCPU_MAX_FEATURES - note this also exposes KVM_ARM_VCPU_HAS_EL2!
+>> ---
+>>  Documentation/virt/kvm/api.rst | 57 ++++++++++++++++++++++++++++++++++
+>>  include/uapi/linux/kvm.h       | 23 ++++++++++++++
+>>  2 files changed, 80 insertions(+)
+>>
+>> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+>> index 01a3abef8abb..2d5dc7e48954 100644
+>> --- a/Documentation/virt/kvm/api.rst
+>> +++ b/Documentation/virt/kvm/api.rst
+>> @@ -6517,6 +6517,54 @@ the capability to be present.
+>>  
+>>  `flags` must currently be zero.
+>>  
+>> +4.144 KVM_ARM_VCPU_RMI_PSCI_COMPLETE
+>> +------------------------------------
+>> +
+>> +:Capability: KVM_CAP_ARM_RMI
+>> +:Architectures: arm64
+>> +:Type: vcpu ioctl
+>> +:Parameters: struct kvm_arm_rmi_psci_complete (in)
+>> +:Returns: 0 if successful, < 0 on error
+>> +
+>> +::
+>> +
+>> +  struct kvm_arm_rmi_psci_complete {
+>> +	__u64 target_mpidr;
+>> +	__u32 psci_status;
+>> +	__u32 padding[3];
+>> +  };
+>> +
+>> +Where PSCI functions are handled by user space, the RMM needs to be informed of
+>> +the target of the operation using `target_mpidr`, along with the status
+>> +(`psci_status`). The RMM v1.0 specification defines two functions that require
+>> +this call: PSCI_CPU_ON and PSCI_AFFINITY_INFO.
+>> +
+>> +If the kernel is handling PSCI then this is done automatically and the VMM
+>> +doesn't need to call this ioctl.
+> 
+> Shouldn't we make handling of PSCI mandatory for VMMs that deal with
+> CCA? I suspect it would simplify the implementation significantly.
 
-> On Tue, Feb 03, 2026 at 04:24:04PM -0600, Kim Phillips wrote:
-> > AMD EPYC 5th generation and above processors support IBPB-on-Entry
-> > for SNP guests.  By invoking an Indirect Branch Prediction Barrier
-> > (IBPB) on VMRUN, old indirect branch predictions are prevented
-> > from influencing indirect branches within the guest.
-> > 
-> > SNP guests may choose to enable IBPB-on-Entry by setting
-> > SEV_FEATURES bit 21 (IbpbOnEntry).
-> > 
-> > Host support for IBPB on Entry is indicated by CPUID
-> > Fn8000_001F[IbpbOnEntry], bit 31.
-> > 
-> > If supported, indicate support for IBPB on Entry in
-> > sev_supported_vmsa_features bit 23 (IbpbOnEntry).
-> > 
-> > For more info, refer to page 615, Section 15.36.17 "Side-Channel
-> > Protection", AMD64 Architecture Programmer's Manual Volume 2: System
-> > Programming Part 2, Pub. 24593 Rev. 3.42 - March 2024 (see Link).
-> > 
-> > Link: https://bugzilla.kernel.org/attachment.cgi?id=306250
-> > Signed-off-by: Kim Phillips <kim.phillips@amd.com>
-> > Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-> > ---
+What do you mean by making it "mandatory for VMMs"? If you mean PSCI is
+always forwarded to user space then I don't think it's going to make
+much difference. Patch 27 handles the PSCI changes (72 lines added), and
+some of that is adding this uAPI for the VMM to handle it.
 
-...
+Removing the functionality to allow the VMM to handle it would obviously
+simplify things a bit (we can drop this uAPI), but I think the desire is
+to push this onto user space.
 
-> > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> > index ea515cf41168..8a6d25db0c00 100644
-> > --- a/arch/x86/kvm/svm/sev.c
-> > +++ b/arch/x86/kvm/svm/sev.c
-> > @@ -3165,8 +3165,15 @@ void __init sev_hardware_setup(void)
-> >  	    cpu_feature_enabled(X86_FEATURE_NO_NESTED_DATA_BP))
-> >  		sev_supported_vmsa_features |= SVM_SEV_FEAT_DEBUG_SWAP;
-> >  
-> > -	if (sev_snp_enabled && tsc_khz && cpu_feature_enabled(X86_FEATURE_SNP_SECURE_TSC))
-> > +	if (!sev_snp_enabled)
-> > +		return;
-> > +	/* the following feature bit checks are SNP specific */
-> > +
-> > +	if (tsc_khz && cpu_feature_enabled(X86_FEATURE_SNP_SECURE_TSC))
-> >  		sev_supported_vmsa_features |= SVM_SEV_FEAT_SECURE_TSC;
-> > +
-> > +	if (cpu_feature_enabled(X86_FEATURE_IBPB_ON_ENTRY))
-> > +		sev_supported_vmsa_features |= SVM_SEV_FEAT_IBPB_ON_ENTRY;
-> >  }
+> What vcpu fd does this apply to? The vcpu calling the PSCI function?
+> Or the target? This is pretty important for PSCI_ON. My guess is that
+> this is setting the return value for the caller?
 
-I think I'd prefer to nest the if-statement, e.g.
+Yes the fd is the vcpu calling PSCI. As you say, this is for the return
+value to be set correctly.
 
-	if (sev_snp_enabled) {
-		if (tsc_khz && cpu_feature_enabled(X86_FEATURE_SNP_SECURE_TSC))
-			sev_supported_vmsa_features |= SVM_SEV_FEAT_SECURE_TSC;
+> Assuming this is indeed for the caller, why do we have a different
+> flow from anything else that returns a result from a hypercall?
 
-		if (cpu_feature_enabled(X86_FEATURE_IBPB_ON_ENTRY))
-			sev_supported_vmsa_features |= SVM_SEV_FEAT_IBPB_ON_ENTRY;
-	}
+I'm not entirely sure what you are suggesting. Do you mean why are we
+not just writing to the GPRS that would contain the result? The issue
+here is that the RMM needs to know the PA of the target REC structure -
+this isn't a return to the guest, but information for the RMM itself to
+complete the PSCI call.
 
-I'm mildly concerned that'll we'll overlook the early return and unintentionally
-bury common code in the SNP-section tail.
+Ultimately even in the case where the VMM is handling PSCI, it's
+actually a combination of the VMM and the RMM - with the RMM validating
+the responses.
 
-More importantly, this patch is buggy.  __sev_guest_init() needs to disallow
-setting SVM_SEV_FEAT_IBPB_ON_ENTRY for non-SNP guests.
+>> +
+>> +4.145 KVM_ARM_RMI_POPULATE
+>> +--------------------------
+>> +
+>> +:Capability: KVM_CAP_ARM_RMI
+>> +:Architectures: arm64
+>> +:Type: vm ioctl
+>> +:Parameters: struct kvm_arm_rmi_populate (in)
+>> +:Returns: number of bytes populated, < 0 on error
+>> +
+>> +::
+>> +
+>> +  struct kvm_arm_rmi_populate {
+>> +	__u64 base;
+>> +	__u64 size;
+>> +	__u64 source_uaddr;
+>> +	__u32 flags;
+>> +	__u32 reserved;
+>> +  };
+>> +
+>> +Populate a region of protected address space by copying the data from the user
+>> +space pointer provided. This is only valid before any VCPUs have been run.
+>> +The ioctl might not populate the entire region and user space may have to
+>> +repeatedly call it (with updated pointers) to populate the entire region.
+> 
+> size as a __u64 is odd, as the return value from the ioctl is a signed
+> int. This implies that you can't really report how many bytes you have
+> copied.  Some form of consistency wouldn't hurt.
 
-As a follow-up, I also think we should advertise SVM_SEV_FEAT_SNP_ACTIVE and
-allow userspace to set the flag in kvm_sev_init.flags.  KVM still needs to set
-the flag for backwards compatibility, but disallowing SVM_SEV_FEAT_SNP_ACTIVE
-for an SNP guest is bizarre.
+Good spot. In practice this works because >2GB in one operation is
+highly unlikely to be processed in one go. But I guess I'll change this
+to have an output size argument. I guess I could make the kernel update
+all of base,size,source_uaddr which would simplify user space.
 
-E.g. across 2 or 3 patches:
+Thanks,
+Steve
 
-diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-index edde36097ddc..7db1bfce4cca 100644
---- a/arch/x86/include/asm/svm.h
-+++ b/arch/x86/include/asm/svm.h
-@@ -307,6 +307,10 @@ static_assert((X2AVIC_4K_MAX_PHYSICAL_ID & AVIC_PHYSICAL_MAX_INDEX_MASK) == X2AV
- #define SVM_SEV_FEAT_DEBUG_SWAP                                BIT(5)
- #define SVM_SEV_FEAT_SECURE_TSC                                BIT(9)
- 
-+#define SVM_SEV_FEAT_SNP_ONLY_MASK     (SVM_SEV_FEAT_SNP_ACTIVE | \
-+                                        SVM_SEV_FEAT_SECURE_TSC | \
-+                                        SVM_SEV_FEAT_IBPB_ON_ENTRY)
-+
- #define VMCB_ALLOWED_SEV_FEATURES_VALID                        BIT_ULL(63)
- 
- struct vmcb_seg {
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 41385573629e..b2fe0fa11f90 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -500,7 +500,7 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
-                return -EINVAL;
- 
-        if (!snp_active)
--               valid_vmsa_features &= ~SVM_SEV_FEAT_SECURE_TSC;
-+               valid_vmsa_features &= ~SVM_SEV_FEAT_SNP_ONLY_MASK;
- 
-        if (data->vmsa_features & ~valid_vmsa_features)
-                return -EINVAL;
-@@ -3218,8 +3218,15 @@ void __init sev_hardware_setup(void)
-            cpu_feature_enabled(X86_FEATURE_NO_NESTED_DATA_BP))
-                sev_supported_vmsa_features |= SVM_SEV_FEAT_DEBUG_SWAP;
- 
--       if (sev_snp_enabled && tsc_khz && cpu_feature_enabled(X86_FEATURE_SNP_SECURE_TSC))
--               sev_supported_vmsa_features |= SVM_SEV_FEAT_SECURE_TSC;
-+       if (sev_snp_enabled) {
-+               sev_supported_vmsa_features |= SVM_SEV_FEAT_SNP_ACTIVE;
-+
-+               if (tsc_khz && cpu_feature_enabled(X86_FEATURE_SNP_SECURE_TSC))
-+                       sev_supported_vmsa_features |= SVM_SEV_FEAT_SECURE_TSC;
-+
-+               if (cpu_feature_enabled(X86_FEATURE_IBPB_ON_ENTRY))
-+                       sev_supported_vmsa_features |= SVM_SEV_FEAT_IBPB_ON_ENTRY;
-+       }
- }
- 
- void sev_hardware_unsetup(void)
