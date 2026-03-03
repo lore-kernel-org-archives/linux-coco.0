@@ -1,219 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1236039B975;
-	Tue,  3 Mar 2026 10:16:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F06425B31D
+	for <linux-coco@lists.linux.dev>; Tue,  3 Mar 2026 12:15:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772532987; cv=none; b=bVJJc4u64zzx6/4yjs0+1Oa7dIwHAGr8R9sAfh90vxFaVbbHDJ7R4nS7lfM7TbQFOaluoe2ZyrSyn/kR3ybW7/XQIOt93VxZx6yQZebVk0By6PYpYERnKdfJ+Nyo0qczjmguk6jItW2fia7039VFAGd4VXP2PupsLVzAhaTBgTw=
+	t=1772540112; cv=none; b=FbvuWoLyzKrlCgym/Ok4w6PvjyCraVRd53F3l3IEFlChgE+/LSPX9pG48NrAhrW0eFg8hGIwdPx9FRdXj4oN4Hc2AamiKvUGFUSjS9tnFLb3/XOKhCTIrwSwrqiPg8UuEPTP2CDgyN5Zv9cHDax4WnZdy/rcFMD1t2F80GfOg+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772532987; c=relaxed/simple;
-	bh=Ep1ABK1UeNOvhBIrW+E3WpXy1BHoy0zLsBlj9HIQUlk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=bq4lK6Y981uWoSCbdYibFqSzbFHpROCZnn6/goAvyCh1cNNY/auWhatbXCO7FNJpWr/N/+IGgm/WPxyCwidDbNymxHLUdpmaXzHtMF8Ono3T+gqAzzfy8mziRmhAmw0dTh0w3NlsW1xpTG+vyeRDx1Z8gbngPNCwkOGtKVQ+Kh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lq9eC4oE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772540112; c=relaxed/simple;
+	bh=7Rc9j3LNiGnIyTeHz2J0Avp/KOXJP6cs2JgWLFyvSoI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UD22UZ+KuRkka832Vts3ewnmywTKvceph5XwHbZBWM+8/tIyvYCS247GpxkfYMO9wyKHROZlnLhhW3BArj+Kymt1J8GDAHHINw2ZSoWoZFcP5XAhXaU4qYrQAZFjBA9KlbEOlFtavexKAuOTlkzzA4goOLrr0j97f768Aj1mORU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=OlAEzPOr; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lq9eC4oE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58ECAC116C6;
-	Tue,  3 Mar 2026 10:16:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772532986;
-	bh=Ep1ABK1UeNOvhBIrW+E3WpXy1BHoy0zLsBlj9HIQUlk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=lq9eC4oEV7uKoPaBXovM0xmvM2pKW6w+TdiQtFSkLrqKGIHaD2vsO7bQai5FcoesD
-	 KHFAur7fP1RhU2AZigrBOHe/9BD+V4JOi77NwEi4L4lb8vv1/d8zmcJ+xhP615YMDM
-	 Z1r5bETZ+HM/BSAoLzKgzPmQD2+zx8WFUZktIduc2ctvMc2oXeaXxQ7eAwieg8amxn
-	 vCryQBRsQikDN68NqAhVxS9TFnLFVdApZk6d/FP+m8gOaYO53AuYOFyFK6mGtg0RPZ
-	 SlK0P1dagPB7Ds1Jeq4rEhvz01WLK5SDxH5D6XvsP51jvha7YehVDiBSQIgU6oDb9A
-	 2dFiGKP5YsSWQ==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, aik@amd.com, yilun.xu@linux.intel.com,
-	bhelgaas@google.com, alistair23@gmail.com, lukas@wunner.de,
-	jgg@nvidia.com, Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH v2 08/19] PCI/TSM: Add "evidence" support
-In-Reply-To: <20260303000207.1836586-9-dan.j.williams@intel.com>
-References: <20260303000207.1836586-1-dan.j.williams@intel.com>
- <20260303000207.1836586-9-dan.j.williams@intel.com>
-Date: Tue, 03 Mar 2026 15:46:18 +0530
-Message-ID: <yq5abjh59q19.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="OlAEzPOr"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-50698970941so68868501cf.0
+        for <linux-coco@lists.linux.dev>; Tue, 03 Mar 2026 04:15:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1772540110; x=1773144910; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3MM4W4u3ny+cRpfXrxu8DnH970Z9q8VF2tWXlyBc85c=;
+        b=OlAEzPOrBC6oDLtL95+/y0ofItDQ6BTJOw59di0uOKb3cP9aYPYFBLl3hRZP3LER/Q
+         NKYe6Ee6sBN8+U/Wny71PK9mi2M1IMkIs0lyFdHcIW34YaiacTiMMwz8IA9Sz42HQB06
+         scSO7dWLMWun8KchwR6b8WlPG5ksbtLqiNcwV2LfQNavQY2pXJP6nSRHMFu2aqP22xBH
+         gCCaZl6cp43+hk4Gm1SvMwJiQQ7mg+t838l83yy2YAjLZReNcn/PGCqyJH3l8fRU0lIm
+         J8y4ay8mpoFwHMqRGYgfMbxlh1gugO5nat7E3Xiu0QEYJ0BRaBllcE9l0YXai8S14d/z
+         7D2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772540110; x=1773144910;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3MM4W4u3ny+cRpfXrxu8DnH970Z9q8VF2tWXlyBc85c=;
+        b=uYe7SKGfbPXDu4adjdDcdW5stvWgIjv0qRLB+geik2nb3Upxi7CUk68xj/Y1ZokAnP
+         wkmDS+wRUCCBFF7G1f/LdlIRZA9EHBhToUJ73pIXcjwztJYt/39cIQGSHAthdkj6jlEq
+         Qvd+i8OuX3mf4NS1TufS086DV3Brtos8i/5DMe8HRiS1C68tYshbbQnP+5eBIcsUraAg
+         KypyRzZXkQZyuU0Wcbh1URXggnfzutxSNXwehJGN2QCupE/A7hRafG2qmJJ7/aHsPFto
+         7g0nkR2oKCBup8Za7vzzCHcOdJg3G/taMNOMMhzIFeBra5W9LLS5nuNn++Pfc3Mj+m3r
+         M8Iw==
+X-Forwarded-Encrypted: i=1; AJvYcCX8abMPh3SKvBxziM2GDnwei3K5MrhWL/6fCdoPNZOcWYu+x/4aO41vivfpxlNo56J1tK+LQP0SsSQH@lists.linux.dev
+X-Gm-Message-State: AOJu0YwoVwn87gtre5Sj3MAg8yEikwLrGVuNZDs9Zqm6YOeid5LdM9Rp
+	atD83I6tFxt66E78gp6b/dL4L73yQurEmTVYfAEfZEz9OObqipoIAoL+UqaUzps2yaE=
+X-Gm-Gg: ATEYQzwCTYj6laXDWB2RL/3hBhfvoayrMLUHNKrYVRSGLfWg7eROyItX9pBtgBPe10a
+	GhSmaeWFac3s1sC5wz2if9QVBK8deUHLw9YUp73JE/BTE8OPbCP3sU7AaLAjIHlS/goKso9mgVn
+	/T/vNRQiQlk6crDP2lix5BKzB7IAoXUfzfvgx00u3s5WgzAXsijiT621IuUQnDHyrKzlU/hXTHJ
+	fxYR4sM9q9dtX26HQ9QVP1yWzaY2dGHDXzsXzhBsoLdN6I25pjtajfLzGMgL19dnr9Ij5ruOyw/
+	+0MHBrOERj6/3hDJhiwVESQ2IQM2kPqv+NxRJblnsVO1bLaW9AN6P+6rwcyMaRtnDQQcNtafXh5
+	Cd89l2MiGcopXjO7xap/kDkjW91TcITVo66pskciEc9zwjikoCLbgQClRRLLl5jBEuqktDUlNmG
+	A/uZV7iP54ImCTb1LYjq0v3P6CLdFSZdPe2HGOZCsM7a5OgXLrxIQS9qMLcG2pEtBPhYMpQ1XNj
+	BP6eGd0
+X-Received: by 2002:ac8:5908:0:b0:506:a287:a87 with SMTP id d75a77b69052e-50752849955mr200806971cf.40.1772540110255;
+        Tue, 03 Mar 2026 04:15:10 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5075feb4db9sm79588961cf.22.2026.03.03.04.15.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Mar 2026 04:15:09 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vxOea-00000004CWJ-1Uzg;
+	Tue, 03 Mar 2026 08:15:08 -0400
+Date: Tue, 3 Mar 2026 08:15:08 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: Robin Murphy <robin.murphy@arm.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-pci@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Mike Rapoport <rppt@kernel.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Melody Wang <huibo.wang@amd.com>,
+	Seongman Lee <augustus92@kaist.ac.kr>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Denis Efremov <efremov@linux.com>,
+	Geliang Tang <geliang@kernel.org>,
+	Piotr Gregor <piotrgregor@rsyncme.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Alex Williamson <alex@shazbot.org>, Arnd Bergmann <arnd@arndb.de>,
+	Jesse Barnes <jbarnes@virtuousgeek.org>,
+	Jacob Pan <jacob.jun.pan@linux.intel.com>,
+	Yinghai Lu <yinghai@kernel.org>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Kim Phillips <kim.phillips@amd.com>,
+	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Claire Chang <tientzu@chromium.org>, linux-coco@lists.linux.dev,
+	iommu@lists.linux.dev, Jiri Pirko <jiri@resnulli.us>
+Subject: Re: [PATCH kernel 6/9] x86/dma-direct: Stop changing encrypted page
+ state for TDISP devices
+Message-ID: <20260303121508.GD964116@ziepe.ca>
+References: <20260225053806.3311234-1-aik@amd.com>
+ <20260225053806.3311234-7-aik@amd.com>
+ <d8102507-e537-4e7c-8137-082a43fd270d@arm.com>
+ <20260228000630.GN44359@ziepe.ca>
+ <2a5b2d8c-7359-42bd-9e8e-2c3efacee747@amd.com>
+ <20260302003535.GU44359@ziepe.ca>
+ <500e3174-9aa1-464a-b933-f0bcc2ddde68@amd.com>
+ <20260302133527.GV44359@ziepe.ca>
+ <9cf2e2e6-0fe2-4804-9c62-bc60c89d57c1@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9cf2e2e6-0fe2-4804-9c62-bc60c89d57c1@amd.com>
 
-Dan Williams <dan.j.williams@intel.com> writes:
+On Tue, Mar 03, 2026 at 07:19:36PM +1100, Alexey Kardashevskiy wrote:
 
-> Once one accepts the threat model that devices may be adversarial the
-> process of establishing trust in the device identity, the integrity +
-> confidentiality of its link, and the integrity + confidentiality of its
-> MMIO interface requires multiple evidence objects from the device. The
-> device's certificate chain, measurements and interface report need to be
-> retrieved by the host, validated by the TSM and transmitted to the guest
-> all while mitigating TOCTOU races.
->
-> All TSM implementations share the same fundamental objects, but vary in how
-> the TSM conveys its trust in the objects. Some TSM implementations expect
-> the full documents to be conveyed over untrustworthy channels while the TSM
-> securely conveys a digest. Others transmit full objects with signed SPDM
-> transcripts of requester provided nonces. Some offer a single transcript
-> to convey the version, capabilities, and algorithms (VCA) data and
-> measurements in one blob while others split VCA as a separate signed blob.
->
-> Introduce a netlink interface to dump all these objects in a common way
-> across TSM implementations and across host and guest environments.
-> Userspace is responsible for handling the variance of "TSM provides combo
-> measurements + VCA + nonce + signature, vs TSM provides a digest over a
-> secure channel of the same".
->
-> The implementation adheres to the guideline from:
-> Documentation/userspace-api/netlink/genetlink-legacy.rst
->
->     New Netlink families should never respond to a DO operation with
->     multiple replies, with ``NLM_F_MULTI`` set. Use a filtered dump
->     instead.
->
-> Per SPDM, transcripts may grow to be 16MB in size. Large PCI/TSM netlink
-> blobs are handled via a sequence of dump messages that userspace must
-> concatenate.
->
-> Cc: Donald Hunter <donald.hunter@gmail.com>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Xu Yilun <yilun.xu@linux.intel.com>
-> Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-> Cc: Alexey Kardashevskiy <aik@amd.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  drivers/pci/Makefile                     |   2 +-
->  drivers/pci/tsm/Makefile                 |   9 +
->  Documentation/netlink/specs/pci-tsm.yaml | 151 +++++++++++++
->  drivers/pci/tsm/netlink.h                |  23 ++
->  include/linux/pci-tsm.h                  |  63 ++++++
->  include/uapi/linux/pci-tsm-netlink.h     | 101 +++++++++
->  drivers/pci/{tsm.c => tsm/core.c}        |  17 +-
->  drivers/pci/tsm/evidence.c               | 274 +++++++++++++++++++++++
->  drivers/pci/tsm/netlink.c                |  43 ++++
->  MAINTAINERS                              |   4 +-
->  10 files changed, 682 insertions(+), 5 deletions(-)
->  create mode 100644 drivers/pci/tsm/Makefile
->  create mode 100644 Documentation/netlink/specs/pci-tsm.yaml
->  create mode 100644 drivers/pci/tsm/netlink.h
->  create mode 100644 include/uapi/linux/pci-tsm-netlink.h
->  rename drivers/pci/{tsm.c => tsm/core.c} (98%)
->  create mode 100644 drivers/pci/tsm/evidence.c
->  create mode 100644 drivers/pci/tsm/netlink.c
->
-> diff --git a/drivers/pci/Makefile b/drivers/pci/Makefile
-> index e10cfe5a280b..31f5095360af 100644
-> --- a/drivers/pci/Makefile
-> +++ b/drivers/pci/Makefile
-> @@ -35,7 +35,7 @@ obj-$(CONFIG_XEN_PCIDEV_FRONTEND) += xen-pcifront.o
->  obj-$(CONFIG_VGA_ARB)		+= vgaarb.o
->  obj-$(CONFIG_PCI_DOE)		+= doe.o
->  obj-$(CONFIG_PCI_IDE)		+= ide.o
-> -obj-$(CONFIG_PCI_TSM)		+= tsm.o
-> +obj-$(CONFIG_PCI_TSM)		+= tsm/
->  obj-$(CONFIG_PCI_DYNAMIC_OF_NODES) += of_property.o
->  obj-$(CONFIG_PCI_NPEM)		+= npem.o
->  obj-$(CONFIG_PCIE_TPH)		+= tph.o
-> diff --git a/drivers/pci/tsm/Makefile b/drivers/pci/tsm/Makefile
-> new file mode 100644
-> index 000000000000..afa775224b8d
-> --- /dev/null
-> +++ b/drivers/pci/tsm/Makefile
-> @@ -0,0 +1,9 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +#
-> +# Makefile for the PCI/TSM infrastructure
-> +
-> +obj-$(CONFIG_PCI_TSM) += tsm.o
-> +
-> +tsm-y := core.o
-> +tsm-$(CONFIG_NET) += netlink.o
-> +tsm-$(CONFIG_NET) += evidence.o
-> diff --git a/Documentation/netlink/specs/pci-tsm.yaml b/Documentation/netlink/specs/pci-tsm.yaml
-> new file mode 100644
-> index 000000000000..eb7fc03bd705
-> --- /dev/null
-> +++ b/Documentation/netlink/specs/pci-tsm.yaml
-> @@ -0,0 +1,151 @@
-> +# SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
-> +#
-> +---
-> +name: pci-tsm
-> +protocol: genetlink
-> +uapi-header: linux/pci-tsm-netlink.h
-> +doc: PCI TSM Evidence retrieval over generic netlink
-> +
-> +definitions:
-> +  -
-> +    type: const
-> +    name: max-object-size
-> +    value: 0x01000000
-> +  -
-> +    type: const
-> +    name: max-nonce-size
-> +    value: 256
-> +  -
-> +    type: const
-> +    name: max-obj-type
-> +    value: 4
-> +  -
-> +    name: evidence-type
-> +    type: enum
-> +    doc: PCI device security evidence objects
-> +    entries:
-> +      -
-> +        name: cert0
-> +        doc: SPDM certificate chain from device slot0
-> +      -
-> +        name: cert1
-> +        doc: SPDM certificate chain from device slot1
-> +      -
-> +        name: cert2
-> +        doc: SPDM certificate chain from device slot2
-> +      -
-> +        name: cert3
-> +        doc: SPDM certificate chain from device slot3
-> +      -
-> +        name: cert4
-> +        doc: SPDM certificate chain from device slot4
-> +      -
-> +        name: cert5
-> +        doc: SPDM certificate chain from device slot5
-> +      -
-> +        name: cert6
-> +        doc: SPDM certificate chain from device slot6
-> +      -
-> +        name: cert7
-> +        doc: SPDM certificate chain from device slot7
-> +      -
-> +        name: vca
-> +        doc: SPDM transcript of version, capabilities, and algorithms negotiation
-> +      -
-> +        name: measurements
-> +        doc: SPDM GET_MEASUREMENTS response
-> +      -
-> +        name: report
-> +        doc: TDISP GET_DEVICE_INTERFACE_REPORT response
-> +
->
+> > It seems from your email that the CPU S2 has the Cbit as part of the
+> > address and the S1 feeds it through to the S2, so it is genuinely has
+> > two addres spaces?
+> 
+> S1/S2 PTEs have Cbit. Addresses to look up those PTEs - do not.
 
-In the case of CCA, the slot number is determined early, when we create
-the pdev object that maps to PF0. This is done as part of the connect
-callback. Currently, the slot number is hardcoded to 0. I believe we
-need to extend connect to include slot information.
+So we are back to what I was saying before: using phys_addr_t to
+encode a PTE bit is probably a very confusing idea - especially when
+contrasted with the other arches that have a legitimate address bit.
 
-Even with that change, we would only have one certificate type.
-These would correspond to whichever slot number was selected during
-connect.
+> > Same way it knows if there is no S1?
+> 
+> If no S1 - then sDTE decides on Cbit for the entire ASID (with the help of vTOM).
 
+Sounds like the intention was the IOMMU shared/private space would be
+controlled with vTOM which actually does a create a legitimate address
+bit in the phys_addr_t.
 
--aneesh
+A sDTE global control is OK for non-TDISP devices, or even devices
+that haven't entered RUN yet, but it is not OK for a TDISP device that
+must still be able to access shared memory.
+
+> I understand I am often confusing, trying to unconfuse (including myself)... Thanks,
+
+It seems to me the AMD architecture itself is pretty confusing. :\
+
+Jason
+ 
+ 
