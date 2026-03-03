@@ -1,121 +1,91 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6535739D6F1;
-	Tue,  3 Mar 2026 16:02:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A96F370D45;
+	Tue,  3 Mar 2026 16:38:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772553780; cv=none; b=J4ZqEhuWMX6HFM2c82qOXTZ0p+w9yjL656RKn+DbxOkC6J4coE9gf93XM/N3Gbwe3qYspPGcPCEpb7jGx30EVmPePsMJSNPZ6rp5REsuut14LBY60sjwJBv2VcB1yHyPJVdXZUr8a1YNnFW3/9ERwjY22ny43ljxiv2UC3VChJs=
+	t=1772555923; cv=none; b=O8PgM67IxvNEQR3Tdnon0/O8aL2pPHFyJEuFp6GE0t66AWD7wtuTAdkQl3kUWPXrIWE/QFTOeCSUZbgQThMsIk2K3G7GBRy8mPEVvmI27PPpjcRUMd85tRH93Car2YBPPwu+UOpyWD154gbHyGh/eaNxJoMxR1yUH+wUn4YUCCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772553780; c=relaxed/simple;
-	bh=nybrefJvY4I/b5tGu5aw4kr9AmUjRGgpr4KA3jcPp2o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DbdOx5dwQ5eYG8LYoLyDDMBM2NyQ6Ik1u/d51hv5NSioBnnmyJoKwwGJKp5pj6MrNApb+ao7Xo2KrXNrk36EJrrL5krmmHQ+J/5HNvVEM5jUWDgT1XkQVYcONlTLTNcP1dqZYjNdpS86h05y7DpwrPeQzCYgs/iafSHhHLhRZXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6C1FF339;
-	Tue,  3 Mar 2026 08:02:52 -0800 (PST)
-Received: from [10.57.66.27] (unknown [10.57.66.27])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 67C6E3F694;
-	Tue,  3 Mar 2026 08:02:55 -0800 (PST)
-Message-ID: <37b79d98-10e5-4beb-b95c-783d41050eae@arm.com>
-Date: Tue, 3 Mar 2026 16:02:53 +0000
+	s=arc-20240116; t=1772555923; c=relaxed/simple;
+	bh=lxeNyqMRRI9fL4eYmbH8oZ+nwJE9/XGPxmznsDIrVC4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=PlB99gUF8r19EpW/Al818INv7YRpynHtAg+c8DH/I4a5FnnXRLp/8CIdJtNPzUT2IZsB5eQ9P0JV1t9ifJ1uSNQGoLTxd3cfEnh2BHuY98lIcExvcoKLQioPUM67td6m0Ndv8wDDEKuWawZSU8YpQJTvq0+ACE9UQkD6mPQQXFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jrmrh/Uf; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jrmrh/Uf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 766E9C116C6;
+	Tue,  3 Mar 2026 16:38:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772555922;
+	bh=lxeNyqMRRI9fL4eYmbH8oZ+nwJE9/XGPxmznsDIrVC4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=jrmrh/UfdXRmDeQFjkuIaJKOltOxNdbFhfXFSkPKITeXW0OSp8csrG6TrjyAqcMha
+	 7JssawiTsRd/p1E5crBihv2t+kaJlcDARtXw4GAGkccnjyisEdEI0WsuV6cVjgqOzv
+	 cMPAAJa+sa8jmfhpExDMHcNuIUWk1M+4cBMYSWvomfQQ8EQTVtOYOHNF3AYlLdTeLF
+	 LhyMiE7HH+zSqgUt9lNHxkhW4TUaGpj4RlhU8runUP7L0PB6tc3VSwEVxvW7mZRKe2
+	 fM0izilv5esqNgr7g2JiBU6+Vf7yCN4oUZTBf2vhjSacCAExH+WLTWprW9H4FTeh2S
+	 ujywis8EiKOZA==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, aik@amd.com, yilun.xu@linux.intel.com,
+	bhelgaas@google.com, alistair23@gmail.com, lukas@wunner.de,
+	jgg@nvidia.com, Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH v2 08/19] PCI/TSM: Add "evidence" support
+In-Reply-To: <20260303000207.1836586-9-dan.j.williams@intel.com>
+References: <20260303000207.1836586-1-dan.j.williams@intel.com>
+ <20260303000207.1836586-9-dan.j.williams@intel.com>
+Date: Tue, 03 Mar 2026 22:08:34 +0530
+Message-ID: <yq5a8qc8amwl.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 06/46] arm64: RMI: Define the user ABI
-Content-Language: en-GB
-To: Marc Zyngier <maz@kernel.org>
-Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>
-References: <20251217101125.91098-1-steven.price@arm.com>
- <20251217101125.91098-7-steven.price@arm.com> <86tsuy8g0u.wl-maz@kernel.org>
- <33053e22-6cc6-4d55-bc7f-01f873a15d28@arm.com>
- <9d702666-72a8-43e4-8ab3-548d8154a529@arm.com> <86fr6h838s.wl-maz@kernel.org>
- <d87ee902-3b5e-4cf9-8b97-d83f8da02a5a@arm.com> <86ecm17zeb.wl-maz@kernel.org>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <86ecm17zeb.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 03/03/2026 14:37, Marc Zyngier wrote:
-> On Tue, 03 Mar 2026 14:23:08 +0000,
-> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
->>
->> On 03/03/2026 13:13, Marc Zyngier wrote:
->>> On Mon, 02 Mar 2026 17:13:41 +0000,
->>> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
->>>>
->>>> More importantly, we have to make sure that the "RMI_PSCI_COMPLETE" is
->>>> invoked before both of the following:
->>>>     1. The "source" vCPU is run again
->>>>     2. More importantly the "target" vCPU is run.
->>>
->>> I don't understand why (1) is required. Once the VMM gets the request,
->>
->> The underlying issue is, the RMM doesn't have the VCPU object for the
->> "target" VCPU, to make the book keeping. Also, please note that for  a
->> Realm, PSCI is emulated by the "RMM". Host is obviously notified of the
->> "PSCI" changes via EXIT_PSCI (note, it is not SMCCC exit)
->>   so that it can be in sync with the real state. And does have a say in
->>   CPU_ON. So, before we return to running the "source" CPU,
->> Host must provide the target VCPU object and its consent (via
->> psci_status) to the RMM. This allows the RMM to emulate the PSCI
->> request correctly and also at the same time keep its book keeping
->> in tact (i.e., marking the Target VCPU as runnable or not).
->>
->> When a "source" VCPU exits to the host with a PSCI_EXIT, the RMM
->> marks the source VCPU has a pending PSCI operation, and
->> RMI_PSCI_COMPLETE request ticks that off, making it runnable again.
-> 
-> Sure. What I don't get is what this has to happen on the source vcpu
-> thread. The RMM has absolutely no clue about that, and there should be
-> no impediment to letting the target vcpu do it as it starts.
+Dan Williams <dan.j.williams@intel.com> writes:
 
-Because, the RMM wants to make that the state is consistent. i.e,
-Host cannot lie to the "source" VCPU and RMM (e.g., CPU_ON denied) and
-then run the "target" VCPU.
+> Once one accepts the threat model that devices may be adversarial the
+> process of establishing trust in the device identity, the integrity +
+> confidentiality of its link, and the integrity + confidentiality of its
+> MMIO interface requires multiple evidence objects from the device. The
+> device's certificate chain, measurements and interface report need to be
+> retrieved by the host, validated by the TSM and transmitted to the guest
+> all while mitigating TOCTOU races.
+>
+> All TSM implementations share the same fundamental objects, but vary in how
+> the TSM conveys its trust in the objects. Some TSM implementations expect
+> the full documents to be conveyed over untrustworthy channels while the TSM
+> securely conveys a digest. Others transmit full objects with signed SPDM
+> transcripts of requester provided nonces. Some offer a single transcript
+> to convey the version, capabilities, and algorithms (VCA) data and
+> measurements in one blob while others split VCA as a separate signed blob.
+>
+> Introduce a netlink interface to dump all these objects in a common way
+> across TSM implementations and across host and guest environments.
+> Userspace is responsible for handling the variance of "TSM provides combo
+> measurements + VCA + nonce + signature, vs TSM provides a digest over a
+> secure channel of the same".
+>
+> The implementation adheres to the guideline from:
+> Documentation/userspace-api/netlink/genetlink-legacy.rst
+>
+>     New Netlink families should never respond to a DO operation with
+>     multiple replies, with ``NLM_F_MULTI`` set. Use a filtered dump
+>     instead.
+>
+> Per SPDM, transcripts may grow to be 16MB in size. Large PCI/TSM netlink
+> blobs are handled via a sequence of dump messages that userspace must
+> concatenate.
+>
 
-In other words, the response to the CPU_ON must be recorded by the RMM
-in the target VCPU state, to make sure the target VCPU state is
-consistent with the response.
+Should we also expose evidence->generation to userspace so it can be
+used during accept()? This would allow us to ensure that the device is
+accepted using the same evidence generation observed by userspace.
 
-The only way to fix this would be RMM keeping track of "mpidr" to REC
-object mapping (VCPU object), which impacts the scalability. With that
-in place, RMM can update the target VCPU state from the return of the
-REC_ENTER after a PSCI_EXIT.
-
-That said, will explore the options to address this
-
-Thanks
-Suzuki
-
-> 
-> Even better, you should be able to do that on the first thread that
-> reenters the guest, completely removing any RMM knowledge from the
-> PSCI handling in userspace.
-> 
-> If you can't do that, then please consider fixing the RMM to allow it.
-> 
-> Thanks,
-> 
-> 	M.
-> 
-
-
-
+-aneesh
