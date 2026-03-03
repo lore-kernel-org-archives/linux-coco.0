@@ -1,133 +1,108 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49475474F
-	for <linux-coco@lists.linux.dev>; Tue,  3 Mar 2026 02:24:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799C81E1A3D;
+	Tue,  3 Mar 2026 03:15:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772504656; cv=none; b=pc2erzDIc5aR6MhydF1g1sqbAnobzSKh+GOctoofv5i+GRO3JoboI4TqUJzd9kEpiOxyW93RSjtxnqgC30iJfPdO04Y2VTrB5wMQhPw5U3CVNZWcyhJ+MjSaXXvkvidwOm/AkhK4HOsS9GqswHy57oP9JasJjr0I/5VDM6eDMu4=
+	t=1772507718; cv=none; b=XbX/5+ZGEd4hzbiykHqM0URswkKbju/BwatDRaP1vFGHTOnTcIbm+A3Kv36PKFjOvf/4XCHEp3VhnIvjuQDIG5VedvFbUH3wHIL+y59Ivh0w7rCMZwfW+A/zKqQruAvAJzvhs34lu3hZnIhRRqwrD8w3rTpMATi0kpcuxfK8Q6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772504656; c=relaxed/simple;
-	bh=uZtpxAFpi1G6SUIWdfOSzJAaL5AiGi7GdvzVrHawOYw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XGBwsZUkmSxM3Dyir6OHDm5IDyOz7ZDcsD0IvmCczL1JyWoCiMGwa1z9RBtungWPhqq1lyo6xBKZtp3O8AJ+gO06vwRRQkku7uG1aTXxFu8r4XRXTARzR2b2gE4mgROm69FMwoJ/eVANmeNh5UXU8g8hgpB6sQyBAdhafEyfKKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C6cHuxXy; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1772507718; c=relaxed/simple;
+	bh=xsz3XbahbxkD1Tne3qCV3REAPK8gj5He5vgtDqEZX58=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b9ElQRU2hWOXWxrTpxEvR9wlhiJkLLBGVmbeUBeYvI4j7vF6LUEK97c5k5V0ZPBKHv3NR+DYWnU0Abn47pXokIWJ+XjlWDPfeoFWdyeKhDyjZFmNnBiuplTEbZ0MeMYnIcQCEZ2+2Uj302iHr7PcpVPvA+o48k+hyuhegkBH2xY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fwYbzICV; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C6cHuxXy"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b6ce1b57b9cso4120470a12.1
-        for <linux-coco@lists.linux.dev>; Mon, 02 Mar 2026 18:24:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772504655; x=1773109455; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hgEoULUEc/jsh9Z2U/YxOmzx6Hq08vsikzOFMt8dIRY=;
-        b=C6cHuxXyllNWlTqd6Q/4mybZ8bwPxK3+RvFpAVrduUEvLZWrNv3dv/k49gih/byJao
-         u8L2JUA2hfRHPSSLson1IgL6bHOvFHYxbPFWQMVTTHIGPjf5OEK4cnZbo2yW0cvse+6J
-         gvIV+v78lsU8To8Md1wq1g6LwfhotWx3P7fylLkOWUVQHzsKIjVRYyNXq06a8ogYIT1i
-         UKsfxPofV+u5Xo5KFVSMcltehpwQRLUZSDsFdMPU2lJlMjCiAkHP4ifPJyr1HfPNSstC
-         LSKmXVGOrZFy2bnlNTzKvdmgRtF27zr4QknuLhEK72T+6GelNLCYU+v0gezh0K4+J36j
-         +c1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772504655; x=1773109455;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=hgEoULUEc/jsh9Z2U/YxOmzx6Hq08vsikzOFMt8dIRY=;
-        b=vtaEzN8S2p/r6jmz8BP9572ZwxzHN805CwBwuAfAmJGOsbtF7/0sHAbt5HwRHeI2bZ
-         uLjC8exy9uUGP50v5AbW3HPfqTftFop2PSMAIin8VTvkIripEl4FihM/dk9rZRzk6kQ8
-         WGSzhCj5ehGitcfFdXGX+JiCPVWLtjg7w4XYIGN6J2HI9tK1cV07xa2+/RRLbsH24cmp
-         9sJTH8Dp2nrJfMKAY/Eab0IbDNxdsYgzMAZjH8LoAplswVbqteddCEURySk9r/qyEaRU
-         ybsgwD2MkGY09tQD2aUnbSPVfkP0vCxF3xcTfWll9DWe7tIsSAxRgD/FTub+sqA2Bbhx
-         Js8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXRCmOUM4/yvXx1H5Hj6drcFCOwz4aTWOPEbVUe7ij+aGAjCOTb69iAn/FpOTlJVL/Rt2xzsh7wfYTN@lists.linux.dev
-X-Gm-Message-State: AOJu0YzjQyn/rpsNc79S6n98IaEChMx9SflNUkPeOCaxlhDm85ZlvToC
-	I2zpNF+XrrJgEft39EVAgtBFBA/g/M0XhkNxS1pQIusj22dhAUGCZaPBOD9rBhLCqaEPx+9Ix3Q
-	+iFEx9A==
-X-Received: from pgnn19.prod.google.com ([2002:a05:6a02:4f13:b0:c5e:9fe:7560])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:258d:b0:395:151c:4eda
- with SMTP id adf61e73a8af0-395c3ae7748mr13870512637.45.1772504654755; Mon, 02
- Mar 2026 18:24:14 -0800 (PST)
-Date: Mon, 2 Mar 2026 18:24:13 -0800
-In-Reply-To: <aZ9MDxJ1iEhIbJJ6@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fwYbzICV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772507715; x=1804043715;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xsz3XbahbxkD1Tne3qCV3REAPK8gj5He5vgtDqEZX58=;
+  b=fwYbzICVdTtA31jaUiH+EZoXjkP0QUsyVT8qK16sqfldHaaJydY0g4A/
+   yolU5pPxgnYGhewPdt2ggmTDGoAob7IK6NGMqP1Km1SHM3q5QCzviov1I
+   XLCZA8cRtieOGm4aLNN/bLds1cvHMxdGHuwPNB5hcq2VkmQ7meHV4BCy8
+   5W9PQBcFpp5kAPsQT9OQJmFgROQ1hhkpdvMrXaOCOpn5Ozb9hMrPN7kIL
+   dU2JfwTYo0KN93EeedPnaf2FhJdFwDerb5f2U6KhGyPZXWuK+Sk4NvcSG
+   qiQuRAKgzTaF83gjzLmfDhQjgoGdA2qYShOJNBQ10sZ7rEgP8cUEcrhi8
+   Q==;
+X-CSE-ConnectionGUID: ZQYuU4NlS0iEb55VUSGGFw==
+X-CSE-MsgGUID: LuvJPmjvQC+cl0SCLizjdw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="77398529"
+X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; 
+   d="scan'208";a="77398529"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 19:15:14 -0800
+X-CSE-ConnectionGUID: +4ipEaLzRSy9T0JOCTZuNg==
+X-CSE-MsgGUID: shjD0TQqSjK4KJB1ww6AcA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; 
+   d="scan'208";a="220886311"
+Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
+  by fmviesa004.fm.intel.com with ESMTP; 02 Mar 2026 19:15:12 -0800
+Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vxGE2-000000001MD-0EEX;
+	Tue, 03 Mar 2026 03:15:10 +0000
+Date: Tue, 3 Mar 2026 04:14:32 +0100
+From: kernel test robot <lkp@intel.com>
+To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	linux-pci@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, gregkh@linuxfoundation.org, aik@amd.com,
+	aneesh.kumar@kernel.org, yilun.xu@linux.intel.com,
+	bhelgaas@google.com, alistair23@gmail.com, lukas@wunner.de,
+	jgg@nvidia.com, Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH v2 08/19] PCI/TSM: Add "evidence" support
+Message-ID: <202603030451.0ZpbO6ex-lkp@intel.com>
+References: <20260303000207.1836586-9-dan.j.williams@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20260225012049.920665-1-seanjc@google.com> <20260225012049.920665-15-seanjc@google.com>
- <8bed2406e9f5f30f8f01c1da731fae6e040da827.camel@intel.com> <aZ9MDxJ1iEhIbJJ6@google.com>
-Message-ID: <aaZGTY3CzhaCb1lc@google.com>
-Subject: Re: [PATCH 14/14] KVM: x86: Add helpers to prepare kvm_run for
- userspace MMIO exit
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"x86@kernel.org" <x86@kernel.org>, "zhangjiaji1@huawei.com" <zhangjiaji1@huawei.com>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "michael.roth@amd.com" <michael.roth@amd.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260303000207.1836586-9-dan.j.williams@intel.com>
 
-On Wed, Feb 25, 2026, Sean Christopherson wrote:
-> On Wed, Feb 25, 2026, Rick P Edgecombe wrote:
-> > On Tue, 2026-02-24 at 17:20 -0800, Sean Christopherson wrote:
-> > > +static inline void __kvm_prepare_emulated_mmio_exit(struct kvm_vcpu =
-*vcpu,
-> > > +						=C2=A0=C2=A0=C2=A0 gpa_t gpa, unsigned int len,
-> > > +						=C2=A0=C2=A0=C2=A0 const void *data,
-> > > +						=C2=A0=C2=A0=C2=A0 bool is_write)
-> > > +{
-> > > +	struct kvm_run *run =3D vcpu->run;
-> > > +
-> > > +	run->mmio.len =3D min(8u, len);
-> >=20
-> > I would think to extract this to a local var so it can be used twice.
->=20
-> Ya, either way works for me.  The copy+paste is a little gross, but it's =
-also
-> unlikely that anyone is going to modify this code (or if they did, that a=
-ny goofs
-> wouldn't be immediately disastrous).
+Hi Dan,
 
-Ooh, better idea.  Since TDX is the only direct user of
-__kvm_prepare_emulated_mmio_exit() and it only supports lenths of 1, 2, 4, =
-and 8,
-kvm_prepare_emulated_mmio_exit() is the only path that actually needs to ca=
-p the
-length.  Then the inner helper can assert a valid length.  Doesn't change a=
-nything
-in practice, but I like the idea of making the caller be aware of the limit=
-ation
-(even if that caller is itself a helper).
+kernel test robot noticed the following build warnings:
 
-static inline void __kvm_prepare_emulated_mmio_exit(struct kvm_vcpu *vcpu,
-						    gpa_t gpa, unsigned int len,
-						    const void *data,
-						    bool is_write)
-{
-	struct kvm_run *run =3D vcpu->run;
+[auto build test WARNING on c2012263047689e495e81c96d7d5b0586299578d]
 
-	KVM_BUG_ON(len > 8, vcpu->kvm);
+url:    https://github.com/intel-lab-lkp/linux/commits/Dan-Williams/PCI-TSM-Report-active-IDE-streams-per-host-bridge/20260303-080409
+base:   c2012263047689e495e81c96d7d5b0586299578d
+patch link:    https://lore.kernel.org/r/20260303000207.1836586-9-dan.j.williams%40intel.com
+patch subject: [PATCH v2 08/19] PCI/TSM: Add "evidence" support
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+docutils: docutils (Docutils 0.21.2, Python 3.13.5, on linux)
+reproduce: (https://download.01.org/0day-ci/archive/20260303/202603030451.0ZpbO6ex-lkp@intel.com/reproduce)
 
-	run->mmio.len =3D len;
-	run->mmio.is_write =3D is_write;
-	run->exit_reason =3D KVM_EXIT_MMIO;
-	run->mmio.phys_addr =3D gpa;
-	if (is_write)
-		memcpy(run->mmio.data, data, len);
-}
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603030451.0ZpbO6ex-lkp@intel.com/
 
-static inline void kvm_prepare_emulated_mmio_exit(struct kvm_vcpu *vcpu,
-						  struct kvm_mmio_fragment *frag)
-{
-	WARN_ON_ONCE(!vcpu->mmio_needed || !vcpu->mmio_nr_fragments);
+All warnings (new ones prefixed by >>):
 
-	__kvm_prepare_emulated_mmio_exit(vcpu, frag->gpa, min(8u, frag->len),
-					 frag->data, vcpu->mmio_is_write);
-}
+   Warning: tools/docs/documentation-file-ref-check references a file that doesn't exist: m,^Documentation/scheduler/sched-pelt
+   Warning: tools/docs/documentation-file-ref-check references a file that doesn't exist: m,(Documentation/translations/[
+   Using alabaster theme
+   WARNING: ./include/crypto/skcipher.h:166 struct member 'SKCIPHER_ALG_COMMON' not described in 'skcipher_alg'
+   Documentation/driver-api/pci/tsm:147: ./include/linux/pci-tsm.h:112: ERROR: Unexpected indentation. [docutils]
+>> Documentation/driver-api/pci/tsm:147: ./include/linux/pci-tsm.h:113: WARNING: Block quote ends without a blank line; unexpected unindent. [docutils]
+>> Documentation/driver-api/pci/tsm:147: ./include/linux/pci-tsm.h:116: WARNING: Definition list ends without a blank line; unexpected unindent. [docutils]
+   ERROR: Cannot find file ./drivers/pci/tsm.c
+   ERROR: Cannot find file ./drivers/pci/tsm.c
+   WARNING: No kernel-doc for file ./drivers/pci/tsm.c
+   WARNING: ./include/linux/virtio.h:183 struct member 'map' not described in 'virtio_device'
+   WARNING: ./include/linux/virtio.h:183 struct member 'VIRTIO_DECLARE_FEATURES(features' not described in 'virtio_device'
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
