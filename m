@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6297015665C
-	for <linux-coco@lists.linux.dev>; Tue,  3 Mar 2026 00:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21CC35D5FC
+	for <linux-coco@lists.linux.dev>; Tue,  3 Mar 2026 00:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772496071; cv=none; b=RDbBMHr5V43kHOgQv/4fSYXoTnyJq597Ri9PuESBzAn14NzDylsNB/HJkDfdCXP9WTs6YB2yYqrKxYlU30Al1VNVt2D0Gn/4p3+YjClJaTgAOGbKmLbVFMW2Lewv0GJEYeyWW/v+IHxTo79N9xJHOQkYWNdtbBMM1VoFsju4dSI=
+	t=1772496073; cv=none; b=nUxTDTr6Xit6etGNVN6tLDDjNJfip5NZZhT9rUp7iOkjpyZB1wHqjx/89fgofx3ooDZ9AAZH3BfiR78njLCnc9HPjnRvTWc/dkIzJ0yy0o4L021o0gWzvknIjqA0UFpnEHDiPJS1BWuAa8xmD9lny/u8J4gxeo8phiPAJrWNOa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772496071; c=relaxed/simple;
-	bh=15Nqiey4EMB27HQmv8Rid8AOvuVthTHLMnQEzkNrWNU=;
+	s=arc-20240116; t=1772496073; c=relaxed/simple;
+	bh=/xbSz0XB0SFhE9gB5JbwJ7oy06YwjFLtdehMTj/80AY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MCly743E6GPTUEJg1NXELba7Z5PHiuqsx4AI/e7ufy5L9VvsxXD5VCs9XWJl4oljX5nJ1kMfTOYcsPzWwhwR8ICkAfd1fE3cPoy3Z+sD9/dD/OljtkYI+e/2V+QjxypiQNIP0Ip7nEE4EMMB7wtGT9bvr5GAb8ZKIk1woRFsbIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hAyZ3cB4; arc=none smtp.client-ip=198.175.65.17
+	 MIME-Version; b=VVjq2ocmg/xlDxHzm6jWpvSZcaUvWYMtYCfIscbbuscf+KmPWRUntkEQFAIpQ2Y8Od02oYhRY8/3qxSeoaWXofDZ6zVTJUeyiLN2JKCpN/vuvtLVLFMsz/QDBZXENiyAXCB0TCqjadFFmpd1G4etucTFT7lCWO+82QjXJcuDgO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fom8gh1W; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hAyZ3cB4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fom8gh1W"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772496070; x=1804032070;
+  t=1772496071; x=1804032071;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=15Nqiey4EMB27HQmv8Rid8AOvuVthTHLMnQEzkNrWNU=;
-  b=hAyZ3cB4Rk5s8plWGu0LKjLSjIDqG7u6B/OtEV7QeTVAWTfxhZNGYV3L
-   h/SIdfXyirYni+XhEjQv6kZuSi1dLwP8I4+vUQNet68nZte1MLCxtzgdP
-   I0TaeBhkpwjV1uHTW23pXC8j/6PMEtlPuE1vI6hdXIZqFS0gGgJ3ntxZe
-   JgZzuZCGEdaIOle/c4lhfDKgvMCxQkgD6TEfNLZr+VGph4zp7ifG6T19S
-   c48cCrI446gtjnanCHmsTTEZe6usFg6EJuCUA+oTcfoyRX0PuHJvpRtJq
-   dz7kIu+mW7qh5l8XvmT2U30o4OLBU/S5CbdVqEA8GUcpRuJje01YxQJ4r
-   Q==;
-X-CSE-ConnectionGUID: IXjM1rlbSAa6RMngFTZDMw==
-X-CSE-MsgGUID: Zrh/0Fa9RfeEwLtfcEM3Eg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="73483045"
+  bh=/xbSz0XB0SFhE9gB5JbwJ7oy06YwjFLtdehMTj/80AY=;
+  b=Fom8gh1WZcYPG1xiS40OO4u9LLsRfs4M3U9/A9dcCaU3VszUCorGSUou
+   UQv0AFftZN/b6889Yzjf4VZXWvwaOjpdfQzJVeKjixQ9noaMkwE43/8yo
+   OPYdfi4QsIMD4WHO7U1u+i1EVK5+e51ZAIp038taZG0b7tOGV8nTPLtX+
+   CtlV9gibaHW9rCBOTm4F4TdyejagsNpzi646QInwh26ST2RF6OXtGj5tb
+   u7iPSmoO4A9jAZh47z0fRAsaJluXt5T7MI64bJuolXTKKwSNnWIfwrPHl
+   EwSFzSB8yBcfwzCr71B/56spRboLtU1HW8DyAHRy4enVPVK9IkkhenwQN
+   w==;
+X-CSE-ConnectionGUID: WhNbH0LARmqbE9EB4+46sQ==
+X-CSE-MsgGUID: P/1MXNpZRWWizEZBnvZ+KQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="73483069"
 X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; 
-   d="scan'208";a="73483045"
+   d="scan'208";a="73483069"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
   by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 16:01:01 -0800
-X-CSE-ConnectionGUID: 89pK29fAQtim8RZO75OTyw==
-X-CSE-MsgGUID: LK3JYhneSL2PxRRYaAP2Aw==
+X-CSE-ConnectionGUID: OIEckF6bTICfYk7DbX2nXg==
+X-CSE-MsgGUID: wduQTRhORVi5JlTcBOQFZA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; 
-   d="scan'208";a="214967132"
+   d="scan'208";a="214967139"
 Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
-  by fmviesa006.fm.intel.com with ESMTP; 02 Mar 2026 16:01:00 -0800
+  by fmviesa006.fm.intel.com with ESMTP; 02 Mar 2026 16:01:01 -0800
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-coco@lists.linux.dev,
 	linux-pci@vger.kernel.org
@@ -54,9 +54,9 @@ Cc: gregkh@linuxfoundation.org,
 	alistair23@gmail.com,
 	lukas@wunner.de,
 	jgg@nvidia.com
-Subject: [PATCH v2 17/19] tools/testing/devsec: Add a script to exercise samples/devsec/
-Date: Mon,  2 Mar 2026 16:02:05 -0800
-Message-ID: <20260303000207.1836586-18-dan.j.williams@intel.com>
+Subject: [PATCH v2 19/19] tools/testing/devsec: Add basic evidence retrieval validation
+Date: Mon,  2 Mar 2026 16:02:07 -0800
+Message-ID: <20260303000207.1836586-20-dan.j.williams@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260303000207.1836586-1-dan.j.williams@intel.com>
 References: <20260303000207.1836586-1-dan.j.williams@intel.com>
@@ -68,268 +68,85 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Run the samples/devsec/ infrastructure through the PCIe TDISP connect,
-bind, lock, and accept flows. Include tests for module "autoprobe" policy.
+Checkout basic operation of the pci-tsm-netlink ABI. The main complexity is
+reassembly of single evidence payloads that span multiple messages.
 
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- tools/testing/devsec/devsec.sh | 234 +++++++++++++++++++++++++++++++++
- MAINTAINERS                    |   1 +
- 2 files changed, 235 insertions(+)
- create mode 100755 tools/testing/devsec/devsec.sh
+ tools/testing/devsec/devsec.sh | 46 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
 diff --git a/tools/testing/devsec/devsec.sh b/tools/testing/devsec/devsec.sh
-new file mode 100755
-index 000000000000..ce4a986b74dd
---- /dev/null
+index ce4a986b74dd..6a9313e7104f 100755
+--- a/tools/testing/devsec/devsec.sh
 +++ b/tools/testing/devsec/devsec.sh
-@@ -0,0 +1,234 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+# Copyright (C) 2025-2026 Intel Corporation
-+
-+# Checkout PCI/TSM sysfs and driver-core mechanics with the
-+# devsec_link_tsm and devsec_tsm sample modules from samples/devsec/.
-+
-+set -ex
-+
-+trap 'err $LINENO' ERR
-+err() {
-+        echo $(basename $0): failed at line $1
-+        [ -n "$2" ] && "$2"
-+        exit 1
-+}
-+
-+ORDER=""
-+
-+setup_modules() {
-+	if [[ $ORDER == "bus" ]]; then
-+		modprobe devsec_bus
-+		modprobe devsec_link_tsm
-+		modprobe devsec_tsm
-+	else
-+		modprobe devsec_tsm
-+		modprobe devsec_link_tsm
-+		modprobe devsec_bus
-+	fi
-+}
-+
-+teardown_modules() {
-+	if [[ $ORDER == "bus" ]]; then
-+		modprobe -r devsec_tsm
-+		modprobe -r devsec_link_tsm
-+		modprobe -r devsec_bus
-+	else
-+		modprobe -r devsec_bus
-+		modprobe -r devsec_link_tsm
-+		modprobe -r devsec_tsm
-+	fi
-+}
-+
-+PCI_DEVS=(
-+"/sys/bus/pci/devices/10000:01:00.0"
-+"/sys/bus/pci/devices/10001:03:00.0"
-+)
-+FN_DEVS=(
-+"/sys/bus/pci/devices/10000:01:00.1"
-+"/sys/bus/pci/devices/10001:03:00.1"
-+)
-+tsm_devsec=""
-+tsm_link=""
-+devsec_pci="/sys/bus/pci/drivers/devsec_pci"
-+
-+tdisp_test() {
-+	pci_dev=${PCI_DEVS[$1]}
-+	fn_dev=${FN_DEVS[$1]}
-+	host_bridge=$(dirname $(dirname $(readlink -f $pci_dev)))
-+
-+	# with the device disconnected from the devsec TSM validate that
-+	# the devsec_pci driver loads and honors the autoprobe policy
-+	echo "devsec_pci" > $pci_dev/driver_override
-+	modprobe devsec_pci "autoprobe=0"
-+
-+	[[ -e $pci_dev/driver ]] && err "$LINENO"
-+	echo $(basename $pci_dev) > $devsec_pci/bind
-+	echo $(basename $pci_dev) > $devsec_pci/unbind
-+
-+	# grab the device's resource from /proc/iomem
-+	resource=$(cat /proc/iomem | grep -m1 $(basename $pci_dev) | awk -F ' :' '{print $1}' | tr -d ' ')
-+	[[ -n $resource ]] || err "$LINENO"
-+
-+	# lock and accept the device, validate that the resource is now
-+	# marked encrypted
-+	echo $(basename $tsm_devsec) > $pci_dev/tsm/lock
-+	echo 1 > $pci_dev/tsm/accept
-+
-+	cat /proc/iomem | grep "$resource" | grep -q -m1 "PCI MMIO Encrypted" || err "$LINENO"
-+
-+	# validate that the driver now fails with -EINVAL when trying to
-+	# bind
-+	expect="echo: write error: Invalid argument"
-+	echo $(basename $pci_dev) 2>&1 > $devsec_pci/bind | grep -q "$expect" || err "$LINENO"
-+
-+	# unlock and validate that the encrypted mmio is removed
-+	echo $(basename $tsm_devsec) > $pci_dev/tsm/unlock
-+	cat /proc/iomem | grep "$resource" | grep -q "PCI MMIO Encrypted" && err "$LINENO"
-+
-+	modprobe -r devsec_pci
-+}
-+
-+validate_disconnected() {
-+	pci_dev=${PCI_DEVS[$1]}
-+	fn_dev=${FN_DEVS[$1]}
-+	host_bridge=$(dirname $(dirname $(readlink -f $pci_dev)))
-+
-+	# validate that the dsm is not yet detected and that the sub-function
-+	# is aware of any TSM capabilities
-+	dsm=$(cat $pci_dev/tsm/dsm) || err "$LINENO from $2"
-+	bound=$(cat $pci_dev/tsm/bound) || err "$LINENO from $2"
-+	[[ -z $dsm ]] || err "$LINENO from $2"
-+	[[ -z $bound ]] || err "$LINENO from $2"
-+	[[ ! -e $fn_dev/tsm/dsm ]] || err "$LINENO from $2"
-+	[[ ! -e $fn_dev/tsm/bound ]] || err "$LINENO from $2"
-+	[[ ! -e $fn_dev/tsm/connect ]] || err "$LINENO from $2"
-+	[[ ! -e $fn_dev/tsm/disconnect ]] || err "$LINENO from $2"
-+}
-+
-+# check that all devices can be connected simultaneously
-+ide_multi_test() {
-+	for pci_dev in ${PCI_DEVS[@]}; do
-+		echo $(basename $tsm_link) > $pci_dev/tsm/connect
-+	done
-+
-+	#check stream links show up and point back to the pci_dev
-+	for pci_dev in ${PCI_DEVS[@]}; do
-+		host_bridge=$(dirname $(dirname $(readlink -f $pci_dev)))
-+		hb=$(basename $host_bridge)
-+		[[ -e $host_bridge/stream0.0.0 ]] || err "$LINENO"
-+		[[ -e $tsm_link/$hb/stream0.0.0 ]] || err "$LINENO"
-+		[[ $(readlink -f "$tsm_link/$hb/stream0.0.0") == $(readlink -f $pci_dev) ]] || err "$LINENO"
-+	done
-+
-+	for pci_dev in ${PCI_DEVS[@]}; do
-+		echo $(basename $tsm_link) > $pci_dev/tsm/disconnect
-+	done
-+}
-+
-+ide_test() {
-+	pci_dev=${PCI_DEVS[$1]}
-+	fn_dev=${FN_DEVS[$1]}
-+	host_bridge=$(dirname $(dirname $(readlink -f $pci_dev)))
-+
-+	# validate that all of the secure streams are idle by default
-+	hb=$(basename $host_bridge)
-+	nr=$(cat $host_bridge/available_secure_streams)
-+	[[ $nr == 4 ]] || err "$LINENO"
-+
-+	validate_disconnected $1 $LINENO
-+
-+	# connect a stream and validate that the stream link shows up at
-+	# the host bridge and the TSM
-+	echo $(basename $tsm_link) > $pci_dev/tsm/connect
-+	nr=$(cat $host_bridge/available_secure_streams)
-+	[[ $nr == 3 ]] || err "$LINENO"
-+
-+	[[ $(cat $pci_dev/tsm/connect) == $(basename $tsm_link) ]] || err "$LINENO"
-+	[[ -e $host_bridge/stream0.0.0 ]] || err "$LINENO"
-+	[[ -e $tsm_link/$hb/stream0.0.0 ]] || err "$LINENO"
-+
-+	# with the DSM connected (PF0), validate both it and its
-+	# sub-function (PF1) populate tsm/dsm with the PF0 device.
-+	dsm=$(cat $pci_dev/tsm/dsm)
-+	[[ $dsm == $(basename $pci_dev) ]] || err "$LINENO"
-+	dsm=$(cat $fn_dev/tsm/dsm)
-+	[[ $dsm == $(basename $pci_dev) ]] || err "$LINENO"
-+
-+	# bind both functions and validate that they display bound to
-+	# the TSM device
-+	echo $(basename $pci_dev) > $tsm_link/device/tsm_bind
-+	bound=$(cat $pci_dev/tsm/bound)
-+	[[ $bound == $(basename $tsm_link) ]] || err "$LINENO"
-+	echo $(basename $fn_dev) > $tsm_link/device/tsm_bind
-+	bound=$(cat $fn_dev/tsm/bound)
-+	[[ $bound == $(basename $tsm_link) ]] || err "$LINENO"
-+
-+	# test manual unbind
-+	echo $(basename $pci_dev) > $tsm_link/device/tsm_unbind
-+	bound=$(cat $pci_dev/tsm/bound)
-+	[[ -z $bound ]] || err "$LINENO"
-+	echo $(basename $fn_dev) > $tsm_link/device/tsm_unbind
-+	bound=$(cat $fn_dev/tsm/bound)
-+	[[ -z $bound ]] || err "$LINENO"
-+
-+	# rebind to test automatic unbind at disconnect
-+	echo $(basename $pci_dev) > $tsm_link/device/tsm_bind
-+	echo $(basename $fn_dev) > $tsm_link/device/tsm_bind
-+
-+	# check that the links disappear at disconnect and the stream
-+	# pool is refilled
-+	echo $(basename $tsm_link) > $pci_dev/tsm/disconnect
-+	nr=$(cat $host_bridge/available_secure_streams)
-+	[[ $nr == 4 ]] || err "$LINENO"
-+
-+	validate_disconnected $1 $LINENO
-+
-+	[[ $(cat $pci_dev/tsm/connect) == "" ]] || err "$LINENO"
-+	[[ ! -e $host_bridge/stream0.0.0 ]] || err "$LINENO"
-+	[[ ! -e $tsm_link/$hb/stream0.0.0 ]] || err "$LINENO"
-+}
-+
-+reconnect() {
-+	pci_dev=${PCI_DEVS[$1]}
-+	fn_dev=${FN_DEVS[$1]}
-+	host_bridge=$(dirname $(dirname $(readlink -f $pci_dev)))
-+
-+	# reconnect to prepare for surprise removal of the TSM or device
-+	echo $(basename $tsm_link) > $pci_dev/tsm/connect
-+	[[ $(cat $pci_dev/tsm/connect) == $(basename $tsm_link) ]] || err "$LINENO"
-+	[[ -e $host_bridge/stream0.0.0 ]] || err "$LINENO"
-+	[[ -e $tsm_link/$hb/stream0.0.0 ]] || err "$LINENO"
-+}
-+
-+devsec_test() {
-+	setup_modules
-+
-+	# find the tsm devices by personality
-+	for tsm in /sys/class/tsm/tsm*; do
-+		mode=$(cat $tsm/pci_mode)
-+		[[ $mode == "devsec" ]] && tsm_devsec=$tsm
-+		[[ $mode == "link" ]] && tsm_link=$tsm
-+	done
-+	[[ -n $tsm_devsec ]] || err "$LINENO"
-+	[[ -n $tsm_link ]] || err "$LINENO"
-+
-+	# check that devsec bus loads correctly and the TSM is detected
-+	for i in ${!PCI_DEVS[@]}; do
-+		pci_dev=${PCI_DEVS[$i]}
-+		[[ -e $pci_dev ]] || err "$LINENO"
-+		[[ -e $pci_dev/tsm ]] || err "$LINENO"
-+	done
-+
-+	ide_multi_test
-+	ide_test 0
-+	tdisp_test 0
-+
-+	reconnect 0
-+	teardown_modules
-+}
-+
-+ORDER="bus"
-+devsec_test
-+ORDER="tsm"
-+devsec_test
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 889546f66f2f..a62b32481094 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -26541,6 +26541,7 @@ F:	include/linux/*tsm*.h
- F:	include/uapi/linux/pci-tsm-netlink.h
- F:	samples/devsec/
- F:	samples/tsm-mr/
-+F:	tools/testing/devsec/
+@@ -126,6 +126,46 @@ ide_multi_test() {
+ 	done
+ }
  
- TRUSTED SERVICES TEE DRIVER
- M:	Balint Dobszay <balint.dobszay@arm.com>
++check_evidence() {
++	pci_dev=$1
++
++	set +x
++
++	python3 tools/net/ynl/pyynl/cli.py --family pci-tsm --dump evidence-read \
++	--json "{\"type-mask\": 2047, \"dev-name\": \"$(basename $pci_dev)\", \"flags\": 0}" \
++	--output-json > json
++
++	# Coalesce multi-message payloads where the protocol is a tuple
++	# of (type, val) followed by one more (val) only messages.
++	objects=()
++	for obj in $(jq -c '.[]' json); do
++		if [[ $(echo $obj | jq -r 'has("type")') == "true" ]]; then
++			t=$(echo $obj | jq -r '.type')
++			val_len=$(echo $obj | jq -r '.val | length')
++			objects[$t]=$val_len
++		else
++			val_len=$(echo $obj | jq -r '.val | length')
++			objects[$t]=$((objects[$t] + val_len))
++		fi
++	done
++
++	# Check that all 11 objects (PCI_TSM_EVIDENCE_TYPE_MAX) were
++	# returned and only objects 0 and 9
++	# (PCI_TSM_EVIDENCE_TYPE_CERT0,
++	# PCI_TSM_EVIDENCE_TYPE_MEASUREMENTS) have a length of 8192 and
++	# the rest are empty.
++	[[ ${#objects[@]} -eq 11 ]] || err "$LINENO"
++	for i in ${!objects[@]}; do
++		if [[ $i == 0 || $i == 9 ]]; then
++			[[ ${objects[$i]} == 8192 ]] || err "$LINENO"
++		else
++			[[ ${objects[$i]} == 0 ]] || err "$LINENO"
++		fi
++	done
++
++	set -x
++}
++
+ ide_test() {
+ 	pci_dev=${PCI_DEVS[$1]}
+ 	fn_dev=${FN_DEVS[$1]}
+@@ -155,6 +195,8 @@ ide_test() {
+ 	dsm=$(cat $fn_dev/tsm/dsm)
+ 	[[ $dsm == $(basename $pci_dev) ]] || err "$LINENO"
+ 
++	check_evidence $pci_dev
++
+ 	# bind both functions and validate that they display bound to
+ 	# the TSM device
+ 	echo $(basename $pci_dev) > $tsm_link/device/tsm_bind
+@@ -213,6 +255,10 @@ devsec_test() {
+ 	[[ -n $tsm_devsec ]] || err "$LINENO"
+ 	[[ -n $tsm_link ]] || err "$LINENO"
+ 
++	# initialize evidence payloads
++	dd if=/dev/zero of=/sys/bus/faux/devices/devsec_link_tsm/certs bs=4K count=1
++	dd if=/dev/zero of=/sys/bus/faux/devices/devsec_link_tsm/transcript bs=4K count=1
++
+ 	# check that devsec bus loads correctly and the TSM is detected
+ 	for i in ${!PCI_DEVS[@]}; do
+ 		pci_dev=${PCI_DEVS[$i]}
 -- 
 2.52.0
 
