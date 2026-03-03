@@ -1,152 +1,205 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21CC35D5FC
-	for <linux-coco@lists.linux.dev>; Tue,  3 Mar 2026 00:01:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ACE11E8332
+	for <linux-coco@lists.linux.dev>; Tue,  3 Mar 2026 00:19:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772496073; cv=none; b=nUxTDTr6Xit6etGNVN6tLDDjNJfip5NZZhT9rUp7iOkjpyZB1wHqjx/89fgofx3ooDZ9AAZH3BfiR78njLCnc9HPjnRvTWc/dkIzJ0yy0o4L021o0gWzvknIjqA0UFpnEHDiPJS1BWuAa8xmD9lny/u8J4gxeo8phiPAJrWNOa4=
+	t=1772497155; cv=none; b=IoWSSxsg3xTK0Wten5lfoLrB6CI7ttip9xkh9jmd6l9CR85P9M4qBx8bu6OhGrMyDgFqtpT1dutiDNrMkN/nhabvLh4cOzRPGxX/XXBBUxlnyEkgrSFRi1L66SE52ypb3L31oSXD2eyL3d/JRZNgJPN2nlA3Z8XexDxspulXrTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772496073; c=relaxed/simple;
-	bh=/xbSz0XB0SFhE9gB5JbwJ7oy06YwjFLtdehMTj/80AY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VVjq2ocmg/xlDxHzm6jWpvSZcaUvWYMtYCfIscbbuscf+KmPWRUntkEQFAIpQ2Y8Od02oYhRY8/3qxSeoaWXofDZ6zVTJUeyiLN2JKCpN/vuvtLVLFMsz/QDBZXENiyAXCB0TCqjadFFmpd1G4etucTFT7lCWO+82QjXJcuDgO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fom8gh1W; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1772497155; c=relaxed/simple;
+	bh=pt/lyo6zfzp5um0atVczBnFUoiSRW5zCwV7Y9opM2zA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qhmF+hpuL+sD3rgG1h+xbhL9crLSZ4d2PuGvDWOkJXex0pCrd+CPczfdCn8Dtt+VsRNCarjc3cavC6+ycUM6FR/VDEMf8H5TrDaKeLgMvaRgTmex43BpdwYWk//MQVc2Q6oMtjyQpQ5e2whkLSnZnLNRkuFlQs3wldNKLGkeDZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=f1VgySf/; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fom8gh1W"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772496071; x=1804032071;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=/xbSz0XB0SFhE9gB5JbwJ7oy06YwjFLtdehMTj/80AY=;
-  b=Fom8gh1WZcYPG1xiS40OO4u9LLsRfs4M3U9/A9dcCaU3VszUCorGSUou
-   UQv0AFftZN/b6889Yzjf4VZXWvwaOjpdfQzJVeKjixQ9noaMkwE43/8yo
-   OPYdfi4QsIMD4WHO7U1u+i1EVK5+e51ZAIp038taZG0b7tOGV8nTPLtX+
-   CtlV9gibaHW9rCBOTm4F4TdyejagsNpzi646QInwh26ST2RF6OXtGj5tb
-   u7iPSmoO4A9jAZh47z0fRAsaJluXt5T7MI64bJuolXTKKwSNnWIfwrPHl
-   EwSFzSB8yBcfwzCr71B/56spRboLtU1HW8DyAHRy4enVPVK9IkkhenwQN
-   w==;
-X-CSE-ConnectionGUID: WhNbH0LARmqbE9EB4+46sQ==
-X-CSE-MsgGUID: P/1MXNpZRWWizEZBnvZ+KQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="73483069"
-X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; 
-   d="scan'208";a="73483069"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 16:01:01 -0800
-X-CSE-ConnectionGUID: OIEckF6bTICfYk7DbX2nXg==
-X-CSE-MsgGUID: wduQTRhORVi5JlTcBOQFZA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; 
-   d="scan'208";a="214967139"
-Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
-  by fmviesa006.fm.intel.com with ESMTP; 02 Mar 2026 16:01:01 -0800
-From: Dan Williams <dan.j.williams@intel.com>
-To: linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	aik@amd.com,
-	aneesh.kumar@kernel.org,
-	yilun.xu@linux.intel.com,
-	bhelgaas@google.com,
-	alistair23@gmail.com,
-	lukas@wunner.de,
-	jgg@nvidia.com
-Subject: [PATCH v2 19/19] tools/testing/devsec: Add basic evidence retrieval validation
-Date: Mon,  2 Mar 2026 16:02:07 -0800
-Message-ID: <20260303000207.1836586-20-dan.j.williams@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260303000207.1836586-1-dan.j.williams@intel.com>
-References: <20260303000207.1836586-1-dan.j.williams@intel.com>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="f1VgySf/"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-5069df1de6fso43450531cf.3
+        for <linux-coco@lists.linux.dev>; Mon, 02 Mar 2026 16:19:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1772497153; x=1773101953; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=uBmRMf9aoSKjaEvUH8kwvq+kwq2UPw7m0MsTmit1ZFs=;
+        b=f1VgySf/uBgagbszvRhq4kL9f1HyoQoBas4jurccaG7xjGa5D96i9CKrhqLIMg9SOA
+         o4pOLDiDBdJ1K3i/kcpFZZZMqnNIFMFicFEbDafkdtQM4510NGnCSf/JXOeCgoec9dtF
+         vTjWg+CF4/y+RNNUDF8b+E/9q8oQjo50ohb88+dkuubcaKt1AJfIcT9+aBzKnRtnpe3O
+         g7Nsdyb6wm77EU1QECaXAiVoXT3effdiav8xCt5JdWg57AGuvxk3XU1AIH2R8Yhgiv58
+         XqrPiy+w3Rajtu/oMAW/yXwknRfxDjld5Ji+V8yhieoIpPTMBvx2yN66zGYFI0yd+iaZ
+         GtlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772497153; x=1773101953;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uBmRMf9aoSKjaEvUH8kwvq+kwq2UPw7m0MsTmit1ZFs=;
+        b=IqYaBpg8P5StDlhY925dGcHkF3DXyp5kEYzYo1Re8DvD4gWW5YxOaejKYoxnOnEZVC
+         l8Kw3XhXWMS7RkcJ1rabSckFlULlZZTTZGogXHVBPneFe9XoskgVDoCjmpTPRUXDfocM
+         yix80UZdCORTJvGpKV7UFDnNEWgeHPrDJ7hE5yG5oL+6pv8nfA5YTKoIxZQTjfsRQ9M9
+         kVK00quv4r2WlAkqf3j5Z3WAH0FEElNWL/9GCkDoxR4wax8MMXmWl5RBd/e9FgXeAfZO
+         XyH8fuyJ1kGB9hL6nWN36ng3kIjcTv/FW3SMsBGJ9LrcfF8e4MrFlNAocGKy4gaYUTKN
+         PDJg==
+X-Forwarded-Encrypted: i=1; AJvYcCVG8l5aUlYiTHBd4HO43Ol9kf9J0MiCkrtiXvRK47MJPGxI8NE3ajWPpLHWQ/6bOhNLDDazQwSjD/yH@lists.linux.dev
+X-Gm-Message-State: AOJu0YwBtXBla3aJARJRKLlURywA3f3KIVcqcsrqItPcRJHlg8VtnuLB
+	HeHhANKZUBU33IerJf2w7H092uUZxi8dBSeTKJBXx2ZRQcHDFp5fkzsHGbfHwI38cFk=
+X-Gm-Gg: ATEYQzz0w4m5WK79PSA5BD7fmpBJ9Xguh85Qskrv0tIHj8FWh517tgP/UCLKFF+mGSj
+	BIHty4avODmG/LisplPmlQsjqUKsw0vii4eEFnGBxWXR5IrDrwnK66dqQevir0EdFo6TlSmvs4r
+	baFfm51DRffthfsNdX35K1oYYOWfwY338KZUbtTzm2GjRA3c7RYgCKjRjUcRcpv7UreURfYvnNa
+	KZrCTxoDHE67toGdOuXa2U+Vpjz9r5SeWeYx5V6ceA+8zkmsyzMteeSlF68TB5kQNTo7tSmnxrj
+	GKFIPvCkmGfIXeeCskO+nYcDnO/lVmEZ1q6ZIB91XgjaPuL6OHoqBBQTyu3m7cSt3z2zJT75SUI
+	ojMaprcYxDacnNI/ekpykDTrtYePUWmbezRdkTzrFk08DvkcX0tNcIMPFzUFKuNU9DGbKd4A2Ok
+	rFQNyqtVI4J3D9fnd5aSFIPHs+zPbF43lKOTmy2AIBLLf6GccdUm99UaeChTyO76S2xsQ+9zTKS
+	o4f9WvI
+X-Received: by 2002:a05:622a:1ba5:b0:4ff:c8ae:efe4 with SMTP id d75a77b69052e-507527824e3mr187758101cf.30.1772497152911;
+        Mon, 02 Mar 2026 16:19:12 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-899c7159b44sm115519746d6.9.2026.03.02.16.19.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Mar 2026 16:19:12 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vxDTj-000000042qC-2Ytm;
+	Mon, 02 Mar 2026 20:19:11 -0400
+Date: Mon, 2 Mar 2026 20:19:11 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: dan.j.williams@intel.com
+Cc: Robin Murphy <robin.murphy@arm.com>, Alexey Kardashevskiy <aik@amd.com>,
+	x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-pci@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Mike Rapoport <rppt@kernel.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Melody Wang <huibo.wang@amd.com>,
+	Seongman Lee <augustus92@kaist.ac.kr>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Denis Efremov <efremov@linux.com>,
+	Geliang Tang <geliang@kernel.org>,
+	Piotr Gregor <piotrgregor@rsyncme.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Alex Williamson <alex@shazbot.org>, Arnd Bergmann <arnd@arndb.de>,
+	Jesse Barnes <jbarnes@virtuousgeek.org>,
+	Jacob Pan <jacob.jun.pan@linux.intel.com>,
+	Yinghai Lu <yinghai@kernel.org>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Kim Phillips <kim.phillips@amd.com>,
+	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Claire Chang <tientzu@chromium.org>, linux-coco@lists.linux.dev,
+	iommu@lists.linux.dev
+Subject: Re: [PATCH kernel 4/9] dma/swiotlb: Stop forcing SWIOTLB for TDISP
+ devices
+Message-ID: <20260303001911.GA964116@ziepe.ca>
+References: <20260225053806.3311234-1-aik@amd.com>
+ <20260225053806.3311234-5-aik@amd.com>
+ <699f238873ae7_1cc5100b6@dwillia2-mobl4.notmuch>
+ <04b06a53-769c-44f1-a157-34591b9f8439@arm.com>
+ <699f621daab02_2f4a1008f@dwillia2-mobl4.notmuch>
+ <20260228002808.GO44359@ziepe.ca>
+ <69a622e92cccf_6423c10092@dwillia2-mobl4.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <69a622e92cccf_6423c10092@dwillia2-mobl4.notmuch>
 
-Checkout basic operation of the pci-tsm-netlink ABI. The main complexity is
-reassembly of single evidence payloads that span multiple messages.
+On Mon, Mar 02, 2026 at 03:53:13PM -0800, dan.j.williams@intel.com wrote:
+> > > The specification allows it, but Linux DMA mapping core is not yet ready
+> > > for it. So the expectation to start is that the device loses access to
+> > > its original shared IOMMU mappings when converted to private operation.
+> > 
+> > Yes, the underlying translation changes, but no, it doesn't loose DMA
+> > access to any shared pages, it just goes through the T=1 IOMMU now.
+> 
+> Yes, what I meant to say is that Linux may need to be prepared for
+> implementations that do not copy over the shared mappings. At least for
+> early staging / minimum viable implementation for first merge.
+> 
+> > The T=1 IOMMU will still have them mapped on all three platforms
+> > AFAIK.
+> 
+> Oh, I thought SEV-TIO had trouble with this, if this is indeed the case,
+> great, ignore my first comment.
 
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- tools/testing/devsec/devsec.sh | 46 ++++++++++++++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
+Alexey?
 
-diff --git a/tools/testing/devsec/devsec.sh b/tools/testing/devsec/devsec.sh
-index ce4a986b74dd..6a9313e7104f 100755
---- a/tools/testing/devsec/devsec.sh
-+++ b/tools/testing/devsec/devsec.sh
-@@ -126,6 +126,46 @@ ide_multi_test() {
- 	done
- }
- 
-+check_evidence() {
-+	pci_dev=$1
-+
-+	set +x
-+
-+	python3 tools/net/ynl/pyynl/cli.py --family pci-tsm --dump evidence-read \
-+	--json "{\"type-mask\": 2047, \"dev-name\": \"$(basename $pci_dev)\", \"flags\": 0}" \
-+	--output-json > json
-+
-+	# Coalesce multi-message payloads where the protocol is a tuple
-+	# of (type, val) followed by one more (val) only messages.
-+	objects=()
-+	for obj in $(jq -c '.[]' json); do
-+		if [[ $(echo $obj | jq -r 'has("type")') == "true" ]]; then
-+			t=$(echo $obj | jq -r '.type')
-+			val_len=$(echo $obj | jq -r '.val | length')
-+			objects[$t]=$val_len
-+		else
-+			val_len=$(echo $obj | jq -r '.val | length')
-+			objects[$t]=$((objects[$t] + val_len))
-+		fi
-+	done
-+
-+	# Check that all 11 objects (PCI_TSM_EVIDENCE_TYPE_MAX) were
-+	# returned and only objects 0 and 9
-+	# (PCI_TSM_EVIDENCE_TYPE_CERT0,
-+	# PCI_TSM_EVIDENCE_TYPE_MEASUREMENTS) have a length of 8192 and
-+	# the rest are empty.
-+	[[ ${#objects[@]} -eq 11 ]] || err "$LINENO"
-+	for i in ${!objects[@]}; do
-+		if [[ $i == 0 || $i == 9 ]]; then
-+			[[ ${objects[$i]} == 8192 ]] || err "$LINENO"
-+		else
-+			[[ ${objects[$i]} == 0 ]] || err "$LINENO"
-+		fi
-+	done
-+
-+	set -x
-+}
-+
- ide_test() {
- 	pci_dev=${PCI_DEVS[$1]}
- 	fn_dev=${FN_DEVS[$1]}
-@@ -155,6 +195,8 @@ ide_test() {
- 	dsm=$(cat $fn_dev/tsm/dsm)
- 	[[ $dsm == $(basename $pci_dev) ]] || err "$LINENO"
- 
-+	check_evidence $pci_dev
-+
- 	# bind both functions and validate that they display bound to
- 	# the TSM device
- 	echo $(basename $pci_dev) > $tsm_link/device/tsm_bind
-@@ -213,6 +255,10 @@ devsec_test() {
- 	[[ -n $tsm_devsec ]] || err "$LINENO"
- 	[[ -n $tsm_link ]] || err "$LINENO"
- 
-+	# initialize evidence payloads
-+	dd if=/dev/zero of=/sys/bus/faux/devices/devsec_link_tsm/certs bs=4K count=1
-+	dd if=/dev/zero of=/sys/bus/faux/devices/devsec_link_tsm/transcript bs=4K count=1
-+
- 	# check that devsec bus loads correctly and the TSM is detected
- 	for i in ${!PCI_DEVS[@]}; do
- 		pci_dev=${PCI_DEVS[$i]}
--- 
-2.52.0
+I think it is really important that shared mappings continue to be
+reachable by TDISP device.
 
+> I have a v2 of a TEE I/O set going out shortly and sounds like it will
+> need a rethink for this attribute proposal for v3. I think it still helps to
+> have combo sets at this stage so the whole lifecycle is visible in one
+> set, but it is nearly at the point of being too big a set to consider in
+> one sitting.
+
+My problem is I can't get in one place an actually correct picture of
+how the IOVA translation works in all the arches and how the
+phys_addr_t works.
+
+So it is hard to make sense of all these proposals. What I would love
+to see is one series that deals with this:
+
+  [PATCH v2 11/19] x86, dma: Allow accepted devices to map private memory
+
+For *all* the arches, along with a description for each of:
+ * how their phys_addr_t is constructed
+ * how their S2 IOMMU mapping works
+ * how a vIOMMU S1 would change any of the above.
+
+Then maybe we can see if we are actually doing it properly or not.
+
+> > ARM has a "solution" right now. The location of the high bit is
+> > controlled by the VMM and the VMM cannot create a CC VM where the IPA
+> > space exceeds the dma_mask of any assigned device.
+> > 
+> > Thus the VMM must limit the total available DRAM to fit within the HW
+> > restrictions.
+> > 
+> > Hopefully TDX can do the same.
+> 
+> TDX does not have the same problem, but the ARM "solution" seems
+> reasonable for now.
+
+I'm surprised because Xu said:
+
+ This is same as Intel TDX, the GPA shared bit are used by IOMMU to
+ target shared/private. You can imagine for T=1, there are 2 IOPTs, or
+ 1 IOPT with all private at lower address & all shared at higher address.
+
+ https://lore.kernel.org/all/aaF6HD2gfe%2Fudl%2Fx@yilunxu-OptiPlex-7050/
+
+So how come that not have exactly the same problem as ARM?
+
+Jason
