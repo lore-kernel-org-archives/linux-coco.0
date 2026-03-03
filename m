@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D79564
-	for <linux-coco@lists.linux.dev>; Tue,  3 Mar 2026 00:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F931E487
+	for <linux-coco@lists.linux.dev>; Tue,  3 Mar 2026 00:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772496065; cv=none; b=n8EeG7GdRotMyXhGG+GsGyj9DGqqnDHZ6cMgA5IsLEOpcgifUlYdG7yrP1U0Kzm/AWA2So6Xqz1Be8TWuWQO9k260vtGdTe7wDVZCBHDwtcKXj4IehO/A16pe+jb1ZoXiK1LBLso3257cYE9P+rX5kZgZzI2T0lTkEVzcI6f4d0=
+	t=1772496066; cv=none; b=i7wQFTZY/gXJkvE4m8mECtw7v6Hv3KnrZa8J3UPJkBWlRga5RygNtHogdYRskOP16NGrQb0Gc+C0QVCkrHZ3vvETT2hZeTZyqB1vQOpXyTmbUf3+MDJNBtwURXI1VCRIR5EPsa5T8n2FpiY4s3PBJL0s7sXeHMwUbS2sOMaBdVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772496065; c=relaxed/simple;
-	bh=g4F4QzDJ7y4CVPFfkparBIa6osJjoPCeEtBUy2R5LkM=;
+	s=arc-20240116; t=1772496066; c=relaxed/simple;
+	bh=o2Zu0c/3hllJMga2T4+P+5Si/OuA2BCSZAXmQcZT9J4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SVa1Q79fIjyc8jXQv7qKifhxqmOJcoRG3BF74ZQUxPfjJOmWs6l3WvGUtYK2Whx+U2hcNO30gYrh33a7KV9nEhCw7SeGpNy5uMUWFIN2gCmlGJGSE0XXIAjnkFyrTojMzU5E9m4KAzyZgVOx3N0AFLByxrUt2Fqgha+Vkeor8ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CVzgXXrz; arc=none smtp.client-ip=198.175.65.17
+	 MIME-Version; b=dM+RmxuA2SfDSGm3LRcP3ju45mnS65mkE4GDN1ivrY4CU29583efzgXUonH24Ep9U4GqB7zlUxJFOOUsrxDu5QEsGvL4qGgqwXg5hsmjELPwD2YvrPVgpQ+BSOCu+QSay0Ur5hX3Lhgcoo9PEDOYRhXSITMRDucQo2p4azYgatg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZQPltaAE; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CVzgXXrz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZQPltaAE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1772496065; x=1804032065;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=g4F4QzDJ7y4CVPFfkparBIa6osJjoPCeEtBUy2R5LkM=;
-  b=CVzgXXrz0zqeyzXtWr89bzAQSgtsOUsK6alIoQJeCq+24Dp85HhhyAqS
-   +wOlTisTnFRK4vQ36f0eIsX2uS45LlA7Cmes8u60EToeUcnZTruapnrXp
-   /fZJGSIuQ3Keph8+79BnC38mSJ+raG7HS3zE9Eawnfu4VVxKQ0jgfypSe
-   1Lm1Y2GB2q81/9jP+d3K3cEX/bSdeHG4xJDJCl0N+Y0gpFmAylHcL+cCK
-   acmhK2naBMyM0b/JA2WG7NpKzEF3qRHjv+juYrt0cEpeeUiwUwuEJWPx8
-   QDZibIjusLmQyfEfjA8Pm1aWVun9ojn5WfD3YQJTXr6wGGdB8xLbzy31d
+  bh=o2Zu0c/3hllJMga2T4+P+5Si/OuA2BCSZAXmQcZT9J4=;
+  b=ZQPltaAEfrYRSqhuYQzNbb1BeJ25Wy/cuYiYn6rBiosFrW9b5nfzNvE3
+   J0LU2qnrRvc3NyY0PmRXpFBLhKisMfKqirzy154rDMEEdoyhi6fbJsX58
+   cT2nqwcGHcmd8z8x/wPoIcE8WO1eBBksYAMkBO0c1/7XsOz6m8zlSm90+
+   jL4JXXhsaSNdV0iDIJPZiLRc3d7lSHNn4bWcAwTFWcbY0pueNORMKNRa+
+   9Q6TWk5m5BntmKQl973c6L3FS6AEiSDGIB72B7B8KMmEIAoxPCA3uLKpq
+   VLpLC5zlkkSoIlgRsBuHi+ysUhC4knopUB8X23pTYYcM55l5I8Pj+Zn0p
    Q==;
-X-CSE-ConnectionGUID: TXy/1OgrRfiBzsPtZaBRjg==
-X-CSE-MsgGUID: Rn+A2hOgR3ycjWUgSEAe1A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="73482941"
+X-CSE-ConnectionGUID: IBnd4NMuRXajqjWyk840Dw==
+X-CSE-MsgGUID: SPGLSu/bQPqzakXXzofBvg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="73482960"
 X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; 
-   d="scan'208";a="73482941"
+   d="scan'208";a="73482960"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
   by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 16:00:58 -0800
-X-CSE-ConnectionGUID: rfkNQQW2QOyIUXq4MavL+w==
-X-CSE-MsgGUID: nN2ODUWRT4mtQtmWTjZhvg==
+X-CSE-ConnectionGUID: wMctE89/TmCkDvvyaCbuOw==
+X-CSE-MsgGUID: n7/6zYUVSJKHn3etPd/d/Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; 
-   d="scan'208";a="214967109"
+   d="scan'208";a="214967112"
 Received: from dwillia2-desk.jf.intel.com ([10.88.27.145])
   by fmviesa006.fm.intel.com with ESMTP; 02 Mar 2026 16:00:57 -0800
 From: Dan Williams <dan.j.williams@intel.com>
@@ -54,17 +54,17 @@ Cc: gregkh@linuxfoundation.org,
 	alistair23@gmail.com,
 	lukas@wunner.de,
 	jgg@nvidia.com,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Thomas Gleixner <tglx@kernel.org>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
 	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>
-Subject: [PATCH v2 10/19] x86, swiotlb: Teach swiotlb to skip "accepted" devices
-Date: Mon,  2 Mar 2026 16:01:58 -0800
-Message-ID: <20260303000207.1836586-11-dan.j.williams@intel.com>
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: [PATCH v2 11/19] x86, dma: Allow accepted devices to map private memory
+Date: Mon,  2 Mar 2026 16:01:59 -0800
+Message-ID: <20260303000207.1836586-12-dan.j.williams@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260303000207.1836586-1-dan.j.williams@intel.com>
 References: <20260303000207.1836586-1-dan.j.williams@intel.com>
@@ -76,104 +76,41 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-There are two mechanisms to force SWIOTLB operation, the kernel command
-line option and the internal SWIOTLB_FORCE flag. With the arrival of
-"accepted" devices, devices that have been enabled to DMA to private
-encrypted memory, the SWIOTLB_FORCE flag is an awkward fit. It may be the
-case that SWIOTLB operation wants to be forced regardless of the device
-acceptance state.
+With the arrival of "accepted" devices, devices that have been enabled to
+DMA to private encrypted memory, coherent DMA allocation no longer requires
+page conversion. Update force_dma_unencrypted() to skip accepted devices.
 
-Introduce a new SWIOTLB_UNACCPTED flag that allows for both augmenting the
-result of is_swiotlb_force_bounce() dynamically and allowing for an "always
-SWIOTLB" override.
-
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@kernel.org>
 Cc: Ingo Molnar <mingo@redhat.com>
 Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
 Cc: x86@kernel.org
 Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Robin Murphy <robin.murphy@arm.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- include/linux/swiotlb.h   | 15 ++++++++++++---
- arch/x86/kernel/pci-dma.c |  2 +-
- kernel/dma/swiotlb.c      |  1 +
- 3 files changed, 14 insertions(+), 4 deletions(-)
+ arch/x86/mm/mem_encrypt.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h
-index 3dae0f592063..0efb9b8e5dd0 100644
---- a/include/linux/swiotlb.h
-+++ b/include/linux/swiotlb.h
-@@ -17,6 +17,7 @@ struct scatterlist;
- #define SWIOTLB_VERBOSE	(1 << 0) /* verbose initialization */
- #define SWIOTLB_FORCE	(1 << 1) /* force bounce buffering */
- #define SWIOTLB_ANY	(1 << 2) /* allow any memory for the buffer */
-+#define SWIOTLB_UNACCEPTED (1 << 3) /* swiotlb for unaccepted devices */
- 
- /*
-  * Maximum allowable number of contiguous slabs to map,
-@@ -91,6 +92,7 @@ struct io_tlb_pool {
-  * @nslabs:	Total number of IO TLB slabs in all pools.
-  * @debugfs:	The dentry to debugfs.
-  * @force_bounce: %true if swiotlb bouncing is forced
-+ * @bounce_unaccepted: %true if unaccepted devices must bounce
-  * @for_alloc:  %true if the pool is used for memory allocation
-  * @can_grow:	%true if more pools can be allocated dynamically.
-  * @phys_limit:	Maximum allowed physical address.
-@@ -109,8 +111,9 @@ struct io_tlb_mem {
- 	struct io_tlb_pool defpool;
- 	unsigned long nslabs;
- 	struct dentry *debugfs;
--	bool force_bounce;
--	bool for_alloc;
-+	u8 force_bounce:1;
-+	u8 bounce_unaccepted:1;
-+	u8 for_alloc:1;
- #ifdef CONFIG_SWIOTLB_DYNAMIC
- 	bool can_grow;
- 	u64 phys_limit;
-@@ -173,7 +176,13 @@ static inline bool is_swiotlb_force_bounce(struct device *dev)
+diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
+index 95bae74fdab2..6d2972ff6ed8 100644
+--- a/arch/x86/mm/mem_encrypt.c
++++ b/arch/x86/mm/mem_encrypt.c
+@@ -20,10 +20,11 @@
+ bool force_dma_unencrypted(struct device *dev)
  {
- 	struct io_tlb_mem *mem = dev->dma_io_tlb_mem;
- 
--	return mem && mem->force_bounce;
-+	if (!mem)
-+		return false;
-+	if (mem->force_bounce)
-+		return true;
-+	if (mem->bounce_unaccepted && !device_cc_accepted(dev))
-+		return true;
-+	return false;
- }
- 
- void swiotlb_init(bool addressing_limited, unsigned int flags);
-diff --git a/arch/x86/kernel/pci-dma.c b/arch/x86/kernel/pci-dma.c
-index 6267363e0189..8a737f501ae5 100644
---- a/arch/x86/kernel/pci-dma.c
-+++ b/arch/x86/kernel/pci-dma.c
-@@ -61,7 +61,7 @@ static void __init pci_swiotlb_detect(void)
+ 	/*
+-	 * For SEV, all DMA must be to unencrypted addresses.
++	 * Require unencrypted DMA unless the device has been "accepted",
++	 * enabled by a TSM driver to DMA to private encrypted memory.
  	 */
- 	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
- 		x86_swiotlb_enable = true;
--		x86_swiotlb_flags |= SWIOTLB_FORCE;
-+		x86_swiotlb_flags |= SWIOTLB_UNACCEPTED;
- 	}
- }
- #else
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index a547c7693135..57e9647939fe 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -365,6 +365,7 @@ void __init swiotlb_init_remap(bool addressing_limit, unsigned int flags,
+ 	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+-		return true;
++		return !device_cc_accepted(dev);
  
- 	io_tlb_default_mem.force_bounce =
- 		swiotlb_force_bounce || (flags & SWIOTLB_FORCE);
-+	io_tlb_default_mem.bounce_unaccepted = flags & SWIOTLB_UNACCEPTED;
- 
- #ifdef CONFIG_SWIOTLB_DYNAMIC
- 	if (!remap)
+ 	/*
+ 	 * For SME, all DMA must be to unencrypted addresses if the
 -- 
 2.52.0
 
