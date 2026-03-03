@@ -1,141 +1,182 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010017.outbound.protection.outlook.com [52.101.46.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D5C1862A
-	for <linux-coco@lists.linux.dev>; Tue,  3 Mar 2026 07:16:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772522163; cv=none; b=G/Mcbnr7lASx8ph4AUMB2oeDUmbrgyb+xWT0nyVZnhlB8V0I7vC19mZkUcorZXeoDtSlKYLaUD6ljEgdLCm8eTFdGs4R5XSwf0DfJJcLPNKuw7OhFERjtkX0HxWO55iXigf7Rr5H4Zymx1hMg9DM8CHFR0UjPCUfPDlm78KHt4Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772522163; c=relaxed/simple;
-	bh=nN2Qu9GFnQ1o9H3knQtLTAOj/0kAFAK30myHIyuh+V8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h13Tm0dASs6lew+CKh1lBbFow4b29M25DRsQrNCvqihqUdi4nsBa5gO9DfiZfCS9rKiBszcAJczxAOYw5vAydcRFmP6BxWzKPKu0jiVC5RXMmv+EUvUX5cObmqSTsBLcIQ7KN8KTAwkXfkWwWlyEO5Tj/87+gvJQrJWcZf6ak9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B5YgUf2/; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64289309EFC
+	for <linux-coco@lists.linux.dev>; Tue,  3 Mar 2026 07:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772523453; cv=fail; b=rQF72IO8HlmWPnuXgFgtg4FhaAXuJXPOpwx/uKjSFobHAGx2MQ/9hDP4r0S0AA/h3IVzz7w4LzWvQYAJak5/kaC+g0Pfb3HcXaHogxTKRVhLIl3++b43fLmkCQprjhdxgKyCKPPh1FExDse0IdQEcz2Z90whNwRbSOr7X24PUbI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772523453; c=relaxed/simple;
+	bh=SKKIr/XWFXt+ycOrVhs8H6tv9R4UHYpdQVzOpPq+b1c=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=cobs7uwxueRKyCeOZ59cCy+R7RyRrJNuYnlKrBYjNde2FTEwOn0nVjTPsNKxzh7TcS5UhW9Nzco58nO/wkUodUNk0Vp2TdsVHURTFT5h7ZXgW+wYctCbyC9EEIh5d2nW5XLuTRjB7gUgTnUwwEcL8DitHJjvROwR3FZLqMZdaIE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=eE0f+Mw3; arc=fail smtp.client-ip=52.101.46.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B5YgUf2/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772522162; x=1804058162;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=nN2Qu9GFnQ1o9H3knQtLTAOj/0kAFAK30myHIyuh+V8=;
-  b=B5YgUf2/CB3AkD/5fxQTWCKSVslP0RdUbk3REF0TW4Sywky/sOfGxXwq
-   DG02KQqP1PROnsatESqnRx70z0OzYWzKxnZZh1tWBvIjR8kotIAJgCXmF
-   Xvsj1yp929vEZ84MKcGSCF3LEUDwqf5+4DtZsTCX4cOYh3YCcOwrq2GNB
-   S/Dt9IX8WB8aZkncjzD8al+7KPtKQPQiIP6ZGI0drFx1EtmlBb0EhuSYT
-   UkNNJU6wl3N+Q+KwOC6RWRzdOL6kjC7BbdHHDpHhP0pYeMLdoUTMneWqW
-   kISFmHz0pxpzpMBO4ionEQ+v8SorLq1KrgbjbbbGAZI7YH3+1iF4eX/0D
-   w==;
-X-CSE-ConnectionGUID: /WZqsKJ+TSagwXzP3LRjFg==
-X-CSE-MsgGUID: itG1EUwcROmZ4m04mBP8qA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="73456089"
-X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; 
-   d="scan'208";a="73456089"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 23:16:02 -0800
-X-CSE-ConnectionGUID: Iaq3mFzLSwGaaiccQc851g==
-X-CSE-MsgGUID: NRR6nqt1Rq+ekJ2VKEz8SQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; 
-   d="scan'208";a="217897252"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 23:15:59 -0800
-Message-ID: <e6e1b542-332f-407c-b997-244b5d475276@linux.intel.com>
-Date: Tue, 3 Mar 2026 15:15:22 +0800
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="eE0f+Mw3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DTDI+spNx9NENuCK3wcYqP8nL+HpxqwIMGb8CIrMqldl6PQhxXENDW0GAJpF5jgJXrX5I663wYGoda5svYoCwJsfkFQdEMGdp/BGdBfl6Qh2YGKjOQKWDR10+uvoxw4+FhcwclJMEU/ulZhn7WCjcrKEe/tMUk1L7hTsUegHL43jCeYjyzVVrEeasFkSUzYjojdm2MXTqro9VasbiEKgzwaOuq2xbAKTJ1cvmVp5cLXcbjWSZEJXMArlI3o0/9I8qwFMnVk3usrU9DAhNzbqIuAD336026ecqIOvW+w3nUC1pD811QaVM8UdcFaEWBOK5FQwDrrl6nVaBvWMHaBoZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KCOY/LDl2C0ugokTlQLKG1iNXYxQN1txQDp9SfDCYTM=;
+ b=Fj9efwpG0sOHKyHFc285QfKFqrGqYKriAMY8ZwE28F4vTqzhjgFRiCG0np4O77p+2X/q3ktsYvKuS8GwfBLgM0UHQu6eLNxyN0/ZNHsZJizU85bF1Xeq2/5QcqnOywfcp5ECQ5fV/HFEJYdSo6nBE1jFfkSBZea23cMWflc+XTt5f+/Zcs2fOVQ8euaqCb1Qs6GNrULW6/1bmNrg20tOfQkC6lEqCJZeIZ2vLLmaLXOvkr0xM3ozBuw02Sy0KiMLHB3cZRGFf36GXlg70xmuLM1K+sCgDE518trEYBsi2JN0Zlhkd8nkAM0eQ8DIsO+GUE5Nz4IWPh9bgspJyuqteQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KCOY/LDl2C0ugokTlQLKG1iNXYxQN1txQDp9SfDCYTM=;
+ b=eE0f+Mw3T7ssY2JZKgh+QaUSAT6mDUCegm0WiF5dEFzT4oHgmlDRkIWWNb5tZKaKkt+OziUt8tFijv2o563rJOWvpHdDsT1dRbpciCMJB5lAy3qndtr/BKuNiIrjN/lSGnV9sibU7HowYWd6yWzcksWgvTl/z0k20WYmCahI4GM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
+ by BN7PPF9507C739C.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6da) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Tue, 3 Mar
+ 2026 07:37:29 +0000
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::1e6b:ca8b:7715:6fee]) by CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::1e6b:ca8b:7715:6fee%4]) with mapi id 15.20.9654.015; Tue, 3 Mar 2026
+ 07:37:29 +0000
+Message-ID: <3f36f3cf-64fa-48f3-917d-d5e3453d3453@amd.com>
+Date: Tue, 3 Mar 2026 18:36:51 +1100
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v2 11/19] x86, dma: Allow accepted devices to map private
+ memory
+To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+ linux-pci@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, aneesh.kumar@kernel.org,
+ yilun.xu@linux.intel.com, bhelgaas@google.com, alistair23@gmail.com,
+ lukas@wunner.de, jgg@nvidia.com, Dave Hansen <dave.hansen@linux.intel.com>,
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>
+References: <20260303000207.1836586-1-dan.j.williams@intel.com>
+ <20260303000207.1836586-12-dan.j.williams@intel.com>
+From: Alexey Kardashevskiy <aik@amd.com>
+Content-Language: en-US
+In-Reply-To: <20260303000207.1836586-12-dan.j.williams@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SY5PR01CA0108.ausprd01.prod.outlook.com
+ (2603:10c6:10:246::22) To CH3PR12MB9194.namprd12.prod.outlook.com
+ (2603:10b6:610:19f::7)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/19] PCI/TSM: Add Device Security (TVM Guest) ACCEPT
- operation support
-To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
- linux-pci@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, aik@amd.com, aneesh.kumar@kernel.org,
- yilun.xu@linux.intel.com, bhelgaas@google.com, alistair23@gmail.com,
- lukas@wunner.de, jgg@nvidia.com
-References: <20260303000207.1836586-1-dan.j.williams@intel.com>
- <20260303000207.1836586-8-dan.j.williams@intel.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20260303000207.1836586-8-dan.j.williams@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|BN7PPF9507C739C:EE_
+X-MS-Office365-Filtering-Correlation-Id: 10ffd89b-2376-4763-2735-08de78f7b931
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	sVYic28u5uWVo5ZyDEyNe9CM0n0UnHBvYtzXQM3AKCOZqSyVBfOc5DNzaDJiR1sP2NpvfOlUMdJLT04t9CGpnyaXh6bs0wsWf7vwpnBklXnaIjzY0CQW0ubThOq84vMYVYG0lt6w9RV1wNe1w6Q7bhotTj3WJ26MVsPTPQLNLD+RhDCg9OcoQhXmcgyyxyl7UGxkQN8YjVYGhWZJjMAmk9FJpblHcxONOwPtWN7RMWs0meGSpWihpZp+LzejGenL7zfdlog8iB18irmcnzgVhNbjJ9cR50TxByt+TXAr2/OBAQ5wGoJiuqvQ41D8QZk7vnJJJ7rUywB8PPldoYa78KdYfZuznlebalZc35GdsE+VtPfKpSkMiC4pmgvWayoF2JrdkMZ1Fd2cXA0yuB6d2xH3t2nCA1FOQc6I/ECy9a+ol88hNYmWP62tudNzq9rjWrN+HEVacgTSTaB0EWko7FmfGIyG7a/JM4r6XYa2GUonDc/h5AHkeOYKwpr98bqwg9V+LW2Jl3WyQcr+YLarVqkFr10P9hp3k2Nt7tECTOjnyJ6R6+8jaOrVQDNrM1o4pGQmvLSkkOTyf0zb7/23Ww8uMybhezp+rDKl4ItfpirZaCzImR5QZnWnvnQ3+fr42tQMV6TwqA28xZwzcE72w7NGvEF2HF8vIOVi0EYC2QlJ8giK3IeC74jcWgPM8B6W1fWFspF+7XyaSPlnvm5C/IVOf46XKdgl8CecTG/XCPw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bzVLNUVsT28xTlAyeWI0bjdKcnp3Vy9wS2VBTDdSeFlBU3hnUStoUm8yb0hC?=
+ =?utf-8?B?QTA0RVhnbFFoVHVRcEd2YUFLMjNDcDF5cHhEVmo4QnJUNVUvdm56ZmdQdW80?=
+ =?utf-8?B?QlNLS09WWmZQRHNmNW1nV3RDcGxPTEd1L1lCM2ltRDNwL2tDUE1JZDBIa1lL?=
+ =?utf-8?B?YUNRZXFYWWhsYnRPTUxCcEdmL3dEa1BHV2w4T055bjQ4QXUvelppUmNyeUZZ?=
+ =?utf-8?B?TFo0UE9KMzhtOXlHZmVqRTlTRXRwd2NhanVENnNZQVFiMHhFblRRc2FVem84?=
+ =?utf-8?B?WVVZaE5uNW1rcjhTVWhaTVJGcHlGNGZFejRqNmE4ZTBMdXdibVViUFBqdnlt?=
+ =?utf-8?B?RU5xUVJrZGYyam9Wamd0bllEMmJpK3ZLaDY4NVVWaU81VnpMK0QvRzVwRWRt?=
+ =?utf-8?B?QkZ5b29ZL0dybm5rVlp4MGJGSXA1NkkvekFIdVYxVEd0eGppQjZHN3crNTNz?=
+ =?utf-8?B?N0Fmb2d2c215THptaExCWSs2dTZQUy9ZcFh0cVQ3VU4yY2lKS0xNOVYrRkRV?=
+ =?utf-8?B?Q2VHVkpVbWZHTFhEN2RweXRMd1dDellXdFJCMzlUVHM0bkFPNnBUYysvVWtm?=
+ =?utf-8?B?RjhvTHhxZ3lDS3p0bGdTNmF5a01ZYnNQd0lTaGxPSFU4MmJSZHFNM1gwYjh6?=
+ =?utf-8?B?WEhadGY5RTVDTi9NaGhvQ0ZZYkZoL0NXb0lzNG9YcGU5MWxucC9JaFhsOGpJ?=
+ =?utf-8?B?SEt3bEVyZWUzcWJFVHA3UWRVS3JISmM2K3lRTHZvRjREQ05XM0ZZMHhHSnV5?=
+ =?utf-8?B?eGJTSjQrVTJ2NncrK2dyZWRqM0ZWRHpSd2FGandCMXM4aUZKcWN6WndjRDIx?=
+ =?utf-8?B?eGs3dHduaUV5TGlTODdiZWdxSTlxaVBPeG9qOVBBTy9sZmhzbEpZcC9UQWps?=
+ =?utf-8?B?OFNaOExBelNMUE0zeFVmbEs1am01bFR0Qk5RcFFqRVlqSEJJWVNGQWg2RmJ2?=
+ =?utf-8?B?L1NFcDF0cFY5U21iaUFpQUF2YmkySjBaMXZnTWd2MkNteThQVkxrb1M2dlhD?=
+ =?utf-8?B?TEVmcWo1ckNHLzZnb1dRZmxTQ2NhYktSbHJ3d0VOaFZNM0tNbGlnaEJYekxm?=
+ =?utf-8?B?bGFkRExOc3c0M3puaFZGSndGOTl4NlVycFhpbjJXS3o3UkVaY2E4K0taVmFt?=
+ =?utf-8?B?U0hDMGlZaUJBK0JrRjd0ZmUremRCc2UyUWNzY044elpiY3p2TFpqU1lyRm5k?=
+ =?utf-8?B?YjlpbzlzeDV4NUZrMDBVNFdpZ2ZJZllTbVRwQzViQzlsZW9rZWtnb3JRYlhx?=
+ =?utf-8?B?c2xBUHg1OWE2WmN4SlJlN2xFajFrT0FyUTBXUHZTQWdZM3QxWExOTEhsNklJ?=
+ =?utf-8?B?RXNncEc5eHR3cEExelB3R2p2TW5rSVlIN0ZXQVN1SGhUdm5VNTdhbSt1Sis2?=
+ =?utf-8?B?cWYyRGlMbkJHR1BQRWx1a05zUGFobjZqWUxWSWFRUHJLMlNzSmx6eGZscURN?=
+ =?utf-8?B?bENhN01jVHRsMnlrOENpaHc4VGRDZy9QSjAwV2Rub3lLVFdEY2ViWCtnY3Ju?=
+ =?utf-8?B?WWRyQmk3SWRwKzdWbjdrcHNWZFg4N3VTNmdiazhJSVczU2pOcmpJRGMxcVFT?=
+ =?utf-8?B?Mk1maVM4cEpkT3Y2R0trSk1XLzBDNi9CelFwS3RBSE9tNHFHQXJOWmIzcklL?=
+ =?utf-8?B?bGM2aTRLMTRyQjdzamoxdzgreW9uN2lHMlBiaDY0ZGdnVWJxMVBVQ1ZBQ2FZ?=
+ =?utf-8?B?ZnpJTEh2OVgybVVKSWpCTDgxZHhJeEc1NzREdnVDeHlXazNCZ2gwTVdxNEVJ?=
+ =?utf-8?B?WHdtLzlSdFZOck5yNHByS3lEaVJqNjk5T3lvNjBFVjBGL2xJbGNISVIxZFRI?=
+ =?utf-8?B?RXJKWS9UT3BKdnFTSE9uM3gxejNrREtSR2h6OFVKdmJtM0tOdDRXZlJHU1BW?=
+ =?utf-8?B?L0RLNVFvODh3SXNFdnRRNnlWWlpGSU9jbGd5SGVESFJ2eElCR1h6anZnV29Y?=
+ =?utf-8?B?bHloc05GTGJmb0F2WURTcS9IZHF0S2FmU0dQcmcrMXlRU2JUZUNDUzZzaVlY?=
+ =?utf-8?B?WVZMSjhaZlB6bUluQXdOVmpBMWFQMzBrb0IyVUkyWUhzV0FHTjVuUVliSjkv?=
+ =?utf-8?B?dHozUHFUeGVnNjZISGR3MTBnQjF1NXlDRGpVbWVkc3EwRUNtVm9DMnhDdGk5?=
+ =?utf-8?B?THlVMEtEQ096YzlwNmZKcE5CZWJNMmdaVG55eCt1bXBMMWZ4S2JlVFZYaERB?=
+ =?utf-8?B?N1U5VE1zQUt6eHFZZVZFOVZYMlc3T3NSL25QUm5NdEZTaDNvZm9Cd0dmN29y?=
+ =?utf-8?B?RjA4bGxrM2NWT1kzRU1VUVRuYU1oeCtwZDliVjlZQnhFVXhMRVJwejBjcHZr?=
+ =?utf-8?B?QWllSEMydVhqdE5UZlMxcmY3UHdGSXl2N2tHOWlxWjdVQUtlWUJidz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 10ffd89b-2376-4763-2735-08de78f7b931
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 07:37:29.7225
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yra9/B16w6EMvV3tO2XY2qOwRg6jAyzHcFsk7F1KbF/lvrrcyP3DowoP/JwygYuEmdEAmUY11PjTyMr0QZgt8A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF9507C739C
 
-On 3/3/26 08:01, Dan Williams wrote:
-> The final operation of the PCIe Trusted Execution Environment (TEE) Device
-> Interface Security Protocol (TDISP) is asking the TEE Security Manager
-> (TEE) to enable private DMA and MMIO.
+
+
+On 3/3/26 11:01, Dan Williams wrote:
+> With the arrival of "accepted" devices, devices that have been enabled to
+> DMA to private encrypted memory, coherent DMA allocation no longer requires
+> page conversion. Update force_dma_unencrypted() to skip accepted devices.
 > 
-> The story so far in the security lifecycle of the device is that the VMM
-> setup an SPDM session and link encryption with the device's physical
-> function0. The VMM then assigned either that physical function or other
-> virtual function of that device to a VM. The VM asked the TSM to transition
-> the device from TDISP UNLOCKED->LOCKED. With the device LOCKED the VM
-> validated signed fresh device evidence and expected MMIO mappings.
-> 
-> The VM now accepts the device to transition it from LOCKED to RUN and tell
-> the TSM to unblock DMA to VM private memory.
-> 
-> Implement a sysfs trigger to flip the device to private operation and plumb
-> that to a 'struct pci_tsm_ops::accept()' operation.
-> 
-> Co-developed-by: Xu Yilun<yilun.xu@linux.intel.com>
-> Signed-off-by: Xu Yilun<yilun.xu@linux.intel.com>
-> Co-developed-by: Aneesh Kumar K.V (Arm)<aneesh.kumar@kernel.org>
-> Signed-off-by: Aneesh Kumar K.V (Arm)<aneesh.kumar@kernel.org>
-> Signed-off-by: Dan Williams<dan.j.williams@intel.com>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Andy Lutomirski <luto@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Thomas Gleixner <tglx@kernel.org>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: x86@kernel.org
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+
+Reviewed-by: Alexey Kardashevskiy <aik@amd.com>
+
 > ---
->   drivers/pci/Kconfig                     |  2 +
->   Documentation/ABI/testing/sysfs-bus-pci | 13 +++++
->   include/linux/pci-tsm.h                 |  7 ++-
->   drivers/pci/tsm.c                       | 69 ++++++++++++++++++++++++-
->   4 files changed, 88 insertions(+), 3 deletions(-)
+>   arch/x86/mm/mem_encrypt.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
-> index e3f848ffb52a..c45c6b978e1d 100644
-> --- a/drivers/pci/Kconfig
-> +++ b/drivers/pci/Kconfig
-> @@ -127,6 +127,8 @@ config PCI_IDE
+> diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
+> index 95bae74fdab2..6d2972ff6ed8 100644
+> --- a/arch/x86/mm/mem_encrypt.c
+> +++ b/arch/x86/mm/mem_encrypt.c
+> @@ -20,10 +20,11 @@
+>   bool force_dma_unencrypted(struct device *dev)
+>   {
+>   	/*
+> -	 * For SEV, all DMA must be to unencrypted addresses.
+> +	 * Require unencrypted DMA unless the device has been "accepted",
+> +	 * enabled by a TSM driver to DMA to private encrypted memory.
+>   	 */
+>   	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+> -		return true;
+> +		return !device_cc_accepted(dev);
 >   
->   config PCI_TSM
->   	bool "PCI TSM: Device security protocol support"
-> +	depends on ARCH_HAS_CC_PLATFORM
-> +	select CONFIDENTIAL_DEVICES
->   	select PCI_IDE
->   	select PCI_DOE
->   	select TSM
-> diff --git a/Documentation/ABI/testing/sysfs-bus-pci b/Documentation/ABI/testing/sysfs-bus-pci
-> index 1ed77b9402a6..c2a5c4fe9373 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-pci
-> +++ b/Documentation/ABI/testing/sysfs-bus-pci
-> @@ -732,3 +732,16 @@ Description:
->   		'lock' to teardown the connection. Writes fail with EBUSY if
->   		this device is bound to a driver. This is a "devsec" TSM
->   		attribute, see Documentation/ABI/testing/sysfs-class-tsm.
-> +
-> +What:		/sys/bus/pci/devices/.../tsm/accept
-> +Contact:	linux-coco@lists.linux.dev
-> +Description:
-> +		(RW) Write "1" (or any boolean "true" string) to this file to
-> +		request that TSM transition the device from the TDISP LOCKED
-> +		state to the RUN state and arrange the for the secure IOMMU to
+>   	/*
+>   	 * For SME, all DMA must be to unencrypted addresses if the
 
-Nit: remove the typo extra 'the'
+-- 
+Alexey
 
-"...and arrange for the secure IOMMU to..."
-
-> +		accept requests with T=1 in the PCIe packet header (TLP)
-> +		targeting private memory. Per TDISP the only exits from the RUN
-> +		state are via an explicit unlock request or an event that
-> +		transitions the device to the ERROR state. Writes fail with
-> +		EBUSY if this device is bound to a driver. This is a "devsec"
-> +		TSM attribute, see Documentation/ABI/testing/sysfs-class-tsm.
-
-Thanks,
-baolu
