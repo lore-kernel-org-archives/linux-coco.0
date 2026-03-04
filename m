@@ -1,66 +1,50 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5613346B4
-	for <linux-coco@lists.linux.dev>; Wed,  4 Mar 2026 15:02:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C2D33F369
+	for <linux-coco@lists.linux.dev>; Wed,  4 Mar 2026 15:25:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772636558; cv=none; b=MRNZ6sT5j2VtsofXiSS3XL5oVOplLRGv69NMQwVShB4NhkhMt3t6Ct6LWm1Y3I5WWc2otbcAqKSaZFrWrnEqny1xE/rU8VRbf/n8HCGMB4p1oGqUfhyW2iViI5E4BxIzW2sRybIzRQQS/WuyCa/876v5nQWzYMOuAFH7gU2w7Gk=
+	t=1772637952; cv=none; b=TtdKJJ1fexziYDppz49IbryYkIAibe3+HDB6BCQRNpyfBbUvnfDyvZNDEIkBYbcvV3idWSxTiryOVirTEX+/mnI8ydiEB1tOf4y0bMiNf16yLmLAaThNPfYfrm2vsw8DkB93VJeuIGoiuI0OMtmuDSl4FSptmch3BB3cHlxexnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772636558; c=relaxed/simple;
-	bh=6zZ1Agw5MlpKm8ZY1+2Yokb8eeyLEP5wcbptGyVeKdw=;
+	s=arc-20240116; t=1772637952; c=relaxed/simple;
+	bh=9AgIFJrC96DUYPdz7UAGuHhwSWExCU90vm6AIBQ906g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QU5vp4iJrc48sNo6DWk20Fyy+nlMUsu8kxZ3p4tKKgjBWhm6U5qG1PQsjAkY72epZ6R4hhBY+d+79aDd+/6Da4k4F4+vW4l62bgz2NgamdTYVakcbd+8qWDP52Hacrfi46IbXMsgiuu1ebRUSecFZt+wWWzuuGiDm/SxEMTN/bE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=NC1fBBxD; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	 In-Reply-To:Content-Type; b=MXuFncpzKqqJCZz5VRjzYMaoMp35axrpYP58Nw6lsZwOJOH9ePYEGafxK6QA51vS38GJuhZxG6ZDkKTJyNcYJqyEGbFx/BkzSzwyMWyyKWLW9sMnXDGpMiWvIAC/a+S7AfwhKhLMHRlnKN7LhAO9AE/BSBCRSh7AEoyG/i+On1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aTKEHMsB; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="NC1fBBxD"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4836f363d0dso61647095e9.3
-        for <linux-coco@lists.linux.dev>; Wed, 04 Mar 2026 07:02:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1772636555; x=1773241355; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=PQaLSfKevN5NxnWRn/Bkxayowjy+4UP8KRfpRnFjRz8=;
-        b=NC1fBBxDfgZrGpPFVku9JaGM4Okb5um6oG3CyCqkmD8WjK9f3mOvXDyKACMQT4bVfC
-         eDAPvOUhBzCjZbqcI6klEP/ik4Tir4he4G11Dn5uSnsUaztgAsZRXIOMKhBnl2YK6P30
-         PlqeoXbEncUx3sGPmd+2bZPcSU94TAaqshExda/Ty04ov/RWFN/gtRj6/p+O8YXJ2s8W
-         FYYLzOIvv1so9CT+aHXY3THqWrJJMut09OqhG5Ay9egmi9LzsE1p1MjN33nQAGAbdX+6
-         HEMV3XeqbH0752qyQTmRoSOhGxJq2JjYQiQgsfx/iGq+bDwKU7QBXLf2eFV5CuxKYeui
-         MGyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772636555; x=1773241355;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PQaLSfKevN5NxnWRn/Bkxayowjy+4UP8KRfpRnFjRz8=;
-        b=R6FM0p2Rc/0NEfkU+BpltjSb14bKs6yOU6ba4F/UU9IHxVyX36juD3354s0570a2YI
-         Zitu+8MoscNQPc+vIg43/wIfWpmN9wkDGJ0n3KmgIyIuKEJuwcG6qbl5Kjb2IVophvmf
-         PYsTgBQdb5Lv3Q50HyzDSOA+fSJY0OVwRD7rrrM8PUwLft8c+LYnJGdXqMhgFXrA6BD1
-         nbfpQEBSAUHTetcRf9OiDnVqtDSotiq81aGnNCZiAyP57xphrec0yQ0mo/Fi3N2NgsDo
-         fMTbZpkWFMTtSsQIQzkU1rzEj8fYWIxk7JY+4c0rGu7G5ZJ8nZAC3pbo1nTmpjUwEImD
-         pOoA==
-X-Forwarded-Encrypted: i=1; AJvYcCU+RvWn6QUQv/XTyM7hPZgrCdPdq6r/8kNr4UYFnO6Eu1Dqxmze9RG0lF7hkVh7Aw2aB8QgNNiznhqR@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy9GRd23tbNRJm+st7Roc938otYZ8XkMpQ02I7Q79nVhbTnqtv0
-	J06gpLRFb2+LCIcNQo/7Pe3pWCSIJvyVsnopf0xUULQj1Gcjb9Z0Sy54MdE1xymKkmw=
-X-Gm-Gg: ATEYQzzOR0x7Gjccy3V2JYK+KGkoy8bZv4+vYR0OF+KARB8v9bWVqvS8Bo7FmZ15uTD
-	wHk7eG3KbLG0wXvjHkb4BSZMmUHBWLe26dOkj6G57AFA8SyX3DMpudzJ5e/WkYR5CCIbY8yFtMB
-	U9TpQd/BbPjWbA3EDNPJrWrsHpWiXvfR81sri7HUa0pbhwiRxicJFrOVdWrl9AgzMUqdMm7eGoW
-	/QKeNmgL3yOIBh7gVMPhgW6VrdY2KBGTJRPc264nyRMb12KwEyL2oqCZv0/lnPLOVbi4DcDAszf
-	4L/VSawmFn2C4KrdUFSeu4C2pCWS3/iWGfCOyktZ6YwDJzmB94INw5lNIP8Mu9q642jZ1kb9pbg
-	gcE1ZmHuOxH50jlJEH74nV/9I20LEVDGjP3CxzainpWnAadC0OB9Z83KHxFbbSKmArwQpTMDd9Z
-	9lLbDFHi/TyNgClTktCv5zODNfxPWievJAYT9VPIsWVK2IWV0K4bkfDebtLqk=
-X-Received: by 2002:a05:600c:6389:b0:480:6941:d38b with SMTP id 5b1f17b1804b1-4851989f63amr33047315e9.30.1772636554833;
-        Wed, 04 Mar 2026 07:02:34 -0800 (PST)
-Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [185.218.67.140])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439b0549600sm29325387f8f.35.2026.03.04.07.02.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Mar 2026 07:02:34 -0800 (PST)
-Message-ID: <f0941a37-1055-4473-a8d2-fbe3e912c7b8@suse.com>
-Date: Wed, 4 Mar 2026 17:02:32 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aTKEHMsB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772637951; x=1804173951;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=9AgIFJrC96DUYPdz7UAGuHhwSWExCU90vm6AIBQ906g=;
+  b=aTKEHMsBS3M6b6AzruRFfWhzzF8XmxqHDbFYu6Vs1MPBmB/dOtgLvzlR
+   1FdQaVdyBoV1bvkOL2mdIzJFoSK5CtOA73tdEvsYrZdVvGxCqGGr1UfBx
+   9iSHmc++xl8UU7R8fDEfMa5rCrjdk3sdBvzC7EWwyheHez8TfHqT6M2m9
+   wCqhQXbMjTGtiuKeAc7vYIICC9MXE3lR0eX6sHG7MP5gQnH6aiKiyqhA2
+   WQsHyWrNBXmMAp7SYCx8X7SwSuOkUbxXiU/f89raUr9qxDgTOtLLCjBL9
+   +gk339E4FtKesvRqSsoHbqJ96OyfwfG/NpQ+lrekrWO3lM/Hkcc1p5HDL
+   w==;
+X-CSE-ConnectionGUID: cHJN1SCoRuStTweb1M8rNw==
+X-CSE-MsgGUID: aP38yQtRSByXJKU1+HEKvQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="85048041"
+X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
+   d="scan'208";a="85048041"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 07:25:50 -0800
+X-CSE-ConnectionGUID: vtF7OjPBQoG3vn+8rgx1LQ==
+X-CSE-MsgGUID: rvSzvX3eRUmvBcV4MnJciA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
+   d="scan'208";a="256253427"
+Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.108.205]) ([10.125.108.205])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 07:25:47 -0800
+Message-ID: <7ab8d3af-b4f5-481c-ab2e-059ddd7e718e@intel.com>
+Date: Wed, 4 Mar 2026 07:25:53 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -68,85 +52,106 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/4] x86/tdx: Clean up the definitions of TDX TD
- ATTRIBUTES
-To: Xiaoyao Li <xiaoyao.li@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, x86@kernel.org,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, Kai Huang
- <kai.huang@intel.com>, binbin.wu@linux.intel.com,
- Tony Lindgren <tony.lindgren@linux.intel.com>
-References: <20260303030335.766779-1-xiaoyao.li@intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
+Subject: Re: [PATCH v2 3/7] x86/sev: add support for RMPOPT instruction
+To: Sean Christopherson <seanjc@google.com>,
+ Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ peterz@infradead.org, thomas.lendacky@amd.com, herbert@gondor.apana.org.au,
+ davem@davemloft.net, ardb@kernel.org, pbonzini@redhat.com, aik@amd.com,
+ Michael.Roth@amd.com, KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+ Nathan.Fontenot@amd.com, jackyli@google.com, pgonda@google.com,
+ rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
+ pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com,
+ nikunj@amd.com, john.allen@amd.com, darwi@linutronix.de,
+ linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+ kvm@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1772486459.git.ashish.kalra@amd.com>
+ <8dc0198f1261f5ae4b16388fc1ffad5ddb3895f9.1772486459.git.ashish.kalra@amd.com>
+ <aahH4XARlftClMrQ@google.com>
+From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <20260303030335.766779-1-xiaoyao.li@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <aahH4XARlftClMrQ@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-
-
-On 3.03.26 г. 5:03 ч., Xiaoyao Li wrote:
-> The main purpose of this series was to remove redundant macros between
-> core TDX and KVM, along with a typo fix. They were implemented as patch 1
-> and patch 2.
+On 3/4/26 07:01, Sean Christopherson wrote:
+> I don't see any performance data in either posted version.  Bluntly, this series
+> isn't going anywhere without data to guide us.  E.g. comments like this from v1
 > 
-> During the review of v1 and v2, there was encouragement to refine the
-> names of the macros related to TD attributes to clarify their scope.
-> Thus patch 3 and patch 4 are added.
+>  : And there is a cost associated with re-enabling the optimizations for all
+>  : system RAM (even though it runs as a background kernel thread executing RMPOPT
+>  : on different 1GB regions in parallel and with inline cond_resched()'s),
+>  : we don't want to run this periodically.
 > 
-> Note, Binbin suggested to rename tdx_attributes[] to tdx_td_attributes[]
-> during v3 review. However, this v4 doesn't do it but leaves it for future
-> cleanup to avoid making it more complicated because it also looks like
-> it needs to rename "Attributes" to "TD Attributes" in tdx_dump_attributes(),
-> which has user visibility change.
-> 
+> suggest there is meaningful cost associated with the scan.
 
+Well the RMP is 0.4% of the size of system memory, and I assume that you
+need to scan the whole table. There are surely shortcuts for 2M pages,
+but with 4k, that's ~8.5GB of RMP table for 2TB of memory. That's an
+awful lot of memory traffic for each CPU.
 
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+It'll be annoying to keep a refcount per 1GB of paddr space.
+
+One other way to do it would be to loosely mirror the RMPOPT bitmap and
+keep our own bitmap of 1GB regions that _need_ RMPOPT run on them. Any
+private=>shared conversion sets a bit in the bitmap and schedules some
+work out in the future.
+
+It could also be less granular than that. Instead of any private=>shared
+conversion, the RMPOPT scan could be triggered on VM destruction which
+is much more likely to result in RMPOPT doing anything useful.
+
+BTW, I assume that the RMPOPT disable machinery is driven from the
+INVLPGB-like TLB invalidations that are a part of the SNP
+shared=>private conversions. It's a darn shame that RMPOPT wasn't
+broadcast in the same way. It would save the poor OS a lot of work. The
+RMPOPT table is per-cpu of course, but I'm not sure what keeps *a* CPU
+from broadcasting its success finding an SNP-free physical region to
+other CPUs.
+
+tl;dr: I agree with you. The cost of these scans is going to be
+annoying, and it's going to need OS help to optimize it.
