@@ -1,220 +1,237 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010043.outbound.protection.outlook.com [52.101.193.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03362E55A;
-	Wed,  4 Mar 2026 06:46:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772606766; cv=fail; b=CLFRivEezDCbzKWJfc24jhfdImXhP9wKf9SZhQjiOq3tyFEJtaewlMHsI9glCqaajwIv//GT9NvfzteeGNvIoaYJCyJfGd/uGE5kkJQtI8ilbwBSnsOWRpxaIUK9RiAy2waN8ykViYx7VZ5emQPvbNIHmokzb9JthgdSQPz2uzY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772606766; c=relaxed/simple;
-	bh=8U8lj9pZm8d9svi+WUjf5T0B10YVNQglyDSszfMMBEA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=K3yYouc2KJ4nYm+uLMqiFY/tRhiyM1ir95rcafdxilQNmH3mF+buGAuZOcfM9QurWd/QYRNB8uyYjyJbFb3OQ5ohkC+tXy6D0LnKhh5RHS7y67QKfEtqIHyp8E/P0IlFV7ozBkFVW5sM1t4UlNwQNqcaWzFO1ZONljsGcHawdXE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=QlBBPR7o; arc=fail smtp.client-ip=52.101.193.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="QlBBPR7o"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BAQlNy8vQpS8PDWU7XslnspxwA8xlFo2VPqdp5/hxk3dpYQ72An430EgaztYpFPJF1Lnz+mFugO6XGJvM0RO45eNrqV92DI21BnR9SCgiONfRM4wxJHYBpyVxCMpKpiKkgck4WI+bQjT1IkWBLITsRARKU2/aaH9JSHZpwVTWn/HMxS0wKSS419JEnYXXg8pzOlx/UXI45+eUakyOH+hYbZCPCr2Mo1Lesx87of7Qk5sh3jVXfw+pvG7EphiOxEsPANzmLnzhd1owVqCcZnYxoy4j6cQE0zT8c+Aem+Hoxa9NANRVLLKTPRjL7RsrFrMc6whXkXjwFsbteqA2z9Cqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aSuuLBxjsT0Z5Q9/iRFMYZPCB1aEbrRflARsAZfEOvE=;
- b=YeaadGd5EP7ut9zMe6oA1Ttur7QTNdzZ00sXv+JMXtyjUPmjIoF5Zt7dX6fRvG8NIepvGHdrmOutgKpRlrnIIrfFjAnF9/PRroYGHaTgnmmYOUa4Wh5VJj8WabTA3lx8rl0bNf77rmmm+c33NQyoHWntRwzC+R5SFm7/BDA8qFFFc2HDsHuTBoZZYGo6/aZdz077SL3ABdp9fKwC9oV0JO0KMqAa2AXN/fVK6X7OiSla0P5XOInYTbmplR7cIJ6rd1fpK3sxPpfP0p/mzGuHmWoSRMbsQPghnR66AEKAnRTXMenfUXGIyFrG2T8Xd1N8iCHFik0gH7V+5UxY2IXRVg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aSuuLBxjsT0Z5Q9/iRFMYZPCB1aEbrRflARsAZfEOvE=;
- b=QlBBPR7o5XAj1JEIeAKEA0toXXgQcNdIxU/8vJkv4JfQvUIRk+GEbnqL+THOlidkWmXlaLnzD0hgopkHOdKkBrPC+p43Xur/rRTVfjdua0fh2899FSoeuDd0iZ7nd9dsAFospQ3AbLKMyzoT05eBpRWE46//gxgZJ61MZdXF7HM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by MN2PR12MB4079.namprd12.prod.outlook.com (2603:10b6:208:1d5::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.17; Wed, 4 Mar
- 2026 06:46:00 +0000
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::1e6b:ca8b:7715:6fee]) by CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::1e6b:ca8b:7715:6fee%4]) with mapi id 15.20.9654.022; Wed, 4 Mar 2026
- 06:46:00 +0000
-Message-ID: <5d669086-a5c8-4e55-8108-a9fff41cf094@amd.com>
-Date: Wed, 4 Mar 2026 17:45:31 +1100
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH kernel 4/9] dma/swiotlb: Stop forcing SWIOTLB for TDISP
- devices
-To: Jason Gunthorpe <jgg@nvidia.com>, dan.j.williams@intel.com
-Cc: Robin Murphy <robin.murphy@arm.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-pci@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Mike Rapoport <rppt@kernel.org>,
- Tom Lendacky <thomas.lendacky@amd.com>, Ard Biesheuvel <ardb@kernel.org>,
- Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
- Ashish Kalra <ashish.kalra@amd.com>, Stefano Garzarella
- <sgarzare@redhat.com>, Melody Wang <huibo.wang@amd.com>,
- Seongman Lee <augustus92@kaist.ac.kr>, Joerg Roedel <joerg.roedel@amd.com>,
- Nikunj A Dadhania <nikunj@amd.com>, Michael Roth <michael.roth@amd.com>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Andi Kleen <ak@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Tony Luck <tony.luck@intel.com>, David Woodhouse <dwmw@amazon.co.uk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Denis Efremov <efremov@linux.com>, Geliang Tang <geliang@kernel.org>,
- Piotr Gregor <piotrgregor@rsyncme.org>, "Michael S. Tsirkin"
- <mst@redhat.com>, Alex Williamson <alex@shazbot.org>,
- Arnd Bergmann <arnd@arndb.de>, Jesse Barnes <jbarnes@virtuousgeek.org>,
- Jacob Pan <jacob.jun.pan@linux.intel.com>, Yinghai Lu <yinghai@kernel.org>,
- Kevin Brodsky <kevin.brodsky@arm.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
- Xu Yilun <yilun.xu@linux.intel.com>, Herbert Xu
- <herbert@gondor.apana.org.au>, Kim Phillips <kim.phillips@amd.com>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Claire Chang <tientzu@chromium.org>, linux-coco@lists.linux.dev,
- iommu@lists.linux.dev
-References: <20260225053806.3311234-1-aik@amd.com>
- <20260225053806.3311234-5-aik@amd.com>
- <699f238873ae7_1cc5100b6@dwillia2-mobl4.notmuch>
- <04b06a53-769c-44f1-a157-34591b9f8439@arm.com>
- <699f621daab02_2f4a1008f@dwillia2-mobl4.notmuch>
- <20260228002808.GO44359@ziepe.ca>
- <69a622e92cccf_6423c10092@dwillia2-mobl4.notmuch>
- <20260303001911.GA964116@ziepe.ca> <20260303124306.GA1002356@nvidia.com>
-From: Alexey Kardashevskiy <aik@amd.com>
-Content-Language: en-US
-In-Reply-To: <20260303124306.GA1002356@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SY6PR01CA0079.ausprd01.prod.outlook.com
- (2603:10c6:10:110::12) To CH3PR12MB9194.namprd12.prod.outlook.com
- (2603:10b6:610:19f::7)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 016E3370D50;
+	Wed,  4 Mar 2026 12:08:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772626119; cv=none; b=ugXQVJgcZyf+TNam3RC4DwBD3zAzKZOPt1agznY3TgB78UcXiCVY8pLx4FJyzszuAh8UPn5091iVjIXa1HqP0J90vZlHc2QzZiy6Bos3fZEkIHRvJ2EWHvh/PhGviWPnCtzggWztwpw7xJZ5IckVoGfj3qPNfWMOJDh6dpKQLOU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772626119; c=relaxed/simple;
+	bh=p8/jmC0wH90dMSW4LEuylFzVA8sOV4ndHvTedy3JGag=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bnjD2XEeDi4ltcTlVWdRm2MuJYxbELOB9jhgq6JsSlIFGS5Pt1iiNZa5eqAO5eGDCWDPesCfU+cb1x2TPc5CwNNHOQcb5jB4HR3LQijRXwJqZSeS6sgl1oLnnqWVC0obUWDkdNulr/hmHSsWX/yQzu+RCpN+C2hmYLJMwR7NYLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C588D339;
+	Wed,  4 Mar 2026 04:08:30 -0800 (PST)
+Received: from [10.57.56.227] (unknown [10.57.56.227])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3A4E73F836;
+	Wed,  4 Mar 2026 04:08:32 -0800 (PST)
+Message-ID: <25a22155-50d1-4a85-8ccd-755fee803066@arm.com>
+Date: Wed, 4 Mar 2026 12:08:30 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|MN2PR12MB4079:EE_
-X-MS-Office365-Filtering-Correlation-Id: f9b1eb29-628c-43c0-583b-08de79b9b251
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	iC9Um92X9OMS3ByL87folJgo54gcRHeT00Cn+F30/bEsUOvS7gadQotjKUua99C9rlfEwwAt0a7lipwyXRpQxEyYJSbLgei8LQPEaQyccej4I+qWBZOsvUuaDxh/4ZzgOqpj5tdkov/s9f31CLahJ6Q1KUk2+j6enOVs3Mx1gK27Hb7GN5kFDDODV0yi+SpJ/gb7FQF/jALo4H+O1CkpKCZIjy/7GcqaIIIJ/YzOzVcaGdZkYTAu9CRsJ3b18bRNxYgQm5rek9HeNmh3SvWJLjHStXy1iBuNji1UcsjzzcluOoGn5M4KTuzOQ4VXbu8irQAWFBMe7W64dc6F3lOhVXrpjrC544AqbRJPoPPT8P30FI6u7MSqMKsalz7YP1rgkt2TMiuLAtAOenvuEHdpKlypJfvilmAtcOlaSEbqiU1srWr+PapiBjdhVy44e1NcM/oXxQ2PHwddFcr+8bVxEeFc45SLLAcGC3YJ0deIBt8px38kuhpP7iXIVN9pSksI0krUUcK3x+Bf3FqrRM13GPstUksJJtVfgvTrn8Xs56pWGnYVmrUdB1lz4oZwWmmnnAA3xy9vE4OLHNeX08m1ZleN6L7ibdBm0ppwH/R5dEY56iDuYQtl5a/4P4HiHx6gXcXpA0kAvre7w25kcfjmOL3gQSmV5PTO6g0u06a4EiUBDUnWV3bVn6Ki+oJLucO4v0seH8/o/kzKji1JlXb8zL8oDRxEzDaMe3ieo+wjmJk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VG54d3lKT24zdnR3emxMbGc5V05kNmhiY0E5WW1UblgzOE9UMVhlb0xybjJl?=
- =?utf-8?B?RU5pL1l2OHNnb3RXcFE4bTQ1ZXNCczVCMWtOY1M5WVdQY05TMlAwa0F6WTh0?=
- =?utf-8?B?bWpNSllrQm9CNlRQZVdPeXJ6OWViVWl4ZDRoWHM4dVltcDFSVk5sTXh5VHNT?=
- =?utf-8?B?dm1yUHNacHBVaVFHUStMZkE2bXdDT2pINVFXM2dTT1RGU1BDek5uSDF5MUEx?=
- =?utf-8?B?QjZaWXJrQ3FYdXBTbVBUdEpjUVpRVmV6OTlhN2pLR1hBYmtTaGlMMWpjR0VP?=
- =?utf-8?B?MlhHWEhBRHlyelpuaXlWZjV5NTFSQkxmSHVJbXVZTzFBTHBvaUZ4amROdXdk?=
- =?utf-8?B?WjJsL3VYeHNpRXNXay9ZQlpmWFkzZEJQcitNMm95VXNqcytDUmVFWE9JN0Fy?=
- =?utf-8?B?UnQxZ3gxSVJ4UnNQeTBlMUt0TnhvbVJjREtvTUlIWEN2WHA4a0V3d2oxdzd3?=
- =?utf-8?B?enNuUUlLYjc5bGtFS1lNbkxGcDQ2NGhva04wVmRvVTJrZnNTUkZnQ01PY05x?=
- =?utf-8?B?dEowQjBEMFdVN0xGZjdJUlJpZEpYWnlwWUE5MThraXRUbDNSeWw1bWMrS0p0?=
- =?utf-8?B?c3ltQmErM1RKMFJYVkNQTmV4dnJFRkRvM1AvN0RmTWo4Z0t1d3N0NURGR3A3?=
- =?utf-8?B?OWFqTGVINGZjOWE3ZTN5ektYOHFldDNTeHAzVzRRSzBtaFBNL1FrcDl2U0Vu?=
- =?utf-8?B?eWY2eHNvK3JmenB3MEpxQkVlR2FocGVhU3huUXRMYmRkVjlBdVl0ekVVcEtp?=
- =?utf-8?B?WjZVaEVaby85ZHhveEZhYzRJYk9oQlFac3lpSnJBZllySE5QZTNWZlNKTktk?=
- =?utf-8?B?R1djOXZOdHQzdnJNQ1JZWmxhVmo0b3F1NzNZelFNNG9QcnoxVFd3ejkwMEx3?=
- =?utf-8?B?eUVlVjZHallYMG9vRVhPWkEwT2pqa1ZmWkdOV1VyVXYrT0FOS1FVTk1qcmo2?=
- =?utf-8?B?NHV3RFVzbTFmWVpCdkJtU0tiZkMyL3VqQWgwbnp3WGVPdmtiWkx5cmhwbkNT?=
- =?utf-8?B?ZHpoemJMcFZjcjJBODRmN0RtRVRsYjEwck5zOTR2aXRqVEpOTFBxWWRNejhx?=
- =?utf-8?B?eHFYcnZ2NDNuSlkyVHI4VStnaDhsM1V2QkJRSXNCWTVPLzdMUWhVM3VCdzUx?=
- =?utf-8?B?M3loUUdRWklnVFF4MXgrWmJEaGJoN3ZUZzNIemM1dTBKUG5Xb0Y3R3Qvb1l3?=
- =?utf-8?B?TlE2Z2xtQnZVamJsb0h5RlZJRjFXY000YnpFTUFRMkJBYTN2YU9WMUxqVzJY?=
- =?utf-8?B?QkZkUStlOUIvR2puaWZBM3J6QjRZWUZnSEdFL3RWdDNXUFh6ZlJuM2p4TE1r?=
- =?utf-8?B?YzZaZ3BweWsvUnMrV3BEQkdPUHVwekE2eFh6K09senVXL2MwekF1ZFZWVU5y?=
- =?utf-8?B?MVVnY2dDVzM3RjA1dFJBSjZDa2ZsWjI0NHFQdWVDTi81N0ZKdFdYLzROc2Fm?=
- =?utf-8?B?OThVS1pMME13S1pGOUUzVzVIRis3MW9ranNIcGVySFVRTGllcGp5d1JlVk9G?=
- =?utf-8?B?N1FTSWg0NjRJZ2tIVm9HcGljVng5ajFQSzNQWjg2ZHR3RVcxK1BEWEJTNFYx?=
- =?utf-8?B?aTloeFM5bGN2SEVSSGVtdzJSVlBwc05QSEQ3Ky9yL2xYMHdEMit0TmZuR2Jw?=
- =?utf-8?B?d0RZYzJYUGJNNlRLVCtWbmJaT016alB3bHZaMndUNlVoR3Jxc29HYms4QmVQ?=
- =?utf-8?B?Y0ZkMndza1RNRXdBazViamd5YWFVRUo5TG1xK0JYWlY3eE13aHFqYmQxbDVY?=
- =?utf-8?B?eGVIeFBLU1NMbUlQTVpoOXRqb2FpWXg4ZzRMbGJwamF4TDBvYlQvclV2WFBu?=
- =?utf-8?B?NmwyblpaNUd6SkljWFlMUjlaTDhiWU4zUjFwT2VpVnM1Z1pVSDlFdCthMzRr?=
- =?utf-8?B?aFVmbXJIbUl5bHRGdGttQTJpZE5yejRmYkVOdC9ZM3VjL0c2K2FZdkpQT2Zj?=
- =?utf-8?B?NVpVMnpINFlzckZJNExnQm9sd21QaHR3U3FzY3NhUFFWQnJZQWFmbnVNMjlm?=
- =?utf-8?B?WmI3U0Y3citzbDk0NjBWSU5YZDU3RTRsYXU2eExmSnEyakVVWjU5cmlYcU9o?=
- =?utf-8?B?S1pkazM5NTg1emp4NFRYUTlaYk1abEkvdEIrOXRGRVpvcEFzYVQrOHJvNU9J?=
- =?utf-8?B?VnFidmpZc0xnS0grTzRwUTFLNTFxM1A0bVdwV1UvQ3d4NUlHZ295VlFEeDFx?=
- =?utf-8?B?UGltNDJoTzQxUXJMeTNWK2hWQ1FRaGRxM1U5SkZua2N2TVhZMzk1Wk9XL1Fi?=
- =?utf-8?B?ei9ZbFBudW0vNlB6emZENGF3M1pRV3NBT1VCdjZtdndmK01ZVFZDcjU4Sk1K?=
- =?utf-8?Q?gnb73cznlAasFOURZp?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f9b1eb29-628c-43c0-583b-08de79b9b251
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2026 06:46:00.5558
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yh5Dmo6efADwwbNDbajuL8IHMbZ+cXa5yhxdZ+5A5QgZAP2r4FLlDxY54I2hlwlF/lipkoo8JOaRTy3JFP6NDg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4079
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 06/46] arm64: RMI: Define the user ABI
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>
+References: <20251217101125.91098-1-steven.price@arm.com>
+ <20251217101125.91098-7-steven.price@arm.com> <86tsuy8g0u.wl-maz@kernel.org>
+ <33053e22-6cc6-4d55-bc7f-01f873a15d28@arm.com> <86h5qx83df.wl-maz@kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <86h5qx83df.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-
-
-On 3/3/26 23:43, Jason Gunthorpe wrote:
-> On Mon, Mar 02, 2026 at 08:19:11PM -0400, Jason Gunthorpe wrote:
->>> Oh, I thought SEV-TIO had trouble with this, if this is indeed the case,
->>> great, ignore my first comment.
+On 03/03/2026 13:11, Marc Zyngier wrote:
+> On Mon, 02 Mar 2026 15:23:44 +0000,
+> Steven Price <steven.price@arm.com> wrote:
 >>
->> Alexey?
+>> Hi Marc,
 >>
->> I think it is really important that shared mappings continue to be
->> reachable by TDISP device.
+>> On 02/03/2026 14:25, Marc Zyngier wrote:
+>>> On Wed, 17 Dec 2025 10:10:43 +0000,
+>>> Steven Price <steven.price@arm.com> wrote:
+>>>>
+>>>> There is one CAP which identified the presence of CCA, and two ioctls.
+>>>> One ioctl is used to populate memory and the other is used when user
+>>>> space is providing the PSCI implementation to identify the target of the
+>>>> operation.
+>>>>
+>>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>>> ---
+>>>> Changes since v11:
+>>>>  * Completely reworked to be more implicit. Rather than having explicit
+>>>>    CAP operations to progress the realm construction these operations
+>>>>    are done when needed (on populating and on first vCPU run).
+>>>>  * Populate and PSCI complete are promoted to proper ioctls.
+>>>> Changes since v10:
+>>>>  * Rename symbols from RME to RMI.
+>>>> Changes since v9:
+>>>>  * Improvements to documentation.
+>>>>  * Bump the magic number for KVM_CAP_ARM_RME to avoid conflicts.
+>>>> Changes since v8:
+>>>>  * Minor improvements to documentation following review.
+>>>>  * Bump the magic numbers to avoid conflicts.
+>>>> Changes since v7:
+>>>>  * Add documentation of new ioctls
+>>>>  * Bump the magic numbers to avoid conflicts
+>>>> Changes since v6:
+>>>>  * Rename some of the symbols to make their usage clearer and avoid
+>>>>    repetition.
+>>>> Changes from v5:
+>>>>  * Actually expose the new VCPU capability (KVM_ARM_VCPU_REC) by bumping
+>>>>    KVM_VCPU_MAX_FEATURES - note this also exposes KVM_ARM_VCPU_HAS_EL2!
+>>>> ---
+>>>>  Documentation/virt/kvm/api.rst | 57 ++++++++++++++++++++++++++++++++++
+>>>>  include/uapi/linux/kvm.h       | 23 ++++++++++++++
+>>>>  2 files changed, 80 insertions(+)
+>>>>
+>>>> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+>>>> index 01a3abef8abb..2d5dc7e48954 100644
+>>>> --- a/Documentation/virt/kvm/api.rst
+>>>> +++ b/Documentation/virt/kvm/api.rst
+>>>> @@ -6517,6 +6517,54 @@ the capability to be present.
+>>>>  
+>>>>  `flags` must currently be zero.
+>>>>  
+>>>> +4.144 KVM_ARM_VCPU_RMI_PSCI_COMPLETE
+>>>> +------------------------------------
+>>>> +
+>>>> +:Capability: KVM_CAP_ARM_RMI
+>>>> +:Architectures: arm64
+>>>> +:Type: vcpu ioctl
+>>>> +:Parameters: struct kvm_arm_rmi_psci_complete (in)
+>>>> +:Returns: 0 if successful, < 0 on error
+>>>> +
+>>>> +::
+>>>> +
+>>>> +  struct kvm_arm_rmi_psci_complete {
+>>>> +	__u64 target_mpidr;
+>>>> +	__u32 psci_status;
+>>>> +	__u32 padding[3];
+>>>> +  };
+>>>> +
+>>>> +Where PSCI functions are handled by user space, the RMM needs to be informed of
+>>>> +the target of the operation using `target_mpidr`, along with the status
+>>>> +(`psci_status`). The RMM v1.0 specification defines two functions that require
+>>>> +this call: PSCI_CPU_ON and PSCI_AFFINITY_INFO.
+>>>> +
+>>>> +If the kernel is handling PSCI then this is done automatically and the VMM
+>>>> +doesn't need to call this ioctl.
+>>>
+>>> Shouldn't we make handling of PSCI mandatory for VMMs that deal with
+>>> CCA? I suspect it would simplify the implementation significantly.
+>>
+>> What do you mean by making it "mandatory for VMMs"? If you mean PSCI is
+>> always forwarded to user space then I don't think it's going to make
+>> much difference. Patch 27 handles the PSCI changes (72 lines added), and
+>> some of that is adding this uAPI for the VMM to handle it.
+>>
+>> Removing the functionality to allow the VMM to handle it would obviously
+>> simplify things a bit (we can drop this uAPI), but I think the desire is
+>> to push this onto user space.
 > 
-> I think Alexey has clarified this in the other thread, and probably
-> AMD has some work to do here.
+> And that's what I'm asking for. I do not want this to be optional. CCA
+> should implies PSCI in userspace, and that's it.
 > 
-> The issue is AMD does not have seperate address spaces for
-> shared/private like ARM does, instead it relies on a C bit in the *PTE*
-> to determine shared/private.
+>>
+>>> What vcpu fd does this apply to? The vcpu calling the PSCI function?
+>>> Or the target? This is pretty important for PSCI_ON. My guess is that
+>>> this is setting the return value for the caller?
+>>
+>> Yes the fd is the vcpu calling PSCI. As you say, this is for the return
+>> value to be set correctly.
 > 
-> The S2 IOMMU page table *does* have the full mapping of all shared &
-> private pages but the HW requires a matching C bit to permit access.
+> Another question is why do we need the ioctl at all? Why can't it be
+> done on the first run of the target vcpu? If no PSCI call was issued
+> to run it, then the run fails.
+
+So my concern is the ordering of operations for PSCI_CPU_ON. As things
+stand the RMM needs to know the MPIDR mapping to look up the REC object
+before either VCPU runs again.
+
+If we do this on the first run of the target VCPU, then how is the VMM
+to tell that the target VCPU has executed "long enough" that it is safe
+to do the return on the initial VCPU? Since the VCPUs are different
+threads this becomes tricky. Options I can see are:
+
+a) The VMM has to wait for the target VCPU to exit - we'd probably want
+to trigger an artificial early exit in this case to unblock things.
+
+b) The kernel blocks the initial VCPU from running until the target VCPU
+has completed this "first run" logic. I think waiting in the kernel is
+probably problematic, so this implies return some sort of "retry later"
+response to the VMM.
+
+c) The kernel handles the "PSCI_COMPLETE" dance on whichever VCPU runs
+first, blocking the other until the dance is complete. A disadvantage
+here is that behaviour can differ (in error conditions) depending on
+which VCPU thread wins the race.
+
+All these options also involve the kernel keeping track of the PSCI
+sequence, in particular:
+
+1. Tracking that the exit was due to a PSCI_CPU_ON.
+
+2. Treating attempting to run the target VCPU as an implicit success
+return from the PSCI call.
+
+3. Recognising the next run on the initial VCPU as containing the PSCI
+result - if 2, above, has happened then the kernel will need to handle
+this (by killing the guest).
+
+TLDR; Yes this is possible but I don't think it's pretty, and I'm not
+convinced it's an improved uAPI.
+
+Of course the above all assumes that the RMM can't just track things
+internally. My preference is to kill RMI_PSCI_COMPLETE altogether, but
+I'm not sure how possible that is within the context of the RMM.
+
+>>
+>>> Assuming this is indeed for the caller, why do we have a different
+>>> flow from anything else that returns a result from a hypercall?
+>>
+>> I'm not entirely sure what you are suggesting. Do you mean why are we
+>> not just writing to the GPRS that would contain the result? The issue
+>> here is that the RMM needs to know the PA of the target REC structure -
+>> this isn't a return to the guest, but information for the RMM itself to
+>> complete the PSCI call.
 > 
-> If there is a S1 IOMMU then the IOPTEs of the VM can provide the C
-> bit, so no problem.
+> PSCI is a SMC call. SMC calls are routed to userspace as such. For odd
+> reasons, the RMM treats PSCI differently from any other SMC call.
 > 
-> If there is no S1 then the sDTE of the hypervisor controls the C bit,
+> That seems a very bizarre behaviour to me.
 
-sDTE is controlled by the FW (not the HV) on the VM behalf - the VM chooses whether to enable sDTE and therefore vTOM.
+The RMM generally treats SMC specially. We have the RSI_HOST_CALL as a
+proxy for "general SMC-like" behaviour which is forwarded to the VMM. I
+believe the intention here is to ensure that SMCs (from the realm guest)
+are handled by a trusted agent (i.e. the RMM). PSCI is a corner case
+because it requires some coordination and buy-in from the VMM.
 
-> and it sounds like currently AMD sets this globally which effectively
-> locks TDISP RUN devices to *only* access private memory.
+I'm not sure I fully understand the security pros and cons of the design
+here and what impact it would have if PSCI was well trusted.
 
-Right. The assumption is that if the guest wants finer control - there is secure vIOMMU (in the works).
+Thanks,
+Steve
 
-> I suspect AMD needs to use their vTOM feature to allow shared memory
-> to remain available to TDISP RUN with a high/low address split.
-I could probably do something about it bit I wonder what is the real live use case which requires leaking SME mask, have a live example which I could try recreating?
-
-> Alexey, did I capture this properly?
-
-Yes, with the correction about sDTE above. Thanks,
-
-
+>>
+>> Ultimately even in the case where the VMM is handling PSCI, it's
+>> actually a combination of the VMM and the RMM - with the RMM validating
+>> the responses.
 > 
-> Jason
-
--- 
-Alexey
+> I don't see why PSCI is singled out here, irrespective of the tracking
+> that the RMM wants to do.
+> 
+> 	M.
+> 
 
