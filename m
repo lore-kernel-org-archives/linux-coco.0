@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C2D33F369
-	for <linux-coco@lists.linux.dev>; Wed,  4 Mar 2026 15:25:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87CD33F5BF
+	for <linux-coco@lists.linux.dev>; Wed,  4 Mar 2026 15:32:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772637952; cv=none; b=TtdKJJ1fexziYDppz49IbryYkIAibe3+HDB6BCQRNpyfBbUvnfDyvZNDEIkBYbcvV3idWSxTiryOVirTEX+/mnI8ydiEB1tOf4y0bMiNf16yLmLAaThNPfYfrm2vsw8DkB93VJeuIGoiuI0OMtmuDSl4FSptmch3BB3cHlxexnI=
+	t=1772638375; cv=none; b=cr5zjsf4FQ6TLgAJ6e7oe1uuAe1M6OC2myqAHnrl2KLGbUnE5ATOPuzy+YYVi/HSupZb1dThj+wAkD3K+E/oR4JwMry0kGrR9h06hUW0EODwF+hHuU8Scj9MX4/W0upSjBongcfHsMGivJ1794KlxGki9yFJTgAJFyhJ44h8EI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772637952; c=relaxed/simple;
-	bh=9AgIFJrC96DUYPdz7UAGuHhwSWExCU90vm6AIBQ906g=;
+	s=arc-20240116; t=1772638375; c=relaxed/simple;
+	bh=XBMAT5z5ygdpLhx3F2eLQgqNesCDgx63shXVWkcXZ+o=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MXuFncpzKqqJCZz5VRjzYMaoMp35axrpYP58Nw6lsZwOJOH9ePYEGafxK6QA51vS38GJuhZxG6ZDkKTJyNcYJqyEGbFx/BkzSzwyMWyyKWLW9sMnXDGpMiWvIAC/a+S7AfwhKhLMHRlnKN7LhAO9AE/BSBCRSh7AEoyG/i+On1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aTKEHMsB; arc=none smtp.client-ip=192.198.163.10
+	 In-Reply-To:Content-Type; b=Rhs6dV3A9sPE/LHAphEw9G45QCtQFlKyec6gqrDie3KK75Xx11eoL0HlVtrm9d54Yn81Co2AjuMGl7l4QT29o/FWrZZ1bZI7Ohgu7vQI+7YCIiyC+YYTKa+i6+iT/lvS9GQCsjeshmKdij0870TbkfIwBk+sqRIxw5u1rit0lsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JfC0bmVF; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aTKEHMsB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JfC0bmVF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772637951; x=1804173951;
+  t=1772638374; x=1804174374;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=9AgIFJrC96DUYPdz7UAGuHhwSWExCU90vm6AIBQ906g=;
-  b=aTKEHMsBS3M6b6AzruRFfWhzzF8XmxqHDbFYu6Vs1MPBmB/dOtgLvzlR
-   1FdQaVdyBoV1bvkOL2mdIzJFoSK5CtOA73tdEvsYrZdVvGxCqGGr1UfBx
-   9iSHmc++xl8UU7R8fDEfMa5rCrjdk3sdBvzC7EWwyheHez8TfHqT6M2m9
-   wCqhQXbMjTGtiuKeAc7vYIICC9MXE3lR0eX6sHG7MP5gQnH6aiKiyqhA2
-   WQsHyWrNBXmMAp7SYCx8X7SwSuOkUbxXiU/f89raUr9qxDgTOtLLCjBL9
-   +gk339E4FtKesvRqSsoHbqJ96OyfwfG/NpQ+lrekrWO3lM/Hkcc1p5HDL
+  bh=XBMAT5z5ygdpLhx3F2eLQgqNesCDgx63shXVWkcXZ+o=;
+  b=JfC0bmVFJlJmCXPNRR5ATP6ovGheSWl43bMJdDKZvE0gtXsZiEtfwYzB
+   HrWsg5eagiDVoNMHcxiHQA7JxN5ovGTpuyaPFEEj5nIs/wFoJSFj7RiBW
+   z3icVeaAe3o5jjc+8EvBHMz1pKDSPwjnsLSBDLbflMWT2qAsjjDEJBhML
+   3l7eRSr3Qkbf6rwsxqVK55FDAgusBwhQtrIVxMNhBj3/PH+e1e5aWUQnZ
+   5RPpzU9AjjLBzlwVnmJ9Z2wcZNIat/Atb4F6TEYJjLRveNybarzz5LB9L
+   P3p9t7izrTQKUkjqE5w2joqtkISrnT5frkZgJCLQDcH7UKZ30TNkpBBzv
    w==;
-X-CSE-ConnectionGUID: cHJN1SCoRuStTweb1M8rNw==
-X-CSE-MsgGUID: aP38yQtRSByXJKU1+HEKvQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="85048041"
+X-CSE-ConnectionGUID: //2w/95hTqKsmM0yoVDxQA==
+X-CSE-MsgGUID: 9Jq1bkUNSn632HlTVgTQPg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="61275535"
 X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
-   d="scan'208";a="85048041"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 07:25:50 -0800
-X-CSE-ConnectionGUID: vtF7OjPBQoG3vn+8rgx1LQ==
-X-CSE-MsgGUID: rvSzvX3eRUmvBcV4MnJciA==
+   d="scan'208";a="61275535"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 07:32:53 -0800
+X-CSE-ConnectionGUID: 6wp5RMW/RGeAStFOsK+C8A==
+X-CSE-MsgGUID: B9ikh49BTleaXqj3q3yOjw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
-   d="scan'208";a="256253427"
+   d="scan'208";a="215725725"
 Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.108.205]) ([10.125.108.205])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 07:25:47 -0800
-Message-ID: <7ab8d3af-b4f5-481c-ab2e-059ddd7e718e@intel.com>
-Date: Wed, 4 Mar 2026 07:25:53 -0800
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 07:32:52 -0800
+Message-ID: <692e1b72-920d-4b7d-a5b2-75fd554a13c0@intel.com>
+Date: Wed, 4 Mar 2026 07:32:58 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -69,6 +69,7 @@ Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
 References: <cover.1772486459.git.ashish.kalra@amd.com>
  <8dc0198f1261f5ae4b16388fc1ffad5ddb3895f9.1772486459.git.ashish.kalra@amd.com>
  <aahH4XARlftClMrQ@google.com>
+ <7ab8d3af-b4f5-481c-ab2e-059ddd7e718e@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -114,44 +115,19 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <aahH4XARlftClMrQ@google.com>
+In-Reply-To: <7ab8d3af-b4f5-481c-ab2e-059ddd7e718e@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 3/4/26 07:01, Sean Christopherson wrote:
-> I don't see any performance data in either posted version.  Bluntly, this series
-> isn't going anywhere without data to guide us.  E.g. comments like this from v1
-> 
->  : And there is a cost associated with re-enabling the optimizations for all
->  : system RAM (even though it runs as a background kernel thread executing RMPOPT
->  : on different 1GB regions in parallel and with inline cond_resched()'s),
->  : we don't want to run this periodically.
-> 
-> suggest there is meaningful cost associated with the scan.
+On 3/4/26 07:25, Dave Hansen wrote:
+> BTW, I assume that the RMPOPT disable machinery is driven from the
+> INVLPGB-like TLB invalidations that are a part of the SNP
+> shared=>private conversions. It's a darn shame that RMPOPT wasn't
+> broadcast in the same way. It would save the poor OS a lot of work. The
+> RMPOPT table is per-cpu of course, but I'm not sure what keeps *a* CPU
+> from broadcasting its success finding an SNP-free physical region to
+> other CPUs.
 
-Well the RMP is 0.4% of the size of system memory, and I assume that you
-need to scan the whole table. There are surely shortcuts for 2M pages,
-but with 4k, that's ~8.5GB of RMP table for 2TB of memory. That's an
-awful lot of memory traffic for each CPU.
-
-It'll be annoying to keep a refcount per 1GB of paddr space.
-
-One other way to do it would be to loosely mirror the RMPOPT bitmap and
-keep our own bitmap of 1GB regions that _need_ RMPOPT run on them. Any
-private=>shared conversion sets a bit in the bitmap and schedules some
-work out in the future.
-
-It could also be less granular than that. Instead of any private=>shared
-conversion, the RMPOPT scan could be triggered on VM destruction which
-is much more likely to result in RMPOPT doing anything useful.
-
-BTW, I assume that the RMPOPT disable machinery is driven from the
-INVLPGB-like TLB invalidations that are a part of the SNP
-shared=>private conversions. It's a darn shame that RMPOPT wasn't
-broadcast in the same way. It would save the poor OS a lot of work. The
-RMPOPT table is per-cpu of course, but I'm not sure what keeps *a* CPU
-from broadcasting its success finding an SNP-free physical region to
-other CPUs.
-
-tl;dr: I agree with you. The cost of these scans is going to be
-annoying, and it's going to need OS help to optimize it.
+I guess the other dirt simple optimization would be to have one CPU to
+the RMPOPT scan and then only IPI more CPUs if that first one succeeds.
+That wouldn't be awful.
