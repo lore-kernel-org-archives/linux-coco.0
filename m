@@ -1,117 +1,86 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325F739E19A
-	for <linux-coco@lists.linux.dev>; Thu,  5 Mar 2026 12:37:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8AE39E172
+	for <linux-coco@lists.linux.dev>; Thu,  5 Mar 2026 12:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772714232; cv=none; b=gDiWw1ZUZ8fli5s2BCqxAJmutVANoZfx7E2eJfRiclwuR5nKkgwoL4v7rqk3ao0Yw9Vf0D/yhCFhgcNwrVwUzUxQZL/HE9dhAZlLPCk20lhz9dKsdkFAC1DsPPy7dwp6xIGPHLRy8Zq5OPQMDqMsCIL/lDGcVYtEu6jxrcSkjOA=
+	t=1772714421; cv=none; b=T10p1f8bP8V1jez8VQ8E4yl+vUX7FakX6amq6npswdghwPxtAEQ+ukWVImI9JMajU5IIWSfPyrDeIBufLWhlyZ1i5UfT8bDciQXMGnLc8bxsXAI3LxX69MgGzM3DZt1WJPgurrueFJ8zHVcAzTqivzd3UTNEq/2D3SHt5YjXdFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772714232; c=relaxed/simple;
-	bh=RgGyNNdqIjOgrAqL+GlweCLk+LqtKtjZYUw3vDQn6y8=;
+	s=arc-20240116; t=1772714421; c=relaxed/simple;
+	bh=vEuPDSsDt//wtmzfe9Xu8GSe0LEcvi4euzHg4drb0UE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kNKhyiTssfMvZPUsvbpQ5+9iL1+XmctKbC502mneu+zGtPTvGGInkPRMdfMLc8rH9vu6CTYXLWab9JzBUnT16q4NyfTrKxRAZnFBYWpZgQa9qxfokMvpwEoB7+Wy8us4dpmtdFyXxdN2TvdI2TcNrI+o2bENm0rgyD6h3O/oZ5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ftTR59Xo; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=kvrnB8FHH3aupQYdgH4TvQqAiynIiusVGQtb/JzX9p9GLusN9o9QkqG98OMpCceC2Ki7b2VDLr5gbPpEBAeJVV84kWPCUz3mxeZWNQSfpcmgs7FbaIqaDhAkqsMoWPveR2bG1mbCXz3cpEFC6ADogGc9mBYDQDJmFKOs4yUfVC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=pOv+/2RU; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ftTR59Xo"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8242D40E0169;
-	Thu,  5 Mar 2026 12:37:03 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id ZuA0T_DorMHJ; Thu,  5 Mar 2026 12:36:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1772714218; bh=FdLGhI+DKtaC+bV/1yMll/XT7I8JFxUD3aTMY78plpA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ftTR59XoXE0SLEETFfVID/cp83ClrywO1Qf9vg3EiTu3FsJlGuwqRs/ZNEbnMizVY
-	 +vk0wC/55+dx8MzeOFHFMDQ4LD04kFDgJrLD2f0dFXOEZEENeEC0e2lAUfbCpdFbI1
-	 tqWAVMNomvwKIgUENf1eqh8A8vMyFPx7pUHHudRMD+BEUldKH+jJA+Q7Ige+BIolbK
-	 ko0rctrW89EM9bGxWhqwEoZ+++/3sXuCGDd3ia3sgm7/F/eYOGFvIQtsOh3z5Y4SxC
-	 62HFqZfqMsDEjwwYBHT6AF3InAvepFU3ZQPV0Ep/VxzxIfWdqlzTQMnnqzibR7ZyqM
-	 fzALAKXDa2TYbruVF+i/DPfwvI3bAQiQkvKhSngLeTxVBMG0riqBxRX58HwuuM7I6e
-	 4hqpuJuFa4SbSvrr3ECtYwkingN6JlgqamFtJFC+Rg3jxxuNpSV6vPJ/0f+i455psz
-	 WWBLYFMXWLPoQ2q6zgZMLoB/72VEETAzy7wyMNlWIc7jVWH1hrKet4ur+uGs7IMvNa
-	 1+QapLbaji1Myah5cX+vkzfuTFXz0Zk6q9rJHTZxhc0B+XMUOyFdvVP/kAAewJxvb+
-	 g/7zprUNfojCgBXgh2NbybOqyAU4PIFN09GZIipzgiZqT2RCil33IQ5JoZo8PDRLSW
-	 RpvqDJo9JLTrpab9Yiq+tay0=
-Received: from zn.tnic (pd9530d5e.dip0.t-ipconnect.de [217.83.13.94])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id CC89940E0031;
-	Thu,  5 Mar 2026 12:36:24 +0000 (UTC)
-Date: Thu, 5 Mar 2026 13:36:18 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Ashish Kalra <Ashish.Kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, peterz@infradead.org,
-	thomas.lendacky@amd.com, herbert@gondor.apana.org.au,
-	davem@davemloft.net, ardb@kernel.org, pbonzini@redhat.com,
-	aik@amd.com, Michael.Roth@amd.com, KPrateek.Nayak@amd.com,
-	Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	john.allen@amd.com, darwi@linutronix.de,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v2 1/7] x86/cpufeatures: Add X86_FEATURE_AMD_RMPOPT
- feature flag
-Message-ID: <20260305123618.GFaal4whNN9VMxMWLA@fat_crate.local>
-References: <cover.1772486459.git.ashish.kalra@amd.com>
- <219ebbd57ac1d99fc5ea055431f7a8396021c2c2.1772486459.git.ashish.kalra@amd.com>
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="pOv+/2RU"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-439a89b6fd0so4849597f8f.2
+        for <linux-coco@lists.linux.dev>; Thu, 05 Mar 2026 04:40:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1772714418; x=1773319218; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vEuPDSsDt//wtmzfe9Xu8GSe0LEcvi4euzHg4drb0UE=;
+        b=pOv+/2RU35bJrOFIGfg6h/pv3HESCAgZcaod0Cix/Cm4J2JnAYfwbr8/TRx4bZXCIY
+         Pqu9sz8VVGYb/sfiI3snqtWl2NebdPy9GbiheC1VznwmqS8NiBBj5fbvKgZHW3WhKyi8
+         n4xG2ZD0KxEx3iLc0mPzJeltKB6d2yu/8kG0+MDxnt0kv3y+6Ldoi8dfsHo+ZbsBTl4a
+         lFq54cdp2jzhCxHvp5TVW0aHiRSzFrNYWiHYYPTLh2DBY/qTfUz5vvv5CQVQJ60+Uc26
+         AfBp/W5uGLzfxvuKAKI82QJWjl7FklW/5eJ/zCPXsSaw9NktBUAP6Pu7Q6zH6VVVJuJU
+         vDoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772714418; x=1773319218;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vEuPDSsDt//wtmzfe9Xu8GSe0LEcvi4euzHg4drb0UE=;
+        b=l8X68PtVuO/sx9Xj//xjJxZKex5JYM08QiK0lh8fzRhKeMAdYidch4J6iuQxPGXJlL
+         NFyrF4VV5rkKClnysisEiR5TLErSUwbzJYLzrLCGpAfZzCxCQNYlmMFILHtAUqVd5t6I
+         l03vwbH93sMsOLB1hYc9jaXPCZBXJvwRsgEVpvaCf+MOZttqdlYKH6dF1MmBHF2QwVrK
+         2OsOtdxfOmWlzHsVxjwz4BFpF/zZYSEJoKfZL+A0XPvNcHvVEKVDU/Db1QiczQj5iytl
+         K+Ah0jZelLmn0uESWeA1bUownLzfTxKohrnUVTauY3prZs7mgiGgnxqIBcpsu+9/UEVc
+         LC/w==
+X-Forwarded-Encrypted: i=1; AJvYcCVnIUqA43fGXpU23kFIwiKDuOfg5kIWY/xHzcXoARGLhzjLW+ZuHr5/Qnj4JE9fzrR+Zizg2KRGalWG@lists.linux.dev
+X-Gm-Message-State: AOJu0YzGZHyAUVAZKl92GwnP/x1LVC2cS3lblG/hpcfKawAeToL94ObB
+	qiNv66hex/3Fs3/9TY1Pv1MBP8Tv5izDm8uiMeK6ArKxVwmbv4a6RD7TuTYyk50r1eo=
+X-Gm-Gg: ATEYQzytM/asTJMRLUE9jD4AtumOOULKhvY5NCxW6N1akDSB0tIZGkAhcR6kZ5B4y6U
+	NaVkWVntBcEvyarzCYTuT+otcclH44g6gzNe13AuD7IQRqoBnN0DHgJVR4LVq78bRiiPGmUYR0P
+	aNpSg3bVkTTV3yzzyxAT8aHg+vp6iXwMRb1EK50jeI7yGNTDG4PRtjvhSk2XJEHs5NPjZhT9Aqw
+	jG95oCgICwRdDMiqiSBI6QIxqw2eA9IIH+0gke5UFqTWEr/+96YttoPgwB0R72kfKK2SG5IyDIn
+	8gE4GsLgbfYTIIHzBarU8hJttoHU4/fes9/Wiu2TaXdvYFA1kBV+Bx123WgOdLX6NwTc4sO9FPU
+	N4TOjrH5ZLJzGf0GdHs7Nx4S8PFIphaoArQc+iKbhhBegm4Tg4qxOHAJb8N1yev/0JImdQ5B18b
+	0qmb9N+M6XXJNeEw+7k7T7Zdk36TAmWnI=
+X-Received: by 2002:a05:6000:2510:b0:439:cd10:a1f9 with SMTP id ffacd0b85a97d-439cd10a224mr6376565f8f.54.1772714418526;
+        Thu, 05 Mar 2026 04:40:18 -0800 (PST)
+Received: from FV6GYCPJ69 ([85.163.81.98])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439b503425asm33480811f8f.25.2026.03.05.04.40.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Mar 2026 04:40:18 -0800 (PST)
+Date: Thu, 5 Mar 2026 13:40:16 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	iommu@lists.linux.dev, linux-media@vger.kernel.org
+Cc: sumit.semwal@linaro.org, benjamin.gaignard@collabora.com, 
+	Brian.Starkey@arm.com, jstultz@google.com, tjmercier@google.com, 
+	christian.koenig@amd.com, m.szyprowski@samsung.com, robin.murphy@arm.com, jgg@ziepe.ca, 
+	leon@kernel.org, sean.anderson@linux.dev, ptesarik@suse.com, 
+	catalin.marinas@arm.com, aneesh.kumar@kernel.org, suzuki.poulose@arm.com, 
+	steven.price@arm.com, thomas.lendacky@amd.com, john.allen@amd.com, 
+	ashish.kalra@amd.com, suravee.suthikulpanit@amd.com, linux-coco@lists.linux.dev
+Subject: Re: [PATCH net-next v3 0/2] dma-buf: heaps: system: add an option to
+ allocate explicitly decrypted memory
+Message-ID: <yyb5ozsxnfcuzo5rzpg64hgj4rtxz6glpqf5fpkhp4zrwdgted@izdksr4b3vte>
+References: <20260305123641.164164-1-jiri@resnulli.us>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <219ebbd57ac1d99fc5ea055431f7a8396021c2c2.1772486459.git.ashish.kalra@amd.com>
+In-Reply-To: <20260305123641.164164-1-jiri@resnulli.us>
 
-On Mon, Mar 02, 2026 at 09:35:19PM +0000, Ashish Kalra wrote:
-> From: Ashish Kalra <ashish.kalra@amd.com>
-> 
-> Add a flag indicating whether RMPOPT instruction is supported.
-> 
-> RMPOPT is a new instruction designed to minimize the performance
-> overhead of RMP checks on the hypervisor and on non-SNP guests by
-> allowing RMP checks to be skipped when 1G regions of memory are known
-> not to contain any SEV-SNP guest memory.
-> 
-> For more information on the RMPOPT instruction, see the AMD64 RMPOPT
-> technical documentation. [1]
-> 
-> Link: https://docs.amd.com/v/u/en-US/69201_1.00_AMD64_RMPOPT_PUB [1]
-
-Please do not add URLs to documents on corporate sites because latter change
-notoriously fast, resulting in dead links. Instead, quote the document title
-so that anyone looking for it, can find it after a web search engine has
-indexed it.
-
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> ---
->  arch/x86/include/asm/cpufeatures.h | 2 +-
->  arch/x86/kernel/cpu/scattered.c    | 1 +
->  2 files changed, 2 insertions(+), 1 deletion(-)
-
-Btw, looking further in the set, the first several patches are for tip and
-then KVM ones come.
-
-I'm thinking, when the time comes, I'll give you, Sean, an immutable branch
-which you can merge.
-
-Right?
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+The "net-next" in [PATCH] brackets is obviously incorrect, ignore
+this bad string please.
