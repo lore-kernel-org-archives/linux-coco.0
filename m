@@ -1,52 +1,59 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010023.outbound.protection.outlook.com [52.101.61.23])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B512BEFEF
-	for <linux-coco@lists.linux.dev>; Thu,  5 Mar 2026 19:22:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.23
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772738551; cv=fail; b=NsZko73p6BYBalJiUQj1RIB45gCZ+bu5USbQpAwFNXGOZJC0cIDCF1bgPun8UxVfjg+6TBlfeiWtGfhPMd5igm8yrnuSGkY/5oQxCs0rLUFDI/Yc2+A/BmTd1OFJxysCgQBvLbfFwvQ1R0d/Y53dbyHFJgX4Q3gsl20bkXkAmNs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772738551; c=relaxed/simple;
-	bh=DPTaK4J/opukvKgIdf+eRTgrt1KgUmGOJkWOR+AnJnk=;
-	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=l0Zf8I1Mi//KFGHvmGRNTaiEbDE7JZygaxYd3uu4q3Gy9NhRps8rXx9Zx4864w9k8kLFeneII5ZNgeNRiFW8oxowHgda0IzJpNmzaa+C1gZ+3Oc2rkXw8yh/KW6hF9nk6fCu32ctJcnRhp+7vxiMVO4h6k/lj9K9bRdsh9AiZ+c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=osF2Oax8; arc=fail smtp.client-ip=52.101.61.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55E62E7185
+	for <linux-coco@lists.linux.dev>; Thu,  5 Mar 2026 19:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772739646; cv=none; b=MO1WtgRVbiz2I4WpI/vaJa9sYQ5LKy0DKHkJf4UsaOmIvS7vRCSkogTVaH4x+4Ee7pPhGUSOh51Gt5OR0uXXHwBkb1OdgC8EfypeBMPShMw0TfYctwi1FakqdAHar6a5UE7qlKBSdN7rxlp7enKumfc8IZ2co1N/cgc/sTXI8uM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772739646; c=relaxed/simple;
+	bh=dX7+M7aZQQC360idkIppyO3g5g/oBHH6aOJ0+WaVOyo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZBwAZfvu9ASEVBbOprq41nHkxAbgXtnpD8UQs/clbbjUoo96IU0MelxzKi5tXnEC+7ab4syKHHNAKmcb1bqhNexOMiOre9QO967Vfbn/s8AkvV7Zh0C+OE8OrdHjoyJfNGWH0TE/EJBVjt0bkVP/pXzHPwdn3mzfabjpIBTipWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gzxamwZe; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="osF2Oax8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=T0uStUcHMvHqXdob/TLfY8I7XmxWedq4kLZBmvhwhLCPDgfmWVLp6YL97jEBcoKM2eE9gQKkPPcMJrHtx3ApfUzohyVQcF38nc4WrHNHmR4XwrM2UFYhqOyLTUr9pxeO0f27CExxA65P4SumbwM3s14oEK2PRm4TFYdxlNMzLRTbkZ8k/TeCp9K6jei8iKqoE+GcqfY5ZdwFRsVz+Os29QI+K7ozJPNRyQxfR7qW8DrzQMlM7+wp+5sQkNhqEQaaeSlXH3r7vN1ivNi1SjVq91gcqDWjMtVxMG+VgRWkXB8pZxBXK2DxGg9eh0Zmjc0YBWg26Es82Kj981YjvfujpQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Zt2yfzk3aHf1sfmLAFlB7dcEMu8Mt6XG4IYvZF4ompc=;
- b=pqWbcDdy7YEZt9cuyf4tCtXJcsIJ3CAE1gYsPaNXwlrYwsZz1Gbnouim9aP/Q4CuWFu6LnRB1iEvmLAuEEKrDLSPXXNttrSa15H+d61XXFYAOuKcLG0qLdqJDmgsn6+lFGMpyKTkp1kKevK0ytYNliBkxrO9iZXL6XwkCOAH2xMjtFttM0Er2V7rUPxCMVmE4epzByDpaXC4If1wKootAYgHP2RPmwLYKV2HcJdjNXGaz2/LPFk7ztHni6vIfHf9N1LDYUEx8tUvWZxXSed/rVdBFlTn8bmXO6Rr9nf2LdEdmg+BpzU2UeLrBNZq145OBn4jCevcr6nQKvaxyK1ZWA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Zt2yfzk3aHf1sfmLAFlB7dcEMu8Mt6XG4IYvZF4ompc=;
- b=osF2Oax8EGYE3cRK6JMPRh06JcASntzKWftU92RuvzRHUR2DFhChfAtX9mDnIYohq8X1HU20/+RWIL23B/FdC1asgbYAiB8EmXt2ZBJWvItGnf4evSvlnuOQ89Y8z33c4fsr6pgE9YcJ+MYXWIZVl2ka6szEV5j2ov63Fe7hMRQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
- by MW3PR12MB4362.namprd12.prod.outlook.com (2603:10b6:303:5d::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Thu, 5 Mar
- 2026 19:22:26 +0000
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad%5]) with mapi id 15.20.9678.017; Thu, 5 Mar 2026
- 19:22:26 +0000
-Message-ID: <6a4f4ecf-ffc0-43a9-98d4-06235b42063e@amd.com>
-Date: Thu, 5 Mar 2026 13:22:21 -0600
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gzxamwZe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772739644; x=1804275644;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=dX7+M7aZQQC360idkIppyO3g5g/oBHH6aOJ0+WaVOyo=;
+  b=gzxamwZeTnpTH/iRu8S9V+3V+O0AcD/eU/BnPY67kBylANB1gBI86fZs
+   dWXF4MeKfQvVwPzOwEP4OSe+e4OCZxZTFamKuCuhiUbxnwgAWHPF+dumk
+   +//QI2AMUvr8F7lJa111BP56jDT8XcrxAoVajm9LG0eKTAVbOg2eP8Beb
+   gagZikdhJ6KwVlAFT8PM1E6XyUzEnZn9kw3K8DGN26YbehGngSuA4sIEj
+   TN5RImJwl685nJSvpdKy2HNOVi9EDt0oAwHONP4rDCyxOyuAWdgEXAlW6
+   y3xd/WycX78nZYWipg8ERBGv7shfaiL8EefkH2priJBJxH2jEY/4yFYrm
+   w==;
+X-CSE-ConnectionGUID: u6GSzxb5QbODJKLLQLiYbg==
+X-CSE-MsgGUID: 8RtmbH6oT0KJy5fc8KOHxQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="73713190"
+X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
+   d="scan'208";a="73713190"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 11:40:44 -0800
+X-CSE-ConnectionGUID: xOWA3BYFSdSZvicbVVeSQA==
+X-CSE-MsgGUID: BJniGFQuT3+e0kmbfPpX/g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
+   d="scan'208";a="215975788"
+Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.109.20]) ([10.125.109.20])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 11:40:42 -0800
+Message-ID: <d7ba3790-a959-4150-87e0-c87dea4d09c5@intel.com>
+Date: Thu, 5 Mar 2026 11:40:49 -0800
+Precedence: bulk
+X-Mailing-List: linux-coco@lists.linux.dev
+List-Id: <linux-coco.lists.linux.dev>
+List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
+List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 3/7] x86/sev: add support for RMPOPT instruction
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-To: Dave Hansen <dave.hansen@intel.com>,
+To: "Kalra, Ashish" <ashish.kalra@amd.com>,
  Sean Christopherson <seanjc@google.com>
 Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
  dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
@@ -64,193 +71,92 @@ References: <cover.1772486459.git.ashish.kalra@amd.com>
  <aahH4XARlftClMrQ@google.com>
  <7ab8d3af-b4f5-481c-ab2e-059ddd7e718e@intel.com>
  <0fbb94ad-bfcf-4fbe-bf40-d79051d67ad8@amd.com>
+ <6a4f4ecf-ffc0-43a9-98d4-06235b42063e@amd.com>
+From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
-In-Reply-To: <0fbb94ad-bfcf-4fbe-bf40-d79051d67ad8@amd.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <6a4f4ecf-ffc0-43a9-98d4-06235b42063e@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1P222CA0040.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:2d0::8) To BL3PR12MB9049.namprd12.prod.outlook.com
- (2603:10b6:208:3b8::21)
-Precedence: bulk
-X-Mailing-List: linux-coco@lists.linux.dev
-List-Id: <linux-coco.lists.linux.dev>
-List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
-List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|MW3PR12MB4362:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1ad3998f-180d-44d7-b1e4-08de7aec88ef
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	7HZXaD7/+/LIPeJcZz1oqck+gMUIo+T91FskFhsDOFeSrP8s5wCrSg4nCpNCF4H7LHdyn36zMogzYkQvZexwkPkguMHExxDM2QcFKLb6ZpWAdJbmuGaTTvgiLeRmwb+uZI6Iq3E9ZScbRYGu7Mc9JPbQ1IAM7c7v3t4VWnP9xe3W6rjBfQRAzXj3gnI9Be+inX5AQ332aYeJJ0DrMOZLMMqhC7Yq1ECoE/M8VEjFccLzYGJQ/copRWY4Lkd0f/kXECPAYe6RwKjqHm8UkgDuIy9QMBptheAmE/DfMawC/ZE/MmaJLD37fRrqZqrSKaYMhTe+ZL//RZkqrSpXYt72F/I5gq8JNPpNmVoxYvjxdLrzSqtN5S70quMt7kg5hmJPP+Qi+iu8Ne2CyHErfpswckiFX7aySka/22uqPjIMCGmhW9Wfl+3Cw8nMSHDJe8XazOHgfoUZ1TzRotHkU8lmSZyE/HxpuCoFYgU1eJTq9+Q30ugSR8Mb4G/XmTiWoLE0nSbSFVUM9ziaWYBzwf5cpAHxthj2jr7JiyuFelqZKkk028hy8tus8aPK7IM2USUpz6WhMJuaQDIWWjRG95ynY1TGv6QOGitmnyfO4HEA1Gudqotm+9MY2jPacLESkDoQlGvoDnwLkoLSp4tt/JkGdEn14RcrCVGlojEDW+P3DRuQ99xGhi5/wq/XK1t4qlkNb8zD6L6Za/Je8zcC0TE+n9u2qSanwFuR+yGMPKPfeN8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?L09pT1hZV3hLS0ZHSmc3TnVpbm1mR25MY0VxZE01TmprUnoxNEtVdW9SVDBY?=
- =?utf-8?B?Vk9ZL2NZSWNieFFJc2NBTm5oMUtzM0hpbVlhUUs2S29aeXY0YzFjc0hNWUs1?=
- =?utf-8?B?Uk94UUt0OGhoUm5lUUdvZk40UFVCZHFCc3ArRksyMHlsMjNFdXlrSzU4czlS?=
- =?utf-8?B?ME5KcVFXRkl5SzBQNXlZVGY0ZGxPVkVDdGh6U3IzZUxYUktlZVM1WUMzNFFQ?=
- =?utf-8?B?ZnVGNi9iMTFEQWF3QkdoeDZ1YVFpbEdHVGtGV0ZQUFpYK3NXaTkxUWE0SjFG?=
- =?utf-8?B?aEROaVZVUFdxWC85S2dPSklQU0JZcExyMlZXWDl4REhQTXVoRmExMDlGT0hC?=
- =?utf-8?B?ZTJlVkpFMklPbjBMY3piVXRiRHFzY2I1ZkhQQzJaUUdVSkYrRkEwV01aN3pk?=
- =?utf-8?B?SVlpM0VTeVJ0RFM2TUxzdHI4eXFKWkZCQVNMMjdIdmRoUlg0bzBmMjlFWXh1?=
- =?utf-8?B?NzBmRHQwK0lSUyszSXlBejJmU210UzIvU3RvK1M5RlRJTS8wQjB1RGx0Rks1?=
- =?utf-8?B?SFhQTndrUHRLdWF3S2ZPa0ZQVEIxUU1VL3pDSFdadzZXVDVhU2FQbDBBaGx2?=
- =?utf-8?B?Ny9zTG1XWFVnVTQ1MzZXRUZWZjJNbFUxVlNiNGQrUmVWSnEyeUdTVmw2Ri85?=
- =?utf-8?B?anhnVlRmTmRTUGthcHM4VmlGOTU0U3UvbkZLd1BHV2w1VW5TTGpFdXFTQ010?=
- =?utf-8?B?L3dhY1JwY1oyZCtNdVlXS2E5Q2IzSjlGTWR0aWNSUDV0UE1yVmszT04yYURx?=
- =?utf-8?B?dlJWTXlSS1Y5ejVjcTVQR1FzNUIwT0lmbllXTDJvVmxrY2ZwQ3VuQ1pPMWJ3?=
- =?utf-8?B?ZkY1aDM5alFlK3graTkwNE1oYXloK1BhamFpM2hxTHZlWnJLL2xDRk1seHZ5?=
- =?utf-8?B?N0p1b200U3V1Q2svZkY4REl1VWF6UVY1WkxpYld3M3RHdUUwZUtkckYyV0hu?=
- =?utf-8?B?ZmVLRG1DbzdsRGU5WnA2OUI2ajhLdjJveWg5d0dKR3JVbEw0aGRyN2hwd1Z2?=
- =?utf-8?B?NElZNFordlFIVnZpMFc2L0hkYWVWRnoxSTN6SHR0UHUxQ0FpWi9tMC9nb1RI?=
- =?utf-8?B?ZG8zZVUzRkRqcyt1Tmt2d2xuNmlXRjlFUThFWEVlNXRBU2xtdnNyUTNJZzh2?=
- =?utf-8?B?bmg5TjNLS2R2ZUVreG1yWVFZR05mbDAwRWlvSUZZd3EySmxSa1BIUGV0RXl5?=
- =?utf-8?B?dmVLcm9PL2g3WnpWNW1mcDJ0QlJLbXplZjl5RGhuN1p3N0hiWkQ1YnhxNWlZ?=
- =?utf-8?B?VFFkWmJXd2xuanlSNVlRV21mUjMxSHVSUWZLNUdMR2U0N2xHdHRLb0NDZVZp?=
- =?utf-8?B?QU00TXJ6c0FJV3A5WFJsYXFnVlUxSC9zOGdjS2t5MFNuNU9ZNHp1TjZJRjJX?=
- =?utf-8?B?R2xuajlpSVlvbll2Y1J3QTVZQkdwZ3pvZUg3QzUyR3Vyc29hNFJmcnV4ZFZJ?=
- =?utf-8?B?VDE2UUl3aHQrejRER3pyRjZQZ3c4bWtxSVJMeVJFNWpreWhzYk5Bd2ZkMzVB?=
- =?utf-8?B?ZGtWSzFKSWNXV2FWdXczSkNoelNLdVMwMGhmUU0vdTcvaFZ6ZkxDekRXME96?=
- =?utf-8?B?Q0ZZSkxxcVZjdkFlRDVYTkFSLzRSclV2YlgvUGgzSkF6WW5wUll0NHN6bS94?=
- =?utf-8?B?K1BYZ2JVWENTdFpIZ0R5V2NwcHZpT0pvemdVNng4Z0V0dkNQay9QcEYxN1RE?=
- =?utf-8?B?K1ZWTSt2aFhzOGxXb29aMVNSYkU5M0h3cjA5THlodk5HMFhGSVM3LzBkenp6?=
- =?utf-8?B?YXl3K2V1Yy9XRURjRklXU3hGcDFSRUsxNlljZWtKa09CT3N6RG5Ja2VPNlFI?=
- =?utf-8?B?bHZWS0E5aWxzWEFROERiOGY0TFNqVnNFWlZqUWx6c3hzYUZneCtIaVk3dFU3?=
- =?utf-8?B?Y0Y0WWNuY1RLQlhmdDNMQ3Bzcit5VU5mNWNKUm9zeEc1anhMT0JTOHVmUDRv?=
- =?utf-8?B?YnozL3QzTi9rVWlOb0hnTlVtUVdwOFJEa3dwUzU5cVFYaXAxaWpTMDdPdnEv?=
- =?utf-8?B?K2FUb29MdGs3UkVrajVhM2h0ZkdEN0dXYzN2akltWW5DdWViWFNrOTg4MFUz?=
- =?utf-8?B?aTRNVFhvVEovRDFhY3ZtZTdvZUpWUW43SnJUOTdVZmFDOG5ZZFpoRUlQK3Fl?=
- =?utf-8?B?b05mc3YwM0xEb2dWTUh3dDA5TFprN2NHKy9uSUxNRlRlVUNISWRiKzBXSUp3?=
- =?utf-8?B?L0s2dk9SUE1lRmZmTiswendZQWRYMjdOdDk4OHMvaDlQUy9QYnp3NFJNcnc1?=
- =?utf-8?B?VTJ0ZURxQmRaclN4M0ZFSlpta3VCZlh2S0hUV2V2cVc0cXVVbmpnSEVvSGF3?=
- =?utf-8?B?RHg2ZDY2QnVXV2FJTWx6cENaNFhmSER4a1YyZGhLaE8ySTM3ZHNMdz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1ad3998f-180d-44d7-b1e4-08de7aec88ef
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 19:22:26.3723
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gQPZ7Zs5c1VBMEXt3Q9/J4wMncY8/QrEr4KpuyN1nTjzSDxDL4+sRW7M2KztkHRgDTceNJzanyii4f26kbhmiA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4362
 
-An update on performance data: 
-
+On 3/5/26 11:22, Kalra, Ashish wrote:
+> But, these are the performance numbers you should be considering : 
 > 
-> RMPOPT after SNP guest shutdown:
-> ...
-> [  298.746893] SEV-SNP: RMPOPT max. CPU cycles 248083620
-> [  298.746898] SEV-SNP: RMPOPT min. CPU cycles 60
-> [  298.746900] SEV-SNP: RMPOPT average cycles 127859
+> RMPOPT during boot: 
 > 
+> [   49.913402] SEV-SNP: RMPOPT largest cycles 1143020
+> [   49.913407] SEV-SNP: RMPOPT smallest cycles 60
+> [   49.913408] SEV-SNP: RMPOPT average cycles 5226
 > 
+> RMPOPT after SNP guest shutdown: 
+> 
+> [  276.435091] SEV-SNP: RMPOPT largest cycles 83680
+> [  276.435096] SEV-SNP: RMPOPT smallest cycles 60
+> [  276.435097] SEV-SNP: RMPOPT average cycles 5658
 
-A single RMPOPT instruction should not be taking 248M cycles, so i looked at
-my performance measurement code : 
+First of all, I'd really appreciate wall clock measurements on these.
+It's just less math and guesswork. Cycles are easy to measure but hard
+to read. Please make these easier to read. Also, the per-RMPOPT numbers
+don't mean much. You have to scale it by the number of CPUs and memory
+(or 2TB) to get to a real, useful number.
 
-I was not disabling interrupts around my measurement code, so probably this 
-measurement code was getting interrupted/preempted and causing this discrepancy: 
+The thing that matters is how long this loop takes:
 
-I am now measuring with interrupts disabled around this code: 
+	for (pa = pa_start; pa < pa_end; pa += PUD_SIZE)
 
-static void rmpopt(void *val)
-{
-        bool optimized;
-        u64 start, end;
+and *especially* how long it takes per-cpu and when the system has a
+full 2TB load of memory.
 
-        local_irq_disable();
-        start = rdtsc_ordered();
+That will tell us how many resources this RMPOPT thing is going to take,
+which is the _real_ thing we need to know.
 
-        asm volatile(".byte 0xf2, 0x0f, 0x01, 0xfc"
-                     : "=@ccc" (optimized)
-                     : "a" ((u64)val & PUD_MASK), "c" ((u64)val & 0x1)
-                     : "memory", "cc");
+Also, to some degree, the thing we care about here the *most* is the
+worst case scenario. I think the worst possible case is that there's one
+4k private page in each 1GB of memory, and that it's the last 4k page.
+I'd like to see numbers for something close to *that*, not when there
+are no private pages.
 
-        end = rdtsc_ordered();
-        local_irq_enable();
-
-	total_cycles += (end - start);
-        ++iteration;
-
-        if ((end - start) > largest_cycle_rmpopt) {
-                pr_info("RMPOPT max cycle on cpu %d, addr 0x%llx, cycles %llu, prev largest %llu\n",
-                                smp_processor_id(), ((u64)val & PUD_MASK), end - start, largest_cycle_rmpopt);
-                largest_cycle_rmpopt = end - start;
-        }
-...
-...
-
-But, the following is interesting, if I invoke rmpopt() using smp_call_on_cpu() which issues
-RMPOPT on each CPU serially compared to using on_each_cpu_mask() above which will execute rmpopt()
-function and RMPOPT instruction in parallel on multiple CPUs (by sending IPIs in parallel),
-I observe a significant difference and improvement in "individual" RMPOPT instruction performance: 
-
-rmpopt() executing serially using smp_call_on_cpu(): 
-
-[  244.518677] SEV-SNP: RMPOPT instruction cycles 3300
-[  244.518716] SEV-SNP: RMPOPT instruction cycles 2840
-[  244.518758] SEV-SNP: RMPOPT instruction cycles 3260
-[  244.518800] SEV-SNP: RMPOPT instruction cycles 3640
-[  244.518838] SEV-SNP: RMPOPT instruction cycles 1980
-[  244.518878] SEV-SNP: RMPOPT instruction cycles 3420
-[  244.518919] SEV-SNP: RMPOPT instruction cycles 3620
-[  244.518958] SEV-SNP: RMPOPT instruction cycles 3120
-[  244.518997] SEV-SNP: RMPOPT instruction cycles 2160
-[  244.519038] SEV-SNP: RMPOPT instruction cycles 3040
-[  244.519078] SEV-SNP: RMPOPT instruction cycles 3700
-[  244.519119] SEV-SNP: RMPOPT instruction cycles 3960
-[  244.519158] SEV-SNP: RMPOPT instruction cycles 3420
-[  244.519211] SEV-SNP: RMPOPT instruction cycles 5080
-[  244.519254] SEV-SNP: RMPOPT instruction cycles 3000
-[  244.519295] SEV-SNP: RMPOPT instruction cycles 3420
-[  244.527150] SEV-SNP: RMPOPT max cycle on cpu 256, addr 0x40000000, cycles 34680, prev largest 22100
-[  244.529622] SEV-SNP: RMPOPT max cycle on cpu 320, addr 0x40000000, cycles 36800, prev largest 34680
-[  244.559314] SEV-SNP: RMPOPT max cycle on cpu 256, addr 0x80000000, cycles 39740, prev largest 36800
-[  244.561718] SEV-SNP: RMPOPT max cycle on cpu 320, addr 0x80000000, cycles 41840, prev largest 39740
-[  244.562837] SEV-SNP: RMPOPT max cycle on cpu 352, addr 0x80000000, cycles 42160, prev largest 41840
-[  244.886705] SEV-SNP: RMPOPT max cycle on cpu 384, addr 0x300000000, cycles 42300, prev largest 42160
-[  247.701377] SEV-SNP: RMPOPT max cycle on cpu 384, addr 0x1980000000, cycles 42400, prev largest 42300
-[  250.322355] SEV-SNP: RMPOPT max cycle on cpu 384, addr 0x2ec0000000, cycles 42420, prev largest 42400
-[  250.755457] SEV-SNP: RMPOPT max cycle on cpu 384, addr 0x3240000000, cycles 42540, prev largest 42420
-[  264.271293] SEV-SNP: RMPOPT max cycle on cpu 32, addr 0xa040000000, cycles 50400, prev largest 42540
-[  264.333739] SEV-SNP: RMPOPT max cycle on cpu 32, addr 0xa0c0000000, cycles 50940, prev largest 50400
-[  264.395521] SEV-SNP: RMPOPT max cycle on cpu 32, addr 0xa140000000, cycles 51240, prev largest 50940
-[  264.733133] SEV-SNP: RMPOPT max cycle on cpu 32, addr 0xa400000000, cycles 51480, prev largest 51240
-[  269.500891] SEV-SNP: RMPOPT max cycle on cpu 0, addr 0xcac0000000, cycles 66080, prev largest 51480
-[  273.507009] SEV-SNP: RMPOPT max cycle on cpu 320, addr 0xeb40000000, cycles 83680, prev largest 66080
-[  276.435091] SEV-SNP: RMPOPT largest cycles 83680
-[  276.435096] SEV-SNP: RMPOPT smallest cycles 60
-[  276.435097] SEV-SNP: RMPOPT average cycles 5658
-[  276.435098] SEV-SNP: RMPOPT cycles taken for physical address range 0x0000000000000000 - 0x0000010380000000 on all cpus 63815935380 cycles
-
-Compare this to executing rmpopt() in parallel:
-
-[ 1238.809183] SEV-SNP: RMPOPT average cycles 114372
-
-
-So, looks like executing RMPOPT in parallel is causing performance degradation, which we will investigate. 
-
-But, these are the performance numbers you should be considering : 
-
-RMPOPT during boot: 
-
-[   49.913402] SEV-SNP: RMPOPT largest cycles 1143020
-[   49.913407] SEV-SNP: RMPOPT smallest cycles 60
-[   49.913408] SEV-SNP: RMPOPT average cycles 5226
-
-
-RMPOPT after SNP guest shutdown: 
-
-[  276.435091] SEV-SNP: RMPOPT largest cycles 83680
-[  276.435096] SEV-SNP: RMPOPT smallest cycles 60
-[  276.435097] SEV-SNP: RMPOPT average cycles 5658
-
-
-Thanks,
-Ashish
+The two things you measured above are interesting, but they're only part
+of the story.
