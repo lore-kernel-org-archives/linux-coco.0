@@ -1,137 +1,125 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2516E3DBD6F
-	for <linux-coco@lists.linux.dev>; Thu,  5 Mar 2026 17:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383B83E51C7
+	for <linux-coco@lists.linux.dev>; Thu,  5 Mar 2026 17:13:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772730663; cv=none; b=T6R+rolVOGCvQTxn4g4r2kaMTy+poe3LfdBkWEuZM452Hz7fEJPVmW5MmQzyOlhZ9jlQxLFey8+LxkC51Gly+kS5E6r1VeIQ3Mm553bV959QuhjFm/spgclkq0v5XEzs1LvpHn0mOGoAzio39/cnTFB6x/5zVqQXuqkqZyetNqA=
+	t=1772730825; cv=none; b=WXbVwdY/J/m0zKWcY76UoIdhyt2t116uu1TC6tSzDAdItOQQ60YCNeSYkhkShegrwuZrqCR4JtLQqyr3RpnJwhhZXnuyJ0hldlfbS7mO9WHggP2IqZuqaisBC6HDPu1Z3gXMzNV2xPTDu/AnAwsjsVtmFVRu3ye23FArwKGjFrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772730663; c=relaxed/simple;
-	bh=vwgoh1YpPCNmEVw+tt+RGy4f+rv+AHH7GLlM+0zF37Y=;
+	s=arc-20240116; t=1772730825; c=relaxed/simple;
+	bh=qHC00ISKgrMZfRY6dSld9netJgpoxAtIn0hM+5n3r7Q=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=dUetmJhHsETSWK6+7WkNwHUNeaNYiKT6Df3spRoO4T6j9oLrQIVROOaPof8PgOGksr/4VTSuF0dekX+BEfufRyVsFB/CvkZmyfEZwHICwWCm/uhVytnRtm/NAWcx/52EyqAwiEiOK489Lee1dURUGy1BrPn8Q9KaHb4yJer63iQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KO1XCAee; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=lH9pNJ060fs+rAbyqGOa+cXuanwTVDUvhsla1pZ6NAXi/PMrXxsD5Nggy3r3nRhHXYsE15TY9CRti9L0hVgx/ruK8fPh5vleP6ncv/YB3PfqtbNVX4VHZaWd1D1lOMVG/nuZuYbbQy0Y5vncOsK7om/2gKfzqZHs9rfKRYE5djg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lbEO8TEP; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KO1XCAee"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-354c44bf176so7710304a91.0
-        for <linux-coco@lists.linux.dev>; Thu, 05 Mar 2026 09:11:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lbEO8TEP"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3568090851aso44920483a91.1
+        for <linux-coco@lists.linux.dev>; Thu, 05 Mar 2026 09:13:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772730661; x=1773335461; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1772730824; x=1773335624; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wjP5vV9RH9OSKAjVvneHEnYGM5u56iDo3DZIIc/IaHE=;
-        b=KO1XCAeeMo3veVMrFivHsRjCLHbQB2iTl9k4yywahx+oRt5sUh9YF2A0T9rmFrRYtF
-         sm4cmE9aI9Va0sDVZpIvJ6Z0LctBJl0Ff6vVB5KnzAT/ytT5Haeko/4OPoUQjnKOomi6
-         lfbpuBpTmCdVdyp+dFkbfJ65HJSWt/sFkNMfVPFr5fZp6bNMkYzUI/HVZsAtT7s9Y8yY
-         GVmhBdRG355cBVHFbZPLYE+sFWQJ1CTJ/RCxCt2PHqcC+XqcFWzDiswJab+v7JjYWVKo
-         bwDs270q+7iK7LLnGfsO6QmZWy5QG8qY2I1YMKF6kbXwevHTM7oj9maO/flAPe4EfJx3
-         O6Tg==
+        bh=E2bUC8Oe3NfU9TjoldHhqqoJKW3UcTrvlp0nRfSmBH0=;
+        b=lbEO8TEPXGCmYYN+XcPbQlr/LznBx1FbX60aB+Fl/JvbyGFfNbUzceogo0R1nhyK46
+         z46Yr+iGKMqTHTBCrJqOkOCrab9hK395fFXpmxedNEtDDhP2sQxcJ/Hkw5Y+SiwtMnJL
+         y8xw1qL6qDCmIRpJqzrMTi8+DiQ3GjO1yU67eNqd3RgvLSGFU7UucjZSOOtrhD57e6nh
+         u2q+2xzWXFduK+QGQcft/EAHTxvA+eOabdmYloojWQznghROrXFnuj9jmuIYywfk0az3
+         J8yAbYKYDqK4ftk7RsOeQIE0JJZVGfJckOJymAIykv+PClbbm4ezodoqkN8ZGxy9G2i0
+         ATTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772730661; x=1773335461;
+        d=1e100.net; s=20230601; t=1772730824; x=1773335624;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wjP5vV9RH9OSKAjVvneHEnYGM5u56iDo3DZIIc/IaHE=;
-        b=JXj26UXvZwUnF7Sh+C92RoZFeASHgV4pMnGC849yQnskTXfThFXxzpxKzvEhs1qHW4
-         XXyyyS/gjhxGHp7KwjzUMbUbpVaOx0TefdOmMIMpJyGQA3SKuh6B6fse6YOzTKNJtf/X
-         FLRpr3GHVM9yWK+0i66s8ttWcKsyAAwFPpvU0eS4UMKm+tPLiJO9iuyr0/IDdG4N8HPI
-         5pJ0djLgFAuozKsucYW8rNNcczzcpfHbm4a6YABNdJUXJdUfibx3l3t12fIv+935eCAY
-         5sHMfA0T4B4WIsDCCWrKjZBpkBkM5jZpKiUti7z7cxW6r2ae1ih/1WWqgsOMSOyUTqQ3
-         Iyog==
-X-Forwarded-Encrypted: i=1; AJvYcCUENXRl7RRgVVzGbqT63mYHFah3/ki4riwulONZTVJ9m5nouqJRQHjCv4+YFbKVz/JKSVtCn/f7Y0JZ@lists.linux.dev
-X-Gm-Message-State: AOJu0YwGs+/LicsT1Nbkju/x5WcOayfp6+1y2K6T0NQhRjHkhk5oeEbH
-	SzQYSc0n6PtKzfp4jCbFVSBFYaSQ5VDC8YPeysK6NEwSPj31CpnQZnYg1rB4Eykn8F0EGLP2er9
-	LqgKdnQ==
-X-Received: from pjj5.prod.google.com ([2002:a17:90b:5545:b0:359:974a:3d42])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:510f:b0:32e:528c:60ee
- with SMTP id 98e67ed59e1d1-359a6a52fb0mr6143772a91.24.1772730661449; Thu, 05
- Mar 2026 09:11:01 -0800 (PST)
-Date: Thu,  5 Mar 2026 09:07:57 -0800
-In-Reply-To: <20260225012049.920665-1-seanjc@google.com>
+        bh=E2bUC8Oe3NfU9TjoldHhqqoJKW3UcTrvlp0nRfSmBH0=;
+        b=f8l17QoxYW3Fb2arQxf41BMg/8ZSyo6PDS4SxcP51AP2SZQ+XrBqD4LHOeXsLtwjSy
+         Vm/CgD4C/quuAMNN3G3eKarPfHh4duqsmF33DuSw+lK8sLeTHq67gEJi7QcB/PZN5WNx
+         j3O4rE9498CS2C6aMAg7N+yZE7lL53/a8y1xNFvwlm2UBBvrKe3xkGBFZ9s2kjcW1GWq
+         DjfVx0N0s+sAd6ABK3cd9hmSHo2FsQ38oXpc0XD6FKPkSRGVW5j8b6778Wh0GvUh3UJf
+         mhubl3v4hYqcWx1sUv/VTbSP1OAdopickF6ea7oTdD+KC675SkpZJdC3At2IZTuSpAWF
+         bYhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWBjYj76jGqwH9Qb74RAoPEj/z2fqMlo07AdAi+uDth18/FZBLHpu4z4iD3reGgrj3NEAnUbFAF8/47@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy+4/1WwTcsaKM/TtO0qdPnBMqpZXGxgSzJ0K/u3tP3ai/GX/QG
+	gw6kHIN7fokC5ixE7WlzxW9m5GHv8ksgReEDUPpE95ADGAqnidxaYMjyPds14REQRSukAIEUP3+
+	J+6ZkFQ==
+X-Received: from pjbms20.prod.google.com ([2002:a17:90b:2354:b0:359:8d4a:7276])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:388d:b0:359:8293:67f2
+ with SMTP id 98e67ed59e1d1-359a6a7a05fmr4296177a91.32.1772730823229; Thu, 05
+ Mar 2026 09:13:43 -0800 (PST)
+Date: Thu,  5 Mar 2026 09:08:39 -0800
+In-Reply-To: <20260214012702.2368778-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260225012049.920665-1-seanjc@google.com>
+References: <20260214012702.2368778-1-seanjc@google.com>
 X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <177272739326.1549300.4569691006460007231.b4-ty@google.com>
-Subject: Re: [PATCH 00/14] KVM: x86: Emulator MMIO fix and cleanups
+Message-ID: <177272960351.1566277.2741684808536756847.b4-ty@google.com>
+Subject: Re: [PATCH v3 00/16] KVM: x86/tdx: Have TDX handle VMXON during bringup
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Kiryl Shutsemau <kas@kernel.org>
-Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Yashu Zhang <zhangjiaji1@huawei.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Michael Roth <michael.roth@amd.com>
+To: Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Kiryl Shutsemau <kas@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	Chao Gao <chao.gao@intel.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
+	Dan Williams <dan.j.williams@intel.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, 24 Feb 2026 17:20:35 -0800, Sean Christopherson wrote:
-> Fix a UAF stack bug where KVM references a stack pointer around an exit to
-> userspace, and then clean up the related code to try to make it easier to
-> maintain (not necessarily "easy", but "easier").
+On Fri, 13 Feb 2026 17:26:46 -0800, Sean Christopherson wrote:
+> Assuming I didn't break anything between v2 and v3, I think this is ready to
+> rip.  Given the scope of the KVM changes, and that they extend outside of x86,
+> my preference is to take this through the KVM tree.  But a stable topic branch
+> in tip would work too, though I think we'd want it sooner than later so that
+> it can be used as a base.
 > 
-> The SEV-ES and TDX changes are compile-tested only.
-> 
-> Sean Christopherson (14):
->   KVM: x86: Use scratch field in MMIO fragment to hold small write
->     values
->   KVM: x86: Open code handling of completed MMIO reads in
->     emulator_read_write()
->   KVM: x86: Trace unsatisfied MMIO reads on a per-page basis
->   KVM: x86: Use local MMIO fragment variable to clean up
->     emulator_read_write()
->   KVM: x86: Open code read vs. write userspace MMIO exits in
->     emulator_read_write()
->   KVM: x86: Move MMIO write tracing into vcpu_mmio_write()
->   KVM: x86: Harden SEV-ES MMIO against on-stack use-after-free
->   KVM: x86: Dedup kvm_sev_es_mmio_{read,write}()
->   KVM: x86: Consolidate SEV-ES MMIO emulation into a single public API
->   KVM: x86: Bury emulator read/write ops in
->     emulator_{read,write}_emulated()
->   KVM: x86: Fold emulator_write_phys() into write_emulate()
->   KVM: x86: Rename .read_write_emulate() to .read_write_guest()
->   KVM: x86: Don't panic the kernel if completing userspace I/O / MMIO
->     goes sideways
->   KVM: x86: Add helpers to prepare kvm_run for userspace MMIO exit
+> Chao, I deliberately omitted your Tested-by, as I shuffled things around enough
+> while splitting up the main patch that I'm not 100% positive I didn't regress
+> anything relative to v2.
 > 
 > [...]
 
-Applied to kvm-x86 mmio, with the hardened version of the helper in patch 14.
-Thanks for the testing!
+Applied to kvm-x86 vmxon, with the minor fixups.  I'll make sure not to touch
+the hashes at this point, but holler if anyone wants an "official" stable tag.
 
-[01/14] KVM: x86: Use scratch field in MMIO fragment to hold small write values
-        https://github.com/kvm-x86/linux/commit/0b16e69d17d8
-[02/14] KVM: x86: Open code handling of completed MMIO reads in emulator_read_write()
-        https://github.com/kvm-x86/linux/commit/4046823e78b0
-[03/14] KVM: x86: Trace unsatisfied MMIO reads on a per-page basis
-        https://github.com/kvm-x86/linux/commit/4f11fded5381
-[04/14] KVM: x86: Use local MMIO fragment variable to clean up emulator_read_write()
-        https://github.com/kvm-x86/linux/commit/523b6269f700
-[05/14] KVM: x86: Open code read vs. write userspace MMIO exits in emulator_read_write()
-        https://github.com/kvm-x86/linux/commit/cbbf8228c071
-[06/14] KVM: x86: Move MMIO write tracing into vcpu_mmio_write()
-        https://github.com/kvm-x86/linux/commit/72f36f99072c
-[07/14] KVM: x86: Harden SEV-ES MMIO against on-stack use-after-free
-        https://github.com/kvm-x86/linux/commit/144089f5c394
-[08/14] KVM: x86: Dedup kvm_sev_es_mmio_{read,write}()
-        https://github.com/kvm-x86/linux/commit/33e09e2f9735
-[09/14] KVM: x86: Consolidate SEV-ES MMIO emulation into a single public API
-        https://github.com/kvm-x86/linux/commit/326e810eaaa5
-[10/14] KVM: x86: Bury emulator read/write ops in emulator_{read,write}_emulated()
-        https://github.com/kvm-x86/linux/commit/3517193ef9c2
-[11/14] KVM: x86: Fold emulator_write_phys() into write_emulate()
-        https://github.com/kvm-x86/linux/commit/929613b3cd1a
-[12/14] KVM: x86: Rename .read_write_emulate() to .read_write_guest()
-        https://github.com/kvm-x86/linux/commit/216729846603
-[13/14] KVM: x86: Don't panic the kernel if completing userspace I/O / MMIO goes sideways
-        https://github.com/kvm-x86/linux/commit/4f09e62afcd6
-[14/14] KVM: x86: Add helpers to prepare kvm_run for userspace MMIO exit
-        https://github.com/kvm-x86/linux/commit/e2138c4a5be1
+[01/16] KVM: x86: Move kvm_rebooting to x86
+        https://github.com/kvm-x86/linux/commit/4059172b2a78
+[02/16] KVM: VMX: Move architectural "vmcs" and "vmcs_hdr" structures to public vmx.h
+        https://github.com/kvm-x86/linux/commit/3c75e6a5da3c
+[03/16] KVM: x86: Move "kvm_rebooting" to kernel as "virt_rebooting"
+        https://github.com/kvm-x86/linux/commit/a1450a8156c6
+[04/16] KVM: VMX: Unconditionally allocate root VMCSes during boot CPU bringup
+        https://github.com/kvm-x86/linux/commit/405b7c27934e
+[05/16] x86/virt: Force-clear X86_FEATURE_VMX if configuring root VMCS fails
+        https://github.com/kvm-x86/linux/commit/95e4adb24ff6
+[06/16] KVM: VMX: Move core VMXON enablement to kernel
+        https://github.com/kvm-x86/linux/commit/920da4f75519
+[07/16] KVM: SVM: Move core EFER.SVME enablement to kernel
+        https://github.com/kvm-x86/linux/commit/32d76cdfa122
+[08/16] KVM: x86: Move bulk of emergency virtualizaton logic to virt subsystem
+        https://github.com/kvm-x86/linux/commit/428afac5a8ea
+[09/16] x86/virt: Add refcounting of VMX/SVM usage to support multiple in-kernel users
+        https://github.com/kvm-x86/linux/commit/8528a7f9c91d
+[10/16] x86/virt/tdx: Drop the outdated requirement that TDX be enabled in IRQ context
+        https://github.com/kvm-x86/linux/commit/0efe5dc16169
+[11/16] KVM: x86/tdx: Do VMXON and TDX-Module initialization during subsys init
+        https://github.com/kvm-x86/linux/commit/165e77353831
+[12/16] x86/virt/tdx: Tag a pile of functions as __init, and globals as __ro_after_init
+        https://github.com/kvm-x86/linux/commit/9900400e20c0
+[13/16] x86/virt/tdx: KVM: Consolidate TDX CPU hotplug handling
+        https://github.com/kvm-x86/linux/commit/eac90a5ba0aa
+[14/16] x86/virt/tdx: Use ida_is_empty() to detect if any TDs may be running
+        https://github.com/kvm-x86/linux/commit/afe31de159bf
+[15/16] KVM: Bury kvm_{en,dis}able_virtualization() in kvm_main.c once more
+        https://github.com/kvm-x86/linux/commit/d30372d0b7e6
+[16/16] KVM: TDX: Fold tdx_bringup() into tdx_hardware_setup()
+        https://github.com/kvm-x86/linux/commit/f630de1f8d70
 
 --
 https://github.com/kvm-x86/linux/tree/next
