@@ -1,162 +1,99 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f73.google.com (mail-ot1-f73.google.com [209.85.210.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55E62E7185
-	for <linux-coco@lists.linux.dev>; Thu,  5 Mar 2026 19:40:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569C3364054
+	for <linux-coco@lists.linux.dev>; Thu,  5 Mar 2026 22:26:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772739646; cv=none; b=MO1WtgRVbiz2I4WpI/vaJa9sYQ5LKy0DKHkJf4UsaOmIvS7vRCSkogTVaH4x+4Ee7pPhGUSOh51Gt5OR0uXXHwBkb1OdgC8EfypeBMPShMw0TfYctwi1FakqdAHar6a5UE7qlKBSdN7rxlp7enKumfc8IZ2co1N/cgc/sTXI8uM=
+	t=1772749615; cv=none; b=gPNdKba9NkfgeBZDxvXfMIIWMVsyoCiVDva42yU+mvBIQoLn5rTo2Ylm1TGnJvSZDMtgYcFOhflhzev0yfPtRkISyooL4r2d9s5binzzk8I9p9xYTBToka8FTRSVJbBJNxanpXBJxT9cp8f6CsWk6VLEU/+KdJmMcnEFAmbtfcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772739646; c=relaxed/simple;
-	bh=dX7+M7aZQQC360idkIppyO3g5g/oBHH6aOJ0+WaVOyo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZBwAZfvu9ASEVBbOprq41nHkxAbgXtnpD8UQs/clbbjUoo96IU0MelxzKi5tXnEC+7ab4syKHHNAKmcb1bqhNexOMiOre9QO967Vfbn/s8AkvV7Zh0C+OE8OrdHjoyJfNGWH0TE/EJBVjt0bkVP/pXzHPwdn3mzfabjpIBTipWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gzxamwZe; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1772749615; c=relaxed/simple;
+	bh=ckC8e9ScrPoWujr5t7OMT2iQ/3KONFj76Mv1ZZOmSHY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Vhh12Md5ku0j1P+w01UQuEaymlxQ27G9ZnZERzGwmGmkiZzhYZ5LMAejXknfInuDc19z8QTIodnd8EHlbIfcYLJg4KDkC3qrn+0vL29Y0vKeD8Dyh03XLz1rLFqKCKL3mLOmOYoN7wDL9PNk+JKRKmvkkpIVx+/dm3sJf9CXxyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--sagis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hdjD0PoT; arc=none smtp.client-ip=209.85.210.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--sagis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gzxamwZe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772739644; x=1804275644;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=dX7+M7aZQQC360idkIppyO3g5g/oBHH6aOJ0+WaVOyo=;
-  b=gzxamwZeTnpTH/iRu8S9V+3V+O0AcD/eU/BnPY67kBylANB1gBI86fZs
-   dWXF4MeKfQvVwPzOwEP4OSe+e4OCZxZTFamKuCuhiUbxnwgAWHPF+dumk
-   +//QI2AMUvr8F7lJa111BP56jDT8XcrxAoVajm9LG0eKTAVbOg2eP8Beb
-   gagZikdhJ6KwVlAFT8PM1E6XyUzEnZn9kw3K8DGN26YbehGngSuA4sIEj
-   TN5RImJwl685nJSvpdKy2HNOVi9EDt0oAwHONP4rDCyxOyuAWdgEXAlW6
-   y3xd/WycX78nZYWipg8ERBGv7shfaiL8EefkH2priJBJxH2jEY/4yFYrm
-   w==;
-X-CSE-ConnectionGUID: u6GSzxb5QbODJKLLQLiYbg==
-X-CSE-MsgGUID: 8RtmbH6oT0KJy5fc8KOHxQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="73713190"
-X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
-   d="scan'208";a="73713190"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 11:40:44 -0800
-X-CSE-ConnectionGUID: xOWA3BYFSdSZvicbVVeSQA==
-X-CSE-MsgGUID: BJniGFQuT3+e0kmbfPpX/g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
-   d="scan'208";a="215975788"
-Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.109.20]) ([10.125.109.20])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 11:40:42 -0800
-Message-ID: <d7ba3790-a959-4150-87e0-c87dea4d09c5@intel.com>
-Date: Thu, 5 Mar 2026 11:40:49 -0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hdjD0PoT"
+Received: by mail-ot1-f73.google.com with SMTP id 46e09a7af769-7d4beae6581so97493822a34.2
+        for <linux-coco@lists.linux.dev>; Thu, 05 Mar 2026 14:26:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772749613; x=1773354413; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=RM07twrcR0dXNaC+0E22+0adMf36n7my8fIoC64KCh0=;
+        b=hdjD0PoTojcxyNt+in/I3Cf15rxeMhYaMI+qmv4R8r7X8iA0hXnVZrDUmxRmESF/yR
+         fGNU7wguy6aTzE2pH4eqgtyy8Z9f7h2HytPA2SDQ34J+VN1iQDgqURPLexjeRhYaGjA5
+         rHJenH5j+41fAmaWFiaRQ6ZAngJ7wXaxqM2otRpt4VPZGnTP0h9KIyPwL/cfyIM9v418
+         8pu8msAflMooU2iW+xR6f7nK39JI62y4XGW6XgxPdoofuPoCNLEIbkipXsUkZqksQhU+
+         kJ9/Wbo4IytqlqpRlc8CLQ913DLgtALHAAyQzesp4x4xkv66ddzqeeK+dIL1o0dwnZvm
+         TrPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772749613; x=1773354413;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RM07twrcR0dXNaC+0E22+0adMf36n7my8fIoC64KCh0=;
+        b=FBGFFLuXrBNCcWdNb/DjVfRgescuRrzW+YPQgZ6WI+aMuSIBJzu/tvbqFmPi25CzeY
+         3cRIdSkR2Qrun+lFSyK9e2MFX6U4EcfEFBdpUpzlrC7Q2vOJ44lMGfyCOkK0FqM8TltK
+         UejbCUoiq+MstnYminFDe1378d3Ic0EBKEMeJQlGeihUVlG4Jde+DIRF5pNdAIrpYwiT
+         A27R4g5vqsYrda3NOoyceBQvzJ0G0y4oYiNH6dHR6mmDpoYW/0lrQSkBDpsCbJawEDx7
+         +cyd+NOmZCIcxJdgxuBJHQlY6iP3bgfLpm34nTT07tWrYNfk/z2lKLGYP6xKCPPQIvir
+         F5Ng==
+X-Forwarded-Encrypted: i=1; AJvYcCUrryxJkwtELr5SC7dMluAVycgcbCxYKI5KCWK1hSwqLaESMdOvRpuUX6kFoGcYyAkVzdwiO6yNlVen@lists.linux.dev
+X-Gm-Message-State: AOJu0YwLCSuD5n7dkdTA5YkkqdvWV9scKkBsu05HAe0Gm8T+yPqdl3gB
+	lc7FpB7VSPGJafuliwByTeFz1EEJKIFuu/m0L+QYrlirEiR2Vgqr8+ANySH7vbcePxk/d5H6Bwr
+	zTQ==
+X-Received: from jablo9.prod.google.com ([2002:a05:6638:aa09:b0:5d1:5187:4cc8])
+ (user=sagis job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6820:228e:b0:676:eb1e:df29
+ with SMTP id 006d021491bc7-67b9bcc0e80mr106951eaf.31.1772749612963; Thu, 05
+ Mar 2026 14:26:52 -0800 (PST)
+Date: Thu,  5 Mar 2026 22:26:25 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/7] x86/sev: add support for RMPOPT instruction
-To: "Kalra, Ashish" <ashish.kalra@amd.com>,
- Sean Christopherson <seanjc@google.com>
-Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- peterz@infradead.org, thomas.lendacky@amd.com, herbert@gondor.apana.org.au,
- davem@davemloft.net, ardb@kernel.org, pbonzini@redhat.com, aik@amd.com,
- Michael.Roth@amd.com, KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
- Nathan.Fontenot@amd.com, jackyli@google.com, pgonda@google.com,
- rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
- pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com,
- nikunj@amd.com, john.allen@amd.com, darwi@linutronix.de,
- linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev
-References: <cover.1772486459.git.ashish.kalra@amd.com>
- <8dc0198f1261f5ae4b16388fc1ffad5ddb3895f9.1772486459.git.ashish.kalra@amd.com>
- <aahH4XARlftClMrQ@google.com>
- <7ab8d3af-b4f5-481c-ab2e-059ddd7e718e@intel.com>
- <0fbb94ad-bfcf-4fbe-bf40-d79051d67ad8@amd.com>
- <6a4f4ecf-ffc0-43a9-98d4-06235b42063e@amd.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <6a4f4ecf-ffc0-43a9-98d4-06235b42063e@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
+Message-ID: <20260305222627.4193305-1-sagis@google.com>
+Subject: [PATCH v4 0/2] Extend KVM_HC_MAP_GPA_RANGE api to allow retry
+From: Sagi Shahar <sagis@google.com>
+To: Vishal Annapurve <vannapurve@google.com>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Michael Roth <michael.roth@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Sagi Shahar <sagis@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 3/5/26 11:22, Kalra, Ashish wrote:
-> But, these are the performance numbers you should be considering : 
-> 
-> RMPOPT during boot: 
-> 
-> [   49.913402] SEV-SNP: RMPOPT largest cycles 1143020
-> [   49.913407] SEV-SNP: RMPOPT smallest cycles 60
-> [   49.913408] SEV-SNP: RMPOPT average cycles 5226
-> 
-> RMPOPT after SNP guest shutdown: 
-> 
-> [  276.435091] SEV-SNP: RMPOPT largest cycles 83680
-> [  276.435096] SEV-SNP: RMPOPT smallest cycles 60
-> [  276.435097] SEV-SNP: RMPOPT average cycles 5658
+In some cases, userspace might decide to split MAP_GPA requests and
+retry them the next time the guest runs. One common case is MAP_GPA
+requests received right before intrahost migration when userspace
+might decide to complete the request after the migration is complete
+to reduce blackout time.
 
-First of all, I'd really appreciate wall clock measurements on these.
-It's just less math and guesswork. Cycles are easy to measure but hard
-to read. Please make these easier to read. Also, the per-RMPOPT numbers
-don't mean much. You have to scale it by the number of CPUs and memory
-(or 2TB) to get to a real, useful number.
+This is v4 of the series.
 
-The thing that matters is how long this loop takes:
+Changes from v3[1]:
+ * Rebased on top of v7.0-rc2.
+ * Switch "if" statement to switch-case in tdx_complete_vmcall_map_gpa()
+   as suggested by Michael Roth.
 
-	for (pa = pa_start; pa < pa_end; pa += PUD_SIZE)
+[1] https://lore.kernel.org/lkml/20260206222829.3758171-1-sagis@google.com/
 
-and *especially* how long it takes per-cpu and when the system has a
-full 2TB load of memory.
+Sagi Shahar (1):
+  KVM: SEV: Restrict userspace return codes for KVM_HC_MAP_GPA_RANGE
 
-That will tell us how many resources this RMPOPT thing is going to take,
-which is the _real_ thing we need to know.
+Vishal Annapurve (1):
+  KVM: TDX: Allow userspace to return errors to guest for MAPGPA
 
-Also, to some degree, the thing we care about here the *most* is the
-worst case scenario. I think the worst possible case is that there's one
-4k private page in each 1GB of memory, and that it's the last 4k page.
-I'd like to see numbers for something close to *that*, not when there
-are no private pages.
+ Documentation/virt/kvm/api.rst |  3 +++
+ arch/x86/kvm/svm/sev.c         | 12 ++++++++++--
+ arch/x86/kvm/vmx/tdx.c         | 28 +++++++++++++++++++++-------
+ arch/x86/kvm/x86.h             |  6 ++++++
+ 4 files changed, 40 insertions(+), 9 deletions(-)
 
-The two things you measured above are interesting, but they're only part
-of the story.
+-- 
+2.53.0.473.g4a7958ca14-goog
+
