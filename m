@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9C93368AE
-	for <linux-coco@lists.linux.dev>; Thu,  5 Mar 2026 04:29:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CD7286A4
+	for <linux-coco@lists.linux.dev>; Thu,  5 Mar 2026 04:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772684987; cv=none; b=Tn55dn41p7ha6Jj95wnhpejnhHc9uwzSu/fxLTD8NbQrZDxe8RCr7N2W7oNfQ/rRlvPnDPBz382QSm102E7KMemFfuBNMvNw6irtwTe3Uey6MR/AL5GNyX9x2R1UyAOMqHYIVaVpfgwgX7TUvBuREmz/8/8+tX5Z3QUT1tW2agE=
+	t=1772685181; cv=none; b=O7oqDasSVO4EL6nG49dLA50B33cCz/o2lO/yeAs9XkQrxmTkGkeDisBKI+7XdEfX7ks1U3D1dGItuk4WXySvBbMMCx8S8LtcyJa50vehnzyNE9XrFOZxZLAdf8y1u2LQpT1PSVw0coWJ0YefaoeAyMbJarLgUBo4HMC1FZrpeOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772684987; c=relaxed/simple;
-	bh=6Chbtbh91JQswn6MUozfrBBtYQHYxdhIh4GFF8DHSbQ=;
+	s=arc-20240116; t=1772685181; c=relaxed/simple;
+	bh=sey/vW6tzCKlEWT523imCveqwybENurz2eDJ3w2DBcQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lrp+EKVDEgdSWxhN5RzQo0KEMshtmGEjlClK82+NtAhKGCom3Zv5ST0IbM/Tk1lnOhT16pDwUT6aGr00pzwfWip0UKTWavhN3RLVzQ+/+fGzqr5n5R3gTfcl5XZbGz1f9GvM7FTdRYxmsjrefIdoERb8dnjhV9nMJ+4iI53Da+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HQ3869GP; arc=none smtp.client-ip=198.175.65.12
+	 Content-Type:Content-Disposition:In-Reply-To; b=n6N66W45GZSXNxPYVvV0JnkFtlGaXfPLUcPfCkOX3u3cSqdIwdR4uiw0xxP7EWSE4wTBmEUNQihukMUU3POTwlydZHUJWh0kQkOwihKdhrgT0E4Ic7JKpI4KFCr3Z3JZm2LmJHG7r4Y+I6ZQsZLUapmWhrCMxMx0glTEgD1SIO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U6rX7/Ky; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HQ3869GP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U6rX7/Ky"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772684985; x=1804220985;
+  t=1772685178; x=1804221178;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=6Chbtbh91JQswn6MUozfrBBtYQHYxdhIh4GFF8DHSbQ=;
-  b=HQ3869GPjggvlMQsiycPuE6AVxVXcAGMkQOHgOn5NlyAVE4MXZKjC559
-   ZHYVmesYL+ARbsS5lXrTrjM9g0koQB+2w3Q4HZM7ZyIlz0O/F4OOmuZKU
-   K20SaKnj8vNeWSfqGzTXs9GSOPcqG4yEb9bLSDFVSRGK98yNJeR2iMwV8
-   H/3rLrYFoG+/pAr9wlXVAW/PlyT/BoYRSEcMDpmt2ARhv32lRHCNmoE7G
-   VZ7u8Mphe+xgF6ayCdUDLfsTaCStB4oLXVbnHyRbKz+dL0q4XQQy3fENG
-   4AlbkCTkvKMP0bKUuss8XeyUwzxAqyUOP7rut4g5OLNjedy6K2N5i636t
-   Q==;
-X-CSE-ConnectionGUID: w8AJ5ZZMR0yBK93w/sI5Eg==
-X-CSE-MsgGUID: QRBVolQqQryDMWWSvm5h/Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="85233156"
+  bh=sey/vW6tzCKlEWT523imCveqwybENurz2eDJ3w2DBcQ=;
+  b=U6rX7/Ky1emIZSO//BoMja8Y1WapPBQ6Q1TTp3sUoe4BUIko8MSWhttx
+   gnly+CAjtEwrzEuMaPOtb4t/vcMHql9M2TozalxQHsMje0vd3/vlWxH6O
+   KuahRTd5LJaNDexn+BunddrU6URkmeUjRKZePfK8pk2uOEdhOgfGAveaU
+   Ex6RQUZUxINXgj3chOvAO5TmHNa2ou3Xvg7TcfDAHoihy9dGa9u2UYrIc
+   /aNz+rHpKB2e8eRxXTs2C7xfToU2z50EIZ0HPSXrZ9lFEf1t/DfGGmCsH
+   ZN47w8tURn6bRuhV7XrSJDQjoNmxZFWXfFHv7uUY/WzMkgQh+rWq+OJ18
+   w==;
+X-CSE-ConnectionGUID: G0cbpS7YSE+jWqw6nLCRyw==
+X-CSE-MsgGUID: j3qkkRnMSW2o1N3A5LFxow==
+X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="77605105"
 X-IronPort-AV: E=Sophos;i="6.21,325,1763452800"; 
-   d="scan'208";a="85233156"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 20:29:45 -0800
-X-CSE-ConnectionGUID: s4U3BI54Sk6/QBIZSOJy4g==
-X-CSE-MsgGUID: 0fsv4OblQDKlhJeyEOmozQ==
+   d="scan'208";a="77605105"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 20:32:58 -0800
+X-CSE-ConnectionGUID: j+azb6n0RPug0EgTYoxo+Q==
+X-CSE-MsgGUID: U/HE2gaLTLabzSpb8WaTwQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,325,1763452800"; 
-   d="scan'208";a="215836413"
+   d="scan'208";a="223048221"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa010.fm.intel.com with ESMTP; 04 Mar 2026 20:29:39 -0800
-Date: Thu, 5 Mar 2026 12:09:46 +0800
+  by orviesa004.jf.intel.com with ESMTP; 04 Mar 2026 20:32:52 -0800
+Date: Thu, 5 Mar 2026 12:12:59 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: Chao Gao <chao.gao@intel.com>
 Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
@@ -56,11 +56,11 @@ Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
 	binbin.wu@linux.intel.com, tony.lindgren@linux.intel.com,
 	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v4 09/24] x86/virt/seamldr: Check update limit before TDX
- Module updates
-Message-ID: <aakCCudhc/P+4cJh@yilunxu-OptiPlex-7050>
+Subject: Re: [PATCH v4 10/24] x86/virt/seamldr: Allocate and populate a
+ module update request
+Message-ID: <aakCyyYsZa1sqyNP@yilunxu-OptiPlex-7050>
 References: <20260212143606.534586-1-chao.gao@intel.com>
- <20260212143606.534586-10-chao.gao@intel.com>
+ <20260212143606.534586-11-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -69,22 +69,29 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260212143606.534586-10-chao.gao@intel.com>
+In-Reply-To: <20260212143606.534586-11-chao.gao@intel.com>
 
-On Thu, Feb 12, 2026 at 06:35:12AM -0800, Chao Gao wrote:
-> TDX maintains a log about each TDX Module which has been loaded. This
-> log has a finite size which limits the number of TDX Module updates
-> which can be performed.
+On Thu, Feb 12, 2026 at 06:35:13AM -0800, Chao Gao wrote:
+> P-SEAMLDR uses the SEAMLDR_PARAMS structure to describe TDX Module
+> update requests. This structure contains physical addresses pointing to
+> the module binary and its signature file (or sigstruct), along with an
+> update scenario field.
 > 
-> After each successful update, the remaining updates reduces by one. Once
-> it reaches zero, further updates will fail until next reboot.
+> TDX Modules are distributed in the tdx_blob format defined at [1]. A
+> tdx_blob contains a header, sigstruct, and module binary. This is also
+> the format supplied by the userspace to the kernel.
 > 
-> Before updating the TDX Module, verify that the update limit has not been
-> exceeded. Otherwise, P-SEAMLDR will detect this violation after the old TDX
-> Module is gone and all TDs will be killed.
+> Parse the tdx_blob format and populate a SEAMLDR_PARAMS structure
+> accordingly. This structure will be passed to P-SEAMLDR to initiate the
+> update.
 > 
-> Note that userspace should perform this check before updates. Perform this
-> check in kernel as well to make the update process more robust.
+> Note that the sigstruct_pa field in SEAMLDR_PARAMS has been extended to
+> a 4-element array. The updated "SEAM Loader (SEAMLDR) Interface
+> Specification" will be published separately. The kernel does not
+> validate P-SEAMLDR compatibility (for example, whether it supports 4KB
+> or 16KB sigstruct); userspace must ensure the P-SEAMLDR version is
+> compatible with the selected TDX Module by checking the minimum
+> P-SEAMLDR version requirements at [2].
 > 
 > Signed-off-by: Chao Gao <chao.gao@intel.com>
 > Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
