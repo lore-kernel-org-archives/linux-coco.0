@@ -1,419 +1,194 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C5521C9EA;
-	Thu,  5 Mar 2026 04:46:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772685999; cv=none; b=VWdLO3qoSzB4ZlBWdCT68HtaTg6UdnOH7oKkK4KtWRIgF1dAjIjMy+UVs/1cJgkdwn1cgIQPAhMOPTaFMYj0+PPbMO+B9SiEbE30ZEVcu4KhLPZEHB8qoEVfpRY+VpsJIagQf1gafp5kZ4HypZNap2ieOXnKr9eiu1Frgd9CVlQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772685999; c=relaxed/simple;
-	bh=JgKMY70MTFLFYeeqkpmSDs8x1Iw6TfduL41te7pOKaw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=PjKYHzapOtoTnV7R53KtVV1AMGdVA6tDokhfPvwFj8OuvAbwE7Glq1bIlrr8RtqWF+7AKUS1NnRPPHrXEVN5Hs7nk1U+UA5bnf/zHa9FgdY08xMKoS97pHwF16r0apRyAcTjD4FBlzlpWD3Db9lkTD7+7a7oz0YKGq93ZKfafbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vv2AM8Of; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AED273D8D
+	for <linux-coco@lists.linux.dev>; Thu,  5 Mar 2026 07:02:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772694169; cv=fail; b=NYqqoj76LND4+wXGxHqXRGe7Gku8Q0qKC+KAXZVeMMuVH84UJvwaqHsgvPu3IjAo4UVs+izRXjNgHFtAFa68iUhCRrkpYykx4WVtYowiAr4kdK5cl7yvRExjLfnQoKHEZzWuv9bSs29A3y/LHJeFJoaYjeIU4zxUrnXMiI5GvLs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772694169; c=relaxed/simple;
+	bh=qO3DDqQmKxfkiOs3klrBaC7mmgWQkZisO/HqrpNo7xw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=qzIJRUfjRQDylZHfSMETg/rCCyitT1WtCfdII9WorN+tIdVq7Pw8EZgWCxfyOocJU68OQe2d8krXe65CJCQWzbZsfL5aKvKlG97hlBf+TiFtrFQvozANmTbWe6PnuLrH1EB+Q82x9RlAr+iyv2cHwfeOkWPudXvFuYI9pTLM3Ts=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C6gN8zAD; arc=fail smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vv2AM8Of"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EBB2C116C6;
-	Thu,  5 Mar 2026 04:46:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772685998;
-	bh=JgKMY70MTFLFYeeqkpmSDs8x1Iw6TfduL41te7pOKaw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Vv2AM8OfNCYKCF8oybSB65u47mk84qpKo3CobajR06QlzkVCPddoMBNxBca3Uhn4z
-	 Hpit0Lgf5xxccru5P/U599UgwZQug6X2x+FxfZh8kPlkGg441ZafR8s2eNCZCNnE1z
-	 B4NvMOYk07qwEmA6QJbWodv71En3egkPxAuGxXIQvRjhWlK4XPfjQxJh/borxOrFNC
-	 3MQL3y6LRFUEj64arQRnSAkvoPhYApOOqGmLxmEBLocVz9l8TwqNWxU3DGSBBBo+v2
-	 plbqfuiruyFtChytgGzm3lZfMBQfxIrTNcVrALR4iubREI/O8W4qswH6p2gaSdmU3J
-	 5nL7Rw6OrRAIw==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	linux-pci@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, aik@amd.com, yilun.xu@linux.intel.com,
-	bhelgaas@google.com, alistair23@gmail.com, lukas@wunner.de,
-	jgg@nvidia.com, Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH v2 09/19] PCI/TSM: Support creating encrypted MMIO
- descriptors via TDISP Report
-In-Reply-To: <20260303000207.1836586-10-dan.j.williams@intel.com>
-References: <20260303000207.1836586-1-dan.j.williams@intel.com>
- <20260303000207.1836586-10-dan.j.williams@intel.com>
-Date: Thu, 05 Mar 2026 10:16:29 +0530
-Message-ID: <yq5a4imuanoa.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C6gN8zAD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772694167; x=1804230167;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=qO3DDqQmKxfkiOs3klrBaC7mmgWQkZisO/HqrpNo7xw=;
+  b=C6gN8zADuw95cZq4BZCrEYf9SyZphWnMfK1yo/rj9x+OmYlOCe1TkbeN
+   Hdq5kM4Ba6WGb7Vkn/PFux1KhT8MDIeeXFub7TlQBxQKnwGR8C0z1jTf+
+   xZIZTaju+5LpqIzVUyU2CkOeoRaUjuTjgZTMZq6pxtjSqJl1K3b/OR2WK
+   A6uA1cM7QBDpaYn/PWh1VucX3AXld2l0XEReag1zexZHggz+/tLLS84bV
+   K/T0mNlPmr2GXhubzH+GUbaiTuYjZkRFuqyTo9G4/g1qrAVXQ1MZehKDq
+   6DgLtT97pnsoxNqSSf7wWl47evP7mUYhfgcuRaewZB/P0TLYhwIofOata
+   g==;
+X-CSE-ConnectionGUID: KdCud0x1QWKp4DELSCOu2A==
+X-CSE-MsgGUID: LXwe8mSuSvCy50VkL/Hc8A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="73472366"
+X-IronPort-AV: E=Sophos;i="6.21,325,1763452800"; 
+   d="scan'208";a="73472366"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 23:02:46 -0800
+X-CSE-ConnectionGUID: FORxQ8CRTVC64TW8hoLHgA==
+X-CSE-MsgGUID: vVOW+NVYQmqAVCWAqSWHOg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,325,1763452800"; 
+   d="scan'208";a="249057468"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 23:02:46 -0800
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 4 Mar 2026 23:02:45 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Wed, 4 Mar 2026 23:02:45 -0800
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.30) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 4 Mar 2026 23:02:45 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uCHogS5BEc7/dnHmaUr0qzsJEEXlCW05tHjGQNMd9j3SsS5+0cowWzGg5aK2ArVxvoZWrQbFlB5myMPBjZ903YqcP7jC8iHlP8hRA5GvoaAr9sKm+bu/+mqMvwWCo30nRVrubVXzz/fdSqSFMhG7N1A32U6X34CkguCyXlxGiXu/JlJKF8zYhBhhWGEqog653cHaK/l7BbOq1CitWzVUH41w4rMSeKSyDrnDdfS6onNr0CtH/er73NvGee5TYcFe9AA6LVmurSG60btSffWvJE6UYJbsm9qoDnKkR1IxkzqmQsPeKHkv04QX/GlqzEihla8VD2YNko2/P9+GwnH3dg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qO3DDqQmKxfkiOs3klrBaC7mmgWQkZisO/HqrpNo7xw=;
+ b=PNES2a0apJo11HO/wPGpntqzjYmunWt5+6JZlc155Vk8LIOkCgZqaj1mWdUAUeB9TNkZrd5nU8Jm8xjFABb8URD+8HipLCI9oO7ZW9gd9lVV+FYq6YcYQRL4ajJLfjvaOvzYN2FsMfSNSXAGtbacF8ax0P8mtjqh5bVw/cnevb45H832gx2LMIvUFIH4qy4Fvm41Pu9ePYMv/GLYnxI69TdR8rGlgwxHqrYRf9CuIUIukO/v6MqqU+xh5hWEqbrbsTlf29SwpSan8ETV7prmAVd1d/iBXNctJOO+CKABAPdhhnRxr/JZbSbHdmT+aSKkfz/yzaUMWx4aEEPndAaifg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DM6PR11MB2650.namprd11.prod.outlook.com (2603:10b6:5:c4::18) by
+ SA2PR11MB5179.namprd11.prod.outlook.com (2603:10b6:806:112::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9678.17; Thu, 5 Mar 2026 07:02:37 +0000
+Received: from DM6PR11MB2650.namprd11.prod.outlook.com
+ ([fe80::ec1e:bdbd:ecd8:4c86]) by DM6PR11MB2650.namprd11.prod.outlook.com
+ ([fe80::ec1e:bdbd:ecd8:4c86%6]) with mapi id 15.20.9678.016; Thu, 5 Mar 2026
+ 07:02:37 +0000
+From: "Huang, Kai" <kai.huang@intel.com>
+To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>
+CC: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "seanjc@google.com"
+	<seanjc@google.com>, "kas@kernel.org" <kas@kernel.org>, "Chatre, Reinette"
+	<reinette.chatre@intel.com>, "Verma, Vishal L" <vishal.l.verma@intel.com>,
+	"nik.borisov@suse.com" <nik.borisov@suse.com>, "mingo@redhat.com"
+	<mingo@redhat.com>, "Weiny, Ira" <ira.weiny@intel.com>, "hpa@zytor.com"
+	<hpa@zytor.com>, "Annapurve, Vishal" <vannapurve@google.com>,
+	"sagis@google.com" <sagis@google.com>, "Duan, Zhenzhong"
+	<zhenzhong.duan@intel.com>, "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"paulmck@kernel.org" <paulmck@kernel.org>, "tglx@kernel.org"
+	<tglx@kernel.org>, "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
+	"Williams, Dan J" <dan.j.williams@intel.com>, "bp@alien8.de" <bp@alien8.de>
+Subject: Re: [PATCH v4 08/24] x86/virt/seamldr: Block TDX Module updates if
+ any CPU is offline
+Thread-Topic: [PATCH v4 08/24] x86/virt/seamldr: Block TDX Module updates if
+ any CPU is offline
+Thread-Index: AQHcnCz9/3oTEjRns0C8a2Fuaveo3bWfo7yA
+Date: Thu, 5 Mar 2026 07:02:37 +0000
+Message-ID: <dd0996c343c0d0447a76f2edb073e67f8779c130.camel@intel.com>
+References: <20260212143606.534586-1-chao.gao@intel.com>
+	 <20260212143606.534586-9-chao.gao@intel.com>
+In-Reply-To: <20260212143606.534586-9-chao.gao@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM6PR11MB2650:EE_|SA2PR11MB5179:EE_
+x-ms-office365-filtering-correlation-id: 5479b79c-48ea-4b4f-a5ca-08de7a852f36
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700021;
+x-microsoft-antispam-message-info: IBjf0xat5Lb5T054+Ub9JcZ62XNOuY2H1ZWwTt0Xc405N9xDC321kNnoJHGfsk/2xxd/tyoL/XCxl/u2feAVYBhK0QBPK/tsiFO3mkMQoWQKX9SVt9TJpbjIQlMXa5uEwaInGsU8IWmlubRFWc3xA8ZvyhptA0Eo1O0QsiILsBhcIretAcNTGBwxPC3FTujzsLz1jjv0oNirw4BUQDTESuhNBOf6uVpPhA7vxjQwRuLJ456ikjQdC/Tp2yAwrGM8XgD8Ohecelv8OCmlPU4+R2+rR4mdFP32fKZ9PHm4NBW/NDO1fDDKnx5npDVxUP/tEPN8XOqY+XcuiZcU22IRARDi6XTW9yzemgapWr2mHNFDDHp0lYoRpSFKT5SJT2CYjXICnjetW9qcFStkbk+9ZMxWV2c4EFKTyZBZyrecWj1hy2U4EX3NGFFQgk9a490AfYukiwJqzX0czBjJoDr5fbrpEjcOi0pF3iffnC5XGJ/kfpqCpK0JInMgSuPzVJ/mDJuCnTZM6G2E9cPTZ2R7cWXYCfs0ulMpdYZgojyzSonqysSR6RrqnZGbHfTcz0Nfbg+FASzoQKt41z3C8nXAK59tav8Utic8A2AN1VDECuc2JOjvSastm2AxJU01ZUFxEfBm7Hql3YsVdsO/3kplQ3K03ZSlAm2QNPnyGV9foQ62nUNd3AZhBjaMWCqkM/FaxH4vD4CVsyr1JAkAXhIT7ePaeaJ62IWrz8UXpe7Y5yNVRwVOB2ChOlRQ1on70UusIeJ2TIA5e8Tx/c5iQI/ASZmT/EY5NzWeU9z4/84kjxo=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB2650.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?QVAzTGE4dHoxT3ZyRE5waEltYkN4R3BKbmFqNy9BSDU1ZUorQmN0RDd3T1J5?=
+ =?utf-8?B?ZEFUR0VzMGU0ZlNNTHBVMUE0emtNczBEZWtKSGFrSncxaitoUWNUU2dydWcv?=
+ =?utf-8?B?eWlwdm5DQ05uUTNHR2h5cklydlZvc1RGd3ZMemk0WVRRZEVSYnVLQ0NUTnZx?=
+ =?utf-8?B?UjVpV0UvbmtGK2Y5Vi9sK3c2UGxuUWoySCtMU3d3Z1VYSDJKZVMyc1UxaFBy?=
+ =?utf-8?B?QkkzMG8wVFRpWU9QRDJ3MkU2U3hJREordjUwcVl2NnRoZHozbGdMWXFxS2VT?=
+ =?utf-8?B?VVhhTG5DYTFJQWxrWTR1UTBMYklKSGxFbHdoQ1BHcSthUCsrYjdybGtNNytl?=
+ =?utf-8?B?VHVsR3RSdW1COVJUMUZYZDJLU1pPTzliZUdSb2NHMnNYSzQ4R1lSKzRlL1pH?=
+ =?utf-8?B?akF2Qyt6Zm9jV21XRytuaHZxRTZiK1ZIUUFGMzlIU3dRR0l1Uzhwc3FYSzA4?=
+ =?utf-8?B?OFVWa2pCQTBXYzdLRkpmT1Y3WmpUcHl6bHdBMFgxL3pkRG5uVVhkVmxZSWw3?=
+ =?utf-8?B?WHZuVm5OOVlOeDdqZERqTlJRSEdGYTFreFhTMXFaWkhKTUdwa25BbGtqZ21F?=
+ =?utf-8?B?NjBVSTlZS2RzTmh1Qi8wazlvVUE0NS8va0JtQVRkR2Q5MWQrVm5BcmQ3VHZD?=
+ =?utf-8?B?dlRzK3VjNlU3QkMzc0tsaVpPRGdIQmJiRDVvbEplY3paOWtFbG4xeXdoRHZi?=
+ =?utf-8?B?dmVHSGp5NlBtOEJSdjAyQk5vTW9OdktWMnRkamh1TVNMSnM2ZjRITm9PYmF6?=
+ =?utf-8?B?bkdYNXNQc3d4Myt4WmtIYXpHVjRGUHBOTmdnSDNoWncvKzlOMFY4RUxlYmhD?=
+ =?utf-8?B?SjVFY2h3WWlIZmlxUkd5bW9PMXJUOEQzZ0hac3ljSzdnVWp2OWozcmVWQ2tj?=
+ =?utf-8?B?Z3VDbDhNME5aNVNxbE1jdmZ6UWdHZDhiWGYyd1BxaHVZb01XVWdrT2hKR2lr?=
+ =?utf-8?B?di9vWmFLQmhjb2hGMWxCZFlOam80VXZqdTZyVDYrY2ZFTStkQ1crcC9Fa2s0?=
+ =?utf-8?B?VTlTdUdoVUNRZWpVdXVxQlo5YldPT2ZSMDdBcWp1VmpmVXp5V0d1ejdqREU4?=
+ =?utf-8?B?RVdndlRXWmk2L2RWMWFDakNOYko3dVdydVFTeGp3NU9KWlU2Mk41QXBZVk1w?=
+ =?utf-8?B?RkVCYjYzL2loUEZFMnlyWVlEcVBGWWlwclVCZG9zTzE4TXVoNmNZSEIwM3FN?=
+ =?utf-8?B?Skc5Z3E0WHlSVUx5Qll1L0JLeUt1SjM1QWN1WUM2dVFyeG4xZUFNSXRlT1NN?=
+ =?utf-8?B?ODdDQ1hQTWR3NHRMa0Y4aitJZTI3OHZtMEw3bjI4VDR3SjRsSGphUEU5RGhR?=
+ =?utf-8?B?Unh0RDJoM0pRK0RqMS9oQzB1dWpDYWgxMWQ2cFJqTitDaWNyY25jQjdvc2s2?=
+ =?utf-8?B?WVlpMitKM3pMaTdnUzJvZXhiSzdmUCt4UzZxWnptNGpMeVlXZlVXcVNGU1VN?=
+ =?utf-8?B?cGpjU3lPSGNFOUhSaFZUTTkycWVjR3RUVW42ck9seFRsOTZZZkYxRERVN0dr?=
+ =?utf-8?B?dXhmRWpVQTN6UENPMEswZXJCTFRiVGdTSWx1NTBwQVlZbXVPbThCMEFXTmRE?=
+ =?utf-8?B?Q1lvNWFhSmZ1M21aN1NsaUpqWCsyb3NRRjl4QmFUQWx1LzdoS0x5Sjc5YkNM?=
+ =?utf-8?B?N3lvWXNVdzA2WE02bmtma0NsM2tnMXdwVWxDZlNsU2ZMRjI0OW95ZDdmU2ZQ?=
+ =?utf-8?B?Wjh6K2tPYVF5RGhFQWNySGlqSXgrYjlTQnBDeXFGYTIrSUw1MXlOc0lWT2F0?=
+ =?utf-8?B?cVFsRUNTZUpFTXk4TS9KVzh5V3o5N0s0V0N3YUJCbkd4TW9vV3JrWHg2WFJn?=
+ =?utf-8?B?NmVRMGYwYUpUdy9TcFlUYTdQTHp6MGp4TEtMZlZTblRSY0Q2M3VpeVdqRnJv?=
+ =?utf-8?B?ZmhMa0h4SmU1WnNnN2ZaNE90dmNEL1R0RU50NkIvMEZPZGhZQUxiNWpTNitm?=
+ =?utf-8?B?NHFYYkhyVEVwVnJDUVROWDVJaUxSNy8wa0ZwYm16Z0JrYkRnYkRZcU40VC9m?=
+ =?utf-8?B?UUxuY1k0bXowNjdEbzFSS1ZjK2hxaUViY0xMNTBNaEVaZFI2NDEzMVl0TXpH?=
+ =?utf-8?B?UVZIV3A1MFNoSjZQY1d1SXFVQVU4ajlLVzNVTmpLdUJ0a0pyK0J0YWprQmpk?=
+ =?utf-8?B?ZjdpTVVCbkVHemQ5VktPUmpheGN0UkI0VDU3aXZ5TEZkcUtkZWdTZnNEVnow?=
+ =?utf-8?B?WGlDVEoydFBsSUhtSitFaTJoZy9ocFBuN2x4SStqYy9VYVlpYmFSSmc2T3Er?=
+ =?utf-8?B?Z0UzUGJ5eGU4Z2JWOG9QZkY3dXBzUU5YVWo5cEkzamxSZnYxcldVYUpwNXVn?=
+ =?utf-8?B?UERpenh3Um5BbFNzaUlJcmQ2Y3VZdDBZVktpR3pjVVNCa1NVYVFydz09?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <804EED9B61C1574FA5402CA38B25C446@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB2650.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5479b79c-48ea-4b4f-a5ca-08de7a852f36
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Mar 2026 07:02:37.4199
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 0Z64fztn7X5nJtZbwIHmkKpiHBZOwVw4dscbu59z61Q1cgpGH9M/VYw1ZOKzB5S/jH4STppMgy72F29U5jVAlA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5179
+X-OriginatorOrg: intel.com
 
-Dan Williams <dan.j.williams@intel.com> writes:
-
-> After pci_tsm_bind() and pci_tsm_lock() the low level TSM driver is
-> expected to populate PCI_TSM_EVIDENCE_TYPE_REPORT in its evidence store.
-> This report is defined by the TDISP GET_DEVICE_INTERFACE_REPORT response
-> payload.
->
-> Add a helper to create encrypted MMIO descriptors from that report
-> data. With those descriptors the TSM driver can use pci_tsm_mmio_setup() to
-> inform ioremap() how to map the device per the device's expectations. The
-> VM is expected to validate the interface with the relying party before
-> accepting the device for operation.
->
-> The helper also provides the obfuscated starting address for each
-> encrypted MMIO range as the VM is never disclosed on the hpa that
-> correlates to the gpa of the device's mmio. The obfuscated address is BAR
-> relative.
->
-> Based on an original patch by Aneesh [1]
->
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Link: https://lore.kernel.org/linux-coco/20251117140007.122062-8-aneesh.kumar@kernel.org/
-> Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  include/linux/ioport.h  |   1 +
->  include/linux/pci-tsm.h |  34 ++++++
->  drivers/pci/tsm/core.c  | 235 ++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 270 insertions(+)
->
-> diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-> index 9afa30f9346f..1c106608c514 100644
-> --- a/include/linux/ioport.h
-> +++ b/include/linux/ioport.h
-> @@ -143,6 +143,7 @@ enum {
->  	IORES_DESC_RESERVED			= 7,
->  	IORES_DESC_SOFT_RESERVED		= 8,
->  	IORES_DESC_CXL				= 9,
-> +	IORES_DESC_ENCRYPTED			= 10,
->  };
->  
->  /*
-> diff --git a/include/linux/pci-tsm.h b/include/linux/pci-tsm.h
-> index b70b4c0457c4..8869585230a3 100644
-> --- a/include/linux/pci-tsm.h
-> +++ b/include/linux/pci-tsm.h
-> @@ -194,12 +194,42 @@ struct pci_tsm_pf0 {
->  	struct pci_doe_mb *doe_mb;
->  };
->  
-> +/**
-> + * struct pci_tsm_mmio_entry - an encrypted MMIO range
-> + * @res: MMIO address range (typically Guest Physical Address, GPA)
-> + * @tsm_offset: Host Physical Address, HPA obfuscation offset added by the TSM.
-> + *		Translates report addresses to GPA.
-> + */
-> +struct pci_tsm_mmio_entry {
-> +	struct resource res;
-> +	u64 tsm_offset;
-> +};
-> +
-> +struct pci_tsm_mmio {
-> +	int nr;
-> +	struct pci_tsm_mmio_entry mmio[] __counted_by(nr);
-> +};
-> +
-> +static inline struct pci_tsm_mmio_entry *
-> +pci_tsm_mmio_entry(struct pci_tsm_mmio *mmio, int idx)
-> +{
-> +	return &mmio->mmio[idx];
-> +}
-> +
-> +static inline struct resource *pci_tsm_mmio_resource(struct pci_tsm_mmio *mmio,
-> +						     int idx)
-> +{
-> +	return &mmio->mmio[idx].res;
-> +}
-> +
->  /**
->   * struct pci_tsm_devsec - context for tracking private/accepted PCI resources
->   * @base_tsm: generic core "tsm" context
-> + * @mmio: encrypted MMIO resources for this assigned device
->   */
->  struct pci_tsm_devsec {
->  	struct pci_tsm base_tsm;
-> +	struct pci_tsm_mmio *mmio;
->  };
->  
->  /* physical function0 and capable of 'connect' */
-> @@ -297,6 +327,10 @@ ssize_t pci_tsm_guest_req(struct pci_dev *pdev, enum pci_tsm_req_scope scope,
->  struct pci_tsm_devsec *to_pci_tsm_devsec(struct pci_tsm *tsm);
->  void pci_tsm_init_evidence(struct pci_tsm_evidence *evidence, int slot,
->  			   enum hash_algo digest_algo);
-> +int pci_tsm_mmio_setup(struct pci_dev *pdev, struct pci_tsm_mmio *mmio);
-> +void pci_tsm_mmio_teardown(struct pci_tsm_mmio *mmio);
-> +struct pci_tsm_mmio *pci_tsm_mmio_alloc(struct pci_dev *pdev);
-> +int pci_tsm_mmio_free(struct pci_dev *pdev, struct pci_tsm_mmio *mmio);
->  #else
->  static inline int pci_tsm_register(struct tsm_dev *tsm_dev)
->  {
-> diff --git a/drivers/pci/tsm/core.c b/drivers/pci/tsm/core.c
-> index 039733fd19b1..e4f830b16d18 100644
-> --- a/drivers/pci/tsm/core.c
-> +++ b/drivers/pci/tsm/core.c
-> @@ -15,6 +15,7 @@
->  #include <linux/pci-tsm.h>
->  #include <linux/sysfs.h>
->  #include <linux/tsm.h>
-> +#include <linux/unaligned.h>
->  #include <linux/xarray.h>
->  #include "../pci.h"
->  
-> @@ -558,6 +559,240 @@ static ssize_t dsm_show(struct device *dev, struct device_attribute *attr,
->  }
->  static DEVICE_ATTR_RO(dsm);
->  
-> +static void mmio_teardown(struct pci_tsm_mmio *mmio, int nr)
-> +{
-> +	while (nr--)
-> +		remove_resource(pci_tsm_mmio_resource(mmio, nr));
-> +}
-> +
-> +/**
-> + * pci_tsm_mmio_setup() - mark device MMIO as encrypted in iomem
-> + * @pdev: device owner of MMIO resources
-> + * @mmio: container of an array of resources to mark encrypted
-> + */
-> +int pci_tsm_mmio_setup(struct pci_dev *pdev, struct pci_tsm_mmio *mmio)
-> +{
-> +	int i;
-> +
-> +	device_lock_assert(&pdev->dev);
-> +	if (pdev->dev.driver)
-> +		return -EBUSY;
-> +
-> +	for (i = 0; i < mmio->nr; i++) {
-> +		struct resource *res = pci_tsm_mmio_resource(mmio, i);
-> +		int j;
-> +
-> +		if (resource_size(res) == 0 || !res->end)
-> +			break;
-> +
-> +		/* Only require the caller to set the range, init remainder */
-> +		*res = DEFINE_RES_NAMED_DESC(res->start, resource_size(res),
-> +					     "PCI MMIO Encrypted",
-> +					     IORESOURCE_MEM,
-> +					     IORES_DESC_ENCRYPTED);
-> +
-> +		for (j = 0; j < PCI_NUM_RESOURCES; j++)
-> +			if (resource_contains(pci_resource_n(pdev, j), res))
-> +				break;
-> +
-> +		/* Request is outside of device MMIO */
-> +		if (j >= PCI_NUM_RESOURCES)
-> +			break;
-> +
-> +		if (insert_resource(&iomem_resource, res) != 0)
-> +			break;
-> +	}
-> +
-> +	if (i >= mmio->nr)
-> +		return 0;
-> +
-> +	mmio_teardown(mmio, i);
-> +
-> +	return -EINVAL;
-> +}
-> +EXPORT_SYMBOL_GPL(pci_tsm_mmio_setup);
-> +
-> +void pci_tsm_mmio_teardown(struct pci_tsm_mmio *mmio)
-> +{
-> +	mmio_teardown(mmio, mmio->nr);
-> +}
-> +EXPORT_SYMBOL_GPL(pci_tsm_mmio_teardown);
-> +
-> +/*
-> + * PCIe ECN TEE Device Interface Security Protocol (TDISP)
-> + *
-> + * Device Interface Report data object layout as defined by PCIe r7.0 section
-> + * 11.3.11
-> + */
-> +#define PCI_TSM_DEVIF_REPORT_MMIO_ATTR_MSIX_TABLE BIT(0)
-> +#define PCI_TSM_DEVIF_REPORT_MMIO_ATTR_MSIX_PBA BIT(1)
-> +#define PCI_TSM_DEVIF_REPORT_MMIO_ATTR_IS_NON_TEE BIT(2)
-> +#define PCI_TSM_DEVIF_REPORT_MMIO_ATTR_IS_UPDATABLE BIT(3)
-> +#define PCI_TSM_DEVIF_REPORT_MMIO_ATTR_RANGE_ID GENMASK(31, 16)
-> +
-> +/* An interface report 'pfn' is 4K in size */
-> +struct pci_tsm_devif_mmio {
-> +	__le64 pfn;
-> +	__le32 nr_pfns;
-> +	__le32 attributes;
-> +};
-> +
-> +struct pci_tsm_devif_report {
-> +	__le16 interface_info;
-> +	__le16 reserved;
-> +	__le16 msi_x_message_control;
-> +	__le16 lnr_control;
-> +	__le32 tph_control;
-> +	__le32 mmio_range_count;
-> +	struct pci_tsm_devif_mmio mmio[];
-> +};
-> +
-> +/**
-> + * pci_tsm_mmio_alloc() - allocate encrypted MMIO range descriptor
-> + * @pdev: device owner of MMIO ranges
-> + * @report_data: TDISP Device Interface (DevIf) Report blob
-> + * @report_sz: DevIf Report size
-> + *
-> + * Return: the encrypted MMIO range descriptor on success, NULL on failure
-> + *
-> + * Assumes that this is called within the live lifetime of a PCI device's
-> + * association with a low level TSM.
-> + */
-> +struct pci_tsm_mmio *pci_tsm_mmio_alloc(struct pci_dev *pdev)
-> +{
-> +	struct pci_tsm *tsm = pdev->tsm;
-> +	struct pci_tsm_evidence *evidence = &tsm->evidence;
-> +	struct pci_tsm_evidence_object *report_obj = &evidence->obj[PCI_TSM_EVIDENCE_TYPE_REPORT];
-> +	struct tsm_dev *tsm_dev = tsm->tsm_dev;
-> +	u64 reporting_bar_base, last_reporting_end;
-> +	const struct pci_tsm_devif_report *report;
-> +	u32 mmio_range_count;
-> +	int last_bar = -1;
-> +	int i;
-> +
-> +	guard(rwsem_read)(&evidence->lock);
-> +	if (report_obj->len < sizeof(struct pci_tsm_devif_report))
-> +		return NULL;
-> +
-> +	if (dev_WARN_ONCE(&tsm_dev->dev, !IS_ALIGNED((unsigned long) report_obj->data, 8),
-> +			  "misaligned report data\n"))
-> +		return NULL;
-> +
-> +	report = report_obj->data;
-> +	mmio_range_count = __le32_to_cpu(report->mmio_range_count);
-> +
-> +	/* check that the report object is self-consistent on mmio entries */
-> +	if (report_obj->len < struct_size(report, mmio, mmio_range_count))
-> +		return NULL;
-> +
-> +	/* create pci_tsm_mmio descriptors from the report data */
-> +	struct pci_tsm_mmio *mmio __free(kfree) =
-> +		kzalloc(struct_size(mmio, mmio, mmio_range_count), GFP_KERNEL);
-> +	if (!mmio)
-> +		return NULL;
-> +
-> +	for (i = 0; i < mmio_range_count; i++) {
-> +		u64 range_off;
-> +		struct range range;
-> +		const struct pci_tsm_devif_mmio *mmio_data = &report->mmio[i];
-> +		struct pci_tsm_mmio_entry *entry =
-> +			pci_tsm_mmio_entry(mmio, mmio->nr);
-> +		/* report values in are in terms of 4K pages */
-> +		u64 tsm_offset = __le64_to_cpu(mmio_data->pfn) * SZ_4K;
-> +		u64 size = __le32_to_cpu(mmio_data->nr_pfns) * SZ_4K;
-> +		u32 attr = __le32_to_cpu(mmio_data->attributes);
-> +		int bar = FIELD_GET(PCI_TSM_DEVIF_REPORT_MMIO_ATTR_RANGE_ID,
-> +				    attr);
-> +
-> +		tsm_offset *= SZ_4K;
-> +		size *= SZ_4K;
-> +
-> +		if (bar >= PCI_STD_NUM_BARS ||
-> +		    !(pci_resource_flags(pdev, bar) & IORESOURCE_MEM)) {
-> +			pci_dbg(pdev, "Invalid reporting bar ID %d\n", bar);
-> +			return NULL;
-> +		}
-> +
-> +		if (last_bar > bar) {
-> +			pci_dbg(pdev, "Reporting bar ID not in ascending order\n");
-> +			return NULL;
-> +		}
-> +
-> +		if (last_bar < bar) {
-> +			/* transition to a new bar */
-> +			last_bar = bar;
-> +			/*
-> +			 * The tsm_offset for the first range of the BAR
-> +			 * corresponds to the BAR base.
-> +			 */
-> +			reporting_bar_base = tsm_offset;
-> +		} else if (tsm_offset < last_reporting_end) {
-> +			pci_dbg(pdev, "Reporting ranges within BAR not in ascending order\n");
-> +			return NULL;
-> +		}
->
-....
-> +		range_off = tsm_offset - reporting_bar_base;
-> 
-range_off will always be zero? Should we do
-
- 		range_off = tsm_offset & (pci_resource_len(pdev, bar) - 1);
-
-
-So that we correctly handle if the interface report is reporting a range
-within a bar. The only requirement here is bar address should be aligned
-to its size and mmio_reporting_offset should not add offsets in that range.
-
-> +
-> +		last_reporting_end = tsm_offset + size;
-> +		if (last_reporting_end < tsm_offset) {
-> +			pci_dbg(pdev, "Reporting range overflow\n");
-> +			return NULL;
-> +		}
-> +
-> +		range_off = tsm_offset - reporting_bar_base;
-> +		if (pci_resource_len(pdev, bar) < range_off + size) {
-> +			pci_dbg(pdev, "Reporting range larger than BAR size\n");
-> +			return NULL;
-> +		}
-> +
-> +		range.start = pci_resource_start(pdev, bar) + range_off;
-> +		range.end = range.start + size - 1;
-> +
-> +		if (FIELD_GET(PCI_TSM_DEVIF_REPORT_MMIO_ATTR_IS_NON_TEE,
-> +			      attr)) {
-> +			pci_dbg(pdev, "Skipping non-TEE range, BAR%d %pra\n",
-> +				 bar, &range);
-> +			continue;
-> +		}
-> +
-> +		/* Currently not supported */
-> +		if (FIELD_GET(PCI_TSM_DEVIF_REPORT_MMIO_ATTR_MSIX_TABLE,
-> +			      attr) ||
-> +		    FIELD_GET(PCI_TSM_DEVIF_REPORT_MMIO_ATTR_MSIX_PBA, attr)) {
-> +			pci_dbg(pdev, "Skipping MSIX range BAR%d %pra\n", bar,
-> +				 &range);
-> +			continue;
-> +		}
-> +
-> +		entry->res.start = range.start;
-> +		entry->res.end = range.end;
-> +		entry->tsm_offset = tsm_offset;
-> +		mmio->nr++;
-> +	}
-> +
-> +	return_ptr(mmio);
-> +}
-> +EXPORT_SYMBOL_GPL(pci_tsm_mmio_alloc);
-> +
-> +/**
-> + * pci_tsm_mmio_free() - free a pci_tsm_mmio instance
-> + * @pdev: device owner of MMIO ranges
-> + * @mmio: instance to free
-> + *
-> + * Returns 0 if @mmio was idle on entry, -EBUSY otherwise
-> + */
-> +int pci_tsm_mmio_free(struct pci_dev *pdev, struct pci_tsm_mmio *mmio)
-> +{
-> +	for (int i = 0; i < mmio->nr; i++) {
-> +		struct resource *res = pci_tsm_mmio_resource(mmio, i);
-> +
-> +		if (dev_WARN_ONCE(&pdev->dev, resource_assigned(res),
-> +				  "MMIO resource still assigned %pr\n", res))
-> +			return -EBUSY;
-> +	}
-> +	kfree(mmio);
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(pci_tsm_mmio_free);
-> +
->  /**
->   * pci_tsm_accept() - accept a device for private MMIO+DMA operation
->   * @pdev: PCI device to accept
-> -- 
-> 2.52.0
+T24gVGh1LCAyMDI2LTAyLTEyIGF0IDA2OjM1IC0wODAwLCBDaGFvIEdhbyB3cm90ZToNCj4gUC1T
+RUFNTERSIHJlcXVpcmVzIGV2ZXJ5IENQVSB0byBjYWxsIFNFQU1MRFIuSU5TVEFMTCBkdXJpbmcg
+dXBkYXRlcy4gU28sDQo+IGV2ZXJ5IENQVSBzaG91bGQgYmUgb25saW5lIGR1cmluZyB1cGRhdGVz
+Lg0KPiANCj4gQ2hlY2sgaWYgYWxsIENQVXMgYXJlIG9ubGluZSBhbmQgYWJvcnQgdGhlIHVwZGF0
+ZSBpZiBhbnkgQ1BVIGlzIG9mZmxpbmUgYXQNCj4gdGhlIHZlcnkgYmVnaW5uaW5nLiBXaXRob3V0
+IHRoaXMgY2hlY2ssIFAtU0VBTUxEUiB3aWxsIHJlcG9ydCBmYWlsdXJlIGF0IGENCj4gbGF0ZXIg
+cGhhc2Ugd2hlcmUgdGhlIG9sZCBURFggbW9kdWxlIGlzIGdvbmUgYW5kIFREcyBoYXZlIHRvIGJl
+IGtpbGxlZC4NCj4gDQo+IEhvbGQgY3B1c19yZWFkX2xvY2sgdG8gYXZvaWQgcmFjZXMgYmV0d2Vl
+biBDUFUgaG90cGx1ZyBhbmQgVERYIE1vZHVsZQ0KPiB1cGRhdGVzLg0KPiANCj4gU2lnbmVkLW9m
+Zi1ieTogQ2hhbyBHYW8gPGNoYW8uZ2FvQGludGVsLmNvbT4NCj4gUmV2aWV3ZWQtYnk6IFh1IFlp
+bHVuIDx5aWx1bi54dUBsaW51eC5pbnRlbC5jb20+DQo+IFJldmlld2VkLWJ5OiBUb255IExpbmRn
+cmVuIDx0b255LmxpbmRncmVuQGxpbnV4LmludGVsLmNvbT4NCg0KUmV2aWV3ZWQtYnk6IEthaSBI
+dWFuZyA8a2FpLmh1YW5nQGludGVsLmNvbT4NCg==
