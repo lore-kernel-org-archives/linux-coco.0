@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB10285CA3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B60A286D53
 	for <linux-coco@lists.linux.dev>; Sat,  7 Mar 2026 01:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772845454; cv=none; b=b9JqkAMqljmCKUc7F/P0iVRwzXAoY/bATp8qoHwT3LAiOWvCQZXy9DV0xUWUgVBw5pH87qlLJ2MaMlZgY/5z0L+4LmQ5YnzLhjyIGVRjViIdYMCWHu14dkxKVy1cDi9FuVwEy2//XuoZBzRA8dIiGoZbnwngh6SAGh9jdQbNPFs=
+	t=1772845454; cv=none; b=GV/RFPCcd26tE99c7fRXq2eDGq9ECuePwn3x6GVQ3qa/X32NCCihOZCCAEX6qSXZRDOxpKRddvzu+gkl+05m9YcRGtDO16uvGokVocTSXjQgcoQPSnIoyhX2M6/VczjvzPdHY+4Pc6myHjDc4SYcZt0O5+TI8bceOjL4NklN/I0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772845454; c=relaxed/simple;
-	bh=Ib4A2dLqs3t1llyi121mdd/5hQlAcyxmpeDuX6pTBgM=;
+	bh=Y9KMueimA6TuqteFC7M2S3rpvtCygw0L+mAHMgMh3rQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bj9Z7SBo51N9xs6PJ+cIZxT+PeNYL33QCWgDgLzmdxGxllYpylazK2J7PmQg4H6YKPiuH33EBnFeUthgc3xVMBaoxR0oHiTJhnlOcSuTTtTQEXjKanOtsOwc32r9fZkZReFpzBEKYWZOYAa5w7IRtPWuMDqfhqmJxD/NVPJTM3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aR6FcbrO; arc=none smtp.client-ip=192.198.163.13
+	 MIME-Version; b=YWyx0CL/+g6LISdbi2vXskvrjhS1aAaWtfxE4FR7bOAds3Q0NDtrxhSi1XitjlvHiuGsp0whPMY/3vGImvr4Qr5ktPeA0L47D5pjblazel1SW+8c+v1jTLdejEDDzxKCtAGR8rk1/DraGobGDZXW5dzhXiwpkrvEUSl1HvgNtck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c0re1zVC; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aR6FcbrO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c0re1zVC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772845451; x=1804381451;
+  t=1772845452; x=1804381452;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Ib4A2dLqs3t1llyi121mdd/5hQlAcyxmpeDuX6pTBgM=;
-  b=aR6FcbrOEubkecLN0KRsjGc2zAh2hBQXSuXyiujvtmBuhPZXGkRmaKfT
-   vYdHLFDJNSU15hcwyV/fZU3GI3+dKeo9qdSfdx8g60hDYFr+8u4B9S6D4
-   WjOaTlGsQ1iXBQEWW7dZL9H1rf3vGT+wBAdM2Iml8OBJNr69zSvVgRVoU
-   uZlD37VWKgrnfG2WVepRpIIHWkhJKBD8L3CX88H7gLU2NyRmiY6ELNdyF
-   e7DqQtgR6ZbzdMt+QqQDBC8QEp19YUkmiDJIFJZfvNyidMulhEmYOSnoi
-   JAmkwKLCZOxI3SY5igQVNO0DN2XOFi4HoamwLotvnv2eSMIdmEzCEfMVB
+  bh=Y9KMueimA6TuqteFC7M2S3rpvtCygw0L+mAHMgMh3rQ=;
+  b=c0re1zVCWYB7LITqDLz32XR3Ge15unU3FhgcuAO+5tEOTHwLvb9bsG3n
+   s2J6VzuMB7YdfI2bK4qQZ/PeT9jcwuiCL1Z1O89a6cuOuwBLvM/hoUd+D
+   qcBONr9mi14tSBfo/1OgjNFa1WjoLNOOIgZD+1/f5mnvw+QOqydcTA8+Y
+   1J4oYGpMM4Oog6bfTnWuXdVn0jHerXujKtzyN1fVIMzWqM4rVH+igCACn
+   7684lgwV4TrpbGz0Y7O6kJ2WVHEBej9XfzlYAzsbzul/8jxY39/7ui60B
+   Nm4loOuWpM0x40zwFLIM69V4sEJtHSUIkMhH4z3bq0ZdyctQZqDPCFdPo
    Q==;
-X-CSE-ConnectionGUID: PRo/HRA9RJ6wulZgQONYyg==
-X-CSE-MsgGUID: UK+qrGKIRvSywP9dnofTKg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11721"; a="76565950"
+X-CSE-ConnectionGUID: XGMnocjTQMy2UI2/H23r4w==
+X-CSE-MsgGUID: EIy5mJqrQaSzlkfss/5HlQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11721"; a="76565954"
 X-IronPort-AV: E=Sophos;i="6.23,105,1770624000"; 
-   d="scan'208";a="76565950"
+   d="scan'208";a="76565954"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
   by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 17:04:08 -0800
-X-CSE-ConnectionGUID: z6oddU4cTMajb1kLg7sgzg==
-X-CSE-MsgGUID: FKN6yTkOSg2ojlhEfXf0bQ==
+X-CSE-ConnectionGUID: LcrIWqwxSGms1ueyVs2t3g==
+X-CSE-MsgGUID: eytv7WfRQvemAVuA54gpAA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,105,1770624000"; 
-   d="scan'208";a="218329625"
+   d="scan'208";a="218329628"
 Received: from rpedgeco-desk.jf.intel.com ([10.88.27.139])
   by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 17:04:08 -0800
 From: Rick Edgecombe <rick.p.edgecombe@intel.com>
@@ -61,9 +61,9 @@ To: bp@alien8.de,
 	ackerleytng@google.com
 Cc: rick.p.edgecombe@intel.com,
 	vishal.l.verma@intel.com
-Subject: [PATCH 3/4] x86/virt/tdx: Add SEAMCALL wrapper for TDH.SYS.DISABLE
-Date: Fri,  6 Mar 2026 17:03:57 -0800
-Message-ID: <20260307010358.819645-4-rick.p.edgecombe@intel.com>
+Subject: [PATCH 4/4] KVM: x86: Disable the TDX module during kexec and kdump
+Date: Fri,  6 Mar 2026 17:03:58 -0800
+Message-ID: <20260307010358.819645-5-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260307010358.819645-1-rick.p.edgecombe@intel.com>
 References: <20260307010358.819645-1-rick.p.edgecombe@intel.com>
@@ -77,104 +77,98 @@ Content-Transfer-Encoding: 8bit
 
 From: Vishal Verma <vishal.l.verma@intel.com>
 
-Some early TDX-capable platforms have an erratum where a partial write
-to TDX private memory can cause a machine check on a subsequent read.
-On these platforms, kexec and kdump have been disabled in these cases,
-because the old kernel cannot safely hand off TDX state to the new
-kernel. Later TDX modules support the TDH.SYS.DISABLE SEAMCALL, which
-provides a way to cleanly disable TDX and allow kexec to proceed.
+Use the TDH.SYS.DISABLE SEAMCALL, which disables the TDX module,
+reclaims all memory resources assigned to TDX, and clears any
+partial-write induced poison, to allow kexec and kdump on platforms with
+the partial write errata.
 
-This can be a long running operation, and the time needed largely
-depends on the amount of memory that has been allocated to TDs. If all
-TDs have been destroyed prior to the sys_disable call, then it is fast,
-with only needing to override the TDX module memory.
+On TDX-capable platforms with the partial write erratum, kexec has been
+disabled because the new kernel could hit a machine check reading a
+previously poisoned memory location.
 
-After the SEAMCALL completes, the TDX module is disabled and all memory
-resources allocated to TDX are freed and reset. The next kernel can then
-re-initialize the TDX module from scratch via the normal TDX bring-up
-sequence.
+Later TDX modules support TDH.SYS.DISABLE, which disables the module and
+reclaims all TDX memory resources, allowing the new kernel to re-initialize
+TDX from scratch. This operation also clears the old memory, cleaning up
+any poison.
 
-The SEAMCALL may be interrupted by an interrupt. In this case, it
-returns TDX_INTERRUPTED_RESUMABLE, and it must be retried in a loop
-until the operation completes successfully.
+Add tdx_sys_disable() to tdx_shutdown(), which is called in the
+syscore_shutdown path for kexec. This is done just before tdx_shutdown()
+disables VMX on all CPUs.
 
-Add a tdx_sys_disable() helper, which implements the retry loop around
-the SEAMCALL to provide this functionality.
+For kdump, call tdx_sys_disable() in the crash path before
+x86_virt_emergency_disable_virtualization_cpu() does VMXOFF.
+
+Since this clears any poison on TDX-managed memory, the
+X86_BUG_TDX_PW_MCE check in machine_kexec() that blocked kexec on
+partial write errata platforms can be removed.
 
 Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 ---
- arch/x86/include/asm/tdx.h  |  3 +++
- arch/x86/virt/vmx/tdx/tdx.c | 18 ++++++++++++++++++
- arch/x86/virt/vmx/tdx/tdx.h |  1 +
- 3 files changed, 22 insertions(+)
+ arch/x86/kernel/crash.c            |  2 ++
+ arch/x86/kernel/machine_kexec_64.c | 16 ----------------
+ arch/x86/virt/vmx/tdx/tdx.c        |  1 +
+ 3 files changed, 3 insertions(+), 16 deletions(-)
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index f0826b0a512a..baaf43a09e99 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -173,6 +173,8 @@ static inline int pg_level_to_tdx_sept_level(enum pg_level level)
-         return level - 1;
- }
+diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
+index cd796818d94d..623d4474631a 100644
+--- a/arch/x86/kernel/crash.c
++++ b/arch/x86/kernel/crash.c
+@@ -38,6 +38,7 @@
+ #include <linux/kdebug.h>
+ #include <asm/cpu.h>
+ #include <asm/reboot.h>
++#include <asm/tdx.h>
+ #include <asm/intel_pt.h>
+ #include <asm/crash.h>
+ #include <asm/cmdline.h>
+@@ -112,6 +113,7 @@ void native_machine_crash_shutdown(struct pt_regs *regs)
  
-+void tdx_sys_disable(void);
-+
- u64 tdh_vp_enter(struct tdx_vp *vp, struct tdx_module_args *args);
- u64 tdh_mng_addcx(struct tdx_td *td, struct page *tdcs_page);
- u64 tdh_mem_page_add(struct tdx_td *td, u64 gpa, struct page *page, struct page *source, u64 *ext_err1, u64 *ext_err2);
-@@ -204,6 +206,7 @@ static inline void tdx_init(void) { }
- static inline u32 tdx_get_nr_guest_keyids(void) { return 0; }
- static inline const char *tdx_dump_mce_info(struct mce *m) { return NULL; }
- static inline const struct tdx_sys_info *tdx_get_sysinfo(void) { return NULL; }
-+static inline void tdx_sys_disable(void) { }
- #endif	/* CONFIG_INTEL_TDX_HOST */
+ 	crash_smp_send_stop();
  
- #endif /* !__ASSEMBLER__ */
++	tdx_sys_disable();
+ 	x86_virt_emergency_disable_virtualization_cpu();
+ 
+ 	/*
+diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
+index 0590d399d4f1..c3f4a389992d 100644
+--- a/arch/x86/kernel/machine_kexec_64.c
++++ b/arch/x86/kernel/machine_kexec_64.c
+@@ -347,22 +347,6 @@ int machine_kexec_prepare(struct kimage *image)
+ 	unsigned long reloc_end = (unsigned long)__relocate_kernel_end;
+ 	int result;
+ 
+-	/*
+-	 * Some early TDX-capable platforms have an erratum.  A kernel
+-	 * partial write (a write transaction of less than cacheline
+-	 * lands at memory controller) to TDX private memory poisons that
+-	 * memory, and a subsequent read triggers a machine check.
+-	 *
+-	 * On those platforms the old kernel must reset TDX private
+-	 * memory before jumping to the new kernel otherwise the new
+-	 * kernel may see unexpected machine check.  For simplicity
+-	 * just fail kexec/kdump on those platforms.
+-	 */
+-	if (boot_cpu_has_bug(X86_BUG_TDX_PW_MCE)) {
+-		pr_info_once("Not allowed on platform with tdx_pw_mce bug\n");
+-		return -EOPNOTSUPP;
+-	}
+-
+ 	/* Setup the identity mapped 64bit page table */
+ 	result = init_pgtable(image, __pa(control_page));
+ 	if (result)
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 0802d0fd18a4..68bd2618dde4 100644
+index 68bd2618dde4..b388fbce5d76 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -37,6 +37,7 @@
- #include <asm/msr.h>
- #include <asm/cpufeature.h>
- #include <asm/tdx.h>
-+#include <asm/shared/tdx_errno.h>
- #include <asm/cpu_device_id.h>
- #include <asm/processor.h>
- #include <asm/mce.h>
-@@ -1940,3 +1941,20 @@ u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, struct page *page)
- 	return seamcall(TDH_PHYMEM_PAGE_WBINVD, &args);
- }
- EXPORT_SYMBOL_FOR_KVM(tdh_phymem_page_wbinvd_hkid);
-+
-+void tdx_sys_disable(void)
-+{
-+	struct tdx_module_args args = {};
-+
-+	/*
-+	 * SEAMCALLs that can return TDX_INTERRUPTED_RESUMABLE are guaranteed
-+	 * to make forward progress between interrupts, so it is safe to loop
-+	 * unconditionally here.
-+	 *
-+	 * This is a 'destructive' SEAMCALL, in that no other SEAMCALL can be
-+	 * run after this until a full reinitialization is done.
-+	 */
-+	while (seamcall(TDH_SYS_DISABLE, &args) == TDX_INTERRUPTED_RESUMABLE)
-+		;
-+}
-+
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index dde219c823b4..e2cf2dd48755 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -46,6 +46,7 @@
- #define TDH_PHYMEM_PAGE_WBINVD		41
- #define TDH_VP_WR			43
- #define TDH_SYS_CONFIG			45
-+#define TDH_SYS_DISABLE			69
+@@ -252,6 +252,7 @@ static void tdx_shutdown_cpu(void *ign)
  
- /*
-  * SEAMCALL leaf:
+ static void tdx_shutdown(void *ign)
+ {
++	tdx_sys_disable();
+ 	on_each_cpu(tdx_shutdown_cpu, NULL, 1);
+ }
+ 
 -- 
 2.53.0
 
