@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F0127F75C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8BFA281369
 	for <linux-coco@lists.linux.dev>; Sat,  7 Mar 2026 01:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772845451; cv=none; b=K3Eq4BG2fPEtfokYFhSwEuFzazwhriWC5lzrtwMhnv/MkBqFMrdUceyVk5fa/Dzj2D3w6EJnbPE/eTBGPizDqEQUoM1KWvUQ1zdQvCRt2/XWylCAXtkCm5x8QKGRr5janSgwgJFZfbXEOyw5KDBcfRYyOEIsVSIrVPrRb+Zdn7I=
+	t=1772845452; cv=none; b=uzSmh/uh0Ho7R5SqP5hkMyXXrrTkN1rHi3AdfpSq0zZtruBzFZaX3GiQjRih0Xg4QTTbzlgXkoqpqUy+sTjkkDZe1zbK+qZhY5fkT9tDp/aB4SMS/AvDer14oGtXNdMXXpCiDP7O+asirRu8IgyvBUnqDJdu8oTgLyFv5B71Vkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772845451; c=relaxed/simple;
-	bh=g/D2jQlObfVMXooMIoY7xGv3HKXJWcnBX6Rf9c1bpsY=;
+	s=arc-20240116; t=1772845452; c=relaxed/simple;
+	bh=oTLfhSSlOmM92LJkqNFBzQ2K3fHxLneuG0MsPSGtmy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TLFRgVyOYNVMUqZ6s5R5jhaPbo5kcuS72kuPfFr5cP8kL68x9d+czDbarMfLODo6ASoJXu1+ZlEJGbKKuvg/0yYsh0atvt/IV0MGdzTLXAYkZUn582hSZQPKzGoGVUtE3/esQYpRdnkF+UogKUupeFGuZxxdougUz/lFhLG9qCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h6VJfXjp; arc=none smtp.client-ip=192.198.163.13
+	 MIME-Version; b=bDIpvnS/7D2toasBoXgdmOLIZDC/QJLFyzYhYG3DSvi0HM9B2Cacpukd2S7t9rq+fpCFLUuMZwIpb2rrtvPAcZ/jmqMBrivRrJMch2zv0PlqMopufuGkZZGStb9ufRt8G881x6lGPK6n/MHaNobucX2XdVOwpsp0g9x9OE9y0tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jCKrLwaW; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h6VJfXjp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jCKrLwaW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1772845450; x=1804381450;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=g/D2jQlObfVMXooMIoY7xGv3HKXJWcnBX6Rf9c1bpsY=;
-  b=h6VJfXjpv16VgR9G4bp0h1bN3j7tIrgHioYWX1ID6529/tTHhtNuZHCB
-   6qbv/qH2MbJvrQdYHPPIJsXNpiNz0cH9QfWHaU+EbUx3CzrQ+DYbPn3xT
-   E3/ap0qt6cLUgj+u/EdK+kQhOTkbstUItqjURVHjIg9abH9Et0Iy+Lmk1
-   8cobsu+QdJgqV0jbHggmduWwOcluAGnMpsK0VuSlDOJ2jhWQShjDEvSIv
-   4129OCfpe7pZljjMDx3C0HqH+SJlmpTHjYQuCKzX51PCrX5Sh8MGUgJCZ
-   3Sg6bwG0ocpMNAOG6DAlCWFKPQSd494fHEnJozUvJ3oBhQ0MBgk3V21li
+  bh=oTLfhSSlOmM92LJkqNFBzQ2K3fHxLneuG0MsPSGtmy0=;
+  b=jCKrLwaW5TGp6d0vnwLyVM9f1Hs3gCIY3lwnEcCMqkIaTLNzbNXVWrhx
+   BqCOa9EsyJZXqzn/+Ikt9J+tZDP8Fr1y+HhMjyqBOUROOK8NpKvTlcTQl
+   EqZr7H7Dd3UFXDvb0KFSxxmQz6x7a1Ca3y5aiEagM629GVO8/gmA+1uuB
+   BC9RnvP1jGxFSu015NPmHyS1ik0ImzjYDrFTlYxU0zCVViWEiLimzHV4H
+   a628vbF2FByBXi3apVy/Ggxejtm59MTL3NfhnAT83BHB+lxnwysH5MtBw
+   kJSOhRYhQnJ0sDUcKBDq+TUtucT6At4d9ZV10OP+lWAlJbVnLKqD7COgm
    g==;
-X-CSE-ConnectionGUID: 6O0PLfplQuaSooNNV6hy4Q==
-X-CSE-MsgGUID: YWP70DdhQRa6BL20R8sUdg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11721"; a="76565939"
+X-CSE-ConnectionGUID: aAFUFXWrTg+Nu4kXZno7XQ==
+X-CSE-MsgGUID: gnBLfZ/gQLaVHtZJTRwyrw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11721"; a="76565943"
 X-IronPort-AV: E=Sophos;i="6.23,105,1770624000"; 
-   d="scan'208";a="76565939"
+   d="scan'208";a="76565943"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
   by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 17:04:08 -0800
-X-CSE-ConnectionGUID: FBMnce3WTIqNwEt6qBdX3w==
-X-CSE-MsgGUID: NSaiEWrsSaivLt3guM7IWg==
+X-CSE-ConnectionGUID: +yrCuu/GSI6QofSK7FcTIw==
+X-CSE-MsgGUID: tmPMvj9KQfmWXtAEsa0ZTg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,105,1770624000"; 
-   d="scan'208";a="218329617"
+   d="scan'208";a="218329622"
 Received: from rpedgeco-desk.jf.intel.com ([10.88.27.139])
   by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 17:04:08 -0800
 From: Rick Edgecombe <rick.p.edgecombe@intel.com>
@@ -60,13 +60,10 @@ To: bp@alien8.de,
 	kai.huang@intel.com,
 	ackerleytng@google.com
 Cc: rick.p.edgecombe@intel.com,
-	vishal.l.verma@intel.com,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Sagi Shahar <sagis@google.com>,
-	Vishal Annapurve <vannapurve@google.com>
-Subject: [PATCH 1/4] x86/tdx: Move all TDX error defines into <asm/shared/tdx_errno.h>
-Date: Fri,  6 Mar 2026 17:03:55 -0800
-Message-ID: <20260307010358.819645-2-rick.p.edgecombe@intel.com>
+	vishal.l.verma@intel.com
+Subject: [PATCH 2/4] x86/virt/tdx: Pull kexec cache flush logic into arch/x86
+Date: Fri,  6 Mar 2026 17:03:56 -0800
+Message-ID: <20260307010358.819645-3-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260307010358.819645-1-rick.p.edgecombe@intel.com>
 References: <20260307010358.819645-1-rick.p.edgecombe@intel.com>
@@ -78,162 +75,127 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+KVM tries to take care of some required cache flushing earlier in the
+kexec path in order to be kind to some long standing races that can occur
+later in the operation. Until recently, VMXOFF was handled within KVM.
+Since VMX being enabled is required to make a SEAMCALL, it had the best
+per-cpu scoped operation to plug the flushing into.
 
-Today there are two separate locations where TDX error codes are defined:
-         arch/x86/include/asm/tdx.h
-         arch/x86/kvm/vmx/tdx_errno.h
+This early kexec cache flushing in KVM happens via a syscore shutdown 
+callback. Now that VMX enablement control has moved to arch/x86, which has 
+grown its own syscore shutdown callback, it no longer make sense for it to 
+live in KVM. It fits better with the TDX enablement managing code.
 
-They have some overlap that is already defined similarly. Reduce the
-duplication and prepare to introduce some helpers for these error codes in
-the central place by unifying them. Join them at:
-        asm/shared/tdx_errno.h
-...and update the headers that contained the duplicated definitions to
-include the new unified header.
+In addition, future changes will add a SEAMCALL that happens immediately
+before VMXOFF, which means the cache flush in KVM will be too late to be
+helpful. So move it to the newly added TDX arch/x86 syscore shutdown
+handler.
 
-Place the new header in "asm/shared". While the compressed code for the
-guest doesn't use these error code header definitions today, it does
-make the types of calls that return the values they define. Place the
-defines in "shared" location so that compressed code has the definitions
-accessible, but leave cleanups to use proper error codes for future
-changes.
+Since tdx_cpu_flush_cache_for_kexec() is no longer needed by KVM, make it 
+static and remove the export. Since it is also not part of an operation 
+spread across disparate components, remove the redundant comments and 
+verbose naming.
 
-Opportunistically massage some comments. Also, adjust
-_BITUL()->_BITULL() to address 32 bit build errors after the move.
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-[enhance log]
-Tested-by: Sagi Shahar <sagis@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Acked-by: Vishal Annapurve <vannapurve@google.com>
-Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 ---
- arch/x86/include/asm/shared/tdx.h             |  1 +
- .../vmx => include/asm/shared}/tdx_errno.h    | 27 +++++++++++++++----
- arch/x86/include/asm/tdx.h                    | 20 --------------
- arch/x86/kvm/vmx/tdx.h                        |  1 -
- 4 files changed, 23 insertions(+), 26 deletions(-)
- rename arch/x86/{kvm/vmx => include/asm/shared}/tdx_errno.h (65%)
+ arch/x86/include/asm/tdx.h  |  6 ------
+ arch/x86/kvm/vmx/tdx.c      | 10 ----------
+ arch/x86/virt/vmx/tdx/tdx.c | 39 +++++++++++++++++++------------------
+ 3 files changed, 20 insertions(+), 35 deletions(-)
 
-diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-index 8bc074c8d7c6..6a1646fc2b2f 100644
---- a/arch/x86/include/asm/shared/tdx.h
-+++ b/arch/x86/include/asm/shared/tdx.h
-@@ -4,6 +4,7 @@
- 
- #include <linux/bits.h>
- #include <linux/types.h>
-+#include <asm/shared/tdx_errno.h>
- 
- #define TDX_HYPERCALL_STANDARD  0
- 
-diff --git a/arch/x86/kvm/vmx/tdx_errno.h b/arch/x86/include/asm/shared/tdx_errno.h
-similarity index 65%
-rename from arch/x86/kvm/vmx/tdx_errno.h
-rename to arch/x86/include/asm/shared/tdx_errno.h
-index 6ff4672c4181..3aa74f6a6119 100644
---- a/arch/x86/kvm/vmx/tdx_errno.h
-+++ b/arch/x86/include/asm/shared/tdx_errno.h
-@@ -1,14 +1,16 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--/* architectural status code for SEAMCALL */
-+#ifndef _X86_SHARED_TDX_ERRNO_H
-+#define _X86_SHARED_TDX_ERRNO_H
- 
--#ifndef __KVM_X86_TDX_ERRNO_H
--#define __KVM_X86_TDX_ERRNO_H
-+#include <asm/trapnr.h>
- 
-+/* Upper 32 bit of the TDX error code encodes the status */
- #define TDX_SEAMCALL_STATUS_MASK		0xFFFFFFFF00000000ULL
- 
- /*
-- * TDX SEAMCALL Status Codes (returned in RAX)
-+ * TDX SEAMCALL Status Codes
-  */
-+#define TDX_SUCCESS				0ULL
- #define TDX_NON_RECOVERABLE_VCPU		0x4000000100000000ULL
- #define TDX_NON_RECOVERABLE_TD			0x4000000200000000ULL
- #define TDX_NON_RECOVERABLE_TD_NON_ACCESSIBLE	0x6000000500000000ULL
-@@ -17,6 +19,7 @@
- #define TDX_OPERAND_INVALID			0xC000010000000000ULL
- #define TDX_OPERAND_BUSY			0x8000020000000000ULL
- #define TDX_PREVIOUS_TLB_EPOCH_BUSY		0x8000020100000000ULL
-+#define TDX_RND_NO_ENTROPY			0x8000020300000000ULL
- #define TDX_PAGE_METADATA_INCORRECT		0xC000030000000000ULL
- #define TDX_VCPU_NOT_ASSOCIATED			0x8000070200000000ULL
- #define TDX_KEY_GENERATION_FAILED		0x8000080000000000ULL
-@@ -28,6 +31,20 @@
- #define TDX_EPT_ENTRY_STATE_INCORRECT		0xC0000B0D00000000ULL
- #define TDX_METADATA_FIELD_NOT_READABLE		0xC0000C0200000000ULL
- 
-+/*
-+ * SW-defined error codes.
-+ *
-+ * Bits 47:40 == 0xFF indicate Reserved status code class that never used by
-+ * TDX module.
-+ */
-+#define TDX_ERROR			_BITULL(63)
-+#define TDX_NON_RECOVERABLE		_BITULL(62)
-+#define TDX_SW_ERROR			(TDX_ERROR | GENMASK_ULL(47, 40))
-+#define TDX_SEAMCALL_VMFAILINVALID	(TDX_SW_ERROR | _ULL(0xFFFF0000))
-+
-+#define TDX_SEAMCALL_GP			(TDX_SW_ERROR | X86_TRAP_GP)
-+#define TDX_SEAMCALL_UD			(TDX_SW_ERROR | X86_TRAP_UD)
-+
- /*
-  * TDX module operand ID, appears in 31:0 part of error code as
-  * detail information
-@@ -37,4 +54,4 @@
- #define TDX_OPERAND_ID_SEPT			0x92
- #define TDX_OPERAND_ID_TD_EPOCH			0xa9
- 
--#endif /* __KVM_X86_TDX_ERRNO_H */
-+#endif /* _X86_SHARED_TDX_ERRNO_H */
 diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index a149740b24e8..0c1ae4954f17 100644
+index 0c1ae4954f17..f0826b0a512a 100644
 --- a/arch/x86/include/asm/tdx.h
 +++ b/arch/x86/include/asm/tdx.h
-@@ -12,26 +12,6 @@
- #include <asm/trapnr.h>
- #include <asm/shared/tdx.h>
+@@ -206,11 +206,5 @@ static inline const char *tdx_dump_mce_info(struct mce *m) { return NULL; }
+ static inline const struct tdx_sys_info *tdx_get_sysinfo(void) { return NULL; }
+ #endif	/* CONFIG_INTEL_TDX_HOST */
  
--/*
-- * SW-defined error codes.
-- *
-- * Bits 47:40 == 0xFF indicate Reserved status code class that never used by
-- * TDX module.
-- */
--#define TDX_ERROR			_BITUL(63)
--#define TDX_NON_RECOVERABLE		_BITUL(62)
--#define TDX_SW_ERROR			(TDX_ERROR | GENMASK_ULL(47, 40))
--#define TDX_SEAMCALL_VMFAILINVALID	(TDX_SW_ERROR | _UL(0xFFFF0000))
+-#ifdef CONFIG_KEXEC_CORE
+-void tdx_cpu_flush_cache_for_kexec(void);
+-#else
+-static inline void tdx_cpu_flush_cache_for_kexec(void) { }
+-#endif
 -
--#define TDX_SEAMCALL_GP			(TDX_SW_ERROR | X86_TRAP_GP)
--#define TDX_SEAMCALL_UD			(TDX_SW_ERROR | X86_TRAP_UD)
+ #endif /* !__ASSEMBLER__ */
+ #endif /* _ASM_X86_TDX_H */
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index b7264b533feb..50a5cfdbd33e 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -440,16 +440,6 @@ void tdx_disable_virtualization_cpu(void)
+ 		tdx_flush_vp(&arg);
+ 	}
+ 	local_irq_restore(flags);
 -
--/*
-- * TDX module SEAMCALL leaf function error codes
-- */
--#define TDX_SUCCESS		0ULL
--#define TDX_RND_NO_ENTROPY	0x8000020300000000ULL
+-	/*
+-	 * Flush cache now if kexec is possible: this is necessary to avoid
+-	 * having dirty private memory cachelines when the new kernel boots,
+-	 * but WBINVD is a relatively expensive operation and doing it during
+-	 * kexec can exacerbate races in native_stop_other_cpus().  Do it
+-	 * now, since this is a safe moment and there is going to be no more
+-	 * TDX activity on this CPU from this point on.
+-	 */
+-	tdx_cpu_flush_cache_for_kexec();
+ }
+ 
+ #define TDX_SEAMCALL_RETRIES 10000
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index cb9b3210ab71..0802d0fd18a4 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -224,8 +224,28 @@ static int tdx_offline_cpu(unsigned int cpu)
+ 	return 0;
+ }
+ 
++static void tdx_cpu_flush_cache(void)
++{
++	lockdep_assert_preemption_disabled();
++
++	if (!this_cpu_read(cache_state_incoherent))
++		return;
++
++	wbinvd();
++	this_cpu_write(cache_state_incoherent, false);
++}
++
+ static void tdx_shutdown_cpu(void *ign)
+ {
++	/*
++	 * Flush cache now if kexec is possible: this is necessary to avoid
++	 * having dirty private memory cachelines when the new kernel boots,
++	 * but WBINVD is a relatively expensive operation and doing it during
++	 * kexec can exacerbate races in native_stop_other_cpus().  Do it
++	 * now, since this is a safe moment and there is going to be no more
++	 * TDX activity on this CPU from this point on.
++	 */
++	tdx_cpu_flush_cache();
+ 	x86_virt_put_ref(X86_FEATURE_VMX);
+ }
+ 
+@@ -1920,22 +1940,3 @@ u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, struct page *page)
+ 	return seamcall(TDH_PHYMEM_PAGE_WBINVD, &args);
+ }
+ EXPORT_SYMBOL_FOR_KVM(tdh_phymem_page_wbinvd_hkid);
 -
- #ifndef __ASSEMBLER__
- 
- #include <uapi/asm/mce.h>
-diff --git a/arch/x86/kvm/vmx/tdx.h b/arch/x86/kvm/vmx/tdx.h
-index b5cd2ffb303e..ac8323a68b16 100644
---- a/arch/x86/kvm/vmx/tdx.h
-+++ b/arch/x86/kvm/vmx/tdx.h
-@@ -3,7 +3,6 @@
- #define __KVM_X86_VMX_TDX_H
- 
- #include "tdx_arch.h"
--#include "tdx_errno.h"
- 
- #ifdef CONFIG_KVM_INTEL_TDX
- #include "common.h"
+-#ifdef CONFIG_KEXEC_CORE
+-void tdx_cpu_flush_cache_for_kexec(void)
+-{
+-	lockdep_assert_preemption_disabled();
+-
+-	if (!this_cpu_read(cache_state_incoherent))
+-		return;
+-
+-	/*
+-	 * Private memory cachelines need to be clean at the time of
+-	 * kexec.  Write them back now, as the caller promises that
+-	 * there should be no more SEAMCALLs on this CPU.
+-	 */
+-	wbinvd();
+-	this_cpu_write(cache_state_incoherent, false);
+-}
+-EXPORT_SYMBOL_FOR_KVM(tdx_cpu_flush_cache_for_kexec);
+-#endif
 -- 
 2.53.0
 
