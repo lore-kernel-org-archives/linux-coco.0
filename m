@@ -1,66 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908F479CD;
-	Sat,  7 Mar 2026 13:27:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F891D5147;
+	Sun,  8 Mar 2026 10:19:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772890043; cv=none; b=blHCxBRoK7Zct3ggax7HZNzo7cFAFSSSfB8ijDM0CqsUnKtEbHJuskkT00IdhzN2+bFpdGnmorYdFQxm1/gC+gN3KfBuPledGb4veBbLE7N8h1+sr4UmavmFpsRjLdY4SRRK/8n6Lwm7EEMCtaV8o37l4w/qcKZvHx+4AednLCY=
+	t=1772965192; cv=none; b=Bb9PEFSNeWc4ozn/4fVSO1mp+Z+hQ7v+cZEq2anLXOlJU4vizq1AUfJmxuIRr3JTlQ6CTi9/R2URzyRthEAb08mhJRFIjv+DIFEXq0xsVsQFS5UFX9lN7t+kQVnd31DX+J1xKa0GV1QwFBshr+tossLIklagpsnd9FkTjcdHBKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772890043; c=relaxed/simple;
-	bh=vIvT6bQId4zPdoWRJ0P5oTpovgUsdg9ymIKV+oAiH9E=;
+	s=arc-20240116; t=1772965192; c=relaxed/simple;
+	bh=2rFD7sDu1Wtasy0MSqFkcujG/V06Q4133pzep9gFi5Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cp1V4koEYOEQywuFOhD+e9Uvzl4e4NT73cMCX0TL1xNsbEC5wt0gcp4tdJgB/ePj2mA4V+CUCLSctSxanYsBJ1rF0W27UboxUO3O91mIFxSXBLYEqwWv2KviIsHhuSRsSe45wIMHuVnhz7J72oLeUzS4/H1VaXkvqa+oy6zNL4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=anwakfsr; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=F1TvCuuLmsfooaVwNqlwz+l+HOTQgSdKMQz538ctYdHJrTQ7uSe+6FnPpaHh3zkkwluKCzXF2sW6bU0rnSJjDVdW79bvBNgXIl7S/d2RxWwHp0xBjwXbql1xTFhwD1AuKNg8bfDvoN/BPBESw72I9sCXl9aWD+PnBv01/otlwYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F2DwgKES; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="anwakfsr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772890042; x=1804426042;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vIvT6bQId4zPdoWRJ0P5oTpovgUsdg9ymIKV+oAiH9E=;
-  b=anwakfsrV2dNb5CAGHdR9FDFOz8tnrnmdKEDtXNowfJgks7oSaxeq/Kv
-   WzwJQJZf9r7mmwmcSzmrKLqBJ/LPNPa3ZPGgF9Pcn+jMFzKFv1lxy7vn2
-   iGLggCyxvqc/ssodl9ehJ9NRIzzwyE59BslUA6VaavjHxKJcfmJ/OohLN
-   9Dxj+nKlVJUEaoH0JrV5n8AgS8UYGwsnVyAopXQiIDzL1PqP9cSGTqHSr
-   S4vTyxai3Q5Rdq5bv5SIv0J0O3znEZ//3XUjsbkWcZsEVnzs0d4qf3Dxc
-   7UNmEQFc4zR95BEl7uB6V9W81pDU9pL6bK3pazJZnwZN2KLC01FyAzKLa
-   w==;
-X-CSE-ConnectionGUID: l+eYmHK9RICvNtwy+T8amA==
-X-CSE-MsgGUID: coCutW55SqibLlFb3vVOog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11722"; a="74027647"
-X-IronPort-AV: E=Sophos;i="6.23,106,1770624000"; 
-   d="scan'208";a="74027647"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2026 05:27:22 -0800
-X-CSE-ConnectionGUID: N1AucRjnT7mxrOb/Ev0EYQ==
-X-CSE-MsgGUID: bXFbXXPoTfWZKUIFR3x27w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,106,1770624000"; 
-   d="scan'208";a="219259446"
-Received: from lkp-server01.sh.intel.com (HELO 058beb05654c) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 07 Mar 2026 05:27:18 -0800
-Received: from kbuild by 058beb05654c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vyrgY-0000000021g-0eEz;
-	Sat, 07 Mar 2026 13:27:14 +0000
-Date: Sat, 7 Mar 2026 21:26:58 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alexey Makhalov <alexey.makhalov@broadcom.com>, x86@kernel.org,
-	virtualization@lists.linux.dev, bp@alien8.de, hpa@zytor.com,
-	dave.hansen@linux.intel.com, mingo@redhat.com, tglx@linutronix.de
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	ajay.kaher@broadcom.com, brennan.lamoreaux@broadcom.com,
-	bo.gan@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
-	linux-kernel@vger.kernel.org, kas@kernel.org,
-	rick.p.edgecombe@intel.com, linux-coco@lists.linux.dev,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>
-Subject: Re: [PATCH 2/4] x86/vmware: Log kmsg dump on panic
-Message-ID: <202603072123.02mytKqA-lkp@intel.com>
-References: <20260307004238.1181299-3-alexey.makhalov@broadcom.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F2DwgKES"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B329DC116C6;
+	Sun,  8 Mar 2026 10:19:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772965192;
+	bh=2rFD7sDu1Wtasy0MSqFkcujG/V06Q4133pzep9gFi5Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=F2DwgKESqYEHeq6xbQ9Y/4KnjfpT9egAUca/+6XgnSqcnIp+Laiy1Uwm+N8V9voBd
+	 fxcBXtB0ojzfBqRoHjyYn+btN53hl1eP2g+Jl3kEAF3iW/kTPJAKlqcJdjkY40fWj3
+	 BOVCrPGvleJYYxoXLHmOtzNbV7f0JY0Da4oaPUzLgTxfaDgwKlmmaF61Wrr9kkBIv/
+	 +9eat2/GKxxXdtyHMLFC0ycpvww03vxshsMyR+WyUIwUJgGYDRlp3Fc/rw0s5sAkSm
+	 +iRAx6RP4744nYEW727O46BGo4mqK33oWMhfaNBeKUFxhH4f8WJbCe/hP0cnU9rYOF
+	 QhjHbo17LHl1w==
+Date: Sun, 8 Mar 2026 12:19:48 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	iommu@lists.linux.dev, linux-media@vger.kernel.org,
+	sumit.semwal@linaro.org, benjamin.gaignard@collabora.com,
+	Brian.Starkey@arm.com, jstultz@google.com, tjmercier@google.com,
+	christian.koenig@amd.com, m.szyprowski@samsung.com,
+	robin.murphy@arm.com, jgg@ziepe.ca, sean.anderson@linux.dev,
+	ptesarik@suse.com, catalin.marinas@arm.com, aneesh.kumar@kernel.org,
+	suzuki.poulose@arm.com, steven.price@arm.com,
+	thomas.lendacky@amd.com, john.allen@amd.com, ashish.kalra@amd.com,
+	suravee.suthikulpanit@amd.com, linux-coco@lists.linux.dev
+Subject: Re: [PATCH net-next v3 1/2] dma-mapping: introduce
+ DMA_ATTR_CC_DECRYPTED for pre-decrypted memory
+Message-ID: <20260308101948.GO12611@unreal>
+References: <20260305123641.164164-1-jiri@resnulli.us>
+ <20260305123641.164164-2-jiri@resnulli.us>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -69,39 +52,52 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260307004238.1181299-3-alexey.makhalov@broadcom.com>
+In-Reply-To: <20260305123641.164164-2-jiri@resnulli.us>
 
-Hi Alexey,
+On Thu, Mar 05, 2026 at 01:36:40PM +0100, Jiri Pirko wrote:
+> From: Jiri Pirko <jiri@nvidia.com>
+> 
+> Current CC designs don't place a vIOMMU in front of untrusted devices.
+> Instead, the DMA API forces all untrusted device DMA through swiotlb
+> bounce buffers (is_swiotlb_force_bounce()) which copies data into
+> decrypted memory on behalf of the device.
+> 
+> When a caller has already arranged for the memory to be decrypted
+> via set_memory_decrypted(), the DMA API needs to know so it can map
+> directly using the unencrypted physical address rather than bounce
+> buffering. Following the pattern of DMA_ATTR_MMIO, add
+> DMA_ATTR_CC_DECRYPTED for this purpose. Like the MMIO case, only the
+> caller knows what kind of memory it has and must inform the DMA API
+> for it to work correctly.
+> 
+> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+> ---
+> v1->v2:
+> - rebased on top of recent dma-mapping-fixes
+> ---
+>  include/linux/dma-mapping.h |  6 ++++++
+>  include/trace/events/dma.h  |  3 ++-
+>  kernel/dma/direct.h         | 14 +++++++++++---
+>  3 files changed, 19 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+> index 29973baa0581..ae3d85e494ec 100644
+> --- a/include/linux/dma-mapping.h
+> +++ b/include/linux/dma-mapping.h
+> @@ -85,6 +85,12 @@
+>   * a cacheline must have this attribute for this to be considered safe.
+>   */
+>  #define DMA_ATTR_CPU_CACHE_CLEAN	(1UL << 11)
+> +/*
+> + * DMA_ATTR_CC_DECRYPTED: Indicates memory that has been explicitly decrypted
+> + * (shared) for confidential computing guests. The caller must have
+> + * called set_memory_decrypted(). A struct page is required.
+> + */
+> +#define DMA_ATTR_CC_DECRYPTED	(1UL << 12)
 
-kernel test robot noticed the following build warnings:
+While adding the new attribute is fine, I would expect additional checks in
+dma_map_phys() to ensure the attribute cannot be misused. For example,
+WARN_ON(attrs & (DMA_ATTR_CC_DECRYPTED | DMA_ATTR_MMIO)), along with a check
+that we are taking the direct path only.
 
-[auto build test WARNING on tip/master]
-[also build test WARNING on linus/master v7.0-rc2 next-20260305]
-[cannot apply to tip/x86/vmware tip/auto-latest]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Alexey-Makhalov/x86-vmware-Introduce-common-vmware_hypercall/20260307-091038
-base:   tip/master
-patch link:    https://lore.kernel.org/r/20260307004238.1181299-3-alexey.makhalov%40broadcom.com
-patch subject: [PATCH 2/4] x86/vmware: Log kmsg dump on panic
-config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260307/202603072123.02mytKqA-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260307/202603072123.02mytKqA-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603072123.02mytKqA-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> Warning: arch/x86/kernel/cpu/vmware.c:741 function parameter 'dumper' not described in 'kmsg_dumper_vmware_log'
->> Warning: arch/x86/kernel/cpu/vmware.c:741 function parameter 'detail' not described in 'kmsg_dumper_vmware_log'
->> Warning: arch/x86/kernel/cpu/vmware.c:741 function parameter 'dumper' not described in 'kmsg_dumper_vmware_log'
->> Warning: arch/x86/kernel/cpu/vmware.c:741 function parameter 'detail' not described in 'kmsg_dumper_vmware_log'
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks
