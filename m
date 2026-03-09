@@ -1,120 +1,172 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-pg1-f225.google.com (mail-pg1-f225.google.com [209.85.215.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D77301493
-	for <linux-coco@lists.linux.dev>; Mon,  9 Mar 2026 17:51:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071511A3164
+	for <linux-coco@lists.linux.dev>; Tue, 10 Mar 2026 00:17:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773078690; cv=none; b=U1BkCp0y4UFStHHeNkkTsogQxU9jxWQqRm9qeF2sAR2pNXdN7qLOo02KWTp67dqDgQM3Im+CUgZxA69my2Rs7XLtfOMyyAYBdbBxL64nOd80mtaBzP/ErxDTdB52F9Kh754plbEGVSCc9e7D2HSDHKxLA4rTln39WcoAV8+e9CY=
+	t=1773101832; cv=none; b=IzdZjWPXsH4xRpsVS0JFh8TC0O7VlohJjucfuL7mn81sxA1zaYFS0PixxuXLyFXP8sZ4m/Mzk3Udo0imMi5+RgTNoyPuYSg78AmprrBQYoyzVwP6ltG69TW0tkwkNmLugsIEP5UtHOREUZzfA8zehF/FLVA7ldrTsXyRaRPCRxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773078690; c=relaxed/simple;
-	bh=3aAI8WLDhwMQMlGaUhMuyZUWlilFZJY6aa0zFeBAhhw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nmG2azgj1V1SPE9XqA3rrnOeNLXNnYPwJnYz/U0mTIV2qx8WKmx9kNDNmeZYVz3NuoRK9dhc3g+Kvsg7qo+xGWE6bIxXpfCOq0w1YzBLGNTVTxCDxV/XErwLLq5tkX9q6rZH71Jux7MlRqJ5QG+QfO4mWRaF14lJ+T5Drub1x2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=kHgZ6TRy; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1773101832; c=relaxed/simple;
+	bh=svdA7A+dthIfmJn6H+/CYxQwZVSDdE6m1ViEhOWnzN0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=F+y4Y8ti7Yfyk4ylfcjC4PLZye1nBP2x+0uMb5e+nrBX3iCLiDAqabN8j/cNDi1CwtEznqg3hMkgrMUIUluSegTpGrcYd+TKUEl5fGiQWOMgMsRzgCTYHsNhfi0VtMH5fXobHZ+svHH/FyggHPduq8hU7oqoOWYlWYZWHkeSVRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=c4rzaiLX; arc=none smtp.client-ip=209.85.215.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="kHgZ6TRy"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-48529c325f0so22160845e9.0
-        for <linux-coco@lists.linux.dev>; Mon, 09 Mar 2026 10:51:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1773078685; x=1773683485; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ix+vqdOy5SvfTABiwCl1s7T3mrppwl4vO9UcVMmB22w=;
-        b=kHgZ6TRyDBXPzmJGXVC9t6Dk9vF74oAs0qr6bMl/2Dd1dunGcSwcWHYLnI5qEOcHs8
-         Qn9ozXkI7J/upUX+729lm0jfiC3pCHvt2o7vZly7vOtssReOWdb046HOs5dvlN3sCi7b
-         MHHMM232cetR7o7jZ12dOSWWf131zVfL8yZGOF5rJPPaXEQcVigjVuwWeivzF41AisQL
-         HGdkpmYX31dFdzmhU+MW6n8Hu5/VPzgAM+8CQaOhtWBgMsFnRiKLNVQBj0Mm6v67uQjb
-         /PRg7mDRXb13j68H8aW+VA9G5XBBICLySpjhtxaegzfTCJwiqHdEkn7xJ3HI2uXZwNr5
-         B2JQ==
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="c4rzaiLX"
+Received: by mail-pg1-f225.google.com with SMTP id 41be03b00d2f7-c73967cf77aso1565640a12.3
+        for <linux-coco@lists.linux.dev>; Mon, 09 Mar 2026 17:17:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773078685; x=1773683485;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ix+vqdOy5SvfTABiwCl1s7T3mrppwl4vO9UcVMmB22w=;
-        b=KN0LuecZ6P7Zi7mrhymVmqloR2ETaZTI2tKw2Sg4DqQ0CEcC023RyreSgwdQKhkpIm
-         RmxgHGECzNcomO7kd1XZ87TKfqBSPqxFHdqTG1P5cj6cVlXUQT5ICDNAF1m5Q3+aJgfR
-         Knb1NNA96qLheyqXF/GmFaB07g81jOJjVoiEMfZNHeYDtCGUdRBMhLnCODZ0P++ck3hD
-         cyIkh8XrkeFhP9nt1h4as49H8JBLF48nH4T7KI2wGJLt1R6vrVk8zoC/p84L472mJUbP
-         x9S6sbnw0aVxEO56iYkKf01BVcKpwH3NpEmQInvEuvNOybGXSbWOHXo6c7f9JfKdpGP5
-         mFLA==
-X-Forwarded-Encrypted: i=1; AJvYcCUQ2rkws/O3A/jOuDGLC8D96xmAC0jAGj66hparO+lOAVnrhZ69EhQlzNnIVXZfRzpOOq0tDocikcNk@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw/XpIkkL29p5hZhMv++IjaiV8HGuS3hTMn8UmzsRYLEtpy7mDo
-	hkdvjg3XpcHfvIy08Cfn1HP51cA0mXpmde85Yftv1luxX2tr7Nap/Ttwz2+YBe8nG6Q=
-X-Gm-Gg: ATEYQzxl7mc23DvNdrcfdazYse5ejTtMAJILBlIxSX53fqJM7o/agAB+Rvs074QftDM
-	fIWIgUlraYojMVH+Prb3U0p3EUc8zCJUWW2F+YcQbU+bCZwssuzHifhbzKMdL7oBW8m88ozSg8M
-	EM1giBg7moOy1G+QKaG+vbeMr+zGVRCOmJeIpqz/ubO6I8vQsIJEkQjs+oMbnhyXGtcjnoP5zb7
-	9kgA4FKgGOHZ6TdkN27qRhRg9dHMn1v6TlZtpFSbGp+16aJ6Uo/ZjrgCkwF15STJnF+rfktlxil
-	Z5DUCEfYRz9unplEvT4/Lx6jCeL6/blpyI/VjBWTrmzQmL/GlNDUnzBi77734ahjzHNe7Igqt9K
-	Hvro4VshHPKKGPGjeeSGDp2Imeudvw7RTgnzj1VQgRC3PLfY9uVpRV61r6/Ha0yaGTHxIZg4s5j
-	Qw7iUdiZLcYBDaOf7cDJE32MenwPA7YK0=
-X-Received: by 2002:a05:600c:5250:b0:485:2fe9:3375 with SMTP id 5b1f17b1804b1-4852fe93587mr147475155e9.15.1773078684896;
-        Mon, 09 Mar 2026 10:51:24 -0700 (PDT)
-Received: from FV6GYCPJ69 ([208.127.45.21])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439dadac2a7sm28642353f8f.15.2026.03.09.10.51.23
+        d=1e100.net; s=20230601; t=1773101830; x=1773706630;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GhB5D335RnTvmhxu2qGnXeGw/Xudg4Jft8uixUbp1M4=;
+        b=dYE5aY3bDdnppufaPmWBgP7aIucGcMOrwLiifZqHo+5fCYoD4Usr5YGGf7YowmOmDQ
+         iSZx8bHv4I83aryeB46MLCT9RB43QGNNSKj7ljdMzvScuAVpxJlxKVP50VsOw53FY2Vx
+         RmAqnfb2pCeHaHseV1eM6MHSa/zHDDT1Ri0z3e8FNQKD4QBmBJD3lbx/DzT1881xNvGc
+         ZJF7Wu2AeKAQuYqt/O9SBoHy8h6TTc/qrt7I3WSWeFkSmS0KpgTxqvUzq3SI8K4qSPMm
+         hbVi9P+eQUe25XPoGCBWKnB8ny4313BMnlc/fnuw+NnHJDqTLYLar4XUet/lks+Qyskr
+         VMJA==
+X-Forwarded-Encrypted: i=1; AJvYcCVjYpPpfLT9GWBEyfvCmMVJCWc7h7x3newJb+zKG9Z+mn5krddPyzm2R9YGBeya/0ZWg77NU8PeubNF@lists.linux.dev
+X-Gm-Message-State: AOJu0YzwvmnN3DGJl6iHrSZBTP0BsfLZbJ+Jwm3jmpgtLYj/Mkt/8ZJV
+	yMC40xOgwF4aslZjVlRW1WvbZk417yDcvz+EfwBEI7Y8Ul3V5K60avAd5EHPmJpCINL/WyCcMZ5
+	tTOVQF3dV5F3Gp+X86aW6W7oxmJlq2Sw4Y7z0KwgFeU5g4rN78mepCWxck8e/FDHa6A0jkEXoQ4
+	lmPn+iL6fI2r8h7KbZ1+w9Kyd75GqHUdJHWd/r0jOq1ICP2x2pAt54ppKB8yvkuMjZldeKRAuKT
+	OfjfwdHFKfrXfmvcYvI
+X-Gm-Gg: ATEYQzxB+N6ePB5Y/8I/eFXwZOU4pJXoW7L/NxEYC4uHu4/b4WEYhb72cfFkAYiAu88
+	hn9zxqNX08GBqvV6hnsUxeL34QMZIKnXsysPGxDgdbcTBsSfXaoajx6yfGpCUuAQqwJyT4nqCkK
+	LDEZokLEdhpxflhV1nLofij6KktdsCWhel1n6tF7BbSX7phg8PfYwURMvyf0jipb6v2ZUIIU426
+	T/h6iXLu66kEgJVuZD1QQiOaTpAFwEYwQLjmjV4XiFLKDebCHiYoJvqi6PVjPOK268gTGyV1new
+	WcpsKOqEQArn/jYJHX7CUZfGbZ8GJSke23s+y9PwHm7Mu0yWTDCdvKPq0XCkl/g6cD4FRrHoB9k
+	dB20u4PUvy2RvtLevgwQCYDWuNPtQWcoYTxRofkUrXNJTvrhvHi35/+CkK3JGW+mPNbv0rtg8uP
+	p6DbldOM3iuUkjuV/JNd1DfFExwFLxI9b8XxC2AnPn8emEn5HvMJ+wGwoZ4Y9M
+X-Received: by 2002:a17:902:c401:b0:2ad:9b86:ddc2 with SMTP id d9443c01a7336-2ae82455273mr133315825ad.22.1773101830185;
+        Mon, 09 Mar 2026 17:17:10 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-29.dlp.protect.broadcom.com. [144.49.247.29])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2ae83e9c69asm16830475ad.22.2026.03.09.17.17.09
+        for <linux-coco@lists.linux.dev>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 09 Mar 2026 17:17:10 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-2be21146933so10831073eec.1
+        for <linux-coco@lists.linux.dev>; Mon, 09 Mar 2026 17:17:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1773101829; x=1773706629; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GhB5D335RnTvmhxu2qGnXeGw/Xudg4Jft8uixUbp1M4=;
+        b=c4rzaiLXExn5ez5oJNwbW5gwLfdbKY8cXolAvGiybDspKguV2oGsNf/gbclyMG7Fhx
+         dwBKacWDxdE7fQ81+ypQ1mVAlUuUe9P0gJaAaoSFg31yUtQZXUEzoemtIZJYS5cfOn7v
+         XabKozt2LZZ6MuTAoRG1C1dkCJqOusyLbO0Cg=
+X-Forwarded-Encrypted: i=1; AJvYcCWSa4jUQDbLIUw5hm4/4YA3oG0PF4gIABsCkDexwz059pJqhS4ksTcTPIV4RTf262YXHUAaQoHrNW98@lists.linux.dev
+X-Received: by 2002:a05:7301:418b:b0:2bd:b102:a022 with SMTP id 5a478bee46e88-2be4e08842cmr4290764eec.27.1773101828591;
+        Mon, 09 Mar 2026 17:17:08 -0700 (PDT)
+X-Received: by 2002:a05:7301:418b:b0:2bd:b102:a022 with SMTP id 5a478bee46e88-2be4e08842cmr4290754eec.27.1773101827964;
+        Mon, 09 Mar 2026 17:17:07 -0700 (PDT)
+Received: from amakhalov-build-vm.. ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2be4f948324sm12678991eec.17.2026.03.09.17.17.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2026 10:51:24 -0700 (PDT)
-Date: Mon, 9 Mar 2026 18:51:21 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Leon Romanovsky <leon@kernel.org>, dri-devel@lists.freedesktop.org, 
-	linaro-mm-sig@lists.linaro.org, iommu@lists.linux.dev, linux-media@vger.kernel.org, 
-	sumit.semwal@linaro.org, benjamin.gaignard@collabora.com, Brian.Starkey@arm.com, 
-	jstultz@google.com, tjmercier@google.com, christian.koenig@amd.com, 
-	m.szyprowski@samsung.com, robin.murphy@arm.com, sean.anderson@linux.dev, ptesarik@suse.com, 
-	catalin.marinas@arm.com, aneesh.kumar@kernel.org, suzuki.poulose@arm.com, 
-	steven.price@arm.com, thomas.lendacky@amd.com, john.allen@amd.com, 
-	ashish.kalra@amd.com, suravee.suthikulpanit@amd.com, linux-coco@lists.linux.dev
-Subject: Re: [PATCH net-next v3 1/2] dma-mapping: introduce
- DMA_ATTR_CC_DECRYPTED for pre-decrypted memory
-Message-ID: <phry3e2dtgxzxdqvrnqfuskangp4al64f2auithwme5kwkgepe@7qtftrhgv4l7>
-References: <20260305123641.164164-1-jiri@resnulli.us>
- <20260305123641.164164-2-jiri@resnulli.us>
- <20260308101948.GO12611@unreal>
- <20260309131530.GJ1687929@ziepe.ca>
- <20260309140233.GW12611@unreal>
- <20260309151857.GO1687929@ziepe.ca>
+        Mon, 09 Mar 2026 17:17:07 -0700 (PDT)
+From: Alexey Makhalov <alexey.makhalov@broadcom.com>
+To: x86@kernel.org,
+	virtualization@lists.linux.dev,
+	bp@alien8.de,
+	hpa@zytor.com,
+	dave.hansen@linux.intel.com,
+	mingo@redhat.com,
+	tglx@linutronix.de
+Cc: ajay.kaher@broadcom.com,
+	brennan.lamoreaux@broadcom.com,
+	bo.gan@broadcom.com,
+	bcm-kernel-feedback-list@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	kas@kernel.org,
+	rick.p.edgecombe@intel.com,
+	linux-coco@lists.linux.dev,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>
+Subject: [PATCH v2 0/4] x86/vmware: Hypercall refactoring and improved guest support
+Date: Mon,  9 Mar 2026 23:52:46 +0000
+Message-ID: <20260309235250.2611115-1-alexey.makhalov@broadcom.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20260307004238.1181299-1-alexey.makhalov@broadcom.com>
+References: <20260307004238.1181299-1-alexey.makhalov@broadcom.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260309151857.GO1687929@ziepe.ca>
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Mon, Mar 09, 2026 at 04:18:57PM +0100, jgg@ziepe.ca wrote:
->On Mon, Mar 09, 2026 at 04:02:33PM +0200, Leon Romanovsky wrote:
->> On Mon, Mar 09, 2026 at 10:15:30AM -0300, Jason Gunthorpe wrote:
->> > On Sun, Mar 08, 2026 at 12:19:48PM +0200, Leon Romanovsky wrote:
->> > 
->> > > > +/*
->> > > > + * DMA_ATTR_CC_DECRYPTED: Indicates memory that has been explicitly decrypted
->> > > > + * (shared) for confidential computing guests. The caller must have
->> > > > + * called set_memory_decrypted(). A struct page is required.
->> > > > + */
->> > > > +#define DMA_ATTR_CC_DECRYPTED	(1UL << 12)
->> > > 
->> > > While adding the new attribute is fine, I would expect additional checks in
->> > > dma_map_phys() to ensure the attribute cannot be misused. For example,
->> > > WARN_ON(attrs & (DMA_ATTR_CC_DECRYPTED | DMA_ATTR_MMIO)), along with a check
->> > > that we are taking the direct path only.
->> > 
->> > DECRYPYED and MMIO is something that needs to work, VFIO (inside a
->> > TVM) should be using that combination.
->> 
->> So this sentence "A struct page is required" from the comment above is
->> not accurate.
->
->It would be clearer to say "Unless DMA_ATTR_MMIO is provided a struct
->page is required"
->
->We need to audit if that works properly, IIRC it does, but I don't
->remember.. Jiri?
+This series improves VMware guest support on x86 by refactoring the
+hypercall infrastructure and adding better crash diagnostics, along
+with encrypted guest support for the steal time clock.
 
-How can you do set_memory_decrypted if you don't have page/folio ?
+The first patch introduces a common vmware_hypercall() backend selected
+via static calls. It consolidates the existing hypercall mechanisms
+(backdoor, VMCALL/VMMCALL, and TDX) behind a single interface and
+selects the optimal implementation at boot. This reduces duplication
+and simplifies future extensions.
+
+Building on top of the new hypercall infrastructure, the next two
+patches improve post-mortem debugging of VMware guests. They export
+panic information to the hypervisor by dumping kernel messages to the
+VM vmware.log on the host and explicitly reporting guest crash event
+to the hypervisor.
+
+The final patch adds support for encrypted guests by ensuring that the
+shared memory used for the steal time clock is mapped as decrypted
+before being shared with the hypervisor. This enables steal time
+accounting to function correctly when guest memory encryption is
+enabled.
+
+Patch overview:
+
+1. x86/vmware: Introduce common vmware_hypercall
+
+   * Consolidate hypercall implementations behind a common API
+   * Select backend via static_call at boot
+
+2. x86/vmware: Log kmsg dump on panic
+
+   * Register a kmsg dumper
+   * Export panic logs to the host
+
+3. x86/vmware: Report guest crash to the hypervisor
+
+   * Register a panic notifier
+   * Notify the hypervisor about guest crashes
+
+4. x86/vmware: Support steal time clock for encrypted guests
+
+   * Mark shared steal time memory as decrypted early in boot
+
+
+Changelog:
+
+V1 -> V2
+   * Fix compilation warnings in patch 2 "x86/vmware: Log kmsg dump on panic"
+     reported by kernel test robot <lkp@intel.com>
+
+
+Alexey Makhalov (4):
+  x86/vmware: Introduce common vmware_hypercall()
+  x86/vmware: Log kmsg dump on panic
+  x86/vmware: Report guest crash to the hypervisor
+  x86/vmware: Support steal time clock for encrypted guests
+
+ arch/x86/include/asm/vmware.h | 276 ++++++++------------
+ arch/x86/kernel/cpu/vmware.c  | 470 +++++++++++++++++++++++++---------
+ 2 files changed, 463 insertions(+), 283 deletions(-)
+
+
+base-commit: 7d08a6ad25f85c9bb7d0382142838cb54713f1a3
+-- 
+2.43.7
 
