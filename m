@@ -1,71 +1,141 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0193F33B974;
-	Tue, 10 Mar 2026 17:10:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773162615; cv=none; b=O2KyWwOBWFr27zlvUrJNwnFwKrTWagFg2pPQSelOs9Gy2DSTy3daha0xNMz7Sbx1V8eH9S1yLHgnzgoOr+TbkTpCplz7fPyxJM/3cDRPuVIG2n0Fo7rYOnOl0dQRG0o3OdMUM1GXlxDdREiYg1d5rZb6KukA2f4ief41M2+IvIg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773162615; c=relaxed/simple;
-	bh=r7lCt6kJbI/2c4eHVow8TmaKDrAdUOvtgdZVXMj8U2Q=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=oSgyVGq+AHVoi64Xevw2bB3Hyd5xM3PNusKtyILIVX4gPoO4JeHC+k81GCHLRB4C80qSLr7Tq+qZOWDyf3GvPtOuUEvuhIvrsXQV4nY4OnFBxomFVoo2RCWToAzPC2b3KZc4w85XMjiuMry8l4LyQt6c6lwBe439Kaf4lzxWMlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=p7oephA/; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="p7oephA/"
-Received: from 8bytes.org (p200300f6af1d9600b43a1b46c831cc21.dip0.t-ipconnect.de [IPv6:2003:f6:af1d:9600:b43a:1b46:c831:cc21])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 9AB7B1A4BBE;
-	Tue, 10 Mar 2026 18:10:07 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1773162607;
-	bh=r7lCt6kJbI/2c4eHVow8TmaKDrAdUOvtgdZVXMj8U2Q=;
-	h=Date:From:To:Subject:From;
-	b=p7oephA/CdC/gQxQt8tVOXvpRa01X3NAjjd968ignuv9jSqoabA1aHo9/v+eDmVsc
-	 7/+Q/ZXObbfy6gw/hdSWy76Tl7BlUTOZ3lZKlDLM+4Vyx3FnjU1WsRL6fAKiU50xBk
-	 SgP918uxTbHpz63pb1YRvJcu9FDbK+XWuac8DrhRQ1fCnxgDwxlCjNT4t4zaX37ywZ
-	 SMUJQ3IfIdXJAgZRBBiuhX3Oa0f6HYCb6G46CABOOJzqpCaOE7MavuofbCNR/D8+Nd
-	 KHf9vjrZBKxlfsK/O3hIgGEbv5noMOHZEO43hpIP+BQUPmz5FLGoDEl1gJ43ocJn6S
-	 e1bwOiz0/hvCw==
-Date: Tue, 10 Mar 2026 18:10:06 +0100
-From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
-To: coconut-svsm@lists.linux.dev, linux-coco@lists.linux.dev
-Subject: SVSM Development Call March 11, 2026
-Message-ID: <ete4u42tzmawocptkhibgkv6tgg7rlqcpncdutnk36qtpdejcz@cxhur5ib7dzz>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BAC3B8926
+	for <linux-coco@lists.linux.dev>; Tue, 10 Mar 2026 18:58:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773169118; cv=none; b=NUsWAqS/aZQSt/fgOWBJheDw2uKfqxV/Io5JGyGqEVoq5d5kps0sxtz+jkjFmV/FBgnqv52LebtCSKguAbvnng+hWOJqoG49xaVk++Q/cXeHqbB04Zl5qypYT++QCKIhxwP1C4trv6nfF0yy/oz2oRiqwTuTD5wUu26fkMCMVlI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773169118; c=relaxed/simple;
+	bh=81CV99lNlV4J5277gW3fDZjdxnK5AWBgeJX1oceDRck=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hpucFyfoP+G6of+p5CzEcbKevVbAWLeuDr0GIzKhEvjDr6GMuMMWp8hQDOGNkOlXw/ELbb9dfXFbdwGofuyUOOsCFfWmBTlYy2/iSsAu8DmHzSWoCLUqxMhfoSJmWj6UymUKFn5KdAeV06xwGLNIHAFRH74LM6Tui/Blc+VNgxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FkN0XsAs; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FkN0XsAs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773169115; x=1804705115;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=81CV99lNlV4J5277gW3fDZjdxnK5AWBgeJX1oceDRck=;
+  b=FkN0XsAsM7TPb5U+j+HsB7D+eCrj4aQ6CMEy7ZHDT6eAHKyrcLpt+kza
+   MsOAbaHBIYWC2Clf7lNnbNAknMp83G3+YPgSFOklPOvOMAME+kl63fccG
+   F+DOqNEzKr3xxu4nBuC5XWVocBR2Cmp3EyTObTNcF41SOuMIAHRRfSN+P
+   5cIe+KVJ4zc+5O8RhrMzF8giSIC/HiQp4sUu4SQhaIsszOrWfipClIKr0
+   NLNiJ56OO/R19bLrJ7E60V5wVbFIfn0Mn5w8PD9zZ2uFBW/rEXLfUn7EV
+   O3meu9f6RqFgRKvWvzsAfMVIozNCMLYLUoWiOlSzmpibV0/e35qQ24AIu
+   g==;
+X-CSE-ConnectionGUID: qN6ne3dYSHCrpWcBeVjEVg==
+X-CSE-MsgGUID: O8wvvLT9RrSdKcKjnzRXpw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="91612436"
+X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; 
+   d="scan'208";a="91612436"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 11:58:34 -0700
+X-CSE-ConnectionGUID: 25foagyRT22nwTHS2Epupw==
+X-CSE-MsgGUID: uMwr1lC9Q4KVq/pQOhbdlw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; 
+   d="scan'208";a="224393587"
+Received: from soc-pf446t5c.clients.intel.com (HELO [10.24.81.126]) ([10.24.81.126])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 11:58:33 -0700
+Message-ID: <1d06d750-f846-49a3-8555-d315b0e2cabd@linux.intel.com>
+Date: Tue, 10 Mar 2026 11:58:34 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] virt: tdx-guest: Optimize the get-quote polling
+ interval time
+To: "Miao, Jun" <jun.miao@intel.com>, "kas@kernel.org" <kas@kernel.org>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260211085801.4036464-1-jun.miao@intel.com>
+ <20260211085801.4036464-2-jun.miao@intel.com>
+ <1cc137df-0940-4eb4-b7c3-2e5e8948d9f5@linux.intel.com>
+ <PH7PR11MB8455A677E5BB797F9074E1EC9A76A@PH7PR11MB8455.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <PH7PR11MB8455A677E5BB797F9074E1EC9A76A@PH7PR11MB8455.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi,
+Hi Jun,
 
-Here is the call for agenda items for this weeks SVSM development call.  Please
-send any agenda items you have in mind as a reply to this email or raise them
-in the meeting.
+On 2/21/2026 6:17 PM, Miao, Jun wrote:
+>> On 2/11/2026 12:58 AM, Jun Miao wrote:
+>>> The TD guest sends TDREPORT to the TD Quoting Enclave via a vsock or a
+>>> tdvmcall. In general, vsock is indeed much faster than tdvmcall, and
+>>> Quote requests usually take a few millisecond to complete rather than
+>>> seconds based on actual measurements.
+>>>
+>>> The following get quote time via tdvmcall were obtained on the GNR:
+>>>
+>>> | msleep_interruptible(time)     | 1s       | 5ms      | 1ms        |
+>>> | ------------------------------ | -------- | -------- | ---------- |
+>>> | Duration                       | 1.004 s  | 1.005 s  | 1.036 s    |
+>>> | Total(Get Quote)               | 167      | 142      | 167        |
+>>> | Success:                       | 167      | 142      | 167        |
+>>> | Failure:                       | 0        | 0        | 0          |
+>>> | Avg total / 1s                 | 0.97     | 141.31   | 166.35     |
+>>> | Avg success / 1s               | 0.97     | 141.31   | 166.35     |
+>>> | Avg total / 1s / thread        | 0.97     | 141.31   | 166.35     |
+>>> | Avg success / 1s / thread      | 0.97     | 141.31   | 166.35     |
+>>> | Min elapsed_time               | 1025.95ms| 6.85 ms  | 2.99 ms    |
+>>> | Max elapsed_time               | 1025.95ms| 10.93 ms | 10.76 ms   |
+>>>
+>>
+>> Thanks for sharing the data!
+>>
+>>> According to trace analysis, the typical execution tdvmcall get the
+>>> quote time is 4 ms. Therefore, 5 ms is a reasonable balance between
+>>> performance efficiency and CPU overhead.
+>>
+>> Since the average is 4 ms, why choose 5ms?
+>>
+>>>
+>>> And compared to the previous throughput of one request per second, the
+>>> current 5ms can get 142 requests per second delivers a 142Ã—
+>>> performance improvement, which is critical for high-frequency use
+>>> cases without vsock.
+>>
+>> Is this addressing a real customer issue or a theoretical improvement?
+> 
+> Hi Kuppuswamy,
+> 
+> From the customer issue, the more detail "Test Report"
+> [PATCH 0/1] [Test Report] get qutoe time via tdvmcall
+> [Background]
+> Currently, many mobile device vendors (such as OPPO and Xiaomi) use TDVM for security management.
+> Each mobile terminal must perform remote attestation before it can access the TDVM confidential container.
+> As a result, there are a large number of remote attestation get-quote requests, especially in cases where vsock 
+> is not configured or misconfigured and cannot be used.
+> 
 
-There is one item on the agenda so far:
+Thanks for the details.
 
-	- IGVM-Measure discussion
+Since it's a real issue, I'm fine with updating the polling interval to 5ms. 
+Given that deployed QEs respond fast, we should also reduce the maximum wait 
+time to 2 seconds (from 30 seconds) to fail faster on errors.
 
-We will use the LF Zoom instance. Details of the meeting  can be found in our
-governance repository at:
+You can use read_poll_timeout() from <linux/iopoll.h> to simplify the 
+timeout handling instead of manual loop counters.
 
-	https://github.com/coconut-svsm/governance
+That said, polling with fixed intervals doesn't scale well since QE response 
+times vary by implementation. The proper long-term solution is still an 
+interrupt-based approach to eliminate the polling overhead entirely.
 
-The link to the COCONUT-SVSM calendar is:
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
 
-	https://zoom-lfx.platform.linuxfoundation.org/meetings/coconut-svsm?view=week
-
-The meeting will be recorded and the recording eventually published.
-
-Regards,
-
-	Jörg
