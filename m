@@ -1,45 +1,46 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011043.outbound.protection.outlook.com [52.101.62.43])
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012009.outbound.protection.outlook.com [52.101.53.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583FB30BB9B
-	for <linux-coco@lists.linux.dev>; Wed, 11 Mar 2026 13:06:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6462FFDE1
+	for <linux-coco@lists.linux.dev>; Wed, 11 Mar 2026 13:06:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.9
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773234393; cv=fail; b=eFyenxN7jX2/6tjozOkwUhxnqoOsuj6EWvSoaWVUIt1Gz3FXsqubG1TR2mn5YxY6RV/uGAQcIJOAQwhDY/JQGwA6tSVYV7Psp/+oL9v7RkYZaEfe65pQzkw5G84ppwG8CzbIvXLLQOm86W1j6aWjaoPsg4UvKCs2W/q2s3ycIPM=
+	t=1773234404; cv=fail; b=mG2+k4LTzO/5DBw5zXE+/vx2vIrGwtrXdsClQ9Kl5rw7LkXURZXpYxseO5+jht4oDv3fbQpTi8T58Tpp5tJ7D/dtrREQ0o7nwlOppy49JU7jkcmjvqabQkscOSpAPXNUWBE0vg5ZbvC4vc522AOjAtoMN+QD7e+Ua7M4QlgK5rY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773234393; c=relaxed/simple;
-	bh=Xq9tBR3Qeq1+H/LLxaLjPiZA+BciW8QAljriTrrUAQY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=p0ouGYA4Wlrx5+lSv+Oen1LiwNuO3OP8nbcdeEOat1ojmFJsUNMzgRmcSffwww8bH0CEj4X75jIw6vQQ4dDir4RtQVYTjXXyVW/z/sZQM1Cj4esUYjBLNnMecbCFQ/YOTvcNfpcAuj+WcvVLwmrpY1X//qoiIQuKIGWhHSJrr4U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=t1lSt6tu; arc=fail smtp.client-ip=52.101.62.43
+	s=arc-20240116; t=1773234404; c=relaxed/simple;
+	bh=55hDm+85cz5T37kZZnXiO3N+aUVNMyjspgABGPOXxCc=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KmPEG6Ocq7MLl+BWAZEVEba7JMe0vNUHWtV566X6CpYOKlgGMVz+21PpGJf5jRNwDGHvpD6gU0PLpXowmw2i/Q44HCcMQU/UbGEpHIK9TgeFQ+Ioly9vug4i3iaLk9LOqiDLAOGvZ2xfVxsJdkBMFivRvssqKqaalTtRMJJ3IKc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=4ch9dQ3U; arc=fail smtp.client-ip=52.101.53.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="t1lSt6tu"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="4ch9dQ3U"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mB6UcnCnn8jvixNe6VdPEDGy2EGEVL/nF0biCMJbCWml/gfGP5UN5uACB+InoSmifU56K8hybRAioKHEXj+j/kpr4q9lRNG9M4x7Y7I7AToBZXnmtQPNjEgU/q+FBSOv8ooLFSHwXZXbLE+jlf0KqtOYgItkW9qrMU09gaCWlNiqHz1H8btjg5ACFwPIM297YnNNl7r1k8paYfU3s89LRM1iTGL9iiDV/o6UQe+YLL0Ij68adFg31KWwsLA7CTCoa29efSQeEpmaxEwzIK9WQMrL/ilkOQXlR7qNidl6mYlPf+WXJW2lbP360wyrFy/ZJ+VLv5Al3xxteLOM82EPmg==
+ b=eIn/w2w2wrhjMTSBLFzLem5f31y7lHrPg9gA0oCHMYt/dvihGdnYhSEPYuoOOlQ8wxJyxT6a0dVqg2oL494qC9Hyg+tuqZ4JWy7rcnPec/DK9602kELhs7g7OMkfZAyuP9khF+BHG8m7nJy26QYrWJHoZQWyLo11PGudu+HQ5ZwJUCNbwE8yOEW3ULbEPmywX6ug5N3qhlZmLc2RwnJEdPeYoYw71O8JKT8L8dUn0R2I94MNARNoQUlhoNE4ybz6KI65QHXm/nXQOGw3VI0z6dirCd5/1RvzNzrwxskej3zxdyCiUp3e+Gv2goGNR1by1XM61bwWIHmRUoBoFDjJlA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LqF8hqsk1aJr3lFs9kLZIWpplMkP7VSZjRWIaLVZKAc=;
- b=sJSjDhR4I9+jQ+hx1VanQ8ev2lRJwFkA63BuhayMJqOKnhexT3YqrC/asn0UJZztbNkBJ5wLs8sYcWKXaWpnTHwx2/YrP4r8Z6hePA4IvityimiRadDg72DLVPGXZrCGqmkhXxLKte0cbBHtouVr0ij1Id3dvQyasOosJ7Z0VF4WJ9CUoce3ToNhRbzLqGpx1tvqVeNOuClFGW2N4dAl9bbevth64s9cjMbeNXrZKsSYneOyqmIXO8cpb6xZcqEOrl/o687SZvLOwdfXwTJRBOjPGbRgOAMmogQu+ThGq2lk2TNNtMPbKJVLrSRhg04vKWa+DV3QRK2ysubVkBQKnw==
+ bh=oMIP0WdmGv0vGnKZx5wkU20a/hGDhwpaLJlv7eDuzS0=;
+ b=BSChhpQEbK7RhzdZ0P+3QosBvSdKX+DREkE/4LP1TNG0z5gu2McmpgmbRcf9LSpILfuEb5uciDrVPIfk67st+L7Jt+YIO8a5T3c+Rz445gMlzoVSXnCR7Q9j+/C7pAM9GEUB692G2u+z5A3wrvVYQm2HH1uJiJVdJicp0BKtfGZLcaDpadMeObXS8uXP2JbSIvxfPfZyqafT13J0IkIoBYrdFUEKsJV63gJdwYyswzRqD3KGutdzWPK8dL/BMvUzc11JRdQpxxgwXS/tSN/FBe/fXfZc0mu8Iav7kxDOxXzWh8EOM/sNR2mmvDrK0b+kQbY9kcfyFXcKWxrofQAiYg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LqF8hqsk1aJr3lFs9kLZIWpplMkP7VSZjRWIaLVZKAc=;
- b=t1lSt6tuScrBUReCzG7/lJKS1bxKsWjyAWisj8LGsDH1O+BeVBUbRsSsMwJG1NSaic6pUCMHZ0OGENvdRZnSykOkCIt5JyZjxESZ5fqWRF2uLRrHvHHtYiJrG8Gjmd4WHZ+U61UhgqhSiWMTyyx08NVZ/GZ/SwYFHcTMrt8RDxY=
-Received: from BL1PR13CA0025.namprd13.prod.outlook.com (2603:10b6:208:256::30)
- by DS0PR12MB6606.namprd12.prod.outlook.com (2603:10b6:8:d2::20) with
+ bh=oMIP0WdmGv0vGnKZx5wkU20a/hGDhwpaLJlv7eDuzS0=;
+ b=4ch9dQ3UIab3g6yFkt4jE0AS8Ax2PwEmGh1EwmfUEI4q9BIcK3Whpg8L1JNGo9yNmfayJGNt0ktd65SU2dOAccMnbUbcJA9rtcUH+8KFK6I1PR9vOdnqscTrKJbqmwdYGAvSIC9PwZBk6UNnCIwSS/wm/oO0EKlnwHIufP8XRFg=
+Received: from BN0PR04CA0066.namprd04.prod.outlook.com (2603:10b6:408:ea::11)
+ by SA3PR12MB7952.namprd12.prod.outlook.com (2603:10b6:806:316::6) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Wed, 11 Mar
- 2026 13:06:23 +0000
-Received: from BN1PEPF0000468B.namprd05.prod.outlook.com
- (2603:10b6:208:256:cafe::ba) by BL1PR13CA0025.outlook.office365.com
- (2603:10b6:208:256::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.25 via Frontend Transport; Wed,
- 11 Mar 2026 13:06:23 +0000
+ 2026 13:06:35 +0000
+Received: from BN1PEPF0000468E.namprd05.prod.outlook.com
+ (2603:10b6:408:ea:cafe::ab) by BN0PR04CA0066.outlook.office365.com
+ (2603:10b6:408:ea::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.26 via Frontend Transport; Wed,
+ 11 Mar 2026 13:06:08 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -47,13 +48,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BN1PEPF0000468B.mail.protection.outlook.com (10.167.243.136) with Microsoft
+ BN1PEPF0000468E.mail.protection.outlook.com (10.167.243.139) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9678.18 via Frontend Transport; Wed, 11 Mar 2026 13:06:22 +0000
+ 15.20.9678.18 via Frontend Transport; Wed, 11 Mar 2026 13:06:35 +0000
 Received: from gaul.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 11 Mar
- 2026 08:06:21 -0500
+ 2026 08:06:33 -0500
 From: Kim Phillips <kim.phillips@amd.com>
 To: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
 	<linux-coco@lists.linux.dev>, <x86@kernel.org>
@@ -63,11 +64,13 @@ CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
  Roth" <michael.roth@amd.com>, Borislav Petkov <borislav.petkov@amd.com>,
 	Borislav Petkov <bp@alien8.de>, Naveen Rao <naveen.rao@amd.com>, David Kaplan
 	<david.kaplan@amd.com>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, "Kim
- Phillips" <kim.phillips@amd.com>
-Subject: [PATCH v2 0/3] KVM: SEV: Add support for BTB Isolation
-Date: Wed, 11 Mar 2026 08:06:08 -0500
-Message-ID: <20260311130611.2201214-1-kim.phillips@amd.com>
+ Phillips" <kim.phillips@amd.com>, <stable@kernel.org>
+Subject: [PATCH v2 1/3] cpu/bugs: Allow forcing Automatic IBRS with SNP enabled using spectre_v2=eibrs
+Date: Wed, 11 Mar 2026 08:06:09 -0500
+Message-ID: <20260311130611.2201214-2-kim.phillips@amd.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260311130611.2201214-1-kim.phillips@amd.com>
+References: <20260311130611.2201214-1-kim.phillips@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -80,84 +83,108 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF0000468B:EE_|DS0PR12MB6606:EE_
-X-MS-Office365-Filtering-Correlation-Id: b19bd280-3181-4772-f824-08de7f6efea2
+X-MS-TrafficTypeDiagnostic: BN1PEPF0000468E:EE_|SA3PR12MB7952:EE_
+X-MS-Office365-Filtering-Correlation-Id: 65ea5731-d5eb-4b52-591d-08de7f6f0646
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|36860700016|1800799024|56012099003|18002099003|13003099007;
+	BCL:0;ARA:13230040|1800799024|36860700016|82310400026|376014|13003099007|22082099003|56012099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	VtGYETefPUXzZE0vJ2+8rRaEcEuKoqZH8yvc2kTWyZxI8F4EOqGcTOWNYDflehxPXEH46wjDKIdU32HiA1eNvvEWcF6XLL1jUijHMC5EudRci4oH0sE05HBqx/7h9BV+kZD31H6lVR0TNDwoWKfKSLfs5tw7Krr4uHDYFo5hhC0n4wqd41kKY3pOPT+6JdEzxEhUi3Vm1oRhrJz4Ji5p5zq8idiUrI3LBBwmD+dR+CVMrtz7kbfFjyfAHRq0R2ZGoNWbwxNGWDfan8xKXQ6IlPMi5RclMq/FrKw8TNnO6/Iv6uJF92RuMmJcj8CTTID3x35wgP04Uo9eXRPBEWCY2f6+H4NhFtZlJDFTp6BGzVMjA41RCkl1QGIX41KKn8pVgNoV+X68iu0EI/egRdcdH7RCHenGMPJvxpx0tS2Rh8nXPDQcLYgatGpPp8A3+vbokne+syf9CqIg4BDkPC9iSk8fj2Gre3g34fpB3VcpqHc+b61waEJ2y3uTZwAqaZhtjTLHPSDkLkotRaPaMLngg82tJ7poHpL5ZyHs4sPYD3zyjz6qtChcTyFij/zXtymjqHEbK6UwX5qJOQ7pj6JKp5FFy8Z1Z0py0wuhWiHwaQZYTd2LkrBRYwJWLz5k/0PSl3OnlI6tFbEhy/ttFLZJkuZiTRYXiPKhStaLamlP/j5m8QDHwiioP7C40f5uaW7nDPkjztZqUlNJzEk/oPxjNt94bNjcYQ9PZe+n3yNYHjY=
+	bg1w0rCqeZ6eeI2cNcLLUIjD8mGDtK1H3o0TPDKYK0NIw9oiK8937hmvEBn2WyQswnCOspNTzC3LT0abGZQdi4yr45zRx1cx+uLE/cAy/ECalMrk06mOEr3kfOsFxM+nemea4bfix3sCK4fbYa1nPCTcu8M3NPSbbR9qemDDCU9SH7LUJDqKaQoO8w0VJNlA7KeUYCpiDAjY0N3Xp5P5aVdXMU3aFTKHzAlfM+les4EFwXIfPNWhf6ycqqDZnzl5An20C98irad4W4XOUj/Drfh8Yoffon6XAdqbLUoBZz8fXRyhxiaFP491mrKh87+aR94ScTbmVIBPyMDuPej+vFJWFGAi6KOAaCs1fflPAwCfeDe/qB11OcznU2x+fhBpkshhqdJcZ3jW/Nc3JM4omMU7SPuRS0hLkucNiehkk0aGEL7w9D1lzeYvxCFNT57mkP0/N6xcZD0IUk3lCoeMrY53yIIxYFHA/kuOfjzpHNODeg4dw/Yn/lfak4SoBXQwKdTvF7uLmLXEPjKkNxFA0C45eIQK0HBq9MTtSZ+NtX3nh1EA9OwQUZrkJ3riW9bLv85xbjufjmmKvO66cMJ0N8zMkuUGSwUFbpnQbv9PekveT8PgizFLUSkCApBNHKvXip/S7mrelPP/jNS4c1MOByIgWnPRT0Q3FOcgHhOBIICFSU4r9rzNwbI08UsL+BS1n/WDAJr3Z7eWMnUx7fE7wOiezzfxQcqjCWEaoLF+caMCKJyPb6+w8bx206RHsPPea9942tKTmu+tK9qa+XAyzw==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700016)(1800799024)(56012099003)(18002099003)(13003099007);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(82310400026)(376014)(13003099007)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	YIxwTvjOGzyDtQ/qPTjl31qYQh5OfcYQhoUbUVLYyRaHcsg3M5idWH0Q1zJvb2peb7khEKh0lzWIk9XQmxZRhICLscEaz0/ETPXXXNSWdBAT4ALH/6CdF2HNBKfVrD9v/oYCKdQF1vJmL4D8epIfEZBgS6e6E0xQTxR4BQCBieAh2KjJ8qftHARYBBiagWXdot+aoKHmP4HpDuYaqzHnX+vI5HCO9wne/ozqyPesh7tcIJF20YF7vrv8kL8wFXdDFzOFABleFEoY9GvnvGSV4beZdN8KwRYYNmGfmDNVp6hczov4Vc7uJPLozioXCuudGLRi5UmDeJbfMLBreEzLMSJQ/BEP2yqcbIeerxaOeQx3MILIwuzkj7tvjZCKzC5XvPxmC7RLdNoI3WSaHF9E7iW2GA18OpBY4ebiqgFa2zqtf6bEDGC6/z9D5pJL/MJ+
+	y9zd8t07F+IZ/ow9d8pqM88k1qdaNqJSIWwhzYP7Kp/R1Jl1GfkkaOfP/WVNMKzR/1ZPwpIXBN/NFA/0kfxK3WU3lbchsSasoKoEd1W2S7VLHEiLC3XHcv0sqnYIQJBXAD/AU/DRyeTewzg6z0YRA3xNwRD7OPwDXacyLGxtqN3EMbc85+o/h98dN0DRj+I/hXZ1IwlpVJ4kLh54aBu/jxpzWjTMF3sSFsBy504wh4M01yqQKSL5p1NPq88jfqnbrhV346jat6FzmImIAfOeF7M05lfxOoCAtTPdcdv2LGttZOt+gOD/lw2g3xzEOBe4XywrTbkonbfhto6uNO2qB4/2p79EdebtzHoXgqYEhJXH/3ZzJKkN/qkzWvKeFqviWFrjJqapY+MY6FGiPFyUbMW9A2WMau/jThZ9zCeFR70g5+zPy8u+b4JUv05e6TnD
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2026 13:06:22.8011
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2026 13:06:35.6124
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b19bd280-3181-4772-f824-08de7f6efea2
+X-MS-Exchange-CrossTenant-Network-Message-Id: 65ea5731-d5eb-4b52-591d-08de7f6f0646
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF0000468B.namprd05.prod.outlook.com
+	BN1PEPF0000468E.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6606
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7952
 
-This feature ensures SNP guest Branch Target Buffers (BTBs) are not
-affected by context outside that guest.
+To allow this, do the SNP check in spectre_v2_select_mitigation()
+processing instead of the original commit's implementation in
+cpu_set_bug_bits().
 
-The first patch fixes a longstanding bug where users weren't able
-to force Automatic IBRS on SNP enabled machines using spectre_v2=eibrs.
+Since SPECTRE_V2_CMD_AUTO logic falls through to SPECTRE_V2_CMD_FORCE,
+double-check if SPECTRE_V2_CMD_FORCE is used before allowing
+SPECTRE_V2_EIBRS with SNP enabled.
 
-The second patch fixes another longstanding bug where users couldn't
-select legacy / toggling SPEC_CTRL[IBRS] on AMD systems.  Users of
-the BTB Isolation feature may use IBRS to mitigate possible
-performance degradation caused by BTB Isolation.
+Also mute SPECTRE_V2_IBRS_PERF_MSG if SNP is enabled on an AutoIBRS
+capable machine, since, in that case, the message doesn't apply.
 
-The third patch adds support for the feature by adding it to the
-supported features bitmask.
-
-Based on tip/master, currently 7726ce228780.
-https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git
-
-This series also available here:
-
-https://github.com/AMDESE/linux/tree/btb-isol-latest
-
-Advance qemu bits (to add btb-isol=on/off switch) available here:
-
-https://github.com/AMDESE/qemu/tree/btb-isol-latest
-
-Qemu bits will be posted upstream once kernel bits are merged.
-They depend on Naveen Rao's "target/i386: SEV: Add support for
-enabling VMSA SEV features":
-
-https://lore.kernel.org/qemu-devel/cover.1761648149.git.naveen@kernel.org/
-
+Fixes: acaa4b5c4c85 ("x86/speculation: Do not enable Automatic IBRS if SEV-SNP is enabled")
+Reported-by: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@kernel.org
+Signed-off-by: Kim Phillips <kim.phillips@amd.com>
+---
 v2:
- - Patch 1/3:
-   - Address Dave Hansen's comment to adhere to using the IBRS_ENHANCED
-     Intel feature flag also for AutoIBRS.
+ - Address Dave Hansen's comment to adhere to using the IBRS_ENHANCED
+   Intel feature flag also for AutoIBRS.
 
 v1:
- https://lore.kernel.org/kvm/20260224180157.725159-1-kim.phillips@amd.com/
+ https://lore.kernel.org/kvm/20260224180157.725159-2-kim.phillips@amd.com/
 
-Kim Phillips (3):
-  cpu/bugs: Allow forcing Automatic IBRS with SNP enabled using
-    spectre_v2=eibrs
-  cpu/bugs: Allow spectre_v2=ibrs on x86 vendors other than Intel
-  KVM: SEV: Add support for SNP BTB Isolation
-
- arch/x86/include/asm/svm.h   |  1 +
- arch/x86/kernel/cpu/bugs.c   | 19 +++++++++++--------
+ arch/x86/kernel/cpu/bugs.c   | 12 ++++++++++--
  arch/x86/kernel/cpu/common.c |  6 +-----
- arch/x86/kvm/svm/sev.c       |  3 +++
- 4 files changed, 16 insertions(+), 13 deletions(-)
+ 2 files changed, 11 insertions(+), 7 deletions(-)
 
-
-base-commit: 7726ce2287804e70b2bf2fc00f104530b603d3f3
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 83f51cab0b1e..957e0df38d90 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -2181,7 +2181,14 @@ static void __init spectre_v2_select_mitigation(void)
+ 			break;
+ 		fallthrough;
+ 	case SPECTRE_V2_CMD_FORCE:
+-		if (boot_cpu_has(X86_FEATURE_IBRS_ENHANCED)) {
++		/*
++		 * Unless forced, don't use AutoIBRS when SNP is enabled
++		 * because it degrades host userspace indirect branch performance.
++		 */
++		if (boot_cpu_has(X86_FEATURE_IBRS_ENHANCED) &&
++		    (!boot_cpu_has(X86_FEATURE_SEV_SNP) ||
++		     (boot_cpu_has(X86_FEATURE_SEV_SNP) &&
++		      spectre_v2_cmd == SPECTRE_V2_CMD_FORCE))) {
+ 			spectre_v2_enabled = SPECTRE_V2_EIBRS;
+ 			break;
+ 		}
+@@ -2261,7 +2268,8 @@ static void __init spectre_v2_apply_mitigation(void)
+ 
+ 	case SPECTRE_V2_IBRS:
+ 		setup_force_cpu_cap(X86_FEATURE_KERNEL_IBRS);
+-		if (boot_cpu_has(X86_FEATURE_IBRS_ENHANCED))
++		if (boot_cpu_has(X86_FEATURE_IBRS_ENHANCED) &&
++		    !boot_cpu_has(X86_FEATURE_SEV_SNP))
+ 			pr_warn(SPECTRE_V2_IBRS_PERF_MSG);
+ 		break;
+ 
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index bb937bc4b00f..5aff1424a27d 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1486,13 +1486,9 @@ static void __init cpu_set_bug_bits(struct cpuinfo_x86 *c)
+ 	/*
+ 	 * AMD's AutoIBRS is equivalent to Intel's eIBRS - use the Intel feature
+ 	 * flag and protect from vendor-specific bugs via the whitelist.
+-	 *
+-	 * Don't use AutoIBRS when SNP is enabled because it degrades host
+-	 * userspace indirect branch performance.
+ 	 */
+ 	if ((x86_arch_cap_msr & ARCH_CAP_IBRS_ALL) ||
+-	    (cpu_has(c, X86_FEATURE_AUTOIBRS) &&
+-	     !cpu_feature_enabled(X86_FEATURE_SEV_SNP))) {
++	    cpu_has(c, X86_FEATURE_AUTOIBRS)) {
+ 		setup_force_cpu_cap(X86_FEATURE_IBRS_ENHANCED);
+ 		if (!cpu_matches(cpu_vuln_whitelist, NO_EIBRS_PBRSB) &&
+ 		    !(x86_arch_cap_msr & ARCH_CAP_PBRSB_NO))
 -- 
 2.43.0
 
