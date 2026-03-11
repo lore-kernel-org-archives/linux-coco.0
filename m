@@ -1,139 +1,158 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D1B2E1F06
-	for <linux-coco@lists.linux.dev>; Wed, 11 Mar 2026 13:31:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373943314D0
+	for <linux-coco@lists.linux.dev>; Wed, 11 Mar 2026 14:15:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773235869; cv=none; b=tX5MnfAHZbFR1+/NILa9U0mhmv4bUw3smwK+Xu3IAnd6B8J5FWfHA+HLNTft1h3QIIGCv4aYwndjRaCWRth1bqpbHUK0AUZr+CkZ+0+UYR99C5RGIfL43g+5m+0bDfY3ig0TgvRJltCQyesqgBmvVu91t/KbLT5Seg4+bTTFy9o=
+	t=1773238522; cv=none; b=VYgrj5oT1MKUlRDU25VnI8q7VVLzdW+FJzp/e7nIHUOBDml93lRj64qgbsRxR8a2CysEAIgOxhTXHNnnphdQGAx0VANHNXRh/C1buRKFd8IskmK/4jx+TDb1qEDDbpG62yJGlLywi8Qfr1u/9w1uqAStIwdARcdO0CQV26OGAtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773235869; c=relaxed/simple;
-	bh=/ZCHNQR0K/KHtlF/tI4c3P2/31qh0EwZ5OC2MqCjQzo=;
+	s=arc-20240116; t=1773238522; c=relaxed/simple;
+	bh=IRdQHaIGsdSoCBH5B0OHZNEfWZFitkLqXLSqpnGZeHg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=EnH3KS2cNZmvpXxC1PvNu8ZmFL3uJtbWfGY9kr3pGmvRAzPn1Kd5J86at2vnWLfhzA/gTO896kqgifXX5sPQJipfzPrdG14ovBPTNPUEvu903ZpTOdrf4lX/nXBmFL26CoDYmZF6sCg1arrNBjfV1C2xrdrKnGoWdFPO0rL/JHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WiEV5gDO; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=RhN/NBASG86zWb5Wyqz4PY5XP5iBKAGpeRI8O3OsXF/5m4HJTcLpgahiL421TB44Y8lQWRW+klFRbw20WrAsVAgRA9h6Bfuxp8ddDg/ekp6mZl5gKFtTiCjyeBb6LDh0jHkDYVQtW0Q6hWYiR6woOe3/G+b7LDZJLr5nQUBSC+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j6MuX/rf; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WiEV5gDO"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c738662b963so4564453a12.0
-        for <linux-coco@lists.linux.dev>; Wed, 11 Mar 2026 06:31:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="j6MuX/rf"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ae4e9577ceso537537475ad.1
+        for <linux-coco@lists.linux.dev>; Wed, 11 Mar 2026 07:15:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773235866; x=1773840666; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GZLhg+7nDQkz8+/rpm0J7Hm6SsaOjD5Jd9IV860eNcY=;
-        b=WiEV5gDOEcsljmAcCN80OFSRBheU6TcBoPiF/xijYn3tdrb2NcHuvTrc0UtlX4AlpK
-         pxG6TezzRE+7mkBQYciOZNBc+CbnDbmGgg1S743IV/VFMtMxO/OcO5RW68ifANT6lEqJ
-         6V7ija+TAVRVbDAVmNO0GzBUqkVPAS3b3kbgrzLsTp0HJN5ooixSLqdIciS1Kghp3ObN
-         5SZCQQR1IfJBilh9+8BMdow1OYmZE8YWsbKV2zh6efw+gVodQTl94j1xJW15jRnXQCpF
-         s/MZxgUt/5HlBRUqPyfCEd7CXRsNNJzypJ6N4ZYgaxOcqN56N7vLSI2Q3fRKeoc3dVlv
-         OVbw==
+        d=google.com; s=20230601; t=1773238519; x=1773843319; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=32AGf21pa1XHN25iothH4Nfw6LkakhGMZaNhl2RKfBU=;
+        b=j6MuX/rfeLktSTIWwIPc/jtow7iw1YRiSEjsqtOzWBTDsb/BhB3DjIy8frb1ysDwQN
+         2NPHhb5RFYtEU1TJrAgg5u2lowfIXhzSbgkTfUi44dDRyvFSgmiIQNgBDW/fWbcfW0H1
+         Mybr8PSxNOIUMHJUzTEt+7M8/Si3BDLftfxOWgQMTHGZJMOWPHVLoSm7OwW9WeiRLDiT
+         UWTCh9lU7/V/YttXyWvkRqa1ey2X3XMjxXctQNMqjGgxJxkZjM2ZzszyZy9nAd5OVGs5
+         mHHldS5+KStNfrLEIYkK0IMDKmpqHHCzuE0Wlk2nj9ZC4wyZx3JTZLawSqfmfrF6IxtM
+         RVMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773235866; x=1773840666;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=GZLhg+7nDQkz8+/rpm0J7Hm6SsaOjD5Jd9IV860eNcY=;
-        b=Wn0wWm5eGsX/sQnMdOHdW2hRwnXeu147bszXHve3CTrm+ggCOvg78BeqmlQHzhhS2i
-         l4/NgYGEZDxH9WmWDdlhyo106W//c3Ti15PKnMBqJr46+8O3pu5iHj+lQ3+cY3MQf0AR
-         07Dk5b074bCiot5M+15ubLJ7n5+1AQ/opupNKwW7B61SKQyuJUw/CniqFqFO1BgRyT+/
-         xUNn6A3EHPpPLPhiW+gw7PaCTtVHvCzU1rUnDLv8MDJbtllYVu8YlJXnUUlVlgpmQ9bv
-         JLwoLxUsSeCw4mtH+37pdzxpVdzHtKtFx5tQHS8ecvRtmwTbY0HmU9kn+6k/7dyzUSIv
-         T83w==
-X-Forwarded-Encrypted: i=1; AJvYcCUXjxZdOigApWZ1T49NrYl31DfHH0xnjhUreymip4RCrnO+aJfKNoEccvKtCADtBiO1BnrZKgzmkaD4@lists.linux.dev
-X-Gm-Message-State: AOJu0YyHAnIOTLXq8H6KK7oCs8bBiLe37k2bXhhEdwPKB/WfX8foThpH
-	zzrtmb+QTKtpmhKUxJ1pW1QmhpwLTPHbPf6u62Mw4VXfn+N6n5SJmAiB8n6kjv/UgGznKd2cgv2
-	HvQx5qQ==
-X-Received: from pgjc17.prod.google.com ([2002:a63:d151:0:b0:c70:ab5b:1db6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:a94:b0:398:9bb1:ad07
- with SMTP id adf61e73a8af0-398c5f3d48cmr2534716637.22.1773235865707; Wed, 11
- Mar 2026 06:31:05 -0700 (PDT)
-Date: Wed, 11 Mar 2026 06:31:03 -0700
-In-Reply-To: <CAO9r8zNBEOJrxbx8ob2KRLRKkd_aZjz8tyXGqXxs0=TJq4fU6Q@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1773238519; x=1773843319;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=32AGf21pa1XHN25iothH4Nfw6LkakhGMZaNhl2RKfBU=;
+        b=JA1yVzu9UtK4zhPbY2wx+nqj1eUt4I0sp2HL0yzi2TCXt+T5PcooXUxas7pd9iewUx
+         Tpfblwbeu3hdqAkUfxdRTEUKyQr0NzPkUxS25iUEivX03486AKoAGnzAjgN5ERZlIUNs
+         /6pyl1pUnGkyDV6N/S6QUELvrHPG5blaxMGKMy+zFd82yG4n3GF9+RHc0kOPdI9mBCW9
+         SR/NDpwXh1mXXovB9LJY+T2KaAKS4VRKS9kBclmZSBekTBWPUuDswXjnpo+0Qf6x618L
+         RjaHtPA4BGMPrDjo3Ce4bfxCt37NyT7uisoirNiHCngZAonZ+WnhiHNT/QWRuzb5qN7q
+         eBlg==
+X-Forwarded-Encrypted: i=1; AJvYcCUkW85WLNRsn7I+2sBwxvaL11Cs/mYxycrWv913eQcSghO8GObkfdvq52C/DpEmnSwCJJ+rkGw68S+t@lists.linux.dev
+X-Gm-Message-State: AOJu0YzswLdo97SCUWAHM/8Cl93dKtePRqjMBUpwSILKFKmhsgWTro9/
+	oEWmrKGqaM2IisFl6d6iA9eljhjeaoEZNne1bDprStBESBrooAzLTN/EVZv1mixSYQX0Ol4DS/A
+	6dH3nsA==
+X-Received: from plbld3.prod.google.com ([2002:a17:902:fac3:b0:2ae:4b5c:a2a0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2a86:b0:2ae:7fbd:3dcd
+ with SMTP id d9443c01a7336-2aeae8ffae8mr30306955ad.52.1773238519493; Wed, 11
+ Mar 2026 07:15:19 -0700 (PDT)
+Date: Wed, 11 Mar 2026 07:15:18 -0700
+In-Reply-To: <20260311130611.2201214-4-kim.phillips@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <20260311003346.2626238-1-seanjc@google.com> <20260311003346.2626238-5-seanjc@google.com>
- <CAO9r8zNBEOJrxbx8ob2KRLRKkd_aZjz8tyXGqXxs0=TJq4fU6Q@mail.gmail.com>
-Message-ID: <abFulxXuRziXj039@google.com>
-Subject: Re: [PATCH 4/7] KVM: x86: Add wrapper APIs to reset dirty/available
- register masks
+References: <20260311130611.2201214-1-kim.phillips@amd.com> <20260311130611.2201214-4-kim.phillips@amd.com>
+Message-ID: <abF49hzCdFsMNJNs@google.com>
+Subject: Re: [PATCH v2 3/3] KVM: SEV: Add support for SNP BTB Isolation
 From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, kvm@vger.kernel.org, 
-	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	"Chang S . Bae" <chang.seok.bae@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Kim Phillips <kim.phillips@amd.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, x86@kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+	Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, Borislav Petkov <borislav.petkov@amd.com>, 
+	Borislav Petkov <bp@alien8.de>, Naveen Rao <naveen.rao@amd.com>, David Kaplan <david.kaplan@amd.com>, 
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Mar 10, 2026, Yosry Ahmed wrote:
-> On Tue, Mar 10, 2026 at 5:34=E2=80=AFPM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> >
-> > Add wrappers for setting regs_{avail,dirty} in anticipation of turning =
-the
-> > fields into proper bitmaps, at which point direct writes won't work so
-> > well.
-> >
-> > Deliberately leave the initialization in kvm_arch_vcpu_create() as-is,
-> > because the regs_avail logic in particular is special in that it's the =
-one
-> > and only place where KVM marks eagerly synchronized registers as availa=
-ble.
-> >
-> > No functional change intended.
-> >
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > ---
-> >  arch/x86/kvm/kvm_cache_regs.h | 19 +++++++++++++++++++
-> >  arch/x86/kvm/svm/svm.c        |  4 ++--
-> >  arch/x86/kvm/vmx/nested.c     |  4 ++--
-> >  arch/x86/kvm/vmx/tdx.c        |  2 +-
-> >  arch/x86/kvm/vmx/vmx.c        |  4 ++--
-> >  5 files changed, 26 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/arch/x86/kvm/kvm_cache_regs.h b/arch/x86/kvm/kvm_cache_reg=
-s.h
-> > index ac1f9867a234..94e31cf38cb8 100644
-> > --- a/arch/x86/kvm/kvm_cache_regs.h
-> > +++ b/arch/x86/kvm/kvm_cache_regs.h
-> > @@ -105,6 +105,25 @@ static __always_inline bool kvm_register_test_and_=
-mark_available(struct kvm_vcpu
-> >         return arch___test_and_set_bit(reg, (unsigned long *)&vcpu->arc=
-h.regs_avail);
-> >  }
-> >
-> > +static __always_inline void kvm_reset_available_registers(struct kvm_v=
-cpu *vcpu,
-> > +                                                         u32 available=
-_mask)
->=20
-> Not closely following this series and don't know this code well, but
-> this API is very confusing for me tbh. Especially in comparison with
-> kvm_reset_dirty_registers().
->=20
-> Maybe rename this to kvm_clear_available_registers(), and pass in a
-> "clear_mask", then reverse the polarity:
->=20
-> vcpu->arch.regs_avail &=3D ~clear_mask;
+On Wed, Mar 11, 2026, Kim Phillips wrote:
+> This feature ensures SNP guest Branch Target Buffers (BTBs) are not
+> affected by context outside that guest.  CPU hardware tracks each
+> guest's BTB entries and can flush the BTB if it has been determined
+> to be contaminated with any prediction information originating outside
+> the particular guest's context.
+> 
+> To mitigate possible performance penalties incurred by these flushes,
+> it is recommended that the hypervisor run with SPEC_CTRL[IBRS] set.
+> Note that using Automatic IBRS is not an equivalent option here, since
+> it behaves differently when SEV-SNP is active.  See commit acaa4b5c4c85
+> ("x86/speculation: Do not enable Automatic IBRS if SEV-SNP is enabled")
+> for more details.
+> 
+> Indicate support for BTB Isolation in sev_supported_vmsa_features,
+> bit 7.
 
-Oh, yeah, I can do something like that.  I originally misread the TDX code =
-and
-thought it was explicitly setting regs_avail, and so came up with a roundab=
-out
-name.  I didn't revisit the naming or the polarity of the param once I real=
-ized
-all callers could use the same scheme.
+This isn't very useful for the changelog.  I can read the patch quite easily.
 
-No small part of me is tempted to turn it into a straigh "set" though, unle=
-ss I'm
-missing something, the whole &=3D business is an implementation quirk.
+What would be useful is a description of the change in conversational language,
+and an explanation of why it is the correct change.  E.g. (not really, but you
+get the idea)
 
-> Most callers are already passing in an inverse of a mask, so might as
-> well pass the mask as-is and invert it here, and it helps make the
-> name clear, we're passing in a bitmask to clear from regs_avail.
+  Advertise support for BTB Ioslation via SEV_VMSA_FEATURES when SNP is
+  enabled, as all hardware that supports SNP also support BTB Isolation.
+  BTB Isolation is an optional feature that can be enabled by the guest to
+  sprinkle fairy dust on the CPU to completely prevent all speculative
+  execution attacks.
+
+> SNP-active guests can enable (BTB) Isolation through SEV_Status
+> bit 9 (SNPBTBIsolation).
+
+That's not what the doc says:
+
+  SNP-active guests may choose to enable the Branch Target Buffer Isolation
+  mode through SEV_FEATURES bit 7 (BTBIsolation).
+
+> For more info,> refer to page 615, Section 15.36.17 "Side-Channel
+> Protection", AMD64 Architecture Programmer's Manual Volume 2: System
+> Programming Part 2, Pub. 24593 Rev. 3.42 - March 2024 (see Link).
+> 
+> Link: https://bugzilla.kernel.org/attachment.cgi?id=306250
+> Signed-off-by: Kim Phillips <kim.phillips@amd.com>
+> ---
+> v2: No changes
+> v1: https://lore.kernel.org/kvm/20260224180157.725159-4-kim.phillips@amd.com/
+> 
+>  arch/x86/include/asm/svm.h | 1 +
+>  arch/x86/kvm/svm/sev.c     | 3 +++
+>  2 files changed, 4 insertions(+)
+> 
+> diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
+> index edde36097ddc..2038461c1316 100644
+> --- a/arch/x86/include/asm/svm.h
+> +++ b/arch/x86/include/asm/svm.h
+> @@ -305,6 +305,7 @@ static_assert((X2AVIC_4K_MAX_PHYSICAL_ID & AVIC_PHYSICAL_MAX_INDEX_MASK) == X2AV
+>  #define SVM_SEV_FEAT_RESTRICTED_INJECTION		BIT(3)
+>  #define SVM_SEV_FEAT_ALTERNATE_INJECTION		BIT(4)
+>  #define SVM_SEV_FEAT_DEBUG_SWAP				BIT(5)
+> +#define SVM_SEV_FEAT_BTB_ISOLATION			BIT(7)
+>  #define SVM_SEV_FEAT_SECURE_TSC				BIT(9)
+>  
+>  #define VMCB_ALLOWED_SEV_FEATURES_VALID			BIT_ULL(63)
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 3f9c1aa39a0a..ac29cf47dd08 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -3167,6 +3167,9 @@ void __init sev_hardware_setup(void)
+>  
+>  	if (sev_snp_enabled && tsc_khz && cpu_feature_enabled(X86_FEATURE_SNP_SECURE_TSC))
+>  		sev_supported_vmsa_features |= SVM_SEV_FEAT_SECURE_TSC;
+> +
+> +	if (sev_snp_enabled)
+
+If BTB_ISOLATION is actually supported on *all* SNP hardware, then that needs to
+be called out.  Please also separate this from the core kernel changes, unless
+there is some dependency on them.  And if there _is_ a dependency, call that out.
+
+Ugh, I'm getting deja vu.  I suspect I had a long response typed out for v1 of
+this patch, and rebooted my system before actually sending it.
+
+Oh wait, no, you just made the same mistakes in two different patches.  Please
+revist https://lore.kernel.org/all/aaWog_UjW-M3412C@google.com.
+
+In general, spamming patches without internalizing the feedback makes for grumpy
+maintainers.
