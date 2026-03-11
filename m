@@ -1,49 +1,49 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522DB2C1593
-	for <linux-coco@lists.linux.dev>; Wed, 11 Mar 2026 18:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B4E221FCD
+	for <linux-coco@lists.linux.dev>; Wed, 11 Mar 2026 18:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773254819; cv=none; b=cxfGCOvwVMyy+bXiSc+jhy0QLxRG0K03L0wCJ60KEjBjf6bWvGa2C0TwfZXyZF3EiKFc4KcYW6Z6PqVOb2RaLv2mf/lz2e3zakWqljp1OW/WYS5cWSEpRTYRr+JwWfemt8QZ4gupRew01KKoUD5/YLTbTaZolQdcm2H77eX1aK0=
+	t=1773255059; cv=none; b=GMWAmtZpwfvzFy2if6pGLNN06yvn2yejRMpCIHj4Z6Zho5wrvO0lWOF2ohallhzhhH5e9DhXbRShX6ivl5s0shKWlNvjy31yHhAycQ02sDX4WXZ9G9ysBHExfg0ABBhWfU3YkBR661PLL9a+G5B/E4pfG45LXkMLBuz/Z2Y8c2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773254819; c=relaxed/simple;
-	bh=Iw2qScVqNJWSdZjRj9Ns9nJ9JwvAF0ZGqlGxvR23R0E=;
+	s=arc-20240116; t=1773255059; c=relaxed/simple;
+	bh=Te4eI0knPeiotE2hZEjwgv+MSdfSyh85QDbwl4FRJWU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kJoi5fww8f2tbWC+4JyI60WhhtdaaM80+u77Vwkzg1KQCwsU024AQgrqBBa14QJj34ImPUtnBiIM9cKNGUoAXxSVmu/FK7DU0+grGl3hD/dDPMffsZJ7oj7gmKXPKj95qDvUx1764haRUIQphUtKLLRIQCiCCJpzkbuNYbcF1a4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HQlyKs2v; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=RS3Xq4uzzrf1Xp4lE47TJt4RdMkeiEYdyrPxvpKzZkfLsswBtes+2qmsM9fD0TSlPcbvtYfVx7J+ALF6YV+FWmWK7JbqyqPSZhdKwWrw6e2A1WElOnpBVwsy4ir1FhwvZyR4RR07sHKgp9+lLWuJ6xM85l3D66V3vaGukMxJAH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=G5F/fIgQ; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HQlyKs2v"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="G5F/fIgQ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773254817;
+	s=mimecast20190719; t=1773255057;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=/pkEHB5uOFLCM0434mgJGXFNBapXANy5qIwNdAs9qQk=;
-	b=HQlyKs2v5d7ejd1pFsgDyBlZXPHwmKDE9QTDQ9O0av4eXCdOC3Tz0rCHKI4HKyX9HPQklE
-	AMbJZ7ouaK6xUDCJOaEZNAFcF/COgsjXuBhsUu3X77sr3v9rEbrNK2yqxcoMlOYelsCV3y
-	yDUEJJLgIo5hIdk6zBBnhAYSDqRrQrY=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=F7AROcK70CW6XJ2dTy6Mf7xNWM6FalWRhqSf6kMBPFI=;
+	b=G5F/fIgQ4ZTOpdjH3hNNYenW9QEIkm9W61SC8vAhCeh1JU2LDOq0e9ssSoNIZXC4i28KXj
+	/qFS/r6axk8CjqhqYcr7SWMSeeHjILQcWe+zCcbeT5t9Ubq+4K0XtTe48NxpbboEYX7oP7
+	qtLndm5v0Cs2qUwF2GbtlgTnLhBy1YM=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-185-ju4yT5yOMeeqzWhzb7KmRQ-1; Wed,
- 11 Mar 2026 14:46:51 -0400
-X-MC-Unique: ju4yT5yOMeeqzWhzb7KmRQ-1
-X-Mimecast-MFC-AGG-ID: ju4yT5yOMeeqzWhzb7KmRQ_1773254810
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-133-c7JVzJo7P42rwCjUcTU5QA-1; Wed,
+ 11 Mar 2026 14:50:55 -0400
+X-MC-Unique: c7JVzJo7P42rwCjUcTU5QA-1
+X-Mimecast-MFC-AGG-ID: c7JVzJo7P42rwCjUcTU5QA_1773255054
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 084521956080;
-	Wed, 11 Mar 2026 18:46:50 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0550B195605C;
+	Wed, 11 Mar 2026 18:50:54 +0000 (UTC)
 Received: from [10.44.32.138] (unknown [10.44.32.138])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9424A30002D2;
-	Wed, 11 Mar 2026 18:46:47 +0000 (UTC)
-Message-ID: <b9d6d345-32ac-498d-8da9-bb8cca386413@redhat.com>
-Date: Wed, 11 Mar 2026 19:46:46 +0100
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8EADF1956095;
+	Wed, 11 Mar 2026 18:50:51 +0000 (UTC)
+Message-ID: <c117141f-61da-4572-98ea-7a8a79eb5bab@redhat.com>
+Date: Wed, 11 Mar 2026 19:50:49 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -51,13 +51,16 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/7] KVM: x86: Drop the "EX" part of "EXREG" to avoid
- collision with APX
-To: Sean Christopherson <seanjc@google.com>, Kiryl Shutsemau <kas@kernel.org>
-Cc: kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, "Chang S . Bae" <chang.seok.bae@intel.com>
+Subject: Re: [PATCH 4/7] KVM: x86: Add wrapper APIs to reset dirty/available
+ register masks
+To: Sean Christopherson <seanjc@google.com>, Yosry Ahmed <yosry@kernel.org>
+Cc: Kiryl Shutsemau <kas@kernel.org>, kvm@vger.kernel.org, x86@kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ "Chang S . Bae" <chang.seok.bae@intel.com>
 References: <20260311003346.2626238-1-seanjc@google.com>
- <20260311003346.2626238-3-seanjc@google.com>
+ <20260311003346.2626238-5-seanjc@google.com>
+ <CAO9r8zNBEOJrxbx8ob2KRLRKkd_aZjz8tyXGqXxs0=TJq4fU6Q@mail.gmail.com>
+ <abFulxXuRziXj039@google.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
 Autocrypt: addr=pbonzini@redhat.com; keydata=
  xsEhBFRCcBIBDqDGsz4K0zZun3jh+U6Z9wNGLKQ0kSFyjN38gMqU1SfP+TUNQepFHb/Gc0E2
@@ -94,23 +97,33 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
  dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
  b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <20260311003346.2626238-3-seanjc@google.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: F7pWZpBTTbNi8UrwbZdEYVsLYea7ToA5GgamAekKG1g_1773254810
+In-Reply-To: <abFulxXuRziXj039@google.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-MFC-PROC-ID: UJP90XPnJDb5MRweCN-5FgaaHf1z-eZQ8EyG0MedjZU_1773255054
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 3/11/26 01:33, Sean Christopherson wrote:
-> Now that NR_VCPU_REGS is no longer a thing, drop the "EX" is for
-> extended (or maybe extra?") prefix from non-GRP registers to avoid a
-> collision with APX (Advanced Performance Extensions), which adds:
+On 3/11/26 14:31, Sean Christopherson wrote:
+>> Not closely following this series and don't know this code well, but
+>> this API is very confusing for me tbh. Especially in comparison with
+>> kvm_reset_dirty_registers().
+>>
+>> Maybe rename this to kvm_clear_available_registers(), and pass in a
+>> "clear_mask", then reverse the polarity:
+>>
+>> vcpu->arch.regs_avail &= ~clear_mask;
+> Oh, yeah, I can do something like that.  I originally misread the TDX code and
+> thought it was explicitly setting regs_avail, and so came up with a roundabout
+> name.  I didn't revisit the naming or the polarity of the param once I realized
+> all callers could use the same scheme.
 > 
->    16 additional general-purpose registers (GPRs) R16–R31, also referred
->    to as Extended GPRs (EGPRs)  in this document;
+> No small part of me is tempted to turn it into a straigh "set" though, unless I'm
+> missing something, the whole &= business is an implementation quirk.
 
-And also, now that RIP is effectively an EXREG.
+I like kvm_clear_available_registers() for this + removing the second 
+argument completely for kvm_reset_dirty_registers().
 
 Paolo
 
