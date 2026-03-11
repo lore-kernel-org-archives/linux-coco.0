@@ -1,228 +1,281 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44D67261A
-	for <linux-coco@lists.linux.dev>; Wed, 11 Mar 2026 12:24:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773231885; cv=none; b=RL5QhmgGYwsdsIbQ8yECCkzlLMp+GGL9CzGe4z9K9riP13YUOuusQl8b8UzuWDJIemWQvSZ14Y4huwl32tYO62IJJwjnbKzMcrsCwn/9SY2tijEX09HGqe5luWt6z7SSVMTKc52ZFKhitT/B213tNfJozwq+xNKpCS9Sc1jIkgo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773231885; c=relaxed/simple;
-	bh=rmLt2Zd1Svv94StO58JTVqPThQKGl0ZJLa2inCyuhrU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QII/twkp4GfrzO4MszNxyNXqQ/tfRjiysV/joyqI3q4KBH102Z2QPao7r2vJj6ujxVR3Gd215WRHHCshSgrRMxLY6llwQuXbod6AvWOp+moyiO5s3xaLN0LP2dPuvJGQmvP4M8kR8TIhBjPdNrtwzier+SM1qpH+byAKLTpQax0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cyQuYyu5; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09FFA27587D
+	for <linux-coco@lists.linux.dev>; Wed, 11 Mar 2026 12:50:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773233442; cv=fail; b=RcPrqMNdOmATXxiIZ3HWa72Txo1LwqJhano5nyv1Ays/B/hHdmAxctq6TsDelWsqcYcL/pwchehnLTsOt8XeHKYnJXsB1N3eCiCSeWQoTBKSzdguUQo1lnIjSW0zm2NWe3uq9CfuwPbHl9Waw/44zbpEAl1rz+pUNbm43vRma14=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773233442; c=relaxed/simple;
+	bh=6FXCwEl9oQCwrc+bKvYcR5a49jsgOtrOnlMBdsMo0jY=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=HzmDLv3vy8JyHrne9YHo2IcoJNPY9Bv3Q8ViIWdbKWAm6aMmj66uqDAm8y/eP0P9ppYBWaR9ZgCzrsfo37L0LVOZobCbu2EIbLxmvW8JyFOYJd4IPZ4qNqXivihekL5ovUnEEB1XPSImsIQQ9Il3K9PAzPywokcHYfdiRMkGxLA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SV2ymDsJ; arc=fail smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cyQuYyu5"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4852ef20fe8so61035e9.1
-        for <linux-coco@lists.linux.dev>; Wed, 11 Mar 2026 05:24:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773231879; x=1773836679; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HeBGnYAajUaTqEiFUt5o86dxRkDw0LV7oFcPjSzEHkE=;
-        b=cyQuYyu5kLlcMxnAsDBJAMr8mhXw/5+Ae/rpwPXMwxw9TV6x8G167xEBF4xmfSUwPT
-         Yn+YBPeOO78HFsyxXYd6vj3DLb9eisHvSnWfWK7IOyHipMKU8eCr6kXyqqHV775xZKQx
-         B7DibYnmcq1cH67LDrZzV0b/k5uhDP72Obim2mCKo4EsqaZyWUrhP+TLi6+LPJmwVGxJ
-         gGeeNLkDzOot+7pea3+KFbN5SOjetkB/qS+4AfgkS7qAaEdBAq4GvwjxNBKHzWi29Mw2
-         i8sqRd61O6GfKG+O/fY6GopBl9OSEJMqjXt5dyc0f7vJcc+U9JorzdwQKCd9RVHTfv2m
-         7v4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773231879; x=1773836679;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HeBGnYAajUaTqEiFUt5o86dxRkDw0LV7oFcPjSzEHkE=;
-        b=Nwwcy9p9Hf1Ote4XdX+6sSBoJMUmcq/OFbX7n2WptQxup3U2PwkO6woAY44t+nm5cD
-         ekGImRs6POtEARsQk9lNSY19RD9kpgWO1smruwbdqKigbsl4gEJgBTQu9iRQznIuimq+
-         +0Rw//W0S8LRrWaJlhd2DSX5HjQPpGAR3EfqPpwh27UUJNLbxySwK3mvJPJrq1rznYsO
-         c4Sk2GqNeINx12h9h1ddk3UzMCS1zC2gdUf0193E3sFQ8Pql6ed3zNdrdLoLfrVTFe+h
-         MmCOZthu/KaB7ZfeB9m/PpiNPd9WKOCKnzGoP7Gi8Rj+2vc9P0bS4KB7km2zyFu8k3em
-         Zi7A==
-X-Forwarded-Encrypted: i=1; AJvYcCV4KS8xLmE8fmhdY9ouplscUiThjwKk7Z/EjFrxqYLSyMuldOgolKcdFS/JL61gkXBpFk4REI6nghQ/@lists.linux.dev
-X-Gm-Message-State: AOJu0YxxdqY9MMSKyI1NDZDW0lkIH0smGJFeOKRpflEjDFh+Vw6eaCOm
-	9Dl9OJ39q+sODEoNnaLnGceUPEBEfCHL50wvp/c7guDM0X1aE6piv2togh/wADLGhQ==
-X-Gm-Gg: ATEYQzwHjoS5KbTNbmmuWuhuwOA50HnrxI5oqVPFBkd5sWh/WpvMhu6lwwFHogOIi56
-	2Ou3X2KR4hGvPgdHZvbDsulhJoYG6/m4Gg3kK05ptnQwzKuS6tND2SX+DDwVo82qxHmINDldSUb
-	yNBa7ZjxyKUHY/9pwTteIuqhC4wq+Qlf0ZD4mRCOQTWRupgciZ/bCIh/LyE2OVbSPypS/PZlX5i
-	2tMV0n3l6YhbNudwP/V0OGlcr0KcvBh6vEe0aFIACU1bL54y2lEtRJkVJmZhYVZOdS2I43ZQBsb
-	ip5y+EH0Q4p3evVobqqRJKLBBnStDCQAeWUg6C2mEQT1HtknQZIRk6JkQCyH0ZfXgz0kcrqckLD
-	KlcJaGdqq0Mm2NvAq3KQmdZVvmqPABZk9idb4k9PprSjtIoCbJf/8JpytQMUMQvUsKDrszfDH+B
-	jBQ37t0gvj59Qw56yIT7Jz1OB+MHpfGpMCwYwo+YeBV1dG6bo+Llb4Uzbi
-X-Received: by 2002:a05:600d:8446:10b0:477:86fd:fb47 with SMTP id 5b1f17b1804b1-48549e6f504mr699505e9.8.1773231878612;
-        Wed, 11 Mar 2026 05:24:38 -0700 (PDT)
-Received: from google.com (54.95.38.34.bc.googleusercontent.com. [34.38.95.54])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439f81f1318sm7153025f8f.21.2026.03.11.05.24.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Mar 2026 05:24:37 -0700 (PDT)
-Date: Wed, 11 Mar 2026 12:24:33 +0000
-From: Mostafa Saleh <smostafa@google.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, linux-coco@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>, will@kernel.org,
-	maz@kernel.org, tglx@linutronix.de, robin.murphy@arm.com,
-	akpm@linux-foundation.org, jgg@ziepe.ca, steven.price@arm.com
-Subject: Re: [PATCH v2 4/4] dma: direct: set decrypted flag for remapped dma
- allocations
-Message-ID: <abFfAQp2arV9eoae@google.com>
-References: <20251221160920.297689-1-aneesh.kumar@kernel.org>
- <20251221160920.297689-5-aneesh.kumar@kernel.org>
- <5820e8f3-9cf8-423f-89df-0df7ca78a84b@arm.com>
- <yq5ams39txvk.fsf@kernel.org>
- <yq5abjjl4o0j.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SV2ymDsJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773233441; x=1804769441;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=6FXCwEl9oQCwrc+bKvYcR5a49jsgOtrOnlMBdsMo0jY=;
+  b=SV2ymDsJIOqhIlSASU2j3nl8kwWrqrxlYbCoaCjDRm2w7QPNi2TKZif5
+   NG1WA0LFaV1vremeGpnr+9olR9NFeN9fBoDbzLoxsXPZ4NtUKrYEGj/nZ
+   wo5mRN/3LMsfV5ErwTB+RVacUnWbPaKOL4DO+xBw0V/IVT1H4jC8eee+R
+   YalQu5keRc9j2997fdbFRLNzYYjDG4Z3GFWEjtPt1Xybqh3BUhhdEI16b
+   ROVH6ghoaBCGiJTXsryXrCFBSKnIfwvoDm8b4pa19Ls8xMnuecy0SfPIS
+   SJ1ndPvuc/1gzflz8B1TUl0Vpcoi9Qy40/JGF9+AoRTm/WwqEGrew2KaP
+   A==;
+X-CSE-ConnectionGUID: G69PH9ylTyyaOcKG7Tp7NA==
+X-CSE-MsgGUID: J7HZPonaRaypin9RiLRqfg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="91679546"
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
+   d="scan'208";a="91679546"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 05:50:40 -0700
+X-CSE-ConnectionGUID: zKKQSLPTSa+/9KLUJuc7Bg==
+X-CSE-MsgGUID: 3GGwT0EqSJqOsMDOatwL3A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
+   d="scan'208";a="217925442"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 05:50:40 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 11 Mar 2026 05:50:39 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Wed, 11 Mar 2026 05:50:39 -0700
+Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.63) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 11 Mar 2026 05:50:39 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vxiO6XEeZsDq2y3ucp1KVrT1GBe6uNYcA2mYXFT4593VICMilz3YS4zwOT+hfVcgKwIw8AegagWokoviV251dW6Y2SmqY8TicljUrmxDPoaWauP9FbHTDP7zx5dYRITqOkNg8SvzmKPzEwmZN6h/vnrgxfishyYEB0TO+/QIkk5HYh3dAgkhRUwBbLFKuSrsk46qr9xk5QI5tVhj34uLYl8lHg1XxVJmy2sGVlcfc7fl4RKUmwpr+L3nHGtms7jUrdVat5xtrS36UKHIrIHXG7y3D5/G7xGJCndM52eihNIhKHrJe6RDdlWLWPl7Hou5UxwEieZzh3sA/OENuKt2pw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3K97boxsHayZNO9k5q/bIyW+sNCIRclFMfml95a3XNc=;
+ b=ic1T1HqUNW280S+GyF1LXTVZnIl7neK2ssxbyOI9xGkwOFN44df33rQ/YxAFa/mxK5YjKAvib1Hb4kmmelkTBl3Xa8MWnF/pr9xtooONJ6zuPa5IpbB8vXAnO6o+/5CEYjn6i54qbEa5HqR8poo2O+ivJkU4u0cVv9cchTIIEBWszYupoF13O3LINnkC+JSUXhS5lliRE+nzF6L41pBiLbcglE8WTIUoKQQdZAO2K/tcvsk3g1dgl7MlNn+aKWJugMt8WUZMe2JtPGTnC6+jtinbVpizKJpHxUCOwuN4IZF+MSWJfK1hXZkwqHX/gWKqUIT1O9GppxZORZCzSAobOg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
+ by PH8PR11MB7119.namprd11.prod.outlook.com (2603:10b6:510:215::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Wed, 11 Mar
+ 2026 12:50:34 +0000
+Received: from CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
+ ([fe80::fdc2:40ba:101d:40bf%6]) with mapi id 15.20.9723.000; Wed, 11 Mar 2026
+ 12:50:33 +0000
+Date: Wed, 11 Mar 2026 20:50:18 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: <linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<kvm@vger.kernel.org>, <x86@kernel.org>
+CC: <reinette.chatre@intel.com>, <ira.weiny@intel.com>, <kai.huang@intel.com>,
+	<dan.j.williams@intel.com>, <yilun.xu@linux.intel.com>, <sagis@google.com>,
+	<vannapurve@google.com>, <paulmck@kernel.org>, <nik.borisov@suse.com>,
+	<zhenzhong.duan@intel.com>, <seanjc@google.com>,
+	<rick.p.edgecombe@intel.com>, <kas@kernel.org>,
+	<dave.hansen@linux.intel.com>, <vishal.l.verma@intel.com>,
+	<binbin.wu@linux.intel.com>, <tony.lindgren@linux.intel.com>, Thomas Gleixner
+	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH v4 24/24] [NOT-FOR-REVIEW] x86/virt/seamldr: Save and
+ restore current VMCS
+Message-ID: <abFlCkNd7tqaUyAP@intel.com>
+References: <20260212143606.534586-1-chao.gao@intel.com>
+ <20260212143606.534586-25-chao.gao@intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260212143606.534586-25-chao.gao@intel.com>
+X-ClientProxiedBy: SGAP274CA0012.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b6::24)
+ To CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5abjjl4o0j.fsf@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|PH8PR11MB7119:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5911344b-ac7f-49ee-1243-08de7f6cc8c8
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: EOHUuQXkp0CUP3IlRQUVvVV6qaAif2c3hBqHvzkwgf5+9TkewjqK/UXoIuy2G08+no+wkxqXachiYe8g9VqfkfCCy+DqNYhmFJTWKV7XDJIBAU8aND+cWHOUYE3q42lhXgLUJnSiijh/6lbNyP73EzfqbGEpq8sdRVSg85/N4wv0SPGkQsbIWbA/3raMbck22TzVEeBzCJ+KRZxGTAn3mL1CbwAd5aR/dHxX2yCZr7xZKHARm0uOwcD5BxlRsHFYpe8pKAIXfNeIBc4kgAH8va7LjktXNLnLGBmNrC9rp3Z34tQi54SSyqHCAPCcStaacZ1+b/oMmP3mD0xRpIc3iK/AF/qc9D4WMUO1GmbxOhTxbPNyGNBta4xNn/nq8C1TRYMKf+EjIEG+zX4Q2s569Nr3E50SenStPkJDMgozr0BEFynnZdJ1xxer+2I2oZARKgsi9NsmYqExPyYUgnFDkqbhuT4+6XFvZiJxnWcawXB4+nSQYfn1OXH6m4WFw4FolKd7MhD4ZP+hoRzWrWb13NbI5z2JFBmbpzm4jHdWobRcwVsdVjjV53vzEIWCngcfxqmPvb8ZiRMppAgZ7H5cN++l8SsFy73y873pTFeZAPUKkXW3KlqEkQSsWi0ylEHRxLER/Ul+0OaYHBPKqmN6s0iQM9LMm1VkSHKFHpjuP5ymRfRMTqefJVuW0MTKm0z45grBKPV/9QPFTGWX+8hSC3YwZ2+R6F63r/HnzCPcUByY/aiGLY0G1PVvGPMQVtxy
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?XqDYDxPg6jXB9uCzf7XFgulDScnSEeOPNTRKFGO/VBMGjW3x7gJHO3Nx/3?=
+ =?iso-8859-1?Q?AXBXmxwd34Huu19MqBgEjvHK/qJBMb01oFceqQvTIrFmAY+YfzS6JKXMjd?=
+ =?iso-8859-1?Q?Wt2PVmM68f+QVgaIq/XJBdtlchJxMzIAP2kOqieTHhvfueQJGaqDeSqMW0?=
+ =?iso-8859-1?Q?mB3IVqWoxNsIGlK45YsQPhljPnrazmmh5bJ24+QpDn7uXSipscu0SA2tMJ?=
+ =?iso-8859-1?Q?6D1EWfnCVRnmYDp1+Apyih9fTAoufk94vGl2mqQloBZLCQJffcytahXjVs?=
+ =?iso-8859-1?Q?0FBquMhUmJACs9gEOd6SYUga4AePq9zJkCqTr/tOnNxqyUCbEW8YN/4tuH?=
+ =?iso-8859-1?Q?aAC/oggG4EVesbtACyrBuyF2/McPD6Xd4aEq9VyzDXFV2pn0u2AuOSoxjC?=
+ =?iso-8859-1?Q?8LvnQdlQvbnxmnB7QwZYFynxLEdrlrJ7yCSl9wiLMAxNn3/WO7ADOYgbgn?=
+ =?iso-8859-1?Q?3DGEUPNud7YRfEvtgtf8Ghph01lHfN4VF7MQnVe/I4a9pWUr8DzSrEW9lz?=
+ =?iso-8859-1?Q?26kwnT6ewnl4nSTqcvjYD5SpDtBr9Z0avzRJCGeYOupz3fpegdGIjkesH8?=
+ =?iso-8859-1?Q?1TXPCH9u+XUG0C0iYde56H9ON/0FghYUfv30v6TLr/eaJBEwUoRkehrd9/?=
+ =?iso-8859-1?Q?GZf4N4mVeq06OQG2GXbIzqXoBaxI8IYto4KKLRX5ZP9hGmKUpfhWELbej2?=
+ =?iso-8859-1?Q?7ZdZQ4GdRE0XWEUtriGwRYBg8TJVXdiJJoTqrDkd/wkG1W0aXhfY1866l8?=
+ =?iso-8859-1?Q?/VQQaZ5aSZsVDkcW/U71W92GZ72RysYloQo/lD4pMBh8Ryk4ucx6VAcp1g?=
+ =?iso-8859-1?Q?pyH/hCtvtBk3IlfaGNTSWQsXlwjbM139YjrfiVuprJJmpJs39a/+ru3ui3?=
+ =?iso-8859-1?Q?yI4UqGZkFORsP/GQufoAYLkrAl7I5xv5Ud36cFoQfl/lkhrEMX0rJikit9?=
+ =?iso-8859-1?Q?oDv0i1xAx43VpCf1QY+rWEfRYIbLXciLY88ZyqbBuAbIPVxgYhPZ35MCM6?=
+ =?iso-8859-1?Q?xYhX1wMf/inIL35MCdyGq8uEyn1yfZXwtUr93X4+f/PeCvXw2gSZ/VFoNE?=
+ =?iso-8859-1?Q?7SUAuQSCuhN2YULYqg5tzo8UDeTa1DAKMGsV3F6K7ZOOVngE3dMw1ngToD?=
+ =?iso-8859-1?Q?8gvbjaM0tAnUhJ9yv0lwhxqW7upxmHBKrlpAioHNTzd6v6HB+gEgDAx3wT?=
+ =?iso-8859-1?Q?1wCyV2aCWelJ47NtyfHholQzngAri+TlmDXo6Tl8u27hEu59srtujTBNmC?=
+ =?iso-8859-1?Q?iOse0Kv4guOhjLQf2b3tqZjZgrAOc5laFXbESQnaCgY1WIteYOEPnlhPto?=
+ =?iso-8859-1?Q?ZBBv5qd/VUchvIswbCM571ghhLImn19Ofi5mUkLOgknNVH1OVpC238SwI6?=
+ =?iso-8859-1?Q?HZlD6QPl9nIKqljWSneznsp4OnolBwUm3Z9C94lsuNivKGN/NOgsBW5QTY?=
+ =?iso-8859-1?Q?sBT4fQ2InTS7RVlMhVe61W3SJVT3Zv6gpegb+ynI+B0y06E9UDiF8WHGjx?=
+ =?iso-8859-1?Q?+z0YnCWJhKbZlLVG1NX1N143naZKpNHA6pdaCPz58APR83mHe3932Yf9WV?=
+ =?iso-8859-1?Q?4NSfILX/Dtpdc1F+i+fzqDj/0aFJPdffqwdYUq/LrHTbEycFID76nGEyc/?=
+ =?iso-8859-1?Q?uPIp1HFMakD06p4nMKqaOxAFdAaY2CodWVt/45OrgKl+EoMbltAE6Gc/iA?=
+ =?iso-8859-1?Q?pXVNrw7RTBVP/8+RRdkwQlA0kd6zjfUdfn0zJvv3yODxGmWWysHfVob+JB?=
+ =?iso-8859-1?Q?THtsq3EPoojGtrHL2UXxjcF4km7rnhBTI4NRjUs1fUj7ol6CQNJg/fS+zx?=
+ =?iso-8859-1?Q?1USpzgxVZg=3D=3D?=
+X-Exchange-RoutingPolicyChecked: Iew8sy6VasSoHd4hgkIow3vnaxgjugxu0uCcFnc4ffBLh77Fx81X0pD07edh+Gp0qRrhBO5fMCuHwaeZzq6yt7XCL++xrABlsmrxqYlfmCGC6Wmn+SaLYDL4J5kRtxYxMrQ5eNmEcca3WsBCE0AatHuyXy9L4R6GG25nAFR4xbWkByBU154g6gjm/3jjF+h5lxCncrKRBSgrK78wUp3VWtXwVXdxfa+jlAq8A6oqfT/3LLoYfrB0enGt3fBJ8wb6pAvY91uRnW80cVIyqP5jkaYV2QhADLvK3lNCPqRd/2CZb5m7jf6BZoHy6Yk6hZCkZeuHDO4dmy3956eDF2+MDw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5911344b-ac7f-49ee-1243-08de7f6cc8c8
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2026 12:50:33.8226
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GVUolakdGUGt+wvD/FEJAEKFfRAgkT7Bt1HgtAENvhYtjNULD1pNMUcAjZ8aoRDJt4/AB2sf+7mmC+NWdSq1TQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB7119
+X-OriginatorOrg: intel.com
 
-On Fri, Dec 26, 2025 at 02:29:24PM +0530, Aneesh Kumar K.V wrote:
-> Aneesh Kumar K.V <aneesh.kumar@kernel.org> writes:
-> 
-> > Suzuki K Poulose <suzuki.poulose@arm.com> writes:
-> >
-> >> On 21/12/2025 16:09, Aneesh Kumar K.V (Arm) wrote:
-> >>> Devices that are DMA non-coherent and need a remap were skipping
-> >>> dma_set_decrypted(), leaving buffers encrypted even when the device
-> >>> requires unencrypted access. Move the call after the remap
-> >>> branch so both paths mark the allocation decrypted (or fail cleanly)
-> >>> before use.
-> >>> 
-> >>> Fixes: f3c962226dbe ("dma-direct: clean up the remapping checks in dma_direct_alloc")
-> >>> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> >>> ---
-> >>>   kernel/dma/direct.c | 8 +++-----
-> >>>   1 file changed, 3 insertions(+), 5 deletions(-)
-> >>> 
-> >>> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-> >>> index 3448d877c7c6..a62dc25524cc 100644
-> >>> --- a/kernel/dma/direct.c
-> >>> +++ b/kernel/dma/direct.c
-> >>> @@ -271,9 +271,6 @@ void *dma_direct_alloc(struct device *dev, size_t size,
-> >>>   	if (remap) {
-> >>>   		pgprot_t prot = dma_pgprot(dev, PAGE_KERNEL, attrs);
-> >>>   
-> >>> -		if (force_dma_unencrypted(dev))
-> >>> -			prot = pgprot_decrypted(prot);
-> >>
-> >> This would be problematic, isn't it ? We don't support decrypted on a
-> >> vmap area for arm64. If we move this down, we might actually use the
-> >> vmapped area. Not sure if other archs are fine with "decrypting" a
-> >> "vmap" address.
-> >>
-> >> If we map the "vmap" address with pgprot_decrypted, we could go ahead
-> >> and further map the linear map (i.e., page_address(page)) decrypted
-> >> and get everything working.
-> >
-> > We still have the problem w.r.t free
-> >
-> > dma_direct_free():
-> >
-> > 	if (is_vmalloc_addr(cpu_addr)) {
-> > 		vunmap(cpu_addr);
-> > 	} else {
-> > 		if (dma_set_encrypted(dev, cpu_addr, size))
-> > 			return;
-> > 	}
-> >
-> 
-> How about the below change? 
-> 
-> commit 8261c528961c6959b85de87c5659ce9081dc85b7
-> Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> Date:   Fri Dec 19 14:46:20 2025 +0530
-> 
->     dma: direct: set decrypted flag for remapped DMA allocations
->     
->     Devices that are DMA non-coherent and require a remap were skipping
->     dma_set_decrypted(), leaving DMA buffers encrypted even when the device
->     requires unencrypted access. Move the call after the if (remap) branch
->     so that both direct and remapped allocation paths correctly mark the
->     allocation as decrypted (or fail cleanly) before use.
->     
->     If CMA allocations return highmem pages, treat this as an allocation
->     error so that dma_direct_alloc() falls back to the standard allocation
->     path. This is required because some architectures (e.g. arm64) cannot
->     mark vmap addresses as decrypted, and highmem pages necessarily require
->     a vmap remap. As a result, such allocations cannot be safely marked
->     unencrypted for DMA.
->     
->     Other architectures (e.g. x86) do not have this limitation, but instead
->     of making this architecture-specific, I have made the restriction apply
->     when the device requires unencrypted DMA access. This was done for
->     simplicity,
->     
->     Fixes: f3c962226dbe ("dma-direct: clean up the remapping checks in dma_direct_alloc")
->     Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+On Thu, Feb 12, 2026 at 06:35:27AM -0800, Chao Gao wrote:
+>P-SEAMLDR calls clobber the current VMCS as documented in Intel® Trust
+>Domain CPU Architectural Extensions (May 2021 edition) Chapter 2.3 [1]:
+>
+>  SEAMRET from the P-SEAMLDR clears the current VMCS structure pointed
+>  to by the current-VMCS pointer. A VMM that invokes the P-SEAMLDR using
+>  SEAMCALL must reload the current-VMCS, if required, using the VMPTRLD
+>  instruction.
+>
+>Save and restore the current VMCS using VMPTRST and VMPTRLD instructions
+>to avoid breaking KVM.
+>
+>Signed-off-by: Chao Gao <chao.gao@intel.com>
+>---
+>This patch is needed for testing until microcode is updated to preserve
+>the current VMCS across P-SEAMLDR calls. Otherwise, if some normal VMs
+>are running before TDX Module updates, vmread/vmwrite errors may occur
+>immediately after updates.
 
-Are there any cases this happened in CCA, the only cases I can see
-remap is true are:
-- PageHighMem(): Where that fails for CCA
-- !dev_is_dma_coherent(): AFAIK, all devices with CCA must have an
-  SMMU, so direct DMA is only for virtualized devices which cannot
-  be incoherent.
+The agreed approach is to fix the CPU behavior rather than work around the
+issue in the kernel. So, I'll include the following patch to handle this
+erratum. Please let me know if you have any concerns.
 
-Thanks,
-Mostafa
+From 04b53e83dc9daee1866e1c8f26e3d027e1a0be6a Mon Sep 17 00:00:00 2001
+From: Chao Gao <chao.gao@intel.com>
+Date: Tue, 10 Mar 2026 18:49:41 -0700
+Subject: [PATCH] coco/tdx-host: Don't expose P-SEAMLDR features on CPUs with
+ erratum
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-> 
-> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-> index 7c0b55ca121f..811de37ad81c 100644
-> --- a/kernel/dma/direct.c
-> +++ b/kernel/dma/direct.c
-> @@ -264,6 +264,15 @@ void *dma_direct_alloc(struct device *dev, size_t size,
->  	 * remapped to return a kernel virtual address.
->  	 */
->  	if (PageHighMem(page)) {
-> +		/*
-> +		 * Unencrypted/shared DMA requires a linear-mapped buffer
-> +		 * address to look up the PFN and set architecture-required PFN
-> +		 * attributes. This is not possible with HighMem, so return
-> +		 * failure.
-> +		 */
-> +		if (force_dma_unencrypted(dev))
-> +			goto out_free_pages;
-> +
->  		remap = true;
->  		set_uncached = false;
->  	}
-> @@ -284,7 +293,13 @@ void *dma_direct_alloc(struct device *dev, size_t size,
->  			goto out_free_pages;
->  	} else {
->  		ret = page_address(page);
-> -		if (dma_set_decrypted(dev, ret, size))
-> +	}
-> +
-> +	if (force_dma_unencrypted(dev)) {
-> +		void *lm_addr;
-> +
-> +		lm_addr = page_address(page);
-> +		if (set_memory_decrypted((unsigned long)lm_addr, PFN_UP(size)))
->  			goto out_leak_pages;
->  	}
->  
-> @@ -349,8 +364,16 @@ void dma_direct_free(struct device *dev, size_t size,
->  	} else {
->  		if (IS_ENABLED(CONFIG_ARCH_HAS_DMA_CLEAR_UNCACHED))
->  			arch_dma_clear_uncached(cpu_addr, size);
-> -		if (dma_set_encrypted(dev, cpu_addr, size))
-> +	}
-> +
-> +	if (force_dma_unencrypted(dev)) {
-> +		void *lm_addr;
-> +
-> +		lm_addr = phys_to_virt(dma_to_phys(dev, dma_addr));
-> +		if (set_memory_encrypted((unsigned long)lm_addr, PFN_UP(size))) {
-> +			pr_warn_ratelimited("leaking DMA memory that can't be re-encrypted\n");
->  			return;
-> +		}
->  	}
->  
->  	__dma_direct_free_pages(dev, dma_direct_to_page(dev, dma_addr), size);
+Some TDX-capable CPUs have an erratum, as documented in Intel® Trust
+Domain CPU Architectural Extensions (May 2021 edition) Chapter 2.3:
+
+  SEAMRET from the P-SEAMLDR clears the current VMCS structure pointed
+  to by the current-VMCS pointer. A VMM that invokes the P-SEAMLDR using
+  SEAMCALL must reload the current-VMCS, if required, using the VMPTRLD
+  instruction.
+
+Clearing the current VMCS behind KVM's back will break KVM.
+
+This erratum is not present when IA32_VMX_BASIC[60] is set. Check for
+the erratum and refuse to expose P-SEAMLDR features (e.g., TDX module
+updates) on affected CPUs.
+
+== Alternatives ==
+Two workarounds were considered but both were rejected:
+
+1. Save/restore the current VMCS around P-SEAMLDR calls. This produces ugly
+   assembly code [1] and doesn't play well with #MCE or #NMI if they
+   need to use the current VMCS.
+
+2. Move KVM's VMCS tracking logic to the TDX core code, which would break
+   the boundary between KVM and the TDX core code [2].
+
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+Link: https://lore.kernel.org/kvm/fedb3192-e68c-423c-93b2-a4dc2f964148@intel.com/ # [1]
+Link: https://lore.kernel.org/kvm/aYIXFmT-676oN6j0@google.com/ # [2]
+---
+ arch/x86/include/asm/vmx.h            |  1 +
+ drivers/virt/coco/tdx-host/tdx-host.c | 12 ++++++++++++
+ 2 files changed, 13 insertions(+)
+
+diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
+index c85c50019523..d066c50b9051 100644
+--- a/arch/x86/include/asm/vmx.h
++++ b/arch/x86/include/asm/vmx.h
+@@ -135,6 +135,7 @@
+ #define VMX_BASIC_INOUT				BIT_ULL(54)
+ #define VMX_BASIC_TRUE_CTLS			BIT_ULL(55)
+ #define VMX_BASIC_NO_HW_ERROR_CODE_CC		BIT_ULL(56)
++#define VMX_BASIC_PRESERVE_CURRENT_VMCS		BIT_ULL(60)
+ 
+ static inline u32 vmx_basic_vmcs_revision_id(u64 vmx_basic)
+ {
+diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
+index 891cc6a083e0..13c23769d09d 100644
+--- a/drivers/virt/coco/tdx-host/tdx-host.c
++++ b/drivers/virt/coco/tdx-host/tdx-host.c
+@@ -12,8 +12,10 @@
+ #include <linux/sysfs.h>
+ 
+ #include <asm/cpu_device_id.h>
++#include <asm/msr.h>
+ #include <asm/seamldr.h>
+ #include <asm/tdx.h>
++#include <asm/vmx.h>
+ 
+ static const struct x86_cpu_id tdx_host_ids[] = {
+	X86_MATCH_FEATURE(X86_FEATURE_TDX_HOST_PLATFORM, NULL),
+@@ -175,6 +177,7 @@ static int seamldr_init(struct device *dev)
+ {
+	const struct tdx_sys_info *tdx_sysinfo = tdx_get_sysinfo();
+	struct fw_upload *tdx_fwl;
++	u64 basic_msr;
+ 
+	if (WARN_ON_ONCE(!tdx_sysinfo))
+		return -EIO;
+@@ -182,6 +185,15 @@ static int seamldr_init(struct device *dev)
+	if (!tdx_supports_runtime_update(tdx_sysinfo))
+		return 0;
+ 
++	/*
++	 * Some TDX-capable CPUs have an erratum where the current VMCS may
++	 * be cleared after calling into P-SEAMLDR. Ensure no such erratum
++	 * exists before exposing any P-SEAMLDR functions.
++	 */
++	rdmsrq(MSR_IA32_VMX_BASIC, basic_msr);
++	if (!(basic_msr & VMX_BASIC_PRESERVE_CURRENT_VMCS))
++		return 0;
++
+	tdx_fwl = firmware_upload_register(THIS_MODULE, dev, "tdx_module",
+					   &tdx_fw_ops, NULL);
+	if (IS_ERR(tdx_fwl))
+-- 
+2.47.3
+
+
