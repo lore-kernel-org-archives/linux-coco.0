@@ -1,281 +1,163 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011043.outbound.protection.outlook.com [52.101.62.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09FFA27587D
-	for <linux-coco@lists.linux.dev>; Wed, 11 Mar 2026 12:50:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583FB30BB9B
+	for <linux-coco@lists.linux.dev>; Wed, 11 Mar 2026 13:06:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773233442; cv=fail; b=RcPrqMNdOmATXxiIZ3HWa72Txo1LwqJhano5nyv1Ays/B/hHdmAxctq6TsDelWsqcYcL/pwchehnLTsOt8XeHKYnJXsB1N3eCiCSeWQoTBKSzdguUQo1lnIjSW0zm2NWe3uq9CfuwPbHl9Waw/44zbpEAl1rz+pUNbm43vRma14=
+	t=1773234393; cv=fail; b=eFyenxN7jX2/6tjozOkwUhxnqoOsuj6EWvSoaWVUIt1Gz3FXsqubG1TR2mn5YxY6RV/uGAQcIJOAQwhDY/JQGwA6tSVYV7Psp/+oL9v7RkYZaEfe65pQzkw5G84ppwG8CzbIvXLLQOm86W1j6aWjaoPsg4UvKCs2W/q2s3ycIPM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773233442; c=relaxed/simple;
-	bh=6FXCwEl9oQCwrc+bKvYcR5a49jsgOtrOnlMBdsMo0jY=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=HzmDLv3vy8JyHrne9YHo2IcoJNPY9Bv3Q8ViIWdbKWAm6aMmj66uqDAm8y/eP0P9ppYBWaR9ZgCzrsfo37L0LVOZobCbu2EIbLxmvW8JyFOYJd4IPZ4qNqXivihekL5ovUnEEB1XPSImsIQQ9Il3K9PAzPywokcHYfdiRMkGxLA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SV2ymDsJ; arc=fail smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1773234393; c=relaxed/simple;
+	bh=Xq9tBR3Qeq1+H/LLxaLjPiZA+BciW8QAljriTrrUAQY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=p0ouGYA4Wlrx5+lSv+Oen1LiwNuO3OP8nbcdeEOat1ojmFJsUNMzgRmcSffwww8bH0CEj4X75jIw6vQQ4dDir4RtQVYTjXXyVW/z/sZQM1Cj4esUYjBLNnMecbCFQ/YOTvcNfpcAuj+WcvVLwmrpY1X//qoiIQuKIGWhHSJrr4U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=t1lSt6tu; arc=fail smtp.client-ip=52.101.62.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SV2ymDsJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773233441; x=1804769441;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=6FXCwEl9oQCwrc+bKvYcR5a49jsgOtrOnlMBdsMo0jY=;
-  b=SV2ymDsJIOqhIlSASU2j3nl8kwWrqrxlYbCoaCjDRm2w7QPNi2TKZif5
-   NG1WA0LFaV1vremeGpnr+9olR9NFeN9fBoDbzLoxsXPZ4NtUKrYEGj/nZ
-   wo5mRN/3LMsfV5ErwTB+RVacUnWbPaKOL4DO+xBw0V/IVT1H4jC8eee+R
-   YalQu5keRc9j2997fdbFRLNzYYjDG4Z3GFWEjtPt1Xybqh3BUhhdEI16b
-   ROVH6ghoaBCGiJTXsryXrCFBSKnIfwvoDm8b4pa19Ls8xMnuecy0SfPIS
-   SJ1ndPvuc/1gzflz8B1TUl0Vpcoi9Qy40/JGF9+AoRTm/WwqEGrew2KaP
-   A==;
-X-CSE-ConnectionGUID: G69PH9ylTyyaOcKG7Tp7NA==
-X-CSE-MsgGUID: J7HZPonaRaypin9RiLRqfg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="91679546"
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
-   d="scan'208";a="91679546"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 05:50:40 -0700
-X-CSE-ConnectionGUID: zKKQSLPTSa+/9KLUJuc7Bg==
-X-CSE-MsgGUID: 3GGwT0EqSJqOsMDOatwL3A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
-   d="scan'208";a="217925442"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 05:50:40 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 11 Mar 2026 05:50:39 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 11 Mar 2026 05:50:39 -0700
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.63) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 11 Mar 2026 05:50:39 -0700
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="t1lSt6tu"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vxiO6XEeZsDq2y3ucp1KVrT1GBe6uNYcA2mYXFT4593VICMilz3YS4zwOT+hfVcgKwIw8AegagWokoviV251dW6Y2SmqY8TicljUrmxDPoaWauP9FbHTDP7zx5dYRITqOkNg8SvzmKPzEwmZN6h/vnrgxfishyYEB0TO+/QIkk5HYh3dAgkhRUwBbLFKuSrsk46qr9xk5QI5tVhj34uLYl8lHg1XxVJmy2sGVlcfc7fl4RKUmwpr+L3nHGtms7jUrdVat5xtrS36UKHIrIHXG7y3D5/G7xGJCndM52eihNIhKHrJe6RDdlWLWPl7Hou5UxwEieZzh3sA/OENuKt2pw==
+ b=mB6UcnCnn8jvixNe6VdPEDGy2EGEVL/nF0biCMJbCWml/gfGP5UN5uACB+InoSmifU56K8hybRAioKHEXj+j/kpr4q9lRNG9M4x7Y7I7AToBZXnmtQPNjEgU/q+FBSOv8ooLFSHwXZXbLE+jlf0KqtOYgItkW9qrMU09gaCWlNiqHz1H8btjg5ACFwPIM297YnNNl7r1k8paYfU3s89LRM1iTGL9iiDV/o6UQe+YLL0Ij68adFg31KWwsLA7CTCoa29efSQeEpmaxEwzIK9WQMrL/ilkOQXlR7qNidl6mYlPf+WXJW2lbP360wyrFy/ZJ+VLv5Al3xxteLOM82EPmg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3K97boxsHayZNO9k5q/bIyW+sNCIRclFMfml95a3XNc=;
- b=ic1T1HqUNW280S+GyF1LXTVZnIl7neK2ssxbyOI9xGkwOFN44df33rQ/YxAFa/mxK5YjKAvib1Hb4kmmelkTBl3Xa8MWnF/pr9xtooONJ6zuPa5IpbB8vXAnO6o+/5CEYjn6i54qbEa5HqR8poo2O+ivJkU4u0cVv9cchTIIEBWszYupoF13O3LINnkC+JSUXhS5lliRE+nzF6L41pBiLbcglE8WTIUoKQQdZAO2K/tcvsk3g1dgl7MlNn+aKWJugMt8WUZMe2JtPGTnC6+jtinbVpizKJpHxUCOwuN4IZF+MSWJfK1hXZkwqHX/gWKqUIT1O9GppxZORZCzSAobOg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
- by PH8PR11MB7119.namprd11.prod.outlook.com (2603:10b6:510:215::14) with
+ bh=LqF8hqsk1aJr3lFs9kLZIWpplMkP7VSZjRWIaLVZKAc=;
+ b=sJSjDhR4I9+jQ+hx1VanQ8ev2lRJwFkA63BuhayMJqOKnhexT3YqrC/asn0UJZztbNkBJ5wLs8sYcWKXaWpnTHwx2/YrP4r8Z6hePA4IvityimiRadDg72DLVPGXZrCGqmkhXxLKte0cbBHtouVr0ij1Id3dvQyasOosJ7Z0VF4WJ9CUoce3ToNhRbzLqGpx1tvqVeNOuClFGW2N4dAl9bbevth64s9cjMbeNXrZKsSYneOyqmIXO8cpb6xZcqEOrl/o687SZvLOwdfXwTJRBOjPGbRgOAMmogQu+ThGq2lk2TNNtMPbKJVLrSRhg04vKWa+DV3QRK2ysubVkBQKnw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LqF8hqsk1aJr3lFs9kLZIWpplMkP7VSZjRWIaLVZKAc=;
+ b=t1lSt6tuScrBUReCzG7/lJKS1bxKsWjyAWisj8LGsDH1O+BeVBUbRsSsMwJG1NSaic6pUCMHZ0OGENvdRZnSykOkCIt5JyZjxESZ5fqWRF2uLRrHvHHtYiJrG8Gjmd4WHZ+U61UhgqhSiWMTyyx08NVZ/GZ/SwYFHcTMrt8RDxY=
+Received: from BL1PR13CA0025.namprd13.prod.outlook.com (2603:10b6:208:256::30)
+ by DS0PR12MB6606.namprd12.prod.outlook.com (2603:10b6:8:d2::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Wed, 11 Mar
- 2026 12:50:34 +0000
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf%6]) with mapi id 15.20.9723.000; Wed, 11 Mar 2026
- 12:50:33 +0000
-Date: Wed, 11 Mar 2026 20:50:18 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: <linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<kvm@vger.kernel.org>, <x86@kernel.org>
-CC: <reinette.chatre@intel.com>, <ira.weiny@intel.com>, <kai.huang@intel.com>,
-	<dan.j.williams@intel.com>, <yilun.xu@linux.intel.com>, <sagis@google.com>,
-	<vannapurve@google.com>, <paulmck@kernel.org>, <nik.borisov@suse.com>,
-	<zhenzhong.duan@intel.com>, <seanjc@google.com>,
-	<rick.p.edgecombe@intel.com>, <kas@kernel.org>,
-	<dave.hansen@linux.intel.com>, <vishal.l.verma@intel.com>,
-	<binbin.wu@linux.intel.com>, <tony.lindgren@linux.intel.com>, Thomas Gleixner
-	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
-	<bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v4 24/24] [NOT-FOR-REVIEW] x86/virt/seamldr: Save and
- restore current VMCS
-Message-ID: <abFlCkNd7tqaUyAP@intel.com>
-References: <20260212143606.534586-1-chao.gao@intel.com>
- <20260212143606.534586-25-chao.gao@intel.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260212143606.534586-25-chao.gao@intel.com>
-X-ClientProxiedBy: SGAP274CA0012.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b6::24)
- To CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
+ 2026 13:06:23 +0000
+Received: from BN1PEPF0000468B.namprd05.prod.outlook.com
+ (2603:10b6:208:256:cafe::ba) by BL1PR13CA0025.outlook.office365.com
+ (2603:10b6:208:256::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.25 via Frontend Transport; Wed,
+ 11 Mar 2026 13:06:23 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN1PEPF0000468B.mail.protection.outlook.com (10.167.243.136) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9678.18 via Frontend Transport; Wed, 11 Mar 2026 13:06:22 +0000
+Received: from gaul.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 11 Mar
+ 2026 08:06:21 -0500
+From: Kim Phillips <kim.phillips@amd.com>
+To: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <x86@kernel.org>
+CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, "Nikunj A
+ Dadhania" <nikunj@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, "Michael
+ Roth" <michael.roth@amd.com>, Borislav Petkov <borislav.petkov@amd.com>,
+	Borislav Petkov <bp@alien8.de>, Naveen Rao <naveen.rao@amd.com>, David Kaplan
+	<david.kaplan@amd.com>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, "Kim
+ Phillips" <kim.phillips@amd.com>
+Subject: [PATCH v2 0/3] KVM: SEV: Add support for BTB Isolation
+Date: Wed, 11 Mar 2026 08:06:08 -0500
+Message-ID: <20260311130611.2201214-1-kim.phillips@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|PH8PR11MB7119:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5911344b-ac7f-49ee-1243-08de7f6cc8c8
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-TrafficTypeDiagnostic: BN1PEPF0000468B:EE_|DS0PR12MB6606:EE_
+X-MS-Office365-Filtering-Correlation-Id: b19bd280-3181-4772-f824-08de7f6efea2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: EOHUuQXkp0CUP3IlRQUVvVV6qaAif2c3hBqHvzkwgf5+9TkewjqK/UXoIuy2G08+no+wkxqXachiYe8g9VqfkfCCy+DqNYhmFJTWKV7XDJIBAU8aND+cWHOUYE3q42lhXgLUJnSiijh/6lbNyP73EzfqbGEpq8sdRVSg85/N4wv0SPGkQsbIWbA/3raMbck22TzVEeBzCJ+KRZxGTAn3mL1CbwAd5aR/dHxX2yCZr7xZKHARm0uOwcD5BxlRsHFYpe8pKAIXfNeIBc4kgAH8va7LjktXNLnLGBmNrC9rp3Z34tQi54SSyqHCAPCcStaacZ1+b/oMmP3mD0xRpIc3iK/AF/qc9D4WMUO1GmbxOhTxbPNyGNBta4xNn/nq8C1TRYMKf+EjIEG+zX4Q2s569Nr3E50SenStPkJDMgozr0BEFynnZdJ1xxer+2I2oZARKgsi9NsmYqExPyYUgnFDkqbhuT4+6XFvZiJxnWcawXB4+nSQYfn1OXH6m4WFw4FolKd7MhD4ZP+hoRzWrWb13NbI5z2JFBmbpzm4jHdWobRcwVsdVjjV53vzEIWCngcfxqmPvb8ZiRMppAgZ7H5cN++l8SsFy73y873pTFeZAPUKkXW3KlqEkQSsWi0ylEHRxLER/Ul+0OaYHBPKqmN6s0iQM9LMm1VkSHKFHpjuP5ymRfRMTqefJVuW0MTKm0z45grBKPV/9QPFTGWX+8hSC3YwZ2+R6F63r/HnzCPcUByY/aiGLY0G1PVvGPMQVtxy
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|36860700016|1800799024|56012099003|18002099003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	VtGYETefPUXzZE0vJ2+8rRaEcEuKoqZH8yvc2kTWyZxI8F4EOqGcTOWNYDflehxPXEH46wjDKIdU32HiA1eNvvEWcF6XLL1jUijHMC5EudRci4oH0sE05HBqx/7h9BV+kZD31H6lVR0TNDwoWKfKSLfs5tw7Krr4uHDYFo5hhC0n4wqd41kKY3pOPT+6JdEzxEhUi3Vm1oRhrJz4Ji5p5zq8idiUrI3LBBwmD+dR+CVMrtz7kbfFjyfAHRq0R2ZGoNWbwxNGWDfan8xKXQ6IlPMi5RclMq/FrKw8TNnO6/Iv6uJF92RuMmJcj8CTTID3x35wgP04Uo9eXRPBEWCY2f6+H4NhFtZlJDFTp6BGzVMjA41RCkl1QGIX41KKn8pVgNoV+X68iu0EI/egRdcdH7RCHenGMPJvxpx0tS2Rh8nXPDQcLYgatGpPp8A3+vbokne+syf9CqIg4BDkPC9iSk8fj2Gre3g34fpB3VcpqHc+b61waEJ2y3uTZwAqaZhtjTLHPSDkLkotRaPaMLngg82tJ7poHpL5ZyHs4sPYD3zyjz6qtChcTyFij/zXtymjqHEbK6UwX5qJOQ7pj6JKp5FFy8Z1Z0py0wuhWiHwaQZYTd2LkrBRYwJWLz5k/0PSl3OnlI6tFbEhy/ttFLZJkuZiTRYXiPKhStaLamlP/j5m8QDHwiioP7C40f5uaW7nDPkjztZqUlNJzEk/oPxjNt94bNjcYQ9PZe+n3yNYHjY=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700016)(1800799024)(56012099003)(18002099003)(13003099007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?XqDYDxPg6jXB9uCzf7XFgulDScnSEeOPNTRKFGO/VBMGjW3x7gJHO3Nx/3?=
- =?iso-8859-1?Q?AXBXmxwd34Huu19MqBgEjvHK/qJBMb01oFceqQvTIrFmAY+YfzS6JKXMjd?=
- =?iso-8859-1?Q?Wt2PVmM68f+QVgaIq/XJBdtlchJxMzIAP2kOqieTHhvfueQJGaqDeSqMW0?=
- =?iso-8859-1?Q?mB3IVqWoxNsIGlK45YsQPhljPnrazmmh5bJ24+QpDn7uXSipscu0SA2tMJ?=
- =?iso-8859-1?Q?6D1EWfnCVRnmYDp1+Apyih9fTAoufk94vGl2mqQloBZLCQJffcytahXjVs?=
- =?iso-8859-1?Q?0FBquMhUmJACs9gEOd6SYUga4AePq9zJkCqTr/tOnNxqyUCbEW8YN/4tuH?=
- =?iso-8859-1?Q?aAC/oggG4EVesbtACyrBuyF2/McPD6Xd4aEq9VyzDXFV2pn0u2AuOSoxjC?=
- =?iso-8859-1?Q?8LvnQdlQvbnxmnB7QwZYFynxLEdrlrJ7yCSl9wiLMAxNn3/WO7ADOYgbgn?=
- =?iso-8859-1?Q?3DGEUPNud7YRfEvtgtf8Ghph01lHfN4VF7MQnVe/I4a9pWUr8DzSrEW9lz?=
- =?iso-8859-1?Q?26kwnT6ewnl4nSTqcvjYD5SpDtBr9Z0avzRJCGeYOupz3fpegdGIjkesH8?=
- =?iso-8859-1?Q?1TXPCH9u+XUG0C0iYde56H9ON/0FghYUfv30v6TLr/eaJBEwUoRkehrd9/?=
- =?iso-8859-1?Q?GZf4N4mVeq06OQG2GXbIzqXoBaxI8IYto4KKLRX5ZP9hGmKUpfhWELbej2?=
- =?iso-8859-1?Q?7ZdZQ4GdRE0XWEUtriGwRYBg8TJVXdiJJoTqrDkd/wkG1W0aXhfY1866l8?=
- =?iso-8859-1?Q?/VQQaZ5aSZsVDkcW/U71W92GZ72RysYloQo/lD4pMBh8Ryk4ucx6VAcp1g?=
- =?iso-8859-1?Q?pyH/hCtvtBk3IlfaGNTSWQsXlwjbM139YjrfiVuprJJmpJs39a/+ru3ui3?=
- =?iso-8859-1?Q?yI4UqGZkFORsP/GQufoAYLkrAl7I5xv5Ud36cFoQfl/lkhrEMX0rJikit9?=
- =?iso-8859-1?Q?oDv0i1xAx43VpCf1QY+rWEfRYIbLXciLY88ZyqbBuAbIPVxgYhPZ35MCM6?=
- =?iso-8859-1?Q?xYhX1wMf/inIL35MCdyGq8uEyn1yfZXwtUr93X4+f/PeCvXw2gSZ/VFoNE?=
- =?iso-8859-1?Q?7SUAuQSCuhN2YULYqg5tzo8UDeTa1DAKMGsV3F6K7ZOOVngE3dMw1ngToD?=
- =?iso-8859-1?Q?8gvbjaM0tAnUhJ9yv0lwhxqW7upxmHBKrlpAioHNTzd6v6HB+gEgDAx3wT?=
- =?iso-8859-1?Q?1wCyV2aCWelJ47NtyfHholQzngAri+TlmDXo6Tl8u27hEu59srtujTBNmC?=
- =?iso-8859-1?Q?iOse0Kv4guOhjLQf2b3tqZjZgrAOc5laFXbESQnaCgY1WIteYOEPnlhPto?=
- =?iso-8859-1?Q?ZBBv5qd/VUchvIswbCM571ghhLImn19Ofi5mUkLOgknNVH1OVpC238SwI6?=
- =?iso-8859-1?Q?HZlD6QPl9nIKqljWSneznsp4OnolBwUm3Z9C94lsuNivKGN/NOgsBW5QTY?=
- =?iso-8859-1?Q?sBT4fQ2InTS7RVlMhVe61W3SJVT3Zv6gpegb+ynI+B0y06E9UDiF8WHGjx?=
- =?iso-8859-1?Q?+z0YnCWJhKbZlLVG1NX1N143naZKpNHA6pdaCPz58APR83mHe3932Yf9WV?=
- =?iso-8859-1?Q?4NSfILX/Dtpdc1F+i+fzqDj/0aFJPdffqwdYUq/LrHTbEycFID76nGEyc/?=
- =?iso-8859-1?Q?uPIp1HFMakD06p4nMKqaOxAFdAaY2CodWVt/45OrgKl+EoMbltAE6Gc/iA?=
- =?iso-8859-1?Q?pXVNrw7RTBVP/8+RRdkwQlA0kd6zjfUdfn0zJvv3yODxGmWWysHfVob+JB?=
- =?iso-8859-1?Q?THtsq3EPoojGtrHL2UXxjcF4km7rnhBTI4NRjUs1fUj7ol6CQNJg/fS+zx?=
- =?iso-8859-1?Q?1USpzgxVZg=3D=3D?=
-X-Exchange-RoutingPolicyChecked: Iew8sy6VasSoHd4hgkIow3vnaxgjugxu0uCcFnc4ffBLh77Fx81X0pD07edh+Gp0qRrhBO5fMCuHwaeZzq6yt7XCL++xrABlsmrxqYlfmCGC6Wmn+SaLYDL4J5kRtxYxMrQ5eNmEcca3WsBCE0AatHuyXy9L4R6GG25nAFR4xbWkByBU154g6gjm/3jjF+h5lxCncrKRBSgrK78wUp3VWtXwVXdxfa+jlAq8A6oqfT/3LLoYfrB0enGt3fBJ8wb6pAvY91uRnW80cVIyqP5jkaYV2QhADLvK3lNCPqRd/2CZb5m7jf6BZoHy6Yk6hZCkZeuHDO4dmy3956eDF2+MDw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5911344b-ac7f-49ee-1243-08de7f6cc8c8
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2026 12:50:33.8226
+X-MS-Exchange-AntiSpam-MessageData-0:
+	YIxwTvjOGzyDtQ/qPTjl31qYQh5OfcYQhoUbUVLYyRaHcsg3M5idWH0Q1zJvb2peb7khEKh0lzWIk9XQmxZRhICLscEaz0/ETPXXXNSWdBAT4ALH/6CdF2HNBKfVrD9v/oYCKdQF1vJmL4D8epIfEZBgS6e6E0xQTxR4BQCBieAh2KjJ8qftHARYBBiagWXdot+aoKHmP4HpDuYaqzHnX+vI5HCO9wne/ozqyPesh7tcIJF20YF7vrv8kL8wFXdDFzOFABleFEoY9GvnvGSV4beZdN8KwRYYNmGfmDNVp6hczov4Vc7uJPLozioXCuudGLRi5UmDeJbfMLBreEzLMSJQ/BEP2yqcbIeerxaOeQx3MILIwuzkj7tvjZCKzC5XvPxmC7RLdNoI3WSaHF9E7iW2GA18OpBY4ebiqgFa2zqtf6bEDGC6/z9D5pJL/MJ+
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2026 13:06:22.8011
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GVUolakdGUGt+wvD/FEJAEKFfRAgkT7Bt1HgtAENvhYtjNULD1pNMUcAjZ8aoRDJt4/AB2sf+7mmC+NWdSq1TQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB7119
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b19bd280-3181-4772-f824-08de7f6efea2
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF0000468B.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6606
 
-On Thu, Feb 12, 2026 at 06:35:27AM -0800, Chao Gao wrote:
->P-SEAMLDR calls clobber the current VMCS as documented in Intel® Trust
->Domain CPU Architectural Extensions (May 2021 edition) Chapter 2.3 [1]:
->
->  SEAMRET from the P-SEAMLDR clears the current VMCS structure pointed
->  to by the current-VMCS pointer. A VMM that invokes the P-SEAMLDR using
->  SEAMCALL must reload the current-VMCS, if required, using the VMPTRLD
->  instruction.
->
->Save and restore the current VMCS using VMPTRST and VMPTRLD instructions
->to avoid breaking KVM.
->
->Signed-off-by: Chao Gao <chao.gao@intel.com>
->---
->This patch is needed for testing until microcode is updated to preserve
->the current VMCS across P-SEAMLDR calls. Otherwise, if some normal VMs
->are running before TDX Module updates, vmread/vmwrite errors may occur
->immediately after updates.
+This feature ensures SNP guest Branch Target Buffers (BTBs) are not
+affected by context outside that guest.
 
-The agreed approach is to fix the CPU behavior rather than work around the
-issue in the kernel. So, I'll include the following patch to handle this
-erratum. Please let me know if you have any concerns.
+The first patch fixes a longstanding bug where users weren't able
+to force Automatic IBRS on SNP enabled machines using spectre_v2=eibrs.
 
-From 04b53e83dc9daee1866e1c8f26e3d027e1a0be6a Mon Sep 17 00:00:00 2001
-From: Chao Gao <chao.gao@intel.com>
-Date: Tue, 10 Mar 2026 18:49:41 -0700
-Subject: [PATCH] coco/tdx-host: Don't expose P-SEAMLDR features on CPUs with
- erratum
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+The second patch fixes another longstanding bug where users couldn't
+select legacy / toggling SPEC_CTRL[IBRS] on AMD systems.  Users of
+the BTB Isolation feature may use IBRS to mitigate possible
+performance degradation caused by BTB Isolation.
 
-Some TDX-capable CPUs have an erratum, as documented in Intel® Trust
-Domain CPU Architectural Extensions (May 2021 edition) Chapter 2.3:
+The third patch adds support for the feature by adding it to the
+supported features bitmask.
 
-  SEAMRET from the P-SEAMLDR clears the current VMCS structure pointed
-  to by the current-VMCS pointer. A VMM that invokes the P-SEAMLDR using
-  SEAMCALL must reload the current-VMCS, if required, using the VMPTRLD
-  instruction.
+Based on tip/master, currently 7726ce228780.
+https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git
 
-Clearing the current VMCS behind KVM's back will break KVM.
+This series also available here:
 
-This erratum is not present when IA32_VMX_BASIC[60] is set. Check for
-the erratum and refuse to expose P-SEAMLDR features (e.g., TDX module
-updates) on affected CPUs.
+https://github.com/AMDESE/linux/tree/btb-isol-latest
 
-== Alternatives ==
-Two workarounds were considered but both were rejected:
+Advance qemu bits (to add btb-isol=on/off switch) available here:
 
-1. Save/restore the current VMCS around P-SEAMLDR calls. This produces ugly
-   assembly code [1] and doesn't play well with #MCE or #NMI if they
-   need to use the current VMCS.
+https://github.com/AMDESE/qemu/tree/btb-isol-latest
 
-2. Move KVM's VMCS tracking logic to the TDX core code, which would break
-   the boundary between KVM and the TDX core code [2].
+Qemu bits will be posted upstream once kernel bits are merged.
+They depend on Naveen Rao's "target/i386: SEV: Add support for
+enabling VMSA SEV features":
 
-Signed-off-by: Chao Gao <chao.gao@intel.com>
-Link: https://lore.kernel.org/kvm/fedb3192-e68c-423c-93b2-a4dc2f964148@intel.com/ # [1]
-Link: https://lore.kernel.org/kvm/aYIXFmT-676oN6j0@google.com/ # [2]
----
- arch/x86/include/asm/vmx.h            |  1 +
- drivers/virt/coco/tdx-host/tdx-host.c | 12 ++++++++++++
- 2 files changed, 13 insertions(+)
+https://lore.kernel.org/qemu-devel/cover.1761648149.git.naveen@kernel.org/
 
-diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
-index c85c50019523..d066c50b9051 100644
---- a/arch/x86/include/asm/vmx.h
-+++ b/arch/x86/include/asm/vmx.h
-@@ -135,6 +135,7 @@
- #define VMX_BASIC_INOUT				BIT_ULL(54)
- #define VMX_BASIC_TRUE_CTLS			BIT_ULL(55)
- #define VMX_BASIC_NO_HW_ERROR_CODE_CC		BIT_ULL(56)
-+#define VMX_BASIC_PRESERVE_CURRENT_VMCS		BIT_ULL(60)
- 
- static inline u32 vmx_basic_vmcs_revision_id(u64 vmx_basic)
- {
-diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
-index 891cc6a083e0..13c23769d09d 100644
---- a/drivers/virt/coco/tdx-host/tdx-host.c
-+++ b/drivers/virt/coco/tdx-host/tdx-host.c
-@@ -12,8 +12,10 @@
- #include <linux/sysfs.h>
- 
- #include <asm/cpu_device_id.h>
-+#include <asm/msr.h>
- #include <asm/seamldr.h>
- #include <asm/tdx.h>
-+#include <asm/vmx.h>
- 
- static const struct x86_cpu_id tdx_host_ids[] = {
-	X86_MATCH_FEATURE(X86_FEATURE_TDX_HOST_PLATFORM, NULL),
-@@ -175,6 +177,7 @@ static int seamldr_init(struct device *dev)
- {
-	const struct tdx_sys_info *tdx_sysinfo = tdx_get_sysinfo();
-	struct fw_upload *tdx_fwl;
-+	u64 basic_msr;
- 
-	if (WARN_ON_ONCE(!tdx_sysinfo))
-		return -EIO;
-@@ -182,6 +185,15 @@ static int seamldr_init(struct device *dev)
-	if (!tdx_supports_runtime_update(tdx_sysinfo))
-		return 0;
- 
-+	/*
-+	 * Some TDX-capable CPUs have an erratum where the current VMCS may
-+	 * be cleared after calling into P-SEAMLDR. Ensure no such erratum
-+	 * exists before exposing any P-SEAMLDR functions.
-+	 */
-+	rdmsrq(MSR_IA32_VMX_BASIC, basic_msr);
-+	if (!(basic_msr & VMX_BASIC_PRESERVE_CURRENT_VMCS))
-+		return 0;
-+
-	tdx_fwl = firmware_upload_register(THIS_MODULE, dev, "tdx_module",
-					   &tdx_fw_ops, NULL);
-	if (IS_ERR(tdx_fwl))
+v2:
+ - Patch 1/3:
+   - Address Dave Hansen's comment to adhere to using the IBRS_ENHANCED
+     Intel feature flag also for AutoIBRS.
+
+v1:
+ https://lore.kernel.org/kvm/20260224180157.725159-1-kim.phillips@amd.com/
+
+Kim Phillips (3):
+  cpu/bugs: Allow forcing Automatic IBRS with SNP enabled using
+    spectre_v2=eibrs
+  cpu/bugs: Allow spectre_v2=ibrs on x86 vendors other than Intel
+  KVM: SEV: Add support for SNP BTB Isolation
+
+ arch/x86/include/asm/svm.h   |  1 +
+ arch/x86/kernel/cpu/bugs.c   | 19 +++++++++++--------
+ arch/x86/kernel/cpu/common.c |  6 +-----
+ arch/x86/kvm/svm/sev.c       |  3 +++
+ 4 files changed, 16 insertions(+), 13 deletions(-)
+
+
+base-commit: 7726ce2287804e70b2bf2fc00f104530b603d3f3
 -- 
-2.47.3
-
+2.43.0
 
